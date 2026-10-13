@@ -1,341 +1,192 @@
-# Virtual-space characters — pipeline & playbook
+# Virtual-space characters — the character creator
 
-How the selectable player characters are made, from AI generation to the
-in-game sprite. Read this before adding, regenerating, or debugging an avatar.
-The knowledge here is hard-won and mostly empirical — the PixelLab service is
-powerful but flaky, and the engine has a few non-obvious contracts.
+How the Space's characters are made, from PixelLab generations to the figure
+people compose in the creator. Read this before adding a piece (an outfit, a
+body, a hairstyle, a hat, a face item), regenerating one, or debugging how a
+character draws. Almost everything below was learned by spending generations;
+the cost table at the end is what a piece really takes.
 
-Every avatar is a **premium 8-direction isometric** character, authored at
-**native scale 1** (1:1, no scaling in code) to match the iso diamond floor
-(see [`ISOMETRIC.md`](ISOMETRIC.md)). There is no legacy top-down / 4-direction
-avatar anymore.
+Characters are **paper dolls**: a person picks a body, a skin colour, an
+outfit and its two colours, a hairstyle and its colour, a hat and its two
+colours, and a face item, from pieces generated beforehand. Nothing calls
+PixelLab while somebody makes a character. Every piece is premium
+**8-direction** art at **native scale 1**, with every clip drawn for every
+facing — no mirroring, no reversed clips.
 
 ---
 
-## 1. What exists
+## 1. What a character is
 
-Players choose a character when they enter a Space — channel or DM (a 4×2 picker).
-The roster is **8 iso avatars**, all built by this pipeline:
+A **recipe**, one short string (`RetroHexChat.VirtualSpace.CharacterRecipe`):
 
-| id | role | sheet |
+```
+c1.b-av.s-2.o-tun-0-3.h-lng-2.w-0.f-0
+   body skin outfit+2 dyes  hair+dye  hat+2 dyes  face
+```
+
+`h-0`, `w-0`, `f-0` mean none. A colour is one base-36 digit, an index into a
+palette. The recipe travels everywhere: the wire (`space_select_avatar`, join
+params), the portal URL (`?avatar=`), the nickname's row
+(`registered_nicks.avatar`). Every client composes the same figure from it.
+
+The pieces, as layers drawn in this order:
+
+| Layer | What it is | Made per |
 |---|---|---|
-| `hero` | default (assigned before a pick) | `avatars/iso_hero.webp` |
-| `knight` | armoured melee | `avatars/iso_knight.webp` |
-| `sorceress` | mage | `avatars/iso_sorceress.webp` |
-| `archer` | ranged | `avatars/iso_archer.webp` |
-| `barbarian` | heavy melee | `avatars/iso_barbarian.webp` |
-| `rogue` | daggers | `avatars/iso_rogue.webp` |
-| `cleric` | support | `avatars/iso_cleric.webp` |
-| `monk` | martial artist | `avatars/iso_monk.webp` |
+| **base** | a body wearing an outfit: the whole figure, skin included | body × outfit |
+| **face** | a face item (glasses, beard…) | once, on the master |
+| **hair** | a hairstyle | once, on the master |
+| **hat** | headwear; `hair: clip` cuts the hair it covers | once, on the master |
 
-The clean id (`hero`) is what the server and picker use; the sheet/geometry are
-named `iso_<id>` (`iso_hero.webp`, `iso_hero.geo.json`). `hero` is `hd(@avatars)`
-— the **default** everyone spawns as until they pick.
+Overlays are made **once, on the master mannequin**, and fit every body: the
+bodies are states of the master too, so they share its skeleton and their heads
+stand where the master's does. The build measures any pixel of drift per frame
+(each base's `delta` in the catalog) and the compositor moves the overlays by it.
 
-Runtime sheets + their geometry are served from
-`apps/retro_hex_chat_web/priv/static/images/space/avatars/iso_<id>.webp` (+
-`iso_<id>.geo.json`). Raw generation exports (per-frame PNGs) are kept in
-`virtual.space/characters/iso_<id>/pixellab/` so a sheet can always be recomposed
-without re-spending generations.
+## 2. The master and its states
 
-### Animations & facings
+Everything is a **PixelLab character state** (`create_character_state`) of one
+master mannequin, `CreatorBaseAverage` (`catalog_src.json` → `master`): v3,
+104 px canvas, ~95 px tall, bald, plain grey undershirt and shorts, barefoot.
+A state keeps the master's identity, proportions and **skeleton** — that is
+what makes the layers line up. Never make a piece with `create_character`: a
+new character has its own skeleton and nothing will fit on it.
 
-Each character carries **walk + idle + attack + sleep** in all **8 iso
-facings** (sleep's south row is the 4-frame seated doze from the class's
-"sitting on the ground" sibling state; the other seven facings hold that state's
-static sitting rotations). Knight, rogue and sorceress additionally carry
-**idle2** — the second idle stance generated for them (breathing-idle; their
-`idle` block is calm-idle). Every class also carries the three combat blocks,
-8-dir each: **hit** (taking-punch), **ko** (falling-back-death) and **getup**
-(getting-up). The eight facings, in the row order every sheet is packed:
+### Key colours (how a piece says what is its own)
 
-```
-south, south-east, east, north-east, north, north-west, west, south-west
-```
+A state is **not** a clean diff of the master: every generation redraws the
+whole figure a little, so `state − master` is noise all over the body. A piece
+marks its own pixels by colour instead:
 
-The game's `sword` action maps to the **attack** block (each class swings its
-own weapon — the weapon comes for free from the base sprite), and the combat
-loop plays `hit` on a landed blow, `ko` falling at zero HP (the pose machine
-holds its last frame while the participant stays down) and `getup` on
-recovery. `idle` and `sleep` are the resting states — the renderer alternates
-`idle`/`idle2` on a slow, per-participant-offset cycle where `idle2` exists,
-and `sleep` faces the avatar's own direction; an avatar missing any animation
-falls back to `walk`.
+- **Overlays** (hair, hat, face item): drawn in **vivid saturated magenta**
+  (hue ~310). A hat's band or trim in **vivid saturated cyan** (hue ~185).
+- **Outfits**: the dyeable cloth in **magenta** (main colour) and **cyan**
+  (trim). Anything not meant to be dyed in **neutrals** — greys, black, white,
+  metal. **No browns or warm tans on an outfit**: they read as skin and get
+  recoloured with it.
+- The final colours come from palettes at runtime, so the key colours are
+  never seen.
 
-### Sheet layout (per character)
-
-`compose_iso_avatar.py` packs one sheet per character: **4 frames** per
-animation per direction, laid out **direction-major** in the fixed animation
-order `walk, idle, idle2, attack, sleep, hit, ko, getup`, skipping any
-animation not yet generated. Templates that yield more than 4 frames are
-subsampled evenly to 4 at import time (never truncated — a cut motion reads
-as a glitch).
-Every frame is cropped to **one shared vertical window** (feet flush to the
-bottom, full width kept so the body stays centred through the attack swing).
-
-Geometry lives beside the sheet in `iso_<id>.geo.json`:
-
-```json
-{"frameW": 188, "frameH": 142, "cols": [0, 188, 376, 564],
- "anims": {"walk": {"south": 0, "south-east": 142, ...},
-           "idle": {...}, "attack": {...},
-           "sleep": {"south": 3408, "south-east": 3550, ...}}}
-```
-
-`frameW/frameH` is the cell size, `cols` are the four frame x-offsets, and each
-anim maps a direction → its **row y-offset**. The atlas is generated from this
-data (§4) — no per-avatar code.
-
----
-
-## 2. Generating a character (PixelLab MCP)
-
-The [PixelLab](https://pixellab.ai) MCP server does the art. Add it once:
-
-```bash
-claude mcp add pixellab https://api.pixellab.ai/mcp -t http \
-  -H "Authorization: Bearer <PIXELLAB_TOKEN>"
-```
-
-Check `mcp__pixellab__get_balance` first. Budget generously: an 8-direction
-character with walk + idle + attack + sleep is **many** generations (1 create +
-8 walk + 8 idle + 8 attack + 1 sleep, plus retries) — a paid tier (Tier 1, 2000
-generations) is required, not a trial.
-
-> ⚠️ PixelLab has **no reference-image input** for `create_character`. Style
-> consistency comes ONLY from using identical parameters across every
-> character. Do not change them between characters.
-
-> **Premium art, not the easiest.** Always use the premium **v3 / 8-direction**
-> path — never `standard`. Credits are not the constraint; class-A art is.
-> (See the memory `premium-art-not-easiest`.)
-
-### 2a. Create (the 8 directional rotations)
-
-`mcp__pixellab__create_character` — the premium 8-direction rotation set.
-Locked params (identical across every character):
+Prompts that worked (pass `state_name`, keep the rest of the figure "exactly
+unchanged"):
 
 ```
-description: "RPG overworld <role>, <specifics>"
-n_directions: 8                  # the eight iso facings
-view:        "isometric"         # matches the 2:1 diamond floor
-outline:     "single color black outline"
-shading:     "basic shading"
-detail:      "medium detail"
+outfit: wearing a knee-length cloth tunic dyed vivid saturated magenta pink,
+        with vivid saturated cyan trim along the collar, sleeves and hem, a
+        plain cyan sash belt, light grey trousers and dark grey leather boots;
+        keep the exact same bald head, face, skin, body proportions and pose unchanged
+hair:   with long straight hair falling down to the shoulders, the hair is a
+        vivid saturated magenta pink colour; everything else exactly unchanged:
+        same face, same grey undershirt and shorts, same pose
+hat:    wearing a wide-brimmed adventurer hat made of leather dyed vivid
+        saturated magenta pink, with a vivid saturated cyan band around the
+        crown; everything else exactly unchanged: …
+body:   with a much broader, stockier, heavier and more muscular build with
+        wide shoulders and a thick torso; keep the exact same bald head and
+        face unchanged, same grey undershirt and shorts, same pose
 ```
 
-The art is authored at its **native size** and rendered at **scale 1** — never
-scale it up or down in code. If a size looks wrong, **regenerate** it in
-PixelLab at the right size; do not scale/crop in the engine (memory
-`pixellab-art-authority-scale-1`).
+Lessons:
+- A **grey** key is useless: grey hair over the grey undershirt left holes
+  where the two matched. Always a key no other part of the figure has.
+- Say where a hat **sits**: the adventurer hat came out worn low over the eyes,
+  and its portrait shows a brim and a chin. Ask for "worn high on the head, the
+  face fully visible".
+- A body type must keep the **height and the head**: a shorter body moves the
+  head and every overlay would need its own version.
 
-### 2b. Walk & idle animations
+## 3. Animations
 
-`mcp__pixellab__animate_character` — **1 generation per direction (8 total)** per
-animation. Walk and idle are full 8-direction cycles (4 frames each):
+The clips are in `catalog_src.json` → `clips`. Each is generated for every
+piece and every facing:
 
-```
-animation_name: "walk"    # then "idle"
-directions:     ["south","south-east","east","north-east",
-                 "north","north-west","west","south-west"]
-```
+| Clip | How |
+|---|---|
+| walk, idle, attack, hit, ko, getup | `animate_character` `mode="skeleton-v3"` with the template the source names |
+| sit | **posed**: `animate-with-skeleton-v3` with keypoints from `creator_pose.py` (its `steps`) |
 
-### 2c. Attack animation
+The frames of a clip are whatever its template gives; the build reads the
+count off the master and refuses a piece that differs.
 
-`mcp__pixellab__animate_character`, **v3** mode — **1 gen/direction (8 total)**:
+- **Only `skeleton-v3` keeps the piece's look.** `mode="template"` redraws the
+  character from its *original description* — the master's — so a tunic state
+  walked barefoot in grey shorts. `mode="v3"` (custom) kept the look but the
+  south walk barely moved.
+- skeleton-v3 frames come on a **144 px canvas** with the figure centred; the
+  poses of different states match frame for frame.
+- **There is no sit template** (`crouching` ends squatting), so the seated clip
+  is posed: `creator_pose.py` takes the master's 3-D skeleton (PixelLab keeps
+  it with the character), bends it into a chair, projects it into each facing
+  with an affine map fitted to the facing's 2-D skeleton (within ~1.5 px), and
+  sends the same keypoints for every piece. Say there is **no furniture** in
+  the `action` — "sitting down on a chair" drew chairs and a table.
+- `/estimate-skeleton` cannot read lying poses (it gave −21° for a body lying
+  flat), so nothing tracks heads; every overlay is animated itself.
 
-```
-mode:               "v3"
-frame_count:        4
-keep_first_frame:   false          # false => exactly 4 frames (true => 5)
-animation_name:     "attack"
-action_description: "swinging their weapon forward in a quick attack"
-directions:         ["south","south-east","east","north-east",
-                     "north","north-west","west","south-west"]   # v3 defaults to south only!
-```
+## 4. The pipeline
 
-### 2d. Sleep (south-only seated pose)
+All committed; nothing here runs in a build.
 
-Sleep is a single **south-facing** seated/resting pose — one direction, not
-eight. Generate it for `south` only; the atlas reuses it for any facing.
+1. **Add the piece to `virtual.space/characters/creator/catalog_src.json`**
+   with a new short id (never reuse one — stored recipes name ids) and its
+   PixelLab state id. A base goes under `bases` as `"<body>/<outfit>"`.
+2. **Generate its clips**: `python3 virtual.space/tools/creator_generate.py plan`
+   lists what is missing; `… run --budget N` queues it (8 jobs at a time,
+   retries failures, stops at the budget, writes posed frames to `raw/` as jobs
+   end); the animation groups are kept in `characters/creator/pixellab.json`.
+   Token in `PIXELLAB_TOKEN`.
+3. **Download the frames**: `… creator_generate.py fetch` →
+   `characters/creator/raw/<layer>/<clip>/<dir>/<i>.png`.
+4. **Build**: `make space.creator` (`build_creator.py`) writes the indexed
+   sheets `apps/retro_hex_chat_web/priv/static/images/space/creator/<layer>_<clip>.png`
+   (rows the eight facings, columns the frames), the hat masks, the portrait
+   crops, both catalogs (`…/creator/catalog.json` for the web,
+   `apps/retro_hex_chat/priv/virtual_space/character_catalog.json` for the
+   server), the swatch CSS and the golden portraits the server is tested
+   against. `make space.creator.check` (part of `make lint.css`) fails when
+   any of it is not what the frames build.
+5. **Look at it**: `python3 virtual.space/tools/creator_contact_sheet.py out.png --random 20`
+   composes random recipes in every clip and facing, the way the game does.
+6. **Name it**: a label in `components/ui/space_character_creator.ex` and a
+   row in `scripts/i18n/glossary.py` (with its context).
+7. `make ci`.
 
-### 2e. Job limits & flakiness (the empirical part)
+### Colour
 
-- **Max 8 concurrent jobs.** An 8-direction animation = 8 jobs, so only **one
-  character animates at a time**. Batch accordingly; excess calls return
-  `need N job slots but only M available`.
-- PixelLab **fails intermittently**, especially under load:
-  - `Generation failed due to heavy load. Please try again.`
-  - spurious `404: Character rotation image not found for direction: <dir>`
-    (the rotation PNG is actually fine — verify with `curl` on the public
-    backblaze URL; just retry).
-- **Retry failed directions individually.** Partial successes survive: an
-  8-direction call that dies on direction 5 keeps directions 1–4.
-- Some directions occasionally generate **3 or 5 frames instead of 4** — the
-  compose script pads/truncates to exactly 4 (see §3).
-- After generating, **always verify coverage** before composing: every
-  direction of walk/idle/attack should have frames, plus the full `sleep` block
-  (4 doze frames in `sleep/south`, one static sitting rotation per other facing).
+Each layer is an **indexed PNG**. The build sorts every pixel into a channel —
+`skin` (warm hues), `primary`/`secondary`/`hair` (the keys), or a fixed neutral
+(outline, eyes, metal) — and claims dark shadows for the channel they sit in.
+Each channel is quantized to a fixed number of shades (`shades` in the source)
+at known palette indices, listed per layer in the catalog. A palette colour is a **ramp** of that many shades, built from one
+swatch colour (shadows cooler, highlights warmer). Recolouring is writing the
+ramp into those indices of the PNG's `PLTE` chunk — the browser
+(`png_palette.js`) and the server (`CharacterPortrait.patch_plte/2`) patch the
+same bytes, and no pixel is read back off a canvas.
 
-### 2f. Download the export
+## 5. In the app
 
-The per-character endpoint returns a zip (raw, reliable):
+- **Server**: `CharacterCatalog` (compile-time catalog), `CharacterRecipe`
+  (`parse/1` strict on the wire, `coerce/1` for anything stored, `put/3` for the
+  creator's clicks, `random/1` for a seat nobody dressed), `Accounts.Avatars`
+  (the nickname's character).
+- **Creator**: `components/ui/space_character_creator.ex` and
+  `SpaceCreatorPreviewHook` (`lib/space/creator_preview.js`).
+- **Game**: `character_compositor.js` composes a strip per recipe, clip and
+  facing (LRU-cached, bounded in bytes) that `sprite_atlas.js` hands the
+  renderer like any sprite.
+- **Chat portraits**: `/character-portrait/<version>/<recipe>`, composed by
+  `RetroHexChatWeb.CharacterPortrait` from the head crops the build cuts.
 
-```bash
-curl -L "https://api.pixellab.ai/mcp/characters/<id>/download" \
-  -H "Authorization: Bearer <PIXELLAB_TOKEN>" -o char.zip
-# HTTP 423 => jobs still pending. Structure:
-#   <Name>/rotations/<dir>.png
-#   <Name>/animations/<anim>/<dir>/frame_00X.png
-#   metadata.json
-```
+## 6. Costs (Tier 1, measured)
 
-Unzip so the raw frames land under
-`virtual.space/characters/iso_<id>/pixellab/animations/<anim>/<dir>/*.png`.
+| Job | Generations |
+|---|---|
+| a state (`create_character_state`, 104 px) | ~25 |
+| a template clip, skeleton-v3, one facing | 3 |
+| the seated clip, one facing (3 frames) | 2 |
+| **one piece: state + 6 clips × 8 + sit × 8** | **~185** |
 
----
-
-## 3. Composing the sheet
-
-```bash
-python3 virtual.space/tools/compose_iso_avatar.py           # default iso_knight
-python3 virtual.space/tools/compose_iso_avatar.py iso_hero  # one character
-```
-
-`compose_iso_avatar.py` reads the raw frames, crops every frame to **one shared
-vertical window**, stacks them in direction-major blocks (`walk, idle, attack,
-sleep`, skipping absent ones), and writes `avatars/iso_<id>.webp` plus the sibling
-`iso_<id>.geo.json`. It is **deterministic** (same frames → identical bytes) and
-defensively handles the flakiness:
-
-- **Pads/truncates** to exactly 4 frames per direction (a 3-frame direction
-  repeats its last frame; a 5-frame one drops the extra — imperceptible in a
-  fast cycle).
-- **Skips** any animation with no frames yet (the roster is built up
-  incrementally as animations land).
-
-Inspect the result visually before trusting it — render the walk/idle/attack
-blocks scaled up on a checkerboard (that is how every calibration in this
-project was reviewed).
-
----
-
-## 4. Engine integration
-
-The renderer (`assets/js/lib/space/renderer.js`) is **size-agnostic**: it draws
-`sprite.sw × sprite.sh × avatarScale` and anchors the sprite's feet to the iso
-diamond foot, so the frame size is pure data — no renderer change per character.
-
-### The atlas
-
-`assets/js/lib/space/sprite_atlas.js` builds every avatar from data:
-
-- `DIRECTIONS` — the eight iso facings, in packed row order.
-- `ROSTER` — the 8 clean ids; `DEFAULT_AVATAR_ID = "hero"`.
-- `ISO_GEO` — per-avatar geometry (`frameW/frameH`, `cols`, per-anim/-direction
-  row offsets), **generated** by `tools/gen_iso_atlas.py` from every
-  `iso_<id>.geo.json`.
-- `AVATAR_SHEETS` — self-loaded `av_iso_<id>` image list, loaded **independent of
-  the active map** so every avatar resolves on any scene.
-- `isoAvatar(id)` builds each descriptor from `ISO_GEO` (`scale: 1`, `attack` →
-  the `sword` action); a **single native iso geometry** — no special-cased legacy
-  hero. `avatar(id, dir, frame, action)` resolves the rect, falling back to the
-  default avatar and to `walk` / the first facing when an id/action/direction is
-  absent (so a partially-generated block still serves every facing).
-
-`gen_iso_atlas.py` prints both the `AVATAR_SHEETS` entries and the `ISO_GEO`
-literal, so adding or regenerating a character is a **data change** you paste in.
-
-### The select_avatar round-trip
-
-```
-picker click (phx-click "space_select_avatar")
-  -> ChatLive assigns space_avatar, mounts SpaceCanvasHook with data-avatar
-  -> hook pushes CLIENT_EVENTS.SELECT_AVATAR after channel join
-  -> SpaceChannel handle_in("space_select_avatar")
-  -> VirtualSpace.select_avatar -> ChannelSpaceServer.apply_select_avatar
-  -> broadcast_delta (participant_view carries `avatar`)
-  -> every client's engine applies the delta; sprite swaps live
-```
-
-Two JS gaps that had to be fixed (keep them in mind if avatars ever stop
-updating live): `engine.js _reconcileSelf` must carry `avatar` on a **self**
-delta, and `protocol.js normalizeUpdates` must coerce `avatar`.
-
-### The picker component — location matters
-
-`components/ui/space_character_select.ex`. It **must** live under
-`components/ui/` (a Tailwind-path that `mix lint.css_consistency` skips). A
-component under `live/chat_live/components/` is scanned, and raw Tailwind
-utilities there fail the check as "missing CSS". The animated previews are CSS
-sprites (`.rh-charsel-*` in `retrohex.css`, allowlisted under
-`rh-charsel-sprite--*` because a Tailwind-path component isn't scanned).
-
-In-game, the attack fires on the **Space** key (`ACTION_MAP` in `input.js`).
-
----
-
-## 5. Add a new character — checklist
-
-1. **Generate** (§2): create (8-dir) + walk + idle + attack (8 dirs each),
-   plus the "sitting on the ground" sibling state (8-dir rotations + a south
-   breathing doze) that fills the `sleep` block, using the locked params.
-2. **Download & verify** coverage (§2e–2f), retrying flaky directions.
-3. **Compose** the sheet (§3); eyeball the blocks.
-4. **Regenerate the atlas data**: `python3 tools/gen_iso_atlas.py` and paste the
-   printed `ISO_GEO` block into `sprite_atlas.js`.
-5. **Sync the two source-of-truth roster lists** (they must match, order
-   included — the picker sheet's row order is this order):
-   - JS: add id to `ROSTER` in `sprite_atlas.js`.
-   - Elixir: add id to `@avatars` in `channel_space_server.ex`.
-6. **Repack the picker sheet**: `python3 tools/gen_charsel_sheet.py`, then copy
-   its printed offsets into `.rh-charsel-sprite--<id>` in
-   `css/retrohex/features/space-character-picker.css` (covered by the
-   `rh-charsel-sprite--*` allowlist entry). Adding a class shifts every later
-   row, so paste all of them, not just the new one. If the new art is taller or
-   wider than the current 80×95 cell, the script grows the cell and the shared
-   `.rh-charsel-sprite` / `.rh-charsel-preview` sizes move with it.
-7. **Label**: add to `@labels` in `components/ui/space_character_select.ex`.
-8. **Help**: extend the roster wording in the `feature-choose-character` topic
-   (`chat/help_topics/features.ex`) and its content
-   (`help_content/feature_choose_character.html.heex`).
-9. **Tests**: update `AVATAR_IDS` in `sprite_atlas.test.js` and the `@avatars`
-   assertion in `avatar_test.exs`. `SpaceAssets.sheet_urls/0` follows the Elixir
-   roster on its own, and its test asserts the two agree.
-10. **Validate**: `make ci` (9/9), then verify in a browser — the picker grid,
-   the avatar rendering in-world, and the attack (Space) — via the
-   `e2e/tests/space-character-select.spec.ts` Playwright spec.
-
-Grid tip: keep the roster a multiple of 4 so the picker stays a clean grid.
-
----
-
-## 6. Gotchas, distilled
-
-- **Style consistency = identical create params.** No reference image exists.
-- **Premium v3 / 8-direction, always.** Never `standard`; the eight iso facings
-  must match the diamond.
-- **Native scale 1.** Art is authored 1:1 and rendered at scale 1 — fix a wrong
-  size by regenerating in PixelLab, never by scaling/cropping in code.
-- **8-job ceiling** → animate one character at a time (8 dirs = 8 jobs).
-- **Retry per direction.** Heavy-load and phantom-404 failures are common;
-  partials survive, so re-run only the missing directions.
-- **keep_first_frame:false** for exactly 4 v3 frames; **v3 defaults to south
-  only** — always pass all eight `directions`.
-- **Sleep is south-only** — one seated pose the atlas reuses for any facing.
-- **Picker lives in `components/ui/`**, never `chat_live/components/`.
-- **Renderer is size-agnostic**; don't special-case a frame size there.
-- **Self deltas drop non-position fields** unless explicitly carried.
-
-## 7. Avatar rendering on every map
-
-- **Auto-load every iso sheet, don't rely on the map.** `AVATAR_SHEETS` in
-  `sprite_atlas.js` loads all eight `av_iso_<id>` sheets **independent of the
-  active map**, so an avatar resolves on any scene. A nickname with no sprite
-  means its sheet isn't loaded (or its `avatar` id has no sheet): the atlas
-  returns the rect as soon as the sheet is *registered*, and the label draws from
-  `nickname` alone, so a missing/late sheet shows as a floating name.
-- **Bots (and anyone who never picked) use the default avatar.** The server
-  seeds them via `avatar_for/2 = hd(@avatars) = "hero"`; nothing bot-specific is
-  needed on the client beyond that sheet already being in `AVATAR_SHEETS` (it is
-  — it's the first roster entry). Every bot renders the `hero` sprite on any map.
+PixelLab runs 8 jobs at a time on Tier 1 and, under load, a skeleton-v3 job
+takes 8–14 minutes: a piece takes about an hour of wall time. The group zip
+download answers `423` while any job of the group is running; `creator_generate.py`
+reads frames from the character JSON instead.

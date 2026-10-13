@@ -2,7 +2,7 @@ defmodule RetroHexChatWeb.Components.UI.NickPortraitTest do
   @moduledoc """
   The face beside a nickname, and the case that matters more: no face.
 
-  Somebody who never walked into a space has not chosen a character, and the row
+  Somebody who never walked into a space has not made a character, and the row
   draws nothing at all for them. A placeholder silhouette would put a stranger
   where a person is, which reads worse than the plain text this chat is made of.
   """
@@ -11,13 +11,18 @@ defmodule RetroHexChatWeb.Components.UI.NickPortraitTest do
   import Phoenix.LiveViewTest
   import RetroHexChatWeb.Components.UI.NickPortrait
 
+  alias RetroHexChatWeb.CharacterPortrait
+
   @moduletag :unit
 
-  test "draws the chosen character" do
-    html = render_component(&nick_portrait/1, avatar: "knight", nickname: "Ada")
+  @recipe "c1.b-av.s-2.o-tun-0-3.h-lng-2.w-0.f-0"
 
-    assert html =~ "rh-portrait--knight"
-    assert html =~ ~s(data-testid="nick-portrait-knight")
+  test "draws the character's face from its recipe" do
+    html = render_component(&nick_portrait/1, avatar: @recipe, nickname: "Ada")
+
+    assert html =~ "rh-portrait"
+    assert html =~ ~s(src="#{CharacterPortrait.path(@recipe)}")
+    assert html =~ ~s(data-avatar="#{@recipe}")
     assert html =~ ~s(title="Ada")
   end
 
@@ -28,14 +33,14 @@ defmodule RetroHexChatWeb.Components.UI.NickPortraitTest do
     refute html =~ "rh-portrait"
   end
 
-  # The art is authored at one size and shown at that size, so the class alone
-  # carries the geometry: a component that emitted width or height would be the
-  # second place deciding it, and the two would drift.
-  test "carries no size of its own" do
-    html = render_component(&nick_portrait/1, avatar: "monk")
+  # The art is shown at the size it was drawn, which the image says up front so
+  # a row does not jump when it arrives.
+  test "is the size the portrait was drawn at" do
+    html = render_component(&nick_portrait/1, avatar: @recipe)
+    size = CharacterPortrait.size()
 
-    refute html =~ "width"
-    refute html =~ "height"
+    assert html =~ ~s(width="#{size}")
+    assert html =~ ~s(height="#{size}")
     refute html =~ "style"
   end
 end

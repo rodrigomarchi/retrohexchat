@@ -88,7 +88,7 @@ test.describe("The Construct's library", () => {
     const host = await newSignedInUser(browser, "lt");
     try {
       await inChannel([host], "lt");
-      const { space, walker, room } = await openConstruct(host, "cleric");
+      const { space, walker, room } = await openConstruct(host, "bard");
       const self = await walker.here();
 
       // The long table runs down the y axis; turned, it runs down x.
@@ -217,7 +217,7 @@ test.describe("The Construct's library", () => {
     const host = await newSignedInUser(browser, "le");
     try {
       await inChannel([host], "le");
-      const { space, walker, room } = await openConstruct(host, "knight");
+      const { space, walker, room } = await openConstruct(host, "ranger");
       const self = await walker.here();
 
       await furnish(
@@ -250,7 +250,7 @@ test.describe("The Construct's library", () => {
     try {
       await inChannel([host, guest], "ls");
       const a = await openConstruct(host, "monk");
-      const b = await openConstruct(guest, "archer");
+      const b = await openConstruct(guest, "scout");
       const self = await a.walker.here();
 
       // The sofa covers (x, y) and (x, y+1); each sits from a tile next to
@@ -286,7 +286,7 @@ test.describe("The Construct's library", () => {
     const host = await newSignedInUser(browser, "lf");
     try {
       await inChannel([host], "lf");
-      const { space, walker, room } = await openConstruct(host, "sorceress");
+      const { space, walker, room } = await openConstruct(host, "mage");
       const self = await walker.here();
 
       await openBuildMenu(space);

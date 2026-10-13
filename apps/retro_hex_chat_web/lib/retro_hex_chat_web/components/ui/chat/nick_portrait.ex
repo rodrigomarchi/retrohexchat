@@ -1,36 +1,47 @@
 defmodule RetroHexChatWeb.Components.UI.NickPortrait do
   @moduledoc """
-  The face of the character somebody chose, beside their nickname.
+  The face of the character somebody made in the Space, beside their nickname.
 
-  The same art the virtual space draws, windowed onto the head. A crop rather
-  than a resize: this product's pixel art is authored at one size and shown at
-  that size, and a face scaled down to fit a line of text is a different, worse
-  drawing than the one somebody picked.
+  The same pieces the space composes, cut at the head and stacked by the server
+  (`RetroHexChatWeb.CharacterPortrait`), shown at the size the art was drawn:
+  a face scaled down to fit a line of text is a different, worse drawing.
 
   Draws nothing at all when there is no character. Somebody who has never walked
-  into a space has not chosen, and a placeholder silhouette would put a stranger
-  where a person is — worse than the plain text the mIRC look is made of.
+  into a space has not made one, and a placeholder silhouette would put a
+  stranger where a person is — worse than the plain text the mIRC look is made
+  of.
 
   ## Usage
 
-      <.nick_portrait avatar="knight" nickname="Ada" />
+      <.nick_portrait avatar="c1.b-av.s-2.o-tun-0-3.h-lng-2.w-0.f-0" nickname="Ada" />
   """
   use RetroHexChatWeb.Component
 
-  attr :avatar, :string, default: nil, doc: "the chosen character id, or nil"
+  alias RetroHexChatWeb.CharacterPortrait
+
+  attr :avatar, :string, default: nil, doc: "the character's recipe, or nil"
   attr :nickname, :string, default: nil, doc: "who it is, for the tooltip"
   attr :class, :any, default: nil
   attr :rest, :global
 
   @spec nick_portrait(map()) :: Phoenix.LiveView.Rendered.t()
   def nick_portrait(assigns) do
+    assigns = assign(assigns, :size, CharacterPortrait.size())
+
     ~H"""
-    <span
+    <img
       :if={@avatar}
-      class={classes(["rh-portrait", "rh-portrait--#{@avatar}", @class])}
+      src={CharacterPortrait.path(@avatar)}
+      width={@size}
+      height={@size}
+      alt=""
+      loading="lazy"
+      decoding="async"
+      class={classes(["rh-portrait", @class])}
       title={@nickname}
       aria-hidden="true"
-      data-testid={"nick-portrait-#{@avatar}"}
+      data-testid="nick-portrait"
+      data-avatar={@avatar}
       {@rest}
     />
     """

@@ -40,6 +40,7 @@ import {
 } from "./calls";
 import { Cast, Line } from "./cast";
 import { openSpace, pickAvatar, walk, wander } from "./space";
+import { Look } from "../helpers/characters";
 import {
   cameraContext,
   film,
@@ -104,10 +105,10 @@ const BOT_SETUP = [
 ];
 
 // Who is already walking around #retro's Space when the viewer opens it.
-const SPACE_CROWD: [string, string][] = [
-  ["kestrel", "knight"],
-  ["lumen", "sorceress"],
-  ["bytebard", "archer"],
+const SPACE_CROWD: [string, Look][] = [
+  ["kestrel", "ranger"],
+  ["lumen", "mage"],
+  ["bytebard", "scout"],
   ["m0dem", "rogue"],
 ];
 

@@ -1,0 +1,81 @@
+{
+  "version": 1,
+  "about": "Source of the Space character creator. build_creator.py turns it, with the frames under raw/, into the web and domain catalogs. Ids are short, stable and never reused: a stored recipe names them.",
+  "master": "b472f75a-9395-4b32-b65f-c143be6552dd",
+  "canvas": 144,
+  "dirs": ["south", "south-east", "east", "north-east", "north", "north-west", "west", "south-west"],
+  "clips": [
+    {"anim": "walk", "template": "walking-4-frames", "ms": 120},
+    {"anim": "idle", "template": "breathing-idle", "ms": 220},
+    {"anim": "attack", "template": "cross-punch", "ms": 80},
+    {"anim": "hit", "template": "taking-punch", "ms": 80},
+    {"anim": "ko", "template": "falling-back-death", "ms": 110},
+    {"anim": "getup", "template": "getting-up", "ms": 110},
+    {"anim": "sit", "pose": "seated", "steps": [0.45, 0.8, 1.0], "ms": 120}
+  ],
+  "keys": {"primary": 310, "secondary": 185},
+  "shades": {"skin": 6, "hair": 6, "primary": 7, "secondary": 7},
+  "palettes": {
+    "skin": [
+      {"label": "Porcelain", "rgb": [250, 220, 196]},
+      {"label": "Fair", "rgb": [238, 190, 156]},
+      {"label": "Light tan", "rgb": [222, 168, 124]},
+      {"label": "Olive", "rgb": [196, 150, 104]},
+      {"label": "Tan", "rgb": [174, 122, 82]},
+      {"label": "Brown", "rgb": [140, 92, 58]},
+      {"label": "Deep brown", "rgb": [104, 64, 40]},
+      {"label": "Ebony", "rgb": [74, 46, 30]}
+    ],
+    "hair": [
+      {"label": "Black", "rgb": [44, 38, 46]},
+      {"label": "Dark brown", "rgb": [76, 50, 34]},
+      {"label": "Brown", "rgb": [116, 76, 46]},
+      {"label": "Auburn", "rgb": [150, 64, 38]},
+      {"label": "Copper", "rgb": [198, 106, 50]},
+      {"label": "Blonde", "rgb": [226, 188, 98]},
+      {"label": "Platinum", "rgb": [232, 224, 196]},
+      {"label": "Grey", "rgb": [150, 150, 158]},
+      {"label": "White", "rgb": [236, 236, 240]},
+      {"label": "Blue", "rgb": [72, 112, 204]},
+      {"label": "Green", "rgb": [72, 160, 92]},
+      {"label": "Pink", "rgb": [230, 112, 172]}
+    ],
+    "fabric": [
+      {"label": "Crimson", "rgb": [178, 36, 54]},
+      {"label": "Scarlet", "rgb": [222, 62, 42]},
+      {"label": "Orange", "rgb": [228, 128, 42]},
+      {"label": "Gold", "rgb": [216, 170, 44]},
+      {"label": "Lime", "rgb": [140, 188, 62]},
+      {"label": "Forest", "rgb": [44, 112, 62]},
+      {"label": "Teal", "rgb": [32, 140, 140]},
+      {"label": "Sky", "rgb": [82, 160, 220]},
+      {"label": "Navy", "rgb": [38, 54, 122]},
+      {"label": "Royal blue", "rgb": [72, 72, 190]},
+      {"label": "Violet", "rgb": [122, 62, 170]},
+      {"label": "Plum", "rgb": [120, 42, 92]},
+      {"label": "Rose", "rgb": [220, 112, 142]},
+      {"label": "Leather", "rgb": [112, 76, 48]},
+      {"label": "Charcoal", "rgb": [62, 62, 68]},
+      {"label": "Ivory", "rgb": [232, 224, 200]}
+    ]
+  },
+  "bodies": [
+    {"id": "av", "label": "Average"}
+  ],
+  "outfits": [
+    {"id": "bas", "label": "Undershirt", "channels": []},
+    {"id": "tun", "label": "Tunic", "channels": ["primary", "secondary"]}
+  ],
+  "bases": {
+    "av/bas": "b472f75a-9395-4b32-b65f-c143be6552dd",
+    "av/tun": "e18e62f7-cca2-4e35-879d-b49bbd824e43"
+  },
+  "hair": [
+    {"id": "lng", "label": "Long", "character": "d6e23fbf-56a7-4a66-a996-181224eb97c8", "key": 310}
+  ],
+  "headwear": [
+    {"id": "adv", "label": "Adventurer hat", "character": "f1c131b3-3823-4143-a78e-d2bd696497e2", "hair": "clip", "channels": ["primary", "secondary"]}
+  ],
+  "face": [],
+  "default": "c1.b-av.s-2.o-tun-0-3.h-lng-2.w-0.f-0"
+}

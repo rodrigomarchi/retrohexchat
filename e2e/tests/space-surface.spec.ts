@@ -4,7 +4,7 @@
  * @flow SP7 [done] A shared space link resolves to a card and then to the space itself
  * @flow SP8 [done] Two people in the same space see each other
  * @flow SP9 [done] Walking into an empty space writes its card into the conversation
- * @flow SP10 [done] The picker remembers the character this browser chose last
+ * @flow SP10 [done] The creator opens on the character the nickname made last
  *
  * These @flow lines are the source of truth for e2e/TEST_CATALOG.md.
  * Edit them here, then run `make e2e.catalog` to regenerate the index.
@@ -16,6 +16,7 @@ import {
   uniqueChannel,
   TestUser,
 } from "../helpers/chatUsers";
+import { enterAs, Look, recipeOf } from "../helpers/characters";
 import { enterThroughNewCard } from "../helpers/surfaceEntry";
 
 // A compact hash of the canvas pixels — changes when anything redraws.
@@ -41,12 +42,12 @@ async function enterSpace(user: TestUser, channel: string): Promise<Page> {
 
   const space = await enterThroughNewCard(user.page, user.ctx, "space-open");
 
-  await expect(space.getByTestId("space-character-select")).toBeVisible();
+  await expect(space.getByTestId("space-character-creator")).toBeVisible();
   return space;
 }
 
-async function walkIn(space: Page, avatar: string) {
-  await space.getByTestId(`space-avatar-${avatar}`).click();
+async function walkIn(space: Page, avatar: Look | string) {
+  await enterAs(space, avatar);
   await expect(space.getByTestId("space-loading")).toBeHidden({
     timeout: 15_000,
   });
@@ -74,13 +75,12 @@ test.describe("A space at an address of its own", () => {
       await expect(space.getByTestId("space-back-to-chat")).toBeVisible();
       await expect(space.locator("[data-surface-path]")).toHaveCount(1);
 
-      // Choosing a character is entering.
-      await space.getByTestId("space-avatar-monk").click();
-      await expect(
-        space.locator(
-          '[data-testid="channel-space-shell"][data-avatar="monk"]',
-        ),
-      ).toBeVisible();
+      // Making a character and entering wears it.
+      await enterAs(space, "monk");
+      await expect(space.getByTestId("channel-space-shell")).toHaveAttribute(
+        "data-avatar",
+        recipeOf("monk"),
+      );
 
       // The world boots and keeps drawing: the loading panel goes away and the
       // canvas has pixels in it.
@@ -112,7 +112,7 @@ test.describe("A space at an address of its own", () => {
     try {
       const channel = uniqueChannel("spc");
       const space = await enterSpace(user, channel);
-      await walkIn(space, "hero");
+      await walkIn(space, "wanderer");
 
       const card = user.page.getByTestId("share-message-card").first();
       await expect(card).toBeVisible({ timeout: 15_000 });
@@ -121,8 +121,8 @@ test.describe("A space at an address of its own", () => {
       // A second walk-in is the same gathering, so it is still one card.
       const second = await user.ctx.newPage();
       await second.goto(space.url());
-      await expect(second.getByTestId("space-character-select")).toBeVisible();
-      await second.getByTestId("space-avatar-knight").click();
+      await expect(second.getByTestId("space-character-creator")).toBeVisible();
+      await second.getByTestId("space-creator-enter").click();
 
       await expect(user.page.getByTestId("share-message-card")).toHaveCount(1, {
         timeout: 15_000,
@@ -132,25 +132,25 @@ test.describe("A space at an address of its own", () => {
     }
   });
 
-  test("the picker remembers the character this browser chose last", async ({
+  test("the creator opens on the character the nickname made last", async ({
     browser,
   }) => {
     const user = await newSignedInUser(browser, "spm");
     try {
       const channel = uniqueChannel("spm");
       const space = await enterSpace(user, channel);
-      await space.getByTestId("space-avatar-cleric").click();
+      await walkIn(space, "bard");
 
-      // A new visit to the same address, in the same browser: nothing on the
-      // server outlives the first one, so the memory has to be the browser's.
+      // A new visit to the same address: the character belongs to the
+      // nickname, so the door opens on it, ready to walk straight in.
       const again = await user.ctx.newPage();
       await again.goto(space.url());
 
-      await expect(
-        again.locator(
-          '[data-testid="space-avatar-cleric"][aria-pressed="true"]',
-        ),
-      ).toBeVisible({ timeout: 15_000 });
+      await expect(again.getByTestId("space-creator-preview")).toHaveAttribute(
+        "data-recipe",
+        recipeOf("bard"),
+        { timeout: 15_000 },
+      );
     } finally {
       await closeUsers([user]);
     }
@@ -177,7 +177,9 @@ test.describe("A space at an address of its own", () => {
       await expect(visitor.getByTestId("join-enter")).toBeVisible();
 
       await visitor.getByTestId("join-enter").click();
-      await expect(visitor.getByTestId("space-character-select")).toBeVisible();
+      await expect(
+        visitor.getByTestId("space-character-creator"),
+      ).toBeVisible();
       await expect(visitor).toHaveURL(/\/space\//);
     } finally {
       await closeUsers([user]);
@@ -190,13 +192,13 @@ test.describe("A space at an address of its own", () => {
     try {
       const channel = uniqueChannel("spx");
       const hostSpace = await enterSpace(host, channel);
-      await walkIn(hostSpace, "knight");
+      await walkIn(hostSpace, "ranger");
 
       const guestSpace = await enterSpace(guest, channel);
       await expect(guestSpace.getByTestId("space-roster-names")).toContainText(
         host.nick,
       );
-      await walkIn(guestSpace, "sorceress");
+      await walkIn(guestSpace, "mage");
 
       // Each one's arrival redraws the other's world.
       await expect

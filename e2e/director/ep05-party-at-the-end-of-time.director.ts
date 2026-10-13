@@ -36,6 +36,7 @@ import {
   turnTipsOff,
 } from "./shots";
 import { Walker } from "./space";
+import { buildCharacter, enterAs, Look, recipeOf } from "../helpers/characters";
 
 const PASSWORD = "retro1998";
 const CHANNEL = "#retro";
@@ -51,12 +52,12 @@ const GUESTS = [LUMEN, KESTREL, BYTEBARD, NOVA, HONK];
 // In #retro, never opening the map.
 const FANS = ["wren", "sol"];
 
-const OUTFIT: Record<string, string> = {
-  [LUMEN]: "sorceress",
-  [KESTREL]: "knight",
-  [BYTEBARD]: "archer",
-  [NOVA]: "cleric",
-  [HONK]: "barbarian",
+const OUTFIT: Record<string, Look> = {
+  [LUMEN]: "mage",
+  [KESTREL]: "ranger",
+  [BYTEBARD]: "scout",
+  [NOVA]: "bard",
+  [HONK]: "sailor",
 };
 
 // Where the party stands, round the lamp at the middle of the centre island.
@@ -201,7 +202,7 @@ test.describe("EP05 a party at the End of Time", () => {
     await expect(enter).toBeVisible({ timeout: 15_000 });
     const href = (await enter.getAttribute("href"))!;
     const page = await followCard(lumen.page, lumen.ctx, href);
-    await expect(page.getByTestId("space-character-select")).toBeVisible({
+    await expect(page.getByTestId("space-character-creator")).toBeVisible({
       timeout: 15_000,
     });
     address = page.url();
@@ -212,7 +213,7 @@ test.describe("EP05 a party at the End of Time", () => {
   /** Someone walks into #retro's Space wearing `avatar`, off camera. */
   async function onTheIsland(
     nick: string,
-    avatar: string,
+    avatar: Look,
     page?: Page,
   ): Promise<Walker> {
     const known = spaces.get(nick);
@@ -251,8 +252,10 @@ test.describe("EP05 a party at the End of Time", () => {
     });
   }
 
-  async function walkIn(tab: Page, avatar: string) {
-    await tab.getByTestId(`space-avatar-${avatar}`).click();
+  /** Makes `avatar` at the door and enters; `made` when it is on the preview already. */
+  async function walkIn(tab: Page, avatar: Look, made = false) {
+    if (made) await tab.getByTestId("space-creator-enter").click();
+    else await enterAs(tab, avatar);
     await expect(tab.getByTestId("channel-space-shell")).toBeVisible({
       timeout: 15_000,
     });
@@ -262,20 +265,21 @@ test.describe("EP05 a party at the End of Time", () => {
   }
 
   /** Changes into `avatar` from inside, if not wearing it already. */
-  async function wear(walker: Walker, avatar: string) {
+  async function wear(walker: Walker, avatar: Look) {
     const page = walker.page;
     const shell = page.getByTestId("channel-space-shell");
-    if ((await shell.getAttribute("data-avatar")) === avatar) return;
+    if ((await shell.getAttribute("data-avatar")) === recipeOf(avatar)) return;
     await page.getByTestId("space-change-character").click();
-    await page.getByTestId(`space-avatar-${avatar}`).click();
-    await expect(page.getByTestId("space-character-select")).toBeHidden();
+    await buildCharacter(page, avatar);
+    await page.getByTestId("space-creator-apply").click();
+    await expect(page.getByTestId("space-character-creator")).toBeHidden();
   }
 
   /**
    * Off camera: the whole party is on the island, standing where `spots`
    * says, and Pixel's camera is on Pixel's Space tab in the normal layout.
    */
-  async function party(pixelAvatar: string, spots = AROUND_THE_LAMP) {
+  async function party(pixelAvatar: Look, spots = AROUND_THE_LAMP) {
     for (const nick of GUESTS) await onTheIsland(nick, OUTFIT[nick]);
     const me = await onTheIsland(PIXEL, pixelAvatar);
     await everyoneTo(spots);
@@ -417,17 +421,19 @@ test.describe("EP05 a party at the End of Time", () => {
         );
         const me = Walker.follow(tab, { onCamera: true });
         await follow(tab);
-        const picker = tab.getByTestId("space-character-select");
-        await expect(picker).toBeVisible({ timeout: 15_000 });
+        const creator = tab.getByTestId("space-character-creator");
+        await expect(creator).toBeVisible({ timeout: 15_000 });
         await restCursor(tab);
 
         await cue("who do you want to be tonight");
-        await focus(picker);
+        await focus(creator);
         await cue("eight characters");
-        for (const avatar of ["knight", "sorceress", "archer", "barbarian"]) {
-          await pointAt(tab, tab.getByTestId(`space-avatar-${avatar}`));
+        for (const part of ["body", "skin", "outfit", "hair", "hat"]) {
+          await pointAt(tab, tab.getByTestId(`space-creator-tab-${part}`));
           await pace(350);
         }
+        await pointAt(tab, tab.getByTestId("space-creator-preview"));
+        await pace(350);
 
         await cue("see who's already there");
         await focus(tab.getByTestId("space-roster"));
@@ -435,11 +441,12 @@ test.describe("EP05 a party at the End of Time", () => {
 
         await cue("Pixel goes with the monk");
         await focus(null);
-        await pointAt(tab, tab.getByTestId("space-avatar-monk"));
+        await buildCharacter(tab, "monk");
+        await pointAt(tab, tab.getByTestId("space-creator-enter"));
         await pace(300);
         // The Walker was listening before the click: the join reply is its
         // first word.
-        await walkIn(tab, "monk");
+        await walkIn(tab, "monk", true);
         spaces.set(PIXEL, me);
         await restCursor(tab);
       },
@@ -617,17 +624,18 @@ test.describe("EP05 a party at the End of Time", () => {
         await pointAt(page, change);
         await pace(300);
         await change.click();
-        const picker = page.getByTestId("space-character-select");
-        await expect(picker).toBeVisible();
-        await focus(picker);
+        const creator = page.getByTestId("space-character-creator");
+        await expect(creator).toBeVisible();
+        await focus(creator);
 
         await cue("Change it right there");
-        await pointAt(page, page.getByTestId("space-avatar-archer"));
+        await pointAt(page, page.getByTestId("space-creator-preview"));
         await pace(700);
-        await pointAt(page, page.getByTestId("space-avatar-rogue"));
+        await buildCharacter(page, "rogue");
+        await pointAt(page, page.getByTestId("space-creator-apply"));
         await pace(300);
-        await page.getByTestId("space-avatar-rogue").click();
-        await expect(picker).toBeHidden();
+        await page.getByTestId("space-creator-apply").click();
+        await expect(creator).toBeHidden();
         await focus(null);
         await restCursor(page);
 
@@ -773,7 +781,9 @@ test.describe("EP05 a party at the End of Time", () => {
         await restCursor(chatPage);
 
         await cue("Your character even follows you");
-        const portrait = chatPage.locator(".rh-portrait--rogue").last();
+        const portrait = chatPage
+          .locator(`img.rh-portrait[data-avatar="${recipeOf("rogue")}"]`)
+          .last();
         await focus(portrait);
         await pace(1200);
 

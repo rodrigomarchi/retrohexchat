@@ -13,12 +13,13 @@ import {
   uniqueChannel,
   TestUser,
 } from "../helpers/chatUsers";
+import { enterAs, Look } from "../helpers/characters";
 
 // The loading veil is only there once the map is: waiting for it to be hidden
 // before the map exists passes at once, and the next step would close a tab
 // that never joined.
-async function walkIn(space: Page, avatar: string) {
-  await space.getByTestId(`space-avatar-${avatar}`).click();
+async function walkIn(space: Page, avatar: Look | string) {
+  await enterAs(space, avatar);
   await expect(space.getByTestId("channel-space-shell")).toBeVisible({
     timeout: 15_000,
   });
@@ -42,11 +43,11 @@ async function privateSpaceForTwo(alice: TestUser, bob: TestUser) {
   await alice.chat.sendMessage(`/msg ${bob.nick} sparring?`);
   await alice.page.getByTestId(`pm-${bob.nick}`).click();
   const aliceSpace = await alice.chat.openSpace();
-  await walkIn(aliceSpace, "knight");
+  await walkIn(aliceSpace, "ranger");
 
   const bobSpace = await bob.ctx.newPage();
   await bobSpace.goto(aliceSpace.url());
-  await walkIn(bobSpace, "barbarian");
+  await walkIn(bobSpace, "sailor");
   return { aliceSpace, bobSpace };
 }
 

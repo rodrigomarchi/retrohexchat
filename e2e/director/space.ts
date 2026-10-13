@@ -2,12 +2,13 @@ import { BrowserContext, expect, Page } from "@playwright/test";
 import { readFileSync } from "node:fs";
 import path from "node:path";
 import { enterThroughNewCard } from "../helpers/surfaceEntry";
+import { enterAs, Look } from "../helpers/characters";
 
 /**
  * Spaces on film: entering one, and keeping its avatars alive.
  *
  * The map is a canvas — there is no DOM for positions — so these wait on the
- * picker and the loading veil, and move people with the keys a player holds.
+ * creator and the loading veil, and move people with the keys a player holds.
  */
 
 /** Opens the channel's Space from the chat (card → new tab) and returns the tab. */
@@ -16,15 +17,15 @@ export async function openSpace(
   ctx: BrowserContext,
 ): Promise<Page> {
   const space = await enterThroughNewCard(page, ctx, "space-open");
-  await expect(space.getByTestId("space-character-select")).toBeVisible({
+  await expect(space.getByTestId("space-character-creator")).toBeVisible({
     timeout: 15_000,
   });
   return space;
 }
 
-/** Picks a character and waits until the map has drawn. */
-export async function pickAvatar(space: Page, avatar: string) {
-  await space.getByTestId(`space-avatar-${avatar}`).click();
+/** Makes a character in the door's creator, enters, and waits until the map has drawn. */
+export async function pickAvatar(space: Page, avatar: Look | string) {
+  await enterAs(space, avatar);
   await expect(space.getByTestId("space-loading")).toBeHidden({
     timeout: 20_000,
   });

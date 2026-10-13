@@ -150,7 +150,7 @@ defmodule RetroHexChatWeb.SpaceChannel do
     with %{space_kind: kind, space_id: space_id, participant_key: key} <- socket.assigns,
          {:ok, avatar} <- parse_select_avatar(payload) do
       dispatch_select_avatar(kind, space_id, key, avatar)
-      # Remembered here as well as in the picker: a character can also be
+      # Remembered here as well as at the door: a character can also be
       # changed from inside the running space, and the chat must not keep
       # drawing the one that was left behind.
       remember_avatar(socket, avatar)
@@ -315,8 +315,11 @@ defmodule RetroHexChatWeb.SpaceChannel do
 
   defp parse_action(_), do: :error
 
-  defp parse_select_avatar(%{"avatar" => avatar}) when is_binary(avatar) and avatar != "",
-    do: {:ok, avatar}
+  # A recipe is short; anything longer is not one, and is not carried further
+  # (into telemetry, into the space) to be refused there.
+  defp parse_select_avatar(%{"avatar" => avatar})
+       when is_binary(avatar) and avatar != "" and byte_size(avatar) <= 64,
+       do: {:ok, avatar}
 
   defp parse_select_avatar(_), do: :error
 
@@ -352,9 +355,9 @@ defmodule RetroHexChatWeb.SpaceChannel do
 
   defp parse_build(_payload), do: :error
 
-  # The viewer picked their class on the entry screen; naming it at join means
-  # the snapshot already wears it, so the client downloads one class sheet
-  # instead of the default's and then the real one.
+  # The viewer made their character on the entry screen; naming it at join
+  # means the snapshot already wears it, instead of showing a stranger who
+  # changes a moment later.
   defp build_channel_actor(data, params) do
     %{
       user_id: data.user_id,
@@ -363,7 +366,10 @@ defmodule RetroHexChatWeb.SpaceChannel do
     }
   end
 
-  defp parse_avatar(%{"avatar" => avatar}) when is_binary(avatar) and avatar != "", do: avatar
+  defp parse_avatar(%{"avatar" => avatar})
+       when is_binary(avatar) and avatar != "" and byte_size(avatar) <= 64,
+       do: avatar
+
   defp parse_avatar(_params), do: nil
 
   # `space_init` is the join reply (see `js/lib/space/protocol.js`): the full

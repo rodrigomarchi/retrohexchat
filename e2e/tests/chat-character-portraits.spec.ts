@@ -1,6 +1,6 @@
 /**
  * @section T - Desktop Shell, Menus, Toolbars, Dialogs, And Keyboard
- * @flow T24 [done] The character chosen in a space stands beside the nickname in the chat, in the nicklist and on the hover card, and View ▸ Character Portraits turns them off (features P2)
+ * @flow T24 [done] The character made in a space stands beside the nickname in the chat, in the nicklist and on the hover card, and View ▸ Character Portraits turns them off (features P2)
  *
  * These @flow lines are the source of truth for e2e/TEST_CATALOG.md.
  * Edit them here, then run `make e2e.catalog` to regenerate the index.
@@ -9,6 +9,7 @@ import { test, expect } from "@playwright/test";
 import { ConnectPage, uniqueNickname } from "../pages/ConnectPage";
 import { ChatPage } from "../pages/ChatPage";
 import { shot } from "../helpers/screenshots";
+import { enterAs, recipeOf } from "../helpers/characters";
 
 test.describe("Character portraits", () => {
   test("a chosen character stands beside the nickname, and can be switched off (T24)", async ({
@@ -42,30 +43,49 @@ test.describe("Character portraits", () => {
       await guest.sendMessage(`/join ${channel}`);
       await guest.expectTabVisible(channel);
 
-      // Nobody has chosen, so nobody has a face.
+      // Nobody has made a character, so nobody has a face.
       await guest.sendMessage("no portrait yet");
+      // The line is on screen first, so the count below is of a rendered row.
+      await expect(pageHost.getByText("no portrait yet")).toBeVisible();
       await expect(pageHost.locator(".rh-portrait")).toHaveCount(0);
       await shot(pageHost, "portraits-none-chosen");
 
-      // The guest walks into the channel's space and picks a character.
+      // The guest walks into the channel's space and makes a character.
       const space = await guest.openSpace();
-      await space.getByTestId("space-avatar-knight").click();
+      await enterAs(space, "ranger");
       await expect(space.getByTestId("space-loading")).toBeHidden({
         timeout: 15_000,
       });
       await space.close();
 
-      // Back in the chat, the choice is theirs — and the host's screen has it
-      // beside every line they write.
+      // Back in the chat, the character is theirs — and the host's screen has
+      // it beside every line they write, drawn from the recipe they made.
+      const portrait = `img.rh-portrait[data-testid="nick-portrait"][data-avatar="${recipeOf("ranger")}"]`;
       await guest.sendMessage("now I have a face");
+      await expect(pageHost.locator(portrait).first()).toBeVisible();
+      await expect(pageHost.locator(portrait).first()).toHaveAttribute(
+        "src",
+        new RegExp(
+          `/character-portrait/[^/]+/${recipeOf("ranger").replace(/\./g, "\\.")}$`,
+        ),
+      );
       await expect(
-        pageHost.locator(".rh-portrait--knight").first(),
-      ).toBeVisible();
+        pageHost.locator(`[data-testid^="nicklist-item-"] ${portrait}`),
+      ).toHaveCount(1);
+      // The host never made one, so the host's own lines and nicklist row
+      // stay plain text: every portrait on screen is the guest's.
+      await host.sendMessage("still no face here");
+      await expect(pageHost.getByText("still no face here")).toBeVisible();
       await expect(
         pageHost.locator(
-          '[data-testid^="nicklist-item-"] .rh-portrait--knight',
+          `[data-testid="nick-portrait"]:not([data-avatar="${recipeOf("ranger")}"])`,
         ),
-      ).toHaveCount(1);
+      ).toHaveCount(0);
+      await expect(
+        pageHost.locator(
+          `[data-testid="nicklist-item-${hostNick}"] [data-testid="nick-portrait"]`,
+        ),
+      ).toHaveCount(0);
 
       await shot(pageHost, "portraits-in-conversation");
 

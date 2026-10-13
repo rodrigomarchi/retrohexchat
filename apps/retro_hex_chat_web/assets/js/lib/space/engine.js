@@ -481,9 +481,9 @@ export class SpaceEngine {
     }
   }
 
-  // Ask the atlas for the class sheets these participants wear. The atlas skips
-  // whatever it already holds, so calling this on every snapshot and delta costs
-  // one fetch per class that actually shows up.
+  // Ask the atlas to compose the characters these participants wear. The atlas
+  // skips whatever it is already composing, so calling this on every snapshot
+  // and delta costs nothing for a character it has seen.
   _ensureAvatarSheets(participants) {
     const ids = participants.map((p) => p?.avatar).filter((id) => typeof id === "string");
     if (ids.length) this.atlas?.ensureAvatars?.(ids);

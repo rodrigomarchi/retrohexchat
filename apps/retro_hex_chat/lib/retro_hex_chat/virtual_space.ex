@@ -353,9 +353,6 @@ defmodule RetroHexChat.VirtualSpace do
     )
   end
 
-  @spec avatars() :: [String.t()]
-  defdelegate avatars(), to: ChannelSpaceServer
-
   @spec step_ms() :: non_neg_integer()
   defdelegate step_ms(), to: ChannelSpaceServer
 

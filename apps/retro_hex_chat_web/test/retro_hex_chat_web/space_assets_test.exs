@@ -1,26 +1,16 @@
 defmodule RetroHexChatWeb.SpaceAssetsTest do
   use ExUnit.Case, async: true
 
-  alias RetroHexChat.VirtualSpace
   alias RetroHexChatWeb.SpaceAssets
 
   @moduletag :unit
 
   describe "sheet_urls/0" do
-    test "names one sheet per class, plus the shared fx strip and the UI kit" do
-      urls = SpaceAssets.sheet_urls()
-
-      expected = Enum.map(VirtualSpace.avatars(), &"av_iso_#{&1}") ++ ["fx_combat", "ui_canvas"]
-      assert Enum.sort(Map.keys(urls)) == Enum.sort(expected)
-    end
-
-    test "keys match the ids the client atlas asks sheets by" do
-      # The atlas looks a sheet up by `av_iso_<class>` / `fx_combat`; a key that
-      # drifts from that leaves the client silently on its built-in path.
-      assert %{"av_iso_hero" => hero, "fx_combat" => fx, "ui_canvas" => ui} =
-               SpaceAssets.sheet_urls()
-
-      assert hero =~ "/images/space/avatars/iso_hero"
+    test "names the shared fx strip and the UI kit, by the ids the atlas asks for" do
+      # A key that drifts from the atlas's own leaves the client silently on its
+      # built-in path.
+      assert %{"fx_combat" => fx, "ui_canvas" => ui} = SpaceAssets.sheet_urls()
+      assert map_size(SpaceAssets.sheet_urls()) == 2
       assert fx =~ "/images/space/fx"
       assert ui =~ "/images/space/ui/canvas"
     end
@@ -29,6 +19,13 @@ defmodule RetroHexChatWeb.SpaceAssetsTest do
       for {id, url} <- SpaceAssets.sheet_urls() do
         assert url =~ ~r/\.webp(\?|$)/, "#{id} is not a webp: #{url}"
       end
+    end
+  end
+
+  describe "character_catalog_url/0" do
+    test "is the creator catalog's address" do
+      assert SpaceAssets.character_catalog_url() =~ "/images/space/creator/catalog"
+      assert SpaceAssets.character_catalog_url() =~ ".json"
     end
   end
 

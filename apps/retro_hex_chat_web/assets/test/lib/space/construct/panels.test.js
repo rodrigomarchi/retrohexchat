@@ -6,7 +6,7 @@ function shell() {
   const root = document.createElement("div");
   root.innerHTML = `
     <div data-space-modal></div>
-    <template data-space-panel-template
+    <template data-space-panel-template data-portrait-base="/character-portrait/v1/"
       data-title-sign="Sign" data-title-board="Board" data-title-screen="Screen" data-title-arcade="Arcade"
       data-empty-sign="Nothing written." data-empty-board="Nothing here." data-empty-screen="No pictures."
       data-topic="Topic" data-pinned="Pinned" data-posted-by="Posted by %{name}" data-opens-in-tab="New tab.">
@@ -127,7 +127,7 @@ describe("renderPanel", () => {
     expect(host.dataset.kind).toBe("board");
   });
 
-  it("puts each pinned author's portrait beside their line, when they chose one", () => {
+  it("puts each pinned author's portrait beside their line, when they made one", () => {
     const { root, host } = shell();
     renderPanel(
       root,
@@ -136,7 +136,7 @@ describe("renderPanel", () => {
         kind: "board",
         topic: null,
         pins: [
-          { author: "ana", text: "Snacks", avatar: "knight" },
+          { author: "ana", text: "Snacks", avatar: "c1.b-av.s-2.o-tun-0-3.h-lng-2.w-0.f-0" },
           { author: "bo", text: "Drinks", avatar: null },
           { author: "cy", text: "Odd", avatar: "x y" },
         ],
@@ -145,9 +145,11 @@ describe("renderPanel", () => {
     );
     const rows = host.querySelectorAll(".space-panel-byline");
     expect(rows).toHaveLength(3);
-    expect(rows[0].querySelector(".rh-portrait--knight")).not.toBeNull();
+    expect(rows[0].querySelector("img.rh-portrait").getAttribute("src")).toBe(
+      "/character-portrait/v1/c1.b-av.s-2.o-tun-0-3.h-lng-2.w-0.f-0",
+    );
     expect(rows[1].querySelector(".rh-portrait")).toBeNull();
-    // Only a roster id becomes a class.
+    // Only a recipe goes into the address.
     expect(rows[2].querySelector(".rh-portrait")).toBeNull();
     expect(rows[0].textContent).toBe("ana: Snacks");
   });
@@ -193,10 +195,18 @@ describe("renderPanel", () => {
     renderPanel(
       root,
       host,
-      { kind: "screen", image: { url: "/p.png", name: "p.png", author: "ana", avatar: "monk" } },
+      {
+        kind: "screen",
+        image: {
+          url: "/p.png",
+          name: "p.png",
+          author: "ana",
+          avatar: "c1.b-av.s-5.o-bas-0-0.h-0.w-0.f-0",
+        },
+      },
       ports(),
     );
-    expect(host.querySelector(".space-panel-byline .rh-portrait--monk")).not.toBeNull();
+    expect(host.querySelector(".space-panel-byline img.rh-portrait")).not.toBeNull();
     expect(host.textContent).toContain("Posted by ana");
   });
 });

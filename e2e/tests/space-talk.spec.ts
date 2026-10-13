@@ -15,6 +15,7 @@ import {
   uniqueChannel,
   TestUser,
 } from "../helpers/chatUsers";
+import { buildCharacter, enterAs, Look, recipeOf } from "../helpers/characters";
 import { shot } from "../helpers/screenshots";
 
 // A compact hash of the canvas pixels — changes when anything redraws.
@@ -35,8 +36,8 @@ function canvasSignature(page: Page): Promise<number> {
 // The loading veil is only there once the map is: waiting for it to be hidden
 // before the map exists passes at once, and the next step would close a tab
 // that never joined.
-async function walkIn(space: Page, avatar: string) {
-  await space.getByTestId(`space-avatar-${avatar}`).click();
+async function walkIn(space: Page, avatar: Look | string) {
+  await enterAs(space, avatar);
   await expect(space.getByTestId("channel-space-shell")).toBeVisible({
     timeout: 15_000,
   });
@@ -65,12 +66,12 @@ test.describe("Talking in a space", () => {
       await guest.chat.sendMessage(`/join ${channel}`);
 
       const hostSpace = await host.chat.openSpace();
-      await walkIn(hostSpace, "knight");
+      await walkIn(hostSpace, "ranger");
       // The second one in follows the first one's address, as SP9 does: one
       // gathering, one card.
       const guestSpace = await guest.ctx.newPage();
       await guestSpace.goto(hostSpace.url());
-      await walkIn(guestSpace, "sorceress");
+      await walkIn(guestSpace, "mage");
 
       await say(hostSpace, "party at the lamp in five");
 
@@ -165,7 +166,7 @@ test.describe("Talking in a space", () => {
       ).toBeVisible();
 
       const space = await alice.chat.openSpace();
-      await walkIn(space, "cleric");
+      await walkIn(space, "bard");
 
       await expect(space.getByTestId("space-say-input")).toHaveAttribute(
         "placeholder",
@@ -194,36 +195,58 @@ test.describe("Talking in a space", () => {
       await guest.chat.sendMessage(`/join ${channel}`);
 
       const space = await host.chat.openSpace();
-      await walkIn(space, "hero");
+      await walkIn(space, "wanderer");
 
       await space.getByTestId("space-change-character").click();
-      const picker = space.getByTestId("space-character-select");
-      await expect(picker).toBeVisible();
+      const creator = space.getByTestId("space-character-creator");
+      await expect(creator).toBeVisible();
+      await expect(creator).toContainText("Change character");
+      // It opens on the character being worn.
+      await expect(space.getByTestId("space-creator-preview")).toHaveAttribute(
+        "data-recipe",
+        recipeOf("wanderer"),
+      );
       await shot(space, "change-character-over-the-map");
       // The map keeps running underneath: this is not the door.
       await expect(space.getByTestId("channel-space-shell")).toBeAttached();
-      await space.getByTestId("space-avatar-barbarian").click();
-      await expect(picker).toBeHidden();
+      await buildCharacter(space, "sailor");
+      await space.getByTestId("space-creator-apply").click();
+      await expect(creator).toBeHidden();
       // No reload: the loading veil never comes back.
       await expect(space.getByTestId("space-loading")).toBeHidden();
+      await expect(space.getByTestId("channel-space-shell")).toHaveAttribute(
+        "data-avatar",
+        recipeOf("sailor"),
+      );
       await space.waitForTimeout(800);
-      await shot(space, "changed-to-barbarian");
+      await shot(space, "changed-to-sailor");
 
       // The new character is remembered for the nickname, so the chat draws it.
       await host.chat.sendMessage("new look");
       await expect(
-        guest.page.locator(".rh-portrait--barbarian").first(),
+        guest.page
+          .locator(`img.rh-portrait[data-avatar="${recipeOf("sailor")}"]`)
+          .first(),
       ).toBeVisible({ timeout: 10_000 });
 
-      // And the picker, opened again, starts on it.
+      // And the creator, opened again, starts on it.
       await space.getByTestId("space-change-character").click();
+      await expect(space.getByTestId("space-creator-preview")).toHaveAttribute(
+        "data-recipe",
+        recipeOf("sailor"),
+      );
+      // Cancelling keeps what is worn, even after trying something else on.
+      await space.getByTestId("space-creator-tab-hair").click();
+      await space.getByTestId("space-creator-option-hair-0").click();
       await expect(
-        space.locator(
-          '[data-testid="space-avatar-barbarian"][aria-pressed="true"]',
-        ),
-      ).toBeVisible();
+        space.getByTestId("space-creator-preview"),
+      ).not.toHaveAttribute("data-recipe", recipeOf("sailor"));
       await space.getByTestId("space-change-cancel").click();
-      await expect(picker).toBeHidden();
+      await expect(creator).toBeHidden();
+      await expect(space.getByTestId("channel-space-shell")).toHaveAttribute(
+        "data-avatar",
+        recipeOf("sailor"),
+      );
     } finally {
       await closeUsers([host, guest]);
     }

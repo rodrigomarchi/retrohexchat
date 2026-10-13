@@ -10,15 +10,20 @@ defmodule RetroHexChatWeb.App.SpaceLiveTest do
 
   @moduletag :liveview
 
+  @tunic "c1.b-av.s-2.o-tun-0-3.h-lng-2.w-0.f-0"
+  @bald "c1.b-av.s-5.o-bas-0-0.h-0.w-0.f-0"
+
   alias RetroHexChat.Accounts.Avatars
   alias RetroHexChat.Channels.Server
   alias RetroHexChat.Channels.Supervisor
+  alias RetroHexChat.Nickname
   alias RetroHexChat.Repo
   alias RetroHexChat.Services.RegisteredNick
   alias RetroHexChat.ShareLinks
   alias RetroHexChat.Topics
   alias RetroHexChat.VirtualSpace
   alias RetroHexChat.VirtualSpace.ChannelJoinToken
+  alias RetroHexChat.VirtualSpace.CharacterRecipe
   alias RetroHexChat.VirtualSpace.DirectMessageSpace
   alias RetroHexChat.VirtualSpace.Registry
   alias RetroHexChatWeb.SpaceRef
@@ -72,7 +77,7 @@ defmodule RetroHexChatWeb.App.SpaceLiveTest do
 
       assert html =~ ~s(data-testid="space-denied")
       assert html =~ channel
-      refute html =~ ~s(data-testid="space-character-select")
+      refute html =~ ~s(data-testid="space-character-creator")
     end
 
     # A private space has no membership record: its id *is* the pair, so the
@@ -108,7 +113,7 @@ defmodule RetroHexChatWeb.App.SpaceLiveTest do
 
       for nickname <- [ana, bob] do
         {:ok, _view, html} = build_conn() |> chat_conn(nickname) |> live(path(space_id))
-        assert html =~ ~s(data-testid="space-character-select")
+        assert html =~ ~s(data-testid="space-character-creator")
       end
     end
   end
@@ -130,7 +135,7 @@ defmodule RetroHexChatWeb.App.SpaceLiveTest do
     } do
       {:ok, view, html} = live(conn, path(channel))
 
-      assert html =~ ~s(data-testid="space-character-select")
+      assert html =~ ~s(data-testid="space-character-creator")
       refute html =~ ~s(data-testid="channel-space-shell")
       assert :sys.get_state(view.pid).socket.assigns.avatar == nil
     end
@@ -171,48 +176,98 @@ defmodule RetroHexChatWeb.App.SpaceLiveTest do
       refute has_element?(view, ~s([data-testid="space-open-in-tab"]))
     end
 
-    test "remembers the character this browser picked last time", %{
-      conn: conn,
-      channel: channel
-    } do
-      {:ok, view, _html} = live(conn, path(channel))
-
-      # The browser is what remembers, so the browser is what says so — the
-      # server renders its default first and moves the highlight when told.
-      render_hook(view, "space_remember_avatar", %{"avatar" => "monk"})
-
-      assert has_element?(view, ~s([data-testid="space-avatar-monk"][aria-pressed="true"]))
-      assert :sys.get_state(view.pid).socket.assigns.avatar == nil
-    end
-
-    # The chat draws the saved character beside the nickname, so a picker that
-    # started anywhere else in a fresh browser would be offering a stranger.
-    test "starts on the character the nickname chose, whatever the browser remembers", %{
-      conn: conn
-    } do
+    # The chat draws the saved character beside the nickname, so a creator that
+    # opened on anybody else would be offering a stranger.
+    test "opens on the character the nickname made", %{conn: conn} do
       nickname = register_nick("Saved")
       channel = start_channel(nickname)
       stop_space(channel)
-      :ok = Avatars.remember(nickname, "archer")
+      :ok = Avatars.remember(nickname, @bald)
 
       {:ok, view, _html} = conn |> chat_conn(nickname) |> live(path(channel))
 
-      assert has_element?(view, ~s([data-testid="space-avatar-archer"][aria-pressed="true"]))
-
-      render_hook(view, "space_remember_avatar", %{"avatar" => "monk"})
-
-      assert has_element?(view, ~s([data-testid="space-avatar-archer"][aria-pressed="true"]))
+      assert has_element?(view, ~s([data-testid="space-creator-preview"][data-recipe="#{@bald}"]))
     end
 
-    test "a remembered character this build no longer has is ignored", %{
+    test "somebody who never made one starts from a character drawn for them", %{
       conn: conn,
+      nickname: nickname,
       channel: channel
     } do
       {:ok, view, _html} = live(conn, path(channel))
 
-      render_hook(view, "space_remember_avatar", %{"avatar" => "dragon_lord"})
+      draft = :sys.get_state(view.pid).socket.assigns.draft
+      # The seat the space keeps for this nickname wears the same one.
+      assert draft == CharacterRecipe.for_nickname(nickname)
+      assert draft == CharacterRecipe.random("nick:" <> Nickname.key(nickname))
+      assert CharacterRecipe.valid?(draft)
+    end
+  end
 
-      assert :sys.get_state(view.pid).socket.assigns.last_avatar == "hero"
+  describe "making a character" do
+    setup %{conn: conn} do
+      nickname = "Make#{uid()}" |> String.slice(0, 16)
+      channel = start_channel(nickname)
+      stop_space(channel)
+      %{nickname: nickname, channel: channel, conn: chat_conn(conn, nickname)}
+    end
+
+    test "every choice changes the character the preview draws", %{conn: conn, channel: channel} do
+      {:ok, view, _html} = live(conn, path(channel))
+
+      view |> element(~s([data-testid="space-creator-tab-outfit"])) |> render_click()
+      view |> element(~s([data-testid="space-creator-option-outfit-tun"])) |> render_click()
+      view |> element(~s([data-testid="space-creator-swatch-primary-5"])) |> render_click()
+      view |> element(~s([data-testid="space-creator-tab-hair"])) |> render_click()
+      view |> element(~s([data-testid="space-creator-option-hair-0"])) |> render_click()
+
+      draft = :sys.get_state(view.pid).socket.assigns.draft
+      assert {:ok, %{outfit: "tun", primary: 5, hair: nil}} = CharacterRecipe.parse(draft)
+      assert has_element?(view, ~s([data-testid="space-creator-preview"][data-recipe="#{draft}"]))
+      # The hair tab is open now, and bald is the pressed choice.
+      assert has_element?(
+               view,
+               ~s([data-testid="space-creator-option-hair-0"][aria-pressed="true"])
+             )
+    end
+
+    test "a skin colour is worn when its swatch is pressed", %{conn: conn, channel: channel} do
+      {:ok, view, _html} = live(conn, path(channel))
+      view |> element(~s([data-testid="space-creator-tab-skin"])) |> render_click()
+      view |> element(~s([data-testid="space-creator-swatch-skin-6"])) |> render_click()
+
+      assert {:ok, %{skin: 6}} =
+               CharacterRecipe.parse(:sys.get_state(view.pid).socket.assigns.draft)
+
+      assert has_element?(
+               view,
+               ~s([data-testid="space-creator-swatch-skin-6"][aria-pressed="true"])
+             )
+    end
+
+    test "a colour is offered only for a part that can be dyed", %{conn: conn, channel: channel} do
+      {:ok, view, _html} = live(conn, path(channel))
+      render_click(view, "creator_set", %{"field" => "outfit", "choice" => "bas"})
+      view |> element(~s([data-testid="space-creator-tab-outfit"])) |> render_click()
+
+      refute has_element?(view, ~s([data-testid^="space-creator-swatch-primary"]))
+    end
+
+    test "a choice the art cannot compose changes nothing", %{conn: conn, channel: channel} do
+      {:ok, view, _html} = live(conn, path(channel))
+      before = :sys.get_state(view.pid).socket.assigns.draft
+
+      render_click(view, "creator_set", %{"field" => "hat", "choice" => "crown"})
+      render_click(view, "creator_set", %{"field" => "skin", "choice" => "99"})
+
+      assert :sys.get_state(view.pid).socket.assigns.draft == before
+    end
+
+    test "surprise me makes somebody the art can compose", %{conn: conn, channel: channel} do
+      {:ok, view, _html} = live(conn, path(channel))
+      view |> element(~s([data-testid="space-creator-randomize"])) |> render_click()
+
+      assert CharacterRecipe.valid?(:sys.get_state(view.pid).socket.assigns.draft)
     end
   end
 
@@ -224,17 +279,20 @@ defmodule RetroHexChatWeb.App.SpaceLiveTest do
       %{nickname: nickname, channel: channel, conn: chat_conn(conn, nickname)}
     end
 
-    test "choosing a character is entering, and mints the token the channel checks", %{
+    test "entering wears the character, remembers it, and mints the token the channel checks", %{
       conn: conn,
       channel: channel,
       nickname: nickname
     } do
       {:ok, view, _html} = live(conn, path(channel))
+      render_click(view, "creator_set", %{"field" => "skin", "choice" => "7"})
+      draft = :sys.get_state(view.pid).socket.assigns.draft
 
-      html = view |> element(~s([data-testid="space-avatar-knight"])) |> render_click()
+      html = view |> element(~s([data-testid="space-creator-enter"])) |> render_click()
 
       assert html =~ ~s(data-testid="channel-space-shell")
-      assert html =~ ~s(data-avatar="knight")
+      assert html =~ ~s(data-avatar="#{draft}")
+      assert html =~ "data-character-catalog"
 
       token = :sys.get_state(view.pid).socket.assigns.join_token
 
@@ -269,14 +327,14 @@ defmodule RetroHexChatWeb.App.SpaceLiveTest do
       assert html =~ "window-title-bar--pixel"
       assert html =~ "window-status-field--pixel"
 
-      html = view |> element(~s([data-testid="space-avatar-knight"])) |> render_click()
+      html = view |> element(~s([data-testid="space-creator-enter"])) |> render_click()
 
       # On the map the status is on the say bar, the one line under the map.
       bar = view |> element(~s([data-testid="space-say-form"])) |> render()
       assert bar =~ ~s(data-testid="space-back-to-chat")
       assert bar =~ ~s(data-testid="space-change-character")
       assert bar =~ ~s(data-testid="space-status-count")
-      assert bar =~ "rh-portrait--knight"
+      assert bar =~ ~s(data-testid="nick-portrait")
       refute html =~ "window-status-field--pixel"
 
       # Every overlay on the stage, from the loading card to the gate's question.
@@ -298,7 +356,7 @@ defmodule RetroHexChatWeb.App.SpaceLiveTest do
 
       {:ok, view, _html} = build_conn() |> chat_conn(ana) |> live(path(space_id))
 
-      view |> element(~s([data-testid="space-avatar-hero"])) |> render_click()
+      view |> element(~s([data-testid="space-creator-enter"])) |> render_click()
 
       token = :sys.get_state(view.pid).socket.assigns.join_token
 
@@ -317,20 +375,21 @@ defmodule RetroHexChatWeb.App.SpaceLiveTest do
       stop_space(channel)
 
       {:ok, view, _html} = conn |> chat_conn(nickname) |> live(path(channel))
-      view |> element(~s([data-testid="space-avatar-hero"])) |> render_click()
+      view |> element(~s([data-testid="space-creator-enter"])) |> render_click()
 
       token = :sys.get_state(view.pid).socket.assigns.join_token
       assert {:ok, data} = ChannelJoinToken.verify(token)
       assert is_integer(data.user_id)
     end
 
-    test "an avatar outside the roster changes nothing", %{conn: conn, channel: channel} do
+    # Entering wears the character the creator holds, whatever the event says.
+    test "what the client names on entering is not what is worn", %{conn: conn, channel: channel} do
       {:ok, view, _html} = live(conn, path(channel))
+      draft = :sys.get_state(view.pid).socket.assigns.draft
 
       render_click(view, "space_select_avatar", %{"avatar" => "dragon_lord"})
 
-      assert :sys.get_state(view.pid).socket.assigns.avatar == nil
-      assert has_element?(view, ~s([data-testid="space-character-select"]))
+      assert :sys.get_state(view.pid).socket.assigns.avatar == draft
     end
 
     # The element id is a contract with `SpaceCanvasHook` and with four
@@ -338,7 +397,7 @@ defmodule RetroHexChatWeb.App.SpaceLiveTest do
     test "the shell keeps the element id the hook looks for", %{conn: conn, channel: channel} do
       {:ok, view, _html} = live(conn, path(channel))
 
-      html = view |> element(~s([data-testid="space-avatar-hero"])) |> render_click()
+      html = view |> element(~s([data-testid="space-creator-enter"])) |> render_click()
 
       assert html =~ ~s(id="conversation-space-#{SpaceRef.slug(channel)}")
     end
@@ -352,8 +411,8 @@ defmodule RetroHexChatWeb.App.SpaceLiveTest do
       %{nickname: nickname, channel: channel, conn: chat_conn(conn, nickname)}
     end
 
-    defp walk_in(view, avatar \\ "hero") do
-      view |> element(~s([data-testid="space-avatar-#{avatar}"])) |> render_click()
+    defp walk_in(view) do
+      view |> element(~s([data-testid="space-creator-enter"])) |> render_click()
     end
 
     test "there is nothing to type in before you have walked in", %{conn: conn, channel: channel} do
@@ -426,43 +485,48 @@ defmodule RetroHexChatWeb.App.SpaceLiveTest do
       {:ok, view, _html} = live(conn, path(channel))
       refute has_element?(view, ~s([data-testid="space-change-character"]))
 
-      view |> element(~s([data-testid="space-avatar-hero"])) |> render_click()
+      view |> element(~s([data-testid="space-creator-enter"])) |> render_click()
       assert has_element?(view, ~s([data-testid="space-change-character"]))
     end
 
     # The canvas stays mounted: changing clothes is not leaving the room, and a
     # remount would end the gathering for somebody who was alone in it.
-    test "reopens the picker over the running map and hands the choice to the canvas", %{
+    test "reopens the creator over the running map and hands the character to the canvas", %{
       conn: conn,
       channel: channel
     } do
       {:ok, view, _html} = live(conn, path(channel))
-      view |> element(~s([data-testid="space-avatar-hero"])) |> render_click()
+      view |> element(~s([data-testid="space-creator-enter"])) |> render_click()
       token = :sys.get_state(view.pid).socket.assigns.join_token
 
       view |> element(~s([data-testid="space-change-character"])) |> render_click()
 
-      assert has_element?(view, ~s([data-testid="space-character-select"]))
+      assert has_element?(view, ~s([data-testid="space-character-creator"]))
       assert has_element?(view, ~s([data-testid="channel-space-shell"]))
-      assert has_element?(view, ~s([data-testid="space-avatar-hero"][aria-pressed="true"]))
+      worn = :sys.get_state(view.pid).socket.assigns.avatar
+      assert has_element?(view, ~s([data-testid="space-creator-preview"][data-recipe="#{worn}"]))
 
-      view |> element(~s([data-testid="space-avatar-knight"])) |> render_click()
+      render_click(view, "creator_set", %{"field" => "hair", "choice" => "0"})
+      view |> element(~s([data-testid="space-creator-apply"])) |> render_click()
 
-      assert_push_event(view, "space_change_avatar", %{avatar: "knight"})
-      refute has_element?(view, ~s([data-testid="space-character-select"]))
+      {:ok, changed} = CharacterRecipe.put(worn, "hair", "0")
+      assert_push_event(view, "space_change_avatar", %{avatar: ^changed})
+      refute has_element?(view, ~s([data-testid="space-character-creator"]))
       assert has_element?(view, ~s([data-testid="channel-space-shell"]))
       assert :sys.get_state(view.pid).socket.assigns.join_token == token
     end
 
     test "cancel leaves the character as it was", %{conn: conn, channel: channel} do
       {:ok, view, _html} = live(conn, path(channel))
-      view |> element(~s([data-testid="space-avatar-monk"])) |> render_click()
+      view |> element(~s([data-testid="space-creator-enter"])) |> render_click()
+      worn = :sys.get_state(view.pid).socket.assigns.avatar
 
       view |> element(~s([data-testid="space-change-character"])) |> render_click()
+      render_click(view, "creator_set", %{"field" => "skin", "choice" => "0"})
       view |> element(~s([data-testid="space-change-cancel"])) |> render_click()
 
-      refute has_element?(view, ~s([data-testid="space-character-select"]))
-      assert :sys.get_state(view.pid).socket.assigns.avatar == "monk"
+      refute has_element?(view, ~s([data-testid="space-character-creator"]))
+      assert :sys.get_state(view.pid).socket.assigns.avatar == worn
     end
   end
 
@@ -558,17 +622,21 @@ defmodule RetroHexChatWeb.App.SpaceLiveTest do
       channel: channel
     } do
       {:ok, view, _html} = live(conn, path(channel))
-      view |> element(~s([data-testid="space-avatar-knight"])) |> render_click()
+      view |> element(~s([data-testid="space-creator-enter"])) |> render_click()
+      worn = :sys.get_state(view.pid).socket.assigns.avatar
 
       assert {:error, {:live_redirect, %{to: to}}} = render_hook(view, "space_portal", %{})
-      assert to == path(VirtualSpace.construct_id(channel)) <> "?avatar=knight"
+
+      assert to ==
+               path(VirtualSpace.construct_id(channel)) <>
+                 "?" <> URI.encode_query(%{avatar: worn})
     end
 
     test "is not a door before a character is chosen", %{conn: conn, channel: channel} do
       {:ok, view, _html} = live(conn, path(channel))
 
       render_hook(view, "space_portal", %{})
-      assert has_element?(view, ~s([data-testid="space-character-select"]))
+      assert has_element?(view, ~s([data-testid="space-character-creator"]))
     end
 
     test "the Construct opens straight inside with the character from the address", %{
@@ -578,13 +646,13 @@ defmodule RetroHexChatWeb.App.SpaceLiveTest do
     } do
       construct_id = VirtualSpace.construct_id(channel)
 
-      {:ok, view, html} = live(conn, path(construct_id) <> "?avatar=monk")
+      {:ok, view, html} = live(conn, path(construct_id) <> "?avatar=" <> @tunic)
 
       assert html =~ ~s(data-space-mode="construct")
-      assert html =~ ~s(data-avatar="monk")
+      assert html =~ ~s(data-avatar="#{@tunic}")
       assert html =~ ~s(data-testid="construct-palette")
       assert html =~ "Construct · #{channel}"
-      refute html =~ ~s(data-testid="space-character-select")
+      refute html =~ ~s(data-testid="space-character-creator")
 
       token = :sys.get_state(view.pid).socket.assigns.join_token
       assert {:ok, data} = ChannelJoinToken.verify(token)
@@ -593,10 +661,10 @@ defmodule RetroHexChatWeb.App.SpaceLiveTest do
       assert data.nickname == nickname
 
       assert {:error, {:live_redirect, %{to: to}}} = render_hook(view, "space_portal", %{})
-      assert to == path(channel) <> "?avatar=monk"
+      assert to == path(channel) <> "?" <> URI.encode_query(%{avatar: @tunic})
     end
 
-    test "an address without a character, or with one this build lacks, is the picker", %{
+    test "an address without a character, or with one the art cannot compose, is the creator", %{
       conn: conn,
       channel: channel
     } do
@@ -604,13 +672,13 @@ defmodule RetroHexChatWeb.App.SpaceLiveTest do
 
       for suffix <- ["", "?avatar=dragon_lord"] do
         {:ok, _view, html} = live(conn, path(construct_id) <> suffix)
-        assert html =~ ~s(data-testid="space-character-select")
+        assert html =~ ~s(data-testid="space-character-creator")
         refute html =~ ~s(data-testid="share-bar")
       end
     end
 
     test "the End of Time has no build palette", %{conn: conn, channel: channel} do
-      {:ok, _view, html} = live(conn, path(channel) <> "?avatar=hero")
+      {:ok, _view, html} = live(conn, path(channel) <> "?avatar=" <> @tunic)
 
       assert html =~ ~s(data-testid="channel-space-shell")
       refute html =~ ~s(data-testid="construct-palette")
@@ -622,7 +690,7 @@ defmodule RetroHexChatWeb.App.SpaceLiveTest do
       {:ok, _view, html} =
         conn
         |> chat_conn(outsider)
-        |> live(path(VirtualSpace.construct_id(channel)) <> "?avatar=hero")
+        |> live(path(VirtualSpace.construct_id(channel)) <> "?avatar=" <> @tunic)
 
       assert html =~ ~s(data-testid="space-denied")
       refute html =~ ~s(data-testid="channel-space-shell")
@@ -633,7 +701,7 @@ defmodule RetroHexChatWeb.App.SpaceLiveTest do
       construct_id = VirtualSpace.construct_id(DirectMessageSpace.space_id(me, peer))
 
       {:ok, view, html} =
-        build_conn() |> chat_conn(me) |> live(path(construct_id) <> "?avatar=hero")
+        build_conn() |> chat_conn(me) |> live(path(construct_id) <> "?avatar=" <> @tunic)
 
       assert html =~ ~s(data-space-mode="construct")
       token = :sys.get_state(view.pid).socket.assigns.join_token
@@ -646,7 +714,7 @@ defmodule RetroHexChatWeb.App.SpaceLiveTest do
       {:ok, _view, html} =
         build_conn()
         |> chat_conn("Third#{uid()}" |> String.slice(0, 16))
-        |> live(path(construct_id) <> "?avatar=hero")
+        |> live(path(construct_id) <> "?avatar=" <> @tunic)
 
       assert html =~ ~s(data-testid="space-denied")
     end

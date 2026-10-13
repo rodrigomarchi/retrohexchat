@@ -25,6 +25,13 @@ import {
   tilePoint,
   walkIn,
 } from "../helpers/construct";
+import { Look, recipeOf } from "../helpers/characters";
+
+// The gate carries the character in the address: `?avatar=<recipe>`, whose
+// dots and dashes the query encoding leaves as they are.
+function avatarInUrl(look: Look): RegExp {
+  return new RegExp(`\\?avatar=${recipeOf(look).replace(/\./g, "\\.")}(&|$)`);
+}
 
 test.describe("The Construct", () => {
   test("the gate asks first, takes the character in, and its twin brings it back (SP17)", async ({
@@ -36,7 +43,7 @@ test.describe("The Construct", () => {
       await host.chat.sendMessage(`/join ${channel}`);
       const space = await host.chat.openSpace();
       const walker = Walker.follow(space);
-      await walkIn(space, "knight");
+      await walkIn(space, "ranger");
 
       await walker.goTo(BEFORE_GATE);
       await space.keyboard.press("e");
@@ -54,11 +61,11 @@ test.describe("The Construct", () => {
       await space.keyboard.press("e");
       await expect(modal).toBeVisible();
       await space.keyboard.press("Enter");
-      await expect(space).toHaveURL(/\?avatar=knight/, { timeout: 15_000 });
+      await expect(space).toHaveURL(avatarInUrl("ranger"), { timeout: 15_000 });
       await mapDrawn(space);
       const shell = space.getByTestId("channel-space-shell");
       await expect(shell).toHaveAttribute("data-space-mode", "construct");
-      await expect(shell).toHaveAttribute("data-avatar", "knight");
+      await expect(shell).toHaveAttribute("data-avatar", recipeOf("ranger"));
       await expect(space.getByTestId("construct-palette")).toBeVisible();
       await expect(space.getByTestId("space-say-input")).toHaveAttribute(
         "placeholder",
@@ -77,7 +84,7 @@ test.describe("The Construct", () => {
       });
       await mapDrawn(space);
       await expect(shell).toHaveAttribute("data-space-mode", "channel");
-      await expect(shell).toHaveAttribute("data-avatar", "knight");
+      await expect(shell).toHaveAttribute("data-avatar", recipeOf("ranger"));
     } finally {
       await closeUsers([host]);
     }
@@ -93,7 +100,7 @@ test.describe("The Construct", () => {
       await host.chat.sendMessage(`/join ${channel}`);
       await guest.chat.sendMessage(`/join ${channel}`);
 
-      const a = await openConstruct(host, "archer");
+      const a = await openConstruct(host, "scout");
       const b = await openConstruct(guest, "monk");
       const self = await a.walker.here();
 
@@ -162,7 +169,7 @@ test.describe("The Construct", () => {
     try {
       const channel = uniqueChannel("cs");
       await host.chat.sendMessage(`/join ${channel}`);
-      const { space, walker, room } = await openConstruct(host, "cleric");
+      const { space, walker, room } = await openConstruct(host, "bard");
       const self = await walker.here();
 
       const chairTile = { x: self.x + 2, y: self.y };
@@ -198,7 +205,7 @@ test.describe("The Construct", () => {
       await expect(space.getByTestId("space-modal-yes")).toBeVisible();
       await shot(space, "construct-pad-use-gate");
       await space.getByTestId("space-modal-yes").click();
-      await expect(space).toHaveURL(/\?avatar=rogue/, { timeout: 15_000 });
+      await expect(space).toHaveURL(avatarInUrl("rogue"), { timeout: 15_000 });
       await mapDrawn(space);
 
       const self = await walker.here();

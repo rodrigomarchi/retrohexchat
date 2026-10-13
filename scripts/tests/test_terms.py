@@ -25,6 +25,24 @@ class MissingTermsTest(unittest.TestCase):
         self.assertTrue(missing_terms("How a room works", "Cómo funciona una habitación", "es"))
         self.assertEqual(missing_terms("How a room works", "Cómo funciona una sala", "es"), [])
 
+    def test_a_space_character_is_a_figure_not_a_letter(self):
+        # What the engine gave the character creator's help.
+        self.assertTrue(missing_terms("Each tab is one part of your character", "Cada aba é uma parte do seu caractere", "pt_BR"))
+        self.assertTrue(missing_terms("makes a new random character", "crée un nouveau caractère aléatoire", "fr"))
+        self.assertEqual(missing_terms("makes a new character", "cria um novo personagem", "pt_BR"), [])
+        self.assertEqual(missing_terms("the character creator", "de karakterschepper", "nl"), [])
+
+    def test_letters_are_not_held_to_the_figure(self):
+        # A count of letters, the character counter and "special characters"
+        # are glyphs, and their translations say so.
+        for source, translated, code in [
+            ("Password must be at least 5 characters", "A senha deve ter pelo menos 5 caracteres", "pt_BR"),
+            ("at most %{count} character(s)", "au plus %{count} caractère(s)", "fr"),
+            ("A real-time character counter appears", "Ein Zeichenzähler erscheint", "de"),
+            ("Can contain letters, numbers, special characters", "Pode conter letras, números, caracteres especiais", "pt_BR"),
+        ]:
+            self.assertEqual(missing_terms(source, translated, code), [], source)
+
     def test_a_constructs_sign_is_a_board_not_a_signal(self):
         self.assertEqual(
             missing_terms("That line does not fit on a sign.", "Essa linha não cabe num sinal.", "pt_BR"),
@@ -94,6 +112,13 @@ class ForeignFormsTest(unittest.TestCase):
         # What the engine gave "View channel registration info" for Brazil.
         self.assertEqual(foreign_forms("Ver informações de registo do canal", "pt_BR"), ["registo"])
         self.assertEqual(foreign_forms("Ver informações de registro do canal", "pt_BR"), [])
+
+    def test_the_creators_european_forms_are_foreign_to_pt_br(self):
+        self.assertEqual(
+            foreign_forms("Toda a gente no espaço vê-te entrar.", "pt_BR"), ["Toda a gente", "vê-te"]
+        )
+        self.assertEqual(foreign_forms("Da próxima vez que entrares", "pt_BR"), ["entrares"])
+        self.assertEqual(foreign_forms("Todo mundo no espaço vê você entrar.", "pt_BR"), [])
 
     def test_brazilian_text_passes(self):
         self.assertEqual(foreign_forms("Escolha um apelido e pronto.", "pt_BR"), [])

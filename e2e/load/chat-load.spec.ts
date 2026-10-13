@@ -321,11 +321,11 @@ async function runSpace(
     space = opened[0];
     await space.waitForLoadState("domcontentloaded");
 
-    const picker = space.getByTestId("space-character-select");
-    await expect(picker).toBeVisible();
-    const avatars = picker.locator('[data-testid^="space-avatar-"]');
-    const avatarCount = await avatars.count();
-    await avatars.nth(Math.floor(Math.random() * avatarCount)).click();
+    const creator = space.getByTestId("space-character-creator");
+    await expect(creator).toBeVisible();
+    // Somebody new each time: the creator's own dice, then the door.
+    await space.getByTestId("space-creator-randomize").click();
+    await space.getByTestId("space-creator-enter").click();
     const canvas = space.locator('[data-testid="channel-space-shell"] canvas');
     await expect(canvas).toBeVisible();
     // Over a WAN the sprite atlases load slowly and a loading overlay can

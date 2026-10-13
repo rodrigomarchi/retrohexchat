@@ -12,7 +12,7 @@ the task **before** generating anything — a wrong generation costs credits and
 | Task | Read |
 |---|---|
 | Create or rework a scene / map | [`virtual.space/SCENES.md`](../../../virtual.space/SCENES.md) |
-| Add, regenerate or debug a player avatar | [`virtual.space/CHARACTERS.md`](../../../virtual.space/CHARACTERS.md) |
+| Add a character creator piece (outfit, body, hair, hat, face), or debug how a character draws | [`virtual.space/CHARACTERS.md`](../../../virtual.space/CHARACTERS.md) |
 | Animate tiles, props or scene FX | [`virtual.space/ANIMATIONS.md`](../../../virtual.space/ANIMATIONS.md) |
 | Build a true isometric, 3D-reading scene | [`virtual.space/ISOMETRIC.md`](../../../virtual.space/ISOMETRIC.md) |
 | Chase a real game's look (reference material) | [`virtual.space/DISCOVERY.md`](../../../virtual.space/DISCOVERY.md) |
@@ -31,6 +31,10 @@ These hold regardless of which playbook applies:
   [`virtual.space/SCENES.md`](../../../virtual.space/SCENES.md) §10 ("Scale"),
   and `scripts/tests/test_construct_scale.py` enforces it. Generating first and
   judging after is what wasted a round of credits on tents smaller than a man.
+- **A character piece is a state of the creator's master mannequin, keyed in
+  magenta/cyan, animated with `skeleton-v3`** — never a new character, never
+  `mode="template"`. [`virtual.space/CHARACTERS.md`](../../../virtual.space/CHARACTERS.md)
+  says why; each rule there cost generations to learn.
 - **Never deform aspect ratio.** Do not stretch or squash generated art to fit a
   slot — regenerate at the native ratio (`tile_height`, `width`×`height`).
   Deformation reads as low quality up close.

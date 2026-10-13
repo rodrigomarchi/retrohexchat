@@ -146,6 +146,13 @@ defmodule RetroHexChatWeb.Router do
     get "/indexnow.txt", IndexNowController, :key
   end
 
+  # The face of a Space character, beside a nickname in the chat. The address
+  # names the picture (catalog version and recipe), so it is cached for good:
+  # no session, no layout, nothing that varies by who asks.
+  scope "/", RetroHexChatWeb do
+    get "/character-portrait/:version/:recipe", CharacterPortraitController, :show
+  end
+
   # The build serving this request, which the deploy polls to confirm the new
   # release is live on every backend.
   scope "/", RetroHexChatWeb do

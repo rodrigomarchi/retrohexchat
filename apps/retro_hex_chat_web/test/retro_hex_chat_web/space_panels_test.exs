@@ -48,10 +48,10 @@ defmodule RetroHexChatWeb.SpacePanelsTest do
     end
   end
 
-  test "a pinned line carries the portrait of whoever wrote it, if they chose one" do
+  test "a pinned line carries the portrait of whoever wrote it, if they made one" do
     insert(:registered_nick, nickname: "bob")
     insert(:registered_nick, nickname: "cy")
-    :ok = Avatars.remember("bob", "knight")
+    :ok = Avatars.remember("bob", "c1.b-av.s-2.o-tun-0-3.h-lng-2.w-0.f-0")
     channel = channel_with(["ana"])
 
     for {author, text} <- [{"bob", "Bring snacks"}, {"cy", "Bring drinks"}] do
@@ -63,7 +63,9 @@ defmodule RetroHexChatWeb.SpacePanelsTest do
 
     %{pins: pins} = SpacePanels.fill(%{kind: "board"}, "construct:" <> channel, "ana")
 
-    assert %{avatar: "knight"} = Enum.find(pins, &(&1.author == "bob"))
+    assert %{avatar: "c1.b-av.s-2.o-tun-0-3.h-lng-2.w-0.f-0"} =
+             Enum.find(pins, &(&1.author == "bob"))
+
     assert %{avatar: nil} = Enum.find(pins, &(&1.author == "cy"))
   end
 end

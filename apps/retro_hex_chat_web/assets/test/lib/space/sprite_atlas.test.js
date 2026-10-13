@@ -1,12 +1,6 @@
 import { describe, it, expect, vi } from "vitest";
-import { readFileSync } from "node:fs";
-import path from "node:path";
-import { fileURLToPath } from "node:url";
-
 import {
   createSpriteAtlas,
-  isoAvatar,
-  AVATAR_IDS,
   AVATAR_ACTIONS,
   DIRECTIONS,
 } from "../../../js/lib/space/sprite_atlas.js";
@@ -40,32 +34,62 @@ const TILES = {
   mirrored_chair: { ts: "demo_sheet", col: 7, row: 9, flip_x: true },
 };
 
+const RECIPE = "c1.b-av.s-2.o-tun-0-3.h-lng-2.w-0.f-0";
+const DEFAULT = "c1.b-av.s-0.o-bas-0-0.h-0.w-0.f-0";
+
+// A stand-in for the character compositor: strips are made the first time
+// they are asked for, like the real one, and every request is recorded.
+function fakeCharacters({ ready = true } = {}) {
+  const made = new Map();
+  const asked = [];
+  const settle = [];
+  const frames = { walk: 4, idle: 4, attack: 6, hit: 6, ko: 7, getup: 5, sit: 3 };
+  return {
+    asked,
+    settle: () => settle.splice(0).forEach((resolve) => resolve()),
+    catalog: { dirs: DIRECTIONS, default: DEFAULT },
+    frameSize: { w: 50, h: 100 },
+    valid: (recipe) => typeof recipe === "string" && recipe.startsWith("c1."),
+    strip(recipe, anim, dir) {
+      const key = `${recipe}|${anim}|${dir}`;
+      asked.push(key);
+      if (!made.has(key) && ready) made.set(key, { width: 50 * frames[anim], height: 100, key });
+      return made.get(key) ?? null;
+    },
+    stripOrNearest(recipe, anim, dir) {
+      const strip = this.strip(recipe, anim, dir);
+      if (strip) return { strip, anim };
+      const near = made.get(`${recipe}|idle|south`);
+      return near ? { strip: near, anim: "idle" } : null;
+    },
+    prefetch: (anims) => asked.push(`prefetch:${anims.join(",")}`),
+    frames: (anim) => frames[anim] ?? 0,
+    prepare: (recipe, anim, dir) => asked.push(`prepare:${recipe}|${anim}|${dir}`),
+    prepareAll(recipe, anims) {
+      asked.push(`prepareAll:${recipe}|${anims.join(",")}`);
+      return new Promise((resolve) => settle.push(resolve));
+    },
+    bounds: () => ({ top: 6, foot: 96 }),
+  };
+}
+
 function loadedAtlas() {
-  const atlas = createSpriteAtlas({ tileSize: 16, scale: 2 });
+  const characters = fakeCharacters();
+  const atlas = createSpriteAtlas({ tileSize: 16, scale: 2, characters });
   atlas.loadTilesets(TILESETS);
   atlas.registerTiles(TILES);
-  atlas.ensureAvatars(AVATAR_IDS);
   return atlas;
 }
 
 describe("sprite atlas contract", () => {
-  it("declares the premium iso roster, its actions, and the 8 iso facings", () => {
-    expect(AVATAR_IDS).toEqual([
-      "hero",
-      "knight",
-      "sorceress",
-      "archer",
-      "barbarian",
-      "rogue",
-      "cleric",
-      "monk",
-    ]);
+  it("declares the actions a character can be drawn in, and the 8 iso facings", () => {
     expect(AVATAR_ACTIONS).toEqual([
       "walk",
-      "sword",
       "idle",
       "idle2",
+      "sword",
       "sleep",
+      "sit",
       "hit",
       "ko",
       "getup",
@@ -139,109 +163,78 @@ describe("sprite atlas contract", () => {
     expect(atlas.hasTile("nope")).toBe(false);
   });
 
-  it("slices a fully-animated iso avatar's walk/idle/attack/sleep blocks by 8-direction facing", () => {
+  it("draws a character as one frame of its composed strip", () => {
     const atlas = loadedAtlas();
-    // Hero: walk/idle/attack/sleep + hit/ko/getup, all 8-dir, 188×146 frames.
-    expect(atlas.avatar("hero", "south", 0)).toMatchObject({ sx: 0, sy: 0, sw: 188, sh: 146 });
-    expect(atlas.avatar("hero", "south-east", 1)).toMatchObject({ sx: 188, sy: 146 });
-    // idle block starts at 8*146, sword(attack) at 16*146.
-    expect(atlas.avatar("hero", "south-east", 1, "idle")).toMatchObject({ sx: 188, sy: 1314 });
-    expect(atlas.avatar("hero", "south", 2, "sword")).toMatchObject({ sx: 376, sy: 2336 });
-    // sleep faces the avatar's own direction: south row at 24*146, north at 28*146.
-    expect(atlas.avatar("hero", "south", 0, "sleep")).toMatchObject({ sx: 0, sy: 3504 });
-    expect(atlas.avatar("hero", "north", 0, "sleep")).toMatchObject({ sx: 0, sy: 4088 });
-    // combat blocks: hit at 32*146, ko at 40*146, getup at 48*146.
-    expect(atlas.avatar("hero", "south", 0, "hit")).toMatchObject({ sx: 0, sy: 4672 });
-    expect(atlas.avatar("hero", "south", 3, "ko")).toMatchObject({ sx: 564, sy: 5840 });
-    expect(atlas.avatar("hero", "south", 0, "getup")).toMatchObject({ sx: 0, sy: 7008 });
-    expect(atlas.avatarFrameCount("hero", "walk")).toBe(4);
-    // Hero has a single idle variant.
-    expect(atlas.avatarMeta("hero")).toMatchObject({ hasIdle: true, hasIdle2: false });
-  });
-
-  it("slices the fully-animated knight across walk/idle/idle2/sword/sleep blocks", () => {
-    const atlas = loadedAtlas();
-    // 188×151 frames; walk 0.., idle 1208.., idle2 2416.., sword(attack) 3624..,
-    // sleep 4832.., hit 6040.., ko 7248.., getup 8456.
-    expect(atlas.avatar("knight", "south", 0)).toMatchObject({ sx: 0, sy: 0, sw: 188, sh: 151 });
-    expect(atlas.avatar("knight", "east", 1, "idle")).toMatchObject({ sx: 188, sy: 1510 });
-    // The knight carries a second idle stance (idle2) as a full 8-dir block.
-    expect(atlas.avatar("knight", "east", 1, "idle2")).toMatchObject({ sx: 188, sy: 2718 });
-    expect(atlas.avatar("knight", "south", 2, "sword")).toMatchObject({ sx: 376, sy: 3624 });
-    // sleep faces the avatar's own direction.
-    expect(atlas.avatar("knight", "south", 0, "sleep")).toMatchObject({ sx: 0, sy: 4832 });
-    expect(atlas.avatar("knight", "north", 0, "sleep")).toMatchObject({ sx: 0, sy: 5436 });
-    expect(atlas.avatar("knight", "east", 1, "hit")).toMatchObject({ sx: 188, sy: 6342 });
-    expect(atlas.avatar("knight", "south", 3, "ko")).toMatchObject({ sx: 564, sy: 7248 });
-    expect(atlas.avatar("knight", "north", 0, "getup")).toMatchObject({ sx: 0, sy: 9060 });
-    expect(atlas.avatarFrameCount("knight", "sword")).toBe(4);
-    expect(atlas.avatarMeta("knight")).toMatchObject({ hasIdle: true, hasIdle2: true });
-  });
-
-  it("falls back to the default hero block for an unknown avatar id", () => {
-    const atlas = loadedAtlas();
-    expect(atlas.avatar("who", "south", 0)).toMatchObject({ sx: 0, sy: 0, sw: 188, sh: 146 });
-  });
-
-  it("holds a class sheet back until the room asks for it", () => {
-    // Nothing is downloaded for a class nobody is wearing: opening a room costs
-    // its own avatar, not the whole roster.
-    const atlas = createSpriteAtlas();
-    expect(atlas.avatar("hero", "south")).toBe(null);
-    atlas.ensureAvatars(["hero"]);
-    expect(atlas.avatar("hero", "south")).toMatchObject({ sx: 0, sy: 0, sw: 188, sh: 146 });
-    // A class still absent stays absent.
-    expect(atlas.avatar("knight", "south")).toBe(null);
-  });
-
-  it("fetches a class sheet once, however often the room mentions it", () => {
-    const atlas = createSpriteAtlas();
-    atlas.ensureAvatars(["knight", "knight"]);
-    const first = atlas.avatar("knight", "south");
-    atlas.ensureAvatars(["knight"]);
-    // Same Image instance: the second ask did not start another download.
-    expect(atlas.avatar("knight", "south").img).toBe(first.img);
-  });
-
-  it("resolves an unknown avatar id to the default hero sheet", () => {
-    // The server hands out "default" before a player picks; it must not fetch a
-    // sheet that does not exist.
-    const atlas = createSpriteAtlas();
-    atlas.ensureAvatars(["default"]);
-    expect(atlas.avatar("default", "south")).toMatchObject({ sx: 0, sy: 0, sw: 188, sh: 146 });
-  });
-
-  it("prefers a server-supplied digested sheet url over the built-in path", () => {
-    const atlas = createSpriteAtlas({
-      sheetUrls: { av_iso_hero: "/images/space/avatars/iso_hero-abc123.webp?vsn=d" },
+    expect(atlas.avatar(RECIPE, "south", 2, "walk")).toMatchObject({
+      img: { key: `${RECIPE}|walk|south` },
+      sx: 100,
+      sy: 0,
+      sw: 50,
+      sh: 100,
+      scale: 1,
     });
-    atlas.ensureAvatars(["hero"]);
-    expect(atlas.avatar("hero", "south").img.getAttribute("src")).toBe(
-      "/images/space/avatars/iso_hero-abc123.webp?vsn=d",
-    );
+    // The game's sword swing is the catalog's attack clip; a seat is its sit.
+    expect(atlas.avatar(RECIPE, "east", 0, "sword").img.key).toBe(`${RECIPE}|attack|east`);
+    expect(atlas.avatar(RECIPE, "east", 0, "sleep").img.key).toBe(`${RECIPE}|sit|east`);
+    // A frame past the clip's end wraps round.
+    expect(atlas.avatar(RECIPE, "south", 9, "ko").sx).toBe(100);
+    expect(atlas.avatarFrameCount(RECIPE, "ko")).toBe(7);
+    expect(atlas.avatarMeta(RECIPE)).toMatchObject({
+      hasIdle: true,
+      hasSit: true,
+      hasSleep: false,
+    });
+    expect(atlas.avatarBounds(RECIPE)).toEqual({ top: 6, foot: 96 });
   });
 
-  it("holds the ready gate until the map and every blocking sheet have landed", () => {
+  it("draws a recipe the art cannot compose as the catalog's default", () => {
+    const atlas = loadedAtlas();
+    expect(atlas.avatar("knight", "south", 0).img.key).toBe(`${DEFAULT}|walk|south`);
+  });
+
+  it("draws nothing for a strip not composed yet", () => {
+    const atlas = createSpriteAtlas({ characters: fakeCharacters({ ready: false }) });
+    expect(atlas.avatar(RECIPE, "south", 0)).toBeNull();
+  });
+
+  it("draws nothing before the creator catalog has arrived", () => {
+    const atlas = createSpriteAtlas();
+    expect(atlas.avatar(RECIPE, "south", 0)).toBeNull();
+    expect(atlas.avatarBounds(RECIPE)).toEqual({ top: 0, foot: 0 });
+  });
+
+  it("composes each character in the room standing and walking every way, once", () => {
+    const characters = fakeCharacters();
+    const atlas = createSpriteAtlas({ characters });
+    atlas.ensureAvatars([RECIPE, "knight"]);
+    atlas.ensureAvatars([RECIPE]);
+    expect(characters.asked).toEqual([
+      `prepareAll:${RECIPE}|idle,walk`,
+      `prepareAll:${DEFAULT}|idle,walk`,
+    ]);
+  });
+
+  it("holds the ready gate until the map and the player's own character can be drawn", async () => {
     const images = recordImages();
     const ready = vi.fn();
-    const atlas = createSpriteAtlas({ onReady: ready });
-    atlas.ensureAvatars(["hero"], { blocking: true });
-    // A bystander's class must never hold up the first frame.
-    atlas.ensureAvatars(["knight"]);
+    const characters = fakeCharacters();
+    const atlas = createSpriteAtlas({ onReady: ready, characters });
+    atlas.ensureAvatars([RECIPE], { blocking: true });
+    // A bystander's character must never hold up the first frame.
+    atlas.ensureAvatars(["c1.b-av.s-1.o-bas-0-0.h-0.w-0.f-0"]);
     atlas.loadTilesets(TILESETS);
     atlas.registerTiles(TILES);
 
     const land = (img) => img.dispatchEvent(new Event("load"));
     land(atlas.fx("hit_spark", 0).img);
     land(images.sheet("ui/canvas"));
-    land(atlas.avatar("hero", "south").img);
+    land(atlas.tile("grass").img);
+    expect(characters.asked).toContain(`prepareAll:${RECIPE}|walk,idle`);
     expect(ready).not.toHaveBeenCalled();
 
-    land(atlas.tile("grass").img);
-    expect(ready).toHaveBeenCalledTimes(1);
-
-    // Late arrivals do not re-open the gate.
-    land(atlas.avatar("knight", "south").img);
+    characters.settle();
+    await Promise.resolve();
+    await Promise.resolve();
     expect(ready).toHaveBeenCalledTimes(1);
     images.restore();
   });
@@ -300,21 +293,5 @@ describe("ui kit pieces", () => {
 
   it("knows no piece the kit does not draw", () => {
     expect(createSpriteAtlas().uiPiece("dragon")).toBeNull();
-  });
-});
-
-describe("iso avatar geometry", () => {
-  const avatars = path.resolve(
-    path.dirname(fileURLToPath(import.meta.url)),
-    "../../../../priv/static/images/space/avatars",
-  );
-
-  it.each(AVATAR_IDS)("derives %s's rectangles exactly as its geo.json spells them", (id) => {
-    const geo = JSON.parse(readFileSync(path.join(avatars, `iso_${id}.geo.json`), "utf8"));
-    const desc = isoAvatar(id);
-    for (const [anim, rows] of Object.entries(geo.anims)) {
-      const block = desc[anim === "attack" ? "sword" : anim];
-      expect(block).toEqual({ frameW: geo.frameW, frameH: geo.frameH, cols: geo.cols, rows });
-    }
   });
 });

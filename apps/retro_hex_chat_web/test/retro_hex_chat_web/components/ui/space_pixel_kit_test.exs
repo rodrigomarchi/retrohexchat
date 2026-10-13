@@ -6,7 +6,7 @@ defmodule RetroHexChatWeb.Components.UI.SpacePixelKitTest do
   use RetroHexChatWeb.ConnCase, async: true
 
   import Phoenix.LiveViewTest
-  import RetroHexChatWeb.Components.UI.SpaceCharacterSelect
+  import RetroHexChatWeb.Components.UI.SpaceCharacterCreator
   import RetroHexChatWeb.Components.UI.SpaceConstructPanel
   import RetroHexChatWeb.Components.UI.SpaceSayBar
 
@@ -31,19 +31,23 @@ defmodule RetroHexChatWeb.Components.UI.SpacePixelKitTest do
     refute html =~ "shadow-retro"
   end
 
-  test "the picker is a parchment panel of slots, the chosen one pressed" do
+  test "the creator is a parchment panel of slots and tabs, the worn piece pressed" do
     html =
-      render_component(&space_character_select/1,
-        avatars: ~w(hero knight),
-        selected: "knight",
+      render_component(&space_character_creator/1,
+        id: "creator",
+        recipe: "c1.b-av.s-2.o-tun-0-3.h-lng-2.w-0.f-0",
+        tab: "hair",
+        title: "Make your character",
         roster: [],
         footer: []
       )
 
     assert html =~ "space-ui-panel"
     assert html =~ "space-ui-slot"
-    assert html =~ ~s(data-testid="space-avatar-knight")
-    assert [_] = Regex.scan(~r/aria-pressed="true"/, html)
+    assert html =~ "space-build-tab"
+    assert html =~ ~s(data-testid="space-creator-option-hair-lng")
+    # The long hair is worn, and its colour (the third) is the one chosen.
+    assert [_, _] = Regex.scan(~r/aria-pressed="true"/, html)
     refute html =~ "shadow-retro"
   end
 

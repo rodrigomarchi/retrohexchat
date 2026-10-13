@@ -835,7 +835,7 @@ export class ChatPage {
       this.page.context(),
       "space-open",
     );
-    await expect(space.getByTestId("space-character-select")).toBeVisible();
+    await expect(space.getByTestId("space-character-creator")).toBeVisible();
     return space;
   }
 

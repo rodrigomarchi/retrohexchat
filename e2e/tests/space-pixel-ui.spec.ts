@@ -1,6 +1,6 @@
 /**
  * @section SP - Virtual Spaces
- * @flow SP30 [done] On a phone, the space's screens — the picker, the build palette, the pad, a piece's panel — wear the space's pixel-art kit and fit the screen
+ * @flow SP30 [done] On a phone, the space's screens — the character creator, the build palette, the pad, a piece's panel — wear the space's pixel-art kit and fit the screen
  * @flow SP31 [done] A line said in Japanese or in Traditional Chinese is drawn over the speaker in the pixel font, that region's own glyphs fetched for it
  * @flow SP32 [done] A character who takes a hit shows the kit's HP bar under its nameplate until it is whole again
  * @flow SP33 [done] The Construct's pieces live in a Build menu; what is in hand shows on a card that turns, removes or drops it, so a touch screen can let go of a piece
@@ -120,12 +120,12 @@ test.describe("The space's pixel-art interface", () => {
       const space = await host.chat.openSpace();
       const walker = Walker.follow(space);
       const room = RoomWatch.follow(space);
-      await expect(space.getByTestId("space-character-select")).toBeVisible();
+      await expect(space.getByTestId("space-character-creator")).toBeVisible();
       await expect(space.locator(".space-ui-panel").first()).toBeVisible();
       await fitsTheScreen(space);
-      await shot(space, "phone-picker");
+      await shot(space, "phone-creator");
 
-      await walkIn(space, "cleric");
+      await walkIn(space, "bard");
       await expect(space.getByTestId("space-virtual-pad")).toBeVisible();
       // One fullscreen glyph at a time: enter now, exit once it is full.
       const toggle = space.getByTestId("space-fullscreen-toggle");
@@ -229,7 +229,7 @@ test.describe("The space's pixel-art interface", () => {
       try {
         await inChannel([host], "cj");
         const space = await host.chat.openSpace();
-        await walkIn(space, "sorceress");
+        await walkIn(space, "mage");
         await say(space, line);
         await expect(space.getByTestId("space-said")).toContainText(line);
 
@@ -260,8 +260,8 @@ test.describe("The space's pixel-art interface", () => {
     const guest = await newSignedInUser(browser, "hg");
     try {
       await inChannel([host, guest], "hp");
-      const a = await openConstruct(host, "knight");
-      const b = await openConstruct(guest, "barbarian");
+      const a = await openConstruct(host, "ranger");
+      const b = await openConstruct(guest, "sailor");
       const target = await a.walker.here();
 
       // The guest steps up to the host, facing them, and swings once.
@@ -270,7 +270,7 @@ test.describe("The space's pixel-art interface", () => {
       await b.space.locator("canvas").first().focus();
       await b.space.keyboard.press(" ");
 
-      // One hit hurts and does not knock out: the bar is up, the knight standing.
+      // One hit hurts and does not knock out: the bar is up, the ranger standing.
       await expect
         .poll(async () => (await a.walker.here()).hp ?? 100)
         .toBeLessThan(100);
@@ -290,7 +290,7 @@ test.describe("The space's pixel-art interface", () => {
     const host = await newSignedInUser(browser, "bm");
     try {
       await inChannel([host], "bm");
-      const { space, walker, room } = await openConstruct(host, "knight");
+      const { space, walker, room } = await openConstruct(host, "ranger");
       const self = await walker.here();
 
       // Shut, nothing but the Build key is over the room.
@@ -343,7 +343,7 @@ test.describe("The space's pixel-art interface", () => {
     const host = await newSignedInUser(browser, "cv");
     try {
       await inChannel([host], "cv");
-      const { space, walker } = await openConstruct(host, "sorceress");
+      const { space, walker } = await openConstruct(host, "mage");
       const self = await walker.here();
       const cabinet = { x: self.x + 3, y: self.y + 2 };
 
@@ -383,7 +383,7 @@ test.describe("The space's pixel-art interface", () => {
     try {
       await inChannel([host], "hh");
       const space = await host.chat.openSpace();
-      await walkIn(space, "knight");
+      await walkIn(space, "ranger");
       await mapDrawn(space);
       await handheldAndOneLine(space);
       await fitsTheScreen(space);
@@ -403,7 +403,7 @@ test.describe("The space's pixel-art interface", () => {
     try {
       await inChannel([host], "sm");
       const space = await host.chat.openSpace();
-      await walkIn(space, "knight");
+      await walkIn(space, "ranger");
       await handheldAndOneLine(space);
       const field = (await space.getByTestId("space-say-input").boundingBox())!;
       expect(field.width).toBeGreaterThanOrEqual(90);

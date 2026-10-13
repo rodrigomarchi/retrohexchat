@@ -1,0 +1,73 @@
+/* The Space's character creator (components/ui/space_character_creator.ex):
+   the preview on its little stage beside the tabs of parts, stacked on a
+   phone. The swatch colours are generated with the art
+   (space-creator-swatches.generated.css, by virtual.space/tools/build_creator.py). */
+.space-creator {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+@media (min-width: 640px) {
+  .space-creator {
+    flex-direction: row;
+    align-items: flex-start;
+  }
+}
+
+.space-creator__preview {
+  display: flex;
+  flex: none;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+}
+
+/* The stage: a sunken parchment slot the character stands in, drawn at a
+   whole multiple of its size so no pixel is resampled. */
+.space-creator__stage {
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  min-width: 120px;
+  min-height: 160px;
+  border: 0 solid transparent;
+  border-image-source: var(--space-ui-slot);
+  border-image-slice: var(--space-ui-slot-slice) fill;
+  border-image-width: var(--space-ui-slot-width);
+  border-image-repeat: repeat;
+  padding: 6px;
+}
+
+.space-creator__stage canvas {
+  display: block;
+  image-rendering: pixelated;
+}
+
+.space-creator__panel {
+  margin-top: 6px;
+  max-height: 16rem;
+  overflow-y: auto;
+}
+
+.space-creator-swatch {
+  width: 22px;
+  height: 22px;
+  border: 2px solid var(--space-ui-ink);
+  image-rendering: pixelated;
+}
+
+.space-creator-swatch[aria-pressed="true"] {
+  outline: 2px solid var(--space-ui-gold);
+  outline-offset: 1px;
+}
+
+/* ── Portraits in the chat ──────────────────────────────────────────────────
+   The character's face, composed by the server from the creator's pieces
+   (RetroHexChatWeb.CharacterPortrait) and shown at the size it was drawn. */
+.rh-portrait {
+  display: inline-block;
+  vertical-align: middle;
+  image-rendering: pixelated;
+  flex: none;
+}

@@ -260,14 +260,29 @@ describe("SpaceEngine avatar sheet demand", () => {
         snapshot: {
           serverTime: 1,
           participants: {
-            "registered:1": { nickname: "alice", x: 5, y: 5, avatar: "knight" },
-            "registered:2": { nickname: "bob", x: 8, y: 6, avatar: "monk" },
+            "registered:1": {
+              nickname: "alice",
+              x: 5,
+              y: 5,
+              avatar: "c1.b-av.s-4.o-tun-8-6.h-0.w-adv-d-6.f-0",
+            },
+            "registered:2": {
+              nickname: "bob",
+              x: 8,
+              y: 6,
+              avatar: "c1.b-av.s-7.o-bas-0-0.h-0.w-0.f-0",
+            },
           },
         },
       }),
     );
 
-    expect(atlas.ensureAvatars).toHaveBeenCalledWith(expect.arrayContaining(["knight", "monk"]));
+    expect(atlas.ensureAvatars).toHaveBeenCalledWith(
+      expect.arrayContaining([
+        "c1.b-av.s-4.o-tun-8-6.h-0.w-adv-d-6.f-0",
+        "c1.b-av.s-7.o-bas-0-0.h-0.w-0.f-0",
+      ]),
+    );
   });
 
   it("asks for a class that walks in later, and for one that is swapped mid-room", () => {
@@ -277,19 +292,32 @@ describe("SpaceEngine avatar sheet demand", () => {
     atlas.ensureAvatars.mockClear();
 
     engine.applyDelta({
-      joined: { "registered:9": { nickname: "carol", x: 2, y: 2, avatar: "rogue" } },
+      joined: {
+        "registered:9": {
+          nickname: "carol",
+          x: 2,
+          y: 2,
+          avatar: "c1.b-av.s-5.o-tun-e-1.h-0.w-0.f-0",
+        },
+      },
       updates: {},
       left: [],
     });
-    expect(atlas.ensureAvatars).toHaveBeenCalledWith(expect.arrayContaining(["rogue"]));
+    expect(atlas.ensureAvatars).toHaveBeenCalledWith(
+      expect.arrayContaining(["c1.b-av.s-5.o-tun-e-1.h-0.w-0.f-0"]),
+    );
 
     atlas.ensureAvatars.mockClear();
     engine.applyDelta({
       joined: {},
-      updates: { "registered:9": { x: 3, y: 2, avatar: "cleric" } },
+      updates: {
+        "registered:9": { x: 3, y: 2, avatar: "c1.b-av.s-1.o-tun-5-f.h-lng-5.w-adv-0-3.f-0" },
+      },
       left: [],
     });
-    expect(atlas.ensureAvatars).toHaveBeenCalledWith(expect.arrayContaining(["cleric"]));
+    expect(atlas.ensureAvatars).toHaveBeenCalledWith(
+      expect.arrayContaining(["c1.b-av.s-1.o-tun-5-f.h-lng-5.w-adv-0-3.f-0"]),
+    );
   });
 
   it("says nothing to the atlas when a delta carries no avatar", () => {

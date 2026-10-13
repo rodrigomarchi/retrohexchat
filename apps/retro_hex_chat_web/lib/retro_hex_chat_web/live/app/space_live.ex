@@ -9,7 +9,7 @@ defmodule RetroHexChatWeb.App.SpaceLive do
   the chat's message stream.
 
   Two states, and you always arrive at the first: the **antechamber**, which is
-  the character picker, and **inside**. There is no `[Start]`, because a space
+  the character creator, and **inside**. There is no `[Start]`, because a space
   does not begin or end — it is a place, and the address of a place stays good.
   What begins and ends is the gathering in it, which the conversation hears
   about as a card.
@@ -20,7 +20,7 @@ defmodule RetroHexChatWeb.App.SpaceLive do
   A space's gate leads to its Construct, at an address of its own, and the
   Construct's gate leads back. Walking through either one carries the character
   in the address (`?avatar=`), so the door is not a second antechamber: the
-  same `mount/3` that would draw the picker goes straight inside instead.
+  same `mount/3` that would draw the creator goes straight inside instead.
   """
 
   alias RetroHexChat.Nickname
@@ -30,7 +30,7 @@ defmodule RetroHexChatWeb.App.SpaceLive do
   import RetroHexChatWeb.Components.UI.SpaceBuildPalette
   import RetroHexChatWeb.Components.UI.Desktop
   import RetroHexChatWeb.Components.UI.NickPortrait
-  import RetroHexChatWeb.Components.UI.SpaceCharacterSelect
+  import RetroHexChatWeb.Components.UI.SpaceCharacterCreator
   import RetroHexChatWeb.Components.UI.SpaceConstructPanel
   import RetroHexChatWeb.Components.UI.SpaceFullscreenToggle
   import RetroHexChatWeb.Components.UI.Space.PixelIcon
@@ -47,6 +47,7 @@ defmodule RetroHexChatWeb.App.SpaceLive do
   alias RetroHexChat.Topics
   alias RetroHexChat.VirtualSpace
   alias RetroHexChat.VirtualSpace.ChannelJoinToken
+  alias RetroHexChat.VirtualSpace.CharacterRecipe
   alias RetroHexChat.VirtualSpace.DirectMessageSpace
   alias RetroHexChatWeb.App.Paths
   alias RetroHexChatWeb.App.SessionHelpers
@@ -66,14 +67,13 @@ defmodule RetroHexChatWeb.App.SpaceLive do
       assign(socket,
         nickname: nickname,
         page_title: loading_title(nil),
-        avatars: VirtualSpace.avatars(),
         avatar: nil,
-        # The character a registered nickname chose is its identity — the one
-        # the chat draws beside it — and the picker starts on it in any
-        # browser. Without one, the browser that picked last time says which,
-        # because nothing else outlives a visit.
-        saved_avatar: saved_avatar,
-        last_avatar: saved_avatar || hd(VirtualSpace.avatars()),
+        # The character a nickname made is its identity — the one the chat
+        # draws beside it — and the creator opens on it. Somebody who never
+        # made one starts from a character drawn for their nickname, the same
+        # one the space dressed them in before they chose.
+        draft: saved_avatar || CharacterRecipe.for_nickname(nickname || ""),
+        creator_tab: "body",
         join_token: nil,
         roster: [],
         share_url: nil,
@@ -135,7 +135,7 @@ defmodule RetroHexChatWeb.App.SpaceLive do
         >
           <:icon><.pixel_icon name={:space} /></:icon>
           <%!-- The way back is always there. On the map it is on the say bar,
-                the one line under the map; before the map (the picker, a
+                the one line under the map; before the map (the creator, a
                 refusal) it is the window's own status line. --%>
           <:status :if={!(@space && @avatar)}>
             <.window_status_bar_field skin="pixel" grow>
@@ -161,20 +161,27 @@ defmodule RetroHexChatWeb.App.SpaceLive do
     ~H"""
     <.space_denied :if={@denied} message={@denied} />
 
-    <%!-- The picker remembers the character across visits by asking the browser,
-          because nothing on the server outlives a visit any more: the LiveView
-          is mounted per visit and the chat that used to hold this no longer has
-          the space in it at all. --%>
-    <.space_character_select
+    <.space_character_creator
       :if={@space && is_nil(@avatar)}
-      avatars={@avatars}
-      selected={@last_avatar}
+      id="space-creator"
+      recipe={@draft}
+      tab={@creator_tab}
+      title={dgettext("chat", "Make your character")}
       roster={@roster}
-      remember_key={@space && "space:last-avatar"}
     >
       <:footer>
+        <.button
+          type="button"
+          size="sm"
+          variant="pixel"
+          phx-click="space_select_avatar"
+          data-testid="space-creator-enter"
+        >
+          <:icon><.pixel_icon name={:ok} /></:icon>
+          {dgettext("chat", "Walk in")}
+        </.button>
         <%!-- The invitation is made at the door: a bar over the map would take
-              pixels from the thing the person came for, and the picker is the
+              pixels from the thing the person came for, and the creator is the
               one screen every visit goes through. --%>
         <%!-- A Construct is shared through its space: its gate is right there. --%>
         <.live_component
@@ -189,7 +196,7 @@ defmodule RetroHexChatWeb.App.SpaceLive do
           class="justify-start"
         />
       </:footer>
-    </.space_character_select>
+    </.space_character_creator>
 
     <%!-- The stage is what fullscreen presents: the map and the line you type
           in go together, or a fullscreen map would leave you mute. --%>
@@ -199,16 +206,26 @@ defmodule RetroHexChatWeb.App.SpaceLive do
       data-testid="space-stage"
       class="relative flex min-h-0 w-full flex-1 flex-col"
     >
-      <%!-- The same picker as at the door, over the running map: the map keeps
+      <%!-- The same creator as at the door, over the running map: the map keeps
             running underneath, so changing who you are is not leaving. --%>
-      <.space_character_select
+      <.space_character_creator
         :if={@changing_avatar}
-        avatars={@avatars}
-        selected={@avatar}
-        roster={@roster}
-        remember_key="space:last-avatar"
+        id="space-recreator"
+        recipe={@draft}
+        tab={@creator_tab}
+        title={dgettext("chat", "Change character")}
       >
         <:footer>
+          <.button
+            type="button"
+            size="sm"
+            variant="pixel"
+            phx-click="space_select_avatar"
+            data-testid="space-creator-apply"
+          >
+            <:icon><.pixel_icon name={:ok} /></:icon>
+            {dgettext("chat", "Wear this")}
+          </.button>
           <.button
             type="button"
             size="sm"
@@ -220,7 +237,7 @@ defmodule RetroHexChatWeb.App.SpaceLive do
             {dgettext("chat", "Cancel")}
           </.button>
         </:footer>
-      </.space_character_select>
+      </.space_character_creator>
       <div
         id={@space.dom_id}
         phx-hook="SpaceCanvasHook"
@@ -232,6 +249,7 @@ defmodule RetroHexChatWeb.App.SpaceLive do
         data-space-mode={@space.mode}
         data-avatar={@avatar}
         data-sprite-sheets={SpaceAssets.sheet_urls_json()}
+        data-character-catalog={SpaceAssets.character_catalog_url()}
         class="relative flex-1 min-h-0 w-full bg-canvas"
       >
         <%!-- Focusable so Esc in the line below can hand the keyboard back to
@@ -390,63 +408,56 @@ defmodule RetroHexChatWeb.App.SpaceLive do
 
   @impl true
   @spec handle_event(String.t(), map(), Socket.t()) :: {:noreply, Socket.t()}
-  # Inside, choosing again changes clothes rather than rooms: the canvas stays,
-  # and the choice travels over the space's own channel, which swaps the
-  # character for everyone standing there and remembers it for the nickname.
-  def handle_event(
-        "space_select_avatar",
-        %{"avatar" => avatar},
-        %{assigns: %{avatar: current}} = socket
-      )
+  # The creator's controls: every choice is one field of the recipe, and the
+  # domain decides what the recipe becomes (a body that cannot wear the outfit
+  # on it changes into one it can).
+  def handle_event("creator_tab", %{"tab" => tab}, socket)
+      when tab in ~w(body skin outfit hair hat face) do
+    {:noreply, assign(socket, creator_tab: tab)}
+  end
+
+  # `choice`, not `value`: a clicked <button> sends its own (empty) `value`,
+  # which would overwrite a `phx-value-value`.
+  def handle_event("creator_set", %{"field" => field, "choice" => choice}, socket) do
+    case CharacterRecipe.put(socket.assigns.draft, field, choice) do
+      {:ok, draft} -> {:noreply, assign(socket, draft: draft)}
+      {:error, _reason} -> {:noreply, socket}
+    end
+  end
+
+  def handle_event("creator_randomize", _params, socket) do
+    {:noreply, assign(socket, draft: CharacterRecipe.random(make_ref()))}
+  end
+
+  # Inside, wearing a new character changes clothes rather than rooms: the
+  # canvas stays, and the character travels over the space's own channel, which
+  # swaps it for everyone standing there and remembers it for the nickname.
+  def handle_event("space_select_avatar", _params, %{assigns: %{avatar: current}} = socket)
       when is_binary(current) do
-    if avatar in socket.assigns.avatars do
-      {:noreply,
-       socket
-       |> assign(avatar: avatar, last_avatar: avatar, changing_avatar: false)
-       |> push_event("space_change_avatar", %{avatar: avatar})}
-    else
-      {:noreply, socket}
-    end
+    avatar = socket.assigns.draft
+
+    {:noreply,
+     socket
+     |> assign(avatar: avatar, changing_avatar: false)
+     |> push_event("space_change_avatar", %{avatar: avatar})}
   end
 
-  # Choosing is entering: the token is minted here rather than at mount, so a
-  # picker somebody left open for an hour does not hand the canvas an expired
+  # Entering is the door: the token is minted here rather than at mount, so a
+  # creator somebody left open for an hour does not hand the canvas an expired
   # one.
-  def handle_event("space_select_avatar", %{"avatar" => avatar}, socket) do
-    if avatar in socket.assigns.avatars and socket.assigns.space do
-      # The choice outlives the visit now: the chat draws the same figure beside
-      # this nickname, and a character that vanished when you walked out was a
-      # costume rather than an identity.
-      Avatars.remember(socket.assigns.nickname, avatar)
-
-      {:noreply,
-       assign(socket,
-         avatar: avatar,
-         last_avatar: avatar,
-         join_token: join_token(socket, avatar)
-       )}
-    else
-      {:noreply, socket}
-    end
+  def handle_event("space_select_avatar", _params, %{assigns: %{space: %{}}} = socket) do
+    avatar = socket.assigns.draft
+    # The character outlives the visit: the chat draws the same figure beside
+    # this nickname.
+    Avatars.remember(socket.assigns.nickname, avatar)
+    {:noreply, assign(socket, avatar: avatar, join_token: join_token(socket, avatar))}
   end
 
-  # What the browser remembered from a previous visit, offered before anything
-  # is chosen — unless the nickname has a character of its own, which wins over
-  # whatever this particular browser last clicked. Only a character this build
-  # still has: a saved name that has since been removed would highlight nothing
-  # and select nothing.
-  def handle_event("space_remember_avatar", %{"avatar" => avatar}, socket) do
-    if avatar in socket.assigns.avatars and is_nil(socket.assigns.avatar) and
-         is_nil(socket.assigns.saved_avatar) do
-      {:noreply, assign(socket, last_avatar: avatar)}
-    else
-      {:noreply, socket}
-    end
-  end
+  def handle_event("space_select_avatar", _params, socket), do: {:noreply, socket}
 
   def handle_event("space_change_character", _params, %{assigns: %{avatar: avatar}} = socket)
       when is_binary(avatar) do
-    {:noreply, assign(socket, changing_avatar: true)}
+    {:noreply, assign(socket, changing_avatar: true, draft: avatar)}
   end
 
   def handle_event("space_change_character", _params, socket), do: {:noreply, socket}
@@ -589,11 +600,11 @@ defmodule RetroHexChatWeb.App.SpaceLive do
     ChannelJoinToken.sign(space.id, socket.assigns.user_id, socket.assigns.nickname)
   end
 
-  # Arriving through a gate, the character is already chosen: the address
-  # names it, and an id this build does not have leaves the picker up.
+  # Arriving through a gate, the character is already made: the address
+  # carries it, and one this build cannot compose leaves the creator up.
   defp walk_through(socket, avatar) when is_binary(avatar) do
-    if avatar in socket.assigns.avatars do
-      assign(socket, avatar: avatar, last_avatar: avatar, join_token: join_token(socket, avatar))
+    if CharacterRecipe.valid?(avatar) do
+      assign(socket, avatar: avatar, draft: avatar, join_token: join_token(socket, avatar))
     else
       socket
     end
@@ -601,10 +612,8 @@ defmodule RetroHexChatWeb.App.SpaceLive do
 
   defp walk_through(socket, _avatar), do: socket
 
-  defp saved_avatar(nickname) when is_binary(nickname) and nickname != "" do
-    avatar = Avatars.for_nick(nickname)
-    if avatar in VirtualSpace.avatars(), do: avatar
-  end
+  defp saved_avatar(nickname) when is_binary(nickname) and nickname != "",
+    do: Avatars.for_nick(nickname)
 
   defp saved_avatar(_nickname), do: nil
 

@@ -4444,12 +4444,12 @@ msgstr "Consulta de usuario"
 #: lib/retro_hex_chat/chat/help_topics/features.ex:3973
 #: lib/retro_hex_chat/chat/help_topics/features.ex:3974
 #: lib/retro_hex_chat/chat/help_topics/features.ex:4003
-#: lib/retro_hex_chat/chat/help_topics/features.ex:4029
-#: lib/retro_hex_chat/chat/help_topics/features.ex:4050
-#: lib/retro_hex_chat/chat/help_topics/features.ex:4080
-#: lib/retro_hex_chat/chat/help_topics/features.ex:4104
-#: lib/retro_hex_chat/chat/help_topics/features.ex:4125
-#: lib/retro_hex_chat/chat/help_topics/features.ex:4145
+#: lib/retro_hex_chat/chat/help_topics/features.ex:4026
+#: lib/retro_hex_chat/chat/help_topics/features.ex:4047
+#: lib/retro_hex_chat/chat/help_topics/features.ex:4077
+#: lib/retro_hex_chat/chat/help_topics/features.ex:4101
+#: lib/retro_hex_chat/chat/help_topics/features.ex:4122
+#: lib/retro_hex_chat/chat/help_topics/features.ex:4142
 #, elixir-autogen, elixir-format
 msgid "Virtual Spaces"
 msgstr "Espacios Virtuales"
@@ -4596,11 +4596,6 @@ msgstr "mensaje de bienvenida"
 msgid "Channel Conference"
 msgstr "Conferencia del canal"
 
-#: lib/retro_hex_chat/chat/help_topics/features.ex:4002
-#, elixir-autogen, elixir-format
-msgid "Choosing a Character"
-msgstr "Elegir un personaje"
-
 #: lib/retro_hex_chat/chat/help_topics/features.ex:1543
 #, elixir-autogen, elixir-format
 msgid "P2P Sessions in Chat"
@@ -4624,11 +4619,6 @@ msgstr ""
 "justo en el escritorio del chat — ninguna página separada. Lanzamiento de un"
 " juego lo abre en una nueva ventana del navegador para que se centra el "
 "teclado completo."
-
-#: lib/retro_hex_chat/chat/help_topics/features.ex:4016
-#, elixir-autogen, elixir-format
-msgid "pick character"
-msgstr "elegir personaje"
 
 #: lib/retro_hex_chat/chat/help_topics/features.ex:1505
 #, elixir-autogen, elixir-format
@@ -4727,7 +4717,7 @@ msgstr "Enviar un wallops a los usuarios +w o un anuncio a todos conectados."
 msgid "Set, replace or clear the server's message of the day."
 msgstr "Establecer, reemplazar o aclarar el mensaje del servidor del día."
 
-#: lib/retro_hex_chat/chat/help_topics/features.ex:4079
+#: lib/retro_hex_chat/chat/help_topics/features.ex:4076
 #, elixir-autogen, elixir-format
 msgid "Space Combat"
 msgstr "Space Combat"
@@ -4747,7 +4737,7 @@ msgstr "canal purge"
 msgid "chanserv admin"
 msgstr "chanserv admin"
 
-#: lib/retro_hex_chat/chat/help_topics/features.ex:4091
+#: lib/retro_hex_chat/chat/help_topics/features.ex:4088
 #, elixir-autogen, elixir-format
 msgid "health bar"
 msgstr "Salud"
@@ -4762,7 +4752,7 @@ msgstr "nickserv admin"
 msgid "server name"
 msgstr "Nombre del servidor"
 
-#: lib/retro_hex_chat/chat/help_topics/features.ex:4090
+#: lib/retro_hex_chat/chat/help_topics/features.ex:4087
 #, elixir-autogen, elixir-format
 msgid "sword fight"
 msgstr "espada"
@@ -5266,17 +5256,17 @@ msgstr "Conferencia en su propia pestaña"
 msgid "Sharing a Conference Link"
 msgstr "Compartir el enlace de la conferencia"
 
-#: lib/retro_hex_chat/chat/help_topics/features.ex:4103
+#: lib/retro_hex_chat/chat/help_topics/features.ex:4100
 #, elixir-autogen, elixir-format
 msgid "A Space in Its Own Tab"
 msgstr "Un Espacio en su Propia Pestaña"
 
-#: lib/retro_hex_chat/chat/help_topics/features.ex:4144
+#: lib/retro_hex_chat/chat/help_topics/features.ex:4141
 #, elixir-autogen, elixir-format
 msgid "Inviting Someone to a Space"
 msgstr "Invitar a Alguien a un Espacio"
 
-#: lib/retro_hex_chat/chat/help_topics/features.ex:4112
+#: lib/retro_hex_chat/chat/help_topics/features.ex:4109
 #, elixir-autogen, elixir-format
 msgid "open in a tab"
 msgstr "abrir en una pestaña"
@@ -5413,7 +5403,7 @@ msgstr ""
 "que ya tienes en lugar de una segunda. Cerrar la pestaña no termina la "
 "sesión; solo Terminar sesión, que pregunta antes, es definitivo."
 
-#: lib/retro_hex_chat/chat/help_topics/features.ex:4136
+#: lib/retro_hex_chat/chat/help_topics/features.ex:4133
 #, elixir-autogen, elixir-format
 msgid "Walking into an empty space posts a card in the conversation it belongs to, so everybody reading can see that something is happening and follow it in. The card counts who is inside while it lasts, and once the last person leaves it becomes the record of what happened: how long the gathering ran, and how many people came. Walking into a space somebody is already in posts nothing — one gathering, one card. Only a registered nickname posts one; a guest still walks in as usual."
 msgstr ""
@@ -5425,12 +5415,12 @@ msgstr ""
 "alguien no publica nada: un encuentro, una tarjeta. Solo un apodo registrado"
 " publica una; un invitado entra igual que siempre."
 
-#: lib/retro_hex_chat/chat/help_topics/features.ex:4124
+#: lib/retro_hex_chat/chat/help_topics/features.ex:4121
 #, elixir-autogen, elixir-format
 msgid "Who Is in the Space Right Now"
 msgstr "Quién está en el espacio ahora"
 
-#: lib/retro_hex_chat/chat/help_topics/features.ex:4132
+#: lib/retro_hex_chat/chat/help_topics/features.ex:4129
 #, elixir-autogen, elixir-format
 msgid "someone is in the space"
 msgstr "alguien está en el espacio"
@@ -5490,19 +5480,6 @@ msgstr ""
 " que revocarla sea una respuesta completa en vez de cerrar una de varias. "
 "Tus propios enlaces son tuyos para revocar, y un operador del canal también "
 "puede revocar un enlace que lleve a su canal."
-
-#: lib/retro_hex_chat/chat/help_topics/features.ex:4156
-#, elixir-autogen, elixir-format
-msgid "Share, on the character picker, mints a link and opens it in a small window with Copy and Revoke beside it. Pasting it into a conversation draws a card instead of a bare address. That link names the place rather than one evening in it, so it keeps working after everyone has gone home. It carries which space it is and never permission to be in it: a channel's space still asks whoever follows the link to be in that channel, and a private space still belongs to its two people. Only a registered nickname can mint one."
-msgstr ""
-"Compartir, en el selector de personaje, acuña un enlace y lo abre en una "
-"ventanita con Copiar y Revocar al lado. Pegado en una conversación, dibuja "
-"una tarjeta en vez de una dirección desnuda. Ese enlace nombra el lugar, no "
-"una velada dentro de él, así que sigue funcionando después de que todos se "
-"hayan ido. Lleva de qué espacio se trata y nunca permiso para estar en él: "
-"el espacio de un canal sigue pidiendo que quien siga el enlace esté en ese "
-"canal, y un espacio privado sigue siendo de sus dos personas. Solo un apodo "
-"registrado puede generar uno."
 
 #: lib/retro_hex_chat/chat/help_topics/features.ex:1403
 #, elixir-autogen, elixir-format
@@ -5965,13 +5942,6 @@ msgstr "programar evento"
 msgid "Character Portraits"
 msgstr "Retratos de personaje"
 
-#: lib/retro_hex_chat/chat/help_topics/features.ex:129
-#, elixir-autogen, elixir-format
-msgid "The character you chose in a space stands beside your nickname in the chat, and can be switched off."
-msgstr ""
-"El personaje que elegiste en un espacio aparece junto a tu apodo en el chat,"
-" y se puede desactivar."
-
 #: lib/retro_hex_chat/chat/help_topics/features.ex:124
 #, elixir-autogen, elixir-format
 msgid "avatar in chat"
@@ -6068,7 +6038,7 @@ msgstr ""
 "P2P, Sesión P2P en su propia pestaña, Videollamada, Transferencia de "
 "archivos, Mensajes privados."
 
-#: lib/retro_hex_chat/chat/help_topics/features.ex:4116
+#: lib/retro_hex_chat/chat/help_topics/features.ex:4113
 #, elixir-autogen, elixir-format
 msgid "A space always runs in a browser tab of its own. Space, beside the conversation's tabs, puts the space's card in the conversation rather than opening it; Join on that card is the door, for you and for everybody reading. Pressing it again does not make a second space or a second address — it writes that one card again at the bottom, so you never have to go looking for it. Press it twice in a row and you get one card, because the second press has nothing to bring down. A space has no beginning and no end, so its address stays good: bookmark it and it takes you back."
 msgstr ""
@@ -6317,57 +6287,82 @@ msgstr "Si la pestaña pierde el servidor, el estado de arriba dice Reconectando
 msgid "A multiplayer 8-bit virtual space built into every channel and every private conversation. Space, beside the tabs, opens it in a browser tab of its own — the conversation stays where it is, and the map gets a whole window instead of competing with the chat for the browser. Move with the Arrow keys, WASD or the on-screen pad in the bottom-right corner — tap for a single step or hold to walk continuously; Space or the pad's sword button swings your weapon. The line along the bottom is where you talk: what you type there is said in the conversation and pops up over your character. The translucent button in the top-right corner switches to fullscreen and back. Back to Chat, along the bottom edge, returns to the conversation."
 msgstr "Un espacio virtual multijugador de 8 bits integrado en cada canal y cada conversación privada. El espacio, junto a las pestañas, lo abre en una pestaña del navegador propia — la conversación permanece donde está, y el mapa obtiene una ventana entera en lugar de competir con el chat para el navegador. Muévete con las teclas de flecha, WASD o la almohadilla en pantalla en la esquina inferior derecha: pulsa un solo paso o manténgase para caminar continuamente; El espacio o el botón de la espada de la almohadilla oscila su arma. La línea a lo largo del fondo es donde se habla: lo que escribe se dice en la conversación y aparece sobre su carácter. El botón translúcido en la esquina superior derecha cambia a pantalla completa y trasera. Volver a Chat, a lo largo del borde inferior, vuelve a la conversación."
 
-#: lib/retro_hex_chat/chat/help_topics/features.ex:4095
+#: lib/retro_hex_chat/chat/help_topics/features.ex:4092
 #, elixir-autogen, elixir-format
 msgid "Characters in a Space can spar with each other: press Space (or the pad's sword button) next to another standing character to land a hit. Each hit deals damage and shows a small health bar under their name; at zero HP the character is knocked down for a few seconds, then gets back up on their own with full health. A knockout never has any lasting effect — it is all in good fun."
 msgstr "Los personajes de un espacio pueden escupir entre sí: pulsa Espacio (o el botón de espada de la almohadilla) junto a otro personaje de pie para aterrizar un golpe. Cada golpe daña y muestra una pequeña barra de salud bajo su nombre; a cero HP el personaje es derribado por unos segundos, luego vuelve por su cuenta con salud completa. Un knockout nunca tiene ningún efecto duradero — todo está en buena diversión."
 
-#: lib/retro_hex_chat/chat/help_topics/features.ex:4028
+#: lib/retro_hex_chat/chat/help_topics/features.ex:4025
 #, elixir-autogen, elixir-format
 msgid "Talking in a Space"
 msgstr "Hablando en un espacio"
 
-#: lib/retro_hex_chat/chat/help_topics/features.ex:4041
+#: lib/retro_hex_chat/chat/help_topics/features.ex:4038
 #, elixir-autogen, elixir-format
 msgid "Type in the line along the bottom of a Space and press Enter or Say: the line is said in the conversation the space belongs to — the channel, or the private chat with the other person — and pops up as a bubble over your character for everyone in the space. Lines typed in the chat pop up the same way. Enter anywhere in the space puts the cursor in the line; Esc gives the keyboard back to the map, so the arrow keys walk again. /me works there too; every other command is typed in the chat."
 msgstr "Escribe en la línea a lo largo de la parte inferior de un Espacio y pulsa Enter o Di: la línea se dice en la conversación que el espacio pertenece a — el canal, o el chat privado con la otra persona— y aparece como una burbuja sobre tu personaje para todos en el espacio. Las líneas escritas en el chat aparecen de la misma manera. Entra en cualquier lugar del espacio pone el cursor en la línea; Esc da el teclado de vuelta al mapa, por lo que las teclas de flecha caminan de nuevo. /me trabaja allí también; cada otro comando se escribe en el chat."
 
-#: lib/retro_hex_chat/chat/help_topics/features.ex:4020
-#, elixir-autogen, elixir-format
-msgid "When you enter a Space, a character picker appears first: choose from the classic Hero or one of seven classes — Sorceress, Knight, Archer, Barbarian, Rogue, Cleric or Monk. Each shows an animated preview and has its own walking and attack animations; click one to enter the map wearing it, and everyone in the space sees your choice. It also says who is inside right now, before you commit to walking in. The picker shows again each time you enter, starting on the character your registered nickname chose — or, without one, the one this browser picked last time. Change character, in the status bar, brings the picker back over the map without leaving it."
-msgstr "Cuando entras en un Espacio, aparece primero un personaje: elige el Héroe clásico o una de las siete clases: Sorceres, Knight, Archer, Barbarian, Rogue, Cleric o Monk. Cada uno muestra una vista previa animada y tiene sus propias animaciones de caminar y ataque; haga clic en uno para entrar en el mapa que lo lleva, y todos en el espacio ve su elección. También dice quién está dentro ahora mismo, antes de comprometerse a entrar. El picker muestra de nuevo cada vez que entras, comenzando por el personaje que tu apodo registrado eligió — o, sin uno, el que este navegador escogió la última vez. Cambiar el personaje, en la barra de estado, trae el recolector de nuevo sobre el mapa sin dejarlo."
-
-#: lib/retro_hex_chat/chat/help_topics/features.ex:4036
+#: lib/retro_hex_chat/chat/help_topics/features.ex:4033
 #, elixir-autogen, elixir-format
 msgid "speech bubble"
 msgstr "burbuja de discurso"
 
-#: lib/retro_hex_chat/chat/help_topics/features.ex:4037
+#: lib/retro_hex_chat/chat/help_topics/features.ex:4034
 #, elixir-autogen, elixir-format
 msgid "talk in space"
 msgstr "hablar en el espacio"
 
-#: lib/retro_hex_chat/chat/help_topics/features.ex:4049
+#: lib/retro_hex_chat/chat/help_topics/features.ex:4046
 #, elixir-autogen, elixir-format
 msgid "The Construct"
 msgstr "El Constructo"
 
-#: lib/retro_hex_chat/chat/help_topics/features.ex:4065
+#: lib/retro_hex_chat/chat/help_topics/features.ex:4062
 #, elixir-autogen, elixir-format
 msgid "build"
 msgstr "construcción"
 
-#: lib/retro_hex_chat/chat/help_topics/features.ex:4066
+#: lib/retro_hex_chat/chat/help_topics/features.ex:4063
 #, elixir-autogen, elixir-format
 msgid "furniture"
 msgstr "muebles"
 
-#: lib/retro_hex_chat/chat/help_topics/features.ex:4071
+#: lib/retro_hex_chat/chat/help_topics/features.ex:4068
 #, elixir-autogen, elixir-format
 msgid "Every space has a Construct, an empty white room that the people of the conversation decorate together. Its green gate stands on the north island of the End of Time. Press E beside the gate and answer Yes to go in. Pick a piece on the palette and click the floor to place it. Drag a piece to move it, right-click it to remove it, and press R to turn it. Press E next to a lamp, a door, a die, a teleporter, a sign, an arcade cabinet, a board or a screen to use it, and paint the floor from the Floor tab. Everyone inside sees each change at once, and the room stays as you left it."
 msgstr "Every space has a Construct, an empty white room that the people of the conversation decorate together. Its green gate stands on the north island of the End of Time. Press E beside the gate and answer Yes to go in. Pick a piece on the palette and click the floor to place it. Drag a piece to move it, right-click it to remove it, and press R to turn it. Press E next to a lamp, a door, a die, a teleporter, a sign, an arcade cabinet, a board or a screen to use it, and paint the floor from the Floor tab. Everyone inside sees each change at once, and the room stays as you left it."
 
-#: lib/retro_hex_chat/chat/help_topics/features.ex:4067
+#: lib/retro_hex_chat/chat/help_topics/features.ex:4064
 #, elixir-autogen, elixir-format
 msgid "paint the floor"
 msgstr "pintar el suelo"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:4002
+#, elixir-autogen, elixir-format
+msgid "Making a Character"
+msgstr "Hacer un personaje"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:4153
+#, elixir-autogen, elixir-format
+msgid "Share, on the character creator, mints a link and opens it in a small window with Copy and Revoke beside it. Pasting it into a conversation draws a card instead of a bare address. That link names the place rather than one evening in it, so it keeps working after everyone has gone home. It carries which space it is and never permission to be in it: a channel's space still asks whoever follows the link to be in that channel, and a private space still belongs to its two people. Only a registered nickname can mint one."
+msgstr "Compartir, en el creador de caracteres, miente un enlace y lo abre en una pequeña ventana con Copiar y revocar a su lado. Pasarlo en una conversación dibuja una tarjeta en lugar de una dirección desnuda. Ese enlace nombra el lugar más que una noche en él, así que sigue trabajando después de que todo el mundo se haya ido a casa. Lleva el espacio que es y nunca el permiso para estar en él: el espacio de un canal todavía pide a quien sigue el enlace para estar en ese canal, y un espacio privado todavía pertenece a sus dos personas. Sólo un apodo registrado puede acuñar uno."
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:4013
+#, elixir-autogen, elixir-format
+msgid "change character"
+msgstr "cambio de carácter"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:4012
+#, elixir-autogen, elixir-format
+msgid "make character"
+msgstr "carácter"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:4017
+#, elixir-autogen, elixir-format
+msgid "When you enter a Space, you see the character creator first. Each tab is one part: body, skin, outfit, hair and headwear. Choose a piece to wear it, and a colour for each part that can be dyed. Surprise me picks every part at random. Walk in takes you into the map, and the others in the Space see you right away. Next time, the creator opens with this character. In the chat, its face is shown beside your nickname. Change character, beside the box you type in, opens the creator over the map."
+msgstr "Cuando entras en un Espacio, ves al creador de caracteres primero. Cada pestaña es una parte: cuerpo, piel, traje, pelo y ropa de cabeza. Elija una pieza para llevarla, y un color para cada parte que se puede teñir. Sorprende que escoja cada parte al azar. Camina dentro te lleva al mapa, y los otros en el Espacio te ven de inmediato. La próxima vez, el creador se abre con este personaje. En el chat, su cara se muestra junto a su apodo. Cambiar carácter, al lado de la caja que escribe, abre el creador sobre el mapa."
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:129
+#, elixir-autogen, elixir-format
+msgid "In the chat, the face of your character is shown beside your name. It can be switched off."
+msgstr "En el chat, la cara de tu personaje se muestra junto a tu nombre. Se puede apagar."

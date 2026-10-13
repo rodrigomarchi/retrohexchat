@@ -1,22 +1,21 @@
 defmodule RetroHexChat.Accounts.Avatars do
   @moduledoc """
-  Which character each person chose, kept past the visit that chose it.
+  The character each person made in the Space's creator, kept past the visit
+  that made it.
 
-  The virtual space has had a roster of characters since it existed, but the
-  choice lived in the space's own process and the browser's localStorage — so it
-  was gone the moment somebody walked out, and the chat could never know it. The
-  chat is where a person spends the day, and the same figure standing beside
-  their nickname there is what turns a chosen character into an identity rather
+  The chat is where a person spends the day, and the same figure standing
+  beside their nickname there is what turns a character into an identity rather
   than a costume worn for one visit.
 
-  One short string on the nickname's own row, rather than a table: it is
-  identity, and it should go when the nickname goes — which the row already
-  arranges. `nil` means nobody chose, which is a different fact from choosing
-  the first one in the list, and the reader draws nothing at all for it.
+  One short string on the nickname's own row, rather than a table: the
+  character is a `VirtualSpace.CharacterRecipe`, and it is identity, so it
+  should go when the nickname goes — which the row already arranges. `nil`
+  means nobody made one, which is a different fact from making the default,
+  and the reader draws nothing at all for it.
 
-  The valid set is `VirtualSpace.avatars/0`, asked here rather than trusted from
-  the caller: a build that retires a class must not be able to store a pointer
-  at art it no longer ships.
+  A recipe is parsed here rather than trusted from the caller, and read back
+  through `CharacterRecipe.coerce/1`: a build that retires a hat must not leave
+  a row pointing at art it no longer ships.
   """
 
   import Ecto.Query
@@ -26,10 +25,10 @@ defmodule RetroHexChat.Accounts.Avatars do
   alias RetroHexChat.Repo
   alias RetroHexChat.Services.RegisteredNick
   alias RetroHexChat.Topics
-  alias RetroHexChat.VirtualSpace
+  alias RetroHexChat.VirtualSpace.CharacterRecipe
 
   @doc """
-  Records the character `nickname` chose, and tells every open session.
+  Records the character `nickname` made, and tells every open session.
 
   The broadcast is what keeps the user lists honest: they are streams, and a
   stream does not restyle a row nobody re-inserts — so without it everybody
@@ -38,7 +37,7 @@ defmodule RetroHexChat.Accounts.Avatars do
   """
   @spec remember(String.t(), String.t()) :: :ok | {:error, :not_found | :invalid_avatar}
   def remember(nickname, avatar) do
-    with true <- avatar in VirtualSpace.avatars(),
+    with true <- CharacterRecipe.valid?(avatar),
          :ok <- write(nickname, avatar) do
       Phoenix.PubSub.broadcast(
         RetroHexChat.PubSub,
@@ -53,7 +52,7 @@ defmodule RetroHexChat.Accounts.Avatars do
     end
   end
 
-  @doc "The character this person chose, or nil if they never did."
+  @doc "The character this person made, or nil if they never did."
   @spec for_nick(String.t()) :: String.t() | nil
   def for_nick(nickname) do
     nickname
@@ -64,7 +63,7 @@ defmodule RetroHexChat.Accounts.Avatars do
   end
 
   @doc """
-  The characters these people chose, keyed by the nickname as it was asked for.
+  The characters these people made, keyed by the nickname as it was asked for.
 
   One query for a whole roster or a whole page of messages: a portrait beside
   every line is exactly the feature that turns one screenful into a query a row.
@@ -91,7 +90,7 @@ defmodule RetroHexChat.Accounts.Avatars do
       |> Repo.all()
 
     Map.new(stored, fn {downcased, avatar} ->
-      {Map.fetch!(by_downcase, downcased), avatar}
+      {Map.fetch!(by_downcase, downcased), CharacterRecipe.coerce(avatar)}
     end)
   end
 

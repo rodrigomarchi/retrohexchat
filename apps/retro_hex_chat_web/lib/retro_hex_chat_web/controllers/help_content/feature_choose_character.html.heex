@@ -1,22 +1,53 @@
 <p>
-  {dgettext(
-    "help_space",
-    "When you open a Space, a character picker appears before the map loads. Pick who you want to be — the classic Hero or one of seven adventuring classes."
+  {dgettext("help_space", "When you open a Space, you see the character creator first.")}
+  {dgettext("help_space", "Here you put together who you will be in the Space.")}
+</p>
+<.help_h4 icon={:icon_community}>{dgettext("help_space", "The Preview")}</.help_h4>
+<p>
+  {dgettext("help_space", "You see the preview walk and turn.")}
+  {dgettext("help_space", "%{left} and %{right} rotate the preview.",
+    left: dgettext("chat", "Turn left"),
+    right: dgettext("chat", "Turn right")
   )}
 </p>
-<.help_h4 icon={:icon_community}>{dgettext("help_space", "The Roster")}</.help_h4>
+<.help_h4 icon={:icon_tab_control}>{dgettext("help_space", "The Parts")}</.help_h4>
 <p>
-  {dgettext(
-    "help_space",
-    "Eight characters are available: the Hero, plus the Sorceress, Knight, Archer, Barbarian, Rogue, Cleric and Monk. Each card shows an animated walking preview so you can see the sprite before you commit, and every character has its own attack animation too."
+  {dgettext("help_space", "Each tab is one part: %{parts}.",
+    parts:
+      Enum.join(
+        [
+          dpgettext("chat", "character creator", "Body"),
+          dpgettext("chat", "character creator", "Skin"),
+          dpgettext("chat", "character creator", "Outfit"),
+          dpgettext("chat", "character creator", "Hair"),
+          dpgettext("chat", "character creator", "Headwear")
+        ],
+        ", "
+      )
+  )}
+  {dgettext("help_space", "Choose a piece to wear it.")}
+  {dgettext("help_space", "%{bald} removes the hair. %{none} removes the hat.",
+    bald: dgettext("chat", "Bald"),
+    none: dpgettext("chat", "no headwear", "None")
+  )}
+  {dgettext("help_space", "Under a piece that can be dyed, its colours are shown.")}
+  {dgettext("help_space", "An outfit and a hat each have a %{main} and a %{trim}.",
+    main: dgettext("chat", "Main colour"),
+    trim: dgettext("chat", "Trim colour")
   )}
 </p>
-<.help_h4 icon={:icon_tab_control}>{dgettext("help_space", "Choosing")}</.help_h4>
+<.help_h4 icon={:icon_tab_control}>{dgettext("chat", "Surprise me")}</.help_h4>
 <p>
-  {dgettext(
-    "help_space",
-    "Click a card to enter the map wearing that character. Everyone else in the Space sees your choice immediately. The picker appears each time you enter, starting on the character your registered nickname chose — the one the chat shows beside it — or, without one, on the one this browser picked last."
+  {dgettext("help_space", "%{surprise} picks every part at random.",
+    surprise: dgettext("chat", "Surprise me")
   )}
+  {dgettext("help_space", "You can change any part of it afterwards.")}
+</p>
+<.help_h4 icon={:icon_community}>{dgettext("help_space", "Entering")}</.help_h4>
+<p>
+  {dgettext("help_space", "%{enter} takes you into the map.", enter: dgettext("chat", "Walk in"))}
+  {dgettext("help_space", "Next time, the creator opens with this character.")}
+  {dgettext("help_space", "In the chat, its face is shown beside your nickname.")}
 </p>
 <.help_h4 icon={:icon_community}>{dgettext("help_space", "Changing inside")}</.help_h4>
 <p>
@@ -24,8 +55,10 @@
     change: dgettext("chat", "Change character")
   )}
   {dgettext("help_space", "On a small screen, it shows only the face of your character.")}
-  {dgettext("help_space", "Press it to see the characters again, over the map.")}
-  {dgettext("help_space", "Choose another character and you change where you stand.")}
+  {dgettext("help_space", "Press it to open the creator over the map.")}
+  {dgettext("help_space", "Change what you like, then press %{wear}.",
+    wear: dgettext("chat", "Wear this")
+  )}
   {dgettext("help_space", "Everybody sees the change at once.")}
   {dgettext("help_space", "In the chat, the new character appears beside your nickname.")}
   {dgettext("help_space", "Cancel keeps the character you have.")}

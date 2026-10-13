@@ -38,6 +38,28 @@ _TERMS: dict[str, dict[str, tuple[str, ...]]] = {
         "zh_hans": ("发言", "语音"),
         "zh_hant": ("發言", "語音"),
     },
+    # A Space character is a figure somebody plays, never a letter: Portuguese
+    # gave "caractere", the glyph, in a sentence otherwise right. Only the
+    # figure's own phrasings are held to it; "5 characters", "special
+    # characters" and the character counter are letters, and say so.
+    r"\b(?:(?:your|the|this|a|new|another|standing)\s+(?:[a-z]+\s+){0,2}?characters?"
+    r"(?!\s+(?:counter|count|set|limit|long|class))"
+    r"|characters?\s+(?:creator|portraits?|in\s+a\s+space)"
+    r"|(?:make|change|making)\s+(?:a\s+|your\s+)?character)\b": {
+        "pt": ("personage",),
+        "es": ("personaje",),
+        "fr": ("personnage",),
+        "de": ("charakter", "figur"),
+        "it": ("personagg",),
+        # Dutch games say "karakter" as often as "personage".
+        "nl": ("personage", "karakter"),
+        "pl": ("postać", "postaci"),
+        "ru": ("персонаж",),
+        "id": ("karakter",),
+        "ja": ("キャラクター",),
+        "zh_hans": ("角色",),
+        "zh_hant": ("角色",),
+    },
     r"\brooms?\b": {
         "pt": ("sala",),
         "es": ("sala",),
@@ -231,6 +253,12 @@ _FOREIGN_FORMS: dict[str, tuple[str, ...]] = {
         # "...como o deixaste": the European "tu" preterite of leaving, on the
         # Construct's help.
         "deixaste",
+        # Measured on the character creator's help: "Toda a gente no espaço
+        # vê-te", "Os outros vêem-te", "da próxima vez que entrares".
+        "toda a gente",
+        "vê-te",
+        "vêem-te",
+        "entrares",
     ),
 }
 

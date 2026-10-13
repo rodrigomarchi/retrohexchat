@@ -70,7 +70,7 @@ test.describe("The Construct's pieces", () => {
     const guest = await newSignedInUser(browser, "om");
     try {
       await inChannel([host, guest], "ol");
-      const a = await openConstruct(host, "knight");
+      const a = await openConstruct(host, "ranger");
       const b = await openConstruct(guest, "monk");
       const self = await a.walker.here();
 
@@ -132,7 +132,7 @@ test.describe("The Construct's pieces", () => {
     const host = await newSignedInUser(browser, "ot");
     try {
       await inChannel([host], "ot");
-      const { space, walker, room } = await openConstruct(host, "archer");
+      const { space, walker, room } = await openConstruct(host, "scout");
       const self = await walker.here();
       const near = { x: self.x + 3, y: self.y + 3 };
       const far = { x: self.x + 12, y: self.y + 9 };
@@ -162,7 +162,7 @@ test.describe("The Construct's pieces", () => {
     const guest = await newSignedInUser(browser, "or");
     try {
       await inChannel([host, guest], "os");
-      const a = await openConstruct(host, "cleric");
+      const a = await openConstruct(host, "bard");
       const self = await a.walker.here();
       const sign = { x: self.x + 3, y: self.y + 3 };
       await place(a.space, a.walker, "fun", "sign", sign);
@@ -182,7 +182,7 @@ test.describe("The Construct's pieces", () => {
       await shot(a.space, "construct-sign-written");
 
       // The guest is no operator and did not put the sign up: they read it.
-      const b = await openConstruct(guest, "barbarian");
+      const b = await openConstruct(guest, "sailor");
       await use(b.space, b.walker, sign);
       const theirs = b.space.getByTestId("space-panel");
       await expect(theirs).toContainText("Welcome in!");
@@ -203,7 +203,7 @@ test.describe("The Construct's pieces", () => {
       await host.chat.sendMessage("/topic Movie night at nine");
       await postPicture(host);
 
-      const { space, walker, room } = await openConstruct(host, "sorceress");
+      const { space, walker, room } = await openConstruct(host, "mage");
       const self = await walker.here();
       const board = { x: self.x + 3, y: self.y + 3 };
       const screen = { x: self.x + 3, y: self.y + 6 };
@@ -243,8 +243,8 @@ test.describe("The Construct's pieces", () => {
     const guest = await newSignedInUser(browser, "og");
     try {
       await inChannel([host, guest], "of");
-      const a = await openConstruct(host, "hero");
-      const b = await openConstruct(guest, "knight");
+      const a = await openConstruct(host, "wanderer");
+      const b = await openConstruct(guest, "ranger");
       const self = await a.walker.here();
 
       await chooseInMenu(a.space, "floor", { material: "wood" });

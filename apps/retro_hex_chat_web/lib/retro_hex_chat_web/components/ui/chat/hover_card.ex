@@ -29,6 +29,8 @@ defmodule RetroHexChatWeb.Components.UI.HoverCard do
   import RetroHexChatWeb.Components.UI.Separator
   import RetroHexChatWeb.Components.UI.ActivityIndicator
 
+  alias RetroHexChat.VirtualSpace.CharacterRecipe
+  alias RetroHexChatWeb.Components.UI.SpaceCharacterCreator
   alias RetroHexChatWeb.Icons
 
   @doc "Renders a hover card popup with nick info fields."
@@ -103,9 +105,8 @@ defmodule RetroHexChatWeb.Components.UI.HoverCard do
             class="w-full justify-center"
           />
         <% else %>
-          <%!-- Who they chose to be. Bigger here than in the conversation
-                because the card is where you look somebody up, and there is
-                room; still the same crop of the same art, never resized. --%>
+          <%!-- Who they made themselves in the Space: the same portrait as in
+                the conversation, never resized. --%>
           <div :if={@avatar} class="flex items-center gap-retro-4">
             <.nick_portrait avatar={@avatar} nickname={@nick} />
             <span class="text-muted-foreground">{avatar_label(@avatar)}</span>
@@ -246,19 +247,16 @@ defmodule RetroHexChatWeb.Components.UI.HoverCard do
     ~H""
   end
 
-  # The name of the class, the same words the picker uses. A portrait with no
-  # name under it in a lookup card is a face you cannot ask about.
-  @avatar_labels %{
-    "hero" => "Hero",
-    "knight" => "Knight",
-    "sorceress" => "Sorceress",
-    "archer" => "Archer",
-    "barbarian" => "Barbarian",
-    "rogue" => "Rogue",
-    "cleric" => "Cleric",
-    "monk" => "Monk"
-  }
-
+  # What they are wearing, in the creator's own words. A portrait with no
+  # words beside it in a lookup card is a face you cannot ask about.
   @spec avatar_label(String.t() | nil) :: String.t() | nil
-  defp avatar_label(avatar), do: Map.get(@avatar_labels, avatar)
+  defp avatar_label(avatar) do
+    case CharacterRecipe.parse(avatar) do
+      {:ok, recipe} ->
+        SpaceCharacterCreator.outfit_label(recipe.outfit)
+
+      {:error, _} ->
+        nil
+    end
+  end
 end

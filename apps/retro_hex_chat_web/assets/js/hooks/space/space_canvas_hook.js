@@ -42,9 +42,6 @@ const TILE_SIZE = 16;
 // Integer pixel scale shared by the sprite atlas and the camera step (they must
 // match so floor tiles and avatars align). Lower = more map visible per screen.
 const RENDER_SCALE = 2;
-// The class the server assigns before a player picks one.
-const DEFAULT_AVATAR = "hero";
-
 // Sheet id -> digested URL, rendered by the server because a content hash is
 // exactly what a cached bundle cannot spell. A malformed or absent attribute
 // leaves the atlas on its built-in paths rather than breaking the space.
@@ -77,8 +74,8 @@ export function createSpaceCanvasHook(deps = {}) {
     mounted() {
       this._spaceChannel = this.el.dataset.spaceChannel;
       this._joinToken = this.el.dataset.joinToken;
-      // The chosen character (picked on the entry screen). Pushed to the server
-      // right after join so the world swaps this participant's avatar.
+      // The character made on the entry screen (a creator recipe). It travels
+      // with the join, so the world shows it from the first frame.
       this._avatar = this.el.dataset.avatar || "";
       this._assetsReady = false;
       this._frameRenderedAfterAssets = false;
@@ -97,16 +94,17 @@ export function createSpaceCanvasHook(deps = {}) {
         tileSize: TILE_SIZE,
         scale: RENDER_SCALE,
         sheetUrls: parseSheetUrls(this.el.dataset.spriteSheets),
+        characterCatalog: this.el.dataset.characterCatalog,
         onReady: () => {
           this._assetsReady = true;
           this._overlays?.setLoadingText(t("Drawing room..."));
           this._construct?.ready();
         },
       });
-      // The player's own class is the one sheet the room cannot open without, so
-      // it holds the loading gate and starts fetching before the socket connects.
-      // Everyone else's arrives with the snapshot, behind the gate.
-      this._atlas.ensureAvatars([this._avatar || DEFAULT_AVATAR], { blocking: true });
+      // The player's own character is the one the room cannot open without, so
+      // it holds the loading gate and starts composing before the socket
+      // connects. Everyone else's arrives with the snapshot, behind the gate.
+      this._atlas.ensureAvatars([this._avatar], { blocking: true });
       this._engine = engineFactory({
         canvas,
         atlas: this._atlas,
@@ -191,10 +189,8 @@ export function createSpaceCanvasHook(deps = {}) {
       this._socket = socketFactory();
       this._socket.connect();
 
-      // The chosen class travels with the join, so the snapshot comes back
-      // already wearing it. Asking afterwards cost a whole extra sheet: the
-      // room answered with the default, the atlas fetched that art, and the
-      // swap then made it fetch the real one too.
+      // The character travels with the join, so the snapshot comes back
+      // already wearing it instead of a stranger who changes a moment later.
       this._channel = this._socket.channel(`space:${this._spaceChannel}`, {
         join_token: this._joinToken,
         avatar: this._avatar,
@@ -202,9 +198,9 @@ export function createSpaceCanvasHook(deps = {}) {
 
       this._wireChannelEvents(this._channel);
 
-      // A character chosen again from inside, on the picker the LiveView draws
-      // over the map. The space's own channel makes the swap for everyone; the
-      // atlas starts on the new sheet before the delta that needs it arrives.
+      // A character remade from inside, in the creator the LiveView draws over
+      // the map. The space's own channel makes the swap for everyone; the atlas
+      // starts composing it before the delta that needs it arrives.
       this.handleEvent("space_change_avatar", ({ avatar }) => {
         if (typeof avatar !== "string" || !avatar) return;
         this._atlas?.ensureAvatars([avatar]);

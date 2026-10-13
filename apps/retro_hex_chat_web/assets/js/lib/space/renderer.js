@@ -294,7 +294,7 @@ export class Renderer {
   _drawParallax(ctx, now = 0) {
     for (const layer of this.map.parallax ?? []) {
       const sprite = this.atlas?.tile(layer.tile, now, 0);
-      if (!sprite?.img?.complete || !sprite.img.naturalWidth) continue;
+      if (!isDrawable(sprite?.img)) continue;
       const scroll = layer.scroll ?? 0.3;
       const step = Math.max((layer.step ?? 6) * this.tilePx, 1);
       const ox = -(((this.camera.x * scroll) % step) + step);
@@ -880,27 +880,27 @@ export class Renderer {
       const frames = this.atlas?.avatarFrameCount?.(participant.avatar, "ko") ?? 1;
       return { actionKind: "ko", dir: m.dir8, frame: frames - 1 };
     }
-    // Seated: the sheet's sitting doze, turned the way the chair faces.
+    const frames = (kind) => this.atlas?.avatarFrameCount?.(participant.avatar, kind) ?? 1;
+    // Seated: settled in the chair (the clip's last frame), turned the way the
+    // chair faces.
     if (participant.pose === "sitting") {
       const dir = SEAT_FACING[participant.dir] ?? m.dir8;
+      if (meta.hasSit) return { actionKind: "sit", dir, frame: frames("sit") - 1 };
       if (meta.hasSleep) {
-        return { actionKind: "sleep", dir, frame: Math.floor(now / 300) % 4 };
+        return { actionKind: "sleep", dir, frame: Math.floor(now / 300) % frames("sleep") };
       }
       return { actionKind: meta.hasIdle ? "idle" : "walk", dir, frame: 0 };
     }
     const still = now - m.t;
     if (still < 180) {
-      return { actionKind: "walk", dir: m.dir8, frame: Math.floor(now / 120) % 4 };
+      return { actionKind: "walk", dir: m.dir8, frame: Math.floor(now / 120) % frames("walk") };
     }
     if (meta.hasSleep && still > ISO_SLEEP_MS) {
-      return { actionKind: "sleep", dir: m.dir8, frame: Math.floor(now / 300) % 4 };
+      return { actionKind: "sleep", dir: m.dir8, frame: Math.floor(now / 300) % frames("sleep") };
     }
     if (meta.hasIdle) {
-      return {
-        actionKind: this._idleKind(participant, meta, now),
-        dir: m.dir8,
-        frame: Math.floor(now / 220) % 4,
-      };
+      const kind = this._idleKind(participant, meta, now);
+      return { actionKind: kind, dir: m.dir8, frame: Math.floor(now / 220) % frames(kind) };
     }
     return { actionKind: "walk", dir: m.dir8, frame: 0 };
   }
@@ -1037,7 +1037,7 @@ export class Renderer {
   _blit(ctx, sprite, dx, dy, scale = this.camera.scale) {
     if (!sprite) return;
     const img = sprite.img;
-    if (!img || !img.complete || !img.naturalWidth) return;
+    if (!isDrawable(img)) return;
     const s = scale;
     if (sprite.flipX) {
       ctx.save();
@@ -1137,4 +1137,12 @@ export class Renderer {
       this._centredText(ctx, line, cx, top + BUBBLE_FIRST_BASELINE + i * BUBBLE_LINE_PX);
     });
   }
+}
+
+// Whether a sheet can be drawn yet: an <img> once it has decoded, a composed
+// canvas or a decoded bitmap as soon as it exists.
+export function isDrawable(img) {
+  if (!img) return false;
+  if ("complete" in img && "naturalWidth" in img) return Boolean(img.complete && img.naturalWidth);
+  return (img.width ?? 0) > 0 && (img.height ?? 0) > 0;
 }

@@ -5,6 +5,8 @@ import { SpaceMap } from "../../../js/lib/space/map.js";
 import { Camera } from "../../../js/lib/space/camera.js";
 import { createProjection } from "../../../js/lib/space/projection.js";
 
+const RECIPE = "c1.b-av.s-2.o-tun-0-3.h-lng-2.w-0.f-0";
+
 function mockCtx() {
   return {
     imageSmoothingEnabled: true,
@@ -146,7 +148,7 @@ describe("Renderer depth sorting (walk-behind)", () => {
         {
           key: "registered:1",
           nickname: "",
-          avatar: "hero",
+          avatar: "c1.b-av.s-2.o-tun-0-3.h-lng-2.w-0.f-0",
           x: 4,
           y: avatarY,
           dir: "down",
@@ -183,7 +185,14 @@ describe("Renderer depth sorting (walk-behind)", () => {
     const participants = new Map([
       [
         "registered:1",
-        { key: "registered:1", nickname: "", avatar: "hero", x: 4, y: 2, dir: "down" },
+        {
+          key: "registered:1",
+          nickname: "",
+          avatar: "c1.b-av.s-2.o-tun-0-3.h-lng-2.w-0.f-0",
+          x: 4,
+          y: 2,
+          dir: "down",
+        },
       ],
     ]);
     renderer.draw({ participants, selfKey: "registered:1", bubbles: new Map(), now: 0 });
@@ -272,7 +281,16 @@ describe("Renderer isometric", () => {
       floor,
       decor: [{ x: propXY[0], y: propXY[1], tile: "block", sort: "stand" }],
       participants: new Map([
-        ["k", { key: "k", avatar: "hero", x: avatarXY[0], y: avatarXY[1], dir: "down" }],
+        [
+          "k",
+          {
+            key: "k",
+            avatar: "c1.b-av.s-2.o-tun-0-3.h-lng-2.w-0.f-0",
+            x: avatarXY[0],
+            y: avatarXY[1],
+            dir: "down",
+          },
+        ],
       ]),
     });
     return ctx.drawImage.mock.calls
@@ -450,7 +468,7 @@ describe("Renderer avatar actions", () => {
         {
           key: "registered:1",
           nickname: "alice",
-          avatar: "hero",
+          avatar: "c1.b-av.s-2.o-tun-0-3.h-lng-2.w-0.f-0",
           x: 5,
           y: 5,
           action: { kind: "sword", startedAt: 0, duration: 420 },
@@ -462,7 +480,12 @@ describe("Renderer avatar actions", () => {
 
     // Iso avatars face their last movement direction (south when still), not the
     // action payload; 210/420 of a 4-frame swing → frame 2.
-    expect(atlas.avatar).toHaveBeenCalledWith("hero", "south", 2, "sword");
+    expect(atlas.avatar).toHaveBeenCalledWith(
+      "c1.b-av.s-2.o-tun-0-3.h-lng-2.w-0.f-0",
+      "south",
+      2,
+      "sword",
+    );
   });
 
   it("billboards a wide sword sprite bottom-centre on the diamond foot", () => {
@@ -479,7 +502,7 @@ describe("Renderer avatar actions", () => {
         {
           key: "registered:1",
           nickname: "",
-          avatar: "hero",
+          avatar: "c1.b-av.s-2.o-tun-0-3.h-lng-2.w-0.f-0",
           x: 5,
           y: 5,
           action: { kind: "sword", startedAt: 0, duration: 420 },
@@ -508,7 +531,12 @@ describe("Renderer avatar pose state machine", () => {
 
   it("alternates an avatar with a second idle stance across the slow idle cycle", () => {
     const renderer = poseRenderer();
-    const participant = { key: "u1", avatar: "knight", x: 3, y: 4 };
+    const participant = {
+      key: "u1",
+      avatar: "c1.b-av.s-4.o-tun-8-6.h-0.w-adv-d-6.f-0",
+      x: 3,
+      y: 4,
+    };
     renderer._avatarPose(participant, 0);
     const kinds = new Set();
     // One full 9s cycle inside the idle band (after walk settles, before sleep).
@@ -520,7 +548,7 @@ describe("Renderer avatar pose state machine", () => {
 
   it("keeps a single-idle avatar on its only idle stance", () => {
     const renderer = poseRenderer({ hasIdle2: false });
-    const participant = { key: "u2", avatar: "hero", x: 3, y: 4 };
+    const participant = { key: "u2", avatar: "c1.b-av.s-2.o-tun-0-3.h-lng-2.w-0.f-0", x: 3, y: 4 };
     renderer._avatarPose(participant, 0);
     for (let t = 1000; t < 10000; t += 200) {
       expect(renderer._avatarPose(participant, t).actionKind).toBe("idle");
@@ -529,8 +557,13 @@ describe("Renderer avatar pose state machine", () => {
 
   it("desyncs the idle2 stretches of different participants by key", () => {
     const renderer = poseRenderer();
-    const a = { key: "alice", avatar: "knight", x: 1, y: 1 };
-    const b = { key: "bob-the-long-key", avatar: "knight", x: 2, y: 2 };
+    const a = { key: "alice", avatar: "c1.b-av.s-4.o-tun-8-6.h-0.w-adv-d-6.f-0", x: 1, y: 1 };
+    const b = {
+      key: "bob-the-long-key",
+      avatar: "c1.b-av.s-4.o-tun-8-6.h-0.w-adv-d-6.f-0",
+      x: 2,
+      y: 2,
+    };
     renderer._avatarPose(a, 0);
     renderer._avatarPose(b, 0);
     const diverged = [];
@@ -544,7 +577,12 @@ describe("Renderer avatar pose state machine", () => {
 
   it("sleeps facing the direction of the last step", () => {
     const renderer = poseRenderer();
-    const participant = { key: "u3", avatar: "knight", x: 3, y: 4 };
+    const participant = {
+      key: "u3",
+      avatar: "c1.b-av.s-4.o-tun-8-6.h-0.w-adv-d-6.f-0",
+      x: 3,
+      y: 4,
+    };
     renderer._avatarPose(participant, 0);
     participant.x = 2; // step (-1,0) reads as north-west on screen
     renderer._avatarPose(participant, 100);
@@ -569,7 +607,7 @@ describe("Renderer combat poses", () => {
     for (const kind of ["hit", "ko", "getup"]) {
       const participant = {
         key: `u-${kind}`,
-        avatar: "knight",
+        avatar: "c1.b-av.s-4.o-tun-8-6.h-0.w-adv-d-6.f-0",
         x: 3,
         y: 4,
         pose: kind === "ko" ? "down" : "standing",
@@ -582,7 +620,14 @@ describe("Renderer combat poses", () => {
 
   it("holds the last ko frame while a participant stays down", () => {
     const renderer = combatRenderer();
-    const participant = { key: "u9", avatar: "knight", x: 3, y: 4, pose: "down", action: null };
+    const participant = {
+      key: "u9",
+      avatar: "c1.b-av.s-4.o-tun-8-6.h-0.w-adv-d-6.f-0",
+      x: 3,
+      y: 4,
+      pose: "down",
+      action: null,
+    };
     renderer._avatarPose(participant, 0);
     const pose = renderer._avatarPose(participant, 20000); // long past the sleep threshold
     expect(pose).toMatchObject({ actionKind: "ko", frame: 3 });
@@ -607,7 +652,7 @@ describe("Renderer combat feedback effects", () => {
     const participant = {
       key: "victim",
       nickname: "bob",
-      avatar: "hero",
+      avatar: "c1.b-av.s-2.o-tun-0-3.h-lng-2.w-0.f-0",
       x: 5,
       y: 5,
       pose: "standing",
@@ -688,12 +733,34 @@ describe("Renderer in a Construct", () => {
     const renderer = seatRenderer();
     const facing = (dir) =>
       renderer._avatarPose(
-        { key: `s-${dir}`, avatar: "knight", x: 3, y: 3, pose: "sitting", dir },
+        {
+          key: `s-${dir}`,
+          avatar: "c1.b-av.s-4.o-tun-8-6.h-0.w-adv-d-6.f-0",
+          x: 3,
+          y: 3,
+          pose: "sitting",
+          dir,
+        },
         5000,
       );
 
     expect(facing("down")).toMatchObject({ actionKind: "sleep", dir: "south-west" });
     expect(facing("right")).toMatchObject({ actionKind: "sleep", dir: "south-east" });
+  });
+
+  it("settles a creator character into its seated clip, on the clip's last frame", () => {
+    const atlas = {
+      tile: () => null,
+      avatar: () => ({ canvas: {} }),
+      avatarMeta: () => ({ hasIdle: true, hasSit: true, hasSleep: false }),
+      avatarFrameCount: (_recipe, kind) => (kind === "sit" ? 3 : 4),
+    };
+    const { renderer } = build({ atlas });
+    const pose = renderer._avatarPose(
+      { key: "s", avatar: RECIPE, x: 3, y: 3, pose: "sitting", dir: "down" },
+      5000,
+    );
+    expect(pose).toEqual({ actionKind: "sit", dir: "south-west", frame: 2 });
   });
 
   it("marks the ghost's tile and the picked piece on the floor", () => {

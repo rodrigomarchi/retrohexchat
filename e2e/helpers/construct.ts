@@ -7,6 +7,7 @@ import { readFileSync } from "node:fs";
 import path from "node:path";
 import { expect, Page } from "@playwright/test";
 import { TestUser } from "./chatUsers";
+import { enterAs, Look } from "./characters";
 import { Walker } from "../director/space";
 
 // The tile in front of the End of Time's gate, which stands at (56,10).
@@ -135,8 +136,9 @@ export async function tilePoint(
   };
 }
 
-export async function walkIn(space: Page, avatar: string) {
-  await space.getByTestId(`space-avatar-${avatar}`).click();
+/** Makes `avatar` in the door's creator, walks in, and waits for the map. */
+export async function walkIn(space: Page, avatar: Look | string) {
+  await enterAs(space, avatar);
   await mapDrawn(space);
 }
 
@@ -162,7 +164,7 @@ export async function enterConstruct(walker: Walker) {
 }
 
 /** Into a channel's Space and straight through its gate. */
-export async function openConstruct(user: TestUser, avatar: string) {
+export async function openConstruct(user: TestUser, avatar: Look | string) {
   const space = await user.chat.openSpace();
   const walker = Walker.follow(space);
   const room = RoomWatch.follow(space);

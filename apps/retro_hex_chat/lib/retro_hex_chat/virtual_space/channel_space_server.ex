@@ -32,6 +32,7 @@ defmodule RetroHexChat.VirtualSpace.ChannelSpaceServer do
   alias RetroHexChat.Channels.Server, as: ChannelServer
   alias RetroHexChat.Nickname
   alias RetroHexChat.Topics
+  alias RetroHexChat.VirtualSpace.CharacterRecipe
   alias RetroHexChat.VirtualSpace.Construct
   alias RetroHexChat.VirtualSpace.Construct.Layout
   alias RetroHexChat.VirtualSpace.DirectMessageSpace
@@ -46,11 +47,6 @@ defmodule RetroHexChat.VirtualSpace.ChannelSpaceServer do
   # a small allowance those steps would be silently dropped and the client's
   # prediction would rubber-band.
   @cooldown_jitter_tolerance_ms 30
-
-  # Selectable avatar ids. Must stay in sync with `AVATAR_IDS` in the JS atlas
-  # (`assets/js/lib/space/sprite_atlas.js`). The first entry is the default the
-  # runtime assigns on join, before the player picks a character.
-  @avatars ~w(hero knight sorceress archer barbarian rogue cleric monk)
 
   # Melee combat: a sword swing damages one standing participant on the faced
   # (else any adjacent) tile. At zero HP the target drops (pose "down") and gets
@@ -223,10 +219,6 @@ defmodule RetroHexChat.VirtualSpace.ChannelSpaceServer do
   end
 
   @type select_avatar_error :: :not_found | :not_participant | :invalid_avatar
-
-  @doc "The canonical list of selectable avatar ids (in sync with the JS atlas)."
-  @spec avatars() :: [String.t()]
-  def avatars, do: @avatars
 
   @doc """
   The movement cooldown (ms per step). Shared with clients via the `space_init`
@@ -1317,7 +1309,7 @@ defmodule RetroHexChat.VirtualSpace.ChannelSpaceServer do
       not active_participant?(participant) ->
         {:error, :not_participant, state}
 
-      avatar not in @avatars ->
+      not CharacterRecipe.valid?(avatar) ->
         {:error, :invalid_avatar, state}
 
       participant.avatar == avatar ->
@@ -1619,16 +1611,16 @@ defmodule RetroHexChat.VirtualSpace.ChannelSpaceServer do
     in_bounds?(state.map, x, y) and not MapSet.member?(state.blocked, {x, y})
   end
 
-  # A seat is created as the default hero, before anyone is looking through it.
-  # Kept as a function (not a bare constant) so a future map could vary the
-  # starting look.
-  defp avatar_for(_state, _key), do: hd(@avatars)
+  # A seat is created before anyone is looking through it, as a character
+  # drawn at random from the seat's key: a crowd of members who never opened
+  # the creator is still a crowd of different people, the same people each
+  # time.
+  defp avatar_for(_state, key), do: CharacterRecipe.random(key)
 
-  # A viewer picks their class on the entry screen and names it when they join,
-  # so the snapshot shows what they are wearing from the first frame. Asking
-  # afterwards was a second sheet to download: the client would fetch the
-  # default's art, then learn it needed a different class and fetch that too.
-  # An absent or rejected id leaves the seat on whatever it already wore.
+  # A viewer makes their character on the entry screen and names it when they
+  # join, so the snapshot shows what they are wearing from the first frame
+  # instead of a stranger who changes a moment later. An absent or rejected
+  # recipe leaves the seat on whatever it already wore.
   defp apply_join_avatar(state, _key, nil), do: state
 
   defp apply_join_avatar(state, key, avatar) do
@@ -1695,7 +1687,7 @@ defmodule RetroHexChat.VirtualSpace.ChannelSpaceServer do
     %{
       key: participant.key,
       nickname: participant.nickname,
-      avatar: Map.get(participant, :avatar, "default"),
+      avatar: Map.get(participant, :avatar),
       x: participant.x,
       y: participant.y,
       dir: participant.dir,

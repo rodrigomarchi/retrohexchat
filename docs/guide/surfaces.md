@@ -157,8 +157,8 @@ notice (`error/2`, `system/2` — a sentence on the page's own status bar), and
 `close/1`, which marks the surface finished.
 
 There is no parent to report to. Geometry commands go straight to the page's
-own window manager; the space's last-picked character is `localStorage` on the
-browser that picked it, pushed up as `space_remember_avatar`; a pre-join device
+own window manager; the space's character belongs to the nickname
+(`Accounts.Avatars`), never to the surface; a pre-join device
 choice lives in `localStorage` and, on a trusted terminal, in
 `TrustedDevices.put_device_preference/4`. Nothing about a surface is remembered
 by the chat.
@@ -296,9 +296,9 @@ is not, so changing one means arguing with the reason rather than the line.
   and that is the whole answer. A waiting-room chat is a second conversation
   implementation, which is exactly why the standalone `/lobby` was deleted.
 
-- **The character picker *is* the space's antechamber, and choosing is
-  entering.** A confirm step after it would be ceremony for walking into a place
-  that is already open.
+- **The character creator *is* the space's antechamber, and Walk in is
+  entering.** Deciding who to be is the door; a second confirm after it would
+  be ceremony for walking into a place that is already open.
 
 - **The link is born from a button, never from opening the feature.** Opening
   creates the room; **Share** creates the address. If every game window minted a

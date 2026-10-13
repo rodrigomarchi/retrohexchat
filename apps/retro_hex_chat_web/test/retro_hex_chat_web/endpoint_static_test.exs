@@ -156,19 +156,40 @@ defmodule RetroHexChatWeb.EndpointStaticTest do
       end
     end
 
-    test "the picker preview sheet is really served", %{conn: conn} do
-      conn = get(conn, ~p"/images/space/charsel.webp")
-
+    test "the character creator's catalog and every piece it lists are really served", %{
+      conn: conn
+    } do
+      conn = get(conn, SpaceAssets.character_catalog_url())
       assert response(conn, 200)
-      assert get_resp_header(conn, "content-type") == ["image/webp"]
+      catalog = Jason.decode!(response(conn, 200))
+
+      for url <- creator_urls(catalog) do
+        conn = get(build_conn(), url)
+        assert response(conn, 200), "a creator piece is not served at #{url}"
+        assert get_resp_header(conn, "content-type") == ["image/png"]
+      end
     end
 
     test "the sheets are tracked by git" do
-      urls = Map.values(SpaceAssets.sheet_urls()) ++ ["/images/space/charsel.webp"]
+      catalog =
+        Jason.decode!(
+          File.read!(
+            Path.join(
+              repo_root(),
+              "apps/retro_hex_chat_web/priv/static/images/space/creator/catalog.json"
+            )
+          )
+        )
+
+      urls =
+        Map.values(SpaceAssets.sheet_urls()) ++
+          ["/images/space/creator/catalog.json" | creator_urls(catalog)]
 
       for url <- urls do
+        path = url |> String.split("?") |> hd()
+
         {out, status} =
-          System.cmd("git", ["check-ignore", "apps/retro_hex_chat_web/priv/static" <> url],
+          System.cmd("git", ["check-ignore", "apps/retro_hex_chat_web/priv/static" <> path],
             cd: repo_root(),
             stderr_to_stdout: true
           )
@@ -177,6 +198,19 @@ defmodule RetroHexChatWeb.EndpointStaticTest do
                "the sheet is gitignored and will be missing from the release: #{out}"
       end
     end
+  end
+
+  defp creator_urls(catalog) do
+    for {_name, layer} <- catalog["layers"],
+        group <- [layer["anims"], layer["mask"] || %{}],
+        {_anim, %{"url" => url}} <- group do
+      url
+    end ++
+      for {_name, layer} <- catalog["layers"],
+          key <- ["portrait", "portraitMask"],
+          %{"url" => url} <- [layer[key]] do
+        url
+      end
   end
 
   defp repo_root do

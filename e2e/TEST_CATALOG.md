@@ -135,8 +135,8 @@ make e2e.catalog.check    # verify it is current (also runs in make ci)
 ## Coverage
 
 - **248 spec files** under `e2e/tests/`.
-- **606 Playwright `test()` cases**.
-- **553 documented flows**, 552 done, 1 not done.
+- **607 Playwright `test()` cases**.
+- **554 documented flows**, 553 done, 1 not done.
 - **Every spec documents its own flows.**
 
 ## Flow index
@@ -609,7 +609,7 @@ Grouped by section. Every row comes from an `@flow` line in the spec itself.
 | T17 | Every desktop hangs the wallpaper, and the file behind it really loads | `tests/desktop-wallpaper.spec.ts` | done |
 | T18 | A phone-width viewport hangs the tall wallpaper instead of the wide one | `tests/desktop-wallpaper.spec.ts` | done |
 | T19 | The wide wallpaper is preloaded in the head; the tall one deliberately is not | `tests/desktop-wallpaper.spec.ts` | done |
-| T24 | The character chosen in a space stands beside the nickname in the chat, in the nicklist and on the hover card, and View ▸ Character Portraits turns them off (features P2) | `tests/chat-character-portraits.spec.ts` | done |
+| T24 | The character made in a space stands beside the nickname in the chat, in the nicklist and on the hover card, and View ▸ Character Portraits turns them off (features P2) | `tests/chat-character-portraits.spec.ts` | done |
 
 ### U - Dialog CRUD And Settings Depth
 
@@ -744,16 +744,16 @@ Grouped by section. Every row comes from an `@flow` line in the spec itself.
 
 | # | Flow | Spec file | Status |
 | --- | --- | --- | --- |
-| SP1 | Choosing a class enters the channel space with that avatar rendered | `tests/space-character-select.spec.ts` | done |
-| SP2 | A PM space mounts the End of Time scene with the chosen avatar | `tests/space-end-of-time.spec.ts` | done |
+| SP1 | The door of a space is the character creator: pieces, colours and Surprise me change the preview, and entering wears exactly that character | `tests/space-character-creator.spec.ts` | done |
+| SP2 | A PM space mounts the End of Time scene with the character made at its door | `tests/space-end-of-time.spec.ts` | done |
 | SP3 | The toggle enters and exits fullscreen on the space stage | `tests/space-fullscreen.spec.ts` | done |
 | SP4 | Holding the virtual pad walks continuously, sliding off it onto the floor and lifting stops the walk, and the sword button attacks | `tests/space-virtual-pad.spec.ts` | done |
-| SP5 | The space sheets are served as WebP the browser can actually decode | `tests/space-character-select.spec.ts` | done |
+| SP5 | The creator's art is its catalog and its PNG pieces, each decodable, the catalog asked for at most once per screen, and no per-class sprite sheet ever | `tests/space-character-creator.spec.ts` | done |
 | SP6 | A space is entered from the conversation and runs in a tab of its own | `tests/space-surface.spec.ts` | done |
 | SP7 | A shared space link resolves to a card and then to the space itself | `tests/space-surface.spec.ts` | done |
 | SP8 | Two people in the same space see each other | `tests/space-surface.spec.ts` | done |
 | SP9 | Walking into an empty space writes its card into the conversation | `tests/space-surface.spec.ts` | done |
-| SP10 | The picker remembers the character this browser chose last | `tests/space-surface.spec.ts` | done |
+| SP10 | The creator opens on the character the nickname made last | `tests/space-surface.spec.ts` | done |
 | SP11 | A line typed in a channel's space is said in the channel and pops up over the speaker for everyone in the space | `tests/space-talk.spec.ts` | done |
 | SP12 | Enter puts the cursor in the space's say line, Esc gives the keyboard back to the map, and typing never walks | `tests/space-talk.spec.ts` | done |
 | SP13 | A line typed in a private space goes to the other person's private chat | `tests/space-talk.spec.ts` | done |
@@ -773,13 +773,14 @@ Grouped by section. Every row comes from an `@flow` line in the spec itself.
 | SP27 | A long table covers two tiles and turns with its footprint; chairs set around it are sat in, and a room of each theme (home, office, garden, gamer) is built from the palette's tabs | `tests/space-construct-library.spec.ts` | done |
 | SP28 | The End of Time's own pieces — Morpheus, Neo, the old TV, the DeLorean, the Balrog — are placed in a Construct, animated and lit as on the island | `tests/space-construct-library.spec.ts` | done |
 | SP29 | A sofa seats two people at once, one on each of its tiles | `tests/space-construct-library.spec.ts` | done |
-| SP30 | On a phone, the space's screens — the picker, the build palette, the pad, a piece's panel — wear the space's pixel-art kit and fit the screen | `tests/space-pixel-ui.spec.ts` | done |
+| SP30 | On a phone, the space's screens — the character creator, the build palette, the pad, a piece's panel — wear the space's pixel-art kit and fit the screen | `tests/space-pixel-ui.spec.ts` | done |
 | SP31 | A line said in Japanese or in Traditional Chinese is drawn over the speaker in the pixel font, that region's own glyphs fetched for it | `tests/space-pixel-ui.spec.ts` | done |
 | SP32 | A character who takes a hit shows the kit's HP bar under its nameplate until it is whole again | `tests/space-pixel-ui.spec.ts` | done |
 | SP33 | The Construct's pieces live in a Build menu; what is in hand shows on a card that turns, removes or drops it, so a touch screen can let go of a piece | `tests/space-pixel-ui.spec.ts` | done |
 | SP34 | An arcade cabinet shelves its games as cartridges, each with its cover, under the cabinet's own icon | `tests/space-pixel-ui.spec.ts` | done |
 | SP35 | The pad is held like a handheld (actions under the left thumb, the D-pad under the right) and the say bar carries the status on one line, on a desktop, a phone and a small phone in Russian | `tests/space-pixel-ui.spec.ts` | done |
 | SP36 | A fair and a fantasy corner are built from their own tabs — tents, stalls, Leene's Bell, the Telepod, Nu, braziers and arches, some of them moving; the End of Time's lamppost and the Victorian lamp switch off, and the wingback chair is sat in | `tests/space-construct-library.spec.ts` | done |
+| SP37 | The character made at the door is remembered for the nickname on reload, and another person in the channel sees it beside the nickname | `tests/space-character-creator.spec.ts` | done |
 
 ### LC - Localization
 

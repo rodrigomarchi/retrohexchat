@@ -2,7 +2,7 @@ defmodule RetroHexChatWeb.Live.OpenSurfaces do
   @moduledoc """
   What this person already has open, for the screens that draw a way in.
 
-  Three screens offer "open in a tab" — the call badge, the space picker and
+  Three screens offer "open in a tab" — the call badge, the space creator and
   the P2P starting room — and each of them is wrong about it in the same way if
   it does not know: the tab may already exist, and opening a second one is not
   a neutral act. A second P2P tab *moves the session into it*, which is the

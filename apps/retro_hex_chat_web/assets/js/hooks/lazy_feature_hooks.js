@@ -80,11 +80,11 @@ export const lazyFeatureHooks = {
     serverEvents: [],
     reason: "Virtual-space canvas and engine are only needed inside a space session.",
   }),
-  SpaceCharacterMemoryHook: lazyFeatureHook({
-    name: "SpaceCharacterMemoryHook",
-    loader: () => import("./space/space_character_memory_hook"),
+  SpaceCreatorPreviewHook: lazyFeatureHook({
+    name: "SpaceCreatorPreviewHook",
+    loader: () => import("./space/space_creator_preview_hook"),
     serverEvents: [],
-    reason: "Remembering a character only matters at the door of a space.",
+    reason: "The character creator's preview only draws at the door of a space.",
   }),
   MetricChartHook: lazyFeatureHook({
     name: "MetricChartHook",

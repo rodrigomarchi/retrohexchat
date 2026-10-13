@@ -8,6 +8,7 @@ defmodule RetroHexChatWeb.SpaceChannelTest do
   alias RetroHexChat.VirtualSpace.{
     ChannelJoinToken,
     ChannelSpaceServer,
+    CharacterRecipe,
     DirectMessageSpace,
     Registry
   }
@@ -381,59 +382,62 @@ defmodule RetroHexChatWeb.SpaceChannelTest do
   end
 
   describe "avatar selection" do
-    # The client picks a class before the canvas mounts and names it in the join
-    # params. It matters that the snapshot already wears it: a client told "hero"
-    # first downloads the hero sheet, then learns it needed another class and
-    # downloads that too — the better part of a megabyte for nothing.
-    test "the class named at join is what the snapshot already wears" do
+    @tunic "c1.b-av.s-2.o-tun-0-3.h-lng-2.w-0.f-0"
+    @bald "c1.b-av.s-5.o-bas-0-0.h-0.w-0.f-0"
+
+    # The client makes the character before the canvas mounts and names it in
+    # the join params, so the snapshot already wears it rather than showing a
+    # stranger who changes a moment later.
+    test "the character named at join is what the snapshot already wears" do
       channel = unique_channel()
       {:ok, _pid} = start_channel(channel)
       {:ok, _} = Server.join(channel, "alice")
 
-      assert {:ok, init, _socket} = join_channel_space(channel, "alice", avatar: "monk")
+      assert {:ok, init, _socket} = join_channel_space(channel, "alice", avatar: @tunic)
 
-      assert init.snapshot.participants[init.self_key].avatar == "monk"
+      assert init.snapshot.participants[init.self_key].avatar == @tunic
     end
 
-    test "a class named at join that is not on the roster falls back to the default" do
+    test "a recipe named at join that the art cannot compose leaves the seat's own" do
       channel = unique_channel()
       {:ok, _pid} = start_channel(channel)
       {:ok, _} = Server.join(channel, "alice")
 
       assert {:ok, init, _socket} = join_channel_space(channel, "alice", avatar: "wizard")
 
-      assert init.snapshot.participants[init.self_key].avatar == "hero"
+      assert init.snapshot.participants[init.self_key].avatar ==
+               CharacterRecipe.random(init.self_key)
     end
 
-    test "a space_select_avatar push swaps the avatar and broadcasts a delta" do
+    test "a space_select_avatar push swaps the character and broadcasts a delta" do
       channel = unique_channel()
       {:ok, _pid} = start_channel(channel)
       {:ok, _} = Server.join(channel, "alice")
 
       assert {:ok, init, socket} = join_channel_space(channel, "alice")
       self_key = init.self_key
-      assert init.snapshot.participants[self_key].avatar == "hero"
 
-      push(socket, "space_select_avatar", %{"avatar" => "sorceress"})
+      push(socket, "space_select_avatar", %{"avatar" => @bald})
 
       # Match the selection delta specifically (a join presence delta also fires).
-      assert_push "space_delta", %{updates: %{^self_key => %{avatar: "sorceress"}}}
+      assert_push "space_delta", %{updates: %{^self_key => %{avatar: @bald}}}
 
       {:ok, state} = ChannelSpaceServer.get_state(channel)
-      assert state.participants[self_key].avatar == "sorceress"
+      assert state.participants[self_key].avatar == @bald
     end
 
-    test "an unknown avatar id leaves the participant on the default hero" do
+    test "a recipe the art cannot compose leaves the character as it was" do
       channel = unique_channel()
       {:ok, _pid} = start_channel(channel)
       {:ok, _} = Server.join(channel, "alice")
 
       assert {:ok, init, socket} = join_channel_space(channel, "alice")
+      before = init.snapshot.participants[init.self_key].avatar
 
       push(socket, "space_select_avatar", %{"avatar" => "dragon_lord"})
       # Round-trip a benign call so the invalid push is fully processed first.
       {:ok, state} = ChannelSpaceServer.get_state(channel)
-      assert state.participants[init.self_key].avatar == "hero"
+      assert state.participants[init.self_key].avatar == before
     end
   end
 

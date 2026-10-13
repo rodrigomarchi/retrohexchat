@@ -1,6 +1,6 @@
 /**
  * @section SP - Virtual Spaces
- * @flow SP2 [done] A PM space mounts the End of Time scene with the chosen avatar
+ * @flow SP2 [done] A PM space mounts the End of Time scene with the character made at its door
  *
  * These @flow lines are the source of truth for e2e/TEST_CATALOG.md.
  * Edit them here, then run `make e2e.catalog` to regenerate the index.
@@ -12,6 +12,7 @@ import {
   uniqueChannel,
   TestUser,
 } from "../helpers/chatUsers";
+import { enterAs, recipeOf } from "../helpers/characters";
 
 // A compact hash of the canvas pixels — changes when anything redraws.
 function canvasSignature(canvas: Locator): Promise<number> {
@@ -28,7 +29,7 @@ function canvasSignature(canvas: Locator): Promise<number> {
 
 // The direct-message space renders the cozy "End of Time" cosmic-island scene.
 test.describe("End of Time private space", () => {
-  test("a PM space mounts the End of Time scene with the chosen avatar", async ({
+  test("a PM space mounts the End of Time scene with the character made at its door", async ({
     browser,
   }) => {
     const alice: TestUser = await newSignedInUser(browser, "eota");
@@ -46,12 +47,12 @@ test.describe("End of Time private space", () => {
         alice.page.getByPlaceholder(new RegExp(`Message to ${bob.nick}`)),
       ).toBeVisible();
 
-      // Character picker gates the DM canvas.
+      // The character creator gates the DM canvas.
       const page = await alice.chat.openSpace();
-      await page.getByTestId("space-avatar-knight").click();
+      await enterAs(page, "ranger");
 
       const shell = page.locator(
-        '[data-testid="channel-space-shell"][data-space-mode="direct_message"][data-avatar="knight"]',
+        `[data-testid="channel-space-shell"][data-space-mode="direct_message"][data-avatar="${recipeOf("ranger")}"]`,
       );
       await expect(shell).toBeVisible();
       const canvas = page.locator('[data-testid="channel-space-shell"] canvas');

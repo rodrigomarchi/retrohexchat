@@ -666,7 +666,7 @@ defmodule Mix.Tasks.Lint.CssConsistency do
     "pf-",
     "reconnect-overlay",
     "retro-fieldset",
-    "rh-charsel",
+    "rh-creator",
     "search-highlight",
     "ss-",
     "tm-",
@@ -695,8 +695,7 @@ defmodule Mix.Tasks.Lint.CssConsistency do
                              "p2p-diagram-strip--*",
                              "p2p-diagram__badge--*",
                              "p2p-diagram__browser-svg--*",
-                             "p2p-diagram__link--*",
-                             "rh-charsel-sprite--*"
+                             "p2p-diagram__link--*"
                            ])
 
   defp product_css_reference?(class) do

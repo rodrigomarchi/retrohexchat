@@ -12,6 +12,7 @@ import {
   uniqueChannel,
   TestUser,
 } from "../helpers/chatUsers";
+import { enterAs } from "../helpers/characters";
 
 // A compact hash of the canvas pixels — changes when anything redraws.
 function canvasSignature(canvas: Locator): Promise<number> {
@@ -54,7 +55,7 @@ test.describe("Space virtual pad", () => {
         }
       });
 
-      await page.getByTestId("space-avatar-knight").click();
+      await enterAs(page, "ranger");
 
       const canvas = page.locator('[data-testid="channel-space-shell"] canvas');
       await expect(canvas).toBeVisible();

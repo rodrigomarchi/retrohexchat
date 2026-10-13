@@ -5,6 +5,7 @@ defmodule RetroHexChat.VirtualSpace.AvatarTest do
   alias RetroHexChat.Channels.Server
   alias RetroHexChat.Channels.Supervisor, as: ChannelSupervisor
   alias RetroHexChat.VirtualSpace.ChannelSpaceServer
+  alias RetroHexChat.VirtualSpace.CharacterRecipe
   alias RetroHexChat.VirtualSpace.Supervisor
 
   @moduletag :integration
@@ -38,10 +39,17 @@ defmodule RetroHexChat.VirtualSpace.AvatarTest do
     state.participants[key].avatar
   end
 
-  describe "avatar catalog" do
-    test "exposes the premium 8-direction iso roster, in sync with the JS atlas" do
-      assert ChannelSpaceServer.avatars() ==
-               ~w(hero knight sorceress archer barbarian rogue cleric monk)
+  @tunic "c1.b-av.s-2.o-tun-0-3.h-lng-2.w-0.f-0"
+
+  describe "a seat before anyone chooses" do
+    # Somebody who never opened the creator still looks like somebody, and the
+    # same somebody every time.
+    test "wears a character drawn for its key" do
+      ctx = start_space()
+      avatar = avatar_of(ctx.channel_name, ctx.key)
+
+      assert CharacterRecipe.valid?(avatar)
+      assert avatar == CharacterRecipe.random(ctx.key)
     end
   end
 
@@ -49,14 +57,14 @@ defmodule RetroHexChat.VirtualSpace.AvatarTest do
     test "swaps the participant's avatar and broadcasts a delta carrying it" do
       ctx = start_space()
 
-      assert :ok = ChannelSpaceServer.select_avatar(ctx.channel_name, ctx.key, "knight")
-      assert avatar_of(ctx.channel_name, ctx.key) == "knight"
+      assert :ok = ChannelSpaceServer.select_avatar(ctx.channel_name, ctx.key, @tunic)
+      assert avatar_of(ctx.channel_name, ctx.key) == @tunic
 
       assert_receive %{event: "space_delta", payload: %{updates: updates}}
-      assert updates[ctx.key].avatar == "knight"
+      assert updates[ctx.key].avatar == @tunic
     end
 
-    test "rejects an unknown avatar id without mutating or broadcasting" do
+    test "rejects a recipe the catalog cannot compose without mutating or broadcasting" do
       ctx = start_space()
       before = avatar_of(ctx.channel_name, ctx.key)
 
@@ -80,7 +88,7 @@ defmodule RetroHexChat.VirtualSpace.AvatarTest do
       ctx = start_space()
 
       assert {:error, :not_participant} =
-               ChannelSpaceServer.select_avatar(ctx.channel_name, "nick:ghost", "rogue")
+               ChannelSpaceServer.select_avatar(ctx.channel_name, "nick:ghost", @tunic)
     end
   end
 

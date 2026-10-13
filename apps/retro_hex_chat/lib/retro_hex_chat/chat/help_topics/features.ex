@@ -128,7 +128,7 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
         description:
           dgettext(
             "help",
-            "The character you chose in a space stands beside your nickname in the chat, and can be switched off."
+            "In the chat, the face of your character is shown beside your name. It can be switched off."
           ),
         see_also: ["feature-choose-character", "feature-nick-colors"]
       },
@@ -3999,27 +3999,24 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
       },
       %{
         id: "feature-choose-character",
-        title: dgettext("help", "Choosing a Character"),
+        title: dgettext("help", "Making a Character"),
         category: dgettext("help", "Virtual Spaces"),
         keywords: [
           "character",
           "avatar",
-          "class",
-          "hero",
-          "sorceress",
-          "knight",
-          "archer",
-          "barbarian",
-          "rogue",
-          "cleric",
-          "monk",
-          dgettext("help", "pick character")
+          "creator",
+          "outfit",
+          "hair",
+          "hat",
+          "skin",
+          dgettext("help", "make character"),
+          dgettext("help", "change character")
         ],
         icon: :icon_community,
         description:
           dgettext(
             "help",
-            "When you enter a Space, a character picker appears first: choose from the classic Hero or one of seven classes — Sorceress, Knight, Archer, Barbarian, Rogue, Cleric or Monk. Each shows an animated preview and has its own walking and attack animations; click one to enter the map wearing it, and everyone in the space sees your choice. It also says who is inside right now, before you commit to walking in. The picker shows again each time you enter, starting on the character your registered nickname chose — or, without one, the one this browser picked last time. Change character, in the status bar, brings the picker back over the map without leaving it."
+            "When you enter a Space, you see the character creator first. Each tab is one part: body, skin, outfit, hair and headwear. Choose a piece to wear it, and a colour for each part that can be dyed. Surprise me picks every part at random. Walk in takes you into the map, and the others in the Space see you right away. Next time, the creator opens with this character. In the chat, its face is shown beside your nickname. Change character, beside the box you type in, opens the creator over the map."
           ),
         see_also: ["feature-virtual-spaces", "feature-space-combat"]
       },
@@ -4155,7 +4152,7 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
         description:
           dgettext(
             "help",
-            "Share, on the character picker, mints a link and opens it in a small window with Copy and Revoke beside it. Pasting it into a conversation draws a card instead of a bare address. That link names the place rather than one evening in it, so it keeps working after everyone has gone home. It carries which space it is and never permission to be in it: a channel's space still asks whoever follows the link to be in that channel, and a private space still belongs to its two people. Only a registered nickname can mint one."
+            "Share, on the character creator, mints a link and opens it in a small window with Copy and Revoke beside it. Pasting it into a conversation draws a card instead of a bare address. That link names the place rather than one evening in it, so it keeps working after everyone has gone home. It carries which space it is and never permission to be in it: a channel's space still asks whoever follows the link to be in that channel, and a private space still belongs to its two people. Only a registered nickname can mint one."
           ),
         see_also: ["feature-virtual-spaces", "feature-space-tab"]
       }

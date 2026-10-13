@@ -8,7 +8,6 @@ table to generate by is in virtual.space/SCENES.md §10 ("Scale").
 
 from __future__ import annotations
 
-import glob
 import json
 import os
 import unittest
@@ -19,8 +18,8 @@ REPO = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", ".."))
 MAP = os.path.join(REPO, "apps", "retro_hex_chat", "priv", "maps", "construct.json")
 SPACE = os.path.join(REPO, "apps", "retro_hex_chat_web", "priv", "static", "images", "space")
 
-# A person, in drawn pixels: the avatars stand 87-93 px tall. A fixed rule, so
-# a new character class never moves a piece out of its band.
+# A person, in drawn pixels: the character creator's bodies stand about 90 px
+# tall. A fixed rule, so a new body never moves a piece out of its band.
 PERSON = 90
 
 # Height against a person: (at least, at most), in person heights. The drawn
@@ -57,14 +56,10 @@ SCALE = {
 
 
 def _tallest_avatar():
-    tallest = 0
-    for geo_path in glob.glob(os.path.join(SPACE, "avatars", "iso_*.geo.json")):
-        with open(geo_path) as handle:
-            geo = json.load(handle)
-        sheet = Image.open(geo_path.replace(".geo.json", ".webp")).convert("RGBA")
-        box = sheet.crop((0, 0, geo["frameW"], geo["frameH"])).getbbox()
-        tallest = max(tallest, box[3] - box[1])
-    return tallest
+    """The tallest body of the character creator, head to feet, in pixels."""
+    with open(os.path.join(SPACE, "creator", "catalog.json")) as handle:
+        bodies = json.load(handle)["bodies"]
+    return max(b["foot"] - b["top"] + 1 for b in bodies.values())
 
 
 class ScaleTest(unittest.TestCase):

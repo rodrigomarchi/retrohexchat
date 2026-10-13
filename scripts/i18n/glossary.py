@@ -620,6 +620,21 @@ _ROWS = {
     "Topic":        ("Tópico", "Tópico", "Tema", "Sujet", "Thema", "Argomento", "Onderwerp", "Temat", "Тема", "Topik", "トピック", "主题", "主題"),
 
     "nicklist menu": ("menu da lista de nicks", "menu da lista de nicks", "menú de la lista de nicks", "menu de la liste des pseudos", "Nicklisten-Menü", "menu della lista nick", "nicklijst-menu", "menu listy nicków", "меню списка ников", "menu daftar nick", "ニックリストメニュー", "昵称列表菜单", "暱稱列表菜單"),
+
+    # ── The Space's character creator ─────────────────────────
+    # "Enter" stays out (see Sharing a surface): going into the map is "Walk in".
+    "Make your character": ("Crie seu personagem", "Cria a tua personagem", "Crea tu personaje", "Créez votre personnage", "Erstelle deinen Charakter", "Crea il tuo personaggio", "Maak je personage", "Stwórz swoją postać", "Создайте персонажа", "Buat karaktermu", "キャラクターを作る", "创建你的角色", "建立你的角色"),
+    "Walk in":      ("Entrar", "Entrar", "Entrar", "Entrer", "Eintreten", "Entra", "Naar binnen", "Wejdź", "Войти", "Masuk", "入る", "进入", "進入"),
+    "Wear this":    ("Vestir este", "Vestir este", "Ponerme este", "Porter celui-ci", "Diesen tragen", "Indossa questo", "Dit dragen", "Załóż to", "Надеть это", "Pakai ini", "これを着る", "穿上这个", "穿上這個"),
+    "Surprise me":  ("Surpreenda-me", "Surpreende-me", "Sorpréndeme", "Surprends-moi", "Überrasch mich", "Sorprendimi", "Verras me", "Zaskocz mnie", "Удиви меня", "Kejutkan aku", "おまかせ", "随机一个", "隨機一個"),
+    "Turn left":    ("Virar à esquerda", "Virar à esquerda", "Girar a la izquierda", "Tourner à gauche", "Nach links drehen", "Ruota a sinistra", "Naar links draaien", "Obróć w lewo", "Повернуть влево", "Putar ke kiri", "左に回す", "向左转", "向左轉"),
+    "Turn right":   ("Virar à direita", "Virar à direita", "Girar a la derecha", "Tourner à droite", "Nach rechts drehen", "Ruota a destra", "Naar rechts draaien", "Obróć w prawo", "Повернуть вправо", "Putar ke kanan", "右に回す", "向右转", "向右轉"),
+    "Main colour":  ("Cor principal", "Cor principal", "Color principal", "Couleur principale", "Hauptfarbe", "Colore principale", "Hoofdkleur", "Kolor główny", "Основной цвет", "Warna utama", "メインカラー", "主色", "主色"),
+    "Trim colour":  ("Cor do detalhe", "Cor do debrum", "Color del ribete", "Couleur des finitions", "Besatzfarbe", "Colore delle rifiniture", "Bieskleur", "Kolor wykończenia", "Цвет отделки", "Warna list", "縁取りの色", "饰边颜色", "飾邊顏色"),
+    "Hair colour":  ("Cor do cabelo", "Cor do cabelo", "Color del pelo", "Couleur des cheveux", "Haarfarbe", "Colore dei capelli", "Haarkleur", "Kolor włosów", "Цвет волос", "Warna rambut", "髪の色", "发色", "髮色"),
+    "Bald":         ("Careca", "Careca", "Calvo", "Chauve", "Glatze", "Calvo", "Kaal", "Łysy", "Лысый", "Botak", "スキンヘッド", "光头", "光頭"),
+    "Character":    ("Personagem", "Personagem", "Personaje", "Personnage", "Charakter", "Personaggio", "Personage", "Postać", "Персонаж", "Karakter", "キャラクター", "角色", "角色"),
+    "Skin":         ("Pele", "Pele", "Piel", "Peau", "Haut", "Pelle", "Huid", "Skóra", "Кожа", "Kulit", "肌", "肤色", "膚色"),
 }
 
 # Rows for a msgid that means something else elsewhere in the product, keyed by
@@ -643,6 +658,57 @@ _CONTEXT_ROWS = {
     # The Construct's key that lets go of the piece in hand: never a drop of
     # water, never dropping a table from a database.
     ("let go of a piece", "Drop"): ("Soltar", "Largar", "Soltar", "Lâcher", "Loslassen", "Lascia", "Loslaten", "Puść", "Отпустить", "Lepas", "手放す", "放下", "放下"),
+    # The Space's character creator: its tabs, pieces and colours, each in the
+    # sense the creator means (a body type, a skin tone, a cloth dye).
+    ("character creator", "Body"): ("Corpo", "Corpo", "Cuerpo", "Corps", "Körper", "Corpo", "Lichaam", "Ciało", "Тело", "Tubuh", "体型", "体型", "體型"),
+    ("character creator", "Skin"): ("Pele", "Pele", "Piel", "Peau", "Haut", "Pelle", "Huid", "Skóra", "Кожа", "Kulit", "肌", "肤色", "膚色"),
+    ("character creator", "Outfit"): ("Roupa", "Roupa", "Atuendo", "Tenue", "Kleidung", "Abito", "Kleding", "Strój", "Одежда", "Pakaian", "服装", "服装", "服裝"),
+    ("character creator", "Hair"): ("Cabelo", "Cabelo", "Pelo", "Cheveux", "Haare", "Capelli", "Haar", "Włosy", "Волосы", "Rambut", "髪", "头发", "頭髮"),
+    ("character creator", "Headwear"): ("Chapéu", "Chapéu", "Sombrero", "Couvre-chef", "Kopfbedeckung", "Copricapo", "Hoofddeksel", "Nakrycie głowy", "Головной убор", "Penutup kepala", "帽子", "帽子", "帽子"),
+    ("character creator", "Face"): ("Rosto", "Rosto", "Cara", "Visage", "Gesicht", "Viso", "Gezicht", "Twarz", "Лицо", "Wajah", "顔", "脸", "臉"),
+    ("character body", "Average"): ("Médio", "Médio", "Medio", "Moyen", "Mittel", "Medio", "Gemiddeld", "Przeciętne", "Среднее", "Sedang", "標準", "标准", "標準"),
+    ("character outfit", "Undershirt"): ("Regata", "Camisola interior", "Camiseta interior", "Maillot de corps", "Unterhemd", "Canottiera", "Onderhemd", "Podkoszulek", "Майка", "Kaus dalam", "肌着", "背心", "背心"),
+    ("character outfit", "Tunic"): ("Túnica", "Túnica", "Túnica", "Tunique", "Tunika", "Tunica", "Tuniek", "Tunika", "Туника", "Tunik", "チュニック", "束腰外衣", "束腰外衣"),
+    ("character hair", "Long"): ("Longo", "Comprido", "Largo", "Longs", "Lang", "Lunghi", "Lang", "Długie", "Длинные", "Panjang", "ロング", "长发", "長髮"),
+    ("character headwear", "Adventurer hat"): ("Chapéu de aventureiro", "Chapéu de aventureiro", "Sombrero de aventurero", "Chapeau d'aventurier", "Abenteurerhut", "Cappello da avventuriero", "Avonturiershoed", "Kapelusz podróżnika", "Шляпа искателя приключений", "Topi petualang", "冒険者の帽子", "冒险者帽", "冒險者帽"),
+    ("no headwear", "None"): ("Nenhum", "Nenhum", "Ninguno", "Aucun", "Keine", "Nessuno", "Geen", "Brak", "Нет", "Tidak ada", "なし", "无", "無"),
+    ("no face item", "None"): ("Nenhum", "Nenhum", "Ninguno", "Aucun", "Keines", "Nessuno", "Geen", "Brak", "Нет", "Tidak ada", "なし", "无", "無"),
+    ("skin colour", "Porcelain"): ("Porcelana", "Porcelana", "Porcelana", "Porcelaine", "Porzellan", "Porcellana", "Porselein", "Porcelanowa", "Фарфоровый", "Porselen", "ポーセリン", "瓷白", "瓷白"),
+    ("skin colour", "Fair"): ("Clara", "Clara", "Clara", "Claire", "Hell", "Chiara", "Licht", "Jasna", "Светлый", "Cerah", "色白", "白皙", "白皙"),
+    ("skin colour", "Light tan"): ("Bronzeada clara", "Bronzeado claro", "Bronceado claro", "Hâlée claire", "Leicht gebräunt", "Abbronzata chiara", "Lichtgebruind", "Lekko opalona", "Светло-смуглый", "Sawo terang", "小麦色", "浅麦色", "淺麥色"),
+    ("skin colour", "Olive"): ("Oliva", "Azeitona", "Oliva", "Olivâtre", "Oliv", "Olivastra", "Olijf", "Oliwkowa", "Оливковый", "Zaitun", "オリーブ", "橄榄色", "橄欖色"),
+    ("skin colour", "Tan"): ("Morena", "Morena", "Morena", "Mate", "Gebräunt", "Ambrata", "Getint", "Śniada", "Смуглый", "Sawo matang", "褐色", "棕褐色", "棕褐色"),
+    ("skin colour", "Brown"): ("Marrom", "Castanha", "Marrón", "Brune", "Braun", "Bruna", "Bruin", "Brązowa", "Коричневый", "Cokelat", "ブラウン", "棕色", "棕色"),
+    ("skin colour", "Deep brown"): ("Marrom escura", "Castanha escura", "Marrón oscuro", "Brun foncé", "Dunkelbraun", "Bruno scuro", "Donkerbruin", "Ciemnobrązowa", "Тёмно-коричневый", "Cokelat tua", "ダークブラウン", "深棕色", "深棕色"),
+    ("skin colour", "Ebony"): ("Ébano", "Ébano", "Ébano", "Ébène", "Ebenholz", "Ebano", "Ebbenhout", "Hebanowa", "Эбеновый", "Eboni", "エボニー", "乌木色", "烏木色"),
+    ("hair colour", "Black"): ("Preto", "Preto", "Negro", "Noir", "Schwarz", "Nero", "Zwart", "Czarne", "Чёрный", "Hitam", "黒", "黑色", "黑色"),
+    ("hair colour", "Dark brown"): ("Castanho-escuro", "Castanho-escuro", "Castaño oscuro", "Châtain foncé", "Dunkelbraun", "Castano scuro", "Donkerbruin", "Ciemnobrązowe", "Тёмно-каштановый", "Cokelat tua", "ダークブラウン", "深棕色", "深棕色"),
+    ("hair colour", "Brown"): ("Castanho", "Castanho", "Castaño", "Châtain", "Braun", "Castano", "Bruin", "Brązowe", "Каштановый", "Cokelat", "ブラウン", "棕色", "棕色"),
+    ("hair colour", "Auburn"): ("Ruivo-escuro", "Arruivado", "Caoba", "Auburn", "Kastanienrot", "Ramato", "Kastanjebruin", "Kasztanowe", "Рыжевато-каштановый", "Merah kecokelatan", "赤褐色", "赤褐色", "赤褐色"),
+    ("hair colour", "Copper"): ("Acobreado", "Acobreado", "Cobrizo", "Cuivré", "Kupfer", "Rame", "Koperrood", "Miedziane", "Медный", "Tembaga", "カッパー", "铜色", "銅色"),
+    ("hair colour", "Blonde"): ("Loiro", "Loiro", "Rubio", "Blond", "Blond", "Biondo", "Blond", "Blond", "Блонд", "Pirang", "金髪", "金色", "金色"),
+    ("hair colour", "Platinum"): ("Platinado", "Platinado", "Platino", "Platine", "Platinblond", "Platino", "Platinablond", "Platynowe", "Платиновый", "Platinum", "プラチナ", "铂金色", "鉑金色"),
+    ("hair colour", "Grey"): ("Grisalho", "Grisalho", "Canoso", "Gris", "Grau", "Grigio", "Grijs", "Siwe", "Седой", "Abu-abu", "グレー", "灰色", "灰色"),
+    ("hair colour", "White"): ("Branco", "Branco", "Blanco", "Blanc", "Weiß", "Bianco", "Wit", "Białe", "Белый", "Putih", "白", "白色", "白色"),
+    ("hair colour", "Blue"): ("Azul", "Azul", "Azul", "Bleu", "Blau", "Blu", "Blauw", "Niebieskie", "Синий", "Biru", "青", "蓝色", "藍色"),
+    ("hair colour", "Green"): ("Verde", "Verde", "Verde", "Vert", "Grün", "Verde", "Groen", "Zielone", "Зелёный", "Hijau", "緑", "绿色", "綠色"),
+    ("hair colour", "Pink"): ("Rosa", "Cor-de-rosa", "Rosa", "Rose", "Rosa", "Rosa", "Roze", "Różowe", "Розовый", "Merah muda", "ピンク", "粉色", "粉色"),
+    ("cloth colour", "Crimson"): ("Carmesim", "Carmesim", "Carmesí", "Cramoisi", "Karmesin", "Cremisi", "Karmozijn", "Karmazynowy", "Малиновый", "Merah tua", "クリムゾン", "深红", "深紅"),
+    ("cloth colour", "Scarlet"): ("Escarlate", "Escarlate", "Escarlata", "Écarlate", "Scharlachrot", "Scarlatto", "Scharlaken", "Szkarłatny", "Алый", "Merah terang", "スカーレット", "猩红", "猩紅"),
+    ("cloth colour", "Orange"): ("Laranja", "Laranja", "Naranja", "Orange", "Orange", "Arancione", "Oranje", "Pomarańczowy", "Оранжевый", "Oranye", "オレンジ", "橙色", "橙色"),
+    ("cloth colour", "Gold"): ("Dourado", "Dourado", "Dorado", "Or", "Gold", "Oro", "Goud", "Złoty", "Золотой", "Emas", "ゴールド", "金色", "金色"),
+    ("cloth colour", "Lime"): ("Lima", "Lima", "Lima", "Citron vert", "Limette", "Lime", "Limoen", "Limonkowy", "Лаймовый", "Hijau limau", "ライム", "青柠色", "萊姆色"),
+    ("cloth colour", "Forest"): ("Verde-floresta", "Verde-floresta", "Verde bosque", "Vert forêt", "Waldgrün", "Verde foresta", "Bosgroen", "Leśna zieleń", "Лесной зелёный", "Hijau hutan", "フォレストグリーン", "森林绿", "森林綠"),
+    ("cloth colour", "Teal"): ("Verde-azulado", "Verde-azulado", "Verde azulado", "Bleu canard", "Petrol", "Verde acqua", "Petrol", "Morski", "Сине-зелёный", "Hijau toska", "ティール", "青绿色", "藍綠色"),
+    ("cloth colour", "Sky"): ("Azul-celeste", "Azul-celeste", "Celeste", "Bleu ciel", "Himmelblau", "Azzurro", "Hemelsblauw", "Błękitny", "Небесный", "Biru langit", "スカイブルー", "天蓝色", "天藍色"),
+    ("cloth colour", "Navy"): ("Azul-marinho", "Azul-marinho", "Azul marino", "Bleu marine", "Marineblau", "Blu navy", "Marineblauw", "Granatowy", "Тёмно-синий", "Biru dongker", "ネイビー", "海军蓝", "海軍藍"),
+    ("cloth colour", "Royal blue"): ("Azul-royal", "Azul-real", "Azul real", "Bleu roi", "Königsblau", "Blu reale", "Koningsblauw", "Królewski błękit", "Королевский синий", "Biru royal", "ロイヤルブルー", "宝蓝色", "寶藍色"),
+    ("cloth colour", "Violet"): ("Violeta", "Violeta", "Violeta", "Violet", "Violett", "Viola", "Violet", "Fioletowy", "Фиолетовый", "Ungu", "バイオレット", "紫罗兰色", "紫羅蘭色"),
+    ("cloth colour", "Plum"): ("Ameixa", "Ameixa", "Ciruela", "Prune", "Pflaume", "Prugna", "Pruim", "Śliwkowy", "Сливовый", "Plum", "プラム", "梅子色", "梅子色"),
+    ("cloth colour", "Rose"): ("Rosa", "Rosa", "Rosa", "Rose", "Rosé", "Rosa", "Rozerood", "Różany", "Розовый", "Merah mawar", "ローズ", "玫瑰色", "玫瑰色"),
+    ("cloth colour", "Leather"): ("Couro", "Couro", "Cuero", "Cuir", "Leder", "Cuoio", "Leer", "Skórzany", "Кожаный", "Kulit", "レザー", "皮革色", "皮革色"),
+    ("cloth colour", "Charcoal"): ("Grafite", "Carvão", "Carbón", "Anthracite", "Anthrazit", "Antracite", "Antraciet", "Grafitowy", "Угольный", "Arang", "チャコール", "炭灰色", "炭灰色"),
+    ("cloth colour", "Ivory"): ("Marfim", "Marfim", "Marfil", "Ivoire", "Elfenbein", "Avorio", "Ivoor", "Kość słoniowa", "Слоновая кость", "Gading", "アイボリー", "象牙色", "象牙色"),
 }
 # fmt: on
 

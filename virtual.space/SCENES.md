@@ -248,8 +248,8 @@ all at the **same pixel density and palette register**. Map-agnostic rules:
   share one register.
 - **Judge cohesion against the AVATAR, not in isolation.** A prop can look great
   alone and still clash with the character. Calibrate 2-3 props, render them
-  **next to the actual avatar sprite** (crop a frame from an `iso_<name>.webp`
-  sheet), confirm the style, THEN batch-regenerate everything. Cost of skipping
+  **next to the actual avatar sprite** (a frame of a character from
+  `creator_contact_sheet.py`), confirm the style, THEN batch-regenerate everything. Cost of skipping
   this: regenerating everything twice.
 - **Curate, don't mirror-stamp.** Auto-mirroring the same lamp/bench N times to
   fill space reads as repetitive/lazy. Hand-place a varied set — each piece with

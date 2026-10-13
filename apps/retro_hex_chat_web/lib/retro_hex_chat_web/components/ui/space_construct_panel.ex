@@ -31,7 +31,11 @@ defmodule RetroHexChatWeb.Components.UI.SpaceConstructPanel do
       )
 
     ~H"""
-    <template data-space-panel-template {sentences()}>
+    <template
+      data-space-panel-template
+      data-portrait-base={RetroHexChatWeb.CharacterPortrait.path("")}
+      {sentences()}
+    >
       <div class="space-panel text-left" data-testid="space-panel">
         <div class="space-ui-modal__title flex items-center gap-2">
           <%!-- One icon per kind of piece; the panel shows the one it is. --%>

@@ -28,29 +28,28 @@ There is no PNG fallback, on the same reasoning as
 a browser that cannot decode WebP draws no world. That is every browser shipped
 since 2020 having to be wrong.
 
-Trimming the transparent padding is **not** worth doing — 91% of an avatar sheet
-is transparent, but that compresses to almost nothing already, and repacking
-measured *larger*. Quantising to a 256-colour palette buys 78% and costs up to
-52/255 of error on 8.6% of pixels; the roster is premium art and does not pay
-that.
+Trimming the transparent padding of a scene sheet is **not** worth doing: it
+compresses to almost nothing already, and repacking measured *larger*. The
+character creator's pieces are the one exception to WebP: they are indexed
+PNGs because recolouring them is a palette rewrite (see
+[`../CHARACTERS.md`](../CHARACTERS.md) §4).
 
 ## Where things live
 
 - **Runtime sheets** — `apps/retro_hex_chat_web/priv/static/images/space/`
-  (`endoftime.webp` for the scene; `avatars/iso_<id>.webp` for the 8 avatars).
+  (`endoftime.webp` for the scene; `creator/` for the character creator's
+  pieces and catalog).
   `author_scene.py` writes the scene sheet here.
 - **Tile vocabulary** — the map module (`RetroHexChat.VirtualSpace.Maps.EndOfTime`)
   owns its vocab: semantic tile names → `{col, row, w, h, frames?, period_ms?,
   flip_x?}` on the sheet. Tiles are referenced by name; there is no shared
   cross-map tile catalog.
-- **Avatars** — eight premium **8-direction isometric** characters (`hero`,
-  `knight`, `sorceress`, `archer`, `barbarian`, `rogue`, `cleric`, `monk`),
-  authored at **native scale 1**, each with walk + idle + attack (8 facings) and
-  a south seated sleep. Runtime sheets are `avatars/iso_<id>.webp` with sibling
-  `iso_<id>.geo.json` geometry. The generation → composition → integration
-  pipeline and the "add a new character" recipe are in
-  [`../CHARACTERS.md`](../CHARACTERS.md). Raw exports live under
-  `characters/iso_<id>/pixellab/`.
+- **Characters** — made in the Space's character creator from layered pieces
+  (a body wearing an outfit, hair, headwear, face items), each premium
+  **8-direction** art at **native scale 1**. The sources, the PixelLab
+  pipeline and the "add a piece" recipe are in
+  [`../CHARACTERS.md`](../CHARACTERS.md). Raw frames live under
+  `characters/creator/raw/`.
 
 ## The scripts
 
@@ -70,28 +69,19 @@ that.
   `../scenes/construct/pixellab.json` from the PixelLab account, still or
   animated, into that layout. Run it when a piece is added; it keeps art
   already on disk unless `--force`.
-- **`compose_iso_avatar.py`** — composes one 8-direction iso avatar sheet from a
-  PixelLab export. Crops every frame to one shared window, stacks them in
-  direction-major blocks (`walk, idle, attack, sleep`), and writes
-  `avatars/iso_<id>.webp` plus `iso_<id>.geo.json` (see
-  [`../CHARACTERS.md`](../CHARACTERS.md)).
-- **`gen_iso_atlas.py`** — reads every `iso_<id>.geo.json` and prints the JS
-  atlas data (the `ISO_GEO` literal) to paste into `sprite_atlas.js`, so adding a
-  character is a data change. The literal is compact — frame size and animation
-  names — because every sheet is packed the same way; the script asserts that
-  layout and fails on a sheet that breaks it. It prints no sheet URLs: the atlas
-  derives them from its roster, and at runtime the server hands it digested ones.
+- **`creator_generate.py`** — brings every piece of the character creator up
+  to its clips in all eight facings on PixelLab (`plan`, `run --budget N`) and
+  downloads the frames (`fetch`). See [`../CHARACTERS.md`](../CHARACTERS.md).
+- **`build_creator.py`** — turns those frames into the creator's indexed
+  sheets, masks, portrait crops, its two catalogs and the swatch CSS
+  (`creator_art.py` holds the pixel work, `creator_pose.py` the seated pose).
+- **`creator_contact_sheet.py`** — composes recipes from the built catalog the
+  way the game does, for review and for the portrait golden images.
 - **`author_ui.py`** — the space's pixel-art UI kit: cuts the frames, icons and
   canvas pieces out of the PixelLab generations under `../ui/pixellab/`, derives
   their states, and writes the images, the CSS tokens and the canvas geometry
   (`make space.ui`; `make space.ui.check` is part of `make lint.css`). See
   [`../UI.md`](../UI.md).
-- **`gen_charsel_sheet.py`** — packs the south-facing walk loop of all eight
-  classes into `charsel.webp` (80×95 cells, one row per class in roster order)
-  for the character picker, and prints the offsets
-  `css/retrohex/features/space-character-picker.css` needs. The picker shows this
-  sheet 1:1; it must never point at the runtime sheets, which cost megabytes to
-  fill a thumbnail.
 - **`sheet_io.py`** — not a script: `save_sheet()`, the single place that knows
   how a runtime sheet is encoded. Lossless WebP, `exact=True`, `method=6`. See
   "Why WebP" below.

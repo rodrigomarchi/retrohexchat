@@ -40,7 +40,7 @@ function mountContext() {
   el.dataset.spaceChannel = "#lobby";
   el.dataset.joinToken = "signed-join-token";
   el.dataset.nickname = "alice";
-  el.dataset.avatar = "monk";
+  el.dataset.avatar = "c1.b-av.s-7.o-bas-0-0.h-0.w-0.f-0";
   const canvas = document.createElement("canvas");
   el.appendChild(canvas);
   const serverEvents = {};
@@ -121,7 +121,7 @@ describe("SpaceCanvasHook implementation", () => {
     // and the atlas fetches one sheet instead of the default's and then this.
     expect(socket.channel).toHaveBeenCalledWith("space:#lobby", {
       join_token: "signed-join-token",
-      avatar: "monk",
+      avatar: "c1.b-av.s-7.o-bas-0-0.h-0.w-0.f-0",
     });
     expect(channel.join).toHaveBeenCalled();
   });
@@ -142,10 +142,12 @@ describe("SpaceCanvasHook implementation", () => {
     );
 
     hook.mounted();
-    hook.serverEvents.space_change_avatar({ avatar: "knight" });
+    hook.serverEvents.space_change_avatar({ avatar: "c1.b-av.s-4.o-tun-8-6.h-0.w-adv-d-6.f-0" });
     hook.serverEvents.space_change_avatar({ avatar: 42 });
 
-    expect(channel.push).toHaveBeenCalledWith("space_select_avatar", { avatar: "knight" });
+    expect(channel.push).toHaveBeenCalledWith("space_select_avatar", {
+      avatar: "c1.b-av.s-4.o-tun-8-6.h-0.w-adv-d-6.f-0",
+    });
     expect(channel.push).toHaveBeenCalledTimes(1);
   });
 

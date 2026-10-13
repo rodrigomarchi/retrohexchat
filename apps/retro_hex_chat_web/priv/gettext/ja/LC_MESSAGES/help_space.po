@@ -16,7 +16,7 @@ msgstr ""
 msgid "Joining and Moving"
 msgstr "参加と移動"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_virtual_spaces.html.heex:68
+#: lib/retro_hex_chat_web/controllers/help_content/feature_virtual_spaces.html.heex:70
 #, elixir-autogen, elixir-format
 msgid "Lifecycle"
 msgstr "ライフサイクル"
@@ -25,23 +25,6 @@ msgstr "ライフサイクル"
 #, elixir-autogen, elixir-format
 msgid "Opening Space"
 msgstr "オープニングスペース"
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_choose_character.html.heex:14
-#, elixir-autogen, elixir-format
-msgid "Choosing"
-msgstr "チョイス"
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_choose_character.html.heex:9
-#, elixir-autogen, elixir-format
-msgid "Eight characters are available: the Hero, plus the Sorceress, Knight, Archer, Barbarian, Rogue, Cleric and Monk. Each card shows an animated walking preview so you can see the sprite before you commit, and every character has its own attack animation too."
-msgstr ""
-"8つの文字が利用可能です:ヒーロー、プラスSorceress、 Knight、Archier、Barbarian、Rogue、Clric、Monk。 "
-"各カードはアニメーションのウォーキングプレビューが表示されますので、コミットする前にスプライトを見ることができます。すべてのキャラクターは独自の攻撃アニメーションを持っています。"
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_choose_character.html.heex:7
-#, elixir-autogen, elixir-format
-msgid "The Roster"
-msgstr "ロスター"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_space_combat.html.heex:16
 #, elixir-autogen, elixir-format
@@ -138,7 +121,7 @@ msgstr "仮想スペースは、会話に属するマップです。どのチャ
 msgid "The map is drawn continuously, and inside the chat it shared the browser with everything the chat was doing. In a tab of its own it does not, which is the difference you feel when several people are walking around at once."
 msgstr "マップは絶えず描き続けられ、チャットの中ではチャットがしていることすべてとブラウザを分け合っていました。専用タブならそれがありません。何人も同時に歩いているときに感じる差は、これです。"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_virtual_spaces.html.heex:70
+#: lib/retro_hex_chat_web/controllers/help_content/feature_virtual_spaces.html.heex:72
 #, elixir-autogen, elixir-format
 msgid "The world itself is runtime state: it wakes when the first person walks in and stops when the last one leaves. What outlives it is the card that walking into an empty one posts in the conversation, which becomes the record of how long the gathering ran and how many people came. The address is a place and never expires."
 msgstr "世界そのものはランタイムの状態です。最初の一人が入ると目を覚まし、最後の一人が去ると止まります。それより長く残るのは、空のスペースに入ったときに会話へ投稿されるカードで、集まりがどれだけ続き、何人が来たかの記録になります。アドレスは場所であり、期限切れになりません。"
@@ -177,11 +160,6 @@ msgstr "続いている間"
 #, elixir-autogen, elixir-format
 msgid "Who posts one"
 msgstr "誰が投稿するか"
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_space_share.html.heex:2
-#, elixir-autogen, elixir-format
-msgid "Share, on the character picker, mints a link and opens it in a small window with Copy and Revoke beside it. Pasting the address into a conversation draws a card instead of a bare address, and the card says what the link leads to."
-msgstr "キャラクター選択にある「共有」はリンクを作り、「コピー」と「失効」を添えた小さなウィンドウで開きます。会話に貼ると、素のアドレスではなくカードとして描かれ、そのカードがリンクの行き先を教えてくれます。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_space_tab.html.heex:2
 #, elixir-autogen, elixir-format
@@ -233,12 +211,7 @@ msgstr "/me works there too. Every other command is typed in the chat, where its
 msgid "A Space has a line along its bottom edge for talking. What you type there is said in the conversation the space belongs to, and pops up as a speech bubble over your character for everyone standing in the space."
 msgstr "スペースは話のための最下の端に沿ってラインがあります。 空間が属する会話でタイプされているもの、空間に立っているすべての人のためのあなたのキャラクターの上にスピーチバブルとしてポップアップ."
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_virtual_spaces.html.heex:63
-#, elixir-autogen, elixir-format
-msgid "A channel's space has room for everybody in the channel: members who have not opened it stand in it too, wearing the Hero, and count among the people inside. In a private space only the people who walked in are there."
-msgstr "チャンネルのスペースには、チャンネル内のすべての人のための部屋があります。その中に立っていることを開いていないメンバーは、ヒーローを着用し、内部の人々の間でカウントします。 歩いている人だけがプライベートな空間で。"
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_choose_character.html.heex:21
+#: lib/retro_hex_chat_web/controllers/help_content/feature_choose_character.html.heex:52
 #, elixir-autogen, elixir-format
 msgid "Changing inside"
 msgstr "内部の変更"
@@ -252,11 +225,6 @@ msgstr "スペース内のキャラクターは、それぞれにスペアリン
 #, elixir-autogen, elixir-format
 msgid "Choose a character and you are in. Move with the arrow keys, WASD or the on-screen pad; the server validates every step, so the edges of the islands and the things standing on them block movement for everyone equally."
 msgstr "キャラクターを選んでください。 矢印キー、WASD、または画面上のパッドで移動します。サーバーはすべてのステップを検証します。そのため、島のエッジと、誰もが同じように動きをブロックしているもの。"
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_choose_character.html.heex:16
-#, elixir-autogen, elixir-format
-msgid "Click a card to enter the map wearing that character. Everyone else in the Space sees your choice immediately. The picker appears each time you enter, starting on the character your registered nickname chose — the one the chat shows beside it — or, without one, on the one this browser picked last."
-msgstr "カードをクリックして、その文字を身に着けているマップを入力します。 スペースの他の誰もがすぐにあなたの選択を見ます. ピッカーは、登録されたニックネームが選択されたキャラクターから始めて、入力するたびに表示されます。その中のチャットショーが1つあります。または、このブラウザが最後に選んだ1つに1つあります。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_space_talk.html.heex:7
 #, elixir-autogen, elixir-format
@@ -292,11 +260,6 @@ msgstr "行を入力して Enter を押し、または %{say} をクリックし
 #, elixir-autogen, elixir-format
 msgid "Typing and walking"
 msgstr "タイピングとウォーキング"
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_choose_character.html.heex:2
-#, elixir-autogen, elixir-format
-msgid "When you open a Space, a character picker appears before the map loads. Pick who you want to be — the classic Hero or one of seven adventuring classes."
-msgstr "スペースを開くと、マップのロード前にキャラクターピッカーが現れます。 あなたが望む人を選ぶ - 古典的な英雄または7つの冒険的なクラスのいずれか。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_space_talk.html.heex:21
 #, elixir-autogen, elixir-format
@@ -494,37 +457,142 @@ msgstr "作品がどこかで行くことができないとき、画面の上部
 msgid "Some places stay clear: the gate and the ground in front of it, the spots where people arrive, and the spot where somebody is standing. A chair stays where it is while somebody sits in it. A piece that would leave somebody with no way back to the gate is refused."
 msgstr "一部の場所は、その前にゲートと地面、人が到着するスポット、そして誰かが立っている場所。 椅子は、誰かに座っている間、それがある場所です。 ゲートに戻る道無しで誰かを離れる作品はお断りします。"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_choose_character.html.heex:23
+#: lib/retro_hex_chat_web/controllers/help_content/feature_choose_character.html.heex:54
 #, elixir-autogen, elixir-format
 msgid "%{change} is next to the box you type in, under the map."
 msgstr "%{change}は、マップの下の入力ボックスの横にあります。"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_choose_character.html.heex:31
+#: lib/retro_hex_chat_web/controllers/help_content/feature_choose_character.html.heex:64
 #, elixir-autogen, elixir-format
 msgid "Cancel keeps the character you have."
 msgstr "キャンセルは、あなたが持っている文字を保持します。"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_choose_character.html.heex:28
-#, elixir-autogen, elixir-format
-msgid "Choose another character and you change where you stand."
-msgstr "別のキャラクターを選択し、スタンドする場所を変更します。"
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_choose_character.html.heex:29
+#: lib/retro_hex_chat_web/controllers/help_content/feature_choose_character.html.heex:62
 #, elixir-autogen, elixir-format
 msgid "Everybody sees the change at once."
 msgstr "誰もが一度に変化を見ている。"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_choose_character.html.heex:30
+#: lib/retro_hex_chat_web/controllers/help_content/feature_choose_character.html.heex:63
 #, elixir-autogen, elixir-format
 msgid "In the chat, the new character appears beside your nickname."
 msgstr "チャットでは、新しいキャラクターがニックネームの横に現れます。"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_choose_character.html.heex:26
+#: lib/retro_hex_chat_web/controllers/help_content/feature_choose_character.html.heex:57
 #, elixir-autogen, elixir-format
 msgid "On a small screen, it shows only the face of your character."
 msgstr "小さな画面では、キャラクターの顔だけが表示されます。"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_choose_character.html.heex:27
+#: lib/retro_hex_chat_web/controllers/help_content/feature_choose_character.html.heex:59
 #, elixir-autogen, elixir-format
-msgid "Press it to see the characters again, over the map."
-msgstr "地図上に、もう一度文字を表示するためにそれを押します。"
+msgid "Change what you like, then press %{wear}."
+msgstr "あなたが好きなものを変更し、%{wear}を押します。"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_choose_character.html.heex:46
+#, elixir-autogen, elixir-format
+msgid "Entering"
+msgstr "エントリー"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_choose_character.html.heex:58
+#, elixir-autogen, elixir-format
+msgid "Press it to open the creator over the map."
+msgstr "地図上にクリエイターを開くためにそれを押します。"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_space_share.html.heex:2
+#, elixir-autogen, elixir-format
+msgid "Share, on the character creator, mints a link and opens it in a small window with Copy and Revoke beside it. Pasting the address into a conversation draws a card instead of a bare address, and the card says what the link leads to."
+msgstr "キャラクタークリエイターで共有し、リンクをミントトし、コピーとリヴォークで小さなウィンドウで開きます。 アドレスを会話に貼り付けると、ベアアドレスではなくカードを描画し、カードはリンクが何につながるかを言います。"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_choose_character.html.heex:13
+#, elixir-autogen, elixir-format
+msgid "The Parts"
+msgstr "パーツ"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_choose_character.html.heex:5
+#, elixir-autogen, elixir-format
+msgid "The Preview"
+msgstr "プレビュー"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_choose_character.html.heex:33
+#, elixir-autogen, elixir-format
+msgid "Under a piece that can be dyed, its colours are shown."
+msgstr "染めることができる部分では、その色が示されています。"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_choose_character.html.heex:44
+#, elixir-autogen, elixir-format
+msgid "You can change any part of it afterwards."
+msgstr "その後、その一部を変更することができます。"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_choose_character.html.heex:29
+#, elixir-autogen, elixir-format
+msgid "%{bald} removes the hair. %{none} removes the hat."
+msgstr "%{bald}は毛を取除きます。 %{none}は帽子を取除きます。"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_choose_character.html.heex:48
+#, elixir-autogen, elixir-format
+msgid "%{enter} takes you into the map."
+msgstr "%{enter} は地図に取ります。"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_choose_character.html.heex:41
+#, elixir-autogen, elixir-format
+msgid "%{surprise} picks every part at random."
+msgstr "%{surprise} は全ての部分をランダムにピックアップします。"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_choose_character.html.heex:34
+#, elixir-autogen, elixir-format
+msgid "An outfit and a hat each have a %{main} and a %{trim}."
+msgstr "%{main} と %{trim} のウェアと帽子はそれぞれあります。"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_choose_character.html.heex:28
+#, elixir-autogen, elixir-format
+msgid "Choose a piece to wear it."
+msgstr "身に着ける作品を選ぶ"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_choose_character.html.heex:15
+#, elixir-autogen, elixir-format
+msgid "Each tab is one part: %{parts}."
+msgstr "各タブは1つの部分です:%{parts}."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_choose_character.html.heex:3
+#, elixir-autogen, elixir-format
+msgid "Here you put together who you will be in the Space."
+msgstr "ここは、宇宙にいる人を一緒に入れます。"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_choose_character.html.heex:50
+#, elixir-autogen, elixir-format
+msgid "In the chat, its face is shown beside your nickname."
+msgstr "チャットでは、その顔はニックネームの横に表示されています。"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_choose_character.html.heex:49
+#, elixir-autogen, elixir-format
+msgid "Next time, the creator opens with this character."
+msgstr "次回はクリエイターがこのキャラクターで開きます。"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_choose_character.html.heex:2
+#, elixir-autogen, elixir-format
+msgid "When you open a Space, you see the character creator first."
+msgstr "スペースを開くと、キャラクタークリエイターが最初に見えます。"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_choose_character.html.heex:7
+#, elixir-autogen, elixir-format
+msgid "You see the preview walk and turn."
+msgstr "プレビューウォークを見て、ターンします。"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_choose_character.html.heex:8
+#, elixir-autogen, elixir-format
+msgid "%{left} and %{right} rotate the preview."
+msgstr "%{left}と%{right}がプレビューを回転させます。"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_virtual_spaces.html.heex:63
+#, elixir-autogen, elixir-format
+msgid "Everybody in the channel stands in its space, even the members who have not opened it."
+msgstr "開いていないメンバーでも、その空間に立つチャンネルで誰もが立ちます。"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_virtual_spaces.html.heex:68
+#, elixir-autogen, elixir-format
+msgid "In a private space only the people who walked in are there."
+msgstr "歩いている人だけがプライベートな空間で。"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_virtual_spaces.html.heex:67
+#, elixir-autogen, elixir-format
+msgid "They count among the people inside."
+msgstr "内なる人々の間でカウントします。"

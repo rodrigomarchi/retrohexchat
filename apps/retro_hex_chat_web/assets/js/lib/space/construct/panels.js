@@ -39,7 +39,10 @@ export function renderPanel(root, host, modal, { save, close, refusal }) {
   host.dataset.kind = modal.kind;
   content.querySelector("[data-space-panel-close]")?.addEventListener("click", () => close());
 
-  const parts = BODIES[modal.kind](modal, say);
+  // Where a character's portrait is drawn from: the template names the address
+  // up to the recipe, which changes whenever the art does.
+  const portrait = (avatar) => portraitOf(template.getAttribute("data-portrait-base"), avatar);
+  const parts = BODIES[modal.kind](modal, say, portrait);
   body?.replaceChildren(...(parts.length > 0 ? parts : [line(say(`empty-${modal.kind}`), "note")]));
 
   if (modal.kind === "sign" && modal.can_edit === true) {
@@ -54,18 +57,18 @@ export function renderPanel(root, host, modal, { save, close, refusal }) {
 const BODIES = {
   sign: (modal) => (modal.text ? [line(modal.text, "sign")] : []),
 
-  board: (modal, say) => {
+  board: (modal, say, portrait) => {
     const parts = [];
     if (modal.topic) parts.push(line(say("topic"), "label"), line(modal.topic, "item"));
     const pins = Array.isArray(modal.pins) ? modal.pins : [];
     if (pins.length > 0) {
       parts.push(line(say("pinned"), "label"));
-      for (const pin of pins) parts.push(byline(pin.author, pin.avatar, pin.text));
+      for (const pin of pins) parts.push(byline(pin.author, portrait(pin.avatar), pin.text));
     }
     return parts;
   },
 
-  screen: (modal, say) => {
+  screen: (modal, say, portrait) => {
     const image = modal.image;
     if (!image?.url) return [];
     const img = document.createElement("img");
@@ -73,7 +76,7 @@ const BODIES = {
     img.alt = image.name ?? "";
     img.className = "space-panel-image";
     img.dataset.testid = "space-panel-image";
-    return [img, byline(say("posted-by", image.author), image.avatar)];
+    return [img, byline(say("posted-by", image.author), portrait(image.avatar))];
   },
 
   arcade: (modal, say) => {
@@ -146,17 +149,27 @@ function blankCover(game) {
   return blank;
 }
 
-// A line by somebody, with their character's portrait when they chose one.
-// The portrait's modifier is one of the roster's ids, never free text.
-function byline(author, avatar, text) {
+// The portrait of a character recipe, or null for anything that is not one:
+// the recipe goes into a URL, so only its own alphabet is let through.
+function portraitOf(base, avatar) {
+  if (!base || typeof avatar !== "string" || !/^c1(\.[a-z0-9-]+){6}$/.test(avatar)) return null;
+  const img = document.createElement("img");
+  img.src = base + avatar;
+  img.alt = "";
+  img.width = 24;
+  img.height = 24;
+  img.className = "rh-portrait";
+  img.setAttribute("aria-hidden", "true");
+  img.dataset.testid = "nick-portrait";
+  img.dataset.avatar = avatar;
+  return img;
+}
+
+// A line by somebody, with their character's portrait when they made one.
+function byline(author, portrait, text) {
   const row = document.createElement("p");
   row.className = "space-panel-byline";
-  if (typeof avatar === "string" && /^[a-z]+$/.test(avatar)) {
-    const portrait = document.createElement("span");
-    portrait.classList.add("rh-portrait", `rh-portrait--${avatar}`);
-    portrait.setAttribute("aria-hidden", "true");
-    row.appendChild(portrait);
-  }
+  if (portrait) row.appendChild(portrait);
   const words = document.createElement("span");
   if (text === undefined) {
     words.textContent = author;
