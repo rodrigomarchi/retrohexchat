@@ -50,11 +50,12 @@ class StripTest(unittest.TestCase):
 
     def test_a_strip_wider_than_the_sheet_is_refused(self):
         with self.assertRaises(AssertionError):
-            self.shelf().put_strip("cst_wide", [frame((160, 32), (0, 0, 160, 32))] * 6, 900)
+            wide = ac.T * (ac.SHEET_COLS // 6 + 1)
+            self.shelf().put_strip("cst_wide", [frame((wide, 32), (0, 0, wide, 32))] * 6, 900)
 
     def test_a_strip_that_does_not_fit_the_row_starts_the_next(self):
         shelf = self.shelf()
-        shelf.put("cst_wide", frame((ac.T * 20, ac.T), (0, 0, ac.T * 20, ac.T)))
+        shelf.put("cst_wide", frame((ac.T * (ac.SHEET_COLS - 4), ac.T), (0, 0, ac.T * (ac.SHEET_COLS - 4), ac.T)))
         shelf.put_strip("cst_flag", [frame((32, 64), (0, 0, 32, 64))] * 6, 900)
         self.assertEqual((shelf.vocab["cst_flag"]["col"], shelf.vocab["cst_flag"]["row"]), (0, 1))
 

@@ -3,15 +3,17 @@
   "base": "https://backblaze.pixellab.ai/file/pixellab-characters/objects/8eaaa74c-53ee-46de-b11d-2ac64c019d47",
   "objects": {
     "ancient_gate": {
-      "map_object": "27f3cc47-58a9-4302-872a-011c1e0d50e6"
+      "map_object": "15286b16-55a9-46f0-b4f2-b1e03c084d4b"
     },
     "bell_tower": {
-      "object": "ee583f53-2fdb-4ae3-a771-5311952e7382",
-      "animation": "a7d6f01c-522a-4a6c-a72d-5dbebedcbda4",
-      "frames": 6
+      "map_object": "612a8d2e-07a6-4a31-a5e3-6932f0d30d2a",
+      "image_job": "bfedd3d8-ceca-477c-b96d-96353f64665c",
+      "first": 1,
+      "frames": 6,
+      "note": "the six generated frames, without the job's frame 0 (the map object's still, drawn with a smaller palette); the last loops back to the first."
     },
     "big_top": {
-      "object": "5f4e3baf-e226-48e4-9475-71a402b436cd"
+      "map_object": "04bdaa8d-d1ec-4d4b-aac1-e3c46d6a3bee"
     },
     "brazier": {
       "object": "30e1cfee-c0dd-460e-8743-11735ad2c19e",
@@ -19,34 +21,46 @@
       "frames": 6
     },
     "bunting": {
-      "map_object": "c3ac5f5c-e23f-4510-aa50-1c4b2c3d63d7",
-      "image_job": "fdcdcb62-4f1d-4144-b128-d44e77881fd9",
+      "map_object": "7939e55c-a98f-4c2c-a97f-a649d1cdf918",
+      "image_job": "10c54666-1746-4674-8ce8-69d2a2d45696",
+      "first": 1,
       "frames": 6,
-      "note": "the six generated frames, without the job's frame 0 (the map object's still, drawn with a smaller palette than the frames that follow it); the last loops back to the first.",
-      "first": 1
+      "note": "the six generated frames, without the job's frame 0 (the map object's still, drawn with a smaller palette); the last loops back to the first."
     },
     "circus_tent": {
-      "object": "c5fb44bc-3263-4386-8ccc-b59c827237b8"
+      "map_object": "f57f69b3-fcf6-47f3-9c40-954e78b3679c"
     },
     "crates": {
       "object": "601c6e8f-eb25-44b4-b97a-fb3c060907f7"
     },
     "crt_tv": {
-      "object": "d5d6dff0-7c08-4061-9864-8e2658022738",
-      "animation": "325fadfa-af76-4fd6-bf17-10d1c53bf2c1",
-      "frames": 6
+      "map_object": "cb40ae8c-bb13-4366-9d80-dc4956465802",
+      "image_job": "72dbeb4e-a8e8-41ee-8c9b-5592b783601a",
+      "first": 1,
+      "frames": 6,
+      "note": "the six generated frames, without the job's frame 0 (the map object's still, drawn with a smaller palette); the last loops back to the first."
+    },
+    "door": {
+      "object": "2777dba6-8715-4edd-83a8-4594e2a337e8"
+    },
+    "door_open": {
+      "object": "d95c05b3-1934-4918-ae32-08099d6be879",
+      "note": "the door's 'open' state, made from it with create_object_state so the two match."
     },
     "fair_bench": {
       "object": "2555bd08-3f93-42fe-9290-f1e5ac456526"
     },
     "fair_gate": {
-      "map_object": "2e91bf8c-2a7b-4a11-939f-d45a11777028"
+      "map_object": "bd42a362-ede5-4aa0-a28b-589337042bd9"
     },
     "flag_pole": {
-      "object": "06d2aa29-9d44-4d49-bb22-97d2e3c65c13"
+      "map_object": "cb3cb38a-2c9b-4c09-bd79-e2c4095f9c48"
     },
     "fortune_tent": {
-      "object": "c5d0267b-ec51-4d79-bc2e-6d8dac99bdb5"
+      "map_object": "cec58f53-57e9-41ae-bf3e-8b11b5d23fe2"
+    },
+    "giant_mushroom": {
+      "map_object": "d6878ad7-42c0-4014-96a9-5176909be71d"
     },
     "glowing_arch": {
       "map_object": "7cedb6a6-ed06-432d-8f3c-f0f9a4923106"
@@ -64,27 +78,39 @@
       "object": "c0ed374a-e9fe-4650-ba35-457366daf05d"
     },
     "magic_portal": {
-      "object": "0df19f7c-49a8-4b7a-863e-d5f87efae09d",
-      "animation": "dfca53c4-c6e9-4406-87f1-729ffe48b5db",
-      "frames": 6
+      "map_object": "7b0340f0-b18e-45ad-a850-42cf5d6ebef7",
+      "image_job": "c1795234-adea-424e-833e-c0a297d17f1b",
+      "first": 1,
+      "frames": 6,
+      "note": "the six generated frames, without the job's frame 0 (the map object's still, drawn with a smaller palette); the last loops back to the first."
     },
     "notice_board": {
-      "map_object": "b77373ac-45a6-4705-8453-b0ff1eafdffb"
+      "map_object": "a513b308-3121-4334-8801-9b216baedbe4"
     },
     "nu": {
       "object": "5de7ab8f-5170-4c6e-b852-73bf32c0ca34",
       "animation": "1fc53785-004c-4866-ac2f-18371ba7be0c",
       "frames": 6
     },
+    "palm_tree": {
+      "map_object": "925bb4f3-fbc9-4e67-9072-91116c82b991"
+    },
     "paper_lantern": {
-      "object": "5be0deb2-293d-4d9a-a6bb-0532537e070b",
-      "animation": "1e813ef3-76d6-45ef-8d27-0115a15008cb",
-      "frames": 6
+      "map_object": "dcd9f871-be46-4729-902f-8df9f9b9ecd9",
+      "image_job": "ed492b21-fa92-4b3a-b1f4-00811735afe8",
+      "first": 1,
+      "frames": 6,
+      "note": "the six generated frames, without the job's frame 0 (the map object's still, drawn with a smaller palette); the last loops back to the first."
     },
     "pennant_tent": {
-      "object": "271228c7-fd07-47fc-ba8f-3b0cc1a67575",
-      "animation": "8da14ae8-ecd3-4cd8-8c9a-894f73c1593e",
-      "frames": 6
+      "map_object": "8394cf5d-3851-49b6-ade6-221eb88099ae",
+      "image_job": "922018d9-3bfd-44a6-bd7f-48b01dd92c76",
+      "first": 1,
+      "frames": 6,
+      "note": "the six generated frames, without the job's frame 0 (the map object's still, drawn with a smaller palette); the last loops back to the first."
+    },
+    "pine_tree": {
+      "map_object": "84e7dcca-6773-4e9e-9552-63b6bdda74b9"
     },
     "planter": {
       "map_object": "95878511-7bd7-492a-9a5f-0f6a0c120d88"
@@ -93,13 +119,16 @@
       "object": "21415d13-5145-46e3-a221-26e174bf3080"
     },
     "purple_tent": {
-      "object": "f5a8d650-fe88-403e-800a-bbe389c7eae0"
+      "map_object": "3a31f5a0-5e2f-484b-ba31-25b77f09eb13"
+    },
+    "server_rack": {
+      "map_object": "42944805-9159-4179-a603-bf3ff4d08ac9"
     },
     "signpost": {
-      "object": "026c2dca-03ed-4766-b374-e3b14c224bfc"
+      "map_object": "e07e629e-303e-4c2d-9e4c-63c3304b05be"
     },
     "snack_stall": {
-      "map_object": "fa614a84-b142-4ab7-84b7-2b6779065b0b"
+      "map_object": "13b8a138-dd96-4d95-82ea-1654567c0916"
     },
     "sparkle": {
       "object": "51c0d8ea-3231-4b2d-a43e-2781d3a2e4c4",
@@ -108,9 +137,11 @@
       "note": "PixelLab drew its last two frames as a solid grey block; the first four are the twinkle."
     },
     "splash_fountain": {
-      "object": "e73dc023-8a6a-4bfa-bdcf-7c6c99f5845a",
-      "animation": "1e7293cc-e419-4ab2-b002-42defb8460e0",
-      "frames": 6
+      "map_object": "2b3cbe7b-38a0-4015-a6bf-86758c1a33be",
+      "image_job": "3835e418-d9f7-440c-8e18-70a4b8ca957a",
+      "first": 1,
+      "frames": 6,
+      "note": "the six generated frames, without the job's frame 0 (the map object's still, drawn with a smaller palette); the last loops back to the first."
     },
     "stone_altar": {
       "map_object": "e8a54099-d0e7-4982-88bf-f9bd20088a2f"
@@ -119,15 +150,20 @@
       "object": "f0254ab2-ca6d-43a3-9a98-ed38eaf481f2"
     },
     "stone_column": {
-      "object": "fa990041-78d2-4bae-8899-e8c41df5e61a"
+      "map_object": "54a37e98-3281-491a-8eb9-ae3f055b6454"
     },
     "stone_totem": {
-      "object": "de8188cc-ce43-4039-9b3f-fa3e53cd7a96"
+      "map_object": "c4c3ad41-ddb1-4db0-87b6-05243c56daa7"
+    },
+    "street_lamp": {
+      "map_object": "cad4686f-6341-4f7d-80b9-7889554c065d"
     },
     "striped_tent": {
-      "object": "957deb62-f370-473f-b03c-ebfb17d91bab",
-      "animation": "6d30b4e6-956b-4ec9-9866-913e00872ea7",
-      "frames": 6
+      "map_object": "36c54f41-fb6e-4314-8893-52c1aafd561c",
+      "image_job": "c661047d-d043-42c7-a567-8643be0f0586",
+      "first": 1,
+      "frames": 6,
+      "note": "the six generated frames, without the job's frame 0 (the map object's still, drawn with a smaller palette); the last loops back to the first."
     },
     "telepod": {
       "map_object": "568a2815-8d32-4ed1-9b72-45473f57698c",
@@ -136,6 +172,9 @@
       "note": "the six generated frames, without the job's frame 0 (the map object's still, drawn with a smaller palette than the frames that follow it); the last loops back to the first.",
       "first": 1
     },
+    "tree": {
+      "map_object": "ff0fcc7f-70ab-4bff-813d-3f1fde337f7b"
+    },
     "victorian_lamp": {
       "object": "d207cec8-bc33-45f7-b6df-5b22f07488a4"
     },
@@ -143,13 +182,16 @@
       "map_object": "abef15fb-ac67-4080-bc0a-a274f49dc7c3"
     },
     "water_bucket": {
-      "object": "c7f5d2c5-4f24-410d-a2d8-c77b2b6e3087"
+      "map_object": "20eac550-1200-4bb2-9b1c-13d37de12510"
     },
     "weapon_stall": {
-      "map_object": "0f8628bc-4302-44c8-918a-21cb509106b3"
+      "map_object": "cc47f1ad-818d-4ead-bf69-22dd3c9e297b"
+    },
+    "whiteboard": {
+      "map_object": "6fc62873-fa79-4ada-af2a-6437537d70e3"
     },
     "wingback_chair": {
-      "object": "9fc477e3-a279-4bcc-a592-43b0455b567c"
+      "map_object": "03ae6358-a6d9-4cd6-83c9-c2505276e080"
     }
   }
 }

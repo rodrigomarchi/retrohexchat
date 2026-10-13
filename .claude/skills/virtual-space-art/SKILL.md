@@ -25,6 +25,12 @@ These hold regardless of which playbook applies:
 - **Art is native 1:1 and renders at scale 1.** A wrong size is fixed by
   **regenerating in PixelLab**, never by scaling or cropping in code. PixelLab is
   the source of truth for art.
+- **Size a Construct piece against a person before generating it** (1 m ≈
+  51 px; avatar ≈ 90 px). The table, the canvas per kind of object and the
+  prompt wording that makes PixelLab fill it are in
+  [`virtual.space/SCENES.md`](../../../virtual.space/SCENES.md) §10 ("Scale"),
+  and `scripts/tests/test_construct_scale.py` enforces it. Generating first and
+  judging after is what wasted a round of credits on tents smaller than a man.
 - **Never deform aspect ratio.** Do not stretch or squash generated art to fit a
   slot — regenerate at the native ratio (`tile_height`, `width`×`height`).
   Deformation reads as low quality up close.

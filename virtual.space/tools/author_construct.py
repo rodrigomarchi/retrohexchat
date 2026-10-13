@@ -45,7 +45,7 @@ T = 32
 MARGIN = 8
 FLOOR = 48
 W = H = FLOOR + 2 * MARGIN
-SHEET_COLS = 24
+SHEET_COLS = 40
 Z_STEP = 16
 MAX_ITEMS = 400
 
@@ -96,7 +96,7 @@ KINDS = {
     "corner": {"group": "structure", "dirs": ["down", "right", "up", "left"],
                "tiles": {"down": "corner_up", "right": "corner_right",
                          "up": "corner_down", "left": "corner_left"}},
-    "door": {"file": "door.png", "group": "structure", "use": "door",
+    "door": {"file": "door.png", "group": "structure", "use": "door", "mirror": True,
              "states": {"open": "door_open"}},
     "teleporter": {"file": "teleporter.png", "group": "fun", "use": "teleport",
                    "blocks": False,
@@ -133,7 +133,7 @@ LIBRARY = {
         "office_chair": {"seat": True},
         "file_cabinet": {},
         "printer": {},
-        "whiteboard": {},
+        "whiteboard": {"mirror": True},
         "water_cooler": {},
         "vending_machine": {"lights": _lit("bfe6ff", 1.4, 40)},
         "coffee_machine": {},
@@ -163,7 +163,7 @@ LIBRARY = {
         "park_bench": {"size": [1, 2], "seats": [[0, 0], [0, 1]]},
         "fountain": {"size": [2, 2]},
         "fence": {"mirror": True},
-        "street_lamp": {"lights": _lit("ffe6a8", 2.6, 80), "use": "toggle_light",
+        "street_lamp": {"lights": _lit("ffe6a8", 2.6, 140), "use": "toggle_light",
                         "states": {"off": "street_lamp_off"}},
         "pond": {"size": [2, 2]},
         "palm_tree": {},
@@ -185,33 +185,33 @@ LIBRARY = {
         "hologram": {"lights": _lit("7fe8ff", 2.0, 40)},
         "racing_arcade": {"use": "arcade", "lights": _lit("ff6b6b", 1.4, 50)},
         "neon_totem": {"lights": _lit("b07bff", 2.0, 60)},
-        "crt_tv": {"anim": True, "period_ms": 600, "lights": _lit("c9d6e8", 1.4, 30)},
+        "crt_tv": {"anim": True, "period_ms": 600, "lights": _lit("c9d6e8", 1.2, 20)},
     },
     "fair": {
-        "big_top": {"size": [2, 2]},
-        "fortune_tent": {"size": [2, 2]},
-        "circus_tent": {},
-        "purple_tent": {},
-        "pennant_tent": {"anim": True, "period_ms": 900},
-        "striped_tent": {"anim": True, "period_ms": 900},
-        "weapon_stall": {"size": [1, 3]},
-        "snack_stall": {},
-        "fair_gate": {"size": [1, 2]},
-        "bunting": {"anim": True, "period_ms": 1100, "size": [1, 2]},
+        "big_top": {"size": [3, 3]},
+        "fortune_tent": {"size": [3, 3]},
+        "circus_tent": {"size": [2, 2]},
+        "purple_tent": {"size": [2, 2]},
+        "pennant_tent": {"anim": True, "period_ms": 900, "size": [2, 2]},
+        "striped_tent": {"anim": True, "period_ms": 900, "size": [2, 2]},
+        "weapon_stall": {"size": [2, 3]},
+        "snack_stall": {"size": [2, 2], "mirror": True},
+        "fair_gate": {"size": [1, 4]},
+        "bunting": {"anim": True, "period_ms": 1100, "size": [1, 2], "mirror": True},
         "flag_pole": {},
-        "paper_lantern": {"anim": True, "period_ms": 900, "lights": _lit("ffb35f", 1.6, 50)},
+        "paper_lantern": {"anim": True, "period_ms": 900, "lights": _lit("ffb35f", 1.6, 66)},
         "splash_fountain": {"anim": True, "period_ms": 900, "size": [2, 2]},
         "crates": {},
         "planter": {},
         "fair_bench": {"seat": True},
-        "notice_board": {},
+        "notice_board": {"mirror": True},
         "hedge": {},
         "potted_tree": {},
     },
     "fantasy": {
         "telepod": {"anim": True, "period_ms": 600, "size": [1, 3],
                     "lights": _lit("7fb8ff", 1.8, 40)},
-        "bell_tower": {"anim": True, "period_ms": 1200, "size": [2, 2], "dirs": ["down"]},
+        "bell_tower": {"anim": True, "period_ms": 1200, "size": [2, 2]},
         "nu": {"anim": True, "period_ms": 1400, "size": [2, 2]},
         "brazier": {"anim": True, "period_ms": 660, "lights": _lit("ff9a4d", 2.2, 30)},
         "magic_portal": {"anim": True, "period_ms": 900, "blocks": False,
@@ -558,6 +558,16 @@ def build():
                 shelf.put_strip(name, frames, spec["period_ms"])
             else:
                 art = _art(spec["file"])
+                # A state drawn as art of its own (the door open) is cut to the
+                # box that holds the piece in every state, so the piece stays
+                # put while it changes, the way an animation's frames do.
+                drawn = [v for v in spec.get("states", {}).values()
+                         if os.path.exists(os.path.join(SRC, f"{v}.png"))]
+                if drawn:
+                    together = _union_crop([Image.open(os.path.join(SRC, f)).convert("RGBA")
+                                            for f in [spec["file"]] + [f"{v}.png" for v in drawn]])
+                    art = together[0]
+                    variants.update(zip(drawn, together[1:]))
                 shelf.put(name, art.transpose(Image.FLIP_LEFT_RIGHT) if spec.get("mirror") else art)
             # A piece that keeps one facing (lettering that would read
             # backwards mirrored) has only the tiles of the facings it has.
@@ -575,7 +585,10 @@ def build():
         entry = {"tiles": tiles, "group": spec["group"]}
         for state, variant in spec.get("states", {}).items():
             name = f"cst_{variant}"
-            shelf.put(name, variants[variant])
+            # A state is the same piece seen otherwise, so it runs the way the
+            # piece does: mirrored with it.
+            art = variants[variant]
+            shelf.put(name, art.transpose(Image.FLIP_LEFT_RIGHT) if spec.get("mirror") else art)
             vocab[f"{name}_r"] = dict(vocab[name], flip_x=True)
             entry.setdefault("states", {})[state] = {"down": name, "right": f"{name}_r"}
         for key in ("seat", "lights", "use", "only", "dirs", "label", "size", "foot", "seats"):

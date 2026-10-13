@@ -361,6 +361,52 @@ author is `virtual.space/tools/author_construct.py`, which writes
   smaller palette than the frames after it, and shows as a flicker once a
   loop. A map object may not outlive its day on PixelLab's side, so its id
   records where the art came from; the committed PNG is the art.
+- **Scale: size a piece against a person before generating it.** A character
+  stands ~90 px tall, about 1.75 m, so **1 m ≈ 51 px** of drawn height. Pick the
+  object's height in metres from the table, multiply, and generate on a canvas
+  whose height is that plus ~10%; the art must fill it. The footprint follows
+  the drawn width: an n×m piece's diamond is `(n + m) × 24` px wide, so take the
+  smallest footprint that is at least as wide as the art (trees are the
+  exception: they block their trunk's tile and their crown overhangs, so 1×1).
+  The drawn height includes the floor diamond the piece stands on, about 20 px
+  a tile of depth, so a big footprint measures taller than the object stands.
+  The canvases below are typical, not exact: what matters is the drawn height.
+  `scripts/tests/test_construct_scale.py` measures the packed sheet and fails a
+  piece that drifts out of its band.
+
+  | Kind of object | Height | px | Canvas (w×h) | Footprint |
+  |---|---|---|---|---|
+  | Bucket, small pot, CRT on the floor | 0.4–0.8 m | 20–45 | 32×32 – 48×48 | 1×1 |
+  | Chair, bench, crates, planter, hedge | 0.8–1.1 m | 40–60 | 64×56 | 1×1 |
+  | Table, counter, stove, altar | 0.8–1.1 m (+ depth) | 50–80 | 64×64 – 112×96 | 1×1 – 1×2 |
+  | Wardrobe, fridge, rack, board, signpost | 1.8–2.0 m | 90–110 | 56×112 – 96×120 | 1×1 |
+  | Market stall, arcade, vending machine | 2.0–2.4 m | 100–120 | 112×128 – 128×128 | 2×2 – 2×3 |
+  | Small tent | 2.5–3.0 m | 125–150 | 128×160 | 2×2 |
+  | Lamppost, flagpole, column | 3.0 m | 150–160 | 40×160 – 48×160 | 1×1 |
+  | Tree, pine, palm | 3.0–3.5 m | 160–180 | 128×192 – 128×208 | 1×1 |
+  | Fair arch, bell tower, temple gate | 3.0–3.6 m | 140–185 | 144×176 – 192×208 | 1×4, 2×2, 3×3 |
+  | Big top, fortune-teller's tent | 3.2–3.5 m | 165–175 | 160×176 – 176×192 | 3×3 |
+
+  What the account's credits taught, so the next piece is right first time:
+  - **Say it fills the canvas, and mean it**: "fills the whole canvas from edge
+    to edge" or "reaching from the bottom to the top of the canvas". Without it
+    PixelLab draws the object at about two thirds of the canvas, or smaller.
+  - **Name the size against a person** ("as tall as a grown man", "twice as
+    tall as a man", "knee-high"). It keeps a tent from coming back stool-sized.
+  - **Thin objects shrink.** A string of bunting came back 44 px tall on a
+    112 px canvas until the prompt said its posts reach the top of the canvas;
+    give a pole or a string a canvas just wide enough for it.
+  - **Very large canvases can lose the transparency.** The big top came back on
+    an opaque light backdrop twice at 208×224 and came back clean at 176×192;
+    the temple gate came back clean at 192×208. Check alpha before anything
+    else, and stay at or under ~192×208.
+  - **Measure, don't eyeball**: crop to the drawn pixels and compare the
+    height with an avatar frame; compare the lowest pixel of the left and right
+    quarters for the diagonal (right end higher, or `mirror`).
+  - **Animate after the still is approved**, with `animate_image` on the map
+    object, and loop on the generated frames (`first: 1`). A large frame costs
+    more (a 144×192 animation is 3 generations) and its strip needs room on
+    the sheet: `SHEET_COLS` is 40, so a 6-frame strip may be 6 cells wide.
 - **Judge the drawing's direction, not PixelLab's `view` label.** Every piece
   runs from bottom-left to top-right or is round; old objects drawn straight
   at the camera (a gate, an arch, a sign board) block a diagonal of tiles while

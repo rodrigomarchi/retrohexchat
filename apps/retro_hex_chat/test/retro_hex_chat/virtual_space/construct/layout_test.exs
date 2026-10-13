@@ -62,11 +62,6 @@ defmodule RetroHexChat.VirtualSpace.Construct.LayoutTest do
       assert %{ts: "endoftime"} = base.tiles[lamp.tiles["down"]]
       assert %{ts: "construct"} = base.tiles[lamp.states["off"]["down"]]
 
-      # The bell tower's plaque would read backwards mirrored: it keeps one facing.
-      assert base.catalog["bell_tower"].dirs == ["down"]
-      assert Map.keys(base.catalog["bell_tower"].tiles) == ["down"]
-      refute Map.has_key?(base.tiles, "cst_bell_tower_r")
-
       # Its gate of code is a gate to nowhere.
       assert base.catalog["eot_portal"].use == nil
     end
