@@ -54,6 +54,16 @@ class DownloadsTest(unittest.TestCase):
         )
         self.assertTrue(fetch.downloads(REGISTRY, ["flag"])[1][0].endswith("job-4/download?index=1"))
 
+    def test_an_image_animation_can_skip_the_still_it_began_from(self):
+        registry = {"base": "", "objects": {"flag": {"image_job": "job-4", "first": 1, "frames": 2}}}
+        self.assertEqual(
+            fetch.downloads(registry),
+            [
+                (f"{fetch.MCP}/images/job-4/download?index=1", os.path.join("anim", "flag", "0.png")),
+                (f"{fetch.MCP}/images/job-4/download?index=2", os.path.join("anim", "flag", "1.png")),
+            ],
+        )
+
     def test_everything_in_kind_order_by_default(self):
         paths = [path for _url, path in fetch.downloads(REGISTRY)]
         self.assertEqual(paths[0], os.path.join("anim", "bell", "0.png"))

@@ -148,7 +148,7 @@ LIBRARY = {
         "kitchen_counter": {"size": [1, 2]},
         "tv_stand": {"size": [1, 2], "lights": _lit("9fc4ff", 1.6, 30)},
         "dresser": {},
-        "wardrobe": {"size": [1, 2], "mirror": True},
+        "wardrobe": {},
         "piano": {"size": [1, 2], "mirror": True},
         "fireplace": {"size": [1, 2], "lights": _lit("ff9a4d", 3.0, 12)},
         "grandfather_clock": {},

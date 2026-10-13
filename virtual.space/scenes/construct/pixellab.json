@@ -22,7 +22,8 @@
       "map_object": "c3ac5f5c-e23f-4510-aa50-1c4b2c3d63d7",
       "image_job": "fdcdcb62-4f1d-4144-b128-d44e77881fd9",
       "frames": 6,
-      "note": "frame 0 is the map object's still; the job's seventh frame closes the loop on it and is left out, so both animated pieces run six frames."
+      "note": "the six generated frames, without the job's frame 0 (the map object's still, drawn with a smaller palette than the frames that follow it); the last loops back to the first.",
+      "first": 1
     },
     "circus_tent": {
       "object": "c5fb44bc-3263-4386-8ccc-b59c827237b8"
@@ -132,10 +133,14 @@
       "map_object": "568a2815-8d32-4ed1-9b72-45473f57698c",
       "image_job": "cc5d8afd-c1c9-4c94-b353-0775197479c2",
       "frames": 6,
-      "note": "frame 0 is the map object's still; the job's seventh frame is left out because seven frames four cells wide overrun the sheet's 24 columns."
+      "note": "the six generated frames, without the job's frame 0 (the map object's still, drawn with a smaller palette than the frames that follow it); the last loops back to the first.",
+      "first": 1
     },
     "victorian_lamp": {
       "object": "d207cec8-bc33-45f7-b6df-5b22f07488a4"
+    },
+    "wardrobe": {
+      "map_object": "abef15fb-ac67-4080-bc0a-a274f49dc7c3"
     },
     "water_bucket": {
       "object": "c7f5d2c5-4f24-410d-a2d8-c77b2b6e3087"

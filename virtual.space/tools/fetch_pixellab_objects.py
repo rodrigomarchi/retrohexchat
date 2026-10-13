@@ -3,7 +3,8 @@
 
 Each entry names what a piece was drawn as: a PixelLab object (`object`, and
 for a piece that moves the `animation` it moves with), a map object
-(`map_object`), or the frames of an image animation (`image_job`). A still piece lands as
+(`map_object`), or the frames of an image animation (`image_job`, from its
+`first` frame on). A still piece lands as
 ``scenes/construct/<kind>.png`` (the object's one rotation); an animated one as
 ``scenes/construct/anim/<kind>/<i>.png``, one file per frame — the layout
 ``author_construct.py`` reads. The art is committed: this runs when a piece is
@@ -40,11 +41,14 @@ def downloads(registry, kinds=None):
     for kind in wanted:
         entry = objects[kind]
         if "image_job" in entry:
-            # An animation made from a loose image: the job's frames, frame 0
-            # being the still it started from (the `map_object`, when named,
-            # is where that still came from).
+            # An animation made from a loose image: the job's frames, its frame
+            # 0 being the still it started from (the `map_object`, when named,
+            # is where that still came from). `first` skips into the job, so a
+            # loop can be made of generated frames alone; they land numbered
+            # from 0 either way.
+            first = entry.get("first", 0)
             for i in range(entry["frames"]):
-                out.append((f"{MCP}/images/{entry['image_job']}/download?index={i}",
+                out.append((f"{MCP}/images/{entry['image_job']}/download?index={first + i}",
                             os.path.join("anim", kind, f"{i}.png")))
             continue
         if "map_object" in entry:

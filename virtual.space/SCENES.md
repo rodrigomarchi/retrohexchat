@@ -356,7 +356,11 @@ author is `virtual.space/tools/author_construct.py`, which writes
   `tools/fetch_pixellab_objects.py` downloads them into the layout below, so a
   piece can be traced back to where it was drawn. An entry is an `object`
   (with its `animation`), a `map_object`, or an `image_job` (an
-  `animate_image` run over a map object, frame 0 being the still).
+  `animate_image` run over a map object, frame 0 being the still). A loop is
+  made of the generated frames alone (`first: 1`): the still is drawn with a
+  smaller palette than the frames after it, and shows as a flicker once a
+  loop. A map object may not outlive its day on PixelLab's side, so its id
+  records where the art came from; the committed PNG is the art.
 - **Judge the drawing's direction, not PixelLab's `view` label.** Every piece
   runs from bottom-left to top-right or is round; old objects drawn straight
   at the camera (a gate, an arch, a sign board) block a diagonal of tiles while
