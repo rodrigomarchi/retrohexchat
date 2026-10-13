@@ -238,6 +238,8 @@ defmodule RetroHexChatWeb.Components.UI.SpaceBuildPalette do
   defp tab_icon("structure"), do: :tab_structure
   defp tab_icon("fun"), do: :tab_fun
   defp tab_icon("eot"), do: :tab_eot
+  defp tab_icon("fair"), do: :tab_fair
+  defp tab_icon("fantasy"), do: :tab_fantasy
 
   attr :kind, :string, required: true
   attr :label, :string, required: true
@@ -334,12 +336,15 @@ defmodule RetroHexChatWeb.Components.UI.SpaceBuildPalette do
       {"gamer", dgettext("chat", "Gamer")},
       {"structure", dgettext("chat", "Structure")},
       {"fun", dpgettext("chat", "construct palette", "Fun")},
+      {"fair", dpgettext("chat", "construct palette", "Fair")},
+      {"fantasy", dpgettext("chat", "construct palette", "Fantasy")},
       {"eot", dgettext("chat", "End of Time")}
     ]
   end
 
-  # Every placeable kind and its name on its key. The End of Time's people
-  # are called by their own names, which no language translates.
+  # Every placeable kind and its name on its key. The End of Time's people,
+  # Chrono Trigger's Nu and Lucca's Telepod are called by their own names,
+  # which no language translates.
   defp kinds do
     [
       {"chair", dgettext("chat", "Chair")},
@@ -365,6 +370,7 @@ defmodule RetroHexChatWeb.Components.UI.SpaceBuildPalette do
       {"big_vase", dgettext("chat", "Vase")},
       {"plant", dgettext("chat", "Plant")},
       {"tree", dgettext("chat", "Tree")},
+      {"wingback_chair", dgettext("chat", "Wingback chair")},
       {"office_desk", dgettext("chat", "Office desk")},
       {"office_chair", dgettext("chat", "Office chair")},
       {"meeting_table", dgettext("chat", "Meeting table")},
@@ -388,6 +394,9 @@ defmodule RetroHexChatWeb.Components.UI.SpaceBuildPalette do
       {"pine_tree", dgettext("chat", "Pine tree")},
       {"giant_mushroom", dgettext("chat", "Giant mushroom")},
       {"mailbox", dpgettext("chat", "garden", "Mailbox")},
+      {"victorian_lamp", dgettext("chat", "Victorian lamp")},
+      {"water_bucket", dgettext("chat", "Bucket")},
+      {"signpost", dgettext("chat", "Signpost")},
       {"pool_table", dgettext("chat", "Pool table")},
       {"ping_pong_table", dgettext("chat", "Ping-pong table")},
       {"beanbag", dgettext("chat", "Beanbag")},
@@ -401,9 +410,13 @@ defmodule RetroHexChatWeb.Components.UI.SpaceBuildPalette do
       {"hologram", dgettext("chat", "Hologram")},
       {"racing_arcade", dgettext("chat", "Racing arcade")},
       {"neon_totem", dgettext("chat", "Neon totem")},
+      {"crt_tv", dgettext("chat", "CRT TV")},
       {"wall", dgettext("chat", "Wall")},
       {"corner", dpgettext("chat", "wall", "Corner")},
       {"door", dgettext("chat", "Door")},
+      {"golden_gate", dgettext("chat", "Golden gate")},
+      {"golden_railing", dgettext("chat", "Golden railing")},
+      {"iron_fence", dgettext("chat", "Iron fence")},
       {"teleporter", dgettext("chat", "Teleporter")},
       {"die", dpgettext("chat", "game piece", "Die")},
       {"coin", dgettext("chat", "Coin")},
@@ -411,6 +424,39 @@ defmodule RetroHexChatWeb.Components.UI.SpaceBuildPalette do
       {"arcade", dgettext("chat", "Arcade cabinet")},
       {"board", dpgettext("chat", "notice board", "Board")},
       {"screen", dpgettext("chat", "television", "Screen")},
+      {"big_top", dgettext("chat", "Big top")},
+      {"fortune_tent", dgettext("chat", "Fortune-teller's tent")},
+      {"circus_tent", dgettext("chat", "Circus tent")},
+      {"purple_tent", dgettext("chat", "Purple tent")},
+      {"pennant_tent", dgettext("chat", "Pennant tent")},
+      {"striped_tent", dgettext("chat", "Striped tent")},
+      {"weapon_stall", dgettext("chat", "Weapon stall")},
+      {"snack_stall", dgettext("chat", "Snack stall")},
+      {"fair_gate", dgettext("chat", "Fair gate")},
+      {"bunting", dgettext("chat", "Bunting")},
+      {"flag_pole", dgettext("chat", "Flagpole")},
+      {"paper_lantern", dgettext("chat", "Paper lantern")},
+      {"splash_fountain", dgettext("chat", "Fair fountain")},
+      {"crates", dgettext("chat", "Crates")},
+      {"planter", dgettext("chat", "Planter")},
+      {"fair_bench", dgettext("chat", "Wooden bench")},
+      {"notice_board", dgettext("chat", "Fair notice board")},
+      {"hedge", dgettext("chat", "Hedge")},
+      {"potted_tree", dgettext("chat", "Potted tree")},
+      {"bell_tower", dgettext("chat", "Bell tower")},
+      {"brazier", dgettext("chat", "Brazier")},
+      {"magic_portal", dgettext("chat", "Magic portal")},
+      {"sparkle", dgettext("chat", "Sparkle")},
+      {"ancient_gate", dgettext("chat", "Ancient gate")},
+      {"stone_altar", dgettext("chat", "Stone altar")},
+      {"stone_totem", dgettext("chat", "Stone totem")},
+      {"stone_arch", dgettext("chat", "Stone arch")},
+      {"glowing_arch", dgettext("chat", "Glowing arch")},
+      {"stone_column", dgettext("chat", "Stone column")},
+      {"eot_lamp", dgettext("chat", "End of Time lamppost")},
+      {"eot_portal", dgettext("chat", "Code gate")},
+      {"telepod", "Telepod"},
+      {"nu", "Nu"},
       {"eot_tv", dgettext("chat", "Old TV")},
       {"eot_fire", dgettext("chat", "Campfire")},
       {"eot_dama", dgettext("chat", "Spirit Bomb")},

@@ -135,8 +135,8 @@ make e2e.catalog.check    # verify it is current (also runs in make ci)
 ## Coverage
 
 - **248 spec files** under `e2e/tests/`.
-- **605 Playwright `test()` cases**.
-- **552 documented flows**, 551 done, 1 not done.
+- **606 Playwright `test()` cases**.
+- **553 documented flows**, 552 done, 1 not done.
 - **Every spec documents its own flows.**
 
 ## Flow index
@@ -779,6 +779,7 @@ Grouped by section. Every row comes from an `@flow` line in the spec itself.
 | SP33 | The Construct's pieces live in a Build menu; what is in hand shows on a card that turns, removes or drops it, so a touch screen can let go of a piece | `tests/space-pixel-ui.spec.ts` | done |
 | SP34 | An arcade cabinet shelves its games as cartridges, each with its cover, under the cabinet's own icon | `tests/space-pixel-ui.spec.ts` | done |
 | SP35 | The pad is held like a handheld (actions under the left thumb, the D-pad under the right) and the say bar carries the status on one line, on a desktop, a phone and a small phone in Russian | `tests/space-pixel-ui.spec.ts` | done |
+| SP36 | A fair and a fantasy corner are built from their own tabs — tents, stalls, Leene's Bell, the Telepod, Nu, braziers and arches, some of them moving; the End of Time's lamppost and the Victorian lamp switch off, and the wingback chair is sat in | `tests/space-construct-library.spec.ts` | done |
 
 ### LC - Localization
 

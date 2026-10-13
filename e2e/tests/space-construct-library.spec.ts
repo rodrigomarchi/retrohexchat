@@ -3,6 +3,7 @@
  * @flow SP27 [done] A long table covers two tiles and turns with its footprint; chairs set around it are sat in, and a room of each theme (home, office, garden, gamer) is built from the palette's tabs
  * @flow SP28 [done] The End of Time's own pieces — Morpheus, Neo, the old TV, the DeLorean, the Balrog — are placed in a Construct, animated and lit as on the island
  * @flow SP29 [done] A sofa seats two people at once, one on each of its tiles
+ * @flow SP36 [done] A fair and a fantasy corner are built from their own tabs — tents, stalls, Leene's Bell, the Telepod, Nu, braziers and arches, some of them moving; the End of Time's lamppost and the Victorian lamp switch off, and the wingback chair is sat in
  *
  * These @flow lines are the source of truth for e2e/TEST_CATALOG.md.
  * Edit them here, then run `make e2e.catalog` to regenerate the index.
@@ -20,6 +21,9 @@ import {
   RoomWatch,
   tilePoint,
   chooseInMenu,
+  closeBuildMenu,
+  drawerSettled,
+  openBuildMenu,
 } from "../helpers/construct";
 import { Walker } from "../director/space";
 
@@ -272,6 +276,107 @@ test.describe("The Construct's library", () => {
       await shot(a.space, "construct-sofa-two");
     } finally {
       await closeUsers([host, guest]);
+    }
+  });
+
+  test("a fair, a fantasy corner and the island's lamppost (SP36)", async ({
+    browser,
+  }) => {
+    test.setTimeout(120_000);
+    const host = await newSignedInUser(browser, "lf");
+    try {
+      await inChannel([host], "lf");
+      const { space, walker, room } = await openConstruct(host, "sorceress");
+      const self = await walker.here();
+
+      await openBuildMenu(space);
+      await space.getByTestId("construct-tab-fantasy").click();
+      await drawerSettled(space);
+      await shot(space, "construct-fantasy-tab");
+      await closeBuildMenu(space);
+
+      await furnish(
+        space,
+        walker,
+        room,
+        "fair",
+        { x: self.x + 3, y: self.y + 2 },
+        [
+          ["big_top", 0, 0],
+          ["fortune_tent", 3, 0],
+          ["striped_tent", 6, 0],
+          ["pennant_tent", 7, 0],
+          ["weapon_stall", 0, 4],
+          ["snack_stall", 2, 4],
+          ["bunting", 4, 4],
+          ["paper_lantern", 5, 4],
+          ["splash_fountain", 7, 4],
+          ["fair_bench", 0, 7],
+          ["crates", 1, 7],
+          ["flag_pole", 3, 7],
+          ["hedge", 4, 7],
+          ["potted_tree", 5, 7],
+        ],
+      );
+      await shot(space, "construct-room-fair");
+
+      // The fantasy corner is built off to the right, where the camera follows.
+      const there = { x: self.x + 12, y: self.y };
+      await walker.goTo(there);
+      const lamp = { x: there.x + 6, y: there.y - 1 };
+      await furnish(
+        space,
+        walker,
+        room,
+        "fantasy",
+        { x: there.x + 2, y: there.y + 2 },
+        [
+          ["bell_tower", 0, 0],
+          ["telepod", 3, 0],
+          ["nu", 5, 0],
+          ["brazier", 0, 3],
+          ["stone_arch", 2, 3],
+          ["glowing_arch", 4, 3],
+          ["brazier", 6, 3],
+          ["ancient_gate", 0, 6],
+          ["magic_portal", 4, 6],
+          ["stone_column", 6, 6],
+        ],
+      );
+      await place(space, walker, room, "fantasy", "eot_lamp", lamp);
+      await shot(space, "construct-room-fantasy");
+
+      // The island's lamppost is a lamp like any other here.
+      await walker.goTo({ x: lamp.x - 1, y: lamp.y });
+      await space.keyboard.press("e");
+      await expect
+        .poll(
+          () =>
+            room.items.find((i) => i.x === lamp.x && i.y === lamp.y)?.state?.on,
+        )
+        .toBe(false);
+      await shot(space, "construct-lamppost-off");
+
+      // So does the Victorian one in the garden tab, and the wingback chair
+      // in the furniture tab is sat in.
+      const iron = { x: there.x + 2, y: there.y - 1 };
+      await place(space, walker, room, "garden", "victorian_lamp", iron);
+      await walker.goTo({ x: iron.x, y: iron.y + 1 });
+      await space.keyboard.press("e");
+      await expect
+        .poll(
+          () =>
+            room.items.find((i) => i.x === iron.x && i.y === iron.y)?.state?.on,
+        )
+        .toBe(false);
+      const chair = { x: there.x - 2, y: there.y - 1 };
+      await place(space, walker, room, "furniture", "wingback_chair", chair);
+      await walker.goTo({ x: chair.x - 1, y: chair.y });
+      await space.keyboard.press("f");
+      await expect.poll(async () => (await walker.here()).pose).toBe("sitting");
+      await shot(space, "construct-wingback-and-victorian-lamp");
+    } finally {
+      await closeUsers([host]);
     }
   });
 });

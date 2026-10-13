@@ -349,6 +349,23 @@ author is `virtual.space/tools/author_construct.py`, which writes
   that footprint unless `foot` says otherwise, and a sofa or a bench lists
   its `seats`. Generate a long piece on a wide canvas (≈112 px for two tiles)
   and say it "fills the canvas", or it comes back the size of a stool.
+- **Art already in the PixelLab account is fetched, not regenerated.** The
+  fair and fantasy tabs, the Victorian pieces and a few more are objects made
+  for scenes that never shipped. `scenes/construct/pixellab.json` names each
+  piece's PixelLab object (and animation), and
+  `tools/fetch_pixellab_objects.py` downloads them into the layout below, so a
+  piece can be traced back to where it was drawn. Before taking one, judge its
+  size against the existing pieces (a chair stands ~57 px, a fridge ~99): the
+  account's "16-bit JRPG" set is drawn at 32 px and looks like dolls' furniture
+  in a room.
+- **A piece that moves** is a directory of frames, `anim/<kind>/<i>.png`
+  (`"anim": True` and a `period_ms` in `LIBRARY`). The author crops every frame
+  to the box that holds them all, so the piece stands still while what moves in
+  it moves, and packs them side by side as one tile with `frames` — the same
+  strip the End of Time's sheet uses, which the atlas already steps through. A
+  frame with no transparent pixel is refused: PixelLab sometimes returns a
+  solid grey block as the last frames of an animation; `pixellab.json` then
+  names fewer `frames` and says why.
 - **The End of Time's pieces are the End of Time's own art**: their vocab
   entries point at the `endoftime` sheet (`ts`), which the Construct lists as
   its second tileset, so nothing is copied. Each `foot` is the anchor the
@@ -368,7 +385,8 @@ author is `virtual.space/tools/author_construct.py`, which writes
   What was built is not in the file: it is `virtual_space_constructs` in the
   database (pieces and painted floor), merged onto the base by
   `VirtualSpace.Construct.Layout.apply/3`.
-- **Adding a kind**: generate the art, add it to `KINDS` in the author, re-run
+- **Adding a kind**: generate the art (or name an existing object in
+  `pixellab.json` and fetch it), add it to `LIBRARY` in the author, re-run
   it, add it to its tab in the palette component and its label to the
   glossary. A kind that does something on E names its `use`, which
   `Construct.Layout.use/5` has to know.

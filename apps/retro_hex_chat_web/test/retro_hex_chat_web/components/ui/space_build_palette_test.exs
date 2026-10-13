@@ -16,9 +16,17 @@ defmodule RetroHexChatWeb.Components.UI.SpaceBuildPaletteTest do
       assert html =~ ~s(data-construct-kind="#{kind}")
     end
 
-    for group <- ~w(furniture structure fun floor) do
+    for group <- ~w(furniture structure fun fair fantasy floor) do
       assert html =~ ~s(data-construct-tab="#{group}")
     end
+
+    # Every tab with kinds in it has a key in the palette, so no kind the
+    # catalog files under a tab is left without one.
+    for group <- map.catalog |> Map.values() |> Enum.map(& &1.group) |> Enum.uniq() do
+      assert html =~ ~s(data-construct-tab="#{group}"), group
+    end
+
+    for icon <- ~w(tab-fair tab-fantasy), do: assert(html =~ "space-icon--#{icon}")
 
     [_, open] = Regex.run(~r/data-construct-tab="(\w+)"\s+data-selected="true"/, html)
     assert open == "furniture"

@@ -34,7 +34,7 @@ defmodule RetroHexChat.VirtualSpace.Construct.LayoutTest do
       assert base.catalog["board"].only == ["channel"]
 
       for {_kind, entry} <- base.catalog do
-        assert entry.group in ~w(furniture office garden gamer structure fun eot)
+        assert entry.group in ~w(furniture office garden gamer structure fun fair fantasy eot)
         layers = Enum.map(entry.layers, & &1.tiles)
 
         for tiles <- [entry.tiles | Map.values(entry.states) ++ layers], {dir, tile} <- tiles do
@@ -48,6 +48,22 @@ defmodule RetroHexChat.VirtualSpace.Construct.LayoutTest do
       assert %{ts: "endoftime", frames: 8} = base.tiles["eot_morpheus"]
       assert base.catalog["sofa"].seats == [[0, 0], [0, 1]]
       assert base.catalog["eot_balrog"].size == [5, 2]
+
+      # A piece that moves is a strip of frames on the Construct's own sheet,
+      # and its mirror moves with it.
+      assert %{frames: 6, period_ms: 1200} = base.tiles["cst_bell_tower"]
+      assert %{frames: 6, flip_x: true} = base.tiles["cst_bell_tower_r"]
+      assert base.catalog["bell_tower"].group == "fantasy"
+      assert base.catalog["big_top"].group == "fair"
+
+      # The island's lamppost switches off; its unlit copy is the Construct's.
+      lamp = base.catalog["eot_lamp"]
+      assert lamp.use == "toggle_light"
+      assert %{ts: "endoftime"} = base.tiles[lamp.tiles["down"]]
+      assert %{ts: "construct"} = base.tiles[lamp.states["off"]["down"]]
+
+      # Its gate of code is a gate to nowhere.
+      assert base.catalog["eot_portal"].use == nil
     end
 
     test "reserves the gate, the ground in front of it and every spawn", %{base: base} do

@@ -18,6 +18,7 @@ defmodule RetroHexChatWeb.Components.UI.Space.PixelIcon do
             pad_up pad_down pad_left pad_right loading
             win_minimize win_maximize win_restore win_close build
             tab_furniture tab_office tab_garden tab_gamer tab_structure tab_fun tab_eot tab_floor
+            tab_fair tab_fantasy
             panel_sign panel_board panel_screen panel_arcade)a
 
   attr :name, :atom, required: true, values: @names
@@ -65,6 +66,8 @@ defmodule RetroHexChatWeb.Components.UI.Space.PixelIcon do
   defp icon_class(:tab_fun), do: "space-icon--tab-fun"
   defp icon_class(:tab_eot), do: "space-icon--tab-eot"
   defp icon_class(:tab_floor), do: "space-icon--tab-floor"
+  defp icon_class(:tab_fair), do: "space-icon--tab-fair"
+  defp icon_class(:tab_fantasy), do: "space-icon--tab-fantasy"
   defp icon_class(:panel_sign), do: "space-icon--panel-sign"
   defp icon_class(:panel_board), do: "space-icon--panel-board"
   defp icon_class(:panel_screen), do: "space-icon--panel-screen"

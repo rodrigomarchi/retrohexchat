@@ -61,6 +61,15 @@ that.
   Its only animated strip today is the script-drawn `iso_star` (see the status
   note atop [`../ANIMATIONS.md`](../ANIMATIONS.md)); the iso build is in
   [`../ISOMETRIC.md`](../ISOMETRIC.md).
+- **`author_construct.py`** — the Construct: its floor, its gate and the catalog
+  of every piece people can place, packed into `construct.webp` and
+  `priv/maps/construct.json` from `../scenes/construct/` (a still piece is
+  `<kind>.png`, a moving one `anim/<kind>/<i>.png`). See
+  [`../SCENES.md`](../SCENES.md) §10.
+- **`fetch_pixellab_objects.py`** — downloads the Construct pieces named in
+  `../scenes/construct/pixellab.json` from the PixelLab account, still or
+  animated, into that layout. Run it when a piece is added; it keeps art
+  already on disk unless `--force`.
 - **`compose_iso_avatar.py`** — composes one 8-direction iso avatar sheet from a
   PixelLab export. Crops every frame to one shared window, stacks them in
   direction-major blocks (`walk, idle, attack, sleep`), and writes

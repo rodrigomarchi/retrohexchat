@@ -185,12 +185,66 @@ LIBRARY = {
         "hologram": {"lights": _lit("7fe8ff", 2.0, 40)},
         "racing_arcade": {"use": "arcade", "lights": _lit("ff6b6b", 1.4, 50)},
         "neon_totem": {"lights": _lit("b07bff", 2.0, 60)},
+        "crt_tv": {"anim": True, "period_ms": 600, "lights": _lit("c9d6e8", 1.4, 30)},
+    },
+    "fair": {
+        "big_top": {"size": [2, 2]},
+        "fortune_tent": {"size": [2, 2]},
+        "circus_tent": {},
+        "purple_tent": {},
+        "pennant_tent": {"anim": True, "period_ms": 900},
+        "striped_tent": {"anim": True, "period_ms": 900},
+        "weapon_stall": {"size": [1, 2]},
+        "snack_stall": {},
+        "fair_gate": {"size": [1, 3]},
+        "bunting": {"anim": True, "period_ms": 1100},
+        "flag_pole": {},
+        "paper_lantern": {"anim": True, "period_ms": 900, "lights": _lit("ffb35f", 1.6, 50)},
+        "splash_fountain": {"anim": True, "period_ms": 900, "size": [2, 2]},
+        "crates": {},
+        "planter": {},
+        "fair_bench": {"seat": True},
+        "notice_board": {},
+        "hedge": {},
+        "potted_tree": {},
+    },
+    "fantasy": {
+        "telepod": {"anim": True, "period_ms": 600, "lights": _lit("7fb8ff", 1.8, 40)},
+        "bell_tower": {"anim": True, "period_ms": 1200, "size": [2, 2]},
+        "nu": {"anim": True, "period_ms": 1400, "size": [2, 2]},
+        "brazier": {"anim": True, "period_ms": 660, "lights": _lit("ff9a4d", 2.2, 30)},
+        "magic_portal": {"anim": True, "period_ms": 900, "blocks": False,
+                         "lights": _lit("8fe3ff", 1.6, 24)},
+        "sparkle": {"anim": True, "period_ms": 1000, "blocks": False},
+        "ancient_gate": {"size": [2, 3]},
+        "stone_altar": {},
+        "stone_totem": {},
+        "stone_arch": {"size": [1, 2]},
+        "glowing_arch": {"size": [1, 2], "lights": _lit("7fd0ff", 2.0, 50)},
+        "stone_column": {},
     },
 }
 
+# The Victorian pieces join the tabs they belong in.
+LIBRARY["structure"] = {
+    "golden_gate": {"size": [1, 2]},
+    "golden_railing": {"size": [1, 2]},
+    "iron_fence": {"size": [1, 2]},
+}
+LIBRARY["garden"].update({
+    "victorian_lamp": {"lights": _lit("ffe6a8", 2.6, 120), "use": "toggle_light",
+                       "states": {"off": "victorian_lamp_off"}},
+    "water_bucket": {},
+    "signpost": {},
+})
+LIBRARY["furniture"]["wingback_chair"] = {"seat": True}
+
+# An animated piece (`anim`) is a directory of frames, `anim/<kind>/<i>.png`,
+# instead of one file.
 for _group, _kinds in LIBRARY.items():
     for _kind, _spec in _kinds.items():
-        KINDS[_kind] = {"file": f"{_kind}.png", "group": _group, **_spec}
+        _art_key = {"anim": _kind} if _spec.get("anim") else {"file": f"{_kind}.png"}
+        KINDS[_kind] = {**_art_key, "group": _group, **{k: v for k, v in _spec.items() if k != "anim"}}
 
 # The End of Time itself, piece by piece: its art is the End of Time's own
 # sheet, drawn from there rather than copied. `foot` is where each sprite was
@@ -218,6 +272,18 @@ EOT = {
 }
 for _kind, _spec in EOT.items():
     KINDS[_kind] = {"eot": _kind, "group": "eot", **_spec}
+
+# Two more of the island's own pieces, among the fantasy ones: its lamppost,
+# which switches off like any lamp (the unlit copy is packed here, made from the
+# island's art), and its gate of falling code — a gate to nowhere in a room.
+KINDS["eot_lamp"] = {"eot": "iso_lamp", "group": "fantasy", "use": "toggle_light",
+                     "states": {"off": "eot_lamp_off"},
+                     "lights": [{"radius": 4.2, "color": "ffd591", "blend": "add"},
+                                {"lift": 152, "radius": 1.6, "color": "ffe6a8", "blend": "add"}]}
+KINDS["eot_portal"] = {"eot": "eot_portal", "group": "fantasy",
+                       "lights": [{"radius": 2.4, "color": "4dff9a", "blend": "add"},
+                                  {"lift": 50, "radius": 1.2, "color": "9dffc8", "blend": "add"}]}
+EOT_LAMP = os.path.join(REPO, "virtual.space", "scenes", "end_of_time", "lamp.png")
 
 EOT_MAP = os.path.join(REPO, "apps", "retro_hex_chat", "priv", "maps", "end_of_time.json")
 EOT_SHEET = "endoftime"
@@ -379,9 +445,54 @@ class _Shelf:
         self.col = _place(self.sheet, self.vocab, name, im, self.col, self.row, native)
         self.row_h = max(self.row_h, h)
 
+    def put_strip(self, name, frames, period_ms):
+        """Pack an animation's frames side by side, one block each, as one tile
+        the atlas steps through (`col + frame * w`)."""
+        w, h = _cells(frames[0].width, frames[0].height)
+        if w * len(frames) > SHEET_COLS:
+            raise AssertionError(f"{name}: {len(frames)} frames of {w} cells overrun the sheet")
+        if self.col + w * len(frames) > SHEET_COLS:
+            self.col, self.row, self.row_h = 0, self.row + self.row_h, 0
+        if (self.row + h) * T > self.sheet.height:
+            raise AssertionError(f"{name}: the sheet is full at row {self.row}")
+        col = self.col
+        for i, frame in enumerate(frames):
+            _place(self.sheet, self.vocab, f"{name}_{i}", frame, col + i * w, self.row)
+            del self.vocab[f"{name}_{i}"]
+        self.vocab[name] = {"col": col, "row": self.row, "w": w, "h": h,
+                            "frames": len(frames), "period_ms": period_ms}
+        self.col = col + w * len(frames)
+        self.row_h = max(self.row_h, h)
+
 
 def _art(name):
     return _crop(Image.open(os.path.join(SRC, name)).convert("RGBA"))
+
+
+def _union_crop(frames):
+    """Crop every frame to the box that holds all of them, so the piece stands
+    still while what moves in it moves."""
+    boxes = [f.getbbox() for f in frames if f.getbbox()]
+    if not boxes:
+        return frames
+    box = (min(b[0] for b in boxes), min(b[1] for b in boxes),
+           max(b[2] for b in boxes), max(b[3] for b in boxes))
+    return [f.crop(box) for f in frames]
+
+
+def _frames(kind):
+    """An animated piece's frames, in order, from `anim/<kind>/`."""
+    folder = os.path.join(SRC, "anim", kind)
+    count = len([f for f in os.listdir(folder) if f.endswith(".png")])
+    if count < 2:
+        raise AssertionError(f"{kind}: an animation needs at least two frames")
+    frames = [Image.open(os.path.join(folder, f"{i}.png")).convert("RGBA") for i in range(count)]
+    for i, frame in enumerate(frames):
+        # A frame with no transparent pixel is a failed generation (PixelLab
+        # returns a solid block), not art: a piece standing in a square.
+        if frame.getchannel("A").getextrema()[0] == 255:
+            raise AssertionError(f"{kind}: frame {i} is opaque from edge to edge")
+    return _union_crop(frames)
 
 
 def build():
@@ -415,6 +526,8 @@ def build():
     variants = {"lamp_off": _lamp_off(_art("lamp.png")),
                 "table_lamp_off": _lamp_off(_art("table_lamp.png")),
                 "street_lamp_off": _lamp_off(_art("street_lamp.png")),
+                "victorian_lamp_off": _lamp_off(_art("victorian_lamp.png")),
+                "eot_lamp_off": _lamp_off(_crop(Image.open(EOT_LAMP).convert("RGBA"))),
                 "coin_tails": _coin_tails(_art("coin.png")),
                 **_corners(wall)}
     door_open = os.path.join(SRC, "door_open.png")
@@ -433,6 +546,11 @@ def build():
     for kind, spec in KINDS.items():
         if "eot" in spec:
             tiles = eot_tiles(spec["eot"])
+        elif "anim" in spec:
+            name = f"cst_{kind}"
+            shelf.put_strip(name, _frames(spec["anim"]), spec["period_ms"])
+            vocab[f"{name}_r"] = dict(vocab[name], flip_x=True)
+            tiles = {"down": name, "right": f"{name}_r"}
         elif "file" in spec:
             name = f"cst_{kind}"
             shelf.put(name, _art(spec["file"]))
