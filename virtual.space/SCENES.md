@@ -354,7 +354,17 @@ author is `virtual.space/tools/author_construct.py`, which writes
   for scenes that never shipped. `scenes/construct/pixellab.json` names each
   piece's PixelLab object (and animation), and
   `tools/fetch_pixellab_objects.py` downloads them into the layout below, so a
-  piece can be traced back to where it was drawn. Before taking one, judge its
+  piece can be traced back to where it was drawn. An entry is an `object`
+  (with its `animation`), a `map_object`, or an `image_job` (an
+  `animate_image` run over a map object, frame 0 being the still).
+- **Judge the drawing's direction, not PixelLab's `view` label.** Every piece
+  runs from bottom-left to top-right or is round; old objects drawn straight
+  at the camera (a gate, an arch, a sign board) block a diagonal of tiles while
+  their picture runs across the screen. Regenerate them with `create_map_object`
+  and say where each end stands: "the left post lower and nearer at
+  bottom-left, the right post higher and further away at top-right" turned a
+  frontal fair arch into a diagonal one where "isometric 3/4 view" alone did
+  not. Art drawn along the other diagonal is turned with `mirror`. Before taking one, judge its
   size against the existing pieces (a chair stands ~57 px, a fridge ~99): the
   account's "16-bit JRPG" set is drawn at 32 px and looks like dolls' furniture
   in a room.

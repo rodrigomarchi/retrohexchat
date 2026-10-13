@@ -50,6 +50,22 @@ describe("createBuildPalette", () => {
     expect(root.querySelector("[data-construct-rotate]").disabled).toBe(true);
   });
 
+  it("has nothing to turn for a kind with one facing", () => {
+    const root = paletteDom();
+    const palette = createBuildPalette(root, {
+      onChoose() {},
+      onRotate() {},
+      onRemove() {},
+      dirsOf: (kind) => (kind === "tree" ? ["down"] : undefined),
+    });
+
+    palette.render({ mode: "placing", kind: "tree", dir: "down" }, { kind: "tree", dir: "down" });
+    expect(root.querySelector("[data-construct-rotate]").disabled).toBe(true);
+
+    palette.render({ mode: "placing", kind: "chair", dir: "down" }, { kind: "chair", dir: "down" });
+    expect(root.querySelector("[data-construct-rotate]").disabled).toBe(false);
+  });
+
   it("says why an edit was refused, and puts the hint back after one that went through", () => {
     const root = paletteDom();
     const palette = createBuildPalette(root, { onChoose() {}, onRotate() {}, onRemove() {} });

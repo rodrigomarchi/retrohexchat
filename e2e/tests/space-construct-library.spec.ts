@@ -316,6 +316,8 @@ test.describe("The Construct's library", () => {
           ["flag_pole", 3, 7],
           ["hedge", 4, 7],
           ["potted_tree", 5, 7],
+          ["fair_gate", 7, 7],
+          ["notice_board", 6, 7],
         ],
       );
       await shot(space, "construct-room-fair");
@@ -341,6 +343,7 @@ test.describe("The Construct's library", () => {
           ["ancient_gate", 0, 6],
           ["magic_portal", 4, 6],
           ["stone_column", 6, 6],
+          ["stone_altar", 6, 8],
         ],
       );
       await place(space, walker, room, "fantasy", "eot_lamp", lamp);
@@ -375,6 +378,21 @@ test.describe("The Construct's library", () => {
       await space.keyboard.press("f");
       await expect.poll(async () => (await walker.here()).pose).toBe("sitting");
       await shot(space, "construct-wingback-and-victorian-lamp");
+
+      // The Victorian gate and railings run along the floor's diagonal.
+      await furnish(
+        space,
+        walker,
+        room,
+        "structure",
+        { x: self.x + 4, y: self.y - 2 },
+        [
+          ["golden_gate", 0, 1],
+          ["iron_fence", 2, 0],
+          ["golden_railing", 4, 0],
+        ],
+      );
+      await shot(space, "construct-victorian-gate-and-railings");
     } finally {
       await closeUsers([host]);
     }

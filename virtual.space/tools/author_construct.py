@@ -148,8 +148,8 @@ LIBRARY = {
         "kitchen_counter": {"size": [1, 2]},
         "tv_stand": {"size": [1, 2], "lights": _lit("9fc4ff", 1.6, 30)},
         "dresser": {},
-        "wardrobe": {"size": [1, 2]},
-        "piano": {"size": [1, 2]},
+        "wardrobe": {"size": [1, 2], "mirror": True},
+        "piano": {"size": [1, 2], "mirror": True},
         "fireplace": {"size": [1, 2], "lights": _lit("ff9a4d", 3.0, 12)},
         "grandfather_clock": {},
         "table_lamp": {"lights": [WARM], "use": "toggle_light", "states": {"off": "table_lamp_off"}},
@@ -162,7 +162,7 @@ LIBRARY = {
         "boulder": {},
         "park_bench": {"size": [1, 2], "seats": [[0, 0], [0, 1]]},
         "fountain": {"size": [2, 2]},
-        "fence": {},
+        "fence": {"mirror": True},
         "street_lamp": {"lights": _lit("ffe6a8", 2.6, 80), "use": "toggle_light",
                         "states": {"off": "street_lamp_off"}},
         "pond": {"size": [2, 2]},
@@ -194,10 +194,10 @@ LIBRARY = {
         "purple_tent": {},
         "pennant_tent": {"anim": True, "period_ms": 900},
         "striped_tent": {"anim": True, "period_ms": 900},
-        "weapon_stall": {"size": [1, 2]},
+        "weapon_stall": {"size": [1, 3]},
         "snack_stall": {},
-        "fair_gate": {"size": [1, 3]},
-        "bunting": {"anim": True, "period_ms": 1100},
+        "fair_gate": {"size": [1, 2]},
+        "bunting": {"anim": True, "period_ms": 1100, "size": [1, 2]},
         "flag_pole": {},
         "paper_lantern": {"anim": True, "period_ms": 900, "lights": _lit("ffb35f", 1.6, 50)},
         "splash_fountain": {"anim": True, "period_ms": 900, "size": [2, 2]},
@@ -209,27 +209,28 @@ LIBRARY = {
         "potted_tree": {},
     },
     "fantasy": {
-        "telepod": {"anim": True, "period_ms": 600, "lights": _lit("7fb8ff", 1.8, 40)},
-        "bell_tower": {"anim": True, "period_ms": 1200, "size": [2, 2]},
+        "telepod": {"anim": True, "period_ms": 600, "size": [1, 3],
+                    "lights": _lit("7fb8ff", 1.8, 40)},
+        "bell_tower": {"anim": True, "period_ms": 1200, "size": [2, 2], "dirs": ["down"]},
         "nu": {"anim": True, "period_ms": 1400, "size": [2, 2]},
         "brazier": {"anim": True, "period_ms": 660, "lights": _lit("ff9a4d", 2.2, 30)},
         "magic_portal": {"anim": True, "period_ms": 900, "blocks": False,
                          "lights": _lit("8fe3ff", 1.6, 24)},
         "sparkle": {"anim": True, "period_ms": 1000, "blocks": False},
-        "ancient_gate": {"size": [2, 3]},
+        "ancient_gate": {"size": [3, 3]},
         "stone_altar": {},
         "stone_totem": {},
-        "stone_arch": {"size": [1, 2]},
-        "glowing_arch": {"size": [1, 2], "lights": _lit("7fd0ff", 2.0, 50)},
+        "stone_arch": {"size": [1, 2], "mirror": True},
+        "glowing_arch": {"size": [1, 2], "mirror": True, "lights": _lit("7fd0ff", 2.0, 50)},
         "stone_column": {},
     },
 }
 
 # The Victorian pieces join the tabs they belong in.
 LIBRARY["structure"] = {
-    "golden_gate": {"size": [1, 2]},
+    "golden_gate": {"mirror": True},
     "golden_railing": {"size": [1, 2]},
-    "iron_fence": {"size": [1, 2]},
+    "iron_fence": {"size": [1, 2], "mirror": True},
 }
 LIBRARY["garden"].update({
     "victorian_lamp": {"lights": _lit("ffe6a8", 2.6, 120), "use": "toggle_light",
@@ -240,7 +241,9 @@ LIBRARY["garden"].update({
 LIBRARY["furniture"]["wingback_chair"] = {"seat": True}
 
 # An animated piece (`anim`) is a directory of frames, `anim/<kind>/<i>.png`,
-# instead of one file.
+# instead of one file. `mirror` flips art drawn running the other diagonal, so
+# it runs from bottom-left to top-right like every other piece; `dirs` limits a
+# piece to the facings it has.
 for _group, _kinds in LIBRARY.items():
     for _kind, _spec in _kinds.items():
         _art_key = {"anim": _kind} if _spec.get("anim") else {"file": f"{_kind}.png"}
@@ -546,16 +549,22 @@ def build():
     for kind, spec in KINDS.items():
         if "eot" in spec:
             tiles = eot_tiles(spec["eot"])
-        elif "anim" in spec:
+        elif "anim" in spec or "file" in spec:
             name = f"cst_{kind}"
-            shelf.put_strip(name, _frames(spec["anim"]), spec["period_ms"])
-            vocab[f"{name}_r"] = dict(vocab[name], flip_x=True)
-            tiles = {"down": name, "right": f"{name}_r"}
-        elif "file" in spec:
-            name = f"cst_{kind}"
-            shelf.put(name, _art(spec["file"]))
-            vocab[f"{name}_r"] = dict(vocab[name], flip_x=True)
-            tiles = {"down": name, "right": f"{name}_r"}
+            if "anim" in spec:
+                frames = _frames(spec["anim"])
+                if spec.get("mirror"):
+                    frames = [f.transpose(Image.FLIP_LEFT_RIGHT) for f in frames]
+                shelf.put_strip(name, frames, spec["period_ms"])
+            else:
+                art = _art(spec["file"])
+                shelf.put(name, art.transpose(Image.FLIP_LEFT_RIGHT) if spec.get("mirror") else art)
+            # A piece that keeps one facing (lettering that would read
+            # backwards mirrored) has only the tiles of the facings it has.
+            tiles = {d: t for d, t in {"down": name, "right": f"{name}_r"}.items()
+                     if d in spec.get("dirs", ("down", "right"))}
+            if "right" in tiles:
+                vocab[f"{name}_r"] = dict(vocab[name], flip_x=True)
         else:
             tiles = {}
             for dir_, variant in spec["tiles"].items():

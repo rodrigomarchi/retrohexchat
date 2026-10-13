@@ -1,8 +1,9 @@
 #!/usr/bin/env python3
 """Download the Construct's PixelLab art named in ``scenes/construct/pixellab.json``.
 
-Each entry names the PixelLab object a piece was drawn as, and, for a piece
-that moves, the animation it moves with. A still piece lands as
+Each entry names what a piece was drawn as: a PixelLab object (`object`, and
+for a piece that moves the `animation` it moves with), a map object
+(`map_object`), or the frames of an image animation (`image_job`). A still piece lands as
 ``scenes/construct/<kind>.png`` (the object's one rotation); an animated one as
 ``scenes/construct/anim/<kind>/<i>.png``, one file per frame — the layout
 ``author_construct.py`` reads. The art is committed: this runs when a piece is
@@ -23,6 +24,7 @@ TOOLS = os.path.dirname(os.path.abspath(__file__))
 REPO = os.path.abspath(os.path.join(TOOLS, "..", ".."))
 CONSTRUCT = os.path.join(REPO, "virtual.space", "scenes", "construct")
 REGISTRY = os.path.join(CONSTRUCT, "pixellab.json")
+MCP = "https://api.pixellab.ai/mcp"
 
 
 def downloads(registry, kinds=None):
@@ -37,6 +39,18 @@ def downloads(registry, kinds=None):
     out = []
     for kind in wanted:
         entry = objects[kind]
+        if "image_job" in entry:
+            # An animation made from a loose image: the job's frames, frame 0
+            # being the still it started from (the `map_object`, when named,
+            # is where that still came from).
+            for i in range(entry["frames"]):
+                out.append((f"{MCP}/images/{entry['image_job']}/download?index={i}",
+                            os.path.join("anim", kind, f"{i}.png")))
+            continue
+        if "map_object" in entry:
+            # A map object: one still image, from the MCP's download.
+            out.append((f"{MCP}/map-objects/{entry['map_object']}/download", f"{kind}.png"))
+            continue
         root = f"{base}/{entry['object']}"
         if "animation" in entry:
             for i in range(entry["frames"]):

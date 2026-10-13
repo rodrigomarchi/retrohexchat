@@ -17,6 +17,8 @@ REGISTRY = {
     "objects": {
         "tent": {"object": "obj-1"},
         "bell": {"object": "obj-2", "animation": "anim-9", "frames": 2},
+        "gate": {"map_object": "map-3"},
+        "flag": {"map_object": "map-5", "image_job": "job-4", "frames": 2},
     },
 }
 
@@ -39,6 +41,19 @@ class DownloadsTest(unittest.TestCase):
             ],
         )
 
+    def test_a_map_object_is_its_download(self):
+        self.assertEqual(
+            fetch.downloads(REGISTRY, ["gate"]),
+            [("https://api.pixellab.ai/mcp/map-objects/map-3/download", "gate.png")],
+        )
+
+    def test_an_image_animation_is_its_job_frames_not_the_still_it_began_from(self):
+        self.assertEqual(
+            [path for _url, path in fetch.downloads(REGISTRY, ["flag"])],
+            [os.path.join("anim", "flag", "0.png"), os.path.join("anim", "flag", "1.png")],
+        )
+        self.assertTrue(fetch.downloads(REGISTRY, ["flag"])[1][0].endswith("job-4/download?index=1"))
+
     def test_everything_in_kind_order_by_default(self):
         paths = [path for _url, path in fetch.downloads(REGISTRY)]
         self.assertEqual(paths[0], os.path.join("anim", "bell", "0.png"))
@@ -57,8 +72,8 @@ class RegistryTest(unittest.TestCase):
             registry = json.load(handle)
         for kind, entry in registry["objects"].items():
             self.assertRegex(kind, r"^[a-z_]+$")
-            self.assertIn("object", entry)
-            if "animation" in entry:
+            self.assertTrue({"object", "map_object", "image_job"} & set(entry), kind)
+            if "animation" in entry or "image_job" in entry:
                 self.assertGreater(entry["frames"], 1, kind)
         for _url, rel in fetch.downloads(registry):
             self.assertTrue(os.path.exists(os.path.join(fetch.CONSTRUCT, rel)), rel)

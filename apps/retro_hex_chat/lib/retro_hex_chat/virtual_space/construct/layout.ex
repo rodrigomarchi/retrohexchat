@@ -504,8 +504,8 @@ defmodule RetroHexChat.VirtualSpace.Construct.Layout do
   defp clean_state(_use, _state), do: %{}
 
   # Stored pieces are kept in order while their footprint lands on free,
-  # buildable floor: a piece whose kind grew since it was placed, and now
-  # overlaps its neighbour, is the one that goes.
+  # buildable floor: when a kind grew since it was placed and two pieces now
+  # overlap, the one stored later is the one that goes.
   defp keep_fitting(items, base) do
     {kept, _taken} = Enum.reduce(items, {[], MapSet.new()}, &keep_if_fits(base, &1, &2))
     Enum.reverse(kept)

@@ -48,6 +48,7 @@ export class ConstructController {
     this._keyTarget = keyTarget ?? window;
     this._mode = new BuildMode({ dirsOf: (kind) => this._map()?.catalog?.[kind]?.dirs });
     this._palette = createBuildPalette(palette, {
+      dirsOf: (kind) => this._map()?.catalog?.[kind]?.dirs,
       onChoose: (kind) => this._apply(this._mode.choose(kind)),
       onPaint: (material) => this._apply(this._mode.choosePaint(material)),
       onRotate: () => this._apply(this._mode.rotate()),

@@ -29,7 +29,8 @@ const SHEET_QUERY = "(max-width: 480px)";
  * @param {HTMLElement} root - the `[data-construct-palette]` element
  * @param {{onChoose: (kind: string) => void, onPaint?: (material: string) => void,
  *   onRotate: () => void, onRemove: () => void, onDrop?: () => void,
- *   storage?: () => Storage, isSheet?: () => boolean}} ports
+ *   storage?: () => Storage, isSheet?: () => boolean,
+ *   dirsOf?: (kind: string) => string[]|undefined}} ports
  */
 export function createBuildPalette(
   root,
@@ -41,6 +42,7 @@ export function createBuildPalette(
     onDrop,
     storage = () => window.localStorage,
     isSheet = () => window.matchMedia?.(SHEET_QUERY)?.matches === true,
+    dirsOf = () => undefined,
   },
 ) {
   const kindButtons = () => [...root.querySelectorAll("[data-construct-kind]")];
@@ -203,7 +205,10 @@ export function createBuildPalette(
       const rotate = one("[data-construct-rotate]");
       if (rotate) {
         rotate.hidden = state.mode === "painting";
-        rotate.disabled = !(state.mode === "placing" || state.mode === "selected");
+        // A kind with one facing has nothing to turn to.
+        const facings = held?.kind ? dirsOf(held.kind) : undefined;
+        const turns = !Array.isArray(facings) || facings.length > 1;
+        rotate.disabled = !(turns && (state.mode === "placing" || state.mode === "selected"));
       }
       const remove = one("[data-construct-remove]");
       if (remove) {

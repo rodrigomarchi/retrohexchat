@@ -52,7 +52,7 @@ defmodule RetroHexChat.VirtualSpace.Construct.LayoutTest do
       # A piece that moves is a strip of frames on the Construct's own sheet,
       # and its mirror moves with it.
       assert %{frames: 6, period_ms: 1200} = base.tiles["cst_bell_tower"]
-      assert %{frames: 6, flip_x: true} = base.tiles["cst_bell_tower_r"]
+      assert %{frames: 6, flip_x: true} = base.tiles["cst_nu_r"]
       assert base.catalog["bell_tower"].group == "fantasy"
       assert base.catalog["big_top"].group == "fair"
 
@@ -61,6 +61,11 @@ defmodule RetroHexChat.VirtualSpace.Construct.LayoutTest do
       assert lamp.use == "toggle_light"
       assert %{ts: "endoftime"} = base.tiles[lamp.tiles["down"]]
       assert %{ts: "construct"} = base.tiles[lamp.states["off"]["down"]]
+
+      # The bell tower's plaque would read backwards mirrored: it keeps one facing.
+      assert base.catalog["bell_tower"].dirs == ["down"]
+      assert Map.keys(base.catalog["bell_tower"].tiles) == ["down"]
+      refute Map.has_key?(base.tiles, "cst_bell_tower_r")
 
       # Its gate of code is a gate to nowhere.
       assert base.catalog["eot_portal"].use == nil

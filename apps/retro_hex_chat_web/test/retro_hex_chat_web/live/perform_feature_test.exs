@@ -177,10 +177,14 @@ defmodule RetroHexChatWeb.PerformFeatureTest do
       view = connect_user(conn, nick)
       submit_command(view, "/join #e2ercjoin")
 
-      assert_push_event(view, "save_reconnect_state", %{
-        nickname: ^nick,
-        active_channel: "#e2ercjoin"
-      })
+      # The join lands through the channel server and back, so under a loaded
+      # suite the push can come later than assert_push_event's 100ms default.
+      assert_push_event(
+        view,
+        "save_reconnect_state",
+        %{nickname: ^nick, active_channel: "#e2ercjoin"},
+        1_000
+      )
     end
   end
 

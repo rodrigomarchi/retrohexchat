@@ -3,7 +3,7 @@
   "base": "https://backblaze.pixellab.ai/file/pixellab-characters/objects/8eaaa74c-53ee-46de-b11d-2ac64c019d47",
   "objects": {
     "ancient_gate": {
-      "object": "6158dcda-3049-4945-a850-c22b6183821d"
+      "map_object": "27f3cc47-58a9-4302-872a-011c1e0d50e6"
     },
     "bell_tower": {
       "object": "ee583f53-2fdb-4ae3-a771-5311952e7382",
@@ -19,9 +19,10 @@
       "frames": 6
     },
     "bunting": {
-      "object": "de2ca8bd-3e76-43b4-a6dd-362437608db0",
-      "animation": "b93e47a3-6b20-46ad-b11e-b0e74b536665",
-      "frames": 6
+      "map_object": "c3ac5f5c-e23f-4510-aa50-1c4b2c3d63d7",
+      "image_job": "fdcdcb62-4f1d-4144-b128-d44e77881fd9",
+      "frames": 6,
+      "note": "frame 0 is the map object's still; the job's seventh frame closes the loop on it and is left out, so both animated pieces run six frames."
     },
     "circus_tent": {
       "object": "c5fb44bc-3263-4386-8ccc-b59c827237b8"
@@ -38,7 +39,7 @@
       "object": "2555bd08-3f93-42fe-9290-f1e5ac456526"
     },
     "fair_gate": {
-      "object": "f570e6f9-756b-4954-a147-d91408c4b06b"
+      "map_object": "2e91bf8c-2a7b-4a11-939f-d45a11777028"
     },
     "flag_pole": {
       "object": "06d2aa29-9d44-4d49-bb22-97d2e3c65c13"
@@ -47,13 +48,13 @@
       "object": "c5d0267b-ec51-4d79-bc2e-6d8dac99bdb5"
     },
     "glowing_arch": {
-      "object": "a7fbc42b-7a1b-44c9-a736-6c5960281d92"
+      "map_object": "7cedb6a6-ed06-432d-8f3c-f0f9a4923106"
     },
     "golden_gate": {
-      "object": "258ab586-b9cb-4c38-a61e-0a68b03d3190"
+      "map_object": "91a60354-b280-452c-bf86-85c7d5889543"
     },
     "golden_railing": {
-      "object": "7053083e-c069-4bb9-af92-b533165691d7"
+      "map_object": "e6887f5d-9044-4126-9192-9184c6d2fd98"
     },
     "hedge": {
       "object": "40e99de4-b2e3-4380-81f1-de62702b28ef"
@@ -67,7 +68,7 @@
       "frames": 6
     },
     "notice_board": {
-      "object": "db3614d3-9176-4d61-9e2c-50ff9a970700"
+      "map_object": "b77373ac-45a6-4705-8453-b0ff1eafdffb"
     },
     "nu": {
       "object": "5de7ab8f-5170-4c6e-b852-73bf32c0ca34",
@@ -85,7 +86,7 @@
       "frames": 6
     },
     "planter": {
-      "object": "f01ba3dd-af13-4b7a-97b1-e2b40bcea73d"
+      "map_object": "95878511-7bd7-492a-9a5f-0f6a0c120d88"
     },
     "potted_tree": {
       "object": "21415d13-5145-46e3-a221-26e174bf3080"
@@ -97,7 +98,7 @@
       "object": "026c2dca-03ed-4766-b374-e3b14c224bfc"
     },
     "snack_stall": {
-      "object": "3d81b65f-4287-4c3e-ac8d-83be70260f47"
+      "map_object": "fa614a84-b142-4ab7-84b7-2b6779065b0b"
     },
     "sparkle": {
       "object": "51c0d8ea-3231-4b2d-a43e-2781d3a2e4c4",
@@ -111,7 +112,7 @@
       "frames": 6
     },
     "stone_altar": {
-      "object": "5446fce9-f511-4ef4-bcbe-a5f748c8084b"
+      "map_object": "e8a54099-d0e7-4982-88bf-f9bd20088a2f"
     },
     "stone_arch": {
       "object": "f0254ab2-ca6d-43a3-9a98-ed38eaf481f2"
@@ -128,9 +129,10 @@
       "frames": 6
     },
     "telepod": {
-      "object": "83031df5-a163-418d-920d-00725e7db270",
-      "animation": "d086bcca-d3fc-4190-a511-9cc8bce1a9e0",
-      "frames": 6
+      "map_object": "568a2815-8d32-4ed1-9b72-45473f57698c",
+      "image_job": "cc5d8afd-c1c9-4c94-b353-0775197479c2",
+      "frames": 6,
+      "note": "frame 0 is the map object's still; the job's seventh frame is left out because seven frames four cells wide overrun the sheet's 24 columns."
     },
     "victorian_lamp": {
       "object": "d207cec8-bc33-45f7-b6df-5b22f07488a4"
@@ -139,7 +141,7 @@
       "object": "c7f5d2c5-4f24-410d-a2d8-c77b2b6e3087"
     },
     "weapon_stall": {
-      "object": "7b3e043d-e6ce-4798-8875-9f421fad4f43"
+      "map_object": "0f8628bc-4302-44c8-918a-21cb509106b3"
     },
     "wingback_chair": {
       "object": "9fc477e3-a279-4bcc-a592-43b0455b567c"
