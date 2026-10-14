@@ -17,14 +17,23 @@ defmodule RetroHexChatWeb.Components.UI.SpaceCharacterCreator do
   preview hook (`SpaceCreatorPreviewHook`) composes and draws. `creator_tab`
   switches the part shown and `creator_randomize` makes somebody new. Only the
   open tab is rendered: the rest are a click away and cost no markup.
+
+  Each piece is shown on the character being made: its picture is that
+  character wearing it, in the colours already chosen — the head for what goes
+  on it (bareheaded for a hair or a face item, which a hat would hide), the
+  whole figure for an outfit — drawn by the server from the same art (`RetroHexChatWeb.CharacterPortrait`). A part with only one choice
+  (one body, for now) is no choice, so its tab is not shown.
   """
   use RetroHexChatWeb, :html
 
   import RetroHexChatWeb.Components.UI.Button
   import RetroHexChatWeb.Components.UI.Space.PixelIcon
 
+  require Logger
+
   alias RetroHexChat.VirtualSpace.CharacterCatalog, as: Catalog
   alias RetroHexChat.VirtualSpace.CharacterRecipe
+  alias RetroHexChatWeb.CharacterPortrait
   alias RetroHexChatWeb.SpaceAssets
 
   @tabs ~w(body skin outfit hair hat face)
@@ -35,7 +44,10 @@ defmodule RetroHexChatWeb.Components.UI.SpaceCharacterCreator do
     required: true,
     doc: "the character being made (a CharacterRecipe string)"
 
-  attr :tab, :string, default: "body", doc: "the part whose choices are shown"
+  attr :tab, :string,
+    default: nil,
+    doc: "the part whose choices are shown; the first tab when nil or not one of `tabs/0`"
+
   attr :title, :string, required: true
 
   attr :roster, :list,
@@ -52,14 +64,15 @@ defmodule RetroHexChatWeb.Components.UI.SpaceCharacterCreator do
       assigns
       |> assign(:parsed, recipe)
       |> assign(:recipe, CharacterRecipe.to_string(recipe))
-      |> assign(:tabs, Enum.filter(@tabs, &tab_available?/1))
+      |> assign(:tabs, tabs())
+      |> then(fn a -> if a.tab in a.tabs, do: a, else: assign(a, :tab, hd(a.tabs)) end)
 
     ~H"""
     <div
       class="space-ui-veil absolute inset-0 z-20 flex items-center justify-center overflow-y-auto p-2"
       data-testid="space-character-creator"
     >
-      <div class="space-ui-panel m-auto w-full max-w-2xl">
+      <div class="space-ui-panel m-auto w-full max-w-3xl">
         <h2 class="space-ui-heading mb-2 text-center">{@title}</h2>
         <div class="space-creator">
           <div
@@ -122,7 +135,7 @@ defmodule RetroHexChatWeb.Components.UI.SpaceCharacterCreator do
               class="space-creator__panel"
               data-testid={"space-creator-panel-#{@tab}"}
             >
-              <.part tab={@tab} recipe={@parsed} />
+              <.part tab={@tab} recipe={@parsed} recipe_string={@recipe} />
             </div>
             <div class="mt-2 flex justify-end">
               <.button
@@ -159,6 +172,7 @@ defmodule RetroHexChatWeb.Components.UI.SpaceCharacterCreator do
 
   attr :tab, :string, required: true
   attr :recipe, :map, required: true
+  attr :recipe_string, :string, required: true
 
   defp part(%{tab: "body"} = assigns) do
     ~H"""
@@ -166,6 +180,8 @@ defmodule RetroHexChatWeb.Components.UI.SpaceCharacterCreator do
       field="body"
       options={for id <- Catalog.bodies(), do: {id, body_label(id)}}
       current={@recipe.body}
+      recipe={@recipe_string}
+      view={:figure}
     />
     """
   end
@@ -184,6 +200,8 @@ defmodule RetroHexChatWeb.Components.UI.SpaceCharacterCreator do
       field="outfit"
       options={for id <- Catalog.outfits_for(@recipe.body), do: {id, outfit_label(id)}}
       current={@recipe.outfit}
+      recipe={@recipe_string}
+      view={:figure}
     />
     <.swatches
       :if={@channels > 0}
@@ -208,6 +226,8 @@ defmodule RetroHexChatWeb.Components.UI.SpaceCharacterCreator do
       field="hair"
       options={[{"0", dgettext("chat", "Bald")} | for(id <- Catalog.hair(), do: {id, hair_label(id)})]}
       current={@recipe.hair || "0"}
+      recipe={@recipe_string}
+      view={:head}
     />
     <.swatches
       :if={@recipe.hair}
@@ -230,6 +250,8 @@ defmodule RetroHexChatWeb.Components.UI.SpaceCharacterCreator do
         | for(id <- Catalog.headwear() |> Map.keys() |> Enum.sort(), do: {id, headwear_label(id)})
       ]}
       current={@recipe.hat || "0"}
+      recipe={@recipe_string}
+      view={:head}
     />
     <.swatches
       :if={@channels > 0}
@@ -260,6 +282,8 @@ defmodule RetroHexChatWeb.Components.UI.SpaceCharacterCreator do
         | for(id <- Catalog.face(), do: {id, face_label(id)})
       ]}
       current={@recipe.face || "0"}
+      recipe={@recipe_string}
+      view={:head}
     />
     <.swatches
       :if={@palette}
@@ -274,8 +298,21 @@ defmodule RetroHexChatWeb.Components.UI.SpaceCharacterCreator do
   attr :field, :string, required: true
   attr :options, :list, required: true
   attr :current, :string, required: true
+  attr :recipe, :string, required: true, doc: "the character the pieces are pictured on"
+  attr :view, :atom, required: true, values: [:head, :figure]
 
   defp choices(assigns) do
+    {w, h} = CharacterPortrait.dimensions(assigns.view)
+    # A head is cut small: drawn twice its size, still whole pixels.
+    scale = if assigns.view == :head, do: 2, else: 1
+
+    assigns =
+      assign(assigns,
+        width: w * scale,
+        height: h * scale,
+        stills: Map.new(assigns.options, fn {value, _} -> {value, still(assigns, value)} end)
+      )
+
     ~H"""
     <div class="flex flex-wrap gap-1">
       <button
@@ -285,14 +322,46 @@ defmodule RetroHexChatWeb.Components.UI.SpaceCharacterCreator do
         phx-value-field={@field}
         phx-value-choice={value}
         aria-pressed={to_string(value == @current)}
-        class="space-ui-slot px-2 py-1"
+        class="space-ui-slot space-creator-option"
         data-testid={"space-creator-option-#{@field}-#{value}"}
       >
-        {label}
+        <img
+          :if={@stills[value]}
+          src={@stills[value]}
+          width={@width}
+          height={@height}
+          alt=""
+          class="space-creator-option__still"
+          data-testid={"space-creator-still-#{@field}-#{value}"}
+        />
+        <span class="space-creator-option__label">{label}</span>
       </button>
     </div>
     """
   end
+
+  # The picture of a choice: the character being made, wearing it. A hair or
+  # a face item is shown bareheaded, since a hat would hide what is chosen.
+  defp still(%{recipe: recipe, field: field, view: view}, value) do
+    with {:ok, shown} <- bareheaded(recipe, field),
+         {:ok, wearing} <- CharacterRecipe.put(shown, field, value) do
+      CharacterPortrait.path(wearing, view)
+    else
+      {:error, reason} ->
+        # A choice the catalog offers always composes; one that does not is a
+        # catalog fault, shown as a choice with no picture rather than none.
+        Logger.warning(
+          "creator: no picture of #{field}=#{value} on #{recipe}: #{inspect(reason)}"
+        )
+
+        nil
+    end
+  end
+
+  defp bareheaded(recipe, field) when field in ~w(hair face),
+    do: CharacterRecipe.put(recipe, "hat", "0")
+
+  defp bareheaded(recipe, _field), do: {:ok, recipe}
 
   attr :field, :string, required: true
   attr :palette, :string, required: true
@@ -324,6 +393,11 @@ defmodule RetroHexChatWeb.Components.UI.SpaceCharacterCreator do
     """
   end
 
+  @doc "The creator's tabs, in order: every part with a choice to make."
+  @spec tabs() :: [String.t()]
+  def tabs, do: Enum.filter(@tabs, &tab_available?/1)
+
+  defp tab_available?("body"), do: length(Catalog.bodies()) > 1
   defp tab_available?("face"), do: Catalog.face() != []
   defp tab_available?(_tab), do: true
 

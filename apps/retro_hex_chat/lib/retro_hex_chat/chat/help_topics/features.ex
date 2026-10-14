@@ -4014,10 +4014,36 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
           dgettext("help", "change character")
         ],
         icon: :icon_community,
+        # Short sentences, each its own message: an engine keeps a short one
+        # whole, and a button's name is the glossary's, not a guess.
         description:
-          dgettext(
-            "help",
-            "When you enter a Space, you see the character creator first. Each tab is one part: body, skin, outfit, hair and headwear. Choose a piece to wear it, and a colour for each part that can be dyed. Surprise me picks every part at random. Walk in takes you into the map, and the others in the Space see you right away. Next time, the creator opens with this character. In the chat, its face is shown beside your nickname. Change character, beside the box you type in, opens the creator over the map."
+          Enum.join(
+            [
+              dgettext("help", "When you enter a Space, you see the character creator first."),
+              dgettext("help", "Each tab is one part of your character."),
+              dgettext("help", "Each option shows how your character looks with it."),
+              dgettext(
+                "help",
+                "Choose a piece to wear it, and a colour for each part that can be dyed."
+              ),
+              dgettext("help", "%{surprise} picks every part at random.",
+                surprise: dgettext("help", "Surprise me")
+              ),
+              dgettext(
+                "help",
+                "%{walk_in} takes you into the map, where the others see you at once.",
+                walk_in: dgettext("help", "Walk in")
+              ),
+              dgettext("help", "Next time, the creator opens with this character."),
+              dgettext("help", "In the chat, its face is shown beside your nickname."),
+              dgettext("help", "%{change} is next to the box you type in.",
+                change: dgettext("help", "Change character")
+              ),
+              dgettext("help", "%{change} opens the creator over the map.",
+                change: dgettext("help", "Change character")
+              )
+            ],
+            " "
           ),
         see_also: ["feature-virtual-spaces", "feature-space-combat"]
       },

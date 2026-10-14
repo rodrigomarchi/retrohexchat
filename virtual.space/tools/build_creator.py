@@ -10,7 +10,9 @@ Reads ``virtual.space/characters/creator/catalog_src.json`` and the frames
   channel's shades sit at known indices, so a colour change is a palette swap.
   A hat that hides the hair under it also gets ``<layer>_<anim>_mask.png``.
 * ``priv/static/images/space/creator/portrait_<layer>.png`` -- the piece's
-  head crop, for the portraits the chat shows.
+  head crop, for the portraits the chat shows; ``figure_<layer>.png``, the
+  whole figure, and ``head_<layer>.png``, everything worn on the head, for
+  the creator's pictures of its pieces.
 * ``priv/static/images/space/creator/catalog.json`` -- the web catalog: geometry,
   sheet URLs, palette indices, colour ramps, head offsets.
 * ``apps/retro_hex_chat/priv/virtual_space/character_catalog.json`` -- what the
@@ -59,6 +61,8 @@ CSS_OUT = os.path.join(WEB, "assets", "css", "retrohex", "features", "space-crea
 CHANNEL_PALETTE = {"skin": "skin", "hair": "hair", "primary": "fabric", "secondary": "fabric"}
 # Side of the square a chat portrait is cut to, in pixels.
 PORTRAIT = 24
+# Clear pixels round a figure: an overlay moved by a base's head offset stays in.
+FIGURE_PAD = 2
 
 
 # ------------------------------------------------------------------ catalog
@@ -313,17 +317,30 @@ def build(catalog, raw, out_dir, write=True):
     head_cols = [i % mf.w for i, l in enumerate(ml) if l is not art.TRANSPARENT and i // mf.w < mbox[1] + 16]
     cx = (min(head_cols) + max(head_cols) + 1) // 2
     rect = [cx - PORTRAIT // 2, mbox[1] - 3, PORTRAIT, PORTRAIT]
-    for spec in specs:
-        entry, palette = web_layers[spec["name"]]
-        f, l = data[(spec["name"], "idle", "south")][0][0], data[(spec["name"], "idle", "south")][1][0]
-        crop = crop_indexed(f, l, palette, rect)
-        name = f"portrait_{spec['name']}.png"
-        files[name] = png_bytes(crop)
-        entry["portrait"] = {"file": name}
-        if spec.get("hair") == "clip":
-            cover = art.cover_mask(f, l)
-            files[f"portrait_{spec['name']}_mask.png"] = png_bytes(crop_mask(f, cover, rect))
-            entry["portraitMask"] = {"file": f"portrait_{spec['name']}_mask.png"}
+    # Figures: the same frame, cut to everything any piece draws in it, with
+    # room for the overlays' head offsets.
+    fbox = art.union([art.bbox(*[data[(s["name"], "idle", "south")][k][0] for k in (0, 1)]) for s in specs])
+    figure_rect = [fbox[0] - FIGURE_PAD, fbox[1] - FIGURE_PAD,
+                   fbox[2] - fbox[0] + 2 * FIGURE_PAD, fbox[3] - fbox[1] + 2 * FIGURE_PAD]
+    # Heads: a bust as wide as everything worn on the head in that frame, from
+    # the tip of the tallest hat down past the beard; a long fall of hair or a
+    # hood's cape goes on below it. The creator pictures hair, headwear and
+    # face items in it, where the chat's portrait would cut them.
+    hbox = art.union([art.bbox(*[data[(s["name"], "idle", "south")][k][0] for k in (0, 1)])
+                      for s in specs if s["kind"] != "base"])
+    side = hbox[2] - hbox[0] + 2 * FIGURE_PAD
+    head_rect = [hbox[0] - FIGURE_PAD, hbox[1] - FIGURE_PAD, side, side]
+    for view, view_rect in (("portrait", rect), ("figure", figure_rect), ("head", head_rect)):
+        for spec in specs:
+            entry, palette = web_layers[spec["name"]]
+            f, l = data[(spec["name"], "idle", "south")][0][0], data[(spec["name"], "idle", "south")][1][0]
+            name = f"{view}_{spec['name']}.png"
+            files[name] = png_bytes(crop_indexed(f, l, palette, view_rect))
+            entry[view] = {"file": name}
+            if spec.get("hair") == "clip":
+                cover = art.cover_mask(f, l)
+                files[f"{view}_{spec['name']}_mask.png"] = png_bytes(crop_mask(f, cover, view_rect))
+                entry[f"{view}Mask"] = {"file": f"{view}_{spec['name']}_mask.png"}
 
     # Bounds of each body: where its head and feet are inside the box.
     bodies = {}
@@ -344,9 +361,9 @@ def build(catalog, raw, out_dir, write=True):
             a["url"] = url(a.pop("file"))
         for anim, a in entry.get("mask", {}).items():
             a["url"] = url(a.pop("file"))
-        entry["portrait"]["url"] = url(entry["portrait"].pop("file"))
-        if "portraitMask" in entry:
-            entry["portraitMask"]["url"] = url(entry["portraitMask"].pop("file"))
+        for key in ("portrait", "portraitMask", "figure", "figureMask", "head", "headMask"):
+            if key in entry:
+                entry[key]["url"] = url(entry[key].pop("file"))
         layers_json[name] = entry
 
     items = {
@@ -367,6 +384,8 @@ def build(catalog, raw, out_dir, write=True):
         "channelPalette": CHANNEL_PALETTE,
         "palettes": ramps,
         "portrait": {"rect": rect},
+        "figure": {"rect": figure_rect},
+        "head": {"rect": head_rect},
         "items": items,
         "layers": layers_json,
         "default": catalog["default"],

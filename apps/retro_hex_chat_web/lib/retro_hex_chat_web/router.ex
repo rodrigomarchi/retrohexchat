@@ -153,6 +153,14 @@ defmodule RetroHexChatWeb.Router do
     get "/character-portrait/:version/:recipe", CharacterPortraitController, :show
   end
 
+  # The creator's pictures of its pieces — the whole figure, or the head. Only
+  # somebody in the chat opens the creator, so only a session gets them drawn.
+  scope "/", RetroHexChatWeb do
+    pipe_through :app
+
+    get "/character-still/:view/:version/:recipe", CharacterPortraitController, :still
+  end
+
   # The build serving this request, which the deploy polls to confirm the new
   # release is live on every backend.
   scope "/", RetroHexChatWeb do

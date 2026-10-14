@@ -14,19 +14,14 @@
 <p>
   {dgettext("help_space", "Each tab is one part: %{parts}.",
     parts:
-      Enum.join(
-        [
-          dpgettext("chat", "character creator", "Body"),
-          dpgettext("chat", "character creator", "Skin"),
-          dpgettext("chat", "character creator", "Outfit"),
-          dpgettext("chat", "character creator", "Hair"),
-          dpgettext("chat", "character creator", "Headwear"),
-          dpgettext("chat", "character creator", "Face")
-        ],
-        ", "
+      Enum.map_join(
+        RetroHexChatWeb.Components.UI.SpaceCharacterCreator.tabs(),
+        ", ",
+        &RetroHexChatWeb.Components.UI.SpaceCharacterCreator.tab_label/1
       )
   )}
   {dgettext("help_space", "Choose a piece to wear it.")}
+  {dgettext("help_space", "Each option shows how your character looks with it.")}
   {dgettext("help_space", "%{bald} removes the hair. %{none} removes the hat.",
     bald: dgettext("chat", "Bald"),
     none: dpgettext("chat", "no headwear", "None")

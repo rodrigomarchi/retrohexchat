@@ -67,8 +67,9 @@ defmodule RetroHexChatWeb.PerfBudgets do
   # everyone arrives in, and the only one a dead render can show. 12_481 B raw /
   # 2_991 B gzip and 107 elements measured on 2026-08-30, the smallest surface
   # here: the world it opens onto is a canvas the client fills, so none of it is
-  # in the document.
-  def html_bytes(:space), do: 14_000
+  # in the document. 14_449 B raw measured on 2026-10-14, with the character
+  # creator open on the skin's colours, its first tab.
+  def html_bytes(:space), do: 16_000
   # The P2P session at an address of its own, measured at its starting room —
   # the state everyone arrives in, and the only one a dead render can show.
   # 27_360 B raw and 248 elements measured on 2026-08-30. The largest of the

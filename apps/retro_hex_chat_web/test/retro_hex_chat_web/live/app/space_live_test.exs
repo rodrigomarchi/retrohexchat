@@ -26,6 +26,7 @@ defmodule RetroHexChatWeb.App.SpaceLiveTest do
   alias RetroHexChat.VirtualSpace.CharacterRecipe
   alias RetroHexChat.VirtualSpace.DirectMessageSpace
   alias RetroHexChat.VirtualSpace.Registry
+  alias RetroHexChatWeb.Components.UI.SpaceCharacterCreator
   alias RetroHexChatWeb.SpaceRef
 
   defp start_channel(nickname) do
@@ -229,6 +230,19 @@ defmodule RetroHexChatWeb.App.SpaceLiveTest do
                view,
                ~s([data-testid="space-creator-option-hair-0"][aria-pressed="true"])
              )
+    end
+
+    test "the creator opens on its first tab, and a tab it does not show cannot be opened",
+         %{conn: conn, channel: channel} do
+      {:ok, view, _html} = live(conn, path(channel))
+      first = hd(SpaceCharacterCreator.tabs())
+      assert has_element?(view, ~s([data-testid="space-creator-panel-#{first}"]))
+
+      # One body is no choice: asking for its tab changes nothing.
+      refute "body" in SpaceCharacterCreator.tabs()
+      render_hook(view, "creator_tab", %{"tab" => "body"})
+      assert :sys.get_state(view.pid).socket.assigns.creator_tab == first
+      assert has_element?(view, ~s([data-testid="space-creator-panel-#{first}"]))
     end
 
     test "a skin colour is worn when its swatch is pressed", %{conn: conn, channel: channel} do

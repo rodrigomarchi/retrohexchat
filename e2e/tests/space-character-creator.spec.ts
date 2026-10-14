@@ -1,6 +1,6 @@
 /**
  * @section SP - Virtual Spaces
- * @flow SP1 [done] The door of a space is the character creator: pieces, colours and Surprise me change the preview, and entering wears exactly that character
+ * @flow SP1 [done] The door of a space is the character creator: pieces, each pictured on the character, colours and Surprise me change the preview, and entering wears exactly that character; one body is no tab
  * @flow SP5 [done] The creator's art is its catalog and its PNG pieces, each decodable, the catalog asked for at most once per screen, and no per-class sprite sheet ever
  * @flow SP37 [done] The character made at the door is remembered for the nickname on reload, and another person in the channel sees it beside the nickname
  *
@@ -15,6 +15,7 @@ import {
   TestUser,
 } from "../helpers/chatUsers";
 import { buildCharacter, enterAs, recipeOf } from "../helpers/characters";
+import { shot } from "../helpers/screenshots";
 
 // A compact signature of the canvas pixels — changes when the world redraws.
 async function canvasSignature(page: Page): Promise<number> {
@@ -52,11 +53,13 @@ test.describe("Virtual space character creator", () => {
       const creator = page.getByTestId("space-character-creator");
       await expect(creator).toBeVisible();
       await expect(page.getByTestId("channel-space-shell")).toHaveCount(0);
-      for (const tab of ["body", "skin", "outfit", "hair", "hat"]) {
+      for (const tab of ["skin", "outfit", "hair", "hat", "face"]) {
         await expect(
           page.getByTestId(`space-creator-tab-${tab}`),
         ).toBeVisible();
       }
+      // One body is no choice: there is no tab for it.
+      await expect(page.getByTestId("space-creator-tab-body")).toHaveCount(0);
       const preview = page.getByTestId("space-creator-preview");
       await expect(preview).toHaveAttribute("data-recipe", /^c1\./);
       await page.screenshot({ path: "test-results/space-creator.png" });
@@ -74,6 +77,33 @@ test.describe("Virtual space character creator", () => {
       await page.getByTestId("space-creator-tab-hair").click();
       await page.getByTestId("space-creator-option-hair-0").click();
       await expect(preview).toHaveAttribute("data-recipe", /\.h-0\./);
+
+      // Every piece is pictured on the character being made: a head for what
+      // goes on it, the whole figure for an outfit, each a picture that loads.
+      for (const [tab, field] of [
+        ["hair", "hair"],
+        ["hat", "hat"],
+        ["face", "face"],
+        ["outfit", "outfit"],
+      ]) {
+        await page.getByTestId(`space-creator-tab-${tab}`).click();
+        const stills = page.locator(
+          `[data-testid^="space-creator-still-${field}-"]`,
+        );
+        await expect(stills.first()).toBeVisible();
+        await expect
+          .poll(() =>
+            stills.evaluateAll((imgs) =>
+              imgs.every(
+                (i) =>
+                  (i as HTMLImageElement).complete &&
+                  (i as HTMLImageElement).naturalWidth > 0,
+              ),
+            ),
+          )
+          .toBe(true);
+      }
+      await shot(page, "each outfit pictured on the character");
 
       // Surprise me makes somebody new.
       const before = await recipeOnPreview(page);

@@ -15,19 +15,33 @@ defmodule RetroHexChatWeb.CharacterPortraitTest do
   alias Vix.Vips.Image
   alias Vix.Vips.Operation
 
-  @goldens Path.expand("../fixtures/character_portraits", __DIR__)
+  @goldens %{
+    portrait: Path.expand("../fixtures/character_portraits", __DIR__),
+    figure: Path.expand("../fixtures/character_figures", __DIR__),
+    head: Path.expand("../fixtures/character_heads", __DIR__)
+  }
 
-  test "every golden portrait is drawn pixel for pixel" do
-    files = Path.wildcard(Path.join(@goldens, "*.png"))
-    assert files != []
+  for {view, folder} <- @goldens do
+    test "every golden #{view} is drawn pixel for pixel" do
+      files = Path.wildcard(Path.join(unquote(folder), "*.png"))
+      assert files != []
 
-    for file <- files do
-      recipe = Path.basename(file, ".png")
-      assert {:ok, png} = CharacterPortrait.png(recipe)
+      for file <- files do
+        recipe = Path.basename(file, ".png")
+        assert {:ok, png} = CharacterPortrait.png(recipe, unquote(view))
 
-      assert pixels(png) == pixels(File.read!(file)),
-             "#{recipe} is not the portrait the art draws"
+        assert pixels(png) == pixels(File.read!(file)),
+               "#{recipe} is not the #{unquote(view)} the art draws"
+      end
     end
+  end
+
+  test "a figure is the whole character, a portrait its face" do
+    {:ok, figure} = CharacterPortrait.png(CharacterCatalog.default(), :figure)
+    {:ok, image} = Image.new_from_buffer(figure)
+    {w, h} = CharacterPortrait.dimensions(:figure)
+    assert {Image.width(image), Image.height(image)} == {w, h}
+    assert h > CharacterPortrait.size() * 3
   end
 
   test "a recipe the art cannot compose has no portrait" do
@@ -80,6 +94,31 @@ defmodule RetroHexChatWeb.CharacterPortraitTest do
              |> response(404)
 
       assert conn |> get("/character-portrait/old/#{CharacterCatalog.default()}") |> response(404)
+    end
+  end
+
+  describe "GET /character-still/:view/:version/:recipe" do
+    test "draws a figure or a head for somebody in the chat, and nothing else", %{conn: conn} do
+      signed_in = init_test_session(conn, chat_nickname: "alice")
+
+      for view <- [:figure, :head] do
+        ok = get(signed_in, CharacterPortrait.path(CharacterCatalog.default(), view))
+        assert response(ok, 200)
+        assert get_resp_header(ok, "content-type") == ["image/png"]
+        assert get_resp_header(ok, "cache-control") == ["private, max-age=31536000, immutable"]
+      end
+
+      version = CharacterCatalog.version()
+      default = CharacterCatalog.default()
+      assert signed_in |> get("/character-still/head/#{version}/knight") |> response(404)
+      assert signed_in |> get("/character-still/portrait/#{version}/#{default}") |> response(404)
+      assert signed_in |> get("/character-still/feet/#{version}/#{default}") |> response(404)
+    end
+
+    test "draws nothing for a browser with no chat session", %{conn: conn} do
+      assert conn
+             |> get(CharacterPortrait.path(CharacterCatalog.default(), :figure))
+             |> response(404)
     end
   end
 

@@ -51,6 +51,7 @@ defmodule RetroHexChatWeb.App.SpaceLive do
   alias RetroHexChat.VirtualSpace.DirectMessageSpace
   alias RetroHexChatWeb.App.Paths
   alias RetroHexChatWeb.App.SessionHelpers
+  alias RetroHexChatWeb.Components.UI.SpaceCharacterCreator
   alias RetroHexChatWeb.Live.OpenSurfaces
   alias RetroHexChatWeb.Live.ShareControl
   alias RetroHexChatWeb.ShareLinkRef
@@ -73,7 +74,7 @@ defmodule RetroHexChatWeb.App.SpaceLive do
         # made one starts from a character drawn for their nickname, the same
         # one the space dressed them in before they chose.
         draft: saved_avatar || CharacterRecipe.for_nickname(nickname || ""),
-        creator_tab: "body",
+        creator_tab: hd(SpaceCharacterCreator.tabs()),
         join_token: nil,
         roster: [],
         share_url: nil,
@@ -411,9 +412,10 @@ defmodule RetroHexChatWeb.App.SpaceLive do
   # The creator's controls: every choice is one field of the recipe, and the
   # domain decides what the recipe becomes (a body that cannot wear the outfit
   # on it changes into one it can).
-  def handle_event("creator_tab", %{"tab" => tab}, socket)
-      when tab in ~w(body skin outfit hair hat face) do
-    {:noreply, assign(socket, creator_tab: tab)}
+  def handle_event("creator_tab", %{"tab" => tab}, socket) do
+    if tab in SpaceCharacterCreator.tabs(),
+      do: {:noreply, assign(socket, creator_tab: tab)},
+      else: {:noreply, socket}
   end
 
   # `choice`, not `value`: a clicked <button> sends its own (empty) `value`,

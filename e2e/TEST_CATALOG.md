@@ -744,7 +744,7 @@ Grouped by section. Every row comes from an `@flow` line in the spec itself.
 
 | # | Flow | Spec file | Status |
 | --- | --- | --- | --- |
-| SP1 | The door of a space is the character creator: pieces, colours and Surprise me change the preview, and entering wears exactly that character | `tests/space-character-creator.spec.ts` | done |
+| SP1 | The door of a space is the character creator: pieces, each pictured on the character, colours and Surprise me change the preview, and entering wears exactly that character; one body is no tab | `tests/space-character-creator.spec.ts` | done |
 | SP2 | A PM space mounts the End of Time scene with the character made at its door | `tests/space-end-of-time.spec.ts` | done |
 | SP3 | The toggle enters and exits fullscreen on the space stage | `tests/space-fullscreen.spec.ts` | done |
 | SP4 | Holding the virtual pad walks continuously, sliding off it onto the floor and lifting stops the walk, and the sword button attacks | `tests/space-virtual-pad.spec.ts` | done |

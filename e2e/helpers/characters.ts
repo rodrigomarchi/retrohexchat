@@ -101,8 +101,11 @@ export async function buildCharacter(space: Page, look: Look | string) {
     await expect(key).toHaveAttribute("aria-pressed", "true");
   };
 
-  await tab("body");
-  await choose("body", f.body);
+  // With one body there is nothing to choose, and no tab for it.
+  if (await space.getByTestId("space-creator-tab-body").count()) {
+    await tab("body");
+    await choose("body", f.body);
+  }
   await tab("skin");
   await swatch("skin", f.skin);
   await tab("outfit");

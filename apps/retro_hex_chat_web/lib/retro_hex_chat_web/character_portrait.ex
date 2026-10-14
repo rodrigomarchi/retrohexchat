@@ -11,6 +11,11 @@ defmodule RetroHexChatWeb.CharacterPortrait do
   written into each crop's palette (`patch_plte/2`, the same bytes the browser
   patches), so both draw the same pixels.
 
+  Two more views are cut from the same frame for the creator, which pictures
+  each piece on the character being made: the *figure*, the whole character
+  (`figure_<layer>.png`), for an outfit, and the *head*, everything worn on
+  the head (`head_<layer>.png`), for hair, headwear and face items.
+
   Composed on request: a portrait is a few hundred pixels, and its URL carries
   the catalog version, so the browser keeps it as long as the art is unchanged.
   The crops are read when this module is compiled and carried in it, so a
@@ -29,7 +34,7 @@ defmodule RetroHexChatWeb.CharacterPortrait do
 
   # Every crop the catalog names, keyed by its URL.
   @crops (for {_name, layer} <- @catalog["layers"],
-              key <- ["portrait", "portraitMask"],
+              key <- ["portrait", "portraitMask", "figure", "figureMask", "head", "headMask"],
               %{"url" => url} <- [layer[key]],
               into: %{} do
             path = Path.join(@static, url |> String.split("?") |> hd())
@@ -38,49 +43,72 @@ defmodule RetroHexChatWeb.CharacterPortrait do
   for {url, _bytes} <- @crops,
       do: @external_resource(Path.join(@static, url |> String.split("?") |> hd()))
 
-  @doc "The address of a recipe's portrait."
-  @spec path(String.t()) :: String.t()
-  def path(recipe), do: "/character-portrait/#{CharacterCatalog.version()}/#{recipe}"
+  @typedoc "Which still of a character: the chat's face, the whole of it, or all it wears on its head."
+  @type view :: :portrait | :figure | :head
+
+  @views [:portrait, :figure, :head]
+
+  @doc "The address of a recipe's still: its portrait, or the `:figure` or `:head` view."
+  @spec path(String.t(), view()) :: String.t()
+  def path(recipe, view \\ :portrait)
+  def path(recipe, :portrait), do: "/character-portrait/#{CharacterCatalog.version()}/#{recipe}"
+
+  def path(recipe, view) when view in [:figure, :head],
+    do: "/character-still/#{view}/#{CharacterCatalog.version()}/#{recipe}"
 
   @doc "The portrait's side, in pixels."
   @spec size() :: pos_integer()
   def size, do: @catalog["portrait"]["rect"] |> Enum.at(2)
 
-  @doc "A recipe's portrait as PNG bytes, or an error for a recipe the art cannot compose."
-  @spec png(String.t()) :: {:ok, binary()} | {:error, :invalid_recipe}
-  def png(recipe) do
+  @doc "A view's width and height, in pixels."
+  @spec dimensions(view()) :: {pos_integer(), pos_integer()}
+  def dimensions(view) do
+    [_x, _y, w, h] = @catalog[Atom.to_string(view)]["rect"]
+    {w, h}
+  end
+
+  @doc "A recipe's still as PNG bytes, or an error for a recipe the art cannot compose."
+  @spec png(String.t(), view()) :: {:ok, binary()} | {:error, :invalid_recipe}
+  def png(recipe, view \\ :portrait) when view in @views do
     with {:ok, parsed} <- CharacterRecipe.parse(recipe) do
-      [_x, _y, w, h] = @catalog["portrait"]["rect"]
+      {w, h} = dimensions(view)
 
       {:ok, image} =
-        Image.new_from_binary(pixels(plan(parsed), w, h), w, h, 4, :VIPS_FORMAT_UCHAR)
+        Image.new_from_binary(
+          pixels(plan(parsed), Atom.to_string(view), w, h),
+          w,
+          h,
+          4,
+          :VIPS_FORMAT_UCHAR
+        )
 
       Image.write_to_buffer(image, ".png")
     end
   end
 
-  # The pieces stacked, base first, on a clear w×h square. The overlays move
+  # The pieces stacked, base first, on a clear w×h canvas. The overlays move
   # by the base's head offset, as the space's compositor moves them.
-  defp pixels([{base, :base, _} | _] = layers, w, h) do
-    hat = Enum.find_value(layers, &cutting_hat/1)
+  defp pixels([{base, :base, _} | _] = layers, view, w, h) do
+    hat = Enum.find_value(layers, &cutting_hat(&1, view))
     [dx, dy] = @catalog["layers"][base]["delta"]["idle"] |> hd() |> hd()
     clear = :binary.copy(<<0, 0, 0, 0>>, w * h)
 
     Enum.reduce(layers, clear, fn layer, acc ->
-      over(acc, placed(layer, hat, w, h, dx, dy))
+      over(acc, placed(layer, view, hat, w, h, dx, dy))
     end)
   end
 
-  defp placed({_name, :base, _colours} = layer, hat, _w, _h, _dx, _dy),
-    do: layer_pixels(layer, hat)
+  defp placed({_name, :base, _colours} = layer, view, hat, _w, _h, _dx, _dy),
+    do: layer_pixels(layer, view, hat)
 
-  defp placed(layer, hat, w, h, dx, dy), do: layer |> layer_pixels(hat) |> shift(w, h, dx, dy)
+  defp placed(layer, view, hat, w, h, dx, dy),
+    do: layer |> layer_pixels(view, hat) |> shift(w, h, dx, dy)
 
   # A hat that hides the hair under it carries a mask; one that does not, cuts nothing.
-  defp cutting_hat({name, :hat, _}),
-    do: if(Map.has_key?(@catalog["layers"][name], "portraitMask"), do: name)
+  defp cutting_hat({name, :hat, _}, view),
+    do: if(Map.has_key?(@catalog["layers"][name], view <> "Mask"), do: name)
 
-  defp cutting_hat(_layer), do: nil
+  defp cutting_hat(_layer, _view), do: nil
 
   # `pixels` (w×h RGBA) moved by (dx, dy), clear where nothing moved in.
   defp shift(pixels, _w, _h, 0, 0), do: pixels
@@ -96,10 +124,10 @@ defmodule RetroHexChatWeb.CharacterPortrait do
   end
 
   # A piece's crop; the hair cut where the hat (if any) covers it.
-  defp layer_pixels({name, :hair, colours}, hat) when is_binary(hat),
-    do: cut(rgba(name, "portrait", colours), rgba(hat, "portraitMask", %{}))
+  defp layer_pixels({name, :hair, colours}, view, hat) when is_binary(hat),
+    do: cut(rgba(name, view, colours), rgba(hat, view <> "Mask", %{}))
 
-  defp layer_pixels({name, _kind, colours}, _hat), do: rgba(name, "portrait", colours)
+  defp layer_pixels({name, _kind, colours}, view, _hat), do: rgba(name, view, colours)
 
   defp plan(r) do
     [
@@ -126,7 +154,8 @@ defmodule RetroHexChatWeb.CharacterPortrait do
   defp rgba(name, kind, colours) do
     layer = Map.fetch!(@catalog["layers"], name)
     png = file(get_in(layer, [kind, "url"]))
-    entries = if kind == "portrait", do: entries(layer, colours), else: []
+    # A crop is dyed; a mask (what a hat hides) is only ever a shape.
+    entries = if String.ends_with?(kind, "Mask"), do: [], else: entries(layer, colours)
     {:ok, image} = png |> patch_plte(entries) |> Image.new_from_buffer()
     image = if Image.bands(image) == 4, do: image, else: with_alpha(image)
     {:ok, bytes} = Image.write_to_binary(image)

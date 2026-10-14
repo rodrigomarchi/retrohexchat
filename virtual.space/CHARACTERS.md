@@ -214,6 +214,13 @@ same bytes, and no pixel is read back off a canvas.
   renderer like any sprite.
 - **Chat portraits**: `/character-portrait/<version>/<recipe>`, composed by
   `RetroHexChatWeb.CharacterPortrait` from the head crops the build cuts.
+- **The creator's pictures of its pieces**: `/character-still/<view>/<version>/<recipe>`,
+  the same composition from two more crops of the same frame — `figure`
+  (the whole character, for an outfit) and `head` (a square round everything
+  worn on the head, for hair, headwear and face items; hair and face are
+  shown bareheaded). Each piece's picture is the character being made,
+  wearing it. Goldens for all three views are written by the build and
+  checked by `character_portrait_test.exs`.
 
 ## 6. Costs (Tier 1, measured)
 

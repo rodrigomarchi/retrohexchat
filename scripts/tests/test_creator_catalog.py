@@ -73,17 +73,27 @@ class CatalogTest(unittest.TestCase):
 
 
 class GoldenTest(unittest.TestCase):
-    """The portraits the server is held to are the reference compositor's."""
+    """The stills the server is held to are the reference compositor's."""
 
-    def test_every_golden_portrait_is_what_the_reference_draws(self):
+    def test_every_golden_still_is_what_the_reference_draws(self):
         catalog = load(WEB)
         recipes = sheet.golden_recipes(catalog)
-        on_disk = sorted(name[:-4] for name in os.listdir(sheet.GOLDEN))
-        self.assertEqual(on_disk, sorted(recipes))
-        for recipe in recipes:
-            drawn = sheet.portrait(recipe, catalog)
-            with Image.open(os.path.join(sheet.GOLDEN, f"{recipe}.png")) as golden:
-                self.assertEqual(drawn.tobytes(), golden.convert("RGBA").tobytes(), recipe)
+        for view, folder in sheet.GOLDENS.items():
+            on_disk = sorted(name[:-4] for name in os.listdir(folder))
+            self.assertEqual(on_disk, sorted(recipes), view)
+            for recipe in recipes:
+                drawn = sheet.portrait(recipe, catalog, view)
+                with Image.open(os.path.join(folder, f"{recipe}.png")) as golden:
+                    self.assertEqual(drawn.tobytes(), golden.convert("RGBA").tobytes(), f"{view} {recipe}")
+
+    def test_a_figure_holds_the_whole_character(self):
+        catalog = load(WEB)
+        _x, _y, w, h = catalog["figure"]["rect"]
+        still = sheet.portrait(catalog["default"], catalog, "figure")
+        self.assertEqual(still.size, (w, h))
+        box = still.getchannel("A").getbbox()
+        # Clear all round: nothing of the character is cut off at an edge.
+        self.assertTrue(box[0] > 0 and box[1] > 0 and box[2] < w and box[3] < h, box)
 
 
 if __name__ == "__main__":

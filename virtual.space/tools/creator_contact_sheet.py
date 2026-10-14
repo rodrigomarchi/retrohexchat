@@ -174,18 +174,20 @@ def compose(recipe, catalog, anim, d, frame):
     return out
 
 
-def portrait(recipe, catalog):
-    """The chat portrait of a recipe: each piece's head crop, recoloured."""
-    x, y, w, h = catalog["portrait"]["rect"]
+def portrait(recipe, catalog, view="portrait"):
+    """A still of a recipe: each piece's crop for `view` -- "portrait", the
+    head the chat shows, "figure", the whole character, or "head", all it
+    wears on the head -- recoloured and stacked."""
+    x, y, w, h = catalog[view]["rect"]
     layers = plan(recipe, catalog)
     hat = next((name for name, _c, kind in layers if kind == "hat"), None)
     dx, dy = catalog["layers"][layers[0][0]]["delta"]["idle"][0][0]
     out = Image.new("RGBA", (w, h), (0, 0, 0, 0))
     for name, colours, kind in layers:
         layer = catalog["layers"][name]
-        piece = load(layer["portrait"]["url"], recolour_entries(layer, colours, catalog))
-        if kind == "hair" and hat and catalog["layers"][hat].get("portraitMask"):
-            cut = load(catalog["layers"][hat]["portraitMask"]["url"]).getchannel("A")
+        piece = load(layer[view]["url"], recolour_entries(layer, colours, catalog))
+        if kind == "hair" and hat and catalog["layers"][hat].get(f"{view}Mask"):
+            cut = load(catalog["layers"][hat][f"{view}Mask"]["url"]).getchannel("A")
             alpha = piece.getchannel("A")
             alpha.paste(0, mask=cut)
             piece.putalpha(alpha)
@@ -198,7 +200,11 @@ def portrait(recipe, catalog):
     return out
 
 
-GOLDEN = os.path.join(REPO, "apps", "retro_hex_chat_web", "test", "fixtures", "character_portraits")
+FIXTURES = os.path.join(REPO, "apps", "retro_hex_chat_web", "test", "fixtures")
+GOLDEN = os.path.join(FIXTURES, "character_portraits")
+# Each view's goldens: the same recipes, every still the server draws.
+GOLDENS = {"portrait": GOLDEN, "figure": os.path.join(FIXTURES, "character_figures"),
+           "head": os.path.join(FIXTURES, "character_heads")}
 
 
 def golden_recipes(catalog):
@@ -216,6 +222,8 @@ def golden_recipes(catalog):
         out.append(".".join(["c1", f"b-{body}", "s-1",
                              f"o-{outfit}-{_dye(catalog, outfit, 0, 2)}-{_dye(catalog, outfit, 1, 4)}",
                              f"h-{hair}-3" if hair else "h-0", f"w-{hat}-b-6", "f-0"]))
+    for face in sorted(items["face"]):
+        out.append(f"c1.b-{body}.s-4.o-{outfit}-0-0.h-0.w-0.f-{face}-3")
     return list(dict.fromkeys(out))
 
 
@@ -223,28 +231,31 @@ def _dye(catalog, outfit, slot, value):
     return base36(value) if slot < len(catalog["items"]["outfits"][outfit]["channels"]) else "0"
 
 
-def write_goldens(catalog, folder=GOLDEN):
-    """The portrait of each golden recipe, as the server must also draw it."""
-    os.makedirs(folder, exist_ok=True)
-    for name in os.listdir(folder):
-        os.remove(os.path.join(folder, name))
-    for recipe in golden_recipes(catalog):
-        portrait(recipe, catalog).save(os.path.join(folder, f"{recipe}.png"), format="PNG")
+def write_goldens(catalog, folders=None):
+    """Each view's still of each golden recipe, as the server must also draw it."""
+    for view, folder in (folders or GOLDENS).items():
+        os.makedirs(folder, exist_ok=True)
+        for name in os.listdir(folder):
+            os.remove(os.path.join(folder, name))
+        for recipe in golden_recipes(catalog):
+            portrait(recipe, catalog, view).save(os.path.join(folder, f"{recipe}.png"), format="PNG")
 
 
-def stale_goldens(catalog, folder=GOLDEN):
-    """Golden portraits that are missing, extra, or not what the art draws."""
-    wanted = {f"{r}.png": r for r in golden_recipes(catalog)}
-    present = set(os.listdir(folder)) if os.path.isdir(folder) else set()
-    out = [os.path.join(folder, n) for n in sorted(present - set(wanted))]
-    for name, recipe in sorted(wanted.items()):
-        path = os.path.join(folder, name)
-        if name not in present:
-            out.append(path)
-            continue
-        with Image.open(path) as golden:
-            if golden.convert("RGBA").tobytes() != portrait(recipe, catalog).tobytes():
+def stale_goldens(catalog, folders=None):
+    """Golden stills that are missing, extra, or not what the art draws."""
+    out = []
+    for view, folder in (folders or GOLDENS).items():
+        wanted = {f"{r}.png": r for r in golden_recipes(catalog)}
+        present = set(os.listdir(folder)) if os.path.isdir(folder) else set()
+        out += [os.path.join(folder, n) for n in sorted(present - set(wanted))]
+        for name, recipe in sorted(wanted.items()):
+            path = os.path.join(folder, name)
+            if name not in present:
                 out.append(path)
+                continue
+            with Image.open(path) as golden:
+                if golden.convert("RGBA").tobytes() != portrait(recipe, catalog, view).tobytes():
+                    out.append(path)
     return out
 
 

@@ -809,7 +809,7 @@ msgid "Browser"
 msgstr "Przeglądarka"
 
 #: lib/retro_hex_chat_web/components/ui/chat/connection_status.ex:79
-#: lib/retro_hex_chat_web/live/app/space_live.ex:237
+#: lib/retro_hex_chat_web/live/app/space_live.ex:238
 #: lib/retro_hex_chat_web/live/chat_live/components/composer.ex:520
 #, elixir-autogen, elixir-format
 msgid "Cancel"
@@ -1513,7 +1513,7 @@ msgstr ""
 msgid "Nickname %{nickname} is already in use"
 msgstr "Nickname %{nickname} jest już w użyciu"
 
-#: lib/retro_hex_chat_web/live/app/space_live.ex:335
+#: lib/retro_hex_chat_web/live/app/space_live.ex:336
 #: lib/retro_hex_chat_web/live/chat_live/helpers/whois.ex:151
 #, elixir-autogen, elixir-format
 msgid "No"
@@ -2104,7 +2104,7 @@ msgid "Yellow"
 msgstr "Żółty"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_space_construct.html.heex:12
-#: lib/retro_hex_chat_web/live/app/space_live.ex:325
+#: lib/retro_hex_chat_web/live/app/space_live.ex:326
 #: lib/retro_hex_chat_web/live/chat_live/helpers/whois.ex:151
 #, elixir-autogen, elixir-format
 msgid "Yes"
@@ -2936,7 +2936,7 @@ msgstr "%{peer} stracił połączenie P2P - czekając na ich powrót..."
 msgid "Arcade session ended."
 msgstr "Sesja Arcade zakończona."
 
-#: lib/retro_hex_chat_web/live/app/space_live.ex:797
+#: lib/retro_hex_chat_web/live/app/space_live.ex:799
 #, elixir-autogen, elixir-format
 msgid "Channel Space"
 msgstr "Przestrzeń kanału"
@@ -2981,7 +2981,7 @@ msgstr "Urządzenie domyślne"
 msgid "End P2P Call Media"
 msgstr "Koniec P2P Call Media"
 
-#: lib/retro_hex_chat_web/live/app/space_live.ex:801
+#: lib/retro_hex_chat_web/live/app/space_live.ex:803
 #, elixir-autogen, elixir-format
 msgid "Entering channel space..."
 msgstr "Wchodzimy w przestrzeń kanału..."
@@ -3006,7 +3006,7 @@ msgstr "Zmutować, niewyciszyć lub włączyć mikrofon P2P"
 msgid "Next P2P Layout"
 msgstr "Następny układ P2P"
 
-#: lib/retro_hex_chat_web/live/app/space_live.ex:800
+#: lib/retro_hex_chat_web/live/app/space_live.ex:802
 #, elixir-autogen, elixir-format
 msgid "Opening private room..."
 msgstr "Otwarcie prywatnego pokoju..."
@@ -3038,14 +3038,14 @@ msgstr "Łączenie sesji P2P"
 msgid "P2P session with %{peer} ended."
 msgstr "Sesja P2P z %{peer} Koniec."
 
-#: lib/retro_hex_chat_web/live/app/space_live.ex:796
+#: lib/retro_hex_chat_web/live/app/space_live.ex:798
 #, elixir-autogen, elixir-format
 msgid "Private Space"
 msgstr "Prywatna przestrzeń"
 
 #: lib/retro_hex_chat_web/components/ui/space/conversation_entry.ex:44
 #: lib/retro_hex_chat_web/controllers/help_content/feature_virtual_spaces.html.heex:12
-#: lib/retro_hex_chat_web/live/app/space_live.ex:762
+#: lib/retro_hex_chat_web/live/app/space_live.ex:764
 #, elixir-autogen, elixir-format
 msgid "Space"
 msgstr "Przestrzeń"
@@ -3788,7 +3788,7 @@ msgstr "Akcje rozmowy"
 msgid "Participants"
 msgstr "Uczestnicy"
 
-#: lib/retro_hex_chat_web/live/app/space_live.ex:394
+#: lib/retro_hex_chat_web/live/app/space_live.ex:395
 #, elixir-autogen, elixir-format
 msgid "%{count} in the space"
 msgid_plural "%{count} in the space"
@@ -3796,40 +3796,40 @@ msgstr[0] "%{count} w przestrzeni"
 msgstr[1] "%{count} w przestrzeni"
 msgstr[2] "%{count} w przestrzeni"
 
-#: lib/retro_hex_chat_web/components/ui/space_character_creator.ex:143
+#: lib/retro_hex_chat_web/components/ui/space_character_creator.ex:156
 #, elixir-autogen, elixir-format
 msgid "Inside right now"
 msgstr "Teraz w środku"
 
-#: lib/retro_hex_chat_web/components/ui/space_character_creator.ex:145
+#: lib/retro_hex_chat_web/components/ui/space_character_creator.ex:158
 #, elixir-autogen, elixir-format
 msgid "Nobody is in here yet."
 msgstr "Nikogo tu jeszcze nie ma."
 
-#: lib/retro_hex_chat_web/live/app/space_live.ex:758
 #: lib/retro_hex_chat_web/live/app/space_live.ex:760
+#: lib/retro_hex_chat_web/live/app/space_live.ex:762
 #, elixir-autogen, elixir-format
 msgid "Space · %{name}"
 msgstr "Przestrzeń · %{name}"
 
-#: lib/retro_hex_chat_web/live/app/space_live.ex:645
-#: lib/retro_hex_chat_web/live/app/space_live.ex:660
-#: lib/retro_hex_chat_web/live/app/space_live.ex:679
+#: lib/retro_hex_chat_web/live/app/space_live.ex:647
+#: lib/retro_hex_chat_web/live/app/space_live.ex:662
+#: lib/retro_hex_chat_web/live/app/space_live.ex:681
 #, elixir-autogen, elixir-format
 msgid "That address does not name a space."
 msgstr "Ten adres nie wskazuje żadnej przestrzeni."
 
-#: lib/retro_hex_chat_web/live/app/space_live.ex:691
+#: lib/retro_hex_chat_web/live/app/space_live.ex:693
 #, elixir-autogen, elixir-format
 msgid "This private space belongs to two other people."
 msgstr "Ta prywatna przestrzeń należy do dwóch innych osób."
 
-#: lib/retro_hex_chat_web/live/app/space_live.ex:640
+#: lib/retro_hex_chat_web/live/app/space_live.ex:642
 #, elixir-autogen, elixir-format
 msgid "This space is no longer available."
 msgstr "Ta przestrzeń nie jest już dostępna."
 
-#: lib/retro_hex_chat_web/live/app/space_live.ex:707
+#: lib/retro_hex_chat_web/live/app/space_live.ex:709
 #, elixir-autogen, elixir-format
 msgid "You have to be in %{channel} to enter its space."
 msgstr "Musisz być na %{channel}, aby wejść do jego przestrzeni."
@@ -3864,7 +3864,7 @@ msgstr "%{game} · rozgrywka"
 msgid "%{peer} is back."
 msgstr "%{peer} wrócił."
 
-#: lib/retro_hex_chat_web/live/app/space_live.ex:712
+#: lib/retro_hex_chat_web/live/app/space_live.ex:714
 #, elixir-autogen, elixir-format
 msgid "This space belongs to a channel you are not in."
 msgstr "Ta przestrzeń należy do kanału, do którego nie należysz."
@@ -4311,11 +4311,11 @@ msgstr "Zobacz kto założył kanał"
 msgid "  • Capital letters do not matter: \"Alice\" and \"alice\" are the same nick"
 msgstr "• Duże litery nie mają znaczenia: \"Alice\" i \"Alice\" są tym samym nickiem"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_choose_character.html.heex:60
-#: lib/retro_hex_chat_web/live/app/space_live.ex:216
-#: lib/retro_hex_chat_web/live/app/space_live.ex:365
+#: lib/retro_hex_chat_web/controllers/help_content/feature_choose_character.html.heex:69
+#: lib/retro_hex_chat_web/live/app/space_live.ex:217
 #: lib/retro_hex_chat_web/live/app/space_live.ex:366
-#: lib/retro_hex_chat_web/live/app/space_live.ex:370
+#: lib/retro_hex_chat_web/live/app/space_live.ex:367
+#: lib/retro_hex_chat_web/live/app/space_live.ex:371
 #, elixir-autogen, elixir-format
 msgid "Change character"
 msgstr "Zmień postać"
@@ -4333,23 +4333,23 @@ msgstr "Powiedz"
 msgid "Say something"
 msgstr "Powiedz coś."
 
-#: lib/retro_hex_chat_web/live/app/space_live.ex:787
-#: lib/retro_hex_chat_web/live/app/space_live.ex:793
+#: lib/retro_hex_chat_web/live/app/space_live.ex:789
+#: lib/retro_hex_chat_web/live/app/space_live.ex:795
 #, elixir-autogen, elixir-format
 msgid "Say something to %{name}..."
 msgstr "Powiedz coś %{name}..."
 
-#: lib/retro_hex_chat_web/live/app/space_live.ex:788
+#: lib/retro_hex_chat_web/live/app/space_live.ex:790
 #, elixir-autogen, elixir-format
 msgid "Say something..."
 msgstr "Powiedz coś..."
 
-#: lib/retro_hex_chat_web/live/app/space_live.ex:296
+#: lib/retro_hex_chat_web/live/app/space_live.ex:297
 #, elixir-autogen, elixir-format
 msgid "%{name} is back on their feet."
 msgstr "%{name} znów stoi na nogi."
 
-#: lib/retro_hex_chat_web/live/app/space_live.ex:295
+#: lib/retro_hex_chat_web/live/app/space_live.ex:296
 #, elixir-autogen, elixir-format
 msgid "%{name} is knocked out!"
 msgstr "%{name} jest znokautowany!"
@@ -4367,13 +4367,13 @@ msgstr "Buduj"
 msgid "Chair"
 msgstr "Krzesło"
 
-#: lib/retro_hex_chat_web/live/app/space_live.ex:754
-#: lib/retro_hex_chat_web/live/app/space_live.ex:795
+#: lib/retro_hex_chat_web/live/app/space_live.ex:756
+#: lib/retro_hex_chat_web/live/app/space_live.ex:797
 #, elixir-autogen, elixir-format
 msgid "Construct"
 msgstr "Konstrukt"
 
-#: lib/retro_hex_chat_web/live/app/space_live.ex:310
+#: lib/retro_hex_chat_web/live/app/space_live.ex:311
 #, elixir-autogen, elixir-format
 msgid "Go back to the End of Time?"
 msgstr "Wrócić do końca czasu?"
@@ -4389,7 +4389,7 @@ msgstr "Droga do bramy jest czysta."
 msgid "Lamp"
 msgstr "Lampa"
 
-#: lib/retro_hex_chat_web/live/app/space_live.ex:799
+#: lib/retro_hex_chat_web/live/app/space_live.ex:801
 #, elixir-autogen, elixir-format
 msgid "Loading the Construct..."
 msgstr "Ładowanie Konstrukt..."
@@ -4446,7 +4446,7 @@ msgctxt "furniture"
 msgid "Table"
 msgstr "Stół"
 
-#: lib/retro_hex_chat_web/live/app/space_live.ex:309
+#: lib/retro_hex_chat_web/live/app/space_live.ex:310
 #, elixir-autogen, elixir-format
 msgid "Go into the Construct?"
 msgstr "Do Konstrukt?"
@@ -5205,487 +5205,492 @@ msgstr "Fontanna jarmarku"
 msgid "Fair notice board"
 msgstr "Tablica jarmarku"
 
-#: lib/retro_hex_chat_web/components/ui/space_character_creator.ex:209
-#: lib/retro_hex_chat_web/controllers/help_content/feature_choose_character.html.heex:31
+#: lib/retro_hex_chat_web/components/ui/space_character_creator.ex:227
+#: lib/retro_hex_chat_web/controllers/help_content/feature_choose_character.html.heex:26
 #, elixir-autogen, elixir-format
 msgid "Bald"
 msgstr "Łysy"
 
-#: lib/retro_hex_chat_web/components/ui/space_character_creator.ex:104
+#: lib/retro_hex_chat_web/components/ui/space_character_creator.ex:117
 #, elixir-autogen, elixir-format
 msgid "Character"
 msgstr "Postać"
 
-#: lib/retro_hex_chat_web/components/ui/space_character_creator.ex:217
+#: lib/retro_hex_chat_web/components/ui/space_character_creator.ex:237
 #, elixir-autogen, elixir-format
 msgid "Hair colour"
 msgstr "Kolor włosów"
 
-#: lib/retro_hex_chat_web/components/ui/space_character_creator.ex:193
-#: lib/retro_hex_chat_web/components/ui/space_character_creator.ex:239
-#: lib/retro_hex_chat_web/controllers/help_content/feature_choose_character.html.heex:40
+#: lib/retro_hex_chat_web/components/ui/space_character_creator.ex:211
+#: lib/retro_hex_chat_web/components/ui/space_character_creator.ex:261
+#: lib/retro_hex_chat_web/controllers/help_content/feature_choose_character.html.heex:49
 #, elixir-autogen, elixir-format
 msgid "Main colour"
 msgstr "Kolor główny"
 
-#: lib/retro_hex_chat_web/live/app/space_live.ex:169
+#: lib/retro_hex_chat_web/live/app/space_live.ex:170
 #, elixir-autogen, elixir-format
 msgid "Make your character"
 msgstr "Stwórz swoją postać"
 
-#: lib/retro_hex_chat_web/components/ui/space_character_creator.ex:175
+#: lib/retro_hex_chat_web/components/ui/space_character_creator.ex:191
 #, elixir-autogen, elixir-format
 msgid "Skin"
 msgstr "Skóra"
 
-#: lib/retro_hex_chat_web/components/ui/space_character_creator.ex:136
-#: lib/retro_hex_chat_web/controllers/help_content/feature_choose_character.html.heex:44
-#: lib/retro_hex_chat_web/controllers/help_content/feature_choose_character.html.heex:47
+#: lib/retro_hex_chat_web/components/ui/space_character_creator.ex:149
+#: lib/retro_hex_chat_web/controllers/help_content/feature_choose_character.html.heex:53
+#: lib/retro_hex_chat_web/controllers/help_content/feature_choose_character.html.heex:56
 #, elixir-autogen, elixir-format
 msgid "Surprise me"
 msgstr "Zaskocz mnie"
 
-#: lib/retro_hex_chat_web/components/ui/space_character_creator.ex:200
-#: lib/retro_hex_chat_web/components/ui/space_character_creator.ex:246
-#: lib/retro_hex_chat_web/controllers/help_content/feature_choose_character.html.heex:41
+#: lib/retro_hex_chat_web/components/ui/space_character_creator.ex:218
+#: lib/retro_hex_chat_web/components/ui/space_character_creator.ex:268
+#: lib/retro_hex_chat_web/controllers/help_content/feature_choose_character.html.heex:50
 #, elixir-autogen, elixir-format
 msgid "Trim colour"
 msgstr "Kolor wykończenia"
 
-#: lib/retro_hex_chat_web/components/ui/space_character_creator.ex:81
-#: lib/retro_hex_chat_web/components/ui/space_character_creator.ex:82
+#: lib/retro_hex_chat_web/components/ui/space_character_creator.ex:94
+#: lib/retro_hex_chat_web/components/ui/space_character_creator.ex:95
 #: lib/retro_hex_chat_web/controllers/help_content/feature_choose_character.html.heex:9
 #, elixir-autogen, elixir-format
 msgid "Turn left"
 msgstr "Obróć w lewo"
 
-#: lib/retro_hex_chat_web/components/ui/space_character_creator.ex:91
-#: lib/retro_hex_chat_web/components/ui/space_character_creator.ex:92
+#: lib/retro_hex_chat_web/components/ui/space_character_creator.ex:104
+#: lib/retro_hex_chat_web/components/ui/space_character_creator.ex:105
 #: lib/retro_hex_chat_web/controllers/help_content/feature_choose_character.html.heex:10
 #, elixir-autogen, elixir-format
 msgid "Turn right"
 msgstr "Obróć w prawo"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_choose_character.html.heex:53
-#: lib/retro_hex_chat_web/live/app/space_live.ex:181
+#: lib/retro_hex_chat_web/controllers/help_content/feature_choose_character.html.heex:62
+#: lib/retro_hex_chat_web/live/app/space_live.ex:182
 #, elixir-autogen, elixir-format
 msgid "Walk in"
 msgstr "Wejdź"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_choose_character.html.heex:65
-#: lib/retro_hex_chat_web/live/app/space_live.ex:227
+#: lib/retro_hex_chat_web/controllers/help_content/feature_choose_character.html.heex:74
+#: lib/retro_hex_chat_web/live/app/space_live.ex:228
 #, elixir-autogen, elixir-format
 msgid "Wear this"
 msgstr "Załóż to"
 
-#: lib/retro_hex_chat_web/components/ui/space_character_creator.ex:341
+#: lib/retro_hex_chat_web/components/ui/space_character_creator.ex:415
 #, elixir-autogen, elixir-format
 msgctxt "character body"
 msgid "Average"
 msgstr "Przeciętne"
 
-#: lib/retro_hex_chat_web/components/ui/space_character_creator.ex:332
-#: lib/retro_hex_chat_web/controllers/help_content/feature_choose_character.html.heex:19
+#: lib/retro_hex_chat_web/components/ui/space_character_creator.ex:406
 #, elixir-autogen, elixir-format
 msgctxt "character creator"
 msgid "Body"
 msgstr "Ciało"
 
-#: lib/retro_hex_chat_web/components/ui/space_character_creator.ex:337
-#: lib/retro_hex_chat_web/controllers/help_content/feature_choose_character.html.heex:24
+#: lib/retro_hex_chat_web/components/ui/space_character_creator.ex:411
+#: lib/retro_hex_chat_web/controllers/help_content/feature_choose_character.html.heex:32
 #, elixir-autogen, elixir-format
 msgctxt "character creator"
 msgid "Face"
 msgstr "Twarz"
 
-#: lib/retro_hex_chat_web/components/ui/space_character_creator.ex:335
-#: lib/retro_hex_chat_web/controllers/help_content/feature_choose_character.html.heex:22
+#: lib/retro_hex_chat_web/components/ui/space_character_creator.ex:409
 #, elixir-autogen, elixir-format
 msgctxt "character creator"
 msgid "Hair"
 msgstr "Włosy"
 
-#: lib/retro_hex_chat_web/components/ui/space_character_creator.ex:336
-#: lib/retro_hex_chat_web/controllers/help_content/feature_choose_character.html.heex:23
+#: lib/retro_hex_chat_web/components/ui/space_character_creator.ex:410
 #, elixir-autogen, elixir-format
 msgctxt "character creator"
 msgid "Headwear"
 msgstr "Nakrycie głowy"
 
-#: lib/retro_hex_chat_web/components/ui/space_character_creator.ex:334
-#: lib/retro_hex_chat_web/controllers/help_content/feature_choose_character.html.heex:21
+#: lib/retro_hex_chat_web/components/ui/space_character_creator.ex:408
 #, elixir-autogen, elixir-format
 msgctxt "character creator"
 msgid "Outfit"
 msgstr "Strój"
 
-#: lib/retro_hex_chat_web/components/ui/space_character_creator.ex:333
-#: lib/retro_hex_chat_web/controllers/help_content/feature_choose_character.html.heex:20
+#: lib/retro_hex_chat_web/components/ui/space_character_creator.ex:407
 #, elixir-autogen, elixir-format
 msgctxt "character creator"
 msgid "Skin"
 msgstr "Skóra"
 
-#: lib/retro_hex_chat_web/components/ui/space_character_creator.ex:356
+#: lib/retro_hex_chat_web/components/ui/space_character_creator.ex:430
 #, elixir-autogen, elixir-format
 msgctxt "character hair"
 msgid "Long"
 msgstr "Długie"
 
-#: lib/retro_hex_chat_web/components/ui/space_character_creator.ex:365
+#: lib/retro_hex_chat_web/components/ui/space_character_creator.ex:439
 #, elixir-autogen, elixir-format
 msgctxt "character headwear"
 msgid "Adventurer hat"
 msgstr "Kapelusz podróżnika"
 
-#: lib/retro_hex_chat_web/components/ui/space_character_creator.ex:347
+#: lib/retro_hex_chat_web/components/ui/space_character_creator.ex:421
 #, elixir-autogen, elixir-format
 msgctxt "character outfit"
 msgid "Tunic"
 msgstr "Tunika"
 
-#: lib/retro_hex_chat_web/components/ui/space_character_creator.ex:346
+#: lib/retro_hex_chat_web/components/ui/space_character_creator.ex:420
 #, elixir-autogen, elixir-format
 msgctxt "character outfit"
 msgid "Undershirt"
 msgstr "Podkoszulek"
 
-#: lib/retro_hex_chat_web/components/ui/space_character_creator.ex:428
+#: lib/retro_hex_chat_web/components/ui/space_character_creator.ex:502
 #, elixir-autogen, elixir-format
 msgctxt "cloth colour"
 msgid "Charcoal"
 msgstr "Grafitowy"
 
-#: lib/retro_hex_chat_web/components/ui/space_character_creator.ex:414
+#: lib/retro_hex_chat_web/components/ui/space_character_creator.ex:488
 #, elixir-autogen, elixir-format
 msgctxt "cloth colour"
 msgid "Crimson"
 msgstr "Karmazynowy"
 
-#: lib/retro_hex_chat_web/components/ui/space_character_creator.ex:419
+#: lib/retro_hex_chat_web/components/ui/space_character_creator.ex:493
 #, elixir-autogen, elixir-format
 msgctxt "cloth colour"
 msgid "Forest"
 msgstr "Leśna zieleń"
 
-#: lib/retro_hex_chat_web/components/ui/space_character_creator.ex:417
+#: lib/retro_hex_chat_web/components/ui/space_character_creator.ex:491
 #, elixir-autogen, elixir-format
 msgctxt "cloth colour"
 msgid "Gold"
 msgstr "Złoty"
 
-#: lib/retro_hex_chat_web/components/ui/space_character_creator.ex:429
+#: lib/retro_hex_chat_web/components/ui/space_character_creator.ex:503
 #, elixir-autogen, elixir-format
 msgctxt "cloth colour"
 msgid "Ivory"
 msgstr "Kość słoniowa"
 
-#: lib/retro_hex_chat_web/components/ui/space_character_creator.ex:427
+#: lib/retro_hex_chat_web/components/ui/space_character_creator.ex:501
 #, elixir-autogen, elixir-format
 msgctxt "cloth colour"
 msgid "Leather"
 msgstr "Skórzany"
 
-#: lib/retro_hex_chat_web/components/ui/space_character_creator.ex:418
+#: lib/retro_hex_chat_web/components/ui/space_character_creator.ex:492
 #, elixir-autogen, elixir-format
 msgctxt "cloth colour"
 msgid "Lime"
 msgstr "Limonkowy"
 
-#: lib/retro_hex_chat_web/components/ui/space_character_creator.ex:422
+#: lib/retro_hex_chat_web/components/ui/space_character_creator.ex:496
 #, elixir-autogen, elixir-format
 msgctxt "cloth colour"
 msgid "Navy"
 msgstr "Granatowy"
 
-#: lib/retro_hex_chat_web/components/ui/space_character_creator.ex:416
+#: lib/retro_hex_chat_web/components/ui/space_character_creator.ex:490
 #, elixir-autogen, elixir-format
 msgctxt "cloth colour"
 msgid "Orange"
 msgstr "Pomarańczowy"
 
-#: lib/retro_hex_chat_web/components/ui/space_character_creator.ex:425
+#: lib/retro_hex_chat_web/components/ui/space_character_creator.ex:499
 #, elixir-autogen, elixir-format
 msgctxt "cloth colour"
 msgid "Plum"
 msgstr "Śliwkowy"
 
-#: lib/retro_hex_chat_web/components/ui/space_character_creator.ex:426
+#: lib/retro_hex_chat_web/components/ui/space_character_creator.ex:500
 #, elixir-autogen, elixir-format
 msgctxt "cloth colour"
 msgid "Rose"
 msgstr "Różany"
 
-#: lib/retro_hex_chat_web/components/ui/space_character_creator.ex:423
+#: lib/retro_hex_chat_web/components/ui/space_character_creator.ex:497
 #, elixir-autogen, elixir-format
 msgctxt "cloth colour"
 msgid "Royal blue"
 msgstr "Królewski błękit"
 
-#: lib/retro_hex_chat_web/components/ui/space_character_creator.ex:415
+#: lib/retro_hex_chat_web/components/ui/space_character_creator.ex:489
 #, elixir-autogen, elixir-format
 msgctxt "cloth colour"
 msgid "Scarlet"
 msgstr "Szkarłatny"
 
-#: lib/retro_hex_chat_web/components/ui/space_character_creator.ex:421
+#: lib/retro_hex_chat_web/components/ui/space_character_creator.ex:495
 #, elixir-autogen, elixir-format
 msgctxt "cloth colour"
 msgid "Sky"
 msgstr "Błękitny"
 
-#: lib/retro_hex_chat_web/components/ui/space_character_creator.ex:420
+#: lib/retro_hex_chat_web/components/ui/space_character_creator.ex:494
 #, elixir-autogen, elixir-format
 msgctxt "cloth colour"
 msgid "Teal"
 msgstr "Morski"
 
-#: lib/retro_hex_chat_web/components/ui/space_character_creator.ex:424
+#: lib/retro_hex_chat_web/components/ui/space_character_creator.ex:498
 #, elixir-autogen, elixir-format
 msgctxt "cloth colour"
 msgid "Violet"
 msgstr "Fioletowy"
 
-#: lib/retro_hex_chat_web/components/ui/space_character_creator.ex:400
+#: lib/retro_hex_chat_web/components/ui/space_character_creator.ex:474
 #, elixir-autogen, elixir-format
 msgctxt "hair colour"
 msgid "Auburn"
 msgstr "Kasztanowe"
 
-#: lib/retro_hex_chat_web/components/ui/space_character_creator.ex:397
+#: lib/retro_hex_chat_web/components/ui/space_character_creator.ex:471
 #, elixir-autogen, elixir-format
 msgctxt "hair colour"
 msgid "Black"
 msgstr "Czarne"
 
-#: lib/retro_hex_chat_web/components/ui/space_character_creator.ex:402
+#: lib/retro_hex_chat_web/components/ui/space_character_creator.ex:476
 #, elixir-autogen, elixir-format
 msgctxt "hair colour"
 msgid "Blonde"
 msgstr "Blond"
 
-#: lib/retro_hex_chat_web/components/ui/space_character_creator.ex:406
+#: lib/retro_hex_chat_web/components/ui/space_character_creator.ex:480
 #, elixir-autogen, elixir-format
 msgctxt "hair colour"
 msgid "Blue"
 msgstr "Niebieskie"
 
-#: lib/retro_hex_chat_web/components/ui/space_character_creator.ex:399
+#: lib/retro_hex_chat_web/components/ui/space_character_creator.ex:473
 #, elixir-autogen, elixir-format
 msgctxt "hair colour"
 msgid "Brown"
 msgstr "Brązowe"
 
-#: lib/retro_hex_chat_web/components/ui/space_character_creator.ex:401
+#: lib/retro_hex_chat_web/components/ui/space_character_creator.ex:475
 #, elixir-autogen, elixir-format
 msgctxt "hair colour"
 msgid "Copper"
 msgstr "Miedziane"
 
-#: lib/retro_hex_chat_web/components/ui/space_character_creator.ex:398
+#: lib/retro_hex_chat_web/components/ui/space_character_creator.ex:472
 #, elixir-autogen, elixir-format
 msgctxt "hair colour"
 msgid "Dark brown"
 msgstr "Ciemnobrązowe"
 
-#: lib/retro_hex_chat_web/components/ui/space_character_creator.ex:407
+#: lib/retro_hex_chat_web/components/ui/space_character_creator.ex:481
 #, elixir-autogen, elixir-format
 msgctxt "hair colour"
 msgid "Green"
 msgstr "Zielone"
 
-#: lib/retro_hex_chat_web/components/ui/space_character_creator.ex:404
+#: lib/retro_hex_chat_web/components/ui/space_character_creator.ex:478
 #, elixir-autogen, elixir-format
 msgctxt "hair colour"
 msgid "Grey"
 msgstr "Siwe"
 
-#: lib/retro_hex_chat_web/components/ui/space_character_creator.ex:408
+#: lib/retro_hex_chat_web/components/ui/space_character_creator.ex:482
 #, elixir-autogen, elixir-format
 msgctxt "hair colour"
 msgid "Pink"
 msgstr "Różowe"
 
-#: lib/retro_hex_chat_web/components/ui/space_character_creator.ex:403
+#: lib/retro_hex_chat_web/components/ui/space_character_creator.ex:477
 #, elixir-autogen, elixir-format
 msgctxt "hair colour"
 msgid "Platinum"
 msgstr "Platynowe"
 
-#: lib/retro_hex_chat_web/components/ui/space_character_creator.ex:405
+#: lib/retro_hex_chat_web/components/ui/space_character_creator.ex:479
 #, elixir-autogen, elixir-format
 msgctxt "hair colour"
 msgid "White"
 msgstr "Białe"
 
-#: lib/retro_hex_chat_web/components/ui/space_character_creator.ex:259
-#: lib/retro_hex_chat_web/controllers/help_content/feature_choose_character.html.heex:35
+#: lib/retro_hex_chat_web/components/ui/space_character_creator.ex:281
+#: lib/retro_hex_chat_web/controllers/help_content/feature_choose_character.html.heex:33
 #, elixir-autogen, elixir-format
 msgctxt "no face item"
 msgid "None"
 msgstr "Brak"
 
-#: lib/retro_hex_chat_web/components/ui/space_character_creator.ex:229
-#: lib/retro_hex_chat_web/controllers/help_content/feature_choose_character.html.heex:32
+#: lib/retro_hex_chat_web/components/ui/space_character_creator.ex:249
+#: lib/retro_hex_chat_web/controllers/help_content/feature_choose_character.html.heex:27
 #, elixir-autogen, elixir-format
 msgctxt "no headwear"
 msgid "None"
 msgstr "Brak"
 
-#: lib/retro_hex_chat_web/components/ui/space_character_creator.ex:389
+#: lib/retro_hex_chat_web/components/ui/space_character_creator.ex:463
 #, elixir-autogen, elixir-format
 msgctxt "skin colour"
 msgid "Brown"
 msgstr "Brązowa"
 
-#: lib/retro_hex_chat_web/components/ui/space_character_creator.ex:390
+#: lib/retro_hex_chat_web/components/ui/space_character_creator.ex:464
 #, elixir-autogen, elixir-format
 msgctxt "skin colour"
 msgid "Deep brown"
 msgstr "Ciemnobrązowa"
 
-#: lib/retro_hex_chat_web/components/ui/space_character_creator.ex:391
+#: lib/retro_hex_chat_web/components/ui/space_character_creator.ex:465
 #, elixir-autogen, elixir-format
 msgctxt "skin colour"
 msgid "Ebony"
 msgstr "Hebanowa"
 
-#: lib/retro_hex_chat_web/components/ui/space_character_creator.ex:385
+#: lib/retro_hex_chat_web/components/ui/space_character_creator.ex:459
 #, elixir-autogen, elixir-format
 msgctxt "skin colour"
 msgid "Fair"
 msgstr "Jasna"
 
-#: lib/retro_hex_chat_web/components/ui/space_character_creator.ex:386
+#: lib/retro_hex_chat_web/components/ui/space_character_creator.ex:460
 #, elixir-autogen, elixir-format
 msgctxt "skin colour"
 msgid "Light tan"
 msgstr "Lekko opalona"
 
-#: lib/retro_hex_chat_web/components/ui/space_character_creator.ex:387
+#: lib/retro_hex_chat_web/components/ui/space_character_creator.ex:461
 #, elixir-autogen, elixir-format
 msgctxt "skin colour"
 msgid "Olive"
 msgstr "Oliwkowa"
 
-#: lib/retro_hex_chat_web/components/ui/space_character_creator.ex:384
+#: lib/retro_hex_chat_web/components/ui/space_character_creator.ex:458
 #, elixir-autogen, elixir-format
 msgctxt "skin colour"
 msgid "Porcelain"
 msgstr "Porcelanowa"
 
-#: lib/retro_hex_chat_web/components/ui/space_character_creator.ex:388
+#: lib/retro_hex_chat_web/components/ui/space_character_creator.ex:462
 #, elixir-autogen, elixir-format
 msgctxt "skin colour"
 msgid "Tan"
 msgstr "Śniada"
 
-#: lib/retro_hex_chat_web/components/ui/space_character_creator.ex:269
+#: lib/retro_hex_chat_web/components/ui/space_character_creator.ex:293
 #, elixir-autogen, elixir-format
 msgid "Colour"
 msgstr "Kolor"
 
 #: lib/retro_hex_chat_web/components/ui/space_virtual_pad.ex:54
+#: lib/retro_hex_chat_web/controllers/help_content/feature_space_emotes.html.heex:14
 #, elixir-autogen, elixir-format
 msgid "Dance"
 msgstr "Tańcz"
 
 #: lib/retro_hex_chat_web/components/ui/space_virtual_pad.ex:44
+#: lib/retro_hex_chat_web/controllers/help_content/feature_space_emotes.html.heex:7
 #, elixir-autogen, elixir-format
 msgid "Wave"
 msgstr "Pomachaj"
 
-#: lib/retro_hex_chat_web/components/ui/space_character_creator.ex:374
+#: lib/retro_hex_chat_web/components/ui/space_character_creator.ex:448
+#: lib/retro_hex_chat_web/controllers/help_content/feature_choose_character.html.heex:34
+#: lib/retro_hex_chat_web/controllers/help_content/feature_choose_character.html.heex:40
 #, elixir-autogen, elixir-format
 msgctxt "character face item"
 msgid "Beard"
 msgstr "Broda"
 
-#: lib/retro_hex_chat_web/components/ui/space_character_creator.ex:377
+#: lib/retro_hex_chat_web/components/ui/space_character_creator.ex:451
+#: lib/retro_hex_chat_web/controllers/help_content/feature_choose_character.html.heex:37
+#: lib/retro_hex_chat_web/controllers/help_content/feature_choose_character.html.heex:45
 #, elixir-autogen, elixir-format
 msgctxt "character face item"
 msgid "Eyepatch"
 msgstr "Opaska na oko"
 
-#: lib/retro_hex_chat_web/components/ui/space_character_creator.ex:376
+#: lib/retro_hex_chat_web/components/ui/space_character_creator.ex:450
+#: lib/retro_hex_chat_web/controllers/help_content/feature_choose_character.html.heex:36
+#: lib/retro_hex_chat_web/controllers/help_content/feature_choose_character.html.heex:44
 #, elixir-autogen, elixir-format
 msgctxt "character face item"
 msgid "Glasses"
 msgstr "Okulary"
 
-#: lib/retro_hex_chat_web/components/ui/space_character_creator.ex:375
+#: lib/retro_hex_chat_web/components/ui/space_character_creator.ex:449
+#: lib/retro_hex_chat_web/controllers/help_content/feature_choose_character.html.heex:35
+#: lib/retro_hex_chat_web/controllers/help_content/feature_choose_character.html.heex:41
 #, elixir-autogen, elixir-format
 msgctxt "character face item"
 msgid "Moustache"
 msgstr "Wąsy"
 
-#: lib/retro_hex_chat_web/components/ui/space_character_creator.ex:359
+#: lib/retro_hex_chat_web/components/ui/space_character_creator.ex:433
 #, elixir-autogen, elixir-format
 msgctxt "character hair"
 msgid "Afro"
 msgstr "Afro"
 
-#: lib/retro_hex_chat_web/components/ui/space_character_creator.ex:360
+#: lib/retro_hex_chat_web/components/ui/space_character_creator.ex:434
 #, elixir-autogen, elixir-format
 msgctxt "character hair"
 msgid "Mohawk"
 msgstr "Irokez"
 
-#: lib/retro_hex_chat_web/components/ui/space_character_creator.ex:358
+#: lib/retro_hex_chat_web/components/ui/space_character_creator.ex:432
 #, elixir-autogen, elixir-format
 msgctxt "character hair"
 msgid "Ponytail"
 msgstr "Kucyk"
 
-#: lib/retro_hex_chat_web/components/ui/space_character_creator.ex:357
+#: lib/retro_hex_chat_web/components/ui/space_character_creator.ex:431
 #, elixir-autogen, elixir-format
 msgctxt "character hair"
 msgid "Short"
 msgstr "Krótkie"
 
-#: lib/retro_hex_chat_web/components/ui/space_character_creator.ex:366
+#: lib/retro_hex_chat_web/components/ui/space_character_creator.ex:440
 #, elixir-autogen, elixir-format
 msgctxt "character headwear"
 msgid "Beanie"
 msgstr "Czapka"
 
-#: lib/retro_hex_chat_web/components/ui/space_character_creator.ex:369
+#: lib/retro_hex_chat_web/components/ui/space_character_creator.ex:443
 #, elixir-autogen, elixir-format
 msgctxt "character headwear"
 msgid "Crown"
 msgstr "Korona"
 
-#: lib/retro_hex_chat_web/components/ui/space_character_creator.ex:368
+#: lib/retro_hex_chat_web/components/ui/space_character_creator.ex:442
 #, elixir-autogen, elixir-format
 msgctxt "character headwear"
 msgid "Hood"
 msgstr "Kaptur"
 
-#: lib/retro_hex_chat_web/components/ui/space_character_creator.ex:367
+#: lib/retro_hex_chat_web/components/ui/space_character_creator.ex:441
 #, elixir-autogen, elixir-format
 msgctxt "character headwear"
 msgid "Wizard hat"
 msgstr "Czapka czarodzieja"
 
-#: lib/retro_hex_chat_web/components/ui/space_character_creator.ex:349
+#: lib/retro_hex_chat_web/components/ui/space_character_creator.ex:423
 #, elixir-autogen, elixir-format
 msgctxt "character outfit"
 msgid "Armour"
 msgstr "Zbroja"
 
-#: lib/retro_hex_chat_web/components/ui/space_character_creator.ex:351
+#: lib/retro_hex_chat_web/components/ui/space_character_creator.ex:425
 #, elixir-autogen, elixir-format
 msgctxt "character outfit"
 msgid "Dress"
 msgstr "Sukienka"
 
-#: lib/retro_hex_chat_web/components/ui/space_character_creator.ex:350
+#: lib/retro_hex_chat_web/components/ui/space_character_creator.ex:424
 #, elixir-autogen, elixir-format
 msgctxt "character outfit"
 msgid "Jacket"
 msgstr "Kurtka"
 
-#: lib/retro_hex_chat_web/components/ui/space_character_creator.ex:348
+#: lib/retro_hex_chat_web/components/ui/space_character_creator.ex:422
 #, elixir-autogen, elixir-format
 msgctxt "character outfit"
 msgid "Robe"
