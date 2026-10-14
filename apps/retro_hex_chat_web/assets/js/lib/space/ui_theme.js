@@ -12,11 +12,11 @@
 const PROPERTIES = Object.freeze({
   bubbleInk: "--space-ui-bubble-ink",
   labelInk: "--space-ui-label-ink",
-  signInk: "--space-ui-sign-ink",
   damage: "--space-ui-damage",
   damageKo: "--space-ui-damage-ko",
   damageOutline: "--space-ui-damage-outline",
   hologramInk: "--space-ui-hologram-ink",
+  focus: "--space-ui-focus",
 });
 
 // The pixel font is drawn at its design size, one font pixel per canvas pixel.

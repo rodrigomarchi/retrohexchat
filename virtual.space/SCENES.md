@@ -23,22 +23,23 @@ A scene is a **map definition** consumed by the client renderer. A map module
 | `tiles` | `name => %{ts, col, row, w, h, flip_x?, frames?, period_ms?}` — the vocabulary (rects on a sheet). Must contain `ground`. |
 | `ground` | Opaque base tile drawn under every floor cell (the void terrain tile, e.g. `f0000`). |
 | `layers` | `%{floor: HxW matrix of tile names, decor: [%{x,y,tile,sort}], above: []}`. `sort:"flat"` (starfield, under everyone) vs `"stand"` (props Y-sorted with avatars → walk-behind). |
-| `lights`,`ambient`,`parallax` | Color-math atmosphere: additive radial `lights:[{x,y,radius,color,blend}]`, a multiply `ambient:{color,alpha}` dusk wash, and `parallax:[{tile,scroll,alpha,step}]` cosmic layers behind the floor. Absent → scene renders full-bright, no depth layers. |
+| `lights`,`ambient` | Color-math atmosphere: additive radial `lights:[{x,y,radius,color,blend}]` and a multiply `ambient:{color,alpha}` dusk wash. Absent → scene renders full-bright. |
 | `spawn` | `[%{x,y,dir}]` — off-collision, in-bounds. |
 | `collision` | `[%{x,y,w,h,kind}]` → expanded to a blocked-tile set. |
 | `zones`,`labels`,`interactables`,`seats` | Metadata + interactive furniture. |
 
-**Render order** (`renderer.js draw()`): void backdrop → **parallax** layers →
+**Render order** (`renderer.js draw()`): void backdrop → sea →
 floor → **flat decor** (starfield) → **shadows** → **depth pass** (`stand` decor
 + avatars Y-sorted together, so avatars walk **behind** taller props) → `above`
 layer → **color-math lighting** (ambient multiply wash + additive light pools) →
-map labels → nick labels/bubbles. So:
+map labels → the **focus prompt** → nick labels/bubbles. The target the use
+button reaches (`focus.js`) is ringed in gold as the depth pass draws it. So:
 - **Walk-behind works:** a `sort:"stand"` prop occludes an avatar while the avatar
   is above its base row, and the avatar passes in front once past it. `sort:"flat"`
   decor (stars) stays under everyone. The `above` layer draws over all avatars.
 - **Atmosphere is color-math, not baked art:** the amber lamp pool, cyan Gate glow
   and cozy dusk tint are canvas `globalCompositeOperation` passes driven by the
-  map's `lights`/`ambient`; the drifting nebula is a `parallax` layer. Motion is
+  map's `lights`/`ambient`. Motion is
   still real frames (stars) — no procedural animation in the art.
 - The renderer is **size-agnostic**; multi-tile decor is anchored **top-left**
   and drawn at native sprite size. `flip_x` mirrors without moving the anchor.
@@ -219,9 +220,8 @@ Wire it up:
   turn a seated composition, and each side keeps its own identity. `flip_x`
   (two vocab entries on one rect, the second mirrored) still serves identical
   props; the Elixir `tiles/0` must copy `flip_x` onto the rect.
-- **Dynamic text on a prop → the `hologram` label** — the built-in
-  `table_nameplate` draws a wooden plaque, which won't sit inside a stone/tech
-  artifact. A `hologram` label kind (in `renderer.js`) draws glowing cyan text
+- **Dynamic text on a prop → the `hologram` label**, the only label kind the
+  renderer draws: a plaque won't sit inside a stone/tech artifact. The `hologram` label kind (in `renderer.js`) draws glowing cyan text
   with a 1px glow and **no frame of its own** — it floats on the prop's own
   display panel. Give the label a `w` matching the panel; `fillText`'s maxWidth
   shrinks long nicks so they never spill past the artifact.
@@ -321,7 +321,7 @@ Hard-won iso lessons:
 ## 10. The Construct (a buildable room)
 
 The **Construct** is the second registered map: an empty white floor behind the
-End of Time's green gate (`eot_portal`, north platform, interactable
+End of Time's green gate (`eot_portal`, centre platform at (48,31), interactable
 `construct_portal`), where the people of a channel or DM place furniture. Its
 author is `virtual.space/tools/author_construct.py`, which writes
 `construct.webp` and `priv/maps/construct.json`.

@@ -5,7 +5,7 @@ the way the world is: dark wood, grey stone, gold corners, parchment faces, a
 pixel font. This covers the space page's window and status bar, the say bar, the
 character creator, the loading card, the gate's question, a Construct piece's
 panel, the build palette, the pad and the fullscreen key — and, on the canvas,
-the nameplates, speech bubbles, signs, table plaques and HP bar. The rest of the
+the nameplates, speech bubbles, the focus prompt and the HP bar. The rest of the
 platform stays Win98.
 
 | Piece | Where |

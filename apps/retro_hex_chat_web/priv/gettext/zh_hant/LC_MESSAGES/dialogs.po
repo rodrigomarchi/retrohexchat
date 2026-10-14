@@ -44,13 +44,6 @@ msgstr "/command $1"
 msgid "/join #channel"
 msgstr "/join #channel"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/url_catcher.ex:347
-#: lib/retro_hex_chat_web/components/ui/dialogs/url_catcher.ex:348
-#, elixir-autogen, elixir-format
-msgid "1 URL"
-msgid_plural "%{count} URLs"
-msgstr[0] "%{count} (英語). URL( URL)"
-
 #: lib/retro_hex_chat_web/components/ui/dialogs/bot_form_dialog.ex:91
 #, elixir-autogen, elixir-format
 msgid "A helpful bot"
@@ -4662,7 +4655,7 @@ msgstr "...又是關於%{word}"
 msgid "muted after %{count} lines in %{window} seconds"
 msgstr "%{window} 秒內 %{count} 行後禁言"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/url_catcher.ex:357
+#: lib/retro_hex_chat_web/components/ui/dialogs/url_catcher.ex:356
 #, elixir-autogen, elixir-format
 msgid "%{nick} posted"
 msgstr "%{nick} 發佈了"
@@ -5192,3 +5185,8 @@ msgstr "/notice $nick Welcome!"
 #, elixir-autogen, elixir-format
 msgid "Nickname mask"
 msgstr "暱稱掩碼"
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/url_catcher.ex:347
+#, elixir-autogen, elixir-format
+msgid "Links: %{count}"
+msgstr "連結：%{count}"

@@ -39,4 +39,9 @@ describe("seatTarget", () => {
       null,
     );
   });
+
+  it("passes over a seat someone else sits on, which the server would refuse", () => {
+    const beside = { x: 5, y: 4, dir: "up", pose: "standing", seatId: null };
+    expect(seatTarget(map(), beside, new Set(["chair"]))).toBe(null);
+  });
 });

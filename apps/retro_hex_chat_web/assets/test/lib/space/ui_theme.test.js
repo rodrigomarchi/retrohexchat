@@ -5,7 +5,6 @@ import { readUiTheme, UI_FONT_PX } from "../../../js/lib/space/ui_theme.js";
 const FALLBACK = {
   bubbleInk: "ink",
   labelInk: "label",
-  signInk: "sign",
   damage: "dmg",
   damageKo: "ko",
   damageOutline: "outline",

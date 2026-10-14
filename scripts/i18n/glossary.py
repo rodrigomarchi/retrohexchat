@@ -499,6 +499,14 @@ _ROWS = {
     "Tree":         ("Árvore", "Árvore", "Árbol", "Arbre", "Baum", "Albero", "Boom", "Drzewo", "Дерево", "Pohon", "木", "树", "樹"),
     "Lamp":         ("Luminária", "Candeeiro", "Lámpara", "Lampe", "Lampe", "Lampada", "Lamp", "Lampa", "Лампа", "Lampu", "ランプ", "灯", "燈"),
     "Use":          ("Usar", "Usar", "Usar", "Utiliser", "Benutzen", "Usa", "Gebruiken", "Użyj", "Использовать", "Gunakan", "使う", "使用", "使用"),
+    # The URL Catcher's count: a label and a number, so no language has to
+    # agree a noun with it.
+    "Links: %{count}": ("Links: %{count}", "Links: %{count}", "Enlaces: %{count}", "Liens : %{count}", "Links: %{count}", "Link: %{count}", "Links: %{count}", "Linki: %{count}", "Ссылки: %{count}", "Tautan: %{count}", "リンク: %{count}", "链接：%{count}", "連結：%{count}"),
+    # A Space's gates ask before they move you, and its help names what lights
+    # up as you walk past.
+    "Go into the Construct?": ("Entrar no Constructo?", "Entrar no Constructo?", "¿Entrar al Constructo?", "Entrer dans le Construct ?", "Ins Konstrukt gehen?", "Entrare nel Costrutto?", "Het Construct in gaan?", "Wejść do Konstruktu?", "Войти в Конструкт?", "Masuk ke Konstruk?", "コンストラクトに入りますか?", "进入构造空间?", "進入構造空間?"),
+    "Go back to the End of Time?": ("Voltar ao End of Time?", "Voltar ao End of Time?", "¿Volver al End of Time?", "Retourner à l'End of Time ?", "Zurück zum End of Time?", "Tornare all'End of Time?", "Terug naar het End of Time?", "Wrócić do End of Time?", "Вернуться в End of Time?", "Kembali ke End of Time?", "End of Time に戻りますか?", "返回 End of Time?", "返回 End of Time?"),
+    "Things you can use": ("Coisas que você pode usar", "Coisas que pode usar", "Cosas que puedes usar", "Ce que vous pouvez utiliser", "Was Sie benutzen können", "Cose che puoi usare", "Wat je kunt gebruiken", "Rzeczy, których możesz użyć", "Что можно использовать", "Hal yang bisa dipakai", "使えるもの", "可以使用的东西", "可以使用的東西"),
     "Turn":         ("Girar", "Rodar", "Girar", "Tourner", "Drehen", "Ruota", "Draaien", "Obróć", "Повернуть", "Putar", "回転", "旋转", "旋轉"),
     # More pieces, the palette's tabs and the floor's paints. "Arcade cabinet"
     # is the coin-op machine; "Floor" is what you stand on, never a storey.
@@ -651,6 +659,21 @@ _CONTEXT_ROWS = {
     # elsewhere: a die is never dying, a sign never a signature, a board never
     # a committee, a screen never a filter, a corner never a nook of a room.
     ("wall", "Corner"): ("Canto", "Canto", "Esquina", "Angle", "Ecke", "Angolo", "Hoek", "Narożnik", "Угол", "Sudut", "角", "墙角", "牆角"),
+    # What pressing does, over whatever the use button reaches in a Space:
+    # imperatives on a prompt, never a play in a theatre or a wristwatch.
+    ("space prompt", "Enter the Construct"): ("Entrar no Constructo", "Entrar no Constructo", "Entrar al Constructo", "Entrer dans le Construct", "Ins Konstrukt", "Entra nel Costrutto", "Naar het Construct", "Wejdź do Konstruktu", "Войти в Конструкт", "Masuk ke Konstruk", "コンストラクトへ", "进入构造空间", "進入構造空間"),
+    ("space prompt", "Back to the End of Time"): ("Voltar ao End of Time", "Voltar ao End of Time", "Volver al End of Time", "Retour à l'End of Time", "Zurück zum End of Time", "Torna all'End of Time", "Terug naar het End of Time", "Wróć do End of Time", "Назад в End of Time", "Kembali ke End of Time", "End of Time に戻る", "返回 End of Time", "返回 End of Time"),
+    ("space prompt", "Sit"): ("Sentar", "Sentar", "Sentarse", "S'asseoir", "Hinsetzen", "Siediti", "Zitten", "Usiądź", "Сесть", "Duduk", "座る", "坐下", "坐下"),
+    ("space prompt", "Stand up"): ("Levantar", "Levantar", "Levantarse", "Se lever", "Aufstehen", "Alzati", "Opstaan", "Wstań", "Встать", "Berdiri", "立ち上がる", "起身", "起身"),
+    ("space prompt", "Switch the light"): ("Acender ou apagar", "Acender ou apagar", "Encender o apagar", "Allumer ou éteindre", "Licht schalten", "Accendi o spegni", "Licht aan of uit", "Włącz lub wyłącz", "Включить или выключить", "Nyalakan atau matikan", "明かりを切り替える", "开关灯", "開關燈"),
+    ("space prompt", "Open or close"): ("Abrir ou fechar", "Abrir ou fechar", "Abrir o cerrar", "Ouvrir ou fermer", "Öffnen oder schließen", "Apri o chiudi", "Openen of sluiten", "Otwórz lub zamknij", "Открыть или закрыть", "Buka atau tutup", "開け閉めする", "开关门", "開關門"),
+    ("space prompt", "Teleport"): ("Teletransportar", "Teletransportar", "Teletransportarse", "Se téléporter", "Teleportieren", "Teletrasportati", "Teleporteren", "Teleportuj się", "Телепортироваться", "Teleportasi", "テレポート", "传送", "傳送"),
+    ("space prompt", "Roll the die"): ("Jogar o dado", "Lançar o dado", "Tirar el dado", "Lancer le dé", "Würfeln", "Lancia il dado", "Gooi de dobbelsteen", "Rzuć kostką", "Бросить кубик", "Lempar dadu", "サイコロを振る", "掷骰子", "擲骰子"),
+    ("space prompt", "Flip the coin"): ("Jogar a moeda", "Atirar a moeda", "Lanzar la moneda", "Lancer la pièce", "Münze werfen", "Lancia la moneta", "Gooi de munt", "Rzuć monetą", "Подбросить монету", "Lempar koin", "コインを投げる", "抛硬币", "擲硬幣"),
+    ("space prompt", "Read"): ("Ler", "Ler", "Leer", "Lire", "Lesen", "Leggi", "Lezen", "Czytaj", "Читать", "Baca", "読む", "阅读", "閱讀"),
+    ("space prompt", "Play"): ("Jogar", "Jogar", "Jugar", "Jouer", "Spielen", "Gioca", "Spelen", "Graj", "Играть", "Main", "遊ぶ", "玩", "玩"),
+    ("space prompt", "Read the board"): ("Ler o quadro", "Ler o quadro", "Leer el tablón", "Lire le panneau", "Brett lesen", "Leggi la bacheca", "Lees het bord", "Czytaj tablicę", "Читать доску", "Baca papan", "掲示板を読む", "查看公告板", "查看公告板"),
+    ("space prompt", "Watch"): ("Assistir", "Ver", "Ver", "Regarder", "Ansehen", "Guarda", "Kijken", "Oglądaj", "Смотреть", "Tonton", "見る", "观看", "觀看"),
     ("construct palette", "Fun"): ("Diversão", "Diversão", "Diversión", "Divertissement", "Spaß", "Divertimento", "Plezier", "Zabawa", "Развлечения", "Hiburan", "遊び", "娱乐", "娛樂"),
     ("construct palette", "Fair"): ("Feira", "Feira", "Feria", "Foire", "Jahrmarkt", "Fiera", "Kermis", "Jarmark", "Ярмарка", "Pasar malam", "お祭り", "集市", "市集"),
     ("construct palette", "Fantasy"): ("Fantasia", "Fantasia", "Fantasía", "Fantastique", "Fantasy", "Fantasy", "Fantasy", "Fantasy", "Фэнтези", "Fantasi", "ファンタジー", "奇幻", "奇幻"),

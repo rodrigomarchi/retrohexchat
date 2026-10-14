@@ -42,16 +42,18 @@ const TILE_SIZE = 16;
 // Integer pixel scale shared by the sprite atlas and the camera step (they must
 // match so floor tiles and avatars align). Lower = more map visible per screen.
 const RENDER_SCALE = 2;
-// Sheet id -> digested URL, rendered by the server because a content hash is
-// exactly what a cached bundle cannot spell. A malformed or absent attribute
-// leaves the atlas on its built-in paths rather than breaking the space.
-function parseSheetUrls(raw) {
+// An object the server renders into a data attribute: sheet id -> digested
+// URL (a content hash is exactly what a cached bundle cannot spell), or the
+// translated words of the focus prompt. A malformed or absent attribute
+// leaves an empty object — built-in sheet paths, no prompt text — rather than
+// breaking the space.
+function parseObjectAttribute(raw, what) {
   if (!raw) return {};
   try {
     const parsed = JSON.parse(raw);
     return parsed && typeof parsed === "object" ? parsed : {};
   } catch (error) {
-    log.error("[space] could not parse sprite sheet urls", error);
+    log.error(`[space] could not parse ${what}`, error);
     return {};
   }
 }
@@ -93,7 +95,7 @@ export function createSpaceCanvasHook(deps = {}) {
       this._atlas = createSpriteAtlas({
         tileSize: TILE_SIZE,
         scale: RENDER_SCALE,
-        sheetUrls: parseSheetUrls(this.el.dataset.spriteSheets),
+        sheetUrls: parseObjectAttribute(this.el.dataset.spriteSheets, "sprite sheet urls"),
         characterCatalog: this.el.dataset.characterCatalog,
         onReady: () => {
           this._assetsReady = true;
@@ -118,6 +120,11 @@ export function createSpaceCanvasHook(deps = {}) {
         // steps to the server cadence, so holding a key walks continuously.
         getHeldIntent: () => this._input?.currentIntent() ?? null,
         onStep: (step) => this._channel?.push(CLIENT_EVENTS.INPUT, step),
+        // Whatever the use button reaches is ringed on the canvas and lights
+        // the pad's use key; a touch screen's prompt names no keyboard key.
+        onFocus: (focus) => this._pad?.setReady(Boolean(focus)),
+        prompts: parseObjectAttribute(this.el.dataset.spacePrompts, "focus prompts"),
+        showKeys: !window.matchMedia?.("(pointer: coarse)")?.matches,
       });
 
       // Size the canvas backing store to its laid-out box and keep it in sync,
@@ -289,7 +296,7 @@ export function createSpaceCanvasHook(deps = {}) {
       const map = this._engine?.map;
       if (!self || !map) return;
 
-      const request = actionRequest(action, map, self);
+      const request = actionRequest(action, map, self, this._engine.takenSeats());
       if (request) this._channel?.push(CLIENT_EVENTS.INTERACT, request);
     },
 

@@ -308,6 +308,29 @@ defmodule RetroHexChatWeb.App.SpaceLiveTest do
       assert html =~ ~s(data-avatar="#{draft}")
       assert html =~ "data-character-catalog"
 
+      # Whatever the use button can reach is named over it: every way a
+      # Construct piece is used, and every gate's question.
+      [prompts] =
+        html
+        |> LazyHTML.from_fragment()
+        |> LazyHTML.query("[data-space-prompts]")
+        |> LazyHTML.attribute("data-space-prompts")
+
+      prompts = Jason.decode!(prompts)
+
+      uses =
+        Application.app_dir(:retro_hex_chat, "priv/maps/construct.json")
+        |> File.read!()
+        |> Jason.decode!()
+        |> Map.fetch!("catalog")
+        |> Map.values()
+        |> Enum.map(& &1["use"])
+        |> Enum.reject(&is_nil/1)
+
+      for verb <- uses ++ ["enter_construct", "exit_construct", "sit", "stand", "use"] do
+        assert prompts[verb] not in [nil, ""], "no prompt for #{verb}"
+      end
+
       token = :sys.get_state(view.pid).socket.assigns.join_token
 
       assert {:ok, data} = ChannelJoinToken.verify(token)

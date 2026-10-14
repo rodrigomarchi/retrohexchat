@@ -4,6 +4,7 @@
  * @flow SP18 [done] A piece placed from the Construct's palette is seen by everyone inside, can be dragged elsewhere and removed with a right-click, and the room is still built the next time it opens
  * @flow SP19 [done] A chair placed in the Construct can be sat in with F
  * @flow SP20 [done] On the touch pad, the hand button goes through the gate and sits down on a chair, as E and F do
+ * @flow SP40 [done] The gate stands a few steps from where people arrive; the hand button stays dim until the gate is in reach, then lights up while the gate glows under a prompt
  *
  * These @flow lines are the source of truth for e2e/TEST_CATALOG.md.
  * Edit them here, then run `make e2e.catalog` to regenerate the index.
@@ -45,7 +46,13 @@ test.describe("The Construct", () => {
       const walker = Walker.follow(space);
       await walkIn(space, "ranger");
 
+      // Where people arrive nothing is in reach: the hand button is dim. Beside
+      // the gate it lights up, and the gate glows under its prompt (SP40).
+      const use = space.getByTestId("space-pad-use");
+      await expect(use).not.toHaveAttribute("data-ready", /.*/);
       await walker.goTo(BEFORE_GATE);
+      await expect(use).toHaveAttribute("data-ready", "");
+      await shot(space, "construct-gate-in-reach");
       await space.keyboard.press("e");
       const modal = space.getByTestId("space-modal");
       await expect(modal).toBeVisible();

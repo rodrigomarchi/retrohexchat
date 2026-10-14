@@ -1515,7 +1515,7 @@ msgstr ""
 msgid "Nickname %{nickname} is already in use"
 msgstr "Прозвище %{nickname} уже используется"
 
-#: lib/retro_hex_chat_web/live/app/space_live.ex:336
+#: lib/retro_hex_chat_web/live/app/space_live.ex:337
 #: lib/retro_hex_chat_web/live/chat_live/helpers/whois.ex:151
 #, elixir-autogen, elixir-format
 msgid "No"
@@ -2105,8 +2105,8 @@ msgstr "Слово не в списке выделений"
 msgid "Yellow"
 msgstr "желтый"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_space_construct.html.heex:12
-#: lib/retro_hex_chat_web/live/app/space_live.ex:326
+#: lib/retro_hex_chat_web/controllers/help_content/feature_space_construct.html.heex:15
+#: lib/retro_hex_chat_web/live/app/space_live.ex:327
 #: lib/retro_hex_chat_web/live/chat_live/helpers/whois.ex:151
 #, elixir-autogen, elixir-format
 msgid "Yes"
@@ -2937,7 +2937,7 @@ msgstr "%{peer} потерял P2P-соединение — ждал их воз
 msgid "Arcade session ended."
 msgstr "Завершилась аркадная сессия."
 
-#: lib/retro_hex_chat_web/live/app/space_live.ex:799
+#: lib/retro_hex_chat_web/live/app/space_live.ex:821
 #, elixir-autogen, elixir-format
 msgid "Channel Space"
 msgstr "Космический канал"
@@ -2982,7 +2982,7 @@ msgstr "Устройство по умолчанию"
 msgid "End P2P Call Media"
 msgstr "Конец P2P Call Media"
 
-#: lib/retro_hex_chat_web/live/app/space_live.ex:803
+#: lib/retro_hex_chat_web/live/app/space_live.ex:825
 #, elixir-autogen, elixir-format
 msgid "Entering channel space..."
 msgstr "Вход в пространство канала..."
@@ -3009,7 +3009,7 @@ msgstr "Mute, unmute или включить P2P-микрофон"
 msgid "Next P2P Layout"
 msgstr "Следующий P2P Layout"
 
-#: lib/retro_hex_chat_web/live/app/space_live.ex:802
+#: lib/retro_hex_chat_web/live/app/space_live.ex:824
 #, elixir-autogen, elixir-format
 msgid "Opening private room..."
 msgstr "Открытие частной комнаты..."
@@ -3041,14 +3041,14 @@ msgstr "Подключение сеанса P2P"
 msgid "P2P session with %{peer} ended."
 msgstr "P2P-сессия с окончанием %{peer}."
 
-#: lib/retro_hex_chat_web/live/app/space_live.ex:798
+#: lib/retro_hex_chat_web/live/app/space_live.ex:820
 #, elixir-autogen, elixir-format
 msgid "Private Space"
 msgstr "Частное пространство"
 
 #: lib/retro_hex_chat_web/components/ui/space/conversation_entry.ex:44
 #: lib/retro_hex_chat_web/controllers/help_content/feature_virtual_spaces.html.heex:12
-#: lib/retro_hex_chat_web/live/app/space_live.ex:764
+#: lib/retro_hex_chat_web/live/app/space_live.ex:786
 #, elixir-autogen, elixir-format
 msgid "Space"
 msgstr "Пространство"
@@ -3793,7 +3793,7 @@ msgstr "Действия беседы"
 msgid "Participants"
 msgstr "Участники"
 
-#: lib/retro_hex_chat_web/live/app/space_live.ex:395
+#: lib/retro_hex_chat_web/live/app/space_live.ex:417
 #, elixir-autogen, elixir-format
 msgid "%{count} in the space"
 msgid_plural "%{count} in the space"
@@ -3811,30 +3811,30 @@ msgstr "Сейчас внутри"
 msgid "Nobody is in here yet."
 msgstr "Здесь пока никого нет."
 
-#: lib/retro_hex_chat_web/live/app/space_live.ex:760
-#: lib/retro_hex_chat_web/live/app/space_live.ex:762
+#: lib/retro_hex_chat_web/live/app/space_live.ex:782
+#: lib/retro_hex_chat_web/live/app/space_live.ex:784
 #, elixir-autogen, elixir-format
 msgid "Space · %{name}"
 msgstr "Пространство · %{name}"
 
-#: lib/retro_hex_chat_web/live/app/space_live.ex:647
-#: lib/retro_hex_chat_web/live/app/space_live.ex:662
-#: lib/retro_hex_chat_web/live/app/space_live.ex:681
+#: lib/retro_hex_chat_web/live/app/space_live.ex:669
+#: lib/retro_hex_chat_web/live/app/space_live.ex:684
+#: lib/retro_hex_chat_web/live/app/space_live.ex:703
 #, elixir-autogen, elixir-format
 msgid "That address does not name a space."
 msgstr "Этот адрес не указывает ни на одно пространство."
 
-#: lib/retro_hex_chat_web/live/app/space_live.ex:693
+#: lib/retro_hex_chat_web/live/app/space_live.ex:715
 #, elixir-autogen, elixir-format
 msgid "This private space belongs to two other people."
 msgstr "Это личное пространство принадлежит двум другим людям."
 
-#: lib/retro_hex_chat_web/live/app/space_live.ex:642
+#: lib/retro_hex_chat_web/live/app/space_live.ex:664
 #, elixir-autogen, elixir-format
 msgid "This space is no longer available."
 msgstr "Это пространство больше не доступно."
 
-#: lib/retro_hex_chat_web/live/app/space_live.ex:709
+#: lib/retro_hex_chat_web/live/app/space_live.ex:731
 #, elixir-autogen, elixir-format
 msgid "You have to be in %{channel} to enter its space."
 msgstr "Чтобы войти в пространство %{channel}, нужно быть на этом канале."
@@ -3869,7 +3869,7 @@ msgstr "%{game} · матч"
 msgid "%{peer} is back."
 msgstr "%{peer} снова здесь."
 
-#: lib/retro_hex_chat_web/live/app/space_live.ex:714
+#: lib/retro_hex_chat_web/live/app/space_live.ex:736
 #, elixir-autogen, elixir-format
 msgid "This space belongs to a channel you are not in."
 msgstr "Это пространство принадлежит каналу, в котором вас нет."
@@ -4011,7 +4011,7 @@ msgid "Message unpinned."
 msgstr "Сообщение откреплено."
 
 #: lib/retro_hex_chat_web/components/ui/space_construct_panel.ex:95
-#: lib/retro_hex_chat_web/controllers/help_content/feature_space_construct.html.heex:110
+#: lib/retro_hex_chat_web/controllers/help_content/feature_space_construct.html.heex:116
 #: lib/retro_hex_chat_web/live/chat_live/window_registry.ex:205
 #, elixir-autogen, elixir-format
 msgid "Pinned"
@@ -4318,9 +4318,9 @@ msgstr "Заглавные буквы не имеют значения: «Али
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_choose_character.html.heex:69
 #: lib/retro_hex_chat_web/live/app/space_live.ex:217
-#: lib/retro_hex_chat_web/live/app/space_live.ex:366
 #: lib/retro_hex_chat_web/live/app/space_live.ex:367
-#: lib/retro_hex_chat_web/live/app/space_live.ex:371
+#: lib/retro_hex_chat_web/live/app/space_live.ex:368
+#: lib/retro_hex_chat_web/live/app/space_live.ex:372
 #, elixir-autogen, elixir-format
 msgid "Change character"
 msgstr "Сменить персонажа"
@@ -4338,31 +4338,31 @@ msgstr "Сказать"
 msgid "Say something"
 msgstr "Скажи что-нибудь."
 
-#: lib/retro_hex_chat_web/live/app/space_live.ex:789
-#: lib/retro_hex_chat_web/live/app/space_live.ex:795
+#: lib/retro_hex_chat_web/live/app/space_live.ex:811
+#: lib/retro_hex_chat_web/live/app/space_live.ex:817
 #, elixir-autogen, elixir-format
 msgid "Say something to %{name}..."
 msgstr "Скажите что-нибудь %{name}"
 
-#: lib/retro_hex_chat_web/live/app/space_live.ex:790
+#: lib/retro_hex_chat_web/live/app/space_live.ex:812
 #, elixir-autogen, elixir-format
 msgid "Say something..."
 msgstr "Скажи что-нибудь..."
 
-#: lib/retro_hex_chat_web/live/app/space_live.ex:297
+#: lib/retro_hex_chat_web/live/app/space_live.ex:298
 #, elixir-autogen, elixir-format
 msgid "%{name} is back on their feet."
 msgstr "%{name} снова на ногах"
 
-#: lib/retro_hex_chat_web/live/app/space_live.ex:296
+#: lib/retro_hex_chat_web/live/app/space_live.ex:297
 #, elixir-autogen, elixir-format
 msgid "%{name} is knocked out!"
 msgstr "%{name} выбит!"
 
 #: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:45
 #: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:62
-#: lib/retro_hex_chat_web/controllers/help_content/feature_space_construct.html.heex:24
-#: lib/retro_hex_chat_web/controllers/help_content/feature_space_construct.html.heex:42
+#: lib/retro_hex_chat_web/controllers/help_content/feature_space_construct.html.heex:30
+#: lib/retro_hex_chat_web/controllers/help_content/feature_space_construct.html.heex:48
 #, elixir-autogen, elixir-format
 msgid "Build"
 msgstr "Строить"
@@ -4372,16 +4372,16 @@ msgstr "Строить"
 msgid "Chair"
 msgstr "Стул"
 
-#: lib/retro_hex_chat_web/live/app/space_live.ex:756
-#: lib/retro_hex_chat_web/live/app/space_live.ex:797
+#: lib/retro_hex_chat_web/live/app/space_live.ex:778
+#: lib/retro_hex_chat_web/live/app/space_live.ex:819
 #, elixir-autogen, elixir-format
 msgid "Construct"
 msgstr "Конструкт"
 
-#: lib/retro_hex_chat_web/live/app/space_live.ex:311
+#: lib/retro_hex_chat_web/live/app/space_live.ex:312
 #, elixir-autogen, elixir-format
 msgid "Go back to the End of Time?"
-msgstr "Вернуться в Конец времени?"
+msgstr "Вернуться в End of Time?"
 
 #: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:478
 #, elixir-autogen, elixir-format
@@ -4389,12 +4389,12 @@ msgid "Keep the way to the gate clear."
 msgstr "Держите путь к воротам чистым."
 
 #: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:368
-#: lib/retro_hex_chat_web/controllers/help_content/feature_space_construct.html.heex:71
+#: lib/retro_hex_chat_web/controllers/help_content/feature_space_construct.html.heex:77
 #, elixir-autogen, elixir-format
 msgid "Lamp"
 msgstr "Лампа"
 
-#: lib/retro_hex_chat_web/live/app/space_live.ex:801
+#: lib/retro_hex_chat_web/live/app/space_live.ex:823
 #, elixir-autogen, elixir-format
 msgid "Loading the Construct..."
 msgstr "Загрузка Конструкт..."
@@ -4407,7 +4407,7 @@ msgstr "Выберите кусок, затем щелкните по полу. 
 #: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:169
 #: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:170
 #: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:230
-#: lib/retro_hex_chat_web/controllers/help_content/feature_space_construct.html.heex:55
+#: lib/retro_hex_chat_web/controllers/help_content/feature_space_construct.html.heex:61
 #, elixir-autogen, elixir-format
 msgid "Remove"
 msgstr "Удалить"
@@ -4440,7 +4440,7 @@ msgstr "Дерево"
 #: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:157
 #: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:158
 #: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:229
-#: lib/retro_hex_chat_web/controllers/help_content/feature_space_construct.html.heex:54
+#: lib/retro_hex_chat_web/controllers/help_content/feature_space_construct.html.heex:60
 #, elixir-autogen, elixir-format
 msgid "Turn"
 msgstr "Повернуть"
@@ -4451,10 +4451,10 @@ msgctxt "furniture"
 msgid "Table"
 msgstr "Стол"
 
-#: lib/retro_hex_chat_web/live/app/space_live.ex:310
+#: lib/retro_hex_chat_web/live/app/space_live.ex:311
 #, elixir-autogen, elixir-format
 msgid "Go into the Construct?"
-msgstr "Выберите Конструкт?"
+msgstr "Войти в Конструкт?"
 
 #: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:477
 #, elixir-autogen, elixir-format
@@ -4477,13 +4477,14 @@ msgid "Only one piece at a time, please wait."
 msgstr "Только один кусок за раз, пожалуйста, подождите."
 
 #: lib/retro_hex_chat_web/components/ui/space_virtual_pad.ex:65
+#: lib/retro_hex_chat_web/live/app/space_live.ex:395
 #, elixir-autogen, elixir-format
 msgid "Use"
 msgstr "Использовать"
 
 #: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:424
 #: lib/retro_hex_chat_web/components/ui/space_construct_panel.ex:90
-#: lib/retro_hex_chat_web/controllers/help_content/feature_space_construct.html.heex:101
+#: lib/retro_hex_chat_web/controllers/help_content/feature_space_construct.html.heex:107
 #, elixir-autogen, elixir-format
 msgid "Arcade cabinet"
 msgstr "Игровой автомат"
@@ -4515,25 +4516,25 @@ msgid "Close"
 msgstr "Закрыть"
 
 #: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:422
-#: lib/retro_hex_chat_web/controllers/help_content/feature_space_construct.html.heex:83
+#: lib/retro_hex_chat_web/controllers/help_content/feature_space_construct.html.heex:89
 #, elixir-autogen, elixir-format
 msgid "Coin"
 msgstr "Монета"
 
 #: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:416
-#: lib/retro_hex_chat_web/controllers/help_content/feature_space_construct.html.heex:77
+#: lib/retro_hex_chat_web/controllers/help_content/feature_space_construct.html.heex:83
 #, elixir-autogen, elixir-format
 msgid "Door"
 msgstr "Дверь"
 
 #: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:303
-#: lib/retro_hex_chat_web/controllers/help_content/feature_space_construct.html.heex:126
+#: lib/retro_hex_chat_web/controllers/help_content/feature_space_construct.html.heex:132
 #, elixir-autogen, elixir-format
 msgid "Erase"
 msgstr "Стереть"
 
 #: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:75
-#: lib/retro_hex_chat_web/controllers/help_content/feature_space_construct.html.heex:125
+#: lib/retro_hex_chat_web/controllers/help_content/feature_space_construct.html.heex:131
 #, elixir-autogen, elixir-format
 msgid "Floor"
 msgstr "Пол"
@@ -4584,7 +4585,7 @@ msgid "Structure"
 msgstr "Конструкции"
 
 #: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:420
-#: lib/retro_hex_chat_web/controllers/help_content/feature_space_construct.html.heex:89
+#: lib/retro_hex_chat_web/controllers/help_content/feature_space_construct.html.heex:95
 #, elixir-autogen, elixir-format
 msgid "Teleporter"
 msgstr "Телепорт"
@@ -4631,7 +4632,7 @@ msgid "Fun"
 msgstr "Развлечения"
 
 #: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:421
-#: lib/retro_hex_chat_web/controllers/help_content/feature_space_construct.html.heex:83
+#: lib/retro_hex_chat_web/controllers/help_content/feature_space_construct.html.heex:89
 #, elixir-autogen, elixir-format
 msgctxt "game piece"
 msgid "Die"
@@ -4639,7 +4640,7 @@ msgstr "Кубик"
 
 #: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:425
 #: lib/retro_hex_chat_web/components/ui/space_construct_panel.ex:88
-#: lib/retro_hex_chat_web/controllers/help_content/feature_space_construct.html.heex:107
+#: lib/retro_hex_chat_web/controllers/help_content/feature_space_construct.html.heex:113
 #, elixir-autogen, elixir-format
 msgctxt "notice board"
 msgid "Board"
@@ -4647,7 +4648,7 @@ msgstr "Доска"
 
 #: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:423
 #: lib/retro_hex_chat_web/components/ui/space_construct_panel.ex:87
-#: lib/retro_hex_chat_web/controllers/help_content/feature_space_construct.html.heex:95
+#: lib/retro_hex_chat_web/controllers/help_content/feature_space_construct.html.heex:101
 #, elixir-autogen, elixir-format
 msgctxt "signpost"
 msgid "Sign"
@@ -4655,7 +4656,7 @@ msgstr "Табличка"
 
 #: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:426
 #: lib/retro_hex_chat_web/components/ui/space_construct_panel.ex:89
-#: lib/retro_hex_chat_web/controllers/help_content/feature_space_construct.html.heex:114
+#: lib/retro_hex_chat_web/controllers/help_content/feature_space_construct.html.heex:120
 #, elixir-autogen, elixir-format
 msgctxt "television"
 msgid "Screen"
@@ -4992,7 +4993,7 @@ msgstr "Плита"
 
 #: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:180
 #: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:181
-#: lib/retro_hex_chat_web/controllers/help_content/feature_space_construct.html.heex:43
+#: lib/retro_hex_chat_web/controllers/help_content/feature_space_construct.html.heex:49
 #, elixir-autogen, elixir-format
 msgctxt "let go of a piece"
 msgid "Drop"
@@ -5700,3 +5701,81 @@ msgstr "Куртка"
 msgctxt "character outfit"
 msgid "Robe"
 msgstr "Мантия"
+
+#: lib/retro_hex_chat_web/live/app/space_live.ex:392
+#, elixir-autogen, elixir-format
+msgctxt "space prompt"
+msgid "Back to the End of Time"
+msgstr "Назад в End of Time"
+
+#: lib/retro_hex_chat_web/live/app/space_live.ex:391
+#, elixir-autogen, elixir-format
+msgctxt "space prompt"
+msgid "Enter the Construct"
+msgstr "Войти в Конструкт"
+
+#: lib/retro_hex_chat_web/live/app/space_live.ex:400
+#, elixir-autogen, elixir-format
+msgctxt "space prompt"
+msgid "Flip the coin"
+msgstr "Подбросить монету"
+
+#: lib/retro_hex_chat_web/live/app/space_live.ex:397
+#, elixir-autogen, elixir-format
+msgctxt "space prompt"
+msgid "Open or close"
+msgstr "Открыть или закрыть"
+
+#: lib/retro_hex_chat_web/live/app/space_live.ex:402
+#, elixir-autogen, elixir-format
+msgctxt "space prompt"
+msgid "Play"
+msgstr "Играть"
+
+#: lib/retro_hex_chat_web/live/app/space_live.ex:401
+#, elixir-autogen, elixir-format
+msgctxt "space prompt"
+msgid "Read"
+msgstr "Читать"
+
+#: lib/retro_hex_chat_web/live/app/space_live.ex:403
+#, elixir-autogen, elixir-format
+msgctxt "space prompt"
+msgid "Read the board"
+msgstr "Читать доску"
+
+#: lib/retro_hex_chat_web/live/app/space_live.ex:399
+#, elixir-autogen, elixir-format
+msgctxt "space prompt"
+msgid "Roll the die"
+msgstr "Бросить кубик"
+
+#: lib/retro_hex_chat_web/live/app/space_live.ex:393
+#, elixir-autogen, elixir-format
+msgctxt "space prompt"
+msgid "Sit"
+msgstr "Сесть"
+
+#: lib/retro_hex_chat_web/live/app/space_live.ex:394
+#, elixir-autogen, elixir-format
+msgctxt "space prompt"
+msgid "Stand up"
+msgstr "Встать"
+
+#: lib/retro_hex_chat_web/live/app/space_live.ex:396
+#, elixir-autogen, elixir-format
+msgctxt "space prompt"
+msgid "Switch the light"
+msgstr "Включить или выключить"
+
+#: lib/retro_hex_chat_web/live/app/space_live.ex:398
+#, elixir-autogen, elixir-format
+msgctxt "space prompt"
+msgid "Teleport"
+msgstr "Телепортироваться"
+
+#: lib/retro_hex_chat_web/live/app/space_live.ex:404
+#, elixir-autogen, elixir-format
+msgctxt "space prompt"
+msgid "Watch"
+msgstr "Смотреть"

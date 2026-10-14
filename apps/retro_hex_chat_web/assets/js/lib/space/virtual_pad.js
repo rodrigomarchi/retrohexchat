@@ -55,6 +55,17 @@ export class VirtualPadController {
     for (const pointerId of [...this._pointers.keys()]) this._releasePointer(pointerId);
   }
 
+  /**
+   * Light the use key while something is in reach of it, dim it while not.
+   * @param {boolean} ready
+   */
+  setReady(ready) {
+    const el = this._root?.querySelector?.('[data-space-pad-action="use"]');
+    if (!el) return;
+    if (ready) el.setAttribute("data-ready", "");
+    else el.removeAttribute("data-ready");
+  }
+
   _onPointerDown(event) {
     const control = this._hitTest(this._root, event.clientX, event.clientY);
     if (!control) return;

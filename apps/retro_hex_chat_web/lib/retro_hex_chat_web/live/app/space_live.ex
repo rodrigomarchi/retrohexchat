@@ -251,6 +251,7 @@ defmodule RetroHexChatWeb.App.SpaceLive do
         data-avatar={@avatar}
         data-sprite-sheets={SpaceAssets.sheet_urls_json()}
         data-character-catalog={SpaceAssets.character_catalog_url()}
+        data-space-prompts={focus_prompts()}
         class="relative flex-1 min-h-0 w-full bg-canvas"
       >
         <%!-- Focusable so Esc in the line below can hand the keyboard back to
@@ -381,6 +382,27 @@ defmodule RetroHexChatWeb.App.SpaceLive do
       </.space_say_bar>
     </div>
     """
+  end
+
+  # What pressing does, shown over whatever the use button reaches: by a
+  # gate's modal action, a Construct piece's `use`, or sitting and standing.
+  defp focus_prompts do
+    Jason.encode!(%{
+      enter_construct: dpgettext("chat", "space prompt", "Enter the Construct"),
+      exit_construct: dpgettext("chat", "space prompt", "Back to the End of Time"),
+      sit: dpgettext("chat", "space prompt", "Sit"),
+      stand: dpgettext("chat", "space prompt", "Stand up"),
+      use: dgettext("chat", "Use"),
+      toggle_light: dpgettext("chat", "space prompt", "Switch the light"),
+      door: dpgettext("chat", "space prompt", "Open or close"),
+      teleport: dpgettext("chat", "space prompt", "Teleport"),
+      roll_die: dpgettext("chat", "space prompt", "Roll the die"),
+      flip_coin: dpgettext("chat", "space prompt", "Flip the coin"),
+      sign: dpgettext("chat", "space prompt", "Read"),
+      arcade: dpgettext("chat", "space prompt", "Play"),
+      board: dpgettext("chat", "space prompt", "Read the board"),
+      screen: dpgettext("chat", "space prompt", "Watch")
+    })
   end
 
   attr :roster, :list, required: true

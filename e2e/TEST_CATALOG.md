@@ -136,7 +136,7 @@ make e2e.catalog.check    # verify it is current (also runs in make ci)
 
 - **249 spec files** under `e2e/tests/`.
 - **609 Playwright `test()` cases**.
-- **556 documented flows**, 555 done, 1 not done.
+- **557 documented flows**, 556 done, 1 not done.
 - **Every spec documents its own flows.**
 
 ## Flow index
@@ -783,6 +783,7 @@ Grouped by section. Every row comes from an `@flow` line in the spec itself.
 | SP37 | The character made at the door is remembered for the nickname on reload, and another person in the channel sees it beside the nickname | `tests/space-character-creator.spec.ts` | done |
 | SP38 | Q waves and Z starts and stops a dance, and the other person in the space sees both; a step ends the dance | `tests/space-emotes.spec.ts` | done |
 | SP39 | On the on-screen pad, the hand button waves and the note button dances | `tests/space-emotes.spec.ts` | done |
+| SP40 | The gate stands a few steps from where people arrive; the hand button stays dim until the gate is in reach, then lights up while the gate glows under a prompt | `tests/space-construct.spec.ts` | done |
 
 ### LC - Localization
 

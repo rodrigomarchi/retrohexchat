@@ -89,11 +89,25 @@ class MissingTermsTest(unittest.TestCase):
 
 
 class ForeignFormsTest(unittest.TestCase):
+    def test_a_link_stays_a_link(self):
+        self.assertTrue(missing_terms("%{count} links", "%{count} ligações", "pt_BR"))
+        self.assertTrue(missing_terms("1 link", "Plik 1", "pl"))
+        self.assertEqual(missing_terms("%{count} links", "%{count} links", "pt_BR"), [])
+
     def test_european_forms_are_foreign_to_pt_br(self):
         # What the single Portuguese model gave the Brazilian page.
         self.assertEqual(
             foreign_forms("Escolhe uma alcunha e entras.", "pt_BR"), ["alcunha", "entras"]
         )
+
+    def test_the_construct_helps_european_forms_are_foreign_to_pt_br(self):
+        self.assertEqual(
+            foreign_forms("As peças movem-se quando as arrastas, e todos vêem.", "pt_BR"),
+            ["arrastas", "vêem"],
+        )
+        self.assertEqual(foreign_forms("As pessoas decoram-na juntas.", "pt_BR"), ["decoram-na"])
+        self.assertEqual(foreign_forms("Arraste-a com o rato.", "pt_BR"), ["com o rato"])
+        self.assertEqual(foreign_forms("Pressione R para rodar uma peça.", "pt_BR"), ["rodar uma peça"])
 
     def test_the_constructs_european_forms_are_foreign_to_pt_br(self):
         self.assertEqual(

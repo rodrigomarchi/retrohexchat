@@ -83,6 +83,17 @@ test.describe("The Construct's pieces", () => {
       await use(a.space, a.walker, lamp);
       await expect.poll(() => at(b.room, lamp)?.state?.on).toBe(false);
       await shot(b.space, "construct-lamp-off");
+      // Beside the lamp, its user's hand button is lit and the lamp ringed;
+      // the guest, out of reach, sees no ring (SP40).
+      await expect(a.space.getByTestId("space-pad-use")).toHaveAttribute(
+        "data-ready",
+        "",
+      );
+      await expect(b.space.getByTestId("space-pad-use")).not.toHaveAttribute(
+        "data-ready",
+        /.*/,
+      );
+      await shot(a.space, "construct-lamp-in-reach");
       await a.space.waitForTimeout(200);
       await a.space.keyboard.press("e");
       await expect.poll(() => at(b.room, lamp)?.state?.on).toBe(true);

@@ -16,15 +16,16 @@ import { seatTarget } from "./seating.js";
  * @param {"interact"|"sit"|"use"} action
  * @param {import("./map.js").SpaceMap} map
  * @param {object} participant
+ * @param {Set<string>} [taken] seats someone else sits on
  * @returns {{kind: "use"|"sit"|"stand", target_id: string}|null}
  */
-export function actionRequest(action, map, participant) {
+export function actionRequest(action, map, participant, taken = new Set()) {
   const use = () => {
     const target = interactTarget(map, participant);
     return target ? { kind: "use", target_id: target.id } : null;
   };
   const seat = () => {
-    const target = seatTarget(map, participant);
+    const target = seatTarget(map, participant, taken);
     return target ? { kind: target.action, target_id: target.id } : null;
   };
 

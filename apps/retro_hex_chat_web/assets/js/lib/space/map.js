@@ -32,9 +32,6 @@ export class SpaceMap {
     // wash. Empty/absent on maps that don't opt in (they render at full bright).
     this.lights = Array.isArray(definition.lights) ? definition.lights : [];
     this.ambient = definition.ambient ?? null;
-    // Parallax background layers (cosmic nebula) drawn behind the floor, offset
-    // by the camera times a per-layer scroll factor (< 1) for depth.
-    this.parallax = Array.isArray(definition.parallax) ? definition.parallax : [];
     // Isometric slabs: one 3D underside {hull, thickness, taper} per solid
     // block (platforms, bridges). A legacy single `slab` wraps into the list;
     // empty when a map defines none → no side faces. Vignette is screen-space.

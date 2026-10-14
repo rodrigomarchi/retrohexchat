@@ -29,6 +29,7 @@ import { Camera } from "./camera.js";
 import { Renderer } from "./renderer.js";
 import { Interpolator } from "./interpolation.js";
 import { ChatState } from "./chat.js";
+import { focusKey, focusTarget } from "./focus.js";
 
 // Per-kind animation lengths; ko/getup are slower full-body motions, a wave is
 // the hand going up, twice to and fro and down. PRIORITY decides which action
@@ -60,6 +61,12 @@ export class SpaceEngine {
    *   intent (or null); polled each frame to drive continuous movement
    * @param {Function} [opts.onStep] called with the wire payload of each step
    *   the render loop predicts (held or buffered intents)
+   * @param {Function} [opts.onFocus] called with the target the use button
+   *   reaches (a `Focus`, or null) each time it changes
+   * @param {Record<string, string>} [opts.prompts] the words a focused target's
+   *   prompt shows, by its verb
+   * @param {boolean} [opts.showKeys] whether the prompt names the keyboard key
+   *   (false where the pad is the only way to press)
    */
   constructor({
     canvas,
@@ -70,6 +77,9 @@ export class SpaceEngine {
     onFrameRendered,
     getHeldIntent,
     onStep,
+    onFocus,
+    prompts,
+    showKeys = true,
   } = {}) {
     this.canvas = canvas;
     this.atlas = atlas;
@@ -79,6 +89,10 @@ export class SpaceEngine {
     this._onFrameRendered = typeof onFrameRendered === "function" ? onFrameRendered : null;
     this._getHeldIntent = typeof getHeldIntent === "function" ? getHeldIntent : null;
     this._onStep = typeof onStep === "function" ? onStep : null;
+    this._onFocus = typeof onFocus === "function" ? onFocus : null;
+    this._prompts = prompts ?? {};
+    this._focusKey = "";
+    this._showKeys = showKeys;
 
     this.selfKey = null;
     this.map = null;
@@ -630,8 +644,36 @@ export class SpaceEngine {
       bubbles,
       now,
       construct: this._constructOverlay,
+      focus: this._focus(),
+      showKeys: this._showKeys,
     });
     this._onFrameRendered?.();
+  }
+
+  /** @returns {Set<string>} the seats other participants sit on. */
+  takenSeats() {
+    const taken = new Set();
+    for (const [key, participant] of this.participants) {
+      if (key !== this.selfKey && participant.seatId) taken.add(participant.seatId);
+    }
+    return taken;
+  }
+
+  // What the use button reaches from the avatar's tile, with the words its
+  // prompt shows; a change is told once. While a Construct piece is in hand
+  // or picked, the floor belongs to building and nothing is offered.
+  _focus() {
+    const building = this._constructOverlay?.ghost || this._constructOverlay?.selected;
+    const found = building ? null : focusTarget(this.map, this.self(), this.takenSeats());
+    const focus = found
+      ? { ...found, label: this._prompts[found.verb] ?? this._prompts.use ?? "" }
+      : null;
+    const key = focusKey(focus);
+    if (key !== this._focusKey) {
+      this._focusKey = key;
+      this._onFocus?.(focus);
+    }
+    return focus;
   }
 
   _activeAction(key, now) {

@@ -148,4 +148,14 @@ describe("VirtualPadController", () => {
     root.dispatchEvent(event);
     expect(event.defaultPrevented).toBe(true);
   });
+
+  it("lights the use key while something is in reach", () => {
+    const use = document.createElement("button");
+    use.setAttribute("data-space-pad-action", "use");
+    root.appendChild(use);
+    controller.setReady(true);
+    expect(use.hasAttribute("data-ready")).toBe(true);
+    controller.setReady(false);
+    expect(use.hasAttribute("data-ready")).toBe(false);
+  });
 });

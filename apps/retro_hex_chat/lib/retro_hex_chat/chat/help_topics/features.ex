@@ -4092,9 +4092,32 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
         ],
         icon: :icon_community,
         description:
-          dgettext(
-            "help",
-            "Every space has a Construct, an empty white room that the people of the conversation decorate together. Its green gate stands on the north island of the End of Time. Press E beside the gate and answer Yes to go in. Pick a piece on the palette and click the floor to place it. Drag a piece to move it, right-click it to remove it, and press R to turn it. Press E next to a lamp, a door, a die, a teleporter, a sign, an arcade cabinet, a board or a screen to use it, and paint the floor from the Floor tab. Everyone inside sees each change at once, and the room stays as you left it."
+          Enum.join(
+            [
+              dgettext("help", "Every space has a Construct."),
+              dgettext("help", "Everyone in the conversation can decorate it."),
+              dgettext(
+                "help",
+                "Its green gate stands on the central island of the End of Time, a few steps from where you arrive."
+              ),
+              dgettext("help", "Press E beside the gate and answer Yes to go in."),
+              dgettext(
+                "help",
+                "Choose a piece in the palette, then click the floor to place it."
+              ),
+              dgettext("help", "Press R to spin a piece."),
+              dgettext("help", "A right-click removes a piece right away."),
+              dgettext("help", "Press E next to a lamp, a door or an arcade cabinet to use it."),
+              dgettext(
+                "help",
+                "When you stand next to a gate, an empty seat or a piece you can use, it gets a gold outline."
+              ),
+              dgettext("help", "A label above it shows what will happen."),
+              dgettext("help", "Paint the floor from the Floor tab."),
+              dgettext("help", "Each change appears at once for everyone inside."),
+              dgettext("help", "The Construct is kept just as it was left.")
+            ],
+            " "
           ),
         see_also: ["feature-virtual-spaces", "feature-space-talk", "keyboard-shortcuts"]
       },

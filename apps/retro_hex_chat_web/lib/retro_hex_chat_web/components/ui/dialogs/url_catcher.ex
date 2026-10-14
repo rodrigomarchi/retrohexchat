@@ -344,8 +344,7 @@ defmodule RetroHexChatWeb.Components.UI.UrlCatcher do
 
   @spec entry_count_label(integer()) :: String.t()
   defp entry_count_label(0), do: dgettext("dialogs", "No URLs captured")
-  defp entry_count_label(1), do: dgettext("dialogs", "1 URL")
-  defp entry_count_label(n), do: dngettext("dialogs", "1 URL", "%{count} URLs", n)
+  defp entry_count_label(n), do: dgettext("dialogs", "Links: %{count}", count: n)
 
   # A link is only ever met inside a line somebody wrote, which is what the
   # list below cannot show.

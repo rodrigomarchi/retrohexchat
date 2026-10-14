@@ -53,7 +53,6 @@ function build(overrides = {}) {
     labels: overrides.labels ?? [],
     lights: overrides.lights ?? undefined,
     ambient: overrides.ambient ?? undefined,
-    parallax: overrides.parallax ?? undefined,
   });
   const camera = new Camera({ tileSize: 16, scale: 2, mapWidth: 20, mapHeight: 15 });
   camera.setViewport(320, 240);
@@ -65,29 +64,11 @@ function build(overrides = {}) {
 }
 
 describe("Renderer map labels", () => {
-  it("draws static room labels supplied by the map definition", () => {
-    const { ctx, renderer } = build({
-      labels: [{ id: "nameplate", kind: "nameplate", x: 2, y: 2, w: 6, h: 1, text: "Alice + Bob" }],
-    });
-
-    renderer.draw({ participants: new Map(), selfKey: null, bubbles: new Map() });
-
-    const printed = ctx.fillText.mock.calls.map((c) => c[0]);
-    expect(printed).toContain("Alice + Bob");
-  });
-
-  it("draws compact table nameplates supplied by the map definition", () => {
+  it("draws the map's holograms and nothing for a label of another kind", () => {
     const { ctx, renderer } = build({
       labels: [
-        {
-          id: "dm_nameplate",
-          kind: "table_nameplate",
-          x: 2,
-          y: 2,
-          w: 3,
-          h: 1,
-          text: "Alice + Bob",
-        },
+        { id: "dm", kind: "hologram", x: 2, y: 2, w: 6, h: 1, text: "Alice + Bob", lift: 150 },
+        { id: "old", kind: "nameplate", x: 4, y: 4, w: 6, h: 1, text: "Unknown" },
       ],
     });
 
@@ -95,6 +76,7 @@ describe("Renderer map labels", () => {
 
     const printed = ctx.fillText.mock.calls.map((c) => c[0]);
     expect(printed).toContain("Alice + Bob");
+    expect(printed).not.toContain("Unknown");
     // No `.space-ui` page around a stand-in canvas: the pixel font's size, the
     // generic family.
     expect(ctx.font).toBe("12px monospace");
@@ -359,35 +341,6 @@ describe("Renderer isometric", () => {
     // No lights in either map → the only radial gradient is the vignette.
     expect(withVig.createRadialGradient).toHaveBeenCalledTimes(1);
     expect(withoutVig.createRadialGradient).not.toHaveBeenCalled();
-  });
-});
-
-describe("Renderer parallax", () => {
-  it("tiles a parallax layer across the viewport behind the floor", () => {
-    const img = { complete: true, naturalWidth: 160 };
-    const atlas = {
-      tile: (name) => (name === "neb" ? { img, sx: 0, sy: 288, sw: 160, sh: 96 } : null),
-      avatar: () => null,
-    };
-    const { ctx, renderer } = build({
-      atlas,
-      parallax: [{ tile: "neb", scroll: 0.3, alpha: 0.5, step: 6 }],
-    });
-    renderer.draw({ participants: new Map(), selfKey: null, bubbles: new Map() });
-    // The 320×240 viewport tiled by a stepped nebula draws it several times.
-    const nebulaBlits = ctx.drawImage.mock.calls.filter((c) => c[2] === 288);
-    expect(nebulaBlits.length).toBeGreaterThan(1);
-  });
-
-  it("skips parallax on maps that define none", () => {
-    const img = { complete: true, naturalWidth: 160 };
-    const atlas = {
-      tile: (name) => (name === "neb" ? { img, sx: 0, sy: 288, sw: 160, sh: 96 } : null),
-      avatar: () => null,
-    };
-    const { ctx, renderer } = build({ atlas });
-    renderer.draw({ participants: new Map(), selfKey: null, bubbles: new Map() });
-    expect(ctx.drawImage.mock.calls.filter((c) => c[2] === 288).length).toBe(0);
   });
 });
 
@@ -855,5 +808,54 @@ describe("Renderer UI kit pieces", () => {
     });
     const printed = ctx.fillText.mock.calls.map((c) => c[0]);
     expect(printed).toEqual(expect.arrayContaining(["alice", "hello"]));
+  });
+});
+
+describe("Renderer focus prompt", () => {
+  const KIT_IMG = { kit: true };
+  const atlas = () => ({
+    tile: () => ({ canvas: {} }),
+    avatar: () => ({ canvas: {} }),
+    uiPiece: (name) =>
+      name === "nameplate"
+        ? { img: KIT_IMG, x: 0, y: 0, w: 30, h: 17, t: 6, r: 10, b: 6, l: 10 }
+        : null,
+  });
+  const gate = { id: "g", key: "interact", verb: "enter_construct", x: 4, y: 4, label: "Go in" };
+  const texts = (ctx) => ctx.fillText.mock.calls.map(([text]) => text);
+
+  it("names the key in front of what pressing does", () => {
+    const { ctx, renderer } = build({ atlas: atlas() });
+    renderer.draw({ participants: new Map(), selfKey: null, focus: gate });
+    expect(texts(ctx)).toEqual(expect.arrayContaining(["E ", "Go in"]));
+  });
+
+  it("names no key where the pad is the only way to press", () => {
+    const { ctx, renderer } = build({ atlas: atlas() });
+    renderer.draw({ participants: new Map(), selfKey: null, focus: gate, showKeys: false });
+    expect(texts(ctx)).toContain("Go in");
+    expect(texts(ctx)).not.toContain("E ");
+  });
+
+  it("draws nothing without a focus", () => {
+    const { ctx, renderer } = build({ atlas: atlas() });
+    renderer.draw({ participants: new Map(), selfKey: null, focus: null });
+    expect(texts(ctx)).toEqual([]);
+  });
+
+  it("rises above the character's own nameplate rather than over it", () => {
+    const { ctx, renderer } = build({ atlas: atlas() });
+    // One tile up the screen, the nameplate sits where the prompt would.
+    const self = { key: "s", nickname: "alice", x: 4, y: 3, dir: "down" };
+    const promptY = (participants, selfKey) => {
+      ctx.fillText.mockClear();
+      renderer.draw({ participants, selfKey, focus: gate, showKeys: false });
+      return ctx.fillText.mock.calls.find(([text]) => text === "Go in")[2];
+    };
+    const alone = promptY(new Map(), null);
+    const beside = promptY(new Map([["s", self]]), "s");
+    const nameY = ctx.fillText.mock.calls.find(([text]) => text === "alice")[2];
+    expect(beside).toBeLessThan(nameY);
+    expect(beside).toBeLessThan(alone);
   });
 });

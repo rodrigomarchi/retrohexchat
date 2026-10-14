@@ -49,6 +49,9 @@ TECHNICAL_SOURCE_ALLOWLIST = [
     r"^\s*ETS: %\{ets\}$",
     r"^\s*Online: %\{online\}$",
     r"^\s*Total: %\{total\}$",
+    # The URL Catcher's count: German, Dutch and Portuguese borrow "Links"
+    # (the glossary curates each locale's word).
+    r"^Links: %\{count\}$",
     r"^→ %\{target_type\}:%\{target_id\}$",
     r"^#%\{name\}$",
     r"^%\{field\}: %\{errors\}$",

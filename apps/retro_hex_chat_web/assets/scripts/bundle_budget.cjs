@@ -66,8 +66,10 @@ const CHUNK_OVERRIDES = [
   },
   {
     pattern: /^app-space_canvas_hook-/,
-    budget: 120 * KIB,
-    reason: "isometric renderer: tile/sprite pipeline, collision, camera, animation clock",
+    budget: 124 * KIB,
+    reason:
+      "isometric renderer: tile/sprite pipeline, collision, camera, animation clock, and the " +
+      "focus ring and prompt every frame draws over what the use button reaches",
   },
   {
     pattern: /^app-group_call_webrtc_hook-/,

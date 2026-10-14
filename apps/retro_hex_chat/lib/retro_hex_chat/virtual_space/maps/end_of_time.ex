@@ -53,7 +53,6 @@ defmodule RetroHexChat.VirtualSpace.Maps.EndOfTime do
       layers: %{floor: data["floor"], decor: decor(data), above: []},
       lights: lights(data),
       ambient: ambient(data),
-      parallax: parallax(data),
       labels:
         Enum.map(data["labels"], fn l ->
           %{
@@ -192,15 +191,6 @@ defmodule RetroHexChat.VirtualSpace.Maps.EndOfTime do
   # picks the diamond-vertex the post billboards on).
   defp railing_posts(data) do
     Enum.map(data["railing_posts"] || [], &%{x: &1["x"], y: &1["y"], corner: &1["corner"]})
-  end
-
-  # Parallax background layers: a tile repeated across the void behind the
-  # platform, scrolling slower than the world for cosmic depth.
-  defp parallax(data) do
-    Enum.map(
-      data["parallax"] || [],
-      &%{tile: &1["tile"], scroll: &1["scroll"], alpha: &1["alpha"], step: &1["step"]}
-    )
   end
 
   defp load do

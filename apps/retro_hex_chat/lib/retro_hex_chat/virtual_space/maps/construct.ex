@@ -54,7 +54,6 @@ defmodule RetroHexChat.VirtualSpace.Maps.Construct do
       layers: %{floor: data["floor"], decor: decor(data["decor"]), above: []},
       lights: Enum.map(data["lights"] || [], &light/1),
       ambient: nil,
-      parallax: [],
       labels: [],
       collision:
         Enum.map(

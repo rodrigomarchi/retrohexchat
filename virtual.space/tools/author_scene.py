@@ -105,14 +105,15 @@ FURNITURE = [
     ("eot_gandalf", 19, 35, {"x": 19, "y": 35, "w": 1, "h": 1}),
     # South platform: Goku braced at the centre-south, arms to the sky.
     ("eot_goku", 48, 58, {"x": 48, "y": 58, "w": 2, "h": 1}),
-    # North platform, east of the Matrix nook: the gate to the channel's
-    # Construct, its arch full of falling green code. Pressing E beside it asks
-    # whether to go in.
-    ("eot_portal", 56, 10, {"x": 56, "y": 10, "w": 1, "h": 1}),
+    # Centre platform, five tiles north of the lamppost the people arrive at:
+    # the gate to the channel's Construct, its arch full of falling green
+    # code, the first thing seen on arrival. Pressing E beside it asks whether
+    # to go in.
+    ("eot_portal", 48, 31, {"x": 48, "y": 31, "w": 1, "h": 1}),
 ]
 # Things a participant can use (E): the Construct gate.
 INTERACTABLES = [
-    {"id": "construct_portal", "kind": "portal", "x": 56, "y": 10, "title": "Construct",
+    {"id": "construct_portal", "kind": "portal", "x": 48, "y": 31, "title": "Construct",
      "modal": {"kind": "confirm", "action": "enter_construct"}},
 ]
 # Floating decor: drawn like standing props but with NO ground footprint —
@@ -510,8 +511,8 @@ def build():
     lights.append({"x": 79, "y": 33, "lift": 40, "radius": 1.1, "color": "a8c8ff",
                    "blend": "add"})
     # The Construct gate glows the green of its falling code.
-    lights.append({"x": 56, "y": 10, "radius": 2.4, "color": "4dff9a", "blend": "add"})
-    lights.append({"x": 56, "y": 10, "lift": 50, "radius": 1.2, "color": "9dffc8",
+    lights.append({"x": 48, "y": 31, "radius": 2.4, "color": "4dff9a", "blend": "add"})
+    lights.append({"x": 48, "y": 31, "lift": 50, "radius": 1.2, "color": "9dffc8",
                    "blend": "add"})
 
     zones = [{"id": name, "kind": "platform", "x": r["x0"], "y": r["y0"],

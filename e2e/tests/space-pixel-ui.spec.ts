@@ -19,6 +19,7 @@ import {
 } from "../helpers/chatUsers";
 import { shot } from "../helpers/screenshots";
 import {
+  BEFORE_GATE,
   RoomWatch,
   chooseInMenu,
   drawerSettled,
@@ -155,7 +156,7 @@ test.describe("The space's pixel-art interface", () => {
       await expect(space.getByTestId("space-status-count")).toBeVisible();
 
       // Through the gate: the question is the kit's panel too.
-      await walker.goTo({ x: 56, y: 11 });
+      await walker.goTo(BEFORE_GATE);
       await space.keyboard.press("e");
       await expect(space.getByTestId("space-modal-yes")).toBeVisible();
       await shot(space, "phone-gate-question");

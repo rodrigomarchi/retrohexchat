@@ -47,7 +47,6 @@ defmodule RetroHexChat.VirtualSpace.OfficeTest do
       layers: %{floor: [], decor: [], above: []},
       lights: [],
       ambient: nil,
-      parallax: [],
       labels: [],
       collision: [],
       zones: [

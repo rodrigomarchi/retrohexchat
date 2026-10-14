@@ -8,6 +8,7 @@ import { wrapBubbleText } from "./bubble_layout.js";
 import { drawNineSlice, drawPiece } from "./nine_slice.js";
 import { readUiTheme } from "./ui_theme.js";
 import { createGlyphLoader } from "./ui_font.js";
+import { isFocusedProp } from "./focus.js";
 
 const HASH = String.fromCharCode(35);
 // Solid backdrop painted before the floor so any tile without a sprite (map
@@ -19,7 +20,7 @@ const SHADOW = "05060c";
 // is darker than the screen-right for a faked directional light.
 const SLAB_FACE_L = "191b26";
 const SLAB_FACE_R = "23262f";
-// The canvas's UI — nameplates, bubbles, signs, the HP bar — is drawn from the
+// The canvas's UI — nameplates, bubbles, the HP bar — is drawn from the
 // space's pixel-art kit (`atlas.uiPiece`), in the kit's pixel font and colours
 // (`ui_theme.js`). These colours only stand in when the page defines none.
 const LABEL_BG = "1b1d24";
@@ -29,7 +30,6 @@ const LABEL_FG = "e8dcc0";
 const NAMEPLATE_H = 21;
 const NAMEPLATE_BASELINE = 15;
 const NAMEPLATE_PAD_X = 13;
-const PLAQUE_H = 21;
 // Combat HP bar under the nameplate: healthy green above half, amber below.
 const HP_MAX = 100;
 const HP_BAR_W = 34;
@@ -54,19 +54,23 @@ const BUBBLE_LINE_PX = 13;
 const BUBBLE_FIRST_BASELINE = 18;
 const BUBBLE_PAD_X = 11;
 const BUBBLE_PAD_Y = 11;
-const SIGN_FG = "f9d46f";
 // Holographic display (End of Time nameplate artifact): glowing cyan text with
 // no frame of its own — reads as surviving tech on the artifact's own screen.
 const HOLO_GLOW = "1f6f7d";
 const HOLO_FG = "9ff6ff";
-// A line of the pixel font sits this far below its cap top (cap height 9px).
-const CAP_PX = 9;
 // Construct build markers: the ghost's diamond is green where the piece fits
 // and red where it does not; a picked piece gets a gold outline.
 const BUILD_OK = "4dd27a";
 const BUILD_BAD = "e0533d";
 const BUILD_PICK = "ffd23e";
 const GHOST_ALPHA = 0.55;
+// What the use button reaches: its art ringed in pulsing gold, a prompt over it.
+const FOCUS_RING_PX = 2;
+const FOCUS_PULSE_MS = 900;
+const FOCUS_PROMPT_GAP = 4;
+// A target with no art of its own (the seat under someone): prompt lift.
+const FOCUS_PROMPT_LIFT = 40;
+const FOCUS_KEYS = Object.freeze({ interact: "E", sit: "F" });
 // A seated avatar rests on the seat, not on the floor beneath it: the sitting
 // pose is drawn this many native pixels up, so the chair's legs show below.
 const SEAT_LIFT_PX = 16;
@@ -142,17 +146,19 @@ export class Renderer {
     this._fx = [];
     this._shakeAt = null;
     this._flashCanvas = null;
+    // Gold silhouettes of focused art, by sheet slice; a handful at most.
+    this._rings = new Map();
     this._reducedMotion =
       typeof window !== "undefined" &&
       window.matchMedia?.("(prefers-reduced-motion: reduce)")?.matches === true;
     this._theme = readUiTheme(canvas, {
       bubbleInk: HASH + BUBBLE_FG,
       labelInk: HASH + LABEL_FG,
-      signInk: HASH + SIGN_FG,
       damage: HASH + DMG_FG,
       damageKo: HASH + DMG_KO_FG,
       damageOutline: HASH + LABEL_BG,
       hologramInk: HASH + HOLO_FG,
+      focus: HASH + BUILD_PICK,
       family: "monospace",
     });
     this._glyphs = createGlyphLoader(
@@ -212,8 +218,6 @@ export class Renderer {
     // The cosmic sea abyss (deep-blue gradient + drifting horizontal ripple
     // bands) fills the void behind a floating platform.
     this._drawSea(ctx, now);
-    // Cosmic parallax layers drift behind the floor for depth.
-    this._drawParallax(ctx, now);
     // Flat decor is the distant STARFIELD in the void — drawn BEFORE the floor so
     // the solid platform/slab occludes any stars behind it (a solid island can't
     // have stars showing through it).
@@ -226,13 +230,23 @@ export class Renderer {
     // Depth pass: standing props and avatars share one Y-sorted order so an
     // avatar passes behind a taller prop (walk-behind) and in front once past
     // its base.
-    this._drawDepthSorted(ctx, state.participants, now, state.construct?.ghost ?? null);
+    const focusTop = this._drawDepthSorted(
+      ctx,
+      state.participants,
+      now,
+      state.construct?.ghost ?? null,
+      state.focus ?? null,
+    );
     // Strictly-overhead decor (canopies, lamp tops) draws over everyone.
     this._drawDecorList(ctx, this._aboveDecor(), now);
     // Color-math atmosphere: a cozy ambient wash dims the lit world, then
     // additive light pools re-brighten it near each source (lamp, fire, portal).
     this._drawLighting(ctx);
     this._drawMapLabels(ctx);
+    this._drawFocusPrompt(ctx, state.focus ?? null, focusTop, {
+      showKeys: state.showKeys !== false,
+      self: state.selfKey ? state.participants.get(state.selfKey) : null,
+    });
 
     // Impact sparks glow over the lit world; damage numbers float over labels.
     this._drawCombatSparks(ctx, state.participants, now);
@@ -288,28 +302,6 @@ export class Renderer {
       ctx.fill();
     }
     ctx.restore();
-  }
-
-  // Cosmic parallax: repeat each layer's tile across the viewport, offset by the
-  // camera times a slow scroll factor so the void drifts behind the platform.
-  // Maps without a `parallax` list skip this entirely.
-  _drawParallax(ctx, now = 0) {
-    for (const layer of this.map.parallax ?? []) {
-      const sprite = this.atlas?.tile(layer.tile, now, 0);
-      if (!isDrawable(sprite?.img)) continue;
-      const scroll = layer.scroll ?? 0.3;
-      const step = Math.max((layer.step ?? 6) * this.tilePx, 1);
-      const ox = -(((this.camera.x * scroll) % step) + step);
-      const oy = -(((this.camera.y * scroll) % step) + step);
-      ctx.save();
-      ctx.globalAlpha = layer.alpha ?? 0.5;
-      for (let y = oy; y < this.canvas.height + step; y += step) {
-        for (let x = ox; x < this.canvas.width + step; x += step) {
-          this._blit(ctx, sprite, Math.round(x), Math.round(y));
-        }
-      }
-      ctx.restore();
-    }
   }
 
   // Isometric floor: diamond tiles painted far→near (ascending x+y) so nearer
@@ -435,16 +427,27 @@ export class Renderer {
   // renders behind a prop while above its base, and in front once past it. A
   // prop's base row is its top row plus its sprite height in tiles; an avatar's
   // is its tile row plus one (feet at the bottom of the tile it stands on).
-  _drawDepthSorted(ctx, participants, now = 0, ghost = null) {
+  //
+  // The focused target's art is ringed as it is drawn; the screen point over
+  // its top comes back for the prompt, or null when nothing was ringed.
+  _drawDepthSorted(ctx, participants, now = 0, ghost = null, focus = null) {
     const items = [];
+    let focusTop = null;
     for (const prop of this._standDecor()) {
       const sprite = this.atlas?.tile(prop.tile, now, seedAt(prop.x, prop.y));
       if (!sprite) continue;
+      const ringed = isFocusedProp(focus, prop);
       // Foot = the base tile (depthKey folds elevation in as a tie-break); props
       // draw as upright billboards rising from their diamond foot.
       items.push({
         baseline: this.projection.depthKey(prop.x, prop.y, prop.h ?? 0),
-        draw: () => this._blitBillboard(ctx, prop, sprite),
+        draw: () => {
+          if (ringed) {
+            const top = this._drawFocusRing(ctx, prop, sprite, now);
+            if (top && (!focusTop || top.y < focusTop.y)) focusTop = top;
+          }
+          this._blitBillboard(ctx, prop, sprite);
+        },
       });
     }
     for (const participant of participants.values()) {
@@ -486,6 +489,110 @@ export class Renderer {
     }
     items.sort((a, b) => a.baseline - b.baseline);
     for (const item of items) item.draw();
+    return focusTop;
+  }
+
+  // A pulsing gold ring around a billboard's opaque pixels, drawn just before
+  // the billboard so only the rim shows. Returns the point over its top.
+  _drawFocusRing(ctx, prop, sprite, now) {
+    const ring = this._ringOf(sprite);
+    const scale = this.camera.scale;
+    const f = this.projection.footAnchor(prop.x, prop.y, prop.h ?? 0);
+    const { x, y } = this.camera.worldToScreen(f.x, f.y);
+    const pad = FOCUS_RING_PX * scale;
+    const dx = Math.round(x - (sprite.sw * scale) / 2) - pad;
+    const dy = Math.round(y - sprite.sh * scale) - pad;
+    if (ring) {
+      const w = ring.width * scale;
+      const h = ring.height * scale;
+      const wave = (Math.sin((now / FOCUS_PULSE_MS) * Math.PI * 2) + 1) / 2;
+      ctx.save();
+      ctx.globalAlpha = this._reducedMotion ? 0.9 : 0.55 + 0.45 * wave;
+      ctx.imageSmoothingEnabled = false;
+      if (sprite.flipX) {
+        ctx.scale(-1, 1);
+        ctx.drawImage(ring, 0, 0, ring.width, ring.height, -dx - w, dy, w, h);
+      } else {
+        ctx.drawImage(ring, 0, 0, ring.width, ring.height, dx, dy, w, h);
+      }
+      ctx.restore();
+    }
+    return { x: Math.round(x), y: dy };
+  }
+
+  // The sprite's silhouette grown by FOCUS_RING_PX, in gold, once per sheet
+  // slice; null before the sheet loads or without a 2D context.
+  _ringOf(sprite) {
+    if (!isDrawable(sprite.img) || typeof document === "undefined") return null;
+    const key = `${sprite.sx},${sprite.sy},${sprite.sw},${sprite.sh}`;
+    const cached = this._rings.get(key);
+    if (cached?.img === sprite.img) return cached.canvas;
+    const r = FOCUS_RING_PX;
+    const canvas = document.createElement("canvas");
+    canvas.width = sprite.sw + r * 2;
+    canvas.height = sprite.sh + r * 2;
+    const octx = canvas.getContext?.("2d");
+    if (!octx) return null;
+    for (let ox = -r; ox <= r; ox++) {
+      for (let oy = -r; oy <= r; oy++) {
+        if (Math.abs(ox) + Math.abs(oy) > r) continue;
+        octx.drawImage(
+          sprite.img,
+          sprite.sx,
+          sprite.sy,
+          sprite.sw,
+          sprite.sh,
+          r + ox,
+          r + oy,
+          sprite.sw,
+          sprite.sh,
+        );
+      }
+    }
+    octx.globalCompositeOperation = "source-in";
+    octx.fillStyle = this._theme.focus;
+    octx.fillRect(0, 0, canvas.width, canvas.height);
+    if (this._rings.size >= 8) this._rings.delete(this._rings.keys().next().value);
+    this._rings.set(key, { img: sprite.img, canvas });
+    return canvas;
+  }
+
+  // The prompt over the focused target: the key that reaches it (on a
+  // keyboard) in gold, then what pressing does, on the kit's nameplate. A
+  // piece shorter than the character would put it on the character's own
+  // nameplate, so there it rises above that nameplate instead.
+  _drawFocusPrompt(ctx, focus, top, { showKeys = true, self = null } = {}) {
+    if (!focus?.label) return;
+    let anchor = top;
+    if (!anchor) {
+      const f = this.projection.footAnchor(focus.x, focus.y);
+      const s = this.camera.worldToScreen(f.x, f.y);
+      anchor = { x: Math.round(s.x), y: Math.round(s.y - FOCUS_PROMPT_LIFT * this.camera.scale) };
+    }
+    const key = showKeys ? FOCUS_KEYS[focus.key] : null;
+    const keyText = key ? `${key} ` : "";
+    this._uiFont(ctx, keyText + focus.label);
+    const keyWidth = Math.round(ctx.measureText(keyText).width);
+    const labelWidth = Math.round(ctx.measureText(focus.label).width);
+    const width = keyWidth + labelWidth + NAMEPLATE_PAD_X * 2;
+    const left = Math.round(anchor.x - width / 2);
+    let plateTop = Math.round(anchor.y - NAMEPLATE_H - FOCUS_PROMPT_GAP);
+    if (self?.nickname) {
+      const { x: cx, headY } = this._avatarAnchor(self);
+      const nameWidth = ctx.measureText(self.nickname).width + NAMEPLATE_PAD_X * 2;
+      const nameTop = Math.round(headY - NAMEPLATE_H - 2);
+      const across = left < cx + nameWidth / 2 && cx - nameWidth / 2 < left + width;
+      const down = plateTop < nameTop + NAMEPLATE_H && nameTop < plateTop + NAMEPLATE_H;
+      if (across && down) plateTop = nameTop - NAMEPLATE_H - FOCUS_PROMPT_GAP;
+    }
+    this._frame(ctx, "nameplate", left, plateTop, width, NAMEPLATE_H);
+    const baseline = plateTop + NAMEPLATE_BASELINE;
+    if (key) {
+      ctx.fillStyle = this._theme.focus;
+      ctx.fillText(keyText, left + NAMEPLATE_PAD_X, baseline);
+    }
+    ctx.fillStyle = this._theme.labelInk;
+    ctx.fillText(focus.label, left + NAMEPLATE_PAD_X + keyWidth, baseline);
   }
 
   _drawBuildMarkers(ctx, construct) {
@@ -687,61 +794,12 @@ export class Renderer {
     ctx.restore();
   }
 
+  // The map's floating labels: the End of Time's nameplate, a Construct
+  // sign's line and a die's face, each a hologram over its piece.
   _drawMapLabels(ctx) {
     for (const label of this.map.labels ?? []) {
-      if (!label?.text) continue;
-      if (label.kind === "table_nameplate") {
-        this._drawTableNameplate(ctx, label);
-        continue;
-      }
-      if (label.kind === "hologram") {
-        this._drawHologram(ctx, label);
-        continue;
-      }
-
-      const width = Math.max((label.w ?? 1) * this.tilePx, this.tilePx);
-      const height = Math.max((label.h ?? 1) * this.tilePx, this.tilePx);
-      const la = this.projection.floorAnchor(label.x ?? 0, label.y ?? 0);
-      const { x, y } = this.camera.worldToScreen(la.x, la.y);
-      const dx = Math.round(x);
-      const dy = Math.round(y);
-
-      const text = String(label.text);
-      this._frame(ctx, "sign", dx, dy, width, height);
-      this._uiFont(ctx, text);
-      ctx.fillStyle = this._theme.signInk;
-      this._centredText(
-        ctx,
-        text,
-        dx + width / 2,
-        dy + (height + CAP_PX) / 2,
-        Math.max(Math.round(width) - 24, 1),
-      );
+      if (label?.text && label.kind === "hologram") this._drawHologram(ctx, label);
     }
-  }
-
-  _drawTableNameplate(ctx, label) {
-    const width = Math.max((label.w ?? 1) * this.tilePx, this.tilePx);
-    const height = Math.max((label.h ?? 1) * this.tilePx, this.tilePx);
-    const la = this.projection.floorAnchor(label.x ?? 0, label.y ?? 0);
-    const { x, y } = this.camera.worldToScreen(la.x, la.y);
-    const dx = Math.round(x);
-    const dy = Math.round(y);
-    const plaqueWidth = Math.max(Math.round(width) - 20, this.tilePx * 2);
-    const px = Math.round(dx + (width - plaqueWidth) / 2);
-    const py = Math.round(dy + (height - PLAQUE_H) / 2);
-    const text = String(label.text);
-
-    this._frame(ctx, "plaque", px, py, plaqueWidth, PLAQUE_H);
-    this._uiFont(ctx, text);
-    ctx.fillStyle = this._theme.signInk;
-    this._centredText(
-      ctx,
-      text,
-      px + plaqueWidth / 2,
-      py + NAMEPLATE_BASELINE,
-      Math.max(plaqueWidth - 22, 1),
-    );
   }
 
   // Glowing holographic name display, drawn over the End of Time artifact's own

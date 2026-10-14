@@ -26,11 +26,13 @@
   /* What the canvas renderer reads for its own text (js/lib/space/ui_theme.js). */
   --space-ui-bubble-ink: rgb(66, 31, 34);
   --space-ui-label-ink: rgb(232, 220, 192);
-  --space-ui-sign-ink: rgb(249, 212, 111);
   --space-ui-damage: rgb(255, 236, 160);
   --space-ui-damage-ko: rgb(255, 96, 80);
   --space-ui-damage-outline: rgb(27, 29, 36);
   --space-ui-hologram-ink: rgb(159, 246, 255);
+  /* What the use button reaches: its ring and prompt key on the canvas, and the
+     lit use button. */
+  --space-ui-focus: rgb(255, 210, 62);
 
   font-family: var(--space-ui-font);
   font-size: 12px;
@@ -59,7 +61,10 @@
 }
 
 /* The pixel font has one weight; a synthesized bold smears it. */
-.space-ui :is(b, strong, h1, h2, h3, .font-bold, .font-medium):not(:is([role="dialog"], [role="alertdialog"], .toast-container) *) {
+.space-ui
+  :is(b, strong, h1, h2, h3, .font-bold, .font-medium):not(
+    :is([role="dialog"], [role="alertdialog"], .toast-container) *
+  ) {
   font-weight: 400;
 }
 
@@ -77,7 +82,8 @@
 
 /* Disabled stays etched (retro-controls.css), in stone tones that read on
    wood and parchment. */
-.space-ui :is(:disabled, [aria-disabled="true"], [data-disabled="true"]):not(input, textarea, select) {
+.space-ui
+  :is(:disabled, [aria-disabled="true"], [data-disabled="true"]):not(input, textarea, select) {
   color: var(--space-ui-etched);
   text-shadow: 1px 1px 0 var(--space-ui-etched-light);
 }
@@ -462,6 +468,33 @@
 
 .space-pad-button[data-pressed] .space-icon {
   transform: translateY(1px);
+}
+
+/* The use key is lit while something is in reach (`data-ready`, set as the
+   avatar comes up to a gate, a piece or a seat) and dimmed while nothing is. */
+.space-pad-button[data-space-pad-action="use"]:not([data-ready]) .space-icon {
+  opacity: 0.5;
+}
+
+.space-pad-button[data-space-pad-action="use"][data-ready] {
+  filter: drop-shadow(0 0 3px var(--space-ui-focus));
+  animation: space-pad-ready 0.9s steps(2, jump-none) infinite alternate;
+}
+
+@keyframes space-pad-ready {
+  from {
+    filter: drop-shadow(0 0 1px var(--space-ui-focus));
+  }
+
+  to {
+    filter: drop-shadow(0 0 4px var(--space-ui-focus));
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .space-pad-button[data-space-pad-action="use"][data-ready] {
+    animation: none;
+  }
 }
 
 .space-pad-button--attack {

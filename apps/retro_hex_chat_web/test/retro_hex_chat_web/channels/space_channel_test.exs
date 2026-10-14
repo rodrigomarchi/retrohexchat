@@ -511,7 +511,6 @@ defmodule RetroHexChatWeb.SpaceChannelTest do
       layers: %{floor: [], decor: [], above: []},
       lights: [],
       ambient: nil,
-      parallax: [],
       labels: [],
       collision: [],
       zones: [%{id: "spawn", kind: "zone", x: 0, y: 0, w: 40, h: 24}],

@@ -797,4 +797,58 @@ describe("SpaceEngine combat actions", () => {
 
     expect(engine.predict({ dx: 1, dy: 0, dir: "right" })).toEqual({ moved: false });
   });
+
+  it("hands the renderer what the use button reaches and tells each change once", () => {
+    const onFocus = vi.fn();
+    const { engine, renderer, scheduler } = buildEngine({
+      onFocus,
+      prompts: { enter_construct: "Enter the Construct" },
+      showKeys: false,
+    });
+    const init = tavernInit();
+    init.map.interactables = [
+      {
+        id: "gate",
+        kind: "portal",
+        x: 5,
+        y: 4,
+        modal: { kind: "confirm", action: "enter_construct" },
+      },
+    ];
+    engine.start(init);
+    scheduler.flush();
+    scheduler.flush();
+
+    const state = renderer.draw.mock.calls.at(-1)[0];
+    expect(state.focus).toMatchObject({ id: "gate", label: "Enter the Construct" });
+    expect(state.showKeys).toBe(false);
+    expect(onFocus).toHaveBeenCalledTimes(1);
+
+    engine.participants.get("registered:1").x = 15;
+    scheduler.flush();
+    expect(onFocus).toHaveBeenLastCalledWith(null);
+    expect(onFocus).toHaveBeenCalledTimes(2);
+  });
+
+  it("offers nothing while a Construct piece is in hand", () => {
+    const { engine, renderer, scheduler } = buildEngine();
+    const init = tavernInit();
+    init.map.interactables = [{ id: "lamp", kind: "item", use: "toggle_light", x: 5, y: 4 }];
+    engine.start(init);
+    scheduler.flush();
+    expect(renderer.draw.mock.calls.at(-1)[0].focus?.id).toBe("lamp");
+
+    engine.setConstructOverlay({ ghost: { x: 2, y: 2, tile: "cst_tree" }, selected: null });
+    scheduler.flush();
+    expect(renderer.draw.mock.calls.at(-1)[0].focus).toBe(null);
+  });
+
+  it("names the seats other people sit on, not its own", () => {
+    const { engine } = buildEngine();
+    const init = tavernInit();
+    init.snapshot.participants["registered:1"].seat_id = "mine";
+    init.snapshot.participants["registered:2"].seat_id = "theirs";
+    engine.start(init);
+    expect([...engine.takenSeats()]).toEqual(["theirs"]);
+  });
 });

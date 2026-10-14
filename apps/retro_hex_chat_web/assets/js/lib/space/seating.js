@@ -11,14 +11,15 @@ import { frontTile, isAdjacent } from "./interactions.js";
 /**
  * @param {import("./map.js").SpaceMap} map
  * @param {{x:number,y:number,dir:string,pose:string,seatId:string|null}} participant
+ * @param {Set<string>} [taken] seats someone else sits on, which the server refuses
  * @returns {{action:"sit"|"stand", id:string}|null}
  */
-export function seatTarget(map, participant) {
+export function seatTarget(map, participant, taken = new Set()) {
   if (participant.pose === "sitting" && participant.seatId) {
     return { action: "stand", id: participant.seatId };
   }
 
-  const seats = map.seats ? map.seats() : [];
+  const seats = (map.seats ? map.seats() : []).filter((seat) => !taken.has(seat.id));
   if (!seats.length) return null;
 
   const front = frontTile(participant);

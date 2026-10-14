@@ -10,8 +10,8 @@ import { TestUser } from "./chatUsers";
 import { enterAs, Look } from "./characters";
 import { Walker } from "../director/space";
 
-// The tile in front of the End of Time's gate, which stands at (56,10).
-export const BEFORE_GATE = { x: 56, y: 11 };
+// The tile in front of the End of Time's gate, which stands at (48,31).
+export const BEFORE_GATE = { x: 48, y: 32 };
 
 export type Item = {
   id: string;

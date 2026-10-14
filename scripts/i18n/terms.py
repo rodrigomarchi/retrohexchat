@@ -164,6 +164,13 @@ _TERMS: dict[str, dict[str, tuple[str, ...]]] = {
         "zh_hans": ("骰子",),
         "zh_hant": ("骰子",),
     },
+    # A link is the address in a message: Portuguese gave the phone call
+    # ("ligação"), Polish a file ("Plik"), Dutch a connection ("verbinding").
+    r"\blinks?\b": {
+        "pt": ("link",),
+        "nl": ("link",),
+        "pl": ("link",),
+    },
     r"\bpieces?\b": {
         "pt": ("peça",),
         "es": ("pieza",),
@@ -259,6 +266,16 @@ _FOREIGN_FORMS: dict[str, tuple[str, ...]] = {
         "vê-te",
         "vêem-te",
         "entrares",
+        # Measured on the Construct's help: "As peças movem-se quando as
+        # arrastas", "decoram-na juntas", and "vêem" spelt as before the
+        # 1990 agreement, which Brazil writes "veem".
+        "arrastas",
+        "decoram-na",
+        "vêem",
+        # "arraste-a com o rato": Portugal's mouse, a rat in Brazil.
+        "com o rato",
+        # "Pressione R para rodar uma peça": Brazil turns a piece with "girar".
+        "rodar uma peça",
     ),
 }
 

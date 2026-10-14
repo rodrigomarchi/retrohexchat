@@ -582,13 +582,14 @@ defmodule RetroHexChat.VirtualSpace.Construct.Layout do
   end
 
   # One interactable per tile of the footprint, so E works from any side of a
-  # long piece; the runtime reads the piece's id before the `#`.
+  # long piece; the runtime reads the piece's id before the `#`, and a client
+  # lights up every layer of the piece through `item_id`.
   defp usable(catalog, items) do
     for item <- items,
         use = get_in(catalog, [item.kind, :use]),
         {{x, y}, n} <- Enum.with_index(footprint(%{catalog: catalog}, item)) do
       id = if n == 0, do: interactable_id(item), else: "#{interactable_id(item)}##{n}"
-      %{id: id, kind: "item", use: use, x: x, y: y}
+      %{id: id, kind: "item", use: use, x: x, y: y, item_id: item.id}
     end
   end
 
