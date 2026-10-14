@@ -106,7 +106,10 @@ defmodule RetroHexChatWeb.CharacterPortrait do
       {"base-#{r.body}-#{r.outfit}", :base,
        %{"skin" => r.skin, "primary" => r.primary, "secondary" => r.secondary}}
     ] ++
-      if(r.face, do: [{"face-#{r.face}", :face, %{"primary" => 0}}], else: []) ++
+      if(r.face,
+        do: [{"face-#{r.face}", :face, %{face_channel(r.face) => r.face_colour}}],
+        else: []
+      ) ++
       if(r.hair, do: [{"hair-#{r.hair}", :hair, %{"hair" => r.hair_colour}}], else: []) ++
       if(r.hat,
         do: [
@@ -115,6 +118,9 @@ defmodule RetroHexChatWeb.CharacterPortrait do
         else: []
       )
   end
+
+  # The channel a face item is dyed through: its palette follows from it.
+  defp face_channel(id), do: @catalog["items"]["face"][id]["channel"]
 
   # A layer's crop, recoloured, as raw RGBA bytes.
   defp rgba(name, kind, colours) do

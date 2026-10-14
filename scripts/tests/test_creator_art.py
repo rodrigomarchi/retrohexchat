@@ -112,6 +112,63 @@ class OverlayTest(unittest.TestCase):
         self.assertIsNot(labels[5 * 20 + 5], art.TRANSPARENT)
 
 
+class FillEnclosedTest(unittest.TestCase):
+    KEYS = ["primary"]
+
+    def labels(self, f):
+        # Labelled as given, so only fill_enclosed acts (classify would
+        # already claim a patch this small by its rim).
+        by_colour = {MAGENTA: "primary", SKIN: "skin", GREY: art.NEUTRAL, OUTLINE: art.NEUTRAL}
+        return [None if p[3] < 128 else by_colour[p] for p in f.px]
+
+    def test_a_pale_patch_inside_the_cloth_becomes_the_cloth(self):
+        f = frame(["oMMMMo",
+                   "oMggMo",
+                   "oMggMo",
+                   "oMMMMo"])
+        out = art.fill_enclosed(f, self.labels(f), self.KEYS)
+        self.assertEqual(out[1 * 6 + 2], "primary")
+        self.assertEqual(out[0], art.NEUTRAL)  # the outline stays
+
+    def test_a_patch_open_to_the_background_is_an_edge_and_stays(self):
+        f = frame(["oMMMM.",
+                   "oMggg.",
+                   "oMMMMo"])
+        out = art.fill_enclosed(f, self.labels(f), self.KEYS)
+        self.assertEqual(out[1 * 6 + 2], art.NEUTRAL)
+
+    def test_a_patch_that_meets_the_skin_is_left_as_drawn(self):
+        # A white shirt between a jacket and the neck is not a highlight.
+        f = frame(["oMssMo",
+                   "oMggMo",
+                   "oMggMo",
+                   "oMMMMo"])
+        out = art.fill_enclosed(f, self.labels(f), self.KEYS)
+        self.assertEqual(out[2 * 6 + 2], art.NEUTRAL)
+
+    def test_the_skin_is_never_filled(self):
+        f = frame(["oMMMMo",
+                   "oMssMo",
+                   "oMMMMo"])
+        out = art.fill_enclosed(f, self.labels(f), self.KEYS)
+        self.assertEqual(out[1 * 6 + 2], "skin")
+
+    def test_a_large_region_is_not_a_patch(self):
+        f = frame(["oMMMMo",
+                   "oMggMo",
+                   "oMMMMo"])
+        out = art.fill_enclosed(f, self.labels(f), self.KEYS, max_area=1)
+        self.assertEqual(out[1 * 6 + 2], art.NEUTRAL)
+
+
+class KeepWithinTest(unittest.TestCase):
+    def test_labels_outside_the_box_are_dropped(self):
+        f = frame(["MM",
+                   "MM"])
+        out = art.keep_within(f, ["a", "b", "c", "d"], (1, 0, 2, 2))
+        self.assertEqual(out, [None, "b", None, "d"])
+
+
 class PaletteTest(unittest.TestCase):
     def test_a_channel_gets_exactly_its_shades_shared_by_every_frame(self):
         light, dark = (240, 60, 220, 255), (150, 20, 130, 255)

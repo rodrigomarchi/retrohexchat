@@ -655,6 +655,54 @@ describe("SpaceEngine visual actions", () => {
     expect(state.participants.get("registered:1").action).toBe(null);
   });
 
+  it("waves on its feet, dancing or not, and gives a wave its own length", () => {
+    const { engine, renderer, scheduler } = buildEngine();
+    let clock = 1000;
+    engine.setClock(() => clock);
+    engine.start(tavernInit());
+
+    engine.applyDelta({ seqAck: {}, updates: { "registered:1": { pose: "dancing" } } });
+    expect(engine.performAction("wave")).toEqual({ acted: true, kind: "wave", dir: "down" });
+    scheduler.flush();
+    const action = renderer.draw.mock.calls.at(-1)[0].participants.get("registered:1").action;
+    expect(action).toMatchObject({ kind: "wave", duration: 840 });
+    // the echo of our own wave is not a second one
+    expect(engine.receiveAction({ key: "registered:1", kind: "wave" })).toBe(false);
+
+    clock += 900;
+    engine.applyDelta({ seqAck: {}, updates: { "registered:1": { pose: "sitting" } } });
+    expect(engine.performAction("wave")).toEqual({ acted: false });
+    expect(engine.performAction("dance")).toEqual({ acted: false });
+  });
+
+  it("a predicted step ends the local dance at once, as the server will", () => {
+    const { engine } = buildEngine();
+    engine.setClock(() => 1000);
+    engine.start(tavernInit());
+    engine.applyDelta({ seqAck: {}, updates: { "registered:1": { pose: "dancing" } } });
+
+    expect(engine.predict({ dx: 1, dy: 0, dir: "right" }).moved).toBe(true);
+    expect(engine.self().pose).toBe("standing");
+  });
+
+  it("plays and asks for nothing sooner than the server's action cooldown", () => {
+    const { engine } = buildEngine();
+    let clock = 1000;
+    engine.setClock(() => clock);
+    engine.start(tavernInit({ config: { action_ms: 250 } }));
+
+    expect(engine.requestDance()).toBe(true);
+    // A wave straight after asking for the dance would be dropped by the server.
+    clock += 100;
+    expect(engine.performAction("wave")).toEqual({ acted: false });
+    expect(engine.requestDance()).toBe(false);
+    clock += 150;
+    expect(engine.performAction("wave")).toEqual({ acted: true, kind: "wave", dir: "down" });
+    expect(engine.requestDance()).toBe(false);
+    clock += 250;
+    expect(engine.requestDance()).toBe(true);
+  });
+
   it("records a remote sword action by participant key", () => {
     const { engine, renderer, scheduler } = buildEngine();
     const clock = 50;

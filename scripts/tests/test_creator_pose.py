@@ -62,7 +62,7 @@ class SeatedTest(unittest.TestCase):
         skeletons = {"3d": {"keypoints": s},
                      "2d_references": {"south": {"keypoints": {l: dict(zip("xy", south_view(p)))
                                                                for l, p in s.items()}}}}
-        first, frames = pose.sit_clip(skeletons, "south", [0.5, 1.0], scale=104 / 144, offset=20 / 144)
+        first, frames = pose.posed_clip(skeletons, "south", "seated", [0.5, 1.0], scale=104 / 144, offset=20 / 144)
         self.assertEqual(len(frames), 2)
         self.assertEqual(len(first), 18)
         for frame in frames:
@@ -70,6 +70,46 @@ class SeatedTest(unittest.TestCase):
             for k in frame:
                 self.assertTrue(20 / 144 <= k["x"] <= 124 / 144)
 
+
+
+def length(a, b):
+    return sum((x - y) ** 2 for x, y in zip(a, b)) ** 0.5
+
+
+class WaveTest(unittest.TestCase):
+    def test_the_right_hand_goes_up_and_to_and_fro_the_arm_keeping_its_length(self):
+        s = standing()
+        raised = [pose.waving(s, step) for step in (1, 2)]
+        for p in raised:
+            self.assertGreater(p["RIGHT ARM"][2], s["NOSE"][2])  # the hand above the head
+            self.assertAlmostEqual(length(p["RIGHT SHOULDER"], p["RIGHT ELBOW"]),
+                                   length(s["RIGHT SHOULDER"], s["RIGHT ELBOW"]))
+            self.assertAlmostEqual(length(p["RIGHT ELBOW"], p["RIGHT ARM"]),
+                                   length(s["RIGHT ELBOW"], s["RIGHT ARM"]))
+            self.assertEqual(p["LEFT ARM"], s["LEFT ARM"])  # the other hand stays down
+        # out, then in: the hand moves across, the elbow does not
+        self.assertNotAlmostEqual(raised[0]["RIGHT ARM"][0], raised[1]["RIGHT ARM"][0])
+        self.assertEqual(raised[0]["RIGHT ELBOW"], raised[1]["RIGHT ELBOW"])
+        self.assertLess(pose.waving(s, 0.5)["RIGHT ARM"][2], raised[0]["RIGHT ARM"][2])
+
+
+class DanceTest(unittest.TestCase):
+    def test_four_beats_one_arm_up_then_the_other_the_feet_where_they_stood(self):
+        s = standing()
+        beats = [pose.dancing(s, b) for b in range(4)]
+        self.assertGreater(beats[0]["RIGHT ARM"][2], s["NOSE"][2])
+        self.assertGreater(beats[2]["LEFT ARM"][2], s["NOSE"][2])
+        self.assertEqual(beats[1], beats[3])
+        self.assertEqual(pose.dancing(s, 4), beats[0])  # it loops
+        for p in beats:
+            self.assertEqual(p["LEFT LEG"], s["LEFT LEG"])
+            self.assertEqual(p["RIGHT LEG"], s["RIGHT LEG"])
+
+    def test_every_posed_clip_names_what_the_model_is_told(self):
+        self.assertEqual(sorted(pose.POSES), ["dance", "seated", "wave"])
+        for shape, action in pose.POSES.values():
+            self.assertTrue(callable(shape))
+            self.assertIn("alone", action)
 
 if __name__ == "__main__":
     unittest.main()

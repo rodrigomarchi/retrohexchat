@@ -4,7 +4,7 @@
  *
  * A character is a creator recipe (`RetroHexChat.VirtualSpace.CharacterRecipe`):
  * body, skin, outfit and its two colours, hair and its colour, headwear and its
- * two colours, face item. The looks below are named so a spec reads as a story
+ * two colours, face item and its colour. The looks below are named so a spec reads as a story
  * ("ana walks in as the ranger") rather than as a string of digits, and they
  * are all different from one another, so two people in a room never wear the
  * same figure by accident.
@@ -20,14 +20,14 @@ export const LOOKS = {
   monk: "c1.b-av.s-7.o-bas-0-0.h-0.w-0.f-0",
   // Forest tunic with ivory trim, long blonde hair under a crimson hat.
   bard: "c1.b-av.s-1.o-tun-5-f.h-lng-5.w-adv-0-3.f-0",
-  // Violet tunic, long white hair.
-  mage: "c1.b-av.s-0.o-tun-a-3.h-lng-8.w-0.f-0",
-  // Charcoal tunic with scarlet trim, bald.
-  rogue: "c1.b-av.s-5.o-tun-e-1.h-0.w-0.f-0",
-  // Sky tunic, long copper hair.
-  scout: "c1.b-av.s-3.o-tun-7-d.h-lng-4.w-0.f-0",
-  // The undershirt and the hat in gold and navy, long black hair.
-  sailor: "c1.b-av.s-6.o-bas-0-0.h-lng-0.w-adv-3-8.f-0",
+  // A violet robe with gold trim, a wizard hat, long white hair and glasses.
+  mage: "c1.b-av.s-0.o-rob-a-3.h-lng-8.w-wiz-a-3.f-gls-3",
+  // A charcoal jacket over scarlet trousers, a mohawk and an eyepatch.
+  rogue: "c1.b-av.s-5.o-jkt-e-1.h-mhk-1.w-0.f-eye-e",
+  // Sky dress with a gold sash, an afro.
+  scout: "c1.b-av.s-3.o-drs-7-3.h-afr-4.w-0.f-0",
+  // The undershirt and the hat in gold and navy, long black hair, a beard.
+  sailor: "c1.b-av.s-6.o-bas-0-0.h-lng-0.w-adv-3-8.f-brd-0",
 } as const;
 
 export type Look = keyof typeof LOOKS;
@@ -48,13 +48,16 @@ type Fields = {
   hat: string;
   hatPrimary: number;
   hatSecondary: number;
+  face: string;
+  faceColour: number;
 };
 
 function fields(recipe: string): Fields {
-  const [, b, s, o, h, w] = recipe.split(".");
+  const [, b, s, o, h, w, f] = recipe.split(".");
   const [outfit, primary, secondary] = o.slice(2).split("-");
   const [hair, hairColour = "0"] = h.slice(2).split("-");
   const [hat, hatPrimary = "0", hatSecondary = "0"] = w.slice(2).split("-");
+  const [face, faceColour = "0"] = f.slice(2).split("-");
   const n = (c: string) => parseInt(c, 36);
   return {
     body: b.slice(2),
@@ -67,6 +70,8 @@ function fields(recipe: string): Fields {
     hat,
     hatPrimary: n(hatPrimary),
     hatSecondary: n(hatSecondary),
+    face,
+    faceColour: n(faceColour),
   };
 }
 
@@ -117,6 +122,9 @@ export async function buildCharacter(space: Page, look: Look | string) {
     await swatch("hat_primary", f.hatPrimary);
     await swatch("hat_secondary", f.hatSecondary);
   }
+  await tab("face");
+  await choose("face", f.face);
+  if (f.face !== "0") await swatch("face_colour", f.faceColour);
   await expect(space.getByTestId("space-creator-preview")).toHaveAttribute(
     "data-recipe",
     recipe,

@@ -93,6 +93,8 @@ describe("sprite atlas contract", () => {
       "hit",
       "ko",
       "getup",
+      "wave",
+      "dance",
     ]);
     expect(DIRECTIONS).toEqual([
       "south",

@@ -249,6 +249,9 @@ defmodule RetroHexChatWeb.Components.UI.SpaceCharacterCreator do
   end
 
   defp part(%{tab: "face"} = assigns) do
+    assigns =
+      assign(assigns, :palette, assigns.recipe.face && Catalog.face_palette(assigns.recipe.face))
+
     ~H"""
     <.choices
       field="face"
@@ -257,6 +260,13 @@ defmodule RetroHexChatWeb.Components.UI.SpaceCharacterCreator do
         | for(id <- Catalog.face(), do: {id, face_label(id)})
       ]}
       current={@recipe.face || "0"}
+    />
+    <.swatches
+      :if={@palette}
+      field="face_colour"
+      palette={@palette}
+      current={@recipe.face_colour}
+      label={dgettext("chat", "Colour")}
     />
     """
   end
@@ -335,20 +345,36 @@ defmodule RetroHexChatWeb.Components.UI.SpaceCharacterCreator do
   @spec outfit_label(String.t()) :: String.t()
   def outfit_label("bas"), do: dpgettext("chat", "character outfit", "Undershirt")
   def outfit_label("tun"), do: dpgettext("chat", "character outfit", "Tunic")
+  def outfit_label("rob"), do: dpgettext("chat", "character outfit", "Robe")
+  def outfit_label("arm"), do: dpgettext("chat", "character outfit", "Armour")
+  def outfit_label("jkt"), do: dpgettext("chat", "character outfit", "Jacket")
+  def outfit_label("drs"), do: dpgettext("chat", "character outfit", "Dress")
   def outfit_label(id), do: id
 
   @doc "The name of a hairstyle."
   @spec hair_label(String.t()) :: String.t()
   def hair_label("lng"), do: dpgettext("chat", "character hair", "Long")
+  def hair_label("sht"), do: dpgettext("chat", "character hair", "Short")
+  def hair_label("pny"), do: dpgettext("chat", "character hair", "Ponytail")
+  def hair_label("afr"), do: dpgettext("chat", "character hair", "Afro")
+  def hair_label("mhk"), do: dpgettext("chat", "character hair", "Mohawk")
   def hair_label(id), do: id
 
   @doc "The name of a hat."
   @spec headwear_label(String.t()) :: String.t()
   def headwear_label("adv"), do: dpgettext("chat", "character headwear", "Adventurer hat")
+  def headwear_label("bea"), do: dpgettext("chat", "character headwear", "Beanie")
+  def headwear_label("wiz"), do: dpgettext("chat", "character headwear", "Wizard hat")
+  def headwear_label("hod"), do: dpgettext("chat", "character headwear", "Hood")
+  def headwear_label("crn"), do: dpgettext("chat", "character headwear", "Crown")
   def headwear_label(id), do: id
 
   @doc "The name of a face item."
   @spec face_label(String.t()) :: String.t()
+  def face_label("brd"), do: dpgettext("chat", "character face item", "Beard")
+  def face_label("mus"), do: dpgettext("chat", "character face item", "Moustache")
+  def face_label("gls"), do: dpgettext("chat", "character face item", "Glasses")
+  def face_label("eye"), do: dpgettext("chat", "character face item", "Eyepatch")
   def face_label(id), do: id
 
   @doc "The colour names of a palette, in the catalog's order."

@@ -13,7 +13,8 @@ defmodule RetroHexChat.VirtualSpace.CharacterRecipe do
 
   `c1` names the format; then body, skin colour, outfit with its two colours,
   hairstyle with its colour (`h-0` is bald), headwear with its two colours
-  (`w-0` is bare-headed) and face item (`f-0` is none). A colour is one base-36
+  (`w-0` is bare-headed) and face item with its colour (`f-0` is none; a
+  beard takes a hair colour, glasses a fabric one). A colour is one base-36
   digit, an index into its palette. Every field is always present and in that
   order, so one character has exactly one spelling: `to_string(parse(s)) == s`.
 
@@ -39,7 +40,8 @@ defmodule RetroHexChat.VirtualSpace.CharacterRecipe do
     hat: nil,
     hat_primary: 0,
     hat_secondary: 0,
-    face: nil
+    face: nil,
+    face_colour: 0
   ]
 
   @type t :: %__MODULE__{
@@ -53,7 +55,8 @@ defmodule RetroHexChat.VirtualSpace.CharacterRecipe do
           hat: String.t() | nil,
           hat_primary: non_neg_integer(),
           hat_secondary: non_neg_integer(),
-          face: String.t() | nil
+          face: String.t() | nil,
+          face_colour: non_neg_integer()
         }
 
   @max_length 64
@@ -72,7 +75,7 @@ defmodule RetroHexChat.VirtualSpace.CharacterRecipe do
          {:ok, {outfit, primary, secondary}} <- outfit(o, body),
          {:ok, {hair, hair_colour}} <- hair(h),
          {:ok, {hat, hat_primary, hat_secondary}} <- hat(w),
-         {:ok, face} <- face(f) do
+         {:ok, {face, face_colour}} <- face(f) do
       recipe = %__MODULE__{
         body: body,
         skin: skin,
@@ -84,7 +87,8 @@ defmodule RetroHexChat.VirtualSpace.CharacterRecipe do
         hat: hat,
         hat_primary: hat_primary,
         hat_secondary: hat_secondary,
-        face: face
+        face: face,
+        face_colour: face_colour
       }
 
       # One character, one spelling: "o-bas-3-0" for an outfit with no dye is
@@ -130,13 +134,13 @@ defmodule RetroHexChat.VirtualSpace.CharacterRecipe do
             "w-#{r.hat}-#{hat_dye(r.hat_primary, r.hat, 0)}-#{hat_dye(r.hat_secondary, r.hat, 1)}",
           else: "w-0"
         ),
-        if(r.face, do: "f-" <> r.face, else: "f-0")
+        if(r.face, do: "f-#{r.face}-#{digit(r.face_colour)}", else: "f-0")
       ],
       "."
     )
   end
 
-  @fields ~w(body skin outfit primary secondary hair hair_colour hat hat_primary hat_secondary face)
+  @fields ~w(body skin outfit primary secondary hair hair_colour hat hat_primary hat_secondary face face_colour)
 
   @doc """
   `recipe` with one field changed, as the creator's controls change it.
@@ -170,6 +174,19 @@ defmodule RetroHexChat.VirtualSpace.CharacterRecipe do
   end
 
   defp change(r, "outfit", id), do: {:ok, %{r | outfit: id}}
+
+  # A face item dyed from another palette keeps its colour when that palette
+  # has it, and takes the first one when it does not.
+  defp change(r, "face", id) when id != "0" do
+    case Catalog.face_palette(id) do
+      nil ->
+        :error
+
+      palette ->
+        colour = if r.face_colour < Catalog.palette_size(palette), do: r.face_colour, else: 0
+        {:ok, %{r | face: id, face_colour: colour}}
+    end
+  end
 
   defp change(r, field, "0") when field in ~w(hair hat face),
     do: {:ok, Map.put(r, String.to_existing_atom(field), nil)}
@@ -207,7 +224,10 @@ defmodule RetroHexChat.VirtualSpace.CharacterRecipe do
     {hat, state} = pick([nil | Map.keys(Catalog.headwear()) |> Enum.sort()], state)
     {hat_primary, state} = index("fabric", state)
     {hat_secondary, state} = index("fabric", state)
-    {face, _state} = pick([nil | Catalog.face()], state)
+    {face, state} = pick([nil | Catalog.face()], state)
+
+    {face_colour, _state} =
+      if face, do: index(Catalog.face_palette(face), state), else: {0, state}
 
     Kernel.to_string(%__MODULE__{
       body: body,
@@ -220,7 +240,8 @@ defmodule RetroHexChat.VirtualSpace.CharacterRecipe do
       hat: hat,
       hat_primary: hat_primary,
       hat_secondary: hat_secondary,
-      face: face
+      face: face,
+      face_colour: face_colour
     })
   end
 
@@ -282,8 +303,18 @@ defmodule RetroHexChat.VirtualSpace.CharacterRecipe do
 
   defp hat(_), do: :error
 
-  defp face("f-0"), do: {:ok, nil}
-  defp face("f-" <> id), do: if(id in Catalog.face(), do: {:ok, id}, else: :error)
+  defp face("f-0"), do: {:ok, {nil, 0}}
+
+  defp face("f-" <> rest) do
+    with [id, c] <- String.split(rest, "-"),
+         palette when is_binary(palette) <- Catalog.face_palette(id),
+         {:ok, c} <- index_of(c, palette) do
+      {:ok, {id, c}}
+    else
+      _ -> :error
+    end
+  end
+
   defp face(_), do: :error
 
   defp index_of(<<char>>, palette) do
@@ -325,6 +356,8 @@ defmodule RetroHexChat.VirtualSpace.CharacterRecipe do
         {hat, hat_primary, hat_secondary} =
           ok_or(hat(w), {base.hat, base.hat_primary, base.hat_secondary})
 
+        {face, face_colour} = ok_or(face(f), {base.face, base.face_colour})
+
         %__MODULE__{
           body: body,
           skin: skin,
@@ -336,7 +369,8 @@ defmodule RetroHexChat.VirtualSpace.CharacterRecipe do
           hat: hat,
           hat_primary: hat_primary,
           hat_secondary: hat_secondary,
-          face: ok_or(face(f), base.face)
+          face: face,
+          face_colour: face_colour
         }
 
       _ ->

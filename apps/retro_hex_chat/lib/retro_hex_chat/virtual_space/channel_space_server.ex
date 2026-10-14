@@ -227,6 +227,14 @@ defmodule RetroHexChat.VirtualSpace.ChannelSpaceServer do
   @spec step_ms() :: non_neg_integer()
   def step_ms, do: Application.get_env(:retro_hex_chat, :virtual_space_step_ms, 150)
 
+  @doc """
+  The cooldown between one participant's actions (a swing, a wave, a dance),
+  in ms. Shared with clients via the `space_init` config so they never play
+  an action the server would drop.
+  """
+  @spec action_ms() :: non_neg_integer()
+  def action_ms, do: action_cooldown_ms()
+
   @spec select_avatar(String.t(), String.t(), String.t()) ::
           :ok | {:error, select_avatar_error()}
   def select_avatar(channel_name, participant_key, avatar) do
@@ -247,10 +255,10 @@ defmodule RetroHexChat.VirtualSpace.ChannelSpaceServer do
     end
   end
 
-  @spec leave_channel_viewer(String.t()) :: :ok
-  def leave_channel_viewer(channel_name) do
+  @spec leave_channel_viewer(String.t(), String.t()) :: :ok
+  def leave_channel_viewer(channel_name, participant_key) do
     case Registry.lookup({:channel_space, channel_name}) do
-      {:ok, pid} -> GenServer.cast(pid, :viewer_left)
+      {:ok, pid} -> GenServer.cast(pid, {:channel_viewer_left, participant_key})
       {:error, :not_found} -> :ok
     end
   end
@@ -550,10 +558,12 @@ defmodule RetroHexChat.VirtualSpace.ChannelSpaceServer do
     end
   end
 
+  # A channel member stays in the scene after closing the space (presence is
+  # the channel's), but a dance is something they are there to do: it ends.
   @impl true
-  def handle_cast(:viewer_left, state) do
+  def handle_cast({:channel_viewer_left, participant_key}, state) do
     viewer_count = max(state.viewer_count - 1, 0)
-    state = %{state | viewer_count: viewer_count}
+    state = %{state | viewer_count: viewer_count} |> end_dance(participant_key)
 
     if viewer_count == 0 do
       {:stop, :normal, state}
@@ -584,7 +594,11 @@ defmodule RetroHexChat.VirtualSpace.ChannelSpaceServer do
 
       participant ->
         state = free_seat(state, participant)
-        updated = %{participant | online?: false, seat_id: nil, last_seen_at: DateTime.utc_now()}
+
+        updated =
+          %{participant | online?: false, seat_id: nil, last_seen_at: DateTime.utc_now()}
+          |> standing_if_dancing()
+
         state = put_in(state.participants[participant_key], updated)
 
         broadcast(state.channel_name, "space_participant_left", %{
@@ -824,6 +838,7 @@ defmodule RetroHexChat.VirtualSpace.ChannelSpaceServer do
           participant
           |> Map.merge(attrs)
           |> Map.merge(%{online?: true, last_seen_at: DateTime.utc_now()})
+          |> back_from_away(was_online?)
 
         state = put_in(state.participants[key], participant)
         unless was_online?, do: broadcast_presence_join(state, key, participant)
@@ -840,12 +855,13 @@ defmodule RetroHexChat.VirtualSpace.ChannelSpaceServer do
         if participant.online? do
           state = free_seat(state, participant)
 
-          updated = %{
-            participant
-            | online?: false,
-              seat_id: nil,
-              last_seen_at: DateTime.utc_now()
-          }
+          updated =
+            standing_if_dancing(%{
+              participant
+              | online?: false,
+                seat_id: nil,
+                last_seen_at: DateTime.utc_now()
+            })
 
           state = put_in(state.participants[key], updated)
           broadcast_presence_left(state, key)
@@ -1076,7 +1092,8 @@ defmodule RetroHexChat.VirtualSpace.ChannelSpaceServer do
 
   defp do_interact(state, _key, _payload), do: {:reply, {:error, :invalid_target}, state}
 
-  # --- Actions: the sword swing is the melee attack ---
+  # --- Actions: the sword swing is the melee attack; a wave and a dance are
+  # there to be seen ---
 
   defp apply_action(state, key, %{kind: "sword"} = payload) do
     participant = Map.get(state.participants, key)
@@ -1085,7 +1102,7 @@ defmodule RetroHexChat.VirtualSpace.ChannelSpaceServer do
       not active_participant?(participant) ->
         {:error, :not_participant, state}
 
-      participant.pose != "standing" ->
+      participant.pose not in ["standing", "dancing"] ->
         {:error, :invalid_action, state}
 
       not action_cooldown_elapsed?(participant) ->
@@ -1100,7 +1117,76 @@ defmodule RetroHexChat.VirtualSpace.ChannelSpaceServer do
     end
   end
 
+  # A wave is seen and nothing else: no target, no state, the same cooldown.
+  defp apply_action(state, key, %{kind: "wave"}) do
+    participant = Map.get(state.participants, key)
+
+    cond do
+      not active_participant?(participant) ->
+        {:error, :not_participant, state}
+
+      participant.pose not in ["standing", "dancing"] ->
+        {:error, :invalid_action, state}
+
+      not action_cooldown_elapsed?(participant) ->
+        {:error, :cooldown, state}
+
+      true ->
+        participant = Map.put(participant, :last_action_at, mono_ms())
+        state = put_in(state.participants[key], participant)
+        broadcast_action(state, key, participant, "wave", nil)
+        {:ok, state}
+    end
+  end
+
+  # Dancing is a pose, not a moment: it lasts until the dancer asks again,
+  # steps, sits or is knocked down, and somebody who walks in meanwhile sees
+  # it in the snapshot.
+  defp apply_action(state, key, %{kind: "dance"}) do
+    participant = Map.get(state.participants, key)
+
+    cond do
+      not active_participant?(participant) ->
+        {:error, :not_participant, state}
+
+      participant.pose not in ["standing", "dancing"] ->
+        {:error, :invalid_action, state}
+
+      not action_cooldown_elapsed?(participant) ->
+        {:error, :cooldown, state}
+
+      true ->
+        pose = if participant.pose == "dancing", do: "standing", else: "dancing"
+        changed = %{Map.put(participant, :last_action_at, mono_ms()) | pose: pose}
+        state = put_in(state.participants[key], changed)
+        state = broadcast_delta(state, key, changed, changed.input_seq)
+        {:ok, state}
+    end
+  end
+
   defp apply_action(state, _key, _payload), do: {:error, :invalid_action, state}
+
+  # A dance lasts while its dancer is there to dance it.
+  defp standing_if_dancing(%{pose: "dancing"} = participant),
+    do: %{participant | pose: "standing"}
+
+  defp standing_if_dancing(participant), do: participant
+
+  # Somebody coming back was not dancing while away.
+  defp back_from_away(participant, true = _was_online?), do: participant
+  defp back_from_away(participant, false), do: standing_if_dancing(participant)
+
+  defp end_dance(state, key) do
+    case Map.get(state.participants, key) do
+      %{pose: "dancing"} = participant ->
+        changed = standing_if_dancing(participant)
+        state = put_in(state.participants[key], changed)
+        broadcast_delta(state, key, changed, changed.input_seq)
+
+      _ ->
+        state
+    end
+  end
 
   # --- Construct pieces in use ---
 
@@ -1358,7 +1444,7 @@ defmodule RetroHexChat.VirtualSpace.ChannelSpaceServer do
     candidates =
       state.participants
       |> Enum.filter(fn {other_key, other} ->
-        other_key != key and active_participant?(other) and other.pose == "standing" and
+        other_key != key and active_participant?(other) and other.pose in ["standing", "dancing"] and
           abs(other.x - attacker.x) <= 1 and abs(other.y - attacker.y) <= 1
       end)
 

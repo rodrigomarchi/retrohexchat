@@ -132,6 +132,102 @@ defmodule RetroHexChat.VirtualSpace.CombatTest do
     end
   end
 
+  describe "waving and dancing" do
+    test "a wave is broadcast and changes nothing else" do
+      ctx = start_space()
+      before = participant(ctx.channel_name, ctx.alice)
+
+      assert :ok = ChannelSpaceServer.action(ctx.channel_name, ctx.alice, %{kind: "wave"})
+
+      alice_key = ctx.alice
+      assert_receive %{event: "space_action", payload: %{kind: "wave", key: ^alice_key}}
+      refute_receive %{event: "space_delta"}, 100
+
+      assert Map.delete(participant(ctx.channel_name, ctx.alice), :last_action_at) ==
+               Map.delete(before, :last_action_at)
+    end
+
+    test "dancing is a pose that lasts until asked again or a step" do
+      ctx = start_space()
+      alice_key = ctx.alice
+      dance = fn -> ChannelSpaceServer.action(ctx.channel_name, ctx.alice, %{kind: "dance"}) end
+
+      assert :ok = dance.()
+
+      assert_receive %{
+        event: "space_delta",
+        payload: %{updates: %{^alice_key => %{pose: "dancing"}}}
+      }
+
+      assert participant(ctx.channel_name, ctx.alice).pose == "dancing"
+
+      # On their feet, a dancer still waves and swings.
+      assert :ok = ChannelSpaceServer.action(ctx.channel_name, ctx.alice, %{kind: "wave"})
+      assert :ok = swing(ctx)
+
+      assert :ok = dance.()
+
+      assert_receive %{
+        event: "space_delta",
+        payload: %{updates: %{^alice_key => %{pose: "standing"}}}
+      }
+
+      assert :ok = dance.()
+      assert participant(ctx.channel_name, ctx.alice).pose == "dancing"
+      approach(ctx, ctx.alice, ctx.bob)
+      alice = participant(ctx.channel_name, ctx.alice)
+
+      if alice.pose == "dancing" do
+        # Already beside bob: one step anywhere ends the dance.
+        ChannelSpaceServer.input(ctx.channel_name, ctx.alice, %{seq: 900, dx: 0, dy: 1})
+      end
+
+      assert participant(ctx.channel_name, ctx.alice).pose == "standing"
+    end
+
+    test "a dance ends with its dancer: closing the space, leaving, coming back" do
+      ctx = start_space()
+      alice_key = ctx.alice
+      dance = fn key -> ChannelSpaceServer.action(ctx.channel_name, key, %{kind: "dance"}) end
+
+      # A channel member who closes the space stays in it, but stops dancing.
+      assert :ok = dance.(ctx.alice)
+      flush_space_events()
+      ChannelSpaceServer.leave_channel_viewer(ctx.channel_name, ctx.alice)
+
+      assert_receive %{
+        event: "space_delta",
+        payload: %{updates: %{^alice_key => %{pose: "standing"}}}
+      }
+
+      # Somebody who leaves is not left dancing, and comes back on their feet.
+      assert :ok = dance.(ctx.bob)
+      ChannelSpaceServer.leave(ctx.channel_name, ctx.bob)
+      assert participant(ctx.channel_name, ctx.bob).pose == "standing"
+      {:ok, _} = ChannelSpaceServer.join(ctx.channel_name, %{user_id: nil, nickname: "bob"})
+      assert participant(ctx.channel_name, ctx.bob).pose == "standing"
+    end
+
+    test "a dancer can be hit, and nobody down can dance" do
+      ctx = start_space()
+      approach(ctx, ctx.alice, ctx.bob)
+      assert :ok = ChannelSpaceServer.action(ctx.channel_name, ctx.bob, %{kind: "dance"})
+      flush_space_events()
+
+      for _ <- 1..4, do: swing(ctx)
+
+      bob_key = ctx.bob
+      assert_receive %{event: "space_action", payload: %{kind: "ko", key: ^bob_key}}
+      assert participant(ctx.channel_name, ctx.bob).pose == "down"
+
+      assert {:error, :invalid_action} =
+               ChannelSpaceServer.action(ctx.channel_name, ctx.bob, %{kind: "dance"})
+
+      assert {:error, :invalid_action} =
+               ChannelSpaceServer.action(ctx.channel_name, ctx.bob, %{kind: "wave"})
+    end
+  end
+
   describe "knockout cycle" do
     test "four hits knock the target down, block it, and it recovers on its own" do
       ctx = start_space()

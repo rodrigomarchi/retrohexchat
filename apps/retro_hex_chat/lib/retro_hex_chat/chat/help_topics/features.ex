@@ -3992,6 +3992,7 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
           "feature-space-construct",
           "feature-choose-character",
           "feature-space-combat",
+          "feature-space-emotes",
           "feature-space-tab",
           "feature-space-card",
           "feature-space-share"
@@ -4091,9 +4092,29 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
         description:
           dgettext(
             "help",
-            "Characters in a Space can spar with each other: press Space (or the pad's sword button) next to another standing character to land a hit. Each hit deals damage and shows a small health bar under their name; at zero HP the character is knocked down for a few seconds, then gets back up on their own with full health. A knockout never has any lasting effect — it is all in good fun."
+            "Characters in a Space can spar with each other: press Space (or the pad's sword button) next to another character on their feet to land a hit. Each hit deals damage and shows a small health bar under their name; at zero HP the character is knocked down for a few seconds, then gets back up on their own with full health. A knockout never has any lasting effect — it is all in good fun."
           ),
-        see_also: ["feature-virtual-spaces", "feature-choose-character"]
+        see_also: ["feature-virtual-spaces", "feature-choose-character", "feature-space-emotes"]
+      },
+      %{
+        id: "feature-space-emotes",
+        title: dgettext("help", "Greeting and Dancing"),
+        category: dgettext("help", "Virtual Spaces"),
+        keywords: [
+          "wave",
+          "dance",
+          "emote",
+          "party",
+          dgettext("help", "greeting"),
+          dgettext("help", "dance")
+        ],
+        icon: :icon_community,
+        description:
+          dgettext(
+            "help",
+            "In a space, Q raises a hand to say hello. Z starts or stops a dance. Each one also has a button on the screen."
+          ),
+        see_also: ["feature-virtual-spaces", "feature-space-combat", "feature-choose-character"]
       },
       %{
         id: "feature-space-tab",

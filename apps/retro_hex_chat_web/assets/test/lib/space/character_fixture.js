@@ -35,7 +35,7 @@ export const CATALOG = Object.freeze({
     bases: ["av/bas", "av/tun"],
     hair: ["lng"],
     headwear: { adv: { channels: ["primary", "secondary"], hair: "clip" } },
-    face: {},
+    face: { brd: { channel: "hair" }, gls: { channel: "primary" } },
   },
   layers: {
     "base-av-bas": {
@@ -65,6 +65,20 @@ export const CATALOG = Object.freeze({
       anims: {
         walk: { url: "/h-walk.png", cell: [20, 30], origin: [25, 20] },
         idle: { url: "/h-idle.png", cell: [20, 30], origin: [25, 20] },
+      },
+    },
+    "face-brd": {
+      channels: { hair: [1, 2] },
+      anims: {
+        walk: { url: "/f-walk.png", cell: [16, 12], origin: [26, 30] },
+        idle: { url: "/f-idle.png", cell: [16, 12], origin: [26, 30] },
+      },
+    },
+    "face-gls": {
+      channels: { primary: [1, 2] },
+      anims: {
+        walk: { url: "/g-walk.png", cell: [16, 6], origin: [26, 26] },
+        idle: { url: "/g-idle.png", cell: [16, 6], origin: [26, 26] },
       },
     },
     "hat-adv": {

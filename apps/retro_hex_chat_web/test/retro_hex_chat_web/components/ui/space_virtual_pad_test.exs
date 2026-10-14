@@ -23,8 +23,8 @@ defmodule RetroHexChatWeb.Components.UI.SpaceVirtualPadTest do
   test "buttons never steal keyboard focus and stay pointer-only" do
     html = render_component(&space_virtual_pad/1, %{})
 
-    # 4 directions + use + attack, all out of the tab order.
-    assert length(String.split(html, ~s(tabindex="-1"))) == 7
+    # 4 directions + use + attack + wave + dance, all out of the tab order.
+    assert length(String.split(html, ~s(tabindex="-1"))) == 9
     # touch-action: none so a drag on the pad never scrolls the page.
     assert html =~ "touch-none"
   end

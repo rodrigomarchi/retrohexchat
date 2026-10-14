@@ -7,7 +7,8 @@
  *     c1.b-av.s-2.o-tun-0-3.h-lng-2.w-0.f-0
  *
  * body, skin colour, outfit and its two colours, hairstyle and colour (`h-0`
- * bald), headwear and its two colours (`w-0` none), face item (`f-0` none).
+ * bald), headwear and its two colours (`w-0` none), face item and its colour
+ * (`f-0` none; the item's channel names the palette).
  * Colours are one base-36 digit each. This module only reads and writes the
  * string; the server decides what is valid, and `parseRecipe` here returns null
  * for anything it cannot compose rather than guessing.
@@ -26,7 +27,7 @@ const index = (c) => DIGITS.indexOf(c);
  * @param {string} recipe
  * @param {object} catalog the web catalog (`items`, `palettes`)
  * @returns {object|null} {body, skin, outfit, primary, secondary, hair,
- *   hairColour, hat, hatPrimary, hatSecondary, face}
+ *   hairColour, hat, hatPrimary, hatSecondary, face, faceColour}
  */
 export function parseRecipe(recipe, catalog) {
   if (typeof recipe !== "string" || !catalog || recipe.length > MAX_LENGTH) return null;
@@ -83,9 +84,14 @@ function readRecipe(recipe, catalog) {
   }
 
   let face = null;
+  let faceColour = 0;
   if (f !== "f-0") {
-    const id = f.startsWith("f-") ? f.slice(2) : null;
+    const parts = f.startsWith("f-") ? f.slice(2).split("-") : [];
+    if (parts.length !== 2) return null;
+    const [id, c] = parts;
     if (!own(items.face, id)) return null;
+    faceColour = colour(c, catalog.channelPalette[items.face[id].channel]);
+    if (faceColour === null) return null;
     face = id;
   }
 
@@ -101,6 +107,7 @@ function readRecipe(recipe, catalog) {
     hatPrimary,
     hatSecondary,
     face,
+    faceColour,
   };
 }
 
@@ -121,7 +128,7 @@ export function recipeString(r, catalog) {
     r.hat
       ? `w-${r.hat}-${dye(r.hatPrimary, 0, hatChannels)}-${dye(r.hatSecondary, 1, hatChannels)}`
       : "w-0",
-    r.face ? `f-${r.face}` : "f-0",
+    r.face ? `f-${r.face}-${digit(r.faceColour)}` : "f-0",
   ].join(".");
 }
 
@@ -141,7 +148,10 @@ export function planLayers(recipe, catalog) {
       colours: { skin: r.skin, primary: r.primary, secondary: r.secondary },
     },
   ];
-  if (r.face) out.push({ layer: `face-${r.face}`, kind: "face", colours: { primary: 0 } });
+  if (r.face) {
+    const channel = catalog.items.face[r.face].channel;
+    out.push({ layer: `face-${r.face}`, kind: "face", colours: { [channel]: r.faceColour } });
+  }
   if (r.hair) out.push({ layer: `hair-${r.hair}`, kind: "hair", colours: { hair: r.hairColour } });
   if (r.hat) {
     out.push({

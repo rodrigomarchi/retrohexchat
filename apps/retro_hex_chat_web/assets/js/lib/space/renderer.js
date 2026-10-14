@@ -107,9 +107,11 @@ const ISO_SLEEP_MS = 12000;
 // The phase is offset per participant so a standing crowd never shifts in sync.
 const ISO_IDLE_CYCLE_MS = 9000;
 const ISO_IDLE2_SHARE = 1 / 3;
-// Ephemeral combat actions the pose machine plays from the action stream. A
-// KO'd participant (pose "down") holds the last ko frame between actions.
-const ISO_COMBAT_ACTIONS = new Set(["sword", "hit", "ko", "getup"]);
+// Ephemeral actions the pose machine plays from the action stream. A KO'd
+// participant (pose "down") holds the last ko frame between actions.
+const ISO_COMBAT_ACTIONS = new Set(["sword", "wave", "hit", "ko", "getup"]);
+// One beat of the dance loop.
+const DANCE_BEAT_MS = 200;
 
 export class Renderer {
   /**
@@ -863,8 +865,8 @@ export class Renderer {
 
   // Resolve a participant into an animation pose {actionKind, dir, frame}. Premium
   // 8-direction iso avatars face where they move and run a full state machine:
-  // combat (ko/hit/getup/sword) > down (KO'd, holds the fallen frame) >
-  // walk (moving) > sleep (long idle) > idle (breathing).
+  // actions (ko/hit/getup/sword/wave) > down (KO'd, holds the fallen frame) >
+  // sitting > dancing (loops) > walk (moving) > sleep (long idle) > idle (breathing).
   _avatarPose(participant, now) {
     const meta = this.atlas?.avatarMeta?.(participant.avatar) ?? {};
     const action = ISO_COMBAT_ACTIONS.has(participant.action?.kind) ? participant.action : null;
@@ -890,6 +892,13 @@ export class Renderer {
         return { actionKind: "sleep", dir, frame: Math.floor(now / 300) % frames("sleep") };
       }
       return { actionKind: meta.hasIdle ? "idle" : "walk", dir, frame: 0 };
+    }
+    if (participant.pose === "dancing" && meta.hasDance) {
+      return {
+        actionKind: "dance",
+        dir: m.dir8,
+        frame: Math.floor(now / DANCE_BEAT_MS) % frames("dance"),
+      };
     }
     const still = now - m.t;
     if (still < 180) {

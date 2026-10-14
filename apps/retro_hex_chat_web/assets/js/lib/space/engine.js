@@ -30,14 +30,22 @@ import { Renderer } from "./renderer.js";
 import { Interpolator } from "./interpolation.js";
 import { ChatState } from "./chat.js";
 
-// Per-kind animation lengths; ko/getup are slower full-body motions. PRIORITY
-// decides which action wins when broadcasts overlap on one participant — a
-// knockout interrupts a swing, a swing never interrupts a reaction.
-const ACTION_DURATION_MS = { sword: 420, hit: 420, ko: 650, getup: 650 };
-const ACTION_PRIORITY = { sword: 0, getup: 1, hit: 2, ko: 3 };
+// Per-kind animation lengths; ko/getup are slower full-body motions, a wave is
+// the hand going up, twice to and fro and down. PRIORITY decides which action
+// wins when broadcasts overlap on one participant — a knockout interrupts a
+// swing, a swing never interrupts a reaction.
+const ACTION_DURATION_MS = { sword: 420, wave: 840, hit: 420, ko: 650, getup: 650 };
+const ACTION_PRIORITY = { sword: 0, wave: 0, getup: 1, hit: 2, ko: 3 };
+// Where a participant can swing or wave from: on their feet, dancing or not.
+const UPRIGHT = new Set(["standing", "dancing"]);
+// What the local player can start themselves and see at once.
+const OWN_ACTIONS = new Set(["sword", "wave"]);
 // Server step cadence fallback when the init config omits `step_ms`. Must match
 // the `:virtual_space_step_ms` default in the Elixir config.
 const DEFAULT_STEP_MS = 150;
+// Server action cooldown fallback when the init config omits `action_ms`;
+// matches `@action_cooldown_ms` in ChannelSpaceServer.
+const DEFAULT_ACTION_MS = 250;
 
 export class SpaceEngine {
   /**
@@ -87,6 +95,10 @@ export class SpaceEngine {
     // never sends a step the server would silently drop.
     this._stepMs = DEFAULT_STEP_MS;
     this._lastStepAt = null;
+    // Action pacing: a swing, wave or dance sooner than the server's action
+    // cooldown would be dropped there, so it is neither played nor sent.
+    this._actionMs = DEFAULT_ACTION_MS;
+    this._lastActionAt = null;
     // A tap that landed mid-cooldown; replayed by the render loop once the
     // cooldown expires so rapid taps walk at full cadence instead of dropping.
     this._bufferedIntent = null;
@@ -128,6 +140,8 @@ export class SpaceEngine {
     this._avatarScale = init.config?.avatar_scale ?? scale;
     const stepMs = Number.parseInt(init.config?.step_ms, 10);
     this._stepMs = Number.isFinite(stepMs) && stepMs >= 0 ? stepMs : DEFAULT_STEP_MS;
+    const actionMs = Number.parseInt(init.config?.action_ms, 10);
+    this._actionMs = Number.isFinite(actionMs) && actionMs >= 0 ? actionMs : DEFAULT_ACTION_MS;
     this.camera = new Camera({
       tileSize: this.map.tileSize,
       scale,
@@ -259,7 +273,17 @@ export class SpaceEngine {
     this._lastStepAt = now;
     this._bufferedIntent = null;
     this._pending.push({ seq, dx: intent.dx, dy: intent.dy });
-    this.participants.set(this.selfKey, { ...self, x: nx, y: ny, dir: intent.dir, moving: true });
+    // A step ends a dance on the server; the prediction ends it here too, or
+    // the dancer would glide a tile in the dance pose until the answer comes.
+    const pose = self.pose === "dancing" ? "standing" : self.pose;
+    this.participants.set(this.selfKey, {
+      ...self,
+      x: nx,
+      y: ny,
+      dir: intent.dir,
+      moving: true,
+      pose,
+    });
     this._selfInterp.moveTo(this.selfKey, nx, ny, now);
 
     return { moved: true, seq, dx: intent.dx, dy: intent.dy, dir: intent.dir };
@@ -282,20 +306,39 @@ export class SpaceEngine {
    */
   performAction(kind) {
     const self = this.self();
-    if (!self || self.pose !== "standing") return { acted: false };
-    if (kind !== "sword") return { acted: false };
+    if (!self || !UPRIGHT.has(self.pose)) return { acted: false };
+    if (!OWN_ACTIONS.has(kind)) return { acted: false };
     if (this._activeAction(self.key, this._clock())) return { acted: false };
+    if (!this._actionReady()) return { acted: false };
 
     this.triggerAction({ key: self.key, kind, dir: self.dir });
     return { acted: true, kind, dir: self.dir };
   }
 
+  /**
+   * Whether the local player may ask to start or stop dancing now: on their
+   * feet and past the action cooldown. A yes counts as the action.
+   * @returns {boolean}
+   */
+  requestDance() {
+    const self = this.self();
+    if (!self || !UPRIGHT.has(self.pose)) return false;
+    return this._actionReady();
+  }
+
+  _actionReady() {
+    const now = this._clock();
+    if (this._lastActionAt !== null && now - this._lastActionAt < this._actionMs) return false;
+    this._lastActionAt = now;
+    return true;
+  }
+
   /** Record an incoming `space_action` as a visual animation. */
   receiveAction(action) {
     const normalized = normalizeAction(action);
-    // Our own sword echo: the local prediction already plays it.
+    // Our own swing or wave echoed back: the local prediction already plays it.
     if (
-      normalized.kind === "sword" &&
+      OWN_ACTIONS.has(normalized.kind) &&
       normalized.key === this.selfKey &&
       this._activeAction(normalized.key, this._clock())
     ) {
@@ -314,8 +357,8 @@ export class SpaceEngine {
     const participant = normalized.key ? this.participants.get(normalized.key) : null;
     if (!participant) return false;
     // The ko broadcast arrives after the delta already flipped the pose to
-    // "down"; every other action only makes sense on a standing avatar.
-    if (normalized.kind !== "ko" && participant.pose !== "standing") return false;
+    // "down"; every other action only makes sense on an avatar on its feet.
+    if (normalized.kind !== "ko" && !UPRIGHT.has(participant.pose)) return false;
 
     const active = this._activeAction(normalized.key, this._clock());
     if (active && ACTION_PRIORITY[normalized.kind] <= ACTION_PRIORITY[active.kind]) return false;

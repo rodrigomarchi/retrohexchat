@@ -20,7 +20,8 @@
           dpgettext("chat", "character creator", "Skin"),
           dpgettext("chat", "character creator", "Outfit"),
           dpgettext("chat", "character creator", "Hair"),
-          dpgettext("chat", "character creator", "Headwear")
+          dpgettext("chat", "character creator", "Headwear"),
+          dpgettext("chat", "character creator", "Face")
         ],
         ", "
       )
@@ -29,6 +30,24 @@
   {dgettext("help_space", "%{bald} removes the hair. %{none} removes the hat.",
     bald: dgettext("chat", "Bald"),
     none: dpgettext("chat", "no headwear", "None")
+  )}
+  {dgettext(
+    "help_space",
+    "On the %{tab} tab, %{none} removes %{beard}, %{moustache}, %{glasses} or %{patch}.",
+    tab: dpgettext("chat", "character creator", "Face"),
+    none: dpgettext("chat", "no face item", "None"),
+    beard: dpgettext("chat", "character face item", "Beard"),
+    moustache: dpgettext("chat", "character face item", "Moustache"),
+    glasses: dpgettext("chat", "character face item", "Glasses"),
+    patch: dpgettext("chat", "character face item", "Eyepatch")
+  )}
+  {dgettext("help_space", "%{beard} and %{moustache} use the hair colours.",
+    beard: dpgettext("chat", "character face item", "Beard"),
+    moustache: dpgettext("chat", "character face item", "Moustache")
+  )}
+  {dgettext("help_space", "%{glasses} and %{patch} use the cloth colours.",
+    glasses: dpgettext("chat", "character face item", "Glasses"),
+    patch: dpgettext("chat", "character face item", "Eyepatch")
   )}
   {dgettext("help_space", "Under a piece that can be dyed, its colours are shown.")}
   {dgettext("help_space", "An outfit and a hat each have a %{main} and a %{trim}.",

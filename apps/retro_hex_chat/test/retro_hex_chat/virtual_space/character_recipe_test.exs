@@ -80,6 +80,36 @@ defmodule RetroHexChat.VirtualSpace.CharacterRecipeTest do
       assert {:ok, %{hair: nil}} = CharacterRecipe.parse(recipe)
     end
 
+    test "a face item takes its colour from the palette it is dyed from" do
+      # Glasses in the last cloth colour, which no hair palette has.
+      index = Catalog.palette_size("fabric") - 1
+      last = Integer.to_string(index, 36) |> String.downcase()
+      assert Catalog.palette_size("hair") < Catalog.palette_size("fabric")
+      assert {:ok, glasses} = CharacterRecipe.put(CharacterRecipe.default(), "face", "gls")
+
+      assert {:ok, glasses} =
+               CharacterRecipe.put(glasses, "face_colour", Integer.to_string(index))
+
+      assert String.ends_with?(glasses, ".f-gls-" <> last)
+
+      # A beard cannot be that colour: it is dyed from the hair palette, and
+      # changing to it starts on the first colour instead.
+      assert {:ok, beard} = CharacterRecipe.put(glasses, "face", "brd")
+      assert String.ends_with?(beard, ".f-brd-0")
+
+      assert {:error, :invalid_recipe} =
+               CharacterRecipe.put(beard, "face_colour", Integer.to_string(index))
+
+      assert {:error, :invalid_recipe} =
+               CharacterRecipe.parse(String.replace(beard, "f-brd-0", "f-brd-" <> last))
+
+      assert {:error, :invalid_recipe} =
+               CharacterRecipe.parse(String.replace(beard, "f-brd-0", "f-brd"))
+
+      assert {:ok, bare} = CharacterRecipe.put(beard, "face", "0")
+      assert String.ends_with?(bare, ".f-0")
+    end
+
     test "refuses what the art cannot compose" do
       assert {:error, :invalid_recipe} =
                CharacterRecipe.put(CharacterRecipe.default(), "hat", "crown")

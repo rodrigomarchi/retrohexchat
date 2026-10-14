@@ -46,7 +46,11 @@ defmodule RetroHexChat.VirtualSpace.CharacterCatalog do
 
   @doc "Face item ids."
   @spec face() :: [String.t()]
-  def face, do: @catalog["face"]
+  def face, do: @catalog["face"] |> Map.keys() |> Enum.sort()
+
+  @doc ~s{The palette a face item is dyed from ("hair" or "fabric"), or nil for no such item.}
+  @spec face_palette(String.t()) :: String.t() | nil
+  def face_palette(id), do: Map.get(@catalog["face"], id)
 
   @doc ~s{How many colours a palette ("skin", "hair" or "fabric") holds.}
   @spec palette_size(String.t()) :: pos_integer()

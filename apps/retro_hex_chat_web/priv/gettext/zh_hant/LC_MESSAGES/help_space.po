@@ -46,13 +46,6 @@ msgstr "攻擊"
 msgid "Knockouts"
 msgstr "擊倒"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_space_combat.html.heex:9
-#, elixir-autogen, elixir-format
-msgid "Stand next to another character and press Space — or tap the sword button on the on-screen pad — to swing your weapon. The swing connects with the character on the tile you are facing, or with whoever is standing beside you. Every class swings its own weapon."
-msgstr ""
-"站在另一個角色旁邊,按下Space——或者按下屏幕墊上的劍按鈕——揮動你的武器. 搖擺與你面對的瓷磚上的角色有關 或與站在你旁邊的人有關 "
-"每個班級都有自己的武器"
-
 #: lib/retro_hex_chat_web/controllers/help_content/feature_space_combat.html.heex:14
 #, elixir-autogen, elixir-format
 msgid "Taking hits and health"
@@ -209,7 +202,7 @@ msgstr "/me works there too. Every other command is typed in the chat, where its
 msgid "A Space has a line along its bottom edge for talking. What you type there is said in the conversation the space belongs to, and pops up as a speech bubble over your character for everyone standing in the space."
 msgstr "A Space有一條線沿着它的底端 說話。 在談話中你輸入的內容是 空間屬於的, 彈出一個演講泡泡 在你的性格上,每個人站在空間。"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_choose_character.html.heex:52
+#: lib/retro_hex_chat_web/controllers/help_content/feature_choose_character.html.heex:71
 #, elixir-autogen, elixir-format
 msgid "Changing inside"
 msgstr "內部更改"
@@ -455,42 +448,42 @@ msgstr "當一塊無法去某處時,屏幕頂端的一張紙條會說出原因."
 msgid "Some places stay clear: the gate and the ground in front of it, the spots where people arrive, and the spot where somebody is standing. A chair stays where it is while somebody sits in it. A piece that would leave somebody with no way back to the gate is refused."
 msgstr "有些地方保持清晰:大門和前面的地面,人們到達的地方,以及有人站在的地方。 有人坐在椅子上的時候 椅子就留在原地 一塊會讓一個人無路回城門的石頭被拒絕了"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_choose_character.html.heex:54
+#: lib/retro_hex_chat_web/controllers/help_content/feature_choose_character.html.heex:73
 #, elixir-autogen, elixir-format
 msgid "%{change} is next to the box you type in, under the map."
 msgstr "%{change}位於您輸入的盒子旁邊,在地圖下."
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_choose_character.html.heex:64
+#: lib/retro_hex_chat_web/controllers/help_content/feature_choose_character.html.heex:83
 #, elixir-autogen, elixir-format
 msgid "Cancel keeps the character you have."
 msgstr "取消保留您擁有的字符 。"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_choose_character.html.heex:62
+#: lib/retro_hex_chat_web/controllers/help_content/feature_choose_character.html.heex:81
 #, elixir-autogen, elixir-format
 msgid "Everybody sees the change at once."
 msgstr "每個人都看到 變化一次。"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_choose_character.html.heex:63
+#: lib/retro_hex_chat_web/controllers/help_content/feature_choose_character.html.heex:82
 #, elixir-autogen, elixir-format
 msgid "In the chat, the new character appears beside your nickname."
 msgstr "在聊天中,新角色出現在你的暱稱旁邊."
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_choose_character.html.heex:57
+#: lib/retro_hex_chat_web/controllers/help_content/feature_choose_character.html.heex:76
 #, elixir-autogen, elixir-format
 msgid "On a small screen, it shows only the face of your character."
 msgstr "在小屏幕上,它只顯示你的角色的面孔."
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_choose_character.html.heex:59
+#: lib/retro_hex_chat_web/controllers/help_content/feature_choose_character.html.heex:78
 #, elixir-autogen, elixir-format
 msgid "Change what you like, then press %{wear}."
 msgstr "改變你喜歡的,然後按%{wear}。"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_choose_character.html.heex:46
+#: lib/retro_hex_chat_web/controllers/help_content/feature_choose_character.html.heex:65
 #, elixir-autogen, elixir-format
 msgid "Entering"
 msgstr "輸入"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_choose_character.html.heex:58
+#: lib/retro_hex_chat_web/controllers/help_content/feature_choose_character.html.heex:77
 #, elixir-autogen, elixir-format
 msgid "Press it to open the creator over the map."
 msgstr "按它打開地圖上的創造者。"
@@ -510,37 +503,37 @@ msgstr "各部分"
 msgid "The Preview"
 msgstr "預覽"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_choose_character.html.heex:33
+#: lib/retro_hex_chat_web/controllers/help_content/feature_choose_character.html.heex:52
 #, elixir-autogen, elixir-format
 msgid "Under a piece that can be dyed, its colours are shown."
 msgstr "在能夠染色的一塊下,其顏色被顯示."
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_choose_character.html.heex:44
+#: lib/retro_hex_chat_web/controllers/help_content/feature_choose_character.html.heex:63
 #, elixir-autogen, elixir-format
 msgid "You can change any part of it afterwards."
 msgstr "之後你可以改變它的任何部分。"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_choose_character.html.heex:29
+#: lib/retro_hex_chat_web/controllers/help_content/feature_choose_character.html.heex:30
 #, elixir-autogen, elixir-format
 msgid "%{bald} removes the hair. %{none} removes the hat."
 msgstr "%{bald}除發. %{none}去掉帽子."
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_choose_character.html.heex:48
+#: lib/retro_hex_chat_web/controllers/help_content/feature_choose_character.html.heex:67
 #, elixir-autogen, elixir-format
 msgid "%{enter} takes you into the map."
 msgstr "%{enter}帶你進入地圖。"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_choose_character.html.heex:41
+#: lib/retro_hex_chat_web/controllers/help_content/feature_choose_character.html.heex:60
 #, elixir-autogen, elixir-format
 msgid "%{surprise} picks every part at random."
 msgstr "%{surprise}隨機選擇每個部分."
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_choose_character.html.heex:34
+#: lib/retro_hex_chat_web/controllers/help_content/feature_choose_character.html.heex:53
 #, elixir-autogen, elixir-format
 msgid "An outfit and a hat each have a %{main} and a %{trim}."
 msgstr "一套服裝和帽子各有一個%{main}和一個%{trim}."
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_choose_character.html.heex:28
+#: lib/retro_hex_chat_web/controllers/help_content/feature_choose_character.html.heex:29
 #, elixir-autogen, elixir-format
 msgid "Choose a piece to wear it."
 msgstr "選一塊穿它。"
@@ -555,12 +548,12 @@ msgstr "每個分頁都是一個部分: %{parts}."
 msgid "Here you put together who you will be in the Space."
 msgstr "在這裏,你彙集了你將在太空中是誰。"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_choose_character.html.heex:50
+#: lib/retro_hex_chat_web/controllers/help_content/feature_choose_character.html.heex:69
 #, elixir-autogen, elixir-format
 msgid "In the chat, its face is shown beside your nickname."
 msgstr "在聊天中,它的臉被顯示在你暱稱旁邊."
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_choose_character.html.heex:49
+#: lib/retro_hex_chat_web/controllers/help_content/feature_choose_character.html.heex:68
 #, elixir-autogen, elixir-format
 msgid "Next time, the creator opens with this character."
 msgstr "下一次,創作者以這個角色開始."
@@ -594,3 +587,74 @@ msgstr "在一個私人空間 只有走進來的人在那裏。"
 #, elixir-autogen, elixir-format
 msgid "They count among the people inside."
 msgstr "他們算在內的人。"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_space_combat.html.heex:9
+#, elixir-autogen, elixir-format
+msgid "Stand next to another character and press Space — or tap the sword button on the on-screen pad — to swing your weapon. The swing connects with the character on the tile you are facing, or with whoever is standing beside you."
+msgstr "站在另一個角色旁邊,按下Space——或者按下屏幕墊上的劍按鈕——揮動你的武器. 搖擺與你面對的瓷磚上的角色有關 或與站在你旁邊的人有關"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_space_emotes.html.heex:21
+#, elixir-autogen, elixir-format
+msgid "Dancing does not stop you from greeting or attacking."
+msgstr "跳舞並不妨礙你問候或攻擊。"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_space_emotes.html.heex:10
+#, elixir-autogen, elixir-format
+msgid "Everybody in the space can see it."
+msgstr "太空中的每個人都能看到它。"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_space_emotes.html.heex:20
+#, elixir-autogen, elixir-format
+msgid "People who arrive later also see you dance."
+msgstr "後來來的人也會看到你跳舞"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_space_emotes.html.heex:9
+#, elixir-autogen, elixir-format
+msgid "Press Q to raise a hand and say hello."
+msgstr "按Q舉手問好."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_space_emotes.html.heex:16
+#, elixir-autogen, elixir-format
+msgid "Press Z to start dancing, and Z again to stop."
+msgstr "按Z開始跳舞,Z再次停止."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_space_emotes.html.heex:18
+#, elixir-autogen, elixir-format
+msgid "The dance goes on until you stop it."
+msgstr "舞蹈一直持續 直到你停止。"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_space_emotes.html.heex:19
+#, elixir-autogen, elixir-format
+msgid "Walking or sitting down ends the dance."
+msgstr "走路或坐下 舞蹈結束。"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_space_emotes.html.heex:12
+#, elixir-autogen, elixir-format
+msgid "A seated character cannot say hello."
+msgstr "一個坐着的角色不能打招呼。"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_space_emotes.html.heex:2
+#, elixir-autogen, elixir-format
+msgid "In a space, Q raises a hand to say hello. Z starts or stops a dance. Each one also has a button on the screen."
+msgstr "在一個空間裏,Q舉手打招呼. Z開始或停止跳舞。 每個屏幕上也有一個按鈕."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_space_emotes.html.heex:11
+#: lib/retro_hex_chat_web/controllers/help_content/feature_space_emotes.html.heex:17
+#, elixir-autogen, elixir-format
+msgid "There is also a button for it on the screen."
+msgstr "屏幕上還有一個按鈕"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_choose_character.html.heex:44
+#, elixir-autogen, elixir-format
+msgid "%{beard} and %{moustache} use the hair colours."
+msgstr "%{beard}和%{moustache}使用髮色."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_choose_character.html.heex:48
+#, elixir-autogen, elixir-format
+msgid "%{glasses} and %{patch} use the cloth colours."
+msgstr "%{glasses}和%{patch}使用布色."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_choose_character.html.heex:34
+#, elixir-autogen, elixir-format
+msgid "On the %{tab} tab, %{none} removes %{beard}, %{moustache}, %{glasses} or %{patch}."
+msgstr "在%{tab}標籤上,%{none}移除了%{beard},%{moustache},%{glasses}或%{patch}."

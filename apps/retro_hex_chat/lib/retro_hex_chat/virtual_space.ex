@@ -356,6 +356,9 @@ defmodule RetroHexChat.VirtualSpace do
   @spec step_ms() :: non_neg_integer()
   defdelegate step_ms(), to: ChannelSpaceServer
 
+  @spec action_ms() :: non_neg_integer()
+  defdelegate action_ms(), to: ChannelSpaceServer
+
   @spec select_avatar(String.t(), String.t(), String.t()) :: :ok | {:error, atom()}
   def select_avatar(channel_name, participant_key, avatar) do
     Observability.span(
@@ -375,8 +378,8 @@ defmodule RetroHexChat.VirtualSpace do
     )
   end
 
-  @spec leave_channel_space_viewer(String.t()) :: :ok
-  defdelegate leave_channel_space_viewer(channel_name),
+  @spec leave_channel_space_viewer(String.t(), String.t()) :: :ok
+  defdelegate leave_channel_space_viewer(channel_name, participant_key),
     to: ChannelSpaceServer,
     as: :leave_channel_viewer
 

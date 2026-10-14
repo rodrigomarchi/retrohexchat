@@ -134,9 +134,9 @@ make e2e.catalog.check    # verify it is current (also runs in make ci)
 
 ## Coverage
 
-- **248 spec files** under `e2e/tests/`.
-- **607 Playwright `test()` cases**.
-- **554 documented flows**, 553 done, 1 not done.
+- **249 spec files** under `e2e/tests/`.
+- **609 Playwright `test()` cases**.
+- **556 documented flows**, 555 done, 1 not done.
 - **Every spec documents its own flows.**
 
 ## Flow index
@@ -781,6 +781,8 @@ Grouped by section. Every row comes from an `@flow` line in the spec itself.
 | SP35 | The pad is held like a handheld (actions under the left thumb, the D-pad under the right) and the say bar carries the status on one line, on a desktop, a phone and a small phone in Russian | `tests/space-pixel-ui.spec.ts` | done |
 | SP36 | A fair and a fantasy corner are built from their own tabs — tents, stalls, Leene's Bell, the Telepod, Nu, braziers and arches, some of them moving; the End of Time's lamppost and the Victorian lamp switch off, and the wingback chair is sat in | `tests/space-construct-library.spec.ts` | done |
 | SP37 | The character made at the door is remembered for the nickname on reload, and another person in the channel sees it beside the nickname | `tests/space-character-creator.spec.ts` | done |
+| SP38 | Q waves and Z starts and stops a dance, and the other person in the space sees both; a step ends the dance | `tests/space-emotes.spec.ts` | done |
+| SP39 | On the on-screen pad, the hand button waves and the note button dances | `tests/space-emotes.spec.ts` | done |
 
 ### LC - Localization
 

@@ -202,8 +202,8 @@ defmodule RetroHexChatWeb.SpaceChannel do
   @impl true
   def terminate(_reason, socket) do
     case socket.assigns do
-      %{space_kind: :channel, space_id: space_id} ->
-        VirtualSpace.leave_channel_space_viewer(space_id)
+      %{space_kind: :channel, space_id: space_id, participant_key: participant_key} ->
+        VirtualSpace.leave_channel_space_viewer(space_id, participant_key)
 
       %{space_kind: :direct_message, space_id: space_id, participant_key: participant_key} ->
         VirtualSpace.leave_direct_message_space_viewer(space_id, participant_key)
@@ -311,7 +311,8 @@ defmodule RetroHexChatWeb.SpaceChannel do
     {:ok, %{kind: "sword", dir: dir}}
   end
 
-  defp parse_action(%{"kind" => "sword"}), do: {:ok, %{kind: "sword"}}
+  defp parse_action(%{"kind" => kind}) when kind in ["sword", "wave", "dance"],
+    do: {:ok, %{kind: kind}}
 
   defp parse_action(_), do: :error
 
@@ -391,6 +392,8 @@ defmodule RetroHexChatWeb.SpaceChannel do
         avatar_scale: 1,
         # Movement cooldown; the client paces held-key repeat steps to this.
         step_ms: VirtualSpace.step_ms(),
+        # Cooldown between actions; the client plays none sooner than this.
+        action_ms: VirtualSpace.action_ms(),
         text_chat: "global",
         # The Construct is the one world its visitors can build in.
         buildable: VirtualSpace.space_kind(channel_name) == :construct

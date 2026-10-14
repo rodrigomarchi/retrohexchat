@@ -38,6 +38,7 @@ import hashlib
 import json
 import os
 import sys
+from concurrent.futures import ProcessPoolExecutor
 
 from PIL import Image
 
@@ -80,7 +81,7 @@ def layer_specs(catalog):
                       "keys": {c: keys[c] for c in item["channels"]}, "skin": False, "hair": item["hair"]})
     for item in catalog["face"]:
         specs.append({"name": f"face-{item['id']}", "kind": "face", "id": item["id"],
-                      "keys": {c: keys[c] for c in item.get("channels", ["primary"])}, "skin": False})
+                      "keys": {item["channel"]: item["key"]}, "skin": False})
     return specs
 
 
@@ -136,13 +137,66 @@ def load_frames(raw, layer, anim, dirs, canvas):
     return out
 
 
+def load_sources(raw, layer):
+    """What `creator_generate.py fetch` wrote of where a layer's clips came
+    from: {anim: {facing: {"template", "group"}}}."""
+    path = os.path.join(raw, layer, "sources.json")
+    if not os.path.exists(path):
+        raise FileNotFoundError(f"{layer}: no sources.json; fetch the frames with creator_generate.py")
+    with open(path) as handle:
+        return json.load(handle)
+
+
+def check_sources(catalog, layer, sources):
+    """Refuse a template clip with a facing missing, or made from another
+    template than the catalog names."""
+    for clip in catalog["clips"]:
+        if "template" not in clip:
+            continue
+        got = sources.get(clip["anim"], {})
+        for d in catalog["dirs"]:
+            if d not in got:
+                raise ValueError(f"{layer} {clip['anim']} {d}: no source recorded")
+            if got[d]["template"] != clip["template"]:
+                raise ValueError(f"{layer} {clip['anim']} {d}: made from {got[d]['template']}, "
+                                 f"the catalog says {clip['template']}")
+
+
 def label_frames(spec, frames):
     if spec["kind"] == "base":
-        return [art.classify(f, spec["keys"], skin=True) for f in frames]
-    return [art.overlay(f, spec["keys"]) for f in frames]
+        labels = [art.classify(f, spec["keys"], skin=True) for f in frames]
+    else:
+        labels = [art.overlay(f, spec["keys"]) for f in frames]
+    if spec["kind"] == "face":
+        # A face item is one small piece, its pale parts its own (a lens inside
+        # a frame): only its largest part and what lies against it are kept, so
+        # a speck of the skin's red shadow on a shoulder is not the item.
+        return [art.keep_near_main(f, l, share=1.01) for f, l in zip(frames, labels)]
+    return [art.fill_enclosed(f, l, list(spec["keys"])) for f, l in zip(frames, labels)]
+
+
+# How far past the hair and headwear drawn in the same frame a face item may
+# reach. Measured over every face frame: never past them, so 2 px is slack.
+FACE_REACH = 2
+
+
+def face_box(boxes):
+    """The region a face item is kept in, from the boxes of the hair and
+    headwear of the same frame; None when there are none to go by."""
+    box = art.union(boxes)
+    if box is None:
+        return None
+    return (box[0] - FACE_REACH, box[1] - FACE_REACH, box[2] + FACE_REACH, box[3] + FACE_REACH)
 
 
 # --------------------------------------------------------------------- build
+
+def _label_clip(job):
+    """{facing: (frames, labels)} of one layer's clip (a process pool's task)."""
+    spec, anim, raw, dirs, canvas = job
+    frames = load_frames(raw, spec["name"], anim, dirs, canvas)
+    return {d: (frames[d], label_frames(spec, frames[d])) for d in dirs}
+
 
 def build(catalog, raw, out_dir, write=True):
     """Build everything; returns {path: bytes} of what would be written."""
@@ -152,13 +206,35 @@ def build(catalog, raw, out_dir, write=True):
     master_layer = next(s["name"] for s in specs if s["kind"] == "base"
                         and catalog["bases"][f"{s['body']}/{s['outfit']}"] == catalog["master"])
 
-    # Frames and labels for every layer, clip and facing.
-    data = {}
+    # Every template clip's frames must have come from that template: a walk
+    # fetched into the idle folder would otherwise build without a complaint.
     for spec in specs:
-        for clip in clips:
-            frames = load_frames(raw, spec["name"], clip["anim"], dirs, canvas)
+        check_sources(catalog, spec["name"], load_sources(raw, spec["name"]))
+
+    # Frames and labels for every layer, clip and facing: each (layer, clip)
+    # labelled in a process of its own, gathered back in a fixed order.
+    data = {}
+    work = [(spec, clip["anim"], raw, dirs, canvas) for spec in specs for clip in clips]
+    with ProcessPoolExecutor() as pool:
+        for (spec, anim, *_rest), labelled in zip(work, pool.map(_label_clip, work)):
             for d in dirs:
-                data[(spec["name"], clip["anim"], d)] = (frames[d], label_frames(spec, frames[d]))
+                data[(spec["name"], anim, d)] = labelled[d]
+
+    # A face item is small, and the skin's red shadows can fall in its key:
+    # what it draws away from the head (a speck on an arm) is not the item.
+    heads = [s for s in specs if s["kind"] in ("hair", "hat")]
+    for spec in specs:
+        if spec["kind"] != "face":
+            continue
+        for clip in clips:
+            for d in dirs:
+                frames, labels = data[(spec["name"], clip["anim"], d)]
+                kept = []
+                for i, (f, l) in enumerate(zip(frames, labels)):
+                    box = face_box([art.bbox(*[data[(h["name"], clip["anim"], d)][k][i] for k in (0, 1)])
+                                    for h in heads if i < len(data[(h["name"], clip["anim"], d)][0])])
+                    kept.append(art.keep_within(f, l, box) if box else l)
+                data[(spec["name"], clip["anim"], d)] = (frames, kept)
 
     # One frame count per clip, the master's; every piece must match it.
     counts = {}
@@ -279,7 +355,7 @@ def build(catalog, raw, out_dir, write=True):
         "bases": sorted(catalog["bases"]),
         "hair": [h["id"] for h in catalog["hair"]],
         "headwear": {h["id"]: {"channels": h["channels"], "hair": h["hair"]} for h in catalog["headwear"]},
-        "face": {f["id"]: {"channels": f.get("channels", ["primary"])} for f in catalog["face"]},
+        "face": {f["id"]: {"channel": f["channel"]} for f in catalog["face"]},
     }
     ramps = palettes(catalog)
     web = {
@@ -305,7 +381,7 @@ def build(catalog, raw, out_dir, write=True):
         "bases": items["bases"],
         "hair": items["hair"],
         "headwear": {h: len(v["channels"]) for h, v in items["headwear"].items()},
-        "face": sorted(items["face"]),
+        "face": {f["id"]: CHANNEL_PALETTE[f["channel"]] for f in catalog["face"]},
         "palettes": {name: len(r) for name, r in ramps.items()},
         "default": catalog["default"],
         "portrait_version": web["v"],

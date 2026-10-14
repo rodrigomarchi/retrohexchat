@@ -2,7 +2,8 @@ defmodule RetroHexChatWeb.Components.UI.SpaceVirtualPad do
   @moduledoc """
   On-screen pixel-art control pad for the virtual space: a 4-direction D-pad, the
   use button (what E and F do on a keyboard: go through a gate, sit down, get
-  up) and the sword (attack) button, laid out the way a handheld is held: the
+  up), the sword (attack) button and two smaller ones to wave (Q) and to start
+  or stop dancing (Z), laid out the way a handheld is held: the
   action keys under the left thumb, the D-pad under the right, so mobile and
   mouse users can play without a keyboard. The floor between the two halves is
   the map's: the strip lets presses through and only its keys take them.
@@ -34,6 +35,28 @@ defmodule RetroHexChatWeb.Components.UI.SpaceVirtualPad do
       <%!-- Staggered like a handheld's A and B: the thumb rolls from one to the
             other instead of reaching across. --%>
       <div class="pointer-events-auto flex items-end gap-2" data-space-pad-actions>
+        <div class="flex flex-col gap-2">
+          <button
+            type="button"
+            tabindex="-1"
+            data-space-pad-action="wave"
+            data-testid="space-pad-wave"
+            aria-label={dgettext("chat", "Wave")}
+            class="space-pad-button h-11 w-11"
+          >
+            <.pixel_icon name={:wave} />
+          </button>
+          <button
+            type="button"
+            tabindex="-1"
+            data-space-pad-action="dance"
+            data-testid="space-pad-dance"
+            aria-label={dgettext("chat", "Dance")}
+            class="space-pad-button h-11 w-11"
+          >
+            <.pixel_icon name={:dance} />
+          </button>
+        </div>
         <button
           type="button"
           tabindex="-1"

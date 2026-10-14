@@ -20,11 +20,12 @@ facing — no mirroring, no reversed clips.
 A **recipe**, one short string (`RetroHexChat.VirtualSpace.CharacterRecipe`):
 
 ```
-c1.b-av.s-2.o-tun-0-3.h-lng-2.w-0.f-0
-   body skin outfit+2 dyes  hair+dye  hat+2 dyes  face
+c1.b-av.s-2.o-tun-0-3.h-lng-2.w-0.f-brd-1
+   body skin outfit+2 dyes  hair+dye  hat+2 dyes  face+dye
 ```
 
-`h-0`, `w-0`, `f-0` mean none. A colour is one base-36 digit, an index into a
+`h-0`, `w-0`, `f-0` mean none. A face item's one dye comes from the palette
+its `channel` names (`hair` for a beard, `primary` — cloth — for glasses). A colour is one base-36 digit, an index into a
 palette. The recipe travels everywhere: the wire (`space_select_avatar`, join
 params), the portal URL (`?avatar=`), the nickname's row
 (`registered_nicks.avatar`). Every client composes the same figure from it.
@@ -34,7 +35,7 @@ The pieces, as layers drawn in this order:
 | Layer | What it is | Made per |
 |---|---|---|
 | **base** | a body wearing an outfit: the whole figure, skin included | body × outfit |
-| **face** | a face item (glasses, beard…) | once, on the master |
+| **face** | a face item (glasses, beard…), one dye | once, on the master |
 | **hair** | a hairstyle | once, on the master |
 | **hat** | headwear; `hair: clip` cuts the hair it covers | once, on the master |
 
@@ -103,7 +104,7 @@ piece and every facing:
 | Clip | How |
 |---|---|
 | walk, idle, attack, hit, ko, getup | `animate_character` `mode="skeleton-v3"` with the template the source names |
-| sit | **posed**: `animate-with-skeleton-v3` with keypoints from `creator_pose.py` (its `steps`) |
+| sit, wave, dance | **posed**: `animate-with-skeleton-v3` with keypoints from `creator_pose.py` (the clip's `pose` and `steps`) |
 
 The frames of a clip are whatever its template gives; the build reads the
 count off the master and refuses a piece that differs.
@@ -114,12 +115,23 @@ count off the master and refuses a piece that differs.
   south walk barely moved.
 - skeleton-v3 frames come on a **144 px canvas** with the figure centred; the
   poses of different states match frame for frame.
-- **There is no sit template** (`crouching` ends squatting), so the seated clip
-  is posed: `creator_pose.py` takes the master's 3-D skeleton (PixelLab keeps
+- **There is no sit, wave or dance template** (`crouching` ends squatting), so
+  those clips are posed: `creator_pose.py` takes the master's 3-D skeleton (PixelLab keeps
   it with the character), bends it into a chair, projects it into each facing
   with an affine map fitted to the facing's 2-D skeleton (within ~1.5 px), and
   sends the same keypoints for every piece. Say there is **no furniture** in
-  the `action` — "sitting down on a chair" drew chairs and a table.
+  the `action` — "sitting down on a chair" drew chairs and a table — and
+  that the figure is **alone and holds nothing** (`POSES` keeps each pose's
+  action). A pose is checked for free before it is paid for: project it as a
+  stick figure into the facings and look at it.
+- **A posed job is described by the piece, never by the master.** A state
+  keeps the master's prompt — a bald mannequin, no accessories — and PixelLab
+  follows those words over the first frame: posed with it, an afro came out
+  bald in all 24 facings and most hats vanished. `posed_description` sends the
+  first clause of the state's own edit instead (an outfit adds the bald head
+  the overlays go on).
+- A wave seen side-on reads as a salute unless the arm comes **forward**: the
+  pose puts the hand in front of the face, not over the head.
 - `/estimate-skeleton` cannot read lying poses (it gave −21° for a body lying
   flat), so nothing tracks heads; every overlay is animated itself.
 
@@ -131,13 +143,34 @@ All committed; nothing here runs in a build.
    with a new short id (never reuse one — stored recipes name ids) and its
    PixelLab state id. A base goes under `bases` as `"<body>/<outfit>"`.
 2. **Generate its clips**: `python3 virtual.space/tools/creator_generate.py plan`
-   lists what is missing; `… run --budget N` queues it (8 jobs at a time,
-   retries failures, stops at the budget, writes posed frames to `raw/` as jobs
-   end); the animation groups are kept in `characters/creator/pixellab.json`.
-   Token in `PIXELLAB_TOKEN`.
+   lists what is missing; `… run --budget N` queues it (`--slots` jobs at a
+   time — the plan's limit is the account's, 10 on Tier 2 — retries failures,
+   stops when what it sent reaches the budget, writes posed frames to `raw/`
+   as jobs end); the animation groups are kept in
+   `characters/creator/pixellab.json`. `--only LAYER…` runs only those
+   pieces. One run at a time: a second refuses to start (two would pay twice
+   for the same facing). Every job sent is kept in `pending.json` until it is
+   seen to end, so a stopped run loses nothing it paid for: the next run waits
+   on those jobs first, posed frames included. Token in `PIXELLAB_TOKEN`.
+   Run it under `caffeinate -i`: a Mac asleep overnight wakes only for
+   maintenance, and a run that took minutes per job made 54 in five hours.
 3. **Download the frames**: `… creator_generate.py fetch` →
-   `characters/creator/raw/<layer>/<clip>/<dir>/<i>.png`.
-4. **Build**: `make space.creator` (`build_creator.py`) writes the indexed
+   `characters/creator/raw/<layer>/<clip>/<dir>/<i>.png`. The tools resolve
+   IPv4 first: the frames' CDN answers over IPv6 with addresses some networks
+   cannot reach, and each was waited out before IPv4 was tried.
+4. **Audit before looking**: `python3 virtual.space/tools/creator_audit.py`
+   lists the facings whose body leaves the master's frame, or whose piece
+   falls away against its own idle, and `--redo FILE` writes those as a list.
+   It finds what is missing or misplaced, not what is ugly: look at every
+   clip and facing of the new piece as well (one sheet per piece and clip,
+   eight facings by frames), against the master's same sheet.
+5. **Send back what fails**: each facing to generate again goes in
+   `characters/creator/redo.json` — `{"layer", "anim", "dir", "why"}`, plus
+   `"round": 2` to send one back a second time — and `… run` generates it
+   after anything missing. A template facing goes to a group of its own and
+   replaces the old take only once its frames are there (`pixellab.json` →
+   `redone`); `fetch` swaps those frames on disk. Then audit and look again.
+6. **Build**: `make space.creator` (`build_creator.py`) writes the indexed
    sheets `apps/retro_hex_chat_web/priv/static/images/space/creator/<layer>_<clip>.png`
    (rows the eight facings, columns the frames), the hat masks, the portrait
    crops, both catalogs (`…/creator/catalog.json` for the web,
@@ -145,17 +178,22 @@ All committed; nothing here runs in a build.
    server), the swatch CSS and the golden portraits the server is tested
    against. `make space.creator.check` (part of `make lint.css`) fails when
    any of it is not what the frames build.
-5. **Look at it**: `python3 virtual.space/tools/creator_contact_sheet.py out.png --random 20`
+7. **Look at it**: `python3 virtual.space/tools/creator_contact_sheet.py out.png --random 20`
    composes random recipes in every clip and facing, the way the game does.
-6. **Name it**: a label in `components/ui/space_character_creator.ex` and a
+8. **Name it**: a label in `components/ui/space_character_creator.ex` and a
    row in `scripts/i18n/glossary.py` (with its context).
-7. `make ci`.
+9. `make ci`.
 
 ### Colour
 
 Each layer is an **indexed PNG**. The build sorts every pixel into a channel —
 `skin` (warm hues), `primary`/`secondary`/`hair` (the keys), or a fixed neutral
 (outline, eyes, metal) — and claims dark shadows for the channel they sit in.
+PixelLab paints highlights on cloth and hair in near-white, which carries no
+key: a pale patch walled in by one channel (the outline aside, never touching
+skin or the background) is that channel too, or a recoloured tunic keeps grey
+stains. A face item keeps only its main part, inside the hair and headwear of
+the same frame — the skin's red shadows fall inside its key.
 Each channel is quantized to a fixed number of shades (`shades` in the source)
 at known palette indices, listed per layer in the catalog. A palette colour is a **ramp** of that many shades, built from one
 swatch colour (shadows cooler, highlights warmer). Recolouring is writing the
@@ -183,10 +221,12 @@ same bytes, and no pixel is read back off a canvas.
 |---|---|
 | a state (`create_character_state`, 104 px) | ~25 |
 | a template clip, skeleton-v3, one facing | 3 |
-| the seated clip, one facing (3 frames) | 2 |
-| **one piece: state + 6 clips × 8 + sit × 8** | **~185** |
+| a posed clip, one facing, up to 3 frames (sit) | 2 |
+| a posed clip, one facing, 4–6 frames (wave, dance) | 3 |
+| **one piece: state + every clip × 8** | **~233** |
 
-PixelLab runs 8 jobs at a time on Tier 1 and, under load, a skeleton-v3 job
-takes 8–14 minutes: a piece takes about an hour of wall time. The group zip
+PixelLab runs 8 jobs at a time on Tier 1 and 10 on Tier 2, and under load a
+skeleton-v3 job takes 8–14 minutes: about one job a minute, so a piece takes
+an hour or more of wall time. The group zip
 download answers `423` while any job of the group is running; `creator_generate.py`
 reads frames from the character JSON instead.

@@ -27,13 +27,16 @@ const KEY_MAP = {
   "virtual:right": { dx: 1, dy: 0, dir: "right" },
 };
 
-// Non-movement action keys: interact with a board / sit on a chair / swing.
+// Non-movement action keys: interact with a board / sit on a chair / swing /
+// wave / start or stop dancing.
 const ACTION_MAP = {
   " ": "attack",
   Space: "attack",
   Spacebar: "attack",
   e: "interact",
   f: "sit",
+  q: "wave",
+  z: "dance",
 };
 
 // "use" has no key of its own: it is the touch pad's one button for what E and
@@ -91,7 +94,7 @@ export class InputController {
   /**
    * Fire an action from a non-keyboard source. Actions are one-shot (no held
    * state), matching a fresh action-key press.
-   * @param {"attack"|"interact"|"sit"|"use"} action
+   * @param {"attack"|"interact"|"sit"|"use"|"wave"|"dance"} action
    */
   triggerAction(action) {
     if (!VALID_ACTIONS.has(action)) return;
@@ -110,6 +113,10 @@ export class InputController {
 
   _onKeyDown(event) {
     if (typingInField()) return;
+    // Ctrl+F is the browser's find, Ctrl+Z an undo and Alt+Left back, not a
+    // seat, a dance or a step: a held modifier leaves the key to whoever owns
+    // the combination.
+    if (event.ctrlKey || event.metaKey || event.altKey) return;
     const key = normalizeKey(event.key);
 
     const action = ACTION_MAP[key];

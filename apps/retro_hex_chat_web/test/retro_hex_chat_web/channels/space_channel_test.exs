@@ -359,6 +359,13 @@ defmodule RetroHexChatWeb.SpaceChannelTest do
   end
 
   describe "visual actions" do
+    # Actions in a row: the cooldown between them is the server's own test.
+    setup do
+      Application.put_env(:retro_hex_chat, :virtual_space_action_ms, 0)
+      on_exit(fn -> Application.delete_env(:retro_hex_chat, :virtual_space_action_ms) end)
+      :ok
+    end
+
     test "a space_action sword push broadcasts a visual action without moving the participant" do
       channel = unique_channel()
       {:ok, _pid} = start_channel(channel)
@@ -378,6 +385,24 @@ defmodule RetroHexChatWeb.SpaceChannelTest do
 
       {:ok, state} = ChannelSpaceServer.get_state(channel)
       assert {state.participants[self_key].x, state.participants[self_key].y} == {x0, y0}
+    end
+
+    test "a wave is pushed to the space, a dance comes back as the pose, anything else is dropped" do
+      channel = unique_channel()
+      {:ok, _pid} = start_channel(channel)
+      {:ok, _} = Server.join(channel, "alice")
+
+      assert {:ok, init, socket} = join_channel_space(channel, "alice")
+      self_key = init.self_key
+
+      push(socket, "space_action", %{"kind" => "wave"})
+      assert_push "space_action", %{key: ^self_key, kind: "wave"}
+
+      push(socket, "space_action", %{"kind" => "dance"})
+      assert_push "space_delta", %{updates: %{^self_key => %{pose: "dancing"}}}
+
+      push(socket, "space_action", %{"kind" => "moonwalk"})
+      refute_push "space_action", %{kind: "moonwalk"}, 100
     end
   end
 

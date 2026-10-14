@@ -11,7 +11,9 @@
     {"anim": "hit", "template": "taking-punch", "ms": 80},
     {"anim": "ko", "template": "falling-back-death", "ms": 110},
     {"anim": "getup", "template": "getting-up", "ms": 110},
-    {"anim": "sit", "pose": "seated", "steps": [0.45, 0.8, 1.0], "ms": 120}
+    {"anim": "sit", "pose": "seated", "steps": [0.45, 0.8, 1.0], "ms": 120},
+    {"anim": "wave", "pose": "wave", "steps": [0.5, 1, 2, 1, 2, 0.5], "ms": 140},
+    {"anim": "dance", "pose": "dance", "steps": [0, 1, 2, 3], "ms": 200}
   ],
   "keys": {"primary": 310, "secondary": 185},
   "shades": {"skin": 6, "hair": 6, "primary": 7, "secondary": 7},
@@ -64,18 +66,39 @@
   ],
   "outfits": [
     {"id": "bas", "label": "Undershirt", "channels": []},
-    {"id": "tun", "label": "Tunic", "channels": ["primary", "secondary"]}
+    {"id": "tun", "label": "Tunic", "channels": ["primary", "secondary"]},
+    {"id": "rob", "label": "Robe", "channels": ["primary", "secondary"]},
+    {"id": "arm", "label": "Armour", "channels": ["primary", "secondary"]},
+    {"id": "jkt", "label": "Jacket", "channels": ["primary", "secondary"]},
+    {"id": "drs", "label": "Dress", "channels": ["primary", "secondary"]}
   ],
   "bases": {
     "av/bas": "b472f75a-9395-4b32-b65f-c143be6552dd",
-    "av/tun": "e18e62f7-cca2-4e35-879d-b49bbd824e43"
+    "av/tun": "e18e62f7-cca2-4e35-879d-b49bbd824e43",
+    "av/rob": "0cc084f2-15d7-4f9a-9f9b-82d7195e2c39",
+    "av/arm": "050d3d21-e226-4ed7-84d3-587779db65e6",
+    "av/jkt": "80d304bb-2910-416a-b983-483204c6c487",
+    "av/drs": "1f7bda31-dc91-4e11-b80c-73b2a3399cb7"
   },
   "hair": [
-    {"id": "lng", "label": "Long", "character": "d6e23fbf-56a7-4a66-a996-181224eb97c8", "key": 310}
+    {"id": "lng", "label": "Long", "character": "d6e23fbf-56a7-4a66-a996-181224eb97c8", "key": 310},
+    {"id": "sht", "label": "Short", "character": "35f4e619-e6bf-46b3-a7af-32d7c40d295b", "key": 310},
+    {"id": "mhk", "label": "Mohawk", "character": "cc2f5175-579e-479b-b57e-1d2111750d79", "key": 310},
+    {"id": "afr", "label": "Afro", "character": "1b13e5c9-2175-4977-b6ad-03c2229429d7", "key": 310},
+    {"id": "pny", "label": "Ponytail", "character": "dcf1da4e-e616-4ded-9838-9f90dfde43a4", "key": 310}
   ],
   "headwear": [
-    {"id": "adv", "label": "Adventurer hat", "character": "f1c131b3-3823-4143-a78e-d2bd696497e2", "hair": "clip", "channels": ["primary", "secondary"]}
+    {"id": "adv", "label": "Adventurer hat", "character": "f1c131b3-3823-4143-a78e-d2bd696497e2", "hair": "clip", "channels": ["primary", "secondary"]},
+    {"id": "bea", "label": "Beanie", "character": "af5003d2-5a2c-4f06-8419-e4f37dc016d0", "hair": "clip", "channels": ["primary", "secondary"]},
+    {"id": "hod", "label": "Hood", "character": "9c0035aa-31f3-4a32-9f19-53a2a3395718", "hair": "clip", "channels": ["primary", "secondary"]},
+    {"id": "wiz", "label": "Wizard hat", "character": "a739ce0e-ac11-4636-a89a-17ec54facf06", "hair": "clip", "channels": ["primary", "secondary"]},
+    {"id": "crn", "label": "Crown", "character": "d49c7082-6f57-4dcb-aab8-882ff5e58d8d", "hair": "over", "channels": ["primary", "secondary"]}
   ],
-  "face": [],
+  "face": [
+    {"id": "brd", "label": "Beard", "character": "3e38aedd-ba04-4109-90a4-4afca69da2dd", "channel": "hair", "key": 310},
+    {"id": "mus", "label": "Moustache", "character": "7fd84ad9-9116-4ff6-ad50-5b9599e9fbd4", "channel": "hair", "key": 310},
+    {"id": "gls", "label": "Glasses", "character": "0aee88cc-7e98-4e13-a652-b5a0381216d9", "channel": "primary", "key": 310},
+    {"id": "eye", "label": "Eyepatch", "character": "9cabbbd2-bb9d-42ac-83cf-c00086c53d05", "channel": "primary", "key": 310}
+  ],
   "default": "c1.b-av.s-2.o-tun-0-3.h-lng-2.w-0.f-0"
 }

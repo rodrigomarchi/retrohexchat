@@ -623,4 +623,49 @@ describe("SpaceCanvasHook implementation", () => {
 
     hook.destroyed();
   });
+
+  it("waves at once and asks the server to dance, which it shows when the pose comes back", () => {
+    let pose = "standing";
+    const engine = {
+      start: vi.fn(),
+      applyDelta: vi.fn(),
+      applySnapshot: vi.fn(),
+      destroy: vi.fn(),
+      performAction: vi.fn(() => ({ acted: true, kind: "wave", dir: "left" })),
+      requestDance: () => pose === "standing" || pose === "dancing",
+      self: () => ({ key: "registered:1", pose }),
+    };
+    const channel = fakeChannel();
+    let actionCb;
+    const hook = Object.assign(
+      Object.create(
+        createSpaceCanvasHook({
+          socketFactory: () => fakeSocket(channel),
+          engineFactory: () => engine,
+          inputFactory: ({ onAction }) => {
+            actionCb = onAction;
+            return { attach: vi.fn(), detach: vi.fn() };
+          },
+        }),
+      ),
+      mountContext(),
+    );
+    hook.mounted();
+
+    actionCb("wave");
+    expect(engine.performAction).toHaveBeenCalledWith("wave");
+    expect(channel.push).toHaveBeenCalledWith("space_action", { kind: "wave", dir: "left" });
+
+    channel.push.mockClear();
+    actionCb("dance");
+    expect(channel.push).toHaveBeenCalledWith("space_action", { kind: "dance" });
+
+    // Sitting, or knocked down, nobody dances.
+    channel.push.mockClear();
+    pose = "sitting";
+    actionCb("dance");
+    expect(channel.push).not.toHaveBeenCalled();
+
+    hook.destroyed();
+  });
 });

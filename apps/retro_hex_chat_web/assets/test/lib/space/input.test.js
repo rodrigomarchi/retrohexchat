@@ -123,8 +123,28 @@ describe("InputController", () => {
     expect(c.currentIntent()).toBe(null);
 
     c.triggerAction("attack");
-    c.triggerAction("dance");
+    c.triggerAction("jump");
     expect(actions).toEqual(["attack"]);
+  });
+
+  it("leaves a key held with Ctrl, Cmd or Alt to the browser: Ctrl+F finds, Ctrl+S saves", () => {
+    const actions = [];
+    const intents = [];
+    const c = new InputController({
+      onAction: (a) => actions.push(a),
+      onIntent: (i) => intents.push(i),
+    });
+    c.attach();
+    for (const mod of ["ctrlKey", "metaKey", "altKey"]) {
+      for (const key of ["f", "z", "q", "e", "s", "a", "ArrowLeft"]) {
+        const event = new KeyboardEvent("keydown", { key, [mod]: true, cancelable: true });
+        window.dispatchEvent(event);
+        expect(event.defaultPrevented).toBe(false);
+      }
+    }
+    expect(actions).toEqual([]);
+    expect(intents).toEqual([]);
+    c.detach();
   });
 
   it("emits action intents for Space (attack), e (interact) and f (sit), coalesced and focus-aware", () => {
@@ -139,13 +159,15 @@ describe("InputController", () => {
     window.dispatchEvent(keydown("e")); // auto-repeat coalesced
     window.dispatchEvent(keyup("e"));
     window.dispatchEvent(keydown("f"));
-    expect(actions).toEqual(["attack", "interact", "sit"]);
+    window.dispatchEvent(keydown("q"));
+    window.dispatchEvent(keydown("Z"));
+    expect(actions).toEqual(["attack", "interact", "sit", "wave", "dance"]);
 
     const field = document.createElement("textarea");
     document.body.appendChild(field);
     field.focus();
     window.dispatchEvent(keydown(" "));
-    expect(actions).toHaveLength(3);
+    expect(actions).toHaveLength(5);
 
     field.remove();
     c.detach();

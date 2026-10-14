@@ -48,6 +48,8 @@ const CLIP_FOR_ACTION = Object.freeze({
   hit: "hit",
   ko: "ko",
   getup: "getup",
+  wave: "wave",
+  dance: "dance",
 });
 
 // The canvas's own UI frames (speech bubble, nameplate, signs, HP bar): the
@@ -287,9 +289,17 @@ export function createSpriteAtlas(opts = {}) {
     },
     // What animation capabilities a character has, so the renderer's state
     // machine knows which resting states to drive: every creator character
-    // breathes when idle and sits on a seat; none of them dozes off standing.
+    // breathes when idle, sits on a seat and dances; none of them dozes off
+    // standing.
     avatarMeta(_recipe) {
-      return { hasIdle: true, hasIdle2: false, hasSleep: false, hasSit: true, scale: 1 };
+      return {
+        hasIdle: true,
+        hasIdle2: false,
+        hasSleep: false,
+        hasSit: true,
+        hasDance: true,
+        scale: 1,
+      };
     },
     // Where the character's head and feet are inside a frame, so the renderer
     // can stand its feet on the ground and hang labels above its head.

@@ -37,7 +37,10 @@ class CatalogTest(unittest.TestCase):
         self.assertEqual(self.domain["bases"], items["bases"])
         self.assertEqual(self.domain["hair"], items["hair"])
         self.assertEqual(sorted(self.domain["headwear"]), sorted(items["headwear"]))
-        self.assertEqual(self.domain["face"], sorted(items["face"]))
+        self.assertEqual(sorted(self.domain["face"]), sorted(items["face"]))
+        # A face item is dyed from the palette of the channel it is keyed in.
+        for fid, item in items["face"].items():
+            self.assertEqual(self.domain["face"][fid], self.web["channelPalette"][item["channel"]])
         self.assertEqual(self.domain["default"], self.web["default"])
         self.assertEqual(self.domain["portrait_version"], self.web["v"])
         for name, ramps in self.web["palettes"].items():
@@ -85,3 +88,29 @@ class GoldenTest(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class SourcesCheckTest(unittest.TestCase):
+    """The build refuses frames that did not come from the clip's template."""
+
+    CATALOG = {"dirs": ["south", "east"],
+               "clips": [{"anim": "walk", "template": "walking-4-frames"},
+                         {"anim": "sit", "pose": "seated", "steps": [1]}]}
+
+    def setUp(self):
+        import build_creator
+        self.check = build_creator.check_sources
+
+    def walk(self, **by_dir):
+        return {"walk": {d: {"template": t, "group": "g"} for d, t in by_dir.items()}}
+
+    def test_frames_of_the_named_template_pass(self):
+        self.check(self.CATALOG, "hair-x", self.walk(south="walking-4-frames", east="walking-4-frames"))
+
+    def test_another_template_in_the_folder_is_refused(self):
+        with self.assertRaisesRegex(ValueError, "made from breathing-idle"):
+            self.check(self.CATALOG, "hair-x", self.walk(south="walking-4-frames", east="breathing-idle"))
+
+    def test_a_facing_with_no_source_is_refused(self):
+        with self.assertRaisesRegex(ValueError, "east: no source"):
+            self.check(self.CATALOG, "hair-x", self.walk(south="walking-4-frames"))

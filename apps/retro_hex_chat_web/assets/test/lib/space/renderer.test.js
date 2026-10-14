@@ -748,6 +748,21 @@ describe("Renderer in a Construct", () => {
     expect(facing("right")).toMatchObject({ actionKind: "sleep", dir: "south-east" });
   });
 
+  it("loops the dance while the pose lasts, and a wave plays over it", () => {
+    const atlas = {
+      tile: () => null,
+      avatar: () => ({ canvas: {} }),
+      avatarMeta: () => ({ hasIdle: true, hasSit: true, hasDance: true }),
+      avatarFrameCount: (_recipe, kind) => (kind === "dance" ? 4 : 6),
+    };
+    const { renderer } = build({ atlas });
+    const dancer = { key: "d", avatar: RECIPE, x: 3, y: 3, pose: "dancing", dir: "down" };
+    expect(renderer._avatarPose(dancer, 5000)).toMatchObject({ actionKind: "dance", frame: 1 });
+    expect(renderer._avatarPose(dancer, 5600)).toMatchObject({ actionKind: "dance", frame: 0 });
+    const waving = { ...dancer, action: { kind: "wave", startedAt: 5000, duration: 840 } };
+    expect(renderer._avatarPose(waving, 5420)).toMatchObject({ actionKind: "wave", frame: 3 });
+  });
+
   it("settles a creator character into its seated clip, on the clip's last frame", () => {
     const atlas = {
       tile: () => null,

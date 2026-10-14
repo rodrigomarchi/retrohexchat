@@ -278,6 +278,60 @@ def keep_near_main(frame, labels, share=0.15, reach=3):
     return labels
 
 
+def fill_enclosed(frame, labels, channels, max_area=120, share=0.8):
+    """Pale patches inside a piece become the piece: the highlights PixelLab
+    paints on cloth and hair in near-white, which carry no key and would stay
+    grey through a recolour, and the mannequin's scalp showing through hair.
+
+    An island of opaque pixels that are not of the piece, not skin and not
+    outline-dark is filled with the channel round it when, of the pixels on
+    its rim (the dark outline aside), at least `share` are that one channel.
+    An island touching the background is an edge, not a patch, and stays; so
+    does one larger than `max_area` (trousers under a tunic). An island
+    touching the skin stays too: a white shirt between a jacket and the neck,
+    or a trouser leg between a hem and a knee."""
+    channels = set(channels)
+
+    def candidate(i):
+        if labels[i] in channels or not frame.opaque(i):
+            return False
+        rgb = frame.px[i][:3]
+        return hsv(rgb)[2] >= OUTLINE_VAL and not is_skin(rgb)
+
+    labels = list(labels)
+    for comp in components(frame, candidate):
+        if len(comp) > max_area:
+            continue
+        inside = set(comp)
+        counts, open_edge = {}, False
+        for i in comp:
+            for n in frame.neighbours(i):
+                if n in inside:
+                    continue
+                if not frame.opaque(n):
+                    open_edge = True
+                    break
+                if hsv(frame.px[n][:3])[2] < OUTLINE_VAL:
+                    continue
+                counts[labels[n]] = counts.get(labels[n], 0) + 1
+            if open_edge:
+                break
+        if open_edge or not counts:
+            continue
+        best, n_best = max(counts.items(), key=lambda kv: (kv[1], str(kv[0])))
+        if best in channels and n_best >= share * sum(counts.values()):
+            for i in comp:
+                labels[i] = best
+    return labels
+
+
+def keep_within(frame, labels, box):
+    """Labels outside `box` (x0, y0, x1, y1) dropped to TRANSPARENT."""
+    x0, y0, x1, y1 = box
+    return [l if x0 <= i % frame.w < x1 and y0 <= i // frame.w < y1 else TRANSPARENT
+            for i, l in enumerate(labels)]
+
+
 def kmeans_1d(values, k, iterations=30):
     """Deterministic 1-D k-means: `k` ascending centres for `values`."""
     vals = sorted(values)

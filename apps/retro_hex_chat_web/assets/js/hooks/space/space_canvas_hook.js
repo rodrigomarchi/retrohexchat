@@ -266,14 +266,21 @@ export function createSpaceCanvasHook(deps = {}) {
     },
 
     // Action keys resolve a target from the avatar's facing and ask the server;
-    // the server is authoritative on whether sit/use succeeds. Attack plays
-    // locally for responsiveness; the server decides who it hits and for how
-    // much, and broadcasts the result to everyone.
+    // the server is authoritative on whether sit/use succeeds. Attack and wave
+    // play locally for responsiveness; the server decides who a swing hits and
+    // for how much, and broadcasts the result to everyone. Dancing is a pose the
+    // server turns on and off, so it shows when the server says so.
     _onAction(action) {
-      if (action === "attack") {
-        const result = this._engine?.performAction?.("sword");
+      if (action === "attack" || action === "wave") {
+        const result = this._engine?.performAction?.(action === "attack" ? "sword" : "wave");
         if (result?.acted) {
           this._channel?.push(CLIENT_EVENTS.ACTION, { kind: result.kind, dir: result.dir });
+        }
+        return;
+      }
+      if (action === "dance") {
+        if (this._engine?.requestDance?.()) {
+          this._channel?.push(CLIENT_EVENTS.ACTION, { kind: "dance" });
         }
         return;
       }

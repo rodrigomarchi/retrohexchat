@@ -35,8 +35,8 @@ export const SERVER_EVENTS = Object.freeze({
 });
 
 const DIRECTIONS = new Set(["up", "down", "left", "right"]);
-const POSES = new Set(["standing", "sitting", "down"]);
-const ACTIONS = new Set(["sword", "hit", "ko", "getup"]);
+const POSES = new Set(["standing", "sitting", "down", "dancing"]);
+const ACTIONS = new Set(["sword", "wave", "hit", "ko", "getup"]);
 
 /**
  * Normalize a single participant record into a fully-populated object.

@@ -1,21 +1,42 @@
 {
   "bases": [
+    "av/arm",
     "av/bas",
+    "av/drs",
+    "av/jkt",
+    "av/rob",
     "av/tun"
   ],
   "bodies": [
     "av"
   ],
   "default": "c1.b-av.s-2.o-tun-0-3.h-lng-2.w-0.f-0",
-  "face": [],
+  "face": {
+    "brd": "hair",
+    "eye": "fabric",
+    "gls": "fabric",
+    "mus": "hair"
+  },
   "hair": [
-    "lng"
+    "lng",
+    "sht",
+    "mhk",
+    "afr",
+    "pny"
   ],
   "headwear": {
-    "adv": 2
+    "adv": 2,
+    "bea": 2,
+    "crn": 2,
+    "hod": 2,
+    "wiz": 2
   },
   "outfits": {
+    "arm": 2,
     "bas": 0,
+    "drs": 2,
+    "jkt": 2,
+    "rob": 2,
     "tun": 2
   },
   "palettes": {
@@ -23,6 +44,6 @@
     "hair": 12,
     "skin": 8
   },
-  "portrait_version": "6f5f7615d8",
+  "portrait_version": "5d2b69137a",
   "version": 1
 }

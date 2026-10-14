@@ -71,3 +71,7 @@ Thumbs.db
 # Python bytecode from the i18n tooling package
 __pycache__/
 *.pyc
+
+# creator_generate.py: the lock of the run going on, and the jobs it has sent
+virtual.space/characters/creator/.generate.lock
+virtual.space/characters/creator/pending.json

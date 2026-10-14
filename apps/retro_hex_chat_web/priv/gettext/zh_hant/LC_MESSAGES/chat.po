@@ -3077,32 +3077,32 @@ msgstr "您必須註冊和識別 玩。 使用/ns登記和/ns先識別。"
 msgid "the other user"
 msgstr "另一個用戶"
 
-#: lib/retro_hex_chat_web/components/ui/space_virtual_pad.ex:51
+#: lib/retro_hex_chat_web/components/ui/space_virtual_pad.ex:74
 #, elixir-autogen, elixir-format
 msgid "Attack"
 msgstr "攻擊"
 
-#: lib/retro_hex_chat_web/components/ui/space_virtual_pad.ex:31
+#: lib/retro_hex_chat_web/components/ui/space_virtual_pad.ex:32
 #, elixir-autogen, elixir-format
 msgid "Virtual control pad"
 msgstr "虛擬方向板"
 
-#: lib/retro_hex_chat_web/components/ui/space_virtual_pad.ex:71
+#: lib/retro_hex_chat_web/components/ui/space_virtual_pad.ex:94
 #, elixir-autogen, elixir-format
 msgid "Walk down"
 msgstr "向下走"
 
-#: lib/retro_hex_chat_web/components/ui/space_virtual_pad.ex:63
+#: lib/retro_hex_chat_web/components/ui/space_virtual_pad.ex:86
 #, elixir-autogen, elixir-format
 msgid "Walk left"
 msgstr "向左走"
 
-#: lib/retro_hex_chat_web/components/ui/space_virtual_pad.ex:67
+#: lib/retro_hex_chat_web/components/ui/space_virtual_pad.ex:90
 #, elixir-autogen, elixir-format
 msgid "Walk right"
 msgstr "向右走"
 
-#: lib/retro_hex_chat_web/components/ui/space_virtual_pad.ex:59
+#: lib/retro_hex_chat_web/components/ui/space_virtual_pad.ex:82
 #, elixir-autogen, elixir-format
 msgid "Walk up"
 msgstr "向上走"
@@ -4103,7 +4103,7 @@ msgid "This server"
 msgstr "這台伺服器"
 
 #: lib/retro_hex_chat_web/components/ui/chat/voice_recorder.ex:76
-#: lib/retro_hex_chat_web/controllers/help_content/keyboard_shortcuts.html.heex:44
+#: lib/retro_hex_chat_web/controllers/help_content/keyboard_shortcuts.html.heex:46
 #, elixir-autogen, elixir-format
 msgid "Discard the recording"
 msgstr "捨棄錄音"
@@ -4255,7 +4255,7 @@ msgstr "看看是誰建立了頻道"
 msgid "  • Capital letters do not matter: \"Alice\" and \"alice\" are the same nick"
 msgstr "• 大寫字母無關緊要:\"愛麗絲\"和\"愛麗絲\"是同一種暱稱"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_choose_character.html.heex:55
+#: lib/retro_hex_chat_web/controllers/help_content/feature_choose_character.html.heex:60
 #: lib/retro_hex_chat_web/live/app/space_live.ex:216
 #: lib/retro_hex_chat_web/live/app/space_live.ex:365
 #: lib/retro_hex_chat_web/live/app/space_live.ex:366
@@ -4415,7 +4415,7 @@ msgstr "現場已經有一塊了"
 msgid "Only one piece at a time, please wait."
 msgstr "一次只有一塊,請等待。"
 
-#: lib/retro_hex_chat_web/components/ui/space_virtual_pad.ex:42
+#: lib/retro_hex_chat_web/components/ui/space_virtual_pad.ex:65
 #, elixir-autogen, elixir-format
 msgid "Use"
 msgstr "使用"
@@ -5150,7 +5150,7 @@ msgid "Fair notice board"
 msgstr "市集告示牌"
 
 #: lib/retro_hex_chat_web/components/ui/space_character_creator.ex:209
-#: lib/retro_hex_chat_web/controllers/help_content/feature_choose_character.html.heex:30
+#: lib/retro_hex_chat_web/controllers/help_content/feature_choose_character.html.heex:31
 #, elixir-autogen, elixir-format
 msgid "Bald"
 msgstr "光頭"
@@ -5167,7 +5167,7 @@ msgstr "髮色"
 
 #: lib/retro_hex_chat_web/components/ui/space_character_creator.ex:193
 #: lib/retro_hex_chat_web/components/ui/space_character_creator.ex:239
-#: lib/retro_hex_chat_web/controllers/help_content/feature_choose_character.html.heex:35
+#: lib/retro_hex_chat_web/controllers/help_content/feature_choose_character.html.heex:40
 #, elixir-autogen, elixir-format
 msgid "Main colour"
 msgstr "主色"
@@ -5183,15 +5183,15 @@ msgid "Skin"
 msgstr "膚色"
 
 #: lib/retro_hex_chat_web/components/ui/space_character_creator.ex:136
-#: lib/retro_hex_chat_web/controllers/help_content/feature_choose_character.html.heex:39
-#: lib/retro_hex_chat_web/controllers/help_content/feature_choose_character.html.heex:42
+#: lib/retro_hex_chat_web/controllers/help_content/feature_choose_character.html.heex:44
+#: lib/retro_hex_chat_web/controllers/help_content/feature_choose_character.html.heex:47
 #, elixir-autogen, elixir-format
 msgid "Surprise me"
 msgstr "隨機一個"
 
 #: lib/retro_hex_chat_web/components/ui/space_character_creator.ex:200
 #: lib/retro_hex_chat_web/components/ui/space_character_creator.ex:246
-#: lib/retro_hex_chat_web/controllers/help_content/feature_choose_character.html.heex:36
+#: lib/retro_hex_chat_web/controllers/help_content/feature_choose_character.html.heex:41
 #, elixir-autogen, elixir-format
 msgid "Trim colour"
 msgstr "飾邊顏色"
@@ -5210,314 +5210,427 @@ msgstr "向左轉"
 msgid "Turn right"
 msgstr "向右轉"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_choose_character.html.heex:48
+#: lib/retro_hex_chat_web/controllers/help_content/feature_choose_character.html.heex:53
 #: lib/retro_hex_chat_web/live/app/space_live.ex:181
 #, elixir-autogen, elixir-format
 msgid "Walk in"
 msgstr "進入"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_choose_character.html.heex:60
+#: lib/retro_hex_chat_web/controllers/help_content/feature_choose_character.html.heex:65
 #: lib/retro_hex_chat_web/live/app/space_live.ex:227
 #, elixir-autogen, elixir-format
 msgid "Wear this"
 msgstr "穿上這個"
 
-#: lib/retro_hex_chat_web/components/ui/space_character_creator.ex:331
+#: lib/retro_hex_chat_web/components/ui/space_character_creator.ex:341
 #, elixir-autogen, elixir-format
 msgctxt "character body"
 msgid "Average"
 msgstr "標準"
 
-#: lib/retro_hex_chat_web/components/ui/space_character_creator.ex:322
+#: lib/retro_hex_chat_web/components/ui/space_character_creator.ex:332
 #: lib/retro_hex_chat_web/controllers/help_content/feature_choose_character.html.heex:19
 #, elixir-autogen, elixir-format
 msgctxt "character creator"
 msgid "Body"
 msgstr "體型"
 
-#: lib/retro_hex_chat_web/components/ui/space_character_creator.ex:327
+#: lib/retro_hex_chat_web/components/ui/space_character_creator.ex:337
+#: lib/retro_hex_chat_web/controllers/help_content/feature_choose_character.html.heex:24
 #, elixir-autogen, elixir-format
 msgctxt "character creator"
 msgid "Face"
 msgstr "臉"
 
-#: lib/retro_hex_chat_web/components/ui/space_character_creator.ex:325
+#: lib/retro_hex_chat_web/components/ui/space_character_creator.ex:335
 #: lib/retro_hex_chat_web/controllers/help_content/feature_choose_character.html.heex:22
 #, elixir-autogen, elixir-format
 msgctxt "character creator"
 msgid "Hair"
 msgstr "頭髮"
 
-#: lib/retro_hex_chat_web/components/ui/space_character_creator.ex:326
+#: lib/retro_hex_chat_web/components/ui/space_character_creator.ex:336
 #: lib/retro_hex_chat_web/controllers/help_content/feature_choose_character.html.heex:23
 #, elixir-autogen, elixir-format
 msgctxt "character creator"
 msgid "Headwear"
 msgstr "帽子"
 
-#: lib/retro_hex_chat_web/components/ui/space_character_creator.ex:324
+#: lib/retro_hex_chat_web/components/ui/space_character_creator.ex:334
 #: lib/retro_hex_chat_web/controllers/help_content/feature_choose_character.html.heex:21
 #, elixir-autogen, elixir-format
 msgctxt "character creator"
 msgid "Outfit"
 msgstr "服裝"
 
-#: lib/retro_hex_chat_web/components/ui/space_character_creator.ex:323
+#: lib/retro_hex_chat_web/components/ui/space_character_creator.ex:333
 #: lib/retro_hex_chat_web/controllers/help_content/feature_choose_character.html.heex:20
 #, elixir-autogen, elixir-format
 msgctxt "character creator"
 msgid "Skin"
 msgstr "膚色"
 
-#: lib/retro_hex_chat_web/components/ui/space_character_creator.ex:342
+#: lib/retro_hex_chat_web/components/ui/space_character_creator.ex:356
 #, elixir-autogen, elixir-format
 msgctxt "character hair"
 msgid "Long"
 msgstr "長髮"
 
-#: lib/retro_hex_chat_web/components/ui/space_character_creator.ex:347
+#: lib/retro_hex_chat_web/components/ui/space_character_creator.ex:365
 #, elixir-autogen, elixir-format
 msgctxt "character headwear"
 msgid "Adventurer hat"
 msgstr "冒險者帽"
 
-#: lib/retro_hex_chat_web/components/ui/space_character_creator.ex:337
+#: lib/retro_hex_chat_web/components/ui/space_character_creator.ex:347
 #, elixir-autogen, elixir-format
 msgctxt "character outfit"
 msgid "Tunic"
 msgstr "束腰外衣"
 
-#: lib/retro_hex_chat_web/components/ui/space_character_creator.ex:336
+#: lib/retro_hex_chat_web/components/ui/space_character_creator.ex:346
 #, elixir-autogen, elixir-format
 msgctxt "character outfit"
 msgid "Undershirt"
 msgstr "背心"
 
-#: lib/retro_hex_chat_web/components/ui/space_character_creator.ex:402
+#: lib/retro_hex_chat_web/components/ui/space_character_creator.ex:428
 #, elixir-autogen, elixir-format
 msgctxt "cloth colour"
 msgid "Charcoal"
 msgstr "炭灰色"
 
-#: lib/retro_hex_chat_web/components/ui/space_character_creator.ex:388
+#: lib/retro_hex_chat_web/components/ui/space_character_creator.ex:414
 #, elixir-autogen, elixir-format
 msgctxt "cloth colour"
 msgid "Crimson"
 msgstr "深紅"
 
-#: lib/retro_hex_chat_web/components/ui/space_character_creator.ex:393
+#: lib/retro_hex_chat_web/components/ui/space_character_creator.ex:419
 #, elixir-autogen, elixir-format
 msgctxt "cloth colour"
 msgid "Forest"
 msgstr "森林綠"
 
-#: lib/retro_hex_chat_web/components/ui/space_character_creator.ex:391
+#: lib/retro_hex_chat_web/components/ui/space_character_creator.ex:417
 #, elixir-autogen, elixir-format
 msgctxt "cloth colour"
 msgid "Gold"
 msgstr "金色"
 
-#: lib/retro_hex_chat_web/components/ui/space_character_creator.ex:403
+#: lib/retro_hex_chat_web/components/ui/space_character_creator.ex:429
 #, elixir-autogen, elixir-format
 msgctxt "cloth colour"
 msgid "Ivory"
 msgstr "象牙色"
 
-#: lib/retro_hex_chat_web/components/ui/space_character_creator.ex:401
+#: lib/retro_hex_chat_web/components/ui/space_character_creator.ex:427
 #, elixir-autogen, elixir-format
 msgctxt "cloth colour"
 msgid "Leather"
 msgstr "皮革色"
 
-#: lib/retro_hex_chat_web/components/ui/space_character_creator.ex:392
+#: lib/retro_hex_chat_web/components/ui/space_character_creator.ex:418
 #, elixir-autogen, elixir-format
 msgctxt "cloth colour"
 msgid "Lime"
 msgstr "萊姆色"
 
-#: lib/retro_hex_chat_web/components/ui/space_character_creator.ex:396
+#: lib/retro_hex_chat_web/components/ui/space_character_creator.ex:422
 #, elixir-autogen, elixir-format
 msgctxt "cloth colour"
 msgid "Navy"
 msgstr "海軍藍"
 
-#: lib/retro_hex_chat_web/components/ui/space_character_creator.ex:390
+#: lib/retro_hex_chat_web/components/ui/space_character_creator.ex:416
 #, elixir-autogen, elixir-format
 msgctxt "cloth colour"
 msgid "Orange"
 msgstr "橙色"
 
-#: lib/retro_hex_chat_web/components/ui/space_character_creator.ex:399
+#: lib/retro_hex_chat_web/components/ui/space_character_creator.ex:425
 #, elixir-autogen, elixir-format
 msgctxt "cloth colour"
 msgid "Plum"
 msgstr "梅子色"
 
-#: lib/retro_hex_chat_web/components/ui/space_character_creator.ex:400
+#: lib/retro_hex_chat_web/components/ui/space_character_creator.ex:426
 #, elixir-autogen, elixir-format
 msgctxt "cloth colour"
 msgid "Rose"
 msgstr "玫瑰色"
 
-#: lib/retro_hex_chat_web/components/ui/space_character_creator.ex:397
+#: lib/retro_hex_chat_web/components/ui/space_character_creator.ex:423
 #, elixir-autogen, elixir-format
 msgctxt "cloth colour"
 msgid "Royal blue"
 msgstr "寶藍色"
 
-#: lib/retro_hex_chat_web/components/ui/space_character_creator.ex:389
+#: lib/retro_hex_chat_web/components/ui/space_character_creator.ex:415
 #, elixir-autogen, elixir-format
 msgctxt "cloth colour"
 msgid "Scarlet"
 msgstr "猩紅"
 
-#: lib/retro_hex_chat_web/components/ui/space_character_creator.ex:395
+#: lib/retro_hex_chat_web/components/ui/space_character_creator.ex:421
 #, elixir-autogen, elixir-format
 msgctxt "cloth colour"
 msgid "Sky"
 msgstr "天藍色"
 
-#: lib/retro_hex_chat_web/components/ui/space_character_creator.ex:394
+#: lib/retro_hex_chat_web/components/ui/space_character_creator.ex:420
 #, elixir-autogen, elixir-format
 msgctxt "cloth colour"
 msgid "Teal"
 msgstr "藍綠色"
 
-#: lib/retro_hex_chat_web/components/ui/space_character_creator.ex:398
+#: lib/retro_hex_chat_web/components/ui/space_character_creator.ex:424
 #, elixir-autogen, elixir-format
 msgctxt "cloth colour"
 msgid "Violet"
 msgstr "紫羅蘭色"
 
-#: lib/retro_hex_chat_web/components/ui/space_character_creator.ex:374
+#: lib/retro_hex_chat_web/components/ui/space_character_creator.ex:400
 #, elixir-autogen, elixir-format
 msgctxt "hair colour"
 msgid "Auburn"
 msgstr "赤褐色"
 
-#: lib/retro_hex_chat_web/components/ui/space_character_creator.ex:371
+#: lib/retro_hex_chat_web/components/ui/space_character_creator.ex:397
 #, elixir-autogen, elixir-format
 msgctxt "hair colour"
 msgid "Black"
 msgstr "黑色"
 
-#: lib/retro_hex_chat_web/components/ui/space_character_creator.ex:376
+#: lib/retro_hex_chat_web/components/ui/space_character_creator.ex:402
 #, elixir-autogen, elixir-format
 msgctxt "hair colour"
 msgid "Blonde"
 msgstr "金色"
 
-#: lib/retro_hex_chat_web/components/ui/space_character_creator.ex:380
+#: lib/retro_hex_chat_web/components/ui/space_character_creator.ex:406
 #, elixir-autogen, elixir-format
 msgctxt "hair colour"
 msgid "Blue"
 msgstr "藍色"
 
-#: lib/retro_hex_chat_web/components/ui/space_character_creator.ex:373
+#: lib/retro_hex_chat_web/components/ui/space_character_creator.ex:399
 #, elixir-autogen, elixir-format
 msgctxt "hair colour"
 msgid "Brown"
 msgstr "棕色"
 
-#: lib/retro_hex_chat_web/components/ui/space_character_creator.ex:375
+#: lib/retro_hex_chat_web/components/ui/space_character_creator.ex:401
 #, elixir-autogen, elixir-format
 msgctxt "hair colour"
 msgid "Copper"
 msgstr "銅色"
 
-#: lib/retro_hex_chat_web/components/ui/space_character_creator.ex:372
+#: lib/retro_hex_chat_web/components/ui/space_character_creator.ex:398
 #, elixir-autogen, elixir-format
 msgctxt "hair colour"
 msgid "Dark brown"
 msgstr "深棕色"
 
-#: lib/retro_hex_chat_web/components/ui/space_character_creator.ex:381
+#: lib/retro_hex_chat_web/components/ui/space_character_creator.ex:407
 #, elixir-autogen, elixir-format
 msgctxt "hair colour"
 msgid "Green"
 msgstr "綠色"
 
-#: lib/retro_hex_chat_web/components/ui/space_character_creator.ex:378
+#: lib/retro_hex_chat_web/components/ui/space_character_creator.ex:404
 #, elixir-autogen, elixir-format
 msgctxt "hair colour"
 msgid "Grey"
 msgstr "灰色"
 
-#: lib/retro_hex_chat_web/components/ui/space_character_creator.ex:382
+#: lib/retro_hex_chat_web/components/ui/space_character_creator.ex:408
 #, elixir-autogen, elixir-format
 msgctxt "hair colour"
 msgid "Pink"
 msgstr "粉色"
 
-#: lib/retro_hex_chat_web/components/ui/space_character_creator.ex:377
+#: lib/retro_hex_chat_web/components/ui/space_character_creator.ex:403
 #, elixir-autogen, elixir-format
 msgctxt "hair colour"
 msgid "Platinum"
 msgstr "鉑金色"
 
-#: lib/retro_hex_chat_web/components/ui/space_character_creator.ex:379
+#: lib/retro_hex_chat_web/components/ui/space_character_creator.ex:405
 #, elixir-autogen, elixir-format
 msgctxt "hair colour"
 msgid "White"
 msgstr "白色"
 
-#: lib/retro_hex_chat_web/components/ui/space_character_creator.ex:256
+#: lib/retro_hex_chat_web/components/ui/space_character_creator.ex:259
+#: lib/retro_hex_chat_web/controllers/help_content/feature_choose_character.html.heex:35
 #, elixir-autogen, elixir-format
 msgctxt "no face item"
 msgid "None"
 msgstr "無"
 
 #: lib/retro_hex_chat_web/components/ui/space_character_creator.ex:229
-#: lib/retro_hex_chat_web/controllers/help_content/feature_choose_character.html.heex:31
+#: lib/retro_hex_chat_web/controllers/help_content/feature_choose_character.html.heex:32
 #, elixir-autogen, elixir-format
 msgctxt "no headwear"
 msgid "None"
 msgstr "無"
 
-#: lib/retro_hex_chat_web/components/ui/space_character_creator.ex:363
+#: lib/retro_hex_chat_web/components/ui/space_character_creator.ex:389
 #, elixir-autogen, elixir-format
 msgctxt "skin colour"
 msgid "Brown"
 msgstr "棕色"
 
-#: lib/retro_hex_chat_web/components/ui/space_character_creator.ex:364
+#: lib/retro_hex_chat_web/components/ui/space_character_creator.ex:390
 #, elixir-autogen, elixir-format
 msgctxt "skin colour"
 msgid "Deep brown"
 msgstr "深棕色"
 
-#: lib/retro_hex_chat_web/components/ui/space_character_creator.ex:365
+#: lib/retro_hex_chat_web/components/ui/space_character_creator.ex:391
 #, elixir-autogen, elixir-format
 msgctxt "skin colour"
 msgid "Ebony"
 msgstr "烏木色"
 
-#: lib/retro_hex_chat_web/components/ui/space_character_creator.ex:359
+#: lib/retro_hex_chat_web/components/ui/space_character_creator.ex:385
 #, elixir-autogen, elixir-format
 msgctxt "skin colour"
 msgid "Fair"
 msgstr "白皙"
 
-#: lib/retro_hex_chat_web/components/ui/space_character_creator.ex:360
+#: lib/retro_hex_chat_web/components/ui/space_character_creator.ex:386
 #, elixir-autogen, elixir-format
 msgctxt "skin colour"
 msgid "Light tan"
 msgstr "淺麥色"
 
-#: lib/retro_hex_chat_web/components/ui/space_character_creator.ex:361
+#: lib/retro_hex_chat_web/components/ui/space_character_creator.ex:387
 #, elixir-autogen, elixir-format
 msgctxt "skin colour"
 msgid "Olive"
 msgstr "橄欖色"
 
-#: lib/retro_hex_chat_web/components/ui/space_character_creator.ex:358
+#: lib/retro_hex_chat_web/components/ui/space_character_creator.ex:384
 #, elixir-autogen, elixir-format
 msgctxt "skin colour"
 msgid "Porcelain"
 msgstr "瓷白"
 
-#: lib/retro_hex_chat_web/components/ui/space_character_creator.ex:362
+#: lib/retro_hex_chat_web/components/ui/space_character_creator.ex:388
 #, elixir-autogen, elixir-format
 msgctxt "skin colour"
 msgid "Tan"
 msgstr "棕褐色"
+
+#: lib/retro_hex_chat_web/components/ui/space_character_creator.ex:269
+#, elixir-autogen, elixir-format
+msgid "Colour"
+msgstr "顏色"
+
+#: lib/retro_hex_chat_web/components/ui/space_virtual_pad.ex:54
+#, elixir-autogen, elixir-format
+msgid "Dance"
+msgstr "跳舞"
+
+#: lib/retro_hex_chat_web/components/ui/space_virtual_pad.ex:44
+#, elixir-autogen, elixir-format
+msgid "Wave"
+msgstr "揮手"
+
+#: lib/retro_hex_chat_web/components/ui/space_character_creator.ex:374
+#, elixir-autogen, elixir-format
+msgctxt "character face item"
+msgid "Beard"
+msgstr "鬍子"
+
+#: lib/retro_hex_chat_web/components/ui/space_character_creator.ex:377
+#, elixir-autogen, elixir-format
+msgctxt "character face item"
+msgid "Eyepatch"
+msgstr "眼罩"
+
+#: lib/retro_hex_chat_web/components/ui/space_character_creator.ex:376
+#, elixir-autogen, elixir-format
+msgctxt "character face item"
+msgid "Glasses"
+msgstr "眼鏡"
+
+#: lib/retro_hex_chat_web/components/ui/space_character_creator.ex:375
+#, elixir-autogen, elixir-format
+msgctxt "character face item"
+msgid "Moustache"
+msgstr "八字鬍"
+
+#: lib/retro_hex_chat_web/components/ui/space_character_creator.ex:359
+#, elixir-autogen, elixir-format
+msgctxt "character hair"
+msgid "Afro"
+msgstr "爆炸頭"
+
+#: lib/retro_hex_chat_web/components/ui/space_character_creator.ex:360
+#, elixir-autogen, elixir-format
+msgctxt "character hair"
+msgid "Mohawk"
+msgstr "莫西干"
+
+#: lib/retro_hex_chat_web/components/ui/space_character_creator.ex:358
+#, elixir-autogen, elixir-format
+msgctxt "character hair"
+msgid "Ponytail"
+msgstr "馬尾"
+
+#: lib/retro_hex_chat_web/components/ui/space_character_creator.ex:357
+#, elixir-autogen, elixir-format
+msgctxt "character hair"
+msgid "Short"
+msgstr "短髮"
+
+#: lib/retro_hex_chat_web/components/ui/space_character_creator.ex:366
+#, elixir-autogen, elixir-format
+msgctxt "character headwear"
+msgid "Beanie"
+msgstr "毛線帽"
+
+#: lib/retro_hex_chat_web/components/ui/space_character_creator.ex:369
+#, elixir-autogen, elixir-format
+msgctxt "character headwear"
+msgid "Crown"
+msgstr "王冠"
+
+#: lib/retro_hex_chat_web/components/ui/space_character_creator.ex:368
+#, elixir-autogen, elixir-format
+msgctxt "character headwear"
+msgid "Hood"
+msgstr "兜帽"
+
+#: lib/retro_hex_chat_web/components/ui/space_character_creator.ex:367
+#, elixir-autogen, elixir-format
+msgctxt "character headwear"
+msgid "Wizard hat"
+msgstr "巫師帽"
+
+#: lib/retro_hex_chat_web/components/ui/space_character_creator.ex:349
+#, elixir-autogen, elixir-format
+msgctxt "character outfit"
+msgid "Armour"
+msgstr "盔甲"
+
+#: lib/retro_hex_chat_web/components/ui/space_character_creator.ex:351
+#, elixir-autogen, elixir-format
+msgctxt "character outfit"
+msgid "Dress"
+msgstr "連身裙"
+
+#: lib/retro_hex_chat_web/components/ui/space_character_creator.ex:350
+#, elixir-autogen, elixir-format
+msgctxt "character outfit"
+msgid "Jacket"
+msgstr "夾克"
+
+#: lib/retro_hex_chat_web/components/ui/space_character_creator.ex:348
+#, elixir-autogen, elixir-format
+msgctxt "character outfit"
+msgid "Robe"
+msgstr "長袍"

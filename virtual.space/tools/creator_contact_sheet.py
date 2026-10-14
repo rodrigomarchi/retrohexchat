@@ -51,7 +51,7 @@ def parse(recipe, catalog):
     out["outfit"] = (oid, int(p, 36), int(s, 36))
     out["hair"] = None if fields["h"] == ["0"] else (fields["h"][0], int(fields["h"][1], 36))
     out["hat"] = None if fields["w"] == ["0"] else (fields["w"][0], int(fields["w"][1], 36), int(fields["w"][2], 36))
-    out["face"] = None if fields["f"] == ["0"] else fields["f"][0]
+    out["face"] = None if fields["f"] == ["0"] else (fields["f"][0], int(fields["f"][1], 36))
     if f"{body}/{oid}" not in items["bases"]:
         raise ValueError(f"no outfit {oid} for body {body}")
     return out
@@ -65,12 +65,13 @@ def random_recipe(catalog, rng):
     hair = rng.choice([None] + items["hair"])
     hat = rng.choice([None] + sorted(items["headwear"]))
     face = rng.choice([None] + sorted(items["face"]))
+    face_palette = catalog["channelPalette"][items["face"][face]["channel"]] if face else None
     return ".".join([
         "c1", f"b-{body}", f"s-{n('skin')}",
         f"o-{outfit}-{_dye(catalog, outfit, 0, rng.randrange(16))}-{_dye(catalog, outfit, 1, rng.randrange(16))}",
         f"h-{hair}-{n('hair')}" if hair else "h-0",
         f"w-{hat}-{n('fabric')}-{n('fabric')}" if hat else "w-0",
-        f"f-{face}" if face else "f-0"])
+        f"f-{face}-{n(face_palette)}" if face else "f-0"])
 
 
 def base36(n):
@@ -127,7 +128,8 @@ def plan(recipe, catalog):
     out = [(f"base-{r['body']}-{r['outfit'][0]}",
             {"skin": r["skin"], "primary": r["outfit"][1], "secondary": r["outfit"][2]}, "base")]
     if r["face"]:
-        out.append((f"face-{r['face']}", {"primary": 0}, "face"))
+        channel = catalog["items"]["face"][r["face"][0]]["channel"]
+        out.append((f"face-{r['face'][0]}", {channel: r["face"][1]}, "face"))
     if r["hair"]:
         out.append((f"hair-{r['hair'][0]}", {"hair": r["hair"][1]}, "hair"))
     if r["hat"]:
