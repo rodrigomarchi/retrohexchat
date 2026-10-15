@@ -58,9 +58,9 @@ SCALE = {
     "cubicle_partition": (0.4, 0.75),
     "trash_bin": (0.2, 0.4),
     "tall_plant": (0.6, 0.9),
-    # Glass to wall rooms in: a pane about a person high, a door a little
-    # taller, and a desk whose monitor rises over its top.
-    "glass_wall": (0.75, 1.05),
+    # Glass to wall rooms in, a little taller than a person and as tall as its
+    # door, and a desk whose monitor rises over its top.
+    "glass_wall": (1.05, 1.3),
     "glass_door": (1.05, 1.3),
     "workstation": (0.7, 1.0),
 }

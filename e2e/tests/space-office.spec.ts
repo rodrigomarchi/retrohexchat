@@ -117,7 +117,7 @@ test.describe("The Office", () => {
         .toBe(true);
       await shot(space, "office-meeting-door-open");
 
-      // The door in the back wall leads back to the End of Time.
+      // The wooden door by the reception leads back to the End of Time.
       await walker.goTo(INSIDE_DOOR);
       await space.keyboard.press("e");
       await expect(modal).toContainText("End of Time");

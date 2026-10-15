@@ -140,14 +140,14 @@ LIBRARY = {
         "coat_rack": {},
         "cactus": {},
         "reception_desk": {"size": [1, 2]},
-        "cubicle_partition": {"shadow": False},
+        "cubicle_partition": {"pane": True, "shadow": False},
         "trash_bin": {},
         "tall_plant": {},
         # Glass walls and a glass door to make rooms of the floor, and a desk
         # whose monitor turns its back on the viewer, so whoever sits at it
         # faces the room.
-        "glass_wall": {"glass": True, "shadow": False, "mirror": True},
-        "glass_door": {"glass": True, "shadow": False, "mirror": True, "use": "door",
+        "glass_wall": {"pane": True, "shadow": False},
+        "glass_door": {"pane": True, "shadow": False, "use": "door",
                        "states": {"open": "glass_door_open"}},
         "workstation": {"size": [1, 2]},
     },
@@ -398,43 +398,81 @@ def _lamp_off(im):
     return out
 
 
-def _is_pane(r, g, b):
-    """A pixel of a glass pane: pale and cyan, unlike the grey aluminium."""
-    return r > 190 and g - r > 15
+# A pane standing on one edge of its tile: the edge runs 24 px across and 10 px
+# up, the floor's own slope, so the far end of one pane is exactly the near end
+# of the next and a run of them reads as one wall. Each facing is a different
+# edge of the tile — "down" its +x edge, "up" its -x edge, "right" its +y edge,
+# "left" its -y edge — so whoever is inside a room walled with them has the
+# whole of every inner tile, and its floor stops at the pane. The point each
+# stands on is level with its edge's low end and centred across it.
+PANE_W = 25
+PANE_FEET = {"down": [0.75, 0.25], "up": [-0.25, 0.25],
+             "right": [0.25, 0.75], "left": [0.25, -0.25]}
+PANE_DIRS = ["down", "right", "up", "left"]
+
+GLASS = (196, 232, 240, 100)
+GLASS_GLINT = (238, 250, 255, 170)
+ALU = (204, 209, 216, 255)
+ALU_DARK = (146, 152, 163, 255)
+HANDLE = (92, 98, 110, 255)
+FABRIC = (126, 132, 145, 255)
+FABRIC_DARK = (112, 118, 131, 255)
 
 
-def _glass(im):
-    """A pane of glass drawn as glass: the pale cyan pixels see-through, so a
-    room walled in glass still shows what is inside it; the frame stays solid."""
-    out = im.copy()
-    px = out.load()
-    for y in range(out.height):
-        for x in range(out.width):
-            r, g, b, a = px[x, y]
-            if a and _is_pane(r, g, b):
-                px[x, y] = (r, g, b, 110)
-    return out
+def _pane(height, paint):
+    """A pane on the floor's slope, `height` px tall, coloured column by column
+    by `paint(i, d, height)` (`d` rows above the base, `None` to leave
+    clear). Column 0 is its near end, low on the left; column 24 its far end."""
+    full = height + 11
+    im = Image.new("RGBA", (PANE_W, full), (0, 0, 0, 0))
+    px = im.load()
+    for i in range(PANE_W):
+        base = full - 1 - (i * 5) // 12
+        for d in range(height + 1):
+            colour = paint(i, d, height)
+            if colour:
+                px[i, base - d] = colour
+    return im
 
 
-def _glass_open(im):
-    """A glass door swung open: its frame with nothing in it, the pane and the
-    handle on it (the bluish pixels inside the frame) gone."""
-    out = im.copy()
-    px = out.load()
-    for y in range(out.height):
-        for x in range(out.width):
-            r, g, b, a = px[x, y]
-            if a and (_is_pane(r, g, b) or (g - r > 8 and b - r > 8)):
-                px[x, y] = (0, 0, 0, 0)
-    # What was left of the handle floating where the pane was: a pixel with no
-    # opaque neighbour.
-    alone = [(x, y) for y in range(out.height) for x in range(out.width)
-             if px[x, y][3] and not any(
-                 0 <= x + dx < out.width and 0 <= y + dy < out.height and px[x + dx, y + dy][3]
-                 for dx in (-1, 0, 1) for dy in (-1, 0, 1) if (dx, dy) != (0, 0))]
-    for x, y in alone:
-        px[x, y] = (0, 0, 0, 0)
-    return out
+def _glass_pane(i, d, height):
+    if i == 0 or i == PANE_W - 1 or d <= 1 or d >= height - 1:
+        return ALU_DARK if d == 0 or i == 0 else ALU
+    # Two glints across the glass, the way light catches a pane.
+    return GLASS_GLINT if (d + i * 2) % 41 in (0, 1) and 6 < d < height - 6 else GLASS
+
+
+def _door_pane(open_):
+    def paint(i, d, height):
+        frame = i <= 1 or i >= PANE_W - 2 or d >= height - 2
+        if frame:
+            return ALU_DARK if i == 0 else ALU
+        if open_:
+            return ALU_DARK if d == 0 else None
+        if d <= 1:
+            return ALU
+        if 17 <= i <= 18 and abs(d - height // 2) <= 9:
+            return HANDLE
+        return GLASS_GLINT if (d + i * 2) % 41 in (0, 1) and 6 < d < height - 6 else GLASS
+    return paint
+
+
+def _partition_pane(i, d, height):
+    if d >= height - 1:
+        return ALU
+    if i == 0 or i == PANE_W - 1:
+        return ALU_DARK
+    if d <= 2:
+        return ALU_DARK if d == 0 or i % 6 in (2, 3) else None
+    return FABRIC_DARK if (d + i) % 4 == 0 else FABRIC
+
+
+def _put_pane(shelf, vocab, name, im):
+    """A pane per facing: drawn as it is for the edges along y ("down", "up"),
+    mirrored for the ones along x ("right", "left")."""
+    shelf.put(name, im, native=True)
+    vocab[f"{name}_r"] = dict(vocab[name], flip_x=True)
+    return {d: (name if d in ("down", "up") else f"{name}_r") for d in PANE_DIRS}
 
 
 def _coin_tails(im):
@@ -583,7 +621,6 @@ def build():
                 "eot_lamp_off": _lamp_off(_crop(Image.open(EOT_LAMP).convert("RGBA"))),
                 "coin_tails": _coin_tails(_art("coin.png")),
                 **_corners(wall)}
-    variants["glass_door_open"] = _glass_open(_art("glass_door.png"))
     door_open = os.path.join(SRC, "door_open.png")
     variants["door_open"] = _art("door_open.png") if os.path.exists(door_open) else _art("door.png")
 
@@ -597,8 +634,20 @@ def build():
             vocab[f"{name}_r"] = dict(vocab[name], flip_x=True)
         return {"down": name, "right": f"{name}_r"}
 
+    # The panes are drawn, not generated: only drawn panes meet exactly from one
+    # tile to the next.
+    panes = {
+        # Glass and its door are one height, so a run's top is one line.
+        "glass_wall": _put_pane(shelf, vocab, "cst_glass_wall", _pane(96, _glass_pane)),
+        "glass_door": _put_pane(shelf, vocab, "cst_glass_door", _pane(96, _door_pane(False))),
+        "glass_door_open": _put_pane(shelf, vocab, "cst_glass_door_open", _pane(96, _door_pane(True))),
+        "cubicle_partition": _put_pane(shelf, vocab, "cst_cubicle_partition", _pane(42, _partition_pane)),
+    }
+
     for kind, spec in KINDS.items():
-        if "eot" in spec:
+        if spec.get("pane"):
+            tiles = panes[kind]
+        elif "eot" in spec:
             tiles = eot_tiles(spec["eot"])
         elif "anim" in spec or "file" in spec:
             name = f"cst_{kind}"
@@ -609,8 +658,6 @@ def build():
                 shelf.put_strip(name, frames, spec["period_ms"])
             else:
                 art = _art(spec["file"])
-                if spec.get("glass"):
-                    art = _glass(art)
                 # A state drawn as art of its own (the door open) is cut to the
                 # box that holds the piece in every state, so the piece stays
                 # put while it changes, the way an animation's frames do.
@@ -636,7 +683,10 @@ def build():
                     shelf.put(name, variants[variant])
                 tiles[dir_] = name
         entry = {"tiles": tiles, "group": spec["group"]}
-        for state, variant in spec.get("states", {}).items():
+        if spec.get("pane"):
+            entry["dirs"], entry["feet"] = PANE_DIRS, PANE_FEET
+            entry["states"] = {state: panes[variant] for state, variant in spec.get("states", {}).items()}
+        for state, variant in ({} if spec.get("pane") else spec.get("states", {})).items():
             name = f"cst_{variant}"
             # A state is the same piece seen otherwise, so it runs the way the
             # piece does: mirrored with it.

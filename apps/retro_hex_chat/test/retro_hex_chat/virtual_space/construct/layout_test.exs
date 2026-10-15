@@ -558,7 +558,7 @@ defmodule RetroHexChat.VirtualSpace.Construct.LayoutTest do
       assert [%{x: 30, y: 30}, %{x: 30, y: 31}] =
                Enum.filter(map.seats, &(&1.item_id == bench.id))
 
-      # The art stands in the middle of the bench.
+      # A bench's art stands in its middle, under whoever sits on it.
       assert %{x: 30.0, y: 30.5} = Enum.find(map.layers.decor, &(&1[:item_id] == bench.id))
 
       {:ok, [statue] = items} = place(base, [], "statue", 30, 30, nobody)
@@ -698,6 +698,61 @@ defmodule RetroHexChat.VirtualSpace.Construct.LayoutTest do
 
       assert {:ok, items} = place(office, items, "plant", 20, 20, ctx.nobody)
       assert {:error, :full} = place(office, items, "plant", 21, 20, ctx.nobody)
+    end
+  end
+
+  describe "where a piece's art stands, and where it sorts" do
+    test "a long piece stands forward of its centre and sorts on it", %{base: base} do
+      table = %{
+        id: "t",
+        kind: "long_table",
+        x: 30,
+        y: 30,
+        dir: "down",
+        placed_by: nil,
+        state: %{}
+      }
+
+      prop =
+        base
+        |> Layout.apply([table])
+        |> get_in([:layers, :decor])
+        |> Enum.find(&(&1[:item_id] == "t"))
+
+      assert_in_delta prop.x, 30.6, 1.0e-9
+      assert_in_delta prop.y, 31.1, 1.0e-9
+      # Between whoever stands behind its back half and in front of it.
+      assert_in_delta prop.depth, 60.5, 1.0e-9
+    end
+
+    test "a one-tile piece and a sofa need no order of their own", %{base: base} do
+      chair = %{id: "c", kind: "chair", x: 30, y: 30, dir: "down", placed_by: nil, state: %{}}
+      sofa = %{id: "s", kind: "sofa", x: 33, y: 30, dir: "down", placed_by: nil, state: %{}}
+      decor = base |> Layout.apply([chair, sofa]) |> get_in([:layers, :decor])
+
+      refute decor |> Enum.find(&(&1[:item_id] == "c")) |> Map.has_key?(:depth)
+      assert %{x: 33.0, y: 30.5} = sofa_prop = Enum.find(decor, &(&1[:item_id] == "s"))
+      refute Map.has_key?(sofa_prop, :depth)
+    end
+
+    test "a pane stands on the edge its facing names, sorted just behind it", %{base: base} do
+      for {dir, {x, y}} <- [
+            {"down", {30.75, 30.25}},
+            {"up", {29.75, 30.25}},
+            {"right", {30.25, 30.75}},
+            {"left", {30.25, 29.75}}
+          ] do
+        pane = %{id: "p", kind: "glass_wall", x: 30, y: 30, dir: dir, placed_by: nil, state: %{}}
+
+        prop =
+          base
+          |> Layout.apply([pane])
+          |> get_in([:layers, :decor])
+          |> Enum.find(&(&1[:item_id] == "p"))
+
+        assert {prop.x, prop.y} == {x, y}, dir
+        assert_in_delta prop.depth, x + y - 0.01, 1.0e-9
+      end
     end
   end
 end

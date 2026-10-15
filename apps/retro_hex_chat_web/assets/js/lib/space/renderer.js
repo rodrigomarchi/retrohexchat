@@ -439,8 +439,10 @@ export class Renderer {
       const ringed = isFocusedProp(focus, prop);
       // Foot = the base tile (depthKey folds elevation in as a tie-break); props
       // draw as upright billboards rising from their diamond foot.
+      // A piece whose art stands off its footprint's centre (a long table, a
+      // pane on an edge) says where it sorts: `depth`.
       items.push({
-        baseline: this.projection.depthKey(prop.x, prop.y, prop.h ?? 0),
+        baseline: prop.depth ?? this.projection.depthKey(prop.x, prop.y, prop.h ?? 0),
         draw: () => {
           if (ringed) {
             const top = this._drawFocusRing(ctx, prop, sprite, now);
@@ -478,7 +480,7 @@ export class Renderer {
     const ghostSprite = ghost?.tile ? this.atlas?.tile(ghost.tile) : null;
     if (ghostSprite) {
       items.push({
-        baseline: this.projection.depthKey(ghost.x, ghost.y),
+        baseline: ghost.depth ?? this.projection.depthKey(ghost.x, ghost.y),
         draw: () => {
           ctx.save();
           ctx.globalAlpha = GHOST_ALPHA;

@@ -22,7 +22,8 @@ defmodule RetroHexChat.VirtualSpace.Maps.Construct do
   `group` (its palette tab), `label` (how the line it shows is drawn: its
   width in tiles, how high it floats, its colour and its outline), `size`
   (its footprint, `[w, h]` tiles), `foot` (the point of the footprint its art
-  stands on), `seats` (the footprint tiles that are seats), `layers` (more
+  stands on; `feet` names it per facing, for a pane standing on one edge of
+  its tile), `seats` (the footprint tiles that are seats), `layers` (more
   art drawn with it, each on its own point) and `shadow` (false for a piece
   that stands flush on the floor, a wall, with no contact shadow under it).
   """
@@ -153,6 +154,7 @@ defmodule RetroHexChat.VirtualSpace.Maps.Construct do
          label: label(entry["label"]),
          size: entry["size"] || [1, 1],
          foot: entry["foot"],
+         feet: entry["feet"],
          seats: entry["seats"],
          layers: Enum.map(entry["layers"] || [], &%{tiles: &1["tiles"], foot: &1["foot"]})
        }}

@@ -37,13 +37,40 @@ export function footprintOf(map, kind, x, y, dir = "down") {
 
 /**
  * The floor point a piece's art stands on: its kind's `foot`, by default the
- * centre of the footprint.
+ * centre of the footprint, brought forward for a piece wider than a tile that
+ * nobody sits on, or for a pane on one edge of its tile the point
+ * its `feet` name for the facing, taken as it is.
  * @returns {{x:number, y:number}}
  */
 export function footPointOf(map, kind, x, y, dir = "down") {
+  const edge = map.catalog?.[kind]?.feet?.[dir];
+  if (edge) return { x: x + edge[0], y: y + edge[1] };
   const [w, h] = map.catalog?.[kind]?.size ?? [1, 1];
-  const [fx, fy] = map.catalog?.[kind]?.foot ?? [(w - 1) / 2, (h - 1) / 2];
+  // A piece wider than a tile stands brought forward of its centre, where its
+  // art meets the floor, unless people sit on it (`Construct.Layout`).
+  const seated = (map.catalog?.[kind]?.seats ?? []).length > 0;
+  const forward = w * h === 1 || seated ? 0 : (w + h) / 4 - 0.15;
+  const [fx, fy] = map.catalog?.[kind]?.foot ?? [(w - 1) / 2 + forward, (h - 1) / 2 + forward];
   return MIRRORED.has(dir) ? { x: x + fy, y: y + fx } : { x: x + fx, y: y + fy };
+}
+
+/**
+ * Where a piece falls among the people around it: its footprint's, not its
+ * art's (`Construct.Layout` sends the same `depth` with its decor). A long
+ * piece's art stands forward of its centre and a pane on an edge, so each
+ * sorts by its footprint's centre, a pane just behind its edge.
+ * @returns {number}
+ */
+export function depthOf(map, kind, x, y, dir = "down") {
+  const entry = map.catalog?.[kind];
+  const edge = entry?.feet?.[dir];
+  if (edge) return x + edge[0] + y + edge[1] - 0.01;
+  if (entry?.foot) {
+    const foot = footPointOf(map, kind, x, y, dir);
+    return foot.x + foot.y;
+  }
+  const [w, h] = entry?.size ?? [1, 1];
+  return x + y + (w - 1) / 2 + (h - 1) / 2;
 }
 
 /** The placed piece whose footprint covers a tile. */
@@ -82,10 +109,9 @@ export function tileAtCanvasPoint(camera, canvasX, canvasY) {
  */
 export function itemAtCanvasPoint(map, camera, atlas, canvasX, canvasY) {
   const point = (item) => footPointOf(map, item.kind, item.x, item.y, item.dir);
+  const depth = (item) => depthOf(map, item.kind, item.x, item.y, item.dir);
   const nearestFirst = [...map.items].sort((a, b) => {
-    const pa = point(a);
-    const pb = point(b);
-    return pb.x + pb.y - (pa.x + pa.y);
+    return depth(b) - depth(a);
   });
   const scale = camera.scale ?? 1;
 

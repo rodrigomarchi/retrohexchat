@@ -18,6 +18,7 @@ import { normalizeLayout } from "../protocol.js";
 import { BuildMode } from "./build_mode.js";
 import {
   canPlaceAt,
+  depthOf,
   footPointOf,
   footprintOf,
   itemAtCanvasPoint,
@@ -281,6 +282,7 @@ export class ConstructController {
     return {
       x: foot.x,
       y: foot.y,
+      depth: depthOf(map, kind, at.x, at.y, dir),
       tile: map.kindTile(kind, dir),
       tiles: footprintOf(map, kind, at.x, at.y, dir),
       valid,

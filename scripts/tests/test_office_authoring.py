@@ -66,6 +66,26 @@ class OfficeMapTest(unittest.TestCase):
             ao._validate(catalog, wall, exit_, spawn, set())
 
 
+class PaneTest(unittest.TestCase):
+    def test_a_pane_runs_on_the_floor_slope_so_the_next_one_meets_it(self):
+        import author_construct as ac
+        im = ac._pane(40, ac._glass_pane)
+        self.assertEqual(im.width, ac.PANE_W)
+        alpha = im.getchannel("A").load()
+
+        def lowest(col):
+            return max(y for y in range(im.height) if alpha[col, y])
+
+        # The near end is the pane's lowest point; the far end is 10 px up, a
+        # tile's edge on the 48x20 floor, so the next pane's near end is there.
+        self.assertEqual(lowest(0), im.height - 1)
+        self.assertEqual(lowest(ac.PANE_W - 1), im.height - 11)
+
+    def test_the_office_stands_no_wall_on_its_edge(self):
+        office = _load("office")
+        self.assertFalse({i["kind"] for i in office["fixed_items"]} & {"wall", "corner"})
+
+
 class DoorsTest(unittest.TestCase):
     def test_a_door_is_a_way_through_a_wall_and_a_wall_without_one_is_not(self):
         construct = _load("construct")

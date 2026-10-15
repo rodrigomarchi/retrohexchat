@@ -2,6 +2,7 @@ import { describe, it, expect } from "vitest";
 
 import {
   canPlaceAt,
+  depthOf,
   footPointOf,
   footprintOf,
   itemAtCanvasPoint,
@@ -119,11 +120,44 @@ describe("pieces bigger than a tile", () => {
     expect(footprintOf(map, "chair", 3, 3)).toEqual([{ x: 3, y: 3 }]);
   });
 
-  it("stand their art on the footprint's centre, or the kind's own foot", () => {
+  it("stand their art forward of the footprint's centre, or on the kind's own foot", () => {
     const map = constructMap();
+    // A two-tile table is drawn with the floor it covers: it stands 0.6 of a
+    // tile forward on both axes, straight down the screen.
+    map.catalog.long_table = { size: [1, 2] };
+    const table = footPointOf(map, "long_table", 3, 3, "down");
+    expect(table.x).toBeCloseTo(3.6);
+    expect(table.y).toBeCloseTo(4.1);
+    const turned = footPointOf(map, "long_table", 3, 3, "right");
+    expect(turned.x).toBeCloseTo(4.1);
+    expect(turned.y).toBeCloseTo(3.6);
+    // A sofa keeps its seat under whoever sits on it: its centre.
+    map.catalog.sofa = {
+      ...map.catalog.sofa,
+      seats: [
+        [0, 0],
+        [0, 1],
+      ],
+    };
     expect(footPointOf(map, "sofa", 3, 3, "down")).toEqual({ x: 3, y: 3.5 });
-    expect(footPointOf(map, "sofa", 3, 3, "right")).toEqual({ x: 3.5, y: 3 });
+    expect(footPointOf(map, "chair", 3, 3, "down")).toEqual({ x: 3, y: 3 });
     expect(footPointOf(map, "statue", 3, 3, "down")).toEqual({ x: 4, y: 4 });
+  });
+
+  it("sort a long piece on its footprint's centre, a pane just behind its edge", () => {
+    const map = constructMap();
+    map.catalog.long_table = { size: [1, 2] };
+    map.catalog.pane = { size: [1, 1], feet: { down: [0.75, 0.25] } };
+    expect(depthOf(map, "long_table", 3, 3, "down")).toBeCloseTo(6.5);
+    expect(depthOf(map, "chair", 3, 3, "down")).toBe(6);
+    expect(depthOf(map, "pane", 3, 3, "down")).toBeCloseTo(6.99);
+  });
+
+  it("stand a pane on the edge of its tile its facing names", () => {
+    const map = constructMap();
+    map.catalog.pane = { size: [1, 1], feet: { down: [0.75, 0.25], left: [0.25, -0.25] } };
+    expect(footPointOf(map, "pane", 3, 3, "down")).toEqual({ x: 3.75, y: 3.25 });
+    expect(footPointOf(map, "pane", 3, 3, "left")).toEqual({ x: 3.25, y: 2.75 });
   });
 
   it("are found from any tile they cover", () => {

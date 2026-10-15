@@ -249,11 +249,39 @@ defmodule RetroHexChat.VirtualSpace.Construct.Layout do
 
   defp mirrored?(dir), do: dir in ["right", "left"]
 
-  # Where on the floor a piece's art (or one of its layers) stands: a point
-  # inside the footprint, by default its centre.
-  defp foot_point(entry, item, foot \\ nil) do
+  # Far enough forward, straight down the screen, that the art's lowest pixel
+  # is just short of the footprint's front corner: that corner is (w + h) / 4
+  # of a tile forward of the centre on both axes, and 0.15 short of it is a
+  # few pixels above it. A one-tile piece is drawn standing in its middle, and
+  # so is a sofa or a bench: whoever sits on it is drawn on its tiles, and
+  # the seat must be under them.
+  defp default_foot(_entry, 1, 1), do: [0, 0]
+
+  defp default_foot(%{seats: [_ | _]}, w, h), do: [(w - 1) / 2, (h - 1) / 2]
+
+  defp default_foot(_entry, w, h) do
+    forward = (w + h) / 4 - 0.15
+    [(w - 1) / 2 + forward, (h - 1) / 2 + forward]
+  end
+
+  # Where on the floor a piece's art (or one of its layers) stands: by
+  # default its footprint's centre, brought forward — which for a long piece
+  # is past the footprint, on the floor in front of it. A piece wider
+  # than a tile is drawn with the floor it covers, so its lowest pixel is near
+  # the footprint's front corner, not its centre; stood on the centre it
+  # floats over its own tiles. A pane that stands on one
+  # edge of its tile names the point per facing (`feet`), as it is: each
+  # facing is a different edge, not a mirror of another.
+  defp foot_point(entry, item, foot \\ nil)
+
+  defp foot_point(%{feet: %{} = feet}, %{dir: dir} = item, nil) when is_map_key(feet, dir) do
+    [fx, fy] = Map.fetch!(feet, dir)
+    {item.x + fx, item.y + fy}
+  end
+
+  defp foot_point(entry, item, foot) do
     {w, h} = size(entry, "down")
-    [fx, fy] = foot || entry[:foot] || [(w - 1) / 2, (h - 1) / 2]
+    [fx, fy] = foot || entry[:foot] || default_foot(entry, w, h)
     {fx, fy} = if mirrored?(item.dir), do: {fy, fx}, else: {fx, fy}
     {item.x + fx, item.y + fy}
   end
@@ -586,6 +614,7 @@ defmodule RetroHexChat.VirtualSpace.Construct.Layout do
     main =
       %{x: x, y: y, tile: tile_of(entry, item), sort: "stand", item_id: item.id}
       |> flush(entry)
+      |> sorted(entry, item)
 
     extra =
       for layer <- Map.get(entry, :layers, []) do
@@ -601,6 +630,23 @@ defmodule RetroHexChat.VirtualSpace.Construct.Layout do
   # run of walls reads as a scalloped band rather than as a shadow.
   defp flush(prop, %{shadow: false}), do: Map.put(prop, :shadow, false)
   defp flush(prop, _entry), do: prop
+
+  # Where a piece falls among the people around it is its footprint's, not its
+  # art's: the art of a long table stands forward of its centre, and sorted
+  # there it would cover whoever stands in front of its back half. So a piece
+  # whose art stands elsewhere carries its place in the order (`depth`): a
+  # long piece its footprint's centre, a pane just behind whatever stands on
+  # the far side of its edge.
+  defp sorted(prop, %{feet: %{} = feet}, item) when is_map_key(feet, item.dir),
+    do: Map.put(prop, :depth, prop.x + prop.y - 0.01)
+
+  defp sorted(prop, entry, item) do
+    {w, h} = size(entry, item.dir)
+
+    if entry[:foot] == nil and w * h > 1 and not match?([_ | _], entry[:seats]),
+      do: Map.put(prop, :depth, item.x + (w - 1) / 2 + item.y + (h - 1) / 2),
+      else: prop
+  end
 
   defp tile_of(entry, item) do
     tiles =

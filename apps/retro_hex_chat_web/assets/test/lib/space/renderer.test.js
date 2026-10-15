@@ -63,6 +63,24 @@ function build(overrides = {}) {
   return { ctx, renderer: new Renderer({ canvas, atlas, map, camera }) };
 }
 
+describe("Renderer depth of a piece", () => {
+  it("sorts a prop by the depth it carries, not by where its art stands", () => {
+    const decor = [
+      // Art standing forward of an avatar, but sorted behind it.
+      { x: 5, y: 5, tile: "table", sort: "stand", depth: 2 },
+    ];
+    const drawn = [];
+    const { ctx, renderer } = build({
+      layers: { floor: [], decor, above: [] },
+      atlas: { tile: () => ({ canvas: {}, sw: 32, sh: 32 }), avatar: () => null },
+    });
+    renderer._blitBillboard = () => drawn.push("table");
+    renderer._drawAvatar = () => drawn.push("avatar");
+    renderer._drawDepthSorted(ctx, new Map([["a", { x: 3, y: 3 }]]));
+    expect(drawn).toEqual(["table", "avatar"]);
+  });
+});
+
 describe("Renderer contact shadows", () => {
   it("lays one under a standing prop, and none under one that stands flush", () => {
     const decor = [

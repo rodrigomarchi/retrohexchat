@@ -345,9 +345,16 @@ author is `virtual.space/tools/author_construct.py`, which writes
   garden, gamer, beside the home furniture — each kind one PixelLab object
   named `<kind>.png`. A piece longer than a tile declares its `size`
   (`[w, h]` tiles, the long side down the y axis, which is how PixelLab draws
-  "running from bottom-left to top-right"); its art stands on the centre of
-  that footprint unless `foot` says otherwise, and a sofa or a bench lists
-  its `seats`. Generate a long piece on a wide canvas (≈112 px for two tiles)
+  "running from bottom-left to top-right"); a sofa or a bench lists its
+  `seats`. Its art stands, unless `foot` says otherwise, brought forward of
+  the footprint's centre until its lowest pixel is just short of the
+  footprint's front corner — it is drawn with the floor it covers, and stood
+  on the centre it floats over its tiles — except a piece with `seats`, which
+  stands on its centre so the seat is under whoever sits on it (drawn there,
+  raised by the renderer's seat lift). Where it falls among the people around
+  it stays its footprint's centre: the decor carries that as `depth`, which
+  the renderer sorts by. A sofa's art reaches about a tile behind its seats:
+  keep it off the platform's edge. Generate a long piece on a wide canvas (≈112 px for two tiles)
   and say it "fills the canvas", or it comes back the size of a stool.
 - **Art already in the PixelLab account is fetched, not regenerated.** The
   fair and fantasy tabs, the Victorian pieces and a few more are objects made
@@ -477,20 +484,25 @@ Time's arrival lamp (`eot_office_door` at (48,41), interactable
   through the same `Construct.Layout` code as any piece, and refuses to move,
   turn, remove or relabel one (`:fixed`); storage keeps only what they are
   doing (a lamp off), never where they are. The client never picks one up.
-- **Only the two back walls are white** (`wall` along `v = 0` and `u = 0`,
-  meeting in a `corner`, with no contact shadow — `shadow: false` — so the
-  floor runs right up to them): a front wall would hide the room. The rooms
-  inside it are walled in **glass** (`glass_wall`, `glass_door`): the author
-  draws the pale cyan pane see-through (`_glass`) and the open door as the
-  frame alone (`_glass_open`), so what is behind a glass wall shows. The way
-  out is a door in the left wall (`office_exit`, `exit_office`), with the tile
-  in front of it and the spawns `reserved`.
+- **No wall stands on the platform's edge**: the floor's edge is the room's.
+  The rooms inside it are walled in **panes** drawn by the author, not
+  generated (`_pane`): `glass_wall`, `glass_door` (its open state the frame
+  alone) and `cubicle_partition`. A pane stands on one **edge** of its tile,
+  on the floor's own slope (24 px across, 10 up), so the far end of one is the
+  near end of the next and a run reads as one wall; its facing names the edge
+  ("down" +u, "up" -u, "right" +v, "left" -v) and the catalog's `feet` the
+  point it stands on for each. The pane's tile is blocked — outside the room
+  it walls, a strip along the outside of each run, except where two rooms
+  share a wall and one gives up a column — so the room's floor is its inner
+  tiles and stops at the glass; it sorts just behind its edge (`depth`); two
+  runs meet at a point, with no corner piece. The way out is the wooden door
+  standing at the edge (`office_exit`, `exit_office`), with the tile in front
+  of it and the spawns `reserved`.
 - **Facing**, in three cases. A bulky one-tile piece (a cabinet, a machine,
-  a chair) faces +v as "down" and +u as "right": against the back wall along
-  `v = 0` it is "down", against the one along `u = 0` "right". A two-tile
-  piece runs down v as "down", facing +u, and across u as "right", facing +v.
-  A flat panel (a wall, a pane of glass, the whiteboard, the screen) runs down
-  v as "down", facing +u, so along the back wall at `v = 0` it is "right".
+  a chair) faces +v as "down" and +u as "right". A two-tile piece runs down v
+  as "down", facing +u, and across u as "right", facing +v. A flat board (the
+  whiteboard, the screen) runs down v as "down", facing +u, so along the back
+  edge at `v = 0` it is "right".
   Somebody at a `workstation` sits behind it, facing the room, its monitor's
   back to the viewer — every chair faces the viewer, so a desk whose sitter
   would face away cannot be furnished.
@@ -501,10 +513,12 @@ Time's arrival lamp (`eot_office_door` at (48,41), interactable
   and off the reserved tiles, none overlapping, every free tile reachable from
   the door (through the glass doors) and every chair reachable to sit in
   (`scripts/tests/test_office_authoring.py` runs the same check).
-- **Its own pieces** were generated for it and live in the Construct's
-  `office` tab: `reception_desk` (1×2), `cubicle_partition`, `trash_bin`,
-  `tall_plant`, `workstation` (1×2), `glass_wall` and `glass_door`, sized against a person by the table in §10 and held to it by
-  `test_construct_scale.py`.
+- **Its own pieces** live in the Construct's `office` tab. Generated for it:
+  `reception_desk` (1×2), `trash_bin`, `tall_plant` and `workstation` (1×2,
+  its near-side keyboard recoloured away in the PixelLab workbench, as
+  `pixellab.json` records). Drawn by the author: `glass_wall`, `glass_door`
+  and `cubicle_partition`. All are sized against a person by the table in §10
+  and held to it by `test_construct_scale.py`.
 - **Moving the furniture is editing `FURNITURE`** in the author and running
   it; a stored room keeps the pieces people added unless a piece now stands
   where one of them was, which drops theirs.
