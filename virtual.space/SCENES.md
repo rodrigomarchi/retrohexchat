@@ -316,7 +316,9 @@ Hard-won iso lessons:
 - **Reuse** upright props (the lamp today) as iso billboards — bottom-centre on the
   diamond foot; an upright object reads correctly in any projection.
 - Depth is keyed by `projection.depthKey` (base tile `x+y`, height a tie-break) so
-  back-edge railings draw behind avatars, front-edge in front.
+  back-edge railings draw behind whatever stands on their cell (avatars, a
+  gate put against the rail), front-edge in front; ISOMETRIC.md §3 has the
+  numbers and the posts.
 
 ## 10. The Construct (a buildable room)
 

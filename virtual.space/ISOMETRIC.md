@@ -125,8 +125,11 @@ The pipeline (all real PixelLab art — no code-drawn fence):
    pixels** (never a vertical stretch) when a taller fence is wanted.
 4. Each solid edge cell emits `railings:[{x,y,edge}]`; `renderer._drawRailingTile`
    blits the matching sheared tile at the cell's near vertex (offset by `edge`),
-   depth-sorted so **back** edges (tr/tl) draw behind avatars, **front** (bl/br)
-   in front.
+   depth-sorted (`RAIL_DEPTH`) so a **back** edge (tr/tl, `x+y-0.25`) draws
+   behind everything standing on its cell — an avatar, a gate against the
+   rail — and a **front** edge (bl/br, `x+y+1.25`) in front of everything on
+   its cell and on the next one it does not reach. A post sorts just after
+   the latest rail meeting at its corner, so it caps them.
 5. Ornate posts punctuate the run: `railing_posts:[{x,y,corner}]` — one every N
    cells along each edge **+ the four corners** — billboarded on the diamond
    vertex (`renderer._drawRailingPost`). The tall posts carry the ornament
@@ -145,9 +148,11 @@ height and ornament only read honestly against the avatar and the full floor.
 
 ### Depth sorting (`renderer._drawDepthSorted`)
 Iso merges standing props, avatars and railings into one list keyed by
-`projection.depthKey`: props/railings by their base tile `x+y`, avatars `x+y+0.5`,
-height only a tie-break (`h*EPS`) so a tall thing never reorders its neighbours.
-Multi-tile props sort by their **front** corner. The iso floor itself paints far→near
+`projection.depthKey`: props by their foot `x+y` (or the `depth` they carry —
+a Construct piece longer than a tile sorts on its footprint's centre, a pane
+just behind its edge), avatars `x+y+0.5`, railings by `RAIL_DEPTH` (back
+`-0.25`, front `+1.25`) and posts just after the rails they cap; height only a
+tie-break (`h*EPS`) so a tall thing never reorders its neighbours. The iso floor itself paints far→near
 (cached `x+y` order), **skipping the ground/void tile** so the platform floats.
 
 ---

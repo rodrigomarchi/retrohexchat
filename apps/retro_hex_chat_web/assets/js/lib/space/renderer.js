@@ -87,6 +87,38 @@ const SEAT_FACING = Object.freeze({
 
 // Deterministic per-tile phase seed so repeated animated tiles (stars, water)
 // don't cycle in lockstep — the atlas offsets an animated tile's clock by it.
+// Where a railing sorts against what stands near it. A back rail (tr/tl) is
+// behind everything on its cell; a front rail (bl/br) in front of everything
+// on its cell and on the next one that it does not reach. A post caps the
+// rails that meet at its corner, so it sorts just after the latest of them.
+const RAIL_DEPTH = Object.freeze({ tr: -0.25, tl: -0.25, bl: 1.25, br: 1.25 });
+// The two corners of a cell each rail edge runs between, and where each corner
+// of a cell is, as an offset from the cell (doubled, to key them as integers).
+const RAIL_ENDS = Object.freeze({ tr: ["n", "e"], tl: ["n", "w"], br: ["e", "s"], bl: ["w", "s"] });
+const CORNER_AT = Object.freeze({ n: [-1, -1], e: [1, -1], s: [1, 1], w: [-1, 1] });
+const POST_ABOVE_RAIL = 0.05;
+
+function cornerKey(x, y, corner) {
+  const [dx, dy] = CORNER_AT[corner] ?? [0, 0];
+  return `${2 * x + dx},${2 * y + dy}`;
+}
+
+/** Each post's sort depth: just after the latest rail meeting at its corner. */
+function postDepths(railings, posts) {
+  const latest = new Map();
+  for (const r of railings) {
+    const depth = r.x + r.y + (RAIL_DEPTH[r.edge] ?? 0);
+    for (const end of RAIL_ENDS[r.edge] ?? []) {
+      const key = cornerKey(r.x, r.y, end);
+      latest.set(key, Math.max(latest.get(key) ?? -Infinity, depth));
+    }
+  }
+  return posts.map((p) => {
+    const rail = latest.get(cornerKey(p.x, p.y, p.corner));
+    return rail === undefined ? p.x + p.y + 0.3 : rail + POST_ABOVE_RAIL;
+  });
+}
+
 function seedAt(x, y) {
   return (Math.trunc(x) * 73856093) ^ (Math.trunc(y) * 19349663);
 }
@@ -462,21 +494,28 @@ export class Renderer {
     }
     // Iso railing: one sheared wall tile per platform edge cell, blitted on the
     // cell's shared diamond edge with its void neighbour — the tiles abut into
-    // ONE seam-free wrought-iron fence wrapping the four sides, depth-sorted so
-    // back edges (tr/tl) draw behind avatars and front edges (bl/br) in front.
-    for (const r of this.map.railings ?? []) {
-      const front = r.edge === "bl" || r.edge === "br";
+    // ONE seam-free wrought-iron fence wrapping the four sides. Back rails draw
+    // behind whatever stands on their cell (an avatar, a gate against the
+    // rail), front rails in front, and each post over the rails it caps.
+    const railings = this.map.railings ?? [];
+    for (const r of railings) {
       items.push({
-        baseline: this.projection.depthKey(r.x, r.y) + (front ? 0.75 : 0.25),
+        baseline: this.projection.depthKey(r.x, r.y) + (RAIL_DEPTH[r.edge] ?? 0),
         draw: () => this._drawRailingTile(ctx, r),
       });
     }
-    for (const p of this.map.railingPosts ?? []) {
+    const posts = this.map.railingPosts ?? [];
+    if (this._posts !== posts || this._postRails !== railings) {
+      this._posts = posts;
+      this._postRails = railings;
+      this._postDepths = postDepths(railings, posts);
+    }
+    posts.forEach((p, i) => {
       items.push({
-        baseline: this.projection.depthKey(p.x, p.y) + 0.3,
+        baseline: this._postDepths[i],
         draw: () => this._drawRailingPost(ctx, p),
       });
-    }
+    });
     // The piece about to be placed, translucent, in its true depth slot so it
     // already passes in front of and behind people the way it will.
     const ghostSprite = ghost?.tile ? this.atlas?.tile(ghost.tile) : null;

@@ -81,6 +81,28 @@ describe("Renderer depth of a piece", () => {
   });
 });
 
+describe("Renderer railings", () => {
+  it("draws a cell's back rail and back post behind what stands on the cell", () => {
+    const decor = [{ x: 4, y: 4, tile: "gate", sort: "stand" }];
+    const drawn = [];
+    const { ctx, renderer } = build({
+      layers: { floor: [], decor, above: [] },
+      atlas: { tile: () => ({ canvas: {}, sw: 32, sh: 64 }), avatar: () => null },
+    });
+    renderer.map.railings = [
+      { x: 4, y: 4, edge: "tr" },
+      { x: 4, y: 4, edge: "bl" },
+    ];
+    renderer.map.railingPosts = [{ x: 4, y: 4, corner: "n" }];
+    renderer._blitBillboard = () => drawn.push("gate");
+    renderer._drawRailingTile = (_ctx, r) => drawn.push(`rail ${r.edge}`);
+    renderer._drawRailingPost = (_ctx, p) => drawn.push(`post ${p.corner}`);
+    renderer._drawDepthSorted(ctx, new Map());
+    // The back post caps its rail, and both stand behind the gate.
+    expect(drawn).toEqual(["rail tr", "post n", "gate", "rail bl"]);
+  });
+});
+
 describe("Renderer contact shadows", () => {
   it("lays one under a standing prop, and none under one that stands flush", () => {
     const decor = [
