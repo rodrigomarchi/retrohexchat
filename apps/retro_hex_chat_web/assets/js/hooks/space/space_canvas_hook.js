@@ -160,11 +160,12 @@ export function createSpaceCanvasHook(deps = {}) {
 
       this._attachPointerEvents();
 
-      // A gate's Yes is a navigation, and the LiveView owns where to: it reads
-      // the destination off the space it already resolved.
+      // A gate's Yes is a navigation, and the LiveView owns where to: the gate
+      // says which one it is, and the destination is read off the space the
+      // LiveView already resolved.
       this._modal = new ModalController({
         onChange: (m) => this._overlays?.renderModal(m),
-        onConfirm: () => this.pushEvent("space_portal", {}),
+        onConfirm: (action) => this.pushEvent("space_portal", { action }),
       });
       this._modal.attach();
 

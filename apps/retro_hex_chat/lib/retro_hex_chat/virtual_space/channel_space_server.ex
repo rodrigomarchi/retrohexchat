@@ -420,10 +420,11 @@ defmodule RetroHexChat.VirtualSpace.ChannelSpaceServer do
     end
   end
 
-  # A Construct borrows its members from the space it belongs to, and draws only
-  # the people inside. Its map is the empty room plus whatever was built in it.
+  # A room behind a gate borrows its members from the space it belongs to, and
+  # draws only the people inside. Its map is the room as its kind starts —
+  # empty, or furnished — plus whatever was built in it.
   defp init_construct_state(construct_id, parent, layout) do
-    with {:ok, base} <- construct_map(),
+    with {:ok, base} <- construct_map(construct_id),
          {:ok, membership} <- construct_membership(parent) do
       items = Layout.normalize(base, layout.items)
       floor = Layout.normalize_floor(base, Map.get(layout, :floor))
@@ -456,9 +457,9 @@ defmodule RetroHexChat.VirtualSpace.ChannelSpaceServer do
     end
   end
 
-  defp construct_map do
+  defp construct_map(construct_id) do
     case Application.get_env(:retro_hex_chat, :construct_map_override) do
-      nil -> SpaceMap.get("construct")
+      nil -> SpaceMap.get(Construct.map_id(construct_id))
       %{} = definition -> {:ok, definition}
     end
   end

@@ -71,7 +71,8 @@ export function tileAtCanvasPoint(camera, canvasX, canvasY) {
 
 /**
  * The nearest placed piece whose sprite covers the point, else the one on the
- * tile under it.
+ * tile under it. A piece the room comes with (`fixed`) is never picked up: a
+ * point on it picks nothing, not whatever stands behind it.
  * @param {import("../map.js").SpaceMap} map
  * @param {object} camera
  * @param {{tile: Function}|null} atlas
@@ -97,11 +98,12 @@ export function itemAtCanvasPoint(map, camera, atlas, canvasX, canvasY) {
     const w = sprite.sw * scale;
     const h = sprite.sh * scale;
     if (canvasX >= x - w / 2 && canvasX <= x + w / 2 && canvasY >= y - h && canvasY <= y) {
-      return item;
+      return item.fixed ? null : item;
     }
   }
 
-  return itemCovering(map, tileAtCanvasPoint(camera, canvasX, canvasY));
+  const under = itemCovering(map, tileAtCanvasPoint(camera, canvasX, canvasY));
+  return under?.fixed ? null : under;
 }
 
 /**

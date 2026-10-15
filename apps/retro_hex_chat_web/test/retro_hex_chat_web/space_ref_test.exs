@@ -20,11 +20,22 @@ defmodule RetroHexChatWeb.SpaceRefTest do
     end
 
     test "a space's Construct round-trips, and a Construct of a Construct does not" do
-      for space_id <- ["construct:#retro", "construct:dm:ana:bob"] do
+      for space_id <- [
+            "construct:#retro",
+            "construct:dm:ana:bob",
+            "office:#retro",
+            "office:dm:ana:bob"
+          ] do
         assert {:ok, ^space_id} = space_id |> SpaceRef.slug() |> SpaceRef.space_id()
       end
 
-      for space_id <- ["construct:", "construct:retro", "construct:construct:#retro"] do
+      for space_id <- [
+            "construct:",
+            "construct:retro",
+            "construct:construct:#retro",
+            "office:construct:#retro",
+            "construct:office:#retro"
+          ] do
         assert space_id |> SpaceRef.slug() |> SpaceRef.space_id() == :error
       end
     end
@@ -60,6 +71,7 @@ defmodule RetroHexChatWeb.SpaceRefTest do
     test "recovers the pair a private space is keyed by" do
       assert SpaceRef.participants("dm:ana:bob") == {:ok, ["ana", "bob"]}
       assert SpaceRef.participants("construct:dm:ana:bob") == {:ok, ["ana", "bob"]}
+      assert SpaceRef.participants("office:dm:ana:bob") == {:ok, ["ana", "bob"]}
     end
 
     test "a channel space has no pair to recover" do

@@ -171,6 +171,22 @@ _TERMS: dict[str, dict[str, tuple[str, ...]]] = {
         "nl": ("link",),
         "pl": ("link",),
     },
+    # The Office is a room behind a door: never a post ("ofício"), a cabinet
+    # minister's ("gabinete") or a function.
+    r"\boffices?\b": {
+        "pt": ("escritório",),
+        "es": ("oficina",),
+        "fr": ("bureau",),
+        "de": ("büro",),
+        "it": ("ufficio", "uffici"),
+        "nl": ("kantoor",),
+        "pl": ("biur",),
+        "ru": ("офис",),
+        # Japanese says the room either way; never as a post (役職).
+        "ja": ("オフィス", "事務所"),
+        "zh_hans": ("办公室",),
+        "zh_hant": ("辦公室",),
+    },
     r"\bpieces?\b": {
         "pt": ("peça",),
         "es": ("pieza",),
@@ -276,6 +292,16 @@ _FOREIGN_FORMS: dict[str, tuple[str, ...]] = {
         "com o rato",
         # "Pressione R para rodar uma peça": Brazil turns a piece with "girar".
         "rodar uma peça",
+        # Measured on the Office's help: "O escritório vem mobilado" (Brazil
+        # furnishes with "mobiliado") and the European enclitic of "todos
+        # podem adicionar-lhe".
+        "mobilado",
+        "mobilada",
+        "adicionar-lhe",
+        # And "A carregar o escritório...", "leva-te de volta": the European
+        # progressive and enclitic.
+        "a carregar",
+        "leva-te",
     ),
 }
 
@@ -289,3 +315,16 @@ def foreign_forms(translated: str, locale_code: str) -> list[str]:
     """Words in `translated` that belong to another variant of its language."""
     pattern = FOREIGN_FORMS.get(locale_code)
     return pattern.findall(translated) if pattern else []
+
+
+# The engine writes Italian's "è" as "e'", the way a keyboard without accents
+# does: "L'ufficio e' pieno". The accent is spelling, not style, so it is put
+# back on the way out of the engine rather than the translation being thrown
+# away.
+_ITALIAN_IS = re.compile(r"\b([Ee])'(?=[\s.,;:!?)]|$)")
+
+
+def italian_accents(translated: str) -> str:
+    """`translated` with "e'" (and "E'") written as "è" (and "È")."""
+    return _ITALIAN_IS.sub(lambda m: "è" if m.group(1) == "e" else "È", translated)
+

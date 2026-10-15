@@ -8,6 +8,7 @@ defmodule RetroHexChat.VirtualSpace.ConstructTest do
   alias RetroHexChat.Topics
   alias RetroHexChat.VirtualSpace
   alias RetroHexChat.VirtualSpace.ChannelSpaceServer
+  alias RetroHexChat.VirtualSpace.Construct
   alias RetroHexChat.VirtualSpace.Construct.Store
   alias RetroHexChat.VirtualSpace.DirectMessageSpace
   alias RetroHexChat.VirtualSpace.Registry
@@ -565,6 +566,109 @@ defmodule RetroHexChat.VirtualSpace.ConstructTest do
 
       assert {:error, :not_buildable} =
                ChannelSpaceServer.build(ctx.channel, key("alice"), {:remove, "x"})
+    end
+  end
+
+  describe "a room's id" do
+    test "names its kind and the space it belongs to, once" do
+      assert Construct.space_id("#c", :office) == "office:#c"
+      assert Construct.space_id("dm:a:b") == "construct:dm:a:b"
+      assert {:ok, :office} = Construct.kind("office:dm:a:b")
+      assert {:ok, "dm:a:b"} = Construct.parent_id("office:dm:a:b")
+      assert Construct.map_id("office:#c") == "office"
+      assert Construct.map_id("construct:#c") == "construct"
+      assert VirtualSpace.space_kind("office:#c") == :construct
+
+      for id <- ~w(office:construct:#c construct:office:#c office: office:# office:lobby) do
+        refute Construct.construct?(id), id
+      end
+    end
+  end
+
+  describe "the Office" do
+    setup do
+      ctx = channel_with(["alice", "bob"])
+      office_id = VirtualSpace.construct_id(ctx.channel, :office)
+      on_exit(fn -> stop_construct(office_id) end)
+      Map.put(ctx, :office_id, office_id)
+    end
+
+    test "its door stands on the End of Time and asks before taking anyone in" do
+      {:ok, map} = VirtualSpace.get_map("end_of_time")
+
+      assert %{x: 48, y: 41, modal: %{kind: "confirm", action: "enter_office"}} =
+               Enum.find(map.interactables, &(&1.id == "office_portal"))
+    end
+
+    test "comes furnished, and its furniture stays where it is", ctx do
+      joined = enter(ctx.office_id, "alice")
+
+      assert joined.map.id == "office"
+      assert [%{id: "fixed:" <> _} = piece | _] = Enum.filter(joined.map.items, & &1.fixed)
+
+      assert {:error, :fixed} =
+               VirtualSpace.build_construct(
+                 ctx.office_id,
+                 key("alice"),
+                 "alice",
+                 {:remove, piece.id}
+               )
+    end
+
+    test "takes pieces like the Construct, kept apart from the Construct's", ctx do
+      enter(ctx.office_id, "alice")
+      assert {:ok, 1} = place(ctx.office_id, "alice", "plant", 20, 20)
+
+      assert %{revision: 1, items: items} = Store.load(ctx.office_id)
+      assert Enum.any?(items, &(&1["kind"] == "plant"))
+      assert %{revision: 0, items: []} = Store.load(ctx.construct_id)
+
+      stop_construct(ctx.office_id)
+      joined = enter(ctx.office_id, "alice")
+      assert Enum.any?(joined.map.items, &(&1.kind == "plant" and &1.x == 20))
+    end
+
+    test "a private space's Office admits the pair and nobody else" do
+      suffix = System.unique_integer([:positive])
+      [a, b] = pair = ["off_a_#{suffix}", "off_b_#{suffix}"]
+      office_id = VirtualSpace.construct_id(DirectMessageSpace.space_id(a, b), :office)
+      on_exit(fn -> stop_construct(office_id) end)
+
+      assert enter(office_id, a, pair).map.id == "office"
+
+      assert {:error, :not_in_direct_message} =
+               VirtualSpace.join_construct_space(
+                 office_id,
+                 %{user_id: nil, nickname: "intruder"},
+                 pair
+               )
+    end
+
+    test "a hop into it keeps the space's gathering open", ctx do
+      Application.put_env(:retro_hex_chat, :virtual_space_gathering_grace_ms, 150)
+
+      on_exit(fn ->
+        Application.put_env(:retro_hex_chat, :virtual_space_gathering_grace_ms, 0)
+      end)
+
+      {:ok, opened} =
+        VirtualSpace.join_channel_space(ctx.channel, %{user_id: nil, nickname: "alice"})
+
+      enter(ctx.office_id, "alice")
+      _ = :sys.get_state(VirtualSpace.SessionRecorder)
+
+      {:ok, pid} = Registry.lookup({:channel_space, ctx.channel})
+      ref = Process.monitor(pid)
+      GenServer.stop(pid, :normal)
+      assert_receive {:DOWN, ^ref, :process, ^pid, _reason}
+      Process.sleep(250)
+
+      assert {:ok, %{status: "open"}} = VirtualSpace.get_session(opened.session.token)
+    end
+
+    test "whoever is in it is in the space", ctx do
+      enter(ctx.office_id, "bob")
+      assert "bob" in VirtualSpace.roster(ctx.channel)
     end
   end
 end

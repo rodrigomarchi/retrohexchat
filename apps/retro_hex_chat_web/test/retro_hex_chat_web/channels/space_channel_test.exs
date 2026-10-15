@@ -597,6 +597,37 @@ defmodule RetroHexChatWeb.SpaceChannelTest do
       assert {:error, %{reason: "not_in_channel"}} = join_construct(ctx.construct_id, "mallory")
     end
 
+    test "the Office is joined the same way, furnished and buildable, on its own token", ctx do
+      office_id = "office:" <> ctx.channel
+
+      on_exit(fn ->
+        case Registry.lookup({:construct_space, office_id}) do
+          {:ok, pid} -> GenServer.stop(pid, :normal)
+          {:error, :not_found} -> :ok
+        end
+      end)
+
+      construct_token = ChannelJoinToken.sign_construct(ctx.construct_id, nil, "alice", nil)
+
+      assert {:error, %{reason: "invalid_token"}} =
+               join_construct(office_id, "alice", construct_token)
+
+      assert {:ok, init, socket} = join_construct(office_id, "alice")
+      assert init.map.id == "office"
+      assert init.config.buildable
+      assert [%{fixed: true} | _] = init.map.items
+
+      ref =
+        push(socket, "construct_build", %{
+          "op" => "place",
+          "kind" => "plant",
+          "x" => 20,
+          "y" => 20
+        })
+
+      assert_reply ref, :ok
+    end
+
     test "an edit is answered, and redrawn for everyone from the layout broadcast", ctx do
       {:ok, _init, socket} = join_construct(ctx.construct_id, "alice")
 

@@ -3990,6 +3990,7 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
         see_also: [
           "feature-space-talk",
           "feature-space-construct",
+          "feature-space-office",
           "feature-choose-character",
           "feature-space-combat",
           "feature-space-emotes",
@@ -4119,7 +4120,49 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
             ],
             " "
           ),
-        see_also: ["feature-virtual-spaces", "feature-space-talk", "keyboard-shortcuts"]
+        see_also: [
+          "feature-virtual-spaces",
+          "feature-space-office",
+          "feature-space-talk",
+          "keyboard-shortcuts"
+        ]
+      },
+      %{
+        id: "feature-space-office",
+        title: dpgettext("help", "space room", "The Office"),
+        category: dgettext("help", "Virtual Spaces"),
+        keywords: [
+          "office",
+          "desk",
+          "reception",
+          "meeting",
+          "door",
+          "build",
+          dgettext("help", "office"),
+          dgettext("help", "furniture")
+        ],
+        icon: :icon_community,
+        description:
+          Enum.join(
+            [
+              dgettext("help", "Every space also has an office."),
+              dgettext(
+                "help",
+                "Its wooden door stands on the central island of the End of Time, a few steps south of where you arrive."
+              ),
+              dgettext("help", "Walk up to the door and press E."),
+              dgettext(
+                "help",
+                "The office already has a reception, desks, a meeting table and a small kitchen."
+              ),
+              dgettext("help", "You can sit on its chairs and switch its lamps on and off."),
+              dgettext("help", "Its furniture stays where it is."),
+              dgettext("help", "Pieces are added the same way as in the Construct."),
+              dgettext("help", "The office keeps everything that was added to it.")
+            ],
+            " "
+          ),
+        see_also: ["feature-space-construct", "feature-virtual-spaces", "keyboard-shortcuts"]
       },
       %{
         id: "feature-space-combat",

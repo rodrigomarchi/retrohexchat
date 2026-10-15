@@ -52,6 +52,12 @@ SCALE = {
     "whiteboard": (0.9, 1.3),
     "paper_lantern": (0.9, 1.3),
     "notice_board": (0.9, 1.3),
+    # The Office's own pieces: a waist-high counter, a partition a desk tall,
+    # a wastebasket at the knee, a plant nearly a person high.
+    "reception_desk": (0.4, 0.7),
+    "cubicle_partition": (0.4, 0.75),
+    "trash_bin": (0.2, 0.4),
+    "tall_plant": (0.6, 0.9),
 }
 
 

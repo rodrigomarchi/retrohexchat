@@ -16,7 +16,7 @@ msgstr ""
 msgid "Joining and Moving"
 msgstr "Вход и перемещение"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_virtual_spaces.html.heex:79
+#: lib/retro_hex_chat_web/controllers/help_content/feature_virtual_spaces.html.heex:93
 #, elixir-autogen, elixir-format
 msgid "Lifecycle"
 msgstr "Жизненный цикл"
@@ -119,7 +119,7 @@ msgstr "Виртуальное пространство — это карта, �
 msgid "The map is drawn continuously, and inside the chat it shared the browser with everything the chat was doing. In a tab of its own it does not, which is the difference you feel when several people are walking around at once."
 msgstr "Карта рисуется непрерывно, и внутри чата она делила браузер со всем, что делал чат. В отдельной вкладке — нет, и это та разница, которую чувствуешь, когда по карте одновременно ходят несколько человек."
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_virtual_spaces.html.heex:81
+#: lib/retro_hex_chat_web/controllers/help_content/feature_virtual_spaces.html.heex:95
 #, elixir-autogen, elixir-format
 msgid "The world itself is runtime state: it wakes when the first person walks in and stops when the last one leaves. What outlives it is the card that walking into an empty one posts in the conversation, which becomes the record of how long the gathering ran and how many people came. The address is a place and never expires."
 msgstr "Сам мир — это состояние времени выполнения: он просыпается, когда входит первый человек, и останавливается, когда уходит последний. Его переживает карточка, которую вход в пустое пространство публикует в разговоре и которая становится записью о том, сколько длилась встреча и сколько человек пришло. Адрес — это место, и он никогда не истекает."
@@ -264,16 +264,18 @@ msgstr "Прыжки и ходьба"
 msgid "While the cursor is in the line, the arrow keys and WASD type instead of walking. Enter anywhere in the space puts the cursor in the line; Esc gives the keyboard back to the map."
 msgstr "В то время как курсор находится в линии, клавиши со стрелками и тип WASD вместо ходьбы. Вход в любую точку пространства ставит курсор в линию; Esc возвращает клавиатуру на карту."
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_virtual_spaces.html.heex:70
+#: lib/retro_hex_chat_web/controllers/help_content/feature_virtual_spaces.html.heex:84
 #, elixir-autogen, elixir-format
 msgid "Who is there"
 msgstr "Кто там находится"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_space_construct.html.heex:7
+#: lib/retro_hex_chat_web/controllers/help_content/feature_space_office.html.heex:9
 #, elixir-autogen, elixir-format
 msgid "Going in and out"
 msgstr "Входить и выходить"
 
+#: lib/retro_hex_chat_web/controllers/help_content/feature_space_office.html.heex:53
 #: lib/retro_hex_chat_web/controllers/help_content/feature_virtual_spaces.html.heex:56
 #: lib/retro_hex_chat_web/controllers/help_content/feature_virtual_spaces.html.heex:67
 #, elixir-autogen, elixir-format
@@ -281,6 +283,7 @@ msgid "The Construct"
 msgstr "Конструкт"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_space_construct.html.heex:135
+#: lib/retro_hex_chat_web/controllers/help_content/feature_space_office.html.heex:56
 #, elixir-autogen, elixir-format
 msgid "Together"
 msgstr "Вместе"
@@ -301,14 +304,10 @@ msgid "Every space has a Construct: an empty white room that the people of the c
 msgstr "В каждом пространстве есть Конструкт: пустая белая комната, которую люди беседы украшают вместе. Конструкт канала принадлежит каналу, а Конструкт частного разговора принадлежит двум его людям. Никто другой не может войти."
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_space_construct.html.heex:137
+#: lib/retro_hex_chat_web/controllers/help_content/feature_space_office.html.heex:58
 #, elixir-autogen, elixir-format
 msgid "Everyone inside sees each change at once."
 msgstr "Внутри каждый видит изменения сразу."
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_space_construct.html.heex:140
-#, elixir-autogen, elixir-format
-msgid "The Construct is part of the space's gathering: its card stays open while anybody is in either room."
-msgstr "Конструкт является частью пространства: его карта остается открытой, пока кто-то находится в любой комнате."
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_virtual_spaces.html.heex:62
 #, elixir-autogen, elixir-format
@@ -316,6 +315,7 @@ msgid "The Construct is an empty room that the people of the conversation decora
 msgstr "Конструкт — это пустая комната, которую украшают люди разговора."
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_space_construct.html.heex:20
+#: lib/retro_hex_chat_web/controllers/help_content/feature_space_office.html.heex:22
 #, elixir-autogen, elixir-format
 msgid "On a touch screen, the hand button of the on-screen controls does the same as E."
 msgstr "На сенсорном экране кнопка ручного управления на экране делает то же самое, что и E."
@@ -421,6 +421,7 @@ msgid "It stays in your hand, so you can place a row of chairs with a row of cli
 msgstr "Он остается в вашей руке, поэтому вы можете разместить ряд стульев с рядом щелчков."
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_space_construct.html.heex:27
+#: lib/retro_hex_chat_web/controllers/help_content/feature_space_office.html.heex:41
 #, elixir-autogen, elixir-format
 msgid "Press %{build} in the top-left corner, or B, to see the pieces."
 msgstr "Нажмите %{build} в левом верхнем углу или B, чтобы увидеть детали."
@@ -570,17 +571,17 @@ msgstr "Вы видите предварительный просмотр ход
 msgid "%{left} and %{right} rotate the preview."
 msgstr "%{left} и %{right} вращают превью."
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_virtual_spaces.html.heex:72
+#: lib/retro_hex_chat_web/controllers/help_content/feature_virtual_spaces.html.heex:86
 #, elixir-autogen, elixir-format
 msgid "Everybody in the channel stands in its space, even the members who have not opened it."
 msgstr "Все в канале стоят в его пространстве, даже те участники, которые его не открывали."
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_virtual_spaces.html.heex:77
+#: lib/retro_hex_chat_web/controllers/help_content/feature_virtual_spaces.html.heex:91
 #, elixir-autogen, elixir-format
 msgid "In a private space only the people who walked in are there."
 msgstr "В частном пространстве есть только люди, которые туда вошли."
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_virtual_spaces.html.heex:76
+#: lib/retro_hex_chat_web/controllers/help_content/feature_virtual_spaces.html.heex:90
 #, elixir-autogen, elixir-format
 msgid "They count among the people inside."
 msgstr "Они почитаются среди людей внутри."
@@ -662,6 +663,7 @@ msgid "Each option shows how your character looks with it."
 msgstr "Каждый вариант показывает, как с ним выглядит ваш персонаж."
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_space_construct.html.heex:15
+#: lib/retro_hex_chat_web/controllers/help_content/feature_space_office.html.heex:17
 #, elixir-autogen, elixir-format
 msgid "Answer %{yes} to go in."
 msgstr "Ответьте %{yes}, чтобы войти."
@@ -672,6 +674,7 @@ msgid "Inside, the white gate in the far corner asks the same way and brings you
 msgstr "Внутри белые ворота в дальнем углу спрашивают так же и возвращают вас обратно."
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_space_construct.html.heex:14
+#: lib/retro_hex_chat_web/controllers/help_content/feature_space_office.html.heex:16
 #, elixir-autogen, elixir-format
 msgid "It asks if you want to enter."
 msgstr "Он спрашивает, хотите ли вы войти."
@@ -710,3 +713,120 @@ msgstr "Кнопка руки на экране светится одновре�
 #, elixir-autogen, elixir-format
 msgid "When you stand next to a gate, an empty seat or a piece you can use, it gets a gold outline."
 msgstr "Когда вы стоите рядом с воротами, пустым сиденьем или предметом, который вы можете использовать, он получает золотой контур."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_virtual_spaces.html.heex:72
+#, elixir-autogen, elixir-format
+msgid "A wooden door on the same island, south of where you arrive, leads to the office."
+msgstr "Деревянная дверь на том же острове, к югу от места вашего прибытия, ведет в офис."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_space_office.html.heex:39
+#, elixir-autogen, elixir-format
+msgid "Adding pieces"
+msgstr "Добавить кусочки"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_space_office.html.heex:2
+#, elixir-autogen, elixir-format
+msgid "Every space also has an office."
+msgstr "В каждом помещении также есть офис."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_space_office.html.heex:35
+#, elixir-autogen, elixir-format
+msgid "Press E next to the screen to see the last picture posted."
+msgstr "Нажмите E рядом с экраном, чтобы увидеть последнюю фотографию."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_space_office.html.heex:33
+#, elixir-autogen, elixir-format
+msgid "Press F next to a chair to sit down."
+msgstr "Нажмите F рядом со стулом, чтобы сесть."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_space_office.html.heex:11
+#, elixir-autogen, elixir-format
+msgid "The wooden door stands on the central island of the End of Time, a few steps south of where you arrive."
+msgstr "Деревянная дверь стоит на центральном острове End of Time, в нескольких шагах к югу от места прибытия."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_space_office.html.heex:29
+#, elixir-autogen, elixir-format
+msgid "There is a reception by the door, desks with computers, a meeting table and a small kitchen."
+msgstr "У двери есть прием, столы с компьютерами, стол для совещаний и небольшая кухня."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_space_office.html.heex:51
+#, elixir-autogen, elixir-format
+msgid "They are placed, moved and painted the same way."
+msgstr "Их помещают, перемещают и раскрашивают одинаково."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_space_office.html.heex:36
+#, elixir-autogen, elixir-format
+msgid "This furniture is part of the office."
+msgstr "Эта мебель является частью офиса."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_space_office.html.heex:15
+#, elixir-autogen, elixir-format
+msgid "Walk up to the door and press E."
+msgstr "Подойдите к двери и нажмите E."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_space_office.html.heex:27
+#, elixir-autogen, elixir-format
+msgid "What is already there"
+msgstr "Что там уже есть"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_virtual_spaces.html.heex:70
+#: lib/retro_hex_chat_web/controllers/help_content/feature_virtual_spaces.html.heex:81
+#, elixir-autogen, elixir-format
+msgctxt "space room"
+msgid "The Office"
+msgstr "Офис"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_space_office.html.heex:59
+#, elixir-autogen, elixir-format
+msgid "The office keeps everything that was added to it."
+msgstr "В офисе хранится все, что к нему добавили."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_space_office.html.heex:47
+#, elixir-autogen, elixir-format
+msgid "Any piece from the Construct can also be placed in the office."
+msgstr "Любое устройство Конструкт также можно разместить в офисе."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_space_office.html.heex:3
+#, elixir-autogen, elixir-format
+msgid "It already has furniture, and everyone in the conversation can add more."
+msgstr "В нем уже есть мебель, и каждый в разговоре может добавить еще."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_space_office.html.heex:60
+#, elixir-autogen, elixir-format
+msgid "Like the Construct, the office is part of the space's gathering."
+msgstr "Как и Конструкт, офис является частью пространства."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_space_office.html.heex:34
+#, elixir-autogen, elixir-format
+msgid "Press E next to a lamp to turn its light on or off."
+msgstr "Нажмите E рядом с лампой, чтобы включить или выключить ее свет."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_space_office.html.heex:46
+#, elixir-autogen, elixir-format
+msgid "The Build menu shows the office pieces first."
+msgstr "Меню Build сначала показывает офисные детали."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_virtual_spaces.html.heex:76
+#, elixir-autogen, elixir-format
+msgid "The office already has furniture, and everyone in the conversation can add more."
+msgstr "В офисе уже есть мебель, и каждый в разговоре может добавить больше."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_space_office.html.heex:18
+#, elixir-autogen, elixir-format
+msgid "Inside, the door in the back wall leads you back to the End of Time."
+msgstr "Внутри, дверь в задней стене ведет вас обратно к End of Time."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_space_office.html.heex:7
+#, elixir-autogen, elixir-format
+msgid "Only the people of the conversation can go in."
+msgstr "В нее могут войти только люди разговора."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_space_office.html.heex:37
+#, elixir-autogen, elixir-format
+msgid "This furniture cannot be moved, turned or removed."
+msgstr "Эта мебель не может быть перемещена, повернута или удалена."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_space_construct.html.heex:140
+#, elixir-autogen, elixir-format
+msgid "The Construct and the office are part of the space's gathering: its card stays open while anybody is in one of them."
+msgstr "Конструкт и офис являются частью собрания пространства: его карта остается открытой, пока кто-то находится в одном из них."

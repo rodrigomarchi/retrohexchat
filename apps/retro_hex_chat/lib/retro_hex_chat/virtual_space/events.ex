@@ -3,6 +3,8 @@ defmodule RetroHexChat.VirtualSpace.Events do
   Telemetry events for the VirtualSpace context.
   """
 
+  alias RetroHexChat.VirtualSpace.Construct
+
   @spec emit_participant_count(String.t(), non_neg_integer()) :: :ok
   def emit_participant_count(channel_name, count) do
     :telemetry.execute(
@@ -31,7 +33,7 @@ defmodule RetroHexChat.VirtualSpace.Events do
     :telemetry.execute(
       [:retro_hex_chat, :virtual_space, :construct, :edit],
       %{count: 1},
-      %{channel: construct_id, op: elem(op, 0), result: result}
+      %{channel: construct_id, room: room(construct_id), op: elem(op, 0), result: result}
     )
   end
 
@@ -44,7 +46,16 @@ defmodule RetroHexChat.VirtualSpace.Events do
     :telemetry.execute(
       [:retro_hex_chat, :virtual_space, :construct, :use],
       %{count: 1},
-      %{channel: construct_id, kind: kind, result: result}
+      %{channel: construct_id, room: room(construct_id), kind: kind, result: result}
     )
+  end
+
+  # Which room behind a gate it was — the Construct or the Office — so a graph
+  # can tell them apart.
+  defp room(construct_id) do
+    case Construct.kind(construct_id) do
+      {:ok, kind} -> kind
+      :error -> :unknown
+    end
   end
 end

@@ -1,5 +1,5 @@
 {
-  "_doc": "Where each Construct piece's art came from: the PixelLab object (and, for an animated piece, its animation) that fetch_pixellab_objects.py downloads into this directory \u2014 <kind>.png, or anim/<kind>/<i>.png per frame.",
+  "_doc": "Where each Construct piece's art came from: the PixelLab object (and, for an animated piece, its animation) that fetch_pixellab_objects.py downloads into this directory — <kind>.png, or anim/<kind>/<i>.png per frame.",
   "base": "https://backblaze.pixellab.ai/file/pixellab-characters/objects/8eaaa74c-53ee-46de-b11d-2ac64c019d47",
   "objects": {
     "ancient_gate": {
@@ -39,6 +39,9 @@
       "first": 1,
       "frames": 6,
       "note": "the six generated frames, without the job's frame 0 (the map object's still, drawn with a smaller palette); the last loops back to the first."
+    },
+    "cubicle_partition": {
+      "map_object": "01a32b43-30a3-4ff6-8614-68ce07fac79f"
     },
     "door": {
       "object": "2777dba6-8715-4edd-83a8-4594e2a337e8"
@@ -121,6 +124,9 @@
     "purple_tent": {
       "map_object": "3a31f5a0-5e2f-484b-ba31-25b77f09eb13"
     },
+    "reception_desk": {
+      "map_object": "b2182c2e-251f-49c5-85ce-243319b49a82"
+    },
     "server_rack": {
       "map_object": "42944805-9159-4179-a603-bf3ff4d08ac9"
     },
@@ -165,12 +171,18 @@
       "frames": 6,
       "note": "the six generated frames, without the job's frame 0 (the map object's still, drawn with a smaller palette); the last loops back to the first."
     },
+    "tall_plant": {
+      "map_object": "5f521223-2298-4e66-b725-3625017b7ac8"
+    },
     "telepod": {
       "map_object": "568a2815-8d32-4ed1-9b72-45473f57698c",
       "image_job": "cc5d8afd-c1c9-4c94-b353-0775197479c2",
       "frames": 6,
       "note": "the six generated frames, without the job's frame 0 (the map object's still, drawn with a smaller palette than the frames that follow it); the last loops back to the first.",
       "first": 1
+    },
+    "trash_bin": {
+      "map_object": "b92acc6b-36ae-4c91-84e8-a12c5b1f0e5e"
     },
     "tree": {
       "map_object": "ff0fcc7f-70ab-4bff-813d-3f1fde337f7b"

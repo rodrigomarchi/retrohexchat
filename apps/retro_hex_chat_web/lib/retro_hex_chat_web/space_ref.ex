@@ -64,13 +64,17 @@ defmodule RetroHexChatWeb.SpaceRef do
 
   defp known_shape?("#" <> rest), do: rest != ""
 
-  # A space's Construct is addressed like the space itself, behind a prefix.
-  defp known_shape?("construct:" <> parent),
-    do: not String.starts_with?(parent, "construct:") and known_shape?(parent)
-
+  # A room behind a space's gate is addressed like the space itself, behind
+  # its kind's prefix; a room of a room is no shape at all.
   defp known_shape?(space_id) do
-    VirtualSpace.space_kind(space_id) == :direct_message and
-      match?({:ok, [_a, _b]}, participants(space_id))
+    case VirtualSpace.construct_parent(space_id) do
+      {:ok, parent} ->
+        known_shape?(parent)
+
+      :error ->
+        VirtualSpace.space_kind(space_id) == :direct_message and
+          match?({:ok, [_a, _b]}, participants(space_id))
+    end
   end
 
   @doc """
@@ -81,8 +85,6 @@ defmodule RetroHexChatWeb.SpaceRef do
   opened cold say whether the person holding it is one of the two.
   """
   @spec participants(String.t()) :: {:ok, [String.t()]} | :error
-  def participants("construct:dm:" <> pair), do: participants("dm:" <> pair)
-
   def participants("dm:" <> pair) do
     case String.split(pair, ":") do
       [left, right] when left != "" and right != "" -> {:ok, [left, right]}
@@ -90,5 +92,11 @@ defmodule RetroHexChatWeb.SpaceRef do
     end
   end
 
-  def participants(_space_id), do: :error
+  # A room behind a private space's gate has the private space's two people.
+  def participants(space_id) do
+    case VirtualSpace.construct_parent(space_id) do
+      {:ok, "dm:" <> _pair = parent} -> participants(parent)
+      _other -> :error
+    end
+  end
 end

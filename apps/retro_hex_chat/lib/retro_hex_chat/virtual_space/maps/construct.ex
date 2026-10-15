@@ -1,15 +1,19 @@
 defmodule RetroHexChat.VirtualSpace.Maps.Construct do
   @moduledoc """
   The Construct: an empty white floor floating in the End of Time's own sky —
-  its sea, its stars, a slab under the island — with one gate back. Everything else in it is placed by the people inside
+  its sea, its stars, a slab under the island — with one gate back.
+  Everything else in it is placed by the people inside
   (`VirtualSpace.Construct.Layout`).
 
   Authored by `virtual.space/tools/author_construct.py`, which packs the art
   into `/images/space/construct.webp` and writes `priv/maps/construct.json`.
-  Beyond the shared map protocol the JSON carries three things only this scene
-  has: the `catalog` of placeable kinds, the `reserved` tiles nobody may build
-  on, `max_items`, and the floor `materials` it can be painted with (each a
-  one-character floor tile).
+  Beyond the shared map protocol a buildable room's JSON carries the `catalog`
+  of placeable kinds, the `reserved` tiles nobody may build on, `max_items`,
+  the floor `materials` it can be painted with (each a one-character floor
+  tile), and `fixed_items`: the furniture it comes with, each an `id`
+  (`fixed:<n>`), `kind`, `x`, `y` and `dir`, placed like anybody's piece. The
+  Office (`Maps.Office`) is read through this module from its own file, with
+  the same catalog and sheets.
 
   A catalog entry names the kind's tile per facing, and optionally: `seat`,
   `lights`, `blocks` (false for a piece you walk onto), `dirs` (the facings it
@@ -26,11 +30,15 @@ defmodule RetroHexChat.VirtualSpace.Maps.Construct do
   @optional_tile_keys [:flip_x, :frames, :period_ms, :wpx, :hpx]
 
   @spec definition() :: map()
-  def definition do
-    data = load()
+  def definition, do: definition("construct")
+
+  @doc "A buildable room authored as `priv/maps/<id>.json`."
+  @spec definition(String.t()) :: map()
+  def definition(id) do
+    data = load(id)
 
     %{
-      id: "construct",
+      id: id,
       version: 1,
       width: data["width"],
       height: data["height"],
@@ -67,6 +75,7 @@ defmodule RetroHexChat.VirtualSpace.Maps.Construct do
         ),
       interactables: Enum.map(data["interactables"] || [], &interactable/1),
       seats: [],
+      fixed_items: Enum.map(data["fixed_items"] || [], &fixed_item/1),
       reserved: Enum.map(data["reserved"], fn [x, y] -> %{x: x, y: y} end),
       catalog: catalog(data["catalog"]),
       materials: Enum.map(data["materials"] || [], &%{id: &1["id"], tile: &1["tile"]}),
@@ -157,6 +166,9 @@ defmodule RetroHexChat.VirtualSpace.Maps.Construct do
     }
   end
 
+  defp fixed_item(i),
+    do: %{id: i["id"], kind: i["kind"], x: i["x"], y: i["y"], dir: i["dir"] || "down"}
+
   defp iso(%{} = i),
     do: %{tile_w: i["tile_w"], tile_h: i["tile_h"], z_step: i["z_step"], headroom: i["headroom"]}
 
@@ -170,10 +182,10 @@ defmodule RetroHexChat.VirtualSpace.Maps.Construct do
   defp vignette(%{} = v), do: %{color: v["color"], alpha: v["alpha"], inner: v["inner"]}
   defp vignette(_), do: nil
 
-  defp load do
+  defp load(id) do
     :retro_hex_chat
     |> :code.priv_dir()
-    |> Path.join("maps/construct.json")
+    |> Path.join("maps/#{id}.json")
     |> File.read!()
     |> JSON.decode!()
   end

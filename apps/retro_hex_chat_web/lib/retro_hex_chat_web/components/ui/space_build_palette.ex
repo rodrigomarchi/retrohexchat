@@ -25,9 +25,19 @@ defmodule RetroHexChatWeb.Components.UI.SpaceBuildPalette do
     default: "channel",
     doc: "the conversation the Construct belongs to: a board is a channel's alone"
 
+  attr :room, :string,
+    default: "construct",
+    values: ~w(construct office),
+    doc: "the room being built in: the Office opens on its own tab"
+
   @spec space_build_palette(map()) :: Phoenix.LiveView.Rendered.t()
   def space_build_palette(assigns) do
-    assigns = assign(assigns, :groups, groups(assigns.conversation))
+    {:ok, map} = VirtualSpace.get_map(assigns.room)
+
+    assigns =
+      assigns
+      |> assign(:groups, groups(map, assigns.conversation))
+      |> assign(:materials, materials(map))
 
     ~H"""
     <%!-- The palette is a layer over the map holding three things: the Build key,
@@ -39,7 +49,7 @@ defmodule RetroHexChatWeb.Components.UI.SpaceBuildPalette do
       data-open="false"
       data-testid="construct-palette"
       class="space-build pointer-events-none absolute inset-0 z-10 select-none"
-      {refusal_templates()}
+      {refusal_templates(@room)}
     >
       <.tool_button
         label={dgettext("chat", "Build") <> " (B)"}
@@ -96,7 +106,7 @@ defmodule RetroHexChatWeb.Components.UI.SpaceBuildPalette do
         </div>
         <div data-construct-group="floor" hidden class="space-build-group">
           <.build_material
-            :for={{material, tile, label} <- materials()}
+            :for={{material, tile, label} <- @materials}
             material={material}
             tile={tile}
             label={label}
@@ -287,7 +297,7 @@ defmodule RetroHexChatWeb.Components.UI.SpaceBuildPalette do
 
   # The floor's paints, each drawn from its own floor tile, and the eraser
   # (the white floor itself, "none" to the server).
-  defp materials do
+  defp materials(map) do
     names = %{
       "wood" => dgettext("chat", "Wood"),
       "stone" => dgettext("chat", "Stone"),
@@ -296,8 +306,6 @@ defmodule RetroHexChatWeb.Components.UI.SpaceBuildPalette do
       "carpet_blue" => dgettext("chat", "Blue carpet"),
       "checker" => dgettext("chat", "Checkerboard")
     }
-
-    {:ok, map} = VirtualSpace.get_map("construct")
 
     Enum.map(map.materials, &{&1.id, &1.tile, Map.get(names, &1.id, &1.id)}) ++
       [{"none", white_tile(map), dgettext("chat", "Erase")}]
@@ -310,13 +318,12 @@ defmodule RetroHexChatWeb.Components.UI.SpaceBuildPalette do
     |> String.at(div(map.width, 2))
   end
 
-  # The tabs, in palette order. Each kind sits in the tab its catalog entry
-  # names (`priv/maps/construct.json`), in the order `kinds/0` lists them; a
-  # kind built only in channels is left out of a private Construct's palette.
-  defp groups(conversation) do
-    {:ok, map} = VirtualSpace.get_map("construct")
-
-    for {group, label} <- tabs() do
+  # The tabs, in palette order — the Office's own first in the Office. Each kind
+  # sits in the tab its catalog entry names (`priv/maps/construct.json`), in the
+  # order `kinds/0` lists them; a kind built only in channels is left out of a
+  # private room's palette.
+  defp groups(map, conversation) do
+    for {group, label} <- tabs(map.id) do
       kinds =
         for {kind, kind_label} <- kinds(),
             entry = map.catalog[kind],
@@ -328,7 +335,12 @@ defmodule RetroHexChatWeb.Components.UI.SpaceBuildPalette do
     end
   end
 
-  defp tabs do
+  defp tabs("office") do
+    {office, others} = Enum.split_with(tabs("construct"), &(elem(&1, 0) == "office"))
+    office ++ others
+  end
+
+  defp tabs(_room) do
     [
       {"furniture", dgettext("chat", "Furniture")},
       {"office", dpgettext("chat", "construct palette", "Office")},
@@ -382,6 +394,10 @@ defmodule RetroHexChatWeb.Components.UI.SpaceBuildPalette do
       {"vending_machine", dgettext("chat", "Vending machine")},
       {"coat_rack", dgettext("chat", "Coat rack")},
       {"cactus", dgettext("chat", "Cactus")},
+      {"reception_desk", dgettext("chat", "Reception desk")},
+      {"cubicle_partition", dgettext("chat", "Cubicle partition")},
+      {"trash_bin", dgettext("chat", "Wastebasket")},
+      {"tall_plant", dgettext("chat", "Tall plant")},
       {"bush", dgettext("chat", "Bush")},
       {"flower_bed", dgettext("chat", "Flower bed")},
       {"boulder", dgettext("chat", "Boulder")},
@@ -471,15 +487,17 @@ defmodule RetroHexChatWeb.Components.UI.SpaceBuildPalette do
 
   # One sentence per reason the server can refuse an edit with, keyed the way
   # the reply names it.
-  defp refusal_templates do
+  defp refusal_templates(room) do
     %{
+      "data-refused-fixed" =>
+        dgettext("chat", "This furniture belongs to the office and cannot be moved."),
       "data-refused-occupied" => dgettext("chat", "There is already a piece on that spot."),
       "data-refused-someone_there" => dgettext("chat", "Somebody is standing on that spot."),
       "data-refused-reserved" => dgettext("chat", "Keep the way to the gate clear."),
       "data-refused-would_trap" =>
         dgettext("chat", "That would leave somebody with no way back to the gate."),
       "data-refused-seat_taken" => dgettext("chat", "Somebody is sitting in it."),
-      "data-refused-full" => dgettext("chat", "The Construct is full."),
+      "data-refused-full" => full(room),
       "data-refused-out_of_bounds" => dgettext("chat", "That is off the floor."),
       "data-refused-cooldown" => dgettext("chat", "Only one piece at a time, please wait."),
       "data-refused-not_allowed" =>
@@ -491,4 +509,7 @@ defmodule RetroHexChatWeb.Components.UI.SpaceBuildPalette do
       "data-refused-default" => dgettext("chat", "That piece cannot go there.")
     }
   end
+
+  defp full("office"), do: dgettext("chat", "The office is full.")
+  defp full(_construct), do: dgettext("chat", "The Construct is full.")
 end

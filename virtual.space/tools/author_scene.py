@@ -21,6 +21,7 @@ from sheet_io import save_sheet
 TOOLS = os.path.dirname(os.path.abspath(__file__))
 REPO = os.path.abspath(os.path.join(TOOLS, "..", ".."))
 SRC = os.path.join(REPO, "virtual.space", "scenes", "end_of_time")
+OFFICE_DOOR = os.path.join(REPO, "virtual.space", "scenes", "construct", "door.png")
 ISO = os.path.join(SRC, "iso")
 SHEET_OUT = os.path.join(
     REPO, "apps", "retro_hex_chat_web", "priv", "static", "images", "space", "endoftime.webp"
@@ -110,11 +111,15 @@ FURNITURE = [
     # code, the first thing seen on arrival. Pressing E beside it asks whether
     # to go in.
     ("eot_portal", 48, 31, {"x": 48, "y": 31, "w": 1, "h": 1}),
+    # And five tiles south of it, the wooden door to the channel's Office.
+    ("eot_office_door", 48, 41, {"x": 48, "y": 41, "w": 1, "h": 1}),
 ]
-# Things a participant can use (E): the Construct gate.
+# Things a participant can use (E): the Construct gate and the Office door.
 INTERACTABLES = [
     {"id": "construct_portal", "kind": "portal", "x": 48, "y": 31, "title": "Construct",
      "modal": {"kind": "confirm", "action": "enter_construct"}},
+    {"id": "office_portal", "kind": "portal", "x": 48, "y": 41, "title": "Office",
+     "modal": {"kind": "confirm", "action": "enter_office"}},
 ]
 # Floating decor: drawn like standing props but with NO ground footprint —
 # the Spirit Bomb hangs overhead (6 diagonal tiles NW of Goku = 120px straight
@@ -331,6 +336,10 @@ def build():
     ]:
         if os.path.exists(fn):
             props[name] = _crop(Image.open(fn).convert("RGBA"))
+    # The Office door is the Construct's own door, turned the way it stands
+    # there (`author_construct.py` mirrors it).
+    props["eot_office_door"] = _crop(
+        Image.open(OFFICE_DOOR).convert("RGBA").transpose(Image.FLIP_LEFT_RIGHT))
 
     row = fcells_h
     col = 0
@@ -514,6 +523,8 @@ def build():
     lights.append({"x": 48, "y": 31, "radius": 2.4, "color": "4dff9a", "blend": "add"})
     lights.append({"x": 48, "y": 31, "lift": 50, "radius": 1.2, "color": "9dffc8",
                    "blend": "add"})
+    # The Office door, lit warm like a doorway with the lights on behind it.
+    lights.append({"x": 48, "y": 41, "radius": 2.0, "color": "ffd591", "blend": "add"})
 
     zones = [{"id": name, "kind": "platform", "x": r["x0"], "y": r["y0"],
               "w": r["x1"] - r["x0"] + 1, "h": r["y1"] - r["y0"] + 1}

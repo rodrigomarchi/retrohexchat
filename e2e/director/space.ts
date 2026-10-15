@@ -99,11 +99,24 @@ function ground(mapId = "end_of_time"): Ground {
     width: number;
     height: number;
     collision: { x: number; y: number; w: number; h: number }[];
+    fixed_items?: { kind: string; x: number; y: number; dir: string }[];
+    catalog?: Record<string, { size?: [number, number]; blocks?: boolean }>;
   };
   const blocked = new Set<string>();
   for (const r of map.collision) {
     for (let y = r.y; y < r.y + r.h; y++)
       for (let x = r.x; x < r.x + r.w; x++) blocked.add(tileKey(x, y));
+  }
+  // A furnished room's furniture stands in the way like a wall: its footprint,
+  // turned with the piece.
+  for (const item of map.fixed_items ?? []) {
+    const entry = map.catalog?.[item.kind];
+    if (entry?.blocks === false) continue;
+    const [w0, h0] = entry?.size ?? [1, 1];
+    const [w, h] =
+      item.dir === "right" || item.dir === "left" ? [h0, w0] : [w0, h0];
+    for (let y = item.y; y < item.y + h; y++)
+      for (let x = item.x; x < item.x + w; x++) blocked.add(tileKey(x, y));
   }
   const built = { width: map.width, height: map.height, blocked };
   groundCache.set(mapId, built);

@@ -662,11 +662,63 @@ defmodule RetroHexChatWeb.App.SpaceLiveTest do
       view |> element(~s([data-testid="space-creator-enter"])) |> render_click()
       worn = :sys.get_state(view.pid).socket.assigns.avatar
 
-      assert {:error, {:live_redirect, %{to: to}}} = render_hook(view, "space_portal", %{})
+      assert {:error, {:live_redirect, %{to: to}}} =
+               render_hook(view, "space_portal", %{"action" => "enter_construct"})
 
       assert to ==
                path(VirtualSpace.construct_id(channel)) <>
                  "?" <> URI.encode_query(%{avatar: worn})
+    end
+
+    test "the Office door leads to the Office; a gate this room does not have, nowhere", %{
+      conn: conn,
+      channel: channel
+    } do
+      {:ok, view, _html} = live(conn, path(channel) <> "?avatar=" <> @tunic)
+
+      for action <- ["exit_office", "exit_construct", "teleport", 7] do
+        render_hook(view, "space_portal", %{"action" => action})
+        assert has_element?(view, ~s([data-testid="channel-space-shell"]))
+      end
+
+      assert {:error, {:live_redirect, %{to: to}}} =
+               render_hook(view, "space_portal", %{"action" => "enter_office"})
+
+      assert to ==
+               path(VirtualSpace.construct_id(channel, :office)) <>
+                 "?" <> URI.encode_query(%{avatar: @tunic})
+    end
+
+    test "the Office opens inside, named for itself, with its own tab first and its own way out",
+         %{conn: conn, channel: channel} do
+      office_id = VirtualSpace.construct_id(channel, :office)
+      {:ok, view, html} = live(conn, path(office_id) <> "?avatar=" <> @tunic)
+
+      assert html =~ "Office · #{channel}"
+      assert html =~ ~s(data-testid="construct-palette")
+      assert html =~ "Enter the office"
+      assert html =~ ~s(data-confirm-enter_office=)
+
+      [first_tab | _] =
+        html
+        |> LazyHTML.from_fragment()
+        |> LazyHTML.query(~s([data-construct-tab]))
+        |> LazyHTML.attribute("data-construct-tab")
+
+      assert first_tab == "office"
+
+      token = :sys.get_state(view.pid).socket.assigns.join_token
+
+      assert {:ok, %{space_kind: "construct", space_id: ^office_id}} =
+               ChannelJoinToken.verify(token)
+
+      render_hook(view, "space_portal", %{"action" => "exit_construct"})
+      assert has_element?(view, ~s([data-testid="construct-palette"]))
+
+      assert {:error, {:live_redirect, %{to: to}}} =
+               render_hook(view, "space_portal", %{"action" => "exit_office"})
+
+      assert to == path(channel) <> "?" <> URI.encode_query(%{avatar: @tunic})
     end
 
     test "is not a door before a character is chosen", %{conn: conn, channel: channel} do
@@ -697,7 +749,9 @@ defmodule RetroHexChatWeb.App.SpaceLiveTest do
       assert data.space_id == construct_id
       assert data.nickname == nickname
 
-      assert {:error, {:live_redirect, %{to: to}}} = render_hook(view, "space_portal", %{})
+      assert {:error, {:live_redirect, %{to: to}}} =
+               render_hook(view, "space_portal", %{"action" => "exit_construct"})
+
       assert to == path(channel) <> "?" <> URI.encode_query(%{avatar: @tunic})
     end
 
@@ -754,6 +808,35 @@ defmodule RetroHexChatWeb.App.SpaceLiveTest do
         |> live(path(construct_id) <> "?avatar=" <> @tunic)
 
       assert html =~ ~s(data-testid="space-denied")
+    end
+
+    test "a private space's Office opens for its two and nobody else", %{conn: _conn} do
+      [me, peer] = ["Om#{uid()}", "Op#{uid()}"] |> Enum.map(&String.slice(&1, 0, 16))
+      office_id = VirtualSpace.construct_id(DirectMessageSpace.space_id(me, peer), :office)
+
+      {:ok, view, html} =
+        build_conn() |> chat_conn(me) |> live(path(office_id) <> "?avatar=" <> @tunic)
+
+      assert html =~ "Office · "
+      token = :sys.get_state(view.pid).socket.assigns.join_token
+      assert {:ok, %{space_id: ^office_id, participants: [_, _]}} = ChannelJoinToken.verify(token)
+
+      for nick <- ["Third#{uid()}" |> String.slice(0, 16)] do
+        {:ok, _view, html} =
+          build_conn() |> chat_conn(nick) |> live(path(office_id) <> "?avatar=" <> @tunic)
+
+        assert html =~ ~s(data-testid="space-denied")
+      end
+    end
+
+    test "a page from before the gates named themselves still reaches the Construct", %{
+      conn: conn,
+      channel: channel
+    } do
+      {:ok, view, _html} = live(conn, path(channel) <> "?avatar=" <> @tunic)
+
+      assert {:error, {:live_redirect, %{to: to}}} = render_hook(view, "space_portal", %{})
+      assert to =~ path(VirtualSpace.construct_id(channel))
     end
   end
 

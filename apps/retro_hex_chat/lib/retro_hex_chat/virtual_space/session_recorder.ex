@@ -19,10 +19,10 @@ defmodule RetroHexChat.VirtualSpace.SessionRecorder do
   attached to it, and a `left_at` written from anything else would be invented.
   Neither of the two numbers the card shows — how long, how many — needs one.
 
-  **A gathering spans a space and its Construct.** Walking through the gate
-  empties the End of Time and fills the Construct, and the party has not ended.
-  So a gathering watches every world it is going on in — the space's and its
-  Construct's — and ends only when all of them are empty and stay empty for a
+  **A gathering spans a space and the rooms behind its gates.** Walking through
+  a gate empties the End of Time and fills the Construct or the Office, and the
+  party has not ended. So a gathering watches every world it is going on in —
+  the space's and its rooms' — and ends only when all of them are empty and stay empty for a
   moment (`gathering_grace_ms`): a hop through the gate stops one world before
   the other starts, and the gathering waits it out instead of closing and
   opening a second card.
@@ -262,10 +262,13 @@ defmodule RetroHexChat.VirtualSpace.SessionRecorder do
   end
 
   defp registry_keys(%Session{kind: "direct_message", space_id: space_id}),
-    do: [{:direct_message_space, space_id}, {:construct_space, Construct.space_id(space_id)}]
+    do: [{:direct_message_space, space_id} | rooms(space_id)]
 
   defp registry_keys(%Session{space_id: space_id}),
-    do: [{:channel_space, space_id}, {:construct_space, Construct.space_id(space_id)}]
+    do: [{:channel_space, space_id} | rooms(space_id)]
+
+  defp rooms(space_id),
+    do: Enum.map(Construct.kinds(), &{:construct_space, Construct.space_id(space_id, &1)})
 
   defp record(state, space_id, nickname) do
     case Map.get(state.spaces, space_id) do

@@ -17,10 +17,11 @@ defmodule RetroHexChatWeb.App.SpaceLive do
   Both states are decided in `mount/3`. Initial data delivered after the first
   render is invisible to ExUnit and only ever caught in a browser.
 
-  A space's gate leads to its Construct, at an address of its own, and the
-  Construct's gate leads back. Walking through either one carries the character
-  in the address (`?avatar=`), so the door is not a second antechamber: the
-  same `mount/3` that would draw the creator goes straight inside instead.
+  A space's gates lead to its rooms — the Construct and the Office — each at an
+  address of its own, and each room's way out leads back. Walking through any
+  of them carries the character in the address (`?avatar=`), so the door is not
+  a second antechamber: the same `mount/3` that would draw the creator goes
+  straight inside instead.
   """
 
   alias RetroHexChat.Nickname
@@ -269,7 +270,11 @@ defmodule RetroHexChatWeb.App.SpaceLive do
         >
         </canvas>
         <.space_virtual_pad />
-        <.space_build_palette :if={@space.mode == "construct"} conversation={@space.parent.mode} />
+        <.space_build_palette
+          :if={@space.mode == "construct"}
+          room={@space.room}
+          conversation={@space.parent.mode}
+        />
         <%!-- A maximized window is still a window inside browser chrome. This is
             the only control that gets the tab bar and the address bar off an
             isometric map, so it stays on the one screen a space now has. --%>
@@ -310,6 +315,8 @@ defmodule RetroHexChatWeb.App.SpaceLive do
           data-testid="space-modal"
           data-confirm-enter_construct={dgettext("chat", "Go into the Construct?")}
           data-confirm-exit_construct={dgettext("chat", "Go back to the End of Time?")}
+          data-confirm-enter_office={dgettext("chat", "Go into the office?")}
+          data-confirm-exit_office={dgettext("chat", "Go back to the End of Time?")}
           class="space-ui-panel absolute inset-0 z-30 m-auto h-fit w-fit max-w-[calc(100%-1rem)] text-center"
         >
         </div>
@@ -390,6 +397,8 @@ defmodule RetroHexChatWeb.App.SpaceLive do
     Jason.encode!(%{
       enter_construct: dpgettext("chat", "space prompt", "Enter the Construct"),
       exit_construct: dpgettext("chat", "space prompt", "Back to the End of Time"),
+      enter_office: dpgettext("chat", "space prompt", "Enter the office"),
+      exit_office: dpgettext("chat", "space prompt", "Back to the End of Time"),
       sit: dpgettext("chat", "space prompt", "Sit"),
       stand: dpgettext("chat", "space prompt", "Stand up"),
       use: dgettext("chat", "Use"),
@@ -543,23 +552,24 @@ defmodule RetroHexChatWeb.App.SpaceLive do
 
   def handle_event("revoke_space", _params, socket), do: {:noreply, socket}
 
-  # Through a gate: the destination is this space's Construct, or from a
-  # Construct the space it belongs to — read off the space this screen already
-  # resolved, never off anything the client said.
+  # Through a gate: the gate names where it goes — the space's Construct or
+  # its Office, or from inside either the space it belongs to. The destination
+  # is read off the space this screen already resolved; what the client said is
+  # only which of this room's own gates it went through.
   def handle_event(
         "space_portal",
-        _params,
+        params,
         %{assigns: %{space: %{} = space, avatar: avatar}} = socket
       )
       when is_binary(avatar) do
-    destination =
-      case space do
-        %{mode: "construct", parent: parent} -> parent.id
-        %{id: space_id} -> VirtualSpace.construct_id(space_id)
-      end
+    case portal_destination(space, params["action"]) do
+      {:ok, destination} ->
+        path = Paths.space_path(destination) <> "?" <> URI.encode_query(%{avatar: avatar})
+        {:noreply, push_navigate(socket, to: path)}
 
-    path = Paths.space_path(destination) <> "?" <> URI.encode_query(%{avatar: avatar})
-    {:noreply, push_navigate(socket, to: path)}
+      :error ->
+        {:noreply, socket}
+    end
   end
 
   def handle_event("space_portal", _params, socket), do: {:noreply, socket}
@@ -575,13 +585,30 @@ defmodule RetroHexChatWeb.App.SpaceLive do
     {:noreply, socket}
   end
 
+  defp portal_destination(%{mode: "construct", room: room, parent: parent}, action) do
+    if action == "exit_" <> room, do: {:ok, parent.id}, else: :error
+  end
+
+  # A page loaded before the gates named themselves sends no action; the only
+  # gate it knew of was the Construct's.
+  defp portal_destination(%{mode: mode} = space, nil) when mode != "construct",
+    do: portal_destination(space, "enter_construct")
+
+  defp portal_destination(%{id: space_id}, "enter_construct"),
+    do: {:ok, VirtualSpace.construct_id(space_id, :construct)}
+
+  defp portal_destination(%{id: space_id}, "enter_office"),
+    do: {:ok, VirtualSpace.construct_id(space_id, :office)}
+
+  defp portal_destination(_space, _action), do: :error
+
   @impl true
   @spec handle_info(term(), Socket.t()) :: {:noreply, Socket.t()}
   # The roster topic and only it: who is inside is the reason this surface
   # subscribes to anything at all.
-  # The space's own list, or its Construct's saying it changed: a space counts
-  # whoever is in its Construct too, so the list is read again rather than taken
-  # from a message that only knows one of the two rooms.
+  # The space's own list, or one of its rooms' saying it changed: a space counts
+  # whoever is in its Construct and its Office too, so the list is read again
+  # rather than taken from a message that only knows one of the rooms.
   def handle_info({:space_roster, %{participants: participants}}, socket)
       when socket.assigns.space.mode == "construct" do
     {:noreply, assign(socket, roster: participants)}
@@ -688,11 +715,12 @@ defmodule RetroHexChatWeb.App.SpaceLive do
       # said inside goes — at an address of its own.
       :construct ->
         with {:ok, parent_id} <- construct_parent(space_id),
+             {:ok, kind} <- VirtualSpace.construct_kind(space_id),
              {:ok, parent} <- build_space(parent_id) do
           {:ok,
            space_id
            |> space("construct", parent.participants)
-           |> Map.put(:parent, parent)}
+           |> Map.merge(%{parent: parent, room: Atom.to_string(kind)})}
         end
     end
   end
@@ -774,8 +802,8 @@ defmodule RetroHexChatWeb.App.SpaceLive do
 
   # The Construct's name is the glossary's label, joined to the space's name
   # the way the tab title joins it, rather than a sentence for the engine.
-  defp window_title(%{mode: "construct", parent: parent}),
-    do: dgettext("chat", "Construct") <> " · " <> space_name(parent)
+  defp window_title(%{mode: "construct", room: room, parent: parent}),
+    do: room_name(room) <> " · " <> space_name(parent)
 
   defp window_title(%{mode: "direct_message", participants: participants})
        when is_list(participants),
@@ -816,13 +844,19 @@ defmodule RetroHexChatWeb.App.SpaceLive do
   defp say_placeholder(%{id: channel_name}, _nickname),
     do: dgettext("chat", "Say something to %{name}...", name: channel_name)
 
-  defp loading_title(%{mode: "construct"}), do: dgettext("chat", "Construct")
+  defp loading_title(%{mode: "construct", room: room}), do: room_name(room)
   defp loading_title(%{mode: "direct_message"}), do: dgettext("chat", "Private Space")
   defp loading_title(_space), do: dgettext("chat", "Channel Space")
+
+  defp loading_text(%{mode: "construct", room: "office"}),
+    do: dgettext("chat", "Entering the office...")
 
   defp loading_text(%{mode: "construct"}), do: dgettext("chat", "Loading the Construct...")
   defp loading_text(%{mode: "direct_message"}), do: dgettext("chat", "Opening private room...")
   defp loading_text(_space), do: dgettext("chat", "Entering channel space...")
+
+  defp room_name("office"), do: dpgettext("chat", "space room", "Office")
+  defp room_name(_construct), do: dgettext("chat", "Construct")
 
   # Only a registered nickname can mint a link: the record carries who made it,
   # and a link nobody is accountable for is one nobody can be asked about.

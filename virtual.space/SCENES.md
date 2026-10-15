@@ -451,3 +451,45 @@ author is `virtual.space/tools/author_construct.py`, which writes
   glossary. A kind that does something on E names its `use`, which
   `Construct.Layout.use/5` has to know.
 
+## 11. The Office (a furnished buildable room)
+
+The **Office** is a registered map of its own: the Construct's platform with
+furniture already in it, behind the wooden door five tiles south of the End of
+Time's arrival lamp (`eot_office_door` at (48,41), interactable
+`office_portal`, action `enter_office`). Its author is
+`virtual.space/tools/author_office.py`, which writes `priv/maps/office.json`.
+
+- **It adds no art of its own.** It copies the Construct's `catalog`, `vocab`,
+  `tilesets` and `materials` out of `construct.json`, so every piece of the
+  Construct can be placed in it and its furniture is drawn from the same
+  sheets. The End of Time's door is the Construct's `door.png`, mirrored the
+  way `author_construct.py` turns it, packed into `endoftime.webp` by
+  `author_scene.py`. Order matters: `author_scene.py`, then
+  `author_construct.py` (it copies the End of Time's vocab), then
+  `author_office.py`.
+- **A 24×20 floor in an 8-tile margin of sky**, painted from the start (grey
+  stone, blue carpet under the desks and the meeting corner, wood at the
+  reception, checkerboard at the kitchenette). Painting it again works as in
+  the Construct; Erase brings back the white floor.
+- **The furniture is `fixed_items`**: catalog pieces with ids `fixed:<n>`,
+  placed like anybody's (`x, y` the footprint's back corner, `dir`). The
+  runtime draws them, seats people on their chairs and switches their lamps
+  through the same `Construct.Layout` code as any piece, and refuses to move,
+  turn, remove or relabel one (`:fixed`); storage keeps only what they are
+  doing (a lamp off), never where they are. The client never picks one up.
+- **Only the two back walls are built** (`wall` along `v = 0` and `u = 0`,
+  meeting in a `corner`): a front wall would hide the room. The way out is a
+  door in the left wall (`office_exit`, `exit_office`), with the tile in front
+  of it and the spawns `reserved`.
+- **The author checks the plan before writing it**: every piece on the floor
+  and off the reserved tiles, none overlapping, every free tile reachable from
+  the door and every chair reachable to sit in
+  (`scripts/tests/test_office_authoring.py` runs the same check).
+- **Its own pieces** were generated for it and live in the Construct's
+  `office` tab: `reception_desk` (1×2), `cubicle_partition`, `trash_bin` and
+  `tall_plant`, sized against a person by the table in §10 and held to it by
+  `test_construct_scale.py`.
+- **Moving the furniture is editing `FURNITURE`** in the author and running
+  it; a stored room keeps the pieces people added unless a piece now stands
+  where one of them was, which drops theirs.
+

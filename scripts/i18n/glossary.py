@@ -505,6 +505,7 @@ _ROWS = {
     # A Space's gates ask before they move you, and its help names what lights
     # up as you walk past.
     "Go into the Construct?": ("Entrar no Constructo?", "Entrar no Constructo?", "¿Entrar al Constructo?", "Entrer dans le Construct ?", "Ins Konstrukt gehen?", "Entrare nel Costrutto?", "Het Construct in gaan?", "Wejść do Konstruktu?", "Войти в Конструкт?", "Masuk ke Konstruk?", "コンストラクトに入りますか?", "进入构造空间?", "進入構造空間?"),
+    "Go into the office?": ("Entrar no escritório?", "Entrar no escritório?", "¿Entrar en la oficina?", "Entrer dans le bureau ?", "Ins Büro gehen?", "Entrare in ufficio?", "Het kantoor in gaan?", "Wejść do biura?", "Войти в офис?", "Masuk ke kantor?", "オフィスに入りますか?", "进入办公室?", "進入辦公室?"),
     "Go back to the End of Time?": ("Voltar ao End of Time?", "Voltar ao End of Time?", "¿Volver al End of Time?", "Retourner à l'End of Time ?", "Zurück zum End of Time?", "Tornare all'End of Time?", "Terug naar het End of Time?", "Wrócić do End of Time?", "Вернуться в End of Time?", "Kembali ke End of Time?", "End of Time に戻りますか?", "返回 End of Time?", "返回 End of Time?"),
     "Things you can use": ("Coisas que você pode usar", "Coisas que pode usar", "Cosas que puedes usar", "Ce que vous pouvez utiliser", "Was Sie benutzen können", "Cose che puoi usare", "Wat je kunt gebruiken", "Rzeczy, których możesz użyć", "Что можно использовать", "Hal yang bisa dipakai", "使えるもの", "可以使用的东西", "可以使用的東西"),
     "Turn":         ("Girar", "Rodar", "Girar", "Tourner", "Drehen", "Ruota", "Draaien", "Obróć", "Повернуть", "Putar", "回転", "旋转", "旋轉"),
@@ -556,6 +557,12 @@ _ROWS = {
     "Vending machine": ("Máquina de lanches", "Máquina de venda", "Máquina expendedora", "Distributeur", "Snackautomat", "Distributore automatico", "Snoepautomaat", "Automat z przekąskami", "Торговый автомат", "Mesin penjual", "自動販売機", "自动售货机", "自動販賣機"),
     "Coat rack":    ("Cabideiro", "Cabide de pé", "Perchero", "Portemanteau", "Garderobenständer", "Appendiabiti", "Kapstok", "Wieszak", "Вешалка", "Gantungan baju", "コートラック", "衣帽架", "衣帽架"),
     "Cactus":       ("Cacto", "Cato", "Cactus", "Cactus", "Kaktus", "Cactus", "Cactus", "Kaktus", "Кактус", "Kaktus", "サボテン", "仙人掌", "仙人掌"),
+    # The Office's own pieces: the counter at the door, the low wall between
+    # desks, the basket for paper, the plant nearly a person tall.
+    "Reception desk": ("Balcão de recepção", "Balcão de receção", "Mostrador de recepción", "Comptoir d'accueil", "Empfangstresen", "Bancone della reception", "Receptiebalie", "Lada recepcyjna", "Стойка ресепшена", "Meja resepsionis", "受付カウンター", "前台", "櫃台"),
+    "Cubicle partition": ("Divisória", "Divisória", "Mampara", "Cloison de bureau", "Trennwand", "Divisorio", "Scheidingswand", "Ścianka działowa", "Перегородка", "Sekat kubikel", "パーティション", "隔板", "隔板"),
+    "Wastebasket":  ("Lixeira", "Cesto de papéis", "Papelera", "Corbeille", "Papierkorb", "Cestino", "Prullenbak", "Kosz na śmieci", "Мусорная корзина", "Tempat sampah", "ゴミ箱", "废纸篓", "廢紙簍"),
+    "Tall plant":   ("Planta alta", "Planta alta", "Planta alta", "Grande plante", "Große Pflanze", "Pianta alta", "Grote plant", "Wysoka roślina", "Высокое растение", "Tanaman tinggi", "背の高い植物", "高大盆栽", "高大盆栽"),
     "Bush":         ("Arbusto", "Arbusto", "Arbusto", "Buisson", "Busch", "Cespuglio", "Struik", "Krzew", "Куст", "Semak", "茂み", "灌木", "灌木"),
     "Flower bed":   ("Canteiro", "Canteiro", "Parterre", "Parterre", "Blumenbeet", "Aiuola", "Bloemperk", "Rabata", "Клумба", "Petak bunga", "花壇", "花坛", "花壇"),
     "Boulder":      ("Pedra grande", "Rochedo", "Roca", "Rocher", "Felsbrocken", "Masso", "Rotsblok", "Głaz", "Валун", "Batu besar", "大岩", "巨石", "巨石"),
@@ -662,6 +669,7 @@ _CONTEXT_ROWS = {
     # What pressing does, over whatever the use button reaches in a Space:
     # imperatives on a prompt, never a play in a theatre or a wristwatch.
     ("space prompt", "Enter the Construct"): ("Entrar no Constructo", "Entrar no Constructo", "Entrar al Constructo", "Entrer dans le Construct", "Ins Konstrukt", "Entra nel Costrutto", "Naar het Construct", "Wejdź do Konstruktu", "Войти в Конструкт", "Masuk ke Konstruk", "コンストラクトへ", "进入构造空间", "進入構造空間"),
+    ("space prompt", "Enter the office"): ("Entrar no escritório", "Entrar no escritório", "Entrar en la oficina", "Entrer dans le bureau", "Ins Büro", "Entra in ufficio", "Naar het kantoor", "Wejdź do biura", "Войти в офис", "Masuk ke kantor", "オフィスへ", "进入办公室", "進入辦公室"),
     ("space prompt", "Back to the End of Time"): ("Voltar ao End of Time", "Voltar ao End of Time", "Volver al End of Time", "Retour à l'End of Time", "Zurück zum End of Time", "Torna all'End of Time", "Terug naar het End of Time", "Wróć do End of Time", "Назад в End of Time", "Kembali ke End of Time", "End of Time に戻る", "返回 End of Time", "返回 End of Time"),
     ("space prompt", "Sit"): ("Sentar", "Sentar", "Sentarse", "S'asseoir", "Hinsetzen", "Siediti", "Zitten", "Usiądź", "Сесть", "Duduk", "座る", "坐下", "坐下"),
     ("space prompt", "Stand up"): ("Levantar", "Levantar", "Levantarse", "Se lever", "Aufstehen", "Alzati", "Opstaan", "Wstań", "Встать", "Berdiri", "立ち上がる", "起身", "起身"),
@@ -680,6 +688,10 @@ _CONTEXT_ROWS = {
     ("game piece", "Die"): ("Dado", "Dado", "Dado", "Dé", "Würfel", "Dado", "Dobbelsteen", "Kostka", "Кубик", "Dadu", "サイコロ", "骰子", "骰子"),
     ("signpost", "Sign"): ("Placa", "Placa", "Letrero", "Panneau", "Schild", "Cartello", "Bord", "Tabliczka", "Табличка", "Papan", "看板", "标牌", "標牌"),
     ("notice board", "Board"): ("Mural", "Quadro", "Tablón", "Panneau d'affichage", "Pinnwand", "Bacheca", "Prikbord", "Tablica", "Доска", "Papan pengumuman", "掲示板", "公告板", "公告板"),
+    # The Office behind the End of Time's wooden door: a room, never a post
+    # or a function ("the office of mayor").
+    ("space room", "Office"): ("Escritório", "Escritório", "Oficina", "Bureau", "Büro", "Ufficio", "Kantoor", "Biuro", "Офис", "Kantor", "オフィス", "办公室", "辦公室"),
+    ("space room", "The Office"): ("O escritório", "O escritório", "La oficina", "Le bureau", "Das Büro", "L'ufficio", "Het kantoor", "Biuro", "Офис", "Kantor", "オフィス", "办公室", "辦公室"),
     ("construct palette", "Office"): ("Escritório", "Escritório", "Oficina", "Bureau", "Büro", "Ufficio", "Kantoor", "Biuro", "Офис", "Kantor", "オフィス", "办公室", "辦公室"),
     ("garden", "Mailbox"): ("Caixa de correio", "Caixa do correio", "Buzón", "Boîte aux lettres", "Briefkasten", "Cassetta postale", "Brievenbus", "Skrzynka pocztowa", "Почтовый ящик", "Kotak surat", "郵便受け", "信箱", "信箱"),
     ("kitchen", "Stove"): ("Fogão", "Fogão", "Cocina", "Cuisinière", "Herd", "Fornello", "Fornuis", "Kuchenka", "Плита", "Kompor", "コンロ", "炉灶", "爐灶"),

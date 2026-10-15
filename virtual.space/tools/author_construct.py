@@ -139,6 +139,10 @@ LIBRARY = {
         "coffee_machine": {},
         "coat_rack": {},
         "cactus": {},
+        "reception_desk": {"size": [1, 2]},
+        "cubicle_partition": {},
+        "trash_bin": {},
+        "tall_plant": {},
     },
     "furniture": {
         "sofa": {"size": [1, 2], "seats": [[0, 0], [0, 1]]},

@@ -68,6 +68,18 @@ describe("itemAtCanvasPoint", () => {
 
     expect(itemAtCanvasPoint(map, camera, null, foot.x, foot.y)).toBe(chair);
   });
+
+  it("never picks up a piece the room comes with, nor what stands behind it", () => {
+    const desk = { id: "fixed:3", kind: "tree", x: 5, y: 5, dir: "down", fixed: true };
+    const behind = { id: "b", kind: "tree", x: 4, y: 4, dir: "down" };
+    const map = constructMap({ items: [behind, desk] });
+    const camera = constructCamera(map);
+    const atlas = { tile: () => ({ sw: 40, sh: 90 }) };
+    const foot = screenOf(camera, 5, 5);
+
+    expect(itemAtCanvasPoint(map, camera, atlas, foot.x, foot.y - 10)).toBe(null);
+    expect(itemAtCanvasPoint(map, camera, null, foot.x, foot.y)).toBe(null);
+  });
 });
 
 describe("canPlaceAt", () => {

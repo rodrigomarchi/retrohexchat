@@ -267,12 +267,12 @@ defmodule RetroHexChatWeb.Telemetry do
         reporter_options: [nav: dgettext("system", "Domain")]
       ),
       sum("retro_hex_chat.virtual_space.construct.edit.count",
-        tags: [:op, :result],
+        tags: [:room, :op, :result],
         description: dgettext("system", "Number of Construct edits, by operation and result"),
         reporter_options: [nav: dgettext("system", "Domain")]
       ),
       sum("retro_hex_chat.virtual_space.construct.use.count",
-        tags: [:kind, :result],
+        tags: [:room, :kind, :result],
         description: dgettext("system", "Number of Construct pieces used, by kind and result"),
         reporter_options: [nav: dgettext("system", "Domain")]
       ),

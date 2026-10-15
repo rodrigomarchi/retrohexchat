@@ -1,31 +1,82 @@
 defmodule RetroHexChat.VirtualSpace.Construct do
   @moduledoc """
-  The Construct: the empty room every space has behind its gate, built by the
-  people who go in.
+  The rooms every space has behind its gates, built by the people who go in.
 
-  A channel's space and a private space each own exactly one Construct, and its
-  id is the owner's id behind a prefix — `construct:#lobby`,
-  `construct:dm:alice:bob`. Reading the owner back off the id is what lets the
-  Construct borrow everything it does not have of its own: who may enter it is
-  who may enter the space it belongs to, and a line said inside goes to the same
+  There are two kinds. The **Construct** is an empty white floor; the
+  **Office** comes furnished, and what its people add stands among the
+  furniture that is part of it. Both are the same thing to the runtime — a room
+  anybody inside may build in — and differ only in the map they start from.
+
+  A channel's space and a private space each own one room of each kind, and its
+  id is the owner's id behind the kind's prefix — `construct:#lobby`,
+  `office:dm:alice:bob`. Reading the owner back off the id is what lets a room
+  borrow everything it does not have of its own: who may enter it is who may
+  enter the space it belongs to, and a line said inside goes to the same
   conversation.
 
-  A Construct of a Construct is not a thing; the prefix is read once.
+  A room of a room is not a thing; the prefix is read once.
   """
 
-  @prefix "construct:"
+  @type kind :: :construct | :office
 
-  @doc "The Construct behind a space's gate."
-  @spec space_id(String.t()) :: String.t()
-  def space_id(parent_id) when is_binary(parent_id), do: @prefix <> parent_id
+  @kinds [construct: "construct:", office: "office:"]
 
-  @doc "The space a Construct belongs to, or `:error` for an id that is not one."
+  @doc "The kinds of room a space has behind its gates."
+  @spec kinds() :: [kind()]
+  def kinds, do: Keyword.keys(@kinds)
+
+  @doc "The room of `kind` behind a space's gate."
+  @spec space_id(String.t(), kind()) :: String.t()
+  def space_id(parent_id, kind \\ :construct) when is_binary(parent_id),
+    do: Keyword.fetch!(@kinds, kind) <> parent_id
+
+  @doc "The space a room belongs to, or `:error` for an id that is not one."
   @spec parent_id(term()) :: {:ok, String.t()} | :error
-  def parent_id(@prefix <> "#" <> channel) when channel != "", do: {:ok, "#" <> channel}
-  def parent_id(@prefix <> "dm:" <> pair) when pair != "", do: {:ok, "dm:" <> pair}
-  def parent_id(_space_id), do: :error
+  def parent_id(space_id) do
+    case split(space_id) do
+      {:ok, _kind, parent} -> {:ok, parent}
+      :error -> :error
+    end
+  end
 
-  @doc "Whether an id names a Construct."
+  @doc "Which kind of room an id names, or `:error` for an id that is not one."
+  @spec kind(term()) :: {:ok, kind()} | :error
+  def kind(space_id) do
+    case split(space_id) do
+      {:ok, kind, _parent} -> {:ok, kind}
+      :error -> :error
+    end
+  end
+
+  @doc "The map a room of this id is drawn from."
+  @spec map_id(String.t()) :: String.t()
+  def map_id(space_id) do
+    case kind(space_id) do
+      {:ok, kind} -> Atom.to_string(kind)
+      :error -> "construct"
+    end
+  end
+
+  @doc "Whether an id names a room behind a gate."
   @spec construct?(term()) :: boolean()
-  def construct?(space_id), do: match?({:ok, _parent}, parent_id(space_id))
+  def construct?(space_id), do: match?({:ok, _kind, _parent}, split(space_id))
+
+  defp split(space_id) when is_binary(space_id) do
+    Enum.find_value(@kinds, :error, fn {kind, prefix} ->
+      with true <- String.starts_with?(space_id, prefix),
+           parent =
+             binary_part(space_id, byte_size(prefix), byte_size(space_id) - byte_size(prefix)),
+           true <- space_parent?(parent) do
+        {:ok, kind, parent}
+      else
+        _other -> nil
+      end
+    end)
+  end
+
+  defp split(_space_id), do: :error
+
+  defp space_parent?("#" <> channel), do: channel != ""
+  defp space_parent?("dm:" <> pair), do: pair != ""
+  defp space_parent?(_other), do: false
 end

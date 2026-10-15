@@ -12,6 +12,9 @@ import { Walker } from "../director/space";
 
 // The tile in front of the End of Time's gate, which stands at (48,31).
 export const BEFORE_GATE = { x: 48, y: 32 };
+// And the tile in front of the Office's door at (48,41), five tiles south of
+// the lamp people arrive by.
+export const BEFORE_OFFICE = { x: 48, y: 40 };
 
 export type Item = {
   id: string;
@@ -19,6 +22,7 @@ export type Item = {
   x: number;
   y: number;
   dir: string;
+  fixed?: boolean;
   state?: Record<string, unknown>;
 };
 
@@ -56,9 +60,13 @@ export class RoomWatch {
       string,
       any,
     ];
-    if (typeof topic !== "string" || !topic.startsWith("space:construct:"))
+    if (typeof topic !== "string" || !/^space:(construct|office):/.test(topic))
       return;
-    if (event === "phx_reply" && payload?.response?.map?.id === "construct") {
+    const mapId = payload?.response?.map?.id;
+    if (
+      event === "phx_reply" &&
+      (mapId === "construct" || mapId === "office")
+    ) {
       this.items = payload.response.map.items ?? [];
       this.revision = payload.response.map.revision ?? 0;
       this.labels = payload.response.map.labels ?? [];
@@ -75,20 +83,29 @@ export class RoomWatch {
   }
 }
 
-// The Construct's geometry, read from the same file the server loads, so a
-// tile can be turned into the point of the canvas it is drawn at.
-const CONSTRUCT = JSON.parse(
-  readFileSync(
-    path.resolve(
-      __dirname,
-      "../../apps/retro_hex_chat/priv/maps/construct.json",
-    ),
-    "utf8",
-  ),
-) as {
+type Geometry = {
   width: number;
   height: number;
   iso: { tile_w: number; tile_h: number; z_step: number; headroom: number };
+};
+
+// A room's geometry, read from the same file the server loads, so a tile can
+// be turned into the point of the canvas it is drawn at.
+function geometry(mapId: string): Geometry {
+  return JSON.parse(
+    readFileSync(
+      path.resolve(
+        __dirname,
+        `../../apps/retro_hex_chat/priv/maps/${mapId}.json`,
+      ),
+      "utf8",
+    ),
+  ) as Geometry;
+}
+
+const ROOMS: Record<string, Geometry> = {
+  construct: geometry("construct"),
+  office: geometry("office"),
 };
 
 /**
@@ -100,6 +117,7 @@ export async function tilePoint(
   page: Page,
   self: { x: number; y: number },
   tile: { x: number; y: number },
+  room: "construct" | "office" = "construct",
 ): Promise<{ x: number; y: number }> {
   const canvas = page.locator('[data-testid="channel-space-shell"] > canvas');
   const box = await canvas.evaluate((el: HTMLCanvasElement) => {
@@ -113,7 +131,7 @@ export async function tilePoint(
       h: el.height,
     };
   });
-  const { width, height, iso } = CONSTRUCT;
+  const { width, height, iso } = ROOMS[room];
   const hw = iso.tile_w / 2;
   const hh = iso.tile_h / 2;
   const originX = height * hw + hw;

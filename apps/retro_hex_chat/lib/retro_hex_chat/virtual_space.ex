@@ -200,7 +200,11 @@ defmodule RetroHexChat.VirtualSpace do
           Panels.modal()
   defdelegate fill_construct_panel(modal, conversation, nickname), to: Panels, as: :fill
 
+  # A room's own furniture is stored only for what it is doing (a lamp left
+  # off): where it stands is the map's.
   defp persist_construct(construct_id, layout, revision, nickname) do
+    layout = Map.update!(layout, :items, &Enum.reject(&1, fn item -> idle_fixture?(item) end))
+
     case Store.save(construct_id, layout, revision, nickname) do
       :ok ->
         :ok
@@ -213,16 +217,22 @@ defmodule RetroHexChat.VirtualSpace do
     end
   end
 
+  defp idle_fixture?(item), do: Layout.fixed?(item) and not Map.has_key?(item, :state)
+
   @spec leave_construct_space_viewer(String.t(), String.t()) :: :ok
   defdelegate leave_construct_space_viewer(construct_id, participant_key),
     to: ChannelSpaceServer,
     as: :leave_construct_viewer
 
-  @doc "The Construct behind a space's gate."
-  @spec construct_id(String.t()) :: String.t()
-  defdelegate construct_id(parent_id), to: Construct, as: :space_id
+  @doc "The room of `kind` behind a space's gate — its Construct unless told otherwise."
+  @spec construct_id(String.t(), Construct.kind()) :: String.t()
+  defdelegate construct_id(parent_id, kind \\ :construct), to: Construct, as: :space_id
 
-  @doc "The space a Construct belongs to."
+  @doc "Which kind of room behind a gate an id names."
+  @spec construct_kind(String.t()) :: {:ok, Construct.kind()} | :error
+  defdelegate construct_kind(space_id), to: Construct, as: :kind
+
+  @doc "The space a room behind a gate (its Construct or its Office) belongs to."
   @spec construct_parent(String.t()) :: {:ok, String.t()} | :error
   defdelegate construct_parent(construct_id), to: Construct, as: :parent_id
 
@@ -422,9 +432,14 @@ defmodule RetroHexChat.VirtualSpace do
     end
   end
 
-  # Somebody in a space's Construct is in the space: it is a room of it.
+  # Somebody in a room behind one of a space's gates is in the space: it is a
+  # room of it.
   defp with_construct(space_id, nicknames) do
-    inside = space_id |> Construct.space_id() |> snapshot() |> nicknames()
+    inside =
+      Enum.flat_map(Construct.kinds(), fn kind ->
+        space_id |> Construct.space_id(kind) |> snapshot() |> nicknames()
+      end)
+
     Enum.sort(Enum.uniq(nicknames ++ inside))
   end
 
@@ -437,9 +452,11 @@ defmodule RetroHexChat.VirtualSpace do
   written once here so the prefix is not spelled out at each caller.
   """
   @spec space_kind(String.t()) :: :channel | :direct_message | :construct
-  def space_kind("construct:" <> _rest), do: :construct
   def space_kind("dm:" <> _rest), do: :direct_message
-  def space_kind(_space_id), do: :channel
+
+  def space_kind(space_id) do
+    if Construct.construct?(space_id), do: :construct, else: :channel
+  end
 
   @doc """
   One gathering by its token, whether it is still going or long over.

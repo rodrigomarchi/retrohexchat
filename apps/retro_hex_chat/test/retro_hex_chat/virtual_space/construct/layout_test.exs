@@ -612,4 +612,68 @@ defmodule RetroHexChat.VirtualSpace.Construct.LayoutTest do
       assert {:ok, _items} = place(base, ring, "bench", 40, 40, inside, "down")
     end
   end
+
+  describe "the Office's furniture" do
+    setup do
+      {:ok, office} = SpaceMap.get("office")
+      %{office: office, items: Layout.normalize(office, [])}
+    end
+
+    test "comes with the room, every piece of it from the Construct's catalog", ctx do
+      assert length(ctx.items) == length(ctx.office.fixed_items)
+      assert Enum.all?(ctx.items, &Layout.fixed?/1)
+      assert Enum.all?(ctx.items, &Map.has_key?(ctx.office.catalog, &1.kind))
+
+      kinds = MapSet.new(ctx.items, & &1.kind)
+
+      for kind <- ~w(reception_desk office_desk office_chair meeting_table cubicle_partition) do
+        assert kind in kinds
+      end
+
+      map = Layout.apply(ctx.office, ctx.items)
+      assert Enum.all?(map.items, &(&1.fixed == true))
+      assert map.seats != []
+      assert [%{id: "office_exit", modal: %{action: "exit_office"}} | _] = map.interactables
+    end
+
+    test "cannot be moved, turned, removed or written on", ctx do
+      [desk | _] = Enum.filter(ctx.items, &(&1.kind == "office_desk"))
+
+      for op <- [{:move, desk.id, 20, 20}, {:remove, desk.id}, {:rotate, desk.id}] do
+        assert {:error, :fixed} = Layout.edit(ctx.office, ctx.items, op, ctx.nobody, "alice")
+      end
+
+      assert {:error, :fixed} =
+               Layout.edit(ctx.office, ctx.items, {:label, desk.id, "hi", true}, ctx.nobody, "a")
+    end
+
+    test "keeps its place whatever storage says, and what its lamps were doing", ctx do
+      lamp = Enum.find(ctx.items, &(&1.kind == "lamp"))
+
+      stored = [
+        %{"id" => lamp.id, "kind" => "tree", "x" => 20, "y" => 20, "state" => %{"on" => false}}
+      ]
+
+      assert [kept | _] =
+               ctx.office |> Layout.normalize(stored) |> Enum.filter(&(&1.id == lamp.id))
+
+      assert {kept.kind, kept.x, kept.y} == {"lamp", lamp.x, lamp.y}
+      assert kept.state == %{"on" => false}
+    end
+
+    test "is never where a stored piece lands: the piece is dropped", ctx do
+      desk = Enum.find(ctx.items, &(&1.kind == "office_desk"))
+      stored = [%{"id" => "p1", "kind" => "plant", "x" => desk.x, "y" => desk.y}]
+
+      refute ctx.office |> Layout.normalize(stored) |> Enum.any?(&(&1.id == "p1"))
+    end
+
+    test "does not count against the pieces a room holds", ctx do
+      office = %{ctx.office | max_items: 1}
+      items = Layout.normalize(office, [])
+
+      assert {:ok, items} = place(office, items, "plant", 20, 20, ctx.nobody)
+      assert {:error, :full} = place(office, items, "plant", 21, 20, ctx.nobody)
+    end
+  end
 end

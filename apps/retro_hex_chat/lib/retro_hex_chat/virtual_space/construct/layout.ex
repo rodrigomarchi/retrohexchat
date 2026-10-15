@@ -20,6 +20,11 @@ defmodule RetroHexChat.VirtualSpace.Construct.Layout do
   twin, a sign, a board, a screen or an arcade cabinet opens a panel. What a
   piece is doing lives in its `state`, a small map of string keys that is
   stored with it, so a lamp left off is still off when the room comes back.
+
+  A room may come furnished: the base map's `fixed_items` (the Office's desks,
+  walls and kitchenette) are items like any other — drawn, sat on, switched —
+  that nobody may move, turn, remove or write on. Their place is the map's,
+  never storage's; only what they are doing (a lamp left off) is stored.
   """
 
   alias RetroHexChat.VirtualSpace.Map, as: SpaceMap
@@ -79,6 +84,7 @@ defmodule RetroHexChat.VirtualSpace.Construct.Layout do
           | :not_allowed
           | :too_long
           | :unknown_material
+          | :fixed
 
   @typedoc """
   What an edit is judged against, beyond the items themselves: the tiles people
@@ -288,7 +294,7 @@ defmodule RetroHexChat.VirtualSpace.Construct.Layout do
       not placeable?(base, kind, context) ->
         {:error, :unknown_kind}
 
-      length(items) >= Map.get(base, :max_items, 0) ->
+      Enum.count(items, &(not fixed?(&1))) >= Map.get(base, :max_items, 0) ->
         {:error, :full}
 
       true ->
@@ -309,7 +315,7 @@ defmodule RetroHexChat.VirtualSpace.Construct.Layout do
   end
 
   def edit(base, items, {:move, id, x, y}, context, _actor) do
-    with {:ok, item} <- find(items, id),
+    with {:ok, item} <- find_movable(items, id),
          :ok <- not_sat_on(item, context),
          :ok <- tile_free(base, items, context, item.kind, x, y, item.dir, id) do
       checked(base, replace(items, %{item | x: x, y: y}), context)
@@ -317,7 +323,7 @@ defmodule RetroHexChat.VirtualSpace.Construct.Layout do
   end
 
   def edit(_base, items, {:remove, id}, context, _actor) do
-    with {:ok, item} <- find(items, id),
+    with {:ok, item} <- find_movable(items, id),
          :ok <- not_sat_on(item, context) do
       {:ok, items |> Enum.reject(&(&1.id == id)) |> Enum.map(&unlink(&1, id))}
     end
@@ -325,7 +331,7 @@ defmodule RetroHexChat.VirtualSpace.Construct.Layout do
 
   # A turned piece must still fit: a long table turned may run into a wall.
   def edit(base, items, {:rotate, id}, context, _actor) do
-    with {:ok, item} <- find(items, id),
+    with {:ok, item} <- find_movable(items, id),
          :ok <- not_sat_on(item, context),
          dir = next_dir(dirs(base, item.kind), item.dir),
          :ok <- turned_fits(base, items, context, item, dir) do
@@ -339,7 +345,7 @@ defmodule RetroHexChat.VirtualSpace.Construct.Layout do
   def edit(base, items, {:label, id, text, moderator?}, _context, actor) do
     text = normalize_text(text)
 
-    with {:ok, item} <- find(items, id),
+    with {:ok, item} <- find_movable(items, id),
          :ok <- a_sign(base, item),
          :ok <- may_label(item, actor, moderator?),
          :ok <- fits_sign(text) do
@@ -414,9 +420,13 @@ defmodule RetroHexChat.VirtualSpace.Construct.Layout do
   def normalize(base, raw_items) when is_list(raw_items) do
     catalog = Map.get(base, :catalog, %{})
 
+    {stored_fixed, stored} =
+      raw_items |> Enum.flat_map(&normalize_item/1) |> Enum.split_with(&fixed?/1)
+
+    fixed = fixed_items(base, stored_fixed)
+
     items =
-      raw_items
-      |> Enum.flat_map(&normalize_item/1)
+      (fixed ++ stored)
       |> Enum.filter(&Map.has_key?(catalog, &1.kind))
       |> Enum.map(fn item ->
         %{
@@ -426,12 +436,17 @@ defmodule RetroHexChat.VirtualSpace.Construct.Layout do
         }
       end)
       |> keep_fitting(base)
-      |> Enum.take(Map.get(base, :max_items, 0))
+      |> Enum.take(length(fixed) + Map.get(base, :max_items, 0))
 
     drop_broken_links(items)
   end
 
-  def normalize(_base, _raw_items), do: []
+  def normalize(base, _raw_items), do: normalize(base, [])
+
+  @doc "Whether an item is part of the room it stands in, and stays where it is."
+  @spec fixed?(map()) :: boolean()
+  def fixed?(%{id: "fixed:" <> _n}), do: true
+  def fixed?(_item), do: false
 
   @doc "An item in the shape storage and the wire carry it."
   @spec view(item()) :: map()
@@ -444,6 +459,8 @@ defmodule RetroHexChat.VirtualSpace.Construct.Layout do
       dir: item.dir,
       placed_by: item.placed_by
     }
+
+    view = if fixed?(item), do: Map.put(view, :fixed, true), else: view
 
     case Map.get(item, :state, %{}) do
       state when map_size(state) == 0 -> view
@@ -477,6 +494,24 @@ defmodule RetroHexChat.VirtualSpace.Construct.Layout do
   end
 
   defp normalize_item(_raw), do: []
+
+  # The furniture a room comes with, where its map puts it, doing what it was
+  # left doing.
+  defp fixed_items(base, stored) do
+    states = Map.new(stored, &{&1.id, &1.state})
+
+    for %{id: "fixed:" <> _n = id} = f <- Map.get(base, :fixed_items, []) do
+      %{
+        id: id,
+        kind: f.kind,
+        x: f.x,
+        y: f.y,
+        dir: f.dir,
+        placed_by: nil,
+        state: Map.get(states, id, %{})
+      }
+    end
+  end
 
   defp string_keys(%{} = state), do: Map.new(state, fn {k, v} -> {to_string(k), v} end)
   defp string_keys(_state), do: %{}
@@ -724,6 +759,12 @@ defmodule RetroHexChat.VirtualSpace.Construct.Layout do
   @doc "The seat a placed chair offers; a piece with several seats numbers them after it."
   @spec seat_id(item()) :: String.t()
   def seat_id(item), do: "seat:" <> item.id
+
+  defp find_movable(items, id) do
+    with {:ok, item} <- find(items, id) do
+      if fixed?(item), do: {:error, :fixed}, else: {:ok, item}
+    end
+  end
 
   defp find(items, id) do
     case Enum.find(items, &(&1.id == id)) do

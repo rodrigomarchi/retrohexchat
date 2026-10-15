@@ -4,7 +4,7 @@ from __future__ import annotations
 
 import unittest
 
-from i18n.terms import foreign_forms, missing_terms
+from i18n.terms import foreign_forms, italian_accents, missing_terms
 
 MODES = "+m lets only voiced users speak, +i lets in only who is invited."
 
@@ -66,6 +66,14 @@ class MissingTermsTest(unittest.TestCase):
         self.assertTrue(missing_terms("Its pinned messages.", "Suas mensagens presas.", "pt_BR"))
         self.assertEqual(missing_terms("Its pinned messages.", "Suas mensagens fixadas.", "pt_BR"), [])
         self.assertTrue(missing_terms("Opens in a new tab.", "Abre numa nova página.", "pt_BR"))
+
+    def test_the_office_is_a_room_not_a_post(self):
+        self.assertTrue(missing_terms("Go into the office.", "Entre no gabinete.", "pt_BR"))
+        self.assertTrue(missing_terms("The office is full.", "El cargo está lleno.", "es"))
+        self.assertEqual(missing_terms("The office is full.", "O escritório está cheio.", "pt_BR"), [])
+        self.assertEqual(missing_terms("The office is full.", "Das Büro ist voll.", "de"), [])
+        self.assertTrue(missing_terms("Loading the office...", "役職をロードする...", "ja"))
+        self.assertEqual(missing_terms("Loading the office...", "オフィスをロード中...", "ja"), [])
 
     def test_capital_letters_are_letters_not_money(self):
         source = "Capital letters do not matter"
@@ -133,6 +141,19 @@ class ForeignFormsTest(unittest.TestCase):
         )
         self.assertEqual(foreign_forms("Da próxima vez que entrares", "pt_BR"), ["entrares"])
         self.assertEqual(foreign_forms("Todo mundo no espaço vê você entrar.", "pt_BR"), [])
+
+    def test_the_offices_european_forms_are_foreign_to_pt_br(self):
+        self.assertTrue(foreign_forms("O escritório vem mobilado.", "pt_BR"))
+        self.assertTrue(foreign_forms("Todos podem adicionar-lhe peças.", "pt_BR"))
+        self.assertTrue(foreign_forms("A carregar o escritório...", "pt_BR"))
+        self.assertTrue(foreign_forms("A porta leva-te de volta.", "pt_BR"))
+        self.assertEqual(foreign_forms("O escritório vem mobiliado.", "pt_BR"), [])
+
+    def test_italian_is_written_with_its_accent(self):
+        self.assertEqual(italian_accents("L'ufficio e' pieno."), "L'ufficio è pieno.")
+        self.assertEqual(italian_accents("E' chiuso, e' vero"), "È chiuso, è vero")
+        # An apostrophe that elides a word is left alone.
+        self.assertEqual(italian_accents("l'ufficio e l'arcade"), "l'ufficio e l'arcade")
 
     def test_brazilian_text_passes(self):
         self.assertEqual(foreign_forms("Escolha um apelido e pronto.", "pt_BR"), [])

@@ -11,10 +11,12 @@ defmodule RetroHexChat.VirtualSpace.Map do
 
   alias RetroHexChat.VirtualSpace.Maps.Construct
   alias RetroHexChat.VirtualSpace.Maps.EndOfTime
+  alias RetroHexChat.VirtualSpace.Maps.Office
 
   @maps %{
     "construct" => Construct,
-    "end_of_time" => EndOfTime
+    "end_of_time" => EndOfTime,
+    "office" => Office
   }
 
   @spec get(String.t()) :: {:ok, map()} | {:error, :unknown_map}
