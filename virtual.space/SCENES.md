@@ -321,7 +321,7 @@ Hard-won iso lessons:
 ## 10. The Construct (a buildable room)
 
 The **Construct** is the second registered map: an empty white floor behind the
-End of Time's green gate (`eot_portal`, centre platform at (48,31), interactable
+End of Time's green gate (`eot_portal`, at (45,28) against the centre platform's north railing, interactable
 `construct_portal`), where the people of a channel or DM place furniture. Its
 author is `virtual.space/tools/author_construct.py`, which writes
 `construct.webp` and `priv/maps/construct.json`.
@@ -463,8 +463,9 @@ author is `virtual.space/tools/author_construct.py`, which writes
 ## 11. The Office (a furnished buildable room)
 
 The **Office** is a registered map of its own: the Construct's platform with
-furniture already in it, behind the wooden door five tiles south of the End of
-Time's arrival lamp (`eot_office_door` at (48,41), interactable
+furniture already in it, behind the wooden door beside the green gate, both
+against the centre platform's north railing (`eot_office_door` at (42,28),
+interactable
 `office_portal`, action `enter_office`). Its author is
 `virtual.space/tools/author_office.py`, which writes `priv/maps/office.json`.
 

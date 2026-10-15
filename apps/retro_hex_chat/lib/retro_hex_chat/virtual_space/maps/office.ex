@@ -1,7 +1,8 @@
 defmodule RetroHexChat.VirtualSpace.Maps.Office do
   @moduledoc """
   The Office: a furnished floor floating in the End of Time's sky, behind the
-  wooden door south of the arrival lamp. Reception, desks, a meeting room, a
+  wooden door beside the green gate, against the centre platform's north
+  railing. Reception, desks, a meeting room, a
   kitchenette and filing stand around a clear centre, and the people inside add
   to it with the Construct's own pieces.
 

@@ -22,6 +22,11 @@ TOOLS = os.path.dirname(os.path.abspath(__file__))
 REPO = os.path.abspath(os.path.join(TOOLS, "..", ".."))
 SRC = os.path.join(REPO, "virtual.space", "scenes", "end_of_time")
 OFFICE_DOOR = os.path.join(REPO, "virtual.space", "scenes", "construct", "door.png")
+# The two gates, side by side against the centre platform's north railing,
+# west of the bridge up north (x 47-48): the tile each stands on, its back to
+# the rail, one tile clear of the bridge so crossing it reaches neither.
+CONSTRUCT_GATE = (45, 28)
+OFFICE_GATE = (42, 28)
 ISO = os.path.join(SRC, "iso")
 SHEET_OUT = os.path.join(
     REPO, "apps", "retro_hex_chat_web", "priv", "static", "images", "space", "endoftime.webp"
@@ -106,19 +111,18 @@ FURNITURE = [
     ("eot_gandalf", 19, 35, {"x": 19, "y": 35, "w": 1, "h": 1}),
     # South platform: Goku braced at the centre-south, arms to the sky.
     ("eot_goku", 48, 58, {"x": 48, "y": 58, "w": 2, "h": 1}),
-    # Centre platform, five tiles north of the lamppost the people arrive at:
+    # Centre platform, against its north railing beside the bridge up north:
     # the gate to the channel's Construct, its arch full of falling green
-    # code, the first thing seen on arrival. Pressing E beside it asks whether
-    # to go in.
-    ("eot_portal", 48, 31, {"x": 48, "y": 31, "w": 1, "h": 1}),
-    # And five tiles south of it, the wooden door to the channel's Office.
-    ("eot_office_door", 48, 41, {"x": 48, "y": 41, "w": 1, "h": 1}),
+    # code, and three tiles along the railing the wooden door to its Office.
+    # Pressing E beside either asks whether to go in.
+    ("eot_portal", *CONSTRUCT_GATE, {"x": CONSTRUCT_GATE[0], "y": CONSTRUCT_GATE[1], "w": 1, "h": 1}),
+    ("eot_office_door", *OFFICE_GATE, {"x": OFFICE_GATE[0], "y": OFFICE_GATE[1], "w": 1, "h": 1}),
 ]
 # Things a participant can use (E): the Construct gate and the Office door.
 INTERACTABLES = [
-    {"id": "construct_portal", "kind": "portal", "x": 48, "y": 31, "title": "Construct",
-     "modal": {"kind": "confirm", "action": "enter_construct"}},
-    {"id": "office_portal", "kind": "portal", "x": 48, "y": 41, "title": "Office",
+    {"id": "construct_portal", "kind": "portal", "x": CONSTRUCT_GATE[0], "y": CONSTRUCT_GATE[1],
+     "title": "Construct", "modal": {"kind": "confirm", "action": "enter_construct"}},
+    {"id": "office_portal", "kind": "portal", "x": OFFICE_GATE[0], "y": OFFICE_GATE[1], "title": "Office",
      "modal": {"kind": "confirm", "action": "enter_office"}},
 ]
 # Floating decor: drawn like standing props but with NO ground footprint —
@@ -336,10 +340,9 @@ def build():
     ]:
         if os.path.exists(fn):
             props[name] = _crop(Image.open(fn).convert("RGBA"))
-    # The Office door is the Construct's own door, turned the way it stands
-    # there (`author_construct.py` mirrors it).
-    props["eot_office_door"] = _crop(
-        Image.open(OFFICE_DOOR).convert("RGBA").transpose(Image.FLIP_LEFT_RIGHT))
+    # The Office door is the Construct's own door, as drawn: it runs along the
+    # railing it stands against, the north edge.
+    props["eot_office_door"] = _crop(Image.open(OFFICE_DOOR).convert("RGBA"))
 
     row = fcells_h
     col = 0
@@ -520,11 +523,13 @@ def build():
     lights.append({"x": 79, "y": 33, "lift": 40, "radius": 1.1, "color": "a8c8ff",
                    "blend": "add"})
     # The Construct gate glows the green of its falling code.
-    lights.append({"x": 48, "y": 31, "radius": 2.4, "color": "4dff9a", "blend": "add"})
-    lights.append({"x": 48, "y": 31, "lift": 50, "radius": 1.2, "color": "9dffc8",
+    gx, gy = CONSTRUCT_GATE
+    lights.append({"x": gx, "y": gy, "radius": 2.4, "color": "4dff9a", "blend": "add"})
+    lights.append({"x": gx, "y": gy, "lift": 50, "radius": 1.2, "color": "9dffc8",
                    "blend": "add"})
     # The Office door, lit warm like a doorway with the lights on behind it.
-    lights.append({"x": 48, "y": 41, "radius": 2.0, "color": "ffd591", "blend": "add"})
+    lights.append({"x": OFFICE_GATE[0], "y": OFFICE_GATE[1], "radius": 2.0, "color": "ffd591",
+                   "blend": "add"})
 
     zones = [{"id": name, "kind": "platform", "x": r["x0"], "y": r["y0"],
               "w": r["x1"] - r["x0"] + 1, "h": r["y1"] - r["y0"] + 1}

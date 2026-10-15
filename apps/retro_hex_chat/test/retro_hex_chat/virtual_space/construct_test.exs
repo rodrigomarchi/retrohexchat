@@ -596,7 +596,7 @@ defmodule RetroHexChat.VirtualSpace.ConstructTest do
     test "its door stands on the End of Time and asks before taking anyone in" do
       {:ok, map} = VirtualSpace.get_map("end_of_time")
 
-      assert %{x: 48, y: 41, modal: %{kind: "confirm", action: "enter_office"}} =
+      assert %{x: 42, y: 28, modal: %{kind: "confirm", action: "enter_office"}} =
                Enum.find(map.interactables, &(&1.id == "office_portal"))
     end
 

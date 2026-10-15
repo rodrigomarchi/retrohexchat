@@ -10,11 +10,12 @@ import { TestUser } from "./chatUsers";
 import { enterAs, Look } from "./characters";
 import { Walker } from "../director/space";
 
-// The tile in front of the End of Time's gate, which stands at (48,31).
-export const BEFORE_GATE = { x: 48, y: 32 };
-// And the tile in front of the Office's door at (48,41), five tiles south of
-// the lamp people arrive by.
-export const BEFORE_OFFICE = { x: 48, y: 40 };
+// The tile in front of the End of Time's gate, which stands at (45,28)
+// against the centre platform's north railing.
+export const BEFORE_GATE = { x: 45, y: 29 };
+// And the tile in front of the Office's door, three tiles west along the same
+// railing, at (42,28).
+export const BEFORE_OFFICE = { x: 42, y: 29 };
 
 export type Item = {
   id: string;

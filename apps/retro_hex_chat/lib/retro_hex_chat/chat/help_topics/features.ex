@@ -4148,7 +4148,7 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
               dgettext("help", "Every space also has an office."),
               dgettext(
                 "help",
-                "Its wooden door stands on the central island of the End of Time, a few steps south of where you arrive."
+                "Its wooden door stands on the central island of the End of Time, next to the green gate."
               ),
               dgettext("help", "Walk up to the door and press E."),
               dgettext(
