@@ -1,7 +1,7 @@
 defmodule RetroHexChat.VirtualSpace.Maps.GameRoom do
   @moduledoc """
   The Game Room: a furnished floor floating in the End of Time's sky, behind the
-  neon door across the north bridge from the green gate. A row of arcade
+  neon door beside the Office's wooden door. A row of arcade
   cabinets, a pool table and a ping-pong table, a lounge of beanbags and a LAN
   corner stand around a clear centre, and the people inside add to it with the
   Construct's own pieces.

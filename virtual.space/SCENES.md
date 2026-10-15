@@ -536,8 +536,8 @@ interactable
 ## 12. The Game Room (a furnished buildable room)
 
 The **Game Room** is the Office's sibling: the Construct's platform furnished
-for play, behind a neon door across the north bridge from the green gate
-(`eot_game_room_door` at (50,28), interactable `game_room_portal`, action
+for play, behind a neon door beside the Office's, three tiles further west
+along the north railing (`eot_game_room_door` at (39,28), interactable `game_room_portal`, action
 `enter_game_room`). Its author is `virtual.space/tools/author_game_room.py`,
 which writes `priv/maps/game_room.json`.
 
@@ -552,7 +552,12 @@ which writes `priv/maps/game_room.json`.
   shape and box exactly (`pixellab.json`). The End of Time packs it as drawn,
   like the Office's door; the Construct's sheet packs it mirrored as
   `cst_arcade_door`, the tile the room's way out is drawn with — it is not a
-  catalog piece.
+  catalog piece. A door art wider than a tile reaches past its tile's right
+  corner, where the next tile's back rail sorts after it and crosses it, so
+  `author_scene.py` pads every gate on the End of Time on the right
+  (`_within_tile`) until its art ends at that corner, and gives it no contact
+  shadow (`shadow: false`), since it stands flush against the railing. Their art has no holes inside its
+  outline, for the railing to show through (`test_game_room_authoring.py`).
 - **Its floor is the arcade carpet** (`carpet_arcade`), a material of the
   Construct's like any other, so every buildable room can paint it: dark, with
   sparse pink and cyan specks. Checkerboard along the cabinets, red carpet

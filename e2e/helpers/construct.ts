@@ -16,9 +16,9 @@ export const BEFORE_GATE = { x: 45, y: 29 };
 // And the tile in front of the Office's door, three tiles west along the same
 // railing, at (42,28).
 export const BEFORE_OFFICE = { x: 42, y: 29 };
-// And the tile in front of the Game Room's neon door, across the north bridge
-// from the gate, at (50,28).
-export const BEFORE_GAME_ROOM = { x: 50, y: 29 };
+// And the tile in front of the Game Room's neon door, three tiles further
+// west, at (39,28).
+export const BEFORE_GAME_ROOM = { x: 39, y: 29 };
 
 export type Room = "construct" | "office" | "game_room";
 

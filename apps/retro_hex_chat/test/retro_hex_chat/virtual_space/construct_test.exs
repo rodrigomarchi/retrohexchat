@@ -601,10 +601,10 @@ defmodule RetroHexChat.VirtualSpace.ConstructTest do
       Map.put(ctx, :room_id, room_id)
     end
 
-    test "its door stands across the bridge from the green gate and asks first" do
+    test "its door stands beside the Office's and asks first" do
       {:ok, map} = VirtualSpace.get_map("end_of_time")
 
-      assert %{x: 50, y: 28, modal: %{kind: "confirm", action: "enter_game_room"}} =
+      assert %{x: 39, y: 28, modal: %{kind: "confirm", action: "enter_game_room"}} =
                Enum.find(map.interactables, &(&1.id == "game_room_portal"))
     end
 

@@ -23,13 +23,13 @@ REPO = os.path.abspath(os.path.join(TOOLS, "..", ".."))
 SRC = os.path.join(REPO, "virtual.space", "scenes", "end_of_time")
 OFFICE_DOOR = os.path.join(REPO, "virtual.space", "scenes", "construct", "door.png")
 GAME_ROOM_DOOR = os.path.join(REPO, "virtual.space", "scenes", "construct", "arcade_door.png")
-# The gates against the centre platform's north railing, on both sides of the
-# bridge up north (x 47-48): the tile each stands on, its back to the rail, one
-# tile clear of the bridge so crossing it reaches none. The Construct and the
-# Office to the west, the Game Room across the bridge from the Construct.
+# The gates in a row against the centre platform's north railing, west of the
+# bridge up north (x 47-48): the tile each stands on, its back to the rail, the
+# first one tile clear of the bridge so crossing it reaches none. The Construct
+# nearest the bridge, then three tiles apart the Office and the Game Room.
 CONSTRUCT_GATE = (45, 28)
 OFFICE_GATE = (42, 28)
-GAME_ROOM_GATE = (50, 28)
+GAME_ROOM_GATE = (39, 28)
 ISO = os.path.join(SRC, "iso")
 SHEET_OUT = os.path.join(
     REPO, "apps", "retro_hex_chat_web", "priv", "static", "images", "space", "endoftime.webp"
@@ -116,14 +116,16 @@ FURNITURE = [
     ("eot_goku", 48, 58, {"x": 48, "y": 58, "w": 2, "h": 1}),
     # Centre platform, against its north railing beside the bridge up north:
     # the gate to the channel's Construct, its arch full of falling green
-    # code, and three tiles along the railing the wooden door to its Office;
-    # across the bridge, the neon door to its Game Room. Pressing E beside any
-    # of them asks whether to go in.
+    # code, and three tiles along the railing the wooden door to its Office,
+    # and three more the neon door to its Game Room. Pressing E beside any of
+    # them asks whether to go in.
     ("eot_portal", *CONSTRUCT_GATE, {"x": CONSTRUCT_GATE[0], "y": CONSTRUCT_GATE[1], "w": 1, "h": 1}),
     ("eot_office_door", *OFFICE_GATE, {"x": OFFICE_GATE[0], "y": OFFICE_GATE[1], "w": 1, "h": 1}),
     ("eot_game_room_door", *GAME_ROOM_GATE,
      {"x": GAME_ROOM_GATE[0], "y": GAME_ROOM_GATE[1], "w": 1, "h": 1}),
 ]
+# The props of the gates above, which stand against the railing.
+GATE_PROPS = ("eot_portal", "eot_office_door", "eot_game_room_door")
 # Things a participant can use (E): the Construct gate and the rooms' doors.
 INTERACTABLES = [
     {"id": "construct_portal", "kind": "portal", "x": CONSTRUCT_GATE[0], "y": CONSTRUCT_GATE[1],
@@ -153,6 +155,18 @@ Z_STEP = 16
 
 def _crop(im):
     return im.crop(im.getbbox() or (0, 0, im.width, im.height))
+
+
+def _within_tile(im, tile_w):
+    """A door against the back railing, padded on its right so that, drawn
+    centred on its tile, its art ends at the tile's right corner: the next
+    tile's back rail sorts after the door and would cross what reaches past."""
+    extra = im.width - tile_w
+    if extra <= 0:
+        return im
+    out = Image.new("RGBA", (im.width + extra, im.height), (0, 0, 0, 0))
+    out.paste(im, (0, 0))
+    return out
 
 
 def _floor_tiles():
@@ -348,10 +362,13 @@ def build():
     ]:
         if os.path.exists(fn):
             props[name] = _crop(Image.open(fn).convert("RGBA"))
-    # The Office door is the Construct's own door, as drawn: it runs along the
-    # railing it stands against, the north edge.
+    # The Office's and the Game Room's doors are the Construct's own door and
+    # its neon state, as drawn: they run along the railing they stand against,
+    # the north edge. Every gate ends at its tile's right corner.
     props["eot_office_door"] = _crop(Image.open(OFFICE_DOOR).convert("RGBA"))
     props["eot_game_room_door"] = _crop(Image.open(GAME_ROOM_DOOR).convert("RGBA"))
+    for name in GATE_PROPS:
+        props[name] = _within_tile(props[name], fw)
 
     row = fcells_h
     col = 0
@@ -470,7 +487,11 @@ def build():
     decor = stars + [
         {"x": x, "y": y, "tile": "iso_lamp", "sort": "stand"} for x, y in LAMPS
     ] + [
-        {"x": x, "y": y, "tile": name, "sort": "stand"} for name, x, y, _fp in FURNITURE
+        # A gate stands flush against the railing, so it pools no contact
+        # shadow on the floor around it.
+        {"x": x, "y": y, "tile": name, "sort": "stand",
+         **({"shadow": False} if name in GATE_PROPS else {})}
+        for name, x, y, _fp in FURNITURE
     ] + [
         {"x": x, "y": y, "tile": "eot_fire", "sort": "stand"} for x, y in FIRE_TRAIL
     ] + [

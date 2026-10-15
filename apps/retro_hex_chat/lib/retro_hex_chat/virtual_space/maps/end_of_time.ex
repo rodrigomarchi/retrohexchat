@@ -116,9 +116,12 @@ defmodule RetroHexChat.VirtualSpace.Maps.EndOfTime do
 
   # `sort` ("flat" | "stand") tells the client's depth pass which decor lies
   # under every avatar (the starfield) and which Y-sorts against them so the
-  # player can walk behind it (standing props).
+  # player can walk behind it (standing props); `shadow: false` keeps a prop
+  # flush against the railing from pooling a contact shadow.
   defp decor(data) do
-    Enum.map(data["decor"], &%{x: &1["x"], y: &1["y"], tile: &1["tile"], sort: &1["sort"]})
+    Enum.map(data["decor"], fn d ->
+      put_optional(%{x: d["x"], y: d["y"], tile: d["tile"], sort: d["sort"]}, "shadow", d)
+    end)
   end
 
   # Color-math light sources: additive radial pools the client draws over the

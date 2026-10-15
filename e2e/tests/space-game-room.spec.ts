@@ -1,6 +1,6 @@
 /**
  * @section SP - Virtual Spaces
- * @flow SP42 [done] The Game Room's neon door stands across the north bridge from the green gate: it lights up in reach, asks before going, and opens a furnished room whose arcade cabinets list the games, whose furniture cannot be picked up, where a piece can still be added, and whose own neon door leads back
+ * @flow SP42 [done] The Game Room's neon door stands beside the Office's wooden door: it lights up in reach, asks before going, and opens a furnished room whose arcade cabinets list the games, whose furniture cannot be picked up, where a piece can still be added, and whose own neon door leads back
  *
  * These @flow lines are the source of truth for e2e/TEST_CATALOG.md.
  * Edit them here, then run `make e2e.catalog` to regenerate the index.

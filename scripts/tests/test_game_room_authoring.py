@@ -62,13 +62,40 @@ class GameRoomMapTest(unittest.TestCase):
 
 
 class EndOfTimeDoorTest(unittest.TestCase):
-    def test_the_neon_door_stands_across_the_bridge_from_the_green_gate(self):
+    def test_the_neon_door_stands_beside_the_offices(self):
         eot = _load("end_of_time")
         portal = next(i for i in eot["interactables"] if i["id"] == "game_room_portal")
-        self.assertEqual((portal["x"], portal["y"]), (50, 28))
+        self.assertEqual((portal["x"], portal["y"]), (39, 28))
         self.assertEqual(portal["modal"]["action"], "enter_game_room")
-        self.assertTrue(any(d["tile"] == "eot_game_room_door" and (d["x"], d["y"]) == (50, 28)
+        self.assertTrue(any(d["tile"] == "eot_game_room_door" and (d["x"], d["y"]) == (39, 28)
                             for d in eot["decor"]))
+
+
+class DoorArtTest(unittest.TestCase):
+    # A door stands against the End of Time's railing: a transparent pixel
+    # inside its outline lets the railing behind show through it.
+    def test_the_doors_have_no_holes_inside_their_outline(self):
+        from collections import deque
+
+        from PIL import Image
+
+        art = os.path.join(TOOLS, "..", "scenes", "construct")
+        for name in ("door.png", "arcade_door.png"):
+            im = Image.open(os.path.join(art, name)).convert("RGBA")
+            w, h = im.size
+            alpha = im.getchannel("A").load()
+            outside = set()
+            queue = deque([(x, y) for x in range(w) for y in (0, h - 1)]
+                          + [(x, y) for y in range(h) for x in (0, w - 1)])
+            while queue:
+                x, y = queue.popleft()
+                if (x, y) in outside or not (0 <= x < w and 0 <= y < h) or alpha[x, y]:
+                    continue
+                outside.add((x, y))
+                queue.extend([(x + 1, y), (x - 1, y), (x, y + 1), (x, y - 1)])
+            holes = [(x, y) for y in range(h) for x in range(w)
+                     if not alpha[x, y] and (x, y) not in outside]
+            self.assertEqual(holes, [], name)
 
 
 if __name__ == "__main__":
