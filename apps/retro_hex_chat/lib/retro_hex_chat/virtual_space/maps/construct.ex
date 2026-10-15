@@ -22,8 +22,9 @@ defmodule RetroHexChat.VirtualSpace.Maps.Construct do
   `group` (its palette tab), `label` (how the line it shows is drawn: its
   width in tiles, how high it floats, its colour and its outline), `size`
   (its footprint, `[w, h]` tiles), `foot` (the point of the footprint its art
-  stands on), `seats` (the footprint tiles that are seats) and `layers` (more
-  art drawn with it, each on its own point).
+  stands on), `seats` (the footprint tiles that are seats), `layers` (more
+  art drawn with it, each on its own point) and `shadow` (false for a piece
+  that stands flush on the floor, a wall, with no contact shadow under it).
   """
 
   @sheet "construct"
@@ -112,8 +113,13 @@ defmodule RetroHexChat.VirtualSpace.Maps.Construct do
     end)
   end
 
+  # A prop that stands flush on the floor (the Office's door in its wall) says
+  # so with `shadow: false`.
   defp decor(entries) do
-    Enum.map(entries, &%{x: &1["x"], y: &1["y"], tile: &1["tile"], sort: &1["sort"]})
+    Enum.map(entries, fn e ->
+      prop = %{x: e["x"], y: e["y"], tile: e["tile"], sort: e["sort"]}
+      if e["shadow"] == false, do: Map.put(prop, :shadow, false), else: prop
+    end)
   end
 
   defp light(l) do
@@ -138,6 +144,7 @@ defmodule RetroHexChat.VirtualSpace.Maps.Construct do
              %{radius: l["radius"], color: l["color"], blend: l["blend"], lift: l["lift"]}
            end),
          blocks: entry["blocks"] != false,
+         shadow: entry["shadow"] != false,
          dirs: entry["dirs"] || ["down", "right"],
          use: entry["use"],
          states: entry["states"] || %{},

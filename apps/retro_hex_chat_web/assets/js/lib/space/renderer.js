@@ -695,7 +695,8 @@ export class Renderer {
   }
 
   // Soft elliptical contact shadows under every standing prop and avatar, so
-  // they read as resting on the floor rather than floating. Drawn once with a
+  // they read as resting on the floor rather than floating — except a prop
+  // that stands flush on it, a wall. Drawn once with a
   // shared alpha before the depth pass paints the sprites over them.
   _drawShadows(ctx, participants, now = 0) {
     const stand = this._standDecor();
@@ -707,6 +708,8 @@ export class Renderer {
     // Props: a flat ellipse centred on the billboard's diamond foot (its base),
     // sized to the sprite width.
     for (const prop of stand) {
+      // A wall stands flush on the floor (`shadow: false`).
+      if (prop.shadow === false) continue;
       const sprite = this.atlas?.tile(prop.tile, now, seedAt(prop.x, prop.y));
       if (!sprite) continue;
       const f = this.projection.footAnchor(prop.x, prop.y);

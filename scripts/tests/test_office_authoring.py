@@ -66,5 +66,23 @@ class OfficeMapTest(unittest.TestCase):
             ao._validate(catalog, wall, exit_, spawn, set())
 
 
+class DoorsTest(unittest.TestCase):
+    def test_a_door_is_a_way_through_a_wall_and_a_wall_without_one_is_not(self):
+        construct = _load("construct")
+        catalog = construct["catalog"]
+        exit_ = (ao.X0 + ao.EXIT_UV[0], ao.Y0 + ao.EXIT_UV[1])
+        spawn = _load("office")["spawn"]
+        x = ao.X0 + 6
+
+        def run(door_at):
+            return [{"id": f"fixed:{n}", "kind": "glass_door" if y == door_at else "glass_wall",
+                     "x": x, "y": y, "dir": "down"}
+                    for n, y in enumerate(range(ao.Y0, ao.Y1 + 1))]
+
+        ao._validate(catalog, run(ao.Y0 + 5), exit_, spawn, set())
+        with self.assertRaises(AssertionError):
+            ao._validate(catalog, run(None), exit_, spawn, set())
+
+
 if __name__ == "__main__":
     unittest.main()

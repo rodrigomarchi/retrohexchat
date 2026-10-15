@@ -92,8 +92,8 @@ KINDS = {
              "use": "toggle_light", "states": {"off": "lamp_off"}},
     "tree": {"file": "tree.png", "group": "furniture"},
     "plant": {"file": "plant.png", "group": "furniture"},
-    "wall": {"file": "wall.png", "group": "structure"},
-    "corner": {"group": "structure", "dirs": ["down", "right", "up", "left"],
+    "wall": {"file": "wall.png", "group": "structure", "shadow": False},
+    "corner": {"group": "structure", "dirs": ["down", "right", "up", "left"], "shadow": False,
                "tiles": {"down": "corner_up", "right": "corner_right",
                          "up": "corner_down", "left": "corner_left"}},
     "door": {"file": "door.png", "group": "structure", "use": "door", "mirror": True,
@@ -140,9 +140,16 @@ LIBRARY = {
         "coat_rack": {},
         "cactus": {},
         "reception_desk": {"size": [1, 2]},
-        "cubicle_partition": {},
+        "cubicle_partition": {"shadow": False},
         "trash_bin": {},
         "tall_plant": {},
+        # Glass walls and a glass door to make rooms of the floor, and a desk
+        # whose monitor turns its back on the viewer, so whoever sits at it
+        # faces the room.
+        "glass_wall": {"glass": True, "shadow": False, "mirror": True},
+        "glass_door": {"glass": True, "shadow": False, "mirror": True, "use": "door",
+                       "states": {"open": "glass_door_open"}},
+        "workstation": {"size": [1, 2]},
     },
     "furniture": {
         "sofa": {"size": [1, 2], "seats": [[0, 0], [0, 1]]},
@@ -391,6 +398,45 @@ def _lamp_off(im):
     return out
 
 
+def _is_pane(r, g, b):
+    """A pixel of a glass pane: pale and cyan, unlike the grey aluminium."""
+    return r > 190 and g - r > 15
+
+
+def _glass(im):
+    """A pane of glass drawn as glass: the pale cyan pixels see-through, so a
+    room walled in glass still shows what is inside it; the frame stays solid."""
+    out = im.copy()
+    px = out.load()
+    for y in range(out.height):
+        for x in range(out.width):
+            r, g, b, a = px[x, y]
+            if a and _is_pane(r, g, b):
+                px[x, y] = (r, g, b, 110)
+    return out
+
+
+def _glass_open(im):
+    """A glass door swung open: its frame with nothing in it, the pane and the
+    handle on it (the bluish pixels inside the frame) gone."""
+    out = im.copy()
+    px = out.load()
+    for y in range(out.height):
+        for x in range(out.width):
+            r, g, b, a = px[x, y]
+            if a and (_is_pane(r, g, b) or (g - r > 8 and b - r > 8)):
+                px[x, y] = (0, 0, 0, 0)
+    # What was left of the handle floating where the pane was: a pixel with no
+    # opaque neighbour.
+    alone = [(x, y) for y in range(out.height) for x in range(out.width)
+             if px[x, y][3] and not any(
+                 0 <= x + dx < out.width and 0 <= y + dy < out.height and px[x + dx, y + dy][3]
+                 for dx in (-1, 0, 1) for dy in (-1, 0, 1) if (dx, dy) != (0, 0))]
+    for x, y in alone:
+        px[x, y] = (0, 0, 0, 0)
+    return out
+
+
 def _coin_tails(im):
     """The coin's other face: the same coin struck in silver, mirrored."""
     out = im.transpose(Image.FLIP_LEFT_RIGHT)
@@ -537,6 +583,7 @@ def build():
                 "eot_lamp_off": _lamp_off(_crop(Image.open(EOT_LAMP).convert("RGBA"))),
                 "coin_tails": _coin_tails(_art("coin.png")),
                 **_corners(wall)}
+    variants["glass_door_open"] = _glass_open(_art("glass_door.png"))
     door_open = os.path.join(SRC, "door_open.png")
     variants["door_open"] = _art("door_open.png") if os.path.exists(door_open) else _art("door.png")
 
@@ -562,6 +609,8 @@ def build():
                 shelf.put_strip(name, frames, spec["period_ms"])
             else:
                 art = _art(spec["file"])
+                if spec.get("glass"):
+                    art = _glass(art)
                 # A state drawn as art of its own (the door open) is cut to the
                 # box that holds the piece in every state, so the piece stays
                 # put while it changes, the way an animation's frames do.
@@ -598,6 +647,8 @@ def build():
         for key in ("seat", "lights", "use", "only", "dirs", "label", "size", "foot", "seats"):
             if key in spec:
                 entry[key] = spec[key]
+        if spec.get("shadow") is False:
+            entry["shadow"] = False
         if spec.get("blocks") is False:
             entry["blocks"] = False
         if spec.get("layers"):

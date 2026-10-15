@@ -4335,11 +4335,11 @@ msgstr "User Lookup"
 #: lib/retro_hex_chat/chat/help_topics/features.ex:4054
 #: lib/retro_hex_chat/chat/help_topics/features.ex:4075
 #: lib/retro_hex_chat/chat/help_topics/features.ex:4133
-#: lib/retro_hex_chat/chat/help_topics/features.ex:4170
-#: lib/retro_hex_chat/chat/help_topics/features.ex:4194
-#: lib/retro_hex_chat/chat/help_topics/features.ex:4214
-#: lib/retro_hex_chat/chat/help_topics/features.ex:4235
-#: lib/retro_hex_chat/chat/help_topics/features.ex:4255
+#: lib/retro_hex_chat/chat/help_topics/features.ex:4175
+#: lib/retro_hex_chat/chat/help_topics/features.ex:4199
+#: lib/retro_hex_chat/chat/help_topics/features.ex:4219
+#: lib/retro_hex_chat/chat/help_topics/features.ex:4240
+#: lib/retro_hex_chat/chat/help_topics/features.ex:4260
 #, elixir-autogen, elixir-format
 msgid "Virtual Spaces"
 msgstr "Virtual Spaces"
@@ -4603,7 +4603,7 @@ msgstr "Send a wallops to +w users or an announcement to everyone connected."
 msgid "Set, replace or clear the server's message of the day."
 msgstr "Set, replace or clear the server's message of the day."
 
-#: lib/retro_hex_chat/chat/help_topics/features.ex:4169
+#: lib/retro_hex_chat/chat/help_topics/features.ex:4174
 #, elixir-autogen, elixir-format
 msgid "Space Combat"
 msgstr "Space Combat"
@@ -4623,7 +4623,7 @@ msgstr "channel purge"
 msgid "chanserv admin"
 msgstr "chanserv admin"
 
-#: lib/retro_hex_chat/chat/help_topics/features.ex:4181
+#: lib/retro_hex_chat/chat/help_topics/features.ex:4186
 #, elixir-autogen, elixir-format
 msgid "health bar"
 msgstr "health bar"
@@ -4638,7 +4638,7 @@ msgstr "nickserv admin"
 msgid "server name"
 msgstr "server name"
 
-#: lib/retro_hex_chat/chat/help_topics/features.ex:4180
+#: lib/retro_hex_chat/chat/help_topics/features.ex:4185
 #, elixir-autogen, elixir-format
 msgid "sword fight"
 msgstr "sword fight"
@@ -5132,17 +5132,17 @@ msgstr "Conference in Its Own Tab"
 msgid "Sharing a Conference Link"
 msgstr "Sharing a Conference Link"
 
-#: lib/retro_hex_chat/chat/help_topics/features.ex:4213
+#: lib/retro_hex_chat/chat/help_topics/features.ex:4218
 #, elixir-autogen, elixir-format
 msgid "A Space in Its Own Tab"
 msgstr "A Space in Its Own Tab"
 
-#: lib/retro_hex_chat/chat/help_topics/features.ex:4254
+#: lib/retro_hex_chat/chat/help_topics/features.ex:4259
 #, elixir-autogen, elixir-format
 msgid "Inviting Someone to a Space"
 msgstr "Inviting Someone to a Space"
 
-#: lib/retro_hex_chat/chat/help_topics/features.ex:4222
+#: lib/retro_hex_chat/chat/help_topics/features.ex:4227
 #, elixir-autogen, elixir-format
 msgid "open in a tab"
 msgstr "open in a tab"
@@ -5274,7 +5274,7 @@ msgstr ""
 " to the tab you already have instead of a second one. Closing the tab is not"
 " ending the session; only End session, which asks first, is final."
 
-#: lib/retro_hex_chat/chat/help_topics/features.ex:4246
+#: lib/retro_hex_chat/chat/help_topics/features.ex:4251
 #, elixir-autogen, elixir-format
 msgid "Walking into an empty space posts a card in the conversation it belongs to, so everybody reading can see that something is happening and follow it in. The card counts who is inside while it lasts, and once the last person leaves it becomes the record of what happened: how long the gathering ran, and how many people came. Walking into a space somebody is already in posts nothing — one gathering, one card. Only a registered nickname posts one; a guest still walks in as usual."
 msgstr ""
@@ -5286,12 +5286,12 @@ msgstr ""
 "nothing — one gathering, one card. Only a registered nickname posts one; a "
 "guest still walks in as usual."
 
-#: lib/retro_hex_chat/chat/help_topics/features.ex:4234
+#: lib/retro_hex_chat/chat/help_topics/features.ex:4239
 #, elixir-autogen, elixir-format
 msgid "Who Is in the Space Right Now"
 msgstr "Who Is in the Space Right Now"
 
-#: lib/retro_hex_chat/chat/help_topics/features.ex:4242
+#: lib/retro_hex_chat/chat/help_topics/features.ex:4247
 #, elixir-autogen, elixir-format
 msgid "someone is in the space"
 msgstr "someone is in the space"
@@ -5894,7 +5894,7 @@ msgstr "voice"
 msgid "/p2p <nick>, or the P2P Session button in a private message, sends the request line into that conversation straight away. The line carries a card with the session's own address, and that card is the way in for both of you — the person who asked uses the same door as the person who was asked. Following it opens the session in a browser tab of its own, so the chat you were reading stays exactly where it is. The invited person can refuse instead: Decline sits beside the card and ends the invitation without entering anything. Asking again for a session you already have with that person is not a second session and not a refusal: the same card comes back to the bottom of the conversation, unless it is already the line there. You can have a session with more than one person at once, each in a tab of its own. The conversation IS the private message: session events (connected, file received, game results, who ended it) are saved into the PM history as P2P lines, and the PM tab shows a small P2P icon while the session is live. Once you have the session open somewhere, the chat's status bar says so and takes you back to that tab rather than opening a second one. See also: P2P Starting Room, P2P Session in Its Own Tab, Video Call, File Transfer, Private Messages."
 msgstr "/p2p <nick>, or the P2P Session button in a private message, sends the request line into that conversation straight away. The line carries a card with the session's own address, and that card is the way in for both of you — the person who asked uses the same door as the person who was asked. Following it opens the session in a browser tab of its own, so the chat you were reading stays exactly where it is. The invited person can refuse instead: Decline sits beside the card and ends the invitation without entering anything. Asking again for a session you already have with that person is not a second session and not a refusal: the same card comes back to the bottom of the conversation, unless it is already the line there. You can have a session with more than one person at once, each in a tab of its own. The conversation IS the private message: session events (connected, file received, game results, who ended it) are saved into the PM history as P2P lines, and the PM tab shows a small P2P icon while the session is live. Once you have the session open somewhere, the chat's status bar says so and takes you back to that tab rather than opening a second one. See also: P2P Starting Room, P2P Session in Its Own Tab, Video Call, File Transfer, Private Messages."
 
-#: lib/retro_hex_chat/chat/help_topics/features.ex:4226
+#: lib/retro_hex_chat/chat/help_topics/features.ex:4231
 #, elixir-autogen, elixir-format
 msgid "A space always runs in a browser tab of its own. Space, beside the conversation's tabs, puts the space's card in the conversation rather than opening it; Join on that card is the door, for you and for everybody reading. Pressing it again does not make a second space or a second address — it writes that one card again at the bottom, so you never have to go looking for it. Press it twice in a row and you get one card, because the second press has nothing to bring down. A space has no beginning and no end, so its address stays good: bookmark it and it takes you back."
 msgstr "A space always runs in a browser tab of its own. Space, beside the conversation's tabs, puts the space's card in the conversation rather than opening it; Join on that card is the door, for you and for everybody reading. Pressing it again does not make a second space or a second address — it writes that one card again at the bottom, so you never have to go looking for it. Press it twice in a row and you get one card, because the second press has nothing to bring down. A space has no beginning and no end, so its address stays good: bookmark it and it takes you back."
@@ -6159,7 +6159,7 @@ msgstr "paint the floor"
 msgid "Making a Character"
 msgstr "Making a Character"
 
-#: lib/retro_hex_chat/chat/help_topics/features.ex:4266
+#: lib/retro_hex_chat/chat/help_topics/features.ex:4271
 #, elixir-autogen, elixir-format
 msgid "Share, on the character creator, mints a link and opens it in a small window with Copy and Revoke beside it. Pasting it into a conversation draws a card instead of a bare address. That link names the place rather than one evening in it, so it keeps working after everyone has gone home. It carries which space it is and never permission to be in it: a channel's space still asks whoever follows the link to be in that channel, and a private space still belongs to its two people. Only a registered nickname can mint one."
 msgstr "Share, on the character creator, mints a link and opens it in a small window with Copy and Revoke beside it. Pasting it into a conversation draws a card instead of a bare address. That link names the place rather than one evening in it, so it keeps working after everyone has gone home. It carries which space it is and never permission to be in it: a channel's space still asks whoever follows the link to be in that channel, and a private space still belongs to its two people. Only a registered nickname can mint one."
@@ -6179,27 +6179,27 @@ msgstr "make character"
 msgid "In the chat, the face of your character is shown beside your name. It can be switched off."
 msgstr "In the chat, the face of your character is shown beside your name. It can be switched off."
 
-#: lib/retro_hex_chat/chat/help_topics/features.ex:4185
+#: lib/retro_hex_chat/chat/help_topics/features.ex:4190
 #, elixir-autogen, elixir-format
 msgid "Characters in a Space can spar with each other: press Space (or the pad's sword button) next to another character on their feet to land a hit. Each hit deals damage and shows a small health bar under their name; at zero HP the character is knocked down for a few seconds, then gets back up on their own with full health. A knockout never has any lasting effect — it is all in good fun."
 msgstr "Characters in a Space can spar with each other: press Space (or the pad's sword button) next to another character on their feet to land a hit. Each hit deals damage and shows a small health bar under their name; at zero HP the character is knocked down for a few seconds, then gets back up on their own with full health. A knockout never has any lasting effect — it is all in good fun."
 
-#: lib/retro_hex_chat/chat/help_topics/features.ex:4193
+#: lib/retro_hex_chat/chat/help_topics/features.ex:4198
 #, elixir-autogen, elixir-format
 msgid "Greeting and Dancing"
 msgstr "Greeting and Dancing"
 
-#: lib/retro_hex_chat/chat/help_topics/features.ex:4201
+#: lib/retro_hex_chat/chat/help_topics/features.ex:4206
 #, elixir-autogen, elixir-format
 msgid "dance"
 msgstr "dance"
 
-#: lib/retro_hex_chat/chat/help_topics/features.ex:4200
+#: lib/retro_hex_chat/chat/help_topics/features.ex:4205
 #, elixir-autogen, elixir-format
 msgid "greeting"
 msgstr "greeting"
 
-#: lib/retro_hex_chat/chat/help_topics/features.ex:4205
+#: lib/retro_hex_chat/chat/help_topics/features.ex:4210
 #, elixir-autogen, elixir-format
 msgid "In a space, Q raises a hand to say hello. Z starts or stops a dance. Each one also has a button on the screen."
 msgstr "In a space, Q raises a hand to say hello. Z starts or stops a dance. Each one also has a button on the screen."
@@ -6340,7 +6340,7 @@ msgstr "Press R to spin a piece."
 msgid "Every space also has an office."
 msgstr "Every space also has an office."
 
-#: lib/retro_hex_chat/chat/help_topics/features.ex:4159
+#: lib/retro_hex_chat/chat/help_topics/features.ex:4164
 #, elixir-autogen, elixir-format
 msgid "Its furniture stays where it is."
 msgstr "Its furniture stays where it is."
@@ -6350,7 +6350,7 @@ msgstr "Its furniture stays where it is."
 msgid "Its wooden door stands on the central island of the End of Time, a few steps south of where you arrive."
 msgstr "Its wooden door stands on the central island of the End of Time, a few steps south of where you arrive."
 
-#: lib/retro_hex_chat/chat/help_topics/features.ex:4158
+#: lib/retro_hex_chat/chat/help_topics/features.ex:4162
 #, elixir-autogen, elixir-format
 msgid "You can sit on its chairs and switch its lamps on and off."
 msgstr "You can sit on its chairs and switch its lamps on and off."
@@ -6366,12 +6366,12 @@ msgctxt "space room"
 msgid "The Office"
 msgstr "The Office"
 
-#: lib/retro_hex_chat/chat/help_topics/features.ex:4160
+#: lib/retro_hex_chat/chat/help_topics/features.ex:4165
 #, elixir-autogen, elixir-format
 msgid "Pieces are added the same way as in the Construct."
 msgstr "Pieces are added the same way as in the Construct."
 
-#: lib/retro_hex_chat/chat/help_topics/features.ex:4161
+#: lib/retro_hex_chat/chat/help_topics/features.ex:4166
 #, elixir-autogen, elixir-format
 msgid "The office keeps everything that was added to it."
 msgstr "The office keeps everything that was added to it."
@@ -6385,3 +6385,13 @@ msgstr "The office already has a reception, desks, a meeting table and a small k
 #, elixir-autogen, elixir-format
 msgid "Walk up to the door and press E."
 msgstr "Walk up to the door and press E."
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:4163
+#, elixir-autogen, elixir-format
+msgid "Press E next to a glass door to open it, and again to close it."
+msgstr "Press E next to a glass door to open it, and again to close it."
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:4158
+#, elixir-autogen, elixir-format
+msgid "The meeting table and the kitchen are behind glass walls."
+msgstr "The meeting table and the kitchen are behind glass walls."

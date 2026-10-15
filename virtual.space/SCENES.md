@@ -468,8 +468,8 @@ Time's arrival lamp (`eot_office_door` at (48,41), interactable
   `author_construct.py` (it copies the End of Time's vocab), then
   `author_office.py`.
 - **A 24×20 floor in an 8-tile margin of sky**, painted from the start (grey
-  stone, blue carpet under the desks and the meeting corner, wood at the
-  reception, checkerboard at the kitchenette). Painting it again works as in
+  stone, blue carpet under the desks and in the meeting room, wood at the
+  reception, checkerboard in the kitchenette). Painting it again works as in
   the Construct; Erase brings back the white floor.
 - **The furniture is `fixed_items`**: catalog pieces with ids `fixed:<n>`,
   placed like anybody's (`x, y` the footprint's back corner, `dir`). The
@@ -477,17 +477,33 @@ Time's arrival lamp (`eot_office_door` at (48,41), interactable
   through the same `Construct.Layout` code as any piece, and refuses to move,
   turn, remove or relabel one (`:fixed`); storage keeps only what they are
   doing (a lamp off), never where they are. The client never picks one up.
-- **Only the two back walls are built** (`wall` along `v = 0` and `u = 0`,
-  meeting in a `corner`): a front wall would hide the room. The way out is a
-  door in the left wall (`office_exit`, `exit_office`), with the tile in front
-  of it and the spawns `reserved`.
+- **Only the two back walls are white** (`wall` along `v = 0` and `u = 0`,
+  meeting in a `corner`, with no contact shadow — `shadow: false` — so the
+  floor runs right up to them): a front wall would hide the room. The rooms
+  inside it are walled in **glass** (`glass_wall`, `glass_door`): the author
+  draws the pale cyan pane see-through (`_glass`) and the open door as the
+  frame alone (`_glass_open`), so what is behind a glass wall shows. The way
+  out is a door in the left wall (`office_exit`, `exit_office`), with the tile
+  in front of it and the spawns `reserved`.
+- **Facing**, in three cases. A bulky one-tile piece (a cabinet, a machine,
+  a chair) faces +v as "down" and +u as "right": against the back wall along
+  `v = 0` it is "down", against the one along `u = 0` "right". A two-tile
+  piece runs down v as "down", facing +u, and across u as "right", facing +v.
+  A flat panel (a wall, a pane of glass, the whiteboard, the screen) runs down
+  v as "down", facing +u, so along the back wall at `v = 0` it is "right".
+  Somebody at a `workstation` sits behind it, facing the room, its monitor's
+  back to the viewer — every chair faces the viewer, so a desk whose sitter
+  would face away cannot be furnished.
+- **A door is a way through**: the trap check (`Construct.Layout`) never counts
+  a door as a wall, open or shut, since whoever is behind it opens it with E;
+  so a closed glass door with somebody behind it holds up no edit.
 - **The author checks the plan before writing it**: every piece on the floor
   and off the reserved tiles, none overlapping, every free tile reachable from
-  the door and every chair reachable to sit in
+  the door (through the glass doors) and every chair reachable to sit in
   (`scripts/tests/test_office_authoring.py` runs the same check).
 - **Its own pieces** were generated for it and live in the Construct's
-  `office` tab: `reception_desk` (1×2), `cubicle_partition`, `trash_bin` and
-  `tall_plant`, sized against a person by the table in §10 and held to it by
+  `office` tab: `reception_desk` (1×2), `cubicle_partition`, `trash_bin`,
+  `tall_plant`, `workstation` (1×2), `glass_wall` and `glass_door`, sized against a person by the table in §10 and held to it by
   `test_construct_scale.py`.
 - **Moving the furniture is editing `FURNITURE`** in the author and running
   it; a stored room keeps the pieces people added unless a piece now stands

@@ -1,6 +1,6 @@
 /**
  * @section SP - Virtual Spaces
- * @flow SP41 [done] The Office's wooden door stands south of where people arrive: it lights up in reach, asks before going, and opens a furnished room whose furniture cannot be picked up, where a piece can still be added, and whose own door leads back
+ * @flow SP41 [done] The Office's wooden door stands south of where people arrive: it lights up in reach, asks before going, and opens a furnished room whose furniture cannot be picked up, where a piece can still be added, whose glass doors open with E, and whose own door leads back
  *
  * These @flow lines are the source of truth for e2e/TEST_CATALOG.md.
  * Edit them here, then run `make e2e.catalog` to regenerate the index.
@@ -28,9 +28,12 @@ import { recipeOf } from "../helpers/characters";
 // Office tiles, from `virtual.space/tools/author_office.py`: the reception
 // desk the room comes with, a clear spot in the middle, and the tile inside
 // its door.
-const RECEPTION_DESK = { x: 11, y: 17 };
-const CLEAR = { x: 18, y: 16 };
+const RECEPTION_DESK = { x: 12, y: 16 };
+const CLEAR = { x: 25, y: 19 };
 const INSIDE_DOOR = { x: 9, y: 12 };
+// The meeting room's glass door, and the tile in front of it.
+const MEETING_DOOR = { x: 20, y: 16 };
+const BEFORE_MEETING_DOOR = { x: 20, y: 17 };
 
 test.describe("The Office", () => {
   test("its door leads to a furnished room that takes new pieces and keeps its own (SP41)", async ({
@@ -100,6 +103,19 @@ test.describe("The Office", () => {
         .toBe(true);
       await space.keyboard.press("Escape");
       await shot(space, "office-piece-added");
+
+      // The meeting room's glass door opens with E.
+      await walker.goTo(BEFORE_MEETING_DOOR);
+      await space.keyboard.press("e");
+      await expect
+        .poll(
+          () =>
+            room.items.find(
+              (i) => i.x === MEETING_DOOR.x && i.y === MEETING_DOOR.y,
+            )?.state?.open,
+        )
+        .toBe(true);
+      await shot(space, "office-meeting-door-open");
 
       // The door in the back wall leads back to the End of Time.
       await walker.goTo(INSIDE_DOOR);

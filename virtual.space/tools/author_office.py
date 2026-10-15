@@ -5,17 +5,20 @@ Time's wooden door.
 The Office is the Construct's platform furnished: the same sky (sea, stars,
 vignette), the same slab, the same catalog and the same two sheets, so it adds
 no art of its own. What it adds is a floor plan — two back walls with the way
-out in one of them, a reception by the door, a row of filing and a meeting
-corner along the back, a kitchenette, a desk island at the front — placed as
+out in one of them, a reception by the door with the filing along the back
+wall, a meeting room and a kitchenette in glass, desks in cubicles at the
+front — placed as
 ``fixed_items``: pieces of the catalog that the room comes with, which people
 use like any other (sit on the chairs, switch the lamps) and never move. The
 clear floor in the middle is theirs to build on, with any piece of the
-catalog.
+catalog. The glass rooms each have a glass door, and what is inside them
+shows through their walls.
 
 Reads ``priv/maps/construct.json`` (run ``author_construct.py`` first) and
 writes ``priv/maps/office.json``. Deterministic; the layout is checked before
 it is written: every fixed piece on the floor and off the way out, no two
-overlapping, and every free tile reachable from the door.
+overlapping, and every free tile reachable from the door, through the glass
+doors where a room is walled in.
 """
 import json
 import os
@@ -47,71 +50,92 @@ STONE = MATERIALS["stone"][0]
 CHECKER = MATERIALS["checker"][0]
 
 # Each zone is a rectangle of floor painted with a material: (u0, v0, u1, v1),
-# later zones over earlier ones. The rest of the floor is grey stone.
+# later zones over earlier ones, each running right up to the walls around it.
+# The rest of the floor is grey stone.
 ZONES = [
-    (WOOD, (1, 1, 5, 10)),       # the entrance and reception
-    (CARPET, (11, 1, 17, 7)),    # the meeting corner
-    (CARPET, (6, 12, 16, 19)),   # the desk island
-    (CHECKER, (18, 1, 22, 4)),   # the kitchenette
+    (WOOD, (0, 0, 7, 9)),        # the entrance and reception
+    (CARPET, (8, 0, 17, 8)),     # the meeting room
+    (CHECKER, (18, 0, 23, 7)),   # the kitchenette
+    (CARPET, (6, 10, 16, 19)),   # the desks
 ]
 
-# (kind, u, v, dir): the piece's back corner, as `Construct.Layout` places it.
-# A "down" piece faces screen down-left and runs down the v axis; "right" is
-# its mirror and runs across u. Somebody at a desk sits behind it, facing the
-# room, so a chair stands on the desk's far side.
+# Which way a piece faces, by what it stands against, in three cases:
+# - a bulky one-tile piece (a cabinet, a machine, a chair) faces +v as "down"
+#   and +u as "right": against the back wall along v = 0 it is "down", against
+#   the one along u = 0 "right";
+# - a two-tile piece runs down v as "down", facing +u, and across u as
+#   "right", facing +v;
+# - a flat panel (a wall, a pane of glass, the whiteboard, the screen) runs
+#   down v as "down", facing +u: along the back wall at v = 0 it is "right".
+# A chair faces what it is for; whoever sits at a workstation sits behind it,
+# facing the room, its monitor's back to the viewer.
+MEETING_U = (8, 17)   # the meeting room's glass walls, left and right
+MEETING_V = 8         # and in front
+MEETING_DOOR_U = 12
+KITCHEN_V = 7         # the kitchenette's glass wall in front
+KITCHEN_DOOR_U = 20
+
 FURNITURE = [
     # The back walls, meeting in the far corner, with a gap for the door.
     ("corner", 0, 0, "down"),
     *[("wall", u, 0, "right") for u in range(1, FLOOR_W)],
     *[("wall", 0, v, "down") for v in range(1, FLOOR_H) if v != EXIT_UV[1]],
-    # Reception: the desk a few steps in from the door, its chair behind it,
-    # a waiting sofa — clear of where people arrive.
-    ("coat_rack", 1, 2, "down"),
-    ("reception_desk", 3, 9, "right"),
-    ("office_chair", 3, 8, "down"),
-    ("tall_plant", 5, 8, "down"),
-    ("sofa", 1, 12, "right"),
-    ("tall_plant", 1, 14, "down"),
-    # Along the back wall: the filing, the printer, a plant.
-    ("bookshelf", 6, 1, "right"),
-    ("file_cabinet", 7, 1, "right"),
-    ("file_cabinet", 8, 1, "right"),
-    ("printer", 9, 1, "right"),
-    ("trash_bin", 10, 1, "down"),
-    # The meeting corner: the table, its chairs, the whiteboard and a screen.
-    ("whiteboard", 13, 1, "right"),
-    ("screen", 14, 1, "right"),
-    ("meeting_table", 13, 3, "down"),
-    ("office_chair", 12, 3, "right"),
-    ("office_chair", 12, 4, "right"),
-    ("office_chair", 12, 5, "right"),
-    ("office_chair", 14, 2, "down"),
-    ("tall_plant", 16, 1, "down"),
-    # The kitchenette, against the back wall.
-    ("vending_machine", 19, 1, "right"),
-    ("coffee_machine", 20, 1, "right"),
-    ("water_cooler", 21, 1, "right"),
-    ("trash_bin", 22, 1, "down"),
-    # The desk island at the front: two rows of two, a partition between them.
-    ("office_desk", 8, 13, "down"),
-    ("office_chair", 7, 13, "right"),
-    ("office_desk", 13, 13, "down"),
-    ("office_chair", 12, 13, "right"),
-    ("cubicle_partition", 7, 15, "right"),
-    ("cubicle_partition", 8, 15, "right"),
-    ("cubicle_partition", 12, 15, "right"),
-    ("cubicle_partition", 13, 15, "right"),
-    ("office_desk", 8, 16, "down"),
-    ("office_chair", 7, 16, "right"),
-    ("office_desk", 13, 16, "down"),
-    ("office_chair", 12, 16, "right"),
-    ("cactus", 14, 18, "down"),
-    ("trash_bin", 9, 18, "down"),
-    # Light in the corners, and a plant by the kitchenette.
-    ("lamp", 1, 18, "down"),
+    # The meeting room: glass on its three open sides, a glass door in front.
+    *[("glass_wall", MEETING_U[0], v, "down") for v in range(1, MEETING_V)],
+    *[("glass_wall", MEETING_U[1], v, "down") for v in range(1, MEETING_V)],
+    *[("glass_door" if u == MEETING_DOOR_U else "glass_wall", u, MEETING_V, "right")
+      for u in range(MEETING_U[0], MEETING_U[1] + 1)],
+    ("meeting_table", 11, 3, "down"),
+    ("office_chair", 10, 3, "right"),
+    ("office_chair", 10, 4, "right"),
+    ("office_chair", 10, 5, "right"),
+    ("office_chair", 11, 2, "down"),
+    ("office_chair", 12, 2, "down"),
+    ("whiteboard", 14, 1, "right"),
+    ("screen", 15, 1, "right"),
+    ("tall_plant", 9, 1, "down"),
+    ("tall_plant", 16, 7, "down"),
+    # The kitchenette, in the far-right corner: glass in front, a glass door.
+    *[("glass_door" if u == KITCHEN_DOOR_U else "glass_wall", u, KITCHEN_V, "right")
+      for u in range(MEETING_U[1] + 1, FLOOR_W)],
+    ("vending_machine", 18, 1, "down"),
+    ("coffee_machine", 19, 1, "down"),
+    ("water_cooler", 20, 1, "down"),
+    ("fridge", 22, 1, "down"),
+    ("trash_bin", 21, 1, "down"),
+    ("table", 20, 4, "down"),
+    ("chair", 19, 4, "right"),
+    ("chair", 20, 3, "down"),
+    # Reception, by the way in: the counter, its chair behind it, a sofa
+    # against the wall to wait on, the filing along the back wall.
+    ("coat_rack", 1, 1, "right"),
+    ("reception_desk", 4, 8, "right"),
+    ("office_chair", 4, 7, "down"),
+    ("tall_plant", 6, 7, "down"),
+    ("sofa", 1, 10, "down"),
+    ("tall_plant", 1, 13, "right"),
+    ("bookshelf", 4, 1, "down"),
+    ("file_cabinet", 5, 1, "down"),
+    ("file_cabinet", 6, 1, "down"),
+    ("printer", 7, 1, "down"),
+    # The desks: two rows of workstations, a chair behind each, partitions
+    # between them.
+    *[piece for u, v in ((9, 11), (14, 11), (9, 15), (14, 15)) for piece in (
+        ("workstation", u, v, "down"),
+        ("office_chair", u - 1, v, "right"),
+        ("cubicle_partition", u - 1, v + 2, "right"),
+        ("cubicle_partition", u, v + 2, "right"),
+    )],
+    *[("cubicle_partition", 11, v, "down") for v in (11, 12, 15, 16)],
+    ("trash_bin", 10, 13, "down"),
+    ("cactus", 15, 13, "down"),
+    # A corner to sit in at the front, and light in the corners.
+    ("sofa", 2, 15, "down"),
+    ("coffee_table", 3, 16, "down"),
+    ("lamp", 1, 18, "right"),
     ("lamp", 22, 18, "down"),
-    ("lamp", 22, 6, "down"),
-    ("plant", 22, 8, "down"),
+    ("lamp", 22, 9, "down"),
+    ("plant", 19, 18, "down"),
 ]
 
 
@@ -148,7 +172,10 @@ def _validate(catalog, items, exit_, spawn, reserved):
             if tile in taken:
                 raise AssertionError(f"{item} overlaps {taken[tile]} at {tile}")
             taken[tile] = item
-    blocked = {t for t, i in taken.items() if catalog[i["kind"]].get("blocks", True)}
+    # A door is a way through: it opens on E, so what is behind it counts as
+    # reached.
+    blocked = {t for t, i in taken.items()
+               if catalog[i["kind"]].get("blocks", True) and catalog[i["kind"]].get("use") != "door"}
     blocked.add(exit_)
     start = (spawn[0]["x"], spawn[0]["y"])
     seen, queue = {start}, deque([start])
@@ -233,7 +260,8 @@ def build():
         "slabs": [{"thickness": 10, "taper": 0.78, "hull": [X0, X1, Y0, Y1]}],
         "vocab": construct["vocab"],
         "floor": _floor(),
-        "decor": stars + [{"x": exit_[0], "y": exit_[1], "tile": door, "sort": "stand"}],
+        "decor": stars + [{"x": exit_[0], "y": exit_[1], "tile": door, "sort": "stand",
+                           "shadow": False}],
         "collision": void + [{"x": exit_[0], "y": exit_[1], "w": 1, "h": 1, "kind": "prop"}],
         "spawn": spawn,
         "lights": [{"x": exit_[0], "y": exit_[1], "radius": 2.0, "color": "ffd591", "blend": "add"}],

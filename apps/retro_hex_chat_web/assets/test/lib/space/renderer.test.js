@@ -63,6 +63,21 @@ function build(overrides = {}) {
   return { ctx, renderer: new Renderer({ canvas, atlas, map, camera }) };
 }
 
+describe("Renderer contact shadows", () => {
+  it("lays one under a standing prop, and none under one that stands flush", () => {
+    const decor = [
+      { x: 2, y: 2, tile: "lamp", sort: "stand" },
+      { x: 4, y: 2, tile: "wall", sort: "stand", shadow: false },
+    ];
+    const { ctx, renderer } = build({
+      layers: { floor: [], decor, above: [] },
+      atlas: { tile: () => ({ canvas: {}, sw: 32, sh: 64 }), avatar: () => null },
+    });
+    renderer._drawShadows(ctx, new Map());
+    expect(ctx.arc).toHaveBeenCalledTimes(1);
+  });
+});
+
 describe("Renderer map labels", () => {
   it("draws the map's holograms and nothing for a label of another kind", () => {
     const { ctx, renderer } = build({

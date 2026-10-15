@@ -401,7 +401,8 @@ defmodule RetroHexChat.VirtualSpace.Construct.Layout do
 
   defp act(_use, _base, _items, _item, _context, _roll), do: {:error, :not_usable}
 
-  # A door does not close on somebody standing in it, nor shut anybody in.
+  # A door does not close on somebody standing in it; it shuts nobody in, since
+  # it opens again from either side.
   defp close_door(base, items, item, context) do
     if Enum.any?(footprint(base, item), &(&1 in context.avatars)) do
       {:error, :someone_there}
@@ -498,7 +499,9 @@ defmodule RetroHexChat.VirtualSpace.Construct.Layout do
   # The furniture a room comes with, where its map puts it, doing what it was
   # left doing.
   defp fixed_items(base, stored) do
-    states = Map.new(stored, &{&1.id, &1.state})
+    # A state is kept only by the piece it was stored for: when the plan
+    # changes, `fixed:3` may be another piece, and a lamp's "off" is no door's.
+    states = Map.new(stored, &{{&1.id, &1.kind}, &1.state})
 
     for %{id: "fixed:" <> _n = id} = f <- Map.get(base, :fixed_items, []) do
       %{
@@ -508,7 +511,7 @@ defmodule RetroHexChat.VirtualSpace.Construct.Layout do
         y: f.y,
         dir: f.dir,
         placed_by: nil,
-        state: Map.get(states, id, %{})
+        state: Map.get(states, {id, f.kind}, %{})
       }
     end
   end
@@ -580,17 +583,24 @@ defmodule RetroHexChat.VirtualSpace.Construct.Layout do
     entry = Map.fetch!(catalog, item.kind)
     {x, y} = foot_point(entry, item)
 
-    main = %{x: x, y: y, tile: tile_of(entry, item), sort: "stand", item_id: item.id}
+    main =
+      %{x: x, y: y, tile: tile_of(entry, item), sort: "stand", item_id: item.id}
+      |> flush(entry)
 
     extra =
       for layer <- Map.get(entry, :layers, []) do
         {lx, ly} = foot_point(entry, item, layer.foot)
         tile = Map.get(layer.tiles, item.dir) || Map.get(layer.tiles, "down")
-        %{x: lx, y: ly, tile: tile, sort: "stand", item_id: item.id}
+        flush(%{x: lx, y: ly, tile: tile, sort: "stand", item_id: item.id}, entry)
       end
 
     [main | extra]
   end
+
+  # A wall stands flush on the floor: no contact shadow under it, which along a
+  # run of walls reads as a scalloped band rather than as a shadow.
+  defp flush(prop, %{shadow: false}), do: Map.put(prop, :shadow, false)
+  defp flush(prop, _entry), do: prop
 
   defp tile_of(entry, item) do
     tiles =
@@ -608,6 +618,9 @@ defmodule RetroHexChat.VirtualSpace.Construct.Layout do
   defp state_key("roll_die", %{"face" => face}), do: "face:#{face}"
   defp state_key("flip_coin", %{"face" => face}), do: face
   defp state_key(_use, _state), do: nil
+
+  defp walls_in?(catalog, item),
+    do: blocks?(catalog, item) and get_in(catalog, [item.kind, :use]) != "door"
 
   defp blocks?(catalog, item) do
     entry = Map.fetch!(catalog, item.kind)
@@ -815,7 +828,8 @@ defmodule RetroHexChat.VirtualSpace.Construct.Layout do
   end
 
   # An edit that closes the last way between somebody and the gate is refused:
-  # the room is shared, and one person's wall is everyone else's prison.
+  # the room is shared, and one person's wall is everyone else's prison. A door
+  # is a way, open or shut: whoever is behind it opens it with E.
   defp checked(base, items, context) do
     if everyone_reaches_gate?(base, items, context.avatars),
       do: {:ok, items},
@@ -832,7 +846,7 @@ defmodule RetroHexChat.VirtualSpace.Construct.Layout do
       |> SpaceMap.collision_set()
       |> MapSet.union(
         items
-        |> Enum.filter(&(Map.has_key?(catalog, &1.kind) and blocks?(catalog, &1)))
+        |> Enum.filter(&(Map.has_key?(catalog, &1.kind) and walls_in?(catalog, &1)))
         |> Enum.flat_map(&footprint(base, &1))
         |> MapSet.new()
       )

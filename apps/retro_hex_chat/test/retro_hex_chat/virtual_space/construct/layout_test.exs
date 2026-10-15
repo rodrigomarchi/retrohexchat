@@ -237,7 +237,7 @@ defmodule RetroHexChat.VirtualSpace.Construct.LayoutTest do
                use_on(ctx.base, items, open, ctx.nobody)
     end
 
-    test "refuses to close the door that is somebody's only way out", %{base: base} do
+    test "closes a door on the far side of somebody: they open it again", %{base: base} do
       # The ring around (35,35) is closed by an open door at (35,34).
       ring =
         for {x, y} <- [{34, 34}, {36, 34}, {34, 35}, {36, 35}, {34, 36}, {35, 36}, {36, 36}] do
@@ -255,7 +255,10 @@ defmodule RetroHexChat.VirtualSpace.Construct.LayoutTest do
       }
 
       inside = %{avatars: [{35, 35}], seated: MapSet.new()}
-      assert {:error, :would_trap} = use_on(base, ring ++ [door], door, inside)
+      assert {:ok, items, :changed} = use_on(base, ring ++ [door], door, inside)
+
+      # And with them behind the shut door, the room still takes edits.
+      assert {:ok, _items} = place(base, items, "plant", 20, 20, inside)
     end
 
     test "rolls a die and flips a coin with the roll it is given", %{base: base, nobody: nobody} do
@@ -626,7 +629,7 @@ defmodule RetroHexChat.VirtualSpace.Construct.LayoutTest do
 
       kinds = MapSet.new(ctx.items, & &1.kind)
 
-      for kind <- ~w(reception_desk office_desk office_chair meeting_table cubicle_partition) do
+      for kind <- ~w(reception_desk workstation office_chair meeting_table glass_wall glass_door) do
         assert kind in kinds
       end
 
@@ -637,7 +640,7 @@ defmodule RetroHexChat.VirtualSpace.Construct.LayoutTest do
     end
 
     test "cannot be moved, turned, removed or written on", ctx do
-      [desk | _] = Enum.filter(ctx.items, &(&1.kind == "office_desk"))
+      [desk | _] = Enum.filter(ctx.items, &(&1.kind == "workstation"))
 
       for op <- [{:move, desk.id, 20, 20}, {:remove, desk.id}, {:rotate, desk.id}] do
         assert {:error, :fixed} = Layout.edit(ctx.office, ctx.items, op, ctx.nobody, "alice")
@@ -651,7 +654,7 @@ defmodule RetroHexChat.VirtualSpace.Construct.LayoutTest do
       lamp = Enum.find(ctx.items, &(&1.kind == "lamp"))
 
       stored = [
-        %{"id" => lamp.id, "kind" => "tree", "x" => 20, "y" => 20, "state" => %{"on" => false}}
+        %{"id" => lamp.id, "kind" => "lamp", "x" => 20, "y" => 20, "state" => %{"on" => false}}
       ]
 
       assert [kept | _] =
@@ -659,10 +662,31 @@ defmodule RetroHexChat.VirtualSpace.Construct.LayoutTest do
 
       assert {kept.kind, kept.x, kept.y} == {"lamp", lamp.x, lamp.y}
       assert kept.state == %{"on" => false}
+
+      # A state stored for another piece under the same id is not this one's.
+      moved = [put_in(hd(stored)["kind"], "glass_door")]
+
+      assert [%{state: state}] =
+               ctx.office |> Layout.normalize(moved) |> Enum.filter(&(&1.id == lamp.id))
+
+      assert state == %{}
+    end
+
+    test "draws its walls flush on the floor, with no contact shadow, and says so in a patch",
+         ctx do
+      map = Layout.apply(ctx.office, ctx.items)
+      ids = fn kind -> ctx.items |> Enum.filter(&(&1.kind == kind)) |> MapSet.new(& &1.id) end
+      walls = MapSet.union(ids.("wall"), ids.("glass_wall"))
+      lamps = ids.("lamp")
+
+      decor = Enum.filter(map.layers.decor, &Map.has_key?(&1, :item_id))
+      assert Enum.all?(Enum.filter(decor, &(&1.item_id in walls)), &(&1.shadow == false))
+      refute Enum.any?(Enum.filter(decor, &(&1.item_id in lamps)), &Map.has_key?(&1, :shadow))
+      assert Enum.any?(Layout.patch(map, 1).decor, &(&1[:shadow] == false))
     end
 
     test "is never where a stored piece lands: the piece is dropped", ctx do
-      desk = Enum.find(ctx.items, &(&1.kind == "office_desk"))
+      desk = Enum.find(ctx.items, &(&1.kind == "workstation"))
       stored = [%{"id" => "p1", "kind" => "plant", "x" => desk.x, "y" => desk.y}]
 
       refute ctx.office |> Layout.normalize(stored) |> Enum.any?(&(&1.id == "p1"))

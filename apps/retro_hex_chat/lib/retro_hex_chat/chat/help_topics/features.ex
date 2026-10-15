@@ -4155,7 +4155,12 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
                 "help",
                 "The office already has a reception, desks, a meeting table and a small kitchen."
               ),
+              dgettext(
+                "help",
+                "The meeting table and the kitchen are behind glass walls."
+              ),
               dgettext("help", "You can sit on its chairs and switch its lamps on and off."),
+              dgettext("help", "Press E next to a glass door to open it, and again to close it."),
               dgettext("help", "Its furniture stays where it is."),
               dgettext("help", "Pieces are added the same way as in the Construct."),
               dgettext("help", "The office keeps everything that was added to it.")
