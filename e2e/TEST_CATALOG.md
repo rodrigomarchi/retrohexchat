@@ -134,9 +134,9 @@ make e2e.catalog.check    # verify it is current (also runs in make ci)
 
 ## Coverage
 
-- **250 spec files** under `e2e/tests/`.
-- **610 Playwright `test()` cases**.
-- **558 documented flows**, 557 done, 1 not done.
+- **251 spec files** under `e2e/tests/`.
+- **611 Playwright `test()` cases**.
+- **559 documented flows**, 558 done, 1 not done.
 - **Every spec documents its own flows.**
 
 ## Flow index
@@ -785,6 +785,7 @@ Grouped by section. Every row comes from an `@flow` line in the spec itself.
 | SP39 | On the on-screen pad, the hand button waves and the note button dances | `tests/space-emotes.spec.ts` | done |
 | SP40 | The gate stands a few steps from where people arrive; the hand button stays dim until the gate is in reach, then lights up while the gate glows under a prompt | `tests/space-construct.spec.ts` | done |
 | SP41 | The Office's wooden door stands south of where people arrive: it lights up in reach, asks before going, and opens a furnished room whose furniture cannot be picked up, where a piece can still be added, whose glass doors open with E, and whose own door leads back | `tests/space-office.spec.ts` | done |
+| SP42 | The Game Room's neon door stands across the north bridge from the green gate: it lights up in reach, asks before going, and opens a furnished room whose arcade cabinets list the games, whose furniture cannot be picked up, where a piece can still be added, and whose own neon door leads back | `tests/space-game-room.spec.ts` | done |
 
 ### LC - Localization
 

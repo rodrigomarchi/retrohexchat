@@ -67,6 +67,17 @@ class MissingTermsTest(unittest.TestCase):
         self.assertEqual(missing_terms("Its pinned messages.", "Suas mensagens fixadas.", "pt_BR"), [])
         self.assertTrue(missing_terms("Opens in a new tab.", "Abre numa nova página.", "pt_BR"))
 
+    def test_the_game_room_is_a_room_to_play_in(self):
+        self.assertTrue(missing_terms("The game room is full.", "A partida está cheia.", "pt_BR"))
+        self.assertEqual(missing_terms("The game room is full.", "A sala de jogos está cheia.", "pt_BR"), [])
+        self.assertTrue(missing_terms("The game room is full.", "Le jeu est plein.", "fr"))
+        self.assertEqual(missing_terms("The game room is full.", "La salle de jeux est pleine.", "fr"), [])
+
+    def test_a_word_for_the_game_room_need_not_be_the_chats_room(self):
+        self.assertEqual(missing_terms("The game room is full.", "Das Spielzimmer ist voll.", "de"), [])
+        self.assertEqual(missing_terms("The game room is full.", "游戏室已满。", "zh_hans"), [])
+        self.assertTrue(missing_terms("The room is full.", "Das Zimmer ist voll.", "de"))
+
     def test_the_office_is_a_room_not_a_post(self):
         self.assertTrue(missing_terms("Go into the office.", "Entre no gabinete.", "pt_BR"))
         self.assertTrue(missing_terms("The office is full.", "El cargo está lleno.", "es"))

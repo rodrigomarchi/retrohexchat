@@ -474,11 +474,10 @@ interactable
 - **It adds no art of its own.** It copies the Construct's `catalog`, `vocab`,
   `tilesets` and `materials` out of `construct.json`, so every piece of the
   Construct can be placed in it and its furniture is drawn from the same
-  sheets. The End of Time's door is the Construct's `door.png`, mirrored the
-  way `author_construct.py` turns it, packed into `endoftime.webp` by
-  `author_scene.py`. Order matters: `author_scene.py`, then
-  `author_construct.py` (it copies the End of Time's vocab), then
-  `author_office.py`.
+  sheets. The End of Time's door is the Construct's `door.png` as drawn,
+  packed into `endoftime.webp` by `author_scene.py`. Order matters:
+  `author_scene.py`, then `author_construct.py` (it copies the End of Time's
+  vocab), then `author_office.py` and `author_game_room.py`.
 - **A 24×20 floor in an 8-tile margin of sky**, painted from the start (grey
   stone, blue carpet under the desks and in the meeting room, wood at the
   reception, checkerboard in the kitchenette). Painting it again works as in
@@ -519,7 +518,7 @@ interactable
 - **A door is a way through**: the trap check (`Construct.Layout`) never counts
   a door as a wall, open or shut, since whoever is behind it opens it with E;
   so a closed glass door with somebody behind it holds up no edit.
-- **The author checks the plan before writing it**: every piece on the floor
+- **`furnished_room.validate` checks the plan before it is written**: every piece on the floor
   and off the reserved tiles, none overlapping, every free tile reachable from
   the door (through the glass doors) and every chair reachable to sit in
   (`scripts/tests/test_office_authoring.py` runs the same check).
@@ -533,3 +532,35 @@ interactable
   it; a stored room keeps the pieces people added unless a piece now stands
   where one of them was, which drops theirs.
 
+
+## 12. The Game Room (a furnished buildable room)
+
+The **Game Room** is the Office's sibling: the Construct's platform furnished
+for play, behind a neon door across the north bridge from the green gate
+(`eot_game_room_door` at (50,28), interactable `game_room_portal`, action
+`enter_game_room`). Its author is `virtual.space/tools/author_game_room.py`,
+which writes `priv/maps/game_room.json`.
+
+- **Both furnished rooms are written by `furnished_room.py`.** A room's author
+  describes a `Plan` — floor size, door and spawns, painted zones, furniture,
+  the door's tile and glow — and `build` checks it (§11) and writes the map.
+  The map, its zone, its way out (`<room>_exit`) and the way out's action
+  (`exit_<room>`) are all named after `Plan.room`, which is also the id's
+  prefix (`game_room:#chan`) and the map id (`Construct.map_id/1`).
+- **Its one piece of art is the door**, `arcade_door.png`: the Construct's
+  wooden door turned neon with `create_object_state`, so it keeps the door's
+  shape and box exactly (`pixellab.json`). The End of Time packs it as drawn,
+  like the Office's door; the Construct's sheet packs it mirrored as
+  `cst_arcade_door`, the tile the room's way out is drawn with — it is not a
+  catalog piece.
+- **Its floor is the arcade carpet** (`carpet_arcade`), a material of the
+  Construct's like any other, so every buildable room can paint it: dark, with
+  sparse pink and cyan specks. Checkerboard along the cabinets, red carpet
+  under the lounge, wood under the tables.
+- **Its furniture is the `gamer` tab's**, and the Build menu opens on that tab
+  there. The cabinets along the back edge (`arcade`, `racing_arcade`) open the
+  arcade with E; the beanbags and gaming chairs are seats.
+- **The pool table's art runs the other diagonal**, so it is `mirror` in the
+  catalog: unmirrored, its art runs across u while its footprint runs down v,
+  and the shadow gives it away. Check a two-tile piece's art against its
+  footprint before placing it.

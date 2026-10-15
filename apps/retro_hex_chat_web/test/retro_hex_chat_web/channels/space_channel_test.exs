@@ -597,6 +597,27 @@ defmodule RetroHexChatWeb.SpaceChannelTest do
       assert {:error, %{reason: "not_in_channel"}} = join_construct(ctx.construct_id, "mallory")
     end
 
+    test "the Game Room is joined on its own token, furnished with its cabinets", ctx do
+      room_id = "game_room:" <> ctx.channel
+
+      on_exit(fn ->
+        case Registry.lookup({:construct_space, room_id}) do
+          {:ok, pid} -> GenServer.stop(pid, :normal)
+          {:error, :not_found} -> :ok
+        end
+      end)
+
+      office_token = ChannelJoinToken.sign_construct("office:" <> ctx.channel, nil, "alice", nil)
+
+      assert {:error, %{reason: "invalid_token"}} =
+               join_construct(room_id, "alice", office_token)
+
+      assert {:ok, init, _socket} = join_construct(room_id, "alice")
+      assert init.map.id == "game_room"
+      assert init.config.buildable
+      assert Enum.any?(init.map.items, &(&1.fixed and &1.kind == "racing_arcade"))
+    end
+
     test "the Office is joined the same way, furnished and buildable, on its own token", ctx do
       office_id = "office:" <> ctx.channel
 

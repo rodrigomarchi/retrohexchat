@@ -20,7 +20,7 @@ defmodule RetroHexChat.VirtualSpace.SessionRecorder do
   Neither of the two numbers the card shows — how long, how many — needs one.
 
   **A gathering spans a space and the rooms behind its gates.** Walking through
-  a gate empties the End of Time and fills the Construct or the Office, and the
+  a gate empties the End of Time and fills one of its rooms, and the
   party has not ended. So a gathering watches every world it is going on in —
   the space's and its rooms' — and ends only when all of them are empty and stay empty for a
   moment (`gathering_grace_ms`): a hop through the gate stops one world before

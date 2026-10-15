@@ -616,6 +616,36 @@ defmodule RetroHexChat.VirtualSpace.Construct.LayoutTest do
     end
   end
 
+  describe "the Game Room's furniture" do
+    setup do
+      {:ok, room} = SpaceMap.get("game_room")
+      %{room: room, items: Layout.normalize(room, [])}
+    end
+
+    test "comes with the room, every piece of it from the Construct's catalog", ctx do
+      assert length(ctx.items) == length(ctx.room.fixed_items)
+      assert Enum.all?(ctx.items, &Layout.fixed?/1)
+      kinds = MapSet.new(ctx.items, & &1.kind)
+
+      for kind <- ~w(arcade racing_arcade pool_table ping_pong_table beanbag gaming_chair) do
+        assert kind in kinds
+      end
+
+      map = Layout.apply(ctx.room, ctx.items)
+      assert map.seats != []
+      assert [%{id: "game_room_exit", modal: %{action: "exit_game_room"}} | _] = map.interactables
+      assert Enum.count(map.items, &(&1.kind == "arcade")) >= 4
+    end
+
+    test "cannot be moved, turned or removed", ctx do
+      cabinet = Enum.find(ctx.items, &(&1.kind == "racing_arcade"))
+
+      for op <- [{:move, cabinet.id, 20, 20}, {:remove, cabinet.id}, {:rotate, cabinet.id}] do
+        assert {:error, :fixed} = Layout.edit(ctx.room, ctx.items, op, ctx.nobody, "alice")
+      end
+    end
+  end
+
   describe "the Office's furniture" do
     setup do
       {:ok, office} = SpaceMap.get("office")

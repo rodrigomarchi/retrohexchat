@@ -506,6 +506,7 @@ _ROWS = {
     # up as you walk past.
     "Go into the Construct?": ("Entrar no Constructo?", "Entrar no Constructo?", "¿Entrar al Constructo?", "Entrer dans le Construct ?", "Ins Konstrukt gehen?", "Entrare nel Costrutto?", "Het Construct in gaan?", "Wejść do Konstruktu?", "Войти в Конструкт?", "Masuk ke Konstruk?", "コンストラクトに入りますか?", "进入构造空间?", "進入構造空間?"),
     "Go into the office?": ("Entrar no escritório?", "Entrar no escritório?", "¿Entrar en la oficina?", "Entrer dans le bureau ?", "Ins Büro gehen?", "Entrare in ufficio?", "Het kantoor in gaan?", "Wejść do biura?", "Войти в офис?", "Masuk ke kantor?", "オフィスに入りますか?", "进入办公室?", "進入辦公室?"),
+    "Go into the game room?": ("Entrar na sala de jogos?", "Entrar na sala de jogos?", "¿Entrar en la sala de juegos?", "Entrer dans la salle de jeux ?", "In den Spieleraum gehen?", "Entrare nella sala giochi?", "De speelkamer in gaan?", "Wejść do pokoju gier?", "Войти в игровую комнату?", "Masuk ke ruang permainan?", "ゲームルームに入りますか?", "进入游戏房间?", "進入遊戲房間?"),
     "Go back to the End of Time?": ("Voltar ao End of Time?", "Voltar ao End of Time?", "¿Volver al End of Time?", "Retourner à l'End of Time ?", "Zurück zum End of Time?", "Tornare all'End of Time?", "Terug naar het End of Time?", "Wrócić do End of Time?", "Вернуться в End of Time?", "Kembali ke End of Time?", "End of Time に戻りますか?", "返回 End of Time?", "返回 End of Time?"),
     "Things you can use": ("Coisas que você pode usar", "Coisas que pode usar", "Cosas que puedes usar", "Ce que vous pouvez utiliser", "Was Sie benutzen können", "Cose che puoi usare", "Wat je kunt gebruiken", "Rzeczy, których możesz użyć", "Что можно использовать", "Hal yang bisa dipakai", "使えるもの", "可以使用的东西", "可以使用的東西"),
     "Turn":         ("Girar", "Rodar", "Girar", "Tourner", "Drehen", "Ruota", "Draaien", "Obróć", "Повернуть", "Putar", "回転", "旋转", "旋轉"),
@@ -527,6 +528,7 @@ _ROWS = {
     "Grass":        ("Grama", "Relva", "Césped", "Herbe", "Gras", "Erba", "Gras", "Trawa", "Трава", "Rumput", "芝生", "草地", "草地"),
     "Red carpet":   ("Carpete vermelho", "Alcatifa vermelha", "Alfombra roja", "Moquette rouge", "Roter Teppich", "Moquette rossa", "Rood tapijt", "Czerwony dywan", "Красный ковёр", "Karpet merah", "赤いカーペット", "红地毯", "紅地毯"),
     "Blue carpet":  ("Carpete azul", "Alcatifa azul", "Alfombra azul", "Moquette bleue", "Blauer Teppich", "Moquette blu", "Blauw tapijt", "Niebieski dywan", "Синий ковёр", "Karpet biru", "青いカーペット", "蓝地毯", "藍地毯"),
+    "Arcade carpet": ("Carpete de fliperama", "Alcatifa de arcada", "Alfombra arcade", "Moquette d'arcade", "Arcade-Teppich", "Moquette arcade", "Arcadetapijt", "Dywan arcade", "Ковёр аркады", "Karpet arkade", "ゲーセンのカーペット", "街机地毯", "街機地毯"),
     "Checkerboard": ("Xadrez", "Xadrez", "Ajedrezado", "Damier", "Schachbrett", "Scacchiera", "Dambord", "Szachownica", "Шахматный узор", "Papan catur", "市松模様", "棋盘格", "棋盤格"),
     "Erase":        ("Apagar", "Apagar", "Borrar", "Effacer", "Radieren", "Cancella", "Wissen", "Wymaż", "Стереть", "Hapus", "消す", "擦除", "擦除"),
     # The Construct's library: one noun per piece, and its palette tabs. "End
@@ -673,6 +675,7 @@ _CONTEXT_ROWS = {
     # imperatives on a prompt, never a play in a theatre or a wristwatch.
     ("space prompt", "Enter the Construct"): ("Entrar no Constructo", "Entrar no Constructo", "Entrar al Constructo", "Entrer dans le Construct", "Ins Konstrukt", "Entra nel Costrutto", "Naar het Construct", "Wejdź do Konstruktu", "Войти в Конструкт", "Masuk ke Konstruk", "コンストラクトへ", "进入构造空间", "進入構造空間"),
     ("space prompt", "Enter the office"): ("Entrar no escritório", "Entrar no escritório", "Entrar en la oficina", "Entrer dans le bureau", "Ins Büro", "Entra in ufficio", "Naar het kantoor", "Wejdź do biura", "Войти в офис", "Masuk ke kantor", "オフィスへ", "进入办公室", "進入辦公室"),
+    ("space prompt", "Enter the game room"): ("Entrar na sala de jogos", "Entrar na sala de jogos", "Entrar en la sala de juegos", "Entrer dans la salle de jeux", "In den Spieleraum", "Entra nella sala giochi", "Naar de speelkamer", "Wejdź do pokoju gier", "Войти в игровую комнату", "Masuk ke ruang permainan", "ゲームルームへ", "进入游戏房间", "進入遊戲房間"),
     ("space prompt", "Back to the End of Time"): ("Voltar ao End of Time", "Voltar ao End of Time", "Volver al End of Time", "Retour à l'End of Time", "Zurück zum End of Time", "Torna all'End of Time", "Terug naar het End of Time", "Wróć do End of Time", "Назад в End of Time", "Kembali ke End of Time", "End of Time に戻る", "返回 End of Time", "返回 End of Time"),
     ("space prompt", "Sit"): ("Sentar", "Sentar", "Sentarse", "S'asseoir", "Hinsetzen", "Siediti", "Zitten", "Usiądź", "Сесть", "Duduk", "座る", "坐下", "坐下"),
     ("space prompt", "Stand up"): ("Levantar", "Levantar", "Levantarse", "Se lever", "Aufstehen", "Alzati", "Opstaan", "Wstań", "Встать", "Berdiri", "立ち上がる", "起身", "起身"),
@@ -695,6 +698,10 @@ _CONTEXT_ROWS = {
     # or a function ("the office of mayor").
     ("space room", "Office"): ("Escritório", "Escritório", "Oficina", "Bureau", "Büro", "Ufficio", "Kantoor", "Biuro", "Офис", "Kantor", "オフィス", "办公室", "辦公室"),
     ("space room", "The Office"): ("O escritório", "O escritório", "La oficina", "Le bureau", "Das Büro", "L'ufficio", "Het kantoor", "Biuro", "Офис", "Kantor", "オフィス", "办公室", "辦公室"),
+    # The Game Room behind the neon door: a room to play in, never a match or
+    # a sports hall.
+    ("space room", "Game Room"): ("Sala de jogos", "Sala de jogos", "Sala de juegos", "Salle de jeux", "Spieleraum", "Sala giochi", "Speelkamer", "Pokój gier", "Игровая комната", "Ruang permainan", "ゲームルーム", "游戏房间", "遊戲房間"),
+    ("space room", "The Game Room"): ("A sala de jogos", "A sala de jogos", "La sala de juegos", "La salle de jeux", "Der Spieleraum", "La sala giochi", "De speelkamer", "Pokój gier", "Игровая комната", "Ruang permainan", "ゲームルーム", "游戏房间", "遊戲房間"),
     ("construct palette", "Office"): ("Escritório", "Escritório", "Oficina", "Bureau", "Büro", "Ufficio", "Kantoor", "Biuro", "Офис", "Kantor", "オフィス", "办公室", "辦公室"),
     ("garden", "Mailbox"): ("Caixa de correio", "Caixa do correio", "Buzón", "Boîte aux lettres", "Briefkasten", "Cassetta postale", "Brievenbus", "Skrzynka pocztowa", "Почтовый ящик", "Kotak surat", "郵便受け", "信箱", "信箱"),
     ("kitchen", "Stove"): ("Fogão", "Fogão", "Cocina", "Cuisinière", "Herd", "Fornello", "Fornuis", "Kuchenka", "Плита", "Kompor", "コンロ", "炉灶", "爐灶"),

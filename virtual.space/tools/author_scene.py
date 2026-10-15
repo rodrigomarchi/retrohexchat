@@ -22,11 +22,14 @@ TOOLS = os.path.dirname(os.path.abspath(__file__))
 REPO = os.path.abspath(os.path.join(TOOLS, "..", ".."))
 SRC = os.path.join(REPO, "virtual.space", "scenes", "end_of_time")
 OFFICE_DOOR = os.path.join(REPO, "virtual.space", "scenes", "construct", "door.png")
-# The two gates, side by side against the centre platform's north railing,
-# west of the bridge up north (x 47-48): the tile each stands on, its back to
-# the rail, one tile clear of the bridge so crossing it reaches neither.
+GAME_ROOM_DOOR = os.path.join(REPO, "virtual.space", "scenes", "construct", "arcade_door.png")
+# The gates against the centre platform's north railing, on both sides of the
+# bridge up north (x 47-48): the tile each stands on, its back to the rail, one
+# tile clear of the bridge so crossing it reaches none. The Construct and the
+# Office to the west, the Game Room across the bridge from the Construct.
 CONSTRUCT_GATE = (45, 28)
 OFFICE_GATE = (42, 28)
+GAME_ROOM_GATE = (50, 28)
 ISO = os.path.join(SRC, "iso")
 SHEET_OUT = os.path.join(
     REPO, "apps", "retro_hex_chat_web", "priv", "static", "images", "space", "endoftime.webp"
@@ -113,17 +116,22 @@ FURNITURE = [
     ("eot_goku", 48, 58, {"x": 48, "y": 58, "w": 2, "h": 1}),
     # Centre platform, against its north railing beside the bridge up north:
     # the gate to the channel's Construct, its arch full of falling green
-    # code, and three tiles along the railing the wooden door to its Office.
-    # Pressing E beside either asks whether to go in.
+    # code, and three tiles along the railing the wooden door to its Office;
+    # across the bridge, the neon door to its Game Room. Pressing E beside any
+    # of them asks whether to go in.
     ("eot_portal", *CONSTRUCT_GATE, {"x": CONSTRUCT_GATE[0], "y": CONSTRUCT_GATE[1], "w": 1, "h": 1}),
     ("eot_office_door", *OFFICE_GATE, {"x": OFFICE_GATE[0], "y": OFFICE_GATE[1], "w": 1, "h": 1}),
+    ("eot_game_room_door", *GAME_ROOM_GATE,
+     {"x": GAME_ROOM_GATE[0], "y": GAME_ROOM_GATE[1], "w": 1, "h": 1}),
 ]
-# Things a participant can use (E): the Construct gate and the Office door.
+# Things a participant can use (E): the Construct gate and the rooms' doors.
 INTERACTABLES = [
     {"id": "construct_portal", "kind": "portal", "x": CONSTRUCT_GATE[0], "y": CONSTRUCT_GATE[1],
      "title": "Construct", "modal": {"kind": "confirm", "action": "enter_construct"}},
     {"id": "office_portal", "kind": "portal", "x": OFFICE_GATE[0], "y": OFFICE_GATE[1], "title": "Office",
      "modal": {"kind": "confirm", "action": "enter_office"}},
+    {"id": "game_room_portal", "kind": "portal", "x": GAME_ROOM_GATE[0], "y": GAME_ROOM_GATE[1],
+     "title": "Game Room", "modal": {"kind": "confirm", "action": "enter_game_room"}},
 ]
 # Floating decor: drawn like standing props but with NO ground footprint —
 # the Spirit Bomb hangs overhead (6 diagonal tiles NW of Goku = 120px straight
@@ -343,6 +351,7 @@ def build():
     # The Office door is the Construct's own door, as drawn: it runs along the
     # railing it stands against, the north edge.
     props["eot_office_door"] = _crop(Image.open(OFFICE_DOOR).convert("RGBA"))
+    props["eot_game_room_door"] = _crop(Image.open(GAME_ROOM_DOOR).convert("RGBA"))
 
     row = fcells_h
     col = 0
@@ -529,6 +538,9 @@ def build():
                    "blend": "add"})
     # The Office door, lit warm like a doorway with the lights on behind it.
     lights.append({"x": OFFICE_GATE[0], "y": OFFICE_GATE[1], "radius": 2.0, "color": "ffd591",
+                   "blend": "add"})
+    # The Game Room door glows the pink of its neon.
+    lights.append({"x": GAME_ROOM_GATE[0], "y": GAME_ROOM_GATE[1], "radius": 2.0, "color": "ff6fd8",
                    "blend": "add"})
 
     zones = [{"id": name, "kind": "platform", "x": r["x0"], "y": r["y0"],

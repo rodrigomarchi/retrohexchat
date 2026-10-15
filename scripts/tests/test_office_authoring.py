@@ -11,6 +11,9 @@ TOOLS = os.path.join(os.path.dirname(__file__), "..", "..", "virtual.space", "to
 sys.path.insert(0, os.path.abspath(TOOLS))
 
 import author_office as ao  # noqa: E402
+import furnished_room as fr  # noqa: E402
+
+P = ao.PLAN
 
 MAPS = os.path.join(os.path.dirname(__file__), "..", "..", "apps", "retro_hex_chat", "priv", "maps")
 
@@ -34,9 +37,9 @@ class OfficeMapTest(unittest.TestCase):
 
     def test_the_file_is_what_the_author_writes_now(self):
         catalog = self.construct["catalog"]
-        items = ao._fixed_items(catalog)
+        items = fr.fixed_items(P, catalog)
         self.assertEqual(self.office["fixed_items"], items)
-        self.assertEqual(self.office["floor"], ao._floor())
+        self.assertEqual(self.office["floor"], fr.floor(P))
 
     def test_the_furniture_leaves_the_way_out_clear_and_every_tile_reachable(self):
         catalog = self.construct["catalog"]
@@ -45,25 +48,25 @@ class OfficeMapTest(unittest.TestCase):
         reserved = {tuple(t) for t in self.office["reserved"]}
         # Raises on an overlap, a piece off the floor or on the way out, a
         # cut-off tile or an unreachable chair.
-        ao._validate(catalog, self.office["fixed_items"], exit_, self.office["spawn"], reserved)
+        fr.validate(P, catalog, self.office["fixed_items"], exit_, self.office["spawn"], reserved)
 
     def test_a_piece_on_the_way_out_is_refused(self):
         catalog = self.construct["catalog"]
-        exit_ = (ao.X0 + ao.EXIT_UV[0], ao.Y0 + ao.EXIT_UV[1])
+        exit_ = P.exit
         spawn = self.office["spawn"]
         blocking = [{"id": "fixed:0", "kind": "plant", "x": spawn[0]["x"], "y": spawn[0]["y"],
                      "dir": "down"}]
         with self.assertRaises(AssertionError):
-            ao._validate(catalog, blocking, exit_, spawn, {(spawn[0]["x"], spawn[0]["y"])})
+            fr.validate(P, catalog, blocking, exit_, spawn, {(spawn[0]["x"], spawn[0]["y"])})
 
     def test_a_wall_of_furniture_that_cuts_off_the_floor_is_refused(self):
         catalog = self.construct["catalog"]
-        exit_ = (ao.X0 + ao.EXIT_UV[0], ao.Y0 + ao.EXIT_UV[1])
+        exit_ = P.exit
         spawn = self.office["spawn"]
-        wall = [{"id": f"fixed:{n}", "kind": "wall", "x": ao.X0 + 6, "y": y, "dir": "down"}
-                for n, y in enumerate(range(ao.Y0, ao.Y1 + 1))]
+        wall = [{"id": f"fixed:{n}", "kind": "wall", "x": P.x0 + 6, "y": y, "dir": "down"}
+                for n, y in enumerate(range(P.y0, P.y1 + 1))]
         with self.assertRaises(AssertionError):
-            ao._validate(catalog, wall, exit_, spawn, set())
+            fr.validate(P, catalog, wall, exit_, spawn, set())
 
 
 class PaneTest(unittest.TestCase):
@@ -90,18 +93,18 @@ class DoorsTest(unittest.TestCase):
     def test_a_door_is_a_way_through_a_wall_and_a_wall_without_one_is_not(self):
         construct = _load("construct")
         catalog = construct["catalog"]
-        exit_ = (ao.X0 + ao.EXIT_UV[0], ao.Y0 + ao.EXIT_UV[1])
+        exit_ = P.exit
         spawn = _load("office")["spawn"]
-        x = ao.X0 + 6
+        x = P.x0 + 6
 
         def run(door_at):
             return [{"id": f"fixed:{n}", "kind": "glass_door" if y == door_at else "glass_wall",
                      "x": x, "y": y, "dir": "down"}
-                    for n, y in enumerate(range(ao.Y0, ao.Y1 + 1))]
+                    for n, y in enumerate(range(P.y0, P.y1 + 1))]
 
-        ao._validate(catalog, run(ao.Y0 + 5), exit_, spawn, set())
+        fr.validate(P, catalog, run(P.y0 + 5), exit_, spawn, set())
         with self.assertRaises(AssertionError):
-            ao._validate(catalog, run(None), exit_, spawn, set())
+            fr.validate(P, catalog, run(None), exit_, spawn, set())
 
 
 if __name__ == "__main__":

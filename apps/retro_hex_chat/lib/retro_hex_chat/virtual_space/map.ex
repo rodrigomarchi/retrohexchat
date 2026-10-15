@@ -11,11 +11,13 @@ defmodule RetroHexChat.VirtualSpace.Map do
 
   alias RetroHexChat.VirtualSpace.Maps.Construct
   alias RetroHexChat.VirtualSpace.Maps.EndOfTime
+  alias RetroHexChat.VirtualSpace.Maps.GameRoom
   alias RetroHexChat.VirtualSpace.Maps.Office
 
   @maps %{
     "construct" => Construct,
     "end_of_time" => EndOfTime,
+    "game_room" => GameRoom,
     "office" => Office
   }
 

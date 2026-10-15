@@ -58,6 +58,20 @@ defmodule RetroHexChatWeb.Components.UI.SpaceBuildPaletteTest do
     assert html =~ "The office is full."
   end
 
+  test "the Game Room opens on the gamer tab and says its own refusals" do
+    html = render_component(&space_build_palette/1, %{conversation: "channel", room: "game_room"})
+
+    [_, open] = Regex.run(~r/data-construct-tab="(\w+)"\s+data-selected="true"/, html)
+    assert open == "gamer"
+
+    for kind <- ~w(pool_table beanbag racing_arcade chair reception_desk) do
+      assert html =~ ~s(data-construct-kind="#{kind}")
+    end
+
+    assert html =~ "This furniture belongs to the game room and cannot be moved."
+    assert html =~ "The game room is full."
+  end
+
   test "a private conversation's Construct has no board" do
     html = render_component(&space_build_palette/1, %{conversation: "direct_message"})
 

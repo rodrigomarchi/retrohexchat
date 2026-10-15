@@ -27,8 +27,8 @@ defmodule RetroHexChatWeb.Components.UI.SpaceBuildPalette do
 
   attr :room, :string,
     default: "construct",
-    values: ~w(construct office),
-    doc: "the room being built in: the Office opens on its own tab"
+    values: ~w(construct office game_room),
+    doc: "the room being built in: the Office and the Game Room open on their own tab"
 
   @spec space_build_palette(map()) :: Phoenix.LiveView.Rendered.t()
   def space_build_palette(assigns) do
@@ -304,7 +304,8 @@ defmodule RetroHexChatWeb.Components.UI.SpaceBuildPalette do
       "grass" => dgettext("chat", "Grass"),
       "carpet_red" => dgettext("chat", "Red carpet"),
       "carpet_blue" => dgettext("chat", "Blue carpet"),
-      "checker" => dgettext("chat", "Checkerboard")
+      "checker" => dgettext("chat", "Checkerboard"),
+      "carpet_arcade" => dgettext("chat", "Arcade carpet")
     }
 
     Enum.map(map.materials, &{&1.id, &1.tile, Map.get(names, &1.id, &1.id)}) ++
@@ -318,7 +319,7 @@ defmodule RetroHexChatWeb.Components.UI.SpaceBuildPalette do
     |> String.at(div(map.width, 2))
   end
 
-  # The tabs, in palette order — the Office's own first in the Office. Each kind
+  # The tabs, in palette order — a furnished room's own first in it. Each kind
   # sits in the tab its catalog entry names (`priv/maps/construct.json`), in the
   # order `kinds/0` lists them; a kind built only in channels is left out of a
   # private room's palette.
@@ -335,10 +336,8 @@ defmodule RetroHexChatWeb.Components.UI.SpaceBuildPalette do
     end
   end
 
-  defp tabs("office") do
-    {office, others} = Enum.split_with(tabs("construct"), &(elem(&1, 0) == "office"))
-    office ++ others
-  end
+  defp tabs("office"), do: first("office")
+  defp tabs("game_room"), do: first("gamer")
 
   defp tabs(_room) do
     [
@@ -488,12 +487,16 @@ defmodule RetroHexChatWeb.Components.UI.SpaceBuildPalette do
     ]
   end
 
+  defp first(group) do
+    {own, others} = Enum.split_with(tabs("construct"), &(elem(&1, 0) == group))
+    own ++ others
+  end
+
   # One sentence per reason the server can refuse an edit with, keyed the way
   # the reply names it.
   defp refusal_templates(room) do
     %{
-      "data-refused-fixed" =>
-        dgettext("chat", "This furniture belongs to the office and cannot be moved."),
+      "data-refused-fixed" => fixed(room),
       "data-refused-occupied" => dgettext("chat", "There is already a piece on that spot."),
       "data-refused-someone_there" => dgettext("chat", "Somebody is standing on that spot."),
       "data-refused-reserved" => dgettext("chat", "Keep the way to the gate clear."),
@@ -513,6 +516,13 @@ defmodule RetroHexChatWeb.Components.UI.SpaceBuildPalette do
     }
   end
 
+  defp fixed("game_room"),
+    do: dgettext("chat", "This furniture belongs to the game room and cannot be moved.")
+
+  defp fixed(_room),
+    do: dgettext("chat", "This furniture belongs to the office and cannot be moved.")
+
   defp full("office"), do: dgettext("chat", "The office is full.")
+  defp full("game_room"), do: dgettext("chat", "The game room is full.")
   defp full(_construct), do: dgettext("chat", "The Construct is full.")
 end

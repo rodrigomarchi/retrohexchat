@@ -16,6 +16,11 @@ export const BEFORE_GATE = { x: 45, y: 29 };
 // And the tile in front of the Office's door, three tiles west along the same
 // railing, at (42,28).
 export const BEFORE_OFFICE = { x: 42, y: 29 };
+// And the tile in front of the Game Room's neon door, across the north bridge
+// from the gate, at (50,28).
+export const BEFORE_GAME_ROOM = { x: 50, y: 29 };
+
+export type Room = "construct" | "office" | "game_room";
 
 export type Item = {
   id: string;
@@ -61,12 +66,15 @@ export class RoomWatch {
       string,
       any,
     ];
-    if (typeof topic !== "string" || !/^space:(construct|office):/.test(topic))
+    if (
+      typeof topic !== "string" ||
+      !/^space:(construct|office|game_room):/.test(topic)
+    )
       return;
     const mapId = payload?.response?.map?.id;
     if (
       event === "phx_reply" &&
-      (mapId === "construct" || mapId === "office")
+      (mapId === "construct" || mapId === "office" || mapId === "game_room")
     ) {
       this.items = payload.response.map.items ?? [];
       this.revision = payload.response.map.revision ?? 0;
@@ -107,6 +115,7 @@ function geometry(mapId: string): Geometry {
 const ROOMS: Record<string, Geometry> = {
   construct: geometry("construct"),
   office: geometry("office"),
+  game_room: geometry("game_room"),
 };
 
 /**
@@ -118,7 +127,7 @@ export async function tilePoint(
   page: Page,
   self: { x: number; y: number },
   tile: { x: number; y: number },
-  room: "construct" | "office" = "construct",
+  room: Room = "construct",
 ): Promise<{ x: number; y: number }> {
   const canvas = page.locator('[data-testid="channel-space-shell"] > canvas');
   const box = await canvas.evaluate((el: HTMLCanvasElement) => {

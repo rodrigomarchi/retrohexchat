@@ -17,10 +17,10 @@ defmodule RetroHexChatWeb.App.SpaceLive do
   Both states are decided in `mount/3`. Initial data delivered after the first
   render is invisible to ExUnit and only ever caught in a browser.
 
-  A space's gates lead to its rooms — the Construct and the Office — each at an
-  address of its own, and each room's way out leads back. Walking through any
-  of them carries the character in the address (`?avatar=`), so the door is not
-  a second antechamber: the same `mount/3` that would draw the creator goes
+  A space's gates lead to its rooms — the Construct, the Office and the Game
+  Room — each at an address of its own, and each room's way out leads back.
+  Walking through any of them carries the character in the address
+  (`?avatar=`), so the door is not a second antechamber: the same `mount/3` that would draw the creator goes
   straight inside instead.
   """
 
@@ -317,6 +317,8 @@ defmodule RetroHexChatWeb.App.SpaceLive do
           data-confirm-exit_construct={dgettext("chat", "Go back to the End of Time?")}
           data-confirm-enter_office={dgettext("chat", "Go into the office?")}
           data-confirm-exit_office={dgettext("chat", "Go back to the End of Time?")}
+          data-confirm-enter_game_room={dgettext("chat", "Go into the game room?")}
+          data-confirm-exit_game_room={dgettext("chat", "Go back to the End of Time?")}
           class="space-ui-panel absolute inset-0 z-30 m-auto h-fit w-fit max-w-[calc(100%-1rem)] text-center"
         >
         </div>
@@ -399,6 +401,8 @@ defmodule RetroHexChatWeb.App.SpaceLive do
       exit_construct: dpgettext("chat", "space prompt", "Back to the End of Time"),
       enter_office: dpgettext("chat", "space prompt", "Enter the office"),
       exit_office: dpgettext("chat", "space prompt", "Back to the End of Time"),
+      enter_game_room: dpgettext("chat", "space prompt", "Enter the game room"),
+      exit_game_room: dpgettext("chat", "space prompt", "Back to the End of Time"),
       sit: dpgettext("chat", "space prompt", "Sit"),
       stand: dpgettext("chat", "space prompt", "Stand up"),
       use: dgettext("chat", "Use"),
@@ -552,8 +556,8 @@ defmodule RetroHexChatWeb.App.SpaceLive do
 
   def handle_event("revoke_space", _params, socket), do: {:noreply, socket}
 
-  # Through a gate: the gate names where it goes — the space's Construct or
-  # its Office, or from inside either the space it belongs to. The destination
+  # Through a gate: the gate names where it goes — one of the space's rooms,
+  # or from inside one the space it belongs to. The destination
   # is read off the space this screen already resolved; what the client said is
   # only which of this room's own gates it went through.
   def handle_event(
@@ -600,6 +604,9 @@ defmodule RetroHexChatWeb.App.SpaceLive do
   defp portal_destination(%{id: space_id}, "enter_office"),
     do: {:ok, VirtualSpace.construct_id(space_id, :office)}
 
+  defp portal_destination(%{id: space_id}, "enter_game_room"),
+    do: {:ok, VirtualSpace.construct_id(space_id, :game_room)}
+
   defp portal_destination(_space, _action), do: :error
 
   @impl true
@@ -607,7 +614,7 @@ defmodule RetroHexChatWeb.App.SpaceLive do
   # The roster topic and only it: who is inside is the reason this surface
   # subscribes to anything at all.
   # The space's own list, or one of its rooms' saying it changed: a space counts
-  # whoever is in its Construct and its Office too, so the list is read again
+  # whoever is in the rooms behind its gates too, so the list is read again
   # rather than taken from a message that only knows one of the rooms.
   def handle_info({:space_roster, %{participants: participants}}, socket)
       when socket.assigns.space.mode == "construct" do
@@ -851,11 +858,15 @@ defmodule RetroHexChatWeb.App.SpaceLive do
   defp loading_text(%{mode: "construct", room: "office"}),
     do: dgettext("chat", "Entering the office...")
 
+  defp loading_text(%{mode: "construct", room: "game_room"}),
+    do: dgettext("chat", "Entering the game room...")
+
   defp loading_text(%{mode: "construct"}), do: dgettext("chat", "Loading the Construct...")
   defp loading_text(%{mode: "direct_message"}), do: dgettext("chat", "Opening private room...")
   defp loading_text(_space), do: dgettext("chat", "Entering channel space...")
 
   defp room_name("office"), do: dpgettext("chat", "space room", "Office")
+  defp room_name("game_room"), do: dpgettext("chat", "space room", "Game Room")
   defp room_name(_construct), do: dgettext("chat", "Construct")
 
   # Only a registered nickname can mint a link: the record carries who made it,

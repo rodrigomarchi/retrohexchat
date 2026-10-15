@@ -5,8 +5,9 @@ Each virtual-space map ships one composed sprite sheet, written straight into
 module that declares its tile vocabulary: `end_of_time` (`endoftime.webp`, by
 `author_scene.py`), the scene every channel and DM renders, and `construct`
 (`construct.webp`, by `author_construct.py`), the buildable room behind its
-gate (`SCENES.md` §10), and `office` (by `author_office.py`), the furnished
-room behind the wooden door, drawn from the Construct's sheets (§11). The
+gate (`SCENES.md` §10), and the furnished rooms drawn from the Construct's
+sheets: `office` (by `author_office.py`), behind the wooden door (§11), and
+`game_room` (by `author_game_room.py`), behind the neon door (§12). The
 client sprite atlas slices the sheet with `drawImage`; no pixel data is traced
 into JS or into the map payload.
 
@@ -72,6 +73,12 @@ PNGs because recolouring them is a palette rewrite (see
   packs no sheet. It reads `construct.json`, which reads the End of Time's
   vocab: run `author_scene.py`, then `author_construct.py`, then this. See
   [`../SCENES.md`](../SCENES.md) §11.
+- **`author_game_room.py`** — the Game Room, the same way: arcade cabinets,
+  tables, a lounge and a LAN corner on the arcade carpet, written to
+  `priv/maps/game_room.json`. Run it after `author_construct.py`. See
+  [`../SCENES.md`](../SCENES.md) §12.
+- **`furnished_room.py`** — what both furnished rooms share: their `Plan`, the
+  check that runs before a room is written, and the map it writes.
 - **`fetch_pixellab_objects.py`** — downloads the Construct pieces named in
   `../scenes/construct/pixellab.json` from the PixelLab account, still or
   animated, into that layout. Run it when a piece is added; it keeps art

@@ -183,7 +183,7 @@ LIBRARY = {
         "mailbox": {},
     },
     "gamer": {
-        "pool_table": {"size": [1, 2]},
+        "pool_table": {"size": [1, 2], "mirror": True},
         "ping_pong_table": {"size": [1, 2]},
         "beanbag": {"seat": True},
         "gaming_chair": {"seat": True},
@@ -311,6 +311,7 @@ MATERIALS = {
     "carpet_red": ("4", [(170, 52, 58), (156, 44, 52)]),
     "carpet_blue": ("5", [(60, 92, 170), (52, 80, 154)]),
     "checker": ("6", [(240, 240, 236), (52, 54, 62)]),
+    "carpet_arcade": ("7", [(46, 30, 78), (236, 84, 196), (84, 222, 236)]),
 }
 
 
@@ -364,8 +365,9 @@ def _floor_tile(fill=None, seam=FLOOR_SEAM):
 
 def _material_tile(material, colours):
     """One painted diamond. Wood runs in planks along the iso axis, stone and
-    grass are mottled, carpets are plain, the checker is a 2×2 board."""
-    a, b = colours
+    grass are mottled, carpets are plain, the checker is a 2×2 board, and the
+    arcade carpet is dark with sparse specks of pink and cyan neon."""
+    a, b = colours[:2]
     w, h = Image.open(EOT_FLOOR).size
 
     def mottled(x, y):
@@ -378,7 +380,12 @@ def _material_tile(material, colours):
         u, v = x / w + y / h, x / w - y / h + 1
         return a if (int(u * 2) + int(v * 2)) % 2 == 0 else b
 
-    fill = {"wood": planks, "stone": mottled, "grass": mottled, "checker": checker}.get(
+    def specks(x, y):
+        n = (x * 37 + y * 101 + (x * y) % 7) % 23
+        return b if n == 0 else colours[2] if n == 11 else a
+
+    fill = {"wood": planks, "stone": mottled, "grass": mottled, "checker": checker,
+            "carpet_arcade": specks}.get(
         material, lambda _x, _y: a
     )
     return _floor_tile(lambda x, y: (*fill(x, y), 255),
@@ -612,6 +619,9 @@ def build():
         materials.append({"id": material, "tile": char})
 
     shelf.put("cst_exit", _art("exit.png"))
+    # The Game Room's way out, a door in neon: drawn by its room, never placed
+    # from the catalog, and mirrored like the catalog's door it was made from.
+    shelf.put("cst_arcade_door", _art("arcade_door.png").transpose(Image.FLIP_LEFT_RIGHT))
 
     wall = _art("wall.png")
     variants = {"lamp_off": _lamp_off(_art("lamp.png")),

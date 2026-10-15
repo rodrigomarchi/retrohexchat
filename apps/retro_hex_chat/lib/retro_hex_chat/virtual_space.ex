@@ -232,7 +232,7 @@ defmodule RetroHexChat.VirtualSpace do
   @spec construct_kind(String.t()) :: {:ok, Construct.kind()} | :error
   defdelegate construct_kind(space_id), to: Construct, as: :kind
 
-  @doc "The space a room behind a gate (its Construct or its Office) belongs to."
+  @doc "The space a room behind a gate (its Construct, Office or Game Room) belongs to."
   @spec construct_parent(String.t()) :: {:ok, String.t()} | :error
   defdelegate construct_parent(construct_id), to: Construct, as: :parent_id
 

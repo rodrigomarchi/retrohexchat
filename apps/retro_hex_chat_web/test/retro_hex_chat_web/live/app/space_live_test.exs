@@ -689,6 +689,40 @@ defmodule RetroHexChatWeb.App.SpaceLiveTest do
                  "?" <> URI.encode_query(%{avatar: @tunic})
     end
 
+    test "the Game Room door leads to the Game Room, which opens named for itself", %{
+      conn: conn,
+      channel: channel
+    } do
+      {:ok, view, _html} = live(conn, path(channel) <> "?avatar=" <> @tunic)
+
+      assert {:error, {:live_redirect, %{to: to}}} =
+               render_hook(view, "space_portal", %{"action" => "enter_game_room"})
+
+      room_id = VirtualSpace.construct_id(channel, :game_room)
+      assert to == path(room_id) <> "?" <> URI.encode_query(%{avatar: @tunic})
+
+      {:ok, view, html} = live(conn, path(room_id) <> "?avatar=" <> @tunic)
+      assert html =~ "Game Room · #{channel}"
+      assert html =~ "Enter the game room"
+      assert html =~ ~s(data-confirm-enter_game_room=)
+
+      [first_tab | _] =
+        html
+        |> LazyHTML.from_fragment()
+        |> LazyHTML.query(~s([data-construct-tab]))
+        |> LazyHTML.attribute("data-construct-tab")
+
+      assert first_tab == "gamer"
+
+      render_hook(view, "space_portal", %{"action" => "exit_office"})
+      assert has_element?(view, ~s([data-testid="construct-palette"]))
+
+      assert {:error, {:live_redirect, %{to: to}}} =
+               render_hook(view, "space_portal", %{"action" => "exit_game_room"})
+
+      assert to == path(channel) <> "?" <> URI.encode_query(%{avatar: @tunic})
+    end
+
     test "the Office opens inside, named for itself, with its own tab first and its own way out",
          %{conn: conn, channel: channel} do
       office_id = VirtualSpace.construct_id(channel, :office)

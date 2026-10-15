@@ -2,7 +2,8 @@ defmodule RetroHexChatWeb.SpaceChannel do
   @moduledoc """
   Realtime channel for conversation-backed virtual spaces (`space:#channel`,
   `space:dm:<key>`, or a room behind either one's gates: its Construct,
-  `space:construct:<space>`, or its Office, `space:office:<space>`).
+  `space:construct:<space>`, its Office, `space:office:<space>`, or its Game
+  Room, `space:game_room:<space>`).
 
   Join is authorized by the signed `channel_join_token` issued by the LiveView
   shell. Channel spaces validate channel presence before joining. The reply is
@@ -79,11 +80,15 @@ defmodule RetroHexChatWeb.SpaceChannel do
   def join("space:office:" <> parent_tail, params, socket),
     do: join_room("office:" <> parent_tail, params, socket)
 
+  def join("space:game_room:" <> parent_tail, params, socket),
+    do: join_room("game_room:" <> parent_tail, params, socket)
+
   def join("space:" <> _not_channel_topic, _params, _socket),
     do: {:error, %{reason: "not_found"}}
 
-  # A room behind a gate — the Construct or the Office — is joined the same
-  # way: its token names it, and it admits whoever its space admits.
+  # A room behind a gate — the Construct, the Office or the Game Room — is
+  # joined the same way: its token names it, and it admits whoever its space
+  # admits.
   defp join_room(construct_id, params, socket) do
     with {:ok, data} <- verify_construct_join_token(params, construct_id),
          {:ok, result} <-

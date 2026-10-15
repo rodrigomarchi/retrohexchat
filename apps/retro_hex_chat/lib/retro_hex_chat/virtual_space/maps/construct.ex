@@ -12,8 +12,8 @@ defmodule RetroHexChat.VirtualSpace.Maps.Construct do
   the floor `materials` it can be painted with (each a one-character floor
   tile), and `fixed_items`: the furniture it comes with, each an `id`
   (`fixed:<n>`), `kind`, `x`, `y` and `dir`, placed like anybody's piece. The
-  Office (`Maps.Office`) is read through this module from its own file, with
-  the same catalog and sheets.
+  Office (`Maps.Office`) and the Game Room (`Maps.GameRoom`) are read through
+  this module, each from its own file, with the same catalog and sheets.
 
   A catalog entry names the kind's tile per facing, and optionally: `seat`,
   `lights`, `blocks` (false for a piece you walk onto), `dirs` (the facings it

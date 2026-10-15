@@ -582,6 +582,63 @@ defmodule RetroHexChat.VirtualSpace.ConstructTest do
       for id <- ~w(office:construct:#c construct:office:#c office: office:# office:lobby) do
         refute Construct.construct?(id), id
       end
+
+      assert Construct.space_id("#c", :game_room) == "game_room:#c"
+      assert {:ok, :game_room} = Construct.kind("game_room:dm:a:b")
+      assert Construct.map_id("game_room:#c") == "game_room"
+
+      for id <- ~w(game_room:office:#c office:game_room:#c game_room: game_room:lobby) do
+        refute Construct.construct?(id), id
+      end
+    end
+  end
+
+  describe "the Game Room" do
+    setup do
+      ctx = channel_with(["alice", "bob"])
+      room_id = VirtualSpace.construct_id(ctx.channel, :game_room)
+      on_exit(fn -> stop_construct(room_id) end)
+      Map.put(ctx, :room_id, room_id)
+    end
+
+    test "its door stands across the bridge from the green gate and asks first" do
+      {:ok, map} = VirtualSpace.get_map("end_of_time")
+
+      assert %{x: 50, y: 28, modal: %{kind: "confirm", action: "enter_game_room"}} =
+               Enum.find(map.interactables, &(&1.id == "game_room_portal"))
+    end
+
+    test "comes furnished with arcade cabinets that stay where they are", ctx do
+      joined = enter(ctx.room_id, "alice")
+
+      assert joined.map.id == "game_room"
+      cabinet = Enum.find(joined.map.items, &(&1.fixed and &1.kind == "arcade"))
+      assert cabinet
+
+      assert {:error, :fixed} =
+               VirtualSpace.build_construct(
+                 ctx.room_id,
+                 key("alice"),
+                 "alice",
+                 {:remove, cabinet.id}
+               )
+    end
+
+    test "takes pieces, kept apart from the Construct's and the Office's", ctx do
+      enter(ctx.room_id, "alice")
+      assert {:ok, 1} = place(ctx.room_id, "alice", "plant", 20, 20)
+
+      assert %{revision: 1, items: items} = Store.load(ctx.room_id)
+      assert Enum.any?(items, &(&1["kind"] == "plant"))
+      assert %{revision: 0, items: []} = Store.load(ctx.construct_id)
+
+      assert %{revision: 0, items: []} =
+               Store.load(VirtualSpace.construct_id(ctx.channel, :office))
+    end
+
+    test "whoever is in it is in the space", ctx do
+      enter(ctx.room_id, "bob")
+      assert "bob" in VirtualSpace.roster(ctx.channel)
     end
   end
 

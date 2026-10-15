@@ -2,24 +2,25 @@ defmodule RetroHexChat.VirtualSpace.Construct do
   @moduledoc """
   The rooms every space has behind its gates, built by the people who go in.
 
-  There are two kinds. The **Construct** is an empty white floor; the
-  **Office** comes furnished, and what its people add stands among the
-  furniture that is part of it. Both are the same thing to the runtime — a room
-  anybody inside may build in — and differ only in the map they start from.
+  There are three kinds. The **Construct** is an empty white floor; the
+  **Office** and the **Game Room** come furnished, and what their people add
+  stands among the furniture that is part of them. All are the same thing to
+  the runtime — a room anybody inside may build in — and differ only in the map
+  they start from.
 
   A channel's space and a private space each own one room of each kind, and its
   id is the owner's id behind the kind's prefix — `construct:#lobby`,
-  `office:dm:alice:bob`. Reading the owner back off the id is what lets a room
-  borrow everything it does not have of its own: who may enter it is who may
-  enter the space it belongs to, and a line said inside goes to the same
-  conversation.
+  `office:dm:alice:bob`, `game_room:#lobby`. Reading the owner back off the id
+  is what lets a room borrow everything it does not have of its own: who may
+  enter it is who may enter the space it belongs to, and a line said inside
+  goes to the same conversation.
 
   A room of a room is not a thing; the prefix is read once.
   """
 
-  @type kind :: :construct | :office
+  @type kind :: :construct | :office | :game_room
 
-  @kinds [construct: "construct:", office: "office:"]
+  @kinds [construct: "construct:", office: "office:", game_room: "game_room:"]
 
   @doc "The kinds of room a space has behind its gates."
   @spec kinds() :: [kind()]

@@ -60,7 +60,9 @@ _TERMS: dict[str, dict[str, tuple[str, ...]]] = {
         "zh_hans": ("角色",),
         "zh_hant": ("角色",),
     },
-    r"\brooms?\b": {
+    # A room of the chat; the Game Room is its own term below, and a word for
+    # it ("Spielzimmer", "游戏室") need not also be the chat's room.
+    r"(?<!\bgame )\brooms?\b": {
         "pt": ("sala",),
         "es": ("sala",),
         "fr": ("salon", "salle"),
@@ -186,6 +188,22 @@ _TERMS: dict[str, dict[str, tuple[str, ...]]] = {
         "ja": ("オフィス", "事務所"),
         "zh_hans": ("办公室",),
         "zh_hant": ("辦公室",),
+    },
+    # The Game Room is a room to play in: never a single match ("partida"), a
+    # sports hall or a casino.
+    r"\bgame rooms?\b": {
+        "pt": ("sala de jogos",),
+        "es": ("sala de juego",),
+        "fr": ("salle de jeu", "salle des jeux"),
+        "de": ("spielzimmer", "spieleraum", "spielraum"),
+        "it": ("sala giochi", "sala dei giochi", "stanza di gioco", "stanza dei giochi"),
+        "nl": ("speelkamer", "spelkamer", "spelletjeskamer", "spelruimte", "speelruimte"),
+        "pl": ("gier",),
+        "ru": ("игров",),
+        "id": ("ruang permainan", "ruang game"),
+        "ja": ("ゲームルーム", "ゲーム部屋", "ゲーム室", "遊戯室"),
+        "zh_hans": ("游戏房间", "游戏室"),
+        "zh_hant": ("遊戲房間", "遊戲室"),
     },
     r"\bpieces?\b": {
         "pt": ("peça",),

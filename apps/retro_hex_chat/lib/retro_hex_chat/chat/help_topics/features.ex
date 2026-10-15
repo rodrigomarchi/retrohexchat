@@ -3991,6 +3991,7 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
           "feature-space-talk",
           "feature-space-construct",
           "feature-space-office",
+          "feature-space-game-room",
           "feature-choose-character",
           "feature-space-combat",
           "feature-space-emotes",
@@ -4123,6 +4124,7 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
         see_also: [
           "feature-virtual-spaces",
           "feature-space-office",
+          "feature-space-game-room",
           "feature-space-talk",
           "keyboard-shortcuts"
         ]
@@ -4167,7 +4169,51 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
             ],
             " "
           ),
-        see_also: ["feature-space-construct", "feature-virtual-spaces", "keyboard-shortcuts"]
+        see_also: [
+          "feature-space-construct",
+          "feature-space-game-room",
+          "feature-virtual-spaces",
+          "keyboard-shortcuts"
+        ]
+      },
+      %{
+        id: "feature-space-game-room",
+        title: dpgettext("help", "space room", "The Game Room"),
+        category: dgettext("help", "Virtual Spaces"),
+        keywords: [
+          "game room",
+          "arcade",
+          "pool",
+          "ping-pong",
+          "beanbag",
+          "door",
+          "build",
+          dgettext("help", "game room"),
+          dgettext("help", "arcade")
+        ],
+        icon: :icon_community,
+        description:
+          Enum.join(
+            [
+              dgettext("help", "Every space also has a game room."),
+              dgettext(
+                "help",
+                "Its neon door stands on the central island of the End of Time, on the other side of the bridge from the green gate."
+              ),
+              dgettext("help", "Walk up to the door and press E."),
+              dgettext(
+                "help",
+                "The game room comes with arcade machines, a pool table, a ping-pong table and computers."
+              ),
+              dgettext("help", "Press E next to an arcade machine to see the games."),
+              dgettext("help", "Press F next to a chair to sit down."),
+              dgettext("help", "Its furniture stays where it is."),
+              dgettext("help", "Pieces are added the same way as in the Construct."),
+              dgettext("help", "The game room keeps everything that was added to it.")
+            ],
+            " "
+          ),
+        see_also: ["feature-space-construct", "feature-space-office", "feature-virtual-spaces"]
       },
       %{
         id: "feature-space-combat",

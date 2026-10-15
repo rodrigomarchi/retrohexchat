@@ -24,7 +24,9 @@ defmodule RetroHexChatWeb.SpaceRefTest do
             "construct:#retro",
             "construct:dm:ana:bob",
             "office:#retro",
-            "office:dm:ana:bob"
+            "office:dm:ana:bob",
+            "game_room:#retro",
+            "game_room:dm:ana:bob"
           ] do
         assert {:ok, ^space_id} = space_id |> SpaceRef.slug() |> SpaceRef.space_id()
       end
@@ -34,7 +36,8 @@ defmodule RetroHexChatWeb.SpaceRefTest do
             "construct:retro",
             "construct:construct:#retro",
             "office:construct:#retro",
-            "construct:office:#retro"
+            "construct:office:#retro",
+            "game_room:office:#retro"
           ] do
         assert space_id |> SpaceRef.slug() |> SpaceRef.space_id() == :error
       end

@@ -5,7 +5,7 @@ defmodule RetroHexChat.VirtualSpace.MapTest do
 
   @moduletag :unit
 
-  @map_ids ~w(construct end_of_time office)
+  @map_ids ~w(construct end_of_time game_room office)
 
   describe "get/1" do
     test "returns a definition for every registry id" do

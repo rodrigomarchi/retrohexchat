@@ -50,8 +50,8 @@ defmodule RetroHexChat.VirtualSpace.Events do
     )
   end
 
-  # Which room behind a gate it was — the Construct or the Office — so a graph
-  # can tell them apart.
+  # Which room behind a gate it was — the Construct, the Office or the Game
+  # Room — so a graph can tell them apart.
   defp room(construct_id) do
     case Construct.kind(construct_id) do
       {:ok, kind} -> kind
