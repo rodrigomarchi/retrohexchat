@@ -730,8 +730,9 @@ describe("Renderer in a Construct", () => {
         5000,
       );
 
-    expect(facing("down")).toMatchObject({ actionKind: "sleep", dir: "south-west" });
-    expect(facing("right")).toMatchObject({ actionKind: "sleep", dir: "south-east" });
+    // A seat's art opens down-right as "down", and its sitter looks that way.
+    expect(facing("down")).toMatchObject({ actionKind: "sleep", dir: "south-east" });
+    expect(facing("right")).toMatchObject({ actionKind: "sleep", dir: "south-west" });
   });
 
   it("loops the dance while the pose lasts, and a wave plays over it", () => {
@@ -761,7 +762,7 @@ describe("Renderer in a Construct", () => {
       { key: "s", avatar: RECIPE, x: 3, y: 3, pose: "sitting", dir: "down" },
       5000,
     );
-    expect(pose).toEqual({ actionKind: "sit", dir: "south-west", frame: 2 });
+    expect(pose).toEqual({ actionKind: "sit", dir: "south-east", frame: 2 });
   });
 
   it("marks the ghost's tile and the picked piece on the floor", () => {

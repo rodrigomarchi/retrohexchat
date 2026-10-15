@@ -61,8 +61,10 @@ ZONES = [
 ]
 
 # Which way a piece faces, in three cases:
-# - a bulky one-tile piece (a cabinet, a machine, a chair) faces +v as "down"
-#   and +u as "right";
+# - a bulky one-tile piece faces the way its art was drawn: the bookshelf, the
+#   vending machine and the fridge show their front as "down" (+v); the file
+#   cabinet, the printer, the coffee machine and every seat as "right"'s
+#   mirror, "down" facing +u — check the art, not the kind;
 # - a two-tile piece runs down v as "down", facing +u, and across u as
 #   "right", facing +v;
 # - a pane (glass, a glass door, a cubicle partition) stands on one edge of its
@@ -86,11 +88,11 @@ FURNITURE = [
     *[("glass_door" if u == MEETING_DOOR_U else "glass_wall", u, MEETING[2] + 1, "left")
       for u in range(MEETING[0], MEETING[1] + 1)],
     ("meeting_table", 11, 2, "down"),
-    ("office_chair", 10, 2, "right"),
-    ("office_chair", 10, 3, "right"),
-    ("office_chair", 10, 4, "right"),
-    ("office_chair", 11, 1, "down"),
-    ("office_chair", 12, 1, "down"),
+    ("office_chair", 10, 2, "down"),
+    ("office_chair", 10, 3, "down"),
+    ("office_chair", 10, 4, "down"),
+    ("office_chair", 11, 1, "right"),
+    ("office_chair", 12, 1, "right"),
     ("whiteboard", 14, 0, "right"),
     ("screen", 15, 0, "right"),
     ("tall_plant", 9, 0, "down"),
@@ -100,31 +102,34 @@ FURNITURE = [
     *[("glass_door" if u == KITCHEN_DOOR_U else "glass_wall", u, KITCHEN[2] + 1, "left")
       for u in range(KITCHEN[0], KITCHEN[1] + 1)],
     ("vending_machine", 18, 0, "down"),
-    ("coffee_machine", 19, 0, "down"),
+    ("coffee_machine", 19, 0, "right"),
     ("water_cooler", 20, 0, "down"),
     ("trash_bin", 21, 0, "down"),
     ("fridge", 22, 0, "down"),
     ("table", 20, 4, "down"),
-    ("chair", 19, 4, "right"),
-    ("chair", 20, 3, "down"),
-    # Reception, by the way in: the counter, its chair behind it, a sofa to
-    # wait on, the filing along the back edge. A sofa's art reaches a tile
-    # behind its seats, so it stands two tiles in from the platform's edge.
+    ("chair", 19, 4, "down"),
+    ("chair", 20, 3, "right"),
+    # Reception, by the way in: the counter, its chair behind it, armchairs to
+    # wait in, the filing along the back edge. Armchairs, not a sofa: a piece
+    # two tiles long shows that PixelLab draws on a steeper slope than this
+    # floor's, and a one-tile piece does not.
     ("coat_rack", 0, 1, "right"),
     ("bookshelf", 4, 0, "down"),
-    ("file_cabinet", 5, 0, "down"),
-    ("file_cabinet", 6, 0, "down"),
-    ("printer", 7, 0, "down"),
+    ("file_cabinet", 5, 0, "right"),
+    ("file_cabinet", 6, 0, "right"),
+    ("printer", 7, 0, "right"),
     ("reception_desk", 4, 8, "right"),
-    ("office_chair", 4, 7, "down"),
+    ("office_chair", 4, 7, "right"),
     ("tall_plant", 6, 7, "down"),
-    ("sofa", 2, 10, "down"),
+    ("armchair", 1, 10, "down"),
+    ("armchair", 1, 11, "down"),
+    ("coffee_table", 2, 10, "down"),
     ("tall_plant", 0, 13, "right"),
     # The desks: two rows of workstations, a chair behind each, a partition
     # in front of each row and between the two columns.
     *[piece for u, v in ((9, 11), (14, 11), (9, 15), (14, 15)) for piece in (
         ("workstation", u, v, "down"),
-        ("office_chair", u - 1, v, "right"),
+        ("office_chair", u - 1, v, "down"),
         ("cubicle_partition", u - 1, v + 2, "left"),
         ("cubicle_partition", u, v + 2, "left"),
     )],
@@ -132,7 +137,8 @@ FURNITURE = [
     ("trash_bin", 10, 14, "down"),
     ("cactus", 15, 13, "down"),
     # A corner to sit in at the front, and light in the corners.
-    ("sofa", 2, 15, "down"),
+    ("armchair", 2, 16, "down"),
+    ("armchair", 3, 15, "right"),
     ("coffee_table", 3, 16, "down"),
     ("lamp", 0, 18, "right"),
     ("lamp", 23, 18, "down"),

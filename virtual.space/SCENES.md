@@ -339,8 +339,10 @@ author is `virtual.space/tools/author_construct.py`, which writes
   board, screen), plus the white exit gate. Generated native at single-colour
   outline / basic shading / medium detail and judged next to an avatar frame
   before the batch; ask for the object "standing alone", or PixelLab adds a
-  stool to the door and a chair to the bookshelf. Each art faces screen
-  down-left (tile `down`); its `flip_x` twin is tile `right`.
+  stool to the door and a chair to the bookshelf. Each art is tile `down` as
+  drawn and its `flip_x` twin is tile `right`; which way that faces is the
+  art's own — a bookshelf shows its front down-left, a cabinet or any seat
+  down-right (§11, "Facing").
 - **The library** (`LIBRARY` in the author) adds a tab per theme — office,
   garden, gamer, beside the home furniture — each kind one PixelLab object
   named `<kind>.png`. A piece longer than a tile declares its `size`
@@ -498,8 +500,13 @@ Time's arrival lamp (`eot_office_door` at (48,41), interactable
   runs meet at a point, with no corner piece. The way out is the wooden door
   standing at the edge (`office_exit`, `exit_office`), with the tile in front
   of it and the spawns `reserved`.
-- **Facing**, in three cases. A bulky one-tile piece (a cabinet, a machine,
-  a chair) faces +v as "down" and +u as "right". A two-tile piece runs down v
+- **Facing**, in three cases. A bulky one-tile piece faces the way its art
+  was drawn, which is not the same for every kind: the bookshelf, the vending
+  machine and the fridge show their front as "down" (+v); the file cabinet,
+  the printer, the coffee machine and every seat show theirs as "down" toward
+  +u, and as "right" toward +v. Look at the art before placing one against an
+  edge. Whoever sits faces the way the seat's art opens (`SEAT_FACING` in the
+  renderer: "down" down-right, "right" down-left). A two-tile piece runs down v
   as "down", facing +u, and across u as "right", facing +v. A flat board (the
   whiteboard, the screen) runs down v as "down", facing +u, so along the back
   edge at `v = 0` it is "right".

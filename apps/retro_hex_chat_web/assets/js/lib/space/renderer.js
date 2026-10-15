@@ -76,9 +76,11 @@ const FOCUS_KEYS = Object.freeze({ interact: "E", sit: "F" });
 const SEAT_LIFT_PX = 16;
 // A seated avatar faces the way its chair does: a seat's cardinal facing →
 // the 8-direction iso rotation it reads as on screen (see ISO_STEP_FACING).
+// Every seat's art opens screen down-right as "down" (its mirror, "right",
+// down-left), so that is the way whoever sits in it looks.
 const SEAT_FACING = Object.freeze({
-  down: "south-west",
-  right: "south-east",
+  down: "south-east",
+  right: "south-west",
   up: "north-east",
   left: "north-west",
 });
