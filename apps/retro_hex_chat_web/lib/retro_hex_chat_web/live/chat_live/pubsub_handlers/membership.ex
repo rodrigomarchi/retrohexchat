@@ -37,7 +37,9 @@ defmodule RetroHexChatWeb.ChatLive.PubsubHandlers.Membership do
   alias RetroHexChatWeb.App.Paths
   alias RetroHexChatWeb.ChatLive.CommandDispatch
   alias RetroHexChatWeb.ChatLive.Components.{ChannelCentralDialog, HoverCard, Nicklist}
+  alias RetroHexChatWeb.ChatLive.Helpers.Channel, as: ChannelHelpers
   alias RetroHexChatWeb.ChatLive.Helpers.Conversation
+  alias RetroHexChatWeb.ChatLive.Visitor
 
   # ── User joined/left/nick_changed ─────────────────────────
 
@@ -304,6 +306,22 @@ defmodule RetroHexChatWeb.ChatLive.PubsubHandlers.Membership do
     else
       {:halt, socket}
     end
+  end
+
+  # ── Visitors watching a channel ────────────────────────────
+
+  def handle_info({:watchers_changed, %{channel: channel, guests: guests}}, socket) do
+    {:halt,
+     socket
+     |> ChannelHelpers.put_channel_guests(channel, guests)
+     |> maybe_refresh_cc(channel)}
+  end
+
+  # Only a visitor was watching; a member's view of the room is unchanged.
+  def handle_info({:watch_closed, %{channel: channel}}, socket) do
+    if Visitor.visitor?(socket),
+      do: {:halt, Visitor.watch_closed(socket, channel)},
+      else: {:halt, socket}
   end
 
   # ── Catch-all: pass unhandled to next hook ────────────────

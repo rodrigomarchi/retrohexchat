@@ -13,6 +13,13 @@
   </li>
   <li>{dgettext("help", "Cannot contain spaces")}</li>
   <li>
+    {dgettext(
+      "help",
+      "Cannot be a visitor name such as %{example}",
+      example: "Guest1234"
+    )}
+  </li>
+  <li>
     <strong>{dgettext("help", "Capital letters do not matter")}</strong> {dgettext(
       "help",
       "\"Alice\" and \"alice\" are the same nickname."
@@ -62,4 +69,8 @@
   · <.help_link topic="cmd-nick">{dgettext("help", "Changing Nickname")}</.help_link>
   · <.help_link topic="nickserv">{dgettext("help", "NickServ Overview")}</.help_link>
   · <.help_link topic="feature-nick-expiry">{dgettext("help", "Nick Expiration")}</.help_link>
+  ·
+  <.help_link topic="watching-without-account">
+    {dgettext("help", "Watching Without an Account")}
+  </.help_link>
 </p>

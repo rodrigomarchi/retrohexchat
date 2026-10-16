@@ -6,8 +6,9 @@ defmodule RetroHexChatWeb.Live.Surface do
   chat. Getting there needs three things and deliberately not a fourth.
 
   It needs the person's nickname, which is the same Plug session the chat reads,
-  and it needs the two refusals that go with it: no session goes to `/connect`,
-  and a banned nickname goes there saying why. Those were written inside
+  and it needs the two refusals that go with it: no session goes to the chat as
+  a visitor, with the sign-in window open naming the feature and a way back to
+  this address, and a banned nickname goes to `/connect` saying why. Those were written inside
   `ChatLive.mount/3`; a second copy in each surface is how one of them would end
   up missing the ban check.
 
@@ -47,28 +48,48 @@ defmodule RetroHexChatWeb.Live.Surface do
   import Phoenix.LiveView, only: [attach_hook: 4, connected?: 1, push_navigate: 2, redirect: 2]
 
   alias Phoenix.LiveView.Socket
-  alias RetroHexChat.Accounts.NicknameValidator
-  alias RetroHexChat.Admin.ServerBans
   alias RetroHexChat.Surfaces
   alias RetroHexChat.Topics
+  alias RetroHexChatWeb.App.{CallLive, SpaceLive}
   alias RetroHexChatWeb.App.Paths
+  alias RetroHexChatWeb.App.SessionNickname
   alias RetroHexChatWeb.Live.OpenSurfaces
+  alias RetroHexChatWeb.SpaceRef
 
   @spec on_mount(atom(), map(), map(), Socket.t()) :: {:cont, Socket.t()} | {:halt, Socket.t()}
-  def on_mount(:default, _params, session, socket) do
-    nickname = session["chat_nickname"]
+  def on_mount(:default, params, session, socket) do
+    case SessionNickname.resolve(session) do
+      {:ok, nickname} ->
+        {:cont, attach(socket, nickname)}
 
-    cond do
-      not is_binary(nickname) or NicknameValidator.validate(nickname) != :ok ->
-        {:halt, push_navigate(socket, to: Paths.connect_path(socket))}
-
-      ServerBans.banned?(nickname) ->
+      :banned ->
         {:halt, push_navigate(socket, to: Paths.connect_path(socket, "banned"))}
 
-      true ->
-        {:cont, attach(socket, nickname)}
+      :visitor ->
+        {feature, path} = visitor_destination(socket.view, params)
+        {:halt, push_navigate(socket, to: Paths.visitor_sign_in_path(feature, path))}
     end
   end
+
+  # Somebody without an account opened a surface: they land in the chat as a
+  # visitor, told which feature needs one, and come back to this address once
+  # they have it. The address is rebuilt from the route's own params — the
+  # path itself only arrives later, in `handle_params`.
+  defp visitor_destination(CallLive, %{"token" => token}), do: {:calls, Paths.call_path(token)}
+
+  defp visitor_destination(SpaceLive, %{"slug" => slug}) do
+    case SpaceRef.space_id(slug) do
+      {:ok, space_id} -> {:space, Paths.space_path(space_id)}
+      _unknown -> {:space, Paths.chat_path()}
+    end
+  end
+
+  defp visitor_destination(_view, %{"game" => game, "token" => token}),
+    do: {:games, Paths.play_match_path(game, token)}
+
+  defp visitor_destination(_view, %{"token" => token}), do: {:p2p, Paths.p2p_path(token)}
+  defp visitor_destination(_view, %{"game" => game}), do: {:games, Paths.play_path(game)}
+  defp visitor_destination(_view, _params), do: {:games, Paths.play_path()}
 
   defp attach(socket, nickname) do
     if connected?(socket) do

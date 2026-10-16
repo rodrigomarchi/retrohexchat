@@ -5,6 +5,7 @@ defmodule RetroHexChat.Chat.Attachments do
 
   use Gettext, backend: RetroHexChat.Gettext
 
+  alias RetroHexChat.Channels.Visibility
   alias RetroHexChat.Chat.{Attachment, PrivateMessage, Queries, UploadedFile}
   alias RetroHexChat.Chat.Attachments.Preview
   alias RetroHexChat.Chat.Message
@@ -170,6 +171,17 @@ defmodule RetroHexChat.Chat.Attachments do
   end
 
   def visible_to?(_attachment, _nickname), do: false
+
+  @doc """
+  Whether somebody without an account may see the attachment: a live message
+  in a channel a visitor may watch (`Channels.Visibility.watchable?/1`). A
+  private conversation's never is.
+  """
+  @spec visible_to_visitor?(Attachment.t()) :: boolean()
+  def visible_to_visitor?(%Attachment{message: %Message{deleted_at: nil, channel_name: channel}}),
+    do: Visibility.watchable?(channel)
+
+  def visible_to_visitor?(_attachment), do: false
 
   @spec bucket() :: String.t()
   def bucket, do: Keyword.fetch!(config(), :bucket)

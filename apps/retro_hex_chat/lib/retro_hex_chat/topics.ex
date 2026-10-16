@@ -83,6 +83,18 @@ defmodule RetroHexChat.Topics do
   @spec presence() :: String.t()
   def presence, do: "presence:global"
 
+  @doc "Server-wide announcements (`/announce`), heard by every chat, signed in or not."
+  @spec announcements() :: String.t()
+  def announcements, do: "server:announcements"
+
+  @doc "Operator wallops (`/wallops`)."
+  @spec wallops() :: String.t()
+  def wallops, do: "server:wallops"
+
+  @doc "Server settings, the MOTD and the server-wide disconnects an admin issues."
+  @spec server_settings() :: String.t()
+  def server_settings, do: "server:settings"
+
   @doc """
   Where a person's non-chat surfaces listen, and only for the end of their own
   session.

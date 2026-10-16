@@ -21,6 +21,20 @@ defmodule RetroHexChat.Accounts.NicknameValidator do
 
   def valid?(_), do: false
 
+  @doc """
+  Whether `nickname` has the shape a visitor's name takes — `Guest` and digits,
+  in any case. Visitors watching a channel without an account are listed under
+  these names, so nobody may register one or switch to one: a member called
+  `Guest1234` would be indistinguishable from a visitor.
+  """
+  @spec guest?(term()) :: boolean()
+  def guest?(nickname) when is_binary(nickname), do: Regex.match?(~r/^guest[0-9]+$/i, nickname)
+  def guest?(_nickname), do: false
+
+  @doc "A fresh visitor name: `Guest` and four digits."
+  @spec guest_name() :: String.t()
+  def guest_name, do: "Guest#{1000 + :rand.uniform(9000) - 1}"
+
   @spec validate(String.t()) :: :ok | {:error, String.t()}
   def validate(nickname) do
     cond do

@@ -329,8 +329,21 @@ defmodule RetroHexChatWeb.JoinLive do
     end
   end
 
-  defp enter_path(_resolution, false, slug), do: ~p"/connect?return_to=/join/#{slug}"
+  # Without an account a channel can still be watched, so its card opens it in
+  # the chat as a visitor. Everything else needs an account: the chat opens with
+  # the sign-in window naming the feature, and returns here once signed in.
+  defp enter_path(%{kind: "channel"} = resolution, false, _slug), do: surface_path(resolution)
+
+  defp enter_path(resolution, false, slug),
+    do: Paths.visitor_sign_in_path(visitor_feature(resolution), ~p"/join/#{slug}")
+
   defp enter_path(resolution, true, _slug), do: surface_path(resolution)
+
+  defp visitor_feature(%{kind: "play"}), do: :games
+  defp visitor_feature(%{kind: "call"}), do: :calls
+  defp visitor_feature(%{kind: "space"}), do: :space
+  defp visitor_feature(%{kind: "p2p"}), do: :p2p
+  defp visitor_feature(_resolution), do: :feature
 
   defp surface_path(%{kind: "play", target: %{"game_id" => game_id, "session_token" => token}}),
     do: Paths.play_match_path(game_id, token)

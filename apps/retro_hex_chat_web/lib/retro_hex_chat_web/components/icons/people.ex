@@ -362,6 +362,20 @@ defmodule RetroHexChatWeb.Icons.People do
 
   attr :class, :string, default: nil
 
+  @spec icon_watching(map()) :: Phoenix.LiveView.Rendered.t()
+  def icon_watching(assigns) do
+    ~H"""
+    <svg class={@class} viewBox="0 0 16 16" shape-rendering="crispEdges" aria-hidden="true">
+      <polygon points="1,8 4,5 6,4 10,4 12,5 15,8 12,11 10,12 6,12 4,11" fill="#000080" />
+      <polygon points="3,8 5,6 11,6 13,8 11,10 5,10" fill="#ffffff" />
+      <rect x="6" y="6" width="4" height="4" fill="#000080" />
+      <rect x="7" y="7" width="1" height="1" fill="#ffffff" />
+    </svg>
+    """
+  end
+
+  attr :class, :string, default: nil
+
   @spec icon_role_owner(map()) :: Phoenix.LiveView.Rendered.t()
   def icon_role_owner(assigns) do
     ~H"""

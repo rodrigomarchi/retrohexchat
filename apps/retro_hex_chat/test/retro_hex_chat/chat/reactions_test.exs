@@ -201,7 +201,11 @@ defmodule RetroHexChat.Chat.ReactionsTest do
     :telemetry.attach(
       handler,
       [:retro_hex_chat, :repo, :query],
-      fn _event, _measurements, _metadata, _config -> send(parent, {ref, :query}) end,
+      # Telemetry runs the handler in the process that ran the query, so only
+      # this test's own queries are counted — not those of tests running beside it.
+      fn _event, _measurements, _metadata, _config ->
+        if self() == parent, do: send(parent, {ref, :query})
+      end,
       nil
     )
 

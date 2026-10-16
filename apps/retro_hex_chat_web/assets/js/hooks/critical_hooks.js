@@ -26,6 +26,7 @@ import NicklistHook from "./ui/nicklist_hook";
 import ContextualTipsHook from "./ui/contextual_tips_hook";
 import NickChangeFormHook from "./chat/nick_change_form_hook";
 import OpenTabConfirmHook from "./chat/open_tab_confirm_hook";
+import VisitorLinkGuardHook from "./chat/visitor_link_guard_hook";
 import URLCatcherHook from "./ui/url_catcher_hook";
 import ViewportDetectHook from "./ui/viewport_detect_hook";
 import WindowManagerHook from "./ui/window_manager_hook";
@@ -49,6 +50,7 @@ export const criticalHooks = {
   LagHook: LagHook,
   NickChangeFormHook: NickChangeFormHook,
   OpenTabConfirmHook: OpenTabConfirmHook,
+  VisitorLinkGuardHook: VisitorLinkGuardHook,
   PasteHook: PasteHook,
   ChatViewportHook: ChatViewportHook,
   ChatPaginationHook: ChatPaginationHook,

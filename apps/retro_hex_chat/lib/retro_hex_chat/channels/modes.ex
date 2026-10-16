@@ -61,6 +61,19 @@ defmodule RetroHexChat.Channels.Modes do
   @spec private?(t()) :: boolean()
   def private?(%__MODULE__{flags: flags}), do: MapSet.member?(flags, :private)
 
+  @doc """
+  Whether somebody without an account may watch the channel.
+
+  A visitor reads the conversation as it happens, so everything that keeps a
+  stranger out of a channel keeps a visitor out too: `+s` and `+p` hide it,
+  `+i` and `+k` lock it. `+R` does not — it gates speaking as a member, and a
+  visitor never speaks.
+  """
+  @spec watchable?(t()) :: boolean()
+  def watchable?(%__MODULE__{} = modes) do
+    not (secret?(modes) or private?(modes) or invite_only?(modes) or has_key?(modes))
+  end
+
   @spec strip_colors?(t()) :: boolean()
   def strip_colors?(%__MODULE__{flags: flags}), do: MapSet.member?(flags, :strip_colors)
 

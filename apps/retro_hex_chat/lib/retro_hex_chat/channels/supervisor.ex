@@ -24,6 +24,25 @@ defmodule RetroHexChat.Channels.Supervisor do
     DynamicSupervisor.start_child(supervisor, {RetroHexChat.Channels.Server, channel_name})
   end
 
+  @doc """
+  The channel's process, started if it is not running. Losing a start race to
+  another caller is not an error: the winner's process is the answer.
+  """
+  @spec ensure_started(String.t()) :: {:ok, pid()} | {:error, term()}
+  def ensure_started(channel_name) do
+    case RetroHexChat.Channels.Registry.lookup(channel_name) do
+      {:ok, pid} ->
+        {:ok, pid}
+
+      {:error, :not_found} ->
+        case start_child(channel_name) do
+          {:ok, pid} -> {:ok, pid}
+          {:error, {:already_started, pid}} -> {:ok, pid}
+          {:error, reason} -> {:error, reason}
+        end
+    end
+  end
+
   @spec stop_child(GenServer.server(), pid()) :: :ok | {:error, :not_found}
   def stop_child(supervisor \\ __MODULE__, pid) do
     DynamicSupervisor.terminate_child(supervisor, pid)

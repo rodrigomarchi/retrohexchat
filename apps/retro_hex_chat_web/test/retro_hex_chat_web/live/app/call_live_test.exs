@@ -21,6 +21,7 @@ defmodule RetroHexChatWeb.App.CallLiveTest do
   alias RetroHexChat.GroupCall.RoomServer
   alias RetroHexChat.Services.NickServ
   alias RetroHexChat.Services.RegisteredNick
+  alias RetroHexChatWeb.App.Paths
 
   defp register(prefix) do
     nickname = "#{prefix}#{uid()}" |> String.slice(0, 16)
@@ -87,9 +88,6 @@ defmodule RetroHexChatWeb.App.CallLiveTest do
     end
   end
 
-  defp redirected_to_connect({:error, {_kind, %{to: to}}}), do: to == "/connect"
-  defp redirected_to_connect(_other), do: false
-
   # The room writes its participants out as it terminates, on a sandbox
   # connection borrowed from a process that is itself on its way out.
   defp stop_room(pid) do
@@ -99,8 +97,11 @@ defmodule RetroHexChatWeb.App.CallLiveTest do
   end
 
   describe "who may open it" do
-    test "no session goes to connect", %{conn: conn} do
-      assert redirected_to_connect(live(conn, ~p"/call/whatever"))
+    test "no session lands in the chat, asked to sign in for calls and brought back", %{
+      conn: conn
+    } do
+      assert {:error, {_kind, %{to: to}}} = live(conn, ~p"/call/whatever")
+      assert to == Paths.visitor_sign_in_path(:calls, "/call/whatever")
     end
 
     # The most common thing a shared link is, by a wide margin: a link outlives

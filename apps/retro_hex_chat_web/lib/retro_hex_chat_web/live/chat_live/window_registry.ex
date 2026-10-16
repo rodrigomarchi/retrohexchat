@@ -291,6 +291,10 @@ defmodule RetroHexChatWeb.ChatLive.WindowRegistry do
 
   defp account do
     [
+      window("visitor-connect", dgettext("connect", "Connect to RetroHexChat"), :icon_connect,
+        family: :account,
+        geometry: geometry(160, 40, 560, nil, 360, 320)
+      ),
       window("account", dgettext("chat", "Account"), :icon_status_user,
         family: :account,
         geometry: geometry(180, 40, 560, 620, 420, 380)

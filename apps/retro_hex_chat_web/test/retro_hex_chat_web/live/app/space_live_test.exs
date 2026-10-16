@@ -26,6 +26,7 @@ defmodule RetroHexChatWeb.App.SpaceLiveTest do
   alias RetroHexChat.VirtualSpace.CharacterRecipe
   alias RetroHexChat.VirtualSpace.DirectMessageSpace
   alias RetroHexChat.VirtualSpace.Registry
+  alias RetroHexChatWeb.App.Paths
   alias RetroHexChatWeb.Components.UI.SpaceCharacterCreator
   alias RetroHexChatWeb.SpaceRef
 
@@ -54,12 +55,12 @@ defmodule RetroHexChatWeb.App.SpaceLiveTest do
 
   defp path(space_id), do: "/space/" <> SpaceRef.slug(space_id)
 
-  defp redirected_to_connect({:error, {_kind, %{to: to}}}), do: to == "/connect"
-  defp redirected_to_connect(_other), do: false
-
   describe "who may open it" do
-    test "no session goes to connect", %{conn: conn} do
-      assert redirected_to_connect(live(conn, path("#nowhere")))
+    test "no session lands in the chat, asked to sign in for spaces and brought back", %{
+      conn: conn
+    } do
+      assert {:error, {_kind, %{to: to}}} = live(conn, path("#nowhere"))
+      assert to == Paths.visitor_sign_in_path(:space, path("#nowhere"))
     end
 
     test "a slug that decodes to nothing says so instead of rendering a map", %{conn: conn} do

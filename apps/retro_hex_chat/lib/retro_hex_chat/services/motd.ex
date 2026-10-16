@@ -6,10 +6,10 @@ defmodule RetroHexChat.Services.Motd do
   use Gettext, backend: RetroHexChat.Gettext
 
   alias RetroHexChat.Services.Queries
+  alias RetroHexChat.Topics
 
   @cache_key :motd_cache
   @pubsub RetroHexChat.PubSub
-  @topic "server:settings"
 
   @spec get() :: String.t() | nil
   def get do
@@ -25,7 +25,13 @@ defmodule RetroHexChat.Services.Motd do
     case Queries.upsert_setting("motd", content, admin_nickname) do
       {:ok, _} ->
         Application.put_env(:retro_hex_chat, @cache_key, content)
-        Phoenix.PubSub.broadcast(@pubsub, @topic, {:motd_updated, %{content: content}})
+
+        Phoenix.PubSub.broadcast(
+          @pubsub,
+          Topics.server_settings(),
+          {:motd_updated, %{content: content}}
+        )
+
         :ok
 
       {:error, _changeset} ->
@@ -38,7 +44,7 @@ defmodule RetroHexChat.Services.Motd do
     Queries.delete_setting("motd")
     Application.put_env(:retro_hex_chat, @cache_key, :unset)
 
-    Phoenix.PubSub.broadcast(@pubsub, @topic, {:motd_updated, %{content: nil}})
+    Phoenix.PubSub.broadcast(@pubsub, Topics.server_settings(), {:motd_updated, %{content: nil}})
 
     _ = admin_nickname
     :ok

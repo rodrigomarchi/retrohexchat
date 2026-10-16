@@ -58,11 +58,15 @@ defmodule RetroHexChatWeb.App.SessionController do
 
   # A registered nickname is somebody's: the only ways in are its password (the short token
   # the connect window signs after checking it) and a device its owner trusted. A bare
-  # nickname is for names nobody has registered.
+  # nickname is for names nobody has registered — and never a visitor's name.
   defp require_proof_for_registered(_nickname, %{pre_identified: true}), do: :ok
 
   defp require_proof_for_registered(nickname, _auth) do
-    if NickServ.registered?(nickname), do: {:error, :registered_needs_proof}, else: :ok
+    cond do
+      NickServ.registered?(nickname) -> {:error, :registered_needs_proof}
+      NicknameValidator.guest?(nickname) -> {:error, :reserved_for_visitors}
+      true -> :ok
+    end
   end
 
   # Names this browser sign-in, so an identification made inside the chat (`/ns identify`)

@@ -183,6 +183,18 @@ get fresh timers with the *remaining* duration.
 - **Nicknames are the only durable identity key in chat** (guests have no persistent user
   ID). On nick change, the LiveView unsubscribes/resubscribes the `user:` inbox; DB records
   keep the nickname as-sent (immutable), and history queries must union old+new nicknames.
+- **A visitor watches; it never joins.** `/chat` without a session is the same LiveView in
+  visitor mode (`ChatLive.Visitor`): a `GuestNNNN` name, a `Channels.Server.watch/3` that is
+  monitored and listed apart from members, and a `:handle_event` gate attached before every
+  other hook — reading passes, everything else opens the sign-in window. A live component
+  with events of its own is out of the gate's reach, so a visitor must not reach one: the
+  composer is drawn `inert` under a pane that opens the sign-in window (the screen stays
+  the same as a member's), `Visitor.hidden_windows/0` are left out, and no managed window
+  mounts. Links are the
+  browser's to follow, so `VisitorLinkGuardHook` holds every one outside
+  `Visitor.open_paths/0`. Any entry point that needs an account and finds no session
+  — a surface, the arcade, a share card — sends the reader to
+  `Paths.visitor_sign_in_path/2`, never to bare `/connect`; a new one must too.
 - **Permission checks belong in the domain** (`Channels.Policy`, `Commands.Policy`,
   `Accounts.ServerRoles`). Server roles require `identified: true` (NickServ) and come from
   config/env/RoleCache, not a users table. Channel roles are a single-valued rank

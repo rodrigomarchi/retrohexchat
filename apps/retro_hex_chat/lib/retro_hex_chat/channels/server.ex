@@ -26,6 +26,7 @@ defmodule RetroHexChat.Channels.Server do
     ScheduledEvents
   }
 
+  alias RetroHexChat.Channels.Supervisor, as: ChannelSupervisor
   alias RetroHexChat.Chat
   alias RetroHexChat.Chat.{Archive, Attachments, Content}
   alias RetroHexChat.Nickname
@@ -51,7 +52,8 @@ defmodule RetroHexChat.Channels.Server do
           registered: boolean(),
           created_at: DateTime.t(),
           join_timestamps: [DateTime.t()],
-          last_activity_touched_at: DateTime.t() | nil
+          last_activity_touched_at: DateTime.t() | nil,
+          watchers: %{pid() => {reference(), String.t()}}
         }
 
   @pubsub RetroHexChat.PubSub
@@ -391,6 +393,80 @@ defmodule RetroHexChat.Channels.Server do
     :exit, _reason -> {:error, dgettext("channels", "Channel not found")}
   end
 
+  @doc "The channel every chat opens on — a member's first join, a visitor's first look."
+  @spec default_channel() :: String.t()
+  def default_channel, do: Application.get_env(:retro_hex_chat, :default_channel, "#lobby")
+
+  @doc """
+  Let `pid` — a visitor without an account — watch the channel as `guest_name`.
+
+  A watcher is listed apart from the members, under its guest name, and never
+  joins: it is not in the member list, holds no role, broadcasts no join and
+  cannot speak. The channel monitors it, so a watcher whose process ends drops
+  off the list without saying goodbye — and a room nobody registered stays up
+  while somebody is watching it, stopping when the last member and the last
+  watcher are both gone.
+
+  A registered channel nobody has entered since the node started has no process
+  yet, and watching starts it; so does the default channel, which is where
+  every visitor lands. Any other channel without a process does not exist, and
+  watching never brings one into being. A channel a stranger may not see
+  (`Modes.watchable?/1`) refuses.
+  """
+  @spec watch(String.t(), pid(), String.t()) ::
+          {:ok, map()} | {:error, :not_found | :not_watchable}
+  def watch(channel_name, pid, guest_name)
+      when is_binary(channel_name) and is_pid(pid) and is_binary(guest_name) do
+    Observability.span(
+      [:retro_hex_chat, :channels, :visitor, :watch],
+      %{"chat.channel" => channel_name},
+      fn ->
+        try do
+          with {:ok, channel_pid} <- watchable_process(channel_name) do
+            GenServer.call(channel_pid, {:watch, pid, guest_name})
+          end
+        catch
+          :exit, _reason -> {:error, :not_found}
+        end
+      end
+    )
+  end
+
+  @doc "Stop counting `pid` as watching the channel. A no-op when it was not."
+  @spec unwatch(String.t(), pid()) :: :ok
+  def unwatch(channel_name, pid) when is_binary(channel_name) and is_pid(pid) do
+    Observability.span(
+      [:retro_hex_chat, :channels, :visitor, :unwatch],
+      %{"chat.channel" => channel_name},
+      fn ->
+        try do
+          case Registry.lookup(channel_name) do
+            {:ok, channel_pid} -> GenServer.call(channel_pid, {:unwatch, pid})
+            {:error, :not_found} -> :ok
+          end
+        catch
+          :exit, _reason -> :ok
+        end
+      end
+    )
+  end
+
+  defp watchable_process(channel_name) do
+    with {:error, :not_found} <- Registry.lookup(channel_name),
+         true <- startable_for_watching?(channel_name),
+         {:ok, pid} <- ChannelSupervisor.ensure_started(channel_name) do
+      {:ok, pid}
+    else
+      {:ok, pid} -> {:ok, pid}
+      _not_startable -> {:error, :not_found}
+    end
+  end
+
+  defp startable_for_watching?(channel_name) do
+    channel_name == default_channel() or
+      ServiceQueries.find_registered_channel(channel_name) != nil
+  end
+
   # ──────────────────────────────────────────────────────────────
   # GenServer Callbacks
   # ──────────────────────────────────────────────────────────────
@@ -412,7 +488,8 @@ defmodule RetroHexChat.Channels.Server do
       join_timestamps: [],
       channel_mutes: MapSet.new(),
       welcome_message: nil,
-      last_activity_touched_at: nil
+      last_activity_touched_at: nil,
+      watchers: %{}
     }
 
     {:ok,
@@ -481,7 +558,7 @@ defmodule RetroHexChat.Channels.Server do
 
       membership_lost(state.name, nickname, "channel_part")
 
-      if Membership.count(new_membership) == 0 and not state.registered do
+      if abandoned?(new_state) do
         {:stop, :normal, :ok, new_state}
       else
         reply(:ok, new_state)
@@ -508,6 +585,30 @@ defmodule RetroHexChat.Channels.Server do
     reply(state_to_map(state), state)
   end
 
+  def handle_call({:watch, pid, guest_name}, _from, state) do
+    cond do
+      not Modes.watchable?(state.modes) ->
+        reply({:error, :not_watchable}, state)
+
+      Map.has_key?(state.watchers, pid) ->
+        reply({:ok, state_to_map(state)}, state)
+
+      true ->
+        watcher = {Process.monitor(pid), guest_name}
+        new_state = %{state | watchers: Map.put(state.watchers, pid, watcher)}
+        broadcast_watchers(new_state)
+        reply({:ok, state_to_map(new_state)}, new_state)
+    end
+  end
+
+  def handle_call({:unwatch, pid}, _from, state) do
+    new_state = drop_watcher(state, pid)
+
+    if abandoned?(new_state),
+      do: {:stop, :normal, :ok, new_state},
+      else: reply(:ok, new_state)
+  end
+
   def handle_call({:set_mode, nickname, mode_string, params}, _from, state) do
     params = show_user_mode_targets(state, mode_string, params)
 
@@ -520,7 +621,8 @@ defmodule RetroHexChat.Channels.Server do
            apply_user_modes(new_state.membership, nickname, clean_mode_string, clean_params),
          {:ok, new_modes} <-
            Modes.apply_changes(new_state.modes, clean_mode_string, clean_params) do
-      new_state = %{new_state | modes: new_modes, membership: new_membership}
+      new_state =
+        close_watch_unless_watchable(%{new_state | modes: new_modes, membership: new_membership})
 
       maybe_persist_channel_settings(new_state)
 
@@ -558,7 +660,7 @@ defmodule RetroHexChat.Channels.Server do
 
         membership_lost(state.name, target_nick, "channel_kick")
 
-        if Membership.count(new_membership) == 0 and not state.registered do
+        if abandoned?(new_state) do
           {:stop, :normal, :ok, new_state}
         else
           reply(:ok, new_state)
@@ -1085,6 +1187,15 @@ defmodule RetroHexChat.Channels.Server do
     end
   end
 
+  @impl true
+  def handle_info({:DOWN, _ref, :process, pid, _reason}, state) do
+    new_state = drop_watcher(state, pid)
+
+    if abandoned?(new_state),
+      do: {:stop, :normal, new_state},
+      else: {:noreply, refresh_directory(new_state)}
+  end
+
   @spec run_before_broadcast(keyword(), integer()) :: :ok
   defp run_before_broadcast(opts, message_id) do
     case Keyword.get(opts, :before_broadcast) do
@@ -1314,6 +1425,7 @@ defmodule RetroHexChat.Channels.Server do
       name: state.name,
       topic: state.topic,
       member_count: Membership.count(state.membership),
+      watcher_count: map_size(state.watchers),
       secret?: Modes.secret?(state.modes),
       private?: Modes.private?(state.modes),
       invite_only?: Modes.invite_only?(state.modes),
@@ -1324,6 +1436,56 @@ defmodule RetroHexChat.Channels.Server do
   end
 
   defp via(channel_name), do: Registry.via_tuple(channel_name)
+
+  # ── Watchers ──────────────────────────────────────────────────
+
+  # Nobody left to keep a room nobody registered: no member in it, and no
+  # visitor watching it.
+  defp abandoned?(state) do
+    not state.registered and Membership.count(state.membership) == 0 and
+      map_size(state.watchers) == 0
+  end
+
+  defp drop_watcher(state, pid) do
+    case Map.pop(state.watchers, pid) do
+      {nil, _watchers} ->
+        state
+
+      {{ref, _guest_name}, watchers} ->
+        Process.demonitor(ref, [:flush])
+        new_state = %{state | watchers: watchers}
+        broadcast_watchers(new_state)
+        new_state
+    end
+  end
+
+  # A mode that hides or locks the room ends every visitor's watch at once:
+  # they were reading it as strangers, and strangers may no longer.
+  defp close_watch_unless_watchable(state) do
+    if map_size(state.watchers) > 0 and not Modes.watchable?(state.modes) do
+      Enum.each(state.watchers, fn {_pid, {ref, _name}} -> Process.demonitor(ref, [:flush]) end)
+      broadcast(state.name, {:watch_closed, %{channel: state.name}})
+      new_state = %{state | watchers: %{}}
+      broadcast_watchers(new_state)
+      new_state
+    else
+      state
+    end
+  end
+
+  defp broadcast_watchers(state) do
+    broadcast(
+      state.name,
+      {:watchers_changed,
+       %{channel: state.name, count: map_size(state.watchers), guests: guest_names(state)}}
+    )
+  end
+
+  defp guest_names(state) do
+    state.watchers
+    |> Enum.map(fn {_pid, {_ref, guest_name}} -> guest_name end)
+    |> Enum.sort_by(&String.downcase/1)
+  end
 
   defp broadcast(channel_name, message) do
     {event, metadata} = broadcast_observability(channel_name, message)
@@ -1399,6 +1561,8 @@ defmodule RetroHexChat.Channels.Server do
       welcome_message: state.welcome_message,
       members: Membership.to_list(state.membership),
       member_count: Membership.count(state.membership),
+      watcher_count: map_size(state.watchers),
+      guests: guest_names(state),
       owners: Membership.owners(state.membership),
       operators: Membership.operators(state.membership),
       half_operators: Membership.half_operators(state.membership),

@@ -4,9 +4,9 @@ defmodule RetroHexChat.Commands.Handlers.Announce do
   @behaviour RetroHexChat.Commands.Handler
 
   alias RetroHexChat.Commands.Handler
+  alias RetroHexChat.Topics
 
   @pubsub RetroHexChat.PubSub
-  @topic "server:announcements"
 
   @impl true
   @spec validate(String.t()) :: :ok | {:error, String.t()}
@@ -27,7 +27,7 @@ defmodule RetroHexChat.Commands.Handlers.Announce do
 
     Phoenix.PubSub.broadcast(
       @pubsub,
-      @topic,
+      Topics.announcements(),
       {:announcement,
        %{
          sender: sender,

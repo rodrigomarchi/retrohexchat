@@ -13,6 +13,7 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.Channel do
   alias RetroHexChat.Accounts.Session
   alias RetroHexChat.Channels.Departure
   alias RetroHexChat.Channels.Server
+  alias RetroHexChat.Channels.Supervisor, as: ChannelSupervisor
   alias RetroHexChat.Chat.{AutoJoinList, Queries, UnreadTracker}
   alias RetroHexChat.Page
   alias RetroHexChat.Topics
@@ -235,15 +236,42 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.Channel do
   @spec load_channel_user_count(Phoenix.LiveView.Socket.t(), String.t()) ::
           Phoenix.LiveView.Socket.t()
   def load_channel_user_count(socket, channel_name) do
-    counts = socket.assigns.channel_user_counts
-
-    count =
+    {members, guests} =
       case Server.get_state(channel_name) do
-        {:ok, state} -> state.member_count
-        {:error, _} -> 0
+        {:ok, state} -> {state.member_count, Map.get(state, :guests, [])}
+        {:error, _} -> {0, []}
       end
 
-    assign(socket, channel_user_counts: Map.put(counts, channel_name, count))
+    # The count beside a channel is everybody in it — members and the visitors
+    # watching without an account. The guests are kept by name as well: they
+    # change on a broadcast of their own, and the user list names them apart.
+    assign(socket,
+      channel_user_counts:
+        Map.put(socket.assigns.channel_user_counts, channel_name, members + length(guests)),
+      channel_guests: Map.put(socket.assigns.channel_guests, channel_name, guests)
+    )
+  end
+
+  @doc """
+  The visitors watching a channel changed: move the count beside it by the
+  difference and keep the new list of guest names.
+  """
+  @spec put_channel_guests(Phoenix.LiveView.Socket.t(), String.t(), [String.t()]) ::
+          Phoenix.LiveView.Socket.t()
+  def put_channel_guests(socket, channel_name, guests) do
+    known = socket.assigns.channel_guests
+    delta = length(guests) - length(Map.get(known, channel_name, []))
+
+    assign(socket,
+      channel_user_counts:
+        Map.update(
+          socket.assigns.channel_user_counts,
+          channel_name,
+          length(guests),
+          &max(&1 + delta, 0)
+        ),
+      channel_guests: Map.put(known, channel_name, guests)
+    )
   end
 
   @spec load_channel_messages_with_pagination(Phoenix.LiveView.Socket.t(), String.t()) ::
@@ -299,18 +327,9 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.Channel do
 
   @spec ensure_channel_exists(String.t()) :: :ok | {:error, term()}
   def ensure_channel_exists(channel_name) do
-    alias RetroHexChat.Channels.{Registry, Supervisor}
-
-    case Registry.lookup(channel_name) do
-      {:ok, _pid} ->
-        :ok
-
-      {:error, :not_found} ->
-        case Supervisor.start_child(channel_name) do
-          {:ok, _pid} -> :ok
-          {:error, {:already_started, _pid}} -> :ok
-          {:error, reason} -> {:error, reason}
-        end
+    case ChannelSupervisor.ensure_started(channel_name) do
+      {:ok, _pid} -> :ok
+      {:error, reason} -> {:error, reason}
     end
   end
 

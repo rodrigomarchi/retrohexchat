@@ -3,7 +3,7 @@ defmodule RetroHexChat.Channels.Directory do
   The channel directory: what `/list` reads.
 
   Each channel server keeps a small snapshot of its own directory-visible state
-  — name, topic, member count, the handful of modes that affect visibility — in
+  — name, topic, member count, how many visitors are watching, the handful of modes that affect visibility — in
   its own `Registry` value. Reading the directory is then a single ETS select
   over that registry.
 
@@ -25,6 +25,7 @@ defmodule RetroHexChat.Channels.Directory do
           name: String.t(),
           topic: String.t() | nil,
           member_count: non_neg_integer(),
+          watcher_count: non_neg_integer(),
           secret?: boolean(),
           private?: boolean(),
           invite_only?: boolean(),
@@ -43,6 +44,7 @@ defmodule RetroHexChat.Channels.Directory do
           name: String.t(),
           topic: String.t() | nil,
           member_count: non_neg_integer(),
+          watcher_count: non_neg_integer(),
           secret?: boolean(),
           private?: boolean(),
           invite_only?: boolean(),
@@ -58,6 +60,7 @@ defmodule RetroHexChat.Channels.Directory do
       name: name,
       topic: Map.get(state, :topic),
       member_count: Map.get(state, :member_count, 0),
+      watcher_count: Map.get(state, :watcher_count, 0),
       secret?: get_in(state, [:modes_detail, :secret]) || false,
       private?: get_in(state, [:modes_detail, :private]) || false,
       invite_only?: get_in(state, [:modes_detail, :invite_only]) || false,
@@ -170,6 +173,7 @@ defmodule RetroHexChat.Channels.Directory do
       name: row.name,
       topic: row.topic,
       member_count: 0,
+      watcher_count: 0,
       secret?: Modes.secret?(modes),
       private?: Modes.private?(modes),
       invite_only?: Modes.invite_only?(modes),

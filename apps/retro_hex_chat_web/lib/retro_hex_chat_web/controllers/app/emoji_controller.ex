@@ -10,6 +10,9 @@ defmodule RetroHexChatWeb.App.EmojiController do
   one address forever. A signed URL rendered into the conversation would expire
   while the line was still on screen, and re-signing it on every render would
   make every message cost a signature.
+
+  Served to anybody, visitors included: a server emoji is part of the
+  conversation everybody reads, and nothing about it belongs to one person.
   """
   use RetroHexChatWeb, :controller
 
@@ -19,17 +22,9 @@ defmodule RetroHexChatWeb.App.EmojiController do
 
   @spec show(Plug.Conn.t(), map()) :: Plug.Conn.t()
   def show(conn, %{"id" => id}) do
-    nickname = get_session(conn, :chat_nickname)
-
-    cond do
-      not is_binary(nickname) or nickname == "" ->
-        redirect(conn, to: ~p"/connect")
-
-      entry = find(id) ->
-        redirect_to_storage(conn, entry)
-
-      true ->
-        send_resp(conn, :not_found, "")
+    case find(id) do
+      nil -> send_resp(conn, :not_found, "")
+      entry -> redirect_to_storage(conn, entry)
     end
   end
 

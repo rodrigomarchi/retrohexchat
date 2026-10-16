@@ -11,9 +11,21 @@
 <%!-- Raises a desktop notification for a conversation you are not looking at.
       The server decides whether; the browser decides when. --%>
 <div id="desktop-notify" phx-hook="DesktopNotifyHook" class="hidden"></div>
-<div :if={@push_available} id="push-subscribe" phx-hook="PushSubscribeHook" class="hidden"></div>
+<div
+  :if={@push_available and not @visitor?}
+  id="push-subscribe"
+  phx-hook="PushSubscribeHook"
+  class="hidden"
+>
+</div>
 <div id="nick-change-hook" phx-hook="NickChangeFormHook" class="hidden"></div>
-<form id="nick-change-session-form" action={~p"/chat/session"} method="post" class="hidden">
+<form
+  :if={not @visitor?}
+  id="nick-change-session-form"
+  action={~p"/chat/session"}
+  method="post"
+  class="hidden"
+>
   <input type="hidden" name="_csrf_token" value={Plug.CSRFProtection.get_csrf_token()} />
   <input type="hidden" name="nickname" value={@nick_change_target || ""} />
   <input
@@ -31,7 +43,18 @@
       it forward, and it can only be asked over `BroadcastChannel` because every
       surface here is opened with `rel="noopener"`. Mounted on the screens that
       have an address of their own, which is what the request is keyed by. --%>
-<div id="surface-presence" phx-hook="SurfacePresenceHook" class="hidden"></div>
+<div :if={not @visitor?} id="surface-presence" phx-hook="SurfacePresenceHook" class="hidden">
+</div>
+<%!-- A visitor's links: held, and answered with the sign-in window, except
+      the few paths open to everybody. --%>
+<div
+  :if={@visitor?}
+  id="visitor-link-guard"
+  phx-hook="VisitorLinkGuardHook"
+  data-allow={Jason.encode!(Visitor.open_paths())}
+  class="hidden"
+>
+</div>
 <div id="shortcut-dispatcher-hook" phx-hook="ShortcutDispatcherHook" class="hidden"></div>
 
 <%!-- Toast container --%>
@@ -215,15 +238,19 @@
               conversation_kind={if @session.active_pm, do: :private, else: :channel}
               conversation_label={@session.active_pm || @session.active_channel}
               current_modes={@current_modes}
-              current_nick={@session.nickname}
+              current_nick={@visitor_nick || @session.nickname}
               show_avatars={@session.show_avatars}
               nick_color_fn={@nick_color_fn}
+              guests={Map.get(@channel_guests, @session.active_channel, [])}
             />
           </div>
 
           <%!-- Composer island: autocomplete + syntax tooltip + bottom input panel.
                Full width under the messages/nicklist row — the nicklist ends
                above it, so the input spans the whole conversation. --%>
+          <%!-- A visitor sees the same composer everybody does, `locked`: its
+               events are its own, out of the visitor gate's reach, so it is
+               drawn unreachable and any click on it opens the sign-in window. --%>
           <.live_component
             module={RetroHexChatWeb.ChatLive.Components.Composer}
             id={RetroHexChatWeb.ChatLive.Components.Composer.id()}
@@ -235,6 +262,7 @@
             edit_mode_message_id={@edit_mode_message_id}
             timestamp_format={@timestamp_format}
             timezone={@timezone}
+            locked={@visitor?}
           />
 
           <%!-- Tab bar: Status and the conversation in focus — the two things
@@ -687,7 +715,10 @@
     <%!-- Channel Central — always mounted: the island owns all state, gates
           opens on membership, receives blind PubSub refreshes while closed,
           and drives its own window via window_command. --%>
+    <%!-- Not for a visitor (`@hidden_windows`): always mounted, a layout saved
+          by somebody signed in on this browser would reopen it with its tools live. --%>
     <.desktop_window
+      :if={"channel-central" not in @hidden_windows}
       {WindowRegistry.attrs("channel-central")}
       title={dgettext("chat", "Channel Central: %{channel}", channel: @cc_window_channel || "")}
       open={false}
@@ -700,6 +731,37 @@
         id={RetroHexChatWeb.ChatLive.Components.ChannelCentralDialog.id()}
         session={@session}
         timezone={@timezone}
+      />
+    </.desktop_window>
+
+    <%!-- Sign in — server-managed, a visitor's only: every action a visitor
+          tries opens it, and signing in returns them to the channel on screen. --%>
+    <.desktop_window
+      :if={@visitor? and Visitor.connect_window() in @open_windows}
+      {WindowRegistry.attrs(Visitor.connect_window())}
+      body_class="p-4 overflow-y-auto"
+      data-testid="visitor-connect-window"
+    >
+      <:icon><Icons.icon_connect class="h-4 w-4" /></:icon>
+      <div class="mb-retro-8 space-y-1 text-xs" data-testid="visitor-connect-reason">
+        <p class="font-bold" data-feature={@visitor_feature}>
+          {Visitor.feature_message(@visitor_feature)}
+        </p>
+        <p class="text-muted-foreground">
+          {dgettext(
+            "chat",
+            "Create an account or sign in, and you come back right where you were."
+          )}
+        </p>
+      </div>
+      <.live_component
+        module={RetroHexChatWeb.ConnectForm}
+        id={RetroHexChatWeb.ConnectForm.id()}
+        trusted_device_id={@trusted_device_id}
+        auto_login={false}
+        csrf_token={Plug.CSRFProtection.get_csrf_token()}
+        chat_session_path={~p"/chat/session"}
+        return_to={@visitor_return_to}
       />
     </.desktop_window>
 
@@ -805,6 +867,7 @@
     <%!-- URL Catcher — always mounted (URLs keep accumulating while closed);
           the window manager owns open/close client-side. --%>
     <.desktop_window
+      :if={"url-catcher" not in @hidden_windows}
       {WindowRegistry.attrs("url-catcher")}
       open={false}
       body_class="flex min-h-0 flex-col p-2"
@@ -1092,6 +1155,7 @@
         muted={@muted}
         arcade_session={@arcade_session}
         cc_window_channel={@cc_window_channel}
+        hidden_windows={@hidden_windows}
       />
     </:taskbar>
   </.desktop>

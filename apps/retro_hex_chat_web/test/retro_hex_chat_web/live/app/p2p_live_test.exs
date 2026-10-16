@@ -20,6 +20,7 @@ defmodule RetroHexChatWeb.App.P2PLiveTest do
   alias RetroHexChat.Services.NickServ
   alias RetroHexChat.Services.RegisteredNick
   alias RetroHexChat.ShareLinks
+  alias RetroHexChatWeb.App.Paths
 
   defp register(prefix) do
     nickname = "#{prefix}#{uid()}" |> String.slice(0, 16)
@@ -66,14 +67,15 @@ defmodule RetroHexChatWeb.App.P2PLiveTest do
     :ok
   end
 
-  defp redirected_to_connect({:error, {_kind, %{to: to}}}), do: to == "/connect"
-  defp redirected_to_connect(_other), do: false
-
   @setup_defaults %{"audio" => "true", "video" => "true", "turn_only" => "false"}
 
   describe "who may open it" do
-    test "no session goes to connect", %{conn: conn} do
-      assert redirected_to_connect(live(conn, ~p"/p2p/whatever"))
+    test "no session lands in the chat, asked to sign in and brought back", %{conn: conn} do
+      assert {:error, {_kind, %{to: to}}} = live(conn, ~p"/p2p/whatever")
+      assert to == Paths.visitor_sign_in_path(:p2p, "/p2p/whatever")
+
+      assert {:error, {_kind, %{to: to}}} = live(conn, ~p"/play/tetris/whatever")
+      assert to == Paths.visitor_sign_in_path(:games, "/play/tetris/whatever")
     end
 
     # The most common thing a shared link is, by a wide margin: a link outlives

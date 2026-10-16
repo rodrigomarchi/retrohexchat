@@ -22,7 +22,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.AdminConsoleDialog do
   import RetroHexChatWeb.Components.UI.AdminConsoleDialog
 
   alias RetroHexChat.Accounts.ServerRoles
-  alias RetroHexChat.Channels.{Registry, Server, Supervisor}
+  alias RetroHexChat.Channels.{Server, Supervisor}
   alias RetroHexChat.Commands.{Dispatcher, Parser}
   alias RetroHexChatWeb.ChatLive.AdminOps
 
@@ -191,16 +191,8 @@ defmodule RetroHexChatWeb.ChatLive.Components.AdminConsoleDialog do
 
   @spec ensure_channel_exists(String.t()) :: :ok | {:error, term()}
   defp ensure_channel_exists(channel_name) do
-    case Registry.lookup(channel_name) do
+    case Supervisor.ensure_started(channel_name) do
       {:ok, _pid} -> :ok
-      {:error, :not_found} -> start_channel(channel_name)
-    end
-  end
-
-  defp start_channel(channel_name) do
-    case Supervisor.start_child(channel_name) do
-      {:ok, _pid} -> :ok
-      {:error, {:already_started, _pid}} -> :ok
       {:error, reason} -> {:error, reason}
     end
   end

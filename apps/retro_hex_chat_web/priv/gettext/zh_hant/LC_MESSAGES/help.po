@@ -61,7 +61,7 @@ msgstr "1. 在連接屏幕上輸入暱稱並單擊"
 msgid "1. Enter a nickname that isn't registered yet and click"
 msgstr "1. 輸入尚未註冊的暱稱並單擊"
 
-#: lib/retro_hex_chat_web/controllers/help_content/connecting.html.heex:31
+#: lib/retro_hex_chat_web/controllers/help_content/connecting.html.heex:38
 #, elixir-autogen, elixir-format
 msgid "1. Enter your nickname and click"
 msgstr "1. 輸入暱稱並單擊"
@@ -91,12 +91,12 @@ msgstr "2. 登記表有:"
 msgid "2. You will automatically join"
 msgstr "2. 您將自動加入"
 
-#: lib/retro_hex_chat_web/controllers/help_content/connecting.html.heex:34
+#: lib/retro_hex_chat_web/controllers/help_content/connecting.html.heex:41
 #, elixir-autogen, elixir-format
 msgid "2a."
 msgstr "2a."
 
-#: lib/retro_hex_chat_web/controllers/help_content/connecting.html.heex:41
+#: lib/retro_hex_chat_web/controllers/help_content/connecting.html.heex:48
 #, elixir-autogen, elixir-format
 msgid "2b."
 msgstr "2b."
@@ -116,7 +116,7 @@ msgstr "3. 一旦成功,您將加入已經確認的聊天——60秒識別計時
 msgid "3. Type messages in the input box and press"
 msgstr "3. 輸入框中的信息類型和按鍵"
 
-#: lib/retro_hex_chat_web/controllers/help_content/connecting.html.heex:45
+#: lib/retro_hex_chat_web/controllers/help_content/connecting.html.heex:52
 #, elixir-autogen, elixir-format
 msgid "3. You join the chat already identified and land in"
 msgstr "3. 加入已經確認的聊天並登陸"
@@ -146,11 +146,12 @@ msgstr "從聊天菜單中按類別瀏覽或打開幫助主題 。"
 msgid "Cannot contain spaces"
 msgstr "無法包含空格"
 
-#: lib/retro_hex_chat_web/controllers/help_content/connecting.html.heex:62
+#: lib/retro_hex_chat_web/controllers/help_content/connecting.html.heex:69
 #, elixir-autogen, elixir-format
 msgid "Changing Nickname"
 msgstr "Changing Nickname"
 
+#: lib/retro_hex_chat_web/controllers/help_content/watching_without_account.html.heex:67
 #: lib/retro_hex_chat_web/controllers/help_content/welcome.html.heex:125
 #, elixir-autogen, elixir-format
 msgid "Channels"
@@ -164,14 +165,14 @@ msgstr "確認密碼"
 #: lib/retro_hex_chat_web/controllers/help_content/connect_authentication.html.heex:12
 #: lib/retro_hex_chat_web/controllers/help_content/connect_authentication.html.heex:23
 #: lib/retro_hex_chat_web/controllers/help_content/connecting.html.heex:5
-#: lib/retro_hex_chat_web/controllers/help_content/connecting.html.heex:31
-#: lib/retro_hex_chat_web/controllers/help_content/connecting.html.heex:42
+#: lib/retro_hex_chat_web/controllers/help_content/connecting.html.heex:38
+#: lib/retro_hex_chat_web/controllers/help_content/connecting.html.heex:49
 #: lib/retro_hex_chat_web/controllers/help_content/welcome.html.heex:15
 #, elixir-autogen, elixir-format
 msgid "Connect"
 msgstr "連線"
 
-#: lib/retro_hex_chat_web/controllers/help_content/connecting.html.heex:60
+#: lib/retro_hex_chat_web/controllers/help_content/connecting.html.heex:67
 #: lib/retro_hex_chat_web/controllers/help_content/ui_connect_window.html.heex:57
 #, elixir-autogen, elixir-format
 msgid "Connect Authentication"
@@ -180,12 +181,13 @@ msgstr "連接認證"
 #: lib/retro_hex_chat_web/controllers/help_content/connect_authentication.html.heex:44
 #: lib/retro_hex_chat_web/controllers/help_content/ui_connect_window.html.heex:16
 #: lib/retro_hex_chat_web/controllers/help_content/ui_connect_window.html.heex:54
+#: lib/retro_hex_chat_web/controllers/help_content/watching_without_account.html.heex:66
 #: lib/retro_hex_chat_web/controllers/help_content/welcome.html.heex:124
 #, elixir-autogen, elixir-format
 msgid "Connecting"
 msgstr "連線中"
 
-#: lib/retro_hex_chat_web/controllers/help_content/connecting.html.heex:29
+#: lib/retro_hex_chat_web/controllers/help_content/connecting.html.heex:36
 #, elixir-autogen, elixir-format
 msgid "Connection Flow"
 msgstr "連接流程"
@@ -195,7 +197,7 @@ msgstr "連接流程"
 msgid "Enter"
 msgstr "Enter"
 
-#: lib/retro_hex_chat_web/controllers/help_content/connecting.html.heex:24
+#: lib/retro_hex_chat_web/controllers/help_content/connecting.html.heex:31
 #, elixir-autogen, elixir-format
 msgid "Every nickname must be registered before entering the chat. When you connect with a new nickname, you'll be asked to choose a password to register it. On future visits, you'll enter your password to log in."
 msgstr "每個暱稱在進入聊天前都必須註冊. 與新暱稱連接時,會要求您選擇一個密碼來註冊. 以後訪問時,會輸入密碼登錄."
@@ -247,20 +249,20 @@ msgstr "必須以字母(a-z, A-Z)或特殊字符開頭 :"
 msgid "New Nicknames"
 msgstr "新建暱稱"
 
-#: lib/retro_hex_chat_web/controllers/help_content/connecting.html.heex:34
+#: lib/retro_hex_chat_web/controllers/help_content/connecting.html.heex:41
 #, elixir-autogen, elixir-format
 msgid "New nickname"
 msgstr "新暱稱"
 
-#: lib/retro_hex_chat_web/controllers/help_content/connecting.html.heex:47
 #: lib/retro_hex_chat_web/controllers/help_content/connecting.html.heex:54
-#: lib/retro_hex_chat_web/controllers/help_content/connecting.html.heex:64
+#: lib/retro_hex_chat_web/controllers/help_content/connecting.html.heex:61
+#: lib/retro_hex_chat_web/controllers/help_content/connecting.html.heex:71
 #, elixir-autogen, elixir-format
 msgid "Nick Expiration"
 msgstr "暱稱過期"
 
 #: lib/retro_hex_chat_web/controllers/help_content/connect_authentication.html.heex:45
-#: lib/retro_hex_chat_web/controllers/help_content/connecting.html.heex:63
+#: lib/retro_hex_chat_web/controllers/help_content/connecting.html.heex:70
 #: lib/retro_hex_chat_web/controllers/help_content/ui_connect_window.html.heex:60
 #, elixir-autogen, elixir-format
 msgid "NickServ Overview"
@@ -271,7 +273,7 @@ msgstr "NickServ 概覽"
 msgid "Nickname Rules"
 msgstr "暱稱規則"
 
-#: lib/retro_hex_chat_web/controllers/help_content/connecting.html.heex:49
+#: lib/retro_hex_chat_web/controllers/help_content/connecting.html.heex:56
 #, elixir-autogen, elixir-format
 msgid "Nicknames not used for"
 msgstr "未使用的暱稱"
@@ -307,7 +309,7 @@ msgid "Quick Start"
 msgstr "快速啓動"
 
 #: lib/retro_hex_chat_web/controllers/help_content/connect_authentication.html.heex:32
-#: lib/retro_hex_chat_web/controllers/help_content/connecting.html.heex:38
+#: lib/retro_hex_chat_web/controllers/help_content/connecting.html.heex:45
 #, elixir-autogen, elixir-format
 msgid "Register & Connect"
 msgstr "註冊和連接"
@@ -317,12 +319,12 @@ msgstr "註冊和連接"
 msgid "Registered Nicknames"
 msgstr "已註冊的暱稱"
 
-#: lib/retro_hex_chat_web/controllers/help_content/connecting.html.heex:41
+#: lib/retro_hex_chat_web/controllers/help_content/connecting.html.heex:48
 #, elixir-autogen, elixir-format
 msgid "Registered nickname"
 msgstr "註冊的暱稱"
 
-#: lib/retro_hex_chat_web/controllers/help_content/connecting.html.heex:22
+#: lib/retro_hex_chat_web/controllers/help_content/connecting.html.heex:29
 #, elixir-autogen, elixir-format
 msgid "Registration Required"
 msgstr "需要登記"
@@ -345,9 +347,10 @@ msgstr ""
 
 #: lib/retro_hex_chat_web/components/ui/help/help_viewer.ex:242
 #: lib/retro_hex_chat_web/controllers/help_content/connect_authentication.html.heex:42
-#: lib/retro_hex_chat_web/controllers/help_content/connecting.html.heex:57
+#: lib/retro_hex_chat_web/controllers/help_content/connecting.html.heex:64
 #: lib/retro_hex_chat_web/controllers/help_content/private_messages.html.heex:33
 #: lib/retro_hex_chat_web/controllers/help_content/ui_connect_window.html.heex:52
+#: lib/retro_hex_chat_web/controllers/help_content/watching_without_account.html.heex:64
 #: lib/retro_hex_chat_web/controllers/help_content/welcome.html.heex:122
 #, elixir-autogen, elixir-format
 msgid "See Also"
@@ -388,7 +391,7 @@ msgstr "使用用戶列表"
 msgid "You can send private messages to other users that only the two of you can see."
 msgstr "您可以向其他用戶發送只有你們兩個能看見的私人消息."
 
-#: lib/retro_hex_chat_web/controllers/help_content/connecting.html.heex:53
+#: lib/retro_hex_chat_web/controllers/help_content/connecting.html.heex:60
 #, elixir-autogen, elixir-format
 msgid "are automatically freed. Connect regularly to keep your registration. See"
 msgstr "自動釋放。 定期連接以保留您的註冊 。 見"
@@ -403,7 +406,7 @@ msgstr "字段。"
 msgid "for advanced features — type"
 msgstr "高級特性——類型"
 
-#: lib/retro_hex_chat_web/controllers/help_content/connecting.html.heex:55
+#: lib/retro_hex_chat_web/controllers/help_content/connecting.html.heex:62
 #, elixir-autogen, elixir-format
 msgid "for details."
 msgstr "詳細情況。"
@@ -428,12 +431,12 @@ msgstr "來見他們所有人"
 msgid "to send."
 msgstr "發送。"
 
-#: lib/retro_hex_chat_web/controllers/help_content/connecting.html.heex:42
+#: lib/retro_hex_chat_web/controllers/help_content/connecting.html.heex:49
 #, elixir-autogen, elixir-format
 msgid "— A password prompt appears. Enter your password and click"
 msgstr "- 出現了密碼提示 。 輸入密碼並單擊"
 
-#: lib/retro_hex_chat_web/controllers/help_content/connecting.html.heex:35
+#: lib/retro_hex_chat_web/controllers/help_content/connecting.html.heex:42
 #, elixir-autogen, elixir-format
 msgid "— A registration form appears. Choose a password (minimum 5 characters) and confirm it. Click"
 msgstr "- 出現了登記表。 選擇密碼( 最少 5 個字符) 並確認它 。 單擊"
@@ -795,17 +798,107 @@ msgstr "以後訪問時,請輸入相同的密碼進行登錄."
 msgid "Then click %{button}."
 msgstr "然後點擊%{button}."
 
-#: lib/retro_hex_chat_web/controllers/help_content/connecting.html.heex:16
+#: lib/retro_hex_chat_web/controllers/help_content/connecting.html.heex:23
 #, elixir-autogen, elixir-format
 msgid "\"Alice\" and \"alice\" are the same nickname."
 msgstr "\"愛麗絲\"和\"愛麗絲\"是同一個暱稱."
 
-#: lib/retro_hex_chat_web/controllers/help_content/connecting.html.heex:16
+#: lib/retro_hex_chat_web/controllers/help_content/connecting.html.heex:23
 #, elixir-autogen, elixir-format
 msgid "Capital letters do not matter"
 msgstr "大寫字母不重要"
 
-#: lib/retro_hex_chat_web/controllers/help_content/connecting.html.heex:19
+#: lib/retro_hex_chat_web/controllers/help_content/connecting.html.heex:26
 #, elixir-autogen, elixir-format
 msgid "It is shown as you type it."
 msgstr "它顯示爲您輸入它。"
+
+#: lib/retro_hex_chat_web/controllers/help_content/watching_without_account.html.heex:43
+#, elixir-autogen, elixir-format
+msgid "Everybody in a channel sees its visitors under Visitors, at the foot of the user list, and counted in the number beside the channel. A visitor is not a member: they cannot write, have no role, and leave the list when they close the tab."
+msgstr "一個頻道的每個人都看到訪客在訪客下,在用戶名單的腳下,並在頻道旁邊的號碼中計算。 訪客不是成員:他們不能寫,沒有角色,在關閉標籤時離開名單."
+
+#: lib/retro_hex_chat_web/controllers/help_content/watching_without_account.html.heex:57
+#, elixir-autogen, elixir-format
+msgid "Guest names are reserved: nobody can register one or change to one"
+msgstr "Guest names are reserved: nobody can register one or change to one"
+
+#: lib/retro_hex_chat_web/controllers/help_content/watching_without_account.html.heex:62
+#, elixir-autogen, elixir-format
+msgid "Nothing is kept for a visitor; a new visit gets a new guest name"
+msgstr "Nothing is kept for a visitor; a new visit gets a new guest name"
+
+#: lib/retro_hex_chat_web/controllers/help_content/watching_without_account.html.heex:13
+#, elixir-autogen, elixir-format
+msgid "Open other channels from the sidebar, from Browse all, or from a #channel link in a message"
+msgstr "Open other channels from the sidebar, from Browse all, or from a #channel link in a message"
+
+#: lib/retro_hex_chat_web/controllers/help_content/watching_without_account.html.heex:70
+#, elixir-autogen, elixir-format
+msgid "Public Channel Archive"
+msgstr "公共頻道存檔"
+
+#: lib/retro_hex_chat_web/controllers/help_content/watching_without_account.html.heex:10
+#, elixir-autogen, elixir-format
+msgid "Read the public channels as they happen, and scroll back through them"
+msgstr "讀一下公共頻道,然後通過它們回滾"
+
+#: lib/retro_hex_chat_web/controllers/help_content/watching_without_account.html.heex:51
+#, elixir-autogen, elixir-format
+msgid "Secret, private, invite-only and keyed channels cannot be watched — a channel that becomes one closes for its visitors"
+msgstr "祕密、私人、只邀請和按鍵的頻道不能被觀看——這個頻道成爲其訪客的關閉頻道"
+
+#: lib/retro_hex_chat_web/controllers/help_content/watching_without_account.html.heex:19
+#, elixir-autogen, elixir-format
+msgid "See who is in each channel, and close a channel's tab when you are done"
+msgstr "查看每個頻道中是誰,完成後關閉頻道的標籤"
+
+#: lib/retro_hex_chat_web/controllers/help_content/watching_without_account.html.heex:22
+#, elixir-autogen, elixir-format
+msgid "Share a link to a channel: /chat?join= followed by its name opens that channel for whoever follows it"
+msgstr "共享頻道鏈接: /chat? 加入= 隨其名稱爲跟蹤者打開頻道"
+
+#: lib/retro_hex_chat_web/controllers/help_content/watching_without_account.html.heex:28
+#, elixir-autogen, elixir-format
+msgid "Taking part"
+msgstr "參加"
+
+#: lib/retro_hex_chat_web/controllers/help_content/watching_without_account.html.heex:41
+#, elixir-autogen, elixir-format
+msgid "Visitors in the user list"
+msgstr "用戶名單上的訪客"
+
+#: lib/retro_hex_chat_web/controllers/help_content/connecting.html.heex:74
+#, elixir-autogen, elixir-format
+msgid "Watching Without an Account"
+msgstr "沒有賬戶的監視"
+
+#: lib/retro_hex_chat_web/controllers/help_content/watching_without_account.html.heex:7
+#, elixir-autogen, elixir-format
+msgid "What you can do"
+msgstr "你可以做點什麼"
+
+#: lib/retro_hex_chat_web/controllers/help_content/watching_without_account.html.heex:2
+#, elixir-autogen, elixir-format
+msgid "You do not need an account to look around. Open the chat and you land in #lobby with the conversation arriving live, under a guest name such as Guest4821 that you get for the visit."
+msgstr "你不需要一個賬戶來查看周圍。 在#lobby現場直播時, 以嘉賓的名字登場。"
+
+#: lib/retro_hex_chat_web/controllers/help_content/connecting.html.heex:16
+#, elixir-autogen, elixir-format
+msgid "Cannot be a visitor name such as %{example}"
+msgstr "無法成爲 %{example} 等訪客名"
+
+#: lib/retro_hex_chat_web/controllers/help_content/watching_without_account.html.heex:48
+#, elixir-autogen, elixir-format
+msgid "Limits"
+msgstr "限制"
+
+#: lib/retro_hex_chat_web/controllers/help_content/watching_without_account.html.heex:30
+#, elixir-autogen, elixir-format
+msgid "Everything that does something needs an account: writing, reacting, the menus and settings, games, calls, spaces, private sessions — and following any link, whether to a game or to another site. Each of them opens the Connect window instead, saying which feature it was."
+msgstr "做某事的每件事都需要一個賬戶:寫作,反應,菜單和設置,遊戲,呼叫,空格,私人會話——以及跟隨任何鏈接,無論是遊戲還是其他網站. 每一個都打開了連接窗口, 說它是哪個功能。"
+
+#: lib/retro_hex_chat_web/controllers/help_content/watching_without_account.html.heex:36
+#, elixir-autogen, elixir-format
+msgid "A link to a game, a call or a space opens the chat with that window, and after you sign in it takes you to the link."
+msgstr "一個與遊戲的鏈接,一個呼叫或一個空格打開了與該窗口的聊天,在其中籤名後,將你帶到鏈接."

@@ -31,6 +31,26 @@ defmodule RetroHexChat.Chat.HelpTopics.GettingStarted do
           )
       },
       %{
+        id: "watching-without-account",
+        title: dgettext("help", "Watching Without an Account"),
+        category: dgettext("help", "Getting Started"),
+        keywords: [
+          "guest",
+          "visitor",
+          dgettext("help", "guest"),
+          dgettext("help", "visitor"),
+          dgettext("help", "read only"),
+          dgettext("help", "sign in")
+        ],
+        icon: :icon_watching,
+        description:
+          dgettext(
+            "help",
+            "Open the chat before you have an account: read the public channels live, then sign in to take part."
+          ),
+        see_also: ["connecting", "channels", "feature-public-archive"]
+      },
+      %{
         id: "channels",
         title: dgettext("help", "Channels"),
         category: dgettext("help", "Getting Started"),

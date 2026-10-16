@@ -409,7 +409,7 @@ defmodule RetroHexChat.Commands.Autocomplete do
           %{
             name: "Prv",
             topic: nil,
-            user_count: snapshot.member_count,
+            user_count: people_count(snapshot),
             joined?: false,
             invite_only?: false,
             modes: "",
@@ -429,7 +429,7 @@ defmodule RetroHexChat.Commands.Autocomplete do
     %{
       name: snapshot.name,
       topic: snapshot.topic,
-      user_count: snapshot.member_count,
+      user_count: people_count(snapshot),
       joined?: joined?,
       invite_only?: snapshot.invite_only?,
       modes: snapshot.modes,
@@ -437,6 +437,10 @@ defmodule RetroHexChat.Commands.Autocomplete do
       last_activity_at: Map.get(snapshot, :last_activity_at)
     }
   end
+
+  # Everybody in the room: its members and the visitors watching it without an
+  # account. A channel list counts people, and a visitor reading along is one.
+  defp people_count(snapshot), do: snapshot.member_count + Map.get(snapshot, :watcher_count, 0)
 
   # --- Private Helpers ---
 

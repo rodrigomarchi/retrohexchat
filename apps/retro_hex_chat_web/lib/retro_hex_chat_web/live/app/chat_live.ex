@@ -45,8 +45,8 @@ defmodule RetroHexChatWeb.App.ChatLive do
   import RetroHexChatWeb.Components.UI.AboutDialog
 
   # ── Domain aliases ────────────────────────────────────────────
-  alias RetroHexChat.Accounts.{NicknameValidator, Session, TrustedDevices}
-  alias RetroHexChat.Admin.ServerBans
+  alias RetroHexChat.Accounts.{Session, TrustedDevices}
+  alias RetroHexChat.Channels.Server
   alias RetroHexChat.Services.ChanExpiry
   alias RetroHexChat.Services.{Motd, Queries}
   alias RetroHexChat.Services.NickExpiry
@@ -77,6 +77,7 @@ defmodule RetroHexChatWeb.App.ChatLive do
   alias RetroHexChatWeb.ChatLive.GroupCallReadModel
   alias RetroHexChatWeb.ChatLive.P2PReadModel
   alias RetroHexChatWeb.ChatLive.SpaceReadModel
+  alias RetroHexChatWeb.ChatLive.Visitor
 
   alias RetroHexChatWeb.ChatLive.Components.{
     ConversationsContextMenu,
@@ -85,6 +86,7 @@ defmodule RetroHexChatWeb.App.ChatLive do
   }
 
   alias RetroHexChatWeb.App.Paths
+  alias RetroHexChatWeb.App.SessionNickname
   alias RetroHexChatWeb.ChatLive.WindowRegistry
   alias RetroHexChatWeb.Icons
   alias RetroHexChatWeb.Live.OpenSurfaces
@@ -95,18 +97,40 @@ defmodule RetroHexChatWeb.App.ChatLive do
   @impl true
   @spec mount(map(), map(), Phoenix.LiveView.Socket.t()) :: {:ok, Phoenix.LiveView.Socket.t()}
   def mount(params, http_session, socket) do
-    nickname = http_session["chat_nickname"]
+    case SessionNickname.resolve(http_session) do
+      {:ok, nickname} ->
+        {:ok, mount_chat_session(params, http_session, socket, nickname)}
 
-    case validate_session_nickname(nickname) do
-      :ok ->
-        if ServerBans.banned?(nickname) do
-          {:ok, push_navigate(socket, to: ~p"/connect?reason=banned")}
-        else
-          {:ok, mount_chat_session(params, http_session, socket, nickname)}
-        end
+      :banned ->
+        {:ok, push_navigate(socket, to: ~p"/connect?reason=banned")}
 
-      {:error, _} ->
-        {:ok, push_navigate(socket, to: ~p"/connect")}
+      # Nobody signed in: the same chat, read-only, as a visitor sees it.
+      :visitor ->
+        {:ok, mount_visitor(params, http_session, socket)}
+    end
+  end
+
+  defp mount_visitor(params, http_session, socket) do
+    session = Visitor.session()
+
+    if connected?(socket) do
+      socket
+      |> Visitor.attach_gate()
+      |> attach_all_hooks()
+      |> assign_defaults(session)
+      |> assign(browser_context(http_session, socket))
+      |> assign(
+        visitor?: true,
+        hidden_windows: Visitor.hidden_windows(),
+        open_surface_paths: MapSet.new(),
+        chat_session_id: nil
+      )
+      |> Visitor.enter(params)
+      |> push_initial_preferences()
+    else
+      http_session
+      |> mount_disconnected_chat(socket, session)
+      |> assign(visitor?: true)
     end
   end
 
@@ -121,13 +145,15 @@ defmodule RetroHexChatWeb.App.ChatLive do
   end
 
   defp mount_connected_chat(params, http_session, socket, session, nickname) do
-    default_channel = Application.get_env(:retro_hex_chat, :default_channel, "#lobby")
+    default_channel = Server.default_channel()
 
-    timezone = resolve_timezone(http_session, socket)
-    connect_params = get_connect_params(socket) || %{}
-    client_info = SessionHelpers.parse_client_info(connect_params)
-    trusted_device_id = normalize_trusted_device_id(http_session["trusted_device_id"])
-    browser_id = normalize_browser_id(http_session["browser_id"])
+    %{
+      timezone: timezone,
+      client_info: client_info,
+      trusted_device_id: trusted_device_id,
+      browser_id: browser_id
+    } = browser_context(http_session, socket)
+
     chat_device_session = start_chat_device_session(nickname, trusted_device_id, client_info)
     chat_device_session_ref = trusted_device_session_ref(chat_device_session)
 
@@ -140,9 +166,9 @@ defmodule RetroHexChatWeb.App.ChatLive do
 
     Phoenix.PubSub.subscribe(RetroHexChat.PubSub, Topics.inbox(nickname))
     Phoenix.PubSub.subscribe(RetroHexChat.PubSub, Topics.presence())
-    Phoenix.PubSub.subscribe(RetroHexChat.PubSub, "server:announcements")
-    Phoenix.PubSub.subscribe(RetroHexChat.PubSub, "server:wallops")
-    Phoenix.PubSub.subscribe(RetroHexChat.PubSub, "server:settings")
+    Phoenix.PubSub.subscribe(RetroHexChat.PubSub, Topics.announcements())
+    Phoenix.PubSub.subscribe(RetroHexChat.PubSub, Topics.wallops())
+    Phoenix.PubSub.subscribe(RetroHexChat.PubSub, Topics.server_settings())
     Scraper.subscribe()
     subscribe_chat_device_session(chat_device_session_ref)
 
@@ -153,7 +179,6 @@ defmodule RetroHexChatWeb.App.ChatLive do
     )
 
     previous_nickname = Map.get(socket.assigns.flash, "nick_changed_from")
-    pre_identified = http_session["chat_pre_identified"] == true
     # The cookie is not the only proof of identity, and it was the only one this
     # asked. `chat_pre_identified` is set by a short-token or trusted-device
     # login; somebody who registered, or typed `/ns identify` inside the chat,
@@ -164,7 +189,7 @@ defmodule RetroHexChatWeb.App.ChatLive do
     # nickname cannot borrow one made elsewhere. `maybe_start_nickserv_timer/4`
     # below trusts exactly this answer.
     chat_session_id = http_session["chat_session_id"]
-    identified? = pre_identified or NickServ.identified_in_session?(nickname, chat_session_id)
+    identified? = SessionNickname.identified?(http_session, nickname)
     # The snapshot is filed under the account; a nickname typed in another case
     # is the same person, so it is looked up by the registered spelling.
     owner = if identified?, do: NickServ.account_for(nickname)
@@ -242,6 +267,16 @@ defmodule RetroHexChatWeb.App.ChatLive do
     end
   end
 
+  # What the browser tells every connected chat about itself, signed in or not.
+  defp browser_context(http_session, socket) do
+    %{
+      timezone: resolve_timezone(http_session, socket),
+      client_info: SessionHelpers.parse_client_info(get_connect_params(socket) || %{}),
+      trusted_device_id: normalize_trusted_device_id(http_session["trusted_device_id"]),
+      browser_id: normalize_browser_id(http_session["browser_id"])
+    }
+  end
+
   defp mount_disconnected_chat(http_session, socket, session) do
     socket
     |> assign_defaults(session)
@@ -265,7 +300,9 @@ defmodule RetroHexChatWeb.App.ChatLive do
 
   @impl true
   def terminate(_reason, socket) do
-    session = connected?(socket) && socket.assigns[:session]
+    # A visitor holds nothing to give back: the channels it watched stop
+    # counting it when this process goes, by their own monitor.
+    session = connected?(socket) && !Visitor.visitor?(socket) && socket.assigns[:session]
 
     if session do
       quit_reason = socket.assigns[:quit_reason] || dgettext("chat", "Leaving")
@@ -677,10 +714,6 @@ defmodule RetroHexChatWeb.App.ChatLive do
     socket
   end
 
-  @spec validate_session_nickname(String.t() | nil) :: :ok | {:error, String.t()}
-  defp validate_session_nickname(nil), do: {:error, dgettext("chat", "No nickname in session")}
-  defp validate_session_nickname(nickname), do: NicknameValidator.validate(nickname)
-
   @spec resolve_timezone(map(), Phoenix.LiveView.Socket.t()) :: String.t()
   defp resolve_timezone(http_session, socket) do
     session_tz = http_session["chat_timezone"]
@@ -915,6 +948,13 @@ defmodule RetroHexChatWeb.App.ChatLive do
       current_modes: nil,
       show_conversations: true,
       channel_user_counts: %{},
+      channel_guests: %{},
+      visitor?: false,
+      visitor_nick: nil,
+      visitor_return_to: nil,
+      visitor_pinned_return_to: nil,
+      visitor_feature: :feature,
+      hidden_windows: [],
       popular_channels: [],
       # Suggestions are for somebody who has nowhere to go yet. Expanded they
       # are ten rows in a sidebar of fifteen, so they open for an arrival and

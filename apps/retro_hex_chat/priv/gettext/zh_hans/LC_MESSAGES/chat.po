@@ -494,18 +494,18 @@ msgstr "切换会议相机"
 msgid "Toggle Conference Microphone"
 msgstr "切换会议麦克风"
 
-#: lib/retro_hex_chat/channels/server.ex:1496
+#: lib/retro_hex_chat/channels/server.ex:1660
 #: lib/retro_hex_chat/chat/service.ex:363
 #, elixir-autogen, elixir-format
 msgid "Attachment could not be attached to the message"
 msgstr "信件中无法附加附件"
 
-#: lib/retro_hex_chat/chat/attachments.ex:280
+#: lib/retro_hex_chat/chat/attachments.ex:292
 #, elixir-autogen, elixir-format
 msgid "Attachment exceeds the %{mb} MB limit"
 msgstr "附件超过 %{mb} MB 限制"
 
-#: lib/retro_hex_chat/chat/attachments.ex:275
+#: lib/retro_hex_chat/chat/attachments.ex:287
 #, elixir-autogen, elixir-format
 msgid "Attachment is empty"
 msgstr "附件为空"
@@ -515,9 +515,9 @@ msgstr "附件为空"
 msgid "Unsupported message format"
 msgstr "不支持的消息格式"
 
-#: lib/retro_hex_chat/chat/attachments.ex:320
-#: lib/retro_hex_chat/chat/attachments.ex:402
-#: lib/retro_hex_chat/chat/attachments.ex:407
+#: lib/retro_hex_chat/chat/attachments.ex:332
+#: lib/retro_hex_chat/chat/attachments.ex:414
+#: lib/retro_hex_chat/chat/attachments.ex:419
 #, elixir-autogen, elixir-format
 msgid "file"
 msgstr "文件"
@@ -643,7 +643,7 @@ msgstr "这台服务器已经响应这个名称了。"
 msgid "This server already has %{count} emoji."
 msgstr "这台服务器已经有 %{count} 个表情了。"
 
-#: lib/retro_hex_chat/chat/attachments.ex:314
+#: lib/retro_hex_chat/chat/attachments.ex:326
 #, elixir-autogen, elixir-format
 msgid "A recording cannot be sent as %{type}"
 msgstr "录音无法以 %{type} 发送"
@@ -669,17 +669,17 @@ msgstr "先打个字"
 msgid "You are muted by an administrator"
 msgstr "你被管理员哑了"
 
-#: lib/retro_hex_chat/virtual_space.ex:321
+#: lib/retro_hex_chat/virtual_space.ex:331
 #, elixir-autogen, elixir-format
 msgid "threw the coin, and it landed gold side up"
 msgstr "扔了硬币,就把金色的一面"
 
-#: lib/retro_hex_chat/virtual_space.ex:324
+#: lib/retro_hex_chat/virtual_space.ex:334
 #, elixir-autogen, elixir-format
 msgid "threw the coin, and it landed silver side up"
 msgstr "把硬币扔了,它把银色的一面扔了"
 
-#: lib/retro_hex_chat/virtual_space.ex:317
+#: lib/retro_hex_chat/virtual_space.ex:327
 #, elixir-autogen, elixir-format
 msgid "threw the dice and got %{face}"
 msgstr "掷骰子,得到%{face}"

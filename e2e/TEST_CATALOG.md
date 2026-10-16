@@ -134,9 +134,9 @@ make e2e.catalog.check    # verify it is current (also runs in make ci)
 
 ## Coverage
 
-- **251 spec files** under `e2e/tests/`.
-- **611 Playwright `test()` cases**.
-- **559 documented flows**, 558 done, 1 not done.
+- **252 spec files** under `e2e/tests/`.
+- **615 Playwright `test()` cases**.
+- **563 documented flows**, 562 done, 1 not done.
 - **Every spec documents its own flows.**
 
 ## Flow index
@@ -824,6 +824,10 @@ Grouped by section. Every row comes from an `@flow` line in the spec itself.
 | PW21 | The founder switches the archive with /cs archive on\|off, and another member of the room sees the notice (features P1) | `tests/archive-public.spec.ts` | done |
 | PW22 | The public games catalogue leads from a game's page, through the page's own Connect window, into the game | `tests/games-catalog.spec.ts` | done |
 | PW23 | The mIRC commands guide answers a mIRC habit row by row, and its links lead into the matching help topic and the other guides | `tests/irc-guides.spec.ts` | done |
+| PW24 | Without an account /chat opens read-only: a visitor watches a channel live under a Guest name, members see them under Visitors, and any action opens the Connect window | `tests/chat-public-visitor.spec.ts` | done |
+| PW25 | A visitor who registers from the chat's Connect window comes back to the channel they were watching, now as a member | `tests/chat-public-visitor.spec.ts` | done |
+| PW26 | No link leaves a visitor's chat: a message URL (plain, Ctrl or middle click) and a game in the desktop Games folder open the Connect window naming the feature, and no tab opens | `tests/chat-public-visitor.spec.ts` | done |
+| PW27 | A game, the arcade or a call opened by address without an account lands in the chat with the Connect window naming it, and registering there returns to that address | `tests/chat-public-visitor.spec.ts` | done |
 
 ### Dialog Gallery
 

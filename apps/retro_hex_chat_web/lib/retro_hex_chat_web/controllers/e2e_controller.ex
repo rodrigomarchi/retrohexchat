@@ -1,7 +1,6 @@
 defmodule RetroHexChatWeb.E2EController do
   use RetroHexChatWeb, :controller
 
-  alias RetroHexChat.Channels.Registry, as: ChannelRegistry
   alias RetroHexChat.Channels.Server, as: ChannelServer
   alias RetroHexChat.Channels.Supervisor, as: ChannelSupervisor
   alias RetroHexChat.Chat.Content
@@ -120,16 +119,9 @@ defmodule RetroHexChatWeb.E2EController do
   end
 
   defp ensure_channel_started(channel) do
-    case ChannelRegistry.lookup(channel) do
-      {:ok, _pid} ->
-        :ok
-
-      {:error, :not_found} ->
-        case ChannelSupervisor.start_child(channel) do
-          {:ok, _pid} -> :ok
-          {:error, {:already_started, _pid}} -> :ok
-          {:error, reason} -> {:error, "channel start failed: #{inspect(reason)}"}
-        end
+    case ChannelSupervisor.ensure_started(channel) do
+      {:ok, _pid} -> :ok
+      {:error, reason} -> {:error, "channel start failed: #{inspect(reason)}"}
     end
   end
 

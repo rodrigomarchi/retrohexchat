@@ -55,31 +55,68 @@ defmodule RetroHexChat.Channels.Visibility do
   """
   @spec nameable?(term()) :: boolean()
   def nameable?(channel_name) when is_binary(channel_name) do
-    case Server.get_state(channel_name) do
-      {:ok, %{modes_detail: modes}} ->
-        not (Map.get(modes, :secret, false) or Map.get(modes, :private, false) or
-               Map.get(modes, :invite_only, false))
-
-      _unreachable ->
-        nameable_when_cold?(channel_name)
+    case visibility_modes(channel_name) do
+      %{} = modes -> not (modes.secret or modes.private or modes.invite_only)
+      nil -> false
     end
   end
 
   def nameable?(_channel_name), do: false
 
-  # A registered channel that nobody has joined since the node started has no
-  # process, and a node restarts on every deploy. Answering "not nameable" for
-  # one refused to let a link to a perfectly public room say its own name; the
-  # modes it would have come up with are in the row it would have come up from.
-  defp nameable_when_cold?(channel_name) do
+  @doc """
+  Whether somebody without an account may read `channel_name` — what a visitor
+  watching it sees, attachments included.
+
+  Stricter again than `nameable?/1`: a channel may be named to a stranger and
+  still be locked with a key, and a key is a door a reader without one does
+  not get through. Same answer as `Modes.watchable?/1`, which the channel itself
+  applies when a visitor asks to watch it.
+  """
+  @spec watchable?(term()) :: boolean()
+  def watchable?(channel_name) when is_binary(channel_name) do
+    case visibility_modes(channel_name) do
+      %{} = modes -> not (modes.secret or modes.private or modes.invite_only or modes.key?)
+      nil -> false
+    end
+  end
+
+  def watchable?(_channel_name), do: false
+
+  # The modes that decide who may see a channel, from its process when it has
+  # one. A registered channel that nobody has joined since the node started has
+  # no process, and a node restarts on every deploy. Answering "not visible"
+  # for one refused to let a link to a perfectly public room say its own name;
+  # the modes it would have come up with are in the row it would have come up
+  # from. A channel with neither answers nothing.
+  defp visibility_modes(channel_name) do
+    case Server.get_state(channel_name) do
+      {:ok, %{modes_detail: modes}} ->
+        %{
+          secret: Map.get(modes, :secret, false),
+          private: Map.get(modes, :private, false),
+          invite_only: Map.get(modes, :invite_only, false),
+          key?: Map.get(modes, :key) not in [nil, ""]
+        }
+
+      _unreachable ->
+        cold_visibility_modes(channel_name)
+    end
+  end
+
+  defp cold_visibility_modes(channel_name) do
     case ServiceQueries.find_registered_channel(channel_name) do
       nil ->
-        false
+        nil
 
       channel ->
         modes = Modes.from_string(channel.modes)
 
-        not (Modes.secret?(modes) or Modes.private?(modes) or Modes.invite_only?(modes))
+        %{
+          secret: Modes.secret?(modes),
+          private: Modes.private?(modes),
+          invite_only: Modes.invite_only?(modes),
+          key?: Modes.has_key?(modes)
+        }
     end
   end
 

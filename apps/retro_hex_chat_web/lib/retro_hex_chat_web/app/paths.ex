@@ -51,6 +51,18 @@ defmodule RetroHexChatWeb.App.Paths do
   def chat_path(channel) when is_binary(channel) and channel != "", do: ~p"/chat?join=#{channel}"
   def chat_path(_channel), do: chat_path()
 
+  @doc """
+  The chat as a visitor sees it, with the sign-in window already open saying
+  `feature` needs an account. Signing in there returns to `return_to`.
+
+  Where every entry point sends somebody without an account — a game, a call,
+  a space, the arcade — so the explanation and the way back are the same
+  everywhere.
+  """
+  @spec visitor_sign_in_path(atom(), String.t()) :: String.t()
+  def visitor_sign_in_path(feature, return_to) when is_atom(feature) and is_binary(return_to),
+    do: ~p"/chat?#{[signup: feature, return_to: return_to]}"
+
   @doc "The chat with the solo arcade open on one game, by its catalogue id."
   @spec chat_arcade_path(String.t()) :: String.t()
   def chat_arcade_path(game_id), do: ~p"/chat?arcade=#{game_id}"

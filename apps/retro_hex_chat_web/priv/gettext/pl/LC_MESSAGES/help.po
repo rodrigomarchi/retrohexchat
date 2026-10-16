@@ -62,7 +62,7 @@ msgid "1. Enter a nickname that isn't registered yet and click"
 msgstr ""
 "1. Wprowadź pseudonim, który nie jest jeszcze zarejestrowany i kliknij"
 
-#: lib/retro_hex_chat_web/controllers/help_content/connecting.html.heex:31
+#: lib/retro_hex_chat_web/controllers/help_content/connecting.html.heex:38
 #, elixir-autogen, elixir-format
 msgid "1. Enter your nickname and click"
 msgstr "1. Wprowadź swój pseudonim i kliknij"
@@ -92,12 +92,12 @@ msgstr "2. Pojawia się formularz rejestracyjny z"
 msgid "2. You will automatically join"
 msgstr "2. Dołączysz automatycznie"
 
-#: lib/retro_hex_chat_web/controllers/help_content/connecting.html.heex:34
+#: lib/retro_hex_chat_web/controllers/help_content/connecting.html.heex:41
 #, elixir-autogen, elixir-format
 msgid "2a."
 msgstr "2a."
 
-#: lib/retro_hex_chat_web/controllers/help_content/connecting.html.heex:41
+#: lib/retro_hex_chat_web/controllers/help_content/connecting.html.heex:48
 #, elixir-autogen, elixir-format
 msgid "2b."
 msgstr "2b."
@@ -119,7 +119,7 @@ msgstr ""
 msgid "3. Type messages in the input box and press"
 msgstr "3. Wpisz wiadomości w polu wprowadzania i naciśnij"
 
-#: lib/retro_hex_chat_web/controllers/help_content/connecting.html.heex:45
+#: lib/retro_hex_chat_web/controllers/help_content/connecting.html.heex:52
 #, elixir-autogen, elixir-format
 msgid "3. You join the chat already identified and land in"
 msgstr "3. Dołącz do czatu już zidentyfikowany i wylądować w"
@@ -152,11 +152,12 @@ msgstr ""
 msgid "Cannot contain spaces"
 msgstr "Nie może zawierać spacji"
 
-#: lib/retro_hex_chat_web/controllers/help_content/connecting.html.heex:62
+#: lib/retro_hex_chat_web/controllers/help_content/connecting.html.heex:69
 #, elixir-autogen, elixir-format
 msgid "Changing Nickname"
 msgstr "Zmiana nazwy nickname"
 
+#: lib/retro_hex_chat_web/controllers/help_content/watching_without_account.html.heex:67
 #: lib/retro_hex_chat_web/controllers/help_content/welcome.html.heex:125
 #, elixir-autogen, elixir-format
 msgid "Channels"
@@ -170,14 +171,14 @@ msgstr "Potwierdź hasło"
 #: lib/retro_hex_chat_web/controllers/help_content/connect_authentication.html.heex:12
 #: lib/retro_hex_chat_web/controllers/help_content/connect_authentication.html.heex:23
 #: lib/retro_hex_chat_web/controllers/help_content/connecting.html.heex:5
-#: lib/retro_hex_chat_web/controllers/help_content/connecting.html.heex:31
-#: lib/retro_hex_chat_web/controllers/help_content/connecting.html.heex:42
+#: lib/retro_hex_chat_web/controllers/help_content/connecting.html.heex:38
+#: lib/retro_hex_chat_web/controllers/help_content/connecting.html.heex:49
 #: lib/retro_hex_chat_web/controllers/help_content/welcome.html.heex:15
 #, elixir-autogen, elixir-format
 msgid "Connect"
 msgstr "Połącz"
 
-#: lib/retro_hex_chat_web/controllers/help_content/connecting.html.heex:60
+#: lib/retro_hex_chat_web/controllers/help_content/connecting.html.heex:67
 #: lib/retro_hex_chat_web/controllers/help_content/ui_connect_window.html.heex:57
 #, elixir-autogen, elixir-format
 msgid "Connect Authentication"
@@ -186,12 +187,13 @@ msgstr "Połącz uwierzytelnianie"
 #: lib/retro_hex_chat_web/controllers/help_content/connect_authentication.html.heex:44
 #: lib/retro_hex_chat_web/controllers/help_content/ui_connect_window.html.heex:16
 #: lib/retro_hex_chat_web/controllers/help_content/ui_connect_window.html.heex:54
+#: lib/retro_hex_chat_web/controllers/help_content/watching_without_account.html.heex:66
 #: lib/retro_hex_chat_web/controllers/help_content/welcome.html.heex:124
 #, elixir-autogen, elixir-format
 msgid "Connecting"
 msgstr "Łączenie"
 
-#: lib/retro_hex_chat_web/controllers/help_content/connecting.html.heex:29
+#: lib/retro_hex_chat_web/controllers/help_content/connecting.html.heex:36
 #, elixir-autogen, elixir-format
 msgid "Connection Flow"
 msgstr "Przepływ połączeń"
@@ -201,7 +203,7 @@ msgstr "Przepływ połączeń"
 msgid "Enter"
 msgstr "Enter"
 
-#: lib/retro_hex_chat_web/controllers/help_content/connecting.html.heex:24
+#: lib/retro_hex_chat_web/controllers/help_content/connecting.html.heex:31
 #, elixir-autogen, elixir-format
 msgid "Every nickname must be registered before entering the chat. When you connect with a new nickname, you'll be asked to choose a password to register it. On future visits, you'll enter your password to log in."
 msgstr ""
@@ -256,20 +258,20 @@ msgstr "Należy zacząć od litery (a- z, A- Z) lub specjalnego znaku:"
 msgid "New Nicknames"
 msgstr "Nowe nickname"
 
-#: lib/retro_hex_chat_web/controllers/help_content/connecting.html.heex:34
+#: lib/retro_hex_chat_web/controllers/help_content/connecting.html.heex:41
 #, elixir-autogen, elixir-format
 msgid "New nickname"
 msgstr "Nowy pseudonim"
 
-#: lib/retro_hex_chat_web/controllers/help_content/connecting.html.heex:47
 #: lib/retro_hex_chat_web/controllers/help_content/connecting.html.heex:54
-#: lib/retro_hex_chat_web/controllers/help_content/connecting.html.heex:64
+#: lib/retro_hex_chat_web/controllers/help_content/connecting.html.heex:61
+#: lib/retro_hex_chat_web/controllers/help_content/connecting.html.heex:71
 #, elixir-autogen, elixir-format
 msgid "Nick Expiration"
 msgstr "Nick Wygasa"
 
 #: lib/retro_hex_chat_web/controllers/help_content/connect_authentication.html.heex:45
-#: lib/retro_hex_chat_web/controllers/help_content/connecting.html.heex:63
+#: lib/retro_hex_chat_web/controllers/help_content/connecting.html.heex:70
 #: lib/retro_hex_chat_web/controllers/help_content/ui_connect_window.html.heex:60
 #, elixir-autogen, elixir-format
 msgid "NickServ Overview"
@@ -280,7 +282,7 @@ msgstr "Przegląd NickServ"
 msgid "Nickname Rules"
 msgstr "Zasady nickname"
 
-#: lib/retro_hex_chat_web/controllers/help_content/connecting.html.heex:49
+#: lib/retro_hex_chat_web/controllers/help_content/connecting.html.heex:56
 #, elixir-autogen, elixir-format
 msgid "Nicknames not used for"
 msgstr "Nazwy nieużywane"
@@ -316,7 +318,7 @@ msgid "Quick Start"
 msgstr "Szybki start"
 
 #: lib/retro_hex_chat_web/controllers/help_content/connect_authentication.html.heex:32
-#: lib/retro_hex_chat_web/controllers/help_content/connecting.html.heex:38
+#: lib/retro_hex_chat_web/controllers/help_content/connecting.html.heex:45
 #, elixir-autogen, elixir-format
 msgid "Register & Connect"
 msgstr "Zarejestruj i podłącz"
@@ -326,12 +328,12 @@ msgstr "Zarejestruj i podłącz"
 msgid "Registered Nicknames"
 msgstr "Zarejestrowany nickname"
 
-#: lib/retro_hex_chat_web/controllers/help_content/connecting.html.heex:41
+#: lib/retro_hex_chat_web/controllers/help_content/connecting.html.heex:48
 #, elixir-autogen, elixir-format
 msgid "Registered nickname"
 msgstr "Zarejestrowany pseudonim"
 
-#: lib/retro_hex_chat_web/controllers/help_content/connecting.html.heex:22
+#: lib/retro_hex_chat_web/controllers/help_content/connecting.html.heex:29
 #, elixir-autogen, elixir-format
 msgid "Registration Required"
 msgstr "Rejestracja wymagana"
@@ -358,9 +360,10 @@ msgstr ""
 
 #: lib/retro_hex_chat_web/components/ui/help/help_viewer.ex:242
 #: lib/retro_hex_chat_web/controllers/help_content/connect_authentication.html.heex:42
-#: lib/retro_hex_chat_web/controllers/help_content/connecting.html.heex:57
+#: lib/retro_hex_chat_web/controllers/help_content/connecting.html.heex:64
 #: lib/retro_hex_chat_web/controllers/help_content/private_messages.html.heex:33
 #: lib/retro_hex_chat_web/controllers/help_content/ui_connect_window.html.heex:52
+#: lib/retro_hex_chat_web/controllers/help_content/watching_without_account.html.heex:64
 #: lib/retro_hex_chat_web/controllers/help_content/welcome.html.heex:122
 #, elixir-autogen, elixir-format
 msgid "See Also"
@@ -405,7 +408,7 @@ msgstr ""
 "Możesz wysyłać prywatne wiadomości do innych użytkowników, które tylko wy "
 "dwoje możecie zobaczyć."
 
-#: lib/retro_hex_chat_web/controllers/help_content/connecting.html.heex:53
+#: lib/retro_hex_chat_web/controllers/help_content/connecting.html.heex:60
 #, elixir-autogen, elixir-format
 msgid "are automatically freed. Connect regularly to keep your registration. See"
 msgstr ""
@@ -422,7 +425,7 @@ msgstr "pola."
 msgid "for advanced features — type"
 msgstr "dla zaawansowanych funkcji - typ"
 
-#: lib/retro_hex_chat_web/controllers/help_content/connecting.html.heex:55
+#: lib/retro_hex_chat_web/controllers/help_content/connecting.html.heex:62
 #, elixir-autogen, elixir-format
 msgid "for details."
 msgstr "szczegóły."
@@ -449,12 +452,12 @@ msgstr "Zobaczyć ich wszystkich."
 msgid "to send."
 msgstr "do wysłania."
 
-#: lib/retro_hex_chat_web/controllers/help_content/connecting.html.heex:42
+#: lib/retro_hex_chat_web/controllers/help_content/connecting.html.heex:49
 #, elixir-autogen, elixir-format
 msgid "— A password prompt appears. Enter your password and click"
 msgstr "- Pojawia się hasło. Wprowadź hasło i kliknij"
 
-#: lib/retro_hex_chat_web/controllers/help_content/connecting.html.heex:35
+#: lib/retro_hex_chat_web/controllers/help_content/connecting.html.heex:42
 #, elixir-autogen, elixir-format
 msgid "— A registration form appears. Choose a password (minimum 5 characters) and confirm it. Click"
 msgstr ""
@@ -840,17 +843,107 @@ msgstr "Podczas późniejszych wizyt, wprowadź to samo hasło do logowania."
 msgid "Then click %{button}."
 msgstr "Następnie kliknij %{button}."
 
-#: lib/retro_hex_chat_web/controllers/help_content/connecting.html.heex:16
+#: lib/retro_hex_chat_web/controllers/help_content/connecting.html.heex:23
 #, elixir-autogen, elixir-format
 msgid "\"Alice\" and \"alice\" are the same nickname."
 msgstr "\"Alice\" i \"Alice\" to ta sama ksywka."
 
-#: lib/retro_hex_chat_web/controllers/help_content/connecting.html.heex:16
+#: lib/retro_hex_chat_web/controllers/help_content/connecting.html.heex:23
 #, elixir-autogen, elixir-format
 msgid "Capital letters do not matter"
 msgstr "Capital letters do not matter"
 
-#: lib/retro_hex_chat_web/controllers/help_content/connecting.html.heex:19
+#: lib/retro_hex_chat_web/controllers/help_content/connecting.html.heex:26
 #, elixir-autogen, elixir-format
 msgid "It is shown as you type it."
 msgstr "Pokazuje się, jak go piszesz."
+
+#: lib/retro_hex_chat_web/controllers/help_content/watching_without_account.html.heex:43
+#, elixir-autogen, elixir-format
+msgid "Everybody in a channel sees its visitors under Visitors, at the foot of the user list, and counted in the number beside the channel. A visitor is not a member: they cannot write, have no role, and leave the list when they close the tab."
+msgstr "Każdy w kanale widzi swoich odwiedzających pod Odwiedzającymi, u podnóża listy użytkowników, i liczone w liczbie obok kanału. Odwiedzający nie jest członkiem: nie mogą pisać, nie mają żadnej roli i zostawić listę po zamknięciu karty."
+
+#: lib/retro_hex_chat_web/controllers/help_content/watching_without_account.html.heex:57
+#, elixir-autogen, elixir-format
+msgid "Guest names are reserved: nobody can register one or change to one"
+msgstr "Nazwy gości są zastrzeżone: nikt nie może zarejestrować ani zmienić na jeden"
+
+#: lib/retro_hex_chat_web/controllers/help_content/watching_without_account.html.heex:62
+#, elixir-autogen, elixir-format
+msgid "Nothing is kept for a visitor; a new visit gets a new guest name"
+msgstr "Nic nie jest przechowywane dla odwiedzających; nowa wizyta otrzymuje nową nazwę gościa"
+
+#: lib/retro_hex_chat_web/controllers/help_content/watching_without_account.html.heex:13
+#, elixir-autogen, elixir-format
+msgid "Open other channels from the sidebar, from Browse all, or from a #channel link in a message"
+msgstr "Open other channels from the sidebar, from Browse all, or from a #channel link in a message"
+
+#: lib/retro_hex_chat_web/controllers/help_content/watching_without_account.html.heex:70
+#, elixir-autogen, elixir-format
+msgid "Public Channel Archive"
+msgstr "Public Channel Archive"
+
+#: lib/retro_hex_chat_web/controllers/help_content/watching_without_account.html.heex:10
+#, elixir-autogen, elixir-format
+msgid "Read the public channels as they happen, and scroll back through them"
+msgstr "Przeczytaj publiczne kanały, jak to się dzieje, i przewiń z powrotem przez nich"
+
+#: lib/retro_hex_chat_web/controllers/help_content/watching_without_account.html.heex:51
+#, elixir-autogen, elixir-format
+msgid "Secret, private, invite-only and keyed channels cannot be watched — a channel that becomes one closes for its visitors"
+msgstr "Tajemnicze, prywatne, invite- tylko i odziane kanały nie mogą być oglądane - kanał, który staje się jeden zamyka dla swoich gości"
+
+#: lib/retro_hex_chat_web/controllers/help_content/watching_without_account.html.heex:19
+#, elixir-autogen, elixir-format
+msgid "See who is in each channel, and close a channel's tab when you are done"
+msgstr "Zobacz, kto jest w każdym kanale, i zamknij kartę kanału, kiedy skończysz"
+
+#: lib/retro_hex_chat_web/controllers/help_content/watching_without_account.html.heex:22
+#, elixir-autogen, elixir-format
+msgid "Share a link to a channel: /chat?join= followed by its name opens that channel for whoever follows it"
+msgstr "Podziel się linkiem do kanału: /chat? joind = następnie jego nazwa otwiera ten kanał dla każdego, kto podąża za nim"
+
+#: lib/retro_hex_chat_web/controllers/help_content/watching_without_account.html.heex:28
+#, elixir-autogen, elixir-format
+msgid "Taking part"
+msgstr "Uczestnictwo"
+
+#: lib/retro_hex_chat_web/controllers/help_content/watching_without_account.html.heex:41
+#, elixir-autogen, elixir-format
+msgid "Visitors in the user list"
+msgstr "Odwiedzający na liście użytkowników"
+
+#: lib/retro_hex_chat_web/controllers/help_content/connecting.html.heex:74
+#, elixir-autogen, elixir-format
+msgid "Watching Without an Account"
+msgstr "Oglądanie bez konta"
+
+#: lib/retro_hex_chat_web/controllers/help_content/watching_without_account.html.heex:7
+#, elixir-autogen, elixir-format
+msgid "What you can do"
+msgstr "Co możesz zrobić?"
+
+#: lib/retro_hex_chat_web/controllers/help_content/watching_without_account.html.heex:2
+#, elixir-autogen, elixir-format
+msgid "You do not need an account to look around. Open the chat and you land in #lobby with the conversation arriving live, under a guest name such as Guest4821 that you get for the visit."
+msgstr "Nie potrzebujesz konta, żeby się rozejrzeć. Otwórz czat i wylądować w #lobby z rozmową przychodzącą na żywo, pod nazwą gości, takich jak Guest4821, że dostać na wizytę."
+
+#: lib/retro_hex_chat_web/controllers/help_content/connecting.html.heex:16
+#, elixir-autogen, elixir-format
+msgid "Cannot be a visitor name such as %{example}"
+msgstr "Nie może być nazwą odwiedzającego, taką jak %{example}"
+
+#: lib/retro_hex_chat_web/controllers/help_content/watching_without_account.html.heex:48
+#, elixir-autogen, elixir-format
+msgid "Limits"
+msgstr "Granice"
+
+#: lib/retro_hex_chat_web/controllers/help_content/watching_without_account.html.heex:30
+#, elixir-autogen, elixir-format
+msgid "Everything that does something needs an account: writing, reacting, the menus and settings, games, calls, spaces, private sessions — and following any link, whether to a game or to another site. Each of them opens the Connect window instead, saying which feature it was."
+msgstr "Wszystko, co coś robi, potrzebuje konta: pisanie, reagowanie, menu i ustawienia, gry, rozmowy, spacje, prywatne sesje - i po każdym linku, czy do gry lub do innej strony. Każdy z nich otwiera okno Connect, mówiąc, która to funkcja była."
+
+#: lib/retro_hex_chat_web/controllers/help_content/watching_without_account.html.heex:36
+#, elixir-autogen, elixir-format
+msgid "A link to a game, a call or a space opens the chat with that window, and after you sign in it takes you to the link."
+msgstr "Link do gry, połączenia lub przestrzeni otwiera czat z tym oknem, a po zalogowaniu się w nim zabierze Cię do link."

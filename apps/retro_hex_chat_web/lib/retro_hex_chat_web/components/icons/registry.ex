@@ -27,6 +27,7 @@ defmodule RetroHexChatWeb.Icons.Registry do
     {:icon_role_voiced, RetroHexChatWeb.Icons.People},
     {:icon_role_regular, RetroHexChatWeb.Icons.People},
     {:icon_status_user, RetroHexChatWeb.Icons.People},
+    {:icon_watching, RetroHexChatWeb.Icons.People},
     {:icon_dialog_profile, RetroHexChatWeb.Icons.People},
     {:icon_btn_profile, RetroHexChatWeb.Icons.People},
     {:icon_dialog_user_modes, RetroHexChatWeb.Icons.People},

@@ -330,6 +330,53 @@ defmodule RetroHexChatWeb.Components.UI.Nicklist do
     """
   end
 
+  @doc """
+  The visitors watching the channel without an account, under their guest
+  names. Listed apart from the members because they are not members: no role,
+  no voice, nothing to right-click — the rows carry no `data-nick`, so the
+  user-list hook offers no menu on them. Nothing renders while there are none.
+  """
+  attr :guests, :list, default: []
+  attr :current, :string, default: nil, doc: "the guest name of the visitor looking"
+  attr :class, :any, default: nil
+  attr :rest, :global
+
+  @spec nicklist_guests(map()) :: Phoenix.LiveView.Rendered.t()
+  def nicklist_guests(assigns) do
+    ~H"""
+    <section
+      :if={@guests != []}
+      class={classes(["chat-nicklist-section", "chat-nicklist-section--guest", @class])}
+      data-testid="nicklist-section-guest"
+      {@rest}
+    >
+      <div class="chat-nicklist-section__header">
+        <span class="chat-nicklist-section__icon" aria-hidden="true">
+          <Icons.icon_watching class="h-3 w-3" />
+        </span>
+        <span class="chat-nicklist-section__label">{dgettext("chat", "Visitors")}</span>
+        <span class="chat-nicklist-section__count" data-testid="nicklist-guest-count">
+          {length(@guests)}
+        </span>
+      </div>
+      <div class="chat-nicklist-section__rows">
+        <div
+          :for={guest <- @guests}
+          class="chat-nicklist-row chat-nicklist-row--guest"
+          data-testid={"nicklist-guest-#{guest}"}
+          data-current={to_string(guest == @current)}
+          title={dgettext("chat", "Watching without an account")}
+        >
+          <span class="chat-nicklist-row__role" aria-hidden="true">
+            <Icons.icon_watching class="h-3 w-3" />
+          </span>
+          <span class="chat-nicklist-row__nick text-muted-foreground">{guest}</span>
+        </div>
+      </div>
+    </section>
+    """
+  end
+
   attr :label, :string, required: true
   attr :count, :integer, required: true
   attr :icon, :atom, required: true

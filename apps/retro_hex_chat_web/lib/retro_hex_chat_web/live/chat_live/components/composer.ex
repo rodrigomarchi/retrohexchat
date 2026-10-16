@@ -155,7 +155,8 @@ defmodule RetroHexChatWeb.ChatLive.Components.Composer do
        pm_typing_from: nil,
        edit_mode_message_id: nil,
        timestamp_format: :dd_mm_hh_mm,
-       timezone: "Etc/UTC"
+       timezone: "Etc/UTC",
+       locked: false
      )}
   end
 
@@ -411,196 +412,210 @@ defmodule RetroHexChatWeb.ChatLive.Components.Composer do
       />
       <.syntax_tooltip tooltip={@syntax_tooltip} detail_level={@command_help_level} />
 
-      <div class="chat-composer shrink-0">
-        <.live_component
-          :if={@capabilities.emoji}
-          module={EmojiPickerDialog}
-          id={EmojiPickerDialog.id()}
-          visible={@show_emoji_picker}
-        />
+      <%!-- `locked` is a visitor's composer: drawn exactly as everybody's, but
+            `inert` — no focus, no typing, none of its own events — under a pane
+            that asks the parent to open the sign-in window instead. --%>
+      <div class={["chat-composer shrink-0", @locked && "relative"]}>
+        <div inert={@locked} class="contents">
+          <.live_component
+            :if={@capabilities.emoji}
+            module={EmojiPickerDialog}
+            id={EmojiPickerDialog.id()}
+            visible={@show_emoji_picker}
+          />
 
-        <.reply_bar
-          :if={@reply_to}
-          author={@reply_to.author}
-          message={@reply_to.preview}
-          on_dismiss="cancel_reply"
-        />
+          <.reply_bar
+            :if={@reply_to}
+            author={@reply_to.author}
+            message={@reply_to.preview}
+            on_dismiss="cancel_reply"
+          />
 
-        <.typing_indicator :if={@capabilities.typing_indicator} nick={@pm_typing_from} />
+          <.typing_indicator :if={@capabilities.typing_indicator} nick={@pm_typing_from} />
 
-        <div class="relative">
-          <div
-            :if={show_markdown_preview?(@content_format, @composer_view, @input)}
-            class="composer-markdown-preview"
-            data-testid="composer-markdown-preview"
-          >
-            <.chat_message
-              timestamp={preview_timestamp(@timestamp_format, @timezone)}
-              meta_title={preview_datetime(@timezone)}
-              nick={preview_nick(@nickname)}
-              nick_color="text-text"
-              class="composer-markdown-preview__message"
+          <div class="relative">
+            <div
+              :if={show_markdown_preview?(@content_format, @composer_view, @input)}
+              class="composer-markdown-preview"
+              data-testid="composer-markdown-preview"
             >
-              {raw(markdown_preview_html(@input, @strip_formatting))}
-            </.chat_message>
-          </div>
-
-          <.chat_input
-            id="chat-input-area"
-            input_id="chat-input"
-            value={@input}
-            name="input"
-            content_format={@content_format}
-            placeholder={@placeholder}
-            notice_target={@notice_target}
-            input_error={@input_error}
-            on_submit="send_input"
-            on_change="input_changed"
-            on_notice_cancel="cancel_notice_mode"
-            target={@myself}
-            hook="AutocompleteHook"
-            wrapper_hook="CharCounterHook"
-            input_history={@command_history}
-            recent_commands={@recent_commands}
-            can_send_empty={attachment_selected?(@uploads.attachments)}
-            autofocus
-          >
-            <:toolbar_buttons :if={is_nil(@edit_mode_message_id)}>
-              <label
-                for={@uploads.attachments.ref}
-                class={tool_button_class(variant: "flat", size: "sm")}
-                title={dgettext("chat", "Attach file")}
-                aria-label={dgettext("chat", "Attach file")}
-                data-testid="chat-attachment-button"
+              <.chat_message
+                timestamp={preview_timestamp(@timestamp_format, @timezone)}
+                meta_title={preview_datetime(@timezone)}
+                nick={preview_nick(@nickname)}
+                nick_color="text-text"
+                class="composer-markdown-preview__message"
               >
-                <Icons.icon_choose_file class="w-4 h-4" />
-              </label>
-              <.live_file_input upload={@uploads.attachments} class="sr-only" />
-            </:toolbar_buttons>
-            <:toolbar_buttons :if={@capabilities.formatting_toolbar}>
-              <.formatting_toolbar
-                content_format={@content_format}
-                composer_view={@composer_view}
-                strip_active={@strip_formatting}
-                show_emoji={@capabilities.emoji}
-                on_format="toggle_strip_formatting"
-                on_content_format="set_content_format"
-                on_composer_view="set_composer_view"
-                on_toggle_emoji="toggle_emoji_picker"
-                target={@myself}
-              />
-            </:toolbar_buttons>
-            <%!-- The upload's input outlives the microphone: a recording still
+                {raw(markdown_preview_html(@input, @strip_formatting))}
+              </.chat_message>
+            </div>
+
+            <.chat_input
+              id="chat-input-area"
+              input_id="chat-input"
+              value={@input}
+              name="input"
+              content_format={@content_format}
+              placeholder={@placeholder}
+              notice_target={@notice_target}
+              input_error={@input_error}
+              on_submit="send_input"
+              on_change="input_changed"
+              on_notice_cancel="cancel_notice_mode"
+              target={@myself}
+              hook="AutocompleteHook"
+              wrapper_hook="CharCounterHook"
+              input_history={@command_history}
+              recent_commands={@recent_commands}
+              can_send_empty={attachment_selected?(@uploads.attachments)}
+              autofocus
+            >
+              <:toolbar_buttons :if={is_nil(@edit_mode_message_id)}>
+                <label
+                  for={@uploads.attachments.ref}
+                  class={tool_button_class(variant: "flat", size: "sm")}
+                  title={dgettext("chat", "Attach file")}
+                  aria-label={dgettext("chat", "Attach file")}
+                  data-testid="chat-attachment-button"
+                >
+                  <Icons.icon_choose_file class="w-4 h-4" />
+                </label>
+                <.live_file_input upload={@uploads.attachments} class="sr-only" />
+              </:toolbar_buttons>
+              <:toolbar_buttons :if={@capabilities.formatting_toolbar}>
+                <.formatting_toolbar
+                  content_format={@content_format}
+                  composer_view={@composer_view}
+                  strip_active={@strip_formatting}
+                  show_emoji={@capabilities.emoji}
+                  on_format="toggle_strip_formatting"
+                  on_content_format="set_content_format"
+                  on_composer_view="set_composer_view"
+                  on_toggle_emoji="toggle_emoji_picker"
+                  target={@myself}
+                />
+              </:toolbar_buttons>
+              <%!-- The upload's input outlives the microphone: a recording still
                   uploading when the Status tab opens has to report its progress
                   through an input that is still there. --%>
-            <:toolbar_buttons>
-              <.voice_recorder :if={@capabilities.voice} target={@myself} />
-              <.live_file_input upload={@uploads.voice} class="sr-only" />
-            </:toolbar_buttons>
-          </.chat_input>
+              <:toolbar_buttons>
+                <.voice_recorder :if={@capabilities.voice} target={@myself} />
+                <.live_file_input upload={@uploads.voice} class="sr-only" />
+              </:toolbar_buttons>
+            </.chat_input>
 
-          <div
-            :if={@uploads.voice.entries != [] or upload_errors(@uploads.voice) != []}
-            class="border-x border-b border-border bg-surface px-1 py-1 text-xs"
-            data-testid="chat-voice-pending"
-          >
             <div
-              :for={entry <- @uploads.voice.entries}
-              class="flex min-h-7 items-center gap-1"
-              data-testid="chat-voice-entry"
+              :if={@uploads.voice.entries != [] or upload_errors(@uploads.voice) != []}
+              class="border-x border-b border-border bg-surface px-1 py-1 text-xs"
+              data-testid="chat-voice-pending"
             >
-              <Icons.icon_microphone class="h-4 w-4 shrink-0" />
-              <span class="min-w-0 flex-1 truncate">
-                {dgettext("chat", "Voice message")}
-              </span>
-              <span class="w-10 shrink-0 text-right text-muted-foreground">
-                {entry.progress}%
-              </span>
-              <.tool_button
-                label={dgettext("chat", "Cancel")}
-                size="sm"
-                tone="danger-on-hover"
-                phx-click="cancel_voice_upload"
-                phx-value-ref={entry.ref}
-                phx-target={@myself}
+              <div
+                :for={entry <- @uploads.voice.entries}
+                class="flex min-h-7 items-center gap-1"
+                data-testid="chat-voice-entry"
               >
-                <Icons.icon_close class="h-4 w-4" />
-              </.tool_button>
+                <Icons.icon_microphone class="h-4 w-4 shrink-0" />
+                <span class="min-w-0 flex-1 truncate">
+                  {dgettext("chat", "Voice message")}
+                </span>
+                <span class="w-10 shrink-0 text-right text-muted-foreground">
+                  {entry.progress}%
+                </span>
+                <.tool_button
+                  label={dgettext("chat", "Cancel")}
+                  size="sm"
+                  tone="danger-on-hover"
+                  phx-click="cancel_voice_upload"
+                  phx-value-ref={entry.ref}
+                  phx-target={@myself}
+                >
+                  <Icons.icon_close class="h-4 w-4" />
+                </.tool_button>
+              </div>
+              <p
+                :for={err <- upload_errors(@uploads.voice)}
+                class="px-1 text-destructive"
+                data-testid="chat-voice-error"
+              >
+                {upload_error_to_string(err)}
+              </p>
+              <p
+                :for={entry <- @uploads.voice.entries}
+                :if={upload_errors(@uploads.voice, entry) != []}
+                class="px-1 text-destructive"
+                data-testid="chat-voice-error"
+              >
+                {@uploads.voice
+                |> upload_errors(entry)
+                |> Enum.map_join(", ", &upload_error_to_string/1)}
+              </p>
             </div>
-            <p
-              :for={err <- upload_errors(@uploads.voice)}
-              class="px-1 text-destructive"
-              data-testid="chat-voice-error"
-            >
-              {upload_error_to_string(err)}
-            </p>
-            <p
-              :for={entry <- @uploads.voice.entries}
-              :if={upload_errors(@uploads.voice, entry) != []}
-              class="px-1 text-destructive"
-              data-testid="chat-voice-error"
-            >
-              {@uploads.voice
-              |> upload_errors(entry)
-              |> Enum.map_join(", ", &upload_error_to_string/1)}
-            </p>
-          </div>
 
-          <div
-            :if={attachment_selected?(@uploads.attachments)}
-            class="border-x border-b border-border bg-surface px-1 py-1 text-xs"
-            data-testid="chat-attachment-pending"
-          >
             <div
-              :for={entry <- @uploads.attachments.entries}
-              class="flex min-h-7 items-center gap-1"
-              data-testid="chat-attachment-entry"
+              :if={attachment_selected?(@uploads.attachments)}
+              class="border-x border-b border-border bg-surface px-1 py-1 text-xs"
+              data-testid="chat-attachment-pending"
             >
-              <Icons.icon_file_send class="h-4 w-4 shrink-0" />
-              <span class="min-w-0 flex-1 truncate font-mono" title={entry.client_name}>
-                {entry.client_name}
-              </span>
-              <span class="shrink-0 text-muted-foreground">
-                {Format.bytes(entry.client_size)}
-              </span>
-              <span class="w-10 shrink-0 text-right text-muted-foreground">
-                {entry.progress}%
-              </span>
-              <.tool_button
-                label={dgettext("chat", "Remove attachment")}
-                size="sm"
-                tone="danger-on-hover"
-                phx-click="cancel_attachment_upload"
-                phx-value-ref={entry.ref}
-                phx-target={@myself}
+              <div
+                :for={entry <- @uploads.attachments.entries}
+                class="flex min-h-7 items-center gap-1"
+                data-testid="chat-attachment-entry"
               >
-                <Icons.icon_close class="h-4 w-4" />
-              </.tool_button>
+                <Icons.icon_file_send class="h-4 w-4 shrink-0" />
+                <span class="min-w-0 flex-1 truncate font-mono" title={entry.client_name}>
+                  {entry.client_name}
+                </span>
+                <span class="shrink-0 text-muted-foreground">
+                  {Format.bytes(entry.client_size)}
+                </span>
+                <span class="w-10 shrink-0 text-right text-muted-foreground">
+                  {entry.progress}%
+                </span>
+                <.tool_button
+                  label={dgettext("chat", "Remove attachment")}
+                  size="sm"
+                  tone="danger-on-hover"
+                  phx-click="cancel_attachment_upload"
+                  phx-value-ref={entry.ref}
+                  phx-target={@myself}
+                >
+                  <Icons.icon_close class="h-4 w-4" />
+                </.tool_button>
+              </div>
+              <p
+                :for={err <- upload_errors(@uploads.attachments)}
+                class="px-1 text-destructive"
+                data-testid="chat-attachment-error"
+              >
+                {upload_error_to_string(err)}
+              </p>
+              <p
+                :for={entry <- @uploads.attachments.entries}
+                :if={upload_errors(@uploads.attachments, entry) != []}
+                class="px-1 text-destructive"
+                data-testid="chat-attachment-entry-error"
+              >
+                {entry.client_name}: {entry
+                |> then(&upload_errors(@uploads.attachments, &1))
+                |> Enum.map_join(", ", &upload_error_to_string/1)}
+              </p>
             </div>
-            <p
-              :for={err <- upload_errors(@uploads.attachments)}
-              class="px-1 text-destructive"
-              data-testid="chat-attachment-error"
-            >
-              {upload_error_to_string(err)}
-            </p>
-            <p
-              :for={entry <- @uploads.attachments.entries}
-              :if={upload_errors(@uploads.attachments, entry) != []}
-              class="px-1 text-destructive"
-              data-testid="chat-attachment-entry-error"
-            >
-              {entry.client_name}: {entry
-              |> then(&upload_errors(@uploads.attachments, &1))
-              |> Enum.map_join(", ", &upload_error_to_string/1)}
-            </p>
           </div>
-        </div>
-        <%!-- Composer-owned hook: intercepts multi-line paste on #chat-input and
+          <%!-- Composer-owned hook: intercepts multi-line paste on #chat-input and
               pushes `paste_lines` to the root LiveView (handled by core_events,
               which forwards to the PasteConfirmDialog island). --%>
-        <div :if={@capabilities.paste} id="paste-hook" phx-hook="PasteHook" class="u-hidden"></div>
-        <.history_search visible={true} class="u-hidden" />
+          <div :if={@capabilities.paste} id="paste-hook" phx-hook="PasteHook" class="u-hidden"></div>
+          <.history_search visible={true} class="u-hidden" />
+        </div>
+        <button
+          :if={@locked}
+          type="button"
+          class="absolute inset-0 cursor-text"
+          phx-click="visitor_sign_in"
+          aria-label={dgettext("chat", "Writing in the chat needs an account.")}
+          data-testid="visitor-composer"
+        >
+        </button>
       </div>
     </div>
     """

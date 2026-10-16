@@ -15,14 +15,19 @@ defmodule RetroHexChatWeb.App.PlayLiveTest do
   alias RetroHexChat.Presence.Tracker
   alias RetroHexChat.SessionControl
   alias RetroHexChat.Topics
+  alias RetroHexChatWeb.App.Paths
 
   describe "who may open it" do
-    test "no session goes to connect", %{conn: conn} do
-      assert redirected_to_connect(live(conn, ~p"/play"))
+    test "no session lands in the chat, asked to sign in for games and brought back", %{
+      conn: conn
+    } do
+      assert {:error, {_kind, %{to: to}}} = live(conn, ~p"/play/tetris")
+      assert to == Paths.visitor_sign_in_path(:games, "/play/tetris")
     end
 
-    test "a nickname the validator refuses goes to connect", %{conn: conn} do
-      assert redirected_to_connect(conn |> chat_conn("not a nick") |> live(~p"/play"))
+    test "a nickname the validator refuses is a visitor", %{conn: conn} do
+      assert {:error, {_kind, %{to: to}}} = conn |> chat_conn("not a nick") |> live(~p"/play")
+      assert to == Paths.visitor_sign_in_path(:games, "/play")
     end
 
     test "a banned nickname goes to connect saying so", %{conn: conn} do
@@ -207,9 +212,6 @@ defmodule RetroHexChatWeb.App.PlayLiveTest do
       last_seen_at: DateTime.utc_now()
     })
   end
-
-  defp redirected_to_connect({:error, {_kind, %{to: to}}}), do: to == "/connect"
-  defp redirected_to_connect(_other), do: false
 
   # The dialog wrapper carries `hidden` while it is closed; the surrounding
   # markup is identical either way, so that class is the whole difference.

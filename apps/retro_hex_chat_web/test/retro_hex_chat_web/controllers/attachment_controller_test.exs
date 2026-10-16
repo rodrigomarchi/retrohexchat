@@ -3,7 +3,10 @@ defmodule RetroHexChatWeb.AttachmentControllerTest do
 
   @moduletag :integration
 
+  alias RetroHexChat.Channels.Server
+  alias RetroHexChat.Channels.Supervisor, as: ChannelSupervisor
   alias RetroHexChat.Chat.{Attachments, Service}
+  alias RetroHexChatWeb.App.Paths
 
   defp uploaded_file(owner, attrs \\ %{}) do
     attrs =
@@ -21,9 +24,39 @@ defmodule RetroHexChatWeb.AttachmentControllerTest do
     file
   end
 
-  test "redirects anonymous users to connect", %{conn: conn} do
+  test "sends a visitor's download to sign in", %{conn: conn} do
     conn = get(conn, ~p"/chat/attachments/123")
-    assert redirected_to(conn) == "/connect"
+    assert redirected_to(conn) == Paths.visitor_sign_in_path(:links, "/chat")
+  end
+
+  describe "a visitor's preview" do
+    setup do
+      channel = "#vis#{System.unique_integer([:positive])}"
+      {:ok, pid} = ChannelSupervisor.ensure_started(channel)
+      on_exit(fn -> if Process.alive?(pid), do: ChannelSupervisor.stop_child(pid) end)
+      {:ok, _} = Server.join(channel, "Alice")
+      file = uploaded_file("Alice", %{filename: "screen.png", content_type: "image/png"})
+
+      {:ok, message} =
+        Service.send_message(channel, "Alice", "file", "message", attachment_ids: [file.id])
+
+      %{channel: channel, upload: file, attachment: hd(message.attachments)}
+    end
+
+    test "shows the picture in a channel a visitor may watch", ctx do
+      conn = get(build_conn(), ~p"/chat/attachments/#{ctx.attachment.id}/preview")
+
+      assert redirected_to(conn) ==
+               "http://storage.test/#{ctx.upload.storage_bucket}/#{ctx.upload.storage_key}"
+    end
+
+    test "shows nothing from a channel a stranger may not see", ctx do
+      :ok = Server.set_mode(ctx.channel, "Alice", "+s")
+
+      conn = get(build_conn(), ~p"/chat/attachments/#{ctx.attachment.id}/preview")
+
+      assert conn.status == 404
+    end
   end
 
   test "redirects channel attachment downloads to a signed storage URL", %{conn: conn} do

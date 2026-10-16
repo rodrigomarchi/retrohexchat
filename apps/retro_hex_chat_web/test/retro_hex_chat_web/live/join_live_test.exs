@@ -25,7 +25,8 @@ defmodule RetroHexChatWeb.JoinLiveTest do
   end
 
   describe "a live link" do
-    test "invites a visitor with no session to connect and come back", %{conn: conn} = ctx do
+    test "sends a visitor with no session to sign in for games and come back",
+         %{conn: conn} = ctx do
       slug = share(ctx, "play", %{"game_id" => "hex_pong"})
 
       {:ok, view, html} = live(conn, ~p"/join/#{slug}")
@@ -39,8 +40,7 @@ defmodule RetroHexChatWeb.JoinLiveTest do
                |> Floki.parse_fragment!()
                |> Floki.attribute("href")
 
-      assert href =~ "/connect"
-      assert URI.decode(href) =~ "return_to=/join/#{slug}"
+      assert href == Paths.visitor_sign_in_path(:games, "/join/#{slug}")
     end
 
     test "offers a signed-in visitor the way in", %{conn: conn} = ctx do
@@ -406,7 +406,7 @@ defmodule RetroHexChatWeb.JoinLiveTest do
       assert URI.decode(href) == "/chat?join=#{ctx.channel}"
     end
 
-    test "sends a visitor with no session to connect and come back", ctx do
+    test "opens the channel in the chat for a visitor with no session, to watch", ctx do
       slug = share(ctx, "channel", %{"channel" => ctx.channel})
 
       {:ok, view, _html} = live(ctx.conn, ~p"/join/#{slug}")
@@ -418,7 +418,7 @@ defmodule RetroHexChatWeb.JoinLiveTest do
                |> Floki.parse_fragment!()
                |> Floki.attribute("href")
 
-      assert URI.decode(href) =~ "return_to=/join/#{slug}"
+      assert href == Paths.chat_path(ctx.channel)
     end
 
     # A public address exists under every locale segment the public pages do.

@@ -47,6 +47,10 @@ defmodule RetroHexChatWeb.Components.UI.ChatTaskbar do
   attr :arcade_session, :map, default: nil
   attr :cc_window_channel, :string, default: nil
 
+  attr :hidden_windows, :list,
+    default: [],
+    doc: "windows this reader does not get at all, so no button either"
+
   @spec chat_taskbar(map()) :: Phoenix.LiveView.Rendered.t()
   def chat_taskbar(assigns) do
     assigns = assign(assigns, :taskbar_slots, assigns |> taskbar_windows() |> group_windows())
@@ -280,6 +284,7 @@ defmodule RetroHexChatWeb.Components.UI.ChatTaskbar do
     }
 
     for window <- WindowRegistry.windows(),
+        window.id not in assigns.hidden_windows,
         WindowRegistry.on_taskbar?(window, capabilities) do
       %{
         id: window.id,

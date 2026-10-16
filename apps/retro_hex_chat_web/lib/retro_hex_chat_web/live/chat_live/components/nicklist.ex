@@ -112,6 +112,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.Nicklist do
         online_count: 0,
         away_count: 0,
         muted_count: 0,
+        guests: [],
         call_nicks: MapSet.new(),
         show_avatars: true,
         nick_color_fn: fn _nick -> nil end
@@ -256,6 +257,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.Nicklist do
             </div>
           </.nicklist_section>
           <.list_count_strip shown={min(@total, @max_rendered)} total={@total} />
+          <.nicklist_guests :if={@variant == "channel"} guests={@guests} current={@current_nick} />
         </.nicklist_body>
       </.nicklist_sidebar>
     </div>
@@ -277,6 +279,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.Nicklist do
       current_nick: Map.get(assigns, :current_nick, socket.assigns.current_nick),
       nick_color_fn: Map.get(assigns, :nick_color_fn, socket.assigns.nick_color_fn),
       show_avatars: Map.get(assigns, :show_avatars, socket.assigns.show_avatars),
+      guests: Map.get(assigns, :guests, socket.assigns.guests),
       call_nicks: normalize_call_nicks(assigns, socket)
     )
   end

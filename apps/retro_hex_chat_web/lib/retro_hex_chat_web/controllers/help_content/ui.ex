@@ -9,5 +9,5 @@ defmodule RetroHexChatWeb.HelpContent.UI do
   import RetroHexChatWeb.Components.Diagrams, warn: false
   import RetroHexChatWeb.HelpContent.Helpers
 
-  embed_templates "{ui_*,formatting_*,keyboard_shortcuts*,empty_states*,welcome*,private_messages*,connecting*,connect_authentication*}"
+  embed_templates "{ui_*,formatting_*,keyboard_shortcuts*,empty_states*,welcome*,private_messages*,connecting*,connect_authentication*,watching_without_account*}"
 end

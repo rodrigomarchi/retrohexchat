@@ -4,9 +4,9 @@ defmodule RetroHexChat.Commands.Handlers.Wallops do
   @behaviour RetroHexChat.Commands.Handler
 
   alias RetroHexChat.Commands.Handler
+  alias RetroHexChat.Topics
 
   @pubsub RetroHexChat.PubSub
-  @topic "server:wallops"
 
   @impl true
   @spec validate(String.t()) :: :ok | {:error, String.t()}
@@ -27,7 +27,7 @@ defmodule RetroHexChat.Commands.Handlers.Wallops do
 
     Phoenix.PubSub.broadcast(
       @pubsub,
-      @topic,
+      Topics.wallops(),
       {:wallops,
        %{
          sender: context.nickname,

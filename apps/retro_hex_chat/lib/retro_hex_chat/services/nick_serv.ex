@@ -20,6 +20,7 @@ defmodule RetroHexChat.Services.NickServ do
 
   require Logger
 
+  alias RetroHexChat.Accounts.NicknameValidator
   alias RetroHexChat.Accounts.TrustedDevices
   alias RetroHexChat.ChangesetErrors
   alias RetroHexChat.Nickname
@@ -53,24 +54,32 @@ defmodule RetroHexChat.Services.NickServ do
   end
 
   defp do_register(nickname, password, server) do
-    if Queries.get_setting("registration") == "closed" do
-      {:error,
-       dgettext("services", "Registration is currently closed by the server administrator")}
-    else
-      # bcrypt hash happens in RegisteredNick.registration_changeset, in THIS
-      # (caller) process. The DB unique index handles concurrent same-nick races.
-      case Queries.insert_registered_nick(nickname, password) do
-        {:ok, _} ->
-          GenServer.call(server, {:add_identified, nickname})
+    cond do
+      Queries.get_setting("registration") == "closed" ->
+        {:error,
+         dgettext("services", "Registration is currently closed by the server administrator")}
 
-          {:ok,
-           dgettext("services", "Nickname %{nickname} registered successfully",
-             nickname: nickname
-           )}
+      NicknameValidator.guest?(nickname) ->
+        {:error,
+         dgettext("services", "Visitor names like %{nickname} cannot be registered.",
+           nickname: nickname
+         )}
 
-        {:error, changeset} ->
-          {:error, format_changeset_error(changeset)}
-      end
+      true ->
+        # bcrypt hash happens in RegisteredNick.registration_changeset, in THIS
+        # (caller) process. The DB unique index handles concurrent same-nick races.
+        case Queries.insert_registered_nick(nickname, password) do
+          {:ok, _} ->
+            GenServer.call(server, {:add_identified, nickname})
+
+            {:ok,
+             dgettext("services", "Nickname %{nickname} registered successfully",
+               nickname: nickname
+             )}
+
+          {:error, changeset} ->
+            {:error, format_changeset_error(changeset)}
+        end
     end
   end
 

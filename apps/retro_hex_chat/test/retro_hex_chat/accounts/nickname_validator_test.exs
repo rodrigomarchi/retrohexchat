@@ -117,4 +117,25 @@ defmodule RetroHexChat.Accounts.NicknameValidatorTest do
       assert {:error, "Nickname must be a string"} = NicknameValidator.validate(nil)
     end
   end
+
+  describe "guest?/1" do
+    test "is Guest and digits, in any case" do
+      assert NicknameValidator.guest?("Guest1234")
+      assert NicknameValidator.guest?("guest7")
+      assert NicknameValidator.guest?("GUEST0001")
+    end
+
+    test "is not a name that only starts like one" do
+      refute NicknameValidator.guest?("Guest")
+      refute NicknameValidator.guest?("Guestbook")
+      refute NicknameValidator.guest?("Guest12a")
+      refute NicknameValidator.guest?("MyGuest12")
+      refute NicknameValidator.guest?(nil)
+    end
+
+    test "guest_name/0 makes one" do
+      assert NicknameValidator.guest?(NicknameValidator.guest_name())
+      assert NicknameValidator.valid?(NicknameValidator.guest_name())
+    end
+  end
 end

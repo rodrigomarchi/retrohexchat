@@ -638,7 +638,7 @@ defmodule RetroHexChat.Admin do
   defp broadcast_system_nuke(admin) do
     Phoenix.PubSub.broadcast(
       @pubsub,
-      "server:settings",
+      Topics.server_settings(),
       {:system_nuked, nuke_disconnect_payload(admin)}
     )
   rescue
@@ -725,7 +725,7 @@ defmodule RetroHexChat.Admin do
   end
 
   defp broadcast_server(message) do
-    Phoenix.PubSub.broadcast(@pubsub, "server:settings", message)
+    Phoenix.PubSub.broadcast(@pubsub, Topics.server_settings(), message)
   rescue
     e -> Logger.warning("Admin broadcast to server:settings failed: #{inspect(e)}")
   end
