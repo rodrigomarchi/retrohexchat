@@ -14,9 +14,8 @@ test("the mIRC commands guide leads to the help and to the other guides (PW23)",
   await page.goto("/mirc-commands");
   await expect(page.locator("#mirc-commands-heading")).toBeVisible();
 
-  // The table's windows open cascaded like every landing page's; the taskbar
-  // brings the channels group to the front.
-  await page.locator('[data-window-taskbar="parity-channels"]').click();
+  // The page is one document; its strip of sections leads to the channels group.
+  await page.getByTestId("document-contents-parity-channels").click();
   const channels = page.getByTestId("parity-parity-channels");
   await expect(channels).toContainText("/join #channel key");
   await shot(page, "mirc-commands-channels");
@@ -25,9 +24,9 @@ test("the mIRC commands guide leads to the help and to the other guides (PW23)",
   await channels.getByRole("link", { name: "/join" }).click();
   await expect(page).toHaveURL(/\/chat\/help\/cmd-join$/);
 
-  // Back on the guide, the reading window leads to the other two.
+  // Back on the guide, its reading section leads to the other two.
   await page.goto("/mirc-commands");
-  await page.locator('[data-window-taskbar="read-next"]').click();
+  await page.getByTestId("document-contents-read-next").click();
   await page
     .getByTestId("guide-links")
     .getByRole("link", { name: "IRC chat" })

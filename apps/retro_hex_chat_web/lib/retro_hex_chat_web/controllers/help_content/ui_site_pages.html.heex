@@ -1,0 +1,75 @@
+<p>
+  {dgettext(
+    "help_ui",
+    "RetroHexChat has one desktop. The chat lives on it, and so does every page of the site: the home, the features, the games, the guides, the public archives and this help each open as a window over the chat, and moving between them never reloads the page — the chat keeps running behind whatever you are reading."
+  )}
+</p>
+
+<h3>{dgettext("help_ui", "Finding the Pages")}</h3>
+<ul>
+  <li>
+    <strong>{dgettext("help_ui", "About this site")}</strong> {dgettext(
+      "help_ui",
+      "— The first icon on the desktop. Double-click it for a folder with every page, the guides and the documentation."
+    )}
+  </li>
+  <li>
+    <strong>{dgettext("help_ui", "Start ▸ Navigate")}</strong> {dgettext(
+      "help_ui",
+      "— The same pages from the Start menu, and the Navigate menu of every page window."
+    )}
+  </li>
+  <li>
+    <strong>{dgettext("help_ui", "The taskbar")}</strong> {dgettext(
+      "help_ui",
+      "— An open page has a taskbar button like any other window. Click it to bring the page back; click the chat's button to go back to the conversation."
+    )}
+  </li>
+</ul>
+
+<h3>{dgettext("help_ui", "The Welcome Window")}</h3>
+<p>
+  {dgettext(
+    "help_ui",
+    "The home page opens the Welcome window over the #lobby channel. Its first button takes you into the lobby and puts the Welcome away on the taskbar; the second opens the Connect window to create an account. After that, the next visit opens the Welcome minimized, so you land straight in the chat."
+  )}
+</p>
+
+<h3>{dgettext("help_ui", "Addresses")}</h3>
+<ul>
+  <li>
+    {dgettext(
+      "help_ui",
+      "Each page window has its own address, so the browser's Back and Forward move between the pages you opened, and a bookmark or a shared link opens the same page over the chat."
+    )}
+  </li>
+  <li>
+    {dgettext(
+      "help_ui",
+      "A channel's address is /c/ followed by its name — /c/lobby for #lobby — and the address bar shows it while that channel is in front. Copy it to invite somebody; it opens the channel for them, read-only until they sign in."
+    )}
+  </li>
+  <li>
+    {dgettext(
+      "help_ui",
+      "A private conversation never gets an address: who you talk to privately is not something a link should carry."
+    )}
+  </li>
+  <li>
+    {dgettext(
+      "help_ui",
+      "Closing a page window takes you back to the chat, at the address of the conversation in front."
+    )}
+  </li>
+</ul>
+
+<.help_h4 icon={:icon_link}>{dgettext("help_ui", "See Also")}</.help_h4>
+<p>
+  <.help_link topic="ui-desktop">{dgettext("help_ui", "Desktop & Windows")}</.help_link>
+  · <.help_link topic="ui-start-menu">{dgettext("help_ui", "Start Menu")}</.help_link>
+  ·
+  <.help_link topic="watching-without-account">
+    {dgettext("help_ui", "Watching Without an Account")}
+  </.help_link>
+  · <.help_link topic="ui-connect-window">{dgettext("help_ui", "Connect Window")}</.help_link>
+</p>

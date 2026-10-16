@@ -38,7 +38,7 @@ defmodule RetroHexChatWeb.EndpointStaticTest do
       response = conn |> get("/manifest.webmanifest") |> response(200)
 
       assert response =~ ~s("start_url")
-      assert Jason.decode!(response)["start_url"] == "/chat"
+      assert Jason.decode!(response)["start_url"] == "/"
     end
 
     test "the manifest points at icons that are actually served", %{conn: conn} do

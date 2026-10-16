@@ -98,3 +98,25 @@ export async function loadEventEnd(page: Page): Promise<number> {
     return nav?.loadEventEnd ?? 0;
   });
 }
+
+/**
+ * Elements in the first response of `path`, parsed but never run.
+ *
+ * On the one desktop the chat starts right after the first paint wherever the
+ * address needs it, so the live DOM a moment after `load` is the chat's, not
+ * the page's. What the first paint costs is the document the server sent —
+ * the same thing `PerfBudgets` measures on the Elixir side.
+ */
+export async function firstResponseNodes(
+  page: Page,
+  path: string,
+): Promise<number> {
+  return page.evaluate(async (target) => {
+    const html = await (
+      await fetch(target, { credentials: "same-origin" })
+    ).text();
+    return new DOMParser()
+      .parseFromString(html, "text/html")
+      .querySelectorAll("*").length;
+  }, path);
+}

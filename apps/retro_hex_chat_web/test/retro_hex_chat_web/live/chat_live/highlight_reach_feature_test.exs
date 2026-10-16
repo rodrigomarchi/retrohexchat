@@ -28,7 +28,7 @@ defmodule RetroHexChatWeb.ChatLive.HighlightReachFeatureTest do
   alias RetroHexChat.Channels.{Registry, Supervisor}
 
   defp connect_user(conn, nick) do
-    {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
+    {:ok, view, _html} = live(chat_conn(conn, nick), "/")
     view
   end
 

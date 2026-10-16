@@ -142,7 +142,7 @@ defmodule RetroHexChatWeb.AutojoinFeatureTest do
   # ── Helpers ────────────────────────────────────────────────────
 
   defp connect_user(conn, nick) do
-    {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
+    {:ok, view, _html} = live(chat_conn(conn, nick), "/")
     view
   end
 
@@ -204,7 +204,7 @@ defmodule RetroHexChatWeb.AutojoinFeatureTest do
       channel = "#ajt-#{uid()}"
       ensure_channel(channel)
 
-      {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
+      {:ok, view, _html} = live(chat_conn(conn, nick), "/")
       render_click(view, "switch_channel", %{"channel" => channel})
 
       render_click(view, "ctx_conversations_toggle_autojoin", %{"channel" => channel})
@@ -217,7 +217,7 @@ defmodule RetroHexChatWeb.AutojoinFeatureTest do
       channel = "#ajt-#{uid()}"
       ensure_channel(channel)
 
-      {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
+      {:ok, view, _html} = live(chat_conn(conn, nick), "/")
       render_click(view, "switch_channel", %{"channel" => channel})
 
       render_click(view, "ctx_conversations_toggle_autojoin", %{"channel" => channel})
@@ -232,7 +232,7 @@ defmodule RetroHexChatWeb.AutojoinFeatureTest do
       channel = "#ajt-#{uid()}"
       ensure_channel(channel)
 
-      {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
+      {:ok, view, _html} = live(chat_conn(conn, nick), "/")
       render_click(view, "switch_channel", %{"channel" => channel})
       render_click(view, "ctx_conversations_toggle_autojoin", %{"channel" => channel})
       render_click(view, "close_channel_tab", %{"channel" => channel})

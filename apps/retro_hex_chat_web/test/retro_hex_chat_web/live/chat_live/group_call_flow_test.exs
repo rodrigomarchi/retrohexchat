@@ -33,7 +33,7 @@ defmodule RetroHexChatWeb.ChatLive.GroupCallFlowTest do
 
   defp mount_identified(conn, prefix) do
     nick = register(unique_nick(prefix))
-    {:ok, view, _html} = live(chat_conn(conn, nick.nickname, pre_identified: true), "/chat")
+    {:ok, view, _html} = live(chat_conn(conn, nick.nickname, pre_identified: true), "/")
     %{nick: nick, view: view}
   end
 
@@ -193,7 +193,7 @@ defmodule RetroHexChatWeb.ChatLive.GroupCallFlowTest do
     end
 
     test "an unidentified user is refused, in the policy's words", %{conn: conn} do
-      {:ok, view, _html} = live(chat_conn(conn, unique_nick("gcfe")), "/chat")
+      {:ok, view, _html} = live(chat_conn(conn, unique_nick("gcfe")), "/")
       channel = active_channel(view)
 
       assert has_element?(view, ~s([data-testid="group-call-open"][disabled]))

@@ -11,6 +11,7 @@ import { ConnectPage, uniqueNickname } from "../pages/ConnectPage";
 import { ChatPage } from "../pages/ChatPage";
 import { reopenRegistration } from "../helpers/e2eState";
 import { adminNick, adminPassword } from "../helpers/env";
+import { CHAT_URL } from "../helpers/urls";
 
 const ADMIN_NICK = adminNick();
 const ADMIN_PW = adminPassword();
@@ -143,7 +144,7 @@ test.describe.serial("Registration closed edges", () => {
       await expect(challengerConnect.authError).toContainText(
         "Incorrect password",
       );
-      await expect(source.page).toHaveURL(/\/chat(\?.*)?$/);
+      await expect(source.page).toHaveURL(CHAT_URL);
       await source.chat.sendMessage(sourceMarker);
       await source.chat.expectMessageVisible(sourceMarker);
 
@@ -155,7 +156,7 @@ test.describe.serial("Registration closed edges", () => {
       await challengerConnect.authButton.click();
       await challengerChat.waitUntilConnected();
 
-      await expect(source.page).toHaveURL(/\/chat(\?.*)?$/);
+      await expect(source.page).toHaveURL(CHAT_URL);
       await expect(source.page.getByTestId("session-alert")).toHaveCount(0);
     } finally {
       await setRegistration(admin, "open").catch(() => {});

@@ -11,7 +11,7 @@ defmodule RetroHexChatWeb.WindowTitleFeatureTest do
     test "the active conversation names the window, the taskbar and the tab alike",
          %{conn: conn} do
       nick = "WT1#{uid()}"
-      {:ok, view, html} = live(chat_conn(conn, nick), "/chat")
+      {:ok, view, html} = live(chat_conn(conn, nick), "/")
 
       # Connecting auto-joins #lobby.
       title = "#lobby[#{nick}]"
@@ -27,7 +27,7 @@ defmodule RetroHexChatWeb.WindowTitleFeatureTest do
     test "switching to a joined channel renames all three", %{conn: conn} do
       nick = "WT2#{uid()}"
       channel = "#wt#{uid()}"
-      {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
+      {:ok, view, _html} = live(chat_conn(conn, nick), "/")
 
       html = submit_command_sync(view, "/join #{channel}")
 
@@ -40,7 +40,7 @@ defmodule RetroHexChatWeb.WindowTitleFeatureTest do
 
     test "the status tab names the window after itself", %{conn: conn} do
       nick = "WT3#{uid()}"
-      {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
+      {:ok, view, _html} = live(chat_conn(conn, nick), "/")
 
       html = render_click(view, "switch_tab", %{"type" => "status", "label" => "Status"})
 
@@ -55,7 +55,7 @@ defmodule RetroHexChatWeb.WindowTitleFeatureTest do
 
     test "the title bar meta zone carries the identity state", %{conn: conn} do
       nick = "WT4#{uid()}"
-      {:ok, _view, html} = live(chat_conn(conn, nick), "/chat")
+      {:ok, _view, html} = live(chat_conn(conn, nick), "/")
 
       assert html =~ "window-title-meta"
       assert html =~ "Guest"
@@ -63,7 +63,7 @@ defmodule RetroHexChatWeb.WindowTitleFeatureTest do
 
     test "the app name no longer titles the window", %{conn: conn} do
       nick = "WT5#{uid()}"
-      {:ok, _view, html} = live(chat_conn(conn, nick), "/chat")
+      {:ok, _view, html} = live(chat_conn(conn, nick), "/")
 
       refute html =~ ~s(data-title="RetroHexChat")
     end

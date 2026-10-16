@@ -12,7 +12,7 @@ defmodule RetroHexChatWeb.ChatLive.MenuToolbarEvents do
   """
 
   import Phoenix.Component, only: [assign: 2]
-  import Phoenix.LiveView, only: [push_event: 3, push_navigate: 2, send_update: 2]
+  import Phoenix.LiveView, only: [push_event: 3, push_patch: 2, redirect: 2, send_update: 2]
 
   use Gettext, backend: RetroHexChatWeb.Gettext
 
@@ -93,7 +93,7 @@ defmodule RetroHexChatWeb.ChatLive.MenuToolbarEvents do
      socket
      |> clear_reconnect_state()
      |> push_event("intentional_disconnect", %{})
-     |> push_navigate(to: Paths.connect_path(socket))}
+     |> redirect(to: Paths.session_clear_path(socket, "logout"))}
   end
 
   def handle_event("cancel_disconnect", _params, socket) do
@@ -123,7 +123,7 @@ defmodule RetroHexChatWeb.ChatLive.MenuToolbarEvents do
   end
 
   def handle_event("help_topics", _params, socket) do
-    {:halt, push_navigate(socket, to: ~p"/chat/help")}
+    {:halt, push_patch(socket, to: Paths.localized(~p"/chat/help"))}
   end
 
   def handle_event(_event, _params, socket), do: {:cont, socket}

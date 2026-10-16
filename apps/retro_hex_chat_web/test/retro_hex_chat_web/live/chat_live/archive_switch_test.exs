@@ -22,7 +22,7 @@ defmodule RetroHexChatWeb.ChatLive.ArchiveSwitchTest do
     other = register("Oth")
     channel = "#arcsw#{uid()}"
 
-    {:ok, view, _html} = ctx.conn |> chat_conn(founder, pre_identified: true) |> live(~p"/chat")
+    {:ok, view, _html} = ctx.conn |> chat_conn(founder, pre_identified: true) |> live("/")
     submit_command_sync(view, "/join #{channel}")
     submit_command_sync(view, "/cs register #{channel}")
     open_cc(view, channel)
@@ -59,7 +59,7 @@ defmodule RetroHexChatWeb.ChatLive.ArchiveSwitchTest do
   # the membership lives.
   test "an operator who is not the founder is refused", ctx do
     {:ok, other_view, _html} =
-      build_conn() |> chat_conn(ctx.other, pre_identified: true) |> live(~p"/chat")
+      build_conn() |> chat_conn(ctx.other, pre_identified: true) |> live("/")
 
     submit_command_sync(other_view, "/join #{ctx.channel}")
     open_cc(other_view, ctx.channel)

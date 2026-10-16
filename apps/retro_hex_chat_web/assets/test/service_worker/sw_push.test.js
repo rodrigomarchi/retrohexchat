@@ -137,40 +137,40 @@ describe("notificationclick", () => {
   it("opens the conversation when nothing is open", async () => {
     await dispatch(worker.listeners.notificationclick, clickEvent("#lobby"));
 
-    expect(worker.clients.openWindow).toHaveBeenCalledWith("/chat?conversation=%23lobby");
+    expect(worker.clients.openWindow).toHaveBeenCalledWith("/c/lobby");
   });
 
   // A second window beside the one they already have is not what anybody meant
   // by clicking a notification.
-  it("raises a window already on the chat instead of opening another", async () => {
+  it("raises a window already on the desktop instead of opening another", async () => {
     const focus = vi.fn(() => Promise.resolve());
     const navigate = vi.fn(() => Promise.resolve());
     worker.clients.matchAll.mockResolvedValue([
-      { url: "https://chat.example/chat", focus, navigate },
+      { url: "https://chat.example/c/retro", focus, navigate },
     ]);
 
     await dispatch(worker.listeners.notificationclick, clickEvent("#lobby"));
 
     expect(focus).toHaveBeenCalled();
-    expect(navigate).toHaveBeenCalledWith("/chat?conversation=%23lobby");
+    expect(navigate).toHaveBeenCalledWith("/c/lobby");
     expect(worker.clients.openWindow).not.toHaveBeenCalled();
   });
 
   // Focusing somebody's unrelated tab is worse than opening a new one.
-  it("ignores a window that is not on the chat", async () => {
+  it("ignores a window on a screen of its own", async () => {
     worker.clients.matchAll.mockResolvedValue([
-      { url: "https://chat.example/how-it-works", focus: vi.fn() },
+      { url: "https://chat.example/call/abc123", focus: vi.fn() },
     ]);
 
     await dispatch(worker.listeners.notificationclick, clickEvent("#lobby"));
 
-    expect(worker.clients.openWindow).toHaveBeenCalledWith("/chat?conversation=%23lobby");
+    expect(worker.clients.openWindow).toHaveBeenCalledWith("/c/lobby");
   });
 
   it("opens the chat when the notification names no conversation", async () => {
     await dispatch(worker.listeners.notificationclick, { notification: { close: vi.fn() } });
 
-    expect(worker.clients.openWindow).toHaveBeenCalledWith("/chat");
+    expect(worker.clients.openWindow).toHaveBeenCalledWith("/");
   });
 
   it("dismisses the notification it was given", async () => {

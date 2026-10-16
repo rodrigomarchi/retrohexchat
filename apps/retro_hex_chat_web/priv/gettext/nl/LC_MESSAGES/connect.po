@@ -17,7 +17,6 @@ msgid "1-16 characters"
 msgstr "1-16 tekens"
 
 #: lib/retro_hex_chat_web/components/ui/connect/connect_form_panel.ex:391
-#: lib/retro_hex_chat_web/components/ui/shell/connect_status_bar.ex:55
 #, elixir-autogen, elixir-format
 msgid "Authentication"
 msgstr "Aanmeldingscontrole"
@@ -40,19 +39,16 @@ msgstr "Wachtwoord bevestigen"
 
 #: lib/retro_hex_chat_web/components/ui/connect/connect_form_panel.ex:352
 #: lib/retro_hex_chat_web/components/ui/connect/connect_form_panel.ex:445
-#: lib/retro_hex_chat_web/components/ui/connect/connect_screen.ex:115
-#: lib/retro_hex_chat_web/components/ui/connect/connect_screen.ex:120
 #, elixir-autogen, elixir-format
 msgid "Connect"
 msgstr "Verbinden"
 
-#: lib/retro_hex_chat_web/live/app/connect_live.ex:36
+#: lib/retro_hex_chat_web/site/pages/connect.ex:44
 #, elixir-autogen, elixir-format
 msgid "Connect - RetroHexChat"
 msgstr "Verbinden - RetroHexChat"
 
-#: lib/retro_hex_chat_web/components/ui/connect/connect_screen.ex:65
-#: lib/retro_hex_chat_web/live/landing_live/landing_helpers.ex:48
+#: lib/retro_hex_chat_web/site/pages/connect.ex:40
 #, elixir-autogen, elixir-format
 msgid "Connect to RetroHexChat"
 msgstr "Verbinden met RetroHexChat"
@@ -67,7 +63,7 @@ msgstr "Voer je bijnaam in."
 msgid "Enter your password..."
 msgstr "Voer uw wachtwoord in..."
 
-#: lib/retro_hex_chat_web/live/connect_form.ex:182
+#: lib/retro_hex_chat_web/live/connect_form.ex:176
 #, elixir-autogen, elixir-format
 msgid "Incorrect password"
 msgstr "Onjuist wachtwoord"
@@ -82,12 +78,12 @@ msgstr "Moet beginnen met een brief"
 msgid "Nickname"
 msgstr "Bijnaam"
 
-#: lib/retro_hex_chat_web/live/connect_form.ex:263
+#: lib/retro_hex_chat_web/live/connect_form.ex:256
 #, elixir-autogen, elixir-format
 msgid "Nickname cannot be empty"
 msgstr "Bijnaam kan niet leeg zijn"
 
-#: lib/retro_hex_chat_web/live/connect_form.ex:272
+#: lib/retro_hex_chat_web/live/connect_form.ex:265
 #, elixir-autogen, elixir-format
 msgid "Nickname cannot contain spaces"
 msgstr "Bijnaam kan spaties niet bevatten"
@@ -97,17 +93,17 @@ msgstr "Bijnaam kan spaties niet bevatten"
 msgid "Nickname cleanup"
 msgstr "Bijnaam opruimen"
 
-#: lib/retro_hex_chat_web/live/connect_form.ex:260
+#: lib/retro_hex_chat_web/live/connect_form.ex:253
 #, elixir-autogen, elixir-format
 msgid "Nickname must be a string"
 msgstr "Bijnaam moet een tekenreeks zijn"
 
-#: lib/retro_hex_chat_web/live/connect_form.ex:266
+#: lib/retro_hex_chat_web/live/connect_form.ex:259
 #, elixir-autogen, elixir-format
 msgid "Nickname must be at most 16 characters"
 msgstr "Bijnaam moet maximaal 16 tekens zijn"
 
-#: lib/retro_hex_chat_web/live/connect_form.ex:269
+#: lib/retro_hex_chat_web/live/connect_form.ex:262
 #, elixir-autogen, elixir-format
 msgid "Nickname must start with a letter or special character"
 msgstr "Bijnaam moet beginnen met een letter of speciaal teken"
@@ -123,12 +119,12 @@ msgstr "Geen spaties toegestaan"
 msgid "Password"
 msgstr "Wachtwoord"
 
-#: lib/retro_hex_chat_web/live/connect_form.ex:199
+#: lib/retro_hex_chat_web/live/connect_form.ex:193
 #, elixir-autogen, elixir-format
 msgid "Password must be at least 5 characters"
 msgstr "Wachtwoord moet minstens 5 tekens zijn"
 
-#: lib/retro_hex_chat_web/live/connect_form.ex:209
+#: lib/retro_hex_chat_web/live/connect_form.ex:203
 #, elixir-autogen, elixir-format
 msgid "Passwords do not match"
 msgstr "Wachtwoorden komen niet overeen"
@@ -140,7 +136,6 @@ msgid "Register & Connect"
 msgstr "Registreren & verbinden"
 
 #: lib/retro_hex_chat_web/components/ui/connect/connect_form_panel.ex:463
-#: lib/retro_hex_chat_web/components/ui/shell/connect_status_bar.ex:56
 #, elixir-autogen, elixir-format
 msgid "Registration"
 msgstr "Registratie"
@@ -150,17 +145,17 @@ msgstr "Registratie"
 msgid "Repeat your password..."
 msgstr "Herhaal je wachtwoord..."
 
-#: lib/retro_hex_chat_web/live/app/connect_live.ex:66
+#: lib/retro_hex_chat_web/site/pages/connect.ex:98
 #, elixir-autogen, elixir-format
 msgid "Server banned"
 msgstr "Server verboden"
 
-#: lib/retro_hex_chat_web/live/app/connect_live.ex:65
+#: lib/retro_hex_chat_web/site/pages/connect.ex:97
 #, elixir-autogen, elixir-format
 msgid "Session ended"
 msgstr "Sessie beëindigd"
 
-#: lib/retro_hex_chat_web/live/app/connect_live.ex:64
+#: lib/retro_hex_chat_web/site/pages/connect.ex:96
 #, elixir-autogen, elixir-format
 msgid "Session expired"
 msgstr "Sessie verlopen"
@@ -190,16 +185,9 @@ msgstr ""
 "gaan."
 
 #: lib/retro_hex_chat_web/components/ui/connect/connect_form_panel.ex:295
-#: lib/retro_hex_chat_web/components/ui/shell/connect_status_bar.ex:57
 #, elixir-autogen, elixir-format
 msgid "User Information"
 msgstr "Gebruikersinformatie"
-
-#: lib/retro_hex_chat_web/components/ui/shell/connect_status_bar.ex:30
-#: lib/retro_hex_chat_web/components/ui/shell/connect_status_bar.ex:35
-#, elixir-autogen, elixir-format
-msgid "Not connected"
-msgstr "Niet verbonden"
 
 #: lib/retro_hex_chat_web/components/ui/connect/connect_form_panel.ex:638
 #: lib/retro_hex_chat_web/components/ui/connect/connect_form_panel.ex:731
@@ -267,7 +255,7 @@ msgstr "Tijdzone"
 msgid "Touch"
 msgstr "Aanraken"
 
-#: lib/retro_hex_chat_web/live/connect_form.ex:119
+#: lib/retro_hex_chat_web/live/connect_form.ex:113
 #, elixir-autogen, elixir-format
 msgid "Trusted login expired"
 msgstr "Vertrouwde aanmelding verlopen"

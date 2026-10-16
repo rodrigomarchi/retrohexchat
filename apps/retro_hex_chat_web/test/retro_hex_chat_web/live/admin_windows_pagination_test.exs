@@ -100,7 +100,7 @@ defmodule RetroHexChatWeb.AdminWindowsPaginationTest do
     {:ok, view, _html} =
       conn
       |> chat_conn(@admin_nick, pre_identified: true)
-      |> live(~p"/chat")
+      |> live("/")
 
     NickServ.identify(@admin_nick, @admin_pw)
     view

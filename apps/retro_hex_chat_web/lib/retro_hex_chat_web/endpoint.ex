@@ -17,8 +17,8 @@ defmodule RetroHexChatWeb.Endpoint do
     longpoll: false
 
   socket "/live", Phoenix.LiveView.Socket,
-    websocket: [connect_info: [session: @session_options], log: :debug],
-    longpoll: [connect_info: [session: @session_options], log: :debug]
+    websocket: [connect_info: [:uri, session: @session_options], log: :debug],
+    longpoll: [connect_info: [:uri, session: @session_options], log: :debug]
 
   # esbuild's dynamic-import chunks, ahead of the general handler because they
   # need a different cache policy. `Plug.Static` only grants `immutable` to a

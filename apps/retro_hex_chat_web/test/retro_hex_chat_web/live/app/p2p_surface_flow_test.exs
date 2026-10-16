@@ -49,8 +49,8 @@ defmodule RetroHexChatWeb.App.P2PSurfaceFlowTest do
     conn_a = chat_conn(conn, nick_a, chat_conn_opts(trusted_a))
     conn_b = chat_conn(conn, nick_b, chat_conn_opts(trusted_b))
 
-    {:ok, view_a, _} = live(conn_a, "/chat")
-    {:ok, view_b, _} = live(conn_b, "/chat")
+    {:ok, view_a, _} = live(conn_a, "/")
+    {:ok, view_b, _} = live(conn_b, "/")
 
     Process.put({:conn, view_a.pid}, conn_a)
     Process.put({:conn, view_b.pid}, conn_b)
@@ -1297,7 +1297,7 @@ defmodule RetroHexChatWeb.App.P2PSurfaceFlowTest do
       ctx = mount_pair(conn, "p2pfi#{uid()}", "p2pfj#{uid()}")
       c = register("p2pfk#{uid()}")
       conn_c = chat_conn(conn, c.nickname, pre_identified: true)
-      {:ok, view_c, _} = live(conn_c, "/chat")
+      {:ok, view_c, _} = live(conn_c, "/")
       Process.put({:conn, view_c.pid}, conn_c)
 
       session_ab = invite(ctx)

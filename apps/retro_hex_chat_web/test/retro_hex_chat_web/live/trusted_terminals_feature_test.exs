@@ -61,7 +61,7 @@ defmodule RetroHexChatWeb.TrustedTerminalsFeatureTest do
       conn
       |> put_req_cookie(TrustedDeviceCookie.name(), cookie)
       |> chat_conn(nick, pre_identified: true)
-      |> live(~p"/chat")
+      |> live("/")
 
     refute has_element?(view, ~s([data-window-id="trusted-terminals"]))
 

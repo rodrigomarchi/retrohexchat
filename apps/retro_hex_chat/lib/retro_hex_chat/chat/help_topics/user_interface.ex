@@ -55,8 +55,35 @@ defmodule RetroHexChat.Chat.HelpTopics.UserInterface do
         description:
           dgettext(
             "help",
-            "Sign in from the Connect window, which appears both on its own screen and on every public page. It carries the whole flow: pick a nickname, register a new one or enter a password for a registered one, and choose whether to remember the terminal. A remembered terminal signs you in with a single click, and one set to auto-login takes you straight to the chat."
-          )
+            "Sign in from the Connect window, which opens over the chat at /connect — from Create an account, or from anything you try that needs one. It carries the whole flow: pick a nickname, register a new one or enter a password for a registered one, and choose whether to remember the terminal. A remembered terminal signs you in with a single click, and one set to auto-login takes you straight to the chat."
+          ),
+        see_also: ["ui-site-pages", "watching-without-account", "connecting"]
+      },
+      %{
+        id: "ui-site-pages",
+        title: dgettext("help", "The Site's Pages on the Desktop"),
+        category: dgettext("help", "User Interface"),
+        keywords: [
+          "home",
+          "home page",
+          "welcome",
+          "about this site",
+          "navigate",
+          "page",
+          "address",
+          "link",
+          "share",
+          dgettext("help", "home page"),
+          dgettext("help", "about this site"),
+          dgettext("help", "share a channel")
+        ],
+        icon: :icon_hex_stone,
+        description:
+          dgettext(
+            "help",
+            "Every page of the site — the home's Welcome, the features, the games, this help — opens as a window on the same desktop as the chat, with an address of its own. Reach them from the About this site icon or Start ▸ Navigate; close one to go back to the chat. A channel's address is /c/ and its name, ready to share."
+          ),
+        see_also: ["ui-desktop", "ui-start-menu", "watching-without-account", "ui-connect-window"]
       },
       %{
         id: "ui-open-tab-confirm",
@@ -134,6 +161,7 @@ defmodule RetroHexChat.Chat.HelpTopics.UserInterface do
           "connect screen",
           "desktop folders",
           "app folders",
+          "about this site",
           "launcher",
           "phone",
           "mobile"

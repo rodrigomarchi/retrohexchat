@@ -95,24 +95,25 @@ describe("readFaroConfig", () => {
 
 describe("viewNameForPath", () => {
   it("maps the known surfaces to friendly names", () => {
-    expect(viewNameForPath("/")).toBe("landing");
-    expect(viewNameForPath("")).toBe("landing");
+    expect(viewNameForPath("/")).toBe("home");
+    expect(viewNameForPath("")).toBe("home");
     expect(viewNameForPath("/connect")).toBe("connect");
-    expect(viewNameForPath("/chat")).toBe("chat");
+    expect(viewNameForPath("/c/lobby")).toBe("channel");
     expect(viewNameForPath("/chat/help")).toBe("help");
     expect(viewNameForPath("/chat/help/cmd-join")).toBe("help");
   });
 
   it("strips a leading locale segment", () => {
     expect(viewNameForPath("/pt-BR/chat/help/welcome")).toBe("help");
-    expect(viewNameForPath("/en")).toBe("landing");
+    expect(viewNameForPath("/en")).toBe("home");
+    expect(viewNameForPath("/pt-BR/c/retro")).toBe("channel");
     expect(viewNameForPath("/de/connect")).toBe("connect");
   });
 
   it("collapses id-like segments to :id and ignores a trailing slash", () => {
     expect(viewNameForPath("/bio/12345")).toBe("/bio/:id");
     expect(viewNameForPath("/game/a1b2c3d4e5")).toBe("/game/:id");
-    expect(viewNameForPath("/chat/")).toBe("chat");
+    expect(viewNameForPath("/connect/")).toBe("connect");
   });
 });
 

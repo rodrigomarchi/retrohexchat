@@ -12,7 +12,7 @@ defmodule RetroHexChatWeb.AutocompleteFeatureTest do
 
   describe "autocomplete full workflow" do
     test "command autocomplete → select → argument context", %{conn: conn} do
-      {:ok, view, _html} = live(chat_conn(conn, "E2EAuto1"), "/chat")
+      {:ok, view, _html} = live(chat_conn(conn, "E2EAuto1"), "/")
 
       # Step 1: Open command autocomplete with fuzzy filter
       render_click(view, "autocomplete_query", %{
@@ -62,8 +62,8 @@ defmodule RetroHexChatWeb.AutocompleteFeatureTest do
     end
 
     test "nick autocomplete workflow", %{conn: conn} do
-      {:ok, view1, _} = live(chat_conn(conn, "E2ENick1"), "/chat")
-      {:ok, _view2, _} = live(chat_conn(conn, "E2ENick2"), "/chat")
+      {:ok, view1, _} = live(chat_conn(conn, "E2ENick1"), "/")
+      {:ok, _view2, _} = live(chat_conn(conn, "E2ENick2"), "/")
 
       # Drain the async dispatch (FIFO behind this call) before reading the view.
       _ = :sys.get_state(view1.pid)
@@ -94,7 +94,7 @@ defmodule RetroHexChatWeb.AutocompleteFeatureTest do
     end
 
     test "no messages sent during autocomplete navigation", %{conn: conn} do
-      {:ok, view, _} = live(chat_conn(conn, "E2ENoMsg1"), "/chat")
+      {:ok, view, _} = live(chat_conn(conn, "E2ENoMsg1"), "/")
 
       # Open autocomplete
       render_click(view, "autocomplete_query", %{

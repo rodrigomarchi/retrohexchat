@@ -115,12 +115,12 @@ defmodule RetroHexChatWeb.StartMenuEntryPointsFeatureTest do
   defp state(view), do: :sys.get_state(view.pid).socket.assigns
 
   defp connect_user(conn, nick) do
-    {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
+    {:ok, view, _html} = live(chat_conn(conn, nick), "/")
     view
   end
 
   defp connect_identified(conn, nick) do
-    {:ok, view, _html} = live(chat_conn(conn, nick, pre_identified: true), "/chat")
+    {:ok, view, _html} = live(chat_conn(conn, nick, pre_identified: true), "/")
     view
   end
 

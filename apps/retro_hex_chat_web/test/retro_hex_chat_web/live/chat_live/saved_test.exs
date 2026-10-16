@@ -24,7 +24,7 @@ defmodule RetroHexChatWeb.ChatLive.SavedTest do
     other = register("Oth")
     channel = "#save#{uid()}"
 
-    {:ok, view, _html} = ctx.conn |> chat_conn(owner, pre_identified: true) |> live(~p"/chat")
+    {:ok, view, _html} = ctx.conn |> chat_conn(owner, pre_identified: true) |> live("/")
     submit_command_sync(view, "/join #{channel}")
     {:ok, message_id} = Server.send_message(channel, owner, "the address is on the wiki")
 
@@ -85,7 +85,7 @@ defmodule RetroHexChatWeb.ChatLive.SavedTest do
     render_click(ctx.view, "ctx_chat_save_message", %{"message_id" => to_string(ctx.message_id)})
 
     {:ok, other_view, _html} =
-      build_conn() |> chat_conn(ctx.other, pre_identified: true) |> live(~p"/chat")
+      build_conn() |> chat_conn(ctx.other, pre_identified: true) |> live("/")
 
     submit_command_sync(other_view, "/join #{ctx.channel}")
 

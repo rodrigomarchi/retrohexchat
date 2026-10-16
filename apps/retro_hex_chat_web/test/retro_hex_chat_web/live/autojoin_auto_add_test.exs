@@ -32,7 +32,7 @@ defmodule RetroHexChatWeb.AutojoinAutoAddTest do
       nick = "AJ#{uid()}"
       register_and_identify(nick)
 
-      {:ok, view, _html} = live(chat_conn(conn, nick, pre_identified: true), "/chat")
+      {:ok, view, _html} = live(chat_conn(conn, nick, pre_identified: true), "/")
 
       submit_command_sync(view, "/join #test-aj-#{uid()}")
       apply_autojoin(nick)
@@ -49,7 +49,7 @@ defmodule RetroHexChatWeb.AutojoinAutoAddTest do
     test "guest user does NOT get channel added to auto-join", %{conn: conn} do
       nick = "GJ#{uid()}"
 
-      {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
+      {:ok, view, _html} = live(chat_conn(conn, nick), "/")
 
       channel = "#guest-aj-#{uid()}"
 
@@ -63,7 +63,7 @@ defmodule RetroHexChatWeb.AutojoinAutoAddTest do
       nick = "LJ#{uid()}"
       register_and_identify(nick)
 
-      {:ok, _view, _html} = live(chat_conn(conn, nick, pre_identified: true), "/chat")
+      {:ok, _view, _html} = live(chat_conn(conn, nick, pre_identified: true), "/")
 
       # #lobby is auto-joined on connect, but should NOT be in auto-join list
       refute PreferencePersistence.get_request(nick, "autojoin_list")
@@ -84,7 +84,7 @@ defmodule RetroHexChatWeb.AutojoinAutoAddTest do
       nick = "RJ#{uid()}"
       register_and_identify(nick)
 
-      {:ok, view, _html} = live(chat_conn(conn, nick, pre_identified: true), "/chat")
+      {:ok, view, _html} = live(chat_conn(conn, nick, pre_identified: true), "/")
 
       channel = "#dup-aj-#{uid()}"
 
@@ -111,7 +111,7 @@ defmodule RetroHexChatWeb.AutojoinAutoAddTest do
       nick = "AP#{uid()}"
       register_and_identify(nick)
 
-      {:ok, view, _html} = live(chat_conn(conn, nick, pre_identified: true), "/chat")
+      {:ok, view, _html} = live(chat_conn(conn, nick, pre_identified: true), "/")
 
       channel = "#part-aj-#{uid()}"
 
@@ -141,7 +141,7 @@ defmodule RetroHexChatWeb.AutojoinAutoAddTest do
     test "guest user does NOT trigger auto-join removal on /part", %{conn: conn} do
       nick = "GP#{uid()}"
 
-      {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
+      {:ok, view, _html} = live(chat_conn(conn, nick), "/")
 
       # Guest joins and parts — no persistence at all
       channel = "#guest-pt-#{uid()}"
@@ -165,11 +165,11 @@ defmodule RetroHexChatWeb.AutojoinAutoAddTest do
       register_and_identify(outsider)
       channel = "#test-ajk-#{uid()}"
 
-      {:ok, owner_view, _} = live(chat_conn(conn, owner, pre_identified: true), "/chat")
+      {:ok, owner_view, _} = live(chat_conn(conn, owner, pre_identified: true), "/")
       submit_command_sync(owner_view, "/join #{channel}")
       submit_command_sync(owner_view, "/mode +i")
 
-      {:ok, view, _} = live(chat_conn(conn, outsider, pre_identified: true), "/chat")
+      {:ok, view, _} = live(chat_conn(conn, outsider, pre_identified: true), "/")
       submit_command_sync(view, "/join #{channel}")
       PreferencePersistence.apply_pending(outsider, "autojoin_list")
 
@@ -185,7 +185,7 @@ defmodule RetroHexChatWeb.AutojoinAutoAddTest do
       register_and_identify(nick)
       channel = "#test-ajm-#{uid()}"
 
-      {:ok, view, _html} = live(chat_conn(conn, nick, pre_identified: true), "/chat")
+      {:ok, view, _html} = live(chat_conn(conn, nick, pre_identified: true), "/")
       submit_command_sync(view, "/join #{channel}")
       apply_autojoin(nick)
       assert channel in autojoin_names(nick)
@@ -203,7 +203,7 @@ defmodule RetroHexChatWeb.AutojoinAutoAddTest do
       register_and_identify(nick)
       channel = "#test-ajx-#{uid()}"
 
-      {:ok, view, _html} = live(chat_conn(conn, nick, pre_identified: true), "/chat")
+      {:ok, view, _html} = live(chat_conn(conn, nick, pre_identified: true), "/")
       submit_command_sync(view, "/join #{channel}")
       apply_autojoin(nick)
       assert channel in autojoin_names(nick)

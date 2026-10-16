@@ -14,6 +14,7 @@
 import { Browser, BrowserContext, Page, test, expect } from "@playwright/test";
 import { ConnectPage, uniqueNickname } from "../pages/ConnectPage";
 import { ChatPage } from "../pages/ChatPage";
+import { CHAT_URL } from "../helpers/urls";
 
 type TestUser = {
   chat: ChatPage;
@@ -174,7 +175,7 @@ test.describe("NickServ commands", () => {
         `/ns ghost ${targetNick} wrong-password`,
       );
       await requester.chat.expectMessageVisible("[NickServ] Invalid password");
-      await expect(target.chat.page).toHaveURL(/\/chat(\?.*)?$/);
+      await expect(target.chat.page).toHaveURL(CHAT_URL);
 
       await requester.chat.sendMessage(
         `/ns ghost ${targetNick} ${targetPassword}`,
@@ -218,7 +219,7 @@ test.describe("NickServ commands", () => {
       }, owner.nick);
 
       await page.waitForURL(/\/connect/);
-      expect(new URL(page.url()).pathname).not.toBe("/chat");
+      expect(new URL(page.url()).pathname).toBe("/connect");
     } finally {
       await ctx.close();
     }

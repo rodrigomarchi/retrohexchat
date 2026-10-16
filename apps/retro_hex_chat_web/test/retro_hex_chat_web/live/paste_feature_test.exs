@@ -18,7 +18,7 @@ defmodule RetroHexChatWeb.PasteFeatureTest do
   describe "Multi-Line Paste E2E" do
     test "paste_lines event shows paste confirmation dialog", %{conn: conn, channel: channel} do
       nick = "PE#{uid()}"
-      {:ok, view, _} = live(chat_conn(conn, nick), "/chat")
+      {:ok, view, _} = live(chat_conn(conn, nick), "/")
       join_channel(view, channel)
 
       render_hook(view, "paste_lines", %{"lines" => ["line one", "line two", "line three"]})
@@ -31,7 +31,7 @@ defmodule RetroHexChatWeb.PasteFeatureTest do
 
     test "paste_cancel clears the dialog", %{conn: conn, channel: channel} do
       nick = "PE#{uid()}"
-      {:ok, view, _} = live(chat_conn(conn, nick), "/chat")
+      {:ok, view, _} = live(chat_conn(conn, nick), "/")
       join_channel(view, channel)
 
       render_hook(view, "paste_lines", %{"lines" => ["a", "b"]})
@@ -45,7 +45,7 @@ defmodule RetroHexChatWeb.PasteFeatureTest do
 
     test "paste_send dispatches messages and closes dialog", %{conn: conn, channel: channel} do
       nick = "PE#{uid()}"
-      {:ok, view, _} = live(chat_conn(conn, nick), "/chat")
+      {:ok, view, _} = live(chat_conn(conn, nick), "/")
       join_channel(view, channel)
 
       render_hook(view, "paste_lines", %{"lines" => ["hello world", "second line"]})
@@ -59,7 +59,7 @@ defmodule RetroHexChatWeb.PasteFeatureTest do
 
     test "flood warning shown for more than 50 lines", %{conn: conn, channel: channel} do
       nick = "PE#{uid()}"
-      {:ok, view, _} = live(chat_conn(conn, nick), "/chat")
+      {:ok, view, _} = live(chat_conn(conn, nick), "/")
       join_channel(view, channel)
 
       lines = Enum.map(1..55, &"line #{&1}")

@@ -10,6 +10,7 @@ import { test, expect } from "@playwright/test";
 import { ConnectPage, uniqueNickname } from "../pages/ConnectPage";
 import { ChatPage } from "../pages/ChatPage";
 import { shot } from "../helpers/screenshots";
+import { CHAT_URL } from "../helpers/urls";
 
 test.describe("Several screens, one nickname", () => {
   test("a second context does not end the first (K)", async ({ browser }) => {
@@ -40,7 +41,7 @@ test.describe("Several screens, one nickname", () => {
 
       // The whole point of the change: A is still here. It used to be sent to
       // /connect the instant B finished authenticating.
-      await expect(pageA).toHaveURL(/\/chat(\?.*)?$/);
+      await expect(pageA).toHaveURL(CHAT_URL);
       await expect(chatA.chatInput).toBeVisible();
 
       // And both are really live, not merely still rendering a dead page.
@@ -87,7 +88,7 @@ test.describe("Several screens, one nickname", () => {
         await chat.waitUntilConnected();
       }
 
-      await expect(pages[0]).toHaveURL(/\/chat(\?.*)?$/);
+      await expect(pages[0]).toHaveURL(CHAT_URL);
 
       // The fourth is one too many, and the oldest is the one that gives way.
       const connect3 = new ConnectPage(pages[3]);
@@ -104,8 +105,8 @@ test.describe("Several screens, one nickname", () => {
       await expect(banner).toContainText("oldest window");
 
       // The two in the middle are untouched.
-      await expect(pages[1]).toHaveURL(/\/chat(\?.*)?$/);
-      await expect(pages[2]).toHaveURL(/\/chat(\?.*)?$/);
+      await expect(pages[1]).toHaveURL(CHAT_URL);
+      await expect(pages[2]).toHaveURL(CHAT_URL);
     } finally {
       for (const ctx of contexts) {
         await ctx.close();

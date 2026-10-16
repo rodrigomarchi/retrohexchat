@@ -22,7 +22,7 @@ defmodule RetroHexChatWeb.LayoutAssetsTest do
   # the stylesheet instead of after it.
   describe "the icon sprite is preloaded" do
     test "on the chat layout", %{conn: conn} do
-      html = conn |> chat_conn("Sprite#{uid()}") |> get("/chat") |> html_response(200)
+      html = conn |> chat_conn("Sprite#{uid()}") |> get("/") |> html_response(200)
 
       assert html =~ preload_link()
     end
@@ -42,7 +42,7 @@ defmodule RetroHexChatWeb.LayoutAssetsTest do
 
   describe "the web font does not block the first paint" do
     test "every third-party stylesheet loads out of the render path", %{conn: conn} do
-      chat = conn |> chat_conn("Font#{uid()}") |> get("/chat") |> html_response(200)
+      chat = conn |> chat_conn("Font#{uid()}") |> get("/") |> html_response(200)
       landing = conn |> get("/") |> html_response(200)
       help = conn |> get("/chat/help") |> html_response(200)
 

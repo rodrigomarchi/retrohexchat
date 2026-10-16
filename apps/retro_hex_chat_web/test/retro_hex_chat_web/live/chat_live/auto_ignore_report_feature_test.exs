@@ -73,7 +73,7 @@ defmodule RetroHexChatWeb.ChatLive.AutoIgnoreReportFeatureTest do
     sender = "Chatty#{uid()}"
     ensure_channel(channel)
 
-    {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
+    {:ok, view, _html} = live(chat_conn(conn, nick), "/")
     render_click(view, "switch_channel", %{"channel" => channel})
 
     over_threshold = FloodProtection.get_flood_threshold(FloodProtection.new()) + 1
@@ -97,7 +97,7 @@ defmodule RetroHexChatWeb.ChatLive.AutoIgnoreReportFeatureTest do
     sender = "Loud#{uid()}"
     ensure_channel(channel)
 
-    {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
+    {:ok, view, _html} = live(chat_conn(conn, nick), "/")
     render_click(view, "switch_channel", %{"channel" => channel})
 
     flood(view, channel, sender, FloodProtection.get_flood_threshold(FloodProtection.new()) + 1)
@@ -114,7 +114,7 @@ defmodule RetroHexChatWeb.ChatLive.AutoIgnoreReportFeatureTest do
     sender = "Polite#{uid()}"
     ensure_channel(channel)
 
-    {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
+    {:ok, view, _html} = live(chat_conn(conn, nick), "/")
     render_click(view, "switch_channel", %{"channel" => channel})
 
     under_threshold = FloodProtection.get_flood_threshold(FloodProtection.new()) - 1
@@ -131,7 +131,7 @@ defmodule RetroHexChatWeb.ChatLive.AutoIgnoreReportFeatureTest do
     sender = "Repeat#{uid()}"
     ensure_channel(channel)
 
-    {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
+    {:ok, view, _html} = live(chat_conn(conn, nick), "/")
     render_click(view, "switch_channel", %{"channel" => channel})
 
     flood(view, channel, sender, FloodProtection.get_flood_threshold(FloodProtection.new()) * 3)

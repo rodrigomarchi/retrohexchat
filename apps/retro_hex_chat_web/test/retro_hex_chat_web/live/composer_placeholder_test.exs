@@ -5,7 +5,7 @@ defmodule RetroHexChatWeb.ComposerPlaceholderTest do
 
   test "composer placeholder follows the active channel after switch_tab", %{conn: conn} do
     nick = "probe#{uid()}"
-    {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
+    {:ok, view, _html} = live(chat_conn(conn, nick), "/")
 
     view
     |> element(~s([data-testid="chat-input-form"]))

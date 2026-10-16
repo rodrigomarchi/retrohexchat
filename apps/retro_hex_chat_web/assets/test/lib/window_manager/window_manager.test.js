@@ -573,6 +573,39 @@ describe("WindowManager", () => {
     expect(menu.classList.contains("u-hidden")).toBe(false);
   });
 
+  // The server renders the Start menu closed; a patch must not shut the one
+  // the reader just opened (the first click on a page also starts the chat).
+  it("keeps an open Start menu open through a server patch, and a closed one closed", () => {
+    const menu = el.querySelector("[data-window-start-menu]");
+    el.querySelector("[data-window-start]").click();
+
+    menu.classList.add("u-hidden");
+    hook.reconcile();
+    expect(menu.classList.contains("u-hidden")).toBe(false);
+
+    el.querySelector("[data-window-start]").click();
+    menu.classList.add("u-hidden");
+    hook.reconcile();
+    expect(menu.classList.contains("u-hidden")).toBe(true);
+  });
+
+  it("keeps the open Start-menu group open through a server patch", () => {
+    const trigger = el.querySelector("[data-start-submenu-trigger]");
+    trigger.dataset.testid = "start-menu-admin-submenu";
+    el.querySelector("[data-window-start]").click();
+    trigger.click();
+
+    const panel = el.querySelector("[data-start-submenu-panel]");
+    expect(panel.classList.contains("u-hidden")).toBe(false);
+
+    // The patch renders the group closed.
+    panel.classList.add("u-hidden");
+    trigger.closest("[data-start-submenu]").dataset.submenuOpen = "false";
+    hook.reconcile();
+
+    expect(panel.classList.contains("u-hidden")).toBe(false);
+  });
+
   it("opens a window from a Start-menu item and closes the menu", () => {
     const menu = el.querySelector("[data-window-start-menu]");
     menu.classList.remove("u-hidden");
@@ -1707,21 +1740,6 @@ describe("WindowManager — desktop shortcuts", () => {
     expect(dialog.dataset.state).toBe("closed");
     expect(dialog.classList.contains("hidden")).toBe(true);
     expect(document.body.classList.contains("overflow-hidden")).toBe(false);
-  });
-
-  it("forwards a desktop icon click to an existing chrome target", () => {
-    const workspace = el.querySelector(".desktop__workspace");
-    const targetClick = vi.fn();
-    workspace.insertAdjacentHTML(
-      "afterbegin",
-      `<button data-desktop-click-target="#language-trigger">Language</button>
-       <button id="language-trigger">Menu language</button>`,
-    );
-    el.querySelector("#language-trigger").addEventListener("click", targetClick);
-
-    el.querySelector("[data-desktop-click-target]").click();
-
-    expect(targetClick).toHaveBeenCalledTimes(1);
   });
 });
 

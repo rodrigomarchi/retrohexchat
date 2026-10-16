@@ -58,7 +58,7 @@ defmodule RetroHexChatWeb.App.ArcadeGameController do
       {:error, :not_found} ->
         # The same answer a dead share link gets, for the same reason: an
         # address that names nothing should not be an oracle for what exists.
-        redirect(conn, to: ~p"/chat")
+        redirect(conn, to: Paths.chat_path())
     end
   end
 

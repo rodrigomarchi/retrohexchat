@@ -4,7 +4,7 @@ defmodule RetroHexChatWeb.Components.UI.Landing.IrcGuides do
   table, the questions a page answers, and the window that leads to the other
   guides.
 
-  Built on the shared `desktop_window`, `table`, `badge` and `accordion`
+  Built on the shared `document_section`, `table`, `badge` and `accordion`
   primitives. Every path and every string arrives prepared by the page — these
   components never read the locale or build an address themselves.
   """
@@ -12,7 +12,7 @@ defmodule RetroHexChatWeb.Components.UI.Landing.IrcGuides do
 
   import RetroHexChatWeb.Components.UI.Accordion
   import RetroHexChatWeb.Components.UI.Badge
-  import RetroHexChatWeb.Components.UI.Desktop
+  import RetroHexChatWeb.Components.UI.Site.Document
   import RetroHexChatWeb.Components.UI.Table
   import RetroHexChatWeb.Components.UI.Window
 
@@ -33,7 +33,7 @@ defmodule RetroHexChatWeb.Components.UI.Landing.IrcGuides do
   @spec parity_window(map()) :: Phoenix.LiveView.Rendered.t()
   def parity_window(assigns) do
     ~H"""
-    <.desktop_window id={@id} width={720} title={@title}>
+    <.document_section id={@id} width={720} title={@title}>
       <:icon><Icons.icon_terminal class="w-4 h-4" /></:icon>
       <h2 class="text-sm font-bold mb-2">{@title}</h2>
       <.table data-testid={"parity-#{@id}"}>
@@ -51,7 +51,7 @@ defmodule RetroHexChatWeb.Components.UI.Landing.IrcGuides do
               <.parity_badge status={row.status} />
               <.link
                 :if={row.here && row.help_path}
-                navigate={row.help_path}
+                patch={row.help_path}
                 class="font-mono underline ml-1"
               >
                 /{row.here}
@@ -70,7 +70,7 @@ defmodule RetroHexChatWeb.Components.UI.Landing.IrcGuides do
           {dngettext("landing", "%{count} command", "%{count} commands", length(@rows))}
         </.window_status_bar_field>
       </:status>
-    </.desktop_window>
+    </.document_section>
     """
   end
 
@@ -104,7 +104,7 @@ defmodule RetroHexChatWeb.Components.UI.Landing.IrcGuides do
   @spec guide_questions(map()) :: Phoenix.LiveView.Rendered.t()
   def guide_questions(assigns) do
     ~H"""
-    <.desktop_window id={@id} width={560} title={dgettext("landing", "Questions")}>
+    <.document_section id={@id} width={560} title={dgettext("landing", "Questions")}>
       <:icon><Icons.icon_question class="w-4 h-4" /></:icon>
       <h2 class="text-sm font-bold mb-2">{dgettext("landing", "Questions")}</h2>
       <.accordion>
@@ -118,7 +118,7 @@ defmodule RetroHexChatWeb.Components.UI.Landing.IrcGuides do
           </.accordion_content>
         </.accordion_item>
       </.accordion>
-    </.desktop_window>
+    </.document_section>
     """
   end
 
@@ -128,18 +128,18 @@ defmodule RetroHexChatWeb.Components.UI.Landing.IrcGuides do
   @spec guide_links(map()) :: Phoenix.LiveView.Rendered.t()
   def guide_links(assigns) do
     ~H"""
-    <.desktop_window id="read-next" width={360} title={dgettext("landing", "Read next")}>
+    <.document_section id="read-next" width={360} title={dgettext("landing", "Read next")}>
       <:icon><Icons.icon_link class="w-4 h-4" /></:icon>
       <h2 class="text-sm font-bold mb-2">{dgettext("landing", "Read next")}</h2>
       <ul class="text-sm space-y-1" data-testid="guide-links">
         <li :for={link <- @links}>
-          <.link navigate={link.path} class="inline-flex items-center gap-1 underline">
+          <.link patch={link.path} class="inline-flex items-center gap-1 underline">
             {apply(Icons, link.icon, [%{class: "w-3 h-3 shrink-0"}])}
             {link.label}
           </.link>
         </li>
       </ul>
-    </.desktop_window>
+    </.document_section>
     """
   end
 end

@@ -23,7 +23,7 @@ defmodule RetroHexChatWeb.ChatLive.RetroGamesEntryTest do
   alias RetroHexChatWeb.Components.UI.StartMenuApp
 
   test "the chat renders no games window and mounts no games LiveView", %{conn: conn} do
-    {:ok, view, html} = live(chat_conn(conn, "retro#{uid()}"), "/chat")
+    {:ok, view, html} = live(chat_conn(conn, "retro#{uid()}"), "/")
 
     refute html =~ ~s(data-testid="retro-games-window")
     refute html =~ ~s(data-testid="retro-games-library")

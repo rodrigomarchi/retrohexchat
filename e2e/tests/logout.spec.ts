@@ -24,10 +24,9 @@ test.describe("Logout", () => {
 
     await chat.disconnect();
 
-    // confirm_disconnect uses push_navigate to ~p"/connect" (no query
-    // string). The reason banner only surfaces for SessionController-driven
-    // flows like ?reason=expired, not for user-initiated disconnects from
-    // the chat menu. So the user lands on a clean /connect.
+    // Disconnecting ends the session (`/chat/session/clear?reason=logout`) and
+    // opens a clean sign-in window: the reason banner is for a session that
+    // ended on its own, like ?reason=expired, never for leaving on purpose.
     await expect(page).toHaveURL(/\/connect$/);
     await expect(connect.nicknameInput).toBeVisible();
   });

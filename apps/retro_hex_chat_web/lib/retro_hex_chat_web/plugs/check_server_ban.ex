@@ -3,6 +3,7 @@ defmodule RetroHexChatWeb.Plugs.CheckServerBan do
   import Plug.Conn
 
   alias RetroHexChat.Admin.BanCache
+  alias RetroHexChatWeb.App.Paths
 
   @spec init(keyword()) :: keyword()
   def init(opts), do: opts
@@ -13,7 +14,7 @@ defmodule RetroHexChatWeb.Plugs.CheckServerBan do
 
     if nickname && BanCache.banned?(nickname) do
       conn
-      |> Phoenix.Controller.redirect(to: "/connect?reason=banned")
+      |> Phoenix.Controller.redirect(to: Paths.localized("/connect?reason=banned"))
       |> halt()
     else
       conn

@@ -9,9 +9,9 @@ const ASSETS_ROOT = path.resolve(__dirname, "..");
 const REPO_ROOT = path.resolve(ASSETS_ROOT, "../../..");
 const OUTDIR = fs.mkdtempSync(path.join(os.tmpdir(), "retro-hex-bundle-budget-"));
 
-// Every entry the browser can load on its own. public_pages.js is measured with
-// the same splitting flags production builds it with, so its lazy chunk shows up
-// as a chunk here instead of hiding inside the entry.
+// Every entry the browser can load on its own. desktop.js is measured with the
+// same splitting flags production builds it with, so its lazy chunks show up as
+// chunks here instead of hiding inside the entry.
 const ENTRIES = [
   {
     entry: "js/app.js",
@@ -19,9 +19,9 @@ const ENTRIES = [
     metafile: path.join(OUTDIR, "meta-app.json"),
   },
   {
-    entry: "js/public_pages.js",
-    chunkNames: "chunks/public-[name]-[hash]",
-    metafile: path.join(OUTDIR, "meta-public.json"),
+    entry: "js/desktop.js",
+    chunkNames: "chunks/desktop-[name]-[hash]",
+    metafile: path.join(OUTDIR, "meta-desktop.json"),
   },
   {
     entry: "js/faro_entry.js",
@@ -34,17 +34,23 @@ const ENTRIES = [
 // here is the current size plus roughly 10% headroom, so an ordinary change
 // passes and a step-change has to be argued for.
 const BUDGETS = {
-  entry: 470 * KIB,
+  // 469.6kb before the one desktop; the window manager every screen shares then
+  // gained what the desktop needs on its first paint — the window in front named
+  // by the server, the focus reported as an address, a window started minimized
+  // without its animation — about 2kb that cannot be lazy, because the manager
+  // places the windows before anything else runs.
+  entry: 475 * KIB,
   entryGzip: 130 * KIB,
   localeChunk: 20 * KIB,
   featureChunk: 50 * KIB,
   asyncChunk: 85 * KIB,
-  // The public pages' critical path. This is the number that matters most on
-  // this project: every reader and every crawler downloads it, while the app
-  // bundle is only paid for by people who already signed in. Keeping it near
-  // 10% of app.js is the whole reason the connect LiveSocket is a lazy chunk.
-  publicEntry: 80 * KIB,
-  publicEntryGzip: 18 * KIB,
+  // The desktop's critical path. This is the number that matters most on this
+  // project: every reader of every page and every crawler downloads it, while
+  // the chat's LiveSocket is only paid for once the page has a reason to start
+  // it. Keeping it near 10% of app.js is the whole reason the socket is a lazy
+  // chunk.
+  publicEntry: 90 * KIB,
+  publicEntryGzip: 20 * KIB,
   // The RUM entrypoint is a gate, not a bundle: it reads three metas, decides
   // whether this page sends telemetry at all, and only then imports the SDK.
   // It went unmeasured until 2026-08-20, by which time it had grown to 262 KB
@@ -60,9 +66,11 @@ const BUDGETS = {
 // without one turns the budget into a rubber stamp.
 const CHUNK_OVERRIDES = [
   {
-    pattern: /^public-connect_boot-/,
-    budget: 350 * KIB,
-    reason: "connect window LiveSocket: phoenix + phoenix_live_view, loaded only on first touch",
+    pattern: /^desktop-live_boot-/,
+    budget: 475 * KIB,
+    reason:
+      "the chat's LiveSocket and every critical hook — app.js's body, started by the desktop " +
+      "only once the page has a reason to (lib/site/boot_policy.js); same budget as app.js",
   },
   {
     pattern: /^app-space_canvas_hook-/,
@@ -72,9 +80,23 @@ const CHUNK_OVERRIDES = [
       "focus ring and prompt every frame draws over what the use button reaches",
   },
   {
+    pattern: /^desktop-space_canvas_hook-/,
+    budget: 137 * KIB,
+    reason:
+      "the same modules as app-space_canvas_hook (121kb there): measured unminified, and in " +
+      "the desktop's chunk graph esbuild renames more of their identifiers apart",
+  },
+  {
     pattern: /^app-group_call_webrtc_hook-/,
     budget: 85 * KIB,
     reason: "SFU client: transport, simulcast, device management, layout engine",
+  },
+  {
+    pattern: /^desktop-group_call_webrtc_hook-/,
+    budget: 88 * KIB,
+    reason:
+      "the same modules as app-group_call_webrtc_hook, with the desktop chunk graph's longer " +
+      "renamed identifiers (unminified)",
   },
   {
     pattern: /^faro-faro_sdk-/,
@@ -84,8 +106,8 @@ const CHUNK_OVERRIDES = [
 ];
 
 const LOCALE_CHUNK_PATTERN =
-  /^app-(ar|bn|de|es|fr|hi|id|it|ja|ko|nl|pl|pt_BR|pt_PT|ru|tr|ur|vi|zh_hans|zh_hant)-/;
-const FEATURE_CHUNK_PATTERN = /^app-.*hook-/;
+  /^(app|desktop)-(ar|bn|de|es|fr|hi|id|it|ja|ko|nl|pl|pt_BR|pt_PT|ru|tr|ur|vi|zh_hans|zh_hant)-/;
+const FEATURE_CHUNK_PATTERN = /^(app|desktop)-.*hook-/;
 
 function kib(bytes) {
   return `${(bytes / KIB).toFixed(1)}kb`;
@@ -101,7 +123,7 @@ function errorLine(message) {
 
 function budgetFor(filename) {
   if (filename === "app.js") return BUDGETS.entry;
-  if (filename === "public_pages.js") return BUDGETS.publicEntry;
+  if (filename === "desktop.js") return BUDGETS.publicEntry;
   if (filename === "faro_entry.js") return BUDGETS.faroEntry;
 
   const override = CHUNK_OVERRIDES.find((entry) => entry.pattern.test(filename));
@@ -185,7 +207,7 @@ function checkBudget(rows) {
   const failures = [];
 
   checkGzipEntry(rows, "app.js", BUDGETS.entryGzip, failures);
-  checkGzipEntry(rows, "public_pages.js", BUDGETS.publicEntryGzip, failures);
+  checkGzipEntry(rows, "desktop.js", BUDGETS.publicEntryGzip, failures);
   checkGzipEntry(rows, "faro_entry.js", BUDGETS.faroEntryGzip, failures);
 
   for (const row of rows) {

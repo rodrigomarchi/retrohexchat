@@ -36,6 +36,10 @@ defmodule RetroHexChatWeb.Components.UI.Button do
     default: nil,
     doc: "renders a link that looks like a button — for an action that is a destination"
 
+  attr :patch, :string,
+    default: nil,
+    doc: "same, for a destination inside the current LiveView (a page of the one desktop)"
+
   attr :href, :string, default: nil, doc: "same, for a plain browser navigation"
   attr :rest, :global, include: ~w(disabled form name value target rel)
 
@@ -49,7 +53,7 @@ defmodule RetroHexChatWeb.Components.UI.Button do
   def button(assigns) do
     assigns = assign(assigns, :variant_class, button_variant(assigns))
 
-    if assigns.navigate || assigns.href do
+    if assigns.navigate || assigns.patch || assigns.href do
       button_link(assigns)
     else
       plain_button(assigns)
@@ -64,6 +68,7 @@ defmodule RetroHexChatWeb.Components.UI.Button do
     ~H"""
     <.link
       navigate={@navigate}
+      patch={@patch}
       href={@href}
       class={classes([@variant_class, "gap-retro-4", @class])}
       {@rest}

@@ -25,7 +25,7 @@ defmodule RetroHexChatWeb.ChatLive.ReactionsTest do
     {:ok, _} = register(other)
     channel = "#react#{uid()}"
 
-    {:ok, view, _html} = ctx.conn |> chat_conn(nick) |> live(~p"/chat")
+    {:ok, view, _html} = ctx.conn |> chat_conn(nick) |> live("/")
     submit_command_sync(view, "/join #{channel}")
     {:ok, _} = Server.join(channel, other)
     {:ok, message} = Server.send_message(channel, other, "worth reacting to")

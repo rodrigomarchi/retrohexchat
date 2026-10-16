@@ -22,8 +22,8 @@ defmodule RetroHexChatWeb.IdleTimeTest do
       nick = "Idle1#{uid()}"
       target = "Idle2#{uid()}"
 
-      {:ok, _target_view, _html} = live(chat_conn(conn, target), "/chat")
-      {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
+      {:ok, _target_view, _html} = live(chat_conn(conn, target), "/")
+      {:ok, view, _html} = live(chat_conn(conn, nick), "/")
 
       view
       |> element(~s([data-testid="chat-input-form"]))
@@ -39,7 +39,7 @@ defmodule RetroHexChatWeb.IdleTimeTest do
     test "idle time resets on sending a message", %{conn: conn} do
       nick = "Idle3#{uid()}"
 
-      {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
+      {:ok, view, _html} = live(chat_conn(conn, nick), "/")
 
       # Send a message to reset activity
       view
@@ -66,7 +66,7 @@ defmodule RetroHexChatWeb.IdleTimeTest do
     test "idle time resets on command dispatch", %{conn: conn} do
       nick = "Idle4#{uid()}"
 
-      {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
+      {:ok, view, _html} = live(chat_conn(conn, nick), "/")
 
       # Run a command to reset activity
       view

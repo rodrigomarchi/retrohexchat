@@ -6,7 +6,7 @@
        test.js test.js.changed test.js.related test.js.watch \
        ci ci.quick ci.changed ci.serial ci.quick.serial ci.partition-profile ci.partition-profile.plan \
        umbrella.boundary-audit \
-       i18n.audit i18n.audit.check i18n.status i18n.catalog.check i18n.catalog.size.check i18n.placeholder.check i18n.source-fallback.check i18n.quality.check i18n.glossary i18n.repair i18n.venv i18n.translate i18n.repair.plurals games.shots seo.snapshot seo.compare seo.console seo.indexnow seo.sitemap.submit seo.test i18n.tooling.test i18n.locales.add i18n.wave1.add i18n.gettext.extract i18n.gettext.merge i18n.gettext.rebuild i18n.gettext.check \
+       i18n.audit i18n.audit.check i18n.status i18n.catalog.check i18n.catalog.size.check i18n.placeholder.check i18n.source-fallback.check i18n.quality.check i18n.glossary i18n.repair i18n.venv i18n.translate i18n.repair.plurals games.shots seo.snapshot seo.snapshot.all seo.compare seo.console seo.indexnow seo.sitemap.submit seo.test i18n.tooling.test i18n.locales.add i18n.wave1.add i18n.gettext.extract i18n.gettext.merge i18n.gettext.rebuild i18n.gettext.check \
        lint format format.check credo dialyzer lint.js lint.js.changed lint.js.fix lint.css lint.bundle space.ui space.ui.check space.creator space.creator.check precommit compile \
        assets.setup assets.build assets.deploy \
        clean clean.deps clean.build clean.all \
@@ -300,6 +300,9 @@ e2e.changed: ## Run Playwright specs changed since SINCE (default: uncommitted c
 
 seo.snapshot: ## Save the public pages that matter for search (BASE=http://localhost:4003 OUT=tmp/seo/before)
 	python3 scripts/seo_compare.py snapshot --base $(or $(BASE),http://localhost:4003) --out $(or $(OUT),tmp/seo/before)
+
+seo.snapshot.all: ## Save every page the sitemap lists (BASE=http://localhost:4003 OUT=tmp/seo/before; RESUME=1 keeps what OUT holds)
+	python3 scripts/seo_compare.py snapshot --from-sitemap $(if $(RESUME),--resume) --base $(or $(BASE),http://localhost:4003) --out $(or $(OUT),tmp/seo/before)
 
 seo.compare: ## Fail if a public page lost text or changed any SEO tag (BEFORE=tmp/seo/before AFTER=tmp/seo/after)
 	python3 scripts/seo_compare.py compare $(or $(BEFORE),tmp/seo/before) $(or $(AFTER),tmp/seo/after)

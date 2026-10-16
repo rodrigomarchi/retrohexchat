@@ -90,16 +90,16 @@ defmodule RetroHexChatWeb.Live.OpenSurfacesTest do
       {:ok, _view, html} = conn |> chat_conn(nickname) |> live(~p"/play/hex_pong")
 
       assert html =~ ~s(data-testid="play-back-to-chat")
-      refute html =~ ~s(data-surface-path="/chat")
+      refute html =~ ~s(data-surface-path="/")
     end
 
     test "tries the chat tab that already exists", %{conn: conn} do
       nickname = nick()
-      fake_surface(nickname, "/chat")
+      fake_surface(nickname, "/")
 
       {:ok, _view, html} = conn |> chat_conn(nickname) |> live(~p"/play/hex_pong")
 
-      assert html =~ ~s(data-surface-path="/chat")
+      assert html =~ ~s(data-surface-path="/")
       assert html =~ ~s(phx-hook="SurfaceTabLinkHook")
     end
 
@@ -110,24 +110,24 @@ defmodule RetroHexChatWeb.Live.OpenSurfacesTest do
       watch(nickname)
 
       {:ok, view, html} = conn |> chat_conn(nickname) |> live(~p"/play/hex_pong")
-      refute html =~ ~s(data-surface-path="/chat")
+      refute html =~ ~s(data-surface-path="/")
 
-      chat = fake_surface(nickname, "/chat")
-      await_open(nickname, "/chat")
-      assert render(view) =~ ~s(data-surface-path="/chat")
+      chat = fake_surface(nickname, "/")
+      await_open(nickname, "/")
+      assert render(view) =~ ~s(data-surface-path="/")
 
       close(chat)
-      await_gone(nickname, "/chat")
-      refute render(view) =~ ~s(data-surface-path="/chat")
+      await_gone(nickname, "/")
+      refute render(view) =~ ~s(data-surface-path="/")
     end
 
     test "somebody else's chat is not this person's", %{conn: conn} do
       mine = nick()
-      fake_surface(nick(), "/chat")
+      fake_surface(nick(), "/")
 
       {:ok, _view, html} = conn |> chat_conn(mine) |> live(~p"/play/hex_pong")
 
-      refute html =~ ~s(data-surface-path="/chat")
+      refute html =~ ~s(data-surface-path="/")
     end
   end
 
@@ -142,16 +142,16 @@ defmodule RetroHexChatWeb.Live.OpenSurfacesTest do
     test "registers its own address, so a surface can go back to it", %{conn: conn} do
       nickname = nick()
 
-      {:ok, _view, _html} = conn |> chat_conn(nickname) |> live(~p"/chat")
+      {:ok, _view, _html} = conn |> chat_conn(nickname) |> live("/")
 
-      assert Surfaces.open?(nickname, "/chat")
+      assert Surfaces.open?(nickname, "/")
     end
 
     test "learns about a surface opening without being asked", %{conn: conn} do
       nickname = nick()
       watch(nickname)
 
-      {:ok, view, _html} = conn |> chat_conn(nickname) |> live(~p"/chat")
+      {:ok, view, _html} = conn |> chat_conn(nickname) |> live("/")
       refute MapSet.member?(open_paths(view), "/call/abc")
 
       surface = fake_surface(nickname, "/call/abc")
@@ -178,12 +178,12 @@ defmodule RetroHexChatWeb.Live.OpenSurfacesTest do
 
     test "two surfaces of this person are two addresses", %{conn: conn} do
       nickname = nick()
-      fake_surface(nickname, "/chat")
+      fake_surface(nickname, "/")
 
       {:ok, _view, _html} = conn |> chat_conn(nickname) |> live(~p"/play/hex_pong")
 
       assert Surfaces.open?(nickname, "/play/hex_pong")
-      assert Surfaces.open?(nickname, "/chat")
+      assert Surfaces.open?(nickname, "/")
     end
   end
 

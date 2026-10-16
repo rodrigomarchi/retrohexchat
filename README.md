@@ -160,7 +160,7 @@ RetroHexChat is a **Phoenix umbrella application** with strict separation betwee
 ```
 ┌──────────────────────────────────────────────────────────┐
 │                     Browser (LiveView)                    │
-│  ConnectLive ──→ ChatLive ──→ ChannelListLive            │
+│  DesktopLive (chat + site pages) · surfaces (call/space) │
 │  function components · JS hooks · retro CSS              │
 └──────────────────────┬───────────────────────────────────┘
                        │ Phoenix.PubSub
@@ -437,7 +437,8 @@ retro_hex_chat/
 │       │   ├── prom_ex.ex           # Phoenix/LiveView PromEx collector
 │       │   ├── prom_ex_plug.ex      # Aggregates core + web collectors at /metrics
 │       │   ├── open_telemetry.ex    # Phoenix/Bandit/Ecto tracing setup
-│       │   ├── live/app/             # ConnectLive, ChatLive, P2PSessionLive
+│       │   ├── live/desktop_live.ex  # DesktopLive: the chat and every page
+│       │   ├── live/app/             # the surfaces: play, call, space, P2P
 │       │   └── components/          # Function components, icons, dialogs
 │       └── assets/
 │           ├── css/                 # retrohex.css + component styles

@@ -15,6 +15,9 @@ defmodule RetroHexChatWeb.App.ReturnToTest do
 
   test "accepts the app's own paths" do
     for path <- [
+          "/",
+          "/c/lobby",
+          "/pt-BR/c/lobby",
           "/chat",
           "/chat?join=%23lobby",
           "/join/abcdefghjk",
@@ -39,14 +42,14 @@ defmodule RetroHexChatWeb.App.ReturnToTest do
 
   test "a segment that is not an enabled locale is not a free pass" do
     for path <- ["/xx-YY/join/abcdefghjk", "/evil/join/abcdefghjk", "/pt-BR2/join/abcdefghjk"] do
-      assert ReturnTo.sanitize(path) == "/chat", "expected #{path} to be refused"
+      assert ReturnTo.sanitize(path) == "/", "expected #{path} to be refused"
     end
   end
 
   # Each of these is a real technique, not a hypothetical: a scheme-relative
   # URL, an absolute one, a backslash browsers normalise to a slash, and a
   # traversal that leaves the app's own path space.
-  test "falls back to the chat for anything that could leave this origin" do
+  test "falls back to the home for anything that could leave this origin" do
     for path <- [
           "//evil.example",
           "///evil.example",
@@ -66,7 +69,7 @@ defmodule RetroHexChatWeb.App.ReturnToTest do
           :not_a_string,
           String.duplicate("/play/", 200)
         ] do
-      assert ReturnTo.sanitize(path) == "/chat", "expected #{inspect(path)} to be refused"
+      assert ReturnTo.sanitize(path) == "/", "expected #{inspect(path)} to be refused"
     end
   end
 

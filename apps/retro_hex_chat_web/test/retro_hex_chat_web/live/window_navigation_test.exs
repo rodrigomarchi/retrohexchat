@@ -25,7 +25,7 @@ defmodule RetroHexChatWeb.Live.WindowNavigationTest do
 
   describe "window_next/window_prev" do
     test "window_next switches to next channel", %{conn: conn} do
-      {:ok, view, _html} = live(chat_conn(conn, "WinNext1"), "/chat")
+      {:ok, view, _html} = live(chat_conn(conn, "WinNext1"), "/")
 
       # Join a second channel so there's something to switch to
       view
@@ -42,7 +42,7 @@ defmodule RetroHexChatWeb.Live.WindowNavigationTest do
     end
 
     test "window_prev switches to previous channel", %{conn: conn} do
-      {:ok, view, _html} = live(chat_conn(conn, "WinPrev1"), "/chat")
+      {:ok, view, _html} = live(chat_conn(conn, "WinPrev1"), "/")
 
       view
       |> element(~s([data-testid="chat-input-form"]))
@@ -56,7 +56,7 @@ defmodule RetroHexChatWeb.Live.WindowNavigationTest do
     end
 
     test "window navigation includes PM tabs opened by incoming activity", %{conn: conn} do
-      {:ok, view, _html} = live(chat_conn(conn, "WinPm#{uid()}"), "/chat")
+      {:ok, view, _html} = live(chat_conn(conn, "WinPm#{uid()}"), "/")
 
       send(view.pid, pm_activity("ClosedPm"))
       render(view)
@@ -80,7 +80,7 @@ defmodule RetroHexChatWeb.Live.WindowNavigationTest do
 
   describe "window_select" do
     test "window_select switches to specific window", %{conn: conn} do
-      {:ok, view, _html} = live(chat_conn(conn, "WinSel1"), "/chat")
+      {:ok, view, _html} = live(chat_conn(conn, "WinSel1"), "/")
 
       view
       |> element(~s([data-testid="chat-input-form"]))
@@ -95,7 +95,7 @@ defmodule RetroHexChatWeb.Live.WindowNavigationTest do
     end
 
     test "window_select out of bounds is no-op", %{conn: conn} do
-      {:ok, view, _html} = live(chat_conn(conn, "WinSel2"), "/chat")
+      {:ok, view, _html} = live(chat_conn(conn, "WinSel2"), "/")
 
       # Select window 99 — should be no-op
       html = render_click(view, "window_select", %{"index" => 99})
@@ -105,7 +105,7 @@ defmodule RetroHexChatWeb.Live.WindowNavigationTest do
 
   describe "keyboard shortcut dispatch" do
     test "Ctrl+Shift+] triggers window_next via window_keydown", %{conn: conn} do
-      {:ok, view, _html} = live(chat_conn(conn, "WinKb1"), "/chat")
+      {:ok, view, _html} = live(chat_conn(conn, "WinKb1"), "/")
 
       html =
         render_click(view, "window_keydown", %{
@@ -119,7 +119,7 @@ defmodule RetroHexChatWeb.Live.WindowNavigationTest do
     end
 
     test "Ctrl+Shift+[ triggers window_prev via window_keydown", %{conn: conn} do
-      {:ok, view, _html} = live(chat_conn(conn, "WinKb2"), "/chat")
+      {:ok, view, _html} = live(chat_conn(conn, "WinKb2"), "/")
 
       html =
         render_click(view, "window_keydown", %{
@@ -133,7 +133,7 @@ defmodule RetroHexChatWeb.Live.WindowNavigationTest do
     end
 
     test "Ctrl+Shift+1 triggers window_1 via shortcut_action", %{conn: conn} do
-      {:ok, view, _html} = live(chat_conn(conn, "WinKb3"), "/chat")
+      {:ok, view, _html} = live(chat_conn(conn, "WinKb3"), "/")
 
       html = render_click(view, "shortcut_action", %{"action" => "window_1"})
       assert html =~ "chat-messages"

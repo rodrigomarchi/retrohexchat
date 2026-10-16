@@ -9,7 +9,7 @@ defmodule RetroHexChatWeb.ChatLive.CommandDispatch do
   import Phoenix.Component, only: [assign: 2]
 
   import Phoenix.LiveView,
-    only: [push_event: 3, push_navigate: 2, send_update: 2]
+    only: [push_event: 3, redirect: 2, send_update: 2]
 
   use Gettext, backend: RetroHexChatWeb.Gettext
 
@@ -483,7 +483,7 @@ defmodule RetroHexChatWeb.ChatLive.CommandDispatch do
     |> assign(quit_reason: quit_reason)
     |> clear_reconnect_state()
     |> Phoenix.LiveView.push_event("intentional_disconnect", %{})
-    |> push_navigate(to: Paths.connect_path(socket))
+    |> redirect(to: Paths.session_clear_path(socket, "logout"))
   end
 
   defp cleanup_channels(session, reason) do

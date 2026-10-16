@@ -1,0 +1,390 @@
+<section class="m-4" aria-labelledby="how-it-works-heading">
+  <.landing_page_intro
+    heading_id="how-it-works-heading"
+    title={dgettext("landing", "How Retro Hex Chat Works")}
+    description={
+      dgettext(
+        "landing",
+        "Retro Hex Chat combines a self-hosted Phoenix server with real-time chat, channel Spaces, private WebRTC peer-to-peer sessions, and self-hosted channel conferences."
+      )
+    }
+    status={dgettext("landing", "Architecture overview")}
+  >
+    <:icon><Icons.icon_server class="w-4 h-4" /></:icon>
+  </.landing_page_intro>
+
+  <div class="grid md:grid-cols-2 gap-4 mb-4">
+    <%!-- ══════════════ YOUR SERVER ══════════════ --%>
+    <.document_section id="your-server" width={620} title={dgettext("landing", "Your Server")}>
+      <:icon><Icons.icon_server class="w-4 h-4" /></:icon>
+      <h2 class="text-sm font-bold mb-2">
+        {dgettext("landing", "One server. Fully yours.")}
+      </h2>
+      <div class="space-y-2 mb-3">
+        <div class="shadow-retro-field bg-white p-2 text-xs">
+          <strong>
+            <Icons.icon_database class="w-4 h-4 inline" /> {dgettext(
+              "landing",
+              "Your database"
+            )}
+          </strong>
+          <br /> {dgettext(
+            "landing",
+            "Messages, users, channels — all stored on your machine."
+          )}
+        </div>
+        <div class="shadow-retro-field bg-white p-2 text-xs">
+          <strong>
+            <Icons.icon_rules class="w-4 h-4 inline" /> {dgettext("landing", "Your rules")}
+          </strong>
+          <br /> {dgettext(
+            "landing",
+            "You decide who joins, what channels exist, and how moderation works."
+          )}
+        </div>
+        <div class="shadow-retro-field bg-white p-2 text-xs">
+          <strong>
+            <Icons.icon_backup class="w-4 h-4 inline" /> {dgettext("landing", "Your backups")}
+          </strong>
+          <br /> {dgettext(
+            "landing",
+            "PostgreSQL keeps the data accessible for your own backup and migration strategy."
+          )}
+        </div>
+      </div>
+      <p class="text-sm mb-1">
+        {dgettext(
+          "landing",
+          "Anyone can run a server. Install it on a $5/month VPS, a Raspberry Pi, or your own hardware. You control everything."
+        )}
+      </p>
+      <p class="text-sm">
+        <strong>{dgettext("landing", "Public:")}</strong> {dgettext(
+          "landing",
+          "open to anyone who wants to join."
+        )}<br />
+        <strong>{dgettext("landing", "Private:")}</strong> {dgettext(
+          "landing",
+          "invite-only, for your company or group."
+        )}
+      </p>
+      <:status>
+        <.window_status_bar_field grow>
+          <Icons.icon_checkmark class="w-3 h-3 inline" /> {dgettext("landing", "Self-hosted")}
+        </.window_status_bar_field>
+      </:status>
+    </.document_section>
+
+    <%!-- ══════════════ P2P CONNECTIONS ══════════════ --%>
+    <.document_section
+      id="private-p2p-connections"
+      width={520}
+      title={dgettext("landing", "Private P2P Connections")}
+    >
+      <:icon><Icons.icon_p2p class="w-4 h-4" /></:icon>
+      <h2 class="text-sm font-bold mb-2">
+        {dgettext("landing", "Private sessions connect directly via WebRTC.")}
+      </h2>
+      <div
+        class="shadow-retro-field bg-white p-3 mb-2"
+        aria-label={dgettext("landing", "WebRTC signaling and data flow diagram")}
+      >
+        <.diagram_p2p_flow class="w-full max-w-lg mx-auto" />
+      </div>
+      <p class="text-sm mb-1">
+        {dgettext(
+          "landing",
+          "For private calls, file transfer, and multiplayer games, the server only handles"
+        )}
+        <strong>signaling</strong> {dgettext(
+          "landing",
+          "— helping users find each other. Once connected, all data flows directly between browsers via WebRTC."
+        )}
+      </p>
+      <p class="text-sm">
+        {dgettext(
+          "landing",
+          "If a direct connection isn’t possible (strict firewalls), a"
+        )}
+        <strong>{dgettext("landing", "TURN relay")}</strong> {dgettext(
+          "landing",
+          "is used as fallback while WebRTC transport encryption remains in place."
+        )}
+      </p>
+      <:status>
+        <.window_status_bar_field grow>
+          <Icons.icon_checkmark class="w-3 h-3 inline" /> {dgettext("landing", "Peer-to-peer")}
+        </.window_status_bar_field>
+      </:status>
+    </.document_section>
+
+    <%!-- ══════════════ SPACES ══════════════ --%>
+    <.document_section
+      id="virtual-spaces"
+      width={620}
+      title={dgettext("landing", "Virtual Spaces")}
+    >
+      <:icon><Icons.icon_group_view class="w-4 h-4" /></:icon>
+      <h2 class="text-sm font-bold mb-2">
+        {dgettext("landing", "Spaces are real-time map views of the same conversation.")}
+      </h2>
+      <div class="space-y-2 mb-3">
+        <div class="shadow-retro-field bg-white p-2 text-xs">
+          <strong>
+            <Icons.icon_channels class="w-4 h-4 inline" /> {dgettext(
+              "landing",
+              "Channel or DM"
+            )}
+          </strong>
+          <br /> {dgettext(
+            "landing",
+            "The Space attaches to the active channel or direct message; it is not a separate room."
+          )}
+        </div>
+        <div class="shadow-retro-field bg-white p-2 text-xs">
+          <strong>
+            <Icons.icon_security class="w-4 h-4 inline" /> {dgettext(
+              "landing",
+              "Server-validated movement"
+            )}
+          </strong>
+          <br /> {dgettext(
+            "landing",
+            "The browser sends inputs; the server validates movement, interactions, and presence before broadcasting deltas."
+          )}
+        </div>
+        <div class="shadow-retro-field bg-white p-2 text-xs">
+          <strong>
+            <Icons.icon_chat class="w-4 h-4 inline" /> {dgettext(
+              "landing",
+              "Same chat history"
+            )}
+          </strong>
+          <br /> {dgettext(
+            "landing",
+            "Messages stay in the normal conversation while the Space displays them as in-map bubbles."
+          )}
+        </div>
+      </div>
+      <:status>
+        <.window_status_bar_field grow>
+          <Icons.icon_checkmark class="w-3 h-3 inline" /> {dgettext("landing", "Space runtime")}
+        </.window_status_bar_field>
+      </:status>
+    </.document_section>
+
+    <%!-- ══════════════ CONFERENCES ══════════════ --%>
+    <.document_section
+      id="channel-conferences"
+      width={620}
+      title={dgettext("landing", "Channel Conferences")}
+    >
+      <:icon><Icons.icon_conference class="w-4 h-4" /></:icon>
+      <h2 class="text-sm font-bold mb-2">
+        {dgettext("landing", "Group calls use your server as the media router.")}
+      </h2>
+      <div class="space-y-2 mb-3">
+        <div class="shadow-retro-field bg-white p-2 text-xs">
+          <strong>
+            <Icons.icon_server class="w-4 h-4 inline" /> {dgettext(
+              "landing",
+              "Self-hosted SFU"
+            )}
+          </strong>
+          <br /> {dgettext(
+            "landing",
+            "Each browser sends media to the room server; the room server routes streams to the other participants."
+          )}
+        </div>
+        <div class="shadow-retro-field bg-white p-2 text-xs">
+          <strong>
+            <Icons.icon_call_participants class="w-4 h-4 inline" /> {dgettext(
+              "landing",
+              "Channel membership"
+            )}
+          </strong>
+          <br /> {dgettext(
+            "landing",
+            "Conference access follows the channel membership and moderation model."
+          )}
+        </div>
+        <div class="shadow-retro-field bg-white p-2 text-xs">
+          <strong>
+            <Icons.icon_call_lock class="w-4 h-4 inline" /> {dgettext(
+              "landing",
+              "Moderation controls"
+            )}
+          </strong>
+          <br /> {dgettext(
+            "landing",
+            "Operators can lock the room, mute participants, disable cameras, manage screen sharing, or end the conference."
+          )}
+        </div>
+      </div>
+      <:status>
+        <.window_status_bar_field grow>
+          <Icons.icon_checkmark class="w-3 h-3 inline" /> {dgettext("landing", "SFU routed")}
+        </.window_status_bar_field>
+      </:status>
+    </.document_section>
+
+    <%!-- ══════════════ PRIVACY ══════════════ --%>
+    <.document_section
+      id="privacy-comparison"
+      width={780}
+      title={dgettext("landing", "Privacy Comparison")}
+    >
+      <:icon><Icons.icon_shield class="w-4 h-4" /></:icon>
+      <h2 class="text-sm font-bold mb-2">
+        {dgettext("landing", "Big Tech vs. Retro Hex Chat.")}
+      </h2>
+      <div class="shadow-retro-field bg-white p-2 mb-2 overflow-x-auto">
+        <table class="w-full text-xs border-collapse">
+          <thead>
+            <tr>
+              <th class="text-left p-1 border-b border-gray-400"></th>
+              <th class="text-left p-1 border-b border-gray-400">
+                {dgettext("landing", "Big Tech")}
+              </th>
+              <th class="text-left p-1 border-b border-gray-400">
+                {dgettext("landing", "Retro Hex Chat")}
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="p-1 border-b border-gray-200">
+                <strong>{dgettext("landing", "Messages")}</strong>
+              </td>
+              <td class="p-1 border-b border-gray-200">
+                {dgettext("landing", "Stored on their servers, mined for ads")}
+              </td>
+              <td class="p-1 border-b border-gray-200">
+                {dgettext("landing", "Stored on YOUR server, never leaves")}
+              </td>
+            </tr>
+            <tr>
+              <td class="p-1 border-b border-gray-200">
+                <strong>{dgettext("landing", "Calls")}</strong>
+              </td>
+              <td class="p-1 border-b border-gray-200">
+                {dgettext("landing", "Routed through corporate infrastructure")}
+              </td>
+              <td class="p-1 border-b border-gray-200">
+                {dgettext("landing", "Private P2P, or conferences routed by your own server")}
+              </td>
+            </tr>
+            <tr>
+              <td class="p-1 border-b border-gray-200">
+                <strong>{dgettext("landing", "Your data")}</strong>
+              </td>
+              <td class="p-1 border-b border-gray-200">
+                {dgettext("landing", "Trains their AI, sold to advertisers")}
+              </td>
+              <td class="p-1 border-b border-gray-200">
+                {dgettext("landing", "Stays in your database, period")}
+              </td>
+            </tr>
+            <tr>
+              <td class="p-1 border-b border-gray-200">
+                <strong>{dgettext("landing", "Code")}</strong>
+              </td>
+              <td class="p-1 border-b border-gray-200">
+                {dgettext("landing", "Closed source — trust us")}
+              </td>
+              <td class="p-1 border-b border-gray-200">
+                {dgettext("landing", "Open source — verify yourself")}
+              </td>
+            </tr>
+            <tr>
+              <td class="p-1"><strong>{dgettext("landing", "Control")}</strong></td>
+              <td class="p-1">{dgettext("landing", "They can ban you anytime")}</td>
+              <td class="p-1">
+                {dgettext("landing", "You own the server — nobody can")}
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="text-sm">
+        {dgettext(
+          "landing",
+          "No tracking. No profiling. No algorithms. Your conversations are"
+        )} <strong>{dgettext("landing", "your business")}</strong>.
+      </p>
+      <:status>
+        <.window_status_bar_field grow>
+          <Icons.icon_checkmark class="w-3 h-3 inline" /> {dgettext("landing", "Your data")}
+        </.window_status_bar_field>
+      </:status>
+    </.document_section>
+
+    <%!-- ══════════════ INSTALL ON A DEVICE ══════════════
+          Not the same subject as /install, which is about running your own
+          server. This one is about putting the chat on your own home screen. --%>
+    <.document_section
+      id="install-app"
+      width={420}
+      title={dgettext("landing", "Keep It On Your Device")}
+    >
+      <:icon><Icons.icon_hex_stone class="w-4 h-4" /></:icon>
+      <p class="text-sm">
+        {dgettext(
+          "landing",
+          "RetroHexChat installs from the browser. Open it, choose Install or Add to Home Screen, and it gets its own icon and its own window — no store, no download, no account anywhere else."
+        )}
+      </p>
+      <:status>
+        <.window_status_bar_field grow>
+          <Icons.icon_checkmark class="w-3 h-3 inline" />
+          {dgettext("landing", "No store required")}
+        </.window_status_bar_field>
+      </:status>
+    </.document_section>
+
+    <%!-- ══════════════ SECURITY ══════════════ --%>
+    <.document_section
+      id="security-layers"
+      width={420}
+      title={dgettext("landing", "Security Layers")}
+    >
+      <:icon><Icons.icon_security class="w-4 h-4" /></:icon>
+      <h2 class="text-sm font-bold mb-2">
+        {dgettext("landing", "Security at every layer.")}
+      </h2>
+      <div
+        class="shadow-retro-field bg-white p-3 mb-2"
+        aria-label={dgettext("landing", "Security layers diagram")}
+      >
+        <.diagram_security_layers class="w-full max-w-lg mx-auto" />
+      </div>
+      <p class="text-sm">
+        <strong>{dgettext("landing", "Server connection:")}</strong> {dgettext(
+          "landing",
+          "HTTPS and WSS with TLS encryption."
+        )}<br />
+        <strong>{dgettext("landing", "P2P calls:")}</strong> {dgettext(
+          "landing",
+          "DTLS-SRTP encryption built into WebRTC."
+        )}<br />
+        <strong>{dgettext("landing", "Channel conferences:")}</strong> {dgettext(
+          "landing",
+          "WebRTC media routed by your self-hosted room server."
+        )}<br />
+        <strong>{dgettext("landing", "Passwords:")}</strong> {dgettext(
+          "landing",
+          "bcrypt hashing, never stored in plain text."
+        )}<br />
+        <strong>{dgettext("landing", "Open source:")}</strong> {dgettext(
+          "landing",
+          "anyone can audit the code. No backdoors."
+        )}
+      </p>
+      <:status>
+        <.window_status_bar_field grow>
+          <Icons.icon_checkmark class="w-3 h-3 inline" /> {dgettext("landing", "Encrypted")}
+        </.window_status_bar_field>
+      </:status>
+    </.document_section>
+  </div>
+</section>

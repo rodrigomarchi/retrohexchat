@@ -19,7 +19,7 @@ defmodule RetroHexChatWeb.ChatLive.PinTest do
     other = "Oth#{uid()}"
     channel = "#pin#{uid()}"
 
-    {:ok, view, _html} = ctx.conn |> chat_conn(owner, pre_identified: true) |> live(~p"/chat")
+    {:ok, view, _html} = ctx.conn |> chat_conn(owner, pre_identified: true) |> live("/")
     submit_command_sync(view, "/join #{channel}")
     {:ok, message} = Server.send_message(channel, owner, "the rules live here")
 
@@ -46,7 +46,7 @@ defmodule RetroHexChatWeb.ChatLive.PinTest do
   # channel rather than by the absence of a button.
   test "a regular member is refused", ctx do
     {:ok, other_view, _html} =
-      build_conn() |> chat_conn(ctx.other, pre_identified: true) |> live(~p"/chat")
+      build_conn() |> chat_conn(ctx.other, pre_identified: true) |> live("/")
 
     submit_command_sync(other_view, "/join #{ctx.channel}")
     submit_command_sync(other_view, "/pin #{ctx.message_id}")
@@ -100,7 +100,7 @@ defmodule RetroHexChatWeb.ChatLive.PinTest do
     # member who sends the event anyway is turned down where the pin is written.
     test "a regular member sending the event anyway is refused", ctx do
       {:ok, other_view, _html} =
-        build_conn() |> chat_conn(ctx.other, pre_identified: true) |> live(~p"/chat")
+        build_conn() |> chat_conn(ctx.other, pre_identified: true) |> live("/")
 
       submit_command_sync(other_view, "/join #{ctx.channel}")
 

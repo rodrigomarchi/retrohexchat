@@ -6,7 +6,8 @@ defmodule RetroHexChatWeb.Components.UI.Help.HelpMenuBar do
   primitives and the same `MenuBarHook` DOM contract, with help menus — Navigate,
   View and Help. Items route through three interaction styles: LiveView `navigate`
   links (Home / go to a topic), client-side `data-help-nav` (Back/Forward, read by
-  `HelpNavHook`), and server events (`help_nav_tab`, handled by `HelpLive.Index`).
+  `HelpNavHook`), and server events (`help_nav_tab`, handled by the
+  `Site.HelpViewer` component the menu bar sits above — hence `phx-target`).
   """
   use RetroHexChatWeb.Component
 
@@ -20,6 +21,11 @@ defmodule RetroHexChatWeb.Components.UI.Help.HelpMenuBar do
 
   attr :id, :string, default: "help-menubar"
   attr :current_path, :string, default: "/chat/help"
+
+  attr :viewer, :string,
+    default: "#help-viewer",
+    doc: "the help viewer component the View menu's tabs are sent to"
+
   attr :class, :any, default: nil
   attr :rest, :global
 
@@ -39,7 +45,7 @@ defmodule RetroHexChatWeb.Components.UI.Help.HelpMenuBar do
           <.navigate_menu_items />
         </:section>
         <:section id="view">
-          <.view_menu_items />
+          <.view_menu_items viewer={@viewer} />
         </:section>
         <:section id="language">
           <.language_menu_items mode={:public} current_path={@current_path} />
@@ -58,7 +64,7 @@ defmodule RetroHexChatWeb.Components.UI.Help.HelpMenuBar do
 
       <.menu class="app-menu-bar__desktop-menu" label={dgettext("help", "View")}>
         <:icon><Icons.icon_channels class="h-4 w-4" /></:icon>
-        <.view_menu_items />
+        <.view_menu_items viewer={@viewer} />
       </.menu>
 
       <.language_menu
@@ -88,7 +94,7 @@ defmodule RetroHexChatWeb.Components.UI.Help.HelpMenuBar do
     ~H"""
     <.context_menu_item data-testid="help-menu-home">
       <:icon><Icons.icon_hex_stone class="h-[14px] w-[14px]" /></:icon>
-      <.link navigate={PublicPages.localized_path("/chat/help")} class="block flex-1">
+      <.link patch={PublicPages.localized_path("/chat/help")} class="block flex-1">
         {dgettext("help", "Home")}
       </.link>
     </.context_menu_item>
@@ -108,18 +114,25 @@ defmodule RetroHexChatWeb.Components.UI.Help.HelpMenuBar do
     ~H"""
     <.context_menu_item
       on_click="help_nav_tab"
+      phx-target={@viewer}
       phx-value-tab="contents"
       data-testid="help-menu-contents"
     >
       <:icon><Icons.icon_notepad class="h-[14px] w-[14px]" /></:icon>
       {dgettext("help", "Contents")}
     </.context_menu_item>
-    <.context_menu_item on_click="help_nav_tab" phx-value-tab="index" data-testid="help-menu-index">
+    <.context_menu_item
+      on_click="help_nav_tab"
+      phx-target={@viewer}
+      phx-value-tab="index"
+      data-testid="help-menu-index"
+    >
       <:icon><Icons.icon_btn_channel_list class="h-[14px] w-[14px]" /></:icon>
       {dgettext("help", "Index")}
     </.context_menu_item>
     <.context_menu_item
       on_click="help_nav_tab"
+      phx-target={@viewer}
       phx-value-tab="search"
       data-testid="help-menu-search"
     >

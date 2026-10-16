@@ -23,10 +23,10 @@ defmodule RetroHexChatWeb.QuitFeatureTest do
       nick1 = "QE1#{uid()}"
       nick2 = "QE2#{uid()}"
 
-      {:ok, view1, _} = live(chat_conn(conn, nick1), "/chat")
+      {:ok, view1, _} = live(chat_conn(conn, nick1), "/")
       join_channel(view1, channel)
 
-      {:ok, view2, _} = live(chat_conn(conn, nick2), "/chat")
+      {:ok, view2, _} = live(chat_conn(conn, nick2), "/")
       join_channel(view2, channel)
 
       assert member?(channel, nick1)
@@ -51,10 +51,10 @@ defmodule RetroHexChatWeb.QuitFeatureTest do
       nick1 = "QE3#{uid()}"
       nick2 = "QE4#{uid()}"
 
-      {:ok, view1, _} = live(chat_conn(conn, nick1), "/chat")
+      {:ok, view1, _} = live(chat_conn(conn, nick1), "/")
       join_channel(view1, channel)
 
-      {:ok, view2, _} = live(chat_conn(conn, nick2), "/chat")
+      {:ok, view2, _} = live(chat_conn(conn, nick2), "/")
       join_channel(view2, channel)
 
       assert member?(channel, nick1)

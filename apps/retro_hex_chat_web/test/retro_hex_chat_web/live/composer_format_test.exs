@@ -17,7 +17,7 @@ defmodule RetroHexChatWeb.ComposerFormatTest do
     channel: channel
   } do
     nick = "fmt#{uid()}"
-    {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
+    {:ok, view, _html} = live(chat_conn(conn, nick), "/")
     join_channel(view, channel)
 
     view
@@ -34,7 +34,7 @@ defmodule RetroHexChatWeb.ComposerFormatTest do
 
   test "format selector and markdown controls live inside the formatting menu", %{conn: conn} do
     nick = "fmt#{uid()}"
-    {:ok, view, html} = live(chat_conn(conn, nick), "/chat")
+    {:ok, view, html} = live(chat_conn(conn, nick), "/")
     document = Floki.parse_document!(html)
 
     toolbar_html =
@@ -80,7 +80,7 @@ defmodule RetroHexChatWeb.ComposerFormatTest do
     channel: channel
   } do
     nick = "fmt#{uid()}"
-    {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
+    {:ok, view, _html} = live(chat_conn(conn, nick), "/")
     join_channel(view, channel)
 
     view
@@ -97,7 +97,7 @@ defmodule RetroHexChatWeb.ComposerFormatTest do
 
   test "markdown preview renders as a chat message popover", %{conn: conn} do
     nick = "fmt#{uid()}"
-    {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
+    {:ok, view, _html} = live(chat_conn(conn, nick), "/")
 
     view
     |> element(~s([data-testid="composer-format-markdown"]))
@@ -130,7 +130,7 @@ defmodule RetroHexChatWeb.ComposerFormatTest do
 
   test "editing opens in the original message format", %{conn: conn, channel: channel} do
     nick = "fmt#{uid()}"
-    {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
+    {:ok, view, _html} = live(chat_conn(conn, nick), "/")
     join_channel(view, channel)
 
     view

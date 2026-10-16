@@ -233,7 +233,9 @@ defmodule Mix.Tasks.Audit.Styles do
   defp classify_js_color({file, _line, _content}) do
     cond do
       String.contains?(file, "favicon_badge") -> :info
-      String.contains?(file, "app.js") -> :info
+      # The vendored topbar paints a canvas, which no stylesheet reaches; its
+      # colour is configured where the LiveSocket starts.
+      String.contains?(file, "live_boot.js") -> :info
       true -> :medium
     end
   end

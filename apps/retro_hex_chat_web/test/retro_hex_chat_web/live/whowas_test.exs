@@ -24,14 +24,14 @@ defmodule RetroHexChatWeb.WhowasTest do
       target = "Was2#{uid()}"
 
       # Connect target, then disconnect
-      {:ok, target_view, _html} = live(chat_conn(conn, target), "/chat")
+      {:ok, target_view, _html} = live(chat_conn(conn, target), "/")
       # `GenServer.stop/1` returns only once `terminate/2` has run, and that is
       # what writes the whowas entry — straight into a public ETS table, with
       # no round trip left to wait for.
       GenServer.stop(target_view.pid)
 
       # Now query whowas
-      {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
+      {:ok, view, _html} = live(chat_conn(conn, nick), "/")
 
       view
       |> element(~s([data-testid="chat-input-form"]))
@@ -50,7 +50,7 @@ defmodule RetroHexChatWeb.WhowasTest do
     test "shows not-found message for unknown user", %{conn: conn} do
       nick = "Was3#{uid()}"
 
-      {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
+      {:ok, view, _html} = live(chat_conn(conn, nick), "/")
 
       view
       |> element(~s([data-testid="chat-input-form"]))
@@ -70,7 +70,7 @@ defmodule RetroHexChatWeb.WhowasTest do
       # Manually record a whowas entry for precise control
       WhowasCache.record(target, ["#lobby", "#elixir"])
 
-      {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
+      {:ok, view, _html} = live(chat_conn(conn, nick), "/")
 
       view
       |> element(~s([data-testid="chat-input-form"]))
@@ -90,7 +90,7 @@ defmodule RetroHexChatWeb.WhowasTest do
 
       WhowasCache.record(target, ["#lobby"], "See you tomorrow!")
 
-      {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
+      {:ok, view, _html} = live(chat_conn(conn, nick), "/")
 
       view
       |> element(~s([data-testid="chat-input-form"]))
@@ -109,7 +109,7 @@ defmodule RetroHexChatWeb.WhowasTest do
       target = "Was9#{uid()}"
 
       # Connect and disconnect target
-      {:ok, target_view, _html} = live(chat_conn(conn, target), "/chat")
+      {:ok, target_view, _html} = live(chat_conn(conn, target), "/")
       # `GenServer.stop/1` returns only once `terminate/2` has run, and that is
       # what writes the whowas entry — straight into a public ETS table, with
       # no round trip left to wait for.

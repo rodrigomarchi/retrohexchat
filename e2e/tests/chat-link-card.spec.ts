@@ -54,9 +54,11 @@ test.describe("Link card", () => {
     // re-streamed rather than left bare until the reader reloads.
     await expect(card).toBeVisible({ timeout: 30_000 });
     await expect(card).toContainText("RetroHexChat");
+    // The card links where the page says it lives: its canonical address,
+    // without the query that only made this message unique.
     await expect(
       card.getByRole("link", { name: /read full story/i }),
-    ).toHaveAttribute("href", url);
+    ).toHaveAttribute("href", e2eURL("/connect"));
     await shot(chat.messageList, "link card in the conversation");
 
     // Reload: nothing of the first session survives except the database, so a

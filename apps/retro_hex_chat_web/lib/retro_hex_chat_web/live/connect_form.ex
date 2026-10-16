@@ -10,12 +10,8 @@ defmodule RetroHexChatWeb.ConnectForm do
   Authentication never navigates through LiveView: a successful step fills a
   hidden form and pushes `submit_connect`, and `ConnectFormHook` POSTs it to
   `/chat/session` so the nickname lands in the Plug session. That form and the
-  hook both live inside this component, which is what lets the same island run
-  on the connect desktop and inside a window on the public landing pages.
-
-  `notify_step` is opt-in because only the connect desktop has a status bar
-  reading the current step; landing hosts leave it off and never receive the
-  message.
+  hook both live inside this component, which is what lets it run inside the
+  desktop's sign-in window (`Site.Pages.Connect`) without a page of its own.
   """
   use RetroHexChatWeb, :live_component
 
@@ -54,7 +50,6 @@ defmodule RetroHexChatWeb.ConnectForm do
        trusted_device_id: nil,
        takeover_session: nil,
        auto_login: false,
-       notify_step: false,
        return_to: nil
      )}
   end
@@ -75,8 +70,7 @@ defmodule RetroHexChatWeb.ConnectForm do
       csrf_token: Map.get(assigns, :csrf_token, socket.assigns[:csrf_token]),
       chat_session_path: Map.get(assigns, :chat_session_path, socket.assigns[:chat_session_path]),
       return_to: Map.get(assigns, :return_to, socket.assigns[:return_to]),
-      auto_login: Map.get(assigns, :auto_login, socket.assigns.auto_login),
-      notify_step: Map.get(assigns, :notify_step, socket.assigns.notify_step)
+      auto_login: Map.get(assigns, :auto_login, socket.assigns.auto_login)
     )
   end
 
@@ -223,8 +217,7 @@ defmodule RetroHexChatWeb.ConnectForm do
        password: "",
        password_confirm: "",
        password_error: nil
-     )
-     |> notify_step()}
+     )}
   end
 
   defp register_nickname(socket, nickname, password, password_confirm, params) do
@@ -298,8 +291,7 @@ defmodule RetroHexChatWeb.ConnectForm do
            password: "",
            password_error: nil,
            trusted_device_login: false
-         )
-         |> notify_step()}
+         )}
 
       true ->
         {:noreply,
@@ -311,8 +303,7 @@ defmodule RetroHexChatWeb.ConnectForm do
            password_confirm: "",
            password_error: nil,
            trusted_device_login: false
-         )
-         |> notify_step()}
+         )}
     end
   end
 
@@ -369,12 +360,6 @@ defmodule RetroHexChatWeb.ConnectForm do
 
   # The connect desktop renders a status bar outside this window, so it needs the
   # step. Landing hosts have no status bar and opt out.
-  defp notify_step(%{assigns: %{notify_step: true, step: step}} = socket) do
-    send(self(), {:connect_form_step, step})
-    socket
-  end
-
-  defp notify_step(socket), do: socket
 
   # A reader with a remembered terminal is one click from being signed in, and
   # that click is lost if it lands before the socket is up. The public pages read

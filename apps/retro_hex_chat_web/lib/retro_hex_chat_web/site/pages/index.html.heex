@@ -1,0 +1,497 @@
+<%!-- The way in, before anything else: the Welcome window opens over the chat
+      it is about, and closing it — or this — is entering it. Real links, so
+      they work before the page has started its socket. --%>
+<div class="m-4 mb-0 flex flex-wrap gap-2" data-testid="welcome-actions">
+  <.link
+    patch={@enter_chat_path}
+    class="welcome-enter inline-flex items-center gap-retro-4 px-retro-8 py-retro-4 shadow-retro-raised bg-surface text-sm font-bold text-text no-underline"
+    data-welcome-enter="chat"
+    data-testid="welcome-enter-chat"
+  >
+    <Icons.icon_chat class="h-4 w-4" />
+    {dgettext("landing", "Enter the chat")}
+  </.link>
+  <.link
+    patch={@sign_up_path}
+    class="welcome-enter inline-flex items-center gap-retro-4 px-retro-8 py-retro-4 shadow-retro-raised bg-surface text-sm text-text no-underline"
+    data-welcome-enter="sign-up"
+    data-testid="welcome-sign-up"
+  >
+    <Icons.icon_connect class="h-4 w-4" />
+    {dgettext("landing", "Create an account")}
+  </.link>
+</div>
+
+<%!-- ══════════════ HERO + DESKTOP ══════════════ --%>
+<section class="m-4" aria-labelledby="hero-heading">
+  <div class="grid grid-cols-[1fr_auto] gap-4">
+    <.document_section
+      id="retro-hex-chat-welcome"
+      width={560}
+      title={dgettext("landing", "Retro Hex Chat — Welcome")}
+    >
+      <:icon><Icons.icon_chat class="w-4 h-4" /></:icon>
+      <%!-- The heading of the site's most important page was a wordmark and
+            nothing else, so it said only the brand's own name. The text now
+            carries what the thing is; the wordmark becomes decorative, since
+            a reader hearing the heading would otherwise hear the name twice. --%>
+      <h1 id="hero-heading" class="mb-3">
+        <img
+          src={Endpoint.static_path("/images/landing/wordmark.svg")}
+          alt=""
+          width="800"
+          height="120"
+          class="inline-block max-w-[400px] w-full"
+        />
+        <span class="sr-only">
+          {dgettext("landing", "Retro Hex Chat — Self-hosted chat, spaces, calls and games")}
+        </span>
+      </h1>
+
+      <p class="text-sm mb-2">
+        {dgettext(
+          "landing",
+          "Your server. Your conversations. Your rooms, calls, and spaces."
+        )}<br />
+        {dgettext("landing", "Built with today’s technology.")}
+      </p>
+
+      <p class="text-xs mb-4">
+        {dgettext("landing", "Run your own server. Your data stays with you.")}<br />
+        {dgettext(
+          "landing",
+          "Chat, Spaces, private P2P calls, channel conferences, and retro games."
+        )}<br />
+        {dgettext("landing", "No corporation. No algorithms. No permission needed.")}<br />
+        <strong>{dgettext("landing", "Your data. Your rules. Your community.")}</strong>
+      </p>
+
+      <%!-- The Connect window itself is the call to action now; a button that
+            only navigated to it would be a longer way round. --%>
+      <p class="text-xs text-gray-600">
+        {dgettext("landing", "Open source project • Built with Elixir & Phoenix")}
+      </p>
+      <:status>
+        <.window_status_bar_field grow>{dgettext("landing", "Ready")}</.window_status_bar_field>
+        <.window_status_bar_field>{dgettext("landing", "v0.1.0")}</.window_status_bar_field>
+      </:status>
+    </.document_section>
+
+    <.document_section
+      id="c-desktop"
+      width={360}
+      title={dgettext("landing", "C:\\Desktop")}
+      class="md:w-[200px]"
+    >
+      <:icon><Icons.icon_folder class="w-4 h-4" /></:icon>
+      <div class="grid grid-cols-2 gap-4 justify-items-center py-2">
+        <.link
+          patch={PublicPages.localized_path(PublicPages.path(:features))}
+          class="flex flex-col items-center gap-1 text-xs no-underline text-text hover:underline"
+        >
+          <Icons.icon_folder class="w-8 h-8" />
+          <span>{dgettext("landing", "My Chats")}</span>
+        </.link>
+        <.link
+          patch={PublicPages.localized_path(PublicPages.path(:privacy))}
+          class="flex flex-col items-center gap-1 text-xs no-underline text-text hover:underline"
+        >
+          <Icons.icon_lock class="w-8 h-8" />
+          <span>{dgettext("landing", "Privacy")}</span>
+        </.link>
+        <button
+          type="button"
+          class="flex flex-col items-center gap-1 text-xs bg-transparent border-0 cursor-pointer hover:underline"
+          data-show-target="#readme-popup"
+        >
+          <Icons.icon_notepad class="w-8 h-8" />
+          <span>{dgettext("landing", "README.txt")}</span>
+        </button>
+        <button
+          type="button"
+          class="flex flex-col items-center gap-1 text-xs bg-transparent border-0 cursor-pointer hover:underline"
+          data-show-target="#trash-popup"
+        >
+          <Icons.icon_trash class="w-8 h-8" />
+          <span>{dgettext("landing", "Trash")}</span>
+        </button>
+      </div>
+      <:status>
+        <.window_status_bar_field grow>
+          {dgettext("landing", "4 object(s)")}
+        </.window_status_bar_field>
+      </:status>
+    </.document_section>
+  </div>
+</section>
+
+<%!-- ══════════════ THE PROBLEM + THE SOLUTION ══════════════ --%>
+<section class="m-4" aria-labelledby="problem-heading">
+  <div class="grid md:grid-cols-2 gap-4 mb-4">
+    <.document_section id="the-problem" width={560} title={dgettext("landing", "The Problem")}>
+      <:icon><Icons.icon_warning class="w-4 h-4" /></:icon>
+      <h2 id="problem-heading" class="text-sm font-bold mb-2">
+        {dgettext("landing", "Your community isn’t yours.")}
+      </h2>
+
+      <div class="shadow-retro-field bg-white p-3">
+        <ul class="space-y-2 text-xs">
+          <li class="flex items-start gap-2">
+            <Icons.icon_ban class="w-4 h-4 shrink-0 mt-0.5" />
+            <span>
+              <strong>{dgettext("landing", "Discord can ban your server tomorrow.")}</strong>
+              {dgettext("landing", "No warning. No appeal. No backup.")}
+            </span>
+          </li>
+          <li class="flex items-start gap-2">
+            <Icons.icon_dollar class="w-4 h-4 shrink-0 mt-0.5" />
+            <span>
+              <strong>
+                {dgettext("landing", "Slack charges for messages you already sent.")}
+              </strong>
+              {dgettext("landing", "Your history, behind a paywall.")}
+            </span>
+          </li>
+          <li class="flex items-start gap-2">
+            <Icons.icon_globe_blocked class="w-4 h-4 shrink-0 mt-0.5" />
+            <span>
+              <strong>
+                {dgettext("landing", "Telegram can be blocked in your entire country.")}
+              </strong>
+              {dgettext("landing", "One court order and your community is gone.")}
+            </span>
+          </li>
+          <li class="flex items-start gap-2">
+            <Icons.icon_robot class="w-4 h-4 shrink-0 mt-0.5" />
+            <span>
+              <strong>
+                {dgettext("landing", "Your data trains another company’s AI.")}
+              </strong>
+              {dgettext("landing", "You never consented.")}
+            </span>
+          </li>
+        </ul>
+      </div>
+      <:status>
+        <.window_status_bar_field grow>
+          {dgettext("landing", "C:\\TRUTH\\")}
+        </.window_status_bar_field>
+      </:status>
+    </.document_section>
+
+    <.document_section id="the-solution" width={620} title={dgettext("landing", "The Solution")}>
+      <:icon><Icons.icon_chat class="w-4 h-4" /></:icon>
+      <h3 class="text-sm font-bold mb-2">
+        {dgettext("landing", "Take back control.")}
+      </h3>
+
+      <ul class="space-y-2 text-xs mb-3">
+        <li class="flex items-start gap-2">
+          <Icons.icon_server class="w-4 h-4 shrink-0 mt-0.5" />
+          <span>
+            <strong>{dgettext("landing", "You own the server, the data, the rules.")}</strong>
+            {dgettext("landing", "Install on your own hardware or a $5/month VPS.")}
+          </span>
+        </li>
+        <li class="flex items-start gap-2">
+          <Icons.icon_p2p class="w-4 h-4 shrink-0 mt-0.5" />
+          <span>
+            <strong>{dgettext("landing", "Private P2P calls and files.")}</strong>
+            {dgettext("landing", "Direct between users via WebRTC, with TURN fallback.")}
+          </span>
+        </li>
+        <li class="flex items-start gap-2">
+          <Icons.icon_conference class="w-4 h-4 shrink-0 mt-0.5" />
+          <span>
+            <strong>{dgettext("landing", "Channel conferences.")}</strong>
+            {dgettext(
+              "landing",
+              "Group audio, video, screen share, and moderation on your own server."
+            )}
+          </span>
+        </li>
+        <li class="flex items-start gap-2">
+          <Icons.icon_group_view class="w-4 h-4 shrink-0 mt-0.5" />
+          <span>
+            <strong>{dgettext("landing", "Virtual Spaces.")}</strong>
+            {dgettext("landing", "Turn any channel or DM into a shared 8-bit room.")}
+          </span>
+        </li>
+        <li class="flex items-start gap-2">
+          <Icons.icon_shield class="w-4 h-4 shrink-0 mt-0.5" />
+          <span>
+            <strong>{dgettext("landing", "No corporation can shut you down.")}</strong>
+            {dgettext("landing", "Open source, MIT licensed, community-owned.")}
+          </span>
+        </li>
+        <li class="flex items-start gap-2">
+          <Icons.icon_code class="w-4 h-4 shrink-0 mt-0.5" />
+          <span>
+            <strong>
+              {dgettext("landing", "No “Pro” plan. No algorithms.")}
+            </strong>
+            {dgettext("landing", "Free software. Yours forever.")}
+          </span>
+        </li>
+      </ul>
+      <:status>
+        <.window_status_bar_field grow>
+          <Icons.icon_checkmark class="w-3 h-3 inline" /> {dgettext("landing", "Ready")}
+        </.window_status_bar_field>
+      </:status>
+    </.document_section>
+  </div>
+
+  <%!-- ══════════════ P2P DIAGRAM ══════════════ --%>
+  <.document_section
+    id="private-p2p-no-media-middleman"
+    width={680}
+    title={dgettext("landing", "Private P2P. No media middleman.")}
+    class="mb-4"
+  >
+    <:icon><Icons.icon_p2p class="w-4 h-4" /></:icon>
+    <div
+      class="shadow-retro-field bg-white p-3 mb-2"
+      aria-label={dgettext("landing", "Peer-to-peer connection diagram")}
+    >
+      <.diagram_p2p_architecture class="w-full max-w-lg mx-auto" />
+    </div>
+    <p class="text-sm text-center">
+      {dgettext(
+        "landing",
+        "For private 1:1 sessions, the server only introduces users. Once connected, calls, files, and multiplayer game data flow"
+      )} <strong>directly</strong>
+      {dgettext("landing", "between them — encrypted, private, and fast.")}
+    </p>
+    <:status>
+      <.window_status_bar_field grow>
+        <Icons.icon_checkmark class="w-3 h-3 inline" /> {dgettext("landing", "Got it")}
+      </.window_status_bar_field>
+    </:status>
+  </.document_section>
+</section>
+
+<%!-- ══════════════ CONVERSATION MODES ══════════════ --%>
+<section class="m-4" aria-labelledby="conversation-modes-heading">
+  <.document_section
+    id="three-ways-to-be-together"
+    width={680}
+    title={dgettext("landing", "Three ways to be together")}
+  >
+    <:icon><Icons.icon_channels class="w-4 h-4" /></:icon>
+    <h2 id="conversation-modes-heading" class="text-sm font-bold mb-3">
+      {dgettext("landing", "Chat, Space, or Conference — switch without leaving the channel.")}
+    </h2>
+
+    <div class="grid lg:grid-cols-3 gap-3">
+      <div class="shadow-retro-field bg-white p-3 text-sm">
+        <div class="flex items-center gap-2 font-bold mb-2">
+          <Icons.icon_chat class="w-4 h-4" />
+          {dgettext("landing", "Chat")}
+        </div>
+        <div
+          class="shadow-retro-field bg-[#20232b] p-2 mb-2"
+          aria-label={dgettext("landing", "Persistent chat workspace diagram")}
+        >
+          <.diagram_chat_workspace class="w-full mx-auto" />
+        </div>
+        <p class="text-xs leading-relaxed">
+          {dgettext(
+            "landing",
+            "Channels, DMs, bots, commands, replies, reactions, and moderation stay in one durable conversation history."
+          )}
+        </p>
+      </div>
+
+      <div class="shadow-retro-field bg-white p-3 text-sm">
+        <div class="flex items-center gap-2 font-bold mb-2">
+          <Icons.icon_group_view class="w-4 h-4" />
+          {dgettext("landing", "Space")}
+        </div>
+        <div class="shadow-retro-field bg-black p-1 mb-2">
+          <img
+            src={Endpoint.static_path("/images/landing/space_end_of_time_showcase.png")}
+            alt={
+              dgettext(
+                "landing",
+                "End of Time Space map with avatars and in-world chat bubbles"
+              )
+            }
+            width="960"
+            height="481"
+            class="block w-full h-auto"
+            loading="lazy"
+          />
+        </div>
+        <p class="text-xs leading-relaxed">
+          {dgettext(
+            "landing",
+            "Space renders that same conversation as a live map: avatars move, messages bubble in-world, and the channel or DM stays the source of truth."
+          )}
+        </p>
+      </div>
+
+      <div class="shadow-retro-field bg-white p-3 text-sm">
+        <div class="flex items-center gap-2 font-bold mb-2">
+          <Icons.icon_conference class="w-4 h-4" />
+          {dgettext("landing", "Conference")}
+        </div>
+        <div
+          class="shadow-retro-field bg-[#20232b] p-2 mb-2"
+          aria-label={dgettext("landing", "Channel conference topology diagram")}
+        >
+          <.diagram_conference_topology class="w-full mx-auto" />
+        </div>
+        <p class="text-xs leading-relaxed">
+          {dgettext(
+            "landing",
+            "Conference keeps media inside the channel: participants join from the room, operators moderate, and your SFU routes the streams."
+          )}
+        </p>
+      </div>
+    </div>
+    <:status>
+      <.window_status_bar_field grow>
+        <Icons.icon_checkmark class="w-3 h-3 inline" /> {dgettext(
+          "landing",
+          "Chat / Space / Conference"
+        )}
+      </.window_status_bar_field>
+    </:status>
+  </.document_section>
+</section>
+
+<%!-- ══════════════ GAMES ══════════════ --%>
+<section class="m-4" aria-labelledby="games-heading">
+  <div class="grid md:grid-cols-2 gap-4">
+    <%!-- P2P Multiplayer Games --%>
+    <.document_section
+      id="multiplayer-games"
+      width={460}
+      title={dgettext("landing", "Multiplayer Games")}
+    >
+      <:icon><Icons.icon_joystick class="w-4 h-4" /></:icon>
+      <h2 id="games-heading" class="text-sm font-bold mb-2">
+        {dgettext("landing", "34 multiplayer games. Right from the chat.")}
+      </h2>
+      <div
+        class="shadow-retro-field bg-white p-3 mb-2"
+        aria-label={dgettext("landing", "P2P multiplayer games flow diagram")}
+      >
+        <.diagram_p2p_games class="w-full max-w-lg mx-auto" />
+      </div>
+      <p class="text-sm">
+        {dgettext("landing", "Type")}
+        <strong>{dgettext("landing", "/p2p @nick")}</strong> {dgettext(
+          "landing",
+          "to challenge anyone. Games run on HTML5 Canvas with state synced via WebRTC DataChannel —"
+        )} <strong>{dgettext("landing", "no server involvement")}</strong>{dgettext(
+          "landing",
+          ", just like private P2P calls."
+        )}
+      </p>
+      <:status>
+        <.window_status_bar_field grow>
+          <Icons.icon_checkmark class="w-3 h-3 inline" /> {dgettext("landing", "34 games")}
+        </.window_status_bar_field>
+      </:status>
+    </.document_section>
+
+    <%!-- Solo Arcade Games --%>
+    <.document_section id="solo-arcade" width={420} title={dgettext("landing", "Solo Arcade")}>
+      <:icon><Icons.icon_game_arcade class="w-4 h-4" /></:icon>
+      <h3 class="text-sm font-bold mb-2">
+        {dgettext("landing", "18 classic games. Running in your browser.")}
+      </h3>
+      <div
+        class="shadow-retro-field bg-white p-3 mb-2"
+        aria-label={dgettext("landing", "Solo arcade flow diagram")}
+      >
+        <.diagram_arcade_flow class="w-full max-w-lg mx-auto" />
+      </div>
+      <p class="text-sm">
+        {dgettext("landing", "Open the")}
+        <strong>{dgettext("landing", "Games")}</strong> {dgettext(
+          "landing",
+          "menu and choose"
+        )}
+        <strong>{dgettext("landing", "Arcade")}</strong> {dgettext(
+          "landing",
+          "to review details for DOOM, Quake, Wolfenstein 3D, Half-Life, and ScummVM adventures, then start any game as"
+        )}
+        <strong>{dgettext("landing", "WebAssembly")}</strong> {dgettext(
+          "landing",
+          "in your browser. No downloads."
+        )}
+      </p>
+      <:status>
+        <.window_status_bar_field grow>
+          <Icons.icon_checkmark class="w-3 h-3 inline" /> {dgettext("landing", "18 games")}
+        </.window_status_bar_field>
+      </:status>
+    </.document_section>
+  </div>
+</section>
+
+<%!-- ══════════════ EASTER EGG: README.txt popup ══════════════ --%>
+<div
+  id="readme-popup"
+  hidden
+  class="fixed inset-0 z-modal flex items-center justify-center bg-overlay-bg"
+  data-modal
+  aria-hidden="true"
+>
+  <div class="max-w-lg w-full mx-4" data-modal-panel>
+    <.window>
+      <.window_title_bar
+        title={dgettext("landing", "README.txt — Notepad")}
+        controls={[:close]}
+        close_target="#readme-popup"
+      >
+        <:icon><Icons.icon_notepad class="w-4 h-4" /></:icon>
+      </.window_title_bar>
+      <.window_body>
+        <.readme_text />
+      </.window_body>
+      <.window_status_bar>
+        <.window_status_bar_field grow>
+          {dgettext("landing", "Ln 1, Col 1")}
+        </.window_status_bar_field>
+      </.window_status_bar>
+    </.window>
+  </div>
+</div>
+
+<%!-- ══════════════ EASTER EGG: Trash popup ══════════════ --%>
+<div
+  id="trash-popup"
+  hidden
+  class="fixed inset-0 z-modal flex items-center justify-center bg-overlay-bg"
+  data-modal
+  aria-hidden="true"
+>
+  <div class="max-w-sm w-full mx-4" data-modal-panel>
+    <.window>
+      <.window_title_bar
+        title={dgettext("landing", "Trash")}
+        controls={[:close]}
+        close_target="#trash-popup"
+      >
+        <:icon><Icons.icon_trash class="w-4 h-4" /></:icon>
+      </.window_title_bar>
+      <.window_body>
+        <p class="text-sm">
+          {dgettext("landing", "No trash here.")}<br /> {dgettext(
+            "landing",
+            "Just clean code. ✨"
+          )}
+        </p>
+      </.window_body>
+      <.window_status_bar>
+        <.window_status_bar_field grow>
+          {dgettext("landing", "0 object(s)")}
+        </.window_status_bar_field>
+      </.window_status_bar>
+    </.window>
+  </div>
+</div>

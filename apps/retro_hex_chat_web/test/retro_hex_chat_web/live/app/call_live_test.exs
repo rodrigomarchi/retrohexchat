@@ -147,7 +147,7 @@ defmodule RetroHexChatWeb.App.CallLiveTest do
       channel = "#call#{uid()}"
 
       {:ok, chat, _html} =
-        conn |> chat_conn(host.nickname, pre_identified: true) |> live(~p"/chat")
+        conn |> chat_conn(host.nickname, pre_identified: true) |> live("/")
 
       submit_command_sync(chat, "/join #{channel}")
       assert host.nickname in channel_members(channel)

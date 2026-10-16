@@ -21,7 +21,7 @@ defmodule RetroHexChatWeb.ChatLive.SpaceEntryTest do
   describe "the door" do
     test "the conversation in focus offers to put its space in the conversation",
          %{conn: conn} do
-      {:ok, view, html} = live(chat_conn(conn, "Sp#{uid()}"), "/chat")
+      {:ok, view, html} = live(chat_conn(conn, "Sp#{uid()}"), "/")
 
       channel = assigns_of(view).session.active_channel
 
@@ -40,7 +40,7 @@ defmodule RetroHexChatWeb.ChatLive.SpaceEntryTest do
     test "a private conversation offers the space the two of them share", %{conn: conn} do
       nickname = "Sp#{uid()}"
       peer = "Peer#{uid()}"
-      {:ok, view, _html} = live(chat_conn(conn, nickname), "/chat")
+      {:ok, view, _html} = live(chat_conn(conn, nickname), "/")
 
       render_click(view, "nicklist_dblclick", %{"nick" => peer})
 
@@ -55,7 +55,7 @@ defmodule RetroHexChatWeb.ChatLive.SpaceEntryTest do
 
     # Status is not a conversation, so there is no space to offer from it.
     test "the status tab has no space", %{conn: conn} do
-      {:ok, view, _html} = live(chat_conn(conn, "Sp#{uid()}"), "/chat")
+      {:ok, view, _html} = live(chat_conn(conn, "Sp#{uid()}"), "/")
 
       render_click(view, "switch_to_status", %{})
 
@@ -67,7 +67,7 @@ defmodule RetroHexChatWeb.ChatLive.SpaceEntryTest do
     # address, so there is no second shape for it to become.
     test "an address this person already has open leaves the control alone",
          %{conn: conn} do
-      {:ok, view, _html} = live(chat_conn(conn, "Sp#{uid()}"), "/chat")
+      {:ok, view, _html} = live(chat_conn(conn, "Sp#{uid()}"), "/")
 
       channel = assigns_of(view).session.active_channel
       path = Paths.space_path(channel)
@@ -83,7 +83,7 @@ defmodule RetroHexChatWeb.ChatLive.SpaceEntryTest do
 
   describe "what the chat no longer holds" do
     test "the space is not a tab and not a child of the chat", %{conn: conn} do
-      {:ok, view, html} = live(chat_conn(conn, "Sp#{uid()}"), "/chat")
+      {:ok, view, html} = live(chat_conn(conn, "Sp#{uid()}"), "/")
 
       refute html =~ ~s(data-tab-type="space")
       refute Enum.any?(live_children(view), &(&1.module == SpaceLive))
@@ -92,7 +92,7 @@ defmodule RetroHexChatWeb.ChatLive.SpaceEntryTest do
 
   describe "the surface registry" do
     test "an open space is one of this person's surfaces", %{conn: conn} do
-      {:ok, view, _html} = live(chat_conn(conn, "Sp#{uid()}"), "/chat")
+      {:ok, view, _html} = live(chat_conn(conn, "Sp#{uid()}"), "/")
       channel = assigns_of(view).session.active_channel
 
       assert OpenSurfaces.open?(

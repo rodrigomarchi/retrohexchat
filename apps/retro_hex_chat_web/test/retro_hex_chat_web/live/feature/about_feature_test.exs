@@ -14,7 +14,7 @@ defmodule RetroHexChatWeb.AboutFeatureTest do
 
     test "renders the About dialog content (version + credits)", %{conn: conn} do
       nick = "AB1#{uid()}"
-      {:ok, view, _} = live(chat_conn(conn, nick), "/chat")
+      {:ok, view, _} = live(chat_conn(conn, nick), "/")
 
       html = render(view)
       assert html =~ "About RetroHexChat"
@@ -25,7 +25,7 @@ defmodule RetroHexChatWeb.AboutFeatureTest do
 
     test "starts hidden with no server-driven show state", %{conn: conn} do
       nick = "AB2#{uid()}"
-      {:ok, view, _} = live(chat_conn(conn, nick), "/chat")
+      {:ok, view, _} = live(chat_conn(conn, nick), "/")
 
       # Always present in the DOM...
       assert has_element?(view, "#about-dialog")

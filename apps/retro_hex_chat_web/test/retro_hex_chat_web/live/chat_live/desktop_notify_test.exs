@@ -21,7 +21,7 @@ defmodule RetroHexChatWeb.ChatLive.DesktopNotifyTest do
     {:ok, _} = register(other)
     channel = "#notif#{uid()}"
 
-    {:ok, view, _html} = ctx.conn |> chat_conn(nick) |> live(~p"/chat")
+    {:ok, view, _html} = ctx.conn |> chat_conn(nick) |> live("/")
     submit_command_sync(view, "/join #{channel}")
     # Somewhere else is where the reader is looking: a message in the channel
     # they have open is one they can already see.
@@ -89,7 +89,7 @@ defmodule RetroHexChatWeb.ChatLive.DesktopNotifyTest do
 
     # Preferences load on identify, so the session has to be one that has.
     {:ok, view, _html} =
-      ctx.conn |> chat_conn(quiet, pre_identified: true) |> live(~p"/chat")
+      ctx.conn |> chat_conn(quiet, pre_identified: true) |> live("/")
 
     submit_command_sync(view, "/join #{ctx.channel}")
     submit_command_sync(view, "/join #elsewhere#{uid()}")

@@ -24,15 +24,20 @@ defmodule RetroHexChatWeb.App.ReturnTo do
   leaves outright, and `..` walks out of the path space the prefixes describe.
   """
 
-  @default "/chat"
-  @prefixes ~w(/chat /join/ /play /call/ /space/ /p2p/)
+  # The desktop's home, the channels and invitations, the pages of the site and
+  # their games and archive, and the surfaces. Never the sign-in window itself,
+  # which a connect would only reopen. `/chat` stays because links carrying it
+  # still arrive, and it redirects to the desktop.
+  @default "/"
+  @prefixes ~w(/c/ /chat /join/ /games /archive/ /play /call/ /space/ /p2p/) ++
+              (RetroHexChatWeb.PublicPages.paths() -- ["/"])
   @max_length 512
 
   # Read from the same source the router builds its localized scopes from, so a
   # locale added there cannot become a path refused here.
   @locale_segments RetroHexChatWeb.SEO.localized_locale_segments()
 
-  @doc "The path to land on after connecting, or the chat when the value is not one."
+  @doc "The path to land on after connecting, or the desktop's home when the value is not one."
   @spec sanitize(term()) :: String.t()
   def sanitize(path) when is_binary(path) do
     if allowed?(path), do: path, else: @default
@@ -53,6 +58,10 @@ defmodule RetroHexChatWeb.App.ReturnTo do
       matches_prefix?(strip_locale(path))
   end
 
+  # The home itself, with or without a query (`/?arcade=`), but never as a
+  # prefix — every path starts with `/`.
+  defp matches_prefix?("/"), do: true
+  defp matches_prefix?("/?" <> _query), do: true
   defp matches_prefix?(path), do: Enum.any?(@prefixes, &prefix_match?(path, &1))
 
   # Every public page in this app also exists under a locale segment, so a

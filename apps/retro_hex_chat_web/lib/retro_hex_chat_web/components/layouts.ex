@@ -35,9 +35,9 @@ defmodule RetroHexChatWeb.Layouts do
   The warning is bookkeeping, not waste. Measured against production, the sprite
   crosses the wire exactly once: the preload transfers it and the `<use>` that
   follows is a cache hit. Dropping the preload does silence the warning, and
-  costs the early start it was added for — on `/chat` especially, where the
-  disconnected render is only the boot overlay and the first `<use>` does not
-  exist until LiveView has connected. So it stays, and the console line is
+  costs the early start it was added for — on a channel's address especially,
+  where the disconnected render is only the chat opening and most `<use>`s do
+  not exist until LiveView has connected. So it stays, and the console line is
   expected.
   """
   @spec head_assets(map()) :: Phoenix.LiveView.Rendered.t()

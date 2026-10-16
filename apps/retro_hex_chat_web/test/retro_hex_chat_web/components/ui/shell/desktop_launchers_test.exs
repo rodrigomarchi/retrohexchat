@@ -8,6 +8,7 @@ defmodule RetroHexChatWeb.Components.UI.DesktopLaunchersTest do
   @moduletag :unit
 
   @group_icon_ids ~w(
+    desktop-icon-site
     desktop-icon-view
     desktop-icon-tools
     desktop-icon-automation
@@ -20,6 +21,7 @@ defmodule RetroHexChatWeb.Components.UI.DesktopLaunchersTest do
   # Programs that are not folders sit beside the folder they belong with, so
   # the arcade follows Retro Games rather than trailing the column.
   @shortcut_ids ~w(
+    desktop-icon-site
     desktop-icon-view
     desktop-icon-tools
     desktop-icon-automation
@@ -31,6 +33,7 @@ defmodule RetroHexChatWeb.Components.UI.DesktopLaunchersTest do
   )
 
   @admin_group_icon_ids ~w(
+    desktop-icon-site
     desktop-icon-view
     desktop-icon-tools
     desktop-icon-automation
@@ -62,7 +65,7 @@ defmodule RetroHexChatWeb.Components.UI.DesktopLaunchersTest do
 
     landing_html =
       render_component(&DesktopLaunchers.desktop_launcher_icons/1,
-        screen: :landing,
+        screen: :showcase,
         is_admin: true
       )
 
@@ -76,7 +79,7 @@ defmodule RetroHexChatWeb.Components.UI.DesktopLaunchersTest do
   end
 
   test "public desktop icons gate app folders except Language and Help" do
-    html = render_component(&DesktopLaunchers.desktop_launcher_icons/1, screen: :landing)
+    html = render_component(&DesktopLaunchers.desktop_launcher_icons/1, screen: :showcase)
     document = document(html)
 
     assert testids(html, ".desktop-shortcut") == @shortcut_ids
@@ -141,7 +144,7 @@ defmodule RetroHexChatWeb.Components.UI.DesktopLaunchersTest do
   end
 
   test "public launcher windows render only the always-available Language and Help folders" do
-    html = render_component(&DesktopLaunchers.desktop_launcher_windows/1, screen: :landing)
+    html = render_component(&DesktopLaunchers.desktop_launcher_windows/1, screen: :showcase)
 
     assert html =~ ~s(data-window-id="desktop-launcher-language")
     assert html =~ ~s(data-testid="desktop-launcher-grid-language")
@@ -151,53 +154,8 @@ defmodule RetroHexChatWeb.Components.UI.DesktopLaunchersTest do
     refute html =~ ~s(data-window-id="desktop-launcher-tools")
     refute html =~ ~s(data-window-id="desktop-launcher-admin")
     refute html =~ ~s(data-window-id="desktop-launcher-system")
-    refute html =~ ~s(phx-click=)
     assert enabled?(html, "desktop-launcher-item-help_topics")
     assert enabled?(html, "desktop-launcher-item-show_about")
-  end
-
-  test "connect keeps Help direct and Language wired to the existing menu" do
-    icons_html = render_component(&DesktopLaunchers.desktop_launcher_icons/1, screen: :connect)
-    icons = document(icons_html)
-
-    assert Floki.attribute(icons, ~s([data-testid="desktop-icon-help"]), "href") == ["/chat/help"]
-
-    assert Floki.attribute(
-             icons,
-             ~s([data-testid="desktop-icon-help"]),
-             "data-window-shortcut-action"
-           ) == ["help_topics"]
-
-    assert Floki.attribute(
-             icons,
-             ~s([data-testid="desktop-icon-help"]),
-             "data-desktop-connect-required"
-           ) ==
-             []
-
-    assert Floki.attribute(
-             icons,
-             ~s([data-testid="desktop-icon-language"]),
-             "data-desktop-click-target"
-           ) == [~s(#menubar [data-testid="language-menu-trigger"])]
-
-    assert Floki.attribute(
-             icons,
-             ~s([data-testid="desktop-icon-language"]),
-             "data-desktop-connect-required"
-           ) ==
-             []
-
-    windows_html =
-      render_component(&DesktopLaunchers.desktop_launcher_windows/1, screen: :connect)
-
-    taskbar_html =
-      render_component(&DesktopLaunchers.desktop_launcher_taskbar_buttons/1, screen: :connect)
-
-    refute windows_html =~ ~s(data-window-id="desktop-launcher-help")
-    refute taskbar_html =~ ~s(data-window-taskbar="desktop-launcher-help")
-    refute windows_html =~ ~s(data-window-id="desktop-launcher-language")
-    refute taskbar_html =~ ~s(data-window-taskbar="desktop-launcher-language")
   end
 
   test "launcher gates privileged and session-bound items like the Start menu" do
@@ -269,7 +227,7 @@ defmodule RetroHexChatWeb.Components.UI.DesktopLaunchersTest do
 
   test "public launcher taskbar buttons only target Language and Help" do
     html =
-      render_component(&DesktopLaunchers.desktop_launcher_taskbar_buttons/1, screen: :landing)
+      render_component(&DesktopLaunchers.desktop_launcher_taskbar_buttons/1, screen: :showcase)
 
     assert html =~ ~s(data-window-taskbar="desktop-launcher-language")
     assert html =~ ~s(data-window-taskbar="desktop-launcher-help")

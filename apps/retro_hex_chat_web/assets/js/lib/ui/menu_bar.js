@@ -32,6 +32,7 @@ import { handleCopySelectionClick, refreshCopySelectionItems } from "./copy_sele
 const MenuBarCore = {
   mount() {
     this._activeMenu = null;
+    this._activeKey = null;
     this._mobileSection = null;
 
     this._onMouseDown = (e) => this._handleMouseDown(e);
@@ -161,16 +162,34 @@ const MenuBarCore = {
    * Tools menu offers, and a person who opened it a moment earlier watched it
    * vanish. Worse, `_activeMenu` still pointed at it, so the next click read as
    * "close" and the menu took two clicks to come back.
+   *
+   * A patch may also replace the menu's node (the chat starting under a page's
+   * menu bar does), so a menu no longer in the bar is found again by its key —
+   * its trigger's label, or the phone drawer — and the drawer reopens on the
+   * same section. A menu the patch removed outright is forgotten.
    */
   restore() {
-    const menu = this._activeMenu;
-    if (!menu || !this.el.contains(menu)) {
-      this._activeMenu = null;
-      return;
-    }
+    const section = this._mobileSection;
+    const menu = this.el.contains(this._activeMenu)
+      ? this._activeMenu
+      : this._activeKey &&
+        this._menus().find((candidate) => menuKey(candidate) === this._activeKey);
 
     this._activeMenu = null;
+    if (!menu) return;
+
     this._openMenu(menu);
+    if (section) {
+      const category = menu.querySelector(`[data-mobile-menu-category="${section}"]`);
+      if (category) this._activateMobileMenuCategory(category);
+    }
+  },
+
+  // Every menu of the bar, in order: the parent of each dropdown.
+  _menus() {
+    return Array.from(this.el.querySelectorAll("[data-menubar-dropdown]")).map(
+      (dropdown) => dropdown.parentElement,
+    );
   },
 
   _openMenu(menu) {
@@ -185,6 +204,7 @@ const MenuBarCore = {
       trigger.classList.remove("hover:bg-accent");
     }
     this._activeMenu = menu;
+    this._activeKey = menuKey(menu);
   },
 
   // Opens the shared mobile dropdown already showing `section`. The rail has no
@@ -233,6 +253,7 @@ const MenuBarCore = {
       }
     });
     this._activeMenu = null;
+    this._activeKey = null;
   },
 
   // Hovering a submenu row opens it; hovering any sibling row closes the
@@ -303,6 +324,13 @@ const MenuBarCore = {
     this._syncMobileRail(section);
   },
 };
+
+// What identifies a menu across a re-render that replaced its node.
+function menuKey(menu) {
+  if (!menu) return null;
+  if (menu.querySelector("[data-mobile-menu-root]")) return "mobile-drawer";
+  return menu.querySelector("[data-menubar-trigger]")?.getAttribute("aria-label") ?? null;
+}
 
 /** Builds a menu bar over `el` (a `<nav role="menubar">`). */
 export function createMenuBar(el) {

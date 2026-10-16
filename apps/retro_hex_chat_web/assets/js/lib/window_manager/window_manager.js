@@ -137,9 +137,26 @@ const WindowManagerCore = {
     if (this.el.dataset.cascadeOnMount === "true" && !this.readRememberedLayout()) {
       this.layoutOnMount();
     }
+    this.focusInitialWindow();
     this.bindEvents();
     this.updateStacking();
     this.applyAll();
+  },
+
+  // The server can name the window in front on the first render
+  // (`data-window-initial-focus`): on the one desktop that is the page the
+  // address names, over the chat that comes first in the markup. It is the
+  // server's own choice, so it is not reported back as the reader's.
+  focusInitialWindow() {
+    const id = this.el.querySelector('[data-window-initial-focus="true"]')?.dataset.windowId;
+    if (!id || !this.windows[id]) return;
+
+    this._commanding = true;
+    try {
+      this.focusWindow(id);
+    } finally {
+      this._commanding = false;
+    }
   },
 
   reconcile() {
@@ -150,6 +167,11 @@ const WindowManagerCore = {
     // root's class list without it (it is client-owned), and window visibility
     // below depends on the current stacked state.
     this.updateStacking();
+
+    // The server renders the Start menu closed. One the reader opened stays open
+    // through the patch — the first click on a page is also what starts the
+    // chat, and the patch that follows must not shut the menu it just opened.
+    if (this.startMenuOpen) this.restoreStartMenu();
 
     // A server-driven DOM patch resets the class/style we own on window roots
     // (the server always renders `u-hidden`), so re-assert client-owned geometry
@@ -490,14 +512,6 @@ const WindowManagerCore = {
   // ── Click interactions (controls / taskbar / start menu) ───
 
   onClick(e) {
-    const clickTarget = e.target.closest("[data-desktop-click-target]");
-    if (clickTarget) {
-      e.preventDefault();
-      this.clearShortcutSelection();
-      this.clickDesktopTarget(clickTarget.dataset.desktopClickTarget);
-      return;
-    }
-
     const staticDialogOpen = e.target.closest("[data-desktop-static-dialog-open]");
     if (staticDialogOpen) {
       e.preventDefault();
@@ -813,14 +827,6 @@ const WindowManagerCore = {
     ).find((dialog) => !dialog.classList.contains("hidden"));
   },
 
-  clickDesktopTarget(selector) {
-    if (!selector) return;
-    const target = this.el.querySelector(selector);
-    if (!target) return;
-    target.click();
-    target.focus?.();
-  },
-
   anyMenuOpen() {
     const start = this.startMenu();
     if (start && !start.classList.contains("u-hidden")) return true;
@@ -881,6 +887,18 @@ const WindowManagerCore = {
 
   command(action, id, sourceEl = null, payload = {}) {
     if (!id) return;
+    // What the server asks for is not news to the server: a focus it commands
+    // is not reported back (see `reportFocus`), or the two would answer each
+    // other forever.
+    this._commanding = true;
+    try {
+      this.runCommand(action, id, sourceEl, payload);
+    } finally {
+      this._commanding = false;
+    }
+  },
+
+  runCommand(action, id, sourceEl, payload) {
     if (!this.windows[id]) {
       // Unknown id = a server-managed window that is not mounted. Ask the host
       // to mount its island; the patch registers it and it opens on arrival.
@@ -903,7 +921,7 @@ const WindowManagerCore = {
         this.closeWindow(id);
         break;
       case "minimize":
-        this.minimizeWindow(id);
+        this.minimizeWindow(id, payload);
         break;
       case "maximize":
         this.toggleMaximize(id);
@@ -1187,10 +1205,12 @@ const WindowManagerCore = {
     this.persist();
   },
 
-  minimizeWindow(id) {
+  // `animate: false` minimizes a window the reader never saw open — one the
+  // page starts minimized — without drawing it shrinking into the taskbar.
+  minimizeWindow(id, { animate = true } = {}) {
     const win = this.windows[id];
     const st = win.state;
-    const fromRect = st.open && !st.minimized ? win.el.getBoundingClientRect() : null;
+    const fromRect = animate && st.open && !st.minimized ? win.el.getBoundingClientRect() : null;
     st.minimized = true;
     if (this.focusedId === id) this.focusTopmost();
     this.applyAll();
@@ -1373,6 +1393,22 @@ const WindowManagerCore = {
     this.applyAll();
     if (this.stacked && previousFocusedId !== id) this.resetStackedScrollSoon();
     this.persist();
+    if (previousFocusedId !== id) this.reportFocus(id);
+  },
+
+  // The window in front is the address in the address bar: when the reader
+  // brings a document window or the chat to the front, the host is told so it
+  // can say where they are. Only those windows have an address, and only a
+  // focus the reader made is reported — one the server commanded it knows.
+  reportFocus(id) {
+    if (this._commanding || typeof this.pushEvent !== "function") return;
+    const el = this.windows[id]?.el;
+    if (id === "chat" || el?.dataset.documentSlot) this.pushEvent("window_focused", { id });
+  },
+
+  /** Hand the manager its host channel after it was mounted without one. */
+  setPushEvent(pushEvent) {
+    this.pushEvent = typeof pushEvent === "function" ? pushEvent : null;
   },
 
   focusTopmost() {
@@ -1566,10 +1602,12 @@ const WindowManagerCore = {
     const menu = this.startMenu();
     if (!menu) return;
     menu.classList.toggle("u-hidden");
-    if (menu.classList.contains("u-hidden")) this.closeStartSubmenus(menu);
+    this.startMenuOpen = !menu.classList.contains("u-hidden");
+    if (!this.startMenuOpen) this.closeStartSubmenus(menu);
   },
 
   closeStartMenu() {
+    this.startMenuOpen = false;
     const menu = this.startMenu();
     if (!menu) return;
     menu.classList.add("u-hidden");
@@ -1626,6 +1664,20 @@ const WindowManagerCore = {
     refreshCopySelectionItems(submenu);
   },
 
+  // Put back the Start menu and the group open in it, found again by its
+  // trigger's test id when the patch replaced the nodes.
+  restoreStartMenu() {
+    const menu = this.startMenu();
+    if (!menu) return;
+    menu.classList.remove("u-hidden");
+    if (!this.startSubmenuKey) return;
+    const trigger = menu.querySelector(
+      `[data-start-submenu-trigger][data-testid="${this.startSubmenuKey}"]`,
+    );
+    const submenu = trigger?.closest("[data-start-submenu]");
+    if (submenu) this.setStartSubmenu(submenu, true);
+  },
+
   closeStartSubmenus(root, except = null) {
     root.querySelectorAll("[data-start-submenu]").forEach((submenu) => {
       if (submenu !== except) this.setStartSubmenu(submenu, false);
@@ -1669,6 +1721,9 @@ const WindowManagerCore = {
   },
 
   setStartSubmenu(submenu, open) {
+    const key = submenu.querySelector("[data-start-submenu-trigger]")?.dataset.testid;
+    if (open) this.startSubmenuKey = key;
+    else if (this.startSubmenuKey === key) this.startSubmenuKey = null;
     submenu.dataset.submenuOpen = open ? "true" : "false";
     const trigger = submenu.querySelector("[data-start-submenu-trigger]");
     if (trigger) trigger.setAttribute("aria-expanded", open ? "true" : "false");

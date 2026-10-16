@@ -2,13 +2,13 @@ defmodule RetroHexChatWeb.LocaleControllerTest do
   use RetroHexChatWeb.ConnCase, async: true
 
   describe "update/2" do
-    test "stores the selected locale and redirects to a local return path", %{conn: conn} do
+    test "stores the selected locale and returns to the path in that locale", %{conn: conn} do
       conn =
         conn
         |> init_test_session(%{})
         |> get("/locale/pt-BR?return_to=/connect")
 
-      assert redirected_to(conn) == "/connect"
+      assert redirected_to(conn) == "/pt-BR/connect"
       assert get_session(conn, :locale) == "pt_BR"
     end
 
@@ -18,7 +18,7 @@ defmodule RetroHexChatWeb.LocaleControllerTest do
         |> init_test_session(%{})
         |> get("/locale/zh-TW?return_to=/connect")
 
-      assert redirected_to(conn) == "/connect"
+      assert redirected_to(conn) == "/zh-Hant/connect"
       assert get_session(conn, :locale) == "zh_hant"
     end
 
@@ -28,7 +28,7 @@ defmodule RetroHexChatWeb.LocaleControllerTest do
         |> init_test_session(%{})
         |> get("/locale/pt-PT?return_to=/connect")
 
-      assert redirected_to(conn) == "/connect"
+      assert redirected_to(conn) == "/pt-PT/connect"
       assert get_session(conn, :locale) == "pt_PT"
     end
 
@@ -38,7 +38,7 @@ defmodule RetroHexChatWeb.LocaleControllerTest do
         |> init_test_session(%{})
         |> get("/locale/it-IT?return_to=/connect")
 
-      assert redirected_to(conn) == "/connect"
+      assert redirected_to(conn) == "/it/connect"
       assert get_session(conn, :locale) == "it"
     end
 
@@ -48,7 +48,7 @@ defmodule RetroHexChatWeb.LocaleControllerTest do
         |> init_test_session(%{})
         |> get("/locale/pl-PL?return_to=/connect")
 
-      assert redirected_to(conn) == "/connect"
+      assert redirected_to(conn) == "/pl/connect"
       assert get_session(conn, :locale) == "pl"
     end
 
@@ -58,7 +58,7 @@ defmodule RetroHexChatWeb.LocaleControllerTest do
         |> init_test_session(%{})
         |> get("/locale/nl-BE?return_to=/connect")
 
-      assert redirected_to(conn) == "/connect"
+      assert redirected_to(conn) == "/nl/connect"
       assert get_session(conn, :locale) == "nl"
     end
 
@@ -72,13 +72,13 @@ defmodule RetroHexChatWeb.LocaleControllerTest do
       assert get_session(conn, :locale) == "en"
     end
 
-    test "rejects external return paths", %{conn: conn} do
+    test "rejects external return paths, returning to the home in that locale", %{conn: conn} do
       conn =
         conn
         |> init_test_session(%{})
         |> get("/locale/pt_BR?return_to=https://example.com/phishing")
 
-      assert redirected_to(conn) == "/connect"
+      assert redirected_to(conn) == "/pt-BR"
       assert get_session(conn, :locale) == "pt_BR"
     end
   end

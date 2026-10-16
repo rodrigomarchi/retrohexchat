@@ -3,7 +3,7 @@ defmodule RetroHexChatWeb.Components.UI.Landing.GameCards do
   The public games catalogue's pieces: a game's screenshot, the card that links
   to its page, the page's body, and the link other pages use to reach it.
 
-  Built on the shared `card`, `button` and `desktop_window` primitives and the
+  Built on the shared `card`, `button` and `document_section` primitives and the
   same `game_icon` the in-app library uses, so a game looks like itself on the
   public page and in the app. Every path arrives prepared by the page — these
   components never read the locale or build an address themselves.
@@ -12,7 +12,7 @@ defmodule RetroHexChatWeb.Components.UI.Landing.GameCards do
 
   import RetroHexChatWeb.Components.UI.Button
   import RetroHexChatWeb.Components.UI.Card
-  import RetroHexChatWeb.Components.UI.Desktop
+  import RetroHexChatWeb.Components.UI.Site.Document
   import RetroHexChatWeb.Components.UI.Window
 
   alias RetroHexChatWeb.Icons
@@ -75,7 +75,7 @@ defmodule RetroHexChatWeb.Components.UI.Landing.GameCards do
   def game_card(assigns) do
     ~H"""
     <.link
-      navigate={@path}
+      patch={@path}
       class="block no-underline text-inherit"
       data-testid={"game-card-#{@game.slug}"}
     >
@@ -110,7 +110,7 @@ defmodule RetroHexChatWeb.Components.UI.Landing.GameCards do
   @spec game_card_window(map()) :: Phoenix.LiveView.Rendered.t()
   def game_card_window(assigns) do
     ~H"""
-    <.desktop_window id={@id} width={@width} title={@title}>
+    <.document_section id={@id} width={@width} title={@title}>
       <:icon>{render_slot(@icon)}</:icon>
       <h2 id={@heading_id} class="text-sm font-bold mb-2">{@title}</h2>
       <div class={["grid gap-3", @columns]}>
@@ -118,13 +118,17 @@ defmodule RetroHexChatWeb.Components.UI.Landing.GameCards do
       </div>
       {render_slot(@footer)}
       <:status :if={@status != []}>{render_slot(@status)}</:status>
-    </.desktop_window>
+    </.document_section>
     """
   end
 
   attr :game, :map, required: true, doc: "a `RetroHexChatWeb.GameCatalog` game"
   attr :kind_label, :string, required: true
   attr :how_to_play_path, :string, required: true
+
+  attr :play_path, :string,
+    required: true,
+    doc: "the game for a member; for a visitor, the sign-in window asking for an account first"
 
   @doc """
   A game's page: what it is, what it looks like, how it is played and the way
@@ -134,7 +138,7 @@ defmodule RetroHexChatWeb.Components.UI.Landing.GameCards do
   @spec game_detail(map()) :: Phoenix.LiveView.Rendered.t()
   def game_detail(assigns) do
     ~H"""
-    <.desktop_window id="game" width={760} title={@game.name}>
+    <.document_section id="game" width={760} title={@game.name}>
       <:icon><Icons.game_icon game_id={@game.id} class="w-4 h-4" /></:icon>
 
       <h1 id="game-heading" class="text-lg font-bold mb-1 text-text">{@game.name}</h1>
@@ -145,11 +149,11 @@ defmodule RetroHexChatWeb.Components.UI.Landing.GameCards do
       </div>
 
       <div class="flex flex-wrap gap-2 mb-4">
-        <.button type="button" data-window-open="connect" data-testid="game-play">
+        <.button patch={@play_path} data-testid="game-play">
           <:icon><Icons.icon_joystick class="w-4 h-4" /></:icon>
           {dgettext("landing", "Play now — pick a nickname")}
         </.button>
-        <.button variant="outline" href={@how_to_play_path} data-testid="game-how-to-play">
+        <.button variant="outline" patch={@how_to_play_path} data-testid="game-how-to-play">
           <:icon><Icons.icon_question class="w-4 h-4" /></:icon>
           {dgettext("landing", "How to play")}
         </.button>
@@ -176,7 +180,7 @@ defmodule RetroHexChatWeb.Components.UI.Landing.GameCards do
           {dgettext("landing", "Free, in the browser")}
         </.window_status_bar_field>
       </:status>
-    </.desktop_window>
+    </.document_section>
     """
   end
 
@@ -193,7 +197,7 @@ defmodule RetroHexChatWeb.Components.UI.Landing.GameCards do
   def catalogue_link(assigns) do
     ~H"""
     <p class={@class} {@rest}>
-      <.link navigate={@path} class="inline-flex items-center gap-1 underline">
+      <.link patch={@path} class="inline-flex items-center gap-1 underline">
         <Icons.icon_joystick class="w-3 h-3 shrink-0" />
         <%= if @inner_block != [] do %>
           {render_slot(@inner_block)}

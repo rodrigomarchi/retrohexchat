@@ -11,7 +11,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 
-#: lib/retro_hex_chat_web/live/help_live/index.ex:149
+#: lib/retro_hex_chat_web/site/pages/help.ex:91
 #, elixir-autogen, elixir-format
 msgid "%{topic} — RetroHexChat Help"
 msgstr "%{topic} — Bantuan RetroHexChat"
@@ -135,12 +135,12 @@ msgstr ""
 "Nama panggilan Anda terdaftar dan Anda bergabung dengan chatting sudah "
 "diidentifikasi."
 
-#: lib/retro_hex_chat_web/components/ui/help/help_viewer.ex:437
+#: lib/retro_hex_chat_web/components/ui/help/help_viewer.ex:411
 #, elixir-autogen, elixir-format
 msgid "Breadcrumb"
 msgstr "Breadcrumb"
 
-#: lib/retro_hex_chat_web/components/ui/help/help_viewer.ex:162
+#: lib/retro_hex_chat_web/components/ui/help/help_viewer.ex:112
 #, elixir-autogen, elixir-format
 msgid "Browse by category or open Help Topics from the chat menu."
 msgstr ""
@@ -211,24 +211,22 @@ msgstr ""
 "sandi untuk mendaftarkannya. Pada kunjungan mendatang, Anda akan memasukkan "
 "sandi untuk log masuk."
 
-#: lib/retro_hex_chat_web/components/ui/help/help_menu_bar.ex:70
-#: lib/retro_hex_chat_web/components/ui/help/help_menu_bar.ex:83
+#: lib/retro_hex_chat_web/components/ui/help/help_menu_bar.ex:76
+#: lib/retro_hex_chat_web/components/ui/help/help_menu_bar.ex:89
 #: lib/retro_hex_chat_web/components/ui/help/help_status_bar.ex:55
 #: lib/retro_hex_chat_web/components/ui/help/help_status_bar.ex:57
-#: lib/retro_hex_chat_web/components/ui/help/help_viewer.ex:439
-#: lib/retro_hex_chat_web/components/ui/help/help_viewer.ex:458
-#: lib/retro_hex_chat_web/components/ui/help/help_viewer.ex:463
-#: lib/retro_hex_chat_web/live/help_live/index.ex:138
+#: lib/retro_hex_chat_web/components/ui/help/help_viewer.ex:413
+#: lib/retro_hex_chat_web/site/pages/help.ex:81
 #, elixir-autogen, elixir-format
 msgid "Help"
 msgstr "Bantuan"
 
-#: lib/retro_hex_chat_web/components/ui/help/help_viewer.ex:318
+#: lib/retro_hex_chat_web/components/ui/help/help_viewer.ex:275
 #, elixir-autogen, elixir-format
 msgid "Help navigation"
 msgstr "Navigasi bantuan"
 
-#: lib/retro_hex_chat_web/components/ui/help/help_viewer.ex:55
+#: lib/retro_hex_chat_web/site/pages/help.ex:34
 #, elixir-autogen, elixir-format
 msgid "Help — RetroHexChat"
 msgstr "Bantuan - RetroHexChat"
@@ -338,7 +336,7 @@ msgstr "Nama panggilan terdaftar"
 msgid "Registration Required"
 msgstr "Pendaftaran Diperlukan"
 
-#: lib/retro_hex_chat_web/components/ui/help/help_viewer.ex:157
+#: lib/retro_hex_chat_web/components/ui/help/help_viewer.ex:107
 #, elixir-autogen, elixir-format
 msgid "RetroHexChat Help"
 msgstr "Bantuan RetroHexChat"
@@ -358,7 +356,7 @@ msgstr ""
 "retro otentik. Ini mendukung saluran, pesan pribadi, pemformatan teks, "
 "layanan nick, dan banyak lagi."
 
-#: lib/retro_hex_chat_web/components/ui/help/help_viewer.ex:242
+#: lib/retro_hex_chat_web/components/ui/help/help_viewer.ex:192
 #: lib/retro_hex_chat_web/controllers/help_content/connect_authentication.html.heex:42
 #: lib/retro_hex_chat_web/controllers/help_content/connecting.html.heex:64
 #: lib/retro_hex_chat_web/controllers/help_content/private_messages.html.heex:33
@@ -369,7 +367,7 @@ msgstr ""
 msgid "See Also"
 msgstr "Lihat juga"
 
-#: lib/retro_hex_chat_web/components/ui/help/help_viewer.ex:159
+#: lib/retro_hex_chat_web/components/ui/help/help_viewer.ex:109
 #, elixir-autogen, elixir-format
 msgid "Select a topic from the navigation pane to get started."
 msgstr "Pilih topik dari panel navigasi untuk memulai."
@@ -475,28 +473,28 @@ msgstr "%{count} topik"
 msgid "/notice"
 msgstr "/notice"
 
-#: lib/retro_hex_chat_web/components/ui/help/help_menu_bar.ex:136
+#: lib/retro_hex_chat_web/components/ui/help/help_menu_bar.ex:149
 #, elixir-autogen, elixir-format
 msgid "About RetroHexChat"
 msgstr "Tentang RetroHexChat"
 
-#: lib/retro_hex_chat_web/components/ui/help/help_menu_bar.ex:98
-#: lib/retro_hex_chat_web/components/ui/help/help_viewer.ex:268
-#: lib/retro_hex_chat_web/components/ui/shell/start_menu_app.ex:510
+#: lib/retro_hex_chat_web/components/ui/help/help_menu_bar.ex:104
+#: lib/retro_hex_chat_web/components/ui/help/help_viewer.ex:219
+#: lib/retro_hex_chat_web/components/ui/shell/start_menu_app.ex:526
 #, elixir-autogen, elixir-format
 msgid "Back"
 msgstr "Kembali"
 
-#: lib/retro_hex_chat_web/components/ui/shell/start_menu_app.ex:564
-#: lib/retro_hex_chat_web/components/ui/shell/start_menu_app.ex:571
+#: lib/retro_hex_chat_web/components/ui/shell/start_menu_app.ex:576
+#: lib/retro_hex_chat_web/components/ui/shell/start_menu_app.ex:583
 #, elixir-autogen, elixir-format
 msgid "Back to chat"
 msgstr "Kembali ke percakapan"
 
-#: lib/retro_hex_chat_web/components/ui/help/help_menu_bar.ex:115
-#: lib/retro_hex_chat_web/components/ui/help/help_viewer.ex:321
-#: lib/retro_hex_chat_web/components/ui/shell/desktop_launchers.ex:470
-#: lib/retro_hex_chat_web/components/ui/shell/start_menu_app.ex:165
+#: lib/retro_hex_chat_web/components/ui/help/help_menu_bar.ex:122
+#: lib/retro_hex_chat_web/components/ui/help/help_viewer.ex:282
+#: lib/retro_hex_chat_web/components/ui/shell/desktop_launchers.ex:448
+#: lib/retro_hex_chat_web/components/ui/shell/start_menu_app.ex:177
 #, elixir-autogen, elixir-format
 msgid "Contents"
 msgstr "Isi"
@@ -508,36 +506,36 @@ msgstr ""
 "Untuk pesan ringan yang tidak membuka tab PM di sisi penerima, pilih "
 "Pemberitahuan Kirim dari menu konteks nama panggilan atau gunakan"
 
-#: lib/retro_hex_chat_web/components/ui/help/help_menu_bar.ex:102
-#: lib/retro_hex_chat_web/components/ui/help/help_viewer.ex:271
-#: lib/retro_hex_chat_web/components/ui/shell/start_menu_app.ex:516
+#: lib/retro_hex_chat_web/components/ui/help/help_menu_bar.ex:108
+#: lib/retro_hex_chat_web/components/ui/help/help_viewer.ex:222
+#: lib/retro_hex_chat_web/components/ui/shell/start_menu_app.ex:532
 #, elixir-autogen, elixir-format
 msgid "Forward"
 msgstr "Maju"
 
-#: lib/retro_hex_chat_web/components/ui/help/help_menu_bar.ex:92
-#: lib/retro_hex_chat_web/components/ui/help/help_viewer.ex:277
-#: lib/retro_hex_chat_web/components/ui/help/help_viewer.ex:278
-#: lib/retro_hex_chat_web/live/help_live/index.ex:138
+#: lib/retro_hex_chat_web/components/ui/help/help_menu_bar.ex:98
+#: lib/retro_hex_chat_web/components/ui/help/help_viewer.ex:228
+#: lib/retro_hex_chat_web/components/ui/help/help_viewer.ex:229
+#: lib/retro_hex_chat_web/site/pages/help.ex:81
 #, elixir-autogen, elixir-format
 msgid "Home"
 msgstr "Rumah"
 
-#: lib/retro_hex_chat_web/components/ui/help/help_menu_bar.ex:119
-#: lib/retro_hex_chat_web/components/ui/help/help_viewer.ex:322
-#: lib/retro_hex_chat_web/components/ui/shell/desktop_launchers.ex:476
-#: lib/retro_hex_chat_web/components/ui/shell/start_menu_app.ex:174
+#: lib/retro_hex_chat_web/components/ui/help/help_menu_bar.ex:131
+#: lib/retro_hex_chat_web/components/ui/help/help_viewer.ex:288
+#: lib/retro_hex_chat_web/components/ui/shell/desktop_launchers.ex:455
+#: lib/retro_hex_chat_web/components/ui/shell/start_menu_app.ex:187
 #, elixir-autogen, elixir-format
 msgid "Index"
 msgstr "Indeks"
 
-#: lib/retro_hex_chat_web/components/ui/help/help_menu_bar.ex:54
-#: lib/retro_hex_chat_web/components/ui/help/help_menu_bar.ex:80
+#: lib/retro_hex_chat_web/components/ui/help/help_menu_bar.ex:60
+#: lib/retro_hex_chat_web/components/ui/help/help_menu_bar.ex:86
 #, elixir-autogen, elixir-format
 msgid "Navigate"
 msgstr "Navigasi"
 
-#: lib/retro_hex_chat_web/components/ui/help/help_viewer.ex:364
+#: lib/retro_hex_chat_web/components/ui/help/help_viewer.ex:336
 #, elixir-autogen, elixir-format
 msgid "No topics match \"%{query}\"."
 msgstr "Tidak ada topik yang cocok \"%{query}\"."
@@ -547,26 +545,26 @@ msgstr "Tidak ada topik yang cocok \"%{query}\"."
 msgid "Notice Command"
 msgstr "Perintah Pemberitahuan"
 
-#: lib/retro_hex_chat_web/components/ui/help/help_menu_bar.ex:127
-#: lib/retro_hex_chat_web/components/ui/help/help_viewer.ex:323
-#: lib/retro_hex_chat_web/components/ui/shell/desktop_launchers.ex:482
-#: lib/retro_hex_chat_web/components/ui/shell/start_menu_app.ex:183
+#: lib/retro_hex_chat_web/components/ui/help/help_menu_bar.ex:140
+#: lib/retro_hex_chat_web/components/ui/help/help_viewer.ex:294
+#: lib/retro_hex_chat_web/components/ui/shell/desktop_launchers.ex:462
+#: lib/retro_hex_chat_web/components/ui/shell/start_menu_app.ex:197
 #, elixir-autogen, elixir-format
 msgid "Search"
 msgstr "Cari"
 
-#: lib/retro_hex_chat_web/components/ui/help/help_viewer.ex:292
+#: lib/retro_hex_chat_web/components/ui/help/help_viewer.ex:248
 #, elixir-autogen, elixir-format
 msgid "Search topics..."
 msgstr "Cari topik..."
 
-#: lib/retro_hex_chat_web/components/ui/help/help_viewer.ex:357
+#: lib/retro_hex_chat_web/components/ui/help/help_viewer.ex:329
 #, elixir-autogen, elixir-format
 msgid "Type in the search box to find topics."
 msgstr "Ketik dalam kotak pencarian untuk menemukan topik."
 
-#: lib/retro_hex_chat_web/components/ui/help/help_menu_bar.ex:59
-#: lib/retro_hex_chat_web/components/ui/help/help_menu_bar.ex:81
+#: lib/retro_hex_chat_web/components/ui/help/help_menu_bar.ex:65
+#: lib/retro_hex_chat_web/components/ui/help/help_menu_bar.ex:87
 #, elixir-autogen, elixir-format
 msgid "View"
 msgstr "Tampilan"
@@ -589,27 +587,10 @@ msgstr "Log Masuk Otomatis"
 msgid "Desktop & Windows"
 msgstr "Desktop & Jendela"
 
-#: lib/retro_hex_chat_web/controllers/help_content/ui_connect_window.html.heex:47
-#, elixir-autogen, elixir-format
-msgid "It behaves like every other window: move it, minimize it, or bring it back from the taskbar button or Start ▸ Windows. On the public pages it opens with the page; on the connect screen it is pinned in the middle."
-msgstr ""
-"Ia berperilaku seperti setiap jendela lain: memindahkannya, meminimalisir, "
-"atau membawanya kembali dari tombol taskbar atau Start GibberWindows. Pada "
-"halaman publik itu terbuka dengan halaman; pada layar penghubung itu "
-"disematkan di tengah."
-
 #: lib/retro_hex_chat_web/controllers/help_content/ui_connect_window.html.heex:7
 #, elixir-autogen, elixir-format
 msgid "Signing In"
 msgstr "Masuk"
-
-#: lib/retro_hex_chat_web/controllers/help_content/ui_connect_window.html.heex:2
-#, elixir-autogen, elixir-format
-msgid "The Connect window is where you sign in. It appears on its own screen at /connect, and on every public page — so you can enter the chat without leaving the page you arrived on."
-msgstr ""
-"Jendela penghubung adalah tempat kau mendaftar. Muncul di layar sendiri di "
-"/connect, dan di setiap halaman publik - sehingga Anda dapat memasukkan "
-"percakapan tanpa meninggalkan halaman Anda tiba di."
 
 #: lib/retro_hex_chat_web/controllers/help_content/ui_connect_window.html.heex:45
 #, elixir-autogen, elixir-format
@@ -678,12 +659,12 @@ msgstr "Klik kanan sebuah nama panggilan di daftar pengguna sebelah kanan lalu p
 msgid "User List"
 msgstr "Daftar pengguna"
 
-#: lib/retro_hex_chat_web/components/ui/help/help_viewer.ex:182
+#: lib/retro_hex_chat_web/components/ui/help/help_viewer.ex:132
 #, elixir-autogen, elixir-format
 msgid "Screenshots and more games in the games catalogue"
 msgstr "Tangkapan layar dan game lain di katalog game"
 
-#: lib/retro_hex_chat_web/components/ui/help/help_viewer.ex:202
+#: lib/retro_hex_chat_web/components/ui/help/help_viewer.ex:152
 #, elixir-autogen, elixir-format
 msgid "Coming from mIRC? See which of its commands work the same here"
 msgstr "Datang dari mIRC? Lihat perintah mana yang bekerja sama di sini"
@@ -898,11 +879,6 @@ msgstr "Rahasia, pribadi, invite- saja dan saluran dikupas tidak dapat diawasi -
 msgid "See who is in each channel, and close a channel's tab when you are done"
 msgstr "Lihat siapa yang ada di setiap saluran, dan tutup tab saluran ketika Anda selesai"
 
-#: lib/retro_hex_chat_web/controllers/help_content/watching_without_account.html.heex:22
-#, elixir-autogen, elixir-format
-msgid "Share a link to a channel: /chat?join= followed by its name opens that channel for whoever follows it"
-msgstr "Berbagi link ke saluran: /chat? join = diikuti dengan namanya membuka saluran itu bagi siapa saja yang mengikutinya"
-
 #: lib/retro_hex_chat_web/controllers/help_content/watching_without_account.html.heex:28
 #, elixir-autogen, elixir-format
 msgid "Taking part"
@@ -947,3 +923,18 @@ msgstr "Segala sesuatu yang melakukan sesuatu membutuhkan akun: menulis, bereaks
 #, elixir-autogen, elixir-format
 msgid "A link to a game, a call or a space opens the chat with that window, and after you sign in it takes you to the link."
 msgstr "Sebuah link ke permainan, panggilan atau ruang membuka percakapan dengan jendela itu, dan setelah Anda masuk itu membawa Anda ke link."
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_connect_window.html.heex:47
+#, elixir-autogen, elixir-format
+msgid "It behaves like every other window: move it, minimize it, or bring it back from its taskbar button. Closing it takes you back to the chat; after signing in you land where you were going — the channel you were reading, or the game or call that asked you to sign in."
+msgstr "Ia berperilaku seperti setiap jendela lain: memindahkannya, meminimalisir, atau membawanya kembali dari tombol taskbar. Menutup itu membawa Anda kembali ke chatting; setelah menandatangani di tanah Anda di mana Anda akan - saluran yang Anda baca, atau permainan atau panggilan yang meminta Anda untuk masuk"
+
+#: lib/retro_hex_chat_web/controllers/help_content/watching_without_account.html.heex:22
+#, elixir-autogen, elixir-format
+msgid "Share a channel: its address is /c/ followed by its name, and the address bar shows it while the channel is in front"
+msgstr "Berbagi suatu saluran: alamatnya /c / diikuti dengan namanya, dan bilah alamat menunjukkannya ketika kanal berada di depan"
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_connect_window.html.heex:2
+#, elixir-autogen, elixir-format
+msgid "The Connect window is where you sign in. It opens over the chat at its own address, /connect — from Create an account on the home, or from anything you try that needs an account — so you sign in without leaving the desktop you arrived on."
+msgstr "Jendela penghubung adalah tempat kau mendaftar. Ini membuka melalui percakapan di alamat sendiri, /connect - dari Membuat akun di rumah, atau dari apa pun yang Anda coba yang membutuhkan akun - sehingga Anda masuk tanpa meninggalkan desktop Anda tiba di."

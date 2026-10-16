@@ -30,6 +30,11 @@ DOTTED_KEY_RE = re.compile(r"\b[a-z][a-z0-9_]*\.[a-z][a-z0-9_]*\b")
 MODE_RE = re.compile(r"(?<![\w+-])[+-][A-Za-z]\b")
 ALIAS_VARIABLE_RE = re.compile(r"\$[A-Za-z0-9]+\b")
 
+# The interface's own glyphs — the arrow of a menu path ("Start ▸ Navigate"),
+# a status mark ("↻ Reconnecting:"). The Portuguese model reads them as noise
+# and swaps them for a box ("Iniciar □ Navegar"), so they travel masked.
+UI_GLYPH_RE = re.compile("[▸◂▾▴↻←→↑↓✓✕]")
+
 PROTECTED_PATTERNS = (
     re.compile(r"https?://[^\s<>\"]+"),
     re.compile(r"`[^`]+`"),
@@ -41,6 +46,7 @@ PROTECTED_PATTERNS = (
     re.compile(r"%\{[A-Za-z0-9_]+\}"),
     MODE_RE,
     ALIAS_VARIABLE_RE,
+    UI_GLYPH_RE,
 )
 
 SENTINEL_TEMPLATE = "XPH{index}X"

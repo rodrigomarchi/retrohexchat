@@ -40,10 +40,7 @@ config :retro_hex_chat_web, RetroHexChatWeb.Endpoint,
   watchers: [
     esbuild:
       {Esbuild, :install_and_run,
-       [:retro_hex_chat_web_public_pages_js, ~w(--sourcemap=inline --watch)]},
-    esbuild:
-      {Esbuild, :install_and_run,
-       [:retro_hex_chat_web_help_live_js, ~w(--sourcemap=inline --watch)]},
+       [:retro_hex_chat_web_desktop_js, ~w(--sourcemap=inline --watch)]},
     esbuild:
       {Esbuild, :install_and_run,
        [:retro_hex_chat_web_retrohex_content_js, ~w(--sourcemap=inline --watch)]},

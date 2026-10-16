@@ -21,7 +21,7 @@ defmodule RetroHexChatWeb.FaroMetaTest do
   describe "Faro RUM meta tags in the chat layout" do
     test "renders the collector url and app version metas", %{conn: conn} do
       nick = "Faro#{uid()}"
-      html = conn |> chat_conn(nick) |> get("/chat") |> html_response(200)
+      html = conn |> chat_conn(nick) |> get("/") |> html_response(200)
 
       assert html =~ ~s(<meta name="faro-collector-url" content="/faro/collect")
       assert html =~ ~s(<meta name="faro-app-version" content="#{BuildInfo.version()}")
@@ -34,7 +34,7 @@ defmodule RetroHexChatWeb.FaroMetaTest do
       on_exit(fn -> Application.put_env(:retro_hex_chat_web, :faro_enabled, previous) end)
 
       nick = "Faro#{uid()}"
-      html = conn |> chat_conn(nick) |> get("/chat") |> html_response(200)
+      html = conn |> chat_conn(nick) |> get("/") |> html_response(200)
 
       assert html =~ ~s(<meta name="faro-enabled" content="true")
     end

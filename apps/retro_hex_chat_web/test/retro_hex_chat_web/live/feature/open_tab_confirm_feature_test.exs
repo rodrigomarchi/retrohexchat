@@ -20,7 +20,7 @@ defmodule RetroHexChatWeb.OpenTabConfirmFeatureTest do
 
   defp open_chat(conn, prefix) do
     nick = "#{prefix}#{uid()}"
-    {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
+    {:ok, view, _html} = live(chat_conn(conn, nick), "/")
     view
   end
 

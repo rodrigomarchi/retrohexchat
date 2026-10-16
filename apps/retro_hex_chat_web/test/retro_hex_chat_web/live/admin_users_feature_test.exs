@@ -278,7 +278,7 @@ defmodule RetroHexChatWeb.AdminUsersFeatureTest do
     end
 
     test "a forged window_open renders nothing for a non-admin", %{conn: conn} do
-      {:ok, view, _html} = live(chat_conn(conn, "Plain#{uid()}"), "/chat")
+      {:ok, view, _html} = live(chat_conn(conn, "Plain#{uid()}"), "/")
 
       render_hook(view, "window_open", %{"id" => "admin-users"})
 
@@ -293,7 +293,7 @@ defmodule RetroHexChatWeb.AdminUsersFeatureTest do
   end
 
   defp connect_admin(conn) do
-    {:ok, view, _html} = live(chat_conn(conn, "TestAdmin", pre_identified: true), "/chat")
+    {:ok, view, _html} = live(chat_conn(conn, "TestAdmin", pre_identified: true), "/")
     view
   end
 

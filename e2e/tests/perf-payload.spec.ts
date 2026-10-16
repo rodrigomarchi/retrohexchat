@@ -12,7 +12,11 @@
  */
 import { test, expect } from "@playwright/test";
 import { PERF_BUDGETS } from "../helpers/perfBudgets";
-import { samplePerf, sampleResources } from "../helpers/perfProbe";
+import {
+  firstResponseNodes,
+  samplePerf,
+  sampleResources,
+} from "../helpers/perfProbe";
 
 const SPRITE = /\/assets\/icons\/sprite[-.]/;
 
@@ -26,7 +30,17 @@ test.describe("Payload budgets", () => {
     const sample = await samplePerf(page);
 
     expect(sample.navBytes).toBeLessThanOrEqual(PERF_BUDGETS.connect.navBytes);
-    expect(sample.domNodes).toBeLessThanOrEqual(PERF_BUDGETS.connect.domNodes);
+    expect(await firstResponseNodes(page, "/connect")).toBeLessThanOrEqual(
+      PERF_BUDGETS.connect.domNodes,
+    );
+
+    // The sign-in window starts the chat behind it at once; the whole desktop
+    // it then draws is held to the desktop's budget.
+    await page.waitForFunction(
+      () => document.documentElement.dataset.liveBoot === "ready",
+    );
+    const live = await samplePerf(page);
+    expect(live.domNodes).toBeLessThanOrEqual(PERF_BUDGETS.desktop.domNodes);
   });
 
   test("a help topic stays inside its document and DOM budget (M)", async ({
@@ -38,7 +52,9 @@ test.describe("Payload budgets", () => {
     const sample = await samplePerf(page);
 
     expect(sample.navBytes).toBeLessThanOrEqual(PERF_BUDGETS.help.navBytes);
-    expect(sample.domNodes).toBeLessThanOrEqual(PERF_BUDGETS.help.domNodes);
+    expect(await firstResponseNodes(page, "/chat/help")).toBeLessThanOrEqual(
+      PERF_BUDGETS.help.domNodes,
+    );
   });
 
   test("every icon points at the sprite and none draws inline (M)", async ({
@@ -48,12 +64,18 @@ test.describe("Payload budgets", () => {
       await page.goto(path);
       await page.waitForLoadState("load");
 
-      const counts = await page.evaluate(() => ({
-        svgs: document.querySelectorAll("svg").length,
-        uses: document.querySelectorAll("svg use").length,
-        shapes: document.querySelectorAll("svg rect, svg polygon, svg ellipse")
-          .length,
-      }));
+      // An icon is decorative (`aria-hidden`); a diagram is an image with a
+      // name (`role="img"`, `Components.Diagrams`) and is drawn where it is.
+      const counts = await page.evaluate(() => {
+        const icon = 'svg:not([role="img"])';
+        return {
+          svgs: document.querySelectorAll(icon).length,
+          uses: document.querySelectorAll(`${icon} use`).length,
+          shapes: document.querySelectorAll(
+            `${icon} rect, ${icon} polygon, ${icon} ellipse`,
+          ).length,
+        };
+      });
 
       expect(counts.svgs, `${path} renders no icons at all`).toBeGreaterThan(0);
       expect(

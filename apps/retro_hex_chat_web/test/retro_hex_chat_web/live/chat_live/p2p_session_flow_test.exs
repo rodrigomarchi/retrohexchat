@@ -35,8 +35,8 @@ defmodule RetroHexChatWeb.ChatLive.P2PSessionFlowTest do
     a = register(unique_nick(prefix_a))
     b = register(unique_nick(prefix_b))
 
-    {:ok, view_a, _} = live(chat_conn(conn, a.nickname, pre_identified: true), "/chat")
-    {:ok, view_b, _} = live(chat_conn(conn, b.nickname, pre_identified: true), "/chat")
+    {:ok, view_a, _} = live(chat_conn(conn, a.nickname, pre_identified: true), "/")
+    {:ok, view_b, _} = live(chat_conn(conn, b.nickname, pre_identified: true), "/")
 
     %{a: a, b: b, view_a: view_a, view_b: view_b}
   end

@@ -17,7 +17,6 @@ msgid "1-16 characters"
 msgstr "1-16個字符"
 
 #: lib/retro_hex_chat_web/components/ui/connect/connect_form_panel.ex:391
-#: lib/retro_hex_chat_web/components/ui/shell/connect_status_bar.ex:55
 #, elixir-autogen, elixir-format
 msgid "Authentication"
 msgstr "認證"
@@ -40,19 +39,16 @@ msgstr "確認密碼"
 
 #: lib/retro_hex_chat_web/components/ui/connect/connect_form_panel.ex:352
 #: lib/retro_hex_chat_web/components/ui/connect/connect_form_panel.ex:445
-#: lib/retro_hex_chat_web/components/ui/connect/connect_screen.ex:115
-#: lib/retro_hex_chat_web/components/ui/connect/connect_screen.ex:120
 #, elixir-autogen, elixir-format
 msgid "Connect"
 msgstr "連線"
 
-#: lib/retro_hex_chat_web/live/app/connect_live.ex:36
+#: lib/retro_hex_chat_web/site/pages/connect.ex:44
 #, elixir-autogen, elixir-format
 msgid "Connect - RetroHexChat"
 msgstr "連接 - retroHexChat"
 
-#: lib/retro_hex_chat_web/components/ui/connect/connect_screen.ex:65
-#: lib/retro_hex_chat_web/live/landing_live/landing_helpers.ex:48
+#: lib/retro_hex_chat_web/site/pages/connect.ex:40
 #, elixir-autogen, elixir-format
 msgid "Connect to RetroHexChat"
 msgstr "連接到 retroHexChat"
@@ -67,7 +63,7 @@ msgstr "輸入您的暱稱..."
 msgid "Enter your password..."
 msgstr "輸入密碼..."
 
-#: lib/retro_hex_chat_web/live/connect_form.ex:182
+#: lib/retro_hex_chat_web/live/connect_form.ex:176
 #, elixir-autogen, elixir-format
 msgid "Incorrect password"
 msgstr "密碼錯誤"
@@ -82,12 +78,12 @@ msgstr "必須以字母開頭"
 msgid "Nickname"
 msgstr "暱稱"
 
-#: lib/retro_hex_chat_web/live/connect_form.ex:263
+#: lib/retro_hex_chat_web/live/connect_form.ex:256
 #, elixir-autogen, elixir-format
 msgid "Nickname cannot be empty"
 msgstr "暱稱不能爲空"
 
-#: lib/retro_hex_chat_web/live/connect_form.ex:272
+#: lib/retro_hex_chat_web/live/connect_form.ex:265
 #, elixir-autogen, elixir-format
 msgid "Nickname cannot contain spaces"
 msgstr "暱稱不能包含空格"
@@ -97,17 +93,17 @@ msgstr "暱稱不能包含空格"
 msgid "Nickname cleanup"
 msgstr "暱稱清理"
 
-#: lib/retro_hex_chat_web/live/connect_form.ex:260
+#: lib/retro_hex_chat_web/live/connect_form.ex:253
 #, elixir-autogen, elixir-format
 msgid "Nickname must be a string"
 msgstr "暱稱必須是字符串"
 
-#: lib/retro_hex_chat_web/live/connect_form.ex:266
+#: lib/retro_hex_chat_web/live/connect_form.ex:259
 #, elixir-autogen, elixir-format
 msgid "Nickname must be at most 16 characters"
 msgstr "暱稱必須是最多 16 個字符"
 
-#: lib/retro_hex_chat_web/live/connect_form.ex:269
+#: lib/retro_hex_chat_web/live/connect_form.ex:262
 #, elixir-autogen, elixir-format
 msgid "Nickname must start with a letter or special character"
 msgstr "暱稱必須從字母或特殊字符開始"
@@ -123,12 +119,12 @@ msgstr "不允許空格"
 msgid "Password"
 msgstr "密碼"
 
-#: lib/retro_hex_chat_web/live/connect_form.ex:199
+#: lib/retro_hex_chat_web/live/connect_form.ex:193
 #, elixir-autogen, elixir-format
 msgid "Password must be at least 5 characters"
 msgstr "密碼必須至少爲 5 個字符"
 
-#: lib/retro_hex_chat_web/live/connect_form.ex:209
+#: lib/retro_hex_chat_web/live/connect_form.ex:203
 #, elixir-autogen, elixir-format
 msgid "Passwords do not match"
 msgstr "密碼不匹配"
@@ -140,7 +136,6 @@ msgid "Register & Connect"
 msgstr "註冊和連接"
 
 #: lib/retro_hex_chat_web/components/ui/connect/connect_form_panel.ex:463
-#: lib/retro_hex_chat_web/components/ui/shell/connect_status_bar.ex:56
 #, elixir-autogen, elixir-format
 msgid "Registration"
 msgstr "註冊"
@@ -150,17 +145,17 @@ msgstr "註冊"
 msgid "Repeat your password..."
 msgstr "重複密碼..."
 
-#: lib/retro_hex_chat_web/live/app/connect_live.ex:66
+#: lib/retro_hex_chat_web/site/pages/connect.ex:98
 #, elixir-autogen, elixir-format
 msgid "Server banned"
 msgstr "服務器已禁用"
 
-#: lib/retro_hex_chat_web/live/app/connect_live.ex:65
+#: lib/retro_hex_chat_web/site/pages/connect.ex:97
 #, elixir-autogen, elixir-format
 msgid "Session ended"
 msgstr "會議結束"
 
-#: lib/retro_hex_chat_web/live/app/connect_live.ex:64
+#: lib/retro_hex_chat_web/site/pages/connect.ex:96
 #, elixir-autogen, elixir-format
 msgid "Session expired"
 msgstr "會話過期"
@@ -186,16 +181,9 @@ msgid "The nickname %{nickname} is registered. Please enter your password to con
 msgstr "暱稱%{nickname}已註冊. 請輸入密碼繼續 。"
 
 #: lib/retro_hex_chat_web/components/ui/connect/connect_form_panel.ex:295
-#: lib/retro_hex_chat_web/components/ui/shell/connect_status_bar.ex:57
 #, elixir-autogen, elixir-format
 msgid "User Information"
 msgstr "用戶信息"
-
-#: lib/retro_hex_chat_web/components/ui/shell/connect_status_bar.ex:30
-#: lib/retro_hex_chat_web/components/ui/shell/connect_status_bar.ex:35
-#, elixir-autogen, elixir-format
-msgid "Not connected"
-msgstr "未連線"
 
 #: lib/retro_hex_chat_web/components/ui/connect/connect_form_panel.ex:638
 #: lib/retro_hex_chat_web/components/ui/connect/connect_form_panel.ex:731
@@ -263,7 +251,7 @@ msgstr "時區"
 msgid "Touch"
 msgstr "觸摸"
 
-#: lib/retro_hex_chat_web/live/connect_form.ex:119
+#: lib/retro_hex_chat_web/live/connect_form.ex:113
 #, elixir-autogen, elixir-format
 msgid "Trusted login expired"
 msgstr "信任的登錄過期"

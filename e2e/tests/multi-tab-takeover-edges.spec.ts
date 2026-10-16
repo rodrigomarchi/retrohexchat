@@ -8,6 +8,7 @@
 import { expect, test } from "@playwright/test";
 import { ConnectPage, uniqueNickname } from "../pages/ConnectPage";
 import { ChatPage } from "../pages/ChatPage";
+import { CHAT_URL } from "../helpers/urls";
 
 test.describe("Two screens, unfinished work on one", () => {
   test("the second screen inherits no local state and disturbs none (AA4)", async ({
@@ -51,7 +52,7 @@ test.describe("Two screens, unfinished work on one", () => {
       // What one screen has half-finished is its own: the draft is still typed
       // and the dialog is still open, because the second screen no longer ends
       // the first.
-      await expect(pageA).toHaveURL(/\/chat(\?.*)?$/);
+      await expect(pageA).toHaveURL(CHAT_URL);
       await expect(chatA.chatInput).toHaveValue(draft);
       await expect(chatA.aliasDialog).toBeVisible();
 

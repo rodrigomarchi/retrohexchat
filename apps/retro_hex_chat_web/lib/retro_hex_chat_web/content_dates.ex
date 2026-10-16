@@ -21,7 +21,7 @@ defmodule RetroHexChatWeb.ContentDates do
   """
 
   @help_content_dir "apps/retro_hex_chat_web/lib/retro_hex_chat_web/controllers/help_content"
-  @landing_dir "apps/retro_hex_chat_web/lib/retro_hex_chat_web/live/landing_live"
+  @landing_dir "apps/retro_hex_chat_web/lib/retro_hex_chat_web/site/pages"
   @game_shots_dir "apps/retro_hex_chat_web/priv/static/images/games"
 
   # What a game's page is drawn from besides its template: the two catalogues
@@ -35,7 +35,7 @@ defmodule RetroHexChatWeb.ContentDates do
 
   # What every guide is drawn from besides its own template.
   @guide_sources [
-    "apps/retro_hex_chat_web/lib/retro_hex_chat_web/live/landing_live/guides.ex",
+    "apps/retro_hex_chat_web/lib/retro_hex_chat_web/site/pages/guides.ex",
     "apps/retro_hex_chat_web/lib/retro_hex_chat_web/components/ui/landing/irc_guides.ex"
   ]
 

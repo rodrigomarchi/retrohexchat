@@ -11,7 +11,8 @@ stable — `§19` still means this file.
 
 ## 19.1 What a surface is
 
-`/chat` mounts one LiveView: a Win98 desktop and its windows. The screens below
+The desktop (`/`, `/c/:channel` and every page of the site) mounts one LiveView,
+`DesktopLive`: a Win98 desktop and its windows. The screens below
 have an address of their own instead, and **none of them has a mount inside the
 chat**:
 
@@ -359,7 +360,7 @@ is not, so changing one means arguing with the reason rather than the line.
 
 ## 19.7 Traps that cost a day each
 
-- **A surface must never "go back" by navigating to `/chat`.** Mounting the
+- **A surface must never "go back" by navigating to the desktop (`/`, `/c/…`).** Mounting the
   chat announces a chat session, and a chat session announces a takeover — so
   leaving a surface by navigation ended the chat the person already had open in
   another tab and never asked to leave. Measured: cancelling the antechamber

@@ -17,7 +17,7 @@ defmodule RetroHexChatWeb.Live.SearchHighlightTest do
 
   describe "search_input triggers highlight push_event" do
     test "search_input pushes search_highlight event", %{conn: conn} do
-      {:ok, view, _html} = live(chat_conn(conn, "SrchHL1"), "/chat")
+      {:ok, view, _html} = live(chat_conn(conn, "SrchHL1"), "/")
       render_click(view, "toggle_search")
 
       render_change(view, "search_input", %{"query" => "hello"})
@@ -25,7 +25,7 @@ defmodule RetroHexChatWeb.Live.SearchHighlightTest do
     end
 
     test "empty search_input clears highlights", %{conn: conn} do
-      {:ok, view, _html} = live(chat_conn(conn, "SrchHL2"), "/chat")
+      {:ok, view, _html} = live(chat_conn(conn, "SrchHL2"), "/")
       render_click(view, "toggle_search")
       render_change(view, "search_input", %{"query" => "hello"})
 
@@ -36,7 +36,7 @@ defmodule RetroHexChatWeb.Live.SearchHighlightTest do
 
   describe "search_highlight_count updates assigns" do
     test "updates result count from JS hook", %{conn: conn} do
-      {:ok, view, _html} = live(chat_conn(conn, "SrchHC1"), "/chat")
+      {:ok, view, _html} = live(chat_conn(conn, "SrchHC1"), "/")
       render_click(view, "toggle_search")
 
       render_click(view, "search_highlight_count", %{"count" => 5})
@@ -44,7 +44,7 @@ defmodule RetroHexChatWeb.Live.SearchHighlightTest do
     end
 
     test "shows error when JS hook reports invalid regex", %{conn: conn} do
-      {:ok, view, _html} = live(chat_conn(conn, "SrchHC2"), "/chat")
+      {:ok, view, _html} = live(chat_conn(conn, "SrchHC2"), "/")
       render_click(view, "toggle_search")
 
       render_click(view, "search_highlight_count", %{
@@ -60,7 +60,7 @@ defmodule RetroHexChatWeb.Live.SearchHighlightTest do
 
   describe "search_next/search_prev navigation" do
     test "search_next wraps around", %{conn: conn} do
-      {:ok, view, _html} = live(chat_conn(conn, "SrchNW1"), "/chat")
+      {:ok, view, _html} = live(chat_conn(conn, "SrchNW1"), "/")
       render_click(view, "toggle_search")
       # Simulate JS hook reporting 3 matches
       render_click(view, "search_highlight_count", %{"count" => 3})
@@ -78,7 +78,7 @@ defmodule RetroHexChatWeb.Live.SearchHighlightTest do
     end
 
     test "search_prev wraps around", %{conn: conn} do
-      {:ok, view, _html} = live(chat_conn(conn, "SrchPW1"), "/chat")
+      {:ok, view, _html} = live(chat_conn(conn, "SrchPW1"), "/")
       render_click(view, "toggle_search")
       render_click(view, "search_highlight_count", %{"count" => 3})
 
@@ -93,7 +93,7 @@ defmodule RetroHexChatWeb.Live.SearchHighlightTest do
 
   describe "search_navigate arrow keys" do
     test "ArrowDown triggers search_next", %{conn: conn} do
-      {:ok, view, _html} = live(chat_conn(conn, "SrchAD1"), "/chat")
+      {:ok, view, _html} = live(chat_conn(conn, "SrchAD1"), "/")
       render_click(view, "toggle_search")
       render_click(view, "search_highlight_count", %{"count" => 3})
 
@@ -102,7 +102,7 @@ defmodule RetroHexChatWeb.Live.SearchHighlightTest do
     end
 
     test "ArrowUp triggers search_prev", %{conn: conn} do
-      {:ok, view, _html} = live(chat_conn(conn, "SrchAU1"), "/chat")
+      {:ok, view, _html} = live(chat_conn(conn, "SrchAU1"), "/")
       render_click(view, "toggle_search")
       render_click(view, "search_highlight_count", %{"count" => 3})
 
@@ -111,7 +111,7 @@ defmodule RetroHexChatWeb.Live.SearchHighlightTest do
     end
 
     test "other keys in search_navigate are no-op", %{conn: conn} do
-      {:ok, view, _html} = live(chat_conn(conn, "SrchAN1"), "/chat")
+      {:ok, view, _html} = live(chat_conn(conn, "SrchAN1"), "/")
       render_click(view, "toggle_search")
 
       render_click(view, "search_navigate", %{"key" => "a"})
@@ -121,7 +121,7 @@ defmodule RetroHexChatWeb.Live.SearchHighlightTest do
 
   describe "search_toggle_filter" do
     test "toggling case_sensitive updates assigns", %{conn: conn} do
-      {:ok, view, _html} = live(chat_conn(conn, "SrchTF1"), "/chat")
+      {:ok, view, _html} = live(chat_conn(conn, "SrchTF1"), "/")
       render_click(view, "toggle_search")
 
       render_click(view, "search_toggle_filter", %{"filter" => "case_sensitive"})
@@ -129,7 +129,7 @@ defmodule RetroHexChatWeb.Live.SearchHighlightTest do
     end
 
     test "toggling regex with invalid query shows error", %{conn: conn} do
-      {:ok, view, _html} = live(chat_conn(conn, "SrchTF2"), "/chat")
+      {:ok, view, _html} = live(chat_conn(conn, "SrchTF2"), "/")
       render_click(view, "toggle_search")
       render_change(view, "search_input", %{"query" => "[invalid"})
 
@@ -138,7 +138,7 @@ defmodule RetroHexChatWeb.Live.SearchHighlightTest do
     end
 
     test "toggling regex with valid query does not show error", %{conn: conn} do
-      {:ok, view, _html} = live(chat_conn(conn, "SrchTF3"), "/chat")
+      {:ok, view, _html} = live(chat_conn(conn, "SrchTF3"), "/")
       render_click(view, "toggle_search")
       render_change(view, "search_input", %{"query" => "error|warn"})
 
@@ -147,7 +147,7 @@ defmodule RetroHexChatWeb.Live.SearchHighlightTest do
     end
 
     test "toggling my_mentions updates assigns", %{conn: conn} do
-      {:ok, view, _html} = live(chat_conn(conn, "SrchTF4"), "/chat")
+      {:ok, view, _html} = live(chat_conn(conn, "SrchTF4"), "/")
       render_click(view, "toggle_search")
 
       render_click(view, "search_toggle_filter", %{"filter" => "my_mentions"})
@@ -157,7 +157,7 @@ defmodule RetroHexChatWeb.Live.SearchHighlightTest do
 
   describe "search_history toggle" do
     test "toggling history updates assigns", %{conn: conn} do
-      {:ok, view, _html} = live(chat_conn(conn, "SrchHi1"), "/chat")
+      {:ok, view, _html} = live(chat_conn(conn, "SrchHi1"), "/")
       render_click(view, "toggle_search")
 
       render_click(view, "search_toggle_filter", %{"filter" => "history"})
@@ -165,7 +165,7 @@ defmodule RetroHexChatWeb.Live.SearchHighlightTest do
     end
 
     test "history checkbox renders in search bar", %{conn: conn} do
-      {:ok, view, _html} = live(chat_conn(conn, "SrchHi2"), "/chat")
+      {:ok, view, _html} = live(chat_conn(conn, "SrchHi2"), "/")
       render_click(view, "toggle_search")
       html = render(view)
       assert html =~ "Search history"
@@ -183,7 +183,7 @@ defmodule RetroHexChatWeb.Live.SearchHighlightTest do
         })
       end
 
-      {:ok, view, _html} = live(chat_conn(conn, "SrchAsync1"), "/chat")
+      {:ok, view, _html} = live(chat_conn(conn, "SrchAsync1"), "/")
       render_click(view, "toggle_search")
       render_click(view, "search_toggle_filter", %{"filter" => "history"})
       render_change(view, "search_input", %{"query" => "zzqq"})
@@ -201,7 +201,7 @@ defmodule RetroHexChatWeb.Live.SearchHighlightTest do
         type: "message"
       })
 
-      {:ok, view, _html} = live(chat_conn(conn, "SrchAsync2"), "/chat")
+      {:ok, view, _html} = live(chat_conn(conn, "SrchAsync2"), "/")
       render_click(view, "toggle_search")
       render_click(view, "search_toggle_filter", %{"filter" => "history"})
 
@@ -216,7 +216,7 @@ defmodule RetroHexChatWeb.Live.SearchHighlightTest do
 
   describe "search_last_query persistence" do
     test "closing search saves query, reopening restores it", %{conn: conn} do
-      {:ok, view, _html} = live(chat_conn(conn, "SrchLQ1"), "/chat")
+      {:ok, view, _html} = live(chat_conn(conn, "SrchLQ1"), "/")
       render_click(view, "toggle_search")
       render_change(view, "search_input", %{"query" => "terraform"})
 
@@ -229,7 +229,7 @@ defmodule RetroHexChatWeb.Live.SearchHighlightTest do
     end
 
     test "Escape saves query before closing", %{conn: conn} do
-      {:ok, view, _html} = live(chat_conn(conn, "SrchLQ2"), "/chat")
+      {:ok, view, _html} = live(chat_conn(conn, "SrchLQ2"), "/")
       render_click(view, "toggle_search")
       render_change(view, "search_input", %{"query" => "saved"})
 

@@ -17,7 +17,7 @@ defmodule RetroHexChatWeb.NotifyListTest do
   end
 
   defp connect_user(conn, nick) do
-    {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
+    {:ok, view, _html} = live(chat_conn(conn, nick), "/")
     view
   end
 
@@ -250,7 +250,7 @@ defmodule RetroHexChatWeb.NotifyListTest do
       _ = :sys.get_state(buddy_view.pid)
 
       # Connect the identified user (pre_identified loads persisted data including notify list)
-      {:ok, view, _html} = live(chat_conn(conn, nick, pre_identified: true), "/chat")
+      {:ok, view, _html} = live(chat_conn(conn, nick, pre_identified: true), "/")
 
       # Check the notify list
       view |> render_click("toggle_notify_list")

@@ -1,8 +1,8 @@
 /**
  * @section PW - Public Pages, Landing, And Showcase
- * @flow PW1 [done] The landing loads the public bundle and enables desktop interactions
- * @flow PW2 [done] Mobile navigation works and the Start menu offers no route to /connect
- * @flow PW3 [done] The landing runs the real window manager over a taskbar of links
+ * @flow PW1 [done] The home loads the desktop's small first-paint bundle, its C:\Desktop section works, and its links move between pages without a page load
+ * @flow PW2 [done] On a phone the page's own menu rail opens its drawer on the first tap, even as the chat starts, and leads to another page
+ * @flow PW3 [done] The Start menu reaches every page as a window of the desktop, and closing a page hands the address back to the chat
  * @flow PW19 [done] The public pages declare an installable web app: a linked manifest whose icons and service worker are actually served
  *
  * These @flow lines are the source of truth for e2e/TEST_CATALOG.md.
@@ -39,24 +39,25 @@ function watchBrowserFailures(page: Page) {
 }
 
 test.describe("Landing public pages", () => {
-  test("loads public bundle and enables desktop interactions", async ({
+  test("loads the desktop bundle and moves between pages without a reload (PW1)", async ({
     page,
   }) => {
     const failures = watchBrowserFailures(page);
 
     await page.goto("/");
-    await expect(
-      page.locator('script[src*="/assets/js/public_pages"]'),
-    ).toHaveCount(1);
+    await expect(page.locator('script[src*="/assets/js/desktop"]')).toHaveCount(
+      1,
+    );
+    await expect(page.locator('script[src*="/assets/js/app.js"]')).toHaveCount(
+      0,
+    );
     await expect(page.locator("#hero-heading")).toBeVisible();
+    await page.evaluate(() => {
+      (window as Window & { __sameDocument?: boolean }).__sameDocument = true;
+    });
 
-    // The desktop icons live in the C:\Desktop window, which the cascade puts
-    // behind the hero — bring it forward the way anyone would.
-    await page
-      .locator("#landing-taskbar")
-      .locator('[data-window-taskbar="c-desktop"]')
-      .click();
-
+    // The C:\Desktop section's README opens its popup in place.
+    await page.getByTestId("document-contents-c-desktop").click();
     await expect(page.locator("#readme-popup")).toBeHidden();
     await page.locator('[data-show-target="#readme-popup"]').click();
     await expect(page.locator("#readme-popup")).toBeVisible();
@@ -67,27 +68,27 @@ test.describe("Landing public pages", () => {
 
     await page.keyboard.press("Escape");
     await expect(page.locator("#readme-popup")).toBeHidden();
-    await expect(page.locator("#readme-popup")).toHaveAttribute(
-      "aria-hidden",
-      "true",
-    );
 
     await page
-      .locator('a[href="/features"]')
+      .locator('a[href="/features"]:visible')
       .filter({ hasText: "My Chats" })
       .first()
       .click();
     await expect(page).toHaveURL(/\/features$/);
     await expect(page.locator("#features-heading")).toBeVisible();
+    expect(
+      await page.evaluate(
+        () => (window as Window & { __sameDocument?: boolean }).__sameDocument,
+      ),
+    ).toBe(true);
 
     expect(failures).toEqual([]);
   });
 
-  // Navigation on a phone runs through the same icon rail the chat uses — the
-  // bespoke hamburger and its #mobile-nav drawer are gone, and with them the
-  // last piece of chrome that was the landing's alone. Chrome parity across the
-  // shells is shell-chrome-parity.spec.ts; this covers landing navigation.
-  test("mobile navigation opens and links to app connect flow", async ({
+  // Navigation on a phone runs through the same icon rail the chat uses. The
+  // first tap is also what starts the chat, and the menu it opens has to stay
+  // open through the re-render that follows.
+  test("the phone's menu rail opens on the first tap and leads to another page (PW2)", async ({
     page,
   }) => {
     const failures = watchBrowserFailures(page);
@@ -95,122 +96,65 @@ test.describe("Landing public pages", () => {
     await page.setViewportSize({ width: 390, height: 844 });
     await page.goto("/");
 
-    const navigate = page.getByTestId("app-mobile-menu-rail-navigate");
-    const drawer = page.getByTestId("app-mobile-menu-section-navigate");
-
+    const site = page.getByTestId("document-window-site");
+    const navigate = site.getByTestId("app-mobile-menu-rail-navigate");
+    const drawer = site.getByTestId("app-mobile-menu-section-navigate");
     await shot(page, "landing-mobile");
 
     await expect(drawer).toBeHidden();
     await navigate.click();
+    await page.waitForFunction(
+      () => document.documentElement.dataset.liveBoot === "ready",
+      undefined,
+      { timeout: 15_000 },
+    );
     await expect(navigate).toHaveAttribute("aria-expanded", "true");
     await expect(drawer).toBeVisible();
+    await shot(page, "landing-mobile-drawer");
 
     await drawer.locator('a[href="/features"]').click();
     await expect(page).toHaveURL(/\/features$/);
-
-    // The stacked shell shows one window at a time, and Connect is the front
-    // one on every public page — so the page's own heading is in the document
-    // (crawlers and the desktop shell see it) while the phone opens on the way
-    // in. Start ▸ Windows is how a reader gets to the page's own sections.
-    await expect(page.locator("#features-heading")).toHaveCount(1);
-    await expect(
-      page.getByTestId("landing-connect-window").locator("#nickname"),
-    ).toBeVisible();
-
-    // The way into the app is the window on the page itself. /connect is no
-    // longer somewhere a reader is sent: it is only where the app puts a
-    // session that ended. So the Start menu offers no route to it, and its
-    // "Open the app" row is present but inert — the menu reads the same on
-    // every screen, and an entry with nothing to do says so instead of
-    // vanishing.
-    await page.goto("/");
-    await page.locator("[data-window-start]").click();
-    // Stacked shell: a group drills down on a deliberate tap. Hover is a
-    // pointer affordance and is deliberately inert here, so a finger dragging
-    // across the rows cannot swap levels under itself.
-    await page
-      .locator("#landing-start-menu [data-start-submenu-trigger]")
-      .filter({ hasText: "Navigate" })
-      .click();
-
-    const openTheApp = page.getByTestId("start-menu-item-open-the-app");
-    await expect(openTheApp).toBeVisible();
-    await expect(openTheApp).toHaveAttribute("aria-disabled", "true");
-    await expect(
-      page.locator('#landing-start-menu a[href="/connect"]'),
-    ).toHaveCount(0);
+    await expect(page.locator("#features-heading")).toBeVisible();
 
     expect(failures).toEqual([]);
   });
-  // The landing taskbar is the app's own, driven by the window manager without
-  // LiveView. Its buttons point at other documents, so the manager recognises
-  // them as navigation and stays out of the way.
-  test("runs the real window manager over a taskbar of links", async ({
+
+  test("the Start menu reaches every page, and closing one goes back to the chat (PW3)", async ({
     page,
   }) => {
     const failures = watchBrowserFailures(page);
 
-    await page.goto("/");
+    await page.goto("/features");
     await expect(page.locator("[data-window-manager]")).toHaveCount(1);
 
-    const startMenu = page.locator("#landing-start-menu");
+    const startMenu = page.locator("#chat-start-menu");
     await expect(startMenu).toBeHidden();
     await page.locator("[data-window-start]").click();
     await expect(startMenu).toBeVisible();
     await shot(startMenu, "start-menu-root");
 
-    // The same menu the chat carries, with the app's own entries grayed out —
-    // a visitor can read what RetroHexChat does before connecting to it.
-    await startMenu
-      .locator("[data-start-submenu-trigger]")
-      .filter({ hasText: "Tools" })
-      .hover();
-    const addressBook = startMenu.locator(
-      '[data-testid="start-menu-item-address-book"]',
-    );
-    await expect(addressBook).toBeVisible();
-    await expect(addressBook).toBeDisabled();
-    // Framed on the page, not the menu: the flyout is `left-full` and escapes
-    // the menu's own box, so an element-framed shot would crop it away.
-    await shot(page, "start-menu-tools-disabled");
-
-    await page.keyboard.press("Escape");
-    await expect(startMenu).toBeHidden();
-
-    // The taskbar now stands for this page's windows.
-    const taskbar = page.locator("#landing-taskbar");
-    const hero = page.locator('[data-window-id="retro-hex-chat-welcome"]');
-    await expect(hero).toBeVisible();
-    await shot(page, "landing-desktop");
-
-    await hero.locator('[data-window-control="close"]').click();
-    await expect(hero).toBeHidden();
-
-    // Closing takes the taskbar button with it, exactly as Win98 does — so the
-    // Start menu is where a closed window has to come back from.
-    await expect(
-      taskbar.locator('[data-window-taskbar="retro-hex-chat-welcome"]'),
-    ).toBeHidden();
-
-    await page.locator("[data-window-start]").click();
-    await startMenu
-      .locator("[data-start-submenu-trigger]")
-      .filter({ hasText: "Windows" })
-      .hover();
-    await startMenu
-      .locator('[data-window-open="retro-hex-chat-welcome"]')
-      .click();
-    await expect(hero).toBeVisible();
-
-    // Reaching another page is the Start menu's job.
-    await page.locator("[data-window-start]").click();
     await startMenu
       .locator("[data-start-submenu-trigger]")
       .filter({ hasText: "Navigate" })
       .hover();
-    await startMenu.locator('a[href="/faq"]').click();
+    // A page of the site, reached as a window of the same desktop.
+    const faq = startMenu.locator('a[href="/faq"]');
+    await expect(faq).toHaveAttribute("data-phx-link", "patch");
+    await faq.click();
     await expect(page).toHaveURL(/\/faq$/);
     await expect(page.locator("#faq-heading")).toBeVisible();
+
+    // Closing the page window hands the address to the chat behind it.
+    const site = page.getByTestId("document-window-site");
+    await page.waitForFunction(
+      () => document.documentElement.dataset.liveBoot === "ready",
+      undefined,
+      { timeout: 15_000 },
+    );
+    await site.locator('[data-window-control="close"]').first().click();
+    await expect(site).toHaveCount(0);
+    await expect(page).toHaveURL(/\/c\/lobby$/);
+    await shot(page, "page-closed-chat-in-front");
 
     expect(failures).toEqual([]);
   });
@@ -230,7 +174,7 @@ test.describe("Landing public pages", () => {
     const manifestResponse = await page.request.get(href as string);
     expect(manifestResponse.status()).toBe(200);
     const manifest = await manifestResponse.json();
-    expect(manifest.start_url).toBe("/chat");
+    expect(manifest.start_url).toBe("/");
     expect(manifest.display).toBe("standalone");
 
     // Every icon the manifest names has to exist, or the install prompt is
@@ -244,7 +188,7 @@ test.describe("Landing public pages", () => {
     expect(worker.status()).toBe(200);
 
     await expect(
-      page.locator('[data-window-taskbar="install-app"]'),
+      page.getByTestId("document-contents-install-app"),
     ).toBeVisible();
     await shot(page, "landing-installable");
 

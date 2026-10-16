@@ -28,6 +28,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.ChatShell do
 
   alias RetroHexChat.Accounts.Session
   alias RetroHexChatWeb.ChatLive.ChatContext
+  alias RetroHexChatWeb.Site.Address
 
   import RetroHexChatWeb.Components.UI.MenuBarApp
   import RetroHexChatWeb.Components.UI.StatusBarApp
@@ -50,7 +51,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.ChatShell do
       phx-hook="MenuBarHook"
       connected={true}
       is_admin={@is_admin}
-      language_return_to="/chat"
+      language_return_to={Address.chat_address(assigns)}
       mobile_viewport={@mobile_viewport}
       on_action="toolbar_action"
     />

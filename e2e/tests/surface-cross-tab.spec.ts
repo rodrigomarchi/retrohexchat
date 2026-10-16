@@ -54,7 +54,7 @@ test("a surface goes back to the chat tab instead of opening a second one (K5)",
     // The server already knows the chat is open, so the way back is the tab
     // that exists rather than a fresh one.
     const back = playTab.getByTestId("play-back-to-chat");
-    await expect(back).toHaveAttribute("data-surface-path", "/chat");
+    await expect(back).toHaveAttribute("data-surface-path", "/");
     await shot(playTab, "surface-back-to-existing-chat");
 
     // Clicking it asks that tab to come forward; it answers, so no third page
@@ -101,7 +101,7 @@ test("a surface goes back to the chat tab instead of opening a second one (K5)",
     await chatTab.close();
     await expect(playTab.getByTestId("play-back-to-chat")).not.toHaveAttribute(
       "data-surface-path",
-      "/chat",
+      "/",
       { timeout: 15_000 },
     );
   } finally {

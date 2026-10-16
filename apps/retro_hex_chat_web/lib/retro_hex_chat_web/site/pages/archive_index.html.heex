@@ -1,0 +1,29 @@
+<section class="m-4" aria-labelledby="archive-heading">
+  <.document_section id="archive-index" title={@channel}>
+    <:icon><Icons.icon_channels class="w-4 h-4" /></:icon>
+
+    <h1 id="archive-heading" class="text-sm font-bold mb-2">
+      {dgettext("landing", "%{channel} archive", channel: @channel)}
+    </h1>
+    <p class="text-sm mb-4">
+      {dgettext(
+        "landing",
+        "Everything said here since the channel opened its archive, one page per day. Nothing from before it was opened is published."
+      )}
+    </p>
+
+    <ul class="space-y-1" data-testid="archive-days">
+      <li :for={day <- @days} class="text-sm">
+        <.link patch={~p"/archive/#{@slug}/#{day}"} class="underline">
+          {day}
+        </.link>
+      </li>
+    </ul>
+
+    <p class="text-sm mt-4">
+      <.link patch={~p"/join/#{@slug}"} class="underline">
+        {dgettext("landing", "Join %{channel}", channel: @channel)}
+      </.link>
+    </p>
+  </.document_section>
+</section>

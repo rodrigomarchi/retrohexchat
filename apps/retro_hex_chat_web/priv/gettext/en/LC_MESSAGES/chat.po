@@ -41,52 +41,52 @@ msgstr "  %{position}: %{status} %{trigger} %{channel} → %{command}"
 msgid "  /%{name} → %{expansion}"
 msgstr "  /%{name} → %{expansion}"
 
-#: lib/retro_hex_chat_web/live/app/chat_live.ex:1078
+#: lib/retro_hex_chat_web/live/desktop_live.ex:1131
 #, elixir-autogen
 msgid "  /help            — View full help"
 msgstr "  /help            — View full help"
 
-#: lib/retro_hex_chat_web/live/app/chat_live.ex:1079
+#: lib/retro_hex_chat_web/live/desktop_live.ex:1132
 #, elixir-autogen
 msgid "  /help commands   — List all commands"
 msgstr "  /help commands   — List all commands"
 
-#: lib/retro_hex_chat_web/live/app/chat_live.ex:1075
+#: lib/retro_hex_chat_web/live/desktop_live.ex:1128
 #, elixir-autogen
 msgid "  /join #channel   — Join a channel"
 msgstr "  /join #channel   — Join a channel"
 
-#: lib/retro_hex_chat_web/live/app/chat_live.ex:1076
+#: lib/retro_hex_chat_web/live/desktop_live.ex:1129
 #, elixir-autogen
 msgid "  /msg nick text   — Send a private message"
 msgstr "  /msg nick text   — Send a private message"
 
-#: lib/retro_hex_chat_web/live/app/chat_live.ex:1077
+#: lib/retro_hex_chat_web/live/desktop_live.ex:1130
 #, elixir-autogen
 msgid "  /nick new_nick   — Change your nickname"
 msgstr "  /nick new_nick   — Change your nickname"
 
-#: lib/retro_hex_chat_web/live/app/chat_live.ex:1145
+#: lib/retro_hex_chat_web/live/desktop_live.ex:1198
 #, elixir-autogen
 msgid "  /ns drop <password>       — Permanently unregister your nickname"
 msgstr "  /ns drop <password>       — Permanently unregister your nickname"
 
-#: lib/retro_hex_chat_web/live/app/chat_live.ex:1144
+#: lib/retro_hex_chat_web/live/desktop_live.ex:1197
 #, elixir-autogen
 msgid "  /ns ghost <nick> <pass>   — Disconnect a ghost session"
 msgstr "  /ns ghost <nick> <pass>   — Disconnect a ghost session"
 
-#: lib/retro_hex_chat_web/live/app/chat_live.ex:1142
+#: lib/retro_hex_chat_web/live/desktop_live.ex:1195
 #, elixir-autogen
 msgid "  /ns identify <password>   — Identify (log in) for this session"
 msgstr "  /ns identify <password>   — Identify (log in) for this session"
 
-#: lib/retro_hex_chat_web/live/app/chat_live.ex:1143
+#: lib/retro_hex_chat_web/live/desktop_live.ex:1196
 #, elixir-autogen
 msgid "  /ns info [nickname]       — Look up registration info"
 msgstr "  /ns info [nickname]       — Look up registration info"
 
-#: lib/retro_hex_chat_web/live/app/chat_live.ex:1141
+#: lib/retro_hex_chat_web/live/desktop_live.ex:1194
 #, elixir-autogen
 msgid "  /ns register <password>   — Register your current nickname"
 msgstr "  /ns register <password>   — Register your current nickname"
@@ -101,12 +101,12 @@ msgstr "  Registered: no"
 msgid "  Registered: yes (%{status})"
 msgstr "  Registered: yes (%{status})"
 
-#: lib/retro_hex_chat_web/live/app/chat_live.ex:1121
+#: lib/retro_hex_chat_web/live/desktop_live.ex:1174
 #, elixir-autogen
 msgid "  • If a founder's nick expires, the next ranked user is promoted"
 msgstr "  • If a founder's nick expires, the next ranked user is promoted"
 
-#: lib/retro_hex_chat_web/live/app/chat_live.ex:1155
+#: lib/retro_hex_chat_web/live/desktop_live.ex:1208
 #, elixir-autogen
 msgid "  • Switching to a registered nick gives you 60s to identify"
 msgstr "  • Switching to a registered nick gives you 60s to identify"
@@ -564,8 +564,8 @@ msgstr "* Timer '%{name}' stopped"
 msgid "* Timer '%{name}' target window is no longer available"
 msgstr "* Timer '%{name}' target window is no longer available"
 
-#: lib/retro_hex_chat_web/live/chat_live/helpers/channel.ex:368
-#: lib/retro_hex_chat_web/live/chat_live/helpers/channel.ex:372
+#: lib/retro_hex_chat_web/live/chat_live/helpers/channel.ex:370
+#: lib/retro_hex_chat_web/live/chat_live/helpers/channel.ex:374
 #, elixir-autogen, elixir-format
 msgid "* User '%{target}' not found"
 msgstr "* User '%{target}' not found"
@@ -595,12 +595,12 @@ msgstr "* Your notify list buddy %{old_nick} is now known as %{new_nick}"
 msgid "/join #channel to get started"
 msgstr "/join #channel to get started"
 
-#: lib/retro_hex_chat_web/live/app/chat_live.ex:1072
+#: lib/retro_hex_chat_web/live/desktop_live.ex:1125
 #, elixir-autogen
 msgid "A real-time chat platform with a retro look and feel."
 msgstr "A real-time chat platform with a retro look and feel."
 
-#: lib/retro_hex_chat_web/live/app/chat_live.ex:1115
+#: lib/retro_hex_chat_web/live/desktop_live.ex:1168
 #, elixir-autogen
 msgid "Access hierarchy: Owner > SOP > AOP > VOP"
 msgstr "Access hierarchy: Owner > SOP > AOP > VOP"
@@ -717,7 +717,7 @@ msgstr ""
 #: lib/retro_hex_chat_web/live/chat_live/components/hover_card.ex:120
 #: lib/retro_hex_chat_web/live/chat_live/helpers/whois.ex:155
 #: lib/retro_hex_chat_web/live/chat_live/hover_events.ex:134
-#: lib/retro_hex_chat_web/live/chat_live/window_registry.ex:310
+#: lib/retro_hex_chat_web/live/chat_live/window_registry.ex:306
 #, elixir-autogen, elixir-format
 msgid "Away"
 msgstr "Away"
@@ -834,7 +834,7 @@ msgstr "Cannot update highlight: %{reason}"
 msgid "Case sensitive"
 msgstr "Case sensitive"
 
-#: lib/retro_hex_chat_web/live/app/chat_live.ex:1105
+#: lib/retro_hex_chat_web/live/desktop_live.ex:1158
 #, elixir-autogen
 msgid "ChanServ manages channel registration and access control."
 msgstr "ChanServ manages channel registration and access control."
@@ -892,7 +892,7 @@ msgstr "Channel ownership transferred to %{target}."
 #: lib/retro_hex_chat_web/components/ui/chat/hover_card.ex:186
 #: lib/retro_hex_chat_web/live/chat_live/helpers/whois.ex:133
 #: lib/retro_hex_chat_web/live/chat_live/helpers/whois.ex:194
-#: lib/retro_hex_chat_web/live/chat_live/window_registry.ex:338
+#: lib/retro_hex_chat_web/live/chat_live/window_registry.ex:334
 #, elixir-autogen, elixir-format
 msgid "Channels"
 msgstr "Channels"
@@ -981,7 +981,7 @@ msgstr "Connection Lost"
 msgid "Connection failed"
 msgstr "Connection failed"
 
-#: lib/retro_hex_chat_web/live/chat_live/helpers/channel.ex:353
+#: lib/retro_hex_chat_web/live/chat_live/helpers/channel.ex:355
 #: lib/retro_hex_chat_web/live/chat_live/pubsub_handlers/membership.ex:452
 #, elixir-autogen, elixir-format
 msgid "Connection lost"
@@ -1368,10 +1368,10 @@ msgstr "Lang"
 msgid "Leave Channel"
 msgstr "Leave Channel"
 
-#: lib/retro_hex_chat_web/live/app/chat_live.ex:308
 #: lib/retro_hex_chat_web/live/chat_live/command_dispatch.ex:479
 #: lib/retro_hex_chat_web/live/chat_live/helpers/session.ex:594
 #: lib/retro_hex_chat_web/live/chat_live/menu_toolbar_events.ex:90
+#: lib/retro_hex_chat_web/live/desktop_live.ex:361
 #, elixir-autogen, elixir-format
 msgid "Leaving"
 msgstr "Leaving"
@@ -1483,7 +1483,7 @@ msgstr "Nick color entry not found"
 msgid "Nick color list is full (max 50)"
 msgstr "Nick color list is full (max 50)"
 
-#: lib/retro_hex_chat_web/live/app/chat_live.ex:1135
+#: lib/retro_hex_chat_web/live/desktop_live.ex:1188
 #, elixir-autogen
 msgid "NickServ protects your nickname with a password so nobody else can use it."
 msgstr ""
@@ -1568,7 +1568,7 @@ msgstr "Objects"
 msgid "Online"
 msgstr "Online"
 
-#: lib/retro_hex_chat_web/live/app/chat_live.ex:1082
+#: lib/retro_hex_chat_web/live/desktop_live.ex:1135
 #, elixir-autogen
 msgid "Open /chat/help in a new tab."
 msgstr "Open /chat/help in a new tab."
@@ -1653,8 +1653,8 @@ msgstr "Purple"
 msgid "Query (PM)"
 msgstr "Query (PM)"
 
-#: lib/retro_hex_chat_web/live/app/chat_live.ex:1108
-#: lib/retro_hex_chat_web/live/app/chat_live.ex:1140
+#: lib/retro_hex_chat_web/live/desktop_live.ex:1161
+#: lib/retro_hex_chat_web/live/desktop_live.ex:1193
 #, elixir-autogen
 msgid "Quick start:"
 msgstr "Quick start:"
@@ -1681,7 +1681,7 @@ msgstr "Red"
 msgid "Regex"
 msgstr "Regex"
 
-#: lib/retro_hex_chat_web/live/app/chat_live.ex:1106
+#: lib/retro_hex_chat_web/live/desktop_live.ex:1159
 #, elixir-autogen
 msgid "Register your channel to protect it when no operators are online."
 msgstr "Register your channel to protect it when no operators are online."
@@ -1735,8 +1735,8 @@ msgstr "Replying to %{author}"
 msgid "Reset (Ctrl+Shift+X)"
 msgstr "Reset (Ctrl+Shift+X)"
 
-#: lib/retro_hex_chat_web/live/app/chat_live.ex:1068
-#: lib/retro_hex_chat_web/live/app/chat_live.html.heex:1169
+#: lib/retro_hex_chat_web/live/desktop_live.ex:1121
+#: lib/retro_hex_chat_web/live/desktop_live.html.heex:341
 #, elixir-autogen
 msgid "RetroHexChat"
 msgstr "RetroHexChat"
@@ -1751,8 +1751,8 @@ msgstr "Reverse (Ctrl+Shift+V)"
 msgid "Rule not found"
 msgstr "Rule not found"
 
-#: lib/retro_hex_chat_web/live/app/chat_live.ex:1117
-#: lib/retro_hex_chat_web/live/app/chat_live.ex:1147
+#: lib/retro_hex_chat_web/live/desktop_live.ex:1170
+#: lib/retro_hex_chat_web/live/desktop_live.ex:1200
 #, elixir-autogen
 msgid "Rules:"
 msgstr "Rules:"
@@ -1858,12 +1858,12 @@ msgstr "Status"
 msgid "Symbols"
 msgstr "Symbols"
 
-#: lib/retro_hex_chat_web/components/ui/chat/chat_taskbar.ex:220
+#: lib/retro_hex_chat_web/components/ui/chat/chat_taskbar.ex:242
 #: lib/retro_hex_chat_web/components/ui/chat/message_row.ex:76
 #: lib/retro_hex_chat_web/live/chat_live/components/status_viewport.ex:104
 #: lib/retro_hex_chat_web/live/chat_live/helpers/messages.ex:91
 #: lib/retro_hex_chat_web/live/chat_live/helpers/messages.ex:103
-#: lib/retro_hex_chat_web/live/chat_live/window_registry.ex:397
+#: lib/retro_hex_chat_web/live/chat_live/window_registry.ex:393
 #, elixir-autogen, elixir-format
 msgid "System"
 msgstr "System"
@@ -1904,7 +1904,7 @@ msgstr "This invitation has expired"
 msgid "Timer '%{name}' not found"
 msgstr "Timer '%{name}' not found"
 
-#: lib/retro_hex_chat_web/live/app/chat_live.ex:1081
+#: lib/retro_hex_chat_web/live/desktop_live.ex:1134
 #, elixir-autogen
 msgid "Tip: Go to Help > Help Topics for the full documentation."
 msgstr "Tip: Go to Help > Help Topics for the full documentation."
@@ -1929,12 +1929,12 @@ msgstr "Topic set: %{topic}"
 msgid "Travel & Places"
 msgstr "Travel & Places"
 
-#: lib/retro_hex_chat_web/live/app/chat_live.ex:1123
+#: lib/retro_hex_chat_web/live/desktop_live.ex:1176
 #, elixir-autogen
 msgid "Type /help chanserv or /help channel-permissions for full details."
 msgstr "Type /help chanserv or /help channel-permissions for full details."
 
-#: lib/retro_hex_chat_web/live/app/chat_live.ex:1157
+#: lib/retro_hex_chat_web/live/desktop_live.ex:1210
 #, elixir-autogen
 msgid "Type /help nickserv for full details."
 msgstr "Type /help nickserv for full details."
@@ -2003,7 +2003,7 @@ msgstr "Unmute PM"
 msgid "Updated note for %{nickname}"
 msgstr "Updated note for %{nickname}"
 
-#: lib/retro_hex_chat_web/live/app/chat_live.ex:1074
+#: lib/retro_hex_chat_web/live/desktop_live.ex:1127
 #, elixir-autogen
 msgid "Useful commands:"
 msgstr "Useful commands:"
@@ -2049,7 +2049,7 @@ msgstr "Welcome message for %{channel} has been set."
 msgid "Welcome message updated."
 msgstr "Welcome message updated."
 
-#: lib/retro_hex_chat_web/live/app/chat_live.ex:1071
+#: lib/retro_hex_chat_web/live/desktop_live.ex:1124
 #, elixir-autogen
 msgid "Welcome to %{server_name}!"
 msgstr "Welcome to %{server_name}!"
@@ -2235,7 +2235,7 @@ msgstr "[BotService] Command '%{trigger}' removed."
 msgid "[BotService] Failed to create bot '%{name}': %{message}"
 msgstr "[BotService] Failed to create bot '%{name}': %{message}"
 
-#: lib/retro_hex_chat_web/live/app/chat_live.ex:1104
+#: lib/retro_hex_chat_web/live/desktop_live.ex:1157
 #, elixir-autogen
 msgid "[ChanServ] Channel Services Online"
 msgstr "[ChanServ] Channel Services Online"
@@ -2245,7 +2245,7 @@ msgstr "[ChanServ] Channel Services Online"
 msgid "[NickServ] %{reason}. You are now %{nickname}"
 msgstr "[NickServ] %{reason}. You are now %{nickname}"
 
-#: lib/retro_hex_chat_web/live/app/chat_live.ex:1134
+#: lib/retro_hex_chat_web/live/desktop_live.ex:1187
 #, elixir-autogen
 msgid "[NickServ] Nickname Services Online"
 msgstr "[NickServ] Nickname Services Online"
@@ -2262,7 +2262,7 @@ msgstr ""
 msgid "[Wallops] %{sender}: %{content}"
 msgstr "[Wallops] %{sender}: %{content}"
 
-#: lib/retro_hex_chat_web/live/chat_live/helpers/channel.ex:321
+#: lib/retro_hex_chat_web/live/chat_live/helpers/channel.ex:323
 #, elixir-autogen, elixir-format
 msgid "[Welcome] %{message}"
 msgstr "[Welcome] %{message}"
@@ -2390,8 +2390,8 @@ msgstr "* Missing invite channel"
 msgid "* Missing invite target"
 msgstr "* Missing invite target"
 
-#: lib/retro_hex_chat_web/components/ui/chat/chat_taskbar.ex:221
-#: lib/retro_hex_chat_web/live/chat_live/window_registry.ex:298
+#: lib/retro_hex_chat_web/components/ui/chat/chat_taskbar.ex:243
+#: lib/retro_hex_chat_web/live/chat_live/window_registry.ex:294
 #, elixir-autogen, elixir-format
 msgid "Account"
 msgstr "Account"
@@ -2401,7 +2401,7 @@ msgstr "Account"
 msgid "Alias Editor"
 msgstr "Alias Editor"
 
-#: lib/retro_hex_chat_web/live/chat_live/window_registry.ex:323
+#: lib/retro_hex_chat_web/live/chat_live/window_registry.ex:319
 #, elixir-autogen, elixir-format
 msgid "Arcade"
 msgstr "Arcade"
@@ -2421,7 +2421,7 @@ msgstr "Bio"
 msgid "Bio is limited to 200 characters; extra text was not kept."
 msgstr "Bio is limited to 200 characters; extra text was not kept."
 
-#: lib/retro_hex_chat_web/live/chat_live/window_registry.ex:380
+#: lib/retro_hex_chat_web/live/chat_live/window_registry.ex:376
 #, elixir-autogen, elixir-format
 msgid "Bot Management"
 msgstr "Bot Management"
@@ -2437,7 +2437,7 @@ msgstr "Cancel notice"
 msgid "Channel Central"
 msgstr "Channel Central"
 
-#: lib/retro_hex_chat_web/live/app/chat_live.html.heex:723
+#: lib/retro_hex_chat_web/live/desktop_live.html.heex:753
 #, elixir-autogen, elixir-format
 msgid "Channel Central: %{channel}"
 msgstr "Channel Central: %{channel}"
@@ -2600,7 +2600,7 @@ msgid "Loading %{channel}..."
 msgstr "Loading %{channel}..."
 
 #: lib/retro_hex_chat_web/live/chat_live/components/status_viewport.ex:103
-#: lib/retro_hex_chat_web/live/chat_live/window_registry.ex:353
+#: lib/retro_hex_chat_web/live/chat_live/window_registry.ex:349
 #, elixir-autogen, elixir-format
 msgid "MOTD"
 msgstr "MOTD"
@@ -2682,7 +2682,7 @@ msgstr "Only channel operators can register this channel."
 msgid "Only the founder can drop a channel."
 msgstr "Only the founder can drop a channel."
 
-#: lib/retro_hex_chat_web/live/app/chat_live.html.heex:1170
+#: lib/retro_hex_chat_web/live/desktop_live.html.heex:342
 #, elixir-autogen, elixir-format
 msgid "Opening chat..."
 msgstr "Opening chat..."
@@ -3179,32 +3179,32 @@ msgstr "Start or stop screen sharing in the focused P2P Session Console"
 msgid "Admin tools are restricted to server administrators."
 msgstr "Admin tools are restricted to server administrators."
 
-#: lib/retro_hex_chat_web/live/chat_live/window_registry.ex:348
+#: lib/retro_hex_chat_web/live/chat_live/window_registry.ex:344
 #, elixir-autogen, elixir-format
 msgid "Audit Log"
 msgstr "Audit Log"
 
-#: lib/retro_hex_chat_web/live/chat_live/window_registry.ex:363
+#: lib/retro_hex_chat_web/live/chat_live/window_registry.ex:359
 #, elixir-autogen, elixir-format
 msgid "Broadcast"
 msgstr "Broadcast"
 
-#: lib/retro_hex_chat_web/live/chat_live/window_registry.ex:373
+#: lib/retro_hex_chat_web/live/chat_live/window_registry.ex:369
 #, elixir-autogen, elixir-format
 msgid "Console"
 msgstr "Console"
 
-#: lib/retro_hex_chat_web/live/chat_live/window_registry.ex:368
+#: lib/retro_hex_chat_web/live/chat_live/window_registry.ex:364
 #, elixir-autogen, elixir-format
 msgid "Danger Zone"
 msgstr "Danger Zone"
 
-#: lib/retro_hex_chat_web/live/chat_live/window_registry.ex:343
+#: lib/retro_hex_chat_web/live/chat_live/window_registry.ex:339
 #, elixir-autogen, elixir-format
 msgid "Server Settings"
 msgstr "Server Settings"
 
-#: lib/retro_hex_chat_web/live/chat_live/window_registry.ex:358
+#: lib/retro_hex_chat_web/live/chat_live/window_registry.ex:354
 #, elixir-autogen, elixir-format
 msgid "TURN"
 msgstr "TURN"
@@ -3213,7 +3213,7 @@ msgstr "TURN"
 #: lib/retro_hex_chat_web/components/ui/chat/nicklist.ex:77
 #: lib/retro_hex_chat_web/components/ui/chat/nicklist.ex:267
 #: lib/retro_hex_chat_web/live/chat_live/components/nicklist.ex:392
-#: lib/retro_hex_chat_web/live/chat_live/window_registry.ex:333
+#: lib/retro_hex_chat_web/live/chat_live/window_registry.ex:329
 #, elixir-autogen, elixir-format
 msgid "Users"
 msgstr "Users"
@@ -3243,12 +3243,12 @@ msgstr "P2P request from %{from} - join it from the PM header."
 msgid "Use the P2P control in this private message."
 msgstr "Use the P2P control in this private message."
 
-#: lib/retro_hex_chat_web/live/chat_live/window_registry.ex:306
+#: lib/retro_hex_chat_web/live/chat_live/window_registry.ex:302
 #, elixir-autogen, elixir-format
 msgid "Profile"
 msgstr "Profile"
 
-#: lib/retro_hex_chat_web/live/chat_live/window_registry.ex:314
+#: lib/retro_hex_chat_web/live/chat_live/window_registry.ex:310
 #, elixir-autogen, elixir-format
 msgid "User Modes"
 msgstr "User Modes"
@@ -3263,17 +3263,17 @@ msgstr "Ignore List"
 msgid "Nick Colors"
 msgstr "Nick Colors"
 
-#: lib/retro_hex_chat_web/components/ui/chat/chat_taskbar.ex:219
+#: lib/retro_hex_chat_web/components/ui/chat/chat_taskbar.ex:241
 #, elixir-autogen, elixir-format
 msgid "Admin"
 msgstr "Admin"
 
-#: lib/retro_hex_chat_web/components/ui/chat/chat_taskbar.ex:222
+#: lib/retro_hex_chat_web/components/ui/chat/chat_taskbar.ex:244
 #, elixir-autogen, elixir-format
 msgid "Contacts"
 msgstr "Contacts"
 
-#: lib/retro_hex_chat_web/components/ui/chat/chat_taskbar.ex:223
+#: lib/retro_hex_chat_web/components/ui/chat/chat_taskbar.ex:245
 #, elixir-autogen, elixir-format
 msgid "On Connect"
 msgstr "On Connect"
@@ -3311,7 +3311,7 @@ msgstr "Session ended."
 msgid "This terminal is not remembered."
 msgstr "This terminal is not remembered."
 
-#: lib/retro_hex_chat_web/live/chat_live/window_registry.ex:302
+#: lib/retro_hex_chat_web/live/chat_live/window_registry.ex:298
 #, elixir-autogen, elixir-format
 msgid "Trusted Terminals"
 msgstr "Trusted Terminals"
@@ -3628,9 +3628,9 @@ msgid "Strikethrough"
 msgstr "Strikethrough"
 
 #: lib/retro_hex_chat_web/components/ui/chat/formatting_toolbar.ex:342
-#: lib/retro_hex_chat_web/components/ui/shell/desktop_launchers.ex:459
+#: lib/retro_hex_chat_web/components/ui/shell/desktop_launchers.ex:437
 #: lib/retro_hex_chat_web/components/ui/shell/menu_bar_app.ex:338
-#: lib/retro_hex_chat_web/components/ui/shell/start_menu_app.ex:131
+#: lib/retro_hex_chat_web/components/ui/shell/start_menu_app.ex:143
 #, elixir-autogen, elixir-format
 msgid "Strip Formatting"
 msgstr "Strip Formatting"
@@ -3666,42 +3666,42 @@ msgstr "You"
 msgid "file"
 msgstr "file"
 
-#: lib/retro_hex_chat_web/live/chat_live/window_registry.ex:402
+#: lib/retro_hex_chat_web/live/chat_live/window_registry.ex:398
 #, elixir-autogen, elixir-format
 msgid "App Info"
 msgstr "App Info"
 
-#: lib/retro_hex_chat_web/live/chat_live/window_registry.ex:422
+#: lib/retro_hex_chat_web/live/chat_live/window_registry.ex:418
 #, elixir-autogen, elixir-format
 msgid "Applications"
 msgstr "Applications"
 
-#: lib/retro_hex_chat_web/live/chat_live/window_registry.ex:452
+#: lib/retro_hex_chat_web/live/chat_live/window_registry.ex:448
 #, elixir-autogen, elixir-format
 msgid "Database Stats"
 msgstr "Database Stats"
 
-#: lib/retro_hex_chat_web/live/chat_live/window_registry.ex:427
+#: lib/retro_hex_chat_web/live/chat_live/window_registry.ex:423
 #, elixir-autogen, elixir-format
 msgid "ETS Tables"
 msgstr "ETS Tables"
 
-#: lib/retro_hex_chat_web/live/chat_live/window_registry.ex:457
+#: lib/retro_hex_chat_web/live/chat_live/window_registry.ex:453
 #, elixir-autogen, elixir-format
 msgid "Live Log"
 msgstr "Live Log"
 
-#: lib/retro_hex_chat_web/live/chat_live/window_registry.ex:442
+#: lib/retro_hex_chat_web/live/chat_live/window_registry.ex:438
 #, elixir-autogen, elixir-format
 msgid "Memory Allocators"
 msgstr "Memory Allocators"
 
-#: lib/retro_hex_chat_web/live/chat_live/window_registry.ex:407
+#: lib/retro_hex_chat_web/live/chat_live/window_registry.ex:403
 #, elixir-autogen, elixir-format
 msgid "Metrics"
 msgstr "Metrics"
 
-#: lib/retro_hex_chat_web/live/chat_live/window_registry.ex:447
+#: lib/retro_hex_chat_web/live/chat_live/window_registry.ex:443
 #, elixir-autogen, elixir-format
 msgid "OS Data"
 msgstr "OS Data"
@@ -3712,17 +3712,17 @@ msgstr "OS Data"
 msgid "P2P action failed: %{reason}"
 msgstr "P2P action failed: %{reason}"
 
-#: lib/retro_hex_chat_web/live/chat_live/window_registry.ex:432
+#: lib/retro_hex_chat_web/live/chat_live/window_registry.ex:428
 #, elixir-autogen, elixir-format
 msgid "Ports"
 msgstr "Ports"
 
-#: lib/retro_hex_chat_web/live/chat_live/window_registry.ex:417
+#: lib/retro_hex_chat_web/live/chat_live/window_registry.ex:413
 #, elixir-autogen, elixir-format
 msgid "Processes"
 msgstr "Processes"
 
-#: lib/retro_hex_chat_web/live/chat_live/window_registry.ex:437
+#: lib/retro_hex_chat_web/live/chat_live/window_registry.ex:433
 #, elixir-autogen, elixir-format
 msgid "Sockets"
 msgstr "Sockets"
@@ -3747,7 +3747,7 @@ msgstr "Thumbnail could not be loaded"
 msgid "Thumbnail is being prepared"
 msgstr "Thumbnail is being prepared"
 
-#: lib/retro_hex_chat_web/components/ui/chat/chat_taskbar.ex:157
+#: lib/retro_hex_chat_web/components/ui/chat/chat_taskbar.ex:179
 #, elixir-autogen, elixir-format
 msgid "Round-trip to the server"
 msgstr "Round-trip to the server"
@@ -3847,7 +3847,7 @@ msgstr "This space belongs to a channel you are not in."
 msgid "In the channel call"
 msgstr "In the channel call"
 
-#: lib/retro_hex_chat_web/live/chat_live/components/chat_shell.ex:131
+#: lib/retro_hex_chat_web/live/chat_live/components/chat_shell.ex:132
 #, elixir-autogen, elixir-format
 msgid "P2P: %{peer} — in another tab"
 msgstr "P2P: %{peer} — in another tab"
@@ -3898,7 +3898,7 @@ msgstr "You must be registered with NickServ to open a space."
 msgid "Register your nickname to put the space card here"
 msgstr "Register your nickname to put the space card here"
 
-#: lib/retro_hex_chat_web/live/chat_live/components/chat_shell.ex:132
+#: lib/retro_hex_chat_web/live/chat_live/components/chat_shell.ex:133
 #, elixir-autogen, elixir-format
 msgid "This P2P session is open in another tab of yours"
 msgstr "This P2P session is open in another tab of yours"
@@ -3908,12 +3908,12 @@ msgstr "This P2P session is open in another tab of yours"
 msgid "Registration dropped — you are no longer identified as %{nickname}."
 msgstr "Registration dropped — you are no longer identified as %{nickname}."
 
-#: lib/retro_hex_chat_web/live/app/chat_live.ex:1118
+#: lib/retro_hex_chat_web/live/desktop_live.ex:1171
 #, elixir-autogen, elixir-format
 msgid "  • Channels expire after %{window} of inactivity"
 msgstr "  • Channels expire after %{window} of inactivity"
 
-#: lib/retro_hex_chat_web/live/app/chat_live.ex:1152
+#: lib/retro_hex_chat_web/live/desktop_live.ex:1205
 #, elixir-autogen, elixir-format
 msgid "  • Nicks expire after %{window} of inactivity"
 msgstr "  • Nicks expire after %{window} of inactivity"
@@ -4100,12 +4100,12 @@ msgid "Where"
 msgstr "Where"
 
 #: lib/retro_hex_chat_web/components/ui/shell/menu_bar_app.ex:346
-#: lib/retro_hex_chat_web/components/ui/shell/start_menu_app.ex:138
+#: lib/retro_hex_chat_web/components/ui/shell/start_menu_app.ex:150
 #, elixir-autogen, elixir-format
 msgid "Character Portraits"
 msgstr "Character Portraits"
 
-#: lib/retro_hex_chat_web/live/chat_live/window_registry.ex:385
+#: lib/retro_hex_chat_web/live/chat_live/window_registry.ex:381
 #, elixir-autogen, elixir-format
 msgid "Server Emoji"
 msgstr "Server Emoji"
@@ -4247,32 +4247,32 @@ msgstr "Record a voice message"
 msgid "No microphone is available."
 msgstr "No microphone is available."
 
-#: lib/retro_hex_chat_web/live/app/chat_live.ex:1110
+#: lib/retro_hex_chat_web/live/desktop_live.ex:1163
 #, elixir-autogen, elixir-format
 msgid "Add a Super Operator"
 msgstr "Add a Super Operator"
 
-#: lib/retro_hex_chat_web/live/app/chat_live.ex:1111
+#: lib/retro_hex_chat_web/live/desktop_live.ex:1164
 #, elixir-autogen, elixir-format
 msgid "Add an Auto Operator"
 msgstr "Add an Auto Operator"
 
-#: lib/retro_hex_chat_web/live/app/chat_live.ex:1112
+#: lib/retro_hex_chat_web/live/desktop_live.ex:1165
 #, elixir-autogen, elixir-format
 msgid "Add an Auto Voice user"
 msgstr "Add an Auto Voice user"
 
-#: lib/retro_hex_chat_web/live/app/chat_live.ex:1109
+#: lib/retro_hex_chat_web/live/desktop_live.ex:1162
 #, elixir-autogen, elixir-format
 msgid "Register the channel you are in"
 msgstr "Register the channel you are in"
 
-#: lib/retro_hex_chat_web/live/app/chat_live.ex:1113
+#: lib/retro_hex_chat_web/live/desktop_live.ex:1166
 #, elixir-autogen, elixir-format
 msgid "See who founded the channel"
 msgstr "See who founded the channel"
 
-#: lib/retro_hex_chat_web/live/app/chat_live.ex:1148
+#: lib/retro_hex_chat_web/live/desktop_live.ex:1201
 #, elixir-autogen, elixir-format
 msgid "  • Capital letters do not matter: \"Alice\" and \"alice\" are the same nick"
 msgstr "  • Capital letters do not matter: \"Alice\" and \"alice\" are the same nick"
@@ -5851,7 +5851,7 @@ msgctxt "space room"
 msgid "Game Room"
 msgstr "Game Room"
 
-#: lib/retro_hex_chat_web/live/chat_live/visitor.ex:269
+#: lib/retro_hex_chat_web/live/chat_live/visitor.ex:247
 #, elixir-autogen, elixir-format
 msgid "%{channel} is no longer open to visitors."
 msgstr "%{channel} is no longer open to visitors."
@@ -5866,48 +5866,48 @@ msgstr "Visitors"
 msgid "Watching without an account"
 msgstr "Watching without an account"
 
-#: lib/retro_hex_chat_web/live/chat_live/visitor.ex:246
+#: lib/retro_hex_chat_web/live/chat_live/visitor.ex:224
 #, elixir-autogen, elixir-format
 msgid "%{channel} cannot be watched without an account."
 msgstr "%{channel} cannot be watched without an account."
 
-#: lib/retro_hex_chat_web/live/chat_live/visitor.ex:196
+#: lib/retro_hex_chat_web/live/chat_live/visitor.ex:176
 #, elixir-autogen, elixir-format
 msgid "Calls are for registered members."
 msgstr "Calls are for registered members."
 
-#: lib/retro_hex_chat_web/live/app/chat_live.html.heex:751
+#: lib/retro_hex_chat_web/site/pages/connect.ex:69
 #, elixir-autogen, elixir-format
 msgid "Create an account or sign in, and you come back right where you were."
 msgstr "Create an account or sign in, and you come back right where you were."
 
-#: lib/retro_hex_chat_web/live/chat_live/visitor.ex:195
+#: lib/retro_hex_chat_web/live/chat_live/visitor.ex:175
 #, elixir-autogen, elixir-format
 msgid "Games are for registered players."
 msgstr "Games are for registered players."
 
-#: lib/retro_hex_chat_web/live/chat_live/visitor.ex:200
+#: lib/retro_hex_chat_web/live/chat_live/visitor.ex:180
 #, elixir-autogen, elixir-format
 msgid "Private sessions are for registered members."
 msgstr "Private sessions are for registered members."
 
-#: lib/retro_hex_chat_web/live/chat_live/visitor.ex:197
+#: lib/retro_hex_chat_web/live/chat_live/visitor.ex:177
 #, elixir-autogen, elixir-format
 msgid "Spaces are for registered members."
 msgstr "Spaces are for registered members."
 
-#: lib/retro_hex_chat_web/live/chat_live/visitor.ex:203
+#: lib/retro_hex_chat_web/live/chat_live/visitor.ex:183
 #, elixir-autogen, elixir-format
 msgid "This feature needs an account."
 msgstr "This feature needs an account."
 
 #: lib/retro_hex_chat_web/live/chat_live/components/composer.ex:615
-#: lib/retro_hex_chat_web/live/chat_live/visitor.ex:194
+#: lib/retro_hex_chat_web/live/chat_live/visitor.ex:174
 #, elixir-autogen, elixir-format
 msgid "Writing in the chat needs an account."
 msgstr "Writing in the chat needs an account."
 
-#: lib/retro_hex_chat_web/live/chat_live/visitor.ex:202
+#: lib/retro_hex_chat_web/live/chat_live/visitor.ex:182
 #, elixir-autogen, elixir-format
 msgid "You need an account to open links."
 msgstr "You need an account to open links."

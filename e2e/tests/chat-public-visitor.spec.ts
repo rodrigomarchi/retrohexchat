@@ -1,6 +1,6 @@
 /**
  * @section PW - Public Pages, Landing, And Showcase
- * @flow PW24 [done] Without an account /chat opens read-only: a visitor watches a channel live under a Guest name, members see them under Visitors, and any action opens the Connect window
+ * @flow PW24 [done] Without an account a channel's address (/c/<name>) opens read-only: a visitor watches it live under a Guest name, members see them under Visitors, and any action opens the sign-in window at /connect
  * @flow PW25 [done] A visitor who registers from the chat's Connect window comes back to the channel they were watching, now as a member
  * @flow PW26 [done] No link leaves a visitor's chat: a message URL (plain, Ctrl or middle click) and a game in the desktop Games folder open the Connect window naming the feature, and no tab opens
  * @flow PW27 [done] A game, the arcade or a call opened by address without an account lands in the chat with the Connect window naming it, and registering there returns to that address
@@ -17,6 +17,7 @@ import {
   uniqueChannel,
 } from "../helpers/chatUsers";
 import { shot } from "../helpers/screenshots";
+import { CHAT_URL, channelPath, channelUrl } from "../helpers/urls";
 
 async function openAsVisitor(page: Page, path: string) {
   await page.addInitScript(() => {
@@ -51,7 +52,7 @@ test("a visitor watches a channel live and any action asks them to sign in (PW24
   const visitor = await visitorCtx.newPage();
 
   try {
-    await openAsVisitor(visitor, `/chat?join=${encodeURIComponent(channel)}`);
+    await openAsVisitor(visitor, channelPath(channel));
 
     // The channel the link named, with its history, and no message box.
     await expect(visitor.getByTestId("chat-message-list")).toContainText(
@@ -83,12 +84,14 @@ test("a visitor watches a channel live and any action asks them to sign in (PW24
     ).toBeVisible();
     await shot(member.page.getByTestId("nicklist"), "member-sees-visitor");
 
-    // Right-clicking a nick is an action: it opens the Connect window, not a menu.
+    // Right-clicking a nick is an action: it opens the sign-in window, not a menu,
+    // at an address of its own that remembers the channel to come back to.
     await visitor
       .getByTestId(`nicklist-item-${member.nick}`)
       .click({ button: "right" });
-    const connectWindow = visitor.getByTestId("visitor-connect-window");
+    const connectWindow = visitor.getByTestId("document-window-connect");
     await expect(connectWindow).toBeVisible();
+    await expect(visitor).toHaveURL(/\/connect\?.*return_to=%2Fc%2F/);
     await expect(
       visitor.getByTestId("context-menu-nicklist-context-menu"),
     ).toBeHidden();
@@ -103,7 +106,8 @@ test("a visitor watches a channel live and any action asks them to sign in (PW24
 
     const chat = new ChatPage(visitor);
     await chat.waitUntilConnected();
-    await expect(visitor).toHaveURL(/\/chat(\?.*)?$/);
+    await expect(visitor).toHaveURL(CHAT_URL);
+    await expect(visitor).toHaveURL(channelUrl(channel));
     await chat.expectTabVisible(channel);
     await expect(visitor.getByTestId("visitor-composer")).toHaveCount(0);
     await shot(visitor, "visitor-signed-in");
@@ -129,12 +133,12 @@ test("the visitor's chat on a phone (PW24)", async ({ browser }) => {
 
   try {
     // The lobby opens even with nobody in it: it is where every visitor lands.
-    await openAsVisitor(page, "/chat");
+    await openAsVisitor(page, "/c/lobby");
     await expect(page.getByTestId("tab-bar")).toContainText("#lobby");
     await shot(page, "visitor-phone");
 
     await page.getByTestId("visitor-composer").click();
-    await expect(page.getByTestId("visitor-connect-window")).toBeVisible();
+    await expect(page.getByTestId("document-window-connect")).toBeVisible();
     await shot(page, "visitor-phone-sign-in");
   } finally {
     await ctx.close();
@@ -151,10 +155,10 @@ test("no link leaves a visitor's chat (PW26)", async ({ browser }) => {
   const ctx = await browser.newContext();
   const visitor = await ctx.newPage();
   const reason = visitor.getByTestId("visitor-connect-reason");
-  const connectWindow = visitor.getByTestId("visitor-connect-window");
+  const connectWindow = visitor.getByTestId("document-window-connect");
 
   try {
-    await openAsVisitor(visitor, `/chat?join=${encodeURIComponent(channel)}`);
+    await openAsVisitor(visitor, channelPath(channel));
     const messageLink = visitor
       .getByTestId("chat-message-list")
       .locator("a.chat-link")
@@ -186,7 +190,7 @@ test("no link leaves a visitor's chat (PW26)", async ({ browser }) => {
     await chat.gamesFolderGrid.locator('a[href^="/play"]').first().click();
     await expect(connectWindow).toBeVisible();
     await expect(reason).toContainText("Games are for registered players.");
-    await expect(visitor).toHaveURL(/\/chat/);
+    await expect(visitor).toHaveURL(/\/connect\?/);
     await shot(visitor, "visitor-game-held");
   } finally {
     await ctx.close();
@@ -207,8 +211,8 @@ test("a game, the arcade or a call opened by address asks to sign in and comes b
       ["/call/sometoken", "Calls are for registered members."],
     ]) {
       await openAsVisitor(page, path);
-      await expect(page).toHaveURL(/\/chat\?/);
-      await expect(page.getByTestId("visitor-connect-window")).toBeVisible();
+      await expect(page).toHaveURL(/\/connect\?/);
+      await expect(page.getByTestId("document-window-connect")).toBeVisible();
       await expect(reason).toContainText(sentence);
     }
     await shot(page, "visitor-call-by-address");
@@ -218,7 +222,7 @@ test("a game, the arcade or a call opened by address asks to sign in and comes b
     await expect(reason).toContainText("Games are for registered players.");
     await shot(page, "visitor-play-by-address");
 
-    const connectWindow = page.getByTestId("visitor-connect-window");
+    const connectWindow = page.getByTestId("document-window-connect");
     await connectWindow.locator("#nickname").fill(uniqueNickname("ply"));
     await connectWindow.getByTestId("connect-btn").click();
     await new ConnectPage(page).registerWithPassword("pass12345");

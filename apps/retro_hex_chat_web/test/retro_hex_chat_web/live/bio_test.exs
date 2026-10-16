@@ -21,7 +21,7 @@ defmodule RetroHexChatWeb.BioTest do
     test "set bio shows confirmation message", %{conn: conn} do
       nick = "Bio1#{uid()}"
 
-      {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
+      {:ok, view, _html} = live(chat_conn(conn, nick), "/")
 
       view
       |> element(~s([data-testid="chat-input-form"]))
@@ -37,7 +37,7 @@ defmodule RetroHexChatWeb.BioTest do
     test "view bio shows current bio", %{conn: conn} do
       nick = "Bio2#{uid()}"
 
-      {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
+      {:ok, view, _html} = live(chat_conn(conn, nick), "/")
 
       # Set bio first
       view
@@ -62,7 +62,7 @@ defmodule RetroHexChatWeb.BioTest do
     test "view bio with no bio set shows help message", %{conn: conn} do
       nick = "Bio3#{uid()}"
 
-      {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
+      {:ok, view, _html} = live(chat_conn(conn, nick), "/")
 
       view
       |> element(~s([data-testid="chat-input-form"]))
@@ -78,7 +78,7 @@ defmodule RetroHexChatWeb.BioTest do
     test "clear bio shows confirmation", %{conn: conn} do
       nick = "Bio4#{uid()}"
 
-      {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
+      {:ok, view, _html} = live(chat_conn(conn, nick), "/")
 
       # Set bio first
       view
@@ -104,7 +104,7 @@ defmodule RetroHexChatWeb.BioTest do
       nick = "Bio5#{uid()}"
       target = "Bio6#{uid()}"
 
-      {:ok, target_view, _html} = live(chat_conn(conn, target), "/chat")
+      {:ok, target_view, _html} = live(chat_conn(conn, target), "/")
 
       # Target sets their bio
       target_view
@@ -114,7 +114,7 @@ defmodule RetroHexChatWeb.BioTest do
       # Drain the async dispatch (FIFO behind this call) before reading the view.
       _ = :sys.get_state(target_view.pid)
 
-      {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
+      {:ok, view, _html} = live(chat_conn(conn, nick), "/")
 
       # Whois the target
       view
@@ -133,8 +133,8 @@ defmodule RetroHexChatWeb.BioTest do
       nick = "Bio7#{uid()}"
       target = "Bio8#{uid()}"
 
-      {:ok, _target_view, _html} = live(chat_conn(conn, target), "/chat")
-      {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
+      {:ok, _target_view, _html} = live(chat_conn(conn, target), "/")
+      {:ok, view, _html} = live(chat_conn(conn, nick), "/")
 
       view
       |> element(~s([data-testid="chat-input-form"]))
@@ -153,7 +153,7 @@ defmodule RetroHexChatWeb.BioTest do
       nick = "Bio9#{uid()}"
       long_bio = String.duplicate("x", 250)
 
-      {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
+      {:ok, view, _html} = live(chat_conn(conn, nick), "/")
 
       view
       |> element(~s([data-testid="chat-input-form"]))

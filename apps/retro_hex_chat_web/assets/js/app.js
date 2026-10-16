@@ -1,58 +1,10 @@
-// App LiveView entrypoint with LiveSocket and chat/P2P/game hooks.
-// Uses retrohex.css (Tailwind) via the app root layout.
+// The surfaces' entrypoint — a call, a game, a space in a tab of its own: the
+// application's LiveSocket, connected at once. The desktop has its own entry
+// (`desktop.js`) and imports the same socket from `lib/system/live_boot.js`.
 
-import "phoenix_html";
-import { Socket } from "phoenix";
-import { LiveSocket } from "phoenix_live_view";
-import topbar from "../vendor/topbar";
-import { buildHooks } from "./hooks/registry";
-import {
-  preserveScrollBeforeElUpdated,
-  preserveScrollPatchEnd,
-  preserveScrollPatchStart,
-} from "./hooks/registry";
 import { createPlausibleTracker } from "./lib/analytics/plausible";
-import { getClientInfo } from "./lib/connection/client_info";
-import { loadCurrentLocaleCatalog } from "./lib/i18n";
-import { S3DirectUploader } from "./lib/uploads/s3_direct";
 import { registerServiceWorker } from "./lib/system/service_worker.js";
-import { loadRetroChrome } from "./lib/ui/retro_chrome_loader";
-import { keepDisclosureStateAcrossPatch } from "./lib/ui/disclosure_state";
-
-const Hooks = buildHooks();
-
-const liveSocket = new LiveSocket("/live", Socket, {
-  // The fallback exists for networks that block WebSocket outright, and those
-  // fail fast: the socket errors and LiveView falls back without waiting out
-  // this timer. The timer only decides how long a *working but slow* handshake
-  // gets, so it has to clear intercontinental latency — a client a couple
-  // hundred milliseconds from the server needs several round trips to open,
-  // and cutting it short strands the session on long-polling for its whole
-  // lifetime. WebRTC signalling rides this socket, so that is expensive.
-  longPollFallbackMs: 10_000,
-  params: () => ({
-    _csrf_token: document.querySelector("meta[name='csrf-token']").getAttribute("content"),
-    timezone: Intl.DateTimeFormat().resolvedOptions().timeZone || "Etc/UTC",
-    client_info: JSON.stringify(getClientInfo()),
-  }),
-  hooks: Hooks,
-  uploaders: {
-    S3Direct: S3DirectUploader,
-  },
-  dom: {
-    onPatchStart: preserveScrollPatchStart,
-    onBeforeElUpdated(fromEl, toEl) {
-      preserveScrollBeforeElUpdated(fromEl, toEl);
-      keepDisclosureStateAcrossPatch(fromEl, toEl);
-    },
-    onPatchEnd: preserveScrollPatchEnd,
-  },
-});
-
-// Show progress bar on live navigation and form submits
-topbar.config({ barColors: { 0: "#29d" }, shadowColor: "rgba(0, 0, 0, .3)" });
-window.addEventListener("phx:page-loading-start", (_info) => topbar.show(300));
-window.addEventListener("phx:page-loading-stop", (_info) => topbar.hide());
+import { bootLiveSocket } from "./lib/system/live_boot";
 
 const plausibleEnv = document.querySelector('meta[name="plausible-env"]')?.content || "prod";
 const plausible = createPlausibleTracker({
@@ -62,20 +14,7 @@ const plausible = createPlausibleTracker({
 plausible.attachAutoTracking();
 window.plausible = plausible;
 
-await loadCurrentLocaleCatalog();
-
-// connect if there are any LiveViews on the page
-liveSocket.connect();
-
-// Win98 tooltips over every `title`, the arrows of every up-down field, and how
-// popovers close and place themselves.
-loadRetroChrome(document);
-
-// expose liveSocket on window for web console debug logs and latency simulation:
-// >> liveSocket.enableDebug()
-// >> liveSocket.enableLatencySim(1000)  // enabled for duration of browser session
-// >> liveSocket.disableLatencySim()
-window.liveSocket = liveSocket;
+await bootLiveSocket();
 
 // The lines below enable quality of life phoenix_live_reload
 // development features:

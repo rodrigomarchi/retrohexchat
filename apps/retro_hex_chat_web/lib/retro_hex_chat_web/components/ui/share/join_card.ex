@@ -3,7 +3,6 @@ defmodule RetroHexChatWeb.Components.UI.JoinCard do
   use RetroHexChatWeb.Component
 
   import RetroHexChatWeb.Components.UI.Button
-  import RetroHexChatWeb.Components.UI.Desktop
 
   alias RetroHexChatWeb.Icons
 
@@ -18,81 +17,79 @@ defmodule RetroHexChatWeb.Components.UI.JoinCard do
 
   attr :enter_path, :string, default: nil
 
+  attr :enter_patch?, :boolean,
+    default: false,
+    doc: "the way in is an address of the desktop (a channel, sign-in): a patch, not a load"
+
+  attr :chat_path, :string, default: "/", doc: "where \"Open the chat\" goes"
+
+  @doc """
+  The card's body, inside the invite's document window on the desktop (the
+  window's title is `title/2`, and `from/1` its meta).
+  """
   @spec join_card(map()) :: Phoenix.LiveView.Rendered.t()
   def join_card(assigns) do
     ~H"""
-    <div class="bg-background text-text font-system flex h-screen flex-col">
-      <%!-- The same desktop the landing pages run, on the same public manager:
-            this is the first screen a stranger sees, and a bare centred box
-            would be the one place the product does not look like itself. --%>
-      <.desktop
-        id="join-desktop"
-        persist_key="join"
-        persist={false}
-        window_manager_hook="PublicWindowManagerHook"
-        class="flex-1"
-        data-testid="join-desktop"
+    <div class="flex flex-col gap-3 p-4" data-testid="join-card">
+      <.subject_row :if={@subject} subject={@subject} />
+      <.preview_lines :if={@preview != []} lines={@preview} />
+
+      <p class="text-center" data-testid={state_testid(@state)}>
+        {body_text(@state, @creator_nick)}
+      </p>
+
+      <.button
+        :if={@state in [:ready, :needs_session] && @enter_patch?}
+        patch={@enter_path}
+        class="justify-center"
+        data-testid="join-enter"
       >
-        <.desktop_window
-          id="join"
-          title={title(@state, @kind)}
-          pinned
-          controls={[]}
-          resizable={false}
-          default_centered
-          width={420}
-          body_class="flex flex-col gap-3 p-4"
-          data-testid="join-card"
-        >
-          <:icon><.kind_icon kind={@kind} /></:icon>
-          <:meta :if={@creator_nick && @state != :gone}>
-            {dgettext("share", "from %{nickname}", nickname: @creator_nick)}
-          </:meta>
+        <:icon><Icons.icon_btn_link class="h-4 w-4" /></:icon>
+        {enter_label(@state)}
+      </.button>
 
-          <.subject_row :if={@subject} subject={@subject} />
-          <.preview_lines :if={@preview != []} lines={@preview} />
+      <.button
+        :if={@state in [:ready, :needs_session] && !@enter_patch?}
+        href={@enter_path}
+        class="justify-center"
+        data-testid="join-enter"
+      >
+        <:icon><Icons.icon_btn_link class="h-4 w-4" /></:icon>
+        {enter_label(@state)}
+      </.button>
 
-          <p class="text-center" data-testid={state_testid(@state)}>
-            {body_text(@state, @creator_nick)}
-          </p>
+      <%!-- A card that stopped working still offers the next plausible
+            thing, and for a full match that is the game itself: the person
+            came to play, and the door they took happened to be taken. --%>
+      <.button
+        :if={@state == :filled && @subject}
+        href="/play"
+        class="justify-center"
+        data-testid="join-play-instead"
+      >
+        <:icon><Icons.icon_game_pong class="h-4 w-4" /></:icon>
+        {dgettext("share", "Play something else")}
+      </.button>
 
-          <.button
-            :if={@state in [:ready, :needs_session]}
-            navigate={@enter_path}
-            class="justify-center"
-            data-testid="join-enter"
-          >
-            <:icon><Icons.icon_btn_link class="h-4 w-4" /></:icon>
-            {enter_label(@state)}
-          </.button>
-
-          <%!-- A card that stopped working still offers the next plausible
-                thing, and for a full match that is the game itself: the person
-                came to play, and the door they took happened to be taken. --%>
-          <.button
-            :if={@state == :filled && @subject}
-            navigate="/play"
-            class="justify-center"
-            data-testid="join-play-instead"
-          >
-            <:icon><Icons.icon_game_pong class="h-4 w-4" /></:icon>
-            {dgettext("share", "Play something else")}
-          </.button>
-
-          <.button
-            :if={@state in [:gone, :filled]}
-            navigate="/chat"
-            class="justify-center"
-            data-testid="join-elsewhere"
-          >
-            <:icon><Icons.icon_chat class="h-4 w-4" /></:icon>
-            {dgettext("share", "Open the chat")}
-          </.button>
-        </.desktop_window>
-      </.desktop>
+      <.button
+        :if={@state in [:gone, :filled]}
+        patch={@chat_path}
+        class="justify-center"
+        data-testid="join-elsewhere"
+      >
+        <:icon><Icons.icon_chat class="h-4 w-4" /></:icon>
+        {dgettext("share", "Open the chat")}
+      </.button>
     </div>
     """
   end
+
+  @doc "Who shared it, said after the window's title — nothing for a dead link."
+  @spec from(map()) :: String.t() | nil
+  def from(%{creator_nick: nick, state: state}) when is_binary(nick) and state != :gone,
+    do: dgettext("share", "from %{nickname}", nickname: nick)
+
+  def from(_card), do: nil
 
   attr :lines, :list, required: true
 
@@ -138,54 +135,28 @@ defmodule RetroHexChatWeb.Components.UI.JoinCard do
 
   defp subject_icon(_subject), do: :icon_hex_stone
 
-  attr :kind, :string, default: nil
+  @doc "The window's icon for a kind of link."
+  @spec icon(String.t() | nil) :: atom()
+  def icon("play"), do: :icon_game_pong
+  def icon("call"), do: :icon_protocol_conference_compact
+  def icon("space"), do: :icon_community
+  def icon("channel"), do: :icon_channels
+  def icon("p2p"), do: :icon_protocol_p2p_compact
+  def icon(_kind), do: :icon_hex_stone
 
-  defp kind_icon(%{kind: "play"} = assigns) do
-    ~H"""
-    <Icons.icon_game_pong class="h-4 w-4" />
-    """
-  end
-
-  defp kind_icon(%{kind: "call"} = assigns) do
-    ~H"""
-    <Icons.icon_protocol_conference_compact class="h-4 w-4" />
-    """
-  end
-
-  defp kind_icon(%{kind: "space"} = assigns) do
-    ~H"""
-    <Icons.icon_community class="h-4 w-4" />
-    """
-  end
-
-  defp kind_icon(%{kind: "channel"} = assigns) do
-    ~H"""
-    <Icons.icon_channels class="h-4 w-4" />
-    """
-  end
-
-  defp kind_icon(%{kind: "p2p"} = assigns) do
-    ~H"""
-    <Icons.icon_protocol_p2p_compact class="h-4 w-4" />
-    """
-  end
-
-  defp kind_icon(assigns) do
-    ~H"""
-    <Icons.icon_hex_stone class="h-4 w-4" />
-    """
-  end
-
-  # The title says what kind of thing this is without naming where it lives: a
-  # channel name in a public preview leaks the existence of a channel the
-  # visitor could not have listed.
-  defp title(:gone, _kind), do: dgettext("share", "Link expired")
-  defp title(:filled, _kind), do: dgettext("share", "Seat taken")
-  defp title(_state, "play"), do: dgettext("share", "A game on RetroHexChat")
-  defp title(_state, "call"), do: dgettext("share", "A call on RetroHexChat")
-  defp title(_state, "p2p"), do: dgettext("share", "A P2P session on RetroHexChat")
-  defp title(_state, "channel"), do: dgettext("share", "A room on RetroHexChat")
-  defp title(_state, _kind), do: dgettext("share", "An invitation to RetroHexChat")
+  @doc """
+  The window's title. It says what kind of thing this is without naming where
+  it lives: a channel name in a public preview leaks the existence of a
+  channel the visitor could not have listed.
+  """
+  @spec title(atom(), String.t() | nil) :: String.t()
+  def title(:gone, _kind), do: dgettext("share", "Link expired")
+  def title(:filled, _kind), do: dgettext("share", "Seat taken")
+  def title(_state, "play"), do: dgettext("share", "A game on RetroHexChat")
+  def title(_state, "call"), do: dgettext("share", "A call on RetroHexChat")
+  def title(_state, "p2p"), do: dgettext("share", "A P2P session on RetroHexChat")
+  def title(_state, "channel"), do: dgettext("share", "A room on RetroHexChat")
+  def title(_state, _kind), do: dgettext("share", "An invitation to RetroHexChat")
 
   defp body_text(:gone, _nick),
     do: dgettext("share", "This link is no longer active. The chat is still there.")

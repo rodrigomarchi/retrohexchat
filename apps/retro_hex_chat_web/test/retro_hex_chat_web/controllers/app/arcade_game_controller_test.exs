@@ -40,7 +40,7 @@ defmodule RetroHexChatWeb.App.ArcadeGameControllerTest do
   test "an address that names no game reads like any other dead link", %{conn: conn} do
     conn = get(conn, "/play/arcade/no_such_game")
 
-    assert redirected_to(conn, 302) == "/chat"
+    assert redirected_to(conn, 302) == "/"
   end
 
   # `/play/:game/:token` has the same shape, so the arcade's route has to be

@@ -8,9 +8,9 @@ defmodule RetroHexChatWeb.SessionControllerTest do
   @moduletag :integration
 
   describe "create/2" do
-    test "valid nickname stores session and redirects to /chat", %{conn: conn} do
+    test "valid nickname stores session and redirects to the home", %{conn: conn} do
       conn = post(conn, ~p"/chat/session", %{"nickname" => "ValidNick"})
-      assert redirected_to(conn) == "/chat"
+      assert redirected_to(conn) == "/"
       assert get_session(conn, :chat_nickname) == "ValidNick"
       refute get_session(conn, :chat_pre_identified)
     end
@@ -38,7 +38,7 @@ defmodule RetroHexChatWeb.SessionControllerTest do
       conn =
         post(conn, ~p"/chat/session", %{"nickname" => "AuthNick", "auth_token" => token})
 
-      assert redirected_to(conn) == "/chat"
+      assert redirected_to(conn) == "/"
       assert get_session(conn, :chat_nickname) == "AuthNick"
       assert get_session(conn, :chat_pre_identified) == true
     end
@@ -57,7 +57,7 @@ defmodule RetroHexChatWeb.SessionControllerTest do
           "client_info" => Jason.encode!(%{"browser" => "Firefox 140", "os" => "macOS 15"})
         })
 
-      assert redirected_to(conn) == "/chat"
+      assert redirected_to(conn) == "/"
       assert get_session(conn, :chat_pre_identified) == true
       assert device_id = get_session(conn, :trusted_device_id)
 
@@ -80,7 +80,7 @@ defmodule RetroHexChatWeb.SessionControllerTest do
           "trusted_device_login" => "true"
         })
 
-      assert redirected_to(conn) == "/chat"
+      assert redirected_to(conn) == "/"
       assert get_session(conn, :chat_nickname) == nick
       assert get_session(conn, :chat_pre_identified) == true
       assert get_session(conn, :trusted_device_id)
@@ -156,7 +156,7 @@ defmodule RetroHexChatWeb.SessionControllerTest do
       signed =
         post(build_conn(), ~p"/chat/session", %{"nickname" => variant, "auth_token" => token})
 
-      assert redirected_to(signed) == "/chat"
+      assert redirected_to(signed) == "/"
       assert get_session(signed, :chat_nickname) == variant
     end
 
@@ -170,7 +170,7 @@ defmodule RetroHexChatWeb.SessionControllerTest do
 
     test "without auth_token but valid nick stores session without pre_identified", %{conn: conn} do
       conn = post(conn, ~p"/chat/session", %{"nickname" => "PlainNick"})
-      assert redirected_to(conn) == "/chat"
+      assert redirected_to(conn) == "/"
       assert get_session(conn, :chat_nickname) == "PlainNick"
       refute get_session(conn, :chat_pre_identified)
     end
@@ -189,19 +189,29 @@ defmodule RetroHexChatWeb.SessionControllerTest do
           "join_channel" => "#general"
         })
 
-      assert redirected_to(conn) == "/chat?join=%23general"
+      assert redirected_to(conn) == "/c/general"
       assert get_session(conn, :chat_nickname) == "JoinNick"
       refute get_session(conn, :chat_join_channel)
     end
 
-    test "without join_channel param redirects to /chat without query param", %{conn: conn} do
+    test "without join_channel param redirects to the home without query param", %{conn: conn} do
       conn = post(conn, ~p"/chat/session", %{"nickname" => "NoJoin"})
-      assert redirected_to(conn) == "/chat"
+      assert redirected_to(conn) == "/"
       refute get_session(conn, :chat_join_channel)
     end
   end
 
   describe "delete/2" do
+    test "leaving on purpose opens a clean sign-in window", %{conn: conn} do
+      conn =
+        conn
+        |> init_test_session(%{chat_nickname: "LeavingNick"})
+        |> get(~p"/chat/session/clear?reason=logout")
+
+      assert redirected_to(conn) == "/connect"
+      assert get_session(conn, :chat_nickname) == nil
+    end
+
     test "clears session and redirects to /connect with reason", %{conn: conn} do
       conn =
         conn
@@ -228,7 +238,7 @@ defmodule RetroHexChatWeb.SessionControllerTest do
         |> init_test_session(%{chat_nickname: "LocaleNick", locale: "pt_BR"})
         |> get(~p"/chat/session/clear")
 
-      assert redirected_to(conn) == "/connect?reason=disconnected"
+      assert redirected_to(conn) == "/pt-BR/connect?reason=disconnected"
       assert get_session(conn, :locale) == "pt_BR"
       refute get_session(conn, :chat_nickname)
     end

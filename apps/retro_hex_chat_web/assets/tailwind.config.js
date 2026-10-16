@@ -17,24 +17,27 @@ module.exports = {
       // the desktop demo lost its h-[440px] and collapsed to a bare taskbar.
       "../lib/retro_hex_chat_web/live/showcase_live/**/*.ex",
       "../lib/retro_hex_chat_web/live/showcase_live/**/*.heex",
-      // Landing LiveViews
-      "../lib/retro_hex_chat_web/live/landing_live/**/*.ex",
-      "../lib/retro_hex_chat_web/live/landing_live/**/*.heex",
+      // The pages of the site and their templates, opened as document windows
+      "../lib/retro_hex_chat_web/site/**/*.ex",
+      "../lib/retro_hex_chat_web/site/**/*.heex",
+      "../lib/retro_hex_chat_web/live/site/**/*.ex",
+      // The one desktop's LiveView and its template
+      "../lib/retro_hex_chat_web/live/*.ex",
+      "../lib/retro_hex_chat_web/live/*.heex",
       // Showcase helpers
       "../lib/retro_hex_chat_web/components/showcase_helpers.ex",
       // Showcase layout
       "../lib/retro_hex_chat_web/components/layouts/showcase.html.heex",
-      // Landing layout
-      "../lib/retro_hex_chat_web/components/layouts/landing_live.html.heex",
+      // The desktop's layout
+      "../lib/retro_hex_chat_web/components/layouts/desktop.html.heex",
       // App LiveViews
       "../lib/retro_hex_chat_web/live/app/**/*.ex",
       "../lib/retro_hex_chat_web/live/app/**/*.heex",
-      // Chat app layout
-      "../lib/retro_hex_chat_web/components/layouts/chat.html.heex",
-      // Help LiveViews
+      // The surfaces' and admin layout
+      "../lib/retro_hex_chat_web/components/layouts/surface.html.heex",
+      // Help helpers and the help topic templates
       "../lib/retro_hex_chat_web/live/help_live/**/*.ex",
-      // Help layout
-      "../lib/retro_hex_chat_web/components/layouts/help_live.html.heex",
+      "../lib/retro_hex_chat_web/controllers/help_content/**/*.heex",
       // Shared components
       "../lib/retro_hex_chat_web/components/core_components.ex",
       "../lib/retro_hex_chat_web/components/toast.ex",

@@ -8,18 +8,28 @@ defmodule RetroHexChatWeb.Router do
     plug :accepts, ["json"]
   end
 
-  pipeline :landing_live do
+  # Every public address and every address of the chat is one LiveView on one
+  # desktop: the chat runs behind, and a page of the site opens over it as a
+  # document window. Moving between them is a patch, never a reload, because
+  # they share this one live_session — and the locale segment is part of every
+  # address, so the URL decides the language for a visitor and a member alike.
+  pipeline :desktop do
     plug :accepts, ["html"]
     plug :fetch_session
-    # The landing pages host the connect window, so they need the same
-    # trusted-device context the app pipeline provides.
     plug RetroHexChatWeb.Plugs.PutTrustedDevice
     plug RetroHexChatWeb.Plugs.PutBrowserId
     plug RetroHexChatWeb.Plugs.PutLocale, :public
     plug :fetch_live_flash
-    plug :put_root_layout, html: {RetroHexChatWeb.Layouts, :landing_live}
+    plug :put_root_layout, html: {RetroHexChatWeb.Layouts, :desktop}
     plug :protect_from_forgery
     plug :put_secure_browser_headers
+    plug RetroHexChatWeb.Plugs.RobotsHeader
+  end
+
+  # The archive is read by robots that send `If-None-Match`: its conditional
+  # answer and its cache headers are decided before the LiveView renders.
+  pipeline :archive_http do
+    plug RetroHexChatWeb.Plugs.ArchiveConditional
   end
 
   scope "/api", RetroHexChatWeb do
@@ -38,88 +48,42 @@ defmodule RetroHexChatWeb.Router do
     end
   end
 
-  scope "/", RetroHexChatWeb do
-    pipe_through :landing_live
+  live_session :desktop,
+    on_mount: [
+      {RetroHexChatWeb.Live.PutLocale, :path},
+      {RetroHexChatWeb.Live.PutTrustedDevice, :default}
+    ] do
+    for prefix <- ["/" | Enum.map(@localized_locale_segments, &"/#{&1}")] do
+      scope prefix, RetroHexChatWeb do
+        pipe_through :desktop
 
-    # The public face of a shared link. On the landing pipeline on purpose:
-    # whoever follows one may have no session at all, and the card must not cost
-    # them the whole application bundle to find out what they were sent.
-    live_session :share_join, on_mount: [{RetroHexChatWeb.Live.PutLocale, :default}] do
-      live "/join/:slug", JoinLive
-    end
-
-    live_session :landing_locale,
-      on_mount: [
-        {RetroHexChatWeb.Live.PutLocale, :default},
-        {RetroHexChatWeb.Live.PutTrustedDevice, :default}
-      ] do
-      live "/", LandingLive.Index
-      live "/how-it-works", LandingLive.HowItWorks
-      live "/features", LandingLive.Features
-      live "/privacy", LandingLive.Privacy
-      live "/install", LandingLive.Install
-      live "/community", LandingLive.Community
-      live "/faq", LandingLive.Faq
-      live "/games", LandingLive.Games
-      live "/games/:slug", LandingLive.Game
-      live "/mirc-commands", LandingLive.MircCommands
-      live "/mirc-online", LandingLive.MircOnline
-      live "/irc-chat", LandingLive.IrcChat
-    end
-  end
-
-  for locale_segment <- @localized_locale_segments do
-    live_session_name = :"landing_locale_#{String.replace(locale_segment, "-", "_")}"
-    join_session_name = :"share_join_#{String.replace(locale_segment, "-", "_")}"
-
-    scope "/#{locale_segment}", RetroHexChatWeb do
-      pipe_through :landing_live
-
-      # A share link is a public page, so it exists under every locale segment
-      # the public pages do. Registering it only unprefixed is how someone
-      # browsing in pt-BR gets a router error instead of the card they were
-      # sent — the URL is the one thing about a shared link nobody can fix.
-      live_session join_session_name, on_mount: [{RetroHexChatWeb.Live.PutLocale, :default}] do
-        live "/join/:slug", JoinLive
+        live "/", DesktopLive, :home
+        live "/how-it-works", DesktopLive, :how_it_works
+        live "/features", DesktopLive, :features
+        live "/privacy", DesktopLive, :privacy
+        live "/install", DesktopLive, :install
+        live "/community", DesktopLive, :community
+        live "/faq", DesktopLive, :faq
+        live "/games", DesktopLive, :games
+        live "/games/:slug", DesktopLive, :game
+        live "/mirc-commands", DesktopLive, :mirc_commands
+        live "/mirc-online", DesktopLive, :mirc_online
+        live "/irc-chat", DesktopLive, :irc_chat
+        live "/chat/help", DesktopLive, :help_index
+        live "/chat/help/:topic", DesktopLive, :help_topic
+        live "/join/:slug", DesktopLive, :join
+        live "/connect", DesktopLive, :connect
+        # A channel's address. `c` is a reserved first segment, like `archive`
+        # and `chat`: none of them may ever be a locale tag.
+        live "/c/:channel", DesktopLive, :channel
       end
 
-      live_session live_session_name,
-        on_mount: [
-          {RetroHexChatWeb.Live.PutLocale, :default},
-          {RetroHexChatWeb.Live.PutTrustedDevice, :default}
-        ] do
-        live "/", LandingLive.Index
-        live "/how-it-works", LandingLive.HowItWorks
-        live "/features", LandingLive.Features
-        live "/privacy", LandingLive.Privacy
-        live "/install", LandingLive.Install
-        live "/community", LandingLive.Community
-        live "/faq", LandingLive.Faq
-        live "/games", LandingLive.Games
-        live "/games/:slug", LandingLive.Game
-        live "/mirc-commands", LandingLive.MircCommands
-        live "/mirc-online", LandingLive.MircOnline
-        live "/irc-chat", LandingLive.IrcChat
+      scope prefix, RetroHexChatWeb do
+        pipe_through [:desktop, :archive_http]
+
+        live "/archive/:channel", DesktopLive, :archive_index
+        live "/archive/:channel/:date", DesktopLive, :archive_day
       end
-    end
-  end
-
-  pipeline :help_live do
-    plug :accepts, ["html"]
-    plug :fetch_session
-    plug RetroHexChatWeb.Plugs.PutLocale, :public
-    plug :fetch_live_flash
-    plug :put_root_layout, html: {RetroHexChatWeb.Layouts, :help_live}
-    plug :protect_from_forgery
-    plug :put_secure_browser_headers
-  end
-
-  scope "/", RetroHexChatWeb do
-    pipe_through :help_live
-
-    live_session :help_locale, on_mount: [{RetroHexChatWeb.Live.PutLocale, :default}] do
-      live "/chat/help", HelpLive.Index, :index
-      live "/chat/help/:topic", HelpLive.Index, :show
     end
   end
 
@@ -167,43 +131,6 @@ defmodule RetroHexChatWeb.Router do
     get "/version", VersionController, :show
   end
 
-  # The archive is the only part of a conversation readable from outside, and
-  # it is a controller rather than a LiveView because nothing on it moves and
-  # a robot needs an `etag`. `archive` joins the reserved first segments; it
-  # collides with no locale tag in `config/i18n_locales.exs`.
-  scope "/", RetroHexChatWeb do
-    pipe_through :landing_live
-
-    get "/archive/:channel", ArchiveController, :index
-    get "/archive/:channel/:date", ArchiveController, :day
-  end
-
-  for locale_segment <- @localized_locale_segments do
-    scope "/#{locale_segment}", RetroHexChatWeb do
-      pipe_through :landing_live
-
-      # Registered under every locale segment like any other public route, so
-      # a reader browsing in pt-BR gets the page instead of a router error —
-      # the mistake `/join/:slug` shipped with. The canonical still points at
-      # the unprefixed URL, because a conversation has no translation.
-      get "/archive/:channel", ArchiveController, :index
-      get "/archive/:channel/:date", ArchiveController, :day
-    end
-  end
-
-  for locale_segment <- @localized_locale_segments do
-    live_session_name = :"help_locale_#{String.replace(locale_segment, "-", "_")}"
-
-    scope "/#{locale_segment}", RetroHexChatWeb do
-      pipe_through :help_live
-
-      live_session live_session_name, on_mount: [{RetroHexChatWeb.Live.PutLocale, :default}] do
-        live "/chat/help", HelpLive.Index, :index
-        live "/chat/help/:topic", HelpLive.Index, :show
-      end
-    end
-  end
-
   pipeline :chat_session do
     plug RetroHexChatWeb.Plugs.CheckServerBan
   end
@@ -215,7 +142,7 @@ defmodule RetroHexChatWeb.Router do
     plug RetroHexChatWeb.Plugs.PutBrowserId
     plug RetroHexChatWeb.Plugs.PutLocale
     plug :fetch_live_flash
-    plug :put_root_layout, html: {RetroHexChatWeb.Layouts, :chat}
+    plug :put_root_layout, html: {RetroHexChatWeb.Layouts, :surface}
     plug :protect_from_forgery
     plug :put_secure_browser_headers
   end
@@ -238,10 +165,10 @@ defmodule RetroHexChatWeb.Router do
     # `arcade` is a reserved word inside the game namespace, not a game id.
     get "/play/arcade/:game", ArcadeGameController, :show
 
-    live_session :app_locale, on_mount: [{RetroHexChatWeb.Live.PutLocale, :default}] do
-      live "/connect", ConnectLive
-      live "/chat", ChatLive
-    end
+    # `/chat`, which bookmarks, notifications and share cards still carry:
+    # answered with a permanent redirect to the desktop's home or a channel's
+    # own address.
+    get "/chat", LegacyChatRedirectController, :show
 
     # Surfaces that are not the chat. They carry `Live.Surface`, which the chat
     # deliberately does not: it refuses a missing or banned session the same
@@ -311,7 +238,7 @@ defmodule RetroHexChatWeb.Router do
     plug :fetch_session
     plug RetroHexChatWeb.Plugs.PutLocale
     plug :fetch_live_flash
-    plug :put_root_layout, html: {RetroHexChatWeb.Layouts, :chat}
+    plug :put_root_layout, html: {RetroHexChatWeb.Layouts, :surface}
     plug :protect_from_forgery
     plug :put_secure_browser_headers
     plug :admin_basic_auth

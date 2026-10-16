@@ -70,7 +70,7 @@ defmodule RetroHexChatWeb.NotifyListEntryPointsFeatureTest do
       buddy = "Buddy#{uid()}"
       watcher = "Watch#{uid()}"
 
-      {:ok, _buddy_view, _html} = live(chat_conn(conn, buddy), "/chat")
+      {:ok, _buddy_view, _html} = live(chat_conn(conn, buddy), "/")
       view = connect_user(conn, watcher)
 
       refute has_element?(view, ~s([data-testid="tray-notify-badge"]))
@@ -103,7 +103,7 @@ defmodule RetroHexChatWeb.NotifyListEntryPointsFeatureTest do
   end
 
   defp connect_user(conn, nick) do
-    {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
+    {:ok, view, _html} = live(chat_conn(conn, nick), "/")
     view
   end
 

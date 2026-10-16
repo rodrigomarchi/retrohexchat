@@ -504,6 +504,7 @@ msgstr "セクション"
 #: lib/retro_hex_chat_web/controllers/help_content/ui_overview.html.heex:46
 #: lib/retro_hex_chat_web/controllers/help_content/ui_pinned_window.html.heex:77
 #: lib/retro_hex_chat_web/controllers/help_content/ui_saved_window.html.heex:28
+#: lib/retro_hex_chat_web/controllers/help_content/ui_site_pages.html.heex:66
 #: lib/retro_hex_chat_web/controllers/help_content/ui_start_menu.html.heex:113
 #: lib/retro_hex_chat_web/controllers/help_content/ui_status_tab.html.heex:43
 #: lib/retro_hex_chat_web/controllers/help_content/ui_tab_bar.html.heex:49
@@ -1095,6 +1096,7 @@ msgstr ""
 
 #: lib/retro_hex_chat_web/controllers/help_content/ui_bot_management.html.heex:67
 #: lib/retro_hex_chat_web/controllers/help_content/ui_overview.html.heex:48
+#: lib/retro_hex_chat_web/controllers/help_content/ui_site_pages.html.heex:68
 #: lib/retro_hex_chat_web/controllers/help_content/ui_start_menu.html.heex:116
 #: lib/retro_hex_chat_web/controllers/help_content/ui_toolbar.html.heex:209
 #, elixir-autogen, elixir-format
@@ -1280,6 +1282,7 @@ msgstr "特別メッセージ"
 
 #: lib/retro_hex_chat_web/controllers/help_content/ui_desktop.html.heex:69
 #: lib/retro_hex_chat_web/controllers/help_content/ui_edit_menu.html.heex:86
+#: lib/retro_hex_chat_web/controllers/help_content/ui_site_pages.html.heex:69
 #, elixir-autogen, elixir-format
 msgid "Start Menu"
 msgstr "スタートメニュー"
@@ -2306,13 +2309,6 @@ msgstr "— ニックネームの登録と本人確認、続いてアカウン�
 msgid "— Retro Games, and the Arcade. The Arcade keeps scores against a nickname, so it stays gray until yours is registered and identified."
 msgstr "— レトロゲームとアーケード。アーケードはニックネームごとにスコアを記録するため、ニックネームを登録して本人確認するまでは灰色のままです。"
 
-#: lib/retro_hex_chat_web/controllers/help_content/ui_start_menu.html.heex:80
-#, elixir-autogen, elixir-format
-msgid "— The public pages, the documentation, the design system and the way into the app, plus Back and Forward through the Help viewer's own history. These are real links, so they work with scripting off."
-msgstr ""
-"— "
-"公開ページ、ドキュメント、デザインシステム、アプリへの入口。さらにヘルプビューア自身の履歴をたどる「戻る」と「進む」。いずれも本物のリンクなので、スクリプトを無効にしても動きます。"
-
 #: lib/retro_hex_chat_web/controllers/help_content/ui_start_menu.html.heex:32
 #, elixir-autogen, elixir-format
 msgid "— What the window in front of you is showing: toggling the conversation list and the nicklist, clearing the window, copying the selected text and finding text in it. In the Help viewer the same group switches between Contents, Index and Search."
@@ -2362,15 +2358,6 @@ msgstr "デスクトップのアプリフォルダー"
 msgid "Inside the chat, those folder icons launch the same windows, actions and links as the Start menu. On Landing, Connect, Help and Showcase, Language and Help stay available; the other desktop app folders show a dialog explaining that you need to connect before those desktop apps can run."
 msgstr ""
 "チャット内では、これらのフォルダーアイコンはスタートメニューと同じウィンドウ、操作、リンクを開きます。ランディング、Connect、ヘルプ、ショーケースでは言語とヘルプが引き続き利用でき、その他のアプリフォルダーは、これらのアプリを実行するには接続が必要であることを説明するダイアログを表示します。"
-
-#: lib/retro_hex_chat_web/controllers/help_content/ui_desktop.html.heex:57
-#, elixir-autogen, elixir-format
-msgid "On a desktop viewport, the wallpaper shows app-folder icons for the main app groups: View, Tools, Automation, P2P, Games, Account, Language and Help. Admin and System appear there only inside the chat for admins. Windows and Navigate stay in the Start menu. Double-click a folder icon to open a Windows-style folder window with icons for that group. A single click only selects the desktop icon."
-msgstr ""
-"デスクトップのビューポートでは、壁紙に主要なアプリグループのフォルダーアイコンが表示されます：View、Tools、Automation、P2P、Games、Account、Language、Help。Admin"
-" と System は、チャット内で管理者の場合にのみ表示されます。Windows と Navigate "
-"はスタートメニューに残ります。フォルダーアイコンをダブルクリックすると、そのグループのアイコンが並ぶ Windows "
-"風のフォルダーウィンドウが開きます。シングルクリックではアイコンが選択されるだけです。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/ui_desktop.html.heex:71
 #, elixir-autogen, elixir-format
@@ -3359,7 +3346,7 @@ msgstr "テキストを入力して Enterを押して送信します。"
 #: lib/retro_hex_chat_web/controllers/help_content/formatting_overview.html.heex:72
 #, elixir-autogen, elixir-format
 msgid "Underline"
-msgstr "サイトマップ"
+msgstr "下線"
 
 #: lib/retro_hex_chat_web/controllers/help_content/empty_states.html.heex:22
 #, elixir-autogen, elixir-format
@@ -3505,3 +3492,98 @@ msgstr "コンストラクト、オフィス、ゲーム室で選択した部分
 #, elixir-autogen, elixir-format
 msgid "Turning a piece in the Construct, the office and the game room"
 msgstr "コンストラクト、オフィス、ゲームルームで作品を回す"
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_site_pages.html.heex:47
+#, elixir-autogen, elixir-format
+msgid "A channel's address is /c/ followed by its name — /c/lobby for #lobby — and the address bar shows it while that channel is in front. Copy it to invite somebody; it opens the channel for them, read-only until they sign in."
+msgstr "チャンネルのアドレスは、/c/ に続く名前 — /c/lobby の #lobby — で、アドレスバーは、そのチャネルが前にある間に表示されます。 誰かを招待するためにそれをコピーします。彼らはサインインするまで、チャンネルを開きます。"
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_site_pages.html.heex:53
+#, elixir-autogen, elixir-format
+msgid "A private conversation never gets an address: who you talk to privately is not something a link should carry."
+msgstr "プライベートな会話は決してアドレスを取得しません。個人的に話している人は、リンクを運ぶべきではありません。"
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_site_pages.html.heex:11
+#, elixir-autogen, elixir-format
+msgid "About this site"
+msgstr "このサイトについて"
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_site_pages.html.heex:38
+#, elixir-autogen, elixir-format
+msgid "Addresses"
+msgstr "メールアドレス"
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_site_pages.html.heex:59
+#, elixir-autogen, elixir-format
+msgid "Closing a page window takes you back to the chat, at the address of the conversation in front."
+msgstr "ページのウィンドウを閉じると、チャットの前に会話のアドレスに戻ってきます。"
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_site_pages.html.heex:74
+#, elixir-autogen, elixir-format
+msgid "Connect Window"
+msgstr "接続ウィンドウ"
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_site_pages.html.heex:41
+#, elixir-autogen, elixir-format
+msgid "Each page window has its own address, so the browser's Back and Forward move between the pages you opened, and a bookmark or a shared link opens the same page over the chat."
+msgstr "各ページウィンドウには独自のアドレスがありますので、ブラウザのバックアップとフォワードが開き、ブックマークまたは共有リンクはチャット上で同じページを開きます。"
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_site_pages.html.heex:8
+#, elixir-autogen, elixir-format
+msgid "Finding the Pages"
+msgstr "ページの検索"
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_desktop.html.heex:57
+#, elixir-autogen, elixir-format
+msgid "On a desktop viewport, the wallpaper shows folder icons: About this site, with every page of the site, then the main app groups — View, Tools, Automation, P2P, Games, Account, Language and Help. Admin and System appear there only for admins. Windows and Navigate stay in the Start menu. Double-click a folder icon to open a Windows-style folder window with icons for that group. A single click only selects the desktop icon."
+msgstr "デスクトップビューポートでは、壁紙はフォルダアイコンを表示します。 このサイトについて, サイトのすべてのページで, その後、メインアプリグループ - ビュー, ツール, オートメーション, P2P, ゲーム, アカウント, 言語とヘルプ. 管理者とシステムが管理者のみに表示されます。 Windows と Navigate は、[スタート] メニューに滞在します。 フォルダアイコンをダブルクリックして、そのグループのためのアイコンでWindowsスタイルのフォルダウィンドウを開きます。 シングルクリックでデスクトップアイコンのみを選択します。"
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_site_pages.html.heex:2
+#, elixir-autogen, elixir-format
+msgid "RetroHexChat has one desktop. The chat lives on it, and so does every page of the site: the home, the features, the games, the guides, the public archives and this help each open as a window over the chat, and moving between them never reloads the page — the chat keeps running behind whatever you are reading."
+msgstr "RetroHexChatは1つのデスクトップを持っています。 チャットはそれに住んでおり、そのサイトのすべてのページはホーム、機能、ゲーム、ガイド、公共のアーカイブ、そしてこれはチャット上のウィンドウとして開き、それらの間で移動することは決してページをリロードしません - チャットはあなたが読んでいるものの後ろに実行し続ける。"
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_site_pages.html.heex:17
+#, elixir-autogen, elixir-format
+msgid "Start ▸ Navigate"
+msgstr "開始 ▸ 移動"
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_site_pages.html.heex:30
+#, elixir-autogen, elixir-format
+msgid "The Welcome Window"
+msgstr "ウェルカムウィンドウ"
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_site_pages.html.heex:23
+#, elixir-autogen, elixir-format
+msgid "The taskbar"
+msgstr "タスクバー"
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_site_pages.html.heex:72
+#, elixir-autogen, elixir-format
+msgid "Watching Without an Account"
+msgstr "アカウントなしで監視する"
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_site_pages.html.heex:23
+#, elixir-autogen, elixir-format
+msgid "— An open page has a taskbar button like any other window. Click it to bring the page back; click the chat's button to go back to the conversation."
+msgstr "— 開いたページには、他のウィンドウのようなタスクバーボタンがあります。 クリックしてページを戻します。チャットボタンをクリックすると、会話に戻ります。"
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_site_pages.html.heex:11
+#, elixir-autogen, elixir-format
+msgid "— The first icon on the desktop. Double-click it for a folder with every page, the guides and the documentation."
+msgstr "— デスクトップ上の最初のアイコン。 すべてのページ、ガイド、ドキュメントのフォルダにダブルクリックします。"
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_start_menu.html.heex:80
+#, elixir-autogen, elixir-format
+msgid "— The pages of the site, the documentation and the design system, plus Back and Forward through the Help viewer's own history. Each page opens as a window over the chat, without reloading it. These are real links, so they work with scripting off."
+msgstr "— サイトのページ、ドキュメントと設計システム、およびヘルプビューアの履歴を経由して戻ると転送します。 各ページはチャット上のウィンドウとして開きます。 これらは本当のリンクなので、スクリプトオフで動作します。"
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_site_pages.html.heex:17
+#, elixir-autogen, elixir-format
+msgid "— The same pages from the Start menu, and the Navigate menu of every page window."
+msgstr "— スタートメニューから同じページ、各ページウィンドウのナビゲートメニュー。"
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_site_pages.html.heex:32
+#, elixir-autogen, elixir-format
+msgid "The home page opens the Welcome window over the #lobby channel. Its first button takes you into the lobby and puts the Welcome away on the taskbar; the second opens the Connect window to create an account. After that, the next visit opens the Welcome minimized, so you land straight in the chat."
+msgstr "このページは、#lobbyチャンネル上でウェルカムウィンドウを開きます。 その最初のボタンはロビーに入り、ウェルカムをタスクバーに置きます。 2つ目はコネクトウィンドウを開き、アカウントを作成します。 その後、次の訪問は歓迎の最小化を開いたので、あなたはチャットでまっすぐ着陸します。"

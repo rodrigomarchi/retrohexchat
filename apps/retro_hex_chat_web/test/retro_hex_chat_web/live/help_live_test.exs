@@ -120,11 +120,11 @@ defmodule RetroHexChatWeb.HelpLiveTest do
       assert h1s |> Floki.text() |> String.trim() == "IRC Commands Reference"
     end
 
-    test "uses the help-only LiveView JavaScript bundle", %{conn: conn} do
+    test "uses the desktop's first-paint JavaScript bundle", %{conn: conn} do
       conn = get(conn, "/chat/help/commands-overview")
       html = html_response(conn, 200)
 
-      assert html =~ "/assets/js/help_live.js"
+      assert html =~ "/assets/js/desktop.js"
       refute html =~ "/assets/js/retrohex_content.js"
       refute html =~ "/assets/js/app.js"
     end
@@ -314,11 +314,10 @@ defmodule RetroHexChatWeb.HelpLiveTest do
   end
 
   describe "windowed help desktop (CHM viewer)" do
-    test "renders the desktop shell, window and CHM chrome", %{conn: conn} do
+    test "renders the viewer as a window of the one desktop, with its CHM chrome", %{conn: conn} do
       {:ok, view, _html} = live(conn, "/chat/help")
 
-      assert has_element?(view, "[data-testid=help-desktop]")
-      assert has_element?(view, "[data-testid=help-window]")
+      assert has_element?(view, "#chat-desktop [data-testid=document-window-help]")
       assert has_element?(view, "[data-testid=help-content-pane]")
       assert has_element?(view, "[data-testid=help-search-input]")
 
@@ -328,12 +327,12 @@ defmodule RetroHexChatWeb.HelpLiveTest do
 
       assert has_element?(
                view,
-               ~s([data-testid=help-window] [data-window-menu] [data-testid=help-menu-bar])
+               ~s([data-testid=document-window-help] [data-window-menu] [data-testid=help-menu-bar])
              )
 
       assert has_element?(
                view,
-               ~s([data-testid=help-window] [data-window-status] [data-testid=help-status-topic])
+               ~s([data-testid=document-window-help] [data-window-status] [data-testid=help-status-topic])
              )
     end
 

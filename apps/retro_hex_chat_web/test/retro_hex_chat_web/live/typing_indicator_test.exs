@@ -32,7 +32,7 @@ defmodule RetroHexChatWeb.TypingIndicatorTest do
     test "shows typing indicator when PM partner types", %{conn: conn} do
       nick = "TInd#{uid()}"
       other = "Alice"
-      {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
+      {:ok, view, _html} = live(chat_conn(conn, nick), "/")
 
       open_pm_with(view, nick, other)
 
@@ -46,7 +46,7 @@ defmodule RetroHexChatWeb.TypingIndicatorTest do
     test "hides typing indicator on stop_typing", %{conn: conn} do
       nick = "TStop#{uid()}"
       other = "Bob"
-      {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
+      {:ok, view, _html} = live(chat_conn(conn, nick), "/")
 
       open_pm_with(view, nick, other)
 
@@ -62,7 +62,7 @@ defmodule RetroHexChatWeb.TypingIndicatorTest do
     test "clears typing indicator after timeout", %{conn: conn} do
       nick = "TClr#{uid()}"
       other = "Carol"
-      {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
+      {:ok, view, _html} = live(chat_conn(conn, nick), "/")
 
       open_pm_with(view, nick, other)
 
@@ -81,7 +81,7 @@ defmodule RetroHexChatWeb.TypingIndicatorTest do
     test "does not show typing for non-active PM", %{conn: conn} do
       nick = "TNon#{uid()}"
       other = "Dave"
-      {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
+      {:ok, view, _html} = live(chat_conn(conn, nick), "/")
 
       # Don't open PM with Dave — stay on channel
       send_typing(view, other)
@@ -93,7 +93,7 @@ defmodule RetroHexChatWeb.TypingIndicatorTest do
     test "clears typing indicator on channel switch", %{conn: conn} do
       nick = "TSwC#{uid()}"
       other = "Eve"
-      {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
+      {:ok, view, _html} = live(chat_conn(conn, nick), "/")
 
       open_pm_with(view, nick, other)
 
@@ -111,7 +111,7 @@ defmodule RetroHexChatWeb.TypingIndicatorTest do
     test "does not show own typing", %{conn: conn} do
       nick = "TOwn#{uid()}"
       other = "Frank"
-      {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
+      {:ok, view, _html} = live(chat_conn(conn, nick), "/")
 
       open_pm_with(view, nick, other)
 
@@ -129,7 +129,7 @@ defmodule RetroHexChatWeb.TypingIndicatorTest do
     test "pm_typing reaches the person being typed at", %{conn: conn} do
       nick = "TBc#{uid()}"
       other = "Grace"
-      {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
+      {:ok, view, _html} = live(chat_conn(conn, nick), "/")
 
       open_pm_with(view, nick, other)
 
@@ -143,7 +143,7 @@ defmodule RetroHexChatWeb.TypingIndicatorTest do
     test "pm_stop_typing reaches the person being typed at", %{conn: conn} do
       nick = "TSBc#{uid()}"
       other = "Heidi"
-      {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
+      {:ok, view, _html} = live(chat_conn(conn, nick), "/")
 
       open_pm_with(view, nick, other)
 
@@ -156,7 +156,7 @@ defmodule RetroHexChatWeb.TypingIndicatorTest do
 
     test "pm_typing does nothing without active_pm", %{conn: conn} do
       nick = "TNoPm#{uid()}"
-      {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
+      {:ok, view, _html} = live(chat_conn(conn, nick), "/")
 
       # No PM open — should not crash
       render_hook(view, "pm_typing", %{})

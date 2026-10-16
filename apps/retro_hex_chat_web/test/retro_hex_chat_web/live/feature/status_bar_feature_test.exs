@@ -10,7 +10,7 @@ defmodule RetroHexChatWeb.StatusBarFeatureTest do
   describe "Status Bar E2E" do
     test "renders status bar with channel and connection on chat page", %{conn: conn} do
       nick = "SB1#{uid()}"
-      {:ok, _view, html} = live(chat_conn(conn, nick), "/chat")
+      {:ok, _view, html} = live(chat_conn(conn, nick), "/")
 
       # The bar is the chat window's own, along its bottom edge — the desk has
       # no chrome of its own to hold one.
@@ -19,7 +19,7 @@ defmodule RetroHexChatWeb.StatusBarFeatureTest do
 
     test "the bar carries session state, not identity", %{conn: conn} do
       nick = "SB2#{uid()}"
-      {:ok, _view, html} = live(chat_conn(conn, nick), "/chat")
+      {:ok, _view, html} = live(chat_conn(conn, nick), "/")
 
       # The nickname and the active conversation moved to the window title bar.
       refute html =~ ~s(data-testid="status-bar-account-widget")
@@ -28,14 +28,14 @@ defmodule RetroHexChatWeb.StatusBarFeatureTest do
 
     test "lag display shows initial dash", %{conn: conn} do
       nick = "SB3#{uid()}"
-      {:ok, _view, html} = live(chat_conn(conn, nick), "/chat")
+      {:ok, _view, html} = live(chat_conn(conn, nick), "/")
 
       assert html =~ "id=\"lag-display\""
     end
 
     test "clock lives in the desktop tray, not the status bar", %{conn: conn} do
       nick = "SB4#{uid()}"
-      {:ok, _view, html} = live(chat_conn(conn, nick), "/chat")
+      {:ok, _view, html} = live(chat_conn(conn, nick), "/")
 
       assert html =~ "phx-hook=\"ClockHook\""
       assert html =~ "id=\"chat-tray-clock\""
@@ -44,7 +44,7 @@ defmodule RetroHexChatWeb.StatusBarFeatureTest do
 
     test "lag hook is attached", %{conn: conn} do
       nick = "SB5#{uid()}"
-      {:ok, _view, html} = live(chat_conn(conn, nick), "/chat")
+      {:ok, _view, html} = live(chat_conn(conn, nick), "/")
 
       assert html =~ "phx-hook=\"LagHook\""
       assert html =~ "id=\"lag-display\""
@@ -52,7 +52,7 @@ defmodule RetroHexChatWeb.StatusBarFeatureTest do
 
     test "ping event returns pong with client_time", %{conn: conn} do
       nick = "SB6#{uid()}"
-      {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
+      {:ok, view, _html} = live(chat_conn(conn, nick), "/")
 
       # Sending a ping event should not crash
       html = render_click(view, "ping", %{"client_time" => 1_000_000})
@@ -61,7 +61,7 @@ defmodule RetroHexChatWeb.StatusBarFeatureTest do
 
     test "lag_update event updates lag display", %{conn: conn} do
       nick = "SB7#{uid()}"
-      {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
+      {:ok, view, _html} = live(chat_conn(conn, nick), "/")
 
       html = render_click(view, "lag_update", %{"lag_ms" => 45})
       assert html =~ "45ms"
@@ -69,7 +69,7 @@ defmodule RetroHexChatWeb.StatusBarFeatureTest do
 
     test "lag_update with high value shows warning class", %{conn: conn} do
       nick = "SB8#{uid()}"
-      {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
+      {:ok, view, _html} = live(chat_conn(conn, nick), "/")
 
       html = render_click(view, "lag_update", %{"lag_ms" => 350})
       assert html =~ "350ms"
@@ -78,7 +78,7 @@ defmodule RetroHexChatWeb.StatusBarFeatureTest do
 
     test "lag_update with null shows timeout", %{conn: conn} do
       nick = "SB9#{uid()}"
-      {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
+      {:ok, view, _html} = live(chat_conn(conn, nick), "/")
 
       html = render_click(view, "lag_update", %{"lag_ms" => nil})
       assert html =~ "text-error"
@@ -86,7 +86,7 @@ defmodule RetroHexChatWeb.StatusBarFeatureTest do
 
     test "connection status component is rendered", %{conn: conn} do
       nick = "SBA#{uid()}"
-      {:ok, _view, html} = live(chat_conn(conn, nick), "/chat")
+      {:ok, _view, html} = live(chat_conn(conn, nick), "/")
 
       assert html =~ "data-window-status"
     end

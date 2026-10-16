@@ -20,7 +20,7 @@ defmodule RetroHexChatWeb.ChatLive.ReadMarkersTest do
     {:ok, _} = register(other)
     channel = "#mark#{uid()}"
 
-    {:ok, view, _html} = ctx.conn |> chat_conn(nick) |> live(~p"/chat")
+    {:ok, view, _html} = ctx.conn |> chat_conn(nick) |> live("/")
     submit_command_sync(view, "/join #{channel}")
     {:ok, _} = Server.join(channel, other)
 

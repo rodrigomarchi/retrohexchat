@@ -261,7 +261,7 @@ defmodule RetroHexChatWeb.AdminWindowsFeatureTest do
     end
 
     test "a non-admin is refused, and a forged window_open renders nothing", %{conn: conn} do
-      {:ok, view, _html} = live(chat_conn(conn, "Rando#{uid()}"), "/chat")
+      {:ok, view, _html} = live(chat_conn(conn, "Rando#{uid()}"), "/")
 
       # The refusal is bubbled to the chat surface, so it lands on the render
       # after the click rather than in the click's own result.
@@ -315,7 +315,7 @@ defmodule RetroHexChatWeb.AdminWindowsFeatureTest do
   end
 
   defp connect_admin(conn) do
-    {:ok, view, _html} = live(chat_conn(conn, "TestAdmin", pre_identified: true), "/chat")
+    {:ok, view, _html} = live(chat_conn(conn, "TestAdmin", pre_identified: true), "/")
     view
   end
 

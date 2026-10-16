@@ -198,7 +198,7 @@ defmodule RetroHexChatWeb.ChatLive.MultiSessionTest do
     {:ok, view, _html} =
       conn
       |> chat_conn(nickname, browser_id: browser_id, pre_identified: true)
-      |> live(~p"/chat")
+      |> live("/")
 
     view
   end

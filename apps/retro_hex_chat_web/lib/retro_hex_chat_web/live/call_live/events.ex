@@ -653,8 +653,22 @@ defmodule RetroHexChatWeb.CallLive.Events do
 
   def leave(socket, reason) do
     socket
-    |> assign(group_call_prejoin: nil, left_reason: reason)
+    |> assign(
+      group_call_prejoin: nil,
+      left_reason: stronger(socket.assigns[:left_reason], reason)
+    )
     |> Surface.close()
+  end
+
+  # A ban and the conference removal it causes arrive as two messages, in
+  # either order. The page says the strongest of them: being banned from the
+  # channel explains being removed from its conference, never the other way.
+  @reason_rank %{"channel_ban" => 3, "channel_kick" => 2, "kicked" => 1}
+
+  defp stronger(current, reason) do
+    if Map.get(@reason_rank, current, 0) > Map.get(@reason_rank, reason, 0),
+      do: current,
+      else: reason
   end
 
   @doc """

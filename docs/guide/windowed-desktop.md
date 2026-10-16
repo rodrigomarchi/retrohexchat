@@ -68,6 +68,30 @@ draw it — never a hand-written anchor, because the shape has two states now an
 the wrong one is destructive (a second tab of a P2P session *moves the session
 into it*).
 
+### 7.0.1 Document windows: the pages of the site
+
+Every page of the site opens as a **document window** over the chat
+(`Site.DocumentWindow`), one per slot — `doc-site`, `doc-help`, `doc-archive`,
+`doc-join`, `connect` (`Site.Registry`). A page reuses its slot's window, the way a
+browser window shows one page at a time; help and sign-in have their own, so
+opening them does not close the page underneath.
+
+- **The address is the window in front.** The manager reports a focus change
+  (`window_focused`, never during a command it was given), and `Site.Documents`
+  patches to that window's address with `replace`; closing a document window
+  hands the address to the window behind it, or to the chat's.
+- **The server names the window in front on the first render**
+  (`data-window-initial-focus`), and the manager focuses it on mount without
+  reporting it back as the reader's choice.
+- **A page's sections are not windows.** `document_section/1` keeps each former
+  window's title, ids and status line as a section of the one document, and the
+  strip at the top (`document_contents/1`) links them.
+- **The Welcome** (the home's document) opens minimized for a visitor this
+  browser has welcomed before (`lib/site/welcome.js`) — the same HTML for
+  everybody, a crawler included.
+- A new page is a `Site.Page` module, an entry in `Site.Registry` and a route in
+  the `:desktop` live_session; nothing in the chat's template changes.
+
 ### 7.1 Chat: managed windows (server-owned lifecycle)
 
 An island whose hooks or data channels must outlive a close is kept **always mounted** (rule

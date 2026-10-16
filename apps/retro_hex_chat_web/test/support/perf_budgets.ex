@@ -36,7 +36,9 @@ defmodule RetroHexChatWeb.PerfBudgets do
   The largest a surface's dead render may be, in bytes of HTML.
   """
   @spec html_bytes(atom()) :: pos_integer()
-  def html_bytes(:connect), do: 132_000
+  # The sign-in window over the chat's frame: 84_675 B raw and 904 elements
+  # measured on 2026-10-16.
+  def html_bytes(:connect), do: 93_000
   # 243_104 B raw at 297 topics, measured 2026-10-02, down from 303_678 B on
   # 2026-09-28 — the page is unchanged; what left was repeated `class` attributes,
   # now project classes in the stylesheet. The index still draws a row per topic
@@ -46,11 +48,11 @@ defmodule RetroHexChatWeb.PerfBudgets do
   # show, not what it may weigh — and the element count, not this, is the tighter
   # guard on that.
   def html_bytes(:help), do: 265_000
-  # /chat's disconnected render is the boot overlay and the dialog mount points:
-  # the desktop under it is invisible and arrives with the connected render.
-  # 92_554 B raw measured, but 7_599 B gzipped — the dialog chrome repeats, so
-  # the wire cost fell from 57_712 B to 7_599 B.
-  def html_bytes(:chat), do: 105_000
+  # A member's desktop before the chat is live: its chrome and the chat window
+  # saying it is opening. The chat's body, menus, folders and dialogs arrive
+  # with the connected render. 50_174 B raw and 530 elements measured on
+  # 2026-10-16, down from 92_554 B when the dialogs' mount points came first.
+  def html_bytes(:chat), do: 56_000
   # The first surface that is not the chat. 39_284 B raw / 3_566 B gzip and 267
   # elements measured on 2026-08-28, with every icon a `<use>` reference. It is
   # this small because it carries no taskbar and no Start menu — whether a
@@ -77,28 +79,44 @@ defmodule RetroHexChatWeb.PerfBudgets do
   # camera preview and a roster at once; the session console itself only exists
   # after the host presses Start.
   def html_bytes(:p2p), do: 30_000
-  # The public card a shared link resolves to, and the only page here a stranger
-  # reaches with no session. 9_291 B raw / 2_936 B gzip and 99 elements measured
-  # on 2026-09-01 — the smallest of the lot, because it rides the landing
-  # pipeline rather than the app one: one window, one card, no taskbar, no Start
-  # menu, and none of `app.js`. That is the number to defend if this page ever
-  # starts wanting more, since it is the whole first impression a link makes.
-  def html_bytes(:join), do: 11_000
+  # The public card a shared link resolves to, opened as a window of the one
+  # desktop over the chat it invites into. About 86_000 B raw and 946 elements
+  # measured on 2026-10-16: the card is the small part, and the rest is the
+  # desktop a stranger lands on and stays on — the chat's frame, the taskbar
+  # and a Start menu of the pages, the languages and the help.
+  def html_bytes(:join), do: 95_000
+  # The home: the Welcome window, with every section the landing page carried,
+  # over the chat's frame. 155_420 B raw and 1_697 elements measured on
+  # 2026-10-16, against 229_594 B and about 2_300 elements for the landing page
+  # it replaced — the desktop's own folders, menus and dialogs arrive with the
+  # chat, not with the page. The Start menu's groups are there from the first
+  # paint, empty, so the menu does not rearrange itself when the chat starts.
+  def html_bytes(:home), do: 171_000
+  # The largest page of the site in its document window — `/features`, 140_513 B
+  # raw and 1_638 elements measured on 2026-10-16 (235_526 B as a page of its
+  # own). Every other page fits under it.
+  def html_bytes(:page), do: 155_000
+  # A channel's address for a visitor: the desktop with the chat opening in it.
+  # 50_534 B raw and 525 elements measured on 2026-10-16.
+  def html_bytes(:channel), do: 56_000
 
   @doc """
   The most elements a surface's dead render may contain.
   """
   @spec dom_nodes(atom()) :: pos_integer()
-  def dom_nodes(:connect), do: 1_260
+  def dom_nodes(:connect), do: 995
   # 3_030 measured at 297 topics on 2026-09-28. This is the half that costs
   # main-thread time, and the tighter of the two.
   def dom_nodes(:help), do: 3_200
-  def dom_nodes(:chat), do: 600
+  def dom_nodes(:chat), do: 580
   def dom_nodes(:play), do: 300
   def dom_nodes(:call), do: 260
   def dom_nodes(:space), do: 120
   def dom_nodes(:p2p), do: 270
-  def dom_nodes(:join), do: 110
+  def dom_nodes(:join), do: 1_040
+  def dom_nodes(:home), do: 1_870
+  def dom_nodes(:page), do: 1_800
+  def dom_nodes(:channel), do: 580
 
   @doc """
   The longest a connected mount may block before it renders.

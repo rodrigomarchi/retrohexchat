@@ -174,7 +174,7 @@ defmodule RetroHexChatWeb.Live.Surface do
   @doc """
   The surface is finished and should leave the screen.
 
-  Leaving is **not** navigating to `/chat`. Mounting the chat is announcing a
+  Leaving is **not** navigating to the desktop. Mounting the chat is announcing a
   chat session, and a chat session announces a takeover — so going "back" by
   navigation ended the chat this person already had open, in another tab, that
   they never asked to leave. Measured: cancelling an antechamber left the

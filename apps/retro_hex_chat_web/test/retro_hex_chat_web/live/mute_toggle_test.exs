@@ -9,7 +9,7 @@ defmodule RetroHexChatWeb.MuteToggleTest do
   describe "mute toggle in the system tray" do
     test "mute toggle button renders in the taskbar tray", %{conn: conn} do
       nick = "Mute#{uid()}"
-      {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
+      {:ok, view, _html} = live(chat_conn(conn, nick), "/")
 
       html = render(view)
       assert html =~ "data-testid=\"tray-mute-toggle\""
@@ -18,7 +18,7 @@ defmodule RetroHexChatWeb.MuteToggleTest do
 
     test "clicking mute toggles to muted state", %{conn: conn} do
       nick = "Mute#{uid()}"
-      {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
+      {:ok, view, _html} = live(chat_conn(conn, nick), "/")
 
       view
       |> element(~s([data-testid="tray-mute-toggle"]))
@@ -38,7 +38,7 @@ defmodule RetroHexChatWeb.MuteToggleTest do
 
     test "toggle_mute pushes backend mute state to client", %{conn: conn} do
       nick = "Mute#{uid()}"
-      {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
+      {:ok, view, _html} = live(chat_conn(conn, nick), "/")
 
       view
       |> element(~s([data-testid="tray-mute-toggle"]))
@@ -53,7 +53,7 @@ defmodule RetroHexChatWeb.MuteToggleTest do
 
       assert :ok = SoundSettings.save(nick, muted_settings(true))
 
-      {:ok, view, html} = live(chat_conn(conn, nick, pre_identified: true), "/chat")
+      {:ok, view, html} = live(chat_conn(conn, nick, pre_identified: true), "/")
 
       assert assigns(view).muted == true
       assert html =~ ~s(data-muted="true")
@@ -65,7 +65,7 @@ defmodule RetroHexChatWeb.MuteToggleTest do
       nick = "MuteS#{uid()}"
       insert_registered_nick(nick)
 
-      {:ok, view, _html} = live(chat_conn(conn, nick, pre_identified: true), "/chat")
+      {:ok, view, _html} = live(chat_conn(conn, nick, pre_identified: true), "/")
 
       view
       |> element(~s([data-testid="tray-mute-toggle"]))
@@ -90,7 +90,7 @@ defmodule RetroHexChatWeb.MuteToggleTest do
 
     test "guest mute state stays in the LiveView process only", %{conn: conn} do
       nick = "MuteG#{uid()}"
-      {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
+      {:ok, view, _html} = live(chat_conn(conn, nick), "/")
 
       view
       |> element(~s([data-testid="tray-mute-toggle"]))
@@ -105,7 +105,7 @@ defmodule RetroHexChatWeb.MuteToggleTest do
       nick = "MuteD#{uid()}"
       insert_registered_nick(nick)
 
-      {:ok, view, _html} = live(chat_conn(conn, nick, pre_identified: true), "/chat")
+      {:ok, view, _html} = live(chat_conn(conn, nick, pre_identified: true), "/")
 
       render_click(view, "open_sound_settings_dialog", %{})
 
@@ -127,7 +127,7 @@ defmodule RetroHexChatWeb.MuteToggleTest do
 
     test "legacy mute_state_sync event is ignored", %{conn: conn} do
       nick = "Mute#{uid()}"
-      {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
+      {:ok, view, _html} = live(chat_conn(conn, nick), "/")
 
       render_hook(view, "mute_state_sync", %{"muted" => true})
 

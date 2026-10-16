@@ -24,7 +24,7 @@ defmodule RetroHexChatWeb.ChatLive.PushSubscriptionTest do
 
     nick = "Pusher#{uid()}"
     {:ok, _} = register(nick)
-    {:ok, view, html} = ctx.conn |> chat_conn(nick) |> live(~p"/chat")
+    {:ok, view, html} = ctx.conn |> chat_conn(nick) |> live("/")
 
     %{view: view, html: html, nick: nick}
   end
@@ -65,7 +65,7 @@ defmodule RetroHexChatWeb.ChatLive.PushSubscriptionTest do
 
       nick = "NoPush#{uid()}"
       {:ok, _} = register(nick)
-      {:ok, view, html} = ctx.conn |> chat_conn(nick) |> live(~p"/chat")
+      {:ok, view, html} = ctx.conn |> chat_conn(nick) |> live("/")
 
       %{view: view, html: html, nick: nick}
     end

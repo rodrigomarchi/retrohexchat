@@ -30,6 +30,7 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.Channel do
   alias RetroHexChatWeb.ChatLive.Helpers.Persistence
   alias RetroHexChatWeb.ChatLive.Helpers.Presence, as: PresenceHelpers
   alias RetroHexChatWeb.ChatLive.Helpers.Session, as: SessionHelpers
+  alias RetroHexChatWeb.Site.Address
 
   @spec join_channel(Phoenix.LiveView.Socket.t(), String.t(), Session.t(), String.t() | nil) ::
           Phoenix.LiveView.Socket.t()
@@ -105,6 +106,7 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.Channel do
     |> push_event("channel_joined_flash", %{channel: channel_name})
     |> SessionHelpers.push_reconnect_state()
     |> ConversationsReadModel.load_popular_channels()
+    |> Address.sync()
   end
 
   defp setup_joined_channel(socket, channel_name, session, :background) do

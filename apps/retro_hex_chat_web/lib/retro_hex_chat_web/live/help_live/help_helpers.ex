@@ -2,7 +2,6 @@ defmodule RetroHexChatWeb.HelpLive.HelpHelpers do
   @moduledoc false
   use Phoenix.Component
 
-  defdelegate help_layout(assigns), to: RetroHexChatWeb.Components.UI.Help.HelpViewer
   defdelegate help_topic(assigns), to: RetroHexChatWeb.Components.UI.Help.HelpViewer
   defdelegate help_empty_state(assigns), to: RetroHexChatWeb.Components.UI.Help.HelpViewer
   defdelegate see_also_section(assigns), to: RetroHexChatWeb.Components.UI.Help.HelpViewer

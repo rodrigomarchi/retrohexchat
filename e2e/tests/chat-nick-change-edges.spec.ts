@@ -8,6 +8,7 @@
 import { Browser, BrowserContext, Page, expect, test } from "@playwright/test";
 import { ConnectPage, uniqueNickname } from "../pages/ConnectPage";
 import { ChatPage } from "../pages/ChatPage";
+import { CHAT_URL } from "../helpers/urls";
 
 type TestUser = {
   chat: ChatPage;
@@ -77,7 +78,7 @@ test.describe("Nick change edge cases", () => {
       await alice.chat.expectNickInList(alice.nick);
       await alice.chat.expectNickInList(bob.nick);
 
-      await expect(bob.chat.page).toHaveURL(/\/chat(\?.*)?$/);
+      await expect(bob.chat.page).toHaveURL(CHAT_URL);
       await bob.chat.expectTabVisible(channel);
       await bob.chat.expectNickInList(bob.nick);
       await bob.chat.expectNickInList(alice.nick);

@@ -47,15 +47,15 @@ export function trafficKind(win) {
  * route instead of by every distinct URL.
  *
  * @param {string} pathname - `location.pathname`.
- * @returns {string} The view name (e.g. "landing", "chat", "help").
+ * @returns {string} The view name (e.g. "home", "channel", "help").
  */
 export function viewNameForPath(pathname) {
   let path = (pathname || "/").replace(/\/+$/, "");
   path = path.replace(/^\/[a-z]{2}(-[A-Za-z]{2,4})?(?=\/|$)/, "");
 
-  if (path === "" || path === "/") return "landing";
+  if (path === "" || path === "/") return "home";
   if (path === "/connect") return "connect";
-  if (path === "/chat") return "chat";
+  if (path.startsWith("/c/")) return "channel";
   if (path === "/chat/help" || path.startsWith("/chat/help/")) return "help";
 
   return path

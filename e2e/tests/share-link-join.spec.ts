@@ -19,6 +19,7 @@ import {
   openModerationMenu,
 } from "../helpers/groupCallUsers";
 import { shot } from "../helpers/screenshots";
+import { channelUrl } from "../helpers/urls";
 
 const PASSWORD = "testpass123";
 
@@ -51,7 +52,7 @@ test("a shared link brings a stranger all the way in (K4)", async ({
 
     // Following it goes to connect carrying where to come back to.
     await strangerTab.getByTestId("join-enter").click();
-    await expect(strangerTab).toHaveURL(/\/connect\?return_to=/);
+    await expect(strangerTab).toHaveURL(/\/connect\?.*return_to=/);
 
     const strangerConnect = new ConnectPage(strangerTab);
     await strangerConnect.enterNickname(uniqueNickname());
@@ -191,10 +192,13 @@ test("a channel invite shows the room before a stranger commits (K11)", async ({
     await sharerTab
       .getByTestId("context-menu-item-ctx_conversations_copy_invite")
       .click();
+    // The link is made on the server and copied when it comes back.
+    await expect
+      .poll(() => sharerTab.evaluate(() => navigator.clipboard.readText()))
+      .toContain("/join/");
     const shareUrl = await sharerTab.evaluate(() =>
       navigator.clipboard.readText(),
     );
-    expect(shareUrl).toContain("/join/");
 
     // A different browser with no cookie: the card is the whole pitch.
     await strangerTab.goto(new URL(shareUrl).pathname);
@@ -207,20 +211,25 @@ test("a channel invite shows the room before a stranger commits (K11)", async ({
     );
     await shot(strangerTab.getByTestId("join-card"), "channel-invite-card");
 
-    // Connecting lands back on the card, not in the chat: the address the
-    // stranger was sent is the one they came for, and the way in is still the
-    // card's own button.
+    // A channel can be watched without an account: the card's way in opens
+    // the channel itself, read-only, at its own address. Writing asks for an
+    // account, and registering comes back to the same channel as a member.
     await strangerTab.getByTestId("join-enter").click();
+    await expect(strangerTab).toHaveURL(channelUrl(channel));
+    await strangerTab.getByTestId("visitor-composer").click();
+    await expect(
+      strangerTab.getByTestId("document-window-connect"),
+    ).toBeVisible();
+
     const strangerConnect = new ConnectPage(strangerTab);
     await strangerConnect.enterNickname(uniqueNickname("stranger"));
     await strangerConnect.registerWithPassword(PASSWORD);
 
-    await expect(strangerTab).toHaveURL(new RegExp(`/join/`));
-    await strangerTab.getByTestId("join-enter").click();
-
     const strangerChat = new ChatPage(strangerTab);
     await strangerChat.waitUntilConnected();
+    await expect(strangerTab).toHaveURL(channelUrl(channel));
     await strangerChat.expectTabVisible(channel);
+    await expect(strangerTab.getByTestId("visitor-composer")).toHaveCount(0);
     await shot(strangerTab, "channel-invite-landed");
   } finally {
     await sharerContext.close();

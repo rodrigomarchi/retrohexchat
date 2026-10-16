@@ -9,6 +9,9 @@ defmodule RetroHexChatWeb.App.Paths do
   `/chat/session/clear` is a string nobody would think to keep in step.
   """
 
+  alias RetroHexChatWeb.I18n
+  alias RetroHexChatWeb.SEO
+  alias RetroHexChatWeb.Site.Address
   alias RetroHexChatWeb.SpaceRef
 
   use Phoenix.VerifiedRoutes,
@@ -17,14 +20,10 @@ defmodule RetroHexChatWeb.App.Paths do
     statics: RetroHexChatWeb.static_paths()
 
   @spec connect_path(Phoenix.LiveView.Socket.t()) :: String.t()
-  def connect_path(_socket) do
-    ~p"/connect"
-  end
+  def connect_path(_socket), do: localized(~p"/connect")
 
   @spec connect_path(Phoenix.LiveView.Socket.t(), String.t()) :: String.t()
-  def connect_path(_socket, reason) do
-    ~p"/connect?reason=#{reason}"
-  end
+  def connect_path(_socket, reason), do: localized(~p"/connect?reason=#{reason}")
 
   @doc """
   Where every surface's way back points.
@@ -35,25 +34,21 @@ defmodule RetroHexChatWeb.App.Paths do
   supplied is a signature that describes nothing — and Dialyzer said so.
   """
   @spec chat_path() :: String.t()
-  def chat_path do
-    ~p"/chat"
-  end
+  def chat_path, do: localized("/")
 
   @doc """
-  The chat, opened on a named channel.
-
-  `/chat?join=#retro` is how the connect flow already lands somebody in a
-  channel, and it is the only address a channel has: the chat opens one as a
-  tab, not as a page. An ended call's card uses it, which is what keeps that
-  card from being a dead end.
+  The chat, opened on a named channel: `/c/retro` for `#retro`. An ended
+  call's card uses it, which is what keeps that card from being a dead end.
   """
   @spec chat_path(String.t()) :: String.t()
-  def chat_path(channel) when is_binary(channel) and channel != "", do: ~p"/chat?join=#{channel}"
+  def chat_path(channel) when is_binary(channel) and channel != "",
+    do: localized(Address.channel_path(channel))
+
   def chat_path(_channel), do: chat_path()
 
   @doc """
-  The chat as a visitor sees it, with the sign-in window already open saying
-  `feature` needs an account. Signing in there returns to `return_to`.
+  The sign-in window on the desktop, saying `feature` needs an account.
+  Signing in there returns to `return_to`.
 
   Where every entry point sends somebody without an account — a game, a call,
   a space, the arcade — so the explanation and the way back are the same
@@ -61,11 +56,15 @@ defmodule RetroHexChatWeb.App.Paths do
   """
   @spec visitor_sign_in_path(atom(), String.t()) :: String.t()
   def visitor_sign_in_path(feature, return_to) when is_atom(feature) and is_binary(return_to),
-    do: ~p"/chat?#{[signup: feature, return_to: return_to]}"
+    do: localized(~p"/connect?#{[signup: feature, return_to: return_to]}")
 
-  @doc "The chat with the solo arcade open on one game, by its catalogue id."
+  @doc "The desktop with the solo arcade open on one game, by its catalogue id."
   @spec chat_arcade_path(String.t()) :: String.t()
-  def chat_arcade_path(game_id), do: ~p"/chat?arcade=#{game_id}"
+  def chat_arcade_path(game_id), do: localized(~p"/?arcade=#{game_id}")
+
+  @doc "`path` in the language of the current reader."
+  @spec localized(String.t()) :: String.t()
+  def localized(path), do: SEO.localized_path(path, I18n.current_locale())
 
   @doc """
   A channel's public archive. The `#` cannot travel in a URL — everything

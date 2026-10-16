@@ -183,7 +183,8 @@ get fresh timers with the *remaining* duration.
 - **Nicknames are the only durable identity key in chat** (guests have no persistent user
   ID). On nick change, the LiveView unsubscribes/resubscribes the `user:` inbox; DB records
   keep the nickname as-sent (immutable), and history queries must union old+new nicknames.
-- **A visitor watches; it never joins.** `/chat` without a session is the same LiveView in
+- **A visitor watches; it never joins.** The desktop without a session — the home `/`, a
+  channel's `/c/<name>`, any page of the site — is the same LiveView in
   visitor mode (`ChatLive.Visitor`): a `GuestNNNN` name, a `Channels.Server.watch/3` that is
   monitored and listed apart from members, and a `:handle_event` gate attached before every
   other hook — reading passes, everything else opens the sign-in window. A live component
@@ -312,7 +313,7 @@ get fresh timers with the *remaining* duration.
   hook roots or `data-*` contracts consumed by JS/tests.
 - **Shared screens stay composed after refactors.** Connect, Help, Landing and Chat shell chrome
   follow the same rule as dialogs: desktop shells, taskbars, menu bars, toolbars, empty states,
-  cards and rich rows live in UI modules. Adapters such as `LandingHelpers` or
+  cards and rich rows live in UI modules. Adapters such as `Site.Pages.Helpers` or
   `HelpLive.HelpHelpers` may remain as import-compatible bridges, but they must delegate visual
   work instead of owning HEEx markup.
 - **Keep route verification at the edge.** UI components may render simple fixed paths, but when a
@@ -538,8 +539,10 @@ There is exactly ONE hook registration pattern; do not reintroduce local choice 
 - **One registration path.** A LiveSocket entrypoint imports a single `build*Hooks()` function
   from `assets/js/hooks/*_hooks.js` and passes the returned map to `LiveSocket(..., {hooks})`.
   No entrypoint may import individual hook implementations or define an inline hooks object.
-  `app.js` → `buildHooks()` (`hooks/registry.js`); `help_live.js` → `buildHelpHooks()`;
-  `retrohex_content.js` → `buildShowcaseHooks()`.
+  `app.js` (the surfaces) and the desktop's lazy `lib/system/live_boot.js` chunk →
+  `buildHooks()` (`hooks/registry.js`); `retrohex_content.js` → `buildShowcaseHooks()`.
+  `desktop.js`, the desktop's first-paint entry, has no LiveSocket of its own: it mounts the
+  window manager and starts `live_boot` when `lib/site/boot_policy.js` says so.
 - **Critical vs lazy classification is mandatory.** Critical hooks (chat shell input, keyboard,
   autocomplete, scroll, menu/toolbar, conversations, connection/lag, sound/title/notification,
   context-menu base) are imported eagerly in `critical_hooks.js` — **a critical hook must never
@@ -654,11 +657,11 @@ a move that renames one is caught before commit.
   in `<head>` alternates, footer language links, or the sitemap. Query-locale routes
   (`/locale/:locale?return_to=…`) exist solely for in-app user-initiated language switching.
 - **Routes: explicit localized scopes per enabled non-default locale, never a catch-all
-  `/:locale`** — a catch-all would capture app routes (`/connect`, `/chat`, `/lobby/:token`,
+  `/:locale`** — a catch-all would capture app routes (`/connect`, `/c/:channel`, `/lobby/:token`,
   `/showcase`). `PutLocale` resolves
   the locale from route params/assigns before the session / Accept-Language fallback.
-- **The reserved first segments may not collide with a locale tag**: `connect`,
-  `chat`, `join`, `call`, `space`, `p2p`, `play`. Adding a surface adds one, and the check is
+- **The reserved first segments may not collide with a locale tag**: `c`, `connect`,
+  `chat`, `join`, `archive`, `games`, `call`, `space`, `p2p`, `play` (`Site.RegistryTest`). Adding a surface adds one, and the check is
   against `config/i18n_locales.exs`, which is the only list of locale segments.
 - **Every *public* route goes inside the locale loop, not only in the unprefixed scope.**
   `/join/:slug` shipped registered once and answered `NoRouteError` on `/pt-BR/join/…`. Sixteen
@@ -672,21 +675,36 @@ a move that renames one is caught before commit.
 - **hreflang is reciprocal.** Sitemap and `<head>` alternates list every locale version of a
   page reciprocally; `x-default` points at the English unprefixed URL. Canonical URLs on
   localized pages are self-referencing clean paths.
-- **Public pages avoid the full app bundle.** Prefer server-rendered / CSS-first behavior on
-  landing and help pages; only actual app pages load `app.js`.
+- **Every public address is a window of the one desktop.** `DesktopLive` answers `/`, every
+  page of the site, help, the archive, `/join`, `/connect` and `/c/:channel` in one
+  `live_session`; `Site.Registry` maps the route's action to a `Site.Page`, and
+  `Site.Documents` opens it as a document window over the chat — one window per slot (site,
+  help, archive, join, connect), focused on the first render. Moving between pages is a patch;
+  the window in front owns the address (`window_focused` replaces it, closing hands it to the
+  window behind), and a channel switched in front of the reader takes `/c/<name>`
+  (`Site.Address.sync/1`). A private conversation never gets an address.
+- **The first response carries the page whole and the chat only as a frame.** Everything that
+  acts on a live chat — its body, menus, desktop folders, the full Start menu, the dialogs —
+  renders under `@live_ready`, which is why a page of the site weighs less than the landing
+  page it replaced (`PerfBudgets` `:home`, `:page`, `:channel`). `desktop.js` (≤ 90 kb) starts the
+  LiveSocket at once where the address needs it (`data-boot="now"`: a channel, sign-in, an
+  invitation, a member), otherwise on the first interaction or idle — never by itself for a
+  crawler. A patch link or form used while it starts is held and replayed.
 - **A change to a public page proves it took nothing away from what is indexed.** Snapshot the
   pages with the old code running, again with the new, and compare:
   `make seo.snapshot BASE=<old> OUT=tmp/seo/before`, the same into `tmp/seo/after`, then
   `make seo.compare`. It fails when a title, description, canonical, hreflang, Open Graph,
   Twitter tag, JSON-LD or h1 changed, or when visible text was lost; added text is reported, not
-  failed. Prefer adding to rewriting: text a search engine already ranks is removed only as a
+  failed. The desktop's furniture — Start menu, taskbar, icons, folders, clock, the sign-in
+  form — is not page text and is not compared. `make seo.snapshot.all` sweeps every sitemap URL
+  (`RESUME=1` continues an interrupted sweep). Prefer adding to rewriting: text a search engine already ranks is removed only as a
   deliberate, measured decision.
 - **Every internal link on a public page goes through `PublicPages.localized_path/1`.** A
   literal `/chat/help/…` on a localized page sends the crawler to the English version, and the
   localized one is then reachable only from the sitemap: Bing had never seen most localized help
   topics while the topic tree linked all 300 of them in English. Only the language menu (with
   `hreflang`) and the single-address surfaces — the app, the showcase, the archive — link
-  unprefixed; `landing_controller_test` and `help_live_test` fail on any other.
+  unprefixed; `Site.PagesTest` and `help_live_test` fail on any other.
 - **A help topic's first HTML carries the topic, not the whole help.** Before the socket
   connects, the contents tree lists only the open category's topics (the help home keeps all of
   them, one step from every topic), the topic's description opens the page unless the template's
@@ -712,8 +730,8 @@ a move that renames one is caught before commit.
   game's help topic. Duplicated paragraphs leave a search engine to pick one URL, quite possibly
   the wrong one.
 - **The public pages are one list**, `RetroHexChatWeb.PublicPages`: the menus, the sitemap and each
-  page's own path read it. A page that is not on it — a game, an archive day — passes its own
-  `current_path` to `landing_layout/1`, or its language links lead to the wrong page.
+  page's own path read it. A page that is not on it — a game, an archive day — loads its own
+  `canonical_path`, or its language links lead to the wrong page.
 
 ---
 

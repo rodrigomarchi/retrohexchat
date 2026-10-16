@@ -1,6 +1,6 @@
 /**
  * @section Auth And Lifecycle
- * @flow B [done] Register a nick, disconnect, reconnect with correct password lands on `/chat`
+ * @flow B [done] Register a nick, disconnect, reconnect with correct password lands in the chat
  * @flow D [done] Returning user wrong password shows error; retry with correct password works
  *
  * These @flow lines are the source of truth for e2e/TEST_CATALOG.md.
@@ -9,9 +9,10 @@
 import { test, expect } from "@playwright/test";
 import { ConnectPage, uniqueNickname } from "../pages/ConnectPage";
 import { ChatPage } from "../pages/ChatPage";
+import { CHAT_URL } from "../helpers/urls";
 
 test.describe("Returning user (registered nick)", () => {
-  test("register, log out, reconnect with correct password lands on /chat (B)", async ({
+  test("register, log out, reconnect with correct password lands in the chat (B)", async ({
     page,
   }) => {
     const connect = new ConnectPage(page);
@@ -33,7 +34,7 @@ test.describe("Returning user (registered nick)", () => {
     await connect.enterNickname(nick);
     await connect.authenticateWithPassword(pw);
 
-    await expect(page).toHaveURL(/\/chat(\?.*)?$/);
+    await expect(page).toHaveURL(CHAT_URL);
     // The tab is named after the conversation on screen and this user's nick.
     await expect(page).toHaveTitle(new RegExp(`\\[${nick}\\]$`));
   });
@@ -67,6 +68,6 @@ test.describe("Returning user (registered nick)", () => {
     await connect.authPasswordInput.fill(pw);
     await connect.authButton.click();
 
-    await expect(page).toHaveURL(/\/chat(\?.*)?$/);
+    await expect(page).toHaveURL(CHAT_URL);
   });
 });

@@ -11,7 +11,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 
-#: lib/retro_hex_chat_web/live/help_live/index.ex:149
+#: lib/retro_hex_chat_web/site/pages/help.ex:91
 #, elixir-autogen, elixir-format
 msgid "%{topic} — RetroHexChat Help"
 msgstr "%{topic} — Aide RetroHexChat"
@@ -135,12 +135,12 @@ msgid "4. Your nickname is registered and you join the chat already identified."
 msgstr ""
 "4. Votre pseudonyme est enregistré et vous rejoignez le chat déjà identifié."
 
-#: lib/retro_hex_chat_web/components/ui/help/help_viewer.ex:437
+#: lib/retro_hex_chat_web/components/ui/help/help_viewer.ex:411
 #, elixir-autogen, elixir-format
 msgid "Breadcrumb"
 msgstr "Fil d'Ariane"
 
-#: lib/retro_hex_chat_web/components/ui/help/help_viewer.ex:162
+#: lib/retro_hex_chat_web/components/ui/help/help_viewer.ex:112
 #, elixir-autogen, elixir-format
 msgid "Browse by category or open Help Topics from the chat menu."
 msgstr "Parcourir par catégorie ou ouvrez Aide Sujets du menu chat."
@@ -210,24 +210,22 @@ msgstr ""
 "pour l'enregistrer. Lors de futures visites, vous saisirez votre mot de "
 "passe pour vous connecter."
 
-#: lib/retro_hex_chat_web/components/ui/help/help_menu_bar.ex:70
-#: lib/retro_hex_chat_web/components/ui/help/help_menu_bar.ex:83
+#: lib/retro_hex_chat_web/components/ui/help/help_menu_bar.ex:76
+#: lib/retro_hex_chat_web/components/ui/help/help_menu_bar.ex:89
 #: lib/retro_hex_chat_web/components/ui/help/help_status_bar.ex:55
 #: lib/retro_hex_chat_web/components/ui/help/help_status_bar.ex:57
-#: lib/retro_hex_chat_web/components/ui/help/help_viewer.ex:439
-#: lib/retro_hex_chat_web/components/ui/help/help_viewer.ex:458
-#: lib/retro_hex_chat_web/components/ui/help/help_viewer.ex:463
-#: lib/retro_hex_chat_web/live/help_live/index.ex:138
+#: lib/retro_hex_chat_web/components/ui/help/help_viewer.ex:413
+#: lib/retro_hex_chat_web/site/pages/help.ex:81
 #, elixir-autogen, elixir-format
 msgid "Help"
 msgstr "Aide"
 
-#: lib/retro_hex_chat_web/components/ui/help/help_viewer.ex:318
+#: lib/retro_hex_chat_web/components/ui/help/help_viewer.ex:275
 #, elixir-autogen, elixir-format
 msgid "Help navigation"
 msgstr "Aide à la navigation"
 
-#: lib/retro_hex_chat_web/components/ui/help/help_viewer.ex:55
+#: lib/retro_hex_chat_web/site/pages/help.ex:34
 #, elixir-autogen, elixir-format
 msgid "Help — RetroHexChat"
 msgstr "Aide — RetroHexChat"
@@ -337,7 +335,7 @@ msgstr "Surnom enregistré"
 msgid "Registration Required"
 msgstr "Inscription requise"
 
-#: lib/retro_hex_chat_web/components/ui/help/help_viewer.ex:157
+#: lib/retro_hex_chat_web/components/ui/help/help_viewer.ex:107
 #, elixir-autogen, elixir-format
 msgid "RetroHexChat Help"
 msgstr "Aide RetroHexChat"
@@ -357,7 +355,7 @@ msgstr ""
 "authentiques. Il prend en charge les canaux, les messages privés, le "
 "formatage de texte, les services de pseudo, et bien plus encore."
 
-#: lib/retro_hex_chat_web/components/ui/help/help_viewer.ex:242
+#: lib/retro_hex_chat_web/components/ui/help/help_viewer.ex:192
 #: lib/retro_hex_chat_web/controllers/help_content/connect_authentication.html.heex:42
 #: lib/retro_hex_chat_web/controllers/help_content/connecting.html.heex:64
 #: lib/retro_hex_chat_web/controllers/help_content/private_messages.html.heex:33
@@ -368,7 +366,7 @@ msgstr ""
 msgid "See Also"
 msgstr "Voir aussi"
 
-#: lib/retro_hex_chat_web/components/ui/help/help_viewer.ex:159
+#: lib/retro_hex_chat_web/components/ui/help/help_viewer.ex:109
 #, elixir-autogen, elixir-format
 msgid "Select a topic from the navigation pane to get started."
 msgstr "Sélectionnez un sujet dans le panneau de navigation pour commencer."
@@ -474,28 +472,28 @@ msgstr "%{count} sujets"
 msgid "/notice"
 msgstr "/notice"
 
-#: lib/retro_hex_chat_web/components/ui/help/help_menu_bar.ex:136
+#: lib/retro_hex_chat_web/components/ui/help/help_menu_bar.ex:149
 #, elixir-autogen, elixir-format
 msgid "About RetroHexChat"
 msgstr "À propos de RetroHexChat"
 
-#: lib/retro_hex_chat_web/components/ui/help/help_menu_bar.ex:98
-#: lib/retro_hex_chat_web/components/ui/help/help_viewer.ex:268
-#: lib/retro_hex_chat_web/components/ui/shell/start_menu_app.ex:510
+#: lib/retro_hex_chat_web/components/ui/help/help_menu_bar.ex:104
+#: lib/retro_hex_chat_web/components/ui/help/help_viewer.ex:219
+#: lib/retro_hex_chat_web/components/ui/shell/start_menu_app.ex:526
 #, elixir-autogen, elixir-format
 msgid "Back"
 msgstr "Retour"
 
-#: lib/retro_hex_chat_web/components/ui/shell/start_menu_app.ex:564
-#: lib/retro_hex_chat_web/components/ui/shell/start_menu_app.ex:571
+#: lib/retro_hex_chat_web/components/ui/shell/start_menu_app.ex:576
+#: lib/retro_hex_chat_web/components/ui/shell/start_menu_app.ex:583
 #, elixir-autogen, elixir-format
 msgid "Back to chat"
 msgstr "Retour au chat"
 
-#: lib/retro_hex_chat_web/components/ui/help/help_menu_bar.ex:115
-#: lib/retro_hex_chat_web/components/ui/help/help_viewer.ex:321
-#: lib/retro_hex_chat_web/components/ui/shell/desktop_launchers.ex:470
-#: lib/retro_hex_chat_web/components/ui/shell/start_menu_app.ex:165
+#: lib/retro_hex_chat_web/components/ui/help/help_menu_bar.ex:122
+#: lib/retro_hex_chat_web/components/ui/help/help_viewer.ex:282
+#: lib/retro_hex_chat_web/components/ui/shell/desktop_launchers.ex:448
+#: lib/retro_hex_chat_web/components/ui/shell/start_menu_app.ex:177
 #, elixir-autogen, elixir-format
 msgid "Contents"
 msgstr "Sommaire"
@@ -508,36 +506,36 @@ msgstr ""
 "destinataire, choisissez Envoyer un avis à partir d'un menu contextuel "
 "surnom ou utilisez"
 
-#: lib/retro_hex_chat_web/components/ui/help/help_menu_bar.ex:102
-#: lib/retro_hex_chat_web/components/ui/help/help_viewer.ex:271
-#: lib/retro_hex_chat_web/components/ui/shell/start_menu_app.ex:516
+#: lib/retro_hex_chat_web/components/ui/help/help_menu_bar.ex:108
+#: lib/retro_hex_chat_web/components/ui/help/help_viewer.ex:222
+#: lib/retro_hex_chat_web/components/ui/shell/start_menu_app.ex:532
 #, elixir-autogen, elixir-format
 msgid "Forward"
 msgstr "Avancer"
 
-#: lib/retro_hex_chat_web/components/ui/help/help_menu_bar.ex:92
-#: lib/retro_hex_chat_web/components/ui/help/help_viewer.ex:277
-#: lib/retro_hex_chat_web/components/ui/help/help_viewer.ex:278
-#: lib/retro_hex_chat_web/live/help_live/index.ex:138
+#: lib/retro_hex_chat_web/components/ui/help/help_menu_bar.ex:98
+#: lib/retro_hex_chat_web/components/ui/help/help_viewer.ex:228
+#: lib/retro_hex_chat_web/components/ui/help/help_viewer.ex:229
+#: lib/retro_hex_chat_web/site/pages/help.ex:81
 #, elixir-autogen, elixir-format
 msgid "Home"
 msgstr "Sommaire"
 
-#: lib/retro_hex_chat_web/components/ui/help/help_menu_bar.ex:119
-#: lib/retro_hex_chat_web/components/ui/help/help_viewer.ex:322
-#: lib/retro_hex_chat_web/components/ui/shell/desktop_launchers.ex:476
-#: lib/retro_hex_chat_web/components/ui/shell/start_menu_app.ex:174
+#: lib/retro_hex_chat_web/components/ui/help/help_menu_bar.ex:131
+#: lib/retro_hex_chat_web/components/ui/help/help_viewer.ex:288
+#: lib/retro_hex_chat_web/components/ui/shell/desktop_launchers.ex:455
+#: lib/retro_hex_chat_web/components/ui/shell/start_menu_app.ex:187
 #, elixir-autogen, elixir-format
 msgid "Index"
 msgstr "Sommaire"
 
-#: lib/retro_hex_chat_web/components/ui/help/help_menu_bar.ex:54
-#: lib/retro_hex_chat_web/components/ui/help/help_menu_bar.ex:80
+#: lib/retro_hex_chat_web/components/ui/help/help_menu_bar.ex:60
+#: lib/retro_hex_chat_web/components/ui/help/help_menu_bar.ex:86
 #, elixir-autogen, elixir-format
 msgid "Navigate"
 msgstr "Naviguer"
 
-#: lib/retro_hex_chat_web/components/ui/help/help_viewer.ex:364
+#: lib/retro_hex_chat_web/components/ui/help/help_viewer.ex:336
 #, elixir-autogen, elixir-format
 msgid "No topics match \"%{query}\"."
 msgstr "Aucun sujet ne correspond à \"%{query}\"."
@@ -547,26 +545,26 @@ msgstr "Aucun sujet ne correspond à \"%{query}\"."
 msgid "Notice Command"
 msgstr "Commande d'affichage"
 
-#: lib/retro_hex_chat_web/components/ui/help/help_menu_bar.ex:127
-#: lib/retro_hex_chat_web/components/ui/help/help_viewer.ex:323
-#: lib/retro_hex_chat_web/components/ui/shell/desktop_launchers.ex:482
-#: lib/retro_hex_chat_web/components/ui/shell/start_menu_app.ex:183
+#: lib/retro_hex_chat_web/components/ui/help/help_menu_bar.ex:140
+#: lib/retro_hex_chat_web/components/ui/help/help_viewer.ex:294
+#: lib/retro_hex_chat_web/components/ui/shell/desktop_launchers.ex:462
+#: lib/retro_hex_chat_web/components/ui/shell/start_menu_app.ex:197
 #, elixir-autogen, elixir-format
 msgid "Search"
 msgstr "Rechercher"
 
-#: lib/retro_hex_chat_web/components/ui/help/help_viewer.ex:292
+#: lib/retro_hex_chat_web/components/ui/help/help_viewer.ex:248
 #, elixir-autogen, elixir-format
 msgid "Search topics..."
 msgstr "Thèmes de recherche..."
 
-#: lib/retro_hex_chat_web/components/ui/help/help_viewer.ex:357
+#: lib/retro_hex_chat_web/components/ui/help/help_viewer.ex:329
 #, elixir-autogen, elixir-format
 msgid "Type in the search box to find topics."
 msgstr "Saisissez la case de recherche pour trouver des sujets."
 
-#: lib/retro_hex_chat_web/components/ui/help/help_menu_bar.ex:59
-#: lib/retro_hex_chat_web/components/ui/help/help_menu_bar.ex:81
+#: lib/retro_hex_chat_web/components/ui/help/help_menu_bar.ex:65
+#: lib/retro_hex_chat_web/components/ui/help/help_menu_bar.ex:87
 #, elixir-autogen, elixir-format
 msgid "View"
 msgstr "Affichage"
@@ -589,27 +587,10 @@ msgstr "Connexion automatique"
 msgid "Desktop & Windows"
 msgstr "Bureau & Windows"
 
-#: lib/retro_hex_chat_web/controllers/help_content/ui_connect_window.html.heex:47
-#, elixir-autogen, elixir-format
-msgid "It behaves like every other window: move it, minimize it, or bring it back from the taskbar button or Start ▸ Windows. On the public pages it opens with the page; on the connect screen it is pinned in the middle."
-msgstr ""
-"Il se comporte comme toutes les autres fenêtres : déplacez-le, minimisez-le,"
-" ou ramenez-le à partir du bouton de la barre des tâches ou Démarrez "
-"Windows. Sur les pages publiques, il s'ouvre avec la page ; sur l'écran de "
-"connexion, il est épinglé au milieu."
-
 #: lib/retro_hex_chat_web/controllers/help_content/ui_connect_window.html.heex:7
 #, elixir-autogen, elixir-format
 msgid "Signing In"
 msgstr "Signature"
-
-#: lib/retro_hex_chat_web/controllers/help_content/ui_connect_window.html.heex:2
-#, elixir-autogen, elixir-format
-msgid "The Connect window is where you sign in. It appears on its own screen at /connect, and on every public page — so you can enter the chat without leaving the page you arrived on."
-msgstr ""
-"La fenêtre Connect est là où vous vous connectez. Il apparaît sur son propre"
-" écran à /connect, et sur chaque page publique — afin que vous puissiez "
-"entrer le chat sans quitter la page sur laquelle vous êtes arrivé."
 
 #: lib/retro_hex_chat_web/controllers/help_content/ui_connect_window.html.heex:45
 #, elixir-autogen, elixir-format
@@ -679,12 +660,12 @@ msgstr "Faites un clic droit sur un pseudo dans la liste d'utilisateurs de droit
 msgid "User List"
 msgstr "Liste des utilisateurs"
 
-#: lib/retro_hex_chat_web/components/ui/help/help_viewer.ex:182
+#: lib/retro_hex_chat_web/components/ui/help/help_viewer.ex:132
 #, elixir-autogen, elixir-format
 msgid "Screenshots and more games in the games catalogue"
 msgstr "Captures d'écran et autres jeux dans le catalogue"
 
-#: lib/retro_hex_chat_web/components/ui/help/help_viewer.ex:202
+#: lib/retro_hex_chat_web/components/ui/help/help_viewer.ex:152
 #, elixir-autogen, elixir-format
 msgid "Coming from mIRC? See which of its commands work the same here"
 msgstr "Vous venez de mIRC ? Voir laquelle de ses commandes fonctionnent de la même façon ici"
@@ -899,11 +880,6 @@ msgstr "Secret, private, invite-only and keyed channels cannot be watched — a 
 msgid "See who is in each channel, and close a channel's tab when you are done"
 msgstr "Voir qui est dans chaque canal, et fermer l'onglet d'un canal quand vous avez terminé"
 
-#: lib/retro_hex_chat_web/controllers/help_content/watching_without_account.html.heex:22
-#, elixir-autogen, elixir-format
-msgid "Share a link to a channel: /chat?join= followed by its name opens that channel for whoever follows it"
-msgstr "Partager un lien vers un canal : /chat ? joint = suivi de son nom ouvre ce canal pour celui qui le suit"
-
 #: lib/retro_hex_chat_web/controllers/help_content/watching_without_account.html.heex:28
 #, elixir-autogen, elixir-format
 msgid "Taking part"
@@ -948,3 +924,18 @@ msgstr "Tout ce qui fait quelque chose a besoin d'un compte: écrire, réagir, l
 #, elixir-autogen, elixir-format
 msgid "A link to a game, a call or a space opens the chat with that window, and after you sign in it takes you to the link."
 msgstr "Un lien vers un jeu, un appel ou un espace ouvre le chat avec cette fenêtre, et après que vous vous êtes connecté, il vous emmène vers le lien."
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_connect_window.html.heex:47
+#, elixir-autogen, elixir-format
+msgid "It behaves like every other window: move it, minimize it, or bring it back from its taskbar button. Closing it takes you back to the chat; after signing in you land where you were going — the channel you were reading, or the game or call that asked you to sign in."
+msgstr "It behaves like every other window: move it, minimize it, or bring it back from its taskbar button. Closing it takes you back to the chat; after signing in you land where you were going — the channel you were reading, or the game or call that asked you to sign in."
+
+#: lib/retro_hex_chat_web/controllers/help_content/watching_without_account.html.heex:22
+#, elixir-autogen, elixir-format
+msgid "Share a channel: its address is /c/ followed by its name, and the address bar shows it while the channel is in front"
+msgstr "Partager un canal : son adresse est /c/ suivie de son nom, et la barre d'adresse l'affiche alors que le canal est devant"
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_connect_window.html.heex:2
+#, elixir-autogen, elixir-format
+msgid "The Connect window is where you sign in. It opens over the chat at its own address, /connect — from Create an account on the home, or from anything you try that needs an account — so you sign in without leaving the desktop you arrived on."
+msgstr "La fenêtre Connect est là où vous vous connectez. Il s'ouvre sur le chat à sa propre adresse, /connect — à partir de Créer un compte sur la maison, ou de tout ce que vous essayez qui a besoin d'un compte — vous vous connectez donc sans quitter le bureau sur lequel vous êtes arrivé."

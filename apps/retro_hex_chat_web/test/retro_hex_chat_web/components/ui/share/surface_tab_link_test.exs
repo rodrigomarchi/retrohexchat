@@ -29,9 +29,9 @@ defmodule RetroHexChatWeb.Components.UI.SurfaceTabLinkTest do
       html = render_component(&back_to_chat/1, open?: true, testid: "play-back-to-chat")
 
       assert html =~ ~s(phx-hook="SurfaceTabLinkHook")
-      assert html =~ ~s(data-surface-path="/chat")
+      assert html =~ ~s(data-surface-path="/")
       # Still a real href, so the second click does what the link says.
-      assert html =~ ~s(href="/chat")
+      assert html =~ ~s(href="/")
       refute html =~ ~s(data-phx-link="redirect")
     end
 

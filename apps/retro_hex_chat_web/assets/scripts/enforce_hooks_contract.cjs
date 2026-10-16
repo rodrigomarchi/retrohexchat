@@ -13,9 +13,9 @@ const ALLOWED_DYNAMIC_IMPORT_FILES = new Set([
   // shared catalog for P2P and solo runtimes.
   "js/lib/games/engine_loader.js",
   "js/lib/i18n.js",
-  // The public pages defer their LiveSocket until a reader touches the connect
-  // window, so the critical bundle stays a fraction of the app's.
-  "js/public_pages.js",
+  // The desktop defers the chat's LiveSocket until the page has a reason to start
+  // it, so the first-paint bundle stays a fraction of the app's.
+  "js/desktop.js",
   // The RUM entrypoint is a gate: it answers from three metas and the hostname
   // before importing anything, so a page with RUM off never fetches the 262 KB
   // Faro SDK, and a page with it on waits for idle first.
@@ -36,9 +36,7 @@ const ALLOWED_LAZY_FACADE_FILES = new Set([
 const HOOK_BUILDER_FILES = [
   "js/hooks/critical_hooks.js",
   "js/hooks/lazy_feature_hooks.js",
-  "js/hooks/help_hooks.js",
   "js/hooks/showcase_hooks.js",
-  "js/hooks/connect_hooks.js",
 ];
 
 const NON_IMPLEMENTATION_HOOK_FILES = new Set([
@@ -46,9 +44,7 @@ const NON_IMPLEMENTATION_HOOK_FILES = new Set([
   "js/hooks/critical_hooks.js",
   "js/hooks/lazy_feature_hooks.js",
   "js/hooks/lazy_feature_hook.js",
-  "js/hooks/help_hooks.js",
   "js/hooks/showcase_hooks.js",
-  "js/hooks/connect_hooks.js",
 ]);
 
 // ─── Thinness ratchets ──────────────────────────────────────────────────────
@@ -135,40 +131,38 @@ const HOOK_METHOD_COUNT_OVERRIDES = new Map([
 ]);
 
 // Mutable module scope in lib/ is shared state no test can reset between cases.
-// The three that remain are deliberate, not accidental: public_manager holds the
-// single window manager the entry bundle and the lazy hook chunk must share;
-// interactive coordinates tooltip/hover/context-menu state across the chat hooks;
-// tips holds the tip-seen state for the one contextual-tips hook. Each is a
-// singleton by design, not logic trapped in the wrong layer.
+// The ones that remain are deliberate, not accidental: site_manager holds the
+// single window manager the entry bundle and the lazy socket chunk must share,
+// site_menu_bar the page's menu bar they share the same way;
+// live_boot holds the one LiveSocket a page connects; interactive coordinates
+// tooltip/hover/context-menu state across the chat hooks; tips holds the
+// tip-seen state for the one contextual-tips hook. Each is a singleton by
+// design, not logic trapped in the wrong layer.
 const LIB_MODULE_STATE_OVERRIDES = new Set([
   "js/lib/ui/tips.js",
   "js/lib/chat/interactive.js",
-  "js/lib/window_manager/public_manager.js",
+  "js/lib/window_manager/site_manager.js",
+  "js/lib/ui/site_menu_bar.js",
+  "js/lib/system/live_boot.js",
 ]);
 
+// Where a LiveSocket is built. The application's is built once, in live_boot,
+// and both app.js (the surfaces) and desktop.js (the one desktop) start it.
 const LIVESOCKET_ENTRYPOINTS = {
-  "js/app.js": {
-    registryImport: "./hooks/registry",
+  "js/lib/system/live_boot.js": {
+    registryImport: "../../hooks/registry",
     hookBuilder: "buildHooks",
-  },
-  "js/help_live.js": {
-    registryImport: "./hooks/help_hooks",
-    hookBuilder: "buildHelpHooks",
   },
   "js/retrohex_content.js": {
     registryImport: "./hooks/showcase_hooks",
     hookBuilder: "buildShowcaseHooks",
-  },
-  "js/connect_boot.js": {
-    registryImport: "./hooks/connect_hooks",
-    hookBuilder: "buildConnectHooks",
   },
 };
 
 function main() {
   const failures = [];
 
-  const appJs = readAsset("js/app.js");
+  const appJs = readAsset("js/lib/system/live_boot.js");
   const registryJs = readAsset("js/hooks/registry.js");
   const criticalJs = readAsset("js/hooks/critical_hooks.js");
   const lazyJs = readAsset("js/hooks/lazy_feature_hooks.js");
@@ -186,26 +180,14 @@ function main() {
   checkLibModuleState(failures);
 
   const criticalHooks = parseHookObjectKeys(criticalJs, "criticalHooks", failures);
-  const helpHooks = parseHookObjectKeys(readAsset("js/hooks/help_hooks.js"), "helpHooks", failures);
   const showcaseHooks = parseHookObjectKeys(
     readAsset("js/hooks/showcase_hooks.js"),
     "showcaseHooks",
     failures,
   );
-  const connectHooks = parseHookObjectKeys(
-    readAsset("js/hooks/connect_hooks.js"),
-    "connectHooks",
-    failures,
-  );
   const lazyHooks = parseLazyFeatureHooks(lazyJs, failures);
   checkHookSets(criticalHooks, lazyHooks, failures);
-  const registryHooks = new Set([
-    ...criticalHooks,
-    ...helpHooks,
-    ...showcaseHooks,
-    ...connectHooks,
-    ...lazyHooks,
-  ]);
+  const registryHooks = new Set([...criticalHooks, ...showcaseHooks, ...lazyHooks]);
   checkPhxHookUsage(registryHooks, failures);
   checkRegisteredHooksAreMounted(registryHooks, failures);
 
@@ -221,23 +203,23 @@ function main() {
   process.stdout.write("LiveView hooks contract passed.\n");
 }
 
+// The application's LiveSocket is built in lib/system/live_boot.js, which
+// app.js and desktop.js both start.
 function checkAppEntrypoint(source, failures) {
-  if (!source.includes('import { buildHooks } from "./hooks/registry"')) {
-    failures.push("js/app.js must import buildHooks only from ./hooks/registry.");
-  }
+  const rel = "js/lib/system/live_boot.js";
+  const importPattern = /import\s+(?:\{[^}]*\}|[^"']+)\s+from\s+["']([^"']+)["']/g;
 
-  const importPattern = /import\s+(?:[^"']+\s+from\s+)?["']([^"']+)["']/g;
   for (const match of source.matchAll(importPattern)) {
     const importPath = match[1];
-    if (importPath.startsWith("./hooks/") && importPath !== "./hooks/registry") {
+    if (importPath.startsWith("../../hooks/") && importPath !== "../../hooks/registry") {
       failures.push(
-        `js/app.js imports ${importPath}; hook implementations must go through hooks/registry.js.`,
+        `${rel} imports ${importPath}; hook implementations must go through hooks/registry.js.`,
       );
     }
   }
 
-  if (!source.includes("hooks: Hooks")) {
-    failures.push("js/app.js must pass the buildHooks result to LiveSocket as hooks: Hooks.");
+  if (!source.includes("hooks: buildHooks()")) {
+    failures.push(`${rel} must pass the buildHooks result to LiveSocket as hooks: buildHooks().`);
   }
 }
 

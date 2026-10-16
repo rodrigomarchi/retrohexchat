@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html
+  lang={RetroHexChatWeb.I18n.html_lang()}
+  dir={RetroHexChatWeb.I18n.html_dir()}
+  class="no-js"
+  data-boot={assigns[:boot] || "deferred"}
+  data-member={to_string(assigns[:visitor?] == false)}
+  data-home-paths={RetroHexChatWeb.Site.Address.home_paths() |> Enum.join(" ")}
+>
+  <head>
+    <% head = @head %>
+    <% canonical_path = head.canonical_path %>
+    <% canonical_url = head.canonical_url %>
+    <% hreflang_alternates? = head.hreflang? %>
+    <% og_image = head.og_image %>
+    <% page_title = head.title %>
+    <% page_description = head.description %>
+
+    <meta charset="utf-8" />
+    <%!-- Inline and synchronous: the deferred bundles run after parse, which
+          would let the scriptless layout paint for a frame. --%>
+    <script>
+      document.documentElement.classList.remove("no-js");
+    </script>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="csrf-token" content={get_csrf_token()} />
+    <meta
+      name="plausible-env"
+      content={Application.get_env(:retro_hex_chat_web, :plausible_env, "prod")}
+    />
+    <meta
+      name="faro-enabled"
+      content={to_string(Application.get_env(:retro_hex_chat_web, :faro_enabled, false))}
+    />
+    <meta
+      name="faro-collector-url"
+      content={Application.get_env(:retro_hex_chat_web, :faro_collector_url, "/faro/collect")}
+    />
+    <meta name="faro-app-version" content={RetroHexChatWeb.BuildInfo.version()} />
+    <%!-- Faro's tracing instrumentation adopts this as the parent of the
+          page-load trace, so the browser's spans and the server's land in one
+          trace instead of two that never reference each other. --%>
+    <%= if traceparent = RetroHexChatWeb.TraceContext.traceparent() do %>
+      <meta name="traceparent" content={traceparent} />
+    <% end %>
+
+    <%!-- The tab's title has one writer once the desktop is live:
+          DocumentTitleHook, which layers the chat's activity flash over the
+          title of whatever is in front. This first-paint title is
+          `initial_title`, which LiveView does not track — and with no `default`
+          here, LiveView's mount-time `putTitle` leaves the hook alone. --%>
+    <.live_title>{@initial_title}</.live_title>
+    <meta name="description" content={page_description} />
+    <%!-- An invite card is addressed to whoever was sent it, not to a crawler:
+          a share link in the index is an invitation nobody extended. --%>
+    <meta name="robots" content={head.robots} />
+    <link rel="canonical" href={canonical_url} />
+    <%!-- A page that is one of a run — an archive day too long for one page —
+          names its neighbours, so a crawler can walk the day in order. --%>
+    <link :if={head.prev_url} rel="prev" href={head.prev_url} />
+    <link :if={head.next_url} rel="next" href={head.next_url} />
+    <%!-- hreflang is a claim that the same page exists in another language.
+          For a conversation it is false, so the archive emits none rather than
+          pointing a search engine at the same text fourteen times. --%>
+    <link
+      :for={
+        alternate <-
+          if(hreflang_alternates?,
+            do: RetroHexChatWeb.SEO.alternate_links(canonical_path),
+            else: []
+          )
+      }
+      rel="alternate"
+      hreflang={alternate.hreflang}
+      href={alternate.href}
+    />
+
+    <%!-- Open Graph --%>
+    <meta property="og:type" content={head.og_type} />
+    <meta property="og:title" content={page_title} />
+    <meta property="og:description" content={page_description} />
+    <meta property="og:url" content={canonical_url} />
+    <meta property="og:site_name" content="Retro Hex Chat" />
+    <meta property="og:image" content={og_image.url} />
+    <meta property="og:image:width" content={og_image.width} />
+    <meta property="og:image:height" content={og_image.height} />
+    <meta property="og:image:type" content={og_image.type} />
+    <meta property="og:image:alt" content={og_image.alt} />
+    <meta
+      property="og:locale"
+      content={RetroHexChatWeb.I18n.open_graph_locale()}
+    />
+    <meta
+      :for={
+        locale <-
+          if(hreflang_alternates?,
+            do: RetroHexChatWeb.SEO.open_graph_alternate_locales(),
+            else: []
+          )
+      }
+      property="og:locale:alternate"
+      content={locale}
+    />
+
+    <%!-- Twitter Card --%>
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={page_title} />
+    <meta name="twitter:description" content={page_description} />
+    <meta name="twitter:image" content={og_image.url} />
+    <meta name="twitter:image:alt" content={og_image.alt} />
+
+    <%!-- JSON-LD Structured Data. A page names what it is; only the home page
+          describes the application, because the application is one entity and
+          claiming it on all ninety-eight landing URLs described it ninety-eight
+          times with the same `url`. --%>
+    <script
+      :for={json <- head.json_ld}
+      type="application/ld+json"
+    >
+      <%= Phoenix.HTML.raw(json) %>
+    </script>
+
+    <%!-- Fonts and the icon sprite --%>
+    <.head_assets />
+
+    <%!-- Favicon --%>
+    <link rel="manifest" href={~p"/manifest.webmanifest"} />
+    <meta name="theme-color" content="#000080" />
+    <link rel="apple-touch-icon" href={~p"/images/app_icon_192.png"} />
+    <link rel="icon" type="image/svg+xml" href={~p"/images/favicon.svg"} />
+    <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+
+    <link phx-track-static rel="stylesheet" href={~p"/assets/css/retrohex.css"} />
+    <%!-- The desktop's first-paint bundle: the window manager, the menus and
+          the clock, so the page in front is usable before the chat is. It
+          imports the chat's LiveSocket itself, once there is a reason to. --%>
+    <script phx-track-static type="module" src={~p"/assets/js/desktop.js"}>
+    </script>
+    <script phx-track-static type="module" src={~p"/assets/js/faro_entry.js"}>
+    </script>
+  </head>
+  <body class="bg-background font-system text-text">
+    {@inner_content}
+  </body>
+</html>

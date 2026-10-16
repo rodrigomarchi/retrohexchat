@@ -7,6 +7,7 @@ defmodule RetroHexChatWeb.App.SessionController do
   alias RetroHexChat.Accounts.NicknameValidator
   alias RetroHexChat.Accounts.TrustedDevices
   alias RetroHexChat.Services.NickServ
+  alias RetroHexChatWeb.App.Paths
   alias RetroHexChatWeb.App.ReturnTo
   alias RetroHexChatWeb.App.SessionHelpers
   alias RetroHexChatWeb.App.TrustedDeviceCookie
@@ -34,12 +35,12 @@ defmodule RetroHexChatWeb.App.SessionController do
       |> redirect(to: redirect_path)
     else
       _ ->
-        redirect(conn, to: ~p"/connect")
+        redirect(conn, to: Paths.localized(~p"/connect"))
     end
   end
 
   def create(conn, _params) do
-    redirect(conn, to: ~p"/connect")
+    redirect(conn, to: Paths.localized(~p"/connect"))
   end
 
   @spec delete(Plug.Conn.t(), map()) :: Plug.Conn.t()
@@ -53,8 +54,13 @@ defmodule RetroHexChatWeb.App.SessionController do
     |> maybe_restore_locale(locale)
     |> maybe_put_disconnect_context(disconnect_context)
     |> maybe_delete_trusted_cookie(params)
-    |> redirect(to: ~p"/connect?reason=#{reason}")
+    |> redirect(to: after_clear(reason))
   end
+
+  # Leaving on purpose is not something to be told about: the sign-in window
+  # opens clean. Every other reason is a session that ended on its own.
+  defp after_clear("logout"), do: Paths.localized(~p"/connect")
+  defp after_clear(reason), do: Paths.localized(~p"/connect?reason=#{reason}")
 
   # A registered nickname is somebody's: the only ways in are its password (the short token
   # the connect window signs after checking it) and a device its owner trusted. A bare
@@ -142,14 +148,14 @@ defmodule RetroHexChatWeb.App.SessionController do
   @spec post_connect_path(map()) :: String.t()
   defp post_connect_path(%{"return_to" => return_to})
        when is_binary(return_to) and return_to != "",
-       do: ReturnTo.sanitize(return_to)
+       do: return_to |> ReturnTo.sanitize() |> Paths.localized()
 
   defp post_connect_path(params), do: join_channel_redirect(params["join_channel"])
 
   @spec join_channel_redirect(String.t() | nil) :: String.t()
-  defp join_channel_redirect(nil), do: ~p"/chat"
-  defp join_channel_redirect(""), do: ~p"/chat"
-  defp join_channel_redirect(channel), do: ~p"/chat?join=#{channel}"
+  defp join_channel_redirect(nil), do: Paths.chat_path()
+  defp join_channel_redirect(""), do: Paths.chat_path()
+  defp join_channel_redirect(channel), do: Paths.chat_path(channel)
 
   defp maybe_put_nick_change_flash(conn, old_nickname, new_nickname)
        when is_binary(old_nickname) and old_nickname != "" and old_nickname != new_nickname do

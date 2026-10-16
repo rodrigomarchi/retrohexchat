@@ -26,7 +26,7 @@ defmodule RetroHexChatWeb.AttachmentControllerTest do
 
   test "sends a visitor's download to sign in", %{conn: conn} do
     conn = get(conn, ~p"/chat/attachments/123")
-    assert redirected_to(conn) == Paths.visitor_sign_in_path(:links, "/chat")
+    assert redirected_to(conn) == Paths.visitor_sign_in_path(:links, "/")
   end
 
   describe "a visitor's preview" do

@@ -51,7 +51,7 @@ defmodule RetroHexChatWeb.ChatTabFocusTest do
   } do
     channel_a = "#focus#{uid()}a"
     channel_b = "#focus#{uid()}b"
-    {:ok, view, _html} = live(chat_conn(conn, "Focus#{uid()}"), "/chat")
+    {:ok, view, _html} = live(chat_conn(conn, "Focus#{uid()}"), "/")
 
     submit_command_sync(view, "/join #{channel_a}")
     html = submit_command_sync(view, "/join #{channel_b}")
@@ -64,7 +64,7 @@ defmodule RetroHexChatWeb.ChatTabFocusTest do
 
   test "switching replaces the focused tab instead of accumulating one", %{conn: conn} do
     channel_a = "#swap#{uid()}a"
-    {:ok, view, _html} = live(chat_conn(conn, "Swap#{uid()}"), "/chat")
+    {:ok, view, _html} = live(chat_conn(conn, "Swap#{uid()}"), "/")
 
     submit_command_sync(view, "/join #{channel_a}")
     assert tab_labels(render(view)) == ["Status", channel_a]
@@ -79,7 +79,7 @@ defmodule RetroHexChatWeb.ChatTabFocusTest do
 
   test "a backgrounded channel keeps notifying without taking a tab", %{conn: conn} do
     background = "#bg#{uid()}"
-    {:ok, view, _html} = live(chat_conn(conn, "Bg#{uid()}"), "/chat")
+    {:ok, view, _html} = live(chat_conn(conn, "Bg#{uid()}"), "/")
 
     submit_command_sync(view, "/join #{background}")
     render_click(view, "switch_channel", %{"channel" => "#lobby"})
@@ -98,7 +98,7 @@ defmodule RetroHexChatWeb.ChatTabFocusTest do
   end
 
   test "an incoming PM notifies in the background and only tabs once focused", %{conn: conn} do
-    {:ok, view, _html} = live(chat_conn(conn, "PmFocus#{uid()}"), "/chat")
+    {:ok, view, _html} = live(chat_conn(conn, "PmFocus#{uid()}"), "/")
 
     html = pm_activity(view, "Bob")
 
@@ -113,7 +113,7 @@ defmodule RetroHexChatWeb.ChatTabFocusTest do
   end
 
   test "the Status tab shares the bar with the conversation it covers", %{conn: conn} do
-    {:ok, view, _html} = live(chat_conn(conn, "Stat#{uid()}"), "/chat")
+    {:ok, view, _html} = live(chat_conn(conn, "Stat#{uid()}"), "/")
 
     html = render_click(view, "switch_to_status", %{})
 
@@ -125,7 +125,7 @@ defmodule RetroHexChatWeb.ChatTabFocusTest do
 
   test "keyboard window navigation still reaches channels that have no tab", %{conn: conn} do
     channel_a = "#key#{uid()}a"
-    {:ok, view, _html} = live(chat_conn(conn, "Key#{uid()}"), "/chat")
+    {:ok, view, _html} = live(chat_conn(conn, "Key#{uid()}"), "/")
 
     submit_command_sync(view, "/join #{channel_a}")
     assert assigns(view).session.active_channel == channel_a

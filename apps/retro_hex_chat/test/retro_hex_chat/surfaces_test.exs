@@ -239,7 +239,7 @@ defmodule RetroHexChat.SurfacesTest do
 
     test "the chat and a call are two surfaces, and closing one leaves one" do
       nickname = unique_nick("two")
-      chat = start_surface(nickname, RetroHexChatWeb.App.ChatLive)
+      chat = start_surface(nickname, RetroHexChatWeb.DesktopLive)
       call = start_surface(nickname, RetroHexChatWeb.App.CallLive)
 
       assert Surfaces.count(nickname) == 2
@@ -264,7 +264,7 @@ defmodule RetroHexChat.SurfacesTest do
 
     test "nicknames are counted the way the server compares them" do
       nickname = unique_nick("Case")
-      pid = start_surface(nickname, RetroHexChatWeb.App.ChatLive)
+      pid = start_surface(nickname, RetroHexChatWeb.DesktopLive)
 
       assert Surfaces.count(String.upcase(nickname)) == 1
       close(pid)
@@ -275,26 +275,26 @@ defmodule RetroHexChat.SurfacesTest do
     # nothing is showing them the conversation.
     test "counting one kind ignores the surfaces of every other" do
       nickname = unique_nick("kinds")
-      chat = start_surface(nickname, RetroHexChatWeb.App.ChatLive)
-      phone = start_surface(nickname, RetroHexChatWeb.App.ChatLive)
+      chat = start_surface(nickname, RetroHexChatWeb.DesktopLive)
+      phone = start_surface(nickname, RetroHexChatWeb.DesktopLive)
       call = start_surface(nickname, RetroHexChatWeb.App.CallLive)
 
       assert Surfaces.count(nickname) == 3
-      assert Surfaces.count_kind(nickname, RetroHexChatWeb.App.ChatLive) == 2
+      assert Surfaces.count_kind(nickname, RetroHexChatWeb.DesktopLive) == 2
       assert Surfaces.count_kind(nickname, RetroHexChatWeb.App.CallLive) == 1
 
       close(phone)
-      assert Surfaces.count_kind(nickname, RetroHexChatWeb.App.ChatLive) == 1
+      assert Surfaces.count_kind(nickname, RetroHexChatWeb.DesktopLive) == 1
 
       close(chat)
-      assert Surfaces.count_kind(nickname, RetroHexChatWeb.App.ChatLive) == 0
+      assert Surfaces.count_kind(nickname, RetroHexChatWeb.DesktopLive) == 0
       assert Surfaces.count(nickname) == 1
 
       close(call)
     end
 
     test "counting a kind for somebody with nothing open is not an error" do
-      assert Surfaces.count_kind(unique_nick("nokind"), RetroHexChatWeb.App.ChatLive) == 0
+      assert Surfaces.count_kind(unique_nick("nokind"), RetroHexChatWeb.DesktopLive) == 0
     end
   end
 
@@ -335,7 +335,7 @@ defmodule RetroHexChat.SurfacesTest do
       call = start_surface(nickname, RetroHexChatWeb.App.CallLive)
       Surfaces.defer_part(nickname, [channel], "Connection lost")
 
-      chat = start_surface(nickname, RetroHexChatWeb.App.ChatLive)
+      chat = start_surface(nickname, RetroHexChatWeb.DesktopLive)
       Surfaces.cancel_deferred(nickname)
 
       close(call)

@@ -22,7 +22,7 @@ defmodule RetroHexChatWeb.ChatLive.MentionCountsTest do
     background = "#back#{uid()}"
     onscreen = "#front#{uid()}"
 
-    {:ok, view, _html} = ctx.conn |> chat_conn(nick) |> live(~p"/chat")
+    {:ok, view, _html} = ctx.conn |> chat_conn(nick) |> live("/")
     submit_command_sync(view, "/join #{background}")
     submit_command_sync(view, "/join #{onscreen}")
     {:ok, _} = Server.join(background, other)

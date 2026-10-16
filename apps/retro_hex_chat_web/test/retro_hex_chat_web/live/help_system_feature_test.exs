@@ -82,7 +82,7 @@ defmodule RetroHexChatWeb.HelpSystemFeatureTest do
 
     test "menu bar has Help Topics link in chat", %{conn: conn} do
       nick = "E2EHlp#{uid()}"
-      {:ok, _view, html} = live(chat_conn(conn, nick), "/chat")
+      {:ok, _view, html} = live(chat_conn(conn, nick), "/")
 
       assert html =~ "Help Topics"
       assert html =~ "help_topics"

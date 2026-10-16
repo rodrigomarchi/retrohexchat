@@ -2,8 +2,8 @@ defmodule RetroHexChatWeb.ChatLive.Visitor do
   @moduledoc """
   The chat as somebody without an account sees it.
 
-  `/chat` opened with no nickname in the session is not sent away: it renders
-  the same screen, on `#lobby`, with the conversation arriving live. A visitor
+  The desktop opened with no nickname in the session is not sent away: it
+  renders the same screen, on `#lobby` or the channel its address names, with the conversation arriving live. A visitor
   can open the public channels and read them, move between them and scroll
   their history — and nothing else. Every action, from sending a line to
   right-clicking a nick, opens the sign-in window instead, and signing in there
@@ -39,23 +39,21 @@ defmodule RetroHexChatWeb.ChatLive.Visitor do
   use Gettext, backend: RetroHexChatWeb.Gettext
 
   import Phoenix.Component, only: [assign: 2]
-  import Phoenix.LiveView, only: [attach_hook: 4]
+  import Phoenix.LiveView, only: [attach_hook: 4, push_patch: 2]
 
   alias RetroHexChat.Accounts.NicknameValidator
   alias RetroHexChat.Accounts.Session
   alias RetroHexChat.Channels.Server
   alias RetroHexChat.Chat.KeyBindings
   alias RetroHexChat.Topics
-  alias RetroHexChatWeb.App.ReturnTo
+  alias RetroHexChatWeb.App.Paths
   alias RetroHexChatWeb.ChatLive.ChannelListEvents
   alias RetroHexChatWeb.ChatLive.ConversationsReadModel
   alias RetroHexChatWeb.ChatLive.Helpers.Channel, as: ChannelHelpers
   alias RetroHexChatWeb.ChatLive.Helpers.Conversation
   alias RetroHexChatWeb.ChatLive.Helpers.Messages
-  alias RetroHexChatWeb.ChatLive.Windows
   alias RetroHexChatWeb.PublicPages
-
-  @connect_window "visitor-connect"
+  alias RetroHexChatWeb.Site.Address
 
   # What the sign-in window says the visitor tried to use. `:feature` is the
   # catch-all for an action with no better name.
@@ -82,7 +80,7 @@ defmodule RetroHexChatWeb.ChatLive.Visitor do
     toggle_search close_search search_input search_next search_prev
     search_navigate search_toggle_filter search_highlight_count
     toggle_mute mute_state_sync tab_focused viewport_info desktop_notify_permission
-    ping lag_update rum_session help_topics toggle_cheatsheet
+    ping lag_update rum_session help_topics toggle_cheatsheet help_nav_tab help_search
   )
 
   # What the browser says on its own, not something the reader did. Nothing
@@ -107,10 +105,6 @@ defmodule RetroHexChatWeb.ChatLive.Visitor do
   """
   @spec hidden_windows() :: [String.t()]
   def hidden_windows, do: ~w(channel-central url-catcher)
-
-  @doc "The window that asks a visitor to sign in."
-  @spec connect_window() :: String.t()
-  def connect_window, do: @connect_window
 
   @doc """
   The session a visitor's chat runs on: no nickname, nothing joined, nothing to
@@ -137,12 +131,8 @@ defmodule RetroHexChatWeb.ChatLive.Visitor do
   end
 
   @doc """
-  Opens the default channel, then the one `?join=` names, when it may be watched.
-
-  A visitor sent here from a screen they may not use — a game, a call, a space
-  — arrives with `?signup=<feature>&return_to=<path>`: the sign-in window opens
-  straight away, naming the feature, and signing in returns them to that path
-  rather than to the channel on screen.
+  Opens the default channel, then the one the address names (`/c/:channel`),
+  when it may be watched.
   """
   @spec enter(Phoenix.LiveView.Socket.t(), map()) :: Phoenix.LiveView.Socket.t()
   def enter(socket, params) do
@@ -154,29 +144,19 @@ defmodule RetroHexChatWeb.ChatLive.Visitor do
     socket
     |> assign(visitor_nick: NicknameValidator.guest_name())
     |> watch_channel(default_channel)
-    |> maybe_watch(params["join"], default_channel)
-    |> remember_return_to()
-    |> maybe_ask_on_arrival(params)
+    |> maybe_watch(params["channel"] && Address.channel_name(params["channel"]), default_channel)
   end
-
-  defp maybe_ask_on_arrival(socket, %{"signup" => feature} = params) do
-    socket
-    |> assign(visitor_pinned_return_to: ReturnTo.sanitize(params["return_to"]))
-    |> ask_to_sign_in(feature_named(feature))
-  end
-
-  defp maybe_ask_on_arrival(socket, _params), do: socket
 
   @doc """
-  The paths a visitor's links may still follow: the chat itself, help, the
-  language switch and the public pages with what is under them — in the
-  reader's language and without it. A path ending in `/` opens everything
-  below it, any other only itself. Anything else asks them to sign in
-  (`VisitorLinkGuardHook`).
+  The paths a visitor's links may still follow: the addresses of the one
+  desktop — the pages of the site, help, the archive, a channel, an
+  invitation, the sign-in window — and the language switch, in the reader's
+  language and without it. A path ending in `/` opens everything below it, any
+  other only itself. Anything else asks them to sign in (`VisitorLinkGuardHook`).
   """
   @spec open_paths() :: [String.t()]
   def open_paths do
-    pages = ["/chat/help" | PublicPages.paths()]
+    pages = ["/chat/help", "/c", "/connect", "/join", "/archive" | PublicPages.paths()]
     localized = Enum.uniq(pages ++ Enum.map(pages, &PublicPages.localized_path/1))
 
     Enum.uniq(["/chat", "/locale/" | Enum.flat_map(localized, &with_subpaths/1)])
@@ -219,7 +199,6 @@ defmodule RetroHexChatWeb.ChatLive.Visitor do
       socket
       |> assign(show_status_tab: false)
       |> Conversation.activate_channel(channel)
-      |> remember_return_to()
     else
       start_watching(socket, channel)
     end
@@ -238,7 +217,6 @@ defmodule RetroHexChatWeb.ChatLive.Visitor do
         |> ChannelHelpers.load_channel_user_count(channel)
         |> Conversation.activate_channel(channel)
         |> ConversationsReadModel.load_popular_channels()
-        |> remember_return_to()
 
       {:error, _reason} ->
         Messages.error_event(
@@ -289,36 +267,20 @@ defmodule RetroHexChatWeb.ChatLive.Visitor do
 
     case session.active_channel do
       nil -> assign(socket, show_status_tab: true)
-      next -> socket |> Conversation.activate_channel(next) |> remember_return_to()
+      next -> Conversation.activate_channel(socket, next)
     end
   end
 
   @doc """
-  Opens the sign-in window, saying which `feature` needs an account. Whoever
-  signs in there comes back to where they were: the screen that sent them
-  here, or else the channel on screen.
+  Opens the sign-in window — `/connect` on the desktop — saying which
+  `feature` needs an account. Whoever signs in there comes back to the
+  conversation they were reading.
   """
   @spec ask_to_sign_in(Phoenix.LiveView.Socket.t(), feature()) :: Phoenix.LiveView.Socket.t()
   def ask_to_sign_in(socket, feature) do
-    socket
-    |> assign(visitor_feature: feature)
-    |> remember_return_to()
-    |> Windows.open(@connect_window)
-  end
-
-  defp remember_return_to(socket) do
-    assign(socket,
-      visitor_return_to: socket.assigns[:visitor_pinned_return_to] || return_to(socket)
+    push_patch(socket,
+      to: Paths.visitor_sign_in_path(feature, Address.chat_address(socket.assigns))
     )
-  end
-
-  # `#` starts a fragment in a URL, so the channel travels encoded — the
-  # sign-in flow hands this to the browser as an address.
-  defp return_to(socket) do
-    case socket.assigns.session.active_channel do
-      channel when is_binary(channel) -> "/chat?join=" <> URI.encode_www_form(channel)
-      _none -> "/chat"
-    end
   end
 
   # ── The gate ──────────────────────────────────────────────────
@@ -331,7 +293,6 @@ defmodule RetroHexChatWeb.ChatLive.Visitor do
   # events of its own, out of this gate's reach, so a visitor mounts none but
   # the sign-in window. Not asked about: restoring a layout is not something
   # the reader did.
-  defp gate("window_open", %{"id" => @connect_window}, socket), do: {:cont, socket}
   defp gate("window_open", _params, socket), do: {:halt, socket}
 
   defp gate(event, %{"channel" => channel}, socket)

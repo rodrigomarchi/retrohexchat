@@ -208,12 +208,12 @@ defmodule RetroHexChatWeb.BotManagementEntryPointsFeatureTest do
   end
 
   defp connect_admin(conn) do
-    {:ok, view, _html} = live(chat_conn(conn, "TestAdmin", pre_identified: true), "/chat")
+    {:ok, view, _html} = live(chat_conn(conn, "TestAdmin", pre_identified: true), "/")
     view
   end
 
   defp connect_user(conn, nick) do
-    {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
+    {:ok, view, _html} = live(chat_conn(conn, nick), "/")
     view
   end
 

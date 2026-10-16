@@ -4,8 +4,9 @@ Phoenix LiveView web layer with retro aesthetic.
 
 ### LiveView Screens
 
-- **ConnectLive** (`/`) — Nickname entry dialog
-- **ChatLive** (`/chat`) — Main MDI chat interface
+- **DesktopLive** (`/`, `/c/:channel` and every page of the site) — the one
+  desktop: the chat, and each page, help, the archive, invitations and the
+  sign-in window (`/connect`) as windows over it
 - **ChannelListLive** (`/channels`) — Channel browser
 
 ### Components

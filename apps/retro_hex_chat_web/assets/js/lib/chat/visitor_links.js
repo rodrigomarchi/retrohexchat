@@ -78,8 +78,9 @@ function linkAnchor(target) {
 
 /**
  * Whether a path of ours is open to a visitor. An entry ending in `/` opens
- * everything under it; any other opens exactly itself — so `/chat` opens the
- * chat and not its attachments. `/` is the home page, never everything.
+ * everything under it; any other opens exactly itself — so `/chat/help/`
+ * opens every topic while `/chat` itself is only the old address of the chat,
+ * never its attachments. `/` is the home page, never everything.
  */
 export function openPath(pathname, allow) {
   return allow.some((entry) => {

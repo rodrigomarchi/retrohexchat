@@ -1,6 +1,6 @@
 /**
  * @section X - Channel Modes, Services, Permissions, Persistence Edges
- * @flow X12 [done] Server bans block reconnect and stale-session `/chat` access until admin unban restores login (features P1)
+ * @flow X12 [done] Server bans block reconnect and stale-session desktop access until admin unban restores login (features P1)
  *
  * These @flow lines are the source of truth for e2e/TEST_CATALOG.md.
  * Edit them here, then run `make e2e.catalog` to regenerate the index.
@@ -9,6 +9,7 @@ import { Browser, BrowserContext, Page, expect, test } from "@playwright/test";
 import { ConnectPage, uniqueNickname } from "../pages/ConnectPage";
 import { ChatPage } from "../pages/ChatPage";
 import { adminNick, adminPassword } from "../helpers/env";
+import { CHAT_URL } from "../helpers/urls";
 
 const ADMIN_NICK = adminNick();
 const ADMIN_PW = adminPassword();
@@ -98,7 +99,7 @@ test.describe("Admin ban persistence", () => {
       offline.connect = new ConnectPage(offlinePage);
       offline.chat = new ChatPage(offlinePage);
 
-      await offline.page.goto("/chat");
+      await offline.page.goto("/");
       await expect(offline.page).toHaveURL(/\/connect\?reason=/);
       await expect(offline.page.getByTestId("session-alert")).toContainText(
         "Server banned",
@@ -119,7 +120,7 @@ test.describe("Admin ban persistence", () => {
       await target.connect.open();
       await target.connect.signIn(target.nick, target.password);
       await target.chat.waitUntilConnected();
-      await expect(target.page).toHaveURL(/\/chat$/);
+      await expect(target.page).toHaveURL(CHAT_URL);
     } finally {
       await admin.chat.sendMessage(`/admin user unban ${target.nick}`);
       await admin.chat.sendMessage(`/admin user unban ${offline.nick}`);

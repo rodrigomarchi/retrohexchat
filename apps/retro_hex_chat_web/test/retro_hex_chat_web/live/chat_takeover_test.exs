@@ -37,11 +37,11 @@ defmodule RetroHexChatWeb.ChatTakeoverTest do
     test "both sessions hold the one membership between them", %{conn: conn} do
       nick = "Take#{uid()}"
 
-      {:ok, first, _html} = conn |> chat_conn(nick) |> live("/chat")
+      {:ok, first, _html} = conn |> chat_conn(nick) |> live("/")
       assert render(first) =~ nick
       assert nick in channel_members("#lobby")
 
-      {:ok, second, _html} = conn |> chat_conn(nick) |> live("/chat")
+      {:ok, second, _html} = conn |> chat_conn(nick) |> live("/")
 
       # One member, two screens: the membership is keyed by nickname, so the
       # second session adopts it rather than joining a second time. A count of
@@ -70,8 +70,12 @@ defmodule RetroHexChatWeb.ChatTakeoverTest do
       assert Tracker.online?("presence:global", nick),
              "precondition: the tracker has to believe the nickname is online"
 
+      # The first mount in a test VM also loads the desktop's modules on demand,
+      # which a release has loaded at boot; that cost is not what is measured.
+      {:ok, _warm, _html} = build_conn() |> chat_conn("Warm#{uid()}") |> live("/")
+
       {micros, {:ok, _view, _html}} =
-        :timer.tc(fn -> conn |> chat_conn(nick) |> live("/chat") end)
+        :timer.tc(fn -> conn |> chat_conn(nick) |> live("/") end)
 
       assert div(micros, 1000) < PerfBudgets.connected_mount_ms(),
              "mount blocked for #{div(micros, 1000)}ms"

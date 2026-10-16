@@ -67,7 +67,7 @@ export function ensureE2eDatabaseMigrated() {
 // that sort first, which timed out at six seconds and passed in under two on
 // the retry. Fetching the pages here moves the compile off the first spec.
 export async function warmRenderPaths(baseURL: string): Promise<void> {
-  for (const path of ["/", "/connect", "/chat"]) {
+  for (const path of ["/", "/connect", "/c/lobby"]) {
     try {
       await fetch(`${baseURL}${path}`, { redirect: "follow" });
     } catch {

@@ -1,6 +1,6 @@
 import { Page, Locator, expect } from "@playwright/test";
 
-// Page Object for the app ConnectLive flow at /connect.
+// Page Object for the sign-in window at /connect (`Site.Pages.Connect`).
 // Mirrors the three steps in the LiveView state machine: :nickname, :register,
 // :password (only one is visible at a time).
 export class ConnectPage {
@@ -68,7 +68,19 @@ export class ConnectPage {
     });
     const target = locale ? `/locale/${locale}?return_to=/connect` : "/connect";
     await this.page.goto(target);
-    await expect(this.nicknameInput).toBeVisible();
+    // A remembered terminal opens on its cards instead of the empty field.
+    await expect(
+      this.page
+        .locator('#nickname, [data-testid^="remembered-nick-login-"]')
+        .first(),
+    ).toBeVisible();
+    // The sign-in window starts the chat at once, but a click that lands
+    // before the view has joined has no LiveView to reach.
+    await this.page.waitForFunction(
+      () => document.documentElement.dataset.liveBoot === "ready",
+      undefined,
+      { timeout: 15_000 },
+    );
   }
 
   async enterNickname(nick: string) {
@@ -124,7 +136,7 @@ export class ConnectPage {
   }
 }
 
-// Generates a nickname that satisfies ConnectLive validation:
+// Generates a nickname that satisfies the sign-in form's validation:
 //   - starts with a letter
 //   - 1–16 chars
 //   - no spaces

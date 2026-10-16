@@ -27,7 +27,7 @@ defmodule RetroHexChatWeb.HelpContent.Helpers do
   def help_link(assigns) do
     ~H"""
     <.link
-      navigate={PublicPages.localized_path("/chat/help/#{@topic}")}
+      patch={PublicPages.localized_path("/chat/help/#{@topic}")}
       class="text-link hover:underline"
     >
       {render_slot(@inner_block)}

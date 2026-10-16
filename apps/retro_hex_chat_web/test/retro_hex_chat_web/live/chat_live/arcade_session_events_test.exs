@@ -29,7 +29,7 @@ defmodule RetroHexChatWeb.ChatLive.ArcadeSessionEventsTest do
     test "an identified user opens the arcade window and creates a lobby session", %{conn: conn} do
       nick = "arc#{uid()}"
       registered = register(nick)
-      {:ok, view, _} = live(chat_conn(conn, nick, pre_identified: true), "/chat")
+      {:ok, view, _} = live(chat_conn(conn, nick, pre_identified: true), "/")
 
       render_click(view, "toolbar_action", %{"action" => "open_arcade"})
 
@@ -41,7 +41,7 @@ defmodule RetroHexChatWeb.ChatLive.ArcadeSessionEventsTest do
 
     test "a guest (unidentified) user does not start a session", %{conn: conn} do
       nick = "guest#{uid()}"
-      {:ok, view, _} = live(chat_conn(conn, nick), "/chat")
+      {:ok, view, _} = live(chat_conn(conn, nick), "/")
 
       render_click(view, "toolbar_action", %{"action" => "open_arcade"})
 
@@ -52,7 +52,7 @@ defmodule RetroHexChatWeb.ChatLive.ArcadeSessionEventsTest do
     test "a game id opens the window already previewing that game", %{conn: conn} do
       nick = "arcd#{uid()}"
       register(nick)
-      {:ok, view, _} = live(chat_conn(conn, nick, pre_identified: true), "/chat")
+      {:ok, view, _} = live(chat_conn(conn, nick, pre_identified: true), "/")
 
       render_click(view, "toolbar_action", %{
         "action" => "open_arcade",
@@ -69,13 +69,13 @@ defmodule RetroHexChatWeb.ChatLive.ArcadeSessionEventsTest do
 
   # The public game page signs a reader in and lands them here: the address
   # names the game, and the chat opens the arcade on it as the menu would.
-  describe "/chat?arcade=<game>" do
+  describe "/?arcade=<game>" do
     test "opens the arcade already previewing the named game", %{conn: conn} do
       nick = "arcl#{uid()}"
       register(nick)
 
       {:ok, view, _} =
-        live(chat_conn(conn, nick, pre_identified: true), "/chat?arcade=doom_shareware")
+        live(chat_conn(conn, nick, pre_identified: true), "/?arcade=doom_shareware")
 
       # The open is sent to itself after mount; a render processes it.
       _ = render(view)
@@ -91,11 +91,11 @@ defmodule RetroHexChatWeb.ChatLive.ArcadeSessionEventsTest do
       register(nick)
 
       {:ok, view, _} =
-        live(chat_conn(conn, nick, pre_identified: true), "/chat?arcade=doom_shareware")
+        live(chat_conn(conn, nick, pre_identified: true), "/?arcade=doom_shareware")
 
       _ = render(view)
 
-      assert_patch(view, "/chat")
+      assert_patch(view, "/c/lobby")
     end
 
     test "a game the arcade does not have opens nothing", %{conn: conn} do
@@ -103,7 +103,7 @@ defmodule RetroHexChatWeb.ChatLive.ArcadeSessionEventsTest do
       register(nick)
 
       {:ok, view, _} =
-        live(chat_conn(conn, nick, pre_identified: true), "/chat?arcade=no_such_game")
+        live(chat_conn(conn, nick, pre_identified: true), "/?arcade=no_such_game")
 
       _ = render(view)
 
@@ -145,7 +145,7 @@ defmodule RetroHexChatWeb.ChatLive.ArcadeSessionEventsTest do
     setup %{conn: conn} do
       nick = "arcp#{uid()}"
       register(nick)
-      {:ok, view, _} = live(chat_conn(conn, nick, pre_identified: true), "/chat")
+      {:ok, view, _} = live(chat_conn(conn, nick, pre_identified: true), "/")
       render_click(view, "toolbar_action", %{"action" => "open_arcade"})
       %{view: view, token: arcade_session(view).token}
     end

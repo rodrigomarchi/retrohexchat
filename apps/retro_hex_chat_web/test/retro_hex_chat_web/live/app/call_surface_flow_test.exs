@@ -38,7 +38,7 @@ defmodule RetroHexChatWeb.App.CallSurfaceFlowTest do
   defp mount_identified(conn, prefix) do
     nick = register(unique_nick(prefix))
     session_conn = chat_conn(conn, nick.nickname, pre_identified: true)
-    {:ok, view, _html} = live(session_conn, "/chat")
+    {:ok, view, _html} = live(session_conn, "/")
     Process.put({:conn, view.pid}, session_conn)
     %{nick: nick, view: view}
   end
@@ -52,7 +52,7 @@ defmodule RetroHexChatWeb.App.CallSurfaceFlowTest do
     session_conn =
       chat_conn(conn, nick.nickname, pre_identified: true, trusted_device_cookie: cookie)
 
-    {:ok, view, _html} = live(session_conn, "/chat")
+    {:ok, view, _html} = live(session_conn, "/")
 
     Process.put({:conn, view.pid}, session_conn)
     %{nick: nick, device: device, view: view}

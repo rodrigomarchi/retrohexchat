@@ -51,6 +51,14 @@ defmodule RetroHexChatWeb.Components.UI.ChatTaskbar do
     default: [],
     doc: "windows this reader does not get at all, so no button either"
 
+  attr :documents, :list,
+    default: [],
+    doc: "the pages of the site open as windows on the desktop: `%{id, label, icon}`"
+
+  attr :live_ready, :boolean,
+    default: true,
+    doc: "false on the first render, when only the chat and the pages are on the desktop"
+
   @spec chat_taskbar(map()) :: Phoenix.LiveView.Rendered.t()
   def chat_taskbar(assigns) do
     assigns = assign(assigns, :taskbar_slots, assigns |> taskbar_windows() |> group_windows())
@@ -64,13 +72,18 @@ defmodule RetroHexChatWeb.Components.UI.ChatTaskbar do
         <.start_menu_app
           id="chat-start-menu"
           screen={:chat}
+          full={@live_ready}
+          help_open={Enum.any?(@documents, &(&1.id == "doc-help"))}
           is_admin={@is_admin}
           arcade_available={@arcade_available}
-          windows={[%{id: "chat", label: @chat_label, icon_fn: :icon_chat}]}
+          windows={[
+            %{id: "chat", label: @chat_label, icon_fn: :icon_chat} | start_documents(@documents)
+          ]}
         />
       </:start>
 
       <.desktop_launcher_taskbar_buttons
+        :if={@live_ready}
         screen={:chat}
         is_admin={@is_admin}
         arcade_available={@arcade_available}
@@ -104,6 +117,15 @@ defmodule RetroHexChatWeb.Components.UI.ChatTaskbar do
           <:icon>{apply(Icons, slot.window.icon_fn, [%{class: "h-4 w-4"}])}</:icon>
         </.taskbar_button>
       <% end %>
+
+      <.taskbar_button
+        :for={document <- @documents}
+        window={document.id}
+        label={document.label}
+        class="desktop-taskbar__window-button"
+      >
+        <:icon>{apply(Icons, document.icon, [%{class: "h-4 w-4"}])}</:icon>
+      </.taskbar_button>
 
       <%!-- The tray reads left to right the way Win98's did: the machine's own
             status first, then the volume, then the clock at the far edge. --%>
@@ -285,6 +307,7 @@ defmodule RetroHexChatWeb.Components.UI.ChatTaskbar do
 
     for window <- WindowRegistry.windows(),
         window.id not in assigns.hidden_windows,
+        assigns.live_ready or window.id == "chat",
         WindowRegistry.on_taskbar?(window, capabilities) do
       %{
         id: window.id,
@@ -299,4 +322,8 @@ defmodule RetroHexChatWeb.Components.UI.ChatTaskbar do
   # mirrors the active conversation. Everything else is its registered title.
   defp label(%{id: "chat"}, assigns), do: assigns.chat_label
   defp label(window, _assigns), do: window.taskbar_label
+
+  defp start_documents(documents) do
+    Enum.map(documents, &%{id: &1.id, label: &1.label, icon_fn: &1.icon})
+  end
 end

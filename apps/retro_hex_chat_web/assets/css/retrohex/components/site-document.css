@@ -1,0 +1,46 @@
+/* A page of the site in its document window on the one desktop
+   (`Components.UI.Site.Document`, `Site.DocumentWindow`). */
+
+/* The sections of a page, each headed like the window it used to be. */
+.document-section {
+  @apply flex flex-col;
+}
+
+.document-section__title {
+  @apply shrink-0;
+}
+
+.document-section__body {
+  @apply min-w-0;
+}
+
+.document-section__status {
+  @apply mt-[2px];
+}
+
+/* The strip of section links at the top of a document. */
+.document-contents {
+  @apply sticky top-0 z-[1] bg-surface;
+}
+
+.document-contents__link {
+  @apply shrink-0;
+}
+
+/* A document window is centered by the window manager; on a phone the one in
+   front fills the screen like every other stacked window. */
+.desktop-window--document {
+  @apply max-w-full;
+}
+
+/* The Welcome window's way in. A phone reads the Welcome full-screen, so its
+   first button is sized for a thumb. */
+.welcome-enter {
+  @apply cursor-pointer;
+}
+
+@media (max-width: 767px) {
+  .welcome-enter {
+    @apply flex-1 justify-center py-retro-8 text-base;
+  }
+}

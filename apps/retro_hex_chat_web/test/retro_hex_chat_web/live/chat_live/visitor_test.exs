@@ -7,6 +7,7 @@ defmodule RetroHexChatWeb.ChatLive.VisitorTest do
   alias RetroHexChat.Channels.{Server, Supervisor}
   alias RetroHexChat.Services.NickServ
   alias RetroHexChatWeb.App.Paths
+  alias RetroHexChatWeb.Site.Address
 
   # A member keeps the lobby up: an unregistered room nobody is in stops when
   # its last visitor leaves, and these tests ask the lobby about its visitors
@@ -36,7 +37,7 @@ defmodule RetroHexChatWeb.ChatLive.VisitorTest do
 
   describe "opening /chat without an account" do
     test "shows the chat on the lobby, read-only, instead of sending them away", %{conn: conn} do
-      {:ok, view, _html} = live(conn, ~p"/chat")
+      {:ok, view, _html} = live(conn, "/")
       html = render(view)
 
       assert html =~ ~s(data-testid="chat-desktop")
@@ -58,7 +59,7 @@ defmodule RetroHexChatWeb.ChatLive.VisitorTest do
     end
 
     test "is listed as a guest of the lobby, never as a member", %{conn: conn} do
-      {:ok, view, _html} = live(conn, ~p"/chat")
+      {:ok, view, _html} = live(conn, "/")
       guest_name = assigns(view).visitor_nick
 
       {:ok, state} = Server.get_state("#lobby")
@@ -67,7 +68,7 @@ defmodule RetroHexChatWeb.ChatLive.VisitorTest do
     end
 
     test "stops being listed when the tab closes", %{conn: conn} do
-      {:ok, view, _html} = live(conn, ~p"/chat")
+      {:ok, view, _html} = live(conn, "/")
       guest_name = assigns(view).visitor_nick
       ref = Process.monitor(view.pid)
 
@@ -80,7 +81,7 @@ defmodule RetroHexChatWeb.ChatLive.VisitorTest do
     test "opens the channel a link names", %{conn: conn} do
       channel = open_channel("Host#{uid()}")
 
-      {:ok, view, _html} = live(conn, "/chat?join=" <> URI.encode_www_form(channel))
+      {:ok, view, _html} = live(conn, Address.channel_path(channel))
 
       assert assigns(view).session.active_channel == channel
       assert assigns(view).visitor_nick in guests(channel)
@@ -90,7 +91,7 @@ defmodule RetroHexChatWeb.ChatLive.VisitorTest do
   describe "moving between channels" do
     test "watches a public channel instead of joining it", %{conn: conn} do
       channel = open_channel("Host#{uid()}")
-      {:ok, view, _html} = live(conn, ~p"/chat")
+      {:ok, view, _html} = live(conn, "/")
 
       render_hook(view, "switch_channel", %{"channel" => channel})
 
@@ -104,7 +105,7 @@ defmodule RetroHexChatWeb.ChatLive.VisitorTest do
       founder = "Host#{uid()}"
       channel = open_channel(founder)
       :ok = Server.set_mode(channel, founder, "+s")
-      {:ok, view, _html} = live(conn, ~p"/chat")
+      {:ok, view, _html} = live(conn, "/")
 
       render_hook(view, "switch_channel", %{"channel" => channel})
 
@@ -114,7 +115,7 @@ defmodule RetroHexChatWeb.ChatLive.VisitorTest do
 
     test "closing a channel's tab stops watching it", %{conn: conn} do
       channel = open_channel("Host#{uid()}")
-      {:ok, view, _html} = live(conn, ~p"/chat")
+      {:ok, view, _html} = live(conn, "/")
       render_hook(view, "switch_channel", %{"channel" => channel})
 
       render_hook(view, "close_tab", %{"type" => "channel", "label" => channel})
@@ -126,7 +127,7 @@ defmodule RetroHexChatWeb.ChatLive.VisitorTest do
     test "a channel that goes secret closes for the visitor", %{conn: conn} do
       founder = "Host#{uid()}"
       channel = open_channel(founder)
-      {:ok, view, _html} = live(conn, ~p"/chat")
+      {:ok, view, _html} = live(conn, "/")
       render_hook(view, "switch_channel", %{"channel" => channel})
 
       :ok = Server.set_mode(channel, founder, "+s")
@@ -139,18 +140,18 @@ defmodule RetroHexChatWeb.ChatLive.VisitorTest do
   describe "any action" do
     test "the sign-in button opens the connect window, returning to the channel",
          %{conn: conn} do
-      {:ok, view, _html} = live(conn, ~p"/chat")
+      {:ok, view, _html} = live(conn, "/")
 
       view |> element(~s([data-testid="visitor-composer"])) |> render_click()
 
-      html = render(view)
-      assert html =~ ~s(data-testid="visitor-connect-window")
-      assert assigns(view).visitor_return_to == "/chat?join=%23lobby"
+      assert_patch(view, "/connect?return_to=%2Fc%2Flobby&signup=chat")
+      assert render(view) =~ ~s(data-testid="document-window-connect")
+      assert connect_window(view).return_to == "/c/lobby"
     end
 
     test "a deliberate action opens the connect window and does nothing else",
          %{conn: conn} do
-      {:ok, view, _html} = live(conn, ~p"/chat")
+      {:ok, view, _html} = live(conn, "/")
 
       for {event, params} <- [
             {"nick_right_click", %{"nick" => "someone", "x" => 1, "y" => 1}},
@@ -159,7 +160,9 @@ defmodule RetroHexChatWeb.ChatLive.VisitorTest do
             {"conversations_context_action", %{"action" => "ctx_conversations_leave"}}
           ] do
         render_hook(view, event, params)
-        assert "visitor-connect" in assigns(view).open_windows
+        assert assigns(view).focused_doc == :connect, "#{event} did not ask to sign in"
+        assert assigns(view).docs[:connect]
+        render_patch(view, "/")
       end
 
       refute "away" in assigns(view).open_windows
@@ -167,7 +170,7 @@ defmodule RetroHexChatWeb.ChatLive.VisitorTest do
     end
 
     test "the sign-in window names the feature that needs an account", %{conn: conn} do
-      {:ok, view, _html} = live(conn, ~p"/chat")
+      {:ok, view, _html} = live(conn, "/")
 
       for {event, params, feature} <- [
             {"open_arcade", %{}, :games},
@@ -183,11 +186,11 @@ defmodule RetroHexChatWeb.ChatLive.VisitorTest do
             {"toolbar_action", %{"action" => "open_away_dialog"}, :feature}
           ] do
         render_hook(view, event, params)
-        assert assigns(view).visitor_feature == feature, "#{event} → #{feature}"
+        assert connect_window(view).feature == feature, "#{event} → #{feature}"
       end
 
       html = render(view)
-      assert html =~ ~s(data-testid="visitor-connect-window")
+      assert html =~ ~s(data-testid="document-window-connect")
       assert html =~ "This feature needs an account."
     end
 
@@ -197,14 +200,14 @@ defmodule RetroHexChatWeb.ChatLive.VisitorTest do
 
       {:ok, view, _html} = live(conn, path)
 
-      assert "visitor-connect" in assigns(view).open_windows
-      assert assigns(view).visitor_feature == :games
-      assert assigns(view).visitor_return_to == "/play/tetris"
+      assert assigns(view).focused_doc == :connect
+      assert connect_window(view).feature == :games
+      assert connect_window(view).return_to == "/play/tetris"
       assert render(view) =~ "Games are for registered players."
 
       # Moving to another channel keeps the way back to the screen they came for.
       render_hook(view, "switch_channel", %{"channel" => "#lobby"})
-      assert assigns(view).visitor_return_to == "/play/tetris"
+      assert connect_window(view).return_to == "/play/tetris"
     end
 
     test "a way back that is not ours goes back to the chat", %{conn: conn} do
@@ -212,11 +215,11 @@ defmodule RetroHexChatWeb.ChatLive.VisitorTest do
 
       {:ok, view, _html} = live(conn, path)
 
-      assert assigns(view).visitor_return_to == "/chat"
+      assert connect_window(view).return_to == "/"
     end
 
     test "holds every link not open to everybody", %{conn: conn} do
-      {:ok, view, _html} = live(conn, ~p"/chat")
+      {:ok, view, _html} = live(conn, "/")
       html = render(view)
 
       [allow] =
@@ -226,14 +229,16 @@ defmodule RetroHexChatWeb.ChatLive.VisitorTest do
         |> Floki.attribute("data-allow")
 
       allow = Jason.decode!(allow)
-      assert "/chat" in allow
+      assert "/" in allow
+      assert "/c/" in allow
+      assert "/connect" in allow
       assert "/chat/help/" in allow
       refute Enum.any?(allow, &String.starts_with?(&1, "/play"))
       refute "/chat/" in allow
     end
 
     test "gets no always-mounted tool window, nor its taskbar button", %{conn: conn} do
-      {:ok, view, _html} = live(conn, ~p"/chat")
+      {:ok, view, _html} = live(conn, "/")
       html = render(view)
 
       for id <- ["url-catcher", "channel-central"] do
@@ -243,29 +248,29 @@ defmodule RetroHexChatWeb.ChatLive.VisitorTest do
     end
 
     test "mounts no tool window the window manager asks for", %{conn: conn} do
-      {:ok, view, _html} = live(conn, ~p"/chat")
+      {:ok, view, _html} = live(conn, "/")
 
       render_hook(view, "window_open", %{"id" => "address-book"})
 
       refute "address-book" in assigns(view).open_windows
-      refute "visitor-connect" in assigns(view).open_windows
+      refute Map.has_key?(assigns(view).docs, :connect)
     end
 
     test "what the browser reports on its own asks nothing", %{conn: conn} do
-      {:ok, view, _html} = live(conn, ~p"/chat")
+      {:ok, view, _html} = live(conn, "/")
 
       render_hook(view, "tips_seen", %{"tips" => ["first_join"]})
       render_hook(view, "window_keydown", %{"key" => "a"})
 
-      refute "visitor-connect" in assigns(view).open_windows
+      refute Map.has_key?(assigns(view).docs, :connect)
     end
   end
 
   describe "members" do
     test "see the visitors watching their channel, apart from the members", %{conn: conn} do
       member = "Member#{uid()}"
-      {:ok, member_view, _html} = conn |> chat_conn(member) |> live(~p"/chat")
-      {:ok, visitor_view, _html} = build_conn() |> live(~p"/chat")
+      {:ok, member_view, _html} = conn |> chat_conn(member) |> live("/")
+      {:ok, visitor_view, _html} = build_conn() |> live("/")
       guest_name = assigns(visitor_view).visitor_nick
 
       _ = render(member_view)
@@ -295,4 +300,6 @@ defmodule RetroHexChatWeb.ChatLive.VisitorTest do
       assert redirected_to(conn) == "/connect"
     end
   end
+
+  defp connect_window(view), do: assigns(view).docs[:connect].assigns
 end

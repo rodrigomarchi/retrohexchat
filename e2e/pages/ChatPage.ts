@@ -1,5 +1,6 @@
 import { Page, Locator, expect } from "@playwright/test";
 import { enterThroughNewCard } from "../helpers/surfaceEntry";
+import { CHAT_URL } from "../helpers/urls";
 
 export type AddressBookControlType =
   | "all"
@@ -780,7 +781,7 @@ export class ChatPage {
   // it the click is a no-op, so we wait for a phx-hook root with the live
   // session attribute to confirm hooks have wired up.
   async waitUntilConnected() {
-    await expect(this.page).toHaveURL(/\/chat(\?.*)?$/);
+    await expect(this.page).toHaveURL(CHAT_URL);
     await expect(this.menuBar).toBeVisible();
     await expect(
       this.page.locator("button[data-menubar-trigger]").first(),

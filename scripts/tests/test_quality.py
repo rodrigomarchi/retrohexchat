@@ -18,9 +18,20 @@ from i18n.quality import (
     invented_break,
     is_degenerate,
     lost_negation,
+    introduced_replacement_box,
     is_usable_translation,
     looks_like_mojibake,
 )
+
+
+class ReplacementBoxTest(unittest.TestCase):
+    def test_rejects_a_box_standing_in_for_a_lost_glyph(self):
+        # pt_BR: "Start ▸ Navigate" -> "Iniciar □ Navegar".
+        self.assertTrue(introduced_replacement_box("Start ▸ Navigate", "Iniciar □ Navegar"))
+        self.assertFalse(is_usable_translation("Start ▸ Navigate", "Iniciar □ Navegar", {}))
+
+    def test_keeps_a_box_the_source_has(self):
+        self.assertFalse(introduced_replacement_box("Draw a □ here", "Desenhe um □ aqui"))
 
 
 class DegenerateTest(unittest.TestCase):

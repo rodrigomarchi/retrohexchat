@@ -26,7 +26,7 @@ defmodule RetroHexChatWeb.ChatLive.AvatarsTest do
 
     :ok = Avatars.remember(author, @tunic)
 
-    {:ok, view, _html} = ctx.conn |> chat_conn(viewer, pre_identified: true) |> live(~p"/chat")
+    {:ok, view, _html} = ctx.conn |> chat_conn(viewer, pre_identified: true) |> live("/")
     submit_command_sync(view, "/join #{channel}")
     {:ok, _state} = Server.join(channel, author)
     {:ok, _id} = Server.send_message(channel, author, "the wiki is up again")

@@ -21,7 +21,7 @@ defmodule RetroHexChatWeb.ChatLive.EventsTest do
     guest = register("Gue")
     channel = "#evt#{uid()}"
 
-    {:ok, view, _html} = ctx.conn |> chat_conn(host, pre_identified: true) |> live(~p"/chat")
+    {:ok, view, _html} = ctx.conn |> chat_conn(host, pre_identified: true) |> live("/")
     submit_command_sync(view, "/join #{channel}")
 
     %{view: view, host: host, guest: guest, channel: channel}
@@ -43,7 +43,7 @@ defmodule RetroHexChatWeb.ChatLive.EventsTest do
   # before there is anything to decorate it with.
   test "a second person in the room gets the card too", ctx do
     {:ok, guest_view, _html} =
-      ctx.conn |> chat_conn(ctx.guest, pre_identified: true) |> live(~p"/chat")
+      ctx.conn |> chat_conn(ctx.guest, pre_identified: true) |> live("/")
 
     submit_command_sync(guest_view, "/join #{ctx.channel}")
 
@@ -90,7 +90,7 @@ defmodule RetroHexChatWeb.ChatLive.EventsTest do
 
   test "a regular member is refused, by the channel", ctx do
     {:ok, other_view, _html} =
-      build_conn() |> chat_conn(ctx.guest, pre_identified: true) |> live(~p"/chat")
+      build_conn() |> chat_conn(ctx.guest, pre_identified: true) |> live("/")
 
     submit_command_sync(other_view, "/join #{ctx.channel}")
     submit_command_sync(other_view, "/event 2h Their tournament")

@@ -19,6 +19,29 @@ defmodule RetroHexChatWeb.PayloadBudgetTest do
   # back as `element_render_delay`, so they are asserted here rather than
   # discovered after a deploy.
 
+  for {kind, path} <- [home: "/", page: "/features", channel: "/c/lobby"] do
+    describe "#{kind} (#{path})" do
+      setup %{conn: conn}, do: %{html: html_for(conn, unquote(path))}
+
+      test "stays inside its byte budget", %{html: html} do
+        assert byte_size(html) <= PerfBudgets.html_bytes(unquote(kind))
+      end
+
+      test "stays inside its DOM node budget", %{html: html} do
+        assert PerfBudgets.count_elements(html) <= PerfBudgets.dom_nodes(unquote(kind))
+      end
+    end
+  end
+
+  # The pages carry their diagrams inline (`Components.Diagrams`); a channel's
+  # address carries no drawing of its own, so every icon in it is a reference.
+  test "a channel's address references the sprite instead of carrying the drawings", %{
+    conn: conn
+  } do
+    html = html_for(conn, "/c/lobby")
+    assert PerfBudgets.count(html, "<use href=") == PerfBudgets.count(html, "<svg")
+  end
+
   describe "/connect" do
     setup %{conn: conn}, do: %{html: html_for(conn, ~p"/connect")}
 
@@ -67,10 +90,8 @@ defmodule RetroHexChatWeb.PayloadBudgetTest do
     end
   end
 
-  # The only page in the plan a stranger can reach with no session at all, and
-  # the only one that had no budget: it rides the landing pipeline, so it pays
-  # the small public bundle and its cost is the one a link's first impression is
-  # made of.
+  # A page a stranger reaches with no session at all, from a link: its cost is
+  # the one a link's first impression is made of.
   describe "/join/:slug" do
     setup %{conn: conn}, do: %{html: html_for(conn, open_join())}
 

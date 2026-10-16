@@ -22,8 +22,8 @@ defmodule RetroHexChatWeb.WhoisTest do
       nick = "WhoQ#{uid()}"
       target = "WhoT#{uid()}"
 
-      {:ok, _target_view, _html} = live(chat_conn(conn, target), "/chat")
-      {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
+      {:ok, _target_view, _html} = live(chat_conn(conn, target), "/")
+      {:ok, view, _html} = live(chat_conn(conn, nick), "/")
 
       view
       |> element(~s([data-testid="chat-input-form"]))
@@ -42,8 +42,8 @@ defmodule RetroHexChatWeb.WhoisTest do
       nick = "WhoQ2#{uid()}"
       target = "WhoT2#{uid()}"
 
-      {:ok, _target_view, _html} = live(chat_conn(conn, target), "/chat")
-      {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
+      {:ok, _target_view, _html} = live(chat_conn(conn, target), "/")
+      {:ok, view, _html} = live(chat_conn(conn, nick), "/")
 
       view
       |> element(~s([data-testid="chat-input-form"]))
@@ -60,8 +60,8 @@ defmodule RetroHexChatWeb.WhoisTest do
       nick = "WhoQ3#{uid()}"
       target = "WhoT3#{uid()}"
 
-      {:ok, _target_view, _html} = live(chat_conn(conn, target), "/chat")
-      {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
+      {:ok, _target_view, _html} = live(chat_conn(conn, target), "/")
+      {:ok, view, _html} = live(chat_conn(conn, nick), "/")
 
       view
       |> element(~s([data-testid="chat-input-form"]))
@@ -78,8 +78,8 @@ defmodule RetroHexChatWeb.WhoisTest do
       nick = "WhoQ4#{uid()}"
       target = "WhoT4#{uid()}"
 
-      {:ok, _target_view, _html} = live(chat_conn(conn, target), "/chat")
-      {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
+      {:ok, _target_view, _html} = live(chat_conn(conn, target), "/")
+      {:ok, view, _html} = live(chat_conn(conn, nick), "/")
 
       view
       |> element(~s([data-testid="chat-input-form"]))
@@ -97,8 +97,8 @@ defmodule RetroHexChatWeb.WhoisTest do
       nick = "WhoQ5#{uid()}"
       target = "WhoT5#{uid()}"
 
-      {:ok, _target_view, _html} = live(chat_conn(conn, target), "/chat")
-      {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
+      {:ok, _target_view, _html} = live(chat_conn(conn, target), "/")
+      {:ok, view, _html} = live(chat_conn(conn, nick), "/")
 
       view
       |> element(~s([data-testid="chat-input-form"]))
@@ -116,7 +116,7 @@ defmodule RetroHexChatWeb.WhoisTest do
     test "self-whois works", %{conn: conn} do
       nick = "WhoSelf#{uid()}"
 
-      {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
+      {:ok, view, _html} = live(chat_conn(conn, nick), "/")
 
       view
       |> element(~s([data-testid="chat-input-form"]))
@@ -133,7 +133,7 @@ defmodule RetroHexChatWeb.WhoisTest do
     test "whois for non-existent user shows not online message", %{conn: conn} do
       nick = "WhoQ6#{uid()}"
 
-      {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
+      {:ok, view, _html} = live(chat_conn(conn, nick), "/")
 
       view
       |> element(~s([data-testid="chat-input-form"]))
@@ -150,7 +150,7 @@ defmodule RetroHexChatWeb.WhoisTest do
       nick = "DblClk#{uid()}"
       peer = "DblPeer#{uid()}"
 
-      {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
+      {:ok, view, _html} = live(chat_conn(conn, nick), "/")
 
       # Double-click opens PM query window via nicklist_dblclick event
       render_click(view, "nicklist_dblclick", %{"nick" => peer})
@@ -167,7 +167,7 @@ defmodule RetroHexChatWeb.WhoisTest do
     test "double-click on your own name opens nothing", %{conn: conn} do
       nick = "DblSelf#{uid()}"
 
-      {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
+      {:ok, view, _html} = live(chat_conn(conn, nick), "/")
 
       render_click(view, "nicklist_dblclick", %{"nick" => nick})
 

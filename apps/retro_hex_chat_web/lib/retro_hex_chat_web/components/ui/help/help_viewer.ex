@@ -1,22 +1,15 @@
 defmodule RetroHexChatWeb.Components.UI.Help.HelpViewer do
   @moduledoc """
-  Visual composition for the CHM-style help desktop.
+  Visual composition for the CHM-style help viewer.
 
-  The Help LiveView owns navigation/search state. This module owns the help
-  desktop shell, toolbar, navigator, topic frame and empty state.
-
-  The viewer is one window on a bare desk: its menus hang under its own title
-  bar and the topic it is showing is reported along its bottom edge, the way a
-  CHM viewer did. Nothing sits above the workspace.
+  `RetroHexChatWeb.Site.HelpViewer` owns navigation and search state. This
+  module owns the viewer's toolbar, navigator, topic frame and empty state; the
+  help is a document window on the one desktop, so its menus hang under that
+  window's title bar and the topic it shows is reported along its bottom edge,
+  the way a CHM viewer did.
   """
   use RetroHexChatWeb.Component
 
-  import RetroHexChatWeb.Components.UI.AboutDialog
-  import RetroHexChatWeb.Components.UI.Desktop
-  import RetroHexChatWeb.Components.UI.DesktopLaunchers
-  import RetroHexChatWeb.Components.UI.Help.HelpMenuBar
-  import RetroHexChatWeb.Components.UI.Help.HelpStatusBar
-  import RetroHexChatWeb.Components.UI.StartMenuApp
   import RetroHexChatWeb.Components.UI.ToolButton
   import RetroHexChatWeb.Components.UI.TreeView
 
@@ -30,11 +23,10 @@ defmodule RetroHexChatWeb.Components.UI.Help.HelpViewer do
   attr :topics_by_category, :list, required: true
   attr :all_topics, :list, default: []
   attr :selected_topic, :map, default: nil
-  attr :topic_count, :integer, default: 0
   attr :nav_tab, :atom, default: :contents
   attr :search_query, :string, default: ""
   attr :search_results, :list, default: []
-  attr :canonical_path, :string, default: "/chat/help"
+  attr :target, :any, default: nil, doc: "the live component the toolbar and tabs talk to"
 
   attr :full_tree, :boolean,
     default: true,
@@ -42,78 +34,36 @@ defmodule RetroHexChatWeb.Components.UI.Help.HelpViewer do
 
   slot :inner_block, required: true
 
-  @spec help_layout(map()) :: Phoenix.LiveView.Rendered.t()
-  def help_layout(assigns) do
+  @doc """
+  The viewer inside the help's document window: toolbar, navigator and the
+  topic. The window around it carries the viewer's menus and status zones
+  (`help_menu_bar/1`, `help_status_zones/1`).
+  """
+  @spec help_window_body(map()) :: Phoenix.LiveView.Rendered.t()
+  def help_window_body(assigns) do
     ~H"""
-    <div class="flex flex-col h-screen bg-background font-system text-text">
-      <.desktop id="help-desktop" persist_key="help" data-testid="help-desktop">
-        <%!-- Opens maximized, but a reader can restore it — and then it has to
-              come back a viewer rather than the 360px default sliver every
-              window falls back to. --%>
-        <.desktop_window
-          id="help"
-          title={dgettext("help", "Help — RetroHexChat")}
-          pinned
-          default_maximized
-          width={900}
-          height={620}
-          body_class="p-0"
-          data-testid="help-window"
+    <div class="flex flex-col h-full" data-testid="help-window">
+      <.help_toolbar query={@search_query} target={@target} />
+
+      <div class="flex flex-col md:flex-row flex-1 min-h-0 gap-1 p-1">
+        <.help_navigator
+          nav_tab={@nav_tab}
+          search_query={@search_query}
+          search_results={@search_results}
+          topics_by_category={@topics_by_category}
+          all_topics={@all_topics}
+          selected_topic={@selected_topic}
+          full_tree={@full_tree}
+          target={@target}
+        />
+
+        <main
+          class="shadow-retro-sunken bg-white flex-1 min-h-0 overflow-y-auto p-6"
+          data-testid="help-content-pane"
         >
-          <:icon><Icons.icon_notepad class="w-4 h-4" /></:icon>
-
-          <%!-- Navigate / View / Language / Help, under the viewer's own title
-                bar. The logo that used to open About went with the header;
-                Help ▸ About is the same dialog. --%>
-          <:menu>
-            <.help_menu_bar
-              id="help-menubar"
-              current_path={@canonical_path}
-              phx-hook="MenuBarHook"
-            />
-          </:menu>
-
-          <:status>
-            <.help_status_zones selected_topic={@selected_topic} topic_count={@topic_count} />
-          </:status>
-
-          <div class="flex flex-col h-full">
-            <.help_toolbar query={@search_query} />
-
-            <div class="flex flex-col md:flex-row flex-1 min-h-0 gap-1 p-1">
-              <.help_navigator
-                nav_tab={@nav_tab}
-                search_query={@search_query}
-                search_results={@search_results}
-                topics_by_category={@topics_by_category}
-                all_topics={@all_topics}
-                selected_topic={@selected_topic}
-                full_tree={@full_tree}
-              />
-
-              <main
-                class="shadow-retro-sunken bg-white flex-1 min-h-0 overflow-y-auto p-6"
-                data-testid="help-content-pane"
-              >
-                {render_slot(@inner_block)}
-              </main>
-            </div>
-          </div>
-        </.desktop_window>
-        <.desktop_launcher_windows screen={:help} current_path={@canonical_path} />
-
-        <:shortcuts>
-          <.desktop_launcher_icons screen={:help} current_path={@canonical_path} />
-        </:shortcuts>
-
-        <.desktop_connect_required_dialog />
-
-        <:taskbar>
-          <.help_taskbar current_path={@canonical_path} />
-        </:taskbar>
-      </.desktop>
-
-      <.about_dialog id="about-dialog" />
+          {render_slot(@inner_block)}
+        </main>
+      </div>
     </div>
     """
   end
@@ -194,7 +144,7 @@ defmodule RetroHexChatWeb.Components.UI.Help.HelpViewer do
     ~H"""
     <p class="mt-4 text-xs">
       <.link
-        navigate={@path}
+        patch={@path}
         class="inline-flex items-center gap-1 underline"
         data-testid="help-mirc-link"
       >
@@ -244,7 +194,7 @@ defmodule RetroHexChatWeb.Components.UI.Help.HelpViewer do
       <ul class="list-none m-0 p-0 flex flex-wrap gap-x-4 gap-y-1">
         <li :for={topic <- @related}>
           <.link
-            navigate={help_topic_path(topic.id)}
+            patch={help_topic_path(topic.id)}
             class="inline-flex items-center gap-1 text-xs text-link hover:underline no-underline"
           >
             {apply(Icons, topic.icon, [%{class: "w-3 h-3 shrink-0"}])}
@@ -257,6 +207,7 @@ defmodule RetroHexChatWeb.Components.UI.Help.HelpViewer do
   end
 
   attr :query, :string, default: ""
+  attr :target, :any, default: nil
 
   defp help_toolbar(assigns) do
     ~H"""
@@ -272,7 +223,7 @@ defmodule RetroHexChatWeb.Components.UI.Help.HelpViewer do
         <Icons.icon_btn_next class="w-4 h-4" />
       </.tool_button>
       <.link
-        navigate={PublicPages.localized_path("/chat/help")}
+        patch={PublicPages.localized_path("/chat/help")}
         class={tool_button_class(size: "sm")}
         title={dgettext("help", "Home")}
         aria-label={dgettext("help", "Home")}
@@ -280,7 +231,12 @@ defmodule RetroHexChatWeb.Components.UI.Help.HelpViewer do
         <Icons.icon_hex_stone class="w-4 h-4" />
       </.link>
 
-      <form phx-change="help_search" phx-submit="help_search" class="ml-auto flex-1 max-w-xs">
+      <form
+        phx-change="help_search"
+        phx-submit="help_search"
+        phx-target={@target}
+        class="ml-auto flex-1 max-w-xs"
+      >
         <label class="flex items-center gap-1 shadow-retro-sunken bg-white px-1">
           <Icons.icon_btn_search class="w-3.5 h-3.5 shrink-0 text-muted-foreground" />
           <input
@@ -306,6 +262,7 @@ defmodule RetroHexChatWeb.Components.UI.Help.HelpViewer do
   attr :all_topics, :list, required: true
   attr :selected_topic, :map, default: nil
   attr :full_tree, :boolean, default: true
+  attr :target, :any, default: nil
 
   # Before the socket connects only the open category lists its topics: the
   # first HTML is what a search engine reads, and 297 titles repeated on every
@@ -318,9 +275,24 @@ defmodule RetroHexChatWeb.Components.UI.Help.HelpViewer do
       aria-label={dgettext("help", "Help navigation")}
     >
       <div class="flex shrink-0" role="tablist">
-        <.nav_tab_button tab={:contents} active={@nav_tab} label={dgettext("help", "Contents")} />
-        <.nav_tab_button tab={:index} active={@nav_tab} label={dgettext("help", "Index")} />
-        <.nav_tab_button tab={:search} active={@nav_tab} label={dgettext("help", "Search")} />
+        <.nav_tab_button
+          tab={:contents}
+          active={@nav_tab}
+          target={@target}
+          label={dgettext("help", "Contents")}
+        />
+        <.nav_tab_button
+          tab={:index}
+          active={@nav_tab}
+          target={@target}
+          label={dgettext("help", "Index")}
+        />
+        <.nav_tab_button
+          tab={:search}
+          active={@nav_tab}
+          target={@target}
+          label={dgettext("help", "Search")}
+        />
       </div>
 
       <div class="shadow-retro-sunken bg-white flex-1 min-h-0 max-h-56 md:max-h-none overflow-y-auto p-1">
@@ -333,7 +305,7 @@ defmodule RetroHexChatWeb.Components.UI.Help.HelpViewer do
             <:icon>{apply(Icons, cat_icon, [%{class: "w-4 h-4"}])}</:icon>
             <.link
               :for={topic <- tree_topics(@full_tree, @selected_topic, category, topics)}
-              navigate={help_topic_path(topic.id)}
+              patch={help_topic_path(topic.id)}
               class="block no-underline"
             >
               <.tree_view_item active={@selected_topic != nil && @selected_topic.id == topic.id}>
@@ -383,6 +355,7 @@ defmodule RetroHexChatWeb.Components.UI.Help.HelpViewer do
   attr :tab, :atom, required: true
   attr :active, :atom, required: true
   attr :label, :string, required: true
+  attr :target, :any, default: nil
 
   defp nav_tab_button(assigns) do
     ~H"""
@@ -391,6 +364,7 @@ defmodule RetroHexChatWeb.Components.UI.Help.HelpViewer do
       role="tab"
       phx-click="help_nav_tab"
       phx-value-tab={@tab}
+      phx-target={@target}
       aria-selected={to_string(@tab == @active)}
       data-testid={"help-tab-#{@tab}"}
       class={[
@@ -413,7 +387,7 @@ defmodule RetroHexChatWeb.Components.UI.Help.HelpViewer do
     ~H"""
     <li>
       <.link
-        navigate={help_topic_path(@topic.id)}
+        patch={help_topic_path(@topic.id)}
         class={[
           "flex items-center gap-1.5 px-2 py-1 no-underline text-xs",
           if(@active, do: "bg-selection-bg text-selection-fg", else: "hover:bg-hover-bg text-text")
@@ -435,7 +409,7 @@ defmodule RetroHexChatWeb.Components.UI.Help.HelpViewer do
       <div>
         <h1 class="text-base font-bold text-text">{@topic.title}</h1>
         <nav aria-label={dgettext("help", "Breadcrumb")} class="text-xs text-muted-foreground">
-          <.link navigate={PublicPages.localized_path("/chat/help")} class="hover:underline text-link">
+          <.link patch={PublicPages.localized_path("/chat/help")} class="hover:underline text-link">
             {dgettext("help", "Help")}
           </.link>
           {" > "}{@topic.category}{" > "}{@topic.title}
@@ -445,36 +419,6 @@ defmodule RetroHexChatWeb.Components.UI.Help.HelpViewer do
     """
   end
 
-  attr :current_path, :string, required: true
-
-  defp help_taskbar(assigns) do
-    ~H"""
-    <.taskbar>
-      <:start>
-        <.start_menu_app
-          id="help-start-menu"
-          screen={:help}
-          current_path={@current_path}
-          windows={[%{id: "help", label: dgettext("help", "Help"), icon_fn: :icon_notepad}]}
-        />
-      </:start>
-
-      <.desktop_launcher_taskbar_buttons screen={:help} current_path={@current_path} />
-      <.taskbar_button window="help" label={dgettext("help", "Help")}>
-        <:icon><Icons.icon_notepad class="h-4 w-4" /></:icon>
-      </.taskbar_button>
-
-      <:tray>
-        <.desktop_tray>
-          <span id="help-tray-clock" data-clock phx-hook="ClockHook" class="font-mono tabular-nums">
-          </span>
-        </.desktop_tray>
-      </:tray>
-    </.taskbar>
-    """
-  end
-
-  @spec resolve_related([String.t()]) :: [HelpTopics.topic()]
   defp resolve_related(ids) do
     ids
     |> Enum.map(&HelpTopics.get_topic/1)

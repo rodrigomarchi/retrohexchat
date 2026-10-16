@@ -36,6 +36,16 @@ class ProtectTest(unittest.TestCase):
         _, replacements = protect("Go back to the End of Time?")
         self.assertIn("End of Time", replacements.values())
 
+    def test_masks_the_interface_glyphs(self):
+        # pt_BR: "Start ▸ Navigate" came back as "Iniciar □ Navegar", and
+        # "↻ Reconnecting:" as "□ Reconectando:".
+        for text, glyph in [("Start ▸ Navigate", "▸"), ("↻ Reconnecting:", "↻")]:
+            protected, replacements = protect(text)
+
+            self.assertNotIn(glyph, protected)
+            self.assertIn(glyph, replacements.values())
+            self.assertEqual(restore(protected, replacements), text)
+
     def test_masks_mirc_and_irc(self):
         _, replacements = protect("A chat in the style of mIRC, not an IRC network")
 

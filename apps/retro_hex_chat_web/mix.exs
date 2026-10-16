@@ -112,11 +112,10 @@ defmodule RetroHexChatWeb.MixProject do
         # Before esbuild: the sprite is what every icon's <use> resolves to, and
         # phx.digest at the end of assets.deploy has to find it already written.
         "retrohex.icons.sprite",
-        "esbuild retro_hex_chat_web_public_pages_js",
-        "esbuild retro_hex_chat_web_help_live_js",
+        "esbuild retro_hex_chat_web_desktop_js",
         "esbuild retro_hex_chat_web_retrohex_content_js",
         # No chunk sweep here: assets.clean above already emptied the directory,
-        # and public_pages now emits chunks of its own that this would delete.
+        # and desktop.js now emits chunks of its own that this would delete.
         "esbuild retro_hex_chat_web_app_js",
         "esbuild retro_hex_chat_web_faro_js",
         "cmd node assets/scripts/bundle_retrohex_css.cjs",
@@ -126,11 +125,10 @@ defmodule RetroHexChatWeb.MixProject do
         "assets.clean",
         "compile",
         "retrohex.icons.sprite",
-        "esbuild retro_hex_chat_web_public_pages_js --minify --sourcemap=linked",
-        "esbuild retro_hex_chat_web_help_live_js --minify --sourcemap=linked",
+        "esbuild retro_hex_chat_web_desktop_js --minify --sourcemap=linked",
         "esbuild retro_hex_chat_web_retrohex_content_js --minify --sourcemap=linked",
         # No chunk sweep here: assets.clean above already emptied the directory,
-        # and public_pages now emits chunks of its own that this would delete.
+        # and desktop.js now emits chunks of its own that this would delete.
         "esbuild retro_hex_chat_web_app_js --minify --sourcemap=linked",
         "esbuild retro_hex_chat_web_faro_js --minify --sourcemap=linked",
         "cmd node assets/scripts/bundle_retrohex_css.cjs",

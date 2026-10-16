@@ -114,7 +114,7 @@ defmodule RetroHexChatWeb.TrustedTerminalsPaginationTest do
       conn
       |> put_req_cookie(TrustedDeviceCookie.name(), cookie)
       |> chat_conn(nick, pre_identified: true)
-      |> live(~p"/chat")
+      |> live("/")
 
     render_click(view, "toolbar_action", %{"action" => "open_trusted_terminals_dialog"})
 

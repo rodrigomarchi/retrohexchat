@@ -5,9 +5,10 @@ defmodule RetroHexChatWeb.Components.UI.StartMenuSymmetryTest do
   This is the test that keeps it that way. The old menus drifted apart one
   screen at a time — Connect had three entries, the chat had forty-one, and
   nothing failed when they diverged, because nothing compared them. Here they
-  are compared: same base entries, same order, everywhere. What a screen is
-  allowed to change is which of them are live; the one visibility exception is
-  Admin/System, which are present only in the chat for admins.
+  are compared: same base entries, same order, on both screens that carry it —
+  the one desktop and the showcase. What a screen is allowed to change is which
+  of them are live; the one visibility exception is Admin/System, which are
+  present only in the chat for admins.
   """
   use ExUnit.Case, async: true
 
@@ -15,7 +16,7 @@ defmodule RetroHexChatWeb.Components.UI.StartMenuSymmetryTest do
 
   alias RetroHexChatWeb.Components.UI.StartMenuApp
 
-  @screens [:chat, :connect, :landing, :help, :showcase]
+  @screens [:chat, :showcase]
 
   # One window per screen, so Windows is never the empty case here.
   @windows [%{id: "w", label: "A window", icon_fn: :icon_chat}]
@@ -62,8 +63,8 @@ defmodule RetroHexChatWeb.Components.UI.StartMenuSymmetryTest do
       assert "start-menu-admin-submenu" in admin_groups
       assert "start-menu-system-submenu" in admin_groups
 
-      refute has_group?(:landing, "start-menu-admin-submenu", is_admin: true)
-      refute has_group?(:landing, "start-menu-system-submenu", is_admin: true)
+      refute has_group?(:showcase, "start-menu-admin-submenu", is_admin: true)
+      refute has_group?(:showcase, "start-menu-system-submenu", is_admin: true)
     end
 
     test "the root list stays short enough to fit on screen without scrolling" do
@@ -126,9 +127,9 @@ defmodule RetroHexChatWeb.Components.UI.StartMenuSymmetryTest do
       assert enabled?(:chat, "start-menu-item-open_admin_users", is_admin: true)
       assert enabled?(:chat, "start-menu-item-open_system_home", is_admin: true)
 
-      # An admin on the landing page is still not in the app.
-      refute has_entry?(:landing, "start-menu-item-open_admin_users", is_admin: true)
-      refute has_entry?(:landing, "start-menu-item-open_system_home", is_admin: true)
+      # An admin on the showcase is still not in the app.
+      refute has_entry?(:showcase, "start-menu-item-open_admin_users", is_admin: true)
+      refute has_entry?(:showcase, "start-menu-item-open_system_home", is_admin: true)
     end
 
     # A P2P session lives at its own address, and anything hanging under this
@@ -141,7 +142,7 @@ defmodule RetroHexChatWeb.Components.UI.StartMenuSymmetryTest do
 
     test "Retro Games needs the chat desktop" do
       assert enabled?(:chat, "start-menu-item-retro-games")
-      refute enabled?(:connect, "start-menu-item-retro-games")
+      refute enabled?(:showcase, "start-menu-item-retro-games")
     end
 
     test "the public pages are reachable from everywhere, including the chat" do
@@ -152,26 +153,20 @@ defmodule RetroHexChatWeb.Components.UI.StartMenuSymmetryTest do
     end
 
     test "a screen never links to itself" do
-      refute enabled?(:connect, "start-menu-item-open-the-app")
       refute enabled?(:chat, "start-menu-item-open-the-app")
-
-      # The entry leads to a page carrying the sign-in window, so it is also
-      # redundant on the public pages — they already have one open. Help and the
-      # showcase are the two screens that do not, and it stays live for them.
-      refute enabled?(:landing, "start-menu-item-open-the-app")
-      assert enabled?(:help, "start-menu-item-open-the-app")
       assert enabled?(:showcase, "start-menu-item-open-the-app")
 
-      refute enabled?(:help, "start-menu-item-documentation")
+      # The documentation is a window of the desktop: open or not, the entry
+      # brings it to the front.
       assert enabled?(:chat, "start-menu-item-documentation")
+      assert enabled?(:chat, "start-menu-item-documentation", help_open: true)
 
       refute enabled?(:showcase, "start-menu-item-design-system")
-      assert enabled?(:landing, "start-menu-item-design-system")
+      assert enabled?(:chat, "start-menu-item-design-system")
     end
 
-    # Every screen mounts something for it: the landing desktop a window, the
-    # other four the `about-dialog` modal. There is no screen that cannot say
-    # what this program is.
+    # Both screens mount the `about-dialog` modal. There is no screen that
+    # cannot say what this program is.
     test "About works from everywhere" do
       for screen <- @screens do
         assert enabled?(screen, "start-menu-item-show_about"),
@@ -184,7 +179,7 @@ defmodule RetroHexChatWeb.Components.UI.StartMenuSymmetryTest do
       assert enabled?(:chat, "start-menu-item-open_arcade", arcade_available: true)
 
       # The capability without the screen is still nothing to act on.
-      refute enabled?(:landing, "start-menu-item-open_arcade", arcade_available: true)
+      refute enabled?(:showcase, "start-menu-item-open_arcade", arcade_available: true)
     end
 
     test "the chat window's own menu needs the chat window" do
@@ -198,14 +193,20 @@ defmodule RetroHexChatWeb.Components.UI.StartMenuSymmetryTest do
       end
     end
 
-    test "the help viewer's tabs and history need the help viewer" do
+    test "the help viewer's tabs and history need the help viewer's window" do
       for entry <- ~w(contents index search back forward) do
-        assert enabled?(:help, "start-menu-item-help-#{entry}")
-
-        for screen <- @screens -- [:help] do
-          refute enabled?(screen, "start-menu-item-help-#{entry}")
-        end
+        assert enabled?(:chat, "start-menu-item-help-#{entry}", help_open: true)
+        refute enabled?(:chat, "start-menu-item-help-#{entry}")
+        refute enabled?(:showcase, "start-menu-item-help-#{entry}")
       end
+    end
+
+    # The tabs are rendered outside the viewer component they drive.
+    test "the help viewer's tabs are sent to the viewer" do
+      doc = document(:chat, help_open: true)
+      row = Floki.find(doc, ~s([data-testid="start-menu-item-help-index"]))
+
+      assert Floki.attribute(row, "phx-target") == ["#help-viewer"]
     end
 
     test "every locale is offered from every screen" do
@@ -219,16 +220,13 @@ defmodule RetroHexChatWeb.Components.UI.StartMenuSymmetryTest do
       # Same rows, two href shapes — `LanguageMenu` owns both, and getting the
       # wrong one here would drop a signed-in reader back on /connect.
       assert locale_href(:chat, "pt_BR") =~ "/locale/pt_BR?return_to="
-      assert locale_href(:connect, "pt_BR") =~ "return_to=%2Fconnect"
-      refute locale_href(:landing, "pt_BR") =~ "/locale/"
+      refute locale_href(:showcase, "pt_BR") =~ "/locale/"
     end
 
     test "help search only works where a help viewer is listening" do
-      assert enabled?(:help, "start-menu-item-help-search")
-
-      for screen <- @screens -- [:help] do
-        refute enabled?(screen, "start-menu-item-help-search")
-      end
+      assert enabled?(:chat, "start-menu-item-help-search", help_open: true)
+      refute enabled?(:chat, "start-menu-item-help-search")
+      refute enabled?(:showcase, "start-menu-item-help-search")
     end
   end
 
@@ -245,7 +243,7 @@ defmodule RetroHexChatWeb.Components.UI.StartMenuSymmetryTest do
     end
 
     test "a disabled row carries no click and no window to open" do
-      doc = document(:landing)
+      doc = document(:showcase)
       row = Floki.find(doc, ~s([data-testid="start-menu-item-address-book"]))
 
       assert Floki.attribute(row, "disabled") != []
@@ -255,7 +253,7 @@ defmodule RetroHexChatWeb.Components.UI.StartMenuSymmetryTest do
     end
 
     test "a group whose entries are all dead is grayed but still opens" do
-      doc = document(:landing)
+      doc = document(:showcase)
       trigger = Floki.find(doc, ~s([data-testid="start-menu-tools-submenu"]))
 
       assert Floki.attribute(trigger, "disabled") == [],
@@ -270,7 +268,7 @@ defmodule RetroHexChatWeb.Components.UI.StartMenuSymmetryTest do
   describe "the Windows group" do
     test "lists the windows of the desktop it is standing on" do
       doc =
-        document(:landing,
+        document(:showcase,
           windows: [
             %{id: "readme", label: "Readme", icon_fn: :icon_notepad},
             %{id: "stats", label: "Stats", icon_fn: :icon_status_signal}
@@ -282,7 +280,7 @@ defmodule RetroHexChatWeb.Components.UI.StartMenuSymmetryTest do
     end
 
     test "says so when a desktop has no windows rather than opening on nothing" do
-      doc = document(:landing, windows: [])
+      doc = document(:showcase, windows: [])
       assert Floki.find(doc, ~s([data-testid="start-menu-item-no-windows"])) != []
     end
   end

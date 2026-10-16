@@ -10,7 +10,7 @@ defmodule RetroHexChatWeb.ChatLive.EventRoutingTest do
   # returned untouched and the LiveView keeps rendering.
   describe "unrouted events" do
     test "an unknown event does not crash the session", %{conn: conn} do
-      {:ok, view, _html} = live(chat_conn(conn, "Router#{uid()}"), "/chat")
+      {:ok, view, _html} = live(chat_conn(conn, "Router#{uid()}"), "/")
 
       assert render_hook(view, "totally_unknown_event_#{uid()}", %{"foo" => "bar"})
 
@@ -23,7 +23,7 @@ defmodule RetroHexChatWeb.ChatLive.EventRoutingTest do
   describe "system nuke events" do
     test "force-disconnect connected chat sessions", %{conn: conn} do
       nick = "NukeRoute#{uid()}"
-      {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
+      {:ok, view, _html} = live(chat_conn(conn, nick), "/")
       _ = :sys.get_state(view.pid)
       assert Tracker.online?("channel:#lobby", nick)
       flush_push_events(view)

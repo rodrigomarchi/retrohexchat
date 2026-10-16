@@ -20,10 +20,10 @@ defmodule RetroHexChatWeb.DblclickFeatureTest do
       nick1 = "DE1#{uid()}"
       nick2 = "DE2#{uid()}"
 
-      {:ok, view1, _} = live(chat_conn(conn, nick1), "/chat")
+      {:ok, view1, _} = live(chat_conn(conn, nick1), "/")
       join_channel(view1, channel)
 
-      {:ok, _view2, _} = live(chat_conn(conn, nick2), "/chat")
+      {:ok, _view2, _} = live(chat_conn(conn, nick2), "/")
       join_channel(view1, channel)
 
       # Simulate double-click event (would come from ConversationsHook JS)
@@ -42,7 +42,7 @@ defmodule RetroHexChatWeb.DblclickFeatureTest do
       target = "#dbjt-#{uid()}"
       ensure_channel(target)
 
-      {:ok, view, _} = live(chat_conn(conn, nick), "/chat")
+      {:ok, view, _} = live(chat_conn(conn, nick), "/")
       join_channel(view, channel)
 
       render_click(view, "switch_channel", %{"channel" => target})
@@ -53,7 +53,7 @@ defmodule RetroHexChatWeb.DblclickFeatureTest do
 
     test "conversations has ConversationsHook", %{conn: conn, channel: channel} do
       nick = "DEH#{uid()}"
-      {:ok, view, _} = live(chat_conn(conn, nick), "/chat")
+      {:ok, view, _} = live(chat_conn(conn, nick), "/")
       join_channel(view, channel)
       html = render(view)
 

@@ -151,7 +151,19 @@ def is_usable_translation(source: str, translated: str, replacements: dict[str, 
     if is_boilerplate_answer(source, translated):
         return False
 
+    if introduced_replacement_box(source, translated):
+        return False
+
     return all(value in translated for value in replacements.values())
+
+
+# What a model writes for a glyph it could not carry: "Iniciar □ Navegar".
+REPLACEMENT_BOXES = ("□", "\ufffd")
+
+
+def introduced_replacement_box(source: str, translated: str) -> bool:
+    """True when the output carries a box standing in for a glyph it lost."""
+    return any(box in translated and box not in source for box in REPLACEMENT_BOXES)
 
 
 def batch_is_contaminated(parts: list[str], sources: list[str]) -> bool:

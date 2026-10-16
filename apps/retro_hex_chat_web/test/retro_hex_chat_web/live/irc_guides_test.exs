@@ -5,7 +5,7 @@ defmodule RetroHexChatWeb.IrcGuidesTest do
 
   The generic landing checks — one h1, the taskbar, the lightweight bundle, no
   link to /connect, a unique title and description — run over these pages from
-  `LandingLiveTest`; what is asserted here is what is particular to a guide.
+  `Site.PagesTest`; what is asserted here is what is particular to a guide.
   """
   use RetroHexChatWeb.ConnCase, async: false
 

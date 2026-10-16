@@ -66,7 +66,7 @@ defmodule RetroHexChatWeb.SessionPersistenceTest do
       insert_pm("Bob", nick, "Hey there")
       insert_pm(nick, "Charlie", "Hello Charlie")
 
-      {:ok, view, html} = live(chat_conn(conn, nick, pre_identified: true), "/chat")
+      {:ok, view, html} = live(chat_conn(conn, nick, pre_identified: true), "/")
 
       assert html =~ ~s(data-testid="pm-Alice")
       assert html =~ ~s(data-testid="pm-Bob")
@@ -85,7 +85,7 @@ defmodule RetroHexChatWeb.SessionPersistenceTest do
       insert_pm(nick, "Yuki", "middle")
       insert_pm(nick, "Xena", "newest")
 
-      {:ok, _view, html} = live(chat_conn(conn, nick, pre_identified: true), "/chat")
+      {:ok, _view, html} = live(chat_conn(conn, nick, pre_identified: true), "/")
 
       # All partners should be present
       assert html =~ "Xena"
@@ -104,7 +104,7 @@ defmodule RetroHexChatWeb.SessionPersistenceTest do
       # Create PM history for a nick that won't be identified
       insert_pm(nick, "Someone", "Hi")
 
-      {:ok, _view, html} = live(chat_conn(conn, nick), "/chat")
+      {:ok, _view, html} = live(chat_conn(conn, nick), "/")
 
       # Guest should not see PM partners restored (no load_persisted_data)
       refute html =~ ~s(data-testid="pm-Someone")
@@ -117,7 +117,7 @@ defmodule RetroHexChatWeb.SessionPersistenceTest do
       insert_pm(nick, nick, "Note to self")
       insert_pm(nick, "Other", "Hi")
 
-      {:ok, _view, html} = live(chat_conn(conn, nick, pre_identified: true), "/chat")
+      {:ok, _view, html} = live(chat_conn(conn, nick, pre_identified: true), "/")
 
       assert html =~ "Other"
       refute html =~ ~s(data-testid="pm-#{nick}")
@@ -127,7 +127,7 @@ defmodule RetroHexChatWeb.SessionPersistenceTest do
       nick = "EP#{uid()}"
       register_and_identify(nick)
 
-      {:ok, _view, html} = live(chat_conn(conn, nick, pre_identified: true), "/chat")
+      {:ok, _view, html} = live(chat_conn(conn, nick, pre_identified: true), "/")
 
       # Should mount without errors
       assert html =~ nick
@@ -141,7 +141,7 @@ defmodule RetroHexChatWeb.SessionPersistenceTest do
       conn: conn
     } do
       nick = "AO#{uid()}"
-      {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
+      {:ok, view, _html} = live(chat_conn(conn, nick), "/")
 
       send(view.pid, pm_activity("NewPerson"))
 
@@ -153,7 +153,7 @@ defmodule RetroHexChatWeb.SessionPersistenceTest do
 
     test "incoming P2P invite lands in the sidebar without taking the screen", %{conn: conn} do
       nick = "PI#{uid()}"
-      {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
+      {:ok, view, _html} = live(chat_conn(conn, nick), "/")
 
       send(view.pid, pm_activity("Caller", :incoming, :p2p_invite))
 
@@ -164,7 +164,7 @@ defmodule RetroHexChatWeb.SessionPersistenceTest do
 
     test "clicking a sidebar PM opens a tab and clears unread", %{conn: conn} do
       nick = "OC#{uid()}"
-      {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
+      {:ok, view, _html} = live(chat_conn(conn, nick), "/")
 
       send(view.pid, pm_activity("NewPerson"))
 
@@ -179,7 +179,7 @@ defmodule RetroHexChatWeb.SessionPersistenceTest do
 
     test "existing contact moves to top on incoming PM activity", %{conn: conn} do
       nick = "MT#{uid()}"
-      {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
+      {:ok, view, _html} = live(chat_conn(conn, nick), "/")
 
       # Open two PM conversations via /query
       view
@@ -203,7 +203,7 @@ defmodule RetroHexChatWeb.SessionPersistenceTest do
 
     test "ignored user does NOT appear in conversations", %{conn: conn} do
       nick = "IG#{uid()}"
-      {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
+      {:ok, view, _html} = live(chat_conn(conn, nick), "/")
 
       # Ignore the user
       view
@@ -222,7 +222,7 @@ defmodule RetroHexChatWeb.SessionPersistenceTest do
   describe "US3: pm_activity updates PM conversations" do
     test "{:pm_activity, ...} from new contact creates a sidebar entry, not a tab", %{conn: conn} do
       nick = "IN#{uid()}"
-      {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
+      {:ok, view, _html} = live(chat_conn(conn, nick), "/")
 
       send(view.pid, pm_activity("Dave"))
 
@@ -232,7 +232,7 @@ defmodule RetroHexChatWeb.SessionPersistenceTest do
 
     test "{:pm_activity, ...} from ignored user does NOT create sidebar entry", %{conn: conn} do
       nick = "IX#{uid()}"
-      {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
+      {:ok, view, _html} = live(chat_conn(conn, nick), "/")
 
       # Ignore the user first
       view
@@ -247,7 +247,7 @@ defmodule RetroHexChatWeb.SessionPersistenceTest do
 
     test "{:pm_activity, ...} from existing contact does NOT duplicate", %{conn: conn} do
       nick = "ND#{uid()}"
-      {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
+      {:ok, view, _html} = live(chat_conn(conn, nick), "/")
 
       # Open conversation first
       view
@@ -268,7 +268,7 @@ defmodule RetroHexChatWeb.SessionPersistenceTest do
   describe "US4: PM recency ordering" do
     test "incoming PM activity reorders conversations by recency", %{conn: conn} do
       nick = "RO#{uid()}"
-      {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
+      {:ok, view, _html} = live(chat_conn(conn, nick), "/")
 
       # Open three PM conversations
       view
@@ -299,7 +299,7 @@ defmodule RetroHexChatWeb.SessionPersistenceTest do
   describe "close_pm_tab closes the buffer but keeps the sidebar conversation" do
     test "closing PM tab keeps sidebar entry and removes only the tab", %{conn: conn} do
       nick = "CU#{uid()}"
-      {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
+      {:ok, view, _html} = live(chat_conn(conn, nick), "/")
 
       # Open PM with Eve
       view
@@ -329,7 +329,7 @@ defmodule RetroHexChatWeb.SessionPersistenceTest do
       register_and_identify(nick)
 
       {:ok, view, _html} =
-        live(chat_conn(conn, nick, pre_identified: true, browser_id: @browser), "/chat")
+        live(chat_conn(conn, nick, pre_identified: true, browser_id: @browser), "/")
 
       view
       |> element(~s([data-testid="chat-input-form"]))
@@ -363,7 +363,7 @@ defmodule RetroHexChatWeb.SessionPersistenceTest do
                )
 
       {:ok, view, _html} =
-        live(chat_conn(conn, nick, pre_identified: true, browser_id: @browser), "/chat")
+        live(chat_conn(conn, nick, pre_identified: true, browser_id: @browser), "/")
 
       assert assigns(view).reconnect_active_channel == "#restore"
 
@@ -390,7 +390,7 @@ defmodule RetroHexChatWeb.SessionPersistenceTest do
                )
 
       {:ok, view, _html} =
-        live(chat_conn(conn, nick, pre_identified: true, browser_id: @browser), "/chat")
+        live(chat_conn(conn, nick, pre_identified: true, browser_id: @browser), "/")
 
       view
       |> element(~s([data-testid="chat-input-form"]))
@@ -402,7 +402,7 @@ defmodule RetroHexChatWeb.SessionPersistenceTest do
 
     test "opening a PM tab saves open_pm_tabs in reconnect state", %{conn: conn} do
       nick = "RS#{uid()}"
-      {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
+      {:ok, view, _html} = live(chat_conn(conn, nick), "/")
 
       view
       |> element(~s([data-testid="chat-input-form"]))
@@ -417,7 +417,7 @@ defmodule RetroHexChatWeb.SessionPersistenceTest do
 
     test "restore_session restores only PMs listed in open_pm_tabs", %{conn: conn} do
       nick = "RT#{uid()}"
-      {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
+      {:ok, view, _html} = live(chat_conn(conn, nick), "/")
 
       render_hook(view, "restore_session", %{
         "nickname" => nick,
@@ -439,7 +439,7 @@ defmodule RetroHexChatWeb.SessionPersistenceTest do
       conn: conn
     } do
       nick = "RL#{uid()}"
-      {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
+      {:ok, view, _html} = live(chat_conn(conn, nick), "/")
 
       render_hook(view, "restore_session", %{
         "nickname" => nick,
@@ -460,7 +460,7 @@ defmodule RetroHexChatWeb.SessionPersistenceTest do
   describe "PM nickname rename state" do
     test "nick_changed renames sidebar PMs, open tabs and active PM", %{conn: conn} do
       nick = "RN#{uid()}"
-      {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
+      {:ok, view, _html} = live(chat_conn(conn, nick), "/")
 
       view
       |> element(~s([data-testid="chat-input-form"]))
@@ -483,7 +483,7 @@ defmodule RetroHexChatWeb.SessionPersistenceTest do
   describe "PM edit/delete context detection" do
     test "PM edit while viewing channel does NOT corrupt channel stream", %{conn: conn} do
       nick = "PE#{uid()}"
-      {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
+      {:ok, view, _html} = live(chat_conn(conn, nick), "/")
 
       # Open PM with Frank, then switch back to channel
       view

@@ -4,7 +4,7 @@ defmodule RetroHexChatWeb.HoverOfflineNickTest do
   @moduletag :liveview
 
   test "hovering a nick with no presence meta does not crash the LiveView", %{conn: conn} do
-    {:ok, view, _html} = live(chat_conn(conn, "HovSafe#{uid()}"), "/chat")
+    {:ok, view, _html} = live(chat_conn(conn, "HovSafe#{uid()}"), "/")
 
     # An offline/stale nick from message history has nil presence meta; the
     # hover card must render with unknown client fields instead of raising

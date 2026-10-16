@@ -134,9 +134,9 @@ make e2e.catalog.check    # verify it is current (also runs in make ci)
 
 ## Coverage
 
-- **252 spec files** under `e2e/tests/`.
-- **615 Playwright `test()` cases**.
-- **563 documented flows**, 562 done, 1 not done.
+- **253 spec files** under `e2e/tests/`.
+- **618 Playwright `test()` cases**.
+- **564 documented flows**, 563 done, 1 not done.
 - **Every spec documents its own flows.**
 
 ## Flow index
@@ -147,8 +147,8 @@ Grouped by section. Every row comes from an `@flow` line in the spec itself.
 
 | # | Flow | Spec file | Status |
 | --- | --- | --- | --- |
-| A | Brand-new user registers a nickname and lands on `/chat` | `tests/connect-flow.spec.ts` | done |
-| B | Register a nick, disconnect, reconnect with correct password lands on `/chat` | `tests/returning-user.spec.ts` | done |
+| A | Brand-new user registers a nickname in the sign-in window and lands in the chat | `tests/connect-flow.spec.ts` | done |
+| B | Register a nick, disconnect, reconnect with correct password lands in the chat | `tests/returning-user.spec.ts` | done |
 | C1 | Empty nickname keeps Connect disabled | `tests/nickname-validation.spec.ts` | done |
 | C2 | Nickname longer than 16 chars shows inline error | `tests/nickname-validation.spec.ts` | done |
 | C3 | Nickname containing a space shows inline error | `tests/nickname-validation.spec.ts` | done |
@@ -157,7 +157,7 @@ Grouped by section. Every row comes from an `@flow` line in the spec itself.
 | E | Register step password mismatch shows inline error | `tests/register-validation.spec.ts` | done |
 | F | Register step short password shows inline error | `tests/register-validation.spec.ts` | done |
 | G | Back button returns from register/password to nickname | `tests/navigation.spec.ts` | done |
-| H | Direct `/chat` access without session bounces to `/connect` | `tests/chat-guard.spec.ts` | done |
+| H | The chat's old address `/chat` (and `?join=`) redirects permanently to the desktop: without a session that is the visitor's read-only chat, never a bounce to `/connect` | `tests/chat-guard.spec.ts` | done |
 | I | `/connect?reason=expired` surfaces session expired message | `tests/disconnect-reason.spec.ts` | done |
 | J | `/connect?reason=disconnected` surfaces session ended message | `tests/disconnect-reason.spec.ts` | done |
 | K | A second browser context with the same nickname leaves the first one connected | `tests/multi-tab-takeover.spec.ts` | done |
@@ -690,7 +690,7 @@ Grouped by section. Every row comes from an `@flow` line in the spec itself.
 | X9 | Non-founder access mutations fail clearly and leave AOP/VOP state unchanged (features P1) | `tests/chat-chanserv-permission-edges.spec.ts` | done |
 | X10 | Admin channel delete removes open tabs and sends after deletion target the fallback channel (features P1) | `tests/chat-admin-channel-destructive.spec.ts` | done |
 | X11 | Admin channel purge removes visible history from already-open clients in realtime (features P2) | `tests/chat-admin-channel-purge-realtime.spec.ts` | done |
-| X12 | Server bans block reconnect and stale-session `/chat` access until admin unban restores login (features P1) | `tests/chat-admin-ban-persistence.spec.ts` | done |
+| X12 | Server bans block reconnect and stale-session desktop access until admin unban restores login (features P1) | `tests/chat-admin-ban-persistence.spec.ts` | done |
 | X13 | Server mutes survive disconnect/reconnect and block sends until admin unmute restores sending (features P1) | `tests/chat-admin-user-mute-persistence.spec.ts` | done |
 | X14 | Server operator role appears after reconnect and grants operator-only command/menu access (features P2) | `tests/chat-admin-role-persistence.spec.ts` | done |
 | X15 | Admin audit log shows actor, target, action, and persisted reason for user ban entries (features P1) | `tests/chat-admin-audit-log.spec.ts` | done |
@@ -791,7 +791,7 @@ Grouped by section. Every row comes from an `@flow` line in the spec itself.
 
 | # | Flow | Spec file | Status |
 | --- | --- | --- | --- |
-| LC1 | The connect UI switches between English and pt-BR and persists the selection | `tests/i18n.spec.ts` | done |
+| LC1 | The sign-in window switches between English and pt-BR, at the address in that language, and persists the selection | `tests/i18n.spec.ts` | done |
 | LC2 | A first visit uses pt-BR from Accept-Language | `tests/i18n.spec.ts` | done |
 | LC3 | Switching to Japanese survives a reload | `tests/i18n.spec.ts` | done |
 | LC4 | pt-BR is kept through registration into the chat shell | `tests/i18n.spec.ts` | done |
@@ -801,12 +801,12 @@ Grouped by section. Every row comes from an `@flow` line in the spec itself.
 
 | # | Flow | Spec file | Status |
 | --- | --- | --- | --- |
-| PW1 | The landing loads the public bundle and enables desktop interactions | `tests/landing-public.spec.ts` | done |
-| PW2 | Mobile navigation works and the Start menu offers no route to /connect | `tests/landing-public.spec.ts` | done |
-| PW3 | The landing runs the real window manager over a taskbar of links | `tests/landing-public.spec.ts` | done |
-| PW4 | Landing, connect, and help wear the same phone chrome (one case per public shell) | `tests/shell-chrome-parity.spec.ts` | done |
+| PW1 | The home loads the desktop's small first-paint bundle, its C:\Desktop section works, and its links move between pages without a page load | `tests/landing-public.spec.ts` | done |
+| PW2 | On a phone the page's own menu rail opens its drawer on the first tap, even as the chat starts, and leads to another page | `tests/landing-public.spec.ts` | done |
+| PW3 | The Start menu reaches every page as a window of the desktop, and closing a page hands the address back to the chat | `tests/landing-public.spec.ts` | done |
+| PW4 | The home, the sign-in window and help wear the same phone chrome (one case per document window) | `tests/shell-chrome-parity.spec.ts` | done |
 | PW5 | A rail button opens the shared drawer on its own section | `tests/shell-chrome-parity.spec.ts` | done |
-| PW6 | The landing keeps its Connect out of the chrome | `tests/shell-chrome-parity.spec.ts` | done |
+| PW6 | A page's menu bar carries no Connect; Start ▸ Open the app is there and inert on the desktop | `tests/shell-chrome-parity.spec.ts` | done |
 | PW7 | The showcase drives the page as a window and carries the layout across pages | `tests/showcase-desktop.spec.ts` | done |
 | PW8 | Components are navigated through the Components window | `tests/showcase-desktop.spec.ts` | done |
 | PW9 | The Start menu is the app's own, with the showcase's windows in it | `tests/showcase-desktop.spec.ts` | done |
@@ -815,19 +815,20 @@ Grouped by section. Every row comes from an `@flow` line in the spec itself.
 | PW12 | With JavaScript disabled the page still reads and links like a document, keeping its canonical URL | `tests/showcase-desktop.spec.ts` | done |
 | PW13 | Windows on each landing page are sized by their content (one case per public page) | `tests/desktop-window-sizing.spec.ts` | done |
 | PW14 | The showcase component window is sized by its content | `tests/desktop-window-sizing.spec.ts` | done |
-| PW15 | The landing connect window signs a new nickname into the chat | `tests/landing-connect-window.spec.ts` | done |
-| PW16 | The landing keeps its LiveSocket off until a reader reaches for the form | `tests/landing-connect-window.spec.ts` | done |
-| PW17 | A remembered terminal signs back in with one click from the landing | `tests/landing-connect-window.spec.ts` | done |
-| PW18 | The landing connect window opens fully on screen at every desktop size | `tests/landing-connect-window.spec.ts` | done |
+| PW15 | From the home's Welcome, Create an account opens the sign-in window over the chat without a page load, and registering lands in the chat | `tests/sign-in-window.spec.ts` | done |
+| PW16 | A page of the site keeps the chat's LiveSocket off for a crawler, which never acts; a reader's starts on the first interaction | `tests/sign-in-window.spec.ts` | done |
+| PW17 | A remembered terminal signs back in with one click from the sign-in window | `tests/sign-in-window.spec.ts` | done |
+| PW18 | The sign-in window opens fully on screen at every desktop size | `tests/sign-in-window.spec.ts` | done |
 | PW19 | The public pages declare an installable web app: a linked manifest whose icons and service worker are actually served | `tests/landing-public.spec.ts` | done |
 | PW20 | A channel's public archive is reachable, indexable, and disappears when the founder switches it off (features P1) | `tests/archive-public.spec.ts` | done |
 | PW21 | The founder switches the archive with /cs archive on\|off, and another member of the room sees the notice (features P1) | `tests/archive-public.spec.ts` | done |
-| PW22 | The public games catalogue leads from a game's page, through the page's own Connect window, into the game | `tests/games-catalog.spec.ts` | done |
+| PW22 | The public games catalogue leads from a game's page, through the sign-in window over the same desktop, into the game | `tests/games-catalog.spec.ts` | done |
 | PW23 | The mIRC commands guide answers a mIRC habit row by row, and its links lead into the matching help topic and the other guides | `tests/irc-guides.spec.ts` | done |
-| PW24 | Without an account /chat opens read-only: a visitor watches a channel live under a Guest name, members see them under Visitors, and any action opens the Connect window | `tests/chat-public-visitor.spec.ts` | done |
+| PW24 | Without an account a channel's address (/c/<name>) opens read-only: a visitor watches it live under a Guest name, members see them under Visitors, and any action opens the sign-in window at /connect | `tests/chat-public-visitor.spec.ts` | done |
 | PW25 | A visitor who registers from the chat's Connect window comes back to the channel they were watching, now as a member | `tests/chat-public-visitor.spec.ts` | done |
 | PW26 | No link leaves a visitor's chat: a message URL (plain, Ctrl or middle click) and a game in the desktop Games folder open the Connect window naming the feature, and no tab opens | `tests/chat-public-visitor.spec.ts` | done |
 | PW27 | A game, the arcade or a call opened by address without an account lands in the chat with the Connect window naming it, and registering there returns to that address | `tests/chat-public-visitor.spec.ts` | done |
+| PW28 | The desktop is the home: a visitor at / gets the Welcome window over a live #lobby, and every page of the site opens as a document window over the chat without a reload | `tests/desktop-home.spec.ts` | done |
 
 ### Dialog Gallery
 

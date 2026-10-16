@@ -69,7 +69,18 @@ self.addEventListener("fetch", (event) => {
 // enough of the line to know whether it is worth opening. The message itself is
 // read in the app.
 
-const NOTIFICATION_PATH = "/chat";
+const NOTIFICATION_PATH = "/";
+
+// Screens with an address of their own (a call, a space, a game) and the
+// operator's tools are not the desktop; every other page of the site is, with
+// the chat on it.
+const NOT_THE_DESKTOP = /^\/(call|space|p2p|play|admin|showcase|dev|api)(\/|$)/;
+const LOCALE_SEGMENT = /^\/[a-z]{2}(-[A-Za-z]{2,4})?(?=\/|$)/;
+
+function onTheDesktop(pathname) {
+  const path = pathname.replace(LOCALE_SEGMENT, "") || "/";
+  return !NOT_THE_DESKTOP.test(path);
+}
 
 function notificationFrom(payload) {
   const data = payload && typeof payload === "object" ? payload : {};
@@ -88,9 +99,11 @@ function notificationFrom(payload) {
   };
 }
 
+// A channel has an address, `/c/<name>`; a private conversation never gets
+// one, so its notification opens the desktop, where the chat raises it.
 function conversationUrl(conversation) {
-  if (!conversation) return NOTIFICATION_PATH;
-  return `${NOTIFICATION_PATH}?conversation=${encodeURIComponent(conversation)}`;
+  if (typeof conversation !== "string" || !conversation.startsWith("#")) return NOTIFICATION_PATH;
+  return `/c/${encodeURIComponent(conversation.slice(1))}`;
 }
 
 // A person who already has the chat open somewhere wants that window raised,
@@ -99,7 +112,7 @@ function conversationUrl(conversation) {
 function chooseClickTarget(windows, url) {
   const existing = (windows || []).find((client) => {
     try {
-      return new URL(client.url).pathname.startsWith(NOTIFICATION_PATH);
+      return onTheDesktop(new URL(client.url).pathname);
     } catch {
       return false;
     }

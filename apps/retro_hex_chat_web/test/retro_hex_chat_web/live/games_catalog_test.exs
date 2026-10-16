@@ -5,7 +5,7 @@ defmodule RetroHexChatWeb.GamesCatalogTest do
 
   The generic landing checks — one h1, the taskbar, the lightweight bundle, no
   link to /connect, a unique title and description — run over these pages from
-  `LandingLiveTest`; what is asserted here is what is particular to a game.
+  `Site.PagesTest`; what is asserted here is what is particular to a game.
   """
   use RetroHexChatWeb.ConnCase, async: true
 
@@ -118,26 +118,20 @@ defmodule RetroHexChatWeb.GamesCatalogTest do
       refute page =~ opening
     end
 
-    test "playing goes through the page's own Connect window, which lands on the game", %{
-      conn: conn
-    } do
-      {:ok, view, html} = live(conn, "/games/doom-shareware")
-
-      assert view
-             |> element(~s([data-testid="game-play"][data-window-open="connect"]))
-             |> has_element?()
+    test "playing goes through the sign-in window, which lands on the game", %{conn: conn} do
+      {:ok, view, _html} = live(conn, "/games/doom-shareware")
 
       # The arcade opens inside the chat, on this game, once the reader has a
       # nickname: the public page never sends them off the site.
-      assert html =~ ~s(name="return_to" value="/chat?arcade=doom_shareware")
+      assert play_href(view) == "/connect?return_to=%2F%3Farcade%3Ddoom_shareware&signup=games"
     end
 
     test "a multiplayer game lists its modes and starts a match", %{conn: conn} do
-      {:ok, _view, html} = live(conn, "/games/hex-tennis")
+      {:ok, view, html} = live(conn, "/games/hex-tennis")
 
       assert html =~ "Quick Match"
       assert html =~ "Sudden Death"
-      assert html =~ ~s(name="return_to" value="/play/hex_tennis")
+      assert play_href(view) == "/connect?return_to=%2Fplay%2Fhex_tennis&signup=games"
 
       assert conn |> document("/games/hex-tennis") |> json_ld("VideoGame") |> Map.get("playMode") ==
                "MultiPlayer"
@@ -251,5 +245,15 @@ defmodule RetroHexChatWeb.GamesCatalogTest do
         assert urls =~ "https://retrohexchat.app/games/#{slug}</loc>", "sitemap misses #{slug}"
       end
     end
+  end
+
+  defp play_href(view) do
+    view
+    |> element(~s([data-testid="game-play"]))
+    |> render()
+    |> Floki.parse_fragment!()
+    |> Floki.attribute("href")
+    |> List.first()
+    |> String.replace("&amp;", "&")
   end
 end

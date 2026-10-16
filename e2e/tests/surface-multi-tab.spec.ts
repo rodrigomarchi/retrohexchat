@@ -9,6 +9,7 @@
 import { expect, test } from "@playwright/test";
 import { ChatPage } from "../pages/ChatPage";
 import { ConnectPage, uniqueNickname } from "../pages/ConnectPage";
+import { CHAT_URL } from "../helpers/urls";
 
 const PASSWORD = "testpass123";
 
@@ -39,7 +40,7 @@ test.describe("A surface tab beside the chat", () => {
       // Opening the game surface must not disturb the chat.
       await gameTab.goto("/play/hex_pong");
       await expect(gameTab.getByTestId("retro-games-window")).toBeVisible();
-      await expect(chatTab).toHaveURL(/\/chat(\?.*)?$/);
+      await expect(chatTab).toHaveURL(CHAT_URL);
       await expect(chatTab.getByTestId("session-alert")).toHaveCount(0);
       await expect(chat.menuBar).toBeVisible();
 
@@ -53,7 +54,7 @@ test.describe("A surface tab beside the chat", () => {
       await secondConnect.authenticateWithPassword(PASSWORD);
       await secondChat.waitUntilConnected();
 
-      await expect(chatTab).toHaveURL(/\/chat(\?.*)?$/);
+      await expect(chatTab).toHaveURL(CHAT_URL);
       await expect(chatTab.getByTestId("session-alert")).toHaveCount(0);
       await expect(gameTab).toHaveURL(/\/play\/hex_pong$/);
       await expect(gameTab.getByTestId("retro-games-window")).toBeVisible();

@@ -12,7 +12,7 @@ defmodule RetroHexChatWeb.ChatDesktopShellTest do
       html =
         conn
         |> chat_conn("Desk#{uid()}")
-        |> get("/chat")
+        |> get("/")
         |> html_response(200)
 
       assert html =~ ~s(data-testid="chat-boot-loading")
@@ -20,7 +20,7 @@ defmodule RetroHexChatWeb.ChatDesktopShellTest do
     end
 
     test "renders the chat inside a persistent desktop", %{conn: conn} do
-      {:ok, view, html} = live(chat_conn(conn, "Desk#{uid()}"), "/chat")
+      {:ok, view, html} = live(chat_conn(conn, "Desk#{uid()}"), "/")
 
       assert has_element?(view, ~s(#chat-desktop[data-persist-key="chat"][data-persist="true"]))
 
@@ -40,7 +40,7 @@ defmodule RetroHexChatWeb.ChatDesktopShellTest do
     end
 
     test "pins app folders and opens games from the Games folder", %{conn: conn} do
-      {:ok, view, _html} = live(chat_conn(conn, "Desk#{uid()}"), "/chat")
+      {:ok, view, _html} = live(chat_conn(conn, "Desk#{uid()}"), "/")
 
       assert has_element?(
                view,
@@ -67,7 +67,7 @@ defmodule RetroHexChatWeb.ChatDesktopShellTest do
     end
 
     test "the chat window is pinned and opens windowed, not maximized", %{conn: conn} do
-      {:ok, view, _html} = live(chat_conn(conn, "Desk#{uid()}"), "/chat")
+      {:ok, view, _html} = live(chat_conn(conn, "Desk#{uid()}"), "/")
 
       assert has_element?(
                view,
@@ -99,7 +99,7 @@ defmodule RetroHexChatWeb.ChatDesktopShellTest do
     end
 
     test "the taskbar has a chat window button and a tray clock", %{conn: conn} do
-      {:ok, view, _html} = live(chat_conn(conn, "Desk#{uid()}"), "/chat")
+      {:ok, view, _html} = live(chat_conn(conn, "Desk#{uid()}"), "/")
 
       assert has_element?(view, ~s(#chat-desktop [data-window-taskbar="chat"]))
       assert has_element?(view, ~s(#chat-tray-clock[phx-hook="ClockHook"]))
@@ -108,7 +108,7 @@ defmodule RetroHexChatWeb.ChatDesktopShellTest do
     end
 
     test "the chat layout (tabs, composer, nicklist) lives inside the window body", %{conn: conn} do
-      {:ok, view, _html} = live(chat_conn(conn, "Desk#{uid()}"), "/chat")
+      {:ok, view, _html} = live(chat_conn(conn, "Desk#{uid()}"), "/")
 
       assert has_element?(
                view,
@@ -183,7 +183,7 @@ defmodule RetroHexChatWeb.ChatDesktopShellTest do
     } do
       viewer = "Desk#{uid()}"
       peer = "Peer#{uid()}"
-      {:ok, view, _html} = live(chat_conn(conn, viewer), "/chat")
+      {:ok, view, _html} = live(chat_conn(conn, viewer), "/")
 
       render_click(view, "switch_pm", %{"nickname" => peer})
 
@@ -202,7 +202,7 @@ defmodule RetroHexChatWeb.ChatDesktopShellTest do
 
     test "switching back to a channel restores the channel roster", %{conn: conn} do
       viewer = "Desk#{uid()}"
-      {:ok, view, _html} = live(chat_conn(conn, viewer), "/chat")
+      {:ok, view, _html} = live(chat_conn(conn, viewer), "/")
 
       channel = :sys.get_state(view.pid).socket.assigns.session.active_channel
 
@@ -222,7 +222,7 @@ defmodule RetroHexChatWeb.ChatDesktopShellTest do
     end
 
     test "the status tab is not a conversation and keeps no user list", %{conn: conn} do
-      {:ok, view, _html} = live(chat_conn(conn, "Desk#{uid()}"), "/chat")
+      {:ok, view, _html} = live(chat_conn(conn, "Desk#{uid()}"), "/")
 
       render_click(view, "switch_to_status", %{})
 
@@ -233,7 +233,7 @@ defmodule RetroHexChatWeb.ChatDesktopShellTest do
     end
 
     test "the tab bar closes the chat area from below, after the content row", %{conn: conn} do
-      {:ok, view, _html} = live(chat_conn(conn, "Desk#{uid()}"), "/chat")
+      {:ok, view, _html} = live(chat_conn(conn, "Desk#{uid()}"), "/")
 
       # Sibling combinators pin the order, not just the presence: the tab strip
       # follows the messages/nicklist row instead of leading the top chrome.
@@ -257,7 +257,7 @@ defmodule RetroHexChatWeb.ChatDesktopShellTest do
     test "viewport events collapse mobile panels and restore the prior desktop state", %{
       conn: conn
     } do
-      {:ok, view, _html} = live(chat_conn(conn, "Desk#{uid()}"), "/chat")
+      {:ok, view, _html} = live(chat_conn(conn, "Desk#{uid()}"), "/")
 
       assigns = :sys.get_state(view.pid).socket.assigns
       assert assigns.show_conversations
@@ -289,7 +289,7 @@ defmodule RetroHexChatWeb.ChatDesktopShellTest do
     end
 
     test "the conversation keeps its composer and offers the space beside it", %{conn: conn} do
-      {:ok, view, _html} = live(chat_conn(conn, "Desk#{uid()}"), "/chat")
+      {:ok, view, _html} = live(chat_conn(conn, "Desk#{uid()}"), "/")
 
       chat_tab = ~s([data-testid="tab-bar"] [role="tab"][phx-value-type="channel"])
 
@@ -313,7 +313,7 @@ defmodule RetroHexChatWeb.ChatDesktopShellTest do
 
     test "a private conversation offers the space the two of them share", %{conn: conn} do
       other = "Peer#{uid()}"
-      {:ok, view, _html} = live(chat_conn(conn, "Desk#{uid()}"), "/chat")
+      {:ok, view, _html} = live(chat_conn(conn, "Desk#{uid()}"), "/")
 
       render_click(view, "nicklist_dblclick", %{"nick" => other})
 
@@ -324,7 +324,7 @@ defmodule RetroHexChatWeb.ChatDesktopShellTest do
 
   describe "start menu" do
     test "start button and menu render with Tools/View/Help items", %{conn: conn} do
-      {:ok, view, _html} = live(chat_conn(conn, "Desk#{uid()}"), "/chat")
+      {:ok, view, _html} = live(chat_conn(conn, "Desk#{uid()}"), "/")
 
       assert has_element?(view, ~s(#chat-desktop [data-window-start]))
       assert has_element?(view, ~s(#chat-start-menu[data-window-start-menu]))
@@ -336,7 +336,7 @@ defmodule RetroHexChatWeb.ChatDesktopShellTest do
     end
 
     test "a start menu item opens its dialog through toolbar_action", %{conn: conn} do
-      {:ok, view, _html} = live(chat_conn(conn, "Desk#{uid()}"), "/chat")
+      {:ok, view, _html} = live(chat_conn(conn, "Desk#{uid()}"), "/")
 
       # Channel List keeps the server opener (it loads the /list rows on open).
       view
@@ -347,14 +347,14 @@ defmodule RetroHexChatWeb.ChatDesktopShellTest do
     end
 
     test "the admin group is permission-gated", %{conn: conn} do
-      {:ok, view, _html} = live(chat_conn(conn, "Desk#{uid()}"), "/chat")
+      {:ok, view, _html} = live(chat_conn(conn, "Desk#{uid()}"), "/")
 
       refute has_element?(view, ~s(#chat-start-menu [phx-value-action="open_admin_console"]))
       refute has_element?(view, ~s(#chat-start-menu [phx-value-action="open_bot_dialog"]))
     end
 
     test "admins see the admin group", %{conn: conn} do
-      {:ok, view, _html} = live(chat_conn(conn, "TestAdmin", pre_identified: true), "/chat")
+      {:ok, view, _html} = live(chat_conn(conn, "TestAdmin", pre_identified: true), "/")
 
       assert has_element?(view, ~s(#chat-start-menu [phx-value-action="open_admin_console"]))
       assert has_element?(view, ~s(#chat-start-menu [phx-value-action="open_bot_dialog"]))
@@ -363,7 +363,7 @@ defmodule RetroHexChatWeb.ChatDesktopShellTest do
 
   describe "managed-window plumbing" do
     test "window_open/window_closed for unknown or non-managed ids are no-ops", %{conn: conn} do
-      {:ok, view, _html} = live(chat_conn(conn, "Desk#{uid()}"), "/chat")
+      {:ok, view, _html} = live(chat_conn(conn, "Desk#{uid()}"), "/")
 
       render_hook(view, "window_open", %{"id" => "not-a-window"})
       render_hook(view, "window_closed", %{"id" => "not-a-window"})

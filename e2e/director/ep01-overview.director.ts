@@ -214,7 +214,11 @@ test.describe("EP01 overview", () => {
   /** The viewer's chat, signing in off camera when scene 1 did not run. */
   async function viewerChat(): Promise<ChatPage> {
     const chat = new ChatPage(viewer);
-    if (new URL(viewer.url()).pathname !== "/chat") {
+    // The desktop is the same address signed in or not; the page says which.
+    const member = await viewer
+      .evaluate(() => document.documentElement.dataset.member)
+      .catch(() => undefined);
+    if (member !== "true") {
       const connect = new ConnectPage(viewer);
       await connect.open();
       await connect.signIn(NICK, PASSWORD);

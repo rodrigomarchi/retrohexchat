@@ -23,8 +23,8 @@ defmodule RetroHexChatWeb.Components.UI.DesktopLaunchers do
   alias RetroHexChatWeb.Icons.Registry
   alias RetroHexChatWeb.PublicPages
 
-  @screens [:chat, :connect, :landing, :help, :showcase]
-  @app_screens [:chat, :connect]
+  @screens [:chat, :showcase]
+  @app_screens [:chat]
   @connect_dialog_id "desktop-connect-required-dialog"
 
   attr :screen, :atom,
@@ -61,9 +61,9 @@ defmodule RetroHexChatWeb.Components.UI.DesktopLaunchers do
     """
   end
 
-  # One desktop icon, in whichever of the four shapes the screen allows: the
-  # window it opens, the control it stands in for, the program it runs, or the
-  # closed door that says a chat session is what is missing.
+  # One desktop icon, in whichever of the three shapes the screen allows: the
+  # window it opens, the program it runs, or the closed door that says a chat
+  # session is what is missing.
   attr :item, :any, required: true
   attr :screen, :atom, required: true
   attr :chat?, :boolean, required: true
@@ -74,25 +74,13 @@ defmodule RetroHexChatWeb.Components.UI.DesktopLaunchers do
 
     ~H"""
     <.desktop_icon
-      :if={desktop_window_icon?(@screen, @group)}
+      :if={desktop_icon_available?(@screen, @group)}
       window={@group.window_id}
-      action={desktop_icon_action(@screen, @group)}
-      href={desktop_icon_href(@screen, @group)}
       label={@group.label}
       data-testid={"desktop-icon-#{@group.id}"}
     >
       <:icon>{apply(Icons, @group.icon_fn, [%{class: "h-8 w-8"}])}</:icon>
     </.desktop_icon>
-
-    <button
-      :if={desktop_click_target_icon?(@screen, @group)}
-      type="button"
-      class="desktop-shortcut"
-      data-desktop-click-target={desktop_click_target(@screen, @group)}
-      data-testid={"desktop-icon-#{@group.id}"}
-    >
-      <.shortcut_face icon_fn={@group.icon_fn} label={@group.label} />
-    </button>
 
     <button
       :if={!desktop_icon_available?(@screen, @group)}
@@ -167,6 +155,10 @@ defmodule RetroHexChatWeb.Components.UI.DesktopLaunchers do
   attr :current_path, :string, default: nil
   attr :language_return_to, :string, default: nil
   attr :on_action, :any, default: "toolbar_action"
+
+  attr :help_open, :boolean,
+    default: false,
+    doc: "the help viewer's window is open, so its tabs are live"
 
   @spec desktop_launcher_windows(map()) :: Phoenix.LiveView.Rendered.t()
   def desktop_launcher_windows(assigns) do
@@ -336,6 +328,7 @@ defmodule RetroHexChatWeb.Components.UI.DesktopLaunchers do
     cap = capabilities(assigns)
 
     [
+      group(:site, dgettext("landing", "About this site"), :icon_hex_stone, site_items(cap)),
       group(:view, dgettext("ui", "View"), :icon_channels, view_items(cap)),
       group(:tools, dgettext("ui", "Tools"), :icon_group_tools, tools_items(cap)),
       group(
@@ -390,7 +383,6 @@ defmodule RetroHexChatWeb.Components.UI.DesktopLaunchers do
   end
 
   defp launcher_window_groups(%{screen: :chat} = assigns), do: launcher_groups(assigns)
-  defp launcher_window_groups(%{screen: :connect}), do: []
 
   defp launcher_window_groups(assigns) do
     assigns
@@ -399,23 +391,9 @@ defmodule RetroHexChatWeb.Components.UI.DesktopLaunchers do
   end
 
   defp desktop_icon_available?(:chat, _group), do: true
+  defp desktop_icon_available?(_screen, %{id: :site}), do: false
   defp desktop_icon_available?(_screen, %{id: id}) when id in [:language, :help], do: true
   defp desktop_icon_available?(_screen, _group), do: false
-
-  defp desktop_window_icon?(screen, group),
-    do: desktop_icon_available?(screen, group) and not desktop_click_target_icon?(screen, group)
-
-  defp desktop_click_target_icon?(:connect, %{id: :language}), do: true
-  defp desktop_click_target_icon?(_screen, _group), do: false
-
-  defp desktop_click_target(:connect, %{id: :language}),
-    do: ~s(#menubar [data-testid="language-menu-trigger"])
-
-  defp desktop_icon_action(:connect, %{id: :help}), do: "help_topics"
-  defp desktop_icon_action(_screen, _group), do: nil
-
-  defp desktop_icon_href(:connect, %{id: :help}), do: PublicPages.localized_path("/chat/help")
-  defp desktop_icon_href(_screen, _group), do: nil
 
   defp capabilities(assigns) do
     screen = assigns.screen
@@ -424,7 +402,7 @@ defmodule RetroHexChatWeb.Components.UI.DesktopLaunchers do
     %{
       screen: screen,
       chat?: chat?,
-      help?: screen == :help,
+      help?: assigns[:help_open] == true,
       arcade_available?: chat? and assigns.arcade_available,
       admin?: chat? and assigns.is_admin,
       current_path: assigns.current_path,
@@ -471,18 +449,21 @@ defmodule RetroHexChatWeb.Components.UI.DesktopLaunchers do
         disabled: !cap.help?,
         on_action: "help_nav_tab",
         value_tab: "contents",
+        target: "#help-viewer",
         testid: "desktop-launcher-item-help-contents"
       ),
       action(cap, "help_nav_tab", dgettext("help", "Index"), :icon_btn_channel_list,
         disabled: !cap.help?,
         on_action: "help_nav_tab",
         value_tab: "index",
+        target: "#help-viewer",
         testid: "desktop-launcher-item-help-index"
       ),
       action(cap, "help_nav_tab", dgettext("help", "Search"), :icon_btn_search,
         disabled: !cap.help?,
         on_action: "help_nav_tab",
         value_tab: "search",
+        target: "#help-viewer",
         testid: "desktop-launcher-item-help-search"
       )
     ]
@@ -629,6 +610,29 @@ defmodule RetroHexChatWeb.Components.UI.DesktopLaunchers do
     end)
   end
 
+  # Every page of the site, and its guides and help, opened as windows over the
+  # chat: a patch, never a page load, because they are all addresses of the one
+  # desktop.
+  defp site_items(_cap) do
+    pages =
+      for page <- PublicPages.all() ++ PublicPages.guides() do
+        patch(PublicPages.localized_path(page.path), page.label, page.icon,
+          testid: "desktop-launcher-item-site-#{page.page}"
+        )
+      end
+
+    pages ++
+      [
+        separator(),
+        patch(
+          PublicPages.localized_path("/chat/help"),
+          dgettext("landing", "Documentation"),
+          :icon_notepad,
+          testid: "desktop-launcher-item-site-help"
+        )
+      ]
+  end
+
   defp help_items(cap) do
     [
       help_topics_item(cap),
@@ -657,13 +661,7 @@ defmodule RetroHexChatWeb.Components.UI.DesktopLaunchers do
     ]
   end
 
-  defp help_topics_item(%{screen: :help}) do
-    window("help", dgettext("ui", "Help Topics"), :icon_btn_help_topics,
-      testid: "desktop-launcher-item-help_topics"
-    )
-  end
-
-  defp help_topics_item(%{screen: screen} = cap) when screen in [:chat, :connect] do
+  defp help_topics_item(%{screen: :chat} = cap) do
     action(cap, "help_topics", dgettext("ui", "Help Topics"), :icon_btn_help_topics,
       on_action: "help_topics",
       testid: "desktop-launcher-item-help_topics"
@@ -679,12 +677,6 @@ defmodule RetroHexChatWeb.Components.UI.DesktopLaunchers do
     )
   end
 
-  defp about_item(%{screen: :landing}) do
-    window("about", dgettext("ui", "About RetroHexChat"), :icon_dialog_about,
-      testid: "desktop-launcher-item-show_about"
-    )
-  end
-
   defp about_item(_cap) do
     modal("about-dialog", dgettext("ui", "About RetroHexChat"), :icon_dialog_about,
       testid: "desktop-launcher-item-show_about"
@@ -697,8 +689,7 @@ defmodule RetroHexChatWeb.Components.UI.DesktopLaunchers do
 
   defp locales(cap), do: LanguageMenu.locale_links(:public, cap.current_path, nil)
 
-  defp default_return_to(:chat), do: "/chat"
-  defp default_return_to(:connect), do: "/connect"
+  defp default_return_to(:chat), do: "/"
 
   defp admin_entries, do: menu_entries(&(&1.family == :admin or &1.id == "bot-management-dialog"))
   defp system_entries, do: menu_entries(&(&1.family == :system))
@@ -731,7 +722,20 @@ defmodule RetroHexChatWeb.Components.UI.DesktopLaunchers do
       disabled: Keyword.get(opts, :disabled, false),
       testid: Keyword.get(opts, :testid, "desktop-launcher-item-#{action}"),
       value_section: Keyword.get(opts, :value_section),
-      value_tab: Keyword.get(opts, :value_tab)
+      value_tab: Keyword.get(opts, :value_tab),
+      target: Keyword.get(opts, :target)
+    }
+  end
+
+  defp patch(path, label, icon_fn, opts) do
+    %{
+      kind: :patch,
+      path: path,
+      label: label,
+      icon_fn: icon_fn,
+      icon_kind: :icon,
+      disabled: false,
+      testid: Keyword.fetch!(opts, :testid)
     }
   end
 
@@ -815,6 +819,7 @@ defmodule RetroHexChatWeb.Components.UI.DesktopLaunchers do
       phx-value-action={!@item.disabled && @item.action}
       phx-value-section={!@item.disabled && @item.value_section}
       phx-value-tab={!@item.disabled && @item.value_tab}
+      phx-target={@item.target}
       data-testid={@item.testid}
     >
       <.launcher_item_icon item={@item} class="h-8 w-8" />
@@ -855,6 +860,17 @@ defmodule RetroHexChatWeb.Components.UI.DesktopLaunchers do
       data-confirm-label={@item.confirm_label}
       data-testid={@item.testid}
     >
+      <.launcher_item_icon item={@item} class="h-8 w-8" />
+      <span class="desktop-launcher-item__label">{@item.label}</span>
+    </.link>
+    """
+  end
+
+  defp launcher_item(%{item: %{kind: :patch}} = assigns) do
+    assigns = assign_item_class(assigns)
+
+    ~H"""
+    <.link patch={@item.path} class={@item_class} data-testid={@item.testid}>
       <.launcher_item_icon item={@item} class="h-8 w-8" />
       <span class="desktop-launcher-item__label">{@item.label}</span>
     </.link>

@@ -25,7 +25,7 @@ defmodule RetroHexChatWeb.ChatLive.VoiceMessageTest do
     owner = register("Voi")
     channel = "#voi#{uid()}"
 
-    {:ok, view, _html} = ctx.conn |> chat_conn(owner, pre_identified: true) |> live(~p"/chat")
+    {:ok, view, _html} = ctx.conn |> chat_conn(owner, pre_identified: true) |> live("/")
     submit_command_sync(view, "/join #{channel}")
 
     %{view: view, owner: owner, channel: channel}

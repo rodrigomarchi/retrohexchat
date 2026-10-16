@@ -9,7 +9,7 @@ defmodule RetroHexChatWeb.UrlCatcherWindowTest do
 
   describe "URL Catcher window" do
     test "renders as an always-mounted, initially closed desktop window", %{conn: conn} do
-      {:ok, view, _html} = live(chat_conn(conn, "UrlW#{uid()}"), "/chat")
+      {:ok, view, _html} = live(chat_conn(conn, "UrlW#{uid()}"), "/")
 
       assert has_element?(
                view,
@@ -22,7 +22,7 @@ defmodule RetroHexChatWeb.UrlCatcherWindowTest do
     end
 
     test "the menu action opens/focuses the window via window_command", %{conn: conn} do
-      {:ok, view, _html} = live(chat_conn(conn, "UrlW#{uid()}"), "/chat")
+      {:ok, view, _html} = live(chat_conn(conn, "UrlW#{uid()}"), "/")
 
       render_click(view, "toolbar_action", %{"action" => "toggle_url_catcher"})
 
@@ -30,13 +30,13 @@ defmodule RetroHexChatWeb.UrlCatcherWindowTest do
     end
 
     test "the start menu opens it client-side (no server round trip)", %{conn: conn} do
-      {:ok, view, _html} = live(chat_conn(conn, "UrlW#{uid()}"), "/chat")
+      {:ok, view, _html} = live(chat_conn(conn, "UrlW#{uid()}"), "/")
 
       assert has_element?(view, ~s(#chat-start-menu [data-window-open="url-catcher"]))
     end
 
     test "URLs accumulate in the host while the window is closed", %{conn: conn} do
-      {:ok, view, _html} = live(chat_conn(conn, "UrlW#{uid()}"), "/chat")
+      {:ok, view, _html} = live(chat_conn(conn, "UrlW#{uid()}"), "/")
 
       render_click(view, "ctx_chat_save_url", %{
         "url" => "https://example.com/hello",
@@ -50,7 +50,7 @@ defmodule RetroHexChatWeb.UrlCatcherWindowTest do
     end
 
     test "Escape is no longer a server-side dismissal for the URL Catcher", %{conn: conn} do
-      {:ok, view, _html} = live(chat_conn(conn, "UrlW#{uid()}"), "/chat")
+      {:ok, view, _html} = live(chat_conn(conn, "UrlW#{uid()}"), "/")
 
       # The parent does not track url-catcher visibility at all.
       refute Map.has_key?(:sys.get_state(view.pid).socket.assigns, :show_url_catcher)

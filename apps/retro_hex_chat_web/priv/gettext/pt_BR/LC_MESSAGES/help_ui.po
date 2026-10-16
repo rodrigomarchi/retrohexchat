@@ -522,6 +522,7 @@ msgstr "Secções"
 #: lib/retro_hex_chat_web/controllers/help_content/ui_overview.html.heex:46
 #: lib/retro_hex_chat_web/controllers/help_content/ui_pinned_window.html.heex:77
 #: lib/retro_hex_chat_web/controllers/help_content/ui_saved_window.html.heex:28
+#: lib/retro_hex_chat_web/controllers/help_content/ui_site_pages.html.heex:66
 #: lib/retro_hex_chat_web/controllers/help_content/ui_start_menu.html.heex:113
 #: lib/retro_hex_chat_web/controllers/help_content/ui_status_tab.html.heex:43
 #: lib/retro_hex_chat_web/controllers/help_content/ui_tab_bar.html.heex:49
@@ -1147,6 +1148,7 @@ msgstr ""
 
 #: lib/retro_hex_chat_web/controllers/help_content/ui_bot_management.html.heex:67
 #: lib/retro_hex_chat_web/controllers/help_content/ui_overview.html.heex:48
+#: lib/retro_hex_chat_web/controllers/help_content/ui_site_pages.html.heex:68
 #: lib/retro_hex_chat_web/controllers/help_content/ui_start_menu.html.heex:116
 #: lib/retro_hex_chat_web/controllers/help_content/ui_toolbar.html.heex:209
 #, elixir-autogen, elixir-format
@@ -1346,6 +1348,7 @@ msgstr "Mensagens Especiais"
 
 #: lib/retro_hex_chat_web/controllers/help_content/ui_desktop.html.heex:69
 #: lib/retro_hex_chat_web/controllers/help_content/ui_edit_menu.html.heex:86
+#: lib/retro_hex_chat_web/controllers/help_content/ui_site_pages.html.heex:69
 #, elixir-autogen, elixir-format
 msgid "Start Menu"
 msgstr "O Menu Iniciar"
@@ -2026,12 +2029,7 @@ msgstr "Quadros do RCLE"
 #: lib/retro_hex_chat_web/controllers/help_content/ui_start_menu.html.heex:10
 #, elixir-autogen, elixir-format
 msgid "Entries you cannot use right now are grayed out rather than removed. Open Start ▸ Tools from the landing page and you will see Address Book, Notify List and the rest in gray — they are real parts of the app, waiting for you to connect. A grayed entry does nothing when clicked and never leads anywhere."
-msgstr ""
-"As entradas que você não pode usar agora estão acinzentadas em vez de "
-"removidas. Abra Iniciar □ Ferramentas da landing page e você verá o Livro de"
-" Endereços, a Lista de Notificações e o resto em cinza — elas são partes "
-"reais do aplicativo, esperando que você se conecte. Uma entrada cinza não "
-"faz nada quando clicado e nunca leva a qualquer lugar."
+msgstr "As entradas que você não pode usar agora estão acinzentadas em vez de removidas. Abrir o Início ▸ Ferramentas da landing page e você verá o Livro de Endereços, a Lista de Notificações e o resto em cinza — elas são partes reais do aplicativo, esperando que você se conecte. Uma entrada cinza não faz nada quando clicado e nunca leva a qualquer lugar."
 
 #: lib/retro_hex_chat_web/controllers/help_content/ui_start_menu.html.heex:8
 #, elixir-autogen, elixir-format
@@ -2455,11 +2453,7 @@ msgstr "Janelas do sistema"
 #: lib/retro_hex_chat_web/controllers/help_content/ui_system_windows.html.heex:2
 #, elixir-autogen, elixir-format
 msgid "The System group under File ▸ System — and Start ▸ System — opens thirteen windows onto the server itself. They are admin-only, and every one of them only reads: nothing in this group can change the server, which is what separates it from the Admin group beside it."
-msgstr ""
-"O grupo do sistema em File □ System — e Start □ System — abre treze janelas "
-"para o próprio servidor. Eles são apenas administradores, e cada um deles só"
-" lê: nada neste grupo pode mudar o servidor, que é o que o separa do grupo "
-"Admin ao lado dele."
+msgstr "O grupo de sistema em File ▸ System — e Start ▸ System — abre treze janelas para o próprio servidor. Eles são apenas administradores, e cada um deles só lê: nada neste grupo pode mudar o servidor, que é o que o separa do grupo Admin ao lado dele."
 
 #: lib/retro_hex_chat_web/controllers/help_content/ui_listings.html.heex:66
 #, elixir-autogen, elixir-format
@@ -2579,15 +2573,6 @@ msgstr ""
 "— Jogos Retrô e o Fliperama. O Fliperama guarda pontuações por apelido, "
 "então fica cinza até o seu estar registrado e identificado."
 
-#: lib/retro_hex_chat_web/controllers/help_content/ui_start_menu.html.heex:80
-#, elixir-autogen, elixir-format
-msgid "— The public pages, the documentation, the design system and the way into the app, plus Back and Forward through the Help viewer's own history. These are real links, so they work with scripting off."
-msgstr ""
-"— As páginas públicas, a documentação, o design system e o caminho para "
-"dentro do aplicativo, além de Voltar e Avançar pelo histórico do próprio "
-"visualizador de Ajuda. São links de verdade, então funcionam com scripts "
-"desligados."
-
 #: lib/retro_hex_chat_web/controllers/help_content/ui_start_menu.html.heex:32
 #, elixir-autogen, elixir-format
 msgid "— What the window in front of you is showing: toggling the conversation list and the nicklist, clearing the window, copying the selected text and finding text in it. In the Help viewer the same group switches between Contents, Index and Search."
@@ -2659,17 +2644,6 @@ msgstr ""
 "continuam disponíveis; as demais pastas de aplicativos mostram um diálogo "
 "explicando que você precisa se conectar antes de esses aplicativos poderem "
 "rodar."
-
-#: lib/retro_hex_chat_web/controllers/help_content/ui_desktop.html.heex:57
-#, elixir-autogen, elixir-format
-msgid "On a desktop viewport, the wallpaper shows app-folder icons for the main app groups: View, Tools, Automation, P2P, Games, Account, Language and Help. Admin and System appear there only inside the chat for admins. Windows and Navigate stay in the Start menu. Double-click a folder icon to open a Windows-style folder window with icons for that group. A single click only selects the desktop icon."
-msgstr ""
-"Em uma viewport de desktop, o papel de parede mostra ícones de pasta para os"
-" principais grupos de aplicativos: View, Tools, Automation, P2P, Games, "
-"Account, Language e Help. Admin e System só aparecem ali dentro do chat, "
-"para administradores. Windows e Navigate ficam no menu Iniciar. Dê um duplo "
-"clique num ícone de pasta para abrir uma janela de pasta no estilo Windows "
-"com os ícones daquele grupo. Um clique único apenas seleciona o ícone."
 
 #: lib/retro_hex_chat_web/controllers/help_content/ui_desktop.html.heex:71
 #, elixir-autogen, elixir-format
@@ -3893,3 +3867,98 @@ msgstr "Remova a peça selecionada no Constructo, no escritório ou na sala de j
 #, elixir-autogen, elixir-format
 msgid "Turning a piece in the Construct, the office and the game room"
 msgstr "Virando uma peça no Constructo, no escritório e na sala de jogos"
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_site_pages.html.heex:47
+#, elixir-autogen, elixir-format
+msgid "A channel's address is /c/ followed by its name — /c/lobby for #lobby — and the address bar shows it while that channel is in front. Copy it to invite somebody; it opens the channel for them, read-only until they sign in."
+msgstr "O endereço de um canal é /c/ seguido pelo seu nome — /c/lobby para #lobby — e a barra de endereços mostra-o enquanto o canal está na frente. Copie-o para convidar alguém; ele abre o canal para eles, somente para leitura até que eles entrem."
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_site_pages.html.heex:53
+#, elixir-autogen, elixir-format
+msgid "A private conversation never gets an address: who you talk to privately is not something a link should carry."
+msgstr "Uma conversa privada nunca recebe um endereço: com quem você fala em particular não é algo que um link deve carregar."
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_site_pages.html.heex:11
+#, elixir-autogen, elixir-format
+msgid "About this site"
+msgstr "Sobre este site"
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_site_pages.html.heex:38
+#, elixir-autogen, elixir-format
+msgid "Addresses"
+msgstr "Endereços"
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_site_pages.html.heex:59
+#, elixir-autogen, elixir-format
+msgid "Closing a page window takes you back to the chat, at the address of the conversation in front."
+msgstr "Fechar uma janela de página leva-o de volta para o chat, no endereço da conversa em frente."
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_site_pages.html.heex:74
+#, elixir-autogen, elixir-format
+msgid "Connect Window"
+msgstr "Janela de Conexão"
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_site_pages.html.heex:41
+#, elixir-autogen, elixir-format
+msgid "Each page window has its own address, so the browser's Back and Forward move between the pages you opened, and a bookmark or a shared link opens the same page over the chat."
+msgstr "Cada janela de página tem seu próprio endereço, então o navegador Back and Forward move entre as páginas que você abriu, e um marcador ou um link compartilhado abre a mesma página sobre o chat."
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_site_pages.html.heex:8
+#, elixir-autogen, elixir-format
+msgid "Finding the Pages"
+msgstr "Encontrando as Páginas"
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_desktop.html.heex:57
+#, elixir-autogen, elixir-format
+msgid "On a desktop viewport, the wallpaper shows folder icons: About this site, with every page of the site, then the main app groups — View, Tools, Automation, P2P, Games, Account, Language and Help. Admin and System appear there only for admins. Windows and Navigate stay in the Start menu. Double-click a folder icon to open a Windows-style folder window with icons for that group. A single click only selects the desktop icon."
+msgstr "Numa área de trabalho, o papel de parede mostra ícones de pastas: Sobre este site, com cada página do site, em seguida, os principais grupos de aplicativos — View, Tools, Automation, P2P, Games, Account, Language and Help. Admin e System aparecem lá apenas para administradores. Janelas e Navegar ficar no menu Iniciar. Clique duas vezes em um ícone de pasta para abrir uma janela de pasta estilo Windows com ícones para esse grupo. Um único clique só seleciona o ícone do desktop."
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_site_pages.html.heex:2
+#, elixir-autogen, elixir-format
+msgid "RetroHexChat has one desktop. The chat lives on it, and so does every page of the site: the home, the features, the games, the guides, the public archives and this help each open as a window over the chat, and moving between them never reloads the page — the chat keeps running behind whatever you are reading."
+msgstr "RetroHexChat tem uma área de trabalho. O chat vive nele, assim como todas as páginas do site: a casa, os recursos, os jogos, os guias, os arquivos públicos e isso ajuda cada um a abrir como uma janela sobre o chat, e mover-se entre eles nunca recarrega a página — o chat continua correndo por trás do que quer que você esteja lendo."
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_site_pages.html.heex:17
+#, elixir-autogen, elixir-format
+msgid "Start ▸ Navigate"
+msgstr "Iniciar ▸ Navegar"
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_site_pages.html.heex:30
+#, elixir-autogen, elixir-format
+msgid "The Welcome Window"
+msgstr "A Janela de Boas-vindas"
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_site_pages.html.heex:23
+#, elixir-autogen, elixir-format
+msgid "The taskbar"
+msgstr "A barra de tarefas"
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_site_pages.html.heex:72
+#, elixir-autogen, elixir-format
+msgid "Watching Without an Account"
+msgstr "Observando Sem Conta"
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_site_pages.html.heex:23
+#, elixir-autogen, elixir-format
+msgid "— An open page has a taskbar button like any other window. Click it to bring the page back; click the chat's button to go back to the conversation."
+msgstr "— Uma página aberta tem um botão de barra de tarefas como qualquer outra janela. Clique nele para trazer a página de volta; clique no botão do chat para voltar à conversa."
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_site_pages.html.heex:11
+#, elixir-autogen, elixir-format
+msgid "— The first icon on the desktop. Double-click it for a folder with every page, the guides and the documentation."
+msgstr "— The first icon on the desktop. Double-click it for a folder with every page, the guides and the documentation."
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_start_menu.html.heex:80
+#, elixir-autogen, elixir-format
+msgid "— The pages of the site, the documentation and the design system, plus Back and Forward through the Help viewer's own history. Each page opens as a window over the chat, without reloading it. These are real links, so they work with scripting off."
+msgstr "— As páginas do site, a documentação e o sistema de design, além de Voltar e Avançar através do histórico do visualizador de ajuda. Cada página abre como uma janela sobre o chat, sem recarregá-lo. Estes são links reais, então eles trabalham com script fora."
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_site_pages.html.heex:17
+#, elixir-autogen, elixir-format
+msgid "— The same pages from the Start menu, and the Navigate menu of every page window."
+msgstr "— As mesmas páginas do menu Iniciar e o menu Navegar de cada janela de página."
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_site_pages.html.heex:32
+#, elixir-autogen, elixir-format
+msgid "The home page opens the Welcome window over the #lobby channel. Its first button takes you into the lobby and puts the Welcome away on the taskbar; the second opens the Connect window to create an account. After that, the next visit opens the Welcome minimized, so you land straight in the chat."
+msgstr "A página inicial abre a janela de boas-vindas sobre o canal #lobby. Seu primeiro botão leva você para o lobby e coloca o Welcome na barra de tarefas; o segundo abre a janela Conectar para criar uma conta. Depois disso, a próxima visita abre o Welcome minimizado, então você aterrissa direto no chat."

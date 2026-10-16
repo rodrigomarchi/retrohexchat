@@ -101,6 +101,22 @@ describe("createMenuBar (direct)", () => {
     expect(dropdowns(el)[0].classList.contains("u-hidden")).toBe(false);
   });
 
+  // The chat starting under a page's menu bar replaces the menu's node: the
+  // open menu is found again by its trigger's label and put back.
+  it("re-opens a menu whose node the patch replaced", () => {
+    triggers(el)[0].setAttribute("aria-label", "Navigate");
+    mousedown(triggers(el)[0]);
+
+    const menu = triggers(el)[0].parentElement;
+    const fresh = menu.cloneNode(true);
+    fresh.querySelector("[data-menubar-dropdown]").classList.add("u-hidden");
+    menu.replaceWith(fresh);
+
+    bar.restore();
+
+    expect(dropdowns(el)[0].classList.contains("u-hidden")).toBe(false);
+  });
+
   it("unbinds document listeners on destroy", () => {
     bar.destroy();
     // With the controller torn down, an outside/Escape sequence is inert and a

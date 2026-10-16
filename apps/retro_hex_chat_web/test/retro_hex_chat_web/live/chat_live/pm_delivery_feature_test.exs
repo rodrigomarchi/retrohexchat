@@ -19,7 +19,7 @@ defmodule RetroHexChatWeb.ChatLive.PmDeliveryFeatureTest do
   alias RetroHexChat.Chat.Service
 
   defp connect_user(conn, nick) do
-    {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
+    {:ok, view, _html} = live(chat_conn(conn, nick), "/")
     view
   end
 

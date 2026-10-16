@@ -34,6 +34,7 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.Conversation do
   alias RetroHexChatWeb.ChatLive.Helpers.Session, as: SessionHelpers
   alias RetroHexChatWeb.ChatLive.ReadMarkers
   alias RetroHexChatWeb.ChatLive.ShareCards
+  alias RetroHexChatWeb.Site.Address
 
   @doc """
   Switches to a channel this session has already joined.
@@ -51,6 +52,7 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.Conversation do
     |> load_roster()
     |> ChannelHelpers.load_channel_messages_with_pagination(channel)
     |> SessionHelpers.push_reconnect_state()
+    |> Address.sync()
   end
 
   @doc "Switches to a private conversation, opening its tab if it was closed."

@@ -1,6 +1,11 @@
 import { lazyFeatureHook } from "./lazy_feature_hook";
 
 export const lazyFeatureHooks = {
+  HelpNavHook: lazyFeatureHook({
+    name: "HelpNavHook",
+    loader: () => import("./help/help_nav_hook"),
+    reason: "The help viewer's history is only needed while its window is open.",
+  }),
   FileTransferHook: lazyFeatureHook({
     name: "FileTransferHook",
     loader: () => import("./p2p/file_transfer_hook"),

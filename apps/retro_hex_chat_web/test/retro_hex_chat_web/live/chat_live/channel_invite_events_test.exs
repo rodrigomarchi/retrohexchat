@@ -17,7 +17,7 @@ defmodule RetroHexChatWeb.ChatLive.ChannelInviteEventsTest do
     {:ok, _} = register(nick)
     channel = "#invch#{uid()}"
 
-    {:ok, view, _html} = ctx.conn |> chat_conn(nick) |> live(~p"/chat")
+    {:ok, view, _html} = ctx.conn |> chat_conn(nick) |> live("/")
     submit_command_sync(view, "/join #{channel}")
 
     %{view: view, nick: nick, channel: channel}

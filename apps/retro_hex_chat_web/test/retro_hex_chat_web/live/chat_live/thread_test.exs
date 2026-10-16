@@ -25,7 +25,7 @@ defmodule RetroHexChatWeb.ChatLive.ThreadTest do
     other = register("Oth")
     channel = "#thr#{uid()}"
 
-    {:ok, view, _html} = ctx.conn |> chat_conn(owner, pre_identified: true) |> live(~p"/chat")
+    {:ok, view, _html} = ctx.conn |> chat_conn(owner, pre_identified: true) |> live("/")
     submit_command_sync(view, "/join #{channel}")
     {:ok, _state} = Server.join(channel, other)
     {:ok, root_id} = Server.send_message(channel, owner, "where should the notes live?")

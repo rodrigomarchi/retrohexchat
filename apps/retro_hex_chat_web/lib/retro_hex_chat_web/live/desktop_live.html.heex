@@ -1,0 +1,1264 @@
+<%!-- Hidden hooks --%>
+<%!-- Owns document.title: `data-title` is the live base, the activity flash
+      layers on top of it (see ChatTitle). --%>
+<div
+  id="document-title"
+  phx-hook="DocumentTitleHook"
+  data-title={Site.Documents.tab_title(assigns)}
+  class="hidden"
+>
+</div>
+<%!-- The head names the window in front; a patch does not re-render it. --%>
+<div id="head-sync" phx-hook="HeadSyncHook" class="hidden"></div>
+<%!-- Raises a desktop notification for a conversation you are not looking at.
+      The server decides whether; the browser decides when. --%>
+<div id="desktop-notify" phx-hook="DesktopNotifyHook" class="hidden"></div>
+<div
+  :if={@push_available and not @visitor?}
+  id="push-subscribe"
+  phx-hook="PushSubscribeHook"
+  class="hidden"
+>
+</div>
+<div id="nick-change-hook" phx-hook="NickChangeFormHook" class="hidden"></div>
+<form
+  :if={not @visitor?}
+  id="nick-change-session-form"
+  action={~p"/chat/session"}
+  method="post"
+  class="hidden"
+>
+  <input type="hidden" name="_csrf_token" value={Plug.CSRFProtection.get_csrf_token()} />
+  <input type="hidden" name="nickname" value={@nick_change_target || ""} />
+  <input
+    :if={@nick_change_token}
+    type="hidden"
+    name="auth_token"
+    value={@nick_change_token}
+  />
+  <input type="hidden" name="timezone" value={@timezone} />
+  <input type="hidden" name="join_channel" value={@session.active_channel || ""} />
+</form>
+<div id="viewport-detect" phx-hook="ViewportDetectHook" class="hidden"></div>
+<%!-- This tab answers when another one asks for it by address. The server
+      already knows the tab exists; the only thing the browser adds is pulling
+      it forward, and it can only be asked over `BroadcastChannel` because every
+      surface here is opened with `rel="noopener"`. Mounted on the screens that
+      have an address of their own, which is what the request is keyed by. --%>
+<div :if={not @visitor?} id="surface-presence" phx-hook="SurfacePresenceHook" class="hidden">
+</div>
+<%!-- A visitor's links: held, and answered with the sign-in window, except
+      the few paths open to everybody. --%>
+<div
+  :if={@visitor?}
+  id="visitor-link-guard"
+  phx-hook="VisitorLinkGuardHook"
+  data-allow={Jason.encode!(Visitor.open_paths())}
+  class="hidden"
+>
+</div>
+<div id="shortcut-dispatcher-hook" phx-hook="ShortcutDispatcherHook" class="hidden"></div>
+
+<%!-- Toast container --%>
+<RetroHexChatWeb.Components.Toast.toast_container tips_state={@session.contextual_tips} />
+
+<%!-- Main app container --%>
+<div
+  class="chat-app-root flex flex-col fixed inset-0 overflow-hidden bg-background"
+  phx-click="close_all_context_menus"
+  phx-window-keydown="window_keydown"
+  id="app-container"
+  phx-hook="SoundHook"
+  data-muted={to_string(@muted)}
+>
+  <%!-- The desktop is on the first response: the page in front of it is what
+        a reader came for and what a search engine reads, so its window, the
+        taskbar and the Start menu ship rendered. The chat behind it is the
+        heavy part — its body, its tool windows, its dialogs — and that arrives
+        with the socket (`@live_ready`), the chat window showing it is opening
+        until then. --%>
+  <.desktop
+    id="chat-desktop"
+    persist_key="chat"
+    escape_closes_windows
+    data-testid="chat-desktop"
+  >
+    <%!-- The whole chat surface is one pinned window: maximizable, draggable,
+          resizable, never closable. It opens windowed rather than maximized,
+          because maximized hid the desktop it sits on — there is a taskbar, a
+          Start menu and other windows under there.
+
+          Centered and filled rather than sized in pixels: this is the window
+          the reader spends the session in, so it takes most of whatever screen
+          it is given and still fits a laptop. `WindowRegistry`'s geometry
+          becomes the floor it never opens below. --%>
+    <.desktop_window
+      {Map.put(
+        WindowRegistry.attrs("chat"),
+        :title,
+        ChatTitle.window_title(@session, @show_status_tab)
+      )}
+      default_centered
+      default_fill={0.86}
+      body_class="flex flex-col min-h-0 p-0 overflow-hidden"
+      data-testid="chat-window"
+    >
+      <:icon><Icons.icon_chat class="h-4 w-4" /></:icon>
+      <:meta>{ChatTitle.window_meta(@session, length(@conversation_members))}</:meta>
+
+      <%!-- The application's menus, under its own title bar, as Win98 had them.
+            Dragged narrower than the strip needs, the window collapses them to
+            the icon rail the phone already uses. --%>
+      <:menu :if={@live_ready}>
+        <.chat_shell_menu session={@session} mobile_viewport={@mobile_viewport} />
+      </:menu>
+
+      <%!-- What this session is doing, along the window's own bottom edge, the
+            way a Win98 application reported on itself. The tray speaks for the
+            machine; this speaks for the window. --%>
+      <:status>
+        <.chat_shell_status
+          p2p_elsewhere={P2PReadModel.elsewhere(@p2p_pm_sessions, @open_surface_paths)}
+          group_call_elsewhere={
+            GroupCallReadModel.elsewhere(
+              @session.channels,
+              @group_call_channel_summaries,
+              @open_surface_paths
+            )
+          }
+        />
+      </:status>
+
+      <%= if @live_ready do %>
+        <%!-- MDI layout: conversations | chat | nicklist. What people say is
+              not what the page is about: it never becomes a search snippet. --%>
+        <div class="flex flex-1 min-h-0" data-nosnippet>
+          <%!-- Conversations sidebar --%>
+          <.live_component
+            module={RetroHexChatWeb.ChatLive.Components.Conversations}
+            id={RetroHexChatWeb.ChatLive.Components.Conversations.id()}
+            visible={@show_conversations}
+            channels={@session.channels}
+            active_channel={@session.active_channel}
+            active_pm={@session.active_pm}
+            open_pm_tabs={@open_pm_tabs}
+            pm_conversations={@session.pm_conversations}
+            pm_conversations_truncated={@session.pm_conversations_truncated}
+            autojoin_list={@session.autojoin_list}
+            unread_counts={@unread_counts}
+            mention_counts={@mention_counts}
+            channel_activity_order={@channel_activity_order}
+            highlight_channels={@highlight_channels}
+            flash_channels={@flash_channels}
+            muted_channels={@muted_channels}
+            disconnected_channels={Map.get(assigns, :disconnected_channels, MapSet.new())}
+            group_call_channels={@group_call_channels}
+            group_call_summaries={@group_call_channel_summaries}
+            p2p_pm_sessions={@p2p_pm_sessions}
+            open_paths={@open_surface_paths}
+            conversations_sections={@conversations_sections}
+            mobile_viewport={@mobile_viewport}
+            channel_user_counts={@channel_user_counts}
+            popular_channels={@popular_channels}
+            nick_color_fn={@nick_color_fn}
+          />
+
+          <%!-- Chat area --%>
+          <div class="flex flex-col flex-1 min-w-0 min-h-0 overflow-hidden">
+            <% conversation_space = SpaceReadModel.conversation_space(@session, @show_status_tab) %>
+            <% p2p_pm_session =
+              p2p_pm_session_for_active_pm(@p2p_pm_sessions, @session.active_pm) ||
+                p2p_idle_session_for_active_pm(@session) %>
+
+            <%!-- Topic bar --%>
+            <.topic_bar
+              topic={@current_topic || ""}
+              channel_name={@session.active_channel}
+              variant={
+                cond do
+                  @show_status_tab -> "status"
+                  @session.active_pm -> "pm"
+                  true -> "channel"
+                end
+              }
+              modes={@current_modes}
+            />
+
+            <%!-- Connection status banner + JS-driven reconnect overlay --%>
+            <.connection_status_panel />
+
+            <%!-- Search bar (stateful island — owns its content state) --%>
+            <.live_component
+              module={RetroHexChatWeb.ChatLive.Components.SearchBar}
+              id={RetroHexChatWeb.ChatLive.Components.SearchBar.id()}
+              visible={@search_visible}
+              nickname={@session.nickname}
+              active_channel={@session.active_channel}
+            />
+
+            <%!-- Main content + Nicklist row (fills remaining space) --%>
+            <div class="flex flex-1 min-h-0" data-testid="channel-content-row">
+              <div class="flex flex-col flex-1 min-w-0 min-h-0" data-testid="channel-main-column">
+                <%!-- Messages column --%>
+                <div class="flex flex-col flex-1 min-w-0 min-h-0 relative">
+                  <%!-- Chat messages stream (stateful island — owns the :chat_messages stream
+               + the channel-load spinner and load-older indicator) --%>
+                  <.live_component
+                    module={RetroHexChatWeb.ChatLive.Components.MessageViewport}
+                    id={RetroHexChatWeb.ChatLive.Components.MessageViewport.id()}
+                    chat_clear_token={@chat_clear_token}
+                    nick_color_fn={@nick_color_fn}
+                    timestamp_format={@timestamp_format}
+                    timezone={@timezone}
+                    strip_formatting={@session.strip_formatting}
+                    edit_mode_message_id={@edit_mode_message_id}
+                    show_status_tab={@show_status_tab}
+                    has_more={@has_more}
+                    loading_channel={@loading_channel}
+                    viewer={@session.nickname}
+                    show_avatars={@session.show_avatars}
+                    unread_boundary_id={@unread_boundary_id}
+                  />
+
+                  <%!-- Status messages stream (stateful island — owns the :status_messages stream) --%>
+                  <.live_component
+                    module={RetroHexChatWeb.ChatLive.Components.StatusViewport}
+                    id={RetroHexChatWeb.ChatLive.Components.StatusViewport.id()}
+                    timestamp_format={@timestamp_format}
+                    timezone={@timezone}
+                    show_status_tab={@show_status_tab}
+                  />
+                </div>
+              </div>
+
+              <%!-- User list sidebar: the members of whichever conversation is on
+                 screen — a channel's roster, or the two people in a private
+                 conversation. Only the status tab, which is not a conversation,
+                 goes without one. --%>
+              <.live_component
+                module={RetroHexChatWeb.ChatLive.Components.Nicklist}
+                id={RetroHexChatWeb.ChatLive.Components.Nicklist.id()}
+                available={!@show_status_tab}
+                visible={@show_nicklist}
+                conversation_kind={if @session.active_pm, do: :private, else: :channel}
+                conversation_label={@session.active_pm || @session.active_channel}
+                current_modes={@current_modes}
+                current_nick={@visitor_nick || @session.nickname}
+                show_avatars={@session.show_avatars}
+                nick_color_fn={@nick_color_fn}
+                guests={Map.get(@channel_guests, @session.active_channel, [])}
+              />
+            </div>
+
+            <%!-- Composer island: autocomplete + syntax tooltip + bottom input panel.
+               Full width under the messages/nicklist row — the nicklist ends
+               above it, so the input spans the whole conversation. --%>
+            <%!-- A visitor sees the same composer everybody does, `locked`: its
+               events are its own, out of the visitor gate's reach, so it is
+               drawn unreachable and any click on it opens the sign-in window. --%>
+            <.live_component
+              module={RetroHexChatWeb.ChatLive.Components.Composer}
+              id={RetroHexChatWeb.ChatLive.Components.Composer.id()}
+              session={@session}
+              show_status_tab={@show_status_tab}
+              conversation_members={@conversation_members}
+              show_emoji_picker={@show_emoji_picker}
+              pm_typing_from={@pm_typing_from}
+              edit_mode_message_id={@edit_mode_message_id}
+              timestamp_format={@timestamp_format}
+              timezone={@timezone}
+              locked={@visitor?}
+            />
+
+            <%!-- Tab bar: Status and the conversation in focus — the two things
+               that can occupy the conversation region — plus the entries that
+               open a session beside it, each in a tab of its own. Every other
+               conversation lives in the sidebar; Find lives in the menu bar. --%>
+            <.chat_tabs
+              class="shrink-0 min-w-0"
+              unread_counts={@unread_counts}
+              status_unread={@status_unread}
+              show_status_tab={@show_status_tab}
+              active_channel={@session.active_channel}
+              active_pm={@session.active_pm}
+              nick_color_fn={@nick_color_fn}
+              p2p_pm_sessions={@p2p_pm_sessions}
+              group_call_channels={@group_call_channels}
+              group_call_summaries={@group_call_channel_summaries}
+            >
+              <:actions>
+                <%!-- The sidebar toggles are the stacked layout's rails: below md the
+                   collapsed shells give their 36px back to the conversation and the
+                   composer, so this is the only way back into them. --%>
+                <.conversation_toolbar_actions
+                  sidebar_toggles_class="md:hidden"
+                  conversations_open={@show_conversations}
+                  conversations_unread={UnreadTracker.total(@unread_counts)}
+                  nicklist_open={@show_nicklist && !@show_status_tab}
+                  active_channel={@session.active_channel}
+                  active_pm={@session.active_pm}
+                  show_status_tab={@show_status_tab}
+                  unread_boundary_id={@unread_boundary_id}
+                  pinned_count={@pinned_count}
+                />
+                <.group_call_channel_entry
+                  :if={@session.active_channel && !@show_status_tab}
+                  channel={@session.active_channel}
+                  active={
+                    channel_group_call_active?(@group_call_channels, @session.active_channel)
+                  }
+                  identified={@session.identified}
+                  summary={
+                    channel_group_call_summary(
+                      @group_call_channel_summaries,
+                      @session.active_channel
+                    )
+                  }
+                />
+                <.space_conversation_entry
+                  :if={conversation_space}
+                  space_id={conversation_space.space_id}
+                  identified={@session.identified}
+                />
+                <.p2p_peer_entry
+                  :if={p2p_pm_session}
+                  peer={@session.active_pm}
+                  session={p2p_pm_session}
+                  current={true}
+                />
+              </:actions>
+            </.chat_tabs>
+          </div>
+        </div>
+      <% else %>
+        <div
+          class="flex flex-1 items-center justify-center"
+          aria-busy="true"
+          data-nosnippet
+          data-testid="chat-boot-loading"
+        >
+          <.boot_activity_panel
+            title={dgettext("chat", "RetroHexChat")}
+            text={dgettext("chat", "Opening chat...")}
+            icon={:chat}
+          />
+        </div>
+      <% end %>
+    </.desktop_window>
+
+    <%!-- The pages of the site, each in its window over the chat, the one the
+          address names in front. Rendered on the first response, whole. --%>
+    <.document_window
+      :for={doc <- Site.Documents.ordered(assigns)}
+      doc={doc}
+      focused={doc.slot == @focused_doc}
+    />
+
+    <%= if @live_ready do %>
+      <%!-- Highlight Words — server-managed: closing unmounts the island
+          (selection/sub-form state resets); the session read-model stays
+          parent-owned and flows in as passthrough. --%>
+      <.desktop_window
+        :if={"highlight" in @open_windows}
+        {WindowRegistry.attrs("highlight")}
+        body_class="flex min-h-0 flex-col p-2"
+        data-testid="highlight-window"
+      >
+        <:icon><Icons.icon_star class="h-4 w-4" /></:icon>
+        <.live_component
+          module={RetroHexChatWeb.ChatLive.Components.HighlightDialog}
+          id={RetroHexChatWeb.ChatLive.Components.HighlightDialog.id()}
+          session={@session}
+        />
+      </.desktop_window>
+
+      <%!-- Alias / Custom Menus / Auto Respond — server-managed editors: closing
+          unmounts the island, resetting selection and draft. --%>
+      <.desktop_window
+        :if={"alias" in @open_windows}
+        {WindowRegistry.attrs("alias")}
+        body_class="flex min-h-0 flex-col p-2"
+        data-testid="alias-window"
+      >
+        <:icon><Icons.icon_dialog_alias class="h-4 w-4" /></:icon>
+        <.live_component
+          module={RetroHexChatWeb.ChatLive.Components.AliasDialog}
+          id={RetroHexChatWeb.ChatLive.Components.AliasDialog.id()}
+          aliases={@session.aliases}
+        />
+      </.desktop_window>
+
+      <.desktop_window
+        :if={"custom-menus" in @open_windows}
+        {WindowRegistry.attrs("custom-menus")}
+        body_class="flex min-h-0 flex-col p-2"
+        data-testid="custom-menus-window"
+      >
+        <:icon><Icons.icon_dialog_custom_menus class="h-4 w-4" /></:icon>
+        <.live_component
+          module={RetroHexChatWeb.ChatLive.Components.CustomMenusDialog}
+          id={RetroHexChatWeb.ChatLive.Components.CustomMenusDialog.id()}
+          custom_menus={@session.custom_menus}
+        />
+      </.desktop_window>
+
+      <.desktop_window
+        :if={"auto-respond" in @open_windows}
+        {WindowRegistry.attrs("auto-respond")}
+        body_class="flex min-h-0 flex-col p-2"
+        data-testid="auto-respond-window"
+      >
+        <:icon><Icons.icon_dialog_auto_respond class="h-4 w-4" /></:icon>
+        <.live_component
+          module={RetroHexChatWeb.ChatLive.Components.AutoRespondDialog}
+          id={RetroHexChatWeb.ChatLive.Components.AutoRespondDialog.id()}
+          rules={@session.autorespond_rules}
+        />
+      </.desktop_window>
+
+      <%!-- Address Book — server-managed: the saved contacts, with two
+          window-scoped add/edit sub-forms. --%>
+      <.desktop_window
+        :if={"address-book" in @open_windows}
+        {WindowRegistry.attrs("address-book")}
+        body_class="flex min-h-0 flex-col p-2"
+        data-testid="address-book-window"
+      >
+        <:icon><Icons.icon_dialog_address_book class="h-4 w-4" /></:icon>
+        <.live_component
+          module={RetroHexChatWeb.ChatLive.Components.AddressBookDialog}
+          id={RetroHexChatWeb.ChatLive.Components.AddressBookDialog.id()}
+          session={@session}
+          nick_color_fn={@nick_color_fn}
+          timezone={@timezone}
+        />
+      </.desktop_window>
+
+      <%!-- Nick Colors — server-managed: the per-nickname color overrides, with
+          the palette editor in two window-scoped sub-forms. --%>
+      <.desktop_window
+        :if={"nick-colors" in @open_windows}
+        {WindowRegistry.attrs("nick-colors")}
+        body_class="flex min-h-0 flex-col p-2"
+        data-testid="nick-colors-window"
+      >
+        <:icon><Icons.icon_dialog_nick_colors class="h-4 w-4" /></:icon>
+        <.live_component
+          module={RetroHexChatWeb.ChatLive.Components.NickColorsDialog}
+          id={RetroHexChatWeb.ChatLive.Components.NickColorsDialog.id()}
+          session={@session}
+        />
+      </.desktop_window>
+
+      <%!-- Ignore List — server-managed: the ignored nicknames, with a
+          window-scoped add sub-form. The expiry timers live on the host. --%>
+      <.desktop_window
+        :if={"ignore-list" in @open_windows}
+        {WindowRegistry.attrs("ignore-list")}
+        body_class="flex min-h-0 flex-col p-2"
+        data-testid="ignore-list-window"
+      >
+        <:icon><Icons.icon_dialog_ignore_list class="h-4 w-4" /></:icon>
+        <.live_component
+          module={RetroHexChatWeb.ChatLive.Components.IgnoreListDialog}
+          id={RetroHexChatWeb.ChatLive.Components.IgnoreListDialog.id()}
+          session={@session}
+        />
+      </.desktop_window>
+
+      <%!-- Notify List — server-managed: selection/sub-form state resets on close;
+          the buddy list lives on the session and flows in as passthrough. --%>
+      <.desktop_window
+        :if={"notify-list" in @open_windows}
+        {WindowRegistry.attrs("notify-list")}
+        body_class="flex min-h-0 flex-col p-2"
+        data-testid="notify-list-window"
+      >
+        <:icon><Icons.icon_tab_notify class="h-4 w-4" /></:icon>
+        <.live_component
+          module={RetroHexChatWeb.ChatLive.Components.NotifyListDialog}
+          id={RetroHexChatWeb.ChatLive.Components.NotifyListDialog.id()}
+          session={@session}
+          timezone={@timezone}
+        />
+      </.desktop_window>
+
+      <%!-- Perform — server-managed: the connect-time command list, with
+          window-scoped add/edit sub-forms. --%>
+      <.desktop_window
+        :if={"perform" in @open_windows}
+        {WindowRegistry.attrs("perform")}
+        body_class="flex min-h-0 flex-col p-2"
+        data-testid="perform-window"
+      >
+        <:icon><Icons.icon_dialog_perform class="h-4 w-4" /></:icon>
+        <.live_component
+          module={RetroHexChatWeb.ChatLive.Components.PerformDialog}
+          id={RetroHexChatWeb.ChatLive.Components.PerformDialog.id()}
+          session={@session}
+        />
+      </.desktop_window>
+
+      <%!-- Auto-Join — server-managed: the connect-time channel list, with
+          window-scoped add/edit sub-forms. --%>
+      <.desktop_window
+        :if={"autojoin" in @open_windows}
+        {WindowRegistry.attrs("autojoin")}
+        body_class="flex min-h-0 flex-col p-2"
+        data-testid="autojoin-window"
+      >
+        <:icon><Icons.icon_dialog_autojoin class="h-4 w-4" /></:icon>
+        <.live_component
+          module={RetroHexChatWeb.ChatLive.Components.AutojoinDialog}
+          id={RetroHexChatWeb.ChatLive.Components.AutojoinDialog.id()}
+          session={@session}
+        />
+      </.desktop_window>
+
+      <%!-- Sound Settings — server-managed: the draft seeds from the session on
+          mount; closing discards an uncommitted draft. --%>
+      <.desktop_window
+        :if={"sound-settings" in @open_windows}
+        {WindowRegistry.attrs("sound-settings")}
+        body_class="flex min-h-0 flex-col p-2"
+        data-testid="sound-settings-window"
+      >
+        <:icon><Icons.icon_dialog_sound class="h-4 w-4" /></:icon>
+        <.live_component
+          module={RetroHexChatWeb.ChatLive.Components.SoundSettingsDialog}
+          id={RetroHexChatWeb.ChatLive.Components.SoundSettingsDialog.id()}
+          settings={@session.sound_settings}
+          notify_permission={@desktop_notify_permission}
+          push_available={@push_available}
+          push_subscribed={@push_subscribed}
+        />
+      </.desktop_window>
+
+      <%!-- Mentions — the one window whose contents are a query rather than a
+          preference, so the island loads them and closing it throws them
+          away. --%>
+      <.desktop_window
+        :if={"mentions" in @open_windows}
+        {WindowRegistry.attrs("mentions")}
+        body_class="flex min-h-0 flex-col p-2"
+        data-testid="mentions-window"
+      >
+        <:icon><Icons.icon_megaphone class="h-4 w-4" /></:icon>
+        <.live_component
+          module={RetroHexChatWeb.ChatLive.Components.MentionsDialog}
+          id={RetroHexChatWeb.ChatLive.Components.MentionsDialog.id()}
+          session={@session}
+          timezone={@timezone}
+          nick_color_fn={@nick_color_fn}
+        />
+      </.desktop_window>
+
+      <%!-- Pinned — the lines the channel on screen is keeping. The island
+          reloads when the channel changes, because that is a different list. --%>
+      <.desktop_window
+        :if={"pinned" in @open_windows}
+        {WindowRegistry.attrs("pinned")}
+        body_class="flex min-h-0 flex-col p-2"
+        data-testid="pinned-window"
+      >
+        <:icon><Icons.icon_btn_set_topic class="h-4 w-4" /></:icon>
+        <.live_component
+          module={RetroHexChatWeb.ChatLive.Components.PinnedDialog}
+          id={RetroHexChatWeb.ChatLive.Components.PinnedDialog.id()}
+          channel={@session.active_channel}
+          can_unpin={@can_pin}
+          timezone={@timezone}
+          nick_color_fn={@nick_color_fn}
+        />
+      </.desktop_window>
+
+      <%!-- Saved Messages — one person's pile, across every conversation they
+          were in. Nobody else can see it, so nothing about it is broadcast. --%>
+      <.desktop_window
+        :if={"saved" in @open_windows}
+        {WindowRegistry.attrs("saved")}
+        body_class="flex min-h-0 flex-col p-2"
+        data-testid="saved-window"
+      >
+        <:icon><Icons.icon_btn_star class="h-4 w-4" /></:icon>
+        <.live_component
+          module={RetroHexChatWeb.ChatLive.Components.SavedDialog}
+          id={RetroHexChatWeb.ChatLive.Components.SavedDialog.id()}
+          nickname={@session.nickname}
+          timezone={@timezone}
+          nick_color_fn={@nick_color_fn}
+        />
+      </.desktop_window>
+
+      <%!-- Thread — one message and everything that answered it, read forwards.
+          Nothing is moved here: the replies are still in the conversation. --%>
+      <.desktop_window
+        :if={"thread" in @open_windows}
+        {WindowRegistry.attrs("thread")}
+        body_class="flex min-h-0 flex-col p-2"
+        data-testid="thread-window"
+      >
+        <:icon><Icons.icon_chat class="h-4 w-4" /></:icon>
+        <.live_component
+          module={RetroHexChatWeb.ChatLive.Components.ThreadDialog}
+          id={RetroHexChatWeb.ChatLive.Components.ThreadDialog.id()}
+          nick_color_fn={@nick_color_fn}
+          timestamp_format={@timestamp_format}
+          timezone={@timezone}
+          strip_formatting={@session.strip_formatting}
+          viewer={@session.nickname}
+        />
+      </.desktop_window>
+
+      <%!-- Events — what the channel on screen has agreed to do, soonest first.
+          The same card the conversation draws, in a list. --%>
+      <.desktop_window
+        :if={"events" in @open_windows}
+        {WindowRegistry.attrs("events")}
+        body_class="flex min-h-0 flex-col p-2"
+        data-testid="events-window"
+      >
+        <:icon><Icons.icon_clock class="h-4 w-4" /></:icon>
+        <.live_component
+          module={RetroHexChatWeb.ChatLive.Components.EventsDialog}
+          id={RetroHexChatWeb.ChatLive.Components.EventsDialog.id()}
+          channel={@session.active_channel}
+          viewer={@session.nickname}
+          timezone={@timezone}
+          can_schedule={@can_pin}
+        />
+      </.desktop_window>
+
+      <%!-- Server Emoji — the pictures this server answers to by name. The set
+          belongs to the server, so only an administrator may change it. --%>
+      <.desktop_window
+        :if={"server-emoji" in @open_windows}
+        {WindowRegistry.attrs("server-emoji")}
+        body_class="flex min-h-0 flex-col p-2"
+        data-testid="server-emoji-window"
+      >
+        <:icon><Icons.icon_fmt_emoji class="h-4 w-4" /></:icon>
+        <.live_component
+          module={RetroHexChatWeb.ChatLive.Components.ServerEmojiDialog}
+          id={RetroHexChatWeb.ChatLive.Components.ServerEmojiDialog.id()}
+          nickname={@session.nickname}
+          identified={@session.identified}
+        />
+      </.desktop_window>
+
+      <%!-- Flood Protection — server-managed: uncontrolled form, nothing to keep
+          across closes. --%>
+      <.desktop_window
+        :if={"flood-protection" in @open_windows}
+        {WindowRegistry.attrs("flood-protection")}
+        class="fp-window"
+        body_class="fp-window-body flex min-h-0 flex-col p-2"
+        data-testid="flood-protection-window"
+      >
+        <:icon><Icons.icon_dialog_flood class="h-4 w-4" /></:icon>
+        <.live_component
+          module={RetroHexChatWeb.ChatLive.Components.FloodProtectionDialog}
+          id={RetroHexChatWeb.ChatLive.Components.FloodProtectionDialog.id()}
+          settings={@session.flood_protection}
+        />
+      </.desktop_window>
+
+      <%!-- Arcade — server-managed solo-game launcher, a pure read-model of the
+          @arcade_session assign.
+          The X keeps the session alive while a game is running (the pop-up
+          keeps playing); the Leave/Close button inside ends it. --%>
+      <.desktop_window
+        :if={@arcade_session && "arcade-games" in @open_windows}
+        {WindowRegistry.attrs("arcade-games")}
+        persist_geometry={false}
+        on_close="arcade_window_close"
+        body_class="h-full min-h-0 overflow-hidden p-2"
+        data-testid="arcade-games-window"
+      >
+        <:icon><Icons.icon_game_arcade class="h-4 w-4" /></:icon>
+        <.solo_lobby
+          id="arcade-lobby"
+          games={arcade_games()}
+          session_status={@arcade_session.status}
+          previewed_game={@arcade_session.previewed_game}
+          game_name={@arcade_session.game_name}
+          game_id={@arcade_session.game_id}
+          game_started_at={@arcade_session.game_started_at}
+          game_duration={@arcade_session.game_duration}
+          inactivity_warning={@arcade_session.inactivity_warning}
+          on_preview_game="arcade_preview"
+          on_select_game="arcade_select_game"
+          on_back="arcade_back"
+          on_back_to_launcher="arcade_back_to_launcher"
+          on_close="arcade_leave"
+        />
+      </.desktop_window>
+
+      <%!-- Timers — server-managed: closing unmounts the island (draft state
+          resets by design); reopening mounts a fresh one. --%>
+      <.desktop_window
+        :if={"timers" in @open_windows}
+        {WindowRegistry.attrs("timers")}
+        body_class="flex min-h-0 flex-col p-2"
+        data-testid="timers-window"
+      >
+        <:icon><Icons.icon_btn_timers class="h-4 w-4" /></:icon>
+        <.live_component
+          module={RetroHexChatWeb.ChatLive.Components.TimersDialog}
+          id={RetroHexChatWeb.ChatLive.Components.TimersDialog.id()}
+          timers={@user_timers}
+        />
+      </.desktop_window>
+
+      <%!-- Channel List — always mounted: the search filter survives closes by
+          design; /list reloads the rows into the passthrough on open. --%>
+      <.desktop_window
+        {WindowRegistry.attrs("channel-list")}
+        open={false}
+        body_class="flex min-h-0 flex-col p-2"
+        data-testid="channel-list-window"
+      >
+        <:icon><Icons.icon_channels class="h-4 w-4" /></:icon>
+        <.live_component
+          module={RetroHexChatWeb.ChatLive.Components.ChannelListDialog}
+          id={RetroHexChatWeb.ChatLive.Components.ChannelListDialog.id()}
+          channels={@channel_list_channels}
+          loading={@channel_list_loading}
+        />
+      </.desktop_window>
+
+      <%!-- Cheatsheet — server-managed: static content, recomputed on mount. --%>
+      <.desktop_window
+        :if={"cheatsheet" in @open_windows}
+        {WindowRegistry.attrs("cheatsheet")}
+        class="cs-window"
+        body_class="cs-window-body flex min-h-0 flex-col p-2"
+        data-testid="cheatsheet-window"
+      >
+        <:icon><Icons.icon_dialog_cheatsheet class="h-4 w-4" /></:icon>
+        <.live_component
+          module={RetroHexChatWeb.ChatLive.Components.CheatsheetDialog}
+          id={RetroHexChatWeb.ChatLive.Components.CheatsheetDialog.id()}
+        />
+      </.desktop_window>
+
+      <%!-- Channel Central — always mounted: the island owns all state, gates
+          opens on membership, receives blind PubSub refreshes while closed,
+          and drives its own window via window_command. --%>
+      <%!-- Not for a visitor (`@hidden_windows`): always mounted, a layout saved
+          by somebody signed in on this browser would reopen it with its tools live. --%>
+      <.desktop_window
+        :if={"channel-central" not in @hidden_windows}
+        {WindowRegistry.attrs("channel-central")}
+        title={dgettext("chat", "Channel Central: %{channel}", channel: @cc_window_channel || "")}
+        open={false}
+        body_class="flex min-h-0 flex-col p-2"
+        data-testid="channel-central-window"
+      >
+        <:icon><Icons.icon_dialog_channel_central class="h-4 w-4" /></:icon>
+        <.live_component
+          module={RetroHexChatWeb.ChatLive.Components.ChannelCentralDialog}
+          id={RetroHexChatWeb.ChatLive.Components.ChannelCentralDialog.id()}
+          session={@session}
+          timezone={@timezone}
+        />
+      </.desktop_window>
+
+      <%!-- Account — server-managed: opening refreshes the NickServ identity. --%>
+      <.desktop_window
+        :if={"account" in @open_windows}
+        {WindowRegistry.attrs("account")}
+        body_class="flex min-h-0 flex-col p-2"
+        data-testid="account-window"
+      >
+        <:icon><Icons.icon_status_user class="h-4 w-4" /></:icon>
+        <.live_component
+          module={RetroHexChatWeb.ChatLive.Components.AccountDialog}
+          id={RetroHexChatWeb.ChatLive.Components.AccountDialog.id()}
+          nickname={@session.nickname}
+          account_state={Session.identity_state(@session)}
+          registered={@account_registered}
+          identified={@session.identified}
+        />
+      </.desktop_window>
+
+      <%!-- Trusted Terminals — server-managed: revocable device/session management. --%>
+      <.desktop_window
+        :if={"trusted-terminals" in @open_windows}
+        {WindowRegistry.attrs("trusted-terminals")}
+        body_class="flex min-h-0 flex-col p-2"
+        data-testid="trusted-terminals-window"
+      >
+        <:icon><Icons.icon_lock class="h-4 w-4" /></:icon>
+        <.live_component
+          module={RetroHexChatWeb.ChatLive.Components.TrustedTerminalsDialog}
+          id={RetroHexChatWeb.ChatLive.Components.TrustedTerminalsDialog.id()}
+          session={@session}
+          timezone={@timezone}
+          trusted_device_id={@trusted_device_id}
+          chat_device_session_ref={@chat_device_session_ref}
+        />
+      </.desktop_window>
+
+      <%!-- Profile — server-managed: the bio draft seeds from the session on open. --%>
+      <.desktop_window
+        :if={"profile" in @open_windows}
+        {WindowRegistry.attrs("profile")}
+        body_class="flex min-h-0 flex-col p-2"
+        data-testid="profile-window"
+      >
+        <:icon><Icons.icon_dialog_profile class="h-4 w-4" /></:icon>
+        <.live_component
+          module={RetroHexChatWeb.ChatLive.Components.ProfileDialog}
+          id={RetroHexChatWeb.ChatLive.Components.ProfileDialog.id()}
+          nickname={@session.nickname}
+        />
+      </.desktop_window>
+
+      <%!-- Away — server-managed: a pure view over the session's away state. --%>
+      <.desktop_window
+        :if={"away" in @open_windows}
+        {WindowRegistry.attrs("away")}
+        body_class="flex min-h-0 flex-col p-2"
+        data-testid="away-window"
+      >
+        <:icon><Icons.icon_dialog_away class="h-4 w-4" /></:icon>
+        <.live_component
+          module={RetroHexChatWeb.ChatLive.Components.AwayDialog}
+          id={RetroHexChatWeb.ChatLive.Components.AwayDialog.id()}
+          nickname={@session.nickname}
+          away={@session.away}
+          away_message={@session.away_message || @account_last_away_message || ""}
+        />
+      </.desktop_window>
+
+      <%!-- User Modes — server-managed: a pure view over the session's umodes. --%>
+      <.desktop_window
+        :if={"user-modes" in @open_windows}
+        {WindowRegistry.attrs("user-modes")}
+        body_class="flex min-h-0 flex-col p-2"
+        data-testid="user-modes-window"
+      >
+        <:icon><Icons.icon_dialog_user_modes class="h-4 w-4" /></:icon>
+        <.live_component
+          module={RetroHexChatWeb.ChatLive.Components.UserModesDialog}
+          id={RetroHexChatWeb.ChatLive.Components.UserModesDialog.id()}
+          wallops_enabled={Session.has_mode?(@session, :wallops)}
+        />
+      </.desktop_window>
+
+      <%!-- User Lookup — server-managed: closing resets the draft and result. --%>
+      <.desktop_window
+        :if={"user-lookup" in @open_windows}
+        {WindowRegistry.attrs("user-lookup")}
+        class="ul-window"
+        body_class="ul-window-body flex min-h-0 flex-col p-2"
+        data-testid="user-lookup-window"
+      >
+        <:icon><Icons.icon_btn_search class="h-4 w-4" /></:icon>
+        <.live_component
+          module={RetroHexChatWeb.ChatLive.Components.UserLookupDialog}
+          id={RetroHexChatWeb.ChatLive.Components.UserLookupDialog.id()}
+          result={@lookup_result}
+        />
+      </.desktop_window>
+
+      <%!-- URL Catcher — always mounted (URLs keep accumulating while closed);
+          the window manager owns open/close client-side. --%>
+      <.desktop_window
+        :if={"url-catcher" not in @hidden_windows}
+        {WindowRegistry.attrs("url-catcher")}
+        open={false}
+        body_class="flex min-h-0 flex-col p-2"
+        data-testid="url-catcher-window"
+      >
+        <:icon><Icons.icon_link class="h-4 w-4" /></:icon>
+        <.live_component
+          module={RetroHexChatWeb.ChatLive.Components.UrlCatcherDialog}
+          id={RetroHexChatWeb.ChatLive.Components.UrlCatcherDialog.id()}
+          entries={@url_catcher_entries}
+          dropped={@url_catcher_dropped}
+          timezone={@timezone}
+        />
+      </.desktop_window>
+
+      <%!-- Admin Console — server-managed, admin-gated. The open event is the
+          server-side authz for a forged window_open; the render guard here is
+          the second line of defense (no admin content for non-admins). --%>
+      <.desktop_window
+        :if={admin?(@session) and "admin-console" in @open_windows}
+        {WindowRegistry.attrs("admin-console")}
+        body_class="flex min-h-0 flex-col p-2"
+        data-testid="admin-console-window"
+      >
+        <:icon><Icons.icon_dialog_admin_console class="h-4 w-4" /></:icon>
+        <.live_component
+          module={RetroHexChatWeb.ChatLive.Components.AdminConsoleDialog}
+          id={RetroHexChatWeb.ChatLive.Components.AdminConsoleDialog.id()}
+          session={@session}
+        />
+      </.desktop_window>
+
+      <%!-- Admin Users — server-managed, admin-gated. Same authz model as the
+          admin console: the open event gates, the render guard is the second
+          line of defense against a forged window_open. --%>
+      <.desktop_window
+        :if={admin?(@session) and "admin-users" in @open_windows}
+        {WindowRegistry.attrs("admin-users")}
+        body_class="flex min-h-0 flex-col p-2"
+        data-testid="admin-users-window"
+      >
+        <:icon><Icons.icon_community class="h-4 w-4" /></:icon>
+        <.live_component
+          module={RetroHexChatWeb.ChatLive.Components.AdminUsersDialog}
+          id={RetroHexChatWeb.ChatLive.Components.AdminUsersDialog.id()}
+          session={@session}
+        />
+      </.desktop_window>
+
+      <%!-- Admin Channels — server-managed, admin-gated. Same authz model as the
+          admin console. --%>
+      <.desktop_window
+        :if={admin?(@session) and "admin-channels" in @open_windows}
+        {WindowRegistry.attrs("admin-channels")}
+        body_class="flex min-h-0 flex-col p-2"
+        data-testid="admin-channels-window"
+      >
+        <:icon><Icons.icon_channels class="h-4 w-4" /></:icon>
+        <.live_component
+          module={RetroHexChatWeb.ChatLive.Components.AdminChannelsDialog}
+          id={RetroHexChatWeb.ChatLive.Components.AdminChannelsDialog.id()}
+          session={@session}
+        />
+      </.desktop_window>
+
+      <%!-- Admin Server Settings — server-managed, admin-gated. --%>
+      <.desktop_window
+        :if={admin?(@session) and "admin-server-settings" in @open_windows}
+        {WindowRegistry.attrs("admin-server-settings")}
+        body_class="flex min-h-0 flex-col p-2"
+        data-testid="admin-server-settings-window"
+      >
+        <:icon><Icons.icon_server class="h-4 w-4" /></:icon>
+        <.live_component
+          module={RetroHexChatWeb.ChatLive.Components.AdminServerSettingsDialog}
+          id={RetroHexChatWeb.ChatLive.Components.AdminServerSettingsDialog.id()}
+          session={@session}
+        />
+      </.desktop_window>
+
+      <%!-- Admin Audit Log — server-managed, admin-gated. --%>
+      <.desktop_window
+        :if={admin?(@session) and "admin-audit-log" in @open_windows}
+        {WindowRegistry.attrs("admin-audit-log")}
+        body_class="flex min-h-0 flex-col p-2"
+        data-testid="admin-audit-log-window"
+      >
+        <:icon><Icons.icon_notepad class="h-4 w-4" /></:icon>
+        <.live_component
+          module={RetroHexChatWeb.ChatLive.Components.AdminAuditLogDialog}
+          id={RetroHexChatWeb.ChatLive.Components.AdminAuditLogDialog.id()}
+          session={@session}
+        />
+      </.desktop_window>
+
+      <%!-- Admin MOTD — server-managed, admin-gated. --%>
+      <.desktop_window
+        :if={admin?(@session) and "admin-motd" in @open_windows}
+        {WindowRegistry.attrs("admin-motd")}
+        body_class="flex min-h-0 flex-col p-2"
+        data-testid="admin-motd-window"
+      >
+        <:icon><Icons.icon_notepad class="h-4 w-4" /></:icon>
+        <.live_component
+          module={RetroHexChatWeb.ChatLive.Components.AdminMotdDialog}
+          id={RetroHexChatWeb.ChatLive.Components.AdminMotdDialog.id()}
+          session={@session}
+        />
+      </.desktop_window>
+
+      <%!-- Admin TURN — server-managed, admin-gated. --%>
+      <.desktop_window
+        :if={admin?(@session) and "admin-turn" in @open_windows}
+        {WindowRegistry.attrs("admin-turn")}
+        body_class="flex min-h-0 flex-col p-2"
+        data-testid="admin-turn-window"
+      >
+        <:icon><Icons.icon_websocket class="h-4 w-4" /></:icon>
+        <.live_component
+          module={RetroHexChatWeb.ChatLive.Components.AdminTurnDialog}
+          id={RetroHexChatWeb.ChatLive.Components.AdminTurnDialog.id()}
+          session={@session}
+        />
+      </.desktop_window>
+
+      <%!-- Admin Broadcast — server-managed, admin-gated. --%>
+      <.desktop_window
+        :if={admin?(@session) and "admin-broadcast" in @open_windows}
+        {WindowRegistry.attrs("admin-broadcast")}
+        body_class="flex min-h-0 flex-col p-2"
+        data-testid="admin-broadcast-window"
+      >
+        <:icon><Icons.icon_megaphone class="h-4 w-4" /></:icon>
+        <.live_component
+          module={RetroHexChatWeb.ChatLive.Components.AdminBroadcastDialog}
+          id={RetroHexChatWeb.ChatLive.Components.AdminBroadcastDialog.id()}
+          session={@session}
+        />
+      </.desktop_window>
+
+      <%!-- Admin Danger Zone — server-managed, admin-gated. --%>
+      <.desktop_window
+        :if={admin?(@session) and "admin-danger-zone" in @open_windows}
+        {WindowRegistry.attrs("admin-danger-zone")}
+        body_class="flex min-h-0 flex-col p-2"
+        data-testid="admin-danger-zone-window"
+      >
+        <:icon><Icons.icon_warning class="h-4 w-4" /></:icon>
+        <.live_component
+          module={RetroHexChatWeb.ChatLive.Components.AdminDangerZoneDialog}
+          id={RetroHexChatWeb.ChatLive.Components.AdminDangerZoneDialog.id()}
+          session={@session}
+        />
+      </.desktop_window>
+
+      <%!-- System Home — the node's vitals; server-managed, admin-gated. --%>
+      <.desktop_window
+        :if={admin?(@session) and "system-home" in @open_windows}
+        {WindowRegistry.attrs("system-home")}
+        body_class="flex min-h-0 flex-col p-2"
+        data-testid="system-home-window"
+      >
+        <:icon><Icons.icon_server class="h-4 w-4" /></:icon>
+        <.live_component
+          module={RetroHexChatWeb.ChatLive.Components.SystemHomeDialog}
+          id={RetroHexChatWeb.ChatLive.Components.SystemHomeDialog.id()}
+          session={@session}
+        />
+      </.desktop_window>
+
+      <%!-- The three single-reading runtime windows: the host beneath the node,
+          the database behind it, and the application's own occupancy. Each has
+          a shape of its own, so each has its own island and panel. --%>
+      <.desktop_window
+        :for={
+          reading <- [
+            %{id: "system-os", module: RetroHexChatWeb.ChatLive.Components.SystemOsDialog},
+            %{
+              id: "system-database",
+              module: RetroHexChatWeb.ChatLive.Components.SystemDatabaseDialog
+            },
+            %{
+              id: "system-app-info",
+              module: RetroHexChatWeb.ChatLive.Components.SystemAppInfoDialog
+            },
+            %{
+              id: "system-metrics",
+              module: RetroHexChatWeb.ChatLive.Components.SystemMetricsDialog
+            },
+            %{
+              id: "system-oban",
+              module: RetroHexChatWeb.ChatLive.Components.SystemObanDialog
+            },
+            %{
+              id: "system-request-logger",
+              module: RetroHexChatWeb.ChatLive.Components.SystemLogDialog
+            }
+          ]
+        }
+        :if={admin?(@session) and reading.id in @open_windows}
+        {WindowRegistry.attrs(reading.id)}
+        body_class="flex min-h-0 flex-col p-2"
+        data-testid={"#{reading.id}-window"}
+      >
+        <:icon>
+          {apply(Icons, WindowRegistry.fetch(reading.id).icon, [%{class: "h-4 w-4"}])}
+        </:icon>
+        <.live_component
+          module={reading.module}
+          id={reading.module.id()}
+          session={@session}
+        />
+      </.desktop_window>
+
+      <%!-- The runtime listings below — one window each over one island, which is
+          handed the population it lists. Each opens at its own offset so that
+          two of them side by side do not land exactly on top of each other.
+          Server-managed, admin-gated. --%>
+      <.desktop_window
+        :for={
+          listing <- [
+            %{id: "system-processes", source: :processes},
+            %{id: "system-ports", source: :ports},
+            %{id: "system-sockets", source: :sockets},
+            %{id: "system-ets", source: :ets},
+            %{id: "system-applications", source: :applications},
+            %{id: "system-allocators", source: :allocators}
+          ]
+        }
+        :if={admin?(@session) and listing.id in @open_windows}
+        {WindowRegistry.attrs(listing.id)}
+        body_class="flex min-h-0 flex-col p-2"
+        data-testid={"#{listing.id}-window"}
+      >
+        <:icon>
+          {apply(Icons, WindowRegistry.fetch(listing.id).icon, [%{class: "h-4 w-4"}])}
+        </:icon>
+        <.live_component
+          module={RetroHexChatWeb.ChatLive.Components.SystemSourceDialog}
+          id={RetroHexChatWeb.ChatLive.Components.SystemSourceDialog.id(listing.source)}
+          source={listing.source}
+          session={@session}
+        />
+      </.desktop_window>
+
+      <%!-- Bot Management — server-managed, admin-gated (same authz model as the
+          admin console: the open event gates; the render guard is defense-in-depth). --%>
+      <.desktop_window
+        :if={admin?(@session) and "bot-management-dialog" in @open_windows}
+        {WindowRegistry.attrs("bot-management-dialog")}
+        body_class="flex min-h-0 flex-col p-2"
+        data-testid="bot-management-window"
+      >
+        <:icon><Icons.icon_btn_bot_management class="h-4 w-4" /></:icon>
+        <.live_component
+          module={RetroHexChatWeb.ChatLive.Components.BotManagementDialog}
+          id={RetroHexChatWeb.ChatLive.Components.BotManagementDialog.id()}
+          is_admin={admin?(@session)}
+        />
+      </.desktop_window>
+    <% end %>
+
+    <%!-- The desktop's folders open only once the chat is live: a page read
+          before then carries none of them, and its first double-click starts
+          the chat (`lib/site/boot_policy.js`). --%>
+    <.desktop_launcher_windows
+      :if={@live_ready}
+      screen={:chat}
+      help_open={Map.has_key?(@docs, :help)}
+      is_admin={admin?(@session)}
+      arcade_available={@session.identified == true}
+      windows={[
+        %{
+          id: "chat",
+          label: ChatTitle.window_title(@session, @show_status_tab),
+          icon_fn: :icon_chat
+        }
+      ]}
+    />
+
+    <:shortcuts>
+      <.desktop_launcher_icons screen={:chat} arcade_available={@session.identified == true} />
+    </:shortcuts>
+
+    <:taskbar>
+      <.chat_taskbar
+        chat_label={ChatTitle.window_title(@session, @show_status_tab)}
+        open_windows={@open_windows}
+        is_admin={admin?(@session)}
+        arcade_available={@session.identified == true}
+        online_buddy_count={ChatShell.online_buddy_count(@session.notify_list)}
+        mention_count={Enum.sum(Map.values(@mention_counts))}
+        lag_ms={@lag_ms}
+        lag_status={@lag_status}
+        muted={@muted}
+        arcade_session={@arcade_session}
+        cc_window_channel={@cc_window_channel}
+        hidden_windows={@hidden_windows}
+        live_ready={@live_ready}
+        documents={
+          Enum.map(Site.Documents.ordered(assigns), &%{id: &1.id, label: &1.title, icon: &1.icon})
+        }
+      />
+    </:taskbar>
+  </.desktop>
+</div>
+
+<%!-- About: stateless, opened client-side via show_modal (logo + Help menu) --%>
+<.about_dialog id="about-dialog" show={false} />
+
+<%!-- The chat's islands and dialogs act on a live session, so a page read
+      before the chat starts carries none of them. --%>
+<%= if @live_ready do %>
+  <%!-- Hover card (stateful island — owns the nick hover-card state) --%>
+  <.live_component
+    module={RetroHexChatWeb.ChatLive.Components.HoverCard}
+    id={RetroHexChatWeb.ChatLive.Components.HoverCard.id()}
+  />
+
+  <%!-- Context menus --%>
+  <.live_component
+    module={RetroHexChatWeb.ChatLive.Components.UserContextMenus}
+    id={RetroHexChatWeb.ChatLive.Components.UserContextMenus.id()}
+    session={@session}
+    conversation_members={@conversation_members}
+    nick_color_fn={@nick_color_fn}
+  />
+
+  <.live_component
+    module={RetroHexChatWeb.ChatLive.Components.ConversationsContextMenu}
+    id={RetroHexChatWeb.ChatLive.Components.ConversationsContextMenu.id()}
+    muted_channels={@muted_channels}
+    unread_counts={@unread_counts}
+    session={@session}
+  />
+
+  <%!-- Dialogs --%>
+  <.live_component
+    module={RetroHexChatWeb.ChatLive.Components.MuteDurationDialog}
+    id={RetroHexChatWeb.ChatLive.Components.MuteDurationDialog.id()}
+  />
+
+  <.live_component
+    module={RetroHexChatWeb.ChatLive.Components.InviteChannelPickerDialog}
+    id={RetroHexChatWeb.ChatLive.Components.InviteChannelPickerDialog.id()}
+    visible={@show_invite_channel_picker}
+    channels={@session.channels}
+  />
+
+  <.live_component
+    module={RetroHexChatWeb.ChatLive.Components.KnockRequestDialog}
+    id={RetroHexChatWeb.ChatLive.Components.KnockRequestDialog.id()}
+    visible={@show_knock_request_dialog}
+  />
+
+  <.live_component
+    module={RetroHexChatWeb.ChatLive.Components.DisconnectConfirmDialog}
+    id={RetroHexChatWeb.ChatLive.Components.DisconnectConfirmDialog.id()}
+  />
+
+  <.live_component
+    module={RetroHexChatWeb.ChatLive.Components.DeleteConfirmDialog}
+    id={RetroHexChatWeb.ChatLive.Components.DeleteConfirmDialog.id()}
+  />
+
+  <.live_component
+    module={RetroHexChatWeb.ChatLive.Components.NickChangeDialog}
+    id={RetroHexChatWeb.ChatLive.Components.NickChangeDialog.id()}
+  />
+
+  <.live_component
+    module={RetroHexChatWeb.ChatLive.Components.PasteConfirmDialog}
+    id={RetroHexChatWeb.ChatLive.Components.PasteConfirmDialog.id()}
+  />
+
+  <%!-- Hosts the click gate for every door in the chat that opens a tab. Its
+      mount element carries the hook on purpose: the listener is delegated on
+      `document`, and a hook that pushes must sit on something small and stable
+      rather than on the shell it would ref-lock. --%>
+  <.live_component
+    module={RetroHexChatWeb.ChatLive.Components.OpenTabConfirmDialog}
+    id={RetroHexChatWeb.ChatLive.Components.OpenTabConfirmDialog.id()}
+  />
+
+  <.live_component
+    module={RetroHexChatWeb.ChatLive.Components.InviteQueueDialog}
+    id={RetroHexChatWeb.ChatLive.Components.InviteQueueDialog.id()}
+    invites={@pending_invites}
+  />
+
+  <.live_component
+    module={RetroHexChatWeb.ChatLive.Components.KickQueueDialog}
+    id={RetroHexChatWeb.ChatLive.Components.KickQueueDialog.id()}
+  />
+<% end %>

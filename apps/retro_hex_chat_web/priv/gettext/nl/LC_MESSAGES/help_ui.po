@@ -504,6 +504,7 @@ msgstr "Secties"
 #: lib/retro_hex_chat_web/controllers/help_content/ui_overview.html.heex:46
 #: lib/retro_hex_chat_web/controllers/help_content/ui_pinned_window.html.heex:77
 #: lib/retro_hex_chat_web/controllers/help_content/ui_saved_window.html.heex:28
+#: lib/retro_hex_chat_web/controllers/help_content/ui_site_pages.html.heex:66
 #: lib/retro_hex_chat_web/controllers/help_content/ui_start_menu.html.heex:113
 #: lib/retro_hex_chat_web/controllers/help_content/ui_status_tab.html.heex:43
 #: lib/retro_hex_chat_web/controllers/help_content/ui_tab_bar.html.heex:49
@@ -1117,6 +1118,7 @@ msgstr "Ctrl+Shift+ArrowUp — Toggle microphone Ctrl+Shift+ArrowLeft — Toggle
 
 #: lib/retro_hex_chat_web/controllers/help_content/ui_bot_management.html.heex:67
 #: lib/retro_hex_chat_web/controllers/help_content/ui_overview.html.heex:48
+#: lib/retro_hex_chat_web/controllers/help_content/ui_site_pages.html.heex:68
 #: lib/retro_hex_chat_web/controllers/help_content/ui_start_menu.html.heex:116
 #: lib/retro_hex_chat_web/controllers/help_content/ui_toolbar.html.heex:209
 #, elixir-autogen, elixir-format
@@ -1316,6 +1318,7 @@ msgstr "Speciale berichten"
 
 #: lib/retro_hex_chat_web/controllers/help_content/ui_desktop.html.heex:69
 #: lib/retro_hex_chat_web/controllers/help_content/ui_edit_menu.html.heex:86
+#: lib/retro_hex_chat_web/controllers/help_content/ui_site_pages.html.heex:69
 #, elixir-autogen, elixir-format
 msgid "Start Menu"
 msgstr "Menu Starten"
@@ -2525,14 +2528,6 @@ msgstr ""
 "— Retrospellen en de Speelhal. De Speelhal houdt scores bij per bijnaam, dus"
 " die blijft grijs tot de jouwe geregistreerd en geïdentificeerd is."
 
-#: lib/retro_hex_chat_web/controllers/help_content/ui_start_menu.html.heex:80
-#, elixir-autogen, elixir-format
-msgid "— The public pages, the documentation, the design system and the way into the app, plus Back and Forward through the Help viewer's own history. These are real links, so they work with scripting off."
-msgstr ""
-"— De openbare pagina's, de documentatie, het designsysteem en de weg de app "
-"in, plus Terug en Vooruit door de eigen geschiedenis van de Help-viewer. Het"
-" zijn echte links, dus ze werken ook zonder scripts."
-
 #: lib/retro_hex_chat_web/controllers/help_content/ui_start_menu.html.heex:32
 #, elixir-autogen, elixir-format
 msgid "— What the window in front of you is showing: toggling the conversation list and the nicklist, clearing the window, copying the selected text and finding text in it. In the Help viewer the same group switches between Contents, Index and Search."
@@ -2603,17 +2598,6 @@ msgstr ""
 " Startmenu. Op Landing, Connect, Help en Showcase blijven Taal en Help "
 "beschikbaar; de overige app-mappen tonen een dialoogvenster dat uitlegt dat "
 "je verbinding moet maken voordat die apps kunnen draaien."
-
-#: lib/retro_hex_chat_web/controllers/help_content/ui_desktop.html.heex:57
-#, elixir-autogen, elixir-format
-msgid "On a desktop viewport, the wallpaper shows app-folder icons for the main app groups: View, Tools, Automation, P2P, Games, Account, Language and Help. Admin and System appear there only inside the chat for admins. Windows and Navigate stay in the Start menu. Double-click a folder icon to open a Windows-style folder window with icons for that group. A single click only selects the desktop icon."
-msgstr ""
-"Op een desktopviewport toont de achtergrond app-mapsymbolen voor de "
-"belangrijkste app-groepen: View, Tools, Automation, P2P, Games, Account, "
-"Language en Help. Admin en System verschijnen daar alleen in de chat, voor "
-"beheerders. Windows en Navigate blijven in het Startmenu. Dubbelklik op een "
-"mapsymbool om een mapvenster in Windows-stijl te openen met de symbolen van "
-"die groep. Eén klik selecteert alleen het symbool."
 
 #: lib/retro_hex_chat_web/controllers/help_content/ui_desktop.html.heex:71
 #, elixir-autogen, elixir-format
@@ -3837,3 +3821,98 @@ msgstr "Verwijder het geselecteerde stuk in de Construct, het kantoor of de spel
 #, elixir-autogen, elixir-format
 msgid "Turning a piece in the Construct, the office and the game room"
 msgstr "Een stuk draaien in de Construct, het kantoor en de speelkamer"
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_site_pages.html.heex:47
+#, elixir-autogen, elixir-format
+msgid "A channel's address is /c/ followed by its name — /c/lobby for #lobby — and the address bar shows it while that channel is in front. Copy it to invite somebody; it opens the channel for them, read-only until they sign in."
+msgstr "Een kanaaladres is /c/ gevolgd door de naam /c/lobby voor #lobby en de adresbalk toont het terwijl dat kanaal vooraan staat. Kopieer het om iemand uit te nodigen; het opent het kanaal voor hen, alleen-lezen totdat ze zich aanmelden."
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_site_pages.html.heex:53
+#, elixir-autogen, elixir-format
+msgid "A private conversation never gets an address: who you talk to privately is not something a link should carry."
+msgstr "Een privégesprek krijgt nooit een adres: met wie je privé praat is niet iets wat een link moet dragen."
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_site_pages.html.heex:11
+#, elixir-autogen, elixir-format
+msgid "About this site"
+msgstr "Over deze site"
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_site_pages.html.heex:38
+#, elixir-autogen, elixir-format
+msgid "Addresses"
+msgstr "Adressaten"
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_site_pages.html.heex:59
+#, elixir-autogen, elixir-format
+msgid "Closing a page window takes you back to the chat, at the address of the conversation in front."
+msgstr "Het sluiten van een pagina venster brengt u terug naar de chat, op het adres van het gesprek vooraan."
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_site_pages.html.heex:74
+#, elixir-autogen, elixir-format
+msgid "Connect Window"
+msgstr "Verbindingsvenster"
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_site_pages.html.heex:41
+#, elixir-autogen, elixir-format
+msgid "Each page window has its own address, so the browser's Back and Forward move between the pages you opened, and a bookmark or a shared link opens the same page over the chat."
+msgstr "Elk paginavenster heeft zijn eigen adres, dus de browser's Back and Forward verplaatsen tussen de pagina's die u hebt geopend, en een bladwijzer of een gedeelde link opent dezelfde pagina over de chat."
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_site_pages.html.heex:8
+#, elixir-autogen, elixir-format
+msgid "Finding the Pages"
+msgstr "De pagina's vinden"
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_desktop.html.heex:57
+#, elixir-autogen, elixir-format
+msgid "On a desktop viewport, the wallpaper shows folder icons: About this site, with every page of the site, then the main app groups — View, Tools, Automation, P2P, Games, Account, Language and Help. Admin and System appear there only for admins. Windows and Navigate stay in the Start menu. Double-click a folder icon to open a Windows-style folder window with icons for that group. A single click only selects the desktop icon."
+msgstr "Op een bureaublad viewport, de achtergrond toont map pictogrammen: Over deze site, met elke pagina van de site, dan de belangrijkste app groepen  Beheerder en systeem verschijnen er alleen voor beheerders. Windows en Navigeren blijven in het menu Start. Dubbelklik op een mappictogram om een Windows-stijl mapvenster met pictogrammen voor die groep te openen. Een enkele klik selecteert alleen het bureaublad pictogram."
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_site_pages.html.heex:2
+#, elixir-autogen, elixir-format
+msgid "RetroHexChat has one desktop. The chat lives on it, and so does every page of the site: the home, the features, the games, the guides, the public archives and this help each open as a window over the chat, and moving between them never reloads the page — the chat keeps running behind whatever you are reading."
+msgstr "RetroHexChat heeft één bureaublad. De chat leeft erop, en zo doet elke pagina van de site: het huis, de functies, de games, de gidsen, de openbare archieven en dit helpen elk te openen als een venster over de chat, en bewegen tussen hen nooit herlaadt de pagina"
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_site_pages.html.heex:17
+#, elixir-autogen, elixir-format
+msgid "Start ▸ Navigate"
+msgstr "Starten ▸ Navigeren"
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_site_pages.html.heex:30
+#, elixir-autogen, elixir-format
+msgid "The Welcome Window"
+msgstr "Het welkomstvenster"
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_site_pages.html.heex:23
+#, elixir-autogen, elixir-format
+msgid "The taskbar"
+msgstr "De taakbalk"
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_site_pages.html.heex:72
+#, elixir-autogen, elixir-format
+msgid "Watching Without an Account"
+msgstr "Kijken zonder account"
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_site_pages.html.heex:23
+#, elixir-autogen, elixir-format
+msgid "— An open page has a taskbar button like any other window. Click it to bring the page back; click the chat's button to go back to the conversation."
+msgstr "Een geopende pagina heeft een taakbalkknop zoals elk ander venster. Klik erop om de pagina terug te brengen; klik op de knop chat om terug te gaan naar het gesprek."
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_site_pages.html.heex:11
+#, elixir-autogen, elixir-format
+msgid "— The first icon on the desktop. Double-click it for a folder with every page, the guides and the documentation."
+msgstr "Het eerste pictogram op het bureaublad. Dubbelklik erop voor een map met elke pagina, de gidsen en de documentatie."
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_start_menu.html.heex:80
+#, elixir-autogen, elixir-format
+msgid "— The pages of the site, the documentation and the design system, plus Back and Forward through the Help viewer's own history. Each page opens as a window over the chat, without reloading it. These are real links, so they work with scripting off."
+msgstr "De pagina's van de site, de documentatie en het ontwerpsysteem, plus Back and Forward door de eigen geschiedenis van de Help-viewer. Elke pagina opent als een venster over de chat, zonder het opnieuw te laden. Dit zijn echte links, dus ze werken met scripts uit."
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_site_pages.html.heex:17
+#, elixir-autogen, elixir-format
+msgid "— The same pages from the Start menu, and the Navigate menu of every page window."
+msgstr "Dezelfde pagina's uit het menu Start en het menu Navigeren van elk paginavenster."
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_site_pages.html.heex:32
+#, elixir-autogen, elixir-format
+msgid "The home page opens the Welcome window over the #lobby channel. Its first button takes you into the lobby and puts the Welcome away on the taskbar; the second opens the Connect window to create an account. After that, the next visit opens the Welcome minimized, so you land straight in the chat."
+msgstr "De startpagina opent het Welkomstvenster via het #lobby-kanaal. De eerste knop brengt u naar de lobby en plaatst de Welcome weg op de taakbalk; de tweede opent het venster Connect om een account aan te maken. Daarna opent het volgende bezoek het Welcome geminimaliseerd, dus je landt recht in het gesprek."

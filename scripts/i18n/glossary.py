@@ -664,7 +664,30 @@ _ROWS = {
     "Wave hello":   ("Acenar", "Acenar", "Saludar con la mano", "Saluer de la main", "Winken", "Salutare con la mano", "Zwaaien", "Pomachaj", "Помахать рукой", "Melambaikan tangan", "手を振る", "挥手问好", "揮手問好"),
     "Start or stop dancing": ("Começar ou parar de dançar", "Começar ou parar de dançar", "Empezar o dejar de bailar", "Commencer ou arrêter de danser", "Tanzen beginnen oder beenden", "Iniziare o smettere di ballare", "Beginnen of stoppen met dansen", "Zacznij lub przestań tańczyć", "Начать или закончить танец", "Mulai atau berhenti menari", "踊り始める・やめる", "开始或停止跳舞", "開始或停止跳舞"),
     "Dance":        ("Dançar", "Dançar", "Bailar", "Danser", "Tanzen", "Balla", "Dansen", "Tańcz", "Танцевать", "Menari", "踊る", "跳舞", "跳舞"),
+    # ── The one desktop's way in ─────────────────────────────
+    # "Enter" read as typing: "Digite a conversa", "Geben Sie den Chat ein",
+    # "チャットを入力してください". It is going in, never keying something.
+    "Enter the chat": ("Entrar no chat", "Entrar no chat", "Entrar al chat", "Entrer dans le chat", "Zum Chat", "Entra nella chat", "Naar de chat", "Wejdź na czat", "Войти в чат", "Masuk ke obrolan", "チャットに入る", "进入聊天", "進入聊天"),
+    "About this site": ("Sobre este site", "Sobre este site", "Sobre este sitio", "À propos de ce site", "Über diese Website", "Informazioni su questo sito", "Over deze site", "O tej witrynie", "Об этом сайте", "Tentang situs ini", "このサイトについて", "关于本站", "關於本站"),
+    # pt_BR "Janela de Ligação" is European; de "Fenster schließen" is Close Window.
+    "Connect Window": ("Janela de Conexão", "Janela de Ligação", "Ventana de conexión", "Fenêtre de connexion", "Verbindungsfenster", "Finestra di connessione", "Verbindingsvenster", "Okno połączenia", "Окно подключения", "Jendela Sambungan", "接続ウィンドウ", "连接窗口", "連線視窗"),
+    # ja had collapsed five of these onto "サイトマップ" (Sitemap); es "Underline"
+    # was "Subsidio", de "Untergliederung", and zh "URLs" was "URL( URL)".
+    "Search URLs...": ("Buscar URLs...", "Procurar URLs...", "Buscar URLs...", "Rechercher des URL...", "URLs suchen...", "Cerca URL...", "URL's zoeken...", "Szukaj adresów URL...", "Поиск URL-адресов...", "Cari URL...", "URLを検索...", "搜索 URL...", "搜尋網址..."),
+    "URL":          ("URL", "URL", "URL", "URL", "URL", "URL", "URL", "URL", "URL", "URL", "URL", "网址", "網址"),
+    "URLs":         ("URLs", "URLs", "URLs", "URL", "URLs", "URL", "URL's", "Adresy URL", "URL-адреса", "URL", "URL", "网址", "網址"),
+    "Underline":    ("Sublinhado", "Sublinhado", "Subrayado", "Souligné", "Unterstrichen", "Sottolineato", "Onderstrepen", "Podkreślenie", "Подчёркивание", "Garis bawah", "下線", "下划线", "底線"),
+    "home page":    ("página inicial", "página inicial", "página principal", "page d'accueil", "Startseite", "pagina iniziale", "startpagina", "strona główna", "главная страница", "beranda", "ホームページ", "主页", "首頁"),
+    "On this page": ("Nesta página", "Nesta página", "En esta página", "Sur cette page", "Auf dieser Seite", "In questa pagina", "Op deze pagina", "Na tej stronie", "На этой странице", "Di halaman ini", "このページの内容", "本页内容", "本頁內容"),
 }
+
+# A menu path, or a status with its mark, is built from the labels it names —
+# never translated as a phrase, which moved the arrow ("Iniciar o Navegador ▸")
+# and read the menu as a browser.
+_ROWS["Start ▸ Navigate"] = tuple(
+    f"{start} ▸ {navigate}" for start, navigate in zip(_ROWS["Start"], _ROWS["Navigate"], strict=True)
+)
+_ROWS["↻ Reconnecting:"] = tuple(f"↻ {reconnecting}:" for reconnecting in _ROWS["Reconnecting"])
 
 # Rows for a msgid that means something else elsewhere in the product, keyed by
 # (msgctxt, msgid). Only an entry carrying that context is curated by them.

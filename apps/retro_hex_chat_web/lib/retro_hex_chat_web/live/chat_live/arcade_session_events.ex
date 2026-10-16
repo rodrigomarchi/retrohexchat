@@ -33,10 +33,10 @@ defmodule RetroHexChatWeb.ChatLive.ArcadeSessionEvents do
   alias Phoenix.LiveView.Socket
   alias RetroHexChat.Arcade
   alias RetroHexChat.Arcade.Schema.SoloSession
-  alias RetroHexChatWeb.App.Paths
   alias RetroHexChatWeb.App.SessionHelpers
   alias RetroHexChatWeb.ChatLive.Helpers.Messages
   alias RetroHexChatWeb.ChatLive.Windows
+  alias RetroHexChatWeb.Site.Address
 
   @pubsub RetroHexChat.PubSub
   @window "arcade-games"
@@ -122,7 +122,7 @@ defmodule RetroHexChatWeb.ChatLive.ArcadeSessionEvents do
   # parameter is then dropped from the address: left there, every reconnect
   # would mount on it again and open a new arcade session.
   def handle_info({:open_arcade_link, game_id}, socket) do
-    socket = push_patch(socket, to: Paths.chat_path(), replace: true)
+    socket = push_patch(socket, to: Address.chat_address(socket.assigns), replace: true)
 
     case Arcade.get_game(game_id) do
       {:ok, _game} ->

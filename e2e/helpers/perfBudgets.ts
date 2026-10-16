@@ -14,9 +14,13 @@
  *   /connect         191_772 B       1_804
  *   /chat            568_352 B           —
  *   help             611_705 B       6_049
+ *
+ * Since 2026-10-16 every public address is a window of the one desktop, whose
+ * first response carries the page and only the frame of the chat. The sign-in
+ * window measured 84_675 B and 904 nodes there.
  */
 export const PERF_BUDGETS = {
-  connect: { navBytes: 115_000, domNodes: 1_060 },
+  connect: { navBytes: 93_000, domNodes: 995 },
   // The help index draws a row per topic, so both numbers move when topics are
   // added — and adding one is mandatory for anything with a control surface. A
   // jump this gate should catch is a page that grew without anyone deciding to
@@ -50,9 +54,13 @@ export const PERF_BUDGETS = {
   // exact partition, so it cannot be the one that changes). Crawlability is not
   // the blocker — the sitemap carries every topic URL either way.
   help: { navBytes: 265_000, domNodes: 3_200 },
-  // /chat only exists after a connected mount, so its node count is measured
-  // once the desktop has rendered rather than off the dead render.
+  // The chat only exists after a connected mount, so its node count is
+  // measured once the desktop has rendered rather than off the dead render.
   chat: { domNodes: 4_200 },
+  // The whole desktop once it is live behind a page of the site: the chat, the
+  // page's window, the desktop's folders and the full Start menu. 5_706 nodes
+  // measured on 2026-10-16 behind the sign-in window, a visitor's desktop.
+  desktop: { domNodes: 6_300 },
 } as const;
 
 /** First paint and largest paint, against a local server on loopback. */

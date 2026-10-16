@@ -77,6 +77,7 @@ group_call_track_added
 group_call_track_removed
 group_call_track_updated
 group_call_webrtc_ready
+head:sync
 history_navigate
 input_changed
 insert_emoji
@@ -171,6 +172,7 @@ voice_error
 voice_recorded
 window_closed
 window_command
+window_focused
 window_open
 ## channel-events
 group_call_answer
@@ -287,7 +289,6 @@ dataset.copyFrom
 dataset.copyText
 dataset.creatorTurn
 dataset.cycleMs
-dataset.desktopClickTarget
 dataset.desktopConnectDialog
 dataset.desktopStaticDialogOpen
 dataset.deviceLabelBound
@@ -298,6 +299,7 @@ dataset.devicesEvent
 dataset.difficulty
 dataset.direction
 dataset.disabled
+dataset.documentSlot
 dataset.dots
 dataset.edge
 dataset.editMessageId
@@ -324,6 +326,7 @@ dataset.hidden
 dataset.hideTarget
 dataset.highlighted
 dataset.hint
+dataset.homePaths
 dataset.imageState
 dataset.inputHistory
 dataset.isHost
@@ -341,6 +344,7 @@ dataset.measuring
 dataset.mediaAudio
 dataset.mediaScreen
 dataset.mediaVideo
+dataset.member
 dataset.messageFormat
 dataset.messageId
 dataset.messageSource

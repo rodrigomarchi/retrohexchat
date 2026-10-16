@@ -18,7 +18,7 @@ defmodule RetroHexChatWeb.ContextualTipsPersistenceTest do
 
       assert :ok = ContextualTips.save(nick, tips)
 
-      {:ok, view, html} = live(chat_conn(conn, nick, pre_identified: true), "/chat")
+      {:ok, view, html} = live(chat_conn(conn, nick, pre_identified: true), "/")
 
       assert html =~ "data-tips-state="
       assert ContextualTips.suppressed?(assigns(view).session.contextual_tips)
@@ -29,7 +29,7 @@ defmodule RetroHexChatWeb.ContextualTipsPersistenceTest do
       nick = "TipSeen#{uid()}"
       insert_registered_nick(nick)
 
-      {:ok, view, _html} = live(chat_conn(conn, nick, pre_identified: true), "/chat")
+      {:ok, view, _html} = live(chat_conn(conn, nick, pre_identified: true), "/")
 
       render_hook(view, "tips_seen", %{"tips" => ["first_message", "unknown", nil]})
 
@@ -42,7 +42,7 @@ defmodule RetroHexChatWeb.ContextualTipsPersistenceTest do
       nick = "TipSupp#{uid()}"
       insert_registered_nick(nick)
 
-      {:ok, view, _html} = live(chat_conn(conn, nick, pre_identified: true), "/chat")
+      {:ok, view, _html} = live(chat_conn(conn, nick, pre_identified: true), "/")
 
       render_hook(view, "tips_suppressed_changed", %{"suppressed" => true})
 
@@ -57,7 +57,7 @@ defmodule RetroHexChatWeb.ContextualTipsPersistenceTest do
 
     test "guest tips state stays in the LiveView process only", %{conn: conn} do
       nick = "TipGuest#{uid()}"
-      {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
+      {:ok, view, _html} = live(chat_conn(conn, nick), "/")
 
       render_hook(view, "tips_seen", %{"tips" => ["first_pm"]})
 

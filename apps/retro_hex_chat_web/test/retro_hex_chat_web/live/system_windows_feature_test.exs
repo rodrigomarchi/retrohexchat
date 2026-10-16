@@ -229,7 +229,7 @@ defmodule RetroHexChatWeb.SystemWindowsFeatureTest do
 
   describe "authorization" do
     test "a non-admin cannot open a runtime window", %{conn: conn} do
-      {:ok, view, _html} = live(chat_conn(conn, "PlainUser", pre_identified: true), "/chat")
+      {:ok, view, _html} = live(chat_conn(conn, "PlainUser", pre_identified: true), "/")
 
       render_click(view, "toolbar_action", %{"action" => "open_system_processes"})
 
@@ -238,7 +238,7 @@ defmodule RetroHexChatWeb.SystemWindowsFeatureTest do
   end
 
   defp connect_admin(conn) do
-    {:ok, view, _html} = live(chat_conn(conn, "TestAdmin", pre_identified: true), "/chat")
+    {:ok, view, _html} = live(chat_conn(conn, "TestAdmin", pre_identified: true), "/")
     view
   end
 

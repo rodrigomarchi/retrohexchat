@@ -34,6 +34,7 @@ import FocusChatInputOnClickHook from "./ui/focus_chat_input_on_click_hook";
 import CopyValueHook from "./surfaces/copy_value_hook";
 import SurfacePresenceHook from "./surfaces/surface_presence_hook";
 import SurfaceTabLinkHook from "./surfaces/surface_tab_link_hook";
+import HeadSyncHook from "./ui/head_sync_hook";
 
 export const criticalHooks = {
   ActionListFocusHook: ActionListFocusHook,
@@ -69,6 +70,7 @@ export const criticalHooks = {
   ToolbarGroupHook: ToolbarGroupHook,
   ConversationsHook: ConversationsHook,
   NicklistHook: NicklistHook,
+  HeadSyncHook: HeadSyncHook,
   URLCatcherHook: URLCatcherHook,
   ViewportDetectHook: ViewportDetectHook,
   WindowManagerHook: WindowManagerHook,

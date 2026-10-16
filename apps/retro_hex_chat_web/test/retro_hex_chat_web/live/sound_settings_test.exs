@@ -8,7 +8,7 @@ defmodule RetroHexChatWeb.SoundSettingsTest do
   describe "sound settings dialog" do
     test "dialog opens when open_sound_settings_dialog event fires", %{conn: conn} do
       nick = "SndDlg#{uid()}"
-      {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
+      {:ok, view, _html} = live(chat_conn(conn, nick), "/")
 
       refute has_element?(view, ~s([data-window-id="sound-settings"]))
 
@@ -21,7 +21,7 @@ defmodule RetroHexChatWeb.SoundSettingsTest do
 
     test "dialog shows all 10 event types", %{conn: conn} do
       nick = "SndAll#{uid()}"
-      {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
+      {:ok, view, _html} = live(chat_conn(conn, nick), "/")
 
       render_click(view, "open_sound_settings_dialog", %{})
 
@@ -40,7 +40,7 @@ defmodule RetroHexChatWeb.SoundSettingsTest do
 
     test "each event has a dropdown and preview button", %{conn: conn} do
       nick = "SndDrop#{uid()}"
-      {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
+      {:ok, view, _html} = live(chat_conn(conn, nick), "/")
 
       render_click(view, "open_sound_settings_dialog", %{})
 
@@ -60,7 +60,7 @@ defmodule RetroHexChatWeb.SoundSettingsTest do
   describe "OK/Cancel/Apply behavior" do
     test "sound_settings_change updates draft", %{conn: conn} do
       nick = "SndChg#{uid()}"
-      {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
+      {:ok, view, _html} = live(chat_conn(conn, nick), "/")
 
       render_click(view, "open_sound_settings_dialog", %{})
 
@@ -73,7 +73,7 @@ defmodule RetroHexChatWeb.SoundSettingsTest do
 
     test "sound_settings_ok commits draft and closes dialog", %{conn: conn} do
       nick = "SndOK#{uid()}"
-      {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
+      {:ok, view, _html} = live(chat_conn(conn, nick), "/")
 
       render_click(view, "open_sound_settings_dialog", %{})
 
@@ -91,7 +91,7 @@ defmodule RetroHexChatWeb.SoundSettingsTest do
 
     test "sound_settings_apply commits but keeps dialog open", %{conn: conn} do
       nick = "SndApply#{uid()}"
-      {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
+      {:ok, view, _html} = live(chat_conn(conn, nick), "/")
 
       render_click(view, "open_sound_settings_dialog", %{})
 
@@ -106,7 +106,7 @@ defmodule RetroHexChatWeb.SoundSettingsTest do
 
     test "close_sound_settings_dialog discards draft", %{conn: conn} do
       nick = "SndCancel#{uid()}"
-      {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
+      {:ok, view, _html} = live(chat_conn(conn, nick), "/")
 
       render_click(view, "open_sound_settings_dialog", %{})
 
@@ -125,7 +125,7 @@ defmodule RetroHexChatWeb.SoundSettingsTest do
   describe "sound preview" do
     test "preview button pushes play_sound event", %{conn: conn} do
       nick = "SndPrev#{uid()}"
-      {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
+      {:ok, view, _html} = live(chat_conn(conn, nick), "/")
       # Consume connect sound
       assert_push_event(view, "play_sound", %{type: "chime_short"})
 
@@ -144,7 +144,7 @@ defmodule RetroHexChatWeb.SoundSettingsTest do
   describe "flash toggle" do
     test "toggling flash checkbox updates draft", %{conn: conn} do
       nick = "SndFlash#{uid()}"
-      {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
+      {:ok, view, _html} = live(chat_conn(conn, nick), "/")
 
       render_click(view, "open_sound_settings_dialog", %{})
 

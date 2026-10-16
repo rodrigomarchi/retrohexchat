@@ -28,7 +28,7 @@ defmodule RetroHexChatWeb.ChatLive.SpaceEntryFlowTest do
 
   defp mount_identified(conn, prefix) do
     nick = register(unique_nick(prefix))
-    {:ok, view, _html} = live(chat_conn(conn, nick.nickname, pre_identified: true), "/chat")
+    {:ok, view, _html} = live(chat_conn(conn, nick.nickname, pre_identified: true), "/")
     %{nick: nick, view: view}
   end
 
@@ -123,7 +123,7 @@ defmodule RetroHexChatWeb.ChatLive.SpaceEntryFlowTest do
     # A card carries who is accountable for the address on it, so the control is
     # refused before the press rather than after it.
     test "a guest is refused at the control, not after pressing it", %{conn: conn} do
-      {:ok, view, _html} = live(chat_conn(conn, "SpcGuest#{uid()}"), "/chat")
+      {:ok, view, _html} = live(chat_conn(conn, "SpcGuest#{uid()}"), "/")
       flush(view)
 
       assert has_element?(view, ~s([data-testid="space-open"][disabled]))
