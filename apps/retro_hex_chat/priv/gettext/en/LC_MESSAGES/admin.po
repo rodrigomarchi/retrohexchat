@@ -256,12 +256,12 @@ msgstr "%{nickname} has been muted %{duration_text}."
 msgid "%{nickname} has been server-banned%{duration_text}."
 msgstr "%{nickname} has been server-banned%{duration_text}."
 
-#: lib/retro_hex_chat/admin.ex:691
+#: lib/retro_hex_chat/admin.ex:698
 #, elixir-autogen, elixir-format
 msgid "%{nickname} has been set as %{role}."
 msgstr "%{nickname} has been set as %{role}."
 
-#: lib/retro_hex_chat/admin/server_bans.ex:54
+#: lib/retro_hex_chat/admin/server_bans.ex:55
 #, elixir-autogen, elixir-format
 msgid "%{nickname} has been unbanned"
 msgstr "%{nickname} has been unbanned"
@@ -483,7 +483,7 @@ msgstr "*** [NickServ] %{nick}\n"
 msgid "Active channels: %{channel_count}\n"
 msgstr "Active channels: %{channel_count}\n"
 
-#: lib/retro_hex_chat/admin.ex:710
+#: lib/retro_hex_chat/admin.ex:719
 #, elixir-autogen, elixir-format
 msgid "Admin roles removed from %{nickname}."
 msgstr "Admin roles removed from %{nickname}."
@@ -558,7 +558,7 @@ msgstr "Registration: %{registration}\n"
 msgid "Server banned: %{reason}"
 msgstr "Server banned: %{reason}"
 
-#: lib/retro_hex_chat/admin.ex:396
+#: lib/retro_hex_chat/admin.ex:403
 #, elixir-autogen, elixir-format
 msgid "Server setting '%{key}' set to '%{value}'."
 msgstr "Server setting '%{key}' set to '%{value}'."
@@ -754,7 +754,7 @@ msgstr ""
 "*** Preserved: admin_roles, audit_logs, server_bans, server_settings "
 "(registration reopens)"
 
-#: lib/retro_hex_chat/admin.ex:669
+#: lib/retro_hex_chat/admin.ex:676
 #, elixir-autogen, elixir-format
 msgid "System reset by administrator %{admin}"
 msgstr "System reset by administrator %{admin}"

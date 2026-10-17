@@ -5,7 +5,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.MessageRow do
   Renders the row wrapper (the stream `dom_id`, the status/highlight CSS classes,
   and the `data-*` attributes the message-interaction hooks read) plus the body for
   each message type: normal, action, system, service, error, notice, inline-help,
-  p2p-invite, deleted, edited, and failed-retry (with its reply block).
+  visitor greeting, p2p-invite, deleted, edited, and failed-retry (with its reply block).
 
   Deterministic and side-effect free. It takes only the rendering context it needs
   (`nick_color_fn`, `timestamp_format`, `timezone`, `strip_formatting`,
@@ -51,7 +51,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.MessageRow do
       data-message-source-b64={message_source_b64(@msg)}
       data-system-message={
         if(
-          Map.get(@msg, :type, :normal) in [:system, :service, :inline_help],
+          Map.get(@msg, :type, :normal) in [:system, :service, :inline_help, :visitor_greeting],
           do: "true",
           else: nil
         )
@@ -113,7 +113,11 @@ defmodule RetroHexChatWeb.ChatLive.Components.MessageRow do
   end
 
   defp copy_metadata_enabled?(%{deleted_at: deleted_at}) when not is_nil(deleted_at), do: false
-  defp copy_metadata_enabled?(%{type: type}) when type in [:inline_help, :p2p_invite], do: false
+
+  defp copy_metadata_enabled?(%{type: type})
+       when type in [:inline_help, :p2p_invite, :visitor_greeting],
+       do: false
+
   defp copy_metadata_enabled?(_msg), do: true
 
   defp message_copy_text(msg) do

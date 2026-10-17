@@ -54,7 +54,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.AdminDangerZoneDialog do
 
   def handle_event("admin_danger_zone_execute", %{"confirm" => confirm}, socket) do
     guarded(socket, fn ->
-      if confirm == server_name() do
+      if confirm == Admin.server_name() do
         result = AdminOps.dispatch(socket, "admin", ["nuke", "--confirm"])
 
         {:noreply,
@@ -113,11 +113,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.AdminDangerZoneDialog do
       preview: AdminOps.result_message(preview),
       result: result || AdminOps.first_error_entry([preview]),
       confirm: "",
-      server_name: server_name()
+      server_name: Admin.server_name()
     )
-  end
-
-  defp server_name do
-    Admin.server_settings_values() |> Map.get("server_name", @fallback_server_name)
   end
 end

@@ -309,7 +309,13 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.Channel do
     |> MessageViewport.reset(stream_items)
   end
 
-  defp maybe_show_welcome(socket, channel_name, session) do
+  @doc """
+  Shows the channel's welcome (`/setwelcome`) to whoever enters it — joining
+  or watching — once a session, and never to the one who set it.
+  """
+  @spec maybe_show_welcome(Phoenix.LiveView.Socket.t(), String.t(), Session.t()) ::
+          Phoenix.LiveView.Socket.t()
+  def maybe_show_welcome(socket, channel_name, session) do
     case Server.get_welcome(channel_name) do
       {:ok, nil} ->
         socket

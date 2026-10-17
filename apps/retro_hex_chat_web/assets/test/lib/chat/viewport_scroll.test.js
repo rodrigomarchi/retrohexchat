@@ -95,6 +95,24 @@ describe("createViewportScroller", () => {
     expect(h.controller.pendingPrepend).toBeNull();
   });
 
+  it("a pinned reader stays at the newest line across a prepend", () => {
+    // The page the empty list asked for lands in the patch that rebuilds it:
+    // the browser has the offset at 0 when the server's prepend_start is
+    // handled. Measured then, the distance is the whole first page, and the
+    // older rows would leave the reader in the middle of the history.
+    const h = harness({ scrollHeight: 450, clientHeight: 450 });
+    h.controller.reset();
+    h.scroller.scrollHeight = 2739;
+    h.scroller.scrollTop = 0;
+
+    h.controller.prepareForPrepend();
+    h.scroller.scrollHeight = 4893;
+    h.fireContentChange();
+
+    expect(h.controller.pendingPrepend).toBeNull();
+    expect(h.scroller.scrollTop).toBe(4893);
+  });
+
   it("a message arriving after the prepend does not move the reader", () => {
     const h = harness();
     h.setPinned(false);

@@ -1,9 +1,11 @@
 defmodule RetroHexChat.Commands.Handlers.JoinTest do
-  use ExUnit.Case, async: true
+  # The channel limit is a server setting, read from the database.
+  use RetroHexChat.DataCase, async: true
 
-  @moduletag :unit
+  @moduletag :integration
 
   alias RetroHexChat.Commands.Handlers.Join
+  alias RetroHexChat.Services.Queries
 
   @base_context %{
     nickname: "Alice",
@@ -43,6 +45,20 @@ defmodule RetroHexChat.Commands.Handlers.JoinTest do
 
     test "rejects when at 10 channel limit" do
       ctx = %{@base_context | channels: Enum.map(1..10, &"#chan#{&1}")}
+      assert {:error, "Maximum channel limit reached (10)"} = Join.execute(["#new"], ctx)
+    end
+
+    test "rejects at the limit an admin set" do
+      {:ok, _} = Queries.upsert_setting("max_channels", "2", "Admin")
+      ctx = %{@base_context | channels: ["#one", "#two"]}
+
+      assert {:error, "Maximum channel limit reached (2)"} = Join.execute(["#new"], ctx)
+    end
+
+    test "keeps the default limit when the saved one is not a number" do
+      {:ok, _} = Queries.upsert_setting("max_channels", "many", "Admin")
+      ctx = %{@base_context | channels: Enum.map(1..10, &"#chan#{&1}")}
+
       assert {:error, "Maximum channel limit reached (10)"} = Join.execute(["#new"], ctx)
     end
 

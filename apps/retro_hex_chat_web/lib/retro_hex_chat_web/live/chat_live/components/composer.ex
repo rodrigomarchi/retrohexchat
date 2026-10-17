@@ -36,7 +36,6 @@ defmodule RetroHexChatWeb.ChatLive.Components.Composer do
   """
   use RetroHexChatWeb, :live_component
 
-  import RetroHexChatWeb.Components.UI.Button
   import RetroHexChatWeb.Components.UI.ChatMessage
   import RetroHexChatWeb.Components.UI.ChatInput
   import RetroHexChatWeb.Components.UI.FormattingToolbar
@@ -45,6 +44,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.Composer do
   import RetroHexChatWeb.Components.UI.SyntaxTooltip
   import RetroHexChatWeb.Components.UI.HistorySearch
   import RetroHexChatWeb.Components.UI.TypingIndicator
+  import RetroHexChatWeb.Components.UI.VisitorSignUpButton
   import RetroHexChatWeb.Components.UI.VoiceRecorder
   import Phoenix.HTML, only: [raw: 1]
 
@@ -614,15 +614,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.Composer do
           <span class="visitor-composer__text">
             {dgettext("chat", "You are watching as a visitor.")}
           </span>
-          <.button
-            size="sm"
-            class="shrink-0"
-            phx-click="visitor_sign_in"
-            data-testid="visitor-composer"
-          >
-            <:icon><Icons.icon_watching class="h-4 w-4" /></:icon>
-            {dgettext("chat", "Create an account to talk")}
-          </.button>
+          <.visitor_sign_up_button class="shrink-0" data-testid="visitor-composer" />
         </div>
       </div>
     </div>

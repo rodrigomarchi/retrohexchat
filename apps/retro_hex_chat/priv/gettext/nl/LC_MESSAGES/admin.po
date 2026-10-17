@@ -256,12 +256,12 @@ msgstr "%{nickname} is gedempt %{duration_text}."
 msgid "%{nickname} has been server-banned%{duration_text}."
 msgstr "%{nickname} is serverbanned%{duration_text}."
 
-#: lib/retro_hex_chat/admin.ex:691
+#: lib/retro_hex_chat/admin.ex:698
 #, elixir-autogen, elixir-format
 msgid "%{nickname} has been set as %{role}."
 msgstr "%{nickname} is ingesteld als %{role}."
 
-#: lib/retro_hex_chat/admin/server_bans.ex:54
+#: lib/retro_hex_chat/admin/server_bans.ex:55
 #, elixir-autogen, elixir-format
 msgid "%{nickname} has been unbanned"
 msgstr "%{nickname} is niet verboden"
@@ -483,7 +483,7 @@ msgstr "*** [NickServ] %{nick}"
 msgid "Active channels: %{channel_count}\n"
 msgstr "Actieve kanalen: %{channel_count}"
 
-#: lib/retro_hex_chat/admin.ex:710
+#: lib/retro_hex_chat/admin.ex:719
 #, elixir-autogen, elixir-format
 msgid "Admin roles removed from %{nickname}."
 msgstr "Beheerdersrollen verwijderd van %{nickname}."
@@ -558,7 +558,7 @@ msgstr "Registratie: %{registration}"
 msgid "Server banned: %{reason}"
 msgstr "Server verboden: %{reason}"
 
-#: lib/retro_hex_chat/admin.ex:396
+#: lib/retro_hex_chat/admin.ex:403
 #, elixir-autogen, elixir-format
 msgid "Server setting '%{key}' set to '%{value}'."
 msgstr "Serverinstelling '%{key}' ingesteld op '%{value}'."
@@ -755,7 +755,7 @@ msgstr ""
 "*** Behoud: admin roles, audit logs, server bans, server settings "
 "(registratie heropent)"
 
-#: lib/retro_hex_chat/admin.ex:669
+#: lib/retro_hex_chat/admin.ex:676
 #, elixir-autogen, elixir-format
 msgid "System reset by administrator %{admin}"
 msgstr "Systeemherstel door beheerder %{admin}"

@@ -22,6 +22,7 @@ defmodule RetroHexChat.Services.NickServ do
 
   alias RetroHexChat.Accounts.NicknameValidator
   alias RetroHexChat.Accounts.TrustedDevices
+  alias RetroHexChat.Admin
   alias RetroHexChat.ChangesetErrors
   alias RetroHexChat.Nickname
   alias RetroHexChat.Observability
@@ -55,7 +56,7 @@ defmodule RetroHexChat.Services.NickServ do
 
   defp do_register(nickname, password, server) do
     cond do
-      Queries.get_setting("registration") == "closed" ->
+      Admin.server_setting("registration") == "closed" ->
         {:error,
          dgettext("services", "Registration is currently closed by the server administrator")}
 

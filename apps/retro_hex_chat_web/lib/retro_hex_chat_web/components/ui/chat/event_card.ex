@@ -26,6 +26,7 @@ defmodule RetroHexChatWeb.Components.UI.EventCard do
   use RetroHexChatWeb.Component
 
   import RetroHexChatWeb.Components.UI.Button
+  import RetroHexChatWeb.Components.UI.Inset
 
   alias RetroHexChatWeb.Icons
 
@@ -45,12 +46,9 @@ defmodule RetroHexChatWeb.Components.UI.EventCard do
   @spec event_card(map()) :: Phoenix.LiveView.Rendered.t()
   def event_card(assigns) do
     ~H"""
-    <div
+    <.inset
       :if={@card}
-      class={[
-        "chat-event-card shadow-retro-field bg-canvas my-1 flex max-w-md items-start gap-2 p-2",
-        @class
-      ]}
+      class={["chat-card my-1 flex max-w-md items-start gap-2 p-2", @class]}
       data-testid={"event-card-#{@card.event_id}"}
       data-event-state={if @card.cancelled?, do: "cancelled", else: "scheduled"}
       data-event-attendees={@card.attendee_count}
@@ -130,7 +128,7 @@ defmodule RetroHexChatWeb.Components.UI.EventCard do
           </.link>
         </span>
       </span>
-    </div>
+    </.inset>
     """
   end
 end

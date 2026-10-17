@@ -42,6 +42,8 @@ defmodule RetroHexChatWeb.Site.Page do
       use Gettext, backend: RetroHexChatWeb.Gettext
 
       import RetroHexChatWeb.Components.UI.Landing.LandingMockups, except: [readme_text: 1]
+      import RetroHexChatWeb.Components.UI.FeatureList
+      import RetroHexChatWeb.Components.UI.Inset
       import RetroHexChatWeb.Components.UI.Site.Section
 
       alias RetroHexChatWeb.Site.Window

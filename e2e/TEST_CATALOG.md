@@ -135,8 +135,8 @@ make e2e.catalog.check    # verify it is current (also runs in make ci)
 ## Coverage
 
 - **253 spec files** under `e2e/tests/`.
-- **620 Playwright `test()` cases**.
-- **564 documented flows**, 563 done, 1 not done.
+- **622 Playwright `test()` cases**.
+- **566 documented flows**, 565 done, 1 not done.
 - **Every spec documents its own flows.**
 
 ## Flow index
@@ -829,6 +829,8 @@ Grouped by section. Every row comes from an `@flow` line in the spec itself.
 | PW26 | No link leaves a visitor's chat: a message URL (plain, Ctrl or middle click) and a game in the desktop Games folder open the Connect window naming the feature, and no tab opens | `tests/chat-public-visitor.spec.ts` | done |
 | PW27 | A game, the arcade or a call opened by address without an account lands in the chat with the Connect window naming it, and registering there returns to that address | `tests/chat-public-visitor.spec.ts` | done |
 | PW28 | The desktop is the home: a visitor at / gets the live #lobby in front with an icon per page on the desk; a page opens as its group of windows over the chat, cascaded with its first window in front, and closing its last window goes back to the chat | `tests/desktop-home.spec.ts` | done |
+| PW29 | A visitor arriving at / is greeted in #lobby by the system, for their eyes only: their guest name, how to move between channels, what an account opens (Space, Group Call, P2P, Arcade) and where to create one — on a desktop and on a phone | `tests/chat-public-visitor.spec.ts` | done |
+| PW30 | A visitor reads on arrival what a member reads: the server's message of the day in the Status window and a channel's own welcome (/setwelcome) when they open it | `tests/chat-public-visitor.spec.ts` | done |
 
 ### Dialog Gallery
 

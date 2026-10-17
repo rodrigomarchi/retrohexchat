@@ -11,7 +11,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 
-#: lib/retro_hex_chat_web/site/pages/help.ex:90
+#: lib/retro_hex_chat_web/site/pages/help.ex:97
 #, elixir-autogen, elixir-format
 msgid "%{topic} — RetroHexChat Help"
 msgstr "%{topic} — Bantuan RetroHexChat"
@@ -156,7 +156,7 @@ msgstr "Tak bisa memuat spasi"
 msgid "Changing Nickname"
 msgstr "Mengubah Nama Panggilan"
 
-#: lib/retro_hex_chat_web/controllers/help_content/watching_without_account.html.heex:73
+#: lib/retro_hex_chat_web/controllers/help_content/watching_without_account.html.heex:93
 #: lib/retro_hex_chat_web/controllers/help_content/welcome.html.heex:125
 #, elixir-autogen, elixir-format
 msgid "Channels"
@@ -186,7 +186,7 @@ msgstr "Hubungkan Otentikasi"
 #: lib/retro_hex_chat_web/controllers/help_content/connect_authentication.html.heex:44
 #: lib/retro_hex_chat_web/controllers/help_content/ui_connect_window.html.heex:16
 #: lib/retro_hex_chat_web/controllers/help_content/ui_connect_window.html.heex:54
-#: lib/retro_hex_chat_web/controllers/help_content/watching_without_account.html.heex:72
+#: lib/retro_hex_chat_web/controllers/help_content/watching_without_account.html.heex:92
 #: lib/retro_hex_chat_web/controllers/help_content/welcome.html.heex:124
 #, elixir-autogen, elixir-format
 msgid "Connecting"
@@ -216,7 +216,7 @@ msgstr ""
 #: lib/retro_hex_chat_web/components/ui/help/help_status_bar.ex:55
 #: lib/retro_hex_chat_web/components/ui/help/help_status_bar.ex:57
 #: lib/retro_hex_chat_web/components/ui/help/help_viewer.ex:413
-#: lib/retro_hex_chat_web/site/pages/help.ex:80
+#: lib/retro_hex_chat_web/site/pages/help.ex:87
 #, elixir-autogen, elixir-format
 msgid "Help"
 msgstr "Bantuan"
@@ -226,7 +226,7 @@ msgstr "Bantuan"
 msgid "Help navigation"
 msgstr "Navigasi bantuan"
 
-#: lib/retro_hex_chat_web/site/pages/help.ex:34
+#: lib/retro_hex_chat_web/site/pages/help.ex:35
 #, elixir-autogen, elixir-format
 msgid "Help — RetroHexChat"
 msgstr "Bantuan - RetroHexChat"
@@ -361,7 +361,7 @@ msgstr ""
 #: lib/retro_hex_chat_web/controllers/help_content/connecting.html.heex:64
 #: lib/retro_hex_chat_web/controllers/help_content/private_messages.html.heex:33
 #: lib/retro_hex_chat_web/controllers/help_content/ui_connect_window.html.heex:52
-#: lib/retro_hex_chat_web/controllers/help_content/watching_without_account.html.heex:70
+#: lib/retro_hex_chat_web/controllers/help_content/watching_without_account.html.heex:90
 #: lib/retro_hex_chat_web/controllers/help_content/welcome.html.heex:122
 #, elixir-autogen, elixir-format
 msgid "See Also"
@@ -480,21 +480,21 @@ msgstr "Tentang RetroHexChat"
 
 #: lib/retro_hex_chat_web/components/ui/help/help_menu_bar.ex:104
 #: lib/retro_hex_chat_web/components/ui/help/help_viewer.ex:219
-#: lib/retro_hex_chat_web/components/ui/shell/start_menu_app.ex:540
+#: lib/retro_hex_chat_web/components/ui/shell/start_menu_app.ex:549
 #, elixir-autogen, elixir-format
 msgid "Back"
 msgstr "Kembali"
 
-#: lib/retro_hex_chat_web/components/ui/shell/start_menu_app.ex:590
-#: lib/retro_hex_chat_web/components/ui/shell/start_menu_app.ex:597
+#: lib/retro_hex_chat_web/components/ui/shell/start_menu_app.ex:599
+#: lib/retro_hex_chat_web/components/ui/shell/start_menu_app.ex:606
 #, elixir-autogen, elixir-format
 msgid "Back to chat"
 msgstr "Kembali ke percakapan"
 
 #: lib/retro_hex_chat_web/components/ui/help/help_menu_bar.ex:122
 #: lib/retro_hex_chat_web/components/ui/help/help_viewer.ex:282
-#: lib/retro_hex_chat_web/components/ui/shell/desktop_launchers.ex:564
-#: lib/retro_hex_chat_web/components/ui/shell/start_menu_app.ex:177
+#: lib/retro_hex_chat_web/components/ui/shell/desktop_launchers.ex:524
+#: lib/retro_hex_chat_web/components/ui/shell/start_menu_app.ex:178
 #, elixir-autogen, elixir-format
 msgid "Contents"
 msgstr "Isi"
@@ -508,7 +508,7 @@ msgstr ""
 
 #: lib/retro_hex_chat_web/components/ui/help/help_menu_bar.ex:108
 #: lib/retro_hex_chat_web/components/ui/help/help_viewer.ex:222
-#: lib/retro_hex_chat_web/components/ui/shell/start_menu_app.ex:546
+#: lib/retro_hex_chat_web/components/ui/shell/start_menu_app.ex:555
 #, elixir-autogen, elixir-format
 msgid "Forward"
 msgstr "Maju"
@@ -516,15 +516,15 @@ msgstr "Maju"
 #: lib/retro_hex_chat_web/components/ui/help/help_menu_bar.ex:98
 #: lib/retro_hex_chat_web/components/ui/help/help_viewer.ex:228
 #: lib/retro_hex_chat_web/components/ui/help/help_viewer.ex:229
-#: lib/retro_hex_chat_web/site/pages/help.ex:80
+#: lib/retro_hex_chat_web/site/pages/help.ex:87
 #, elixir-autogen, elixir-format
 msgid "Home"
 msgstr "Rumah"
 
 #: lib/retro_hex_chat_web/components/ui/help/help_menu_bar.ex:131
 #: lib/retro_hex_chat_web/components/ui/help/help_viewer.ex:288
-#: lib/retro_hex_chat_web/components/ui/shell/desktop_launchers.ex:571
-#: lib/retro_hex_chat_web/components/ui/shell/start_menu_app.ex:187
+#: lib/retro_hex_chat_web/components/ui/shell/desktop_launchers.ex:531
+#: lib/retro_hex_chat_web/components/ui/shell/start_menu_app.ex:188
 #, elixir-autogen, elixir-format
 msgid "Index"
 msgstr "Indeks"
@@ -547,8 +547,8 @@ msgstr "Perintah Pemberitahuan"
 
 #: lib/retro_hex_chat_web/components/ui/help/help_menu_bar.ex:140
 #: lib/retro_hex_chat_web/components/ui/help/help_viewer.ex:294
-#: lib/retro_hex_chat_web/components/ui/shell/desktop_launchers.ex:578
-#: lib/retro_hex_chat_web/components/ui/shell/start_menu_app.ex:197
+#: lib/retro_hex_chat_web/components/ui/shell/desktop_launchers.ex:538
+#: lib/retro_hex_chat_web/components/ui/shell/start_menu_app.ex:198
 #, elixir-autogen, elixir-format
 msgid "Search"
 msgstr "Cari"
@@ -839,52 +839,52 @@ msgstr "Huruf kapital tidak masalah"
 msgid "It is shown as you type it."
 msgstr "Hal ini ditampilkan sebagai Anda mengetik itu."
 
-#: lib/retro_hex_chat_web/controllers/help_content/watching_without_account.html.heex:49
+#: lib/retro_hex_chat_web/controllers/help_content/watching_without_account.html.heex:69
 #, elixir-autogen, elixir-format
 msgid "Everybody in a channel sees its visitors under Visitors, at the foot of the user list, and counted in the number beside the channel. A visitor is not a member: they cannot write, have no role, and leave the list when they close the tab."
 msgstr "Semua orang di saluran melihat pengunjung di bawah Pengunjung, di kaki dari daftar pengguna, dan dihitung dalam nomor di samping saluran. Pengunjung bukan anggota: mereka tidak dapat menulis, tidak memiliki peran, dan meninggalkan daftar ketika mereka menutup tab."
 
-#: lib/retro_hex_chat_web/controllers/help_content/watching_without_account.html.heex:63
+#: lib/retro_hex_chat_web/controllers/help_content/watching_without_account.html.heex:83
 #, elixir-autogen, elixir-format
 msgid "Guest names are reserved: nobody can register one or change to one"
 msgstr "Nama tamu dipesan: tidak ada yang dapat mendaftar satu atau perubahan ke satu"
 
-#: lib/retro_hex_chat_web/controllers/help_content/watching_without_account.html.heex:68
+#: lib/retro_hex_chat_web/controllers/help_content/watching_without_account.html.heex:88
 #, elixir-autogen, elixir-format
 msgid "Nothing is kept for a visitor; a new visit gets a new guest name"
 msgstr "Tidak ada yang disimpan untuk pengunjung, kunjungan baru mendapat nama tamu baru"
 
-#: lib/retro_hex_chat_web/controllers/help_content/watching_without_account.html.heex:13
+#: lib/retro_hex_chat_web/controllers/help_content/watching_without_account.html.heex:27
 #, elixir-autogen, elixir-format
 msgid "Open other channels from the sidebar, from Browse all, or from a #channel link in a message"
 msgstr "Buka kanal lain dari bilah sisi, dari Ramban semua, atau dari link #channel dalam suatu pesan"
 
-#: lib/retro_hex_chat_web/controllers/help_content/watching_without_account.html.heex:76
+#: lib/retro_hex_chat_web/controllers/help_content/watching_without_account.html.heex:96
 #, elixir-autogen, elixir-format
 msgid "Public Channel Archive"
 msgstr "Arsip Saluran Publik"
 
-#: lib/retro_hex_chat_web/controllers/help_content/watching_without_account.html.heex:10
+#: lib/retro_hex_chat_web/controllers/help_content/watching_without_account.html.heex:24
 #, elixir-autogen, elixir-format
 msgid "Read the public channels as they happen, and scroll back through them"
 msgstr "Baca saluran publik seperti yang terjadi, dan gulir kembali melalui mereka"
 
-#: lib/retro_hex_chat_web/controllers/help_content/watching_without_account.html.heex:57
+#: lib/retro_hex_chat_web/controllers/help_content/watching_without_account.html.heex:77
 #, elixir-autogen, elixir-format
 msgid "Secret, private, invite-only and keyed channels cannot be watched — a channel that becomes one closes for its visitors"
 msgstr "Rahasia, pribadi, invite- saja dan saluran dikupas tidak dapat diawasi - saluran yang menjadi salah satu menutup untuk pengunjung"
 
-#: lib/retro_hex_chat_web/controllers/help_content/watching_without_account.html.heex:19
+#: lib/retro_hex_chat_web/controllers/help_content/watching_without_account.html.heex:33
 #, elixir-autogen, elixir-format
 msgid "See who is in each channel, and close a channel's tab when you are done"
 msgstr "Lihat siapa yang ada di setiap saluran, dan tutup tab saluran ketika Anda selesai"
 
-#: lib/retro_hex_chat_web/controllers/help_content/watching_without_account.html.heex:28
+#: lib/retro_hex_chat_web/controllers/help_content/watching_without_account.html.heex:48
 #, elixir-autogen, elixir-format
 msgid "Taking part"
 msgstr "Mengambil bagian"
 
-#: lib/retro_hex_chat_web/controllers/help_content/watching_without_account.html.heex:47
+#: lib/retro_hex_chat_web/controllers/help_content/watching_without_account.html.heex:67
 #, elixir-autogen, elixir-format
 msgid "Visitors in the user list"
 msgstr "Pengunjung dalam daftar pengguna"
@@ -894,7 +894,7 @@ msgstr "Pengunjung dalam daftar pengguna"
 msgid "Watching Without an Account"
 msgstr "Menonton Tanpa Akun"
 
-#: lib/retro_hex_chat_web/controllers/help_content/watching_without_account.html.heex:7
+#: lib/retro_hex_chat_web/controllers/help_content/watching_without_account.html.heex:21
 #, elixir-autogen, elixir-format
 msgid "What you can do"
 msgstr "Apa yang dapat Anda lakukan"
@@ -909,17 +909,17 @@ msgstr "Anda tidak perlu account untuk melihat-lihat. Buka chat dan Anda mendara
 msgid "Cannot be a visitor name such as %{example}"
 msgstr "Tidak dapat nama pengunjung seperti %{example}"
 
-#: lib/retro_hex_chat_web/controllers/help_content/watching_without_account.html.heex:54
+#: lib/retro_hex_chat_web/controllers/help_content/watching_without_account.html.heex:74
 #, elixir-autogen, elixir-format
 msgid "Limits"
 msgstr "Batas"
 
-#: lib/retro_hex_chat_web/controllers/help_content/watching_without_account.html.heex:36
+#: lib/retro_hex_chat_web/controllers/help_content/watching_without_account.html.heex:56
 #, elixir-autogen, elixir-format
 msgid "Everything that does something needs an account: writing, reacting, the menus and settings, games, calls, spaces, private sessions — and following any link, whether to a game or to another site. Each of them opens the Connect window instead, saying which feature it was."
 msgstr "Segala sesuatu yang melakukan sesuatu membutuhkan akun: menulis, bereaksi, menu dan pengaturan, permainan, panggilan, ruang, sesi pribadi - dan mengikuti link apapun, apakah permainan atau situs lain. Masing-masing membuka jendela koneksi, mengatakan yang fitur itu."
 
-#: lib/retro_hex_chat_web/controllers/help_content/watching_without_account.html.heex:42
+#: lib/retro_hex_chat_web/controllers/help_content/watching_without_account.html.heex:62
 #, elixir-autogen, elixir-format
 msgid "A link to a game, a call or a space opens the chat with that window, and after you sign in it takes you to the link."
 msgstr "Sebuah link ke permainan, panggilan atau ruang membuka percakapan dengan jendela itu, dan setelah Anda masuk itu membawa Anda ke link."
@@ -929,7 +929,7 @@ msgstr "Sebuah link ke permainan, panggilan atau ruang membuka percakapan dengan
 msgid "It behaves like every other window: move it, minimize it, or bring it back from its taskbar button. Closing it takes you back to the chat; after signing in you land where you were going — the channel you were reading, or the game or call that asked you to sign in."
 msgstr "Ia berperilaku seperti setiap jendela lain: memindahkannya, meminimalisir, atau membawanya kembali dari tombol taskbar. Menutup itu membawa Anda kembali ke chatting; setelah menandatangani di tanah Anda di mana Anda akan - saluran yang Anda baca, atau permainan atau panggilan yang meminta Anda untuk masuk"
 
-#: lib/retro_hex_chat_web/controllers/help_content/watching_without_account.html.heex:22
+#: lib/retro_hex_chat_web/controllers/help_content/watching_without_account.html.heex:42
 #, elixir-autogen, elixir-format
 msgid "Share a channel: its address is /c/ followed by its name, and the address bar shows it while the channel is in front"
 msgstr "Berbagi suatu saluran: alamatnya /c / diikuti dengan namanya, dan bilah alamat menunjukkannya ketika kanal berada di depan"
@@ -939,7 +939,42 @@ msgstr "Berbagi suatu saluran: alamatnya /c / diikuti dengan namanya, dan bilah 
 msgid "The Connect window is where you sign in. It opens over the chat at its own address, /connect — from Create an account on the home, or from anything you try that needs an account — so you sign in without leaving the desktop you arrived on."
 msgstr "Jendela penghubung adalah tempat kau mendaftar. Ini membuka melalui percakapan di alamat sendiri, /connect - dari Membuat akun di rumah, atau dari apa pun yang Anda coba yang membutuhkan akun - sehingga Anda masuk tanpa meninggalkan desktop Anda tiba di."
 
-#: lib/retro_hex_chat_web/controllers/help_content/watching_without_account.html.heex:30
+#: lib/retro_hex_chat_web/controllers/help_content/watching_without_account.html.heex:50
 #, elixir-autogen, elixir-format
 msgid "Where the message box would be, a bar says you are watching as a visitor. Its Create an account to talk button opens the Connect window, and once you sign in you come back to the same channel."
 msgstr "Dimana kotak pesan akan, bar mengatakan Anda menonton sebagai pengunjung. Its Membuat akun untuk bicara tombol membuka jendela Sambung, dan setelah Anda masuk Anda kembali ke saluran yang sama."
+
+#: lib/retro_hex_chat_web/controllers/help_content/watching_without_account.html.heex:8
+#, elixir-autogen, elixir-format
+msgid "At the bottom of the conversation, a System line greets you by your guest name."
+msgstr "Pada bagian bawah percakapan, Garis Sistem menyapa Anda dengan nama tamu Anda."
+
+#: lib/retro_hex_chat_web/controllers/help_content/watching_without_account.html.heex:16
+#, elixir-autogen, elixir-format
+msgid "Each feature it names opens its help topic."
+msgstr "Setiap fitur itu nama membuka topik bantuannya."
+
+#: lib/retro_hex_chat_web/controllers/help_content/watching_without_account.html.heex:12
+#, elixir-autogen, elixir-format
+msgid "It shows how to move between channels and what an account opens, with a button to create one."
+msgstr "Ini menunjukkan bagaimana bergerak antara saluran dan apa yang dibuka akun, dengan tombol untuk menciptakan satu."
+
+#: lib/retro_hex_chat_web/controllers/help_content/watching_without_account.html.heex:19
+#, elixir-autogen, elixir-format
+msgid "Every visit greets you again."
+msgstr "Setiap kunjungan menyapa Anda lagi."
+
+#: lib/retro_hex_chat_web/controllers/help_content/watching_without_account.html.heex:18
+#, elixir-autogen, elixir-format
+msgid "It goes away when you open another channel."
+msgstr "Itu akan hilang ketika kau membuka saluran lain."
+
+#: lib/retro_hex_chat_web/controllers/help_content/watching_without_account.html.heex:17
+#, elixir-autogen, elixir-format
+msgid "Only you see it."
+msgstr "Hanya kau yang melihatnya."
+
+#: lib/retro_hex_chat_web/controllers/help_content/watching_without_account.html.heex:36
+#, elixir-autogen, elixir-format
+msgid "Read what every member reads on arrival: the message of the day in Status, and a channel's welcome when you open it"
+msgstr "Baca apa yang setiap anggota baca saat kedatangan: pesan hari ini di Status, dan sebuah saluran diterima ketika Anda membukanya"

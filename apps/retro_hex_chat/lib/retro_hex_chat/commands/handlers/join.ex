@@ -3,8 +3,8 @@ defmodule RetroHexChat.Commands.Handlers.Join do
   use Gettext, backend: RetroHexChat.Gettext
   @behaviour RetroHexChat.Commands.Handler
 
+  alias RetroHexChat.Admin
   alias RetroHexChat.Commands.Handler
-  alias RetroHexChat.Services.Queries
 
   @default_max_channels 10
 
@@ -106,13 +106,12 @@ defmodule RetroHexChat.Commands.Handlers.Join do
     }
   end
 
+  # A value an admin saved that is not a number falls back to the default.
   @spec max_channels() :: pos_integer()
   defp max_channels do
-    case Queries.get_setting("max_channels") do
-      nil -> @default_max_channels
-      val -> String.to_integer(val)
+    case Integer.parse(Admin.server_setting("max_channels")) do
+      {count, ""} when count > 0 -> count
+      _other -> @default_max_channels
     end
-  rescue
-    _ -> @default_max_channels
   end
 end

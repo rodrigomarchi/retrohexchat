@@ -96,6 +96,19 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.Messages do
     }
   end
 
+  @doc """
+  The System line that greets a visitor: `guest`, reading `channel` on the
+  server named `server`, with the card (`Components.UI.VisitorGreetingCard`)
+  drawn under it.
+  """
+  @spec visitor_greeting_message(String.t(), String.t(), String.t()) :: map()
+  def visitor_greeting_message(guest, channel, server) do
+    "chat"
+    |> dgettext("Welcome to %{server}, %{guest}!", server: server, guest: guest)
+    |> system_message()
+    |> Map.merge(%{type: :visitor_greeting, guest: guest, channel: channel, server: server})
+  end
+
   @spec error_message(String.t()) :: map()
   def error_message(content) do
     %{

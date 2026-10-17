@@ -5,6 +5,26 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.MessagesTest do
 
   import RetroHexChatWeb.ChatLive.Helpers.Messages, only: [in_active_conversation?: 2]
 
+  describe "visitor_greeting_message/3" do
+    test "is a System line carrying who is greeted, where and by which server" do
+      message = Messages.visitor_greeting_message("Guest4821", "#lobby", "RetroHexChat")
+
+      assert %{
+               type: :visitor_greeting,
+               author: "System",
+               guest: "Guest4821",
+               channel: "#lobby",
+               server: "RetroHexChat",
+               content: "Welcome to RetroHexChat, Guest4821!"
+             } = message
+    end
+
+    test "is a new line every time, never one already on screen" do
+      refute Messages.visitor_greeting_message("Guest1", "#lobby", "S").id ==
+               Messages.visitor_greeting_message("Guest1", "#lobby", "S").id
+    end
+  end
+
   describe "stream_type/1" do
     test "keeps renderable persisted message types" do
       assert Messages.stream_type("message") == :message

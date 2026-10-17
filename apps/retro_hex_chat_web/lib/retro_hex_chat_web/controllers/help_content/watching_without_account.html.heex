@@ -4,6 +4,20 @@
     "You do not need an account to look around. Open the chat and you land in #lobby with the conversation arriving live, under a guest name such as Guest4821 that you get for the visit."
   )}
 </p>
+<p>
+  {dgettext(
+    "help",
+    "At the bottom of the conversation, a System line greets you by your guest name."
+  )}
+  {dgettext(
+    "help",
+    "It shows how to move between channels and what an account opens, with a button to create one."
+  )}
+  {dgettext("help", "Each feature it names opens its help topic.")}
+  {dgettext("help", "Only you see it.")}
+  {dgettext("help", "It goes away when you open another channel.")}
+  {dgettext("help", "Every visit greets you again.")}
+</p>
 <.help_h4 icon={:icon_channels}>{dgettext("help", "What you can do")}</.help_h4>
 <ul>
   <li>
@@ -17,6 +31,12 @@
   </li>
   <li>
     {dgettext("help", "See who is in each channel, and close a channel's tab when you are done")}
+  </li>
+  <li>
+    {dgettext(
+      "help",
+      "Read what every member reads on arrival: the message of the day in Status, and a channel's welcome when you open it"
+    )}
   </li>
   <li>
     {dgettext(

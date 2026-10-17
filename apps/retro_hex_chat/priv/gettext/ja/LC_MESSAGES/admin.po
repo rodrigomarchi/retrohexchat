@@ -256,12 +256,12 @@ msgstr "%{nickname}は%{duration_text}をミュートしました。"
 msgid "%{nickname} has been server-banned%{duration_text}."
 msgstr "%{nickname}はサーバー禁止%{duration_text}です。"
 
-#: lib/retro_hex_chat/admin.ex:691
+#: lib/retro_hex_chat/admin.ex:698
 #, elixir-autogen, elixir-format
 msgid "%{nickname} has been set as %{role}."
 msgstr "%{nickname}は%{role}として設定されています。"
 
-#: lib/retro_hex_chat/admin/server_bans.ex:54
+#: lib/retro_hex_chat/admin/server_bans.ex:55
 #, elixir-autogen, elixir-format
 msgid "%{nickname} has been unbanned"
 msgstr "%{nickname}は禁止されています"
@@ -483,7 +483,7 @@ msgstr "*** [NickServ] %{nick}の特長"
 msgid "Active channels: %{channel_count}\n"
 msgstr "アクティブなチャンネル: %{channel_count}"
 
-#: lib/retro_hex_chat/admin.ex:710
+#: lib/retro_hex_chat/admin.ex:719
 #, elixir-autogen, elixir-format
 msgid "Admin roles removed from %{nickname}."
 msgstr "%{nickname}から削除された管理者の役割。"
@@ -558,7 +558,7 @@ msgstr "登録: %{registration}"
 msgid "Server banned: %{reason}"
 msgstr "サーバー禁止:%{reason}"
 
-#: lib/retro_hex_chat/admin.ex:396
+#: lib/retro_hex_chat/admin.ex:403
 #, elixir-autogen, elixir-format
 msgid "Server setting '%{key}' set to '%{value}'."
 msgstr "サーバー設定 '%{key}' を '%{value}' に設定します。"
@@ -753,7 +753,7 @@ msgstr ""
 "*** 保存: admin roles, 監査 logs, server bans, server settings (registration "
 "reopens)"
 
-#: lib/retro_hex_chat/admin.ex:669
+#: lib/retro_hex_chat/admin.ex:676
 #, elixir-autogen, elixir-format
 msgid "System reset by administrator %{admin}"
 msgstr "管理者によるシステムリセット %{admin}"

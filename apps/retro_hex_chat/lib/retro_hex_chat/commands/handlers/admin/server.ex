@@ -10,12 +10,12 @@ defmodule RetroHexChat.Commands.Handlers.Admin.Server do
   alias RetroHexChat.Table
   alias RetroHexChat.Topics
 
-  @valid_settings ~w(server_name server_description welcome_message max_channels registration whowas_retention_seconds)
+  @valid_settings Admin.server_setting_keys()
 
   @spec execute([String.t()], Handler.context()) :: Handler.result()
   def execute(["info"], context) do
-    server_name = Queries.get_setting("server_name") || "RetroHexChat"
-    server_desc = Queries.get_setting("server_description")
+    server_name = Admin.server_name()
+    server_desc = Admin.server_setting("server_description")
     online_count = length(Tracker.list_users(Topics.presence()))
 
     channel_count =
@@ -24,7 +24,7 @@ defmodule RetroHexChat.Commands.Handlers.Admin.Server do
       end
 
     nick_count = Queries.count_registered_nicks()
-    registration = Queries.get_setting("registration") || "open"
+    registration = Admin.server_setting("registration")
     {uptime_ms, _} = :erlang.statistics(:wall_clock)
     uptime_hours = div(uptime_ms, 3_600_000)
     uptime_days = div(uptime_hours, 24)
@@ -32,7 +32,7 @@ defmodule RetroHexChat.Commands.Handlers.Admin.Server do
 
     AuditLogs.log(context.nickname, "server.info")
 
-    desc_line = if server_desc, do: "\n#{server_desc}", else: ""
+    desc_line = if server_desc == "", do: "", else: "\n#{server_desc}"
 
     text =
       dgettext("admin", "*** %{server_name} ***%{desc_line}\n",

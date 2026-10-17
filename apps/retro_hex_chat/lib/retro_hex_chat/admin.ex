@@ -365,10 +365,17 @@ defmodule RetroHexChat.Admin do
 
   @spec server_settings_values() :: %{String.t() => String.t()}
   def server_settings_values do
-    Map.new(@server_setting_keys, fn key ->
-      {key, Queries.get_setting(key) || Map.fetch!(@server_setting_defaults, key)}
-    end)
+    Map.new(@server_setting_keys, &{&1, server_setting(&1)})
   end
+
+  @doc "A server setting's value, or its default while no admin has set it."
+  @spec server_setting(String.t()) :: String.t()
+  def server_setting(key) when key in @server_setting_keys,
+    do: Queries.get_setting(key) || Map.fetch!(@server_setting_defaults, key)
+
+  @doc "The name the server goes by. A name: it is never translated."
+  @spec server_name() :: String.t()
+  def server_name, do: server_setting("server_name")
 
   @spec server_setting_changes(map(), map()) :: [{String.t(), String.t()}]
   def server_setting_changes(current, submitted) do

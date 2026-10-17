@@ -216,6 +216,7 @@ defmodule RetroHexChatWeb.ChatLive.Visitor do
         |> ConversationsReadModel.touch_channel_activity(channel)
         |> ChannelHelpers.load_channel_user_count(channel)
         |> Conversation.activate_channel(channel)
+        |> then(&ChannelHelpers.maybe_show_welcome(&1, channel, &1.assigns.session))
         |> ConversationsReadModel.load_popular_channels()
 
       {:error, _reason} ->

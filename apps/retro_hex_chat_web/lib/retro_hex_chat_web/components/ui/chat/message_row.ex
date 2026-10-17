@@ -23,6 +23,7 @@ defmodule RetroHexChatWeb.Components.UI.MessageRow do
   import RetroHexChatWeb.Components.UI.MessageReactions
   import RetroHexChatWeb.Components.UI.MessageReplyBlock
   import RetroHexChatWeb.Components.UI.ShareMessageCard
+  import RetroHexChatWeb.Components.UI.VisitorGreetingCard
 
   alias RetroHexChat.Chat.TimeFormatter
   alias RetroHexChat.Games.Catalog
@@ -165,6 +166,16 @@ defmodule RetroHexChatWeb.Components.UI.MessageRow do
             topic_title={@msg.topic_title}
             help_url={help_url(@msg.topic_id)}
           />
+        </.chat_message>
+      <% :visitor_greeting -> %>
+        <.chat_message
+          timestamp={ChatHelpers.format_time(@msg.timestamp, @timestamp_format, @timezone)}
+          meta_title={ChatHelpers.format_datetime(@msg.timestamp, @timezone)}
+          source={dgettext("chat", "System")}
+          type="system"
+          layout="stacked"
+        >
+          <.visitor_greeting_card server={@msg.server} guest={@msg.guest} channel={@msg.channel} />
         </.chat_message>
       <% :p2p_invite -> %>
         <.chat_message

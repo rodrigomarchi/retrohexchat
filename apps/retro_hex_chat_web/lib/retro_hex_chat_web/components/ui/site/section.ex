@@ -7,14 +7,14 @@ defmodule RetroHexChatWeb.Components.UI.Site.Section do
   window's own assigns on top and the window itself as `@window`.
 
   The pieces a body is built from are here too, so every window of the site
-  reads alike: its heading, a list of features, and the inset panels its
-  illustrations and notes sit in.
+  reads alike: its heading and its comparison table. The list of features and
+  the inset panel are the UI's own (`Components.UI.FeatureList`,
+  `Components.UI.Inset`), shared with the chat.
   """
   use RetroHexChatWeb.Component
 
+  import RetroHexChatWeb.Components.UI.Inset
   import RetroHexChatWeb.Components.UI.Table
-
-  alias RetroHexChatWeb.Icons
 
   attr :window, RetroHexChatWeb.Site.Window, required: true, doc: "its title is the page's h1"
   attr :heading_id, :string, required: true
@@ -39,49 +39,6 @@ defmodule RetroHexChatWeb.Components.UI.Site.Section do
     <h2 id={@id} class="text-sm font-bold mb-2">{render_slot(@inner_block)}</h2>
     """
   end
-
-  slot :item, required: true, doc: "one feature, its words" do
-    attr :icon, :atom, required: true, doc: "a `RetroHexChatWeb.Icons` function"
-  end
-
-  @doc "What a section offers, a line each, each line led by its icon."
-  @spec feature_list(map()) :: Phoenix.LiveView.Rendered.t()
-  def feature_list(assigns) do
-    ~H"""
-    <ul class="space-y-1.5">
-      <li :for={item <- @item} class="flex items-start gap-2 text-xs">
-        {apply(Icons, item.icon, [%{class: "w-4 h-4 shrink-0 mt-0.5"}])}
-        <span>{render_slot(item)}</span>
-      </li>
-    </ul>
-    """
-  end
-
-  attr :tone, :string,
-    values: ~w(paper canvas diagram screen),
-    default: "paper",
-    doc:
-      "what the panel holds: `paper` notes and tables, a `canvas` mockup of the chat, " <>
-        "a `diagram`, or a `screen` of the running app"
-
-  attr :class, :any, default: nil, doc: "its padding and spacing"
-  attr :rest, :global
-  slot :inner_block, required: true
-
-  @doc "A sunken panel inside a window, the way Win98 framed a field or a picture."
-  @spec inset(map()) :: Phoenix.LiveView.Rendered.t()
-  def inset(assigns) do
-    ~H"""
-    <div class={["shadow-retro-field", tone_class(@tone), @class]} {@rest}>
-      {render_slot(@inner_block)}
-    </div>
-    """
-  end
-
-  defp tone_class("paper"), do: "bg-white"
-  defp tone_class("canvas"), do: "bg-canvas-bg text-canvas-fg"
-  defp tone_class("diagram"), do: "bg-diagram-bg"
-  defp tone_class("screen"), do: "bg-black"
 
   attr :theirs, :string, required: true, doc: "whom the site is set against, the middle column"
 

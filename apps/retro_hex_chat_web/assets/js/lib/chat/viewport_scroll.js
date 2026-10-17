@@ -126,9 +126,15 @@ export function createViewportScroller(scroller, deps = {}) {
     scrollToBottom,
     distanceFromBottom,
 
-    /** prepend_start: hold the distance from the bottom across the prepend. */
+    /**
+     * prepend_start: hold the distance from the bottom across the prepend.
+     * A pinned reader has no distance to hold — they stay at the newest line,
+     * which `settle()` does. Measuring them anyway is what lost them: the
+     * page asked for while the list was still empty lands in the patch that
+     * rebuilds it, and the offset read then is the top of the first page.
+     */
     prepareForPrepend() {
-      pendingPrepend = distanceFromBottom();
+      pendingPrepend = pinned ? null : distanceFromBottom();
       settlingPrepend = null;
     },
 

@@ -56,9 +56,7 @@ defmodule RetroHexChatWeb.DesktopLive do
   # ── Domain aliases ────────────────────────────────────────────
   alias RetroHexChat.Accounts.{Session, TrustedDevices}
   alias RetroHexChat.Channels.Server
-  alias RetroHexChat.Services.ChanExpiry
-  alias RetroHexChat.Services.{Motd, Queries}
-  alias RetroHexChat.Services.NickExpiry
+  alias RetroHexChat.Services.Queries
 
   alias RetroHexChat.Chat.{
     DuplicateTracker,
@@ -66,7 +64,6 @@ defmodule RetroHexChatWeb.DesktopLive do
     KeyBindings,
     ReconnectState,
     SoundSettings,
-    TimeFormatter,
     UnreadTracker
   }
 
@@ -144,6 +141,7 @@ defmodule RetroHexChatWeb.DesktopLive do
         chat_session_id: nil
       )
       |> Visitor.enter(params)
+      |> ChatLive.Arrival.visitor()
       |> push_initial_preferences()
     else
       http_session
@@ -277,10 +275,7 @@ defmodule RetroHexChatWeb.DesktopLive do
     else
       socket
       |> ChatLive.Helpers.play_event_sound(:connect, socket.assigns.session)
-      |> maybe_show_motd()
-      |> show_welcome_message()
-      |> show_chanserv_announcement()
-      |> show_nickserv_announcement()
+      |> ChatLive.Arrival.member()
       |> push_initial_preferences()
     end
   end
@@ -1096,15 +1091,6 @@ defmodule RetroHexChatWeb.DesktopLive do
   # Static solo-arcade catalog for the in-chat Arcade window body.
   defp arcade_games, do: RetroHexChat.Arcade.list_games()
 
-  # ── Startup messages ──────────────────────────────────────────
-
-  defp maybe_show_motd(socket) do
-    case Motd.get() do
-      nil -> socket
-      content -> ChatLive.Helpers.push_status_message(socket, content, :motd)
-    end
-  end
-
   defp maybe_broadcast_nick_changed(socket, old_nickname, new_nickname)
        when is_binary(old_nickname) and old_nickname != "" and old_nickname != new_nickname do
     Enum.each(socket.assigns.session.channels, fn channel ->
@@ -1119,104 +1105,6 @@ defmodule RetroHexChatWeb.DesktopLive do
   end
 
   defp maybe_broadcast_nick_changed(socket, _old_nickname, _new_nickname), do: socket
-
-  defp show_welcome_message(socket) do
-    server_name = Queries.get_setting("server_name") || dgettext("chat", "RetroHexChat")
-
-    lines = [
-      dgettext("chat", "Welcome to %{server_name}!", server_name: server_name),
-      dgettext("chat", "A real-time chat platform with a retro look and feel."),
-      "",
-      dgettext("chat", "Useful commands:"),
-      dgettext("chat", "  /join #channel   — Join a channel"),
-      dgettext("chat", "  /msg nick text   — Send a private message"),
-      dgettext("chat", "  /nick new_nick   — Change your nickname"),
-      dgettext("chat", "  /help            — View full help"),
-      dgettext("chat", "  /help commands   — List all commands"),
-      "",
-      dgettext("chat", "Tip: Go to Help > Help Topics for the full documentation.") <>
-        " " <> dgettext("chat", "Open /chat/help in a new tab.")
-    ]
-
-    socket =
-      Enum.reduce(lines, socket, fn line, acc ->
-        ChatLive.Helpers.push_status_message(acc, line, :system)
-      end)
-
-    case Queries.get_setting("welcome_message") do
-      nil -> socket
-      msg -> ChatLive.Helpers.push_status_message(socket, msg, :system)
-    end
-  end
-
-  # The command is typed, never translated: only its description goes through Gettext, and
-  # every ChanServ command acts on the channel you are in, so none of them takes one.
-  defp chanserv_line(command, description),
-    do: "  " <> String.pad_trailing(command, 21) <> " — " <> description
-
-  defp show_chanserv_announcement(socket) do
-    lines = [
-      "",
-      dgettext("chat", "[ChanServ] Channel Services Online"),
-      dgettext("chat", "ChanServ manages channel registration and access control."),
-      dgettext("chat", "Register your channel to protect it when no operators are online."),
-      "",
-      dgettext("chat", "Quick start:"),
-      chanserv_line("/cs register", dgettext("chat", "Register the channel you are in")),
-      chanserv_line("/cs sop add <nick>", dgettext("chat", "Add a Super Operator")),
-      chanserv_line("/cs aop add <nick>", dgettext("chat", "Add an Auto Operator")),
-      chanserv_line("/cs vop add <nick>", dgettext("chat", "Add an Auto Voice user")),
-      chanserv_line("/cs info", dgettext("chat", "See who founded the channel")),
-      "",
-      dgettext("chat", "Access hierarchy: Owner > SOP > AOP > VOP"),
-      "",
-      dgettext("chat", "Rules:"),
-      dgettext("chat", "  • Channels expire after %{window} of inactivity",
-        window: TimeFormatter.days(ChanExpiry.configured_expiration_days())
-      ),
-      dgettext("chat", "  • If a founder's nick expires, the next ranked user is promoted"),
-      "",
-      dgettext("chat", "Type /help chanserv or /help channel-permissions for full details.")
-    ]
-
-    Enum.reduce(lines, socket, fn line, acc ->
-      ChatLive.Helpers.push_status_message(acc, line, :service)
-    end)
-  end
-
-  defp show_nickserv_announcement(socket) do
-    lines = [
-      "",
-      dgettext("chat", "[NickServ] Nickname Services Online"),
-      dgettext(
-        "chat",
-        "NickServ protects your nickname with a password so nobody else can use it."
-      ),
-      "",
-      dgettext("chat", "Quick start:"),
-      dgettext("chat", "  /ns register <password>   — Register your current nickname"),
-      dgettext("chat", "  /ns identify <password>   — Identify (log in) for this session"),
-      dgettext("chat", "  /ns info [nickname]       — Look up registration info"),
-      dgettext("chat", "  /ns ghost <nick> <pass>   — Disconnect a ghost session"),
-      dgettext("chat", "  /ns drop <password>       — Permanently unregister your nickname"),
-      "",
-      dgettext("chat", "Rules:"),
-      dgettext(
-        "chat",
-        "  • Capital letters do not matter: \"Alice\" and \"alice\" are the same nick"
-      ),
-      dgettext("chat", "  • Nicks expire after %{window} of inactivity",
-        window: TimeFormatter.days(NickExpiry.configured_expiration_days())
-      ),
-      dgettext("chat", "  • Switching to a registered nick gives you 60s to identify"),
-      "",
-      dgettext("chat", "Type /help nickserv for full details.")
-    ]
-
-    Enum.reduce(lines, socket, fn line, acc ->
-      ChatLive.Helpers.push_status_message(acc, line, :service)
-    end)
-  end
 
   defp push_initial_preferences(socket) do
     socket

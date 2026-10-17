@@ -15,6 +15,8 @@ defmodule RetroHexChatWeb.Components.UI.InlineHelpCard do
   """
   use RetroHexChatWeb.Component
 
+  import RetroHexChatWeb.Components.UI.Inset
+
   @doc "Renders an inline help card within a chat message."
   attr :topic_id, :string, required: true, doc: "Help topic ID for rendering content"
   attr :topic_title, :string, required: true, doc: "Display title of the help topic"
@@ -25,11 +27,7 @@ defmodule RetroHexChatWeb.Components.UI.InlineHelpCard do
   @spec inline_help_card(map()) :: Phoenix.LiveView.Rendered.t()
   def inline_help_card(assigns) do
     ~H"""
-    <div
-      class={classes(["mt-1 p-2 bg-canvas shadow-retro-field text-xs", @class])}
-      data-testid="inline-help"
-      {@rest}
-    >
+    <.inset class={["chat-card mt-1 p-2 text-xs", @class]} data-testid="inline-help" {@rest}>
       <h3 class="font-bold mb-1">{@topic_title}</h3>
       <RetroHexChatWeb.HelpLive.HelpHelpers.render_topic_content id={@topic_id} />
       <div class="mt-1 text-muted-foreground">
@@ -42,7 +40,7 @@ defmodule RetroHexChatWeb.Components.UI.InlineHelpCard do
           {dgettext("chat", "Open in Help Topics")}
         </a>
       </div>
-    </div>
+    </.inset>
     """
   end
 end

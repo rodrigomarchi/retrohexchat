@@ -4,6 +4,8 @@
  * @flow PW25 [done] A visitor who registers from the chat's Connect window comes back to the channel they were watching, now as a member
  * @flow PW26 [done] No link leaves a visitor's chat: a message URL (plain, Ctrl or middle click) and a game in the desktop Games folder open the Connect window naming the feature, and no tab opens
  * @flow PW27 [done] A game, the arcade or a call opened by address without an account lands in the chat with the Connect window naming it, and registering there returns to that address
+ * @flow PW30 [done] A visitor reads on arrival what a member reads: the server's message of the day in the Status window and a channel's own welcome (/setwelcome) when they open it
+ * @flow PW29 [done] A visitor arriving at / is greeted in #lobby by the system, for their eyes only: their guest name, how to move between channels, what an account opens (Space, Group Call, P2P, Arcade) and where to create one — on a desktop and on a phone
  *
  * These @flow lines are the source of truth for e2e/TEST_CATALOG.md.
  * Edit them here, then run `make e2e.catalog` to regenerate the index.
@@ -18,6 +20,7 @@ import {
 } from "../helpers/chatUsers";
 import { shot } from "../helpers/screenshots";
 import { CHAT_URL, channelPath, channelUrl } from "../helpers/urls";
+import { adminNick, adminPassword } from "../helpers/env";
 
 async function openAsVisitor(page: Page, path: string) {
   await page.addInitScript(() => {
@@ -37,6 +40,120 @@ async function openAsVisitor(page: Page, path: string) {
   );
   await expect(page.getByTestId("visitor-composer")).toBeVisible();
 }
+
+test("a visitor arriving at the chat is greeted in the lobby, and nobody else sees it (PW29)", async ({
+  browser,
+}) => {
+  const member = await newSignedInUser(browser, "lobby");
+  const visitorCtx = await browser.newContext();
+  const visitor = await visitorCtx.newPage();
+  const phoneCtx = await browser.newContext({
+    viewport: { width: 390, height: 844 },
+    hasTouch: true,
+  });
+  const phone = await phoneCtx.newPage();
+
+  try {
+    await openAsVisitor(visitor, "/");
+
+    const guestName = (
+      await visitor
+        .locator('[data-testid^="nicklist-guest-"][data-current="true"]')
+        .innerText()
+    ).trim();
+    const greeting = visitor.getByTestId("visitor-greeting");
+
+    // Addressed to them by the name the user list shows, in the lobby, at the
+    // bottom of the conversation where the reader's eye already is.
+    await expect(greeting).toContainText(
+      `Welcome to RetroHexChat, ${guestName}!`,
+    );
+    await expect(greeting).toContainText("You are reading #lobby live");
+    await expect(greeting).toBeInViewport();
+    for (const feature of ["Space", "Group Call", "P2P", "Arcade"]) {
+      await expect(greeting.getByRole("link", { name: feature })).toBeVisible();
+    }
+    await shot(visitor, "visitor-greeted-in-lobby");
+    await shot(greeting, "visitor-greeting-card");
+
+    // A feature's name opens its help topic in the desktop's help window.
+    await greeting.getByRole("link", { name: "Space" }).click();
+    await expect(visitor).toHaveURL(/\/chat\/help\/feature-virtual-spaces$/);
+    await expect(visitor.locator("#help-viewer")).toContainText(
+      "Virtual Spaces",
+    );
+
+    // Written for the visitor alone: the members of the lobby never see it.
+    await member.chat.expectTabVisible("#lobby");
+    await expect(
+      member.page.getByTestId(`nicklist-guest-${guestName}`),
+    ).toBeVisible();
+    await expect(
+      member.page.getByTestId("chat-message-list"),
+    ).not.toContainText(guestName);
+
+    await openAsVisitor(phone, "/");
+    const phoneGreeting = phone.getByTestId("visitor-greeting");
+    await expect(phoneGreeting).toBeInViewport();
+    await shot(phone, "visitor-greeted-on-phone");
+
+    // Its sign-up button is the composer's: it opens the sign-in window.
+    await phoneGreeting.getByTestId("visitor-greeting-sign-up").click();
+    await expect(phone).toHaveURL(/\/connect\?/);
+    await shot(phone, "visitor-greeting-sign-up");
+  } finally {
+    await closeUsers([member]);
+    await visitorCtx.close();
+    await phoneCtx.close();
+  }
+});
+
+test("a visitor reads the server's message of the day and a channel's welcome, as a member does (PW30)", async ({
+  browser,
+}) => {
+  const adminCtx = await browser.newContext();
+  const admin = new ChatPage(await adminCtx.newPage());
+  const host = await newSignedInUser(browser, "welc");
+  const channel = uniqueChannel("welcome");
+  const motd = `Visitors welcome ${Date.now()}`;
+  const visitorCtx = await browser.newContext();
+  const visitor = await visitorCtx.newPage();
+
+  try {
+    await new ConnectPage(admin.page).open();
+    await new ConnectPage(admin.page).signIn(adminNick(), adminPassword());
+    await admin.waitUntilConnected();
+    await admin.sendMessage(`/setmotd ${motd}`);
+    await admin.expectMessageVisible("MOTD has been updated.");
+
+    await host.chat.sendMessage(`/join ${channel}`);
+    await host.chat.expectTabVisible(channel);
+    await host.chat.sendMessage("/setwelcome Read the pinned rules first");
+
+    await openAsVisitor(visitor, channelPath(channel));
+    const chat = new ChatPage(visitor);
+
+    // The channel's welcome, in the channel, as a member entering it reads it.
+    await expect(chat.messageList).toContainText(
+      "[Welcome] Read the pinned rules first",
+    );
+    await shot(visitor, "visitor-reads-channel-welcome");
+
+    // The server's text in Status: its message of the day and its welcome.
+    // The member's command quick starts are not there — a visitor can type
+    // none of them.
+    await chat.switchToStatusTab();
+    await chat.expectStatusMessageVisible(motd);
+    await chat.expectStatusMessageVisible("Welcome to RetroHexChat!");
+    await chat.expectStatusMessageHidden("[ChanServ] Channel Services Online");
+    await shot(visitor, "visitor-reads-motd-in-status");
+  } finally {
+    await admin.sendMessage("/clearmotd");
+    await closeUsers([host]);
+    await adminCtx.close();
+    await visitorCtx.close();
+  }
+});
 
 test("a visitor watches a channel live and any action asks them to sign in (PW24, PW25)", async ({
   browser,

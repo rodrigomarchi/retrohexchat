@@ -378,6 +378,9 @@ _ROWS = {
     "React":        ("Reagir", "Reagir", "Reaccionar", "Réagir", "Reagieren", "Reagisci", "Reageren", "Zareaguj", "Отреагировать", "Bereaksi", "リアクション", "回应", "回應"),
     "React...":     ("Reagir...", "Reagir...", "Reaccionar...", "Réagir...", "Reagieren...", "Reagisci...", "Reageren...", "Zareaguj...", "Отреагировать...", "Bereaksi...", "リアクション...", "回应...", "回應..."),
     "Block":        ("Bloquear", "Bloquear", "Bloquear", "Bloquer", "Blockieren", "Blocca", "Blokkeren", "Zablokuj", "Заблокировать", "Blokir", "ブロック", "屏蔽", "封鎖"),
+    # The first of what an account opens, in the card that greets a visitor:
+    # writing in the chat, beside Space and Group Call.
+    "Talk":         ("Conversar", "Conversar", "Conversar", "Discuter", "Chatten", "Chattare", "Chatten", "Rozmawiaj", "Общаться", "Mengobrol", "会話", "聊天", "聊天"),
 
     # ── Account ───────────────────────────────────────────────
     "Login":        ("Entrar", "Entrar", "Iniciar sesión", "Connexion", "Anmelden", "Accedi", "Inloggen", "Zaloguj", "Вход", "Masuk", "ログイン", "登录", "登入"),
