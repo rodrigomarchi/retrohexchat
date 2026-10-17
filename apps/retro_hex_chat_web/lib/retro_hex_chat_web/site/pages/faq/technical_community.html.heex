@@ -1,0 +1,13 @@
+<.accordion>
+  <.accordion_item :for={entry <- entries("technical-community")}>
+    <.accordion_trigger group={entry.group}>
+      <:icon><Icons.icon_question class="w-4 h-4" /></:icon>
+      {entry.question}
+    </.accordion_trigger>
+    <.accordion_content>
+      <p class="text-sm">
+        <.answer_part :for={part <- entry.answer} part={part} />
+      </p>
+    </.accordion_content>
+  </.accordion_item>
+</.accordion>

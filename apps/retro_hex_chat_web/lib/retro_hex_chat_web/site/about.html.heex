@@ -1,0 +1,124 @@
+<footer>
+  <p class="text-sm mb-3">
+    {dgettext("landing", "Retro Hex Chat is free software, licensed under MIT.")}<br />
+    {dgettext("landing", "Built with Elixir, Phoenix, and LiveView.")}<br />
+    {dgettext("landing", "Inspired by the IRC of the 2000s and the freedom it represented.")}
+  </p>
+
+  <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 text-xs mb-3">
+    <div>
+      <h3 class="font-bold mb-1">
+        <Icons.icon_code class="w-3 h-3 inline" /> {dgettext("landing", "Project")}
+      </h3>
+      <ul class="space-y-1">
+        <li>
+          <a
+            href="https://github.com/rodrigomarchi/retrohexchat"
+            target="_blank"
+            rel="noopener"
+          >
+            {dgettext("landing", "GitHub")}
+          </a>
+        </li>
+        <li>
+          <a
+            href="https://github.com/rodrigomarchi/retrohexchat/blob/main/CONTRIBUTING.md"
+            target="_blank"
+            rel="noopener"
+          >
+            {dgettext("landing", "Contribute")}
+          </a>
+        </li>
+        <li>
+          <a
+            href="https://github.com/rodrigomarchi/retrohexchat/blob/main/LICENSE"
+            target="_blank"
+            rel="noopener"
+          >
+            {dgettext("landing", "License (MIT)")}
+          </a>
+        </li>
+        <li>
+          <.link patch={PublicPages.localized_path("/chat/help")}>
+            {dgettext("landing", "Documentation")}
+          </.link>
+        </li>
+      </ul>
+    </div>
+    <div>
+      <h3 class="font-bold mb-1">
+        <Icons.icon_community class="w-3 h-3 inline" /> {dgettext("landing", "Community")}
+      </h3>
+      <%!-- Channel names, not links. They used to point at /connect, which
+          is now only where the app sends you when a session ends — and
+          the window that gets you in is already open on this page. --%>
+      <ul class="space-y-1">
+        <li>#general</li>
+        <li>#dev</li>
+        <li>#help</li>
+      </ul>
+    </div>
+    <div>
+      <h3 class="font-bold mb-1">
+        <Icons.icon_legal class="w-3 h-3 inline" /> {dgettext("landing", "Legal")}
+      </h3>
+      <ul class="space-y-1">
+        <li>
+          <a
+            href="https://github.com/rodrigomarchi/retrohexchat/blob/main/LICENSE"
+            target="_blank"
+            rel="noopener"
+          >
+            {dgettext("landing", "MIT License")}
+          </a>
+        </li>
+        <li>
+          <a
+            href="https://github.com/rodrigomarchi/retrohexchat/blob/main/SECURITY.md"
+            target="_blank"
+            rel="noopener"
+          >
+            {dgettext("landing", "Security")}
+          </a>
+        </li>
+      </ul>
+    </div>
+    <div>
+      <h3 class="font-bold mb-1">
+        <Icons.icon_heart class="w-3 h-3 inline" /> {dgettext("landing", "Support")}
+      </h3>
+      <ul class="space-y-1">
+        <li>
+          <a href="https://github.com/sponsors/rodrigomarchi" target="_blank" rel="noopener">
+            {dgettext("landing", "GitHub Sponsors")}
+          </a>
+        </li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="border-t border-gray-400 pt-3 mb-3">
+    <h3 class="font-bold text-xs mb-2">
+      <Icons.icon_link class="w-3 h-3 inline" /> {dgettext("landing", "Languages")}
+    </h3>
+    <div class="flex flex-wrap gap-x-3 gap-y-1 text-xs">
+      <a
+        :for={{code, label} <- I18n.supported_locales()}
+        href={SEO.localized_path(@current_path, code)}
+        hreflang={Locales.bcp47(code)}
+      >
+        {label}
+      </a>
+    </div>
+  </div>
+
+  <p class="text-sm text-center italic mb-2">
+    {dgettext("landing", "“Your data. Your rules. Nobody in between.”")}
+  </p>
+
+  <div class="flex justify-center gap-4 text-xs text-gray-600">
+    <span>{dgettext("landing", "v0.1.0")}</span>
+    <span>{dgettext("landing", "Made by humans")}</span>
+    <span>{dgettext("landing", "2025–2026")}</span>
+  </div>
+</footer>

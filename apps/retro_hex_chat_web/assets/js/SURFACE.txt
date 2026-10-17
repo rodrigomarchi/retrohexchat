@@ -27,6 +27,7 @@ desktop_notify_click
 desktop_notify_permission
 desktop_notify_request_permission
 dismiss_hover_card
+document_closed
 edit_last_message
 enter_edit_mode
 exit_edit_mode
@@ -258,6 +259,7 @@ unhandledrejection
 visibilitychange
 webkitfullscreenchange
 wheel
+wm:deferred-push
 ## dataset-keys
 dataset.active
 dataset.activeSpeaker
@@ -299,7 +301,7 @@ dataset.devicesEvent
 dataset.difficulty
 dataset.direction
 dataset.disabled
-dataset.documentSlot
+dataset.documentAddress
 dataset.dots
 dataset.edge
 dataset.editMessageId
@@ -326,7 +328,6 @@ dataset.hidden
 dataset.hideTarget
 dataset.highlighted
 dataset.hint
-dataset.homePaths
 dataset.imageState
 dataset.inputHistory
 dataset.isHost
@@ -399,6 +400,7 @@ dataset.spacePanelIcon
 dataset.spacePrompts
 dataset.spriteSheets
 dataset.startLevel
+dataset.startSubmenuKey
 dataset.state
 dataset.streamId
 dataset.submenuOpen
@@ -406,6 +408,7 @@ dataset.submenuVia
 dataset.surfacePath
 dataset.systemMessage
 dataset.target
+dataset.taskbarGroupKey
 dataset.taskbarMenuAction
 dataset.testid
 dataset.threshold
@@ -425,6 +428,8 @@ dataset.visible
 dataset.voiceUpload
 dataset.webrtcId
 dataset.windowControl
+dataset.windowGroup
+dataset.windowGroupOpen
 dataset.windowId
 dataset.windowLoadingText
 dataset.windowOpen

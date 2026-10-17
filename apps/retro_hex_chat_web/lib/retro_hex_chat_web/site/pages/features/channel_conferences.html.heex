@@ -1,0 +1,33 @@
+<.section_heading>
+  {dgettext("landing", "Group calls live inside channels.")}
+</.section_heading>
+<.inset
+  tone="diagram"
+  class="p-2 mb-2"
+  aria-label={dgettext("landing", "Channel conference topology diagram")}
+>
+  <.diagram_conference_topology class="w-full max-w-lg mx-auto" />
+</.inset>
+<.feature_list>
+  <:item icon={:icon_server}>
+    {dgettext("landing", "Self-hosted SFU routes group media through your server")}
+  </:item>
+  <:item icon={:icon_call_devices}>
+    {dgettext(
+      "landing",
+      "Pre-join device picker with microphone, camera, speaker, and layout settings"
+    )}
+  </:item>
+  <:item icon={:icon_call_lock}>
+    {dgettext(
+      "landing",
+      "Moderator controls: lock room, mute all, camera off all, and remove participants"
+    )}
+  </:item>
+  <:item icon={:icon_call_stats}>
+    {dgettext(
+      "landing",
+      "Conference statistics, mini mode, focus/grid layouts, and reconnect handling"
+    )}
+  </:item>
+</.feature_list>

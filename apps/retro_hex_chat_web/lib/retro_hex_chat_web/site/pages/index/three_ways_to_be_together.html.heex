@@ -1,0 +1,73 @@
+<.section_heading id="conversation-modes-heading">
+  {dgettext("landing", "Chat, Space, or Conference — switch without leaving the channel.")}
+</.section_heading>
+
+<div class="grid lg:grid-cols-3 gap-3">
+  <.inset class="p-3 text-sm">
+    <div class="flex items-center gap-2 font-bold mb-2">
+      <Icons.icon_chat class="w-4 h-4" />
+      {dgettext("landing", "Chat")}
+    </div>
+    <.inset
+      tone="diagram"
+      class="p-2 mb-2"
+      aria-label={dgettext("landing", "Persistent chat workspace diagram")}
+    >
+      <.diagram_chat_workspace class="w-full mx-auto" />
+    </.inset>
+    <p class="text-xs leading-relaxed">
+      {dgettext(
+        "landing",
+        "Channels, DMs, bots, commands, replies, reactions, and moderation stay in one durable conversation history."
+      )}
+    </p>
+  </.inset>
+
+  <.inset class="p-3 text-sm">
+    <div class="flex items-center gap-2 font-bold mb-2">
+      <Icons.icon_group_view class="w-4 h-4" />
+      {dgettext("landing", "Space")}
+    </div>
+    <.inset tone="screen" class="p-1 mb-2">
+      <img
+        src={Endpoint.static_path("/images/landing/space_end_of_time_showcase.png")}
+        alt={
+          dgettext(
+            "landing",
+            "End of Time Space map with avatars and in-world chat bubbles"
+          )
+        }
+        width="960"
+        height="481"
+        class="block w-full h-auto"
+        loading="lazy"
+      />
+    </.inset>
+    <p class="text-xs leading-relaxed">
+      {dgettext(
+        "landing",
+        "Space renders that same conversation as a live map: avatars move, messages bubble in-world, and the channel or DM stays the source of truth."
+      )}
+    </p>
+  </.inset>
+
+  <.inset class="p-3 text-sm">
+    <div class="flex items-center gap-2 font-bold mb-2">
+      <Icons.icon_conference class="w-4 h-4" />
+      {dgettext("landing", "Conference")}
+    </div>
+    <.inset
+      tone="diagram"
+      class="p-2 mb-2"
+      aria-label={dgettext("landing", "Channel conference topology diagram")}
+    >
+      <.diagram_conference_topology class="w-full mx-auto" />
+    </.inset>
+    <p class="text-xs leading-relaxed">
+      {dgettext(
+        "landing",
+        "Conference keeps media inside the channel: participants join from the room, operators moderate, and your SFU routes the streams."
+      )}
+    </p>
+  </.inset>
+</div>

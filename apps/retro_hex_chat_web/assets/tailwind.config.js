@@ -129,6 +129,8 @@ module.exports = {
         "canvas-bg": "#0a0a1a",
         "canvas-fg": "#00ffcc",
         "canvas-accent": "#ff0066",
+        // Diagrams on the public pages, drawn on the dark of a terminal
+        "diagram-bg": "#20232b",
         // SaladUI semantic tokens (mapped to retro equivalents)
         background: "#c0c0c0",
         foreground: "#222222",

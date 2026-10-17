@@ -678,17 +678,20 @@ a move that renames one is caught before commit.
 - **Every public address is a window of the one desktop.** `DesktopLive` answers `/`, every
   page of the site, help, the archive, `/join`, `/connect` and `/c/:channel` in one
   `live_session`; `Site.Registry` maps the route's action to a `Site.Page`, and
-  `Site.Documents` opens it as a document window over the chat — one window per slot (site,
-  help, archive, join, connect), focused on the first render. Moving between pages is a patch;
-  the window in front owns the address (`window_focused` replaces it, closing hands it to the
-  window behind), and a channel switched in front of the reader takes `/c/<name>`
-  (`Site.Address.sync/1`). A private conversation never gets an address.
+  `Site.Documents` opens it over the chat — a page of the site as a group of windows, one per
+  section (`Site.Window` entries, island bodies), help, the archive, an invitation and sign-in
+  as one window each ([windowed-desktop §7.0.1](guide/windowed-desktop.md)). A visitor's home is
+  the chat itself, the home's windows closed on the desk behind it. Moving between pages is a
+  patch; the page in front owns the address (`window_focused` replaces it, closing its last
+  window hands it to the page behind), and a channel switched in front of the reader takes
+  `/c/<name>` (`Site.Address.sync/1`). A private conversation never gets an address.
 - **The first response carries the page whole and the chat only as a frame.** Everything that
   acts on a live chat — its body, menus, desktop folders, the full Start menu, the dialogs —
   renders under `@live_ready`, which is why a page of the site weighs less than the landing
   page it replaced (`PerfBudgets` `:home`, `:page`, `:channel`). `desktop.js` (≤ 90 kb) starts the
   LiveSocket at once where the address needs it (`data-boot="now"`: a channel, sign-in, an
-  invitation, a member), otherwise on the first interaction or idle — never by itself for a
+  invitation, a member) and for a reader of the home, whose chat is the home
+  (`data-boot="reader"`), otherwise on the first interaction or idle — never by itself for a
   crawler. A patch link or form used while it starts is held and replayed.
 - **A change to a public page proves it took nothing away from what is indexed.** Snapshot the
   pages with the old code running, again with the new, and compare:

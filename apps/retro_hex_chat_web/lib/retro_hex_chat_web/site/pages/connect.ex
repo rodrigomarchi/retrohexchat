@@ -37,10 +37,12 @@ defmodule RetroHexChatWeb.Site.Pages.Connect do
 
     {:ok,
      %{
-       window_title: dgettext("connect", "Connect to RetroHexChat"),
-       window_icon: :icon_connect,
-       menu: :connect,
-       windows: [],
+       windows: [
+         Window.new("connect", dgettext("connect", "Connect to RetroHexChat"), :icon_connect,
+           menu: :connect,
+           body: &sign_in/1
+         )
+       ],
        page_title: dgettext("connect", "Connect - RetroHexChat"),
        canonical_path: "/connect",
        hreflang_alternates: false,
@@ -54,8 +56,9 @@ defmodule RetroHexChatWeb.Site.Pages.Connect do
      }}
   end
 
-  @impl RetroHexChatWeb.Site.Page
-  def render(assigns) do
+  @doc "The sign-in window's body: why it opened, then the form — an island of its own."
+  @spec sign_in(map()) :: Phoenix.LiveView.Rendered.t()
+  def sign_in(assigns) do
     ~H"""
     <div class="p-4" data-testid="connect-window">
       <.alert :if={@reason_message} variant="destructive" class="mb-4" data-testid="session-alert">

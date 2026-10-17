@@ -85,20 +85,24 @@ defmodule RetroHexChatWeb.PerfBudgets do
   # desktop a stranger lands on and stays on — the chat's frame, the taskbar
   # and a Start menu of the pages, the languages and the help.
   def html_bytes(:join), do: 95_000
-  # The home: the Welcome window, with every section the landing page carried,
-  # over the chat's frame. 155_420 B raw and 1_697 elements measured on
+  # The home: the chat's frame in front, and the home's windows — every section
+  # the landing page carried — closed on the desk behind it, with a visitor's
+  # icon for every page. 151_774 B raw and 1_469 elements measured on
   # 2026-10-16, against 229_594 B and about 2_300 elements for the landing page
   # it replaced — the desktop's own folders, menus and dialogs arrive with the
   # chat, not with the page. The Start menu's groups are there from the first
   # paint, empty, so the menu does not rearrange itself when the chat starts.
-  def html_bytes(:home), do: 171_000
-  # The largest page of the site in its document window — `/features`, 140_513 B
-  # raw and 1_638 elements measured on 2026-10-16 (235_526 B as a page of its
-  # own). Every other page fits under it.
-  def html_bytes(:page), do: 155_000
-  # A channel's address for a visitor: the desktop with the chat opening in it.
-  # 50_534 B raw and 525 elements measured on 2026-10-16.
-  def html_bytes(:channel), do: 56_000
+  def html_bytes(:home), do: 167_000
+  # The largest page of the site — `/features`, twelve windows, 167_275 B raw
+  # and 1_652 elements measured on 2026-10-16 (235_526 B as a page of its own).
+  # Each section is a window of its own now, with the title bar, controls and
+  # resize edges a window carries, and the site's About rides beside the page.
+  # Every other page fits under it.
+  def html_bytes(:page), do: 184_000
+  # A channel's address for a visitor: the desktop with the chat opening in it,
+  # and the visitor's icon for every page of the site. 55_261 B raw and 581
+  # elements measured on 2026-10-16.
+  def html_bytes(:channel), do: 61_000
 
   @doc """
   The most elements a surface's dead render may contain.
@@ -114,9 +118,9 @@ defmodule RetroHexChatWeb.PerfBudgets do
   def dom_nodes(:space), do: 120
   def dom_nodes(:p2p), do: 270
   def dom_nodes(:join), do: 1_040
-  def dom_nodes(:home), do: 1_870
+  def dom_nodes(:home), do: 1_620
   def dom_nodes(:page), do: 1_800
-  def dom_nodes(:channel), do: 580
+  def dom_nodes(:channel), do: 640
 
   @doc """
   The longest a connected mount may block before it renders.

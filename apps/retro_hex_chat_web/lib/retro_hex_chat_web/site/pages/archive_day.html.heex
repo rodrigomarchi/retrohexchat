@@ -1,60 +1,56 @@
-<section class="m-4" aria-labelledby="archive-heading">
-  <.document_section id="archive-day" title={@channel}>
-    <:icon><Icons.icon_channels class="w-4 h-4" /></:icon>
+<section id="archive-day" class="p-retro-8" aria-labelledby="archive-heading">
+  <h1 id="archive-heading" class="text-sm font-bold mb-2">
+    {dgettext("landing", "%{channel} on %{date}", channel: @channel, date: @date)}
+  </h1>
 
-    <h1 id="archive-heading" class="text-sm font-bold mb-2">
-      {dgettext("landing", "%{channel} on %{date}", channel: @channel, date: @date)}
-    </h1>
-
-    <ol class="space-y-1" data-testid="archive-lines">
-      <li
-        :for={entry <- @entries}
-        class="text-sm flex items-start gap-2"
-        id={"line-#{entry.id}"}
-      >
-        <span class="text-muted-foreground shrink-0 tabular-nums">{at(entry.at)}</span>
-        <span class="font-bold shrink-0">
-          {if entry.action?, do: "*", else: "<#{entry.author}>"}
-        </span>
-        <span class="break-words">
-          <span :if={entry.action?} class="italic">{entry.author}</span>
-          {entry.text}
-          <%!-- A file was part of what was said, and the archive publishes no
+  <ol class="space-y-1" data-testid="archive-lines">
+    <li
+      :for={entry <- @entries}
+      class="text-sm flex items-start gap-2"
+      id={"line-#{entry.id}"}
+    >
+      <span class="text-muted-foreground shrink-0 tabular-nums">{at(entry.at)}</span>
+      <span class="font-bold shrink-0">
+        {if entry.action?, do: "*", else: "<#{entry.author}>"}
+      </span>
+      <span class="break-words">
+        <span :if={entry.action?} class="italic">{entry.author}</span>
+        {entry.text}
+        <%!-- A file was part of what was said, and the archive publishes no
                 files: saying so keeps a line that is nothing but an
                 attachment from reading as a line where somebody said
                 nothing. --%>
-          <span :if={entry.attachment?} class="text-muted-foreground italic">
-            {dgettext("landing", "(attachment)")}
-          </span>
-          <span :if={entry.edited?} class="text-muted-foreground">
-            {dgettext("landing", "(edited)")}
-          </span>
+        <span :if={entry.attachment?} class="text-muted-foreground italic">
+          {dgettext("landing", "(attachment)")}
         </span>
-      </li>
-    </ol>
+        <span :if={entry.edited?} class="text-muted-foreground">
+          {dgettext("landing", "(edited)")}
+        </span>
+      </span>
+    </li>
+  </ol>
 
-    <nav
-      :if={@prev_path || @next_path}
-      class="text-sm mt-4 flex gap-4"
-      aria-label={dgettext("landing", "Pages of this day")}
-      data-testid="archive-pager"
-    >
-      <.link :if={@prev_path} patch={@prev_path} rel="prev" class="underline">
-        {dgettext("landing", "← Earlier")}
-      </.link>
-      <.link :if={@next_path} patch={@next_path} rel="next" class="underline">
-        {dgettext("landing", "Later →")}
-      </.link>
-    </nav>
+  <nav
+    :if={@prev_path || @next_path}
+    class="text-sm mt-4 flex gap-4"
+    aria-label={dgettext("landing", "Pages of this day")}
+    data-testid="archive-pager"
+  >
+    <.link :if={@prev_path} patch={@prev_path} rel="prev" class="underline">
+      {dgettext("landing", "← Earlier")}
+    </.link>
+    <.link :if={@next_path} patch={@next_path} rel="next" class="underline">
+      {dgettext("landing", "Later →")}
+    </.link>
+  </nav>
 
-    <p class="text-sm mt-4">
-      <.link patch={~p"/archive/#{@slug}"} class="underline">
-        {dgettext("landing", "All days")}
-      </.link>
-      ·
-      <.link patch={~p"/join/#{@slug}"} class="underline">
-        {dgettext("landing", "Join %{channel}", channel: @channel)}
-      </.link>
-    </p>
-  </.document_section>
+  <p class="text-sm mt-4">
+    <.link patch={~p"/archive/#{@slug}"} class="underline">
+      {dgettext("landing", "All days")}
+    </.link>
+    ·
+    <.link patch={~p"/join/#{@slug}"} class="underline">
+      {dgettext("landing", "Join %{channel}", channel: @channel)}
+    </.link>
+  </p>
 </section>

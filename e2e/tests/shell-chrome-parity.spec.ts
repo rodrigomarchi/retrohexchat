@@ -1,8 +1,8 @@
 /**
  * @section PW - Public Pages, Landing, And Showcase
- * @flow PW4 [done] The home, the sign-in window and help wear the same phone chrome (one case per document window)
+ * @flow PW4 [done] The sign-in window and help wear the same phone chrome (one case per window with a menu bar)
  * @flow PW5 [done] A rail button opens the shared drawer on its own section
- * @flow PW6 [done] A page's menu bar carries no Connect; Start ▸ Open the app is there and inert on the desktop
+ * @flow PW6 [done] A page of the site carries no menu bar of its own; Start ▸ Open the app is there and inert on the desktop
  *
  * These @flow lines are the source of truth for e2e/TEST_CATALOG.md.
  * Edit them here, then run `make e2e.catalog` to regenerate the index.
@@ -19,13 +19,13 @@ import { shot } from "../helpers/screenshots";
 // it — never in a strip across the desk. Each shell names the window it belongs
 // to, and the desk itself must carry no header at all.
 //
-// These are the public shells — the ones reachable with no session, so a single
-// spec can hold them side by side. The chat's own mobile chrome is covered by
+// These are the public shells with a menu bar — the ones reachable with no
+// session, so a single spec can hold them side by side. A page of the site has
+// none: its windows are read, and the desk's icons and Start menu reach them. The chat's own mobile chrome is covered by
 // chat-mobile-desktop.spec.ts, which needs a logged-in user.
 const PHONE = { width: 390, height: 780 };
 
 const SHELLS = [
-  { name: "home", path: "/", rail: 3, window: "document-window-site" },
   {
     name: "connect",
     path: "/connect",
@@ -56,7 +56,11 @@ test.describe("Shell chrome parity", () => {
         .getByTestId(shell.window)
         .locator("[data-window-menu]");
       await expect(strip).toBeVisible();
-      await expect(page.getByTestId("app-header")).toHaveCount(0);
+      await expect(
+        page.locator(
+          "[data-window-menu]:not([data-window-id] [data-window-menu])",
+        ),
+      ).toHaveCount(0);
 
       // Below 768px the window manager stamps the stacked class, which is what
       // swaps the textual menu strip for the rail.
@@ -90,13 +94,12 @@ test.describe("Shell chrome parity", () => {
   test("a rail button opens the shared drawer on its own section", async ({
     page,
   }) => {
-    await page.goto("/");
-    await expect(page.getByTestId("landing-menu-bar")).toBeVisible();
+    await page.goto("/chat/help");
 
     // The page runs this engine before the chat's LiveSocket exists and the
     // hook adopts it after, so a working drawer here is the proof that the two
     // share one implementation rather than two that drifted.
-    const site = page.getByTestId("document-window-site");
+    const site = page.getByTestId("document-window-help");
     const language = site.getByTestId("app-mobile-menu-rail-language");
     await language.click();
 
@@ -106,7 +109,7 @@ test.describe("Shell chrome parity", () => {
     await expect(
       site.getByTestId("app-mobile-menu-section-navigate"),
     ).toBeHidden();
-    await shot(page, "landing-phone-drawer");
+    await shot(page, "help-phone-drawer");
 
     // The same button puts it away; a different one only swaps the section.
     await site.getByTestId("app-mobile-menu-rail-navigate").click();
@@ -116,20 +119,18 @@ test.describe("Shell chrome parity", () => {
     await expect(drawer).toBeHidden();
   });
 
-  test("a page's menu bar carries no Connect", async ({ page }) => {
-    await page.goto("/");
-    await expect(page.getByTestId("landing-menu-bar")).toBeVisible();
+  test("a page of the site carries no menu bar of its own", async ({
+    page,
+  }) => {
+    await page.goto("/features");
+    await expect(page.getByTestId("site-window-intro")).toBeVisible();
 
-    // A CTA in the chrome was chrome no other shell had. Signing in is the
-    // Welcome's own button, which opens the sign-in window over the desktop.
-    // Exact matches: the Start menu carries a Disconnect entry, and a
-    // substring match would read that as the CTA coming back.
-    await expect(
-      page
-        .getByTestId("landing-menu-bar")
-        .getByText("Connect", { exact: true }),
-    ).toHaveCount(0);
-    await expect(page.getByTestId("welcome-sign-up")).toHaveCount(1);
+    // A page is read; the desk's icons and the Start menu are its navigation,
+    // and signing in is the visitor's bar under the chat. The page's windows
+    // are there, and not one of them carries a menu.
+    const windows = page.locator('[data-window-group="site"]');
+    expect(await windows.count()).toBeGreaterThan(1);
+    await expect(windows.locator("[data-window-menu]")).toHaveCount(0);
 
     // This whole describe runs at a phone viewport, where the menu drills down
     // on a tap — hover is deliberately inert in the stacked shell.

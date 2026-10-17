@@ -11,7 +11,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 
-#: lib/retro_hex_chat_web/site/pages/help.ex:91
+#: lib/retro_hex_chat_web/site/pages/help.ex:90
 #, elixir-autogen, elixir-format
 msgid "%{topic} — RetroHexChat Help"
 msgstr "%{topic} — RetroHexChat ヘルプ"
@@ -151,7 +151,7 @@ msgstr "スペースを含まない"
 msgid "Changing Nickname"
 msgstr "ニックネームの変更"
 
-#: lib/retro_hex_chat_web/controllers/help_content/watching_without_account.html.heex:67
+#: lib/retro_hex_chat_web/controllers/help_content/watching_without_account.html.heex:73
 #: lib/retro_hex_chat_web/controllers/help_content/welcome.html.heex:125
 #, elixir-autogen, elixir-format
 msgid "Channels"
@@ -181,7 +181,7 @@ msgstr "認証の接続"
 #: lib/retro_hex_chat_web/controllers/help_content/connect_authentication.html.heex:44
 #: lib/retro_hex_chat_web/controllers/help_content/ui_connect_window.html.heex:16
 #: lib/retro_hex_chat_web/controllers/help_content/ui_connect_window.html.heex:54
-#: lib/retro_hex_chat_web/controllers/help_content/watching_without_account.html.heex:66
+#: lib/retro_hex_chat_web/controllers/help_content/watching_without_account.html.heex:72
 #: lib/retro_hex_chat_web/controllers/help_content/welcome.html.heex:124
 #, elixir-autogen, elixir-format
 msgid "Connecting"
@@ -209,7 +209,7 @@ msgstr ""
 #: lib/retro_hex_chat_web/components/ui/help/help_status_bar.ex:55
 #: lib/retro_hex_chat_web/components/ui/help/help_status_bar.ex:57
 #: lib/retro_hex_chat_web/components/ui/help/help_viewer.ex:413
-#: lib/retro_hex_chat_web/site/pages/help.ex:81
+#: lib/retro_hex_chat_web/site/pages/help.ex:80
 #, elixir-autogen, elixir-format
 msgid "Help"
 msgstr "ヘルプ"
@@ -351,7 +351,7 @@ msgstr ""
 #: lib/retro_hex_chat_web/controllers/help_content/connecting.html.heex:64
 #: lib/retro_hex_chat_web/controllers/help_content/private_messages.html.heex:33
 #: lib/retro_hex_chat_web/controllers/help_content/ui_connect_window.html.heex:52
-#: lib/retro_hex_chat_web/controllers/help_content/watching_without_account.html.heex:64
+#: lib/retro_hex_chat_web/controllers/help_content/watching_without_account.html.heex:70
 #: lib/retro_hex_chat_web/controllers/help_content/welcome.html.heex:122
 #, elixir-autogen, elixir-format
 msgid "See Also"
@@ -460,20 +460,20 @@ msgstr "RetroHexChatについて"
 
 #: lib/retro_hex_chat_web/components/ui/help/help_menu_bar.ex:104
 #: lib/retro_hex_chat_web/components/ui/help/help_viewer.ex:219
-#: lib/retro_hex_chat_web/components/ui/shell/start_menu_app.ex:526
+#: lib/retro_hex_chat_web/components/ui/shell/start_menu_app.ex:540
 #, elixir-autogen, elixir-format
 msgid "Back"
 msgstr "戻る"
 
-#: lib/retro_hex_chat_web/components/ui/shell/start_menu_app.ex:576
-#: lib/retro_hex_chat_web/components/ui/shell/start_menu_app.ex:583
+#: lib/retro_hex_chat_web/components/ui/shell/start_menu_app.ex:590
+#: lib/retro_hex_chat_web/components/ui/shell/start_menu_app.ex:597
 #, elixir-autogen, elixir-format
 msgid "Back to chat"
 msgstr "チャットに戻る"
 
 #: lib/retro_hex_chat_web/components/ui/help/help_menu_bar.ex:122
 #: lib/retro_hex_chat_web/components/ui/help/help_viewer.ex:282
-#: lib/retro_hex_chat_web/components/ui/shell/desktop_launchers.ex:448
+#: lib/retro_hex_chat_web/components/ui/shell/desktop_launchers.ex:564
 #: lib/retro_hex_chat_web/components/ui/shell/start_menu_app.ex:177
 #, elixir-autogen, elixir-format
 msgid "Contents"
@@ -486,7 +486,7 @@ msgstr "受信側でPMタブを開けない軽量メッセージの場合、ニ�
 
 #: lib/retro_hex_chat_web/components/ui/help/help_menu_bar.ex:108
 #: lib/retro_hex_chat_web/components/ui/help/help_viewer.ex:222
-#: lib/retro_hex_chat_web/components/ui/shell/start_menu_app.ex:532
+#: lib/retro_hex_chat_web/components/ui/shell/start_menu_app.ex:546
 #, elixir-autogen, elixir-format
 msgid "Forward"
 msgstr "前進"
@@ -494,14 +494,14 @@ msgstr "前進"
 #: lib/retro_hex_chat_web/components/ui/help/help_menu_bar.ex:98
 #: lib/retro_hex_chat_web/components/ui/help/help_viewer.ex:228
 #: lib/retro_hex_chat_web/components/ui/help/help_viewer.ex:229
-#: lib/retro_hex_chat_web/site/pages/help.ex:81
+#: lib/retro_hex_chat_web/site/pages/help.ex:80
 #, elixir-autogen, elixir-format
 msgid "Home"
 msgstr "ホーム >"
 
 #: lib/retro_hex_chat_web/components/ui/help/help_menu_bar.ex:131
 #: lib/retro_hex_chat_web/components/ui/help/help_viewer.ex:288
-#: lib/retro_hex_chat_web/components/ui/shell/desktop_launchers.ex:455
+#: lib/retro_hex_chat_web/components/ui/shell/desktop_launchers.ex:571
 #: lib/retro_hex_chat_web/components/ui/shell/start_menu_app.ex:187
 #, elixir-autogen, elixir-format
 msgid "Index"
@@ -525,7 +525,7 @@ msgstr "通知コマンド"
 
 #: lib/retro_hex_chat_web/components/ui/help/help_menu_bar.ex:140
 #: lib/retro_hex_chat_web/components/ui/help/help_viewer.ex:294
-#: lib/retro_hex_chat_web/components/ui/shell/desktop_launchers.ex:462
+#: lib/retro_hex_chat_web/components/ui/shell/desktop_launchers.ex:578
 #: lib/retro_hex_chat_web/components/ui/shell/start_menu_app.ex:197
 #, elixir-autogen, elixir-format
 msgid "Search"
@@ -809,17 +809,17 @@ msgstr "Capital letters do not matter"
 msgid "It is shown as you type it."
 msgstr "型として表示されます。"
 
-#: lib/retro_hex_chat_web/controllers/help_content/watching_without_account.html.heex:43
+#: lib/retro_hex_chat_web/controllers/help_content/watching_without_account.html.heex:49
 #, elixir-autogen, elixir-format
 msgid "Everybody in a channel sees its visitors under Visitors, at the foot of the user list, and counted in the number beside the channel. A visitor is not a member: they cannot write, have no role, and leave the list when they close the tab."
 msgstr "チャンネル内の誰もが訪問者を見ている, ユーザーのリストの足で, チャンネルの横にある番号でカウント. 訪問者はメンバーではありません。それらは、タブを閉じるときに、リストを書き込み、ロールを持っていません。"
 
-#: lib/retro_hex_chat_web/controllers/help_content/watching_without_account.html.heex:57
+#: lib/retro_hex_chat_web/controllers/help_content/watching_without_account.html.heex:63
 #, elixir-autogen, elixir-format
 msgid "Guest names are reserved: nobody can register one or change to one"
 msgstr "Guest names are reserved: nobody can register one or change to one"
 
-#: lib/retro_hex_chat_web/controllers/help_content/watching_without_account.html.heex:62
+#: lib/retro_hex_chat_web/controllers/help_content/watching_without_account.html.heex:68
 #, elixir-autogen, elixir-format
 msgid "Nothing is kept for a visitor; a new visit gets a new guest name"
 msgstr "訪問者のために保持されず、新しい訪問は新しいゲスト名を取得します"
@@ -829,7 +829,7 @@ msgstr "訪問者のために保持されず、新しい訪問は新しいゲス
 msgid "Open other channels from the sidebar, from Browse all, or from a #channel link in a message"
 msgstr "サイドバーから他のチャンネルを開きます。, すべてのブラウザから, またはメッセージで#channelリンクから"
 
-#: lib/retro_hex_chat_web/controllers/help_content/watching_without_account.html.heex:70
+#: lib/retro_hex_chat_web/controllers/help_content/watching_without_account.html.heex:76
 #, elixir-autogen, elixir-format
 msgid "Public Channel Archive"
 msgstr "パブリックチャンネルアーカイブ"
@@ -839,7 +839,7 @@ msgstr "パブリックチャンネルアーカイブ"
 msgid "Read the public channels as they happen, and scroll back through them"
 msgstr "パブリックチャンネルを読んで、それらをスクロールして"
 
-#: lib/retro_hex_chat_web/controllers/help_content/watching_without_account.html.heex:51
+#: lib/retro_hex_chat_web/controllers/help_content/watching_without_account.html.heex:57
 #, elixir-autogen, elixir-format
 msgid "Secret, private, invite-only and keyed channels cannot be watched — a channel that becomes one closes for its visitors"
 msgstr "秘密、私的、招待のみ、鍵付きチャンネルは見られません。訪問者が1つ近いチャネル"
@@ -854,7 +854,7 @@ msgstr "各チャンネルで誰であるかを見て、実行時にチャンネ
 msgid "Taking part"
 msgstr "パートを取る"
 
-#: lib/retro_hex_chat_web/controllers/help_content/watching_without_account.html.heex:41
+#: lib/retro_hex_chat_web/controllers/help_content/watching_without_account.html.heex:47
 #, elixir-autogen, elixir-format
 msgid "Visitors in the user list"
 msgstr "ユーザーリストの訪問者"
@@ -879,17 +879,17 @@ msgstr "周りを見ているアカウントを必要としません。 チャ�
 msgid "Cannot be a visitor name such as %{example}"
 msgstr "%{example} などのビジター名にすることはできません。"
 
-#: lib/retro_hex_chat_web/controllers/help_content/watching_without_account.html.heex:48
+#: lib/retro_hex_chat_web/controllers/help_content/watching_without_account.html.heex:54
 #, elixir-autogen, elixir-format
 msgid "Limits"
 msgstr "制限事項"
 
-#: lib/retro_hex_chat_web/controllers/help_content/watching_without_account.html.heex:30
+#: lib/retro_hex_chat_web/controllers/help_content/watching_without_account.html.heex:36
 #, elixir-autogen, elixir-format
 msgid "Everything that does something needs an account: writing, reacting, the menus and settings, games, calls, spaces, private sessions — and following any link, whether to a game or to another site. Each of them opens the Connect window instead, saying which feature it was."
 msgstr "何かがアカウントを必要とするものすべて: 書き込み, 反応, メニューと設定, ゲーム, コール, スペース, プライベートセッション — そして、任意のリンクに従う, ゲームや別のサイトへ. それぞれがコネクトウィンドウを開き、その機能がどの機能だったかを言っています。"
 
-#: lib/retro_hex_chat_web/controllers/help_content/watching_without_account.html.heex:36
+#: lib/retro_hex_chat_web/controllers/help_content/watching_without_account.html.heex:42
 #, elixir-autogen, elixir-format
 msgid "A link to a game, a call or a space opens the chat with that window, and after you sign in it takes you to the link."
 msgstr "ゲーム、コール、またはスペースへのリンクは、そのウィンドウとチャットを開き、サインインした後、リンクに移動します。"
@@ -908,3 +908,8 @@ msgstr "チャンネルを共有する: そのアドレスは、/c/ 続いてそ
 #, elixir-autogen, elixir-format
 msgid "The Connect window is where you sign in. It opens over the chat at its own address, /connect — from Create an account on the home, or from anything you try that needs an account — so you sign in without leaving the desktop you arrived on."
 msgstr "接続ウィンドウは、サインインする場所です。 自分のアドレスでチャットを開き、/connect - 自宅でアカウントを作成したり、アカウントが必要なことを試したりから、デスクトップを離れることなくサインインします。"
+
+#: lib/retro_hex_chat_web/controllers/help_content/watching_without_account.html.heex:30
+#, elixir-autogen, elixir-format
+msgid "Where the message box would be, a bar says you are watching as a visitor. Its Create an account to talk button opens the Connect window, and once you sign in you come back to the same channel."
+msgstr "メッセージボックスがどこにあるか、バーが訪問者として見ていると言います。 ボタンがコネクトウィンドウを開き、サインインすると同じチャンネルに戻ります。"

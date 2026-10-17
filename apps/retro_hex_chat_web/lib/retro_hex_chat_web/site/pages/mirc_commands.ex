@@ -9,10 +9,7 @@ defmodule RetroHexChatWeb.Site.Pages.MircCommands do
   """
   use RetroHexChatWeb.Site.Page
 
-  import RetroHexChatWeb.Components.UI.Landing.IrcGuides
-
   alias RetroHexChat.Commands.MircParity
-  alias RetroHexChatWeb.Icons
   alias RetroHexChatWeb.PublicPages
   alias RetroHexChatWeb.Site.Pages.Guides
 
@@ -29,9 +26,25 @@ defmodule RetroHexChatWeb.Site.Pages.MircCommands do
        groups: groups,
        links: Guides.links(:mirc_commands),
        windows:
-         [%{id: "intro", label: dgettext("landing", "mIRC commands"), icon: :icon_terminal}] ++
-           Enum.map(groups, &%{id: &1.id, label: &1.label, icon: :icon_terminal}) ++
-           [%{id: "read-next", label: dgettext("landing", "Read next"), icon: :icon_link}],
+         [
+           Window.new(
+             "intro",
+             dgettext("landing", "Your mIRC commands, in the browser"),
+             :icon_terminal,
+             width: 640,
+             taskbar_label: dgettext("landing", "mIRC commands"),
+             body: &page_intro/1,
+             assigns: %{
+               heading_id: "mirc-commands-heading",
+               description:
+                 dgettext(
+                   "landing",
+                   "Retro Hex Chat is a chat in the style of mIRC that runs in the browser, and most of what your fingers remember still works. Below are the commands mIRC users type most, each marked the same, different, or not here — with what to type instead."
+                 )
+             },
+             status: [dgettext("landing", "Commands start with a slash")]
+           )
+         ] ++ Enum.map(groups, &Guides.parity_window/1) ++ [Guides.read_next_window()],
        canonical_path: PublicPages.path(:mirc_commands),
        json_ld: [Guides.breadcrumb(:mirc_commands)],
        page_title:
@@ -51,9 +64,4 @@ defmodule RetroHexChatWeb.Site.Pages.MircCommands do
       row.help_topic && PublicPages.localized_path("/chat/help/#{row.help_topic}")
     )
   end
-
-  embed_templates "mirc_commands.html"
-
-  @impl RetroHexChatWeb.Site.Page
-  def render(assigns), do: mirc_commands(assigns)
 end

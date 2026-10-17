@@ -190,17 +190,33 @@ defmodule RetroHexChatWeb.Site.Pages.Faq do
      %{
        active_page: :faq,
        windows: [
-         %{id: "intro", label: dgettext("landing", "FAQ"), icon: :icon_question},
-         %{
-           id: "getting-started",
-           label: dgettext("landing", "Getting Started"),
-           icon: :icon_question
-         },
-         %{
-           id: "technical-community",
-           label: dgettext("landing", "Technical & Community"),
-           icon: :icon_code
-         }
+         Window.new("intro", dgettext("landing", "Retro Hex Chat FAQ"), :icon_question,
+           width: 640,
+           taskbar_label: dgettext("landing", "FAQ"),
+           body: &page_intro/1,
+           assigns: %{
+             heading_id: "faq-heading",
+             description:
+               dgettext(
+                 "landing",
+                 "Answers to common questions about peer-to-peer calls, self-hosting, server requirements, security, mobile support, contributing, and project sponsorship."
+               )
+           },
+           status: [dgettext("landing", "Frequently asked questions")]
+         ),
+         Window.new("getting-started", dgettext("landing", "Getting Started"), :icon_question,
+           width: 520,
+           body: &getting_started/1,
+           status: [dgettext("landing", "8 questions")]
+         ),
+         Window.new(
+           "technical-community",
+           dgettext("landing", "Technical & Community"),
+           :icon_code,
+           width: 480,
+           body: &technical_community/1,
+           status: [dgettext("landing", "6 questions")]
+         )
        ],
        canonical_path: "/faq",
        page_title: dgettext("landing", "FAQ — Retro Hex Chat"),
@@ -268,8 +284,5 @@ defmodule RetroHexChatWeb.Site.Pages.Faq do
 
   defp translate(msgid), do: Gettext.dgettext(RetroHexChatWeb.Gettext, "landing", msgid)
 
-  embed_templates "faq.html"
-
-  @impl RetroHexChatWeb.Site.Page
-  def render(assigns), do: faq(assigns)
+  embed_templates "faq/*"
 end

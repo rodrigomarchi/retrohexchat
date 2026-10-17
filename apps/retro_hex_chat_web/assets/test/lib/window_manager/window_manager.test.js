@@ -83,7 +83,7 @@ function buildDesktop() {
         </div>
       </div>
       <button data-window-taskbar="conn"></button>
-      <div data-taskbar-group data-group-open="false">
+      <div data-taskbar-group data-taskbar-group-key="admin" data-group-open="false">
         <button data-taskbar-group-trigger data-testid="taskbar-group-admin">Admin</button>
         <div data-taskbar-group-panel class="u-hidden">
           <button data-window-taskbar="call" class="desktop-taskbar__group-item"></button>
@@ -591,7 +591,7 @@ describe("WindowManager", () => {
 
   it("keeps the open Start-menu group open through a server patch", () => {
     const trigger = el.querySelector("[data-start-submenu-trigger]");
-    trigger.dataset.testid = "start-menu-admin-submenu";
+    trigger.closest("[data-start-submenu]").dataset.startSubmenuKey = "admin";
     el.querySelector("[data-window-start]").click();
     trigger.click();
 
@@ -657,6 +657,21 @@ describe("WindowManager", () => {
       el.querySelector("[data-taskbar-group-panel] [data-window-taskbar]").click();
 
       expect(hook.focusedId).toBe("call");
+    });
+
+    // The first tap on a visitor's page is also what starts the chat, and the
+    // redraw that follows must not shut the group the tap just opened.
+    it("keeps the group the reader opened open through a server redraw", () => {
+      trigger().click();
+
+      group().outerHTML = group()
+        .outerHTML.replace('data-group-open="true"', 'data-group-open="false"')
+        .replace('aria-expanded="true"', 'aria-expanded="false"');
+      el.querySelector("[data-taskbar-group-panel]").classList.add("u-hidden");
+      hook.reconcile();
+
+      expect(panelHidden()).toBe(false);
+      expect(group().dataset.groupOpen).toBe("true");
     });
 
     it("closes on a pointerdown outside the group", () => {
@@ -1925,6 +1940,202 @@ describe("WindowManager — navigable chrome", () => {
 
       expect(Object.keys(outer.windows)).toEqual(["shell"]);
       expect(inner.windows.demo.state.minimized).toBe(true);
+    });
+  });
+});
+
+describe("WindowManager — a page's group of windows", () => {
+  let el;
+  let wm;
+  let pushEvent;
+
+  function groupMarkup({ open = true, focus = true, address = "/features" } = {}) {
+    const win = (id) => `
+      <div id="${id}" data-window-id="${id}" data-window-group="site" data-document-slot="site"
+           data-window-ephemeral="true" data-window-default-width="300"
+           data-window-min-width="200" data-window-min-height="120">
+        <div data-window-titlebar><button data-window-control="close"></button></div>
+      </div>`;
+    return `
+      <div data-window-group-root="site" data-window-group-open="${open}"
+           data-window-group-focus="${focus}" data-document-address="${address}">
+        ${win("site-intro")}${win("site-channels")}${win("site-bots")}
+      </div>`;
+  }
+
+  function build(group) {
+    el = document.createElement("div");
+    el.dataset.persist = "false";
+    el.innerHTML = `
+      <div class="desktop__workspace">
+        ${windowMarkup("chat", { pinned: true })}
+        ${group}
+      </div>`;
+    document.body.appendChild(el);
+    pushEvent = vi.fn();
+    wm = createWindowManager(el, { pushEvent });
+    wm.mount();
+  }
+
+  afterEach(() => {
+    wm.destroy();
+    el.remove();
+    clearWindowManagerMemory();
+  });
+
+  const ids = ["site-intro", "site-channels", "site-bots"];
+
+  it("opens a page's windows together, the first in front", () => {
+    build(groupMarkup());
+
+    for (const id of ids) expect(wm.windows[id].state.open).toBe(true);
+    expect(wm.focusedId).toBe("site-intro");
+    expect(wm.windows["site-intro"].state.z).toBeGreaterThan(wm.windows["site-bots"].state.z);
+    // A cascade: every window behind shows its title bar above and left.
+    expect(wm.windows["site-bots"].state.x).toBeLessThanOrEqual(wm.windows["site-intro"].state.x);
+    expect(pushEvent).not.toHaveBeenCalledWith("window_focused", expect.anything());
+  });
+
+  it("keeps a closed group closed until it is asked for, then lays it out", () => {
+    build(groupMarkup({ open: false, focus: false }));
+
+    for (const id of ids) expect(wm.windows[id].state.open).toBe(false);
+    expect(wm.focusedId).toBe("chat");
+
+    wm.command("open_group", "site");
+
+    for (const id of ids) expect(wm.windows[id].state.open).toBe(true);
+    expect(wm.focusedId).toBe("site-intro");
+  });
+
+  it("brings an open group forward without rearranging it", () => {
+    build(groupMarkup());
+    wm.focusWindow("site-bots");
+    wm.focusWindow("chat");
+    const placed = ids.map((id) => [wm.windows[id].state.x, wm.windows[id].state.y]);
+
+    wm.command("open_group", "site");
+
+    expect(wm.focusedId).toBe("site-bots");
+    expect(ids.map((id) => [wm.windows[id].state.x, wm.windows[id].state.y])).toEqual(placed);
+  });
+
+  it("keeps the windows the reader closed closed when the group comes forward", () => {
+    build(groupMarkup());
+    wm.closeWindow("site-channels");
+    wm.focusWindow("chat");
+
+    wm.command("open_group", "site");
+
+    expect(wm.windows["site-channels"].state.open).toBe(false);
+    expect(wm.focusedId).toBe("site-intro");
+  });
+
+  it("reports the focus a taskbar click gives as the reader's", () => {
+    build(groupMarkup());
+    el.insertAdjacentHTML("beforeend", `<button data-window-taskbar="chat">chat</button>`);
+
+    el.querySelector('[data-window-taskbar="chat"]').click();
+
+    expect(pushEvent).toHaveBeenCalledWith("window_focused", { id: "chat" });
+  });
+
+  it("tells the host the page's slot when the reader brings a window forward", () => {
+    build(groupMarkup());
+
+    wm.focusWindow("site-channels");
+
+    expect(pushEvent).toHaveBeenCalledWith("window_focused", {
+      id: "site-channels",
+      slot: "site",
+    });
+  });
+
+  it("tells the host the page closed only when its last window closes", () => {
+    build(groupMarkup());
+
+    wm.closeWindow("site-intro");
+    wm.closeWindow("site-channels");
+    expect(pushEvent).not.toHaveBeenCalledWith("document_closed", expect.anything());
+
+    wm.closeWindow("site-bots");
+    expect(pushEvent).toHaveBeenCalledWith("document_closed", { slot: "site" });
+  });
+
+  it("lays out a page that arrives with a patch", () => {
+    build("");
+    el.querySelector(".desktop__workspace").insertAdjacentHTML("beforeend", groupMarkup());
+
+    wm.reconcile();
+
+    for (const id of ids) expect(wm.windows[id].placed).toBe(true);
+    expect(wm.focusedId).toBe("site-intro");
+  });
+
+  // `site-intro` is the first window of more than one page: the same id on
+  // the next page is that page's window, not the one the reader closed.
+  it("treats a window of another page under the same id as a new window", () => {
+    build(groupMarkup());
+    wm.closeWindow("site-intro");
+    wm.focusWindow("chat");
+
+    el.querySelector("[data-window-group-root]").outerHTML = groupMarkup({ address: "/faq" });
+    wm.reconcile();
+
+    for (const id of ids) expect(wm.windows[id].state.open).toBe(true);
+    expect(wm.focusedId).toBe("site-intro");
+  });
+
+  // The server opening a group lays it out, which puts its first window in
+  // front: neither is the reader's doing, so neither is reported back.
+  it("reports no focus the server's own command moves", () => {
+    build(groupMarkup({ open: false, focus: false }));
+
+    wm.command("open_group", "site");
+    wm.command("focus", "chat");
+
+    expect(pushEvent).not.toHaveBeenCalledWith("window_focused", expect.anything());
+  });
+
+  it("hands what the reader does over, in order, when there is no host yet", () => {
+    build(groupMarkup());
+    wm.setPushEvent(null);
+    const deferred = vi.fn();
+    document.addEventListener("wm:deferred-push", deferred);
+
+    wm.focusWindow("site-channels");
+    for (const id of ids) wm.closeWindow(id);
+
+    document.removeEventListener("wm:deferred-push", deferred);
+    expect(deferred.mock.calls.map(([event]) => event.detail.event)).toEqual([
+      "window_focused",
+      "document_closed",
+    ]);
+    expect(deferred.mock.calls[0][0].detail.payload).toEqual({
+      id: "site-channels",
+      slot: "site",
+    });
+  });
+
+  it("hands a desktop icon's request over when there is no host yet", () => {
+    build(groupMarkup());
+    wm.setPushEvent(null);
+    el.insertAdjacentHTML(
+      "afterbegin",
+      `<button data-window-shortcut="faq" data-window-shortcut-action="open_page">FAQ</button>`,
+    );
+    const deferred = vi.fn();
+    document.addEventListener("wm:deferred-push", deferred);
+
+    el.querySelector('[data-window-shortcut="faq"]').dispatchEvent(
+      new MouseEvent("dblclick", { bubbles: true }),
+    );
+
+    document.removeEventListener("wm:deferred-push", deferred);
+    expect(deferred).toHaveBeenCalledTimes(1);
+    expect(deferred.mock.calls[0][0].detail).toEqual({
+      event: "open_page",
+      payload: { id: "faq" },
     });
   });
 });

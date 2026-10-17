@@ -29,9 +29,22 @@
  *   - `[data-window-start]`         Start button (toggles the menu)
  *   - `[data-window-start-menu]`    Start menu popup
  *   - `[data-window-open=<id>]`     opens/focuses a window (e.g. a menu item)
- *   - `[data-taskbar-group]`        taskbar button standing for a window family
+ *   - `[data-taskbar-group]`        taskbar button standing for a window family,
+ *                                   named across redraws by `data-taskbar-group-key`
  *   - `[data-taskbar-menu=<kind>]`  right-click menu (window | desktop)
  *   - `[data-taskbar-menu-action]`  item inside a taskbar menu
+ *   - `[data-window-group=<name>]`  a window that opens, closes and lays out
+ *                                   with the rest of its group — the windows of
+ *                                   one page of the site. A
+ *                                   `[data-window-group-root]` around them says
+ *                                   whether they start open
+ *                                   (`data-window-group-open`), whether the
+ *                                   first takes the front (`data-window-group-focus`)
+ *                                   and which page they are (`data-document-address`).
+ *                                   `window_groups.js` decides what opening one does
+ *   - `[data-document-slot=<slot>]` a window of a document the address bar follows:
+ *                                   focusing one pushes `"window_focused"` {id, slot},
+ *                                   closing its slot's last pushes `"document_closed"`
  *
  * Right-clicking a taskbar button opens the window menu (restore/minimize/
  * maximize/close); right-clicking elsewhere on the taskbar opens the desktop
@@ -41,7 +54,8 @@
  *
  * The server can drive it via `push_event("window_command", {action, id})` where
  * action is one of open | focus | flash | close | minimize | maximize |
- * set_geometry | restore_geometry | dock_pair.
+ * set_geometry | restore_geometry | dock_pair — or `open_group`, whose id names
+ * a window group rather than a window.
  *
  * Escape first closes any open WM menu. On desktops opting in via
  * `data-escape-closes-windows`, it then closes the topmost unpinned window —
@@ -58,6 +72,7 @@
  * island. Hosts with managed windows must handle both events.
  */
 import { handleCopySelectionClick, refreshCopySelectionItems } from "../ui/copy_selection";
+import { groupsToLayOut, lastOpenOfSlot, opensAtStart, planOpenGroup } from "./window_groups";
 
 const rememberedLayouts = new Map();
 // What Phoenix's own focus_wrap considers reachable, minus the sentinel spans
@@ -137,6 +152,7 @@ const WindowManagerCore = {
     if (this.el.dataset.cascadeOnMount === "true" && !this.readRememberedLayout()) {
       this.layoutOnMount();
     }
+    this.layoutArrivedGroups();
     this.focusInitialWindow();
     this.bindEvents();
     this.updateStacking();
@@ -148,15 +164,12 @@ const WindowManagerCore = {
   // address names, over the chat that comes first in the markup. It is the
   // server's own choice, so it is not reported back as the reader's.
   focusInitialWindow() {
-    const id = this.el.querySelector('[data-window-initial-focus="true"]')?.dataset.windowId;
+    const id = this.el.querySelector(
+      '[data-window-initial-focus="true"], [data-window-group-focus="true"] [data-window-id]',
+    )?.dataset.windowId;
     if (!id || !this.windows[id]) return;
 
-    this._commanding = true;
-    try {
-      this.focusWindow(id);
-    } finally {
-      this._commanding = false;
-    }
+    this.quietly(() => this.focusWindow(id));
   },
 
   reconcile() {
@@ -172,6 +185,8 @@ const WindowManagerCore = {
     // through the patch — the first click on a page is also what starts the
     // chat, and the patch that follows must not shut the menu it just opened.
     if (this.startMenuOpen) this.restoreStartMenu();
+    // The same for a taskbar group the reader opened.
+    if (this.taskbarGroupKey) this.restoreTaskbarGroup();
 
     // A server-driven DOM patch resets the class/style we own on window roots
     // (the server always renders `u-hidden`), so re-assert client-owned geometry
@@ -207,6 +222,10 @@ const WindowManagerCore = {
         const remembered = this.readRememberedLayout();
         if (remembered && remembered[id]) this.applyRememberedState(id, remembered[id]);
         added.push(id);
+      } else if (this.windows[id].page !== windowPage(el)) {
+        // The same id on another page (`site-intro`) is that page's window.
+        this.registerWindow(el);
+        added.push(id);
       } else if (this.windows[id].el !== el) {
         this.windows[id].el = el;
       }
@@ -231,6 +250,9 @@ const WindowManagerCore = {
       const win = this.windows[id];
       if (win && win.state.open && !win.state.minimized) this.focusDialogInside(win.el);
     }
+    // A page that arrived by a patch arrived with its windows open: they are
+    // laid out together, the first in front, as on the first paint.
+    if (added.some((id) => this.windows[id].group)) this.layoutArrivedGroups();
   },
 
   pruneWindow(id) {
@@ -277,9 +299,18 @@ const WindowManagerCore = {
   registerWindow(el) {
     const id = el.dataset.windowId;
     const d = el.dataset;
-    const open = d.windowInitialOpen !== "false";
+    const group = d.windowGroup || null;
+    const groupRoot = group ? el.closest("[data-window-group-root]") : null;
+    const open = opensAtStart(groupRoot?.dataset.windowGroupOpen, d.windowInitialOpen);
     this.windows[id] = {
       el,
+      group,
+      // The document the address bar follows while this window is in front,
+      // and the page of the site it belongs to.
+      slot: d.documentSlot || null,
+      page: windowPage(el),
+      // A group's windows are placed together, the first time they show.
+      placed: !group,
       pinned: d.windowPinned === "true",
       managed: d.windowManaged === "true",
       // Ephemeral windows never load or save layout state: every mount
@@ -551,9 +582,11 @@ const WindowManagerCore = {
     const shortcut = e.target.closest("[data-window-shortcut]");
     if (shortcut) {
       // Select-then-open is a desktop idiom, and it only makes sense for a
-      // window this page can actually show. A shortcut pointing somewhere else
-      // is a plain link and behaves like one — a single click follows it.
-      if (!this.actsLocally(shortcut.dataset.windowShortcut)) return;
+      // window this page can actually show, or an action the host runs. A
+      // shortcut pointing somewhere else is a plain link and behaves like one
+      // — a single click follows it.
+      const { windowShortcut, windowShortcutAction } = shortcut.dataset;
+      if (!windowShortcutAction && !this.actsLocally(windowShortcut)) return;
       e.preventDefault();
       this.selectShortcut(shortcut);
       return;
@@ -612,7 +645,7 @@ const WindowManagerCore = {
       if (opener.getAttribute("aria-disabled") === "true" || opener.disabled) return;
       if (!this.actsLocally(opener.dataset.windowOpen)) return;
       e.preventDefault();
-      this.command("open", opener.dataset.windowOpen, opener);
+      this.runCommand("open", opener.dataset.windowOpen, opener, {});
       this.closeStartMenu();
       return;
     }
@@ -637,15 +670,15 @@ const WindowManagerCore = {
   onDblClick(e) {
     const shortcut = e.target.closest("[data-window-shortcut]");
     if (shortcut) {
-      if (!this.actsLocally(shortcut.dataset.windowShortcut)) return;
-      e.preventDefault();
-      if (shortcut.dataset.windowShortcutAction && typeof this.pushEvent === "function") {
-        this.pushEvent(shortcut.dataset.windowShortcutAction, {
-          id: shortcut.dataset.windowShortcut,
-        });
+      const action = shortcut.dataset.windowShortcutAction;
+      if (action) {
+        e.preventDefault();
+        this.pushOrDefer(action, { id: shortcut.dataset.windowShortcut });
         return;
       }
-      this.command("open", shortcut.dataset.windowShortcut, shortcut);
+      if (!this.actsLocally(shortcut.dataset.windowShortcut)) return;
+      e.preventDefault();
+      this.runCommand("open", shortcut.dataset.windowShortcut, shortcut, {});
       return;
     }
 
@@ -877,7 +910,7 @@ const WindowManagerCore = {
     if (!win) return;
     const st = win.state;
     if (!st.open || st.minimized || this.focusedId !== id) {
-      this.command("open", id, taskBtn);
+      this.runCommand("open", id, taskBtn, {});
     } else {
       this.minimizeWindow(id);
     }
@@ -885,20 +918,34 @@ const WindowManagerCore = {
 
   // ── Window operations ──────────────────────────────────────
 
+  // The server's way in (`window_command`). The reader's own clicks — a
+  // taskbar button, a Start menu entry, a desktop icon — run the same command
+  // directly, so the focus they move is reported as theirs.
   command(action, id, sourceEl = null, payload = {}) {
     if (!id) return;
     // What the server asks for is not news to the server: a focus it commands
     // is not reported back (see `reportFocus`), or the two would answer each
     // other forever.
+    this.quietly(() => this.runCommand(action, id, sourceEl, payload));
+  },
+
+  // Runs `fn` without reporting the focus it moves to the host. Nested runs
+  // keep the outer one's silence.
+  quietly(fn) {
+    const was = this._commanding;
     this._commanding = true;
     try {
-      this.runCommand(action, id, sourceEl, payload);
+      fn();
     } finally {
-      this._commanding = false;
+      this._commanding = was;
     }
   },
 
   runCommand(action, id, sourceEl, payload) {
+    if (action === "open_group") {
+      this.openGroup(id);
+      return;
+    }
     if (!this.windows[id]) {
       // Unknown id = a server-managed window that is not mounted. Ask the host
       // to mount its island; the patch registers it and it opens on arrival.
@@ -1203,6 +1250,23 @@ const WindowManagerCore = {
     if (this.focusedId === id) this.focusTopmost();
     this.applyAll();
     this.persist();
+    this.reportDocumentClosed(id);
+  },
+
+  // The last open window of a page closed: the page is gone from the desk, and
+  // the host moves the address to whatever is in front now. A group closed
+  // whole is placed afresh the next time it opens.
+  reportDocumentClosed(id) {
+    const { slot, group } = this.windows[id];
+    const windows = Object.values(this.windows).map((win) => ({
+      slot: win.slot,
+      open: win.state.open,
+    }));
+    if (!slot || !lastOpenOfSlot(windows, slot)) return;
+    if (group) {
+      for (const member of this.groupIds(group)) this.windows[member].placed = false;
+    }
+    this.pushOrDefer("document_closed", { slot });
   },
 
   // `animate: false` minimizes a window the reader never saw open — one the
@@ -1311,6 +1375,66 @@ const WindowManagerCore = {
     this.zCounter += ids.length;
   },
 
+  // ── Window groups ──────────────────────────────────────────
+
+  // Opens a group — a page of the site — or brings it to the front, the way
+  // `planOpenGroup` decides.
+  openGroup(group) {
+    const plan = planOpenGroup(this.groupMembers(group), this.focusedId);
+    switch (plan.kind) {
+      case "open_all":
+        for (const id of plan.ids) {
+          this.windows[id].state.open = true;
+          this.windows[id].state.minimized = false;
+        }
+        this.layoutGroup(plan.ids);
+        break;
+      case "lay_out":
+        this.layoutGroup(plan.ids);
+        break;
+      case "front":
+        this.windows[plan.id].state.minimized = false;
+        this.focusWindow(plan.id);
+        break;
+      default:
+        break;
+    }
+  },
+
+  // A group's windows in the order the page draws them.
+  groupIds(group) {
+    return this.ownedElements("[data-window-group]")
+      .filter((el) => el.dataset.windowGroup === group)
+      .map((el) => el.dataset.windowId)
+      .filter((id) => this.windows[id]);
+  },
+
+  groupMembers(group) {
+    return this.groupIds(group).map((id) => {
+      const { placed, state } = this.windows[id];
+      return { id, open: state.open, minimized: state.minimized, placed, z: state.z || 0 };
+    });
+  },
+
+  // Lays out every group a layout is owed (`groupsToLayOut`).
+  layoutArrivedGroups() {
+    const windows = Object.values(this.windows).map((win) => ({
+      group: win.group,
+      open: win.state.open,
+      placed: win.placed,
+    }));
+    for (const group of groupsToLayOut(windows)) this.layoutGroup(this.groupIds(group));
+  },
+
+  // The page cascade (`cascadeOnMount`), centred, the first window in front —
+  // the layout's doing, not the reader's, so not reported.
+  layoutGroup(ids) {
+    this.cascadeOnMount(ids);
+    for (const id of ids) this.windows[id].placed = true;
+    this.quietly(() => this.focusWindow(ids[0]));
+    this.centerLayout(ids);
+  },
+
   // Anchoring a cascade at the top-left corner leaves the rest of the desk
   // conspicuously empty — most visible on the pages with only a few windows.
   // Heights are only known once the windows have been laid out, so this runs as
@@ -1401,9 +1525,22 @@ const WindowManagerCore = {
   // can say where they are. Only those windows have an address, and only a
   // focus the reader made is reported — one the server commanded it knows.
   reportFocus(id) {
-    if (this._commanding || typeof this.pushEvent !== "function") return;
-    const el = this.windows[id]?.el;
-    if (id === "chat" || el?.dataset.documentSlot) this.pushEvent("window_focused", { id });
+    if (this._commanding) return;
+    const slot = this.windows[id]?.slot;
+    if (id === "chat") this.pushOrDefer("window_focused", { id });
+    else if (slot) this.pushOrDefer("window_focused", { id, slot });
+  },
+
+  // What the reader does before there is a host to tell is handed, in order,
+  // to whoever starts it (`wm:deferred-push`, held by desktop.js).
+  pushOrDefer(event, payload) {
+    if (typeof this.pushEvent === "function") {
+      this.pushEvent(event, payload);
+      return;
+    }
+    this.el.dispatchEvent(
+      new CustomEvent("wm:deferred-push", { bubbles: true, detail: { event, payload } }),
+    );
   },
 
   /** Hand the manager its host channel after it was mounted without one. */
@@ -1664,18 +1801,26 @@ const WindowManagerCore = {
     refreshCopySelectionItems(submenu);
   },
 
-  // Put back the Start menu and the group open in it, found again by its
-  // trigger's test id when the patch replaced the nodes.
+  // Put back the Start menu and the group open in it, found again by its key
+  // (`data-start-submenu-key`) when the patch replaced the nodes.
   restoreStartMenu() {
     const menu = this.startMenu();
     if (!menu) return;
     menu.classList.remove("u-hidden");
     if (!this.startSubmenuKey) return;
-    const trigger = menu.querySelector(
-      `[data-start-submenu-trigger][data-testid="${this.startSubmenuKey}"]`,
+    const submenu = menu.querySelector(
+      `[data-start-submenu-key="${cssEscape(this.startSubmenuKey)}"]`,
     );
-    const submenu = trigger?.closest("[data-start-submenu]");
     if (submenu) this.setStartSubmenu(submenu, true);
+  },
+
+  // The same for the taskbar group the reader opened (`data-taskbar-group-key`).
+  restoreTaskbarGroup() {
+    const group = this.el.querySelector(
+      `[data-taskbar-group-key="${cssEscape(this.taskbarGroupKey)}"]`,
+    );
+    if (group) this.setTaskbarGroup(group, true);
+    else this.taskbarGroupKey = null;
   },
 
   closeStartSubmenus(root, except = null) {
@@ -1701,7 +1846,12 @@ const WindowManagerCore = {
     });
   },
 
+  // A group is named by its key, the one handle that survives the server
+  // redrawing the taskbar.
   setTaskbarGroup(group, open) {
+    const key = group.dataset.taskbarGroupKey;
+    if (open) this.taskbarGroupKey = key;
+    else if (this.taskbarGroupKey === key) this.taskbarGroupKey = null;
     group.dataset.groupOpen = open ? "true" : "false";
     const panel = group.querySelector("[data-taskbar-group-panel]");
     const trigger = group.querySelector("[data-taskbar-group-trigger]");
@@ -1721,7 +1871,7 @@ const WindowManagerCore = {
   },
 
   setStartSubmenu(submenu, open) {
-    const key = submenu.querySelector("[data-start-submenu-trigger]")?.dataset.testid;
+    const key = submenu.dataset.startSubmenuKey;
     if (open) this.startSubmenuKey = key;
     else if (this.startSubmenuKey === key) this.startSubmenuKey = null;
     submenu.dataset.submenuOpen = open ? "true" : "false";
@@ -1918,6 +2068,12 @@ const WindowManagerCore = {
     rememberedLayouts.set(this.persistKey, data);
   },
 };
+
+// The address of the page of the site a window belongs to, or null for any
+// other window (`data-document-address` on its group's root).
+function windowPage(el) {
+  return el.closest("[data-window-group-root]")?.dataset.documentAddress || null;
+}
 
 function int(value, fallback) {
   const n = parseInt(value, 10);

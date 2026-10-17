@@ -8,6 +8,9 @@
  *   - at once when the address is the chat's own, or a window that does nothing
  *     without it — a channel, sign-in, an invitation, a member's desktop
  *     (`<html data-boot="now">`, decided by the server);
+ *   - at once for a reader of the home, whose chat is what the home shows
+ *     (`<html data-boot="reader">`) — but a crawler there indexes the home's
+ *     own words, not the conversation, so it waits like on any other page;
  *   - otherwise on the reader's first interaction, or when the browser is idle
  *     after load, whichever comes first;
  *   - never while the tab is hidden: a background tab waits until it is shown;
@@ -27,8 +30,10 @@ const CRAWLER = /bot|crawl|spider|slurp|bingpreview|facebookexternalhit/i;
  * for a crawler on a page of the site, only when somebody actually acts.
  */
 export function bootMode(html, userAgent = "") {
-  if (html?.dataset?.boot === "now") return "now";
-  return CRAWLER.test(userAgent) ? "interaction" : "deferred";
+  const hint = html?.dataset?.boot;
+  if (hint === "now") return "now";
+  if (CRAWLER.test(userAgent)) return "interaction";
+  return hint === "reader" ? "now" : "deferred";
 }
 
 /**

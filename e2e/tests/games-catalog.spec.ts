@@ -8,6 +8,7 @@
 import { expect, test } from "@playwright/test";
 import { uniqueNickname } from "../pages/ConnectPage";
 import { shot } from "../helpers/screenshots";
+import { bringForward } from "../helpers/siteWindows";
 
 const SIGN_IN_WINDOW = '[data-testid="document-window-connect"]';
 
@@ -18,8 +19,9 @@ test("a game's public page signs a reader in and lands them on the game (PW22)",
   await expect(page.locator("#games-heading")).toBeVisible();
   await shot(page, "games-catalogue");
 
-  // The catalogue is one document: its strip leads to the multiplayer section,
-  // and a card opens the game's page in the same window.
+  // The catalogue is a window per list: the page's taskbar group brings the
+  // multiplayer one forward, and a card opens the game's page in its place.
+  await bringForward(page, "site-multiplayer");
   await page.getByTestId("game-card-hex-tennis").scrollIntoViewIfNeeded();
   await page.getByTestId("game-card-hex-tennis").click();
   await expect(page).toHaveURL(/\/games\/hex-tennis$/);

@@ -3934,20 +3934,10 @@ msgstr "L'adresse d'un canal est /c/ suivie de son nom — /c/lobby pour #lobby 
 msgid "A private conversation never gets an address: who you talk to privately is not something a link should carry."
 msgstr "Une conversation privée n'a jamais une adresse: qui vous parlez en privé n'est pas quelque chose qu'un lien devrait porter."
 
-#: lib/retro_hex_chat_web/controllers/help_content/ui_site_pages.html.heex:11
-#, elixir-autogen, elixir-format
-msgid "About this site"
-msgstr "À propos de ce site"
-
 #: lib/retro_hex_chat_web/controllers/help_content/ui_site_pages.html.heex:38
 #, elixir-autogen, elixir-format
 msgid "Addresses"
 msgstr "Adresses"
-
-#: lib/retro_hex_chat_web/controllers/help_content/ui_site_pages.html.heex:59
-#, elixir-autogen, elixir-format
-msgid "Closing a page window takes you back to the chat, at the address of the conversation in front."
-msgstr "La fermeture d'une fenêtre de page vous ramène au chat, à l'adresse de la conversation en face."
 
 #: lib/retro_hex_chat_web/controllers/help_content/ui_site_pages.html.heex:74
 #, elixir-autogen, elixir-format
@@ -3969,20 +3959,10 @@ msgstr "Trouver les pages"
 msgid "On a desktop viewport, the wallpaper shows folder icons: About this site, with every page of the site, then the main app groups — View, Tools, Automation, P2P, Games, Account, Language and Help. Admin and System appear there only for admins. Windows and Navigate stay in the Start menu. Double-click a folder icon to open a Windows-style folder window with icons for that group. A single click only selects the desktop icon."
 msgstr "Sur une fenêtre de bureau, le fond d'écran affiche les icônes du dossier : A propos de ce site, avec chaque page du site, puis les principaux groupes d'applications — Affichage, Outils, Automation, P2P, Jeux, Compte, Langue et Aide. Admin et System n'y apparaissent que pour les admins. Windows et Naviguez restez dans le menu Démarrer. Double-cliquez sur une icône de dossier pour ouvrir une fenêtre de dossier de style Windows avec des icônes pour ce groupe. Un seul clic sélectionne l'icône du bureau."
 
-#: lib/retro_hex_chat_web/controllers/help_content/ui_site_pages.html.heex:2
-#, elixir-autogen, elixir-format
-msgid "RetroHexChat has one desktop. The chat lives on it, and so does every page of the site: the home, the features, the games, the guides, the public archives and this help each open as a window over the chat, and moving between them never reloads the page — the chat keeps running behind whatever you are reading."
-msgstr "RetroHexChat a un bureau. Le chat vit dessus, et chaque page du site aussi: la maison, les fonctionnalités, les jeux, les guides, les archives publiques et cela aide chacun à ouvrir comme une fenêtre sur le chat, et se déplacer entre eux ne recharge jamais la page — le chat continue à courir derrière tout ce que vous lisez."
-
 #: lib/retro_hex_chat_web/controllers/help_content/ui_site_pages.html.heex:17
 #, elixir-autogen, elixir-format
 msgid "Start ▸ Navigate"
 msgstr "Démarrer ▸ Naviguer"
-
-#: lib/retro_hex_chat_web/controllers/help_content/ui_site_pages.html.heex:30
-#, elixir-autogen, elixir-format
-msgid "The Welcome Window"
-msgstr "La fenêtre de bienvenue"
 
 #: lib/retro_hex_chat_web/controllers/help_content/ui_site_pages.html.heex:23
 #, elixir-autogen, elixir-format
@@ -3994,27 +3974,47 @@ msgstr "La barre des tâches"
 msgid "Watching Without an Account"
 msgstr "Regarder sans compte"
 
-#: lib/retro_hex_chat_web/controllers/help_content/ui_site_pages.html.heex:23
-#, elixir-autogen, elixir-format
-msgid "— An open page has a taskbar button like any other window. Click it to bring the page back; click the chat's button to go back to the conversation."
-msgstr "— Une page ouverte a un bouton de barre des tâches comme n'importe quelle autre fenêtre. Cliquez dessus pour ramener la page; cliquez sur le bouton de chat pour revenir à la conversation."
-
-#: lib/retro_hex_chat_web/controllers/help_content/ui_site_pages.html.heex:11
-#, elixir-autogen, elixir-format
-msgid "— The first icon on the desktop. Double-click it for a folder with every page, the guides and the documentation."
-msgstr "— La première icône sur le bureau. Double-cliquez dessus pour un dossier avec chaque page, les guides et la documentation."
-
 #: lib/retro_hex_chat_web/controllers/help_content/ui_start_menu.html.heex:80
 #, elixir-autogen, elixir-format
 msgid "— The pages of the site, the documentation and the design system, plus Back and Forward through the Help viewer's own history. Each page opens as a window over the chat, without reloading it. These are real links, so they work with scripting off."
 msgstr "— Les pages du site, la documentation et le système de conception, ainsi que Back and Forward à travers la propre histoire du spectateur d'aide. Chaque page s'ouvre comme une fenêtre sur le chat, sans la recharger. Ce sont de vrais liens, donc ils travaillent avec le script off."
 
+#: lib/retro_hex_chat_web/controllers/help_content/ui_site_pages.html.heex:59
+#, elixir-autogen, elixir-format
+msgid "Bringing one of a page's windows forward gives the address bar that page's address. Closing a page's last window takes you back to the chat, at the address of the conversation in front."
+msgstr "L'ajout d'une des fenêtres d'une page donne la barre d'adresse de cette page. La fermeture de la dernière fenêtre d'une page vous ramène à la conversation, à l'adresse de la conversation en face."
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_site_pages.html.heex:2
+#, elixir-autogen, elixir-format
+msgid "RetroHexChat has one desktop. The chat lives on it, and so does every page of the site. A page opens as a set of windows over the chat, one for each of its sections, laid out in a cascade with the page's first window in front; the help, a public archive, an invitation and the Connect window open as one window each. Moving between them never reloads the page — the chat keeps running behind whatever you are reading."
+msgstr "RetroHexChat a un bureau. Le chat vit dessus, et chaque page du site aussi. Une page s'ouvre comme un ensemble de fenêtres sur le chat, une pour chacune de ses sections, disposée dans une cascade avec la première fenêtre de la page devant; l'aide, une archive publique, une invitation et la fenêtre Connect ouverte comme une fenêtre chacun. Se déplacer entre eux ne recharge jamais la page — le chat continue à courir derrière tout ce que vous lisez."
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_site_pages.html.heex:30
+#, elixir-autogen, elixir-format
+msgid "The Home"
+msgstr "La maison"
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_site_pages.html.heex:11
+#, elixir-autogen, elixir-format
+msgid "The desktop icons"
+msgstr "Les icônes du bureau"
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_site_pages.html.heex:23
+#, elixir-autogen, elixir-format
+msgid "— An open page has one taskbar button that lists its windows. Pick one to bring it forward; click the chat's button to go back to the conversation."
+msgstr "— Une page ouverte a un bouton de barre de tâches qui liste ses fenêtres. Choisissez-en un pour le faire avancer; cliquez sur le bouton de chat pour revenir à la conversation."
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_site_pages.html.heex:11
+#, elixir-autogen, elixir-format
+msgid "— Before you sign in, every page has an icon of its own on the desktop: Welcome, How It Works, Features, Games and the rest, then About, README.txt and the Trash. Double-click one to open it. Once you have an account, the pages are in the About this site folder instead."
+msgstr "— Avant de vous connecter, chaque page a une icône propre sur le bureau: Bienvenue, Comment ça marche, Caractéristiques, Jeux et le reste, puis A propos, README.txt et la corbeille. Double-cliquez un pour l'ouvrir. Une fois que vous avez un compte, les pages sont dans le dossier A propos de ce site à la place."
+
 #: lib/retro_hex_chat_web/controllers/help_content/ui_site_pages.html.heex:17
 #, elixir-autogen, elixir-format
-msgid "— The same pages from the Start menu, and the Navigate menu of every page window."
-msgstr "— Les mêmes pages du menu Démarrer et du menu Naviguer dans chaque fenêtre de page."
+msgid "— The same pages from the Start menu."
+msgstr "— Les mêmes pages du menu Démarrer."
 
 #: lib/retro_hex_chat_web/controllers/help_content/ui_site_pages.html.heex:32
 #, elixir-autogen, elixir-format
-msgid "The home page opens the Welcome window over the #lobby channel. Its first button takes you into the lobby and puts the Welcome away on the taskbar; the second opens the Connect window to create an account. After that, the next visit opens the Welcome minimized, so you land straight in the chat."
-msgstr "La page d'accueil ouvre la fenêtre de bienvenue sur le canal #lobby. Son premier bouton vous emmène dans le lobby et place le Welcome sur la barre des tâches ; le second ouvre la fenêtre Connect pour créer un compte. Après cela, la prochaine visite ouvre le Welcome minimisé, de sorte que vous atterrissez directement dans le chat."
+msgid "Before you sign in, the home page is the chat itself: #lobby, live, with nothing in front of it. The home's own windows — what RetroHexChat is, the problem it solves, how it works — open from the Welcome icon, from Start ▸ Navigate ▸ Home, or when you go back to the home from another page; Create an account in the first of them opens the Connect window."
+msgstr "Avant de vous connecter, la page d'accueil est le chat lui-même : #lobby, live, avec rien en face. Les propres fenêtres de la maison — ce qu'est RetroHexChat, le problème qu'il résout, comment il fonctionne — s'ouvrent à partir de l'icône Welcome, de Start ▸ Naviguez ▸ Home, ou lorsque vous retournez à la maison à partir d'une autre page; Créer un compte dans la première ouvre la fenêtre Connect."

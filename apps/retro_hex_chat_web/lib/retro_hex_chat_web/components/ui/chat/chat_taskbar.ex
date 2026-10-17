@@ -14,7 +14,10 @@ defmodule RetroHexChatWeb.Components.UI.ChatTaskbar do
   import RetroHexChatWeb.Components.UI.StartMenuApp
 
   alias RetroHexChatWeb.ChatLive.WindowRegistry
+  alias RetroHexChatWeb.Components.UI.Site.Document
   alias RetroHexChatWeb.Icons
+  alias RetroHexChatWeb.Site.About
+  alias RetroHexChatWeb.Site.Window
 
   attr :chat_label, :string,
     required: true,
@@ -53,7 +56,15 @@ defmodule RetroHexChatWeb.Components.UI.ChatTaskbar do
 
   attr :documents, :list,
     default: [],
-    doc: "the pages of the site open as windows on the desktop: `%{id, label, icon}`"
+    doc: """
+    the pages on the desktop (`Site.Documents.taskbar/2`), `%{slot, label, icon, windows}`,
+    each window `%{id, label, window}` with `window` its `Site.Window`: a page of one
+    window gets a button, a page of the site a group
+    """
+
+  attr :about, :boolean,
+    default: false,
+    doc: "whether the site's About window is on the desktop (`Site.Documents.carries_about?/2`)"
 
   attr :live_ready, :boolean,
     default: true,
@@ -61,7 +72,11 @@ defmodule RetroHexChatWeb.Components.UI.ChatTaskbar do
 
   @spec chat_taskbar(map()) :: Phoenix.LiveView.Rendered.t()
   def chat_taskbar(assigns) do
-    assigns = assign(assigns, :taskbar_slots, assigns |> taskbar_windows() |> group_windows())
+    assigns =
+      assign(assigns,
+        taskbar_slots: assigns |> taskbar_windows() |> group_windows(),
+        about_window: About.window()
+      )
 
     ~H"""
     <.taskbar id="chat-taskbar">
@@ -73,7 +88,7 @@ defmodule RetroHexChatWeb.Components.UI.ChatTaskbar do
           id="chat-start-menu"
           screen={:chat}
           full={@live_ready}
-          help_open={Enum.any?(@documents, &(&1.id == "doc-help"))}
+          help_open={Enum.any?(@documents, &(&1.slot == :help))}
           is_admin={@is_admin}
           arcade_available={@arcade_available}
           windows={[
@@ -95,6 +110,7 @@ defmodule RetroHexChatWeb.Components.UI.ChatTaskbar do
           :if={slot.kind == :group}
           label={slot.label}
           count={length(slot.windows)}
+          key={to_string(slot.family)}
           testid={"taskbar-group-#{slot.family}"}
         >
           <:icon>{apply(Icons, slot.icon_fn, [%{class: "h-4 w-4"}])}</:icon>
@@ -118,13 +134,46 @@ defmodule RetroHexChatWeb.Components.UI.ChatTaskbar do
         </.taskbar_button>
       <% end %>
 
+      <%= for document <- @documents do %>
+        <%= case document.windows do %>
+          <% [window] -> %>
+            <.taskbar_button
+              window={window.id}
+              label={window.label}
+              class="desktop-taskbar__window-button"
+            >
+              <:icon>{Window.icon(window.window)}</:icon>
+            </.taskbar_button>
+          <% windows -> %>
+            <%!-- A page of the site is a family of windows, grouped the way
+                  the chat's own families are. --%>
+            <.taskbar_group
+              label={document.label}
+              count={length(windows)}
+              key="site"
+              testid="taskbar-group-site"
+            >
+              <:icon>{apply(Icons, document.icon, [%{class: "h-4 w-4"}])}</:icon>
+              <.taskbar_button
+                :for={window <- windows}
+                window={window.id}
+                label={window.label}
+                class="desktop-taskbar__group-item w-full"
+              >
+                <:icon>{Window.icon(window.window)}</:icon>
+              </.taskbar_button>
+            </.taskbar_group>
+        <% end %>
+      <% end %>
+
+      <%!-- The site's About, on the taskbar while it is open. --%>
       <.taskbar_button
-        :for={document <- @documents}
-        window={document.id}
-        label={document.label}
+        :if={@about}
+        window={Document.window_id(@about_window)}
+        label={Window.label(@about_window)}
         class="desktop-taskbar__window-button"
       >
-        <:icon>{apply(Icons, document.icon, [%{class: "h-4 w-4"}])}</:icon>
+        <:icon>{Window.icon(@about_window)}</:icon>
       </.taskbar_button>
 
       <%!-- The tray reads left to right the way Win98's did: the machine's own
@@ -323,7 +372,10 @@ defmodule RetroHexChatWeb.Components.UI.ChatTaskbar do
   defp label(%{id: "chat"}, assigns), do: assigns.chat_label
   defp label(window, _assigns), do: window.taskbar_label
 
+  # Start ▸ Windows names a page once, by the window it opens with.
   defp start_documents(documents) do
-    Enum.map(documents, &%{id: &1.id, label: &1.label, icon_fn: &1.icon})
+    Enum.map(documents, fn %{windows: [first | _rest]} = doc ->
+      %{id: first.id, label: doc.label, icon_fn: doc.icon}
+    end)
   end
 end

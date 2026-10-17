@@ -29,11 +29,12 @@ SNAPSHOT="js/SURFACE.txt"
 
 generate() {
   echo "## liveview-events"
-  # pushEvent/pushEventTo/handleEvent in hooks, plus the reducer helpers that a
+  # pushEvent/pushEventTo/handleEvent in hooks — and the window manager's
+  # pushOrDefer, which sends or holds one — plus the reducer helpers that a
   # slice extracts them into: a bare push("event") not preceded by a dot (so
   # channel.push topics, tracked separately below, are not swept in here).
   {
-    grep -rhoE '(pushEvent|pushEventTo|handleEvent)\([^)]*' js/ \
+    grep -rhoE '(pushEvent|pushEventTo|pushOrDefer|handleEvent)\([^)]*' js/ \
       | grep -oE '"[a-zA-Z_0-9:.-]+"'
     grep -rhoE '(^|[^.a-zA-Z_])push\("[a-zA-Z_0-9:.-]+"' js/lib/ \
       | grep -oE '"[a-zA-Z_0-9:.-]+"'

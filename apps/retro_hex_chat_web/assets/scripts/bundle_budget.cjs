@@ -34,12 +34,12 @@ const ENTRIES = [
 // here is the current size plus roughly 10% headroom, so an ordinary change
 // passes and a step-change has to be argued for.
 const BUDGETS = {
-  // 469.6kb before the one desktop; the window manager every screen shares then
-  // gained what the desktop needs on its first paint — the window in front named
-  // by the server, the focus reported as an address, a window started minimized
-  // without its animation — about 2kb that cannot be lazy, because the manager
-  // places the windows before anything else runs.
-  entry: 475 * KIB,
+  // The entry carries the window manager every screen shares, whole: it places
+  // the desktop's windows on the first paint — the window in front named by the
+  // server, a page of the site opened as a group of windows
+  // (lib/window_manager/window_groups.js), the focus reported as an address —
+  // before anything else runs, so none of it can be lazy.
+  entry: 490 * KIB,
   entryGzip: 130 * KIB,
   localeChunk: 20 * KIB,
   featureChunk: 50 * KIB,

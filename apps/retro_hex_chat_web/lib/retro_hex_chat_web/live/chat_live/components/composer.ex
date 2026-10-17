@@ -36,6 +36,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.Composer do
   """
   use RetroHexChatWeb, :live_component
 
+  import RetroHexChatWeb.Components.UI.Button
   import RetroHexChatWeb.Components.UI.ChatMessage
   import RetroHexChatWeb.Components.UI.ChatInput
   import RetroHexChatWeb.Components.UI.FormattingToolbar
@@ -413,8 +414,10 @@ defmodule RetroHexChatWeb.ChatLive.Components.Composer do
       <.syntax_tooltip tooltip={@syntax_tooltip} detail_level={@command_help_level} />
 
       <%!-- `locked` is a visitor's composer: drawn exactly as everybody's, but
-            `inert` — no focus, no typing, none of its own events — under a pane
-            that asks the parent to open the sign-in window instead. --%>
+            `inert` — no focus, no typing, none of its own events — under a bar
+            that says why and offers the way in, asking the parent to open the
+            sign-in window. The bar covers the composer, so the chat keeps its
+            height and nothing moves. --%>
       <div class={["chat-composer shrink-0", @locked && "relative"]}>
         <div inert={@locked} class="contents">
           <.live_component
@@ -607,15 +610,20 @@ defmodule RetroHexChatWeb.ChatLive.Components.Composer do
           <div :if={@capabilities.paste} id="paste-hook" phx-hook="PasteHook" class="u-hidden"></div>
           <.history_search visible={true} class="u-hidden" />
         </div>
-        <button
-          :if={@locked}
-          type="button"
-          class="absolute inset-0 cursor-text"
-          phx-click="visitor_sign_in"
-          aria-label={dgettext("chat", "Writing in the chat needs an account.")}
-          data-testid="visitor-composer"
-        >
-        </button>
+        <div :if={@locked} class="visitor-composer" data-testid="visitor-composer-bar">
+          <span class="visitor-composer__text">
+            {dgettext("chat", "You are watching as a visitor.")}
+          </span>
+          <.button
+            size="sm"
+            class="shrink-0"
+            phx-click="visitor_sign_in"
+            data-testid="visitor-composer"
+          >
+            <:icon><Icons.icon_watching class="h-4 w-4" /></:icon>
+            {dgettext("chat", "Create an account to talk")}
+          </.button>
+        </div>
       </div>
     </div>
     """

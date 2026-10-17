@@ -53,7 +53,7 @@ defmodule RetroHexChatWeb.Site.ConnectPageTest do
     test "closing it goes back to the chat, at the conversation in front", %{conn: conn} do
       {:ok, view, _html} = live(conn, "/connect")
 
-      render_hook(view, "window_closed", %{"id" => "connect"})
+      render_hook(view, "document_closed", %{"slot" => "connect"})
 
       assert_patch(view, "/c/lobby")
       refute has_element?(view, @window)

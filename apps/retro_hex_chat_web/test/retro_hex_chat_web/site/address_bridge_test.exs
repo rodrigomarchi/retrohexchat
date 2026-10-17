@@ -1,9 +1,10 @@
 defmodule RetroHexChatWeb.Site.AddressBridgeTest do
   @moduledoc """
-  The address bar and the desktop say the same thing: the window in front
-  has the address, a window brought forward takes it, closing one hands it
-  to what is behind, and a channel switched in front of the reader gets its
-  own `/c/` address — never while a page of the site is in front.
+  The address bar and the desktop say the same thing: the page in front has
+  the address, a window brought forward hands it its page's, closing a page's
+  last window hands it to what is behind, and a channel switched in front of
+  the reader gets its own `/c/` address — never while a page of the site is in
+  front. A visitor's home is the chat, the home's windows one icon away.
   """
   use RetroHexChatWeb.LiveViewCase, async: false
 
@@ -29,7 +30,7 @@ defmodule RetroHexChatWeb.Site.AddressBridgeTest do
 
     assert has_element?(
              view,
-             ~s([data-testid="document-window-site"][data-window-initial-focus="true"])
+             ~s([data-testid="site-windows"][data-window-group-focus="true"] [data-testid="site-window-intro"])
            )
   end
 
@@ -41,8 +42,43 @@ defmodule RetroHexChatWeb.Site.AddressBridgeTest do
     render_hook(view, "window_focused", %{"id" => "chat"})
     assert_patch(view, "/c/lobby")
 
-    render_hook(view, "window_focused", %{"id" => "doc-site"})
+    render_hook(view, "window_focused", %{"id" => "site-channels", "slot" => "site"})
     assert_patch(view, "/features")
+  end
+
+  # The reader clicked one of the page's own windows: the page is already
+  # there, so it is neither loaded again nor laid out again.
+  test "a window of the page in front keeps the address and the page", %{conn: conn} do
+    {:ok, view, _html} = live(conn, "/features")
+    loaded = assigns(view).docs[:site]
+
+    render_hook(view, "window_focused", %{"id" => "site-bots", "slot" => "site"})
+
+    assert assigns(view).current_address == "/features"
+    assert assigns(view).docs[:site] == loaded
+  end
+
+  test "a slot the desktop never named is not a page", %{conn: conn} do
+    {:ok, view, _html} = live(conn, "/features")
+    before = assigns(view)
+
+    render_hook(view, "document_closed", %{"slot" => "no-such-slot"})
+
+    assert assigns(view).docs == before.docs
+    assert assigns(view).focused_doc == :site
+    assert assigns(view).current_address == "/features"
+  end
+
+  test "a bridge event without what it names asks the visitor gate for nothing", %{conn: conn} do
+    {:ok, view, _html} = live(conn, "/features")
+    before = assigns(view)
+
+    for event <- ~w(window_focused document_closed open_page) do
+      render_hook(view, event, %{})
+    end
+
+    assert assigns(view).docs == before.docs
+    assert assigns(view).current_address == "/features"
   end
 
   test "moving to another page reuses the page's window", %{conn: conn} do
@@ -61,7 +97,7 @@ defmodule RetroHexChatWeb.Site.AddressBridgeTest do
     render_patch(view, "/chat/help/cmd-join")
     assert assigns(view).doc_order == [:help, :site]
 
-    render_hook(view, "window_closed", %{"id" => "doc-help"})
+    render_hook(view, "document_closed", %{"slot" => "help"})
     assert_patch(view, "/faq")
     refute has_element?(view, ~s([data-testid="document-window-help"]))
   end
@@ -69,7 +105,7 @@ defmodule RetroHexChatWeb.Site.AddressBridgeTest do
   test "closing the last page goes back to the conversation in front", %{conn: conn} do
     {:ok, view, _html} = live(conn, "/faq")
 
-    render_hook(view, "window_closed", %{"id" => "doc-site"})
+    render_hook(view, "document_closed", %{"slot" => "site"})
 
     assert_patch(view, "/c/lobby")
     assert assigns(view).docs == %{}
@@ -117,17 +153,112 @@ defmodule RetroHexChatWeb.Site.AddressBridgeTest do
     assert render(view) =~ "Type in the search box to find topics."
   end
 
-  # A visitor whose chat has no channel in front has the home as the chat's
-  # address: closing the Welcome there must not reopen it.
-  test "closing the home's Welcome when the chat's address is the home", %{conn: conn} do
-    {:ok, view, _html} = live(conn, "/")
-    render_hook(view, "switch_to_status", %{})
+  describe "a visitor's home" do
+    test "is the chat in front, the home's windows closed behind it", %{conn: conn} do
+      {:ok, view, _html} = live(conn, "/")
 
-    render_hook(view, "window_closed", %{"id" => "doc-site"})
+      assert assigns(view).focused_doc == nil
+      assert %{open?: false} = assigns(view).docs[:site]
 
-    assert assigns(view).docs == %{}
-    assert assigns(view).focused_doc == nil
-    refute has_element?(view, ~s([data-testid="document-window-site"]))
+      assert has_element?(
+               view,
+               ~s([data-testid="site-windows"][data-window-group-open="false"])
+             )
+    end
+
+    test "keeps its address while the chat shows the conversation it opened with", %{
+      conn: conn
+    } do
+      {:ok, view, _html} = live(conn, "/")
+
+      render_hook(view, "window_focused", %{"id" => "chat"})
+
+      _ = render(view)
+      assert assigns(view).current_address == "/"
+    end
+
+    test "opens its windows where they are when the Welcome icon asks", %{conn: conn} do
+      {:ok, view, _html} = live(conn, "/")
+
+      render_hook(view, "open_page", %{"id" => "home"})
+
+      assert %{open?: true} = assigns(view).docs[:site]
+      assert assigns(view).focused_doc == :site
+      assert_push_event(view, "window_command", %{action: "open_group", id: "site"})
+    end
+
+    # Only arriving at the home leaves its windows closed. Coming to it from
+    # within the desktop — the Start menu's Home, a move back from another
+    # page — is asking for it.
+    test "opens its windows when the reader comes back to it", %{conn: conn} do
+      {:ok, view, _html} = live(conn, "/")
+      render_patch(view, "/features")
+
+      render_patch(view, "/")
+
+      assert %{open?: true, page: RetroHexChatWeb.Site.Pages.Index} = assigns(view).docs[:site]
+      assert assigns(view).focused_doc == :site
+    end
+
+    test "opens its windows from the Start menu's Home, already at the home", %{conn: conn} do
+      {:ok, view, _html} = live(conn, "/")
+
+      view
+      |> element(~s(#chat-start-menu a[href="/"]))
+      |> render_click()
+
+      assert %{open?: true} = assigns(view).docs[:site]
+      assert assigns(view).focused_doc == :site
+    end
+
+    test "in another language, opens in that language", %{conn: conn} do
+      {:ok, view, _html} = live(conn, "/pt-BR")
+      assert %{open?: false} = assigns(view).docs[:site]
+
+      render_hook(view, "open_page", %{"id" => "home"})
+
+      assert_patch(view, "/pt-BR")
+      assert %{open?: true, address: "/pt-BR"} = assigns(view).docs[:site]
+    end
+
+    test "puts its windows away when the last one closes, keeping their words", %{conn: conn} do
+      {:ok, view, _html} = live(conn, "/")
+      render_hook(view, "open_page", %{"id" => "home"})
+
+      render_hook(view, "document_closed", %{"slot" => "site"})
+
+      assert %{open?: false} = assigns(view).docs[:site]
+      assert assigns(view).focused_doc == nil
+      assert render(view) =~ "Your community isn’t yours."
+    end
+  end
+
+  describe "a desktop icon" do
+    test "opens its page at the page's address", %{conn: conn} do
+      {:ok, view, _html} = live(conn, "/c/lobby")
+
+      render_hook(view, "open_page", %{"id" => "faq"})
+
+      assert_patch(view, "/faq")
+      assert assigns(view).focused_doc == :site
+    end
+
+    test "for the home, from another page, opens the home's windows", %{conn: conn} do
+      {:ok, view, _html} = live(conn, "/faq")
+
+      render_hook(view, "open_page", %{"id" => "home"})
+
+      assert_patch(view, "/")
+      assert %{open?: true, page: RetroHexChatWeb.Site.Pages.Index} = assigns(view).docs[:site]
+    end
+
+    test "naming no page of the site does nothing", %{conn: conn} do
+      {:ok, view, _html} = live(conn, "/faq")
+
+      render_hook(view, "open_page", %{"id" => "no-such-page"})
+
+      assert assigns(view).current_address == "/faq"
+    end
   end
 
   describe "a banned nickname" do

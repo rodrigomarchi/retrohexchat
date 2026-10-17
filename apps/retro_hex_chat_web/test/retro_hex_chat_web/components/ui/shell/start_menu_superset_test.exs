@@ -5,8 +5,7 @@ defmodule RetroHexChatWeb.Components.UI.StartMenuSupersetTest do
 
   `StartMenuSymmetryTest` holds the base menu identical across screens, with
   Admin/System added only for chat admins. This holds it complete: an entry in
-  the chat's `MenuBarApp`, the help viewer's `HelpMenuBar` or the landing
-  shell's strip exists here too when the same privilege is in force. Without it
+  the chat's `MenuBarApp` or the help viewer's `HelpMenuBar` exists here too when the same privilege is in force. Without it
   the menus drift the way they already drifted once — the bars grew Edit, View,
   Language, MOTD and the Arcade while the Start menu never heard about any of
   them.
@@ -19,7 +18,6 @@ defmodule RetroHexChatWeb.Components.UI.StartMenuSupersetTest do
   import Phoenix.LiveViewTest
 
   alias RetroHexChatWeb.Components.UI.Help.HelpMenuBar
-  alias RetroHexChatWeb.Components.UI.Landing.LandingShell
   alias RetroHexChatWeb.Components.UI.{LanguageMenu, MenuBarApp, StartMenuApp}
 
   # Entries the bar reaches by server action and the Start menu reaches by
@@ -52,8 +50,6 @@ defmodule RetroHexChatWeb.Components.UI.StartMenuSupersetTest do
     "open_profile_dialog" => "open_profile_dialog",
     # The help bar's Home and Navigate ▸ Documentation both go to /chat/help.
     "home" => "documentation",
-    # The landing bar says "docs" for the same destination.
-    "docs" => "documentation",
     "about" => "show_about"
   }
 
@@ -65,15 +61,11 @@ defmodule RetroHexChatWeb.Components.UI.StartMenuSupersetTest do
     assert missing(help_bar_entries(), start_entries(:help)) == []
   end
 
-  test "the landing shell's menu bar offers nothing the Start menu does not" do
-    assert missing(landing_bar_entries(), start_entries(:landing)) == []
-  end
-
   test "every language the bars offer is offered by the Start menu" do
     # The locale rows are the one set both sides name differently, so they match
     # on the locale code rather than on the whole id.
     bar = scan(language_bar_html(), ~r/data-testid="language-menu-item-([A-Za-z0-9_\-]+)"/)
-    start = start_entries(:landing)
+    start = start_entries(:chat)
 
     assert bar != MapSet.new(), "the language menu rendered no locales at all"
     assert Enum.reject(bar, &MapSet.member?(start, "language-" <> &1)) == []
@@ -81,10 +73,7 @@ defmodule RetroHexChatWeb.Components.UI.StartMenuSupersetTest do
 
   test "the alias tables map only entries the bars actually have" do
     # A stale row would quietly excuse an entry that no longer exists.
-    bar =
-      chat_bar_entries()
-      |> MapSet.union(help_bar_entries())
-      |> MapSet.union(landing_bar_entries())
+    bar = MapSet.union(chat_bar_entries(), help_bar_entries())
 
     stale =
       (Map.keys(@same_window_by_other_name) ++ Map.keys(@same_row_under_another_label))
@@ -102,14 +91,12 @@ defmodule RetroHexChatWeb.Components.UI.StartMenuSupersetTest do
     |> Enum.sort()
   end
 
-  # The four ways an entry can be the same entry: same id, the help viewer's
-  # rows keeping their `help-` prefix, the landing pages keeping their `page-`
-  # one, and the two alias tables above.
+  # The ways an entry can be the same entry: same id, the help viewer's rows
+  # keeping their `help-` prefix, and the two alias tables above.
   defp reachable?(entry, start_entries) do
     [
       entry,
       "help-" <> entry,
-      "page-" <> entry,
       @same_window_by_other_name[entry],
       @same_row_under_another_label[entry]
     ]
@@ -139,18 +126,6 @@ defmodule RetroHexChatWeb.Components.UI.StartMenuSupersetTest do
     render_component(&HelpMenuBar.help_menu_bar/1, [])
     |> scan(~r/data-testid="help-menu-([A-Za-z0-9_\-]+)"/)
     |> MapSet.delete("bar")
-  end
-
-  defp landing_bar_entries do
-    # The strip names a page by its atom (`how_it_works`), the Start menu by its
-    # path segment (`how-it-works`). Rendered on its own: the bar hangs under
-    # the Connect window's title bar now, which the landing pages compose, not
-    # the shell.
-    render_component(&LandingShell.landing_menu_bar/1, active_page: :home)
-    |> scan(~r/data-testid="landing-menu-(?:nav-)?([A-Za-z0-9_\-]+)"/)
-    |> MapSet.delete("bar")
-    |> Enum.map(&String.replace(&1, "_", "-"))
-    |> MapSet.new()
   end
 
   defp language_bar_html do

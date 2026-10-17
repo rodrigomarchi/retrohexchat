@@ -9,11 +9,8 @@ defmodule RetroHexChatWeb.Site.Pages.IrcChat do
   """
   use RetroHexChatWeb.Site.Page
 
-  import RetroHexChatWeb.Components.UI.Landing.IrcGuides
-
   alias RetroHexChat.Chat.Archive
   alias RetroHexChatWeb.App.Paths
-  alias RetroHexChatWeb.Icons
   alias RetroHexChatWeb.PublicPages
   alias RetroHexChatWeb.SEO
   alias RetroHexChatWeb.Site.Pages.Guides
@@ -64,33 +61,49 @@ defmodule RetroHexChatWeb.Site.Pages.IrcChat do
   # taskbar button pointing at one.
   defp windows(rooms) do
     [
-      %{id: "intro", label: dgettext("landing", "IRC chat"), icon: :icon_channels},
-      %{id: "rooms", label: dgettext("landing", "How a chat room works"), icon: :icon_channels},
-      %{id: "who-runs", label: dgettext("landing", "Who runs a chat room"), icon: :icon_shield},
-      %{
-        id: "keep-your-nickname",
-        label: dgettext("landing", "Your nickname"),
-        icon: :icon_btn_profile
-      }
+      Window.new(
+        "intro",
+        dgettext("landing", "IRC-style chat rooms in your browser"),
+        :icon_channels,
+        width: 640,
+        taskbar_label: dgettext("landing", "IRC chat"),
+        body: &page_intro/1,
+        assigns: %{
+          heading_id: "irc-chat-heading",
+          description:
+            dgettext(
+              "landing",
+              "Channels whose names start with #, operators who keep order, and nicknames you can register — the way IRC has always worked, in a browser tab, free and with nothing to install."
+            )
+        },
+        status: [dgettext("landing", "Chat rooms open to anyone")]
+      ),
+      Window.new("rooms", dgettext("landing", "How a chat room works"), :icon_channels,
+        width: 560,
+        body: &rooms/1
+      ),
+      Window.new("who-runs", dgettext("landing", "Who runs a chat room"), :icon_shield,
+        width: 520,
+        body: &who_runs/1
+      ),
+      Window.new("keep-your-nickname", dgettext("landing", "Your nickname"), :icon_btn_profile,
+        width: 480,
+        body: &keep_your_nickname/1
+      )
     ] ++
-      if(rooms == [],
-        do: [],
-        else: [
-          %{
-            id: "open-rooms",
-            label: dgettext("landing", "Read a chat room first"),
-            icon: :icon_chat
-          }
-        ]
-      ) ++
-      [
-        %{id: "questions", label: dgettext("landing", "Questions"), icon: :icon_question},
-        %{id: "read-next", label: dgettext("landing", "Read next"), icon: :icon_link}
-      ]
+      open_rooms_window(rooms) ++
+      [Guides.questions_window(), Guides.read_next_window()]
   end
 
-  embed_templates "irc_chat.html"
+  defp open_rooms_window([]), do: []
 
-  @impl RetroHexChatWeb.Site.Page
-  def render(assigns), do: irc_chat(assigns)
+  defp open_rooms_window(_rooms),
+    do: [
+      Window.new("open-rooms", dgettext("landing", "Read a chat room first"), :icon_chat,
+        width: 420,
+        body: &open_rooms/1
+      )
+    ]
+
+  embed_templates "irc_chat/*"
 end

@@ -31,7 +31,6 @@ defmodule RetroHexChatWeb.Site.Pages.Archive do
 
   alias RetroHexChat.Chat.Archive
   alias RetroHexChatWeb.BuildInfo
-  alias RetroHexChatWeb.Icons
   alias RetroHexChatWeb.SEO
 
   @impl RetroHexChatWeb.Site.Page
@@ -135,27 +134,24 @@ defmodule RetroHexChatWeb.Site.Pages.Archive do
 
   defp common(data) do
     Map.merge(data, %{
-      window_title: data.channel,
-      window_icon: :icon_channels,
+      windows: [
+        Window.new("archive", data.channel, :icon_channels,
+          width: 760,
+          height: 560,
+          body: body(data.kind)
+        )
+      ],
       canonical_path: data.path,
       canonical_url: SEO.site_url(data.path),
       hreflang_alternates: false,
-      robots: "index, follow",
-      windows: [
-        %{
-          id: if(data.kind == :day, do: "archive-day", else: "archive-index"),
-          label: data.channel,
-          icon: :icon_channels
-        }
-      ]
+      robots: "index, follow"
     })
   end
 
   embed_templates "archive_*"
 
-  @impl RetroHexChatWeb.Site.Page
-  def render(%{kind: :index} = assigns), do: archive_index(assigns)
-  def render(%{kind: :day} = assigns), do: archive_day(assigns)
+  defp body(:index), do: &archive_index/1
+  defp body(:day), do: &archive_day/1
 
   @doc "The day a reader is most likely to want: the newest one."
   @spec newest_day([String.t()]) :: String.t() | nil

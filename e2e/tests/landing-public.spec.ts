@@ -1,8 +1,8 @@
 /**
  * @section PW - Public Pages, Landing, And Showcase
- * @flow PW1 [done] The home loads the desktop's small first-paint bundle, its C:\Desktop section works, and its links move between pages without a page load
- * @flow PW2 [done] On a phone the page's own menu rail opens its drawer on the first tap, even as the chat starts, and leads to another page
- * @flow PW3 [done] The Start menu reaches every page as a window of the desktop, and closing a page hands the address back to the chat
+ * @flow PW1 [done] The home loads the desktop's small first-paint bundle, README.txt on the desk opens in place, and a desktop icon moves to another page without a page load
+ * @flow PW2 [done] On a phone a page shows its first window, and the taskbar's group for the page brings any other window of it to the screen
+ * @flow PW3 [done] The Start menu reaches every page as windows of the desktop, and closing a page's last window hands the address back to the chat
  * @flow PW19 [done] The public pages declare an installable web app: a linked manifest whose icons and service worker are actually served
  *
  * These @flow lines are the source of truth for e2e/TEST_CATALOG.md.
@@ -10,6 +10,7 @@
  */
 import { expect, Page, test } from "@playwright/test";
 import { shot } from "../helpers/screenshots";
+import { bringForward, closePage } from "../helpers/siteWindows";
 
 function watchBrowserFailures(page: Page) {
   const failures: string[] = [];
@@ -51,15 +52,14 @@ test.describe("Landing public pages", () => {
     await expect(page.locator('script[src*="/assets/js/app.js"]')).toHaveCount(
       0,
     );
-    await expect(page.locator("#hero-heading")).toBeVisible();
+    await expect(page.getByTestId("chat-window")).toBeVisible();
     await page.evaluate(() => {
       (window as Window & { __sameDocument?: boolean }).__sameDocument = true;
     });
 
-    // The C:\Desktop section's README opens its popup in place.
-    await page.getByTestId("document-contents-c-desktop").click();
+    // README.txt is a file on the desk: it opens in place, before the chat.
     await expect(page.locator("#readme-popup")).toBeHidden();
-    await page.locator('[data-show-target="#readme-popup"]').click();
+    await page.getByTestId("desktop-icon-readme-popup").click();
     await expect(page.locator("#readme-popup")).toBeVisible();
     await expect(page.locator("#readme-popup")).toHaveAttribute(
       "aria-hidden",
@@ -69,11 +69,8 @@ test.describe("Landing public pages", () => {
     await page.keyboard.press("Escape");
     await expect(page.locator("#readme-popup")).toBeHidden();
 
-    await page
-      .locator('a[href="/features"]:visible')
-      .filter({ hasText: "My Chats" })
-      .first()
-      .click();
+    // The first double-click on a page's icon is not lost to the chat starting.
+    await page.getByTestId("desktop-icon-page-features").dblclick();
     await expect(page).toHaveURL(/\/features$/);
     await expect(page.locator("#features-heading")).toBeVisible();
     expect(
@@ -85,36 +82,31 @@ test.describe("Landing public pages", () => {
     expect(failures).toEqual([]);
   });
 
-  // Navigation on a phone runs through the same icon rail the chat uses. The
-  // first tap is also what starts the chat, and the menu it opens has to stay
-  // open through the re-render that follows.
-  test("the phone's menu rail opens on the first tap and leads to another page (PW2)", async ({
+  // A phone shows one window at a time: a page opens on its first, and the
+  // taskbar's group for the page reaches the rest.
+  test("on a phone a page shows its first window, the taskbar the rest (PW2)", async ({
     page,
   }) => {
     const failures = watchBrowserFailures(page);
 
     await page.setViewportSize({ width: 390, height: 844 });
-    await page.goto("/");
+    await page.goto("/features");
 
-    const site = page.getByTestId("document-window-site");
-    const navigate = site.getByTestId("app-mobile-menu-rail-navigate");
-    const drawer = site.getByTestId("app-mobile-menu-section-navigate");
+    const intro = page.getByTestId("site-window-intro");
+    const channels = page.getByTestId("site-window-channels");
+    await expect(intro).toBeVisible();
+    await expect(channels).toBeHidden();
     await shot(page, "landing-mobile");
 
-    await expect(drawer).toBeHidden();
-    await navigate.click();
-    await page.waitForFunction(
-      () => document.documentElement.dataset.liveBoot === "ready",
-      undefined,
-      { timeout: 15_000 },
-    );
-    await expect(navigate).toHaveAttribute("aria-expanded", "true");
-    await expect(drawer).toBeVisible();
-    await shot(page, "landing-mobile-drawer");
-
-    await drawer.locator('a[href="/features"]').click();
-    await expect(page).toHaveURL(/\/features$/);
-    await expect(page.locator("#features-heading")).toBeVisible();
+    await page.getByTestId("taskbar-group-site").click();
+    await page
+      .locator(
+        '[data-taskbar-group-panel] [data-window-taskbar="site-channels"]',
+      )
+      .click();
+    await expect(channels).toBeVisible();
+    await expect(intro).toBeHidden();
+    await shot(page, "landing-mobile-second-window");
 
     expect(failures).toEqual([]);
   });
@@ -144,15 +136,14 @@ test.describe("Landing public pages", () => {
     await expect(page).toHaveURL(/\/faq$/);
     await expect(page.locator("#faq-heading")).toBeVisible();
 
-    // Closing the page window hands the address to the chat behind it.
-    const site = page.getByTestId("document-window-site");
+    // Closing the page's last window hands the address to the chat behind it.
     await page.waitForFunction(
       () => document.documentElement.dataset.liveBoot === "ready",
       undefined,
       { timeout: 15_000 },
     );
-    await site.locator('[data-window-control="close"]').first().click();
-    await expect(site).toHaveCount(0);
+    await closePage(page);
+    await expect(page.getByTestId("site-windows")).toHaveCount(0);
     await expect(page).toHaveURL(/\/c\/lobby$/);
     await shot(page, "page-closed-chat-in-front");
 
@@ -187,9 +178,12 @@ test.describe("Landing public pages", () => {
     const worker = await page.request.get("/sw.js");
     expect(worker.status()).toBe(200);
 
-    await expect(
-      page.getByTestId("document-contents-install-app"),
-    ).toBeVisible();
+    // The page that offers the install says how: its own window, reached
+    // from the page's taskbar group like any other.
+    await bringForward(page, "site-install-app");
+    await expect(page.getByTestId("site-window-install-app")).toContainText(
+      "Add to Home Screen",
+    );
     await shot(page, "landing-installable");
 
     expect(failures).toEqual([]);

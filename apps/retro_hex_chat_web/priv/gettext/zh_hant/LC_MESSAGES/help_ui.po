@@ -3408,20 +3408,10 @@ msgstr "一個頻道的地址是/c/,之後是它的名字——/c/lobby代表#lo
 msgid "A private conversation never gets an address: who you talk to privately is not something a link should carry."
 msgstr "私人談話永遠得不到地址:你私下交談的人不是一個鏈接應該攜帶的東西."
 
-#: lib/retro_hex_chat_web/controllers/help_content/ui_site_pages.html.heex:11
-#, elixir-autogen, elixir-format
-msgid "About this site"
-msgstr "關於本站"
-
 #: lib/retro_hex_chat_web/controllers/help_content/ui_site_pages.html.heex:38
 #, elixir-autogen, elixir-format
 msgid "Addresses"
 msgstr "地址"
-
-#: lib/retro_hex_chat_web/controllers/help_content/ui_site_pages.html.heex:59
-#, elixir-autogen, elixir-format
-msgid "Closing a page window takes you back to the chat, at the address of the conversation in front."
-msgstr "關閉一個頁面窗口會帶你回到聊天,在前面的對話地址."
 
 #: lib/retro_hex_chat_web/controllers/help_content/ui_site_pages.html.heex:74
 #, elixir-autogen, elixir-format
@@ -3443,20 +3433,10 @@ msgstr "查找頁面"
 msgid "On a desktop viewport, the wallpaper shows folder icons: About this site, with every page of the site, then the main app groups — View, Tools, Automation, P2P, Games, Account, Language and Help. Admin and System appear there only for admins. Windows and Navigate stay in the Start menu. Double-click a folder icon to open a Windows-style folder window with icons for that group. A single click only selects the desktop icon."
 msgstr "在桌面視圖端口, 壁紙顯示文件夾圖標 : 關於這個站點,每個站點都有頁面,然後是主要應用組——視圖,工具,自動化,P2P,遊戲,賬戶,語言和幫助. 管理員和系統只在那裏出現管理員。 Windows和Navigate留在開始菜單中. 雙擊文件夾圖標打開帶有該組圖標的 Windows 風格文件夾窗口。 單擊只選擇桌面圖標。"
 
-#: lib/retro_hex_chat_web/controllers/help_content/ui_site_pages.html.heex:2
-#, elixir-autogen, elixir-format
-msgid "RetroHexChat has one desktop. The chat lives on it, and so does every page of the site: the home, the features, the games, the guides, the public archives and this help each open as a window over the chat, and moving between them never reloads the page — the chat keeps running behind whatever you are reading."
-msgstr "RetroHexChat有一個桌面. 聊天就住在它上,網站的每一個頁面也一樣:家,功能,遊戲,指南,公共檔案等等,這些都幫助每個人在聊天時打開一個窗口,在他們之間移動,從不重新加載頁面——聊天總是在您所讀到的任何內容後面運行."
-
 #: lib/retro_hex_chat_web/controllers/help_content/ui_site_pages.html.heex:17
 #, elixir-autogen, elixir-format
 msgid "Start ▸ Navigate"
 msgstr "開始 ▸ 導覽"
-
-#: lib/retro_hex_chat_web/controllers/help_content/ui_site_pages.html.heex:30
-#, elixir-autogen, elixir-format
-msgid "The Welcome Window"
-msgstr "歡迎窗口"
 
 #: lib/retro_hex_chat_web/controllers/help_content/ui_site_pages.html.heex:23
 #, elixir-autogen, elixir-format
@@ -3468,27 +3448,47 @@ msgstr "任務欄"
 msgid "Watching Without an Account"
 msgstr "沒有賬戶的監視"
 
-#: lib/retro_hex_chat_web/controllers/help_content/ui_site_pages.html.heex:23
-#, elixir-autogen, elixir-format
-msgid "— An open page has a taskbar button like any other window. Click it to bring the page back; click the chat's button to go back to the conversation."
-msgstr "——打開的頁面像其他窗口一樣有一個任務欄按鈕. 點擊它可以帶回頁面; 點擊聊天按鈕可以返回對話."
-
-#: lib/retro_hex_chat_web/controllers/help_content/ui_site_pages.html.heex:11
-#, elixir-autogen, elixir-format
-msgid "— The first icon on the desktop. Double-click it for a folder with every page, the guides and the documentation."
-msgstr "——桌面上的第一個圖標. 雙擊它以獲取每個頁面、指南和文件的文件夾。"
-
 #: lib/retro_hex_chat_web/controllers/help_content/ui_start_menu.html.heex:80
 #, elixir-autogen, elixir-format
 msgid "— The pages of the site, the documentation and the design system, plus Back and Forward through the Help viewer's own history. Each page opens as a window over the chat, without reloading it. These are real links, so they work with scripting off."
 msgstr "——網站的頁面,文檔和設計系統,加上通過幫助查看器自身歷史的迴向和前進. 每個頁面在聊天時作爲窗口打開,而不重新加載. 這些是真正的鏈接, 所以它們的工作 腳本關閉。"
 
+#: lib/retro_hex_chat_web/controllers/help_content/ui_site_pages.html.heex:59
+#, elixir-autogen, elixir-format
+msgid "Bringing one of a page's windows forward gives the address bar that page's address. Closing a page's last window takes you back to the chat, at the address of the conversation in front."
+msgstr "將一個頁面窗口向前移動給該頁面地址的地址欄。 關閉一個頁面的最後一個窗口 讓你回到聊天, 在前面的談話地址。"
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_site_pages.html.heex:2
+#, elixir-autogen, elixir-format
+msgid "RetroHexChat has one desktop. The chat lives on it, and so does every page of the site. A page opens as a set of windows over the chat, one for each of its sections, laid out in a cascade with the page's first window in front; the help, a public archive, an invitation and the Connect window open as one window each. Moving between them never reloads the page — the chat keeps running behind whatever you are reading."
+msgstr "RetroHexChat有一個桌面. 聊天就靠它,網站的每一頁都這樣。 一個頁面作爲一組窗口在聊天時打開,每個部分各一個,放在一個級聯中,頁面的第一個窗口放在前面;幫助,公共檔案,邀請和連接窗口各作爲一個窗口打開. 在他們之間移動永遠不會重新裝入頁面——聊天會一直運行在您正在讀到的任何內容後面."
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_site_pages.html.heex:30
+#, elixir-autogen, elixir-format
+msgid "The Home"
+msgstr "家園"
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_site_pages.html.heex:11
+#, elixir-autogen, elixir-format
+msgid "The desktop icons"
+msgstr "桌面圖標"
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_site_pages.html.heex:23
+#, elixir-autogen, elixir-format
+msgid "— An open page has one taskbar button that lists its windows. Pick one to bring it forward; click the chat's button to go back to the conversation."
+msgstr "——打開的頁面有一個任務欄按鈕列出其窗口. 選擇一個來將其向前;單擊聊天的按鈕來回到對話中."
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_site_pages.html.heex:11
+#, elixir-autogen, elixir-format
+msgid "— Before you sign in, every page has an icon of its own on the desktop: Welcome, How It Works, Features, Games and the rest, then About, README.txt and the Trash. Double-click one to open it. Once you have an account, the pages are in the About this site folder instead."
+msgstr "——在您報名之前,每個頁面在桌面上都有一個自己的圖標:歡迎,它是如何工作的,特性,遊戲和其他,然後是關於,README.txt和垃圾桶. 雙擊一打開. 一旦您有賬戶, 頁面就放在這個網站文件夾中 。"
+
 #: lib/retro_hex_chat_web/controllers/help_content/ui_site_pages.html.heex:17
 #, elixir-autogen, elixir-format
-msgid "— The same pages from the Start menu, and the Navigate menu of every page window."
-msgstr "——\"開始\"菜單的相同頁面,以及每個頁面窗口的導航菜單."
+msgid "— The same pages from the Start menu."
+msgstr "——\"開始\"菜單的同頁."
 
 #: lib/retro_hex_chat_web/controllers/help_content/ui_site_pages.html.heex:32
 #, elixir-autogen, elixir-format
-msgid "The home page opens the Welcome window over the #lobby channel. Its first button takes you into the lobby and puts the Welcome away on the taskbar; the second opens the Connect window to create an account. After that, the next visit opens the Welcome minimized, so you land straight in the chat."
-msgstr "主頁通過#lobby頻道打開歡迎窗口. 它的第一個按鈕將你帶入大廳,將\"歡迎\"放在任務欄上;第二個打開連接窗口創建一個賬戶. 之後,下一次訪問打開 歡迎最小, 所以你直接降落 在聊天。"
+msgid "Before you sign in, the home page is the chat itself: #lobby, live, with nothing in front of it. The home's own windows — what RetroHexChat is, the problem it solves, how it works — open from the Welcome icon, from Start ▸ Navigate ▸ Home, or when you go back to the home from another page; Create an account in the first of them opens the Connect window."
+msgstr "在報名之前,主頁是聊天本身: #lobby,直播,前方沒有任何內容. 家的自有窗口——什麼是RetroHexChat,它解決的問題,如何工作——從歡迎圖標,Start ▸ Navigate ▸ Home打開,或者當你從另一頁回到家時; 在其中的第一個頁面創建一個賬戶打開連接窗口."

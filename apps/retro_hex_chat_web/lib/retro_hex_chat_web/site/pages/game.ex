@@ -13,7 +13,6 @@ defmodule RetroHexChatWeb.Site.Pages.Game do
 
   alias RetroHexChatWeb.App.Paths
   alias RetroHexChatWeb.GameCatalog
-  alias RetroHexChatWeb.Icons
   alias RetroHexChatWeb.PublicPages
   alias RetroHexChatWeb.SEO
 
@@ -38,13 +37,24 @@ defmodule RetroHexChatWeb.Site.Pages.Game do
        game: game,
        path: path,
        play_path: play_path(game, ctx),
-       kind_label: kind_label(game),
        how_to_play_path: PublicPages.localized_path("/chat/help/#{game.help_topic}"),
-       catalogue_path: PublicPages.localized_path("/games"),
-       related: game |> GameCatalog.related() |> Enum.map(&card/1),
        windows: [
-         %{id: "game", label: game.name, icon: :icon_joystick},
-         %{id: "more-games", label: dgettext("landing", "More games"), icon: :icon_joystick}
+         Window.new("game", game.name, :game_icon,
+           icon_attrs: %{game_id: game.id},
+           width: 760,
+           body: &game_detail/1,
+           status: [kind_label(game), dgettext("landing", "Free, in the browser")]
+         ),
+         Window.new("more-games", dgettext("landing", "More games"), :icon_joystick,
+           width: 360,
+           body: &game_card_list/1,
+           assigns: %{
+             heading_id: "more-games-heading",
+             cards: game |> GameCatalog.related() |> Enum.map(&card/1),
+             columns: "grid-cols-2",
+             catalogue_path: PublicPages.localized_path("/games")
+           }
+         )
        ],
        canonical_path: path,
        og_image: og_image(game),
@@ -96,9 +106,4 @@ defmodule RetroHexChatWeb.Site.Pages.Game do
       alt: dgettext("landing", "Screenshot of %{name}", name: game.name)
     }
   end
-
-  embed_templates "game.html"
-
-  @impl RetroHexChatWeb.Site.Page
-  def render(assigns), do: game(assigns)
 end

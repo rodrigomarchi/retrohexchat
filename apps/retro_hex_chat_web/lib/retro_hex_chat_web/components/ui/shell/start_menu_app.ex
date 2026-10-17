@@ -119,6 +119,7 @@ defmodule RetroHexChatWeb.Components.UI.StartMenuApp do
         <.start_menu_submenu
           label={dgettext("ui", "View")}
           muted={!@chat? and !@help?}
+          key="view"
           testid="start-menu-view-submenu"
         >
           <:icon><Icons.icon_channels class="h-4 w-4" /></:icon>
@@ -208,6 +209,7 @@ defmodule RetroHexChatWeb.Components.UI.StartMenuApp do
         <.start_menu_submenu
           label={dgettext("ui", "Tools")}
           muted={!@chat?}
+          key="tools"
           testid="start-menu-tools-submenu"
         >
           <:icon><Icons.icon_group_tools class="h-4 w-4" /></:icon>
@@ -307,6 +309,7 @@ defmodule RetroHexChatWeb.Components.UI.StartMenuApp do
         <.start_menu_submenu
           label={dgettext("ui", "Automation")}
           muted={!@chat?}
+          key="automation"
           testid="start-menu-automation-submenu"
         >
           <:icon><Icons.icon_dialog_perform class="h-4 w-4" /></:icon>
@@ -353,6 +356,7 @@ defmodule RetroHexChatWeb.Components.UI.StartMenuApp do
         <.start_menu_submenu
           label={dgettext("ui", "Games")}
           muted={!@chat?}
+          key="games"
           testid="start-menu-games-submenu"
         >
           <:icon><Icons.icon_game_arcade class="h-4 w-4" /></:icon>
@@ -389,6 +393,7 @@ defmodule RetroHexChatWeb.Components.UI.StartMenuApp do
         <.start_menu_submenu
           label={dgettext("ui", "Account")}
           muted={!@chat?}
+          key="account"
           testid="start-menu-account-submenu"
         >
           <:icon><Icons.icon_status_user class="h-4 w-4" /></:icon>
@@ -461,6 +466,7 @@ defmodule RetroHexChatWeb.Components.UI.StartMenuApp do
         <.start_menu_submenu
           :if={@admin?}
           label={dgettext("ui", "Admin")}
+          key="admin"
           testid="start-menu-admin-submenu"
         >
           <:icon><Icons.icon_shield class="h-4 w-4" /></:icon>
@@ -480,6 +486,7 @@ defmodule RetroHexChatWeb.Components.UI.StartMenuApp do
         <.start_menu_submenu
           :if={@admin?}
           label={dgettext("ui", "System")}
+          key="system"
           testid="start-menu-system-submenu"
         >
           <:icon><Icons.icon_server class="h-4 w-4" /></:icon>
@@ -503,6 +510,7 @@ defmodule RetroHexChatWeb.Components.UI.StartMenuApp do
         <.start_menu_submenu
           label={dgettext("ui", "Windows")}
           muted={@windows == []}
+          key="windows"
           testid="start-menu-windows-submenu"
         >
           <:icon><Icons.icon_group_view class="h-4 w-4" /></:icon>
@@ -525,10 +533,11 @@ defmodule RetroHexChatWeb.Components.UI.StartMenuApp do
         </.start_menu_submenu>
 
         <%!-- Real links, so this group navigates and indexes with JavaScript
-              off. `href` rather than `navigate` throughout: these cross
-              live_sessions, which a LiveView patch cannot. --%>
+              off. On the desktop a page's link is a patch — every page is an
+              address of the one desktop; from the showcase, a page load. --%>
         <.start_menu_submenu
           label={dgettext("ui", "Navigate")}
+          key="navigate"
           testid="start-menu-navigate-submenu"
         >
           <:icon><Icons.icon_btn_next class="h-4 w-4" /></:icon>
@@ -606,6 +615,7 @@ defmodule RetroHexChatWeb.Components.UI.StartMenuApp do
               window manager allows no group inside a group. --%>
         <.start_menu_submenu
           label={dgettext("ui", "Language")}
+          key="language"
           testid="start-menu-language-submenu"
         >
           <:icon><Icons.icon_globe class="h-4 w-4" /></:icon>
@@ -623,7 +633,11 @@ defmodule RetroHexChatWeb.Components.UI.StartMenuApp do
 
         <.start_menu_separator />
 
-        <.start_menu_submenu label={dgettext("ui", "Help")} testid="start-menu-help-submenu">
+        <.start_menu_submenu
+          label={dgettext("ui", "Help")}
+          key="help"
+          testid="start-menu-help-submenu"
+        >
           <:icon><Icons.icon_group_help class="h-4 w-4" /></:icon>
           <.help_topics_item screen={@screen} />
           <.window_item

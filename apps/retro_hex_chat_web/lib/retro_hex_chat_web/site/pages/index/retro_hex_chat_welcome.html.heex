@@ -1,0 +1,46 @@
+<%!-- The heading of the site's most important page was a wordmark and
+          nothing else, so it said only the brand's own name. The text now
+          carries what the thing is; the wordmark becomes decorative, since
+          a reader hearing the heading would otherwise hear the name twice. --%>
+<h1 id="hero-heading" class="mb-3">
+  <img
+    src={Endpoint.static_path("/images/landing/wordmark.svg")}
+    alt=""
+    width="800"
+    height="120"
+    class="inline-block max-w-[400px] w-full"
+  />
+  <span class="sr-only">
+    {dgettext("landing", "Retro Hex Chat — Self-hosted chat, spaces, calls and games")}
+  </span>
+</h1>
+
+<p class="text-sm mb-2">
+  {dgettext(
+    "landing",
+    "Your server. Your conversations. Your rooms, calls, and spaces."
+  )}<br />
+  {dgettext("landing", "Built with today’s technology.")}
+</p>
+
+<p class="text-xs mb-4">
+  {dgettext("landing", "Run your own server. Your data stays with you.")}<br />
+  {dgettext(
+    "landing",
+    "Chat, Spaces, private P2P calls, channel conferences, and retro games."
+  )}<br />
+  {dgettext("landing", "No corporation. No algorithms. No permission needed.")}<br />
+  <strong>{dgettext("landing", "Your data. Your rules. Your community.")}</strong>
+</p>
+
+<%!-- The chat behind this window is the product itself; the one thing it
+      cannot do for a visitor is let them talk. A real link, so it works
+      before the page has started its socket. --%>
+<.button patch={@sign_up_path} class="mb-4" data-testid="welcome-sign-up">
+  <:icon><Icons.icon_connect class="h-4 w-4" /></:icon>
+  {dgettext("landing", "Create an account")}
+</.button>
+
+<p class="text-xs text-gray-600">
+  {dgettext("landing", "Open source project • Built with Elixir & Phoenix")}
+</p>

@@ -6,9 +6,6 @@ defmodule RetroHexChatWeb.Site.Pages.MircOnline do
   """
   use RetroHexChatWeb.Site.Page
 
-  import RetroHexChatWeb.Components.UI.Landing.IrcGuides
-
-  alias RetroHexChatWeb.Icons
   alias RetroHexChatWeb.PublicPages
   alias RetroHexChatWeb.SEO
   alias RetroHexChatWeb.Site.Pages.Guides
@@ -48,16 +45,34 @@ defmodule RetroHexChatWeb.Site.Pages.MircOnline do
        links: Guides.links(:mirc_online),
        commands_path: PublicPages.localized_path(PublicPages.path(:mirc_commands)),
        windows: [
-         %{id: "intro", label: dgettext("landing", "mIRC online"), icon: :icon_chat},
-         %{id: "the-window", label: dgettext("landing", "The window you know"), icon: :icon_chat},
-         %{
-           id: "carries-over",
-           label: dgettext("landing", "What stays the same"),
-           icon: :icon_checkmark
-         },
-         %{id: "not-mirc", label: dgettext("landing", "What it is not"), icon: :icon_shield},
-         %{id: "questions", label: dgettext("landing", "Questions"), icon: :icon_question},
-         %{id: "read-next", label: dgettext("landing", "Read next"), icon: :icon_link}
+         Window.new("intro", dgettext("landing", "mIRC online, in your browser"), :icon_chat,
+           width: 640,
+           taskbar_label: dgettext("landing", "mIRC online"),
+           body: &page_intro/1,
+           assigns: %{
+             heading_id: "mirc-online-heading",
+             description:
+               dgettext(
+                 "landing",
+                 "A chat built the way mIRC taught a generation to chat, running in a browser tab: no download, no server list to configure. Pick a nickname, and you are in a channel."
+               )
+           },
+           status: [dgettext("landing", "Free of charge, nothing to install")]
+         ),
+         Window.new("the-window", dgettext("landing", "The window you know"), :icon_chat,
+           width: 560,
+           body: &the_window/1
+         ),
+         Window.new("carries-over", dgettext("landing", "What stays the same"), :icon_checkmark,
+           width: 560,
+           body: &carries_over/1
+         ),
+         Window.new("not-mirc", dgettext("landing", "What it is not"), :icon_shield,
+           width: 480,
+           body: &not_mirc/1
+         ),
+         Guides.questions_window(),
+         Guides.read_next_window()
        ],
        canonical_path: path,
        json_ld: [Guides.breadcrumb(:mirc_online), SEO.faq_page_json_ld(questions, path)],
@@ -71,8 +86,5 @@ defmodule RetroHexChatWeb.Site.Pages.MircOnline do
      }}
   end
 
-  embed_templates "mirc_online.html"
-
-  @impl RetroHexChatWeb.Site.Page
-  def render(assigns), do: mirc_online(assigns)
+  embed_templates "mirc_online/*"
 end

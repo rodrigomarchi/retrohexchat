@@ -39,6 +39,11 @@ describe("bootMode", () => {
     expect(bootMode({ dataset: { boot: "now" } }, "Googlebot/2.1")).toBe("now");
   });
 
+  it("boots a reader of the home at once, but leaves a crawler on its words", () => {
+    expect(bootMode({ dataset: { boot: "reader" } }, "Mozilla/5.0 Chrome/130")).toBe("now");
+    expect(bootMode({ dataset: { boot: "reader" } }, "Googlebot/2.1")).toBe("interaction");
+  });
+
   it("defers on a page of the site", () => {
     expect(bootMode({ dataset: { boot: "deferred" } }, "Mozilla/5.0 Chrome/130")).toBe("deferred");
     expect(bootMode(null)).toBe("deferred");

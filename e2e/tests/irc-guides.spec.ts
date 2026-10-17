@@ -5,8 +5,15 @@
  * These @flow lines are the source of truth for e2e/TEST_CATALOG.md.
  * Edit them here, then run `make e2e.catalog` to regenerate the index.
  */
-import { expect, test } from "@playwright/test";
+import { expect, Page, test } from "@playwright/test";
 import { shot } from "../helpers/screenshots";
+
+async function bringForward(page: Page, windowId: string) {
+  await page.getByTestId("taskbar-group-site").click();
+  await page
+    .locator(`[data-taskbar-group-panel] [data-window-taskbar="${windowId}"]`)
+    .click();
+}
 
 test("the mIRC commands guide leads to the help and to the other guides (PW23)", async ({
   page,
@@ -14,8 +21,9 @@ test("the mIRC commands guide leads to the help and to the other guides (PW23)",
   await page.goto("/mirc-commands");
   await expect(page.locator("#mirc-commands-heading")).toBeVisible();
 
-  // The page is one document; its strip of sections leads to the channels group.
-  await page.getByTestId("document-contents-parity-channels").click();
+  // Each group of the table is a window of its own; the page's taskbar group
+  // brings the channels one forward.
+  await bringForward(page, "site-parity-channels");
   const channels = page.getByTestId("parity-parity-channels");
   await expect(channels).toContainText("/join #channel key");
   await shot(page, "mirc-commands-channels");
@@ -26,7 +34,7 @@ test("the mIRC commands guide leads to the help and to the other guides (PW23)",
 
   // Back on the guide, its reading section leads to the other two.
   await page.goto("/mirc-commands");
-  await page.getByTestId("document-contents-read-next").click();
+  await bringForward(page, "site-read-next");
   await page
     .getByTestId("guide-links")
     .getByRole("link", { name: "IRC chat" })

@@ -67,6 +67,7 @@ defmodule RetroHexChat.Chat.HelpTopics.UserInterface do
           "home",
           "home page",
           "welcome",
+          "desktop icon",
           "about this site",
           "navigate",
           "page",
@@ -81,7 +82,7 @@ defmodule RetroHexChat.Chat.HelpTopics.UserInterface do
         description:
           dgettext(
             "help",
-            "Every page of the site — the home's Welcome, the features, the games, this help — opens as a window on the same desktop as the chat, with an address of its own. Reach them from the About this site icon or Start ▸ Navigate; close one to go back to the chat. A channel's address is /c/ and its name, ready to share."
+            "Every page of the site opens on the same desktop as the chat, with an address of its own: a page as a window for each of its sections, the help and the Connect window as one window each. Open them from their desktop icons or Start ▸ Navigate; close a page's last window to go back to the chat. A channel's address is /c/ and its name, ready to share."
           ),
         see_also: ["ui-desktop", "ui-start-menu", "watching-without-account", "ui-connect-window"]
       },

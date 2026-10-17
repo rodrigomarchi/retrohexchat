@@ -5,7 +5,9 @@ defmodule RetroHexChatWeb.DesktopLive do
   It answers the home (`/`), a channel's address (`/c/:channel`), every page
   of the site, help, the archive, invitations and the sign-in window — in
   every locale, in one `live_session`. `Site.Documents` opens the page an
-  address names as a document window (`Site.Registry`); the chat is composed
+  address names (`Site.Registry`) as the windows it declares — a group for a
+  page of the site, one window for help, the archive, an invitation or
+  sign-in; the chat is composed
   from `components/ui/` and the `ChatLive.*` handlers, and a visitor sees the
   same screen through `ChatLive.Visitor`'s gate.
   """
@@ -47,8 +49,9 @@ defmodule RetroHexChatWeb.DesktopLive do
   # ── Dialog components ────────────────────────────────────────
   import RetroHexChatWeb.Components.UI.AboutDialog
 
-  # ── The pages of the site, as document windows ───────────────
-  import RetroHexChatWeb.Site.DocumentWindow
+  # ── The pages of the site, as windows ────────────────────────
+  import RetroHexChatWeb.Components.UI.Site.Document, only: [site_documents: 1, site_window: 1]
+  import RetroHexChatWeb.Components.UI.Site.DesktopFiles
 
   # ── Domain aliases ────────────────────────────────────────────
   alias RetroHexChat.Accounts.{Session, TrustedDevices}

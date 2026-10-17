@@ -1,0 +1,29 @@
+<.section_heading>
+  {dgettext("landing", "Channels are chat rooms.")}
+</.section_heading>
+<.inset tone="canvas" class="p-3 mb-2">
+  <.channel_list_mockup />
+</.inset>
+<.feature_list>
+  <:item icon={:icon_channels}>
+    <strong>{dgettext("landing", "Public:")}</strong> {dgettext(
+      "landing",
+      "open to anyone who wants to join"
+    )}
+  </:item>
+  <:item icon={:icon_lock}>
+    <strong>{dgettext("landing", "Private:")}</strong> {dgettext(
+      "landing",
+      "invite-only for your group"
+    )}
+  </:item>
+  <:item icon={:icon_security}>
+    <strong>{dgettext("landing", "Protected:")}</strong> {dgettext(
+      "landing",
+      "password-gated access"
+    )}
+  </:item>
+  <:item icon={:icon_btn_settings}>
+    {dgettext("landing", "Topic, modes, slow mode — you control it")}
+  </:item>
+</.feature_list>

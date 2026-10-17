@@ -7,7 +7,7 @@ Part of the [Agent Guide](../AGENT-GUIDE.md) (§7). Section numbers there are st
 ---
 
 - Each feature lives in a `desktop_window` — client-side chrome owned by a
-  `WindowManagerHook` (position/size/z-order/min-max/open persisted to localStorage) wrapping a
+  `WindowManagerHook` (position/size/z-order/min-max/open remembered in tab memory per `persist_key`) wrapping a
   **stateless panel** fed by assigns. The island is only the window **body** — mount the
   `live_component` inside the `desktop_window` slot. `cid` and change-tracking work through the
   function-component slot; you do NOT hoist the wrapper into a LiveView.
@@ -68,29 +68,56 @@ draw it — never a hand-written anchor, because the shape has two states now an
 the wrong one is destructive (a second tab of a P2P session *moves the session
 into it*).
 
-### 7.0.1 Document windows: the pages of the site
+### 7.0.1 The pages of the site: window groups
 
-Every page of the site opens as a **document window** over the chat
-(`Site.DocumentWindow`), one per slot — `doc-site`, `doc-help`, `doc-archive`,
-`doc-join`, `connect` (`Site.Registry`). A page reuses its slot's window, the way a
-browser window shows one page at a time; help and sign-in have their own, so
-opening them does not close the page underneath.
+A page of the site opens over the chat as a **group of windows**, one per
+section, the way the chat's features each have a window of their own. Help, the
+archive, an invitation and sign-in are one window each (ids `doc-help`,
+`doc-archive`, `doc-join`, `connect`). Every page lives in a slot
+(`Site.Registry`): all pages of the site share `:site`, the way a browser shows
+one page at a time, so help and sign-in open beside the page, not instead of it.
 
-- **The address is the window in front.** The manager reports a focus change
-  (`window_focused`, never during a command it was given), and `Site.Documents`
-  patches to that window's address with `replace`; closing a document window
-  hands the address to the window behind it, or to the chat's.
-- **The server names the window in front on the first render**
-  (`data-window-initial-focus`), and the manager focuses it on mount without
-  reporting it back as the reader's choice.
-- **A page's sections are not windows.** `document_section/1` keeps each former
-  window's title, ids and status line as a section of the one document, and the
-  strip at the top (`document_contents/1`) links them.
-- **The Welcome** (the home's document) opens minimized for a visitor this
-  browser has welcomed before (`lib/site/welcome.js`) — the same HTML for
-  everybody, a crawler included.
-- A new page is a `Site.Page` module, an entry in `Site.Registry` and a route in
-  the `:desktop` live_session; nothing in the chat's template changes.
+- **A window is declared once.** A page lists its windows in `load/2` as
+  `Site.Window` entries, in the order they open: id, title, icon, size, status
+  bar fields, an optional shorter taskbar label — and `body`, the function
+  component that draws what the window holds (a template of its own under the
+  page's directory, `embed_templates "features/*"`). Nothing else names a
+  window's title, size or contents, as `WindowRegistry` keeps them for the chat's
+  windows; the desktop draws every window from its entry
+  (`Components.UI.Site.Document`). The site's About is declared the same way
+  (`Site.About`), and the page list itself is `PublicPages`, which
+  `Site.Registry`, the desktop's icons and Start ▸ Navigate all read.
+- **Every body is an island, fed by values.** `Site.WindowBody` receives the
+  window and what its page loaded — values that change only when the page does —
+  and calls the body itself. Never hand a body to an island as a slot: a slot is
+  the parent's markup and re-renders with the parent, and the parent here is the
+  chat. For the same reason the desktop passes `site_documents/1` `@docs` and
+  `@doc_order`, never `assigns`. `site/window_body_test.exs` fails if a chat
+  re-render reaches a window's island.
+- **The group is the window manager's.** Windows carry `data-window-group`; the
+  group's root says whether they start open, whether the first takes the front,
+  and which page they are (`data-document-address`) — the same window id met
+  again on another page (`site-intro`) is that page's window and starts afresh.
+  What opening a group does is decided in `lib/window_manager/window_groups.js`
+  (`planOpenGroup`): a group with nothing open opens whole and is laid out with
+  the page cascade, a page that just arrived is laid out, and one already on the
+  desk comes forward without undoing what the reader closed.
+- **The address is the page in front.** A focus the reader gives a page's window
+  is reported (`window_focused` with its `slot`) and `Site.Documents` replaces the
+  address with that page's; closing a page's last window is reported
+  (`document_closed`) and the address goes to the page behind, or to the chat.
+  Clicks on the taskbar, Start menu and desktop icons are the reader's; only a
+  `window_command` from the server, and the layout it causes, is not reported
+  back. Before the chat has started, everything the manager would report is held
+  (`wm:deferred-push`) and sent in order once it has.
+- **The home is the chat.** A visitor arriving at `/` gets the chat in front and
+  the home's windows on the desk, closed — their words in the HTML. Coming to the
+  home again from within the desktop — the Welcome icon (`open_page`), Start ▸
+  Navigate ▸ Home, a move back — opens them.
+- A new page is a `Site.Page` module with its `Site.Window` entries and their
+  body templates, an entry in `PublicPages` (or `Site.Registry`, for an address
+  no menu names) and a route in the `:desktop` live_session; nothing in the
+  chat's template changes.
 
 ### 7.1 Chat: managed windows (server-owned lifecycle)
 

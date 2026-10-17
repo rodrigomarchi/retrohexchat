@@ -18,42 +18,82 @@ defmodule RetroHexChatWeb.Site.Pages.Features do
        catalogue_path: PublicPages.localized_path("/games"),
        mirc_commands_path: PublicPages.localized_path(PublicPages.path(:mirc_commands)),
        windows: [
-         %{id: "intro", label: dgettext("landing", "Features"), icon: :icon_chat},
-         %{id: "real-time-chat", label: dgettext("landing", "Real-time Chat"), icon: :icon_chat},
-         %{id: "channels", label: dgettext("landing", "Channels"), icon: :icon_channels},
-         %{
-           id: "virtual-spaces",
-           label: dgettext("landing", "Virtual Spaces"),
-           icon: :icon_joystick
-         },
-         %{
-           id: "channel-conferences",
-           label: dgettext("landing", "Channel Conferences"),
-           icon: :icon_chat
-         },
-         %{
-           id: "private-p2p-calls-files",
-           label: dgettext("landing", "Private P2P"),
-           icon: :icon_p2p
-         },
-         %{
-           id: "multiplayer-games",
-           label: dgettext("landing", "Multiplayer Games"),
-           icon: :icon_joystick
-         },
-         %{id: "solo-arcade", label: dgettext("landing", "Solo Arcade"), icon: :icon_joystick},
-         %{id: "bots", label: dgettext("landing", "Bots"), icon: :icon_terminal},
-         %{
-           id: "administration",
-           label: dgettext("landing", "Administration"),
-           icon: :icon_dialog_admin_console
-         },
-         %{
-           id: "built-in-help",
-           label: dgettext("landing", "Built-in Help"),
-           icon: :icon_btn_help_topics
-         },
-         %{id: "irc-commands", label: dgettext("landing", "IRC Commands"), icon: :icon_terminal}
+         Window.new("intro", dgettext("landing", "Retro Hex Chat Features"), :icon_chat,
+           width: 640,
+           taskbar_label: dgettext("landing", "Features"),
+           body: &page_intro/1,
+           assigns: %{
+             heading_id: "features-heading",
+             description:
+               dgettext(
+                 "landing",
+                 "Explore the public chat features: real-time channels, virtual spaces, private P2P voice and video calls, channel conferences, file transfer, games, bots, IRC-style commands, and built-in help."
+               )
+           },
+           status: [dgettext("landing", "Feature overview")]
+         ),
+         Window.new("real-time-chat", dgettext("landing", "Real-time Chat"), :icon_chat,
+           width: 460,
+           body: &real_time_chat/1,
+           status: [{:check, dgettext("landing", "Live")}]
+         ),
+         Window.new("channels", dgettext("landing", "Channels"), :icon_channels,
+           width: 420,
+           body: &channels/1,
+           status: [{:check, dgettext("landing", "Flexible")}]
+         ),
+         Window.new("virtual-spaces", dgettext("landing", "Virtual Spaces"), :icon_group_view,
+           width: 460,
+           body: &virtual_spaces/1,
+           status: [{:check, dgettext("landing", "Spatial chat")}]
+         ),
+         Window.new(
+           "channel-conferences",
+           dgettext("landing", "Channel Conferences"),
+           :icon_conference,
+           width: 400,
+           body: &channel_conferences/1,
+           status: [{:check, dgettext("landing", "Group call")}]
+         ),
+         Window.new(
+           "private-p2p-calls-files",
+           dgettext("landing", "Private P2P Calls & Files"),
+           :icon_p2p,
+           width: 380,
+           taskbar_label: dgettext("landing", "Private P2P"),
+           body: &private_p2p_calls_files/1,
+           status: [{:check, dgettext("landing", "Encrypted")}]
+         ),
+         Window.new("multiplayer-games", dgettext("landing", "Multiplayer Games"), :icon_joystick,
+           width: 520,
+           body: &multiplayer_games/1,
+           status: [{:check, dgettext("landing", "34 games")}]
+         ),
+         Window.new("solo-arcade", dgettext("landing", "Solo Arcade"), :icon_game_arcade,
+           width: 460,
+           body: &solo_arcade/1,
+           status: [{:check, dgettext("landing", "18 games")}]
+         ),
+         Window.new("bots", dgettext("landing", "Bots"), :icon_robot,
+           width: 460,
+           body: &bots/1,
+           status: [{:check, dgettext("landing", "Extensible")}]
+         ),
+         Window.new("administration", dgettext("landing", "Administration"), :icon_rules,
+           width: 560,
+           body: &administration/1,
+           status: [{:check, dgettext("landing", "Full control")}]
+         ),
+         Window.new("built-in-help", dgettext("landing", "Built-in Help"), :icon_question,
+           width: 460,
+           body: &built_in_help/1,
+           status: [{:check, dgettext("landing", "Self-documented")}]
+         ),
+         Window.new("irc-commands", dgettext("landing", "IRC Commands"), :icon_terminal,
+           width: 460,
+           body: &irc_commands/1,
+           status: [{:check, dgettext("landing", "50+ commands")}]
+         )
        ],
        canonical_path: "/features",
        json_ld: [
@@ -71,8 +111,5 @@ defmodule RetroHexChatWeb.Site.Pages.Features do
      }}
   end
 
-  embed_templates "features.html"
-
-  @impl RetroHexChatWeb.Site.Page
-  def render(assigns), do: features(assigns)
+  embed_templates "features/*"
 end

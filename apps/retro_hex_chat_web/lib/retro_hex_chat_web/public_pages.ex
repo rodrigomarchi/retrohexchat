@@ -1,8 +1,9 @@
 defmodule RetroHexChatWeb.PublicPages do
   @moduledoc """
-  The public pages, once: the landing's Start menu, menu bar and taskbar, the
-  chat's Start menu, the sitemap and each page's own address all read this
-  list, so a page added here is a page every one of them knows.
+  The public pages, once: the page that opens at each address
+  (`Site.Registry`), the desktop's icons, Start ▸ Navigate, the sitemap and
+  each page's own address all read this list, so a page added here is a page
+  every one of them knows.
 
   Paths are the canonical, unprefixed ones; a menu localizes them for its
   reader with `localized_path/1`.
@@ -15,41 +16,53 @@ defmodule RetroHexChatWeb.PublicPages do
 
   alias RetroHexChatWeb.I18n
   alias RetroHexChatWeb.SEO
+  alias RetroHexChatWeb.Site.Pages
 
-  @type page :: %{page: atom(), path: String.t(), label: String.t(), icon: atom()}
+  @typedoc """
+  A public page: its name (the route's `live_action`), its address, its icon,
+  the label menus link it by and the title its windows go by on the desktop.
+  """
+  @type page :: %{
+          page: atom(),
+          path: String.t(),
+          label: String.t(),
+          title: String.t(),
+          icon: atom()
+        }
 
   @pages [
-    {:home, "/", :icon_hex_stone},
-    {:how_it_works, "/how-it-works", :icon_server},
-    {:features, "/features", :icon_chat},
-    {:games, "/games", :icon_joystick},
-    {:privacy, "/privacy", :icon_lock},
-    {:install, "/install", :icon_terminal},
-    {:community, "/community", :icon_code},
-    {:faq, "/faq", :icon_question}
+    {:home, "/", :icon_hex_stone, Pages.Index},
+    {:how_it_works, "/how-it-works", :icon_server, Pages.HowItWorks},
+    {:features, "/features", :icon_chat, Pages.Features},
+    {:games, "/games", :icon_joystick, Pages.Games},
+    {:privacy, "/privacy", :icon_lock, Pages.Privacy},
+    {:install, "/install", :icon_terminal, Pages.Install},
+    {:community, "/community", :icon_code, Pages.Community},
+    {:faq, "/faq", :icon_question, Pages.Faq}
   ]
 
   @guides [
-    {:mirc_commands, "/mirc-commands", :icon_terminal},
-    {:mirc_online, "/mirc-online", :icon_chat},
-    {:irc_chat, "/irc-chat", :icon_channels}
+    {:mirc_commands, "/mirc-commands", :icon_terminal, Pages.MircCommands},
+    {:mirc_online, "/mirc-online", :icon_chat, Pages.MircOnline},
+    {:irc_chat, "/irc-chat", :icon_channels, Pages.IrcChat}
   ]
 
   @doc "Every public page, in menu order, labelled in the current locale."
   @spec all() :: [page()]
-  def all do
-    Enum.map(@pages, fn {page, path, icon} ->
-      %{page: page, path: path, label: label(page), icon: icon}
-    end)
-  end
+  def all, do: Enum.map(@pages, &entry/1)
 
   @doc "Every guide, labelled in the current locale."
   @spec guides() :: [page()]
-  def guides do
-    Enum.map(@guides, fn {page, path, icon} ->
-      %{page: page, path: path, label: label(page), icon: icon}
-    end)
-  end
+  def guides, do: Enum.map(@guides, &entry/1)
+
+  @doc "The public page or guide named `page`, or nil."
+  @spec find(atom()) :: page() | nil
+  def find(page), do: Enum.find(all() ++ guides(), &(&1.page == page))
+
+  @doc "The page module each public page and guide opens, by its name — for `Site.Registry`."
+  @spec modules() :: %{atom() => module()}
+  def modules,
+    do: Map.new(@pages ++ @guides, fn {page, _path, _icon, module} -> {page, module} end)
 
   @doc "The canonical path of every public page and guide, for the sitemap."
   @spec paths() :: [String.t()]
@@ -62,7 +75,7 @@ defmodule RetroHexChatWeb.PublicPages do
   @spec path(atom()) :: String.t()
   def path(page) do
     case List.keyfind(@pages ++ @guides, page, 0) do
-      {^page, path, _icon} -> path
+      {^page, path, _icon, _module} -> path
       nil -> "/"
     end
   end
@@ -73,6 +86,15 @@ defmodule RetroHexChatWeb.PublicPages do
   """
   @spec localized_path(String.t()) :: String.t()
   def localized_path(path), do: SEO.localized_path(path, I18n.current_locale())
+
+  defp entry({page, path, icon, _module}) do
+    %{page: page, path: path, label: label(page), title: title(page), icon: icon}
+  end
+
+  # The home is where the menus go back to, and on the desktop it is what
+  # greets a reader.
+  defp title(:home), do: dgettext("landing", "Welcome")
+  defp title(page), do: label(page)
 
   defp label(:home), do: dgettext("landing", "Home")
   defp label(:how_it_works), do: dgettext("landing", "How It Works")

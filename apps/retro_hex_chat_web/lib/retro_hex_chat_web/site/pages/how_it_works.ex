@@ -13,38 +13,79 @@ defmodule RetroHexChatWeb.Site.Pages.HowItWorks do
      %{
        active_page: :how_it_works,
        windows: [
-         %{id: "intro", label: dgettext("landing", "How It Works"), icon: :icon_server},
-         %{id: "your-server", label: dgettext("landing", "Your Server"), icon: :icon_server},
-         %{
-           id: "private-p2p-connections",
-           label: dgettext("landing", "Private P2P Connections"),
-           icon: :icon_p2p
-         },
-         %{
-           id: "virtual-spaces",
-           label: dgettext("landing", "Virtual Spaces"),
-           icon: :icon_joystick
-         },
-         %{
-           id: "channel-conferences",
-           label: dgettext("landing", "Channel Conferences"),
-           icon: :icon_chat
-         },
-         %{
-           id: "privacy-comparison",
-           label: dgettext("landing", "Privacy Comparison"),
-           icon: :icon_lock
-         },
-         %{
-           id: "install-app",
-           label: dgettext("landing", "Keep It On Your Device"),
-           icon: :icon_hex_stone
-         },
-         %{
-           id: "security-layers",
-           label: dgettext("landing", "Security Layers"),
-           icon: :icon_shield
-         }
+         Window.new("intro", dgettext("landing", "How Retro Hex Chat Works"), :icon_server,
+           width: 640,
+           taskbar_label: dgettext("landing", "How It Works"),
+           body: &page_intro/1,
+           assigns: %{
+             heading_id: "how-it-works-heading",
+             description:
+               dgettext(
+                 "landing",
+                 "Retro Hex Chat combines a self-hosted Phoenix server with real-time chat, channel Spaces, private WebRTC peer-to-peer sessions, and self-hosted channel conferences."
+               )
+           },
+           status: [dgettext("landing", "Architecture overview")]
+         ),
+         Window.new("your-server", dgettext("landing", "Your Server"), :icon_server,
+           width: 620,
+           body: &your_server/1,
+           status: [{:check, dgettext("landing", "Self-hosted")}]
+         ),
+         Window.new(
+           "private-p2p-connections",
+           dgettext("landing", "Private P2P Connections"),
+           :icon_p2p,
+           width: 520,
+           body: &private_p2p_connections/1,
+           status: [{:check, dgettext("landing", "Peer-to-peer")}]
+         ),
+         Window.new("virtual-spaces", dgettext("landing", "Virtual Spaces"), :icon_group_view,
+           width: 620,
+           body: &virtual_spaces/1,
+           status: [{:check, dgettext("landing", "Space runtime")}]
+         ),
+         Window.new(
+           "channel-conferences",
+           dgettext("landing", "Channel Conferences"),
+           :icon_conference,
+           width: 620,
+           body: &channel_conferences/1,
+           status: [{:check, dgettext("landing", "SFU routed")}]
+         ),
+         Window.new("privacy-comparison", dgettext("landing", "Privacy Comparison"), :icon_shield,
+           width: 780,
+           body: &privacy_comparison/1,
+           assigns: %{
+             theirs: dgettext("landing", "Big Tech"),
+             rows: [
+               {dgettext("landing", "Messages"),
+                dgettext("landing", "Stored on their servers, mined for ads"),
+                dgettext("landing", "Stored on YOUR server, never leaves")},
+               {dgettext("landing", "Calls"),
+                dgettext("landing", "Routed through corporate infrastructure"),
+                dgettext("landing", "Private P2P, or conferences routed by your own server")},
+               {dgettext("landing", "Your data"),
+                dgettext("landing", "Trains their AI, sold to advertisers"),
+                dgettext("landing", "Stays in your database, period")},
+               {dgettext("landing", "Code"), dgettext("landing", "Closed source — trust us"),
+                dgettext("landing", "Open source — verify yourself")},
+               {dgettext("landing", "Control"), dgettext("landing", "They can ban you anytime"),
+                dgettext("landing", "You own the server — nobody can")}
+             ]
+           },
+           status: [{:check, dgettext("landing", "Your data")}]
+         ),
+         Window.new("install-app", dgettext("landing", "Keep It On Your Device"), :icon_hex_stone,
+           width: 420,
+           body: &install_app/1,
+           status: [{:check, dgettext("landing", "No store required")}]
+         ),
+         Window.new("security-layers", dgettext("landing", "Security Layers"), :icon_security,
+           width: 420,
+           body: &security_layers/1,
+           status: [{:check, dgettext("landing", "Encrypted")}]
+         )
        ],
        canonical_path: "/how-it-works",
        json_ld: [
@@ -63,8 +104,5 @@ defmodule RetroHexChatWeb.Site.Pages.HowItWorks do
      }}
   end
 
-  embed_templates "how_it_works.html"
-
-  @impl RetroHexChatWeb.Site.Page
-  def render(assigns), do: how_it_works(assigns)
+  embed_templates "how_it_works/*"
 end

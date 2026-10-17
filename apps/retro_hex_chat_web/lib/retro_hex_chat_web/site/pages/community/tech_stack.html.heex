@@ -1,0 +1,7 @@
+<div class="grid sm:grid-cols-2 lg:grid-cols-7 gap-2">
+  <.inset :for={{icon, part, made_of} <- @stack} class="p-2 text-xs text-center">
+    {apply(Icons, icon, [%{class: "w-6 h-6 mx-auto mb-1"}])}
+    <strong>{part}</strong>
+    <br /> {made_of}
+  </.inset>
+</div>

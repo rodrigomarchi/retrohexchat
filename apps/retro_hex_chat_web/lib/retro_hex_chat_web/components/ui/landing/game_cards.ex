@@ -3,7 +3,9 @@ defmodule RetroHexChatWeb.Components.UI.Landing.GameCards do
   The public games catalogue's pieces: a game's screenshot, the card that links
   to its page, the page's body, and the link other pages use to reach it.
 
-  Built on the shared `card`, `button` and `document_section` primitives and the
+  The catalogue's windows and a game's page are bodies of windows the page
+  declares (`RetroHexChatWeb.Site.Window`). Built on the shared `card` and
+  `button` primitives and the
   same `game_icon` the in-app library uses, so a game looks like itself on the
   public page and in the app. Every path arrives prepared by the page — these
   components never read the locale or build an address themselves.
@@ -12,10 +14,9 @@ defmodule RetroHexChatWeb.Components.UI.Landing.GameCards do
 
   import RetroHexChatWeb.Components.UI.Button
   import RetroHexChatWeb.Components.UI.Card
-  import RetroHexChatWeb.Components.UI.Site.Document
-  import RetroHexChatWeb.Components.UI.Window
 
   alias RetroHexChatWeb.Icons
+  alias RetroHexChatWeb.Site.Window
 
   attr :game, :map, required: true, doc: "a `RetroHexChatWeb.GameCatalog` game"
 
@@ -93,37 +94,33 @@ defmodule RetroHexChatWeb.Components.UI.Landing.GameCards do
     """
   end
 
-  attr :id, :string, required: true
-  attr :title, :string, required: true
+  attr :window, Window, required: true
   attr :heading_id, :string, required: true
   attr :cards, :list, required: true, doc: "%{game, path} per card"
-  attr :width, :integer, default: 1000
-  attr :columns, :string, default: "grid-cols-2 md:grid-cols-3 lg:grid-cols-4"
-  slot :icon, required: true
-  slot :status
-  slot :footer
+  attr :columns, :string, required: true, doc: "the grid's columns"
+
+  attr :catalogue_path, :string,
+    required: true,
+    doc: "a link to the whole catalogue under the cards, or nil for the catalogue itself"
 
   @doc """
-  A window of game cards under a heading of its own, so a list of games sits
-  in the page outline as a section rather than as cards under the wrong h2.
+  Game cards under a heading of their own, so a list of games sits in the page
+  outline as a section rather than as cards under the wrong h2.
   """
-  @spec game_card_window(map()) :: Phoenix.LiveView.Rendered.t()
-  def game_card_window(assigns) do
+  @spec game_card_list(map()) :: Phoenix.LiveView.Rendered.t()
+  def game_card_list(assigns) do
     ~H"""
-    <.document_section id={@id} width={@width} title={@title}>
-      <:icon>{render_slot(@icon)}</:icon>
-      <h2 id={@heading_id} class="text-sm font-bold mb-2">{@title}</h2>
-      <div class={["grid gap-3", @columns]}>
-        <.game_card :for={card <- @cards} game={card.game} path={card.path} />
-      </div>
-      {render_slot(@footer)}
-      <:status :if={@status != []}>{render_slot(@status)}</:status>
-    </.document_section>
+    <h2 id={@heading_id} class="text-sm font-bold mb-2">{@window.title}</h2>
+    <div class={["grid gap-3", @columns]}>
+      <.game_card :for={card <- @cards} game={card.game} path={card.path} />
+    </div>
+    <p :if={@catalogue_path} class="text-sm mt-3">
+      <.link patch={@catalogue_path} class="underline">{dgettext("landing", "All games")}</.link>
+    </p>
     """
   end
 
   attr :game, :map, required: true, doc: "a `RetroHexChatWeb.GameCatalog` game"
-  attr :kind_label, :string, required: true
   attr :how_to_play_path, :string, required: true
 
   attr :play_path, :string,
@@ -132,55 +129,44 @@ defmodule RetroHexChatWeb.Components.UI.Landing.GameCards do
 
   @doc """
   A game's page: what it is, what it looks like, how it is played and the way
-  in. Playing needs a nickname, so the button brings forward the page's own
-  Connect window, which is told to land the reader on the game.
+  in. A visitor's Play opens the sign-in window, which lands them on the game
+  once they have an account.
   """
   @spec game_detail(map()) :: Phoenix.LiveView.Rendered.t()
   def game_detail(assigns) do
     ~H"""
-    <.document_section id="game" width={760} title={@game.name}>
-      <:icon><Icons.game_icon game_id={@game.id} class="w-4 h-4" /></:icon>
+    <h1 id="game-heading" class="text-lg font-bold mb-1 text-text">{@game.name}</h1>
+    <p class="text-sm mb-3">{@game.tagline}</p>
 
-      <h1 id="game-heading" class="text-lg font-bold mb-1 text-text">{@game.name}</h1>
-      <p class="text-sm mb-3">{@game.tagline}</p>
+    <div class="shadow-retro-field mb-3">
+      <.game_screenshot game={@game} main />
+    </div>
 
-      <div class="shadow-retro-field mb-3">
-        <.game_screenshot game={@game} main />
-      </div>
+    <div class="flex flex-wrap gap-2 mb-4">
+      <.button patch={@play_path} data-testid="game-play">
+        <:icon><Icons.icon_joystick class="w-4 h-4" /></:icon>
+        {dgettext("landing", "Play now — pick a nickname")}
+      </.button>
+      <.button variant="outline" patch={@how_to_play_path} data-testid="game-how-to-play">
+        <:icon><Icons.icon_question class="w-4 h-4" /></:icon>
+        {dgettext("landing", "How to play")}
+      </.button>
+    </div>
 
-      <div class="flex flex-wrap gap-2 mb-4">
-        <.button patch={@play_path} data-testid="game-play">
-          <:icon><Icons.icon_joystick class="w-4 h-4" /></:icon>
-          {dgettext("landing", "Play now — pick a nickname")}
-        </.button>
-        <.button variant="outline" patch={@how_to_play_path} data-testid="game-how-to-play">
-          <:icon><Icons.icon_question class="w-4 h-4" /></:icon>
-          {dgettext("landing", "How to play")}
-        </.button>
-      </div>
+    <h2 class="text-sm font-bold mb-1">{dgettext("landing", "About")}</h2>
+    <p class="text-sm mb-3">{@game.description}</p>
 
-      <h2 class="text-sm font-bold mb-1">{dgettext("landing", "About")}</h2>
-      <p class="text-sm mb-3">{@game.description}</p>
+    <h2 class="text-sm font-bold mb-1">{dgettext("landing", "Controls")}</h2>
+    <p class="text-sm mb-3" data-testid="game-controls">{@game.controls}</p>
 
-      <h2 class="text-sm font-bold mb-1">{dgettext("landing", "Controls")}</h2>
-      <p class="text-sm mb-3" data-testid="game-controls">{@game.controls}</p>
-
-      <div :if={@game.modes != []} data-testid="game-modes">
-        <h2 class="text-sm font-bold mb-1">{dgettext("landing", "Modes")}</h2>
-        <ul class="text-sm list-disc pl-5">
-          <li :for={mode <- @game.modes}>
-            <strong>{mode.name}</strong> — {mode.tagline}
-          </li>
-        </ul>
-      </div>
-
-      <:status>
-        <.window_status_bar_field grow>{@kind_label}</.window_status_bar_field>
-        <.window_status_bar_field>
-          {dgettext("landing", "Free, in the browser")}
-        </.window_status_bar_field>
-      </:status>
-    </.document_section>
+    <div :if={@game.modes != []} data-testid="game-modes">
+      <h2 class="text-sm font-bold mb-1">{dgettext("landing", "Modes")}</h2>
+      <ul class="text-sm list-disc pl-5">
+        <li :for={mode <- @game.modes}>
+          <strong>{mode.name}</strong> — {mode.tagline}
+        </li>
+      </ul>
+    </div>
     """
   end
 

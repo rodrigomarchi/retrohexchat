@@ -31,10 +31,15 @@ defmodule RetroHexChatWeb.Site.Pages.Help do
            # topics: the first HTML is what a search engine reads, and every
            # title repeated on every topic page outweighs the topic itself.
            full_tree: Map.get(ctx, :connected?, false) or topic.id == @default_topic,
-           window_title: dgettext("help", "Help — RetroHexChat"),
-           window_icon: :icon_notepad,
-           menu: :help,
-           windows: [],
+           windows: [
+             Window.new("help", dgettext("help", "Help — RetroHexChat"), :icon_notepad,
+               width: 900,
+               height: 620,
+               fill: 0.9,
+               menu: :help,
+               body: &viewer/1
+             )
+           ],
            page_title: title,
            page_description: topic.description,
            canonical_path: canonical_path,
@@ -50,8 +55,9 @@ defmodule RetroHexChatWeb.Site.Pages.Help do
     end
   end
 
-  @impl RetroHexChatWeb.Site.Page
-  def render(assigns) do
+  @doc "The help window's body: the viewer, an island of its own."
+  @spec viewer(map()) :: Phoenix.LiveView.Rendered.t()
+  def viewer(assigns) do
     ~H"""
     <.live_component
       module={RetroHexChatWeb.Site.HelpViewer}

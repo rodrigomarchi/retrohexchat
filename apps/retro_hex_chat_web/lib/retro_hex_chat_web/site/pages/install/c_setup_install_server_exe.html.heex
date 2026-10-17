@@ -1,0 +1,35 @@
+<.section_heading>
+  {dgettext("landing", "Want your own server? Three steps.")}
+</.section_heading>
+
+<div class="space-y-3">
+  <fieldset class="border-2 border-gray-400 p-3">
+    <legend class="text-sm font-bold px-1">
+      <Icons.icon_git class="w-4 h-4 inline" /> {dgettext(
+        "landing",
+        "Step 1 — Clone"
+      )}
+    </legend>
+    <.step_clone />
+  </fieldset>
+
+  <fieldset class="border-2 border-gray-400 p-3">
+    <legend class="text-sm font-bold px-1">
+      <Icons.icon_wrench class="w-4 h-4 inline" /> {dgettext(
+        "landing",
+        "Step 2 — Setup"
+      )}
+    </legend>
+    <.step_setup />
+  </fieldset>
+
+  <fieldset class="border-2 border-gray-400 p-3">
+    <legend class="text-sm font-bold px-1">
+      <Icons.icon_terminal class="w-4 h-4 inline" /> {dgettext(
+        "landing",
+        "Step 3 — Run"
+      )}
+    </legend>
+    <.step_run />
+  </fieldset>
+</div>

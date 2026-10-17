@@ -4,7 +4,10 @@
 <div
   id="document-title"
   phx-hook="DocumentTitleHook"
-  data-title={Site.Documents.tab_title(assigns)}
+  data-title={
+    Site.Documents.tab_title(@focused_doc, @docs, @head) ||
+      ChatTitle.document_title(@session, @show_status_tab)
+  }
   class="hidden"
 >
 </div>
@@ -346,12 +349,20 @@
       <% end %>
     </.desktop_window>
 
-    <%!-- The pages of the site, each in its window over the chat, the one the
-          address names in front. Rendered on the first response, whole. --%>
-    <.document_window
-      :for={doc <- Site.Documents.ordered(assigns)}
-      doc={doc}
-      focused={doc.slot == @focused_doc}
+    <%!-- The pages of the site over the chat, the one the address names in
+          front: a page of the site as its group of windows, help, the archive,
+          an invitation and sign-in as one window each. Rendered on the first
+          response, whole. --%>
+    <.site_documents docs={@docs} order={@doc_order} focused={@focused_doc} />
+
+    <%!-- The site's About: closed until its desktop icon or the About this
+          site folder asks for it, with the language links of the address on
+          screen (`Site.Documents.carries_about?/2`). --%>
+    <.site_window
+      :if={Site.Documents.carries_about?(@docs, @live_ready)}
+      window={Site.About.window()}
+      page_assigns={%{current_path: @head.canonical_path}}
+      open={false}
     />
 
     <%= if @live_ready do %>
@@ -1148,8 +1159,16 @@
     />
 
     <:shortcuts>
-      <.desktop_launcher_icons screen={:chat} arcade_available={@session.identified == true} />
+      <.desktop_launcher_icons
+        screen={:chat}
+        visitor={@visitor?}
+        arcade_available={@session.identified == true}
+      />
     </:shortcuts>
+
+    <:end_shortcuts :if={@visitor?}>
+      <.desktop_site_icons />
+    </:end_shortcuts>
 
     <:taskbar>
       <.chat_taskbar
@@ -1166,13 +1185,17 @@
         cc_window_channel={@cc_window_channel}
         hidden_windows={@hidden_windows}
         live_ready={@live_ready}
-        documents={
-          Enum.map(Site.Documents.ordered(assigns), &%{id: &1.id, label: &1.title, icon: &1.icon})
-        }
+        documents={Site.Documents.taskbar(@docs, @doc_order)}
+        about={Site.Documents.carries_about?(@docs, @live_ready)}
       />
     </:taskbar>
   </.desktop>
 </div>
+
+<%!-- The files on a visitor's desk: README.txt and the Trash. In the first
+      response beside a page of the site, like the About; with the chat on the
+      chat's own addresses, which start it at once. --%>
+<.desktop_file_popups :if={@visitor? and (@live_ready or Map.has_key?(@docs, :site))} />
 
 <%!-- About: stateless, opened client-side via show_modal (logo + Help menu) --%>
 <.about_dialog id="about-dialog" show={false} />

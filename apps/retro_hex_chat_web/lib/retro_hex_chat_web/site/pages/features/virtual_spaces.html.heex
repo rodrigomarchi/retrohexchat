@@ -1,0 +1,36 @@
+<.section_heading>
+  {dgettext("landing", "Every channel can become a shared 8-bit room.")}
+</.section_heading>
+<.inset tone="screen" class="p-1 mb-2">
+  <img
+    src={Endpoint.static_path("/images/landing/space_end_of_time_showcase.png")}
+    alt={
+      dgettext(
+        "landing",
+        "End of Time Space map with avatars and in-world chat bubbles"
+      )
+    }
+    class="block w-full h-auto"
+    loading="lazy"
+  />
+</.inset>
+<.feature_list>
+  <:item icon={:icon_group_view}>
+    {dgettext("landing", "Switch between Chat and Space from the channel topic bar")}
+  </:item>
+  <:item icon={:icon_palette}>
+    {dgettext("landing", "Choose an avatar before entering the shared map")}
+  </:item>
+  <:item icon={:icon_security}>
+    {dgettext(
+      "landing",
+      "Server-validated movement, collision, seating, and interactions"
+    )}
+  </:item>
+  <:item icon={:icon_chat}>
+    {dgettext(
+      "landing",
+      "Channel and DM messages appear as bubbles in the same conversation"
+    )}
+  </:item>
+</.feature_list>

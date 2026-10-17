@@ -9,8 +9,8 @@ defmodule RetroHexChatWeb.Router do
   end
 
   # Every public address and every address of the chat is one LiveView on one
-  # desktop: the chat runs behind, and a page of the site opens over it as a
-  # document window. Moving between them is a patch, never a reload, because
+  # desktop: the chat runs behind, and a page of the site opens over it as its
+  # windows. Moving between them is a patch, never a reload, because
   # they share this one live_session — and the locale segment is part of every
   # address, so the URL decides the language for a visitor and a member alike.
   pipeline :desktop do

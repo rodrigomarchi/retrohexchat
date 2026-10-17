@@ -3,7 +3,12 @@ defmodule RetroHexChatWeb.Site.PagesTest do
 
   import Phoenix.LiveViewTest
 
+  alias RetroHexChatWeb.ChatLive.WindowRegistry
+  alias RetroHexChatWeb.Components.UI.Site.Document
+  alias RetroHexChatWeb.PublicPages
+  alias RetroHexChatWeb.Site.About
   alias RetroHexChatWeb.Site.Pages.Faq
+  alias RetroHexChatWeb.Site.Registry
 
   @landing_pages [
     {"/", "hero-heading"},
@@ -19,8 +24,6 @@ defmodule RetroHexChatWeb.Site.PagesTest do
     {"/mirc-online", "mirc-online-heading"},
     {"/irc-chat", "irc-chat-heading"}
   ]
-
-  @secondary_landing_pages @landing_pages -- [{"/", "hero-heading"}]
 
   describe "all landing pages" do
     for {path, heading_id} <- @landing_pages do
@@ -81,14 +84,11 @@ defmodule RetroHexChatWeb.Site.PagesTest do
       end
     end
 
-    test "the home's Welcome leads into the chat and to an account", %{conn: conn} do
+    test "the home's Welcome leads to an account", %{conn: conn} do
       document = conn |> get("/") |> html_response(200) |> Floki.parse_document!()
 
-      enter = Floki.find(document, ~s([data-testid="welcome-enter-chat"]))
-      assert Floki.attribute(enter, "href") == ["/c/lobby"]
-      assert Floki.attribute(enter, "data-phx-link") == ["patch"]
-
       sign_up = Floki.find(document, ~s([data-testid="welcome-sign-up"]))
+      assert Floki.attribute(sign_up, "data-phx-link") == ["patch"]
       assert [href] = Floki.attribute(sign_up, "href")
       assert href =~ ~r{^/connect\?}
     end
@@ -179,15 +179,24 @@ defmodule RetroHexChatWeb.Site.PagesTest do
         end
       end
 
+      # A visitor's home keeps its windows closed behind the chat; the desktop
+      # icon that opens them is their way back, and their taskbar group comes
+      # with them.
       test "GET #{path} gives every window a taskbar button", %{conn: conn} do
         conn = get(conn, unquote(path))
         document = html_response(conn, 200) |> Floki.parse_document!()
+
+        closed =
+          document
+          |> Floki.find(~s([data-window-group-open="false"] [data-window-id]))
+          |> Floki.attribute("data-window-id")
 
         windows =
           document
           |> Floki.find("[data-window-id]")
           |> Floki.attribute("data-window-id")
           |> MapSet.new()
+          |> MapSet.difference(MapSet.new(closed))
 
         buttons =
           document
@@ -208,56 +217,92 @@ defmodule RetroHexChatWeb.Site.PagesTest do
     end
   end
 
-  describe "top menu bar and clock" do
-    for {path, _heading_id} <- @landing_pages do
-      test "GET #{path} renders a real dropdown menu bar and a tray clock", %{conn: conn} do
+  describe "a page's windows" do
+    for {path, heading_id} <- @landing_pages do
+      # The windows a page declares (`Site.Window`) are the windows it draws —
+      # nothing drawn undeclared, nothing declared missing — and the first of
+      # them, the one in front, says what the page is.
+      test "GET #{path} draws the windows it declares, its heading first", %{conn: conn} do
         conn = get(conn, unquote(path))
         document = html_response(conn, 200) |> Floki.parse_document!()
 
-        assert Floki.find(document, ~s(nav[role="menubar"])) != []
+        drawn =
+          document
+          |> Floki.find(~s([data-testid="site-windows"] [data-window-group="site"]))
+          |> Floki.attribute("data-window-id")
 
-        # At least the three landing menus (Navigate / Help / Language).
-        triggers = Floki.find(document, "[data-menubar-trigger]")
-        assert length(triggers) >= 3
+        declared =
+          for window <- page_windows(unquote(path)), do: "site-" <> window.id
 
-        # Dropdowns start hidden (desktop.js toggles u-hidden).
-        dropdowns = Floki.find(document, "[data-menubar-dropdown]")
-        assert dropdowns != []
+        assert drawn == declared
 
-        Enum.each(dropdowns, fn dd ->
-          classes = dd |> Floki.attribute("class") |> Enum.join(" ")
-          assert classes =~ "u-hidden"
-        end)
+        [first | _rest] = Floki.find(document, ~s([data-window-group="site"]))
+        assert Floki.find(first, "h1##{unquote(heading_id)}") != []
+        assert first |> Floki.find("p") |> Floki.text() |> String.trim() != ""
+      end
 
-        # Menu items are real links: pages, docs and locale switchers.
-        menubar_hrefs =
-          document |> Floki.find(~s(nav[role="menubar"] a)) |> Floki.attribute("href")
+      test "GET #{path} keeps the tray clock", %{conn: conn} do
+        document = conn |> get(unquote(path)) |> html_response(200) |> Floki.parse_document!()
 
-        assert "/faq" in menubar_hrefs
-        assert "/chat/help" in menubar_hrefs
-        assert Enum.any?(menubar_hrefs, &String.starts_with?(&1, "/pt-BR"))
-
-        # Tray clock element (updated client-side by desktop.js).
         assert Floki.find(document, "[data-clock]") != []
       end
     end
-  end
 
-  describe "secondary landing page content" do
-    for {path, heading_id} <- @secondary_landing_pages do
-      test "GET #{path} starts with a visible intro summary", %{conn: conn} do
-        conn = get(conn, unquote(path))
-        document = html_response(conn, 200) |> Floki.parse_document!()
+    # A page's windows sit on one desktop with the chat's, the site's About and
+    # the one-window pages; two windows sharing a DOM id would be one window
+    # to the window manager.
+    test "every window of a page has a DOM id no other window on the desktop has" do
+      others =
+        MapSet.new(
+          [Document.window_id(About.window()) | Registry.window_ids()] ++
+            Enum.map(WindowRegistry.windows(), & &1.id)
+        )
 
-        intro =
-          Floki.find(
-            document,
-            ~s(section[aria-labelledby="#{unquote(heading_id)}"] > *:first-child)
-          )
+      for page <- PublicPages.all() ++ PublicPages.guides() do
+        ids = for window <- page_windows(page.path), do: Document.window_id(window)
 
-        assert Floki.find(intro, "h1") != []
-        assert intro |> Floki.find("p") |> Floki.text() |> String.trim() != ""
+        assert ids == Enum.uniq(ids), "#{page.path} declares a window twice"
+
+        for id <- ids do
+          refute id in others, "#{page.path}'s #{id} is the id of another window on the desktop"
+        end
       end
+    end
+
+    test "a visitor's home is the chat, with the home's windows closed behind it", %{conn: conn} do
+      document = conn |> get("/") |> html_response(200) |> Floki.parse_document!()
+
+      assert [group] = Floki.find(document, ~s([data-testid="site-windows"]))
+      assert Floki.attribute(group, "data-window-group-open") == ["false"]
+      assert Floki.attribute(group, "data-window-group-focus") == ["false"]
+
+      # Closed is not absent: the home's words are in its HTML.
+      assert Floki.text(group) =~ "Your community isn’t yours."
+
+      # The chat is what the home shows, so a reader's starts at once
+      # (`lib/site/boot_policy.js`; a crawler's still waits).
+      assert Floki.attribute(document, "html", "data-boot") == ["reader"]
+    end
+
+    test "every other page opens on arrival, in front", %{conn: conn} do
+      document = conn |> get("/features") |> html_response(200) |> Floki.parse_document!()
+
+      assert [group] = Floki.find(document, ~s([data-testid="site-windows"]))
+      assert Floki.attribute(group, "data-window-group-open") == ["true"]
+      assert Floki.attribute(group, "data-window-group-focus") == ["true"]
+    end
+
+    test "a visitor's desk has an icon per page of the site", %{conn: conn} do
+      document = conn |> get("/faq") |> html_response(200) |> Floki.parse_document!()
+
+      for page <- PublicPages.all() do
+        icon = Floki.find(document, ~s([data-testid="desktop-icon-page-#{page.page}"]))
+
+        assert Floki.attribute(icon, "data-window-shortcut-action") == ["open_page"]
+        assert Floki.attribute(icon, "data-window-shortcut") == [Atom.to_string(page.page)]
+      end
+
+      assert Floki.find(document, ~s([data-testid="desktop-icon-site-about"])) != []
     end
   end
 
@@ -318,7 +363,7 @@ defmodule RetroHexChatWeb.Site.PagesTest do
       conn = get(conn, "/")
       document = html_response(conn, 200) |> Floki.parse_document!()
 
-      section = Floki.find(document, ~s(section[aria-labelledby="conversation-modes-heading"]))
+      section = Floki.find(document, ~s([data-testid="site-window-three-ways-to-be-together"]))
 
       assert section != []
       assert Floki.find(section, ~s([aria-label="Persistent chat workspace diagram"])) != []
@@ -343,10 +388,7 @@ defmodule RetroHexChatWeb.Site.PagesTest do
       conn = get(conn, "/")
       body = html_response(conn, 200)
 
-      # Navigation on a phone is the shared icon rail, the same contract the
-      # chat's menu bar carries — not a hamburger of the landing's own.
-      assert body =~ ~s(data-mobile-menu-open="navigate")
-      assert body =~ ~s(data-mobile-menu-root)
+      # README.txt is a file on the desk, shown before the chat has started.
       assert body =~ ~s(data-show-target="#readme-popup")
       assert body =~ ~s(data-hide-target="#readme-popup")
       assert body =~ ~s(data-modal)
@@ -495,19 +537,21 @@ defmodule RetroHexChatWeb.Site.PagesTest do
   end
 
   describe "shared layout" do
-    test "all pages include the menu bar and footer", %{conn: conn} do
+    # The site's About is a window of the desk, closed, with the language
+    # links of the address on screen.
+    test "every page carries the site's About and its language links", %{conn: conn} do
       for {path, _} <- @landing_pages do
-        {:ok, _view, html} = live(conn, path)
+        document = conn |> get(path) |> html_response(200) |> Floki.parse_document!()
 
-        # The menus hang under the Connect window's title bar — the desk itself
-        # carries nothing above the workspace.
-        refute html =~ "app-header", "#{path} still has a desk-wide header"
+        about = Floki.find(document, ~s([data-testid="site-window-about"]))
+        assert about != [], "#{path} missing the About window"
+        assert Floki.attribute(about, "data-window-initial-open") == ["false"]
+        assert Floki.text(about) =~ "Languages", "#{path} missing language links"
 
-        assert html =~ ~s(data-testid="landing-menu-bar"), "#{path} missing menu bar"
-        assert html =~ "About", "#{path} missing footer"
-        assert html =~ "Languages", "#{path} missing language links"
-        assert html =~ ~s(hreflang="pt-BR"), "#{path} missing localized footer links"
-        assert html =~ ~s(href="/pt-BR), "#{path} missing clean localized footer links"
+        localized = if path == "/", do: "/pt-BR", else: "/pt-BR" <> path
+
+        assert Floki.find(about, ~s(a[hreflang="pt-BR"][href="#{localized}"])) != [],
+               "#{path} missing its own localized link"
       end
     end
 
@@ -671,6 +715,27 @@ defmodule RetroHexChatWeb.Site.PagesTest do
 
       assert response(conn, 404) == "Not found"
     end
+  end
+
+  defp page_windows(path) do
+    {page, params} =
+      case path do
+        "/games/" <> slug -> {RetroHexChatWeb.Site.Pages.Game, %{"slug" => slug}}
+        path -> {page_at(path), %{}}
+      end
+
+    {:ok, loaded} = page.load(params, %{locale: "en", visitor?: true})
+    loaded.windows
+  end
+
+  defp page_at(path) do
+    %{page: key} =
+      Enum.find(
+        PublicPages.all() ++ PublicPages.guides(),
+        &(&1.path == path)
+      )
+
+    Registry.page(key)
   end
 
   defp sitemap_chunk_body_containing(conn, snippet, opts \\ []) do

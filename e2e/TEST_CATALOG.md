@@ -135,7 +135,7 @@ make e2e.catalog.check    # verify it is current (also runs in make ci)
 ## Coverage
 
 - **253 spec files** under `e2e/tests/`.
-- **618 Playwright `test()` cases**.
+- **620 Playwright `test()` cases**.
 - **564 documented flows**, 563 done, 1 not done.
 - **Every spec documents its own flows.**
 
@@ -801,12 +801,12 @@ Grouped by section. Every row comes from an `@flow` line in the spec itself.
 
 | # | Flow | Spec file | Status |
 | --- | --- | --- | --- |
-| PW1 | The home loads the desktop's small first-paint bundle, its C:\Desktop section works, and its links move between pages without a page load | `tests/landing-public.spec.ts` | done |
-| PW2 | On a phone the page's own menu rail opens its drawer on the first tap, even as the chat starts, and leads to another page | `tests/landing-public.spec.ts` | done |
-| PW3 | The Start menu reaches every page as a window of the desktop, and closing a page hands the address back to the chat | `tests/landing-public.spec.ts` | done |
-| PW4 | The home, the sign-in window and help wear the same phone chrome (one case per document window) | `tests/shell-chrome-parity.spec.ts` | done |
+| PW1 | The home loads the desktop's small first-paint bundle, README.txt on the desk opens in place, and a desktop icon moves to another page without a page load | `tests/landing-public.spec.ts` | done |
+| PW2 | On a phone a page shows its first window, and the taskbar's group for the page brings any other window of it to the screen | `tests/landing-public.spec.ts` | done |
+| PW3 | The Start menu reaches every page as windows of the desktop, and closing a page's last window hands the address back to the chat | `tests/landing-public.spec.ts` | done |
+| PW4 | The sign-in window and help wear the same phone chrome (one case per window with a menu bar) | `tests/shell-chrome-parity.spec.ts` | done |
 | PW5 | A rail button opens the shared drawer on its own section | `tests/shell-chrome-parity.spec.ts` | done |
-| PW6 | A page's menu bar carries no Connect; Start ▸ Open the app is there and inert on the desktop | `tests/shell-chrome-parity.spec.ts` | done |
+| PW6 | A page of the site carries no menu bar of its own; Start ▸ Open the app is there and inert on the desktop | `tests/shell-chrome-parity.spec.ts` | done |
 | PW7 | The showcase drives the page as a window and carries the layout across pages | `tests/showcase-desktop.spec.ts` | done |
 | PW8 | Components are navigated through the Components window | `tests/showcase-desktop.spec.ts` | done |
 | PW9 | The Start menu is the app's own, with the showcase's windows in it | `tests/showcase-desktop.spec.ts` | done |
@@ -815,7 +815,7 @@ Grouped by section. Every row comes from an `@flow` line in the spec itself.
 | PW12 | With JavaScript disabled the page still reads and links like a document, keeping its canonical URL | `tests/showcase-desktop.spec.ts` | done |
 | PW13 | Windows on each landing page are sized by their content (one case per public page) | `tests/desktop-window-sizing.spec.ts` | done |
 | PW14 | The showcase component window is sized by its content | `tests/desktop-window-sizing.spec.ts` | done |
-| PW15 | From the home's Welcome, Create an account opens the sign-in window over the chat without a page load, and registering lands in the chat | `tests/sign-in-window.spec.ts` | done |
+| PW15 | From the visitor's bar under the chat, Create an account opens the sign-in window over the chat without a page load, and registering lands in the chat | `tests/sign-in-window.spec.ts` | done |
 | PW16 | A page of the site keeps the chat's LiveSocket off for a crawler, which never acts; a reader's starts on the first interaction | `tests/sign-in-window.spec.ts` | done |
 | PW17 | A remembered terminal signs back in with one click from the sign-in window | `tests/sign-in-window.spec.ts` | done |
 | PW18 | The sign-in window opens fully on screen at every desktop size | `tests/sign-in-window.spec.ts` | done |
@@ -828,7 +828,7 @@ Grouped by section. Every row comes from an `@flow` line in the spec itself.
 | PW25 | A visitor who registers from the chat's Connect window comes back to the channel they were watching, now as a member | `tests/chat-public-visitor.spec.ts` | done |
 | PW26 | No link leaves a visitor's chat: a message URL (plain, Ctrl or middle click) and a game in the desktop Games folder open the Connect window naming the feature, and no tab opens | `tests/chat-public-visitor.spec.ts` | done |
 | PW27 | A game, the arcade or a call opened by address without an account lands in the chat with the Connect window naming it, and registering there returns to that address | `tests/chat-public-visitor.spec.ts` | done |
-| PW28 | The desktop is the home: a visitor at / gets the Welcome window over a live #lobby, and every page of the site opens as a document window over the chat without a reload | `tests/desktop-home.spec.ts` | done |
+| PW28 | The desktop is the home: a visitor at / gets the live #lobby in front with an icon per page on the desk; a page opens as its group of windows over the chat, cascaded with its first window in front, and closing its last window goes back to the chat | `tests/desktop-home.spec.ts` | done |
 
 ### Dialog Gallery
 

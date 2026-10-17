@@ -1,0 +1,57 @@
+<%!-- 34 counts every playable mode; the catalogue linked below lists the
+          games with their modes under each one, so it shows fewer cards.
+          The sentence is indexed copy and is changed deliberately or not
+          at all. --%>
+<.section_heading>
+  {dgettext("landing", "34 multiplayer games via WebRTC.")}
+</.section_heading>
+<.inset class="p-3 mb-2">
+  <div class="grid grid-cols-4 gap-2 justify-items-center">
+    <div class="flex flex-col items-center gap-0.5">
+      <Icons.icon_game_pong class="w-8 h-8" />
+      <span class="text-[9px]">{dgettext("landing", "Pong")}</span>
+    </div>
+    <div class="flex flex-col items-center gap-0.5">
+      <Icons.icon_game_space class="w-8 h-8" />
+      <span class="text-[9px]">{dgettext("landing", "Star Duel")}</span>
+    </div>
+    <div class="flex flex-col items-center gap-0.5">
+      <Icons.icon_game_tanks class="w-8 h-8" />
+      <span class="text-[9px]">{dgettext("landing", "Tanks")}</span>
+    </div>
+    <div class="flex flex-col items-center gap-0.5">
+      <Icons.icon_game_trails class="w-8 h-8" />
+      <span class="text-[9px]">{dgettext("landing", "Trails")}</span>
+    </div>
+    <div class="flex flex-col items-center gap-0.5">
+      <Icons.icon_game_boxing class="w-8 h-8" />
+      <span class="text-[9px]">{dgettext("landing", "Boxing")}</span>
+    </div>
+    <div class="flex flex-col items-center gap-0.5">
+      <Icons.icon_game_hockey class="w-8 h-8" />
+      <span class="text-[9px]">{dgettext("landing", "Hockey")}</span>
+    </div>
+    <div class="flex flex-col items-center gap-0.5">
+      <Icons.icon_game_invaders class="w-8 h-8" />
+      <span class="text-[9px]">{dgettext("landing", "Invaders")}</span>
+    </div>
+    <div class="flex flex-col items-center gap-0.5">
+      <Icons.icon_game_enduro class="w-8 h-8" />
+      <span class="text-[9px]">{dgettext("landing", "Enduro")}</span>
+    </div>
+  </div>
+</.inset>
+<.feature_list>
+  <:item icon={:icon_terminal}>{dgettext("landing", "Challenge anyone with")}
+    <strong>{dgettext("landing", "/p2p @nick")}</strong></:item>
+  <:item icon={:icon_webrtc}>
+    {dgettext("landing", "Real-time sync via WebRTC DataChannel")}
+  </:item>
+  <:item icon={:icon_p2p}>
+    {dgettext(
+      "landing",
+      "No gameplay server — synced through the private P2P session"
+    )}
+  </:item>
+</.feature_list>
+<.catalogue_link path={@catalogue_path} data-testid="features-multiplayer-catalogue-link" />

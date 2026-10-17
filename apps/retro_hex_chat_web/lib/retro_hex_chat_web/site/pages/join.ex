@@ -67,13 +67,13 @@ defmodule RetroHexChatWeb.Site.Pages.Join do
       |> Map.fetch!(:assigns)
       |> Map.drop([:__changed__, :flash])
 
-    {:ok,
-     Map.merge(card, %{
-       window_title: JoinCard.title(card.state, card.kind),
-       window_icon: JoinCard.icon(card.kind),
-       window_meta: JoinCard.from(card),
-       windows: []
-     })}
+    window =
+      Window.new("join", JoinCard.title(card.state, card.kind), JoinCard.icon(card.kind),
+        meta: JoinCard.from(card),
+        body: &invitation/1
+      )
+
+    {:ok, Map.put(card, :windows, [window])}
   end
 
   defp assign(socket, values), do: Phoenix.Component.assign(socket, values)
@@ -96,8 +96,9 @@ defmodule RetroHexChatWeb.Site.Pages.Join do
 
   defp assign_preview(socket), do: socket
 
-  @impl RetroHexChatWeb.Site.Page
-  def render(assigns) do
+  @doc "The invitation window's body: the card."
+  @spec invitation(map()) :: Phoenix.LiveView.Rendered.t()
+  def invitation(assigns) do
     ~H"""
     <.join_card
       state={@state}

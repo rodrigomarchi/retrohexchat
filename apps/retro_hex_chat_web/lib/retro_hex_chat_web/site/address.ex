@@ -10,6 +10,7 @@ defmodule RetroHexChatWeb.Site.Address do
 
   import Phoenix.LiveView, only: [connected?: 1, push_patch: 2]
 
+  alias RetroHexChat.Channels.Server
   alias RetroHexChatWeb.I18n
   alias RetroHexChatWeb.SEO
 
@@ -66,11 +67,22 @@ defmodule RetroHexChatWeb.Site.Address do
     address = chat_address(assigns)
 
     if assigns[:address_ready?] == true and assigns[:focused_doc] == nil and
-         address != assigns[:current_address] do
+         address != assigns[:current_address] and not home_conversation?(assigns) do
       push_patch(socket, to: address, replace: true)
     else
       socket
     end
+  end
+
+  @doc """
+  Whether the address bar is at the home and the chat shows the conversation
+  the home opens with — a visitor's default channel. The home is that
+  channel's address too, so the bar stays where the reader came in.
+  """
+  @spec home_conversation?(map()) :: boolean()
+  def home_conversation?(assigns) do
+    assigns[:visitor?] == true and assigns[:current_address] in home_paths() and
+      chat_path(assigns) == channel_path(Server.default_channel())
   end
 
   @doc "The home's address in every locale: `/`, `/pt-BR`, …"

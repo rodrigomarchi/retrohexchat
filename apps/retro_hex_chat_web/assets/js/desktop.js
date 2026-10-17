@@ -11,14 +11,6 @@ import { installRetroTooltips } from "./lib/ui/tooltip";
 import { bootMode, scheduleBoot } from "./lib/site/boot_policy";
 import { heldLinkHref, linkFor } from "./lib/site/held_links";
 import { registerServiceWorker } from "./lib/system/service_worker.js";
-import {
-  WELCOME_WINDOW,
-  enteringChat,
-  leftHome,
-  rememberWelcomed,
-  welcomeAction,
-  welcomedBefore,
-} from "./lib/site/welcome";
 import { mountSiteWindowManager } from "./lib/window_manager/site_manager";
 
 function targetElement(selector) {
@@ -106,37 +98,6 @@ function setupWindowManager() {
   return mountSiteWindowManager(document.querySelector("[data-window-manager]"));
 }
 
-// A visitor welcomed before gets the Welcome minimized, the chat in front
-// (`lib/site/welcome.js`); everybody else is remembered as welcomed once they
-// act on it.
-function setupWelcome(wm) {
-  const html = document.documentElement;
-  const welcome = document.querySelector(WELCOME_WINDOW);
-
-  if (welcome && wm && welcomedBefore(window.localStorage)) {
-    wm.command("minimize", welcome.dataset.windowId, null, { animate: false });
-  }
-
-  document.addEventListener(
-    "click",
-    (event) => {
-      if (welcomeAction(event.target)) rememberWelcomed(window.localStorage);
-      // Entering the chat puts the Welcome away where a later visit finds it.
-      if (welcome && wm && enteringChat(event.target)) {
-        wm.command("minimize", welcome.dataset.windowId);
-      }
-    },
-    true,
-  );
-
-  const homePaths = (html.dataset.homePaths || "/").split(" ");
-  window.addEventListener("phx:page-loading-stop", (event) => {
-    if (event.detail?.kind === "patch" && leftHome(event.detail.to, homePaths)) {
-      rememberWelcomed(window.localStorage);
-    }
-  });
-}
-
 // The same menu bar the app runs, minus LiveView — including the mobile rail,
 // so a phone gets the icon rail here exactly as it does in the chat.
 function setupMenuBar() {
@@ -155,6 +116,8 @@ function setupMenuBar() {
 let liveState = "idle";
 let pendingSubmit = null;
 let pendingLink = null;
+let pendingPushes = [];
+let windowManager = null;
 
 function markLive(state) {
   liveState = state;
@@ -180,6 +143,32 @@ function holdSubmitsUntilLive() {
     },
     true,
   );
+}
+
+// The same for what the reader does with the windows before the chat exists —
+// a desktop icon double-clicked, a window brought forward or closed: the window
+// manager has no server to tell yet, so it hands each over (`wm:deferred-push`)
+// and they are sent, in order, once the chat has started.
+function holdPushesUntilLive() {
+  document.addEventListener("wm:deferred-push", (event) => {
+    pendingPushes.push(event.detail);
+    bootLive();
+  });
+}
+
+function replayPendingPushes() {
+  const pending = pendingPushes;
+  pendingPushes = [];
+  if (pending.length === 0) return;
+
+  if (typeof windowManager?.pushEvent !== "function") {
+    log.error(
+      "[desktop] the chat started without a window manager to send",
+      pending.map((push) => push.event),
+    );
+    return;
+  }
+  for (const push of pending) windowManager.pushEvent(push.event, push.payload);
 }
 
 // The same for a patch link clicked while the chat starts (`lib/site/held_links.js`).
@@ -247,6 +236,7 @@ async function bootLive() {
     markLive("ready");
     replayPendingSubmit();
     replayPendingLink();
+    replayPendingPushes();
     if (document.documentElement.dataset.member === "true") registerServiceWorker();
   } catch (error) {
     // A failed chunk leaves the desktop without its chat, which looks like a
@@ -254,15 +244,17 @@ async function bootLive() {
     markLive("failed");
     pendingSubmit = null;
     pendingLink = null;
+    pendingPushes = [];
     log.error("[desktop] could not start the chat's LiveSocket", error);
   }
 }
 
 setupClock();
 setupMenuBar();
-setupWelcome(setupWindowManager());
+windowManager = setupWindowManager();
 holdSubmitsUntilLive();
 holdLinksUntilLive();
+holdPushesUntilLive();
 scheduleBoot({
   mode: bootMode(document.documentElement, navigator.userAgent),
   boot: bootLive,

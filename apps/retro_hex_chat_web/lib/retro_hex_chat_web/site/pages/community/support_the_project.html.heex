@@ -1,0 +1,43 @@
+<.section_heading>
+  {dgettext("landing", "Help keep Retro Hex Chat alive.")}
+</.section_heading>
+
+<p class="text-sm mb-3">
+  {dgettext(
+    "landing",
+    "Retro Hex Chat is 100% volunteer-driven. No investors, no ads, no data collection. If you believe in this project, consider supporting it:"
+  )}
+</p>
+
+<div class="space-y-3">
+  <.inset class="p-3">
+    <p class="text-sm font-bold mb-2">{dgettext("landing", "GitHub Sponsors")}</p>
+    <p class="text-sm mb-2">
+      {dgettext(
+        "landing",
+        "Support directly on GitHub with monthly or one-time sponsorship."
+      )}
+    </p>
+    <%!-- A link that looks like a button, not a button inside a link. --%>
+    <.button
+      href="https://github.com/sponsors/rodrigomarchi"
+      target="_blank"
+      rel="noopener"
+      size="sm"
+      class="no-underline"
+    >
+      <:icon><Icons.icon_link class="h-4 w-4" /></:icon>
+      {dgettext("landing", "♥ Sponsor on GitHub")}
+    </.button>
+  </.inset>
+
+  <.inset class="p-3">
+    <p class="text-sm font-bold mb-1">{dgettext("landing", "Other ways to help")}</p>
+    <ul class="text-sm space-y-1">
+      <li>{dgettext("landing", "⭐ Star the repository")}</li>
+      <li>{dgettext("landing", "📢 Share with friends")}</li>
+      <li>{dgettext("landing", "🐛 Report bugs and suggest features")}</li>
+      <li>{dgettext("landing", "💻 Contribute code")}</li>
+    </ul>
+  </.inset>
+</div>

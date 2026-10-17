@@ -6,9 +6,15 @@ defmodule RetroHexChatWeb.Components.UI.DesktopLaunchers do
   The Start menu remains the canonical menu interaction. These launchers are a
   second surface for the same grouped app map: a visible desktop affordance for
   people who do not proactively open Start.
+
+  A visitor's desk also carries the site itself, down its right edge: an icon
+  per page of the site and the site's About (`desktop_site_icons/1`), where a
+  member keeps the pages in the About this site folder. The home's two files,
+  README.txt and the Trash, close a visitor's app column.
   """
   use RetroHexChatWeb.Component
 
+  import RetroHexChatWeb.Components.UI.Button, only: [button: 1]
   import RetroHexChatWeb.Components.UI.ToolButton
 
   import RetroHexChatWeb.Components.UI.Desktop
@@ -19,9 +25,12 @@ defmodule RetroHexChatWeb.Components.UI.DesktopLaunchers do
   alias RetroHexChatWeb.App.Paths
   alias RetroHexChatWeb.ChatLive.WindowRegistry
   alias RetroHexChatWeb.Components.UI.LanguageMenu
+  alias RetroHexChatWeb.Components.UI.Site.DesktopFiles
+  alias RetroHexChatWeb.Components.UI.Site.Document
   alias RetroHexChatWeb.Icons
   alias RetroHexChatWeb.Icons.Registry
   alias RetroHexChatWeb.PublicPages
+  alias RetroHexChatWeb.Site.About
 
   @screens [:chat, :showcase]
   @app_screens [:chat]
@@ -40,15 +49,26 @@ defmodule RetroHexChatWeb.Components.UI.DesktopLaunchers do
   attr :connect_dialog_id, :string, default: @connect_dialog_id
   attr :on_action, :any, default: "toolbar_action"
 
+  attr :visitor, :boolean,
+    default: false,
+    doc: """
+    a reader without an account: the site's pages have icons of their own
+    (`desktop_site_icons/1`) instead of the About this site folder, and the
+    home's two files close the column
+    """
+
   @spec desktop_launcher_icons(map()) :: Phoenix.LiveView.Rendered.t()
   def desktop_launcher_icons(assigns) do
-    assigns =
-      assigns
-      |> assign(:groups, launcher_groups(assigns))
-      |> assign(:apps, launcher_apps(assigns))
-      |> assign(:chat?, assigns.screen == :chat)
+    groups = launcher_groups(assigns)
 
-    assigns = assign(assigns, :items, interleave(assigns.groups, assigns.apps))
+    items =
+      if assigns.visitor,
+        do:
+          interleave(Enum.reject(groups, &(&1.id == :site)), launcher_apps(assigns)) ++
+            desktop_files(),
+        else: interleave(groups, launcher_apps(assigns))
+
+    assigns = assign(assigns, items: items, chat?: assigns.screen == :chat)
 
     ~H"""
     <.launcher_shortcut
@@ -61,13 +81,81 @@ defmodule RetroHexChatWeb.Components.UI.DesktopLaunchers do
     """
   end
 
-  # One desktop icon, in whichever of the three shapes the screen allows: the
-  # window it opens, the program it runs, or the closed door that says a chat
-  # session is what is missing.
+  attr :connect_dialog_id, :string, default: @connect_dialog_id
+
+  @doc """
+  The site on a visitor's desk: an icon per page, in menu order — the home's
+  being the Welcome a visitor's chat opens behind — and the site's About. A
+  column of its own, down the desk's right edge, so the app's icons keep theirs.
+  """
+  @spec desktop_site_icons(map()) :: Phoenix.LiveView.Rendered.t()
+  def desktop_site_icons(assigns) do
+    assigns = assign(assigns, :items, site_shortcuts())
+
+    ~H"""
+    <.launcher_shortcut
+      :for={item <- @items}
+      item={item}
+      screen={:chat}
+      chat?={true}
+      connect_dialog_id={@connect_dialog_id}
+    />
+    """
+  end
+
+  # One desktop icon, in whichever shape the item takes: a page of the site, a
+  # window it opens, a file it shows, the program it runs, or the closed door
+  # that says a chat session is what is missing.
   attr :item, :any, required: true
   attr :screen, :atom, required: true
   attr :chat?, :boolean, required: true
   attr :connect_dialog_id, :string, required: true
+
+  # A page of the site: double-clicked, the desktop asks for it (`open_page`,
+  # `Site.Documents`), and its windows open over the chat.
+  defp launcher_shortcut(%{item: {:page, page}} = assigns) do
+    assigns = assign(assigns, :page, page)
+
+    ~H"""
+    <.desktop_icon
+      window={Atom.to_string(@page.page)}
+      action="open_page"
+      label={@page.title}
+      data-testid={"desktop-icon-page-#{@page.page}"}
+    >
+      <:icon>{apply(Icons, @page.icon, [%{class: "h-8 w-8"}])}</:icon>
+    </.desktop_icon>
+    """
+  end
+
+  defp launcher_shortcut(%{item: {:window, window}} = assigns) do
+    assigns = assign(assigns, :window, window)
+
+    ~H"""
+    <.desktop_icon
+      window={@window.id}
+      label={@window.label}
+      data-testid={"desktop-icon-#{@window.id}"}
+    >
+      <:icon>{apply(Icons, @window.icon_fn, [%{class: "h-8 w-8"}])}</:icon>
+    </.desktop_icon>
+    """
+  end
+
+  # A file on the desk opens as a popup of its own (`desktop.js`).
+  defp launcher_shortcut(%{item: {:file, file}} = assigns) do
+    assigns = assign(assigns, :file, file)
+
+    ~H"""
+    <.desktop_icon
+      label={@file.label}
+      data-show-target={"#" <> @file.popup}
+      data-testid={"desktop-icon-#{@file.popup}"}
+    >
+      <:icon>{apply(Icons, @file.icon_fn, [%{class: "h-8 w-8"}])}</:icon>
+    </.desktop_icon>
+    """
+  end
 
   defp launcher_shortcut(%{item: {:group, group}} = assigns) do
     assigns = assign(assigns, :group, group)
@@ -82,16 +170,15 @@ defmodule RetroHexChatWeb.Components.UI.DesktopLaunchers do
       <:icon>{apply(Icons, @group.icon_fn, [%{class: "h-8 w-8"}])}</:icon>
     </.desktop_icon>
 
-    <button
+    <.desktop_icon
       :if={!desktop_icon_available?(@screen, @group)}
-      type="button"
-      class="desktop-shortcut"
+      label={@group.label}
       data-desktop-connect-required="true"
       data-desktop-connect-dialog={@connect_dialog_id}
       data-testid={"desktop-icon-#{@group.id}"}
     >
-      <.shortcut_face icon_fn={@group.icon_fn} label={@group.label} />
-    </button>
+      <:icon>{apply(Icons, @group.icon_fn, [%{class: "h-8 w-8"}])}</:icon>
+    </.desktop_icon>
     """
   end
 
@@ -112,39 +199,24 @@ defmodule RetroHexChatWeb.Components.UI.DesktopLaunchers do
     <%!-- Present and grayed rather than absent: an icon that names what the app
           can do and says it is out of reach is the same bargain the Start menu
           makes everywhere else. --%>
-    <button
+    <.desktop_icon
       :if={@chat? and not @app.enabled?}
-      type="button"
-      class="desktop-shortcut desktop-shortcut--disabled"
+      label={@app.label}
       disabled
-      aria-disabled="true"
       data-testid={"desktop-icon-#{@app.id}"}
     >
-      <.shortcut_face icon_fn={@app.icon_fn} label={@app.label} />
-    </button>
+      <:icon>{apply(Icons, @app.icon_fn, [%{class: "h-8 w-8"}])}</:icon>
+    </.desktop_icon>
 
-    <button
+    <.desktop_icon
       :if={!@chat?}
-      type="button"
-      class="desktop-shortcut"
+      label={@app.label}
       data-desktop-connect-required="true"
       data-desktop-connect-dialog={@connect_dialog_id}
       data-testid={"desktop-icon-#{@app.id}"}
     >
-      <.shortcut_face icon_fn={@app.icon_fn} label={@app.label} />
-    </button>
-    """
-  end
-
-  attr :icon_fn, :atom, required: true
-  attr :label, :string, required: true
-
-  defp shortcut_face(assigns) do
-    ~H"""
-    <span class="desktop-shortcut__icon inline-flex h-8 w-8 items-center justify-center">
-      {apply(Icons, @icon_fn, [%{class: "h-8 w-8"}])}
-    </span>
-    <span class="desktop-shortcut__label">{@label}</span>
+      <:icon>{apply(Icons, @app.icon_fn, [%{class: "h-8 w-8"}])}</:icon>
+    </.desktop_icon>
     """
   end
 
@@ -300,17 +372,10 @@ defmodule RetroHexChatWeb.Components.UI.DesktopLaunchers do
           </div>
 
           <div class="shrink-0 flex justify-end gap-retro-4 px-retro-12 pb-retro-12">
-            <button
-              id={"#{@id}-ok"}
-              type="button"
-              class={classes([button_variant(%{}), "gap-retro-4"])}
-              data-desktop-connect-dialog-close
-            >
-              <span class="icon-slot-16">
-                <Icons.icon_checkmark class="w-4 h-4" />
-              </span>
+            <.button id={"#{@id}-ok"} data-desktop-connect-dialog-close>
+              <:icon><Icons.icon_checkmark class="w-4 h-4" /></:icon>
               {dgettext("dialogs", "OK")}
-            </button>
+            </.button>
           </div>
         </div>
       </div>
@@ -381,6 +446,17 @@ defmodule RetroHexChatWeb.Components.UI.DesktopLaunchers do
       }
     ]
   end
+
+  defp site_shortcuts do
+    about = About.window()
+
+    Enum.map(PublicPages.all(), &{:page, &1}) ++
+      [{:window, %{id: Document.window_id(about), label: about.title, icon_fn: about.icon}}]
+  end
+
+  # README.txt and the Trash, at the foot of the app's column, where Windows
+  # kept its own.
+  defp desktop_files, do: Enum.map(DesktopFiles.files(), &{:file, &1})
 
   defp launcher_window_groups(%{screen: :chat} = assigns), do: launcher_groups(assigns)
 
@@ -629,8 +705,14 @@ defmodule RetroHexChatWeb.Components.UI.DesktopLaunchers do
           dgettext("landing", "Documentation"),
           :icon_notepad,
           testid: "desktop-launcher-item-site-help"
-        )
+        ),
+        about_item()
       ]
+  end
+
+  defp about_item do
+    about = About.window()
+    window(Document.window_id(about), about.title, about.icon, [])
   end
 
   defp help_items(cap) do

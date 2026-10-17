@@ -391,6 +391,24 @@
   padding-left: 2px;
 }
 
+/* A visitor's composer: the bar over it says why they cannot write and offers
+   the way in. It covers the composer rather than replacing it, so the chat
+   keeps its height and nothing moves when the reader signs in. */
+.visitor-composer {
+  @apply absolute inset-0 flex items-center justify-center gap-retro-8 bg-surface px-retro-8 text-xs text-text;
+}
+
+.visitor-composer__text {
+  @apply min-w-0 truncate;
+}
+
+/* On a phone the button says it all; the sentence would only be cut short. */
+@media (max-width: 479px) {
+  .visitor-composer__text {
+    @apply hidden;
+  }
+}
+
 /* ── Voice messages ─────────────────────────────────────────────────────────
    The microphone sits in the composer toolbar beside the attachment and
    formatting buttons. While a take runs it takes over the row: the input and

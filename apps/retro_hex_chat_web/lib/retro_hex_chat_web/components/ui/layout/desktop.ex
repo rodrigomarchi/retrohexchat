@@ -61,6 +61,12 @@ defmodule RetroHexChatWeb.Components.UI.Desktop do
   attr :rest, :global
 
   slot :shortcuts, doc: "desktop_icon/1 icons pinned to the workspace (behind windows)"
+
+  slot :end_shortcuts,
+    doc:
+      "a second set of icons, down the workspace's right edge — a set of their own " <>
+        "that would otherwise push the first behind the windows"
+
   slot :inner_block, required: true, doc: "desktop_window/1 children"
   slot :taskbar, doc: "a taskbar/1"
 
@@ -86,15 +92,31 @@ defmodule RetroHexChatWeb.Components.UI.Desktop do
         class="desktop__workspace relative isolate flex-1 overflow-hidden"
         style={"--rhc-wallpaper-desktop:url(#{Wallpaper.desktop_url()});--rhc-wallpaper-mobile:url(#{Wallpaper.mobile_url()})"}
       >
-        <div
-          :if={@shortcuts != []}
-          class="desktop__shortcuts absolute left-0 top-0 z-0 flex flex-col flex-wrap content-start gap-1 p-2"
-        >
+        <.shortcut_column :if={@shortcuts != []} edge={:start}>
           {render_slot(@shortcuts)}
-        </div>
+        </.shortcut_column>
+        <.shortcut_column :if={@end_shortcuts != []} edge={:end}>
+          {render_slot(@end_shortcuts)}
+        </.shortcut_column>
         {render_slot(@inner_block)}
       </div>
       {render_slot(@taskbar)}
+    </div>
+    """
+  end
+
+  attr :edge, :atom, required: true, values: [:start, :end]
+  slot :inner_block, required: true
+
+  # A column of icons down one edge of the workspace, wrapping into the next
+  # column away from that edge when the desk is too short for it.
+  defp shortcut_column(assigns) do
+    ~H"""
+    <div class={[
+      "desktop__shortcuts absolute top-0 z-0 flex flex-col content-start gap-1 p-2",
+      if(@edge == :start, do: "left-0 flex-wrap", else: "right-0 flex-wrap-reverse")
+    ]}>
+      {render_slot(@inner_block)}
     </div>
     """
   end
@@ -107,9 +129,15 @@ defmodule RetroHexChatWeb.Components.UI.Desktop do
   Wired to the `WindowManagerHook` via `data-window-shortcut`.
 
   Pass `href` or `navigate` when the target lives at its own URL — the shortcut
-  becomes a real link and a single click follows it.
+  becomes a real link and a single click follows it. An icon with no `window`
+  does what its own attributes say (a file's `data-show-target`, the sign-in
+  prompt's `data-desktop-connect-required`), and a `disabled` one is shown
+  grayed: present, and out of reach.
   """
-  attr :window, :string, required: true, doc: "target window id to open on double-click"
+  attr :window, :string,
+    default: nil,
+    doc: "target window id to open on double-click; nil when the icon opens something else"
+
   attr :label, :string, required: true
 
   attr :action, :string,
@@ -118,6 +146,7 @@ defmodule RetroHexChatWeb.Components.UI.Desktop do
 
   attr :href, :string, default: nil, doc: "render as a link to this URL instead of a button"
   attr :navigate, :string, default: nil, doc: "same, via LiveView navigation"
+  attr :disabled, :boolean, default: false
   attr :class, :any, default: nil
   attr :rest, :global
 
@@ -129,7 +158,9 @@ defmodule RetroHexChatWeb.Components.UI.Desktop do
     <.chrome_control
       href={@href}
       navigate={@navigate}
-      class={classes(["desktop-shortcut", @class])}
+      disabled={@disabled}
+      aria-disabled={@disabled && "true"}
+      class={classes(["desktop-shortcut", @disabled && "desktop-shortcut--disabled", @class])}
       data-window-shortcut={@window}
       data-window-shortcut-action={@action}
       {@rest}
@@ -522,6 +553,10 @@ defmodule RetroHexChatWeb.Components.UI.Desktop do
   is an `overflow-x-auto` scroller, which clips an upward flyout on both axes.
   The taskbar's right-click menus solve it the same way.
   """
+  attr :key, :string,
+    required: true,
+    doc: "names the group across server redraws, so one the reader opened stays open"
+
   attr :label, :string, required: true
   attr :count, :integer, required: true
   attr :testid, :string, default: nil
@@ -535,6 +570,7 @@ defmodule RetroHexChatWeb.Components.UI.Desktop do
     <div
       class={classes(["desktop-taskbar__group group/taskgroup relative shrink-0", @class])}
       data-taskbar-group
+      data-taskbar-group-key={@key}
       data-group-open="false"
     >
       <button
@@ -705,6 +741,10 @@ defmodule RetroHexChatWeb.Components.UI.Desktop do
   list of grayed entries names the feature and says it is out of reach here.
   Groups never take `disabled` for that reason — only their items do.
   """
+  attr :key, :string,
+    required: true,
+    doc: "names the submenu across server redraws, so one the reader opened stays open"
+
   attr :label, :string, required: true
   attr :muted, :boolean, default: false, doc: "gray the row when every entry is disabled"
   attr :testid, :string, default: nil
@@ -718,6 +758,7 @@ defmodule RetroHexChatWeb.Components.UI.Desktop do
     <div
       class={classes(["desktop-start-submenu group/start relative", @class])}
       data-start-submenu
+      data-start-submenu-key={@key}
       data-submenu-open="false"
     >
       <button

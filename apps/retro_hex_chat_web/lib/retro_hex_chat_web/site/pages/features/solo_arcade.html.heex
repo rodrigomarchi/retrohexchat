@@ -1,0 +1,59 @@
+<.section_heading>
+  {dgettext("landing", "18 classic games via WebAssembly.")}
+</.section_heading>
+<.inset class="p-3 mb-2">
+  <div class="grid grid-cols-4 gap-2 justify-items-center">
+    <div class="flex flex-col items-center gap-0.5">
+      <Icons.icon_game_doom class="w-8 h-8" />
+      <span class="text-[9px]">{dgettext("landing", "DOOM")}</span>
+    </div>
+    <div class="flex flex-col items-center gap-0.5">
+      <Icons.icon_game_quake class="w-8 h-8" />
+      <span class="text-[9px]">{dgettext("landing", "Quake")}</span>
+    </div>
+    <div class="flex flex-col items-center gap-0.5">
+      <Icons.icon_game_wolfenstein class="w-8 h-8" />
+      <span class="text-[9px]">{dgettext("landing", "Wolf3D")}</span>
+    </div>
+    <div class="flex flex-col items-center gap-0.5">
+      <Icons.icon_game_halflife class="w-8 h-8" />
+      <span class="text-[9px]">{dgettext("landing", "Half-Life")}</span>
+    </div>
+    <div class="flex flex-col items-center gap-0.5">
+      <Icons.icon_game_bass class="w-8 h-8" />
+      <span class="text-[9px]">{dgettext("landing", "BASS")}</span>
+    </div>
+    <div class="flex flex-col items-center gap-0.5">
+      <Icons.icon_game_drascula class="w-8 h-8" />
+      <span class="text-[9px]">{dgettext("landing", "Drascula")}</span>
+    </div>
+    <div class="flex flex-col items-center gap-0.5">
+      <Icons.icon_game_fotaq class="w-8 h-8" />
+      <span class="text-[9px]">{dgettext("landing", "FOTAQ")}</span>
+    </div>
+    <div class="flex flex-col items-center gap-0.5">
+      <Icons.icon_game_quake2 class="w-8 h-8" />
+      <span class="text-[9px]">{dgettext("landing", "Quake II")}</span>
+    </div>
+  </div>
+</.inset>
+<.feature_list>
+  <:item icon={:icon_game_arcade}>
+    {dgettext("landing", "Open the")} <strong>{dgettext("landing", "Games")}</strong>
+    {dgettext("landing", "menu and choose")}
+    <strong>{dgettext("landing", "Arcade")}</strong>
+  </:item>
+  <:item icon={:icon_btn_open}>
+    {dgettext(
+      "landing",
+      "Pick a game, review details, then start it in a new browser window"
+    )}
+  </:item>
+  <:item icon={:icon_code}>
+    {dgettext("landing", "Runs entirely in the browser via WebAssembly")}
+  </:item>
+  <:item icon={:icon_laptop}>
+    {dgettext("landing", "No downloads, no plugins — opens in a new window")}
+  </:item>
+</.feature_list>
+<.catalogue_link path={@catalogue_path} data-testid="features-arcade-catalogue-link" />

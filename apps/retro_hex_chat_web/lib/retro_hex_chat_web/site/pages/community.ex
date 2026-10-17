@@ -13,14 +13,56 @@ defmodule RetroHexChatWeb.Site.Pages.Community do
      %{
        active_page: :community,
        windows: [
-         %{id: "intro", label: dgettext("landing", "Community"), icon: :icon_community},
-         %{id: "open-source", label: dgettext("landing", "Open Source"), icon: :icon_code},
-         %{
-           id: "support-the-project",
-           label: dgettext("landing", "Support the Project"),
-           icon: :icon_star
-         },
-         %{id: "tech-stack", label: dgettext("landing", "Tech Stack"), icon: :icon_server}
+         Window.new("intro", dgettext("landing", "Open Source and Community"), :icon_code,
+           width: 640,
+           taskbar_label: dgettext("landing", "Community"),
+           body: &page_intro/1,
+           assigns: %{
+             heading_id: "community-heading",
+             description:
+               dgettext(
+                 "landing",
+                 "Retro Hex Chat is MIT-licensed open source software. Follow the repository, contribute code or translations, report issues, or sponsor continued development."
+               )
+           },
+           status: [dgettext("landing", "Community overview")]
+         ),
+         Window.new("open-source", dgettext("landing", "Open Source"), :icon_code,
+           width: 560,
+           body: &open_source/1,
+           status: [dgettext("landing", "MIT License"), dgettext("landing", "Contribute!")]
+         ),
+         Window.new(
+           "support-the-project",
+           dgettext("landing", "Support the Project"),
+           :icon_heart,
+           width: 680,
+           body: &support_the_project/1,
+           status: [dgettext("landing", "Thank you!")]
+         ),
+         Window.new("tech-stack", dgettext("landing", "Tech Stack"), :icon_server,
+           width: 560,
+           body: &tech_stack/1,
+           assigns: %{
+             stack: [
+               {:icon_elixir, dgettext("landing", "Backend"),
+                dgettext("landing", "Elixir, Phoenix, LiveView")},
+               {:icon_postgres, dgettext("landing", "Database"),
+                dgettext("landing", "PostgreSQL")},
+               {:icon_palette, dgettext("landing", "Frontend"),
+                dgettext("landing", "Retro CSS, Vanilla JS, Canvas")},
+               {:icon_websocket, dgettext("landing", "Real-time"),
+                dgettext("landing", "Phoenix Channels, PubSub")},
+               {:icon_group_view, dgettext("landing", "Spaces"),
+                dgettext("landing", "Canvas map runtime")},
+               {:icon_webrtc, dgettext("landing", "Private P2P"),
+                dgettext("landing", "WebRTC sessions")},
+               {:icon_conference, dgettext("landing", "Conferences"),
+                dgettext("landing", "Self-hosted WebRTC SFU")}
+             ]
+           },
+           status: [{:check, dgettext("landing", "Open source stack")}]
+         )
        ],
        canonical_path: "/community",
        json_ld: [
@@ -38,8 +80,5 @@ defmodule RetroHexChatWeb.Site.Pages.Community do
      }}
   end
 
-  embed_templates "community.html"
-
-  @impl RetroHexChatWeb.Site.Page
-  def render(assigns), do: community(assigns)
+  embed_templates "community/*"
 end

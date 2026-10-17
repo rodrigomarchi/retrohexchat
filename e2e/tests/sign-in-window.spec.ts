@@ -1,6 +1,6 @@
 /**
  * @section PW - Public Pages, Landing, And Showcase
- * @flow PW15 [done] From the home's Welcome, Create an account opens the sign-in window over the chat without a page load, and registering lands in the chat
+ * @flow PW15 [done] From the visitor's bar under the chat, Create an account opens the sign-in window over the chat without a page load, and registering lands in the chat
  * @flow PW16 [done] A page of the site keeps the chat's LiveSocket off for a crawler, which never acts; a reader's starts on the first interaction
  * @flow PW17 [done] A remembered terminal signs back in with one click from the sign-in window
  * @flow PW18 [done] The sign-in window opens fully on screen at every desktop size
@@ -52,7 +52,7 @@ async function register(page: Page, nickname: string, remember = false) {
 }
 
 test.describe("The sign-in window", () => {
-  test("opens from the Welcome without a page load and signs a nickname in (PW15)", async ({
+  test("opens from the visitor's bar without a page load and signs a nickname in (PW15)", async ({
     page,
   }) => {
     const failures = watchAssetFailures(page);
@@ -62,10 +62,11 @@ test.describe("The sign-in window", () => {
       (window as SentinelWindow).__sameDocument = true;
     });
 
-    await page.getByTestId("welcome-sign-up").click();
+    await page.mouse.move(10, 10);
+    await page.getByTestId("visitor-composer").click({ timeout: 15000 });
     await expect(page.locator(SIGN_IN_WINDOW)).toBeVisible({ timeout: 15000 });
     await expect(page).toHaveURL(/\/connect\?/);
-    // A patch, not a page load: the document the Welcome was in is still here.
+    // A patch, not a page load: the document the chat was in is still here.
     expect(
       await page.evaluate(() => (window as SentinelWindow).__sameDocument),
     ).toBe(true);
@@ -89,7 +90,7 @@ test.describe("The sign-in window", () => {
 
     try {
       await crawler.goto("/features");
-      await expect(crawler.getByTestId("document-window-site")).toBeVisible();
+      await expect(crawler.getByTestId("site-window-intro")).toBeVisible();
       // Long past the idle a reader's page boots at: nothing started.
       await crawler.waitForTimeout(3000);
       await expect(crawler.locator("html")).not.toHaveAttribute(
@@ -99,7 +100,7 @@ test.describe("The sign-in window", () => {
       await expect(crawler.getByTestId("chat-boot-loading")).toBeVisible();
 
       // Somebody acting on the page is a reader, whatever the agent says.
-      await crawler.getByTestId("document-window-site").click();
+      await crawler.getByTestId("site-window-intro").click();
       await expect(crawler.locator("html")).toHaveAttribute(
         "data-live-boot",
         "ready",

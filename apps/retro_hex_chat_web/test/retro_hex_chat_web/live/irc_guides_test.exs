@@ -75,7 +75,7 @@ defmodule RetroHexChatWeb.IrcGuidesTest do
       test "#{path} states as FAQPage exactly the questions it shows", %{conn: conn} do
         document = document(conn, unquote(path))
         faq = json_ld(document, "FAQPage")
-        shown = document |> Floki.find("#questions") |> Floki.text()
+        shown = document |> Floki.find("#site-questions") |> Floki.text()
 
         assert faq["url"] == "https://retrohexchat.app" <> unquote(path)
         assert faq["mainEntity"] != []
@@ -89,7 +89,7 @@ defmodule RetroHexChatWeb.IrcGuidesTest do
 
   describe "/irc-chat rooms" do
     test "a server with no published room shows no window for them", %{conn: conn} do
-      assert conn |> document("/irc-chat") |> Floki.find("#open-rooms") == []
+      assert conn |> document("/irc-chat") |> Floki.find("#site-open-rooms") == []
     end
 
     test "lists a room that publishes its archive, linking to it", %{conn: conn} do
@@ -117,7 +117,7 @@ defmodule RetroHexChatWeb.IrcGuidesTest do
       document = document(conn, "/irc-chat")
 
       assert ("/archive/" <> String.trim_leading(channel, "#")) in hrefs(document)
-      assert document |> Floki.find("#open-rooms") |> Floki.text() =~ channel
+      assert document |> Floki.find("#site-open-rooms") |> Floki.text() =~ channel
     end
   end
 end
