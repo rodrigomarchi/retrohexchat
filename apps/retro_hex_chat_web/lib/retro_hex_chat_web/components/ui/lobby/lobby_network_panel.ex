@@ -428,7 +428,7 @@ defmodule RetroHexChatWeb.Components.UI.Lobby.LobbyNetworkPanel do
   defp session_header(assigns) do
     ~H"""
     <div
-      class="grid gap-1 border border-border bg-surface p-2 shadow-retro-sunken"
+      class="grid gap-1 bg-surface p-2 shadow-retro-sunken"
       data-testid="p2p-stats-session-header"
     >
       <.media_session_status_header

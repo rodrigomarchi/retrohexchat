@@ -13,6 +13,9 @@ defmodule RetroHexChatWeb.Components.UI.MediaSession.SummaryCard do
   Named for the role rather than the caller: it began beside media sessions and
   is now equally the vocabulary of the runtime windows, which is why `detail`
   became optional rather than being faked with an empty string.
+
+  No frame: the cards sit side by side in a grid, and its gap is what keeps
+  one figure from the next.
   """
   use RetroHexChatWeb.Component
 
@@ -37,7 +40,7 @@ defmodule RetroHexChatWeb.Components.UI.MediaSession.SummaryCard do
     <div
       class={
         classes([
-          "min-w-0 border border-border px-2 py-1 shadow-retro-sunken",
+          "min-w-0 px-2 py-1",
           @class
         ])
       }

@@ -51,7 +51,7 @@ defmodule RetroHexChatWeb.Components.UI.Lobby.FilePanel do
       <.media_session_status_header
         title={dgettext("lobby", "Files")}
         testid="p2p-files-activity-header"
-        class="border border-border p-2 shadow-retro-field"
+        class="p-2 shadow-retro-field"
       >
         <:icon>
           <Icons.icon_file_send class="h-5 w-5 shrink-0" />
@@ -117,7 +117,7 @@ defmodule RetroHexChatWeb.Components.UI.Lobby.FilePanel do
 
       <div
         :if={@file_transfer && @file_transfer[:file_name]}
-        class="shadow-retro-field flex min-h-[220px] flex-1 items-center justify-center overflow-auto bg-white p-3 sm:min-h-[300px]"
+        class="flex min-h-[220px] flex-1 items-center justify-center overflow-auto p-3 sm:min-h-[300px]"
         data-testid="p2p-files-transfer-stage"
       >
         <.file_transfer

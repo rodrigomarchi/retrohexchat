@@ -800,6 +800,7 @@ test.describe("In-chat P2P session", () => {
         "p2p-console-section-stats",
       );
       await expect(statsSection).toBeVisible();
+      await shot(statsSection, "p2p-stats-section");
       await p2pStatsTab(aliceSession, "video").click();
 
       const videoStats = p2pStatsDetails(aliceSession, "video");

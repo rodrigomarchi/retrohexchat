@@ -34,6 +34,7 @@
  * Edit them here, then run `make e2e.catalog` to regenerate the index.
  */
 import { test, expect, BrowserContext, Page } from "@playwright/test";
+import { shot } from "../helpers/screenshots";
 import { mkdirSync } from "node:fs";
 import { uniqueChannel } from "../helpers/chatUsers";
 import {
@@ -2111,6 +2112,7 @@ test.describe("Channel group calls", () => {
       await expect(groupCallInlineStats(aliceCall)).toContainText(
         "Browser connection",
       );
+      await shot(groupCallInlineStats(aliceCall), "group-call-stats");
 
       await groupCallWindow(aliceCall)
         .locator('[data-window-control="restore"]')

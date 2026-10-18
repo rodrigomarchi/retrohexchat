@@ -46,7 +46,7 @@ defmodule RetroHexChatWeb.Components.UI.Lobby.GamePanel do
       <.media_session_status_header
         title={dgettext("lobby", "Games")}
         testid="p2p-games-activity-header"
-        class="border border-border p-2 shadow-retro-field"
+        class="p-2 shadow-retro-field"
       >
         <:icon>
           <Icons.icon_joystick class="h-5 w-5 shrink-0" />

@@ -347,7 +347,7 @@ get fresh timers with the *remaining* duration.
   | A card in the conversation (event, shared room, help, greeting) | `ChatCard` — **no frame**: spacing, the row's spine and upright text set it apart |
   | A field of text, a list, a picture (Win98 sunken panel) | `Inset` |
   | A raised card on a page of the site (a game, a trusted device) | `Card` |
-  | One measured figure | `MediaSession.SummaryCard` |
+  | One measured figure | `MediaSession.SummaryCard` — no frame; the grid's gap separates them |
   | A reading in a diagnostics list | `MediaSession.StatRows` |
   | An icon in a pressed-in square | `IconWell` |
   | One word of state in a header | `Badge size="xs" bevel="sunken"` |
@@ -357,7 +357,8 @@ get fresh timers with the *remaining* duration.
   A border earns its place by doing a job: setting content apart from a surface of the same
   colour, outlining a whole clickable area, marking a read-only field, or lifting something that
   floats. A frame inside a frame, or a border that repeats what spacing or a heading already says,
-  is decoration — leave it out.
+  is decoration — leave it out: a panel header is the bevel alone, without a second 1px line,
+  and a raised card sits straight on its panel, not in a white field of its own.
 - **A popover or menu is `Popover` / `DropdownMenu`, never a hand-rolled `<details>`.** The
   open state belongs to the browser: the LiveSocket entrypoints carry it across every patch
   (`lib/ui/popover.js`), and closing — click outside, Escape, `Popover.close_after/1` — happens

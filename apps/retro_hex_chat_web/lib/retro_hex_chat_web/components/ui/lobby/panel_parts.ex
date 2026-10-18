@@ -7,7 +7,8 @@ defmodule RetroHexChatWeb.Components.UI.Lobby.PanelParts do
       up yet: its header saying Offline, and one line on what connecting allows.
     * `state_card/1` — one moment of an activity that waits on somebody: an
       invitation to answer, an answer being waited for, a score to read. A
-      picture, the words, and the answers under them.
+      picture, the words, and the answers under them, on a card raised
+      straight off the panel — never boxed again in a field of its own.
   """
   use RetroHexChatWeb.Component
 
@@ -31,7 +32,7 @@ defmodule RetroHexChatWeb.Components.UI.Lobby.PanelParts do
       <.media_session_status_header
         title={@title}
         testid={@header_testid}
-        class="border border-border p-2 shadow-retro-field"
+        class="p-2 shadow-retro-field"
       >
         <:icon>{apply(Icons, @icon, [%{class: "h-5 w-5 shrink-0"}])}</:icon>
         <:meta>
@@ -59,14 +60,14 @@ defmodule RetroHexChatWeb.Components.UI.Lobby.PanelParts do
   slot :detail, doc: "a block under the words, before the answers"
   slot :actions, doc: "the answers, right-aligned under the card"
 
-  @doc "One moment of an activity, centred in the panel's field."
+  @doc "One moment of an activity, a raised card centred on the panel."
   @spec state_card(map()) :: Phoenix.LiveView.Rendered.t()
   def state_card(assigns) do
     ~H"""
     <div
       class={
         classes([
-          "shadow-retro-field flex min-h-[220px] items-center justify-center bg-white p-3 text-xs sm:min-h-[300px]",
+          "flex min-h-[220px] items-center justify-center p-3 text-xs sm:min-h-[300px]",
           @class
         ])
       }
