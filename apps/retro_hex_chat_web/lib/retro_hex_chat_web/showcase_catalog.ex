@@ -434,6 +434,13 @@ defmodule RetroHexChatWeb.ShowcaseCatalog do
       icon: :icon_tab_conversations
     },
     %{
+      id: "chat-cards",
+      group: :chat,
+      module: Chat.ChatCardsPage,
+      label: dgettext_noop("showcase", "Chat Cards"),
+      icon: :icon_clock
+    },
+    %{
       id: "hover-card",
       group: :chat,
       module: Chat.HoverCardPage,

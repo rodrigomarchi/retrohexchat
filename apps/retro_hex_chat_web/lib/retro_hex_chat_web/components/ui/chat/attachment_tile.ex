@@ -60,13 +60,7 @@ defmodule RetroHexChatWeb.Components.UI.ChatAttachment do
       data-preview-kind={preview_kind(@attachment)}
       title={logical_path(@attachment)}
     >
-      <div class="flex h-6 items-center gap-1 border-b border-border bg-muted px-1">
-        <Icons.icon_file_send class="h-4 w-4 shrink-0" />
-        <span class="min-w-0 flex-1 truncate font-mono">{filename(@attachment)}</span>
-        <span class="shrink-0 text-muted-foreground">
-          {Format.bytes(attachment_byte_size(@attachment))}
-        </span>
-      </div>
+      <.tile_header attachment={@attachment} />
       <div class="flex h-36 w-full items-center justify-center bg-white p-1">
         <img
           src={preview_href(@attachment)}
@@ -80,12 +74,18 @@ defmodule RetroHexChatWeb.Components.UI.ChatAttachment do
     """
   end
 
+  # The frame of a tile that plays something: a fixed width, so a run of them
+  # lines up down the conversation.
+  @frame "w-72 max-w-full border border-border bg-surface text-xs shadow-retro-field"
+
   attr :attachment, :map, required: true
 
   defp video_tile(assigns) do
+    assigns = assign(assigns, :frame, @frame)
+
     ~H"""
     <div
-      class="w-72 max-w-full border border-border bg-surface text-xs shadow-retro-field"
+      class={@frame}
       data-testid="message-attachment"
       data-preview-kind={preview_kind(@attachment)}
       title={logical_path(@attachment)}
@@ -107,9 +107,11 @@ defmodule RetroHexChatWeb.Components.UI.ChatAttachment do
   attr :attachment, :map, required: true
 
   defp audio_tile(assigns) do
+    assigns = assign(assigns, :frame, @frame)
+
     ~H"""
     <div
-      class="w-72 max-w-full border border-border bg-surface text-xs shadow-retro-field"
+      class={@frame}
       data-testid="message-attachment"
       data-preview-kind={preview_kind(@attachment)}
       title={logical_path(@attachment)}
@@ -136,11 +138,14 @@ defmodule RetroHexChatWeb.Components.UI.ChatAttachment do
   # recorder invented and the byte size is a fact about storage, so neither is
   # on the tile — the length is the one measurement a listener decides with.
   defp voice_tile(assigns) do
-    assigns = assign(assigns, :duration_ms, VoiceMessages.duration_ms(assigns.attachment))
+    assigns =
+      assigns
+      |> assign(:duration_ms, VoiceMessages.duration_ms(assigns.attachment))
+      |> assign(:frame, @frame)
 
     ~H"""
     <div
-      class="w-72 max-w-full border border-border bg-surface text-xs shadow-retro-field"
+      class={@frame}
       data-testid="message-voice"
       data-preview-kind="voice"
     >

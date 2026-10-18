@@ -15,8 +15,8 @@ defmodule RetroHexChatWeb.Components.UI.VisitorGreetingCard do
   use RetroHexChatWeb.Component
 
   import RetroHexChatWeb.Components.UI.Button
+  import RetroHexChatWeb.Components.UI.ChatCard
   import RetroHexChatWeb.Components.UI.FeatureList
-  import RetroHexChatWeb.Components.UI.Inset
   import RetroHexChatWeb.Components.UI.VisitorSignUpButton
 
   alias RetroHexChatWeb.Icons
@@ -38,14 +38,10 @@ defmodule RetroHexChatWeb.Components.UI.VisitorGreetingCard do
   @spec visitor_greeting_card(map()) :: Phoenix.LiveView.Rendered.t()
   def visitor_greeting_card(assigns) do
     ~H"""
-    <.inset
-      class={["chat-card mt-1 p-2 text-xs space-y-2", @class]}
-      data-testid="visitor-greeting"
-      {@rest}
-    >
-      <h3 class="font-bold">
+    <.chat_card class={@class} data-testid="visitor-greeting" {@rest}>
+      <:title>
         {dgettext("chat", "Welcome to %{server}, %{guest}!", server: @server, guest: @guest)}
-      </h3>
+      </:title>
       <p>
         {dgettext("chat", "You are reading %{channel} live as a visitor.", channel: @channel)}
         {dgettext("chat", "The user list shows you as a guest.")}
@@ -69,7 +65,7 @@ defmodule RetroHexChatWeb.Components.UI.VisitorGreetingCard do
         </:item>
       </.feature_list>
       <p>{dgettext("chat", "An account only needs a nickname and a password.")}</p>
-      <div class="flex flex-wrap gap-2">
+      <:actions>
         <.visitor_sign_up_button data-testid="visitor-greeting-sign-up" />
         <.button
           size="sm"
@@ -80,8 +76,8 @@ defmodule RetroHexChatWeb.Components.UI.VisitorGreetingCard do
           <:icon><Icons.icon_btn_help_topics class="h-4 w-4" /></:icon>
           {dgettext("ui", "Help Topics")}
         </.button>
-      </div>
-    </.inset>
+      </:actions>
+    </.chat_card>
     """
   end
 

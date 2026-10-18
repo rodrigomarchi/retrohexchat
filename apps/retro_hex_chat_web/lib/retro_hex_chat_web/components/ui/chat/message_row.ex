@@ -29,6 +29,7 @@ defmodule RetroHexChatWeb.Components.UI.MessageRow do
   alias RetroHexChat.Games.Catalog
   alias RetroHexChatWeb.App.ChatHelpers
   alias RetroHexChatWeb.App.Paths
+  alias RetroHexChatWeb.PublicPages
   alias RetroHexChatWeb.ShareLinkRef
 
   attr :msg, :map, required: true
@@ -48,6 +49,7 @@ defmodule RetroHexChatWeb.Components.UI.MessageRow do
           timestamp={ChatHelpers.format_time(@msg.timestamp, @timestamp_format, @timezone)}
           meta_title={ChatHelpers.format_datetime(@msg.timestamp, @timezone)}
           type="action"
+          layout={card_layout(@msg)}
           nick={@msg.author}
           nick_color={@nick_color_fn.(@msg.author)}
           avatar={@show_avatars && Map.get(@msg, :avatar)}
@@ -60,15 +62,7 @@ defmodule RetroHexChatWeb.Components.UI.MessageRow do
           <%!-- A `/me` line can carry a share link like any other line, and the
                 viewport attaches the card to it; a row that then draws the bare
                 address is the door made invisible. --%>
-          <.share_message_card
-            :if={not @strip_formatting}
-            card={Map.get(@msg, :share_card)}
-            subject={share_subject(Map.get(@msg, :share_card))}
-            enter_path={share_enter_path(Map.get(@msg, :share_card))}
-            share_url={share_url(Map.get(@msg, :share_card))}
-            next_path={share_next_path(Map.get(@msg, :share_card))}
-            ended_at_text={share_ended_at_text(Map.get(@msg, :share_card), @timezone)}
-          />
+          <.share_card msg={@msg} strip_formatting={@strip_formatting} timezone={@timezone} />
         </.chat_message>
       <% :system -> %>
         <.chat_message
@@ -76,7 +70,7 @@ defmodule RetroHexChatWeb.Components.UI.MessageRow do
           meta_title={ChatHelpers.format_datetime(@msg.timestamp, @timezone)}
           source={dgettext("chat", "System")}
           type="system"
-          layout={if Map.get(@msg, :share_card), do: "stacked", else: "auto"}
+          layout={card_layout(@msg)}
         >
           * {raw(formatted_content(@msg, @strip_formatting))}
           <%!-- What the channel agreed to do, under the line that said so. The
@@ -96,15 +90,7 @@ defmodule RetroHexChatWeb.Components.UI.MessageRow do
                 reason that line exists. Attaching the card without drawing it
                 here is how the door came to be invisible while every test that
                 built its own `:message` row stayed green. --%>
-          <.share_message_card
-            :if={not @strip_formatting}
-            card={Map.get(@msg, :share_card)}
-            subject={share_subject(Map.get(@msg, :share_card))}
-            enter_path={share_enter_path(Map.get(@msg, :share_card))}
-            share_url={share_url(Map.get(@msg, :share_card))}
-            next_path={share_next_path(Map.get(@msg, :share_card))}
-            ended_at_text={share_ended_at_text(Map.get(@msg, :share_card), @timezone)}
-          />
+          <.share_card msg={@msg} strip_formatting={@strip_formatting} timezone={@timezone} />
         </.chat_message>
       <% :p2p_system -> %>
         <.chat_message
@@ -183,6 +169,7 @@ defmodule RetroHexChatWeb.Components.UI.MessageRow do
           meta_title={ChatHelpers.format_datetime(@msg.timestamp, @timezone)}
           source={dgettext("chat", "P2P")}
           type="system"
+          layout={card_layout(@msg)}
         >
           * {dgettext("chat", "P2P request")}
           <span :if={is_nil(Map.get(@msg, :share_card))} class="text-muted-foreground">
@@ -191,12 +178,11 @@ defmodule RetroHexChatWeb.Components.UI.MessageRow do
           <%!-- The invite is a variant of the same card, not a second
                 component: a session is a room like any other, and the line
                 above it is the sentence a card cannot carry — who is asking. --%>
-          <.share_message_card
-            :if={not @strip_formatting}
-            card={Map.get(@msg, :share_card)}
-            enter_path={p2p_enter_path(Map.get(@msg, :share_card))}
-            next_path={share_next_path(Map.get(@msg, :share_card))}
-            ended_at_text={share_ended_at_text(Map.get(@msg, :share_card), @timezone)}
+          <.share_card
+            msg={@msg}
+            strip_formatting={@strip_formatting}
+            timezone={@timezone}
+            invite?={true}
           />
         </.chat_message>
       <% _ -> %>
@@ -232,15 +218,7 @@ defmodule RetroHexChatWeb.Components.UI.MessageRow do
             />
             <%!-- A link into this app draws itself rather than being scraped:
                   the useful thing is the room's state, not a page title. --%>
-            <.share_message_card
-              :if={not @strip_formatting}
-              card={Map.get(@msg, :share_card)}
-              subject={share_subject(Map.get(@msg, :share_card))}
-              enter_path={share_enter_path(Map.get(@msg, :share_card))}
-              share_url={share_url(Map.get(@msg, :share_card))}
-              next_path={share_next_path(Map.get(@msg, :share_card))}
-              ended_at_text={share_ended_at_text(Map.get(@msg, :share_card), @timezone)}
-            />
+            <.share_card msg={@msg} strip_formatting={@strip_formatting} timezone={@timezone} />
             <.attachment_gallery attachments={Map.get(@msg, :attachments, [])} />
             <.edited_tag
               :if={Map.get(@msg, :edited_at)}
@@ -299,7 +277,51 @@ defmodule RetroHexChatWeb.Components.UI.MessageRow do
     """
   end
 
-  defp help_url(topic_id), do: "/chat/help/#{topic_id}"
+  defp help_url(topic_id), do: PublicPages.localized_path("/chat/help/#{topic_id}")
+
+  # A card is a block of its own and cannot ride the head line beside the
+  # narration, so a row carrying one is stacked whatever its type would choose.
+  defp card_layout(msg) do
+    if Map.get(msg, :share_card) || Map.get(msg, :event_card), do: "stacked", else: "auto"
+  end
+
+  attr :msg, :map, required: true
+  attr :strip_formatting, :boolean, required: true
+  attr :timezone, :string, required: true
+
+  attr :invite?, :boolean,
+    default: false,
+    doc: "a P2P invite: its way in is the session itself, and it is not passed on"
+
+  # The card a line's own link draws. The reader who asked for plain text gets
+  # the address instead, which `without_card_address/3` leaves in place for them.
+  defp share_card(%{invite?: true} = assigns) do
+    ~H"""
+    <.share_message_card
+      :if={not @strip_formatting}
+      card={Map.get(@msg, :share_card)}
+      enter_path={p2p_enter_path(Map.get(@msg, :share_card))}
+      next_path={share_next_path(Map.get(@msg, :share_card))}
+      ended_at_text={share_ended_at_text(Map.get(@msg, :share_card), @timezone)}
+    />
+    """
+  end
+
+  defp share_card(assigns) do
+    assigns = assign(assigns, :card, Map.get(assigns.msg, :share_card))
+
+    ~H"""
+    <.share_message_card
+      :if={not @strip_formatting}
+      card={@card}
+      subject={share_subject(@card)}
+      enter_path={share_enter_path(@card)}
+      share_url={share_url(@card)}
+      next_path={share_next_path(@card)}
+      ended_at_text={share_ended_at_text(@card, @timezone)}
+    />
+    """
+  end
 
   defp event_start(msg) do
     case Map.get(msg, :event_card) do

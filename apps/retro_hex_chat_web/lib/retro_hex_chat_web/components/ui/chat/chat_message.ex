@@ -151,9 +151,9 @@ defmodule RetroHexChatWeb.Components.UI.ChatMessage do
 
       <div :if={@stacked?} class="chat-message__body">
         <span class={["chat-message__spine", @nick_color]} aria-hidden="true"></span>
-        <span class={["chat-message__text", message_body_class(@type)]}>
+        <div class={["chat-message__text", message_body_class(@type)]}>
           {render_slot(@inner_block)}
-        </span>
+        </div>
       </div>
     </div>
     """

@@ -123,6 +123,12 @@ test("opening a conference writes the card, and the card counts up on its own (K
     await expect(
       bob.page.getByTestId(`nicklist-in-call-${ana.nick}`),
     ).toBeVisible({ timeout: 15_000 });
+    await shot(
+      bob.page
+        .locator(".chat-message__row:has([data-testid=share-message-card])")
+        .last(),
+      "conference-card-live",
+    );
 
     // (K10) The room ends. The card is the only thing left of it, so it stops
     // being a door and becomes the record — and it does that on Bob's screen,
@@ -150,6 +156,13 @@ test("opening a conference writes the card, and the card counts up on its own (K
     // happened in, so every way on the card used to offer led where he already
     // was — and following one re-mounted the chat under him.
     await expect(card.getByTestId("share-message-next")).toHaveCount(0);
+    await shot(
+      bob.page
+        .locator(".chat-message__row:has([data-testid=share-message-card])")
+        .last(),
+      "conference-card-ended",
+    );
+    await shot(bob.page, "conference-card-in-chat");
   } finally {
     await closeGroupCallUsers([ana, bob]);
   }

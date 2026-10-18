@@ -1,8 +1,7 @@
 defmodule RetroHexChatWeb.Components.UI.InlineHelpCard do
   @moduledoc """
-  Inline help card component for the showcase design system.
-
-  Displays a help topic inline within a chat message, with title,
+  A help topic, drawn in the conversation under the `/help` line that asked
+  for it. Displays a help topic inline within a chat message, with title,
   rendered content, and a link to the full help page.
 
   ## Usage
@@ -15,7 +14,7 @@ defmodule RetroHexChatWeb.Components.UI.InlineHelpCard do
   """
   use RetroHexChatWeb.Component
 
-  import RetroHexChatWeb.Components.UI.Inset
+  import RetroHexChatWeb.Components.UI.ChatCard
 
   @doc "Renders an inline help card within a chat message."
   attr :topic_id, :string, required: true, doc: "Help topic ID for rendering content"
@@ -27,10 +26,10 @@ defmodule RetroHexChatWeb.Components.UI.InlineHelpCard do
   @spec inline_help_card(map()) :: Phoenix.LiveView.Rendered.t()
   def inline_help_card(assigns) do
     ~H"""
-    <.inset class={["chat-card mt-1 p-2 text-xs", @class]} data-testid="inline-help" {@rest}>
-      <h3 class="font-bold mb-1">{@topic_title}</h3>
+    <.chat_card class={@class} data-testid="inline-help" {@rest}>
+      <:title>{@topic_title}</:title>
       <RetroHexChatWeb.HelpLive.HelpHelpers.render_topic_content id={@topic_id} />
-      <div class="mt-1 text-muted-foreground">
+      <div class="text-muted-foreground">
         <a
           href={@help_url}
           target="_blank"
@@ -40,7 +39,7 @@ defmodule RetroHexChatWeb.Components.UI.InlineHelpCard do
           {dgettext("chat", "Open in Help Topics")}
         </a>
       </div>
-    </.inset>
+    </.chat_card>
     """
   end
 end

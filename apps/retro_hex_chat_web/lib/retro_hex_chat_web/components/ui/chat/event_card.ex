@@ -26,7 +26,7 @@ defmodule RetroHexChatWeb.Components.UI.EventCard do
   use RetroHexChatWeb.Component
 
   import RetroHexChatWeb.Components.UI.Button
-  import RetroHexChatWeb.Components.UI.Inset
+  import RetroHexChatWeb.Components.UI.ChatCard
 
   alias RetroHexChatWeb.Icons
 
@@ -46,89 +46,70 @@ defmodule RetroHexChatWeb.Components.UI.EventCard do
   @spec event_card(map()) :: Phoenix.LiveView.Rendered.t()
   def event_card(assigns) do
     ~H"""
-    <.inset
+    <.chat_card
       :if={@card}
-      class={["chat-card my-1 flex max-w-md items-start gap-2 p-2", @class]}
+      layout={:row}
+      class={@class}
       data-testid={"event-card-#{@card.event_id}"}
       data-event-state={if @card.cancelled?, do: "cancelled", else: "scheduled"}
       data-event-attendees={@card.attendee_count}
     >
-      <span class="shrink-0">
-        <Icons.icon_clock class="h-8 w-8" />
+      <:icon><Icons.icon_clock class="h-8 w-8" /></:icon>
+      <:title>{@card.title}</:title>
+      <%!-- Called off is said in the badge, not by dimming the card: an event
+            that will not happen is still something a reader has to read. --%>
+      <:badge :if={@card.cancelled?}>
+        <.chat_card_badge tone={:muted} data-testid="event-card-cancelled">
+          {dgettext("chat", "Called off")}
+        </.chat_card_badge>
+      </:badge>
+
+      <%!-- Both readings of the same instant. The clock time is what somebody
+            writes down; "in two hours" is what tells them whether to stop
+            what they are doing, and neither answers for the other. --%>
+      <span class="block text-muted-foreground">
+        <span data-testid={"event-when-#{@card.event_id}"}>{@when_text}</span>
+        <span :if={@relative_text}>· {@relative_text}</span>
       </span>
 
-      <span class="min-w-0 flex-1">
-        <span class="flex min-w-0 items-center gap-1">
-          <span class="min-w-0 flex-1 truncate font-bold">{@card.title}</span>
-          <%!-- Called off is said in the badge, not by dimming the card. The
-                same reasoning as the session card: an event that will not happen
-                is still something a reader has to read, and seven tenths opacity
-                is how this product draws a control it has refused. --%>
-          <span
-            :if={@card.cancelled?}
-            class="shrink-0 text-[10px] font-bold uppercase text-muted-foreground"
-            data-testid="event-card-cancelled"
-          >
-            {dgettext("chat", "Called off")}
-          </span>
+      <span :if={@card.description} class="mt-1 block break-words">{@card.description}</span>
+
+      <:actions>
+        <.button
+          :if={not @card.cancelled?}
+          type="button"
+          size="sm"
+          variant={if @attending, do: "default", else: "outline"}
+          phx-click={if @attending, do: @on_unattend, else: @on_attend}
+          phx-value-event_id={@card.event_id}
+          aria-pressed={to_string(@attending)}
+          data-testid={"event-attend-#{@card.event_id}"}
+        >
+          <:icon><Icons.icon_checkmark class="h-4 w-4" /></:icon>
+          {if @attending, do: dgettext("chat", "Going"), else: dgettext("chat", "I'm going")}
+        </.button>
+
+        <span class="text-muted-foreground" data-testid={"event-count-#{@card.event_id}"}>
+          {dngettext(
+            "chat",
+            "%{count} going",
+            "%{count} going",
+            @card.attendee_count,
+            count: @card.attendee_count
+          )}
         </span>
 
-        <%!-- Both readings of the same instant. The clock time is what somebody
-              writes down; "in two hours" is what tells them whether to stop
-              what they are doing, and neither answers for the other. --%>
-        <span class="block text-muted-foreground">
-          <span data-testid={"event-when-#{@card.event_id}"}>{@when_text}</span>
-          <span :if={@relative_text}>· {@relative_text}</span>
-        </span>
-
-        <span :if={@card.description} class="mt-1 block break-words">{@card.description}</span>
-
-        <span class="mt-1 flex items-center gap-2">
-          <.button
-            :if={not @card.cancelled?}
-            type="button"
-            size="sm"
-            variant={if @attending, do: "default", else: "outline"}
-            phx-click={if @attending, do: @on_unattend, else: @on_attend}
-            phx-value-event_id={@card.event_id}
-            aria-pressed={to_string(@attending)}
-            data-testid={"event-attend-#{@card.event_id}"}
-          >
-            <:icon><Icons.icon_checkmark class="h-4 w-4" /></:icon>
-            {if @attending, do: dgettext("chat", "Going"), else: dgettext("chat", "I'm going")}
-          </.button>
-
-          <span class="text-muted-foreground" data-testid={"event-count-#{@card.event_id}"}>
-            {dngettext(
-              "chat",
-              "%{count} going",
-              "%{count} going",
-              @card.attendee_count,
-              count: @card.attendee_count
-            )}
-          </span>
-
-          <%!-- `href`, never `navigate`: a `navigate` follows in the same tab, so
-                the one control on this card that is supposed to open a place
-                beside the conversation would have taken the conversation away
-                instead. `rel="noopener"` for the reason every door in this
-                product carries it — a shared event loop measured at 1203 ms
-                against 12 ms. --%>
-          <.link
-            :if={@surface_path && not @card.cancelled?}
-            href={@surface_path}
-            target="_blank"
-            rel="noopener"
-            data-confirm-tab="surface"
-            data-confirm-label={@card.title}
-            class="ml-auto underline"
-            data-testid={"event-surface-#{@card.event_id}"}
-          >
-            {dgettext("chat", "Where")}
-          </.link>
-        </span>
-      </span>
-    </.inset>
+        <.surface_link
+          :if={@surface_path && not @card.cancelled?}
+          href={@surface_path}
+          label={@card.title}
+          class="ml-auto"
+          data-testid={"event-surface-#{@card.event_id}"}
+        >
+          {dgettext("chat", "Where")}
+        </.surface_link>
+      </:actions>
+    </.chat_card>
     """
   end
 end

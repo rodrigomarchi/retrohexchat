@@ -26,7 +26,9 @@ defmodule RetroHexChatWeb.Components.UI.ShareMessageCard do
   use RetroHexChatWeb.Component
 
   import RetroHexChatWeb.Components.UI.Button
+  import RetroHexChatWeb.Components.UI.ChatCard
 
+  alias RetroHexChatWeb.Components.UI.ShareKind
   alias RetroHexChatWeb.Icons
 
   attr :card, :map,
@@ -50,18 +52,12 @@ defmodule RetroHexChatWeb.Components.UI.ShareMessageCard do
       |> assign(:next_label, next_label(assigns.subject, assigns.card))
 
     ~H"""
-    <%!-- A card that has ended is a record, not a dead control, and the whole
-          card used to be drawn at seven tenths opacity to say so. That is the
-          product's own spelling of *disabled* — it is what a refused button
-          looks like — so the one card in the conversation that is pure history,
-          and the one somebody is most likely to be reading weeks later, was the
-          card that looked broken. The state is already said three times over:
-          the badge word, the missing way in, and a detail written in the past
-          tense. It is said in the badge's colour now, and nothing on the card is
-          dimmed. --%>
-    <div
+    <%!-- A card that has ended is a record, not a dead control: the state is
+          said by the badge word and its colour, the missing way in, and a
+          detail written in the past tense — nothing on the card is dimmed. --%>
+    <.chat_card
       :if={@card}
-      class="shadow-retro-field my-1 flex max-w-md items-center gap-2 p-2"
+      layout={:row}
       data-testid="share-message-card"
       data-share-kind={@card.kind}
       data-share-state={state(@card)}
@@ -69,107 +65,90 @@ defmodule RetroHexChatWeb.Components.UI.ShareMessageCard do
       data-share-duration={metric(@card, :duration_seconds)}
       data-share-visitors={metric(@card, :visitors)}
     >
-      <span class="shrink-0">
-        {apply(Icons, icon_name(@subject, @card), [%{class: "h-8 w-8"}])}
+      <:icon>
+        {apply(Icons, ShareKind.subject_icon(@subject, @card.kind), [%{class: "h-8 w-8"}])}
+      </:icon>
+      <:title>{heading(@subject, @card)}</:title>
+      <:badge>
+        <.chat_card_badge tone={if @ended?, do: :muted, else: :live} data-testid="share-message-state">
+          {badge(@card)}
+        </.chat_card_badge>
+      </:badge>
+
+      <%!-- The instant, on a line of its own. The row this card hangs under
+            is stamped with the moment the door was written — the room
+            *opening* — so a gathering that ran all afternoon said how long it
+            lasted and nothing about when it stopped. Written in full because
+            it is the one clock on the row with no neighbouring date to be
+            read against, and kept out of the sentence below because that
+            sentence is clamped and the ending would push the headcount off
+            the end of it. --%>
+      <span
+        :if={@ended? and @ended_at_text}
+        class="text-muted-foreground block"
+        data-testid="share-message-ended-at"
+      >
+        {dgettext("share", "ended %{when}", when: @ended_at_text)}
       </span>
-
-      <span class="min-w-0 flex-1">
-        <span class="flex min-w-0 items-center gap-1">
-          <span class="min-w-0 flex-1 truncate font-bold">{heading(@subject, @card)}</span>
-          <span
-            class={[
-              "shrink-0 text-[10px] font-bold uppercase",
-              if(@ended?, do: "text-muted-foreground", else: "text-primary")
-            ]}
-            data-testid="share-message-state"
-          >
-            {badge(@card)}
-          </span>
-        </span>
-
-        <%!-- The instant, on a line of its own. The row this card hangs under
-              is stamped with the moment the door was written — the room
-              *opening* — so a gathering that ran all afternoon said how long it
-              lasted and nothing about when it stopped. Written in full because
-              it is the one clock on the row with no neighbouring date to be
-              read against, and kept out of the sentence below because that
-              sentence is clamped and the ending would push the headcount off
-              the end of it. --%>
-        <span
-          :if={@ended? and @ended_at_text}
-          class="text-muted-foreground block text-sm"
-          data-testid="share-message-ended-at"
-        >
-          {dgettext("share", "ended %{when}", when: @ended_at_text)}
-        </span>
-        <%!-- The heading truncates because a channel name has no length limit
-              worth designing around. The detail must not: it is a short fixed
-              sentence, and the half of it that got cut was the headcount the
-              ended card exists to carry — "lasted less than a minute…" with the
-              people silently gone. Two lines, and it always fits. --%>
-        <span
-          class="text-muted-foreground block line-clamp-2 text-sm"
-          data-testid="share-message-detail"
-        >
-          {detail(@subject, @card)}
-        </span>
+      <%!-- The heading truncates because a channel name has no length limit
+            worth designing around. The detail must not: it is a short fixed
+            sentence, and the half of it that got cut was the headcount the
+            ended card exists to carry — "lasted less than a minute…" with the
+            people silently gone. Two lines, and it always fits. --%>
+      <span
+        class="text-muted-foreground block line-clamp-2"
+        data-testid="share-message-detail"
+      >
+        {detail(@subject, @card)}
       </span>
 
       <%!-- A card that has ended loses the way in: the room is not there to be
             entered, and a button that says Join and cannot is worse than no
-            button.
+            button. --%>
+      <:actions :if={not @ended? and (@enter_path || @share_url)}>
+        <.surface_link
+          :if={@enter_path}
+          as={:button}
+          href={@enter_path}
+          label={heading(@subject, @card)}
+          data-testid="share-message-enter"
+        >
+          <:icon><Icons.icon_btn_link class="h-4 w-4" /></:icon>
+          {dgettext("share", "Join")}
+        </.surface_link>
 
-            The way in is a real anchor into a tab of its own. The card is the
-            only door a session has, and following it must not cost the reader
-            the conversation the card is sitting in — the chat stays where it
-            is and the room opens beside it. `rel="noopener"` is not decoration:
-            without it the new tab shares this one's event loop, and a session
-            renegotiating media would be doing it inside the chat's. --%>
-      <.button
-        :if={not @ended? and @enter_path}
-        href={@enter_path}
-        target="_blank"
-        rel="noopener"
-        data-confirm-tab="surface"
-        data-confirm-label={heading(@subject, @card)}
-        size="sm"
-        class="shrink-0"
-        data-testid="share-message-enter"
-      >
-        <:icon><Icons.icon_btn_link class="h-4 w-4" /></:icon>
-        {dgettext("share", "Join")}
-      </.button>
-
-      <.button
-        :if={not @ended? and @share_url}
-        type="button"
-        size="sm"
-        variant="outline"
-        class="shrink-0"
-        id={"share-card-copy-#{@card.slug}"}
-        phx-hook="CopyValueHook"
-        data-copy-text={@share_url}
-        data-copied-label={dgettext("share", "Copied!")}
-        data-testid="share-message-copy"
-      >
-        <:icon><Icons.icon_copy class="h-4 w-4" /></:icon>
-        {dgettext("share", "Copy link")}
-      </.button>
+        <.button
+          :if={@share_url}
+          type="button"
+          size="sm"
+          variant="outline"
+          class="shrink-0"
+          id={"share-card-copy-#{@card.slug}"}
+          phx-hook="CopyValueHook"
+          data-copy-text={@share_url}
+          data-copied-label={dgettext("share", "Copied!")}
+          data-testid="share-message-copy"
+        >
+          <:icon><Icons.icon_copy class="h-4 w-4" /></:icon>
+          {dgettext("share", "Copy link")}
+        </.button>
+      </:actions>
 
       <%!-- The label is required as well as the path, so a kind added later
             gets no button rather than somebody else's. --%>
-      <.button
-        :if={@ended? && @next_path && @next_label}
-        navigate={@next_path}
-        size="sm"
-        variant="outline"
-        class="shrink-0"
-        data-testid="share-message-next"
-      >
-        <:icon><Icons.icon_btn_link class="h-4 w-4" /></:icon>
-        {@next_label}
-      </.button>
-    </div>
+      <:actions :if={@ended? && @next_path && @next_label}>
+        <.button
+          navigate={@next_path}
+          size="sm"
+          variant="outline"
+          class="shrink-0"
+          data-testid="share-message-next"
+        >
+          <:icon><Icons.icon_btn_link class="h-4 w-4" /></:icon>
+          {@next_label}
+        </.button>
+      </:actions>
+    </.chat_card>
     """
   end
 
@@ -180,17 +159,6 @@ defmodule RetroHexChatWeb.Components.UI.ShareMessageCard do
 
   defp state(%{state: :ended}), do: "ended"
   defp state(_card), do: "live"
-
-  defp icon_name(%{icon: icon}, _card) when is_binary(icon) do
-    name = :"icon_#{icon}"
-    if function_exported?(Icons, name, 1), do: name, else: :icon_hex_stone
-  end
-
-  defp icon_name(_subject, %{kind: "play"}), do: :icon_game_pong
-  defp icon_name(_subject, %{kind: "call"}), do: :icon_protocol_conference_compact
-  defp icon_name(_subject, %{kind: "space"}), do: :icon_community
-  defp icon_name(_subject, %{kind: "p2p"}), do: :icon_protocol_p2p_compact
-  defp icon_name(_subject, _card), do: :icon_hex_stone
 
   # The heading names the channel only when the domain said it may be named;
   # otherwise it says what kind of room it is and nothing about which one.

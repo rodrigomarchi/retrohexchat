@@ -4,6 +4,7 @@ defmodule RetroHexChatWeb.Components.UI.JoinCard do
 
   import RetroHexChatWeb.Components.UI.Button
 
+  alias RetroHexChatWeb.Components.UI.ShareKind
   alias RetroHexChatWeb.Icons
 
   attr :state, :atom, required: true, values: [:ready, :needs_session, :filled, :gone]
@@ -31,7 +32,7 @@ defmodule RetroHexChatWeb.Components.UI.JoinCard do
   def join_card(assigns) do
     ~H"""
     <div class="flex flex-col gap-3 p-4" data-testid="join-card">
-      <.subject_row :if={@subject} subject={@subject} />
+      <.subject_row :if={@subject} subject={@subject} kind={@kind} />
       <.preview_lines :if={@preview != []} lines={@preview} />
 
       <p class="text-center" data-testid={state_testid(@state)}>
@@ -109,6 +110,7 @@ defmodule RetroHexChatWeb.Components.UI.JoinCard do
   end
 
   attr :subject, :map, required: true
+  attr :kind, :string, default: nil
 
   # What was actually shared, drawn rather than described: a stranger decides
   # whether to follow a link by recognising the thing on the other side.
@@ -116,7 +118,7 @@ defmodule RetroHexChatWeb.Components.UI.JoinCard do
     ~H"""
     <div class="flex items-center gap-3" data-testid="join-subject">
       <span class="shadow-retro-field shrink-0 p-2">
-        {apply(Icons, subject_icon(@subject), [%{class: "h-8 w-8"}])}
+        {apply(Icons, ShareKind.subject_icon(@subject, @kind), [%{class: "h-8 w-8"}])}
       </span>
       <span class="min-w-0">
         <span class="block truncate font-bold">{@subject.name}</span>
@@ -128,21 +130,9 @@ defmodule RetroHexChatWeb.Components.UI.JoinCard do
     """
   end
 
-  defp subject_icon(%{icon: icon}) when is_binary(icon) do
-    name = :"icon_#{icon}"
-    if function_exported?(Icons, name, 1), do: name, else: :icon_hex_stone
-  end
-
-  defp subject_icon(_subject), do: :icon_hex_stone
-
   @doc "The window's icon for a kind of link."
   @spec icon(String.t() | nil) :: atom()
-  def icon("play"), do: :icon_game_pong
-  def icon("call"), do: :icon_protocol_conference_compact
-  def icon("space"), do: :icon_community
-  def icon("channel"), do: :icon_channels
-  def icon("p2p"), do: :icon_protocol_p2p_compact
-  def icon(_kind), do: :icon_hex_stone
+  defdelegate icon(kind), to: ShareKind
 
   @doc """
   The window's title. It says what kind of thing this is without naming where

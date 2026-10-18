@@ -1,8 +1,8 @@
 defmodule RetroHexChatWeb.Components.UI.Inset do
   @moduledoc """
-  A sunken panel, the way Win98 framed a field or a picture: the frame a
-  card in the conversation sits in, and the one a page of the site sets its
-  illustrations and notes in.
+  A sunken panel, the way Win98 framed a field or a picture: the frame a page
+  of the site sets its illustrations and notes in. A card in the conversation
+  has no frame — that is `ChatCard`.
 
   ## Usage
 
