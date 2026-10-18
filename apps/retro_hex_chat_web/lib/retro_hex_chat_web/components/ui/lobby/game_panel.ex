@@ -35,7 +35,7 @@ defmodule RetroHexChatWeb.Components.UI.Lobby.GamePanel do
       <.media_session_status_header
         title={dgettext("lobby", "Games")}
         testid="p2p-games-activity-header"
-        class="border border-border bg-canvas p-2 shadow-retro-field"
+        class="border border-border p-2 shadow-retro-field"
       >
         <:icon>
           <Icons.icon_joystick class="h-5 w-5 shrink-0" />
@@ -66,7 +66,7 @@ defmodule RetroHexChatWeb.Components.UI.Lobby.GamePanel do
       <.media_session_status_header
         title={dgettext("lobby", "Games")}
         testid="p2p-games-activity-header"
-        class="border border-border bg-canvas p-2 shadow-retro-field"
+        class="border border-border p-2 shadow-retro-field"
       >
         <:icon>
           <Icons.icon_joystick class="h-5 w-5 shrink-0" />
@@ -127,7 +127,7 @@ defmodule RetroHexChatWeb.Components.UI.Lobby.GamePanel do
       >
         <div class="w-full max-w-[26rem] border border-border bg-surface p-3 text-left shadow-retro-raised">
           <div class="flex min-w-0 items-start gap-2">
-            <span class="shadow-retro-sunken inline-flex h-10 w-10 shrink-0 items-center justify-center bg-canvas">
+            <span class="shadow-retro-sunken inline-flex h-10 w-10 shrink-0 items-center justify-center">
               <Icons.game_icon game_id={@game.game_id} class="h-6 w-6" />
             </span>
             <div class="min-w-0 flex-1">
@@ -139,7 +139,7 @@ defmodule RetroHexChatWeb.Components.UI.Lobby.GamePanel do
             <.badge variant="default">{outcome_label(@game)}</.badge>
           </div>
 
-          <div class="mt-3 flex items-center justify-center gap-4 border border-border bg-canvas px-2 py-2 text-sm shadow-retro-sunken">
+          <div class="mt-3 flex items-center justify-center gap-4 border border-border px-2 py-2 text-sm shadow-retro-sunken">
             <span class={["font-bold", score_class(@game, 1)]}>
               {dgettext("lobby", "P1 %{score}", score: score_of(@game, "p1"))}
             </span>
@@ -169,7 +169,7 @@ defmodule RetroHexChatWeb.Components.UI.Lobby.GamePanel do
         >
           <div class="w-full max-w-[30rem] border border-border bg-surface p-2 shadow-retro-raised">
             <div class="flex min-w-0 items-start gap-2">
-              <span class="shadow-retro-sunken inline-flex h-10 w-10 shrink-0 items-center justify-center bg-canvas">
+              <span class="shadow-retro-sunken inline-flex h-10 w-10 shrink-0 items-center justify-center">
                 <Icons.game_icon game_id={@game_request.game_id} class="h-6 w-6" />
               </span>
               <div class="min-w-0 flex-1">
@@ -212,7 +212,7 @@ defmodule RetroHexChatWeb.Components.UI.Lobby.GamePanel do
         >
           <div class="w-full max-w-[30rem] border border-border bg-surface p-2 shadow-retro-raised">
             <div class="flex min-w-0 items-start gap-2">
-              <span class="shadow-retro-sunken inline-flex h-10 w-10 shrink-0 items-center justify-center bg-canvas">
+              <span class="shadow-retro-sunken inline-flex h-10 w-10 shrink-0 items-center justify-center">
                 <Icons.icon_clock class="h-5 w-5 animate-spin" />
               </span>
               <div class="min-w-0 flex-1">
@@ -253,7 +253,7 @@ defmodule RetroHexChatWeb.Components.UI.Lobby.GamePanel do
             class="shadow-retro-raised flex min-h-[3.75rem] items-center gap-2 bg-secondary p-2 text-left text-xs"
             data-testid={"lobby-game-#{game.id}"}
           >
-            <span class="shadow-retro-sunken inline-flex h-8 w-8 shrink-0 items-center justify-center bg-canvas">
+            <span class="shadow-retro-sunken inline-flex h-8 w-8 shrink-0 items-center justify-center">
               <Icons.game_icon game_id={game.id} class="h-5 w-5" />
             </span>
             <span class="min-w-0">
@@ -298,7 +298,7 @@ defmodule RetroHexChatWeb.Components.UI.Lobby.GamePanel do
 
   defp game_status_badge_class(_game, request, _outgoing) when is_map(request),
     do:
-      "border border-warning bg-warning-light px-1.5 py-0.5 text-[10px] font-bold text-foreground shadow-retro-sunken"
+      "border border-warning bg-warning-bg px-1.5 py-0.5 text-[10px] font-bold text-foreground shadow-retro-sunken"
 
   defp game_status_badge_class(_game, _request, _outgoing),
     do:

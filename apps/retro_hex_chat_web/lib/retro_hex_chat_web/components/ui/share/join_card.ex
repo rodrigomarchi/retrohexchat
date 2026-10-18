@@ -99,7 +99,7 @@ defmodule RetroHexChatWeb.Components.UI.JoinCard do
   # channel decide how a stranger's screen looks.
   defp preview_lines(assigns) do
     ~H"""
-    <ul class="shadow-retro-field bg-canvas flex flex-col gap-1 p-2" data-testid="join-preview">
+    <ul class="shadow-retro-field flex flex-col gap-1 p-2" data-testid="join-preview">
       <li :for={line <- @lines} class="font-chat truncate text-sm">
         <span class="font-bold">{line.author}</span>
         <span class="text-muted-foreground">{line.content}</span>
@@ -115,7 +115,7 @@ defmodule RetroHexChatWeb.Components.UI.JoinCard do
   defp subject_row(assigns) do
     ~H"""
     <div class="flex items-center gap-3" data-testid="join-subject">
-      <span class="shadow-retro-field bg-canvas shrink-0 p-2">
+      <span class="shadow-retro-field shrink-0 p-2">
         {apply(Icons, subject_icon(@subject), [%{class: "h-8 w-8"}])}
       </span>
       <span class="min-w-0">

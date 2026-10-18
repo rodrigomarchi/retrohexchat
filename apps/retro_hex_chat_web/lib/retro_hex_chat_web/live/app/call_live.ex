@@ -227,7 +227,7 @@ defmodule RetroHexChatWeb.App.CallLive do
   defp call_left(assigns) do
     ~H"""
     <div
-      class="m-2 flex items-start gap-2 border border-border bg-canvas p-2 text-xs shadow-retro-sunken"
+      class="m-2 flex items-start gap-2 border border-border p-2 text-xs shadow-retro-sunken"
       data-testid="call-left"
       data-left-reason={@reason}
     >
@@ -308,7 +308,7 @@ defmodule RetroHexChatWeb.App.CallLive do
   defp call_denied(assigns) do
     ~H"""
     <div
-      class="m-2 flex items-start gap-2 border border-border bg-canvas p-2 text-xs shadow-retro-sunken"
+      class="m-2 flex items-start gap-2 border border-border p-2 text-xs shadow-retro-sunken"
       data-testid="call-denied"
     >
       <span class="flex h-8 w-8 shrink-0 items-center justify-center bg-surface shadow-retro-sunken">

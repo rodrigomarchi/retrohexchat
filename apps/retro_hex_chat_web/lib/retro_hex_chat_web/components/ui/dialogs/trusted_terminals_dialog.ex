@@ -166,7 +166,7 @@ defmodule RetroHexChatWeb.Components.UI.TrustedTerminalsDialog do
                 {@status_message}
               </p>
 
-              <div :if={!@identified} class="shadow-retro-field bg-canvas p-3">
+              <div :if={!@identified} class="shadow-retro-field p-3">
                 <div class="flex items-center gap-retro-4">
                   <Icons.icon_lock class="w-4 h-4" />
                   <span>

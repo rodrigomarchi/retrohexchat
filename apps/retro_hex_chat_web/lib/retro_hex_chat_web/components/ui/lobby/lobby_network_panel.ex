@@ -429,7 +429,7 @@ defmodule RetroHexChatWeb.Components.UI.Lobby.LobbyNetworkPanel do
         class="bg-transparent p-0 shadow-none"
       >
         <:icon>
-          <span class="flex h-8 w-8 shrink-0 items-center justify-center bg-canvas shadow-retro-sunken">
+          <span class="flex h-8 w-8 shrink-0 items-center justify-center shadow-retro-sunken">
             <Icons.icon_protocol_p2p_compact class="h-5 w-5" />
           </span>
         </:icon>
@@ -480,7 +480,6 @@ defmodule RetroHexChatWeb.Components.UI.Lobby.LobbyNetworkPanel do
           value={net_health_label(@stats.connection.level)}
           detail={dgettext("p2p", "MOS %{score}", score: format_mos(@stats.connection.mos))}
           tone_class={net_health_class(@stats.connection.level)}
-          class="bg-canvas"
           testid="p2p-stats-summary-health"
         />
         <.summary_card
@@ -493,7 +492,6 @@ defmodule RetroHexChatWeb.Components.UI.Lobby.LobbyNetworkPanel do
               loss: @stats.connection.loss_pct
             )
           }
-          class="bg-canvas"
           testid="p2p-stats-summary-latency"
         />
         <.summary_card
@@ -501,7 +499,6 @@ defmodule RetroHexChatWeb.Components.UI.Lobby.LobbyNetworkPanel do
           label={dgettext("p2p", "Media")}
           value={p2p_media_summary(@stats)}
           detail={p2p_video_summary(@stats.video)}
-          class="bg-canvas"
           testid="p2p-stats-summary-media"
         />
         <.summary_card
@@ -509,7 +506,6 @@ defmodule RetroHexChatWeb.Components.UI.Lobby.LobbyNetworkPanel do
           label={dgettext("p2p", "Data")}
           value={p2p_data_summary(@stats)}
           detail={p2p_data_detail(@stats)}
-          class="bg-canvas"
           testid="p2p-stats-summary-data"
         />
       </div>
@@ -524,7 +520,7 @@ defmodule RetroHexChatWeb.Components.UI.Lobby.LobbyNetworkPanel do
   defp session_badge(assigns) do
     ~H"""
     <span
-      class="inline-flex h-6 items-center gap-1 bg-canvas px-1.5 text-[10px] font-bold shadow-retro-sunken"
+      class="inline-flex h-6 items-center gap-1 px-1.5 text-[10px] font-bold shadow-retro-sunken"
       data-testid={@testid}
     >
       {apply(Icons, @icon, [%{class: "h-3.5 w-3.5"}])}

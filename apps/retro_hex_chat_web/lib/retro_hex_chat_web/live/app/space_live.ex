@@ -253,7 +253,7 @@ defmodule RetroHexChatWeb.App.SpaceLive do
         data-sprite-sheets={SpaceAssets.sheet_urls_json()}
         data-character-catalog={SpaceAssets.character_catalog_url()}
         data-space-prompts={focus_prompts()}
-        class="relative flex-1 min-h-0 w-full bg-canvas"
+        class="relative flex-1 min-h-0 w-full"
       >
         <%!-- Focusable so Esc in the line below can hand the keyboard back to
             the map. --%>

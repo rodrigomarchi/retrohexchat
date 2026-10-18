@@ -34,7 +34,7 @@ defmodule RetroHexChatWeb.Components.UI.MessageReplyBlock do
     <div
       class={
         classes([
-          "flex gap-1 items-center text-xs text-muted-foreground pl-2 cursor-pointer hover:bg-surface-hover",
+          "flex gap-1 items-center text-xs text-muted-foreground pl-2 cursor-pointer hover:bg-hover-bg",
           @class
         ])
       }

@@ -307,6 +307,68 @@ defmodule Mix.Tasks.Lint.CssConsistencyTest do
     end
   end
 
+  describe "parse_theme_colours/1" do
+    test "joins nested keys and lets DEFAULT stand for the key above it" do
+      config = """
+      module.exports = {
+        theme: {
+          extend: {
+            colors: {
+              // Neutrals
+              white: "#ffffff",
+              gray: {
+                100: "#f0f0f0",
+              },
+              "canvas-bg": "#0a0a1a",
+              primary: {
+                DEFAULT: "#000080",
+                foreground: "#ffffff",
+              },
+            },
+            spacing: { 4: "4px" },
+          },
+        },
+      }
+      """
+
+      colours = CssConsistency.parse_theme_colours(config)
+
+      for colour <- ~w(white gray-100 canvas-bg primary primary-foreground red-500 transparent) do
+        assert MapSet.member?(colours, colour), "expected #{colour}"
+      end
+
+      refute MapSet.member?(colours, "canvas")
+      refute MapSet.member?(colours, "4")
+    end
+  end
+
+  describe "unknown_colour_utilities/2" do
+    @colours MapSet.new(
+               ~w(canvas-bg surface hover-bg warning warning-bg muted muted-foreground white)
+             )
+
+    test "flags a colour utility one word short of a theme colour" do
+      refs = MapSet.new(~w(bg-canvas bg-warning-light hover:bg-surface-hover))
+
+      assert CssConsistency.unknown_colour_utilities(refs, @colours) == refs
+    end
+
+    test "passes theme colours, opacity, variants and non-colour utilities" do
+      refs =
+        MapSet.new(~w(bg-canvas-bg bg-white/90 text-muted-foreground border-b-surface
+             data-[state=active]:border-b-surface text-xs text-left ring-2 bg-gradient-to-r))
+
+      assert CssConsistency.unknown_colour_utilities(refs, @colours) == MapSet.new()
+    end
+
+    test "the theme of this app names every colour the app uses" do
+      refs = CssConsistency.extract_all_references()
+      colours = CssConsistency.theme_colours()
+
+      assert CssConsistency.unknown_colour_utilities(refs, colours) == MapSet.new()
+    end
+  end
+
   describe "end-to-end on actual codebase" do
     test "extract_defined_classes returns a set" do
       defined = CssConsistency.extract_defined_classes()

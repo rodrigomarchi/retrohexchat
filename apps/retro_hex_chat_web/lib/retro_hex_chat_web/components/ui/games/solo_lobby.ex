@@ -40,7 +40,7 @@ defmodule RetroHexChatWeb.Components.UI.SoloLobby do
       <%!-- Inactivity warning --%>
       <div
         :if={@inactivity_warning}
-        class="shadow-retro-field flex shrink-0 items-center gap-retro-4 bg-warning-light px-retro-8 py-retro-4 text-xs"
+        class="shadow-retro-field flex shrink-0 items-center gap-retro-4 bg-warning-bg px-retro-8 py-retro-4 text-xs"
       >
         <Icons.icon_warning class="w-4 h-4 flex-shrink-0" />
         <span>

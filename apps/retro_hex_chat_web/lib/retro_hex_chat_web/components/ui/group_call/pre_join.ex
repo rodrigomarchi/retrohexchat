@@ -72,7 +72,7 @@ defmodule RetroHexChatWeb.Components.UI.GroupCall.PreJoin do
             </div>
 
             <section class="grid min-w-0 content-start gap-2 text-xs">
-              <div class="grid min-w-0 gap-2 border border-border bg-canvas p-2 shadow-retro-sunken">
+              <div class="grid min-w-0 gap-2 border border-border p-2 shadow-retro-sunken">
                 <div class="flex items-start gap-2">
                   <span class="flex h-8 w-8 shrink-0 items-center justify-center bg-surface shadow-retro-sunken">
                     <Icons.icon_protocol_conference_compact class="h-4 w-4" />
@@ -91,7 +91,7 @@ defmodule RetroHexChatWeb.Components.UI.GroupCall.PreJoin do
                 </div>
               </div>
 
-              <div class="min-w-0 border border-border bg-canvas p-2 shadow-retro-sunken">
+              <div class="min-w-0 border border-border p-2 shadow-retro-sunken">
                 <div class="mb-2 flex items-center gap-1 font-bold">
                   <Icons.icon_devices class="h-3.5 w-3.5" />
                   {dgettext("group_call", "Media defaults")}
@@ -116,7 +116,7 @@ defmodule RetroHexChatWeb.Components.UI.GroupCall.PreJoin do
               </div>
 
               <div
-                class="grid min-w-0 gap-2 border border-border bg-canvas p-2 shadow-retro-sunken"
+                class="grid min-w-0 gap-2 border border-border p-2 shadow-retro-sunken"
                 data-testid="group-call-prejoin-devices"
               >
                 <DeviceSelect.device_select
@@ -149,7 +149,7 @@ defmodule RetroHexChatWeb.Components.UI.GroupCall.PreJoin do
               </div>
 
               <details
-                class="grid min-w-0 gap-2 border border-border bg-canvas p-2 shadow-retro-sunken"
+                class="grid min-w-0 gap-2 border border-border p-2 shadow-retro-sunken"
                 data-testid="group-call-prejoin-advanced"
               >
                 <summary class="flex cursor-pointer items-start justify-between gap-2 font-bold">
@@ -201,7 +201,7 @@ defmodule RetroHexChatWeb.Components.UI.GroupCall.PreJoin do
                   </div>
 
                   <div class="flex min-w-0 items-start gap-2 border border-border bg-surface p-2 shadow-retro-sunken">
-                    <span class="flex h-8 w-8 shrink-0 items-center justify-center bg-canvas shadow-retro-sunken">
+                    <span class="flex h-8 w-8 shrink-0 items-center justify-center shadow-retro-sunken">
                       <Icons.icon_protocol_conference class="h-5 w-5" />
                     </span>
                     <div class="min-w-0">
@@ -249,7 +249,7 @@ defmodule RetroHexChatWeb.Components.UI.GroupCall.PreJoin do
   defp inside_now(assigns) do
     ~H"""
     <div
-      class="grid min-w-0 gap-1 border border-border bg-canvas p-2 text-xs shadow-retro-sunken"
+      class="grid min-w-0 gap-1 border border-border p-2 text-xs shadow-retro-sunken"
       data-testid="group-call-prejoin-roster"
     >
       <div class="flex items-center gap-1 font-bold">

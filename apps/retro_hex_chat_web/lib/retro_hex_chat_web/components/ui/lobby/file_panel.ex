@@ -33,7 +33,7 @@ defmodule RetroHexChatWeb.Components.UI.Lobby.FilePanel do
       <.media_session_status_header
         title={dgettext("lobby", "Files")}
         testid="p2p-files-activity-header"
-        class="border border-border bg-canvas p-2 shadow-retro-field"
+        class="border border-border p-2 shadow-retro-field"
       >
         <:icon>
           <Icons.icon_file_send class="h-5 w-5 shrink-0" />
@@ -71,7 +71,7 @@ defmodule RetroHexChatWeb.Components.UI.Lobby.FilePanel do
       <.media_session_status_header
         title={dgettext("lobby", "Files")}
         testid="p2p-files-activity-header"
-        class="border border-border bg-canvas p-2 shadow-retro-field"
+        class="border border-border p-2 shadow-retro-field"
       >
         <:icon>
           <Icons.icon_file_send class="h-5 w-5 shrink-0" />
@@ -179,7 +179,7 @@ defmodule RetroHexChatWeb.Components.UI.Lobby.FilePanel do
   end
 
   defp file_status_badge_class(%{status: "offer_received"}) do
-    "border border-warning bg-warning-light px-1.5 py-0.5 text-[10px] font-bold text-foreground shadow-retro-sunken"
+    "border border-warning bg-warning-bg px-1.5 py-0.5 text-[10px] font-bold text-foreground shadow-retro-sunken"
   end
 
   defp file_status_badge_class(%{file_name: name}) when is_binary(name) and name != "" do

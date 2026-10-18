@@ -243,7 +243,7 @@ defmodule RetroHexChatWeb.App.P2PLive do
   defp p2p_denied(assigns) do
     ~H"""
     <div
-      class="m-auto flex h-fit w-full max-w-[520px] items-start gap-2 border border-border bg-canvas p-2 text-xs shadow-retro-sunken"
+      class="m-auto flex h-fit w-full max-w-[520px] items-start gap-2 border border-border p-2 text-xs shadow-retro-sunken"
       data-testid="p2p-denied"
     >
       <span class="flex h-8 w-8 shrink-0 items-center justify-center bg-surface shadow-retro-sunken">
@@ -260,7 +260,7 @@ defmodule RetroHexChatWeb.App.P2PLive do
   defp p2p_left(assigns) do
     ~H"""
     <div
-      class="m-auto flex h-fit w-full max-w-[520px] items-start gap-2 border border-border bg-canvas p-2 text-xs shadow-retro-sunken"
+      class="m-auto flex h-fit w-full max-w-[520px] items-start gap-2 border border-border p-2 text-xs shadow-retro-sunken"
       data-testid="p2p-left"
     >
       <span class="flex h-8 w-8 shrink-0 items-center justify-center bg-surface shadow-retro-sunken">
@@ -288,7 +288,7 @@ defmodule RetroHexChatWeb.App.P2PLive do
   defp p2p_displaced(assigns) do
     ~H"""
     <div
-      class="m-auto flex h-fit w-full max-w-[520px] items-start gap-2 border border-border bg-canvas p-2 text-xs shadow-retro-sunken"
+      class="m-auto flex h-fit w-full max-w-[520px] items-start gap-2 border border-border p-2 text-xs shadow-retro-sunken"
       data-testid="p2p-displaced"
     >
       <span class="flex h-8 w-8 shrink-0 items-center justify-center bg-surface shadow-retro-sunken">

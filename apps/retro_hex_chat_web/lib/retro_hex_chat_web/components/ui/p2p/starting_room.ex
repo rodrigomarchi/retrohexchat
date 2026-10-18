@@ -108,7 +108,7 @@ defmodule RetroHexChatWeb.Components.UI.P2P.StartingRoom do
 
             <section
               :if={!@game}
-              class="grid min-w-0 gap-2 border border-border bg-canvas p-2 shadow-retro-sunken"
+              class="grid min-w-0 gap-2 border border-border p-2 shadow-retro-sunken"
             >
               <div class="flex items-center gap-1 font-bold">
                 <Icons.icon_devices class="h-3.5 w-3.5" />
@@ -142,7 +142,7 @@ defmodule RetroHexChatWeb.Components.UI.P2P.StartingRoom do
 
             <section
               :if={!@game}
-              class="grid min-w-0 gap-2 border border-border bg-canvas p-2 shadow-retro-sunken"
+              class="grid min-w-0 gap-2 border border-border p-2 shadow-retro-sunken"
             >
               <DeviceSelect.device_select
                 name="p2p_setup[audio_input_id]"
@@ -175,7 +175,7 @@ defmodule RetroHexChatWeb.Components.UI.P2P.StartingRoom do
 
             <details
               :if={!@game}
-              class="grid min-w-0 gap-2 border border-border bg-canvas p-2 shadow-retro-sunken"
+              class="grid min-w-0 gap-2 border border-border p-2 shadow-retro-sunken"
               data-testid="p2p-setup-advanced"
             >
               <summary class="flex cursor-pointer items-start justify-between gap-2 font-bold">
@@ -278,7 +278,7 @@ defmodule RetroHexChatWeb.Components.UI.P2P.StartingRoom do
   defp roster(assigns) do
     ~H"""
     <section
-      class="grid min-w-0 gap-1 border border-border bg-canvas p-2 shadow-retro-sunken"
+      class="grid min-w-0 gap-1 border border-border p-2 shadow-retro-sunken"
       data-testid="p2p-room-roster"
     >
       <div class="flex items-center gap-1 font-bold">
@@ -316,7 +316,7 @@ defmodule RetroHexChatWeb.Components.UI.P2P.StartingRoom do
   defp match_subject(assigns) do
     ~H"""
     <section
-      class="grid min-w-0 content-start gap-2 self-start border border-border bg-canvas p-2 shadow-retro-sunken"
+      class="grid min-w-0 content-start gap-2 self-start border border-border p-2 shadow-retro-sunken"
       data-testid="p2p-room-game"
     >
       <div class="flex min-w-0 items-center gap-2">
@@ -358,7 +358,7 @@ defmodule RetroHexChatWeb.Components.UI.P2P.StartingRoom do
       data-audio-input-id={device_preference(@device_preferences, :audio_input_id)}
       data-video-input-id={device_preference(@device_preferences, :video_input_id)}
       data-audio-output-id={device_preference(@device_preferences, :audio_output_id)}
-      class="flex max-h-[240px] min-h-[170px] flex-col self-start border border-border bg-canvas p-1 shadow-retro-sunken"
+      class="flex max-h-[240px] min-h-[170px] flex-col self-start border border-border p-1 shadow-retro-sunken"
       data-testid="p2p-setup-preview"
     >
       <div class="mb-1 flex items-center justify-between gap-2 text-xs">
@@ -390,7 +390,7 @@ defmodule RetroHexChatWeb.Components.UI.P2P.StartingRoom do
         <div
           id="p2p-setup-empty"
           phx-update="ignore"
-          class="absolute inset-0 flex flex-col items-center justify-center gap-1 bg-canvas text-center text-xs text-muted-foreground"
+          class="absolute inset-0 flex flex-col items-center justify-center gap-1 bg-surface text-center text-xs text-muted-foreground"
           data-p2p-setup-empty
           data-testid="p2p-setup-preview-empty"
         >

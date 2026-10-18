@@ -42,7 +42,7 @@ defmodule RetroHexChatWeb.Components.UI.GroupCall.MediaPreview do
       data-audio-output-id={device_preference(@device_preferences, :audio_output_id)}
       data-prejoin-scope={@scope}
       data-prejoin-remembered={to_string(@remembered)}
-      class="flex min-h-[170px] flex-col border border-border bg-canvas p-1 shadow-retro-sunken"
+      class="flex min-h-[170px] flex-col border border-border p-1 shadow-retro-sunken"
       data-testid="group-call-prejoin-preview"
     >
       <div class="mb-1 flex items-center justify-between gap-2 text-xs">
@@ -76,7 +76,7 @@ defmodule RetroHexChatWeb.Components.UI.GroupCall.MediaPreview do
         <div
           id="group-call-prejoin-empty"
           phx-update="ignore"
-          class="absolute inset-0 flex flex-col items-center justify-center gap-1 bg-canvas text-center text-xs text-muted-foreground"
+          class="absolute inset-0 flex flex-col items-center justify-center gap-1 bg-surface text-center text-xs text-muted-foreground"
           data-group-call-prejoin-empty
           data-testid="group-call-prejoin-empty"
         >

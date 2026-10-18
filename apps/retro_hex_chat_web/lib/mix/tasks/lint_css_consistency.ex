@@ -78,7 +78,12 @@ defmodule Mix.Tasks.Lint.CssConsistency do
     all_known = MapSet.union(MapSet.union(defined, vendor), @phoenix_classes)
 
     raw_unused = MapSet.difference(defined, referenced)
-    raw_missing = missing_reference_candidates(referenced, all_known)
+
+    raw_missing =
+      referenced
+      |> missing_reference_candidates(all_known)
+      |> MapSet.union(unknown_colour_utilities(referenced, theme_colours()))
+
     unused = filter_by_allowlist(raw_unused, unused_allow, unused_prefixes)
     missing = filter_by_allowlist(raw_missing, missing_allow, explicit_dynamic_prefixes)
 
@@ -475,6 +480,112 @@ defmodule Mix.Tasks.Lint.CssConsistency do
     |> MapSet.difference(all_known)
     |> Enum.filter(&product_css_reference?/1)
     |> MapSet.new()
+  end
+
+  # -- Colour utilities that name no colour --
+  #
+  # Tailwind compiles a colour utility only when its colour is in the theme, so
+  # `bg-canvas` — one word short of `bg-canvas-bg` — renders nothing and fails
+  # nowhere. A colour utility whose colour is unknown, but whose first word is
+  # the start of a theme colour, is that near miss, and counts as missing.
+
+  @colour_utility ~r/^(bg|text|border(?:-[xytrblse])?|ring(?:-offset)?|outline|fill|stroke|from|via|to|divide|decoration|accent|caret|placeholder)-(.+)$/
+
+  @default_colours ~w(inherit current transparent black white)
+  @default_palettes ~w(slate gray zinc neutral stone red orange amber yellow lime green
+                       emerald teal cyan sky blue indigo violet purple fuchsia pink rose)
+  @default_shades ~w(50 100 200 300 400 500 600 700 800 900 950)
+
+  @doc false
+  @spec unknown_colour_utilities(MapSet.t(), MapSet.t()) :: MapSet.t()
+  def unknown_colour_utilities(referenced, colours) do
+    roots = MapSet.new(colours, &(&1 |> String.split("-") |> hd()))
+
+    referenced
+    |> Enum.filter(&unknown_colour_utility?(&1, colours, roots))
+    |> MapSet.new()
+  end
+
+  defp unknown_colour_utility?(class, colours, roots) do
+    utility = class |> normalized_utility_class() |> String.replace(~r{/\d+$}, "")
+
+    case Regex.run(@colour_utility, utility) do
+      [_, _prefix, colour] ->
+        not MapSet.member?(colours, colour) and
+          MapSet.member?(roots, colour |> String.split("-") |> hd())
+
+      _ ->
+        false
+    end
+  end
+
+  @doc false
+  @spec theme_colours() :: MapSet.t()
+  def theme_colours do
+    web_app_root()
+    |> Path.join("assets/tailwind.config.js")
+    |> File.read!()
+    |> parse_theme_colours()
+  end
+
+  @doc """
+  The colour names a Tailwind config gives its utilities: Tailwind's defaults,
+  plus every key of the config's `colors` object, nested keys joined by `-` and
+  `DEFAULT` standing for the key above it.
+  """
+  @spec parse_theme_colours(String.t()) :: MapSet.t()
+  def parse_theme_colours(config) do
+    defaults =
+      @default_colours ++
+        for palette <- @default_palettes, shade <- @default_shades, do: "#{palette}-#{shade}"
+
+    case Regex.run(~r/colors:\s*\{/, config, return: :index) do
+      [{start, length}] ->
+        config
+        |> binary_part(start + length, byte_size(config) - start - length)
+        |> String.split("\n")
+        |> collect_colour_keys([], [])
+        |> Enum.concat(defaults)
+        |> MapSet.new()
+
+      nil ->
+        MapSet.new(defaults)
+    end
+  end
+
+  @colour_key ~r/^\s*"?([A-Za-z0-9-]+)"?\s*:\s*(\{)?/
+
+  defp collect_colour_keys([], _path, acc), do: acc
+
+  defp collect_colour_keys([line | rest], path, acc) do
+    line = line |> String.replace(~r{//.*$}, "") |> String.trim()
+
+    cond do
+      String.starts_with?(line, "}") and path == [] ->
+        acc
+
+      String.starts_with?(line, "}") ->
+        collect_colour_keys(rest, tl(path), acc)
+
+      match = Regex.run(@colour_key, line) ->
+        [key | open] = tl(match)
+
+        if open == ["{"] and not String.contains?(line, "}") do
+          collect_colour_keys(rest, [key | path], acc)
+        else
+          collect_colour_keys(rest, path, [colour_name([key | path]) | acc])
+        end
+
+      true ->
+        collect_colour_keys(rest, path, acc)
+    end
+  end
+
+  defp colour_name(path) do
+    path
+    |> Enum.reverse()
+    |> Enum.reject(&(&1 == "DEFAULT"))
+    |> Enum.join("-")
   end
 
   @tailwind_exact_classes MapSet.new([

@@ -90,7 +90,7 @@ defmodule RetroHexChatWeb.P2PLive.Components.P2PSessionConsole do
 
       <.recovery_notice p2p_session={@p2p_session} />
 
-      <div class="min-h-0 flex-1 overflow-hidden border border-border border-t-0 bg-canvas">
+      <div class="min-h-0 flex-1 overflow-hidden border border-border border-t-0">
         <div
           id="p2p-console-section-call-scroll"
           phx-hook="PreserveScrollHook"
@@ -326,7 +326,7 @@ defmodule RetroHexChatWeb.P2PLive.Components.P2PSessionConsole do
   end
 
   defp recovery_notice_class(_recovery) do
-    "flex shrink-0 flex-col gap-1 border border-warning bg-warning-light px-2 py-1 text-foreground sm:flex-row sm:items-center sm:justify-between"
+    "flex shrink-0 flex-col gap-1 border border-warning bg-warning-bg px-2 py-1 text-foreground sm:flex-row sm:items-center sm:justify-between"
   end
 
   defp recovery_icon_class(%{state: :failed}), do: "text-destructive"

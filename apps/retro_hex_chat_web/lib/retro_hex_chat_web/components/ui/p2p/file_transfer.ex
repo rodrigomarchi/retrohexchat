@@ -53,7 +53,7 @@ defmodule RetroHexChatWeb.Components.UI.FileTransfer do
       {@rest}
     >
       <div class="flex min-w-0 items-start gap-2">
-        <span class="shadow-retro-sunken inline-flex h-8 w-8 shrink-0 items-center justify-center bg-canvas">
+        <span class="shadow-retro-sunken inline-flex h-8 w-8 shrink-0 items-center justify-center">
           <Icons.icon_file_send class="h-4 w-4" />
         </span>
         <div class="min-w-0 flex-1">

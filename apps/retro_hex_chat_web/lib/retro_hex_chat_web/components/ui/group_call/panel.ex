@@ -520,7 +520,7 @@ defmodule RetroHexChatWeb.Components.UI.GroupCall.Panel do
       </:meta>
 
       <div class="grid gap-2">
-        <section class="grid gap-2 border border-border bg-canvas p-2 shadow-retro-sunken">
+        <section class="grid gap-2 border border-border p-2 shadow-retro-sunken">
           <div class="flex min-w-0 items-center justify-between gap-2">
             <span class="inline-flex min-w-0 items-center gap-1 font-bold">
               <Icons.icon_layout_maximize class="h-4 w-4 shrink-0" />
@@ -572,7 +572,7 @@ defmodule RetroHexChatWeb.Components.UI.GroupCall.Panel do
       id="group-call-inline-stats-scroll"
       phx-hook="PreserveScrollHook"
       data-preserve-scroll-target="self"
-      class="min-h-0 overflow-auto border border-border bg-canvas p-2 shadow-retro-sunken"
+      class="min-h-0 overflow-auto border border-border p-2 shadow-retro-sunken"
       aria-label={dgettext("group_call", "Conference statistics")}
       data-testid="group-call-inline-stats"
     >
@@ -675,7 +675,7 @@ defmodule RetroHexChatWeb.Components.UI.GroupCall.Panel do
     <div
       :if={@raised_participants != []}
       id="group-call-raised-hand-queue"
-      class="mb-1 border border-warning bg-warning-light p-2 shadow-retro-sunken"
+      class="mb-1 border border-warning bg-warning-bg p-2 shadow-retro-sunken"
       role="status"
       aria-live="polite"
       data-testid="group-call-raised-hand-queue"
@@ -725,7 +725,7 @@ defmodule RetroHexChatWeb.Components.UI.GroupCall.Panel do
     ~H"""
     <div
       class={[
-        "mb-1 grid min-w-0 gap-2 border border-border bg-canvas p-2",
+        "mb-1 grid min-w-0 gap-2 border border-border p-2",
         @active_speaker && "border-primary bg-primary/10 shadow-retro-raised"
       ]}
       id={"group-call-participant-row-#{@participant.id}"}
@@ -754,7 +754,7 @@ defmodule RetroHexChatWeb.Components.UI.GroupCall.Panel do
               />
               <span
                 :if={participant_hand_raised?(@participant)}
-                class="inline-flex h-6 min-w-6 shrink-0 items-center justify-center border border-warning bg-warning-light px-1 text-[9px] font-bold text-foreground shadow-retro-status"
+                class="inline-flex h-6 min-w-6 shrink-0 items-center justify-center border border-warning bg-warning-bg px-1 text-[9px] font-bold text-foreground shadow-retro-status"
                 title={dgettext("group_call", "Hand raised")}
                 aria-label={dgettext("group_call", "Hand raised")}
                 data-testid={"group-call-participant-hand-#{@participant.id}"}
@@ -763,7 +763,7 @@ defmodule RetroHexChatWeb.Components.UI.GroupCall.Panel do
               </span>
               <span
                 :if={@latest_reaction}
-                class="group-call-participant-reaction inline-flex h-6 min-w-6 shrink-0 items-center justify-center border border-border bg-warning-light px-1 leading-none shadow-retro-status"
+                class="group-call-participant-reaction inline-flex h-6 min-w-6 shrink-0 items-center justify-center border border-border bg-warning-bg px-1 leading-none shadow-retro-status"
                 title={participant_reaction_title(@latest_reaction)}
                 aria-label={participant_reaction_title(@latest_reaction)}
                 data-testid={"group-call-participant-reaction-#{@participant.id}"}
@@ -991,7 +991,7 @@ defmodule RetroHexChatWeb.Components.UI.GroupCall.Panel do
     ~H"""
     <div
       :if={@call && @call.warning && !@call.error}
-      class="flex shrink-0 items-center justify-between gap-2 border border-warning bg-warning-light px-2 py-1 text-foreground"
+      class="flex shrink-0 items-center justify-between gap-2 border border-warning bg-warning-bg px-2 py-1 text-foreground"
       role="status"
       aria-live="polite"
       data-testid="group-call-warning"

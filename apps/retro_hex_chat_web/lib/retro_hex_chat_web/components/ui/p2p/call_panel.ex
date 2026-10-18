@@ -70,7 +70,7 @@ defmodule RetroHexChatWeb.Components.UI.P2P.CallPanel do
         class="flex h-full min-h-[136px] flex-col items-center justify-center gap-2 border border-border bg-surface p-3 text-center shadow-retro-sunken"
         data-testid="p2p-call-disconnected"
       >
-        <span class="flex h-20 w-20 items-center justify-center bg-canvas shadow-retro-sunken">
+        <span class="flex h-20 w-20 items-center justify-center shadow-retro-sunken">
           <Icons.icon_protocol_p2p_compact class="h-16 w-16" />
         </span>
         <div class="font-bold">{dgettext("p2p", "Waiting for peer")}</div>
@@ -165,7 +165,7 @@ defmodule RetroHexChatWeb.Components.UI.P2P.CallPanel do
                 <div
                   :if={@peer_left}
                   data-testid="p2p-call-peer-left"
-                  class="absolute inset-0 flex flex-col items-center justify-center gap-2 bg-canvas p-4 text-center shadow-retro-sunken"
+                  class="absolute inset-0 flex flex-col items-center justify-center gap-2 bg-surface p-4 text-center shadow-retro-sunken"
                 >
                   <CallControls.icon_call_phone_end class="h-16 w-16" />
                   <div class="font-bold">
@@ -182,7 +182,7 @@ defmodule RetroHexChatWeb.Components.UI.P2P.CallPanel do
                 <div
                   :if={@peer_camera_off and not @peer_left}
                   data-testid="lobby-peer-camera-off"
-                  class="absolute inset-0 flex flex-col items-center justify-center gap-2 bg-canvas p-4 text-center shadow-retro-sunken"
+                  class="absolute inset-0 flex flex-col items-center justify-center gap-2 bg-surface p-4 text-center shadow-retro-sunken"
                 >
                   <CallControls.icon_call_camera_off class="h-16 w-16" />
                   <div class="font-bold">
@@ -358,7 +358,7 @@ defmodule RetroHexChatWeb.Components.UI.P2P.CallPanel do
       data-testid="p2p-call-idle"
     >
       <div class="flex min-h-[120px] flex-1 flex-col items-center justify-center gap-2 text-center">
-        <span class="flex h-11 w-11 items-center justify-center bg-canvas shadow-retro-sunken">
+        <span class="flex h-11 w-11 items-center justify-center shadow-retro-sunken">
           <CallControls.icon_call_webrtc class="h-6 w-6" />
         </span>
         <div :if={@peer_in_call} class="font-bold" data-testid="p2p-call-peer-in-call">

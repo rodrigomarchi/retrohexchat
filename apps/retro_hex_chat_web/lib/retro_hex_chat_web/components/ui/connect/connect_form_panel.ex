@@ -170,7 +170,7 @@ defmodule RetroHexChatWeb.Components.UI.ConnectFormPanel do
       data-testid="takeover-session-card"
     >
       <div class="flex min-w-0 items-start gap-retro-4">
-        <span class="inline-flex h-9 w-9 shrink-0 items-center justify-center bg-canvas shadow-retro-sunken">
+        <span class="inline-flex h-9 w-9 shrink-0 items-center justify-center shadow-retro-sunken">
           <Icons.icon_laptop class="h-6 w-6" />
         </span>
         <div class="min-w-0 flex-1">
@@ -550,7 +550,7 @@ defmodule RetroHexChatWeb.Components.UI.ConnectFormPanel do
 
   defp connect_notice(assigns) do
     ~H"""
-    <div class="flex gap-2 items-start p-2 bg-canvas shadow-retro-field" {@rest}>
+    <div class="flex gap-2 items-start p-2 shadow-retro-field" {@rest}>
       <.notice_icon icon={@icon} class="w-3.5 h-3.5 shrink-0 mt-0.5" />
       <div>
         <strong>{@title}</strong>
@@ -572,7 +572,7 @@ defmodule RetroHexChatWeb.Components.UI.ConnectFormPanel do
 
   defp remember_terminal_fields(assigns) do
     ~H"""
-    <div class="mt-3 p-2 bg-canvas shadow-retro-field text-xs space-y-retro-6">
+    <div class="mt-3 p-2 shadow-retro-field text-xs space-y-retro-6">
       <label class="flex items-start gap-retro-4">
         <.checkbox
           id="remember-device"

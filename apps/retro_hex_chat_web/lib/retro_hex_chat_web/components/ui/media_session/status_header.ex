@@ -8,7 +8,7 @@ defmodule RetroHexChatWeb.Components.UI.MediaSession.StatusHeader do
   use RetroHexChatWeb.Component
 
   attr :title, :string, required: true
-  attr :class, :any, default: "shadow-retro-field bg-canvas p-2"
+  attr :class, :any, default: "shadow-retro-field p-2"
   attr :title_class, :any, default: "truncate font-bold leading-4"
 
   attr :meta_class, :any,

@@ -54,7 +54,7 @@ defmodule RetroHexChatWeb.Components.UI.TrustedDevices.TrustedTerminalCard do
     >
       <div class="flex min-w-0 items-start justify-between gap-retro-8">
         <div class="flex min-w-0 items-start gap-retro-8">
-          <span class="inline-flex h-12 w-12 shrink-0 items-center justify-center bg-canvas shadow-retro-sunken">
+          <span class="inline-flex h-12 w-12 shrink-0 items-center justify-center shadow-retro-sunken">
             <Icons.icon_laptop class="h-8 w-8" />
           </span>
 

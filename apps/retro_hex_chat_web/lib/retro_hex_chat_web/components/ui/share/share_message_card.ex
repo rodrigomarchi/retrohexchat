@@ -61,7 +61,7 @@ defmodule RetroHexChatWeb.Components.UI.ShareMessageCard do
           dimmed. --%>
     <div
       :if={@card}
-      class="shadow-retro-field bg-canvas my-1 flex max-w-md items-center gap-2 p-2"
+      class="shadow-retro-field my-1 flex max-w-md items-center gap-2 p-2"
       data-testid="share-message-card"
       data-share-kind={@card.kind}
       data-share-state={state(@card)}
