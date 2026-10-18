@@ -21,6 +21,11 @@ defmodule RetroHexChatWeb.Components.UI.ChatCard do
   Either way the actions sit under the words, in one row, so a card that grows
   a third button grows downward instead of squeezing its title.
 
+  **Everything starts at the left**, as every line of the conversation does: the
+  state badge follows its title, and the controls follow one another. Nothing
+  on a card is pushed to its right edge, where a reader scanning down the left
+  of the conversation would never look for it.
+
   A link preview is not one of these: it quotes another page and is drawn as a
   quotation (`.chat-link-card`, a bar on its left), so it never reads as
   something this app is offering.
@@ -59,8 +64,8 @@ defmodule RetroHexChatWeb.Components.UI.ChatCard do
     >
       <span :if={@icon != []} class="shrink-0">{render_slot(@icon)}</span>
       <div class="min-w-0 flex-1">
-        <div :if={@title != [] or @badge != []} class="flex min-w-0 items-center gap-1">
-          <span class="min-w-0 flex-1 truncate font-bold">{render_slot(@title)}</span>
+        <div :if={@title != [] or @badge != []} class="flex min-w-0 items-center gap-2">
+          <span class="min-w-0 truncate font-bold">{render_slot(@title)}</span>
           {render_slot(@badge)}
         </div>
         {render_slot(@inner_block)}
@@ -73,8 +78,8 @@ defmodule RetroHexChatWeb.Components.UI.ChatCard do
   def chat_card(assigns) do
     ~H"""
     <div class={classes(["chat-card my-1 max-w-xl space-y-2 py-1 text-sm", @class])} {@rest}>
-      <div :if={@title != [] or @badge != []} class="flex min-w-0 items-center gap-1">
-        <h3 class="min-w-0 flex-1 font-bold">{render_slot(@title)}</h3>
+      <div :if={@title != [] or @badge != []} class="flex min-w-0 items-center gap-2">
+        <h3 class="min-w-0 font-bold">{render_slot(@title)}</h3>
         {render_slot(@badge)}
       </div>
       {render_slot(@inner_block)}

@@ -103,7 +103,6 @@ defmodule RetroHexChatWeb.Components.UI.EventCard do
           :if={@surface_path && not @card.cancelled?}
           href={@surface_path}
           label={@card.title}
-          class="ml-auto"
           data-testid={"event-surface-#{@card.event_id}"}
         >
           {dgettext("chat", "Where")}
