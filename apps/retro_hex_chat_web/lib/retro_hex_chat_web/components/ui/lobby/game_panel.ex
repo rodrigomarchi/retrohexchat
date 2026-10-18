@@ -10,8 +10,10 @@ defmodule RetroHexChatWeb.Components.UI.Lobby.GamePanel do
   use RetroHexChatWeb.Component
 
   import RetroHexChatWeb.Components.UI.Badge
+  import RetroHexChatWeb.Components.UI.IconWell
   import RetroHexChatWeb.Components.UI.MediaSession.ActionButton
   import RetroHexChatWeb.Components.UI.MediaSession.StatusHeader
+  import RetroHexChatWeb.Components.UI.Lobby.PanelParts
 
   import RetroHexChatWeb.Components.UI.ToolButton
 
@@ -27,36 +29,14 @@ defmodule RetroHexChatWeb.Components.UI.Lobby.GamePanel do
   @spec game_panel(map()) :: Phoenix.LiveView.Rendered.t()
   def game_panel(assigns) do
     ~H"""
-    <section
+    <.disconnected_section
       :if={!@connected}
-      class="flex h-full min-h-[180px] flex-col gap-2 bg-surface p-2"
-      data-testid="p2p-games-disconnected"
-    >
-      <.media_session_status_header
-        title={dgettext("lobby", "Games")}
-        testid="p2p-games-activity-header"
-        class="border border-border p-2 shadow-retro-field"
-      >
-        <:icon>
-          <Icons.icon_joystick class="h-5 w-5 shrink-0" />
-        </:icon>
-        <:meta>
-          <span>{dgettext("lobby", "Waiting for P2P connection")}</span>
-        </:meta>
-        <:facets>
-          <span class="border border-border bg-muted px-1.5 py-0.5 text-[10px] font-bold text-muted-foreground shadow-retro-sunken">
-            {dgettext("chat", "Offline")}
-          </span>
-        </:facets>
-      </.media_session_status_header>
-
-      <div class="shadow-retro-field flex min-h-0 flex-1 items-center justify-center bg-white p-4 text-center text-xs text-muted-foreground">
-        <div class="max-w-[18rem] space-y-2">
-          <Icons.icon_joystick class="mx-auto h-6 w-6" />
-          <p>{dgettext("lobby", "Connect to play a game.")}</p>
-        </div>
-      </div>
-    </section>
+      title={dgettext("lobby", "Games")}
+      icon={:icon_joystick}
+      text={dgettext("lobby", "Connect to play a game.")}
+      testid="p2p-games-disconnected"
+      header_testid="p2p-games-activity-header"
+    />
 
     <section
       :if={@connected}
@@ -76,9 +56,13 @@ defmodule RetroHexChatWeb.Components.UI.Lobby.GamePanel do
           <span>{game_count_label(@games)}</span>
         </:meta>
         <:facets>
-          <span class={game_status_badge_class(@game, @game_request, @game_outgoing)}>
+          <.badge
+            variant={game_status_variant(@game, @game_request, @game_outgoing)}
+            size="xs"
+            bevel="sunken"
+          >
             {game_status_label(@game, @game_request, @game_outgoing)}
-          </span>
+          </.badge>
         </:facets>
       </.media_session_status_header>
 
@@ -120,25 +104,22 @@ defmodule RetroHexChatWeb.Components.UI.Lobby.GamePanel do
         </div>
       </div>
 
-      <div
+      <.state_card
         :if={@game.status == "finished"}
-        class="shadow-retro-field flex min-h-[220px] flex-1 items-center justify-center bg-white p-4 text-center"
+        class="flex-1"
         data-testid="lobby-game-result"
       >
-        <div class="w-full max-w-[26rem] border border-border bg-surface p-3 text-left shadow-retro-raised">
-          <div class="flex min-w-0 items-start gap-2">
-            <span class="shadow-retro-sunken inline-flex h-10 w-10 shrink-0 items-center justify-center">
-              <Icons.game_icon game_id={@game.game_id} class="h-6 w-6" />
-            </span>
-            <div class="min-w-0 flex-1">
-              <p class="text-[10px] font-bold leading-3 text-muted-foreground">
-                {dgettext("lobby", "Final Score")}
-              </p>
-              <p class="truncate text-xs font-bold">{game_name(@games, @game.game_id)}</p>
-            </div>
-            <.badge variant="default">{outcome_label(@game)}</.badge>
+        <:icon><Icons.game_icon game_id={@game.game_id} class="h-6 w-6" /></:icon>
+        <div class="flex min-w-0 items-start gap-2">
+          <div class="min-w-0 flex-1">
+            <p class="text-[10px] font-bold leading-3 text-muted-foreground">
+              {dgettext("lobby", "Final Score")}
+            </p>
+            <p class="truncate font-bold">{game_name(@games, @game.game_id)}</p>
           </div>
-
+          <.badge variant="default">{outcome_label(@game)}</.badge>
+        </div>
+        <:detail>
           <div class="mt-3 flex items-center justify-center gap-4 border border-border px-2 py-2 text-sm shadow-retro-sunken">
             <span class={["font-bold", score_class(@game, 1)]}>
               {dgettext("lobby", "P1 %{score}", score: score_of(@game, "p1"))}
@@ -148,96 +129,75 @@ defmodule RetroHexChatWeb.Components.UI.Lobby.GamePanel do
               {dgettext("lobby", "%{score} P2", score: score_of(@game, "p2"))}
             </span>
           </div>
-
-          <div class="mt-3 flex justify-end">
-            <.media_session_action_button
-              label={dgettext("lobby", "Back to games")}
-              phx-click="dismiss_game_result"
-            >
-              <Icons.icon_joystick class="h-4 w-4" />
-              <span>{dgettext("lobby", "Back to games")}</span>
-            </.media_session_action_button>
-          </div>
-        </div>
-      </div>
+        </:detail>
+        <:actions>
+          <.media_session_action_button
+            label={dgettext("lobby", "Back to games")}
+            phx-click="dismiss_game_result"
+          >
+            <Icons.icon_joystick class="h-4 w-4" />
+            <span>{dgettext("lobby", "Back to games")}</span>
+          </.media_session_action_button>
+        </:actions>
+      </.state_card>
 
       <div :if={@game.status not in ["playing", "finished"]} class="min-h-0 flex-1 overflow-auto">
-        <div
+        <.state_card
           :if={@game_request && !@game_outgoing}
-          class="shadow-retro-field flex h-full min-h-[220px] items-center justify-center bg-white p-3 text-xs sm:min-h-[300px]"
+          class="h-full"
           data-testid="lobby-game-consent"
         >
-          <div class="w-full max-w-[30rem] border border-border bg-surface p-2 shadow-retro-raised">
-            <div class="flex min-w-0 items-start gap-2">
-              <span class="shadow-retro-sunken inline-flex h-10 w-10 shrink-0 items-center justify-center">
-                <Icons.game_icon game_id={@game_request.game_id} class="h-6 w-6" />
-              </span>
-              <div class="min-w-0 flex-1">
-                <p class="font-bold">
-                  {dgettext("lobby", "%{peer} wants to play", peer: @game_request.proposer_nick)}
-                </p>
-                <p class="truncate text-muted-foreground">
-                  {game_name(@games, @game_request.game_id)}
-                </p>
-                <p class="mt-1 text-[10px] leading-3 text-muted-foreground">
-                  {dgettext("lobby", "The call stays active while the game runs.")}
-                </p>
-              </div>
-            </div>
-            <div class="mt-3 flex justify-end gap-1">
-              <.media_session_action_button
-                label={dgettext("lobby", "Accept game invite")}
-                phx-click="respond_game"
-                phx-value-accepted="true"
-              >
-                <Icons.icon_checkmark class="h-4 w-4 text-success" />
-                <span>{dgettext("lobby", "Accept")}</span>
-              </.media_session_action_button>
-              <.media_session_action_button
-                label={dgettext("lobby", "Decline game invite")}
-                phx-click="respond_game"
-                phx-value-accepted="false"
-              >
-                <Icons.icon_close class="h-4 w-4" />
-                <span>{dgettext("lobby", "Decline")}</span>
-              </.media_session_action_button>
-            </div>
-          </div>
-        </div>
+          <:icon><Icons.game_icon game_id={@game_request.game_id} class="h-6 w-6" /></:icon>
+          <p class="font-bold">
+            {dgettext("lobby", "%{peer} wants to play", peer: @game_request.proposer_nick)}
+          </p>
+          <p class="truncate text-muted-foreground">{game_name(@games, @game_request.game_id)}</p>
+          <p class="mt-1 text-[10px] leading-3 text-muted-foreground">
+            {dgettext("lobby", "The call stays active while the game runs.")}
+          </p>
+          <:actions>
+            <.media_session_action_button
+              label={dgettext("lobby", "Accept game invite")}
+              phx-click="respond_game"
+              phx-value-accepted="true"
+            >
+              <Icons.icon_checkmark class="h-4 w-4 text-success" />
+              <span>{dgettext("lobby", "Accept")}</span>
+            </.media_session_action_button>
+            <.media_session_action_button
+              label={dgettext("lobby", "Decline game invite")}
+              phx-click="respond_game"
+              phx-value-accepted="false"
+            >
+              <Icons.icon_close class="h-4 w-4" />
+              <span>{dgettext("lobby", "Decline")}</span>
+            </.media_session_action_button>
+          </:actions>
+        </.state_card>
 
-        <div
+        <.state_card
           :if={@game_request && @game_outgoing}
-          class="shadow-retro-field flex h-full min-h-[220px] items-center justify-center bg-white p-3 text-xs sm:min-h-[300px]"
+          class="h-full"
           data-testid="p2p-games-waiting"
         >
-          <div class="w-full max-w-[30rem] border border-border bg-surface p-2 shadow-retro-raised">
-            <div class="flex min-w-0 items-start gap-2">
-              <span class="shadow-retro-sunken inline-flex h-10 w-10 shrink-0 items-center justify-center">
-                <Icons.icon_clock class="h-5 w-5 animate-spin" />
-              </span>
-              <div class="min-w-0 flex-1">
-                <p class="font-bold">
-                  {dgettext("lobby", "Waiting for %{peer} to accept...", peer: @peer_nick)}
-                </p>
-                <p class="truncate text-muted-foreground">
-                  {game_name(@games, @game_request.game_id)}
-                </p>
-                <p class="mt-1 text-[10px] leading-3 text-muted-foreground">
-                  {dgettext("lobby", "The call remains live while the invite is pending.")}
-                </p>
-              </div>
-            </div>
-            <div class="mt-3 flex justify-end gap-1">
-              <.media_session_action_button
-                label={dgettext("lobby", "Cancel game invite")}
-                phx-click="end_game"
-              >
-                <Icons.icon_close class="h-4 w-4" />
-                <span>{dgettext("lobby", "Cancel")}</span>
-              </.media_session_action_button>
-            </div>
-          </div>
-        </div>
+          <:icon><Icons.icon_clock class="h-5 w-5 animate-spin" /></:icon>
+          <p class="font-bold">
+            {dgettext("lobby", "Waiting for %{peer} to accept...", peer: @peer_nick)}
+          </p>
+          <p class="truncate text-muted-foreground">{game_name(@games, @game_request.game_id)}</p>
+          <p class="mt-1 text-[10px] leading-3 text-muted-foreground">
+            {dgettext("lobby", "The call remains live while the invite is pending.")}
+          </p>
+          <:actions>
+            <.media_session_action_button
+              label={dgettext("lobby", "Cancel game invite")}
+              phx-click="end_game"
+            >
+              <Icons.icon_close class="h-4 w-4" />
+              <span>{dgettext("lobby", "Cancel")}</span>
+            </.media_session_action_button>
+          </:actions>
+        </.state_card>
 
         <div
           :if={!@game_request}
@@ -253,9 +213,9 @@ defmodule RetroHexChatWeb.Components.UI.Lobby.GamePanel do
             class="shadow-retro-raised flex min-h-[3.75rem] items-center gap-2 bg-secondary p-2 text-left text-xs"
             data-testid={"lobby-game-#{game.id}"}
           >
-            <span class="shadow-retro-sunken inline-flex h-8 w-8 shrink-0 items-center justify-center">
+            <.icon_well size="sm">
               <Icons.game_icon game_id={game.id} class="h-5 w-5" />
-            </span>
+            </.icon_well>
             <span class="min-w-0">
               <span class="block truncate font-bold">{game.name}</span>
               <span class="text-muted-foreground block truncate">{game.tagline}</span>
@@ -291,18 +251,10 @@ defmodule RetroHexChatWeb.Components.UI.Lobby.GamePanel do
 
   defp game_status_label(_game, _request, _outgoing), do: dgettext("lobby", "Ready")
 
-  @spec game_status_badge_class(map(), map() | nil, boolean()) :: String.t()
-  defp game_status_badge_class(%{status: "playing"}, _request, _outgoing),
-    do:
-      "border border-success bg-white px-1.5 py-0.5 text-[10px] font-bold text-success shadow-retro-sunken"
-
-  defp game_status_badge_class(_game, request, _outgoing) when is_map(request),
-    do:
-      "border border-warning bg-warning-bg px-1.5 py-0.5 text-[10px] font-bold text-foreground shadow-retro-sunken"
-
-  defp game_status_badge_class(_game, _request, _outgoing),
-    do:
-      "border border-border bg-muted px-1.5 py-0.5 text-[10px] font-bold text-muted-foreground shadow-retro-sunken"
+  @spec game_status_variant(map(), map() | nil, boolean()) :: String.t()
+  defp game_status_variant(%{status: "playing"}, _request, _outgoing), do: "success"
+  defp game_status_variant(_game, request, _outgoing) when is_map(request), do: "warning"
+  defp game_status_variant(_game, _request, _outgoing), do: "muted"
 
   @spec game_name([map()], String.t() | nil) :: String.t()
   defp game_name(games, game_id) do

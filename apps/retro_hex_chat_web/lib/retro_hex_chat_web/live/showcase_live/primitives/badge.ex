@@ -9,6 +9,7 @@ defmodule RetroHexChatWeb.ShowcaseLive.Primitives.Badge do
     statics: RetroHexChatWeb.static_paths()
 
   import RetroHexChatWeb.Components.UI.Badge
+  import RetroHexChatWeb.Components.UI.IconWell
   import RetroHexChatWeb.ShowcaseHelpers
   alias RetroHexChatWeb.Icons
 
@@ -108,6 +109,35 @@ defmodule RetroHexChatWeb.ShowcaseLive.Primitives.Badge do
           <.badge variant="secondary">{dgettext("showcase", "2.4 MB")}</.badge>
           <.badge>{dgettext("showcase", "ScummVM")}</.badge>
         </div>
+      </.showcase_card>
+
+      <.showcase_card
+        title="Status pill"
+        description="Badge size xs, bevel sunken: the one word of state in a panel header's facets."
+      >
+        <div class="flex flex-wrap items-center gap-2">
+          <.badge variant="muted" size="xs" bevel="sunken">Offline</.badge>
+          <.badge variant="success" size="xs" bevel="sunken">Playing</.badge>
+          <.badge variant="warning" size="xs" bevel="sunken">Incoming</.badge>
+          <.badge variant="destructive" size="xs" bevel="sunken">Check file</.badge>
+        </div>
+        <.code_example>
+          &lt;.badge variant="success" size="xs" bevel="sunken"&gt;Playing&lt;/.badge&gt;
+        </.code_example>
+      </.showcase_card>
+
+      <.showcase_card
+        title="Icon well"
+        description="IconWell: an icon in a pressed-in square, sm 32px, md 40px, lg 48px."
+      >
+        <div class="flex items-end gap-2">
+          <.icon_well size="sm"><Icons.icon_joystick class="h-4 w-4" /></.icon_well>
+          <.icon_well size="md"><Icons.icon_joystick class="h-6 w-6" /></.icon_well>
+          <.icon_well size="lg"><Icons.icon_joystick class="h-8 w-8" /></.icon_well>
+        </div>
+        <.code_example>
+          &lt;.icon_well size="md"&gt;&lt;Icons.icon_joystick class="h-6 w-6" /&gt;&lt;/.icon_well&gt;
+        </.code_example>
       </.showcase_card>
     </.showcase_layout>
     """

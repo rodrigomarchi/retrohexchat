@@ -23,6 +23,7 @@ defmodule RetroHexChatWeb.App.CallLive do
   import RetroHexChatWeb.Components.UI.Desktop
   import RetroHexChatWeb.Components.UI.GroupCall.Panel
   import RetroHexChatWeb.Components.UI.GroupCall.PreJoin
+  import RetroHexChatWeb.Components.UI.IconWell
   import RetroHexChatWeb.Components.UI.SurfaceTabLink
   import RetroHexChatWeb.Components.UI.Window
 
@@ -231,9 +232,9 @@ defmodule RetroHexChatWeb.App.CallLive do
       data-testid="call-left"
       data-left-reason={@reason}
     >
-      <span class="flex h-8 w-8 shrink-0 items-center justify-center bg-surface shadow-retro-sunken">
+      <.icon_well size="sm">
         <Icons.icon_protocol_conference_compact class="h-4 w-4" />
-      </span>
+      </.icon_well>
       <div class="min-w-0 space-y-1">
         <p>{left_headline(@reason, @channel, @by)}</p>
         <%!-- No second way back: `← Chat` is already along the bottom of this
@@ -311,9 +312,9 @@ defmodule RetroHexChatWeb.App.CallLive do
       class="m-2 flex items-start gap-2 border border-border p-2 text-xs shadow-retro-sunken"
       data-testid="call-denied"
     >
-      <span class="flex h-8 w-8 shrink-0 items-center justify-center bg-surface shadow-retro-sunken">
+      <.icon_well size="sm">
         <Icons.icon_protocol_conference_compact class="h-4 w-4" />
-      </span>
+      </.icon_well>
       <p class="min-w-0">{@message}</p>
     </div>
     """

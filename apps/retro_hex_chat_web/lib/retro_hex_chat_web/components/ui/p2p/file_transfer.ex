@@ -16,6 +16,7 @@ defmodule RetroHexChatWeb.Components.UI.FileTransfer do
   """
   use RetroHexChatWeb.Component
 
+  import RetroHexChatWeb.Components.UI.IconWell
   import RetroHexChatWeb.Components.UI.Progress
   import RetroHexChatWeb.Components.UI.Badge
   import RetroHexChatWeb.Components.UI.MediaSession.ActionButton
@@ -53,9 +54,9 @@ defmodule RetroHexChatWeb.Components.UI.FileTransfer do
       {@rest}
     >
       <div class="flex min-w-0 items-start gap-2">
-        <span class="shadow-retro-sunken inline-flex h-8 w-8 shrink-0 items-center justify-center">
+        <.icon_well size="sm">
           <Icons.icon_file_send class="h-4 w-4" />
-        </span>
+        </.icon_well>
         <div class="min-w-0 flex-1">
           <div class="flex min-w-0 flex-wrap items-center gap-x-2 gap-y-1">
             <span class="min-w-0 flex-1 truncate font-bold">{@file_name}</span>

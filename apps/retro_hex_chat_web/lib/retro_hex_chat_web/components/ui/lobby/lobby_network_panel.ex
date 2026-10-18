@@ -17,9 +17,12 @@ defmodule RetroHexChatWeb.Components.UI.Lobby.LobbyNetworkPanel do
   """
   use RetroHexChatWeb.Component
 
+  import RetroHexChatWeb.Components.UI.Badge
+  import RetroHexChatWeb.Components.UI.IconWell
   import RetroHexChatWeb.Components.UI.Toolbar
   import RetroHexChatWeb.Components.UI.ToolButton
   import RetroHexChatWeb.Components.UI.MediaSession.DiagnosticsGroup
+  import RetroHexChatWeb.Components.UI.MediaSession.StatRows
   import RetroHexChatWeb.Components.UI.MediaSession.StatusHeader
   import RetroHexChatWeb.Components.UI.MediaSession.SummaryCard
   import RetroHexChatWeb.Components.UI.Tabs
@@ -261,6 +264,8 @@ defmodule RetroHexChatWeb.Components.UI.Lobby.LobbyNetworkPanel do
           >
             <dl class="grid grid-cols-2 gap-x-3 gap-y-[2px] text-xs">
               <.stat_status
+                active_label={dgettext("p2p", "Active")}
+                idle_label={dgettext("p2p", "Idle")}
                 icon={:icon_microphone}
                 label={dgettext("p2p", "Status")}
                 active={@stats.audio.active}
@@ -307,6 +312,8 @@ defmodule RetroHexChatWeb.Components.UI.Lobby.LobbyNetworkPanel do
           >
             <dl class="grid grid-cols-2 gap-x-3 gap-y-[2px] text-xs">
               <.stat_status
+                active_label={dgettext("p2p", "Active")}
+                idle_label={dgettext("p2p", "Idle")}
                 icon={:icon_camera}
                 label={dgettext("p2p", "Status")}
                 active={@stats.video.active}
@@ -429,9 +436,9 @@ defmodule RetroHexChatWeb.Components.UI.Lobby.LobbyNetworkPanel do
         class="bg-transparent p-0 shadow-none"
       >
         <:icon>
-          <span class="flex h-8 w-8 shrink-0 items-center justify-center shadow-retro-sunken">
+          <.icon_well size="sm">
             <Icons.icon_protocol_p2p_compact class="h-5 w-5" />
-          </span>
+          </.icon_well>
         </:icon>
         <:meta>
           <span class={["inline-flex items-center gap-1", session_status_class(@session_status)]}>
@@ -450,22 +457,22 @@ defmodule RetroHexChatWeb.Components.UI.Lobby.LobbyNetworkPanel do
           </span>
         </:meta>
         <:facets>
-          <.session_badge :if={@call_summary} icon={:icon_camera} testid="p2p-stats-facet-call">
+          <.connection_facet :if={@call_summary} icon={:icon_camera} testid="p2p-stats-facet-call">
             {call_badge_label(@call_summary)}
-          </.session_badge>
-          <.session_badge :if={@file_summary} icon={:icon_file_send} testid="p2p-stats-facet-file">
+          </.connection_facet>
+          <.connection_facet :if={@file_summary} icon={:icon_file_send} testid="p2p-stats-facet-file">
             {dgettext("p2p", "File")}
-          </.session_badge>
-          <.session_badge
+          </.connection_facet>
+          <.connection_facet
             :if={get_in(@game_summary || %{}, [:active?]) == true}
             icon={:icon_joystick}
             testid="p2p-stats-facet-game"
           >
             {dgettext("p2p", "Game")}
-          </.session_badge>
-          <.session_badge :if={@turn_only} icon={:icon_privacy} testid="p2p-stats-relay">
+          </.connection_facet>
+          <.connection_facet :if={@turn_only} icon={:icon_privacy} testid="p2p-stats-relay">
             {dgettext("p2p", "Relay")}
-          </.session_badge>
+          </.connection_facet>
         </:facets>
       </.media_session_status_header>
 
@@ -517,15 +524,13 @@ defmodule RetroHexChatWeb.Components.UI.Lobby.LobbyNetworkPanel do
   attr :testid, :string, required: true
   slot :inner_block, required: true
 
-  defp session_badge(assigns) do
+  # What the session is carrying right now, one pill per thing, beside its name.
+  defp connection_facet(assigns) do
     ~H"""
-    <span
-      class="inline-flex h-6 items-center gap-1 px-1.5 text-[10px] font-bold shadow-retro-sunken"
-      data-testid={@testid}
-    >
-      {apply(Icons, @icon, [%{class: "h-3.5 w-3.5"}])}
-      <span>{render_slot(@inner_block)}</span>
-    </span>
+    <.badge variant="outline" size="xs" bevel="sunken" class="h-6" data-testid={@testid}>
+      <:icon>{apply(Icons, @icon, [%{class: "h-3 w-3"}])}</:icon>
+      {render_slot(@inner_block)}
+    </.badge>
     """
   end
 
@@ -576,6 +581,7 @@ defmodule RetroHexChatWeb.Components.UI.Lobby.LobbyNetworkPanel do
     ~H"""
     <dl class="grid grid-cols-2 gap-x-3 gap-y-[2px] text-xs">
       <.stat_status
+        active_label={dgettext("p2p", "Active")}
         icon={@icon}
         label={dgettext("p2p", "Status")}
         active={@channel.active}
@@ -603,50 +609,6 @@ defmodule RetroHexChatWeb.Components.UI.Lobby.LobbyNetworkPanel do
         info_open={@info_open}
       />
     </dl>
-    """
-  end
-
-  attr :label, :string, required: true
-  attr :value, :string, required: true
-  attr :icon, :atom, default: nil
-  attr :tip, :string, default: nil
-  attr :info_open, :boolean, default: false
-
-  defp stat_row(assigns) do
-    ~H"""
-    <div class="flex flex-col">
-      <div class="flex items-center justify-between gap-2" title={@tip}>
-        <dt class="text-muted-foreground flex min-w-0 items-center gap-1">
-          <span :if={@icon} class="inline-flex shrink-0">
-            {apply(Icons, @icon, [%{class: "w-3.5 h-3.5"}])}
-          </span>
-          <span class="truncate">{@label}</span>
-        </dt>
-        <dd class="shrink-0 font-bold tabular-nums">{@value}</dd>
-      </div>
-      <p :if={@info_open && @tip} class="text-muted-foreground text-[10px] leading-tight">{@tip}</p>
-    </div>
-    """
-  end
-
-  attr :label, :string, required: true
-  attr :active, :boolean, required: true
-  attr :icon, :atom, default: nil
-  attr :idle_label, :string, default: nil
-
-  defp stat_status(assigns) do
-    ~H"""
-    <div class="flex items-center justify-between gap-2">
-      <dt class="text-muted-foreground flex min-w-0 items-center gap-1">
-        <span :if={@icon} class="inline-flex shrink-0">
-          {apply(Icons, @icon, [%{class: "w-3.5 h-3.5"}])}
-        </span>
-        <span class="truncate">{@label}</span>
-      </dt>
-      <dd class={["shrink-0 font-bold", (@active && "text-success") || "text-muted-foreground"]}>
-        {(@active && dgettext("p2p", "Active")) || @idle_label || dgettext("p2p", "Idle")}
-      </dd>
-    </div>
     """
   end
 

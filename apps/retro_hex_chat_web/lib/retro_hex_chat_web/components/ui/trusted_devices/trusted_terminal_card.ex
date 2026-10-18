@@ -6,6 +6,7 @@ defmodule RetroHexChatWeb.Components.UI.TrustedDevices.TrustedTerminalCard do
 
   import RetroHexChatWeb.Components.UI.Badge
   import RetroHexChatWeb.Components.UI.Card
+  import RetroHexChatWeb.Components.UI.IconWell
   import RetroHexChatWeb.Components.UI.Label
   import RetroHexChatWeb.Components.UI.Switch
 
@@ -54,9 +55,9 @@ defmodule RetroHexChatWeb.Components.UI.TrustedDevices.TrustedTerminalCard do
     >
       <div class="flex min-w-0 items-start justify-between gap-retro-8">
         <div class="flex min-w-0 items-start gap-retro-8">
-          <span class="inline-flex h-12 w-12 shrink-0 items-center justify-center shadow-retro-sunken">
+          <.icon_well size="lg">
             <Icons.icon_laptop class="h-8 w-8" />
-          </span>
+          </.icon_well>
 
           <div class="min-w-0">
             <div class="mb-retro-4 flex min-w-0 flex-wrap items-center gap-retro-3">

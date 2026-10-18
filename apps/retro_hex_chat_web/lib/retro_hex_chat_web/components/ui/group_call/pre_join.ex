@@ -16,6 +16,7 @@ defmodule RetroHexChatWeb.Components.UI.GroupCall.PreJoin do
   use RetroHexChatWeb.Component
 
   import RetroHexChatWeb.Components.UI.Button
+  import RetroHexChatWeb.Components.UI.IconWell
 
   alias RetroHexChatWeb.Components.UI.GroupCall.DeviceSelect
   alias RetroHexChatWeb.Components.UI.GroupCall.MediaPreview
@@ -74,9 +75,9 @@ defmodule RetroHexChatWeb.Components.UI.GroupCall.PreJoin do
             <section class="grid min-w-0 content-start gap-2 text-xs">
               <div class="grid min-w-0 gap-2 border border-border p-2 shadow-retro-sunken">
                 <div class="flex items-start gap-2">
-                  <span class="flex h-8 w-8 shrink-0 items-center justify-center bg-surface shadow-retro-sunken">
+                  <.icon_well size="sm">
                     <Icons.icon_protocol_conference_compact class="h-4 w-4" />
-                  </span>
+                  </.icon_well>
                   <div class="min-w-0">
                     <div class="font-bold">
                       {dgettext("group_call", "Join %{channel}", channel: @channel_name)}
@@ -201,9 +202,9 @@ defmodule RetroHexChatWeb.Components.UI.GroupCall.PreJoin do
                   </div>
 
                   <div class="flex min-w-0 items-start gap-2 border border-border bg-surface p-2 shadow-retro-sunken">
-                    <span class="flex h-8 w-8 shrink-0 items-center justify-center shadow-retro-sunken">
+                    <.icon_well size="sm">
                       <Icons.icon_protocol_conference class="h-5 w-5" />
-                    </span>
+                    </.icon_well>
                     <div class="min-w-0">
                       <div class="font-bold">{dgettext("group_call", "Conference route")}</div>
                       <p class="text-muted-foreground">

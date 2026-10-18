@@ -32,6 +32,7 @@ defmodule RetroHexChatWeb.Components.UI.P2P.StartingRoom do
   use RetroHexChatWeb.Component
 
   import RetroHexChatWeb.Components.UI.Button
+  import RetroHexChatWeb.Components.UI.IconWell
 
   alias RetroHexChatWeb.Components.UI.GroupCall.DeviceSelect
   alias RetroHexChatWeb.Components.UI.MediaSession.PermissionNotice
@@ -190,9 +191,9 @@ defmodule RetroHexChatWeb.Components.UI.P2P.StartingRoom do
 
               <div class="mt-2 grid min-w-0 gap-2 md:grid-cols-2">
                 <div class="flex min-w-0 items-start gap-2">
-                  <span class="flex h-8 w-8 shrink-0 items-center justify-center bg-surface shadow-retro-sunken">
+                  <.icon_well size="sm">
                     <Icons.icon_protocol_p2p class="h-5 w-5" />
-                  </span>
+                  </.icon_well>
                   <div class="min-w-0">
                     <div class="font-bold">{dgettext("p2p", "Direct P2P topology")}</div>
                     <p class="text-muted-foreground">

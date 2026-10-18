@@ -9,9 +9,11 @@ defmodule RetroHexChatWeb.Components.UI.Lobby.FilePanel do
   """
   use RetroHexChatWeb.Component
 
+  import RetroHexChatWeb.Components.UI.Badge
   import RetroHexChatWeb.Components.UI.FileTransfer
   import RetroHexChatWeb.Components.UI.MediaSession.ActionButton
   import RetroHexChatWeb.Components.UI.MediaSession.StatusHeader
+  import RetroHexChatWeb.Components.UI.Lobby.PanelParts
 
   alias RetroHexChatWeb.Icons
 
@@ -25,36 +27,14 @@ defmodule RetroHexChatWeb.Components.UI.Lobby.FilePanel do
   @spec file_panel(map()) :: Phoenix.LiveView.Rendered.t()
   def file_panel(assigns) do
     ~H"""
-    <section
+    <.disconnected_section
       :if={!@connected}
-      class="flex h-full min-h-[180px] flex-col gap-2 bg-surface p-2"
-      data-testid="p2p-files-disconnected"
-    >
-      <.media_session_status_header
-        title={dgettext("lobby", "Files")}
-        testid="p2p-files-activity-header"
-        class="border border-border p-2 shadow-retro-field"
-      >
-        <:icon>
-          <Icons.icon_file_send class="h-5 w-5 shrink-0" />
-        </:icon>
-        <:meta>
-          <span>{dgettext("lobby", "Waiting for P2P connection")}</span>
-        </:meta>
-        <:facets>
-          <span class="border border-border bg-muted px-1.5 py-0.5 text-[10px] font-bold text-muted-foreground shadow-retro-sunken">
-            {dgettext("chat", "Offline")}
-          </span>
-        </:facets>
-      </.media_session_status_header>
-
-      <div class="shadow-retro-field flex min-h-0 flex-1 items-center justify-center bg-white p-4 text-center text-xs text-muted-foreground">
-        <div class="max-w-[18rem] space-y-2">
-          <Icons.icon_file_send class="mx-auto h-6 w-6" />
-          <p>{dgettext("lobby", "Connect to send a file.")}</p>
-        </div>
-      </div>
-    </section>
+      title={dgettext("lobby", "Files")}
+      icon={:icon_file_send}
+      text={dgettext("lobby", "Connect to send a file.")}
+      testid="p2p-files-disconnected"
+      header_testid="p2p-files-activity-header"
+    />
 
     <section
       :if={@connected}
@@ -81,9 +61,9 @@ defmodule RetroHexChatWeb.Components.UI.Lobby.FilePanel do
           <span>{dgettext("lobby", "Max %{size} MB", size: @max_file_size_mb)}</span>
         </:meta>
         <:facets>
-          <span class={file_status_badge_class(@file_transfer)}>
+          <.badge variant={file_status_variant(@file_transfer)} size="xs" bevel="sunken">
             {file_status_label(@file_transfer)}
-          </span>
+          </.badge>
         </:facets>
       </.media_session_status_header>
 
@@ -173,22 +153,14 @@ defmodule RetroHexChatWeb.Components.UI.Lobby.FilePanel do
 
   defp file_status_label(_file_transfer), do: dgettext("lobby", "Ready")
 
-  @spec file_status_badge_class(map() | nil) :: String.t()
-  defp file_status_badge_class(%{status: "validation_error"}) do
-    "border border-destructive bg-destructive/10 px-1.5 py-0.5 text-[10px] font-bold text-destructive shadow-retro-sunken"
-  end
+  @spec file_status_variant(map() | nil) :: String.t()
+  defp file_status_variant(%{status: "validation_error"}), do: "destructive"
+  defp file_status_variant(%{status: "offer_received"}), do: "warning"
 
-  defp file_status_badge_class(%{status: "offer_received"}) do
-    "border border-warning bg-warning-bg px-1.5 py-0.5 text-[10px] font-bold text-foreground shadow-retro-sunken"
-  end
+  defp file_status_variant(%{file_name: name}) when is_binary(name) and name != "",
+    do: "success"
 
-  defp file_status_badge_class(%{file_name: name}) when is_binary(name) and name != "" do
-    "border border-success bg-white px-1.5 py-0.5 text-[10px] font-bold text-success shadow-retro-sunken"
-  end
-
-  defp file_status_badge_class(_file_transfer) do
-    "border border-border bg-muted px-1.5 py-0.5 text-[10px] font-bold text-muted-foreground shadow-retro-sunken"
-  end
+  defp file_status_variant(_file_transfer), do: "muted"
 
   @spec ft_direction(map(), String.t()) :: String.t()
   defp ft_direction(ft, nickname) do

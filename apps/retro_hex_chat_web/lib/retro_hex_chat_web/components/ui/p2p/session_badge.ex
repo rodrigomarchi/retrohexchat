@@ -18,9 +18,11 @@ defmodule RetroHexChatWeb.Components.UI.P2P.SessionBadge do
   use RetroHexChatWeb.Component
 
   import RetroHexChatWeb.Components.UI.Button
+  import RetroHexChatWeb.Components.UI.EntryPopover
   import RetroHexChatWeb.Components.UI.Popover
   import RetroHexChatWeb.Components.UI.ToolButton
 
+  alias RetroHexChatWeb.Components.UI.EntryPopover
   alias RetroHexChatWeb.Icons
 
   attr :peer, :string, required: true
@@ -103,25 +105,18 @@ defmodule RetroHexChatWeb.Components.UI.P2P.SessionBadge do
         trigger_testid="p2p-peer-popover-toggle"
         panel_testid="p2p-peer-popover"
         panel_attrs={["data-peer": @peer]}
-        panel_class="w-72 border border-border bg-surface p-2 text-xs shadow-retro-raised"
+        panel_class={EntryPopover.panel_class()}
         id={"p2p-peer-popover-#{@peer}"}
         class="conversation-toolbar-entry"
       >
         <:trigger><Icons.icon_btn_info class="h-3.5 w-3.5" /></:trigger>
-        <div class="flex items-start justify-between gap-2 border-b border-border pb-1">
-          <div class="min-w-0">
-            <div class="flex items-center gap-1 font-bold">
-              <Icons.icon_protocol_p2p_compact class="h-3.5 w-3.5 shrink-0" />
-              <span class="truncate">{@peer}</span>
-            </div>
-          </div>
-          <span class={[
-            "shadow-retro-sunken bg-white px-1 py-px text-[10px] font-bold",
-            status_class(@status)
-          ]}>
-            {status_label(@status)}
-          </span>
-        </div>
+        <.entry_popover_header
+          title={@peer}
+          state_label={status_label(@status)}
+          state_class={status_class(@status)}
+        >
+          <:icon><Icons.icon_protocol_p2p_compact class="h-3.5 w-3.5 shrink-0" /></:icon>
+        </.entry_popover_header>
 
         <div class="mt-2 grid grid-cols-2 gap-1">
           <.button

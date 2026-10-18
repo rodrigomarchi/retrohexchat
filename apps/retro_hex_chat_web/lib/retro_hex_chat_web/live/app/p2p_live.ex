@@ -28,6 +28,7 @@ defmodule RetroHexChatWeb.App.P2PLive do
   import RetroHexChatWeb.Components.UI.ActivityIndicator
   import RetroHexChatWeb.Components.UI.Button
   import RetroHexChatWeb.Components.UI.Desktop
+  import RetroHexChatWeb.Components.UI.IconWell
   import RetroHexChatWeb.Components.UI.P2P.StartingRoom
   import RetroHexChatWeb.Components.UI.SurfaceTabLink
   import RetroHexChatWeb.Components.UI.Window
@@ -246,9 +247,9 @@ defmodule RetroHexChatWeb.App.P2PLive do
       class="m-auto flex h-fit w-full max-w-[520px] items-start gap-2 border border-border p-2 text-xs shadow-retro-sunken"
       data-testid="p2p-denied"
     >
-      <span class="flex h-8 w-8 shrink-0 items-center justify-center bg-surface shadow-retro-sunken">
+      <.icon_well size="sm">
         <Icons.icon_protocol_p2p_compact class="h-4 w-4" />
-      </span>
+      </.icon_well>
       <p class="min-w-0">{@message}</p>
     </div>
     """
@@ -263,9 +264,9 @@ defmodule RetroHexChatWeb.App.P2PLive do
       class="m-auto flex h-fit w-full max-w-[520px] items-start gap-2 border border-border p-2 text-xs shadow-retro-sunken"
       data-testid="p2p-left"
     >
-      <span class="flex h-8 w-8 shrink-0 items-center justify-center bg-surface shadow-retro-sunken">
+      <.icon_well size="sm">
         <Icons.icon_protocol_p2p_compact class="h-4 w-4" />
-      </span>
+      </.icon_well>
       <p class="min-w-0">{dgettext("chat", "Session ended.")}</p>
     </div>
     """
@@ -291,9 +292,9 @@ defmodule RetroHexChatWeb.App.P2PLive do
       class="m-auto flex h-fit w-full max-w-[520px] items-start gap-2 border border-border p-2 text-xs shadow-retro-sunken"
       data-testid="p2p-displaced"
     >
-      <span class="flex h-8 w-8 shrink-0 items-center justify-center bg-surface shadow-retro-sunken">
+      <.icon_well size="sm">
         <Icons.icon_protocol_p2p_compact class="h-4 w-4" />
-      </span>
+      </.icon_well>
       <div class="min-w-0">
         <p>{dgettext("p2p", "This session is open in another window of yours.")}</p>
         <.button

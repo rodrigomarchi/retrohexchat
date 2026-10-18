@@ -8,9 +8,11 @@ defmodule RetroHexChatWeb.Components.UI.GroupCall.ChannelBadge do
   """
   use RetroHexChatWeb.Component
 
+  import RetroHexChatWeb.Components.UI.EntryPopover
   import RetroHexChatWeb.Components.UI.Popover
   import RetroHexChatWeb.Components.UI.ToolButton
 
+  alias RetroHexChatWeb.Components.UI.EntryPopover
   alias RetroHexChatWeb.Icons
 
   attr :channel, :string, required: true
@@ -81,29 +83,22 @@ defmodule RetroHexChatWeb.Components.UI.GroupCall.ChannelBadge do
         trigger_testid="group-call-channel-popover-toggle"
         panel_testid="group-call-channel-popover"
         panel_attrs={["data-channel": @channel]}
-        panel_class="w-72 border border-border bg-surface p-2 text-xs shadow-retro-raised"
+        panel_class={EntryPopover.panel_class()}
         id={"group-call-popover-#{@channel}"}
         class="conversation-toolbar-entry"
       >
         <:trigger><Icons.icon_btn_info class="h-3.5 w-3.5" /></:trigger>
-        <div class="flex items-start justify-between gap-2 border-b border-border pb-1">
-          <div class="min-w-0">
-            <div class="flex items-center gap-1 font-bold">
-              <Icons.icon_protocol_conference_compact class="h-3.5 w-3.5 shrink-0" />
-              <span class="truncate">{@channel}</span>
-            </div>
-            <div class="mt-0.5 flex items-center gap-1 text-[10px] text-muted-foreground">
-              <Icons.icon_clock class="h-3 w-3 shrink-0" />
-              <span>{@duration}</span>
-            </div>
-          </div>
-          <span class={[
-            "shadow-retro-sunken bg-white px-1 py-px text-[10px] font-bold",
-            state_class(@state)
-          ]}>
-            {state_label(@state)}
-          </span>
-        </div>
+        <.entry_popover_header
+          title={@channel}
+          state_label={state_label(@state)}
+          state_class={state_class(@state)}
+        >
+          <:icon><Icons.icon_protocol_conference_compact class="h-3.5 w-3.5 shrink-0" /></:icon>
+          <:meta>
+            <Icons.icon_clock class="h-3 w-3 shrink-0" />
+            <span>{@duration}</span>
+          </:meta>
+        </.entry_popover_header>
 
         <div class="mt-2 grid grid-cols-2 gap-1 text-[11px]">
           <div class="shadow-retro-status bg-white px-1 py-px">

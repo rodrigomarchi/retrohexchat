@@ -7,6 +7,7 @@ defmodule RetroHexChatWeb.Components.UI.SoloLobby do
 
   import RetroHexChatWeb.Components.UI.Badge
   import RetroHexChatWeb.Components.UI.Button
+  import RetroHexChatWeb.Components.UI.Inset
 
   @doc """
   Renders the multi-state body of the solo arcade window: the game launcher,
@@ -106,10 +107,7 @@ defmodule RetroHexChatWeb.Components.UI.SoloLobby do
         </div>
       </div>
 
-      <div
-        data-testid="arcade-icon-window"
-        class="min-h-0 flex-1 overflow-auto bg-white p-retro-10 shadow-retro-field"
-      >
+      <.inset data-testid="arcade-icon-window" class="min-h-0 flex-1 overflow-auto p-retro-10">
         <div
           data-testid="arcade-icon-grid"
           class="grid grid-cols-[repeat(auto-fill,minmax(92px,1fr))] content-start gap-x-retro-8 gap-y-retro-12"
@@ -135,7 +133,7 @@ defmodule RetroHexChatWeb.Components.UI.SoloLobby do
             </span>
           </button>
         </div>
-      </div>
+      </.inset>
 
       <div
         data-testid="arcade-status-bar"
@@ -161,7 +159,7 @@ defmodule RetroHexChatWeb.Components.UI.SoloLobby do
       data-testid="arcade-game-preview"
       class="flex min-h-0 flex-1 flex-col gap-retro-10"
     >
-      <div class="flex shrink-0 items-center gap-retro-12 bg-white p-retro-10 shadow-retro-field">
+      <.inset class="flex shrink-0 items-center gap-retro-12 p-retro-10">
         <Icons.game_icon game_id={@previewed_game.id} class="h-12 w-12 flex-shrink-0" />
         <div class="min-w-0 flex-1 space-y-retro-2">
           <h3 class="truncate text-base font-bold leading-tight">{@previewed_game.name}</h3>
@@ -214,7 +212,7 @@ defmodule RetroHexChatWeb.Components.UI.SoloLobby do
             {dgettext("games", "Leave")}
           </.button>
         </div>
-      </div>
+      </.inset>
 
       <div class="min-h-0 flex-1 overflow-auto bg-white p-retro-10 shadow-retro-sunken">
         <div class="grid min-h-full grid-cols-1 items-stretch gap-retro-10 md:grid-cols-[repeat(auto-fit,minmax(18rem,1fr))]">

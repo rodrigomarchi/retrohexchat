@@ -13,6 +13,7 @@ defmodule RetroHexChatWeb.Components.UI.EventsDialog do
   use RetroHexChatWeb.Component
 
   import RetroHexChatWeb.Components.UI.EventCard
+  import RetroHexChatWeb.Components.UI.Inset
   import RetroHexChatWeb.Components.UI.ListStates
   import RetroHexChatWeb.Components.UI.DialogBanner
 
@@ -67,10 +68,10 @@ defmodule RetroHexChatWeb.Components.UI.EventsDialog do
         }
       />
 
-      <div
+      <.inset
         :if={not State.empty?(@state)}
         id={"#{@id}-list"}
-        class="min-h-[200px] flex-1 overflow-y-auto bg-white p-1 shadow-retro-field"
+        class="min-h-[200px] flex-1 overflow-y-auto p-1"
         phx-hook="InfiniteScrollHook"
         phx-update="stream"
         data-edge="bottom"
@@ -83,6 +84,7 @@ defmodule RetroHexChatWeb.Components.UI.EventsDialog do
         <div
           :for={{dom_id, row} <- @events}
           id={dom_id}
+          class="border-b border-border px-1 last:border-b-0"
           data-testid={"events-row-#{row.card.event_id}"}
         >
           <.event_card
@@ -95,7 +97,7 @@ defmodule RetroHexChatWeb.Components.UI.EventsDialog do
             class="max-w-none"
           />
         </div>
-      </div>
+      </.inset>
 
       <.list_load_more_button
         :if={State.more?(@state)}

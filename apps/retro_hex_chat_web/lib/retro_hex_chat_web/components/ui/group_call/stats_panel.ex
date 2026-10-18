@@ -5,6 +5,7 @@ defmodule RetroHexChatWeb.Components.UI.GroupCall.StatsPanel do
   use RetroHexChatWeb.Component
 
   import RetroHexChatWeb.Components.UI.MediaSession.DiagnosticsGroup
+  import RetroHexChatWeb.Components.UI.MediaSession.StatRows
   import RetroHexChatWeb.Components.UI.MediaSession.StatusHeader
   import RetroHexChatWeb.Components.UI.MediaSession.SummaryCard
 
@@ -253,6 +254,8 @@ defmodule RetroHexChatWeb.Components.UI.GroupCall.StatsPanel do
       >
         <dl class="grid grid-cols-2 gap-x-3 gap-y-[2px]">
           <.stat_status
+            active_label={dgettext("group_call", "Active")}
+            idle_label={dgettext("group_call", "Idle")}
             icon={:icon_microphone}
             label={dgettext("group_call", "Status")}
             active={@stats.audio.active}
@@ -283,6 +286,8 @@ defmodule RetroHexChatWeb.Components.UI.GroupCall.StatsPanel do
       >
         <dl class="grid grid-cols-2 gap-x-3 gap-y-[2px]">
           <.stat_status
+            active_label={dgettext("group_call", "Active")}
+            idle_label={dgettext("group_call", "Idle")}
             icon={:icon_camera}
             label={dgettext("group_call", "Status")}
             active={@stats.video.active}
@@ -399,53 +404,6 @@ defmodule RetroHexChatWeb.Components.UI.GroupCall.StatsPanel do
           />
         </dl>
       </.media_session_diagnostics_group>
-    </div>
-    """
-  end
-
-  attr :label, :string, required: true
-  attr :value, :string, required: true
-  attr :icon, :atom, required: true
-
-  defp stat_row(assigns) do
-    ~H"""
-    <div class="contents">
-      <dt class="text-muted-foreground flex min-w-0 items-center gap-1 truncate">
-        {apply(Icons, @icon, [%{class: "h-3.5 w-3.5 shrink-0"}])}
-        <span class="truncate">{@label}</span>
-      </dt>
-      <dd class="truncate text-right font-mono">{@value}</dd>
-    </div>
-    """
-  end
-
-  attr :label, :string, required: true
-  attr :active, :boolean, required: true
-  attr :icon, :atom, required: true
-
-  defp stat_status(assigns) do
-    assigns =
-      assign(assigns,
-        label_text:
-          if(assigns.active,
-            do: dgettext("group_call", "Active"),
-            else: dgettext("group_call", "Idle")
-          )
-      )
-
-    ~H"""
-    <div class="contents">
-      <dt class="text-muted-foreground flex min-w-0 items-center gap-1 truncate">
-        {apply(Icons, @icon, [%{class: "h-3.5 w-3.5 shrink-0"}])}
-        <span class="truncate">{@label}</span>
-      </dt>
-      <dd class={[
-        "truncate text-right font-bold",
-        @active && "text-success",
-        !@active && "text-muted-foreground"
-      ]}>
-        {@label_text}
-      </dd>
     </div>
     """
   end

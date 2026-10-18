@@ -339,6 +339,25 @@ get fresh timers with the *remaining* duration.
   button and does not survive review. `active` is the sunken look and `pressed` is
   `aria-pressed`; keep them apart where the state and the drawing disagree (a microphone is drawn
   sunken while off and announced as pressed while on).
+- **One frame per job.** A box around content is chosen by what it holds, never written out as
+  a `shadow-retro-*` string on the spot:
+
+  | Holds | Use |
+  |---|---|
+  | A card in the conversation (event, shared room, help, greeting) | `ChatCard` — **no frame**: spacing, the row's spine and upright text set it apart |
+  | A field of text, a list, a picture (Win98 sunken panel) | `Inset` |
+  | A raised card on a page of the site (a game, a trusted device) | `Card` |
+  | One measured figure | `MediaSession.SummaryCard` |
+  | A reading in a diagnostics list | `MediaSession.StatRows` |
+  | An icon in a pressed-in square | `IconWell` |
+  | One word of state in a header | `Badge size="xs" bevel="sunken"` |
+  | A summary opened from a conversation-toolbar entry | `EntryPopover` |
+  | Something floating over the page (hover card, menu) | `Window` / `Popover` |
+
+  A border earns its place by doing a job: setting content apart from a surface of the same
+  colour, outlining a whole clickable area, marking a read-only field, or lifting something that
+  floats. A frame inside a frame, or a border that repeats what spacing or a heading already says,
+  is decoration — leave it out.
 - **A popover or menu is `Popover` / `DropdownMenu`, never a hand-rolled `<details>`.** The
   open state belongs to the browser: the LiveSocket entrypoints carry it across every patch
   (`lib/ui/popover.js`), and closing — click outside, Escape, `Popover.close_after/1` — happens

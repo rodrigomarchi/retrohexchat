@@ -17,13 +17,27 @@ defmodule RetroHexChatWeb.Components.UI.Badge do
         <:icon><Icons.icon_checkmark class="h-3 w-3" /></:icon>
         Online
       </.badge>
+
+  `size="xs"` with `bevel="sunken"` is the status pill a panel header carries
+  in its facets — "Offline", "Playing", "Incoming": one word of state, drawn
+  pressed into the header rather than standing on it, with a border in the
+  variant's colour so the state reads before the word does.
+
+      <.badge variant="success" size="xs" bevel="sunken">Playing</.badge>
   """
   attr :class, :string, default: nil
 
   attr :variant, :string,
-    values: ~w(default secondary destructive outline success warning),
+    values: ~w(default secondary destructive outline success warning muted),
     default: "default",
     doc: "the badge variant style"
+
+  attr :size, :string, values: ~w(default xs), default: "default"
+
+  attr :bevel, :string,
+    values: ~w(field sunken),
+    default: "field",
+    doc: "`sunken` pressed in with a border in the variant's colour — the status pill"
 
   attr :rest, :global
   slot :icon, doc: "optional leading icon"
@@ -36,7 +50,9 @@ defmodule RetroHexChatWeb.Components.UI.Badge do
     <span
       class={
         classes([
-          "inline-flex items-center shadow-retro-field px-1.5 py-px text-[11px] font-bold leading-tight select-none",
+          "inline-flex items-center font-bold leading-tight select-none",
+          size_class(@size),
+          bevel_class(@bevel),
           @variant_class,
           @class
         ])
@@ -61,9 +77,26 @@ defmodule RetroHexChatWeb.Components.UI.Badge do
                 "destructive" => "bg-white text-destructive",
                 "outline" => "bg-transparent text-foreground",
                 "success" => "bg-white text-success-dark",
-                "warning" => "bg-white text-warning"
+                "warning" => "bg-white text-warning",
+                "muted" => "bg-muted text-muted-foreground"
               }
             )
 
+  defp variant(%{bevel: "sunken", variant: variant}), do: sunken_variant(variant)
   defp variant(props), do: Variants.classes(@variants, props)
+
+  defp size_class("xs"), do: "px-1.5 py-0.5 text-[10px]"
+  defp size_class(_default), do: "px-1.5 py-px text-[11px]"
+
+  defp bevel_class("sunken"), do: "border shadow-retro-sunken"
+  defp bevel_class(_field), do: "shadow-retro-field"
+
+  # Pressed in, the badge's colour moves to its border, and a state that wants
+  # an answer — an incoming offer, a failure — tints the well it sits in.
+  defp sunken_variant("success"), do: "border-success bg-white text-success"
+  defp sunken_variant("warning"), do: "border-warning bg-warning-bg text-foreground"
+  defp sunken_variant("destructive"), do: "border-destructive bg-destructive/10 text-destructive"
+  defp sunken_variant("muted"), do: "border-border bg-muted text-muted-foreground"
+  defp sunken_variant("outline"), do: "border-border bg-transparent text-foreground"
+  defp sunken_variant(_default), do: "border-border bg-white text-primary"
 end

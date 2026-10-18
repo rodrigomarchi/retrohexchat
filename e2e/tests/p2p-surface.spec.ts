@@ -8,6 +8,7 @@
  * Edit them here, then run `make e2e.catalog` to regenerate the index.
  */
 import { test, expect, Page } from "@playwright/test";
+import { shot } from "../helpers/screenshots";
 import {
   newP2PUser,
   closeP2PUsers,
@@ -126,6 +127,7 @@ test.describe("P2P session at its own address", () => {
         fileName,
         { timeout: 15_000 },
       );
+      await shot(bobFilePanel, "files-incoming");
       const downloadPromise = bobSession.waitForEvent("download", {
         timeout: 20_000,
       });
@@ -136,6 +138,7 @@ test.describe("P2P session at its own address", () => {
       // A game on the same connection.
       await openP2PConsoleSection(aliceSession, "games");
       await expect(aliceSession.getByTestId("lobby-game-panel")).toBeVisible();
+      await shot(aliceSession.getByTestId("lobby-game-panel"), "games-catalog");
       await aliceSession
         .getByTestId("lobby-game-panel")
         .getByRole("button", { name: "Hex Pong" })
@@ -143,6 +146,8 @@ test.describe("P2P session at its own address", () => {
 
       const consent = bobSession.getByTestId("lobby-game-consent");
       await expect(consent).toBeVisible({ timeout: 15_000 });
+      await shot(aliceSession.getByTestId("lobby-game-panel"), "games-waiting");
+      await shot(bobSession.getByTestId("lobby-game-panel"), "games-consent");
       await consent.getByRole("button", { name: "Accept" }).click();
 
       for (const page of [aliceSession, bobSession]) {

@@ -15,6 +15,7 @@
  * These @flow lines are the source of truth for e2e/TEST_CATALOG.md.
  * Edit them here, then run `make e2e.catalog` to regenerate the index.
  */
+import { shot } from "../helpers/screenshots";
 import { test, expect, Page } from "@playwright/test";
 import { mkdirSync } from "node:fs";
 import {
@@ -338,6 +339,7 @@ test.describe("In-chat P2P session", () => {
       const popover = alice.page.getByTestId("p2p-peer-popover");
       await alice.page.getByTestId("p2p-peer-popover-toggle").click();
       await expect(popover).toBeVisible();
+      await shot(popover, "p2p-summary-popover");
 
       // The strip sits at the bottom of the window, so the panel has to open
       // upwards to be seen at all.

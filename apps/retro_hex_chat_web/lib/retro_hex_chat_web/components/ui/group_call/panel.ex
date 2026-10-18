@@ -7,6 +7,7 @@ defmodule RetroHexChatWeb.Components.UI.GroupCall.Panel do
   """
   use RetroHexChatWeb.Component
 
+  import RetroHexChatWeb.Components.UI.IconWell
   import RetroHexChatWeb.Components.UI.MediaSession.ActionButton
   import RetroHexChatWeb.Components.UI.DropdownMenu
   import RetroHexChatWeb.Components.UI.Popover
@@ -17,6 +18,7 @@ defmodule RetroHexChatWeb.Components.UI.GroupCall.Panel do
   import RetroHexChatWeb.Components.UI.ToolButton
   import RetroHexChatWeb.Components.UI.MediaSession.InspectorPanel
   import RetroHexChatWeb.Components.UI.MediaSession.SectionNav
+  import RetroHexChatWeb.Components.UI.MediaSession.SummaryCard
 
   alias RetroHexChatWeb.Components.UI.GroupCall.{
     ActiveSpeakerRing,
@@ -541,13 +543,15 @@ defmodule RetroHexChatWeb.Components.UI.GroupCall.Panel do
         </section>
 
         <div class="grid gap-1">
-          <.setting_status_card
+          <.summary_card
             icon={:icon_layout_maximize}
+            testid="group-call-setting-layout"
             label={dgettext("group_call", "Layout")}
             value={layout_mode_label(@call)}
           />
-          <.setting_status_card
+          <.summary_card
             icon={:icon_tab_nicklist}
+            testid="group-call-setting-people"
             label={dgettext("group_call", "People")}
             value={
               if show_participants?(@call),
@@ -555,8 +559,9 @@ defmodule RetroHexChatWeb.Components.UI.GroupCall.Panel do
                 else: dgettext("group_call", "Hidden")
             }
           />
-          <.setting_status_card
+          <.summary_card
             icon={:icon_pip}
+            testid="group-call-setting-self-view"
             label={dgettext("group_call", "Self view")}
             value={self_view_label(@call)}
           />
@@ -582,22 +587,6 @@ defmodule RetroHexChatWeb.Components.UI.GroupCall.Panel do
         stats={@call.stats}
       />
     </section>
-    """
-  end
-
-  attr :icon, :atom, required: true
-  attr :label, :string, required: true
-  attr :value, :string, required: true
-
-  defp setting_status_card(assigns) do
-    ~H"""
-    <div class="grid min-w-0 gap-1 border border-border bg-surface px-2 py-1 shadow-retro-sunken">
-      <span class="inline-flex min-w-0 items-center gap-1 text-[10px] font-bold text-muted-foreground">
-        {apply(Icons, @icon, [%{class: "h-4 w-4 shrink-0"}])}
-        <span class="truncate">{@label}</span>
-      </span>
-      <span class="truncate font-bold leading-4">{@value}</span>
-    </div>
     """
   end
 
@@ -740,9 +729,9 @@ defmodule RetroHexChatWeb.Components.UI.GroupCall.Panel do
       role="listitem"
     >
       <div class="flex min-w-0 items-start gap-2">
-        <span class="shadow-retro-sunken inline-flex h-8 w-8 shrink-0 items-center justify-center bg-surface">
+        <.icon_well size="sm">
           {apply(Icons, participant_role_icon(@participant), [%{class: "h-4 w-4"}])}
-        </span>
+        </.icon_well>
 
         <div class="min-w-0 flex-1">
           <div class="flex min-w-0 flex-wrap items-center gap-1">

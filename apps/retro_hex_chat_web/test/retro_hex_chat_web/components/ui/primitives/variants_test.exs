@@ -99,5 +99,19 @@ defmodule RetroHexChatWeb.Components.UI.VariantsTest do
     test "the caller's own class still lands" do
       assert badge(%{variant: "success", class: "mine"}) =~ "mine"
     end
+
+    test "a status pill is pressed in, with its colour on the border" do
+      html = badge(%{variant: "warning", size: "xs", bevel: "sunken"})
+
+      assert html =~ "shadow-retro-sunken"
+      assert html =~ "border-warning"
+      assert html =~ "bg-warning-bg"
+      assert html =~ "text-[10px]"
+      refute html =~ "shadow-retro-field"
+    end
+
+    test "a sunken badge with no variant still names a border" do
+      assert badge(%{bevel: "sunken"}) =~ "border-border"
+    end
   end
 end
