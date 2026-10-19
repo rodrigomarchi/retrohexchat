@@ -2,14 +2,13 @@
  * The connect form's client-field and device-label controller — no LiveView.
  *
  * Fills the hidden session fields (timezone, client info, device label),
- * suggests and renders a trusted-terminal label, and wires the remember-device
- * panel. The hook binds this and calls `submit()` when the server clears the
+ * suggests a trusted-terminal label, and wires the remember-device panel. The hook binds this and calls `submit()` when the server clears the
  * connection to submit.
  *
  * @module connection/connect_form
  */
 import { getClientInfo } from "./client_info";
-import { deviceLabelMetadata, suggestDeviceLabel } from "./device_label_suggestion";
+import { suggestDeviceLabel } from "./device_label_suggestion";
 
 export function createConnectForm(el) {
   const form = {
@@ -67,8 +66,6 @@ export function createConnectForm(el) {
         }
       }
 
-      this.renderDeviceLabelSuggestion(suggestion);
-      this.renderDeviceLabelMetadata(deviceLabelMetadata(info));
       this.populateHiddenDeviceLabel();
     },
 
@@ -81,34 +78,6 @@ export function createConnectForm(el) {
       });
 
       input.dataset.deviceLabelBound = "true";
-    },
-
-    renderDeviceLabelSuggestion(suggestion) {
-      const badge = this.el.querySelector("[data-device-label-suggestion]");
-      const value = this.el.querySelector("[data-device-label-suggestion-value]");
-      if (!badge || !value) return;
-
-      value.textContent = suggestion;
-      badge.hidden = suggestion === "";
-    },
-
-    renderDeviceLabelMetadata(metadata) {
-      const wrapper = this.el.querySelector("[data-device-label-metadata]");
-      if (!wrapper) return;
-
-      let hasVisibleMetadata = false;
-
-      for (const [key, value] of Object.entries(metadata)) {
-        const item = this.el.querySelector(`[data-device-meta-item="${key}"]`);
-        const valueEl = this.el.querySelector(`[data-device-meta-value="${key}"]`);
-        if (!item || !valueEl) continue;
-
-        valueEl.textContent = value;
-        item.hidden = value === "";
-        hasVisibleMetadata = hasVisibleMetadata || value !== "";
-      }
-
-      wrapper.hidden = !hasVisibleMetadata;
     },
 
     populateHiddenDeviceLabel() {

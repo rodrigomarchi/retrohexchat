@@ -67,7 +67,7 @@ defmodule RetroHexChatWeb.Site.Documents do
 
   @doc """
   The desktop's starting point: no page open, and what the session says about
-  the reader for pages that care (`trusted_device_id`, the last disconnect).
+  the reader for pages that care (`trusted_device_id`).
   Attaches the window bridge, which must run before the visitor gate — call
   this before `Visitor.attach_gate/1`.
   """
@@ -79,7 +79,7 @@ defmodule RetroHexChatWeb.Site.Documents do
       doc_order: [],
       focused_doc: nil,
       head: Head.from_page(%{}),
-      site_session: Map.take(http_session, ["trusted_device_id", "last_disconnect_context"])
+      site_session: Map.take(http_session, ["trusted_device_id"])
     )
     |> attach_hook(:site_documents, :handle_event, &event/3)
     |> attach_hook(:site_address, :handle_info, &info/2)

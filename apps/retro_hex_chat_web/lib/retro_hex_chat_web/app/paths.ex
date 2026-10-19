@@ -142,11 +142,6 @@ defmodule RetroHexChatWeb.App.Paths do
     query =
       [reason: reason]
       |> maybe_put_query(:forget_device, "true", Keyword.get(opts, :forget_device, false))
-      |> maybe_put_query(
-        :disconnected_by_session_ref,
-        Keyword.get(opts, :disconnected_by_session_ref),
-        true
-      )
 
     ~p"/chat/session/clear?#{query}"
   end

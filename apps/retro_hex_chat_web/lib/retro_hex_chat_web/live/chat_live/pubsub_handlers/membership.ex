@@ -227,12 +227,7 @@ defmodule RetroHexChatWeb.ChatLive.PubsubHandlers.Membership do
      |> maybe_clear_reconnect_state(payload)
      |> push_event("intentional_disconnect", %{})
      |> push_event("clear_client_state", %{})
-     |> Phoenix.LiveView.redirect(
-       to:
-         Paths.session_clear_path(socket, reason,
-           disconnected_by_session_ref: Map.get(payload, :disconnected_by_session_ref)
-         )
-     )}
+     |> Phoenix.LiveView.redirect(to: Paths.session_clear_path(socket, reason))}
   end
 
   def handle_info({:force_rename, %{reason: reason}}, socket) do

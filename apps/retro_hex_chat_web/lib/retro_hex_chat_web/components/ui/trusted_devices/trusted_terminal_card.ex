@@ -97,25 +97,16 @@ defmodule RetroHexChatWeb.Components.UI.TrustedDevices.TrustedTerminalCard do
         >
           {render_slot(@actions, @card_context)}
 
-          <div :if={@show_auto_login_toggle} class="flex items-center gap-retro-4">
-            <.switch
-              id={@auto_login_id}
-              value={@auto_login}
-              on_toggle={@on_auto_login_toggle}
-              target={@auto_login_target}
-              event_value={
-                %{
-                  nickname: @nickname,
-                  device_id: @device_id,
-                  enabled: not @auto_login
-                }
-              }
-              testid={@auto_login_testid}
-            />
-            <.label for={@auto_login_id} class="text-[11px]">
-              {dgettext("ui", "Auto-login")}
-            </.label>
-          </div>
+          <.auto_login_switch
+            :if={@show_auto_login_toggle}
+            id={@auto_login_id}
+            testid={@auto_login_testid}
+            enabled={@auto_login}
+            nickname={@nickname}
+            device_id={@device_id}
+            on_toggle={@on_auto_login_toggle}
+            target={@auto_login_target}
+          />
         </div>
       </div>
 
@@ -144,6 +135,36 @@ defmodule RetroHexChatWeb.Components.UI.TrustedDevices.TrustedTerminalCard do
         {render_slot(@management, @card_context)}
       </div>
     </.card>
+    """
+  end
+
+  attr :id, :string, required: true
+  attr :testid, :string, required: true
+  attr :enabled, :boolean, required: true
+  attr :nickname, :string, required: true
+  attr :device_id, :any, default: nil
+  attr :on_toggle, :any, default: nil
+  attr :target, :any, default: nil
+
+  @doc """
+  Whether a remembered nickname signs in by itself on this terminal: the
+  switch sends `on_toggle` with the nickname, the device and the state it
+  asks for.
+  """
+  @spec auto_login_switch(map()) :: Phoenix.LiveView.Rendered.t()
+  def auto_login_switch(assigns) do
+    ~H"""
+    <div class="flex items-center gap-retro-4">
+      <.switch
+        id={@id}
+        value={@enabled}
+        on_toggle={@on_toggle}
+        target={@target}
+        event_value={%{nickname: @nickname, device_id: @device_id, enabled: not @enabled}}
+        testid={@testid}
+      />
+      <.label for={@id} class="text-[11px]">{dgettext("ui", "Auto-login")}</.label>
+    </div>
     """
   end
 

@@ -34,18 +34,13 @@ defmodule RetroHexChatWeb.ConnectTrustedDeviceTest do
 
     assert html =~ ~s(data-testid="remembered-nicks")
     assert html =~ ~s(data-testid="remembered-nick-#{nick}")
-    assert html =~ "Home terminal"
-    assert html =~ "Firefox 152"
-    assert html =~ "macOS 10.15"
-    assert html =~ "1512x982"
-    assert html =~ "America/Sao_Paulo"
-    assert html =~ "24-bit"
-    assert html =~ "10 cores"
-    assert html =~ "This device"
-    assert html =~ "Trusted"
-    assert html =~ "NickServ"
-    assert html =~ "Enter as #{nick}"
-    assert html =~ "No touch"
+    assert has_element?(view, ~s([data-testid="remembered-nick-login-#{nick}"]), "Log in")
+
+    # The row is the way back in, not a description of this browser: what the
+    # terminal is lives in Trusted Terminals.
+    refute html =~ "Firefox 152"
+    refute html =~ "1512x982"
+    refute html =~ "America/Sao_Paulo"
     assert has_element?(view, ~s([data-testid="manual-login-btn"]))
 
     assert has_element?(
@@ -143,50 +138,6 @@ defmodule RetroHexChatWeb.ConnectTrustedDeviceTest do
     assert has_element?(view, ~s([data-testid="remembered-nick-login-#{nick}"]))
   end
 
-  test "connect reason renders the machine that took over the nick", %{conn: conn} do
-    nick = "Takeover#{uid()}"
-    NickServ.register(nick, "pass123")
-
-    {:ok, %{cookie_value: cookie}} =
-      TrustedDevices.remember_nick(nil, nick,
-        label: "Current Mac",
-        actor_nickname: nick,
-        client_info: %{"browser" => "Safari 18", "os" => "macOS 15"}
-      )
-
-    {:ok, takeover} =
-      TrustedDevices.record_session_start(nick, nil, %{
-        "browser" => "Chrome 150",
-        "os" => "Windows 10+",
-        "timezone" => "America/Sao_Paulo",
-        "screen" => "1920x1080",
-        "color_depth" => 24,
-        "cores" => 8
-      })
-
-    disconnect_context = %{
-      "session_ref" => takeover.session_ref,
-      "nickname" => nick,
-      "recorded_at" => DateTime.utc_now() |> DateTime.to_iso8601()
-    }
-
-    {:ok, view, html} =
-      conn
-      |> init_test_session(%{last_disconnect_context: disconnect_context})
-      |> put_req_cookie(TrustedDeviceCookie.name(), cookie)
-      |> live(~p"/connect?reason=disconnected")
-
-    assert has_element?(view, ~s([data-testid="takeover-session-card"]))
-    assert html =~ "Machine that disconnected you"
-    assert html =~ "Active"
-    assert html =~ "Chrome 150"
-    assert html =~ "Windows 10+"
-    assert html =~ "1920x1080"
-    assert html =~ "8 cores"
-    assert html =~ "24-bit"
-    assert html =~ "Current Mac"
-  end
-
   test "remembered terminal screen can switch to manual nickname login", %{conn: conn} do
     nick = "ManTrust#{uid()}"
     NickServ.register(nick, "pass123")
@@ -225,6 +176,8 @@ defmodule RetroHexChatWeb.ConnectTrustedDeviceTest do
       |> put_req_cookie(TrustedDeviceCookie.name(), cookie)
       |> live(~p"/connect")
 
+    view |> element(~s([data-testid="manual-login-btn"])) |> render_click()
+
     view
     |> element(~s(form[phx-submit="connect"]))
     |> render_submit(%{"nickname" => nick})
@@ -232,7 +185,7 @@ defmodule RetroHexChatWeb.ConnectTrustedDeviceTest do
     assert_push_event(view, "submit_connect", %{})
   end
 
-  test "remember terminal fields expose device label suggestion targets", %{conn: conn} do
+  test "remember terminal shows only the label, once ticked", %{conn: conn} do
     nick = "Suggest#{uid()}"
     NickServ.register(nick, "pass123")
 
@@ -244,27 +197,7 @@ defmodule RetroHexChatWeb.ConnectTrustedDeviceTest do
 
     assert has_element?(view, ~s([data-testid="remember-device-panel"][hidden]))
     assert has_element?(view, ~s([data-testid="device-label"][data-device-label-input]))
-    assert has_element?(view, ~s([data-testid="device-metadata-details"][open]))
-
-    assert has_element?(
-             view,
-             ~s([data-testid="device-label-suggestion"][data-device-label-suggestion])
-           )
-
-    assert has_element?(
-             view,
-             ~s([data-testid="device-label-metadata"][data-device-label-metadata])
-           )
-
-    assert has_element?(view, ~s([data-device-meta-item="browser"]))
-    assert has_element?(view, ~s([data-device-meta-item="os"]))
-    assert has_element?(view, ~s([data-device-meta-item="device_type"]))
-    assert has_element?(view, ~s([data-device-meta-item="language"]))
-    assert has_element?(view, ~s([data-device-meta-item="screen"]))
-    assert has_element?(view, ~s([data-device-meta-item="timezone"]))
-    assert has_element?(view, ~s([data-device-meta-item="color_depth"]))
-    assert has_element?(view, ~s([data-device-meta-item="cores"]))
-    assert has_element?(view, ~s([data-device-meta-item="touch"]))
+    refute has_element?(view, ~s([data-device-meta-item]))
   end
 
   test "failed authentication preserves remember terminal label fields", %{conn: conn} do

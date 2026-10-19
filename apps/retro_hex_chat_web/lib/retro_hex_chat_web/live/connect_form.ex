@@ -4,8 +4,8 @@ defmodule RetroHexChatWeb.ConnectForm do
 
   Owns the whole nickname → password/register progression, the trusted-terminal
   choices and the remember-terminal fields. The host supplies only what comes
-  from the Plug session (`trusted_device_id`), the takeover card and the two
-  values the hidden POST form needs; everything else is the island's own.
+  from the Plug session (`trusted_device_id`) and the two values the hidden
+  POST form needs; everything else is the island's own.
 
   Authentication never navigates through LiveView: a successful step fills a
   hidden form and pushes `submit_connect`, and `ConnectFormHook` POSTs it to
@@ -48,7 +48,6 @@ defmodule RetroHexChatWeb.ConnectForm do
        submit_connect: false,
        auto_login_attempted: false,
        trusted_device_id: nil,
-       takeover_session: nil,
        auto_login: false,
        return_to: nil
      )}
@@ -66,7 +65,6 @@ defmodule RetroHexChatWeb.ConnectForm do
   defp assign_context(socket, assigns) do
     assign(socket,
       trusted_device_id: Map.get(assigns, :trusted_device_id, socket.assigns.trusted_device_id),
-      takeover_session: Map.get(assigns, :takeover_session, socket.assigns.takeover_session),
       csrf_token: Map.get(assigns, :csrf_token, socket.assigns[:csrf_token]),
       chat_session_path: Map.get(assigns, :chat_session_path, socket.assigns[:chat_session_path]),
       return_to: Map.get(assigns, :return_to, socket.assigns[:return_to]),
@@ -390,7 +388,6 @@ defmodule RetroHexChatWeb.ConnectForm do
         password_error={@password_error}
         auth_token={@auth_token}
         remembered_nicks={@remembered_nicks}
-        takeover_session={@takeover_session}
         manual_login={@manual_login}
         trusted_device_login={@trusted_device_login}
         remember_device={@remember_device}

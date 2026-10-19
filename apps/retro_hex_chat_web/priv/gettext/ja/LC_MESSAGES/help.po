@@ -173,14 +173,14 @@ msgid "Connect"
 msgstr "接続"
 
 #: lib/retro_hex_chat_web/controllers/help_content/connecting.html.heex:67
-#: lib/retro_hex_chat_web/controllers/help_content/ui_connect_window.html.heex:57
+#: lib/retro_hex_chat_web/controllers/help_content/ui_connect_window.html.heex:61
 #, elixir-autogen, elixir-format
 msgid "Connect Authentication"
 msgstr "認証の接続"
 
 #: lib/retro_hex_chat_web/controllers/help_content/connect_authentication.html.heex:44
 #: lib/retro_hex_chat_web/controllers/help_content/ui_connect_window.html.heex:16
-#: lib/retro_hex_chat_web/controllers/help_content/ui_connect_window.html.heex:54
+#: lib/retro_hex_chat_web/controllers/help_content/ui_connect_window.html.heex:58
 #: lib/retro_hex_chat_web/controllers/help_content/watching_without_account.html.heex:92
 #: lib/retro_hex_chat_web/controllers/help_content/welcome.html.heex:124
 #, elixir-autogen, elixir-format
@@ -263,7 +263,7 @@ msgstr "ニックエクスカーション"
 
 #: lib/retro_hex_chat_web/controllers/help_content/connect_authentication.html.heex:45
 #: lib/retro_hex_chat_web/controllers/help_content/connecting.html.heex:70
-#: lib/retro_hex_chat_web/controllers/help_content/ui_connect_window.html.heex:60
+#: lib/retro_hex_chat_web/controllers/help_content/ui_connect_window.html.heex:64
 #, elixir-autogen, elixir-format
 msgid "NickServ Overview"
 msgstr "NickServの概要"
@@ -350,7 +350,7 @@ msgstr ""
 #: lib/retro_hex_chat_web/controllers/help_content/connect_authentication.html.heex:42
 #: lib/retro_hex_chat_web/controllers/help_content/connecting.html.heex:64
 #: lib/retro_hex_chat_web/controllers/help_content/private_messages.html.heex:33
-#: lib/retro_hex_chat_web/controllers/help_content/ui_connect_window.html.heex:52
+#: lib/retro_hex_chat_web/controllers/help_content/ui_connect_window.html.heex:56
 #: lib/retro_hex_chat_web/controllers/help_content/watching_without_account.html.heex:90
 #: lib/retro_hex_chat_web/controllers/help_content/welcome.html.heex:122
 #, elixir-autogen, elixir-format
@@ -460,13 +460,13 @@ msgstr "RetroHexChatについて"
 
 #: lib/retro_hex_chat_web/components/ui/help/help_menu_bar.ex:104
 #: lib/retro_hex_chat_web/components/ui/help/help_viewer.ex:219
-#: lib/retro_hex_chat_web/components/ui/shell/start_menu_app.ex:549
+#: lib/retro_hex_chat_web/components/ui/shell/start_menu_app.ex:546
 #, elixir-autogen, elixir-format
 msgid "Back"
 msgstr "戻る"
 
-#: lib/retro_hex_chat_web/components/ui/shell/start_menu_app.ex:599
-#: lib/retro_hex_chat_web/components/ui/shell/start_menu_app.ex:606
+#: lib/retro_hex_chat_web/components/ui/shell/start_menu_app.ex:596
+#: lib/retro_hex_chat_web/components/ui/shell/start_menu_app.ex:603
 #, elixir-autogen, elixir-format
 msgid "Back to chat"
 msgstr "チャットに戻る"
@@ -486,7 +486,7 @@ msgstr "受信側でPMタブを開けない軽量メッセージの場合、ニ�
 
 #: lib/retro_hex_chat_web/components/ui/help/help_menu_bar.ex:108
 #: lib/retro_hex_chat_web/components/ui/help/help_viewer.ex:222
-#: lib/retro_hex_chat_web/components/ui/shell/start_menu_app.ex:555
+#: lib/retro_hex_chat_web/components/ui/shell/start_menu_app.ex:552
 #, elixir-autogen, elixir-format
 msgid "Forward"
 msgstr "前進"
@@ -547,18 +547,18 @@ msgstr "トピックを見つけるために検索ボックスに入力します
 msgid "View"
 msgstr "表示"
 
-#: lib/retro_hex_chat_web/controllers/help_content/ui_connect_window.html.heex:34
+#: lib/retro_hex_chat_web/controllers/help_content/ui_connect_window.html.heex:38
 #, elixir-autogen, elixir-format
 msgid "A remembered terminal can go one step further: turn on auto-login for it and opening any page signs you straight into the chat, with nothing to click."
 msgstr ""
 "記憶されたターミナルは1つのステップをさらに進むことができます:それのための自動ログインをオンにし、あなたがチャットにまっすぐに署名するページを開く、何もクリックしません。"
 
-#: lib/retro_hex_chat_web/controllers/help_content/ui_connect_window.html.heex:32
+#: lib/retro_hex_chat_web/controllers/help_content/ui_connect_window.html.heex:36
 #, elixir-autogen, elixir-format
 msgid "Auto-Login"
 msgstr "自動ログイン"
 
-#: lib/retro_hex_chat_web/controllers/help_content/ui_connect_window.html.heex:59
+#: lib/retro_hex_chat_web/controllers/help_content/ui_connect_window.html.heex:63
 #, elixir-autogen, elixir-format
 msgid "Desktop & Windows"
 msgstr "デスクトップとWindows"
@@ -568,7 +568,7 @@ msgstr "デスクトップとWindows"
 msgid "Signing In"
 msgstr "サインイン"
 
-#: lib/retro_hex_chat_web/controllers/help_content/ui_connect_window.html.heex:45
+#: lib/retro_hex_chat_web/controllers/help_content/ui_connect_window.html.heex:49
 #, elixir-autogen, elixir-format
 msgid "The Window Itself"
 msgstr "窓自体"
@@ -578,36 +578,17 @@ msgstr "窓自体"
 msgid "The nickname rules are the same everywhere — see"
 msgstr "ニックネームルールはどこでも同じです。"
 
-#: lib/retro_hex_chat_web/controllers/help_content/ui_connect_window.html.heex:40
+#: lib/retro_hex_chat_web/controllers/help_content/ui_connect_window.html.heex:44
 #, elixir-autogen, elixir-format
 msgid "This is per terminal and per nickname, so a shared machine can stay manual while your own signs you in. Disconnecting from the chat always returns you here rather than looping straight back in."
 msgstr ""
 "これは、端末とニックネーム当たりのもので、共有マシンは自分のサイン中にマニュアルを維持することができます。 "
 "チャットから接続を解除すると、直接バックアップをループするのではなく、常にここに戻ってきます。"
 
-#: lib/retro_hex_chat_web/controllers/help_content/ui_connect_window.html.heex:21
-#, elixir-autogen, elixir-format
-msgid "Tick Remember this terminal while signing in and this browser is remembered for that nickname. On your next visit the window lists it as a card instead of an empty field, and one click signs you back in — no password."
-msgstr ""
-"サインイン中にこのターミナルを覚えておいてください。このブラウザは、そのニックネームを記憶しています。 "
-"次のウィンドウでは、空のフィールドではなくカードとしてそれをリストし、ワンクリックで、パスワードなし。"
-
 #: lib/retro_hex_chat_web/controllers/help_content/ui_connect_window.html.heex:19
 #, elixir-autogen, elixir-format
 msgid "Trusted Terminals"
 msgstr "信頼できるターミナル"
-
-#: lib/retro_hex_chat_web/controllers/help_content/ui_connect_window.html.heex:9
-#, elixir-autogen, elixir-format
-msgid "Type a nickname and click Connect. A nickname nobody has registered opens a short registration form; a registered one asks for its password. Either way you land in the chat already identified."
-msgstr ""
-"ニックネームを入力して接続をクリックします。 誰が登録したニックネームが短い登録フォームを開きます。登録した名前はパスワードを要求します。 "
-"すでに特定したチャットに上陸した方法のいずれか。"
-
-#: lib/retro_hex_chat_web/controllers/help_content/ui_connect_window.html.heex:27
-#, elixir-autogen, elixir-format
-msgid "Use another nick/password switches back to the plain nickname field, and Back to trusted terminals returns to the list."
-msgstr "別の nick/password スイッチをプレーンニックネームフィールドに戻し、信頼できる端末に戻るとリストに戻ります。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/ui_connect_window.html.heex:17
 #, elixir-autogen, elixir-format
@@ -894,7 +875,7 @@ msgstr "何かがアカウントを必要とするものすべて: 書き込み,
 msgid "A link to a game, a call or a space opens the chat with that window, and after you sign in it takes you to the link."
 msgstr "ゲーム、コール、またはスペースへのリンクは、そのウィンドウとチャットを開き、サインインした後、リンクに移動します。"
 
-#: lib/retro_hex_chat_web/controllers/help_content/ui_connect_window.html.heex:47
+#: lib/retro_hex_chat_web/controllers/help_content/ui_connect_window.html.heex:51
 #, elixir-autogen, elixir-format
 msgid "It behaves like every other window: move it, minimize it, or bring it back from its taskbar button. Closing it takes you back to the chat; after signing in you land where you were going — the channel you were reading, or the game or call that asked you to sign in."
 msgstr "他のすべてのウィンドウのように振る舞います。移動、最小化、またはタスクバーボタンから戻ってくる。 閉じると、チャットに戻ります。あなたが行っていた土地に署名した後、あなたが読んだチャンネル、またはあなたがサインインするように求めたゲームや呼び出し。"
@@ -948,3 +929,23 @@ msgstr "Only you see it."
 #, elixir-autogen, elixir-format
 msgid "Read what every member reads on arrival: the message of the day in Status, and a channel's welcome when you open it"
 msgstr "すべてのメンバーが到着時に何を読んでいるか:ステータスの日のメッセージと、開いたときにチャンネルの歓迎"
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_connect_window.html.heex:9
+#, elixir-autogen, elixir-format
+msgid "Type a nickname and click Continue. A nickname nobody has registered opens a short registration form; a registered one asks for its password. Either way you land in the chat already identified."
+msgstr "Type a nickname and click Continue. A nickname nobody has registered opens a short registration form; a registered one asks for its password. Either way you land in the chat already identified."
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_connect_window.html.heex:31
+#, elixir-autogen, elixir-format
+msgid "What each terminal is — its browser, its system, when it was last used — is in Trusted Terminals, in the Start menu."
+msgstr "各端末が何であるか — ブラウザ、そのシステム、最後に使用していたとき — は Trusted Terminal にあります。"
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_connect_window.html.heex:27
+#, elixir-autogen, elixir-format
+msgid "Log in with another nickname opens an empty field, and Back to the list goes back."
+msgstr "別のニックネームでログインすると、空のフィールドが開き、リストに戻ります。"
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_connect_window.html.heex:21
+#, elixir-autogen, elixir-format
+msgid "Tick Remember this terminal when you log in, and this browser remembers your nickname. Next time, the window lists your nicknames instead of an empty field. Click Log in beside one and you are in, without a password."
+msgstr "あなたがログインしたときに、このターミナルを忘れないでください。このブラウザはあなたのニックネームを覚えています。 次に、ウィンドウは空のフィールドではなくニックネームをリストします。 パスワードなしでログインしてください。"

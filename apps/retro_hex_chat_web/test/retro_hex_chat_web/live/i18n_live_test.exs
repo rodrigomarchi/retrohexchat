@@ -10,7 +10,7 @@ defmodule RetroHexChatWeb.Live.I18nLiveTest do
 
       assert html =~ ~s(lang="pt-BR")
       assert html =~ "Conectar ao RetroHexChat"
-      assert html =~ "Informações do usuário"
+      assert html =~ "Entrar ou criar uma conta"
       assert html =~ "Digite seu apelido..."
       assert html =~ "Idioma"
       assert html =~ "Português"

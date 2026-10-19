@@ -134,6 +134,36 @@ _TERMS: dict[str, dict[str, tuple[str, ...]]] = {
         "zh_hans": ("大写",),
         "zh_hant": ("大寫",),
     },
+    # A letter of the alphabet, not of the post: "start with a letter" came
+    # back as "carta", "Brief" and "手紙".
+    r"\b(?:with|by) an? letter\b|\b(?:upper|lower)case letters?\b": {
+        "pt": ("letra",),
+        "es": ("letra",),
+        "fr": ("lettre",),
+        "de": ("buchstab",),
+        "it": ("letter",),
+        "nl": ("letter",),
+        "pl": ("liter",),
+        "ru": ("букв",),
+        "id": ("huruf",),
+        "ja": ("文字",),
+        "zh_hans": ("字母",),
+        "zh_hant": ("字母",),
+    },
+    # Blanks between characters, not places: German gave "Keine Plätze".
+    r"\bno spaces\b": {
+        "de": ("leerzeich",),
+        "pl": ("spacj",),
+        "ru": ("пробел",),
+        "ja": ("スペース", "空白"),
+    },
+    # Signing in to an account that exists: German gave "Registrieren", which
+    # is creating one.
+    r"\bsign(?:s|ed|ing)? in\b": {
+        "de": ("anmeld", "einlogg"),
+        "nl": ("aanmeld", "inlog"),
+        "pl": ("zaloguj", "logow"),
+    },
     # The Construct's pieces, measured on their help and their panels: a
     # sign came back as a signal ("sinal"), a piece as a scrap ("pedaço"), a
     # pinned message as a stuck one ("presas"), a browser tab as a page. A

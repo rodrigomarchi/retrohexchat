@@ -11,315 +11,182 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<12 || n%100>14) ? 1 : 2);\n"
 
-#: lib/retro_hex_chat_web/components/ui/connect/connect_form_panel.ex:317
-#, elixir-autogen, elixir-format
-msgid "1-16 characters"
-msgstr "1-16 персонажей"
-
-#: lib/retro_hex_chat_web/components/ui/connect/connect_form_panel.ex:391
-#, elixir-autogen, elixir-format
-msgid "Authentication"
-msgstr "аутентификация"
-
-#: lib/retro_hex_chat_web/components/ui/connect/connect_form_panel.ex:441
-#: lib/retro_hex_chat_web/components/ui/connect/connect_form_panel.ex:535
+#: lib/retro_hex_chat_web/components/ui/connect/connect_form_panel.ex:376
 #, elixir-autogen, elixir-format
 msgid "Back"
 msgstr "Назад"
 
-#: lib/retro_hex_chat_web/components/ui/connect/connect_form_panel.ex:488
+#: lib/retro_hex_chat_web/components/ui/connect/connect_form_panel.ex:159
 #, elixir-autogen, elixir-format
 msgid "Choose a password (min. 5 characters)..."
 msgstr "Выберите пароль (мин. 5 символов)"
 
-#: lib/retro_hex_chat_web/components/ui/connect/connect_form_panel.ex:500
+#: lib/retro_hex_chat_web/components/ui/connect/connect_form_panel.ex:165
 #, elixir-autogen, elixir-format
 msgid "Confirm password"
 msgstr "Подтвердить пароль"
 
-#: lib/retro_hex_chat_web/components/ui/connect/connect_form_panel.ex:352
-#: lib/retro_hex_chat_web/components/ui/connect/connect_form_panel.ex:445
+#: lib/retro_hex_chat_web/components/ui/connect/connect_form_panel.ex:134
 #, elixir-autogen, elixir-format
 msgid "Connect"
 msgstr "Подключиться"
 
-#: lib/retro_hex_chat_web/site/pages/connect.ex:43
+#: lib/retro_hex_chat_web/site/pages/connect.ex:42
 #, elixir-autogen, elixir-format
 msgid "Connect - RetroHexChat"
 msgstr "Обсуждение RetroHexChat"
 
-#: lib/retro_hex_chat_web/site/pages/connect.ex:40
+#: lib/retro_hex_chat_web/site/pages/connect.ex:35
 #, elixir-autogen, elixir-format
 msgid "Connect to RetroHexChat"
 msgstr "Подключение к RetroHexChat"
 
-#: lib/retro_hex_chat_web/components/ui/connect/connect_form_panel.ex:311
+#: lib/retro_hex_chat_web/components/ui/connect/connect_form_panel.ex:271
 #, elixir-autogen, elixir-format
 msgid "Enter your nickname..."
 msgstr "Введите свое прозвище..."
 
-#: lib/retro_hex_chat_web/components/ui/connect/connect_form_panel.ex:416
+#: lib/retro_hex_chat_web/components/ui/connect/connect_form_panel.ex:124
 #, elixir-autogen, elixir-format
 msgid "Enter your password..."
 msgstr "Введите свой пароль..."
 
-#: lib/retro_hex_chat_web/live/connect_form.ex:176
+#: lib/retro_hex_chat_web/live/connect_form.ex:174
 #, elixir-autogen, elixir-format
 msgid "Incorrect password"
 msgstr "Неправильный пароль"
 
-#: lib/retro_hex_chat_web/components/ui/connect/connect_form_panel.ex:323
-#, elixir-autogen, elixir-format
-msgid "Must start with a letter"
-msgstr "Начинать надо с письма"
-
-#: lib/retro_hex_chat_web/components/ui/connect/connect_form_panel.ex:298
-#, elixir-autogen, elixir-format
-msgid "Nickname"
-msgstr "Прозвище"
-
-#: lib/retro_hex_chat_web/live/connect_form.ex:256
+#: lib/retro_hex_chat_web/live/connect_form.ex:254
 #, elixir-autogen, elixir-format
 msgid "Nickname cannot be empty"
 msgstr "Имя не может быть пустым"
 
-#: lib/retro_hex_chat_web/live/connect_form.ex:265
+#: lib/retro_hex_chat_web/live/connect_form.ex:263
 #, elixir-autogen, elixir-format
 msgid "Nickname cannot contain spaces"
 msgstr "Прозвища не могут содержать пространства"
 
-#: lib/retro_hex_chat_web/components/ui/connect/connect_form_panel.ex:370
-#, elixir-autogen, elixir-format
-msgid "Nickname cleanup"
-msgstr "Уборка по прозвищу"
-
-#: lib/retro_hex_chat_web/live/connect_form.ex:253
+#: lib/retro_hex_chat_web/live/connect_form.ex:251
 #, elixir-autogen, elixir-format
 msgid "Nickname must be a string"
 msgstr "Имя должно быть строкой"
 
-#: lib/retro_hex_chat_web/live/connect_form.ex:259
+#: lib/retro_hex_chat_web/live/connect_form.ex:257
 #, elixir-autogen, elixir-format
 msgid "Nickname must be at most 16 characters"
 msgstr "Имя должно быть максимум 16 символов"
 
-#: lib/retro_hex_chat_web/live/connect_form.ex:262
+#: lib/retro_hex_chat_web/live/connect_form.ex:260
 #, elixir-autogen, elixir-format
 msgid "Nickname must start with a letter or special character"
 msgstr "Имя должно начинаться с буквы или специального символа."
 
-#: lib/retro_hex_chat_web/components/ui/connect/connect_form_panel.ex:329
-#, elixir-autogen, elixir-format
-msgid "No spaces allowed"
-msgstr "Пространства не допускаются"
-
-#: lib/retro_hex_chat_web/components/ui/connect/connect_form_panel.ex:405
-#: lib/retro_hex_chat_web/components/ui/connect/connect_form_panel.ex:477
+#: lib/retro_hex_chat_web/components/ui/connect/connect_form_panel.ex:122
+#: lib/retro_hex_chat_web/components/ui/connect/connect_form_panel.ex:157
 #, elixir-autogen, elixir-format
 msgid "Password"
 msgstr "Пароль"
 
-#: lib/retro_hex_chat_web/live/connect_form.ex:193
+#: lib/retro_hex_chat_web/live/connect_form.ex:191
 #, elixir-autogen, elixir-format
 msgid "Password must be at least 5 characters"
 msgstr "Пароль должен быть не менее 5 символов"
 
-#: lib/retro_hex_chat_web/live/connect_form.ex:203
+#: lib/retro_hex_chat_web/live/connect_form.ex:201
 #, elixir-autogen, elixir-format
 msgid "Passwords do not match"
 msgstr "Пароли не совпадают"
 
-#: lib/retro_hex_chat_web/components/ui/connect/connect_form_panel.ex:539
+#: lib/retro_hex_chat_web/components/ui/connect/connect_form_panel.ex:182
 #: lib/retro_hex_chat_web/controllers/help_content/welcome.html.heex:33
 #, elixir-autogen, elixir-format
 msgid "Register & Connect"
 msgstr "Регистрация и подключение"
 
-#: lib/retro_hex_chat_web/components/ui/connect/connect_form_panel.ex:463
-#, elixir-autogen, elixir-format
-msgid "Registration"
-msgstr "Регистрация"
-
-#: lib/retro_hex_chat_web/components/ui/connect/connect_form_panel.ex:511
+#: lib/retro_hex_chat_web/components/ui/connect/connect_form_panel.ex:167
 #, elixir-autogen, elixir-format
 msgid "Repeat your password..."
 msgstr "Повторите свой пароль..."
 
-#: lib/retro_hex_chat_web/site/pages/connect.ex:97
+#: lib/retro_hex_chat_web/site/pages/connect.ex:100
 #, elixir-autogen, elixir-format
 msgid "Server banned"
 msgstr "Сервер запрещен"
 
-#: lib/retro_hex_chat_web/site/pages/connect.ex:96
+#: lib/retro_hex_chat_web/site/pages/connect.ex:99
 #, elixir-autogen, elixir-format
 msgid "Session ended"
 msgstr "Заседание завершилось"
 
-#: lib/retro_hex_chat_web/site/pages/connect.ex:95
+#: lib/retro_hex_chat_web/site/pages/connect.ex:98
 #, elixir-autogen, elixir-format
 msgid "Session expired"
 msgstr "Сессия закончилась"
 
-#: lib/retro_hex_chat_web/components/ui/connect/connect_form_panel.ex:365
-#, elixir-autogen, elixir-format
-msgid "Session expiry"
-msgstr "Сессия заканчивается"
-
-#: lib/retro_hex_chat_web/components/ui/connect/connect_form_panel.ex:366
-#, elixir-autogen, elixir-format
-msgid "Sessions expire after 10 failed reconnection attempts."
-msgstr "Сессии истекают после 10 неудачных попыток воссоединения."
-
-#: lib/retro_hex_chat_web/components/ui/connect/connect_form_panel.ex:467
+#: lib/retro_hex_chat_web/components/ui/connect/connect_form_panel.ex:147
 #, elixir-autogen, elixir-format
 msgid "The nickname %{nickname} is available! Choose a password to register it."
 msgstr "прозвище %{nickname} Доступно! Выберите пароль для его регистрации."
 
-#: lib/retro_hex_chat_web/components/ui/connect/connect_form_panel.ex:395
+#: lib/retro_hex_chat_web/components/ui/connect/connect_form_panel.ex:112
 #, elixir-autogen, elixir-format
 msgid "The nickname %{nickname} is registered. Please enter your password to continue."
 msgstr ""
 "прозвище %{nickname} Зарегистрирована. Пожалуйста, введите пароль, чтобы "
 "продолжить."
 
-#: lib/retro_hex_chat_web/components/ui/connect/connect_form_panel.ex:295
-#, elixir-autogen, elixir-format
-msgid "User Information"
-msgstr "Пользовательская информация"
-
-#: lib/retro_hex_chat_web/components/ui/connect/connect_form_panel.ex:638
-#: lib/retro_hex_chat_web/components/ui/connect/connect_form_panel.ex:731
-#, elixir-autogen, elixir-format
-msgid "Browser"
-msgstr "Браузер"
-
-#: lib/retro_hex_chat_web/components/ui/connect/connect_form_panel.ex:644
-#: lib/retro_hex_chat_web/components/ui/connect/connect_form_panel.ex:747
-#, elixir-autogen, elixir-format
-msgid "CPU"
-msgstr "ЦП"
-
-#: lib/retro_hex_chat_web/components/ui/connect/connect_form_panel.ex:643
-#: lib/retro_hex_chat_web/components/ui/connect/connect_form_panel.ex:752
-#, elixir-autogen, elixir-format
-msgid "Color"
-msgstr "цвет"
-
-#: lib/retro_hex_chat_web/components/ui/connect/connect_form_panel.ex:637
-#, elixir-autogen, elixir-format
-msgid "Device"
-msgstr "Устройство"
-
-#: lib/retro_hex_chat_web/components/ui/connect/connect_form_panel.ex:629
-#, elixir-autogen, elixir-format
-msgid "Device metadata"
-msgstr "Метаданные устройства"
-
-#: lib/retro_hex_chat_web/components/ui/connect/connect_form_panel.ex:640
-#, elixir-autogen, elixir-format
-msgid "Language"
-msgstr "Язык языка"
-
-#: lib/retro_hex_chat_web/components/ui/connect/connect_form_panel.ex:639
-#: lib/retro_hex_chat_web/components/ui/connect/connect_form_panel.ex:734
-#, elixir-autogen, elixir-format
-msgid "OS"
-msgstr "ОСО"
-
-#: lib/retro_hex_chat_web/components/ui/connect/connect_form_panel.ex:585
+#: lib/retro_hex_chat_web/components/ui/connect/connect_form_panel.ex:399
 #, elixir-autogen, elixir-format
 msgid "Remember this terminal"
 msgstr "Запомните этот терминал"
 
-#: lib/retro_hex_chat_web/components/ui/connect/connect_form_panel.ex:641
-#: lib/retro_hex_chat_web/components/ui/connect/connect_form_panel.ex:737
-#, elixir-autogen, elixir-format
-msgid "Screen"
-msgstr "экран"
-
-#: lib/retro_hex_chat_web/components/ui/connect/connect_form_panel.ex:599
+#: lib/retro_hex_chat_web/components/ui/connect/connect_form_panel.ex:408
 #, elixir-autogen, elixir-format
 msgid "Terminal label:"
 msgstr "Метка терминала:"
 
-#: lib/retro_hex_chat_web/components/ui/connect/connect_form_panel.ex:642
-#: lib/retro_hex_chat_web/components/ui/connect/connect_form_panel.ex:742
-#, elixir-autogen, elixir-format
-msgid "Timezone"
-msgstr "Таймзона"
-
-#: lib/retro_hex_chat_web/components/ui/connect/connect_form_panel.ex:645
-#, elixir-autogen, elixir-format
-msgid "Touch"
-msgstr "касаться"
-
-#: lib/retro_hex_chat_web/live/connect_form.ex:113
+#: lib/retro_hex_chat_web/live/connect_form.ex:111
 #, elixir-autogen, elixir-format
 msgid "Trusted login expired"
 msgstr "Доверенный логин истек"
 
-#: lib/retro_hex_chat_web/components/ui/connect/connect_form_panel.ex:587
-#, elixir-autogen, elixir-format
-msgid "Use this browser for faster NickServ login later."
-msgstr "Используйте этот браузер для более быстрого входа в NickServ позже."
-
-#: lib/retro_hex_chat_web/components/ui/connect/connect_form_panel.ex:225
-#, elixir-autogen, elixir-format
-msgid "Choose a remembered NickServ identity."
-msgstr "Выберите запоминающийся идентификатор NickServ."
-
-#: lib/retro_hex_chat_web/components/ui/connect/connect_form_panel.ex:222
-#, elixir-autogen, elixir-format
-msgid "Trusted terminals"
-msgstr "Доверенные терминалы"
-
-#: lib/retro_hex_chat_web/components/ui/connect/connect_form_panel.ex:264
-#, elixir-autogen, elixir-format
-msgid "Enter as %{nickname}"
-msgstr "Введите как %{nickname}"
-
-#: lib/retro_hex_chat_web/components/ui/connect/connect_form_panel.ex:291
-#, elixir-autogen, elixir-format
-msgid "Back to trusted terminals"
-msgstr "Вернуться в Доверенные терминалы"
-
-#: lib/retro_hex_chat_web/components/ui/connect/connect_form_panel.ex:238
-#, elixir-autogen, elixir-format
-msgid "Use another nick/password"
-msgstr "Используйте другой nick/password"
-
-#: lib/retro_hex_chat_web/components/ui/connect/connect_form_panel.ex:178
-#, elixir-autogen, elixir-format
-msgid "Machine that disconnected you"
-msgstr "Устройство, которое отключило вас"
-
-#: lib/retro_hex_chat_web/components/ui/connect/connect_form_panel.ex:773
-#, elixir-autogen, elixir-format
-msgid "Unknown device"
-msgstr "Неизвестное устройство"
-
-#: lib/retro_hex_chat_web/components/ui/connect/connect_form_panel.ex:771
-#, elixir-autogen, elixir-format
-msgid "Unremembered session"
-msgstr "Незапомненный сеанс"
-
-#: lib/retro_hex_chat_web/components/ui/connect/connect_form_panel.ex:373
+#: lib/retro_hex_chat_web/components/ui/connect/connect_form_panel.ex:174
 #, elixir-autogen, elixir-format
 msgid "Nicknames unused for %{window} are automatically released."
 msgstr ""
 "Прозвища, не используемые в течение %{window}, выпускаются автоматически."
 
-#: lib/retro_hex_chat_web/components/ui/connect/connect_form_panel.ex:357
+#: lib/retro_hex_chat_web/components/ui/connect/connect_form_panel.ex:305
 #, elixir-autogen, elixir-format
-msgid "More than one screen"
-msgstr "Больше одного экрана"
+msgid "Continue"
+msgstr "Продолжить"
 
-#: lib/retro_hex_chat_web/components/ui/connect/connect_form_panel.ex:358
+#: lib/retro_hex_chat_web/components/ui/connect/connect_form_panel.ex:301
 #, elixir-autogen, elixir-format
-msgid "You can be signed in on up to %{count} screens at once. Opening a %{next}th ends the one you have not used for longest."
-msgstr "Вы можете быть подключены не более чем на %{count} экранах одновременно. Открытие %{next}-го завершает тот, которым вы не пользовались дольше всего."
+msgid "How sessions work"
+msgstr "Как работают сессии"
 
-#: lib/retro_hex_chat_web/components/ui/connect/connect_form_panel.ex:335
+#: lib/retro_hex_chat_web/components/ui/connect/connect_form_panel.ex:293
 #, elixir-autogen, elixir-format
-msgid "Capital letters do not matter"
-msgstr "Заглавные буквы не имеют значения"
+msgid "Back to the list"
+msgstr "Вернуться в список"
+
+#: lib/retro_hex_chat_web/components/ui/connect/connect_form_panel.ex:260
+#, elixir-autogen, elixir-format
+msgid "Log in or create an account"
+msgstr "Войти или создать аккаунт"
+
+#: lib/retro_hex_chat_web/components/ui/connect/connect_form_panel.ex:242
+#, elixir-autogen, elixir-format
+msgid "Log in with another nickname"
+msgstr "Войдите с другим прозвищем"
+
+#: lib/retro_hex_chat_web/components/ui/connect/connect_form_panel.ex:280
+#, elixir-autogen, elixir-format
+msgid "Use 1 to 16 characters. Start with A–Z. No spaces."
+msgstr "Используйте от 1 до 16 символов. Начните с A-Z. Никаких пробелов."
+
+#: lib/retro_hex_chat_web/components/ui/connect/connect_form_panel.ex:228
+#, elixir-autogen, elixir-format
+msgid "Log in"
+msgstr "Войти"

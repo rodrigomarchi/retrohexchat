@@ -30,7 +30,6 @@ defmodule RetroHexChat.Accounts.TrustedDevices do
   @default_session_stale_seconds 300
   @max_events 20
   @default_page_size 50
-  @disconnect_context_ttl_seconds 600
   @system_actor "system"
   @preference_namespace_format ~r/^[a-z0-9][a-z0-9_.:-]{0,63}$/
   @max_preference_settings_bytes 16_384
@@ -597,38 +596,6 @@ defmodule RetroHexChat.Accounts.TrustedDevices do
 
     record_session_stop(session_ref, Map.get(payload, :stop_reason, "session_limit"))
   end
-
-  @doc """
-  Returns the recent session that took over a nickname and disconnected another
-  window. The session ref is opaque and short lived at the UI boundary.
-  """
-  @spec takeover_session_for_disconnect(String.t() | nil, String.t() | nil) :: map() | nil
-  def takeover_session_for_disconnect(session_ref, nickname)
-      when is_binary(session_ref) and byte_size(session_ref) <= 64 and
-             is_binary(nickname) and byte_size(nickname) > 0 do
-    cutoff = DateTime.add(DateTime.utc_now(), -@disconnect_context_ttl_seconds, :second)
-
-    from(s in ChatDeviceSession,
-      left_join: d in TrustedDevice,
-      on: d.id == s.trusted_device_id,
-      where: s.session_ref == ^session_ref,
-      where: matches(s.nickname, nickname),
-      where: s.connected_at >= ^cutoff,
-      select: {s, d}
-    )
-    |> Repo.one()
-    |> case do
-      {session, device} ->
-        {session, device}
-        |> session_row_to_map(nil)
-        |> Map.put(:trusted?, not is_nil(device))
-
-      nil ->
-        nil
-    end
-  end
-
-  def takeover_session_for_disconnect(_session_ref, _nickname), do: nil
 
   defp session_row_to_map({session, device}, current_session_ref) do
     client_info = session.client_info || %{}

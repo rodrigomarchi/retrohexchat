@@ -15,26 +15,6 @@ export function suggestDeviceLabel(info = {}) {
   return truncateLabel([device, browser].filter(Boolean).join(" ") || "Trusted Terminal");
 }
 
-/**
- * Return the compact metadata shown under the suggested label.
- *
- * @param {Object} info
- * @returns {Object}
- */
-export function deviceLabelMetadata(info = {}) {
-  return {
-    device_type: deviceName(info) || "",
-    browser: cleanValue(info.browser),
-    os: cleanValue(info.os),
-    language: cleanValue(info.language),
-    screen: cleanValue(info.screen),
-    timezone: cleanValue(info.timezone),
-    color_depth: colorDepthLabel(info.color_depth),
-    cores: coresLabel(info.cores),
-    touch: touchLabel(info.touch),
-  };
-}
-
 function deviceName(info) {
   const os = cleanValue(info.os);
   const normalized = os.toLowerCase();
@@ -80,28 +60,6 @@ function parseScreen(screen) {
     width: Number.parseInt(match[1], 10),
     height: Number.parseInt(match[2], 10),
   };
-}
-
-function colorDepthLabel(value) {
-  const depth = positiveInteger(value);
-  return depth ? `${depth} bit` : "";
-}
-
-function coresLabel(value) {
-  const cores = positiveInteger(value);
-  if (!cores) return "";
-  return cores === 1 ? "1 core" : `${cores} cores`;
-}
-
-function touchLabel(value) {
-  if (value === true) return "Touch";
-  if (value === false) return "No touch";
-  return "";
-}
-
-function positiveInteger(value) {
-  const number = Number(value);
-  return Number.isInteger(number) && number > 0 ? number : null;
 }
 
 function truncateLabel(label) {

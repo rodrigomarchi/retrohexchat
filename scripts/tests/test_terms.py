@@ -131,6 +131,22 @@ class MissingTermsTest(unittest.TestCase):
         self.assertEqual(missing_terms(source, "Las mayúsculas no importan", "es"), [])
         self.assertEqual(missing_terms(source, "大文字は関係ありません", "ja"), [])
 
+    def test_a_letter_of_the_alphabet_is_not_a_letter_in_the_post(self):
+        source = "Start with a letter."
+        self.assertTrue(missing_terms(source, "Começa com uma carta.", "pt_BR"))
+        self.assertTrue(missing_terms(source, "Beginnen Sie mit einem Brief.", "de"))
+        self.assertEqual(missing_terms(source, "Comece com uma letra.", "pt_BR"), [])
+        self.assertEqual(missing_terms(source, "Beginnen Sie mit einem Buchstaben.", "de"), [])
+
+    def test_spaces_between_characters_are_not_places(self):
+        self.assertTrue(missing_terms("No spaces.", "Keine Plätze.", "de"))
+        self.assertEqual(missing_terms("No spaces.", "Keine Leerzeichen.", "de"), [])
+
+    def test_signing_in_is_not_signing_up(self):
+        source = "Sign in or create an account"
+        self.assertTrue(missing_terms(source, "Registrieren oder ein Konto erstellen", "de"))
+        self.assertEqual(missing_terms(source, "Anmelden oder ein Konto erstellen", "de"), [])
+
     def test_portuguese_locales_share_their_forms(self):
         self.assertEqual(missing_terms("Your nickname", "A sua alcunha", "pt_PT"), [])
         self.assertTrue(missing_terms("Your nickname", "Seu nome", "pt_BR"))
