@@ -157,6 +157,9 @@ defmodule RetroHexChatWeb.ChatLive.P2PReadModel do
 
   # A badge, and only a badge: the fields a conversation row reads, and not one
   # more. The full state machine belongs to whoever is actually in the session.
+  # `game` is the one field that is not in the database: what the two of them
+  # are playing lives in the session's process, and a session only has one
+  # once it is connected.
   defp pm_session(%LobbySession{} = db_session, user_id) do
     role = role_of(db_session, user_id)
 
@@ -166,9 +169,19 @@ defmodule RetroHexChatWeb.ChatLive.P2PReadModel do
       role: role,
       peer_nick: peer_nick_for(db_session.token, user_id),
       state: state_for(db_session.status, role),
+      game: game_for(db_session),
       path: Paths.p2p_path(db_session.token)
     }
   end
+
+  defp game_for(%LobbySession{status: "connected", token: token}) do
+    case Lobby.current_game(token) do
+      %{status: "playing", game_id: game_id} -> %{status: :playing, game_id: game_id}
+      _idle_or_gone -> nil
+    end
+  end
+
+  defp game_for(_not_connected), do: nil
 
   defp state_for("pending", :peer), do: :pending_received
   defp state_for("pending", :creator), do: :invite_sent

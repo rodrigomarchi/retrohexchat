@@ -72,6 +72,12 @@ export const lazyFeatureHooks = {
     readyEvent: "lobby_game_canvas_ready",
     reason: "P2P session game canvas and engine loading are heavy features.",
   }),
+  SpectateCanvasHook: lazyFeatureHook({
+    name: "SpectateCanvasHook",
+    loader: () => import("./games/spectate_canvas_hook"),
+    serverEvents: [],
+    reason: "Watching a match loads a game engine, only on the page that shows one.",
+  }),
   RetroGameCanvasHook: lazyFeatureHook({
     name: "RetroGameCanvasHook",
     loader: () => import("./games/retro_game_canvas_hook"),

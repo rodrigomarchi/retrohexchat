@@ -34,7 +34,8 @@ class Plan:
     ``room`` names the map (``<room>.json``), its zone, its exit
     (``<room>_exit``) and the exit's action (``exit_<room>``). ``zones`` paint
     the floor, later ones over earlier ones, on ``ground``. ``furniture`` is
-    ``(kind, u, v, dir)``. ``exit_tile`` is the vocab tile of the door out and
+    ``(kind, u, v, dir)``, or ``(kind, u, v, dir, game)`` for a cabinet that
+    plays one Retro Game (a catalogue id such as ``"hex_pong"``). ``exit_tile`` is the vocab tile of the door out and
     ``exit_light`` its glow."""
 
     room: str
@@ -100,13 +101,17 @@ def footprint(catalog, kind, x, y, dir_):
 
 def fixed_items(plan, catalog):
     items = []
-    for n, (kind, u, v, dir_) in enumerate(plan.furniture):
+    for n, (kind, u, v, dir_, *game) in enumerate(plan.furniture):
         if kind not in catalog:
             raise AssertionError(f"{kind} is not in the Construct's catalog")
         if dir_ not in catalog[kind].get("dirs", ["down", "right"]):
             raise AssertionError(f"{kind} does not face {dir_}")
-        items.append({"id": f"fixed:{n}", "kind": kind, "x": plan.x0 + u, "y": plan.y0 + v,
-                      "dir": dir_})
+        if game and catalog[kind].get("use") != "arcade":
+            raise AssertionError(f"{kind} plays no game, so it cannot be given one")
+        item = {"id": f"fixed:{n}", "kind": kind, "x": plan.x0 + u, "y": plan.y0 + v, "dir": dir_}
+        if game:
+            item["game"] = game[0]
+        items.append(item)
     return items
 
 

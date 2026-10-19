@@ -836,7 +836,7 @@ describe("HexEnduroEngine", () => {
       expect(engine.audio.playGameOver).toHaveBeenCalled();
     });
 
-    it("calls onGameEnd with draw on channel close", () => {
+    it("calls onGameEnd with a disconnected draw on channel close", () => {
       const onGameEnd = vi.fn();
       engine = new HexEnduroEngine(canvas, channel, "hex_enduro", true, onGameEnd);
       engine.start();
@@ -850,6 +850,7 @@ describe("HexEnduroEngine", () => {
       expect(onGameEnd).toHaveBeenCalledWith({
         score: { p1: 42, p2: 38 },
         winner: 0,
+        disconnected: true,
       });
     });
   });

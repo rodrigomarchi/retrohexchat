@@ -56,6 +56,19 @@ class GameRoomMapTest(unittest.TestCase):
         cabinets = [i for i in self.room["fixed_items"] if catalog[i["kind"]].get("use") == "arcade"]
         self.assertGreaterEqual(len(cabinets), 4)
 
+    def test_every_cabinet_plays_a_game_of_its_own(self):
+        cabinets = [i for i in self.room["fixed_items"] if i["kind"] in ("arcade", "racing_arcade")]
+        games = [i.get("game") for i in cabinets]
+        self.assertEqual(len(games), 8)
+        self.assertTrue(all(games))
+        self.assertEqual(len(set(games)), len(games))
+
+    def test_a_piece_that_plays_no_game_cannot_be_given_one(self):
+        catalog = self.construct["catalog"]
+        plan = fr.Plan(**{**P.__dict__, "furniture": [("pool_table", 5, 9, "down", "hex_pong")]})
+        with self.assertRaises(AssertionError):
+            fr.fixed_items(plan, catalog)
+
     def test_its_floor_is_the_arcade_carpet_the_floor_tab_also_paints(self):
         char = next(m["tile"] for m in self.construct["materials"] if m["id"] == "carpet_arcade")
         self.assertTrue(any(char in row for row in self.room["floor"]))

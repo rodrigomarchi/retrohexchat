@@ -138,6 +138,9 @@ defmodule RetroHexChatWeb.ChatLive.Visitor do
   def enter(socket, params) do
     Phoenix.PubSub.subscribe(RetroHexChat.PubSub, Topics.announcements())
     Phoenix.PubSub.subscribe(RetroHexChat.PubSub, Topics.server_settings())
+    # Who is playing what is something to read, like the list it is drawn in.
+    Phoenix.PubSub.subscribe(RetroHexChat.PubSub, Topics.games_playing())
+    send(self(), :refresh_games_playing)
 
     default_channel = Server.default_channel()
 
@@ -156,7 +159,7 @@ defmodule RetroHexChatWeb.ChatLive.Visitor do
   """
   @spec open_paths() :: [String.t()]
   def open_paths do
-    pages = ["/chat/help", "/c", "/connect", "/join", "/archive" | PublicPages.paths()]
+    pages = ["/chat/help", "/c", "/connect", "/join", "/archive", "/watch" | PublicPages.paths()]
     localized = Enum.uniq(pages ++ Enum.map(pages, &PublicPages.localized_path/1))
 
     Enum.uniq(["/chat", "/locale/" | Enum.flat_map(localized, &with_subpaths/1)])
@@ -346,6 +349,7 @@ defmodule RetroHexChatWeb.ChatLive.Visitor do
   defp feature_of(event, _params) when event in ~w(visitor_link confirm_open_tab), do: :links
   defp feature_of("open_arcade", _params), do: :games
   defp feature_of("arcade_" <> _rest, _params), do: :games
+  defp feature_of("game_" <> _rest, _params), do: :games
   defp feature_of("p2p_" <> _rest, _params), do: :p2p
   defp feature_of("lobby_" <> _rest, _params), do: :p2p
   defp feature_of("group_call" <> _rest, _params), do: :calls

@@ -1,6 +1,6 @@
 /**
  * @section SP - Virtual Spaces
- * @flow SP42 [done] The Game Room's neon door stands beside the Office's wooden door: it lights up in reach, asks before going, and opens a furnished room whose arcade cabinets list the games, whose furniture cannot be picked up, where a piece can still be added, and whose own neon door leads back
+ * @flow SP42 [done] The Game Room's neon door stands beside the Office's wooden door: it lights up in reach, asks before going, and opens a furnished room whose arcade cabinets each play one Retro Game of their own and list the rest, whose furniture cannot be picked up, where a piece can still be added, and whose own neon door leads back
  *
  * These @flow lines are the source of truth for e2e/TEST_CATALOG.md.
  * Edit them here, then run `make e2e.catalog` to regenerate the index.
@@ -106,9 +106,17 @@ test.describe("The Game Room", () => {
       await space.keyboard.press("Escape");
       await shot(space, "game-room-piece-added");
 
-      // An arcade cabinet lists the games.
+      // An arcade cabinet plays one game of its own, with its channel, and
+      // lists the rest below it.
       await walker.goTo(BEFORE_CABINET);
       await space.keyboard.press("e");
+      const featured = space
+        .locator('[data-testid^="space-panel-featured-"]')
+        .first();
+      await expect(featured).toBeVisible();
+      await expect(
+        featured.locator('[data-testid$="-channel"]'),
+      ).toHaveAttribute("href", /\/c\//);
       const doom = space.getByTestId("space-panel-game-doom_shareware");
       await expect(doom).toHaveAttribute("href", "/play/arcade/doom_shareware");
       await shot(space, "game-room-arcade");

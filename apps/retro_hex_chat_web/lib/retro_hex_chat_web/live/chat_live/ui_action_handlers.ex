@@ -13,6 +13,7 @@ defmodule RetroHexChatWeb.ChatLive.UiActionHandlers do
   - `Invite` — send invite, toggle auto-join on invite
   - `Settings` — notice routing, bio, whowas
   - `Events` — the channel calendar: open, schedule, call off
+  - `Games` — a seat at a game, offered to its channel
 
   NOT a hook module — public function called by CommandDispatch.
   """
@@ -66,6 +67,8 @@ defmodule RetroHexChatWeb.ChatLive.UiActionHandlers do
 
   @event_actions ~w(open_events_dialog create_event cancel_event)a
 
+  @game_actions ~w(game_lfg)a
+
   @server_message_actions ~w(show_motd set_welcome clear_welcome set_user_mode)a
 
   @spec handle_ui_action(Phoenix.LiveView.Socket.t(), atom(), map()) ::
@@ -106,6 +109,9 @@ defmodule RetroHexChatWeb.ChatLive.UiActionHandlers do
 
   def handle_ui_action(socket, action, payload) when action in @event_actions,
     do: UiActions.Events.handle_ui_action(socket, action, payload)
+
+  def handle_ui_action(socket, action, payload) when action in @game_actions,
+    do: UiActions.Games.handle_ui_action(socket, action, payload)
 
   # Every action here is routed by an explicit list, so reaching this clause
   # means a handler exists and nothing sends work to it — a command that appears

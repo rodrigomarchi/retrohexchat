@@ -150,3 +150,8 @@
 .chat-nicklist-row__badge--in-call {
   @apply bg-primary text-white;
 }
+
+/* A game's own icon is already in colour, so the badge only frames it. */
+.chat-nicklist-row__badge--playing {
+  @apply bg-white text-text;
+}

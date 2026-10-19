@@ -30,6 +30,7 @@ defmodule RetroHexChatWeb.DesktopLive do
   # ── Chat components ──────────────────────────────────────────
   import RetroHexChatWeb.Components.UI.ConversationToolbarActions
   import RetroHexChatWeb.Components.UI.TopicBar
+  import RetroHexChatWeb.Components.UI.GameChannelBar
   import RetroHexChatWeb.Components.UI.ChatTaskbar
   import RetroHexChatWeb.Components.UI.ConnectionStatus
   import RetroHexChatWeb.Components.UI.ActivityIndicator
@@ -182,6 +183,9 @@ defmodule RetroHexChatWeb.DesktopLive do
 
     Phoenix.PubSub.subscribe(RetroHexChat.PubSub, Topics.inbox(nickname))
     Phoenix.PubSub.subscribe(RetroHexChat.PubSub, Topics.presence())
+    Phoenix.PubSub.subscribe(RetroHexChat.PubSub, Topics.games_playing())
+    # After the first render, when the user list exists to be told.
+    send(self(), :refresh_games_playing)
     Phoenix.PubSub.subscribe(RetroHexChat.PubSub, Topics.announcements())
     Phoenix.PubSub.subscribe(RetroHexChat.PubSub, Topics.wallops())
     Phoenix.PubSub.subscribe(RetroHexChat.PubSub, Topics.server_settings())
@@ -253,7 +257,7 @@ defmodule RetroHexChatWeb.DesktopLive do
       |> ChatLive.Helpers.maybe_join_channel(join_channel)
       |> maybe_broadcast_nick_changed(previous_nickname, nickname)
       |> ChatLive.Helpers.maybe_start_nickserv_timer(nickname, identified?, reconnecting?)
-      |> maybe_restore_reconnect_state(backend_reconnect_state)
+      |> maybe_restore_reconnect_state(backend_reconnect_state, join_channel)
       # After the restore, never before it. The snapshot is what tells the
       # *next* mount this session already happened, and until here there was
       # nothing to write it: the channel join runs before identity is
@@ -820,9 +824,20 @@ defmodule RetroHexChatWeb.DesktopLive do
   defp normalize_browser_id(browser_id) when is_binary(browser_id), do: browser_id
   defp normalize_browser_id(_browser_id), do: ""
 
-  defp maybe_restore_reconnect_state(socket, nil), do: socket
+  defp maybe_restore_reconnect_state(socket, nil, _address_channel), do: socket
 
-  defp maybe_restore_reconnect_state(socket, snapshot) do
+  # An address that names a channel (`/c/hex-pong`) is where this person asked
+  # to be: the snapshot still reopens the tabs they had, but the conversation in
+  # front is the one the address chose, not the one the last session ended in.
+  defp maybe_restore_reconnect_state(socket, snapshot, address_channel)
+       when is_binary(address_channel) do
+    ChatLive.Helpers.restore_session(
+      socket,
+      Map.drop(snapshot, [:active_channel, :active_pm, "active_channel", "active_pm"])
+    )
+  end
+
+  defp maybe_restore_reconnect_state(socket, snapshot, _no_address) do
     ChatLive.Helpers.restore_session(socket, snapshot)
   end
 
@@ -900,6 +915,7 @@ defmodule RetroHexChatWeb.DesktopLive do
       {:save_events, &ChatLive.SaveEvents.handle_event/3},
       {:thread_events, &ChatLive.ThreadEvents.handle_event/3},
       {:event_events, &ChatLive.EventEvents.handle_event/3},
+      {:game_events, &ChatLive.GameEvents.handle_event/3},
       {:tip_events, &ChatLive.TipEvents.handle_event/3},
       {:admin_events, &ChatLive.AdminEvents.handle_event/3},
       {:bot_events, &ChatLive.BotEvents.handle_event/3},
@@ -997,6 +1013,9 @@ defmodule RetroHexChatWeb.DesktopLive do
       pinned_count: 0,
       can_pin: false,
       current_modes: nil,
+      # Matches anybody may watch, for a game channel's strip; filled with the
+      # user list's "who is playing" from `Games.Activity`.
+      live_matches: [],
       show_conversations: true,
       channel_user_counts: %{},
       channel_guests: %{},

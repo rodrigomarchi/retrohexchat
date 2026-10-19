@@ -378,6 +378,34 @@ defmodule RetroHexChatWeb.SessionPersistenceTest do
       assert assigns(view).session.active_channel == "#restore"
     end
 
+    # The address is where the person asked to be: the snapshot puts their tabs
+    # back, and leaves the conversation in front alone.
+    test "a channel's address wins over the channel the last session ended in", %{conn: conn} do
+      nick = "RA#{uid()}"
+      register_and_identify(nick)
+
+      assert :ok =
+               ReconnectState.save(
+                 nick,
+                 %{channels: ["#lobby", "#restore"], active_channel: "#lobby"},
+                 @browser
+               )
+
+      {:ok, view, _html} =
+        live(chat_conn(conn, nick, pre_identified: true, browser_id: @browser), "/c/asked")
+
+      assert assigns(view).session.active_channel == "#asked"
+      assert assigns(view).reconnect_active_channel == nil
+
+      send(view.pid, {:execute_rejoin, 1, ["#lobby", "#restore"]})
+      render(view)
+      send(view.pid, {:execute_rejoin, 2, ["#lobby", "#restore"]})
+      render(view)
+
+      assert "#restore" in assigns(view).session.channels
+      assert assigns(view).session.active_channel == "#asked"
+    end
+
     test "intentional quit deletes the persisted reconnect state", %{conn: conn} do
       nick = "RQ#{uid()}"
       register_and_identify(nick)

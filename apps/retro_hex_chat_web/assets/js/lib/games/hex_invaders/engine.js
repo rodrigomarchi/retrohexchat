@@ -514,6 +514,7 @@ export class HexInvadersEngine extends GameEngine {
         this.onGameEnd({
           score: { p1: this.gameState.score1, p2: this.gameState.score2 },
           winner: 0, // no winner on disconnect
+          disconnected: true,
         });
       } catch (error) {
         // The disconnect result callback (pushEvent) threw — do not lose it.

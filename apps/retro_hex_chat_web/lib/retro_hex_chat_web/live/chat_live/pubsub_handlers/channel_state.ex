@@ -455,6 +455,13 @@ defmodule RetroHexChatWeb.ChatLive.PubsubHandlers.ChannelState do
     {:halt, socket}
   end
 
+  # ── A seat offered in a channel ───────────────────────────
+
+  # Somebody took the seat a card in this channel offered, or it expired: the
+  # card says "Taken" or "Over" now, for everybody reading the channel.
+  def handle_info({:share_cards_changed, _channel}, socket),
+    do: {:halt, ShareCards.refresh(socket)}
+
   # ── Catch-all: pass unhandled to next hook ────────────────
 
   def handle_info(_, socket), do: {:cont, socket}

@@ -81,7 +81,9 @@ const BODIES = {
 
   arcade: (modal, say) => {
     const games = Array.isArray(modal.games) ? modal.games : [];
-    if (games.length === 0) return [];
+    const parts = modal.featured ? featuredGame(modal.featured) : [];
+    if (games.length === 0) return parts;
+    if (modal.featured) parts.push(line(modal.featured.others_label, "label"));
     const list = document.createElement("ul");
     list.className = "space-panel-games";
     for (const game of games) {
@@ -92,13 +94,66 @@ const BODIES = {
       link.className = "space-panel-game";
       link.dataset.testid = `space-panel-game-${game.id}`;
       link.append(cover(game), line(game.name, "game-name"), line(game.tagline ?? "", "note"));
+      // Said by the server in the reader's language, and only when somebody is.
+      if (game.activity) link.append(line(game.activity, "note"));
       const item = document.createElement("li");
       item.appendChild(link);
       list.appendChild(item);
     }
-    return [list, line(say("opens-in-tab"), "note")];
+    return [...parts, list, line(say("opens-in-tab"), "note")];
   },
 };
+
+// The game a cabinet the room came with plays: its label and the two ways on
+// — playing it, and its channel — and beside it, who is at it now and the
+// matches of it anybody may watch. Every word in it is the server's, already
+// in the reader's language.
+function featuredGame(game) {
+  const block = document.createElement("div");
+  block.className = "space-panel-featured";
+  block.dataset.testid = `space-panel-featured-${game.id}`;
+
+  const card = document.createElement("div");
+  card.className = "space-panel-featured-game";
+  card.append(cover(game), line(game.name, "game-name"), line(game.tagline ?? "", "note"));
+  const actions = document.createElement("div");
+  actions.className = "space-panel-featured-actions";
+  actions.append(
+    tabLink(game.url, game.play_label, "space-panel-featured-play"),
+    tabLink(game.channel_url, game.channel, "space-panel-featured-channel"),
+  );
+  card.appendChild(actions);
+
+  block.append(card, featuredSide(game));
+  return [block];
+}
+
+function featuredSide(game) {
+  const side = document.createElement("div");
+  side.className = "space-panel-featured-side";
+  side.dataset.testid = "space-panel-featured-side";
+  const live = game.live ?? [];
+  if (!game.playing && live.length === 0) side.append(line(game.nobody ?? "", "note"));
+  if (game.playing) side.append(line(game.playing, "note"));
+  if (live.length > 0) {
+    side.append(line(game.live_label, "label"));
+    for (const match of live) {
+      side.append(tabLink(match.url, match.label, `space-panel-watch-${match.token}`));
+    }
+  }
+  return side;
+}
+
+function tabLink(href, text, testid) {
+  const link = document.createElement("a");
+  link.href = href;
+  link.target = "_blank";
+  link.rel = "noopener";
+  link.className = "space-panel-link";
+  link.dataset.testid = testid;
+  link.textContent = text;
+  return link;
+}
 
 // The field that rewrites a sign. Its keys stay in it: Enter saves the line
 // rather than reaching the say bar below the map, which also binds Enter.

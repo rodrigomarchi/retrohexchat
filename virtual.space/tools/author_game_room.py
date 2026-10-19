@@ -3,8 +3,8 @@
 Time's neon door.
 
 The Game Room is the Construct's platform furnished for play, on a dark arcade
-carpet: a row of arcade cabinets along the back edge, each opening the
-arcade, a pool table and a ping-pong table down the left side, a lounge of
+carpet: a row of arcade cabinets along the back edge, each playing one Retro
+Game, a pool table and a ping-pong table down the left side, a lounge of
 beanbags under the jukebox and the screens, and a LAN corner of desks with
 gaming chairs at the front. The clear floor in the middle is the players' to
 build on, with any piece of the catalog.
@@ -43,13 +43,25 @@ ZONES = [
 # A seat "down" faces +u and "right" faces +v. A desk with a gaming chair
 # behind it turns its monitor's back on the viewer, so whoever plays at it
 # faces the room. Two-tile tables run down v as "down".
-CABINETS = ["arcade", "racing_arcade"] * 4
+# Each cabinet plays one Retro Game, so a row of them reads as the arcade's
+# programme: the shooters and the bat-and-ball games in the plain cabinets,
+# the racing and the dodging games in the ones with a wheel.
+CABINETS = [
+    ("arcade", "hex_pong"),
+    ("racing_arcade", "hex_enduro"),
+    ("arcade", "hex_invaders"),
+    ("racing_arcade", "light_trails"),
+    ("arcade", "star_duel"),
+    ("racing_arcade", "hex_skiing"),
+    ("arcade", "hex_raid"),
+    ("racing_arcade", "hex_frost"),
+]
 
 FURNITURE = [
     # The arcade: cabinets shoulder to shoulder along the back edge, a neon
     # totem at each end of the row.
     ("neon_totem", 2, 0, "down"),
-    *[(kind, 3 + n, 0, "down") for n, kind in enumerate(CABINETS)],
+    *[(kind, 3 + n, 0, "down", game) for n, (kind, game) in enumerate(CABINETS)],
     ("neon_totem", 11, 0, "down"),
     # The lounge: the jukebox, a television on its stand, a vending
     # machine, a console and a neon sign, server racks humming in the corner,

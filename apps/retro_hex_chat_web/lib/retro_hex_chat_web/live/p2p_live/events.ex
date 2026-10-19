@@ -46,19 +46,23 @@ defmodule RetroHexChatWeb.P2PLive.Events do
   alias RetroHexChat.Accounts.TrustedDevices
   alias RetroHexChat.Calls.Events, as: CallEvents
   alias RetroHexChat.Chat.Service, as: ChatService
+  alias RetroHexChat.Games.Activity
   alias RetroHexChat.Games.Telemetry, as: GameTelemetry
+  alias RetroHexChat.Games.Watchers
   alias RetroHexChat.Lobby
   alias RetroHexChat.Lobby.JoinToken
   alias RetroHexChat.Lobby.Schema.Session, as: LobbySession
   alias RetroHexChat.P2P
   alias RetroHexChat.Topics
   alias RetroHexChatWeb.App.P2PStats
+  alias RetroHexChatWeb.App.Paths
   alias RetroHexChatWeb.Live.P2PConfirmDialog
   alias RetroHexChatWeb.Live.Surface
   alias RetroHexChatWeb.MediaDevices
   alias RetroHexChatWeb.P2PLive.Components.P2PFileIsland
   alias RetroHexChatWeb.P2PLive.Components.P2PGameIsland
   alias RetroHexChatWeb.P2PLive.Components.P2PMediaIsland
+  alias RetroHexChatWeb.SEO
 
   @pubsub RetroHexChat.PubSub
   @call_window_id "p2p-call"
@@ -304,8 +308,9 @@ defmodule RetroHexChatWeb.P2PLive.Events do
     {:halt, socket}
   end
 
-  # Only the host's game engine fires onGameEnd; it reports the authoritative
-  # result and the server relays "finished" (with the score) to both peers.
+  # Both engines may report an end; the session takes the host's as the
+  # result, writes the match down, and relays "finished" (with the score read
+  # by `Games.Result`) to both peers.
   def handle_event("lobby_game_result", result, %{assigns: %{p2p_session: %{}}} = socket) do
     p2p = socket.assigns.p2p_session
     _ = Lobby.finish_game(p2p.token, p2p.user_id, result)
@@ -515,6 +520,19 @@ defmodule RetroHexChatWeb.P2PLive.Events do
   # User-topic lobby events without a token envelope (lobby_session_ended).
   def handle_info(%{event: "lobby_" <> _rest}, socket), do: {:halt, socket}
 
+  # Somebody started or stopped watching this session's match: the players are
+  # told how many are there.
+  def handle_info(%{event: "presence_diff", topic: "lobby:" <> _rest = topic}, socket) do
+    case socket.assigns.p2p_session do
+      %{token: token} when is_binary(token) ->
+        if topic == Topics.lobby_watchers(token), do: send_watchers(token)
+        {:halt, socket}
+
+      _no_session ->
+        {:halt, socket}
+    end
+  end
+
   # Another page of this same person asked for this seat and got it. The anchor
   # stops being rendered, so the hook is destroyed and this browser's peer
   # connection goes down with it — which is the honest outcome: one person is
@@ -525,7 +543,7 @@ defmodule RetroHexChatWeb.P2PLive.Events do
         # The page that took the seat is the one listening now. Reclaiming
         # subscribes again, so leaving this subscription in place would make a
         # page that lost and retook its seat hear every event twice.
-        Phoenix.PubSub.unsubscribe(@pubsub, Topics.lobby(token))
+        unsubscribe_session(token)
 
         {:halt,
          socket
@@ -903,11 +921,14 @@ defmodule RetroHexChatWeb.P2PLive.Events do
          p2p
        ) do
     is_host = payload.host_id == p2p.user_id
+    :ok = Activity.playing(socket.assigns.nickname, payload.game_id, p2p.token)
 
     Phoenix.LiveView.send_update(P2PGameIsland,
       id: P2PGameIsland.id(),
       action: {:playing, payload.game_id, is_host}
     )
+
+    send_watchers(p2p.token)
 
     {:halt, open_p2p_console(socket, "games")}
   end
@@ -917,6 +938,7 @@ defmodule RetroHexChatWeb.P2PLive.Events do
          socket,
          _p2p
        ) do
+    :ok = Activity.stopped(socket.assigns.nickname)
     Phoenix.LiveView.send_update(P2PGameIsland, id: P2PGameIsland.id(), action: :idle)
 
     {:halt, socket}
@@ -927,6 +949,8 @@ defmodule RetroHexChatWeb.P2PLive.Events do
          socket,
          _p2p
        ) do
+    :ok = Activity.stopped(socket.assigns.nickname)
+
     Phoenix.LiveView.send_update(P2PGameIsland,
       id: P2PGameIsland.id(),
       action: {:result, payload.result}
@@ -1356,7 +1380,7 @@ defmodule RetroHexChatWeb.P2PLive.Events do
   def attach_session(socket, token, user_id, role, opts \\ []) do
     case Lobby.join_session(token, user_id, takeover: true) do
       :ok ->
-        Phoenix.PubSub.subscribe(@pubsub, Topics.lobby(token))
+        subscribe_session(token)
         p2p = new_session(socket, token, user_id, role, :joining, opts)
 
         socket
@@ -1368,8 +1392,38 @@ defmodule RetroHexChatWeb.P2PLive.Events do
     end
   end
 
+  @doc """
+  This page listens to a session: what it says, and who is watching its
+  match. `unsubscribe_session/1` is the way back.
+  """
+  @spec subscribe_session(String.t()) :: :ok
+  def subscribe_session(token) do
+    :ok = Phoenix.PubSub.subscribe(@pubsub, Topics.lobby(token))
+    Phoenix.PubSub.subscribe(@pubsub, Topics.lobby_watchers(token))
+  end
+
+  @spec unsubscribe_session(String.t()) :: :ok
+  def unsubscribe_session(token) do
+    :ok = Phoenix.PubSub.unsubscribe(@pubsub, Topics.lobby(token))
+    Phoenix.PubSub.unsubscribe(@pubsub, Topics.lobby_watchers(token))
+  end
+
+  # What the game panel says about the people watching: how many, and the
+  # address to hand on — only for a match others may watch.
+  defp send_watchers(token) do
+    watch_url = if Lobby.watch_token(token), do: SEO.site_url(Paths.watch_path(token))
+
+    Phoenix.LiveView.send_update(P2PGameIsland,
+      id: P2PGameIsland.id(),
+      action: {:watchers, Watchers.count(token), watch_url}
+    )
+  end
+
+  # A session that ends mid-game ends the game with it: nobody is playing it
+  # any more, and nobody can watch it.
   defp detach_session(socket, p2p) do
-    Phoenix.PubSub.unsubscribe(@pubsub, Topics.lobby(p2p.token))
+    unsubscribe_session(p2p.token)
+    :ok = Activity.stopped(socket.assigns.nickname)
 
     put_p2p(socket, nil)
   end

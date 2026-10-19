@@ -13,7 +13,12 @@ defmodule RetroHexChatWeb.GamesCatalogTest do
 
   @moduletag :liveview
 
+  alias RetroHexChat.Games.Queries, as: GameQueries
+  alias RetroHexChat.Games.Schema.GameRating
+  alias RetroHexChat.Lobby
+  alias RetroHexChat.Services.RegisteredNick
   alias RetroHexChatWeb.GameCatalog
+  alias RetroHexChatWeb.LiveMatchPages
 
   defp document(conn, path),
     do: conn |> get(path) |> html_response(200) |> Floki.parse_document!()
@@ -141,6 +146,113 @@ defmodule RetroHexChatWeb.GamesCatalogTest do
       assert_error_sent 404, fn -> get(conn, "/games/no-such-game") end
       # A mode is part of its game's page, never a page of its own.
       assert_error_sent 404, fn -> get(conn, "/games/hex-tennis-quick") end
+    end
+  end
+
+  describe "a Retro Game's community" do
+    # Written straight to the ledger: recording through `Games.Results` would
+    # also announce the match in #hex-pong, a channel process this async test
+    # does not own.
+    defp record_match(host, guest, {p1_score, p2_score, outcome}, token) do
+      now = DateTime.utc_now()
+
+      {:ok, _row} =
+        GameQueries.insert(%{
+          game_id: "hex_pong",
+          base_id: "hex_pong",
+          origin: "p2p",
+          p1_id: host.id,
+          p1_nickname: host.nickname,
+          p2_id: guest.id,
+          p2_nickname: guest.nickname,
+          p1_score: p1_score,
+          p2_score: p2_score,
+          outcome: outcome,
+          ranked: true,
+          duration_ms: 120_000,
+          started_at: DateTime.add(now, -120, :second),
+          finished_at: now,
+          lobby_token: token
+        })
+    end
+
+    defp player(nickname) do
+      {:ok, nick} =
+        RetroHexChat.Repo.insert(%RegisteredNick{
+          nickname: nickname,
+          password_hash: "x",
+          registered_at: DateTime.utc_now(),
+          last_seen_at: DateTime.utc_now()
+        })
+
+      %{id: nick.id, nickname: nickname}
+    end
+
+    # What a crawler reads is the first response: the ranking and the latest
+    # matches have to be in it, not arrive over the socket.
+    test "the ranking and the latest matches are in the page a visitor is sent", %{conn: conn} do
+      ana = player("ana#{System.unique_integer([:positive])}")
+      beto = player("beto#{System.unique_integer([:positive])}")
+      record_match(ana, beto, {11, 4, "p1"}, "hub-1")
+      record_match(beto, ana, {6, 11, "p2"}, "hub-2")
+
+      document = document(conn, "/games/hex-pong")
+
+      assert [week] = Floki.find(document, ~s([data-testid="game-community-week"]))
+      assert Floki.text(week) =~ ana.nickname
+      assert Floki.text(week) =~ "2 wins"
+
+      assert document |> Floki.find(~s([data-testid="game-community-recent"])) |> Floki.text() =~
+               "#{ana.nickname} 11 × 4 #{beto.nickname}"
+
+      assert [channel] = Floki.find(document, ~s([data-testid="game-community-channel"]))
+      assert Floki.attribute(channel, "href") == ["/c/hex-pong"]
+
+      assert json_ld(document, "VideoGame")["interactionStatistic"]["userInteractionCount"] == 2
+    end
+
+    test "a versus game ranks its players by rating", %{conn: conn} do
+      ana = player("ana#{System.unique_integer([:positive])}")
+
+      RetroHexChat.Repo.insert!(%GameRating{
+        base_id: "hex_pong",
+        player_id: ana.id,
+        rating: 1234,
+        matches: 3
+      })
+
+      ratings =
+        conn
+        |> document("/games/hex-pong")
+        |> Floki.find(~s([data-testid="game-community-ratings"]))
+        |> Floki.text()
+
+      assert ratings =~ ana.nickname
+      assert ratings =~ "1234"
+    end
+
+    test "a match being played in the open is on the page, to watch", %{conn: conn} do
+      ana = player("ana#{System.unique_integer([:positive])}")
+      beto = player("beto#{System.unique_integer([:positive])}")
+
+      {:ok, %{token: token}} =
+        Lobby.create_open_session(ana.id, metadata: %{"game_id" => "hex_pong"})
+
+      LiveMatchPages.playing([ana.nickname, beto.nickname], "hex_pong", token)
+
+      assert [link] =
+               conn
+               |> document("/games/hex-pong")
+               |> Floki.find(~s([data-testid="game-community-live"] [data-token="#{token}"]))
+
+      assert Floki.attribute(link, "href") == ["/watch/#{token}"]
+      assert Floki.text(link) =~ ana.nickname
+    end
+
+    test "an arcade game has no community window", %{conn: conn} do
+      document = document(conn, "/games/doom-shareware")
+      assert Floki.find(document, ~s([data-testid="game-community-channel"])) == []
+      refute json_ld(document, "VideoGame")["interactionStatistic"]
     end
   end
 

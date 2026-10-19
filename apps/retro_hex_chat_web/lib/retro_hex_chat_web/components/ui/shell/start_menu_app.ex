@@ -375,9 +375,9 @@ defmodule RetroHexChatWeb.Components.UI.StartMenuApp do
               disabled={!@chat?}
               testid="start-menu-item-retro-games"
             />
-            <%!-- The arcade keeps scores against a nick, so it needs one that is
-              registered and identified — a chat alone is not enough. It is a
-              catalogue of its own and stays one row. --%>
+            <%!-- An arcade session belongs to an account, so it needs a nick
+              that is registered and identified — a chat alone is not enough.
+              It is a catalogue of its own and stays one row. --%>
             <.app_item
               action="open_arcade"
               on_action={@on_action}

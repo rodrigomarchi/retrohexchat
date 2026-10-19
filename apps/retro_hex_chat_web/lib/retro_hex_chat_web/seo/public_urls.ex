@@ -12,6 +12,7 @@ defmodule RetroHexChatWeb.SEO.PublicUrls do
 
   alias RetroHexChat.Chat.Archive
   alias RetroHexChat.Chat.HelpTopics
+  alias RetroHexChat.Games.Results
   alias RetroHexChatWeb.ContentDates
   alias RetroHexChatWeb.GameCatalog
   alias RetroHexChatWeb.SEO
@@ -31,12 +32,28 @@ defmodule RetroHexChatWeb.SEO.PublicUrls do
       |> Enum.map(&{"/chat/help/#{&1.id}", ContentDates.help_topic(&1.id)})
 
     landing_paths = Enum.map(SEO.landing_paths(), &{&1, ContentDates.landing(&1)})
-    game_paths = Enum.map(GameCatalog.slugs(), &{"/games/#{&1}", ContentDates.game_page(&1)})
+    game_paths = Enum.map(GameCatalog.list(), &{GameCatalog.page_path(&1), game_lastmod(&1)})
 
     (landing_paths ++
        game_paths ++ [{"/chat/help", ContentDates.help_topic("welcome")}] ++ help_topic_paths)
     |> Enum.uniq_by(&elem(&1, 0))
   end
+
+  # A Retro Game's page shows its latest matches and its ranking, so it
+  # changed the last day anybody played it, not only the last day its files did.
+  defp game_lastmod(%{kind: :multiplayer} = game) do
+    played =
+      case Results.last_finished_at(game.id) do
+        nil -> nil
+        at -> at |> DateTime.to_date() |> Date.to_iso8601()
+      end
+
+    [ContentDates.game_page(game.slug), played]
+    |> Enum.reject(&is_nil/1)
+    |> Enum.max(fn -> nil end)
+  end
+
+  defp game_lastmod(game), do: ContentDates.game_page(game.slug)
 
   @doc "The showcase pages: English only, one URL each, and no known day."
   @spec showcase_paths() :: [String.t()]

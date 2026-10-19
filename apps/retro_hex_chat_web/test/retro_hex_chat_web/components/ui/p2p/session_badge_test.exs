@@ -33,6 +33,27 @@ defmodule RetroHexChatWeb.Components.UI.P2P.SessionBadgeTest do
     assert Floki.attribute(item, "aria-label") == []
   end
 
+  test "a connected session that is playing says which game" do
+    html =
+      entry(%{
+        state: :connected,
+        token: "tok-game",
+        peer_nick: "alice",
+        game: %{status: :playing, game_id: "hex_tennis_quick"}
+      })
+
+    [item] = html |> Floki.parse_document!() |> Floki.find(~s([data-testid="p2p-peer-entry"]))
+
+    assert item |> Floki.text() |> String.trim() ==
+             "P2P Session · Playing Hex Tennis: Quick Match"
+
+    assert entry(%{state: :connected, token: "tok-idle", peer_nick: "alice", game: nil})
+           |> Floki.parse_document!()
+           |> Floki.find(~s([data-testid="p2p-peer-entry"]))
+           |> Floki.text()
+           |> String.trim() == "P2P Session · Connected"
+  end
+
   # The card is the door and this entry is not one: it carries no address in any
   # state, so nobody enters a session the conversation was never shown.
   test "the entry carries no address, whatever the session is doing" do

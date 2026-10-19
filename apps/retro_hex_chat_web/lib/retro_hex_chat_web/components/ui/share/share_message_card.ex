@@ -40,6 +40,10 @@ defmodule RetroHexChatWeb.Components.UI.ShareMessageCard do
   attr :share_url, :string, default: nil, doc: "the address to hand on, for the Copy button"
   attr :next_path, :string, default: nil, doc: "where an ended card points instead of in"
 
+  attr :watch_path, :string,
+    default: nil,
+    doc: "a taken seat's match, to watch — the one way on a full match offers"
+
   attr :ended_at_text, :string,
     default: nil,
     doc: "when the room stopped, already in the reader's timezone"
@@ -132,6 +136,20 @@ defmodule RetroHexChatWeb.Components.UI.ShareMessageCard do
           <:icon><Icons.icon_copy class="h-4 w-4" /></:icon>
           {dgettext("share", "Copy link")}
         </.button>
+      </:actions>
+
+      <%!-- A seat that was taken is a match being played; nobody can join
+          it, anybody can watch it. --%>
+      <:actions :if={@watch_path}>
+        <.surface_link
+          as={:button}
+          href={@watch_path}
+          label={heading(@subject, @card)}
+          data-testid="share-message-watch"
+        >
+          <:icon><Icons.icon_watching class="h-4 w-4" /></:icon>
+          {dpgettext("share", "match", "Watch")}
+        </.surface_link>
       </:actions>
 
       <%!-- The label is required as well as the path, so a kind added later

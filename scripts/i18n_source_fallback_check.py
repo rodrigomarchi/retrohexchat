@@ -68,6 +68,7 @@ TECHNICAL_SOURCE_ALLOWLIST = [
     r"^P1 %\{score\}$",
     r"^%\{game\} — %\{nickname\} vs %\{peer\}$",
     r"^— %\{p1\} × %\{p2\}%\{winner\}$",
+    r"^%\{p1\} %\{p1_score\} × %\{p2_score\} %\{p2\}$",
     r"^- %\{note\}$",
     r"^%\{base\} = %\{sum\}$",
     r"^%\{base\} %\{sign\} %\{modifier\} = %\{total\}$",

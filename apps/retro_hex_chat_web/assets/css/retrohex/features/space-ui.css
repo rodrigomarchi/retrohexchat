@@ -870,3 +870,37 @@
 .space-panel-game-name {
   color: var(--space-ui-ink);
 }
+
+/* The game a cabinet plays, ahead of the shelf: its cartridge a little larger,
+   and its two ways on under it. */
+.space-panel-featured {
+  display: grid;
+  grid-template-columns: minmax(0, 16rem) minmax(0, 1fr);
+  gap: 4px 16px;
+  margin-bottom: 8px;
+}
+
+.space-panel-featured-game,
+.space-panel-featured-side {
+  display: grid;
+  align-content: start;
+  gap: 2px;
+}
+
+@media (max-width: 640px) {
+  .space-panel-featured {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+.space-panel-featured-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 4px;
+}
+
+.space-panel-link {
+  color: var(--space-ui-ink);
+  text-decoration: underline;
+}

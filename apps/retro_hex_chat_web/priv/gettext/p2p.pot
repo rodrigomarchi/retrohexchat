@@ -69,7 +69,7 @@ msgstr ""
 
 #: lib/retro_hex_chat_web/components/ui/lobby/lobby_network_panel.ex:615
 #: lib/retro_hex_chat_web/components/ui/p2p/p2p_connection_diagram.ex:374
-#: lib/retro_hex_chat_web/components/ui/p2p/session_badge.ex:243
+#: lib/retro_hex_chat_web/components/ui/p2p/session_badge.ex:252
 #, elixir-autogen, elixir-format
 msgid "Connected"
 msgstr ""
@@ -114,7 +114,7 @@ msgstr ""
 #: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:890
 #: lib/retro_hex_chat_web/components/ui/p2p/file_transfer.ex:157
 #: lib/retro_hex_chat_web/components/ui/p2p/p2p_connection_diagram.ex:403
-#: lib/retro_hex_chat_web/components/ui/p2p/session_badge.ex:240
+#: lib/retro_hex_chat_web/components/ui/p2p/session_badge.ex:249
 #: lib/retro_hex_chat_web/components/ui/p2p/starting_room.ex:507
 #: lib/retro_hex_chat_web/live/p2p_live/components/p2p_session_console.ex:257
 #, elixir-autogen, elixir-format
@@ -316,7 +316,7 @@ msgid "Closed"
 msgstr ""
 
 #: lib/retro_hex_chat_web/components/ui/lobby/lobby_network_panel.ex:656
-#: lib/retro_hex_chat_web/components/ui/p2p/session_badge.ex:242
+#: lib/retro_hex_chat_web/components/ui/p2p/session_badge.ex:251
 #, elixir-autogen, elixir-format
 msgid "Connecting"
 msgstr ""
@@ -566,7 +566,7 @@ msgid "Peer online"
 msgstr ""
 
 #: lib/retro_hex_chat_web/components/ui/lobby/lobby_network_panel.ex:616
-#: lib/retro_hex_chat_web/components/ui/p2p/session_badge.ex:241
+#: lib/retro_hex_chat_web/components/ui/p2p/session_badge.ex:250
 #, elixir-autogen, elixir-format
 msgid "Pending"
 msgstr ""
@@ -812,8 +812,8 @@ msgstr ""
 msgid "End"
 msgstr ""
 
-#: lib/retro_hex_chat_web/components/ui/p2p/session_badge.ex:254
-#: lib/retro_hex_chat_web/live/app/p2p_live.ex:279
+#: lib/retro_hex_chat_web/components/ui/p2p/session_badge.ex:263
+#: lib/retro_hex_chat_web/live/app/p2p_live.ex:278
 #, elixir-autogen, elixir-format
 msgid "P2P Session"
 msgstr ""
@@ -823,7 +823,7 @@ msgstr ""
 msgid "P2P layout"
 msgstr ""
 
-#: lib/retro_hex_chat_web/components/ui/p2p/session_badge.ex:96
+#: lib/retro_hex_chat_web/components/ui/p2p/session_badge.ex:97
 #, elixir-autogen, elixir-format
 msgid "P2P session summary"
 msgstr ""
@@ -1082,8 +1082,8 @@ msgstr ""
 msgid "Call controls become available after the peer joins the P2P session."
 msgstr ""
 
-#: lib/retro_hex_chat_web/components/ui/p2p/session_badge.ex:92
-#: lib/retro_hex_chat_web/components/ui/p2p/session_badge.ex:145
+#: lib/retro_hex_chat_web/components/ui/p2p/session_badge.ex:93
+#: lib/retro_hex_chat_web/components/ui/p2p/session_badge.ex:146
 #, elixir-autogen, elixir-format
 msgid "Decline"
 msgstr ""
@@ -1093,13 +1093,13 @@ msgstr ""
 msgid "Invite pending"
 msgstr ""
 
-#: lib/retro_hex_chat_web/components/ui/p2p/session_badge.ex:132
+#: lib/retro_hex_chat_web/components/ui/p2p/session_badge.ex:133
 #: lib/retro_hex_chat_web/components/ui/p2p/starting_room.ex:267
 #, elixir-autogen, elixir-format
 msgid "Start"
 msgstr ""
 
-#: lib/retro_hex_chat_web/components/ui/p2p/session_badge.ex:246
+#: lib/retro_hex_chat_web/components/ui/p2p/session_badge.ex:255
 #, elixir-autogen, elixir-format
 msgid "Start P2P session with %{peer}"
 msgstr ""
@@ -1215,7 +1215,7 @@ msgstr ""
 msgid "Trigger"
 msgstr ""
 
-#: lib/retro_hex_chat_web/live/app/p2p_live.ex:308
+#: lib/retro_hex_chat_web/live/app/p2p_live.ex:307
 #, elixir-autogen, elixir-format
 msgid "Bring it back here"
 msgstr ""
@@ -1240,12 +1240,12 @@ msgstr ""
 msgid "In the room"
 msgstr ""
 
-#: lib/retro_hex_chat_web/live/app/p2p_live.ex:572
+#: lib/retro_hex_chat_web/live/app/p2p_live.ex:569
 #, elixir-autogen, elixir-format
 msgid "This P2P session is no longer available."
 msgstr ""
 
-#: lib/retro_hex_chat_web/live/app/p2p_live.ex:299
+#: lib/retro_hex_chat_web/live/app/p2p_live.ex:298
 #, elixir-autogen, elixir-format
 msgid "This session is open in another window of yours."
 msgstr ""
@@ -1265,8 +1265,8 @@ msgstr ""
 msgid "Waiting for %{peer} to start."
 msgstr ""
 
-#: lib/retro_hex_chat_web/live/app/p2p_live.ex:562
-#: lib/retro_hex_chat_web/live/app/p2p_live.ex:567
+#: lib/retro_hex_chat_web/live/app/p2p_live.ex:559
+#: lib/retro_hex_chat_web/live/app/p2p_live.ex:564
 #, elixir-autogen, elixir-format
 msgid "You must be registered with NickServ to use P2P sessions."
 msgstr ""
@@ -1293,8 +1293,8 @@ msgstr ""
 msgid "ready"
 msgstr ""
 
-#: lib/retro_hex_chat_web/live/app/p2p_live.ex:549
-#: lib/retro_hex_chat_web/live/app/p2p_live.ex:554
+#: lib/retro_hex_chat_web/live/app/p2p_live.ex:546
+#: lib/retro_hex_chat_web/live/app/p2p_live.ex:551
 #, elixir-autogen, elixir-format
 msgid "You must be identified with NickServ to use P2P sessions."
 msgstr ""
@@ -1309,7 +1309,7 @@ msgstr ""
 msgid "Share the link — the match starts when somebody takes the seat."
 msgstr ""
 
-#: lib/retro_hex_chat_web/live/app/p2p_live.ex:577
+#: lib/retro_hex_chat_web/live/app/p2p_live.ex:574
 #, elixir-autogen, elixir-format
 msgid "This match is already full."
 msgstr ""
@@ -1330,17 +1330,17 @@ msgstr ""
 msgid "whoever joins"
 msgstr ""
 
-#: lib/retro_hex_chat_web/live/app/p2p_live.ex:280
+#: lib/retro_hex_chat_web/live/app/p2p_live.ex:279
 #, elixir-autogen, elixir-format
 msgid "Taking your seat..."
 msgstr ""
 
-#: lib/retro_hex_chat_web/components/ui/p2p/session_badge.ex:252
+#: lib/retro_hex_chat_web/components/ui/p2p/session_badge.ex:261
 #, elixir-autogen, elixir-format
 msgid "Open the P2P session with %{peer} in a tab of its own"
 msgstr ""
 
-#: lib/retro_hex_chat_web/components/ui/p2p/session_badge.ex:81
+#: lib/retro_hex_chat_web/components/ui/p2p/session_badge.ex:82
 #, elixir-autogen, elixir-format
 msgid "Decline P2P request"
 msgstr ""
@@ -1355,7 +1355,7 @@ msgstr ""
 msgid "Leave call"
 msgstr ""
 
-#: lib/retro_hex_chat_web/components/ui/p2p/session_badge.ex:257
+#: lib/retro_hex_chat_web/components/ui/p2p/session_badge.ex:266
 #, elixir-autogen, elixir-format
 msgid "P2P Session · %{state}"
 msgstr ""
@@ -1388,4 +1388,9 @@ msgstr ""
 #: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:175
 #, elixir-autogen, elixir-format
 msgid "You are still in it. They can join again, or you can leave too."
+msgstr ""
+
+#: lib/retro_hex_chat_web/components/ui/p2p/session_badge.ex:245
+#, elixir-autogen, elixir-format
+msgid "Playing %{game}"
 msgstr ""

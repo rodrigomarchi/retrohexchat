@@ -42,7 +42,9 @@ defmodule RetroHexChatWeb.P2PLive.Components.P2PGameIsland do
        game_outgoing: false,
        games: Catalog.list_games(),
        connected: false,
-       peer_nick: nil
+       peer_nick: nil,
+       watchers: 0,
+       watch_url: nil
      )}
   end
 
@@ -66,6 +68,8 @@ defmodule RetroHexChatWeb.P2PLive.Components.P2PGameIsland do
         game_outgoing={@game_outgoing}
         games={@games}
         peer_nick={@peer_nick}
+        watchers={@watchers}
+        watch_url={@watch_url}
       />
     </div>
     """
@@ -112,8 +116,9 @@ defmodule RetroHexChatWeb.P2PLive.Components.P2PGameIsland do
   end
 
   # Both peers receive the finished broadcast: swap the frozen canvas for the
-  # result card (the canvas hook unmounts and stops its engine), and drop a chat
-  # line. The badge goes idle via summarize.
+  # result card (the canvas hook unmounts and stops its engine). The line in
+  # the conversation is the server's to write, once, when it records the match.
+  # The badge goes idle via summarize.
   defp handle_action(socket, {:result, result}) do
     game = socket.assigns.game
 
@@ -123,8 +128,11 @@ defmodule RetroHexChatWeb.P2PLive.Components.P2PGameIsland do
       game_request: nil,
       game_outgoing: false
     )
-    |> post_result_message(game.game_id, result)
     |> summarize()
+  end
+
+  defp handle_action(socket, {:watchers, count, watch_url}) do
+    assign(socket, watchers: count, watch_url: watch_url)
   end
 
   defp handle_action(socket, :dismiss_result) do
@@ -146,33 +154,6 @@ defmodule RetroHexChatWeb.P2PLive.Components.P2PGameIsland do
   end
 
   defp surface_games, do: send(self(), {:p2p_console_section, "games"})
-
-  @spec post_result_message(Phoenix.LiveView.Socket.t(), String.t() | nil, map()) ::
-          Phoenix.LiveView.Socket.t()
-  defp post_result_message(socket, game_id, result) do
-    name = game_name(socket.assigns.games, game_id)
-    score = result["score"] || %{}
-    p1 = score["p1"] || 0
-    p2 = score["p2"] || 0
-
-    message =
-      dgettext("lobby", "Game over — %{game}: %{p1} × %{p2}", game: name, p1: p1, p2: p2)
-
-    send(
-      self(),
-      {:p2p_feature_notice, :game, message, scope: :shared, writer: socket.assigns.game.is_host}
-    )
-
-    socket
-  end
-
-  @spec game_name([map()], String.t() | nil) :: String.t()
-  defp game_name(games, game_id) do
-    case Enum.find(games, &(&1.id == game_id)) do
-      %{name: name} -> name
-      _ -> to_string(game_id)
-    end
-  end
 
   # The host owns the taskbar read-model: bubble a minimal summary up so the badge
   # tracks the game without reading the island's full state.

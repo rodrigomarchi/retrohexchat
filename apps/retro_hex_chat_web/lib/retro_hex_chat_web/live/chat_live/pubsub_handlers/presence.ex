@@ -30,6 +30,7 @@ defmodule RetroHexChatWeb.ChatLive.PubsubHandlers.Presence do
 
   alias RetroHexChat.Accounts.Session
   alias RetroHexChat.Chat.{CapturedURL, IgnoreList}
+  alias RetroHexChat.Games.Activity
   alias RetroHexChat.Presence.NotifyList
   alias RetroHexChat.Scraper.Store
   alias RetroHexChatWeb.ChatLive.Components.HoverCard
@@ -178,7 +179,38 @@ defmodule RetroHexChatWeb.ChatLive.PubsubHandlers.Presence do
 
   # ── Catch-all: pass unhandled to next hook ────────────────
 
+  # Who is in a Retro Games match anywhere, for the badge in the user list and
+  # the matches to watch. Presence is the source: a tab that closes mid-match
+  # takes its badge with it. Every connected page hears every diff, so a burst
+  # of them — matches starting together, somebody toggling a game — is read
+  # once, a moment after the first.
+  @games_refresh_ms 1_000
+
+  def handle_info(%{event: "presence_diff"}, socket) do
+    if socket.assigns[:games_refresh_due] do
+      {:halt, socket}
+    else
+      Process.send_after(self(), :refresh_games_playing, @games_refresh_ms)
+      {:halt, assign(socket, games_refresh_due: true)}
+    end
+  end
+
+  def handle_info(:refresh_games_playing, socket) do
+    {:halt,
+     socket
+     |> assign(games_refresh_due: false)
+     |> mark_games_playing()}
+  end
+
   def handle_info(_, socket), do: {:cont, socket}
+
+  defp mark_games_playing(socket) do
+    games = Map.new(Activity.now(), fn {key, %{game_id: game_id}} -> {key, game_id} end)
+
+    socket
+    |> Nicklist.mark_playing(games)
+    |> assign(live_matches: Activity.live_matches())
+  end
 
   # ── Private helpers ───────────────────────────────────────
 

@@ -9,6 +9,7 @@
  */
 import { log } from "../../lib/logger.js";
 import { createGameEngine } from "../../lib/games/engine_loader.js";
+import { createHostTransport } from "../../lib/games/spectate_wire.js";
 
 const LobbyGameCanvasHook = {
   mounted() {
@@ -60,11 +61,18 @@ const LobbyGameCanvasHook = {
     this._engineLoading = true;
 
     let engine;
+    // The host's match can be watched: what it sends its guest is also
+    // published for whoever is watching. The guest only plays.
+    const host = isHost
+      ? createHostTransport(this.channel, document.getElementById("lobby-webrtc"))
+      : null;
+    this._hostWire = host;
 
     try {
       engine = await createGameEngine({
         canvas,
         channel: this.channel,
+        transport: host?.transport,
         gameId: this._gameId,
         mode: isHost ? "p2p_host" : "p2p_guest",
         isHost,
@@ -105,6 +113,9 @@ const LobbyGameCanvasHook = {
       this.engine.stop();
       this.engine = null;
     }
+
+    this._hostWire?.destroy();
+    this._hostWire = null;
   },
 
   destroyed() {

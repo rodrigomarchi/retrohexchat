@@ -1957,6 +1957,7 @@ msgstr ""
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_away.html.heex:30
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_ban.html.heex:43
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_bio.html.heex:34
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_challenge.html.heex:28
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_clear.html.heex:53
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_clearmotd.html.heex:54
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_clearwelcome.html.heex:52
@@ -1970,6 +1971,7 @@ msgstr ""
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_join.html.heex:37
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_kick.html.heex:40
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_knock.html.heex:39
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_lfg.html.heex:30
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_list.html.heex:23
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_me.html.heex:34
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_mode.html.heex:102
@@ -2389,6 +2391,7 @@ msgstr "Варианты"
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_away.html.heex:9
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_ban.html.heex:9
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_bio.html.heex:9
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_challenge.html.heex:10
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_deop.html.heex:19
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_devoice.html.heex:19
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_event.html.heex:9
@@ -2398,6 +2401,7 @@ msgstr "Варианты"
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_join.html.heex:9
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_kick.html.heex:11
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_knock.html.heex:9
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_lfg.html.heex:9
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_me.html.heex:9
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_mode.html.heex:9
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_msg.html.heex:9
@@ -2680,6 +2684,7 @@ msgstr "Корневые администраторы не могут быть �
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_autorespond.html.heex:36
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_ban.html.heex:27
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_bio.html.heex:28
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_challenge.html.heex:17
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_clear.html.heex:35
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_clearmotd.html.heex:37
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_clearwelcome.html.heex:37
@@ -2693,6 +2698,7 @@ msgstr "Корневые администраторы не могут быть �
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_join.html.heex:22
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_kick.html.heex:30
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_knock.html.heex:31
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_lfg.html.heex:17
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_mode.html.heex:90
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_motd.html.heex:30
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_msg.html.heex:29
@@ -2970,6 +2976,7 @@ msgstr "Подкоманды"
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_away.html.heex:7
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_ban.html.heex:7
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_bio.html.heex:7
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_challenge.html.heex:8
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_clear.html.heex:14
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_clearmotd.html.heex:15
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_clearwelcome.html.heex:15
@@ -2983,6 +2990,7 @@ msgstr "Подкоманды"
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_join.html.heex:7
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_kick.html.heex:8
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_knock.html.heex:7
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_lfg.html.heex:7
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_list.html.heex:7
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_me.html.heex:7
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_mode.html.heex:7
@@ -5923,3 +5931,74 @@ msgstr "/autorespond add on_join #welcome /notice $nick Welcome! /autorespond ad
 #, elixir-autogen, elixir-format
 msgid "When you join a channel, a new tab opens and you can see messages and participate in the conversation. If the channel doesn't exist, it is created automatically and you become its owner (giving you control over channel settings). For registered users, joining a channel automatically adds it to your auto-join list so it's rejoined on your next connection."
 msgstr "Когда вы присоединяетесь к каналу, открывается новая вкладка, и вы можете видеть сообщения и участвовать в разговоре. Если канал не существует, он создается автоматически, и вы становитесь его владельцем. Для зарегистрированных пользователей присоединение к каналу автоматически добавляет его в ваш список автоматического соединения, поэтому он снова присоединяется к вашему следующему соединению."
+
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_challenge.html.heex:9
+#, elixir-autogen, elixir-format
+msgid "/challenge <nickname> [mode]"
+msgstr "/challenge <nickname> [mode]"
+
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_lfg.html.heex:8
+#, elixir-autogen, elixir-format
+msgid "/lfg [mode]"
+msgstr "/lfg [mode]"
+
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_challenge.html.heex:20
+#, elixir-autogen, elixir-format
+msgid "Both of you need registered, identified nicknames"
+msgstr "Вам обоим нужны зарегистрированные, идентифицированные никнеймы"
+
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_lfg.html.heex:21
+#, elixir-autogen, elixir-format
+msgid "Needs a registered nickname you have identified"
+msgstr "Нужен зарегистрированный ник, который вы определили"
+
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_challenge.html.heex:19
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_lfg.html.heex:19
+#, elixir-autogen, elixir-format
+msgid "Only in a game's own channel"
+msgstr "Только в игровом канале"
+
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_challenge.html.heex:13
+#, elixir-autogen, elixir-format
+msgid "— Who to play. They have to be online and registered."
+msgstr "- Кому играть. Они должны быть онлайн и зарегистрированы."
+
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_lfg.html.heex:28
+#, elixir-autogen, elixir-format
+msgid "A seat nobody takes expires after about fifteen minutes"
+msgstr "A seat nobody takes expires after about fifteen minutes"
+
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_challenge.html.heex:22
+#, elixir-autogen, elixir-format
+msgid "If the two of you already have a P2P session, its card comes back and you choose the game inside it"
+msgstr "Если у вас уже есть P2P-сессия, карта возвращается, и вы выбираете игру внутри нее."
+
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_lfg.html.heex:23
+#, elixir-autogen, elixir-format
+msgid "One open seat per game and channel. Asking again points at the same card."
+msgstr "Открытое место для игры и канала. Повторный запрос на ту же карту."
+
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_lfg.html.heex:2
+#, elixir-autogen, elixir-format
+msgid "Use it to find somebody to play with, in the place where the players are. Run it in a game's channel. A card with one open seat appears there, and whoever presses Join first plays you."
+msgstr "Используйте его, чтобы найти кого-то, с кем можно играть, в том месте, где находятся игроки. Запустите его на игровом канале. Там появляется карта с одним открытым сиденьем, и тот, кто нажимает «Присоединиться», сначала играет с вами."
+
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_challenge.html.heex:15
+#, elixir-autogen, elixir-format
+msgid "— A mode of the channel's game."
+msgstr "— Режим игры канала."
+
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_lfg.html.heex:12
+#, elixir-autogen, elixir-format
+msgid "— A mode of the channel's game. Without one, you play the standard game."
+msgstr "— Режим игры канала. Без них вы играете в стандартную игру."
+
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_challenge.html.heex:2
+#, elixir-autogen, elixir-format
+msgid "Use it to invite one person to play this game. It works like the command %{command}, but the game is already chosen. The invitation arrives in your private conversation. The game starts when you are both in the session."
+msgstr "Используйте его, чтобы пригласить одного человека играть в эту игру. Он работает как команда %{command}, но игра уже выбрана. Приглашение приходит в вашу личную беседу. Игра начинается, когда вы оба находитесь в игре."
+
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_lfg.html.heex:20
+#, elixir-autogen, elixir-format
+msgid "The first player who presses Join plays you"
+msgstr "Первый игрок, который нажимает на Join, играет с вами"

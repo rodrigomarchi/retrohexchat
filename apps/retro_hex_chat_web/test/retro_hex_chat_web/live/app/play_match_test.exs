@@ -11,9 +11,11 @@ defmodule RetroHexChatWeb.App.PlayMatchTest do
 
   @moduletag :liveview
 
+  alias RetroHexChat.Games.Activity
   alias RetroHexChat.Games.Catalog
   alias RetroHexChat.Lobby
   alias RetroHexChat.Lobby.Registry
+  alias RetroHexChat.Nickname
   alias RetroHexChat.Services.NickServ
   alias RetroHexChat.Services.RegisteredNick
 
@@ -274,6 +276,15 @@ defmodule RetroHexChatWeb.App.PlayMatchTest do
       # And the console opens on the game rather than on the call.
       assert assigns(host_view).p2p_session.console_section == "games"
       assert assigns(guest_view).p2p_session.console_section == "games"
+
+      # Both are playing, until the session ends under the game.
+      _ = render(host_view)
+      assert %{game_id: @game} = Activity.now()[Nickname.key(host.nickname)]
+
+      :ok = Lobby.close_session(session.token, guest.id, "peer_left")
+      _ = :sys.get_state(host_view.pid)
+      refute Map.has_key?(Activity.now(), Nickname.key(host.nickname))
+      refute Enum.any?(Activity.live_matches(), &(&1.token == session.token))
     end
   end
 

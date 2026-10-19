@@ -440,7 +440,7 @@ defmodule RetroHexChatWeb.Components.UI.DesktopLaunchers do
         # The server opens this window: a session has to exist before there is
         # anything to draw, so the icon pushes the event and the window follows.
         action: "open_arcade",
-        # The arcade keeps scores against a nick, so it needs one that is
+        # An arcade session belongs to an account, so it needs a nick that is
         # registered and identified — a chat alone is not enough.
         enabled?: cap.arcade_available?
       }

@@ -527,6 +527,7 @@ export class HexEnduroEngine extends GameEngine {
           this.onGameEnd({
             score: { p1: this.gameState.p1.score, p2: this.gameState.p2.score },
             winner: 0, // draw on disconnect
+            disconnected: true,
           });
         } catch (error) {
           // The result callback (pushEvent) threw — do not lose it.

@@ -1,0 +1,30 @@
+<p>
+  {dgettext(
+    "help_commands",
+    "Use it to invite one person to play this game. It works like the command %{command}, but the game is already chosen. The invitation arrives in your private conversation. The game starts when you are both in the session.",
+    command: "/p2p"
+  )}
+</p>
+<.help_h4 icon={:icon_code}>{dgettext("help_commands", "Syntax")}</.help_h4>
+<pre>{dgettext("help_commands", "/challenge <nickname> [mode]")}</pre>
+<.help_h4 icon={:icon_tag}>{dgettext("help_commands", "Parameters")}</.help_h4>
+<p>
+  <code>nickname</code>
+  {dgettext("help_commands", "— Who to play. They have to be online and registered.")}<br />
+  <code>mode</code>
+  {dgettext("help_commands", "— A mode of the channel's game.")}
+</p>
+<.help_h4 icon={:icon_rules}>{dgettext("help_commands", "Rules & Limits")}</.help_h4>
+<ul>
+  <li>{dgettext("help_commands", "Only in a game's own channel")}</li>
+  <li>{dgettext("help_commands", "Both of you need registered, identified nicknames")}</li>
+  <li>
+    {dgettext(
+      "help_commands",
+      "If the two of you already have a P2P session, its card comes back and you choose the game inside it"
+    )}
+  </li>
+</ul>
+<.help_h4 icon={:icon_lightbulb}>{dgettext("help_commands", "Examples")}</.help_h4>
+<pre>/challenge mario
+/challenge mario quick</pre>

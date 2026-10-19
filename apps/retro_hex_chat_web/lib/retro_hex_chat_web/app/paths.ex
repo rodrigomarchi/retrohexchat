@@ -116,6 +116,10 @@ defmodule RetroHexChatWeb.App.Paths do
   @spec play_match_path(String.t(), String.t()) :: String.t()
   def play_match_path(game_id, session_token), do: ~p"/play/#{game_id}/#{session_token}"
 
+  @doc "A match offered in the open, watched: `/watch/<token>`."
+  @spec watch_path(String.t()) :: String.t()
+  def watch_path(session_token), do: ~p"/watch/#{session_token}"
+
   @doc """
   An arcade game at an address of ours.
 

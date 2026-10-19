@@ -23,6 +23,7 @@ defmodule RetroHexChatWeb.Components.UI.P2P.SessionBadge do
   import RetroHexChatWeb.Components.UI.ToolButton
 
   alias RetroHexChatWeb.Components.UI.EntryPopover
+  alias RetroHexChatWeb.Components.UI.GameResultCard
   alias RetroHexChatWeb.Icons
 
   attr :peer, :string, required: true
@@ -70,7 +71,7 @@ defmodule RetroHexChatWeb.Components.UI.P2P.SessionBadge do
         data-p2p-status={Atom.to_string(@status)}
       >
         <Icons.icon_toolbar_p2p class="h-3.5 w-3.5 shrink-0" />
-        <span class="conversation-toolbar-button__text">{entry_text(@status)}</span>
+        <span class="conversation-toolbar-button__text">{entry_text(@status, @game)}</span>
       </.tool_button>
 
       <%!-- Refusing is not a door, which is why it survived the removal of the
@@ -112,7 +113,7 @@ defmodule RetroHexChatWeb.Components.UI.P2P.SessionBadge do
         <:trigger><Icons.icon_btn_info class="h-3.5 w-3.5" /></:trigger>
         <.entry_popover_header
           title={@peer}
-          state_label={status_label(@status)}
+          state_label={status_label(@status, @game)}
           state_class={status_class(@status)}
         >
           <:icon><Icons.icon_protocol_p2p_compact class="h-3.5 w-3.5 shrink-0" /></:icon>
@@ -198,6 +199,7 @@ defmodule RetroHexChatWeb.Components.UI.P2P.SessionBadge do
     status = status(state)
 
     assigns
+    |> assign(:game, value(session, :game))
     |> assign(:active, session != nil)
     |> assign(:idle?, state in [:idle, "idle"])
     |> assign(:pending_received?, pending_received?(state, role))
@@ -237,6 +239,13 @@ defmodule RetroHexChatWeb.Components.UI.P2P.SessionBadge do
   defp visual_state(nil), do: nil
   defp visual_state(_state), do: "connecting"
 
+  # A game in progress is what the session is doing, so it is what the entry
+  # says: "P2P Session · Playing Hex Pong" rather than "Connected".
+  defp status_label(:live, %{status: :playing, game_id: game_id}),
+    do: dgettext("p2p", "Playing %{game}", game: GameResultCard.game_title(game_id))
+
+  defp status_label(status, _game), do: status_label(status)
+
   defp status_label(:idle), do: dgettext("p2p", "Ready")
   defp status_label(:invite), do: dgettext("p2p", "Pending")
   defp status_label(:link), do: dgettext("p2p", "Connecting")
@@ -251,10 +260,10 @@ defmodule RetroHexChatWeb.Components.UI.P2P.SessionBadge do
   defp title(peer, _status),
     do: dgettext("p2p", "Open the P2P session with %{peer} in a tab of its own", peer: peer)
 
-  defp entry_text(:idle), do: dgettext("p2p", "P2P Session")
+  defp entry_text(:idle, _game), do: dgettext("p2p", "P2P Session")
 
-  defp entry_text(status),
-    do: dgettext("p2p", "P2P Session · %{state}", state: status_label(status))
+  defp entry_text(status, game),
+    do: dgettext("p2p", "P2P Session · %{state}", state: status_label(status, game))
 
   defp state_text_class(:idle), do: nil
   defp state_text_class(:invite), do: "text-warning"

@@ -682,6 +682,17 @@ _ROWS = {
     "Underline":    ("Sublinhado", "Sublinhado", "Subrayado", "Souligné", "Unterstrichen", "Sottolineato", "Onderstrepen", "Podkreślenie", "Подчёркивание", "Garis bawah", "下線", "下划线", "底線"),
     "home page":    ("página inicial", "página inicial", "página principal", "page d'accueil", "Startseite", "pagina iniziale", "startpagina", "strona główna", "главная страница", "beranda", "ホームページ", "主页", "首頁"),
     "On this page": ("Nesta página", "Nesta página", "En esta página", "Sur cette page", "Auf dieser Seite", "In questa pagina", "Op deze pagina", "Na tej stronie", "На этой странице", "Di halaman ini", "このページの内容", "本页内容", "本頁內容"),
+    # ── A game's channel and its results ──────────────────────
+    # "Draw" is the result of a match, never the verb.
+    "Ranking":        ("Ranking", "Classificação", "Clasificación", "Classement", "Rangliste", "Classifica", "Ranglijst", "Ranking", "Рейтинг", "Peringkat", "ランキング", "排行榜", "排行榜"),
+    "Rematch":        ("Revanche", "Desforra", "Revancha", "Revanche", "Revanche", "Rivincita", "Revanche", "Rewanż", "Реванш", "Tanding ulang", "再戦", "再战", "再戰"),
+    "Draw":           ("Empate", "Empate", "Empate", "Match nul", "Unentschieden", "Pareggio", "Gelijkspel", "Remis", "Ничья", "Seri", "引き分け", "平局", "平手"),
+    "Find a partner": ("Procurar parceiro", "Procurar parceiro", "Buscar compañero", "Trouver un partenaire", "Mitspieler finden", "Trova un compagno", "Medespeler zoeken", "Znajdź partnera", "Найти партнёра", "Cari lawan main", "相手を探す", "寻找对手", "尋找對手"),
+    "Personal best":  ("Recorde pessoal", "Recorde pessoal", "Récord personal", "Record personnel", "Persönliche Bestleistung", "Record personale", "Persoonlijk record", "Rekord osobisty", "Личный рекорд", "Rekor pribadi", "自己ベスト", "个人最佳", "個人最佳"),
+    "Computer":       ("Computador", "Computador", "Computadora", "Ordinateur", "Computer", "Computer", "Computer", "Komputer", "Компьютер", "Komputer", "コンピューター", "电脑", "電腦"),
+    "Ended early":    ("Encerrada antes", "Terminada antes", "Terminó antes", "Fin anticipée", "Vorzeitig beendet", "Finita prima", "Vroeg beëindigd", "Zakończona wcześniej", "Завершена досрочно", "Berakhir lebih awal", "途中終了", "提前结束", "提前結束"),
+    "Rating":         ("Rating", "Classificação Elo", "Puntuación Elo", "Classement Elo", "Elo-Wertung", "Punteggio Elo", "Elo-rating", "Ranking Elo", "Рейтинг Эло", "Peringkat Elo", "レーティング", "等级分", "等級分"),
+    "Match over":     ("Partida encerrada", "Partida terminada", "Partida terminada", "Partie terminée", "Spiel vorbei", "Partita finita", "Wedstrijd voorbij", "Mecz zakończony", "Матч окончен", "Pertandingan selesai", "試合終了", "比赛结束", "比賽結束"),
 }
 
 # A menu path, or a status with its mark, is built from the labels it names —
@@ -695,6 +706,13 @@ _ROWS["↻ Reconnecting:"] = tuple(f"↻ {reconnecting}:" for reconnecting in _R
 # Rows for a msgid that means something else elsewhere in the product, keyed by
 # (msgctxt, msgid). Only an entry carrying that context is curated by them.
 _CONTEXT_ROWS = {
+    # Starting a game, never playing a recording (the bare "Play" is media).
+    # A watched match's own words: "Live" on a match is not "available" as
+    # elsewhere, and "Watch" is watching a game being played.
+    ("match", "Watch"): ("Assistir", "Assistir", "Ver", "Regarder", "Zuschauen", "Guarda", "Kijken", "Oglądaj", "Смотреть", "Tonton", "観戦", "观战", "觀戰"),
+    ("match", "Live"): ("Ao vivo", "Em direto", "En directo", "En direct", "Live", "In diretta", "Live", "Na żywo", "В эфире", "Langsung", "ライブ", "直播", "直播"),
+    ("match", "Ended"): ("Encerrada", "Terminada", "Terminada", "Terminée", "Beendet", "Terminata", "Afgelopen", "Zakończona", "Завершена", "Selesai", "終了済み", "已结束", "已結束"),
+    ("game", "Play"): ("Jogar", "Jogar", "Jugar", "Jouer", "Spielen", "Gioca", "Spelen", "Graj", "Играть", "Main", "遊ぶ", "玩", "玩"),
     ("furniture", "Table"): ("Mesa", "Mesa", "Mesa", "Table", "Tisch", "Tavolo", "Tafel", "Stół", "Стол", "Meja", "テーブル", "桌子", "桌子"),
     # The Construct's other pieces whose English names mean something else
     # elsewhere: a die is never dying, a sign never a signature, a board never

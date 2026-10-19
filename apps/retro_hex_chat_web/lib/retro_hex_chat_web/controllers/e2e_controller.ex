@@ -5,6 +5,10 @@ defmodule RetroHexChatWeb.E2EController do
   alias RetroHexChat.Channels.Supervisor, as: ChannelSupervisor
   alias RetroHexChat.Chat.Content
   alias RetroHexChat.Chat.ContextualTips
+  alias RetroHexChat.Games.Catalog, as: GameCatalog
+  alias RetroHexChat.Games.Channels, as: GameChannels
+  alias RetroHexChat.Games.Results
+  alias RetroHexChat.Services.Queries, as: ServiceQueries
 
   @message_types %{
     "message" => :message,
@@ -53,6 +57,62 @@ defmodule RetroHexChatWeb.E2EController do
   end
 
   defp do_create_channel_message(conn, _params), do: error(conn, :bad_request, "invalid params")
+
+  @doc """
+  Writes a finished Retro Games match through the real ledger, as if it had
+  been played — so a spec sees its card in the game's channel and in the two
+  players' conversation without driving a whole match on a canvas. The game's
+  channel is made first, as the boot job would have made it.
+  """
+  @spec record_game_result(Plug.Conn.t(), map()) :: Plug.Conn.t()
+  def record_game_result(conn, params) do
+    if Application.get_env(:retro_hex_chat, :e2e_fault_injection?, false) do
+      do_record_game_result(conn, params)
+    else
+      not_found(conn)
+    end
+  end
+
+  defp do_record_game_result(
+         conn,
+         %{"game_id" => game_id, "p1" => p1, "payload" => payload} = params
+       )
+       when is_binary(game_id) and is_binary(p1) and is_map(payload) do
+    seconds = Map.get(params, "duration_seconds", 120)
+
+    with {:ok, host} <- registered_player(p1),
+         {:ok, guest} <- optional_player(Map.get(params, "p2")),
+         _created = GameChannels.ensure(GameCatalog.channel_name(game_id)),
+         _created = GameChannels.ensure(GameChannels.feed()),
+         {:ok, row} <-
+           Results.record(%{
+             game_id: game_id,
+             origin: if(guest, do: "p2p", else: "ai"),
+             difficulty: if(guest, do: nil, else: Map.get(params, "difficulty", "normal")),
+             p1: host,
+             p2: guest,
+             payload: payload,
+             lobby_token:
+               guest && "e2e-" <> Integer.to_string(System.unique_integer([:positive])),
+             started_at: DateTime.add(DateTime.utc_now(), -seconds, :second)
+           }) do
+      json(conn, %{status: "created", id: row.id})
+    else
+      {:error, reason} -> error(conn, :unprocessable_entity, inspect(reason))
+    end
+  end
+
+  defp do_record_game_result(conn, _params), do: error(conn, :bad_request, "invalid params")
+
+  defp optional_player(nil), do: {:ok, nil}
+  defp optional_player(nickname), do: registered_player(nickname)
+
+  defp registered_player(nickname) do
+    case ServiceQueries.find_by_nickname(nickname) do
+      nil -> {:error, "#{nickname} is not registered"}
+      nick -> {:ok, %{id: nick.id, nickname: nick.nickname}}
+    end
+  end
 
   @doc """
   Turns contextual tips off for a nickname, as "Don't show tips again" would.

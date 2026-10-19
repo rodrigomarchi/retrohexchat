@@ -165,7 +165,7 @@ msgstr[0] "%{count} 用戶"
 msgid "%{field}: %{errors}"
 msgstr "%{field}: %{errors}"
 
-#: lib/retro_hex_chat_web/live/chat_live/pubsub_handlers/channel_state.ex:468
+#: lib/retro_hex_chat_web/live/chat_live/pubsub_handlers/channel_state.ex:475
 #, elixir-autogen, elixir-format
 msgid "%{message} (%{reason})"
 msgstr "%{message} (%{reason})"
@@ -314,12 +314,12 @@ msgstr "(編)."
 msgid "* %{channel} is not invite-only — anyone can join"
 msgstr "* %{channel} 不只邀請——任何人都可以加入"
 
-#: lib/retro_hex_chat_web/live/chat_live/pubsub_handlers/presence.ex:214
+#: lib/retro_hex_chat_web/live/chat_live/pubsub_handlers/presence.ex:228
 #, elixir-autogen, elixir-format
 msgid "* %{inviter} has invited you to %{channel}"
 msgstr "*%{inviter}邀請您參加%{channel}"
 
-#: lib/retro_hex_chat_web/live/chat_live/pubsub_handlers/presence.ex:115
+#: lib/retro_hex_chat_web/live/chat_live/pubsub_handlers/presence.ex:116
 #, elixir-autogen, elixir-format
 msgid "* %{nickname} has gone offline"
 msgstr "* %{nickname} 已經下線"
@@ -339,7 +339,7 @@ msgstr "* %{nickname} 敲了%{channel} (%{message})"
 msgid "* %{nickname} ignore updated to: %{type}"
 msgstr "*%{nickname} 忽略更新爲:%{type}"
 
-#: lib/retro_hex_chat_web/live/chat_live/timer_handlers.ex:136
+#: lib/retro_hex_chat_web/live/chat_live/timer_handlers.ex:137
 #, elixir-autogen, elixir-format
 msgid "* %{nickname} is no longer auto-ignored"
 msgstr "* %{nickname} 已經不再自動"
@@ -352,7 +352,7 @@ msgstr "* %{nickname} 已經不再自動"
 msgid "* %{nickname} is no longer ignored"
 msgstr "* %{nickname} 不再被忽略"
 
-#: lib/retro_hex_chat_web/live/chat_live/timer_handlers.ex:102
+#: lib/retro_hex_chat_web/live/chat_live/timer_handlers.ex:103
 #, elixir-autogen, elixir-format
 msgid "* %{nickname} is no longer ignored (timer expired)"
 msgstr "* %{nickname} 不再忽略( 計時器過期)"
@@ -370,7 +370,7 @@ msgstr "* %{nickname} 現在被忽略"
 msgid "* %{nickname} is now ignored (%{type})"
 msgstr "* %{nickname} 現在被忽略(%{type})"
 
-#: lib/retro_hex_chat_web/live/chat_live/pubsub_handlers/presence.ex:114
+#: lib/retro_hex_chat_web/live/chat_live/pubsub_handlers/presence.ex:115
 #, elixir-autogen, elixir-format
 msgid "* %{nickname} is now online"
 msgstr "* %{nickname} 現在在線上"
@@ -435,7 +435,7 @@ msgstr "* 自動加入清單已清除"
 msgid "* Auto-join on invite: %{status}"
 msgstr "* 應邀請自動加入:%{status}"
 
-#: lib/retro_hex_chat_web/live/chat_live/timer_handlers.ex:188
+#: lib/retro_hex_chat_web/live/chat_live/timer_handlers.ex:189
 #, elixir-autogen, elixir-format
 msgid "* Auto-joining %{channel}..."
 msgstr "* 自動連接 %{channel}..."
@@ -455,7 +455,7 @@ msgstr "* 生物集:%{text}"
 msgid "* Bio truncated to 200 characters and set."
 msgstr "* 生物切換到200個字符和設定。"
 
-#: lib/retro_hex_chat_web/live/chat_live/timer_handlers.ex:237
+#: lib/retro_hex_chat_web/live/chat_live/timer_handlers.ex:238
 #, elixir-autogen, elixir-format
 msgid "* Channel invite to %{channel} expired"
 msgstr "* 頻道邀請 %{channel} 過期"
@@ -510,12 +510,12 @@ msgstr "* 通知路由的硬碼爲:活動"
 msgid "* Perform list cleared"
 msgstr "* 執行清單已清除"
 
-#: lib/retro_hex_chat_web/live/chat_live/timer_handlers.ex:161
+#: lib/retro_hex_chat_web/live/chat_live/timer_handlers.ex:162
 #, elixir-autogen, elixir-format
 msgid "* Performing: %{command}"
 msgstr "* 表演: %{command}"
 
-#: lib/retro_hex_chat_web/live/chat_live/timer_handlers.ex:212
+#: lib/retro_hex_chat_web/live/chat_live/timer_handlers.ex:213
 #, elixir-autogen, elixir-format
 msgid "* Rejoining %{channel}..."
 msgstr "* 重歸於好 %{channel}..."
@@ -555,7 +555,7 @@ msgstr "* 計時器'%{name} 設置:%{type},%{interval}s→%{command}"
 msgid "* Timer '%{name}' stopped"
 msgstr "* 計時器 '%{name}已停止"
 
-#: lib/retro_hex_chat_web/live/chat_live/timer_handlers.ex:73
+#: lib/retro_hex_chat_web/live/chat_live/timer_handlers.ex:74
 #, elixir-autogen, elixir-format
 msgid "* Timer '%{name}' target window is no longer available"
 msgstr "* 計時器 '%{name}' 目標窗口不再可用"
@@ -571,7 +571,7 @@ msgstr "* 用戶 '%{target}' 找不到"
 msgid "* You are not a channel operator"
 msgstr "* 你不是頻道操作員"
 
-#: lib/retro_hex_chat_web/live/chat_live/pubsub_handlers/presence.ex:191
+#: lib/retro_hex_chat_web/live/chat_live/pubsub_handlers/presence.ex:205
 #, elixir-autogen, elixir-format
 msgid "* You have been invited to %{channel} by %{inviter} (auto-joined)"
 msgstr "* 你被邀請參加 %{channel} 由 %{inviter} (自動結合)."
@@ -705,9 +705,9 @@ msgstr ""
 "/help <command>爲細節類型,或從菜單中打開全幫助系統的幫助話題."
 
 #: lib/retro_hex_chat_web/components/ui/chat/hover_card.ex:129
-#: lib/retro_hex_chat_web/components/ui/chat/nicklist.ex:123
-#: lib/retro_hex_chat_web/components/ui/chat/nicklist.ex:316
-#: lib/retro_hex_chat_web/components/ui/chat/nicklist.ex:554
+#: lib/retro_hex_chat_web/components/ui/chat/nicklist.ex:124
+#: lib/retro_hex_chat_web/components/ui/chat/nicklist.ex:317
+#: lib/retro_hex_chat_web/components/ui/chat/nicklist.ex:572
 #: lib/retro_hex_chat_web/live/chat_live/away_events.ex:32
 #: lib/retro_hex_chat_web/live/chat_live/components/hover_card.ex:120
 #: lib/retro_hex_chat_web/live/chat_live/helpers/whois.ex:155
@@ -752,7 +752,7 @@ msgid "Bold (Ctrl+Shift+B)"
 msgstr "粗體( Ctrl+Shift+B)"
 
 #: lib/retro_hex_chat_web/components/ui/chat/hover_card.ex:244
-#: lib/retro_hex_chat_web/live/chat_live/components/nicklist.ex:391
+#: lib/retro_hex_chat_web/live/chat_live/components/nicklist.ex:425
 #, elixir-autogen, elixir-format
 msgid "Bot"
 msgstr "機器人"
@@ -775,7 +775,7 @@ msgid "Brown"
 msgstr "褐色"
 
 #: lib/retro_hex_chat_web/components/ui/chat/conversations.ex:479
-#: lib/retro_hex_chat_web/components/ui/chat/visitor_greeting_card.ex:61
+#: lib/retro_hex_chat_web/components/ui/chat/visitor_greeting_card.ex:57
 #, elixir-autogen, elixir-format
 msgid "Browse All Channels..."
 msgstr "瀏覽所有頻道..."
@@ -1000,7 +1000,7 @@ msgstr "聯繫人列表已完整( 最多 100 個條目)"
 
 #: lib/retro_hex_chat_web/components/ui/chat/conversation_toolbar_actions.ex:82
 #: lib/retro_hex_chat_web/components/ui/chat/conversations.ex:327
-#: lib/retro_hex_chat_web/components/ui/chat/visitor_greeting_card.ex:58
+#: lib/retro_hex_chat_web/components/ui/chat/visitor_greeting_card.ex:54
 #, elixir-autogen, elixir-format
 msgid "Conversations"
 msgstr "談話"
@@ -1190,12 +1190,12 @@ msgid "Grey"
 msgstr "灰色"
 
 #: lib/retro_hex_chat_web/components/ui/chat/hover_card.ex:236
-#: lib/retro_hex_chat_web/live/chat_live/components/nicklist.ex:389
+#: lib/retro_hex_chat_web/live/chat_live/components/nicklist.ex:423
 #, elixir-autogen, elixir-format
 msgid "Half-Op"
 msgstr "半業務"
 
-#: lib/retro_hex_chat_web/components/ui/chat/message_row.ex:159
+#: lib/retro_hex_chat_web/components/ui/chat/message_row.ex:152
 #: lib/retro_hex_chat_web/live/chat_live/helpers/messages.ex:195
 #, elixir-autogen, elixir-format
 msgid "Help"
@@ -1368,7 +1368,7 @@ msgstr "離開頻道"
 #: lib/retro_hex_chat_web/live/chat_live/command_dispatch.ex:479
 #: lib/retro_hex_chat_web/live/chat_live/helpers/session.ex:594
 #: lib/retro_hex_chat_web/live/chat_live/menu_toolbar_events.ex:90
-#: lib/retro_hex_chat_web/live/desktop_live.ex:359
+#: lib/retro_hex_chat_web/live/desktop_live.ex:363
 #, elixir-autogen, elixir-format
 msgid "Leaving"
 msgstr "離開"
@@ -1557,8 +1557,8 @@ msgid "Objects"
 msgstr "對象"
 
 #: lib/retro_hex_chat_web/components/ui/chat/hover_card.ex:138
-#: lib/retro_hex_chat_web/components/ui/chat/nicklist.ex:115
-#: lib/retro_hex_chat_web/components/ui/chat/nicklist.ex:309
+#: lib/retro_hex_chat_web/components/ui/chat/nicklist.ex:116
+#: lib/retro_hex_chat_web/components/ui/chat/nicklist.ex:310
 #: lib/retro_hex_chat_web/live/chat_live/components/status_viewport.ex:108
 #, elixir-autogen, elixir-format
 msgid "Online"
@@ -1574,13 +1574,13 @@ msgstr "在新標籤中打開 /chat/help."
 msgid "Open Link"
 msgstr "打開鏈接"
 
-#: lib/retro_hex_chat_web/components/ui/chat/inline_help_card.ex:40
+#: lib/retro_hex_chat_web/components/ui/chat/inline_help_card.ex:39
 #, elixir-autogen, elixir-format
 msgid "Open in Help Topics"
 msgstr "在幫助主題中打開"
 
 #: lib/retro_hex_chat_web/components/ui/chat/hover_card.ex:232
-#: lib/retro_hex_chat_web/live/chat_live/components/nicklist.ex:388
+#: lib/retro_hex_chat_web/live/chat_live/components/nicklist.ex:422
 #, elixir-autogen, elixir-format
 msgid "Operator"
 msgstr "運算符"
@@ -1592,7 +1592,7 @@ msgid "Orange"
 msgstr "橙色"
 
 #: lib/retro_hex_chat_web/components/ui/chat/hover_card.ex:228
-#: lib/retro_hex_chat_web/live/chat_live/components/nicklist.ex:387
+#: lib/retro_hex_chat_web/live/chat_live/components/nicklist.ex:421
 #, elixir-autogen, elixir-format
 msgid "Owner"
 msgstr "擁有者"
@@ -1612,7 +1612,7 @@ msgstr "人員與身體"
 msgid "Perform list is full (max 50 commands)"
 msgstr "執行列表已滿( 最多 50 個命令)"
 
-#: lib/retro_hex_chat_web/live/chat_live/timer_handlers.ex:319
+#: lib/retro_hex_chat_web/live/chat_live/timer_handlers.ex:320
 #, elixir-autogen, elixir-format
 msgid "Perform: invalid command format: %{command}"
 msgstr "執行: 無效的命令格式: %{command}"
@@ -1729,7 +1729,7 @@ msgstr "對%{author}的答覆"
 msgid "Reset (Ctrl+Shift+X)"
 msgstr "重置( Ctrl+Shift) 。"
 
-#: lib/retro_hex_chat_web/live/desktop_live.html.heex:344
+#: lib/retro_hex_chat_web/live/desktop_live.html.heex:352
 #, elixir-autogen
 msgid "RetroHexChat"
 msgstr "反轉HexChat"
@@ -1795,7 +1795,7 @@ msgid "Send"
 msgstr "傳送"
 
 #: lib/retro_hex_chat_web/components/ui/chat/hover_card.ex:135
-#: lib/retro_hex_chat_web/components/ui/chat/message_row.ex:150
+#: lib/retro_hex_chat_web/components/ui/chat/message_row.ex:143
 #: lib/retro_hex_chat_web/live/chat_live/pubsub_handlers/server_messages.ex:22
 #, elixir-autogen, elixir-format
 msgid "Server"
@@ -1806,7 +1806,7 @@ msgstr "伺服器"
 msgid "Server setting '%{key}' changed to '%{value}'."
 msgstr "服務器設置爲%{key}, 改爲%{value} 。"
 
-#: lib/retro_hex_chat_web/components/ui/chat/message_row.ex:122
+#: lib/retro_hex_chat_web/components/ui/chat/message_row.ex:115
 #: lib/retro_hex_chat_web/live/chat_live/command_dispatch.ex:510
 #: lib/retro_hex_chat_web/live/chat_live/components/status_viewport.ex:106
 #, elixir-autogen, elixir-format
@@ -1852,8 +1852,8 @@ msgid "Symbols"
 msgstr "符號"
 
 #: lib/retro_hex_chat_web/components/ui/chat/chat_taskbar.ex:291
-#: lib/retro_hex_chat_web/components/ui/chat/message_row.ex:77
-#: lib/retro_hex_chat_web/components/ui/chat/message_row.ex:174
+#: lib/retro_hex_chat_web/components/ui/chat/message_row.ex:72
+#: lib/retro_hex_chat_web/components/ui/chat/message_row.ex:167
 #: lib/retro_hex_chat_web/live/chat_live/components/status_viewport.ex:104
 #: lib/retro_hex_chat_web/live/chat_live/helpers/messages.ex:91
 #: lib/retro_hex_chat_web/live/chat_live/helpers/messages.ex:116
@@ -2018,7 +2018,7 @@ msgid "User not registered"
 msgstr "未註冊的用戶"
 
 #: lib/retro_hex_chat_web/components/ui/chat/hover_card.ex:240
-#: lib/retro_hex_chat_web/live/chat_live/components/nicklist.ex:390
+#: lib/retro_hex_chat_web/live/chat_live/components/nicklist.ex:424
 #, elixir-autogen, elixir-format
 msgid "Voiced"
 msgstr "語音"
@@ -2316,7 +2316,7 @@ msgid "is typing..."
 msgstr "正在輸入..."
 
 #: lib/retro_hex_chat_web/live/chat_live/components/ignore_list_dialog.ex:151
-#: lib/retro_hex_chat_web/live/chat_live/components/message_viewport.ex:331
+#: lib/retro_hex_chat_web/live/chat_live/components/message_viewport.ex:332
 #, elixir-autogen, elixir-format
 msgid "messages"
 msgstr "信件"
@@ -2429,7 +2429,7 @@ msgstr "取消通知"
 msgid "Channel Central"
 msgstr "中央頻道"
 
-#: lib/retro_hex_chat_web/live/desktop_live.html.heex:764
+#: lib/retro_hex_chat_web/live/desktop_live.html.heex:772
 #, elixir-autogen, elixir-format
 msgid "Channel Central: %{channel}"
 msgstr "頻道中心:%{channel}"
@@ -2465,7 +2465,7 @@ msgstr "聯繫說明"
 msgid "Custom Menus"
 msgstr "自定義菜單"
 
-#: lib/retro_hex_chat_web/components/ui/chat/message_row.ex:215
+#: lib/retro_hex_chat_web/components/ui/chat/message_row.ex:208
 #, elixir-autogen, elixir-format
 msgid "Deleted"
 msgstr "刪除"
@@ -2514,7 +2514,7 @@ msgstr "輸入當前暱稱 。"
 msgid "Enter the new nick."
 msgstr "輸入新暱稱 。"
 
-#: lib/retro_hex_chat_web/components/ui/chat/message_row.ex:131
+#: lib/retro_hex_chat_web/components/ui/chat/message_row.ex:124
 #: lib/retro_hex_chat_web/live/chat_live/components/status_viewport.ex:105
 #, elixir-autogen, elixir-format
 msgid "Error"
@@ -2586,7 +2586,7 @@ msgstr "最後上線：%{target}"
 msgid "Last seen"
 msgstr "最後一次見到"
 
-#: lib/retro_hex_chat_web/live/chat_live/components/message_viewport.ex:330
+#: lib/retro_hex_chat_web/live/chat_live/components/message_viewport.ex:331
 #, elixir-autogen, elixir-format
 msgid "Loading %{channel}..."
 msgstr "正在載入 %{channel}..."
@@ -2651,9 +2651,8 @@ msgstr "通知 %{target}："
 msgid "Notify List"
 msgstr "通知名單"
 
-#: lib/retro_hex_chat_web/components/ui/chat/nicklist.ex:545
-#: lib/retro_hex_chat_web/components/ui/lobby/file_panel.ex:46
-#: lib/retro_hex_chat_web/components/ui/lobby/game_panel.ex:48
+#: lib/retro_hex_chat_web/components/ui/chat/nicklist.ex:563
+#: lib/retro_hex_chat_web/components/ui/lobby/panel_parts.ex:42
 #: lib/retro_hex_chat_web/live/chat_live/components/status_viewport.ex:109
 #, elixir-autogen, elixir-format
 msgid "Offline"
@@ -2674,7 +2673,7 @@ msgstr "只有頻道運營商可以註冊此頻道."
 msgid "Only the founder can drop a channel."
 msgstr "只有創始人才能丟棄一個頻道."
 
-#: lib/retro_hex_chat_web/live/desktop_live.html.heex:345
+#: lib/retro_hex_chat_web/live/desktop_live.html.heex:353
 #, elixir-autogen, elixir-format
 msgid "Opening chat..."
 msgstr "正在打開聊天..."
@@ -2867,7 +2866,7 @@ msgstr "你必須和NickServ確認身份才能使用ChanServ."
 msgid "min 10s for repeating timers"
 msgstr "重複計時器的分鐘 10"
 
-#: lib/retro_hex_chat_web/live/p2p_live/events.ex:1154
+#: lib/retro_hex_chat_web/live/p2p_live/events.ex:1179
 #, elixir-autogen, elixir-format
 msgid "%{nick} cancelled the P2P invite."
 msgstr "%{nick}取消了P2P邀請."
@@ -2877,22 +2876,22 @@ msgstr "%{nick}取消了P2P邀請."
 msgid "%{nick} declined the P2P invite."
 msgstr "%{nick}拒絕了P2P邀請."
 
-#: lib/retro_hex_chat_web/live/p2p_live/events.ex:479
+#: lib/retro_hex_chat_web/live/p2p_live/events.ex:484
 #, elixir-autogen, elixir-format
 msgid "%{nick} ended the P2P session."
 msgstr "%{nick}結束P2P會話."
 
-#: lib/retro_hex_chat_web/live/p2p_live/events.ex:1583
+#: lib/retro_hex_chat_web/live/p2p_live/events.ex:1621
 #, elixir-autogen, elixir-format
 msgid "%{peer} declined the P2P invite."
 msgstr "%{peer}拒絕了P2P邀請."
 
-#: lib/retro_hex_chat_web/live/p2p_live/events.ex:1592
+#: lib/retro_hex_chat_web/live/p2p_live/events.ex:1630
 #, elixir-autogen, elixir-format
 msgid "%{peer} left the P2P session."
 msgstr "%{peer}離開P2P會話."
 
-#: lib/retro_hex_chat_web/live/p2p_live/events.ex:762
+#: lib/retro_hex_chat_web/live/p2p_live/events.ex:781
 #, elixir-autogen, elixir-format
 msgid "%{peer} lost the P2P connection — waiting for them to return..."
 msgstr "%{peer}失去了P2P連接——等待他們返回......"
@@ -2912,7 +2911,7 @@ msgstr "頻道空間"
 msgid "Chat"
 msgstr "聊天"
 
-#: lib/retro_hex_chat_web/live/p2p_live/events.ex:342
+#: lib/retro_hex_chat_web/live/p2p_live/events.ex:347
 #, elixir-autogen, elixir-format
 msgid "Could not load the game. Please try again."
 msgstr "無法裝入遊戲 。 請再試一次"
@@ -2937,7 +2936,7 @@ msgstr "循環自動、 聚焦、 分割、 揚聲器和壓縮佈局"
 msgid "Cycle P2P Self View"
 msgstr "循環 P2P 自視圖"
 
-#: lib/retro_hex_chat_web/live/p2p_live/events.ex:1688
+#: lib/retro_hex_chat_web/live/p2p_live/events.ex:1726
 #, elixir-autogen, elixir-format
 msgid "Default device"
 msgstr "默認設備"
@@ -2952,7 +2951,7 @@ msgstr "結束 P2P 調用媒體"
 msgid "Entering channel space..."
 msgstr "正在進入頻道空間..."
 
-#: lib/retro_hex_chat_web/live/p2p_live/events.ex:889
+#: lib/retro_hex_chat_web/live/p2p_live/events.ex:908
 #, elixir-autogen, elixir-format
 msgid "Game request declined."
 msgstr "遊戲請求被拒絕 。"
@@ -2977,30 +2976,30 @@ msgstr "下一個 P2P 版式"
 msgid "Opening private room..."
 msgstr "打開私人房間..."
 
-#: lib/retro_hex_chat_web/components/ui/chat/message_row.ex:113
-#: lib/retro_hex_chat_web/components/ui/chat/message_row.ex:184
-#: lib/retro_hex_chat_web/components/ui/chat/visitor_greeting_card.ex:113
+#: lib/retro_hex_chat_web/components/ui/chat/message_row.ex:100
+#: lib/retro_hex_chat_web/components/ui/chat/message_row.ex:177
+#: lib/retro_hex_chat_web/components/ui/chat/visitor_greeting_card.ex:109
 #, elixir-autogen, elixir-format
 msgid "P2P"
 msgstr "P2P"
 
-#: lib/retro_hex_chat_web/live/p2p_live/events.ex:150
+#: lib/retro_hex_chat_web/live/p2p_live/events.ex:154
 #, elixir-autogen, elixir-format
 msgid "P2P connection failed."
 msgstr "P2P 連接失敗 。"
 
-#: lib/retro_hex_chat_web/components/ui/p2p/session_badge.ex:253
+#: lib/retro_hex_chat_web/components/ui/p2p/session_badge.ex:257
 #, elixir-autogen, elixir-format
 msgid "P2P invite pending"
 msgstr "P2P 邀請待決"
 
-#: lib/retro_hex_chat_web/components/ui/p2p/session_badge.ex:254
+#: lib/retro_hex_chat_web/components/ui/p2p/session_badge.ex:258
 #, elixir-autogen, elixir-format
 msgid "P2P session connecting"
 msgstr "正在連線 P2P 工作階段"
 
-#: lib/retro_hex_chat_web/live/p2p_live/events.ex:1589
-#: lib/retro_hex_chat_web/live/p2p_live/events.ex:1598
+#: lib/retro_hex_chat_web/live/p2p_live/events.ex:1627
+#: lib/retro_hex_chat_web/live/p2p_live/events.ex:1636
 #, elixir-autogen, elixir-format
 msgid "P2P session with %{peer} ended."
 msgstr "P2P會話的%{peer}結束."
@@ -3010,7 +3009,7 @@ msgstr "P2P會話的%{peer}結束."
 msgid "Private Space"
 msgstr "私人空間"
 
-#: lib/retro_hex_chat_web/components/ui/chat/visitor_greeting_card.ex:101
+#: lib/retro_hex_chat_web/components/ui/chat/visitor_greeting_card.ex:97
 #: lib/retro_hex_chat_web/components/ui/space/conversation_entry.ex:44
 #: lib/retro_hex_chat_web/controllers/help_content/feature_virtual_spaces.html.heex:12
 #: lib/retro_hex_chat_web/live/app/space_live.ex:821
@@ -3028,27 +3027,27 @@ msgstr "啓動、 暫停或恢復您的 P2P 相機"
 msgid "Stop only the call media; the P2P session stays open"
 msgstr "只停止調用媒體; P2P 會話保持開放"
 
-#: lib/retro_hex_chat_web/live/p2p_live/events.ex:1586
+#: lib/retro_hex_chat_web/live/p2p_live/events.ex:1624
 #, elixir-autogen, elixir-format
 msgid "The P2P invite was cancelled."
 msgstr "P2P邀請被取消."
 
-#: lib/retro_hex_chat_web/live/p2p_live/events.ex:1595
+#: lib/retro_hex_chat_web/live/p2p_live/events.ex:1633
 #, elixir-autogen, elixir-format
 msgid "The P2P session expired."
 msgstr "P2P會話結束."
 
-#: lib/retro_hex_chat_web/live/p2p_live/events.ex:962
+#: lib/retro_hex_chat_web/live/p2p_live/events.ex:987
 #, elixir-autogen, elixir-format
 msgid "The P2P session will expire soon due to inactivity."
 msgstr "由於不開展活動,P2P會議將很快結束。"
 
-#: lib/retro_hex_chat_web/live/p2p_live/events.ex:984
+#: lib/retro_hex_chat_web/live/p2p_live/events.ex:1009
 #, elixir-autogen, elixir-format
 msgid "The other user"
 msgstr "另一個用戶"
 
-#: lib/retro_hex_chat_web/live/p2p_live/events.ex:1549
+#: lib/retro_hex_chat_web/live/p2p_live/events.ex:1587
 #, elixir-autogen, elixir-format
 msgid "This P2P invite is no longer active."
 msgstr "此P2P邀請已不活動 。"
@@ -3073,7 +3072,7 @@ msgstr "切換 P2P 屏幕共享"
 msgid "You must be registered and identified to play. Use /ns register and /ns identify first."
 msgstr "您必須註冊和識別 玩。 使用/ns登記和/ns先識別。"
 
-#: lib/retro_hex_chat_web/live/p2p_live/events.ex:1579
+#: lib/retro_hex_chat_web/live/p2p_live/events.ex:1617
 #, elixir-autogen, elixir-format
 msgid "the other user"
 msgstr "另一個用戶"
@@ -3125,7 +3124,7 @@ msgstr "正在加入..."
 
 #: lib/retro_hex_chat_web/components/ui/chat/chat_context_menu.ex:142
 #: lib/retro_hex_chat_web/components/ui/chat/nicklist_context_menu.ex:143
-#: lib/retro_hex_chat_web/live/app/p2p_live.ex:645
+#: lib/retro_hex_chat_web/live/app/p2p_live.ex:646
 #, elixir-autogen, elixir-format
 msgid "P2P Session"
 msgstr "P2P 工作階段"
@@ -3135,8 +3134,8 @@ msgstr "P2P 工作階段"
 msgid "P2P Session Console"
 msgstr "P2P 工作階段主控台"
 
-#: lib/retro_hex_chat_web/live/p2p_live/events.ex:1211
-#: lib/retro_hex_chat_web/live/p2p_live/events.ex:1242
+#: lib/retro_hex_chat_web/live/p2p_live/events.ex:1236
+#: lib/retro_hex_chat_web/live/p2p_live/events.ex:1267
 #, elixir-autogen, elixir-format
 msgid "P2P session connected - call, files, games and stats are available."
 msgstr "P2P會話連接——電話,文件和遊戲均可使用."
@@ -3202,15 +3201,15 @@ msgid "TURN"
 msgstr "土耳其"
 
 #: lib/retro_hex_chat_web/components/ui/chat/conversation_toolbar_actions.ex:92
-#: lib/retro_hex_chat_web/components/ui/chat/nicklist.ex:77
-#: lib/retro_hex_chat_web/components/ui/chat/nicklist.ex:267
-#: lib/retro_hex_chat_web/live/chat_live/components/nicklist.ex:392
+#: lib/retro_hex_chat_web/components/ui/chat/nicklist.ex:78
+#: lib/retro_hex_chat_web/components/ui/chat/nicklist.ex:268
+#: lib/retro_hex_chat_web/live/chat_live/components/nicklist.ex:426
 #: lib/retro_hex_chat_web/live/chat_live/window_registry.ex:329
 #, elixir-autogen, elixir-format
 msgid "Users"
 msgstr "用戶"
 
-#: lib/retro_hex_chat_web/live/p2p_live/events.ex:983
+#: lib/retro_hex_chat_web/live/p2p_live/events.ex:1008
 #, elixir-autogen, elixir-format
 msgid "%{peer} accepted the P2P request - connecting..."
 msgstr "%{peer}接受了P2P請求 - 連接."
@@ -3220,17 +3219,17 @@ msgstr "%{peer}接受了P2P請求 - 連接."
 msgid "Auto-Join"
 msgstr "自動加入"
 
-#: lib/retro_hex_chat_web/components/ui/chat/message_row.ex:187
+#: lib/retro_hex_chat_web/components/ui/chat/message_row.ex:181
 #, elixir-autogen, elixir-format
 msgid "P2P request"
 msgstr "P2P請求"
 
-#: lib/retro_hex_chat_web/live/chat_live/pubsub_handlers.ex:242
+#: lib/retro_hex_chat_web/live/chat_live/pubsub_handlers.ex:254
 #, elixir-autogen, elixir-format
 msgid "P2P request from %{from} - join it from the PM header."
 msgstr "p2P請求來自%{from} - 從PM頭加入."
 
-#: lib/retro_hex_chat_web/components/ui/chat/message_row.ex:189
+#: lib/retro_hex_chat_web/components/ui/chat/message_row.ex:183
 #, elixir-autogen, elixir-format
 msgid "Use the P2P control in this private message."
 msgstr "在此私有信件中使用 P2P 控制 。"
@@ -3292,7 +3291,7 @@ msgstr "工作階段 ID 無效。"
 msgid "Invalid terminal id."
 msgstr "終端機 ID 無效。"
 
-#: lib/retro_hex_chat_web/live/app/p2p_live.ex:269
+#: lib/retro_hex_chat_web/live/app/p2p_live.ex:270
 #: lib/retro_hex_chat_web/live/chat_live/components/trusted_terminals_dialog.ex:215
 #, elixir-autogen, elixir-format
 msgid "Session ended."
@@ -3349,9 +3348,9 @@ msgid "IRC colors"
 msgstr "IRC 顏色"
 
 #: lib/retro_hex_chat_web/components/ui/chat/conversations.ex:814
-#: lib/retro_hex_chat_web/components/ui/chat/nicklist.ex:131
-#: lib/retro_hex_chat_web/components/ui/chat/nicklist.ex:323
-#: lib/retro_hex_chat_web/components/ui/chat/nicklist.ex:562
+#: lib/retro_hex_chat_web/components/ui/chat/nicklist.ex:132
+#: lib/retro_hex_chat_web/components/ui/chat/nicklist.ex:324
+#: lib/retro_hex_chat_web/components/ui/chat/nicklist.ex:580
 #, elixir-autogen, elixir-format
 msgid "Muted"
 msgstr "靜音"
@@ -3404,8 +3403,8 @@ msgstr "私訊"
 msgid "Collapse conversations"
 msgstr "收合對話"
 
-#: lib/retro_hex_chat_web/components/ui/chat/nicklist.ex:90
-#: lib/retro_hex_chat_web/components/ui/chat/nicklist.ex:281
+#: lib/retro_hex_chat_web/components/ui/chat/nicklist.ex:91
+#: lib/retro_hex_chat_web/components/ui/chat/nicklist.ex:282
 #, elixir-autogen, elixir-format
 msgid "Collapse user list"
 msgstr "收合使用者清單"
@@ -3420,21 +3419,21 @@ msgstr "對話側欄"
 msgid "Expand conversations"
 msgstr "展開對話"
 
-#: lib/retro_hex_chat_web/components/ui/chat/nicklist.ex:91
+#: lib/retro_hex_chat_web/components/ui/chat/nicklist.ex:92
 #, elixir-autogen, elixir-format
 msgid "Expand user list"
 msgstr "展開使用者清單"
 
 #: lib/retro_hex_chat_web/components/ui/chat/conversations.ex:150
 #: lib/retro_hex_chat_web/components/ui/chat/conversations.ex:333
-#: lib/retro_hex_chat_web/components/ui/chat/visitor_greeting_card.ex:59
+#: lib/retro_hex_chat_web/components/ui/chat/visitor_greeting_card.ex:55
 #, elixir-autogen, elixir-format
 msgid "Open channels"
 msgstr "已開啟的頻道"
 
 #: lib/retro_hex_chat_web/components/ui/chat/conversations.ex:165
 #: lib/retro_hex_chat_web/components/ui/chat/conversations.ex:446
-#: lib/retro_hex_chat_web/components/ui/chat/visitor_greeting_card.ex:60
+#: lib/retro_hex_chat_web/components/ui/chat/visitor_greeting_card.ex:56
 #, elixir-autogen, elixir-format
 msgid "Popular channels"
 msgstr "熱門頻道"
@@ -3444,12 +3443,12 @@ msgstr "熱門頻道"
 msgid "Private messages"
 msgstr "私人信息"
 
-#: lib/retro_hex_chat_web/components/ui/chat/nicklist.ex:84
+#: lib/retro_hex_chat_web/components/ui/chat/nicklist.ex:85
 #, elixir-autogen, elixir-format
 msgid "User list rail"
 msgstr "使用者清單側欄"
 
-#: lib/retro_hex_chat_web/components/ui/chat/attachment_tile.ex:371
+#: lib/retro_hex_chat_web/components/ui/chat/attachment_tile.ex:376
 #, elixir-autogen, elixir-format
 msgid "Archive"
 msgstr "壓縮檔"
@@ -3489,7 +3488,7 @@ msgstr "附件上傳失敗"
 msgid "Attachments can only be sent with messages"
 msgstr "附件只能用信件發送"
 
-#: lib/retro_hex_chat_web/components/ui/chat/attachment_tile.ex:367
+#: lib/retro_hex_chat_web/components/ui/chat/attachment_tile.ex:372
 #, elixir-autogen, elixir-format
 msgid "Audio"
 msgstr "音訊"
@@ -3504,7 +3503,7 @@ msgstr "粗體"
 msgid "Bulleted list"
 msgstr "項目符號清單"
 
-#: lib/retro_hex_chat_web/components/ui/chat/attachment_tile.ex:370
+#: lib/retro_hex_chat_web/components/ui/chat/attachment_tile.ex:375
 #, elixir-autogen, elixir-format
 msgid "Code"
 msgstr "程式碼"
@@ -3524,7 +3523,7 @@ msgstr "複製原始碼"
 msgid "Could not store attachment: %{reason}"
 msgstr "無法存儲附件 : %{reason}"
 
-#: lib/retro_hex_chat_web/components/ui/chat/attachment_tile.ex:373
+#: lib/retro_hex_chat_web/components/ui/chat/attachment_tile.ex:378
 #, elixir-autogen, elixir-format
 msgid "File"
 msgstr "檔案"
@@ -3539,7 +3538,7 @@ msgstr "標題"
 msgid "IRC formatting"
 msgstr "IRC 格式"
 
-#: lib/retro_hex_chat_web/components/ui/chat/attachment_tile.ex:365
+#: lib/retro_hex_chat_web/components/ui/chat/attachment_tile.ex:370
 #, elixir-autogen, elixir-format
 msgid "Image"
 msgstr "圖片"
@@ -3579,18 +3578,18 @@ msgstr "訊息格式"
 msgid "Numbered list"
 msgstr "編號清單"
 
-#: lib/retro_hex_chat_web/components/ui/chat/attachment_tile.ex:372
+#: lib/retro_hex_chat_web/components/ui/chat/attachment_tile.ex:377
 #, elixir-autogen, elixir-format
 msgid "Office"
 msgstr "Office"
 
-#: lib/retro_hex_chat_web/components/ui/chat/attachment_tile.ex:183
-#: lib/retro_hex_chat_web/components/ui/chat/attachment_tile.ex:275
+#: lib/retro_hex_chat_web/components/ui/chat/attachment_tile.ex:188
+#: lib/retro_hex_chat_web/components/ui/chat/attachment_tile.ex:280
 #, elixir-autogen, elixir-format
 msgid "Open"
 msgstr "開啟"
 
-#: lib/retro_hex_chat_web/components/ui/chat/attachment_tile.ex:368
+#: lib/retro_hex_chat_web/components/ui/chat/attachment_tile.ex:373
 #, elixir-autogen, elixir-format
 msgid "PDF"
 msgstr "PDF"
@@ -3600,7 +3599,7 @@ msgstr "PDF"
 msgid "Plain text"
 msgstr "純文字"
 
-#: lib/retro_hex_chat_web/components/ui/chat/attachment_tile.ex:238
+#: lib/retro_hex_chat_web/components/ui/chat/attachment_tile.ex:243
 #: lib/retro_hex_chat_web/components/ui/chat/formatting_toolbar.ex:152
 #, elixir-autogen, elixir-format
 msgid "Preview"
@@ -3629,7 +3628,7 @@ msgstr "刪除線"
 msgid "Strip Formatting"
 msgstr "清除格式"
 
-#: lib/retro_hex_chat_web/components/ui/chat/attachment_tile.ex:369
+#: lib/retro_hex_chat_web/components/ui/chat/attachment_tile.ex:374
 #, elixir-autogen, elixir-format
 msgid "Text"
 msgstr "文字"
@@ -3640,7 +3639,7 @@ msgstr "文字"
 msgid "Too many attachments"
 msgstr "附件過多"
 
-#: lib/retro_hex_chat_web/components/ui/chat/attachment_tile.ex:366
+#: lib/retro_hex_chat_web/components/ui/chat/attachment_tile.ex:371
 #, elixir-autogen, elixir-format
 msgid "Video"
 msgstr "視訊"
@@ -3655,7 +3654,7 @@ msgstr "編寫"
 msgid "You"
 msgstr "你"
 
-#: lib/retro_hex_chat_web/components/ui/chat/attachment_tile.ex:330
+#: lib/retro_hex_chat_web/components/ui/chat/attachment_tile.ex:335
 #, elixir-autogen, elixir-format
 msgid "file"
 msgstr "文件"
@@ -3700,8 +3699,8 @@ msgstr "計量"
 msgid "OS Data"
 msgstr "OS 數據"
 
-#: lib/retro_hex_chat_web/live/p2p_live/events.ex:1558
-#: lib/retro_hex_chat_web/live/p2p_live/events.ex:1562
+#: lib/retro_hex_chat_web/live/p2p_live/events.ex:1596
+#: lib/retro_hex_chat_web/live/p2p_live/events.ex:1600
 #, elixir-autogen, elixir-format
 msgid "P2P action failed: %{reason}"
 msgstr "P2P 動作失敗: %{reason}"
@@ -3721,7 +3720,7 @@ msgstr "進程"
 msgid "Sockets"
 msgstr "襪子"
 
-#: lib/retro_hex_chat_web/live/p2p_live/events.ex:1553
+#: lib/retro_hex_chat_web/live/p2p_live/events.ex:1591
 #, elixir-autogen, elixir-format
 msgid "This P2P session is already active in another window."
 msgstr "P2P 會話已經在另一個窗口中活動 。"
@@ -3751,7 +3750,7 @@ msgstr "與伺服器的往返時間"
 msgid "Conversation actions"
 msgstr "會話操作"
 
-#: lib/retro_hex_chat_web/live/chat_live/components/nicklist.ex:384
+#: lib/retro_hex_chat_web/live/chat_live/components/nicklist.ex:418
 #, elixir-autogen, elixir-format
 msgid "Participants"
 msgstr "參與者"
@@ -3800,32 +3799,32 @@ msgstr "此空間已無法使用。"
 msgid "You have to be in %{channel} to enter its space."
 msgstr "你需要先加入 %{channel} 才能進入它的空間。"
 
-#: lib/retro_hex_chat_web/live/p2p_live/events.ex:122
+#: lib/retro_hex_chat_web/live/p2p_live/events.ex:126
 #, elixir-autogen, elixir-format
 msgid "The P2P signaling channel refused this session."
 msgstr "P2P 訊令通道拒絕了此工作階段。"
 
-#: lib/retro_hex_chat_web/live/app/p2p_live.ex:643
+#: lib/retro_hex_chat_web/live/app/p2p_live.ex:644
 #, elixir-autogen, elixir-format
 msgid "P2P · %{peer}"
 msgstr "P2P · %{peer}"
 
-#: lib/retro_hex_chat_web/live/p2p_live/events.ex:533
+#: lib/retro_hex_chat_web/live/p2p_live/events.ex:552
 #, elixir-autogen, elixir-format
 msgid "This P2P session moved to another window of yours."
 msgstr "此 P2P 工作階段已移到你的另一個視窗。"
 
-#: lib/retro_hex_chat_web/live/app/p2p_live.ex:637
+#: lib/retro_hex_chat_web/live/app/p2p_live.ex:638
 #, elixir-autogen, elixir-format
 msgid "%{game} · %{peer}"
 msgstr "%{game} · %{peer}"
 
-#: lib/retro_hex_chat_web/live/app/p2p_live.ex:640
+#: lib/retro_hex_chat_web/live/app/p2p_live.ex:641
 #, elixir-autogen, elixir-format
 msgid "%{game} · match"
 msgstr "%{game} · 對局"
 
-#: lib/retro_hex_chat_web/live/p2p_live/events.ex:1012
+#: lib/retro_hex_chat_web/live/p2p_live/events.ex:1037
 #, elixir-autogen, elixir-format
 msgid "%{peer} is back."
 msgstr "%{peer} 回來了。"
@@ -3835,7 +3834,7 @@ msgstr "%{peer} 回來了。"
 msgid "This space belongs to a channel you are not in."
 msgstr "這個空間屬於一個你未加入的頻道。"
 
-#: lib/retro_hex_chat_web/components/ui/chat/nicklist.ex:534
+#: lib/retro_hex_chat_web/components/ui/chat/nicklist.ex:539
 #, elixir-autogen, elixir-format
 msgid "In the channel call"
 msgstr "在頻道通話中"
@@ -3845,12 +3844,12 @@ msgstr "在頻道通話中"
 msgid "P2P: %{peer} — in another tab"
 msgstr "P2P：%{peer} — 在其他分頁"
 
-#: lib/retro_hex_chat_web/live/chat_live/helpers/lobby_invite.ex:84
+#: lib/retro_hex_chat_web/live/chat_live/helpers/lobby_invite.ex:92
 #, elixir-autogen, elixir-format
 msgid "P2P request sent to %{target}. Open it from the card below."
 msgstr "P2P 請求已傳送給 %{target}。請從下方的卡片開啟。"
 
-#: lib/retro_hex_chat_web/live/chat_live/helpers/lobby_invite.ex:99
+#: lib/retro_hex_chat_web/live/chat_live/helpers/lobby_invite.ex:107
 #, elixir-autogen, elixir-format
 msgid "P2P session request. Open it from the card below. /p2p/%{token}"
 msgstr "P2P 工作階段請求。請從下方的卡片開啟。/p2p/%{token}"
@@ -4043,7 +4042,7 @@ msgstr[0] "開啟討論串（%{count} 則回覆）"
 msgid "Thread"
 msgstr "討論串"
 
-#: lib/retro_hex_chat_web/components/ui/chat/event_card.ex:102
+#: lib/retro_hex_chat_web/components/ui/chat/event_card.ex:93
 #, elixir-autogen, elixir-format
 msgid "%{count} going"
 msgid_plural "%{count} going"
@@ -4059,7 +4058,7 @@ msgstr "%{title} 即將開始。"
 msgid "%{title} was called off."
 msgstr "%{title} 已取消。"
 
-#: lib/retro_hex_chat_web/components/ui/chat/event_card.ex:72
+#: lib/retro_hex_chat_web/components/ui/chat/event_card.ex:63
 #, elixir-autogen, elixir-format
 msgid "Called off"
 msgstr "已取消"
@@ -4069,17 +4068,17 @@ msgstr "已取消"
 msgid "Events"
 msgstr "活動"
 
-#: lib/retro_hex_chat_web/components/ui/chat/event_card.ex:98
+#: lib/retro_hex_chat_web/components/ui/chat/event_card.ex:89
 #, elixir-autogen, elixir-format
 msgid "Going"
 msgstr "參加"
 
-#: lib/retro_hex_chat_web/components/ui/chat/event_card.ex:98
+#: lib/retro_hex_chat_web/components/ui/chat/event_card.ex:89
 #, elixir-autogen, elixir-format
 msgid "I'm going"
 msgstr "我要參加"
 
-#: lib/retro_hex_chat_web/components/ui/chat/event_card.ex:127
+#: lib/retro_hex_chat_web/components/ui/chat/event_card.ex:108
 #, elixir-autogen, elixir-format
 msgid "Where"
 msgstr "在哪"
@@ -4126,8 +4125,8 @@ msgstr "此瀏覽器沒有授予麥克風權限。"
 msgid "This browser recorded in a format this chat cannot send"
 msgstr "此瀏覽器錄製的格式無法在本聊天中傳送"
 
-#: lib/retro_hex_chat_web/components/ui/chat/attachment_tile.ex:150
-#: lib/retro_hex_chat_web/components/ui/chat/attachment_tile.ex:339
+#: lib/retro_hex_chat_web/components/ui/chat/attachment_tile.ex:155
+#: lib/retro_hex_chat_web/components/ui/chat/attachment_tile.ex:344
 #: lib/retro_hex_chat_web/live/chat_live/components/composer.ex:522
 #, elixir-autogen, elixir-format
 msgid "Voice message"
@@ -4138,7 +4137,7 @@ msgstr "語音訊息"
 msgid "The space is open. Its card is the line below."
 msgstr "space 已經開放，它的卡片就是下面這一行。"
 
-#: lib/retro_hex_chat_web/live/chat_live/helpers/lobby_invite.ex:90
+#: lib/retro_hex_chat_web/live/chat_live/helpers/lobby_invite.ex:98
 #, elixir-autogen, elixir-format
 msgid "You already have a P2P session with %{target}. Its card is the line below."
 msgstr "你和 %{target} 已經有一個 P2P 工作階段，它的卡片就是下面這一行。"
@@ -4305,7 +4304,7 @@ msgstr "%{name}被擊倒!"
 #: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:72
 #: lib/retro_hex_chat_web/controllers/help_content/feature_space_construct.html.heex:30
 #: lib/retro_hex_chat_web/controllers/help_content/feature_space_construct.html.heex:48
-#: lib/retro_hex_chat_web/controllers/help_content/feature_space_game_room.html.heex:43
+#: lib/retro_hex_chat_web/controllers/help_content/feature_space_game_room.html.heex:42
 #: lib/retro_hex_chat_web/controllers/help_content/feature_space_office.html.heex:49
 #, elixir-autogen, elixir-format
 msgid "Build"
@@ -4729,7 +4728,7 @@ msgid "Fridge"
 msgstr "冰箱"
 
 #: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:347
-#: lib/retro_hex_chat_web/controllers/help_content/feature_space_game_room.html.heex:46
+#: lib/retro_hex_chat_web/controllers/help_content/feature_space_game_room.html.heex:45
 #, elixir-autogen, elixir-format
 msgid "Gamer"
 msgstr "遊戲"
@@ -5832,27 +5831,27 @@ msgctxt "space room"
 msgid "Game Room"
 msgstr "遊戲房間"
 
-#: lib/retro_hex_chat_web/live/chat_live/visitor.ex:248
+#: lib/retro_hex_chat_web/live/chat_live/visitor.ex:251
 #, elixir-autogen, elixir-format
 msgid "%{channel} is no longer open to visitors."
 msgstr "%{channel}不再向訪客開放."
 
-#: lib/retro_hex_chat_web/components/ui/chat/nicklist.ex:357
+#: lib/retro_hex_chat_web/components/ui/chat/nicklist.ex:358
 #, elixir-autogen, elixir-format
 msgid "Visitors"
 msgstr "訪客"
 
-#: lib/retro_hex_chat_web/components/ui/chat/nicklist.ex:368
+#: lib/retro_hex_chat_web/components/ui/chat/nicklist.ex:369
 #, elixir-autogen, elixir-format
 msgid "Watching without an account"
 msgstr "沒有賬戶的監視"
 
-#: lib/retro_hex_chat_web/live/chat_live/visitor.ex:225
+#: lib/retro_hex_chat_web/live/chat_live/visitor.ex:228
 #, elixir-autogen, elixir-format
 msgid "%{channel} cannot be watched without an account."
 msgstr "%{channel}沒有賬戶就無法觀看."
 
-#: lib/retro_hex_chat_web/live/chat_live/visitor.ex:176
+#: lib/retro_hex_chat_web/live/chat_live/visitor.ex:179
 #, elixir-autogen, elixir-format
 msgid "Calls are for registered members."
 msgstr "電話是給註冊會員的。"
@@ -5862,32 +5861,32 @@ msgstr "電話是給註冊會員的。"
 msgid "Create an account or sign in, and you come back right where you were."
 msgstr "創建賬戶或簽入, 你回來就在那裏。"
 
-#: lib/retro_hex_chat_web/live/chat_live/visitor.ex:175
+#: lib/retro_hex_chat_web/live/chat_live/visitor.ex:178
 #, elixir-autogen, elixir-format
 msgid "Games are for registered players."
 msgstr "遊戲面向註冊玩家."
 
-#: lib/retro_hex_chat_web/live/chat_live/visitor.ex:180
+#: lib/retro_hex_chat_web/live/chat_live/visitor.ex:183
 #, elixir-autogen, elixir-format
 msgid "Private sessions are for registered members."
 msgstr "註冊會員可參加非公開會議。"
 
-#: lib/retro_hex_chat_web/live/chat_live/visitor.ex:177
+#: lib/retro_hex_chat_web/live/chat_live/visitor.ex:180
 #, elixir-autogen, elixir-format
 msgid "Spaces are for registered members."
 msgstr "空間是註冊會員的空間."
 
-#: lib/retro_hex_chat_web/live/chat_live/visitor.ex:183
+#: lib/retro_hex_chat_web/live/chat_live/visitor.ex:186
 #, elixir-autogen, elixir-format
 msgid "This feature needs an account."
 msgstr "此特性需要一個賬戶 。"
 
-#: lib/retro_hex_chat_web/live/chat_live/visitor.ex:174
+#: lib/retro_hex_chat_web/live/chat_live/visitor.ex:177
 #, elixir-autogen, elixir-format
 msgid "Writing in the chat needs an account."
 msgstr "在聊天中寫入需要一個賬戶 。"
 
-#: lib/retro_hex_chat_web/live/chat_live/visitor.ex:182
+#: lib/retro_hex_chat_web/live/chat_live/visitor.ex:185
 #, elixir-autogen, elixir-format
 msgid "You need an account to open links."
 msgstr "您需要一個賬戶打開鏈接 。"
@@ -5902,68 +5901,73 @@ msgstr "創建要聊天的賬戶"
 msgid "You are watching as a visitor."
 msgstr "你作爲訪客在看"
 
-#: lib/retro_hex_chat_web/components/ui/chat/visitor_greeting_card.ex:55
+#: lib/retro_hex_chat_web/components/ui/chat/visitor_greeting_card.ex:51
 #, elixir-autogen, elixir-format
 msgid "In %{conversations}, %{open} and %{popular} take you to other channels, and %{browse} lists every public one."
 msgstr "%{conversations}中,%{open}和%{popular}帶你到其他頻道,%{browse}列出每一個公共頻道."
 
-#: lib/retro_hex_chat_web/components/ui/chat/visitor_greeting_card.ex:95
+#: lib/retro_hex_chat_web/components/ui/chat/visitor_greeting_card.ex:91
 #, elixir-autogen, elixir-format
 msgid "Talk"
 msgstr "聊天"
 
-#: lib/retro_hex_chat_web/components/ui/chat/visitor_greeting_card.ex:51
+#: lib/retro_hex_chat_web/components/ui/chat/visitor_greeting_card.ex:47
 #, elixir-autogen, elixir-format
 msgid "The user list shows you as a guest."
 msgstr "用戶列表顯示您爲嘉賓."
 
-#: lib/retro_hex_chat_web/components/ui/chat/visitor_greeting_card.ex:47
+#: lib/retro_hex_chat_web/components/ui/chat/visitor_greeting_card.ex:43
 #: lib/retro_hex_chat_web/live/chat_live/helpers/messages.ex:107
 #, elixir-autogen, elixir-format
 msgid "Welcome to %{server}, %{guest}!"
 msgstr "歡迎來到%{server},%{guest}!"
 
-#: lib/retro_hex_chat_web/components/ui/chat/visitor_greeting_card.ex:64
+#: lib/retro_hex_chat_web/components/ui/chat/visitor_greeting_card.ex:60
 #, elixir-autogen, elixir-format
 msgid "With a free account you can also:"
 msgstr "免費賬戶也可以:"
 
-#: lib/retro_hex_chat_web/components/ui/chat/visitor_greeting_card.ex:50
+#: lib/retro_hex_chat_web/components/ui/chat/visitor_greeting_card.ex:46
 #, elixir-autogen, elixir-format
 msgid "You are reading %{channel} live as a visitor."
 msgstr "你讀 %{channel} 作爲訪客現場。"
 
-#: lib/retro_hex_chat_web/components/ui/chat/visitor_greeting_card.ex:52
+#: lib/retro_hex_chat_web/components/ui/chat/visitor_greeting_card.ex:48
 #, elixir-autogen, elixir-format
 msgid "You can read every public channel, but writing needs an account."
 msgstr "你可以讀每個公共頻道,但寫作需要一個賬戶."
 
-#: lib/retro_hex_chat_web/components/ui/chat/visitor_greeting_card.ex:114
+#: lib/retro_hex_chat_web/components/ui/chat/visitor_greeting_card.ex:110
 #, elixir-autogen, elixir-format
 msgid "A direct call, file transfer or game with one person."
 msgstr "直接通話,文件傳輸或與一人遊戲."
 
-#: lib/retro_hex_chat_web/components/ui/chat/visitor_greeting_card.ex:71
+#: lib/retro_hex_chat_web/components/ui/chat/visitor_greeting_card.ex:67
 #, elixir-autogen, elixir-format
 msgid "An account only needs a nickname and a password."
 msgstr "賬戶只需要暱稱和密碼."
 
-#: lib/retro_hex_chat_web/components/ui/chat/visitor_greeting_card.ex:108
+#: lib/retro_hex_chat_web/components/ui/chat/visitor_greeting_card.ex:104
 #, elixir-autogen, elixir-format
 msgid "An audio and video call for the whole channel."
 msgstr "An audio and video call for the whole channel."
 
-#: lib/retro_hex_chat_web/components/ui/chat/visitor_greeting_card.ex:120
+#: lib/retro_hex_chat_web/components/ui/chat/visitor_greeting_card.ex:116
 #, elixir-autogen, elixir-format
 msgid "Doom, Quake and other classics in the browser."
 msgstr "Doom,Quake等經典在瀏覽器中出現."
 
-#: lib/retro_hex_chat_web/components/ui/chat/visitor_greeting_card.ex:102
+#: lib/retro_hex_chat_web/components/ui/chat/visitor_greeting_card.ex:98
 #, elixir-autogen, elixir-format
 msgid "Walk this channel's 8-bit world with your own character."
 msgstr "Walk this channel's 8-bit world with your own character."
 
-#: lib/retro_hex_chat_web/components/ui/chat/visitor_greeting_card.ex:96
+#: lib/retro_hex_chat_web/components/ui/chat/visitor_greeting_card.ex:92
 #, elixir-autogen, elixir-format
 msgid "Write here, in any channel, or privately to anyone."
 msgstr "Write here, in any channel, or privately to anyone."
+
+#: lib/retro_hex_chat_web/components/ui/chat/nicklist.ex:551
+#, elixir-autogen, elixir-format
+msgid "Playing %{game}"
+msgstr "播放 %{game} 遊戲"

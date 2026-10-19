@@ -295,6 +295,117 @@ defmodule RetroHexChatWeb.ChatLive.Components.MessageRowTest do
     refute html =~ ~s(data-testid="share-message-copy")
   end
 
+  test "a taken seat offers its match to watch, and nothing to join" do
+    seat = fn watch? ->
+      row(%{
+        id: "seat#{watch?}",
+        author: "System",
+        content: "ana is looking for a partner in Hex Pong — https://x/join/abc",
+        type: :system,
+        timestamp: @ts,
+        share_card: %{
+          slug: "abc",
+          kind: "play",
+          target: %{"game_id" => "hex_pong", "session_token" => "tokw"},
+          creator_nick: "ana",
+          state: :ended,
+          reason: :full,
+          watch?: watch?,
+          participants: [],
+          channel_name: nil,
+          game_id: "hex_pong"
+        }
+      })
+    end
+
+    html = seat.(true)
+    assert html =~ ~s(data-testid="share-message-watch")
+    assert html =~ ~s(href="/watch/tokw")
+    refute html =~ ~s(data-testid="share-message-enter")
+
+    refute seat.(false) =~ "share-message-watch"
+  end
+
+  describe "a match's card" do
+    defp match_card(place) do
+      %{
+        result_id: 41,
+        game_id: "hex_tennis_quick",
+        base_id: "hex_tennis",
+        origin: "p2p",
+        difficulty: nil,
+        p1_nickname: "ana",
+        p2_nickname: "beto",
+        p1_score: 3,
+        p2_score: 1,
+        outcome: :p1,
+        ranked: true,
+        personal_best: false,
+        duration_ms: 125_000,
+        finished_at: @ts,
+        place: place
+      }
+    end
+
+    test "stands in for GameServ's sentence in a game's channel" do
+      html =
+        row(%{
+          id: 7,
+          author: "GameServ",
+          content: "ana beat beto 3 × 1 in Hex Tennis: Quick Match",
+          type: :message,
+          timestamp: @ts,
+          result_card: match_card(:channel)
+        })
+
+      assert html =~ ~s(data-testid="game-result-card-41")
+      assert html =~ "Hex Tennis: Quick Match"
+      assert html =~ "ana 3 × 1 beto"
+      assert html =~ "Winner: ana"
+
+      # The sentence stays on the row for copying, and is not drawn.
+      refute html |> Floki.parse_fragment!() |> Floki.find(".chat-message__text") |> Floki.text() =~
+               "ana beat beto"
+
+      # Already in the game's channel: no way into it.
+      refute html =~ ~s(data-testid="game-result-channel")
+    end
+
+    test "carries the way into the game's channel from the players' conversation" do
+      html =
+        row(%{
+          id: 8,
+          author: "ana",
+          content: "ana beat beto 3 × 1 in Hex Tennis: Quick Match",
+          type: :p2p_system,
+          timestamp: @ts,
+          result_card: match_card(:private)
+        })
+
+      assert html =~ ~s(data-testid="game-result-card-41")
+      assert html =~ ~s(data-testid="game-result-channel")
+      assert html =~ ~s(phx-value-channel="#hex-tennis")
+    end
+
+    test "a reader who asked for plain text gets the sentence instead" do
+      html =
+        row(
+          %{
+            id: 9,
+            author: "GameServ",
+            content: "ana beat beto 3 × 1 in Hex Tennis: Quick Match",
+            type: :message,
+            timestamp: @ts,
+            result_card: match_card(:channel)
+          },
+          %{strip_formatting: true}
+        )
+
+      assert html =~ "ana beat beto"
+      refute html =~ "game-result-card"
+    end
+  end
+
   test "renders a deleted placeholder instead of content" do
     html =
       row(%{

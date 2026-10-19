@@ -1,8 +1,12 @@
 defmodule RetroHexChatWeb.P2PLive.Components.P2PGameIslandTest do
   use RetroHexChatWeb.ConnCase, async: true
 
+  alias RetroHexChat.Games.Catalog
+  alias RetroHexChat.Games.Result
+
   import Phoenix.LiveViewTest
 
+  alias RetroHexChatWeb.Components.UI.Lobby.GamePanel
   alias RetroHexChatWeb.P2PLive.Components.P2PGameIsland
 
   @moduletag :unit
@@ -17,6 +21,30 @@ defmodule RetroHexChatWeb.P2PLive.Components.P2PGameIslandTest do
     refute html =~ ~s(data-testid="lobby-game-panel")
     assert html =~ ~s(data-testid="p2p-games-activity-header")
     assert html =~ "Connect to play"
+  end
+
+  # A match others may watch says how many are, and hands over its address; a
+  # private one says nothing about watching at all.
+  test "a match played in the open says who is watching, and how to share it" do
+    panel = fn watch_url ->
+      render_component(&GamePanel.game_panel/1,
+        connected: true,
+        game: %{status: "playing", game_id: "hex_pong", is_host: true},
+        game_request: nil,
+        game_outgoing: false,
+        games: Catalog.list_games(),
+        peer_nick: "trinity",
+        watchers: 2,
+        watch_url: watch_url
+      )
+    end
+
+    html = panel.("https://example.test/watch/tok")
+    assert html =~ ~s(data-testid="lobby-game-watchers")
+    assert html =~ "2 watching"
+    assert html =~ ~s(data-copy-text="https://example.test/watch/tok")
+
+    refute panel.(nil) =~ "lobby-game-watchers"
   end
 
   test "lists the game catalog when connected and idle" do
@@ -78,7 +106,7 @@ defmodule RetroHexChatWeb.P2PLive.Components.P2PGameIslandTest do
       render_component(P2PGameIsland,
         id: P2PGameIsland.id(),
         connected: true,
-        action: {:result, %{"score" => %{"p1" => 11, "p2" => 7}, "winner" => 1}}
+        action: {:result, %Result{game_id: "hex_pong", p1_score: 11, p2_score: 7, outcome: :p1}}
       )
 
     assert html =~ ~s(data-testid="lobby-game-result")
@@ -87,7 +115,22 @@ defmodule RetroHexChatWeb.P2PLive.Components.P2PGameIslandTest do
     assert html =~ "7"
     # A fresh (non-host) viewer whose opponent (P1) won sees a loss.
     assert html =~ "You lose."
+    assert html =~ ~s(data-testid="lobby-game-rematch")
     refute html =~ ~s(id="lobby-game-canvas")
+  end
+
+  test "a draw and a co-op board read in words, whatever the engine sent" do
+    for {outcome, words} <- [draw: "Draw.", coop_win: "Cleared together!", none: "Match over."] do
+      html =
+        render_component(P2PGameIsland,
+          id: P2PGameIsland.id(),
+          connected: true,
+          action:
+            {:result, %Result{game_id: "hex_pong", p1_score: 3, p2_score: 3, outcome: outcome}}
+        )
+
+      assert html =~ words
+    end
   end
 
   test "dismissing the result returns to the game catalog" do

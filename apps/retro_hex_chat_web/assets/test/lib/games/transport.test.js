@@ -2,6 +2,8 @@ import { describe, it, expect, vi } from "vitest";
 import {
   createDataChannelTransport,
   createLocalTransport,
+  createSpectatorTransport,
+  createTeeTransport,
   normalizeGameTransport,
 } from "../../../js/lib/games/transport.js";
 
@@ -68,5 +70,43 @@ describe("game transport", () => {
 
     expect(wrapped.kind).toBe("p2p");
     expect(normalizeGameTransport(explicit)).toBe(explicit);
+  });
+
+  it("hands a spectator's engine every frame, and never lets it speak", () => {
+    const transport = createSpectatorTransport();
+    const listener = vi.fn();
+    transport.addEventListener("message", listener);
+
+    const frame = new Uint8Array([0x80, 1]).buffer;
+    transport.deliver(frame);
+
+    expect(listener).toHaveBeenCalledWith({ data: frame });
+    // Never "open": the engine's own guard drops its handshake and inputs.
+    expect(transport.readyState).not.toBe("open");
+    expect(transport.send(new ArrayBuffer(1))).toBe(false);
+  });
+
+  it("copies what the host sends, snapshots thinned and every other message whole", () => {
+    const channel = createChannel();
+    const publish = vi.fn();
+    let now = 0;
+    const tee = createTeeTransport(createDataChannelTransport(channel), publish, {
+      now: () => now,
+    });
+
+    const state = () => new Uint8Array([0x80, 0]).buffer;
+    const end = new Uint8Array([0x83, 0]).buffer;
+
+    tee.send(state()); // published
+    now = 16;
+    tee.send(state()); // too soon after the last copy
+    now = 70;
+    tee.send(state()); // published
+    tee.send(end); // always published
+
+    expect(channel.send).toHaveBeenCalledTimes(4);
+    expect(publish).toHaveBeenCalledTimes(3);
+    expect(publish).toHaveBeenLastCalledWith(end);
+    expect(tee.readyState).toBe("open");
   });
 });

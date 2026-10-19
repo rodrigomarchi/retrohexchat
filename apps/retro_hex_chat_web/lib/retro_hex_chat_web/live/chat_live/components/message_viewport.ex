@@ -43,6 +43,8 @@ defmodule RetroHexChatWeb.ChatLive.Components.MessageViewport do
 
   alias RetroHexChat.Accounts.Avatars
   alias RetroHexChat.Channels.ScheduledEvents
+  alias RetroHexChat.Games.Channels, as: GameChannels
+  alias RetroHexChat.Games.Results
   alias RetroHexChat.Scraper
   alias RetroHexChat.ShareLinks
   alias RetroHexChat.ShareLinks.Card
@@ -520,8 +522,44 @@ defmodule RetroHexChatWeb.ChatLive.Components.MessageViewport do
     |> Enum.map(&put_card(&1, cards))
     |> put_share_cards()
     |> put_event_cards(viewer)
+    |> put_result_cards()
     |> put_avatars()
   end
+
+  # The ids of the rows written in one kind of conversation. Channel lines and
+  # private lines are numbered apart, so anything resolved by a line's id asks
+  # with the ids of its own kind only.
+  @spec ids_from([map()], :channel | :private) :: [integer()]
+  defp ids_from(items, source) do
+    for %{source: ^source, id: id} when is_integer(id) <- items, do: id
+  end
+
+  # A match's card hangs off the line that announced it, in the game's channel
+  # or in the players' conversation — one query per kind, per screenful. Only
+  # GameServ announces in a channel, and only a P2P system line in a
+  # conversation, so a screenful with neither asks nothing.
+  @spec put_result_cards([map()]) :: [map()]
+  defp put_result_cards(items) do
+    announcements = Enum.filter(items, &announces_result?/1)
+
+    cards = %{
+      channel: Results.cards_for_messages(:channel, ids_from(announcements, :channel)),
+      private: Results.cards_for_messages(:private, ids_from(announcements, :private))
+    }
+
+    Enum.map(items, fn item ->
+      case get_in(cards, [Map.get(item, :source) || :none, Map.get(item, :id)]) do
+        nil -> item
+        card -> Map.put(item, :result_card, card)
+      end
+    end)
+  end
+
+  defp announces_result?(%{source: :channel, author: author}),
+    do: author == GameChannels.service()
+
+  defp announces_result?(%{source: :private, type: type}), do: type == :p2p_system
+  defp announces_result?(_line), do: false
 
   # Whose face goes beside each nickname, one query for the whole batch. Every
   # row reaches here — a page, a prepended page and a single arriving message —
@@ -540,8 +578,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.MessageViewport do
   # the cards and one for this reader's own answers, per screenful.
   @spec put_event_cards([map()], String.t() | nil) :: [map()]
   defp put_event_cards(items, viewer) do
-    ids = items |> Enum.map(&Map.get(&1, :id)) |> Enum.filter(&is_integer/1)
-    cards = ScheduledEvents.cards_for_messages(ids)
+    cards = items |> ids_from(:channel) |> ScheduledEvents.cards_for_messages()
 
     if map_size(cards) == 0 do
       items
@@ -554,7 +591,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.MessageViewport do
   end
 
   @spec put_event_card(map(), map(), MapSet.t()) :: map()
-  defp put_event_card(item, cards, going) do
+  defp put_event_card(%{source: :channel} = item, cards, going) do
     case Map.get(cards, Map.get(item, :id)) do
       nil ->
         item
@@ -565,6 +602,8 @@ defmodule RetroHexChatWeb.ChatLive.Components.MessageViewport do
         |> Map.put(:event_attending, MapSet.member?(going, card.event_id))
     end
   end
+
+  defp put_event_card(item, _cards, _going), do: item
 
   # A link into this app resolves against the database rather than the scraper:
   # there is nothing to fetch, and the answer is a room's state rather than a

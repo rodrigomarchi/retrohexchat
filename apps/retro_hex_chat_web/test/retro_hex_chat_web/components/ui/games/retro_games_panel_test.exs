@@ -4,6 +4,8 @@ defmodule RetroHexChatWeb.Components.UI.Games.RetroGamesPanelTest do
   import Phoenix.LiveViewTest
   import RetroHexChatWeb.Components.UI.RetroGamesPanel
 
+  alias RetroHexChat.Games.Result
+
   @moduletag :unit
 
   @game %{
@@ -544,43 +546,60 @@ defmodule RetroHexChatWeb.Components.UI.Games.RetroGamesPanelTest do
            |> Floki.text() =~ "Playing"
   end
 
-  test "renders Hockey-style flat final score payloads" do
-    html =
-      render_component(&retro_games_panel/1,
-        id: "retro-games-panel",
-        games: [@hockey],
-        status: "finished",
-        selected_game: @hockey,
-        difficulty: "normal",
-        canvas_ready: false,
-        result: %{"winner" => "p1", "score_p1" => 5, "score_p2" => 3},
-        target: "retro-games-island"
-      )
+  defp finished_text(game, result, extra \\ []) do
+    [
+      id: "retro-games-panel",
+      games: [game],
+      status: "finished",
+      selected_game: game,
+      difficulty: "normal",
+      canvas_ready: false,
+      result: result,
+      target: "retro-games-island"
+    ]
+    |> Keyword.merge(extra)
+    |> then(&render_component(fn assigns -> retro_games_panel(assigns) end, &1))
+    |> Floki.parse_document!()
+  end
 
-    document = Floki.parse_document!(html)
-    text = Floki.text(document)
+  test "draws the score and the verdict of a finished match" do
+    result = %Result{game_id: "hex_hockey", p1_score: 5, p2_score: 3, outcome: :p1}
+    text = @hockey |> finished_text(result) |> Floki.text()
 
     assert text =~ "You 5 x 3 AI"
     assert text =~ "You won"
+
+    result = %Result{game_id: "hex_raid", p1_score: 1200, p2_score: 1450, outcome: :p2}
+    assert @raid |> finished_text(result) |> Floki.text() =~ "AI won"
   end
 
-  test "renders Raid-style flat final score payloads" do
-    html =
-      render_component(&retro_games_panel/1,
-        id: "retro-games-panel",
-        games: [@raid],
-        status: "finished",
-        selected_game: @raid,
-        difficulty: "normal",
-        canvas_ready: false,
-        result: %{"winner" => 2, "score1" => 1200, "score2" => 1450},
-        target: "retro-games-island"
-      )
+  test "names a co-op board and a match with no verdict in words" do
+    cleared = %Result{game_id: "hex_raid", p1_score: 10, p2_score: 10, outcome: :coop_win}
+    assert @raid |> finished_text(cleared) |> Floki.text() =~ "Board cleared"
 
-    document = Floki.parse_document!(html)
-    text = Floki.text(document)
+    silent = %Result{game_id: "hex_raid", p1_score: 1, p2_score: 0, outcome: :none}
+    assert @raid |> finished_text(silent) |> Floki.text() =~ "No winner reported"
+  end
 
-    assert text =~ "You 1200 x 1450 AI"
-    assert text =~ "AI won"
+  test "a written match says where it went, and a personal best says so" do
+    result = %Result{game_id: "hex_raid", p1_score: 1200, p2_score: 900, outcome: :p1}
+
+    document =
+      finished_text(@raid, result, record: %{personal_best: true}, ranked?: true)
+
+    assert [_] = Floki.find(document, ~s([data-testid="retro-game-recorded"]))
+    assert Floki.text(document) =~ "Personal best"
+
+    assert [link] = Floki.find(document, ~s([data-testid="retro-game-channel-link"]))
+    assert Floki.attribute(link, "href") == ["/c/hex-raid"]
+    assert Floki.find(document, ~s([data-testid="retro-game-unranked"])) == []
+  end
+
+  test "a guest's match tells them how to be ranked" do
+    result = %Result{game_id: "hex_raid", p1_score: 1, p2_score: 0, outcome: :p1}
+    document = finished_text(@raid, result)
+
+    assert [_] = Floki.find(document, ~s([data-testid="retro-game-unranked"]))
+    assert Floki.find(document, ~s([data-testid="retro-game-recorded"])) == []
   end
 end

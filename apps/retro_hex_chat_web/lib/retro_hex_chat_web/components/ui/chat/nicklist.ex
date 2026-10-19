@@ -6,6 +6,7 @@ defmodule RetroHexChatWeb.Components.UI.Nicklist do
 
   alias RetroHexChat.Channels.Modes
   alias RetroHexChatWeb.Components.UI.Chat.Role
+  alias RetroHexChatWeb.Components.UI.GameResultCard
   import RetroHexChatWeb.Components.UI.ToolButton
 
   alias RetroHexChatWeb.Icons
@@ -490,6 +491,10 @@ defmodule RetroHexChatWeb.Components.UI.Nicklist do
     default: false,
     doc: "whether this person is in the channel's conference, from the summary the chat holds"
 
+  attr :playing_game, :string,
+    default: nil,
+    doc: "the Retro Game this person is in a match of right now, or nil"
+
   attr :class, :any, default: nil
   attr :rest, :global
 
@@ -536,6 +541,19 @@ defmodule RetroHexChatWeb.Components.UI.Nicklist do
         aria-hidden="true"
       >
         <Icons.icon_protocol_conference_compact class="h-3 w-3" />
+      </span>
+      <%!-- A match in progress, with the game's own icon: somebody to watch
+            for in a game's channel, and somebody not to expect an answer from
+            for a minute anywhere else. --%>
+      <span
+        :if={@playing_game}
+        class="chat-nicklist-row__badge chat-nicklist-row__badge--playing"
+        title={dgettext("chat", "Playing %{game}", game: GameResultCard.game_title(@playing_game))}
+        data-testid={"nicklist-playing-#{@nick}"}
+        data-game-id={@playing_game}
+        aria-hidden="true"
+      >
+        <Icons.game_icon game_id={@playing_game} class="h-3 w-3" />
       </span>
       <%!-- Offline is drawn, not only greyed: the nick dims for both away and
             offline, so each one also carries its own badge. --%>

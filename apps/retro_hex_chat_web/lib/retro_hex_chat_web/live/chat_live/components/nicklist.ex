@@ -86,6 +86,20 @@ defmodule RetroHexChatWeb.ChatLive.Components.Nicklist do
     socket
   end
 
+  @doc """
+  Marks who is in the middle of a Retro Games match, and which game. Returns
+  the socket.
+
+  Takes everybody playing anywhere, keyed by `Nickname.key/1`; only the people
+  in the list on screen change what it draws.
+  """
+  @spec mark_playing(Phoenix.LiveView.Socket.t(), %{String.t() => String.t()}) ::
+          Phoenix.LiveView.Socket.t()
+  def mark_playing(socket, games_by_key) when is_map(games_by_key) do
+    send_update(__MODULE__, id: @id, action: {:playing, games_by_key})
+    socket
+  end
+
   @doc "Removes a single user row by nick. Returns the socket."
   @spec remove(Phoenix.LiveView.Socket.t(), String.t()) :: Phoenix.LiveView.Socket.t()
   def remove(socket, nick) do
@@ -114,6 +128,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.Nicklist do
         muted_count: 0,
         guests: [],
         call_nicks: MapSet.new(),
+        playing: %{},
         show_avatars: true,
         nick_color_fn: fn _nick -> nil end
       )
@@ -169,6 +184,24 @@ defmodule RetroHexChatWeb.ChatLive.Components.Nicklist do
       socket = assign_context(socket, Map.put(assigns, :call_nicks, wanted))
       {:ok, reset_role_streams(socket, socket.assigns.users)}
     end
+  end
+
+  # Who is playing what, from presence. A match starting anywhere on the server
+  # arrives here, so the rows are re-streamed only when somebody in this list
+  # started or stopped one.
+  def update(%{action: {:playing, games_by_key}} = assigns, socket) do
+    members = MapSet.new(socket.assigns.users, &Nickname.key(&1.nickname))
+
+    visible = fn games ->
+      Map.filter(games, fn {key, _game} -> MapSet.member?(members, key) end)
+    end
+
+    changed? = visible.(games_by_key) != visible.(socket.assigns.playing)
+    socket = assign_context(socket, Map.put(assigns, :playing, games_by_key))
+
+    if changed?,
+      do: {:ok, reset_role_streams(socket, socket.assigns.users)},
+      else: {:ok, socket}
   end
 
   # The rows are a stream, and a stream does not restyle what nobody re-inserts:
@@ -250,6 +283,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.Nicklist do
                 muted={Map.get(user, :muted, false)}
                 current={Nickname.equal?(user.nickname, @current_nick)}
                 in_call={MapSet.member?(@call_nicks, Nickname.key(user.nickname))}
+                playing_game={Map.get(@playing, Nickname.key(user.nickname))}
                 nick_color={@nick_color_fn.(user.nickname)}
                 avatar={@show_avatars && Map.get(user, :avatar)}
                 data-nick={user.nickname}

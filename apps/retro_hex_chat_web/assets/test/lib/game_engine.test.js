@@ -353,6 +353,29 @@ describe("GameEngine", () => {
       expect(handled).toEqual([]);
     });
 
+    it("leaves the keyboard alone for somebody only watching", () => {
+      const watching = new (class extends GameEngine {
+        _gameLoop() {}
+        _renderState() {}
+      })(canvas, channel, "test", false, { mode: "spectator" });
+      watching._handleKeyDown = vi.fn();
+      watching.setKeyboardCaptured(true);
+
+      const globalShortcut = vi.fn();
+      window.addEventListener("keydown", globalShortcut);
+
+      watching.start();
+      window.dispatchEvent(
+        new KeyboardEvent("keydown", { key: "ArrowUp", bubbles: true, cancelable: true }),
+      );
+
+      expect(watching._handleKeyDown).not.toHaveBeenCalled();
+      expect(globalShortcut).toHaveBeenCalledOnce();
+
+      window.removeEventListener("keydown", globalShortcut);
+      watching.stop();
+    });
+
     it("stops handled game keys before they reach global LiveView shortcuts", () => {
       engine = new TestEngine(canvas, channel, "test", false);
       engine._handleKeyDown = (event) => {

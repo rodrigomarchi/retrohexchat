@@ -11,7 +11,10 @@ defmodule RetroHexChatWeb.App.PlayLive do
 
   The state is the same shape it always had: which game is chosen, how hard the
   opponent plays, whether the canvas has reported for duty, and how the last
-  match ended. All of it is per-person and per-tab, so none of it is persisted.
+  match ended. All of it is per-person and per-tab. The one thing that outlives
+  the tab is a finished match of a signed-in player, which `Games.Results`
+  writes down — timed from when this page started it, not from anything the
+  canvas says.
   """
   use RetroHexChatWeb, :live_view
 
@@ -21,7 +24,10 @@ defmodule RetroHexChatWeb.App.PlayLive do
   import RetroHexChatWeb.Components.UI.Window
 
   alias Phoenix.LiveView.Socket
+  alias RetroHexChat.Games.Activity
   alias RetroHexChat.Games.Catalog
+  alias RetroHexChat.Games.Result
+  alias RetroHexChat.Games.Results
   alias RetroHexChat.Lobby
   alias RetroHexChat.ShareLinks
   alias RetroHexChatWeb.App.Paths
@@ -36,7 +42,7 @@ defmodule RetroHexChatWeb.App.PlayLive do
 
   @impl true
   @spec mount(map(), map(), Socket.t()) :: {:ok, Socket.t()}
-  def mount(params, _session, socket) do
+  def mount(params, session, socket) do
     socket =
       socket
       |> assign(
@@ -50,6 +56,9 @@ defmodule RetroHexChatWeb.App.PlayLive do
         difficulty: "normal",
         canvas_ready: false,
         result: nil,
+        record: nil,
+        player: SessionHelpers.identified_player(session, socket.assigns.surface_nickname),
+        match_started_at: nil,
         error_message: nil,
         match_error: nil
       )
@@ -141,6 +150,8 @@ defmodule RetroHexChatWeb.App.PlayLive do
         difficulty={@difficulty}
         canvas_ready={@canvas_ready}
         result={@result}
+        record={@record}
+        ranked?={not is_nil(@player)}
         error_message={@error_message}
         target={nil}
         class="min-h-0 flex-1"
@@ -156,7 +167,11 @@ defmodule RetroHexChatWeb.App.PlayLive do
   end
 
   def handle_event("retro_games_set_difficulty", %{"difficulty" => difficulty}, socket) do
-    {:noreply, assign(socket, difficulty: normalize_difficulty(difficulty))}
+    if socket.assigns.status == "playing" do
+      {:noreply, socket}
+    else
+      {:noreply, assign(socket, difficulty: normalize_difficulty(difficulty))}
+    end
   end
 
   def handle_event("retro_games_start_ai", _params, socket) do
@@ -165,7 +180,13 @@ defmodule RetroHexChatWeb.App.PlayLive do
 
   def handle_event("retro_games_play_again", _params, socket) do
     {:noreply,
-     assign(socket, status: "ready", canvas_ready: false, result: nil, error_message: nil)}
+     assign(socket,
+       status: "ready",
+       canvas_ready: false,
+       result: nil,
+       record: nil,
+       error_message: nil
+     )}
   end
 
   def handle_event("retro_games_back", _params, socket) do
@@ -251,12 +272,14 @@ defmodule RetroHexChatWeb.App.PlayLive do
     with true <- Catalog.solo_game_id?(game_id),
          {:ok, game} <- Catalog.get_game(game_id) do
       socket
+      |> stop_playing()
       |> stop_current_unless(game_id)
       |> assign(
         status: "ready",
         selected_game: game,
         canvas_ready: false,
         result: nil,
+        record: nil,
         error_message: nil,
         share_url: nil,
         share_slug: nil,
@@ -271,8 +294,16 @@ defmodule RetroHexChatWeb.App.PlayLive do
          %{assigns: %{status: "ready", canvas_ready: true, selected_game: game}} = socket
        )
        when is_map(game) do
+    :ok = Activity.playing(socket.assigns.nickname, game.id)
+
     socket
-    |> assign(status: "playing", result: nil, error_message: nil)
+    |> assign(
+      status: "playing",
+      result: nil,
+      record: nil,
+      error_message: nil,
+      match_started_at: DateTime.utc_now()
+    )
     |> push_event("retro_game_begin", %{game_id: game.id, difficulty: socket.assigns.difficulty})
   end
 
@@ -288,19 +319,56 @@ defmodule RetroHexChatWeb.App.PlayLive do
 
   defp mark_canvas_ready(socket, _game_id), do: socket
 
-  defp finish_match(%{assigns: %{selected_game: %{id: game_id}}} = socket, result) do
-    if game_id(result) == game_id do
-      assign(socket, status: "finished", canvas_ready: false, result: result)
+  # Only a match this page started can finish: a result arriving in any other
+  # state is a canvas reporting on a game nobody here began.
+  defp finish_match(
+         %{assigns: %{status: "playing", selected_game: %{id: game_id}}} = socket,
+         payload
+       ) do
+    if game_id(payload) == game_id do
+      result =
+        case Result.normalize(game_id, payload) do
+          {:ok, result} -> result
+          {:error, _unreadable} -> nil
+        end
+
+      socket
+      |> stop_playing()
+      |> assign(
+        status: "finished",
+        canvas_ready: false,
+        result: result,
+        record: record_match(socket, payload)
+      )
     else
       socket
     end
   end
 
-  defp finish_match(socket, _result), do: socket
+  defp finish_match(socket, _payload), do: socket
+
+  # A guest plays for fun: their name is nobody's to keep a score under.
+  defp record_match(%{assigns: %{player: nil}}, _payload), do: nil
+
+  defp record_match(%{assigns: assigns}, payload) do
+    case Results.record(%{
+           game_id: assigns.selected_game.id,
+           origin: "ai",
+           difficulty: assigns.difficulty,
+           p1: assigns.player,
+           payload: payload,
+           started_at: assigns.match_started_at
+         }) do
+      {:ok, row} -> Results.card(row)
+      {:error, _refused} -> nil
+    end
+  end
 
   defp fail_match(%{assigns: %{selected_game: %{id: game_id}}} = socket, payload) do
     if game_id(payload) == game_id do
-      assign(socket,
+      socket
+      |> stop_playing()
+      |> assign(
         status: "error",
         canvas_ready: false,
         error_message: dgettext("games", "The game engine could not be loaded."),
@@ -315,18 +383,29 @@ defmodule RetroHexChatWeb.App.PlayLive do
 
   defp back_to_library(socket) do
     socket
+    |> stop_playing()
     |> stop_current_unless(nil)
     |> assign(
       status: "library",
       selected_game: nil,
       canvas_ready: false,
       result: nil,
+      record: nil,
       error_message: nil,
       share_url: nil,
       share_slug: nil,
       match_error: nil
     )
   end
+
+  # The match this page was playing is over, however it ended: the chat's user
+  # list and the game's page stop saying this player is in one.
+  defp stop_playing(%{assigns: %{status: "playing", nickname: nickname}} = socket) do
+    :ok = Activity.stopped(nickname)
+    socket
+  end
+
+  defp stop_playing(socket), do: socket
 
   defp stop_current_unless(%{assigns: %{selected_game: %{id: current_id}}} = socket, next_id)
        when current_id != next_id do

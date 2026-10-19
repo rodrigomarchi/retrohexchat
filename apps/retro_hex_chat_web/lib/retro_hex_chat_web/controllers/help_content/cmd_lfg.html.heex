@@ -1,0 +1,32 @@
+<p>
+  {dgettext(
+    "help_commands",
+    "Use it to find somebody to play with, in the place where the players are. Run it in a game's channel. A card with one open seat appears there, and whoever presses Join first plays you."
+  )}
+</p>
+<.help_h4 icon={:icon_code}>{dgettext("help_commands", "Syntax")}</.help_h4>
+<pre>{dgettext("help_commands", "/lfg [mode]")}</pre>
+<.help_h4 icon={:icon_tag}>{dgettext("help_commands", "Parameters")}</.help_h4>
+<p>
+  <code>mode</code>
+  {dgettext(
+    "help_commands",
+    "— A mode of the channel's game. Without one, you play the standard game."
+  )}
+</p>
+<.help_h4 icon={:icon_rules}>{dgettext("help_commands", "Rules & Limits")}</.help_h4>
+<ul>
+  <li>{dgettext("help_commands", "Only in a game's own channel")}</li>
+  <li>{dgettext("help_commands", "The first player who presses Join plays you")}</li>
+  <li>{dgettext("help_commands", "Needs a registered nickname you have identified")}</li>
+  <li>
+    {dgettext(
+      "help_commands",
+      "One open seat per game and channel. Asking again points at the same card."
+    )}
+  </li>
+  <li>{dgettext("help_commands", "A seat nobody takes expires after about fifteen minutes")}</li>
+</ul>
+<.help_h4 icon={:icon_lightbulb}>{dgettext("help_commands", "Examples")}</.help_h4>
+<pre>/lfg
+/lfg blitz</pre>

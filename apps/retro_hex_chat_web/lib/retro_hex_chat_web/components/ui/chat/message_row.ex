@@ -18,6 +18,7 @@ defmodule RetroHexChatWeb.Components.UI.MessageRow do
   import RetroHexChatWeb.Components.UI.ChatMessage
   import RetroHexChatWeb.Components.UI.ChatAttachment
   import RetroHexChatWeb.Components.UI.EventCard
+  import RetroHexChatWeb.Components.UI.GameResultCard
   import RetroHexChatWeb.Components.UI.InlineHelpCard
   import RetroHexChatWeb.Components.UI.MessageIndicators
   import RetroHexChatWeb.Components.UI.MessageReactions
@@ -98,8 +99,14 @@ defmodule RetroHexChatWeb.Components.UI.MessageRow do
           meta_title={ChatHelpers.format_datetime(@msg.timestamp, @timezone)}
           source={dgettext("chat", "P2P")}
           type="system"
+          layout={card_layout(@msg)}
         >
-          * {raw(formatted_content(@msg, @strip_formatting))}
+          <%!-- A match the two of you played is the card; the sentence it
+                replaces is still there for whoever turned formatting off. --%>
+          <span :if={is_nil(result_card(@msg, @strip_formatting))}>
+            * {raw(formatted_content(@msg, @strip_formatting))}
+          </span>
+          <.game_result_card card={result_card(@msg, @strip_formatting)} />
         </.chat_message>
       <% :service -> %>
         <.chat_message
@@ -210,8 +217,14 @@ defmodule RetroHexChatWeb.Components.UI.MessageRow do
             nick={@msg.author}
             nick_color={@nick_color_fn.(@msg.author)}
             avatar={@show_avatars && Map.get(@msg, :avatar)}
+            layout={card_layout(@msg)}
           >
-            {raw(formatted_content(@msg, @strip_formatting))}
+            <span :if={is_nil(result_card(@msg, @strip_formatting))}>
+              {raw(formatted_content(@msg, @strip_formatting))}
+            </span>
+            <%!-- A line the games service wrote about a match, in the game's
+                  channel or in the one every game's results go to. --%>
+            <.game_result_card card={result_card(@msg, @strip_formatting)} />
             <.link_preview_card
               card={Map.get(@msg, :link_preview)}
               strip_formatting={@strip_formatting}
@@ -282,8 +295,15 @@ defmodule RetroHexChatWeb.Components.UI.MessageRow do
   # A card is a block of its own and cannot ride the head line beside the
   # narration, so a row carrying one is stacked whatever its type would choose.
   defp card_layout(msg) do
-    if Map.get(msg, :share_card) || Map.get(msg, :event_card), do: "stacked", else: "auto"
+    if Map.get(msg, :share_card) || Map.get(msg, :event_card) || Map.get(msg, :result_card),
+      do: "stacked",
+      else: "auto"
   end
+
+  # The match card stands in for the sentence about the match, except for the
+  # reader who asked for plain text: they get the sentence.
+  defp result_card(_msg, true = _strip_formatting), do: nil
+  defp result_card(msg, _strip_formatting), do: Map.get(msg, :result_card)
 
   attr :msg, :map, required: true
   attr :strip_formatting, :boolean, required: true
@@ -318,10 +338,17 @@ defmodule RetroHexChatWeb.Components.UI.MessageRow do
       enter_path={share_enter_path(@card)}
       share_url={share_url(@card)}
       next_path={share_next_path(@card)}
+      watch_path={share_watch_path(@card)}
       ended_at_text={share_ended_at_text(@card, @timezone)}
     />
     """
   end
+
+  defp share_watch_path(%{watch?: true, target: %{"session_token" => token}})
+       when is_binary(token),
+       do: Paths.watch_path(token)
+
+  defp share_watch_path(_card), do: nil
 
   defp event_start(msg) do
     case Map.get(msg, :event_card) do

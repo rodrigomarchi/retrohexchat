@@ -41,6 +41,7 @@ defmodule RetroHexChatWeb.ChatLive.TimerHandlers do
   alias RetroHexChatWeb.ChatLive.Helpers.Conversation
   alias RetroHexChatWeb.ChatLive.Helpers.PM
   alias RetroHexChatWeb.ChatLive.Helpers.Session, as: SessionHelpers
+  alias RetroHexChatWeb.Site.Address
 
   # ── Typing indicator timer ────────────────────────────────
 
@@ -479,14 +480,18 @@ defmodule RetroHexChatWeb.ChatLive.TimerHandlers do
         |> assign(session: new_session, show_status_tab: false)
         |> Conversation.load_roster()
         |> PM.load_pm_messages_with_pagination(target_pm)
+        |> Address.sync()
 
       target_channel && target_channel in session.channels ->
         new_session = Session.set_active_channel(session, target_channel)
 
+        # The address bar follows the conversation the restore put back, so
+        # the two never disagree.
         socket
         |> assign(session: new_session, show_status_tab: false)
         |> Conversation.load_roster()
         |> load_channel_messages_with_pagination(target_channel)
+        |> Address.sync()
 
       true ->
         socket

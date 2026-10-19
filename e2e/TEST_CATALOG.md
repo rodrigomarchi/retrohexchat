@@ -134,9 +134,9 @@ make e2e.catalog.check    # verify it is current (also runs in make ci)
 
 ## Coverage
 
-- **253 spec files** under `e2e/tests/`.
-- **622 Playwright `test()` cases**.
-- **566 documented flows**, 565 done, 1 not done.
+- **254 spec files** under `e2e/tests/`.
+- **625 Playwright `test()` cases**.
+- **571 documented flows**, 570 done, 1 not done.
 - **Every spec documents its own flows.**
 
 ## Flow index
@@ -467,6 +467,11 @@ Grouped by section. Every row comes from an `@flow` line in the spec itself.
 | N61 | Closing the call tab by accident is not leaving: reopening the call's address within the reconnection window puts you straight back in your seat — even after a moderator locked the room — with no antechamber, live video both ways, and one row for you on the other side (features P0) | `tests/chat-group-call.spec.ts` | done |
 | N62 | While your conference runs in its own tab, the chat keeps up: coming back to it shows the newest lines of the channel, the call's card included, and a line you send scrolls into view (features P0) | `tests/chat-group-call.spec.ts` | done |
 | N63 | Ending the conference for everyone ends it on every page and says so: the moderator's tab says they ended it, each other participant's tab names who did, and neither points back at a room that no longer exists (features P0) | `tests/chat-group-call.spec.ts` | done |
+| N64 | A game's channel names its game under the topic, and Find a partner puts one seat's card in the channel; pressing it again points at the same card | `tests/game-channels.spec.ts` | done |
+| N65 | A match between two people is written down once: GameServ says it in the game's channel with a card, and the same card lands in the two players' private conversation | `tests/game-channels.spec.ts` | done |
+| N66 | A visitor reads a game's channel and its public page — ranking, latest matches, the channel's last lines — and pressing Find a partner opens the sign-in window | `tests/game-channels.spec.ts` | done |
+| N67 | Somebody with no account watches the match being played, at its /watch address, drawn live from the host's relayed frames | `tests/game-open-lobby.spec.ts` | done |
+| N68 | The players see how many are watching and the watch link to hand on; the match is offered to watch under its game channel's topic and on the game's page | `tests/game-open-lobby.spec.ts` | done |
 
 ### O - Chat UI Micro-Journeys
 
@@ -785,7 +790,7 @@ Grouped by section. Every row comes from an `@flow` line in the spec itself.
 | SP39 | On the on-screen pad, the hand button waves and the note button dances | `tests/space-emotes.spec.ts` | done |
 | SP40 | The gate stands a few steps from where people arrive; the hand button stays dim until the gate is in reach, then lights up while the gate glows under a prompt | `tests/space-construct.spec.ts` | done |
 | SP41 | The Office's wooden door stands south of where people arrive: it lights up in reach, asks before going, and opens a furnished room whose furniture cannot be picked up, where a piece can still be added, whose glass doors open with E, and whose own door leads back | `tests/space-office.spec.ts` | done |
-| SP42 | The Game Room's neon door stands beside the Office's wooden door: it lights up in reach, asks before going, and opens a furnished room whose arcade cabinets list the games, whose furniture cannot be picked up, where a piece can still be added, and whose own neon door leads back | `tests/space-game-room.spec.ts` | done |
+| SP42 | The Game Room's neon door stands beside the Office's wooden door: it lights up in reach, asks before going, and opens a furnished room whose arcade cabinets each play one Retro Game of their own and list the rest, whose furniture cannot be picked up, where a piece can still be added, and whose own neon door leads back | `tests/space-game-room.spec.ts` | done |
 
 ### LC - Localization
 

@@ -82,7 +82,9 @@ export class GameEngine {
    * @param {string} gameId
    * @param {boolean} isHost
    * @param {object} [options]
-   * @param {"p2p_host"|"p2p_guest"|"solo"} [options.mode]
+   * @param {"p2p_host"|"p2p_guest"|"solo"|"spectator"} [options.mode] — a spectator
+   *   is a guest that only watches: it draws the host's snapshots and never
+   *   takes the keyboard.
    */
   constructor(canvas, channel, gameId, isHost, options = {}) {
     this.canvas = canvas;
@@ -137,8 +139,11 @@ export class GameEngine {
     this.running = true;
 
     this.channel.addEventListener("message", this._boundOnMessage);
-    window.addEventListener("keydown", this._boundOnKeyDown, KEYBOARD_CAPTURE_OPTIONS);
-    window.addEventListener("keyup", this._boundOnKeyUp, KEYBOARD_CAPTURE_OPTIONS);
+    // Somebody watching has no paddle: their keys stay the page's.
+    if (this.mode !== "spectator") {
+      window.addEventListener("keydown", this._boundOnKeyDown, KEYBOARD_CAPTURE_OPTIONS);
+      window.addEventListener("keyup", this._boundOnKeyUp, KEYBOARD_CAPTURE_OPTIONS);
+    }
 
     const now = this._now();
     this._clock.reset(now);

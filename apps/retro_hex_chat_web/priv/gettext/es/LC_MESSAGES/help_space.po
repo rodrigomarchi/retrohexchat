@@ -275,7 +275,7 @@ msgstr "¿Quién está ahí?"
 msgid "Going in and out"
 msgstr "Entrar y salir"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_space_game_room.html.heex:54
+#: lib/retro_hex_chat_web/controllers/help_content/feature_space_game_room.html.heex:53
 #: lib/retro_hex_chat_web/controllers/help_content/feature_space_office.html.heex:58
 #: lib/retro_hex_chat_web/controllers/help_content/feature_virtual_spaces.html.heex:56
 #: lib/retro_hex_chat_web/controllers/help_content/feature_virtual_spaces.html.heex:67
@@ -284,7 +284,7 @@ msgid "The Construct"
 msgstr "El Constructo"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_space_construct.html.heex:135
-#: lib/retro_hex_chat_web/controllers/help_content/feature_space_game_room.html.heex:57
+#: lib/retro_hex_chat_web/controllers/help_content/feature_space_game_room.html.heex:56
 #: lib/retro_hex_chat_web/controllers/help_content/feature_space_office.html.heex:61
 #, elixir-autogen, elixir-format
 msgid "Together"
@@ -306,7 +306,7 @@ msgid "Every space has a Construct: an empty white room that the people of the c
 msgstr "Every space has a Construct: an empty white room that the people of the conversation decorate together. A channel's Construct belongs to the channel, and a private conversation's Construct belongs to its two people. Nobody else can go in."
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_space_construct.html.heex:137
-#: lib/retro_hex_chat_web/controllers/help_content/feature_space_game_room.html.heex:59
+#: lib/retro_hex_chat_web/controllers/help_content/feature_space_game_room.html.heex:58
 #: lib/retro_hex_chat_web/controllers/help_content/feature_space_office.html.heex:63
 #, elixir-autogen, elixir-format
 msgid "Everyone inside sees each change at once."
@@ -425,7 +425,7 @@ msgid "It stays in your hand, so you can place a row of chairs with a row of cli
 msgstr "Se queda en su mano, para que pueda colocar una fila de sillas con una fila de clics."
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_space_construct.html.heex:27
-#: lib/retro_hex_chat_web/controllers/help_content/feature_space_game_room.html.heex:40
+#: lib/retro_hex_chat_web/controllers/help_content/feature_space_game_room.html.heex:39
 #: lib/retro_hex_chat_web/controllers/help_content/feature_space_office.html.heex:46
 #, elixir-autogen, elixir-format
 msgid "Press %{build} in the top-left corner, or B, to see the pieces."
@@ -721,7 +721,7 @@ msgstr "El botón de mano en la pantalla brilla al mismo tiempo."
 msgid "When you stand next to a gate, an empty seat or a piece you can use, it gets a gold outline."
 msgstr "Cuando te quedas junto a una puerta, un asiento vacío o una pieza que puedas usar, obtiene un contorno de oro."
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_space_game_room.html.heex:38
+#: lib/retro_hex_chat_web/controllers/help_content/feature_space_game_room.html.heex:37
 #: lib/retro_hex_chat_web/controllers/help_content/feature_space_office.html.heex:44
 #, elixir-autogen, elixir-format
 msgid "Adding pieces"
@@ -737,7 +737,7 @@ msgstr "Cada espacio también tiene una oficina."
 msgid "Press E next to the screen to see the last picture posted."
 msgstr "Pulse E junto a la pantalla para ver la última imagen publicada."
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_space_game_room.html.heex:34
+#: lib/retro_hex_chat_web/controllers/help_content/feature_space_game_room.html.heex:33
 #: lib/retro_hex_chat_web/controllers/help_content/feature_space_office.html.heex:38
 #, elixir-autogen, elixir-format
 msgid "Press F next to a chair to sit down."
@@ -748,7 +748,7 @@ msgstr "Presione F junto a una silla para sentarse."
 msgid "There is a reception by the door, desks with computers, a meeting table and a small kitchen."
 msgstr "Hay una recepción junto a la puerta, escritorios con computadoras, una mesa de reuniones y una pequeña cocina."
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_space_game_room.html.heex:52
+#: lib/retro_hex_chat_web/controllers/help_content/feature_space_game_room.html.heex:51
 #: lib/retro_hex_chat_web/controllers/help_content/feature_space_office.html.heex:56
 #, elixir-autogen, elixir-format
 msgid "They are placed, moved and painted the same way."
@@ -819,7 +819,7 @@ msgstr "La oficina ya tiene muebles, y todos en la conversación pueden añadir 
 msgid "Only the people of the conversation can go in."
 msgstr "Sólo la gente de la conversación puede entrar."
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_space_game_room.html.heex:36
+#: lib/retro_hex_chat_web/controllers/help_content/feature_space_game_room.html.heex:35
 #: lib/retro_hex_chat_web/controllers/help_content/feature_space_office.html.heex:42
 #, elixir-autogen, elixir-format
 msgid "This furniture cannot be moved, turned or removed."
@@ -850,7 +850,7 @@ msgstr "Una puerta de madera al lado de la puerta verde conduce a la oficina."
 msgid "The wooden door stands on the central island of the End of Time, next to the green gate."
 msgstr "La puerta de madera está en la isla central del End of Time, junto a la puerta verde."
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_space_game_room.html.heex:48
+#: lib/retro_hex_chat_web/controllers/help_content/feature_space_game_room.html.heex:47
 #, elixir-autogen, elixir-format
 msgid "Any piece from the Construct can also be placed in the game room."
 msgstr "Cualquier pieza del Constructo también se puede colocar en la sala de juegos."
@@ -860,15 +860,10 @@ msgstr "Cualquier pieza del Constructo también se puede colocar en la sala de j
 msgid "Every space also has a game room."
 msgstr "Cada espacio también tiene una sala de juegos."
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_space_game_room.html.heex:61
+#: lib/retro_hex_chat_web/controllers/help_content/feature_space_game_room.html.heex:60
 #, elixir-autogen, elixir-format
 msgid "Like the Construct, the game room is part of the space's gathering."
 msgstr "Como el Constructo, la sala de juegos es parte de la reunión del espacio."
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_space_game_room.html.heex:30
-#, elixir-autogen, elixir-format
-msgid "Press E next to an arcade machine to see the games. A game opens in a new tab."
-msgstr "Presione E junto a una máquina de arcade para ver los juegos. Un juego se abre en una nueva pestaña."
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_space_game_room.html.heex:3
 #: lib/retro_hex_chat_web/controllers/help_content/feature_virtual_spaces.html.heex:92
@@ -876,12 +871,12 @@ msgstr "Presione E junto a una máquina de arcade para ver los juegos. Un juego 
 msgid "The game room already has arcade machines and tables to play, and everyone in the conversation can add more."
 msgstr "La sala de juegos ya tiene máquinas de arcade y mesas para jugar, y todos en la conversación pueden añadir más."
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_space_game_room.html.heex:60
+#: lib/retro_hex_chat_web/controllers/help_content/feature_space_game_room.html.heex:59
 #, elixir-autogen, elixir-format
 msgid "The game room keeps everything that was added to it."
 msgstr "La sala de juegos mantiene todo lo que se le agregó."
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_space_game_room.html.heex:35
+#: lib/retro_hex_chat_web/controllers/help_content/feature_space_game_room.html.heex:34
 #, elixir-autogen, elixir-format
 msgid "This furniture is part of the game room."
 msgstr "This furniture is part of the game room."
@@ -893,7 +888,7 @@ msgctxt "space room"
 msgid "The Game Room"
 msgstr "La sala de juegos"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_space_game_room.html.heex:45
+#: lib/retro_hex_chat_web/controllers/help_content/feature_space_game_room.html.heex:44
 #, elixir-autogen, elixir-format
 msgid "The Build menu opens on the %{tab} tab."
 msgstr "El menú Build se abre en la pestaña %{tab}."
@@ -922,3 +917,18 @@ msgstr "Una puerta de neón junto a la puerta de madera de la oficina conduce a 
 #, elixir-autogen, elixir-format
 msgid "The neon door stands on the central island of the End of Time, next to the wooden door of the office."
 msgstr "La puerta de neón está en la isla central del End of Time, junto a la puerta de madera de la oficina."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_space_game_room.html.heex:30
+#, elixir-autogen, elixir-format
+msgid "Press E next to an arcade machine to see which game it plays."
+msgstr "Presione E junto a una máquina de arcade para ver qué juego juega."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_space_game_room.html.heex:31
+#, elixir-autogen, elixir-format
+msgid "The other games are listed below it."
+msgstr "Los otros juegos se enumeran a continuación."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_space_game_room.html.heex:32
+#, elixir-autogen, elixir-format
+msgid "Watching opens in a tab of its own."
+msgstr "Ver se abre en una pestaña propia."

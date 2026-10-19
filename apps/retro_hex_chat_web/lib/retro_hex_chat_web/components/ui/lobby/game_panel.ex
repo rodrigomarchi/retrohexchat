@@ -10,6 +10,7 @@ defmodule RetroHexChatWeb.Components.UI.Lobby.GamePanel do
   use RetroHexChatWeb.Component
 
   import RetroHexChatWeb.Components.UI.Badge
+  import RetroHexChatWeb.Components.UI.Button
   import RetroHexChatWeb.Components.UI.IconWell
   import RetroHexChatWeb.Components.UI.MediaSession.ActionButton
   import RetroHexChatWeb.Components.UI.MediaSession.StatusHeader
@@ -17,6 +18,8 @@ defmodule RetroHexChatWeb.Components.UI.Lobby.GamePanel do
 
   import RetroHexChatWeb.Components.UI.ToolButton
 
+  alias RetroHexChat.Games.Result
+  alias RetroHexChatWeb.Components.UI.LiveMatch
   alias RetroHexChatWeb.Icons
 
   attr :connected, :boolean, default: false
@@ -25,6 +28,11 @@ defmodule RetroHexChatWeb.Components.UI.Lobby.GamePanel do
   attr :game_outgoing, :boolean, required: true
   attr :games, :list, required: true
   attr :peer_nick, :string, required: true
+  attr :watchers, :integer, default: 0, doc: "how many pages are watching the match"
+
+  attr :watch_url, :string,
+    default: nil,
+    doc: "the address the match is watched at — nil for a match nobody else may watch"
 
   @spec game_panel(map()) :: Phoenix.LiveView.Rendered.t()
   def game_panel(assigns) do
@@ -77,6 +85,27 @@ defmodule RetroHexChatWeb.Components.UI.Lobby.GamePanel do
               {game_name(@games, @game.game_id)}
             </span>
           </p>
+          <%!-- A match played in the open says who is looking, and hands
+                over the address to watch it at. --%>
+          <div :if={@watch_url} class="flex shrink-0 items-center gap-2 text-xs">
+            <span class="flex items-center gap-1" data-testid="lobby-game-watchers">
+              <Icons.icon_watching class="h-4 w-4 shrink-0" />
+              {LiveMatch.watchers_label(@watchers)}
+            </span>
+            <.button
+              type="button"
+              size="sm"
+              variant="outline"
+              id="lobby-game-watch-copy"
+              phx-hook="CopyValueHook"
+              data-copy-text={@watch_url}
+              data-copied-label={dgettext("share", "Copied!")}
+              data-testid="lobby-game-watch-copy"
+            >
+              <:icon><Icons.icon_copy class="h-4 w-4" /></:icon>
+              {dgettext("share", "Copy link")}
+            </.button>
+          </div>
           <.tool_button
             label={dgettext("lobby", "End game")}
             caption={dgettext("lobby", "End game")}
@@ -121,16 +150,28 @@ defmodule RetroHexChatWeb.Components.UI.Lobby.GamePanel do
         </div>
         <:detail>
           <div class="mt-3 flex items-center justify-center gap-4 border border-border px-2 py-2 text-sm shadow-retro-sunken">
-            <span class={["font-bold", score_class(@game, 1)]}>
-              {dgettext("lobby", "P1 %{score}", score: score_of(@game, "p1"))}
+            <span class={["font-bold", score_class(@game, :p1)]}>
+              {dgettext("lobby", "P1 %{score}", score: score_of(@game, :p1))}
             </span>
             <span class="text-muted-foreground">{dgettext("lobby", "×")}</span>
-            <span class={["font-bold", score_class(@game, 2)]}>
-              {dgettext("lobby", "%{score} P2", score: score_of(@game, "p2"))}
+            <span class={["font-bold", score_class(@game, :p2)]}>
+              {dgettext("lobby", "%{score} P2", score: score_of(@game, :p2))}
             </span>
           </div>
         </:detail>
         <:actions>
+          <%!-- The same game again asks the other side the same question a
+                first game does: a rematch is a proposal, not a decision made
+                for them. --%>
+          <.media_session_action_button
+            label={dgettext("lobby", "Rematch")}
+            phx-click="propose_game"
+            phx-value-game_id={@game.game_id}
+            data-testid="lobby-game-rematch"
+          >
+            <Icons.icon_retry class="h-4 w-4" />
+            <span>{dgettext("lobby", "Rematch")}</span>
+          </.media_session_action_button>
           <.media_session_action_button
             label={dgettext("lobby", "Back to games")}
             phx-click="dismiss_game_result"
@@ -264,27 +305,33 @@ defmodule RetroHexChatWeb.Components.UI.Lobby.GamePanel do
     end
   end
 
-  @spec score_of(map(), String.t()) :: integer()
-  defp score_of(game, key) do
-    get_in(game, [:result, "score", key]) || 0
+  @spec score_of(map(), :p1 | :p2) :: non_neg_integer()
+  defp score_of(%{result: %Result{p1_score: score}}, :p1), do: score
+  defp score_of(%{result: %Result{p2_score: score}}, :p2), do: score
+  defp score_of(_game, _side), do: 0
+
+  @spec score_class(map(), :p1 | :p2) :: String.t()
+  defp score_class(game, side) do
+    if outcome(game) == side, do: "text-foreground", else: "text-muted-foreground"
   end
 
-  @spec score_class(map(), integer()) :: String.t()
-  defp score_class(game, player) do
-    if winner(game) == player, do: "text-foreground", else: "text-muted-foreground"
-  end
-
+  # The host plays P1 and the guest P2, so "you" is whichever side this
+  # console's player is on.
   @spec outcome_label(map()) :: String.t()
   defp outcome_label(game) do
-    viewer = if game.is_host, do: 1, else: 2
+    viewer = if game.is_host, do: :p1, else: :p2
 
-    case winner(game) do
-      w when w in [1, 2] and w == viewer -> dgettext("lobby", "You win!")
-      w when w in [1, 2] -> dgettext("lobby", "You lose.")
-      _ -> dgettext("lobby", "Draw.")
+    case outcome(game) do
+      ^viewer -> dgettext("lobby", "You win!")
+      side when side in [:p1, :p2] -> dgettext("lobby", "You lose.")
+      :coop_win -> dgettext("lobby", "Cleared together!")
+      :coop_loss -> dgettext("lobby", "Out of lives.")
+      :draw -> dgettext("lobby", "Draw.")
+      _no_verdict -> dgettext("lobby", "Match over.")
     end
   end
 
-  @spec winner(map()) :: integer() | nil
-  defp winner(game), do: get_in(game, [:result, "winner"])
+  @spec outcome(map()) :: Result.outcome() | nil
+  defp outcome(%{result: %Result{outcome: outcome}}), do: outcome
+  defp outcome(_game), do: nil
 end

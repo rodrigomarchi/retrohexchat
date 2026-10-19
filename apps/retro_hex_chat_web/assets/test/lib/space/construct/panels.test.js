@@ -84,6 +84,83 @@ describe("renderPanel", () => {
     expect(link.rel).toBe("noopener");
   });
 
+  it("puts the game a cabinet plays up front, with who is at it and its two ways on", () => {
+    const { root, host } = shell();
+    renderPanel(
+      root,
+      host,
+      {
+        kind: "arcade",
+        featured: {
+          id: "hex_pong",
+          name: "Hex Pong",
+          tagline: "Cyberpunk Pong",
+          url: "/play/hex_pong",
+          channel: "#hex-pong",
+          channel_url: "/c/hex-pong",
+          playing: "Playing now: ana",
+          play_label: "Play",
+          others_label: "Other games",
+        },
+        games: [{ id: "hex_tennis", name: "Hex Tennis", url: "/play/hex_tennis" }],
+      },
+      ports(),
+    );
+
+    const featured = host.querySelector('[data-testid="space-panel-featured-hex_pong"]');
+    expect(featured.textContent).toContain("Playing now: ana");
+    const play = featured.querySelector('[data-testid="space-panel-featured-play"]');
+    expect(play.getAttribute("href")).toBe("/play/hex_pong");
+    expect(play.target).toBe("_blank");
+    const channel = featured.querySelector('[data-testid="space-panel-featured-channel"]');
+    expect(channel.getAttribute("href")).toBe("/c/hex-pong");
+    expect(channel.textContent).toBe("#hex-pong");
+    expect(host.textContent).toContain("Other games");
+    expect(host.querySelector('[data-testid="space-panel-game-hex_tennis"]')).not.toBeNull();
+  });
+
+  it("lists beside the game the matches of it anybody may watch, or says nobody plays it", () => {
+    const featured = (extra) => ({
+      kind: "arcade",
+      featured: {
+        id: "hex_pong",
+        name: "Hex Pong",
+        url: "/play/hex_pong",
+        channel: "#hex-pong",
+        channel_url: "/c/hex-pong",
+        play_label: "Play",
+        others_label: "Other games",
+        nobody: "Nobody is playing it right now.",
+        live_label: "Live now",
+        live: [],
+        ...extra,
+      },
+      games: [],
+    });
+
+    const quiet = shell();
+    renderPanel(quiet.root, quiet.host, featured({}), ports());
+    const side = quiet.host.querySelector('[data-testid="space-panel-featured-side"]');
+    expect(side.textContent).toBe("Nobody is playing it right now.");
+
+    const busy = shell();
+    renderPanel(
+      busy.root,
+      busy.host,
+      featured({
+        playing: "Playing now: ana, beto",
+        live: [{ token: "tok", url: "/watch/tok", label: "ana × beto · 2 watching" }],
+      }),
+      ports(),
+    );
+    const watch = busy.host.querySelector('[data-testid="space-panel-watch-tok"]');
+    expect(watch.getAttribute("href")).toBe("/watch/tok");
+    expect(watch.target).toBe("_blank");
+    expect(watch.textContent).toBe("ana × beto · 2 watching");
+    expect(busy.host.textContent).toContain("Live now");
+    expect(busy.host.textContent).not.toContain("Nobody is playing");
+  });
+
   it("lets whoever may write on a sign save it, and says why a save is refused", () => {
     const { root, host } = shell();
     const p = ports();

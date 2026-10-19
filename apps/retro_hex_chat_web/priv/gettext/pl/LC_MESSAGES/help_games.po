@@ -3989,6 +3989,7 @@ msgstr ""
 #: lib/retro_hex_chat_web/controllers/help_content/feature_block_breakers.html.heex:72
 #: lib/retro_hex_chat_web/controllers/help_content/feature_game_match_full.html.heex:31
 #: lib/retro_hex_chat_web/controllers/help_content/feature_game_match_link.html.heex:39
+#: lib/retro_hex_chat_web/controllers/help_content/feature_game_scores.html.heex:50
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_boxing.html.heex:67
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_warlords.html.heex:83
 #: lib/retro_hex_chat_web/controllers/help_content/feature_pixel_tanks.html.heex:65
@@ -4117,8 +4118,11 @@ msgstr "Granie z kimś"
 msgid "Ready, then Start"
 msgstr "Gotowe, potem Start"
 
+#: lib/retro_hex_chat_web/controllers/help_content/feature_game_channels.html.heex:56
 #: lib/retro_hex_chat_web/controllers/help_content/feature_game_match_full.html.heex:25
 #: lib/retro_hex_chat_web/controllers/help_content/feature_game_match_link.html.heex:33
+#: lib/retro_hex_chat_web/controllers/help_content/feature_game_scores.html.heex:48
+#: lib/retro_hex_chat_web/controllers/help_content/feature_game_watch.html.heex:63
 #, elixir-autogen, elixir-format
 msgid "See also:"
 msgstr "Zobacz też:"
@@ -4212,3 +4216,245 @@ msgstr "Zakładka Sesje w oknie Zaufane terminale, w menu Start, wypisuje każdy
 #, elixir-autogen, elixir-format
 msgid "Double-click the Retro Games desktop icon, or open Start ▸ Games and choose Retro Games: both show the library, one icon per game. Choosing a game opens that game in a browser tab of its own, and the chat stays exactly where it was."
 msgstr "Kliknij dwukrotnie ikonę Retro Games na pulpicie albo otwórz Start ▸ Games i wybierz Retro Games: jedno i drugie pokazuje bibliotekę, po jednej ikonie na grę. Wybranie gry otwiera ją we własnej karcie przeglądarki, a czat zostaje dokładnie tam, gdzie był."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_game_scores.html.heex:42
+#, elixir-autogen, elixir-format
+msgid "A match somebody left before the end"
+msgstr "Mecz, który ktoś zostawił przed końcem."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_game_scores.html.heex:43
+#, elixir-autogen, elixir-format
+msgid "A match that ended within seconds of starting"
+msgstr "Mecz, który zakończył się w ciągu kilku sekund od rozpoczęcia"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_game_scores.html.heex:44
+#, elixir-autogen, elixir-format
+msgid "A score the game cannot produce"
+msgstr "Wynik gry nie może produkować"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_game_scores.html.heex:31
+#, elixir-autogen, elixir-format
+msgid "After a match with somebody"
+msgstr "Po meczu z kimś"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_game_scores.html.heex:49
+#: lib/retro_hex_chat_web/controllers/help_content/feature_game_watch.html.heex:64
+#, elixir-autogen, elixir-format
+msgid "Game Channels"
+msgstr "Kanały gier"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_game_scores.html.heex:8
+#, elixir-autogen, elixir-format
+msgid "How a game ranks"
+msgstr "Jak gra w rankingu"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_game_channels.html.heex:58
+#, elixir-autogen, elixir-format
+msgid "Scores and Rankings"
+msgstr "Wyniki i rankingi"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_game_channels.html.heex:34
+#, elixir-autogen, elixir-format
+msgid "The strip under the topic"
+msgstr "Pasek pod tematem"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_game_scores.html.heex:40
+#, elixir-autogen, elixir-format
+msgid "What does not count"
+msgstr "Co się nie liczy?"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_game_channels.html.heex:47
+#, elixir-autogen, elixir-format
+msgid "Who can"
+msgstr "Kto może"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_game_scores.html.heex:10
+#, elixir-autogen, elixir-format
+msgid "A versus game ranks wins. Hex Pong, Hex Tennis and Hex Hockey are versus games, like most of the others. A score game ranks the best score you took home, and tells you when you beat your own best. Hex Raid, Hex Invaders and Hex Enduro are score games. A co-op game ranks the score the two of you made together. Matches against the computer are ranked apart, with one ranking per difficulty."
+msgstr "Gracze kontra zawodnicy wygrywają. Hex Pong, Hex Tenis i Hockey Hex są kontra gry, jak większość innych. Gra wynik rangi najlepszy wynik wziąłeś do domu, i mówi, kiedy pokonać swoje najlepsze. Hex Raid, Hex Invaders i Hex Enduro są punktami gry. Gra kooperacyjna uszeregowuje wynik, który wasza dwójka zrobiła razem. Zapałki przeciwko komputerowi są podzielone, z jednym rankingiem na trudności."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_game_channels.html.heex:49
+#, elixir-autogen, elixir-format
+msgid "Anybody can read a game channel and its page without an account. Playing, offering a seat, challenging somebody and talking need a registered nickname that you have identified. A visitor who presses any of them sees the sign-in window."
+msgstr "Każdy może przeczytać kanał gier i jego stronę bez konta. Granie, oferowanie miejsca, wyzywanie kogoś i rozmowa potrzebują zarejestrowanej ksywki, którą zidentyfikowaliście. Gość, który naciska któregoś z nich widzi znak w oknie."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_game_scores.html.heex:2
+#, elixir-autogen, elixir-format
+msgid "Every match a registered, identified player finishes is written down. That covers matches against the computer and matches between two people in a P2P session. A guest's matches are played for fun and are not kept."
+msgstr "Każdy mecz jest zapisany. To pokrywa dopasowanie do komputera i dopasowanie pomiędzy dwoma osobami podczas sesji P2P. Mecze gości są rozgrywane dla zabawy i nie są przechowywane."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_game_scores.html.heex:34
+#, elixir-autogen, elixir-format
+msgid "The result appears in your private conversation as a card with the score and a way into the game's channel. While you play, the P2P entry of the conversation shows which game. Rematch, on the result inside the session, offers the same game again."
+msgstr "Wynik pojawia się w prywatnej rozmowie jako karty z wynikiem i sposób na kanał gry. Podczas gry, P2P wpis rozmowy pokazuje, która gra. Rematch, na wynik w sesji, oferuje tę samą grę ponownie."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_game_channels.html.heex:2
+#, elixir-autogen, elixir-format
+msgid "Every Retro Game has its own channel, like %{channel}. The players of the game talk there, find partners and see the latest results. The channel %{feed} shows the results of every game."
+msgstr "Każda gra Retro ma swój własny kanał, jak %{channel}. Gracze w grze rozmawiać tam, znaleźć partnerów i zobaczyć najnowsze wyniki. Kanał %{feed} pokazuje wyniki każdej gry."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_game_scores.html.heex:19
+#, elixir-autogen, elixir-format
+msgid "A win against a stronger player gives more points."
+msgstr "Wygrana z silniejszym graczem daje więcej punktów."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_game_scores.html.heex:20
+#, elixir-autogen, elixir-format
+msgid "Each week has a new challenge for every game."
+msgstr "Każdy tydzień ma nowe wyzwanie dla każdej gry."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_game_scores.html.heex:16
+#, elixir-autogen, elixir-format
+msgid "Ratings and challenges"
+msgstr "Oceny i wyzwania"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_game_scores.html.heex:21
+#, elixir-autogen, elixir-format
+msgid "The challenge starts on Monday."
+msgstr "Wyzwanie zaczyna się w poniedziałek."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_game_scores.html.heex:22
+#, elixir-autogen, elixir-format
+msgid "The page of the game shows the challenge and its leader."
+msgstr "Strona gry pokazuje wyzwanie i jego lidera."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_game_scores.html.heex:27
+#, elixir-autogen, elixir-format
+msgid "The user list shows a game icon next to anybody who is playing now."
+msgstr "Lista użytkowników pokazuje ikonę gry obok każdego, kto teraz gra."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_game_scores.html.heex:18
+#, elixir-autogen, elixir-format
+msgid "Versus games also rank players by rating."
+msgstr "Gry kontra również rangi graczy według ocen."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_game_scores.html.heex:25
+#, elixir-autogen, elixir-format
+msgid "Who is playing now"
+msgstr "Kto teraz gra?"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_game_watch.html.heex:2
+#, elixir-autogen, elixir-format
+msgid "Anybody can watch a match whose seat was offered to everybody."
+msgstr "Każdy może obejrzeć mecz, którego miejsce zaoferowano każdemu."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_game_watch.html.heex:18
+#, elixir-autogen, elixir-format
+msgid "Nobody can watch a private match."
+msgstr "Nikt nie może oglądać prywatnego meczu."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_game_channels.html.heex:61
+#: lib/retro_hex_chat_web/controllers/help_content/feature_game_watch.html.heex:5
+#, elixir-autogen, elixir-format
+msgid "Watching a Match"
+msgstr "Oglądanie meczu"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_game_watch.html.heex:13
+#, elixir-autogen, elixir-format
+msgid "Watching only shows the game. It never shows the call or the files of the players."
+msgstr "Oglądanie tylko pokazuje grę. Nigdy nie pokazuje połączenia ani plików graczy."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_game_watch.html.heex:10
+#, elixir-autogen, elixir-format
+msgid "Watching opens in a tab of its own."
+msgstr "Oglądanie otwiera się na własną kartę."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_game_watch.html.heex:8
+#, elixir-autogen, elixir-format
+msgid "When somebody takes the seat, the card shows a Watch button."
+msgstr "Kiedy ktoś zajmuje miejsce, karta pokazuje przycisk Watch."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_game_watch.html.heex:11
+#, elixir-autogen, elixir-format
+msgid "You do not need an account to watch."
+msgstr "Nie potrzebujesz konta do oglądania."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_game_watch.html.heex:36
+#, elixir-autogen, elixir-format
+msgid "Below the game there is a link to play it yourself and a link to its channel."
+msgstr "Poniżej gry znajduje się link do odtwarzania go samodzielnie i link do jego kanału."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_game_watch.html.heex:30
+#, elixir-autogen, elixir-format
+msgid "Between two games the page waits, and the next game starts on its own."
+msgstr "Między dwoma grami strona czeka, a następna gra zaczyna się na własną rękę."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_game_watch.html.heex:24
+#, elixir-autogen, elixir-format
+msgid "The page shows the game as it is played, the names of both players and whether the match is live."
+msgstr "Strona pokazuje grę, jak jest rozegrane, nazwy obu graczy i czy mecz jest na żywo."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_game_watch.html.heex:21
+#, elixir-autogen, elixir-format
+msgid "What Watching Shows"
+msgstr "Co oglądanie pokazuje"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_game_watch.html.heex:41
+#, elixir-autogen, elixir-format
+msgid "After a match, the page lists other matches to watch."
+msgstr "Po meczu, strona wymienia inne mecze do oglądania."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_game_watch.html.heex:49
+#, elixir-autogen, elixir-format
+msgid "In the game room, an arcade machine lists the matches of its game being played now."
+msgstr "W pokoju gier, maszyna arcade wymienia mecze jego gry jest odtwarzane teraz."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_game_watch.html.heex:58
+#, elixir-autogen, elixir-format
+msgid "Players can see how many people are watching their match."
+msgstr "Gracze mogą zobaczyć, ilu ludzi ogląda mecz."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_game_watch.html.heex:47
+#, elixir-autogen, elixir-format
+msgid "The page of a game also lists the matches being played now."
+msgstr "Strona gry zawiera również listę rozgrywanych meczów."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_game_watch.html.heex:59
+#, elixir-autogen, elixir-format
+msgid "They can also copy the link to their match."
+msgstr "Mogą również skopiować link do ich meczu."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_game_watch.html.heex:44
+#, elixir-autogen, elixir-format
+msgid "Where to Find a Match"
+msgstr "Gdzie znaleźć dopasowanie"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_game_watch.html.heex:56
+#, elixir-autogen, elixir-format
+msgid "While Playing"
+msgstr "Podczas gry"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_game_watch.html.heex:46
+#, elixir-autogen, elixir-format
+msgid "You can also find a live match in the channel of its game."
+msgstr "Można również znaleźć mecz na żywo w kanale jego gry."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_game_channels.html.heex:27
+#, elixir-autogen, elixir-format
+msgid "Each player is announced at most once every five minutes in each game. Every match still counts in the rankings."
+msgstr "Każdy gracz jest ogłaszany co najwyżej raz na pięć minut w każdej grze. Każdy mecz nadal się liczy w rankingach."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_game_channels.html.heex:36
+#, elixir-autogen, elixir-format
+msgid "The first link opens the game in a new tab. The second link puts a card with one open seat in the channel, like the command %{command}. The first person who joins plays with you. The third link opens the page of the game in a new tab, with the best players of the week and the latest matches."
+msgstr "Pierwszy link otwiera grę w nowej zakładce. Drugi link umieszcza kartę z jednym otwartym siedzeniem w kanale, jak polecenie %{command}. Pierwsza osoba, która do ciebie dołączyła, bawi się z tobą. Trzeci link otwiera stronę gry w nowej zakładce, z najlepszymi graczami tygodnia i najnowsze mecze."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_game_channels.html.heex:12
+#, elixir-autogen, elixir-format
+msgid "The service %{service} keeps the game channels and sits in each one. It announces a match between two people played in the open, a personal best, and a win against the computer on hard, with a card that shows the score. Once a day it says how many matches the game had and who did best."
+msgstr "Usługa %{service} utrzymuje kanały gry i siedzi w każdym z nich. Ogłasza mecz pomiędzy dwoma ludźmi granymi na otwartej przestrzeni, osobistym najlepszym, i wygraną z komputerem na twardo, z kartą, która pokazuje wynik. Raz dziennie jest napisane, ile dopasowań miał mecz i kto zrobił najlepiej."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_game_channels.html.heex:41
+#, elixir-autogen, elixir-format
+msgid "When somebody is playing the game in the open, a fourth link opens the match to watch."
+msgstr "Kiedy ktoś gra w grę w otwartym, czwarty link otwiera mecz do oglądania."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_game_channels.html.heex:20
+#, elixir-autogen, elixir-format
+msgid "A private match is not announced."
+msgstr "Prywatny mecz nie jest ogłoszony."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_game_channels.html.heex:21
+#, elixir-autogen, elixir-format
+msgid "The result of a private match stays in the conversation of its two players."
+msgstr "Wynik prywatnego meczu pozostaje w rozmowie dwóch graczy."

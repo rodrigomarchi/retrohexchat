@@ -11,17 +11,17 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 
-#: lib/retro_hex_chat_web/components/ui/share/join_card.ex:179
+#: lib/retro_hex_chat_web/components/ui/share/join_card.ex:169
 #, elixir-autogen, elixir-format
 msgid "%{nickname} shared this with you."
 msgstr "%{nickname} さんがあなたに共有しました。"
 
-#: lib/retro_hex_chat_web/components/ui/share/join_card.ex:155
+#: lib/retro_hex_chat_web/components/ui/share/join_card.ex:145
 #, elixir-autogen, elixir-format
 msgid "A game on RetroHexChat"
 msgstr "RetroHexChat のゲーム"
 
-#: lib/retro_hex_chat_web/components/ui/share/join_card.ex:159
+#: lib/retro_hex_chat_web/components/ui/share/join_card.ex:149
 #, elixir-autogen, elixir-format
 msgid "An invitation to RetroHexChat"
 msgstr "RetroHexChat への招待"
@@ -31,12 +31,12 @@ msgstr "RetroHexChat への招待"
 msgid "Join - RetroHexChat"
 msgstr "参加 - RetroHexChat"
 
-#: lib/retro_hex_chat_web/components/ui/share/join_card.ex:153
+#: lib/retro_hex_chat_web/components/ui/share/join_card.ex:143
 #, elixir-autogen, elixir-format
 msgid "Link expired"
 msgstr "リンクの有効期限切れ"
 
-#: lib/retro_hex_chat_web/components/ui/share/join_card.ex:81
+#: lib/retro_hex_chat_web/components/ui/share/join_card.ex:82
 #, elixir-autogen, elixir-format
 msgid "Open the chat"
 msgstr "チャットを開く"
@@ -58,64 +58,64 @@ msgstr "共有"
 msgid "Share link"
 msgstr "共有リンク"
 
-#: lib/retro_hex_chat_web/components/ui/share/join_card.ex:181
+#: lib/retro_hex_chat_web/components/ui/share/join_card.ex:171
 #, elixir-autogen, elixir-format
 msgid "Someone shared this with you."
 msgstr "誰かがあなたに共有しました。"
 
-#: lib/retro_hex_chat_web/components/ui/share/join_card.ex:171
+#: lib/retro_hex_chat_web/components/ui/share/join_card.ex:161
 #, elixir-autogen, elixir-format
 msgid "%{nickname} shared this with you. Pick a nickname to join."
 msgstr "%{nickname} さんがあなたに共有しました。ニックネームを選んで参加してください。"
 
-#: lib/retro_hex_chat_web/components/ui/share/join_card.ex:176
+#: lib/retro_hex_chat_web/components/ui/share/join_card.ex:166
 #, elixir-autogen, elixir-format
 msgid "Pick a nickname to join."
 msgstr "ニックネームを選んで参加してください。"
 
-#: lib/retro_hex_chat_web/components/ui/share/join_card.ex:162
+#: lib/retro_hex_chat_web/components/ui/share/join_card.ex:152
 #, elixir-autogen, elixir-format
 msgid "This link is no longer active. The chat is still there."
 msgstr "このリンクは無効になりました。チャットはそのままあります。"
 
-#: lib/retro_hex_chat_web/components/ui/share/join_card.ex:90
+#: lib/retro_hex_chat_web/components/ui/share/join_card.ex:91
 #, elixir-autogen, elixir-format
 msgid "from %{nickname}"
 msgstr "%{nickname} から"
 
-#: lib/retro_hex_chat_web/components/ui/share/share_message_card.ex:219
+#: lib/retro_hex_chat_web/components/ui/share/share_message_card.ex:205
 #, elixir-autogen, elixir-format
 msgid "A game"
 msgstr "ゲーム"
 
-#: lib/retro_hex_chat_web/components/ui/share/share_message_card.ex:216
+#: lib/retro_hex_chat_web/components/ui/share/share_message_card.ex:202
 #, elixir-autogen, elixir-format
 msgid "An invitation"
 msgstr "招待"
 
-#: lib/retro_hex_chat_web/components/ui/share/share_message_card.ex:308
+#: lib/retro_hex_chat_web/components/ui/share/share_message_card.ex:294
 #, elixir-autogen, elixir-format
 msgid "shared by %{nickname}"
 msgstr "%{nickname} が共有"
 
-#: lib/retro_hex_chat_web/components/ui/share/share_message_card.ex:310
+#: lib/retro_hex_chat_web/components/ui/share/share_message_card.ex:296
 #, elixir-autogen, elixir-format
 msgid "shared with this conversation"
 msgstr "この会話で共有"
 
-#: lib/retro_hex_chat_web/components/ui/share/join_card.ex:183
+#: lib/retro_hex_chat_web/components/ui/share/join_card.ex:173
 #, elixir-autogen, elixir-format
 msgid "Connect and join"
 msgstr "接続して参加"
 
-#: lib/retro_hex_chat_web/components/ui/share/join_card.ex:184
-#: lib/retro_hex_chat_web/components/ui/share/share_message_card.ex:140
+#: lib/retro_hex_chat_web/components/ui/share/join_card.ex:174
+#: lib/retro_hex_chat_web/components/ui/share/share_message_card.ex:121
 #: lib/retro_hex_chat_web/controllers/help_content/feature_virtual_spaces.html.heex:17
 #, elixir-autogen, elixir-format
 msgid "Join"
 msgstr "参加"
 
-#: lib/retro_hex_chat_web/components/ui/share/share_message_card.ex:269
+#: lib/retro_hex_chat_web/components/ui/share/share_message_card.ex:255
 #: lib/retro_hex_chat_web/site/pages/join.ex:336
 #: lib/retro_hex_chat_web/site/pages/join.ex:356
 #, elixir-autogen, elixir-format
@@ -128,13 +128,13 @@ msgstr[0] "現在 %{count} 人が参加中"
 msgid "A call in %{channel}"
 msgstr "%{channel} の通話"
 
-#: lib/retro_hex_chat_web/components/ui/share/join_card.ex:156
+#: lib/retro_hex_chat_web/components/ui/share/join_card.ex:146
 #: lib/retro_hex_chat_web/site/pages/join.ex:349
 #, elixir-autogen, elixir-format
 msgid "A call on RetroHexChat"
 msgstr "RetroHexChat の通話"
 
-#: lib/retro_hex_chat_web/components/ui/share/share_message_card.ex:213
+#: lib/retro_hex_chat_web/components/ui/share/share_message_card.ex:199
 #, elixir-autogen, elixir-format
 msgid "A conference"
 msgstr "グループ通話"
@@ -149,7 +149,7 @@ msgstr "RetroHexChat のプライベートスペース"
 msgid "A space on RetroHexChat"
 msgstr "RetroHexChat のスペース"
 
-#: lib/retro_hex_chat_web/components/ui/share/share_message_card.ex:214
+#: lib/retro_hex_chat_web/components/ui/share/share_message_card.ex:200
 #, elixir-autogen, elixir-format
 msgid "A virtual space"
 msgstr "バーチャルスペース"
@@ -159,7 +159,7 @@ msgstr "バーチャルスペース"
 msgid "The space of %{channel}"
 msgstr "%{channel} のスペース"
 
-#: lib/retro_hex_chat_web/components/ui/share/join_card.ex:157
+#: lib/retro_hex_chat_web/components/ui/share/join_card.ex:147
 #: lib/retro_hex_chat_web/site/pages/join.ex:278
 #, elixir-autogen, elixir-format
 msgid "A P2P session on RetroHexChat"
@@ -186,17 +186,17 @@ msgstr "空席 1"
 msgid "No seats left"
 msgstr "空席なし"
 
-#: lib/retro_hex_chat_web/components/ui/share/join_card.ex:71
+#: lib/retro_hex_chat_web/components/ui/share/join_card.ex:72
 #, elixir-autogen, elixir-format
 msgid "Play something else"
 msgstr "別のゲームで遊ぶ"
 
-#: lib/retro_hex_chat_web/components/ui/share/join_card.ex:154
+#: lib/retro_hex_chat_web/components/ui/share/join_card.ex:144
 #, elixir-autogen, elixir-format
 msgid "Seat taken"
 msgstr "席は埋まりました"
 
-#: lib/retro_hex_chat_web/components/ui/share/join_card.ex:167
+#: lib/retro_hex_chat_web/components/ui/share/join_card.ex:157
 #, elixir-autogen, elixir-format
 msgid "Somebody already took the seat. This match is full."
 msgstr "すでに誰かが席に着きました。この対戦は満員です。"
@@ -215,7 +215,8 @@ msgid "It is already open in another window of yours."
 msgstr "すでにあなたの別のウィンドウで開いています。"
 
 #: lib/retro_hex_chat_web/components/ui/dialogs/share_link_dialog.ex:96
-#: lib/retro_hex_chat_web/components/ui/share/share_message_card.ex:152
+#: lib/retro_hex_chat_web/components/ui/lobby/game_panel.ex:102
+#: lib/retro_hex_chat_web/components/ui/share/share_message_card.ex:133
 #, elixir-autogen, elixir-format
 msgid "Copied!"
 msgstr "コピーしました！"
@@ -225,7 +226,7 @@ msgstr "コピーしました！"
 msgid "Copy"
 msgstr "コピー"
 
-#: lib/retro_hex_chat_web/site/pages/join.ex:92
+#: lib/retro_hex_chat_web/site/pages/join.ex:93
 #, elixir-autogen, elixir-format
 msgid "Somebody shared this with you."
 msgstr "誰かがこれをあなたに共有しました。"
@@ -240,101 +241,102 @@ msgstr "失効"
 msgid "Stop this link from working? The room stays open."
 msgstr "このリンクを無効にしますか？ルームはそのままです。"
 
-#: lib/retro_hex_chat_web/components/ui/share/share_message_card.ex:257
+#: lib/retro_hex_chat_web/components/ui/share/share_message_card.ex:243
 #, elixir-autogen, elixir-format
 msgid "%{names} · %{count} person inside now"
 msgid_plural "%{names} · %{count} people inside now"
 msgstr[0] "%{names} · 現在 %{count} 人が参加中"
 
-#: lib/retro_hex_chat_web/components/ui/share/share_message_card.ex:200
+#: lib/retro_hex_chat_web/components/ui/share/share_message_card.ex:186
 #, elixir-autogen, elixir-format
 msgid "Call in %{channel}"
 msgstr "%{channel} の通話"
 
-#: lib/retro_hex_chat_web/components/ui/share/share_message_card.ex:223
+#: lib/retro_hex_chat_web/components/ui/share/share_message_card.ex:209
 #, elixir-autogen, elixir-format
 msgid "Closed"
 msgstr "閉鎖"
 
-#: lib/retro_hex_chat_web/components/ui/share/share_message_card.ex:156
+#: lib/retro_hex_chat_web/components/ui/lobby/game_panel.ex:106
+#: lib/retro_hex_chat_web/components/ui/share/share_message_card.ex:137
 #, elixir-autogen, elixir-format
 msgid "Copy link"
 msgstr "リンクをコピー"
 
-#: lib/retro_hex_chat_web/components/ui/share/share_message_card.ex:224
+#: lib/retro_hex_chat_web/components/ui/share/share_message_card.ex:210
 #, elixir-autogen, elixir-format
 msgid "Expired"
 msgstr "期限切れ"
 
-#: lib/retro_hex_chat_web/components/ui/share/share_message_card.ex:227
+#: lib/retro_hex_chat_web/components/ui/share/share_message_card.ex:213
 #, elixir-autogen, elixir-format
 msgid "Live"
 msgstr "ライブ"
 
-#: lib/retro_hex_chat_web/components/ui/share/share_message_card.ex:279
+#: lib/retro_hex_chat_web/components/ui/share/share_message_card.ex:265
 #, elixir-autogen, elixir-format
 msgid "One seat open"
 msgstr "空き 1 席"
 
-#: lib/retro_hex_chat_web/components/ui/share/share_message_card.ex:225
+#: lib/retro_hex_chat_web/components/ui/share/share_message_card.ex:211
 #, elixir-autogen, elixir-format
 msgid "Over"
 msgstr "終了済み"
 
-#: lib/retro_hex_chat_web/components/ui/share/share_message_card.ex:318
+#: lib/retro_hex_chat_web/components/ui/share/share_message_card.ex:304
 #, elixir-autogen, elixir-format
 msgid "Play"
 msgstr "プレイ"
 
-#: lib/retro_hex_chat_web/components/ui/share/share_message_card.ex:316
+#: lib/retro_hex_chat_web/components/ui/share/share_message_card.ex:302
 #, elixir-autogen, elixir-format
 msgid "Play %{game}"
 msgstr "%{game} をプレイ"
 
-#: lib/retro_hex_chat_web/components/ui/share/share_message_card.ex:203
+#: lib/retro_hex_chat_web/components/ui/share/share_message_card.ex:189
 #, elixir-autogen, elixir-format
 msgid "Space of %{channel}"
 msgstr "%{channel} のスペース"
 
-#: lib/retro_hex_chat_web/components/ui/share/share_message_card.ex:222
+#: lib/retro_hex_chat_web/components/ui/share/share_message_card.ex:208
 #, elixir-autogen, elixir-format
 msgid "Taken"
 msgstr "満席"
 
-#: lib/retro_hex_chat_web/components/ui/share/share_message_card.ex:226
+#: lib/retro_hex_chat_web/components/ui/share/share_message_card.ex:212
 #, elixir-autogen, elixir-format
 msgid "Waiting"
 msgstr "待機中"
 
-#: lib/retro_hex_chat_web/components/ui/share/share_message_card.ex:304
+#: lib/retro_hex_chat_web/components/ui/share/share_message_card.ex:290
 #, elixir-autogen, elixir-format
 msgid "%{count} hour"
 msgid_plural "%{count} hours"
 msgstr[0] "%{count}時間"
 
-#: lib/retro_hex_chat_web/components/ui/share/share_message_card.ex:298
+#: lib/retro_hex_chat_web/components/ui/share/share_message_card.ex:284
 #, elixir-autogen, elixir-format
 msgid "%{count} minute"
 msgid_plural "%{count} minutes"
 msgstr[0] "%{count}分"
 
-#: lib/retro_hex_chat_web/components/ui/share/share_message_card.ex:248
+#: lib/retro_hex_chat_web/components/ui/share/share_message_card.ex:234
 #, elixir-autogen, elixir-format
 msgid "lasted %{duration}"
 msgstr "%{duration} 続きました"
 
-#: lib/retro_hex_chat_web/components/ui/share/share_message_card.ex:238
+#: lib/retro_hex_chat_web/components/ui/share/share_message_card.ex:224
 #, elixir-autogen, elixir-format
 msgid "lasted %{duration} · %{count} person took part"
 msgid_plural "lasted %{duration} · %{count} people took part"
 msgstr[0] "%{duration} 続き、%{count} 人が参加しました"
 
-#: lib/retro_hex_chat_web/components/ui/share/share_message_card.ex:293
+#: lib/retro_hex_chat_web/components/ui/share/share_message_card.ex:279
 #, elixir-autogen, elixir-format
 msgid "less than a minute"
 msgstr "1分未満"
 
-#: lib/retro_hex_chat_web/components/ui/share/share_message_card.ex:215
+#: lib/retro_hex_chat_web/components/ui/share/share_message_card.ex:201
 #, elixir-autogen, elixir-format
 msgid "P2P session"
 msgstr "P2Pセッション"
@@ -344,12 +346,12 @@ msgstr "P2Pセッション"
 msgid "Close"
 msgstr "閉じる"
 
-#: lib/retro_hex_chat_web/components/ui/share/join_card.ex:158
+#: lib/retro_hex_chat_web/components/ui/share/join_card.ex:148
 #, elixir-autogen, elixir-format
 msgid "A room on RetroHexChat"
 msgstr "RetroHexChat の部屋"
 
-#: lib/retro_hex_chat_web/components/ui/share/share_message_card.ex:103
+#: lib/retro_hex_chat_web/components/ui/share/share_message_card.ex:95
 #, elixir-autogen, elixir-format
 msgid "ended %{when}"
 msgstr "終了 %{when}"
@@ -368,3 +370,9 @@ msgstr "リンクは部屋にまっすぐに行き、アカウントがないと
 #, elixir-autogen, elixir-format
 msgid "What somebody sees when they follow it"
 msgstr "誰かがそれをフォローするときに見る"
+
+#: lib/retro_hex_chat_web/components/ui/share/share_message_card.ex:151
+#, elixir-autogen, elixir-format
+msgctxt "match"
+msgid "Watch"
+msgstr "観戦"

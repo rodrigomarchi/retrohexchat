@@ -1879,6 +1879,7 @@ msgstr "输入要读取和发送消息的聊天频道 。 如果这个频道还�
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_away.html.heex:30
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_ban.html.heex:43
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_bio.html.heex:34
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_challenge.html.heex:28
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_clear.html.heex:53
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_clearmotd.html.heex:54
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_clearwelcome.html.heex:52
@@ -1892,6 +1893,7 @@ msgstr "输入要读取和发送消息的聊天频道 。 如果这个频道还�
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_join.html.heex:37
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_kick.html.heex:40
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_knock.html.heex:39
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_lfg.html.heex:30
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_list.html.heex:23
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_me.html.heex:34
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_mode.html.heex:102
@@ -2271,6 +2273,7 @@ msgstr "选项"
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_away.html.heex:9
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_ban.html.heex:9
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_bio.html.heex:9
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_challenge.html.heex:10
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_deop.html.heex:19
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_devoice.html.heex:19
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_event.html.heex:9
@@ -2280,6 +2283,7 @@ msgstr "选项"
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_join.html.heex:9
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_kick.html.heex:11
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_knock.html.heex:9
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_lfg.html.heex:9
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_me.html.heex:9
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_mode.html.heex:9
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_msg.html.heex:9
@@ -2521,6 +2525,7 @@ msgstr "根管理员不能通过命令降级"
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_autorespond.html.heex:36
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_ban.html.heex:27
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_bio.html.heex:28
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_challenge.html.heex:17
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_clear.html.heex:35
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_clearmotd.html.heex:37
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_clearwelcome.html.heex:37
@@ -2534,6 +2539,7 @@ msgstr "根管理员不能通过命令降级"
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_join.html.heex:22
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_kick.html.heex:30
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_knock.html.heex:31
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_lfg.html.heex:17
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_mode.html.heex:90
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_motd.html.heex:30
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_msg.html.heex:29
@@ -2776,6 +2782,7 @@ msgstr "子命令"
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_away.html.heex:7
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_ban.html.heex:7
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_bio.html.heex:7
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_challenge.html.heex:8
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_clear.html.heex:14
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_clearmotd.html.heex:15
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_clearwelcome.html.heex:15
@@ -2789,6 +2796,7 @@ msgstr "子命令"
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_join.html.heex:7
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_kick.html.heex:8
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_knock.html.heex:7
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_lfg.html.heex:7
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_list.html.heex:7
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_me.html.heex:7
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_mode.html.heex:7
@@ -5511,3 +5519,74 @@ msgstr "/autorespond add on_join #welcome /notice $nick Welcome! /autorespond ad
 #, elixir-autogen, elixir-format
 msgid "When you join a channel, a new tab opens and you can see messages and participate in the conversation. If the channel doesn't exist, it is created automatically and you become its owner (giving you control over channel settings). For registered users, joining a channel automatically adds it to your auto-join list so it's rejoined on your next connection."
 msgstr "当您加入一个频道时,会打开一个新的标签,可以看到消息并参与对话. 如果频道不存在,则自动创建,并成为其所有者(给予您对频道设置的控制). 对于注册用户,加入一个频道会自动添加到您的自动连接列表中,这样它就可以重新加入您的下一个连接."
+
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_challenge.html.heex:9
+#, elixir-autogen, elixir-format
+msgid "/challenge <nickname> [mode]"
+msgstr "/challenge <nickname> [mode]"
+
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_lfg.html.heex:8
+#, elixir-autogen, elixir-format
+msgid "/lfg [mode]"
+msgstr "/lfg [mode]"
+
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_challenge.html.heex:20
+#, elixir-autogen, elixir-format
+msgid "Both of you need registered, identified nicknames"
+msgstr "你们俩都需要注册 识别的昵称"
+
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_lfg.html.heex:21
+#, elixir-autogen, elixir-format
+msgid "Needs a registered nickname you have identified"
+msgstr "需要您确认的注册昵称"
+
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_challenge.html.heex:19
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_lfg.html.heex:19
+#, elixir-autogen, elixir-format
+msgid "Only in a game's own channel"
+msgstr "只在游戏自己的频道中"
+
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_challenge.html.heex:13
+#, elixir-autogen, elixir-format
+msgid "— Who to play. They have to be online and registered."
+msgstr "-谁玩? 他们必须在网上注册。"
+
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_lfg.html.heex:28
+#, elixir-autogen, elixir-format
+msgid "A seat nobody takes expires after about fifteen minutes"
+msgstr "A seat nobody takes expires after about fifteen minutes"
+
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_challenge.html.heex:22
+#, elixir-autogen, elixir-format
+msgid "If the two of you already have a P2P session, its card comes back and you choose the game inside it"
+msgstr "如果你们两个已经有一个P2P会话,它的卡片会回来,你选择里面的游戏"
+
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_lfg.html.heex:23
+#, elixir-autogen, elixir-format
+msgid "One open seat per game and channel. Asking again points at the same card."
+msgstr "每场比赛和频道各一个开放座位. 又问指同牌."
+
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_lfg.html.heex:2
+#, elixir-autogen, elixir-format
+msgid "Use it to find somebody to play with, in the place where the players are. Run it in a game's channel. A card with one open seat appears there, and whoever presses Join first plays you."
+msgstr "用它找个人玩, 在玩家所在的地方。 在游戏频道上运行. 一张开着座位的卡片就在那里出现 谁先按着门铃就先玩你"
+
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_challenge.html.heex:15
+#, elixir-autogen, elixir-format
+msgid "— A mode of the channel's game."
+msgstr "——频道游戏模式."
+
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_lfg.html.heex:12
+#, elixir-autogen, elixir-format
+msgid "— A mode of the channel's game. Without one, you play the standard game."
+msgstr "— A mode of the channel's game. Without one, you play the standard game."
+
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_challenge.html.heex:2
+#, elixir-autogen, elixir-format
+msgid "Use it to invite one person to play this game. It works like the command %{command}, but the game is already chosen. The invitation arrives in your private conversation. The game starts when you are both in the session."
+msgstr "用它邀请一个人来玩这个游戏. 它的工作原理类似命令%{command},但游戏已经选中. 你的私人谈话邀请函来了 游戏从你们俩在会话中开始。"
+
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_lfg.html.heex:20
+#, elixir-autogen, elixir-format
+msgid "The first player who presses Join plays you"
+msgstr "第一个按键的玩家 加入你"

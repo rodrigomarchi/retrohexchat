@@ -125,7 +125,7 @@ defmodule RetroHexChatWeb.GameCatalog do
 
   @doc "The public slug of a catalogue id: `doom_shareware` reads `doom-shareware`."
   @spec slug(String.t()) :: String.t()
-  def slug(id), do: String.replace(id, "_", "-")
+  defdelegate slug(id), to: Games
 
   defp arcade_games do
     Enum.map(Arcade.list_games(), fn game ->

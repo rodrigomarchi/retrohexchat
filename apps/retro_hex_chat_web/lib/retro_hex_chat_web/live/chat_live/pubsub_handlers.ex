@@ -21,6 +21,8 @@ defmodule RetroHexChatWeb.ChatLive.PubsubHandlers do
 
   alias __MODULE__.{ChannelState, Membership, Messages, Presence, ServerMessages}
 
+  @games_playing RetroHexChat.Topics.games_playing()
+
   # ── Messages: channel messages, PMs, typing, notices ──────
 
   def handle_info(%{event: "new_message"} = msg, socket),
@@ -124,6 +126,9 @@ defmodule RetroHexChatWeb.ChatLive.PubsubHandlers do
   def handle_info({:group_call_ended, _} = msg, socket),
     do: ChannelState.handle_info(msg, socket)
 
+  def handle_info({:share_cards_changed, _} = msg, socket),
+    do: ChannelState.handle_info(msg, socket)
+
   # ── Membership: join/leave, nick change, disconnect ───────
 
   def handle_info({:user_joined, _} = msg, socket),
@@ -194,6 +199,13 @@ defmodule RetroHexChatWeb.ChatLive.PubsubHandlers do
     do: Presence.handle_info(msg, socket)
 
   def handle_info({:channel_invite, _} = msg, socket),
+    do: Presence.handle_info(msg, socket)
+
+  # Somebody started or ended a Retro Games match; also asked for once at mount.
+  def handle_info(%{event: "presence_diff", topic: @games_playing} = msg, socket),
+    do: Presence.handle_info(msg, socket)
+
+  def handle_info(:refresh_games_playing = msg, socket),
     do: Presence.handle_info(msg, socket)
 
   # Explicit, like every route here: a chosen character that fell through to the

@@ -39,7 +39,6 @@ defmodule RetroHexChatWeb.App.P2PLive do
   alias RetroHexChat.Lobby.Schema.Session, as: LobbySession
   alias RetroHexChat.Services.NickServ
   alias RetroHexChat.ShareLinks
-  alias RetroHexChat.Topics
   alias RetroHexChatWeb.App.Paths
   alias RetroHexChatWeb.App.SessionHelpers
   alias RetroHexChatWeb.Icons
@@ -367,9 +366,7 @@ defmodule RetroHexChatWeb.App.P2PLive do
   # match nobody has walked into yet.
   defp enter(socket, %LobbySession{status: status} = db_session, user_id, :creator)
        when status in ["pending", "open"] do
-    if connected?(socket) do
-      Phoenix.PubSub.subscribe(RetroHexChat.PubSub, Topics.lobby(db_session.token))
-    end
+    if connected?(socket), do: Events.subscribe_session(db_session.token)
 
     socket
     |> assign(

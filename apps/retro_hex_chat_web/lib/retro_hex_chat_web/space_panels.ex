@@ -9,9 +9,14 @@ defmodule RetroHexChatWeb.SpacePanels do
   portrait of whoever posted the picture or pinned a line.
   """
 
+  use Gettext, backend: RetroHexChatWeb.Gettext
+
   alias RetroHexChat.Accounts.Avatars
+  alias RetroHexChat.Games.Activity
+  alias RetroHexChat.Games.Catalog
   alias RetroHexChat.VirtualSpace
   alias RetroHexChatWeb.App.Paths
+  alias RetroHexChatWeb.Components.UI.LiveMatch
   alias RetroHexChatWeb.GameCatalog
   alias RetroHexChatWeb.SpaceRef
 
@@ -52,22 +57,75 @@ defmodule RetroHexChatWeb.SpacePanels do
     %{modal | pins: Enum.map(pins, &Map.put(&1, :avatar, Map.get(avatars, &1.author)))}
   end
 
+  # A cabinet the Game Room came with plays one game: that game is up front —
+  # who is at it, a way to play it and the way into its channel — with the
+  # rest of the shelf under it. A cabinet somebody placed shelves them all.
   defp for_the_page(%{kind: "arcade"} = modal) do
-    games =
-      Enum.map(GameCatalog.list(), fn game ->
-        %{
-          id: game.id,
-          name: game.name,
-          tagline: game.tagline,
-          url: game_url(game),
-          cover: game.screenshot && game.screenshot.path
-        }
-      end)
+    playing = Activity.now() |> Map.values() |> Enum.frequencies_by(&Catalog.base_id(&1.game_id))
+    shelf = Enum.map(GameCatalog.list(), &shelved(&1, playing))
+    {featured, others} = Enum.split_with(shelf, &(&1.id == Map.get(modal, :game_id)))
 
-    Map.put(modal, :games, games)
+    modal
+    |> Map.put(:games, if(featured == [], do: shelf, else: others))
+    |> Map.put(:featured, featured |> List.first() |> featured())
   end
 
   defp for_the_page(modal), do: modal
+
+  defp shelved(game, playing) do
+    %{
+      id: game.id,
+      name: game.name,
+      tagline: game.tagline,
+      url: game_url(game),
+      cover: game.screenshot && game.screenshot.path,
+      activity: activity(Map.get(playing, game.id, 0))
+    }
+  end
+
+  # The words are the server's, in the reader's language, like the rest of
+  # what the panel says about a game.
+  defp featured(nil), do: nil
+
+  defp featured(game) do
+    channel = Catalog.channel_name(game.id)
+
+    Map.merge(game, %{
+      channel: channel,
+      channel_url: Paths.chat_path(channel),
+      playing: playing_now(Activity.playing_in(game.id)),
+      nobody: dgettext("games", "No one is playing this game now."),
+      live: Enum.map(Activity.live_matches(game.id), &live_match/1),
+      live_label: dgettext("games", "Live now"),
+      play_label: dpgettext("games", "game", "Play"),
+      others_label: dgettext("games", "Other games")
+    })
+  end
+
+  # A match being played in the open, as the cabinet lists it: one line, and
+  # the page it is watched at.
+  defp live_match(match) do
+    label =
+      [
+        LiveMatch.players_line(match.players),
+        match.watchers > 0 && LiveMatch.watchers_label(match.watchers)
+      ]
+      |> Enum.filter(&is_binary/1)
+      |> Enum.join(" · ")
+
+    %{token: match.token, url: Paths.watch_path(match.token), label: label}
+  end
+
+  defp playing_now([]), do: nil
+
+  defp playing_now(names),
+    do: dgettext("games", "Playing now: %{names}", names: Enum.join(names, ", "))
+
+  # A cabinet with somebody at it says so: the room is busier than it looks.
+  defp activity(0), do: nil
+
+  defp activity(count),
+    do: dngettext("games", "%{count} playing now", "%{count} playing now", count, count: count)
 
   defp portrait(author) when is_binary(author), do: Map.get(Avatars.for_nicks([author]), author)
   defp portrait(_nobody), do: nil

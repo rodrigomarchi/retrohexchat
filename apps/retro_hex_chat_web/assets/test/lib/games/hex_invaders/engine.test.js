@@ -1372,7 +1372,7 @@ describe("HexInvadersEngine", () => {
     });
 
     describe("_handleChannelClose", () => {
-      it("sets phase to FINISHED and calls onGameEnd with winner 0", () => {
+      it("sets phase to FINISHED and calls onGameEnd with winner 0, marked disconnected", () => {
         const onGameEnd = vi.fn();
         engine = new HexInvadersEngine(canvas, channel, "hex_invaders", true, onGameEnd);
         engine.start();
@@ -1387,6 +1387,7 @@ describe("HexInvadersEngine", () => {
         expect(onGameEnd).toHaveBeenCalledWith({
           score: { p1: 50, p2: 30 },
           winner: 0,
+          disconnected: true,
         });
       });
 

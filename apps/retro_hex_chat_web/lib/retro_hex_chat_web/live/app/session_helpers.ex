@@ -5,6 +5,7 @@ defmodule RetroHexChatWeb.App.SessionHelpers do
   """
 
   alias RetroHexChat.Services.RegisteredNick
+  alias RetroHexChatWeb.App.SessionNickname
 
   @allowed_client_keys %{
     "browser" => :browser,
@@ -25,6 +26,23 @@ defmodule RetroHexChatWeb.App.SessionHelpers do
       nick -> {:ok, nick.id}
     end
   end
+
+  @doc """
+  The account behind `nickname` when this browser session has proved it, as the
+  player a result is written for — nil for a guest, and for a registered nick
+  somebody typed without signing in.
+  """
+  @spec identified_player(map(), String.t() | nil) :: %{id: integer(), nickname: String.t()} | nil
+  def identified_player(session, nickname) when is_binary(nickname) do
+    with true <- SessionNickname.identified?(session, nickname),
+         {:ok, id} <- resolve_user_id(nickname) do
+      %{id: id, nickname: nickname}
+    else
+      _unproved -> nil
+    end
+  end
+
+  def identified_player(_session, _nickname), do: nil
 
   @spec parse_client_info(map() | nil) :: map()
   def parse_client_info(nil), do: %{}

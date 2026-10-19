@@ -502,6 +502,7 @@ export class TennisEngine extends GameEngine {
         this.onGameEnd({
           score: { p1: this.gameState.p1Games, p2: this.gameState.p2Games },
           winner: 0,
+          disconnected: true,
         });
       } catch (error) {
         // The disconnect result callback (pushEvent) threw — do not lose it.

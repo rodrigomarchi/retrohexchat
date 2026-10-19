@@ -38,7 +38,9 @@ defmodule RetroHexChatWeb.Site.Documents do
   import Phoenix.LiveView
 
   alias RetroHexChat.Channels.Visibility
+  alias RetroHexChat.Games.Catalog, as: Games
   alias RetroHexChatWeb.ChatLive.ChatTitle
+  alias RetroHexChatWeb.Components.UI.GameResultCard
   alias RetroHexChatWeb.Components.UI.Site.Document
   alias RetroHexChatWeb.PublicPages
   alias RetroHexChatWeb.Site.Address
@@ -285,12 +287,22 @@ defmodule RetroHexChatWeb.Site.Documents do
   defp chat_title(_assigns, "/c/" <> _ = path) do
     channel = path |> String.replace_prefix("/c/", "") |> URI.decode() |> Address.channel_name()
 
-    if Visibility.nameable?(channel),
-      do: "#{channel} — RetroHexChat",
-      else: "RetroHexChat"
+    cond do
+      not Visibility.nameable?(channel) -> "RetroHexChat"
+      game = game_named(channel) -> "#{channel} — #{game} — RetroHexChat"
+      true -> "#{channel} — RetroHexChat"
+    end
   end
 
   defp chat_title(assigns, _path), do: ChatTitle.document_title(assigns.session, false)
+
+  # A game's channel says which game it is about in a shared link's preview.
+  defp game_named(channel) do
+    case Games.game_for_channel(channel) do
+      {:ok, game_id} -> GameResultCard.game_title(game_id)
+      :error -> nil
+    end
+  end
 
   # ── From the windows to the address ───────────────────────────
 

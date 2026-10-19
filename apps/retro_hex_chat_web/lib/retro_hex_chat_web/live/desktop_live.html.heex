@@ -187,6 +187,14 @@
               modes={@current_modes}
             />
 
+            <%!-- A game's own channel says which game, and offers it. --%>
+            <.game_channel_bar
+              :if={not @show_status_tab and is_nil(@session.active_pm)}
+              channel={@session.active_channel}
+              live_matches={@live_matches}
+              class="shadow-retro-sunken bg-white"
+            />
+
             <%!-- Connection status banner + JS-driven reconnect overlay --%>
             <.connection_status_panel />
 

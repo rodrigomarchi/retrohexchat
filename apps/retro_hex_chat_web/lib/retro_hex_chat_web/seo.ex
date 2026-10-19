@@ -284,10 +284,11 @@ defmodule RetroHexChatWeb.SEO do
   A game's page as `VideoGame` structured data. Its `url` and `inLanguage` are
   the page's own: on `/pt-BR/games/x` they name that page, not the English one.
   There is no rating to offer, so the markup describes rather than competes for
-  a rich result.
+  a rich result. `plays` is how many matches have been played, when the game
+  keeps count.
   """
-  @spec video_game_json_ld(map(), String.t()) :: String.t()
-  def video_game_json_ld(game, path) do
+  @spec video_game_json_ld(map(), String.t(), non_neg_integer() | nil) :: String.t()
+  def video_game_json_ld(game, path, plays \\ nil) do
     %{
       "@context" => "https://schema.org",
       "@type" => "VideoGame",
@@ -303,8 +304,19 @@ defmodule RetroHexChatWeb.SEO do
       "offers" => %{"@type" => "Offer", "price" => "0", "priceCurrency" => "USD"}
     }
     |> put_image(game)
+    |> put_plays(plays)
     |> Jason.encode!(escape: :html_safe)
   end
+
+  defp put_plays(data, plays) when is_integer(plays) and plays > 0 do
+    Map.put(data, "interactionStatistic", %{
+      "@type" => "InteractionCounter",
+      "interactionType" => %{"@type" => "PlayAction"},
+      "userInteractionCount" => plays
+    })
+  end
+
+  defp put_plays(data, _plays), do: data
 
   defp put_image(data, %{screenshot: %{path: path}}), do: Map.put(data, "image", site_url(path))
   defp put_image(data, _game), do: data

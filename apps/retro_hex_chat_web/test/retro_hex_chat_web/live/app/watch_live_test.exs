@@ -1,0 +1,117 @@
+defmodule RetroHexChatWeb.App.WatchLiveTest do
+  @moduledoc """
+  Watching a match: open to anybody, an account or not, for a seat offered in
+  the open — and a closed door, said plainly, for a session that was not.
+  """
+  use RetroHexChatWeb.LiveViewCase, async: false
+
+  @moduletag :liveview
+
+  alias RetroHexChat.Lobby
+  alias RetroHexChat.Lobby.SessionServer
+  alias RetroHexChat.Services.RegisteredNick
+  alias RetroHexChat.Topics
+  alias RetroHexChatWeb.LiveMatchPages
+
+  defp registered(prefix) do
+    nickname = "#{prefix}#{uid()}" |> String.slice(0, 16)
+
+    {:ok, nick} =
+      %RegisteredNick{}
+      |> RegisteredNick.registration_changeset(%{nickname: nickname, password: "password123"})
+      |> RetroHexChat.Repo.insert()
+
+    nick
+  end
+
+  defp offered_match do
+    host = registered("wh")
+    guest = registered("wg")
+
+    {:ok, %{token: token}} =
+      Lobby.create_open_session(host.id, metadata: %{"game_id" => "hex_tennis"})
+
+    {:ok, _claimed} = Lobby.claim_open_session(token, guest.id)
+    on_exit(fn -> Lobby.close_session(token, host.id, "test_cleanup") end)
+    %{token: token, host: host, guest: guest}
+  end
+
+  test "a visitor watches, and the canvas follows the games", %{conn: conn} do
+    %{token: token, host: host, guest: guest} = offered_match()
+
+    {:ok, view, html} = live(conn, "/watch/#{token}")
+    assert html =~ "Waiting for the next game."
+    assert html =~ host.nickname
+    assert html =~ guest.nickname
+
+    send(view.pid, {:watch_game, %{status: "playing", game_id: "hex_tennis_quick"}})
+    html = render(view)
+
+    assert html =~ ~s(phx-hook="SpectateCanvasHook")
+    assert html =~ ~s(data-token="#{token}")
+    assert html =~ ~s(data-game-id="hex_tennis_quick")
+    assert html =~ "Watching Hex Tennis: Quick Match"
+
+    send(view.pid, {:watch_game, %{status: "finished", game_id: "hex_tennis_quick", result: nil}})
+    html = render(view)
+    refute html =~ "SpectateCanvasHook"
+    assert html =~ "Match over"
+  end
+
+  test "it hears the session itself, not a message sent to it by hand", %{conn: conn} do
+    %{token: token, host: host, guest: guest} = offered_match()
+    {:ok, view, _html} = live(conn, "/watch/#{token}")
+    Phoenix.PubSub.subscribe(RetroHexChat.PubSub, Topics.lobby_watch(token))
+
+    :ok = SessionServer.join(token, host.id)
+    :ok = SessionServer.join(token, guest.id)
+    :ok = SessionServer.transition(token, :connected)
+    :ok = SessionServer.propose_game(token, host.id, host.nickname, "hex_tennis")
+    :ok = SessionServer.respond_game(token, guest.id, guest.nickname, true)
+
+    assert_receive {:watch_game, %{status: "playing"}}
+    assert render(view) =~ "SpectateCanvasHook"
+  end
+
+  test "the page counts itself, and the next one counts too", %{conn: conn} do
+    %{token: token} = offered_match()
+
+    {:ok, first, _html} = live(conn, "/watch/#{token}")
+    assert first |> element(~s([data-testid="watch-watchers"])) |> render() =~ "1 watching"
+
+    {:ok, _second, _html} = live(build_conn(), "/watch/#{token}")
+
+    # Presence says so on its own; saying it here makes the order certain.
+    Phoenix.PubSub.broadcast(RetroHexChat.PubSub, Topics.lobby_watchers(token), %{
+      event: "presence_diff"
+    })
+
+    assert first |> element(~s([data-testid="watch-watchers"])) |> render() =~ "2 watching"
+  end
+
+  test "once a match is over, the other matches being played are offered", %{conn: conn} do
+    %{token: token} = offered_match()
+    %{token: other, host: host, guest: guest} = offered_match()
+    LiveMatchPages.playing([host.nickname, guest.nickname], "hex_pong", other)
+
+    {:ok, view, _html} = live(conn, "/watch/#{token}")
+    send(view.pid, {:watch_game, %{status: "closed"}})
+
+    html = view |> element(~s([data-testid="watch-others"])) |> render()
+    assert html =~ ~s(href="/watch/#{other}")
+
+    assert html =~ "#{host.nickname} × #{guest.nickname}" or
+             html =~ "#{guest.nickname} × #{host.nickname}"
+  end
+
+  test "a session one person invited another to cannot be watched", %{conn: conn} do
+    creator = registered("wc")
+    peer = registered("wp")
+    {:ok, %{token: token}} = Lobby.create_session(creator.id, peer.id)
+    on_exit(fn -> Lobby.close_session(token, creator.id, "test_cleanup") end)
+
+    {:ok, _view, html} = live(conn, "/watch/#{token}")
+    assert html =~ "This match cannot be watched."
+    refute html =~ "SpectateCanvasHook"
+  end
+end

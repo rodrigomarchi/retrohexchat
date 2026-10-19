@@ -2,6 +2,8 @@
  * @section N - P2P, File, Call, Game
  * @flow N45 [done] A match link minted inside a game is followed from another browser, the seat is taken and the game runs over the P2P session
  * @flow N46 [done] A third person following the same match link is told the seat is taken, and it stays taken after the match ends
+ * @flow N67 [done] Somebody with no account watches the match being played, at its /watch address, drawn live from the host's relayed frames
+ * @flow N68 [done] The players see how many are watching and the watch link to hand on; the match is offered to watch under its game channel's topic and on the game's page
  *
  * These @flow lines are the source of truth for e2e/TEST_CATALOG.md.
  * Edit them here, then run `make e2e.catalog` to regenerate the index.
@@ -124,6 +126,58 @@ test("a match link fills its one seat and the game runs on it (N45, N46)", async
     }
 
     await shot(host, "match-running-host");
+
+    // A match offered in the open is watched in the open: no account, no
+    // seat, only the game as the host plays it.
+    const token = new URL(matchUrl).pathname.split("/").pop();
+    const watcherCtx = await browser.newContext();
+    const watcher = await watcherCtx.newPage();
+
+    try {
+      await watcher.goto(`/watch/${token}`);
+      const canvas = watcher.getByTestId("watch-canvas");
+      await expect(canvas).toBeVisible({ timeout: 30_000 });
+      await expect
+        .poll(async () => Number(await canvas.getAttribute("data-frames")), {
+          timeout: 30_000,
+        })
+        .toBeGreaterThan(0);
+      await expect(watcher.getByTestId("watch-status")).toHaveText("Live");
+      await shot(watcher, "match-watched-without-an-account");
+      await expect(watcher.getByTestId("watch-watchers")).toHaveText(
+        "1 watching",
+      );
+
+      // The players are told somebody is watching, and can hand the address on.
+      await expect(host.getByTestId("lobby-game-watchers")).toContainText(
+        "1 watching",
+        { timeout: 15_000 },
+      );
+      await expect(host.getByTestId("lobby-game-watch-copy")).toHaveAttribute(
+        "data-copy-text",
+        new RegExp(`/watch/${token}$`),
+      );
+      await shot(host, "match-host-sees-who-watches");
+
+      // Where people already are, the match is there to be found: the game's
+      // channel, under its topic, and the game's own page.
+      await latecomer.goto("/c/hex-pong");
+      const live = latecomer
+        .getByTestId("game-channel-bar")
+        .locator(`[data-testid="live-match-link"][data-token="${token}"]`);
+      await expect(live).toBeVisible({ timeout: 15_000 });
+      await expect(live).toHaveAttribute("href", `/watch/${token}`);
+      await shot(latecomer, "game-channel-live-match");
+
+      await latecomer.goto("/games/hex-pong");
+      await expect(
+        latecomer
+          .getByTestId("game-community-live")
+          .locator(`[data-token="${token}"]`),
+      ).toBeVisible();
+    } finally {
+      await watcherCtx.close();
+    }
 
     // And the link stays dead once the match is over.
     await latecomer.goto(joinPath);

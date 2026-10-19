@@ -41,6 +41,7 @@ defmodule RetroHexChatWeb.Router do
     if Application.compile_env(:retro_hex_chat, :e2e_fault_injection?, false) do
       post "/e2e/channel-messages", E2EController, :create_channel_message
       post "/e2e/contextual-tips/suppress", E2EController, :suppress_contextual_tips
+      post "/e2e/game-results", E2EController, :record_game_result
 
       post "/e2e/group-call-peer/terminate",
            E2EFaultController,
@@ -191,6 +192,16 @@ defmodule RetroHexChatWeb.Router do
       live "/call/:token", CallLive
       live "/space/:slug", SpaceLive
       live "/p2p/:token", P2PLive
+    end
+
+    # Watching a match asks nothing of anyone, an account included, so it is
+    # not a surface: `Live.Surface` would send a visitor to sign in first.
+    live_session :watch,
+      on_mount: [
+        {RetroHexChatWeb.Live.PutLocale, :default},
+        {RetroHexChatWeb.Live.PutTrustedDevice, :default}
+      ] do
+      live "/watch/:token", WatchLive
     end
 
     # The standalone lobby page is gone — P2P sessions live inside the chat

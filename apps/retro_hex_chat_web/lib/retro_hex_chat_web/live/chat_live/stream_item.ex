@@ -14,6 +14,13 @@ defmodule RetroHexChatWeb.ChatLive.StreamItem do
   Either kind can arrive straight from the database or from a broadcast that
   spelled the same field differently, so the readers try each spelling in turn.
 
+  The one thing a row does say about its kind is `source` — `:channel` or
+  `:private` — because the two are numbered apart: anything resolved by a
+  line's id (an event's card, a match's card) has to know which table the id
+  is from, or a private line borrows the card of a channel line that happens
+  to share its number. A row built anywhere else — an ephemeral notice — has
+  no source and is never decorated by id.
+
   A field the source does not carry is left out rather than written as `nil`,
   because the row distinguishes absent from empty: a message with no reply is
   not a message replying to nothing.
@@ -56,6 +63,7 @@ defmodule RetroHexChatWeb.ChatLive.StreamItem do
   def from_message(message) do
     message
     |> base(
+      :channel,
       first_present(message, [:id]),
       first_present(message, [:author, :author_nickname]),
       first_present(message, [:timestamp, :inserted_at])
@@ -68,6 +76,7 @@ defmodule RetroHexChatWeb.ChatLive.StreamItem do
   def from_private_message(pm) do
     pm
     |> base(
+      :private,
       first_present(pm, [:id]),
       first_present(pm, [:sender, :sender_nickname]),
       first_present(pm, [:timestamp, :inserted_at])
@@ -136,15 +145,16 @@ defmodule RetroHexChatWeb.ChatLive.StreamItem do
   def put_avatar(item, nil), do: item
   def put_avatar(item, avatar), do: Map.put(item, :avatar, avatar)
 
-  defp base(source, id, author, timestamp) do
+  defp base(message, source, id, author, timestamp) do
     %{
+      source: source,
       id: id,
       author: author,
-      content: source.content,
-      content_format: Map.get(source, :content_format) || "irc",
-      type: resolve_type(source),
+      content: message.content,
+      content_format: Map.get(message, :content_format) || "irc",
+      type: resolve_type(message),
       timestamp: timestamp,
-      attachments: attachment_payloads(source)
+      attachments: attachment_payloads(message)
     }
   end
 

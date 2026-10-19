@@ -51,8 +51,16 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.LobbyInvite do
     Messages.system_event(socket, dgettext("chat", "Could not start the P2P invite."))
   end
 
+  # A challenge sent from a game's channel names its game, and the session
+  # proposes it as soon as both sides are in. A plain `/p2p` names none.
   defp create_session(socket, session, %{creator_id: creator_id, target_id: target_id} = payload) do
-    case Lobby.create_session(creator_id, target_id) do
+    metadata =
+      case payload do
+        %{game_id: game_id} when is_binary(game_id) -> %{"game_id" => game_id}
+        _no_game -> %{}
+      end
+
+    case Lobby.create_session(creator_id, target_id, metadata: metadata) do
       {:ok, %{token: token}} ->
         do_deliver_invite(socket, session, Map.put(payload, :token, token))
 

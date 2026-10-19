@@ -4,6 +4,9 @@ defmodule RetroHexChatWeb.Components.UI.RetroGamesPanel do
 
   import RetroHexChatWeb.Components.UI.ToolButton
 
+  alias RetroHexChat.Games.Catalog
+  alias RetroHexChat.Games.Result
+  alias RetroHexChatWeb.App.Paths
   alias RetroHexChatWeb.Icons
 
   import RetroHexChatWeb.Components.UI.Badge
@@ -17,7 +20,9 @@ defmodule RetroHexChatWeb.Components.UI.RetroGamesPanel do
   attr :selected_game, :map, default: nil
   attr :difficulty, :string, default: "normal"
   attr :canvas_ready, :boolean, default: false
-  attr :result, :map, default: nil
+  attr :result, Result, default: nil
+  attr :record, :map, default: nil, doc: "the `Games.Results.card/1` of the match just written"
+  attr :ranked?, :boolean, default: false, doc: "whether this player's matches are written down"
   attr :error_message, :string, default: nil
   attr :target, :any, required: true
   attr :class, :string, default: nil
@@ -37,6 +42,8 @@ defmodule RetroHexChatWeb.Components.UI.RetroGamesPanel do
         difficulty={@difficulty}
         canvas_ready={@canvas_ready}
         result={@result}
+        record={@record}
+        ranked?={@ranked?}
         error_message={@error_message}
         target={@target}
       />
@@ -105,7 +112,9 @@ defmodule RetroHexChatWeb.Components.UI.RetroGamesPanel do
   attr :status, :string, required: true
   attr :difficulty, :string, required: true
   attr :canvas_ready, :boolean, default: false
-  attr :result, :map, default: nil
+  attr :result, Result, default: nil
+  attr :record, :map, default: nil
+  attr :ranked?, :boolean, default: false
   attr :error_message, :string, default: nil
   attr :target, :any, required: true
 
@@ -149,11 +158,37 @@ defmodule RetroHexChatWeb.Components.UI.RetroGamesPanel do
             <h4 class="text-base font-bold">{dgettext("games", "Match Finished")}</h4>
             <p class="text-sm">
               {dgettext("games", "You %{you} x %{ai} AI",
-                you: result_score(@result, "p1"),
-                ai: result_score(@result, "p2")
+                you: (@result && @result.p1_score) || 0,
+                ai: (@result && @result.p2_score) || 0
               )}
             </p>
-            <p class="text-xs text-muted-foreground">{winner_label(@result)}</p>
+            <p class="text-xs text-muted-foreground" data-testid="retro-game-verdict">
+              {verdict_label(@result)}
+            </p>
+            <.badge :if={@record && @record.personal_best} variant="success">
+              <:icon><Icons.icon_star class="h-3 w-3" /></:icon>
+              {dgettext("games", "Personal best")}
+            </.badge>
+            <%!-- Where the match went, or why it went nowhere: a signed-in
+                  player's result is in the game's channel and ranking, and a
+                  guest is told what would have put it there. --%>
+            <p :if={@record} class="text-xs" data-testid="retro-game-recorded">
+              {dgettext("games", "Saved to your record.")}
+              <.link
+                href={Paths.chat_path(Catalog.channel_name(@game.id))}
+                class="underline"
+                data-testid="retro-game-channel-link"
+              >
+                {Catalog.channel_name(@game.id)}
+              </.link>
+            </p>
+            <p
+              :if={not @ranked?}
+              class="text-xs text-muted-foreground"
+              data-testid="retro-game-unranked"
+            >
+              {dgettext("games", "Sign in with a registered nickname to enter the ranking.")}
+            </p>
           </div>
 
           <div
@@ -339,34 +374,6 @@ defmodule RetroHexChatWeb.Components.UI.RetroGamesPanel do
       </div>
     </div>
     """
-  end
-
-  defp result_score(nil, _player), do: 0
-
-  defp result_score(result, player) do
-    score = Map.get(result, "score") || Map.get(result, :score) || %{}
-
-    Map.get(score, player) ||
-      nested_score(score, player) ||
-      flat_score(result, player) ||
-      0
-  end
-
-  defp nested_score(score, "p1"), do: Map.get(score, :p1)
-  defp nested_score(score, "p2"), do: Map.get(score, :p2)
-
-  defp flat_score(result, "p1") do
-    Map.get(result, "score_p1") ||
-      Map.get(result, :score_p1) ||
-      Map.get(result, "score1") ||
-      Map.get(result, :score1)
-  end
-
-  defp flat_score(result, "p2") do
-    Map.get(result, "score_p2") ||
-      Map.get(result, :score_p2) ||
-      Map.get(result, "score2") ||
-      Map.get(result, :score2)
   end
 
   defp difficulty_label("easy"), do: dgettext("games", "Easy")
@@ -581,13 +588,10 @@ defmodule RetroHexChatWeb.Components.UI.RetroGamesPanel do
   defp status_label("error"), do: dgettext("games", "Error")
   defp status_label(_status), do: dgettext("games", "Loading")
 
-  defp winner_label(%{"winner" => 1}), do: dgettext("games", "You won")
-  defp winner_label(%{"winner" => 2}), do: dgettext("games", "AI won")
-  defp winner_label(%{"winner" => "p1"}), do: dgettext("games", "You won")
-  defp winner_label(%{"winner" => "p2"}), do: dgettext("games", "AI won")
-  defp winner_label(%{winner: 1}), do: dgettext("games", "You won")
-  defp winner_label(%{winner: 2}), do: dgettext("games", "AI won")
-  defp winner_label(%{winner: "p1"}), do: dgettext("games", "You won")
-  defp winner_label(%{winner: "p2"}), do: dgettext("games", "AI won")
-  defp winner_label(_result), do: dgettext("games", "No winner reported")
+  defp verdict_label(%Result{outcome: :p1}), do: dgettext("games", "You won")
+  defp verdict_label(%Result{outcome: :p2}), do: dgettext("games", "AI won")
+  defp verdict_label(%Result{outcome: :draw}), do: dgettext("games", "Draw")
+  defp verdict_label(%Result{outcome: :coop_win}), do: dgettext("games", "Board cleared")
+  defp verdict_label(%Result{outcome: :coop_loss}), do: dgettext("games", "Out of lives")
+  defp verdict_label(_unknown), do: dgettext("games", "No winner reported")
 end

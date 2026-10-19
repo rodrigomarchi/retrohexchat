@@ -78,8 +78,17 @@ defmodule RetroHexChatWeb.ChatLive.StreamItemTest do
 
   describe "the shape both conversations produce" do
     test "a channel message and a private message become the same row" do
-      assert StreamItem.from_message(channel_message()) ==
-               StreamItem.from_private_message(private_message())
+      channel_row = StreamItem.from_message(channel_message())
+      private_row = StreamItem.from_private_message(private_message())
+
+      assert Map.delete(channel_row, :source) == Map.delete(private_row, :source)
+    end
+
+    # The two are numbered apart, so whatever is found by a line's id has to
+    # know which kind of line it is holding.
+    test "each row says which kind of conversation its id belongs to" do
+      assert %{source: :channel} = StreamItem.from_message(channel_message())
+      assert %{source: :private} = StreamItem.from_private_message(private_message())
     end
 
     test "the row carries the keys the renderer reads" do

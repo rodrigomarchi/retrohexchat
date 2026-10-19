@@ -12,6 +12,8 @@ defmodule RetroHexChatWeb.App.PlayLiveTest do
   @moduletag :liveview
 
   alias RetroHexChat.Admin.ServerBans
+  alias RetroHexChat.Games.Activity
+  alias RetroHexChat.Nickname
   alias RetroHexChat.Presence.Tracker
   alias RetroHexChat.SessionControl
   alias RetroHexChat.Topics
@@ -106,6 +108,84 @@ defmodule RetroHexChatWeb.App.PlayLiveTest do
 
       assert html =~ "retro-games-panel"
       refute html =~ "RetroGameCanvasHook"
+    end
+  end
+
+  describe "a finished match" do
+    setup do
+      # A match in a test lasts as long as a render round trip.
+      Application.put_env(:retro_hex_chat, :game_result_min_duration_ms, 0)
+      on_exit(fn -> Application.delete_env(:retro_hex_chat, :game_result_min_duration_ms) end)
+    end
+
+    defp play_to_the_end(view, payload) do
+      render_hook(view, "retro_game_canvas_ready", %{"game_id" => "hex_pong"})
+      view |> element(~s([data-testid="retro-game-start-ai"])) |> render_click()
+      render_hook(view, "retro_game_result", Map.put(payload, "game_id", "hex_pong"))
+    end
+
+    test "a signed-in player's match is written down and points at the game's channel", %{
+      conn: conn
+    } do
+      nick = "Rank#{uid()}"
+      {:ok, _} = register(nick)
+      Phoenix.PubSub.subscribe(RetroHexChat.PubSub, Topics.game_results())
+
+      {:ok, view, _html} =
+        conn |> chat_conn(nick, pre_identified: true) |> live(~p"/play/hex_pong")
+
+      render_hook(view, "retro_game_canvas_ready", %{"game_id" => "hex_pong"})
+      view |> element(~s([data-testid="retro-game-start-ai"])) |> render_click()
+
+      # While the match runs, the chat's user list and the game's page can say so.
+      assert %{game_id: "hex_pong"} = Activity.now()[Nickname.key(nick)]
+
+      html =
+        render_hook(view, "retro_game_result", %{
+          "game_id" => "hex_pong",
+          "score" => %{"p1" => 11, "p2" => 6},
+          "winner" => 1
+        })
+
+      refute Map.has_key?(Activity.now(), Nickname.key(nick))
+
+      assert html =~ "You won"
+      assert html =~ "retro-game-recorded"
+      assert html =~ "/c/hex-pong"
+
+      assert_receive {:game_result_recorded, %{p1_nickname: ^nick, origin: "ai", outcome: "p1"}}
+    end
+
+    test "a nickname typed without signing in plays unranked", %{conn: conn} do
+      nick = "Typed#{uid()}"
+      {:ok, _} = register(nick)
+      Phoenix.PubSub.subscribe(RetroHexChat.PubSub, Topics.game_results())
+
+      {:ok, view, _html} = conn |> chat_conn(nick) |> live(~p"/play/hex_pong")
+      html = play_to_the_end(view, %{"score" => %{"p1" => 3, "p2" => 11}, "winner" => 2})
+
+      assert html =~ "AI won"
+      assert html =~ "retro-game-unranked"
+      refute_receive {:game_result_recorded, _row}
+    end
+
+    test "a result nobody started is ignored", %{conn: conn} do
+      nick = "Stray#{uid()}"
+      {:ok, _} = register(nick)
+      Phoenix.PubSub.subscribe(RetroHexChat.PubSub, Topics.game_results())
+
+      {:ok, view, _html} =
+        conn |> chat_conn(nick, pre_identified: true) |> live(~p"/play/hex_pong")
+
+      html =
+        render_hook(view, "retro_game_result", %{
+          "game_id" => "hex_pong",
+          "score" => %{"p1" => 11, "p2" => 0},
+          "winner" => 1
+        })
+
+      refute html =~ "retro-game-result"
+      refute_receive {:game_result_recorded, _row}
     end
   end
 

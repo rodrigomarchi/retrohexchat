@@ -11,6 +11,7 @@ defmodule RetroHexChatWeb.SpacePanelsTest do
   alias RetroHexChat.Channels.Server
   alias RetroHexChat.Channels.Supervisor, as: ChannelSupervisor
   alias RetroHexChat.Chat.Queries
+  alias RetroHexChat.Games.Activity
   alias RetroHexChatWeb.GameCatalog
   alias RetroHexChatWeb.SpacePanels
 
@@ -46,6 +47,45 @@ defmodule RetroHexChatWeb.SpacePanelsTest do
         assert shelved.cover == nil
       end
     end
+  end
+
+  test "a cabinet the room came with puts its own game up front" do
+    channel = channel_with(["ana"])
+
+    %{featured: featured, games: games} =
+      SpacePanels.fill(%{kind: "arcade", game_id: "hex_pong"}, "construct:" <> channel, "ana")
+
+    assert %{
+             id: "hex_pong",
+             channel: "#hex-pong",
+             channel_url: "/c/hex-pong",
+             url: "/play/hex_pong"
+           } =
+             featured
+
+    refute Enum.any?(games, &(&1.id == "hex_pong"))
+    assert length(games) == length(GameCatalog.list()) - 1
+
+    assert %{live: [], live_label: "Live now", nobody: "No one is playing this game now."} =
+             featured
+  end
+
+  test "a cabinet somebody placed shelves every game, none up front" do
+    channel = channel_with(["ana"])
+    assert %{featured: nil} = SpacePanels.fill(%{kind: "arcade"}, "construct:" <> channel, "ana")
+  end
+
+  test "a cabinet says how many are playing a game right now" do
+    channel = channel_with(["ana"])
+    nick = "pnl#{System.unique_integer([:positive])}"
+    :ok = Activity.playing(nick, "hex_tennis_quick")
+
+    %{games: games} = SpacePanels.fill(%{kind: "arcade"}, "construct:" <> channel, "ana")
+
+    assert %{activity: "1 playing now"} = Enum.find(games, &(&1.id == "hex_tennis"))
+    assert %{activity: nil} = Enum.find(games, &(&1.id == "hex_pong"))
+
+    :ok = Activity.stopped(nick)
   end
 
   test "a pinned line carries the portrait of whoever wrote it, if they made one" do

@@ -1,0 +1,64 @@
+<p>
+  {dgettext(
+    "help_games",
+    "Every Retro Game has its own channel, like %{channel}. The players of the game talk there, find partners and see the latest results. The channel %{feed} shows the results of every game.",
+    channel: "#hex-pong",
+    feed: "#retro-games"
+  )}
+</p>
+
+<.help_h4 icon={:icon_robot}>GameServ</.help_h4>
+<p>
+  {dgettext(
+    "help_games",
+    "The service %{service} keeps the game channels and sits in each one. It announces a match between two people played in the open, a personal best, and a win against the computer on hard, with a card that shows the score. Once a day it says how many matches the game had and who did best.",
+    service: "GameServ"
+  )}
+</p>
+<ul>
+  <li>
+    {dgettext("help_games", "A private match is not announced.")}
+    {dgettext(
+      "help_games",
+      "The result of a private match stays in the conversation of its two players."
+    )}
+  </li>
+  <li>
+    {dgettext(
+      "help_games",
+      "Each player is announced at most once every five minutes in each game. Every match still counts in the rankings."
+    )}
+  </li>
+</ul>
+
+<.help_h4 icon={:icon_joystick}>{dgettext("help_games", "The strip under the topic")}</.help_h4>
+<p>
+  {dgettext(
+    "help_games",
+    "The first link opens the game in a new tab. The second link puts a card with one open seat in the channel, like the command %{command}. The first person who joins plays with you. The third link opens the page of the game in a new tab, with the best players of the week and the latest matches.",
+    command: "/lfg"
+  )}
+  {dgettext(
+    "help_games",
+    "When somebody is playing the game in the open, a fourth link opens the match to watch."
+  )}
+</p>
+
+<.help_h4 icon={:icon_lock}>{dgettext("help_games", "Who can")}</.help_h4>
+<p>
+  {dgettext(
+    "help_games",
+    "Anybody can read a game channel and its page without an account. Playing, offering a seat, challenging somebody and talking need a registered nickname that you have identified. A visitor who presses any of them sees the sign-in window."
+  )}
+</p>
+
+<p>
+  {dgettext("help_games", "See also:")}
+  <.help_link topic="feature-game-scores">
+    {dgettext("help_games", "Scores and Rankings")}
+  </.help_link>
+  ·
+  <.help_link topic="feature-game-watch">{dgettext("help_games", "Watching a Match")}</.help_link>
+  · <.help_link topic="cmd-lfg">/lfg</.help_link>
+  · <.help_link topic="cmd-challenge">/challenge</.help_link>
+</p>

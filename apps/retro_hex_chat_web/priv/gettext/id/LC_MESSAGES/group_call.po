@@ -11,41 +11,41 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:168
+#: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:170
 #, elixir-autogen, elixir-format
 msgid "Call"
 msgstr "Call"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:1427
+#: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:1416
 #: lib/retro_hex_chat_web/components/ui/group_call/video_surface.ex:258
 #, elixir-autogen, elixir-format
 msgid "Camera off"
 msgstr "Matikan kamera"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:1424
+#: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:1413
 #, elixir-autogen, elixir-format
 msgid "Camera on"
 msgstr "Kamera hidup"
 
 #: lib/retro_hex_chat_web/components/ui/dialogs/group_call_confirm_dialog.ex:72
-#: lib/retro_hex_chat_web/components/ui/group_call/pre_join.ex:233
+#: lib/retro_hex_chat_web/components/ui/group_call/pre_join.ex:234
 #, elixir-autogen, elixir-format
 msgid "Cancel"
 msgstr "Batal"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:1045
-#: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:1226
-#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:587
+#: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:1034
+#: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:1215
+#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:545
 #, elixir-autogen, elixir-format
 msgid "Connected"
 msgstr "Terhubung"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:1042
+#: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:1031
 #, elixir-autogen, elixir-format
 msgid "Connecting media"
 msgstr "Menyambung media"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:1046
+#: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:1035
 #, elixir-autogen, elixir-format
 msgid "Connection error"
 msgstr "Galat koneksi"
@@ -66,7 +66,7 @@ msgstr "Tak bisa menghapus peserta."
 msgid "Could not update participant media."
 msgstr "Tak bisa memperbarui media peserta."
 
-#: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:1228
+#: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:1217
 #, elixir-autogen, elixir-format
 msgid "Disconnected"
 msgstr "Terputus"
@@ -81,7 +81,7 @@ msgstr "Panggilan Akhir Kelompok"
 msgid "End call"
 msgstr "Panggilan akhir"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:332
+#: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:334
 #, elixir-autogen, elixir-format
 msgid "End group call"
 msgstr "Panggilan grup akhir"
@@ -93,18 +93,18 @@ msgstr ""
 "Akhiri panggilan grup %{channel} untuk semua orang? Semua peserta akan "
 "diputus."
 
-#: lib/retro_hex_chat_web/components/ui/chat/visitor_greeting_card.ex:107
-#: lib/retro_hex_chat_web/components/ui/group_call/channel_badge.ex:341
-#: lib/retro_hex_chat_web/components/ui/group_call/channel_badge.ex:370
-#: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:1037
-#: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:1038
-#: lib/retro_hex_chat_web/live/app/call_live.ex:62
-#: lib/retro_hex_chat_web/live/app/call_live.ex:123
+#: lib/retro_hex_chat_web/components/ui/chat/visitor_greeting_card.ex:103
+#: lib/retro_hex_chat_web/components/ui/group_call/channel_badge.ex:336
+#: lib/retro_hex_chat_web/components/ui/group_call/channel_badge.ex:365
+#: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:1026
+#: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:1027
+#: lib/retro_hex_chat_web/live/app/call_live.ex:63
+#: lib/retro_hex_chat_web/live/app/call_live.ex:124
 #, elixir-autogen, elixir-format
 msgid "Group Call"
 msgstr "Panggilan grup"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:1047
+#: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:1036
 #, elixir-autogen, elixir-format
 msgid "Group call"
 msgstr "Panggilan grup"
@@ -130,32 +130,33 @@ msgstr "Media panggilan grup terdegradasi."
 msgid "Group calls are available in channels only."
 msgstr "Panggilan grup hanya tersedia di saluran saja."
 
-#: lib/retro_hex_chat_web/components/ui/group_call/channel_badge.ex:342
+#: lib/retro_hex_chat_web/components/ui/group_call/channel_badge.ex:337
 #, elixir-autogen, elixir-format
 msgid "Identify with NickServ to use group calls"
 msgstr "Identifikasi dengan NickServ untuk menggunakan panggilan grup"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:1040
-#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:432
-#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:548
-#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:565
-#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:598
-#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:871
+#: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:1029
+#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:258
+#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:290
+#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:506
+#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:523
+#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:556
+#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:829
 #, elixir-autogen, elixir-format
 msgid "Idle"
 msgstr "Diam"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:1229
+#: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:1218
 #, elixir-autogen, elixir-format
 msgid "In call"
 msgstr "Dalam panggilan"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:1227
+#: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:1216
 #, elixir-autogen, elixir-format
 msgid "Joining"
 msgstr "Bergabung"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:1041
+#: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:1030
 #, elixir-autogen, elixir-format
 msgid "Joining call"
 msgstr "Bergabung panggilan"
@@ -170,8 +171,8 @@ msgstr "Tinggalkan Panggilan Grup"
 msgid "Leave call"
 msgstr "Keluar dari panggilan"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:387
-#: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:459
+#: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:389
+#: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:461
 #, elixir-autogen, elixir-format
 msgid "Leave group call"
 msgstr "Tinggalkan panggilan grup"
@@ -182,22 +183,22 @@ msgid "Leave the group call in %{channel}? Your microphone and camera will disco
 msgstr ""
 "Tinggalkan panggilan grup di %{channel}Mikrofon dan kameramu akan dimatikan."
 
-#: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:1414
+#: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:1403
 #, elixir-autogen, elixir-format
 msgid "Microphone off"
 msgstr "Mikrofon mati"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:1411
+#: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:1400
 #, elixir-autogen, elixir-format
 msgid "Microphone on"
 msgstr "Mikrofon hidup"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:1353
+#: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:1342
 #, elixir-autogen, elixir-format
 msgid "Mute participant"
 msgstr "Peserta Bisu"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:1043
+#: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:1032
 #, elixir-autogen, elixir-format
 msgid "Negotiating media"
 msgstr "Negosiasi media"
@@ -213,33 +214,33 @@ msgstr "Buka saluran sebelum memulai panggilan grup."
 msgid "Participant is no longer in the group call."
 msgstr "Peserta tidak lagi dalam kelompok panggilan."
 
-#: lib/retro_hex_chat_web/components/ui/group_call/channel_badge.ex:110
-#: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:607
-#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:111
-#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:337
+#: lib/retro_hex_chat_web/components/ui/group_call/channel_badge.ex:105
+#: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:596
+#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:112
+#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:342
 #, elixir-autogen, elixir-format
 msgid "Participants"
 msgstr "Peserta"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:358
-#: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:440
+#: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:360
+#: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:442
 #, elixir-autogen, elixir-format
 msgid "Toggle camera"
 msgstr "Nyalakan/matikan kamera"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:346
-#: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:429
+#: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:348
+#: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:431
 #, elixir-autogen, elixir-format
 msgid "Toggle microphone"
 msgstr "Nyalakan/matikan mikrofon"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:1356
+#: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:1345
 #, elixir-autogen, elixir-format
 msgid "Unmute participant"
 msgstr "Peserta Unmute"
 
-#: lib/retro_hex_chat_web/live/app/call_live.ex:512
-#: lib/retro_hex_chat_web/live/app/call_live.ex:518
+#: lib/retro_hex_chat_web/live/app/call_live.ex:513
+#: lib/retro_hex_chat_web/live/app/call_live.ex:519
 #: lib/retro_hex_chat_web/live/chat_live/group_call_events.ex:164
 #, elixir-autogen, elixir-format
 msgid "You must be identified with NickServ to use group calls."
@@ -251,116 +252,116 @@ msgstr ""
 msgid "You must be registered to moderate group calls."
 msgstr "Anda harus terdaftar ke panggilan kelompok moderat."
 
-#: lib/retro_hex_chat_web/live/app/call_live.ex:530
-#: lib/retro_hex_chat_web/live/app/call_live.ex:536
+#: lib/retro_hex_chat_web/live/app/call_live.ex:531
+#: lib/retro_hex_chat_web/live/app/call_live.ex:537
 #: lib/retro_hex_chat_web/live/chat_live/group_call_events.ex:82
 #, elixir-autogen, elixir-format
 msgid "You must be registered with NickServ to use group calls."
 msgstr ""
 "Anda harus terdaftar dengan NickServ untuk menggunakan panggilan kelompok."
 
-#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:839
-#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:849
+#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:797
+#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:807
 #, elixir-autogen, elixir-format
 msgid "%{active}/%{total} active"
 msgstr "%{active}/%{total} aktif"
 
-#: lib/retro_hex_chat_web/live/chat_live/pubsub_handlers/channel_state.ex:525
+#: lib/retro_hex_chat_web/live/chat_live/pubsub_handlers/channel_state.ex:532
 #, elixir-autogen, elixir-format
 msgid "%{actor} allowed %{count} conference camera."
 msgid_plural "%{actor} allowed %{count} conference cameras."
 msgstr[0] "%{actor} diijinkan %{count} Kamera konferensi."
 
-#: lib/retro_hex_chat_web/live/chat_live/pubsub_handlers/channel_state.ex:511
+#: lib/retro_hex_chat_web/live/chat_live/pubsub_handlers/channel_state.ex:518
 #, elixir-autogen, elixir-format
 msgid "%{actor} allowed %{count} conference microphone."
 msgid_plural "%{actor} allowed %{count} conference microphones."
 msgstr[0] "%{actor} diijinkan %{count} Mikrofon konferensi."
 
-#: lib/retro_hex_chat_web/live/chat_live/pubsub_handlers/channel_state.ex:608
+#: lib/retro_hex_chat_web/live/chat_live/pubsub_handlers/channel_state.ex:615
 #, elixir-autogen, elixir-format
 msgid "%{actor} allowed %{target} to share a screen again."
 msgstr "%{actor} diijinkan %{target} untuk berbagi layar lagi."
 
-#: lib/retro_hex_chat_web/live/chat_live/pubsub_handlers/channel_state.ex:619
+#: lib/retro_hex_chat_web/live/chat_live/pubsub_handlers/channel_state.ex:626
 #, elixir-autogen, elixir-format
 msgid "%{actor} allowed %{target} to speak."
 msgstr "%{actor} diijinkan %{target} untuk berbicara."
 
-#: lib/retro_hex_chat_web/live/chat_live/pubsub_handlers/channel_state.ex:572
+#: lib/retro_hex_chat_web/live/chat_live/pubsub_handlers/channel_state.ex:579
 #, elixir-autogen, elixir-format
 msgid "%{actor} allowed %{target}'s conference camera."
 msgstr "%{actor} diijinkan %{target}Kamera konferensi."
 
-#: lib/retro_hex_chat_web/live/chat_live/pubsub_handlers/channel_state.ex:550
+#: lib/retro_hex_chat_web/live/chat_live/pubsub_handlers/channel_state.ex:557
 #, elixir-autogen, elixir-format
 msgid "%{actor} allowed %{target}'s conference microphone."
 msgstr "%{actor} diijinkan %{target}Mikrofon konferensi."
 
-#: lib/retro_hex_chat_web/live/chat_live/pubsub_handlers/channel_state.ex:637
+#: lib/retro_hex_chat_web/live/chat_live/pubsub_handlers/channel_state.ex:644
 #, elixir-autogen, elixir-format
 msgid "%{actor} locked the conference."
 msgstr "%{actor} mengunci konferensi."
 
-#: lib/retro_hex_chat_web/live/chat_live/pubsub_handlers/channel_state.ex:483
+#: lib/retro_hex_chat_web/live/chat_live/pubsub_handlers/channel_state.ex:490
 #, elixir-autogen, elixir-format
 msgid "%{actor} muted %{count} conference microphone."
 msgid_plural "%{actor} muted %{count} conference microphones."
 msgstr[0] "%{actor} Muted %{count} Mikrofon konferensi."
 
-#: lib/retro_hex_chat_web/live/chat_live/pubsub_handlers/channel_state.ex:539
+#: lib/retro_hex_chat_web/live/chat_live/pubsub_handlers/channel_state.ex:546
 #, elixir-autogen, elixir-format
 msgid "%{actor} muted %{target}'s conference microphone."
 msgstr "%{actor} Muted %{target}Mikrofon konferensi."
 
-#: lib/retro_hex_chat_web/live/chat_live/pubsub_handlers/channel_state.ex:630
+#: lib/retro_hex_chat_web/live/chat_live/pubsub_handlers/channel_state.ex:637
 #, elixir-autogen, elixir-format
 msgid "%{actor} removed %{target} from the conference."
 msgstr "%{actor} dihapus %{target} dari konferensi."
 
-#: lib/retro_hex_chat_web/live/chat_live/pubsub_handlers/channel_state.ex:597
+#: lib/retro_hex_chat_web/live/chat_live/pubsub_handlers/channel_state.ex:604
 #, elixir-autogen, elixir-format
 msgid "%{actor} stopped %{target}'s screen share."
 msgstr "%{actor} dihentikan %{target}'s screen share."
 
-#: lib/retro_hex_chat_web/live/chat_live/pubsub_handlers/channel_state.ex:497
+#: lib/retro_hex_chat_web/live/chat_live/pubsub_handlers/channel_state.ex:504
 #, elixir-autogen, elixir-format
 msgid "%{actor} turned off %{count} conference camera."
 msgid_plural "%{actor} turned off %{count} conference cameras."
 msgstr[0] "%{actor} dimatikan %{count} Kamera konferensi."
 
-#: lib/retro_hex_chat_web/live/chat_live/pubsub_handlers/channel_state.ex:561
+#: lib/retro_hex_chat_web/live/chat_live/pubsub_handlers/channel_state.ex:568
 #, elixir-autogen, elixir-format
 msgid "%{actor} turned off %{target}'s conference camera."
 msgstr "%{actor} dimatikan %{target}Kamera konferensi."
 
-#: lib/retro_hex_chat_web/live/chat_live/pubsub_handlers/channel_state.ex:641
+#: lib/retro_hex_chat_web/live/chat_live/pubsub_handlers/channel_state.ex:648
 #, elixir-autogen, elixir-format
 msgid "%{actor} unlocked the conference."
 msgstr "%{actor} membuka konferensi."
 
-#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:678
+#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:636
 #, elixir-autogen, elixir-format
 msgid "%{audio} audio / %{video} video / %{screen} screen"
 msgstr "%{audio} audio / %{video} video / %{screen} layar"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:669
-#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:823
+#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:627
+#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:781
 #, elixir-autogen, elixir-format
 msgid "%{connected}/%{total} connected"
 msgstr "%{connected}/%{total} tersambung"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:767
+#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:725
 #, elixir-autogen, elixir-format
 msgid "%{connection} / ICE %{ice}"
 msgstr "%{connection} / ICE %{ice}"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/channel_badge.ex:297
+#: lib/retro_hex_chat_web/components/ui/group_call/channel_badge.ex:292
 #, elixir-autogen, elixir-format
 msgid "%{hours}h %{minutes}m"
 msgstr "%{hours}h %{minutes}m"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:774
+#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:732
 #, elixir-autogen, elixir-format
 msgid "%{inbound} in / %{fanout} fanout"
 msgstr "%{inbound} dalam / %{fanout} fanout"
@@ -372,96 +373,96 @@ msgstr ""
 "%{level} kualitas: RTT %{rtt} ms, kehilangan %{loss}%, %{bitrate} kbps, "
 "%{fps} fps, membeku %{freezes}"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/channel_badge.ex:299
+#: lib/retro_hex_chat_web/components/ui/group_call/channel_badge.ex:294
 #, elixir-autogen, elixir-format
 msgid "%{minutes}m"
 msgstr "%{minutes}m"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:1399
+#: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:1388
 #, elixir-autogen, elixir-format
 msgid "%{nickname} reacted with %{reaction}"
 msgstr "%{nickname} bereaksi dengan %{reaction}"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:719
+#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:677
 #, elixir-autogen, elixir-format
 msgid "%{nominated}/%{total} nominated"
 msgstr "%{nominated}/%{total} dinominasikan"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:793
+#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:751
 #, elixir-autogen, elixir-format
 msgid "%{nominated}/%{total} nominated / %{valid} valid"
 msgstr "%{nominated}/%{total} dinominasikan / %{valid} valid"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:298
+#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:303
 #, elixir-autogen, elixir-format
 msgid "%{n} fps"
 msgstr "%{n} fps"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:243
-#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:263
-#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:268
-#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:303
+#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:244
+#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:266
+#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:271
 #: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:308
-#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:550
-#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:551
+#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:313
+#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:508
+#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:509
 #, elixir-autogen, elixir-format
 msgid "%{n} kbps"
 msgstr "%{n} kbps"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:69
-#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:228
-#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:233
-#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:618
+#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:70
+#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:229
+#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:234
+#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:576
 #, elixir-autogen, elixir-format
 msgid "%{n} ms"
 msgstr "%{n} ms"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:481
+#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:439
 #, elixir-autogen, elixir-format
 msgid "%{n} subs"
 msgstr "Subs %{n}"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:238
-#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:273
-#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:313
+#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:239
+#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:276
+#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:318
 #, elixir-autogen, elixir-format
 msgid "%{n}%"
 msgstr "%{n}%"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:699
-#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:710
+#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:657
+#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:668
 #, elixir-autogen, elixir-format
 msgid "%{packets} pkt / %{bytes}"
 msgstr "%{packets} pkt / %{bytes}"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:728
-#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:803
+#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:686
+#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:761
 #, elixir-autogen, elixir-format
 msgid "%{sent} up / %{received} down"
 msgstr "%{sent} naik / %{received} turun"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/channel_badge.ex:345
+#: lib/retro_hex_chat_web/components/ui/group_call/channel_badge.ex:340
 #, elixir-autogen, elixir-format
 msgid "%{state} conference in %{channel}: %{count}/%{max} participants, %{duration}"
 msgstr ""
 "%{state} konferensi di %{channel}: %{count}/%{max} Peserta, %{duration}"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:652
+#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:610
 #, elixir-autogen, elixir-format
 msgid "%{status} / max %{max}"
 msgstr "%{status} / max %{max}"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:688
+#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:646
 #, elixir-autogen, elixir-format
 msgid "%{subs} subs / %{routes} routes"
 msgstr "%{subs} subs / %{routes} rute"
 
-#: lib/retro_hex_chat_web/live/chat_live/pubsub_handlers/channel_state.ex:582
+#: lib/retro_hex_chat_web/live/chat_live/pubsub_handlers/channel_state.ex:589
 #, elixir-autogen, elixir-format
 msgid "%{target} started sharing a screen."
 msgstr "%{target} mulai berbagi layar."
 
-#: lib/retro_hex_chat_web/live/chat_live/pubsub_handlers/channel_state.ex:589
+#: lib/retro_hex_chat_web/live/chat_live/pubsub_handlers/channel_state.ex:596
 #, elixir-autogen, elixir-format
 msgid "%{target} stopped sharing a screen."
 msgstr "%{target} berhenti berbagi layar."
@@ -471,31 +472,32 @@ msgstr "%{target} berhenti berbagi layar."
 msgid "%{target} was removed from the conference and banned from %{channel}."
 msgstr "%{target} dihapus dari konferensi dan dilarang dari %{channel}."
 
-#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:783
+#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:741
 #, elixir-autogen, elixir-format
 msgid "%{tracks} trk / %{packets} pkt / %{bytes}"
 msgstr "%{tracks} trk / %{packets} pkt / %{bytes}"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:842
-#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:852
+#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:800
+#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:810
 #, elixir-autogen, elixir-format
 msgid "0 active"
 msgstr "0 aktif"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:829
+#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:787
 #, elixir-autogen, elixir-format
 msgid "0 connected"
 msgstr "0 tersambung"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/channel_badge.ex:285
-#: lib/retro_hex_chat_web/components/ui/group_call/channel_badge.ex:306
-#: lib/retro_hex_chat_web/components/ui/group_call/channel_badge.ex:310
+#: lib/retro_hex_chat_web/components/ui/group_call/channel_badge.ex:280
+#: lib/retro_hex_chat_web/components/ui/group_call/channel_badge.ex:301
+#: lib/retro_hex_chat_web/components/ui/group_call/channel_badge.ex:305
 #, elixir-autogen, elixir-format
 msgid "0m"
 msgstr "0m"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:431
-#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:547
+#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:257
+#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:289
+#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:505
 #, elixir-autogen, elixir-format
 msgid "Active"
 msgstr "Aktif"
@@ -505,40 +507,40 @@ msgstr "Aktif"
 msgid "All participants disconnect"
 msgstr "Semua peserta terputus"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:1373
+#: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:1362
 #, elixir-autogen, elixir-format
 msgid "Allow %{nickname} to speak"
 msgstr "Ijinkan %{nickname} untuk berbicara"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:1362
+#: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:1351
 #, elixir-autogen, elixir-format
 msgid "Allow participant camera"
 msgstr "Ijinkan kamera peserta"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:1350
+#: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:1339
 #, elixir-autogen, elixir-format
 msgid "Allow participant microphone"
 msgstr "Ijinkan mikropon peserta"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:1368
+#: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:1357
 #, elixir-autogen, elixir-format
 msgid "Allow participant screen sharing"
 msgstr "Ijinkan berbagi layar peserta"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:249
-#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:869
+#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:250
+#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:827
 #, elixir-autogen, elixir-format
 msgid "Audio"
 msgstr "Audio"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:116
+#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:117
 #, elixir-autogen, elixir-format
 msgid "Audio tracks"
 msgstr "Trek audio"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:1139
-#: lib/retro_hex_chat_web/components/ui/group_call/pre_join.ex:180
-#: lib/retro_hex_chat_web/components/ui/group_call/pre_join.ex:363
+#: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:1128
+#: lib/retro_hex_chat_web/components/ui/group_call/pre_join.ex:181
+#: lib/retro_hex_chat_web/components/ui/group_call/pre_join.ex:364
 #, elixir-autogen, elixir-format
 msgid "Auto"
 msgstr "Otomatis"
@@ -548,37 +550,37 @@ msgstr "Otomatis"
 msgid "Auto layout"
 msgstr "Tata letak otomatis"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:902
+#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:860
 #, elixir-autogen, elixir-format
 msgid "Bandwidth"
 msgstr "Bandwidth"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:36
+#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:37
 #, elixir-autogen, elixir-format
 msgid "Browser %{state}"
 msgstr "Peramban %{state}"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:205
+#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:206
 #, elixir-autogen, elixir-format
 msgid "Browser connection"
 msgstr "Koneksi peramban"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:329
+#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:334
 #, elixir-autogen, elixir-format
 msgid "Browser summary"
 msgstr "Ringkasan peramban"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:901
+#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:859
 #, elixir-autogen, elixir-format
 msgid "CPU"
 msgstr "CPU"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/pre_join.ex:137
+#: lib/retro_hex_chat_web/components/ui/group_call/pre_join.ex:138
 #, elixir-autogen, elixir-format
 msgid "Camera"
 msgstr "Kamera"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:1421
+#: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:1410
 #, elixir-autogen, elixir-format
 msgid "Camera disabled by moderator"
 msgstr "Kamera dinonaktifkan oleh moderator"
@@ -608,7 +610,7 @@ msgstr "Kamera diblokir"
 msgid "Cameras off"
 msgstr "Kamera mati"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:242
+#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:243
 #, elixir-autogen, elixir-format
 msgid "Capacity"
 msgstr "Kapasitas"
@@ -623,7 +625,7 @@ msgstr "Ubah tilikan diri"
 msgid "Channel access is banned"
 msgstr "Akses saluran dilarang"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:70
+#: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:72
 #, elixir-autogen, elixir-format
 msgid "Channel conference"
 msgstr "Konferensi saluran"
@@ -638,7 +640,7 @@ msgstr "Memeriksa perangkat"
 msgid "Clear focused participant"
 msgstr "Bersihkan peserta fokus"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:407
+#: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:409
 #, elixir-autogen, elixir-format
 msgid "Compact conference controls"
 msgstr "Kontrol konferensi kompak"
@@ -663,22 +665,22 @@ msgstr "Kontrol tata letak konferensi"
 msgid "Conference media"
 msgstr "Media konferensi"
 
-#: lib/retro_hex_chat_web/live/chat_live/pubsub_handlers/channel_state.ex:645
+#: lib/retro_hex_chat_web/live/chat_live/pubsub_handlers/channel_state.ex:652
 #, elixir-autogen, elixir-format
 msgid "Conference moderation updated."
 msgstr "Moderasi konferensi diperbarui."
 
-#: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:614
+#: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:603
 #, elixir-autogen, elixir-format
 msgid "Conference participant list"
 msgstr "Daftar peserta konferensi"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:608
+#: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:597
 #, elixir-autogen, elixir-format
 msgid "Conference participants"
 msgstr "Peserta konferensi"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:475
+#: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:477
 #, elixir-autogen, elixir-format
 msgid "Conference reactions"
 msgstr "Reaksi konferensi"
@@ -688,7 +690,7 @@ msgstr "Reaksi konferensi"
 msgid "Conference started in %{channel}."
 msgstr "Konferensi dimulai di %{channel}."
 
-#: lib/retro_hex_chat_web/components/ui/group_call/channel_badge.ex:72
+#: lib/retro_hex_chat_web/components/ui/group_call/channel_badge.ex:74
 #, elixir-autogen, elixir-format
 msgid "Conference summary"
 msgstr "Ringkasan konferensi"
@@ -698,7 +700,7 @@ msgstr "Ringkasan konferensi"
 msgid "Conference video tiles"
 msgstr "Ubin video konferensi"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:959
+#: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:948
 #, elixir-autogen, elixir-format
 msgid "Connection needs attention"
 msgstr "Koneksi membutuhkan perhatian"
@@ -738,47 +740,47 @@ msgstr "Tak bisa memperbarui bantuan yang diangkat."
 msgid "Default device"
 msgstr "Perangkat bawaan"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/channel_badge.ex:359
+#: lib/retro_hex_chat_web/components/ui/group_call/channel_badge.ex:354
 #, elixir-autogen, elixir-format
 msgid "Degraded"
 msgstr "Tidak stabil"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:262
-#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:302
+#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:265
+#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:307
 #, elixir-autogen, elixir-format
 msgid "Download"
 msgstr "Unduh"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/channel_badge.ex:360
+#: lib/retro_hex_chat_web/components/ui/group_call/channel_badge.ex:355
 #, elixir-autogen, elixir-format
 msgid "Ending"
 msgstr "Berakhir"
 
 #: lib/retro_hex_chat_web/components/ui/group_call/participant_quality_badge.ex:79
-#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:879
+#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:837
 #, elixir-autogen, elixir-format
 msgid "Excellent"
 msgstr "Bagus"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:451
+#: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:453
 #, elixir-autogen, elixir-format
 msgid "Expand conference"
 msgstr "Perluas konferensi"
 
 #: lib/retro_hex_chat_web/components/ui/group_call/participant_quality_badge.ex:81
-#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:881
+#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:839
 #, elixir-autogen, elixir-format
 msgid "Fair"
 msgstr "Adil"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:161
+#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:162
 #, elixir-autogen, elixir-format
 msgid "Fanout"
 msgstr "Fanout"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:1137
-#: lib/retro_hex_chat_web/components/ui/group_call/pre_join.ex:182
-#: lib/retro_hex_chat_web/components/ui/group_call/pre_join.ex:362
+#: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:1126
+#: lib/retro_hex_chat_web/components/ui/group_call/pre_join.ex:183
+#: lib/retro_hex_chat_web/components/ui/group_call/pre_join.ex:363
 #, elixir-autogen, elixir-format
 msgid "Focus"
 msgstr "Fokus"
@@ -788,7 +790,7 @@ msgstr "Fokus"
 msgid "Focus layout"
 msgstr "Tata letak fokus"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:836
+#: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:825
 #, elixir-autogen, elixir-format
 msgid "Focus participant"
 msgstr "Peserta fokus"
@@ -799,30 +801,30 @@ msgstr "Peserta fokus"
 msgid "Focus your video"
 msgstr "Fokus video Anda"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:297
+#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:302
 #, elixir-autogen, elixir-format
 msgid "Frame rate"
 msgstr "Laju bingkai"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:317
+#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:322
 #, elixir-autogen, elixir-format
 msgid "Freezes"
 msgstr "Beku"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/channel_badge.ex:357
+#: lib/retro_hex_chat_web/components/ui/group_call/channel_badge.ex:352
 #, elixir-autogen, elixir-format
 msgid "Full"
 msgstr "Penuh"
 
 #: lib/retro_hex_chat_web/components/ui/group_call/participant_quality_badge.ex:80
-#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:880
+#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:838
 #, elixir-autogen, elixir-format
 msgid "Good"
 msgstr "Baik"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:1136
-#: lib/retro_hex_chat_web/components/ui/group_call/pre_join.ex:181
-#: lib/retro_hex_chat_web/components/ui/group_call/pre_join.ex:361
+#: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:1125
+#: lib/retro_hex_chat_web/components/ui/group_call/pre_join.ex:182
+#: lib/retro_hex_chat_web/components/ui/group_call/pre_join.ex:362
 #, elixir-autogen, elixir-format
 msgid "Grid"
 msgstr "Grid"
@@ -842,16 +844,16 @@ msgstr "Koneksi media panggilan grup gagal. Coba kembali koneksi media."
 msgid "Group call media is connecting."
 msgstr "Media panggilan grup sedang menyambung."
 
-#: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:758
-#: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:759
+#: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:747
+#: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:748
 #, elixir-autogen, elixir-format
 msgid "Hand raised"
 msgstr "Angkat tangan"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:555
-#: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:1142
-#: lib/retro_hex_chat_web/components/ui/group_call/pre_join.ex:195
-#: lib/retro_hex_chat_web/components/ui/group_call/pre_join.ex:366
+#: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:559
+#: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:1131
+#: lib/retro_hex_chat_web/components/ui/group_call/pre_join.ex:196
+#: lib/retro_hex_chat_web/components/ui/group_call/pre_join.ex:367
 #, elixir-autogen, elixir-format
 msgid "Hidden"
 msgstr "Tersembunyi"
@@ -861,103 +863,103 @@ msgstr "Tersembunyi"
 msgid "Hide self view"
 msgstr "Sembunyikan tilikan diri"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:352
+#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:357
 #, elixir-autogen, elixir-format
 msgid "ICE"
 msgstr "ICE"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:176
-#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:495
+#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:177
+#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:453
 #, elixir-autogen, elixir-format
 msgid "ICE pairs"
 msgstr "Pasangan ICE"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:181
-#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:500
+#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:182
+#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:458
 #, elixir-autogen, elixir-format
 msgid "ICE traffic"
 msgstr "Lalu lintas ICE"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/channel_badge.ex:122
+#: lib/retro_hex_chat_web/components/ui/group_call/channel_badge.ex:117
 #, elixir-autogen, elixir-format
 msgid "In conference"
 msgstr "Dalam konferensi"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:166
-#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:485
+#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:167
+#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:443
 #, elixir-autogen, elixir-format
 msgid "Inbound RTP"
 msgstr "RTP Inbound"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:232
+#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:233
 #, elixir-autogen, elixir-format
 msgid "Jitter"
 msgstr "Jitter"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/pre_join.ex:237
+#: lib/retro_hex_chat_web/components/ui/group_call/pre_join.ex:238
 #, elixir-autogen, elixir-format
 msgid "Join call"
 msgstr "Gabung panggilan"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/pre_join.ex:112
+#: lib/retro_hex_chat_web/components/ui/group_call/pre_join.ex:113
 #, elixir-autogen, elixir-format
 msgid "Join with camera"
 msgstr "Gabung dengan kamera"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/pre_join.ex:105
+#: lib/retro_hex_chat_web/components/ui/group_call/pre_join.ex:106
 #, elixir-autogen, elixir-format
 msgid "Join with microphone"
 msgstr "Bergabung dengan mikrofon"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:68
-#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:227
+#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:69
+#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:228
 #, elixir-autogen, elixir-format
 msgid "Latency"
 msgstr "Latensi"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:527
-#: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:546
-#: lib/retro_hex_chat_web/components/ui/group_call/pre_join.ex:178
+#: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:529
+#: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:549
+#: lib/retro_hex_chat_web/components/ui/group_call/pre_join.ex:179
 #, elixir-autogen, elixir-format
 msgid "Layout"
 msgstr "Tata Letak"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:389
-#: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:460
-#: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:983
-#: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:1016
+#: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:391
+#: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:462
+#: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:972
+#: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:1005
 #, elixir-autogen, elixir-format
 msgid "Leave"
 msgstr "Keluar"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:977
-#: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:1011
+#: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:966
+#: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:1000
 #, elixir-autogen, elixir-format
 msgid "Leave conference"
 msgstr "Tinggalkan konferensi"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:322
+#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:327
 #, elixir-autogen, elixir-format
 msgid "Limited by"
 msgstr "Terbatas oleh"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:309
+#: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:311
 #, elixir-autogen, elixir-format
 msgid "Lock conference"
 msgstr "Konferensi Kunci"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/channel_badge.ex:358
+#: lib/retro_hex_chat_web/components/ui/group_call/channel_badge.ex:353
 #, elixir-autogen, elixir-format
 msgid "Locked"
 msgstr "Terkunci"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:1209
+#: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:1198
 #, elixir-autogen, elixir-format
 msgid "Lower hand"
 msgstr "Turunkan tangan"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:61
-#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:221
+#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:62
+#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:222
 #, elixir-autogen, elixir-format
 msgid "MOS %{score}"
 msgstr "MOS %{score}"
@@ -967,12 +969,12 @@ msgstr "MOS %{score}"
 msgid "Media recovery failed. Retry the media connection."
 msgstr "Pemulihan media gagal. Coba kembali koneksi media."
 
-#: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:1003
+#: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:992
 #, elixir-autogen, elixir-format
 msgid "Media warning"
 msgstr "Peringatan media"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/pre_join.ex:128
+#: lib/retro_hex_chat_web/components/ui/group_call/pre_join.ex:129
 #, elixir-autogen, elixir-format
 msgid "Microphone"
 msgstr "Mikrofon"
@@ -982,7 +984,7 @@ msgstr "Mikrofon"
 msgid "Microphone disconnects"
 msgstr "Mikrofon terputus"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:1408
+#: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:1397
 #, elixir-autogen, elixir-format
 msgid "Microphone muted by moderator"
 msgstr "Mikrofon muted oleh moderator"
@@ -1013,7 +1015,7 @@ msgstr "Mute Everyone?"
 msgid "Mute all"
 msgstr "Mute semua"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:316
+#: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:318
 #, elixir-autogen, elixir-format
 msgid "Mute all lower-ranked participants"
 msgstr "Mute semua peserta peringkat-rendah"
@@ -1025,8 +1027,8 @@ msgstr ""
 "Membuat semua peserta peringkat rendah di %{channel}? Mereka tak bisa diam "
 "sampai moderator mengijinkan mikrofon mereka lagi."
 
-#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:737
-#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:813
+#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:695
+#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:771
 #, elixir-autogen, elixir-format
 msgid "NACK %{nack} / PLI %{pli}"
 msgstr "Nack %{nack} # PLI %{pli}"
@@ -1036,21 +1038,21 @@ msgstr "Nack %{nack} # PLI %{pli}"
 msgid "No lower-ranked conference participants were affected."
 msgstr "Tidak ada peserta konferensi peringkat rendah yang terpengaruh."
 
-#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:898
+#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:856
 #, elixir-autogen, elixir-format
 msgid "No video"
 msgstr "Tidak ada video"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:612
-#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:619
-#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:627
-#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:637
-#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:900
+#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:570
+#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:577
+#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:585
+#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:595
+#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:858
 #, elixir-autogen, elixir-format
 msgid "None"
 msgstr "Nihil"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:1440
+#: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:1429
 #, elixir-autogen, elixir-format
 msgid "Not sharing screen"
 msgstr "Tidak berbagi layar"
@@ -1072,53 +1074,53 @@ msgstr "Hanya peringkat bawah yang terpengaruh"
 msgid "Operators can unban later"
 msgstr "Operator dapat unban nanti"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:903
+#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:861
 #, elixir-autogen, elixir-format
 msgid "Other"
 msgstr "Lainnya"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:171
-#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:490
+#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:172
+#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:448
 #, elixir-autogen, elixir-format
 msgid "Outbound RTP"
 msgstr "RTP Keluar"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:237
-#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:272
-#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:312
+#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:238
+#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:275
+#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:317
 #, elixir-autogen, elixir-format
 msgid "Packet loss"
 msgstr "Kehilangan paket"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:759
+#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:717
 #, elixir-autogen, elixir-format
 msgid "Participant %{id}"
 msgstr "Peserta %{id}"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:151
+#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:152
 #, elixir-autogen, elixir-format
 msgid "Peer connections"
 msgstr "Koneksi Peer"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:131
+#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:132
 #, elixir-autogen, elixir-format
 msgid "Pending"
 msgstr "Tertunda"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:1141
-#: lib/retro_hex_chat_web/components/ui/group_call/pre_join.ex:194
-#: lib/retro_hex_chat_web/components/ui/group_call/pre_join.ex:365
+#: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:1130
+#: lib/retro_hex_chat_web/components/ui/group_call/pre_join.ex:195
+#: lib/retro_hex_chat_web/components/ui/group_call/pre_join.ex:366
 #, elixir-autogen, elixir-format
 msgid "PiP"
 msgstr "PiP"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:845
+#: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:834
 #, elixir-autogen, elixir-format
 msgid "Pin participant"
 msgstr "Peserta Pin"
 
 #: lib/retro_hex_chat_web/components/ui/group_call/participant_quality_badge.ex:82
-#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:882
+#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:840
 #, elixir-autogen, elixir-format
 msgid "Poor"
 msgstr "Buruk"
@@ -1135,13 +1137,13 @@ msgstr "Pratinjau"
 msgid "Quality unknown"
 msgstr "Kualitas tidak diketahui"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:186
-#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:505
+#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:187
+#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:463
 #, elixir-autogen, elixir-format
 msgid "RTCP feedback"
 msgstr "feedback RTCP"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:1210
+#: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:1199
 #, elixir-autogen, elixir-format
 msgid "Raise hand"
 msgstr "Angkat tangan"
@@ -1152,12 +1154,12 @@ msgid "Receive-only mode"
 msgstr "Modus penerimaan -saja"
 
 #: lib/retro_hex_chat_web/components/ui/group_call/participant_quality_badge.ex:83
-#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:589
+#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:547
 #, elixir-autogen, elixir-format
 msgid "Reconnecting"
 msgstr "Menghubungkan ulang"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:1044
+#: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:1033
 #, elixir-autogen, elixir-format
 msgid "Reconnecting media"
 msgstr "Menyambung ulang media"
@@ -1191,7 +1193,7 @@ msgstr "Mikrofon remote"
 msgid "Remote screen share"
 msgstr "Share layar remote"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:342
+#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:347
 #, elixir-autogen, elixir-format
 msgid "Remote streams"
 msgstr "Arus remote"
@@ -1214,7 +1216,7 @@ msgstr "Hapus Dari Saluran?"
 msgid "Remove and ban"
 msgstr "Hapus dan ban"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:909
+#: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:898
 #, elixir-autogen, elixir-format
 msgid "Remove from conference and ban from channel"
 msgstr "Hapus dari konferensi dan hapus dari saluran"
@@ -1231,91 +1233,91 @@ msgstr "Dihapus dari konferensi saluran"
 msgid "Requesting a fresh media offer."
 msgstr "Meminta tawaran media baru."
 
-#: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:686
+#: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:675
 #, elixir-autogen, elixir-format
 msgid "Requests to speak"
 msgstr "Permintaan untuk berbicara"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:292
+#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:297
 #, elixir-autogen, elixir-format
 msgid "Resolution"
 msgstr "Resolusi"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:974
+#: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:963
 #: lib/retro_hex_chat_web/components/ui/media_session/permission_notice.ex:35
 #, elixir-autogen, elixir-format
 msgid "Retry"
 msgstr "Coba lagi"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:969
+#: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:958
 #, elixir-autogen, elixir-format
 msgid "Retry media connection"
 msgstr "Coba koneksi media"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:89
-#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:106
+#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:90
+#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:107
 #, elixir-autogen, elixir-format
 msgid "Room"
 msgstr "Kamar"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:1434
+#: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:1423
 #: lib/retro_hex_chat_web/components/ui/group_call/screen_share_control.ex:42
 #, elixir-autogen, elixir-format
 msgid "Screen sharing disabled by moderator"
 msgstr "Berbagi layar dinonaktifkan oleh moderator"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:126
+#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:127
 #, elixir-autogen, elixir-format
 msgid "Screen tracks"
 msgstr "Trek layar"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:560
-#: lib/retro_hex_chat_web/components/ui/group_call/pre_join.ex:191
+#: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:565
+#: lib/retro_hex_chat_web/components/ui/group_call/pre_join.ex:192
 #, elixir-autogen, elixir-format
 msgid "Self view"
 msgstr "Tampilan sendiri"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:495
+#: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:497
 #, elixir-autogen, elixir-format
 msgid "Send clap reaction"
 msgstr "Kirim reaksi bertepuk tangan"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:493
+#: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:495
 #, elixir-autogen, elixir-format
 msgid "Send heart reaction"
 msgstr "Kirim reaksi jantung"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:496
+#: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:498
 #, elixir-autogen, elixir-format
 msgid "Send laugh reaction"
 msgstr "Kirim reaksi tertawa"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:497
+#: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:499
 #, elixir-autogen, elixir-format
 msgid "Send sparkle reaction"
 msgstr "Kirim reaksi berkilau"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:494
+#: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:496
 #, elixir-autogen, elixir-format
 msgid "Send thumbs up reaction"
 msgstr "Kirim reaksi ibu jari up"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:98
+#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:99
 #, elixir-autogen, elixir-format
 msgid "Server"
 msgstr "Server"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:194
+#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:195
 #, elixir-autogen, elixir-format
 msgid "Server peers"
 msgstr "Peer Server"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:143
+#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:144
 #, elixir-autogen, elixir-format
 msgid "Server runtime"
 msgstr "Waktu berjalan server"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:156
+#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:157
 #, elixir-autogen, elixir-format
 msgid "Server tracks"
 msgstr "Trek server"
@@ -1325,7 +1327,7 @@ msgstr "Trek server"
 msgid "Share screen"
 msgstr "Berbagi layar"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:1437
+#: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:1426
 #: lib/retro_hex_chat_web/components/ui/group_call/video_surface.ex:252
 #, elixir-autogen, elixir-format
 msgid "Sharing screen"
@@ -1336,15 +1338,15 @@ msgstr "Berbagi layar"
 msgid "Show self view in grid"
 msgstr "Tampilkan tampilan sendiri dalam kisi"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:510
+#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:468
 #, elixir-autogen, elixir-format
 msgid "Signaling"
 msgstr "Sinyal"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/channel_badge.ex:114
-#: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:1138
-#: lib/retro_hex_chat_web/components/ui/group_call/pre_join.ex:146
-#: lib/retro_hex_chat_web/components/ui/group_call/pre_join.ex:183
+#: lib/retro_hex_chat_web/components/ui/group_call/channel_badge.ex:109
+#: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:1127
+#: lib/retro_hex_chat_web/components/ui/group_call/pre_join.ex:147
+#: lib/retro_hex_chat_web/components/ui/group_call/pre_join.ex:184
 #, elixir-autogen, elixir-format
 msgid "Speaker"
 msgstr "Speaker"
@@ -1365,23 +1367,23 @@ msgstr "Berbicara"
 msgid "Speaking now"
 msgstr "Berbicara sekarang"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:257
-#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:287
+#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:260
+#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:292
 #, elixir-autogen, elixir-format
 msgid "Status"
 msgstr "Status"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:1369
+#: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:1358
 #, elixir-autogen, elixir-format
 msgid "Stop participant screen sharing"
 msgstr "Berhenti berbagi layar peserta"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:480
+#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:438
 #, elixir-autogen, elixir-format
 msgid "Subscribers"
 msgstr "Subscriber"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:201
+#: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:203
 #, elixir-autogen, elixir-format
 msgid "Switch to compact conference mode"
 msgstr "Pindah ke mode konferensi kompak"
@@ -1396,20 +1398,20 @@ msgstr "Sistem baku"
 msgid "The room is stopped on the server"
 msgstr "Ruangan berhenti di server"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:1143
-#: lib/retro_hex_chat_web/components/ui/group_call/pre_join.ex:193
-#: lib/retro_hex_chat_web/components/ui/group_call/pre_join.ex:367
+#: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:1132
+#: lib/retro_hex_chat_web/components/ui/group_call/pre_join.ex:194
+#: lib/retro_hex_chat_web/components/ui/group_call/pre_join.ex:368
 #, elixir-autogen, elixir-format
 msgid "Tile"
 msgstr "Ubin"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:136
+#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:137
 #, elixir-autogen, elixir-format
 msgid "Track total"
 msgstr "Trek total"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:347
-#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:475
+#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:352
+#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:433
 #, elixir-autogen, elixir-format
 msgid "Tracks"
 msgstr "Trek"
@@ -1419,7 +1421,7 @@ msgstr "Trek"
 msgid "Turn Cameras Off?"
 msgstr "Matikan Kamera?"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:323
+#: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:325
 #, elixir-autogen, elixir-format
 msgid "Turn off all lower-ranked cameras"
 msgstr "Matikan semua kamera peringkat rendah"
@@ -1431,43 +1433,43 @@ msgstr ""
 "Matikan kamera untuk semua peserta peringkat-rendah di %{channel}Mereka "
 "tidak bisa menghidupkan kembali kamera sampai moderator mengizinkannya lagi."
 
-#: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:1363
+#: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:1352
 #, elixir-autogen, elixir-format
 msgid "Turn participant camera off"
 msgstr "Matikan kamera peserta"
 
 #: lib/retro_hex_chat_web/components/ui/group_call/participant_quality_badge.ex:84
-#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:655
-#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:864
-#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:883
-#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:904
+#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:613
+#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:822
+#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:841
+#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:862
 #, elixir-autogen, elixir-format
 msgid "Unknown"
 msgstr "Tak dikenal"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:762
+#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:720
 #, elixir-autogen, elixir-format
 msgid "Unknown peer"
 msgstr "Peer tak dikenal"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:267
-#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:307
+#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:270
+#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:312
 #, elixir-autogen, elixir-format
 msgid "Upload"
 msgstr "Unggah"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:279
-#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:870
+#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:282
+#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:828
 #, elixir-autogen, elixir-format
 msgid "Video"
 msgstr "Video"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:121
+#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:122
 #, elixir-autogen, elixir-format
 msgid "Video tracks"
 msgstr "Trek video"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/channel_badge.ex:138
+#: lib/retro_hex_chat_web/components/ui/group_call/channel_badge.ex:133
 #: lib/retro_hex_chat_web/components/ui/group_call/video_surface.ex:60
 #, elixir-autogen, elixir-format
 msgid "Waiting for participants"
@@ -1503,248 +1505,248 @@ msgstr "Mikrofon Anda digusur oleh moderator."
 msgid "Your screen is replacing the camera feed."
 msgstr "Layar Anda mengganti feed kamera."
 
-#: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:341
+#: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:343
 #, elixir-autogen, elixir-format
 msgid "Conference media controls"
 msgstr "Kontrol konferensi"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:271
+#: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:273
 #, elixir-autogen, elixir-format
 msgid "Conference view controls"
 msgstr "Kontrol konferensi"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/pre_join.ex:210
+#: lib/retro_hex_chat_web/components/ui/group_call/pre_join.ex:211
 #, elixir-autogen, elixir-format
 msgid "Each browser sends media to the room server; the server routes streams to the other participants."
 msgstr ""
 "Setiap peramban mengirim media ke server kamar; rute server mengalir ke "
 "peserta lain."
 
-#: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:824
+#: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:813
 #, elixir-autogen, elixir-format
 msgid "Participant actions"
 msgstr "Peserta"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:793
+#: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:782
 #, elixir-autogen, elixir-format
 msgid "Participant media state"
 msgstr "Keadaan media partisipan"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:533
+#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:491
 #, elixir-autogen, elixir-format
 msgid "%{count} peers"
 msgstr "%{count} peer"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:537
+#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:495
 #, elixir-autogen, elixir-format
 msgid "%{health} / %{latency} ms"
 msgstr "%{health} / %{latency} ms"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:71
+#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:72
 #, elixir-autogen, elixir-format
 msgid "%{jitter} ms jitter / %{loss}% loss"
 msgstr "%{jitter} ms jitter / %{loss}% kehilangan"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/pre_join.ex:355
+#: lib/retro_hex_chat_web/components/ui/group_call/pre_join.ex:356
 #, elixir-autogen, elixir-format
 msgid "%{layout} / %{self}"
 msgstr "%{layout} / %{self}"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:83
+#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:84
 #, elixir-autogen, elixir-format
 msgid "%{n} tracks"
 msgstr "%{n} kbps"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:519
+#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:477
 #, elixir-autogen, elixir-format
 msgid "%{participants} / %{tracks} tracks"
 msgstr "%{participants} / %{tracks} trek"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:571
+#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:529
 #, elixir-autogen, elixir-format
 msgid "%{participants} people / %{streams} streams / %{ice}"
 msgstr "%{participants} orang-orang / %{streams} stream / %{ice}"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:556
+#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:514
 #, elixir-autogen, elixir-format
 msgid "%{resolution} / %{fps} fps / %{loss}% loss"
 msgstr "%{resolution} / %{fps} fps / %{loss}% kehilangan"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:544
+#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:502
 #, elixir-autogen, elixir-format
 msgid "%{state} / %{down} down / %{up} up"
 msgstr "%{state} / %{down} bawah / %{up} naik"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:564
+#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:522
 #, elixir-autogen, elixir-format
 msgid "%{state} / %{resolution}"
 msgstr "%{state} / %{resolution}"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:867
+#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:825
 #, elixir-autogen, elixir-format
 msgid "Audio + Video"
 msgstr "Video + Audio"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/pre_join.ex:85
+#: lib/retro_hex_chat_web/components/ui/group_call/pre_join.ex:86
 #, elixir-autogen, elixir-format
 msgid "Choose how you enter the room. You can change media and layout after joining."
 msgstr ""
 "Pilih bagaimana Anda memasuki ruangan. Anda dapat mengubah media dan tata "
 "letak setelah bergabung."
 
-#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:54
+#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:55
 #, elixir-autogen, elixir-format
 msgid "Conference health summary"
 msgstr "Ringkasan konferensi"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/pre_join.ex:208
+#: lib/retro_hex_chat_web/components/ui/group_call/pre_join.ex:209
 #, elixir-autogen, elixir-format
 msgid "Conference route"
 msgstr "Reaksi konferensi"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:159
+#: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:161
 #, elixir-autogen, elixir-format
 msgid "Conference sections"
 msgstr "Reaksi konferensi"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:505
+#: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:507
 #, elixir-autogen, elixir-format
 msgid "Conference settings"
 msgstr "Statistik Konferensi"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:576
+#: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:581
 #, elixir-autogen, elixir-format
 msgid "Conference statistics"
 msgstr "Statistik Konferensi"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:59
+#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:60
 #, elixir-autogen, elixir-format
 msgid "Health"
 msgstr "Kesehatan"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/pre_join.ex:82
+#: lib/retro_hex_chat_web/components/ui/group_call/pre_join.ex:83
 #, elixir-autogen, elixir-format
 msgid "Join %{channel}"
 msgstr "Gabung %{channel}"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:639
+#: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:628
 #, elixir-autogen, elixir-format
 msgid "Joining conference"
 msgstr "Pertemuan Bergabung"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/pre_join.ex:158
+#: lib/retro_hex_chat_web/components/ui/group_call/pre_join.ex:159
 #, elixir-autogen, elixir-format
 msgid "Layout and route"
 msgstr "Tata letak dan rute"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/pre_join.ex:169
+#: lib/retro_hex_chat_web/components/ui/group_call/pre_join.ex:170
 #, elixir-autogen, elixir-format
 msgid "Layout defaults"
 msgstr "Tata Letak bawaan"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:81
+#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:82
 #, elixir-autogen, elixir-format
 msgid "Media"
 msgstr "Media"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/pre_join.ex:97
+#: lib/retro_hex_chat_web/components/ui/group_call/pre_join.ex:98
 #, elixir-autogen, elixir-format
 msgid "Media defaults"
 msgstr "Baku media"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:642
+#: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:631
 #, elixir-autogen, elixir-format
 msgid "Participant controls appear here once your media connection is ready."
 msgstr "Kontrol partisipan muncul di sini setelah koneksi media Anda siap."
 
-#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:526
+#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:484
 #, elixir-autogen, elixir-format
 msgid "Peer connections %{peers} / %{tracks}"
 msgstr "Koneksi Peer %{peers} / %{tracks}"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:175
-#: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:551
+#: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:177
+#: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:555
 #, elixir-autogen, elixir-format
 msgid "People"
 msgstr "Orang"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:189
-#: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:504
+#: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:191
+#: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:506
 #, elixir-autogen, elixir-format
 msgid "Settings"
 msgstr "Pengaturan"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:182
+#: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:184
 #, elixir-autogen, elixir-format
 msgid "Stats"
 msgstr "Stat"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:554
+#: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:558
 #, elixir-autogen, elixir-format
 msgid "Visible"
 msgstr "Tampak"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/pre_join.ex:347
+#: lib/retro_hex_chat_web/components/ui/group_call/pre_join.ex:348
 #, elixir-autogen, elixir-format
 msgid "conference"
 msgstr "Media konferensi"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:579
+#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:537
 #, elixir-autogen, elixir-format
 msgid "%{state} / %{reason}"
 msgstr "%{state} / %{reason}"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:382
+#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:387
 #, elixir-autogen, elixir-format
 msgid "Attempt"
 msgstr "Percobaan"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:588
+#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:546
 #, elixir-autogen, elixir-format
 msgid "Connecting"
 msgstr "Menghubungkan"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:625
+#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:583
 #, elixir-autogen, elixir-format
 msgid "Epoch %{epoch}"
 msgstr "Era %{epoch}"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:592
+#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:550
 #, elixir-autogen, elixir-format
 msgid "Failed"
 msgstr "Gagal"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:591
+#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:549
 #, elixir-autogen, elixir-format
 msgid "Negotiating"
 msgstr "Menegosiasikan"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:387
+#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:392
 #, elixir-autogen, elixir-format
 msgid "Next retry"
 msgstr "Percobaan berikutnya"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:392
+#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:397
 #, elixir-autogen, elixir-format
 msgid "Offer"
 msgstr "Penawaran"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:372
+#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:377
 #, elixir-autogen, elixir-format
 msgid "Reason"
 msgstr "Alasan"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:359
+#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:364
 #, elixir-autogen, elixir-format
 msgid "Recovery"
 msgstr "Pemulihan"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:397
+#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:402
 #, elixir-autogen, elixir-format
 msgid "Rejoin"
 msgstr "Gabung lagi"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:590
+#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:548
 #, elixir-autogen, elixir-format
 msgid "Rejoining"
 msgstr "Bergabung lagi"
@@ -1754,32 +1756,32 @@ msgstr "Bergabung lagi"
 msgid "Rejoining the media session."
 msgstr "Bergabung kembali ke sesi media."
 
-#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:367
+#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:372
 #, elixir-autogen, elixir-format
 msgid "State"
 msgstr "Status"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:377
+#: lib/retro_hex_chat_web/components/ui/group_call/stats_panel.ex:382
 #, elixir-autogen, elixir-format
 msgid "Trigger"
 msgstr "Pemicu"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/pre_join.ex:257
+#: lib/retro_hex_chat_web/components/ui/group_call/pre_join.ex:258
 #, elixir-autogen, elixir-format
 msgid "Already inside"
 msgstr "Sudah di dalam"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/pre_join.ex:261
+#: lib/retro_hex_chat_web/components/ui/group_call/pre_join.ex:262
 #, elixir-autogen, elixir-format
 msgid "Nobody yet — you would be the first."
 msgstr "Belum ada siapa pun — Anda yang pertama."
 
-#: lib/retro_hex_chat_web/live/app/call_live.ex:501
+#: lib/retro_hex_chat_web/live/app/call_live.ex:502
 #, elixir-autogen, elixir-format
 msgid "This conference has ended."
 msgstr "Konferensi ini telah berakhir."
 
-#: lib/retro_hex_chat_web/live/app/call_live.ex:495
+#: lib/retro_hex_chat_web/live/app/call_live.ex:496
 #, elixir-autogen, elixir-format
 msgid "This conference is no longer available."
 msgstr "Konferensi ini tidak lagi tersedia."
@@ -1799,17 +1801,17 @@ msgstr "%{nickname} membuka konferensi — %{url}"
 msgid "The conference opened, but its link could not be created."
 msgstr "Konferensi terbuka, tetapi tautannya tidak dapat dibuat."
 
-#: lib/retro_hex_chat_web/live/app/call_live.ex:302
+#: lib/retro_hex_chat_web/live/app/call_live.ex:303
 #, elixir-autogen, elixir-format
 msgid "This tab is finished. The room is still at this address."
 msgstr "Tab ini selesai. Ruangnya masih ada di alamat ini."
 
-#: lib/retro_hex_chat_web/live/app/call_live.ex:292
+#: lib/retro_hex_chat_web/live/app/call_live.ex:293
 #, elixir-autogen, elixir-format
 msgid "You left the conference in %{channel}."
 msgstr "Anda keluar dari konferensi di %{channel}."
 
-#: lib/retro_hex_chat_web/live/app/call_live.ex:295
+#: lib/retro_hex_chat_web/live/app/call_live.ex:296
 #, elixir-autogen, elixir-format
 msgid "You left the conference."
 msgstr "Anda keluar dari konferensi."
@@ -1824,73 +1826,73 @@ msgstr "Panggilan di %{channel} terbuka di tab lain milikmu"
 msgid "The conference in %{channel} is open. Its card is the line below."
 msgstr "Konferensi di %{channel} terbuka. Kartunya adalah baris di bawah ini."
 
-#: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:292
-#: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:299
+#: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:294
+#: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:301
 #, elixir-autogen, elixir-format
 msgid "Moderation"
 msgstr "Moderasi"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/channel_badge.ex:373
+#: lib/retro_hex_chat_web/components/ui/group_call/channel_badge.ex:368
 #, elixir-autogen, elixir-format
 msgid "Group Call · %{state}"
 msgstr "Panggilan grup · %{state}"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/channel_badge.ex:356
+#: lib/retro_hex_chat_web/components/ui/group_call/channel_badge.ex:351
 #, elixir-autogen, elixir-format
 msgid "In progress"
 msgstr "Berlangsung"
 
-#: lib/retro_hex_chat_web/live/app/call_live.ex:275
+#: lib/retro_hex_chat_web/live/app/call_live.ex:276
 #, elixir-autogen, elixir-format
 msgid "A moderator removed you from the conference in %{channel}."
 msgstr "Seorang moderator mengeluarkan Anda dari konferensi di %{channel}."
 
-#: lib/retro_hex_chat_web/live/app/call_live.ex:289
+#: lib/retro_hex_chat_web/live/app/call_live.ex:290
 #, elixir-autogen, elixir-format
 msgid "A moderator removed you from the conference."
 msgstr "Seorang moderator mengeluarkan Anda dari konferensi."
 
-#: lib/retro_hex_chat_web/live/app/call_live.ex:299
+#: lib/retro_hex_chat_web/live/app/call_live.ex:300
 #, elixir-autogen, elixir-format
 msgid "This tab is finished."
 msgstr "Tab ini selesai."
 
-#: lib/retro_hex_chat_web/live/app/call_live.ex:263
+#: lib/retro_hex_chat_web/live/app/call_live.ex:264
 #, elixir-autogen, elixir-format
 msgid "You were banned from %{channel}, and that ended your call."
 msgstr "Anda diblokir dari %{channel}, dan panggilan Anda pun berakhir."
 
-#: lib/retro_hex_chat_web/live/app/call_live.ex:269
+#: lib/retro_hex_chat_web/live/app/call_live.ex:270
 #, elixir-autogen, elixir-format
 msgid "You were kicked from %{channel}, and that ended your call."
 msgstr "Anda dikeluarkan dari %{channel}, dan panggilan Anda pun berakhir."
 
-#: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:1032
+#: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:1021
 #, elixir-autogen, elixir-format
 msgid "Reconnecting to the server…"
 msgstr "Menyambung ulang ke server…"
 
-#: lib/retro_hex_chat_web/live/app/call_live.ex:250
+#: lib/retro_hex_chat_web/live/app/call_live.ex:251
 #, elixir-autogen, elixir-format
 msgid "%{nickname} ended the conference in %{channel} for everyone."
 msgstr "%{nickname} mengakhiri konferensi di %{channel} untuk semua orang."
 
-#: lib/retro_hex_chat_web/live/app/call_live.ex:259
+#: lib/retro_hex_chat_web/live/app/call_live.ex:260
 #, elixir-autogen, elixir-format
 msgid "The conference has ended."
 msgstr "Konferensi telah berakhir."
 
-#: lib/retro_hex_chat_web/live/app/call_live.ex:256
+#: lib/retro_hex_chat_web/live/app/call_live.ex:257
 #, elixir-autogen, elixir-format
 msgid "The conference in %{channel} has ended."
 msgstr "Konferensi di %{channel} telah berakhir."
 
-#: lib/retro_hex_chat_web/live/app/call_live.ex:286
+#: lib/retro_hex_chat_web/live/app/call_live.ex:287
 #, elixir-autogen, elixir-format
 msgid "You ended the conference for everyone."
 msgstr "Anda mengakhiri konferensi untuk semua orang."
 
-#: lib/retro_hex_chat_web/live/app/call_live.ex:281
+#: lib/retro_hex_chat_web/live/app/call_live.ex:282
 #, elixir-autogen, elixir-format
 msgid "You ended the conference in %{channel} for everyone."
 msgstr "Anda mengakhiri konferensi di %{channel} untuk semua orang."

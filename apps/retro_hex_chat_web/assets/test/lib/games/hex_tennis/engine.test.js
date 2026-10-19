@@ -727,7 +727,9 @@ describe("TennisEngine", () => {
       e._handleChannelClose();
       expect(e.gameState.phase).toBe(PHASE.GAME_OVER);
       expect(e._shouldCaptureKeyboardEvent({ key: "ArrowUp" })).toBe(false);
-      expect(onEnd).toHaveBeenCalledWith(expect.objectContaining({ winner: 0 }));
+      expect(onEnd).toHaveBeenCalledWith(
+        expect.objectContaining({ winner: 0, disconnected: true }),
+      );
       e.stop();
     });
 
