@@ -261,6 +261,31 @@ defmodule RetroHexChat.Games.Results do
     Queries.standings(filter, order, Keyword.get(opts, :limit, 10))
   end
 
+  @type player_record :: %{
+          rating: Ratings.record() | nil,
+          people: Queries.totals() | nil,
+          computer: Queries.totals() | nil,
+          recent: [card()]
+        }
+
+  @doc """
+  One player's record in a game and all its modes: their rating (a versus
+  game between people), their ranked matches against people and against the
+  computer, and their latest matches as cards.
+  """
+  @spec player_record(String.t(), integer(), pos_integer()) :: player_record()
+  def player_record(game_id, player_id, limit \\ 5) do
+    base_id = Catalog.base_id(game_id)
+    totals = Queries.player_totals(base_id, player_id)
+
+    %{
+      rating: if(Catalog.ranking(base_id) == :versus, do: Ratings.of(base_id, player_id)),
+      people: Map.get(totals, "p2p"),
+      computer: Map.get(totals, "ai"),
+      recent: base_id |> Queries.recent_of(player_id, limit) |> Enum.map(&card/1)
+    }
+  end
+
   @doc "The latest public matches of a game and all its modes, as cards, newest first."
   @spec recent(String.t(), pos_integer()) :: [card()]
   def recent(base_id, limit \\ 10), do: base_id |> Queries.recent(limit) |> Enum.map(&card/1)

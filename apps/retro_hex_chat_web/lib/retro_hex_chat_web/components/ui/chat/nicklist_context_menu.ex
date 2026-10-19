@@ -31,6 +31,7 @@ defmodule RetroHexChatWeb.Components.UI.NicklistContextMenu do
   attr :is_target_op, :boolean, default: false
   attr :is_target_voiced, :boolean, default: false
   attr :is_target_muted, :boolean, default: false
+  attr :is_target_watchable, :boolean, default: false, doc: "playing a match anybody may watch"
   attr :show_color_picker, :boolean, default: false
   attr :nick_color_fn, :any, default: nil
   attr :custom_items, :list, default: []
@@ -69,6 +70,15 @@ defmodule RetroHexChatWeb.Components.UI.NicklistContextMenu do
       >
         <:icon><Icons.icon_megaphone class="w-[14px] h-[14px]" /></:icon>
         {dgettext("chat", "Send Notice...")}
+      </.context_menu_item>
+      <.context_menu_item
+        :if={@is_target_watchable}
+        on_click={@on_action}
+        action="context_watch"
+        phx-value-nick={@target_nick}
+      >
+        <:icon><Icons.icon_watching class="w-[14px] h-[14px]" /></:icon>
+        {dgettext("chat", "Watch the Match")}
       </.context_menu_item>
       <.context_menu_item on_click={@on_action} action="context_whois" phx-value-nick={@target_nick}>
         <:icon><Icons.icon_btn_search class="w-[14px] h-[14px]" /></:icon>

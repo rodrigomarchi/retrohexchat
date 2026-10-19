@@ -134,6 +134,8 @@ defmodule RetroHexChatWeb.Components.UI.ChatCard do
   attr :href, :string, required: true
   attr :label, :string, required: true, doc: "what is being opened, for the tab confirmation"
   attr :as, :atom, values: [:link, :button], default: :link
+  attr :size, :string, values: ~w(default sm lg), default: "sm", doc: "`:button` only"
+  attr :variant, :string, default: "default", doc: "`:button` only"
   attr :class, :any, default: nil
   attr :rest, :global
   slot :icon, doc: "`:button` only"
@@ -157,7 +159,8 @@ defmodule RetroHexChatWeb.Components.UI.ChatCard do
       rel="noopener"
       data-confirm-tab="surface"
       data-confirm-label={@label}
-      size="sm"
+      size={@size}
+      variant={@variant}
       class={["shrink-0", @class]}
       {@rest}
     >

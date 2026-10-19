@@ -348,10 +348,40 @@ defmodule RetroHexChatWeb.App.PlayMatchTest do
       end)
     end
 
+    # A game's home offers the room as an address, so it is opened on arrival.
+    test "the address asking for a room opens one", %{conn: conn} do
+      host = register("MLink") |> identify()
+
+      assert {:error, {:live_redirect, %{to: to}}} =
+               conn |> chat_conn(host.nickname) |> live(~p"/play/#{@game}?match=new")
+
+      assert to =~ "/play/#{@game}/"
+      token = to |> String.split("/") |> List.last()
+      assert {:ok, %{creator_id: creator_id}} = Lobby.get_session(token)
+      assert creator_id == host.id
+
+      on_exit(fn ->
+        case Registry.lookup(token) do
+          {:ok, pid} -> stop_session(pid)
+          {:error, :not_found} -> :ok
+        end
+      end)
+    end
+
     test "an unregistered nickname is not offered one", %{conn: conn} do
       {:ok, view, _html} = conn |> chat_conn("mstr#{uid()}") |> live(~p"/play/#{@game}")
 
       refute has_element?(view, ~s([data-testid="play-create-match"]))
+    end
+
+    # The room would refuse its own host, so the button is not offered.
+    test "a registered nickname that is not identified is not offered one", %{conn: conn} do
+      host = register("MIdle")
+
+      {:ok, view, _html} = conn |> chat_conn(host.nickname) |> live(~p"/play/#{@game}")
+
+      refute has_element?(view, ~s([data-testid="play-create-match"]))
+      assert render_click(view, "create_match", %{})
     end
   end
 end

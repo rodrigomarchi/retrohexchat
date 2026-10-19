@@ -157,6 +157,44 @@ defmodule RetroHexChat.Games.ResultsTest do
     end
   end
 
+  describe "player_record/3" do
+    test "a player's rating, matches by opponent and latest matches, private ones too",
+         %{ana: ana, beto: beto} do
+      {:ok, _} = Results.record(p2p_match(ana, beto, "hex_pong", pong(11, 7, 1), token: "rec-1"))
+
+      {:ok, _} =
+        Results.record(
+          Map.put(
+            p2p_match(beto, ana, "hex_pong", pong(11, 9, 1), token: "rec-2"),
+            :public?,
+            false
+          )
+        )
+
+      {:ok, _} = Results.record(ai_match(ana, "hex_pong", pong(11, 3, 1)))
+
+      record = Results.player_record("hex_pong", ana.id)
+
+      assert %{rating: rating, matches: 2, wins: 1, losses: 1, draws: 0, rank: rank, players: 2} =
+               record.rating
+
+      assert is_integer(rating) and rank in [1, 2]
+      assert %{matches: 2, wins: 1} = record.people
+      assert %{matches: 1, wins: 1, best: 11} = record.computer
+      assert length(record.recent) == 3
+    end
+
+    test "a score game has no rating, and a stranger to the game has nothing", %{ana: ana} do
+      {:ok, _} = Results.record(ai_match(ana, "hex_raid", raid(900, 300)))
+
+      assert %{rating: nil, people: nil, computer: %{best: 900}} =
+               Results.player_record("hex_raid_blitz", ana.id)
+
+      assert %{rating: nil, people: nil, computer: nil, recent: []} =
+               Results.player_record("hex_pong", ana.id)
+    end
+  end
+
   describe "cards" do
     test "a card is found by the kind of line that announced it", %{ana: ana} do
       {:ok, row} = Results.record(ai_match(ana, "hex_pong", pong(11, 7, 1)))

@@ -183,7 +183,9 @@ defmodule RetroHexChatWeb.App.WatchLive do
             </div>
 
             <div :if={@game_id} class="flex flex-wrap items-center gap-retro-8 text-xs">
-              <.link href={Paths.play_path(@game_id)} class="underline" data-testid="watch-play">
+              <%!-- The game's home: every way to play it, from the computer to
+                    a seat in its channel. --%>
+              <.link href={Paths.game_page_path(@game_id)} class="underline" data-testid="watch-play">
                 {dgettext("games", "Play %{game} yourself", game: GameResultCard.game_title(@game_id))}
               </.link>
               <.link

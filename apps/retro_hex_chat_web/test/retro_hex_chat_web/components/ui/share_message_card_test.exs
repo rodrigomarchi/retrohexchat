@@ -347,7 +347,15 @@ defmodule RetroHexChatWeb.Components.UI.ShareMessageCardTest do
 
       assert html =~ "Taken"
       assert html =~ "Play Hex Pong"
-      assert html =~ "/play/hex_pong"
+
+      # Beside the chat, as every Play: the card sits in the conversation.
+      assert [next] =
+               html
+               |> Floki.parse_fragment!()
+               |> Floki.find(~s([data-testid="share-message-next"]))
+
+      assert Floki.attribute(next, "href") == ["/play/hex_pong"]
+      assert Floki.attribute(next, "target") == ["_blank"]
     end
 
     test "a revoked link is a card that says so, not a card that vanished" do

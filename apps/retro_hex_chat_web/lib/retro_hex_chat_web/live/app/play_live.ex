@@ -29,6 +29,7 @@ defmodule RetroHexChatWeb.App.PlayLive do
   alias RetroHexChat.Games.Result
   alias RetroHexChat.Games.Results
   alias RetroHexChat.Lobby
+  alias RetroHexChat.Services.NickServ
   alias RetroHexChat.ShareLinks
   alias RetroHexChatWeb.App.Paths
   alias RetroHexChatWeb.App.SessionHelpers
@@ -50,20 +51,21 @@ defmodule RetroHexChatWeb.App.PlayLive do
         page_title: dgettext("games", "Retro Games"),
         share_url: nil,
         share_slug: nil,
-        games: Catalog.list_solo_games(),
-        status: "library",
+        status: "ready",
         selected_game: nil,
         difficulty: "normal",
         canvas_ready: false,
         result: nil,
         record: nil,
         player: SessionHelpers.identified_player(session, socket.assigns.surface_nickname),
+        host_id: host_id(socket.assigns.surface_nickname),
         match_started_at: nil,
         error_message: nil,
         match_error: nil
       )
       |> OpenSurfaces.attach(socket.assigns.surface_nickname)
       |> select_from_path(params)
+      |> open_match_if_asked(params)
 
     {:ok, socket}
   end
@@ -120,8 +122,10 @@ defmodule RetroHexChatWeb.App.PlayLive do
 
               Both are invitations, so they are read together and weighted:
               a match is the whole thing, a link is one way to hand it out. --%>
+        <%!-- The match room seats only an identified nickname, so the
+              button is offered to nobody it would turn away. --%>
         <Button.button
-          :if={sharable?(@nickname)}
+          :if={@host_id}
           type="button"
           phx-click="create_match"
           data-testid="play-create-match"
@@ -144,7 +148,6 @@ defmodule RetroHexChatWeb.App.PlayLive do
       </div>
       <.retro_games_panel
         id="retro-games-panel"
-        games={@games}
         status={@status}
         selected_game={@selected_game}
         difficulty={@difficulty}
@@ -162,10 +165,6 @@ defmodule RetroHexChatWeb.App.PlayLive do
 
   @impl true
   @spec handle_event(String.t(), map(), Socket.t()) :: {:noreply, Socket.t()}
-  def handle_event("retro_games_select", %{"game-id" => game_id}, socket) do
-    {:noreply, select_game(socket, game_id)}
-  end
-
   def handle_event("retro_games_set_difficulty", %{"difficulty" => difficulty}, socket) do
     if socket.assigns.status == "playing" do
       {:noreply, socket}
@@ -189,8 +188,18 @@ defmodule RetroHexChatWeb.App.PlayLive do
      )}
   end
 
-  def handle_event("retro_games_back", _params, socket) do
-    {:noreply, back_to_library(socket)}
+  # Ending a match leaves the game on screen, ready for another: the game's
+  # home, where another game is chosen, is still open in the chat's tab.
+  def handle_event(
+        "retro_games_end",
+        _params,
+        %{assigns: %{selected_game: %{id: game_id}}} = socket
+      ) do
+    {:noreply,
+     socket
+     |> stop_playing()
+     |> push_event("retro_game_stop", %{game_id: game_id})
+     |> assign(status: "ready", result: nil, record: nil, error_message: nil)}
   end
 
   # Minting is a deliberate act, not a side effect of opening a game: a link per
@@ -229,22 +238,7 @@ defmodule RetroHexChatWeb.App.PlayLive do
   # what the domain calls an open lobby. Creating it is not sharing it: the
   # address is minted in the room, by Share, the way every other surface in
   # this plan mints one.
-  def handle_event("create_match", _params, %{assigns: %{selected_game: %{id: game_id}}} = socket) do
-    with {:ok, user_id} <- SessionHelpers.resolve_user_id(socket.assigns.nickname || ""),
-         {:ok, %{token: token}} <-
-           Lobby.create_open_session(user_id, metadata: %{"game_id" => game_id}) do
-      {:noreply, push_navigate(socket, to: Paths.play_match_path(game_id, token))}
-    else
-      {:error, message} when is_binary(message) ->
-        {:noreply, assign(socket, match_error: message)}
-
-      _unavailable ->
-        {:noreply,
-         assign(socket, match_error: dgettext("games", "You cannot start a match right now."))}
-    end
-  end
-
-  def handle_event("create_match", _params, socket), do: {:noreply, socket}
+  def handle_event("create_match", _params, socket), do: {:noreply, open_match(socket)}
 
   # The canvas hook reports to whichever LiveView owns its element, which is
   # this one in both mounts.
@@ -260,33 +254,41 @@ defmodule RetroHexChatWeb.App.PlayLive do
     {:noreply, fail_match(socket, params)}
   end
 
-  # Only the routed mount has params at all: a child LiveView is handed
-  # `:not_mounted_at_router`, which falls through to the library.
+  # This page plays one game, named by its address. Without one there is
+  # nothing to play here: the games are chosen in the catalogue.
   defp select_from_path(socket, %{"game" => game_id}) when is_binary(game_id) do
     select_game(socket, game_id)
   end
 
-  defp select_from_path(socket, _params), do: socket
+  defp select_from_path(socket, _params), do: to_catalogue(socket)
+
+  defp to_catalogue(socket), do: redirect(socket, to: Paths.localized("/games"))
+
+  # A game's home offers "a match room to copy a link from" as an address,
+  # `?match=new`, so the room is opened here, once the page is live — a
+  # crawler's or a preview's fetch opens nothing.
+  defp open_match_if_asked(socket, %{"match" => "new"}) do
+    if connected?(socket), do: open_match(socket), else: socket
+  end
+
+  defp open_match_if_asked(socket, _params), do: socket
+
+  defp open_match(%{assigns: %{selected_game: %{id: game_id}, host_id: user_id}} = socket)
+       when not is_nil(user_id) do
+    case Lobby.create_open_session(user_id, metadata: %{"game_id" => game_id}) do
+      {:ok, %{token: token}} -> push_navigate(socket, to: Paths.play_match_path(game_id, token))
+      {:error, message} -> assign(socket, match_error: message)
+    end
+  end
+
+  defp open_match(socket), do: socket
 
   defp select_game(socket, game_id) do
     with true <- Catalog.solo_game_id?(game_id),
          {:ok, game} <- Catalog.get_game(game_id) do
-      socket
-      |> stop_playing()
-      |> stop_current_unless(game_id)
-      |> assign(
-        status: "ready",
-        selected_game: game,
-        canvas_ready: false,
-        result: nil,
-        record: nil,
-        error_message: nil,
-        share_url: nil,
-        share_slug: nil,
-        match_error: nil
-      )
+      assign(socket, selected_game: game)
     else
-      _ -> back_to_library(socket)
+      _ -> to_catalogue(socket)
     end
   end
 
@@ -381,23 +383,6 @@ defmodule RetroHexChatWeb.App.PlayLive do
 
   defp fail_match(socket, _payload), do: socket
 
-  defp back_to_library(socket) do
-    socket
-    |> stop_playing()
-    |> stop_current_unless(nil)
-    |> assign(
-      status: "library",
-      selected_game: nil,
-      canvas_ready: false,
-      result: nil,
-      record: nil,
-      error_message: nil,
-      share_url: nil,
-      share_slug: nil,
-      match_error: nil
-    )
-  end
-
   # The match this page was playing is over, however it ended: the chat's user
   # list and the game's page stop saying this player is in one.
   defp stop_playing(%{assigns: %{status: "playing", nickname: nickname}} = socket) do
@@ -406,13 +391,6 @@ defmodule RetroHexChatWeb.App.PlayLive do
   end
 
   defp stop_playing(socket), do: socket
-
-  defp stop_current_unless(%{assigns: %{selected_game: %{id: current_id}}} = socket, next_id)
-       when current_id != next_id do
-    push_event(socket, "retro_game_stop", %{game_id: current_id})
-  end
-
-  defp stop_current_unless(socket, _next_id), do: socket
 
   defp normalize_difficulty(difficulty) when difficulty in @difficulties, do: difficulty
   defp normalize_difficulty(_difficulty), do: "normal"
@@ -424,6 +402,19 @@ defmodule RetroHexChatWeb.App.PlayLive do
   end
 
   defp sharable?(_nickname), do: false
+
+  # Who may open a match room: the room's own door asks NickServ whether the
+  # nickname is identified, so this asks the same question.
+  defp host_id(nickname) when is_binary(nickname) and nickname != "" do
+    with true <- NickServ.identified?(nickname),
+         {:ok, user_id} <- SessionHelpers.resolve_user_id(nickname) do
+      user_id
+    else
+      _unproved -> nil
+    end
+  end
+
+  defp host_id(_nickname), do: nil
 
   defp game_id(%{"game_id" => game_id}), do: game_id
   defp game_id(%{game_id: game_id}), do: game_id

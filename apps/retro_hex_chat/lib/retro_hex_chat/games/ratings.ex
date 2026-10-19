@@ -105,6 +105,39 @@ defmodule RetroHexChat.Games.Ratings do
     |> Repo.update!()
   end
 
+  @type record :: %{
+          rating: integer(),
+          rank: pos_integer(),
+          players: pos_integer(),
+          matches: non_neg_integer(),
+          wins: non_neg_integer(),
+          losses: non_neg_integer(),
+          draws: non_neg_integer()
+        }
+
+  @doc """
+  One player's rating in a game: the rating, their place among everybody
+  rated in it (players with the same rating share a place) and their wins,
+  losses and draws. Nil until their first rated match.
+  """
+  @spec of(String.t(), integer()) :: record() | nil
+  def of(base_id, player_id) do
+    case Repo.get_by(GameRating, base_id: base_id, player_id: player_id) do
+      nil ->
+        nil
+
+      rating ->
+        rated = where(GameRating, [r], r.base_id == ^base_id)
+
+        rating
+        |> Map.take([:rating, :matches, :wins, :losses, :draws])
+        |> Map.merge(%{
+          rank: Repo.aggregate(where(rated, [r], r.rating > ^rating.rating), :count) + 1,
+          players: Repo.aggregate(rated, :count)
+        })
+    end
+  end
+
   @doc "The best-rated players of a game, with their current nickname."
   @spec top(String.t(), pos_integer()) :: [standing()]
   def top(base_id, limit \\ 5) do

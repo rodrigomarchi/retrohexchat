@@ -21,6 +21,36 @@ class MissingTermsTest(unittest.TestCase):
 
         self.assertEqual(missing_terms(MODES, translated, "de"), [])
 
+    def test_a_match_is_a_game_played_not_a_correspondence(self):
+        # What the engine shipped for the watch link's label.
+        self.assertTrue(missing_terms("Watching a match", "Observando uma correspondência", "pt_BR"))
+        self.assertTrue(missing_terms("Watching a match", "Ver una coincidencia", "es"))
+        self.assertTrue(missing_terms("Watch the match", "Eine Übereinstimmung beobachten", "de"))
+        self.assertEqual(missing_terms("Watch the match", "Assistir à partida", "pt_BR"), [])
+        self.assertEqual(missing_terms("Watch the Match", "Смотреть матч", "ru"), [])
+        # "No match" is a game too, and Italian gave "nessuna corrispondenza".
+        self.assertTrue(missing_terms("No match is being played.", "Non c'è nessuna corrispondenza.", "it"))
+        self.assertTrue(missing_terms("It opens a new match.", "Il ouvre une nouvelle correspondance.", "fr"))
+
+    def test_matching_is_not_held_to_the_game(self):
+        for source in [
+            "Passwords do not match",
+            "A miniature of the conversation with the matching line wearing its highlight",
+            "The active match is highlighted in orange.",
+            "If nothing matches, you get a line that says no entries were found.",
+        ]:
+            self.assertEqual(missing_terms(source, "irrelevante", "pt_BR"), [], source)
+
+    def test_a_player_is_not_a_media_player(self):
+        self.assertTrue(
+            missing_terms("Right-click a player and choose Watch the Match.", "Faites un clic droit sur un lecteur et choisissez Regarder la partie.", "fr")
+        )
+        self.assertEqual(
+            missing_terms("Right-click a player and choose Watch the Match.", "Faites un clic droit sur un joueur et choisissez Regarder la partie.", "fr"),
+            [],
+        )
+        self.assertEqual(missing_terms("Audio and video attachments use native players", "lecteurs natifs", "fr"), [])
+
     def test_a_bedroom_is_not_a_chat_room(self):
         self.assertTrue(missing_terms("How a room works", "Cómo funciona una habitación", "es"))
         self.assertEqual(missing_terms("How a room works", "Cómo funciona una sala", "es"), [])

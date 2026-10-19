@@ -56,6 +56,10 @@ defmodule RetroHexChatWeb.App.WatchLiveTest do
     html = render(view)
     refute html =~ "SpectateCanvasHook"
     assert html =~ "Match over"
+
+    # Playing it yourself starts at the game's home, with every way in.
+    assert view |> element(~s([data-testid="watch-play"])) |> render() =~
+             ~s(href="/games/hex-tennis")
   end
 
   test "it hears the session itself, not a message sent to it by hand", %{conn: conn} do

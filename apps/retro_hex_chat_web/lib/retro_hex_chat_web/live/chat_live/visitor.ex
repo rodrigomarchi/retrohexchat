@@ -47,6 +47,7 @@ defmodule RetroHexChatWeb.ChatLive.Visitor do
   alias RetroHexChat.Chat.KeyBindings
   alias RetroHexChat.Topics
   alias RetroHexChatWeb.App.Paths
+  alias RetroHexChatWeb.App.ReturnTo
   alias RetroHexChatWeb.ChatLive.ChannelListEvents
   alias RetroHexChatWeb.ChatLive.ConversationsReadModel
   alias RetroHexChatWeb.ChatLive.Helpers.Channel, as: ChannelHelpers
@@ -277,14 +278,21 @@ defmodule RetroHexChatWeb.ChatLive.Visitor do
 
   @doc """
   Opens the sign-in window — `/connect` on the desktop — saying which
-  `feature` needs an account. Whoever signs in there comes back to the
-  conversation they were reading.
+  `feature` needs an account. Whoever signs in there comes back to
+  `return_to` when it is one of ours, and otherwise to the conversation they
+  were reading.
   """
-  @spec ask_to_sign_in(Phoenix.LiveView.Socket.t(), feature()) :: Phoenix.LiveView.Socket.t()
-  def ask_to_sign_in(socket, feature) do
-    push_patch(socket,
-      to: Paths.visitor_sign_in_path(feature, Address.chat_address(socket.assigns))
-    )
+  @spec ask_to_sign_in(Phoenix.LiveView.Socket.t(), feature(), String.t() | nil) ::
+          Phoenix.LiveView.Socket.t()
+  def ask_to_sign_in(socket, feature, return_to \\ nil) do
+    push_patch(socket, to: Paths.visitor_sign_in_path(feature, way_back(socket, return_to)))
+  end
+
+  defp way_back(socket, return_to) do
+    case ReturnTo.sanitize(return_to) do
+      "/" -> Address.chat_address(socket.assigns)
+      path -> path
+    end
   end
 
   # ── The gate ──────────────────────────────────────────────────
@@ -334,6 +342,10 @@ defmodule RetroHexChatWeb.ChatLive.Visitor do
       socket
     )
   end
+
+  # A link of ours names where it led: signing in lands there.
+  defp gate("visitor_link", %{"path" => path} = params, socket),
+    do: {:halt, ask_to_sign_in(socket, feature_of("visitor_link", params), path)}
 
   defp gate(event, params, socket), do: {:halt, ask_to_sign_in(socket, feature_of(event, params))}
 

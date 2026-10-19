@@ -15,9 +15,8 @@ defmodule RetroHexChatWeb.Components.UI.RetroGamesPanel do
   @difficulties ~w(easy normal hard)
 
   attr :id, :string, required: true
-  attr :games, :list, required: true
-  attr :status, :string, default: "library"
-  attr :selected_game, :map, default: nil
+  attr :status, :string, default: "ready"
+  attr :selected_game, :map, required: true
   attr :difficulty, :string, default: "normal"
   attr :canvas_ready, :boolean, default: false
   attr :result, Result, default: nil
@@ -32,10 +31,7 @@ defmodule RetroHexChatWeb.Components.UI.RetroGamesPanel do
   def retro_games_panel(assigns) do
     ~H"""
     <section id={@id} class={classes(["flex h-full min-h-0 flex-col gap-retro-10", @class])} {@rest}>
-      <.library_state :if={@selected_game == nil} games={@games} target={@target} />
-
       <.game_state
-        :if={@selected_game != nil}
         id={"#{@id}-session"}
         game={@selected_game}
         status={@status}
@@ -48,62 +44,6 @@ defmodule RetroHexChatWeb.Components.UI.RetroGamesPanel do
         target={@target}
       />
     </section>
-    """
-  end
-
-  attr :games, :list, required: true
-  attr :target, :any, required: true
-
-  defp library_state(assigns) do
-    ~H"""
-    <div class="flex h-full min-h-0 flex-col gap-[2px]" data-testid="retro-games-library">
-      <div
-        class="min-h-0 flex-1 overflow-auto bg-white p-retro-10 shadow-retro-sunken"
-        data-testid="retro-games-icon-window"
-      >
-        <div
-          class="grid grid-cols-[repeat(auto-fill,minmax(92px,1fr))] content-start gap-x-retro-8 gap-y-retro-10"
-          data-testid="retro-games-icon-grid"
-        >
-          <button
-            :for={game <- @games}
-            type="button"
-            phx-click="retro_games_select"
-            phx-target={@target}
-            phx-value-game-id={game.id}
-            aria-label={game.name}
-            class={[
-              "group flex h-[104px] min-w-0 cursor-pointer flex-col items-center justify-start",
-              "gap-retro-4 bg-transparent px-retro-2 py-retro-4 text-center outline-none",
-              "hover:bg-hover-bg focus-visible:bg-selection-bg focus-visible:text-selection-fg active:shadow-retro-sunken"
-            ]}
-            data-testid={"retro-game-#{game.id}"}
-          >
-            <span class="flex h-12 w-12 shrink-0 items-center justify-center">
-              <Icons.game_icon game_id={game.id} class="h-12 w-12" />
-            </span>
-            <span class="flex min-h-8 w-full items-start justify-center">
-              <span class="block max-w-full break-words px-retro-2 text-[11px] font-bold leading-tight group-hover:bg-selection-bg group-hover:text-selection-fg">
-                {game.name}
-              </span>
-            </span>
-          </button>
-        </div>
-      </div>
-
-      <div
-        class="grid h-6 shrink-0 grid-cols-[minmax(0,1fr)_auto] gap-[2px]"
-        data-testid="retro-games-status-bar"
-      >
-        <span class="truncate px-retro-4 py-retro-2 text-[11px] shadow-retro-status">
-          {dgettext("games", "Ready")}
-        </span>
-        <span class="flex items-center gap-retro-3 px-retro-4 py-retro-2 text-[11px] font-bold shadow-retro-status">
-          <Icons.icon_robot class="h-3.5 w-3.5 shrink-0" />
-          {dgettext("games", "Solo AI")}
-        </span>
-      </div>
-    </div>
     """
   end
 
@@ -188,6 +128,15 @@ defmodule RetroHexChatWeb.Components.UI.RetroGamesPanel do
               data-testid="retro-game-unranked"
             >
               {dgettext("games", "Sign in with a registered nickname to enter the ranking.")}
+              <.link
+                href={Paths.localized("/chat/help/nickserv")}
+                target="_blank"
+                rel="noopener"
+                class="underline"
+                data-testid="retro-game-how-to-register"
+              >
+                {dgettext("games", "How to register")}
+              </.link>
             </p>
           </div>
 
@@ -340,7 +289,7 @@ defmodule RetroHexChatWeb.Components.UI.RetroGamesPanel do
               variant="destructive"
               size="sm"
               class="h-8 w-full lg:h-10"
-              phx-click="retro_games_back"
+              phx-click="retro_games_end"
               phx-target={@target}
               data-testid="retro-game-end-match"
             >
@@ -357,17 +306,6 @@ defmodule RetroHexChatWeb.Components.UI.RetroGamesPanel do
             >
               <:icon><Icons.icon_retry class="h-4 w-4" /></:icon>
               {dgettext("games", "Again")}
-            </.button>
-            <.button
-              variant="outline"
-              size="sm"
-              class="h-8 w-full"
-              phx-click="retro_games_back"
-              phx-target={@target}
-              data-testid="retro-game-back"
-            >
-              <:icon><Icons.icon_btn_prev class="h-4 w-4" /></:icon>
-              {dgettext("games", "Back")}
             </.button>
           </section>
         </aside>

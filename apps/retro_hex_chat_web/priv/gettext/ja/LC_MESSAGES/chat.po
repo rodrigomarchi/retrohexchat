@@ -201,7 +201,7 @@ msgid "%{nickname} has no custom color"
 msgstr "%{nickname}に習慣色がありません"
 
 #: lib/retro_hex_chat_web/live/chat_live/components/address_book_dialog.ex:222
-#: lib/retro_hex_chat_web/live/chat_live/context_menu_events.ex:258
+#: lib/retro_hex_chat_web/live/chat_live/context_menu_events.ex:270
 #, elixir-autogen, elixir-format
 msgid "%{nickname} is already in your contacts"
 msgstr "%{nickname}は既にあなたの連絡先にいます"
@@ -322,7 +322,7 @@ msgstr "(編集)"
 msgid "* %{channel} is not invite-only — anyone can join"
 msgstr "* %{channel} は招待のみではありません。"
 
-#: lib/retro_hex_chat_web/live/chat_live/pubsub_handlers/presence.ex:228
+#: lib/retro_hex_chat_web/live/chat_live/pubsub_handlers/presence.ex:246
 #, elixir-autogen, elixir-format
 msgid "* %{inviter} has invited you to %{channel}"
 msgstr "* %{inviter}は%{channel}にあなたを招待しました"
@@ -353,8 +353,8 @@ msgid "* %{nickname} is no longer auto-ignored"
 msgstr "* %{nickname}はもはや自動無視されません"
 
 #: lib/retro_hex_chat_web/live/chat_live/components/ignore_list_dialog.ex:111
-#: lib/retro_hex_chat_web/live/chat_live/context_menu_events.ex:322
-#: lib/retro_hex_chat_web/live/chat_live/context_menu_events.ex:803
+#: lib/retro_hex_chat_web/live/chat_live/context_menu_events.ex:334
+#: lib/retro_hex_chat_web/live/chat_live/context_menu_events.ex:815
 #: lib/retro_hex_chat_web/live/chat_live/ui_actions/ignore.ex:91
 #, elixir-autogen, elixir-format
 msgid "* %{nickname} is no longer ignored"
@@ -365,9 +365,9 @@ msgstr "* %{nickname}は無視されません"
 msgid "* %{nickname} is no longer ignored (timer expired)"
 msgstr "* %{nickname}は無視されません(タイマーが期限切れ)"
 
-#: lib/retro_hex_chat_web/live/chat_live/context_menu_events.ex:295
-#: lib/retro_hex_chat_web/live/chat_live/context_menu_events.ex:480
-#: lib/retro_hex_chat_web/live/chat_live/context_menu_events.ex:672
+#: lib/retro_hex_chat_web/live/chat_live/context_menu_events.ex:307
+#: lib/retro_hex_chat_web/live/chat_live/context_menu_events.ex:492
+#: lib/retro_hex_chat_web/live/chat_live/context_menu_events.ex:684
 #, elixir-autogen, elixir-format
 msgid "* %{nickname} is now ignored"
 msgstr "* %{nickname} は無視されます"
@@ -579,7 +579,7 @@ msgstr "* '%{target}'が見つかりません"
 msgid "* You are not a channel operator"
 msgstr "* チャネル演算子ではありません"
 
-#: lib/retro_hex_chat_web/live/chat_live/pubsub_handlers/presence.ex:205
+#: lib/retro_hex_chat_web/live/chat_live/pubsub_handlers/presence.ex:223
 #, elixir-autogen, elixir-format
 msgid "* You have been invited to %{channel} by %{inviter} (auto-joined)"
 msgstr "※%{inviter}(オートジョイント)で%{channel}に招待されている方"
@@ -614,14 +614,14 @@ msgstr "アクセス階層:所有者 > SOP > AOP > VOP"
 msgid "Activities"
 msgstr "活動内容"
 
-#: lib/retro_hex_chat_web/components/ui/chat/nicklist_context_menu.ex:94
+#: lib/retro_hex_chat_web/components/ui/chat/nicklist_context_menu.ex:104
 #, elixir-autogen, elixir-format
 msgid "Add to Contacts"
 msgstr "連絡先を追加"
 
 #: lib/retro_hex_chat_web/live/chat_live/components/address_book_dialog.ex:77
-#: lib/retro_hex_chat_web/live/chat_live/context_menu_events.ex:249
-#: lib/retro_hex_chat_web/live/chat_live/context_menu_events.ex:501
+#: lib/retro_hex_chat_web/live/chat_live/context_menu_events.ex:261
+#: lib/retro_hex_chat_web/live/chat_live/context_menu_events.ex:513
 #, elixir-autogen, elixir-format
 msgid "Added %{nickname} to contacts"
 msgstr "連絡する%{nickname}を追加"
@@ -632,7 +632,7 @@ msgstr "連絡する%{nickname}を追加"
 msgid "Added %{nickname} to notify list"
 msgstr "リストに通知するために%{nickname}を追加"
 
-#: lib/retro_hex_chat_web/components/ui/chat/chat_context_menu.ex:127
+#: lib/retro_hex_chat_web/components/ui/chat/chat_context_menu.ex:137
 #: lib/retro_hex_chat_web/live/chat_live/window_registry.ex:231
 #, elixir-autogen, elixir-format
 msgid "Address Book"
@@ -725,8 +725,8 @@ msgstr ""
 msgid "Away"
 msgstr "離席中"
 
-#: lib/retro_hex_chat_web/components/ui/chat/chat_context_menu.ex:162
-#: lib/retro_hex_chat_web/components/ui/chat/nicklist_context_menu.ex:173
+#: lib/retro_hex_chat_web/components/ui/chat/chat_context_menu.ex:172
+#: lib/retro_hex_chat_web/components/ui/chat/nicklist_context_menu.ex:183
 #, elixir-autogen, elixir-format
 msgid "Ban"
 msgstr "Ban"
@@ -811,7 +811,7 @@ msgid "Cannot add highlight: %{reason}"
 msgstr "ハイライトを追加することはできません: %{reason}"
 
 #: lib/retro_hex_chat_web/live/chat_live/components/address_book_dialog.ex:219
-#: lib/retro_hex_chat_web/live/chat_live/context_menu_events.ex:266
+#: lib/retro_hex_chat_web/live/chat_live/context_menu_events.ex:278
 #, elixir-autogen, elixir-format
 msgid "Cannot add yourself to contacts"
 msgstr "連絡先に自分自身を追加することはできません"
@@ -869,7 +869,7 @@ msgstr "%{channel}の歴史は%{admin}によって浄化されました。"
 msgid "Channel %{channel} not found"
 msgstr "チャンネル%{channel}が見つかりません"
 
-#: lib/retro_hex_chat_web/components/ui/chat/chat_context_menu.ex:255
+#: lib/retro_hex_chat_web/components/ui/chat/chat_context_menu.ex:265
 #, elixir-autogen, elixir-format
 msgid "Channel Info"
 msgstr "チャネル情報"
@@ -1013,18 +1013,18 @@ msgstr "コンタクトリストがいっぱい(最大100エントリー)"
 msgid "Conversations"
 msgstr "コンバージョン"
 
-#: lib/retro_hex_chat_web/components/ui/chat/chat_context_menu.ex:247
+#: lib/retro_hex_chat_web/components/ui/chat/chat_context_menu.ex:257
 #: lib/retro_hex_chat_web/components/ui/chat/conversations_context_menu.ex:210
 #, elixir-autogen, elixir-format
 msgid "Copy Channel Name"
 msgstr "コピー チャネルの名前"
 
-#: lib/retro_hex_chat_web/components/ui/chat/chat_context_menu.ex:286
+#: lib/retro_hex_chat_web/components/ui/chat/chat_context_menu.ex:296
 #, elixir-autogen, elixir-format
 msgid "Copy Message"
 msgstr "コピーメッセージ"
 
-#: lib/retro_hex_chat_web/components/ui/chat/chat_context_menu.ex:106
+#: lib/retro_hex_chat_web/components/ui/chat/chat_context_menu.ex:116
 #, elixir-autogen, elixir-format
 msgid "Copy Nick"
 msgstr "コピーニック"
@@ -1034,23 +1034,23 @@ msgstr "コピーニック"
 msgid "Copy Nickname"
 msgstr "コピーニックネーム"
 
-#: lib/retro_hex_chat_web/components/ui/chat/chat_context_menu.ex:221
+#: lib/retro_hex_chat_web/components/ui/chat/chat_context_menu.ex:231
 #, elixir-autogen, elixir-format
 msgid "Copy URL"
 msgstr "URLのコピー"
 
-#: lib/retro_hex_chat_web/live/chat_live/context_menu_events.ex:273
-#: lib/retro_hex_chat_web/live/chat_live/context_menu_events.ex:510
+#: lib/retro_hex_chat_web/live/chat_live/context_menu_events.ex:285
+#: lib/retro_hex_chat_web/live/chat_live/context_menu_events.ex:522
 #, elixir-autogen, elixir-format
 msgid "Could not add %{nickname} to contacts"
 msgstr "%{nickname} を連絡先に追加できません。"
 
-#: lib/retro_hex_chat_web/live/chat_live/context_menu_events.ex:365
+#: lib/retro_hex_chat_web/live/chat_live/context_menu_events.ex:377
 #, elixir-autogen, elixir-format
 msgid "Could not set color for %{nickname}"
 msgstr "%{nickname}のカラーを設定できません"
 
-#: lib/retro_hex_chat_web/components/ui/chat/chat_context_menu.ex:387
+#: lib/retro_hex_chat_web/components/ui/chat/chat_context_menu.ex:397
 #, elixir-autogen, elixir-format
 msgid "Delete"
 msgstr "削除"
@@ -1173,14 +1173,14 @@ msgstr "フード&ドリンク"
 msgid "For"
 msgstr "For"
 
-#: lib/retro_hex_chat_web/components/ui/chat/chat_context_menu.ex:184
-#: lib/retro_hex_chat_web/components/ui/chat/nicklist_context_menu.ex:195
+#: lib/retro_hex_chat_web/components/ui/chat/chat_context_menu.ex:194
+#: lib/retro_hex_chat_web/components/ui/chat/nicklist_context_menu.ex:205
 #, elixir-autogen, elixir-format
 msgid "Give Op (+o)"
 msgstr "Op を贈る (+o)"
 
-#: lib/retro_hex_chat_web/components/ui/chat/chat_context_menu.ex:173
-#: lib/retro_hex_chat_web/components/ui/chat/nicklist_context_menu.ex:184
+#: lib/retro_hex_chat_web/components/ui/chat/chat_context_menu.ex:183
+#: lib/retro_hex_chat_web/components/ui/chat/nicklist_context_menu.ex:194
 #, elixir-autogen, elixir-format
 msgid "Give Voice (+v)"
 msgstr "声をあげて下さい(+v)"
@@ -1224,19 +1224,19 @@ msgstr "ホスト"
 msgid "Idle"
 msgstr "アイドル"
 
-#: lib/retro_hex_chat_web/components/ui/chat/chat_context_menu.ex:115
-#: lib/retro_hex_chat_web/components/ui/chat/chat_context_menu.ex:119
-#: lib/retro_hex_chat_web/components/ui/chat/nicklist_context_menu.ex:131
+#: lib/retro_hex_chat_web/components/ui/chat/chat_context_menu.ex:125
+#: lib/retro_hex_chat_web/components/ui/chat/chat_context_menu.ex:129
+#: lib/retro_hex_chat_web/components/ui/chat/nicklist_context_menu.ex:141
 #, elixir-autogen, elixir-format
 msgid "Ignore"
 msgstr "無視"
 
-#: lib/retro_hex_chat_web/components/ui/chat/chat_context_menu.ex:396
+#: lib/retro_hex_chat_web/components/ui/chat/chat_context_menu.ex:406
 #, elixir-autogen, elixir-format
 msgid "Ignore Sender"
 msgstr "イグノー・センダー"
 
-#: lib/retro_hex_chat_web/live/chat_live/context_menu_events.ex:301
+#: lib/retro_hex_chat_web/live/chat_live/context_menu_events.ex:313
 #: lib/retro_hex_chat_web/live/chat_live/ui_actions/ignore.ex:72
 #, elixir-autogen, elixir-format
 msgid "Ignore list is full (max 100 entries)"
@@ -1336,7 +1336,7 @@ msgstr "見つからない項目"
 msgid "Join %{channel}"
 msgstr "%{channel}を結合して下さい"
 
-#: lib/retro_hex_chat_web/components/ui/chat/chat_context_menu.ex:239
+#: lib/retro_hex_chat_web/components/ui/chat/chat_context_menu.ex:249
 #, elixir-autogen, elixir-format
 msgid "Join Channel"
 msgstr "チャンネル登録"
@@ -1347,13 +1347,13 @@ msgstr "チャンネル登録"
 msgid "Joined %{channel}"
 msgstr "%{channel} に参加"
 
-#: lib/retro_hex_chat_web/components/ui/chat/chat_context_menu.ex:153
-#: lib/retro_hex_chat_web/components/ui/chat/nicklist_context_menu.ex:164
+#: lib/retro_hex_chat_web/components/ui/chat/chat_context_menu.ex:163
+#: lib/retro_hex_chat_web/components/ui/chat/nicklist_context_menu.ex:174
 #, elixir-autogen, elixir-format
 msgid "Kick"
 msgstr "キック"
 
-#: lib/retro_hex_chat_web/live/chat_live/context_menu_events.ex:869
+#: lib/retro_hex_chat_web/live/chat_live/context_menu_events.ex:881
 #, elixir-autogen, elixir-format
 msgid "Kicked"
 msgstr "Kicked"
@@ -1483,7 +1483,7 @@ msgid "Nick color entry not found"
 msgstr "Nickカラーエントリーが見つかりません"
 
 #: lib/retro_hex_chat_web/live/chat_live/components/nick_colors_dialog.ex:181
-#: lib/retro_hex_chat_web/live/chat_live/context_menu_events.ex:358
+#: lib/retro_hex_chat_web/live/chat_live/context_menu_events.ex:370
 #, elixir-autogen, elixir-format
 msgid "Nick color list is full (max 50)"
 msgstr "ニックカラーリストがいっぱい(最大50)"
@@ -1577,7 +1577,7 @@ msgstr "オンライン"
 msgid "Open /chat/help in a new tab."
 msgstr "新しいタブで/chat/helpを開きます。"
 
-#: lib/retro_hex_chat_web/components/ui/chat/chat_context_menu.ex:217
+#: lib/retro_hex_chat_web/components/ui/chat/chat_context_menu.ex:227
 #, elixir-autogen, elixir-format
 msgid "Open Link"
 msgstr "オープンリンク"
@@ -1641,7 +1641,7 @@ msgstr "%{channel}で再びノックする前にお待ちください"
 msgid "Prev"
 msgstr "前のページ"
 
-#: lib/retro_hex_chat_web/components/ui/chat/chat_context_menu.ex:77
+#: lib/retro_hex_chat_web/components/ui/chat/chat_context_menu.ex:78
 #, elixir-autogen, elixir-format
 msgid "Private Message"
 msgstr "プライベートメッセージ"
@@ -1652,7 +1652,7 @@ msgstr "プライベートメッセージ"
 msgid "Purple"
 msgstr "パープル"
 
-#: lib/retro_hex_chat_web/components/ui/chat/nicklist_context_menu.ex:63
+#: lib/retro_hex_chat_web/components/ui/chat/nicklist_context_menu.ex:64
 #, elixir-autogen, elixir-format
 msgid "Query (PM)"
 msgstr "クエリ(PM)"
@@ -1712,7 +1712,7 @@ msgstr "通知リストから%{nickname}を削除"
 msgid "Removed custom color for %{nickname}"
 msgstr "%{nickname}のカスタムカラーを削除"
 
-#: lib/retro_hex_chat_web/components/ui/chat/chat_context_menu.ex:350
+#: lib/retro_hex_chat_web/components/ui/chat/chat_context_menu.ex:360
 #, elixir-autogen, elixir-format
 msgid "Reply"
 msgstr "スタッフ"
@@ -1758,7 +1758,7 @@ msgstr "見つからないルール"
 msgid "Rules:"
 msgstr "ルール:"
 
-#: lib/retro_hex_chat_web/components/ui/chat/chat_context_menu.ex:225
+#: lib/retro_hex_chat_web/components/ui/chat/chat_context_menu.ex:235
 #, elixir-autogen, elixir-format
 msgid "Save to URL List"
 msgstr "URLリストに保存"
@@ -1821,12 +1821,12 @@ msgstr "サーバーの設定 '%{key}' は '%{value}' に変更されます。"
 msgid "Service"
 msgstr "サービス"
 
-#: lib/retro_hex_chat_web/live/chat_live/context_menu_events.ex:347
+#: lib/retro_hex_chat_web/live/chat_live/context_menu_events.ex:359
 #, elixir-autogen, elixir-format
 msgid "Set %{nickname}'s color to %{color}"
 msgstr "%{nickname}の色を%{color}に設定する"
 
-#: lib/retro_hex_chat_web/components/ui/chat/nicklist_context_menu.ex:102
+#: lib/retro_hex_chat_web/components/ui/chat/nicklist_context_menu.ex:112
 #, elixir-autogen, elixir-format
 msgid "Set Nick Color"
 msgstr "セット ニック色"
@@ -1952,7 +1952,7 @@ msgstr "コマンド - / リスト"
 msgid "Type a message..."
 msgstr "メッセージを入力してください。"
 
-#: lib/retro_hex_chat_web/live/chat_live/context_menu_events.ex:622
+#: lib/retro_hex_chat_web/live/chat_live/context_menu_events.ex:634
 #, elixir-autogen, elixir-format
 msgid "URL saved to URL Catcher"
 msgstr "URLに保存されたURLキャッチャー"
@@ -1967,13 +1967,13 @@ msgstr "禁止エラー:%{message}"
 msgid "Underline (Ctrl+Shift+U)"
 msgstr "インライン (Ctrl+Shift+U)"
 
-#: lib/retro_hex_chat_web/components/ui/chat/chat_context_menu.ex:115
-#: lib/retro_hex_chat_web/components/ui/chat/nicklist_context_menu.ex:131
+#: lib/retro_hex_chat_web/components/ui/chat/chat_context_menu.ex:125
+#: lib/retro_hex_chat_web/components/ui/chat/nicklist_context_menu.ex:141
 #, elixir-autogen, elixir-format
 msgid "Unignore"
 msgstr "Unignore"
 
-#: lib/retro_hex_chat_web/live/chat_live/context_menu_events.ex:604
+#: lib/retro_hex_chat_web/live/chat_live/context_menu_events.ex:616
 #: lib/retro_hex_chat_web/live/chat_live/hover_events.ex:170
 #: lib/retro_hex_chat_web/live/chat_live/hover_events.ex:179
 #: lib/retro_hex_chat_web/live/chat_live/hover_events.ex:184
@@ -2020,7 +2020,7 @@ msgstr "ユーザーモード +%{flag} を有効にしました。"
 msgid "User mode -%{flag} disabled."
 msgstr "ユーザーモード -%{flag} は無効になっています。"
 
-#: lib/retro_hex_chat_web/components/ui/chat/chat_context_menu.ex:137
+#: lib/retro_hex_chat_web/components/ui/chat/chat_context_menu.ex:147
 #, elixir-autogen, elixir-format
 msgid "User not registered"
 msgstr "ユーザー登録"
@@ -2062,8 +2062,8 @@ msgstr "%{server_name}へようこそ!"
 msgid "White"
 msgstr "ホワイト"
 
-#: lib/retro_hex_chat_web/components/ui/chat/chat_context_menu.ex:89
-#: lib/retro_hex_chat_web/components/ui/chat/nicklist_context_menu.ex:75
+#: lib/retro_hex_chat_web/components/ui/chat/chat_context_menu.ex:99
+#: lib/retro_hex_chat_web/components/ui/chat/nicklist_context_menu.ex:85
 #, elixir-autogen, elixir-format
 msgid "Whois"
 msgstr "Whois"
@@ -2324,7 +2324,7 @@ msgid "is typing..."
 msgstr "は..."
 
 #: lib/retro_hex_chat_web/live/chat_live/components/ignore_list_dialog.ex:151
-#: lib/retro_hex_chat_web/live/chat_live/components/message_viewport.ex:332
+#: lib/retro_hex_chat_web/live/chat_live/components/message_viewport.ex:333
 #, elixir-autogen, elixir-format
 msgid "messages"
 msgstr "メッセージ"
@@ -2548,7 +2548,7 @@ msgstr "高い単語"
 msgid "Idle for"
 msgstr "アイドル用"
 
-#: lib/retro_hex_chat_web/components/ui/chat/nicklist_context_menu.ex:155
+#: lib/retro_hex_chat_web/components/ui/chat/nicklist_context_menu.ex:165
 #, elixir-autogen, elixir-format
 msgid "Invite to Channel..."
 msgstr "チャネルへの招待"
@@ -2578,8 +2578,8 @@ msgstr "キーボードショートカット"
 msgid "Language"
 msgstr "日本語 English"
 
-#: lib/retro_hex_chat_web/components/ui/chat/chat_context_menu.ex:97
-#: lib/retro_hex_chat_web/components/ui/chat/nicklist_context_menu.ex:83
+#: lib/retro_hex_chat_web/components/ui/chat/chat_context_menu.ex:107
+#: lib/retro_hex_chat_web/components/ui/chat/nicklist_context_menu.ex:93
 #, elixir-autogen, elixir-format
 msgid "Last Seen (Whowas)"
 msgstr "最終参照(Whowas)"
@@ -2594,7 +2594,7 @@ msgstr "最終確認: %{target}"
 msgid "Last seen"
 msgstr "最後に見ました"
 
-#: lib/retro_hex_chat_web/live/chat_live/components/message_viewport.ex:331
+#: lib/retro_hex_chat_web/live/chat_live/components/message_viewport.ex:332
 #, elixir-autogen, elixir-format
 msgid "Loading %{channel}..."
 msgstr "%{channel}を読み込み中..."
@@ -2610,8 +2610,8 @@ msgstr "モットD"
 msgid "Message must be 200 characters or less"
 msgstr "メッセージは200文字以内"
 
-#: lib/retro_hex_chat_web/components/ui/chat/chat_context_menu.ex:195
-#: lib/retro_hex_chat_web/components/ui/chat/nicklist_context_menu.ex:206
+#: lib/retro_hex_chat_web/components/ui/chat/chat_context_menu.ex:205
+#: lib/retro_hex_chat_web/components/ui/chat/nicklist_context_menu.ex:216
 #, elixir-autogen, elixir-format
 msgid "Mute (channel)"
 msgstr "ミュート(チャンネル)"
@@ -2714,14 +2714,14 @@ msgstr "Quit メッセージ"
 msgid "Reconnecting"
 msgstr "再接続中"
 
-#: lib/retro_hex_chat_web/components/ui/chat/chat_context_menu.ex:183
-#: lib/retro_hex_chat_web/components/ui/chat/nicklist_context_menu.ex:194
+#: lib/retro_hex_chat_web/components/ui/chat/chat_context_menu.ex:193
+#: lib/retro_hex_chat_web/components/ui/chat/nicklist_context_menu.ex:204
 #, elixir-autogen, elixir-format
 msgid "Remove Op (-o)"
 msgstr "Opを削除(-o)"
 
-#: lib/retro_hex_chat_web/components/ui/chat/chat_context_menu.ex:172
-#: lib/retro_hex_chat_web/components/ui/chat/nicklist_context_menu.ex:183
+#: lib/retro_hex_chat_web/components/ui/chat/chat_context_menu.ex:182
+#: lib/retro_hex_chat_web/components/ui/chat/nicklist_context_menu.ex:193
 #, elixir-autogen, elixir-format
 msgid "Remove Voice (-v)"
 msgstr "ボイスを削除する (-v)"
@@ -2746,8 +2746,8 @@ msgstr "秒は数でなければなりません。"
 msgid "Send Notice"
 msgstr "Send Notice"
 
-#: lib/retro_hex_chat_web/components/ui/chat/chat_context_menu.ex:85
-#: lib/retro_hex_chat_web/components/ui/chat/nicklist_context_menu.ex:71
+#: lib/retro_hex_chat_web/components/ui/chat/chat_context_menu.ex:86
+#: lib/retro_hex_chat_web/components/ui/chat/nicklist_context_menu.ex:72
 #, elixir-autogen, elixir-format
 msgid "Send Notice..."
 msgstr "Send Notice..."
@@ -2798,8 +2798,8 @@ msgstr "確認するサーバー名を入力します。"
 msgid "URL Catcher"
 msgstr "URLキャッチャー"
 
-#: lib/retro_hex_chat_web/components/ui/chat/chat_context_menu.ex:194
-#: lib/retro_hex_chat_web/components/ui/chat/nicklist_context_menu.ex:205
+#: lib/retro_hex_chat_web/components/ui/chat/chat_context_menu.ex:204
+#: lib/retro_hex_chat_web/components/ui/chat/nicklist_context_menu.ex:215
 #, elixir-autogen, elixir-format
 msgid "Unmute (channel)"
 msgstr "Unmute (チャンネル)"
@@ -2843,7 +2843,7 @@ msgstr "%{target}のWhois"
 msgid "You are already using that nickname"
 msgstr "そのニックネームを既に使用しています"
 
-#: lib/retro_hex_chat_web/live/chat_live/context_menu_events.ex:934
+#: lib/retro_hex_chat_web/live/chat_live/context_menu_events.ex:946
 #, elixir-autogen, elixir-format
 msgid "You are not in any channel"
 msgstr "どのチャンネルにも参加していません"
@@ -2858,7 +2858,7 @@ msgstr "このリストを管理する権限はありません。"
 msgid "You must be a channel operator to change this setting."
 msgstr "この設定を変更するためにチャンネル演算子でなければなりません。"
 
-#: lib/retro_hex_chat_web/live/chat_live/context_menu_events.ex:930
+#: lib/retro_hex_chat_web/live/chat_live/context_menu_events.ex:942
 #, elixir-autogen, elixir-format
 msgid "You must be a channel operator to use this command"
 msgstr "このコマンドを使用するチャンネル演算子でなければなりません"
@@ -2874,7 +2874,7 @@ msgstr "あなたはChanServを使用するためにNickServで識別する必�
 msgid "min 10s for repeating timers"
 msgstr "繰り返すタイマーのための最低10s"
 
-#: lib/retro_hex_chat_web/live/p2p_live/events.ex:1179
+#: lib/retro_hex_chat_web/live/p2p_live/events.ex:1178
 #, elixir-autogen, elixir-format
 msgid "%{nick} cancelled the P2P invite."
 msgstr "%{nick}がP2P招待をキャンセルしました。"
@@ -2889,17 +2889,17 @@ msgstr "%{nick} は P2P の招待を拒否しました。"
 msgid "%{nick} ended the P2P session."
 msgstr "%{nick} は P2P セッションを終了しました。"
 
-#: lib/retro_hex_chat_web/live/p2p_live/events.ex:1621
+#: lib/retro_hex_chat_web/live/p2p_live/events.ex:1637
 #, elixir-autogen, elixir-format
 msgid "%{peer} declined the P2P invite."
 msgstr "%{peer} は P2P の招待を拒否しました。"
 
-#: lib/retro_hex_chat_web/live/p2p_live/events.ex:1630
+#: lib/retro_hex_chat_web/live/p2p_live/events.ex:1646
 #, elixir-autogen, elixir-format
 msgid "%{peer} left the P2P session."
 msgstr "%{peer} は P2P セッションを残します。"
 
-#: lib/retro_hex_chat_web/live/p2p_live/events.ex:781
+#: lib/retro_hex_chat_web/live/p2p_live/events.ex:780
 #, elixir-autogen, elixir-format
 msgid "%{peer} lost the P2P connection — waiting for them to return..."
 msgstr "%{peer} は P2P 接続を失いました。"
@@ -2944,7 +2944,7 @@ msgstr "サイクルオート、フォーカス、スプリット、スピーカ
 msgid "Cycle P2P Self View"
 msgstr "周期P2Pの自己図"
 
-#: lib/retro_hex_chat_web/live/p2p_live/events.ex:1726
+#: lib/retro_hex_chat_web/live/p2p_live/events.ex:1742
 #, elixir-autogen, elixir-format
 msgid "Default device"
 msgstr "デフォルトデバイス"
@@ -2959,7 +2959,7 @@ msgstr "エンドP2Pコールメディア"
 msgid "Entering channel space..."
 msgstr "チャンネルスペースを入力する..."
 
-#: lib/retro_hex_chat_web/live/p2p_live/events.ex:908
+#: lib/retro_hex_chat_web/live/p2p_live/events.ex:907
 #, elixir-autogen, elixir-format
 msgid "Game request declined."
 msgstr "ゲームのリクエストが減少しました。"
@@ -3006,8 +3006,8 @@ msgstr "P2Pの招待状"
 msgid "P2P session connecting"
 msgstr "P2Pセッションに接続中"
 
-#: lib/retro_hex_chat_web/live/p2p_live/events.ex:1627
-#: lib/retro_hex_chat_web/live/p2p_live/events.ex:1636
+#: lib/retro_hex_chat_web/live/p2p_live/events.ex:1643
+#: lib/retro_hex_chat_web/live/p2p_live/events.ex:1652
 #, elixir-autogen, elixir-format
 msgid "P2P session with %{peer} ended."
 msgstr "P2Pセッション%{peer}終了"
@@ -3035,27 +3035,27 @@ msgstr "P2Pカメラの起動、一時停止、または再開"
 msgid "Stop only the call media; the P2P session stays open"
 msgstr "コールメディアのみを停止します。P2P セッションはオープンします。"
 
-#: lib/retro_hex_chat_web/live/p2p_live/events.ex:1624
+#: lib/retro_hex_chat_web/live/p2p_live/events.ex:1640
 #, elixir-autogen, elixir-format
 msgid "The P2P invite was cancelled."
 msgstr "P2Pの招待はキャンセルされました。"
 
-#: lib/retro_hex_chat_web/live/p2p_live/events.ex:1633
+#: lib/retro_hex_chat_web/live/p2p_live/events.ex:1649
 #, elixir-autogen, elixir-format
 msgid "The P2P session expired."
 msgstr "P2P セッションが終了しました。"
 
-#: lib/retro_hex_chat_web/live/p2p_live/events.ex:987
+#: lib/retro_hex_chat_web/live/p2p_live/events.ex:986
 #, elixir-autogen, elixir-format
 msgid "The P2P session will expire soon due to inactivity."
 msgstr "P2P セッションは、非アクティブで終了します。"
 
-#: lib/retro_hex_chat_web/live/p2p_live/events.ex:1009
+#: lib/retro_hex_chat_web/live/p2p_live/events.ex:1008
 #, elixir-autogen, elixir-format
 msgid "The other user"
 msgstr "他のユーザ"
 
-#: lib/retro_hex_chat_web/live/p2p_live/events.ex:1587
+#: lib/retro_hex_chat_web/live/p2p_live/events.ex:1603
 #, elixir-autogen, elixir-format
 msgid "This P2P invite is no longer active."
 msgstr "このP2Pの招待状は有効ではありません。"
@@ -3080,7 +3080,7 @@ msgstr "P2P画面共有を切り替える"
 msgid "You must be registered and identified to play. Use /ns register and /ns identify first."
 msgstr "プレイに登録して確認する必要があります。 /ns レジスタおよび /ns を最初に特定して下さい。"
 
-#: lib/retro_hex_chat_web/live/p2p_live/events.ex:1617
+#: lib/retro_hex_chat_web/live/p2p_live/events.ex:1633
 #, elixir-autogen, elixir-format
 msgid "the other user"
 msgstr "他のユーザ"
@@ -3120,7 +3120,7 @@ msgstr "上に歩く"
 msgid "Toggle fullscreen"
 msgstr "全画面表示を切り替え"
 
-#: lib/retro_hex_chat_web/components/ui/chat/chat_context_menu.ex:377
+#: lib/retro_hex_chat_web/components/ui/chat/chat_context_menu.ex:387
 #, elixir-autogen, elixir-format
 msgid "Edit"
 msgstr "編集"
@@ -3130,9 +3130,9 @@ msgstr "編集"
 msgid "Joining..."
 msgstr "Joining..."
 
-#: lib/retro_hex_chat_web/components/ui/chat/chat_context_menu.ex:142
-#: lib/retro_hex_chat_web/components/ui/chat/nicklist_context_menu.ex:143
-#: lib/retro_hex_chat_web/live/app/p2p_live.ex:646
+#: lib/retro_hex_chat_web/components/ui/chat/chat_context_menu.ex:152
+#: lib/retro_hex_chat_web/components/ui/chat/nicklist_context_menu.ex:153
+#: lib/retro_hex_chat_web/live/app/p2p_live.ex:643
 #, elixir-autogen, elixir-format
 msgid "P2P Session"
 msgstr "P2Pセッション"
@@ -3142,8 +3142,8 @@ msgstr "P2Pセッション"
 msgid "P2P Session Console"
 msgstr "P2Pセッションコンソール"
 
-#: lib/retro_hex_chat_web/live/p2p_live/events.ex:1236
-#: lib/retro_hex_chat_web/live/p2p_live/events.ex:1267
+#: lib/retro_hex_chat_web/live/p2p_live/events.ex:1235
+#: lib/retro_hex_chat_web/live/p2p_live/events.ex:1266
 #, elixir-autogen, elixir-format
 msgid "P2P session connected - call, files, games and stats are available."
 msgstr "P2P セッションが接続され、通話、ファイル、ゲームが利用できます。"
@@ -3217,7 +3217,7 @@ msgstr "ターンン"
 msgid "Users"
 msgstr "ユーザ名"
 
-#: lib/retro_hex_chat_web/live/p2p_live/events.ex:1008
+#: lib/retro_hex_chat_web/live/p2p_live/events.ex:1007
 #, elixir-autogen, elixir-format
 msgid "%{peer} accepted the P2P request - connecting..."
 msgstr "%{peer} P2Pリクエストを承諾 - 接続..."
@@ -3299,7 +3299,7 @@ msgstr "セッション ID が正しくありません。"
 msgid "Invalid terminal id."
 msgstr "端末 ID が正しくありません。"
 
-#: lib/retro_hex_chat_web/live/app/p2p_live.ex:270
+#: lib/retro_hex_chat_web/live/app/p2p_live.ex:269
 #: lib/retro_hex_chat_web/live/chat_live/components/trusted_terminals_dialog.ex:215
 #, elixir-autogen, elixir-format
 msgid "Session ended."
@@ -3521,7 +3521,7 @@ msgstr "コード"
 msgid "Code block"
 msgstr "コードブロック"
 
-#: lib/retro_hex_chat_web/components/ui/chat/chat_context_menu.ex:295
+#: lib/retro_hex_chat_web/components/ui/chat/chat_context_menu.ex:305
 #, elixir-autogen, elixir-format
 msgid "Copy Source"
 msgstr "ソースをコピー"
@@ -3707,8 +3707,8 @@ msgstr "メトリック"
 msgid "OS Data"
 msgstr "OSデータ"
 
-#: lib/retro_hex_chat_web/live/p2p_live/events.ex:1596
-#: lib/retro_hex_chat_web/live/p2p_live/events.ex:1600
+#: lib/retro_hex_chat_web/live/p2p_live/events.ex:1612
+#: lib/retro_hex_chat_web/live/p2p_live/events.ex:1616
 #, elixir-autogen, elixir-format
 msgid "P2P action failed: %{reason}"
 msgstr "P2P アクションが失敗しました: %{reason}"
@@ -3728,7 +3728,7 @@ msgstr "プロセス"
 msgid "Sockets"
 msgstr "ソケット"
 
-#: lib/retro_hex_chat_web/live/p2p_live/events.ex:1591
+#: lib/retro_hex_chat_web/live/p2p_live/events.ex:1607
 #, elixir-autogen, elixir-format
 msgid "This P2P session is already active in another window."
 msgstr "このP2Pセッションは他のウィンドウで既に有効になっています。"
@@ -3812,27 +3812,27 @@ msgstr "%{channel} のスペースに入るには、そのチャンネルに参�
 msgid "The P2P signaling channel refused this session."
 msgstr "P2P のシグナリングチャンネルがこのセッションを拒否しました。"
 
-#: lib/retro_hex_chat_web/live/app/p2p_live.ex:644
+#: lib/retro_hex_chat_web/live/app/p2p_live.ex:641
 #, elixir-autogen, elixir-format
 msgid "P2P · %{peer}"
 msgstr "P2P · %{peer}"
 
-#: lib/retro_hex_chat_web/live/p2p_live/events.ex:552
+#: lib/retro_hex_chat_web/live/p2p_live/events.ex:551
 #, elixir-autogen, elixir-format
 msgid "This P2P session moved to another window of yours."
 msgstr "この P2P セッションは別のウィンドウに移動しました。"
 
-#: lib/retro_hex_chat_web/live/app/p2p_live.ex:638
+#: lib/retro_hex_chat_web/live/app/p2p_live.ex:635
 #, elixir-autogen, elixir-format
 msgid "%{game} · %{peer}"
 msgstr "%{game} · %{peer}"
 
-#: lib/retro_hex_chat_web/live/app/p2p_live.ex:641
+#: lib/retro_hex_chat_web/live/app/p2p_live.ex:638
 #, elixir-autogen, elixir-format
 msgid "%{game} · match"
 msgstr "%{game} · 対戦"
 
-#: lib/retro_hex_chat_web/live/p2p_live/events.ex:1037
+#: lib/retro_hex_chat_web/live/p2p_live/events.ex:1036
 #, elixir-autogen, elixir-format
 msgid "%{peer} is back."
 msgstr "%{peer} が戻りました。"
@@ -3933,7 +3933,7 @@ msgstr "リアクション"
 msgid "React with %{emoji}"
 msgstr "%{emoji} でリアクションする"
 
-#: lib/retro_hex_chat_web/components/ui/chat/chat_context_menu.ex:305
+#: lib/retro_hex_chat_web/components/ui/chat/chat_context_menu.ex:315
 #, elixir-autogen, elixir-format
 msgid "React..."
 msgstr "リアクション..."
@@ -3992,22 +3992,22 @@ msgstr "固定 (%{count})"
 msgid "Show the messages this channel keeps"
 msgstr "このチャンネルが保持しているメッセージを表示"
 
-#: lib/retro_hex_chat_web/components/ui/chat/chat_context_menu.ex:317
+#: lib/retro_hex_chat_web/components/ui/chat/chat_context_menu.ex:327
 #, elixir-autogen, elixir-format
 msgid "Pin"
 msgstr "固定する"
 
-#: lib/retro_hex_chat_web/components/ui/chat/chat_context_menu.ex:326
+#: lib/retro_hex_chat_web/components/ui/chat/chat_context_menu.ex:336
 #, elixir-autogen, elixir-format
 msgid "Unpin"
 msgstr "固定を解除"
 
-#: lib/retro_hex_chat_web/components/ui/chat/chat_context_menu.ex:346
+#: lib/retro_hex_chat_web/components/ui/chat/chat_context_menu.ex:356
 #, elixir-autogen, elixir-format
 msgid "Remove from Saved"
 msgstr "保存から削除"
 
-#: lib/retro_hex_chat_web/components/ui/chat/chat_context_menu.ex:337
+#: lib/retro_hex_chat_web/components/ui/chat/chat_context_menu.ex:347
 #, elixir-autogen, elixir-format
 msgid "Save for Later"
 msgstr "後で見る"
@@ -4039,7 +4039,7 @@ msgid "%{count} reply"
 msgid_plural "%{count} replies"
 msgstr[0] "%{count}件の返信"
 
-#: lib/retro_hex_chat_web/components/ui/chat/chat_context_menu.ex:362
+#: lib/retro_hex_chat_web/components/ui/chat/chat_context_menu.ex:372
 #, elixir-autogen, elixir-format
 msgid "Open Thread (%{count} reply)"
 msgid_plural "Open Thread (%{count} replies)"
@@ -5839,7 +5839,7 @@ msgctxt "space room"
 msgid "Game Room"
 msgstr "ゲームルーム"
 
-#: lib/retro_hex_chat_web/live/chat_live/visitor.ex:251
+#: lib/retro_hex_chat_web/live/chat_live/visitor.ex:252
 #, elixir-autogen, elixir-format
 msgid "%{channel} is no longer open to visitors."
 msgstr "%{channel}は、訪問者に公開されていません。"
@@ -5854,12 +5854,12 @@ msgstr "訪問者"
 msgid "Watching without an account"
 msgstr "アカウントなしで監視"
 
-#: lib/retro_hex_chat_web/live/chat_live/visitor.ex:228
+#: lib/retro_hex_chat_web/live/chat_live/visitor.ex:229
 #, elixir-autogen, elixir-format
 msgid "%{channel} cannot be watched without an account."
 msgstr "%{channel}はアカウントなしで視聴できません。"
 
-#: lib/retro_hex_chat_web/live/chat_live/visitor.ex:179
+#: lib/retro_hex_chat_web/live/chat_live/visitor.ex:180
 #, elixir-autogen, elixir-format
 msgid "Calls are for registered members."
 msgstr "会員の募集は必須です。"
@@ -5869,32 +5869,32 @@ msgstr "会員の募集は必須です。"
 msgid "Create an account or sign in, and you come back right where you were."
 msgstr "アカウントを作成したり、サインインしたり、自分がどこにいたかをすぐに返したりします。"
 
-#: lib/retro_hex_chat_web/live/chat_live/visitor.ex:178
+#: lib/retro_hex_chat_web/live/chat_live/visitor.ex:179
 #, elixir-autogen, elixir-format
 msgid "Games are for registered players."
 msgstr "ゲームは登録済みプレーヤーのためです。"
 
-#: lib/retro_hex_chat_web/live/chat_live/visitor.ex:183
+#: lib/retro_hex_chat_web/live/chat_live/visitor.ex:184
 #, elixir-autogen, elixir-format
 msgid "Private sessions are for registered members."
 msgstr "ご登録いただいた方には、プライベートセッションをご用意いたします。"
 
-#: lib/retro_hex_chat_web/live/chat_live/visitor.ex:180
+#: lib/retro_hex_chat_web/live/chat_live/visitor.ex:181
 #, elixir-autogen, elixir-format
 msgid "Spaces are for registered members."
 msgstr "スペースは登録済み会員の対象となります。"
 
-#: lib/retro_hex_chat_web/live/chat_live/visitor.ex:186
+#: lib/retro_hex_chat_web/live/chat_live/visitor.ex:187
 #, elixir-autogen, elixir-format
 msgid "This feature needs an account."
 msgstr "この機能はアカウントが必要です。"
 
-#: lib/retro_hex_chat_web/live/chat_live/visitor.ex:177
+#: lib/retro_hex_chat_web/live/chat_live/visitor.ex:178
 #, elixir-autogen, elixir-format
 msgid "Writing in the chat needs an account."
 msgstr "チャットでの書き込みにはアカウントが必要です。"
 
-#: lib/retro_hex_chat_web/live/chat_live/visitor.ex:185
+#: lib/retro_hex_chat_web/live/chat_live/visitor.ex:186
 #, elixir-autogen, elixir-format
 msgid "You need an account to open links."
 msgstr "リンクを開くにはアカウントが必要です。"
@@ -5979,3 +5979,10 @@ msgstr "Write here, in any channel, or privately to anyone."
 #, elixir-autogen, elixir-format
 msgid "Playing %{game}"
 msgstr "%{game}の再生"
+
+#: lib/retro_hex_chat_web/components/ui/chat/chat_context_menu.ex:95
+#: lib/retro_hex_chat_web/components/ui/chat/nicklist_context_menu.ex:81
+#: lib/retro_hex_chat_web/controllers/help_content/feature_game_watch.html.heex:51
+#, elixir-autogen, elixir-format
+msgid "Watch the Match"
+msgstr "試合を観戦"

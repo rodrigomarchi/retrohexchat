@@ -96,7 +96,7 @@ msgid "18 classic games. Running in your browser."
 msgstr "18 pertandingan klasik. Berjalan di browser Anda."
 
 #: lib/retro_hex_chat_web/site/pages/features.ex:75
-#: lib/retro_hex_chat_web/site/pages/index.ex:72
+#: lib/retro_hex_chat_web/site/pages/index.ex:85
 #, elixir-autogen, elixir-format
 msgid "18 games"
 msgstr "18 game"
@@ -116,7 +116,8 @@ msgstr "6 pertanyaan"
 msgid "A corporation"
 msgstr "Sebuah perusahaan"
 
-#: lib/retro_hex_chat_web/components/ui/landing/game_cards.ex:156
+#: lib/retro_hex_chat_web/components/ui/landing/game_cards.ex:160
+#: lib/retro_hex_chat_web/components/ui/landing/game_home.ex:200
 #: lib/retro_hex_chat_web/site/about.ex:21
 #, elixir-autogen, elixir-format
 msgid "About"
@@ -207,7 +208,7 @@ msgstr "Bangun-dalam Bantuan"
 msgid "C:\\SETUP\\install_server.exe"
 msgstr "C:\\ SEtup\\ install _ server.exe"
 
-#: lib/retro_hex_chat_web/site/pages/index.ex:39
+#: lib/retro_hex_chat_web/site/pages/index.ex:42
 #, elixir-autogen, elixir-format
 msgid "C:\\TRUTH\\"
 msgstr "C:\\ TRUTH\\"
@@ -365,7 +366,7 @@ msgstr "Discord dapat melarang server Anda besok."
 msgid "Do I need to run my own server?"
 msgstr "Apa aku perlu menjalankan serverku sendiri?"
 
-#: lib/retro_hex_chat_web/components/ui/shell/desktop_launchers.ex:705
+#: lib/retro_hex_chat_web/components/ui/shell/desktop_launchers.ex:700
 #: lib/retro_hex_chat_web/components/ui/shell/start_menu_app.ex:572
 #: lib/retro_hex_chat_web/site/about.html.heex:43
 #, elixir-autogen, elixir-format
@@ -493,7 +494,7 @@ msgstr "GitHub"
 msgid "GitHub Sponsors"
 msgstr "Sponsor GitHub"
 
-#: lib/retro_hex_chat_web/site/pages/index.ex:53
+#: lib/retro_hex_chat_web/site/pages/index.ex:56
 #, elixir-autogen, elixir-format
 msgid "Got it"
 msgstr "Mengerti"
@@ -608,7 +609,7 @@ msgstr "Hanya kode bersih. ✨"
 msgid "Legal"
 msgstr "Legal"
 
-#: lib/retro_hex_chat_web/components/ui/shell/desktop_launchers.ex:735
+#: lib/retro_hex_chat_web/components/ui/shell/desktop_launchers.ex:730
 #: lib/retro_hex_chat_web/components/ui/shell/start_menu_app.ex:670
 #: lib/retro_hex_chat_web/site/about.html.heex:38
 #, elixir-autogen, elixir-format
@@ -680,7 +681,7 @@ msgstr "Modiasi:"
 
 #: lib/retro_hex_chat_web/site/pages/features.ex:67
 #: lib/retro_hex_chat_web/site/pages/games.ex:39
-#: lib/retro_hex_chat_web/site/pages/index.ex:64
+#: lib/retro_hex_chat_web/site/pages/index.ex:67
 #, elixir-autogen, elixir-format
 msgid "Multiplayer Games"
 msgstr "Permainan Multiplayer"
@@ -943,8 +944,8 @@ msgstr "RSS:"
 msgid "Rate limiting, flood protection, and word filters."
 msgstr "Batas tingkat, perlindungan banjir, dan penyaring kata."
 
-#: lib/retro_hex_chat_web/site/pages/index.ex:34
-#: lib/retro_hex_chat_web/site/pages/index.ex:44
+#: lib/retro_hex_chat_web/site/pages/index.ex:37
+#: lib/retro_hex_chat_web/site/pages/index.ex:47
 #, elixir-autogen, elixir-format
 msgid "Ready"
 msgstr "Siap"
@@ -1011,7 +1012,7 @@ msgid "Retro Hex Chat is free software, licensed under MIT."
 msgstr ""
 "Retro Hex Chat adalah perangkat lunak gratis, berlisensi di bawah MIT."
 
-#: lib/retro_hex_chat_web/site/pages/index.ex:29
+#: lib/retro_hex_chat_web/site/pages/index.ex:32
 #, elixir-autogen, elixir-format
 msgid "Retro Hex Chat — Welcome"
 msgstr "Retro Hex Chat - Selamat Datang"
@@ -1100,7 +1101,7 @@ msgstr "Skunt biaya untuk pesan Anda sudah dikirim."
 
 #: lib/retro_hex_chat_web/site/pages/features.ex:72
 #: lib/retro_hex_chat_web/site/pages/games.ex:36
-#: lib/retro_hex_chat_web/site/pages/index.ex:69
+#: lib/retro_hex_chat_web/site/pages/index.ex:82
 #, elixir-autogen, elixir-format
 msgid "Solo Arcade"
 msgstr "Arcade solo"
@@ -1205,12 +1206,12 @@ msgstr "Telegram dapat diblokir di seluruh negara Anda."
 msgid "Thank you!"
 msgstr "Terima kasih!"
 
-#: lib/retro_hex_chat_web/site/pages/index.ex:36
+#: lib/retro_hex_chat_web/site/pages/index.ex:39
 #, elixir-autogen, elixir-format
 msgid "The Problem"
 msgstr "Masalah"
 
-#: lib/retro_hex_chat_web/site/pages/index.ex:41
+#: lib/retro_hex_chat_web/site/pages/index.ex:44
 #, elixir-autogen, elixir-format
 msgid "The Solution"
 msgstr "Solusi"
@@ -1272,11 +1273,6 @@ msgstr "Tempat Sampah"
 #, elixir-autogen, elixir-format
 msgid "Trivia:"
 msgstr "Trivia:"
-
-#: lib/retro_hex_chat_web/site/pages/index/multiplayer_games.html.heex:11
-#, elixir-autogen, elixir-format
-msgid "Type"
-msgstr "Tipe"
 
 #: lib/retro_hex_chat_web/site/pages/features/administration.html.heex:16
 #, elixir-autogen, elixir-format
@@ -1538,7 +1534,7 @@ msgstr "invite- hanya untuk grup Anda"
 msgid "invite-only, for your company or group."
 msgstr "invite- saja, untuk perusahaan atau kelompok Anda."
 
-#: lib/retro_hex_chat_web/site/pages/index/multiplayer_games.html.heex:15
+#: lib/retro_hex_chat_web/site/pages/index/multiplayer_games.html.heex:18
 #, elixir-autogen, elixir-format
 msgid "no server involvement"
 msgstr "tidak ada keterlibatan server"
@@ -1588,16 +1584,9 @@ msgstr "server, ditambang untuk iklan"
 msgid "timed messages and reminders"
 msgstr "waktu pesan dan pengingat"
 
-#: lib/retro_hex_chat_web/site/pages/index/multiplayer_games.html.heex:12
-#, elixir-autogen, elixir-format
-msgid "to challenge anyone. Games run on HTML5 Canvas with state synced via WebRTC DataChannel —"
-msgstr ""
-"untuk menantang siapa pun. Games dijalankan pada HTML5 Canvas dengan negara "
-"disinkronkan via WebRTC DatRChannel —"
-
 #: lib/retro_hex_chat_web/site/about.ex:24
 #: lib/retro_hex_chat_web/site/about.html.heex:120
-#: lib/retro_hex_chat_web/site/pages/index.ex:34
+#: lib/retro_hex_chat_web/site/pages/index.ex:37
 #, elixir-autogen, elixir-format
 msgid "v0.1.0"
 msgstr "v0.1.0"
@@ -1703,13 +1692,11 @@ msgstr ""
 "tugas setup, mulai Phoenix, dan tetap kendalikan data komunitas Anda."
 
 #: lib/retro_hex_chat_web/site/pages/features/multiplayer_games.html.heex:46
-#: lib/retro_hex_chat_web/site/pages/index/multiplayer_games.html.heex:12
 #, elixir-autogen, elixir-format
 msgid "/p2p @nick"
 msgstr "/p2p @nick"
 
 #: lib/retro_hex_chat_web/site/pages/features.ex:70
-#: lib/retro_hex_chat_web/site/pages/index.ex:67
 #, elixir-autogen, elixir-format
 msgid "34 games"
 msgstr "34 games"
@@ -1719,11 +1706,6 @@ msgstr "34 games"
 msgid "34 multiplayer games via WebRTC."
 msgstr "34 permainan multiplayer via WebRTC."
 
-#: lib/retro_hex_chat_web/site/pages/index/multiplayer_games.html.heex:2
-#, elixir-autogen, elixir-format
-msgid "34 multiplayer games. Right from the chat."
-msgstr "34 permainan multiplayer. Langsung dari obrolan."
-
 #: lib/retro_hex_chat_web/site/pages/features/solo_arcade.html.heex:44
 #: lib/retro_hex_chat_web/site/pages/index/solo_arcade.html.heex:16
 #, elixir-autogen, elixir-format
@@ -1732,7 +1714,7 @@ msgstr "Arcade"
 
 #: lib/retro_hex_chat_web/public_pages.ex:102
 #: lib/retro_hex_chat_web/site/pages/features/solo_arcade.html.heex:42
-#: lib/retro_hex_chat_web/site/pages/game.ex:81
+#: lib/retro_hex_chat_web/site/pages/game.ex:63
 #: lib/retro_hex_chat_web/site/pages/games.ex:25
 #: lib/retro_hex_chat_web/site/pages/games.ex:48
 #: lib/retro_hex_chat_web/site/pages/index/solo_arcade.html.heex:12
@@ -1744,7 +1726,7 @@ msgstr "Permainan"
 #: lib/retro_hex_chat_web/site/pages/community.ex:70
 #: lib/retro_hex_chat_web/site/pages/faq.ex:230
 #: lib/retro_hex_chat_web/site/pages/features.ex:101
-#: lib/retro_hex_chat_web/site/pages/game.ex:80
+#: lib/retro_hex_chat_web/site/pages/game.ex:62
 #: lib/retro_hex_chat_web/site/pages/games.ex:47
 #: lib/retro_hex_chat_web/site/pages/guides.ex:89
 #: lib/retro_hex_chat_web/site/pages/how_it_works.ex:93
@@ -1771,7 +1753,7 @@ msgstr "Buka aplikasi"
 msgid "menu and choose"
 msgstr "menu dan pilih"
 
-#: lib/retro_hex_chat_web/site/pages/index/multiplayer_games.html.heex:15
+#: lib/retro_hex_chat_web/site/pages/index/multiplayer_games.html.heex:18
 #, elixir-autogen, elixir-format
 msgid ", just like private P2P calls."
 msgstr ", seperti panggilan P2P pribadi."
@@ -1850,7 +1832,7 @@ msgstr "Kanal atau DM"
 msgid "Chat"
 msgstr "Obrolan"
 
-#: lib/retro_hex_chat_web/site/pages/index.ex:62
+#: lib/retro_hex_chat_web/site/pages/index.ex:65
 #, elixir-autogen, elixir-format
 msgid "Chat / Space / Conference"
 msgstr "Percakapan / Ruang / Konferensi"
@@ -2093,7 +2075,7 @@ msgstr ""
 
 #: lib/retro_hex_chat_web/site/pages/community.ex:58
 #: lib/retro_hex_chat_web/site/pages/features.ex:63
-#: lib/retro_hex_chat_web/site/pages/index.ex:51
+#: lib/retro_hex_chat_web/site/pages/index.ex:54
 #, elixir-autogen, elixir-format
 msgid "Private P2P"
 msgstr "Prajurit P2P"
@@ -2123,7 +2105,7 @@ msgstr "Prebet P2P via WebRTC; konferensi saluran melalui SFU anda sendiri"
 msgid "Private P2P, or conferences routed by your own server"
 msgstr "P2P pribadi, atau konferensi diarahkan oleh server Anda sendiri"
 
-#: lib/retro_hex_chat_web/site/pages/index.ex:48
+#: lib/retro_hex_chat_web/site/pages/index.ex:51
 #, elixir-autogen, elixir-format
 msgid "Private P2P. No media middleman."
 msgstr "Prajurit P2P. Tidak ada perantara media."
@@ -2163,14 +2145,14 @@ msgstr ""
 "saluran Spaces, peer WebRTC privat ke sesi peer, dan mengadakan konferensi "
 "saluran pribadi."
 
-#: lib/retro_hex_chat_web/site/pages/index.ex:77
+#: lib/retro_hex_chat_web/site/pages/index.ex:90
 #: lib/retro_hex_chat_web/site/pages/index/retro_hex_chat_welcome.html.heex:14
 #, elixir-autogen, elixir-format
 msgid "Retro Hex Chat — Self-hosted chat, spaces, calls and games"
 msgstr ""
 "Retro Hex Chat - self -hosted chatting, spasi, panggilan dan permainan"
 
-#: lib/retro_hex_chat_web/site/pages/index.ex:17
+#: lib/retro_hex_chat_web/site/pages/index.ex:20
 #, elixir-autogen, elixir-format
 msgid "Run your own chat server with channels, virtual spaces, private P2P calls, channel conferences, bots, and retro games. Open source, self-hosted, and MIT licensed."
 msgstr ""
@@ -2267,7 +2249,7 @@ msgstr ""
 "Peramban mengirim masukan; server memvalidasi pergerakan, interaksi, dan "
 "kehadiran sebelum penyiaran Delta."
 
-#: lib/retro_hex_chat_web/site/pages/index.ex:57
+#: lib/retro_hex_chat_web/site/pages/index.ex:60
 #, elixir-autogen, elixir-format
 msgid "Three ways to be together"
 msgstr "Tiga cara untuk bersama"
@@ -2397,13 +2379,13 @@ msgstr "Persyaratan"
 msgid "Setup"
 msgstr "Penyiapan"
 
-#: lib/retro_hex_chat_web/site/pages/index.ex:60
+#: lib/retro_hex_chat_web/site/pages/index.ex:63
 #, elixir-autogen, elixir-format
 msgid "Three ways"
 msgstr "Tiga cara"
 
 #: lib/retro_hex_chat_web/public_pages.ex:96
-#: lib/retro_hex_chat_web/site/pages/index.ex:32
+#: lib/retro_hex_chat_web/site/pages/index.ex:35
 #, elixir-autogen, elixir-format
 msgid "Welcome"
 msgstr "Selamat datang"
@@ -2549,6 +2531,7 @@ msgid "← Earlier"
 msgstr "← Sebelumnya"
 
 #: lib/retro_hex_chat_web/site/pages/games.ex:71
+#: lib/retro_hex_chat_web/site/pages/index.ex:73
 #, elixir-autogen, elixir-format
 msgid "%{count} game"
 msgid_plural "%{count} games"
@@ -2564,42 +2547,40 @@ msgstr "Semua game"
 msgid "DOOM, Quake, Wolfenstein 3D, Half-Life and classic adventures in the browser, plus multiplayer arcade games to play with friends — free, nothing to install."
 msgstr "DOOM, Quake, Wolfenstein 3D, Half-Life, dan petualangan klasik di browser, plus game arkade multipemain bersama teman — gratis, tanpa instalasi."
 
-#: lib/retro_hex_chat_web/site/pages/game.ex:60
+#: lib/retro_hex_chat_web/site/pages/game.ex:133
 #, elixir-autogen, elixir-format
 msgid "Free, in the browser"
 msgstr "Gratis, di browser"
 
-#: lib/retro_hex_chat_web/components/ui/landing/game_cards.ex:152
+#: lib/retro_hex_chat_web/components/ui/landing/game_cards.ex:156
+#: lib/retro_hex_chat_web/components/ui/landing/game_home.ex:208
 #, elixir-autogen, elixir-format
 msgid "How to play"
 msgstr "Cara bermain"
 
-#: lib/retro_hex_chat_web/components/ui/landing/game_cards.ex:163
+#: lib/retro_hex_chat_web/components/ui/landing/game_cards.ex:167
 #, elixir-autogen, elixir-format
 msgid "Modes"
 msgstr "Mode"
 
-#: lib/retro_hex_chat_web/site/pages/game.ex:63
+#: lib/retro_hex_chat_web/site/pages/game.ex:135
 #, elixir-autogen, elixir-format
 msgid "More games"
 msgstr "Game lainnya"
 
-#: lib/retro_hex_chat_web/site/pages/game.ex:139
-#, elixir-autogen, elixir-format
-msgid "Multiplayer — or against the AI"
-msgstr "Multipemain — atau melawan AI"
-
-#: lib/retro_hex_chat_web/site/pages/game.ex:144
+#: lib/retro_hex_chat_web/site/pages/game.ex:193
 #, elixir-autogen, elixir-format
 msgid "Play %{name} in your browser"
 msgstr "Mainkan %{name} di browser"
 
-#: lib/retro_hex_chat_web/site/pages/game.ex:143
+#: lib/retro_hex_chat_web/site/pages/game.ex:192
 #, elixir-autogen, elixir-format
 msgid "Play %{name} in your browser — Retro Hex Chat"
 msgstr "Mainkan %{name} di browser — Retro Hex Chat"
 
-#: lib/retro_hex_chat_web/components/ui/landing/game_cards.ex:148
+#: lib/retro_hex_chat_web/components/ui/landing/game_cards.ex:151
+#: lib/retro_hex_chat_web/components/ui/landing/game_home.ex:119
+#: lib/retro_hex_chat_web/components/ui/landing/game_home.ex:234
 #, elixir-autogen, elixir-format
 msgid "Play now — pick a nickname"
 msgstr "Main sekarang — pilih nama panggilan"
@@ -2615,12 +2596,12 @@ msgid "Retro games you can play in your browser — Retro Hex Chat"
 msgstr "Game retro untuk dimainkan di browser — Retro Hex Chat"
 
 #: lib/retro_hex_chat_web/components/ui/landing/game_cards.ex:50
-#: lib/retro_hex_chat_web/site/pages/game.ex:158
+#: lib/retro_hex_chat_web/site/pages/game.ex:207
 #, elixir-autogen, elixir-format
 msgid "Screenshot of %{name}"
 msgstr "Tangkapan layar %{name}"
 
-#: lib/retro_hex_chat_web/components/ui/landing/game_cards.ex:191
+#: lib/retro_hex_chat_web/components/ui/landing/game_cards.ex:195
 #, elixir-autogen, elixir-format
 msgid "See every game in the catalogue"
 msgstr "Lihat semua game di katalog"
@@ -2630,12 +2611,13 @@ msgstr "Lihat semua game di katalog"
 msgid "Shareware classics and freeware adventures running on their original engines, and arcade games to play against a friend or the AI. Free, and nothing to install: pick a nickname and play."
 msgstr "Klasik shareware dan petualangan freeware di mesin aslinya, plus game arkade melawan teman atau AI. Gratis, tanpa instalasi: pilih nama panggilan dan main."
 
-#: lib/retro_hex_chat_web/site/pages/game.ex:136
+#: lib/retro_hex_chat_web/site/pages/game.ex:188
 #, elixir-autogen, elixir-format
 msgid "Solo arcade"
 msgstr "Arkade solo"
 
-#: lib/retro_hex_chat_web/components/ui/landing/game_cards.ex:159
+#: lib/retro_hex_chat_web/components/ui/landing/game_cards.ex:163
+#: lib/retro_hex_chat_web/components/ui/landing/game_home.ex:203
 #, elixir-autogen, elixir-format
 msgid "Controls"
 msgstr "Kontrol"
@@ -3006,80 +2988,115 @@ msgstr "Tentang situs ini"
 msgid "Create an account"
 msgstr "Buat akun"
 
-#: lib/retro_hex_chat_web/components/ui/landing/game_community.ex:133
+#: lib/retro_hex_chat_web/components/ui/landing/game_community.ex:151
 #, elixir-autogen, elixir-format
 msgid "%{count} win"
 msgid_plural "%{count} wins"
 msgstr[0] "%{count} menang"
 
-#: lib/retro_hex_chat_web/components/ui/landing/game_community.ex:87
+#: lib/retro_hex_chat_web/components/ui/landing/game_community.ex:83
 #, elixir-autogen, elixir-format
 msgid "Against the computer on hard"
 msgstr "Melawan komputer dengan keras"
 
-#: lib/retro_hex_chat_web/components/ui/landing/game_community.ex:104
+#: lib/retro_hex_chat_web/components/ui/landing/game_community.ex:117
 #, elixir-autogen, elixir-format
 msgid "In the channel"
 msgstr "Dalam kanal"
 
-#: lib/retro_hex_chat_web/components/ui/landing/game_community.ex:90
+#: lib/retro_hex_chat_web/components/ui/landing/game_community.ex:86
 #, elixir-autogen, elixir-format
 msgid "Latest matches"
 msgstr "Cocok terakhir"
 
-#: lib/retro_hex_chat_web/components/ui/landing/game_community.ex:92
+#: lib/retro_hex_chat_web/components/ui/landing/game_community.ex:88
+#: lib/retro_hex_chat_web/components/ui/landing/game_home.ex:250
 #, elixir-autogen, elixir-format
 msgid "No matches yet. Play the first one."
 msgstr "Belum ada yang cocok. Mainkan yang pertama."
 
-#: lib/retro_hex_chat_web/components/ui/landing/game_community.ex:77
-#: lib/retro_hex_chat_web/components/ui/landing/game_community.ex:121
+#: lib/retro_hex_chat_web/components/ui/landing/game_community.ex:35
+#: lib/retro_hex_chat_web/components/ui/landing/game_community.ex:73
+#: lib/retro_hex_chat_web/components/ui/landing/game_community.ex:139
 #, elixir-autogen, elixir-format
 msgid "Nobody yet."
 msgstr "Belum ada."
 
-#: lib/retro_hex_chat_web/components/ui/landing/game_community.ex:57
+#: lib/retro_hex_chat_web/components/ui/landing/game_community.ex:127
 #, elixir-autogen, elixir-format
 msgid "Open the channel"
 msgstr "Buka kanal"
 
-#: lib/retro_hex_chat_web/components/ui/landing/game_community.ex:71
+#: lib/retro_hex_chat_web/components/ui/landing/game_community.ex:67
 #, elixir-autogen, elixir-format
 msgid "This week, between players"
 msgstr "Minggu ini, antara pemain"
 
-#: lib/retro_hex_chat_web/components/ui/landing/game_community.ex:136
+#: lib/retro_hex_chat_web/components/ui/landing/game_community.ex:154
 #, elixir-autogen, elixir-format
 msgid "best score: %{score}"
 msgstr "skor terbaik: %{score}"
 
-#: lib/retro_hex_chat_web/components/ui/landing/game_community.ex:35
+#: lib/retro_hex_chat_web/components/ui/landing/game_community.ex:107
 #, elixir-autogen, elixir-format
 msgid "%{count} game played this week."
 msgid_plural "%{count} games played this week."
 msgstr[0] "%{count} pertandingan dimainkan minggu ini."
 
-#: lib/retro_hex_chat_web/components/ui/landing/game_community.ex:62
+#: lib/retro_hex_chat_web/components/ui/landing/game_community.ex:58
 #, elixir-autogen, elixir-format
 msgid "Challenge of the week: %{game}"
 msgstr "Tantangan minggu ini: %{game}"
 
-#: lib/retro_hex_chat_web/components/ui/landing/game_community.ex:67
+#: lib/retro_hex_chat_web/components/ui/landing/game_community.ex:63
 #, elixir-autogen, elixir-format
 msgid "In the lead: %{nickname}"
 msgstr "%{nickname}"
 
-#: lib/retro_hex_chat_web/components/ui/landing/game_community.ex:45
+#: lib/retro_hex_chat_web/components/ui/landing/game_community.ex:38
 #, elixir-autogen, elixir-format
 msgid "Playing now: %{names}"
 msgstr "Putar sekarang: %{names}"
 
-#: lib/retro_hex_chat_web/components/ui/landing/game_community.ex:75
+#: lib/retro_hex_chat_web/components/ui/landing/game_community.ex:71
+#: lib/retro_hex_chat_web/components/ui/landing/game_home.ex:258
 #, elixir-autogen, elixir-format
 msgid "Rating"
 msgstr "Peringkat Elo"
 
-#: lib/retro_hex_chat_web/components/ui/landing/game_community.ex:49
+#: lib/retro_hex_chat_web/components/ui/landing/game_community.ex:42
 #, elixir-autogen, elixir-format
 msgid "Live now"
 msgstr "Hiduplah sekarang"
+
+#: lib/retro_hex_chat_web/components/ui/landing/game_cards.ex:152
+#, elixir-autogen, elixir-format
+msgid "Play now"
+msgstr "Main sekarang"
+
+#: lib/retro_hex_chat_web/site/pages/game.ex:88
+#, elixir-autogen, elixir-format
+msgid "%{count} game played this week"
+msgid_plural "%{count} games played this week"
+msgstr[0] "%{count} game dimainkan minggu ini"
+
+#: lib/retro_hex_chat_web/site/pages/game.ex:95
+#, elixir-autogen, elixir-format
+msgid "%{count} playing now"
+msgid_plural "%{count} playing now"
+msgstr[0] "%{count} bermain sekarang"
+
+#: lib/retro_hex_chat_web/site/pages/index/multiplayer_games.html.heex:15
+#, elixir-autogen, elixir-format
+msgid "Games run on HTML5 Canvas with state synced via WebRTC DataChannel —"
+msgstr "Games run on HTML5 Canvas with state synced via WebRTC DataChannel —"
+
+#: lib/retro_hex_chat_web/site/pages/index/multiplayer_games.html.heex:11
+#, elixir-autogen, elixir-format
+msgid "Pick a game, then play the computer, find a partner in its channel or invite a friend."
+msgstr "Pilih permainan, kemudian bermain komputer, menemukan pasangan dalam saluran nya atau mengundang teman."
+
+#: lib/retro_hex_chat_web/site/pages/index/multiplayer_games.html.heex:2
+#, elixir-autogen, elixir-format
+msgid "Games to play with others, from the chat."
+msgstr "Permainan untuk bermain dengan orang lain, dari chatting."

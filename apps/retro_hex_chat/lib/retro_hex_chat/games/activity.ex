@@ -62,6 +62,17 @@ defmodule RetroHexChat.Games.Activity do
     end)
   end
 
+  @doc "The match `nickname` is playing now, when anybody may watch it."
+  @spec watch_token(String.t() | nil) :: String.t() | nil
+  def watch_token(nickname) when is_binary(nickname) do
+    case Tracker.get_by_key(Topics.games_playing(), Nickname.key(nickname)) do
+      %{metas: [%{watch: token} | _rest]} when is_binary(token) -> token
+      _not_watchable -> nil
+    end
+  end
+
+  def watch_token(_nickname), do: nil
+
   @doc """
   The matches being played now that anybody may watch — all of them, or those
   of `base_id` and its modes — the most watched first.

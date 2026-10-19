@@ -8,6 +8,8 @@ defmodule RetroHexChatWeb.ChatLive.GameChannelFlowTest do
 
   @moduletag :liveview_feature
 
+  import Ecto.Query, only: [from: 2]
+
   alias RetroHexChat.Channels.Registry, as: ChannelRegistry
   alias RetroHexChat.Channels.Supervisor, as: ChannelSupervisor
   alias RetroHexChat.Chat.Queries, as: ChatQueries
@@ -15,6 +17,7 @@ defmodule RetroHexChatWeb.ChatLive.GameChannelFlowTest do
   alias RetroHexChat.Lobby
   alias RetroHexChat.Services.RegisteredNick
   alias RetroHexChat.ShareLinks
+  alias RetroHexChatWeb.LiveMatchPages
 
   setup do
     :created = Channels.ensure("#hex-pong")
@@ -71,6 +74,50 @@ defmodule RetroHexChatWeb.ChatLive.GameChannelFlowTest do
     assert [_still_one] = seat_lines()
   end
 
+  # From the game's home, the same seat — in its channel, which the reader is
+  # taken to, so they see the card their press put there.
+  test "the game's home finds a partner for a mode in its channel", %{conn: conn} do
+    nick = register("home#{uid()}" |> String.slice(0, 16))
+
+    {:ok, view, _html} =
+      live(chat_conn(conn, nick.nickname, pre_identified: true), "/games/hex-pong")
+
+    view
+    |> element(~s([data-testid="game-way-hex_pong"] [data-testid="game-lfg"]))
+    |> render_click()
+
+    assert_patch(view, "/c/hex-pong")
+    assert [line] = seat_lines()
+    assert line.content =~ "#{nick.nickname} is looking for a partner in Hex Pong"
+  end
+
+  test "the game's home invites a nickname to the game", %{conn: conn} do
+    host = register("chal#{uid()}" |> String.slice(0, 16))
+    peer = register("peer#{uid()}" |> String.slice(0, 16))
+    # The one invited is online, as an invitation needs.
+    {:ok, _peer_view, _html} =
+      live(chat_conn(build_conn(), peer.nickname, pre_identified: true), "/")
+
+    {:ok, view, _html} =
+      live(chat_conn(conn, host.nickname, pre_identified: true), "/games/hex-pong")
+
+    view
+    |> element(~s([data-testid="game-challenge-form"]))
+    |> render_submit(%{"game" => "hex_pong", "nickname" => peer.nickname})
+
+    # Out to the chat, on the conversation the invitation went to — a private
+    # conversation has no address but the chat's own.
+    assert_patch(view, "/")
+
+    assert [session] =
+             RetroHexChat.Repo.all(
+               from(s in RetroHexChat.Lobby.Schema.Session, where: s.creator_id == ^host.id)
+             )
+
+    assert session.peer_id == peer.id
+    assert Lobby.match_game_id(session) == "hex_pong"
+  end
+
   test "a visitor sees the game's strip, and pressing it asks for an account", %{conn: conn} do
     {:ok, view, _html} = live(conn, "/c/hex-pong")
 
@@ -80,5 +127,28 @@ defmodule RetroHexChatWeb.ChatLive.GameChannelFlowTest do
 
     assert_patch(view, "/connect?return_to=%2Fc%2Fhex-pong&signup=games")
     assert seat_lines() == []
+  end
+
+  test "a player in a match in the open can be watched from their nickname's menu",
+       %{conn: conn} do
+    host = register("host#{uid()}" |> String.slice(0, 16))
+
+    {:ok, %{token: token}} =
+      Lobby.create_open_session(host.id, metadata: %{"game_id" => "hex_pong"})
+
+    on_exit(fn -> Lobby.close_session(token, host.id, "test_cleanup") end)
+    LiveMatchPages.playing([host.nickname], "hex_pong", token)
+
+    {:ok, view, _html} = live(chat_conn(conn, "viewer#{uid()}"), "/c/hex-pong")
+
+    render_click(view, "nick_right_click", %{"nick" => host.nickname, "x" => 10, "y" => 10})
+    assert render(view) =~ "context-menu-item-context_watch"
+
+    render_click(view, "context_watch", %{"nick" => host.nickname})
+    assert render(view) =~ "/watch/#{token}"
+
+    # Somebody who is not playing has nothing to watch.
+    render_click(view, "nick_right_click", %{"nick" => "idle#{uid()}", "x" => 10, "y" => 10})
+    refute render(view) =~ "context-menu-item-context_watch"
   end
 end

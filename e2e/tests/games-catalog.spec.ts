@@ -26,12 +26,18 @@ test("a game's public page signs a reader in and lands them on the game (PW22)",
   await page.getByTestId("game-card-hex-tennis").click();
   await expect(page).toHaveURL(/\/games\/hex-tennis$/);
   await expect(page.locator("#game-heading")).toHaveText("Hex Tennis");
-  await expect(page.getByTestId("game-modes")).toContainText("Quick Match");
+  // One window, the game's home: a way in per mode.
+  await expect(page.getByTestId("game-way-hex_tennis_quick")).toContainText(
+    "Quick Match",
+  );
   await shot(page, "game-page");
 
   // Playing needs a nickname: the sign-in window opens over the same
   // desktop, remembering the game it was asked for.
-  await page.getByTestId("game-play").click();
+  await page
+    .getByTestId("game-way-hex_tennis")
+    .getByTestId("game-play")
+    .click();
   const connect = page.locator(SIGN_IN_WINDOW);
   await expect(connect).toBeVisible();
   await expect(page).toHaveURL(/\/connect\?.*return_to=%2Fplay%2Fhex_tennis/);

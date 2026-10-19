@@ -3,11 +3,10 @@ defmodule RetroHexChatWeb.ChatLive.RetroGamesEntryTest do
   How the chat offers Retro Games, now that it does not host them.
 
   A catalogue is not a room: there is nothing to create and nothing to
-  announce, so a game is a plain address opened in a tab of its own. What the
-  chat keeps is the catalogue — the Games folder holds a game per game, so the
-  second tab is offered on the game the reader chose rather than on the list
-  they are still reading. The Start menu carries the way to that folder and not
-  a second copy of it.
+  announce. What the chat keeps is the catalogue — the Games folder holds a
+  game per game, its modes chosen on the game's home, which each icon opens
+  over the chat. The game itself opens from there, in a tab of its own. The
+  Start menu carries the way to that folder and not a second copy of it.
 
   What is left to assert is that the folder is complete, that each row says
   where it goes, that nothing opens a tab on the bare catalogue any more, and
@@ -31,20 +30,23 @@ defmodule RetroHexChatWeb.ChatLive.RetroGamesEntryTest do
   end
 
   describe "the catalogue" do
-    test "the Games folder holds a game per game, each at its own address" do
+    test "the Games folder holds a game per game, each opening its home" do
       document = render_launcher()
 
-      for game <- Catalog.list_solo_games() do
+      for game <- Catalog.base_games() do
         assert [item] =
                  Floki.find(document, ~s([data-testid="desktop-launcher-item-game-#{game.id}"])),
                "the Games folder is missing #{game.id}"
 
-        assert Floki.attribute(item, "href") == [Paths.play_path(game.id)]
-        assert Floki.attribute(item, "target") == ["_blank"]
-        assert Floki.attribute(item, "rel") == ["noopener"]
-        assert Floki.attribute(item, "data-confirm-tab") == ["surface"]
-        assert Floki.attribute(item, "data-confirm-label") == [game.name]
-        assert Floki.attribute(item, "data-window-open") == []
+        assert Floki.attribute(item, "href") == [Paths.game_page_path(game.id)]
+        assert Floki.attribute(item, "data-phx-link") == ["patch"]
+        assert Floki.attribute(item, "target") == []
+      end
+
+      # A mode is chosen on its game's home, not from a second icon.
+      for mode <- Catalog.modes_of("hex_tennis") do
+        assert Floki.find(document, ~s([data-testid="desktop-launcher-item-game-#{mode.id}"])) ==
+                 []
       end
     end
 

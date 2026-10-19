@@ -4,11 +4,14 @@ defmodule RetroHexChatWeb.Site.Pages.Index do
 
   import RetroHexChatWeb.Components.Diagrams
   import RetroHexChatWeb.Components.UI.Button
+  import RetroHexChatWeb.Components.UI.Landing.GameCards, only: [catalogue_link: 1]
 
   alias RetroHexChat.Channels.Server
+  alias RetroHexChat.Games.Catalog
   alias RetroHexChatWeb.App.Paths
   alias RetroHexChatWeb.Endpoint
   alias RetroHexChatWeb.Icons
+  alias RetroHexChatWeb.PublicPages
   alias RetroHexChatWeb.SEO
 
   @impl RetroHexChatWeb.Site.Page
@@ -64,7 +67,17 @@ defmodule RetroHexChatWeb.Site.Pages.Index do
          Window.new("multiplayer-games", dgettext("landing", "Multiplayer Games"), :icon_joystick,
            width: 460,
            body: &multiplayer_games/1,
-           status: [{:check, dgettext("landing", "34 games")}]
+           assigns: %{catalogue_path: PublicPages.localized_path("/games")},
+           status: [
+             {:check,
+              dngettext(
+                "landing",
+                "%{count} game",
+                "%{count} games",
+                length(Catalog.base_games()),
+                count: length(Catalog.base_games())
+              )}
+           ]
          ),
          Window.new("solo-arcade", dgettext("landing", "Solo Arcade"), :icon_game_arcade,
            width: 420,

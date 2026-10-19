@@ -1,5 +1,5 @@
 <.section_heading id="games-heading">
-  {dgettext("landing", "34 multiplayer games. Right from the chat.")}
+  {dgettext("landing", "Games to play with others, from the chat.")}
 </.section_heading>
 <.inset
   class="p-3 mb-2"
@@ -8,12 +8,16 @@
   <.diagram_p2p_games class="w-full max-w-lg mx-auto" />
 </.inset>
 <p class="text-sm">
-  {dgettext("landing", "Type")}
-  <strong>{dgettext("landing", "/p2p @nick")}</strong> {dgettext(
+  {dgettext(
     "landing",
-    "to challenge anyone. Games run on HTML5 Canvas with state synced via WebRTC DataChannel —"
+    "Pick a game, then play the computer, find a partner in its channel or invite a friend."
+  )}
+  {dgettext(
+    "landing",
+    "Games run on HTML5 Canvas with state synced via WebRTC DataChannel —"
   )} <strong>{dgettext("landing", "no server involvement")}</strong>{dgettext(
     "landing",
     ", just like private P2P calls."
   )}
 </p>
+<.catalogue_link path={@catalogue_path} data-testid="index-multiplayer-catalogue-link" />

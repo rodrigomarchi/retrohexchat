@@ -2,6 +2,7 @@
  * @section N - P2P, File, Call, Game
  * @flow N64 [done] A game's channel names its game under the topic, and Find a partner puts one seat's card in the channel; pressing it again points at the same card
  * @flow N65 [done] A match between two people is written down once: GameServ says it in the game's channel with a card, and the same card lands in the two players' private conversation
+ * @flow N70 [done] A result card's game name opens the game's home, whose You tab shows the player's own rating and latest matches
  * @flow N66 [done] A visitor reads a game's channel and its public page — ranking, latest matches, the channel's last lines — and pressing Find a partner opens the sign-in window
  *
  * These @flow lines are the source of truth for e2e/TEST_CATALOG.md.
@@ -10,7 +11,7 @@
 import { APIRequestContext, expect, test } from "@playwright/test";
 import { closeUsers, newSignedInUser, TestUser } from "../helpers/chatUsers";
 import { shot } from "../helpers/screenshots";
-import { bringForward } from "../helpers/siteWindows";
+import { waitForView } from "../helpers/liveView";
 
 const GAME_CHANNEL = "#hex-pong";
 
@@ -114,6 +115,22 @@ test.describe("Game channels", () => {
       await pmCard.getByTestId("game-result-channel").click();
       await expect(beto.page).toHaveURL(/\/c\/hex-pong/);
       await expect(beto.page.getByTestId("game-channel-bar")).toBeVisible();
+
+      // The game's name on the card opens its home over the chat, where the
+      // You tab is the player's own record.
+      await beto.page
+        .locator('[data-testid^="game-result-card-"]')
+        .last()
+        .getByTestId("game-result-home")
+        .click();
+      await expect(beto.page).toHaveURL(/\/games\/hex-pong/);
+      await waitForView(beto.page);
+      await beto.page.getByTestId("game-home-tab-you").click();
+      await expect(beto.page.getByTestId("game-you-rating")).toBeVisible();
+      await expect(beto.page.getByTestId("game-you-recent")).toContainText(
+        ana.nick,
+      );
+      await shot(beto.page, "game-home-you");
     } finally {
       await closeUsers([ana, beto]);
     }
@@ -137,8 +154,13 @@ test.describe("Game channels", () => {
       // The page a search lands on: the ranking and the latest matches are
       // in it before any socket connects.
       await visitor.goto("/games/hex-pong");
+      await expect(visitor.getByTestId("game-home")).toBeVisible();
+      // The tabs switch once the page's view has joined.
+      await waitForView(visitor);
+      await shot(visitor, "game-home-play");
       // The ranking is the week's top five, which earlier runs share; the
       // latest match is this one, newest first.
+      await visitor.getByTestId("game-home-tab-ranking").click();
       await expect(visitor.getByTestId("game-community-week")).toBeVisible();
       await expect(
         visitor.getByTestId("game-community-recent").locator("li").first(),
@@ -146,8 +168,8 @@ test.describe("Game channels", () => {
       await shot(visitor, "game-page-community");
 
       // The channel is readable without an account; acting on it is not.
-      await bringForward(visitor, "site-community");
-      await shot(visitor, "game-page-community-in-front");
+      await visitor.getByTestId("game-home-tab-channel").click();
+      await shot(visitor, "game-home-channel");
       await visitor.getByTestId("game-community-channel").click();
       await expect(visitor).toHaveURL(/\/c\/hex-pong/);
       await expect(visitor.getByTestId("game-channel-bar")).toBeVisible();

@@ -3,6 +3,7 @@ defmodule RetroHexChatWeb.Components.UI.JoinCard do
   use RetroHexChatWeb.Component
 
   import RetroHexChatWeb.Components.UI.Button
+  import RetroHexChatWeb.Components.UI.ChatCard, only: [surface_link: 1]
 
   alias RetroHexChatWeb.Components.UI.ShareKind
   alias RetroHexChatWeb.Icons
@@ -23,6 +24,8 @@ defmodule RetroHexChatWeb.Components.UI.JoinCard do
     doc: "the way in is an address of the desktop (a channel, sign-in): a patch, not a load"
 
   attr :chat_path, :string, default: "/", doc: "where \"Open the chat\" goes"
+  attr :watch_path, :string, default: nil, doc: "a full match anybody may watch"
+  attr :game_path, :string, default: nil, doc: "a full match's game's home"
 
   @doc """
   The card's body, inside the invite's document window on the desktop (the
@@ -59,17 +62,30 @@ defmodule RetroHexChatWeb.Components.UI.JoinCard do
         {enter_label(@state)}
       </.button>
 
+      <.surface_link
+        :if={@state == :filled && @watch_path}
+        as={:button}
+        size="default"
+        href={@watch_path}
+        label={dgettext("share", "Watching a match")}
+        class="justify-center"
+        data-testid="join-watch"
+      >
+        <:icon><Icons.icon_watching class="h-4 w-4" /></:icon>
+        {dgettext("share", "Watch the match")}
+      </.surface_link>
+
       <%!-- A card that stopped working still offers the next plausible
             thing, and for a full match that is the game itself: the person
             came to play, and the door they took happened to be taken. --%>
       <.button
-        :if={@state == :filled && @subject}
-        href="/play"
+        :if={@state == :filled && @game_path}
+        patch={@game_path}
         class="justify-center"
         data-testid="join-play-instead"
       >
         <:icon><Icons.icon_game_pong class="h-4 w-4" /></:icon>
-        {dgettext("share", "Play something else")}
+        {dgettext("share", "Other ways to play")}
       </.button>
 
       <.button

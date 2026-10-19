@@ -98,6 +98,11 @@ defmodule RetroHexChat.Lobby.WatchTest do
     assert [%{token: ^token, game_id: "hex_pong", players: ["ana", "beto"], watchers: 0}] =
              Activity.live_matches("hex_pong")
 
+    # Each player leads to it, the way a nickname's menu does.
+    assert Activity.watch_token("ana") == token
+    assert Activity.watch_token("Beto") == token
+    assert Activity.watch_token("nobody") == nil
+
     watcher = page(fn -> :ok = Watchers.watch(token) end)
     page(fn -> :ok = Watchers.watch(token) end)
     assert Watchers.count(token) == 2
@@ -121,6 +126,7 @@ defmodule RetroHexChat.Lobby.WatchTest do
 
     assert "ana2" in Activity.playing_in("hex_pong")
     refute Enum.any?(Activity.live_matches(), &(&1.token == token))
+    assert Activity.watch_token("ana2") == nil
   end
 
   defp eventually(fun, tries \\ 50) do

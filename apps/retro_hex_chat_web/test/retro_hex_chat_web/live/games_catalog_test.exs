@@ -13,6 +13,7 @@ defmodule RetroHexChatWeb.GamesCatalogTest do
 
   @moduletag :liveview
 
+  alias RetroHexChat.Chat.HelpTopics
   alias RetroHexChat.Games.Queries, as: GameQueries
   alias RetroHexChat.Games.Schema.GameRating
   alias RetroHexChat.Lobby
@@ -135,15 +136,69 @@ defmodule RetroHexChatWeb.GamesCatalogTest do
       assert play_href(view) == "/connect?return_to=%2F%3Farcade%3Ddoom_shareware&signup=games"
     end
 
-    test "a multiplayer game lists its modes and starts a match", %{conn: conn} do
+    test "a multiplayer game is one window, its home, with a way in per mode", %{conn: conn} do
       {:ok, view, html} = live(conn, "/games/hex-tennis")
 
       assert html =~ "Quick Match"
       assert html =~ "Sudden Death"
-      assert play_href(view) == "/connect?return_to=%2Fplay%2Fhex_tennis&signup=games"
+      assert has_element?(view, ~s([data-testid="game-home"]))
+      assert has_element?(view, ~s([data-testid="game-way-hex_tennis"]))
+      assert has_element?(view, ~s([data-testid="game-way-hex_tennis_quick"]))
+
+      # A visitor's every way in asks for an account and lands on the game.
+      assert play_href(view, "hex_tennis_quick") ==
+               "/connect?return_to=%2Fplay%2Fhex_tennis&signup=games"
+
+      refute has_element?(view, ~s([data-testid="game-lfg"]))
+      refute has_element?(view, ~s([data-testid="game-invite"]))
+
+      # Every tab is in the HTML a crawler reads.
+      for tab <- ~w(play live ranking channel) do
+        assert has_element?(view, ~s([data-testid="game-home-#{tab}"]))
+      end
 
       assert conn |> document("/games/hex-tennis") |> json_ld("VideoGame") |> Map.get("playMode") ==
                "MultiPlayer"
+    end
+
+    test "a member plays a mode beside the desktop, and How to play is its own topic",
+         %{conn: conn} do
+      {:ok, view, _html} = conn |> chat_conn("gamer#{uid()}") |> live("/games/hex-tennis")
+
+      play =
+        view
+        |> element(~s([data-testid="game-way-hex_tennis_quick"] [data-testid="game-play"]))
+        |> render()
+        |> Floki.parse_fragment!()
+
+      assert Floki.attribute(play, "href") == ["/play/hex_tennis_quick"]
+      assert Floki.attribute(play, "target") == ["_blank"]
+      assert Floki.attribute(play, "data-confirm-tab") == ["surface"]
+      refute render(view) =~ "pick a nickname"
+
+      assert has_element?(
+               view,
+               ~s([data-testid="game-way-hex_tennis_quick"] [data-testid="game-lfg"][phx-value-game="hex_tennis_quick"])
+             )
+
+      assert has_element?(
+               view,
+               ~s([data-testid="game-challenge-form"][phx-submit="game_home_challenge"])
+             )
+
+      assert view |> element(~s([data-testid="game-match-link"])) |> render() =~
+               "/play/hex_tennis?match=new"
+
+      assert view
+             |> element(~s([data-testid="game-how-to-play"]))
+             |> render() =~ "/chat/help/feature-hex-tennis"
+    end
+
+    test "every game's How to play is a topic that exists" do
+      for game <- GameCatalog.list() do
+        assert HelpTopics.get_topic(game.help_topic),
+               "#{game.slug} points at #{game.help_topic}"
+      end
     end
 
     test "a slug that names no game answers 404", %{conn: conn} do
@@ -250,7 +305,57 @@ defmodule RetroHexChatWeb.GamesCatalogTest do
                |> Floki.find(~s([data-testid="game-community-live"] [data-token="#{token}"]))
 
       assert Floki.attribute(link, "href") == ["/watch/#{token}"]
+      # Watching is a screen of its own, beside the desktop.
+      assert Floki.attribute(link, "target") == ["_blank"]
       assert Floki.text(link) =~ ana.nickname
+    end
+
+    test "the You tab is the reader's own record in the game", %{conn: conn} do
+      ana = player("ana#{System.unique_integer([:positive])}")
+      beto = player("beto#{System.unique_integer([:positive])}")
+      record_match(ana, beto, {11, 4, "p1"}, "you-1")
+
+      RetroHexChat.Repo.insert!(%GameRating{
+        base_id: "hex_pong",
+        player_id: ana.id,
+        rating: 1216,
+        matches: 1,
+        wins: 1
+      })
+
+      {:ok, view, _html} = conn |> chat_conn(ana.nickname) |> live("/games/hex-pong")
+
+      rating = view |> element(~s([data-testid="game-you-rating"])) |> render()
+      assert rating =~ "1216"
+      assert rating =~ "Place 1 of 1"
+
+      assert view |> element(~s([data-testid="game-you-totals"])) |> render() =~ "Against people"
+
+      assert view |> element(~s([data-testid="game-you-recent"])) |> render() =~
+               "#{ana.nickname} 11 × 4 #{beto.nickname}"
+    end
+
+    test "a reader the ranking does not know is told how to enter it", %{conn: conn} do
+      {:ok, visitor_view, _html} = live(conn, "/games/hex-pong")
+      assert has_element?(visitor_view, ~s([data-testid="game-you-unranked"]))
+      assert has_element?(visitor_view, ~s([data-testid="game-you-sign-in"]))
+
+      {:ok, guest_view, _html} =
+        build_conn() |> chat_conn("unreg#{uid()}") |> live("/games/hex-pong")
+
+      assert has_element?(guest_view, ~s([data-testid="game-you-unranked"]))
+
+      assert has_element?(
+               guest_view,
+               ~s([data-testid="game-you-register"][href="/chat/help/nickserv"])
+             )
+
+      someone = player("new#{System.unique_integer([:positive])}")
+
+      {:ok, new_view, _html} =
+        build_conn() |> chat_conn(someone.nickname) |> live("/games/hex-pong")
+
+      assert has_element?(new_view, ~s([data-testid="game-you-none"]))
     end
 
     test "an arcade game has no community window", %{conn: conn} do
@@ -364,9 +469,14 @@ defmodule RetroHexChatWeb.GamesCatalogTest do
     end
   end
 
-  defp play_href(view) do
+  defp play_href(view, way \\ nil) do
+    selector =
+      if way,
+        do: ~s([data-testid="game-way-#{way}"] [data-testid="game-play"]),
+        else: ~s([data-testid="game-play"])
+
     view
-    |> element(~s([data-testid="game-play"]))
+    |> element(selector)
     |> render()
     |> Floki.parse_fragment!()
     |> Floki.attribute("href")

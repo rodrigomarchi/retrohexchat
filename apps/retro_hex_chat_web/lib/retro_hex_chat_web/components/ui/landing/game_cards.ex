@@ -127,6 +127,8 @@ defmodule RetroHexChatWeb.Components.UI.Landing.GameCards do
     required: true,
     doc: "the game for a member; for a visitor, the sign-in window asking for an account first"
 
+  attr :visitor, :boolean, default: false, doc: "Play asks for a nickname first"
+
   @doc """
   A game's page: what it is, what it looks like, how it is played and the way
   in. A visitor's Play opens the sign-in window, which lands them on the game
@@ -145,7 +147,9 @@ defmodule RetroHexChatWeb.Components.UI.Landing.GameCards do
     <div class="flex flex-wrap gap-2 mb-4">
       <.button patch={@play_path} data-testid="game-play">
         <:icon><Icons.icon_joystick class="w-4 h-4" /></:icon>
-        {dgettext("landing", "Play now — pick a nickname")}
+        {if @visitor,
+          do: dgettext("landing", "Play now — pick a nickname"),
+          else: dgettext("landing", "Play now")}
       </.button>
       <.button variant="outline" patch={@how_to_play_path} data-testid="game-how-to-play">
         <:icon><Icons.icon_question class="w-4 h-4" /></:icon>

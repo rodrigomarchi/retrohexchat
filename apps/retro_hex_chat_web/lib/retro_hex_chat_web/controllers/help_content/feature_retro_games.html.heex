@@ -13,25 +13,73 @@
   )}
 </p>
 
-<.help_h4 icon={:icon_game_pong}>{dgettext("help_games", "Starting a Solo Game")}</.help_h4>
+<.help_h4 icon={:icon_game_pong}>{dgettext("help_games", "How to Open a Game")}</.help_h4>
 <ul>
   <li>
     {dgettext(
       "help_games",
-      "Double-click the Retro Games desktop icon, or open Start ▸ Games and choose Retro Games: both show the library, one icon per game. Choosing a game opens that game in a browser tab of its own, and the chat stays exactly where it was."
+      "Double-click the Retro Games desktop icon, or open Start ▸ Games and choose Retro Games. The folder shows one icon per game."
+    )}
+  </li>
+  <li>{dgettext("help_games", "Choosing a game opens its page over the chat.")}</li>
+  <li>
+    {dgettext(
+      "help_games",
+      "The catalogue of games and the channel of each game lead to the same page."
+    )}
+  </li>
+</ul>
+
+<.help_h4 icon={:icon_joystick}>{dgettext("help_games", "The Page of a Game")}</.help_h4>
+<ul>
+  <li>{dgettext("help_games", "The Play tab lists the game and each of its modes.")}</li>
+  <li>
+    {dgettext(
+      "help_games",
+      "Against the computer opens the game in a tab of its own. Choose Easy, Normal or Hard there, then click Play vs AI."
     )}
   </li>
   <li>
     {dgettext(
       "help_games",
-      "Choose a game icon in the library."
+      "Find a partner takes you to the channel of the game and offers a seat there, like the command %{command}.",
+      command: "/lfg"
     )}
   </li>
   <li>
     {dgettext(
       "help_games",
-      "Select Easy, Normal, or Hard, then click Play vs AI once the canvas is ready."
+      "To play with somebody you know, type their nickname and click Invite. It works like the command %{command}.",
+      command: "/challenge"
     )}
+  </li>
+  <li>
+    {dgettext(
+      "help_games",
+      "%{link} gives you a link to send to a friend.",
+      link: dgettext("games", "Create a match link")
+    )}
+  </li>
+  <li>
+    {dgettext(
+      "help_games",
+      "The Live tab shows who is playing now and the matches you can watch."
+    )}
+  </li>
+  <li>
+    {dgettext(
+      "help_games",
+      "The Ranking tab shows the challenge of the week, the best players and the latest matches."
+    )}
+  </li>
+  <li>
+    {dgettext(
+      "help_games",
+      "The You tab shows your rating and your latest results."
+    )}
+  </li>
+  <li>
+    {dgettext("help_games", "The last tab is the channel of the game, with its latest lines.")}
   </li>
 </ul>
 
@@ -40,7 +88,8 @@
   <li>
     {dgettext(
       "help_games",
-      "Every game has an address of its own: /play opens the library and /play/hex_pong opens that game directly. Send someone the address and they land on the same screen."
+      "Every game has an address of its own, such as %{address}. Send someone the address and they land on the same game.",
+      address: "/play/hex_pong"
     )}
   </li>
   <li>

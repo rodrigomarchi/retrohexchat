@@ -41,10 +41,10 @@ defmodule RetroHexChatWeb.App.PlayLiveTest do
       assert to =~ "banned"
     end
 
-    test "a valid session gets the library", %{conn: conn} do
-      {:ok, _view, html} = conn |> chat_conn("Play#{uid()}") |> live(~p"/play")
-
-      assert html =~ "retro-games-panel"
+    # One game per page: the games are chosen in the catalogue.
+    test "a valid session with no game in the address is sent to the catalogue", %{conn: conn} do
+      assert {:error, {:redirect, %{to: "/games"}}} =
+               conn |> chat_conn("Play#{uid()}") |> live(~p"/play")
     end
   end
 
@@ -56,7 +56,7 @@ defmodule RetroHexChatWeb.App.PlayLiveTest do
       nick = "Coex#{uid()}"
       Phoenix.PubSub.subscribe(RetroHexChat.PubSub, Topics.inbox(nick))
 
-      {:ok, _view, _html} = conn |> chat_conn(nick) |> live(~p"/play")
+      {:ok, _view, _html} = conn |> chat_conn(nick) |> live(~p"/play/hex_pong")
 
       refute_receive {:force_disconnect, _payload}
     end
@@ -67,14 +67,14 @@ defmodule RetroHexChatWeb.App.PlayLiveTest do
     test "opening it does not put the person online", %{conn: conn} do
       nick = "Pres#{uid()}"
 
-      {:ok, _view, _html} = conn |> chat_conn(nick) |> live(~p"/play")
+      {:ok, _view, _html} = conn |> chat_conn(nick) |> live(~p"/play/hex_pong")
 
       refute Tracker.online?(Topics.presence(), nick)
     end
 
     test "a chat takeover leaves it running", %{conn: conn} do
       nick = "Keep#{uid()}"
-      {:ok, view, _html} = conn |> chat_conn(nick) |> live(~p"/play")
+      {:ok, view, _html} = conn |> chat_conn(nick) |> live(~p"/play/hex_pong")
 
       SessionControl.disconnect(nick, %{reason: "another window"}, :chat)
 
@@ -86,7 +86,7 @@ defmodule RetroHexChatWeb.App.PlayLiveTest do
 
     test "a ban ends it", %{conn: conn} do
       nick = "Gone#{uid()}"
-      {:ok, view, _html} = conn |> chat_conn(nick) |> live(~p"/play")
+      {:ok, view, _html} = conn |> chat_conn(nick) |> live(~p"/play/hex_pong")
 
       SessionControl.disconnect(nick, %{reason: "Server banned"}, :all)
 
@@ -103,11 +103,24 @@ defmodule RetroHexChatWeb.App.PlayLiveTest do
       assert html =~ "RetroGameCanvasHook"
     end
 
-    test "an unknown game falls back to the library", %{conn: conn} do
-      {:ok, _view, html} = conn |> chat_conn("Miss#{uid()}") |> live(~p"/play/not_a_game")
+    # Ending a match keeps the game on screen, ready for another.
+    test "ending a match leaves the game ready", %{conn: conn} do
+      nick = "End#{uid()}"
+      {:ok, view, _html} = conn |> chat_conn(nick) |> live(~p"/play/hex_pong")
 
-      assert html =~ "retro-games-panel"
-      refute html =~ "RetroGameCanvasHook"
+      render_hook(view, "retro_game_canvas_ready", %{"game_id" => "hex_pong"})
+      render_click(view, "retro_games_start_ai", %{})
+      assert Map.has_key?(Activity.now(), Nickname.key(nick))
+
+      render_click(view, "retro_games_end", %{})
+      assert_push_event(view, "retro_game_stop", %{game_id: "hex_pong"})
+      assert has_element?(view, ~s([data-testid="retro-game-start-ai"]))
+      refute Map.has_key?(Activity.now(), Nickname.key(nick))
+    end
+
+    test "an unknown game is sent to the catalogue", %{conn: conn} do
+      assert {:error, {:redirect, %{to: "/games"}}} =
+               conn |> chat_conn("Miss#{uid()}") |> live(~p"/play/not_a_game")
     end
   end
 
@@ -275,12 +288,6 @@ defmodule RetroHexChatWeb.App.PlayLiveTest do
 
       assert render(view) =~ "share-create"
       assert view |> element(~s([data-testid="share-create"])) |> render() =~ "disabled"
-    end
-
-    test "there is nothing to share from the library", %{conn: conn} do
-      {:ok, _view, html} = conn |> chat_conn("Lib#{uid()}") |> live(~p"/play")
-
-      refute html =~ "share-bar"
     end
   end
 

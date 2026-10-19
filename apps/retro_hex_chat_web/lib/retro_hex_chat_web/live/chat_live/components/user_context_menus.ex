@@ -32,6 +32,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.UserContextMenus do
 
   alias RetroHexChat.Channels.Server
   alias RetroHexChat.Chat.{CustomMenus, IgnoreList, KeyBindings}
+  alias RetroHexChat.Games.Activity
 
   @id "user-context-menus"
 
@@ -119,6 +120,8 @@ defmodule RetroHexChatWeb.ChatLive.Components.UserContextMenus do
         nick_is_target_voiced: channel_user_voiced?(users, nick_menu.target_nick),
         nick_is_target_muted: channel_user_muted?(users, nick_menu.target_nick),
         nick_custom_items: CustomMenus.entries_for(session.custom_menus, :nicklist),
+        chat_target_watchable: watchable?(chat),
+        nick_target_watchable: watchable?(nick_menu),
         key_bindings: KeyBindings.defaults()
       )
 
@@ -143,6 +146,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.UserContextMenus do
         is_target_voiced={@chat_is_target_voiced}
         is_target_muted={@chat_is_target_muted}
         is_already_joined={@chat_is_already_joined}
+        is_target_watchable={@chat_target_watchable}
         custom_items={@chat_custom_items}
         key_bindings={@key_bindings}
         on_action="chat_context_action"
@@ -161,6 +165,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.UserContextMenus do
         is_target_op={@nick_is_target_op}
         is_target_voiced={@nick_is_target_voiced}
         is_target_muted={@nick_is_target_muted}
+        is_target_watchable={@nick_target_watchable}
         show_color_picker={@show_context_color_picker}
         nick_color_fn={@nick_color_fn}
         custom_items={@nick_custom_items}
@@ -198,6 +203,11 @@ defmodule RetroHexChatWeb.ChatLive.Components.UserContextMenus do
   end
 
   @spec chat_context_target_ignored?(map() | nil, map()) :: boolean()
+  # Asked only of an open menu: presence is read once per right-click, not on
+  # every render of the chat.
+  defp watchable?(%{visible: true, target_nick: nick}), do: Activity.watch_token(nick) != nil
+  defp watchable?(_menu), do: false
+
   defp chat_context_target_ignored?(_session, %{target_nick: nil}), do: false
 
   defp chat_context_target_ignored?(session, %{target_nick: nick}) do

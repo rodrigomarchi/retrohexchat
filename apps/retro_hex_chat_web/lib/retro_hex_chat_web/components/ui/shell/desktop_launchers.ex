@@ -604,28 +604,23 @@ defmodule RetroHexChatWeb.Components.UI.DesktopLaunchers do
   end
 
   # The folder is the catalogue, because a folder full of games is what a
-  # catalogue looks like on this desktop. A game has an address of its own, so
-  # the tab opens on the game the reader chose — not on the list they are still
-  # reading. The names are proper nouns and stay untranslated.
+  # catalogue looks like on this desktop: one icon per game, its modes chosen
+  # on the game's own page. An icon opens that page over the chat — how to
+  # play, who is playing now, who is winning — and the game itself opens from
+  # there, in a tab of its own. The page is public, so a visitor may open it
+  # too. The names are proper nouns and stay untranslated.
   #
   # Nothing but games lives here. The arcade used to sit at the end of this
   # list and was the thirty-fifth icon in it: a whole feature below the fold of
   # a window you had to scroll, reached by two clicks, which is the same thing
   # as hiding it. It is a program of its own now, with an icon of its own —
   # `launcher_apps/1`.
-  defp games_items(cap) do
-    Enum.map(Catalog.list_solo_games(), &game_item(cap, &1))
-  end
-
-  defp game_item(cap, game) do
-    link(Paths.play_path(game.id), game.name, Registry.game(game.id),
-      target: "_blank",
-      rel: "noopener",
-      confirm_tab: "surface",
-      confirm_label: game.name,
-      disabled: !cap.chat?,
-      testid: "desktop-launcher-item-game-#{game.id}"
-    )
+  defp games_items(_cap) do
+    for game <- Catalog.base_games(), Catalog.solo_game_id?(game.id) do
+      patch(Paths.game_page_path(game.id), game.name, Registry.game(game.id),
+        testid: "desktop-launcher-item-game-#{game.id}"
+      )
+    end
   end
 
   defp account_items(cap) do

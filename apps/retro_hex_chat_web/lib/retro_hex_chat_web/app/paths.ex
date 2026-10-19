@@ -9,6 +9,7 @@ defmodule RetroHexChatWeb.App.Paths do
   `/chat/session/clear` is a string nobody would think to keep in step.
   """
 
+  alias RetroHexChat.Games.Catalog
   alias RetroHexChatWeb.I18n
   alias RetroHexChatWeb.SEO
   alias RetroHexChatWeb.Site.Address
@@ -77,6 +78,14 @@ defmodule RetroHexChatWeb.App.Paths do
   @doc "The games catalogue, at an address of its own."
   @spec play_path() :: String.t()
   def play_path, do: ~p"/play"
+
+  @doc """
+  A Retro Game's own page — its home in the desktop: how to play it, who is
+  playing it now and who is winning. A mode's id leads to its game's page.
+  """
+  @spec game_page_path(String.t()) :: String.t()
+  def game_page_path(game_id),
+    do: localized("/games/" <> Catalog.slug(Catalog.base_id(game_id)))
 
   @doc "A game at its own address, by its catalogue id."
   @spec play_path(String.t()) :: String.t()

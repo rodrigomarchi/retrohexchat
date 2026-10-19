@@ -46,7 +46,7 @@ defmodule RetroHexChatWeb.GameCatalog do
           og_width: pos_integer(),
           og_height: pos_integer()
         }
-  @type mode :: %{name: String.t(), tagline: String.t()}
+  @type mode :: %{id: String.t(), name: String.t(), tagline: String.t()}
   @type game :: %{
           id: String.t(),
           slug: String.t(),
@@ -151,7 +151,7 @@ defmodule RetroHexChatWeb.GameCatalog do
       modes =
         game.id
         |> Games.modes_of()
-        |> Enum.map(&%{name: mode_name(&1.name, game.name), tagline: &1.tagline})
+        |> Enum.map(&%{id: &1.id, name: mode_name(&1.name, game.name), tagline: &1.tagline})
 
       %{
         id: game.id,
@@ -164,7 +164,7 @@ defmodule RetroHexChatWeb.GameCatalog do
         modes: modes,
         engine: nil,
         icon: game.icon,
-        help_topic: "feature-retro-games",
+        help_topic: "feature-" <> slug(game.id),
         screenshot: screenshot(slug(game.id))
       }
     end)

@@ -75,7 +75,7 @@ defmodule RetroHexChatWeb.PayloadBudgetTest do
   end
 
   describe "/play" do
-    setup %{conn: conn}, do: %{html: html_for(session_conn(conn), ~p"/play")}
+    setup %{conn: conn}, do: %{html: html_for(session_conn(conn), ~p"/play/hex_pong")}
 
     test "stays inside its byte budget", %{html: html} do
       assert byte_size(html) <= PerfBudgets.html_bytes(:play)

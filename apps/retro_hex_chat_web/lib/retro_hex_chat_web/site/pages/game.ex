@@ -7,14 +7,16 @@ defmodule RetroHexChatWeb.Site.Pages.Game do
   every control, tips — stays in the in-app help, which this page links to
   rather than repeats.
 
-  A Retro Game's page is also its community's front door: a window of who is
-  winning, the latest matches and its channel's last lines, read from the
-  database on every request — the part of the page that is new every day.
+  A Retro Game's page is its home in the desktop (`Landing.GameHome`): one
+  window, where every way into the game leads — the Retro Games folder, the
+  catalogue, its channel, its results. Ways to play each mode, who is playing
+  it now, who is winning and what its channel says, read from the database on
+  every request — the part of the page that is new every day.
   """
   use RetroHexChatWeb.Site.Page
 
   import RetroHexChatWeb.Components.UI.Landing.GameCards
-  import RetroHexChatWeb.Components.UI.Landing.GameCommunity
+  import RetroHexChatWeb.Components.UI.Landing.GameHome
 
   alias RetroHexChat.Chat.Archive
   alias RetroHexChat.Games.Activity
@@ -24,6 +26,7 @@ defmodule RetroHexChatWeb.Site.Pages.Game do
   alias RetroHexChat.Games.Results
 
   alias RetroHexChatWeb.App.Paths
+  alias RetroHexChatWeb.App.SessionHelpers
   alias RetroHexChatWeb.GameCatalog
   alias RetroHexChatWeb.PublicPages
   alias RetroHexChatWeb.SEO
@@ -49,30 +52,9 @@ defmodule RetroHexChatWeb.Site.Pages.Game do
        game: game,
        path: path,
        play_path: play_path(game, ctx),
+       visitor: ctx.visitor?,
        how_to_play_path: PublicPages.localized_path("/chat/help/#{game.help_topic}"),
-       windows:
-         Enum.reject(
-           [
-             Window.new("game", game.name, :game_icon,
-               icon_attrs: %{game_id: game.id},
-               width: 760,
-               body: &game_detail/1,
-               status: [kind_label(game), dgettext("landing", "Free, in the browser")]
-             ),
-             community_window(game),
-             Window.new("more-games", dgettext("landing", "More games"), :icon_joystick,
-               width: 360,
-               body: &game_card_list/1,
-               assigns: %{
-                 heading_id: "more-games-heading",
-                 cards: game |> GameCatalog.related() |> Enum.map(&card/1),
-                 columns: "grid-cols-2",
-                 catalogue_path: PublicPages.localized_path("/games")
-               }
-             )
-           ],
-           &is_nil/1
-         ),
+       windows: windows(game, ctx),
        canonical_path: path,
        og_image: og_image(game),
        json_ld: [
@@ -88,35 +70,105 @@ defmodule RetroHexChatWeb.Site.Pages.Game do
      }}
   end
 
-  # Only a Retro Game has a channel and a ledger; an arcade game has neither.
-  defp community_window(%{kind: :multiplayer, id: game_id}) do
+  # A Retro Game is one window, its home. An arcade game has no channel, no
+  # ledger and nobody to play with: its page is the game and the games beside it.
+  defp windows(%{kind: :multiplayer, id: game_id} = game, ctx) do
     channel = Catalog.channel_name(game_id)
     week_ago = DateTime.add(DateTime.utc_now(), -7, :day)
     challenge = Challenges.for_week(game_id, Date.utc_today())
+    week_count = Results.count_since(game_id, week_ago)
+    playing_now = Activity.playing_in(game_id)
 
-    Window.new("community", channel, :icon_chat,
-      width: 360,
-      body: &game_community/1,
-      assigns: %{
-        channel: channel,
-        channel_path: Paths.chat_path(channel),
-        ranking: if(Catalog.ranking(game_id) == :versus, do: :wins, else: :best),
-        week: Results.standings(game_id, modes: true, since: week_ago, limit: 5),
-        ratings: Ratings.top(game_id, 5),
-        playing_now: Activity.playing_in(game_id),
-        live: Activity.live_matches(game_id),
-        challenge: challenge,
-        challenge_leader: Challenges.leader(challenge),
-        computer:
-          Results.standings(game_id, modes: true, origin: "ai", difficulty: "hard", limit: 3),
-        recent: Results.recent(game_id, 6),
-        chatter: Archive.recent(channel, 5),
-        week_count: Results.count_since(game_id, week_ago)
-      }
-    )
+    [
+      Window.new("game", game.name, :game_icon,
+        icon_attrs: %{game_id: game.id},
+        width: 820,
+        body: &game_home/1,
+        status: [
+          dngettext(
+            "landing",
+            "%{count} game played this week",
+            "%{count} games played this week",
+            week_count,
+            count: week_count
+          ),
+          dngettext(
+            "landing",
+            "%{count} playing now",
+            "%{count} playing now",
+            length(playing_now),
+            count: length(playing_now)
+          )
+        ],
+        assigns: %{
+          ways: ways(game),
+          sign_in_path: play_path(game, ctx),
+          you: your_record(game_id, ctx),
+          register_path: PublicPages.localized_path("/chat/help/nickserv"),
+          channel: channel,
+          channel_path: Paths.chat_path(channel),
+          ranking: if(Catalog.ranking(game_id) == :versus, do: :wins, else: :best),
+          week: Results.standings(game_id, modes: true, since: week_ago, limit: 5),
+          ratings: Ratings.top(game_id, 5),
+          playing_now: playing_now,
+          live: Activity.live_matches(game_id),
+          challenge: challenge,
+          challenge_leader: Challenges.leader(challenge),
+          computer:
+            Results.standings(game_id, modes: true, origin: "ai", difficulty: "hard", limit: 3),
+          recent: Results.recent(game_id, 6),
+          chatter: Archive.recent(channel, 5),
+          week_count: week_count
+        }
+      )
+    ]
   end
 
-  defp community_window(_arcade_game), do: nil
+  defp windows(game, _ctx) do
+    [
+      Window.new("game", game.name, :game_icon,
+        icon_attrs: %{game_id: game.id},
+        width: 760,
+        body: &game_detail/1,
+        status: [kind_label(game), dgettext("landing", "Free, in the browser")]
+      ),
+      Window.new("more-games", dgettext("landing", "More games"), :icon_joystick,
+        width: 360,
+        body: &game_card_list/1,
+        assigns: %{
+          heading_id: "more-games-heading",
+          cards: game |> GameCatalog.related() |> Enum.map(&card/1),
+          columns: "grid-cols-2",
+          catalogue_path: PublicPages.localized_path("/games")
+        }
+      )
+    ]
+  end
+
+  # The reader's own record, when their nickname is registered: the one the
+  # ranking knows them by. A visitor and an unregistered nickname have none.
+  defp your_record(game_id, %{visitor?: false, nickname: nickname}) when is_binary(nickname) do
+    case SessionHelpers.resolve_user_id(nickname) do
+      {:ok, player_id} -> Results.player_record(game_id, player_id)
+      _unregistered -> nil
+    end
+  end
+
+  defp your_record(_game_id, _ctx), do: nil
+
+  # One way in per mode, the game itself first. Each opens in a tab of its
+  # own: against the computer at the game's address, and a match room —
+  # whose link is handed to a friend — at the same address asking for one.
+  defp ways(game) do
+    standard = %{id: game.id, name: game.name, tagline: game.tagline}
+
+    for mode <- [standard | game.modes] do
+      Map.merge(mode, %{
+        play_path: Paths.play_path(mode.id),
+        link_path: Paths.play_path(mode.id) <> "?match=new"
+      })
+    end
+  end
 
   defp matches_played(%{kind: :multiplayer, id: game_id}),
     do: Results.count_since(game_id, ~U[2000-01-01 00:00:00Z])
@@ -134,9 +186,6 @@ defmodule RetroHexChatWeb.Site.Pages.Game do
     do: %{game: game, path: PublicPages.localized_path(GameCatalog.page_path(game))}
 
   defp kind_label(%{kind: :arcade}), do: dgettext("landing", "Solo arcade")
-
-  defp kind_label(%{kind: :multiplayer}),
-    do: dgettext("landing", "Multiplayer — or against the AI")
 
   defp title(game) do
     candidates = [

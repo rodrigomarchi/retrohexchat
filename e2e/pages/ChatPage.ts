@@ -908,15 +908,29 @@ export class ChatPage {
    * folder is the catalogue, so there is nothing to open a tab for until a
    * game is chosen.
    */
-  async openGameFromFolder(gameId: string): Promise<Page> {
+  /** A game's icon opens its home over the chat, on the same desktop. */
+  async openGameHomeFromFolder(gameId: string): Promise<Locator> {
     await this.openGamesFolder();
 
     const icon = this.gameFolderIcon(gameId);
     await expect(icon).toBeVisible();
+    await icon.click();
+
+    const home = this.page.getByTestId("game-home");
+    await expect(home).toBeVisible();
+    return home;
+  }
+
+  /** From the game's home, against the computer: the game opens in a tab of its own. */
+  async openGameFromFolder(gameId: string): Promise<Page> {
+    const home = await this.openGameHomeFromFolder(gameId);
 
     // Asked first, like every door that opens a tab: the entry raises the
     // question and the dialog's Open is the anchor that carries you out.
-    await icon.click();
+    await home
+      .getByTestId(`game-way-${gameId}`)
+      .getByTestId("game-play")
+      .click();
 
     const confirm = this.page.getByTestId("open-tab-confirm-open");
     await expect(confirm).toBeVisible();

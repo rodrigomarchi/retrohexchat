@@ -692,6 +692,27 @@ _ROWS = {
     "Computer":       ("Computador", "Computador", "Computadora", "Ordinateur", "Computer", "Computer", "Computer", "Komputer", "Компьютер", "Komputer", "コンピューター", "电脑", "電腦"),
     "Ended early":    ("Encerrada antes", "Terminada antes", "Terminó antes", "Fin anticipée", "Vorzeitig beendet", "Finita prima", "Vroeg beëindigd", "Zakończona wcześniej", "Завершена досрочно", "Berakhir lebih awal", "途中終了", "提前结束", "提前結束"),
     "Rating":         ("Rating", "Classificação Elo", "Puntuación Elo", "Classement Elo", "Elo-Wertung", "Punteggio Elo", "Elo-rating", "Ranking Elo", "Рейтинг Эло", "Peringkat Elo", "レーティング", "等级分", "等級分"),
+    # Watching a match and the way to it. "Match" is a game played: the engine
+    # gave "correspondência", "coincidencia" and "Übereinstimmung".
+    "Watch the match":  ("Assistir à partida", "Assistir à partida", "Ver la partida", "Regarder la partie", "Spiel ansehen", "Guarda la partita", "Wedstrijd bekijken", "Oglądaj mecz", "Смотреть матч", "Tonton pertandingan", "試合を観戦", "观看比赛", "觀看比賽"),
+    "Watch the Match":  ("Assistir à partida", "Assistir à partida", "Ver la partida", "Regarder la partie", "Spiel ansehen", "Guarda la partita", "Wedstrijd bekijken", "Oglądaj mecz", "Смотреть матч", "Tonton pertandingan", "試合を観戦", "观看比赛", "觀看比賽"),
+    "Watching a match": ("Assistindo a uma partida", "A assistir a uma partida", "Viendo una partida", "Regarder une partie", "Ein Spiel ansehen", "Guardare una partita", "Een wedstrijd bekijken", "Oglądanie meczu", "Просмотр матча", "Menonton pertandingan", "試合を観戦中", "观看比赛", "觀看比賽"),
+    "Against the computer":        ("Contra o computador", "Contra o computador", "Contra la computadora", "Contre l'ordinateur", "Gegen den Computer", "Contro il computer", "Tegen de computer", "Z komputerem", "Против компьютера", "Lawan komputer", "コンピューターと対戦", "对战电脑", "對戰電腦"),
+    "Invite":                      ("Convidar", "Convidar", "Invitar", "Inviter", "Einladen", "Invita", "Uitnodigen", "Zaproś", "Пригласить", "Undang", "招待", "邀请", "邀請"),
+    "Play with somebody you know": ("Jogar com alguém que você conhece", "Jogar com alguém que conheces", "Jugar con alguien que conoces", "Jouer avec quelqu'un que vous connaissez", "Mit jemandem spielen, den Sie kennen", "Gioca con qualcuno che conosci", "Spelen met iemand die je kent", "Zagraj z kimś znajomym", "Играть со знакомым", "Main dengan orang yang dikenal", "知り合いと遊ぶ", "和认识的人玩", "和認識的人玩"),
+    "Other ways to play":          ("Outras formas de jogar", "Outras formas de jogar", "Otras formas de jugar", "Autres façons de jouer", "Andere Spielmöglichkeiten", "Altri modi di giocare", "Andere manieren om te spelen", "Inne sposoby gry", "Другие способы играть", "Cara lain bermain", "ほかの遊び方", "其他玩法", "其他玩法"),
+    "Create a match link":         ("Criar um link de partida", "Criar um link de partida", "Crear un enlace de partida", "Créer un lien de partie", "Spiel-Link erstellen", "Crea un link alla partita", "Wedstrijdlink maken", "Utwórz link do meczu", "Создать ссылку на матч", "Buat tautan pertandingan", "対戦リンクを作成", "创建比赛链接", "建立比賽連結"),
+    # The reader's own record in a game.
+    "Wins":                        ("Vitórias", "Vitórias", "Victorias", "Victoires", "Siege", "Vittorie", "Overwinningen", "Wygrane", "Победы", "Menang", "勝ち", "胜", "勝"),
+    "Losses":                      ("Derrotas", "Derrotas", "Derrotas", "Défaites", "Niederlagen", "Sconfitte", "Nederlagen", "Porażki", "Поражения", "Kalah", "負け", "负", "負"),
+    "Draws":                       ("Empates", "Empates", "Empates", "Nuls", "Unentschieden", "Pareggi", "Gelijkspelen", "Remisy", "Ничьи", "Seri", "引き分け", "平", "和"),
+    "Matches":                     ("Partidas", "Partidas", "Partidas", "Parties", "Spiele", "Partite", "Wedstrijden", "Mecze", "Матчи", "Pertandingan", "試合数", "比赛", "比賽"),
+    "Best score":                  ("Melhor pontuação", "Melhor pontuação", "Mejor puntuación", "Meilleur score", "Bestes Ergebnis", "Miglior punteggio", "Beste score", "Najlepszy wynik", "Лучший счёт", "Skor terbaik", "ベストスコア", "最高分", "最高分"),
+    "Against people":              ("Contra pessoas", "Contra pessoas", "Contra personas", "Contre des joueurs", "Gegen Menschen", "Contro persone", "Tegen mensen", "Z ludźmi", "Против людей", "Lawan orang", "対人戦", "对战真人", "對戰真人"),
+    "Your latest matches":         ("Suas últimas partidas", "As suas últimas partidas", "Tus últimas partidas", "Vos dernières parties", "Ihre letzten Spiele", "Le tue ultime partite", "Je laatste wedstrijden", "Twoje ostatnie mecze", "Ваши последние матчи", "Pertandingan terakhir Anda", "最近の試合", "你最近的比赛", "你最近的比賽"),
+    "Place %{rank} of %{players}": ("%{rank}º de %{players}", "%{rank}.º de %{players}", "Puesto %{rank} de %{players}", "%{rank}e sur %{players}", "Platz %{rank} von %{players}", "%{rank}° su %{players}", "Plaats %{rank} van %{players}", "Miejsce %{rank} z %{players}", "Место %{rank} из %{players}", "Peringkat %{rank} dari %{players}", "%{players}人中%{rank}位", "第%{rank}名，共%{players}人", "第%{rank}名，共%{players}人"),
+    "Play now":         ("Jogar agora", "Jogar agora", "Jugar ahora", "Jouer maintenant", "Jetzt spielen", "Gioca ora", "Nu spelen", "Graj teraz", "Играть сейчас", "Main sekarang", "今すぐ遊ぶ", "立即游玩", "立即遊玩"),
+    "How to register":  ("Como se registrar", "Como se registar", "Cómo registrarse", "Comment s'inscrire", "So registrieren Sie sich", "Come registrarsi", "Zo registreer je", "Jak się zarejestrować", "Как зарегистрироваться", "Cara mendaftar", "登録方法", "如何注册", "如何註冊"),
     "Match over":     ("Partida encerrada", "Partida terminada", "Partida terminada", "Partie terminée", "Spiel vorbei", "Partita finita", "Wedstrijd voorbij", "Mecz zakończony", "Матч окончен", "Pertandingan selesai", "試合終了", "比赛结束", "比賽結束"),
 }
 
@@ -712,6 +733,8 @@ _CONTEXT_ROWS = {
     ("match", "Watch"): ("Assistir", "Assistir", "Ver", "Regarder", "Zuschauen", "Guarda", "Kijken", "Oglądaj", "Смотреть", "Tonton", "観戦", "观战", "觀戰"),
     ("match", "Live"): ("Ao vivo", "Em direto", "En directo", "En direct", "Live", "In diretta", "Live", "Na żywo", "В эфире", "Langsung", "ライブ", "直播", "直播"),
     ("match", "Ended"): ("Encerrada", "Terminada", "Terminada", "Terminée", "Beendet", "Terminata", "Afgelopen", "Zakończona", "Завершена", "Selesai", "終了済み", "已结束", "已結束"),
+    # The reader's own tab in a game's home: never the pronoun in a sentence.
+    ("player", "You"): ("Você", "Você", "Tú", "Vous", "Du", "Tu", "Jij", "Ty", "Вы", "Kamu", "あなた", "你", "你"),
     ("game", "Play"): ("Jogar", "Jogar", "Jugar", "Jouer", "Spielen", "Gioca", "Spelen", "Graj", "Играть", "Main", "遊ぶ", "玩", "玩"),
     ("furniture", "Table"): ("Mesa", "Mesa", "Mesa", "Table", "Tisch", "Tavolo", "Tafel", "Stół", "Стол", "Meja", "テーブル", "桌子", "桌子"),
     # The Construct's other pieces whose English names mean something else

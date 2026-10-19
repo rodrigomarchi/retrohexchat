@@ -1,13 +1,19 @@
 defmodule RetroHexChatWeb.Components.UI.Landing.GameCommunity do
   @moduledoc """
-  The people around a Retro Game, on its public page: who is winning, the
-  latest matches, and the last few things said in its channel.
+  The people around a Retro Game, on its home (`Landing.GameHome`): who is
+  playing it now, who is winning, and what is said in its channel — one
+  component per tab.
 
   It is the part of the page that changes every day, which is what makes the
   page worth coming back to — for a person and for a search engine — and all
-  of it is in the first HTML the server sends. Every way in leads to the
-  game's channel, which a visitor can read without an account; playing and
-  talking there is what asks for one.
+  of it is in the first HTML the server sends.
+
+  Their assigns come from the page: `channel`, `channel_path`, `ranking`
+  (`:wins` or `:best`), `week` and `computer` (standings), `ratings` (Elo,
+  shown for a versus game), `playing_now` (nicknames in a match right now),
+  `live` (the matches among them anybody may watch), `challenge` and
+  `challenge_leader` (the week's challenge), `recent` (match cards), `chatter`
+  (archived lines) and `week_count`.
   """
   use RetroHexChatWeb.Component
 
@@ -18,45 +24,35 @@ defmodule RetroHexChatWeb.Components.UI.Landing.GameCommunity do
   alias RetroHexChatWeb.Components.UI.GameResultCard
   alias RetroHexChatWeb.Icons
 
-  @doc """
-  The community window's body. Its assigns come from the page: `channel`,
-  `channel_path`, `ranking` (`:wins` or `:best`), `week` and `computer`
-  (standings), `ratings` (Elo, shown for a versus game), `playing_now`
-  (nicknames in a match right now), `live` (the matches among them anybody may
-  watch), `challenge` and `challenge_leader` (the
-  week's challenge), `recent` (match cards), `chatter` (archived lines) and
-  `week_count`.
-  """
-  @spec game_community(map()) :: Phoenix.LiveView.Rendered.t()
-  def game_community(assigns) do
-    ~H"""
-    <h2 id="game-community-heading" class="text-sm font-bold mb-1">{@channel}</h2>
-    <p class="text-sm mb-3" data-testid="game-community-count">
-      {dngettext(
-        "landing",
-        "%{count} game played this week.",
-        "%{count} games played this week.",
-        @week_count,
-        count: @week_count
-      )}
-    </p>
+  attr :live, :list, required: true
+  attr :playing_now, :list, required: true
 
+  @doc "Who is playing the game now, and the matches among theirs anybody may watch."
+  @spec live_now(map()) :: Phoenix.LiveView.Rendered.t()
+  def live_now(assigns) do
+    ~H"""
+    <p :if={@playing_now == []} class="text-sm text-muted-foreground">
+      {dgettext("landing", "Nobody yet.")}
+    </p>
     <p :if={@playing_now != []} class="text-sm mb-3" data-testid="game-community-playing">
       {dgettext("landing", "Playing now: %{names}", names: Enum.join(@playing_now, ", "))}
     </p>
 
-    <div :if={@live != []} class="mb-3" data-testid="game-community-live">
+    <div :if={@live != []} data-testid="game-community-live">
       <h3 class="text-sm font-bold mb-1">{dgettext("landing", "Live now")}</h3>
       <ul class="text-sm space-y-1">
-        <li :for={match <- @live}><.live_match_link match={match} show_game={false} /></li>
+        <li :for={match <- @live}>
+          <.live_match_link match={match} show_game={false} new_tab />
+        </li>
       </ul>
     </div>
+    """
+  end
 
-    <.button patch={@channel_path} class="mb-4" data-testid="game-community-channel">
-      <:icon><Icons.icon_chat class="w-4 h-4" /></:icon>
-      {dgettext("landing", "Open the channel")}
-    </.button>
-
+  @doc "Who is winning: the week's challenge, the week, the rating, the computer and the latest matches."
+  @spec ranking(map()) :: Phoenix.LiveView.Rendered.t()
+  def ranking(assigns) do
+    ~H"""
     <div class="mb-3" data-testid="game-community-challenge">
       <h3 class="text-sm font-bold mb-1">
         {dgettext("landing", "Challenge of the week: %{game}",
@@ -99,15 +95,37 @@ defmodule RetroHexChatWeb.Components.UI.Landing.GameCommunity do
         </span>
       </li>
     </ul>
+    """
+  end
 
-    <div :if={@chatter != []} data-testid="game-community-chatter">
-      <h3 class="text-sm font-bold mb-1 mt-3">{dgettext("landing", "In the channel")}</h3>
+  @doc "The game's channel: how busy it is, its last lines, and the way in."
+  @spec channel_corner(map()) :: Phoenix.LiveView.Rendered.t()
+  def channel_corner(assigns) do
+    ~H"""
+    <h2 id="game-community-heading" class="text-sm font-bold mb-1">{@channel}</h2>
+    <p class="text-sm mb-3" data-testid="game-community-count">
+      {dngettext(
+        "landing",
+        "%{count} game played this week.",
+        "%{count} games played this week.",
+        @week_count,
+        count: @week_count
+      )}
+    </p>
+
+    <div :if={@chatter != []} class="mb-3" data-testid="game-community-chatter">
+      <h3 class="text-sm font-bold mb-1">{dgettext("landing", "In the channel")}</h3>
       <ul class="text-sm space-y-1">
         <li :for={line <- @chatter} class="break-words">
           <strong>{line.author}</strong>: {line.text}
         </li>
       </ul>
     </div>
+
+    <.button patch={@channel_path} data-testid="game-community-channel">
+      <:icon><Icons.icon_chat class="w-4 h-4" /></:icon>
+      {dgettext("landing", "Open the channel")}
+    </.button>
     """
   end
 

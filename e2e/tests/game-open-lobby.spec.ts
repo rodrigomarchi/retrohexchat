@@ -4,6 +4,7 @@
  * @flow N46 [done] A third person following the same match link is told the seat is taken, and it stays taken after the match ends
  * @flow N67 [done] Somebody with no account watches the match being played, at its /watch address, drawn live from the host's relayed frames
  * @flow N68 [done] The players see how many are watching and the watch link to hand on; the match is offered to watch under its game channel's topic and on the game's page
+ * @flow N69 [done] A full match's link, a playing nickname's menu and the game's page each lead to watching it; a member's Play on the game's page opens beside the desktop
  *
  * These @flow lines are the source of truth for e2e/TEST_CATALOG.md.
  * Edit them here, then run `make e2e.catalog` to regenerate the index.
@@ -12,6 +13,7 @@ import { expect, test, type Page } from "@playwright/test";
 import { ChatPage } from "../pages/ChatPage";
 import { ConnectPage, uniqueNickname } from "../pages/ConnectPage";
 import { shot } from "../helpers/screenshots";
+import { waitForView } from "../helpers/liveView";
 
 /**
  * The open lobby: a match that does not know who is coming.
@@ -58,6 +60,7 @@ test("a match link fills its one seat and the game runs on it (N45, N46)", async
 
     await expect(host).toHaveURL(new RegExp(`/play/${GAME}/`));
     const matchUrl = host.url();
+    const token = new URL(matchUrl).pathname.split("/").pop();
     await expect(host.getByTestId("p2p-room-game")).toBeVisible();
     await expect(host.getByTestId("p2p-room-roster")).toContainText(hostNick);
     // A game has no camera to choose: the device half of the room is gone.
@@ -92,6 +95,11 @@ test("a match link fills its one seat and the game runs on it (N45, N46)", async
     await expect(latecomer.getByTestId("join-filled")).toBeVisible();
     await expect(latecomer.getByTestId("join-card")).not.toContainText(
       "Link expired",
+    );
+    // The seat was offered to everybody, so the late click may still watch.
+    await expect(latecomer.getByTestId("join-watch")).toHaveAttribute(
+      "href",
+      `/watch/${token}`,
     );
     await shot(latecomer, "join-card-seat-taken");
 
@@ -129,7 +137,6 @@ test("a match link fills its one seat and the game runs on it (N45, N46)", async
 
     // A match offered in the open is watched in the open: no account, no
     // seat, only the game as the host plays it.
-    const token = new URL(matchUrl).pathname.split("/").pop();
     const watcherCtx = await browser.newContext();
     const watcher = await watcherCtx.newPage();
 
@@ -169,12 +176,37 @@ test("a match link fills its one seat and the game runs on it (N45, N46)", async
       await expect(live).toHaveAttribute("href", `/watch/${token}`);
       await shot(latecomer, "game-channel-live-match");
 
+      // The host's nickname leads there too, from its menu in the channel.
+      const hostChat = await hostCtx.newPage();
+      await hostChat.goto("/c/hex-pong");
+      await new ChatPage(hostChat).waitUntilConnected();
+      await new ChatPage(latecomer).openNicklistContextMenu(hostNick);
+      await expect(
+        latecomer.getByTestId("context-menu-item-context_watch"),
+      ).toBeVisible();
+      await shot(
+        latecomer.getByTestId("context-menu-nicklist-context-menu"),
+        "nick-menu-watch-the-match",
+      );
+      await latecomer.keyboard.press("Escape");
+
       await latecomer.goto("/games/hex-pong");
+      // The tabs switch once the page's view has joined.
+      await waitForView(latecomer);
+      await latecomer.getByTestId("game-home-tab-live").click();
       await expect(
         latecomer
           .getByTestId("game-community-live")
           .locator(`[data-token="${token}"]`),
       ).toBeVisible();
+      await shot(latecomer, "game-home-live");
+      await latecomer.getByTestId("game-home-tab-play").click();
+      // A member's Play opens the game beside the desktop.
+      const memberPlay = latecomer
+        .getByTestId("game-way-hex_pong")
+        .getByTestId("game-play");
+      await expect(memberPlay).toHaveAttribute("target", "_blank");
+      await shot(latecomer, "game-home-member");
     } finally {
       await watcherCtx.close();
     }

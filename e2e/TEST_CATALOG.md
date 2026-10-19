@@ -136,7 +136,7 @@ make e2e.catalog.check    # verify it is current (also runs in make ci)
 
 - **254 spec files** under `e2e/tests/`.
 - **625 Playwright `test()` cases**.
-- **571 documented flows**, 570 done, 1 not done.
+- **573 documented flows**, 572 done, 1 not done.
 - **Every spec documents its own flows.**
 
 ## Flow index
@@ -397,7 +397,7 @@ Grouped by section. Every row comes from an `@flow` line in the spec itself.
 | M33 | A runtime listing is resized, narrowed, and read row by row | `tests/chat-system-windows.spec.ts` | done |
 | M34 | Open system windows are reachable from the taskbar | `tests/chat-system-windows.spec.ts` | done |
 | M35 | The system windows coexist on one desktop | `tests/chat-system-windows.spec.ts` | done |
-| M36 | The Games folder is the catalogue and a game icon opens that game in a tab of its own (features P2) | `tests/chat-retro-games.spec.ts` | done |
+| M36 | The Games folder is the catalogue: a game icon opens the game's home over the chat, and its Play opens the game in a tab of its own (features P2) | `tests/chat-retro-games.spec.ts` | done |
 | M37 | Start -> Games -> Retro Games opens the folder, and the Arcade is still a window (features P2) | `tests/chat-retro-games.spec.ts` | done |
 
 ### N - P2P, File, Call, Game
@@ -472,6 +472,8 @@ Grouped by section. Every row comes from an `@flow` line in the spec itself.
 | N66 | A visitor reads a game's channel and its public page — ranking, latest matches, the channel's last lines — and pressing Find a partner opens the sign-in window | `tests/game-channels.spec.ts` | done |
 | N67 | Somebody with no account watches the match being played, at its /watch address, drawn live from the host's relayed frames | `tests/game-open-lobby.spec.ts` | done |
 | N68 | The players see how many are watching and the watch link to hand on; the match is offered to watch under its game channel's topic and on the game's page | `tests/game-open-lobby.spec.ts` | done |
+| N69 | A full match's link, a playing nickname's menu and the game's page each lead to watching it; a member's Play on the game's page opens beside the desktop | `tests/game-open-lobby.spec.ts` | done |
+| N70 | A result card's game name opens the game's home, whose You tab shows the player's own rating and latest matches | `tests/game-channels.spec.ts` | done |
 
 ### O - Chat UI Micro-Journeys
 

@@ -49,12 +49,13 @@ export function parseAllow(raw) {
 
 /**
  * What a visitor's click on `target` would open and must not, or null when it
- * may go ahead.
+ * may go ahead. A feature of ours carries its path too, so whoever signs in
+ * lands on what they clicked rather than back in the chat.
  *
  * @param {EventTarget} target the event target
  * @param {string} origin this site's origin
  * @param {string[]} allow the open paths
- * @returns {{feature: string}|null}
+ * @returns {{feature: string, path?: string}|null}
  */
 export function blockedLink(target, origin, allow) {
   const anchor = linkAnchor(target);
@@ -68,7 +69,8 @@ export function blockedLink(target, origin, allow) {
 
   if (url.origin === origin && openPath(url.pathname, allow)) return null;
 
-  return { feature: featureOf(url, origin) };
+  const feature = featureOf(url, origin);
+  return feature === "links" ? { feature } : { feature, path: url.pathname + url.search };
 }
 
 function linkAnchor(target) {

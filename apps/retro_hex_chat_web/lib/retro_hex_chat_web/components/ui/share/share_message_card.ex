@@ -153,18 +153,20 @@ defmodule RetroHexChatWeb.Components.UI.ShareMessageCard do
       </:actions>
 
       <%!-- The label is required as well as the path, so a kind added later
-            gets no button rather than somebody else's. --%>
+            gets no button rather than somebody else's. It opens beside the
+            chat, as every Play does: following it in this tab would take the
+            conversation away. --%>
       <:actions :if={@ended? && @next_path && @next_label}>
-        <.button
-          navigate={@next_path}
-          size="sm"
+        <.surface_link
+          as={:button}
+          href={@next_path}
+          label={@next_label}
           variant="outline"
-          class="shrink-0"
           data-testid="share-message-next"
         >
           <:icon><Icons.icon_btn_link class="h-4 w-4" /></:icon>
           {@next_label}
-        </.button>
+        </.surface_link>
       </:actions>
     </.chat_card>
     """

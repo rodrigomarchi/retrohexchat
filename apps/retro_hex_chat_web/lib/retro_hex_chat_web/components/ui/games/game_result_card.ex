@@ -41,7 +41,17 @@ defmodule RetroHexChatWeb.Components.UI.GameResultCard do
       data-outcome={@card.outcome}
     >
       <:icon><Icons.game_icon game_id={@card.game_id} class="h-8 w-8" /></:icon>
-      <:title>{game_title(@card.game_id)}</:title>
+      <%!-- The game's name leads to its home — its ranking among the rest —
+            opened over the chat. --%>
+      <:title>
+        <.link
+          patch={Paths.game_page_path(@card.game_id)}
+          class="underline"
+          data-testid="game-result-home"
+        >
+          {game_title(@card.game_id)}
+        </.link>
+      </:title>
       <:badge :if={@card.personal_best}>
         <.chat_card_badge tone={:live}>{dgettext("games", "Personal best")}</.chat_card_badge>
       </:badge>

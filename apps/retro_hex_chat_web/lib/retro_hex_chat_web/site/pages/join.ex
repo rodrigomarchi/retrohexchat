@@ -109,6 +109,8 @@ defmodule RetroHexChatWeb.Site.Pages.Join do
       enter_path={@enter_path}
       enter_patch?={@enter_patch?}
       chat_path={@chat_path}
+      watch_path={@watch_path}
+      game_path={@game_path}
     />
     """
   end
@@ -142,6 +144,8 @@ defmodule RetroHexChatWeb.Site.Pages.Join do
       creator_nick: resolution.creator_nick,
       subject: subject(resolution),
       enter_path: enter_path(resolution, signed_in?, slug),
+      watch_path: nil,
+      game_path: nil,
       # A channel and the sign-in window are addresses of this desktop; a
       # call, a game, a space and a P2P session are screens of their own.
       enter_patch?: resolution.kind == "channel" or not signed_in?
@@ -158,7 +162,7 @@ defmodule RetroHexChatWeb.Site.Pages.Join do
         cond do
           LobbySession.terminal?(db_session.status) -> gone_card(socket)
           participant?(db_session, nickname) -> live_card(socket, resolution, signed_in?, slug)
-          true -> full_card(socket, resolution)
+          true -> full_card(socket, resolution, db_session)
         end
 
       {:error, :not_found} ->
@@ -166,14 +170,18 @@ defmodule RetroHexChatWeb.Site.Pages.Join do
     end
   end
 
-  defp full_card(socket, resolution) do
+  # A seat that was offered to everybody is a match anybody may watch, so the
+  # late click still gets to see it.
+  defp full_card(socket, resolution, db_session) do
     assign(socket,
       state: :filled,
       kind: resolution.kind,
       creator_nick: resolution.creator_nick,
       subject: subject(resolution),
       enter_path: nil,
-      enter_patch?: false
+      enter_patch?: false,
+      watch_path: if(Lobby.watchable?(db_session), do: Paths.watch_path(db_session.token)),
+      game_path: game_path(resolution)
     )
   end
 
@@ -184,9 +192,16 @@ defmodule RetroHexChatWeb.Site.Pages.Join do
       creator_nick: nil,
       subject: nil,
       enter_path: nil,
-      enter_patch?: false
+      enter_patch?: false,
+      watch_path: nil,
+      game_path: nil
     )
   end
+
+  defp game_path(%{target: %{"game_id" => game_id}}) when is_binary(game_id),
+    do: Paths.game_page_path(game_id)
+
+  defp game_path(_resolution), do: nil
 
   # Asked of the session and never of the link: a link says which room, and who
   # is in the room is the room's own answer.

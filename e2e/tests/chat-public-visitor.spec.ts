@@ -301,10 +301,14 @@ test("no link leaves a visitor's chat (PW26)", async ({ browser }) => {
     await shot(visitor, "visitor-link-held");
     await visitor.keyboard.press("Escape");
 
-    // A game in the desktop's Games folder is a game, and says so.
+    // A game in the desktop's Games folder opens its home, which a visitor
+    // may read; playing it is a game, and says so.
     const chat = new ChatPage(visitor);
-    await chat.openGamesFolder();
-    await chat.gamesFolderGrid.locator('a[href^="/play"]').first().click();
+    const home = await chat.openGameHomeFromFolder("hex_pong");
+    await home
+      .getByTestId("game-way-hex_pong")
+      .getByTestId("game-play")
+      .click();
     await expect(connectWindow).toBeVisible();
     await expect(reason).toContainText("Games are for registered players.");
     await expect(visitor).toHaveURL(/\/connect\?/);
@@ -335,7 +339,7 @@ test("a game, the arcade or a call opened by address asks to sign in and comes b
     await shot(page, "visitor-call-by-address");
 
     // From a game's address: registering there ends on that address.
-    await openAsVisitor(page, "/play");
+    await openAsVisitor(page, "/play/hex_pong");
     await expect(reason).toContainText("Games are for registered players.");
     await shot(page, "visitor-play-by-address");
 
@@ -344,7 +348,7 @@ test("a game, the arcade or a call opened by address asks to sign in and comes b
     await connectWindow.getByTestId("connect-btn").click();
     await new ConnectPage(page).registerWithPassword("pass12345");
 
-    await expect(page).toHaveURL(/\/play$/);
+    await expect(page).toHaveURL(/\/play\/hex_pong$/);
     await shot(page, "visitor-back-on-play");
   } finally {
     await ctx.close();

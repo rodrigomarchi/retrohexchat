@@ -3,7 +3,7 @@ defmodule RetroHexChatWeb.ChatLive.ContextMenuEvents do
   Handle context menu events for nicklist and chat area.
 
   Covers nicklist: nick_right_click, nicklist_dblclick, close_context_menu,
-  context_query, context_whois, context_whowas, context_kick, context_ban, context_op,
+  context_query, context_whois, context_watch, context_whowas, context_kick, context_ban, context_op,
   context_deop, context_voice, context_devoice, context_mute, context_unmute,
   context_invite_to_channel, context_add_contact, context_set_nick_color, context_ignore,
   context_unignore, context_notice, context_pick_color, context_lobby.
@@ -11,7 +11,7 @@ defmodule RetroHexChatWeb.ChatLive.ContextMenuEvents do
   Covers chat area: chat_context_menu, close_chat_context_menu, ctx_chat_pm, ctx_chat_notice,
   ctx_chat_whois, ctx_chat_whowas, ctx_chat_copy_nick, ctx_chat_ignore, ctx_chat_add_contact,
   ctx_chat_kick, ctx_chat_ban, ctx_chat_voice, ctx_chat_devoice,
-  ctx_chat_op, ctx_chat_deop, ctx_chat_mute, ctx_chat_unmute, ctx_chat_open_url,
+  ctx_chat_op, ctx_chat_deop, ctx_chat_mute, ctx_chat_unmute, ctx_chat_watch, ctx_chat_open_url,
   ctx_chat_copy_url, ctx_chat_save_url, ctx_chat_join, ctx_chat_copy_channel,
   ctx_chat_channel_info, edit_message,
   ctx_chat_copy_message, ctx_chat_ignore_sender,
@@ -48,7 +48,9 @@ defmodule RetroHexChatWeb.ChatLive.ContextMenuEvents do
   alias RetroHexChat.Chat.{CapturedURL, IgnoreList}
   alias RetroHexChat.Commands.Duration
   alias RetroHexChat.Commands.Handlers.Lobby
+  alias RetroHexChat.Games.Activity
   alias RetroHexChat.Services.NickServ
+  alias RetroHexChatWeb.App.Paths
   alias RetroHexChatWeb.ChatLive.ChannelCentralEvents
   alias RetroHexChatWeb.ChatLive.CommandDispatch
 
@@ -125,6 +127,16 @@ defmodule RetroHexChatWeb.ChatLive.ContextMenuEvents do
      socket
      |> close_context_menu()
      |> CommandDispatch.dispatch_command(socket.assigns.session, "whois", [nick])}
+  end
+
+  # The match the nickname is playing, asked again now: the menu was drawn a
+  # moment ago, and a match that ended since has nothing left to open.
+  def handle_event("context_watch", %{"nick" => nick}, socket) do
+    {:halt, socket |> close_context_menu() |> confirm_watch(nick)}
+  end
+
+  def handle_event("ctx_chat_watch", %{"nick" => nick}, socket) do
+    {:halt, socket |> close_chat_context_menu() |> confirm_watch(nick)}
   end
 
   def handle_event("context_whowas", %{"nick" => nick}, socket) do
@@ -980,6 +992,13 @@ defmodule RetroHexChatWeb.ChatLive.ContextMenuEvents do
         new_cooldowns = Map.delete(auto_state.cooldowns, key)
         new_auto_state = %{active: new_active, cooldowns: new_cooldowns}
         assign(socket, auto_ignore_state: new_auto_state)
+    end
+  end
+
+  defp confirm_watch(socket, nick) do
+    case Activity.watch_token(nick) do
+      nil -> socket
+      token -> OpenTabEvents.confirm(socket, Paths.watch_path(token))
     end
   end
 end

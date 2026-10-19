@@ -153,6 +153,54 @@ defmodule RetroHexChat.Games.Queries do
     |> Repo.exists?()
   end
 
+  @type totals :: %{
+          matches: non_neg_integer(),
+          wins: non_neg_integer(),
+          best: non_neg_integer() | nil
+        }
+
+  @doc """
+  One player's ranked matches of a game and all its modes, by kind of
+  opponent (`"p2p"`, `"ai"`): how many, how many won and their best score.
+  A kind they never played against is absent.
+  """
+  @spec player_totals(String.t(), integer()) :: %{String.t() => totals()}
+  def player_totals(base_id, player_id) do
+    GameResult
+    |> where([r], r.ranked and r.base_id == ^base_id)
+    |> where([r], r.p1_id == ^player_id or r.p2_id == ^player_id)
+    |> participants()
+    |> subquery()
+    |> join(:inner, [p], r in GameResult, on: r.id == p.result_id)
+    |> where([p], p.player_id == ^player_id)
+    |> group_by([p, r], r.origin)
+    |> select(
+      [p, r],
+      {r.origin,
+       %{
+         matches: count(p.result_id),
+         wins: type(sum(fragment("CASE WHEN ? THEN 1 ELSE 0 END", p.won)), :integer),
+         best: max(p.score)
+       }}
+    )
+    |> Repo.all()
+    |> Map.new()
+  end
+
+  @doc """
+  One player's latest matches of a game and all its modes, newest first —
+  private ones too: they are the player's own.
+  """
+  @spec recent_of(String.t(), integer(), pos_integer()) :: [GameResult.t()]
+  def recent_of(base_id, player_id, limit) do
+    GameResult
+    |> where([r], r.base_id == ^base_id)
+    |> where([r], r.p1_id == ^player_id or r.p2_id == ^player_id)
+    |> order_by([r], desc: r.finished_at, desc: r.id)
+    |> limit(^limit)
+    |> Repo.all()
+  end
+
   @doc "The latest public matches of a game and all its modes, newest first."
   @spec recent(String.t(), pos_integer()) :: [GameResult.t()]
   def recent(base_id, limit) do

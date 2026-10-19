@@ -44,6 +44,13 @@
 <.help_h4 icon={:icon_watching}>{dgettext("help_games", "Where to Find a Match")}</.help_h4>
 <ul>
   <li>{dgettext("help_games", "You can also find a live match in the channel of its game.")}</li>
+  <li>
+    {dgettext(
+      "help_games",
+      "In the list of users, the menu of a person who is playing has %{watch}.",
+      watch: dgettext("chat", "Watch the Match")
+    )}
+  </li>
   <li>{dgettext("help_games", "The page of a game also lists the matches being played now.")}</li>
   <li>
     {dgettext(

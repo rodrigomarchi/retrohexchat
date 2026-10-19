@@ -270,9 +270,20 @@ defmodule RetroHexChatWeb.Site.JoinPageTest do
       # learning who answered it.
       refute html =~ claimer.nickname
 
-      # And never a dead end.
-      assert has_element?(view, ~s([data-testid="join-play-instead"]))
+      # And never a dead end: the seat was offered to everybody, so the match
+      # is theirs to watch.
+      assert has_element?(
+               view,
+               ~s([data-testid="join-play-instead"][href="/games/hex-pong"][data-phx-link="patch"])
+             )
+
       assert has_element?(view, ~s([data-testid="join-elsewhere"]))
+
+      watch =
+        view |> element(~s([data-testid="join-watch"])) |> render() |> Floki.parse_fragment!()
+
+      assert Floki.attribute(watch, "href") == ["/watch/#{ctx.session.token}"]
+      assert Floki.attribute(watch, "target") == ["_blank"]
     end
 
     test "whoever is already in it still gets the way in", %{conn: conn} = ctx do

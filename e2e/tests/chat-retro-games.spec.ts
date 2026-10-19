@@ -1,6 +1,6 @@
 /**
  * @section M - Admin, Server Operations, Bots
- * @flow M36 [done] The Games folder is the catalogue and a game icon opens that game in a tab of its own (features P2)
+ * @flow M36 [done] The Games folder is the catalogue: a game icon opens the game's home over the chat, and its Play opens the game in a tab of its own (features P2)
  * @flow M37 [done] Start -> Games -> Retro Games opens the folder, and the Arcade is still a window (features P2)
  *
  * These @flow lines are the source of truth for e2e/TEST_CATALOG.md.
@@ -12,7 +12,7 @@ import { ChatPage } from "../pages/ChatPage";
 import { shot } from "../helpers/screenshots";
 
 test.describe("Retro Games from the chat", () => {
-  test("the Games folder lists the games and an icon opens Pixel Tanks in a tab", async ({
+  test("the Games folder opens Pixel Tanks' home, and its Play opens the game in a tab", async ({
     page,
   }) => {
     const connect = new ConnectPage(page);
@@ -59,9 +59,10 @@ test.describe("Retro Games from the chat", () => {
     ).toBeVisible();
     await shot(games.getByTestId("retro-games-window"), "pixel-tanks-ready");
 
-    await games.getByTestId("retro-game-back").click();
-    await expect(games.getByTestId("retro-games-library")).toBeVisible();
-    await expect(games.getByTestId("retro-games-icon-grid")).toBeVisible();
+    // One game per tab: no library to go back to, the home is in the chat's tab.
+    await expect(games.getByTestId("retro-game-back")).toHaveCount(0);
+    await expect(page.getByTestId("game-home")).toBeVisible();
+    await shot(page, "pixel-tanks-home");
   });
 
   test("Start reaches the same folder, and the Arcade is still a window", async ({

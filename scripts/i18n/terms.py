@@ -217,6 +217,43 @@ _TERMS: dict[str, dict[str, tuple[str, ...]]] = {
         "fr": ("épingl",),
         "de": ("angeheftet", "pinn", "fixiert"),
     },
+    # A match is a game played, never a correspondence or a coincidence:
+    # "Watching a match" came back as "Observando uma correspondência", "Ver
+    # una coincidencia" and "Eine Übereinstimmung beobachten". Only the noun
+    # after a determiner is held to it; "passwords do not match", "the
+    # matching line" and a search's "the active match" are the other word.
+    r"\b(?:a|the|this|that|their|your|each|every|another|no|private|live|whole|full|short|fast)"
+    r"\s+(?:(?:new|next|first|last|single|open)\s+)?match(?:es)?\b|\bmatch(?:es)?\s+(?:link|room|over|finished|format)\b": {
+        "pt": ("partida", "jogo"),
+        "es": ("partida", "partido", "juego"),
+        "fr": ("partie", "match"),
+        "de": ("spiel", "match", "partie"),
+        "it": ("partit", "match"),
+        "nl": ("wedstrijd", "potje", "partij", "match", "spel"),
+        "pl": ("mecz", "rozgrywk", "partii", "partia", "gry", "grę", "grze"),
+        "ru": ("матч", "игр", "парти"),
+        "id": ("pertandingan", "permainan", "laga"),
+        "ja": ("試合", "対戦", "マッチ"),
+        "zh_hans": ("比赛", "对局", "对战"),
+        "zh_hant": ("比賽", "對局", "對戰"),
+    },
+    # A player of a game, never a media player: French gave "un lecteur" in
+    # "Right-click a player". Media, video and audio players, and a game's
+    # single-player mode, are the other words.
+    r"(?<!media )(?<!video )(?<!audio )(?<!native )(?<!single-)(?<!multi-)\bplayers?\b": {
+        "pt": ("jogador",),
+        "es": ("jugador",),
+        "fr": ("joueur",),
+        "de": ("spieler",),
+        "it": ("giocator",),
+        "nl": ("speler",),
+        "pl": ("gracz",),
+        "ru": ("игрок",),
+        "id": ("pemain",),
+        "ja": ("プレイヤー", "プレーヤー", "選手"),
+        "zh_hans": ("玩家", "选手"),
+        "zh_hant": ("玩家", "選手"),
+    },
     r"\bnew tab\b": {
         "pt": ("aba", "separador", "guia"),
         "es": ("pestaña",),

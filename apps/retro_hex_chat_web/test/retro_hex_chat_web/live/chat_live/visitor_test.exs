@@ -194,6 +194,19 @@ defmodule RetroHexChatWeb.ChatLive.VisitorTest do
       assert html =~ "This feature needs an account."
     end
 
+    test "a link held in the chat comes back to where it led once they sign in", %{conn: conn} do
+      {:ok, view, _html} = live(conn, "/")
+
+      render_hook(view, "visitor_link", %{"feature" => "games", "path" => "/play/hex_pong"})
+      assert connect_window(view).feature == :games
+      assert connect_window(view).return_to == "/play/hex_pong"
+
+      # A path that is not ours is the conversation they were reading.
+      render_patch(view, "/")
+      render_hook(view, "visitor_link", %{"feature" => "games", "path" => "//evil.test/x"})
+      assert connect_window(view).return_to == "/c/lobby"
+    end
+
     test "arriving from a screen that needs an account opens the window, with the way back",
          %{conn: conn} do
       path = Paths.visitor_sign_in_path(:games, "/play/tetris")

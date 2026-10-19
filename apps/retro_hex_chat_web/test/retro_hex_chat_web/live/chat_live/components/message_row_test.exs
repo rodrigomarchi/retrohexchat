@@ -363,6 +363,13 @@ defmodule RetroHexChatWeb.ChatLive.Components.MessageRowTest do
       assert html =~ "ana 3 × 1 beto"
       assert html =~ "Winner: ana"
 
+      # The game's name leads to its home — a mode's, to its game's.
+      assert [home] =
+               html |> Floki.parse_fragment!() |> Floki.find(~s([data-testid="game-result-home"]))
+
+      assert Floki.attribute(home, "href") == ["/games/hex-tennis"]
+      assert Floki.attribute(home, "data-phx-link") == ["patch"]
+
       # The sentence stays on the row for copying, and is not drawn.
       refute html |> Floki.parse_fragment!() |> Floki.find(".chat-message__text") |> Floki.text() =~
                "ana beat beto"

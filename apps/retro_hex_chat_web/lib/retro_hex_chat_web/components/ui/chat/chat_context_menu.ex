@@ -37,6 +37,7 @@ defmodule RetroHexChatWeb.Components.UI.ChatContextMenu do
   attr :is_target_voiced, :boolean, default: false
   attr :is_target_muted, :boolean, default: false
   attr :is_already_joined, :boolean, default: false
+  attr :is_target_watchable, :boolean, default: false, doc: "playing a match anybody may watch"
   attr :key_bindings, :map, default: %{}
   attr :custom_items, :list, default: []
   attr :on_action, :any, default: nil
@@ -83,6 +84,15 @@ defmodule RetroHexChatWeb.Components.UI.ChatContextMenu do
     >
       <:icon><Icons.icon_megaphone class="w-[14px] h-[14px]" /></:icon>
       {dgettext("chat", "Send Notice...")}
+    </.context_menu_item>
+    <.context_menu_item
+      :if={@is_target_watchable}
+      on_click={@on_action}
+      action="ctx_chat_watch"
+      phx-value-nick={@target_nick}
+    >
+      <:icon><Icons.icon_watching class="w-[14px] h-[14px]" /></:icon>
+      {dgettext("chat", "Watch the Match")}
     </.context_menu_item>
     <.context_menu_item on_click={@on_action} action="ctx_chat_whois" phx-value-nick={@target_nick}>
       <:icon><Icons.icon_btn_search class="w-[14px] h-[14px]" /></:icon>

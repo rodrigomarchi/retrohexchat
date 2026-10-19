@@ -1,9 +1,10 @@
 defmodule RetroHexChatWeb.Components.UI.GameChannelBar do
   @moduledoc """
-  The strip under a game channel's topic: the game the room is about, and the
-  three things somebody reading it can do about that game — play it now,
-  offer a seat to the room, or look at who is winning — and, when one is being
-  played in the open, the match to watch.
+  The strip under a game channel's topic: the game the room is about — its
+  name leads to the game's home, with every way to play it and who is
+  winning — and the two things somebody reading it can do about that game
+  right here — play it now, or offer a seat to the room — and, when one is
+  being played in the open, the match to watch.
 
   Drawn only in a game's own channel (`#hex-pong`); any other channel gets
   nothing. A visitor sees the same strip as a member, and pressing anything on
@@ -23,7 +24,6 @@ defmodule RetroHexChatWeb.Components.UI.GameChannelBar do
   alias RetroHexChatWeb.App.Paths
   alias RetroHexChatWeb.Components.UI.GameResultCard
   alias RetroHexChatWeb.Icons
-  alias RetroHexChatWeb.PublicPages
 
   attr :channel, :string, default: nil
 
@@ -54,12 +54,18 @@ defmodule RetroHexChatWeb.Components.UI.GameChannelBar do
       data-testid="game-channel-bar"
       data-game-id={@game_id}
     >
-      <span class="flex min-w-0 items-center gap-retro-4">
+      <%!-- The game's home is a page of this desktop: it opens over the chat,
+            which stays where it is. --%>
+      <.link
+        patch={Paths.game_page_path(@game_id)}
+        class="flex min-w-0 items-center gap-retro-4 underline"
+        data-testid="game-channel-home"
+      >
         <Icons.game_icon game_id={@game_id} class="h-4 w-4 shrink-0" />
         <span class="truncate font-bold">{GameResultCard.game_title(@game_id)}</span>
-      </span>
+      </.link>
 
-      <%!-- Three actions, read as one row of words: the strip is a line of the
+      <%!-- Two actions, read as one row of words: the strip is a line of the
             conversation's furniture, not a toolbar. --%>
       <.surface_link
         href={Paths.play_path(@game_id)}
@@ -81,16 +87,6 @@ defmodule RetroHexChatWeb.Components.UI.GameChannelBar do
       >
         {dgettext("games", "Find a partner")}
       </button>
-
-      <.link
-        href={PublicPages.localized_path("/games/" <> Catalog.slug(@game_id))}
-        target="_blank"
-        rel="noopener"
-        class="shrink-0 whitespace-nowrap underline"
-        data-testid="game-channel-ranking"
-      >
-        {dgettext("games", "Ranking")}
-      </.link>
 
       <%!-- The strip is redrawn when somebody starts or stops playing, not
             when somebody starts watching, so it names no count it would

@@ -15,21 +15,26 @@ describe("visitor_links", () => {
   afterEach(() => cleanupDOM());
 
   describe("blockedLink", () => {
-    it("holds a game, a call, a space and a private session, naming each", () => {
+    it("holds a game, a call, a space and a private session, naming each and its path", () => {
       expect(blockedLink(link(`<a href="/play/arcade/doom">x</a>`), ORIGIN, ALLOW)).toEqual({
         feature: "games",
+        path: "/play/arcade/doom",
       });
       expect(blockedLink(link(`<a href="/play">x</a>`), ORIGIN, ALLOW)).toEqual({
         feature: "games",
+        path: "/play",
       });
-      expect(blockedLink(link(`<a href="/call/abc">x</a>`), ORIGIN, ALLOW)).toEqual({
+      expect(blockedLink(link(`<a href="/call/abc?x=1">x</a>`), ORIGIN, ALLOW)).toEqual({
         feature: "calls",
+        path: "/call/abc?x=1",
       });
       expect(blockedLink(link(`<a href="/space/xyz">x</a>`), ORIGIN, ALLOW)).toEqual({
         feature: "space",
+        path: "/space/xyz",
       });
       expect(blockedLink(link(`<a href="/p2p/tok">x</a>`), ORIGIN, ALLOW)).toEqual({
         feature: "p2p",
+        path: "/p2p/tok",
       });
     });
 
@@ -45,6 +50,7 @@ describe("visitor_links", () => {
       const inner = link(`<a href="/play/tetris"><span id="inner">Play</span></a>`);
       expect(blockedLink(inner.querySelector("#inner"), ORIGIN, ALLOW)).toEqual({
         feature: "games",
+        path: "/play/tetris",
       });
     });
 

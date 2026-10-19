@@ -6,7 +6,7 @@ defmodule RetroHexChatWeb.Components.UI.GameChannelBarTest do
 
   @moduletag :unit
 
-  test "a game's channel offers the game, a seat and its ranking" do
+  test "a game's channel offers the game, a seat and the game's home" do
     html = render_component(&game_channel_bar/1, channel: "#hex-pong")
     document = Floki.parse_document!(html)
 
@@ -21,8 +21,12 @@ defmodule RetroHexChatWeb.Components.UI.GameChannelBarTest do
     assert [lfg] = Floki.find(document, ~s([data-testid="game-channel-lfg"]))
     assert Floki.attribute(lfg, "phx-click") == ["game_lfg"]
 
-    assert [ranking] = Floki.find(document, ~s([data-testid="game-channel-ranking"]))
-    assert Floki.attribute(ranking, "href") == ["/games/hex-pong"]
+    # The game's name leads to its home, a page of the desktop: opened over
+    # the chat, never in another tab.
+    assert [home] = Floki.find(document, ~s([data-testid="game-channel-home"]))
+    assert Floki.attribute(home, "href") == ["/games/hex-pong"]
+    assert Floki.attribute(home, "data-phx-link") == ["patch"]
+    assert Floki.attribute(home, "target") == []
   end
 
   test "a match of its game being played in the open is offered to watch" do

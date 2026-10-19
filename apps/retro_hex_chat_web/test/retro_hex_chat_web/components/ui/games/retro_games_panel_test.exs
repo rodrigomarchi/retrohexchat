@@ -143,48 +143,10 @@ defmodule RetroHexChatWeb.Components.UI.Games.RetroGamesPanelTest do
     controls: "Arrow keys or WASD to move, Space or Shift to shoot/tackle"
   }
 
-  test "renders the library as a Windows-style icon launcher" do
-    html =
-      render_component(&retro_games_panel/1,
-        id: "retro-games-panel",
-        games: [@game, @tanks, @hockey],
-        status: "library",
-        selected_game: nil,
-        difficulty: "normal",
-        canvas_ready: false,
-        target: "retro-games-island"
-      )
-
-    document = Floki.parse_document!(html)
-    text = Floki.text(document)
-
-    assert [_] = Floki.find(document, ~s([data-testid="retro-games-library"]))
-    assert [_] = Floki.find(document, ~s([data-testid="retro-games-icon-window"]))
-    assert [_] = Floki.find(document, ~s([data-testid="retro-games-icon-grid"]))
-    assert [_] = Floki.find(document, ~s([data-testid="retro-games-status-bar"]))
-
-    for game <- [@game, @tanks, @hockey] do
-      assert [_] =
-               Floki.find(
-                 document,
-                 ~s([data-testid="retro-game-#{game.id}"][aria-label="#{game.name}"])
-               )
-
-      assert [_] = Floki.find(document, ~s([data-testid="retro-game-#{game.id}"] svg))
-      assert text =~ game.name
-    end
-
-    assert text =~ "Ready"
-    assert text =~ "Solo AI"
-    refute text =~ "Arrow keys"
-    refute text =~ "Browser-native games"
-  end
-
   test "renders the ready game with an integrated control panel" do
     html =
       render_component(&retro_games_panel/1,
         id: "retro-games-panel",
-        games: [@game],
         status: "ready",
         selected_game: @game,
         difficulty: "normal",
@@ -218,14 +180,14 @@ defmodule RetroHexChatWeb.Components.UI.Games.RetroGamesPanelTest do
     end
 
     assert [_] = Floki.find(document, ~s([data-testid="retro-game-start-ai"]))
-    assert [_] = Floki.find(document, ~s([data-testid="retro-game-back"]))
+    # One game per page: its home, where another is chosen, is in the chat's tab.
+    assert Floki.find(document, ~s([data-testid="retro-game-back"])) == []
   end
 
   test "renders the Light Trails goal in the shared status panel" do
     html =
       render_component(&retro_games_panel/1,
         id: "retro-games-panel",
-        games: [@trails],
         status: "ready",
         selected_game: @trails,
         difficulty: "normal",
@@ -242,7 +204,6 @@ defmodule RetroHexChatWeb.Components.UI.Games.RetroGamesPanelTest do
     html =
       render_component(&retro_games_panel/1,
         id: "retro-games-panel",
-        games: [@tanks],
         status: "ready",
         selected_game: @tanks,
         difficulty: "normal",
@@ -265,7 +226,6 @@ defmodule RetroHexChatWeb.Components.UI.Games.RetroGamesPanelTest do
     html =
       render_component(&retro_games_panel/1,
         id: "retro-games-panel",
-        games: [@outlaw],
         status: "ready",
         selected_game: @outlaw,
         difficulty: "normal",
@@ -287,7 +247,6 @@ defmodule RetroHexChatWeb.Components.UI.Games.RetroGamesPanelTest do
     html =
       render_component(&retro_games_panel/1,
         id: "retro-games-panel",
-        games: [@star_duel],
         status: "ready",
         selected_game: @star_duel,
         difficulty: "normal",
@@ -309,7 +268,6 @@ defmodule RetroHexChatWeb.Components.UI.Games.RetroGamesPanelTest do
     html =
       render_component(&retro_games_panel/1,
         id: "retro-games-panel",
-        games: [@breakout],
         status: "ready",
         selected_game: @breakout,
         difficulty: "normal",
@@ -330,7 +288,6 @@ defmodule RetroHexChatWeb.Components.UI.Games.RetroGamesPanelTest do
     html =
       render_component(&retro_games_panel/1,
         id: "retro-games-panel",
-        games: [@warlords],
         status: "ready",
         selected_game: @warlords,
         difficulty: "normal",
@@ -351,7 +308,6 @@ defmodule RetroHexChatWeb.Components.UI.Games.RetroGamesPanelTest do
     html =
       render_component(&retro_games_panel/1,
         id: "retro-games-panel",
-        games: [@raid],
         status: "ready",
         selected_game: @raid,
         difficulty: "normal",
@@ -373,7 +329,6 @@ defmodule RetroHexChatWeb.Components.UI.Games.RetroGamesPanelTest do
     html =
       render_component(&retro_games_panel/1,
         id: "retro-games-panel",
-        games: [@boxing],
         status: "ready",
         selected_game: @boxing,
         difficulty: "normal",
@@ -395,7 +350,6 @@ defmodule RetroHexChatWeb.Components.UI.Games.RetroGamesPanelTest do
     html =
       render_component(&retro_games_panel/1,
         id: "retro-games-panel",
-        games: [@tennis],
         status: "ready",
         selected_game: @tennis,
         difficulty: "normal",
@@ -417,7 +371,6 @@ defmodule RetroHexChatWeb.Components.UI.Games.RetroGamesPanelTest do
     html =
       render_component(&retro_games_panel/1,
         id: "retro-games-panel",
-        games: [@invaders],
         status: "ready",
         selected_game: @invaders,
         difficulty: "normal",
@@ -440,7 +393,6 @@ defmodule RetroHexChatWeb.Components.UI.Games.RetroGamesPanelTest do
     html =
       render_component(&retro_games_panel/1,
         id: "retro-games-panel",
-        games: [@enduro],
         status: "ready",
         selected_game: @enduro,
         difficulty: "normal",
@@ -463,7 +415,6 @@ defmodule RetroHexChatWeb.Components.UI.Games.RetroGamesPanelTest do
     html =
       render_component(&retro_games_panel/1,
         id: "retro-games-panel",
-        games: [@skiing],
         status: "ready",
         selected_game: @skiing,
         difficulty: "normal",
@@ -484,7 +435,6 @@ defmodule RetroHexChatWeb.Components.UI.Games.RetroGamesPanelTest do
     html =
       render_component(&retro_games_panel/1,
         id: "retro-games-panel",
-        games: [@frost],
         status: "ready",
         selected_game: @frost,
         difficulty: "normal",
@@ -506,7 +456,6 @@ defmodule RetroHexChatWeb.Components.UI.Games.RetroGamesPanelTest do
     html =
       render_component(&retro_games_panel/1,
         id: "retro-games-panel",
-        games: [@hockey],
         status: "ready",
         selected_game: @hockey,
         difficulty: "normal",
@@ -528,7 +477,6 @@ defmodule RetroHexChatWeb.Components.UI.Games.RetroGamesPanelTest do
     html =
       render_component(&retro_games_panel/1,
         id: "retro-games-panel",
-        games: [@game],
         status: "playing",
         selected_game: @game,
         difficulty: "hard",
@@ -549,7 +497,6 @@ defmodule RetroHexChatWeb.Components.UI.Games.RetroGamesPanelTest do
   defp finished_text(game, result, extra \\ []) do
     [
       id: "retro-games-panel",
-      games: [game],
       status: "finished",
       selected_game: game,
       difficulty: "normal",
@@ -601,5 +548,8 @@ defmodule RetroHexChatWeb.Components.UI.Games.RetroGamesPanelTest do
 
     assert [_] = Floki.find(document, ~s([data-testid="retro-game-unranked"]))
     assert Floki.find(document, ~s([data-testid="retro-game-recorded"])) == []
+
+    assert [how] = Floki.find(document, ~s([data-testid="retro-game-how-to-register"]))
+    assert Floki.attribute(how, "href") == ["/chat/help/nickserv"]
   end
 end
