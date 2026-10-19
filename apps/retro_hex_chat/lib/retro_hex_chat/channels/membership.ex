@@ -104,17 +104,21 @@ defmodule RetroHexChat.Channels.Membership do
     end
   end
 
-  @spec count(t()) :: non_neg_integer()
-  def count(%__MODULE__{members: members}), do: map_size(members)
-
   @doc """
-  How many people are in the channel: every member but the bots. A room with a
-  service sitting in it and nobody else is an empty room to whoever is looking
-  for company.
+  How many members the channel has, bots included.
+
+  `exclude_bots: true` counts only the people: what a bot does in a room — a
+  feed publishing, a service announcing — makes it a room worth reading, but
+  not somebody to talk to.
   """
-  @spec people_count(t()) :: non_neg_integer()
-  def people_count(%__MODULE__{members: members}),
-    do: Enum.count(members, fn {_key, %{role: role}} -> role != :bot end)
+  @spec count(t(), keyword()) :: non_neg_integer()
+  def count(membership, opts \\ [])
+
+  def count(%__MODULE__{members: members}, opts) do
+    if Keyword.get(opts, :exclude_bots, false),
+      do: Enum.count(members, fn {_key, %{role: role}} -> role != :bot end),
+      else: map_size(members)
+  end
 
   @spec to_list(t()) :: [{String.t(), role()}]
   def to_list(%__MODULE__{members: members}) do

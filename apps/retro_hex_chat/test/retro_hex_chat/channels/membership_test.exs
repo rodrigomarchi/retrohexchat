@@ -271,15 +271,15 @@ defmodule RetroHexChat.Channels.MembershipTest do
     end
   end
 
-  describe "people_count/1" do
-    test "leaves the bots out" do
+  describe "count/2" do
+    test "counts the bots unless asked to leave them out" do
       m =
         Membership.new()
         |> Membership.add("alice")
         |> Membership.add("GameServ", :bot)
 
       assert Membership.count(m) == 2
-      assert Membership.people_count(m) == 1
+      assert Membership.count(m, exclude_bots: true) == 1
     end
   end
 

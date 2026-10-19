@@ -1414,9 +1414,8 @@ defmodule RetroHexChat.Channels.Server do
     Directory.publish(state.name, %{
       name: state.name,
       topic: state.topic,
-      # The directory is how people find company: it counts people, and a bot
-      # holding a room open is not somebody to talk to.
-      member_count: Membership.people_count(state.membership),
+      # Bots count: a channel a feed keeps publishing in is a live one.
+      member_count: Membership.count(state.membership),
       watcher_count: map_size(state.watchers),
       secret?: Modes.secret?(state.modes),
       private?: Modes.private?(state.modes),

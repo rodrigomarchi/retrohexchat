@@ -76,6 +76,18 @@ defmodule RetroHexChat.Channels.DirectoryTest do
       assert find(name).member_count == 1
     end
 
+    test "a channel only a bot is in counts as occupied" do
+      name = unique("dirbot")
+      start_channel(name)
+
+      Server.join(name, "FeedBot", nil, bot: true)
+
+      assert find(name).member_count == 1
+
+      assert [%{name: ^name}] =
+               [] |> Autocomplete.list_visible_channels() |> Enum.filter(&(&1.name == name))
+    end
+
     test "the topic follows a topic change" do
       name = unique("dirtopic")
       start_channel(name)
