@@ -22,7 +22,7 @@ chat**:
 | P2P session | `/p2p/:token` | `App.P2PLive` |
 | match | `/play/:game/:token` | `App.P2PLive`, opened at its game |
 | space | `/space/:slug` | `App.SpaceLive` |
-| solo games | `/play`, `/play/:game` | `App.PlayLive` |
+| a game against the computer | `/play/:game` (`/play` alone redirects to `/games`) | `App.PlayLive` |
 | arcade | `/play/arcade/:game` | a redirect, not a LiveView |
 
 One module, one mount, one route each. There is no `"embedded" => true` and no
@@ -321,18 +321,19 @@ is not, so changing one means arguing with the reason rather than the line.
   the place*. What walking into an empty one mints is a link to that
   **gathering**, once per gathering — the same one-per-room ratio.
 
-  **The solo games keep the rule as written.** `/play` is a catalogue, not a
-  room: there is nothing to create, nothing to announce and no card. It is the
-  one screen with an address that posts nothing.
+  **A game against the computer keeps the rule as written.** `/play/:game` is
+  not a room: there is nothing to create, nothing to announce and no card. It
+  is the one screen with an address that posts nothing.
 
-  **Where the catalogue is read is not where it is played.** A catalogue at an
-  address of its own would put a second tab between the reader and the list.
-  So the Games desktop folder holds the catalogue — one icon per game, from
-  `Games.Catalog` — and each icon is the address of that game. The tab is
-  offered on the game the reader chose, never on the list they are still
-  reading, and Start ▸ Games ▸ Retro Games opens that folder rather than
-  carrying a second copy of it. The folder is links; `PlayLive` still lives
-  only at its own address.
+  **Where a game is chosen is not where it is played.** Each Retro Game has a
+  home, its page of the desktop (`/games/:slug`, `Site.Pages.Game`): every way
+  to play it — the computer, a seat in its channel, an invitation, a match
+  link — who is playing it now and who is winning. The Games desktop folder
+  holds one icon per game, from `Games.Catalog`, and each opens that home over
+  the chat; so do the catalogue, the game's channel strip and its result
+  cards. From the home, playing opens `/play/:game` in a tab of its own, and
+  the home stays in the chat's tab. `/play` alone names nothing to play and
+  sends the reader to the catalogue.
 
 - **After it starts, the link still works.** A link spends most of its life
   after minute zero. Call and space let a late click in; a full match says

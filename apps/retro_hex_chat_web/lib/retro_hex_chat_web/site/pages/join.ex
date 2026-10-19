@@ -400,7 +400,7 @@ defmodule RetroHexChatWeb.Site.Pages.Join do
     do: Paths.play_match_path(game_id, token)
 
   defp surface_path(%{kind: "play", target: %{"game_id" => game_id}}), do: ~p"/play/#{game_id}"
-  defp surface_path(%{kind: "play"}), do: ~p"/play"
+  defp surface_path(%{kind: "play"}), do: Paths.localized("/games")
 
   defp surface_path(%{kind: "call", target: %{"room_token" => room_token}}),
     do: Paths.call_path(room_token)

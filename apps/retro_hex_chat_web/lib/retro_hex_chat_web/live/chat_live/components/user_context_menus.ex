@@ -202,12 +202,13 @@ defmodule RetroHexChatWeb.ChatLive.Components.UserContextMenus do
       false
   end
 
-  @spec chat_context_target_ignored?(map() | nil, map()) :: boolean()
-  # Asked only of an open menu: presence is read once per right-click, not on
-  # every render of the chat.
+  # Asked only of an open menu, not of every render of the chat: a presence
+  # lookup, while the menu is up.
+  @spec watchable?(map()) :: boolean()
   defp watchable?(%{visible: true, target_nick: nick}), do: Activity.watch_token(nick) != nil
   defp watchable?(_menu), do: false
 
+  @spec chat_context_target_ignored?(map() | nil, map()) :: boolean()
   defp chat_context_target_ignored?(_session, %{target_nick: nil}), do: false
 
   defp chat_context_target_ignored?(session, %{target_nick: nick}) do

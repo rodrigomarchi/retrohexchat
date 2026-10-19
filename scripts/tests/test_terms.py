@@ -38,6 +38,7 @@ class MissingTermsTest(unittest.TestCase):
             "A miniature of the conversation with the matching line wearing its highlight",
             "The active match is highlighted in orange.",
             "If nothing matches, you get a line that says no entries were found.",
+            "in the search input to jump between matches. The chat scrolls to each match automatically.",
         ]:
             self.assertEqual(missing_terms(source, "irrelevante", "pt_BR"), [], source)
 
@@ -50,6 +51,13 @@ class MissingTermsTest(unittest.TestCase):
             [],
         )
         self.assertEqual(missing_terms("Audio and video attachments use native players", "lecteurs natifs", "fr"), [])
+
+    def test_playing_a_game_is_not_playing_back(self):
+        source = "Play browser-native games against the computer."
+        self.assertTrue(missing_terms(source, "ブラウザネイティブのゲームをコンピュータと再生します。", "ja"))
+        self.assertEqual(missing_terms(source, "ブラウザネイティブのゲームでコンピュータと遊びます。", "ja"), [])
+        # A recording is still played back.
+        self.assertEqual(missing_terms("Play the voice message.", "ボイスメッセージを再生します。", "ja"), [])
 
     def test_a_bedroom_is_not_a_chat_room(self):
         self.assertTrue(missing_terms("How a room works", "Cómo funciona una habitación", "es"))

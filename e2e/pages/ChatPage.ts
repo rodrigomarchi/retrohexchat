@@ -48,8 +48,6 @@ export class ChatPage {
   readonly startGamesSubmenuTrigger: Locator;
   readonly startRetroGamesItem: Locator;
   readonly retroGamesWindow: Locator;
-  readonly retroGamesLibrary: Locator;
-  readonly retroGamesIconGrid: Locator;
   readonly arcadeIcon: Locator;
   readonly arcadeWindow: Locator;
   readonly arcadeLibrary: Locator;
@@ -363,8 +361,6 @@ export class ChatPage {
     );
     this.startRetroGamesItem = page.getByTestId("start-menu-item-retro-games");
     this.retroGamesWindow = page.getByTestId("retro-games-window");
-    this.retroGamesLibrary = page.getByTestId("retro-games-library");
-    this.retroGamesIconGrid = page.getByTestId("retro-games-icon-grid");
     // The arcade is a program, not a folder row: it has a desktop icon of its
     // own beside Retro Games, because the last icon of a list you must scroll
     // is a feature in hiding.

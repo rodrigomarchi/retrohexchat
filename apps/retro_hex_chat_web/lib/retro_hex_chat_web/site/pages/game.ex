@@ -104,6 +104,7 @@ defmodule RetroHexChatWeb.Site.Pages.Game do
           ways: ways(game),
           sign_in_path: play_path(game, ctx),
           you: your_record(game_id, ctx),
+          identified: Map.get(ctx, :identified?, false),
           register_path: PublicPages.localized_path("/chat/help/nickserv"),
           channel: channel,
           channel_path: Paths.chat_path(channel),
@@ -145,9 +146,24 @@ defmodule RetroHexChatWeb.Site.Pages.Game do
     ]
   end
 
-  # The reader's own record, when their nickname is registered: the one the
-  # ranking knows them by. A visitor and an unregistered nickname have none.
-  defp your_record(game_id, %{visitor?: false, nickname: nickname}) when is_binary(nickname) do
+  @doc """
+  Whether who is playing the game of a loaded home, or which of its matches
+  may be watched, is no longer what the page shows — the one part of it that
+  moves with presence rather than with a recorded match.
+  """
+  @spec live_changed?(map()) :: boolean()
+  def live_changed?(%{game: %{kind: :multiplayer, id: game_id}, windows: [home | _rest]}) do
+    shown = Map.take(home.assigns, [:playing_now, :live])
+    now = %{playing_now: Activity.playing_in(game_id), live: Activity.live_matches(game_id)}
+    shown != now
+  end
+
+  def live_changed?(_loaded), do: false
+
+  # The reader's own record — private matches included — so only for a
+  # nickname this session has proved: holding somebody's registered nickname
+  # without their password shows nothing of theirs.
+  defp your_record(game_id, %{identified?: true, nickname: nickname}) when is_binary(nickname) do
     case SessionHelpers.resolve_user_id(nickname) do
       {:ok, player_id} -> Results.player_record(game_id, player_id)
       _unregistered -> nil

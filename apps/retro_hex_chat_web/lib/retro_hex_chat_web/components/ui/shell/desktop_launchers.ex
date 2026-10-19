@@ -616,7 +616,7 @@ defmodule RetroHexChatWeb.Components.UI.DesktopLaunchers do
   # as hiding it. It is a program of its own now, with an icon of its own —
   # `launcher_apps/1`.
   defp games_items(_cap) do
-    for game <- Catalog.base_games(), Catalog.solo_game_id?(game.id) do
+    for game <- Catalog.base_games() do
       patch(Paths.game_page_path(game.id), game.name, Registry.game(game.id),
         testid: "desktop-launcher-item-game-#{game.id}"
       )

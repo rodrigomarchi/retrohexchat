@@ -62,7 +62,7 @@ defmodule RetroHexChatWeb.ChatLive.RetroGamesEntryTest do
 
     test "neither entry opens a tab on the bare catalogue any more" do
       for document <- [render_launcher(), render_start_menu()] do
-        refute Paths.play_path() in Floki.attribute(document, "a", "href")
+        refute "/play" in Floki.attribute(document, "a", "href")
       end
     end
 

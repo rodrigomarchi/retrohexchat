@@ -90,7 +90,11 @@ defmodule RetroHexChatWeb.SpacePanels do
   defp featured(game) do
     channel = Catalog.channel_name(game.id)
 
+    # The cabinet's own game is played right here, and its home is a click away.
     Map.merge(game, %{
+      url: Paths.play_path(game.id),
+      home_url: Paths.game_page_path(game.id),
+      home_label: dgettext("share", "Other ways to play"),
       channel: channel,
       channel_url: Paths.chat_path(channel),
       playing: playing_now(Activity.playing_in(game.id)),
@@ -130,10 +134,10 @@ defmodule RetroHexChatWeb.SpacePanels do
   defp portrait(author) when is_binary(author), do: Map.get(Avatars.for_nicks([author]), author)
   defp portrait(_nobody), do: nil
 
-  # A cabinet opens the game itself, on its own page in a new tab, rather than
-  # the chat's library: the Space stays where it is.
+  # The shelf opens a game in a new tab, and the Space stays where it is: an
+  # arcade game itself, a Retro Game at its home — every way to play it.
   defp game_url(%{kind: :arcade, id: id}), do: Paths.arcade_path(id)
-  defp game_url(%{kind: :multiplayer, id: id}), do: Paths.play_path(id)
+  defp game_url(%{kind: :multiplayer, id: id}), do: Paths.game_page_path(id)
 
   defp conversation(space_id) do
     case VirtualSpace.construct_parent(space_id) do

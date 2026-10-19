@@ -14,10 +14,12 @@ defmodule RetroHexChatWeb.GamesCatalogTest do
   @moduletag :liveview
 
   alias RetroHexChat.Chat.HelpTopics
+  alias RetroHexChat.Games.Catalog
   alias RetroHexChat.Games.Queries, as: GameQueries
   alias RetroHexChat.Games.Schema.GameRating
   alias RetroHexChat.Lobby
   alias RetroHexChat.Services.RegisteredNick
+  alias RetroHexChatWeb.App.Paths
   alias RetroHexChatWeb.GameCatalog
   alias RetroHexChatWeb.LiveMatchPages
 
@@ -163,7 +165,10 @@ defmodule RetroHexChatWeb.GamesCatalogTest do
 
     test "a member plays a mode beside the desktop, and How to play is its own topic",
          %{conn: conn} do
-      {:ok, view, _html} = conn |> chat_conn("gamer#{uid()}") |> live("/games/hex-tennis")
+      gamer = player("gamer#{System.unique_integer([:positive])}")
+
+      {:ok, view, _html} =
+        conn |> chat_conn(gamer.nickname, pre_identified: true) |> live("/games/hex-tennis")
 
       play =
         view
@@ -186,8 +191,11 @@ defmodule RetroHexChatWeb.GamesCatalogTest do
                ~s([data-testid="game-challenge-form"][phx-submit="game_home_challenge"])
              )
 
-      assert view |> element(~s([data-testid="game-match-link"])) |> render() =~
-               "/play/hex_tennis?match=new"
+      assert view
+             |> element(
+               ~s([data-testid="game-way-hex_tennis_quick"] [data-testid="game-match-link"])
+             )
+             |> render() =~ "/play/hex_tennis_quick?match=new"
 
       assert view
              |> element(~s([data-testid="game-how-to-play"]))
@@ -323,7 +331,8 @@ defmodule RetroHexChatWeb.GamesCatalogTest do
         wins: 1
       })
 
-      {:ok, view, _html} = conn |> chat_conn(ana.nickname) |> live("/games/hex-pong")
+      {:ok, view, _html} =
+        conn |> chat_conn(ana.nickname, pre_identified: true) |> live("/games/hex-pong")
 
       rating = view |> element(~s([data-testid="game-you-rating"])) |> render()
       assert rating =~ "1216"
@@ -333,6 +342,22 @@ defmodule RetroHexChatWeb.GamesCatalogTest do
 
       assert view |> element(~s([data-testid="game-you-recent"])) |> render() =~
                "#{ana.nickname} 11 × 4 #{beto.nickname}"
+    end
+
+    # The You tab includes private matches, so it is shown only to a session
+    # that proved the nickname: holding it is not enough.
+    test "a registered nickname this session has not proved sees no record", %{conn: conn} do
+      ana = player("ana#{System.unique_integer([:positive])}")
+      beto = player("beto#{System.unique_integer([:positive])}")
+      record_match(ana, beto, {11, 4, "p1"}, "you-private")
+
+      {:ok, view, _html} =
+        conn |> chat_conn(ana.nickname, pre_identified: false) |> live("/games/hex-pong")
+
+      assert has_element?(view, ~s([data-testid="game-you-unranked"]))
+      refute has_element?(view, ~s([data-testid="game-you-recent"]))
+      refute has_element?(view, ~s([data-testid="game-lfg"]))
+      assert has_element?(view, ~s([data-testid="game-identify"]))
     end
 
     test "a reader the ranking does not know is told how to enter it", %{conn: conn} do
@@ -353,15 +378,52 @@ defmodule RetroHexChatWeb.GamesCatalogTest do
       someone = player("new#{System.unique_integer([:positive])}")
 
       {:ok, new_view, _html} =
-        build_conn() |> chat_conn(someone.nickname) |> live("/games/hex-pong")
+        build_conn()
+        |> chat_conn(someone.nickname, pre_identified: true)
+        |> live("/games/hex-pong")
 
       assert has_element?(new_view, ~s([data-testid="game-you-none"]))
+    end
+
+    # Open while matches end and people start playing, the home follows:
+    # no reopening to see the result that just came in.
+    test "an open home follows its game's results and who is playing", %{conn: conn} do
+      ana = player("ana#{System.unique_integer([:positive])}")
+      beto = player("beto#{System.unique_integer([:positive])}")
+      {:ok, view, _html} = conn |> chat_conn(ana.nickname) |> live("/games/hex-pong")
+
+      record_match(ana, beto, {11, 2, "p1"}, "live-1")
+      send(view.pid, {:game_result_recorded, %{base_id: "hex_pong"}})
+
+      assert view |> element(~s([data-testid="game-community-recent"])) |> render() =~
+               "#{ana.nickname} 11 × 2 #{beto.nickname}"
+
+      {:ok, %{token: token}} =
+        Lobby.create_open_session(ana.id, metadata: %{"game_id" => "hex_pong"})
+
+      LiveMatchPages.playing([ana.nickname, beto.nickname], "hex_pong", token)
+      send(view.pid, :refresh_games_playing)
+
+      assert view |> element(~s([data-testid="game-community-playing"])) |> render() =~
+               beto.nickname
     end
 
     test "an arcade game has no community window", %{conn: conn} do
       document = document(conn, "/games/doom-shareware")
       assert Floki.find(document, ~s([data-testid="game-community-channel"])) == []
       refute json_ld(document, "VideoGame")["interactionStatistic"]
+    end
+  end
+
+  describe "the home page" do
+    test "lists every Retro Game, each leading to its home", %{conn: conn} do
+      document = document(conn, "/")
+
+      for game <- Catalog.base_games() do
+        assert [link] = Floki.find(document, ~s([data-testid="index-game-#{game.id}"]))
+
+        assert Floki.attribute(link, "href") == [Paths.game_page_path(game.id)]
+      end
     end
   end
 

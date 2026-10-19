@@ -17,6 +17,7 @@ defmodule RetroHexChatWeb.ChatLive.GameEvents do
   alias RetroHexChat.Games.Catalog
   alias RetroHexChatWeb.ChatLive.CommandDispatch
   alias RetroHexChatWeb.ChatLive.Helpers.Channel, as: ChannelHelpers
+  alias RetroHexChatWeb.ChatLive.Helpers.Conversation
   alias RetroHexChatWeb.Site.Address
 
   @spec handle_event(String.t(), map(), Phoenix.LiveView.Socket.t()) ::
@@ -39,37 +40,48 @@ defmodule RetroHexChatWeb.ChatLive.GameEvents do
 
   def handle_event(_event, _params, socket), do: {:cont, socket}
 
-  # Joined, or switched to when already in it — the join is what makes it the
-  # conversation the command runs in. A channel that refused the reader has
-  # said why, and nothing is run.
+  # Switched to when the reader is already in it, joined otherwise — the way
+  # a click on a channel does it — so the command runs in it. Then out from
+  # under the game's home to wherever that left the chat: the channel with the
+  # seat's card, the conversation the invitation went to, or the line saying
+  # why the channel turned the reader away.
   defp in_game_channel(socket, game_id, command, args) do
     case Catalog.get_game(game_id) do
       {:ok, _game} ->
         channel = Catalog.channel_name(game_id)
-        socket = ChannelHelpers.join_channel(socket, channel, socket.assigns.session)
-        run_in(socket, channel, command, args)
+
+        socket
+        |> enter(channel)
+        |> run_in(channel, command, args)
+        |> then(&push_patch(&1, to: Address.chat_address(&1.assigns)))
 
       {:error, :not_found} ->
         socket
     end
   end
 
-  # Then to wherever the command left the chat — the channel with the seat's
-  # card, or the conversation the invitation went to — out from under the
-  # game's home.
-  defp run_in(%{assigns: %{session: %{active_channel: channel}}} = socket, channel, command, args) do
-    socket = CommandDispatch.dispatch_command(socket, socket.assigns.session, command, args)
-    push_patch(socket, to: Address.chat_address(socket.assigns))
+  defp enter(socket, channel) do
+    session = socket.assigns.session
+
+    if channel in session.channels,
+      do: Conversation.activate_channel(socket, channel),
+      else: ChannelHelpers.join_channel(socket, channel, session)
   end
+
+  defp run_in(
+         %{assigns: %{session: %{active_channel: channel}}} = socket,
+         channel,
+         command,
+         args
+       ),
+       do: CommandDispatch.dispatch_command(socket, socket.assigns.session, command, args)
 
   defp run_in(socket, _channel, _command, _args), do: socket
 
-  # A mode is named to the commands by its last word: `hex_raid_blitz` is
-  # `/lfg blitz` in #hex-raid.
   defp mode_args(game_id) do
-    case String.replace_prefix(game_id, Catalog.base_id(game_id) <> "_", "") do
-      ^game_id -> []
-      mode -> [mode]
+    case Catalog.mode_word(game_id) do
+      nil -> []
+      word -> [word]
     end
   end
 end

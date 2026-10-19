@@ -91,6 +91,32 @@ defmodule RetroHexChatWeb.ChatLive.GameChannelFlowTest do
     assert line.content =~ "#{nick.nickname} is looking for a partner in Hex Pong"
   end
 
+  # Already in the channel, a press switches to it: joining again would
+  # subscribe the chat a second time, and every line would arrive twice.
+  test "a press from the home while in the channel subscribes once", %{conn: conn} do
+    nick = register("twice#{uid()}" |> String.slice(0, 16))
+
+    {:ok, view, _html} =
+      live(chat_conn(conn, nick.nickname, pre_identified: true), "/c/hex-pong")
+
+    subscriptions = fn ->
+      RetroHexChat.PubSub
+      |> Registry.lookup(RetroHexChat.Topics.channel("#hex-pong"))
+      |> Enum.count(fn {pid, _value} -> pid == view.pid end)
+    end
+
+    assert subscriptions.() == 1
+
+    render_patch(view, "/games/hex-pong")
+
+    view
+    |> element(~s([data-testid="game-way-hex_pong"] [data-testid="game-lfg"]))
+    |> render_click()
+
+    assert_patch(view, "/c/hex-pong")
+    assert subscriptions.() == 1
+  end
+
   test "the game's home invites a nickname to the game", %{conn: conn} do
     host = register("chal#{uid()}" |> String.slice(0, 16))
     peer = register("peer#{uid()}" |> String.slice(0, 16))

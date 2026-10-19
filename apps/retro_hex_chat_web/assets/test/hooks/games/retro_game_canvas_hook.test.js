@@ -113,20 +113,29 @@ describe("RetroGameCanvasHook", () => {
     expect(engine.beginMatch).not.toHaveBeenCalled();
   });
 
-  it("stops the engine on server stop and destroy", async () => {
-    const engine = buildEngine();
+  it("a match ended early gets a fresh engine, ready for the next one", async () => {
+    const first = buildEngine();
+    const second = buildEngine();
+    const engineFactory = vi.fn().mockResolvedValueOnce(first).mockResolvedValueOnce(second);
     const eventHandlers = {};
-    const hook = buildHook(() => Promise.resolve(engine));
+    const hook = buildHook(engineFactory);
     hook.handleEvent.mockImplementation((event, cb) => {
       eventHandlers[event] = cb;
     });
 
     hook.mounted();
-    await hook._enginePromise;
+    await vi.waitFor(() => expect(hook.engine).toBe(first));
     eventHandlers.retro_game_stop({ game_id: "hex_pong" });
-    hook.destroyed();
+    await vi.waitFor(() => expect(hook.engine).toBe(second));
 
-    expect(engine.stop).toHaveBeenCalledOnce();
+    expect(first.stop).toHaveBeenCalledOnce();
+    expect(hook.engine).toBe(second);
+    expect(
+      hook.pushEvent.mock.calls.filter(([event]) => event === "retro_game_canvas_ready"),
+    ).toHaveLength(2);
+
+    hook.destroyed();
+    expect(second.stop).toHaveBeenCalledOnce();
     expect(hook.engine).toBeNull();
   });
 });

@@ -59,9 +59,13 @@ defmodule RetroHexChatWeb.SpacePanelsTest do
              id: "hex_pong",
              channel: "#hex-pong",
              channel_url: "/c/hex-pong",
-             url: "/play/hex_pong"
+             url: "/play/hex_pong",
+             home_url: "/games/hex-pong"
            } =
              featured
+
+    # The shelf leads to each Retro Game's home.
+    assert %{url: "/games/hex-tennis"} = Enum.find(games, &(&1.id == "hex_tennis"))
 
     refute Enum.any?(games, &(&1.id == "hex_pong"))
     assert length(games) == length(GameCatalog.list()) - 1

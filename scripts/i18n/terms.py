@@ -221,8 +221,9 @@ _TERMS: dict[str, dict[str, tuple[str, ...]]] = {
     # "Watching a match" came back as "Observando uma correspondência", "Ver
     # una coincidencia" and "Eine Übereinstimmung beobachten". Only the noun
     # after a determiner is held to it; "passwords do not match", "the
-    # matching line" and a search's "the active match" are the other word.
-    r"\b(?:a|the|this|that|their|your|each|every|another|no|private|live|whole|full|short|fast)"
+    # matching line", a search's "the active match" and its "each match" are
+    # the other word.
+    r"\b(?:a|the|this|that|their|your|every|another|no|private|live|whole|full|short|fast)"
     r"\s+(?:(?:new|next|first|last|single|open)\s+)?match(?:es)?\b|\bmatch(?:es)?\s+(?:link|room|over|finished|format)\b": {
         "pt": ("partida", "jogo"),
         "es": ("partida", "partido", "juego"),
@@ -253,6 +254,15 @@ _TERMS: dict[str, dict[str, tuple[str, ...]]] = {
         "ja": ("プレイヤー", "プレーヤー", "選手"),
         "zh_hans": ("玩家", "选手"),
         "zh_hant": ("玩家", "選手"),
+    },
+    # Playing a game, never playing back a recording: Japanese gave "再生"
+    # ("ゲームを再生します") for "play games". Only a "play" whose sentence is
+    # about a game, a match or the computer is held to it; a voice message is
+    # still played back.
+    r"\bplay(?:s|ed|ing)?\b(?=[^.]*\b(?:games?|match(?:es)?|computer)\b)": {
+        "ja": ("遊", "プレイ", "対戦"),
+        "zh_hans": ("玩", "对战"),
+        "zh_hant": ("玩", "對戰"),
     },
     r"\bnew tab\b": {
         "pt": ("aba", "separador", "guia"),

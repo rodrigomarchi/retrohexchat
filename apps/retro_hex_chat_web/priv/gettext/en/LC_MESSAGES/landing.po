@@ -92,7 +92,7 @@ msgid "18 classic games. Running in your browser."
 msgstr "18 classic games. Running in your browser."
 
 #: lib/retro_hex_chat_web/site/pages/features.ex:75
-#: lib/retro_hex_chat_web/site/pages/index.ex:85
+#: lib/retro_hex_chat_web/site/pages/index.ex:92
 #, elixir-autogen, elixir-format
 msgid "18 games"
 msgstr "18 games"
@@ -112,8 +112,8 @@ msgstr "6 questions"
 msgid "A corporation"
 msgstr "A corporation"
 
-#: lib/retro_hex_chat_web/components/ui/landing/game_cards.ex:160
-#: lib/retro_hex_chat_web/components/ui/landing/game_home.ex:200
+#: lib/retro_hex_chat_web/components/ui/landing/game_cards.ex:161
+#: lib/retro_hex_chat_web/components/ui/landing/game_home.ex:214
 #: lib/retro_hex_chat_web/site/about.ex:21
 #, elixir-autogen, elixir-format
 msgid "About"
@@ -353,7 +353,7 @@ msgid "Do I need to run my own server?"
 msgstr "Do I need to run my own server?"
 
 #: lib/retro_hex_chat_web/components/ui/shell/desktop_launchers.ex:700
-#: lib/retro_hex_chat_web/components/ui/shell/start_menu_app.ex:572
+#: lib/retro_hex_chat_web/components/ui/shell/start_menu_app.ex:569
 #: lib/retro_hex_chat_web/site/about.html.heex:43
 #, elixir-autogen, elixir-format
 msgid "Documentation"
@@ -596,7 +596,7 @@ msgid "Legal"
 msgstr "Legal"
 
 #: lib/retro_hex_chat_web/components/ui/shell/desktop_launchers.ex:730
-#: lib/retro_hex_chat_web/components/ui/shell/start_menu_app.ex:670
+#: lib/retro_hex_chat_web/components/ui/shell/start_menu_app.ex:667
 #: lib/retro_hex_chat_web/site/about.html.heex:38
 #, elixir-autogen, elixir-format
 msgid "License (MIT)"
@@ -1073,7 +1073,7 @@ msgstr "Slack charges for messages you already sent."
 
 #: lib/retro_hex_chat_web/site/pages/features.ex:72
 #: lib/retro_hex_chat_web/site/pages/games.ex:36
-#: lib/retro_hex_chat_web/site/pages/index.ex:82
+#: lib/retro_hex_chat_web/site/pages/index.ex:89
 #, elixir-autogen, elixir-format
 msgid "Solo Arcade"
 msgstr "Solo Arcade"
@@ -1491,11 +1491,6 @@ msgstr "invite-only for your group"
 msgid "invite-only, for your company or group."
 msgstr "invite-only, for your company or group."
 
-#: lib/retro_hex_chat_web/site/pages/index/multiplayer_games.html.heex:18
-#, elixir-autogen, elixir-format
-msgid "no server involvement"
-msgstr "no server involvement"
-
 #: lib/retro_hex_chat_web/site/pages/faq.ex:178
 #, elixir-autogen, elixir-format
 msgid "one active session"
@@ -1689,7 +1684,7 @@ msgstr "Home"
 msgid "Open the"
 msgstr "Open the"
 
-#: lib/retro_hex_chat_web/components/ui/shell/start_menu_app.ex:588
+#: lib/retro_hex_chat_web/components/ui/shell/start_menu_app.ex:585
 #, elixir-autogen, elixir-format
 msgid "Open the app"
 msgstr "Open the app"
@@ -1699,11 +1694,6 @@ msgstr "Open the app"
 #, elixir-autogen, elixir-format
 msgid "menu and choose"
 msgstr "menu and choose"
-
-#: lib/retro_hex_chat_web/site/pages/index/multiplayer_games.html.heex:18
-#, elixir-autogen, elixir-format
-msgid ", just like private P2P calls."
-msgstr ", just like private P2P calls."
 
 #: lib/retro_hex_chat_web/site/pages/features.ex:95
 #, elixir-autogen, elixir-format
@@ -2033,7 +2023,7 @@ msgstr "Retro CSS, Vanilla JS, Canvas"
 msgid "Retro Hex Chat combines a self-hosted Phoenix server with real-time chat, channel Spaces, private WebRTC peer-to-peer sessions, and self-hosted channel conferences."
 msgstr "Retro Hex Chat combines a self-hosted Phoenix server with real-time chat, channel Spaces, private WebRTC peer-to-peer sessions, and self-hosted channel conferences."
 
-#: lib/retro_hex_chat_web/site/pages/index.ex:90
+#: lib/retro_hex_chat_web/site/pages/index.ex:97
 #: lib/retro_hex_chat_web/site/pages/index/retro_hex_chat_welcome.html.heex:14
 #, elixir-autogen, elixir-format
 msgid "Retro Hex Chat — Self-hosted chat, spaces, calls and games"
@@ -2366,7 +2356,7 @@ msgid "← Earlier"
 msgstr "← Earlier"
 
 #: lib/retro_hex_chat_web/site/pages/games.ex:71
-#: lib/retro_hex_chat_web/site/pages/index.ex:73
+#: lib/retro_hex_chat_web/site/pages/index.ex:80
 #, elixir-autogen, elixir-format
 msgid "%{count} game"
 msgid_plural "%{count} games"
@@ -2383,40 +2373,35 @@ msgstr "All games"
 msgid "DOOM, Quake, Wolfenstein 3D, Half-Life and classic adventures in the browser, plus multiplayer arcade games to play with friends — free, nothing to install."
 msgstr "DOOM, Quake, Wolfenstein 3D, Half-Life and classic adventures in the browser, plus multiplayer arcade games to play with friends — free, nothing to install."
 
-#: lib/retro_hex_chat_web/site/pages/game.ex:133
+#: lib/retro_hex_chat_web/site/pages/game.ex:134
 #, elixir-autogen, elixir-format
 msgid "Free, in the browser"
 msgstr "Free, in the browser"
 
-#: lib/retro_hex_chat_web/components/ui/landing/game_cards.ex:156
-#: lib/retro_hex_chat_web/components/ui/landing/game_home.ex:208
+#: lib/retro_hex_chat_web/components/ui/landing/game_cards.ex:157
+#: lib/retro_hex_chat_web/components/ui/landing/game_home.ex:222
 #, elixir-autogen, elixir-format
 msgid "How to play"
 msgstr "How to play"
 
-#: lib/retro_hex_chat_web/components/ui/landing/game_cards.ex:167
-#, elixir-autogen, elixir-format
-msgid "Modes"
-msgstr "Modes"
-
-#: lib/retro_hex_chat_web/site/pages/game.ex:135
+#: lib/retro_hex_chat_web/site/pages/game.ex:136
 #, elixir-autogen, elixir-format
 msgid "More games"
 msgstr "More games"
 
-#: lib/retro_hex_chat_web/site/pages/game.ex:193
+#: lib/retro_hex_chat_web/site/pages/game.ex:209
 #, elixir-autogen, elixir-format
 msgid "Play %{name} in your browser"
 msgstr "Play %{name} in your browser"
 
-#: lib/retro_hex_chat_web/site/pages/game.ex:192
+#: lib/retro_hex_chat_web/site/pages/game.ex:208
 #, elixir-autogen, elixir-format
 msgid "Play %{name} in your browser — Retro Hex Chat"
 msgstr "Play %{name} in your browser — Retro Hex Chat"
 
-#: lib/retro_hex_chat_web/components/ui/landing/game_cards.ex:151
+#: lib/retro_hex_chat_web/components/ui/landing/game_cards.ex:152
 #: lib/retro_hex_chat_web/components/ui/landing/game_home.ex:119
-#: lib/retro_hex_chat_web/components/ui/landing/game_home.ex:234
+#: lib/retro_hex_chat_web/components/ui/landing/game_home.ex:248
 #, elixir-autogen, elixir-format
 msgid "Play now — pick a nickname"
 msgstr "Play now — pick a nickname"
@@ -2432,12 +2417,12 @@ msgid "Retro games you can play in your browser — Retro Hex Chat"
 msgstr "Retro games you can play in your browser — Retro Hex Chat"
 
 #: lib/retro_hex_chat_web/components/ui/landing/game_cards.ex:50
-#: lib/retro_hex_chat_web/site/pages/game.ex:207
+#: lib/retro_hex_chat_web/site/pages/game.ex:223
 #, elixir-autogen, elixir-format
 msgid "Screenshot of %{name}"
 msgstr "Screenshot of %{name}"
 
-#: lib/retro_hex_chat_web/components/ui/landing/game_cards.ex:195
+#: lib/retro_hex_chat_web/components/ui/landing/game_cards.ex:187
 #, elixir-autogen, elixir-format
 msgid "See every game in the catalogue"
 msgstr "See every game in the catalogue"
@@ -2447,13 +2432,13 @@ msgstr "See every game in the catalogue"
 msgid "Shareware classics and freeware adventures running on their original engines, and arcade games to play against a friend or the AI. Free, and nothing to install: pick a nickname and play."
 msgstr "Shareware classics and freeware adventures running on their original engines, and arcade games to play against a friend or the AI. Free, and nothing to install: pick a nickname and play."
 
-#: lib/retro_hex_chat_web/site/pages/game.ex:188
+#: lib/retro_hex_chat_web/site/pages/game.ex:204
 #, elixir-autogen, elixir-format
 msgid "Solo arcade"
 msgstr "Solo arcade"
 
-#: lib/retro_hex_chat_web/components/ui/landing/game_cards.ex:163
-#: lib/retro_hex_chat_web/components/ui/landing/game_home.ex:203
+#: lib/retro_hex_chat_web/components/ui/landing/game_cards.ex:164
+#: lib/retro_hex_chat_web/components/ui/landing/game_home.ex:217
 #, elixir-autogen, elixir-format
 msgid "Controls"
 msgstr "Controls"
@@ -2825,7 +2810,7 @@ msgstr "About this site"
 msgid "Create an account"
 msgstr "Create an account"
 
-#: lib/retro_hex_chat_web/components/ui/landing/game_community.ex:151
+#: lib/retro_hex_chat_web/components/ui/landing/game_community.ex:165
 #, elixir-autogen, elixir-format
 msgid "%{count} win"
 msgid_plural "%{count} wins"
@@ -2837,7 +2822,7 @@ msgstr[1] "%{count} wins"
 msgid "Against the computer on hard"
 msgstr "Against the computer on hard"
 
-#: lib/retro_hex_chat_web/components/ui/landing/game_community.ex:117
+#: lib/retro_hex_chat_web/components/ui/landing/game_community.ex:131
 #, elixir-autogen, elixir-format
 msgid "In the channel"
 msgstr "In the channel"
@@ -2848,19 +2833,19 @@ msgid "Latest matches"
 msgstr "Latest matches"
 
 #: lib/retro_hex_chat_web/components/ui/landing/game_community.ex:88
-#: lib/retro_hex_chat_web/components/ui/landing/game_home.ex:250
+#: lib/retro_hex_chat_web/components/ui/landing/game_home.ex:264
 #, elixir-autogen, elixir-format
 msgid "No matches yet. Play the first one."
 msgstr "No matches yet. Play the first one."
 
 #: lib/retro_hex_chat_web/components/ui/landing/game_community.ex:35
 #: lib/retro_hex_chat_web/components/ui/landing/game_community.ex:73
-#: lib/retro_hex_chat_web/components/ui/landing/game_community.ex:139
+#: lib/retro_hex_chat_web/components/ui/landing/game_community.ex:153
 #, elixir-autogen, elixir-format
 msgid "Nobody yet."
 msgstr "Nobody yet."
 
-#: lib/retro_hex_chat_web/components/ui/landing/game_community.ex:127
+#: lib/retro_hex_chat_web/components/ui/landing/game_community.ex:141
 #, elixir-autogen, elixir-format
 msgid "Open the channel"
 msgstr "Open the channel"
@@ -2870,17 +2855,10 @@ msgstr "Open the channel"
 msgid "This week, between players"
 msgstr "This week, between players"
 
-#: lib/retro_hex_chat_web/components/ui/landing/game_community.ex:154
+#: lib/retro_hex_chat_web/components/ui/landing/game_community.ex:168
 #, elixir-autogen, elixir-format
 msgid "best score: %{score}"
 msgstr "best score: %{score}"
-
-#: lib/retro_hex_chat_web/components/ui/landing/game_community.ex:107
-#, elixir-autogen, elixir-format
-msgid "%{count} game played this week."
-msgid_plural "%{count} games played this week."
-msgstr[0] "%{count} game played this week."
-msgstr[1] "%{count} games played this week."
 
 #: lib/retro_hex_chat_web/components/ui/landing/game_community.ex:58
 #, elixir-autogen, elixir-format
@@ -2898,7 +2876,7 @@ msgid "Playing now: %{names}"
 msgstr "Playing now: %{names}"
 
 #: lib/retro_hex_chat_web/components/ui/landing/game_community.ex:71
-#: lib/retro_hex_chat_web/components/ui/landing/game_home.ex:258
+#: lib/retro_hex_chat_web/components/ui/landing/game_home.ex:272
 #, elixir-autogen, elixir-format
 msgid "Rating"
 msgstr "Rating"
@@ -2908,11 +2886,12 @@ msgstr "Rating"
 msgid "Live now"
 msgstr "Live now"
 
-#: lib/retro_hex_chat_web/components/ui/landing/game_cards.ex:152
+#: lib/retro_hex_chat_web/components/ui/landing/game_cards.ex:153
 #, elixir-autogen, elixir-format
 msgid "Play now"
 msgstr "Play now"
 
+#: lib/retro_hex_chat_web/components/ui/landing/game_community.ex:121
 #: lib/retro_hex_chat_web/site/pages/game.ex:88
 #, elixir-autogen, elixir-format
 msgid "%{count} game played this week"
@@ -2927,17 +2906,17 @@ msgid_plural "%{count} playing now"
 msgstr[0] "%{count} playing now"
 msgstr[1] "%{count} playing now"
 
-#: lib/retro_hex_chat_web/site/pages/index/multiplayer_games.html.heex:15
-#, elixir-autogen, elixir-format
-msgid "Games run on HTML5 Canvas with state synced via WebRTC DataChannel —"
-msgstr "Games run on HTML5 Canvas with state synced via WebRTC DataChannel —"
-
-#: lib/retro_hex_chat_web/site/pages/index/multiplayer_games.html.heex:11
-#, elixir-autogen, elixir-format
-msgid "Pick a game, then play the computer, find a partner in its channel or invite a friend."
-msgstr "Pick a game, then play the computer, find a partner in its channel or invite a friend."
-
 #: lib/retro_hex_chat_web/site/pages/index/multiplayer_games.html.heex:2
 #, elixir-autogen, elixir-format
 msgid "Games to play with others, from the chat."
 msgstr "Games to play with others, from the chat."
+
+#: lib/retro_hex_chat_web/site/pages/index/multiplayer_games.html.heex:11
+#, elixir-autogen, elixir-format
+msgid "Pick a game, then play against the computer or with other people."
+msgstr "Pick a game, then play against the computer or with other people."
+
+#: lib/retro_hex_chat_web/site/pages/index/multiplayer_games.html.heex:12
+#, elixir-autogen, elixir-format
+msgid "Games run in the browser and need no download."
+msgstr "Games run in the browser and need no download."

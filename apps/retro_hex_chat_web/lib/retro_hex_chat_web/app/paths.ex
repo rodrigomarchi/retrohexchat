@@ -75,10 +75,6 @@ defmodule RetroHexChatWeb.App.Paths do
   def archive_path("#" <> slug), do: ~p"/archive/#{slug}"
   def archive_path(slug), do: ~p"/archive/#{slug}"
 
-  @doc "The games catalogue, at an address of its own."
-  @spec play_path() :: String.t()
-  def play_path, do: ~p"/play"
-
   @doc """
   A Retro Game's own page — its home in the desktop: how to play it, who is
   playing it now and who is winning. A mode's id leads to its game's page.

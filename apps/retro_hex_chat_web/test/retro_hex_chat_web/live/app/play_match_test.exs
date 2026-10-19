@@ -368,6 +368,17 @@ defmodule RetroHexChatWeb.App.PlayMatchTest do
       end)
     end
 
+    test "the address asking for a room says why there is none for an unproved nickname",
+         %{conn: conn} do
+      host = register("MNoId")
+
+      {:ok, view, _html} =
+        conn |> chat_conn(host.nickname) |> live(~p"/play/#{@game}?match=new")
+
+      assert view |> element(~s([data-testid="play-match-error"])) |> render() =~
+               "identified with NickServ"
+    end
+
     test "an unregistered nickname is not offered one", %{conn: conn} do
       {:ok, view, _html} = conn |> chat_conn("mstr#{uid()}") |> live(~p"/play/#{@game}")
 

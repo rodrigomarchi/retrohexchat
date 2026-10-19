@@ -4,6 +4,7 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
   use Gettext, backend: RetroHexChat.Gettext
 
   alias RetroHexChat.Chat.TimeFormatter
+  alias RetroHexChat.Games.Catalog
   alias RetroHexChat.Services.NickExpiry
 
   @spec topics() :: [map()]
@@ -2096,7 +2097,7 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
         description:
           dgettext(
             "help",
-            "Every Retro Game has a channel named after it, like %{channel}. The channel %{feed} carries the results of every game. The service %{service} keeps these channels and says what was played in the open in them. The strip under the topic has three links. Play opens the game. Find a partner puts a card with one open seat in the channel. Ranking opens the game's page. A fourth link opens a match being played now, to watch. Anybody can read a game channel. Playing, offering a seat and talking need a registered, identified nickname.",
+            "Every Retro Game has a channel named after it, like %{channel}. The channel %{feed} carries the results of every game. The service %{service} keeps these channels and says what was played in the open in them. The strip under the topic names the game: the name opens the page of the game over the chat. Play opens the game. Find a partner puts a card with one open seat in the channel. A last link opens a match being played now, to watch. Anybody can read a game channel. Playing, offering a seat and talking need a registered, identified nickname.",
             channel: "#hex-pong",
             feed: "#retro-games",
             service: "GameServ"
@@ -2152,6 +2153,11 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
           ) <>
             " " <>
             dgettext("help", "You can also find a live match in the channel of its game.") <>
+            " " <>
+            dgettext(
+              "help",
+              "In the list of users, right-click a person who is playing to watch the match."
+            ) <>
             " " <>
             dgettext("help", "Players can see how many people are watching their match."),
         see_also: ["feature-game-channels", "feature-game-match-link", "cmd-lfg"]
@@ -2241,11 +2247,22 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
         description:
           dgettext(
             "help",
-            "Play browser-native RetroHexChat games solo against AI. The Retro Games desktop icon opens the library: every game has an icon in it, and Start ▸ Games ▸ Retro Games opens the same window. Choosing a game opens that game in a browser tab of its own, and the chat stays where it was. Hex Pong, Light Trails, Star Duel variants, Block Breakers, Hex Warlords, Hex Raid variants, Hex Outlaw variants, Hex Tennis variants, Hex Invaders variants, Hex Enduro variants, Hex Skiing variants, Hex Frost variants, and Hex Hockey variants are available."
+            "Retro Games are games in the browser, against the computer or with other people."
           ) <>
             " " <>
-            dgettext("help", "Hex Boxing is also available.") <>
-            " " <> dgettext("help", "Pixel Tanks is also available."),
+            dgettext(
+              "help",
+              "The Retro Games desktop icon opens a folder with one icon per game, and Start ▸ Games ▸ Retro Games opens the same folder."
+            ) <>
+            " " <>
+            dgettext(
+              "help",
+              "Each icon opens the page of its game over the chat. Against the computer opens the game in a browser tab of its own."
+            ) <>
+            " " <>
+            dgettext("help", "The games: %{games}.",
+              games: Enum.map_join(Catalog.base_games(), ", ", & &1.name)
+            ),
         see_also: [
           "feature-hex-pong",
           "feature-light-trails",

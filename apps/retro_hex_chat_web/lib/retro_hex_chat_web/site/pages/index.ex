@@ -67,7 +67,14 @@ defmodule RetroHexChatWeb.Site.Pages.Index do
          Window.new("multiplayer-games", dgettext("landing", "Multiplayer Games"), :icon_joystick,
            width: 460,
            body: &multiplayer_games/1,
-           assigns: %{catalogue_path: PublicPages.localized_path("/games")},
+           assigns: %{
+             catalogue_path: PublicPages.localized_path("/games"),
+             games:
+               Enum.map(
+                 Catalog.base_games(),
+                 &%{id: &1.id, name: &1.name, path: Paths.game_page_path(&1.id)}
+               )
+           },
            status: [
              {:check,
               dngettext(

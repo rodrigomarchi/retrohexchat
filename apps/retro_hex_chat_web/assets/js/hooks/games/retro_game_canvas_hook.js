@@ -94,9 +94,12 @@ export function createRetroGameCanvasHook({ engineFactory = createGameEngine } =
       this._focusGameSurface();
     },
 
+    // A match ended early leaves the game on screen for the next one: the
+    // engine is thrown away and a fresh one loaded, which reports ready again.
     _stopMatch(payload = {}) {
       if (payload.game_id && payload.game_id !== this._gameId) return;
       this._cleanup();
+      this._enginePromise = this._maybeInitGame();
     },
 
     _reportResult(result = {}) {

@@ -150,8 +150,7 @@ defmodule RetroHexChatWeb.Components.UI.Games.RetroGamesPanelTest do
         status: "ready",
         selected_game: @game,
         difficulty: "normal",
-        canvas_ready: true,
-        target: "retro-games-island"
+        canvas_ready: true
       )
 
     document = Floki.parse_document!(html)
@@ -191,8 +190,7 @@ defmodule RetroHexChatWeb.Components.UI.Games.RetroGamesPanelTest do
         status: "ready",
         selected_game: @trails,
         difficulty: "normal",
-        canvas_ready: true,
-        target: "retro-games-island"
+        canvas_ready: true
       )
 
     document = Floki.parse_document!(html)
@@ -207,8 +205,7 @@ defmodule RetroHexChatWeb.Components.UI.Games.RetroGamesPanelTest do
         status: "ready",
         selected_game: @tanks,
         difficulty: "normal",
-        canvas_ready: true,
-        target: "retro-games-island"
+        canvas_ready: true
       )
 
     document = Floki.parse_document!(html)
@@ -229,8 +226,7 @@ defmodule RetroHexChatWeb.Components.UI.Games.RetroGamesPanelTest do
         status: "ready",
         selected_game: @outlaw,
         difficulty: "normal",
-        canvas_ready: true,
-        target: "retro-games-island"
+        canvas_ready: true
       )
 
     document = Floki.parse_document!(html)
@@ -250,8 +246,7 @@ defmodule RetroHexChatWeb.Components.UI.Games.RetroGamesPanelTest do
         status: "ready",
         selected_game: @star_duel,
         difficulty: "normal",
-        canvas_ready: true,
-        target: "retro-games-island"
+        canvas_ready: true
       )
 
     document = Floki.parse_document!(html)
@@ -271,8 +266,7 @@ defmodule RetroHexChatWeb.Components.UI.Games.RetroGamesPanelTest do
         status: "ready",
         selected_game: @breakout,
         difficulty: "normal",
-        canvas_ready: true,
-        target: "retro-games-island"
+        canvas_ready: true
       )
 
     document = Floki.parse_document!(html)
@@ -291,8 +285,7 @@ defmodule RetroHexChatWeb.Components.UI.Games.RetroGamesPanelTest do
         status: "ready",
         selected_game: @warlords,
         difficulty: "normal",
-        canvas_ready: true,
-        target: "retro-games-island"
+        canvas_ready: true
       )
 
     document = Floki.parse_document!(html)
@@ -311,8 +304,7 @@ defmodule RetroHexChatWeb.Components.UI.Games.RetroGamesPanelTest do
         status: "ready",
         selected_game: @raid,
         difficulty: "normal",
-        canvas_ready: true,
-        target: "retro-games-island"
+        canvas_ready: true
       )
 
     document = Floki.parse_document!(html)
@@ -332,8 +324,7 @@ defmodule RetroHexChatWeb.Components.UI.Games.RetroGamesPanelTest do
         status: "ready",
         selected_game: @boxing,
         difficulty: "normal",
-        canvas_ready: true,
-        target: "retro-games-island"
+        canvas_ready: true
       )
 
     document = Floki.parse_document!(html)
@@ -353,8 +344,7 @@ defmodule RetroHexChatWeb.Components.UI.Games.RetroGamesPanelTest do
         status: "ready",
         selected_game: @tennis,
         difficulty: "normal",
-        canvas_ready: true,
-        target: "retro-games-island"
+        canvas_ready: true
       )
 
     document = Floki.parse_document!(html)
@@ -374,8 +364,7 @@ defmodule RetroHexChatWeb.Components.UI.Games.RetroGamesPanelTest do
         status: "ready",
         selected_game: @invaders,
         difficulty: "normal",
-        canvas_ready: true,
-        target: "retro-games-island"
+        canvas_ready: true
       )
 
     document = Floki.parse_document!(html)
@@ -396,8 +385,7 @@ defmodule RetroHexChatWeb.Components.UI.Games.RetroGamesPanelTest do
         status: "ready",
         selected_game: @enduro,
         difficulty: "normal",
-        canvas_ready: true,
-        target: "retro-games-island"
+        canvas_ready: true
       )
 
     document = Floki.parse_document!(html)
@@ -418,8 +406,7 @@ defmodule RetroHexChatWeb.Components.UI.Games.RetroGamesPanelTest do
         status: "ready",
         selected_game: @skiing,
         difficulty: "normal",
-        canvas_ready: true,
-        target: "retro-games-island"
+        canvas_ready: true
       )
 
     document = Floki.parse_document!(html)
@@ -438,8 +425,7 @@ defmodule RetroHexChatWeb.Components.UI.Games.RetroGamesPanelTest do
         status: "ready",
         selected_game: @frost,
         difficulty: "normal",
-        canvas_ready: true,
-        target: "retro-games-island"
+        canvas_ready: true
       )
 
     document = Floki.parse_document!(html)
@@ -459,8 +445,7 @@ defmodule RetroHexChatWeb.Components.UI.Games.RetroGamesPanelTest do
         status: "ready",
         selected_game: @hockey,
         difficulty: "normal",
-        canvas_ready: true,
-        target: "retro-games-island"
+        canvas_ready: true
       )
 
     document = Floki.parse_document!(html)
@@ -480,8 +465,7 @@ defmodule RetroHexChatWeb.Components.UI.Games.RetroGamesPanelTest do
         status: "playing",
         selected_game: @game,
         difficulty: "hard",
-        canvas_ready: true,
-        target: "retro-games-island"
+        canvas_ready: true
       )
 
     document = Floki.parse_document!(html)
@@ -501,8 +485,7 @@ defmodule RetroHexChatWeb.Components.UI.Games.RetroGamesPanelTest do
       selected_game: game,
       difficulty: "normal",
       canvas_ready: false,
-      result: result,
-      target: "retro-games-island"
+      result: result
     ]
     |> Keyword.merge(extra)
     |> then(&render_component(fn assigns -> retro_games_panel(assigns) end, &1))
@@ -551,5 +534,10 @@ defmodule RetroHexChatWeb.Components.UI.Games.RetroGamesPanelTest do
 
     assert [how] = Floki.find(document, ~s([data-testid="retro-game-how-to-register"]))
     assert Floki.attribute(how, "href") == ["/chat/help/nickserv"]
+
+    # Unranked or not, the rest of the game is at its home and in its channel.
+    assert [home] = Floki.find(document, ~s([data-testid="retro-game-home-link"]))
+    assert Floki.attribute(home, "href") == ["/games/hex-raid"]
+    assert [_] = Floki.find(document, ~s([data-testid="retro-game-channel-link"]))
   end
 end

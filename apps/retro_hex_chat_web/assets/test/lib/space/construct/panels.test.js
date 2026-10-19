@@ -96,13 +96,15 @@ describe("renderPanel", () => {
           name: "Hex Pong",
           tagline: "Cyberpunk Pong",
           url: "/play/hex_pong",
+          home_url: "/games/hex-pong",
+          home_label: "Other ways to play",
           channel: "#hex-pong",
           channel_url: "/c/hex-pong",
           playing: "Playing now: ana",
           play_label: "Play",
           others_label: "Other games",
         },
-        games: [{ id: "hex_tennis", name: "Hex Tennis", url: "/play/hex_tennis" }],
+        games: [{ id: "hex_tennis", name: "Hex Tennis", url: "/games/hex-tennis" }],
       },
       ports(),
     );
@@ -112,6 +114,9 @@ describe("renderPanel", () => {
     const play = featured.querySelector('[data-testid="space-panel-featured-play"]');
     expect(play.getAttribute("href")).toBe("/play/hex_pong");
     expect(play.target).toBe("_blank");
+    const home = featured.querySelector('[data-testid="space-panel-featured-home"]');
+    expect(home.getAttribute("href")).toBe("/games/hex-pong");
+    expect(home.textContent).toBe("Other ways to play");
     const channel = featured.querySelector('[data-testid="space-panel-featured-channel"]');
     expect(channel.getAttribute("href")).toBe("/c/hex-pong");
     expect(channel.textContent).toBe("#hex-pong");

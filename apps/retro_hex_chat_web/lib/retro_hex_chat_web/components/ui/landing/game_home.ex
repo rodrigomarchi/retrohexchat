@@ -17,19 +17,19 @@ defmodule RetroHexChatWeb.Components.UI.Landing.GameHome do
   `visitor`, `ways` (one per mode: `id`, `name`, `tagline`, `play_path`,
   `link_path`), `how_to_play_path`, `sign_in_path`, `you` (the reader's
   `Games.Results.player_record/3`, nil without a registered nickname),
-  `register_path`, and the community's own —
+  `register_path`, `identified` (whether this session proved its nickname: playing with
+  people is offered only then), and the community's own —
   see `RetroHexChatWeb.Components.UI.Landing.GameCommunity`.
   """
   use RetroHexChatWeb.Component
 
   import RetroHexChatWeb.Components.UI.Button
+  import RetroHexChatWeb.Components.UI.Input
   import RetroHexChatWeb.Components.UI.ChatCard, only: [surface_link: 1]
   import RetroHexChatWeb.Components.UI.Landing.GameCards, only: [game_screenshot: 1]
   import RetroHexChatWeb.Components.UI.Landing.GameCommunity
   import RetroHexChatWeb.Components.UI.Tabs
 
-  alias RetroHexChat.Chat.TimeFormatter
-  alias RetroHexChatWeb.Components.UI.GameResultCard
   alias RetroHexChatWeb.Icons
 
   @doc "The home window's body."
@@ -131,7 +131,7 @@ defmodule RetroHexChatWeb.Components.UI.Landing.GameHome do
             </.surface_link>
 
             <.button
-              :if={not @visitor}
+              :if={@identified}
               type="button"
               size="sm"
               variant="outline"
@@ -149,10 +149,34 @@ defmodule RetroHexChatWeb.Components.UI.Landing.GameHome do
               <:icon><Icons.icon_protocol_p2p_compact class="h-4 w-4" /></:icon>
               {dgettext("games", "Find a partner")}
             </.button>
+
+            <.surface_link
+              :if={@identified}
+              href={way.link_path}
+              label={way.name}
+              class="w-full text-xs"
+              data-testid="game-match-link"
+            >
+              {dgettext("games", "Create a match link")}
+            </.surface_link>
           </li>
         </ul>
 
-        <div :if={not @visitor} class="mt-retro-12" data-testid="game-invite">
+        <%!-- Playing with people needs a nickname this session has proved:
+              the seat, the invitation and the match room all ask for one, so
+              they are offered only to whom they would not turn away. --%>
+        <p
+          :if={not @visitor and not @identified}
+          class="text-sm mt-retro-12"
+          data-testid="game-identify"
+        >
+          {dgettext("p2p", "You must be identified with NickServ to use P2P sessions.")}
+          <.link patch={@register_path} class="underline">
+            {dgettext("games", "How to register")}
+          </.link>
+        </p>
+
+        <div :if={@identified} class="mt-retro-12" data-testid="game-invite">
           <h2 class="text-sm font-bold mb-retro-4">
             {dgettext("games", "Play with somebody you know")}
           </h2>
@@ -170,15 +194,14 @@ defmodule RetroHexChatWeb.Components.UI.Landing.GameHome do
               <option :for={way <- @ways} value={way.id}>{way.name}</option>
             </select>
             <input :if={length(@ways) == 1} type="hidden" name="game" value={@game.id} />
-            <input
-              type="text"
+            <.input
               name="nickname"
               required
               maxlength="30"
               autocomplete="off"
               placeholder={dgettext("games", "Nickname")}
               aria-label={dgettext("games", "Nickname")}
-              class="shadow-retro-field bg-white px-retro-4 py-retro-2 text-sm min-w-0 flex-1 basis-[120px]"
+              class="h-8 min-w-0 flex-1 basis-[120px]"
               data-testid="game-challenge-nickname"
             />
             <.button type="submit" size="sm" data-testid="game-challenge">
@@ -186,15 +209,6 @@ defmodule RetroHexChatWeb.Components.UI.Landing.GameHome do
               {dgettext("games", "Invite")}
             </.button>
           </form>
-          <p class="text-xs mt-retro-6">
-            <.surface_link
-              href={hd(@ways).link_path}
-              label={@game.name}
-              data-testid="game-match-link"
-            >
-              {dgettext("games", "Create a match link")}
-            </.surface_link>
-          </p>
         </div>
 
         <h2 class="text-sm font-bold mt-retro-12 mb-1">{dgettext("landing", "About")}</h2>
@@ -227,7 +241,7 @@ defmodule RetroHexChatWeb.Components.UI.Landing.GameHome do
   defp your_record(%{you: nil} = assigns) do
     ~H"""
     <p class="text-sm mb-retro-8" data-testid="game-you-unranked">
-      {dgettext("games", "Sign in with a registered nickname to enter the ranking.")}
+      {dgettext("games", "Only registered nicknames appear in the ranking.")}
     </p>
     <.button :if={@visitor} size="sm" patch={@sign_in_path} data-testid="game-you-sign-in">
       <:icon><Icons.icon_status_user class="h-4 w-4" /></:icon>
@@ -301,14 +315,7 @@ defmodule RetroHexChatWeb.Components.UI.Landing.GameHome do
     </table>
 
     <h3 class="text-sm font-bold mb-1">{dgettext("games", "Your latest matches")}</h3>
-    <ul class="text-sm space-y-1" data-testid="game-you-recent">
-      <li :for={card <- @you.recent}>
-        <strong>{GameResultCard.score_line(card)}</strong>
-        <span class="text-muted-foreground">
-          · {GameResultCard.verdict(card)} · {TimeFormatter.format_relative(card.finished_at)}
-        </span>
-      </li>
-    </ul>
+    <.match_list cards={@you.recent} testid="game-you-recent" />
     """
   end
 

@@ -527,13 +527,6 @@ defmodule RetroHexChat.Games.Catalog do
   @spec list_games() :: [game()]
   def list_games, do: Enum.map(@games, &translate_game/1)
 
-  @spec list_solo_games() :: [game()]
-  def list_solo_games do
-    @games
-    |> Enum.filter(&solo_game_id?(&1.id))
-    |> Enum.map(&translate_game/1)
-  end
-
   @spec get_game(String.t()) :: {:ok, game()} | {:error, :not_found}
   def get_game(id) do
     case Enum.find(@games, &(&1.id == id)) do
@@ -595,6 +588,18 @@ defmodule RetroHexChat.Games.Catalog do
   """
   @spec slug(String.t()) :: String.t()
   def slug(game_id), do: String.replace(game_id, "_", "-")
+
+  @doc """
+  The word a command names `game_id`'s mode by — `"blitz"` for
+  `hex_raid_blitz`, as in `/lfg blitz` — or nil for a game itself.
+  """
+  @spec mode_word(String.t()) :: String.t() | nil
+  def mode_word(game_id) do
+    case base_id(game_id) do
+      ^game_id -> nil
+      base_id -> String.replace_prefix(game_id, base_id <> "_", "")
+    end
+  end
 
   @doc "The channel where `game_id` and every mode of it is talked about: `#hex-pong`."
   @spec channel_name(String.t()) :: String.t()

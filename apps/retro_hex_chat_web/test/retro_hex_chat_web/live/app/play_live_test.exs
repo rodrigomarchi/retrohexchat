@@ -28,8 +28,16 @@ defmodule RetroHexChatWeb.App.PlayLiveTest do
     end
 
     test "a nickname the validator refuses is a visitor", %{conn: conn} do
-      assert {:error, {_kind, %{to: to}}} = conn |> chat_conn("not a nick") |> live(~p"/play")
-      assert to == Paths.visitor_sign_in_path(:games, "/play")
+      assert {:error, {_kind, %{to: to}}} =
+               conn |> chat_conn("not a nick") |> live(~p"/play/hex_pong")
+
+      assert to == Paths.visitor_sign_in_path(:games, "/play/hex_pong")
+    end
+
+    # Nothing to play names nothing that needs an account: the catalogue it
+    # points at is public.
+    test "a visitor at /play with no game reads the catalogue, unasked", %{conn: conn} do
+      assert {:error, {_kind, %{to: "/games"}}} = live(conn, ~p"/play")
     end
 
     test "a banned nickname goes to connect saying so", %{conn: conn} do
@@ -98,9 +106,17 @@ defmodule RetroHexChatWeb.App.PlayLiveTest do
 
   describe "choosing a game" do
     test "a known game in the path opens it", %{conn: conn} do
-      {:ok, _view, html} = conn |> chat_conn("Pick#{uid()}") |> live(~p"/play/hex_pong")
+      {:ok, view, html} = conn |> chat_conn("Pick#{uid()}") |> live(~p"/play/hex_tennis_quick")
 
       assert html =~ "RetroGameCanvasHook"
+
+      # The rest of the game is at its home and in its channel — a mode's,
+      # its game's.
+      assert view |> element(~s([data-testid="play-game-home"])) |> render() =~
+               ~s(href="/games/hex-tennis")
+
+      assert view |> element(~s([data-testid="play-game-channel"])) |> render() =~
+               ~s(href="/c/hex-tennis")
     end
 
     # Ending a match keeps the game on screen, ready for another.
@@ -114,8 +130,12 @@ defmodule RetroHexChatWeb.App.PlayLiveTest do
 
       render_click(view, "retro_games_end", %{})
       assert_push_event(view, "retro_game_stop", %{game_id: "hex_pong"})
-      assert has_element?(view, ~s([data-testid="retro-game-start-ai"]))
       refute Map.has_key?(Activity.now(), Nickname.key(nick))
+
+      # The canvas loads a fresh engine and says so before another match.
+      assert has_element?(view, ~s([data-testid="retro-game-start-disabled"]))
+      render_hook(view, "retro_game_canvas_ready", %{"game_id" => "hex_pong"})
+      assert has_element?(view, ~s([data-testid="retro-game-start-ai"]))
     end
 
     test "an unknown game is sent to the catalogue", %{conn: conn} do

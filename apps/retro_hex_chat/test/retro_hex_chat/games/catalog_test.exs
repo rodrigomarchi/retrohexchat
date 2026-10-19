@@ -75,7 +75,7 @@ defmodule RetroHexChat.Games.CatalogTest do
     end
   end
 
-  describe "list_solo_games/0" do
+  describe "list_games/0, game by game" do
     test "returns the games with a browser solo runtime" do
       assert [
                %{id: "hex_pong", name: "Hex Pong"},
@@ -112,7 +112,7 @@ defmodule RetroHexChat.Games.CatalogTest do
                %{id: "hex_hockey", name: "Hex Hockey"},
                %{id: "hex_hockey_blitz", name: "Hex Hockey: Blitz"},
                %{id: "hex_hockey_showdown", name: "Hex Hockey: Showdown"}
-             ] = Catalog.list_solo_games()
+             ] = Catalog.list_games()
     end
 
     # A description is one msgid, translated when the game is read: anything
@@ -281,7 +281,7 @@ defmodule RetroHexChat.Games.CatalogTest do
                    id: "hex_hockey_showdown",
                    controls: "Setas ou WASD para mover, Espaço ou Shift para chutar/desarmar"
                  }
-               ] = Catalog.list_solo_games()
+               ] = Catalog.list_games()
       after
         Gettext.put_locale(RetroHexChat.Gettext, previous_locale)
       end
@@ -450,5 +450,15 @@ defmodule RetroHexChat.Games.CatalogTest do
       assert Catalog.ranking("hex_invaders_coop") == :coop
       assert Catalog.ranking("block_breakers") == :coop
     end
+  end
+
+  test "mode_word/1 is the word a command names each mode by, and nil for a game" do
+    for game <- Catalog.base_games(), mode <- Catalog.modes_of(game.id) do
+      word = Catalog.mode_word(mode.id)
+      assert game.id <> "_" <> word == mode.id
+    end
+
+    assert Catalog.mode_word("hex_pong") == nil
+    assert Catalog.mode_word("hex_raid_blitz") == "blitz"
   end
 end

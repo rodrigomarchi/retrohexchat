@@ -8,16 +8,24 @@
   <.diagram_p2p_games class="w-full max-w-lg mx-auto" />
 </.inset>
 <p class="text-sm">
-  {dgettext(
-    "landing",
-    "Pick a game, then play the computer, find a partner in its channel or invite a friend."
-  )}
-  {dgettext(
-    "landing",
-    "Games run on HTML5 Canvas with state synced via WebRTC DataChannel —"
-  )} <strong>{dgettext("landing", "no server involvement")}</strong>{dgettext(
-    "landing",
-    ", just like private P2P calls."
-  )}
+  {dgettext("landing", "Pick a game, then play against the computer or with other people.")}
+  {dgettext("landing", "Games run in the browser and need no download.")}
 </p>
+<%!-- Every game, each opening its home: what it is, how to play it, who is
+      playing it now. --%>
+<ul
+  class="grid grid-cols-[repeat(auto-fill,minmax(88px,1fr))] gap-retro-6 mt-retro-8"
+  data-testid="index-multiplayer-games"
+>
+  <li :for={game <- @games}>
+    <.link
+      patch={game.path}
+      class="flex flex-col items-center gap-retro-2 text-center text-xs hover:underline"
+      data-testid={"index-game-#{game.id}"}
+    >
+      <Icons.game_icon game_id={game.id} class="h-8 w-8" />
+      <span class="leading-tight">{game.name}</span>
+    </.link>
+  </li>
+</ul>
 <.catalogue_link path={@catalogue_path} data-testid="index-multiplayer-catalogue-link" />

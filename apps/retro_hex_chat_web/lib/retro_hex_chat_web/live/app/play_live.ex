@@ -1,13 +1,16 @@
 defmodule RetroHexChatWeb.App.PlayLive do
   @moduledoc """
-  Retro Games, at an address of its own.
+  A Retro Game, played against the computer, at an address of its own.
 
-  The page at `/play` and `/play/:game`, and the only place the catalogue is
-  rendered. The chat used to draw this same module into a window of its own;
-  it does not any more, and the chat's Games menu is a plain link here.
+  The page at `/play/:game`, opened in a tab beside the desktop from the
+  game's home (`Site.Pages.Game`), which stays open in the chat's tab: every
+  other way to play the game — a partner, an invitation — starts there.
+  `/play` without a game names nothing to play and sends the reader to the
+  catalogue. From here a match room can be opened (Play with someone, or
+  arriving at `?match=new` from the home) and the game shared.
 
-  A catalogue is not a room — there is nothing to create and nothing to
-  announce — so this is the one screen with an address that posts no card.
+  A game against the computer is not a room — there is nothing to create and
+  nothing to announce — so this screen posts no card.
 
   The state is the same shape it always had: which game is chosen, how hard the
   opponent plays, whether the canvas has reported for duty, and how the last
@@ -34,6 +37,7 @@ defmodule RetroHexChatWeb.App.PlayLive do
   alias RetroHexChatWeb.App.Paths
   alias RetroHexChatWeb.App.SessionHelpers
   alias RetroHexChatWeb.Components.UI.Button
+  alias RetroHexChatWeb.Components.UI.GameResultCard
   alias RetroHexChatWeb.Icons
   alias RetroHexChatWeb.Live.OpenSurfaces
   alias RetroHexChatWeb.Live.ShareControl
@@ -59,6 +63,7 @@ defmodule RetroHexChatWeb.App.PlayLive do
         record: nil,
         player: SessionHelpers.identified_player(session, socket.assigns.surface_nickname),
         host_id: host_id(socket.assigns.surface_nickname),
+        sharable: sharable?(socket.assigns.surface_nickname),
         match_started_at: nil,
         error_message: nil,
         match_error: nil
@@ -103,6 +108,26 @@ defmodule RetroHexChatWeb.App.PlayLive do
                 testid="play-back-to-chat"
               />
             </.window_status_bar_field>
+            <%!-- The game's home and its channel: the rest of the game is
+                  there — partners, rankings, who is playing now. --%>
+            <.window_status_bar_field>
+              <.link
+                href={Paths.game_page_path(@selected_game.id)}
+                class="underline"
+                data-testid="play-game-home"
+              >
+                {GameResultCard.game_title(Catalog.base_id(@selected_game.id))}
+              </.link>
+            </.window_status_bar_field>
+            <.window_status_bar_field>
+              <.link
+                href={Paths.chat_path(Catalog.channel_name(@selected_game.id))}
+                class="underline"
+                data-testid="play-game-channel"
+              >
+                {Catalog.channel_name(@selected_game.id)}
+              </.link>
+            </.window_status_bar_field>
           </:status>
           <.games_body {assigns} />
         </.desktop_window>
@@ -114,7 +139,7 @@ defmodule RetroHexChatWeb.App.PlayLive do
   defp games_body(assigns) do
     ~H"""
     <div class="flex h-full min-h-0 flex-col gap-2">
-      <div :if={@selected_game} class="flex flex-wrap items-center gap-2">
+      <div class="flex flex-wrap items-center gap-2">
         <%!-- Where a match is born, and deliberately inside the game rather
               than beside it: you decide to play with somebody while looking at
               what you would play. The room comes first and the link second —
@@ -137,7 +162,7 @@ defmodule RetroHexChatWeb.App.PlayLive do
           module={ShareControl}
           id="share-game"
           url={@share_url}
-          available={sharable?(@nickname)}
+          available={@sharable}
           on_share="share_game"
           on_revoke="revoke_game"
           variant="outline"
@@ -156,7 +181,6 @@ defmodule RetroHexChatWeb.App.PlayLive do
         record={@record}
         ranked?={not is_nil(@player)}
         error_message={@error_message}
-        target={nil}
         class="min-h-0 flex-1"
       />
     </div>
@@ -199,7 +223,7 @@ defmodule RetroHexChatWeb.App.PlayLive do
      socket
      |> stop_playing()
      |> push_event("retro_game_stop", %{game_id: game_id})
-     |> assign(status: "ready", result: nil, record: nil, error_message: nil)}
+     |> assign(status: "ready", canvas_ready: false, result: nil, record: nil, error_message: nil)}
   end
 
   # Minting is a deliberate act, not a side effect of opening a game: a link per
@@ -240,8 +264,6 @@ defmodule RetroHexChatWeb.App.PlayLive do
   # this plan mints one.
   def handle_event("create_match", _params, socket), do: {:noreply, open_match(socket)}
 
-  # The canvas hook reports to whichever LiveView owns its element, which is
-  # this one in both mounts.
   def handle_event("retro_game_canvas_ready", params, socket) do
     {:noreply, mark_canvas_ready(socket, game_id(params))}
   end
@@ -280,6 +302,14 @@ defmodule RetroHexChatWeb.App.PlayLive do
       {:error, message} -> assign(socket, match_error: message)
     end
   end
+
+  # Arriving at `?match=new` without a nickname the room would seat: said,
+  # rather than a game against the computer the reader never asked for.
+  defp open_match(%{assigns: %{selected_game: %{}}} = socket),
+    do:
+      assign(socket,
+        match_error: dgettext("p2p", "You must be identified with NickServ to use P2P sessions.")
+      )
 
   defp open_match(socket), do: socket
 

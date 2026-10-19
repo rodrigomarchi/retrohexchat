@@ -130,9 +130,10 @@ defmodule RetroHexChatWeb.Components.UI.Landing.GameCards do
   attr :visitor, :boolean, default: false, doc: "Play asks for a nickname first"
 
   @doc """
-  A game's page: what it is, what it looks like, how it is played and the way
-  in. A visitor's Play opens the sign-in window, which lands them on the game
-  once they have an account.
+  An arcade game's page: what it is, what it looks like, how it is played and
+  the way in. A visitor's Play opens the sign-in window, which lands them on
+  the game once they have an account. A Retro Game's page is its home
+  (`Landing.GameHome`).
   """
   @spec game_detail(map()) :: Phoenix.LiveView.Rendered.t()
   def game_detail(assigns) do
@@ -162,15 +163,6 @@ defmodule RetroHexChatWeb.Components.UI.Landing.GameCards do
 
     <h2 class="text-sm font-bold mb-1">{dgettext("landing", "Controls")}</h2>
     <p class="text-sm mb-3" data-testid="game-controls">{@game.controls}</p>
-
-    <div :if={@game.modes != []} data-testid="game-modes">
-      <h2 class="text-sm font-bold mb-1">{dgettext("landing", "Modes")}</h2>
-      <ul class="text-sm list-disc pl-5">
-        <li :for={mode <- @game.modes}>
-          <strong>{mode.name}</strong> — {mode.tagline}
-        </li>
-      </ul>
-    </div>
     """
   end
 

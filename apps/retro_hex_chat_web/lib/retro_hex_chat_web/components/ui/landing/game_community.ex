@@ -87,8 +87,22 @@ defmodule RetroHexChatWeb.Components.UI.Landing.GameCommunity do
     <p :if={@recent == []} class="text-sm text-muted-foreground">
       {dgettext("landing", "No matches yet. Play the first one.")}
     </p>
-    <ul :if={@recent != []} class="text-sm space-y-1" data-testid="game-community-recent">
-      <li :for={card <- @recent}>
+    <.match_list :if={@recent != []} cards={@recent} testid="game-community-recent" />
+    """
+  end
+
+  attr :cards, :list, required: true, doc: "`Games.Results.card/1`s, newest first"
+  attr :testid, :string, required: true
+
+  @doc """
+  Matches as lines: the score, how it ended — a match somebody left says so —
+  and when.
+  """
+  @spec match_list(map()) :: Phoenix.LiveView.Rendered.t()
+  def match_list(assigns) do
+    ~H"""
+    <ul class="text-sm space-y-1" data-testid={@testid}>
+      <li :for={card <- @cards}>
         <strong>{GameResultCard.score_line(card)}</strong>
         <span class="text-muted-foreground">
           · {GameResultCard.verdict(card)} · {TimeFormatter.format_relative(card.finished_at)}
@@ -106,8 +120,8 @@ defmodule RetroHexChatWeb.Components.UI.Landing.GameCommunity do
     <p class="text-sm mb-3" data-testid="game-community-count">
       {dngettext(
         "landing",
-        "%{count} game played this week.",
-        "%{count} games played this week.",
+        "%{count} game played this week",
+        "%{count} games played this week",
         @week_count,
         count: @week_count
       )}

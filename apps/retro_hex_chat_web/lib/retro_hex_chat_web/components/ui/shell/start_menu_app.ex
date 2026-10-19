@@ -361,13 +361,10 @@ defmodule RetroHexChatWeb.Components.UI.StartMenuApp do
         >
           <:icon><Icons.icon_game_arcade class="h-4 w-4" /></:icon>
           <%= if @full do %>
-            <%!-- Opens the catalogue, not a tab. A catalogue is not a room and
-              still has nothing to announce, but it is also not one address:
-              each game has one of its own, and the second tab belongs to the
-              game the reader picked rather than to the list they are about to
-              read. The Games folder is where that list lives, and this row is
-              the way to it — mirroring its contents here would put the same
-              catalogue on five screens to be reachable from one. --%>
+            <%!-- The Games folder, one icon per game, each opening the game's
+              home: this row is the way to it, not a second copy of it. It
+              lives on the chat's desktop, so a screen without one has no
+              folder to open. --%>
             <.window_item
               window="desktop-launcher-games"
               label={dgettext("ui", "Retro Games")}

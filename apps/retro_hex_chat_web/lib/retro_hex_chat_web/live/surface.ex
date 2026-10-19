@@ -66,8 +66,13 @@ defmodule RetroHexChatWeb.Live.Surface do
         {:halt, push_navigate(socket, to: Paths.connect_path(socket, "banned"))}
 
       :visitor ->
-        {feature, path} = visitor_destination(socket.view, params)
-        {:halt, push_navigate(socket, to: Paths.visitor_sign_in_path(feature, path))}
+        case visitor_destination(socket.view, params) do
+          {:open, path} ->
+            {:halt, push_navigate(socket, to: path)}
+
+          {feature, path} ->
+            {:halt, push_navigate(socket, to: Paths.visitor_sign_in_path(feature, path))}
+        end
     end
   end
 
@@ -89,7 +94,9 @@ defmodule RetroHexChatWeb.Live.Surface do
 
   defp visitor_destination(_view, %{"token" => token}), do: {:p2p, Paths.p2p_path(token)}
   defp visitor_destination(_view, %{"game" => game}), do: {:games, Paths.play_path(game)}
-  defp visitor_destination(_view, _params), do: {:games, Paths.play_path()}
+  # `/play` with no game names nothing to play: the catalogue it points at is
+  # public, so a visitor reads it without being asked for an account.
+  defp visitor_destination(_view, _params), do: {:open, Paths.localized("/games")}
 
   defp attach(socket, nickname) do
     if connected?(socket) do

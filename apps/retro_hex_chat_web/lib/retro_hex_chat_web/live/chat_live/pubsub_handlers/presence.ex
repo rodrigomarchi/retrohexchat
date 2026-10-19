@@ -37,6 +37,8 @@ defmodule RetroHexChatWeb.ChatLive.PubsubHandlers.Presence do
   alias RetroHexChatWeb.ChatLive.Components.MessageViewport
   alias RetroHexChatWeb.ChatLive.Components.Nicklist
   alias RetroHexChatWeb.ChatLive.Helpers.Conversation
+  alias RetroHexChatWeb.Site.Documents
+  alias RetroHexChatWeb.Site.Pages
 
   # ── Global presence events ────────────────────────────────
 
@@ -210,6 +212,21 @@ defmodule RetroHexChatWeb.ChatLive.PubsubHandlers.Presence do
     socket
     |> Nicklist.mark_playing(games)
     |> assign(live_matches: Activity.live_matches())
+    |> refresh_game_home()
+  end
+
+  # A game's home, when one is open, says who is playing it now: loaded again
+  # only when that changed, not on every move of anybody's presence.
+  defp refresh_game_home(socket) do
+    case socket.assigns.docs[:site] do
+      %{page: Pages.Game, open?: true, assigns: loaded} ->
+        if Pages.Game.live_changed?(loaded),
+          do: Documents.refresh(socket, Pages.Game),
+          else: socket
+
+      _no_game_home ->
+        socket
+    end
   end
 
   # ── Private helpers ───────────────────────────────────────

@@ -61,6 +61,7 @@ defmodule RetroHexChatWeb.Site.Documents do
           open?: boolean(),
           active_page: atom() | nil,
           assigns: map(),
+          params: map(),
           address: String.t()
         }
 
@@ -179,7 +180,7 @@ defmodule RetroHexChatWeb.Site.Documents do
   defp open_page(socket, page, params, address, open?) do
     case page.load(params, ctx(socket)) do
       {:ok, loaded} ->
-        doc = build(page, loaded, address, open?)
+        doc = page |> build(loaded, address, open?) |> Map.put(:params, params)
         head = Head.from_page(loaded)
 
         socket
@@ -251,8 +252,26 @@ defmodule RetroHexChatWeb.Site.Documents do
       open?: open?,
       active_page: loaded[:active_page],
       assigns: loaded,
+      params: %{},
       address: address
     }
+  end
+
+  @doc """
+  Loads `page` again when it is the page open in its slot — its windows and
+  what they say, in place, without moving the reader's focus. A page whose
+  words change while it is read (a game's home: who is playing, who won)
+  stays current this way.
+  """
+  @spec refresh(Phoenix.LiveView.Socket.t(), module()) :: Phoenix.LiveView.Socket.t()
+  def refresh(socket, page) do
+    with %{page: ^page, open?: true, params: params} = doc <- socket.assigns.docs[page.slot()],
+         {:ok, loaded} <- page.load(params, ctx(socket)) do
+      doc = %{doc | windows: Map.fetch!(loaded, :windows), assigns: loaded}
+      assign(socket, docs: Map.put(socket.assigns.docs, doc.slot, doc))
+    else
+      _closed_or_gone -> socket
+    end
   end
 
   defp ctx(socket) do
@@ -262,6 +281,8 @@ defmodule RetroHexChatWeb.Site.Documents do
       locale: assigns[:locale],
       visitor?: assigns[:visitor?] == true,
       nickname: if(assigns[:visitor?], do: nil, else: assigns.session.nickname),
+      # Proved in this chat session — not merely a registered nickname typed in.
+      identified?: assigns[:visitor?] != true and assigns.session.identified == true,
       connected?: connected?(socket),
       session: assigns.site_session,
       chat_address: Address.chat_address(assigns)
@@ -341,6 +362,19 @@ defmodule RetroHexChatWeb.Site.Documents do
   defp event(_event, _params, socket), do: {:cont, socket}
 
   defp info({Address, :sync_address}, socket), do: {:halt, Address.follow(socket)}
+
+  # A match of the game whose home is open was just written down: its ranking,
+  # its latest matches and the reader's own record have moved.
+  defp info({:game_result_recorded, %{base_id: base_id}}, socket) do
+    case socket.assigns.docs[:site] do
+      %{page: Pages.Game, assigns: %{game: %{id: ^base_id}}} ->
+        {:halt, refresh(socket, Pages.Game)}
+
+      _other_page ->
+        {:halt, socket}
+    end
+  end
+
   defp info(_message, socket), do: {:cont, socket}
 
   defp open_doc(_socket, nil), do: nil

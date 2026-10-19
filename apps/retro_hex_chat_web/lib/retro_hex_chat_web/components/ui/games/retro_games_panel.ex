@@ -23,7 +23,6 @@ defmodule RetroHexChatWeb.Components.UI.RetroGamesPanel do
   attr :record, :map, default: nil, doc: "the `Games.Results.card/1` of the match just written"
   attr :ranked?, :boolean, default: false, doc: "whether this player's matches are written down"
   attr :error_message, :string, default: nil
-  attr :target, :any, required: true
   attr :class, :string, default: nil
   attr :rest, :global
 
@@ -41,7 +40,6 @@ defmodule RetroHexChatWeb.Components.UI.RetroGamesPanel do
         record={@record}
         ranked?={@ranked?}
         error_message={@error_message}
-        target={@target}
       />
     </section>
     """
@@ -56,7 +54,6 @@ defmodule RetroHexChatWeb.Components.UI.RetroGamesPanel do
   attr :record, :map, default: nil
   attr :ranked?, :boolean, default: false
   attr :error_message, :string, default: nil
-  attr :target, :any, required: true
 
   defp game_state(assigns) do
     assigns =
@@ -114,20 +111,13 @@ defmodule RetroHexChatWeb.Components.UI.RetroGamesPanel do
                   guest is told what would have put it there. --%>
             <p :if={@record} class="text-xs" data-testid="retro-game-recorded">
               {dgettext("games", "Saved to your record.")}
-              <.link
-                href={Paths.chat_path(Catalog.channel_name(@game.id))}
-                class="underline"
-                data-testid="retro-game-channel-link"
-              >
-                {Catalog.channel_name(@game.id)}
-              </.link>
             </p>
             <p
               :if={not @ranked?}
               class="text-xs text-muted-foreground"
               data-testid="retro-game-unranked"
             >
-              {dgettext("games", "Sign in with a registered nickname to enter the ranking.")}
+              {dgettext("games", "Only registered nicknames appear in the ranking.")}
               <.link
                 href={Paths.localized("/chat/help/nickserv")}
                 target="_blank"
@@ -136,6 +126,24 @@ defmodule RetroHexChatWeb.Components.UI.RetroGamesPanel do
                 data-testid="retro-game-how-to-register"
               >
                 {dgettext("games", "How to register")}
+              </.link>
+            </p>
+            <%!-- Everything else about the game — partners, the ranking — is
+                  at its home and in its channel. --%>
+            <p class="flex flex-wrap justify-center gap-x-retro-8 text-xs">
+              <.link
+                href={Paths.game_page_path(@game.id)}
+                class="underline"
+                data-testid="retro-game-home-link"
+              >
+                {dgettext("share", "Other ways to play")}
+              </.link>
+              <.link
+                href={Paths.chat_path(Catalog.channel_name(@game.id))}
+                class="underline"
+                data-testid="retro-game-channel-link"
+              >
+                {Catalog.channel_name(@game.id)}
               </.link>
             </p>
           </div>
@@ -223,7 +231,6 @@ defmodule RetroHexChatWeb.Components.UI.RetroGamesPanel do
                 pressed={@difficulty == difficulty}
                 class="h-8 min-h-0 w-auto min-w-0 gap-retro-3 px-retro-4 text-[11px] font-bold leading-none"
                 phx-click="retro_games_set_difficulty"
-                phx-target={@target}
                 phx-value-difficulty={difficulty}
                 disabled={@status == "playing"}
                 data-testid={"retro-game-difficulty-#{difficulty}"}
@@ -268,7 +275,6 @@ defmodule RetroHexChatWeb.Components.UI.RetroGamesPanel do
               size="sm"
               class="h-8 w-full lg:h-10"
               phx-click="retro_games_start_ai"
-              phx-target={@target}
               data-testid="retro-game-start-ai"
             >
               <:icon><Icons.icon_btn_play class="h-4 w-4" /></:icon>
@@ -290,7 +296,6 @@ defmodule RetroHexChatWeb.Components.UI.RetroGamesPanel do
               size="sm"
               class="h-8 w-full lg:h-10"
               phx-click="retro_games_end"
-              phx-target={@target}
               data-testid="retro-game-end-match"
             >
               <:icon><Icons.icon_btn_disconnect class="h-4 w-4" /></:icon>
@@ -301,7 +306,6 @@ defmodule RetroHexChatWeb.Components.UI.RetroGamesPanel do
               size="sm"
               class="h-8 w-full lg:h-10"
               phx-click="retro_games_play_again"
-              phx-target={@target}
               data-testid="retro-game-play-again"
             >
               <:icon><Icons.icon_retry class="h-4 w-4" /></:icon>

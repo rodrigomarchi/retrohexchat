@@ -104,8 +104,8 @@ const BODIES = {
   },
 };
 
-// The game a cabinet the room came with plays: its label and the two ways on
-// — playing it, and its channel — and beside it, who is at it now and the
+// The game a cabinet the room came with plays: its label and the ways on —
+// playing it, its home with every other way, and its channel — and beside it, who is at it now and the
 // matches of it anybody may watch. Every word in it is the server's, already
 // in the reader's language.
 function featuredGame(game) {
@@ -120,6 +120,7 @@ function featuredGame(game) {
   actions.className = "space-panel-featured-actions";
   actions.append(
     tabLink(game.url, game.play_label, "space-panel-featured-play"),
+    tabLink(game.home_url, game.home_label, "space-panel-featured-home"),
     tabLink(game.channel_url, game.channel, "space-panel-featured-channel"),
   );
   card.appendChild(actions);
