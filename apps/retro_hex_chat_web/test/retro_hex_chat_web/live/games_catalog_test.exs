@@ -41,15 +41,19 @@ defmodule RetroHexChatWeb.GamesCatalogTest do
         title = document |> Floki.find("title") |> Floki.text() |> String.trim()
         description = meta(document, ~s(meta[name="description"]))
 
-        assert String.length(title) <= 70, "#{slug} title is too long: #{title}"
-        assert String.length(description) <= 170, "#{slug} description is too long"
-        assert document |> Floki.find("h1") |> length() == 1, "#{slug} has more than one h1"
+        page = "#{prefix}/games/#{slug}"
+        assert String.length(title) <= 70, "#{page} title is too long: #{title}"
+        assert String.length(description) <= 170, "#{page} description is too long"
+        assert document |> Floki.find("h1") |> length() == 1, "#{page} has more than one h1"
 
         {title, description}
       end
 
-    assert pages |> Enum.map(&elem(&1, 0)) |> Enum.uniq() |> length() == length(pages)
-    assert pages |> Enum.map(&elem(&1, 1)) |> Enum.uniq() |> length() == length(pages)
+    assert pages |> Enum.map(&elem(&1, 0)) |> Enum.uniq() |> length() == length(pages),
+           "two game pages share a title (#{prefix})"
+
+    assert pages |> Enum.map(&elem(&1, 1)) |> Enum.uniq() |> length() == length(pages),
+           "two game pages share a description (#{prefix})"
   end
 
   describe "/games" do
@@ -259,12 +263,13 @@ defmodule RetroHexChatWeb.GamesCatalogTest do
   describe "every game's page" do
     # The landing suite checks one game page in English; every game has a name
     # of its own length in every language, and a title or description a search
-    # result cuts is one the page loses, so each is checked here.
-    for prefix <- ["" | Enum.map(RetroHexChatWeb.SEO.localized_locale_segments(), &"/#{&1}")] do
-      @prefix prefix
-      test "has a title and description that fit a search result, unlike any other (#{prefix})",
-           %{conn: conn} do
-        check_titles(conn, @prefix)
+    # result cuts is one the page loses, so each is checked here. One test
+    # walks every language: a test holds its database connection until it
+    # ends, and one per language held most of the pool at once.
+    test "has a title and description that fit a search result, unlike any other",
+         %{conn: conn} do
+      for prefix <- ["" | Enum.map(RetroHexChatWeb.SEO.localized_locale_segments(), &"/#{&1}")] do
+        check_titles(conn, prefix)
       end
     end
   end
