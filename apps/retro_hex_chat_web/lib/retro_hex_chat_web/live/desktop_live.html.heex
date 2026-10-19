@@ -113,7 +113,11 @@
             Dragged narrower than the strip needs, the window collapses them to
             the icon rail the phone already uses. --%>
       <:menu :if={@live_ready}>
-        <.chat_shell_menu session={@session} mobile_viewport={@mobile_viewport} />
+        <.chat_shell_menu
+          session={@session}
+          mobile_viewport={@mobile_viewport}
+          return_to={@current_address}
+        />
       </:menu>
 
       <%!-- What this session is doing, along the window's own bottom edge, the

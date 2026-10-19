@@ -19,7 +19,6 @@ defmodule RetroHexChatWeb.Components.UI.Site.Document do
   import RetroHexChatWeb.Components.UI.Desktop
   import RetroHexChatWeb.Components.UI.Help.HelpMenuBar
   import RetroHexChatWeb.Components.UI.Help.HelpStatusBar
-  import RetroHexChatWeb.Components.UI.MenuBarApp
   import RetroHexChatWeb.Components.UI.Window
 
   alias RetroHexChat.Chat.HelpTopics
@@ -181,9 +180,6 @@ defmodule RetroHexChatWeb.Components.UI.Site.Document do
           current_path={@doc.assigns[:canonical_path]}
           phx-hook="MenuBarHook"
         />
-      </:menu>
-      <:menu :if={@window.menu == :connect}>
-        <.menu_bar_app id="connect-menubar" phx-hook="MenuBarHook" connected={false} />
       </:menu>
 
       <:status :if={@window.menu == :help}>

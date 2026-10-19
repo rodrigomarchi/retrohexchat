@@ -838,7 +838,7 @@ Grouped by section. Every row comes from an `@flow` line in the spec itself.
 | PW28 | The desktop is the home: a visitor at / gets the live #lobby in front with an icon per page on the desk; a page opens as its group of windows over the chat, cascaded with its first window in front, and closing its last window goes back to the chat | `tests/desktop-home.spec.ts` | done |
 | PW29 | A visitor arriving at / is greeted in #lobby by the system, for their eyes only: their guest name, how to move between channels, what an account opens (Space, Group Call, P2P, Arcade) and where to create one — on a desktop and on a phone | `tests/chat-public-visitor.spec.ts` | done |
 | PW30 | A visitor reads on arrival what a member reads: the server's message of the day in the Status window and a channel's own welcome (/setwelcome) when they open it | `tests/chat-public-visitor.spec.ts` | done |
-| PW31 | Every step of the sign-in window — nickname, a wrong nickname, registration with Remember this terminal, password, remembered nicknames — fits a 1280x720 desktop and a phone without scrolling or spilling sideways, and How sessions work opens the help topic | `tests/sign-in-window-fit.spec.ts` | done |
+| PW31 | Every step of the sign-in window — nickname, a wrong nickname, registration with Remember this terminal, password, remembered nicknames — fits a 1280x720 desktop and a phone without scrolling or spilling sideways, a visitor's reason included, and How sessions work opens the help topic | `tests/sign-in-window-fit.spec.ts` | done |
 
 ### Dialog Gallery
 

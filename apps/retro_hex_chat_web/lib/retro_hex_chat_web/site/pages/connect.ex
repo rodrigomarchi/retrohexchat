@@ -33,7 +33,6 @@ defmodule RetroHexChatWeb.Site.Pages.Connect do
      %{
        windows: [
          Window.new("connect", dgettext("connect", "Connect to RetroHexChat"), :icon_connect,
-           menu: :connect,
            # A form in one column, as narrow on a desktop as on a phone.
            width: 400,
            body: &sign_in/1
@@ -66,11 +65,21 @@ defmodule RetroHexChatWeb.Site.Pages.Connect do
         <span>{@reason_message}</span>
       </p>
 
-      <div :if={@feature} class="space-y-retro-2 text-xs" data-testid="visitor-connect-reason">
-        <p class="font-bold" data-feature={@feature}>{Visitor.feature_message(@feature)}</p>
-        <p class="text-muted-foreground">
-          {dgettext("chat", "Create an account or sign in, and you come back right where you were.")}
-        </p>
+      <div
+        :if={@feature}
+        class="flex items-start gap-retro-6 bg-white p-retro-6 text-xs shadow-retro-field"
+        data-testid="visitor-connect-reason"
+      >
+        {apply(Icons, Visitor.feature_icon(@feature), [%{class: "h-5 w-5 shrink-0"}])}
+        <div class="space-y-retro-2">
+          <p class="font-bold" data-feature={@feature}>{Visitor.feature_message(@feature)}</p>
+          <p class="text-muted-foreground">
+            {dgettext(
+              "chat",
+              "Create an account or sign in, and you come back right where you were."
+            )}
+          </p>
+        </div>
       </div>
 
       <.live_component

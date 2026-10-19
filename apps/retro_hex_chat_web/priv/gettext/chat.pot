@@ -1731,7 +1731,7 @@ msgstr ""
 msgid "Reset (Ctrl+Shift+X)"
 msgstr ""
 
-#: lib/retro_hex_chat_web/live/desktop_live.html.heex:352
+#: lib/retro_hex_chat_web/live/desktop_live.html.heex:356
 #, elixir-autogen
 msgid "RetroHexChat"
 msgstr ""
@@ -2431,7 +2431,7 @@ msgstr ""
 msgid "Channel Central"
 msgstr ""
 
-#: lib/retro_hex_chat_web/live/desktop_live.html.heex:772
+#: lib/retro_hex_chat_web/live/desktop_live.html.heex:776
 #, elixir-autogen, elixir-format
 msgid "Channel Central: %{channel}"
 msgstr ""
@@ -2675,7 +2675,7 @@ msgstr ""
 msgid "Only the founder can drop a channel."
 msgstr ""
 
-#: lib/retro_hex_chat_web/live/desktop_live.html.heex:353
+#: lib/retro_hex_chat_web/live/desktop_live.html.heex:357
 #, elixir-autogen, elixir-format
 msgid "Opening chat..."
 msgstr ""
@@ -2980,7 +2980,7 @@ msgstr ""
 
 #: lib/retro_hex_chat_web/components/ui/chat/message_row.ex:100
 #: lib/retro_hex_chat_web/components/ui/chat/message_row.ex:177
-#: lib/retro_hex_chat_web/components/ui/chat/visitor_greeting_card.ex:109
+#: lib/retro_hex_chat_web/components/ui/chat/visitor_greeting_card.ex:115
 #, elixir-autogen, elixir-format
 msgid "P2P"
 msgstr ""
@@ -3011,7 +3011,7 @@ msgstr ""
 msgid "Private Space"
 msgstr ""
 
-#: lib/retro_hex_chat_web/components/ui/chat/visitor_greeting_card.ex:97
+#: lib/retro_hex_chat_web/components/ui/chat/visitor_greeting_card.ex:103
 #: lib/retro_hex_chat_web/components/ui/space/conversation_entry.ex:44
 #: lib/retro_hex_chat_web/controllers/help_content/feature_virtual_spaces.html.heex:12
 #: lib/retro_hex_chat_web/live/app/space_live.ex:821
@@ -3842,7 +3842,7 @@ msgstr ""
 msgid "In the channel call"
 msgstr ""
 
-#: lib/retro_hex_chat_web/live/chat_live/components/chat_shell.ex:132
+#: lib/retro_hex_chat_web/live/chat_live/components/chat_shell.ex:136
 #, elixir-autogen, elixir-format
 msgid "P2P: %{peer} — in another tab"
 msgstr ""
@@ -3893,7 +3893,7 @@ msgstr ""
 msgid "Register your nickname to put the space card here"
 msgstr ""
 
-#: lib/retro_hex_chat_web/live/chat_live/components/chat_shell.ex:133
+#: lib/retro_hex_chat_web/live/chat_live/components/chat_shell.ex:137
 #, elixir-autogen, elixir-format
 msgid "This P2P session is open in another tab of yours"
 msgstr ""
@@ -5841,7 +5841,7 @@ msgctxt "space room"
 msgid "Game Room"
 msgstr ""
 
-#: lib/retro_hex_chat_web/live/chat_live/visitor.ex:252
+#: lib/retro_hex_chat_web/live/chat_live/visitor.ex:262
 #, elixir-autogen, elixir-format
 msgid "%{channel} is no longer open to visitors."
 msgstr ""
@@ -5856,7 +5856,7 @@ msgstr ""
 msgid "Watching without an account"
 msgstr ""
 
-#: lib/retro_hex_chat_web/live/chat_live/visitor.ex:229
+#: lib/retro_hex_chat_web/live/chat_live/visitor.ex:239
 #, elixir-autogen, elixir-format
 msgid "%{channel} cannot be watched without an account."
 msgstr ""
@@ -5866,7 +5866,7 @@ msgstr ""
 msgid "Calls are for registered members."
 msgstr ""
 
-#: lib/retro_hex_chat_web/site/pages/connect.ex:72
+#: lib/retro_hex_chat_web/site/pages/connect.ex:77
 #, elixir-autogen, elixir-format
 msgid "Create an account or sign in, and you come back right where you were."
 msgstr ""
@@ -5916,7 +5916,7 @@ msgstr ""
 msgid "In %{conversations}, %{open} and %{popular} take you to other channels, and %{browse} lists every public one."
 msgstr ""
 
-#: lib/retro_hex_chat_web/components/ui/chat/visitor_greeting_card.ex:91
+#: lib/retro_hex_chat_web/components/ui/chat/visitor_greeting_card.ex:97
 #, elixir-autogen, elixir-format
 msgid "Talk"
 msgstr ""
@@ -5947,32 +5947,33 @@ msgstr ""
 msgid "You can read every public channel, but writing needs an account."
 msgstr ""
 
-#: lib/retro_hex_chat_web/components/ui/chat/visitor_greeting_card.ex:110
+#: lib/retro_hex_chat_web/components/ui/chat/visitor_greeting_card.ex:116
 #, elixir-autogen, elixir-format
 msgid "A direct call, file transfer or game with one person."
 msgstr ""
 
 #: lib/retro_hex_chat_web/components/ui/chat/visitor_greeting_card.ex:67
+#: lib/retro_hex_chat_web/components/ui/connect/connect_form_panel.ex:269
 #, elixir-autogen, elixir-format
 msgid "An account only needs a nickname and a password."
 msgstr ""
 
-#: lib/retro_hex_chat_web/components/ui/chat/visitor_greeting_card.ex:104
+#: lib/retro_hex_chat_web/components/ui/chat/visitor_greeting_card.ex:110
 #, elixir-autogen, elixir-format
 msgid "An audio and video call for the whole channel."
 msgstr ""
 
-#: lib/retro_hex_chat_web/components/ui/chat/visitor_greeting_card.ex:116
+#: lib/retro_hex_chat_web/components/ui/chat/visitor_greeting_card.ex:122
 #, elixir-autogen, elixir-format
 msgid "Doom, Quake and other classics in the browser."
 msgstr ""
 
-#: lib/retro_hex_chat_web/components/ui/chat/visitor_greeting_card.ex:98
+#: lib/retro_hex_chat_web/components/ui/chat/visitor_greeting_card.ex:104
 #, elixir-autogen, elixir-format
 msgid "Walk this channel's 8-bit world with your own character."
 msgstr ""
 
-#: lib/retro_hex_chat_web/components/ui/chat/visitor_greeting_card.ex:92
+#: lib/retro_hex_chat_web/components/ui/chat/visitor_greeting_card.ex:98
 #, elixir-autogen, elixir-format
 msgid "Write here, in any channel, or privately to anyone."
 msgstr ""

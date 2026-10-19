@@ -44,7 +44,7 @@ defmodule RetroHexChatWeb.Site.Window do
           assigns: map(),
           status: [status_field()],
           taskbar_label: String.t() | nil,
-          menu: :help | :connect | nil,
+          menu: :help | nil,
           meta: String.t() | nil,
           width: pos_integer(),
           height: pos_integer() | nil,

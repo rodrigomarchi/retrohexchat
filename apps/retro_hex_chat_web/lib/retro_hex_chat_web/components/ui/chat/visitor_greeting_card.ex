@@ -59,8 +59,8 @@ defmodule RetroHexChatWeb.Components.UI.VisitorGreetingCard do
       </p>
       <p class="font-bold">{dgettext("chat", "With a free account you can also:")}</p>
       <.feature_list>
-        <:item :for={feature <- features()} icon={feature.icon}>
-          <.link patch={topic_path(feature.topic)} class="font-bold underline">{feature.name}</.link>
+        <:item :for={feature <- account_features()} icon={feature.icon}>
+          <.link patch={feature.path} class="font-bold underline">{feature.name}</.link>
           — {feature.text}
         </:item>
       </.feature_list>
@@ -81,37 +81,43 @@ defmodule RetroHexChatWeb.Components.UI.VisitorGreetingCard do
     """
   end
 
-  # What an account opens, each named by the label the screen shows it under
-  # and leading to the help topic that explains it.
-  defp features do
+  @doc """
+  What an account opens, each named by the label the screen shows it under and
+  leading (`path`) to the help topic that explains it. The visitor's greeting
+  lists them; the sign-in window shows them as a row of icons.
+  """
+  @spec account_features() :: [
+          %{icon: atom(), path: String.t(), name: String.t(), text: String.t()}
+        ]
+  def account_features do
     [
       %{
         icon: :icon_chat,
-        topic: "channels",
+        path: topic_path("channels"),
         name: dgettext("chat", "Talk"),
         text: dgettext("chat", "Write here, in any channel, or privately to anyone.")
       },
       %{
         icon: :icon_toolbar_community,
-        topic: "feature-virtual-spaces",
+        path: topic_path("feature-virtual-spaces"),
         name: dgettext("chat", "Space"),
         text: dgettext("chat", "Walk this channel's 8-bit world with your own character.")
       },
       %{
         icon: :icon_toolbar_conference,
-        topic: "feature-channel-conference",
+        path: topic_path("feature-channel-conference"),
         name: dgettext("group_call", "Group Call"),
         text: dgettext("chat", "An audio and video call for the whole channel.")
       },
       %{
         icon: :icon_p2p,
-        topic: "feature-universal-lobby",
+        path: topic_path("feature-universal-lobby"),
         name: dgettext("chat", "P2P"),
         text: dgettext("chat", "A direct call, file transfer or game with one person.")
       },
       %{
         icon: :icon_game_arcade,
-        topic: "feature-arcade",
+        path: topic_path("feature-arcade"),
         name: dgettext("ui", "Arcade"),
         text: dgettext("chat", "Doom, Quake and other classics in the browser.")
       }

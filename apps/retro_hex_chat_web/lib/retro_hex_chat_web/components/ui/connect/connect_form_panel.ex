@@ -14,6 +14,7 @@ defmodule RetroHexChatWeb.Components.UI.ConnectFormPanel do
 
   import RetroHexChatWeb.Components.UI.Button
   import RetroHexChatWeb.Components.UI.Checkbox
+  import RetroHexChatWeb.Components.UI.IconWell
   import RetroHexChatWeb.Components.UI.Input
   import RetroHexChatWeb.Components.UI.Label
 
@@ -22,6 +23,7 @@ defmodule RetroHexChatWeb.Components.UI.ConnectFormPanel do
 
   alias RetroHexChat.Chat.TimeFormatter
   alias RetroHexChat.Services.NickExpiry
+  alias RetroHexChatWeb.Components.UI.VisitorGreetingCard
   alias RetroHexChatWeb.Icons
   alias RetroHexChatWeb.PublicPages
 
@@ -106,16 +108,17 @@ defmodule RetroHexChatWeb.Components.UI.ConnectFormPanel do
   defp connect_step(%{step: :password} = assigns) do
     ~H"""
     <form phx-submit="authenticate" phx-target={@target} autocomplete="off" class="space-y-retro-8">
-      <p class="flex items-start gap-retro-4 text-xs">
-        <Icons.icon_lock class="mt-px h-3.5 w-3.5 shrink-0" />
-        <span>
-          {dgettext(
+      <.step_header
+        icon={:icon_lock}
+        title={@nickname}
+        subtitle={
+          dgettext(
             "connect",
             "The nickname %{nickname} is registered. Please enter your password to continue.",
             nickname: @nickname
-          )}
-        </span>
-      </p>
+          )
+        }
+      />
 
       <.password_field
         id="password"
@@ -141,16 +144,17 @@ defmodule RetroHexChatWeb.Components.UI.ConnectFormPanel do
   defp connect_step(assigns) do
     ~H"""
     <form phx-submit="register" phx-target={@target} autocomplete="off" class="space-y-retro-8">
-      <p class="flex items-start gap-retro-4 text-xs">
-        <Icons.icon_checkmark class="mt-px h-3.5 w-3.5 shrink-0" />
-        <span>
-          {dgettext(
+      <.step_header
+        icon={:icon_star}
+        title={@nickname}
+        subtitle={
+          dgettext(
             "connect",
             "The nickname %{nickname} is available! Choose a password to register it.",
             nickname: @nickname
-          )}
-        </span>
-      </p>
+          )
+        }
+      />
 
       <.password_field
         id="reg-password"
@@ -195,7 +199,9 @@ defmodule RetroHexChatWeb.Components.UI.ConnectFormPanel do
   # it describes the terminal.
   defp remembered_nicknames(assigns) do
     ~H"""
-    <div class="space-y-retro-6">
+    <div class="space-y-retro-8">
+      <.step_header icon={:icon_devices} title={dgettext("ui", "Trusted Terminals")} />
+
       <ul class="bg-white shadow-retro-field" data-testid="remembered-nicks">
         <li
           :for={entry <- @remembered_nicks}
@@ -256,21 +262,28 @@ defmodule RetroHexChatWeb.Components.UI.ConnectFormPanel do
   defp nickname_form(assigns) do
     ~H"""
     <form phx-submit="connect" phx-target={@target} class="space-y-retro-6">
-      <.label for="nickname" class="font-bold">
-        {dgettext("connect", "Log in or create an account")}
-      </.label>
-      <.input
-        type="text"
-        id="nickname"
-        name="nickname"
-        value={@nickname}
-        maxlength="16"
-        autocomplete="off"
-        required
-        aria-describedby="nickname-hint"
-        placeholder={dgettext("connect", "Enter your nickname...")}
-        phx-mounted={JS.focus()}
+      <.step_header
+        icon={:icon_status_user}
+        for="nickname"
+        title={dgettext("connect", "Log in or create an account")}
+        subtitle={dgettext("chat", "An account only needs a nickname and a password.")}
       />
+      <div class="relative">
+        <Icons.icon_status_user class="pointer-events-none absolute top-1/2 left-2 h-4 w-4 -translate-y-1/2" />
+        <.input
+          type="text"
+          id="nickname"
+          name="nickname"
+          value={@nickname}
+          maxlength="16"
+          autocomplete="off"
+          required
+          aria-describedby="nickname-hint"
+          class="pl-8"
+          placeholder={dgettext("connect", "Enter your nickname...")}
+          phx-mounted={JS.focus()}
+        />
+      </div>
       <p
         :if={is_nil(@nickname_error)}
         id="nickname-hint"
@@ -280,6 +293,8 @@ defmodule RetroHexChatWeb.Components.UI.ConnectFormPanel do
         {dgettext("connect", "Use 1 to 16 characters. Start with A–Z. No spaces.")}
       </p>
       <.field_error id="nickname-hint" message={@nickname_error} testid="nickname-error" />
+
+      <.account_features />
 
       <div class="flex items-center justify-between gap-retro-6 pt-retro-4">
         <button
@@ -306,6 +321,48 @@ defmodule RetroHexChatWeb.Components.UI.ConnectFormPanel do
         </.button>
       </div>
     </form>
+    """
+  end
+
+  attr :icon, :atom, required: true
+  attr :title, :string, required: true
+  attr :subtitle, :string, default: nil
+  attr :for, :string, default: nil, doc: "the field the title labels, when it is one"
+
+  # What each step is about, in one glance: a big icon, a title, a line.
+  defp step_header(assigns) do
+    ~H"""
+    <div class="flex items-center gap-retro-8" data-testid="connect-step-header">
+      <.icon_well size="lg">{apply(Icons, @icon, [%{class: "h-8 w-8"}])}</.icon_well>
+      <div class="min-w-0 space-y-retro-2">
+        <.label :if={@for} for={@for} class="block text-sm font-bold">{@title}</.label>
+        <p :if={!@for} class="truncate text-sm font-bold">{@title}</p>
+        <p :if={@subtitle} class="text-xs text-muted-foreground">{@subtitle}</p>
+      </div>
+    </div>
+    """
+  end
+
+  # What an account opens, as a row of icons, each leading to its help topic.
+  defp account_features(assigns) do
+    assigns = assign(assigns, :features, VisitorGreetingCard.account_features())
+
+    ~H"""
+    <ul
+      class="grid grid-cols-5 gap-retro-2 border-t border-border pt-retro-6"
+      data-testid="connect-account-features"
+    >
+      <li :for={feature <- @features}>
+        <.link
+          patch={feature.path}
+          title={feature.text}
+          class="flex flex-col items-center gap-retro-2 p-retro-2 text-center text-[11px] leading-tight hover:bg-white hover:shadow-retro-field"
+        >
+          {apply(Icons, feature.icon, [%{class: "h-8 w-8"}])}
+          <span>{feature.name}</span>
+        </.link>
+      </li>
+    </ul>
     """
   end
 

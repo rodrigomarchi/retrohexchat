@@ -13,8 +13,8 @@ import { test, expect, type Locator, type Page } from "@playwright/test";
 import { ConnectPage, uniqueNickname } from "../pages/ConnectPage";
 import { CHAT_URL } from "../helpers/urls";
 
-// The menu bar a language is picked from: the sign-in window's own, or the
-// chat window's when nothing is in front of it.
+// The sign-in window has no menus of its own: a language is picked from the
+// chat window's, behind it.
 function signIn(page: Page): Locator {
   return page.getByTestId("document-window-connect");
 }
@@ -60,8 +60,12 @@ test.describe("Internationalization", () => {
       "Enter your nickname...",
     );
 
-    await chooseLanguage(page, "pt_BR", signIn(page));
+    // The chat's menu brings the chat to the front: the language comes back
+    // there, and the sign-in window opens in it from then on.
+    await chooseLanguage(page, "pt_BR");
 
+    await expect(page).toHaveURL(/\/pt-BR\/c\/lobby$/);
+    await page.goto("/connect");
     await expect(page).toHaveURL(/\/pt-BR\/connect$/);
     await expect(page.locator("html")).toHaveAttribute("lang", "pt-BR");
     await expect(
@@ -79,8 +83,9 @@ test.describe("Internationalization", () => {
       signIn(page).getByText("Conectar ao RetroHexChat").first(),
     ).toBeVisible();
 
-    await chooseLanguage(page, "en", signIn(page));
-    await expect(page).toHaveURL(/\/\/[^/]+\/connect$/);
+    await chooseLanguage(page, "en");
+    await expect(page).toHaveURL(/\/\/[^/]+\/c\/lobby$/);
+    await page.goto("/connect");
 
     await expect(page.locator("html")).toHaveAttribute("lang", "en");
     await expect(
@@ -113,9 +118,9 @@ test.describe("Internationalization", () => {
   test("switches to Japanese and survives a reload", async ({ page }) => {
     await page.goto("/connect");
 
-    await chooseLanguage(page, "ja", signIn(page));
+    await chooseLanguage(page, "ja");
 
-    await expect(page).toHaveURL(/\/ja\/connect$/);
+    await expect(page).toHaveURL(/\/ja\/c\/lobby$/);
     await expect(page.locator("html")).toHaveAttribute("lang", "ja");
     await expect(page.locator("html")).toHaveAttribute("dir", "ltr");
 

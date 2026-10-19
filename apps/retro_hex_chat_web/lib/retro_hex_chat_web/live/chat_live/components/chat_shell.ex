@@ -41,6 +41,10 @@ defmodule RetroHexChatWeb.ChatLive.Components.ChatShell do
     default: nil,
     doc: "The host's @mobile_viewport assign, threaded through to the menu bar"
 
+  attr :return_to, :string,
+    default: nil,
+    doc: "Where a language picked from the menu comes back to: the address on screen"
+
   @spec chat_shell_menu(map()) :: Phoenix.LiveView.Rendered.t()
   def chat_shell_menu(assigns) do
     assigns = assign(assigns, is_admin: ChatContext.admin?(assigns.session))
@@ -51,7 +55,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.ChatShell do
       phx-hook="MenuBarHook"
       connected={true}
       is_admin={@is_admin}
-      language_return_to={Address.chat_address(assigns)}
+      language_return_to={@return_to || Address.chat_address(assigns)}
       mobile_viewport={@mobile_viewport}
       on_action="toolbar_action"
     />

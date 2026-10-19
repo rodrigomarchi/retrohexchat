@@ -186,6 +186,16 @@ defmodule RetroHexChatWeb.ChatLive.Visitor do
   def feature_message(:links), do: dgettext("chat", "You need an account to open links.")
   def feature_message(_feature), do: dgettext("chat", "This feature needs an account.")
 
+  @doc "The icon the sign-in window draws beside `feature_message/1`."
+  @spec feature_icon(feature()) :: atom()
+  def feature_icon(:chat), do: :icon_chat
+  def feature_icon(:games), do: :icon_joystick
+  def feature_icon(:calls), do: :icon_toolbar_conference
+  def feature_icon(:space), do: :icon_toolbar_community
+  def feature_icon(:p2p), do: :icon_p2p
+  def feature_icon(:links), do: :icon_link
+  def feature_icon(_feature), do: :icon_lock
+
   defp maybe_watch(socket, channel, default) when is_binary(channel) and channel != default,
     do: watch_channel(socket, channel)
 

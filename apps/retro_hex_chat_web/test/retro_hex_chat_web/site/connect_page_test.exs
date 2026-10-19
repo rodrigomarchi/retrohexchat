@@ -15,17 +15,28 @@ defmodule RetroHexChatWeb.Site.ConnectPageTest do
   @window ~s([data-testid="document-window-connect"])
 
   describe "the window" do
-    test "opens over the chat, with its menus, its form and a taskbar button", %{conn: conn} do
+    test "opens over the chat, with its form and a taskbar button", %{conn: conn} do
       {:ok, view, _html} = live(conn, "/connect")
 
       assert has_element?(view, "#chat-desktop #{@window}")
-      assert has_element?(view, ~s(#{@window} [data-window-menu] #connect-menubar))
       assert has_element?(view, ~s(#{@window} form[phx-submit="connect"]))
       assert has_element?(view, ~s([data-window-taskbar="connect"]))
+    end
+
+    # Language and Help are the chat's menus, behind it; a second copy on the
+    # window repeated them.
+    test "has no menus of its own", %{conn: conn} do
+      {:ok, view, _html} = live(conn, "/connect")
+
+      refute has_element?(view, ~s(#{@window} [data-window-menu]))
+    end
+
+    test "the chat's language menu comes back to the address on screen", %{conn: conn} do
+      {:ok, view, _html} = live(conn, "/connect")
 
       assert has_element?(
                view,
-               ~s(#connect-menubar [data-testid="language-menu-item-pt_BR"] a[href^="/locale/pt_BR"])
+               ~s(#menubar [data-testid="language-menu-item-pt_BR"] a[href*="return_to=%2Fconnect"])
              )
     end
 
