@@ -43,6 +43,15 @@ defmodule RetroHexChat.Games.Catalog do
     "hex_hockey_showdown"
   ]
 
+  # How a finished match is ranked. Every game not listed is a versus game: two
+  # sides, one winner. Score games rank the points a player took home; co-op
+  # games rank the score the pair made together.
+  @score_game_ids ~w(hex_raid hex_raid_pacifist hex_raid_blitz hex_invaders hex_invaders_blitz
+                     hex_enduro hex_enduro_night hex_enduro_sprint)
+  @coop_game_ids ~w(block_breakers hex_invaders_coop)
+
+  @type ranking :: :versus | :score | :coop
+
   @type game :: %{
           required(:id) => String.t(),
           optional(:mode_of) => String.t(),
@@ -560,6 +569,52 @@ defmodule RetroHexChat.Games.Catalog do
     |> Enum.filter(&(Map.get(&1, :mode_of) == game_id))
     |> Enum.map(&translate_game/1)
   end
+
+  @doc """
+  The game a mode belongs to — `"hex_tennis"` for `"hex_tennis_quick"` — and
+  the game itself for a game that is not a mode. Every mode of a game shares
+  its channel and its page.
+  """
+  @spec base_id(String.t()) :: String.t()
+  def base_id(game_id) do
+    case Enum.find(@games, &(&1.id == game_id)) do
+      %{mode_of: base_id} -> base_id
+      _base_or_unknown -> game_id
+    end
+  end
+
+  @doc "How a finished match of `game_id` is ranked."
+  @spec ranking(String.t()) :: ranking()
+  def ranking(game_id) when game_id in @coop_game_ids, do: :coop
+  def ranking(game_id) when game_id in @score_game_ids, do: :score
+  def ranking(_game_id), do: :versus
+
+  @doc """
+  The address-safe name of a game: `"hex-pong"` for `"hex_pong"`. Its public
+  page and its channel are both named after it.
+  """
+  @spec slug(String.t()) :: String.t()
+  def slug(game_id), do: String.replace(game_id, "_", "-")
+
+  @doc "The channel where `game_id` and every mode of it is talked about: `#hex-pong`."
+  @spec channel_name(String.t()) :: String.t()
+  def channel_name(game_id), do: "#" <> slug(base_id(game_id))
+
+  @doc "Every game channel, one per base game, in catalogue order."
+  @spec channel_names() :: [String.t()]
+  def channel_names,
+    do: for(%{id: id} = game <- @games, not Map.has_key?(game, :mode_of), do: channel_name(id))
+
+  @doc "The base game a channel belongs to; `:error` for any other channel."
+  @spec game_for_channel(String.t()) :: {:ok, String.t()} | :error
+  def game_for_channel("#" <> name) do
+    case Enum.find(@games, &(not Map.has_key?(&1, :mode_of) and slug(&1.id) == name)) do
+      %{id: id} -> {:ok, id}
+      nil -> :error
+    end
+  end
+
+  def game_for_channel(_name), do: :error
 
   # Every text field is a msgid translated when the game is read, never when
   # the module compiles: a description concatenated from two msgids at compile

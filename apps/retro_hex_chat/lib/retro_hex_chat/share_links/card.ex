@@ -291,10 +291,17 @@ defmodule RetroHexChat.ShareLinks.Card do
       {:ok, %Session{status: "open", peer_id: nil}} ->
         %{count: 1, game_id: game_id}
 
-      {:ok, %Session{status: status}} ->
+      # A taken seat is a match being played in the open, and the card says
+      # whether it can be watched.
+      {:ok, %Session{status: status} = session} ->
         if Session.terminal?(status),
           do: %{state: :ended, reason: :over, game_id: game_id},
-          else: %{state: :ended, reason: :full, game_id: game_id}
+          else: %{
+            state: :ended,
+            reason: :full,
+            game_id: game_id,
+            watch?: Lobby.watchable?(session)
+          }
 
       _other ->
         %{state: :ended, reason: :over, game_id: game_id}

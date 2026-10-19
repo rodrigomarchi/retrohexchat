@@ -271,6 +271,18 @@ defmodule RetroHexChat.Channels.MembershipTest do
     end
   end
 
+  describe "people_count/1" do
+    test "leaves the bots out" do
+      m =
+        Membership.new()
+        |> Membership.add("alice")
+        |> Membership.add("GameServ", :bot)
+
+      assert Membership.count(m) == 2
+      assert Membership.people_count(m) == 1
+    end
+  end
+
   describe "count/1" do
     test "returns 0 for empty membership" do
       assert Membership.count(Membership.new()) == 0

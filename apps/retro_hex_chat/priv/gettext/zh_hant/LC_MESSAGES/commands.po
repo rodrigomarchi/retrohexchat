@@ -612,20 +612,20 @@ msgstr "/mute troll"
 msgid "/mute troll 30m"
 msgstr "/mute troll 30m"
 
-#: lib/retro_hex_chat/commands/handlers/nick.ex:59
-#: lib/retro_hex_chat/commands/handlers/nick.ex:80
+#: lib/retro_hex_chat/commands/handlers/nick.ex:63
+#: lib/retro_hex_chat/commands/handlers/nick.ex:84
 #, elixir-autogen, elixir-format
 msgid "/nick <newnick>"
 msgstr "/nick <newnick>"
 
-#: lib/retro_hex_chat/commands/handlers/nick.ex:65
-#: lib/retro_hex_chat/commands/handlers/nick.ex:96
+#: lib/retro_hex_chat/commands/handlers/nick.ex:69
+#: lib/retro_hex_chat/commands/handlers/nick.ex:100
 #, elixir-autogen, elixir-format
 msgid "/nick NewNick"
 msgstr "/nick NewNick"
 
-#: lib/retro_hex_chat/commands/handlers/nick.ex:65
-#: lib/retro_hex_chat/commands/handlers/nick.ex:96
+#: lib/retro_hex_chat/commands/handlers/nick.ex:69
+#: lib/retro_hex_chat/commands/handlers/nick.ex:100
 #, elixir-autogen, elixir-format
 msgid "/nick [Bot]"
 msgstr "/nick [Bot]"
@@ -1055,7 +1055,7 @@ msgstr "在通知列表中添加一個用戶"
 msgid "Add an auto-respond rule"
 msgstr "添加自動對應的規則"
 
-#: lib/retro_hex_chat/commands/registry.ex:75
+#: lib/retro_hex_chat/commands/registry.ex:77
 #, elixir-autogen, elixir-format
 msgid "Advanced"
 msgstr "高級"
@@ -1099,7 +1099,7 @@ msgstr "禁止"
 msgid "Ban user from channel"
 msgstr "從頻道禁止用戶"
 
-#: lib/retro_hex_chat/commands/registry.ex:71
+#: lib/retro_hex_chat/commands/registry.ex:73
 #, elixir-autogen, elixir-format
 msgid "Basics"
 msgstr "基本情況"
@@ -1129,12 +1129,12 @@ msgstr ""
 "旗幟:+o(操作者),+v(聲音),+b(ban),+h(半音),+m(調製),+i(只邀請),+t(主題保護),+k(鍵/password),+l(用戶限制),+n(沒有外部消息),+j(join prottle),+K(沒有敲門).\n"
 "要求:頻道操作員. 半操作員只能設置+v/-v. 一定是在頻道里"
 
-#: lib/retro_hex_chat/commands/handlers/nick.ex:82
+#: lib/retro_hex_chat/commands/handlers/nick.ex:86
 #, elixir-autogen, elixir-format
 msgid "Change your display name in the chat. A confirmation dialog appears before the change takes effect."
 msgstr "更改聊天中的顯示名稱 。 更改生效前會出現確認對話框 。"
 
-#: lib/retro_hex_chat/commands/handlers/nick.ex:61
+#: lib/retro_hex_chat/commands/handlers/nick.ex:65
 #, elixir-autogen, elixir-format
 msgid "Change your display name. A confirmation dialog appears before the change takes effect.\nRules: 1-16 characters, no spaces. Must start with a letter or [ ] \\ ^ _ { | }.\nAllowed characters: letters, numbers, [ ] \\ ^ _ ` { | } and hyphens.\nCannot change to your current nickname or one already in use."
 msgstr ""
@@ -1143,7 +1143,7 @@ msgstr ""
 "Allowed characters: letters, numbers, [ ] \\ ^ _ ` { | } and hyphens.\n"
 "Cannot change to your current nickname or one already in use."
 
-#: lib/retro_hex_chat/commands/registry.ex:72
+#: lib/retro_hex_chat/commands/registry.ex:74
 #, elixir-autogen, elixir-format
 msgid "Channel"
 msgstr "頻道"
@@ -1219,7 +1219,7 @@ msgstr "清除全部自動連接列表"
 msgid "Command name to view detailed help"
 msgstr "查看詳細幫助的命令名稱"
 
-#: lib/retro_hex_chat/commands/registry.ex:74
+#: lib/retro_hex_chat/commands/registry.ex:76
 #, elixir-autogen, elixir-format
 msgid "Configuration"
 msgstr "配置"
@@ -1597,7 +1597,7 @@ msgstr ""
 msgid "New channel topic"
 msgstr "新建頻道主題"
 
-#: lib/retro_hex_chat/commands/handlers/nick.ex:93
+#: lib/retro_hex_chat/commands/handlers/nick.ex:97
 #, elixir-autogen, elixir-format
 msgid "New nickname (max 16 characters)"
 msgstr "新建暱稱( 最多 16 個字符)"
@@ -1612,22 +1612,22 @@ msgstr "新擁有者"
 msgid "NickServ admin (drop, info, resetpass)"
 msgstr "NickServ 管理員( 投放、 信息、 重置通道)"
 
-#: lib/retro_hex_chat/commands/handlers/nick.ex:23
+#: lib/retro_hex_chat/commands/handlers/nick.ex:24
 #, elixir-autogen, elixir-format
 msgid "Nickname cannot contain spaces"
 msgstr "暱稱不能包含空格"
 
-#: lib/retro_hex_chat/commands/handlers/nick.ex:42
+#: lib/retro_hex_chat/commands/handlers/nick.ex:43
 #, elixir-autogen, elixir-format
 msgid "Nickname contains invalid characters"
 msgstr "暱稱包含無效字符"
 
-#: lib/retro_hex_chat/commands/handlers/nick.ex:36
+#: lib/retro_hex_chat/commands/handlers/nick.ex:37
 #, elixir-autogen, elixir-format
 msgid "Nickname must start with a letter or special character ([\\]^_{|})"
 msgstr "暱稱必須從字母或特殊字符開頭 ([\\] QQ)"
 
-#: lib/retro_hex_chat/commands/handlers/nick.ex:32
+#: lib/retro_hex_chat/commands/handlers/nick.ex:33
 #, elixir-autogen, elixir-format
 msgid "Nickname too long (max 16 characters)"
 msgstr "暱稱太長( 最多 16 個字符)"
@@ -2411,8 +2411,8 @@ msgstr "使用量: /msg <nickname> <message>"
 msgid "Usage: /mute <nickname> [duration]"
 msgstr "用法:/mute <nickname> [期]"
 
-#: lib/retro_hex_chat/commands/handlers/nick.ex:15
-#: lib/retro_hex_chat/commands/handlers/nick.ex:20
+#: lib/retro_hex_chat/commands/handlers/nick.ex:16
+#: lib/retro_hex_chat/commands/handlers/nick.ex:21
 #, elixir-autogen, elixir-format
 msgid "Usage: /nick <newnick>"
 msgstr "用法:/nick <newnick>"
@@ -2557,7 +2557,7 @@ msgstr "用法:/whois <nickname>"
 msgid "Usage: /whowas <nickname>"
 msgstr "用法:/whowas <nickname>"
 
-#: lib/retro_hex_chat/commands/registry.ex:73
+#: lib/retro_hex_chat/commands/registry.ex:75
 #, elixir-autogen, elixir-format
 msgid "User"
 msgstr "用戶"
@@ -2695,12 +2695,12 @@ msgstr "瓦洛普斯派來了"
 msgid "Without arguments, opens the Bot Management dialog (admins) or shows bot list."
 msgstr "沒有參數,請打開Bot管理對話框(admins)或顯示bot列表."
 
-#: lib/retro_hex_chat/commands/handlers/nick.ex:29
+#: lib/retro_hex_chat/commands/handlers/nick.ex:30
 #, elixir-autogen, elixir-format
 msgid "You are already using that nickname"
 msgstr "你已經在用這個綽號了"
 
-#: lib/retro_hex_chat/commands/handler/guards.ex:22
+#: lib/retro_hex_chat/commands/handler/guards.ex:23
 #: lib/retro_hex_chat/commands/handlers/event.ex:49
 #: lib/retro_hex_chat/commands/handlers/me.ex:20
 #: lib/retro_hex_chat/commands/handlers/part.ex:16
@@ -2738,7 +2738,7 @@ msgstr "您必須是頻道操作員來踢踢用戶"
 msgid "You must be a channel operator to unban users"
 msgstr "您必須是取消禁用用戶的頻道操作員"
 
-#: lib/retro_hex_chat/commands/handler/guards.ex:36
+#: lib/retro_hex_chat/commands/handler/guards.ex:37
 #: lib/retro_hex_chat/commands/policy.ex:34
 #, elixir-autogen, elixir-format
 msgid "You must be a channel operator to use this command"
@@ -2750,7 +2750,7 @@ msgstr "您必須是頻道操作員才能使用此命令"
 msgid "You must be a server administrator to use this command"
 msgstr "您必須是服務器管理員才能使用此命令"
 
-#: lib/retro_hex_chat/commands/handler/guards.ex:54
+#: lib/retro_hex_chat/commands/handler/guards.ex:55
 #, elixir-autogen, elixir-format
 msgid "You must be at least a half-operator to use this command"
 msgstr "您必須至少是半操作員才能使用此命令"
@@ -3491,3 +3491,105 @@ msgstr ""
 #, elixir-autogen, elixir-format
 msgid "You must be a channel operator to register the channel"
 msgstr "您必須是頻道操作員才能註冊頻道"
+
+#: lib/retro_hex_chat/commands/handler/guards.ex:96
+#, elixir-autogen, elixir-format
+msgid "%{game} has no mode called %{mode}."
+msgstr "%{game}沒有稱爲%{mode}的模式."
+
+#: lib/retro_hex_chat/commands/handlers/challenge.ex:46
+#: lib/retro_hex_chat/commands/handlers/challenge.ex:70
+#, elixir-autogen, elixir-format
+msgid "/challenge <nickname> [mode]"
+msgstr "/challenge <nickname> [mode]"
+
+#: lib/retro_hex_chat/commands/handlers/challenge.ex:53
+#: lib/retro_hex_chat/commands/handlers/challenge.ex:92
+#, elixir-autogen, elixir-format
+msgid "/challenge mario"
+msgstr "/challenge mario"
+
+#: lib/retro_hex_chat/commands/handlers/challenge.ex:54
+#: lib/retro_hex_chat/commands/handlers/challenge.ex:93
+#, elixir-autogen, elixir-format
+msgid "/challenge mario quick"
+msgstr "/challenge mario quick"
+
+#: lib/retro_hex_chat/commands/handlers/lfg.ex:52
+#: lib/retro_hex_chat/commands/handlers/lfg.ex:84
+#, elixir-autogen, elixir-format
+msgid "/lfg"
+msgstr "/lfg"
+
+#: lib/retro_hex_chat/commands/handlers/lfg.ex:46
+#: lib/retro_hex_chat/commands/handlers/lfg.ex:67
+#, elixir-autogen, elixir-format
+msgid "/lfg [mode]"
+msgstr "/lfg [mode]"
+
+#: lib/retro_hex_chat/commands/handlers/lfg.ex:52
+#: lib/retro_hex_chat/commands/handlers/lfg.ex:84
+#, elixir-autogen, elixir-format
+msgid "/lfg blitz"
+msgstr "/lfg blitz"
+
+#: lib/retro_hex_chat/commands/handlers/challenge.ex:88
+#: lib/retro_hex_chat/commands/handlers/lfg.ex:81
+#, elixir-autogen, elixir-format
+msgid "A mode of the game, like blitz"
+msgstr "遊戲模式, 如閃電"
+
+#: lib/retro_hex_chat/commands/handlers/challenge.ex:72
+#, elixir-autogen, elixir-format
+msgid "Invite someone to play the channel's game over a P2P session.\nRequires: both users must be registered and identified (/ns identify)."
+msgstr ""
+"請人通過P2P會話來玩頻道的遊戲.\n"
+"要求:兩個用戶都必須註冊和識別(/ns識別)."
+
+#: lib/retro_hex_chat/commands/handlers/lfg.ex:69
+#, elixir-autogen, elixir-format
+msgid "Look for someone to play the channel's game with: a card with one open seat appears in the channel.\nRequires: a registered, identified nickname."
+msgstr ""
+"找個人來玩頻道的遊戲,玩的是: 頻道里出現了一張開張座位的牌.\n"
+"要求:一個已註冊、已識別的暱稱。"
+
+#: lib/retro_hex_chat/commands/handlers/nick.ex:46
+#, elixir-autogen, elixir-format
+msgid "That nickname is reserved"
+msgstr "這個暱稱是保留下來的"
+
+#: lib/retro_hex_chat/commands/handlers/challenge.ex:34
+#, elixir-autogen, elixir-format
+msgid "Usage: /challenge <nickname> [mode]"
+msgstr "用法:/challenge <nickname> [模"
+
+#: lib/retro_hex_chat/commands/handler/guards.ex:81
+#, elixir-autogen, elixir-format
+msgid "Use this in a game's own channel, like %{channel}."
+msgstr "在遊戲自己的頻道中使用此功能,如%{channel}."
+
+#: lib/retro_hex_chat/commands/handlers/challenge.ex:81
+#, elixir-autogen, elixir-format
+msgid "Who to play"
+msgstr "誰玩"
+
+#: lib/retro_hex_chat/commands/handlers/lfg.ex:34
+#, elixir-autogen, elixir-format
+msgid "You must be identified to look for a match."
+msgstr "您必須確認身份 尋找匹配。"
+
+#: lib/retro_hex_chat/commands/handlers/challenge.ex:48
+#, elixir-autogen, elixir-format
+msgid "Invite someone to play the channel's game. Run it in a game's channel: they get a P2P invite in your private conversation, and the game starts once you are both in.\nName a mode to play it instead of the standard game.\nRequires: both users must be registered and identified (/ns identify)."
+msgstr ""
+"邀人玩頻道遊戲. 在遊戲的頻道中運行:他們在您的私人對話中得到了一個P2P邀請,遊戲在你們兩個都進入後開始.\n"
+"命名一個模式來播放它而不是標準遊戲.\n"
+"要求:兩個用戶都必須註冊和識別(/ns識別)."
+
+#: lib/retro_hex_chat/commands/handlers/lfg.ex:48
+#, elixir-autogen, elixir-format
+msgid "Look for someone to play the channel's game with. Run it in a game's channel: a card with one open seat appears in the channel, and whoever presses Join first plays you.\nName a mode to play it instead of the standard game.\nRequires: a registered, identified nickname."
+msgstr ""
+"找人來玩頻道的遊戲 在遊戲頻道中運行:頻道中出現一個開張座位的卡片,誰按\"聯合\"就先玩你.\n"
+"命名一個模式來播放它而不是標準遊戲.\n"
+"要求:一個已註冊、已識別的暱稱。"

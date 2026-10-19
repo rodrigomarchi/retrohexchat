@@ -11,7 +11,8 @@ defmodule RetroHexChat.VirtualSpace.Maps.Construct do
   of placeable kinds, the `reserved` tiles nobody may build on, `max_items`,
   the floor `materials` it can be painted with (each a one-character floor
   tile), and `fixed_items`: the furniture it comes with, each an `id`
-  (`fixed:<n>`), `kind`, `x`, `y` and `dir`, placed like anybody's piece. The
+  (`fixed:<n>`), `kind`, `x`, `y` and `dir`, placed like anybody's piece, and
+  a cabinet's `game` — the Retro Game it plays (`Games.Catalog` id). The
   Office (`Maps.Office`) and the Game Room (`Maps.GameRoom`) are read through
   this module, each from its own file, with the same catalog and sheets.
 
@@ -27,6 +28,8 @@ defmodule RetroHexChat.VirtualSpace.Maps.Construct do
   art drawn with it, each on its own point) and `shadow` (false for a piece
   that stands flush on the floor, a wall, with no contact shadow under it).
   """
+
+  alias RetroHexChat.Games.Catalog, as: Games
 
   @sheet "construct"
   @optional_tile_keys [:flip_x, :frames, :period_ms, :wpx, :hpx]
@@ -175,8 +178,21 @@ defmodule RetroHexChat.VirtualSpace.Maps.Construct do
     }
   end
 
-  defp fixed_item(i),
-    do: %{id: i["id"], kind: i["kind"], x: i["x"], y: i["y"], dir: i["dir"] || "down"}
+  defp fixed_item(i) do
+    %{id: i["id"], kind: i["kind"], x: i["x"], y: i["y"], dir: i["dir"] || "down"}
+    |> put_game(i["game"])
+  end
+
+  # A cabinet's game is checked against the catalogue as the map loads: a
+  # misspelled id would be a cabinet that opens on nothing, found by whoever
+  # walks up to it.
+  defp put_game(item, nil), do: item
+
+  defp put_game(item, game_id) do
+    if Games.valid_game_id?(game_id),
+      do: Map.put(item, :game, game_id),
+      else: raise(ArgumentError, "#{item.id} plays #{inspect(game_id)}, which is no Retro Game")
+  end
 
   defp iso(%{} = i),
     do: %{tile_w: i["tile_w"], tile_h: i["tile_h"], z_step: i["z_step"], headroom: i["headroom"]}

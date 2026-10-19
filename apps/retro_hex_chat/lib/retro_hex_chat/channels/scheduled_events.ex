@@ -29,6 +29,7 @@ defmodule RetroHexChat.Channels.ScheduledEvents do
 
   alias RetroHexChat.Channels.Schemas.ChannelEvent
   alias RetroHexChat.Channels.Schemas.ChannelEventAttendee
+  alias RetroHexChat.Games.Catalog
   alias RetroHexChat.Page
   alias RetroHexChat.Repo
 
@@ -57,7 +58,9 @@ defmodule RetroHexChat.Channels.ScheduledEvents do
   Writes down something the channel is going to do.
 
   Refuses a time that has already passed, because an event nobody can still get
-  to is a row that only ever produces a wrong reminder.
+  to is a row that only ever produces a wrong reminder. An event in a game's
+  own channel is about that game unless it says otherwise — a tournament in
+  #hex-pong is played in Hex Pong — so its card leads to the game.
   """
   @spec create(String.t(), String.t(), map()) :: {:ok, ChannelEvent.t()} | {:error, String.t()}
   def create(channel_name, created_by, attrs) do
@@ -67,6 +70,11 @@ defmodule RetroHexChat.Channels.ScheduledEvents do
       |> ChannelEvent.changeset(
         attrs
         |> Map.take([:title, :description, :starts_at, :surface_hint])
+        |> Map.update(
+          :surface_hint,
+          channel_game(channel_name),
+          &(&1 || channel_game(channel_name))
+        )
         |> Map.merge(%{channel_name: channel_name, created_by: created_by})
       )
       |> Repo.insert()
@@ -74,6 +82,13 @@ defmodule RetroHexChat.Channels.ScheduledEvents do
         {:ok, event} -> {:ok, event}
         {:error, changeset} -> {:error, first_error(changeset)}
       end
+    end
+  end
+
+  defp channel_game(channel_name) do
+    case Catalog.game_for_channel(channel_name) do
+      {:ok, game_id} -> game_id
+      :error -> nil
     end
   end
 

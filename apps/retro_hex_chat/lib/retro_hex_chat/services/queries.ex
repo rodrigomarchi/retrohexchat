@@ -227,7 +227,7 @@ defmodule RetroHexChat.Services.Queries do
     cutoff = DateTime.add(now, -days, :day)
 
     from(c in RegisteredChannel,
-      where: c.last_activity_at < ^cutoff
+      where: c.last_activity_at < ^cutoff and not c.system
     )
   end
 

@@ -86,6 +86,15 @@ defmodule RetroHexChat.Lobby.Schema.Session do
   @spec open?(String.t()) :: boolean()
   def open?(status), do: status == "open"
 
+  @doc """
+  Whether the session's seat was offered to everybody — a match link, `/lfg` —
+  rather than one person inviting another. What is played in it is played in
+  the open.
+  """
+  @spec offered?(t()) :: boolean()
+  def offered?(%__MODULE__{metadata: %{"offered" => true}}), do: true
+  def offered?(_invited), do: false
+
   @spec terminal?(String.t()) :: boolean()
   def terminal?(status), do: status in @terminal_statuses
 

@@ -328,6 +328,32 @@ defmodule RetroHexChat.Chat.HelpTopics.Commands do
           )
       },
       %{
+        id: "cmd-lfg",
+        title: "/lfg",
+        category: dgettext("help", "Retro Games"),
+        keywords: ["lfg", dgettext("help", "find a partner"), "seat", "match", "game", "channel"],
+        icon: :icon_protocol_p2p,
+        description:
+          dgettext(
+            "help",
+            "Run it in a game's channel. It opens a match with one empty seat and puts its card in the channel. Whoever presses Join first plays you. Add the name of a mode to play that mode instead. Running it again while your seat is still open points at the same card."
+          ),
+        see_also: ["feature-game-channels", "cmd-challenge", "feature-game-match-link"]
+      },
+      %{
+        id: "cmd-challenge",
+        title: "/challenge",
+        category: dgettext("help", "Retro Games"),
+        keywords: ["challenge", dgettext("help", "invite to play"), "p2p", "match", "game"],
+        icon: :icon_protocol_p2p,
+        description:
+          dgettext(
+            "help",
+            "Run it in a game's channel to invite one person to play that game. Add the name of a mode to play that mode instead. It is a P2P invite with the game already chosen. The card arrives in your private conversation, and the game starts once you are both in the session."
+          ),
+        see_also: ["feature-game-channels", "cmd-p2p", "cmd-lfg"]
+      },
+      %{
         id: "cmd-p2p",
         title: "/p2p",
         category: dgettext("help", "P2P & Calls"),

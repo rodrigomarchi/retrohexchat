@@ -14,12 +14,19 @@ defmodule RetroHexChat.Lobby.Service do
   @pubsub RetroHexChat.PubSub
   @open_lobby_ttl_ms :timer.minutes(15)
 
-  @spec create_session(integer(), integer()) ::
+  @doc """
+  Creates a session between two people, the one named by an invite.
+
+  `:metadata` is what the session is for, as on an open lobby: an invite sent
+  from a game's channel carries `%{"game_id" => id}`, and the session proposes
+  that game as soon as both are connected.
+  """
+  @spec create_session(integer(), integer(), keyword()) ::
           {:ok, %{session: Session.t(), token: String.t()}} | {:error, String.t()}
-  def create_session(creator_id, peer_id) do
+  def create_session(creator_id, peer_id, opts \\ []) do
     with :ok <- check_rate_limit(creator_id),
          :ok <- Policy.can_create?(creator_id, peer_id),
-         {:ok, session} <- insert_session(creator_id, peer_id),
+         {:ok, session} <- insert_session(creator_id, peer_id, opts),
          {:ok, _pid} <- Supervisor.start_child(session.token) do
       Logger.debug(
         "Lobby session created: session_id=#{session.id}, creator=#{creator_id}, peer=#{peer_id}"
@@ -87,9 +94,22 @@ defmodule RetroHexChat.Lobby.Service do
          {:ok, claimed} <- Queries.claim_open_session(token, claimer_id),
          :ok <- start_claimed_session(claimed) do
       Logger.debug("Open lobby claimed: session_id=#{claimed.id}, claimer=#{claimer_id}")
+      seat_changed(claimed)
       {:ok, claimed}
     end
   end
+
+  @doc """
+  Tell the channel an open lobby was offered in that its seat changed — taken,
+  or expired — so the card everybody there is looking at changes with it. A
+  lobby offered nowhere has nobody to tell.
+  """
+  @spec seat_changed(Session.t()) :: :ok
+  def seat_changed(%Session{metadata: %{"channel" => channel}}) when is_binary(channel) do
+    Phoenix.PubSub.broadcast(@pubsub, Topics.channel(channel), {:share_cards_changed, channel})
+  end
+
+  def seat_changed(_session), do: :ok
 
   # The seat was won by the write above; if the process that runs the match
   # cannot start, the row must not stay `pending` with nobody serving it — that
@@ -200,14 +220,15 @@ defmodule RetroHexChat.Lobby.Service do
     message in ["Session process not running", dgettext("lobby", "Session process not running")]
   end
 
-  defp insert_session(creator_id, peer_id) do
+  defp insert_session(creator_id, peer_id, opts) do
     db_token = Base.url_encode64(:crypto.strong_rand_bytes(32), padding: false)
 
     case Queries.insert_session(%{
            token: db_token,
            creator_id: creator_id,
            peer_id: peer_id,
-           status: "pending"
+           status: "pending",
+           metadata: Keyword.get(opts, :metadata, %{})
          }) do
       {:ok, _session} = ok ->
         ok
@@ -245,7 +266,9 @@ defmodule RetroHexChat.Lobby.Service do
            creator_id: creator_id,
            peer_id: nil,
            status: "open",
-           metadata: Keyword.get(opts, :metadata, %{}),
+           # A seat offered to whoever follows the link is a match played in
+           # the open: it may be watched (`Lobby.watchable?/1`).
+           metadata: Map.put(Keyword.get(opts, :metadata, %{}), "offered", true),
            expires_at: DateTime.add(now, ttl_ms, :millisecond)
          }) do
       {:ok, _session} = ok ->

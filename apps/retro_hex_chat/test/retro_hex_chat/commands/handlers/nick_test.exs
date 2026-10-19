@@ -28,6 +28,11 @@ defmodule RetroHexChat.Commands.Handlers.NickTest do
       assert {:ok, :nick_change, "NewNick"} = Nick.execute(["NewNick"], @base_context)
     end
 
+    test "refuses a service's name and a visitor's, in any case" do
+      assert {:error, "That nickname is reserved"} = Nick.execute(["gameserv"], @base_context)
+      assert {:error, "That nickname is reserved"} = Nick.execute(["Guest1234"], @base_context)
+    end
+
     test "accepts nickname starting with letter" do
       assert {:ok, :nick_change, "Bob"} = Nick.execute(["Bob"], @base_context)
     end

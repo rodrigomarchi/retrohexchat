@@ -107,6 +107,15 @@ defmodule RetroHexChat.Channels.Membership do
   @spec count(t()) :: non_neg_integer()
   def count(%__MODULE__{members: members}), do: map_size(members)
 
+  @doc """
+  How many people are in the channel: every member but the bots. A room with a
+  service sitting in it and nobody else is an empty room to whoever is looking
+  for company.
+  """
+  @spec people_count(t()) :: non_neg_integer()
+  def people_count(%__MODULE__{members: members}),
+    do: Enum.count(members, fn {_key, %{role: role}} -> role != :bot end)
+
   @spec to_list(t()) :: [{String.t(), role()}]
   def to_list(%__MODULE__{members: members}) do
     members

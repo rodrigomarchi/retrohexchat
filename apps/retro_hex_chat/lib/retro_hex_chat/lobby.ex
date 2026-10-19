@@ -40,9 +40,9 @@ defmodule RetroHexChat.Lobby do
           remaining: non_neg_integer()
         }
 
-  @spec create_session(integer(), integer()) ::
+  @spec create_session(integer(), integer(), keyword()) ::
           {:ok, %{session: Session.t(), token: String.t()}} | {:error, String.t()}
-  defdelegate create_session(creator_id, peer_id), to: Service
+  defdelegate create_session(creator_id, peer_id, opts \\ []), to: Service
 
   @doc """
   Creates a lobby with no peer named — the match link of wave 5.
@@ -86,6 +86,37 @@ defmodule RetroHexChat.Lobby do
   end
 
   def match_game_id(_session), do: nil
+
+  @doc "`creator_id`'s still-open lobby made for exactly `metadata`, or nil."
+  @spec find_open_session(integer(), map()) :: Session.t() | nil
+  def find_open_session(creator_id, metadata),
+    do: Queries.find_open_session(creator_id, Map.put(metadata, "offered", true))
+
+  @doc """
+  Whether a session's matches may be watched by anybody: a seat that was
+  offered to whoever followed its link (a match link, `/lfg`) is a match
+  played in the open. A session one person invited another to is theirs.
+  """
+  @spec watchable?(Session.t()) :: boolean()
+  def watchable?(%Session{status: status} = session),
+    do: Session.offered?(session) and status not in ~w(closed expired failed)
+
+  @doc "`token` when its session may be watched now, `nil` otherwise."
+  @spec watch_token(String.t() | nil) :: String.t() | nil
+  def watch_token(token) when is_binary(token) do
+    case get_session(token) do
+      {:ok, session} -> if watchable?(session), do: token
+      _missing -> nil
+    end
+  end
+
+  def watch_token(_no_session), do: nil
+
+  @doc "Whether `user_id` is the host of the game `token` is playing right now."
+  @spec game_host?(String.t(), integer()) :: boolean()
+  def game_host?(token, user_id) do
+    match?({:ok, %{game: %{status: "playing", host_id: ^user_id}}}, session_info(token))
+  end
 
   @doc "Whether `session` is a match link with its seat still empty."
   @spec open_session?(Session.t()) :: boolean()
@@ -178,6 +209,25 @@ defmodule RetroHexChat.Lobby do
   @spec session_info(String.t()) :: {:ok, map()} | {:error, :not_found}
   defdelegate session_info(token), to: SessionServer, as: :get_state
 
+  @doc """
+  What the session's game slot holds right now — `"idle"`, `"playing"` or
+  `"finished"`, the game, and the last result — or nil when no process is
+  running for `token`. It lives in the session's process and nowhere else, so
+  a conversation that draws "playing Hex Pong" asks here rather than the
+  database.
+  """
+  @spec current_game(String.t()) ::
+          %{status: String.t(), game_id: String.t() | nil, result: map() | nil} | nil
+  def current_game(token) do
+    case session_info(token) do
+      {:ok, %{game: game}} ->
+        %{status: game.status, game_id: game.game_id, result: Map.get(game, :result)}
+
+      _no_process ->
+        nil
+    end
+  end
+
   @spec signaling_released?(String.t()) :: boolean()
   defdelegate signaling_released?(token), to: SessionServer
 
@@ -265,9 +315,15 @@ defmodule RetroHexChat.Lobby do
     candidates
     |> Enum.reduce_while({:ok, initial}, fn session, {:ok, acc} ->
       case Queries.expire_open_session(session, now) do
-        {:ok, :expired} -> {:cont, {:ok, Map.update!(acc, :expired, &(&1 + 1))}}
-        {:ok, :skipped} -> {:cont, {:ok, Map.update!(acc, :skipped, &(&1 + 1))}}
-        {:error, reason} -> {:halt, {:error, reason}}
+        {:ok, :expired} ->
+          Service.seat_changed(session)
+          {:cont, {:ok, Map.update!(acc, :expired, &(&1 + 1))}}
+
+        {:ok, :skipped} ->
+          {:cont, {:ok, Map.update!(acc, :skipped, &(&1 + 1))}}
+
+        {:error, reason} ->
+          {:halt, {:error, reason}}
       end
     end)
     |> case do

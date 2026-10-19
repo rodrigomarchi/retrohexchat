@@ -412,4 +412,43 @@ defmodule RetroHexChat.Games.CatalogTest do
       assert Enum.sort(covered) == Enum.sort(ids)
     end
   end
+
+  describe "channels" do
+    test "every base game has one channel, named after its slug" do
+      names = Catalog.channel_names()
+
+      assert length(names) == length(Catalog.base_games())
+      assert names == Enum.uniq(names)
+      assert "#hex-pong" in names
+
+      for name <- names do
+        assert String.length(name) <= 50
+        refute String.contains?(name, " ")
+      end
+    end
+
+    test "a mode shares its game's channel" do
+      assert Catalog.channel_name("hex_tennis_quick") == "#hex-tennis"
+      assert Catalog.base_id("hex_tennis_quick") == "hex_tennis"
+      assert Catalog.base_id("hex_tennis") == "hex_tennis"
+    end
+
+    test "a channel names its base game back" do
+      for %{id: id} <- Catalog.base_games() do
+        assert Catalog.game_for_channel(Catalog.channel_name(id)) == {:ok, id}
+      end
+
+      assert Catalog.game_for_channel("#lobby") == :error
+      assert Catalog.game_for_channel("hex-pong") == :error
+    end
+  end
+
+  describe "ranking/1" do
+    test "versus is the default, score and co-op are named" do
+      assert Catalog.ranking("hex_pong") == :versus
+      assert Catalog.ranking("hex_invaders_blitz") == :score
+      assert Catalog.ranking("hex_invaders_coop") == :coop
+      assert Catalog.ranking("block_breakers") == :coop
+    end
+  end
 end

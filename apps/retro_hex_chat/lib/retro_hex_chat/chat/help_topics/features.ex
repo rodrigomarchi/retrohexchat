@@ -2078,6 +2078,85 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
         see_also: ["feature-retro-games", "feature-game-match-full", "feature-p2p-starting-room"]
       },
       %{
+        id: "feature-game-channels",
+        title: dgettext("help", "Game Channels"),
+        category: dgettext("help", "Retro Games"),
+        keywords: [
+          dgettext("help", "game channel"),
+          dgettext("help", "find a partner"),
+          "#hex-pong",
+          "#retro-games",
+          "GameServ",
+          "lfg",
+          "challenge",
+          "channel",
+          "community"
+        ],
+        icon: :icon_chat,
+        description:
+          dgettext(
+            "help",
+            "Every Retro Game has a channel named after it, like %{channel}. The channel %{feed} carries the results of every game. The service %{service} keeps these channels and says what was played in the open in them. The strip under the topic has three links. Play opens the game. Find a partner puts a card with one open seat in the channel. Ranking opens the game's page. A fourth link opens a match being played now, to watch. Anybody can read a game channel. Playing, offering a seat and talking need a registered, identified nickname.",
+            channel: "#hex-pong",
+            feed: "#retro-games",
+            service: "GameServ"
+          ),
+        see_also: [
+          "feature-game-scores",
+          "feature-game-watch",
+          "cmd-lfg",
+          "cmd-challenge",
+          "feature-game-match-link"
+        ]
+      },
+      %{
+        id: "feature-game-scores",
+        title: dgettext("help", "Scores and Rankings"),
+        category: dgettext("help", "Retro Games"),
+        keywords: [
+          dgettext("help", "score"),
+          dgettext("help", "ranking"),
+          dgettext("help", "personal best"),
+          dgettext("help", "rematch"),
+          "leaderboard",
+          "record",
+          "result",
+          "wins"
+        ],
+        icon: :icon_star,
+        description:
+          dgettext(
+            "help",
+            "Every match a registered, identified player finishes is written down. That covers matches against the computer and matches between two people in a P2P session. The result of a match between two people also appears as a card in your private conversation. The game's channel announces matches between people, personal bests and wins on hard. The other matches count toward the daily summary. A versus game ranks wins, and a score game ranks your best score. A match somebody left counts for nothing. Rematch, on the result, offers the same game again."
+          ),
+        see_also: ["feature-game-channels", "feature-retro-games", "cmd-challenge"]
+      },
+      %{
+        id: "feature-game-watch",
+        title: dgettext("help", "Watching a Match"),
+        category: dgettext("help", "Retro Games"),
+        keywords: [
+          dgettext("help", "watch"),
+          dgettext("help", "spectator"),
+          "watch",
+          "spectate",
+          "live",
+          "match",
+          "visitor"
+        ],
+        icon: :icon_watching,
+        description:
+          dgettext(
+            "help",
+            "Anybody can watch a match whose seat was offered to everybody. When somebody takes the seat, the card shows a Watch button. You do not need an account to watch, and watching only shows the game."
+          ) <>
+            " " <>
+            dgettext("help", "You can also find a live match in the channel of its game.") <>
+            " " <>
+            dgettext("help", "Players can see how many people are watching their match."),
+        see_also: ["feature-game-channels", "feature-game-match-link", "cmd-lfg"]
+      },
+      %{
         id: "feature-game-match-full",
         title: dgettext("help", "Why a Match Link Stopped Working"),
         category: dgettext("help", "Retro Games"),
@@ -4205,7 +4284,8 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
                 "help",
                 "The game room comes with arcade machines, a pool table, a ping-pong table and computers."
               ),
-              dgettext("help", "Press E next to an arcade machine to see the games."),
+              dgettext("help", "Press E next to an arcade machine to see which game it plays."),
+              dgettext("help", "The other games are listed below it."),
               dgettext("help", "Press F next to a chair to sit down."),
               dgettext("help", "Its furniture stays where it is."),
               dgettext("help", "Pieces are added the same way as in the Construct."),

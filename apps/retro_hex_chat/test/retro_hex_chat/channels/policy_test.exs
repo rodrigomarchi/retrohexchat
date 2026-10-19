@@ -83,6 +83,14 @@ defmodule RetroHexChat.Channels.PolicyTest do
       assert {:error, msg} = Policy.can_speak?(modes, membership, "alice")
       assert msg =~ "moderated"
     end
+
+    # A bot's role used to fall through the moderated branch's `case` and
+    # crash the channel's process mid-send.
+    test "lets a bot speak in a moderated channel" do
+      {:ok, modes} = Modes.apply_changes(Modes.new(), "+m", [])
+      membership = Membership.new() |> Membership.add("GameServ", :bot)
+      assert :ok = Policy.can_speak?(modes, membership, "GameServ")
+    end
   end
 
   describe "can_change_topic?/3" do

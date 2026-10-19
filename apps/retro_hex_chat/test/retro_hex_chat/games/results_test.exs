@@ -1,0 +1,185 @@
+defmodule RetroHexChat.Games.ResultsTest do
+  # Recording a match between two people announces it in its game's channel,
+  # which is a process of its own: not something an async test may share.
+  use RetroHexChat.DataCase, async: false
+
+  import RetroHexChat.Factory
+
+  alias RetroHexChat.Channels.Registry, as: ChannelRegistry
+  alias RetroHexChat.Channels.Supervisor, as: ChannelSupervisor
+  alias RetroHexChat.Games.Channels, as: GameChannels
+  alias RetroHexChat.Games.Results
+  alias RetroHexChat.Games.Schema.GameResult
+  alias RetroHexChat.Topics
+
+  @moduletag :integration
+
+  setup do
+    on_exit(fn ->
+      for name <- GameChannels.names(),
+          {:ok, pid} <- [ChannelRegistry.lookup(name)],
+          do: ChannelSupervisor.stop_child(pid)
+    end)
+
+    ana = insert(:registered_nick, nickname: "ana")
+    beto = insert(:registered_nick, nickname: "beto")
+    %{ana: player(ana), beto: player(beto)}
+  end
+
+  defp player(nick), do: %{id: nick.id, nickname: nick.nickname}
+
+  defp ago(ms), do: DateTime.add(DateTime.utc_now(), -ms, :millisecond)
+
+  defp ai_match(player, game_id, payload, opts \\ []) do
+    %{
+      game_id: game_id,
+      origin: "ai",
+      difficulty: Keyword.get(opts, :difficulty, "normal"),
+      p1: player,
+      payload: payload,
+      started_at: Keyword.get(opts, :started_at, ago(60_000))
+    }
+  end
+
+  defp p2p_match(host, guest, game_id, payload, opts \\ []) do
+    %{
+      game_id: game_id,
+      origin: "p2p",
+      p1: host,
+      p2: guest,
+      payload: payload,
+      lobby_token: Keyword.get(opts, :token, "tok-1"),
+      started_at: Keyword.get(opts, :started_at, ago(90_000))
+    }
+  end
+
+  defp pong(p1, p2, winner), do: %{"score" => %{"p1" => p1, "p2" => p2}, "winner" => winner}
+  defp raid(p1, p2), do: %{"score" => %{"p1" => p1, "p2" => p2}, "winner" => 1}
+
+  describe "record/1" do
+    test "writes a match against the computer and announces it", %{ana: ana} do
+      Phoenix.PubSub.subscribe(RetroHexChat.PubSub, Topics.game_results())
+
+      assert {:ok, %GameResult{} = row} =
+               Results.record(ai_match(ana, "hex_pong", pong(11, 7, 1), difficulty: "hard"))
+
+      assert row.base_id == "hex_pong"
+      assert row.outcome == "p1"
+      assert row.difficulty == "hard"
+      assert row.ranked
+      assert row.p2_nickname == nil
+      assert row.duration_ms >= 60_000
+
+      assert_receive {:game_result_recorded, %GameResult{id: id}}
+      assert id == row.id
+    end
+
+    test "writes a two-player match under its lobby session once", %{ana: ana, beto: beto} do
+      started_at = ago(90_000)
+      match = p2p_match(ana, beto, "hex_tennis_quick", pong(3, 1, 1), started_at: started_at)
+
+      assert {:ok, row} = Results.record(match)
+      assert row.base_id == "hex_tennis"
+      assert row.p2_nickname == "beto"
+
+      assert {:error, :already_recorded} = Results.record(match)
+      assert Repo.aggregate(GameResult, :count) == 1
+    end
+
+    test "keeps a disconnect out of the rankings", %{ana: ana, beto: beto} do
+      payload = Map.put(pong(4, 2, 0), "disconnected", true)
+      assert {:ok, row} = Results.record(p2p_match(ana, beto, "hex_pong", payload))
+      refute row.ranked
+      assert row.outcome == "none"
+    end
+
+    test "refuses what no real match produces", %{ana: ana} do
+      assert {:error, :too_short} =
+               Results.record(ai_match(ana, "hex_pong", pong(11, 0, 1), started_at: ago(500)))
+
+      assert {:error, :implausible} = Results.record(ai_match(ana, "hex_pong", pong(900, 0, 1)))
+      assert {:error, :unknown_game} = Results.record(ai_match(ana, "doom", pong(1, 0, 1)))
+      assert Repo.aggregate(GameResult, :count) == 0
+    end
+
+    test "marks a personal best only in a score game", %{ana: ana} do
+      assert {:ok, %{personal_best: true}} =
+               Results.record(ai_match(ana, "hex_raid", raid(500, 100)))
+
+      assert {:ok, %{personal_best: false}} =
+               Results.record(ai_match(ana, "hex_raid", raid(400, 100)))
+
+      assert {:ok, %{personal_best: true}} =
+               Results.record(ai_match(ana, "hex_raid", raid(800, 100)))
+
+      # Another difficulty is another ladder.
+      assert {:ok, %{personal_best: true}} =
+               Results.record(ai_match(ana, "hex_raid", raid(100, 50), difficulty: "hard"))
+
+      assert {:ok, %{personal_best: false}} =
+               Results.record(ai_match(ana, "hex_pong", pong(11, 0, 1)))
+    end
+  end
+
+  describe "standings/2" do
+    test "a versus game ranks wins, as host and as guest alike", %{ana: ana, beto: beto} do
+      {:ok, _} = Results.record(p2p_match(ana, beto, "hex_pong", pong(11, 5, 1), token: "a"))
+      {:ok, _} = Results.record(p2p_match(beto, ana, "hex_pong", pong(4, 11, 2), token: "b"))
+      {:ok, _} = Results.record(p2p_match(beto, ana, "hex_pong", pong(11, 9, 1), token: "c"))
+
+      assert [
+               %{nickname: "ana", wins: 2, matches: 3},
+               %{nickname: "beto", wins: 1, matches: 3}
+             ] = Results.standings("hex_pong")
+    end
+
+    test "a score game ranks the best score, per difficulty", %{ana: ana, beto: beto} do
+      {:ok, _} = Results.record(ai_match(ana, "hex_raid", raid(300, 0)))
+      {:ok, _} = Results.record(ai_match(beto, "hex_raid", raid(700, 0)))
+      {:ok, _} = Results.record(ai_match(ana, "hex_raid", raid(900, 0), difficulty: "hard"))
+
+      assert [%{nickname: "beto", best: 700}, %{nickname: "ana", best: 300}] =
+               Results.standings("hex_raid", origin: "ai", difficulty: "normal")
+
+      assert [%{nickname: "ana", best: 900}] =
+               Results.standings("hex_raid", origin: "ai", difficulty: "hard")
+    end
+
+    test "only counts what finished since a moment", %{ana: ana, beto: beto} do
+      {:ok, old} = Results.record(p2p_match(ana, beto, "hex_pong", pong(11, 2, 1), token: "old"))
+      Repo.update_all(GameResult, set: [finished_at: ago(10 * 86_400_000)])
+      {:ok, _} = Results.record(p2p_match(ana, beto, "hex_pong", pong(2, 11, 2), token: "new"))
+
+      assert [%{nickname: "beto", wins: 1}, %{nickname: "ana", wins: 0}] =
+               Results.standings("hex_pong", since: ago(86_400_000))
+
+      assert old.id
+    end
+  end
+
+  describe "cards" do
+    test "a card is found by the kind of line that announced it", %{ana: ana} do
+      {:ok, row} = Results.record(ai_match(ana, "hex_pong", pong(11, 7, 1)))
+      pm = insert(:private_message, sender_nickname: "ana", recipient_nickname: "beto")
+      {:ok, _} = Results.attach_message(row, :private, pm.id)
+
+      pm_id = pm.id
+
+      assert %{^pm_id => %{outcome: :p1, p1_score: 11, p2_score: 7}} =
+               Results.cards_for_messages(:private, [pm_id])
+
+      assert Results.cards_for_messages(:channel, [pm.id]) == %{}
+    end
+
+    test "recent/2 covers every mode of the game, newest first", %{ana: ana} do
+      {:ok, _} = Results.record(ai_match(ana, "hex_tennis", pong(6, 2, 1)))
+      {:ok, _} = Results.record(ai_match(ana, "hex_tennis_quick", pong(1, 3, 2)))
+
+      assert [%{game_id: "hex_tennis_quick"}, %{game_id: "hex_tennis"}] =
+               Results.recent("hex_tennis")
+
+      assert Results.count_since("hex_tennis", ago(3_600_000)) == 2
+      assert Results.counts_since(ago(3_600_000)) == %{"hex_tennis" => 2}
+    end
+  end
+end

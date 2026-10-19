@@ -1,6 +1,7 @@
 defmodule RetroHexChat.VirtualSpace.Construct.LayoutTest do
   use ExUnit.Case, async: true
 
+  alias RetroHexChat.Games.Catalog
   alias RetroHexChat.VirtualSpace.Construct.Layout
   alias RetroHexChat.VirtualSpace.Map, as: SpaceMap
 
@@ -635,6 +636,16 @@ defmodule RetroHexChat.VirtualSpace.Construct.LayoutTest do
       assert map.seats != []
       assert [%{id: "game_room_exit", modal: %{action: "exit_game_room"}} | _] = map.interactables
       assert Enum.count(map.items, &(&1.kind == "arcade")) >= 4
+    end
+
+    test "every cabinet plays a Retro Game of its own", ctx do
+      games =
+        for item <- ctx.items, item.kind in ~w(arcade racing_arcade), do: Map.get(item, :game)
+
+      assert length(games) == 8
+      assert Enum.all?(games, &Catalog.valid_game_id?/1)
+      assert games == Enum.uniq(games)
+      assert Enum.find(ctx.items, &(&1.id == "fixed:1")).game == "hex_pong"
     end
 
     test "cannot be moved, turned or removed", ctx do

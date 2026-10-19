@@ -3,6 +3,7 @@ defmodule RetroHexChat.Commands.Handlers.Nick do
   use Gettext, backend: RetroHexChat.Gettext
   @behaviour RetroHexChat.Commands.Handler
 
+  alias RetroHexChat.Accounts.NicknameValidator
   alias RetroHexChat.Commands.Handler
 
   # IRC-style allowed first characters: letters + [\]^_{|}
@@ -40,6 +41,9 @@ defmodule RetroHexChat.Commands.Handlers.Nick do
 
       not Regex.match?(@valid_nick_pattern, new_nick) ->
         {:error, dgettext("commands", "Nickname contains invalid characters")}
+
+      NicknameValidator.reserved?(new_nick) ->
+        {:error, dgettext("commands", "That nickname is reserved")}
 
       true ->
         {:ok, :nick_change, new_nick}

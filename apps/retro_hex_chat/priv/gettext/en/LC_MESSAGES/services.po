@@ -12,7 +12,7 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #: lib/retro_hex_chat/services/chan_serv.ex:450
-#: lib/retro_hex_chat/services/nick_serv.ex:519
+#: lib/retro_hex_chat/services/nick_serv.ex:525
 #, elixir-autogen, elixir-format
 msgid "%{field}: %{errors}"
 msgstr "%{field}: %{errors}"
@@ -58,7 +58,7 @@ msgstr "Channel %{channel_name} registered by %{founder_nick}"
 msgid "Failed to add %{target_nick} to %{level} list"
 msgstr "Failed to add %{target_nick} to %{level} list"
 
-#: lib/retro_hex_chat/services/nick_serv.ex:256
+#: lib/retro_hex_chat/services/nick_serv.ex:262
 #, elixir-autogen, elixir-format
 msgid "Failed to reset password for %{nickname}"
 msgstr "Failed to reset password for %{nickname}"
@@ -73,24 +73,24 @@ msgstr "Failed to save MOTD."
 msgid "Founder of %{channel_name} transferred to %{new_founder}"
 msgstr "Founder of %{channel_name} transferred to %{new_founder}"
 
-#: lib/retro_hex_chat/services/nick_serv.ex:165
+#: lib/retro_hex_chat/services/nick_serv.ex:171
 #, elixir-autogen, elixir-format
 msgid "Ghost command sent for %{target_nick}"
 msgstr "Ghost command sent for %{target_nick}"
 
-#: lib/retro_hex_chat/services/nick_serv.ex:512
+#: lib/retro_hex_chat/services/nick_serv.ex:518
 #, elixir-autogen, elixir-format
 msgid "Ghosted by %{requester_nick}"
 msgstr "Ghosted by %{requester_nick}"
 
-#: lib/retro_hex_chat/services/nick_serv.ex:443
+#: lib/retro_hex_chat/services/nick_serv.ex:449
 #, elixir-autogen, elixir-format
 msgid "Identify timeout (60s)"
 msgstr "Identify timeout (60s)"
 
-#: lib/retro_hex_chat/services/nick_serv.ex:114
-#: lib/retro_hex_chat/services/nick_serv.ex:167
-#: lib/retro_hex_chat/services/nick_serv.ex:196
+#: lib/retro_hex_chat/services/nick_serv.ex:120
+#: lib/retro_hex_chat/services/nick_serv.ex:173
+#: lib/retro_hex_chat/services/nick_serv.ex:202
 #, elixir-autogen, elixir-format
 msgid "Invalid password"
 msgstr "Invalid password"
@@ -100,21 +100,21 @@ msgstr "Invalid password"
 msgid "NickExpiry"
 msgstr "NickExpiry"
 
-#: lib/retro_hex_chat/services/nick_serv.ex:105
-#: lib/retro_hex_chat/services/nick_serv.ex:129
-#: lib/retro_hex_chat/services/nick_serv.ex:186
-#: lib/retro_hex_chat/services/nick_serv.ex:215
-#: lib/retro_hex_chat/services/nick_serv.ex:242
+#: lib/retro_hex_chat/services/nick_serv.ex:111
+#: lib/retro_hex_chat/services/nick_serv.ex:135
+#: lib/retro_hex_chat/services/nick_serv.ex:192
+#: lib/retro_hex_chat/services/nick_serv.ex:221
+#: lib/retro_hex_chat/services/nick_serv.ex:248
 #, elixir-autogen, elixir-format
 msgid "Nickname %{nickname} is not registered"
 msgstr "Nickname %{nickname} is not registered"
 
-#: lib/retro_hex_chat/services/nick_serv.ex:77
+#: lib/retro_hex_chat/services/nick_serv.ex:83
 #, elixir-autogen, elixir-format
 msgid "Nickname %{nickname} registered successfully"
 msgstr "Nickname %{nickname} registered successfully"
 
-#: lib/retro_hex_chat/services/nick_serv.ex:156
+#: lib/retro_hex_chat/services/nick_serv.ex:162
 #, elixir-autogen, elixir-format
 msgid "Nickname %{target_nick} is not registered"
 msgstr "Nickname %{target_nick} is not registered"
@@ -124,17 +124,17 @@ msgstr "Nickname %{target_nick} is not registered"
 msgid "Only the founder can drop a channel"
 msgstr "Only the founder can drop a channel"
 
-#: lib/retro_hex_chat/services/nick_serv.ex:252
+#: lib/retro_hex_chat/services/nick_serv.ex:258
 #, elixir-autogen, elixir-format
 msgid "Password for %{nickname} has been reset"
 msgstr "Password for %{nickname} has been reset"
 
-#: lib/retro_hex_chat/services/nick_serv.ex:194
+#: lib/retro_hex_chat/services/nick_serv.ex:200
 #, elixir-autogen, elixir-format
 msgid "Registration for %{nickname} dropped"
 msgstr "Registration for %{nickname} dropped"
 
-#: lib/retro_hex_chat/services/nick_serv.ex:224
+#: lib/retro_hex_chat/services/nick_serv.ex:230
 #, elixir-autogen, elixir-format
 msgid "Registration for %{nickname} dropped by admin"
 msgstr "Registration for %{nickname} dropped by admin"
@@ -144,7 +144,7 @@ msgstr "Registration for %{nickname} dropped by admin"
 msgid "Registration is currently closed by the server administrator"
 msgstr "Registration is currently closed by the server administrator"
 
-#: lib/retro_hex_chat/services/nick_serv.ex:112
+#: lib/retro_hex_chat/services/nick_serv.ex:118
 #, elixir-autogen, elixir-format
 msgid "You are now identified as %{nickname}"
 msgstr "You are now identified as %{nickname}"
@@ -158,3 +158,8 @@ msgstr "You must be identified to use ChanServ"
 #, elixir-autogen, elixir-format
 msgid "Visitor names like %{nickname} cannot be registered."
 msgstr "Visitor names like %{nickname} cannot be registered."
+
+#: lib/retro_hex_chat/services/nick_serv.ex:71
+#, elixir-autogen, elixir-format
+msgid "%{nickname} is a service's name and cannot be registered."
+msgstr "%{nickname} is a service's name and cannot be registered."

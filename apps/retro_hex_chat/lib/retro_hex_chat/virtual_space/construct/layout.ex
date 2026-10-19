@@ -541,6 +541,7 @@ defmodule RetroHexChat.VirtualSpace.Construct.Layout do
         placed_by: nil,
         state: Map.get(states, {id, f.kind}, %{})
       }
+      |> Map.merge(Map.take(f, [:game]))
     end
   end
 

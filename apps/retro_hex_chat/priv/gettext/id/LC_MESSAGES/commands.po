@@ -612,20 +612,20 @@ msgstr "/mute troll"
 msgid "/mute troll 30m"
 msgstr "/mute troll 30m"
 
-#: lib/retro_hex_chat/commands/handlers/nick.ex:59
-#: lib/retro_hex_chat/commands/handlers/nick.ex:80
+#: lib/retro_hex_chat/commands/handlers/nick.ex:63
+#: lib/retro_hex_chat/commands/handlers/nick.ex:84
 #, elixir-autogen, elixir-format
 msgid "/nick <newnick>"
 msgstr "/nick <newnick>"
 
-#: lib/retro_hex_chat/commands/handlers/nick.ex:65
-#: lib/retro_hex_chat/commands/handlers/nick.ex:96
+#: lib/retro_hex_chat/commands/handlers/nick.ex:69
+#: lib/retro_hex_chat/commands/handlers/nick.ex:100
 #, elixir-autogen, elixir-format
 msgid "/nick NewNick"
 msgstr "/nick NewNick"
 
-#: lib/retro_hex_chat/commands/handlers/nick.ex:65
-#: lib/retro_hex_chat/commands/handlers/nick.ex:96
+#: lib/retro_hex_chat/commands/handlers/nick.ex:69
+#: lib/retro_hex_chat/commands/handlers/nick.ex:100
 #, elixir-autogen, elixir-format
 msgid "/nick [Bot]"
 msgstr "/nick [Bot]"
@@ -1055,7 +1055,7 @@ msgstr "Tambahkan pengguna ke daftar pemberitahuan Anda"
 msgid "Add an auto-respond rule"
 msgstr "Tambahkan aturan auto- respon"
 
-#: lib/retro_hex_chat/commands/registry.ex:75
+#: lib/retro_hex_chat/commands/registry.ex:77
 #, elixir-autogen, elixir-format
 msgid "Advanced"
 msgstr "Tingkat lanjut"
@@ -1101,7 +1101,7 @@ msgstr "Ban"
 msgid "Ban user from channel"
 msgstr "Ban pengguna dari saluran"
 
-#: lib/retro_hex_chat/commands/registry.ex:71
+#: lib/retro_hex_chat/commands/registry.ex:73
 #, elixir-autogen, elixir-format
 msgid "Basics"
 msgstr "Basics"
@@ -1133,14 +1133,14 @@ msgstr ""
 "Flag: + o (operator), + v (voice), + b (ban), + h (half-op), + m (moderated), + i (invites -only), + t (topic protected), + k (key/password), + l (limit pengguna), + n (no pesan eksternal), + j (join throttle), + K (no knock).\n"
 "Butuh: operator saluran. Half- operator hanya dapat menset + v / -v. Pasti ada di saluran."
 
-#: lib/retro_hex_chat/commands/handlers/nick.ex:82
+#: lib/retro_hex_chat/commands/handlers/nick.ex:86
 #, elixir-autogen, elixir-format
 msgid "Change your display name in the chat. A confirmation dialog appears before the change takes effect."
 msgstr ""
 "Ubah nama tampilan Anda dalam percakapan. Sebuah dialog konfirmasi muncul "
 "sebelum perubahan berlaku."
 
-#: lib/retro_hex_chat/commands/handlers/nick.ex:61
+#: lib/retro_hex_chat/commands/handlers/nick.ex:65
 #, elixir-autogen, elixir-format
 msgid "Change your display name. A confirmation dialog appears before the change takes effect.\nRules: 1-16 characters, no spaces. Must start with a letter or [ ] \\ ^ _ { | }.\nAllowed characters: letters, numbers, [ ] \\ ^ _ ` { | } and hyphens.\nCannot change to your current nickname or one already in use."
 msgstr ""
@@ -1149,7 +1149,7 @@ msgstr ""
 "Diijinkan karakter: huruf, nomor, []\\ ^ _ '{126;} dan tanda hubung.\n"
 "Tidak dapat mengubah ke nama panggilan Anda saat ini atau salah satu yang telah digunakan."
 
-#: lib/retro_hex_chat/commands/registry.ex:72
+#: lib/retro_hex_chat/commands/registry.ex:74
 #, elixir-autogen, elixir-format
 msgid "Channel"
 msgstr "Kanal"
@@ -1227,7 +1227,7 @@ msgstr "Bersihkan seluruh daftar autojoin Anda"
 msgid "Command name to view detailed help"
 msgstr "Nama perintah untuk menampilkan bantuan terrinci"
 
-#: lib/retro_hex_chat/commands/registry.ex:74
+#: lib/retro_hex_chat/commands/registry.ex:76
 #, elixir-autogen, elixir-format
 msgid "Configuration"
 msgstr "Konfigurasi"
@@ -1615,7 +1615,7 @@ msgstr ""
 msgid "New channel topic"
 msgstr "Topik kanal baru"
 
-#: lib/retro_hex_chat/commands/handlers/nick.ex:93
+#: lib/retro_hex_chat/commands/handlers/nick.ex:97
 #, elixir-autogen, elixir-format
 msgid "New nickname (max 16 characters)"
 msgstr "Nama panggilan baru (maksimal 16 karakter)"
@@ -1630,24 +1630,24 @@ msgstr "Pemilik baru"
 msgid "NickServ admin (drop, info, resetpass)"
 msgstr "Admin NickServ (drop, info, resetpass)"
 
-#: lib/retro_hex_chat/commands/handlers/nick.ex:23
+#: lib/retro_hex_chat/commands/handlers/nick.ex:24
 #, elixir-autogen, elixir-format
 msgid "Nickname cannot contain spaces"
 msgstr "Nama panggilan tak boleh memuat spasi"
 
-#: lib/retro_hex_chat/commands/handlers/nick.ex:42
+#: lib/retro_hex_chat/commands/handlers/nick.ex:43
 #, elixir-autogen, elixir-format
 msgid "Nickname contains invalid characters"
 msgstr "Nama panggilan berisi karakter tidak valid"
 
-#: lib/retro_hex_chat/commands/handlers/nick.ex:36
+#: lib/retro_hex_chat/commands/handlers/nick.ex:37
 #, elixir-autogen, elixir-format
 msgid "Nickname must start with a letter or special character ([\\]^_{|})"
 msgstr ""
 "Nama panggilan harus dimulai dengan huruf atau karakter khusus ([\\] ^ _ "
 "{124;})"
 
-#: lib/retro_hex_chat/commands/handlers/nick.ex:32
+#: lib/retro_hex_chat/commands/handlers/nick.ex:33
 #, elixir-autogen, elixir-format
 msgid "Nickname too long (max 16 characters)"
 msgstr "Nama panggilan terlalu panjang (maksimal 16 karakter)"
@@ -2476,8 +2476,8 @@ msgstr "Penggunaan: /msg <nickname> <message>"
 msgid "Usage: /mute <nickname> [duration]"
 msgstr "Penggunaan: /mute <nickname> [durasi]"
 
-#: lib/retro_hex_chat/commands/handlers/nick.ex:15
-#: lib/retro_hex_chat/commands/handlers/nick.ex:20
+#: lib/retro_hex_chat/commands/handlers/nick.ex:16
+#: lib/retro_hex_chat/commands/handlers/nick.ex:21
 #, elixir-autogen, elixir-format
 msgid "Usage: /nick <newnick>"
 msgstr "Penggunaan: /nick <newnick>"
@@ -2624,7 +2624,7 @@ msgstr "Penggunaan: /whois <nickname>"
 msgid "Usage: /whowas <nickname>"
 msgstr "Penggunaan: /whowas <nickname>"
 
-#: lib/retro_hex_chat/commands/registry.ex:73
+#: lib/retro_hex_chat/commands/registry.ex:75
 #, elixir-autogen, elixir-format
 msgid "User"
 msgstr "Pengguna"
@@ -2768,12 +2768,12 @@ msgstr ""
 "Tanpa argumen, membuka dialog Bot Management (admin) atau menampilkan daftar"
 " bot."
 
-#: lib/retro_hex_chat/commands/handlers/nick.ex:29
+#: lib/retro_hex_chat/commands/handlers/nick.ex:30
 #, elixir-autogen, elixir-format
 msgid "You are already using that nickname"
 msgstr "Anda sudah menggunakan nama panggilan itu"
 
-#: lib/retro_hex_chat/commands/handler/guards.ex:22
+#: lib/retro_hex_chat/commands/handler/guards.ex:23
 #: lib/retro_hex_chat/commands/handlers/event.ex:49
 #: lib/retro_hex_chat/commands/handlers/me.ex:20
 #: lib/retro_hex_chat/commands/handlers/part.ex:16
@@ -2811,7 +2811,7 @@ msgstr "Anda harus menjadi operator saluran untuk menendang pengguna"
 msgid "You must be a channel operator to unban users"
 msgstr "Anda harus menjadi operator saluran ke pengguna unban"
 
-#: lib/retro_hex_chat/commands/handler/guards.ex:36
+#: lib/retro_hex_chat/commands/handler/guards.ex:37
 #: lib/retro_hex_chat/commands/policy.ex:34
 #, elixir-autogen, elixir-format
 msgid "You must be a channel operator to use this command"
@@ -2824,7 +2824,7 @@ msgid "You must be a server administrator to use this command"
 msgstr ""
 "Anda harus menjadi administrator server untuk menggunakan perintah ini"
 
-#: lib/retro_hex_chat/commands/handler/guards.ex:54
+#: lib/retro_hex_chat/commands/handler/guards.ex:55
 #, elixir-autogen, elixir-format
 msgid "You must be at least a half-operator to use this command"
 msgstr "Anda harus setidaknya operator half-untuk menggunakan perintah ini"
@@ -3566,3 +3566,105 @@ msgstr ""
 #, elixir-autogen, elixir-format
 msgid "You must be a channel operator to register the channel"
 msgstr "Anda harus menjadi operator saluran untuk mendaftar saluran"
+
+#: lib/retro_hex_chat/commands/handler/guards.ex:96
+#, elixir-autogen, elixir-format
+msgid "%{game} has no mode called %{mode}."
+msgstr "%{game} tidak memiliki mode bernama %{mode}."
+
+#: lib/retro_hex_chat/commands/handlers/challenge.ex:46
+#: lib/retro_hex_chat/commands/handlers/challenge.ex:70
+#, elixir-autogen, elixir-format
+msgid "/challenge <nickname> [mode]"
+msgstr "/challenge <nickname> [mode]"
+
+#: lib/retro_hex_chat/commands/handlers/challenge.ex:53
+#: lib/retro_hex_chat/commands/handlers/challenge.ex:92
+#, elixir-autogen, elixir-format
+msgid "/challenge mario"
+msgstr "/challenge mario"
+
+#: lib/retro_hex_chat/commands/handlers/challenge.ex:54
+#: lib/retro_hex_chat/commands/handlers/challenge.ex:93
+#, elixir-autogen, elixir-format
+msgid "/challenge mario quick"
+msgstr "/challenge mario quick"
+
+#: lib/retro_hex_chat/commands/handlers/lfg.ex:52
+#: lib/retro_hex_chat/commands/handlers/lfg.ex:84
+#, elixir-autogen, elixir-format
+msgid "/lfg"
+msgstr "/lfg"
+
+#: lib/retro_hex_chat/commands/handlers/lfg.ex:46
+#: lib/retro_hex_chat/commands/handlers/lfg.ex:67
+#, elixir-autogen, elixir-format
+msgid "/lfg [mode]"
+msgstr "/lfg [mode]"
+
+#: lib/retro_hex_chat/commands/handlers/lfg.ex:52
+#: lib/retro_hex_chat/commands/handlers/lfg.ex:84
+#, elixir-autogen, elixir-format
+msgid "/lfg blitz"
+msgstr "/lfg blitz"
+
+#: lib/retro_hex_chat/commands/handlers/challenge.ex:88
+#: lib/retro_hex_chat/commands/handlers/lfg.ex:81
+#, elixir-autogen, elixir-format
+msgid "A mode of the game, like blitz"
+msgstr "Mode permainan, seperti blitz"
+
+#: lib/retro_hex_chat/commands/handlers/challenge.ex:72
+#, elixir-autogen, elixir-format
+msgid "Invite someone to play the channel's game over a P2P session.\nRequires: both users must be registered and identified (/ns identify)."
+msgstr ""
+"Undang seseorang untuk memainkan permainan saluran selama sesi P2P.\n"
+"Pertanyaan: kedua pengguna harus terdaftar dan diidentifikasi (identifikasi /ns)."
+
+#: lib/retro_hex_chat/commands/handlers/lfg.ex:69
+#, elixir-autogen, elixir-format
+msgid "Look for someone to play the channel's game with: a card with one open seat appears in the channel.\nRequires: a registered, identified nickname."
+msgstr ""
+"Carilah seseorang untuk memainkan permainan saluran dengan: kartu dengan satu kursi terbuka muncul di saluran.\n"
+"Permintaan: nama panggilan terdaftar dan teridentifikasi."
+
+#: lib/retro_hex_chat/commands/handlers/nick.ex:46
+#, elixir-autogen, elixir-format
+msgid "That nickname is reserved"
+msgstr "Nama panggilan itu dipesan"
+
+#: lib/retro_hex_chat/commands/handlers/challenge.ex:34
+#, elixir-autogen, elixir-format
+msgid "Usage: /challenge <nickname> [mode]"
+msgstr "Penggunaan: /challenge <nickname> [mode]"
+
+#: lib/retro_hex_chat/commands/handler/guards.ex:81
+#, elixir-autogen, elixir-format
+msgid "Use this in a game's own channel, like %{channel}."
+msgstr "Gunakan ini dalam saluran permainan sendiri, seperti %{channel}."
+
+#: lib/retro_hex_chat/commands/handlers/challenge.ex:81
+#, elixir-autogen, elixir-format
+msgid "Who to play"
+msgstr "Who to play"
+
+#: lib/retro_hex_chat/commands/handlers/lfg.ex:34
+#, elixir-autogen, elixir-format
+msgid "You must be identified to look for a match."
+msgstr "Anda harus diidentifikasi untuk mencari kecocokan."
+
+#: lib/retro_hex_chat/commands/handlers/challenge.ex:48
+#, elixir-autogen, elixir-format
+msgid "Invite someone to play the channel's game. Run it in a game's channel: they get a P2P invite in your private conversation, and the game starts once you are both in.\nName a mode to play it instead of the standard game.\nRequires: both users must be registered and identified (/ns identify)."
+msgstr ""
+"Undang seseorang untuk memainkan permainan saluran. Jalankan dalam saluran permainan: mereka mendapatkan undangan P2P dalam percakapan pribadi Anda, dan permainan dimulai setelah Anda berdua masuk\n"
+"Nama mode untuk memainkannya daripada permainan standar.\n"
+"Pertanyaan: kedua pengguna harus terdaftar dan diidentifikasi (identifikasi /ns)."
+
+#: lib/retro_hex_chat/commands/handlers/lfg.ex:48
+#, elixir-autogen, elixir-format
+msgid "Look for someone to play the channel's game with. Run it in a game's channel: a card with one open seat appears in the channel, and whoever presses Join first plays you.\nName a mode to play it instead of the standard game.\nRequires: a registered, identified nickname."
+msgstr ""
+"Carilah seseorang untuk memainkan permainan saluran dengan. Jalankan dalam saluran permainan: kartu dengan satu kursi terbuka muncul di saluran, dan siapa pun menekan Join memainkan pertama Anda.\n"
+"Nama mode untuk memainkannya daripada permainan standar.\n"
+"Permintaan: nama panggilan terdaftar dan teridentifikasi."

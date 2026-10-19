@@ -13,7 +13,8 @@ defmodule RetroHexChat.Chat.Service do
     Policy,
     Queries,
     Reactions,
-    Replies
+    Replies,
+    SendOptions
   }
 
   alias RetroHexChat.Notifications
@@ -34,8 +35,8 @@ defmodule RetroHexChat.Chat.Service do
 
   defp do_send_message(channel_name, nickname, content, type, opts) do
     reply_to_id = Keyword.get(opts, :reply_to_id)
-    content_format = content_format_from_opts(opts)
-    attachment_ids = attachment_ids_from_opts(opts)
+    content_format = SendOptions.content_format(opts)
+    attachment_ids = SendOptions.attachment_ids(opts)
 
     with :ok <- Content.validate_message(content, content_format, attachment_ids),
          {:ok, reply_attrs} <- resolve_reply_attrs(reply_to_id, :message),
@@ -50,6 +51,7 @@ defmodule RetroHexChat.Chat.Service do
              attachment_ids
            ) do
       Observability.set_current_span_attributes(%{"chat.message.id" => message.id})
+      SendOptions.before_broadcast(opts, message.id)
       broadcast_message(channel_name, message)
       {:ok, message}
     end
@@ -235,8 +237,8 @@ defmodule RetroHexChat.Chat.Service do
     # Filed under the spelling the recipient chose, whatever case was typed.
     recipient = as_shown(recipient)
     reply_to_id = Keyword.get(opts, :reply_to_id)
-    content_format = content_format_from_opts(opts)
-    attachment_ids = attachment_ids_from_opts(opts)
+    content_format = SendOptions.content_format(opts)
+    attachment_ids = SendOptions.attachment_ids(opts)
 
     with :ok <- Content.validate_message(content, content_format, attachment_ids),
          {:ok, reply_attrs} <- resolve_reply_attrs(reply_to_id, :pm),
@@ -251,6 +253,7 @@ defmodule RetroHexChat.Chat.Service do
              attachment_ids
            ) do
       Observability.set_current_span_attributes(%{"chat.message.id" => pm.id})
+      SendOptions.before_broadcast(opts, pm.id)
       broadcast_private_message(sender, recipient, pm)
       {:ok, pm}
     end
@@ -506,26 +509,6 @@ defmodule RetroHexChat.Chat.Service do
 
   defp safe_type_atom(type), do: type
 
-  defp content_format_from_opts(opts) do
-    opts
-    |> Keyword.get(:content_format, "irc")
-    |> normalize_content_format()
-  end
-
-  defp attachment_ids_from_opts(opts) do
-    opts
-    |> Keyword.get(:attachment_ids, [])
-    |> List.wrap()
-    |> Enum.reject(&is_nil/1)
-  end
-
-  defp normalize_content_format(format) do
-    case Content.normalize_format(format) do
-      {:ok, normalized} -> Atom.to_string(normalized)
-      :error -> format
-    end
-  end
-
   defp content_format(%{content_format: content_format}) when is_binary(content_format),
     do: content_format
 
@@ -534,7 +517,7 @@ defmodule RetroHexChat.Chat.Service do
   defp edit_content_format(message, opts) do
     opts
     |> Keyword.get(:content_format, content_format(message))
-    |> normalize_content_format()
+    |> SendOptions.normalize_format()
   end
 
   defp message_metadata(conversation_type, type, content, opts, extra) do
@@ -543,9 +526,9 @@ defmodule RetroHexChat.Chat.Service do
         conversation_type: Atom.to_string(conversation_type),
         message_type: normalize_message_type(type),
         message_size_bytes: byte_size(content),
-        content_format: content_format_from_opts(opts),
+        content_format: SendOptions.content_format(opts),
         has_reply: Keyword.has_key?(opts, :reply_to_id),
-        has_attachments: attachment_ids_from_opts(opts) != []
+        has_attachments: SendOptions.attachment_ids(opts) != []
       },
       extra
     )

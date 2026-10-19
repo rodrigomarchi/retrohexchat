@@ -1237,7 +1237,8 @@ defmodule RetroHexChat.VirtualSpace.ChannelSpaceServer do
   defp outcome({:error, reason}), do: reason
 
   # A panel is the caller's to fill in: the runtime knows the piece, the caller
-  # knows the conversation's topic, pins and pictures.
+  # knows the conversation's topic, pins and pictures. A cabinet the room came
+  # with names the game it plays; one somebody placed names none.
   defp panel_modal(panel, item) do
     %{
       kind: panel,
@@ -1246,7 +1247,8 @@ defmodule RetroHexChat.VirtualSpace.ChannelSpaceServer do
       action: nil,
       item_id: item.id,
       text: item.state["text"],
-      placed_by: item.placed_by
+      placed_by: item.placed_by,
+      game_id: Map.get(item, :game)
     }
   end
 

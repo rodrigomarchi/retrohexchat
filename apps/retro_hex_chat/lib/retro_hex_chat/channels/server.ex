@@ -28,7 +28,7 @@ defmodule RetroHexChat.Channels.Server do
 
   alias RetroHexChat.Channels.Supervisor, as: ChannelSupervisor
   alias RetroHexChat.Chat
-  alias RetroHexChat.Chat.{Archive, Attachments, Content}
+  alias RetroHexChat.Chat.{Archive, Attachments, Content, SendOptions}
   alias RetroHexChat.Nickname
   alias RetroHexChat.Notifications
   alias RetroHexChat.Observability
@@ -1131,8 +1131,8 @@ defmodule RetroHexChat.Channels.Server do
   end
 
   defp do_handle_send_message(nickname, content, type, opts, state) do
-    requested_format = content_format_from_opts(opts)
-    attachment_ids = attachment_ids_from_opts(opts)
+    requested_format = SendOptions.content_format(opts)
+    attachment_ids = SendOptions.attachment_ids(opts)
 
     with :ok <- Content.validate_message(content, requested_format, attachment_ids),
          :ok <- Policy.can_speak?(state.modes, state.membership, nickname),
@@ -1175,7 +1175,7 @@ defmodule RetroHexChat.Channels.Server do
       # the broadcast: every reader decorates the line as it arrives, and the
       # one who decorates it a millisecond too early gets no card and is never
       # told again.
-      run_before_broadcast(opts, id)
+      SendOptions.before_broadcast(opts, id)
 
       broadcast(state.name, %{event: "new_message", payload: payload})
       Notifications.notify_channel_message(payload)
@@ -1194,16 +1194,6 @@ defmodule RetroHexChat.Channels.Server do
     if abandoned?(new_state),
       do: {:stop, :normal, new_state},
       else: {:noreply, refresh_directory(new_state)}
-  end
-
-  @spec run_before_broadcast(keyword(), integer()) :: :ok
-  defp run_before_broadcast(opts, message_id) do
-    case Keyword.get(opts, :before_broadcast) do
-      fun when is_function(fun, 1) -> _ignored = fun.(message_id)
-      _none -> :ok
-    end
-
-    :ok
   end
 
   defp extract_ban_operations(mode_string, params) do
@@ -1424,7 +1414,9 @@ defmodule RetroHexChat.Channels.Server do
     Directory.publish(state.name, %{
       name: state.name,
       topic: state.topic,
-      member_count: Membership.count(state.membership),
+      # The directory is how people find company: it counts people, and a bot
+      # holding a room open is not somebody to talk to.
+      member_count: Membership.people_count(state.membership),
       watcher_count: map_size(state.watchers),
       secret?: Modes.secret?(state.modes),
       private?: Modes.private?(state.modes),
@@ -1508,7 +1500,7 @@ defmodule RetroHexChat.Channels.Server do
         conversation_type: "channel",
         message_type: normalize_message_type(type),
         message_size_bytes: byte_size(content),
-        content_format: content_format_from_opts(opts),
+        content_format: SendOptions.content_format(opts),
         has_reply: Keyword.has_key?(opts, :reply_to_id)
       },
       extra
@@ -1711,31 +1703,11 @@ defmodule RetroHexChat.Channels.Server do
     end
   end
 
-  defp content_format_from_opts(opts) do
-    opts
-    |> Keyword.get(:content_format, "irc")
-    |> normalize_content_format()
-  end
-
-  defp normalize_content_format(format) do
-    case Content.normalize_format(format) do
-      {:ok, normalized} -> Atom.to_string(normalized)
-      :error -> format
-    end
-  end
-
   defp persisted_content_format(%{content_format: content_format}, _fallback)
        when is_binary(content_format),
        do: content_format
 
   defp persisted_content_format(_message, fallback), do: fallback
-
-  defp attachment_ids_from_opts(opts) do
-    opts
-    |> Keyword.get(:attachment_ids, [])
-    |> List.wrap()
-    |> Enum.reject(&is_nil/1)
-  end
 
   defp maybe_persist_exception(type, action, channel_name, nickname, added_by, state) do
     if state.registered do

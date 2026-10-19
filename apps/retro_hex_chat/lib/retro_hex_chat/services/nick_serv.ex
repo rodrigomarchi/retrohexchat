@@ -66,6 +66,12 @@ defmodule RetroHexChat.Services.NickServ do
            nickname: nickname
          )}
 
+      NicknameValidator.service?(nickname) ->
+        {:error,
+         dgettext("services", "%{nickname} is a service's name and cannot be registered.",
+           nickname: nickname
+         )}
+
       true ->
         # bcrypt hash happens in RegisteredNick.registration_changeset, in THIS
         # (caller) process. The DB unique index handles concurrent same-nick races.

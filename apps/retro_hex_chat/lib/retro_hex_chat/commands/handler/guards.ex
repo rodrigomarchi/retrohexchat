@@ -13,6 +13,7 @@ defmodule RetroHexChat.Commands.Handler.Guards do
   use Gettext, backend: RetroHexChat.Gettext
 
   alias RetroHexChat.Commands.Handler
+  alias RetroHexChat.Games.Catalog
 
   @doc """
   Resolves the channel the command applies to, refusing when there is none.
@@ -52,6 +53,50 @@ defmodule RetroHexChat.Commands.Handler.Guards do
       {:error,
        message ||
          dgettext("commands", "You must be at least a half-operator to use this command")}
+    end
+  end
+
+  @doc """
+  Resolves the game a command run in a game's channel is about: the channel's
+  own game, or the mode `args` names — `blitz` in `#hex-hockey` is Hex Hockey:
+  Blitz. Refuses anywhere but a game's channel.
+  """
+  @spec require_game_channel(Handler.context(), [String.t()]) ::
+          {:ok, %{channel: String.t(), game_id: String.t()}} | {:error, String.t()}
+  def require_game_channel(context, args) do
+    with {:ok, channel} <- require_channel(context),
+         {:ok, base_id} <- game_of(channel),
+         {:ok, game_id} <- mode_of(base_id, args) do
+      {:ok, %{channel: channel, game_id: game_id}}
+    end
+  end
+
+  defp game_of(channel) do
+    case Catalog.game_for_channel(channel) do
+      {:ok, base_id} ->
+        {:ok, base_id}
+
+      :error ->
+        {:error,
+         dgettext("commands", "Use this in a game's own channel, like %{channel}.",
+           channel: Catalog.channel_name("hex_pong")
+         )}
+    end
+  end
+
+  defp mode_of(base_id, []), do: {:ok, base_id}
+
+  defp mode_of(base_id, [word | _rest]) do
+    mode_id = base_id <> "_" <> word
+
+    if Enum.any?(Catalog.modes_of(base_id), &(&1.id == mode_id)) do
+      {:ok, mode_id}
+    else
+      {:error,
+       dgettext("commands", "%{game} has no mode called %{mode}.",
+         game: Catalog.channel_name(base_id),
+         mode: word
+       )}
     end
   end
 end

@@ -153,22 +153,9 @@ defmodule RetroHexChat.Chat.Archive do
       page =
         query
         |> maybe_after(cursor)
-        |> from(as: :message)
         |> order_by([m], asc: m.id)
         |> limit(^Page.limit_with_lookahead(limit))
-        |> select([m], %{
-          id: m.id,
-          author: m.author_nickname,
-          content: m.content,
-          plain_content: m.plain_content,
-          type: m.type,
-          edited_at: m.edited_at,
-          at: m.inserted_at,
-          attachment?:
-            exists(
-              from(a in Attachment, where: parent_as(:message).id == a.message_id, select: 1)
-            )
-        })
+        |> select_line()
         |> Repo.all()
         |> Page.new(limit, & &1.id)
         |> Page.map(&entry/1)
@@ -177,6 +164,45 @@ defmodule RetroHexChat.Chat.Archive do
     else
       _ -> %{page: Page.empty(), previous: nil}
     end
+  end
+
+  @doc """
+  The last `limit` lines `channel_name` published, oldest first — what a page
+  quotes to show the room is alive. Empty for a channel that does not publish.
+  """
+  @spec recent(String.t(), pos_integer()) :: [entry()]
+  def recent(channel_name, limit) do
+    case publishing_channel(channel_name) do
+      nil ->
+        []
+
+      channel ->
+        channel
+        |> publishable_messages()
+        |> order_by([m], desc: m.id)
+        |> limit(^limit)
+        |> select_line()
+        |> Repo.all()
+        |> Enum.reverse()
+        |> Enum.map(&entry/1)
+    end
+  end
+
+  # What every read takes from a published line, before `entry/1` shapes it.
+  defp select_line(query) do
+    query
+    |> from(as: :message)
+    |> select([m], %{
+      id: m.id,
+      author: m.author_nickname,
+      content: m.content,
+      plain_content: m.plain_content,
+      type: m.type,
+      edited_at: m.edited_at,
+      at: m.inserted_at,
+      attachment?:
+        exists(from(a in Attachment, where: parent_as(:message).id == a.message_id, select: 1))
+    })
   end
 
   @doc """

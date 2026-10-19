@@ -1,8 +1,12 @@
 defmodule RetroHexChat.Lobby.SessionServerTest do
   use RetroHexChat.DataCase, async: false
 
+  alias RetroHexChat.Chat.PrivateMessage
+  alias RetroHexChat.Games.Result
+  alias RetroHexChat.Games.Schema.GameResult
   alias RetroHexChat.Lobby.{Queries, Registry, SessionServer, Supervisor}
   alias RetroHexChat.Services.RegisteredNick
+  alias RetroHexChat.Topics
 
   @moduletag :integration
 
@@ -549,18 +553,62 @@ defmodule RetroHexChat.Lobby.SessionServerTest do
       :ok = SessionServer.respond_game(ctx.token, ctx.peer.id, "peer", true)
       assert_receive %{event: "lobby_game_status_changed", payload: %{status: "playing"}}
 
-      result = %{"score" => %{"p1" => 11, "p2" => 7}, "winner" => 1}
-      assert :ok = SessionServer.finish_game(ctx.token, ctx.creator.id, result)
+      payload = %{"score" => %{"p1" => 11, "p2" => 7}, "winner" => 1}
+      assert :ok = SessionServer.finish_game(ctx.token, ctx.creator.id, payload)
 
+      # Both consoles draw the score as `Games.Result` read it, whatever
+      # spelling the engine used.
       assert_receive %{
         event: "lobby_game_status_changed",
-        payload: %{status: "finished", game_id: "hex_pong", result: ^result}
+        payload: %{
+          status: "finished",
+          game_id: "hex_pong",
+          result: %Result{p1_score: 11, p2_score: 7, outcome: :p1}
+        }
       }
 
       {:ok, finished} = SessionServer.get_state(ctx.token)
       assert finished.game.status == "finished"
-      assert finished.game.result == result
+      assert %Result{outcome: :p1} = finished.game.result
       assert finished.session.status == "connected"
+
+      stop_server(ctx.token)
+    end
+
+    test "a finished game is written down once and announced in the players' conversation" do
+      Application.put_env(:retro_hex_chat, :game_result_min_duration_ms, 0)
+      on_exit(fn -> Application.delete_env(:retro_hex_chat, :game_result_min_duration_ms) end)
+
+      ctx = setup_connected_lobby("fin3")
+      Phoenix.PubSub.subscribe(RetroHexChat.PubSub, Topics.inbox("peer_fin3"))
+
+      :ok = SessionServer.propose_game(ctx.token, ctx.creator.id, "creator_fin3", "hex_pong")
+      assert_receive %{event: "lobby_game_request"}
+      :ok = SessionServer.respond_game(ctx.token, ctx.peer.id, "peer_fin3", true)
+
+      # The conversation's P2P badge is told the game began, on the inbox.
+      assert_receive %{event: "lobby_session_progress", payload: %{peer_nick: "creator_fin3"}}
+
+      payload = %{"score" => %{"p1" => 4, "p2" => 11}, "winner" => 2}
+      assert :ok = SessionServer.finish_game(ctx.token, ctx.creator.id, payload)
+
+      # Written after the host's answer, before the session's next message.
+      {:ok, _state} = SessionServer.get_state(ctx.token)
+      assert [row] = Repo.all(GameResult)
+      assert row.origin == "p2p"
+      assert row.p1_nickname == "creator_fin3"
+      assert row.p2_nickname == "peer_fin3"
+      assert row.outcome == "p2"
+      assert row.lobby_token == ctx.token
+      assert is_integer(row.pm_message_id)
+
+      # One person invited the other: the match counts, but no channel hears of it.
+      refute row.public
+      assert is_nil(row.channel_message_id)
+
+      pm = Repo.get!(PrivateMessage, row.pm_message_id)
+      assert pm.type == "p2p_system"
+      assert pm.content =~ "peer_fin3 beat creator_fin3 11 × 4 in Hex Pong"
 
       stop_server(ctx.token)
     end

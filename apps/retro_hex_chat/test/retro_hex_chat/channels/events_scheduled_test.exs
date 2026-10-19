@@ -44,6 +44,16 @@ defmodule RetroHexChat.Channels.EventsScheduledTest do
       refute event.cancelled_at
     end
 
+    test "an event in a game's channel leads to the game, unless it names another", ctx do
+      in_game = create(%{ctx | channel: "#hex-pong"})
+      assert in_game.surface_hint == "hex_pong"
+
+      elsewhere = create(%{ctx | channel: "#hex-pong"}, surface_hint: "hex_tennis")
+      assert elsewhere.surface_hint == "hex_tennis"
+
+      assert create(ctx).surface_hint == nil
+    end
+
     test "refuses an event in the past", ctx do
       assert {:error, message} =
                ScheduledEvents.create(ctx.channel, ctx.host, %{

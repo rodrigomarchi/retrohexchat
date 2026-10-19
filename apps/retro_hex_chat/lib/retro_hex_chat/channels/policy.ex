@@ -63,8 +63,10 @@ defmodule RetroHexChat.Channels.Policy do
         {:error, dgettext("channels", "Cannot send to channel (no external messages)")}
 
       Modes.moderated?(modes) ->
+        # A bot joined by the server speaks for a service the channel asked
+        # for, so moderation never silences it.
         case Membership.role(membership, nickname) do
-          {:ok, role} when role in [:owner, :operator, :half_operator, :voiced] ->
+          {:ok, role} when role in [:owner, :operator, :half_operator, :voiced, :bot] ->
             :ok
 
           {:ok, :regular} ->

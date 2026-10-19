@@ -26,6 +26,8 @@ defmodule RetroHexChat.Lobby.SessionServer do
 
   require Logger
 
+  alias RetroHexChat.Games.Result
+  alias RetroHexChat.Games.Results
   alias RetroHexChat.Lobby.{Queries, Registry}
   alias RetroHexChat.Lobby.Schema.Session
   alias RetroHexChat.NamedTimers
@@ -56,6 +58,11 @@ defmodule RetroHexChat.Lobby.SessionServer do
       {:ok, pid} -> {:ok, GenServer.call(pid, :get_state)}
       error -> error
     end
+  catch
+    # Registered when looked up, gone by the time it was asked: a session
+    # closing between the two is a session that is no longer there.
+    :exit, {reason, _call} when reason in [:noproc, :normal, :shutdown] -> {:error, :not_found}
+    :exit, {{:shutdown, _why}, _call} -> {:error, :not_found}
   end
 
   @doc """
@@ -363,11 +370,14 @@ defmodule RetroHexChat.Lobby.SessionServer do
     end
   end
 
-  # Only the game host reports the authoritative result (the guest engine never
-  # fires onGameEnd), so the server relays it to both peers.
+  # Only the game host reports the authoritative result, so the server relays
+  # it to both peers. Several guest engines fire `onGameEnd` too — on the
+  # host's GAME_END message, or when the channel closes — and those reports are
+  # the ones refused here.
   def handle_call({:finish_game, user_id, result}, _from, %{game: %{status: "playing"}} = state) do
     if user_id == state.game.host_id do
-      {:reply, :ok, handle_finish_game(state, result)}
+      match = match_record(state, result)
+      {:reply, :ok, handle_finish_game(state, result), {:continue, {:record_match, match}}}
     else
       {:reply, {:error, :not_host}, state}
     end
@@ -375,6 +385,12 @@ defmodule RetroHexChat.Lobby.SessionServer do
 
   def handle_call({:finish_game, _user_id, _result}, _from, state) do
     {:reply, {:error, :no_game_in_progress}, state}
+  end
+
+  @impl true
+  def handle_continue({:record_match, match}, state) do
+    record_match(match)
+    {:noreply, state}
   end
 
   @impl true
@@ -808,6 +824,7 @@ defmodule RetroHexChat.Lobby.SessionServer do
       })
 
     broadcast(state.token, "lobby_session_closed", %{reason: reason, closed_by: closed_by})
+    notify_watchers(state.token, %{status: "closed"})
     notify_chat_participants(state.nicks, session, reason)
     %{state | session: session}
   end
@@ -868,7 +885,12 @@ defmodule RetroHexChat.Lobby.SessionServer do
     request = state.game_request
     state = NamedTimers.cancel(state, :game_request_expiry)
 
-    game = %{status: "playing", game_id: request.game_id, host_id: request.proposer_id}
+    game = %{
+      status: "playing",
+      game_id: request.game_id,
+      host_id: request.proposer_id,
+      started_at: DateTime.utc_now()
+    }
 
     broadcast(state.token, "lobby_game_response", %{
       accepted: true,
@@ -883,7 +905,11 @@ defmodule RetroHexChat.Lobby.SessionServer do
       host_id: request.proposer_id
     })
 
-    %{state | game: game, game_request: nil}
+    notify_watchers(state.token, %{status: "playing", game_id: request.game_id})
+
+    state = %{state | game: game, game_request: nil}
+    notify_chat_progress(state)
+    state
   end
 
   defp handle_respond_game(state, responder_id, responder_nick, false) do
@@ -903,13 +929,26 @@ defmodule RetroHexChat.Lobby.SessionServer do
   defp handle_end_game(state) do
     game = %{status: "idle", game_id: nil, host_id: nil}
     broadcast(state.token, "lobby_game_status_changed", %{status: "idle", game_id: nil})
-    %{state | game: game, game_request: nil}
+    notify_watchers(state.token, %{status: "idle", game_id: nil})
+    state = %{state | game: game, game_request: nil}
+    notify_chat_progress(state)
+    state
   end
 
-  defp handle_finish_game(state, result) do
+  # The result both peers see is the engine's payload read by `Games.Result`,
+  # so the two consoles draw the same score whatever spelling the engine used.
+  # The match is written down afterwards (`handle_continue/2`), by the process
+  # that timed it, once the host has its answer.
+  defp handle_finish_game(state, payload) do
     Logger.debug(
       "Lobby game finished: session_id=#{state.session.id}, game=#{state.game.game_id}"
     )
+
+    result =
+      case Result.normalize(state.game.game_id, payload) do
+        {:ok, result} -> result
+        {:error, _unreadable} -> nil
+      end
 
     game = %{
       status: "finished",
@@ -924,8 +963,49 @@ defmodule RetroHexChat.Lobby.SessionServer do
       result: result
     })
 
-    %{state | game: game, game_request: nil}
+    notify_watchers(state.token, %{
+      status: "finished",
+      game_id: state.game.game_id,
+      result: result
+    })
+
+    state = %{state | game: game, game_request: nil}
+    notify_chat_progress(state)
+    state
   end
+
+  # The players already have their result. Writing it down — the ledger, the
+  # ratings, the lines that announce it — touches the database and other
+  # processes, and a failure there must not end the session it came from.
+  defp record_match(match) do
+    Results.record(match)
+  rescue
+    error ->
+      Logger.error(
+        "Lobby: match not recorded: " <> Exception.format(:error, error, __STACKTRACE__)
+      )
+  catch
+    :exit, reason -> Logger.error("Lobby: match not recorded: #{inspect(reason)}")
+  end
+
+  defp match_record(%{game: game} = state, payload) do
+    host_role = role_of(state, game.host_id)
+    guest_role = if host_role == :creator, do: :peer, else: :creator
+
+    %{
+      game_id: game.game_id,
+      origin: "p2p",
+      p1: %{id: game.host_id, nickname: Map.get(state.nicks, host_role)},
+      p2: %{id: player_id(state, guest_role), nickname: Map.get(state.nicks, guest_role)},
+      payload: payload,
+      started_at: game.started_at,
+      lobby_token: state.token,
+      public?: Session.offered?(state.session)
+    }
+  end
+
+  defp player_id(state, :creator), do: state.session.creator_id
+  defp player_id(state, :peer), do: state.session.peer_id
 
   defp role_of(state, user_id) do
     cond do
@@ -1009,6 +1089,12 @@ defmodule RetroHexChat.Lobby.SessionServer do
     state
     |> NamedTimers.schedule(:lobby_warning, lobby_warning_timeout())
     |> NamedTimers.schedule(:lobby_expiry, lobby_expiry_timeout())
+  end
+
+  # Whoever watches the session's matches hears only the games starting and
+  # ending, never the connection they are played over.
+  defp notify_watchers(token, payload) do
+    Phoenix.PubSub.broadcast(@pubsub, Topics.lobby_watch(token), {:watch_game, payload})
   end
 
   # The envelope carries the token so a subscriber holding session state can

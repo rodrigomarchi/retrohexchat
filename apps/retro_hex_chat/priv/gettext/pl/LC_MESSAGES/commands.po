@@ -612,20 +612,20 @@ msgstr "/mute troll"
 msgid "/mute troll 30m"
 msgstr "/mute troll 30m"
 
-#: lib/retro_hex_chat/commands/handlers/nick.ex:59
-#: lib/retro_hex_chat/commands/handlers/nick.ex:80
+#: lib/retro_hex_chat/commands/handlers/nick.ex:63
+#: lib/retro_hex_chat/commands/handlers/nick.ex:84
 #, elixir-autogen, elixir-format
 msgid "/nick <newnick>"
 msgstr "/nick <newnick>"
 
-#: lib/retro_hex_chat/commands/handlers/nick.ex:65
-#: lib/retro_hex_chat/commands/handlers/nick.ex:96
+#: lib/retro_hex_chat/commands/handlers/nick.ex:69
+#: lib/retro_hex_chat/commands/handlers/nick.ex:100
 #, elixir-autogen, elixir-format
 msgid "/nick NewNick"
 msgstr "/nick NewNick"
 
-#: lib/retro_hex_chat/commands/handlers/nick.ex:65
-#: lib/retro_hex_chat/commands/handlers/nick.ex:96
+#: lib/retro_hex_chat/commands/handlers/nick.ex:69
+#: lib/retro_hex_chat/commands/handlers/nick.ex:100
 #, elixir-autogen, elixir-format
 msgid "/nick [Bot]"
 msgstr "/nick [Bot]"
@@ -1055,7 +1055,7 @@ msgstr "Dodaj użytkownika do listy powiadomień"
 msgid "Add an auto-respond rule"
 msgstr "Dodaj regułę auto- response"
 
-#: lib/retro_hex_chat/commands/registry.ex:75
+#: lib/retro_hex_chat/commands/registry.ex:77
 #, elixir-autogen, elixir-format
 msgid "Advanced"
 msgstr "Zaawansowane"
@@ -1101,7 +1101,7 @@ msgstr "Zakaz"
 msgid "Ban user from channel"
 msgstr "Zakaz korzystania z kanału"
 
-#: lib/retro_hex_chat/commands/registry.ex:71
+#: lib/retro_hex_chat/commands/registry.ex:73
 #, elixir-autogen, elixir-format
 msgid "Basics"
 msgstr "Podstawy"
@@ -1133,14 +1133,14 @@ msgstr ""
 "Flagi: + o (operator), + v (głos), + b (zakaz), + h (połowa-op), + m (moderowane), + i (invite- only), + t (chroniony temat), + k (key/password), + l (limit użytkownika), + n (brak zewnętrznych wiadomości), + j (połączenie przepustnicy), + K (brak pukania).\n"
 "Wymaga: operatora kanału. Half- operatorzy mogą ustawić tylko + v / -v. Musi być w kanale."
 
-#: lib/retro_hex_chat/commands/handlers/nick.ex:82
+#: lib/retro_hex_chat/commands/handlers/nick.ex:86
 #, elixir-autogen, elixir-format
 msgid "Change your display name in the chat. A confirmation dialog appears before the change takes effect."
 msgstr ""
 "Zmień nazwę ekranu w czacie. Pojawia się okno z potwierdzeniem przed "
 "wejściem zmiany w życie."
 
-#: lib/retro_hex_chat/commands/handlers/nick.ex:61
+#: lib/retro_hex_chat/commands/handlers/nick.ex:65
 #, elixir-autogen, elixir-format
 msgid "Change your display name. A confirmation dialog appears before the change takes effect.\nRules: 1-16 characters, no spaces. Must start with a letter or [ ] \\ ^ _ { | }.\nAllowed characters: letters, numbers, [ ] \\ ^ _ ` { | } and hyphens.\nCannot change to your current nickname or one already in use."
 msgstr ""
@@ -1149,7 +1149,7 @@ msgstr ""
 "Dozwolone znaki: litery, liczby, []\\ ^ _ '{< 124;} i hyphens.\n"
 "Nie można zmienić aktualnego pseudonimu lub już używanego."
 
-#: lib/retro_hex_chat/commands/registry.ex:72
+#: lib/retro_hex_chat/commands/registry.ex:74
 #, elixir-autogen, elixir-format
 msgid "Channel"
 msgstr "Kanał"
@@ -1227,7 +1227,7 @@ msgstr "Wyczyść całą listę autodołącz"
 msgid "Command name to view detailed help"
 msgstr "Nazwa polecenia, aby wyświetlić szczegółową pomoc"
 
-#: lib/retro_hex_chat/commands/registry.ex:74
+#: lib/retro_hex_chat/commands/registry.ex:76
 #, elixir-autogen, elixir-format
 msgid "Configuration"
 msgstr "Konfiguracja"
@@ -1614,7 +1614,7 @@ msgstr ""
 msgid "New channel topic"
 msgstr "Nowy temat kanału"
 
-#: lib/retro_hex_chat/commands/handlers/nick.ex:93
+#: lib/retro_hex_chat/commands/handlers/nick.ex:97
 #, elixir-autogen, elixir-format
 msgid "New nickname (max 16 characters)"
 msgstr "Nowy pseudonim (maksymalnie 16 znaków)"
@@ -1629,23 +1629,23 @@ msgstr "Nowy właściciel"
 msgid "NickServ admin (drop, info, resetpass)"
 msgstr "Administrator NickServ (drop, info, rewitalipass)"
 
-#: lib/retro_hex_chat/commands/handlers/nick.ex:23
+#: lib/retro_hex_chat/commands/handlers/nick.ex:24
 #, elixir-autogen, elixir-format
 msgid "Nickname cannot contain spaces"
 msgstr "Nickname nie może zawierać spacji"
 
-#: lib/retro_hex_chat/commands/handlers/nick.ex:42
+#: lib/retro_hex_chat/commands/handlers/nick.ex:43
 #, elixir-autogen, elixir-format
 msgid "Nickname contains invalid characters"
 msgstr "Nickname zawiera nieprawidłowe znaki"
 
-#: lib/retro_hex_chat/commands/handlers/nick.ex:36
+#: lib/retro_hex_chat/commands/handlers/nick.ex:37
 #, elixir-autogen, elixir-format
 msgid "Nickname must start with a letter or special character ([\\]^_{|})"
 msgstr ""
 "Nickname musi zaczynać się literą lub znakiem specjalnym ([\\] ^ _ {< 124;})"
 
-#: lib/retro_hex_chat/commands/handlers/nick.ex:32
+#: lib/retro_hex_chat/commands/handlers/nick.ex:33
 #, elixir-autogen, elixir-format
 msgid "Nickname too long (max 16 characters)"
 msgstr "Zbyt długi pseudonim (maksymalnie 16 znaków)"
@@ -2467,8 +2467,8 @@ msgstr "Sposób użycia: /msg <nickname> <message>"
 msgid "Usage: /mute <nickname> [duration]"
 msgstr "Sposób użycia: /mute <nickname> [czas trwania]"
 
-#: lib/retro_hex_chat/commands/handlers/nick.ex:15
-#: lib/retro_hex_chat/commands/handlers/nick.ex:20
+#: lib/retro_hex_chat/commands/handlers/nick.ex:16
+#: lib/retro_hex_chat/commands/handlers/nick.ex:21
 #, elixir-autogen, elixir-format
 msgid "Usage: /nick <newnick>"
 msgstr "Sposób użycia: /nick <newnick>"
@@ -2614,7 +2614,7 @@ msgstr "Sposób użycia: /whois <nickname>"
 msgid "Usage: /whowas <nickname>"
 msgstr "Sposób użycia: /whowas <nickname>"
 
-#: lib/retro_hex_chat/commands/registry.ex:73
+#: lib/retro_hex_chat/commands/registry.ex:75
 #, elixir-autogen, elixir-format
 msgid "User"
 msgstr "User"
@@ -2759,12 +2759,12 @@ msgstr ""
 "Bez argumentów otwiera okno dialogowe Bot Management (admins) lub wyświetla "
 "listę botów."
 
-#: lib/retro_hex_chat/commands/handlers/nick.ex:29
+#: lib/retro_hex_chat/commands/handlers/nick.ex:30
 #, elixir-autogen, elixir-format
 msgid "You are already using that nickname"
 msgstr "Już używasz tej ksywki."
 
-#: lib/retro_hex_chat/commands/handler/guards.ex:22
+#: lib/retro_hex_chat/commands/handler/guards.ex:23
 #: lib/retro_hex_chat/commands/handlers/event.ex:49
 #: lib/retro_hex_chat/commands/handlers/me.ex:20
 #: lib/retro_hex_chat/commands/handlers/part.ex:16
@@ -2802,7 +2802,7 @@ msgstr "Musisz być operatorem kanału, aby kopać użytkowników"
 msgid "You must be a channel operator to unban users"
 msgstr "Musisz być operatorem kanału do usunięcia użytkowników"
 
-#: lib/retro_hex_chat/commands/handler/guards.ex:36
+#: lib/retro_hex_chat/commands/handler/guards.ex:37
 #: lib/retro_hex_chat/commands/policy.ex:34
 #, elixir-autogen, elixir-format
 msgid "You must be a channel operator to use this command"
@@ -2814,7 +2814,7 @@ msgstr "Musisz być operatorem kanału, aby używać tego polecenia"
 msgid "You must be a server administrator to use this command"
 msgstr "Musisz być administratorem serwera, aby używać tego polecenia"
 
-#: lib/retro_hex_chat/commands/handler/guards.ex:54
+#: lib/retro_hex_chat/commands/handler/guards.ex:55
 #, elixir-autogen, elixir-format
 msgid "You must be at least a half-operator to use this command"
 msgstr "Musisz być co najmniej pół-operatorem, aby używać tego polecenia"
@@ -3554,3 +3554,105 @@ msgstr ""
 #, elixir-autogen, elixir-format
 msgid "You must be a channel operator to register the channel"
 msgstr "Musisz być operatorem kanału, aby zarejestrować kanał"
+
+#: lib/retro_hex_chat/commands/handler/guards.ex:96
+#, elixir-autogen, elixir-format
+msgid "%{game} has no mode called %{mode}."
+msgstr "%{game} nie ma trybu zwanego %{mode}."
+
+#: lib/retro_hex_chat/commands/handlers/challenge.ex:46
+#: lib/retro_hex_chat/commands/handlers/challenge.ex:70
+#, elixir-autogen, elixir-format
+msgid "/challenge <nickname> [mode]"
+msgstr "/challenge <nickname> [mode]"
+
+#: lib/retro_hex_chat/commands/handlers/challenge.ex:53
+#: lib/retro_hex_chat/commands/handlers/challenge.ex:92
+#, elixir-autogen, elixir-format
+msgid "/challenge mario"
+msgstr "/challenge mario"
+
+#: lib/retro_hex_chat/commands/handlers/challenge.ex:54
+#: lib/retro_hex_chat/commands/handlers/challenge.ex:93
+#, elixir-autogen, elixir-format
+msgid "/challenge mario quick"
+msgstr "/challenge mario quick"
+
+#: lib/retro_hex_chat/commands/handlers/lfg.ex:52
+#: lib/retro_hex_chat/commands/handlers/lfg.ex:84
+#, elixir-autogen, elixir-format
+msgid "/lfg"
+msgstr "/lfg"
+
+#: lib/retro_hex_chat/commands/handlers/lfg.ex:46
+#: lib/retro_hex_chat/commands/handlers/lfg.ex:67
+#, elixir-autogen, elixir-format
+msgid "/lfg [mode]"
+msgstr "/lfg [mode]"
+
+#: lib/retro_hex_chat/commands/handlers/lfg.ex:52
+#: lib/retro_hex_chat/commands/handlers/lfg.ex:84
+#, elixir-autogen, elixir-format
+msgid "/lfg blitz"
+msgstr "/lfg blitz"
+
+#: lib/retro_hex_chat/commands/handlers/challenge.ex:88
+#: lib/retro_hex_chat/commands/handlers/lfg.ex:81
+#, elixir-autogen, elixir-format
+msgid "A mode of the game, like blitz"
+msgstr "Tryb gry, jak blitz"
+
+#: lib/retro_hex_chat/commands/handlers/challenge.ex:72
+#, elixir-autogen, elixir-format
+msgid "Invite someone to play the channel's game over a P2P session.\nRequires: both users must be registered and identified (/ns identify)."
+msgstr ""
+"Zaproś kogoś do gry na kanale podczas sesji P2P.\n"
+"Wymaga: obaj użytkownicy muszą być zarejestrowani i identyfikowani (identyfikacja /ns)."
+
+#: lib/retro_hex_chat/commands/handlers/lfg.ex:69
+#, elixir-autogen, elixir-format
+msgid "Look for someone to play the channel's game with: a card with one open seat appears in the channel.\nRequires: a registered, identified nickname."
+msgstr ""
+"Szukaj kogoś do gry kanału z: karta z jednym otwartym siedzeniem pojawia się w kanale.\n"
+"Wymagane: zarejestrowany, zidentyfikowany pseudonim."
+
+#: lib/retro_hex_chat/commands/handlers/nick.ex:46
+#, elixir-autogen, elixir-format
+msgid "That nickname is reserved"
+msgstr "Ta ksywka jest zarezerwowana."
+
+#: lib/retro_hex_chat/commands/handlers/challenge.ex:34
+#, elixir-autogen, elixir-format
+msgid "Usage: /challenge <nickname> [mode]"
+msgstr "Sposób użycia: /challenge <nickname> [tryb]"
+
+#: lib/retro_hex_chat/commands/handler/guards.ex:81
+#, elixir-autogen, elixir-format
+msgid "Use this in a game's own channel, like %{channel}."
+msgstr "Użyj tego we własnym kanale gry, jak %{channel}."
+
+#: lib/retro_hex_chat/commands/handlers/challenge.ex:81
+#, elixir-autogen, elixir-format
+msgid "Who to play"
+msgstr "Kto grać"
+
+#: lib/retro_hex_chat/commands/handlers/lfg.ex:34
+#, elixir-autogen, elixir-format
+msgid "You must be identified to look for a match."
+msgstr "Musisz być zidentyfikowany, by szukać dopasowania."
+
+#: lib/retro_hex_chat/commands/handlers/challenge.ex:48
+#, elixir-autogen, elixir-format
+msgid "Invite someone to play the channel's game. Run it in a game's channel: they get a P2P invite in your private conversation, and the game starts once you are both in.\nName a mode to play it instead of the standard game.\nRequires: both users must be registered and identified (/ns identify)."
+msgstr ""
+"Zaproś kogoś do gry w kanał. Uruchom go w kanale gry: otrzymują zaproszenie P2P w prywatnej rozmowie, a gra zaczyna się po obu w.\n"
+"Podaj tryb gry zamiast standardowej gry.\n"
+"Wymaga: obaj użytkownicy muszą być zarejestrowani i identyfikowani (identyfikacja /ns)."
+
+#: lib/retro_hex_chat/commands/handlers/lfg.ex:48
+#, elixir-autogen, elixir-format
+msgid "Look for someone to play the channel's game with. Run it in a game's channel: a card with one open seat appears in the channel, and whoever presses Join first plays you.\nName a mode to play it instead of the standard game.\nRequires: a registered, identified nickname."
+msgstr ""
+"Poszukaj kogoś do gry w kanał. Uruchom go w kanale gry: karta z jednym otwartym siedzeniem pojawia się w kanale, a ktokolwiek naciska Dołącz pierwszy gra.\n"
+"Podaj tryb gry zamiast standardowej gry.\n"
+"Wymagane: zarejestrowany, zidentyfikowany pseudonim."

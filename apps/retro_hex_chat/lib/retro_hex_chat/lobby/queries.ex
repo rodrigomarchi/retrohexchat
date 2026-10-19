@@ -82,6 +82,22 @@ defmodule RetroHexChat.Lobby.Queries do
     |> select([s], s)
   end
 
+  @doc """
+  `creator_id`'s open lobby for exactly `metadata`, while its seat is still
+  empty and its window still open — the lobby a second offer of the same seat
+  should point back at.
+  """
+  @spec find_open_session(integer(), map(), DateTime.t()) :: Session.t() | nil
+  def find_open_session(creator_id, metadata, now \\ DateTime.utc_now()) do
+    Session
+    |> where([s], s.creator_id == ^creator_id and s.metadata == ^metadata)
+    |> where([s], is_nil(s.peer_id) and s.status == "open")
+    |> where([s], is_nil(s.expires_at) or s.expires_at > ^now)
+    |> order_by([s], desc: s.id)
+    |> limit(1)
+    |> Repo.one()
+  end
+
   @doc "Open lobbies whose window has closed, oldest first."
   @spec list_expired_open_sessions(DateTime.t(), keyword()) :: [Session.t()]
   def list_expired_open_sessions(now, opts \\ []) do

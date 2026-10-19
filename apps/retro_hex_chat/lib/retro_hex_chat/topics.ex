@@ -54,6 +54,34 @@ defmodule RetroHexChat.Topics do
   @spec lobby(String.t()) :: String.t()
   def lobby(session_token) when is_binary(session_token), do: "lobby:" <> session_token
 
+  @doc """
+  A P2P match as the people watching it see it: the games starting and ending.
+
+  Apart from `lobby/1` on purpose: that topic carries every ICE candidate and
+  SDP of the session, and somebody watching a match has no business with the
+  connection it is played over.
+  """
+  @spec lobby_watch(String.t()) :: String.t()
+  def lobby_watch(session_token) when is_binary(session_token),
+    do: lobby(session_token) <> ":watch"
+
+  @doc """
+  The host's snapshots of a watched match, apart from `lobby_watch/1`: a page
+  that only draws "live" or "finished" must not be handed fifteen frames a
+  second it has no use for.
+  """
+  @spec lobby_frames(String.t()) :: String.t()
+  def lobby_frames(session_token) when is_binary(session_token),
+    do: lobby_watch(session_token) <> ":frames"
+
+  @doc """
+  Who is watching a match: presence, one entry per page open on it. Its diffs
+  are what tells the players, and everybody watching, how many are there.
+  """
+  @spec lobby_watchers(String.t()) :: String.t()
+  def lobby_watchers(session_token) when is_binary(session_token),
+    do: lobby_watch(session_token) <> ":watchers"
+
   @doc "Everything a virtual space pushes to the clients standing in it."
   @spec space(String.t()) :: String.t()
   def space(space_id) when is_binary(space_id), do: "space:" <> space_id
@@ -82,6 +110,27 @@ defmodule RetroHexChat.Topics do
   """
   @spec presence() :: String.t()
   def presence, do: "presence:global"
+
+  @doc """
+  Every Retro Games result as it is recorded, whoever played it and wherever.
+
+  One topic for all games rather than one per game: its readers — the service
+  that posts results into each game's channel, a page counting the day's
+  matches — want every game, and a listener per game would be the same
+  subscriber written seventeen times.
+  """
+  @spec game_results() :: String.t()
+  def game_results, do: "games:results"
+
+  @doc """
+  Who is in the middle of a Retro Games match right now, as presence.
+
+  Tracked by the page the match is played on, so a closed tab takes its
+  player off the list by itself; read by the chat's user list and by a game's
+  public page.
+  """
+  @spec games_playing() :: String.t()
+  def games_playing, do: "games:playing"
 
   @doc "Server-wide announcements (`/announce`), heard by every chat, signed in or not."
   @spec announcements() :: String.t()

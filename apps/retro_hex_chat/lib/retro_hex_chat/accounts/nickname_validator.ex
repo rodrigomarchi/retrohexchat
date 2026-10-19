@@ -5,6 +5,8 @@ defmodule RetroHexChat.Accounts.NicknameValidator do
   """
   use Gettext, backend: RetroHexChat.Gettext
 
+  alias RetroHexChat.Nickname
+
   @max_length 16
   # IRC first-character specials: [ ] \ ^ _ { | }
   @first_char_specials ~c"[]\\^_{|}"
@@ -30,6 +32,26 @@ defmodule RetroHexChat.Accounts.NicknameValidator do
   @spec guest?(term()) :: boolean()
   def guest?(nickname) when is_binary(nickname), do: Regex.match?(~r/^guest[0-9]+$/i, nickname)
   def guest?(_nickname), do: false
+
+  # The server's own services speak under these names, in channels and in
+  # replies. A person holding one could put words in a service's mouth.
+  @service_names ~w(ChanServ NickServ GameServ)
+
+  @doc "The names the server's services speak under."
+  @spec service_names() :: [String.t()]
+  def service_names, do: @service_names
+
+  @doc "Whether `nickname` is a service's name, in any case."
+  @spec service?(term()) :: boolean()
+  def service?(nickname) when is_binary(nickname), do: Nickname.member?(@service_names, nickname)
+  def service?(_nickname), do: false
+
+  @doc """
+  Whether `nickname` belongs to nobody who could sign in with it: a visitor's
+  name or a service's.
+  """
+  @spec reserved?(term()) :: boolean()
+  def reserved?(nickname), do: guest?(nickname) or service?(nickname)
 
   @doc "A fresh visitor name: `Guest` and four digits."
   @spec guest_name() :: String.t()

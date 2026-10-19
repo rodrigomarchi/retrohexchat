@@ -220,6 +220,24 @@ defmodule RetroHexChat.Chat.ArchiveTest do
     end
   end
 
+  describe "recent/2" do
+    test "the newest published lines, oldest first, without the chatter", ctx do
+      {:ok, _} = Archive.publish(ctx.channel)
+      message(ctx.channel, "first")
+      message(ctx.channel, "joined", "system")
+      message(ctx.channel, "second")
+      message(ctx.channel, "third")
+
+      assert [%{text: "second"}, %{text: "third"}] = Archive.recent(ctx.channel, 2)
+    end
+
+    test "a channel nobody published quotes nothing", ctx do
+      message(ctx.channel, "a line")
+
+      assert Archive.recent(ctx.channel, 5) == []
+    end
+  end
+
   describe "published_channels/0" do
     test "lists what the sitemap has to offer", ctx do
       {:ok, _} = Archive.publish(ctx.channel)
