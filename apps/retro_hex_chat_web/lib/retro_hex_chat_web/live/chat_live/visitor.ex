@@ -10,8 +10,10 @@ defmodule RetroHexChatWeb.ChatLive.Visitor do
   lands them back on the channel they were reading.
 
   A visitor is a watcher, never a member (`Channels.Server.watch/3`). They get
-  a guest name for the visit (`Guest` and digits, reserved so no account can
-  take one) and are listed under it in a section of the user list of their own,
+  a guest name (`Guest` and digits, reserved so no account can take one) that
+  belongs to the browser, not the tab — every tab of one browser shares it, and
+  no two browsers hold the same one (`Accounts.GuestNames`) — and are listed
+  under it in a section of the user list of their own,
   counted beside the channel — but they do not join it, hold no role, announce
   nothing and leave nothing behind when the tab closes. Which
   channels they may open is the channel's own answer — the server refuses a
@@ -41,7 +43,7 @@ defmodule RetroHexChatWeb.ChatLive.Visitor do
   import Phoenix.Component, only: [assign: 2]
   import Phoenix.LiveView, only: [attach_hook: 4, push_patch: 2]
 
-  alias RetroHexChat.Accounts.NicknameValidator
+  alias RetroHexChat.Accounts.GuestNames
   alias RetroHexChat.Accounts.Session
   alias RetroHexChat.Channels.Server
   alias RetroHexChat.Chat.KeyBindings
@@ -146,7 +148,7 @@ defmodule RetroHexChatWeb.ChatLive.Visitor do
     default_channel = Server.default_channel()
 
     socket
-    |> assign(visitor_nick: NicknameValidator.guest_name())
+    |> assign(visitor_nick: GuestNames.claim(socket.assigns.browser_id))
     |> watch_channel(default_channel)
     |> maybe_watch(params["channel"] && Address.channel_name(params["channel"]), default_channel)
   end

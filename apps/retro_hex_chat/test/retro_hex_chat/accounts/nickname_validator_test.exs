@@ -132,10 +132,5 @@ defmodule RetroHexChat.Accounts.NicknameValidatorTest do
       refute NicknameValidator.guest?("MyGuest12")
       refute NicknameValidator.guest?(nil)
     end
-
-    test "guest_name/0 makes one" do
-      assert NicknameValidator.guest?(NicknameValidator.guest_name())
-      assert NicknameValidator.valid?(NicknameValidator.guest_name())
-    end
   end
 end

@@ -1,7 +1,8 @@
 <p>
   {dgettext(
     "help",
-    "You do not need an account to look around. Open the chat and you land in #lobby with the conversation arriving live, under a guest name such as Guest4821 that you get for the visit."
+    "You do not need an account to look around. Open the chat and you land in #lobby with the conversation arriving live, under a guest name such as %{guest}.",
+    guest: "Guest4821"
   )}
 </p>
 <p>
@@ -83,6 +84,12 @@
     {dgettext(
       "help",
       "Guest names are reserved: nobody can register one or change to one"
+    )}
+  </li>
+  <li>
+    {dgettext(
+      "help",
+      "Every tab of your browser has the same guest name, and no other visitor has it"
     )}
   </li>
   <li>{dgettext("help", "Nothing is kept for a visitor; a new visit gets a new guest name")}</li>

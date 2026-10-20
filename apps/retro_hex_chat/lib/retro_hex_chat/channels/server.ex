@@ -53,7 +53,8 @@ defmodule RetroHexChat.Channels.Server do
           created_at: DateTime.t(),
           join_timestamps: [DateTime.t()],
           last_activity_touched_at: DateTime.t() | nil,
-          watchers: %{pid() => {reference(), String.t()}}
+          watchers: %{pid() => {reference(), String.t()}},
+          guests: %{String.t() => {String.t(), pos_integer()}}
         }
 
   @pubsub RetroHexChat.PubSub
@@ -400,7 +401,8 @@ defmodule RetroHexChat.Channels.Server do
   @doc """
   Let `pid` — a visitor without an account — watch the channel as `guest_name`.
 
-  A watcher is listed apart from the members, under its guest name, and never
+  A watcher is listed apart from the members, under its guest name — once, and
+  counted once, however many of its tabs watch under that name — and never
   joins: it is not in the member list, holds no role, broadcasts no join and
   cannot speak. The channel monitors it, so a watcher whose process ends drops
   off the list without saying goodbye — and a room nobody registered stays up
@@ -489,7 +491,10 @@ defmodule RetroHexChat.Channels.Server do
       channel_mutes: MapSet.new(),
       welcome_message: nil,
       last_activity_touched_at: nil,
-      watchers: %{}
+      watchers: %{},
+      # The watchers' names, each with how many of its tabs watch: a visitor
+      # reading in several tabs is several watchers and one guest.
+      guests: %{}
     }
 
     {:ok,
@@ -595,8 +600,14 @@ defmodule RetroHexChat.Channels.Server do
 
       true ->
         watcher = {Process.monitor(pid), guest_name}
-        new_state = %{state | watchers: Map.put(state.watchers, pid, watcher)}
-        broadcast_watchers(new_state)
+
+        new_state = %{
+          state
+          | watchers: Map.put(state.watchers, pid, watcher),
+            guests: add_guest(state.guests, guest_name)
+        }
+
+        maybe_broadcast_watchers(state, new_state)
         reply({:ok, state_to_map(new_state)}, new_state)
     end
   end
@@ -1416,7 +1427,7 @@ defmodule RetroHexChat.Channels.Server do
       topic: state.topic,
       # Bots count: a channel a feed keeps publishing in is a live one.
       member_count: Membership.count(state.membership),
-      watcher_count: map_size(state.watchers),
+      watcher_count: watcher_count(state),
       secret?: Modes.secret?(state.modes),
       private?: Modes.private?(state.modes),
       invite_only?: Modes.invite_only?(state.modes),
@@ -1442,10 +1453,10 @@ defmodule RetroHexChat.Channels.Server do
       {nil, _watchers} ->
         state
 
-      {{ref, _guest_name}, watchers} ->
+      {{ref, guest_name}, watchers} ->
         Process.demonitor(ref, [:flush])
-        new_state = %{state | watchers: watchers}
-        broadcast_watchers(new_state)
+        new_state = %{state | watchers: watchers, guests: drop_guest(state.guests, guest_name)}
+        maybe_broadcast_watchers(state, new_state)
         new_state
     end
   end
@@ -1456,7 +1467,7 @@ defmodule RetroHexChat.Channels.Server do
     if map_size(state.watchers) > 0 and not Modes.watchable?(state.modes) do
       Enum.each(state.watchers, fn {_pid, {ref, _name}} -> Process.demonitor(ref, [:flush]) end)
       broadcast(state.name, {:watch_closed, %{channel: state.name}})
-      new_state = %{state | watchers: %{}}
+      new_state = %{state | watchers: %{}, guests: %{}}
       broadcast_watchers(new_state)
       new_state
     else
@@ -1468,15 +1479,41 @@ defmodule RetroHexChat.Channels.Server do
     broadcast(
       state.name,
       {:watchers_changed,
-       %{channel: state.name, count: map_size(state.watchers), guests: guest_names(state)}}
+       %{channel: state.name, count: watcher_count(state), guests: guest_names(state)}}
     )
   end
 
+  # Another tab of a guest already listed, or one that is not its last, leaves
+  # the list as it was: nothing to tell the channel.
+  defp maybe_broadcast_watchers(old_state, new_state) do
+    if map_size(old_state.guests) != map_size(new_state.guests),
+      do: broadcast_watchers(new_state)
+  end
+
+  defp add_guest(guests, guest_name) do
+    Map.update(guests, Nickname.key(guest_name), {guest_name, 1}, fn {name, tabs} ->
+      {name, tabs + 1}
+    end)
+  end
+
+  defp drop_guest(guests, guest_name) do
+    key = Nickname.key(guest_name)
+
+    case guests do
+      %{^key => {_name, 1}} -> Map.delete(guests, key)
+      %{^key => {name, tabs}} -> Map.put(guests, key, {name, tabs - 1})
+      _absent -> guests
+    end
+  end
+
+  # One visitor reading in several tabs is listed once and counted once.
   defp guest_names(state) do
-    state.watchers
-    |> Enum.map(fn {_pid, {_ref, guest_name}} -> guest_name end)
+    state.guests
+    |> Enum.map(fn {_key, {guest_name, _tabs}} -> guest_name end)
     |> Enum.sort_by(&String.downcase/1)
   end
+
+  defp watcher_count(state), do: map_size(state.guests)
 
   defp broadcast(channel_name, message) do
     {event, metadata} = broadcast_observability(channel_name, message)
@@ -1552,7 +1589,7 @@ defmodule RetroHexChat.Channels.Server do
       welcome_message: state.welcome_message,
       members: Membership.to_list(state.membership),
       member_count: Membership.count(state.membership),
-      watcher_count: map_size(state.watchers),
+      watcher_count: watcher_count(state),
       guests: guest_names(state),
       owners: Membership.owners(state.membership),
       operators: Membership.operators(state.membership),

@@ -70,6 +70,45 @@ defmodule RetroHexChat.Channels.WatchersTest do
       assert state.guests == []
     end
 
+    test "lists a visitor watching from several tabs once, until the last tab goes" do
+      channel = unique_channel()
+      start_channel(channel)
+      {:ok, _} = Server.join(channel, "founder")
+      Phoenix.PubSub.subscribe(RetroHexChat.PubSub, Topics.channel(channel))
+      first = visitor()
+      second = visitor()
+
+      {:ok, _} = Server.watch(channel, first, "Guest4444")
+      assert_receive {:watchers_changed, %{count: 1, guests: ["Guest4444"]}}
+
+      # The second tab changes nothing anybody sees, so nothing is said.
+      {:ok, state} = Server.watch(channel, second, "Guest4444")
+      assert state.guests == ["Guest4444"]
+      assert state.watcher_count == 1
+      assert directory_entry(channel).watcher_count == 1
+      refute_received {:watchers_changed, _}
+
+      :ok = Server.unwatch(channel, first)
+      {:ok, state} = Server.get_state(channel)
+      assert state.guests == ["Guest4444"]
+      assert state.watcher_count == 1
+      refute_received {:watchers_changed, _}
+
+      :ok = Server.unwatch(channel, second)
+      assert_receive {:watchers_changed, %{count: 0, guests: []}}
+      assert directory_entry(channel).watcher_count == 0
+    end
+
+    test "counts two visitors as two" do
+      channel = unique_channel()
+      start_channel(channel)
+      {:ok, _} = Server.watch(channel, visitor(), "Guest5555")
+      {:ok, state} = Server.watch(channel, visitor(), "Guest6666")
+
+      assert state.guests == ["Guest5555", "Guest6666"]
+      assert state.watcher_count == 2
+    end
+
     test "unwatch/2 drops the visitor" do
       channel = unique_channel()
       start_channel(channel)

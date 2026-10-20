@@ -15,6 +15,7 @@ defmodule RetroHexChat.Application do
       {Phoenix.PubSub, name: RetroHexChat.PubSub},
       {Registry, keys: :unique, name: RetroHexChat.Channels.ChannelRegistry},
       RetroHexChat.Channels.Supervisor,
+      RetroHexChat.Accounts.GuestNames,
       RetroHexChat.P2P.RateLimitTable,
       RetroHexChat.P2P.Turn.Supervisor,
       {Registry, keys: :unique, name: RetroHexChat.Lobby.SessionRegistry},

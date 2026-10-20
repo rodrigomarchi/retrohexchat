@@ -6,6 +6,7 @@ defmodule RetroHexChatWeb.ChatLive.VisitorTest do
   alias RetroHexChat.Accounts.NicknameValidator
   alias RetroHexChat.Channels.{Server, Supervisor}
   alias RetroHexChat.Services.NickServ
+  alias RetroHexChatWeb.App.BrowserIdCookie
   alias RetroHexChatWeb.App.Paths
   alias RetroHexChatWeb.Site.Address
 
@@ -85,6 +86,64 @@ defmodule RetroHexChatWeb.ChatLive.VisitorTest do
 
       assert assigns(view).session.active_channel == channel
       assert assigns(view).visitor_nick in guests(channel)
+    end
+  end
+
+  describe "one browser, several tabs" do
+    # A tab of the browser the cookie names, as a fresh request would send it.
+    defp tab(browser_id) do
+      conn = put_req_header(build_conn(), "cookie", "#{BrowserIdCookie.name()}=#{browser_id}")
+      {:ok, view, _html} = live(conn, "/")
+      view
+    end
+
+    defp lobby_watchers do
+      {:ok, state} = Server.get_state("#lobby")
+      {state.guests, state.watcher_count}
+    end
+
+    test "every tab is the same guest, listed and counted once" do
+      {guests_before, count_before} = lobby_watchers()
+      browser = "browser-#{uid()}"
+
+      first = tab(browser)
+      second = tab(browser)
+      third = tab(browser)
+
+      name = assigns(first).visitor_nick
+      assert assigns(second).visitor_nick == name
+      assert assigns(third).visitor_nick == name
+
+      {guests, count} = lobby_watchers()
+      assert Enum.count(guests, &(&1 == name)) == 1
+      assert length(guests) == length(guests_before) + 1
+      assert count == count_before + 1
+    end
+
+    test "the guest stays listed until the last of its tabs closes" do
+      browser = "browser-#{uid()}"
+      first = tab(browser)
+      second = tab(browser)
+      name = assigns(first).visitor_nick
+
+      ref = Process.monitor(first.pid)
+      GenServer.stop(first.pid, :normal)
+      assert_receive {:DOWN, ^ref, :process, _pid, _reason}
+      assert name in guests("#lobby")
+
+      ref = Process.monitor(second.pid)
+      GenServer.stop(second.pid, :normal)
+      assert_receive {:DOWN, ^ref, :process, _pid, _reason}
+      refute name in guests("#lobby")
+    end
+
+    test "two browsers are two guests with names of their own" do
+      one = tab("browser-#{uid()}")
+      other = tab("browser-#{uid()}")
+
+      refute assigns(one).visitor_nick == assigns(other).visitor_nick
+      assert assigns(one).visitor_nick in guests("#lobby")
+      assert assigns(other).visitor_nick in guests("#lobby")
     end
   end
 

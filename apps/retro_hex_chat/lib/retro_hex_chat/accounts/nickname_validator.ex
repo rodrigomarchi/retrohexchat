@@ -53,10 +53,6 @@ defmodule RetroHexChat.Accounts.NicknameValidator do
   @spec reserved?(term()) :: boolean()
   def reserved?(nickname), do: guest?(nickname) or service?(nickname)
 
-  @doc "A fresh visitor name: `Guest` and four digits."
-  @spec guest_name() :: String.t()
-  def guest_name, do: "Guest#{1000 + :rand.uniform(9000) - 1}"
-
   @spec validate(String.t()) :: :ok | {:error, String.t()}
   def validate(nickname) do
     cond do

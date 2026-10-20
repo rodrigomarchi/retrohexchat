@@ -157,7 +157,7 @@ msgstr "Nie może zawierać spacji"
 msgid "Changing Nickname"
 msgstr "Zmiana nazwy nickname"
 
-#: lib/retro_hex_chat_web/controllers/help_content/watching_without_account.html.heex:93
+#: lib/retro_hex_chat_web/controllers/help_content/watching_without_account.html.heex:100
 #: lib/retro_hex_chat_web/controllers/help_content/welcome.html.heex:125
 #, elixir-autogen, elixir-format
 msgid "Channels"
@@ -187,7 +187,7 @@ msgstr "Połącz uwierzytelnianie"
 #: lib/retro_hex_chat_web/controllers/help_content/connect_authentication.html.heex:44
 #: lib/retro_hex_chat_web/controllers/help_content/ui_connect_window.html.heex:16
 #: lib/retro_hex_chat_web/controllers/help_content/ui_connect_window.html.heex:62
-#: lib/retro_hex_chat_web/controllers/help_content/watching_without_account.html.heex:92
+#: lib/retro_hex_chat_web/controllers/help_content/watching_without_account.html.heex:99
 #: lib/retro_hex_chat_web/controllers/help_content/welcome.html.heex:124
 #, elixir-autogen, elixir-format
 msgid "Connecting"
@@ -361,7 +361,7 @@ msgstr ""
 #: lib/retro_hex_chat_web/controllers/help_content/connecting.html.heex:64
 #: lib/retro_hex_chat_web/controllers/help_content/private_messages.html.heex:33
 #: lib/retro_hex_chat_web/controllers/help_content/ui_connect_window.html.heex:60
-#: lib/retro_hex_chat_web/controllers/help_content/watching_without_account.html.heex:90
+#: lib/retro_hex_chat_web/controllers/help_content/watching_without_account.html.heex:97
 #: lib/retro_hex_chat_web/controllers/help_content/welcome.html.heex:122
 #, elixir-autogen, elixir-format
 msgid "See Also"
@@ -807,52 +807,47 @@ msgstr "Capital letters do not matter"
 msgid "It is shown as you type it."
 msgstr "Pokazuje się, jak go piszesz."
 
-#: lib/retro_hex_chat_web/controllers/help_content/watching_without_account.html.heex:69
+#: lib/retro_hex_chat_web/controllers/help_content/watching_without_account.html.heex:70
 #, elixir-autogen, elixir-format
 msgid "Everybody in a channel sees its visitors under Visitors, at the foot of the user list, and counted in the number beside the channel. A visitor is not a member: they cannot write, have no role, and leave the list when they close the tab."
 msgstr "Każdy w kanale widzi swoich odwiedzających pod Odwiedzającymi, u podnóża listy użytkowników, i liczone w liczbie obok kanału. Odwiedzający nie jest członkiem: nie mogą pisać, nie mają żadnej roli i zostawić listę po zamknięciu karty."
 
-#: lib/retro_hex_chat_web/controllers/help_content/watching_without_account.html.heex:83
+#: lib/retro_hex_chat_web/controllers/help_content/watching_without_account.html.heex:84
 #, elixir-autogen, elixir-format
 msgid "Guest names are reserved: nobody can register one or change to one"
 msgstr "Nazwy gości są zastrzeżone: nikt nie może zarejestrować ani zmienić na jeden"
 
-#: lib/retro_hex_chat_web/controllers/help_content/watching_without_account.html.heex:88
-#, elixir-autogen, elixir-format
-msgid "Nothing is kept for a visitor; a new visit gets a new guest name"
-msgstr "Nic nie jest przechowywane dla odwiedzających; nowa wizyta otrzymuje nową nazwę gościa"
-
-#: lib/retro_hex_chat_web/controllers/help_content/watching_without_account.html.heex:27
+#: lib/retro_hex_chat_web/controllers/help_content/watching_without_account.html.heex:28
 #, elixir-autogen, elixir-format
 msgid "Open other channels from the sidebar, from Browse all, or from a #channel link in a message"
 msgstr "Open other channels from the sidebar, from Browse all, or from a #channel link in a message"
 
-#: lib/retro_hex_chat_web/controllers/help_content/watching_without_account.html.heex:96
+#: lib/retro_hex_chat_web/controllers/help_content/watching_without_account.html.heex:103
 #, elixir-autogen, elixir-format
 msgid "Public Channel Archive"
 msgstr "Public Channel Archive"
 
-#: lib/retro_hex_chat_web/controllers/help_content/watching_without_account.html.heex:24
+#: lib/retro_hex_chat_web/controllers/help_content/watching_without_account.html.heex:25
 #, elixir-autogen, elixir-format
 msgid "Read the public channels as they happen, and scroll back through them"
 msgstr "Przeczytaj publiczne kanały, jak to się dzieje, i przewiń z powrotem przez nich"
 
-#: lib/retro_hex_chat_web/controllers/help_content/watching_without_account.html.heex:77
+#: lib/retro_hex_chat_web/controllers/help_content/watching_without_account.html.heex:78
 #, elixir-autogen, elixir-format
 msgid "Secret, private, invite-only and keyed channels cannot be watched — a channel that becomes one closes for its visitors"
 msgstr "Tajemnicze, prywatne, invite- tylko i odziane kanały nie mogą być oglądane - kanał, który staje się jeden zamyka dla swoich gości"
 
-#: lib/retro_hex_chat_web/controllers/help_content/watching_without_account.html.heex:33
+#: lib/retro_hex_chat_web/controllers/help_content/watching_without_account.html.heex:34
 #, elixir-autogen, elixir-format
 msgid "See who is in each channel, and close a channel's tab when you are done"
 msgstr "Zobacz, kto jest w każdym kanale, i zamknij kartę kanału, kiedy skończysz"
 
-#: lib/retro_hex_chat_web/controllers/help_content/watching_without_account.html.heex:48
+#: lib/retro_hex_chat_web/controllers/help_content/watching_without_account.html.heex:49
 #, elixir-autogen, elixir-format
 msgid "Taking part"
 msgstr "Uczestnictwo"
 
-#: lib/retro_hex_chat_web/controllers/help_content/watching_without_account.html.heex:67
+#: lib/retro_hex_chat_web/controllers/help_content/watching_without_account.html.heex:68
 #, elixir-autogen, elixir-format
 msgid "Visitors in the user list"
 msgstr "Odwiedzający na liście użytkowników"
@@ -862,32 +857,27 @@ msgstr "Odwiedzający na liście użytkowników"
 msgid "Watching Without an Account"
 msgstr "Oglądanie bez konta"
 
-#: lib/retro_hex_chat_web/controllers/help_content/watching_without_account.html.heex:21
+#: lib/retro_hex_chat_web/controllers/help_content/watching_without_account.html.heex:22
 #, elixir-autogen, elixir-format
 msgid "What you can do"
 msgstr "Co możesz zrobić?"
-
-#: lib/retro_hex_chat_web/controllers/help_content/watching_without_account.html.heex:2
-#, elixir-autogen, elixir-format
-msgid "You do not need an account to look around. Open the chat and you land in #lobby with the conversation arriving live, under a guest name such as Guest4821 that you get for the visit."
-msgstr "Nie potrzebujesz konta, żeby się rozejrzeć. Otwórz czat i wylądować w #lobby z rozmową przychodzącą na żywo, pod nazwą gości, takich jak Guest4821, że dostać na wizytę."
 
 #: lib/retro_hex_chat_web/controllers/help_content/connecting.html.heex:16
 #, elixir-autogen, elixir-format
 msgid "Cannot be a visitor name such as %{example}"
 msgstr "Nie może być nazwą odwiedzającego, taką jak %{example}"
 
-#: lib/retro_hex_chat_web/controllers/help_content/watching_without_account.html.heex:74
+#: lib/retro_hex_chat_web/controllers/help_content/watching_without_account.html.heex:75
 #, elixir-autogen, elixir-format
 msgid "Limits"
 msgstr "Granice"
 
-#: lib/retro_hex_chat_web/controllers/help_content/watching_without_account.html.heex:56
+#: lib/retro_hex_chat_web/controllers/help_content/watching_without_account.html.heex:57
 #, elixir-autogen, elixir-format
 msgid "Everything that does something needs an account: writing, reacting, the menus and settings, games, calls, spaces, private sessions — and following any link, whether to a game or to another site. Each of them opens the Connect window instead, saying which feature it was."
 msgstr "Wszystko, co coś robi, potrzebuje konta: pisanie, reagowanie, menu i ustawienia, gry, rozmowy, spacje, prywatne sesje - i po każdym linku, czy do gry lub do innej strony. Każdy z nich otwiera okno Connect, mówiąc, która to funkcja była."
 
-#: lib/retro_hex_chat_web/controllers/help_content/watching_without_account.html.heex:62
+#: lib/retro_hex_chat_web/controllers/help_content/watching_without_account.html.heex:63
 #, elixir-autogen, elixir-format
 msgid "A link to a game, a call or a space opens the chat with that window, and after you sign in it takes you to the link."
 msgstr "Link do gry, połączenia lub przestrzeni otwiera czat z tym oknem, a po zalogowaniu się w nim zabierze Cię do link."
@@ -897,7 +887,7 @@ msgstr "Link do gry, połączenia lub przestrzeni otwiera czat z tym oknem, a po
 msgid "It behaves like every other window: move it, minimize it, or bring it back from its taskbar button. Closing it takes you back to the chat; after signing in you land where you were going — the channel you were reading, or the game or call that asked you to sign in."
 msgstr "Zachowuje się jak każde inne okno: przesuwać, minimalizować lub przywrócić z przycisku paska zadań. Zamykanie to zabiera cię z powrotem do czatu; po podpisaniu się w ziemi, gdzie idziesz - kanał, który czytasz, lub gra lub telefon, który poprosił o zalogowanie się."
 
-#: lib/retro_hex_chat_web/controllers/help_content/watching_without_account.html.heex:42
+#: lib/retro_hex_chat_web/controllers/help_content/watching_without_account.html.heex:43
 #, elixir-autogen, elixir-format
 msgid "Share a channel: its address is /c/ followed by its name, and the address bar shows it while the channel is in front"
 msgstr "Podziel się kanałem: jego adres to /c / po którym następuje jego nazwa, a pasek adresu pokazuje go, gdy kanał jest z przodu"
@@ -907,42 +897,42 @@ msgstr "Podziel się kanałem: jego adres to /c / po którym następuje jego naz
 msgid "The Connect window is where you sign in. It opens over the chat at its own address, /connect — from Create an account on the home, or from anything you try that needs an account — so you sign in without leaving the desktop you arrived on."
 msgstr "Okno Connect jest miejscem, w którym się piszesz. Otwiera on czat pod swoim własnym adresem, /connect - od Utwórz konto w domu, lub z czegokolwiek, co można spróbować, że potrzebuje konta - więc zalogować się bez opuszczania pulpitu przybył na."
 
-#: lib/retro_hex_chat_web/controllers/help_content/watching_without_account.html.heex:50
+#: lib/retro_hex_chat_web/controllers/help_content/watching_without_account.html.heex:51
 #, elixir-autogen, elixir-format
 msgid "Where the message box would be, a bar says you are watching as a visitor. Its Create an account to talk button opens the Connect window, and once you sign in you come back to the same channel."
 msgstr "Tam, gdzie byłaby wiadomość, bar mówi, że oglądasz jako gość. Jego Tworzenie konta do rozmowy przycisk otwiera okno Connect, a po zalogowaniu się wrócić do tego samego kanału."
 
-#: lib/retro_hex_chat_web/controllers/help_content/watching_without_account.html.heex:8
+#: lib/retro_hex_chat_web/controllers/help_content/watching_without_account.html.heex:9
 #, elixir-autogen, elixir-format
 msgid "At the bottom of the conversation, a System line greets you by your guest name."
 msgstr "Na dole rozmowy, linia systemowa wita cię po imieniu gościa."
 
-#: lib/retro_hex_chat_web/controllers/help_content/watching_without_account.html.heex:16
+#: lib/retro_hex_chat_web/controllers/help_content/watching_without_account.html.heex:17
 #, elixir-autogen, elixir-format
 msgid "Each feature it names opens its help topic."
 msgstr "Każda funkcja, którą nazywa otwiera swój temat pomocy."
 
-#: lib/retro_hex_chat_web/controllers/help_content/watching_without_account.html.heex:12
+#: lib/retro_hex_chat_web/controllers/help_content/watching_without_account.html.heex:13
 #, elixir-autogen, elixir-format
 msgid "It shows how to move between channels and what an account opens, with a button to create one."
 msgstr "Pokazuje, jak poruszać się między kanałami i co otwiera konto, z przyciskiem do tworzenia jednego."
 
-#: lib/retro_hex_chat_web/controllers/help_content/watching_without_account.html.heex:19
+#: lib/retro_hex_chat_web/controllers/help_content/watching_without_account.html.heex:20
 #, elixir-autogen, elixir-format
 msgid "Every visit greets you again."
 msgstr "Każda wizyta znów cię wita."
 
-#: lib/retro_hex_chat_web/controllers/help_content/watching_without_account.html.heex:18
+#: lib/retro_hex_chat_web/controllers/help_content/watching_without_account.html.heex:19
 #, elixir-autogen, elixir-format
 msgid "It goes away when you open another channel."
 msgstr "Odchodzi, gdy otwierasz inny kanał."
 
-#: lib/retro_hex_chat_web/controllers/help_content/watching_without_account.html.heex:17
+#: lib/retro_hex_chat_web/controllers/help_content/watching_without_account.html.heex:18
 #, elixir-autogen, elixir-format
 msgid "Only you see it."
 msgstr "Tylko ty to widzisz."
 
-#: lib/retro_hex_chat_web/controllers/help_content/watching_without_account.html.heex:36
+#: lib/retro_hex_chat_web/controllers/help_content/watching_without_account.html.heex:37
 #, elixir-autogen, elixir-format
 msgid "Read what every member reads on arrival: the message of the day in Status, and a channel's welcome when you open it"
 msgstr "Przeczytaj to, co każdy członek czyta po przyjeździe: wiadomość dnia w statusie, i kanał jest mile widziany, gdy go otworzyć"
@@ -976,3 +966,18 @@ msgstr "Po odłączeniu lub po zakończeniu sesji to okno otwiera się zamiast c
 #, elixir-autogen, elixir-format
 msgid "Auto-login is set per terminal and per nickname, so a shared computer can stay manual."
 msgstr "Autologowanie jest ustawiane na terminal i ksywkę, więc wspólny komputer może pozostać ręczny."
+
+#: lib/retro_hex_chat_web/controllers/help_content/watching_without_account.html.heex:90
+#, elixir-autogen, elixir-format
+msgid "Every tab of your browser has the same guest name, and no other visitor has it"
+msgstr "Każda zakładka przeglądarki ma tę samą nazwę i żaden inny gość jej nie ma."
+
+#: lib/retro_hex_chat_web/controllers/help_content/watching_without_account.html.heex:2
+#, elixir-autogen, elixir-format
+msgid "You do not need an account to look around. Open the chat and you land in #lobby with the conversation arriving live, under a guest name such as %{guest}."
+msgstr "Nie potrzebujesz konta, żeby się rozejrzeć. Otwórz czat i wylądować w #lobby z rozmową przychodzącą na żywo, pod nazwą gości, takich jak %{guest}."
+
+#: lib/retro_hex_chat_web/controllers/help_content/watching_without_account.html.heex:95
+#, elixir-autogen, elixir-format
+msgid "Nothing is kept for a visitor; a new visit gets a new guest name"
+msgstr "Nic nie jest przechowywane dla odwiedzających; nowa wizyta otrzymuje nową nazwę gościa"
