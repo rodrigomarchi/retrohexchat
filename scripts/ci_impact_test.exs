@@ -47,6 +47,24 @@ defmodule CIImpactTest do
     assert plan.fallback == nil
   end
 
+  test "source that calls gettext checks the .pot templates, never the catalogues" do
+    file = "apps/retro_hex_chat_web/lib/retro_hex_chat_web/live/app/chat_live.ex"
+    plan = CIImpact.plan([file], gettext?: fn ^file -> true end)
+
+    assert "i18n_coverage" in plan.checks
+    refute "i18n_catalog" in plan.checks
+  end
+
+  test "source without gettext leaves the i18n checks out" do
+    plan =
+      CIImpact.plan(["apps/retro_hex_chat/lib/retro_hex_chat/chat/message.ex"],
+        gettext?: fn _file -> false end
+      )
+
+    refute "i18n_coverage" in plan.checks
+    refute "i18n_catalog" in plan.checks
+  end
+
   test "plain domain tests run the domain test check" do
     plan = CIImpact.plan(["apps/retro_hex_chat/test/retro_hex_chat/chat/message_test.exs"])
 

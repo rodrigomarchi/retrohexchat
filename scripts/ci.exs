@@ -14,13 +14,20 @@
 # Each OS process gets a distinct test database via TEST_DB_SUFFIX; MIX_TEST_PARTITION
 # remains reserved for ExUnit's own partition selection.
 #
+# With --changed, the checks come from the diff (scripts/ci_impact.exs) and the
+# ExUnit files from what the diff can reach (scripts/ci_test_selection.exs);
+# browser smokes are left out unless --browser is given.
+#
 # Usage:
 #   elixir scripts/ci.exs              # run all checks
 #   elixir scripts/ci.exs --quick      # skip dialyzer
+#   elixir scripts/ci.exs --changed --base origin/main [--browser]
+#   elixir scripts/ci.exs --changed --files apps/x/lib/a.ex,apps/x/lib/b.ex
 #   elixir scripts/ci.exs --only compile,credo
 #   CI_TEST_PARTITIONS=1 CI_FEATURE_PARTITIONS=1 elixir scripts/ci.exs
 
 Code.require_file("ci_impact.exs", __DIR__)
+Code.require_file("ci_test_selection.exs", __DIR__)
 
 defmodule CI do
   @compile_check "compile"
@@ -57,6 +64,7 @@ defmodule CI do
     "e2e"
   ]
   @stage4_isolated ["dialyzer"]
+  @test_checks ["test", "test_feature", "test_domain", "test_web"]
 
   @full_checks CIImpact.full_checks()
   @all_checks Enum.uniq(
@@ -181,6 +189,10 @@ defmodule CI do
     end
 
     stage1_results = run_stage1(checks, project_root, runner_config)
+
+    {checks, runner_config} =
+      select_tests(checks, changed_plan, stage1_results, project_root, runner_config)
+
     stage2_results = run_stage2(checks, stage1_results, project_root, runner_config)
     stage3_results = run_stage3_browser(checks, stage1_results, stage2_results, project_root)
 
@@ -355,7 +367,7 @@ defmodule CI do
 
   defp run_partitioned_check(check, config, project_root, runner_config) do
     %{label: label, cmd: cmd, args: args} = config
-    partitions = partition_count(config.partitions, runner_config)
+    partitions = partition_count(check, config.partitions, runner_config)
 
     IO.puts(
       "    #{c(:dim)}⟳#{c(:reset)} #{label} #{c(:dim)}(#{partitions} partition#{plural(partitions)})#{c(:reset)}..."
@@ -410,6 +422,7 @@ defmodule CI do
       args
       |> partition_args(partition, partitions)
       |> maybe_add_no_compile(check, runner_config)
+      |> Kernel.++(Map.get(runner_config.test_files, check, []))
 
     port =
       Port.open(
@@ -427,6 +440,16 @@ defmodule CI do
     path = Path.join(log_dir, "#{check}-partition-#{partition}-of-#{partitions}.log")
     File.write!(path, output)
     Path.relative_to(path, project_root)
+  end
+
+  # A partition is a VM and a database; one per selected file at most.
+  defp partition_count(check, kind, runner_config) do
+    configured = partition_count(kind, runner_config)
+
+    case Map.fetch(runner_config.test_files, check) do
+      {:ok, files} -> files |> length() |> max(1) |> min(configured)
+      :error -> configured
+    end
   end
 
   defp partition_count(:test, runner_config), do: runner_config.test_partitions
@@ -511,6 +534,8 @@ defmodule CI do
           base: :string,
           head: :string,
           explain_only: :boolean,
+          browser: :boolean,
+          files: :string,
           test_partitions: :integer,
           feature_partitions: :integer
         ],
@@ -524,7 +549,9 @@ defmodule CI do
     %{
       test_partitions: positive_int(opts[:test_partitions], "CI_TEST_PARTITIONS", 3),
       feature_partitions: positive_int(opts[:feature_partitions], "CI_FEATURE_PARTITIONS", 4),
-      test_db_pool_size: positive_int(nil, "CI_TEST_DB_POOL_SIZE", 6)
+      test_db_pool_size: positive_int(nil, "CI_TEST_DB_POOL_SIZE", 6),
+      # check => the test files it runs, when a selection narrowed it
+      test_files: %{}
     }
   end
 
@@ -557,7 +584,7 @@ defmodule CI do
 
         opts[:changed] ->
           plan = changed_plan(project_root, opts)
-          {plan.checks, plan}
+          {without_browser(plan.checks, opts), plan}
 
         true ->
           {@full_checks, nil}
@@ -569,8 +596,14 @@ defmodule CI do
     {checks, changed_plan}
   end
 
+  # The full run never opens a browser; a selection of it should not either,
+  # unless asked to.
+  defp without_browser(checks, opts) do
+    if opts[:browser], do: checks, else: Enum.reject(checks, &(&1 in @stage3_browser))
+  end
+
   defp maybe_add_compile_for_partitioned_checks(checks) do
-    if Enum.any?(checks, &(&1 in ["test", "test_feature"])) and @compile_check not in checks do
+    if Enum.any?(checks, &(&1 in @test_checks)) and @compile_check not in checks do
       [@compile_check | checks]
       |> Enum.uniq()
       |> Enum.sort_by(&(Enum.find_index(@all_checks, fn check -> check == &1 end) || 999))
@@ -586,17 +619,111 @@ defmodule CI do
     |> Enum.filter(&(&1 in @all_checks))
   end
 
+  # --- test selection ---
+
+  # Runs after Stage 1: the dependency graph is read from the build `compile`
+  # just produced, so it describes the code being tested.
+  defp select_tests(checks, nil, _stage1_results, _project_root, runner_config),
+    do: {checks, runner_config}
+
+  defp select_tests(checks, plan, stage1_results, project_root, runner_config) do
+    cond do
+      not Enum.any?(checks, &(&1 in @test_checks)) ->
+        {checks, runner_config}
+
+      stage1_results[@compile_check] != :ok ->
+        {checks, runner_config}
+
+      plan.fallback ->
+        {checks, runner_config}
+
+      true ->
+        apply_test_selection(checks, test_selection(project_root, plan.files), runner_config)
+    end
+  end
+
+  defp apply_test_selection(checks, {:full, reason}, runner_config) do
+    IO.puts("\n  #{c(:cyan)}Test selection#{c(:reset)}: every test (#{reason})")
+    {replace_test_checks(checks, ["test", "test_feature"]), runner_config}
+  end
+
+  defp apply_test_selection(checks, {:ok, selection}, runner_config) do
+    files = %{"test" => selection.unit, "test_feature" => selection.feature}
+    selected = for check <- ["test", "test_feature"], files[check] != [], do: check
+
+    IO.puts("\n  #{c(:cyan)}Test selection#{c(:reset)}")
+    print_list("Tests", selection.unit)
+    print_list("Feature tests", selection.feature)
+
+    {replace_test_checks(checks, selected),
+     %{runner_config | test_files: Map.take(files, selected)}}
+  end
+
+  defp replace_test_checks(checks, test_checks) do
+    (Enum.reject(checks, &(&1 in @test_checks)) ++ test_checks)
+    |> Enum.uniq()
+    |> Enum.sort_by(&(Enum.find_index(@all_checks, fn check -> check == &1 end) || 999))
+  end
+
+  defp test_selection(project_root, files) do
+    web = Path.join(project_root, "apps/retro_hex_chat_web")
+    xref = Path.join(System.tmp_dir!(), "ci-xref-#{System.unique_integer([:positive])}.json")
+    xref_args = ["xref", "graph", "--format", "json", "--include-siblings", "--output", xref]
+
+    try do
+      with {_, 0} <- System.cmd("mix", xref_args, cd: web, stderr_to_stdout: true),
+           {routes, 0} <-
+             System.cmd("mix", ["phx.routes", "RetroHexChatWeb.Router"],
+               cd: web,
+               stderr_to_stdout: true
+             ) do
+        graph = xref |> File.read!() |> JSON.decode!()
+        CITestSelection.select(files, CITestSelection.context(project_root, graph, routes))
+      else
+        {output, _code} ->
+          {:full, "the dependency graph could not be read: #{last_line(output)}"}
+      end
+    after
+      File.rm(xref)
+    end
+  end
+
+  defp last_line(output), do: output |> String.split("\n", trim: true) |> List.last("")
+
+  # Whether a source file has, or had before this diff, a gettext call.
+  defp gettext_file?(project_root, base, file) do
+    case File.read(Path.join(project_root, file)) do
+      {:ok, source} ->
+        String.contains?(source, "gettext") or removed_gettext?(project_root, base, file)
+
+      {:error, _} ->
+        true
+    end
+  end
+
+  defp removed_gettext?(project_root, base, file) do
+    case System.cmd("git", ["diff", base, "--", file], cd: project_root, stderr_to_stdout: true) do
+      {diff, 0} -> String.contains?(diff, "gettext")
+      _ -> true
+    end
+  end
+
   defp changed_plan(project_root, opts) do
     base = opts[:base] || "origin/main"
     head = opts[:head] || "HEAD"
 
-    case changed_files(project_root, base, head) do
-      {:ok, files} -> CIImpact.plan(files)
+    case changed_files(project_root, base, head, opts[:files]) do
+      {:ok, files} -> CIImpact.plan(files, gettext?: &gettext_file?(project_root, base, &1))
       {:error, reason} -> CIImpact.fallback([], reason)
     end
   end
 
-  defp changed_files(project_root, base, head) do
+  # --files a,b plans for those paths instead of the diff: what would run if
+  # these were the change.
+  defp changed_files(_project_root, _base, _head, files) when is_binary(files),
+    do: {:ok, String.split(files, ",", trim: true)}
+
+  defp changed_files(project_root, base, head, nil) do
     with {:ok, committed} <- git_changed_files(project_root, [base <> "..." <> head]),
          {:ok, staged} <- git_changed_files(project_root, ["--cached"]),
          {:ok, unstaged} <- git_changed_files(project_root, []),
@@ -606,7 +733,8 @@ defmodule CI do
   end
 
   defp git_changed_files(project_root, diff_args) do
-    args = ["diff", "--name-only", "--diff-filter=ACMRTUXB"] ++ diff_args
+    # Deletions included: a removed module is a change the tests must see.
+    args = ["diff", "--name-only", "--diff-filter=ACDMRTUXB"] ++ diff_args
 
     case System.cmd("git", args, cd: project_root, stderr_to_stdout: true) do
       {output, 0} ->

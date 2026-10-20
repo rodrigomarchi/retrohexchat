@@ -73,7 +73,7 @@ def check_deploy(cmd):
         block(
             "Blocked: `make deploy-sun` skips CI validation.\n"
             "Use `make deploy` (runs the full CI pipeline first), or "
-            "`make deploy.skip-ci` only if `make ci` just passed on this exact "
+            "`make deploy.skip-ci` only if `make ci.full` just passed on this exact "
             "revision."
         )
 

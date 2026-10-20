@@ -6,13 +6,18 @@ Part of the [Agent Guide](../AGENT-GUIDE.md) (§13). Section numbers there are s
 
 ---
 
-- **`make ci` (the complete local guard) is the ONLY final validation and the
-  completeness gate, not E2E and not `ci.changed`.** A task isn't done until it's fully
+- **`make ci` is the gate for a change, not E2E.** It runs the checks and the ExUnit
+  files the diff can reach (`scripts/ci_test_selection.exs`); `make ci.full` runs the
+  whole suite, and `make deploy` runs it before shipping. A task isn't done until it's
   green. The guard partitions the normal ExUnit suite and the LiveView feature suite by
   default (`CI_TEST_PARTITIONS=3`, `CI_FEATURE_PARTITIONS=4`,
   `CI_TEST_DB_POOL_SIZE=6`); use `make ci.serial` only to diagnose partition-specific issues. All
-  warnings/failures are yours — never "pre-existing" without proof. `make ci.quick` (skips
-  dialyzer) and `make ci.changed` (diff-selected checks) are for iteration only.
+  warnings/failures are yours — never "pre-existing" without proof. `make ci.quick` (full,
+  skips dialyzer) is for iteration only.
+- **A test is selected by what it names.** A test that reaches the code only through
+  `live(conn, "/")` and `Channels.Server` — which most of the suite uses — runs in
+  `make ci` only when those change. Alias the module a test is about, or name the file
+  after it (`address_book_test.exs` for `address_book_dialog.ex`).
   Per-feature Playwright alone does NOT catch LiveViewTest/component regressions; when an
   E2E spec and a `make ci` LiveViewTest disagree, `make ci` is authoritative — the spec is
   stale.

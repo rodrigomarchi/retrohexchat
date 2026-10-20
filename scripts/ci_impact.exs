@@ -38,10 +38,19 @@ defmodule CIImpact do
 
   def full_checks, do: @full_checks
 
-  def plan(files) do
+  @doc """
+  The checks a set of changed files needs.
+
+  `:gettext?` answers whether a source file has, or had, a gettext call: the
+  `.pot` templates record every call's line, so only such a file can put them
+  out of date. Without it every source file is assumed to.
+  """
+  def plan(files, opts \\ []) do
+    gettext? = Keyword.get(opts, :gettext?, fn _file -> true end)
+
     files
     |> normalize_files()
-    |> Enum.reduce(empty_plan(), &classify_file/2)
+    |> Enum.reduce(empty_plan(), &classify_file(&1, &2, gettext?))
     |> finalize()
   end
 
@@ -76,7 +85,7 @@ defmodule CIImpact do
     }
   end
 
-  defp classify_file(file, plan) do
+  defp classify_file(file, plan, gettext?) do
     plan = %{plan | files: [file | plan.files]}
 
     cond do
@@ -92,8 +101,7 @@ defmodule CIImpact do
         |> add("compile", "#{file} is Elixir source")
         |> add("format", "#{file} is Elixir source")
         |> add("credo", "#{file} is Elixir source")
-        |> add("i18n_coverage", "#{file} can add or drop a translatable string")
-        |> add("i18n_catalog", "#{file} can add or drop a translatable string")
+        |> maybe_gettext(file, gettext?)
         |> add("test_domain", "#{file} changed the domain app")
         |> add("test_web", "web app depends on retro_hex_chat")
         |> maybe_domain_feature(file)
@@ -110,8 +118,7 @@ defmodule CIImpact do
         |> add("compile", "#{file} is Elixir source")
         |> add("format", "#{file} is Elixir source")
         |> add("credo", "#{file} is Elixir source")
-        |> add("i18n_coverage", "#{file} can add or drop a translatable string")
-        |> add("i18n_catalog", "#{file} can add or drop a translatable string")
+        |> maybe_gettext(file, gettext?)
         |> add("test_web", "#{file} changed the web app")
         |> maybe_web_feature(file)
 
@@ -221,6 +228,17 @@ defmodule CIImpact do
         fallback: %{level: :full, reason: reason},
         reasons: Map.update(plan.reasons, "full", [reason], &[reason | &1])
     }
+  end
+
+  # The catalogues (`.po`) change only through extract and merge, which touch
+  # files under priv/gettext, so a source change needs the coverage check
+  # alone -- and only when the file calls gettext.
+  defp maybe_gettext(plan, file, gettext?) do
+    if gettext?.(file) do
+      add(plan, "i18n_coverage", "#{file} calls gettext; its strings and lines are in the .pot")
+    else
+      plan
+    end
   end
 
   defp maybe_domain_feature(plan, file) do

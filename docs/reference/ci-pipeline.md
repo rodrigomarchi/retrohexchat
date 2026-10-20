@@ -1,27 +1,46 @@
 # CI pipeline, validation gates and browser E2E
 
 Read when a check fails, when tuning partitions, when adding a check, or when you
-need the browser-E2E workflow. The *rule* — `make ci` is the only completion gate —
-lives in `AGENTS.md`; this file is the mechanics behind it.
+need the browser-E2E workflow. The *rule* — `make ci` is the gate for a change,
+`make ci.full` the deploy's — lives in `AGENTS.md`; this file is the mechanics
+behind it.
 
-The source of truth is `scripts/ci.exs` and `scripts/ci_impact.exs`. If this file
-and those disagree, the scripts win and this file is the defect.
+The source of truth is `scripts/ci.exs`, `scripts/ci_impact.exs` and
+`scripts/ci_test_selection.exs`. If this file and those disagree, the scripts win
+and this file is the defect.
 
 ---
 
 ## The gate
 
-**ALWAYS use `make ci`** (or `elixir scripts/ci.exs`) to validate code.
-This is a standalone Elixir script that runs the complete local guard.
-The check list lives in `@full_checks` in `scripts/ci_impact.exs`; the run prints
-its own total, so this file does not carry a number that would rot.
-No other validation method is acceptable as the final gate.
+**ALWAYS use `make ci`** to validate a change. It is `elixir scripts/ci.exs
+--changed --base origin/main`, in three steps:
 
-`make ci.quick`, `make ci.changed`, stale tests, JS changed tests, and Playwright
-smokes are iteration tools only. They are useful for short loops, but they never
-replace the final `make ci` pass.
+1. **The diff.** Committed since `origin/main`, staged, unstaged, untracked and
+   deleted files.
+2. **The checks** (`scripts/ci_impact.exs`): each changed file adds the checks it
+   needs. A file no rule knows, or one everything depends on (the Makefile,
+   `mix.exs`, `mix.lock`, `config/`, `test/support/`, `test_helper.exs`,
+   migrations, the CI scripts), runs the full list. Browser smokes join only with
+   `BROWSER=1`, since the full run never opens a browser either.
+3. **The tests** (`scripts/ci_test_selection.exs`), after compile, from the xref
+   graph and the router: a test runs when it changed, is named after a changed
+   file, names a module the change reaches by walking back through callers, or
+   visits a route such a module serves. The walk stops at hubs — files with many
+   callers, modules most tests name (`Channels.Server`, `NickServ`) and routes most
+   tests visit (`/`) — which count only when the change is in them or next to
+   them. A removed source file, or a template no module embeds, runs every test.
 
-**NEVER** skip dialyzer, JS tests, JS lint, or CSS lint in final validation.
+`make ci EXPLAIN=1` prints steps 1–2 without running anything; the run prints
+the test list. `elixir scripts/ci.exs --changed --files a.ex,b.ex` plans for
+those paths instead of the diff.
+
+**`make ci.full`** (`elixir scripts/ci.exs`) runs every check in `@full_checks`
+(`scripts/ci_impact.exs`) and the whole suite; `make deploy` runs it before
+shipping. Measured against the last 400 commits, the selection kept 91% of the
+test files those commits changed alongside their source, for a median of a
+quarter of the suite's time — the rest is what `ci.full` exists to catch.
+
 **NEVER** run checks individually or via manual parallel Bash calls — use the script.
 If any check fails, the task is NOT complete.
 
@@ -53,9 +72,12 @@ Stage 3 (isolated):
   └─ dialyzer
 ```
 
-**Performance:** measured local runs are `2m52s`-`2m56s` for `make ci`
-with a warm Dialyzer PLT. `make ci.serial` runs the same checks with one
-partition per suite and takes roughly twice as long.
+**Performance:** `make ci.full` measured `3m24s` with a warm Dialyzer PLT and an
+unchanged character creator; `make ci` took 27s–63s for one changed source file,
+depending on how much of the suite reaches it. Nearly all of the suite's time is
+in `async: false` LiveView modules, which run one at a time within a partition.
+`make ci.serial` runs the same checks with one partition per suite and takes
+roughly twice as long.
 
 The normal ExUnit suite and LiveView feature suite are partitioned by default:
 `CI_TEST_PARTITIONS=3`, `CI_FEATURE_PARTITIONS=4`, and
@@ -83,10 +105,10 @@ rendered in English in all thirteen locales.
 
 ## Options
 
-- `make ci` — every check (standard final gate)
-- `make ci.quick` — skip dialyzer (iteration only)
-- `make ci.changed CI_BASE=origin/main EXPLAIN=1` — print the diff-selected plan
-- `make ci.changed CI_BASE=origin/main` — run diff-selected checks (iteration only)
+- `make ci` — what the diff reaches (the gate for a change); `CI_BASE=ref`,
+  `EXPLAIN=1`, `BROWSER=1`
+- `make ci.full` — every check and the whole suite (what `make deploy` runs)
+- `make ci.quick` — every check but dialyzer (iteration only)
 - `make ci.serial` — diagnose partition-specific failures
 - `make ci.partition-profile` — measure partition-count tradeoffs
 - `elixir scripts/ci.exs --only compile,credo` — run specific checks only
@@ -94,6 +116,16 @@ rendered in English in all thirteen locales.
 **Coverage remains explicit:** `make ci` does not run coverage. Use
 `make test.cover` or `make test.cover.all` when coverage is the requested signal,
 then still finish with `make ci`.
+
+## Cached checks
+
+A check that is a pure function of files is skipped when none of them changed
+since it last passed: `scripts/ci_cache.py NAME --input PATH... -- COMMAND`
+hashes every file under each input, the command and the Python toolchain, and
+keeps the digest of the last pass in `tmp/ci-cache/`. `space.creator.check`
+uses it — rebuilding every character sheet to compare took five minutes of a
+seven-minute run. `CI_CACHE=0` runs it regardless. Declare every file the check
+reads, outputs included: an undeclared input is a pass that is never re-earned.
 
 ## Frontend bundle budget
 

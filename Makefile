@@ -4,7 +4,7 @@
        e2e e2e.headless e2e.sweep e2e.batch e2e.director e2e.batches e2e.prepare e2e.db.reset e2e.changed e2e.shard e2e.smoke e2e.smoke.connect e2e.smoke.chat e2e.smoke.dialogs e2e.smoke.i18n e2e.smoke.calls e2e.smoke.mobile e2e.smoke.perf e2e.ui e2e.shots e2e.install e2e.db.setup load.test \
        test.cover.all test.domain test.domain.stale test.web test.web.stale test.failed test.seed test.file test.line \
        test.js test.js.changed test.js.related test.js.watch \
-       ci ci.quick ci.changed ci.serial ci.quick.serial ci.partition-profile ci.partition-profile.plan \
+       ci ci.full ci.quick ci.changed ci.serial ci.quick.serial ci.partition-profile ci.partition-profile.plan \
        umbrella.boundary-audit \
        i18n.audit i18n.audit.check i18n.status i18n.catalog.check i18n.catalog.size.check i18n.placeholder.check i18n.source-fallback.check i18n.quality.check i18n.glossary i18n.repair i18n.venv i18n.translate i18n.repair.plurals games.shots seo.snapshot seo.snapshot.all seo.compare seo.console seo.indexnow seo.sitemap.submit seo.test i18n.tooling.test i18n.locales.add i18n.wave1.add i18n.gettext.extract i18n.gettext.merge i18n.gettext.rebuild i18n.gettext.check \
        lint format format.check credo dialyzer lint.js lint.js.changed lint.js.fix lint.css lint.bundle space.ui space.ui.check space.creator space.creator.check precommit compile \
@@ -76,6 +76,10 @@ CI_CHANGED_FLAGS = --changed --base $(CI_BASE) --head $(CI_HEAD)
 
 ifeq ($(EXPLAIN),1)
 CI_CHANGED_FLAGS += --explain-only
+endif
+
+ifeq ($(BROWSER),1)
+CI_CHANGED_FLAGS += --browser
 endif
 
 # ---------------------------------------------------------------------
@@ -452,8 +456,22 @@ space.ui: ## Rebuild the Virtual Space UI kit from virtual.space/ui/kit.json
 space.creator: ## Rebuild the Space character creator from virtual.space/characters/creator
 	python3 virtual.space/tools/build_creator.py
 
+# Rebuilding every sheet to compare takes minutes and is a pure function of the
+# frames, the tools and the committed outputs, so the verdict is cached on their
+# digest (scripts/ci_cache.py); CI_CACHE=0 rebuilds regardless.
+SPACE_CREATOR_INPUTS = \
+	virtual.space/characters/creator \
+	virtual.space/tools \
+	apps/retro_hex_chat_web/priv/static/images/space \
+	apps/retro_hex_chat/priv/virtual_space/character_catalog.json \
+	apps/retro_hex_chat_web/assets/css/retrohex/features/space-creator-swatches.generated.css \
+	apps/retro_hex_chat_web/test/fixtures/character_portraits \
+	apps/retro_hex_chat_web/test/fixtures/character_figures \
+	apps/retro_hex_chat_web/test/fixtures/character_heads
+
 space.creator.check: ## Fail when the committed character creator is not what its frames build
-	@python3 virtual.space/tools/build_creator.py --check
+	@python3 scripts/ci_cache.py space-creator $(foreach p,$(SPACE_CREATOR_INPUTS),--input $(p)) \
+		--python-module PIL -- python3 virtual.space/tools/build_creator.py --check
 
 space.ui.check: ## Fail when the committed Virtual Space UI kit is not what kit.json builds
 	@python3 virtual.space/tools/author_ui.py --check
@@ -473,14 +491,19 @@ lint.css.build: ## Prove the stylesheet compiles
 lint.bundle: ## Enforce frontend bundle budgets
 	npm run bundle:budget --prefix $(WEB_APP)/assets
 
-ci: ## Run all CI checks locally with maximum parallelism
+# `make ci` runs what the diff against CI_BASE (staged, unstaged and untracked
+# included) can reach; `make ci.full` runs everything, and `make deploy` runs
+# `make ci.full` before it ships.
+ci: ## Run the checks and tests the diff against CI_BASE can reach (EXPLAIN=1 prints the plan, BROWSER=1 adds smokes)
+	$(TEST_ENV) CI_TEST_PARTITIONS=$(CI_TEST_PARTITIONS) CI_FEATURE_PARTITIONS=$(CI_FEATURE_PARTITIONS) CI_TEST_DB_POOL_SIZE=$(CI_TEST_DB_POOL_SIZE) elixir scripts/ci.exs $(CI_CHANGED_FLAGS)
+
+ci.full: ## Run every CI check and the whole suite (what make deploy runs)
 	$(TEST_ENV) CI_TEST_PARTITIONS=$(CI_TEST_PARTITIONS) CI_FEATURE_PARTITIONS=$(CI_FEATURE_PARTITIONS) CI_TEST_DB_POOL_SIZE=$(CI_TEST_DB_POOL_SIZE) elixir scripts/ci.exs
 
 ci.quick: ## Run CI checks without dialyzer (faster iteration)
 	$(TEST_ENV) CI_TEST_PARTITIONS=$(CI_TEST_PARTITIONS) CI_FEATURE_PARTITIONS=$(CI_FEATURE_PARTITIONS) CI_TEST_DB_POOL_SIZE=$(CI_TEST_DB_POOL_SIZE) elixir scripts/ci.exs --quick
 
-ci.changed: ## Run checks selected from git diff (usage: make ci.changed CI_BASE=origin/main EXPLAIN=1)
-	$(TEST_ENV) CI_TEST_PARTITIONS=$(CI_TEST_PARTITIONS) CI_FEATURE_PARTITIONS=$(CI_FEATURE_PARTITIONS) CI_TEST_DB_POOL_SIZE=$(CI_TEST_DB_POOL_SIZE) elixir scripts/ci.exs $(CI_CHANGED_FLAGS)
+ci.changed: ci ## Same as make ci
 
 ci.serial: ## Run all CI checks with one Elixir test partition per suite
 	$(TEST_ENV) CI_TEST_PARTITIONS=1 CI_FEATURE_PARTITIONS=1 CI_TEST_DB_POOL_SIZE=$(CI_TEST_DB_POOL_SIZE) elixir scripts/ci.exs

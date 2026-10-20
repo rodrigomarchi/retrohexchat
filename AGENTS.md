@@ -29,11 +29,17 @@ The parts you would not guess:
 
 ## The completion gate
 
-**`make ci` is the only acceptable final gate.** Staged, partitioned, ~3m warm.
-If any check fails, the task is not complete.
+**`make ci` is the gate for a change.** It runs what the diff against `origin/main`
+(staged, unstaged and untracked included) can reach: the checks the changed files
+need and the ExUnit files that name, call or serve what changed. If any check
+fails, the task is not complete. `make ci EXPLAIN=1` prints the plan without
+running it; `BROWSER=1` adds the Playwright smokes the diff touches.
 
-`make ci.quick`, `make ci.changed`, stale tests and Playwright smokes are iteration
-tools. They never replace the final `make ci` pass.
+**`make ci.full` runs every check and the whole suite** — `make deploy` runs it
+before anything ships, and a change to the CI itself, `config/`, `mix.lock`,
+migrations or `test/support` makes `make ci` run it too. What the selection
+cannot see (a module reached only through a hub, a message sent by name) fails
+there, and is still yours to fix.
 
 Two traps worth knowing before you run it:
 
@@ -48,7 +54,7 @@ Mechanics, options, partitions, browser E2E and deploy: [`docs/reference/ci-pipe
 
 **Always `make deploy`** — it runs the full CI pipeline, then ships to Sun
 (production). **Never `make deploy-sun` directly: it skips CI validation.**
-Use `make deploy.skip-ci` only when `make ci` just passed on this exact revision.
+Use `make deploy.skip-ci` only when `make ci.full` just passed on this exact revision.
 
 **Sweep the browser before a release — in batches, never in one command.**
 `make ci` proves the server; it never opens a browser, and a whole-suite run

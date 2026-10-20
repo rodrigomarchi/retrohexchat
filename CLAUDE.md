@@ -30,8 +30,9 @@ first, or open the rule directly.
 
 - **Use plan mode** for changes spanning more than one bounded context, and for
   anything touching WebRTC signaling or the deploy path.
-- **Validate targeted while iterating, full `make ci` at the end of a functional
-  block** — not after every edit.
+- **Validate targeted while iterating, `make ci` at the end of a functional
+  block** — not after every edit. It runs only what the diff reaches; `make ci.full`
+  is the deploy's.
 - **Every error found is yours to fix now**, regardless of which session introduced it.
 - **Debug browser behaviour with a targeted Playwright spec**, not an interactive
   browser session.
