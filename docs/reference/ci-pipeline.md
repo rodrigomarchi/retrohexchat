@@ -187,7 +187,7 @@ share is the whole argument.
 
 **Hosted CI:** GitHub Actions is still `workflow_dispatch` while credits are
 constrained. The workflow runs `Impact Plan` first, executes conditional jobs from
-the same impact matrix as `make ci.changed`, and reports through the single stable
+the same impact matrix as `make ci`, and reports through the single stable
 `CI Report` job for branch protection.
 
 ---
@@ -196,7 +196,7 @@ the same impact matrix as `make ci.changed`, and reports through the single stab
 
 **Browser E2E is NOT part of `make ci`** — it is local only, by
 design. The "feature tests" worker is `mix test --only liveview_feature`, not
-Playwright. `make ci.changed` can select focused browser smokes for critical UI
+Playwright. `make ci BROWSER=1` adds the focused browser smokes for critical UI
 surfaces, but those smokes are still local feedback, not the completion gate.
 
 For critical UI diffs, prefer named smokes:
@@ -275,12 +275,12 @@ thrown away; the same call left in the suite is evidence anyone can regenerate.
 ## Deploy
 
 **ALWAYS use `make deploy`** (or `elixir scripts/deploy_all.exs`) to deploy unless
-`make ci` just passed on the exact revision being deployed. The standard target
-runs the full CI pipeline first, then deploys to production (Sun).
+`make ci.full` just passed on the exact revision being deployed. The standard target
+runs the full CI pipeline (`make ci.full`) first, then deploys to production (Sun).
 NEVER use `make deploy-sun` directly — it skips CI validation.
 
 ```
-Phase 1: CI Validation (make ci — partitioned, ~3m)
+Phase 1: CI Validation (make ci.full — partitioned, ~2m)
     ↓ (only if all checks pass)
 Phase 2: Deploy
     └─ Sun (production) — scp + ssh deploy.sh

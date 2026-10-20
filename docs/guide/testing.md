@@ -39,7 +39,7 @@ Part of the [Agent Guide](../AGENT-GUIDE.md) (§13). Section numbers there are s
   first, inspect co-change frequency and `mix xref` cycles, then write a short
   decision/RFC. Current data shows `chat` is frequent but tightly coupled to web/E2E,
   so extraction is not approved yet.
-- **Critical UI diffs get browser smokes by surface.** `make ci.changed` selects focused
+- **Critical UI diffs get browser smokes by surface.** `make ci BROWSER=1` adds focused
   Playwright smokes for known critical JS/CSS/web surfaces: connect flow, chat shell,
   dialogs/window manager, i18n, P2P/group call, and mobile layout. E2E helper/page/global
   setup changes still widen to broader E2E because the selector cannot trust one surface.

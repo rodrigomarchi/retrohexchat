@@ -118,6 +118,7 @@ defmodule CIImpact do
         |> add("compile", "#{file} is Elixir source")
         |> add("format", "#{file} is Elixir source")
         |> add("credo", "#{file} is Elixir source")
+        |> add("lint_css", "#{file} can carry inline styles and classes the CSS audits read")
         |> maybe_gettext(file, gettext?)
         |> add("test_web", "#{file} changed the web app")
         |> maybe_web_feature(file)

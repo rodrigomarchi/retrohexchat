@@ -79,6 +79,7 @@ defmodule CIImpactTest do
     assert "credo" in plan.checks
     assert "test_web" in plan.checks
     assert "test_feature" in plan.checks
+    assert "lint_css" in plan.checks
   end
 
   test "web feature tests run feature tests only plus formatting" do
