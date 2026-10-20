@@ -147,6 +147,7 @@ defmodule RetroHexChatWeb.ChatLive.Visitor do
 
     default_channel = Server.default_channel()
     guest = GuestNames.claim(socket.assigns.browser_id)
+    if socket.assigns[:locale], do: GuestNames.put_locale(socket.assigns.locale)
 
     # What a room's bots say to this visitor alone — a greeting on arrival —
     # is addressed to the guest name. Subscribed before watching, because

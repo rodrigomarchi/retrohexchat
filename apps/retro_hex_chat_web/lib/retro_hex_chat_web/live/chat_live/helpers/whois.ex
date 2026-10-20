@@ -9,6 +9,7 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.Whois do
 
   use Gettext, backend: RetroHexChatWeb.Gettext
 
+  alias RetroHexChat.Accounts.NickLocales
   alias RetroHexChat.Accounts.Session
   alias RetroHexChat.Channels.Visibility
   alias RetroHexChat.Chat.{TimeFormatter, UserBio}
@@ -18,7 +19,11 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.Whois do
   alias RetroHexChatWeb.ChatLive.Helpers.Messages
   alias RetroHexChatWeb.ChatLive.Windows
 
-  @type lookup_row :: %{label: String.t(), value: String.t()}
+  @type lookup_row :: %{
+          required(:label) => String.t(),
+          required(:value) => String.t(),
+          optional(:locale) => String.t() | nil
+        }
   @type lookup_result :: %{
           kind: :whois | :whowas,
           nickname: String.t(),
@@ -120,14 +125,14 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.Whois do
       os: client_field(is_self, socket, target_meta, :os),
       language: client_field(is_self, socket, target_meta, :language),
       screen: client_field(is_self, socket, target_meta, :screen),
-      client_timezone: client_field(is_self, socket, target_meta, :timezone)
+      client_timezone: client_field(is_self, socket, target_meta, :timezone),
+      locale: NickLocales.for_nick(target)
     }
   end
 
   defp format_whois_result(data, target, my_nick) do
     rows =
-      []
-      |> append_row(dgettext("chat", "Nickname"), target)
+      [nickname_row(target, data.locale)]
       |> maybe_append_row(
         data.target_channels != [],
         dgettext("chat", "Channels"),
@@ -185,8 +190,7 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.Whois do
 
   defp format_whowas_result(entry, online) do
     rows =
-      []
-      |> append_row(dgettext("chat", "Nickname"), entry.nickname)
+      [nickname_row(entry.nickname, NickLocales.for_nick(entry.nickname))]
       |> append_row(
         dgettext("chat", "Last seen"),
         TimeFormatter.format_relative(entry.disconnected_at)
@@ -254,6 +258,11 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.Whois do
 
   defp client_display(browser, os),
     do: dgettext("chat", "%{browser} — %{os}", browser: browser, os: os)
+
+  # The nickname row carries the language they use the chat in; the card draws
+  # its flag beside the name.
+  defp nickname_row(nickname, locale),
+    do: %{label: dgettext("chat", "Nickname"), value: nickname, locale: locale}
 
   defp append_row(rows, label, value), do: rows ++ [%{label: label, value: value}]
   defp maybe_append_row(rows, true, label, value), do: append_row(rows, label, value)

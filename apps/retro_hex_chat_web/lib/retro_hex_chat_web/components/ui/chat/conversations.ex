@@ -42,6 +42,7 @@ defmodule RetroHexChatWeb.Components.UI.Conversations do
   use RetroHexChatWeb.Component
 
   import RetroHexChatWeb.Components.UI.MentionBadge
+  import RetroHexChatWeb.Components.UI.NickFlag
   import RetroHexChatWeb.Components.UI.Button
   import RetroHexChatWeb.Components.UI.ToolButton
   import RetroHexChatWeb.Components.UI.EmptyState
@@ -261,6 +262,7 @@ defmodule RetroHexChatWeb.Components.UI.Conversations do
 
   attr :open_pm_tabs, :list, default: [], doc: "PM tabs currently open in the MDI tab bar"
   attr :pm_conversations, :list, default: []
+  attr :pm_locales, :map, default: %{}, doc: "each PM peer's locale, drawn as a flag"
 
   attr :pm_conversations_truncated, :boolean,
     default: false,
@@ -429,6 +431,7 @@ defmodule RetroHexChatWeb.Components.UI.Conversations do
               flash={member?(@flash_channels, "pm:#{pm}")}
               muted={member?(@muted_channels, "pm:#{pm}")}
               nick_color={nick_color(assigns, pm)}
+              locale={Map.get(@pm_locales, pm)}
               p2p_session={p2p_session_for_pm(assigns, pm)}
               on_click={@on_pm_click}
             />
@@ -635,6 +638,7 @@ defmodule RetroHexChatWeb.Components.UI.Conversations do
   attr :flash, :boolean, default: false
   attr :muted, :boolean, default: false
   attr :nick_color, :string, default: nil
+  attr :locale, :string, default: nil
   attr :p2p_session, :map, default: nil
   attr :on_click, :any, default: nil
   attr :testid, :string, default: nil
@@ -679,6 +683,7 @@ defmodule RetroHexChatWeb.Components.UI.Conversations do
       <span class="chat-conversations-row__icon">
         <Icons.icon_tab_pm class="w-3 h-3" />
       </span>
+      <.nick_flag locale={@locale} />
       <span class={["chat-conversations-row__label", !@active && @nick_color]}>{@nick}</span>
       <.row_status
         name={@nick}

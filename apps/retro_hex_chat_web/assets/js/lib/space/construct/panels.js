@@ -11,6 +11,8 @@
  * @module space/construct/panels
  */
 
+import { buildNickFlag, drawableFlag } from "../../nick_flag.js";
+
 const PANELS = new Set(["sign", "board", "screen", "arcade"]);
 
 /**
@@ -63,7 +65,9 @@ const BODIES = {
     const pins = Array.isArray(modal.pins) ? modal.pins : [];
     if (pins.length > 0) {
       parts.push(line(say("pinned"), "label"));
-      for (const pin of pins) parts.push(byline(pin.author, portrait(pin.avatar), pin.text));
+      for (const pin of pins) {
+        parts.push(byline(pin.author, portrait(pin.avatar), pin.text, flagOf(pin.flag)));
+      }
     }
     return parts;
   },
@@ -76,7 +80,10 @@ const BODIES = {
     img.alt = image.name ?? "";
     img.className = "space-panel-image";
     img.dataset.testid = "space-panel-image";
-    return [img, byline(say("posted-by", image.author), portrait(image.avatar))];
+    return [
+      img,
+      byline(say("posted-by", image.author), portrait(image.avatar), undefined, flagOf(image.flag)),
+    ];
   },
 
   arcade: (modal, say) => {
@@ -221,11 +228,21 @@ function portraitOf(base, avatar) {
   return img;
 }
 
-// A line by somebody, with their character's portrait when they made one.
-function byline(author, portrait, text) {
+// The flag of the language somebody uses the chat in, drawn the way the chat
+// draws it beside a nickname; null for anything that is not a reference into
+// the icon sprite.
+function flagOf(flag) {
+  if (!drawableFlag(flag) || !/^\/[^#]*#icon_flag_[a-z_]+$/.test(flag.href)) return null;
+  return buildNickFlag(document, flag);
+}
+
+// A line by somebody, with their character's portrait when they made one and
+// the flag of their language when there is one.
+function byline(author, portrait, text, flag = null) {
   const row = document.createElement("p");
   row.className = "space-panel-byline";
   if (portrait) row.appendChild(portrait);
+  if (flag) row.appendChild(flag);
   const words = document.createElement("span");
   if (text === undefined) {
     words.textContent = author;

@@ -18,6 +18,7 @@ defmodule RetroHexChatWeb.Site.Pages.Game do
   import RetroHexChatWeb.Components.UI.Landing.GameCards
   import RetroHexChatWeb.Components.UI.Landing.GameHome
 
+  alias RetroHexChat.Accounts.NickLocales
   alias RetroHexChat.Chat.Archive
   alias RetroHexChat.Games.Activity
   alias RetroHexChat.Games.Catalog
@@ -100,27 +101,28 @@ defmodule RetroHexChatWeb.Site.Pages.Game do
             count: length(playing_now)
           )
         ],
-        assigns: %{
-          ways: ways(game),
-          sign_in_path: play_path(game, ctx),
-          you: your_record(game_id, ctx),
-          identified: Map.get(ctx, :identified?, false),
-          register_path: PublicPages.localized_path("/chat/help/nickserv"),
-          channel: channel,
-          channel_path: Paths.chat_path(channel),
-          ranking: if(Catalog.ranking(game_id) == :versus, do: :wins, else: :best),
-          week: Results.standings(game_id, modes: true, since: week_ago, limit: 5),
-          ratings: Ratings.top(game_id, 5),
-          playing_now: playing_now,
-          live: Activity.live_matches(game_id),
-          challenge: challenge,
-          challenge_leader: Challenges.leader(challenge),
-          computer:
-            Results.standings(game_id, modes: true, origin: "ai", difficulty: "hard", limit: 3),
-          recent: Results.recent(game_id, 6),
-          chatter: Archive.recent(channel, 5),
-          week_count: week_count
-        }
+        assigns:
+          put_nick_locales(%{
+            ways: ways(game),
+            sign_in_path: play_path(game, ctx),
+            you: your_record(game_id, ctx),
+            identified: Map.get(ctx, :identified?, false),
+            register_path: PublicPages.localized_path("/chat/help/nickserv"),
+            channel: channel,
+            channel_path: Paths.chat_path(channel),
+            ranking: if(Catalog.ranking(game_id) == :versus, do: :wins, else: :best),
+            week: Results.standings(game_id, modes: true, since: week_ago, limit: 5),
+            ratings: Ratings.top(game_id, 5),
+            playing_now: playing_now,
+            live: Activity.live_matches(game_id),
+            challenge: challenge,
+            challenge_leader: Challenges.leader(challenge),
+            computer:
+              Results.standings(game_id, modes: true, origin: "ai", difficulty: "hard", limit: 3),
+            recent: Results.recent(game_id, 6),
+            chatter: Archive.recent(channel, 5),
+            week_count: week_count
+          })
       )
     ]
   end
@@ -144,6 +146,21 @@ defmodule RetroHexChatWeb.Site.Pages.Game do
         }
       )
     ]
+  end
+
+  # Every nickname the home names — standings, ratings, matches, the channel's
+  # last lines, who is playing — in one lookup, for the flag before each name.
+  defp put_nick_locales(assigns) do
+    cards = assigns.recent ++ ((assigns.you && assigns.you.recent) || [])
+
+    nicks =
+      Enum.map(assigns.week ++ assigns.computer ++ assigns.ratings, & &1.nickname) ++
+        Enum.flat_map(cards, &[&1.p1_nickname, &1.p2_nickname]) ++
+        Enum.map(assigns.chatter, & &1.author) ++
+        assigns.playing_now ++
+        List.wrap(assigns.challenge_leader && assigns.challenge_leader.nickname)
+
+    Map.put(assigns, :nick_locales, NickLocales.for_nicks(nicks))
   end
 
   @doc """

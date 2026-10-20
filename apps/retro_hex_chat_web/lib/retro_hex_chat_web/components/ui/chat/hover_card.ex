@@ -22,6 +22,7 @@ defmodule RetroHexChatWeb.Components.UI.HoverCard do
   """
   use RetroHexChatWeb.Component
 
+  import RetroHexChatWeb.Components.UI.NickFlag
   import RetroHexChatWeb.Components.UI.NickPortrait
 
   import RetroHexChatWeb.Components.UI.Window
@@ -30,6 +31,7 @@ defmodule RetroHexChatWeb.Components.UI.HoverCard do
   import RetroHexChatWeb.Components.UI.ActivityIndicator
 
   alias RetroHexChat.VirtualSpace.CharacterRecipe
+  alias RetroHexChatWeb.Components.UI.NickFlag
   alias RetroHexChatWeb.Components.UI.SpaceCharacterCreator
   alias RetroHexChatWeb.Icons
 
@@ -64,6 +66,10 @@ defmodule RetroHexChatWeb.Components.UI.HoverCard do
   attr :avatar, :string,
     default: nil,
     doc: "the character this person chose; nil draws nothing"
+
+  attr :locale, :string,
+    default: nil,
+    doc: "the language this person uses the chat in; nil draws nothing"
 
   attr :class, :string, default: nil
   attr :rest, :global
@@ -110,6 +116,16 @@ defmodule RetroHexChatWeb.Components.UI.HoverCard do
           <div :if={@avatar} class="flex items-center gap-retro-4">
             <.nick_portrait avatar={@avatar} nickname={@nick} />
             <span class="text-muted-foreground">{avatar_label(@avatar)}</span>
+          </div>
+
+          <%!-- The language they use the chat in, named in itself. --%>
+          <div
+            :if={NickFlag.language(@locale)}
+            class="flex items-center gap-retro-4"
+            data-testid="hover-card-locale"
+          >
+            <.nick_flag locale={@locale} />
+            <span class="text-muted-foreground">{NickFlag.language(@locale)}</span>
           </div>
 
           <%!-- Role badge (from role attr) --%>

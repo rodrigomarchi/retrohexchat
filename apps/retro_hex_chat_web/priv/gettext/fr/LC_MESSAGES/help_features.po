@@ -3055,6 +3055,7 @@ msgstr ""
 #: lib/retro_hex_chat_web/controllers/help_content/feature_key_bindings.html.heex:107
 #: lib/retro_hex_chat_web/controllers/help_content/feature_kick_notifications.html.heex:65
 #: lib/retro_hex_chat_web/controllers/help_content/feature_lag_indicator.html.heex:79
+#: lib/retro_hex_chat_web/controllers/help_content/feature_language_flags.html.heex:21
 #: lib/retro_hex_chat_web/controllers/help_content/feature_link_previews.html.heex:90
 #: lib/retro_hex_chat_web/controllers/help_content/feature_mentions.html.heex:36
 #: lib/retro_hex_chat_web/controllers/help_content/feature_message_attachments.html.heex:41
@@ -6827,6 +6828,7 @@ msgstr ""
 "que les mots."
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_character_portraits.html.heex:21
+#: lib/retro_hex_chat_web/controllers/help_content/feature_language_flags.html.heex:14
 #, elixir-autogen, elixir-format
 msgid "Who Has One"
 msgstr "Qui en a un"
@@ -8052,3 +8054,23 @@ msgstr "Seulement des gens qui en ont fait une. Quelqu'un qui n'est jamais entr�
 #, elixir-autogen, elixir-format
 msgid "The character you made in a virtual space stands beside your nickname in the chat: in the conversation, in the user list, and on the card somebody sees when they look you up."
 msgstr "Le personnage que vous avez fait dans un espace virtuel se tient à côté de votre surnom dans le chat: dans la conversation, dans la liste des utilisateurs, et sur la carte quelqu'un voit quand ils vous regardent."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_language_flags.html.heex:7
+#, elixir-autogen, elixir-format
+msgid "Changing Yours"
+msgstr "Changer le vôtre"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_language_flags.html.heex:16
+#, elixir-autogen, elixir-format
+msgid "Everybody, visitors included. Somebody whose own language the chat does not offer reads it in English, so their flag is the English one."
+msgstr "Tout le monde, visiteurs compris. Quelqu'un dont la langue n'est pas proposée lit le chat en anglais, et son drapeau est donc celui de l'anglais."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_language_flags.html.heex:2
+#, elixir-autogen, elixir-format
+msgid "The small flag in front of a nickname is the language that person uses the chat in. You see it in the conversation, in the user list, in private messages, on the card somebody sees when they look you up, and above people in a virtual space."
+msgstr "Le petit drapeau devant un pseudo est la langue dans laquelle cette personne utilise le chat. Il apparaît dans la conversation, dans la liste des utilisateurs, dans les messages privés, sur la fiche qu'on voit en vous consultant et au-dessus des personnes dans un espace virtuel."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_language_flags.html.heex:9
+#, elixir-autogen, elixir-format
+msgid "Your flag is the language you pick under Start ▸ Language. Pick another one and the chat reopens in it, and everybody else's user list shows your new flag."
+msgstr "Votre drapeau est la langue que vous choisissez dans Démarrer ▸ Langue. Choisissez-en une autre et le chat se rouvre dans cette langue, et la liste des utilisateurs de chacun affiche votre nouveau drapeau."

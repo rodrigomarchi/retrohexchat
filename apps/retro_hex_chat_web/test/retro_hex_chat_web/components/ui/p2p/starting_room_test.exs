@@ -177,4 +177,31 @@ defmodule RetroHexChatWeb.Components.UI.P2P.StartingRoomTest do
     refute Floki.raw_html(Floki.find(document, ~s([data-testid="p2p-setup-turn-only"]))) =~
              "checked"
   end
+
+  test "both seats show their person's language flag, an empty seat none" do
+    html =
+      render_room(%{media_mode: "video"}, %{
+        self_locale: "pt_BR",
+        peer_locale: "de",
+        peer_present?: true
+      })
+
+    doc = Floki.parse_fragment!(html)
+
+    assert doc
+           |> Floki.find(~s([data-testid="p2p-room-occupant-you"] [data-testid="nick-flag"]))
+           |> Floki.attribute("data-locale") == ["pt_BR"]
+
+    assert doc
+           |> Floki.find(~s([data-testid="p2p-room-occupant-peer"] [data-testid="nick-flag"]))
+           |> Floki.attribute("data-locale") == ["de"]
+
+    empty =
+      render_room(%{media_mode: "video"}, %{peer_nick: nil, peer_locale: "de", match?: true})
+
+    assert empty
+           |> Floki.parse_fragment!()
+           |> Floki.find(~s([data-testid="p2p-room-occupant-peer"] [data-testid="nick-flag"])) ==
+             []
+  end
 end

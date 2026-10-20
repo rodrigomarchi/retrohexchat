@@ -34,6 +34,7 @@ defmodule RetroHexChat.Chat.Roster do
   require Logger
 
   alias RetroHexChat.Accounts.Avatars
+  alias RetroHexChat.Accounts.NickLocales
   alias RetroHexChat.Bots
   alias RetroHexChat.Channels.Server
   alias RetroHexChat.Presence.Tracker
@@ -54,7 +55,8 @@ defmodule RetroHexChat.Chat.Roster do
           muted: boolean(),
           online: boolean(),
           rank: non_neg_integer(),
-          avatar: String.t() | nil
+          avatar: String.t() | nil,
+          locale: String.t() | nil
         }
 
   @type t :: %__MODULE__{
@@ -125,7 +127,8 @@ defmodule RetroHexChat.Chat.Roster do
       muted: false,
       online: true,
       rank: role_rank(role),
-      avatar: Avatars.for_nick(nickname)
+      avatar: Avatars.for_nick(nickname),
+      locale: NickLocales.for_nick(nickname)
     }
   end
 
@@ -148,9 +151,10 @@ defmodule RetroHexChat.Chat.Roster do
 
     # One query for everybody's chosen character, not one per row: a portrait
     # beside every nickname is exactly the feature that turns a roster into a
-    # query a member.
-    avatars =
-      state.members |> Enum.map(fn {nickname, _role} -> nickname end) |> Avatars.for_nicks()
+    # query a member. The same goes for the flag beside it.
+    nicknames = Enum.map(state.members, fn {nickname, _role} -> nickname end)
+    avatars = Avatars.for_nicks(nicknames)
+    locales = NickLocales.for_nicks(nicknames)
 
     Enum.map(state.members, fn {nickname, role} ->
       meta = Map.get(presence, Nickname.key(nickname), %{})
@@ -163,7 +167,8 @@ defmodule RetroHexChat.Chat.Roster do
         muted: MapSet.member?(muted, nickname),
         online: true,
         rank: role_rank(role),
-        avatar: Map.get(avatars, nickname)
+        avatar: Map.get(avatars, nickname),
+        locale: Map.get(locales, nickname)
       }
     end)
   end
@@ -191,7 +196,10 @@ defmodule RetroHexChat.Chat.Roster do
       muted: false,
       online: meta != nil,
       rank: rank,
-      avatar: Avatars.for_nick(nickname)
+      avatar: Avatars.for_nick(nickname),
+      # Somebody here says it in their presence entry; only the absent are
+      # looked up.
+      locale: (meta && Map.get(meta, :locale)) || NickLocales.for_nick(nickname)
     }
   end
 end

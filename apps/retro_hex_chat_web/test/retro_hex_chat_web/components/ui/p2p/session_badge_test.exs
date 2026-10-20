@@ -139,4 +139,13 @@ defmodule RetroHexChatWeb.Components.UI.P2P.SessionBadgeTest do
     assert html =~ ~s(data-p2p-state="pending")
     assert html =~ ~s(data-p2p-status="invite")
   end
+
+  test "the summary names the peer with their language flag" do
+    html = entry(%{state: :connected, token: "tok", peer_nick: "alice", peer_locale: "fr"})
+
+    assert html
+           |> Floki.parse_fragment!()
+           |> Floki.find(~s([data-testid="p2p-peer-popover"] [data-testid="nick-flag"]))
+           |> Floki.attribute("data-locale") == ["fr"]
+  end
 end

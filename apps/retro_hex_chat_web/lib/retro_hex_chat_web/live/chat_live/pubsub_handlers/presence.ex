@@ -37,34 +37,21 @@ defmodule RetroHexChatWeb.ChatLive.PubsubHandlers.Presence do
   alias RetroHexChatWeb.ChatLive.Components.MessageViewport
   alias RetroHexChatWeb.ChatLive.Components.Nicklist
   alias RetroHexChatWeb.ChatLive.Helpers.Conversation
+  alias RetroHexChatWeb.ChatLive.Helpers.NickFlags
+  alias RetroHexChatWeb.Components.UI.LiveMatch
   alias RetroHexChatWeb.Site.Documents
   alias RetroHexChatWeb.Site.Pages
 
   # ── Global presence events ────────────────────────────────
 
-  # Somebody chose a character. The user list is a stream, so the row has to be
-  # re-inserted or it keeps the face it was drawn with.
-  def handle_info({:avatar_changed, %{nickname: nick, avatar: avatar}}, socket) do
-    members = socket.assigns.conversation_members
+  # Somebody chose a character, or opened the chat in another language. The
+  # user list is a stream, so the row has to be re-inserted or it keeps the
+  # face and the flag it was drawn with.
+  def handle_info({:avatar_changed, %{nickname: nick, avatar: avatar}}, socket),
+    do: {:halt, put_member(socket, nick, :avatar, avatar)}
 
-    socket =
-      case Enum.find(members, &(&1.nickname == nick)) do
-        nil ->
-          socket
-
-        member ->
-          updated = Map.put(member, :avatar, avatar)
-
-          socket
-          |> assign(
-            conversation_members:
-              Enum.map(members, &if(&1.nickname == nick, do: updated, else: &1))
-          )
-          |> Nicklist.upsert(updated)
-      end
-
-    {:halt, socket}
-  end
+  def handle_info({:locale_changed, %{nickname: nick, locale: locale}}, socket),
+    do: {:halt, put_member(socket, nick, :locale, locale)}
 
   def handle_info({:user_connected, %{nickname: nick}}, socket) do
     session = socket.assigns.session
@@ -211,8 +198,20 @@ defmodule RetroHexChatWeb.ChatLive.PubsubHandlers.Presence do
 
     socket
     |> Nicklist.mark_playing(games)
-    |> assign(live_matches: Activity.live_matches())
+    |> assign_live_matches(Activity.live_matches())
     |> refresh_game_home()
+  end
+
+  # The flag before each player's name, asked for again only when somebody
+  # else is playing — not on every move of anybody's presence.
+  defp assign_live_matches(socket, matches) do
+    nicks = LiveMatch.player_nicks(matches)
+    {_nicks, locales} = cache = NickFlags.locales(nicks, socket.assigns[:live_match_locales])
+
+    assign(socket,
+      live_matches: LiveMatch.put_player_locales(matches, locales),
+      live_match_locales: cache
+    )
   end
 
   # A game's home, when one is open, says who is playing it now: loaded again
@@ -325,5 +324,28 @@ defmodule RetroHexChatWeb.ChatLive.PubsubHandlers.Presence do
   defp maybe_update_hover_away(socket, nick, away, message) do
     send_update(HoverCard, id: HoverCard.id(), action: {:update_away, nick, away, message})
     socket
+  end
+
+  defp put_member(socket, nick, key, value) do
+    members = socket.assigns.conversation_members
+
+    case Enum.find(members, &Nickname.equal?(&1.nickname, nick)) do
+      nil ->
+        socket
+
+      # Already drawn that way: re-inserting the row would only push it again.
+      %{^key => ^value} ->
+        socket
+
+      member ->
+        updated = Map.put(member, key, value)
+
+        socket
+        |> assign(
+          conversation_members:
+            Enum.map(members, &if(&1.nickname == member.nickname, do: updated, else: &1))
+        )
+        |> Nicklist.upsert(updated)
+    end
   end
 end

@@ -23,19 +23,23 @@ defmodule RetroHexChatWeb.ChatLive.Components.IgnoreListDialog do
   alias RetroHexChat.Chat.IgnoreList
 
   alias RetroHexChatWeb.ChatLive.Components.DialogIsland
+  alias RetroHexChatWeb.ChatLive.Helpers.NickFlags
 
   @id "ignore-list-dialog"
 
   @spec id() :: String.t()
   def id, do: @id
 
-  @initial %{show_add_dialog: false}
+  @initial %{show_add_dialog: false, entry_locales: %{}, entry_locales_cache: nil}
 
   @spec mount(Phoenix.LiveView.Socket.t()) :: {:ok, Phoenix.LiveView.Socket.t()}
   def mount(socket), do: DialogIsland.mount(socket, @id, @initial)
 
   @spec update(map(), Phoenix.LiveView.Socket.t()) :: {:ok, Phoenix.LiveView.Socket.t()}
-  def update(assigns, socket), do: DialogIsland.update(socket, assigns)
+  def update(assigns, socket) do
+    {:ok, socket} = DialogIsland.update(socket, assigns)
+    {:ok, put_locales(socket)}
+  end
 
   @spec handle_event(String.t(), map(), Phoenix.LiveView.Socket.t()) ::
           {:noreply, Phoenix.LiveView.Socket.t()}
@@ -127,6 +131,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.IgnoreListDialog do
         id={@id}
         target={@myself}
         entries={@entries}
+        locales={@entry_locales}
         show_add_dialog={@show_add_dialog}
         on_add="control_add_dialog"
         on_remove="control_remove"
@@ -139,7 +144,16 @@ defmodule RetroHexChatWeb.ChatLive.Components.IgnoreListDialog do
 
   defp put_session(socket, session) do
     send(self(), {:ab_session, session, :ignore})
-    assign(socket, session: session)
+    socket |> assign(session: session) |> put_locales()
+  end
+
+  # The flag beside each ignored nickname, asked for again only when the list
+  # names different people — not on every re-render the parent sends down.
+  defp put_locales(%{assigns: %{session: nil}} = socket), do: socket
+
+  defp put_locales(socket) do
+    nicks = Enum.map(IgnoreList.sorted_entries(socket.assigns.session.ignore_list), & &1.nickname)
+    NickFlags.assign_locales(socket, nicks, :entry_locales, :entry_locales_cache)
   end
 
   defp bubble_status(socket, level, message) do

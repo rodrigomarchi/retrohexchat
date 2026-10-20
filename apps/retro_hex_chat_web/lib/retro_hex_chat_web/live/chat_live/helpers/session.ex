@@ -555,7 +555,7 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.Session do
       end
     end)
 
-    client_meta = Map.get(socket.assigns, :client_info, %{})
+    client_meta = PresenceHelpers.session_meta(socket)
 
     # Every topic the session is present on, the server-wide one included: left
     # out of this, the old nick stayed listed as online for good and the new one

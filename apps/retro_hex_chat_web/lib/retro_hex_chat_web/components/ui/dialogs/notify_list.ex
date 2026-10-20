@@ -19,6 +19,7 @@ defmodule RetroHexChatWeb.Components.UI.NotifyList do
   import RetroHexChatWeb.Components.UI.Input
   import RetroHexChatWeb.Components.UI.Textarea
   import RetroHexChatWeb.Components.UI.DialogBanner
+  import RetroHexChatWeb.Components.UI.NickFlag
 
   alias RetroHexChatWeb.Components.Diagrams
   alias RetroHexChatWeb.Icons
@@ -32,6 +33,7 @@ defmodule RetroHexChatWeb.Components.UI.NotifyList do
     default: [],
     doc: "List of %{nickname, online (boolean), last_seen (string)} maps"
 
+  attr :locales, :map, default: %{}, doc: "Each tracked nickname's locale, for its flag"
   attr :selected_entry, :string, default: nil, doc: "Currently selected nickname"
   attr :auto_whois, :boolean, default: false, doc: "Auto-Whois checkbox state"
   attr :on_add, :any, default: nil, doc: "Add button callback"
@@ -58,6 +60,7 @@ defmodule RetroHexChatWeb.Components.UI.NotifyList do
           id={@id}
           target={@target}
           entries={@entries}
+          locales={@locales}
           selected_entry={@selected_entry}
           selected_note={@selected_note}
           auto_whois={@auto_whois}
@@ -89,6 +92,7 @@ defmodule RetroHexChatWeb.Components.UI.NotifyList do
   attr :id, :string, required: true
   attr :target, :any, default: nil
   attr :entries, :list, default: []
+  attr :locales, :map, default: %{}, doc: "Each tracked nickname's locale, for its flag"
   attr :selected_entry, :string, default: nil, doc: "the entry the edit sub-form is about"
   attr :auto_whois, :boolean, default: false
   attr :on_add, :any, default: nil
@@ -182,6 +186,7 @@ defmodule RetroHexChatWeb.Components.UI.NotifyList do
                 data-testid={"notify-list-row-#{entry.tracked_nickname}"}
               >
                 <:title>
+                  <.nick_flag locale={@locales[entry.tracked_nickname]} />
                   {entry.tracked_nickname}
                   <.online_status online={entry.online} />
                 </:title>

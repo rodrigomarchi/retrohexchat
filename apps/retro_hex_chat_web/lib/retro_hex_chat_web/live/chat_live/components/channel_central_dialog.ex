@@ -29,6 +29,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.ChannelCentralDialog do
   alias RetroHexChat.Channels.Server
   alias RetroHexChat.Services.ChanServ
   alias RetroHexChatWeb.App.ChatHelpers
+  alias RetroHexChatWeb.ChatLive.Helpers.NickFlags
 
   @id "channel-central-dialog"
 
@@ -64,7 +65,9 @@ defmodule RetroHexChatWeb.ChatLive.Components.ChannelCentralDialog do
     channel_central_cs_error: nil,
     channel_central_cs_confirm_drop: false,
     show_cc_add_list_entry_dialog: false,
-    show_cc_transfer_dialog: false
+    show_cc_transfer_dialog: false,
+    channel_central_locales: %{},
+    channel_central_locales_cache: nil
   }
 
   @spec mount(Phoenix.LiveView.Socket.t()) :: {:ok, Phoenix.LiveView.Socket.t()}
@@ -120,10 +123,12 @@ defmodule RetroHexChatWeb.ChatLive.Components.ChannelCentralDialog do
     case Server.set_public_archive(channel, nickname, enabled == "true") do
       :ok ->
         {:noreply,
-         assign(socket,
+         socket
+         |> assign(
            channel_central_cs_error: nil,
            channel_central_registration: ChanServ.registration_snapshot(channel, nickname)
-         )}
+         )
+         |> put_locales()}
 
       {:error, reason} ->
         {:noreply, chanserv_error(socket, reason)}
@@ -497,6 +502,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.ChannelCentralDialog do
         notice={@channel_central_notice}
         transfer_error={@channel_central_transfer_error}
         registration={@channel_central_registration}
+        nick_locales={@channel_central_locales}
         registered_since={@cc_registered_since}
         access_tab={@channel_central_access_tab}
         access_nick={@channel_central_access_nick}
@@ -563,6 +569,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.ChannelCentralDialog do
             channel_central_owner: owner,
             channel_central_registration: ChanServ.registration_snapshot(channel, nickname)
           )
+          |> put_locales()
           |> push_event("window_command", %{action: "open", id: "channel-central"})
         else
           bubble_error(
@@ -594,12 +601,14 @@ defmodule RetroHexChatWeb.ChatLive.Components.ChannelCentralDialog do
           operator = nickname in state.operators or nickname in Map.get(state, :owners, [])
           owner = nickname in Map.get(state, :owners, [])
 
-          assign(socket,
+          socket
+          |> assign(
             channel_central_state: state,
             channel_central_operator: operator,
             channel_central_owner: owner,
             channel_central_registration: ChanServ.registration_snapshot(channel, nickname)
           )
+          |> put_locales()
 
         {:error, _} ->
           close_channel_central(socket)
@@ -613,13 +622,63 @@ defmodule RetroHexChatWeb.ChatLive.Components.ChannelCentralDialog do
     channel = socket.assigns.channel_central_channel
 
     if channel do
-      assign(socket,
+      socket
+      |> assign(
         channel_central_registration:
           ChanServ.registration_snapshot(channel, socket.assigns.session.nickname)
       )
+      |> put_locales()
     else
       assign(socket, channel_central_registration: nil)
     end
+  end
+
+  # The flag beside every person the window names — who set the topic, the
+  # founder, the access lists and who added each entry, who set each ban. Asked
+  # for when the channel's state or registration is read, and again only when
+  # that names somebody new.
+  @spec put_locales(Phoenix.LiveView.Socket.t()) :: Phoenix.LiveView.Socket.t()
+  defp put_locales(socket) do
+    nicks =
+      (state_nicks(socket.assigns.channel_central_state) ++
+         registration_nicks(socket.assigns.channel_central_registration))
+      |> Enum.filter(&is_binary/1)
+      |> Enum.uniq()
+      |> Enum.sort()
+
+    NickFlags.assign_locales(
+      socket,
+      nicks,
+      :channel_central_locales,
+      :channel_central_locales_cache
+    )
+  end
+
+  defp state_nicks(nil), do: []
+
+  defp state_nicks(state) do
+    setters =
+      Enum.flat_map(~w(bans ban_exceptions invite_exceptions), fn list_type ->
+        state
+        |> channel_central_list_entries(list_type)
+        |> Map.fetch!(:entries)
+        |> Enum.map(& &1.set_by)
+      end)
+
+    [Map.get(state, :topic_set_by) | setters]
+  end
+
+  defp registration_nicks(nil), do: []
+
+  defp registration_nicks(registration) do
+    access =
+      registration
+      |> Map.get(:access, %{})
+      |> Map.values()
+      |> List.flatten()
+      |> Enum.flat_map(&[Map.get(&1, :nickname), Map.get(&1, :added_by)])
+
+    [Map.get(registration, :founder) | access]
   end
 
   defp bubble_error(socket, message) do

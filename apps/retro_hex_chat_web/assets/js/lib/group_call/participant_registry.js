@@ -5,10 +5,11 @@ import { t } from "../i18n.js";
  *
  * The hook keeps a map of the participants the server announces, keyed by id,
  * and normalizes each into a stable record (a display nickname, a status, a
- * media-state map). This owns that map and the normalization. It is pure data —
- * no DOM, no connection — so the defaults and the map lifecycle are testable
- * without a call. The tile DOM the hook drives off these records, and the
- * quality/layout bookkeeping a removal triggers, stay in the hook.
+ * media-state map, and the language flag drawn beside the name). This owns
+ * that map and the normalization. It is pure data — no DOM, no connection — so
+ * the defaults and the map lifecycle are testable without a call. The tile DOM
+ * the hook drives off these records, and the quality/layout bookkeeping a
+ * removal triggers, stay in the hook.
  */
 export function createParticipantRegistry() {
   const byId = new Map();
@@ -26,11 +27,15 @@ export function createParticipantRegistry() {
       if (!participant?.id) return null;
 
       const id = String(participant.id);
+      // The language flag only comes with the LiveView's roster; a signalling
+      // payload that leaves it out keeps the one already known.
+      const flag = "flag" in participant ? participant.flag || null : byId.get(id)?.flag || null;
       const record = {
         id,
         nickname: participant.nickname || t("Remote"),
         status: participant.status || "connected",
         media_state: participant.media_state || participant.mediaState || {},
+        flag,
       };
       byId.set(id, record);
       return record;

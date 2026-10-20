@@ -29,6 +29,7 @@ defmodule RetroHexChat.VirtualSpace.ChannelSpaceServer do
 
   require Logger
 
+  alias RetroHexChat.Accounts.NickLocales
   alias RetroHexChat.Channels.Server, as: ChannelServer
   alias RetroHexChat.Nickname
   alias RetroHexChat.Topics
@@ -71,6 +72,7 @@ defmodule RetroHexChat.VirtualSpace.ChannelSpaceServer do
           hp: non_neg_integer(),
           seat_id: String.t() | nil,
           zone_id: String.t() | nil,
+          locale: String.t() | nil,
           online?: boolean(),
           muted?: boolean(),
           input_seq: integer(),
@@ -124,7 +126,8 @@ defmodule RetroHexChat.VirtualSpace.ChannelSpaceServer do
   @spec join(String.t(), %{
           :user_id => integer() | nil,
           :nickname => String.t(),
-          optional(:avatar) => String.t() | nil
+          optional(:avatar) => String.t() | nil,
+          optional(:locale) => String.t() | nil
         }) ::
           {:ok, %{participant: participant(), snapshot: map(), map: map()}} | {:error, atom()}
   def join(channel_name, participant_context) do
@@ -134,7 +137,8 @@ defmodule RetroHexChat.VirtualSpace.ChannelSpaceServer do
   @spec join_direct_message(String.t(), %{
           :user_id => integer() | nil,
           :nickname => String.t(),
-          optional(:avatar) => String.t() | nil
+          optional(:avatar) => String.t() | nil,
+          optional(:locale) => String.t() | nil
         }) ::
           {:ok, %{participant: participant(), snapshot: map(), map: map()}} | {:error, atom()}
   def join_direct_message(space_id, participant_context) do
@@ -501,6 +505,7 @@ defmodule RetroHexChat.VirtualSpace.ChannelSpaceServer do
         {:reply, {:error, join_missing_reason(state)}, state}
 
       _participant ->
+        state = put_join_locale(state, key, Map.get(context, :locale))
         state = mark_participant_online(state, key, %{user_id: context.user_id})
         state = apply_join_avatar(state, key, Map.get(context, :avatar))
         participant = Map.fetch!(state.participants, key)
@@ -699,8 +704,15 @@ defmodule RetroHexChat.VirtualSpace.ChannelSpaceServer do
           |> Enum.reject(&MapSet.member?(current_keys, &1))
           |> Enum.reduce(state, &remove_channel_member_by_key/2)
 
+        # Every new seat's flag in one lookup rather than one per member.
+        locales =
+          members
+          |> Enum.map(fn {nick, _role} -> nick end)
+          |> Enum.reject(&Map.has_key?(state.participants, channel_participant_key(&1)))
+          |> NickLocales.for_nicks()
+
         Enum.reduce(members, state, fn {nick, role}, acc ->
-          add_channel_member(acc, nick, role)
+          add_channel_member(acc, nick, role, nil, {:known, Map.get(locales, nick)})
         end)
 
       {:error, :not_found} ->
@@ -719,9 +731,9 @@ defmodule RetroHexChat.VirtualSpace.ChannelSpaceServer do
 
   # A member of the channel stands in a space that draws its members; in one
   # that draws its viewers they are seated but invisible until they look in.
-  defp add_channel_member(state, nickname, role, previous \\ nil) do
+  defp add_channel_member(state, nickname, role, previous \\ nil, locale \\ :lookup) do
     online? = state.presence == :members
-    add_participant(state, nickname, channel_role(role), previous, online?, online?)
+    add_participant(state, nickname, channel_role(role), previous, online?, online?, locale)
   end
 
   defp seed_direct_message_member(state, nickname) do
@@ -731,7 +743,9 @@ defmodule RetroHexChat.VirtualSpace.ChannelSpaceServer do
     add_participant(state, nickname, :participant, nil, false, false)
   end
 
-  defp add_participant(state, nickname, role, previous, broadcast?, online?) do
+  # `locale` is `{:known, locale}` when the caller already looked it up with
+  # the rest of a batch, or `:lookup` for a seat that arrives alone.
+  defp add_participant(state, nickname, role, previous, broadcast?, online?, locale \\ :lookup) do
     key = channel_participant_key(nickname)
 
     if Map.has_key?(state.participants, key) do
@@ -752,6 +766,8 @@ defmodule RetroHexChat.VirtualSpace.ChannelSpaceServer do
         nickname: nickname,
         role: role,
         avatar: avatar_for(state, key),
+        # The flag over their head, as the chat draws it beside their name.
+        locale: seat_locale(locale, nickname),
         x: x,
         y: y,
         dir: dir,
@@ -1706,6 +1722,16 @@ defmodule RetroHexChat.VirtualSpace.ChannelSpaceServer do
   # time.
   defp avatar_for(_state, key), do: CharacterRecipe.random(key)
 
+  defp seat_locale({:known, locale}, _nickname), do: locale
+  defp seat_locale(:lookup, nickname), do: NickLocales.for_nick(nickname)
+
+  # The language the viewer opened the space in, which may be newer than the
+  # one the seat was drawn with when the channel's members were seated.
+  defp put_join_locale(state, _key, nil), do: state
+
+  defp put_join_locale(state, key, locale),
+    do: update_in(state.participants[key], &Map.put(&1, :locale, locale))
+
   # A viewer makes their character on the entry screen and names it when they
   # join, so the snapshot shows what they are wearing from the first frame
   # instead of a stranger who changes a moment later. An absent or rejected
@@ -1777,6 +1803,7 @@ defmodule RetroHexChat.VirtualSpace.ChannelSpaceServer do
       key: participant.key,
       nickname: participant.nickname,
       avatar: Map.get(participant, :avatar),
+      locale: Map.get(participant, :locale),
       x: participant.x,
       y: participant.y,
       dir: participant.dir,

@@ -18,6 +18,7 @@ defmodule RetroHexChatWeb.Components.UI.UrlCatcher do
   import RetroHexChatWeb.Components.UI.Input
   import RetroHexChatWeb.Components.UI.Select
   import RetroHexChatWeb.Components.UI.DialogBanner
+  import RetroHexChatWeb.Components.UI.NickFlag
 
   alias RetroHexChatWeb.Components.Diagrams
   alias RetroHexChatWeb.Icons
@@ -29,6 +30,8 @@ defmodule RetroHexChatWeb.Components.UI.UrlCatcher do
   attr :entries, :list,
     default: [],
     doc: "List of CapturedURL structs"
+
+  attr :locales, :map, default: %{}, doc: "Each poster's locale by nickname, for their flag"
 
   attr :dropped, :integer,
     default: 0,
@@ -59,6 +62,7 @@ defmodule RetroHexChatWeb.Components.UI.UrlCatcher do
           <.url_catcher_panel
             id={@id}
             entries={@entries}
+            locales={@locales}
             dropped={@dropped}
             sort_column={@sort_column}
             sort_direction={@sort_direction}
@@ -91,6 +95,7 @@ defmodule RetroHexChatWeb.Components.UI.UrlCatcher do
   """
   attr :id, :string, required: true
   attr :entries, :list, default: [], doc: "List of CapturedURL structs"
+  attr :locales, :map, default: %{}, doc: "Each poster's locale by nickname, for their flag"
   attr :dropped, :integer, default: 0, doc: "Links discarded to stay within the buffer's bound"
   attr :sort_column, :atom, default: :timestamp
   attr :sort_direction, :atom, default: :desc
@@ -271,6 +276,7 @@ defmodule RetroHexChatWeb.Components.UI.UrlCatcher do
               <div class="uc-entry-meta">
                 <span>
                   <span class="uc-meta-label">{dgettext("dialogs", "Nick")}</span>
+                  <.nick_flag locale={@locales[entry.posted_by]} />
                   {entry.posted_by}
                 </span>
                 <span>

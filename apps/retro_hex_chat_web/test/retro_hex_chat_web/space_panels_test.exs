@@ -6,6 +6,7 @@ defmodule RetroHexChatWeb.SpacePanelsTest do
   @moduletag :integration
 
   alias RetroHexChat.Accounts.Avatars
+  alias RetroHexChat.Accounts.NickLocales
   alias RetroHexChat.Channels.Pins
   alias RetroHexChat.Channels.Registry, as: ChannelRegistry
   alias RetroHexChat.Channels.Server
@@ -96,6 +97,7 @@ defmodule RetroHexChatWeb.SpacePanelsTest do
     insert(:registered_nick, nickname: "bob")
     insert(:registered_nick, nickname: "cy")
     :ok = Avatars.remember("bob", "c1.b-av.s-2.o-tun-0-3.h-lng-2.w-0.f-0")
+    :ok = NickLocales.remember("bob", "es", store: true)
     channel = channel_with(["ana"])
 
     for {author, text} <- [{"bob", "Bring snacks"}, {"cy", "Bring drinks"}] do
@@ -111,5 +113,10 @@ defmodule RetroHexChatWeb.SpacePanelsTest do
              Enum.find(pins, &(&1.author == "bob"))
 
     assert %{avatar: nil} = Enum.find(pins, &(&1.author == "cy"))
+
+    # And the flag of the language they use the chat in, when there is one.
+    assert %{flag: %{href: href, language: "Español"}} = Enum.find(pins, &(&1.author == "bob"))
+    assert href =~ "#icon_flag_es"
+    assert %{flag: nil} = Enum.find(pins, &(&1.author == "cy"))
   end
 end

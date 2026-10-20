@@ -49,6 +49,7 @@ export function normalizeParticipant(key, raw = {}) {
     key,
     nickname: typeof raw.nickname === "string" ? raw.nickname : "",
     avatar: typeof raw.avatar === "string" ? raw.avatar : "default",
+    locale: typeof raw.locale === "string" ? raw.locale : null,
     x: toInt(raw.x, 0),
     y: toInt(raw.y, 0),
     dir: DIRECTIONS.has(raw.dir) ? raw.dir : "down",

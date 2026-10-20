@@ -16,6 +16,8 @@ defmodule RetroHexChatWeb.Components.UI.Autocomplete do
   """
   use RetroHexChatWeb.Component
 
+  import RetroHexChatWeb.Components.UI.NickFlag
+
   @doc "Renders the autocomplete dropdown."
   attr :items, :list, default: []
   attr :selected_index, :integer, default: 0
@@ -117,6 +119,7 @@ defmodule RetroHexChatWeb.Components.UI.Autocomplete do
         "w-2 h-2 rounded-full shrink-0",
         if(result.status == :online, do: "bg-success", else: "bg-disabled")
       ]} />
+      <.nick_flag locale={Map.get(result, :locale)} />
       <span class={["font-bold truncate", Map.get(result, :color_class)]}>{result.nickname}</span>
     </div>
     """

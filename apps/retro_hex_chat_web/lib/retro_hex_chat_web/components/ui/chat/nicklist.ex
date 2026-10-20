@@ -2,6 +2,7 @@ defmodule RetroHexChatWeb.Components.UI.Nicklist do
   @moduledoc false
   use RetroHexChatWeb.Component
 
+  import RetroHexChatWeb.Components.UI.NickFlag
   import RetroHexChatWeb.Components.UI.NickPortrait
 
   alias RetroHexChat.Channels.Modes
@@ -338,6 +339,7 @@ defmodule RetroHexChatWeb.Components.UI.Nicklist do
   user-list hook offers no menu on them. Nothing renders while there are none.
   """
   attr :guests, :list, default: []
+  attr :locales, :map, default: %{}, doc: "each guest's locale, by guest name"
   attr :current, :string, default: nil, doc: "the guest name of the visitor looking"
   attr :class, :any, default: nil
   attr :rest, :global
@@ -371,6 +373,7 @@ defmodule RetroHexChatWeb.Components.UI.Nicklist do
           <span class="chat-nicklist-row__role" aria-hidden="true">
             <Icons.icon_watching class="h-3 w-3" />
           </span>
+          <.nick_flag locale={Map.get(@locales, guest)} />
           <span class="chat-nicklist-row__nick text-muted-foreground">{guest}</span>
         </div>
       </div>
@@ -487,6 +490,10 @@ defmodule RetroHexChatWeb.Components.UI.Nicklist do
     default: nil,
     doc: "the character this person chose; nil draws nothing"
 
+  attr :locale, :string,
+    default: nil,
+    doc: "the language this person uses the chat in, drawn as a flag; nil draws nothing"
+
   attr :in_call, :boolean,
     default: false,
     doc: "whether this person is in the channel's conference, from the summary the chat holds"
@@ -527,6 +534,7 @@ defmodule RetroHexChatWeb.Components.UI.Nicklist do
         {role_icon(assigns)}
       </span>
       <.nick_portrait avatar={@avatar} nickname={@nick} />
+      <.nick_flag locale={@locale} />
       <span class={["chat-nicklist-row__nick", @nick_color || "text-text"]}>
         {@nick}
       </span>

@@ -23,6 +23,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.AddressBookDialog do
   import RetroHexChatWeb.Components.UI.AddressBook
 
   alias RetroHexChat.Accounts.{ContactList, Session}
+  alias RetroHexChatWeb.ChatLive.Helpers.NickFlags
 
   @id "address-book-dialog"
 
@@ -42,13 +43,14 @@ defmodule RetroHexChatWeb.ChatLive.Components.AddressBookDialog do
      socket
      |> assign(:id, @id)
      |> assign(@initial)
-     |> assign(session: nil, nick_color_fn: nil, timezone: "Etc/UTC")}
+     |> assign(session: nil, nick_color_fn: nil, timezone: "Etc/UTC")
+     |> assign(contact_locales: %{}, contact_locales_cache: nil)}
   end
 
   # Opening is pure window mount — closing unmounts the island, so there is no
   # open directive to reset state that the next mount rebuilds anyway.
   @spec update(map(), Phoenix.LiveView.Socket.t()) :: {:ok, Phoenix.LiveView.Socket.t()}
-  def update(assigns, socket), do: {:ok, assign(socket, assigns)}
+  def update(assigns, socket), do: {:ok, socket |> assign(assigns) |> put_locales()}
 
   # ── Contacts ─────────────────────────────────────────────────────
 
@@ -166,6 +168,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.AddressBookDialog do
         show_contact_add_dialog={@show_contact_add_dialog}
         show_contact_edit_dialog={@show_contact_edit_dialog}
         nick_color_fn={@nick_color_fn}
+        locales={@contact_locales}
         timezone={@timezone}
         selected_contact_note={@selected_contact_note}
         on_add="contact_add_dialog"
@@ -180,7 +183,16 @@ defmodule RetroHexChatWeb.ChatLive.Components.AddressBookDialog do
 
   defp put_session(socket, session) do
     send(self(), {:ab_session, session, :contacts})
-    assign(socket, session: session)
+    socket |> assign(session: session) |> put_locales()
+  end
+
+  # The flag beside each contact, asked for again only when the contacts are
+  # different people — not on every re-render the parent sends down.
+  defp put_locales(%{assigns: %{session: nil}} = socket), do: socket
+
+  defp put_locales(socket) do
+    nicks = Enum.map(socket.assigns.session.contacts.entries, & &1.contact_nickname)
+    NickFlags.assign_locales(socket, nicks, :contact_locales, :contact_locales_cache)
   end
 
   defp bubble_status(socket, level, message) do

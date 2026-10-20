@@ -33,6 +33,7 @@ defmodule RetroHexChatWeb.Components.UI.PinnedDialog do
   import RetroHexChatWeb.Components.UI.Button
   import RetroHexChatWeb.Components.UI.ListStates
   import RetroHexChatWeb.Components.UI.DialogBanner
+  import RetroHexChatWeb.Components.UI.NickFlag
 
   alias RetroHexChatWeb.App.ChatHelpers
   alias RetroHexChatWeb.Components.Diagrams
@@ -42,7 +43,11 @@ defmodule RetroHexChatWeb.Components.UI.PinnedDialog do
   @doc "Renders the Pinned window body."
   attr :id, :string, required: true
   attr :first_row, :map, default: nil, doc: "Newest row, for the banner picture"
-  attr :pins, :any, required: true, doc: "The stream of pinned rows"
+
+  attr :pins, :any,
+    required: true,
+    doc: "The stream of pinned rows; `:author_locale` on a row draws its author's flag"
+
   attr :can_unpin, :boolean, default: false
   attr :state, :any, default: nil, doc: "PaginatedList.State for the list"
   attr :target, :any, default: nil
@@ -109,6 +114,7 @@ defmodule RetroHexChatWeb.Components.UI.PinnedDialog do
             data-testid={"pinned-open-#{pin.message_id}"}
           >
             <span class="mentions-row__head flex items-center gap-retro-4">
+              <.nick_flag locale={Map.get(pin, :author_locale)} />
               <span class={["truncate font-bold", nick_class(@nick_color_fn, pin.author_nickname)]}>
                 {pin.author_nickname}
               </span>

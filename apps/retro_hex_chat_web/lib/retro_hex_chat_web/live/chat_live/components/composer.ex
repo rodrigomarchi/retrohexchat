@@ -54,6 +54,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.Composer do
   alias RetroHexChat.Commands.{Autocomplete, CommandSyntax, Registry}
   alias RetroHexChatWeb.App.ChatHelpers
   alias RetroHexChatWeb.ChatLive.Components.EmojiPickerDialog
+  alias RetroHexChatWeb.ChatLive.Helpers.NickFlags
   alias RetroHexChatWeb.Components.UI.Format
   import RetroHexChatWeb.Components.UI.ToolButton
 
@@ -430,11 +431,16 @@ defmodule RetroHexChatWeb.ChatLive.Components.Composer do
           <.reply_bar
             :if={@reply_to}
             author={@reply_to.author}
+            locale={NickFlags.member_locale(@conversation_members, @reply_to.author)}
             message={@reply_to.preview}
             on_dismiss="cancel_reply"
           />
 
-          <.typing_indicator :if={@capabilities.typing_indicator} nick={@pm_typing_from} />
+          <.typing_indicator
+            :if={@capabilities.typing_indicator}
+            nick={@pm_typing_from}
+            locale={NickFlags.member_locale(@conversation_members, @pm_typing_from)}
+          />
 
           <div class="relative">
             <div
@@ -446,6 +452,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.Composer do
                 timestamp={preview_timestamp(@timestamp_format, @timezone)}
                 meta_title={preview_datetime(@timezone)}
                 nick={preview_nick(@nickname)}
+                locale={NickFlags.member_locale(@conversation_members, @nickname)}
                 nick_color="text-text"
                 class="composer-markdown-preview__message"
               >

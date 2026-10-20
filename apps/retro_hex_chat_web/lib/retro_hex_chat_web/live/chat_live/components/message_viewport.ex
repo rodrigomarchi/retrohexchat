@@ -42,6 +42,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.MessageViewport do
   import RetroHexChatWeb.Components.UI.ListStates
 
   alias RetroHexChat.Accounts.Avatars
+  alias RetroHexChat.Accounts.NickLocales
   alias RetroHexChat.Channels.ScheduledEvents
   alias RetroHexChat.Games.Channels, as: GameChannels
   alias RetroHexChat.Games.Results
@@ -439,7 +440,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.MessageViewport do
 
     changed =
       carrying
-      |> Enum.map(&{&1, Map.get(described, &1.share_card.slug)})
+      |> Enum.map(&{&1, keep_creator_locale(Map.get(described, &1.share_card.slug), &1)})
       |> Enum.filter(fn {msg, card} -> is_map(card) and card != msg.share_card end)
       |> Enum.map(fn {msg, card} -> Map.put(msg, :share_card, card) end)
 
@@ -447,6 +448,13 @@ defmodule RetroHexChatWeb.ChatLive.Components.MessageViewport do
     |> track(fn rendered -> Enum.reduce(changed, rendered, &upsert(&2, &1)) end)
     |> then(&Enum.reduce(changed, &1, fn msg, acc -> stream_insert(acc, :chat_messages, msg) end))
   end
+
+  # A card described again is the same person's: the flag looked up with the
+  # page stays, rather than a lookup per refresh.
+  defp keep_creator_locale(card, msg) when is_map(card),
+    do: Map.put(card, :creator_locale, Map.get(msg.share_card, :creator_locale))
+
+  defp keep_creator_locale(card, _msg), do: card
 
   # The chat owns the subscriptions, because a subscription outlives a render.
   # It is told which spaces are on screen and does the arithmetic; saying it
@@ -524,6 +532,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.MessageViewport do
     |> put_event_cards(viewer)
     |> put_result_cards()
     |> put_avatars()
+    |> put_locales()
   end
 
   # The ids of the rows written in one kind of conversation. Channel lines and
@@ -547,11 +556,38 @@ defmodule RetroHexChatWeb.ChatLive.Components.MessageViewport do
       private: Results.cards_for_messages(:private, ids_from(announcements, :private))
     }
 
+    cards = put_player_locales(cards)
+
     Enum.map(items, fn item ->
       case get_in(cards, [Map.get(item, :source) || :none, Map.get(item, :id)]) do
         nil -> item
         card -> Map.put(item, :result_card, card)
       end
+    end)
+  end
+
+  # The flag beside each player on a match card: one lookup for every card on
+  # the screenful, and none when there is no card.
+  defp put_player_locales(cards) do
+    players =
+      for {_kind, by_id} <- cards,
+          {_id, card} <- by_id,
+          nick <- [card.p1_nickname, card.p2_nickname],
+          is_binary(nick),
+          uniq: true,
+          do: nick
+
+    locales = NickLocales.for_nicks(players)
+
+    Map.new(cards, fn {kind, by_id} ->
+      {kind,
+       Map.new(by_id, fn {id, card} ->
+         {id,
+          Map.merge(card, %{
+            p1_locale: Map.get(locales, card.p1_nickname),
+            p2_locale: Map.get(locales, card.p2_nickname)
+          })}
+       end)}
     end)
   end
 
@@ -571,6 +607,33 @@ defmodule RetroHexChatWeb.ChatLive.Components.MessageViewport do
 
     Enum.map(items, &StreamItem.put_avatar(&1, Map.get(avatars, Map.get(&1, :author))))
   end
+
+  # The flag beside each nickname, for the same batch and for the same reason —
+  # the authors, whoever they answer, and whoever shared a card they posted.
+  @spec put_locales([map()]) :: [map()]
+  defp put_locales(items) do
+    locales =
+      items
+      |> Enum.flat_map(&[Map.get(&1, :author), Map.get(&1, :reply_to_author), share_creator(&1)])
+      |> Enum.filter(&is_binary/1)
+      |> NickLocales.for_nicks()
+
+    Enum.map(items, fn item ->
+      item
+      |> StreamItem.put_locale(Map.get(locales, Map.get(item, :author)))
+      |> StreamItem.put_reply_locale(Map.get(locales, Map.get(item, :reply_to_author)))
+      |> put_creator_locale(locales)
+    end)
+  end
+
+  defp share_creator(%{share_card: %{creator_nick: nick}}), do: nick
+  defp share_creator(_item), do: nil
+
+  defp put_creator_locale(%{share_card: %{creator_nick: nick} = card} = item, locales)
+       when is_binary(nick),
+       do: Map.put(item, :share_card, Map.put(card, :creator_locale, Map.get(locales, nick)))
+
+  defp put_creator_locale(item, _locales), do: item
 
   # An event card hangs off the line that announced it, resolved by message id
   # rather than by reading the text — the announcement is an ordinary message

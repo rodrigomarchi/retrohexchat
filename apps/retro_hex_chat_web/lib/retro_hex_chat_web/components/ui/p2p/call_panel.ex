@@ -12,6 +12,7 @@ defmodule RetroHexChatWeb.Components.UI.P2P.CallPanel do
   import RetroHexChatWeb.Components.UI.MediaSession.ReactionPicker
   import RetroHexChatWeb.Components.UI.Popover
   import RetroHexChatWeb.Components.UI.MediaSession.Header
+  import RetroHexChatWeb.Components.UI.NickFlag
   import RetroHexChatWeb.Components.UI.ToolButton
 
   alias RetroHexChatWeb.Icons
@@ -22,6 +23,7 @@ defmodule RetroHexChatWeb.Components.UI.P2P.CallPanel do
   attr :call_layout, :string, required: true
   attr :self_view, :string, default: "pip"
   attr :peer_nick, :string, required: true
+  attr :peer_locale, :string, default: nil, doc: "the peer's language, for the flag"
   attr :nickname, :string, required: true
   attr :local_muted, :boolean, required: true
   attr :local_camera_off, :boolean, required: true
@@ -202,6 +204,7 @@ defmodule RetroHexChatWeb.Components.UI.P2P.CallPanel do
                     :if={!@peer_screen_sharing}
                     class="h-4 w-4 shrink-0"
                   />
+                  <.nick_flag :if={@peer_nick} locale={@peer_locale} />
                   <span class="truncate">{peer_label(@peer_nick)}</span>
                   <CallControls.icon_call_mute
                     :if={@peer_muted}
@@ -273,7 +276,12 @@ defmodule RetroHexChatWeb.Components.UI.P2P.CallPanel do
           </div>
         </div>
 
-        <.idle_call_state :if={!@show_surface} peer_nick={@peer_nick} peer_in_call={@peer_sharing} />
+        <.idle_call_state
+          :if={!@show_surface}
+          peer_nick={@peer_nick}
+          peer_locale={@peer_locale}
+          peer_in_call={@peer_sharing}
+        />
       </section>
     </div>
     """
@@ -349,6 +357,7 @@ defmodule RetroHexChatWeb.Components.UI.P2P.CallPanel do
   end
 
   attr :peer_nick, :string, default: nil
+  attr :peer_locale, :string, default: nil
   attr :peer_in_call, :boolean, default: false
 
   defp idle_call_state(assigns) do
@@ -400,6 +409,7 @@ defmodule RetroHexChatWeb.Components.UI.P2P.CallPanel do
         </.tool_button>
         <span class="ml-1 inline-flex items-center gap-1 text-muted-foreground">
           <Icons.icon_protocol_p2p_compact class="h-4 w-4" />
+          <.nick_flag :if={@peer_nick} locale={@peer_locale} />
           {peer_label(@peer_nick)}
         </span>
       </.media_session_command_bar>

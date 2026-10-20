@@ -33,6 +33,7 @@ defmodule RetroHexChatWeb.Components.UI.P2P.StartingRoom do
 
   import RetroHexChatWeb.Components.UI.Button
   import RetroHexChatWeb.Components.UI.IconWell
+  import RetroHexChatWeb.Components.UI.NickFlag
 
   alias RetroHexChatWeb.Components.UI.GroupCall.DeviceSelect
   alias RetroHexChatWeb.Components.UI.MediaSession.PermissionNotice
@@ -294,6 +295,7 @@ defmodule RetroHexChatWeb.Components.UI.P2P.StartingRoom do
         >
           <span class="inline-flex min-w-0 items-center gap-1">
             <Icons.icon_status_user class="h-3.5 w-3.5 shrink-0" />
+            <.nick_flag locale={occupant.locale} />
             <span class="truncate">{occupant.nickname}</span>
             <span :if={occupant.host?} class="shrink-0 text-muted-foreground">
               ({dgettext("p2p", "host")})
@@ -445,12 +447,15 @@ defmodule RetroHexChatWeb.Components.UI.P2P.StartingRoom do
       %{
         slot: "you",
         nickname: room.nickname,
+        locale: Map.get(room, :self_locale),
         host?: room.host?,
         status: own_status(room)
       },
       %{
         slot: "peer",
         nickname: room.peer_nick || empty_seat_label(room),
+        # An empty seat names nobody, so it has no language either.
+        locale: room.peer_nick && Map.get(room, :peer_locale),
         host?: not room.host?,
         status: peer_status(room)
       }

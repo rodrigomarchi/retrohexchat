@@ -88,6 +88,31 @@ defmodule RetroHexChatWeb.Components.UI.ThreadDialogTest do
     refute html =~ "Nobody has answered this yet."
   end
 
+  test "each line carries its author's language flag" do
+    replies = [8 |> reply("the wiki") |> Map.put(:locale, "de")]
+
+    html =
+      panel(
+        root: Map.put(root(), :locale, "pt_BR"),
+        replies: stream(replies),
+        state: loaded(replies)
+      )
+
+    doc = Floki.parse_fragment!(html)
+
+    assert [_flag] =
+             Floki.find(
+               doc,
+               ~s([data-testid="thread-root"] [data-testid="nick-flag"][data-locale="pt_BR"])
+             )
+
+    assert [_flag] =
+             Floki.find(
+               doc,
+               ~s([data-testid="thread-lines"] [data-testid="nick-flag"][data-locale="de"])
+             )
+  end
+
   test "with more to fetch it offers the rest" do
     replies = [reply(8, "the wiki")]
 

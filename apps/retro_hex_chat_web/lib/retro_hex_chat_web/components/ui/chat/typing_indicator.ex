@@ -11,8 +11,11 @@ defmodule RetroHexChatWeb.Components.UI.TypingIndicator do
   """
   use RetroHexChatWeb.Component
 
+  import RetroHexChatWeb.Components.UI.NickFlag
+
   @doc "Renders a typing indicator bar."
   attr :nick, :string, default: nil, doc: "Nickname of the user who is typing"
+  attr :locale, :string, default: nil, doc: "their locale, drawn as a flag before the name"
   attr :class, :any, default: nil
   attr :rest, :global
 
@@ -25,7 +28,7 @@ defmodule RetroHexChatWeb.Components.UI.TypingIndicator do
       data-testid="typing-indicator"
       {@rest}
     >
-      {@nick} {dgettext("chat", "is typing...")}
+      <.nick_flag locale={@locale} /> {@nick} {dgettext("chat", "is typing...")}
     </div>
     """
   end

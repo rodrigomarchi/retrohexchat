@@ -236,6 +236,41 @@ describe("renderPanel", () => {
     expect(rows[0].textContent).toBe("ana: Snacks");
   });
 
+  it("puts each pinned author's language flag beside their line, and nothing else", () => {
+    const { root, host } = shell();
+    const flag = {
+      locale: "pt_BR",
+      href: "/assets/icons/sprite.svg#icon_flag_pt_br",
+      language: "Português",
+    };
+    renderPanel(
+      root,
+      host,
+      {
+        kind: "board",
+        topic: null,
+        pins: [
+          { author: "ana", text: "Snacks", flag },
+          { author: "bo", text: "Drinks", flag: null },
+          {
+            author: "cy",
+            text: "Odd",
+            flag: { locale: "xx", language: "X", href: "javascript:alert(1)" },
+          },
+        ],
+      },
+      ports(),
+    );
+    const rows = host.querySelectorAll(".space-panel-byline");
+    const drawn = rows[0].querySelector('[data-testid="nick-flag"]');
+    expect(drawn.getAttribute("title")).toBe("Português");
+    expect(drawn.querySelector("use").getAttribute("href")).toBe(flag.href);
+    expect(rows[1].querySelector('[data-testid="nick-flag"]')).toBeNull();
+    // Only a reference into the sprite becomes an address.
+    expect(rows[2].querySelector('[data-testid="nick-flag"]')).toBeNull();
+    expect(rows[0].textContent).toBe("ana: Snacks");
+  });
+
   it("shelves an arcade's games with their covers, lazily, and an initial for one without", () => {
     const { root, host } = shell();
     renderPanel(

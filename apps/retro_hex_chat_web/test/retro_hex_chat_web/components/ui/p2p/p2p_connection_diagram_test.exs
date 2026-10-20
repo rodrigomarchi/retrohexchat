@@ -70,4 +70,13 @@ defmodule RetroHexChatWeb.Components.UI.P2PConnectionDiagramTest do
     assert html =~ "report.pdf"
     assert html =~ "42%"
   end
+
+  test "each side of the link carries its person's language flag" do
+    html = render_diagram(%{nickname_locale: "pt_BR", peer_locale: "ja"})
+
+    assert html
+           |> Floki.parse_fragment!()
+           |> Floki.find(~s([data-testid="nick-flag"]))
+           |> Floki.attribute("data-locale") == ["pt_BR", "ja"]
+  end
 end

@@ -43,6 +43,7 @@ defmodule RetroHexChatWeb.P2PLive.Components.P2PGameIsland do
        games: Catalog.list_games(),
        connected: false,
        peer_nick: nil,
+       peer_locale: nil,
        watchers: 0,
        watch_url: nil
      )}
@@ -68,6 +69,7 @@ defmodule RetroHexChatWeb.P2PLive.Components.P2PGameIsland do
         game_outgoing={@game_outgoing}
         games={@games}
         peer_nick={@peer_nick}
+        peer_locale={@peer_locale}
         watchers={@watchers}
         watch_url={@watch_url}
       />
@@ -79,7 +81,8 @@ defmodule RetroHexChatWeb.P2PLive.Components.P2PGameIsland do
   defp assign_context(socket, assigns) do
     assign(socket,
       connected: Map.get(assigns, :connected, socket.assigns.connected),
-      peer_nick: Map.get(assigns, :peer_nick, socket.assigns.peer_nick)
+      peer_nick: Map.get(assigns, :peer_nick, socket.assigns.peer_nick),
+      peer_locale: Map.get(assigns, :peer_locale, socket.assigns.peer_locale)
     )
   end
 

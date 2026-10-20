@@ -3,11 +3,21 @@ defmodule RetroHexChatWeb.ChatLive.Components.AddressBookDialogTest do
 
   import Phoenix.LiveViewTest
 
-  alias RetroHexChat.Accounts.{ContactList, Session}
+  alias RetroHexChat.Accounts.{ContactList, NickLocales, Session}
+  alias RetroHexChat.Services.NickServ
   alias RetroHexChatWeb.App.ChatHelpers
   alias RetroHexChatWeb.ChatLive.Components.AddressBookDialog
 
   @moduletag :unit
+
+  # A registered nickname whose language is on its row, as it is for somebody
+  # who opened the chat in Portuguese and left.
+  defp speaker(prefix) do
+    nickname = "#{prefix}#{System.unique_integer([:positive])}"
+    {:ok, _nick} = NickServ.register(nickname, "password123")
+    :ok = NickLocales.remember(nickname, "pt_BR", store: true)
+    nickname
+  end
 
   defp session(contacts \\ nil) do
     base = Session.new("Nick")
@@ -46,6 +56,19 @@ defmodule RetroHexChatWeb.ChatLive.Components.AddressBookDialogTest do
     html = dialog(%{session: session(contacts)})
 
     assert html =~ "Buddy"
+  end
+
+  test "draws each contact's language flag beside the nickname" do
+    nickname = speaker("Ctc")
+    {:ok, contacts} = ContactList.add_entry(ContactList.new(), "Nick", nickname, nil)
+    html = dialog(%{session: session(contacts)})
+
+    assert [_flag] =
+             html
+             |> Floki.parse_fragment!()
+             |> Floki.find(
+               ~s(#contact-entry-#{nickname} [data-testid="nick-flag"][data-locale="pt_BR"])
+             )
   end
 
   test "renders the contact add sub-form targeting the component" do

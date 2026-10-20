@@ -1,0 +1,16 @@
+/* ── Language flags beside nicknames ────────────────────────────────────────
+   The flag of the language somebody uses the chat in, beside their nickname
+   (RetroHexChatWeb.Components.UI.NickFlag): the language menu's 14×14 pixel
+   flag at its drawn size, so its one-pixel outline stays crisp. */
+.rh-nick-flag {
+  display: inline-flex;
+  align-items: center;
+  vertical-align: middle;
+  flex: none;
+  line-height: 0;
+}
+
+.rh-nick-flag__icon {
+  width: 14px;
+  height: 14px;
+}

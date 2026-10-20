@@ -10,6 +10,7 @@ defmodule RetroHexChatWeb.Site.JoinPageTest do
 
   @moduletag :liveview
 
+  alias RetroHexChat.Accounts.NickLocales
   alias RetroHexChat.Channels.Server
   alias RetroHexChat.Channels.Supervisor
   alias RetroHexChat.Lobby
@@ -388,6 +389,24 @@ defmodule RetroHexChatWeb.Site.JoinPageTest do
 
       assert html =~ "join-preview"
       assert html =~ "anybody around?"
+    end
+
+    test "each line of the preview carries its author's flag", ctx do
+      :ok = NickLocales.remember(ctx.nick, "ja", store: true)
+      {:ok, _} = Server.send_message(ctx.channel, ctx.nick, "konnichiwa")
+      slug = share(ctx, "channel", %{"channel" => ctx.channel})
+
+      html = ctx.conn |> get(~p"/join/#{slug}") |> html_response(200)
+
+      assert [line] =
+               html
+               |> Floki.parse_document!()
+               |> Floki.find(~s([data-testid="join-preview"] li))
+
+      assert line |> Floki.find(~s([data-testid="nick-flag"])) |> Floki.attribute("data-locale") ==
+               ["ja"]
+
+      assert Floki.text(line) =~ ctx.nick
     end
 
     test "a secret channel is neither named nor previewed", ctx do

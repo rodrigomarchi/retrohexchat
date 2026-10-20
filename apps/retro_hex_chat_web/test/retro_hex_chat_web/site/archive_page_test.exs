@@ -13,11 +13,13 @@ defmodule RetroHexChatWeb.Site.ArchivePageTest do
 
   @moduletag :integration
 
+  alias RetroHexChat.Accounts.NickLocales
   alias RetroHexChat.Chat.Archive
   alias RetroHexChat.Chat.Attachment
   alias RetroHexChat.Chat.Attachments
   alias RetroHexChat.Chat.Queries
   alias RetroHexChat.Repo
+  alias RetroHexChat.Services.NickServ
   alias RetroHexChat.Services.RegisteredChannel
 
   setup do
@@ -150,6 +152,27 @@ defmodule RetroHexChatWeb.Site.ArchivePageTest do
 
       assert second.status == 304
       assert second.resp_body == ""
+    end
+
+    test "the day draws each author's flag beside their name", ctx do
+      {:ok, _} = NickServ.register("Speaker", "password123")
+      :ok = NickLocales.remember("Speaker", "fr", store: true)
+
+      body = build_conn() |> get(~p"/archive/#{ctx.slug}/#{ctx.date}") |> html_response(200)
+
+      assert body =~ ~r/data-locale="fr".*?&lt;Speaker&gt;/s
+    end
+
+    test "a flag that changed gets a different etag", ctx do
+      {:ok, _} = NickServ.register("Speaker", "password123")
+
+      [before] =
+        build_conn() |> get(~p"/archive/#{ctx.slug}/#{ctx.date}") |> get_resp_header("etag")
+
+      :ok = NickLocales.remember("Speaker", "de", store: true)
+      [now] = build_conn() |> get(~p"/archive/#{ctx.slug}/#{ctx.date}") |> get_resp_header("etag")
+
+      refute before == now
     end
 
     test "a changed day gets a different etag", ctx do

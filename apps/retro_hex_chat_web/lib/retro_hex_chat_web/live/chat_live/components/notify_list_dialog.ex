@@ -27,6 +27,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.NotifyListDialog do
   import RetroHexChatWeb.Components.UI.NotifyList
 
   alias RetroHexChat.Presence.NotifyList
+  alias RetroHexChatWeb.ChatLive.Helpers.NickFlags
   alias RetroHexChatWeb.ChatLive.NotifyOps
 
   @id "notify-list-dialog"
@@ -47,12 +48,13 @@ defmodule RetroHexChatWeb.ChatLive.Components.NotifyListDialog do
      socket
      |> assign(:id, @id)
      |> assign(@initial)
-     |> assign(session: nil, timezone: "Etc/UTC")}
+     |> assign(session: nil, timezone: "Etc/UTC")
+     |> assign(entry_locales: %{}, entry_locales_cache: nil)}
   end
 
   # passthrough context (session, timezone)
   @spec update(map(), Phoenix.LiveView.Socket.t()) :: {:ok, Phoenix.LiveView.Socket.t()}
-  def update(assigns, socket), do: {:ok, assign(socket, assigns)}
+  def update(assigns, socket), do: {:ok, socket |> assign(assigns) |> put_locales()}
 
   # ── Selection / sub-form open-close ──────────────────────────────
 
@@ -162,6 +164,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.NotifyListDialog do
         id={@id}
         target={@myself}
         entries={@entries}
+        locales={@entry_locales}
         timezone={@timezone}
         selected_entry={@notify_selected}
         selected_note={@selected_note}
@@ -184,7 +187,17 @@ defmodule RetroHexChatWeb.ChatLive.Components.NotifyListDialog do
 
   defp put_session(socket, session) do
     send(self(), {:notify_dialog_session, session})
-    assign(socket, session: session)
+    socket |> assign(session: session) |> put_locales()
+  end
+
+  # The flag beside each tracked nickname, asked for again only when the list
+  # names different people — a buddy going on- or offline re-renders the window
+  # without changing who is on it.
+  defp put_locales(%{assigns: %{session: nil}} = socket), do: socket
+
+  defp put_locales(socket) do
+    nicks = Enum.map(socket.assigns.session.notify_list.entries, & &1.tracked_nickname)
+    NickFlags.assign_locales(socket, nicks, :entry_locales, :entry_locales_cache)
   end
 
   defp bubble_status(socket, message) do

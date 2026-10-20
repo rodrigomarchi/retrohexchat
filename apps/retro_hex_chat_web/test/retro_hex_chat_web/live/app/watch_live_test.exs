@@ -7,6 +7,7 @@ defmodule RetroHexChatWeb.App.WatchLiveTest do
 
   @moduletag :liveview
 
+  alias RetroHexChat.Accounts.NickLocales
   alias RetroHexChat.Lobby
   alias RetroHexChat.Lobby.SessionServer
   alias RetroHexChat.Services.RegisteredNick
@@ -97,6 +98,7 @@ defmodule RetroHexChatWeb.App.WatchLiveTest do
     %{token: token} = offered_match()
     %{token: other, host: host, guest: guest} = offered_match()
     LiveMatchPages.playing([host.nickname, guest.nickname], "hex_pong", other)
+    :ok = NickLocales.remember(host.nickname, "ja", store: true)
 
     {:ok, view, _html} = live(conn, "/watch/#{token}")
     send(view.pid, {:watch_game, %{status: "closed"}})
@@ -104,8 +106,39 @@ defmodule RetroHexChatWeb.App.WatchLiveTest do
     html = view |> element(~s([data-testid="watch-others"])) |> render()
     assert html =~ ~s(href="/watch/#{other}")
 
-    assert html =~ "#{host.nickname} × #{guest.nickname}" or
-             html =~ "#{guest.nickname} × #{host.nickname}"
+    text = html |> Floki.parse_fragment!() |> Floki.text() |> String.split() |> Enum.join(" ")
+
+    assert text =~ "#{host.nickname} × #{guest.nickname}" or
+             text =~ "#{guest.nickname} × #{host.nickname}"
+
+    # Each player's name after the flag of their language; nobody knows the
+    # guest's, so only the host has one.
+    assert html
+           |> Floki.parse_fragment!()
+           |> Floki.find(~s([data-testid="nick-flag"]))
+           |> Enum.flat_map(&Floki.attribute(&1, "data-locale")) == ["ja"]
+  end
+
+  test "the status bar names the players after the flags of their languages", %{conn: conn} do
+    %{token: token, host: host, guest: guest} = offered_match()
+    :ok = NickLocales.remember(guest.nickname, "pt_BR", store: true)
+
+    {:ok, _view, html} = live(conn, "/watch/#{token}")
+
+    players = html |> Floki.parse_document!() |> Floki.find(~s([data-testid="match-player"]))
+
+    assert Enum.map(players, &String.trim(Floki.text(&1))) == [
+             "#{host.nickname} ×",
+             guest.nickname
+           ]
+
+    assert players
+           |> Enum.map(
+             &(&1
+               |> Floki.find(~s([data-testid="nick-flag"]))
+               |> Floki.attribute("data-locale"))
+           ) ==
+             [[], ["pt_BR"]]
   end
 
   test "a session one person invited another to cannot be watched", %{conn: conn} do

@@ -10,7 +10,10 @@
       id={"line-#{entry.id}"}
     >
       <span class="text-muted-foreground shrink-0 tabular-nums">{at(entry.at)}</span>
-      <span class="font-bold shrink-0">
+      <%!-- The flag of the language the author uses the chat in, ahead of
+            the name, the way the chat draws it. --%>
+      <span class="font-bold shrink-0 inline-flex items-center gap-1">
+        <.nick_flag locale={Map.get(@locales, entry.author)} />
         {if entry.action?, do: "*", else: "<#{entry.author}>"}
       </span>
       <span class="break-words">

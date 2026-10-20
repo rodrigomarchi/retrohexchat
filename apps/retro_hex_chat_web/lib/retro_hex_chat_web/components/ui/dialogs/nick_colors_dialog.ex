@@ -21,6 +21,7 @@ defmodule RetroHexChatWeb.Components.UI.NickColorsDialog do
   import RetroHexChatWeb.Components.UI.ColorPicker
   import RetroHexChatWeb.Components.UI.Input
   import RetroHexChatWeb.Components.UI.DialogBanner
+  import RetroHexChatWeb.Components.UI.NickFlag
 
   alias RetroHexChatWeb.Components.Diagrams
   alias RetroHexChatWeb.Icons
@@ -32,6 +33,7 @@ defmodule RetroHexChatWeb.Components.UI.NickColorsDialog do
   attr :id, :string, required: true
   attr :target, :any, default: nil
   attr :nick_colors, :list, default: [], doc: "List of %{target_nickname, color_index} maps"
+  attr :locales, :map, default: %{}, doc: "Each nickname's locale, for its flag"
   attr :selected, :string, default: nil, doc: "Selected nickname"
   attr :palette_editing_index, :integer, default: nil, doc: "Color index in the palette editor"
   attr :show_add_dialog, :boolean, default: false
@@ -77,6 +79,7 @@ defmodule RetroHexChatWeb.Components.UI.NickColorsDialog do
           <.nick_colors_table
             target={@target}
             nick_colors={@nick_colors}
+            locales={@locales}
             on_edit={@on_edit}
             on_remove={@on_remove}
           />
@@ -236,6 +239,7 @@ defmodule RetroHexChatWeb.Components.UI.NickColorsDialog do
 
   attr :target, :any, default: nil
   attr :nick_colors, :list, required: true
+  attr :locales, :map, default: %{}
   attr :on_edit, :any, default: nil
   attr :on_remove, :any, default: nil
 
@@ -268,6 +272,7 @@ defmodule RetroHexChatWeb.Components.UI.NickColorsDialog do
               class="ab-mobile-list-primary"
               data-label={dgettext("dialogs", "Nick")}
             >
+              <.nick_flag locale={@locales[entry.target_nickname]} />
               {entry.target_nickname}
             </.table_cell>
             <.table_cell class="ab-mobile-list-meta" data-label={dgettext("dialogs", "Color")}>

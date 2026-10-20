@@ -14,6 +14,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.UrlCatcherDialog do
   import RetroHexChatWeb.Components.UI.UrlCatcher
 
   alias RetroHexChat.Chat.CapturedURL
+  alias RetroHexChatWeb.ChatLive.Helpers.NickFlags
 
   @id "url-catcher-dialog"
 
@@ -32,7 +33,9 @@ defmodule RetroHexChatWeb.ChatLive.Components.UrlCatcherDialog do
        filter_channel: nil,
        search_query: "",
        sort_column: :timestamp,
-       sort_direction: :desc
+       sort_direction: :desc,
+       poster_locales: %{},
+       poster_locales_cache: nil
      )}
   end
 
@@ -40,10 +43,12 @@ defmodule RetroHexChatWeb.ChatLive.Components.UrlCatcherDialog do
   @spec update(map(), Phoenix.LiveView.Socket.t()) :: {:ok, Phoenix.LiveView.Socket.t()}
   def update(assigns, socket) do
     {:ok,
-     assign(socket,
+     socket
+     |> assign(
        entries: Map.get(assigns, :entries, socket.assigns.entries),
        timezone: Map.get(assigns, :timezone, socket.assigns.timezone)
-     )}
+     )
+     |> put_locales()}
   end
 
   @impl true
@@ -86,6 +91,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.UrlCatcherDialog do
       <.url_catcher_panel
         id={@id}
         entries={@filtered}
+        locales={@poster_locales}
         sort_column={@sort_column}
         sort_direction={@sort_direction}
         filter_channel={@filter_channel}
@@ -99,6 +105,15 @@ defmodule RetroHexChatWeb.ChatLive.Components.UrlCatcherDialog do
       />
     </div>
     """
+  end
+
+  # The flag beside each poster. The log grows while the window is closed, so
+  # the lookup runs again only when a link arrives from somebody it has not
+  # seen yet.
+  @spec put_locales(Phoenix.LiveView.Socket.t()) :: Phoenix.LiveView.Socket.t()
+  defp put_locales(socket) do
+    posters = socket.assigns.entries |> Enum.map(& &1.posted_by) |> Enum.uniq() |> Enum.sort()
+    NickFlags.assign_locales(socket, posters, :poster_locales, :poster_locales_cache)
   end
 
   @spec filtered_entries(map()) :: [map()]

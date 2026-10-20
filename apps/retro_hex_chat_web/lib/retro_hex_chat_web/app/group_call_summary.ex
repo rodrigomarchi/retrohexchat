@@ -14,6 +14,7 @@ defmodule RetroHexChatWeb.App.GroupCallSummary do
   already normalised summary back through it.
   """
 
+  alias RetroHexChat.Accounts.NickLocales
   alias RetroHexChat.GroupCall
   alias RetroHexChatWeb.App.GroupCallShape
   alias RetroHexChatWeb.App.GroupCallStats
@@ -72,6 +73,48 @@ defmodule RetroHexChatWeb.App.GroupCallSummary do
           GroupCallShape.empty_participant_quality()
     }
   end
+
+  @doc """
+  Keep the language of everybody in `holder`'s roster beside it, as
+  `:nick_locales` (`%{nickname => locale | nil}`), for the flag drawn beside
+  each name.
+
+  `holder` is a summary or the call a participant holds — anything with
+  `:participants`, and an optional `:nickname` for the reader's own name. The
+  languages already in `known` (by default the holder's own) are kept while
+  their names are still in the roster; only a name new to it is asked about,
+  so a roster that only changed its media costs no lookup at all. A name
+  nobody could answer for is kept as `nil` so it is not asked again.
+  """
+  @spec put_nick_locales(map(), map() | nil) :: map()
+  def put_nick_locales(holder, known \\ nil) when is_map(holder) do
+    nicks = roster_nicks(holder)
+    known = Map.take(known || Map.get(holder, :nick_locales) || %{}, nicks)
+
+    locales =
+      case Enum.reject(nicks, &Map.has_key?(known, &1)) do
+        [] ->
+          known
+
+        missing ->
+          found = NickLocales.for_nicks(missing)
+          Map.merge(known, Map.new(missing, &{&1, Map.get(found, &1)}))
+      end
+
+    Map.put(holder, :nick_locales, locales)
+  end
+
+  defp roster_nicks(holder) do
+    participants = List.wrap(Map.get(holder, :participants))
+
+    [Map.get(holder, :nickname) | Enum.map(participants, &participant_nick/1)]
+    |> Enum.filter(&is_binary/1)
+    |> Enum.uniq()
+  end
+
+  defp participant_nick(%{nickname: nickname}), do: nickname
+  defp participant_nick(%{"nickname" => nickname}), do: nickname
+  defp participant_nick(_participant), do: nil
 
   defp summary_for(room) do
     case GroupCall.get_summary(room.token) do

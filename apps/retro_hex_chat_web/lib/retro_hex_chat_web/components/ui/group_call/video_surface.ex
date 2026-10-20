@@ -9,6 +9,7 @@ defmodule RetroHexChatWeb.Components.UI.GroupCall.VideoSurface do
   use RetroHexChatWeb.Component
 
   import RetroHexChatWeb.Components.UI.MediaSession.ReactionPicker, only: [reaction_icon: 1]
+  import RetroHexChatWeb.Components.UI.NickFlag
 
   alias RetroHexChatWeb.Icons
   alias RetroHexChatWeb.Icons.CallControls
@@ -113,7 +114,10 @@ defmodule RetroHexChatWeb.Components.UI.GroupCall.VideoSurface do
           </div>
 
           <div class="group-call-video-tile__nameplate icon-on-dark">
-            <span class="truncate font-bold" data-group-call-local-name>{@call.nickname}</span>
+            <span class="inline-flex min-w-0 items-center gap-1">
+              <.nick_flag locale={Map.get(@call[:nick_locales] || %{}, @call.nickname)} />
+              <span class="truncate font-bold" data-group-call-local-name>{@call.nickname}</span>
+            </span>
             <span class="group-call-video-tile__badges">
               <span class="group-call-video-badge" data-group-call-local-audio-badge>
                 <CallControls.icon_call_microphone class="group-call-video-badge__on h-4 w-4" />

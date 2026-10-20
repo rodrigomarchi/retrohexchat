@@ -2780,6 +2780,7 @@ msgstr "在當前頻道或PM中以實時突出顯示搜索消息."
 #: lib/retro_hex_chat_web/controllers/help_content/feature_key_bindings.html.heex:107
 #: lib/retro_hex_chat_web/controllers/help_content/feature_kick_notifications.html.heex:65
 #: lib/retro_hex_chat_web/controllers/help_content/feature_lag_indicator.html.heex:79
+#: lib/retro_hex_chat_web/controllers/help_content/feature_language_flags.html.heex:21
 #: lib/retro_hex_chat_web/controllers/help_content/feature_link_previews.html.heex:90
 #: lib/retro_hex_chat_web/controllers/help_content/feature_mentions.html.heex:36
 #: lib/retro_hex_chat_web/controllers/help_content/feature_message_attachments.html.heex:41
@@ -5940,6 +5941,7 @@ msgid "View ▸ Character Portraits, in the menu bar or the Start menu, switches
 msgstr "選單列或開始選單中的「檢視 ▸ 角色頭像」可以把它們關掉再打開。純文字的一行是這個聊天外觀的另一半，而閱讀繁忙頻道的人可能只想要文字。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_character_portraits.html.heex:21
+#: lib/retro_hex_chat_web/controllers/help_content/feature_language_flags.html.heex:14
 #, elixir-autogen, elixir-format
 msgid "Who Has One"
 msgstr "誰有頭像"
@@ -7155,3 +7157,23 @@ msgstr "唯有造過者. 從未走進空間的人 根本得不到肖像, 而不�
 #, elixir-autogen, elixir-format
 msgid "The character you made in a virtual space stands beside your nickname in the chat: in the conversation, in the user list, and on the card somebody sees when they look you up."
 msgstr "在虛擬空間中你製作的人物站在聊天時的暱稱旁邊:在對話中,在用戶列表中,在卡片上有人看到你時會看到你."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_language_flags.html.heex:7
+#, elixir-autogen, elixir-format
+msgid "Changing Yours"
+msgstr "更改你的旗幟"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_language_flags.html.heex:16
+#, elixir-autogen, elixir-format
+msgid "Everybody, visitors included. Somebody whose own language the chat does not offer reads it in English, so their flag is the English one."
+msgstr "所有人，包括訪客。如果某人的語言聊天不提供，他會以英語閱讀，因此他的旗幟是英語旗幟。"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_language_flags.html.heex:2
+#, elixir-autogen, elixir-format
+msgid "The small flag in front of a nickname is the language that person uses the chat in. You see it in the conversation, in the user list, in private messages, on the card somebody sees when they look you up, and above people in a virtual space."
+msgstr "暱稱前的小旗幟表示此人使用聊天的語言。它會出現在對話中、使用者列表中、私人訊息中、別人查看你時看到的卡片上，以及虛擬空間中人物的上方。"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_language_flags.html.heex:9
+#, elixir-autogen, elixir-format
+msgid "Your flag is the language you pick under Start ▸ Language. Pick another one and the chat reopens in it, and everybody else's user list shows your new flag."
+msgstr "你的旗幟就是你在 開始 ▸ 語言 中選擇的語言。選擇另一種語言後，聊天會以該語言重新開啟，所有人的使用者列表都會顯示你的新旗幟。"

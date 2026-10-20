@@ -37,6 +37,7 @@ defmodule RetroHexChatWeb.CallLive.Events do
   alias RetroHexChatWeb.App.GroupCallStats
   alias RetroHexChatWeb.App.GroupCallSummary
   alias RetroHexChatWeb.App.SessionHelpers
+  alias RetroHexChatWeb.Components.UI.NickFlag
   alias RetroHexChatWeb.Live.GroupCallConfirmDialog
   alias RetroHexChatWeb.Live.Surface
   alias RetroHexChatWeb.MediaDevices
@@ -928,6 +929,7 @@ defmodule RetroHexChatWeb.CallLive.Events do
       error: nil,
       warning: nil
     }
+    |> GroupCallSummary.put_nick_locales()
   end
 
   defp apply_connection_state(socket, state) do
@@ -1615,6 +1617,7 @@ defmodule RetroHexChatWeb.CallLive.Events do
         GroupCallShape.value(payload, :server_stats) || call.server_stats
       )
     )
+    |> GroupCallSummary.put_nick_locales()
   end
 
   defp refresh_server_stats(call) do
@@ -1646,7 +1649,7 @@ defmodule RetroHexChatWeb.CallLive.Events do
       |> Kernel.++([participant])
       |> Enum.sort_by(& &1.id)
 
-    %{call | participants: participants}
+    GroupCallSummary.put_nick_locales(%{call | participants: participants})
   end
 
   defp merge_existing_participant_media(%{id: nil} = participant, _call), do: participant
@@ -2138,10 +2141,28 @@ defmodule RetroHexChatWeb.CallLive.Events do
       mini: Map.get(layout, :mini, false),
       pinned_participant_ids: layout.pinned_participant_ids,
       self_participant_id: call.participant_id,
-      participants: Enum.map(call.participants || [], &GroupCallShape.participant_payload/1),
+      participants:
+        Enum.map(call.participants || [], fn participant ->
+          participant
+          |> GroupCallShape.participant_payload()
+          |> Map.put(:flag, participant_flag(call, participant))
+        end),
       tracks: Enum.map(call.tracks || [], &GroupCallShape.track_payload/1)
     }
   end
+
+  # What a JS-drawn name tile needs to draw the flag beside it: the tile is
+  # built in the browser, so it gets the sprite reference rather than a locale
+  # it would have to map to an icon itself.
+  defp participant_flag(call, %{nickname: nickname}) do
+    call
+    |> Map.get(:nick_locales)
+    |> Kernel.||(%{})
+    |> Map.get(nickname)
+    |> NickFlag.payload()
+  end
+
+  defp participant_flag(_call, _participant), do: nil
 
   defp put_screen_share_media(call, participant_id, active?) do
     call =

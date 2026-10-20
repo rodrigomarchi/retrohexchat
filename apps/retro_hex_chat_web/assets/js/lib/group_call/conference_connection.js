@@ -52,6 +52,7 @@ import { createTrackRegistry } from "./track_registry.js";
 import { createParticipantRegistry } from "./participant_registry.js";
 import { createTileView } from "./tile_view.js";
 import { localEmptyState, localEmptyStateCopy, participantTileMedia } from "./tiles.js";
+import { syncNickFlag } from "../nick_flag.js";
 import {
   actualMediaState,
   hasLiveTrack,
@@ -825,7 +826,10 @@ export function createConferenceConnection(el, ports) {
         tile.dataset.trackSource || null,
       );
 
-      if (nameEl) nameEl.textContent = name;
+      if (nameEl) {
+        nameEl.textContent = name;
+        syncNickFlag(nameEl, participant.flag);
+      }
       tile.dataset.mediaAudio = String(audio);
       tile.dataset.mediaVideo = String(video);
       tile.dataset.mediaScreen = String(screen);

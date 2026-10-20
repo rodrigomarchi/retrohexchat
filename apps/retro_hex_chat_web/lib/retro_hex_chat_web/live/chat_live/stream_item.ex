@@ -40,7 +40,9 @@ defmodule RetroHexChatWeb.ChatLive.StreamItem do
     :deleted_at,
     :reactions,
     :reply_count,
-    :avatar
+    :avatar,
+    :locale,
+    :reply_to_locale
   ]
 
   @doc """
@@ -144,6 +146,19 @@ defmodule RetroHexChatWeb.ChatLive.StreamItem do
   @spec put_avatar(map(), String.t() | nil) :: map()
   def put_avatar(item, nil), do: item
   def put_avatar(item, avatar), do: Map.put(item, :avatar, avatar)
+
+  @doc """
+  Gives a row the language its author uses the chat in, drawn as a flag beside
+  the nickname. Filled by the viewport, like `put_avatar/2`; absent draws nothing.
+  """
+  @spec put_locale(map(), String.t() | nil) :: map()
+  def put_locale(item, nil), do: item
+  def put_locale(item, locale), do: Map.put(item, :locale, locale)
+
+  @doc "The same for the author of the message a row answers."
+  @spec put_reply_locale(map(), String.t() | nil) :: map()
+  def put_reply_locale(item, nil), do: item
+  def put_reply_locale(item, locale), do: Map.put(item, :reply_to_locale, locale)
 
   defp base(message, source, id, author, timestamp) do
     %{

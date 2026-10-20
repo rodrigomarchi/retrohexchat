@@ -14,6 +14,7 @@ defmodule RetroHexChatWeb.Components.UI.Lobby.FilePanel do
   import RetroHexChatWeb.Components.UI.MediaSession.ActionButton
   import RetroHexChatWeb.Components.UI.MediaSession.StatusHeader
   import RetroHexChatWeb.Components.UI.Lobby.PanelParts
+  import RetroHexChatWeb.Components.UI.NickFlag
 
   alias RetroHexChatWeb.Icons
 
@@ -21,6 +22,7 @@ defmodule RetroHexChatWeb.Components.UI.Lobby.FilePanel do
   attr :file_transfer, :map, default: nil
   attr :nickname, :string, required: true
   attr :peer_nick, :string, default: nil
+  attr :peer_locale, :string, default: nil, doc: "the peer's language, for the flag"
   attr :max_file_size_mb, :integer, required: true
   attr :blocked_file_extensions, :list, required: true
 
@@ -57,7 +59,10 @@ defmodule RetroHexChatWeb.Components.UI.Lobby.FilePanel do
           <Icons.icon_file_send class="h-5 w-5 shrink-0" />
         </:icon>
         <:meta>
-          <span>{dgettext("lobby", "Peer %{peer}", peer: peer_label(@peer_nick))}</span>
+          <span class="inline-flex min-w-0 items-center gap-1">
+            <.nick_flag :if={@peer_nick} locale={@peer_locale} />
+            {dgettext("lobby", "Peer %{peer}", peer: peer_label(@peer_nick))}
+          </span>
           <span>{dgettext("lobby", "Max %{size} MB", size: @max_file_size_mb)}</span>
         </:meta>
         <:facets>

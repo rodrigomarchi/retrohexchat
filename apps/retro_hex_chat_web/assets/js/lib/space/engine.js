@@ -27,6 +27,7 @@ import {
 import { SpaceMap } from "./map.js";
 import { Camera } from "./camera.js";
 import { Renderer } from "./renderer.js";
+import { FlagImages } from "./flag_images.js";
 import { Interpolator } from "./interpolation.js";
 import { ChatState } from "./chat.js";
 import { focusKey, focusTarget } from "./focus.js";
@@ -174,6 +175,7 @@ export class SpaceEngine {
         map: this.map,
         camera: this.camera,
         avatarScale: this._avatarScale,
+        flags: new FlagImages({ urls: init.config?.flags }),
       });
 
     this.applySnapshot(init.snapshot);

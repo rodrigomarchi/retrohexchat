@@ -55,6 +55,12 @@ describe("normalizeParticipant", () => {
     expect(p.hp).toBe(0);
   });
 
+  it("keeps the participant's locale, and nothing that is not a string", () => {
+    expect(normalizeParticipant("registered:1", { locale: "pt_BR" }).locale).toBe("pt_BR");
+    expect(normalizeParticipant("registered:1", { locale: 3 }).locale).toBe(null);
+    expect(normalizeParticipant("registered:1", {}).locale).toBe(null);
+  });
+
   it("coerces coordinates to integers and clamps direction", () => {
     const p = normalizeParticipant("registered:2", { x: "7", y: 3.9, dir: "diagonal" });
     expect(p.x).toBe(7);

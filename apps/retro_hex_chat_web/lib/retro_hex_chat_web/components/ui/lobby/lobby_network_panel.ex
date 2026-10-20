@@ -36,6 +36,8 @@ defmodule RetroHexChatWeb.Components.UI.Lobby.LobbyNetworkPanel do
   # Diagram / identity — drive the Network tab's topology + whois.
   attr :nickname, :string, required: true
   attr :peer_nick, :string, required: true
+  attr :nickname_locale, :string, default: nil, doc: "the reader's language, for the flag"
+  attr :peer_locale, :string, default: nil, doc: "the peer's language, for the flag"
   attr :peer_online, :boolean, default: false
   attr :session_status, :string, required: true
   attr :connection_label, :string, default: nil
@@ -136,6 +138,8 @@ defmodule RetroHexChatWeb.Components.UI.Lobby.LobbyNetworkPanel do
           <.p2p_connection_diagram
             nickname={@nickname}
             peer_nick={@peer_nick}
+            nickname_locale={@nickname_locale}
+            peer_locale={@peer_locale}
             peer_online={@peer_online}
             session_status={@session_status}
             webrtc_state={@connection_label}

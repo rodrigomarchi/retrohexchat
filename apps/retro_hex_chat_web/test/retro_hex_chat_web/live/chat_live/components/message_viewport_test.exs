@@ -3,7 +3,11 @@ defmodule RetroHexChatWeb.ChatLive.Components.MessageViewportTest do
 
   import Phoenix.LiveViewTest
 
+  alias RetroHexChat.Accounts.NickLocales
+  alias RetroHexChat.Repo
   alias RetroHexChat.Scraper.Store
+  alias RetroHexChat.Services.{NickServ, RegisteredNick}
+  alias RetroHexChat.ShareLinks
   alias RetroHexChatWeb.ChatLive.Components.MessageViewport
 
   @moduletag :unit
@@ -62,6 +66,48 @@ defmodule RetroHexChatWeb.ChatLive.Components.MessageViewportTest do
       render_component(MessageViewport, id: MessageViewport.id(), loading_channel: "#general")
 
     assert loading =~ "Loading #general"
+  end
+
+  # The sharer's flag on a card is looked up with the page's authors, so a card
+  # posted by somebody else still names its sharer with their language.
+  describe "share cards" do
+    @describetag :integration
+
+    test "a card carries the language of whoever shared it" do
+      sharer = "Shr#{System.unique_integer([:positive])}"
+      {:ok, _reply} = NickServ.register(sharer, "password123")
+      registered = Repo.get_by!(RegisteredNick, nickname: sharer)
+      :ok = NickLocales.remember(sharer, "ja", store: true)
+
+      # Expired, so the card's detail is the sentence that names the sharer.
+      {:ok, link} =
+        ShareLinks.create(%{
+          kind: "space",
+          target: %{"channel" => "#nowhere#{System.unique_integer([:positive])}"},
+          creator_id: registered.id,
+          creator_nick: sharer,
+          expires_at: DateTime.add(DateTime.utc_now(), -60)
+        })
+
+      row = %{
+        id: "m1",
+        author: "alice",
+        content: "look https://retrohexchat.app/join/#{link.slug}",
+        type: :message,
+        content_format: "irc",
+        timestamp: ~U[2024-01-01 12:00:00Z]
+      }
+
+      html =
+        render_component(MessageViewport, id: MessageViewport.id(), action: {:reset, [row]})
+
+      assert [_flag] =
+               html
+               |> Floki.parse_fragment!()
+               |> Floki.find(
+                 ~s([data-testid="share-message-detail"] [data-testid="nick-flag"][data-locale="ja"])
+               )
+    end
   end
 
   # A card that only appeared on arrival was the whole defect: the client used to

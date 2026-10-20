@@ -16,6 +16,7 @@ defmodule RetroHexChat.Services.RegisteredNick do
     field :registered_at, :utc_datetime_usec
     field :last_seen_at, :utc_datetime_usec
     field :avatar, :string
+    field :locale, :string
 
     timestamps(type: :utc_datetime_usec)
   end

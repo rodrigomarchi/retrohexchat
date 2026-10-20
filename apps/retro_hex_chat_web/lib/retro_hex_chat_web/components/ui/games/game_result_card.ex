@@ -18,6 +18,7 @@ defmodule RetroHexChatWeb.Components.UI.GameResultCard do
   use RetroHexChatWeb.Component
 
   import RetroHexChatWeb.Components.UI.ChatCard
+  import RetroHexChatWeb.Components.UI.NickFlag
 
   alias RetroHexChat.Games.Catalog
   alias RetroHexChatWeb.App.ChatHelpers
@@ -60,7 +61,7 @@ defmodule RetroHexChatWeb.Components.UI.GameResultCard do
       </:badge>
 
       <span class="block font-bold" data-testid="game-result-score">
-        {score_line(@card)}
+        <.score_with_flags card={@card} />
       </span>
       <span class="block text-muted-foreground">
         {verdict(@card)}
@@ -113,6 +114,71 @@ defmodule RetroHexChatWeb.Components.UI.GameResultCard do
       p2_score: card.p2_score
     )
   end
+
+  attr :card, :map, required: true
+  attr :locales, :map, default: nil, doc: "nickname => locale; nil reads the card's own"
+
+  @doc """
+  `score_line/1` with each player's language flag right before their name.
+
+  The flags go in after translation, at the places the translation put the
+  names, so a language that orders the line differently still gets each flag
+  beside the right person. The text is exactly `score_line/1`'s.
+  """
+  @spec score_with_flags(map()) :: Phoenix.LiveView.Rendered.t()
+  def score_with_flags(assigns) do
+    assigns = assign(assigns, :parts, score_parts(assigns.card, assigns.locales))
+
+    ~H"""
+    <.score_part :for={part <- @parts} part={part} />
+    """
+  end
+
+  defp score_part(%{part: {:text, text}} = assigns) do
+    assigns = assign(assigns, :text, text)
+    ~H"{@text}"
+  end
+
+  defp score_part(%{part: {:player, nick, locale}} = assigns) do
+    assigns = assign(assigns, nick: nick, locale: locale)
+    ~H|<.nick_flag locale={@locale} class="mr-1" />{@nick}|
+  end
+
+  # Private-use marks stand in for the names while the line is translated;
+  # nothing a translator writes or a nickname holds contains them.
+  @p1_mark "\u{E000}1\u{E000}"
+  @p2_mark "\u{E000}2\u{E000}"
+
+  defp score_parts(card, locales) do
+    line =
+      dgettext("games", "%{p1} %{p1_score} × %{p2_score} %{p2}",
+        p1: @p1_mark,
+        p2: @p2_mark,
+        p1_score: card.p1_score,
+        p2_score: card.p2_score
+      )
+
+    ~r/(\x{E000}[12]\x{E000})/u
+    |> Regex.split(line, include_captures: true, trim: true)
+    |> Enum.map(fn
+      @p1_mark -> {:player, card.p1_nickname, player_locale(card, :p1, locales)}
+      @p2_mark -> {:player, opponent(card), player_locale(card, :p2, locales)}
+      text -> {:text, text}
+    end)
+  end
+
+  # The computer has no language; a person's comes from the page's lookup, or
+  # from the card when the card carries it.
+  defp player_locale(%{p2_nickname: nil}, :p2, _locales), do: nil
+
+  defp player_locale(card, side, locales) when is_map(locales),
+    do: Map.get(locales, Map.get(card, nickname_key(side)))
+
+  defp player_locale(card, :p1, _locales), do: Map.get(card, :p1_locale)
+  defp player_locale(card, :p2, _locales), do: Map.get(card, :p2_locale)
+
+  defp nickname_key(:p1), do: :p1_nickname
+  defp nickname_key(:p2), do: :p2_nickname
 
   @doc "Who the first player played: a person, or the computer at a difficulty."
   @spec opponent(map()) :: String.t()

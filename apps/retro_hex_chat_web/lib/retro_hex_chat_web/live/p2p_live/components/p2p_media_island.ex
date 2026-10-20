@@ -63,6 +63,7 @@ defmodule RetroHexChatWeb.P2PLive.Components.P2PMediaIsland do
        media_mode: "video",
        nickname: nil,
        peer_nick: nil,
+       peer_locale: nil,
        token: nil,
        user_id: nil
      )}
@@ -152,6 +153,7 @@ defmodule RetroHexChatWeb.P2PLive.Components.P2PMediaIsland do
         call_layout={@call_layout}
         self_view={@self_view}
         peer_nick={@peer_nick}
+        peer_locale={@peer_locale}
         nickname={@nickname}
         local_muted={@local_muted}
         local_camera_off={@local_camera_off}
@@ -177,6 +179,7 @@ defmodule RetroHexChatWeb.P2PLive.Components.P2PMediaIsland do
       connected: Map.get(assigns, :connected, socket.assigns.connected),
       nickname: Map.get(assigns, :nickname, socket.assigns.nickname),
       peer_nick: Map.get(assigns, :peer_nick, socket.assigns.peer_nick),
+      peer_locale: Map.get(assigns, :peer_locale, socket.assigns.peer_locale),
       token: Map.get(assigns, :token, socket.assigns.token),
       user_id: Map.get(assigns, :user_id, socket.assigns.user_id),
       self_view: Map.get(assigns, :self_view, socket.assigns.self_view),

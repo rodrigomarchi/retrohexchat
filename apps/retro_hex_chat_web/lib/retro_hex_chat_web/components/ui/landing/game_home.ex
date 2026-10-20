@@ -69,7 +69,7 @@ defmodule RetroHexChatWeb.Components.UI.Landing.GameHome do
         <.play_tab {assigns} />
       </.tabs_content>
       <.tabs_content builder={builder} value="live" data-testid="game-home-live">
-        <.live_now live={@live} playing_now={@playing_now} />
+        <.live_now live={@live} playing_now={@playing_now} nick_locales={@nick_locales} />
       </.tabs_content>
       <.tabs_content builder={builder} value="ranking" data-testid="game-home-ranking">
         <.ranking {assigns} />
@@ -315,7 +315,7 @@ defmodule RetroHexChatWeb.Components.UI.Landing.GameHome do
     </table>
 
     <h3 class="text-sm font-bold mb-1">{dgettext("games", "Your latest matches")}</h3>
-    <.match_list cards={@you.recent} testid="game-you-recent" />
+    <.match_list cards={@you.recent} locales={@nick_locales} testid="game-you-recent" />
     """
   end
 

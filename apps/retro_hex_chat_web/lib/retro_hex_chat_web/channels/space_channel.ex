@@ -15,9 +15,13 @@ defmodule RetroHexChatWeb.SpaceChannel do
   require Logger
 
   alias RetroHexChat.Accounts.Avatars
+  alias RetroHexChat.Accounts.NickLocales
   alias RetroHexChat.VirtualSpace
   alias RetroHexChat.VirtualSpace.ChannelJoinToken
   alias RetroHexChat.VirtualSpace.DirectMessageSpace
+  alias RetroHexChatWeb.I18n.Locales
+  alias RetroHexChatWeb.Icons.Registry
+  alias RetroHexChatWeb.Icons.Sprite
   alias RetroHexChatWeb.SpaceAssets
   alias RetroHexChatWeb.SpacePanels
   alias RetroHexChatWeb.SpaceSessionAnnouncement
@@ -375,7 +379,8 @@ defmodule RetroHexChatWeb.SpaceChannel do
     %{
       user_id: data.user_id,
       nickname: data.nickname,
-      avatar: parse_avatar(params)
+      avatar: parse_avatar(params),
+      locale: NickLocales.for_nick(data.nickname)
     }
   end
 
@@ -407,11 +412,21 @@ defmodule RetroHexChatWeb.SpaceChannel do
         # Cooldown between actions; the client plays none sooner than this.
         action_ms: VirtualSpace.action_ms(),
         text_chat: "global",
+        # The language flags its nameplates draw, locale → image: a canvas
+        # draws images, so each flag arrives as a document of its own.
+        flags: flag_images(),
         # The Construct is the one world its visitors can build in.
         buildable: VirtualSpace.space_kind(channel_name) == :construct
       },
       snapshot: result.snapshot
     }
+  end
+
+  defp flag_images do
+    Map.new(Locales.enabled(), fn %{code: code} ->
+      svg = Sprite.standalone(Registry.flag(code), 14)
+      {code, "data:image/svg+xml;base64," <> Base.encode64(svg)}
+    end)
   end
 
   defp join_error(:not_found), do: "not_found"

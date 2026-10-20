@@ -17,6 +17,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.SavedDialog do
   import RetroHexChatWeb.Components.UI.SavedDialog
 
   alias RetroHexChat.Chat.SavedMessages
+  alias RetroHexChatWeb.ChatLive.Helpers.NickFlags
   alias RetroHexChatWeb.PaginatedList
 
   @id "saved-dialog"
@@ -122,10 +123,14 @@ defmodule RetroHexChatWeb.ChatLive.Components.SavedDialog do
 
   @spec fetch(Phoenix.LiveView.Socket.t(), keyword()) :: RetroHexChat.Page.t()
   defp fetch(socket, opts) do
-    case socket.assigns.nickname do
-      nil -> %RetroHexChat.Page{}
-      nickname -> SavedMessages.list(nickname, opts)
-    end
+    page =
+      case socket.assigns.nickname do
+        nil -> %RetroHexChat.Page{}
+        nickname -> SavedMessages.list(nickname, opts)
+      end
+
+    # The flag beside each author, one lookup for the whole page.
+    NickFlags.put_author_locales(page, :author_nickname)
   end
 
   @spec to_integer(term()) :: integer()

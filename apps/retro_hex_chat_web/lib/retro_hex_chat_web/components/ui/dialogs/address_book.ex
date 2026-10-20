@@ -22,6 +22,7 @@ defmodule RetroHexChatWeb.Components.UI.AddressBook do
   import RetroHexChatWeb.Components.UI.Button
   import RetroHexChatWeb.Components.UI.Input
   import RetroHexChatWeb.Components.UI.DialogBanner
+  import RetroHexChatWeb.Components.UI.NickFlag
 
   alias RetroHexChatWeb.Components.Diagrams
   alias RetroHexChatWeb.Icons
@@ -38,6 +39,7 @@ defmodule RetroHexChatWeb.Components.UI.AddressBook do
   attr :show_contact_add_dialog, :boolean, default: false
   attr :show_contact_edit_dialog, :boolean, default: false
   attr :nick_color_fn, :any, default: nil, doc: "Function for nick color display"
+  attr :locales, :map, default: %{}, doc: "Each contact's locale by nickname, for its flag"
   attr :timezone, :string, default: nil, doc: "Timezone for timestamps"
   attr :selected_contact_note, :string, default: "", doc: "Note for the selected contact (edit)"
   attr :on_add, :any, default: nil, doc: "Add button callback"
@@ -82,6 +84,7 @@ defmodule RetroHexChatWeb.Components.UI.AddressBook do
             on_edit={@on_edit}
             on_remove={@on_remove}
             nick_color_fn={@nick_color_fn}
+            locales={@locales}
             timezone={@timezone}
           />
           <.add_button target={@target} on_add={@on_add} testid_prefix="contact" />
@@ -244,6 +247,7 @@ defmodule RetroHexChatWeb.Components.UI.AddressBook do
   attr :on_edit, :any, default: nil
   attr :on_remove, :any, default: nil
   attr :nick_color_fn, :any, default: nil
+  attr :locales, :map, default: %{}
   attr :timezone, :string, default: nil
 
   defp contacts_table(assigns) do
@@ -275,6 +279,7 @@ defmodule RetroHexChatWeb.Components.UI.AddressBook do
               class="ab-mobile-list-primary"
               data-label={dgettext("dialogs", "Nick")}
             >
+              <.nick_flag locale={@locales[contact.contact_nickname]} />
               <span class={@nick_color_fn && @nick_color_fn.(contact.contact_nickname)}>
                 {contact.contact_nickname}
               </span>

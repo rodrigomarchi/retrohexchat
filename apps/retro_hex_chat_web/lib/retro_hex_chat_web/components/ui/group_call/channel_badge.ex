@@ -9,6 +9,7 @@ defmodule RetroHexChatWeb.Components.UI.GroupCall.ChannelBadge do
   use RetroHexChatWeb.Component
 
   import RetroHexChatWeb.Components.UI.EntryPopover
+  import RetroHexChatWeb.Components.UI.NickFlag
   import RetroHexChatWeb.Components.UI.Popover
   import RetroHexChatWeb.Components.UI.ToolButton
 
@@ -121,7 +122,10 @@ defmodule RetroHexChatWeb.Components.UI.GroupCall.ChannelBadge do
               :for={participant <- @participants}
               class="flex min-w-0 items-center justify-between gap-1"
             >
-              <span class="truncate">{participant.nickname}</span>
+              <span class="inline-flex min-w-0 items-center gap-1">
+                <.nick_flag locale={Map.get(@nick_locales, participant.nickname)} />
+                <span class="truncate">{participant.nickname}</span>
+              </span>
               <span class="flex shrink-0 items-center gap-px text-muted-foreground">
                 <Icons.icon_raise_hand :if={hand_raised?(participant)} class="h-3 w-3 text-warning" />
                 <Icons.icon_microphone :if={media_enabled?(participant, :audio)} class="h-3 w-3" />
@@ -183,6 +187,7 @@ defmodule RetroHexChatWeb.Components.UI.GroupCall.ChannelBadge do
     assigns
     |> assign(:room_token, value(summary.room, :token))
     |> assign(:participants, participants)
+    |> assign(:nick_locales, summary.nick_locales)
     |> assign(:participant_count, participant_count)
     |> assign(:max_participants, max_participants)
     |> assign(:state, state)
@@ -202,7 +207,8 @@ defmodule RetroHexChatWeb.Components.UI.GroupCall.ChannelBadge do
       participants: [],
       pending_participants: [],
       server_stats: %{},
-      participant_quality: %{}
+      participant_quality: %{},
+      nick_locales: %{}
     }
   end
 
@@ -215,7 +221,8 @@ defmodule RetroHexChatWeb.Components.UI.GroupCall.ChannelBadge do
       participants: normalize_participants(value(summary, :participants)),
       pending_participants: normalize_participants(value(summary, :pending_participants)),
       server_stats: value(summary, :server_stats) || %{},
-      participant_quality: value(summary, :participant_quality) || %{}
+      participant_quality: value(summary, :participant_quality) || %{},
+      nick_locales: value(summary, :nick_locales) || %{}
     }
   end
 

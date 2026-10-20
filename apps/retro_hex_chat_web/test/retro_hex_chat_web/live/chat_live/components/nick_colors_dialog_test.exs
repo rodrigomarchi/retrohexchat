@@ -3,10 +3,20 @@ defmodule RetroHexChatWeb.ChatLive.Components.NickColorsDialogTest do
 
   import Phoenix.LiveViewTest
 
-  alias RetroHexChat.Accounts.{NickColors, Session}
+  alias RetroHexChat.Accounts.{NickColors, NickLocales, Session}
+  alias RetroHexChat.Services.NickServ
   alias RetroHexChatWeb.ChatLive.Components.NickColorsDialog
 
   @moduletag :unit
+
+  # A registered nickname whose language is on its row, as it is for somebody
+  # who opened the chat in Portuguese and left.
+  defp speaker(prefix) do
+    nickname = "#{prefix}#{System.unique_integer([:positive])}"
+    {:ok, _nick} = NickServ.register(nickname, "password123")
+    :ok = NickLocales.remember(nickname, "pt_BR", store: true)
+    nickname
+  end
 
   defp dialog(overrides) do
     sess = Map.get(overrides, :session, Session.new("Nick"))
@@ -26,6 +36,19 @@ defmodule RetroHexChatWeb.ChatLive.Components.NickColorsDialogTest do
 
     assert html =~ "ColorBud"
     assert html =~ "irc-bg-4"
+  end
+
+  test "draws each coloured nickname's language flag beside it" do
+    nickname = speaker("Col")
+    {:ok, colors} = NickColors.add_entry(NickColors.new(), nickname, 4)
+    html = dialog(%{session: Session.set_nick_colors(Session.new("Nick"), colors)})
+
+    assert [_flag] =
+             html
+             |> Floki.parse_fragment!()
+             |> Floki.find(
+               ~s(#nick-color-entry-#{nickname} [data-testid="nick-flag"][data-locale="pt_BR"])
+             )
   end
 
   test "renders the add sub-form targeting the component" do

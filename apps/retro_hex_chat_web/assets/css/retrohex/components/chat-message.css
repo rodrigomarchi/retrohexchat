@@ -31,6 +31,13 @@
   vertical-align: -2px;
 }
 
+/* The language flag rides the same line as the kind icon, so it drops the
+   same 2px: in a `font-size: 0` head, "middle" is the baseline itself. */
+.chat-message__head .rh-nick-flag {
+  vertical-align: -2px;
+  margin-left: 4px;
+}
+
 /* `inline-flex` on both: the container's `font-size: 0` collapses the newlines
    *between* these elements, but the formatter also leaves one *inside* each
    opening tag, and that one takes the element's own size — printing

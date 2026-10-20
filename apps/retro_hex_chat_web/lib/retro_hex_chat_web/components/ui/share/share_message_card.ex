@@ -27,6 +27,7 @@ defmodule RetroHexChatWeb.Components.UI.ShareMessageCard do
 
   import RetroHexChatWeb.Components.UI.Button
   import RetroHexChatWeb.Components.UI.ChatCard
+  import RetroHexChatWeb.Components.UI.NickFlag
 
   alias RetroHexChatWeb.Components.UI.ShareKind
   alias RetroHexChatWeb.Icons
@@ -48,12 +49,17 @@ defmodule RetroHexChatWeb.Components.UI.ShareMessageCard do
     default: nil,
     doc: "when the room stopped, already in the reader's timezone"
 
+  attr :creator_locale, :string,
+    default: nil,
+    doc: "the locale of whoever shared the link, for their flag where the card names them"
+
   @spec share_message_card(map()) :: Phoenix.LiveView.Rendered.t()
   def share_message_card(assigns) do
     assigns =
       assigns
       |> assign(:ended?, ended?(assigns.card))
       |> assign(:next_label, next_label(assigns.subject, assigns.card))
+      |> assign(:names_creator?, names_creator?(assigns.subject, assigns.card))
 
     ~H"""
     <%!-- A card that has ended is a record, not a dead control: the state is
@@ -103,6 +109,7 @@ defmodule RetroHexChatWeb.Components.UI.ShareMessageCard do
         class="text-muted-foreground block line-clamp-2"
         data-testid="share-message-detail"
       >
+        <.nick_flag :if={@names_creator?} locale={@creator_locale} />
         {detail(@subject, @card)}
       </span>
 
@@ -296,6 +303,13 @@ defmodule RetroHexChatWeb.Components.UI.ShareMessageCard do
     do: dgettext("share", "shared by %{nickname}", nickname: nick)
 
   defp shared_by(_card), do: dgettext("share", "shared with this conversation")
+
+  # Whether the detail line is the one that names who shared the link — the
+  # only place the card writes a person's nickname on its own.
+  defp names_creator?(subject, %{creator_nick: nick} = card) when is_binary(nick),
+    do: detail(subject, card) == shared_by(card)
+
+  defp names_creator?(_subject, _card), do: false
 
   # Only a match has anywhere to send the reader. Everything else falls through
   # to `nil` and draws no button at all — the catch-all here used to say "Back

@@ -12,11 +12,13 @@ defmodule RetroHexChatWeb.SpacePanels do
   use Gettext, backend: RetroHexChatWeb.Gettext
 
   alias RetroHexChat.Accounts.Avatars
+  alias RetroHexChat.Accounts.NickLocales
   alias RetroHexChat.Games.Activity
   alias RetroHexChat.Games.Catalog
   alias RetroHexChat.VirtualSpace
   alias RetroHexChatWeb.App.Paths
   alias RetroHexChatWeb.Components.UI.LiveMatch
+  alias RetroHexChatWeb.Components.UI.NickFlag
   alias RetroHexChatWeb.GameCatalog
   alias RetroHexChatWeb.SpaceRef
 
@@ -46,15 +48,26 @@ defmodule RetroHexChatWeb.SpacePanels do
       url: "/chat/attachments/#{id}/preview",
       name: image.filename,
       author: image.author,
-      avatar: portrait(image.author)
+      avatar: portrait(image.author),
+      flag: NickFlag.payload(NickLocales.for_nick(image.author))
     }
 
     %{modal | image: image}
   end
 
   defp for_the_page(%{kind: "board", pins: [_ | _] = pins} = modal) do
-    avatars = pins |> Enum.map(& &1.author) |> Avatars.for_nicks()
-    %{modal | pins: Enum.map(pins, &Map.put(&1, :avatar, Map.get(avatars, &1.author)))}
+    authors = Enum.map(pins, & &1.author)
+    avatars = Avatars.for_nicks(authors)
+    locales = NickLocales.for_nicks(authors)
+
+    pins =
+      Enum.map(pins, fn pin ->
+        pin
+        |> Map.put(:avatar, Map.get(avatars, pin.author))
+        |> Map.put(:flag, NickFlag.payload(Map.get(locales, pin.author)))
+      end)
+
+    %{modal | pins: pins}
   end
 
   # A cabinet the Game Room came with plays one game: that game is up front —

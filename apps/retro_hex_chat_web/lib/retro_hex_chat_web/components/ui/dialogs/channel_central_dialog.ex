@@ -20,6 +20,7 @@ defmodule RetroHexChatWeb.Components.UI.ChannelCentralDialog do
   import RetroHexChatWeb.Components.UI.DialogBanner
   import RetroHexChatWeb.Components.UI.Fieldset
   import RetroHexChatWeb.Components.UI.ListStates
+  import RetroHexChatWeb.Components.UI.NickFlag
   import RetroHexChatWeb.Components.UI.Tabs
   import RetroHexChatWeb.Components.UI.Table
   import RetroHexChatWeb.Components.UI.Button
@@ -61,6 +62,11 @@ defmodule RetroHexChatWeb.Components.UI.ChannelCentralDialog do
   attr :transfer_error, :string, default: nil
   attr :registration, :map, default: nil
   attr :registered_since, :string, default: nil, doc: "When the channel was registered, formatted"
+
+  attr :nick_locales, :map,
+    default: %{},
+    doc: "The locale of each person the window names, by nickname, for their flag"
+
   attr :access_tab, :string, default: "sop"
   attr :access_nick, :string, default: ""
   attr :cs_error, :string, default: nil
@@ -167,6 +173,7 @@ defmodule RetroHexChatWeb.Components.UI.ChannelCentralDialog do
             topic={@topic}
             topic_set_by={@topic_set_by}
             topic_set_at={@topic_set_at}
+            nick_locales={@nick_locales}
             created_at={@created_at}
             member_count={@member_count}
             operator={@operator}
@@ -198,6 +205,7 @@ defmodule RetroHexChatWeb.Components.UI.ChannelCentralDialog do
             list_type={@list_type}
             entries={@list_entries}
             total={@list_total}
+            nick_locales={@nick_locales}
             operator={@operator}
             on_list_type={@on_list_type}
             on_add={@on_list_add}
@@ -213,6 +221,7 @@ defmodule RetroHexChatWeb.Components.UI.ChannelCentralDialog do
             identified={@identified}
             registration={@registration}
             registered_since={@registered_since}
+            nick_locales={@nick_locales}
             access_tab={@access_tab}
             error_message={@cs_error}
             access_adding={@access_adding}
@@ -266,6 +275,7 @@ defmodule RetroHexChatWeb.Components.UI.ChannelCentralDialog do
   attr :identified, :boolean, default: false
   attr :registration, :map, default: nil
   attr :registered_since, :string, default: nil, doc: "When the channel was registered, formatted"
+  attr :nick_locales, :map, default: %{}, doc: "Locale by nickname, for each person's flag"
   attr :access_tab, :string, default: "sop"
   attr :error_message, :string, default: nil
   attr :confirm_drop, :boolean, default: false
@@ -334,7 +344,10 @@ defmodule RetroHexChatWeb.Components.UI.ChannelCentralDialog do
             <span class="text-muted-foreground">
               {dgettext("dialogs", "Founder")}:
             </span>
-            <span class="cc-status-value">{Map.get(@registration, :founder)}</span>
+            <span class="cc-status-value">
+              <.nick_flag locale={@nick_locales[Map.get(@registration, :founder)]} />
+              {Map.get(@registration, :founder)}
+            </span>
             <span class="text-muted-foreground">
               {dgettext("dialogs", "Since")}:
             </span>
@@ -512,12 +525,14 @@ defmodule RetroHexChatWeb.Components.UI.ChannelCentralDialog do
                   class="cc-mobile-list-primary px-2 py-1 text-xs font-mono"
                   data-label={dgettext("dialogs", "Nickname")}
                 >
+                  <.nick_flag locale={@nick_locales[entry.nickname]} />
                   {entry.nickname}
                 </.table_cell>
                 <.table_cell
                   class="cc-mobile-list-meta px-2 py-1 text-xs"
                   data-label={dgettext("dialogs", "Added By")}
                 >
+                  <.nick_flag locale={@nick_locales[entry.added_by]} />
                   {entry.added_by}
                 </.table_cell>
                 <.table_cell :if={@can_manage_active?} class="cc-mobile-list-action px-2 py-1">
@@ -796,6 +811,7 @@ defmodule RetroHexChatWeb.Components.UI.ChannelCentralDialog do
   attr :topic, :string, default: ""
   attr :topic_set_by, :string, default: nil
   attr :topic_set_at, :string, default: nil
+  attr :nick_locales, :map, default: %{}, doc: "Locale by nickname, for the topic setter's flag"
   attr :created_at, :string, default: nil
   attr :member_count, :integer, default: 0
   attr :operator, :boolean, default: false
@@ -873,6 +889,7 @@ defmodule RetroHexChatWeb.Components.UI.ChannelCentralDialog do
             {@topic}
           </p>
           <div :if={@topic_set_by} class="text-[10px] text-muted-foreground mt-1">
+            <.nick_flag locale={@nick_locales[@topic_set_by]} />
             {dgettext("dialogs", "Set by %{nick}", nick: @topic_set_by)}
             <span :if={@topic_set_at}>{dgettext("dialogs", "on %{date}", date: @topic_set_at)}</span>
           </div>
@@ -897,6 +914,7 @@ defmodule RetroHexChatWeb.Components.UI.ChannelCentralDialog do
             {@topic}
           </p>
           <div :if={@topic_set_by} class="text-[10px] text-muted-foreground mt-1">
+            <.nick_flag locale={@nick_locales[@topic_set_by]} />
             {dgettext("dialogs", "Set by %{nick}", nick: @topic_set_by)}
             <span :if={@topic_set_at}>{dgettext("dialogs", "on %{date}", date: @topic_set_at)}</span>
           </div>
@@ -1224,6 +1242,7 @@ defmodule RetroHexChatWeb.Components.UI.ChannelCentralDialog do
   attr :list_type, :string, required: true
   attr :entries, :list, required: true
   attr :total, :integer, default: nil, doc: "Entries the channel holds, for the truncation strip"
+  attr :nick_locales, :map, default: %{}, doc: "Locale by nickname, for each setter's flag"
   attr :operator, :boolean, default: false
   attr :on_list_type, :any, default: nil
   attr :on_add, :any, default: nil
@@ -1305,6 +1324,7 @@ defmodule RetroHexChatWeb.Components.UI.ChannelCentralDialog do
                 class="cc-mobile-list-meta px-2 py-1 text-xs"
                 data-label={dgettext("dialogs", "Set By")}
               >
+                <.nick_flag locale={@nick_locales[entry.set_by]} />
                 {entry.set_by}
               </.table_cell>
               <.table_cell

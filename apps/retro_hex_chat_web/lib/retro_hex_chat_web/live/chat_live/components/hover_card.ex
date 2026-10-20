@@ -99,6 +99,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.HoverCard do
         contact_note={@card[:contact_note]}
         is_ignored={@card[:is_ignored] || false}
         avatar={@card[:avatar]}
+        locale={@card[:locale]}
         on_close="nick_hover_dismiss"
       />
     </div>

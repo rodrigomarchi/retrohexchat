@@ -17,6 +17,8 @@ defmodule RetroHexChatWeb.Components.UI.MessageReplyBlock do
   """
   use RetroHexChatWeb.Component
 
+  import RetroHexChatWeb.Components.UI.NickFlag
+
   alias RetroHexChatWeb.Icons
 
   @doc "Renders a reply-to indicator block above a message."
@@ -24,6 +26,7 @@ defmodule RetroHexChatWeb.Components.UI.MessageReplyBlock do
   attr :author, :string, default: "?", doc: "Author of the parent message"
   attr :preview, :string, default: nil, doc: "Preview text of the parent message (nil if deleted)"
   attr :nick_color, :string, default: nil, doc: "CSS class for the author nick color"
+  attr :locale, :string, default: nil, doc: "the author's locale, drawn as a flag"
   attr :on_click, :any, default: nil, doc: "Event name for click-to-scroll"
   attr :class, :any, default: nil
   attr :rest, :global
@@ -46,6 +49,7 @@ defmodule RetroHexChatWeb.Components.UI.MessageReplyBlock do
       {@rest}
     >
       <Icons.icon_btn_prev class="w-3 h-3 rotate-180" />
+      <.nick_flag locale={@locale} />
       <span class={@nick_color}>{@author}</span>
       <span :if={@preview} class="truncate">{@preview}</span>
       <span :if={!@preview} class="italic">{dgettext("chat", "[message deleted]")}</span>

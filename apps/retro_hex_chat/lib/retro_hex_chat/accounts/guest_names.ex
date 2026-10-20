@@ -46,6 +46,27 @@ defmodule RetroHexChat.Accounts.GuestNames do
     GenServer.call(server, {:claim, holder(browser_id, self()), self()})
   end
 
+  @doc """
+  Records the language the calling tab reads the chat in, against the guest
+  name it claimed — the flag drawn beside that name in the user list. One per
+  guest, the latest tab's: a visitor reading in two languages at once is rare,
+  and the one they opened last is the one they chose last. A tab that claimed
+  nothing has no name to record it against.
+  """
+  @spec put_locale(String.t(), GenServer.server()) :: :ok
+  def put_locale(locale, server \\ __MODULE__) when is_binary(locale) do
+    GenServer.call(server, {:put_locale, self(), locale})
+  end
+
+  @doc """
+  The language each of these guests reads in, keyed by the name as asked.
+  A name nobody holds, or whose holder never said, is absent.
+  """
+  @spec locales([String.t()], GenServer.server()) :: %{String.t() => String.t()}
+  def locales(names, server \\ __MODULE__)
+  def locales([], _server), do: %{}
+  def locales(names, server), do: GenServer.call(server, {:locales, names})
+
   defp holder(browser_id, _pid) when is_binary(browser_id) and browser_id != "",
     do: {:browser, browser_id}
 
@@ -55,7 +76,7 @@ defmodule RetroHexChat.Accounts.GuestNames do
 
   @impl true
   def init(uniform) do
-    # holders: holder => %{name, tabs: %{pid => ref}}; names: key(name) => holder;
+    # holders: holder => %{name, tabs: %{pid => ref}, locale}; names: key(name) => holder;
     # tabs: pid => holder.
     {:ok, %{holders: %{}, names: %{}, tabs: %{}, uniform: uniform}}
   end
@@ -80,6 +101,25 @@ defmodule RetroHexChat.Accounts.GuestNames do
 
         {:reply, name, state}
     end
+  end
+
+  def handle_call({:put_locale, pid, locale}, _from, state) do
+    case state.tabs do
+      %{^pid => holder} -> {:reply, :ok, put_in(state, [:holders, holder, :locale], locale)}
+      _unclaimed -> {:reply, :ok, state}
+    end
+  end
+
+  def handle_call({:locales, names}, _from, state) do
+    found =
+      for name <- names,
+          is_binary(name),
+          holder = Map.get(state.names, Nickname.key(name)),
+          locale = get_in(state.holders, [holder, :locale]),
+          into: %{},
+          do: {name, locale}
+
+    {:reply, found, state}
   end
 
   @impl true

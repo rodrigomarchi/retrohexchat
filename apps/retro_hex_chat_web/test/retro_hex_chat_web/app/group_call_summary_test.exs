@@ -68,4 +68,25 @@ defmodule RetroHexChatWeb.App.GroupCallSummaryTest do
       assert GroupCallSummary.normalize(once, "#retro") == once
     end
   end
+
+  describe "put_nick_locales/2" do
+    test "keeps what is known for the names still there and asks about nobody else" do
+      holder = %{
+        nickname: "ana",
+        participants: [%{nickname: "ana"}, %{nickname: "bob"}],
+        nick_locales: %{"ana" => "pt_BR", "bob" => nil, "gone" => "de"}
+      }
+
+      # Every name is already known, so this answers without a lookup.
+      assert GroupCallSummary.put_nick_locales(holder).nick_locales ==
+               %{"ana" => "pt_BR", "bob" => nil}
+    end
+
+    test "known languages handed in win over the holder's own" do
+      holder = %{participants: [%{"nickname" => "ana"}], nick_locales: %{}}
+
+      assert GroupCallSummary.put_nick_locales(holder, %{"ana" => "fr"}).nick_locales ==
+               %{"ana" => "fr"}
+    end
+  end
 end

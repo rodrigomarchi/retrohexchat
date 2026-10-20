@@ -29,6 +29,7 @@ defmodule RetroHexChatWeb.Site.Pages.Join do
   alias RetroHexChatWeb.Components.UI.JoinCard
 
   alias Phoenix.LiveView.Socket
+  alias RetroHexChat.Accounts.NickLocales
   alias RetroHexChat.Channels
   alias RetroHexChat.Channels.Visibility
   alias RetroHexChat.Chat.Queries
@@ -329,10 +330,16 @@ defmodule RetroHexChatWeb.Site.Pages.Join do
   # stranger could not have listed does not get to leak its conversation either.
   defp assign_preview_lines(%{assigns: %{kind: "channel", subject: %{name: name}}} = socket)
        when is_binary(name) do
-    assign(socket, preview: Queries.preview_messages(name))
+    assign(socket, preview: name |> Queries.preview_messages() |> put_author_locales())
   end
 
   defp assign_preview_lines(socket), do: assign(socket, preview: [])
+
+  # The flag before each author, for every line in one lookup.
+  defp put_author_locales(lines) do
+    locales = lines |> Enum.map(& &1.author) |> NickLocales.for_nicks()
+    Enum.map(lines, &Map.put(&1, :author_locale, Map.get(locales, &1.author)))
+  end
 
   defp space_name(channel_name) do
     if Visibility.nameable?(channel_name) do

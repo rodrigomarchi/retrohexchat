@@ -68,6 +68,21 @@ defmodule RetroHexChatWeb.ChatLive.VisitorTest do
       refute Enum.any?(state.members, fn {nick, _role} -> nick == guest_name end)
     end
 
+    # A visitor has a language like anybody else: the chat's, drawn as a flag
+    # in front of their guest name in the list of visitors.
+    test "is listed with the flag of the language the chat is shown in", %{conn: conn} do
+      {:ok, view, _html} = live(conn, "/ja")
+      guest_name = assigns(view).visitor_nick
+
+      [row] =
+        view
+        |> render()
+        |> Floki.parse_document!()
+        |> Floki.find(~s([data-testid="nicklist-guest-#{guest_name}"]))
+
+      assert [_flag] = Floki.find(row, ~s([data-testid="nick-flag"][data-locale="ja"]))
+    end
+
     test "stops being listed when the tab closes", %{conn: conn} do
       {:ok, view, _html} = live(conn, "/")
       guest_name = assigns(view).visitor_nick

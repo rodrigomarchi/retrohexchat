@@ -26,6 +26,8 @@ defmodule RetroHexChatWeb.ChatLive.Components.ChatTabs do
 
   import RetroHexChatWeb.Components.UI.IrcTabs
 
+  alias RetroHexChatWeb.ChatLive.Helpers.NickFlags
+
   attr :class, :any, default: nil, doc: "Extra classes for the tab bar container"
   attr :unread_counts, :map, default: %{}, doc: "Unread counts keyed by channel / \"pm:nick\""
   attr :status_unread, :boolean, default: false
@@ -33,6 +35,11 @@ defmodule RetroHexChatWeb.ChatLive.Components.ChatTabs do
   attr :active_channel, :string, default: nil
   attr :active_pm, :string, default: nil
   attr :nick_color_fn, :any, required: true, doc: "nick -> CSS color class (PM tab)"
+
+  attr :members, :list,
+    default: [],
+    doc: "the conversation's roster; a PM tab draws its peer's flag from it"
+
   attr :on_switch, :any, default: "switch_tab"
   attr :on_close, :any, default: "close_tab"
   slot :actions
@@ -63,6 +70,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.ChatTabs do
         unread={tab.unread}
         closeable={tab.closeable}
         nick_color={tab.nick_color}
+        locale={tab.locale}
         p2p={tab.p2p}
         group_call={tab.group_call}
         group_call_summary={tab.group_call_summary}
@@ -91,6 +99,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.ChatTabs do
       unread: assigns.status_unread,
       closeable: false,
       nick_color: nil,
+      locale: nil,
       p2p: false,
       p2p_state: nil,
       p2p_session: nil,
@@ -116,6 +125,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.ChatTabs do
       unread: Map.get(assigns.unread_counts, channel, 0) > 0,
       closeable: true,
       nick_color: nil,
+      locale: nil,
       p2p: false,
       p2p_state: nil,
       p2p_session: nil,
@@ -135,6 +145,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.ChatTabs do
       unread: Map.get(assigns.unread_counts, "pm:#{pm}", 0) > 0,
       closeable: true,
       nick_color: assigns.nick_color_fn.(pm),
+      locale: NickFlags.member_locale(assigns.members, pm),
       p2p: pm_p2p_session != nil,
       p2p_state: pm_p2p_state,
       p2p_session: pm_p2p_session,

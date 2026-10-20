@@ -18,6 +18,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.PinnedDialog do
   import RetroHexChatWeb.Components.UI.PinnedDialog
 
   alias RetroHexChat.Channels.Pins
+  alias RetroHexChatWeb.ChatLive.Helpers.NickFlags
   alias RetroHexChatWeb.PaginatedList
 
   @id "pinned-dialog"
@@ -111,9 +112,13 @@ defmodule RetroHexChatWeb.ChatLive.Components.PinnedDialog do
 
   @spec fetch(Phoenix.LiveView.Socket.t(), keyword()) :: RetroHexChat.Page.t()
   defp fetch(socket, opts) do
-    case socket.assigns.channel do
-      nil -> %RetroHexChat.Page{}
-      channel -> Pins.list(channel, opts)
-    end
+    page =
+      case socket.assigns.channel do
+        nil -> %RetroHexChat.Page{}
+        channel -> Pins.list(channel, opts)
+      end
+
+    # The flag beside each author, one lookup for the whole page.
+    NickFlags.put_author_locales(page, :author_nickname)
   end
 end

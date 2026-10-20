@@ -3015,6 +3015,7 @@ msgstr ""
 #: lib/retro_hex_chat_web/controllers/help_content/feature_key_bindings.html.heex:107
 #: lib/retro_hex_chat_web/controllers/help_content/feature_kick_notifications.html.heex:65
 #: lib/retro_hex_chat_web/controllers/help_content/feature_lag_indicator.html.heex:79
+#: lib/retro_hex_chat_web/controllers/help_content/feature_language_flags.html.heex:21
 #: lib/retro_hex_chat_web/controllers/help_content/feature_link_previews.html.heex:90
 #: lib/retro_hex_chat_web/controllers/help_content/feature_mentions.html.heex:36
 #: lib/retro_hex_chat_web/controllers/help_content/feature_message_attachments.html.heex:41
@@ -6708,6 +6709,7 @@ msgid "View ▸ Character Portraits, in the menu bar or the Start menu, switches
 msgstr "«Вид ▸ Портреты персонажей» в строке меню или в меню «Пуск» выключает их и включает обратно. Простая текстовая строка — вторая половина облика этого чата, и тот, кто читает оживлённый канал, может хотеть одних лишь слов."
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_character_portraits.html.heex:21
+#: lib/retro_hex_chat_web/controllers/help_content/feature_language_flags.html.heex:14
 #, elixir-autogen, elixir-format
 msgid "Who Has One"
 msgstr "У кого он есть"
@@ -7933,3 +7935,23 @@ msgstr "Только те, кто его сделал. Кто-то, кто ни�
 #, elixir-autogen, elixir-format
 msgid "The character you made in a virtual space stands beside your nickname in the chat: in the conversation, in the user list, and on the card somebody sees when they look you up."
 msgstr "Персонаж, которого вы сделали в виртуальном пространстве, стоит рядом с вашим прозвищем в чате: в разговоре, в списке пользователей и на карте кто-то видит, когда они смотрят на вас."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_language_flags.html.heex:7
+#, elixir-autogen, elixir-format
+msgid "Changing Yours"
+msgstr "Как сменить свой"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_language_flags.html.heex:16
+#, elixir-autogen, elixir-format
+msgid "Everybody, visitors included. Somebody whose own language the chat does not offer reads it in English, so their flag is the English one."
+msgstr "У всех, включая гостей. Тот, чей язык чат не предлагает, читает его по-английски, поэтому его флаг — английский."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_language_flags.html.heex:2
+#, elixir-autogen, elixir-format
+msgid "The small flag in front of a nickname is the language that person uses the chat in. You see it in the conversation, in the user list, in private messages, on the card somebody sees when they look you up, and above people in a virtual space."
+msgstr "Маленький флаг перед ником — это язык, на котором человек пользуется чатом. Его видно в разговоре, в списке пользователей, в личных сообщениях, на карточке, которую видят, когда смотрят информацию о вас, и над людьми в виртуальном пространстве."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_language_flags.html.heex:9
+#, elixir-autogen, elixir-format
+msgid "Your flag is the language you pick under Start ▸ Language. Pick another one and the chat reopens in it, and everybody else's user list shows your new flag."
+msgstr "Ваш флаг — это язык, выбранный в меню Начать ▸ Язык. Выберите другой, и чат откроется заново на нём, а в списках пользователей у всех появится ваш новый флаг."

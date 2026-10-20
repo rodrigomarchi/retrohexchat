@@ -15,6 +15,7 @@ defmodule RetroHexChatWeb.Components.UI.Lobby.GamePanel do
   import RetroHexChatWeb.Components.UI.MediaSession.ActionButton
   import RetroHexChatWeb.Components.UI.MediaSession.StatusHeader
   import RetroHexChatWeb.Components.UI.Lobby.PanelParts
+  import RetroHexChatWeb.Components.UI.NickFlag
 
   import RetroHexChatWeb.Components.UI.ToolButton
 
@@ -28,6 +29,7 @@ defmodule RetroHexChatWeb.Components.UI.Lobby.GamePanel do
   attr :game_outgoing, :boolean, required: true
   attr :games, :list, required: true
   attr :peer_nick, :string, required: true
+  attr :peer_locale, :string, default: nil, doc: "the peer's language, for the flag"
   attr :watchers, :integer, default: 0, doc: "how many pages are watching the match"
 
   attr :watch_url, :string,
@@ -60,7 +62,10 @@ defmodule RetroHexChatWeb.Components.UI.Lobby.GamePanel do
           <Icons.icon_joystick class="h-5 w-5 shrink-0" />
         </:icon>
         <:meta>
-          <span>{dgettext("lobby", "Peer %{peer}", peer: peer_label(@peer_nick))}</span>
+          <span class="inline-flex min-w-0 items-center gap-1">
+            <.nick_flag :if={@peer_nick} locale={@peer_locale} />
+            {dgettext("lobby", "Peer %{peer}", peer: peer_label(@peer_nick))}
+          </span>
           <span>{game_count_label(@games)}</span>
         </:meta>
         <:facets>
@@ -189,7 +194,11 @@ defmodule RetroHexChatWeb.Components.UI.Lobby.GamePanel do
           data-testid="lobby-game-consent"
         >
           <:icon><Icons.game_icon game_id={@game_request.game_id} class="h-6 w-6" /></:icon>
-          <p class="font-bold">
+          <p class="inline-flex min-w-0 items-center gap-1 font-bold">
+            <.nick_flag
+              :if={@game_request.proposer_nick == @peer_nick}
+              locale={@peer_locale}
+            />
             {dgettext("lobby", "%{peer} wants to play", peer: @game_request.proposer_nick)}
           </p>
           <p class="truncate text-muted-foreground">{game_name(@games, @game_request.game_id)}</p>

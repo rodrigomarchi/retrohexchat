@@ -29,6 +29,9 @@ defmodule RetroHexChatWeb.Site.Pages.Archive do
     router: RetroHexChatWeb.Router,
     statics: RetroHexChatWeb.static_paths()
 
+  import RetroHexChatWeb.Components.UI.NickFlag
+
+  alias RetroHexChat.Accounts.NickLocales
   alias RetroHexChat.Chat.Archive
   alias RetroHexChatWeb.BuildInfo
   alias RetroHexChatWeb.SEO
@@ -58,6 +61,7 @@ defmodule RetroHexChatWeb.Site.Pages.Archive do
          cursor: cursor,
          first: first,
          entries: entries,
+         locales: entries |> Enum.map(& &1.author) |> NickLocales.for_nicks(),
          has_more: page.has_more,
          path: page_path(day_path, cursor),
          prev_path: previous_path(day_path, previous),
@@ -82,8 +86,9 @@ defmodule RetroHexChatWeb.Site.Pages.Archive do
 
   @doc """
   The `etag` of what `data/1` returned: the text of the lines a page shows —
-  so a second edit of an already edited line still changes it — and the
-  release, so a fix to how a page is drawn reaches a robot that holds the old one.
+  so a second edit of an already edited line still changes it — the flags
+  beside its authors, and the release, so a fix to how a page is drawn reaches
+  a robot that holds the old one.
   """
   @spec etag(map()) :: String.t()
   def etag(%{kind: :index} = data), do: hash([data.channel, data.days, BuildInfo.version()])
@@ -95,7 +100,8 @@ defmodule RetroHexChatWeb.Site.Pages.Archive do
       data.cursor,
       data.has_more,
       BuildInfo.version(),
-      Enum.map(data.entries, &{&1.id, &1.text})
+      Enum.map(data.entries, &{&1.id, &1.text}),
+      data.locales
     ])
   end
 

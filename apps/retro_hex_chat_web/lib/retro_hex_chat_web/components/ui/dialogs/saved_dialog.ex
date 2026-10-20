@@ -33,6 +33,7 @@ defmodule RetroHexChatWeb.Components.UI.SavedDialog do
   import RetroHexChatWeb.Components.UI.Button
   import RetroHexChatWeb.Components.UI.ListStates
   import RetroHexChatWeb.Components.UI.DialogBanner
+  import RetroHexChatWeb.Components.UI.NickFlag
 
   alias RetroHexChatWeb.App.ChatHelpers
   alias RetroHexChatWeb.Components.Diagrams
@@ -42,7 +43,11 @@ defmodule RetroHexChatWeb.Components.UI.SavedDialog do
   @doc "Renders the Saved Messages window body."
   attr :id, :string, required: true
   attr :first_row, :map, default: nil, doc: "Newest row, for the banner picture"
-  attr :entries, :any, required: true, doc: "The stream of saved rows"
+
+  attr :entries, :any,
+    required: true,
+    doc: "The stream of saved rows; `:author_locale` on a row draws its author's flag"
+
   attr :state, :any, default: nil, doc: "PaginatedList.State for the list"
   attr :target, :any, default: nil
   attr :timezone, :string, default: "Etc/UTC"
@@ -112,6 +117,7 @@ defmodule RetroHexChatWeb.Components.UI.SavedDialog do
               data-testid={"saved-open-#{entry.id}"}
             >
               <span class="mentions-row__head flex items-center gap-retro-4">
+                <.nick_flag locale={Map.get(entry, :author_locale)} />
                 <span class={["truncate font-bold", nick_class(@nick_color_fn, entry.author_nickname)]}>
                   {entry.author_nickname}
                 </span>

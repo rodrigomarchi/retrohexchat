@@ -59,8 +59,12 @@ defmodule RetroHexChatWeb.ChatLive.GroupCallReadModel do
   def mark_active(socket, channel_name, summary \\ nil)
 
   def mark_active(socket, channel_name, summary) when is_binary(channel_name) do
+    known = socket |> summaries() |> Map.get(channel_name, %{}) |> Map.get(:nick_locales)
+
     summary =
-      GroupCallSummary.normalize(summary || GroupCallSummary.fetch(channel_name), channel_name)
+      (summary || GroupCallSummary.fetch(channel_name))
+      |> GroupCallSummary.normalize(channel_name)
+      |> GroupCallSummary.put_nick_locales(known)
 
     assign(socket,
       group_call_channels: socket |> channels() |> MapSet.put(channel_name),

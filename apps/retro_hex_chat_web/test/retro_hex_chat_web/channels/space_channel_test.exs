@@ -1,9 +1,11 @@
 defmodule RetroHexChatWeb.SpaceChannelTest do
   use RetroHexChatWeb.ChannelCase, async: false
 
+  alias RetroHexChat.Accounts.NickLocales
   alias RetroHexChat.Channels.Registry, as: ChannelRegistry
   alias RetroHexChat.Channels.{Server, Supervisor}
   alias RetroHexChat.Presence.Tracker
+  alias RetroHexChat.Services.NickServ
 
   alias RetroHexChat.VirtualSpace.{
     ChannelJoinToken,
@@ -391,6 +393,33 @@ defmodule RetroHexChatWeb.SpaceChannelTest do
 
       push(socket, "space_action", %{"kind" => "moonwalk"})
       refute_push "space_action", %{kind: "moonwalk"}, 100
+    end
+  end
+
+  describe "language flags" do
+    # The nameplate's flag is the language the person uses the chat in: the
+    # screen they have open for somebody here, the row's memory for a member
+    # who is not.
+    test "every seat carries its person's language, and the join names the flags" do
+      channel = unique_channel()
+      {:ok, _pid} = start_channel(channel)
+      member = "flagmember#{uid()}"
+      {:ok, _} = NickServ.register(member, "password123")
+      :ok = NickLocales.remember(member, "ja", store: true)
+      {:ok, _} = Server.join(channel, "alice")
+      {:ok, _} = Server.join(channel, member)
+      assert {:ok, _ref} = Tracker.track_user("presence:global", "alice", %{locale: "es"})
+
+      assert {:ok, init, _socket} = join_channel_space(channel, "alice")
+
+      assert init.snapshot.participants[init.self_key].locale == "es"
+      assert init.snapshot.participants[participant_key(member)].locale == "ja"
+      assert "data:image/svg+xml;base64," <> encoded = init.config.flags["es"]
+      svg = Base.decode64!(encoded)
+      assert svg =~ ~s(<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14")
+      assert svg =~ "<rect"
+      refute svg =~ "data-phx"
+      assert Map.has_key?(init.config.flags, "pt_BR")
     end
   end
 

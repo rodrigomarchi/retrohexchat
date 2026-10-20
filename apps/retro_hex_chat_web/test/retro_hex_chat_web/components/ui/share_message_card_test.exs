@@ -15,6 +15,7 @@ defmodule RetroHexChatWeb.Components.UI.ShareMessageCardTest do
   import Phoenix.LiveViewTest
 
   alias RetroHexChatWeb.Components.UI.MessageRow
+  alias RetroHexChatWeb.Components.UI.ShareMessageCard
 
   @base %{
     id: 1,
@@ -283,6 +284,55 @@ defmodule RetroHexChatWeb.Components.UI.ShareMessageCardTest do
 
       assert html =~ "shared by ana"
       refute html =~ "lasted"
+    end
+
+    test "who shared it carries their language flag" do
+      html =
+        render_component(&ShareMessageCard.share_message_card/1,
+          card: ended(kind: "space"),
+          creator_locale: "pt_BR"
+        )
+
+      assert [_flag] =
+               html
+               |> Floki.parse_fragment!()
+               |> Floki.find(
+                 ~s([data-testid="share-message-detail"] [data-testid="nick-flag"][data-locale="pt_BR"])
+               )
+    end
+
+    # The page's lookup gave the card its sharer's language, so a line somebody
+    # else wrote — a service announcing it, a reshare — still flags the sharer.
+    test "the card's own sharer language wins over the line's" do
+      flag = fn msg ->
+        msg
+        |> render_row()
+        |> Floki.parse_fragment!()
+        |> Floki.find(~s([data-testid="share-message-detail"] [data-testid="nick-flag"]))
+        |> Enum.flat_map(&Floki.attribute(&1, "data-locale"))
+      end
+
+      card = Map.put(ended(kind: "space"), :creator_locale, "ja")
+
+      assert flag.(%{@base | author: "System"} |> Map.put(:share_card, card)) == ["ja"]
+      assert flag.(@base |> Map.put(:locale, "de") |> Map.put(:share_card, card)) == ["ja"]
+
+      # With no language on the card, the line's own stands in when its author
+      # is the sharer.
+      assert flag.(@base |> Map.put(:locale, "de") |> Map.put(:share_card, ended(kind: "space"))) ==
+               ["de"]
+    end
+
+    # The flag belongs to the sentence that names the person; a headcount or a
+    # game's tagline names nobody.
+    test "a detail that names nobody draws no flag" do
+      html =
+        render_component(&ShareMessageCard.share_message_card/1,
+          card: card(),
+          creator_locale: "pt_BR"
+        )
+
+      refute html =~ ~s(data-testid="nick-flag")
     end
   end
 

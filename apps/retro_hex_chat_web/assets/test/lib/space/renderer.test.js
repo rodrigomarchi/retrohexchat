@@ -60,7 +60,8 @@ function build(overrides = {}) {
     tile: () => ({ canvas: {} }),
     avatar: () => ({ canvas: {} }),
   };
-  return { ctx, renderer: new Renderer({ canvas, atlas, map, camera }) };
+  const flags = overrides.flags ?? null;
+  return { ctx, renderer: new Renderer({ canvas, atlas, map, camera, flags }) };
 }
 
 describe("Renderer depth of a piece", () => {
@@ -853,6 +854,28 @@ describe("Renderer UI kit pieces", () => {
     expect(fromKit(ctx, 100).length).toBeGreaterThan(0);
     // Below half, the amber fill.
     expect(ctx.drawImage.mock.calls.some(([img, x]) => img === KIT_IMG && x === 142)).toBe(true);
+  });
+
+  it("draws the language flag ahead of the name, and widens the plate for it", () => {
+    const FLAG = { flag: true };
+    const flags = { size: 14, get: (locale) => (locale === "pt_BR" ? FLAG : null) };
+    const { ctx, renderer } = build({ atlas: kitAtlas(), flags });
+    ctx.measureText.mockReturnValue({ width: 40 });
+
+    renderer.draw({ participants: alice(), selfKey: "registered:1" });
+    const [, plainName] = ctx.fillText.mock.calls.find(([text]) => text === "alice");
+    expect(ctx.drawImage.mock.calls.some(([img]) => img === FLAG)).toBe(false);
+
+    ctx.fillText.mockClear();
+    renderer.draw({ participants: alice({ locale: "pt_BR" }), selfKey: "registered:1" });
+    const flagCall = ctx.drawImage.mock.calls.find(([img]) => img === FLAG);
+    const [, flaggedName] = ctx.fillText.mock.calls.find(([text]) => text === "alice");
+
+    expect(flagCall).toBeDefined();
+    expect(flagCall.slice(3, 5)).toEqual([14, 14]);
+    // The flag sits before the name, which moves right to make room for it.
+    expect(flagCall[1] + 14).toBeLessThanOrEqual(flaggedName);
+    expect(flaggedName).toBeGreaterThan(plainName);
   });
 
   it("still writes every name and line when the kit's sheet is missing", () => {

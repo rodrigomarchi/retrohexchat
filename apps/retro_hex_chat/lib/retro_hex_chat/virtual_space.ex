@@ -42,7 +42,8 @@ defmodule RetroHexChat.VirtualSpace do
   @spec join_channel_space(String.t(), %{
           :user_id => integer() | nil,
           :nickname => String.t(),
-          optional(:avatar) => String.t() | nil
+          optional(:avatar) => String.t() | nil,
+          optional(:locale) => String.t() | nil
         }) :: {:ok, join_result()} | {:error, atom()}
   def join_channel_space(channel_name, actor) do
     Observability.span(
@@ -56,7 +57,8 @@ defmodule RetroHexChat.VirtualSpace do
           |> ChannelSpaceServer.join(%{
             user_id: actor.user_id,
             nickname: actor.nickname,
-            avatar: Map.get(actor, :avatar)
+            avatar: Map.get(actor, :avatar),
+            locale: Map.get(actor, :locale)
           })
           |> with_session(session)
         end
@@ -69,7 +71,8 @@ defmodule RetroHexChat.VirtualSpace do
           %{
             :user_id => integer() | nil,
             :nickname => String.t(),
-            optional(:avatar) => String.t() | nil
+            optional(:avatar) => String.t() | nil,
+            optional(:locale) => String.t() | nil
           },
           [String.t()]
         ) :: {:ok, join_result()} | {:error, atom()}
@@ -85,7 +88,8 @@ defmodule RetroHexChat.VirtualSpace do
           |> ChannelSpaceServer.join_direct_message(%{
             user_id: actor.user_id,
             nickname: actor.nickname,
-            avatar: Map.get(actor, :avatar)
+            avatar: Map.get(actor, :avatar),
+            locale: Map.get(actor, :locale)
           })
           |> with_session(session)
         end
@@ -107,7 +111,8 @@ defmodule RetroHexChat.VirtualSpace do
           %{
             :user_id => integer() | nil,
             :nickname => String.t(),
-            optional(:avatar) => String.t() | nil
+            optional(:avatar) => String.t() | nil,
+            optional(:locale) => String.t() | nil
           },
           [String.t()] | nil
         ) :: {:ok, join_result()} | {:error, atom()}
@@ -130,7 +135,8 @@ defmodule RetroHexChat.VirtualSpace do
       |> ChannelSpaceServer.join(%{
         user_id: actor.user_id,
         nickname: actor.nickname,
-        avatar: Map.get(actor, :avatar)
+        avatar: Map.get(actor, :avatar),
+        locale: Map.get(actor, :locale)
       })
       |> case do
         {:error, :not_found} when attempts > 1 ->

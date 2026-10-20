@@ -131,7 +131,27 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
             "help",
             "In the chat, the face of your character is shown beside your name. It can be switched off."
           ),
-        see_also: ["feature-choose-character", "feature-nick-colors"]
+        see_also: ["feature-choose-character", "feature-nick-colors", "feature-language-flags"]
+      },
+      %{
+        id: "feature-language-flags",
+        title: dgettext("help", "Language Flags"),
+        category: dgettext("help", "Chat Display"),
+        keywords: [
+          "flag",
+          "locale",
+          "language",
+          dgettext("help", "language flag"),
+          dgettext("help", "change my flag")
+        ],
+        icon: :icon_globe,
+        description:
+          dgettext(
+            "help",
+            "The flag in front of a nickname is the language that person uses the chat in. " <>
+              "Yours is the language you pick under Start ▸ Language."
+          ),
+        see_also: ["feature-character-portraits", "ui-start-menu", "ui-nicklist"]
       },
       %{
         id: "feature-nick-colors",

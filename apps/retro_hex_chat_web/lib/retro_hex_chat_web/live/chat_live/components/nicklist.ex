@@ -26,6 +26,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.Nicklist do
   the parent, which owns the context menu and reads `conversation_members` there.
   """
 
+  alias RetroHexChat.Accounts.NickLocales
   alias RetroHexChat.Nickname
   use RetroHexChatWeb, :live_component
 
@@ -127,6 +128,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.Nicklist do
         away_count: 0,
         muted_count: 0,
         guests: [],
+        guest_locales: %{},
         call_nicks: MapSet.new(),
         playing: %{},
         show_avatars: true,
@@ -286,12 +288,18 @@ defmodule RetroHexChatWeb.ChatLive.Components.Nicklist do
                 playing_game={Map.get(@playing, Nickname.key(user.nickname))}
                 nick_color={@nick_color_fn.(user.nickname)}
                 avatar={@show_avatars && Map.get(user, :avatar)}
+                locale={Map.get(user, :locale)}
                 data-nick={user.nickname}
               />
             </div>
           </.nicklist_section>
           <.list_count_strip shown={min(@total, @max_rendered)} total={@total} />
-          <.nicklist_guests :if={@variant == "channel"} guests={@guests} current={@current_nick} />
+          <.nicklist_guests
+            :if={@variant == "channel"}
+            guests={@guests}
+            locales={@guest_locales}
+            current={@current_nick}
+          />
         </.nicklist_body>
       </.nicklist_sidebar>
     </div>
@@ -314,8 +322,21 @@ defmodule RetroHexChatWeb.ChatLive.Components.Nicklist do
       nick_color_fn: Map.get(assigns, :nick_color_fn, socket.assigns.nick_color_fn),
       show_avatars: Map.get(assigns, :show_avatars, socket.assigns.show_avatars),
       guests: Map.get(assigns, :guests, socket.assigns.guests),
+      guest_locales: guest_locales(assigns, socket),
       call_nicks: normalize_call_nicks(assigns, socket)
     )
+  end
+
+  # A visitor's flag is asked of the guest registry when the list of guests
+  # changes, not on every update the user list gets.
+  defp guest_locales(assigns, socket) do
+    case Map.get(assigns, :guests) do
+      guests when is_list(guests) and guests != socket.assigns.guests ->
+        NickLocales.for_nicks(guests)
+
+      _unchanged ->
+        socket.assigns.guest_locales
+    end
   end
 
   # Normalised on the way in, once. The summary spells a nickname the way its

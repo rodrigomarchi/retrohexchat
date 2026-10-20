@@ -21,6 +21,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.NickColorsDialog do
   alias RetroHexChat.Accounts.{NickColors, Session}
 
   alias RetroHexChatWeb.ChatLive.Components.DialogIsland
+  alias RetroHexChatWeb.ChatLive.Helpers.NickFlags
 
   @id "nick-colors-dialog"
 
@@ -31,14 +32,19 @@ defmodule RetroHexChatWeb.ChatLive.Components.NickColorsDialog do
     selected: nil,
     palette_editing_index: nil,
     show_add_dialog: false,
-    show_edit_dialog: false
+    show_edit_dialog: false,
+    entry_locales: %{},
+    entry_locales_cache: nil
   }
 
   @spec mount(Phoenix.LiveView.Socket.t()) :: {:ok, Phoenix.LiveView.Socket.t()}
   def mount(socket), do: DialogIsland.mount(socket, @id, @initial)
 
   @spec update(map(), Phoenix.LiveView.Socket.t()) :: {:ok, Phoenix.LiveView.Socket.t()}
-  def update(assigns, socket), do: DialogIsland.update(socket, assigns)
+  def update(assigns, socket) do
+    {:ok, socket} = DialogIsland.update(socket, assigns)
+    {:ok, put_locales(socket)}
+  end
 
   @spec handle_event(String.t(), map(), Phoenix.LiveView.Socket.t()) ::
           {:noreply, Phoenix.LiveView.Socket.t()}
@@ -138,6 +144,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.NickColorsDialog do
         id={@id}
         target={@myself}
         nick_colors={@entries}
+        locales={@entry_locales}
         selected={@selected}
         palette_editing_index={@palette_editing_index}
         show_add_dialog={@show_add_dialog}
@@ -154,7 +161,21 @@ defmodule RetroHexChatWeb.ChatLive.Components.NickColorsDialog do
 
   defp put_session(socket, session) do
     send(self(), {:ab_session, session, :nick_colors})
-    assign(socket, session: session)
+    socket |> assign(session: session) |> put_locales()
+  end
+
+  # The flag beside each coloured nickname, asked for again only when the list
+  # names different people — not on every re-render the parent sends down.
+  defp put_locales(%{assigns: %{session: nil}} = socket), do: socket
+
+  defp put_locales(socket) do
+    nicks =
+      Enum.map(
+        NickColors.sorted_entries(socket.assigns.session.nick_colors),
+        & &1.target_nickname
+      )
+
+    NickFlags.assign_locales(socket, nicks, :entry_locales, :entry_locales_cache)
   end
 
   defp bubble_status(socket, level, message) do

@@ -20,6 +20,7 @@ defmodule RetroHexChatWeb.Components.UI.IgnoreListDialog do
   import RetroHexChatWeb.Components.UI.Button
   import RetroHexChatWeb.Components.UI.Input
   import RetroHexChatWeb.Components.UI.DialogBanner
+  import RetroHexChatWeb.Components.UI.NickFlag
 
   alias RetroHexChatWeb.Components.Diagrams
   alias RetroHexChatWeb.Icons
@@ -31,6 +32,7 @@ defmodule RetroHexChatWeb.Components.UI.IgnoreListDialog do
   attr :id, :string, required: true
   attr :target, :any, default: nil
   attr :entries, :list, default: [], doc: "List of ignore entries"
+  attr :locales, :map, default: %{}, doc: "Each ignored nickname's locale, for its flag"
   attr :show_add_dialog, :boolean, default: false
   attr :on_add, :any, default: nil
   attr :on_remove, :any, default: nil
@@ -72,7 +74,12 @@ defmodule RetroHexChatWeb.Components.UI.IgnoreListDialog do
             )}
           </.dialog_banner>
 
-          <.control_table target={@target} control_list={@entries} on_remove={@on_remove} />
+          <.control_table
+            target={@target}
+            control_list={@entries}
+            locales={@locales}
+            on_remove={@on_remove}
+          />
           <div class="ab-action-row flex gap-retro-4 mt-retro-4">
             <.button
               size="sm"
@@ -99,6 +106,7 @@ defmodule RetroHexChatWeb.Components.UI.IgnoreListDialog do
 
   attr :target, :any, default: nil
   attr :control_list, :list, required: true
+  attr :locales, :map, default: %{}
   attr :on_remove, :any, default: nil
 
   defp control_table(assigns) do
@@ -130,6 +138,7 @@ defmodule RetroHexChatWeb.Components.UI.IgnoreListDialog do
               class="ab-mobile-list-primary font-bold text-xs"
               data-label={dgettext("dialogs", "Nick")}
             >
+              <.nick_flag locale={@locales[control_nick(entry)]} />
               {control_nick(entry)}
             </.table_cell>
             <.table_cell

@@ -9,7 +9,20 @@ describe("createParticipantRegistry", () => {
       nickname: "Remote",
       status: "connected",
       media_state: {},
+      flag: null,
     });
+  });
+
+  it("keeps the known flag when a later payload says nothing about it", () => {
+    const registry = createParticipantRegistry();
+    const flag = {
+      locale: "pt_BR",
+      language: "Português (Brasil)",
+      href: "/s.svg#icon_flag_pt_br",
+    };
+    registry.upsert({ id: "p", nickname: "alice", flag });
+    expect(registry.upsert({ id: "p", nickname: "alice" }).flag).toEqual(flag);
+    expect(registry.upsert({ id: "p", nickname: "alice", flag: null }).flag).toBe(null);
   });
 
   it("keeps provided nickname, status and media state (either casing)", () => {

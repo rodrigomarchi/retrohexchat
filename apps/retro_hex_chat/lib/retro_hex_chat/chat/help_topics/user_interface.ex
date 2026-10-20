@@ -284,7 +284,7 @@ defmodule RetroHexChat.Chat.HelpTopics.UserInterface do
                 "replaces the list with its entries and the group's own row at the top takes " <>
                 "you back."
             ),
-        see_also: ["ui-desktop", "ui-overview", "keyboard-shortcuts"]
+        see_also: ["ui-desktop", "ui-overview", "keyboard-shortcuts", "feature-language-flags"]
       },
       %{
         id: "ui-conversations",
@@ -347,7 +347,7 @@ defmodule RetroHexChat.Chat.HelpTopics.UserInterface do
               "user list — a channel's members grouped by role, or the two people in a " <>
               "private message."
           ),
-        see_also: ["ui-lists", "private-messages", "ui-conversations"]
+        see_also: ["ui-lists", "private-messages", "ui-conversations", "feature-language-flags"]
       },
       %{
         id: "ui-topic-bar",

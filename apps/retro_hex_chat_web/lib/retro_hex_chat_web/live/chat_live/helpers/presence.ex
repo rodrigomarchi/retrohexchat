@@ -48,6 +48,18 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.Presence do
     end
   end
 
+  @doc """
+  What this session publishes about itself on every topic it is tracked on: the
+  browser's own description (`client_info`) and the language the chat is shown
+  in, which every other screen draws as a flag beside the nickname.
+  """
+  @spec session_meta(Phoenix.LiveView.Socket.t()) :: map()
+  def session_meta(socket) do
+    socket.assigns
+    |> Map.get(:client_info, %{})
+    |> Map.put(:locale, Map.get(socket.assigns, :locale))
+  end
+
   @spec safe_untrack_user(String.t(), String.t()) :: :ok
   def safe_untrack_user(topic, nickname) do
     Tracker.untrack_user(topic, nickname)

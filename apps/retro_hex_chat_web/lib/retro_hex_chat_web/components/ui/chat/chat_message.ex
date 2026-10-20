@@ -16,6 +16,7 @@ defmodule RetroHexChatWeb.Components.UI.ChatMessage do
   """
   use RetroHexChatWeb.Component
 
+  import RetroHexChatWeb.Components.UI.NickFlag
   import RetroHexChatWeb.Components.UI.NickPortrait
 
   alias RetroHexChatWeb.Icons
@@ -81,6 +82,10 @@ defmodule RetroHexChatWeb.Components.UI.ChatMessage do
     default: nil,
     doc: "The character the author chose, drawn beside the nick; nil draws nothing"
 
+  attr :locale, :string,
+    default: nil,
+    doc: "The language the author uses the chat in, drawn as a flag beside the nick"
+
   attr :source, :string,
     default: nil,
     doc: "Non-interactive origin label"
@@ -121,6 +126,7 @@ defmodule RetroHexChatWeb.Components.UI.ChatMessage do
       <div class="chat-message__head">
         <.message_kind_icon kind={resolve_kind(@kind, @nick, @source, @type)} />
         <.nick_portrait :if={@nick} avatar={@avatar} nickname={@nick} />
+        <.nick_flag :if={@nick} locale={@locale} />
         <span
           :if={@nick}
           class={["chat-nick chat-message__author", @nick_color || "text-text"]}

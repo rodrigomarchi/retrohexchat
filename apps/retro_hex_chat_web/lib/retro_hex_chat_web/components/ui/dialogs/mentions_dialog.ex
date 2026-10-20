@@ -31,6 +31,7 @@ defmodule RetroHexChatWeb.Components.UI.MentionsDialog do
 
   import RetroHexChatWeb.Components.UI.ListStates
   import RetroHexChatWeb.Components.UI.DialogBanner
+  import RetroHexChatWeb.Components.UI.NickFlag
 
   alias RetroHexChatWeb.App.ChatHelpers
   alias RetroHexChatWeb.Components.Diagrams
@@ -40,7 +41,11 @@ defmodule RetroHexChatWeb.Components.UI.MentionsDialog do
   @doc "Renders the Mentions window body."
   attr :id, :string, required: true
   attr :first_row, :map, default: nil, doc: "Newest row, for the banner picture"
-  attr :mentions, :any, required: true, doc: "The stream of mention rows"
+
+  attr :mentions, :any,
+    required: true,
+    doc: "The stream of mention rows; `:author_locale` on a row draws its author's flag"
+
   attr :state, :any, default: nil, doc: "PaginatedList.State for the list"
   attr :target, :any, default: nil
   attr :timezone, :string, default: "Etc/UTC"
@@ -105,6 +110,7 @@ defmodule RetroHexChatWeb.Components.UI.MentionsDialog do
           <span class="mentions-row__head flex items-center gap-retro-4">
             <Icons.icon_channels class="h-3 w-3 shrink-0" />
             <span class="font-bold">{mention.channel_name}</span>
+            <.nick_flag locale={Map.get(mention, :author_locale)} />
             <span class={["truncate", nick_class(@nick_color_fn, mention.author_nickname)]}>
               {mention.author_nickname}
             </span>

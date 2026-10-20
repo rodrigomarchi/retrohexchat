@@ -30,6 +30,7 @@ defmodule RetroHexChatWeb.ChatLive.P2PReadModel do
   the status bar has: you end a session from the page that is holding it.
   """
 
+  alias RetroHexChat.Accounts.NickLocales
   alias RetroHexChat.Nickname
 
   import Phoenix.Component, only: [assign: 2]
@@ -57,6 +58,7 @@ defmodule RetroHexChatWeb.ChatLive.P2PReadModel do
           |> Lobby.active_sessions_for_user()
           |> Enum.map(&pm_session(&1, user_id))
           |> Enum.filter(&is_binary(&1.peer_nick))
+          |> put_peer_locales()
           |> Map.new(&{Nickname.key(&1.peer_nick), &1})
 
         assign(socket, p2p_pm_sessions: sessions)
@@ -80,7 +82,9 @@ defmodule RetroHexChatWeb.ChatLive.P2PReadModel do
       when is_binary(peer_nick) do
     with {:ok, user_id} <- SessionHelpers.resolve_user_id(nickname),
          %LobbySession{} = db_session <- Lobby.active_session_between_nicks(nickname, peer_nick) do
-      put_pm_session(socket, pm_session(db_session, user_id))
+      read_model = pm_session(db_session, user_id)
+      [read_model] = put_peer_locales([read_model], pm_sessions(socket))
+      put_pm_session(socket, read_model)
     else
       _none -> drop_pm(socket, peer_nick)
     end
@@ -144,6 +148,32 @@ defmodule RetroHexChatWeb.ChatLive.P2PReadModel do
       if db_session.creator_id == user_id, do: summary.peer, else: summary.created_by
     else
       _absent -> nil
+    end
+  end
+
+  # The peer's language, for the flag beside their name on the badge: one
+  # lookup for every session, and none for a peer whose badge already had it.
+  defp put_peer_locales(read_models, known \\ %{}) do
+    cached = Map.new(read_models, &{&1.peer_nick, cached_locale(known, &1.peer_nick)})
+    found = NickLocales.for_nicks(for {nick, :unknown} <- cached, do: nick)
+
+    Enum.map(read_models, fn %{peer_nick: nick} = read_model ->
+      locale =
+        case Map.fetch!(cached, nick) do
+          {:known, locale} -> locale
+          :unknown -> Map.get(found, nick)
+        end
+
+      Map.put(read_model, :peer_locale, locale)
+    end)
+  end
+
+  defp cached_locale(_known, nick) when not is_binary(nick), do: {:known, nil}
+
+  defp cached_locale(known, nick) do
+    case Map.get(known, Nickname.key(nick)) do
+      %{peer_nick: ^nick, peer_locale: locale} -> {:known, locale}
+      _other -> :unknown
     end
   end
 

@@ -24,6 +24,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.ThreadDialog do
 
   import RetroHexChatWeb.Components.UI.ThreadDialog
 
+  alias RetroHexChat.Accounts.NickLocales
   alias RetroHexChat.Chat.Queries
   alias RetroHexChatWeb.ChatLive.StreamItem
   alias RetroHexChatWeb.PaginatedList
@@ -61,7 +62,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.ThreadDialog do
   @impl true
   @spec update(map(), Phoenix.LiveView.Socket.t()) :: {:ok, Phoenix.LiveView.Socket.t()}
   def update(%{action: {:reply_arrived, item}}, socket) do
-    {:ok, PaginatedList.insert(socket, :replies, item)}
+    {:ok, PaginatedList.insert(socket, :replies, put_locale(item))}
   end
 
   def update(assigns, socket) do
@@ -117,7 +118,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.ThreadDialog do
 
       message ->
         socket
-        |> assign(root: row(socket.assigns.kind, message))
+        |> assign(root: put_locale(row(socket.assigns.kind, message)))
         |> PaginatedList.reset(:replies, fetch(socket, limit: @page_size))
     end
   end
@@ -131,11 +132,30 @@ defmodule RetroHexChatWeb.ChatLive.Components.ThreadDialog do
         RetroHexChat.Page.empty()
 
       message ->
-        message
-        |> Queries.thread_for(opts)
-        |> RetroHexChat.Page.map(&(kind |> row(&1) |> without_quote()))
+        page =
+          message
+          |> Queries.thread_for(opts)
+          |> RetroHexChat.Page.map(&(kind |> row(&1) |> without_quote()))
+
+        %{page | items: put_locales(page.items)}
     end
   end
+
+  # The flag beside each author, one lookup for the whole page.
+  @spec put_locales([map()]) :: [map()]
+  defp put_locales(items) do
+    locales = items |> Enum.map(& &1.author) |> NickLocales.for_nicks()
+    Enum.map(items, &StreamItem.put_locale(&1, Map.get(locales, &1.author)))
+  end
+
+  # The thread's first line, and a reply that arrives while the window is open:
+  # the room's own row may already know its author's language; one that does
+  # not is asked about on its own.
+  @spec put_locale(map()) :: map()
+  defp put_locale(%{locale: _locale} = item), do: item
+
+  defp put_locale(item),
+    do: StreamItem.put_locale(item, NickLocales.for_nick(item.author))
 
   defp root_message(_kind, nil), do: nil
   defp root_message(:message, id), do: Queries.get_message(id)

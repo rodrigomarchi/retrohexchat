@@ -127,4 +127,32 @@ defmodule RetroHexChat.Accounts.GuestNamesTest do
     assert NicknameValidator.guest?(name1)
     assert NicknameValidator.guest?(name2)
   end
+
+  describe "locales" do
+    test "remembers the language a guest's tab reads in, by guest name", %{server: server} do
+      test = self()
+
+      pid =
+        spawn_link(fn ->
+          name = GuestNames.claim("b-#{System.unique_integer([:positive])}", server)
+          :ok = GuestNames.put_locale("ja", server)
+          send(test, {:claimed, name})
+
+          receive do
+            :close -> :ok
+          end
+        end)
+
+      assert_receive {:claimed, name}, 2_000
+
+      assert GuestNames.locales([name, "Guest0"], server) == %{name => "ja"}
+      close_tab(server, pid)
+      assert GuestNames.locales([name], server) == %{}
+    end
+
+    test "a tab that claimed nothing has nothing to record", %{server: server} do
+      assert :ok = GuestNames.put_locale("ja", server)
+      assert :sys.get_state(server).holders == %{}
+    end
+  end
 end

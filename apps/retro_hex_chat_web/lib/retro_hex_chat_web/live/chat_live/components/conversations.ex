@@ -28,6 +28,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.Conversations do
   import RetroHexChatWeb.Components.UI.Conversations
 
   alias RetroHexChat.Chat.AutoJoinList
+  alias RetroHexChatWeb.ChatLive.Helpers.NickFlags
 
   @id "conversations"
 
@@ -47,6 +48,8 @@ defmodule RetroHexChatWeb.ChatLive.Components.Conversations do
        active_pm: nil,
        open_pm_tabs: [],
        pm_conversations: [],
+       pm_locales: %{},
+       pm_locales_cache: nil,
        pm_conversations_truncated: false,
        autojoin_list: AutoJoinList.new(),
        unread_counts: %{},
@@ -101,8 +104,16 @@ defmodule RetroHexChatWeb.ChatLive.Components.Conversations do
         Map.put(acc, key, Map.get(assigns, key, socket.assigns[key]))
       end)
 
-    {:ok, assign(socket, Map.put(merged, :id, Map.get(assigns, :id, socket.assigns.id)))}
+    {:ok,
+     socket
+     |> assign(Map.put(merged, :id, Map.get(assigns, :id, socket.assigns.id)))
+     |> put_pm_locales(merged.pm_conversations || [])}
   end
+
+  # Each conversation's flag, asked again only when the list of people changes —
+  # this component updates on every unread count, and the list rarely moves.
+  defp put_pm_locales(socket, pms),
+    do: NickFlags.assign_locales(socket, pms, :pm_locales, :pm_locales_cache)
 
   @impl true
   @spec render(map()) :: Phoenix.LiveView.Rendered.t()
@@ -164,6 +175,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.Conversations do
           p2p_pm_sessions={@p2p_pm_sessions}
           open_pm_tabs={@open_pm_tabs}
           pm_conversations={@pm_conversations}
+          pm_locales={@pm_locales}
           pm_conversations_truncated={@pm_conversations_truncated}
           autojoin_entries={@autojoin_entries}
           active_pm={@active_pm}

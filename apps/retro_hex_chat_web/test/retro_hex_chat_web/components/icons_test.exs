@@ -86,4 +86,20 @@ defmodule RetroHexChatWeb.IconsTest do
       assert String.ends_with?(href, "#icon_folder")
     end
   end
+
+  describe "Sprite.standalone/2" do
+    test "is the icon as a document of its own, sized, with no page-only attributes" do
+      svg = Sprite.standalone(Registry.flag("es"), 14)
+
+      assert String.starts_with?(
+               svg,
+               ~s(<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14")
+             )
+
+      assert String.ends_with?(svg, "</svg>")
+      refute svg =~ "<use"
+      refute svg =~ "class="
+      refute svg =~ "<!--"
+    end
+  end
 end

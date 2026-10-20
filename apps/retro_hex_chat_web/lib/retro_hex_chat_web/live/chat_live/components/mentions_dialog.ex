@@ -20,6 +20,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.MentionsDialog do
   import RetroHexChatWeb.Components.UI.MentionsDialog
 
   alias RetroHexChat.Chat.Search
+  alias RetroHexChatWeb.ChatLive.Helpers.NickFlags
   alias RetroHexChatWeb.PaginatedList
 
   @id "mentions-dialog"
@@ -103,9 +104,13 @@ defmodule RetroHexChatWeb.ChatLive.Components.MentionsDialog do
 
   @spec fetch(Phoenix.LiveView.Socket.t(), keyword()) :: RetroHexChat.Page.t()
   defp fetch(socket, opts) do
-    case socket.assigns.session do
-      nil -> %RetroHexChat.Page{}
-      session -> Search.list_mentions(session.nickname, session.channels, opts)
-    end
+    page =
+      case socket.assigns.session do
+        nil -> %RetroHexChat.Page{}
+        session -> Search.list_mentions(session.nickname, session.channels, opts)
+      end
+
+    # The flag beside each author, one lookup for the whole page.
+    NickFlags.put_author_locales(page, :author_nickname)
   end
 end

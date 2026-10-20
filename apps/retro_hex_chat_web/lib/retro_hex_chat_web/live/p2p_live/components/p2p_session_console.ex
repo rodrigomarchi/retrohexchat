@@ -104,6 +104,7 @@ defmodule RetroHexChatWeb.P2PLive.Components.P2PSessionConsole do
             connected={@p2p_connected?}
             nickname={@nickname}
             peer_nick={@p2p_session.peer_nick}
+            peer_locale={Map.get(@p2p_session, :peer_locale)}
             token={@p2p_session.token}
             user_id={@p2p_session.user_id}
             mini={Map.get(@p2p_session, :call_mini, false)}
@@ -125,6 +126,7 @@ defmodule RetroHexChatWeb.P2PLive.Components.P2PSessionConsole do
             connected={@p2p_connected?}
             nickname={@nickname}
             peer_nick={@p2p_session.peer_nick}
+            peer_locale={Map.get(@p2p_session, :peer_locale)}
             token={@p2p_session.token}
           />
         </div>
@@ -141,6 +143,7 @@ defmodule RetroHexChatWeb.P2PLive.Components.P2PSessionConsole do
             id={P2PGameIsland.id()}
             connected={@p2p_connected?}
             peer_nick={@p2p_session.peer_nick}
+            peer_locale={Map.get(@p2p_session, :peer_locale)}
           />
         </div>
 
@@ -157,6 +160,8 @@ defmodule RetroHexChatWeb.P2PLive.Components.P2PSessionConsole do
             info_open={@p2p_session.info_open}
             nickname={@nickname}
             peer_nick={@p2p_session.peer_nick}
+            nickname_locale={Map.get(@p2p_session, :self_locale)}
+            peer_locale={Map.get(@p2p_session, :peer_locale)}
             peer_online={@p2p_session.peer_online}
             session_status={@session_status}
             connection_label={@connection_label}

@@ -11,6 +11,7 @@ defmodule RetroHexChatWeb.Components.UI.ReplyBar do
   """
   use RetroHexChatWeb.Component
 
+  import RetroHexChatWeb.Components.UI.NickFlag
   import RetroHexChatWeb.Components.UI.ToolButton
 
   alias RetroHexChatWeb.Icons
@@ -18,6 +19,7 @@ defmodule RetroHexChatWeb.Components.UI.ReplyBar do
   @doc "Renders the reply bar."
   attr :author, :string, required: true
   attr :message, :string, default: nil
+  attr :locale, :string, default: nil, doc: "the author's locale, drawn as a flag"
   attr :on_dismiss, :any, default: nil, doc: "JS command or event name for dismiss"
   attr :class, :string, default: nil
   attr :rest, :global
@@ -39,7 +41,11 @@ defmodule RetroHexChatWeb.Components.UI.ReplyBar do
       {@rest}
     >
       <Icons.icon_retry class="w-3 h-3 shrink-0 text-muted-foreground" />
-      <span class="font-bold shrink-0">{dgettext("chat", "Replying to")} {" "}{@author}</span>
+      <span class="font-bold shrink-0 inline-flex items-center gap-retro-4">
+        {dgettext("chat", "Replying to")}
+        <.nick_flag locale={@locale} />
+        {@author}
+      </span>
       <span :if={@message} class="flex-1 truncate text-muted-foreground">
         {@message}
       </span>

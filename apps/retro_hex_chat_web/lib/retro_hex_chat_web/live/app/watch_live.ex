@@ -25,6 +25,7 @@ defmodule RetroHexChatWeb.App.WatchLive do
   import RetroHexChatWeb.Components.UI.Window
 
   alias Phoenix.LiveView.Socket
+  alias RetroHexChat.Accounts.NickLocales
   alias RetroHexChat.Games.Activity
   alias RetroHexChat.Games.Catalog
   alias RetroHexChat.Games.Result
@@ -54,6 +55,8 @@ defmodule RetroHexChatWeb.App.WatchLive do
          token: token,
          watchable?: true,
          players: [summary.created_by, summary.peer],
+         player_locales:
+           NickLocales.for_nicks(Enum.reject([summary.created_by, summary.peer], &is_nil/1)),
          round: 0,
          watchers: Watchers.count(token)
        )
@@ -66,6 +69,7 @@ defmodule RetroHexChatWeb.App.WatchLive do
            token: token,
            watchable?: false,
            players: [],
+           player_locales: %{},
            round: 0,
            watchers: 0,
            status: "closed",
@@ -108,6 +112,7 @@ defmodule RetroHexChatWeb.App.WatchLive do
     Activity.live_matches()
     |> Enum.reject(&(&1.token == token))
     |> Enum.take(5)
+    |> LiveMatch.put_player_locales()
   end
 
   @impl true
@@ -136,7 +141,7 @@ defmodule RetroHexChatWeb.App.WatchLive do
               <span data-testid="watch-watchers">{LiveMatch.watchers_label(@watchers)}</span>
             </.window_status_bar_field>
             <.window_status_bar_field :if={@players != []}>
-              {LiveMatch.players_line(@players)}
+              <.match_players players={@players} locales={@player_locales} />
             </.window_status_bar_field>
           </:status>
 

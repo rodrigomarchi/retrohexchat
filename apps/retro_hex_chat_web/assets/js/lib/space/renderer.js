@@ -30,6 +30,8 @@ const LABEL_FG = "e8dcc0";
 const NAMEPLATE_H = 21;
 const NAMEPLATE_BASELINE = 15;
 const NAMEPLATE_PAD_X = 13;
+// Between a nameplate's flag and the name after it.
+const NAMEPLATE_FLAG_GAP = 4;
 // Combat HP bar under the nameplate: healthy green above half, amber below.
 const HP_MAX = 100;
 const HP_BAR_W = 34;
@@ -159,8 +161,10 @@ export class Renderer {
    * @param {object} opts.map SpaceMap instance
    * @param {object} opts.camera Camera instance
    */
-  constructor({ canvas, atlas, map, camera, avatarScale }) {
+  constructor({ canvas, atlas, map, camera, avatarScale, flags = null }) {
     this.canvas = canvas;
+    // The language flags drawn on nameplates (`FlagImages`); none without it.
+    this.flags = flags;
     this.atlas = atlas;
     this.map = map;
     this.camera = camera;
@@ -1194,12 +1198,28 @@ export class Renderer {
     if (!participant.nickname) return;
     const { x: cx, headY } = this._avatarAnchor(participant);
     this._uiFont(ctx, participant.nickname);
-    const width = Math.round(ctx.measureText(participant.nickname).width) + NAMEPLATE_PAD_X * 2;
+    // The flag of the language they use the chat in, ahead of the name, the
+    // way the chat draws it beside the nickname.
+    const flag = this.flags?.get(participant.locale) ?? null;
+    const flagWidth = flag ? this.flags.size + NAMEPLATE_FLAG_GAP : 0;
+    const textWidth = Math.round(ctx.measureText(participant.nickname).width);
+    const width = textWidth + flagWidth + NAMEPLATE_PAD_X * 2;
+    const left = Math.round(cx - width / 2);
     const top = Math.round(headY - NAMEPLATE_H - 2);
 
-    this._frame(ctx, "nameplate", Math.round(cx - width / 2), top, width, NAMEPLATE_H);
+    this._frame(ctx, "nameplate", left, top, width, NAMEPLATE_H);
+    if (flag) {
+      const size = this.flags.size;
+      ctx.drawImage(
+        flag,
+        left + NAMEPLATE_PAD_X,
+        top + Math.round((NAMEPLATE_H - size) / 2),
+        size,
+        size,
+      );
+    }
     ctx.fillStyle = this._theme.labelInk;
-    this._centredText(ctx, participant.nickname, cx, top + NAMEPLATE_BASELINE);
+    this._centredText(ctx, participant.nickname, cx + flagWidth / 2, top + NAMEPLATE_BASELINE);
     this._drawHpBar(ctx, participant, cx, headY);
   }
 

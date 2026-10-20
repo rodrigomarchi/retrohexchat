@@ -19,6 +19,7 @@ defmodule RetroHexChatWeb.Components.UI.GroupCall.Panel do
   import RetroHexChatWeb.Components.UI.MediaSession.InspectorPanel
   import RetroHexChatWeb.Components.UI.MediaSession.SectionNav
   import RetroHexChatWeb.Components.UI.MediaSession.SummaryCard
+  import RetroHexChatWeb.Components.UI.NickFlag
 
   alias RetroHexChatWeb.Components.UI.GroupCall.{
     ActiveSpeakerRing,
@@ -687,6 +688,7 @@ defmodule RetroHexChatWeb.Components.UI.GroupCall.Panel do
             <span class="inline-flex h-5 min-w-5 items-center justify-center border border-border bg-surface text-[10px] text-muted-foreground shadow-retro-sunken">
               {index}
             </span>
+            <.nick_flag locale={nick_locale(@call, participant.nickname)} />
             <span class="min-w-0 truncate font-bold">{participant.nickname}</span>
           </span>
           <.tool_button
@@ -735,6 +737,7 @@ defmodule RetroHexChatWeb.Components.UI.GroupCall.Panel do
 
         <div class="min-w-0 flex-1">
           <div class="flex min-w-0 flex-wrap items-center gap-1">
+            <.nick_flag locale={nick_locale(@call, @participant.nickname)} />
             <span class="min-w-0 truncate font-bold">{@participant.nickname}</span>
             <span class="inline-flex shrink-0 items-center gap-1">
               <ActiveSpeakerRing.active_speaker_badge
@@ -1135,6 +1138,13 @@ defmodule RetroHexChatWeb.Components.UI.GroupCall.Panel do
   defp media_enabled?(_call, _key), do: true
 
   defp participant_count(call), do: length(participants(call))
+  # The languages are looked up when the roster changes (`GroupCallSummary.put_nick_locales/2`),
+  # never here.
+  defp nick_locale(%{nick_locales: locales}, nickname) when is_map(locales),
+    do: Map.get(locales, nickname)
+
+  defp nick_locale(_call, _nickname), do: nil
+
   defp participants(nil), do: []
   defp participants(%{participants: participants}), do: participants || []
 

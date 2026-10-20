@@ -70,4 +70,15 @@ defmodule RetroHexChatWeb.Components.UI.GroupCall.ChannelBadgeTest do
     assert html =~ ~s(phx-click="group_call_open")
     assert html =~ "disabled"
   end
+
+  test "the roster in the popover carries each person's language flag before the name" do
+    html = render_entry(summary: summary(%{nick_locales: %{"ana" => "pt_BR", "bob" => nil}}))
+
+    [flag] =
+      html
+      |> Floki.parse_fragment!()
+      |> Floki.find(~s([data-testid="group-call-channel-popover"] [data-testid="nick-flag"]))
+
+    assert Floki.attribute(flag, "data-locale") == ["pt_BR"]
+  end
 end

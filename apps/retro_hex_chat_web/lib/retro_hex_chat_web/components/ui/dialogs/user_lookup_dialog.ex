@@ -9,6 +9,7 @@ defmodule RetroHexChatWeb.Components.UI.UserLookupDialog do
   import RetroHexChatWeb.Components.UI.Button
   import RetroHexChatWeb.Components.UI.Input
   import RetroHexChatWeb.Components.UI.DialogBanner
+  import RetroHexChatWeb.Components.UI.NickFlag
 
   alias RetroHexChatWeb.Components.Diagrams
   alias RetroHexChatWeb.Icons
@@ -159,7 +160,10 @@ defmodule RetroHexChatWeb.Components.UI.UserLookupDialog do
       <dl class="ul-result-list">
         <div :for={row <- @rows} class="ul-result-row">
           <dt class="ul-result-label">{row.label}:</dt>
-          <dd class="ul-result-value">{row.value}</dd>
+          <dd class="ul-result-value">
+            <.nick_flag locale={Map.get(row, :locale)} />
+            {row.value}
+          </dd>
         </div>
       </dl>
 

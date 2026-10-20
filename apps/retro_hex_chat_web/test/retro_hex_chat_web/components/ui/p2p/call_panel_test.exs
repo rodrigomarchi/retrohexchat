@@ -282,4 +282,14 @@ defmodule RetroHexChatWeb.Components.UI.P2P.CallPanelTest do
     assert html =~ ~s(data-reaction="heart")
     assert html =~ ~s(data-reaction="clap")
   end
+
+  test "the peer's name carries their language flag" do
+    html = render_panel(peer_locale: "es")
+
+    assert html
+           |> Floki.parse_fragment!()
+           |> Floki.find(~s([data-testid="nick-flag"]))
+           |> Floki.attribute("data-locale")
+           |> Enum.uniq() == ["es"]
+  end
 end

@@ -45,4 +45,22 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.PresenceTest do
       assert log =~ "presence_test.exs"
     end
   end
+
+  describe "session_meta/1" do
+    @tag :unit
+    test "is the browser's description and the language the chat is shown in" do
+      socket = %Phoenix.LiveView.Socket{
+        assigns: %{__changed__: %{}, client_info: %{browser: "Firefox"}, locale: "fr"}
+      }
+
+      assert PresenceHelpers.session_meta(socket) == %{browser: "Firefox", locale: "fr"}
+    end
+
+    @tag :unit
+    test "says no language before the session has one" do
+      socket = %Phoenix.LiveView.Socket{assigns: %{__changed__: %{}}}
+
+      assert PresenceHelpers.session_meta(socket) == %{locale: nil}
+    end
+  end
 end

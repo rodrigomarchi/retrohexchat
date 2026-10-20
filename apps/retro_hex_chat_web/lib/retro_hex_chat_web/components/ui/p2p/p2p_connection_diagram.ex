@@ -6,6 +6,8 @@ defmodule RetroHexChatWeb.Components.UI.P2PConnectionDiagram do
   """
   use RetroHexChatWeb.Component
 
+  import RetroHexChatWeb.Components.UI.NickFlag
+
   alias RetroHexChatWeb.Icons
 
   attr :nickname, :string, required: true
@@ -18,6 +20,8 @@ defmodule RetroHexChatWeb.Components.UI.P2PConnectionDiagram do
   attr :call, :map, default: nil
   attr :local_info, :map, default: %{}
   attr :peer_info, :map, default: %{}
+  attr :nickname_locale, :string, default: nil, doc: "the reader's language, for the flag"
+  attr :peer_locale, :string, default: nil, doc: "the peer's language, for the flag"
 
   @spec p2p_connection_diagram(map()) :: Phoenix.LiveView.Rendered.t()
   def p2p_connection_diagram(assigns) do
@@ -38,6 +42,7 @@ defmodule RetroHexChatWeb.Components.UI.P2PConnectionDiagram do
       <div class="p2p-diagram__peers">
         <.peer_panel
           nick={@nickname}
+          locale={@nickname_locale}
           label={dgettext("p2p", "(you)")}
           online={true}
           status_label={peer_status_label(@diagram_state, :local)}
@@ -59,6 +64,7 @@ defmodule RetroHexChatWeb.Components.UI.P2PConnectionDiagram do
 
         <.peer_panel
           nick={@peer_nick}
+          locale={@peer_locale}
           online={@peer_online}
           status_label={peer_status_label(@diagram_state, :remote)}
           info={@peer_info}
@@ -79,6 +85,8 @@ defmodule RetroHexChatWeb.Components.UI.P2PConnectionDiagram do
   attr :call, :map, default: nil
   attr :local_info, :map, default: %{}
   attr :peer_info, :map, default: %{}
+  attr :nickname_locale, :string, default: nil, doc: "the reader's language, for the flag"
+  attr :peer_locale, :string, default: nil, doc: "the peer's language, for the flag"
 
   @spec p2p_connection_strip(map()) :: Phoenix.LiveView.Rendered.t()
   def p2p_connection_strip(assigns) do
@@ -99,6 +107,7 @@ defmodule RetroHexChatWeb.Components.UI.P2PConnectionDiagram do
     >
       <.strip_peer
         nick={@nickname}
+        locale={@nickname_locale}
         label={dgettext("p2p", "you")}
         online={true}
         browser_name={@local_browser_name}
@@ -117,6 +126,7 @@ defmodule RetroHexChatWeb.Components.UI.P2PConnectionDiagram do
 
       <.strip_peer
         nick={@peer_nick}
+        locale={@peer_locale}
         online={@peer_online}
         browser_name={@peer_browser_name}
         status_label={peer_status_label(@diagram_state, :remote)}
@@ -126,6 +136,7 @@ defmodule RetroHexChatWeb.Components.UI.P2PConnectionDiagram do
   end
 
   attr :nick, :string, required: true
+  attr :locale, :string, default: nil
   attr :label, :string, default: nil
   attr :online, :boolean, required: true
   attr :browser_name, :string, required: true
@@ -141,6 +152,7 @@ defmodule RetroHexChatWeb.Components.UI.P2PConnectionDiagram do
       ]}>
       </span>
       <Icons.icon_browser class={"p2p-diagram-strip__browser p2p-diagram__browser-svg--#{@browser_name}"} />
+      <.nick_flag locale={@locale} />
       <span class="p2p-diagram-strip__nick">{@nick}</span>
       <span :if={@label} class="p2p-diagram-strip__you">({@label})</span>
       <span :if={@status_label} class="p2p-diagram-strip__peer-status">{@status_label}</span>
@@ -151,6 +163,7 @@ defmodule RetroHexChatWeb.Components.UI.P2PConnectionDiagram do
   # --- Peer Panel ---
 
   attr :nick, :string, required: true
+  attr :locale, :string, default: nil
   attr :label, :string, default: nil
   attr :online, :boolean, required: true
   attr :status_label, :string, default: nil
@@ -174,6 +187,7 @@ defmodule RetroHexChatWeb.Components.UI.P2PConnectionDiagram do
             !@online && "p2p-diagram__status-dot--offline"
           ]}>
           </span>
+          <.nick_flag locale={@locale} />
           <span class="p2p-diagram__nick">{@nick}</span>
           <span :if={@label} class="p2p-diagram__you-label">{@label}</span>
         </div>

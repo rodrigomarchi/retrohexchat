@@ -4,6 +4,7 @@ defmodule RetroHexChatWeb.Components.UI.JoinCard do
 
   import RetroHexChatWeb.Components.UI.Button
   import RetroHexChatWeb.Components.UI.ChatCard, only: [surface_link: 1]
+  import RetroHexChatWeb.Components.UI.NickFlag
 
   alias RetroHexChatWeb.Components.UI.ShareKind
   alias RetroHexChatWeb.Icons
@@ -15,7 +16,7 @@ defmodule RetroHexChatWeb.Components.UI.JoinCard do
 
   attr :preview, :list,
     default: [],
-    doc: "the last few visible lines of the room, oldest first"
+    doc: "the last few visible lines of the room, oldest first; `:author_locale` draws a flag"
 
   attr :enter_path, :string, default: nil
 
@@ -118,6 +119,7 @@ defmodule RetroHexChatWeb.Components.UI.JoinCard do
     ~H"""
     <ul class="shadow-retro-field flex flex-col gap-1 p-2" data-testid="join-preview">
       <li :for={line <- @lines} class="font-chat truncate text-sm">
+        <.nick_flag locale={Map.get(line, :author_locale)} />
         <span class="font-bold">{line.author}</span>
         <span class="text-muted-foreground">{line.content}</span>
       </li>

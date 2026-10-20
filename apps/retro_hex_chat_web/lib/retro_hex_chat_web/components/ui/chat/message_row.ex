@@ -28,6 +28,7 @@ defmodule RetroHexChatWeb.Components.UI.MessageRow do
 
   alias RetroHexChat.Chat.TimeFormatter
   alias RetroHexChat.Games.Catalog
+  alias RetroHexChat.Nickname
   alias RetroHexChatWeb.App.ChatHelpers
   alias RetroHexChatWeb.App.Paths
   alias RetroHexChatWeb.PublicPages
@@ -53,6 +54,7 @@ defmodule RetroHexChatWeb.Components.UI.MessageRow do
           layout={card_layout(@msg)}
           nick={@msg.author}
           nick_color={@nick_color_fn.(@msg.author)}
+          locale={Map.get(@msg, :locale)}
           avatar={@show_avatars && Map.get(@msg, :avatar)}
         >
           * {raw(formatted_content(@msg, @strip_formatting))}
@@ -133,6 +135,7 @@ defmodule RetroHexChatWeb.Components.UI.MessageRow do
           type="notice"
           nick={@msg.author}
           nick_color={@nick_color_fn.(@msg.author)}
+          locale={Map.get(@msg, :locale)}
         >
           {raw(formatted_content(@msg, @strip_formatting))}
         </.chat_message>
@@ -199,6 +202,7 @@ defmodule RetroHexChatWeb.Components.UI.MessageRow do
           author={Map.get(@msg, :reply_to_author, "?")}
           preview={Map.get(@msg, :reply_to_preview)}
           nick_color={@nick_color_fn.(Map.get(@msg, :reply_to_author, ""))}
+          locale={Map.get(@msg, :reply_to_locale)}
           on_click="scroll_to_reply_parent"
         />
         <%= if Map.get(@msg, :deleted_at) do %>
@@ -216,6 +220,7 @@ defmodule RetroHexChatWeb.Components.UI.MessageRow do
             meta_title={ChatHelpers.format_datetime(@msg.timestamp, @timezone)}
             nick={@msg.author}
             nick_color={@nick_color_fn.(@msg.author)}
+            locale={Map.get(@msg, :locale)}
             avatar={@show_avatars && Map.get(@msg, :avatar)}
             layout={card_layout(@msg)}
           >
@@ -320,6 +325,7 @@ defmodule RetroHexChatWeb.Components.UI.MessageRow do
     <.share_message_card
       :if={not @strip_formatting}
       card={Map.get(@msg, :share_card)}
+      creator_locale={creator_locale(Map.get(@msg, :share_card), @msg)}
       enter_path={p2p_enter_path(Map.get(@msg, :share_card))}
       next_path={share_next_path(Map.get(@msg, :share_card))}
       ended_at_text={share_ended_at_text(Map.get(@msg, :share_card), @timezone)}
@@ -334,6 +340,7 @@ defmodule RetroHexChatWeb.Components.UI.MessageRow do
     <.share_message_card
       :if={not @strip_formatting}
       card={@card}
+      creator_locale={creator_locale(@card, @msg)}
       subject={share_subject(@card)}
       enter_path={share_enter_path(@card)}
       share_url={share_url(@card)}
@@ -343,6 +350,17 @@ defmodule RetroHexChatWeb.Components.UI.MessageRow do
     />
     """
   end
+
+  # The card carries its sharer's flag, looked up with the page. Without it,
+  # whoever shared the card wrote the line it hangs off, most of the time; then
+  # the line's own flag is theirs, with nothing more to look up.
+  defp creator_locale(%{creator_locale: locale}, _msg) when is_binary(locale), do: locale
+
+  defp creator_locale(%{creator_nick: nick}, msg) when is_binary(nick) do
+    if Nickname.equal?(nick, Map.get(msg, :author)), do: Map.get(msg, :locale)
+  end
+
+  defp creator_locale(_card, _msg), do: nil
 
   defp share_watch_path(%{watch?: true, target: %{"session_token" => token}})
        when is_binary(token),

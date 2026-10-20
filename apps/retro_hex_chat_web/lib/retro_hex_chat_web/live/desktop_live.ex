@@ -55,7 +55,7 @@ defmodule RetroHexChatWeb.DesktopLive do
   import RetroHexChatWeb.Components.UI.Site.DesktopFiles
 
   # ── Domain aliases ────────────────────────────────────────────
-  alias RetroHexChat.Accounts.{Session, TrustedDevices}
+  alias RetroHexChat.Accounts.{NickLocales, Session, TrustedDevices}
   alias RetroHexChat.Channels.Server
   alias RetroHexChat.Services.Queries
 
@@ -225,7 +225,16 @@ defmodule RetroHexChatWeb.DesktopLive do
     if connected?(socket) and is_binary(params["arcade"]),
       do: send(self(), {:open_arcade_link, params["arcade"]})
 
-    ChatLive.Helpers.safe_track_user(Topics.presence(), nickname, client_info)
+    ChatLive.Helpers.safe_track_user(
+      Topics.presence(),
+      nickname,
+      Map.put(client_info, :locale, socket.assigns[:locale])
+    )
+
+    # The flag beside this nickname on every other screen. Written to the row
+    # only for somebody who proved the name, so a stranger typing it cannot
+    # repaint its owner's.
+    NickLocales.remember(nickname, socket.assigns[:locale], store: identified?)
 
     # The chat is one of this person's surfaces, and a live one owns the
     # lifetime of their channel membership again: whatever departure a previous
@@ -1018,6 +1027,8 @@ defmodule RetroHexChatWeb.DesktopLive do
       # Matches anybody may watch, for a game channel's strip; filled with the
       # user list's "who is playing" from `Games.Activity`.
       live_matches: [],
+      # Their players' languages, kept while the same people are playing.
+      live_match_locales: nil,
       show_conversations: true,
       channel_user_counts: %{},
       channel_guests: %{},

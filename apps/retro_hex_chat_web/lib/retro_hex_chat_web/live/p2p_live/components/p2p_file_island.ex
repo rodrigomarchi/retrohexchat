@@ -43,6 +43,7 @@ defmodule RetroHexChatWeb.P2PLive.Components.P2PFileIsland do
        connected: false,
        nickname: nil,
        peer_nick: nil,
+       peer_locale: nil,
        token: nil,
        max_file_size_mb: max_file_size_mb(),
        blocked_file_extensions: blocked_file_extensions()
@@ -67,6 +68,7 @@ defmodule RetroHexChatWeb.P2PLive.Components.P2PFileIsland do
         file_transfer={@file_transfer}
         nickname={@nickname}
         peer_nick={@peer_nick}
+        peer_locale={@peer_locale}
         max_file_size_mb={@max_file_size_mb}
         blocked_file_extensions={@blocked_file_extensions}
       />
@@ -80,6 +82,7 @@ defmodule RetroHexChatWeb.P2PLive.Components.P2PFileIsland do
       connected: Map.get(assigns, :connected, socket.assigns.connected),
       nickname: Map.get(assigns, :nickname, socket.assigns.nickname),
       peer_nick: Map.get(assigns, :peer_nick, socket.assigns.peer_nick),
+      peer_locale: Map.get(assigns, :peer_locale, socket.assigns.peer_locale),
       token: Map.get(assigns, :token, socket.assigns.token)
     )
   end

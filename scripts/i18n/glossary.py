@@ -274,6 +274,9 @@ _ROWS = {
     "Windows":      ("Janelas", "Janelas", "Ventanas", "Fenêtres", "Fenster", "Finestre", "Vensters", "Okna", "Окна", "Jendela", "ウィンドウ", "窗口", "視窗"),
     "No windows":   ("Nenhuma janela", "Nenhuma janela", "Sin ventanas", "Aucune fenêtre", "Keine Fenster", "Nessuna finestra", "Geen vensters", "Brak okien", "Нет окон", "Tidak ada jendela", "ウィンドウなし", "无窗口", "無視窗"),
     "Navigate":     ("Navegar", "Navegar", "Navegar", "Naviguer", "Navigieren", "Naviga", "Navigeren", "Nawigacja", "Навигация", "Navigasi", "移動", "导航", "導覽"),
+    # Left to the pipeline the menu's own name came back as "Язык языка" and
+    # "日本語 English": one word, no sentence, and the model guessed.
+    "Language":     ("Idioma", "Língua", "Idioma", "Langue", "Sprache", "Lingua", "Taal", "Język", "Язык", "Bahasa", "言語", "语言", "語言"),
     "Automation":   ("Automação", "Automação", "Automatización", "Automatisation", "Automatisierung", "Automazione", "Automatisering", "Automatyzacja", "Автоматизация", "Otomatisasi", "自動化", "自动化", "自動化"),
 
     # ── Connection ────────────────────────────────────────────

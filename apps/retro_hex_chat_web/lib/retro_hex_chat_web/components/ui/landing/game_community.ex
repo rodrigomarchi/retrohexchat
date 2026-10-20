@@ -13,12 +13,15 @@ defmodule RetroHexChatWeb.Components.UI.Landing.GameCommunity do
   shown for a versus game), `playing_now` (nicknames in a match right now),
   `live` (the matches among them anybody may watch), `challenge` and
   `challenge_leader` (the week's challenge), `recent` (match cards), `chatter`
-  (archived lines) and `week_count`.
+  (archived lines) and `week_count` — and `nick_locales`, the language of
+  every nickname among them (`nickname => locale`), looked up once by the page,
+  for the flag drawn before each name.
   """
   use RetroHexChatWeb.Component
 
   import RetroHexChatWeb.Components.UI.Button
   import RetroHexChatWeb.Components.UI.LiveMatch
+  import RetroHexChatWeb.Components.UI.NickFlag
 
   alias RetroHexChat.Chat.TimeFormatter
   alias RetroHexChatWeb.Components.UI.GameResultCard
@@ -26,6 +29,7 @@ defmodule RetroHexChatWeb.Components.UI.Landing.GameCommunity do
 
   attr :live, :list, required: true
   attr :playing_now, :list, required: true
+  attr :nick_locales, :map, default: %{}
 
   @doc "Who is playing the game now, and the matches among theirs anybody may watch."
   @spec live_now(map()) :: Phoenix.LiveView.Rendered.t()
@@ -35,14 +39,16 @@ defmodule RetroHexChatWeb.Components.UI.Landing.GameCommunity do
       {dgettext("landing", "Nobody yet.")}
     </p>
     <p :if={@playing_now != []} class="text-sm mb-3" data-testid="game-community-playing">
-      {dgettext("landing", "Playing now: %{names}", names: Enum.join(@playing_now, ", "))}
+      <.around_name text={dgettext("landing", "Playing now: %{names}", names: name_mark())}>
+        <.flagged_names names={@playing_now} locales={@nick_locales} />
+      </.around_name>
     </p>
 
     <div :if={@live != []} data-testid="game-community-live">
       <h3 class="text-sm font-bold mb-1">{dgettext("landing", "Live now")}</h3>
       <ul class="text-sm space-y-1">
         <li :for={match <- @live}>
-          <.live_match_link match={match} show_game={false} new_tab />
+          <.live_match_link match={match} show_game={false} locales={@nick_locales} new_tab />
         </li>
       </ul>
     </div>
@@ -60,12 +66,19 @@ defmodule RetroHexChatWeb.Components.UI.Landing.GameCommunity do
         )}
       </h3>
       <p :if={@challenge_leader} class="text-sm">
-        {dgettext("landing", "In the lead: %{nickname}", nickname: @challenge_leader.nickname)}
+        <.around_name text={dgettext("landing", "In the lead: %{nickname}", nickname: name_mark())}>
+          <.nick_flag locale={Map.get(@nick_locales, @challenge_leader.nickname)} class="mr-1" />{@challenge_leader.nickname}
+        </.around_name>
       </p>
     </div>
 
     <h3 class="text-sm font-bold mb-1">{dgettext("landing", "This week, between players")}</h3>
-    <.standings standings={@week} ranking={@ranking} testid="game-community-week" />
+    <.standings
+      standings={@week}
+      ranking={@ranking}
+      locales={@nick_locales}
+      testid="game-community-week"
+    />
 
     <div :if={@ranking == :wins}>
       <h3 class="text-sm font-bold mb-1 mt-3">{dgettext("landing", "Rating")}</h3>
@@ -74,6 +87,7 @@ defmodule RetroHexChatWeb.Components.UI.Landing.GameCommunity do
       </p>
       <ol :if={@ratings != []} class="text-sm list-decimal pl-5" data-testid="game-community-ratings">
         <li :for={row <- @ratings}>
+          <.nick_flag locale={Map.get(@nick_locales, row.nickname)} />
           <strong>{row.nickname}</strong>
           <span class="text-muted-foreground">{row.rating}</span>
         </li>
@@ -81,18 +95,29 @@ defmodule RetroHexChatWeb.Components.UI.Landing.GameCommunity do
     </div>
 
     <h3 class="text-sm font-bold mb-1 mt-3">{dgettext("landing", "Against the computer on hard")}</h3>
-    <.standings standings={@computer} ranking={@ranking} testid="game-community-computer" />
+    <.standings
+      standings={@computer}
+      ranking={@ranking}
+      locales={@nick_locales}
+      testid="game-community-computer"
+    />
 
     <h3 class="text-sm font-bold mb-1 mt-3">{dgettext("landing", "Latest matches")}</h3>
     <p :if={@recent == []} class="text-sm text-muted-foreground">
       {dgettext("landing", "No matches yet. Play the first one.")}
     </p>
-    <.match_list :if={@recent != []} cards={@recent} testid="game-community-recent" />
+    <.match_list
+      :if={@recent != []}
+      cards={@recent}
+      locales={@nick_locales}
+      testid="game-community-recent"
+    />
     """
   end
 
   attr :cards, :list, required: true, doc: "`Games.Results.card/1`s, newest first"
   attr :testid, :string, required: true
+  attr :locales, :map, default: %{}, doc: "nickname => locale, for the players' flags"
 
   @doc """
   Matches as lines: the score, how it ended — a match somebody left says so —
@@ -103,7 +128,7 @@ defmodule RetroHexChatWeb.Components.UI.Landing.GameCommunity do
     ~H"""
     <ul class="text-sm space-y-1" data-testid={@testid}>
       <li :for={card <- @cards}>
-        <strong>{GameResultCard.score_line(card)}</strong>
+        <strong><GameResultCard.score_with_flags card={card} locales={@locales} /></strong>
         <span class="text-muted-foreground">
           · {GameResultCard.verdict(card)} · {TimeFormatter.format_relative(card.finished_at)}
         </span>
@@ -131,6 +156,7 @@ defmodule RetroHexChatWeb.Components.UI.Landing.GameCommunity do
       <h3 class="text-sm font-bold mb-1">{dgettext("landing", "In the channel")}</h3>
       <ul class="text-sm space-y-1">
         <li :for={line <- @chatter} class="break-words">
+          <.nick_flag locale={Map.get(@nick_locales, line.author)} />
           <strong>{line.author}</strong>: {line.text}
         </li>
       </ul>
@@ -145,6 +171,7 @@ defmodule RetroHexChatWeb.Components.UI.Landing.GameCommunity do
 
   attr :standings, :list, required: true
   attr :ranking, :atom, required: true
+  attr :locales, :map, default: %{}
   attr :testid, :string, required: true
 
   defp standings(assigns) do
@@ -154,10 +181,46 @@ defmodule RetroHexChatWeb.Components.UI.Landing.GameCommunity do
     </p>
     <ol :if={@standings != []} class="text-sm list-decimal pl-5" data-testid={@testid}>
       <li :for={row <- @standings}>
+        <.nick_flag locale={Map.get(@locales, row.nickname)} />
         <strong>{row.nickname}</strong>
         <span class="text-muted-foreground">{standing_value(row, @ranking)}</span>
       </li>
     </ol>
+    """
+  end
+
+  # A private-use mark stands in for the name while a sentence is translated,
+  # so the flagged name goes where the translation put it.
+  @name_mark "\u{E000}"
+
+  defp name_mark, do: @name_mark
+
+  attr :text, :string, required: true, doc: "a translation with `name_mark/0` where the name goes"
+  slot :inner_block, required: true
+
+  defp around_name(assigns) do
+    {before, rest} =
+      case String.split(assigns.text, @name_mark, parts: 2) do
+        [before, rest] -> {before, rest}
+        [whole] -> {whole, ""}
+      end
+
+    assigns = assign(assigns, before: before, rest: rest)
+
+    ~H"{@before}{render_slot(@inner_block)}{@rest}"
+  end
+
+  attr :names, :list, required: true
+  attr :locales, :map, required: true
+
+  # A list of nicknames, each with its flag before it, comma-separated.
+  defp flagged_names(assigns) do
+    assigns = assign(assigns, :last, length(assigns.names) - 1)
+
+    ~H"""
+    <span :for={{name, index} <- Enum.with_index(@names)} class="whitespace-nowrap">
+      <.nick_flag locale={Map.get(@locales, name)} class="mr-1" />{name}{if index < @last, do: ","}
+    </span>
     """
   end
 

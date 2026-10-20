@@ -3,6 +3,7 @@ defmodule RetroHexChatWeb.Components.UI.IrcTabs do
   use RetroHexChatWeb.Component
 
   import RetroHexChatWeb.Components.UI.GroupCall.ChannelBadge
+  import RetroHexChatWeb.Components.UI.NickFlag
   import RetroHexChatWeb.Components.UI.P2P.SessionBadge
 
   import RetroHexChatWeb.Components.UI.ToolButton
@@ -66,6 +67,7 @@ defmodule RetroHexChatWeb.Components.UI.IrcTabs do
   attr :label, :string, required: true
   attr :closeable, :boolean, default: true
   attr :nick_color, :string, default: nil, doc: "CSS class for nick coloring (PM tabs)"
+  attr :locale, :string, default: nil, doc: "the PM peer's locale, drawn as a flag"
   attr :p2p, :boolean, default: false, doc: "Marks the PM tab that owns the live P2P session"
   attr :p2p_state, :string, default: nil, doc: "Visual P2P state: pending, connecting, connected"
   attr :p2p_session, :map, default: nil, doc: "P2P session read model for the owning PM tab"
@@ -111,6 +113,7 @@ defmodule RetroHexChatWeb.Components.UI.IrcTabs do
       <span class="irc-tab__icon icon-slot-16">
         {type_icon(assigns)}
       </span>
+      <.nick_flag :if={@type == "pm"} locale={@locale} />
       <%!-- A PM tab keeps its nick colour while selected. The bar holds one
            conversation at a time, so the colour reads as who you are talking to
            rather than as a way to scan a row of unselected tabs. --%>

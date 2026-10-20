@@ -19,6 +19,7 @@ defmodule RetroHexChatWeb.Components.UI.P2P.SessionBadge do
 
   import RetroHexChatWeb.Components.UI.Button
   import RetroHexChatWeb.Components.UI.EntryPopover
+  import RetroHexChatWeb.Components.UI.NickFlag
   import RetroHexChatWeb.Components.UI.Popover
   import RetroHexChatWeb.Components.UI.ToolButton
 
@@ -116,7 +117,12 @@ defmodule RetroHexChatWeb.Components.UI.P2P.SessionBadge do
           state_label={status_label(@status, @game)}
           state_class={status_class(@status)}
         >
-          <:icon><Icons.icon_protocol_p2p_compact class="h-3.5 w-3.5 shrink-0" /></:icon>
+          <:icon>
+            <Icons.icon_protocol_p2p_compact class="h-3.5 w-3.5 shrink-0" />
+            <%!-- The header draws its icon slot right before the title, which
+                  is the peer's name: the flag sits beside it there. --%>
+            <.nick_flag locale={@peer_locale} />
+          </:icon>
         </.entry_popover_header>
 
         <div class="mt-2 grid grid-cols-2 gap-1">
@@ -200,6 +206,7 @@ defmodule RetroHexChatWeb.Components.UI.P2P.SessionBadge do
 
     assigns
     |> assign(:game, value(session, :game))
+    |> assign(:peer_locale, value(session, :peer_locale))
     |> assign(:active, session != nil)
     |> assign(:idle?, state in [:idle, "idle"])
     |> assign(:pending_received?, pending_received?(state, role))

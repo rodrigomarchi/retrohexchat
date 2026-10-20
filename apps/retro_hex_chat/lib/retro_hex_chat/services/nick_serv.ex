@@ -20,6 +20,7 @@ defmodule RetroHexChat.Services.NickServ do
 
   require Logger
 
+  alias RetroHexChat.Accounts.NickLocales
   alias RetroHexChat.Accounts.NicknameValidator
   alias RetroHexChat.Accounts.TrustedDevices
   alias RetroHexChat.Admin
@@ -78,6 +79,7 @@ defmodule RetroHexChat.Services.NickServ do
         case Queries.insert_registered_nick(nickname, password) do
           {:ok, _} ->
             GenServer.call(server, {:add_identified, nickname})
+            NickLocales.adopt(nickname)
 
             {:ok,
              dgettext("services", "Nickname %{nickname} registered successfully",
@@ -114,6 +116,7 @@ defmodule RetroHexChat.Services.NickServ do
         if RegisteredNick.verify_password(nick, password) do
           Queries.update_last_seen(nick)
           GenServer.call(server, {:mark_identified, nickname})
+          NickLocales.adopt(nickname)
 
           {:ok, dgettext("services", "You are now identified as %{nickname}", nickname: nickname)}
         else

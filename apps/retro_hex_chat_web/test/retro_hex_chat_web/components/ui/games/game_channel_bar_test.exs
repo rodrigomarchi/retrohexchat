@@ -42,12 +42,36 @@ defmodule RetroHexChatWeb.Components.UI.GameChannelBarTest do
     # The match of a mode of the game counts as the game's.
     assert [link] = Floki.find(document, ~s([data-testid="live-match-link"]))
     assert Floki.attribute(link, "href") == ["/watch/tennis-tok"]
-    assert Floki.text(link) =~ "ana × beto"
+    assert link |> Floki.text() |> String.split() |> Enum.join(" ") =~ "ana × beto"
     # No count the strip would leave stale.
     refute Floki.text(link) =~ "watching"
 
     refute render_component(&game_channel_bar/1, channel: "#hex-pong", live_matches: []) =~
              "live-match-link"
+  end
+
+  test "each player of the offered match carries the flag of their language" do
+    live = [
+      %{
+        token: "tennis-tok",
+        game_id: "hex_tennis",
+        players: ["ana", "beto"],
+        watchers: 0,
+        player_locales: %{"ana" => "pt_BR"}
+      }
+    ]
+
+    players =
+      render_component(&game_channel_bar/1, channel: "#hex-tennis", live_matches: live)
+      |> Floki.parse_document!()
+      |> Floki.find(~s([data-testid="live-match-link"] [data-testid="match-player"]))
+
+    assert [ana, beto] = players
+
+    assert ana |> Floki.find(~s([data-testid="nick-flag"])) |> Floki.attribute("data-locale") ==
+             ["pt_BR"]
+
+    assert Floki.find(beto, ~s([data-testid="nick-flag"])) == []
   end
 
   test "any other channel gets nothing" do

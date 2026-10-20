@@ -210,4 +210,22 @@ defmodule RetroHexChatWeb.ChatLive.StreamItemTest do
                StreamItem.from_message(channel_message(%{attachments: [payload]}))
     end
   end
+
+  describe "language flags" do
+    test "a row carries its author's language, and its answered author's" do
+      row =
+        %{author: "ana"}
+        |> StreamItem.put_locale("pt_BR")
+        |> StreamItem.put_reply_locale("ja")
+
+      assert %{locale: "pt_BR", reply_to_locale: "ja"} = row
+    end
+
+    test "an unknown language leaves the field out" do
+      row = %{author: "ana"} |> StreamItem.put_locale(nil) |> StreamItem.put_reply_locale(nil)
+
+      refute Map.has_key?(row, :locale)
+      refute Map.has_key?(row, :reply_to_locale)
+    end
+  end
 end

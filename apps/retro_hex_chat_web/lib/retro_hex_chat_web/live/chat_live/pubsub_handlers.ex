@@ -214,6 +214,9 @@ defmodule RetroHexChatWeb.ChatLive.PubsubHandlers do
   def handle_info({:avatar_changed, _} = msg, socket),
     do: Presence.handle_info(msg, socket)
 
+  def handle_info({:locale_changed, _} = msg, socket),
+    do: Presence.handle_info(msg, socket)
+
   # ── Read markers: where this person's other screens have got to ─
   #
   # Explicit, never the catch-all. A marker that fell through to `{:cont, …}`

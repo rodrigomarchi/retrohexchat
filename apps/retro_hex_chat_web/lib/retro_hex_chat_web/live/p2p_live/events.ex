@@ -43,6 +43,7 @@ defmodule RetroHexChatWeb.P2PLive.Events do
   use Gettext, backend: RetroHexChatWeb.Gettext
 
   alias Phoenix.LiveView.Socket
+  alias RetroHexChat.Accounts.NickLocales
   alias RetroHexChat.Accounts.TrustedDevices
   alias RetroHexChat.Calls.Events, as: CallEvents
   alias RetroHexChat.Chat.Service, as: ChatService
@@ -998,7 +999,7 @@ defmodule RetroHexChatWeb.P2PLive.Events do
   defp seat_taken(socket, p2p) do
     case Lobby.join_session(p2p.token, p2p.user_id) do
       :ok ->
-        p2p = %{p2p | peer_nick: p2p.peer_nick || peer_nick_for(p2p.token, p2p.user_id)}
+        p2p = put_peer_nick(p2p, p2p.peer_nick || peer_nick_for(p2p.token, p2p.user_id))
 
         socket
         |> put_p2p(%{p2p | state: :joining, peer_online: true})
@@ -1039,8 +1040,19 @@ defmodule RetroHexChatWeb.P2PLive.Events do
     end
   end
 
+  # The language travels with the name: a peer named only now (an open lobby's
+  # arrival) is looked up once, here.
+  defp put_peer_nick(%{peer_nick: nick} = p2p, nick), do: p2p
+
+  defp put_peer_nick(p2p, nick),
+    do: Map.merge(p2p, %{peer_nick: nick, peer_locale: NickLocales.for_nick(nick)})
+
   defp new_session(socket, token, user_id, role, state, opts) do
     setup_preferences = load_p2p_setup_preferences(socket)
+    peer_nick = peer_nick_for(token, user_id)
+    # Both languages in one lookup, kept with the session: the flags beside the
+    # two names never ask again unless the peer's name changes.
+    locales = NickLocales.for_nicks(Enum.filter([socket.assigns[:nickname], peer_nick], & &1))
 
     %{
       token: token,
@@ -1051,7 +1063,9 @@ defmodule RetroHexChatWeb.P2PLive.Events do
       # a game in it, and it is read from the session rather than the address.
       match_game_id: Keyword.get(opts, :match_game_id),
       match_proposed: false,
-      peer_nick: peer_nick_for(token, user_id),
+      peer_nick: peer_nick,
+      peer_locale: Map.get(locales, peer_nick),
+      self_locale: Map.get(locales, socket.assigns[:nickname]),
       state: state,
       webrtc_started: false,
       # Whether this page's start announces a rebuild. A page that opens into a
@@ -1132,6 +1146,8 @@ defmodule RetroHexChatWeb.P2PLive.Events do
       nickname: nickname,
       match?: is_binary(p2p.match_game_id),
       peer_nick: p2p.peer_nick,
+      peer_locale: Map.get(p2p, :peer_locale),
+      self_locale: Map.get(p2p, :self_locale),
       host?: p2p.role == :creator,
       host_nick: if(p2p.role == :creator, do: nickname, else: p2p.peer_nick),
       ready?: p2p.room_ready,
