@@ -27,60 +27,70 @@ shot, logged in as an admin who has `/identify`-ed.
 /join #deutschland
 /cs register
 /cs archive on
+/cs language de
 /topic Deutschsprachiger Raum — reinkommen, hinsetzen, reden. Der Kaffee geht aufs Haus.
 /mode +tn
 
 /join #nachrichten
 /cs register
 /cs archive on
+/cs language de
 /topic Nachrichten — Spiegel, SZ, FAZ und Deutschlandfunk, direkt aus dem Feed. !Greta quellen zeigt die Liste.
 /mode +tn
 
 /join #dach
 /cs register
 /cs archive on
+/cs language de
 /topic Österreich und Schweiz — Der Standard und NZZ. Deutschsprachig ist nicht dasselbe wie deutsch.
 /mode +tn
 
 /join #technik
 /cs register
 /cs archive on
+/cs language de
 /topic Technik — heise und Golem. Projekt-Support gehört zum Projekt; hier wird geredet.
 /mode +tn
 
 /join #netz
 /cs register
 /cs archive on
+/cs language de
 /topic Netz — netzpolitik.org und t3n. Digitalpolitik, Plattformen, das Kleingedruckte.
 /mode +tn
 
 /join #computer
 /cs register
 /cs archive on
+/cs language de
 /topic Computer — ComputerBase am Draht. Hardware, Bauteile, Bastelei.
 /mode +tn
 
 /join #wirtschaft
 /cs register
 /cs archive on
+/cs language de
 /topic Wirtschaft — Handelsblatt und WirtschaftsWoche. Eine Schlagzeile ist keine Empfehlung.
 /mode +tn
 
 /join #wissenschaft
 /cs register
 /cs archive on
+/cs language de
 /topic Wissenschaft — Spektrum und wissenschaft.de. Dumme Fragen gibt es nicht, nur ungestellte.
 /mode +tn
 
 /join #sport
 /cs register
 /cs archive on
+/cs language de
 /topic Sport — kicker und Sportschau. Tabelle, Transfers und die übliche Diskussion.
 /mode +tn
 
 /join #spiele
 /cs register
 /cs archive on
+/cs language de
 /topic Spiele — Eurogamer.de am Draht. Wer wirklich spielen will: Menü Games, 18 Klassiker im Browser.
 /mode +tn
 
@@ -362,7 +372,8 @@ that matters after a paste.
 | `#sport` | **Uwe** | kicker, Sportschau |
 | `#spiele` | **Jonas** | Eurogamer.de |
 
-**Wachtmeister** stands in all ten and greets in none of them. All channels are `+tn`.
+**Wachtmeister** stands in all ten and greets in none of them. All channels are `+tn`,
+publish their archive and are marked German (`/cs language de`).
 
 Room names carry no umlauts: the client only linkifies `[a-zA-Z][a-zA-Z0-9_-]*`,
 so `#räume` would be typed and never clickable. Everything inside a room is

@@ -3055,7 +3055,7 @@ msgstr ""
 #: lib/retro_hex_chat_web/controllers/help_content/feature_key_bindings.html.heex:107
 #: lib/retro_hex_chat_web/controllers/help_content/feature_kick_notifications.html.heex:65
 #: lib/retro_hex_chat_web/controllers/help_content/feature_lag_indicator.html.heex:79
-#: lib/retro_hex_chat_web/controllers/help_content/feature_language_flags.html.heex:21
+#: lib/retro_hex_chat_web/controllers/help_content/feature_language_flags.html.heex:34
 #: lib/retro_hex_chat_web/controllers/help_content/feature_link_previews.html.heex:90
 #: lib/retro_hex_chat_web/controllers/help_content/feature_mentions.html.heex:36
 #: lib/retro_hex_chat_web/controllers/help_content/feature_message_attachments.html.heex:41
@@ -8074,3 +8074,18 @@ msgstr "Le petit drapeau devant un pseudo est la langue dans laquelle cette pers
 #, elixir-autogen, elixir-format
 msgid "Your flag is the language you pick under Start ▸ Language. Pick another one and the chat reopens in it, and everybody else's user list shows your new flag."
 msgstr "Votre drapeau est la langue que vous choisissez dans Démarrer ▸ Langue. Choisissez-en une autre et le chat se rouvre dans cette langue, et la liste des utilisateurs de chacun affiche votre nouveau drapeau."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_language_flags.html.heex:21
+#, elixir-autogen, elixir-format
+msgid "A Channel's Language"
+msgstr "La langue d'un salon"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_language_flags.html.heex:23
+#, elixir-autogen, elixir-format
+msgid "A channel can have a flag too: the language people speak there, beside the channel's name in its tab, in the conversations list, in the channel list, above the conversation and in its public archive. Its founder chooses it with /cs language followed by a code such as pt_BR, or under Channel Central ▸ Registration ▸ Language, and /cs language none takes it away."
+msgstr "Un salon peut aussi avoir un drapeau : la langue qu'on y parle, à côté du nom du salon dans son onglet, dans la liste des conversations, dans la liste des salons, au-dessus de la conversation et dans son archive publique. Son fondateur la choisit avec /cs language suivi d'un code comme pt_BR, ou dans Canal Central ▸ Enregistrement ▸ Langue, et /cs language none la retire."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_language_flags.html.heex:29
+#, elixir-autogen, elixir-format
+msgid "A channel whose founder has not chosen one has no flag. The Retro Games channels are English."
+msgstr "Un salon dont le fondateur n'a pas choisi de langue n'a pas de drapeau. Les salons des Jeux rétro sont en anglais."

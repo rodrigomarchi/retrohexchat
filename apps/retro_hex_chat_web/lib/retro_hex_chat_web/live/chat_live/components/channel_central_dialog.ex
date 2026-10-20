@@ -135,6 +135,27 @@ defmodule RetroHexChatWeb.ChatLive.Components.ChannelCentralDialog do
     end
   end
 
+  # The founder naming the language the channel is spoken in. As with the
+  # archive, the channel checks again that it is the founder asking.
+  def handle_event("cc_cs_language", params, socket) do
+    channel = socket.assigns.channel_central_channel
+    nickname = socket.assigns.session.nickname
+
+    case Server.set_locale(channel, nickname, blank_to_nil(params["locale"])) do
+      :ok ->
+        {:noreply,
+         socket
+         |> assign(
+           channel_central_cs_error: nil,
+           channel_central_registration: ChanServ.registration_snapshot(channel, nickname)
+         )
+         |> put_locales()}
+
+      {:error, reason} ->
+        {:noreply, chanserv_error(socket, reason)}
+    end
+  end
+
   def handle_event("cc_cs_register", _params, socket) do
     cond do
       !socket.assigns.session.identified ->
@@ -192,6 +213,8 @@ defmodule RetroHexChatWeb.ChatLive.Components.ChannelCentralDialog do
 
         case ChanServ.drop(channel, nickname) do
           {:ok, _message} ->
+            _ = Server.mark_unregistered(channel)
+
             {:noreply,
              socket
              |> assign(
@@ -477,6 +500,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.ChannelCentralDialog do
             assigns.timezone
           ),
         cc_member_count: channel_central_member_count(state),
+        cc_channel_locale: channel_central_locale(assigns.channel_central_registration, state),
         cc_welcome_message: channel_central_welcome_message(state),
         cc_throttle_seconds: channel_central_throttle_seconds(state),
         cc_modes: channel_central_modes(state),
@@ -490,6 +514,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.ChannelCentralDialog do
         target={@myself}
         active_tab={@channel_central_tab}
         channel_name={@channel_central_channel}
+        channel_locale={@cc_channel_locale}
         topic={@cc_topic}
         topic_set_by={@cc_topic_set_by}
         topic_set_at={@cc_topic_set_at}
@@ -529,6 +554,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.ChannelCentralDialog do
         on_list_remove="cc_remove_list_entry"
         on_cs_register="cc_cs_register"
         on_cs_archive_toggle="cc_cs_archive_toggle"
+        on_cs_language="cc_cs_language"
         on_cs_drop_request="cc_cs_drop_request"
         on_cs_drop="cc_cs_drop"
         on_cs_drop_cancel="cc_cs_drop_cancel"
@@ -1012,6 +1038,16 @@ defmodule RetroHexChatWeb.ChatLive.Components.ChannelCentralDialog do
   defp channel_central_registered_since(registration, timezone) do
     ChatHelpers.format_datetime(Map.get(registration, :registered_at), timezone)
   end
+
+  # The registration snapshot is read again whenever the founder changes the
+  # language here, so it is the fresher of the two; the channel's own state
+  # answers when there is no snapshot yet.
+  defp channel_central_locale(%{} = registration, _state), do: Map.get(registration, :locale)
+  defp channel_central_locale(nil, %{} = state), do: Map.get(state, :locale)
+  defp channel_central_locale(nil, nil), do: nil
+
+  defp blank_to_nil(value) when value in [nil, ""], do: nil
+  defp blank_to_nil(value), do: value
 
   defp channel_central_member_count(nil), do: 0
   defp channel_central_member_count(state), do: Map.get(state, :member_count, 0)

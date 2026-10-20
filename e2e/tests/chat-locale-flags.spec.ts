@@ -3,6 +3,7 @@
  * @flow W18 [done] Everybody's nickname carries the flag of the language they use the chat in: the user list, their lines, the hover card and a private conversation's row and tab, on a desktop and on a phone
  * @flow W19 [done] A visitor watching without an account is listed under Visitors with the flag of the language the chat is shown to them in
  * @flow W20 [done] The tools that list people draw the same flag: autocomplete, whois, the address book, notify list, nick colours, ignore list, URL catcher, mentions, pinned lines, Channel Central and a private conversation's typing line
+ * @flow W21 [done] A channel's founder sets the language it is spoken in with /cs language or Channel Central's Registration tab, and its flag is drawn beside the channel's name: the tab, the topic bar, the conversations list, the channel list and the public archive, on a desktop and on a phone
  *
  * These @flow lines are the source of truth for e2e/TEST_CATALOG.md.
  * Edit them here, then run `make e2e.catalog` to regenerate the index.
@@ -272,6 +273,109 @@ test.describe("Language flags beside nicknames", () => {
       await shot(alice.chat.ignoreListDialog, "ignore-list-window");
     } finally {
       await closeUsers([alice, kenji]);
+    }
+  });
+
+  test("a channel's founder gives it a language and its flag follows the name (W21)", async ({
+    browser,
+  }) => {
+    const alice = await signedInIn(browser, "w21a", "pt_BR");
+    const channel = uniqueChannel("idioma");
+    const slug = channel.slice(1);
+    const page = alice.page;
+    const channelFlag = (
+      scope: Page | ReturnType<Page["locator"]>,
+      locale: string,
+    ) => scope.locator(`[data-testid="channel-flag"][data-locale="${locale}"]`);
+
+    try {
+      await alice.chat.sendMessage(`/join ${channel}`);
+      await alice.chat.expectTabVisible(channel);
+      await alice.chat.sendMessage("/cs register");
+      await alice.chat.sendMessage("/cs archive on");
+
+      // Nobody chose yet: no flag beside the name.
+      await expect(
+        page.getByTestId("tab-bar").getByTestId("channel-flag"),
+      ).toHaveCount(0);
+
+      // The command, written loosely.
+      await alice.chat.sendMessage("/cs language pt-br");
+      await expect(
+        channelFlag(page.getByTestId("tab-bar"), "pt_BR"),
+      ).toBeVisible();
+      await expect(
+        channelFlag(page.getByTestId("topic-bar"), "pt_BR"),
+      ).toBeVisible();
+      await expect(
+        channelFlag(page.getByTestId(`channel-${channel}`), "pt_BR"),
+      ).toBeVisible();
+      await shot(page, "channel-language-desktop");
+      await shot(page.getByTestId("topic-bar"), "topic-bar-flag");
+      await shot(
+        page.getByTestId(`channel-${channel}`),
+        "conversations-row-flag",
+      );
+
+      // Channel Central: the founder's select changes it. Opened from the
+      // conversation bar, which reads the same in every language.
+      await page.getByTestId("conversation-toolbar-channel-central").click();
+      await expect(alice.chat.channelCentralDialog).toBeVisible();
+      await alice.chat.switchChannelCentralToTab("registration");
+      const control = page.getByTestId("cc-language-switch");
+      await expect(control).toBeVisible();
+      await expect(channelFlag(control, "pt_BR")).toBeVisible();
+      await shot(alice.chat.channelCentralDialog, "channel-central-language");
+
+      await control.locator(".retro-combo").click();
+      await shot(
+        alice.chat.channelCentralDialog,
+        "channel-central-language-open",
+      );
+      await page
+        .locator("#cc-language-select-content label[role=option]", {
+          hasText: "日本語",
+        })
+        .click();
+      await expect(channelFlag(control, "ja")).toBeVisible();
+      await expect(
+        channelFlag(page.getByTestId("tab-bar"), "ja"),
+      ).toBeVisible();
+      await page.keyboard.press("Escape");
+
+      // The channel list draws it beside the room's name.
+      await alice.chat.sendMessage("/list");
+      await expect(alice.chat.channelListDialog).toBeVisible();
+      await expect(
+        channelFlag(alice.chat.channelListRow(channel), "ja"),
+      ).toBeVisible();
+      await shot(alice.chat.channelListDialog, "channel-list-flag");
+      await alice.chat.closeChannelList();
+
+      // The public archive's heading.
+      await alice.chat.sendMessage("said in a room that speaks Japanese");
+      const reader = await alice.ctx.newPage();
+      await reader.goto(`/archive/${slug}`);
+      await expect(
+        channelFlag(reader.locator("#archive-heading"), "ja"),
+      ).toBeVisible();
+      await shot(reader, "archive-index-flag");
+      await reader.close();
+    } finally {
+      await closeUsers([alice]);
+    }
+
+    // On a phone the tab and the topic bar keep the flag at the same size.
+    const phone = await signedInIn(browser, "w21p", "en", PHONE);
+    try {
+      await phone.chat.sendMessage(`/join ${channel}`);
+      await phone.chat.expectTabVisible(channel);
+      await expect(
+        channelFlag(phone.page.getByTestId("tab-bar"), "ja"),
+      ).toBeVisible();
+      await shot(phone.page, "channel-language-phone");
+    } finally {
+      await closeUsers([phone]);
     }
   });
 });

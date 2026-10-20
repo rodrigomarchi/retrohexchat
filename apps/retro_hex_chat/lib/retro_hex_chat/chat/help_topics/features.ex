@@ -142,7 +142,9 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
           "locale",
           "language",
           dgettext("help", "language flag"),
-          dgettext("help", "change my flag")
+          dgettext("help", "change my flag"),
+          "cs language",
+          dgettext("help", "channel language")
         ],
         icon: :icon_globe,
         description:
@@ -151,7 +153,13 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
             "The flag in front of a nickname is the language that person uses the chat in. " <>
               "Yours is the language you pick under Start ▸ Language."
           ),
-        see_also: ["feature-character-portraits", "ui-start-menu", "ui-nicklist"]
+        see_also: [
+          "feature-character-portraits",
+          "ui-start-menu",
+          "ui-nicklist",
+          "cmd-cs",
+          "chanserv-ui"
+        ]
       },
       %{
         id: "feature-nick-colors",

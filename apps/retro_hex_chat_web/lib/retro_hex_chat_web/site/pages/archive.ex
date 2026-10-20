@@ -48,7 +48,7 @@ defmodule RetroHexChatWeb.Site.Pages.Archive do
     channel = channel_name(slug)
 
     with {:ok, cursor} <- cursor(params),
-         %{page: %{items: [first | _] = entries} = page, previous: previous} <-
+         %{page: %{items: [first | _] = entries} = page, previous: previous, locale: locale} <-
            Archive.page_for(channel, date, after: cursor) do
       day_path = "/archive/#{slug}/#{date}"
 
@@ -56,6 +56,7 @@ defmodule RetroHexChatWeb.Site.Pages.Archive do
        %{
          kind: :day,
          channel: channel,
+         channel_locale: locale,
          slug: slug,
          date: date,
          cursor: cursor,
@@ -75,23 +76,32 @@ defmodule RetroHexChatWeb.Site.Pages.Archive do
   def data(%{"channel" => slug}) do
     channel = channel_name(slug)
 
-    case Archive.days_for(channel) do
-      [] ->
+    case Archive.index_for(channel) do
+      %{days: []} ->
         :not_found
 
-      days ->
-        {:ok, %{kind: :index, channel: channel, slug: slug, days: days, path: "/archive/#{slug}"}}
+      %{days: days, locale: locale} ->
+        {:ok,
+         %{
+           kind: :index,
+           channel: channel,
+           channel_locale: locale,
+           slug: slug,
+           days: days,
+           path: "/archive/#{slug}"
+         }}
     end
   end
 
   @doc """
   The `etag` of what `data/1` returned: the text of the lines a page shows —
   so a second edit of an already edited line still changes it — the flags
-  beside its authors, and the release, so a fix to how a page is drawn reaches
-  a robot that holds the old one.
+  beside its authors and beside the channel's name, and the release, so a fix
+  to how a page is drawn reaches a robot that holds the old one.
   """
   @spec etag(map()) :: String.t()
-  def etag(%{kind: :index} = data), do: hash([data.channel, data.days, BuildInfo.version()])
+  def etag(%{kind: :index} = data),
+    do: hash([data.channel, data.channel_locale, data.days, BuildInfo.version()])
 
   def etag(%{kind: :day} = data) do
     hash([
@@ -101,7 +111,8 @@ defmodule RetroHexChatWeb.Site.Pages.Archive do
       data.has_more,
       BuildInfo.version(),
       Enum.map(data.entries, &{&1.id, &1.text}),
-      data.locales
+      data.locales,
+      data.channel_locale
     ])
   end
 

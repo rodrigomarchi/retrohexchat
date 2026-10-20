@@ -88,7 +88,8 @@ defmodule RetroHexChat.Services.ChanServ do
           registered_at: info.registered_at,
           viewer_role: viewer_role(channel_name, viewer_nick, server),
           access: access_by_level(channel_name),
-          public_archive?: Archive.published?(channel_name)
+          public_archive?: Archive.published?(channel_name),
+          locale: Map.get(info, :locale)
         }
 
       {:error, _msg} ->
@@ -99,7 +100,8 @@ defmodule RetroHexChat.Services.ChanServ do
           registered_at: nil,
           viewer_role: nil,
           access: empty_access(),
-          public_archive?: false
+          public_archive?: false,
+          locale: nil
         }
     end
   end
@@ -223,7 +225,8 @@ defmodule RetroHexChat.Services.ChanServ do
           founder: channel.founder_nickname,
           registered_at: channel.registered_at,
           topic: channel.topic || "",
-          modes: channel.modes || ""
+          modes: channel.modes || "",
+          locale: channel.locale
         }
 
         {:reply, {:ok, info}, state}

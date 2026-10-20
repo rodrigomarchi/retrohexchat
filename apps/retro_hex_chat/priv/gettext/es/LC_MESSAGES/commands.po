@@ -23,12 +23,12 @@ msgstr ""
 msgid "  %{name} [%{status}] — %{description}"
 msgstr "%{name} [%{status}] — %{description}"
 
-#: lib/retro_hex_chat/commands/handlers/cs.ex:254
+#: lib/retro_hex_chat/commands/handlers/cs.ex:345
 #, elixir-autogen, elixir-format
 msgid "  %{nickname} [%{level}] (added by %{added_by})"
 msgstr "%{nickname} [%{level}] (added by %{added_by})"
 
-#: lib/retro_hex_chat/commands/handlers/cs.ex:250
+#: lib/retro_hex_chat/commands/handlers/cs.ex:341
 #, elixir-autogen, elixir-format
 msgid "  (empty)"
 msgstr "(vacío)"
@@ -348,44 +348,44 @@ msgstr "/bot list"
 msgid "/bot set GreeterBot greeting Welcome, {nickname}!"
 msgstr "/bot set GreeterBot greeting Welcome, {nickname}!"
 
-#: lib/retro_hex_chat/commands/handlers/cs.ex:109
-#: lib/retro_hex_chat/commands/handlers/cs.ex:273
+#: lib/retro_hex_chat/commands/handlers/cs.ex:125
+#: lib/retro_hex_chat/commands/handlers/cs.ex:364
 #, elixir-autogen, elixir-format
 msgid "/cs <subcommand> [args]"
 msgstr "/cs <subcommand> [args]"
 
-#: lib/retro_hex_chat/commands/handlers/cs.ex:121
-#: lib/retro_hex_chat/commands/handlers/cs.ex:300
+#: lib/retro_hex_chat/commands/handlers/cs.ex:138
+#: lib/retro_hex_chat/commands/handlers/cs.ex:395
 #, elixir-autogen, elixir-format
 msgid "/cs aop del nick"
 msgstr "/cs aop del nick"
 
-#: lib/retro_hex_chat/commands/handlers/cs.ex:117
-#: lib/retro_hex_chat/commands/handlers/cs.ex:296
+#: lib/retro_hex_chat/commands/handlers/cs.ex:133
+#: lib/retro_hex_chat/commands/handlers/cs.ex:390
 #, elixir-autogen, elixir-format
 msgid "/cs drop"
 msgstr "/cs drop"
 
-#: lib/retro_hex_chat/commands/handlers/cs.ex:118
-#: lib/retro_hex_chat/commands/handlers/cs.ex:297
+#: lib/retro_hex_chat/commands/handlers/cs.ex:134
+#: lib/retro_hex_chat/commands/handlers/cs.ex:391
 #, elixir-autogen, elixir-format
 msgid "/cs info"
 msgstr "/cs info"
 
-#: lib/retro_hex_chat/commands/handlers/cs.ex:116
-#: lib/retro_hex_chat/commands/handlers/cs.ex:295
+#: lib/retro_hex_chat/commands/handlers/cs.ex:132
+#: lib/retro_hex_chat/commands/handlers/cs.ex:389
 #, elixir-autogen, elixir-format
 msgid "/cs register"
 msgstr "/cs register"
 
-#: lib/retro_hex_chat/commands/handlers/cs.ex:120
-#: lib/retro_hex_chat/commands/handlers/cs.ex:299
+#: lib/retro_hex_chat/commands/handlers/cs.ex:137
+#: lib/retro_hex_chat/commands/handlers/cs.ex:394
 #, elixir-autogen, elixir-format
 msgid "/cs sop add nick"
 msgstr "/cs sop add nick"
 
-#: lib/retro_hex_chat/commands/handlers/cs.ex:122
-#: lib/retro_hex_chat/commands/handlers/cs.ex:301
+#: lib/retro_hex_chat/commands/handlers/cs.ex:139
+#: lib/retro_hex_chat/commands/handlers/cs.ex:396
 #, elixir-autogen, elixir-format
 msgid "/cs vop list"
 msgstr "/cs vop list"
@@ -1310,7 +1310,7 @@ msgstr ""
 "Desconectar desde el servidor y volver a la pantalla de conexión. Otros "
 "usuarios ven tu mensaje de renuncia opcional."
 
-#: lib/retro_hex_chat/commands/handlers/cs.ex:305
+#: lib/retro_hex_chat/commands/handlers/cs.ex:400
 #, elixir-autogen, elixir-format
 msgid "Drop channel registration"
 msgstr "Registro del canal de goteo"
@@ -1524,23 +1524,23 @@ msgstr "MOTD ha sido aclarado."
 msgid "MOTD has been updated."
 msgstr "MOTD ha sido actualizado."
 
-#: lib/retro_hex_chat/commands/handlers/cs.ex:312
+#: lib/retro_hex_chat/commands/handlers/cs.ex:412
 #, elixir-autogen, elixir-format
 msgid "Manage auto-operator access list"
 msgstr "Gestione la lista de acceso autooperador"
 
-#: lib/retro_hex_chat/commands/handlers/cs.ex:313
+#: lib/retro_hex_chat/commands/handlers/cs.ex:413
 #, elixir-autogen, elixir-format
 msgid "Manage auto-voice access list"
 msgstr "Gestione la lista de acceso de facturación automática"
 
-#: lib/retro_hex_chat/commands/handlers/cs.ex:275
+#: lib/retro_hex_chat/commands/handlers/cs.ex:366
 #, elixir-autogen, elixir-format
 msgid "Manage channel registration and access lists through ChanServ."
 msgstr ""
 "Gestione las listas de registro y acceso del canal a través de ChanServ."
 
-#: lib/retro_hex_chat/commands/handlers/cs.ex:311
+#: lib/retro_hex_chat/commands/handlers/cs.ex:411
 #, elixir-autogen, elixir-format
 msgid "Manage super-operator access list"
 msgstr "Gestione la lista de acceso superoperador"
@@ -1823,7 +1823,7 @@ msgstr ""
 "Registre y proteja su apodo con una contraseña a través de NickServ, los "
 "servicios de apodo bot."
 
-#: lib/retro_hex_chat/commands/handlers/cs.ex:304
+#: lib/retro_hex_chat/commands/handlers/cs.ex:399
 #, elixir-autogen, elixir-format
 msgid "Register the current channel"
 msgstr "Registrar el canal actual"
@@ -2142,7 +2142,7 @@ msgstr ""
 "Uso común: /perform añadir /ns identificar mipassword\n"
 "Las posiciones son números de índice 0. Las contraseñas están enmascaradas en la pantalla de la lista."
 
-#: lib/retro_hex_chat/commands/handlers/cs.ex:314
+#: lib/retro_hex_chat/commands/handlers/cs.ex:414
 #, elixir-autogen, elixir-format
 msgid "Show ChanServ help"
 msgstr "Mostrar ChanServ ayuda"
@@ -2205,7 +2205,7 @@ msgstr ""
 #: lib/retro_hex_chat/commands/handlers/alias.ex:110
 #: lib/retro_hex_chat/commands/handlers/auto_respond.ex:179
 #: lib/retro_hex_chat/commands/handlers/autojoin.ex:132
-#: lib/retro_hex_chat/commands/handlers/cs.ex:291
+#: lib/retro_hex_chat/commands/handlers/cs.ex:385
 #: lib/retro_hex_chat/commands/handlers/notify.ex:122
 #: lib/retro_hex_chat/commands/handlers/ns.ex:359
 #: lib/retro_hex_chat/commands/handlers/perform.ex:155
@@ -2714,7 +2714,7 @@ msgstr "Usuario a unmute"
 msgid "View audit log"
 msgstr "Ver historial de auditoría"
 
-#: lib/retro_hex_chat/commands/handlers/cs.ex:306
+#: lib/retro_hex_chat/commands/handlers/cs.ex:401
 #, elixir-autogen, elixir-format
 msgid "View channel registration info"
 msgstr "Ver información de registro del canal"
@@ -2957,26 +2957,28 @@ msgstr "[BotService] No se pudo crear el bot: %{message}"
 msgid "[BotService] No bots configured."
 msgstr "[BotService] No hay bots configurados."
 
-#: lib/retro_hex_chat/commands/handlers/cs.ex:36
-#: lib/retro_hex_chat/commands/handlers/cs.ex:135
-#: lib/retro_hex_chat/commands/handlers/cs.ex:138
-#: lib/retro_hex_chat/commands/handlers/cs.ex:145
-#: lib/retro_hex_chat/commands/handlers/cs.ex:148
-#: lib/retro_hex_chat/commands/handlers/cs.ex:167
-#: lib/retro_hex_chat/commands/handlers/cs.ex:177
-#: lib/retro_hex_chat/commands/handlers/cs.ex:217
-#: lib/retro_hex_chat/commands/handlers/cs.ex:220
-#: lib/retro_hex_chat/commands/handlers/cs.ex:230
+#: lib/retro_hex_chat/commands/handlers/cs.ex:40
+#: lib/retro_hex_chat/commands/handlers/cs.ex:152
+#: lib/retro_hex_chat/commands/handlers/cs.ex:155
+#: lib/retro_hex_chat/commands/handlers/cs.ex:163
+#: lib/retro_hex_chat/commands/handlers/cs.ex:166
+#: lib/retro_hex_chat/commands/handlers/cs.ex:185
+#: lib/retro_hex_chat/commands/handlers/cs.ex:195
+#: lib/retro_hex_chat/commands/handlers/cs.ex:246
+#: lib/retro_hex_chat/commands/handlers/cs.ex:255
+#: lib/retro_hex_chat/commands/handlers/cs.ex:308
+#: lib/retro_hex_chat/commands/handlers/cs.ex:311
+#: lib/retro_hex_chat/commands/handlers/cs.ex:321
 #, elixir-autogen, elixir-format
 msgid "[ChanServ] %{message}"
 msgstr "[ChanServ] %{message}"
 
-#: lib/retro_hex_chat/commands/handlers/cs.ex:156
+#: lib/retro_hex_chat/commands/handlers/cs.ex:174
 #, elixir-autogen, elixir-format
 msgid "[ChanServ] %{name}: founder=%{founder}, registered=%{registered_at}"
 msgstr "[ChanServ] %{name}: fundador=%{founder}, registrado=%{registered_at}"
 
-#: lib/retro_hex_chat/commands/handlers/cs.ex:241
+#: lib/retro_hex_chat/commands/handlers/cs.ex:332
 #, elixir-autogen, elixir-format
 msgid "[ChanServ] Access list for %{channel} (%{level})"
 msgstr "[ChanServ] Lista de acceso para %{channel} (%{level})"
@@ -3372,52 +3374,33 @@ msgstr "¿Cuándo? Dilo como un plazo desde ahora, como 2h, 30m o 3d."
 msgid "Which one? Use /event cancel <id>."
 msgstr "¿Cuál? Usa /event cancel <id>."
 
-#: lib/retro_hex_chat/commands/handlers/cs.ex:119
-#: lib/retro_hex_chat/commands/handlers/cs.ex:298
+#: lib/retro_hex_chat/commands/handlers/cs.ex:135
+#: lib/retro_hex_chat/commands/handlers/cs.ex:392
 #, elixir-autogen, elixir-format
 msgid "/cs archive on"
 msgstr "/cs archive on"
 
-#: lib/retro_hex_chat/commands/handlers/cs.ex:111
-#, elixir-autogen, elixir-format
-msgid "Manage channel registration and access lists through ChanServ.\nSubcommands: register, drop, info, archive on|off, sop/aop/vop add|del|list, help. Must be in a channel.\nAccess hierarchy: SOP (super-operator) > AOP (auto-operator) > VOP (auto-voice).\nRegister requires channel operator. Drop and archive require being the channel founder."
-msgstr ""
-"Gestiona el registro del canal y las listas de acceso a través de ChanServ.\n"
-"Subcomandos: register, drop, info, archive on|off, sop/aop/vop add|del|list, help. Hay que estar en un canal.\n"
-"Jerarquía de acceso: SOP (superoperador) > AOP (autooperador) > VOP (autovoz).\n"
-"Register requiere ser operador del canal. Drop y archive requieren ser el fundador del canal."
-
-#: lib/retro_hex_chat/commands/handlers/cs.ex:309
+#: lib/retro_hex_chat/commands/handlers/cs.ex:404
 #, elixir-autogen, elixir-format
 msgid "Publish the channel's public archive (on|off)"
 msgstr "Publicar el archivo público del canal (on|off)"
 
-#: lib/retro_hex_chat/commands/handlers/cs.ex:284
-#, elixir-autogen, elixir-format
-msgid "Subcommand: register, drop, info, archive, sop, aop, vop"
-msgstr "Subcomando: register, drop, info, archive, sop, aop, vop"
-
-#: lib/retro_hex_chat/commands/handlers/cs.ex:25
-#, elixir-autogen, elixir-format
-msgid "Usage: /cs <register|drop|info|archive|sop|aop|vop|help> [args]"
-msgstr "Uso: /cs <register|drop|info|archive|sop|aop|vop|help> [args]"
-
-#: lib/retro_hex_chat/commands/handlers/cs.ex:186
+#: lib/retro_hex_chat/commands/handlers/cs.ex:204
 #, elixir-autogen, elixir-format
 msgid "Usage: /cs archive <on|off>"
 msgstr "Uso: /cs archive <on|off>"
 
-#: lib/retro_hex_chat/commands/handlers/cs.ex:211
+#: lib/retro_hex_chat/commands/handlers/cs.ex:229
 #, elixir-autogen, elixir-format
 msgid "[ChanServ] The public archive of %{channel} is off."
 msgstr "[ChanServ] El archivo público de %{channel} está desactivado."
 
-#: lib/retro_hex_chat/commands/handlers/cs.ex:197
+#: lib/retro_hex_chat/commands/handlers/cs.ex:215
 #, elixir-autogen, elixir-format
 msgid "[ChanServ] The public archive of %{channel} is on: what is said from now on is published."
 msgstr "[ChanServ] El archivo público de %{channel} está activado: lo que se diga a partir de ahora se publica."
 
-#: lib/retro_hex_chat/commands/handlers/cs.ex:207
+#: lib/retro_hex_chat/commands/handlers/cs.ex:225
 #, elixir-autogen, elixir-format
 msgid "[ChanServ] The public archive of %{channel} is on."
 msgstr "[ChanServ] El archivo público de %{channel} está activado."
@@ -3573,7 +3556,7 @@ msgstr ""
 "Describe lo que estás haciendo, mostrado como '* YourNick hace algo'. Funciona en canales y en chats privados.\n"
 "Se requiere un texto de acción."
 
-#: lib/retro_hex_chat/commands/handlers/cs.ex:38
+#: lib/retro_hex_chat/commands/handlers/cs.ex:42
 #, elixir-autogen, elixir-format
 msgid "You must be a channel operator to register the channel"
 msgstr "Usted debe ser un operador de canal para registrar el canal"
@@ -3689,3 +3672,63 @@ msgstr "El bot recibirá a los visitantes con '%{greeting}'."
 #, elixir-autogen, elixir-format
 msgid "The bot will not greet visitors."
 msgstr "El bot no saludará a los visitantes."
+
+#: lib/retro_hex_chat/commands/handlers/cs.ex:136
+#: lib/retro_hex_chat/commands/handlers/cs.ex:393
+#, elixir-autogen, elixir-format
+msgid "/cs language pt_BR"
+msgstr "/cs language pt_BR"
+
+#: lib/retro_hex_chat/commands/handlers/cs.ex:271
+#, elixir-autogen, elixir-format
+msgid "Languages: %{codes}"
+msgstr "Idiomas: %{codes}"
+
+#: lib/retro_hex_chat/commands/handlers/cs.ex:127
+#, elixir-autogen, elixir-format
+msgid "Manage channel registration and access lists through ChanServ.\nSubcommands: register, drop, info, archive on|off, language <code|none>, sop/aop/vop add|del|list, help. Must be in a channel.\nAccess hierarchy: SOP (super-operator) > AOP (auto-operator) > VOP (auto-voice).\nRegister requires channel operator. Drop, archive and language require being the channel founder."
+msgstr ""
+"Gestiona el registro del canal y las listas de acceso a través de ChanServ.\n"
+"Subcomandos: register, drop, info, archive on|off, language <code|none>, sop/aop/vop add|del|list, help. Hay que estar en un canal.\n"
+"Jerarquía de acceso: SOP (superoperador) > AOP (autooperador) > VOP (autovoz).\n"
+"Register requiere ser operador del canal. Drop, archive y language requieren ser el fundador del canal."
+
+#: lib/retro_hex_chat/commands/handlers/cs.ex:409
+#, elixir-autogen, elixir-format
+msgid "Set the language the channel is spoken in (code|none)"
+msgstr "Fija el idioma que se habla en el canal (código|none)"
+
+#: lib/retro_hex_chat/commands/handlers/cs.ex:375
+#, elixir-autogen, elixir-format
+msgid "Subcommand: register, drop, info, archive, language, sop, aop, vop"
+msgstr "Subcomando: register, drop, info, archive, language, sop, aop, vop"
+
+#: lib/retro_hex_chat/commands/handlers/cs.ex:283
+#, elixir-autogen, elixir-format
+msgid "Unknown language: %{code}. Languages: %{codes}"
+msgstr "Idioma desconocido: %{code}. Idiomas: %{codes}"
+
+#: lib/retro_hex_chat/commands/handlers/cs.ex:26
+#, elixir-autogen, elixir-format
+msgid "Usage: /cs <register|drop|info|archive|language|sop|aop|vop|help> [args]"
+msgstr "Uso: /cs <register|drop|info|archive|language|sop|aop|vop|help> [args]"
+
+#: lib/retro_hex_chat/commands/handlers/cs.ex:270
+#, elixir-autogen, elixir-format
+msgid "Usage: /cs language <code|none>"
+msgstr "Uso: /cs language <code|none>"
+
+#: lib/retro_hex_chat/commands/handlers/cs.ex:294
+#, elixir-autogen, elixir-format
+msgid "[ChanServ] %{channel} has no language set."
+msgstr "[ChanServ] %{channel} no tiene idioma fijado."
+
+#: lib/retro_hex_chat/commands/handlers/cs.ex:298
+#, elixir-autogen, elixir-format
+msgid "[ChanServ] %{channel} is spoken in %{language} (%{code})."
+msgstr "[ChanServ] En %{channel} se habla %{language} (%{code})."
+
+#: lib/retro_hex_chat/commands/handlers/cs.ex:240
+#, elixir-autogen, elixir-format
+msgid "[ChanServ] %{channel} no longer has a language."
+msgstr "[ChanServ] %{channel} ya no tiene idioma."

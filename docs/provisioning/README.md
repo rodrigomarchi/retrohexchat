@@ -70,6 +70,13 @@ which lints all fourteen files against the handlers that have to run them.
   (`/archive/<room>/<day>`) from the moment the script runs. The archive is
   founder-only and the founder is whoever pasted the script, so it must be
   pasted by an identified admin.
+- **Every room says its language.** `/cs language <code>` follows every
+  `/cs archive on`, with the script's own file name as the code — every room in
+  `pt_BR.md` is `/cs language pt_BR`. It draws the language's flag beside the
+  room's name in tabs, the channel list and the archive. Like the archive it is
+  founder-only, so it takes effect only when pasted by the identified admin who
+  registered the room. The code is written exactly as `config/i18n_locales.exs`
+  spells it, even though the command would accept `pt-br`.
 - **No farewells.** They become noise on reconnect churn.
 - **A bot only advertises triggers it answers.** `!fontes` in a greeting from a
   bot with no `fontes` command promises silence, and the promise reads as a bug
@@ -140,6 +147,21 @@ are adjacent in its script, so the output comes out grouped by bot already.
 
 **Deploy first.** A key that the running release does not know comes back as an
 unknown setting, and the paste is silently half-applied.
+
+A channel setting is derived the same way, except the console needs to stand in
+each room first: `/cs` acts on the active channel. This gives every room its
+language — pasted by the founder, after the release that knows `/cs language`:
+
+```bash
+for f in docs/provisioning/*.md; do
+  locale=$(basename "$f" .md); [ "$locale" = README ] && continue
+  echo "# ── $locale ──"
+  grep -E '^/(join #|cs language )' "$f"
+done
+```
+
+`/join` on a room the admin already sits in is harmless in the console: it only
+moves the active channel, so the block can be pasted twice.
 
 ## Adding a language
 

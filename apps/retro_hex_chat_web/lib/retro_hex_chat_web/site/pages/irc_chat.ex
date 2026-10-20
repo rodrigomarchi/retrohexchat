@@ -9,6 +9,8 @@ defmodule RetroHexChatWeb.Site.Pages.IrcChat do
   """
   use RetroHexChatWeb.Site.Page
 
+  import RetroHexChatWeb.Components.UI.NickFlag, only: [channel_flag: 1]
+
   alias RetroHexChat.Chat.Archive
   alias RetroHexChatWeb.App.Paths
   alias RetroHexChatWeb.PublicPages
@@ -37,7 +39,12 @@ defmodule RetroHexChatWeb.Site.Pages.IrcChat do
   def load(_params, _ctx) do
     path = PublicPages.path(:irc_chat)
     questions = Guides.questions(@questions)
-    rooms = Enum.map(Archive.published_channels(), &%{name: &1, path: Paths.archive_path(&1)})
+
+    rooms =
+      Enum.map(
+        Archive.published_rooms(),
+        &%{name: &1.name, locale: &1.locale, path: Paths.archive_path(&1.name)}
+      )
 
     {:ok,
      %{

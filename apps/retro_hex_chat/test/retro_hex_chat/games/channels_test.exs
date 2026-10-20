@@ -39,6 +39,8 @@ defmodule RetroHexChat.Games.ChannelsTest do
     assert channel.system
     assert channel.founder_nickname == "GameServ"
     assert channel.topic =~ "Hex Pong"
+    # Talked about in English, whichever language the players use the chat in.
+    assert channel.locale == "en"
     assert Archive.published?("#hex-pong")
     assert gameserv_inside?("#hex-pong")
     assert gameserv_inside?(Channels.feed())

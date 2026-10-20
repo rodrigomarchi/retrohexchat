@@ -27,60 +27,70 @@ shot, logged in as an admin who has `/identify`-ed.
 /join #nederland
 /cs register
 /cs archive on
+/cs language nl
 /topic Nederlandstalig kanaal — kom binnen, ga zitten, er wordt gepraat. Koffie van het huis.
 /mode +tn
 
 /join #nieuws
 /cs register
 /cs archive on
+/cs language nl
 /topic Nieuws — AD, Volkskrant en Trouw, rechtstreeks uit de feed. !Sanne bronnen toont de lijst.
 /mode +tn
 
 /join #vlaanderen
 /cs register
 /cs archive on
+/cs language nl
 /topic Vlaanderen — VRT NWS, De Morgen en HLN. Andere voorpagina, zelfde taal.
 /mode +tn
 
 /join #achtergrond
 /cs register
 /cs archive on
+/cs language nl
 /topic Achtergrond — NRC, Het Parool en RTL Nieuws. Het verhaal achter de kop.
 /mode +tn
 
 /join #techniek
 /cs register
 /cs archive on
+/cs language nl
 /topic Techniek — Tweakers en Bright. Support voor een project hoort bij het project; hier wordt gepraat.
 /mode +tn
 
 /join #beveiliging
 /cs register
 /cs archive on
+/cs language nl
 /topic Beveiliging — Security.NL aan de lijn. Lezen voordat je patcht, niet erna.
 /mode +tn
 
 /join #voetbal
 /cs register
 /cs archive on
+/cs language nl
 /topic Voetbal — VI, VoetbalPrimeur en HLN Sport. Stand, transfers en het gebruikelijke gelijk.
 /mode +tn
 
 /join #wetenschap
 /cs register
 /cs archive on
+/cs language nl
 /topic Wetenschap — Scientias en New Scientist. Domme vragen bestaan niet, ongestelde wel.
 /mode +tn
 
 /join #ondernemen
 /cs register
 /cs archive on
+/cs language nl
 /topic Ondernemen — Emerce aan de lijn. Een kop is geen advies.
 /mode +tn
 
 /join #auto
 /cs register
 /cs archive on
+/cs language nl
 /topic Auto — Autoblog aan de lijn. Rijden, sleutelen en meningen van wie de trein neemt.
 /mode +tn
 
@@ -362,4 +372,5 @@ that matters after a paste.
 | `#ondernemen` | **Daan** | Emerce |
 | `#auto` | **Kees** | Autoblog |
 
-**Poortwachter** stands in all ten and greets in none of them. All channels are `+tn`.
+**Poortwachter** stands in all ten and greets in none of them. All channels are `+tn`,
+publish their archive and are marked Dutch (`/cs language nl`).

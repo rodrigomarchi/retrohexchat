@@ -10,6 +10,7 @@ defmodule RetroHexChat.Commands.Handlers.Cs do
   alias RetroHexChat.Commands.Handler
   alias RetroHexChat.Commands.Policy
   alias RetroHexChat.Commands.Timestamp
+  alias RetroHexChat.Locales
   alias RetroHexChat.Services.{ChanServ, Queries}
 
   @access_levels ~w(sop aop vop)
@@ -22,7 +23,10 @@ defmodule RetroHexChat.Commands.Handlers.Cs do
   @spec execute([String.t()], Handler.context()) :: Handler.result()
   def execute([], _context) do
     {:error,
-     dgettext("commands", "Usage: /cs <register|drop|info|archive|sop|aop|vop|help> [args]")}
+     dgettext(
+       "commands",
+       "Usage: /cs <register|drop|info|archive|language|sop|aop|vop|help> [args]"
+     )}
   end
 
   # Registering makes the channel yours for good, so it is for whoever already runs it — the
@@ -59,6 +63,18 @@ defmodule RetroHexChat.Commands.Handlers.Cs do
   def execute(["archive" | _], context) do
     with :ok <- Policy.require_channel(context) do
       call_archive_status(context.active_channel)
+    end
+  end
+
+  def execute(["language", code | _], context) do
+    with :ok <- Policy.require_channel(context) do
+      call_set_language(context.active_channel, context.nickname, code)
+    end
+  end
+
+  def execute(["language" | _], context) do
+    with :ok <- Policy.require_channel(context) do
+      call_language_status(context.active_channel)
     end
   end
 
@@ -110,13 +126,14 @@ defmodule RetroHexChat.Commands.Handlers.Cs do
       description:
         dgettext(
           "commands",
-          "Manage channel registration and access lists through ChanServ.\nSubcommands: register, drop, info, archive on|off, sop/aop/vop add|del|list, help. Must be in a channel.\nAccess hierarchy: SOP (super-operator) > AOP (auto-operator) > VOP (auto-voice).\nRegister requires channel operator. Drop and archive require being the channel founder."
+          "Manage channel registration and access lists through ChanServ.\nSubcommands: register, drop, info, archive on|off, language <code|none>, sop/aop/vop add|del|list, help. Must be in a channel.\nAccess hierarchy: SOP (super-operator) > AOP (auto-operator) > VOP (auto-voice).\nRegister requires channel operator. Drop, archive and language require being the channel founder."
         ),
       examples: [
         dgettext("commands", "/cs register"),
         dgettext("commands", "/cs drop"),
         dgettext("commands", "/cs info"),
         dgettext("commands", "/cs archive on"),
+        dgettext("commands", "/cs language pt_BR"),
         dgettext("commands", "/cs sop add nick"),
         dgettext("commands", "/cs aop del nick"),
         dgettext("commands", "/cs vop list")
@@ -142,6 +159,7 @@ defmodule RetroHexChat.Commands.Handlers.Cs do
   defp call_drop(channel, nickname, server) do
     case ChanServ.drop(channel, nickname, server) do
       {:ok, msg} ->
+        _ = Server.mark_unregistered(channel)
         {:ok, :system, %{content: dgettext("commands", "[ChanServ] %{message}", message: msg)}}
 
       {:error, msg} ->
@@ -209,6 +227,79 @@ defmodule RetroHexChat.Commands.Handlers.Cs do
 
   defp archive_state(channel, false) do
     dgettext("commands", "[ChanServ] The public archive of %{channel} is off.", channel: channel)
+  end
+
+  # `none` and `off` clear it, as the archive switch reads `off`; anything else
+  # has to name a language the chat speaks, written however the reader likes.
+  defp call_set_language(channel, nickname, code) when code in ~w(none off) do
+    case Server.set_locale(channel, nickname, nil) do
+      :ok ->
+        {:ok, :system,
+         %{
+           content:
+             dgettext("commands", "[ChanServ] %{channel} no longer has a language.",
+               channel: channel
+             )
+         }}
+
+      {:error, msg} ->
+        {:error, dgettext("commands", "[ChanServ] %{message}", message: msg)}
+    end
+  end
+
+  defp call_set_language(channel, nickname, code) do
+    with {:ok, locale} <- language_code(code),
+         :ok <- Server.set_locale(channel, nickname, locale) do
+      {:ok, :system, %{content: language_state(channel, locale)}}
+    else
+      {:error, msg} -> {:error, dgettext("commands", "[ChanServ] %{message}", message: msg)}
+    end
+  end
+
+  defp call_language_status(channel) do
+    locale =
+      case Queries.find_registered_channel(channel) do
+        %{locale: locale} -> locale
+        nil -> nil
+      end
+
+    text =
+      Enum.join(
+        [
+          language_state(channel, locale),
+          dgettext("commands", "Usage: /cs language <code|none>"),
+          dgettext("commands", "Languages: %{codes}", codes: Enum.join(Locales.codes(), ", "))
+        ],
+        "\n"
+      )
+
+    {:ok, :system, %{content: text}}
+  end
+
+  defp language_code(code) do
+    case Locales.normalize(code) do
+      nil ->
+        {:error,
+         dgettext("commands", "Unknown language: %{code}. Languages: %{codes}",
+           code: code,
+           codes: Enum.join(Locales.codes(), ", ")
+         )}
+
+      locale ->
+        {:ok, locale}
+    end
+  end
+
+  defp language_state(channel, nil) do
+    dgettext("commands", "[ChanServ] %{channel} has no language set.", channel: channel)
+  end
+
+  defp language_state(channel, locale) do
+    dgettext("commands", "[ChanServ] %{channel} is spoken in %{language} (%{code}).",
+      channel: channel,
+      language: Locales.label(locale),
+      code: locale
+    )
   end
 
   defp call_manage_access(channel, action, level, target, requester, server) do
@@ -281,7 +372,10 @@ defmodule RetroHexChat.Commands.Handlers.Cs do
           type: :text,
           position: 0,
           description:
-            dgettext("commands", "Subcommand: register, drop, info, archive, sop, aop, vop")
+            dgettext(
+              "commands",
+              "Subcommand: register, drop, info, archive, language, sop, aop, vop"
+            )
         },
         %Parameter{
           name: "args",
@@ -296,6 +390,7 @@ defmodule RetroHexChat.Commands.Handlers.Cs do
         dgettext("commands", "/cs drop"),
         dgettext("commands", "/cs info"),
         dgettext("commands", "/cs archive on"),
+        dgettext("commands", "/cs language pt_BR"),
         dgettext("commands", "/cs sop add nick"),
         dgettext("commands", "/cs aop del nick"),
         dgettext("commands", "/cs vop list")
@@ -307,6 +402,11 @@ defmodule RetroHexChat.Commands.Handlers.Cs do
         %{
           name: "archive",
           description: dgettext("commands", "Publish the channel's public archive (on|off)")
+        },
+        %{
+          name: "language",
+          description:
+            dgettext("commands", "Set the language the channel is spoken in (code|none)")
         },
         %{name: "sop", description: dgettext("commands", "Manage super-operator access list")},
         %{name: "aop", description: dgettext("commands", "Manage auto-operator access list")},

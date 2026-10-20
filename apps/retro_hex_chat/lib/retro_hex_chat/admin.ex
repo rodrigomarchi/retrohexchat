@@ -226,6 +226,7 @@ defmodule RetroHexChat.Admin do
   def drop_channel(channel_name, admin) do
     case ChanServ.admin_drop(channel_name) do
       {:ok, msg} ->
+        _ = Channels.Server.mark_unregistered(channel_name)
         AuditLogs.log(admin, "cs.drop", {"channel", channel_name})
         {:ok, msg}
 

@@ -119,6 +119,8 @@ defmodule RetroHexChat.Chat.HelpTopics.Commands do
           "cs info",
           "cs archive",
           dgettext("help", "public archive"),
+          "cs language",
+          dgettext("help", "channel language"),
           "sop",
           "aop",
           "vop",
@@ -134,7 +136,8 @@ defmodule RetroHexChat.Chat.HelpTopics.Commands do
           "chanserv-register",
           "chanserv-access",
           "chanserv-ui",
-          "feature-public-archive"
+          "feature-public-archive",
+          "feature-language-flags"
         ]
       },
       %{

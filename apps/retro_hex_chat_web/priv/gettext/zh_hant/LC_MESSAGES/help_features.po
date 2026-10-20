@@ -2780,7 +2780,7 @@ msgstr "在當前頻道或PM中以實時突出顯示搜索消息."
 #: lib/retro_hex_chat_web/controllers/help_content/feature_key_bindings.html.heex:107
 #: lib/retro_hex_chat_web/controllers/help_content/feature_kick_notifications.html.heex:65
 #: lib/retro_hex_chat_web/controllers/help_content/feature_lag_indicator.html.heex:79
-#: lib/retro_hex_chat_web/controllers/help_content/feature_language_flags.html.heex:21
+#: lib/retro_hex_chat_web/controllers/help_content/feature_language_flags.html.heex:34
 #: lib/retro_hex_chat_web/controllers/help_content/feature_link_previews.html.heex:90
 #: lib/retro_hex_chat_web/controllers/help_content/feature_mentions.html.heex:36
 #: lib/retro_hex_chat_web/controllers/help_content/feature_message_attachments.html.heex:41
@@ -7177,3 +7177,18 @@ msgstr "暱稱前的小旗幟表示此人使用聊天的語言。它會出現在
 #, elixir-autogen, elixir-format
 msgid "Your flag is the language you pick under Start ▸ Language. Pick another one and the chat reopens in it, and everybody else's user list shows your new flag."
 msgstr "你的旗幟就是你在 開始 ▸ 語言 中選擇的語言。選擇另一種語言後，聊天會以該語言重新開啟，所有人的使用者列表都會顯示你的新旗幟。"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_language_flags.html.heex:21
+#, elixir-autogen, elixir-format
+msgid "A Channel's Language"
+msgstr "頻道的語言"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_language_flags.html.heex:23
+#, elixir-autogen, elixir-format
+msgid "A channel can have a flag too: the language people speak there, beside the channel's name in its tab, in the conversations list, in the channel list, above the conversation and in its public archive. Its founder chooses it with /cs language followed by a code such as pt_BR, or under Channel Central ▸ Registration ▸ Language, and /cs language none takes it away."
+msgstr "頻道也可以有旗幟：即頻道裡使用的語言，顯示在頻道名稱旁邊——頻道分頁、對話清單、頻道清單、對話上方以及公開存檔中。創建者可以用 /cs language 加上 pt_BR 這樣的代碼來選擇，或在 中央頻道 ▸ 註冊 ▸ 語言 中選擇；/cs language none 會移除它。"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_language_flags.html.heex:29
+#, elixir-autogen, elixir-format
+msgid "A channel whose founder has not chosen one has no flag. The Retro Games channels are English."
+msgstr "創建者尚未選擇語言的頻道沒有旗幟。復古遊戲的頻道使用英語。"

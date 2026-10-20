@@ -29,6 +29,7 @@ defmodule RetroHexChat.Channels.Server do
   alias RetroHexChat.Channels.Supervisor, as: ChannelSupervisor
   alias RetroHexChat.Chat
   alias RetroHexChat.Chat.{Archive, Attachments, Content, SendOptions}
+  alias RetroHexChat.Locales
   alias RetroHexChat.Nickname
   alias RetroHexChat.Notifications
   alias RetroHexChat.Observability
@@ -43,6 +44,7 @@ defmodule RetroHexChat.Channels.Server do
           topic: String.t(),
           topic_set_by: String.t() | nil,
           topic_set_at: DateTime.t() | nil,
+          locale: String.t() | nil,
           membership: Membership.t(),
           modes: Modes.t(),
           bans: MapSet.t(String.t()),
@@ -274,6 +276,41 @@ defmodule RetroHexChat.Channels.Server do
   end
 
   @doc """
+  Sets the language the channel is spoken in, or clears it with `nil`.
+  Founder only, so only a registered channel has one.
+
+  Goes through the channel process because the language is drawn beside the
+  channel's name wherever it is listed: the room, its tab on every member's
+  screen and the channel list all have to hear about it.
+  """
+  @spec set_locale(String.t(), String.t(), String.t() | nil) :: :ok | {:error, String.t()}
+  def set_locale(channel_name, nickname, locale) do
+    with {:ok, locale} <- offered_locale(locale) do
+      case Registry.lookup(channel_name) do
+        {:ok, pid} -> GenServer.call(pid, {:set_locale, nickname, locale})
+        {:error, :not_found} -> {:error, dgettext("channels", "Channel not found")}
+      end
+    end
+  catch
+    :exit, {:noproc, _call} ->
+      {:error, dgettext("channels", "Channel not found")}
+
+    :exit, reason ->
+      Logger.error("Channel language change failed for #{channel_name}: #{inspect(reason)}")
+      {:error, dgettext("channels", "The channel did not answer. Try again.")}
+  end
+
+  # Only a language the chat speaks, however it was written; nil clears it.
+  defp offered_locale(nil), do: {:ok, nil}
+
+  defp offered_locale(locale) do
+    case Locales.normalize(locale) do
+      nil -> {:error, dgettext("channels", "Unknown language: %{code}", code: locale)}
+      code -> {:ok, code}
+    end
+  end
+
+  @doc """
   Puts something on the channel's calendar and tells the room.
 
   Requires operator privilege, checked here rather than at the command: whether
@@ -404,6 +441,20 @@ defmodule RetroHexChat.Channels.Server do
     :exit, _reason -> {:error, dgettext("channels", "Channel not found")}
   end
 
+  @doc """
+  Tells a running channel its registration was dropped: what only a registered
+  channel keeps — its language among them — goes with it.
+  """
+  @spec mark_unregistered(String.t()) :: :ok | {:error, String.t()}
+  def mark_unregistered(channel_name) do
+    case Registry.lookup(channel_name) do
+      {:ok, pid} -> GenServer.call(pid, :mark_unregistered)
+      {:error, :not_found} -> :ok
+    end
+  catch
+    :exit, _reason -> :ok
+  end
+
   @doc "The channel every chat opens on — a member's first join, a visitor's first look."
   @spec default_channel() :: String.t()
   def default_channel, do: Application.get_env(:retro_hex_chat, :default_channel, "#lobby")
@@ -490,6 +541,7 @@ defmodule RetroHexChat.Channels.Server do
       topic: "",
       topic_set_by: nil,
       topic_set_at: nil,
+      locale: nil,
       membership: Membership.new(),
       modes: Modes.new(),
       bans: MapSet.new(),
@@ -764,8 +816,8 @@ defmodule RetroHexChat.Channels.Server do
   end
 
   def handle_call({:set_public_archive, nickname, enabled?}, _from, state) do
-    with :ok <- identified?(nickname),
-         :ok <- founder?(state.name, nickname),
+    with :ok <- identified?(nickname, :archive),
+         :ok <- founder?(state.name, nickname, :archive),
          {:ok, _channel} <- toggle_archive(state.name, enabled?) do
       broadcast(
         state.name,
@@ -981,10 +1033,27 @@ defmodule RetroHexChat.Channels.Server do
     reply({:ok, state.welcome_message}, state)
   end
 
+  # The row may already say what language the room speaks — a Retro Games
+  # channel is written with one — so the flag comes from it.
   def handle_call(:mark_registered, _from, state) do
     new_state = %{state | registered: true}
     maybe_persist_channel_settings(new_state)
+    reply(:ok, put_locale(new_state, registered_locale(state.name), nil))
+  end
+
+  def handle_call(:mark_unregistered, _from, state) do
+    new_state = put_locale(%{state | registered: false}, nil, nil)
     reply(:ok, new_state)
+  end
+
+  def handle_call({:set_locale, nickname, locale}, _from, state) do
+    with :ok <- identified?(nickname, :locale),
+         :ok <- founder?(state.name, nickname, :locale) do
+      ServiceQueries.update_registered_channel_settings(state.name, locale: locale)
+      reply(:ok, put_locale(state, locale, nickname))
+    else
+      {:error, reason} -> reply({:error, reason}, state)
+    end
   end
 
   def handle_call({:knock, nickname, message}, _from, state) do
@@ -1436,6 +1505,7 @@ defmodule RetroHexChat.Channels.Server do
     Directory.publish(state.name, %{
       name: state.name,
       topic: state.topic,
+      locale: state.locale,
       # Bots count: a channel a feed keeps publishing in is a live one.
       member_count: Membership.count(state.membership),
       watcher_count: watcher_count(state),
@@ -1609,6 +1679,7 @@ defmodule RetroHexChat.Channels.Server do
       topic: state.topic,
       topic_set_by: state.topic_set_by,
       topic_set_at: state.topic_set_at,
+      locale: state.locale,
       welcome_message: state.welcome_message,
       members: Membership.to_list(state.membership),
       member_count: Membership.count(state.membership),
@@ -1873,20 +1944,55 @@ defmodule RetroHexChat.Channels.Server do
   # Founder status is read by nickname, and a registered nickname can be held
   # for a minute before NickServ enforces it. Publishing a room to search
   # engines is not something to allow in that minute.
-  defp identified?(nickname) do
+  defp identified?(nickname, setting) do
     if ServicesPolicy.identified?(nickname) do
       :ok
     else
-      {:error, dgettext("channels", "Identify with NickServ before changing the public archive")}
+      {:error, unidentified_message(setting)}
     end
   end
 
-  defp founder?(channel_name, nickname) do
+  defp founder?(channel_name, nickname, setting) do
     if ChanServ.viewer_role(channel_name, nickname) == "founder" do
       :ok
     else
-      {:error, dgettext("channels", "Only the channel founder can change the public archive")}
+      {:error, not_founder_message(setting)}
     end
+  end
+
+  defp registered_locale(channel_name) do
+    case ServiceQueries.find_registered_channel(channel_name) do
+      %{locale: locale} -> locale
+      nil -> nil
+    end
+  end
+
+  defp unidentified_message(:archive),
+    do: dgettext("channels", "Identify with NickServ before changing the public archive")
+
+  defp unidentified_message(:locale),
+    do: dgettext("channels", "Identify with NickServ before changing the channel's language")
+
+  defp not_founder_message(:archive),
+    do: dgettext("channels", "Only the channel founder can change the public archive")
+
+  defp not_founder_message(:locale),
+    do: dgettext("channels", "Only the founder of a registered channel can set its language")
+
+  # Every screen that draws the channel's name draws its flag: the room is told,
+  # and the directory the channel list reads is rewritten. Saying nothing when
+  # nothing changed keeps a dropped channel that never had one quiet.
+  defp put_locale(%{locale: locale} = state, locale, _nickname), do: state
+
+  defp put_locale(state, locale, nickname) do
+    new_state = refresh_directory(%{state | locale: locale})
+
+    broadcast(
+      state.name,
+      {:channel_locale_changed, %{channel: state.name, nickname: nickname, locale: locale}}
+    )
+
+    new_state
   end
 
   defp toggle_archive(channel_name, true), do: Archive.publish(channel_name)
@@ -1931,6 +2037,7 @@ defmodule RetroHexChat.Channels.Server do
         %{
           state
           | topic: persisted.topic,
+            locale: persisted.locale,
             modes: modes,
             bans: bans,
             ban_exceptions: ban_exceptions,

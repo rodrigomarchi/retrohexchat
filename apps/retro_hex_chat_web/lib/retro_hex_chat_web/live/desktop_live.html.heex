@@ -166,6 +166,7 @@
             conversations_sections={@conversations_sections}
             mobile_viewport={@mobile_viewport}
             channel_user_counts={@channel_user_counts}
+            channel_locales={@channel_locales}
             popular_channels={@popular_channels}
             nick_color_fn={@nick_color_fn}
           />
@@ -181,6 +182,7 @@
             <.topic_bar
               topic={@current_topic || ""}
               channel_name={@session.active_channel}
+              locale={Map.get(@channel_locales, @session.active_channel)}
               variant={
                 cond do
                   @show_status_tab -> "status"
@@ -297,6 +299,7 @@
               active_channel={@session.active_channel}
               active_pm={@session.active_pm}
               members={@conversation_members}
+              channel_locales={@channel_locales}
               nick_color_fn={@nick_color_fn}
               p2p_pm_sessions={@p2p_pm_sessions}
               group_call_channels={@group_call_channels}

@@ -238,19 +238,22 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.Channel do
   @spec load_channel_user_count(Phoenix.LiveView.Socket.t(), String.t()) ::
           Phoenix.LiveView.Socket.t()
   def load_channel_user_count(socket, channel_name) do
-    {members, guests} =
+    {members, guests, locale} =
       case Server.get_state(channel_name) do
-        {:ok, state} -> {state.member_count, Map.get(state, :guests, [])}
-        {:error, _} -> {0, []}
+        {:ok, state} -> {state.member_count, Map.get(state, :guests, []), Map.get(state, :locale)}
+        {:error, _} -> {0, [], nil}
       end
 
     # The count beside a channel is everybody in it — members and the visitors
     # watching without an account. The guests are kept by name as well: they
     # change on a broadcast of their own, and the user list names them apart.
+    # The channel's language comes from the same read; it changes on a
+    # broadcast of its own too.
     assign(socket,
       channel_user_counts:
         Map.put(socket.assigns.channel_user_counts, channel_name, members + length(guests)),
-      channel_guests: Map.put(socket.assigns.channel_guests, channel_name, guests)
+      channel_guests: Map.put(socket.assigns.channel_guests, channel_name, guests),
+      channel_locales: Map.put(socket.assigns.channel_locales, channel_name, locale)
     )
   end
 

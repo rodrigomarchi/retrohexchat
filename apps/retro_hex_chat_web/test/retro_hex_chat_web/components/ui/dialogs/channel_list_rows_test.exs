@@ -80,4 +80,27 @@ defmodule RetroHexChatWeb.Components.UI.ChannelListRowsTest do
 
     refute html =~ ~s(data-testid="channel-list-activity-#void")
   end
+
+  describe "the room's language" do
+    test "a room whose founder named its language draws that flag beside its name" do
+      html = render_list([row(name: "#papo", locale: "pt_BR")])
+
+      [row_html] = rows(html, "#papo")
+      assert row_html =~ ~s(data-testid="channel-flag")
+      assert row_html =~ ~s(data-locale="pt_BR")
+    end
+
+    test "a room with no language draws no flag" do
+      html = render_list([row(name: "#lobby", locale: nil), row(name: "#old")])
+
+      refute html =~ ~s(data-testid="channel-flag")
+    end
+  end
+
+  defp rows(html, name) do
+    html
+    |> LazyHTML.from_fragment()
+    |> LazyHTML.query(~s([data-testid="channel-list-row-#{name}"]))
+    |> Enum.map(&LazyHTML.to_html/1)
+  end
 end

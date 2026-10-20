@@ -27,60 +27,70 @@ shot, logged in as an admin who has `/identify`-ed.
 /join #portugal
 /cs register
 /cs archive on
+/cs language pt_PT
 /topic Canal português — conversa à portuguesa. Entra, senta-te, o café é por conta da casa.
 /mode +tn
 
 /join #actualidade
 /cs register
 /cs archive on
+/cs language pt_PT
 /topic Actualidade — Observador e SAPO 24 directamente do feed. !Duarte fontes mostra de onde vem.
 /mode +tn
 
 /join #ultimahora
 /cs register
 /cs archive on
+/cs language pt_PT
 /topic Última hora — Notícias ao Minuto e TVI. Chega primeiro aqui, contexto vem depois no #actualidade.
 /mode +tn
 
 /join #informatica
 /cs register
 /cs archive on
+/cs language pt_PT
 /topic Informática — SAPO Tek e Pplware no fio. Suporte de projecto é com o projecto; aqui é conversa.
 /mode +tn
 
 /join #gadgets
 /cs register
 /cs archive on
+/cs language pt_PT
 /topic Gadgets — 4gnews e Leak. Telemóveis, relógios e coisas que não precisas mas queres.
 /mode +tn
 
 /join #negocios
 /cs register
 /cs archive on
+/cs language pt_PT
 /topic Negócios — ECO e Jornal de Negócios. !Afonso fontes lista os feeds.
 /mode +tn
 
 /join #bolsa
 /cs register
 /cs archive on
+/cs language pt_PT
 /topic Bolsa — Dinheiro Vivo no fio. Manchete não é conselho de investimento.
 /mode +tn
 
 /join #desporto
 /cs register
 /cs archive on
+/cs language pt_PT
 /topic Desporto — Record e Mais Futebol. Bola, tabela e a discussão do costume.
 /mode +tn
 
 /join #cultura
 /cs register
 /cs archive on
+/cs language pt_PT
 /topic Cultura — Visão e Sábado. Livros, cinema, exposições e o que anda a dar.
 /mode +tn
 
 /join #natureza
 /cs register
 /cs archive on
+/cs language pt_PT
 /topic Natureza — Wilder no fio. Aves, plantas, bichos e o território que os aguenta.
 /mode +tn
 
@@ -353,4 +363,5 @@ that matters after a paste.
 | `#cultura` | **Amalia** | Visão, Sábado |
 | `#natureza` | **Ines** | Wilder |
 
-**Sentinela** stands in all ten and greets in none of them. All channels are `+tn`.
+**Sentinela** stands in all ten and greets in none of them. All channels are `+tn`,
+publish their archive and are marked European Portuguese (`/cs language pt_PT`).

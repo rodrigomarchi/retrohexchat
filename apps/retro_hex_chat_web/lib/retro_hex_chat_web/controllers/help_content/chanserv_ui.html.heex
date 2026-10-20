@@ -36,6 +36,12 @@
       "Add and Remove run the same actions as /cs <level> add <nick> and /cs <level> del <nick>."
     )}
   </li>
+  <li>
+    {dgettext(
+      "help_channels",
+      "Language, shown to the founder, runs the same action as /cs language. Everybody else sees which language the channel is spoken in."
+    )}
+  </li>
 </ul>
 
 <.help_h4 icon={:icon_rules}>{dgettext("help_channels", "Disabled Controls")}</.help_h4>
@@ -57,4 +63,8 @@
     {dgettext("help_channels", "Channel Registration")}
   </.help_link>
   · <.help_link topic="chanserv-access">{dgettext("help_channels", "Access Lists")}</.help_link>
+  ·
+  <.help_link topic="feature-language-flags">
+    {dgettext("help_channels", "Language Flags")}
+  </.help_link>
 </p>

@@ -206,7 +206,7 @@ msgstr "Geheim (+s)"
 #: lib/retro_hex_chat_web/controllers/help_content/chanserv.html.heex:133
 #: lib/retro_hex_chat_web/controllers/help_content/chanserv_access.html.heex:45
 #: lib/retro_hex_chat_web/controllers/help_content/chanserv_register.html.heex:41
-#: lib/retro_hex_chat_web/controllers/help_content/chanserv_ui.html.heex:49
+#: lib/retro_hex_chat_web/controllers/help_content/chanserv_ui.html.heex:55
 #: lib/retro_hex_chat_web/controllers/help_content/mode_c.html.heex:62
 #: lib/retro_hex_chat_web/controllers/help_content/mode_h.html.heex:65
 #: lib/retro_hex_chat_web/controllers/help_content/mode_i.html.heex:72
@@ -771,7 +771,7 @@ msgstr "ChanServ Auto-Grant"
 #: lib/retro_hex_chat_web/controllers/help_content/channel_permissions.html.heex:203
 #: lib/retro_hex_chat_web/controllers/help_content/chanserv_access.html.heex:47
 #: lib/retro_hex_chat_web/controllers/help_content/chanserv_register.html.heex:43
-#: lib/retro_hex_chat_web/controllers/help_content/chanserv_ui.html.heex:54
+#: lib/retro_hex_chat_web/controllers/help_content/chanserv_ui.html.heex:60
 #, elixir-autogen, elixir-format
 msgid "ChanServ Overview"
 msgstr "Overzicht van ChanServ"
@@ -1457,7 +1457,7 @@ msgstr "AOP gebruikers kunnen VOP lijsten beheren."
 
 #: lib/retro_hex_chat_web/controllers/help_content/channel_transfer_ownership.html.heex:76
 #: lib/retro_hex_chat_web/controllers/help_content/chanserv.html.heex:140
-#: lib/retro_hex_chat_web/controllers/help_content/chanserv_ui.html.heex:59
+#: lib/retro_hex_chat_web/controllers/help_content/chanserv_ui.html.heex:65
 #: lib/retro_hex_chat_web/controllers/help_content/mode_m.html.heex:75
 #: lib/retro_hex_chat_web/controllers/help_content/mode_o.html.heex:85
 #: lib/retro_hex_chat_web/controllers/help_content/mode_q.html.heex:66
@@ -1513,7 +1513,7 @@ msgstr ""
 #: lib/retro_hex_chat_web/controllers/help_content/channel_welcome_message.html.heex:90
 #: lib/retro_hex_chat_web/controllers/help_content/chanserv.html.heex:96
 #: lib/retro_hex_chat_web/controllers/help_content/chanserv_register.html.heex:32
-#: lib/retro_hex_chat_web/controllers/help_content/chanserv_ui.html.heex:52
+#: lib/retro_hex_chat_web/controllers/help_content/chanserv_ui.html.heex:58
 #: lib/retro_hex_chat_web/controllers/help_content/mode_i.html.heex:46
 #: lib/retro_hex_chat_web/controllers/help_content/mode_j.html.heex:52
 #: lib/retro_hex_chat_web/controllers/help_content/mode_j.html.heex:89
@@ -1541,7 +1541,7 @@ msgstr ""
 
 #: lib/retro_hex_chat_web/controllers/help_content/chanserv.html.heex:136
 #: lib/retro_hex_chat_web/controllers/help_content/chanserv_access.html.heex:50
-#: lib/retro_hex_chat_web/controllers/help_content/chanserv_ui.html.heex:57
+#: lib/retro_hex_chat_web/controllers/help_content/chanserv_ui.html.heex:63
 #, elixir-autogen, elixir-format
 msgid "Channel Registration"
 msgstr "Kanaalregistratie"
@@ -1571,7 +1571,7 @@ msgstr "Commando"
 msgid "Controls"
 msgstr "Besturing"
 
-#: lib/retro_hex_chat_web/controllers/help_content/chanserv_ui.html.heex:41
+#: lib/retro_hex_chat_web/controllers/help_content/chanserv_ui.html.heex:47
 #, elixir-autogen, elixir-format
 msgid "Disabled Controls"
 msgstr "Gehandicapten"
@@ -1697,7 +1697,7 @@ msgstr ""
 "Het tabblad Registratie maakt alleen Register Channel voor kanaaloperators "
 "mogelijk."
 
-#: lib/retro_hex_chat_web/controllers/help_content/chanserv_ui.html.heex:43
+#: lib/retro_hex_chat_web/controllers/help_content/chanserv_ui.html.heex:49
 #, elixir-autogen, elixir-format
 msgid "The dialog disables or hides write controls when you are not identified with NickServ or your ChanServ role cannot manage the selected list."
 msgstr ""
@@ -2822,3 +2822,13 @@ msgstr "Capital letters do not matter"
 #, elixir-autogen, elixir-format
 msgid "It is shown as you type it."
 msgstr "Het wordt getoond zoals je het typt."
+
+#: lib/retro_hex_chat_web/controllers/help_content/chanserv_ui.html.heex:68
+#, elixir-autogen, elixir-format
+msgid "Language Flags"
+msgstr "Taalvlaggen"
+
+#: lib/retro_hex_chat_web/controllers/help_content/chanserv_ui.html.heex:40
+#, elixir-autogen, elixir-format
+msgid "Language, shown to the founder, runs the same action as /cs language. Everybody else sees which language the channel is spoken in."
+msgstr "Taal, zichtbaar voor de oprichter, doet hetzelfde als /cs language. Ieder ander ziet welke taal er in het kanaal gesproken wordt."

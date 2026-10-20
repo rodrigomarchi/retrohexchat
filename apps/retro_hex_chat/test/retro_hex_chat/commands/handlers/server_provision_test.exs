@@ -22,6 +22,7 @@ defmodule RetroHexChat.Commands.Handlers.ServerProvisionTest do
   alias RetroHexChat.Commands.Handlers.Bot
   alias RetroHexChat.Commands.Handlers.Cs
   alias RetroHexChat.Commands.Registry
+  alias RetroHexChat.Locales
 
   @dir Path.expand("../../../../../../docs/provisioning", __DIR__)
   @base Path.join(@dir, "en.md")
@@ -219,6 +220,61 @@ defmodule RetroHexChat.Commands.Handlers.ServerProvisionTest do
 
       assert missing == [],
              "#{Path.basename(path)} registers #{length(missing)} room(s) without /cs archive on"
+    end
+  end
+
+  # The language draws the flag beside the room's name. Every room a script
+  # opens is in that script's language, so the code is the file's own name — and
+  # it has to be one `/cs language` accepts as written, not merely one it can
+  # guess its way to.
+  test "every registered room says its script's language, once", %{scripts: scripts} do
+    for path <- scripts do
+      {_body, _lines, parsed} = read(path)
+      file = Path.basename(path)
+      locale = Path.basename(path, ".md")
+
+      assert Locales.normalize(locale) == locale,
+             "#{file} is named after #{locale}, which is not an enabled locale code"
+
+      {_current, registered, spoken} =
+        Enum.reduce(parsed, {nil, [], %{}}, fn
+          ["join", chan | _], {_cur, reg, spoken} ->
+            {String.downcase(chan), reg, spoken}
+
+          ["cs", "register" | _], {cur, reg, spoken} ->
+            {cur, [cur | reg], spoken}
+
+          ["cs", "language" | codes], {cur, reg, spoken} ->
+            {cur, reg, Map.update(spoken, cur, [codes], &[codes | &1])}
+
+          _line, acc ->
+            acc
+        end)
+
+      wrong =
+        for chan <- Enum.uniq(registered),
+            codes = Map.get(spoken, chan, []),
+            codes != [[locale]],
+            do: {chan, Enum.reverse(codes)}
+
+      assert wrong == [],
+             "#{file}: every registered room needs exactly one /cs language #{locale}: " <>
+               inspect(wrong)
+
+      unregistered = Map.keys(spoken) -- registered
+
+      assert unregistered == [],
+             "#{file} sets a language on rooms it never registers: #{inspect(unregistered)}"
+
+      misplaced =
+        parsed
+        |> Enum.chunk_every(2, 1, [[]])
+        |> Enum.filter(&match?([["cs", "archive", "on"], _next], &1))
+        |> Enum.reject(&match?([_archive, ["cs", "language", ^locale]], &1))
+
+      assert misplaced == [],
+             "#{file}: /cs language #{locale} belongs right after each /cs archive on, " <>
+               "#{length(misplaced)} room(s) do not have it there"
     end
   end
 

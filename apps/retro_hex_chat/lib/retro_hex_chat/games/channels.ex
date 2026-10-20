@@ -27,6 +27,9 @@ defmodule RetroHexChat.Games.Channels do
 
   @service "GameServ"
   @feed "#retro-games"
+  # The games are played across every language the chat speaks; the channels
+  # they are talked about in are English.
+  @locale "en"
 
   @doc "The nickname the games service speaks under."
   @spec service() :: String.t()
@@ -101,7 +104,8 @@ defmodule RetroHexChat.Games.Channels do
             name: name,
             founder_nickname: @service,
             topic: topic(name),
-            modes: "+nt"
+            modes: "+nt",
+            locale: @locale
           })
           |> Repo.insert()
 

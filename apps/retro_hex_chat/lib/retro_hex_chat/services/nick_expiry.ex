@@ -5,6 +5,7 @@ defmodule RetroHexChat.Services.NickExpiry do
   require Logger
 
   alias RetroHexChat.Admin.RoleCache
+  alias RetroHexChat.Channels.Server, as: ChannelServer
   alias RetroHexChat.Repo
   alias RetroHexChat.Services.NickServ
   alias RetroHexChat.Services.Queries
@@ -161,6 +162,7 @@ defmodule RetroHexChat.Services.NickExpiry do
 
         channel ->
           {:ok, _channel} = Queries.delete_registered_channel(channel)
+          _ = ChannelServer.mark_unregistered(channel_name)
           1
       end
 

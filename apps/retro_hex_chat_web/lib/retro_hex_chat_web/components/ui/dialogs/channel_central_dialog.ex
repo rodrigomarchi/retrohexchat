@@ -21,12 +21,14 @@ defmodule RetroHexChatWeb.Components.UI.ChannelCentralDialog do
   import RetroHexChatWeb.Components.UI.Fieldset
   import RetroHexChatWeb.Components.UI.ListStates
   import RetroHexChatWeb.Components.UI.NickFlag
+  import RetroHexChatWeb.Components.UI.Select
   import RetroHexChatWeb.Components.UI.Tabs
   import RetroHexChatWeb.Components.UI.Table
   import RetroHexChatWeb.Components.UI.Button
   import RetroHexChatWeb.Components.UI.Input
   import RetroHexChatWeb.Components.UI.Textarea
 
+  alias RetroHexChat.Locales
   alias RetroHexChatWeb.Components.Diagrams
   alias RetroHexChatWeb.Icons
 
@@ -63,6 +65,10 @@ defmodule RetroHexChatWeb.Components.UI.ChannelCentralDialog do
   attr :registration, :map, default: nil
   attr :registered_since, :string, default: nil, doc: "When the channel was registered, formatted"
 
+  attr :channel_locale, :string,
+    default: nil,
+    doc: "The language the channel is spoken in, for its flag beside its name"
+
   attr :nick_locales, :map,
     default: %{},
     doc: "The locale of each person the window names, by nickname, for their flag"
@@ -95,6 +101,7 @@ defmodule RetroHexChatWeb.Components.UI.ChannelCentralDialog do
   attr :on_list_remove, :any, default: nil
   attr :on_cs_register, :any, default: nil
   attr :on_cs_archive_toggle, :any, default: nil
+  attr :on_cs_language, :any, default: nil, doc: "Language change event (form param `locale`)"
   attr :on_cs_drop_request, :any, default: nil
   attr :on_cs_drop, :any, default: nil
   attr :on_cs_drop_cancel, :any, default: nil
@@ -170,6 +177,7 @@ defmodule RetroHexChatWeb.Components.UI.ChannelCentralDialog do
           <.general_tab
             target={@target}
             channel_name={@channel_name}
+            channel_locale={@channel_locale}
             topic={@topic}
             topic_set_by={@topic_set_by}
             topic_set_at={@topic_set_at}
@@ -217,6 +225,7 @@ defmodule RetroHexChatWeb.Components.UI.ChannelCentralDialog do
           <.registration_tab
             target={@target}
             channel_name={@channel_name}
+            channel_locale={@channel_locale}
             operator={@operator}
             identified={@identified}
             registration={@registration}
@@ -228,6 +237,7 @@ defmodule RetroHexChatWeb.Components.UI.ChannelCentralDialog do
             confirm_drop={@cs_confirm_drop}
             on_register={@on_cs_register}
             on_archive_toggle={@on_cs_archive_toggle}
+            on_language={@on_cs_language}
             on_drop_request={@on_cs_drop_request}
             on_drop={@on_cs_drop}
             on_drop_cancel={@on_cs_drop_cancel}
@@ -271,6 +281,7 @@ defmodule RetroHexChatWeb.Components.UI.ChannelCentralDialog do
   # ── Registration Tab ───────────────────────────────────
 
   attr :channel_name, :string, default: nil
+  attr :channel_locale, :string, default: nil
   attr :operator, :boolean, default: false
   attr :identified, :boolean, default: false
   attr :registration, :map, default: nil
@@ -281,6 +292,7 @@ defmodule RetroHexChatWeb.Components.UI.ChannelCentralDialog do
   attr :confirm_drop, :boolean, default: false
   attr :on_register, :any, default: nil
   attr :on_archive_toggle, :any, default: nil
+  attr :on_language, :any, default: nil
   attr :on_drop_request, :any, default: nil
   attr :on_drop, :any, default: nil
   attr :on_drop_cancel, :any, default: nil
@@ -306,6 +318,7 @@ defmodule RetroHexChatWeb.Components.UI.ChannelCentralDialog do
       |> assign(:can_manage_active?, can_manage_access?(role, active_level, assigns.identified))
       |> assign(:public_archive?, Map.get(registration, :public_archive?, false))
       |> assign(:founder?, role == "founder")
+      |> assign(:language_options, Locales.enabled())
 
     ~H"""
     <div class="space-y-2">
@@ -328,7 +341,9 @@ defmodule RetroHexChatWeb.Components.UI.ChannelCentralDialog do
       <div class="cc-status-card shadow-retro-field bg-white p-2" data-testid="cc-cs-status">
         <div class="cc-dialog-heading flex items-center gap-2 mb-2">
           <Icons.icon_shield class="w-[16px] h-[16px]" />
-          <span class="cc-dialog-title text-sm font-bold">{display_channel(@channel_name)}</span>
+          <span class="cc-dialog-title text-sm font-bold">
+            <.channel_flag locale={@channel_locale} class="mr-1" />{display_channel(@channel_name)}
+          </span>
         </div>
 
         <div class="cc-status-grid grid grid-cols-[86px_1fr] gap-1 text-xs">
@@ -387,6 +402,71 @@ defmodule RetroHexChatWeb.Components.UI.ChannelCentralDialog do
               </span>
             </span>
           </label>
+        </div>
+
+        <%!-- The language the channel is spoken in, drawn as a flag beside its
+              name. The founder's to set, like the archive; everybody else on a
+              registered channel sees what it is. --%>
+        <div :if={@registered? && @founder?} class="mt-3 text-xs" data-testid="cc-language-switch">
+          <span class="font-bold">{dgettext("dialogs", "Language")}</span>
+          <span class="block text-[10px] text-muted-foreground mb-1">
+            {dgettext(
+              "dialogs",
+              "The language people speak here. Its flag is shown beside the channel's name, so visitors know what to expect before they join."
+            )}
+          </span>
+          <form
+            phx-change={@on_language}
+            phx-target={@target}
+            class="flex items-center gap-2"
+            data-testid="cc-language-form"
+          >
+            <.channel_flag locale={@channel_locale} />
+            <.select
+              :let={builder}
+              id="cc-language-select"
+              name="locale"
+              value={@channel_locale || ""}
+              label={language_label(@channel_locale)}
+              placeholder={dgettext("dialogs", "No language")}
+              class="w-56"
+              data-testid="cc-language-select"
+            >
+              <.select_trigger builder={builder} class="h-7 text-xs" />
+              <.select_content builder={builder}>
+                <.select_group>
+                  <.select_item
+                    builder={builder}
+                    value=""
+                    label={dgettext("dialogs", "No language")}
+                    data-testid="cc-language-option"
+                  >
+                    {dgettext("dialogs", "No language")}
+                  </.select_item>
+                  <.select_item
+                    :for={locale <- @language_options}
+                    builder={builder}
+                    value={locale.code}
+                    label={locale.label}
+                    data-testid="cc-language-option"
+                  >
+                    {locale.label}
+                  </.select_item>
+                </.select_group>
+              </.select_content>
+            </.select>
+          </form>
+        </div>
+
+        <div
+          :if={@registered? && !@founder?}
+          class="mt-3 flex items-center gap-2 text-xs"
+          data-testid="cc-language-value"
+        >
+          <span class="text-muted-foreground">{dgettext("dialogs", "Language")}:</span>
+          <span class="cc-status-value">
+            <.channel_flag locale={@channel_locale} class="mr-1" />{language_label(@channel_locale)}
+          </span>
         </div>
 
         <div :if={!@registered? && @operator} class="mt-2">
@@ -808,6 +888,7 @@ defmodule RetroHexChatWeb.Components.UI.ChannelCentralDialog do
   # ── General Tab ───────────────────────────────────────
 
   attr :channel_name, :string, default: nil
+  attr :channel_locale, :string, default: nil
   attr :topic, :string, default: ""
   attr :topic_set_by, :string, default: nil
   attr :topic_set_at, :string, default: nil
@@ -851,7 +932,9 @@ defmodule RetroHexChatWeb.Components.UI.ChannelCentralDialog do
       <div class="cc-status-card shadow-retro-field bg-white p-2">
         <div class="cc-dialog-heading flex items-center gap-2 mb-2">
           <Icons.icon_tab_channel class="w-[16px] h-[16px]" />
-          <span class="cc-dialog-title text-sm font-bold">{display_channel(@channel_name)}</span>
+          <span class="cc-dialog-title text-sm font-bold">
+            <.channel_flag locale={@channel_locale} class="mr-1" />{display_channel(@channel_name)}
+          </span>
         </div>
         <div class="cc-status-grid grid grid-cols-2 gap-1 text-xs">
           <span class="text-muted-foreground">
@@ -1447,6 +1530,9 @@ defmodule RetroHexChatWeb.Components.UI.ChannelCentralDialog do
   @spec display_channel(String.t() | nil) :: String.t()
   defp display_channel(nil), do: "#unknown"
   defp display_channel(name), do: name
+
+  @spec language_label(String.t() | nil) :: String.t()
+  defp language_label(locale), do: language(locale) || dgettext("dialogs", "No language")
 
   # What a newcomer actually meets at the door, in the order they meet it.
   @spec door_lines(map()) :: [map()]

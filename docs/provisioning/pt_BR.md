@@ -31,6 +31,7 @@ the Admin Console in one shot, logged in as an admin who has `/identify`-ed.
 /join #brasil
 /cs register
 /cs archive on
+/cs language pt_BR
 /topic Canal brasileiro — bate-papo em português. Chega aí, senta e fica à vontade.
 /mode +tn
 
@@ -38,54 +39,63 @@ the Admin Console in one shot, logged in as an admin who has `/identify`-ed.
 /join #jornal
 /cs register
 /cs archive on
+/cs language pt_BR
 /topic Jornal — manchetes de Folha, BBC Brasil e Poder360, direto do feed. !Zeca fontes lista tudo.
 /mode +tn
 
 /join #tecnologia
 /cs register
 /cs archive on
+/cs language pt_BR
 /topic Tecnologia — Tecnoblog, Canaltech, Olhar Digital e Manual do Usuário. !Bento fontes para a lista.
 /mode +tn
 
 /join #hardware
 /cs register
 /cs archive on
+/cs language pt_BR
 /topic Hardware — placa, gabinete, gambiarra e upgrade. Fofoca de silício por conta do !Juca.
 /mode +tn
 
 /join #programacao
 /cs register
 /cs archive on
+/cs language pt_BR
 /topic Programação — TabNews e Meio Bit no fio. Dúvida de linguagem é com o projeto dela; aqui é o boteco.
 /mode +tn
 
 /join #economia
 /cs register
 /cs archive on
+/cs language pt_BR
 /topic Economia — InfoMoney, Exame e Valor. !Iara fontes mostra de onde vem cada manchete.
 /mode +tn
 
 /join #futebol
 /cs register
 /cs archive on
+/cs language pt_BR
 /topic Futebol — ge e Trivela no ar. Tabela, bola rolando e opinião de quem não joga há vinte anos.
 /mode +tn
 
 /join #ciencia
 /cs register
 /cs archive on
+/cs language pt_BR
 /topic Ciência — Superinteressante e Galileu. Pergunta idiota não existe, existe pergunta não feita.
 /mode +tn
 
 /join #musica
 /cs register
 /cs archive on
+/cs language pt_BR
 /topic Música — POPline e TMDQA no fio. Lançamento, show e briga de fandom.
 /mode +tn
 
 /join #jogos
 /cs register
 /cs archive on
+/cs language pt_BR
 /topic Jogos — Adrenaline no fio. Para jogar de verdade, abre o menu Games: 18 clássicos rodando no navegador.
 /mode +tn
 
@@ -372,7 +382,8 @@ and nowhere else.
 | `#musica` | **Tuca** | POPline, TMDQA |
 | `#jogos` | **Vito** | Adrenaline |
 
-**Sansao** stands in all ten and greets in none of them. All channels are `+tn`.
+**Sansao** stands in all ten and greets in none of them. All channels are `+tn`,
+publish their archive and are marked Brazilian Portuguese (`/cs language pt_BR`).
 
 Poll intervals follow the publisher, not a house default: twenty minutes for a
 newsroom, an hour for a monthly-paced magazine. A room that repeats itself reads

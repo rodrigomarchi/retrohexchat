@@ -40,6 +40,10 @@ defmodule RetroHexChatWeb.ChatLive.Components.ChatTabs do
     default: [],
     doc: "the conversation's roster; a PM tab draws its peer's flag from it"
 
+  attr :channel_locales, :map,
+    default: %{},
+    doc: "each joined channel's language; a channel tab draws its flag"
+
   attr :on_switch, :any, default: "switch_tab"
   attr :on_close, :any, default: "close_tab"
   slot :actions
@@ -125,7 +129,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.ChatTabs do
       unread: Map.get(assigns.unread_counts, channel, 0) > 0,
       closeable: true,
       nick_color: nil,
-      locale: nil,
+      locale: Map.get(assigns.channel_locales, channel),
       p2p: false,
       p2p_state: nil,
       p2p_session: nil,

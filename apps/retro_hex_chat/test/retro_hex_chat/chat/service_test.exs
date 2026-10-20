@@ -123,10 +123,15 @@ defmodule RetroHexChat.Chat.ServiceTest do
   end
 
   describe "send_private_message/4" do
+    # Unique names: a recipient is filed under the spelling of whoever is
+    # connected under that name, and other tests connect a "bob".
     test "persists and returns PM for valid input" do
-      assert {:ok, pm} = Service.send_private_message("Alice", "Bob", "Hello PM!")
-      assert pm.sender_nickname == "Alice"
-      assert pm.recipient_nickname == "Bob"
+      sender = unique_nick("Alice")
+      recipient = unique_nick("Bob")
+
+      assert {:ok, pm} = Service.send_private_message(sender, recipient, "Hello PM!")
+      assert pm.sender_nickname == sender
+      assert pm.recipient_nickname == recipient
       assert pm.content == "Hello PM!"
     end
 

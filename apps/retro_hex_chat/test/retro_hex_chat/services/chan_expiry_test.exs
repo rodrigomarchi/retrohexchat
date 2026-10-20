@@ -3,6 +3,7 @@ defmodule RetroHexChat.Services.ChanExpiryTest do
 
   @moduletag :integration
 
+  alias RetroHexChat.Channels
   alias RetroHexChat.Repo
   alias RetroHexChat.Services.{ChanExpiry, NickExpiry, NickServ, Queries}
 
@@ -55,6 +56,20 @@ defmodule RetroHexChat.Services.ChanExpiryTest do
       assert "#old-chan2" in result.purged_names
       assert Queries.find_registered_channel("#old-chan1") == nil
       assert Queries.find_registered_channel("#old-chan2") == nil
+    end
+
+    # The room is still running: the flag beside its name goes with the row.
+    test "a running room loses the language its registration kept" do
+      name = "#old-lang#{System.unique_integer([:positive])}"
+      register_channel(name, "LangFounder")
+      Queries.update_registered_channel_settings(name, locale: "ja")
+      {:ok, _pid} = Channels.Supervisor.start_child(name)
+      assert {:ok, %{locale: "ja"}} = Channels.Server.get_state(name)
+      backdate_channel_activity(name, 8)
+
+      ChanExpiry.purge(expiration_days: 7)
+
+      assert {:ok, %{locale: nil}} = Channels.Server.get_state(name)
     end
 
     test "does not purge recent channels" do
@@ -150,6 +165,17 @@ defmodule RetroHexChat.Services.ChanExpiryTest do
 
       assert Queries.find_registered_channel("#lone-chan") == nil
       assert Queries.list_access("#lone-chan") == []
+    end
+
+    test "a running room whose founder expired loses its language", ctx do
+      register_nick("LangLoner", "pass12345", 8)
+      register_channel("#lang-lone", "LangLoner")
+      Queries.update_registered_channel_settings("#lang-lone", locale: "de")
+      {:ok, _pid} = Channels.Supervisor.start_child("#lang-lone")
+
+      NickExpiry.purge(nickserv: ctx.nickserv, expiration_days: 7)
+
+      assert {:ok, %{locale: nil}} = Channels.Server.get_state("#lang-lone")
     end
 
     test "deregistered channel can be re-registered by anyone", ctx do

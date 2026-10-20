@@ -36,6 +36,13 @@
     "- Publish the channel's public archive, a page per day anybody can read (founder only). Without on or off it shows whether the archive is on."
   )}<br />
   <code>
+    {dgettext("help_commands", "language <code>/none")}
+  </code>
+  {dgettext(
+    "help_commands",
+    "- Say which language the channel is spoken in, such as pt_BR or ja (founder only). Its flag is drawn beside the channel's name. none takes it away; without a code it shows the language and every code you can use."
+  )}<br />
+  <code>
     {dgettext("help_commands", "sop add/del/list <nick>")}
   </code>
   {dgettext("help_commands", "- Manage Super Operators (can manage AOP and VOP lists).")}<br />
@@ -56,6 +63,7 @@
   <li>
     {dgettext("help_commands", "Only the founder can drop the channel or switch its archive")}
   </li>
+  <li>{dgettext("help_commands", "Only the founder can set the channel's language")}</li>
 </ul>
 <.help_h4 icon={:icon_lightbulb}>{dgettext("help_commands", "Examples")}</.help_h4>
 <pre>{dgettext("help_commands", "/join #mychannel /cs register /cs info /cs aop add Alice /cs aop list /cs vop add Bob /cs drop")}</pre>
@@ -75,5 +83,9 @@
   ·
   <.help_link topic="feature-public-archive">
     {dgettext("help_commands", "Public Channel Archive")}
+  </.help_link>
+  ·
+  <.help_link topic="feature-language-flags">
+    {dgettext("help_commands", "Language Flags")}
   </.help_link>
 </p>

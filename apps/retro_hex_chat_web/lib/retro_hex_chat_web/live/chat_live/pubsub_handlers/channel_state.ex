@@ -25,6 +25,7 @@ defmodule RetroHexChatWeb.ChatLive.PubsubHandlers.ChannelState do
   alias RetroHexChatWeb.ChatLive.EventEvents
   alias RetroHexChatWeb.ChatLive.GroupCallReadModel
   alias RetroHexChatWeb.ChatLive.ShareCards
+  alias RetroHexChatWeb.Components.UI.NickFlag
 
   # ── Mode changes ──────────────────────────────────────────
 
@@ -260,6 +261,24 @@ defmodule RetroHexChatWeb.ChatLive.PubsubHandlers.ChannelState do
      socket
      |> maybe_refresh_cc(Map.get(payload, :channel))
      |> system_event(msg)}
+  end
+
+  # The flag beside the channel's name — its tab, its row, the topic bar — is
+  # redrawn from the map; the room is told when its founder chose, and a
+  # language that went with a dropped registration goes without a word.
+  def handle_info(
+        {:channel_locale_changed, %{channel: channel, locale: locale} = payload},
+        socket
+      ) do
+    socket =
+      socket
+      |> assign(channel_locales: Map.put(socket.assigns.channel_locales, channel, locale))
+      |> maybe_refresh_cc(channel)
+
+    case locale_changed_message(payload) do
+      nil -> {:halt, socket}
+      msg -> {:halt, system_event(socket, msg)}
+    end
   end
 
   def handle_info({:topic_changed, %{nickname: nick, topic: topic} = payload}, socket) do
@@ -725,5 +744,18 @@ defmodule RetroHexChatWeb.ChatLive.PubsubHandlers.ChannelState do
   defp maybe_refresh_cc(socket, channel) do
     send_update(ChannelCentralDialog, id: ChannelCentralDialog.id(), refresh: channel)
     socket
+  end
+
+  defp locale_changed_message(%{nickname: nil}), do: nil
+
+  defp locale_changed_message(%{nickname: nickname, locale: nil}) do
+    dgettext("chat", "%{nickname} removed this channel's language.", nickname: nickname)
+  end
+
+  defp locale_changed_message(%{nickname: nickname, locale: locale}) do
+    dgettext("chat", "%{nickname} set this channel's language to %{language}.",
+      nickname: nickname,
+      language: NickFlag.language(locale) || locale
+    )
   end
 end

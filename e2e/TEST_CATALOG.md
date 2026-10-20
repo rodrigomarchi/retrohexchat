@@ -135,8 +135,8 @@ make e2e.catalog.check    # verify it is current (also runs in make ci)
 ## Coverage
 
 - **257 spec files** under `e2e/tests/`.
-- **632 Playwright `test()` cases**.
-- **578 documented flows**, 577 done, 1 not done.
+- **633 Playwright `test()` cases**.
+- **579 documented flows**, 578 done, 1 not done.
 - **Every spec documents its own flows.**
 
 ## Flow index
@@ -684,6 +684,7 @@ Grouped by section. Every row comes from an `@flow` line in the spec itself.
 | W18 | Everybody's nickname carries the flag of the language they use the chat in: the user list, their lines, the hover card and a private conversation's row and tab, on a desktop and on a phone | `tests/chat-locale-flags.spec.ts` | done |
 | W19 | A visitor watching without an account is listed under Visitors with the flag of the language the chat is shown to them in | `tests/chat-locale-flags.spec.ts` | done |
 | W20 | The tools that list people draw the same flag: autocomplete, whois, the address book, notify list, nick colours, ignore list, URL catcher, mentions, pinned lines, Channel Central and a private conversation's typing line | `tests/chat-locale-flags.spec.ts` | done |
+| W21 | A channel's founder sets the language it is spoken in with /cs language or Channel Central's Registration tab, and its flag is drawn beside the channel's name: the tab, the topic bar, the conversations list, the channel list and the public archive, on a desktop and on a phone | `tests/chat-locale-flags.spec.ts` | done |
 
 ### X - Channel Modes, Services, Permissions, Persistence Edges
 

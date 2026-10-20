@@ -30,60 +30,70 @@ shot, logged in as an admin who has `/identify`-ed.
 /join #russkiy
 /cs register
 /cs archive on
+/cs language ru
 /topic Русскоязычный канал — заходи, садись, разговариваем. Кофе за счёт заведения.
 /mode +tn
 
 /join #novosti
 /cs register
 /cs archive on
+/cs language ru
 /topic Новости — ТАСС, «Интерфакс», «Коммерсантъ» и «Медуза», прямо из лент. !Grisha istochniki покажет список.
 /mode +tn
 
 /join #tehnologii
 /cs register
 /cs archive on
+/cs language ru
 /topic Технологии — 3DNews и CNews. Поддержка проекта живёт у проекта; здесь просто разговор.
 /mode +tn
 
 /join #zhelezo
 /cs register
 /cs archive on
+/cs language ru
 /topic Железо — iXBT и Overclockers. Платы, корпуса, разгон и то, что из этого выходит.
 /mode +tn
 
 /join #razrabotka
 /cs register
 /cs archive on
+/cs language ru
 /topic Разработка — «Хабр» и «Код». Байки, разборы и чужие коммиты.
 /mode +tn
 
 /join #opensource
 /cs register
 /cs archive on
+/cs language ru
 /topic Открытый код — OpenNET на проводе. Релизы, ядра, дистрибутивы.
 /mode +tn
 
 /join #igry
 /cs register
 /cs archive on
+/cs language ru
 /topic Игры — DTF и StopGame. А поиграть по-настоящему — меню Games: 18 классических игр прямо в браузере.
 /mode +tn
 
 /join #nauchpop
 /cs register
 /cs archive on
+/cs language ru
 /topic Научпоп — N+1, «Элементы» и Naked Science. Глупых вопросов не бывает, бывают незаданные.
 /mode +tn
 
 /join #ekonomika
 /cs register
 /cs archive on
+/cs language ru
 /topic Экономика — РБК и vc.ru. Заголовок — это не рекомендация.
 /mode +tn
 
 /join #futbol
 /cs register
 /cs archive on
+/cs language ru
 /topic Футбол — «Чемпионат» на проводе. Таблица, трансферы и обычный спор.
 /mode +tn
 
@@ -367,7 +377,8 @@ matters after a paste.
 | `#ekonomika` | **Larisa** | РБК, vc.ru |
 | `#futbol` | **Valera** | Чемпионат |
 
-**Storozh** stands in all ten and greets in none of them. All channels are `+tn`.
+**Storozh** stands in all ten and greets in none of them. All channels are `+tn`,
+publish their archive and are marked Russian (`/cs language ru`).
 
 Bot nicknames are Latin because the schema requires it — `[a-zA-Z][a-zA-Z0-9_-]*`
 — but every line they speak is Cyrillic.

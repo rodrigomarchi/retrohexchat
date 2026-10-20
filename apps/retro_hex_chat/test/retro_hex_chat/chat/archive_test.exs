@@ -253,6 +253,35 @@ defmodule RetroHexChat.Chat.ArchiveTest do
     end
   end
 
+  describe "the channel's language" do
+    setup ctx do
+      {:ok, _} = Archive.publish(ctx.channel)
+      said = message(ctx.channel, "a line")
+      %{day: day_of(said)}
+    end
+
+    test "every read a page builds on carries it", ctx do
+      set_locale(ctx.channel, "pt_BR")
+
+      assert %{days: [_], locale: "pt_BR"} = Archive.index_for(ctx.channel)
+      assert %{locale: "pt_BR"} = Archive.page_for(ctx.channel, ctx.day)
+      assert %{name: ctx.channel, locale: "pt_BR"} in Archive.published_rooms()
+    end
+
+    test "is nil until the founder names one", ctx do
+      assert %{locale: nil} = Archive.index_for(ctx.channel)
+      assert %{locale: nil} = Archive.page_for(ctx.channel, ctx.day)
+    end
+
+    test "a channel that does not publish gives nothing away", ctx do
+      set_locale(ctx.channel, "pt_BR")
+      {:ok, _} = Archive.unpublish(ctx.channel)
+
+      assert Archive.index_for(ctx.channel) == %{days: [], locale: nil}
+      assert %{locale: nil} = Archive.page_for(ctx.channel, ctx.day)
+    end
+  end
+
   describe "page_for/3 across pages" do
     setup ctx do
       {:ok, _} = Archive.publish(ctx.channel)
@@ -322,6 +351,13 @@ defmodule RetroHexChat.Chat.ArchiveTest do
         registered_at: DateTime.utc_now(),
         last_activity_at: DateTime.utc_now()
       })
+  end
+
+  defp set_locale(name, locale) do
+    RegisteredChannel
+    |> Repo.get_by!(name: name)
+    |> Ecto.Changeset.change(locale: locale)
+    |> Repo.update!()
   end
 
   defp set_modes(name, modes) do

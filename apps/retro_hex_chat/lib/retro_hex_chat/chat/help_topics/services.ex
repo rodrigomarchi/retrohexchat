@@ -122,7 +122,13 @@ defmodule RetroHexChat.Chat.HelpTopics.Services do
             "help",
             "Use Channel Central's Registration tab to register channels and manage access lists without typing commands."
           ),
-        see_also: ["feature-channel-central", "chanserv", "chanserv-register", "chanserv-access"]
+        see_also: [
+          "feature-channel-central",
+          "chanserv",
+          "chanserv-register",
+          "chanserv-access",
+          "feature-language-flags"
+        ]
       }
     ]
   end

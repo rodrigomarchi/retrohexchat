@@ -79,9 +79,13 @@ included, is joined explicitly.
 # holds 14 people, so a split crowd is an empty crowd.
 # Joined explicitly rather than assumed: the console starts on whatever channel
 # the admin happens to be in, and /cs register acts on the active one.
+# Every room then publishes its archive and says its language: /cs language en
+# draws the English flag beside the name. Both are founder-only, and the founder
+# is whoever pasted this.
 /join #lobby
 /cs register
 /cs archive on
+/cs language en
 /topic The lobby — one room, everyone in it. Pull up a chair, the pixels are warm.
 /mode +tn
 
@@ -90,6 +94,7 @@ included, is joined explicitly.
 /join #trivia
 /cs register
 /cs archive on
+/cs language en
 /topic Trivia — !Wanda trivia start to begin, !Wanda answer <guess> to play, !Wanda trivia score for the board. Six categories.
 /mode +tn
 
@@ -98,6 +103,7 @@ included, is joined explicitly.
 /join #arcade
 /cs register
 /cs archive on
+/cs language en
 /topic Arcade — 18 classics running in your browser. Open the Games menu, or ask !Pixel games for the catalogue.
 /mode +tn
 
@@ -106,6 +112,7 @@ included, is joined explicitly.
 /join #retro
 /cs register
 /cs archive on
+/cs language en
 /topic Retro computing — Amiga, C64, Atari, DOS, demoscene, BBS. If it booted from a floppy, it belongs here.
 /mode +tn
 
@@ -114,6 +121,7 @@ included, is joined explicitly.
 /join #tech
 /cs register
 /cs archive on
+/cs language en
 /topic Tech talk — hardware, self-hosting, sysadmin war stories. Project support lives upstream; this is the pub.
 /mode +tn
 
@@ -122,6 +130,7 @@ included, is joined explicitly.
 /join #news
 /cs register
 /cs archive on
+/cs language en
 /topic News — headlines pulled from feeds by Gazeta. !Gazeta rss list to see the sources.
 /mode +tn
 
@@ -130,6 +139,7 @@ included, is joined explicitly.
 /join #help
 /cs register
 /cs archive on
+/cs language en
 /topic Lost? Ask here. !Harold faq for the basics, or /help for the manual.
 /mode +tn
 
@@ -149,6 +159,7 @@ included, is joined explicitly.
 /join #foss
 /cs register
 /cs archive on
+/cs language en
 /topic Free software news — releases, kernels, distros. Fed by LWN, Phoronix and It's FOSS.
 /mode +tn
 
@@ -158,6 +169,7 @@ included, is joined explicitly.
 /join #security
 /cs register
 /cs archive on
+/cs language en
 /topic Security advisories — Krebs, The Hacker News, BleepingComputer and research feeds. Read before you patch.
 /mode +tn
 
@@ -166,6 +178,7 @@ included, is joined explicitly.
 /join #ai
 /cs register
 /cs archive on
+/cs language en
 /topic Machine learning — arXiv preprints and model releases as they land.
 /mode +tn
 
@@ -174,6 +187,7 @@ included, is joined explicitly.
 /join #science
 /cs register
 /cs archive on
+/cs language en
 /topic Science — arXiv astrophysics, NASA, Live Science and discovery feeds. Bring questions.
 /mode +tn
 
@@ -182,6 +196,7 @@ included, is joined explicitly.
 /join #anime
 /cs register
 /cs archive on
+/cs language en
 /topic Anime — news and episode releases via Anime News Network and LiveChart.
 /mode +tn
 
@@ -713,7 +728,8 @@ the capability is created by that first `/bot set`:
 | `#anime` | Brutus, **Yuki**, Sakura | 279 = largest `#anime` on IRC |
 | `#help` | Brutus, **Harold** | 40 |
 
-All channels are `+tn`. Rules live in `!Brutus rules` and the `#lobby` topic rather
+All channels are `+tn`, publish their archive and are marked English
+(`/cs language en`). Rules live in `!Brutus rules` and the `#lobby` topic rather
 than a moderated `#rules` nobody reads.
 
 `#help` is deliberately English-only in this script: it is where someone goes when
@@ -787,7 +803,7 @@ copies nothing.
 
 ## Adding a channel later
 
-`/join #new`, `/cs register`, `/topic`, `/mode +tn`, then `/bot join Brutus #new` and
-whichever channel bot fits. Before adding one, check the census: if the room cannot
-plausibly hold fourteen people, it will read as abandoned, and an abandoned room costs
-more than a missing one.
+`/join #new`, `/cs register`, `/cs archive on`, `/cs language en`, `/topic`,
+`/mode +tn`, then `/bot join Brutus #new` and whichever channel bot fits. Before
+adding one, check the census: if the room cannot plausibly hold fourteen people, it
+will read as abandoned, and an abandoned room costs more than a missing one.

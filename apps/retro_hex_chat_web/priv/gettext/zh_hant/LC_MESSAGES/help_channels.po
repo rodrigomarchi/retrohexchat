@@ -186,7 +186,7 @@ msgstr "密語( +s)"
 #: lib/retro_hex_chat_web/controllers/help_content/chanserv.html.heex:133
 #: lib/retro_hex_chat_web/controllers/help_content/chanserv_access.html.heex:45
 #: lib/retro_hex_chat_web/controllers/help_content/chanserv_register.html.heex:41
-#: lib/retro_hex_chat_web/controllers/help_content/chanserv_ui.html.heex:49
+#: lib/retro_hex_chat_web/controllers/help_content/chanserv_ui.html.heex:55
 #: lib/retro_hex_chat_web/controllers/help_content/mode_c.html.heex:62
 #: lib/retro_hex_chat_web/controllers/help_content/mode_h.html.heex:65
 #: lib/retro_hex_chat_web/controllers/help_content/mode_i.html.heex:72
@@ -730,7 +730,7 @@ msgstr "ChanServ 自動贈款"
 #: lib/retro_hex_chat_web/controllers/help_content/channel_permissions.html.heex:203
 #: lib/retro_hex_chat_web/controllers/help_content/chanserv_access.html.heex:47
 #: lib/retro_hex_chat_web/controllers/help_content/chanserv_register.html.heex:43
-#: lib/retro_hex_chat_web/controllers/help_content/chanserv_ui.html.heex:54
+#: lib/retro_hex_chat_web/controllers/help_content/chanserv_ui.html.heex:60
 #, elixir-autogen, elixir-format
 msgid "ChanServ Overview"
 msgstr "ChanServ 概覽"
@@ -1379,7 +1379,7 @@ msgstr "AOP用戶可以管理VOP列表."
 
 #: lib/retro_hex_chat_web/controllers/help_content/channel_transfer_ownership.html.heex:76
 #: lib/retro_hex_chat_web/controllers/help_content/chanserv.html.heex:140
-#: lib/retro_hex_chat_web/controllers/help_content/chanserv_ui.html.heex:59
+#: lib/retro_hex_chat_web/controllers/help_content/chanserv_ui.html.heex:65
 #: lib/retro_hex_chat_web/controllers/help_content/mode_m.html.heex:75
 #: lib/retro_hex_chat_web/controllers/help_content/mode_o.html.heex:85
 #: lib/retro_hex_chat_web/controllers/help_content/mode_q.html.heex:66
@@ -1429,7 +1429,7 @@ msgstr "ChanServ註冊爲當前頻道指派了創建者,並保留頻道所有權
 #: lib/retro_hex_chat_web/controllers/help_content/channel_welcome_message.html.heex:90
 #: lib/retro_hex_chat_web/controllers/help_content/chanserv.html.heex:96
 #: lib/retro_hex_chat_web/controllers/help_content/chanserv_register.html.heex:32
-#: lib/retro_hex_chat_web/controllers/help_content/chanserv_ui.html.heex:52
+#: lib/retro_hex_chat_web/controllers/help_content/chanserv_ui.html.heex:58
 #: lib/retro_hex_chat_web/controllers/help_content/mode_i.html.heex:46
 #: lib/retro_hex_chat_web/controllers/help_content/mode_j.html.heex:52
 #: lib/retro_hex_chat_web/controllers/help_content/mode_j.html.heex:89
@@ -1455,7 +1455,7 @@ msgstr "Channel Central包括一個註冊標籤,將 ChanServ 註冊和訪問列�
 
 #: lib/retro_hex_chat_web/controllers/help_content/chanserv.html.heex:136
 #: lib/retro_hex_chat_web/controllers/help_content/chanserv_access.html.heex:50
-#: lib/retro_hex_chat_web/controllers/help_content/chanserv_ui.html.heex:57
+#: lib/retro_hex_chat_web/controllers/help_content/chanserv_ui.html.heex:63
 #, elixir-autogen, elixir-format
 msgid "Channel Registration"
 msgstr "頻道註冊"
@@ -1481,7 +1481,7 @@ msgstr "命令"
 msgid "Controls"
 msgstr "控制"
 
-#: lib/retro_hex_chat_web/controllers/help_content/chanserv_ui.html.heex:41
+#: lib/retro_hex_chat_web/controllers/help_content/chanserv_ui.html.heex:47
 #, elixir-autogen, elixir-format
 msgid "Disabled Controls"
 msgstr "禁用控件"
@@ -1587,7 +1587,7 @@ msgstr "在中央頻道設置歡迎信息並加入油門"
 msgid "The Registration tab only enables Register Channel for channel operators."
 msgstr "註冊標籤只允許頻道操作員使用註冊頻道。"
 
-#: lib/retro_hex_chat_web/controllers/help_content/chanserv_ui.html.heex:43
+#: lib/retro_hex_chat_web/controllers/help_content/chanserv_ui.html.heex:49
 #, elixir-autogen, elixir-format
 msgid "The dialog disables or hides write controls when you are not identified with NickServ or your ChanServ role cannot manage the selected list."
 msgstr "對話框在未識別到 NickServ 或您的 ChanServ 角色時會禁用或隱藏寫入控件 。"
@@ -2696,3 +2696,13 @@ msgstr "大寫字母不重要"
 #, elixir-autogen, elixir-format
 msgid "It is shown as you type it."
 msgstr "它顯示爲您輸入它。"
+
+#: lib/retro_hex_chat_web/controllers/help_content/chanserv_ui.html.heex:68
+#, elixir-autogen, elixir-format
+msgid "Language Flags"
+msgstr "語言旗幟"
+
+#: lib/retro_hex_chat_web/controllers/help_content/chanserv_ui.html.heex:40
+#, elixir-autogen, elixir-format
+msgid "Language, shown to the founder, runs the same action as /cs language. Everybody else sees which language the channel is spoken in."
+msgstr "「語言」僅向創建者顯示，作用與 /cs language 相同。其他人會看到頻道使用的語言。"

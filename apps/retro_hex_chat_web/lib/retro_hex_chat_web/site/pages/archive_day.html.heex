@@ -1,5 +1,8 @@
 <section id="archive-day" class="p-retro-8" aria-labelledby="archive-heading">
   <h1 id="archive-heading" class="text-sm font-bold mb-2">
+    <%!-- The language the founder says the room speaks, ahead of the
+          heading that opens with its name, the way a nickname's is. --%>
+    <.channel_flag locale={@channel_locale} class="mr-1" />
     {dgettext("landing", "%{channel} on %{date}", channel: @channel, date: @date)}
   </h1>
 

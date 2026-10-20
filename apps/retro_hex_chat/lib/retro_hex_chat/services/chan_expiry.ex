@@ -3,6 +3,7 @@ defmodule RetroHexChat.Services.ChanExpiry do
 
   require Logger
 
+  alias RetroHexChat.Channels.Server, as: ChannelServer
   alias RetroHexChat.Services.Queries
 
   @default_expiration_days 90
@@ -48,6 +49,8 @@ defmodule RetroHexChat.Services.ChanExpiry do
     names = Queries.list_expired_channel_names(expiration_days, now)
     cleanup = cleanup_channels(names)
     {count, purged_names} = Queries.purge_expired_channels(expiration_days, now, names)
+    # A room somebody is still holding open forgets what only a registration kept.
+    Enum.each(purged_names, &ChannelServer.mark_unregistered/1)
 
     if count > 0 do
       Logger.info("chan_expiry_stop candidates=#{length(names)} purged=#{count}")

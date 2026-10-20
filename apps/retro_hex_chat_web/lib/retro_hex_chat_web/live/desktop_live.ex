@@ -1031,6 +1031,8 @@ defmodule RetroHexChatWeb.DesktopLive do
       live_match_locales: nil,
       show_conversations: true,
       channel_user_counts: %{},
+      # Each joined channel's language, drawn as a flag beside its name.
+      channel_locales: %{},
       channel_guests: %{},
       visitor?: false,
       visitor_nick: nil,

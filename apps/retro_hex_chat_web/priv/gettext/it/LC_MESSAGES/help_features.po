@@ -3044,7 +3044,7 @@ msgstr ""
 #: lib/retro_hex_chat_web/controllers/help_content/feature_key_bindings.html.heex:107
 #: lib/retro_hex_chat_web/controllers/help_content/feature_kick_notifications.html.heex:65
 #: lib/retro_hex_chat_web/controllers/help_content/feature_lag_indicator.html.heex:79
-#: lib/retro_hex_chat_web/controllers/help_content/feature_language_flags.html.heex:21
+#: lib/retro_hex_chat_web/controllers/help_content/feature_language_flags.html.heex:34
 #: lib/retro_hex_chat_web/controllers/help_content/feature_link_previews.html.heex:90
 #: lib/retro_hex_chat_web/controllers/help_content/feature_mentions.html.heex:36
 #: lib/retro_hex_chat_web/controllers/help_content/feature_message_attachments.html.heex:41
@@ -8026,3 +8026,18 @@ msgstr "La piccola bandiera davanti a un nickname è la lingua in cui quella per
 #, elixir-autogen, elixir-format
 msgid "Your flag is the language you pick under Start ▸ Language. Pick another one and the chat reopens in it, and everybody else's user list shows your new flag."
 msgstr "La tua bandiera è la lingua che scegli in Avvia ▸ Lingua. Scegline un'altra e la chat si riapre in quella lingua, e l'elenco utenti di tutti mostra la tua nuova bandiera."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_language_flags.html.heex:21
+#, elixir-autogen, elixir-format
+msgid "A Channel's Language"
+msgstr "La lingua di un canale"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_language_flags.html.heex:23
+#, elixir-autogen, elixir-format
+msgid "A channel can have a flag too: the language people speak there, beside the channel's name in its tab, in the conversations list, in the channel list, above the conversation and in its public archive. Its founder chooses it with /cs language followed by a code such as pt_BR, or under Channel Central ▸ Registration ▸ Language, and /cs language none takes it away."
+msgstr "Anche un canale può avere una bandiera: la lingua che vi si parla, accanto al nome del canale nella sua scheda, nell'elenco delle conversazioni, nell'elenco dei canali, sopra la conversazione e nel suo archivio pubblico. Il fondatore la sceglie con /cs language seguito da un codice come pt_BR, oppure in Canale centrale ▸ Registrazione ▸ Lingua, e /cs language none la toglie."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_language_flags.html.heex:29
+#, elixir-autogen, elixir-format
+msgid "A channel whose founder has not chosen one has no flag. The Retro Games channels are English."
+msgstr "Un canale il cui fondatore non ha scelto una lingua non ha bandiera. I canali dei Giochi retro sono in inglese."

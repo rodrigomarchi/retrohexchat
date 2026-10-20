@@ -3016,7 +3016,7 @@ msgstr ""
 #: lib/retro_hex_chat_web/controllers/help_content/feature_key_bindings.html.heex:107
 #: lib/retro_hex_chat_web/controllers/help_content/feature_kick_notifications.html.heex:65
 #: lib/retro_hex_chat_web/controllers/help_content/feature_lag_indicator.html.heex:79
-#: lib/retro_hex_chat_web/controllers/help_content/feature_language_flags.html.heex:21
+#: lib/retro_hex_chat_web/controllers/help_content/feature_language_flags.html.heex:34
 #: lib/retro_hex_chat_web/controllers/help_content/feature_link_previews.html.heex:90
 #: lib/retro_hex_chat_web/controllers/help_content/feature_mentions.html.heex:36
 #: lib/retro_hex_chat_web/controllers/help_content/feature_message_attachments.html.heex:41
@@ -7950,3 +7950,18 @@ msgstr "Het kleine vlaggetje voor een nickname is de taal waarin die persoon de 
 #, elixir-autogen, elixir-format
 msgid "Your flag is the language you pick under Start ▸ Language. Pick another one and the chat reopens in it, and everybody else's user list shows your new flag."
 msgstr "Jouw vlag is de taal die je kiest onder Starten ▸ Taal. Kies een andere en de chat opent opnieuw in die taal, en ieders gebruikerslijst toont je nieuwe vlag."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_language_flags.html.heex:21
+#, elixir-autogen, elixir-format
+msgid "A Channel's Language"
+msgstr "De taal van een kanaal"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_language_flags.html.heex:23
+#, elixir-autogen, elixir-format
+msgid "A channel can have a flag too: the language people speak there, beside the channel's name in its tab, in the conversations list, in the channel list, above the conversation and in its public archive. Its founder chooses it with /cs language followed by a code such as pt_BR, or under Channel Central ▸ Registration ▸ Language, and /cs language none takes it away."
+msgstr "Ook een kanaal kan een vlag hebben: de taal die er gesproken wordt, naast de naam van het kanaal in zijn tabblad, in de gesprekkenlijst, in de kanalenlijst, boven het gesprek en in zijn openbare archief. De oprichter kiest hem met /cs language gevolgd door een code zoals pt_BR, of onder Kanaal centraal ▸ Registratie ▸ Taal, en /cs language none haalt hem weg."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_language_flags.html.heex:29
+#, elixir-autogen, elixir-format
+msgid "A channel whose founder has not chosen one has no flag. The Retro Games channels are English."
+msgstr "Een kanaal waarvan de oprichter geen taal heeft gekozen, heeft geen vlag. De kanalen van de Retrogames zijn Engelstalig."

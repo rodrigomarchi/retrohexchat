@@ -410,6 +410,7 @@ defmodule RetroHexChat.Commands.Autocomplete do
           %{
             name: "Prv",
             topic: nil,
+            locale: nil,
             user_count: people_count(snapshot),
             joined?: false,
             invite_only?: false,
@@ -430,6 +431,7 @@ defmodule RetroHexChat.Commands.Autocomplete do
     %{
       name: snapshot.name,
       topic: snapshot.topic,
+      locale: Map.get(snapshot, :locale),
       user_count: people_count(snapshot),
       joined?: joined?,
       invite_only?: snapshot.invite_only?,

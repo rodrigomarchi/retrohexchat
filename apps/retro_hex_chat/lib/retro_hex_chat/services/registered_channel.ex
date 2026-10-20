@@ -5,6 +5,8 @@ defmodule RetroHexChat.Services.RegisteredChannel do
   use Ecto.Schema
   import Ecto.Changeset
 
+  alias RetroHexChat.Locales
+
   @type t :: %__MODULE__{}
 
   schema "registered_channels" do
@@ -30,6 +32,10 @@ defmodule RetroHexChat.Services.RegisteredChannel do
     # nobody can drop it.
     field :system, :boolean, default: false
 
+    # The language the channel is spoken in (`"pt_BR"`), drawn as a flag
+    # beside its name. Only its founder sets it; nil draws no flag.
+    field :locale, :string
+
     timestamps(type: :utc_datetime_usec)
   end
 
@@ -44,11 +50,13 @@ defmodule RetroHexChat.Services.RegisteredChannel do
       :mode_key,
       :mode_limit,
       :mode_join_throttle,
-      :last_activity_at
+      :last_activity_at,
+      :locale
     ])
     |> validate_required([:name, :founder_nickname])
     |> validate_length(:name, max: 50)
     |> validate_length(:founder_nickname, max: 16)
+    |> validate_inclusion(:locale, Locales.codes())
     |> unique_constraint(:name, name: :idx_registered_channels_name)
     |> put_registered_at()
   end

@@ -26,60 +26,70 @@ shot, logged in as an admin who has `/identify`-ed.
 /join #polska
 /cs register
 /cs archive on
+/cs language pl
 /topic Kanał polski — wchodź, siadaj, rozmawiamy. Kawa na koszt firmy.
 /mode +tn
 
 /join #wiadomosci
 /cs register
 /cs archive on
+/cs language pl
 /topic Wiadomości — Interia, Polsat News i Wprost, prosto z kanału RSS. !Zofia zrodla pokazuje listę.
 /mode +tn
 
 /join #technologie
 /cs register
 /cs archive on
+/cs language pl
 /topic Technologie — Spider's Web i Antyweb. Wsparcie projektu jest w projekcie; tutaj się rozmawia.
 /mode +tn
 
 /join #komputery
 /cs register
 /cs archive on
+/cs language pl
 /topic Komputery — Benchmark, PurePC i Komputer Świat. Podzespoły, składanie i modyfikacje.
 /mode +tn
 
 /join #bezpieczenstwo
 /cs register
 /cs archive on
+/cs language pl
 /topic Bezpieczeństwo — Niebezpiecznik i Sekurak. Czytaj przed łataniem, nie po.
 /mode +tn
 
 /join #gry
 /cs register
 /cs archive on
+/cs language pl
 /topic Gry — CD-Action i Eurogamer Polska. Żeby naprawdę zagrać, otwórz menu Games: 18 klasyków w przeglądarce.
 /mode +tn
 
 /join #kibic
 /cs register
 /cs archive on
+/cs language pl
 /topic Kibic — Przegląd Sportowy, Sportowe Fakty i TVP Sport. Tabela, transfery i wiadomo co.
 /mode +tn
 
 /join #nauka
 /cs register
 /cs archive on
+/cs language pl
 /topic Nauka — Crazy Nauka i National Geographic Polska. Głupich pytań nie ma, są niezadane.
 /mode +tn
 
 /join #gospodarka
 /cs register
 /cs archive on
+/cs language pl
 /topic Gospodarka — Bankier, Money.pl i Business Insider Polska. Nagłówek to nie rekomendacja.
 /mode +tn
 
 /join #film
 /cs register
 /cs archive on
+/cs language pl
 /topic Film — Filmweb na łączach. Premiery, seriale i spory o zakończenia.
 /mode +tn
 
@@ -365,7 +375,8 @@ matters after a paste.
 | `#gospodarka` | **Halina** | Bankier, Money.pl, Business Insider Polska |
 | `#film` | **Ewa** | Filmweb |
 
-**Stroz** stands in all ten and greets in none of them. All channels are `+tn`.
+**Stroz** stands in all ten and greets in none of them. All channels are `+tn`,
+publish their archive and are marked Polish (`/cs language pl`).
 
 Room names drop the Polish diacritics — `#wiadomosci`, `#bezpieczenstwo` — because
 the client only turns ASCII channel mentions into links. Topics, greetings and

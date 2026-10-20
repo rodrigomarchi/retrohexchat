@@ -16,6 +16,7 @@ defmodule RetroHexChatWeb.Components.UI.TopicBar do
   use RetroHexChatWeb.Component
 
   import RetroHexChatWeb.Components.UI.Badge
+  import RetroHexChatWeb.Components.UI.NickFlag, only: [channel_flag: 1]
 
   alias RetroHexChatWeb.Icons
 
@@ -30,6 +31,7 @@ defmodule RetroHexChatWeb.Components.UI.TopicBar do
   attr :modes, :any, default: []
   attr :variant, :string, default: "channel", values: ~w(channel pm status)
   attr :channel_name, :string, default: nil
+  attr :locale, :string, default: nil, doc: "the language the channel is spoken in"
   attr :class, :string, default: nil
   attr :rest, :global
 
@@ -51,6 +53,7 @@ defmodule RetroHexChatWeb.Components.UI.TopicBar do
     >
       <.topic_icon variant={@variant} />
 
+      <.channel_flag :if={@variant == "channel"} locale={@locale} class="shrink-0" />
       <span :if={@channel_name} class="font-bold shrink-0">{@channel_name}</span>
 
       <span class="flex-1 truncate text-muted-foreground">

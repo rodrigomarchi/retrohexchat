@@ -9,6 +9,7 @@ defmodule RetroHexChat.Commands.Handlers.CsTest do
   alias RetroHexChat.Commands.Handlers.Cs
   alias RetroHexChat.Services.ChanServ
   alias RetroHexChat.Services.NickServ
+  alias RetroHexChat.Services.Queries
 
   setup do
     nick_server = :"nickserv_cs_h_#{rem(System.unique_integer([:positive]), 100_000)}"
@@ -154,6 +155,122 @@ defmodule RetroHexChat.Commands.Handlers.CsTest do
 
       assert {:error, msg} = Cs.execute(["archive", "on"], gone)
       assert msg =~ "Channel not found"
+    end
+  end
+
+  describe "execute/2 - language" do
+    setup ctx do
+      channel = "#cslang#{rem(System.unique_integer([:positive]), 100_000)}"
+      {:ok, _pid} = Channels.Supervisor.start_child(channel)
+      Phoenix.PubSub.subscribe(RetroHexChat.PubSub, "channel:#{channel}")
+
+      context = %{
+        ctx.context
+        | active_channel: channel,
+          channels: [channel],
+          operator_in: [channel]
+      }
+
+      {:ok, :system, _} = Cs.execute(["register"], context)
+      identify(context.nickname)
+      %{context: context, channel: channel}
+    end
+
+    test "the founder sets it, written however they like, and the room hears", ctx do
+      assert {:ok, :system, %{content: content}} =
+               Cs.execute(["language", "pt-br"], ctx.context)
+
+      assert content =~ "Português (Brasil)"
+      assert stored_locale(ctx.channel) == "pt_BR"
+      assert {:ok, %{locale: "pt_BR"}} = Channels.Server.get_state(ctx.channel)
+
+      assert_receive {:channel_locale_changed,
+                      %{channel: channel, nickname: "CsTestUser", locale: "pt_BR"}}
+
+      assert channel == ctx.channel
+    end
+
+    test "none clears it", ctx do
+      {:ok, :system, _} = Cs.execute(["language", "ja"], ctx.context)
+
+      assert {:ok, :system, %{content: content}} = Cs.execute(["language", "none"], ctx.context)
+      assert content =~ "no longer has a language"
+      assert stored_locale(ctx.channel) == nil
+      assert_receive {:channel_locale_changed, %{locale: nil}}
+    end
+
+    test "a language the chat does not speak is refused with the list", ctx do
+      assert {:error, msg} = Cs.execute(["language", "klingon"], ctx.context)
+      assert msg =~ "Unknown language: klingon"
+      assert msg =~ "pt_BR"
+      assert stored_locale(ctx.channel) == nil
+    end
+
+    test "nobody but the founder may", ctx do
+      identify("NotTheFounder")
+      stranger = %{ctx.context | nickname: "NotTheFounder"}
+
+      assert {:error, msg} = Cs.execute(["language", "en"], stranger)
+      assert msg =~ "founder"
+      assert stored_locale(ctx.channel) == nil
+    end
+
+    test "a room nobody registered has none to set", ctx do
+      unregistered = "#csfree#{rem(System.unique_integer([:positive]), 100_000)}"
+      {:ok, _pid} = Channels.Supervisor.start_child(unregistered)
+
+      assert {:error, msg} =
+               Cs.execute(["language", "en"], %{ctx.context | active_channel: unregistered})
+
+      assert msg =~ "founder"
+    end
+
+    test "alone it reports the language, the usage and the choices", ctx do
+      assert {:ok, :system, %{content: content}} = Cs.execute(["language"], ctx.context)
+      assert content =~ "has no language set"
+      assert content =~ "/cs language <code|none>"
+      assert content =~ "pt_BR"
+
+      {:ok, :system, _} = Cs.execute(["language", "de"], ctx.context)
+      assert {:ok, :system, %{content: content}} = Cs.execute(["language"], ctx.context)
+      assert content =~ "Deutsch (de)"
+    end
+
+    # The form in Channel Central reaches the channel without the command's
+    # check, so the channel checks again.
+    test "the channel refuses a code the chat does not speak", ctx do
+      assert {:error, msg} = Channels.Server.set_locale(ctx.channel, "CsTestUser", "xx")
+      assert msg =~ "Unknown language"
+
+      assert {:error, _msg} =
+               Channels.Server.set_locale(ctx.channel, "CsTestUser", String.duplicate("a", 40))
+
+      assert stored_locale(ctx.channel) == nil
+      assert :ok = Channels.Server.set_locale(ctx.channel, "CsTestUser", "pt-br")
+      assert stored_locale(ctx.channel) == "pt_BR"
+    end
+
+    # A registration written while the room is running — a Retro Games
+    # channel is born with one — brings its language along.
+    test "a registration written under a running room brings its language" do
+      name = "#cslater#{rem(System.unique_integer([:positive]), 100_000)}"
+      {:ok, _pid} = Channels.Supervisor.start_child(name)
+      {:ok, _} = Queries.insert_registered_channel(name, "Somebody")
+      Queries.update_registered_channel_settings(name, locale: "en")
+
+      :ok = Channels.Server.mark_registered(name)
+
+      assert {:ok, %{locale: "en"}} = Channels.Server.get_state(name)
+    end
+
+    test "dropping the registration takes the language with it", ctx do
+      {:ok, :system, _} = Cs.execute(["language", "fr"], ctx.context)
+      assert_receive {:channel_locale_changed, %{locale: "fr"}}
+
+      {:ok, :system, _} = Cs.execute(["drop"], ctx.context)
+
+      assert_receive {:channel_locale_changed, %{nickname: nil, locale: nil}}
+      assert {:ok, %{locale: nil}} = Channels.Server.get_state(ctx.channel)
     end
   end
 
@@ -372,6 +489,10 @@ defmodule RetroHexChat.Commands.Handlers.CsTest do
   defp identify(nickname) do
     _ = NickServ.register(nickname, "pass123")
     {:ok, _} = NickServ.identify(nickname, "pass123")
+  end
+
+  defp stored_locale(channel) do
+    Queries.find_registered_channel(channel).locale
   end
 
   defp registered?({:ok, _info}), do: {:ok, %{registered: true}}

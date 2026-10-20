@@ -175,6 +175,38 @@ defmodule RetroHexChatWeb.Site.ArchivePageTest do
       refute before == now
     end
 
+    test "the index and the day draw the channel's flag in the heading", ctx do
+      set_locale(ctx.channel, "pt_BR")
+
+      for path <- [~p"/archive/#{ctx.slug}", ~p"/archive/#{ctx.slug}/#{ctx.date}"] do
+        heading = build_conn() |> get(path) |> html_response(200) |> heading()
+
+        assert [flag] = Floki.find(heading, ~s([data-testid="channel-flag"]))
+        assert Floki.attribute(flag, "data-locale") == ["pt_BR"]
+        assert Floki.text(heading) =~ ctx.channel
+      end
+    end
+
+    test "a channel with no language draws no flag in the heading", ctx do
+      for path <- [~p"/archive/#{ctx.slug}", ~p"/archive/#{ctx.slug}/#{ctx.date}"] do
+        heading = build_conn() |> get(path) |> html_response(200) |> heading()
+
+        assert Floki.find(heading, ~s([data-testid="channel-flag"])) == []
+      end
+    end
+
+    test "a changed channel language gets a different etag", ctx do
+      for path <- [~p"/archive/#{ctx.slug}", ~p"/archive/#{ctx.slug}/#{ctx.date}"] do
+        set_locale(ctx.channel, nil)
+        [before] = build_conn() |> get(path) |> get_resp_header("etag")
+
+        set_locale(ctx.channel, "es")
+        [now] = build_conn() |> get(path) |> get_resp_header("etag")
+
+        refute before == now, "#{path} kept its etag after the channel's language changed"
+      end
+    end
+
     test "a changed day gets a different etag", ctx do
       [before] =
         build_conn() |> get(~p"/archive/#{ctx.slug}/#{ctx.date}") |> get_resp_header("etag")
@@ -340,6 +372,15 @@ defmodule RetroHexChatWeb.Site.ArchivePageTest do
         last_activity_at: DateTime.utc_now()
       })
   end
+
+  defp set_locale(name, locale) do
+    RegisteredChannel
+    |> Repo.get_by!(name: name)
+    |> Ecto.Changeset.change(locale: locale)
+    |> Repo.update!()
+  end
+
+  defp heading(body), do: body |> Floki.parse_document!() |> Floki.find("#archive-heading")
 
   defp set_modes(name, modes) do
     RegisteredChannel

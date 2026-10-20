@@ -23,7 +23,8 @@ defmodule RetroHexChat.Channels.DirectoryTest do
 
     ServiceQueries.update_registered_channel_settings(name,
       modes: Keyword.get(opts, :modes, ""),
-      topic: Keyword.get(opts, :topic, "")
+      topic: Keyword.get(opts, :topic, ""),
+      locale: Keyword.get(opts, :locale)
     )
 
     on_exit(fn ->
@@ -213,6 +214,21 @@ defmodule RetroHexChat.Channels.DirectoryTest do
 
       assert [entry] = matches
       assert entry.live?
+    end
+
+    # The flag beside a channel's name in the list is its language, whether
+    # somebody is holding the room open or not.
+    test "a channel's language travels on its row, live or cold" do
+      cold = unique("langcold")
+      live = unique("langlive")
+      register_channel(cold, locale: "ja")
+      register_channel(live, locale: "pt_BR")
+      start_channel(live)
+
+      catalog = Directory.catalog()
+
+      assert Enum.find(catalog, &(&1.name == cold)).locale == "ja"
+      assert Enum.find(catalog, &(&1.name == live)).locale == "pt_BR"
     end
 
     # A registered channel keeps its process after the last person leaves, so a
