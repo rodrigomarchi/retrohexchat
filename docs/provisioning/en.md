@@ -1,6 +1,6 @@
 # RetroHexChat — Production Provisioning (English)
 
-Twelve channels, twenty-one bots. The room choices trace to
+Twelve channels, twenty-four bots. The room choices trace to
 `scripts/research/irc_census` — a live `/LIST` sweep of 95 public IRC networks,
 of which 59 answered with 49,973 channels. Regenerate it with
 `scripts/research/irc_census/run.sh`.
@@ -61,7 +61,7 @@ included, is joined explicitly.
 ```
 # ══════════════════════════════════════════════════════════
 #  RetroHexChat — Production Setup
-#  12 channels · 21 bots · derived from the IRC census
+#  12 channels · 24 bots · derived from the IRC census
 #  The base script. Language scripts in this directory add rooms on top.
 # ══════════════════════════════════════════════════════════
 
@@ -227,18 +227,23 @@ included, is joined explicitly.
 # ── Patches — #lobby doorman ─────────────────────────────
 # Greetings are private notices scoped to the room: the newcomer gets useful
 # orientation in the channel viewport without turning everyone else's scrollback
-# into bot chatter. The repeat window keeps reconnects from replaying the same
-# line to the same nick over and over.
+# into bot chatter. A visitor without an account, who can only watch, gets the
+# visitor greeting instead: no IRC lessons and no commands they cannot use yet.
+# The lobby welcomes everybody on every arrival, not once a
+# day: the window is only long enough to absorb a reconnect, so a flaky
+# connection does not replay the same lines several times in a minute.
 /bot create Patches Lobby Attendant and Channel Tour Guide
 /bot set Patches prefix !
 /bot set Patches cooldown 1000
 /bot set Patches dice_default 1d20
-/bot set Patches greeting \c03\b[Patches]\o \c10Yo {nickname}!\o I'm Patches — lobby attendant. Try !tour, !rooms, or !Patches roll. Make yourself at home.
+/bot set Patches greeting \c03\b[Patches]\o \c10Yo {nickname}!\o I'm Patches — lobby attendant. Try !tour, !rooms, !guides, or !Patches roll. Make yourself at home.
 /bot set Patches greeting_delivery private_notice
-/bot set Patches greeter_repeat_window 43200
-/bot set Patches public_greeting \c03\b[Patches]\o \b{nickname}\o just walked in. Pull up a chair.
+/bot set Patches greeter_repeat_window 60
+/bot set Patches public_greeting \c03\b[Patches]\o \b{nickname}\o just walked in. Coach, Nova and Echo can show you around.
 /bot set Patches onboarding_1 \c14\b[{botname}]\o \c10/join #lobby\o enters a room · \c10/msg nick\o speaks privately · \c10/nick name\o changes yours.
 /bot set Patches onboarding_2 \c14\b[{botname}]\o \c10/part\o leaves a room · \c10/help\o lists every command.
+/bot set Patches visitor_greeting \c03\b[Patches]\o Welcome, \b{nickname}\o! You're watching #lobby live. \c07Coach\o, \c06Nova\o and \c12Echo\o show what there is to do here — \c10sign up\o to talk to them.
+/bot set Patches onboarding_3 \c03\b[Patches]\o Ask \c07Coach\o about games, \c06Nova\o about spaces and \c12Echo\o about calls and files — say their name and they answer.
 /bot set Patches farewell none
 /bot set Patches mention_response \c03\b[Patches]\o Patches here. \c10Need directions?\o !tour for the grand tour, or just ask.
 
@@ -246,9 +251,60 @@ included, is joined explicitly.
 /bot addcmd Patches rooms \c03\b[Patches]\o #lobby #trivia #arcade #retro #tech #news #foss #security #ai #science #anime #help — \c10twelve rooms in English\o, and more in a dozen other languages. \c02!languages\o for those.
 /bot addcmd Patches languages \c03\b[Patches]\o This server speaks fourteen languages, {nickname}, and \c10each one has its own rooms\o. Change yours from the toolbar and the room list follows.
 /bot addcmd Patches why \c03\b[Patches]\o The median live IRC channel holds fourteen people, {nickname}, so we keep one place to talk rather than four. \c10Wire rooms\o are different: a feed gives a room something to show before it has a crowd.
+/bot addcmd Patches guides \c03\b[Patches]\o Three guides live in #lobby, {nickname}: \c07Coach\o knows the games, \c06Nova\o the virtual spaces, \c12Echo\o calls, conferences and files. Say a name and that guide tells you what it can show you.
 /bot addcmd Patches about \c03\b[Patches]\o RetroHexChat: a retro-styled chat built with \c10Elixir and Phoenix LiveView\o. Windows 98 met a chat room and they fell in love.
 
 /bot join Patches #lobby
+
+# ── Coach, Nova, Echo — #lobby feature guides ─────────────
+# Patches says where to go; these three say what there is to do once you are
+# here. They do not greet — Patches is the room's one welcome, and a second
+# greeter would announce everybody twice — and nothing here runs on a timer:
+# a guide speaks when somebody asks, by command or by saying its name.
+
+/bot create Coach Retro Games Guide
+/bot set Coach prefix !
+/bot set Coach cooldown 1000
+/bot set Coach greeting none
+/bot set Coach farewell none
+/bot set Coach mention_response \c07\b[Coach]\o Games are my thing, {nickname}. \c10!games\o to start, \c10!play\o to find someone, \c10!challenge\o, \c10!ranking\o and \c10!watch\o for the rest.
+
+/bot addcmd Coach games \c07\b[Coach]\o Retro Games run right in the browser — against the computer or against someone. Open one from the \c10Games\o menu. Every game has a room of its own, like #hex-pong, and #retro-games carries every result.
+/bot addcmd Coach play \c07\b[Coach]\o In a game's room, \c10Find a partner\o (or \c10/lfg\o) puts a card with one open seat in the channel: whoever presses Join first plays you. \c10/challenge nick\o invites one person instead.
+/bot addcmd Coach challenge \c07\b[Coach]\o Every week each game puts one of its modes up as \c10the weekly challenge\o. GameServ opens it on Monday in the game's room and names last week's winner; the game's page shows the current one.
+/bot addcmd Coach ranking \c07\b[Coach]\o Every match a registered, identified player finishes counts. \c10Each game's page\o has its ranking and the latest matches — versus games rank wins, score games your best score.
+/bot addcmd Coach watch \c07\b[Coach]\o A match offered to everybody shows a \c10Watch\o button on its card once the seat is taken. Watching needs no account and only shows the game.
+
+/bot join Coach #lobby
+
+/bot create Nova Virtual Spaces Guide
+/bot set Nova prefix !
+/bot set Nova cooldown 1000
+/bot set Nova greeting none
+/bot set Nova farewell none
+/bot set Nova mention_response \c06\b[Nova]\o Hi {nickname}! I know the virtual spaces. \c10!spaces\o to get in, \c10!avatar\o, \c10!build\o, \c10!talk\o and \c10!spar\o for what to do there.
+
+/bot addcmd Nova spaces \c06\b[Nova]\o Every channel and every private chat has a \c10Space\o — an 8-bit world you walk around in with the people in it. Press \c10Space\o beside the tabs: it opens in a tab of its own and the chat stays where it is.
+/bot addcmd Nova avatar \c06\b[Nova]\o The first time you go in, the \c10character creator\o dresses you: choose each part and its colour, or let \c10Surprise me\o pick everything.
+/bot addcmd Nova build \c06\b[Nova]\o Every space has a \c10Construct\o anyone in the conversation can decorate. Its green gate stands on the central island: press \c10E\o beside it and answer Yes. Pick a piece, click the floor, \c10R\o spins it, right-click removes it.
+/bot addcmd Nova talk \c06\b[Nova]\o Type in the line along the bottom of a Space: it is said in the channel and pops up over your character. Lines typed in the chat pop up there too.
+/bot addcmd Nova spar \c06\b[Nova]\o Press \c10Space\o next to another character to spar. At zero HP they go down for a few seconds and get back up — nothing lasts, it is all in good fun.
+
+/bot join Nova #lobby
+
+/bot create Echo Calls and P2P Guide
+/bot set Echo prefix !
+/bot set Echo cooldown 1000
+/bot set Echo greeting none
+/bot set Echo farewell none
+/bot set Echo mention_response \c12\b[Echo]\o Hey {nickname}. I cover calls and files: \c10!call\o, \c10!files\o, \c10!conference\o and \c10!voice\o.
+
+/bot addcmd Echo call \c12\b[Echo]\o \c10/p2p nick\o, or \c10P2P Session\o in a private chat, sends an invitation card. Following it opens your session in a tab of its own: \c10audio and video calls\o, files and games, between the two of you.
+/bot addcmd Echo files \c12\b[Echo]\o Inside a P2P session, \c10drop a file\o to send it straight to the other person. Pick another while one is going and it waits its turn.
+/bot addcmd Echo conference \c12\b[Echo]\o \c10Group Call\o in a channel's toolbar opens a conference for the room and posts its card in the channel. Everyone goes in through that card — camera and microphone are chosen before you join.
+/bot addcmd Echo voice \c12\b[Echo]\o The \c10microphone\o beside the message box records up to a minute of audio and sends it as a message that plays inline.
+
+/bot join Echo #lobby
 
 # ── Wanda — #trivia host (the retention engine) ──────────
 /bot create Wanda Quizmistress and Keeper of the Scoreboard
@@ -644,7 +700,7 @@ the capability is created by that first `/bot set`:
 
 | channel | bots | census target |
 |---|---|---|
-| `#lobby` | Brutus, **Patches** | 91 = top 10% of IRC social rooms |
+| `#lobby` | Brutus, **Patches**, Coach, Nova, Echo | 91 = top 10% of IRC social rooms |
 | `#trivia` | Brutus, **Wanda** | 100 would make it the 4th largest trivia room on IRC |
 | `#arcade` | Brutus, **Pixel**, Joystick | 16 = largest `#arcade` on IRC |
 | `#retro` | Brutus, **Pixel**, Sprite | 26 = largest `#retro` on IRC · 84 = largest retro room of any name |
@@ -669,7 +725,10 @@ answers orientation questions in its own language instead.
 | bot | channels | capabilities | role |
 |---|---|---|---|
 | **Brutus** | all 12 | `moderation` (passive), `custom_commands` | spam and flood, everywhere |
-| **Patches** | `#lobby` | `greeter`, `dice`, `custom_commands` | doorman, explains the twelve rooms |
+| **Patches** | `#lobby` | `greeter`, `dice`, `custom_commands` | doorman, explains the twelve rooms and introduces the guides |
+| **Coach** | `#lobby` | `custom_commands`, `mention` | Retro Games: playing, partners, the weekly challenge, rankings, watching |
+| **Nova** | `#lobby` | `custom_commands`, `mention` | virtual spaces: getting in, the character creator, the Construct |
+| **Echo** | `#lobby` | `custom_commands`, `mention` | P2P sessions, calls, conferences, file transfer, voice messages |
 | **Wanda** | `#trivia` | **`trivia`**, `dice`, `greeter` | quiz host with a scoreboard |
 | **Pixel** | `#arcade`, `#retro` | **`rss`**, `greeter`, `custom_commands` | arcade catalogue; Hackaday and Vintage Computing |
 | **Murphy** | `#tech` | **`rss`**, `greeter`, `custom_commands` | pub talk; Hacker News and the GitHub blog |

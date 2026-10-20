@@ -14,7 +14,7 @@ defmodule RetroHexChat.Commands.Handlers.Bot do
   # Portuguese entry offered "data *" for `dice_*`, the French "dés *".
   @setting_keys ~w(
     prefix cooldown description greeting farewell mention_response
-    public_greeting onboarding_1 onboarding_2 onboarding_3 onboarding_4
+    public_greeting onboarding_1 onboarding_2 onboarding_3 onboarding_4 visitor_greeting
     greeting_delivery onboarding_delivery farewell_delivery greeter_repeat_window
     dice_max_dice dice_max_sides dice_default
     mod_words mod_action mod_spam mod_flood mod_warn
@@ -493,6 +493,17 @@ defmodule RetroHexChat.Commands.Handlers.Bot do
     end
   end
 
+  defp apply_setting(bot, "visitor_greeting", value) do
+    case update_greeter_text(bot, "visitor_greeting", value) do
+      {:ok, nil} ->
+        {:ok, dgettext("commands", "The bot will not greet visitors.")}
+
+      {:ok, text} ->
+        {:ok,
+         dgettext("commands", "The bot will greet visitors with '%{greeting}'.", greeting: text)}
+    end
+  end
+
   defp apply_setting(bot, key, value) when key in @onboarding_keys do
     case update_greeter_text(bot, key, value) do
       {:ok, nil} ->
@@ -898,7 +909,7 @@ defmodule RetroHexChat.Commands.Handlers.Bot do
       /bot delcmd <bot> <trigger> — Remove custom command
     Settings: prefix, cooldown, description, greeting, farewell, mention_response,
       public_greeting, onboarding_1, onboarding_2, onboarding_3, onboarding_4,
-      greeting_delivery, onboarding_delivery, farewell_delivery, greeter_repeat_window,
+      visitor_greeting, greeting_delivery, onboarding_delivery, farewell_delivery, greeter_repeat_window,
       dice_max_dice, dice_max_sides, dice_default,
       mod_words, mod_action, mod_spam, mod_flood, mod_warn,
       trivia_category, trivia_time, trivia_questions, trivia_points,

@@ -11,14 +11,14 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 
-#: lib/retro_hex_chat/commands/handlers/bot.ex:734
+#: lib/retro_hex_chat/commands/handlers/bot.ex:745
 #, elixir-autogen, elixir-format
 msgid "  %{command_prefix}%{bot_name} %{trigger} — %{cmd_description_cmd_response}%{status}"
 msgstr ""
 "%{command_prefix}%{bot_name} %{trigger} — "
 "%{cmd_description_cmd_response}%{status} (英语)."
 
-#: lib/retro_hex_chat/commands/handlers/bot.ex:857
+#: lib/retro_hex_chat/commands/handlers/bot.ex:868
 #, elixir-autogen, elixir-format
 msgid "  %{name} [%{status}] — %{description}"
 msgstr "%{name} [%{status}] — %{description} (英语)."
@@ -53,7 +53,7 @@ msgstr "冷却器: %{cooldown_ms}ms"
 msgid "  Created by: %{created_by}"
 msgstr "创建者: %{created_by}"
 
-#: lib/retro_hex_chat/commands/handlers/bot.ex:881
+#: lib/retro_hex_chat/commands/handlers/bot.ex:892
 #, elixir-autogen, elixir-format
 msgid "  Description: %{desc}"
 msgstr "说明:%{desc}"
@@ -73,12 +73,12 @@ msgstr "前缀: %{command_prefix}"
 msgid "  Status: %{status}"
 msgstr "状况:%{status}"
 
-#: lib/retro_hex_chat/commands/handlers/bot.ex:681
+#: lib/retro_hex_chat/commands/handlers/bot.ex:692
 #, elixir-autogen, elixir-format
 msgid "%{cap_name}.%{field} set to %{display}."
 msgstr "%{cap_name}.%{field}设定为%{display}."
 
-#: lib/retro_hex_chat/commands/handlers/bot.ex:868
+#: lib/retro_hex_chat/commands/handlers/bot.ex:879
 #, elixir-autogen, elixir-format
 msgid "%{field}: %{errors}"
 msgstr "%{field}: %{errors} (英语)."
@@ -1025,7 +1025,7 @@ msgstr "/whowas SomeUser"
 msgid "5:%{seconds}"
 msgstr "5: %{seconds} (韩语)."
 
-#: lib/retro_hex_chat/commands/handlers/bot.ex:571
+#: lib/retro_hex_chat/commands/handlers/bot.ex:582
 #, elixir-autogen, elixir-format
 msgid "Action must be: warn, mute, or kick."
 msgstr "行动必须是:警告、哑巴或踢球。"
@@ -1344,12 +1344,12 @@ msgstr ""
 msgid "Factory reset — destroy all data except admin infrastructure"
 msgstr "工厂重新设置——销毁除行政管理基础设施以外的所有数据"
 
-#: lib/retro_hex_chat/commands/handlers/bot.ex:517
+#: lib/retro_hex_chat/commands/handlers/bot.ex:528
 #, elixir-autogen, elixir-format
 msgid "Farewell disabled."
 msgstr "再见,残疾人。"
 
-#: lib/retro_hex_chat/commands/handlers/bot.ex:515
+#: lib/retro_hex_chat/commands/handlers/bot.ex:526
 #, elixir-autogen, elixir-format
 msgid "Farewell set to '%{farewell}'."
 msgstr "告别消息已设置为 '%{farewell}'。"
@@ -1539,7 +1539,7 @@ msgstr ""
 "在 /whois 中显示可选消息, 将自己标为暂时无法访问 。\n"
 "带个口信 让你离开 没有争论: 清除你离家的状态 并标记你回来。"
 
-#: lib/retro_hex_chat/commands/handlers/bot.ex:543
+#: lib/retro_hex_chat/commands/handlers/bot.ex:554
 #, elixir-autogen, elixir-format
 msgid "Mention response updated."
 msgstr "已更新提及的答复。"
@@ -1637,7 +1637,7 @@ msgstr "昵称太长( 最多 16 个字符)"
 msgid "No MOTD has been set."
 msgstr "没有设定 MOTD 。"
 
-#: lib/retro_hex_chat/commands/handlers/bot.ex:855
+#: lib/retro_hex_chat/commands/handlers/bot.ex:866
 #, elixir-autogen, elixir-format
 msgid "No description"
 msgstr "无说明"
@@ -1663,12 +1663,12 @@ msgstr "通知内容"
 msgid "Notices are always routed to the active window."
 msgstr "通知总是被引导到活动窗口。"
 
-#: lib/retro_hex_chat/commands/handlers/bot.ex:854
+#: lib/retro_hex_chat/commands/handlers/bot.ex:865
 #, elixir-autogen, elixir-format
 msgid "OFF"
 msgstr "关闭"
 
-#: lib/retro_hex_chat/commands/handlers/bot.ex:854
+#: lib/retro_hex_chat/commands/handlers/bot.ex:865
 #, elixir-autogen, elixir-format
 msgid "ON"
 msgstr "关闭"
@@ -2277,7 +2277,7 @@ msgstr "未知的 /notify 子命令 。 使用: 添加、 删除、 编辑、 �
 msgid "Unknown admin subcommand: %{subcmd}. Try: server, user, channel, ns, cs, debug, log, turn, nuke"
 msgstr "未知的管理员子命令: %{subcmd}. 尝试:服务器、用户、频道、ns、cs、调试、日志、转弯、核子"
 
-#: lib/retro_hex_chat/commands/handlers/bot.ex:631
+#: lib/retro_hex_chat/commands/handlers/bot.ex:642
 #, elixir-autogen, elixir-format
 msgid "Unknown setting '%{key}'. Valid: %{settings}"
 msgstr "未知设置 '%{key}'。有效: %{settings}"
@@ -2788,7 +2788,7 @@ msgstr "您必须是频道拥有者使用此命令"
 msgid "[BotService] %{message}"
 msgstr "[业务]%{message}"
 
-#: lib/retro_hex_chat/commands/handlers/bot.ex:719
+#: lib/retro_hex_chat/commands/handlers/bot.ex:730
 #, elixir-autogen, elixir-format
 msgid "[BotService] %{name} has no custom commands."
 msgstr "[BotService]%{name}没有自定义命令."
@@ -2831,9 +2831,9 @@ msgstr "[BotService] 机器人“%{name}”离开了 %{channel}。"
 #: lib/retro_hex_chat/commands/handlers/bot.ex:387
 #: lib/retro_hex_chat/commands/handlers/bot.ex:408
 #: lib/retro_hex_chat/commands/handlers/bot.ex:431
-#: lib/retro_hex_chat/commands/handlers/bot.ex:707
-#: lib/retro_hex_chat/commands/handlers/bot.ex:749
-#: lib/retro_hex_chat/commands/handlers/bot.ex:783
+#: lib/retro_hex_chat/commands/handlers/bot.ex:718
+#: lib/retro_hex_chat/commands/handlers/bot.ex:760
+#: lib/retro_hex_chat/commands/handlers/bot.ex:794
 #, elixir-autogen, elixir-format
 msgid "[BotService] Bot '%{name}' not found."
 msgstr "[BotService] 未找到机器人“%{name}”。"
@@ -2843,27 +2843,27 @@ msgstr "[BotService] 未找到机器人“%{name}”。"
 msgid "[BotService] Bot Info: %{name}"
 msgstr "[BotService] 机器人信息：%{name}"
 
-#: lib/retro_hex_chat/commands/handlers/bot.ex:847
+#: lib/retro_hex_chat/commands/handlers/bot.ex:858
 #, elixir-autogen, elixir-format
 msgid "[BotService] Bots:"
 msgstr "[企业服务] 波兹:"
 
-#: lib/retro_hex_chat/commands/handlers/bot.ex:792
+#: lib/retro_hex_chat/commands/handlers/bot.ex:803
 #, elixir-autogen, elixir-format
 msgid "[BotService] Command '%{trigger}' removed from %{name}."
 msgstr "[BotService] 命令 '%{trigger}' 从%{name}中移除."
 
-#: lib/retro_hex_chat/commands/handlers/bot.ex:761
+#: lib/retro_hex_chat/commands/handlers/bot.ex:772
 #, elixir-autogen, elixir-format
 msgid "[BotService] Command '%{trigger}' set for %{name}."
 msgstr "[BotService] 命令 '%{trigger}' set for %{name}."
 
-#: lib/retro_hex_chat/commands/handlers/bot.ex:725
+#: lib/retro_hex_chat/commands/handlers/bot.ex:736
 #, elixir-autogen, elixir-format
 msgid "[BotService] Commands for %{bot_name}:"
 msgstr "%{bot_name}的指令:"
 
-#: lib/retro_hex_chat/commands/handlers/bot.ex:771
+#: lib/retro_hex_chat/commands/handlers/bot.ex:782
 #, elixir-autogen, elixir-format
 msgid "[BotService] Failed to add command '%{trigger}': %{message}"
 msgstr "[BotService] 无法添加命令 '%{trigger}'：%{message}"
@@ -2873,7 +2873,7 @@ msgstr "[BotService] 无法添加命令 '%{trigger}'：%{message}"
 msgid "[BotService] Failed to create bot: %{message}"
 msgstr "[BotService] 无法创建机器人：%{message}"
 
-#: lib/retro_hex_chat/commands/handlers/bot.ex:843
+#: lib/retro_hex_chat/commands/handlers/bot.ex:854
 #, elixir-autogen, elixir-format
 msgid "[BotService] No bots configured."
 msgstr "[企业服务] 没有配置 bots 。"
@@ -3143,17 +3143,17 @@ msgstr "[BotService] 已将订阅源添加到 %{name}: %{url} → %{channel}"
 msgid "[BotService] Feeds for %{name}:"
 msgstr "%{name}的饲料:"
 
-#: lib/retro_hex_chat/commands/handlers/bot.ex:656
+#: lib/retro_hex_chat/commands/handlers/bot.ex:667
 #, elixir-autogen, elixir-format
 msgid "%{field} must be one of: %{modes}."
 msgstr "%{field} 必须是以下之一：%{modes}。"
 
-#: lib/retro_hex_chat/commands/handlers/bot.ex:499
+#: lib/retro_hex_chat/commands/handlers/bot.ex:510
 #, elixir-autogen, elixir-format
 msgid "Onboarding line %{key} cleared."
 msgstr "新人引导消息 %{key} 已清除。"
 
-#: lib/retro_hex_chat/commands/handlers/bot.ex:503
+#: lib/retro_hex_chat/commands/handlers/bot.ex:514
 #, elixir-autogen, elixir-format
 msgid "Onboarding line %{key} set to '%{line}'."
 msgstr "新人引导消息 %{key} 已设为 '%{line}'。"
@@ -3593,3 +3593,13 @@ msgstr ""
 "找人来玩频道的游戏 在游戏频道中运行:频道中出现一个开张座位的卡片,谁按\"联合\"就先玩你.\n"
 "命名一个模式来播放它而不是标准游戏.\n"
 "要求:一个已注册、已识别的昵称。"
+
+#: lib/retro_hex_chat/commands/handlers/bot.ex:503
+#, elixir-autogen, elixir-format
+msgid "The bot will greet visitors with '%{greeting}'."
+msgstr "机器人会用%{greeting}迎接来访者."
+
+#: lib/retro_hex_chat/commands/handlers/bot.ex:499
+#, elixir-autogen, elixir-format
+msgid "The bot will not greet visitors."
+msgstr "机器人不会迎接访客的"

@@ -11,7 +11,7 @@ add rooms on top and can be pasted in any order, or not at all.
 
 | script | rooms | bots | feeds | social room |
 |---|---|---|---|---|
-| [`en.md`](en.md) | 12 | 21 | 47 | `#lobby` |
+| [`en.md`](en.md) | 12 | 24 | 47 | `#lobby` |
 | [`pt_BR.md`](pt_BR.md) | 10 | 12 | 23 | `#brasil` |
 | [`pt_PT.md`](pt_PT.md) | 10 | 12 | 18 | `#portugal` |
 | [`es.md`](es.md) | 12 | 14 | 25 | `#hispano` |

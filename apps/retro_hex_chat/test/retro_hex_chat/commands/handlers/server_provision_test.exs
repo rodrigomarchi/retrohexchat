@@ -107,7 +107,7 @@ defmodule RetroHexChat.Commands.Handlers.ServerProvisionTest do
     bots = for ["bot", "create", name | _] <- parsed, uniq: true, do: name
 
     assert length(channels) == 12
-    assert length(bots) == 21
+    assert length(bots) == 24
   end
 
   test "the English narrative does not drift back to the old room count or RSS bootstrap" do
@@ -589,7 +589,7 @@ defmodule RetroHexChat.Commands.Handlers.ServerProvisionTest do
       speech =
         for ["bot", "set", bot, key | rest] <- parsed,
             key in ~w(greeting public_greeting onboarding_1 onboarding_2 onboarding_3
-                      onboarding_4 mention_response mod_warn),
+                      onboarding_4 visitor_greeting mention_response mod_warn),
             Enum.join(rest, " ") != "none" do
           {bot, key, Enum.join(rest, " ")}
         end ++

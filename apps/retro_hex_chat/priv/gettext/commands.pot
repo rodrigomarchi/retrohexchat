@@ -11,12 +11,12 @@
 msgid ""
 msgstr ""
 
-#: lib/retro_hex_chat/commands/handlers/bot.ex:734
+#: lib/retro_hex_chat/commands/handlers/bot.ex:745
 #, elixir-autogen, elixir-format
 msgid "  %{command_prefix}%{bot_name} %{trigger} — %{cmd_description_cmd_response}%{status}"
 msgstr ""
 
-#: lib/retro_hex_chat/commands/handlers/bot.ex:857
+#: lib/retro_hex_chat/commands/handlers/bot.ex:868
 #, elixir-autogen, elixir-format
 msgid "  %{name} [%{status}] — %{description}"
 msgstr ""
@@ -51,7 +51,7 @@ msgstr ""
 msgid "  Created by: %{created_by}"
 msgstr ""
 
-#: lib/retro_hex_chat/commands/handlers/bot.ex:881
+#: lib/retro_hex_chat/commands/handlers/bot.ex:892
 #, elixir-autogen, elixir-format
 msgid "  Description: %{desc}"
 msgstr ""
@@ -71,12 +71,12 @@ msgstr ""
 msgid "  Status: %{status}"
 msgstr ""
 
-#: lib/retro_hex_chat/commands/handlers/bot.ex:681
+#: lib/retro_hex_chat/commands/handlers/bot.ex:692
 #, elixir-autogen, elixir-format
 msgid "%{cap_name}.%{field} set to %{display}."
 msgstr ""
 
-#: lib/retro_hex_chat/commands/handlers/bot.ex:868
+#: lib/retro_hex_chat/commands/handlers/bot.ex:879
 #, elixir-autogen, elixir-format
 msgid "%{field}: %{errors}"
 msgstr ""
@@ -1023,7 +1023,7 @@ msgstr ""
 msgid "5:%{seconds}"
 msgstr ""
 
-#: lib/retro_hex_chat/commands/handlers/bot.ex:571
+#: lib/retro_hex_chat/commands/handlers/bot.ex:582
 #, elixir-autogen, elixir-format
 msgid "Action must be: warn, mute, or kick."
 msgstr ""
@@ -1322,12 +1322,12 @@ msgstr ""
 msgid "Factory reset — destroy all data except admin infrastructure"
 msgstr ""
 
-#: lib/retro_hex_chat/commands/handlers/bot.ex:517
+#: lib/retro_hex_chat/commands/handlers/bot.ex:528
 #, elixir-autogen, elixir-format
 msgid "Farewell disabled."
 msgstr ""
 
-#: lib/retro_hex_chat/commands/handlers/bot.ex:515
+#: lib/retro_hex_chat/commands/handlers/bot.ex:526
 #, elixir-autogen, elixir-format
 msgid "Farewell set to '%{farewell}'."
 msgstr ""
@@ -1498,7 +1498,7 @@ msgstr ""
 msgid "Mark yourself as temporarily unavailable, with an optional message shown in /whois.\nWith a message: sets you as away. Without arguments: clears your away status and marks you as back."
 msgstr ""
 
-#: lib/retro_hex_chat/commands/handlers/bot.ex:543
+#: lib/retro_hex_chat/commands/handlers/bot.ex:554
 #, elixir-autogen, elixir-format
 msgid "Mention response updated."
 msgstr ""
@@ -1593,7 +1593,7 @@ msgstr ""
 msgid "No MOTD has been set."
 msgstr ""
 
-#: lib/retro_hex_chat/commands/handlers/bot.ex:855
+#: lib/retro_hex_chat/commands/handlers/bot.ex:866
 #, elixir-autogen, elixir-format
 msgid "No description"
 msgstr ""
@@ -1619,12 +1619,12 @@ msgstr ""
 msgid "Notices are always routed to the active window."
 msgstr ""
 
-#: lib/retro_hex_chat/commands/handlers/bot.ex:854
+#: lib/retro_hex_chat/commands/handlers/bot.ex:865
 #, elixir-autogen, elixir-format
 msgid "OFF"
 msgstr ""
 
-#: lib/retro_hex_chat/commands/handlers/bot.ex:854
+#: lib/retro_hex_chat/commands/handlers/bot.ex:865
 #, elixir-autogen, elixir-format
 msgid "ON"
 msgstr ""
@@ -2172,7 +2172,7 @@ msgstr ""
 msgid "Unknown admin subcommand: %{subcmd}. Try: server, user, channel, ns, cs, debug, log, turn, nuke"
 msgstr ""
 
-#: lib/retro_hex_chat/commands/handlers/bot.ex:631
+#: lib/retro_hex_chat/commands/handlers/bot.ex:642
 #, elixir-autogen, elixir-format
 msgid "Unknown setting '%{key}'. Valid: %{settings}"
 msgstr ""
@@ -2674,7 +2674,7 @@ msgstr ""
 msgid "[BotService] %{message}"
 msgstr ""
 
-#: lib/retro_hex_chat/commands/handlers/bot.ex:719
+#: lib/retro_hex_chat/commands/handlers/bot.ex:730
 #, elixir-autogen, elixir-format
 msgid "[BotService] %{name} has no custom commands."
 msgstr ""
@@ -2717,9 +2717,9 @@ msgstr ""
 #: lib/retro_hex_chat/commands/handlers/bot.ex:387
 #: lib/retro_hex_chat/commands/handlers/bot.ex:408
 #: lib/retro_hex_chat/commands/handlers/bot.ex:431
-#: lib/retro_hex_chat/commands/handlers/bot.ex:707
-#: lib/retro_hex_chat/commands/handlers/bot.ex:749
-#: lib/retro_hex_chat/commands/handlers/bot.ex:783
+#: lib/retro_hex_chat/commands/handlers/bot.ex:718
+#: lib/retro_hex_chat/commands/handlers/bot.ex:760
+#: lib/retro_hex_chat/commands/handlers/bot.ex:794
 #, elixir-autogen, elixir-format
 msgid "[BotService] Bot '%{name}' not found."
 msgstr ""
@@ -2729,27 +2729,27 @@ msgstr ""
 msgid "[BotService] Bot Info: %{name}"
 msgstr ""
 
-#: lib/retro_hex_chat/commands/handlers/bot.ex:847
+#: lib/retro_hex_chat/commands/handlers/bot.ex:858
 #, elixir-autogen, elixir-format
 msgid "[BotService] Bots:"
 msgstr ""
 
-#: lib/retro_hex_chat/commands/handlers/bot.ex:792
+#: lib/retro_hex_chat/commands/handlers/bot.ex:803
 #, elixir-autogen, elixir-format
 msgid "[BotService] Command '%{trigger}' removed from %{name}."
 msgstr ""
 
-#: lib/retro_hex_chat/commands/handlers/bot.ex:761
+#: lib/retro_hex_chat/commands/handlers/bot.ex:772
 #, elixir-autogen, elixir-format
 msgid "[BotService] Command '%{trigger}' set for %{name}."
 msgstr ""
 
-#: lib/retro_hex_chat/commands/handlers/bot.ex:725
+#: lib/retro_hex_chat/commands/handlers/bot.ex:736
 #, elixir-autogen, elixir-format
 msgid "[BotService] Commands for %{bot_name}:"
 msgstr ""
 
-#: lib/retro_hex_chat/commands/handlers/bot.ex:771
+#: lib/retro_hex_chat/commands/handlers/bot.ex:782
 #, elixir-autogen, elixir-format
 msgid "[BotService] Failed to add command '%{trigger}': %{message}"
 msgstr ""
@@ -2759,7 +2759,7 @@ msgstr ""
 msgid "[BotService] Failed to create bot: %{message}"
 msgstr ""
 
-#: lib/retro_hex_chat/commands/handlers/bot.ex:843
+#: lib/retro_hex_chat/commands/handlers/bot.ex:854
 #, elixir-autogen, elixir-format
 msgid "[BotService] No bots configured."
 msgstr ""
@@ -3014,17 +3014,17 @@ msgstr ""
 msgid "[BotService] Feeds for %{name}:"
 msgstr ""
 
-#: lib/retro_hex_chat/commands/handlers/bot.ex:656
+#: lib/retro_hex_chat/commands/handlers/bot.ex:667
 #, elixir-autogen, elixir-format
 msgid "%{field} must be one of: %{modes}."
 msgstr ""
 
-#: lib/retro_hex_chat/commands/handlers/bot.ex:499
+#: lib/retro_hex_chat/commands/handlers/bot.ex:510
 #, elixir-autogen, elixir-format
 msgid "Onboarding line %{key} cleared."
 msgstr ""
 
-#: lib/retro_hex_chat/commands/handlers/bot.ex:503
+#: lib/retro_hex_chat/commands/handlers/bot.ex:514
 #, elixir-autogen, elixir-format
 msgid "Onboarding line %{key} set to '%{line}'."
 msgstr ""
@@ -3438,4 +3438,14 @@ msgstr ""
 #: lib/retro_hex_chat/commands/handlers/lfg.ex:48
 #, elixir-autogen, elixir-format
 msgid "Look for someone to play the channel's game with. Run it in a game's channel: a card with one open seat appears in the channel, and whoever presses Join first plays you.\nName a mode to play it instead of the standard game.\nRequires: a registered, identified nickname."
+msgstr ""
+
+#: lib/retro_hex_chat/commands/handlers/bot.ex:503
+#, elixir-autogen, elixir-format
+msgid "The bot will greet visitors with '%{greeting}'."
+msgstr ""
+
+#: lib/retro_hex_chat/commands/handlers/bot.ex:499
+#, elixir-autogen, elixir-format
+msgid "The bot will not greet visitors."
 msgstr ""

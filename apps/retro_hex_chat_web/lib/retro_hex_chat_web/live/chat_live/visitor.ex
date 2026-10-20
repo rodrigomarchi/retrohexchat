@@ -146,9 +146,15 @@ defmodule RetroHexChatWeb.ChatLive.Visitor do
     send(self(), :refresh_games_playing)
 
     default_channel = Server.default_channel()
+    guest = GuestNames.claim(socket.assigns.browser_id)
+
+    # What a room's bots say to this visitor alone — a greeting on arrival —
+    # is addressed to the guest name. Subscribed before watching, because
+    # watching is what makes them speak.
+    Phoenix.PubSub.subscribe(RetroHexChat.PubSub, Topics.inbox(guest))
 
     socket
-    |> assign(visitor_nick: GuestNames.claim(socket.assigns.browser_id))
+    |> assign(visitor_nick: guest)
     |> watch_channel(default_channel)
     |> maybe_watch(params["channel"] && Address.channel_name(params["channel"]), default_channel)
   end

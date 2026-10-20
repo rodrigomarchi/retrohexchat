@@ -33,6 +33,11 @@
       <td>{dgettext("help_bots", "Every join the repeat window allows")}</td>
     </tr>
     <tr>
+      <td><code>visitor_greeting</code></td>
+      <td>{dgettext("help_bots", "The visitor alone")}</td>
+      <td>{dgettext("help_bots", "Each time the visitor opens the channel")}</td>
+    </tr>
+    <tr>
       <td><code>farewell</code></td>
       <td>{dgettext("help_bots", "Depends on farewell_delivery")}</td>
       <td>{dgettext("help_bots", "On part")}</td>
@@ -56,6 +61,22 @@
     "Any of them takes none to clear it. A cleared line is skipped, so a bot with only a greeting behaves exactly as it always did. Onboarding is numbered rather than appended: setting onboarding_2 twice replaces it, which is what lets a provisioning script be pasted more than once."
   )}
 </p>
+
+<.help_h4 icon={:icon_watching}>{dgettext("help_bots", "How a bot greets visitors")}</.help_h4>
+<p>
+  {dgettext("help_bots", "A visitor without an account can read a channel.")}
+  {dgettext("help_bots", "They cannot join it or type in it.")}
+  {dgettext("help_bots", "A visitor does not get %{greeting} or %{onboarding}.",
+    greeting: "greeting",
+    onboarding: "onboarding_1 … onboarding_4"
+  )}
+  {dgettext("help_bots", "Nothing is said in the channel when a visitor arrives.")}
+  {dgettext("help_bots", "Set %{setting} to welcome them.", setting: "visitor_greeting")}
+  {dgettext("help_bots", "Only the visitor sees it.")}
+  {dgettext("help_bots", "It is sent each time they open the channel.")}
+  {dgettext("help_bots", "No bot greets visitors until it is set.")}
+</p>
+<pre>/bot set &lt;name&gt; visitor_greeting &lt;text&gt;</pre>
 
 <.help_h4 icon={:icon_chat}>{dgettext("help_bots", "Delivery")}</.help_h4>
 <table>

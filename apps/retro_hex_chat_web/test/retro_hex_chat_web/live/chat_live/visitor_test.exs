@@ -89,6 +89,16 @@ defmodule RetroHexChatWeb.ChatLive.VisitorTest do
     end
   end
 
+  describe "what a room's bots say to the visitor alone" do
+    test "reaches the visitor under their guest name" do
+      {:ok, view, _html} = live(build_conn(), "/")
+      guest = assigns(view).visitor_nick
+
+      listeners = Registry.lookup(RetroHexChat.PubSub, RetroHexChat.Topics.inbox(guest))
+      assert Enum.any?(listeners, fn {pid, _value} -> pid == view.pid end)
+    end
+  end
+
   describe "one browser, several tabs" do
     # A tab of the browser the cookie names, as a fresh request would send it.
     defp tab(browser_id) do

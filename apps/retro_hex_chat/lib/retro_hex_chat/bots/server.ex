@@ -265,6 +265,13 @@ defmodule RetroHexChat.Bots.Server do
     {:noreply, state}
   end
 
+  # A visitor without an account began watching a room: `Channels.Server`
+  # says so on the channel topic, since a watcher never joins.
+  def handle_info({:visitor_arrived, payload}, state) do
+    state = handle_channel_event(:visitor_arrived, payload, state)
+    {:noreply, state}
+  end
+
   def handle_info({:user_left, payload}, state) do
     state = handle_channel_event(:user_left, payload, state)
     {:noreply, state}
@@ -359,12 +366,19 @@ defmodule RetroHexChat.Bots.Server do
       {result, state} =
         dispatch_active_capabilities(:event, event, payload, context, state)
 
-      log_event_async(state.bot_id, "channel_#{event}", channel, %{nickname: nickname})
+      maybe_log_event(state.bot_id, event, channel, nickname)
       respond_without_cooldown(state, channel, result)
     else
       state
     end
   end
+
+  # Nothing about a visitor is kept, and a busy lobby would fill the event log
+  # with guest names that mean nothing the next day.
+  defp maybe_log_event(_bot_id, :visitor_arrived, _channel, _nickname), do: :ok
+
+  defp maybe_log_event(bot_id, event, channel, nickname),
+    do: log_event_async(bot_id, "channel_#{event}", channel, %{nickname: nickname})
 
   @spec dispatch_passive_capabilities(String.t(), String.t(), map(), state()) :: state()
   defp dispatch_passive_capabilities(content, author, context, state) do

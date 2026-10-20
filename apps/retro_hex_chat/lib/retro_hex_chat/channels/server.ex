@@ -141,6 +141,10 @@ defmodule RetroHexChat.Channels.Server do
 
   @doc """
   Get the current state of a channel.
+
+  A channel nobody is left in stops on its own, so it can be found and then be
+  gone before it answers. That is the same answer as never finding it; any
+  other failure still fails.
   """
   @spec get_state(String.t()) :: {:ok, map()} | {:error, :not_found}
   def get_state(channel_name) do
@@ -148,6 +152,12 @@ defmodule RetroHexChat.Channels.Server do
       {:ok, _pid} -> {:ok, GenServer.call(via(channel_name), :get_state)}
       {:error, :not_found} -> {:error, :not_found}
     end
+  catch
+    :exit, {reason, {GenServer, :call, _args}} when reason in [:noproc, :normal, :shutdown] ->
+      {:error, :not_found}
+
+    :exit, {{:shutdown, _detail}, {GenServer, :call, _args}} ->
+      {:error, :not_found}
   end
 
   @doc """
@@ -608,6 +618,7 @@ defmodule RetroHexChat.Channels.Server do
         }
 
         maybe_broadcast_watchers(state, new_state)
+        maybe_broadcast_arrival(state, new_state, guest_name)
         reply({:ok, state_to_map(new_state)}, new_state)
     end
   end
@@ -1488,6 +1499,18 @@ defmodule RetroHexChat.Channels.Server do
   defp maybe_broadcast_watchers(old_state, new_state) do
     if map_size(old_state.guests) != map_size(new_state.guests),
       do: broadcast_watchers(new_state)
+  end
+
+  # A visitor arrives with their first tab; another tab of a guest already
+  # here is the same person. The room's bots greet arrivals — a watcher never
+  # joins, so this is the only way they learn a visitor is reading.
+  defp maybe_broadcast_arrival(old_state, new_state, guest_name) do
+    if map_size(new_state.guests) > map_size(old_state.guests),
+      do:
+        broadcast(
+          new_state.name,
+          {:visitor_arrived, %{channel: new_state.name, nickname: guest_name}}
+        )
   end
 
   defp add_guest(guests, guest_name) do

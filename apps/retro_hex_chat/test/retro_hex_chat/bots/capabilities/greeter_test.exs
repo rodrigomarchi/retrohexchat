@@ -206,6 +206,62 @@ defmodule RetroHexChat.Bots.Capabilities.GreeterTest do
     end
   end
 
+  describe "handle_event/3 — visitors without an account" do
+    setup do
+      ctx =
+        @ctx
+        |> put_in([:config, "greeting"], "Yo {nickname}, try !tour.")
+        |> put_in([:config, "public_greeting"], "* {botname} waves at {nickname}")
+        |> put_in([:config, "onboarding_1"], "/join #room · /msg nick · /nick new")
+        |> put_in(
+          [:config, "visitor_greeting"],
+          "Welcome, {nickname}! You're watching {channel}."
+        )
+        |> put_in([:config, "repeat_window_sec"], 60)
+
+      {:ok, ctx: ctx}
+    end
+
+    test "a visitor gets the visitor greeting alone, privately", %{ctx: ctx} do
+      # Nothing they cannot act on: no announcement to the room, no greeting
+      # promising commands, no IRC lessons.
+      assert {:bot_output, output, _state} =
+               Greeter.handle_event(:visitor_arrived, %{nickname: "Guest4821"}, ctx)
+
+      assert output == %{
+               content: "Welcome, Guest4821! You're watching #general.",
+               delivery: "private_notice",
+               target: "Guest4821"
+             }
+    end
+
+    test "the ledger is never asked about a visitor", %{ctx: ctx} do
+      # Nothing about a visitor is kept: a ledger that says "just here" must
+      # not silence them, because it is never consulted.
+      GreetingLedgerStub.put_answer(:within_window)
+
+      assert {:bot_output, %{target: "Guest4821"}, _state} =
+               Greeter.handle_event(:visitor_arrived, %{nickname: "Guest4821"}, ctx)
+    end
+
+    test "a reconnect inside the window is not greeted twice", %{ctx: ctx} do
+      assert {:bot_output, _output, state} =
+               Greeter.handle_event(:visitor_arrived, %{nickname: "Guest4821"}, ctx)
+
+      ctx = %{ctx | capability_state: state}
+      assert :ignore == Greeter.handle_event(:visitor_arrived, %{nickname: "Guest4821"}, ctx)
+
+      assert {:bot_output, %{target: "Guest1234"}, _state} =
+               Greeter.handle_event(:visitor_arrived, %{nickname: "Guest1234"}, ctx)
+    end
+
+    test "a bot with no visitor greeting says nothing to visitors", %{ctx: ctx} do
+      ctx = put_in(ctx.config["visitor_greeting"], nil)
+
+      assert :ignore == Greeter.handle_event(:visitor_arrived, %{nickname: "Guest4821"}, ctx)
+    end
+  end
+
   describe "handle_event/3 — farewells" do
     test "ignores user_left when farewell is nil" do
       assert :ignore == Greeter.handle_event(:user_left, %{nickname: "Alice"}, @ctx)
@@ -256,6 +312,7 @@ defmodule RetroHexChat.Bots.Capabilities.GreeterTest do
       assert is_binary(config["greeting"])
       assert is_nil(config["farewell"])
       assert is_nil(config["public_greeting"])
+      assert is_nil(config["visitor_greeting"])
       assert config["greeting_delivery"] == "private_notice"
       assert config["onboarding_delivery"] == "private_notice"
       assert config["farewell_delivery"] == "silent"

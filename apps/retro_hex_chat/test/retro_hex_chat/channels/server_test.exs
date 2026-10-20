@@ -161,6 +161,27 @@ defmodule RetroHexChat.Channels.ServerTest do
       assert {:error, :not_found} =
                Server.get_state("#nonexistent-#{System.unique_integer([:positive])}")
     end
+
+    test "a channel that stops before answering reads as not found" do
+      # An emptied room shuts itself down, so a caller can find it in the
+      # registry and lose it before the call is answered. Suspending the
+      # server holds the call in its mailbox while the room goes away.
+      channel = unique_channel()
+      {:ok, pid} = start_channel(channel)
+      :sys.suspend(pid)
+
+      asking = Task.async(fn -> Server.get_state(channel) end)
+
+      wait_until(
+        fn -> Process.info(pid, :message_queue_len) == {:message_queue_len, 1} end,
+        5,
+        200
+      )
+
+      :ok = Supervisor.stop_child(pid)
+
+      assert {:error, :not_found} = Task.await(asking)
+    end
   end
 
   describe "channel mutes" do

@@ -12,6 +12,9 @@ defmodule RetroHexChat.Bots.Capabilities.Greeter do
     IRC is: how to join a room, how to speak privately, how to change a nick.
     They repeat verbatim across every room of a server so that whichever door
     somebody comes through teaches the same thing.
+  - `visitor_greeting` goes, privately, to a visitor without an account who
+    starts watching the room. A visitor cannot type a command or a line, so
+    they get none of the above — only this, on every arrival, when it is set.
 
   Whether somebody is new is `RetroHexChat.Bots.GreetingLedger`'s answer, not a
   timer in this process: the announcement is public and a hundred and forty-four
@@ -67,6 +70,15 @@ defmodule RetroHexChat.Bots.Capabilities.Greeter do
     welcome(nickname, ctx)
   end
 
+  # A visitor watches without joining and can do nothing but read, so they get
+  # their own line, privately and every time they arrive: no announcement, no
+  # IRC lessons they could not act on, and no ledger row — nothing about a
+  # visitor is kept, so a reconnect is told apart only in this process.
+  def handle_event(:visitor_arrived, %{nickname: nickname}, ctx) do
+    visitor_greeting = Map.get(ctx.config, "visitor_greeting")
+    render_if_present(:visitor_greeting, visitor_greeting, nickname, "private_notice", ctx)
+  end
+
   def handle_event(:user_left, %{nickname: nickname}, ctx) do
     farewell = Map.get(ctx.config, "farewell")
     delivery = Map.get(ctx.config, "farewell_delivery", legacy_delivery())
@@ -82,6 +94,7 @@ defmodule RetroHexChat.Bots.Capabilities.Greeter do
     %{
       "greeting" => default_greeting(),
       "public_greeting" => nil,
+      "visitor_greeting" => nil,
       "farewell" => nil,
       "greeting_delivery" => "private_notice",
       "onboarding_delivery" => "private_notice",

@@ -911,4 +911,80 @@ defmodule RetroHexChat.Bots.ServerTest do
              "a feed nobody polls is a feed that never publishes"
     end
   end
+
+  describe "a visitor without an account starts watching" do
+    @visitor_greeter_bot %{
+      id: 993,
+      name: "VisitorGreetBot",
+      nickname: "VisitorGreetBot",
+      command_prefix: "!",
+      created_by: "admin",
+      enabled: true,
+      cooldown_ms: 3000,
+      capabilities: %{
+        "greeter" => %{
+          "greeting" => "Welcome {nickname}!",
+          "public_greeting" => "{nickname} just walked in.",
+          "visitor_greeting" => "Hello {nickname}, you are watching {channel}.",
+          "greeting_delivery" => "private_notice",
+          "repeat_window_sec" => 60,
+          "enabled" => true
+        }
+      },
+      channel_configs: [
+        %{channel_name: "#visitorgreet", enabled: true, capability_overrides: %{}}
+      ],
+      custom_commands: []
+    }
+
+    setup do
+      {:ok, pid} = RetroHexChat.Channels.Supervisor.start_child("#visitorgreet")
+      Phoenix.PubSub.subscribe(RetroHexChat.PubSub, "channel:#visitorgreet")
+      Phoenix.PubSub.subscribe(RetroHexChat.PubSub, RetroHexChat.Topics.inbox("Guest4821"))
+      {:ok, _bot} = Supervisor.start_bot(@visitor_greeter_bot)
+      tab = spawn(fn -> receive do: (:stop -> :ok) end)
+
+      on_exit(fn ->
+        send(tab, :stop)
+        Supervisor.stop_bot("VisitorGreetBot")
+        if Process.alive?(pid), do: RetroHexChat.Channels.Supervisor.stop_child(pid)
+      end)
+
+      {:ok, tab: tab}
+    end
+
+    test "is greeted privately with the visitor greeting, and the room hears nothing",
+         %{tab: tab} do
+      {:ok, _} = RetroHexChat.Channels.Server.watch("#visitorgreet", tab, "Guest4821")
+
+      assert_receive %{
+                       event: "new_notice",
+                       payload: %{
+                         author: "VisitorGreetBot",
+                         channel: "#visitorgreet",
+                         content: "Hello Guest4821, you are watching #visitorgreet."
+                       }
+                     },
+                     2000
+
+      refute_receive %{event: "new_message", payload: %{author: "VisitorGreetBot"}}, 100
+      refute_received %{event: "new_notice", payload: %{content: "Welcome Guest4821!"}}
+
+      refute_enqueued(
+        worker: BotEventLogWorker,
+        args: %{bot_id: @visitor_greeter_bot.id, event_type: "channel_visitor_arrived"}
+      )
+    end
+
+    test "a second tab of the same visitor is not a second arrival", %{tab: tab} do
+      {:ok, _} = RetroHexChat.Channels.Server.watch("#visitorgreet", tab, "Guest4821")
+      assert_receive {:visitor_arrived, %{nickname: "Guest4821"}}, 2000
+
+      other_tab = spawn(fn -> receive do: (:stop -> :ok) end)
+      on_exit(fn -> send(other_tab, :stop) end)
+      {:ok, _} = RetroHexChat.Channels.Server.watch("#visitorgreet", other_tab, "Guest4821")
+
+      refute_receive {:visitor_arrived, _}, 200
+    end
+  end
 end
