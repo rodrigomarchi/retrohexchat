@@ -805,39 +805,52 @@ defmodule RetroHexChatWeb.ChatLive.Components.Composer do
   defp send_recording(_recording, file_id),
     do: send(self(), {:composer_dispatch, "", nil, "irc", [file_id]})
 
-  defp announce_recording(
-         socket,
-         %{"filename" => filename, "content_type" => content_type} = params
-       )
-       when is_binary(filename) do
-    recordings = socket.assigns.voice_recordings
+  defp announce_recording(socket, params) do
+    target = voice_target(socket.assigns.session)
 
-    cond do
-      not Regex.match?(@voice_filename, filename) ->
-        assign(socket, input_error: dgettext("chat", "Attachment upload failed"))
-
-      map_size(recordings) >= @voice_in_flight ->
-        assign(socket, input_error: dgettext("chat", "Too many attachments"))
-
-      true ->
-        put_recording(socket, filename, content_type, params["duration_ms"])
+    case put_voice_recording(socket.assigns.voice_recordings, params, target) do
+      {:ok, recordings} -> assign(socket, voice_recordings: recordings, input_error: nil)
+      {:error, message} -> assign(socket, input_error: message)
     end
   end
 
-  defp announce_recording(socket, _params),
-    do: assign(socket, input_error: dgettext("chat", "Attachment upload failed"))
+  @doc """
+  Adds the recording a `voice_recorded` event announces to `recordings`, keyed
+  by its file name and bound for `target`, or says in the composer's words why
+  it is refused: a name the recorder here never produces, more recordings than
+  may upload at once, or a format this chat cannot send. A length past the
+  ceiling is cut down to it.
+  """
+  @spec put_voice_recording(map(), map(), {:pm | :channel, String.t()} | nil) ::
+          {:ok, map()} | {:error, String.t()}
+  def put_voice_recording(
+        recordings,
+        %{"filename" => filename, "content_type" => content_type} = params,
+        target
+      )
+      when is_binary(filename) do
+    cond do
+      not Regex.match?(@voice_filename, filename) ->
+        {:error, dgettext("chat", "Attachment upload failed")}
 
-  defp put_recording(socket, filename, content_type, duration_ms) do
+      map_size(recordings) >= @voice_in_flight ->
+        {:error, dgettext("chat", "Too many attachments")}
+
+      true ->
+        put_recording(recordings, filename, content_type, params["duration_ms"], target)
+    end
+  end
+
+  def put_voice_recording(_recordings, _params, _target),
+    do: {:error, dgettext("chat", "Attachment upload failed")}
+
+  defp put_recording(recordings, filename, content_type, duration_ms, target) do
     case VoiceMessages.metadata(content_type, duration_ms) do
       {:ok, metadata} ->
-        recording = %{metadata: metadata, target: voice_target(socket.assigns.session)}
-        recordings = Map.put(socket.assigns.voice_recordings, filename, recording)
-        assign(socket, voice_recordings: recordings, input_error: nil)
+        {:ok, Map.put(recordings, filename, %{metadata: metadata, target: target})}
 
       {:error, :unsupported_content_type} ->
-        assign(socket,
-          input_error: dgettext("chat", "This browser recorded in a format this chat cannot send")
-        )
+        {:error, dgettext("chat", "This browser recorded in a format this chat cannot send")}
     end
   end
 
@@ -850,13 +863,18 @@ defmodule RetroHexChatWeb.ChatLive.Components.Composer do
 
   defp voice_target(_session), do: nil
 
-  defp voice_error_message("denied"),
+  @doc """
+  The composer's words for a recording the browser could not make, by the
+  reason the recorder names.
+  """
+  @spec voice_error_message(term()) :: String.t()
+  def voice_error_message("denied"),
     do: dgettext("chat", "This browser did not give access to the microphone.")
 
-  defp voice_error_message("unavailable"),
+  def voice_error_message("unavailable"),
     do: dgettext("chat", "No microphone is available.")
 
-  defp voice_error_message(_reason),
+  def voice_error_message(_reason),
     do: dgettext("chat", "This browser cannot record. Attach an audio file instead.")
 
   defp input_for_mode(socket, input) do

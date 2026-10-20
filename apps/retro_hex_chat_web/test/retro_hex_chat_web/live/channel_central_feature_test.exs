@@ -20,21 +20,25 @@ defmodule RetroHexChatWeb.ChannelCentralFeatureTest do
   # ══════════════════════════════════════════════════════════════
 
   describe "US1: Open and View Channel Central" do
-    test "1.1 open via menu bar shows dialog", %{conn: conn} do
+    # Opening, the desktop window it drives, and the programmatic close that
+    # resets the island — one dialog's life on one mount.
+    test "1.1 open shows the dialog, drives the desktop window, and closing resets it",
+         %{conn: conn} do
       view = connect_user(conn, "E2ECc#{uid()}")
       html = open_cc(view, "#lobby")
 
       assert html =~ "Channel Central"
       assert html =~ "#lobby"
-    end
-
-    test "1.2 opening drives the desktop window and mirrors the channel up", %{conn: conn} do
-      view = connect_user(conn, "E2ECcCl#{uid()}")
-      open_cc(view, "#lobby")
 
       assert_push_event(view, "window_command", %{action: "open", id: "channel-central"})
       assert has_element?(view, ~s([data-testid="channel-central-window"]))
-      assert render(view) =~ "Channel Central: #lobby"
+      assert html =~ "Channel Central: #lobby"
+
+      render_click(view, "close_channel_central")
+
+      assert_push_event(view, "window_command", %{action: "close", id: "channel-central"})
+      # The island resets to its closed state: no channel data left in the panel.
+      refute has_element?(view, "#channel-central-dialog-content", "#lobby")
     end
 
     test "1.2b conversation toolbar opens Channel Central for the active channel", %{conn: conn} do
@@ -47,16 +51,6 @@ defmodule RetroHexChatWeb.ChannelCentralFeatureTest do
       assert_push_event(view, "window_command", %{action: "open", id: "channel-central"})
       assert has_element?(view, ~s([data-testid="channel-central-window"]))
       assert render(view) =~ "Channel Central: #lobby"
-    end
-
-    test "1.3 programmatic close resets the island and closes the window", %{conn: conn} do
-      view = connect_user(conn, "E2ECcEs#{uid()}")
-      open_cc(view, "#lobby")
-      render_click(view, "close_channel_central")
-
-      assert_push_event(view, "window_command", %{action: "close", id: "channel-central"})
-      # The island resets to its closed state: no channel data left in the panel.
-      refute has_element?(view, "#channel-central-dialog-content", "#lobby")
     end
 
     test "1.5 all 4 tabs are visible and switchable", %{conn: conn} do
@@ -150,7 +144,7 @@ defmodule RetroHexChatWeb.ChannelCentralFeatureTest do
   # ══════════════════════════════════════════════════════════════
 
   describe "US2: Topic Editing" do
-    test "2.1 operator sets topic from Channel Central", %{conn: conn} do
+    test "2.1 operator sets and then clears the topic from Channel Central", %{conn: conn} do
       channel = "#e2etp-#{uid()}"
       view = connect_user(conn, "E2ETpOp#{uid()}")
       submit_command_sync(view, "/join #{channel}")
@@ -167,18 +161,8 @@ defmodule RetroHexChatWeb.ChannelCentralFeatureTest do
       # Verify server state
       {:ok, state} = Server.get_state(channel)
       assert state.topic == "E2E test topic"
-    end
 
-    test "2.2 clearing topic sets empty string", %{conn: conn} do
-      channel = "#e2eclr-#{uid()}"
-      nick = "E2EClr#{uid()}"
-      view = connect_user(conn, nick)
-      submit_command_sync(view, "/join #{channel}")
-      render_click(view, "switch_channel", %{"channel" => channel})
-
-      Server.set_topic(channel, nick, "Temp topic")
-      open_cc(view, channel)
-
+      # Clearing a set topic stores the empty string.
       view |> element("form[phx-submit=cc_set_topic]") |> render_submit(%{"topic" => ""})
 
       {:ok, state} = Server.get_state(channel)
@@ -191,7 +175,8 @@ defmodule RetroHexChatWeb.ChannelCentralFeatureTest do
   # ══════════════════════════════════════════════════════════════
 
   describe "US3: Mode Toggles" do
-    test "3.1 operator toggles +m moderated", %{conn: conn} do
+    # Each submit is checked against the server before the next one is sent.
+    test "3.1 operator toggles +m, sets +k key and +l limit", %{conn: conn} do
       channel = "#e2emd-#{uid()}"
       view = connect_user(conn, "E2EMd#{uid()}")
       submit_command_sync(view, "/join #{channel}")
@@ -206,16 +191,6 @@ defmodule RetroHexChatWeb.ChannelCentralFeatureTest do
 
       {:ok, state} = Server.get_state(channel)
       assert state.modes =~ "m"
-    end
-
-    test "3.2 operator sets +k key", %{conn: conn} do
-      channel = "#e2eky-#{uid()}"
-      view = connect_user(conn, "E2EKy#{uid()}")
-      submit_command_sync(view, "/join #{channel}")
-      render_click(view, "switch_channel", %{"channel" => channel})
-      open_cc(view, channel)
-
-      cc(view, "channel_central_tab", %{"tab" => "modes"})
 
       view
       |> element("form[phx-submit=cc_apply_modes]")
@@ -223,16 +198,6 @@ defmodule RetroHexChatWeb.ChannelCentralFeatureTest do
 
       {:ok, state} = Server.get_state(channel)
       assert state.modes =~ "k"
-    end
-
-    test "3.3 operator sets +l limit", %{conn: conn} do
-      channel = "#e2elm-#{uid()}"
-      view = connect_user(conn, "E2ELm#{uid()}")
-      submit_command_sync(view, "/join #{channel}")
-      render_click(view, "switch_channel", %{"channel" => channel})
-      open_cc(view, channel)
-
-      cc(view, "channel_central_tab", %{"tab" => "modes"})
 
       view
       |> element("form[phx-submit=cc_apply_modes]")
@@ -248,7 +213,8 @@ defmodule RetroHexChatWeb.ChannelCentralFeatureTest do
   # ══════════════════════════════════════════════════════════════
 
   describe "US3b: Welcome, throttle, and ownership transfer" do
-    test "operator saves and clears welcome message from General tab", %{conn: conn} do
+    test "operator saves and clears the welcome message and applies +j and -j from General tab",
+         %{conn: conn} do
       channel = "#e2ewl-#{uid()}"
       nick = "E2EWl#{uid()}"
       view = connect_user(conn, nick)
@@ -276,16 +242,9 @@ defmodule RetroHexChatWeb.ChannelCentralFeatureTest do
       assert html =~ "Welcome message cleared."
       assert html =~ "No welcome message set."
       assert {:ok, nil} = Server.get_welcome(channel)
-    end
 
-    test "join throttle applies +j and -j from General tab", %{conn: conn} do
-      channel = "#e2esl-#{uid()}"
-      nick = "E2ESl#{uid()}"
-      view = connect_user(conn, nick)
-      submit_command_sync(view, "/join #{channel}")
-      render_click(view, "switch_channel", %{"channel" => channel})
-      html = open_cc(view, channel)
-
+      # The join throttle sits on the same tab: +j, then -j.
+      html = render(view)
       assert html =~ "Join throttle"
       assert html =~ "Apply Throttle"
 
@@ -313,8 +272,9 @@ defmodule RetroHexChatWeb.ChannelCentralFeatureTest do
       owner = "CfgOwner#{uid()}"
       guest = "CfgGuest#{uid()}"
 
-      owner_view = connect_user(conn, owner)
-      submit_command_sync(owner_view, "/join #{channel}")
+      # The owner only has to be in the channel first, not on a screen.
+      ensure_channel(channel)
+      {:ok, _state} = Server.join(channel, owner)
       :ok = Server.set_welcome(channel, "Owner managed welcome", owner)
       :ok = Server.set_mode(channel, owner, "+j", ["5:45"])
 
@@ -341,8 +301,7 @@ defmodule RetroHexChatWeb.ChannelCentralFeatureTest do
 
       owner_view = connect_user(conn, owner)
       submit_command_sync(owner_view, "/join #{channel}")
-      target_view = connect_user(conn, target)
-      submit_command_sync(target_view, "/join #{channel}")
+      {:ok, _state} = Server.join(channel, target)
 
       render_click(owner_view, "switch_channel", %{"channel" => channel})
       html = open_cc(owner_view, channel)
@@ -379,14 +338,21 @@ defmodule RetroHexChatWeb.ChannelCentralFeatureTest do
   # ══════════════════════════════════════════════════════════════
 
   describe "US4: Ban Management" do
-    test "4.1 operator adds ban via dialog", %{conn: conn} do
-      channel = "#e2ebn-#{uid()}"
-      view = connect_user(conn, "E2EBn#{uid()}")
+    # An entry already on the list when the dialog opens, and one added through
+    # its dialog, both leave through their own row's Remove.
+    test "4.1 operator adds a ban via dialog and removes bans", %{conn: conn} do
+      channel = "##e2ebn-#{uid()}"
+      nick = "E2EBn#{uid()}"
+      view = connect_user(conn, nick)
       submit_command_sync(view, "/join #{channel}")
       render_click(view, "switch_channel", %{"channel" => channel})
+
+      Server.ban(channel, nick, "TempBan")
       open_cc(view, channel)
 
       cc(view, "channel_central_tab", %{"tab" => "access_lists"})
+      assert render(view) =~ "TempBan"
+
       cc(view, "cc_open_add_list_entry")
 
       html = render(view)
@@ -400,27 +366,12 @@ defmodule RetroHexChatWeb.ChannelCentralFeatureTest do
 
       html = render(view)
       assert html =~ "Spammer"
-    end
-
-    test "4.2 operator removes ban", %{conn: conn} do
-      channel = "#e2erb-#{uid()}"
-      nick = "E2ERb#{uid()}"
-      view = connect_user(conn, nick)
-      submit_command_sync(view, "/join #{channel}")
-      render_click(view, "switch_channel", %{"channel" => channel})
-
-      Server.ban(channel, nick, "TempBan")
-      open_cc(view, channel)
-
-      cc(view, "channel_central_tab", %{"tab" => "access_lists"})
-
-      html = render(view)
-      assert html =~ "TempBan"
 
       cc(view, "cc_remove_list_entry", %{"nickname" => "TempBan"})
+      cc(view, "cc_remove_list_entry", %{"nickname" => "Spammer"})
 
       html = render(view)
-      # After removing, the ban table should show the empty placeholder
+      # After removing both, the table shows the empty placeholder
       assert html =~ "No bans"
     end
   end
@@ -430,15 +381,22 @@ defmodule RetroHexChatWeb.ChannelCentralFeatureTest do
   # ══════════════════════════════════════════════════════════════
 
   describe "US5: Ban Exceptions" do
-    test "5.1 operator adds ban exception via dialog", %{conn: conn} do
-      channel = "#e2ebe-#{uid()}"
-      view = connect_user(conn, "E2EBe#{uid()}")
+    # An entry already on the list when the dialog opens, and one added through
+    # its dialog, both leave through their own row's Remove.
+    test "5.1 operator adds a ban exception via dialog and removes ban exceptions", %{conn: conn} do
+      channel = "##e2ebe-#{uid()}"
+      nick = "E2EBe#{uid()}"
+      view = connect_user(conn, nick)
       submit_command_sync(view, "/join #{channel}")
       render_click(view, "switch_channel", %{"channel" => channel})
+
+      Server.add_ban_exception(channel, nick, "ExUser")
       open_cc(view, channel)
 
       cc(view, "channel_central_tab", %{"tab" => "access_lists"})
       cc_list(view, "ban_exceptions")
+      assert render(view) =~ "ExUser"
+
       cc(view, "cc_open_add_list_entry")
 
       html = render(view)
@@ -452,26 +410,12 @@ defmodule RetroHexChatWeb.ChannelCentralFeatureTest do
 
       html = render(view)
       assert html =~ "Exempt1"
-    end
-
-    test "5.2 operator removes ban exception", %{conn: conn} do
-      channel = "#e2erbx-#{uid()}"
-      nick = "E2ERbx#{uid()}"
-      view = connect_user(conn, nick)
-      submit_command_sync(view, "/join #{channel}")
-      render_click(view, "switch_channel", %{"channel" => channel})
-
-      Server.add_ban_exception(channel, nick, "ExUser")
-      open_cc(view, channel)
-
-      cc(view, "channel_central_tab", %{"tab" => "access_lists"})
-      html = cc_list(view, "ban_exceptions")
-      assert html =~ "ExUser"
 
       cc(view, "cc_remove_list_entry", %{"nickname" => "ExUser"})
+      cc(view, "cc_remove_list_entry", %{"nickname" => "Exempt1"})
 
       html = render(view)
-      # After removing, the ban exceptions table should show the empty placeholder
+      # After removing both, the table shows the empty placeholder
       assert html =~ "No ban exceptions"
     end
   end
@@ -481,15 +425,24 @@ defmodule RetroHexChatWeb.ChannelCentralFeatureTest do
   # ══════════════════════════════════════════════════════════════
 
   describe "US6: Invite Exceptions" do
-    test "6.1 operator adds invite exception via dialog", %{conn: conn} do
-      channel = "#e2eie-#{uid()}"
-      view = connect_user(conn, "E2EIe#{uid()}")
+    # An entry already on the list when the dialog opens, and one added through
+    # its dialog, both leave through their own row's Remove.
+    test "6.1 operator adds an invite exception via dialog and removes invite exceptions", %{
+      conn: conn
+    } do
+      channel = "##e2eie-#{uid()}"
+      nick = "E2EIe#{uid()}"
+      view = connect_user(conn, nick)
       submit_command_sync(view, "/join #{channel}")
       render_click(view, "switch_channel", %{"channel" => channel})
+
+      Server.add_invite_exception(channel, nick, "InvEx1")
       open_cc(view, channel)
 
       cc(view, "channel_central_tab", %{"tab" => "access_lists"})
       cc_list(view, "invite_exceptions")
+      assert render(view) =~ "InvEx1"
+
       cc(view, "cc_open_add_list_entry")
 
       html = render(view)
@@ -503,26 +456,12 @@ defmodule RetroHexChatWeb.ChannelCentralFeatureTest do
 
       html = render(view)
       assert html =~ "InvUser"
-    end
-
-    test "6.2 operator removes invite exception", %{conn: conn} do
-      channel = "#e2erix-#{uid()}"
-      nick = "E2ERix#{uid()}"
-      view = connect_user(conn, nick)
-      submit_command_sync(view, "/join #{channel}")
-      render_click(view, "switch_channel", %{"channel" => channel})
-
-      Server.add_invite_exception(channel, nick, "InvEx1")
-      open_cc(view, channel)
-
-      cc(view, "channel_central_tab", %{"tab" => "access_lists"})
-      html = cc_list(view, "invite_exceptions")
-      assert html =~ "InvEx1"
 
       cc(view, "cc_remove_list_entry", %{"nickname" => "InvEx1"})
+      cc(view, "cc_remove_list_entry", %{"nickname" => "InvUser"})
 
       html = render(view)
-      # After removing, the invite exceptions table should show the empty placeholder
+      # After removing both, the table shows the empty placeholder
       assert html =~ "No invite exceptions"
     end
   end
@@ -532,7 +471,8 @@ defmodule RetroHexChatWeb.ChannelCentralFeatureTest do
   # ══════════════════════════════════════════════════════════════
 
   describe "US7: Real-Time Updates" do
-    test "7.1 topic change updates open dialog", %{conn: conn} do
+    # Topic, mode and ban changes made elsewhere all reach one open dialog.
+    test "7.1 topic, mode and ban changes update the open dialog", %{conn: conn} do
       channel = "#e2ert1-#{uid()}"
       nick = "E2ERt1#{uid()}"
       view = connect_user(conn, nick)
@@ -543,15 +483,6 @@ defmodule RetroHexChatWeb.ChannelCentralFeatureTest do
       Server.set_topic(channel, nick, "Real-time topic")
       html = render(view)
       assert html =~ "Real-time topic"
-    end
-
-    test "7.2 mode change updates modes tab", %{conn: conn} do
-      channel = "#e2ert2-#{uid()}"
-      nick = "E2ERt2#{uid()}"
-      view = connect_user(conn, nick)
-      submit_command_sync(view, "/join #{channel}")
-      render_click(view, "switch_channel", %{"channel" => channel})
-      open_cc(view, channel)
 
       Server.set_mode(channel, nick, "+m", [])
 
@@ -561,15 +492,6 @@ defmodule RetroHexChatWeb.ChannelCentralFeatureTest do
       cc(view, "channel_central_tab", %{"tab" => "modes"})
       html = render(view)
       assert html =~ "Moderated (+m)"
-    end
-
-    test "7.3 ban added updates bans tab", %{conn: conn} do
-      channel = "#e2ert3-#{uid()}"
-      nick = "E2ERt3#{uid()}"
-      view = connect_user(conn, nick)
-      submit_command_sync(view, "/join #{channel}")
-      render_click(view, "switch_channel", %{"channel" => channel})
-      open_cc(view, channel)
 
       Server.ban(channel, nick, "RtBanned")
       render(view)

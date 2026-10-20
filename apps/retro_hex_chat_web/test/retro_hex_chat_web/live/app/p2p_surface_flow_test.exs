@@ -4,9 +4,12 @@ defmodule RetroHexChatWeb.App.P2PSurfaceFlowTest do
 
   These flows used to be driven through the chat's P2P window. There is no such
   window: a session has one door and it is the card the invite writes into the
-  private message. So each test here does both halves — the chat's control sends
-  the invite and creates the session, and the test follows the address that card
-  carries, the way a reader does.
+  private message. A test about the chat's half — the `/p2p` command, the PM
+  entry, declining from the conversation, `/ignore` — mounts both chats
+  (`chat: true`), sends the invite from there and follows the address the card
+  carries, the way a reader does. Every other test is about the room itself: it
+  creates the session through `Lobby.create_session/3`, which is the same call
+  the chat's control makes, and opens `/p2p/:token` directly.
 
   What the chat still draws *about* a session it cannot reach — the PM badge, the
   tab glyph, the status zone — is asserted in `chat_live/p2p_session_flow_test.exs`.
@@ -22,6 +25,7 @@ defmodule RetroHexChatWeb.App.P2PSurfaceFlowTest do
   alias RetroHexChat.Calls.Events, as: CallEvents
   alias RetroHexChat.Chat.Queries, as: ChatQueries
   alias RetroHexChat.Lobby
+  alias RetroHexChat.Services.NickServ
   alias RetroHexChat.Services.RegisteredNick
 
   # How long a pushed event may take to arrive, not how long it should. The
@@ -49,11 +53,8 @@ defmodule RetroHexChatWeb.App.P2PSurfaceFlowTest do
     conn_a = chat_conn(conn, nick_a, chat_conn_opts(trusted_a))
     conn_b = chat_conn(conn, nick_b, chat_conn_opts(trusted_b))
 
-    {:ok, view_a, _} = live(conn_a, "/")
-    {:ok, view_b, _} = live(conn_b, "/")
-
-    Process.put({:conn, view_a.pid}, conn_a)
-    Process.put({:conn, view_b.pid}, conn_b)
+    view_a = seat(conn_a, nick_a, Keyword.get(opts, :chat, false))
+    view_b = seat(conn_b, nick_b, Keyword.get(opts, :chat, false))
 
     %{
       a: a,
@@ -64,6 +65,33 @@ defmodule RetroHexChatWeb.App.P2PSurfaceFlowTest do
       view_b: view_b
     }
   end
+
+  # Where a participant stands: their chat when the test is about the chat's
+  # half, otherwise a bare seat that only remembers the conn its `/p2p/:token`
+  # page is opened with. The room admits identified nicks only, which is what a
+  # pre-identified chat mount records; a bare seat records the same thing
+  # through the call that mount makes.
+  defp seat(conn, _nickname, true) do
+    {:ok, view, _} = live(conn, "/")
+    Process.put({:conn, view.pid}, conn)
+    view
+  end
+
+  defp seat(conn, nickname, false) do
+    :ok = NickServ.restore_identified(nickname)
+    assert NickServ.identified?(nickname)
+    on_exit(fn -> NickServ.remove_identified(nickname) end)
+
+    key = make_ref()
+    Process.put({:conn, key}, conn)
+    %{seat: key}
+  end
+
+  defp seat_key(%{seat: key}), do: key
+  defp seat_key(%{pid: pid}), do: pid
+
+  defp chat?(%{seat: _key}), do: false
+  defp chat?(_view), do: true
 
   defp maybe_remember_device(nick, true) do
     {:ok, result} = TrustedDevices.remember_nick(nil, nick.nickname)
@@ -87,14 +115,14 @@ defmodule RetroHexChatWeb.App.P2PSurfaceFlowTest do
   # session it opened for which chat instead of looking for a child that does
   # not exist.
   defp open_p2p(view, token) do
-    {:ok, p2p, _html} = live(Process.get({:conn, view.pid}), "/p2p/#{token}")
-    Process.put({:p2p_view, view.pid}, p2p)
+    {:ok, p2p, _html} = live(Process.get({:conn, seat_key(view)}), "/p2p/#{token}")
+    Process.put({:p2p_view, seat_key(view)}, p2p)
     flush(view)
     p2p
   end
 
   defp p2p_view(view) do
-    case Process.get({:p2p_view, view.pid}) do
+    case Process.get({:p2p_view, seat_key(view)}) do
       nil ->
         nil
 
@@ -132,9 +160,8 @@ defmodule RetroHexChatWeb.App.P2PSurfaceFlowTest do
   # Both processes: a control on the session does not reach the chat, and a chat
   # control does not reach the session, so neither is settled by the other.
   defp flush(view) do
-    state = :sys.get_state(view.pid)
-    settle_p2p(Process.get({:p2p_view, view.pid}))
-    state
+    if chat?(view), do: :sys.get_state(view.pid)
+    settle_p2p(Process.get({:p2p_view, seat_key(view)}))
   end
 
   defp settle_p2p(nil), do: :ok
@@ -186,8 +213,14 @@ defmodule RetroHexChatWeb.App.P2PSurfaceFlowTest do
   # Creating the session IS inviting, so `/p2p <nick>` sends the invite and the
   # creator lands in the starting room — where the devices are chosen while
   # waiting for an answer, instead of before asking the question.
+  # Without the chat, the session is created by the call the chat's control
+  # makes, and the creator follows its address all the same.
   defp invite(ctx, params \\ %{}) do
-    submit_command_sync(ctx.view_a, "/p2p #{ctx.b.nickname}")
+    if chat?(ctx.view_a) do
+      submit_command_sync(ctx.view_a, "/p2p #{ctx.b.nickname}")
+    else
+      assert {:ok, _created} = Lobby.create_session(ctx.a.id, ctx.b.id, metadata: %{})
+    end
 
     session = Lobby.active_session_for_user(ctx.a.id)
     assert session, "expected /p2p to create the session and send the invite"
@@ -294,7 +327,7 @@ defmodule RetroHexChatWeb.App.P2PSurfaceFlowTest do
   describe "invite → accept" do
     test "the invite goes out with the command and the creator lands in the room",
          %{conn: conn} do
-      ctx = mount_pair(conn, "p2pgs#{uid()}", "p2pgt#{uid()}")
+      ctx = mount_pair(conn, "p2pgs#{uid()}", "p2pgt#{uid()}", chat: true)
 
       submit_command_sync(ctx.view_a, "/p2p #{ctx.b.nickname}")
 
@@ -318,7 +351,7 @@ defmodule RetroHexChatWeb.App.P2PSurfaceFlowTest do
     end
 
     test "the PM entry creates the session, and its address is the way in", %{conn: conn} do
-      ctx = mount_pair(conn, "p2pgw#{uid()}", "p2pgx#{uid()}")
+      ctx = mount_pair(conn, "p2pgw#{uid()}", "p2pgx#{uid()}", chat: true)
 
       render_click(ctx.view_a, "switch_pm", %{"nickname" => ctx.b.nickname})
       refute Lobby.active_session_for_user(ctx.a.id)
@@ -502,7 +535,7 @@ defmodule RetroHexChatWeb.App.P2PSurfaceFlowTest do
 
   describe "decline and cancel" do
     test "declining closes the pending session and clears the creator state", %{conn: conn} do
-      ctx = mount_pair(conn, "p2pfe#{uid()}", "p2pff#{uid()}")
+      ctx = mount_pair(conn, "p2pfe#{uid()}", "p2pff#{uid()}", chat: true)
       session = invite(ctx)
 
       render_click(ctx.view_b, "p2p_decline_invite", %{"token" => session.token})
@@ -1221,7 +1254,7 @@ defmodule RetroHexChatWeb.App.P2PSurfaceFlowTest do
     end
 
     test "declining persists the decliner's p2p_system line", %{conn: conn} do
-      ctx = mount_pair(conn, "p2pfy#{uid()}", "p2pfz#{uid()}")
+      ctx = mount_pair(conn, "p2pfy#{uid()}", "p2pfz#{uid()}", chat: true)
       session = invite(ctx)
 
       render_click(ctx.view_b, "p2p_decline_invite", %{"token" => session.token})
@@ -1235,7 +1268,7 @@ defmodule RetroHexChatWeb.App.P2PSurfaceFlowTest do
 
   describe "ignore and P2P safety" do
     test "ignoring the active peer closes the session and blocks a new invite", %{conn: conn} do
-      ctx = mount_pair(conn, "p2pgi#{uid()}", "p2pgj#{uid()}")
+      ctx = mount_pair(conn, "p2pgi#{uid()}", "p2pgj#{uid()}", chat: true)
       session = invite(ctx)
       accept_invite(ctx, session.token)
       flush(ctx.view_a)
@@ -1262,7 +1295,7 @@ defmodule RetroHexChatWeb.App.P2PSurfaceFlowTest do
   describe "more than one session" do
     test "a second peer's invite creates a second session, and neither ends the other",
          %{conn: conn} do
-      ctx = mount_pair(conn, "p2pfi#{uid()}", "p2pfj#{uid()}")
+      ctx = mount_pair(conn, "p2pfi#{uid()}", "p2pfj#{uid()}", chat: true)
       c = register("p2pfk#{uid()}")
       conn_c = chat_conn(conn, c.nickname, pre_identified: true)
       {:ok, view_c, _} = live(conn_c, "/")

@@ -54,8 +54,10 @@ defmodule RetroHexChat.Services.NickServRaceTest do
       # Immediately identify (synchronous call processed before async timer message)
       {:ok, _} = NickServ.identify(nickname, password, serial_server)
 
-      # Timer should have been cancelled during identify
-      refute_receive {:force_rename, _}, 300
+      # Timer should have been cancelled during identify, leaving the nick identified
+      assert :sys.get_state(serial_server).timers == %{}
+      assert NickServ.identified?(nickname, serial_server)
+      refute_receive {:force_rename, _}, 150
     end
   end
 

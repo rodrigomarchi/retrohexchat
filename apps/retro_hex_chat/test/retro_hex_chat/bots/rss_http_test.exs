@@ -107,19 +107,13 @@ defmodule RetroHexChat.Bots.RSSHTTPTest do
     {:ok, url: "http://127.0.0.1:#{port}/feed.xml"}
   end
 
-  # Waiting for the first headline is waiting on a poll that fetches over HTTP,
-  # parses and broadcasts — seconds when CI has three partitions on one machine.
-  # Draining the rest afterwards only has to outwait a broadcast already on its
-  # way, so the two get different budgets.
-  @first_headline_timeout 5_000
-  @drain_timeout 300
-
-  defp headlines(timeout \\ @first_headline_timeout) do
+  # Called after poll/1 has settled the bot, so every headline is already here.
+  defp headlines do
     receive do
       %{event: "new_message", payload: %{author: "HttpWireBot", content: content}} ->
-        [content | headlines(@drain_timeout)]
+        [content | headlines()]
     after
-      timeout -> []
+      0 -> []
     end
   end
 
@@ -153,8 +147,14 @@ defmodule RetroHexChat.Bots.RSSHTTPTest do
     pid
   end
 
-  defp poll(pid),
-    do: send(pid, {:capability_timer, :rss, %{type: :poll, feed_id: "f1", channel: @channel}})
+  # The bot fetches over HTTP, parses and sends inside its own handle_info, and
+  # the channel broadcasts each message before its send_message call returns.
+  # A call to the bot queues behind the poll, so once it returns everything the
+  # poll posted is already in this mailbox.
+  defp poll(pid) do
+    send(pid, {:capability_timer, :rss, %{type: :poll, feed_id: "f1", channel: @channel}})
+    _ = :sys.get_state(pid)
+  end
 
   describe "Fetcher.HTTP" do
     test "fetches and parses over a real connection", %{url: url} do

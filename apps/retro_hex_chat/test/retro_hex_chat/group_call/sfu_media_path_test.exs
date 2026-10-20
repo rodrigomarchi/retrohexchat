@@ -13,6 +13,8 @@ defmodule RetroHexChat.GroupCall.SFUMediaPathTest do
   @video_packet_burst 40
   @audio_packet_burst 40
   @min_forwarded_packets 12
+  @rtp_burst_quiet_ms 100
+  @refute_window_ms 150
 
   setup do
     previous_port_range = Application.get_env(:retro_hex_chat, :sfu_ice_port_range)
@@ -97,7 +99,9 @@ defmodule RetroHexChat.GroupCall.SFUMediaPathTest do
 
       sequences = assert_rtp_packet_count(:alice, :video, 4)
       assert length(Enum.uniq(sequences)) == 4
-      refute_receive {:sfu_probe, :alice, :rtp, :video, _track_id, _sequence}, 500
+
+      refute_receive {:sfu_probe, :alice, :rtp, :video, _track_id, _sequence},
+                     @refute_window_ms
     after
       stop_all_synthetic_peers()
     end
@@ -1109,7 +1113,7 @@ defmodule RetroHexChat.GroupCall.SFUMediaPathTest do
 
         counts =
           counts
-          |> collect_rtp_counts(kind, 750)
+          |> collect_rtp_counts(kind, min_count, 750)
           |> Map.new()
 
         send_and_collect_rtp_counts(pid, kind, counts, min_count, attempts - 1)
@@ -1119,31 +1123,56 @@ defmodule RetroHexChat.GroupCall.SFUMediaPathTest do
   defp packet_burst(:audio), do: @audio_packet_burst
   defp packet_burst(:video), do: @video_packet_burst
 
-  defp collect_rtp_counts(counts, kind, timeout) do
+  # Counts `kind` RTP per target until every target has `min_count` or the
+  # deadline passes. Once the targets are satisfied it keeps reading until the
+  # rest of the burst stops arriving (a quiet gap), so no packet of this burst
+  # is left in the mailbox for the next assertion. Other probe messages are
+  # consumed while counting.
+  defp collect_rtp_counts(counts, kind, min_count, timeout) do
     deadline = System.monotonic_time(:millisecond) + timeout
-    collect_pending_rtp_counts(counts, kind, deadline)
+    collect_pending_rtp_counts(counts, kind, min_count, deadline)
   end
 
-  defp collect_pending_rtp_counts(counts, kind, deadline) do
+  defp collect_pending_rtp_counts(counts, kind, min_count, deadline) do
+    if Enum.all?(counts, fn {_name, count} -> count >= min_count end) do
+      drain_rtp_burst_tail(counts, kind, deadline)
+    else
+      remaining = max(deadline - System.monotonic_time(:millisecond), 0)
+
+      receive do
+        {:sfu_probe, name, :rtp, ^kind, _track_id, _sequence} ->
+          counts
+          |> count_rtp(name)
+          |> collect_pending_rtp_counts(kind, min_count, deadline)
+
+        _other ->
+          collect_pending_rtp_counts(counts, kind, min_count, deadline)
+      after
+        remaining ->
+          counts
+      end
+    end
+  end
+
+  defp drain_rtp_burst_tail(counts, kind, deadline) do
     remaining = max(deadline - System.monotonic_time(:millisecond), 0)
 
     receive do
       {:sfu_probe, name, :rtp, ^kind, _track_id, _sequence} ->
-        counts =
-          if Map.has_key?(counts, name) do
-            Map.update!(counts, name, &(&1 + 1))
-          else
-            counts
-          end
-
-        collect_pending_rtp_counts(counts, kind, deadline)
+        counts
+        |> count_rtp(name)
+        |> drain_rtp_burst_tail(kind, deadline)
 
       _other ->
-        collect_pending_rtp_counts(counts, kind, deadline)
+        drain_rtp_burst_tail(counts, kind, deadline)
     after
-      remaining ->
+      min(remaining, @rtp_burst_quiet_ms) ->
         counts
     end
+  end
+
+  defp count_rtp(counts, name) do
+    if Map.has_key?(counts, name), do: Map.update!(counts, name, &(&1 + 1)), else: counts
   end
 
   defp assert_rtp_packet_count(name, kind, expected_count, timeout \\ 5_000) do
@@ -1172,7 +1201,7 @@ defmodule RetroHexChat.GroupCall.SFUMediaPathTest do
     end
   end
 
-  defp refute_rtp_for(names, kind, timeout \\ 500) do
+  defp refute_rtp_for(names, kind, timeout \\ @refute_window_ms) do
     receive do
       {:sfu_probe, name, :rtp, ^kind, _track_id, sequence} ->
         if name in names do

@@ -159,30 +159,29 @@ defmodule RetroHexChat.Bots.RSSPublishingTest do
     {bot, pid}
   end
 
-  defp poll(pid),
-    do: send(pid, {:capability_timer, :rss, %{type: :poll, feed_id: "f1", channel: @channel}})
+  # The bot polls inside its own handle_info — fetch, parse and every send —
+  # and the channel broadcasts each message before its send_message call
+  # returns. A call to the bot queues behind the poll, so once it returns
+  # everything the poll posted is already in this mailbox.
+  defp poll(pid) do
+    send(pid, {:capability_timer, :rss, %{type: :poll, feed_id: "f1", channel: @channel}})
+    settle(pid)
+  end
 
-  # Two different questions, and one timeout cannot answer both. "Did it say
-  # anything?" has to outwait a poll that fetches, parses and broadcasts —
-  # seconds, when CI is running three partitions on one machine. "Did it stay
-  # quiet?" only has to outwait a broadcast that is already on its way. So the
-  # first message gets a generous wait and the rest a short drain; asserting
-  # silence skips the wait entirely.
-  @first_message_timeout 5_000
-  @drain_timeout 300
+  defp settle(pid), do: _ = :sys.get_state(pid)
 
-  defp bot_messages(timeout) do
+  defp bot_messages do
     receive do
       %{event: "new_message", payload: %{author: "WireBot"} = payload} ->
-        [payload | bot_messages(@drain_timeout)]
+        [payload | bot_messages()]
     after
-      timeout -> []
+      0 -> []
     end
   end
 
-  defp headlines, do: Enum.map(bot_messages(@first_message_timeout), & &1.content)
+  defp headlines, do: Enum.map(bot_messages(), & &1.content)
 
-  defp no_headlines, do: Enum.map(bot_messages(@drain_timeout), & &1.content)
+  defp no_headlines, do: headlines()
 
   defp start_channel(channel_name) do
     case Channels.Supervisor.start_child(channel_name) do
@@ -267,7 +266,7 @@ defmodule RetroHexChat.Bots.RSSPublishingTest do
       start_bot([%{"id" => "f1", "url" => @url, "channel" => @channel, "seen" => ["urn:wire:1"]}])
 
     poll(pid)
-    assert [payload] = bot_messages(@first_message_timeout)
+    assert [payload] = bot_messages()
 
     assert payload.content_format == "markdown"
     assert payload.content =~ "**Example News**"
@@ -342,7 +341,6 @@ defmodule RetroHexChat.Bots.RSSPublishingTest do
     {_bot, pid} = start_bot(@unseen)
 
     poll(pid)
-    Process.sleep(80)
 
     assert no_headlines() == []
 
@@ -367,6 +365,8 @@ defmodule RetroHexChat.Bots.RSSPublishingTest do
           reply_to_preview: nil
         }
       })
+
+      settle(pid)
     end
 
     setup do
@@ -420,7 +420,6 @@ defmodule RetroHexChat.Bots.RSSPublishingTest do
       assert [_line] = headlines()
 
       check(pid)
-      Process.sleep(120)
 
       %{feeds: [feed]} = :sys.get_state(pid).capability_states[:rss]
 

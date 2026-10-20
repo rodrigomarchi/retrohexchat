@@ -79,7 +79,12 @@ config :retro_hex_chat,
   # Whether the greeter has met somebody before decides which of three welcomes
   # it composes. The stub answers that question directly so a composition test
   # stays a composition test; `Queries.record_greeting/4` proves the ledger.
-  bot_greeting_ledger: RetroHexChat.Bots.GreetingLedgerStub
+  bot_greeting_ledger: RetroHexChat.Bots.GreetingLedgerStub,
+  # Bots speak without a gap between messages: the real pace is one message
+  # every 3s per bot, which a test publishing a feed page would sleep through.
+  # bots/pace_test.exs covers the derived pace, and output_telemetry_test.exs
+  # sets a short real gap to cover the waits.
+  bot_pace_interval_ms: 0
 
 # TURN server test overrides — disable listener, use random port, fixed secrets
 config :retro_hex_chat,

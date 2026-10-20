@@ -12,9 +12,9 @@ defmodule RetroHexChat.VirtualSpace.CombatTest do
   setup do
     Application.put_env(:retro_hex_chat, :virtual_space_step_ms, 0)
     Application.put_env(:retro_hex_chat, :virtual_space_action_ms, 0)
-    # Long enough that the mid-KO assertions (a 100ms refute window) finish
+    # Long enough that the mid-KO assertions (a few synchronous calls) finish
     # before the getup timer fires, short enough to keep the test fast.
-    Application.put_env(:retro_hex_chat, :virtual_space_ko_down_ms, 600)
+    Application.put_env(:retro_hex_chat, :virtual_space_ko_down_ms, 200)
 
     on_exit(fn ->
       Application.delete_env(:retro_hex_chat, :virtual_space_step_ms)
@@ -88,6 +88,9 @@ defmodule RetroHexChat.VirtualSpace.CombatTest do
 
   defp swing(ctx), do: ChannelSpaceServer.action(ctx.channel_name, ctx.alice, %{kind: "sword"})
 
+  # The space server broadcasts while it handles a call, so once a call such as
+  # `swing/1` has returned every event it caused is already in the mailbox and
+  # `refute_received` needs no wait.
   defp flush_space_events do
     receive do
       %{event: _} -> flush_space_events()
@@ -126,7 +129,7 @@ defmodule RetroHexChat.VirtualSpace.CombatTest do
       if abs(alice.x - bob_before.x) > 1 or abs(alice.y - bob_before.y) > 1 do
         assert :ok = swing(ctx)
         bob_key = ctx.bob
-        refute_receive %{event: "space_action", payload: %{kind: "hit", key: ^bob_key}}, 100
+        refute_received %{event: "space_action", payload: %{kind: "hit", key: ^bob_key}}
         assert participant(ctx.channel_name, ctx.bob).hp == bob_before.hp
       end
     end
@@ -141,7 +144,7 @@ defmodule RetroHexChat.VirtualSpace.CombatTest do
 
       alice_key = ctx.alice
       assert_receive %{event: "space_action", payload: %{kind: "wave", key: ^alice_key}}
-      refute_receive %{event: "space_delta"}, 100
+      refute_received %{event: "space_delta"}
 
       assert Map.delete(participant(ctx.channel_name, ctx.alice), :last_action_at) ==
                Map.delete(before, :last_action_at)
@@ -249,7 +252,7 @@ defmodule RetroHexChat.VirtualSpace.CombatTest do
 
       flush_space_events()
       assert :ok = swing(ctx)
-      refute_receive %{event: "space_action", payload: %{kind: "hit", key: ^bob_key}}, 100
+      refute_received %{event: "space_action", payload: %{kind: "hit", key: ^bob_key}}
       assert participant(ctx.channel_name, ctx.bob).hp == 0
 
       # Recovery: back on their feet with full HP after the down window.

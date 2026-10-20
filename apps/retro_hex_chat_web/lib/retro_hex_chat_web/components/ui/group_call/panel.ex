@@ -1294,15 +1294,36 @@ defmodule RetroHexChatWeb.Components.UI.GroupCall.Panel do
 
   defp self_participant_fallback(_call), do: nil
 
-  defp moderator_participant?(%{channel_role_snapshot: role})
-       when role in ["owner", "operator", "half_operator"],
-       do: true
-
+  defp moderator_participant?(%{channel_role_snapshot: role}), do: moderator_role?(role)
   defp moderator_participant?(_participant), do: false
 
   defp can_moderate_target?(%{channel_role_snapshot: actor_role}, %{
          channel_role_snapshot: target_role
-       }) do
+       }),
+       do: moderates_role?(actor_role, target_role)
+
+  defp can_moderate_target?(_actor, _target), do: false
+
+  defp can_ban_target?(%{channel_role_snapshot: actor_role}, %{channel_role_snapshot: target_role}),
+       do: removes_role?(actor_role, target_role)
+
+  defp can_ban_target?(_actor, _target), do: false
+
+  @doc """
+  Whether a participant whose channel role is `role` is offered the
+  conference-wide controls, such as closing the room: half-operators and up.
+  """
+  @spec moderator_role?(term()) :: boolean()
+  def moderator_role?(role), do: role in ["owner", "operator", "half_operator"]
+
+  @doc """
+  Whether a participant whose channel role is `actor_role` is offered the media
+  moderation controls (microphone, camera, screen) on a participant whose role
+  is `target_role`: half-operators and up, over a lower rank only. An unknown
+  role on either side offers nothing.
+  """
+  @spec moderates_role?(term(), term()) :: boolean()
+  def moderates_role?(actor_role, target_role) do
     with actor_rank when is_integer(actor_rank) <- role_rank(actor_role),
          target_rank when is_integer(target_rank) <- role_rank(target_role) do
       actor_rank >= role_rank("half_operator") and actor_rank > target_rank
@@ -1311,9 +1332,14 @@ defmodule RetroHexChatWeb.Components.UI.GroupCall.Panel do
     end
   end
 
-  defp can_moderate_target?(_actor, _target), do: false
-
-  defp can_ban_target?(%{channel_role_snapshot: actor_role}, %{channel_role_snapshot: target_role}) do
+  @doc """
+  Whether a participant whose channel role is `actor_role` is offered the
+  remove-and-ban control on a participant whose role is `target_role`:
+  operators and owners, over a lower rank only. An unknown role on either side
+  offers nothing.
+  """
+  @spec removes_role?(term(), term()) :: boolean()
+  def removes_role?(actor_role, target_role) do
     with actor_rank when is_integer(actor_rank) <- role_rank(actor_role),
          target_rank when is_integer(target_rank) <- role_rank(target_role) do
       actor_role in ["owner", "operator"] and actor_rank > target_rank
@@ -1321,8 +1347,6 @@ defmodule RetroHexChatWeb.Components.UI.GroupCall.Panel do
       _unknown_role -> false
     end
   end
-
-  defp can_ban_target?(_actor, _target), do: false
 
   defp role_rank(role) when is_atom(role), do: role |> Atom.to_string() |> role_rank()
   defp role_rank("owner"), do: 4

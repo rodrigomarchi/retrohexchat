@@ -1,10 +1,13 @@
 defmodule RetroHexChatWeb.HelpLiveTest do
   use RetroHexChatWeb.ConnCase, async: true
 
+  import Phoenix.Component, only: [sigil_H: 2]
   import Phoenix.LiveViewTest
 
   alias RetroHexChat.Chat.HelpTopics
+  alias RetroHexChatWeb.Components.UI.Help.HelpViewer
   alias RetroHexChatWeb.HelpLive.ContentIndex
+  alias RetroHexChatWeb.HelpLive.HelpHelpers
 
   @moduletag :liveview
 
@@ -293,22 +296,59 @@ defmodule RetroHexChatWeb.HelpLiveTest do
       refute html =~ ~s(data-testid="help-topic-description")
     end
 
-    test "every topic has one See Also, and it reaches every related topic", %{conn: conn} do
-      for topic <- HelpTopics.all_topics() do
-        document =
-          conn |> get(topic_path(topic.id)) |> html_response(200) |> Floki.parse_document!()
+    # The content pane is the viewer's topic (`help_topic/1` around the topic's
+    # own content), so every topic is checked on that markup directly; the
+    # pages fetched below prove the served page carries the same pane.
+    defp see_also_problems(topic, content) do
+      headings = content |> Floki.find("h2, h4") |> Enum.count(&(Floki.text(&1) =~ "See Also"))
+      linked = content |> Floki.find("a") |> Floki.attribute("href")
 
-        content = Floki.find(document, ~s([data-testid="help-content-pane"]))
-        headings = content |> Floki.find("h2, h4") |> Enum.count(&(Floki.text(&1) =~ "See Also"))
-        linked = content |> Floki.find("a") |> Floki.attribute("href")
+      many = if headings > 1, do: ["#{topic.id} shows #{headings} See Also headings"], else: []
 
-        assert headings <= 1, "#{topic.id} shows #{headings} See Also headings"
-
+      unlinked =
         for related <- Map.get(topic, :see_also, []),
-            HelpTopics.get_topic(related) do
-          assert topic_path(related) in linked,
-                 "#{topic.id} lists #{related} as related but never links it"
-        end
+            HelpTopics.get_topic(related),
+            topic_path(related) not in linked,
+            do: "#{topic.id} lists #{related} as related but never links it"
+
+      many ++ unlinked
+    end
+
+    defp content_pane(topic) do
+      assigns = %{topic: topic}
+
+      ~H"""
+      <HelpViewer.help_topic topic={@topic}>
+        <HelpHelpers.render_topic_content id={@topic.id} />
+      </HelpViewer.help_topic>
+      """
+      |> rendered_to_string()
+      |> Floki.parse_fragment!()
+    end
+
+    test "every topic has one See Also, and it reaches every related topic" do
+      problems =
+        Enum.flat_map(HelpTopics.all_topics(), &see_also_problems(&1, content_pane(&1)))
+
+      assert problems == []
+    end
+
+    test "a served topic's pane is the topic as the viewer draws it", %{conn: conn} do
+      for id <- ~w(welcome cmd-ban mode-l feature-arcade-doom-shareware keyboard-shortcuts) do
+        topic = HelpTopics.get_topic(id)
+
+        content =
+          conn
+          |> get(topic_path(id))
+          |> html_response(200)
+          |> Floki.parse_document!()
+          |> Floki.find(~s([data-testid="help-content-pane"]))
+
+        assert see_also_problems(topic, content) == []
+
+        assert content |> Floki.find("a") |> Floki.attribute("href") ==
+                 topic |> content_pane() |> Floki.find("a") |> Floki.attribute("href"),
+               "#{id} serves links the viewer's topic does not draw"
       end
     end
   end

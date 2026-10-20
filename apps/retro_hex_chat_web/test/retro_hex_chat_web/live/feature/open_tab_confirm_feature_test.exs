@@ -37,7 +37,8 @@ defmodule RetroHexChatWeb.OpenTabConfirmFeatureTest do
   end
 
   describe "the question" do
-    test "a door of ours raises it, named and without an address", %{conn: conn} do
+    test "a door of ours raises it, named and without an address; cancelling puts it away",
+         %{conn: conn} do
       view = open_chat(conn, "OT1")
 
       html = gate(view, %{"url" => "/call/abc", "kind" => "surface", "label" => "Call in #retro"})
@@ -45,12 +46,6 @@ defmodule RetroHexChatWeb.OpenTabConfirmFeatureTest do
       assert html =~ ~s(id="open-tab-confirm-dialog-show-trigger")
       assert html =~ "This opens Call in #retro."
       refute html =~ ~s(data-testid="open-tab-confirm-url")
-    end
-
-    test "cancelling puts it away", %{conn: conn} do
-      view = open_chat(conn, "OT4")
-
-      _open = gate(view, %{"url" => "/call/abc", "kind" => "surface"})
 
       view
       |> element(~s([data-testid="open-tab-confirm-cancel"]))
@@ -67,28 +62,30 @@ defmodule RetroHexChatWeb.OpenTabConfirmFeatureTest do
     # but a message can put a link in front of somebody else and a message yields
     # no other scheme, so this is self-inflicted only — but a sink that is safe
     # because of who can reach it is a sink waiting for its reach to change.
-    for scheme <- ["javascript:alert(1)", "data:text/html,<script>1</script>", "vbscript:x"] do
-      test "#{scheme} opens no dialog", %{conn: conn} do
-        view = open_chat(conn, "OT5")
-
-        html = gate(view, %{"url" => unquote(scheme), "kind" => "external"})
-
-        refute html =~ ~s(id="open-tab-confirm-dialog-show-trigger")
-      end
-    end
-
+    #
     # `//evil.example` has no scheme and reads like a path, and a browser would
     # resolve it against the current protocol and go there.
-    test "a protocol-relative address opens no dialog", %{conn: conn} do
-      view = open_chat(conn, "OT6")
+    #
+    # A refusal opens nothing, so every refused payload is asked of one chat in
+    # turn, and the path of ours last proves the same chat still raises the
+    # question.
+    @refused [
+      %{"url" => "javascript:alert(1)", "kind" => "external"},
+      %{"url" => "data:text/html,<script>1</script>", "kind" => "external"},
+      %{"url" => "vbscript:x", "kind" => "external"},
+      %{"url" => "//evil.example/x", "kind" => "surface"}
+    ]
 
-      html = gate(view, %{"url" => "//evil.example/x", "kind" => "surface"})
+    test "unsafe schemes and a protocol-relative address open no dialog; a path of ours does",
+         %{conn: conn} do
+      view = open_chat(conn, "OT5")
 
-      refute html =~ ~s(id="open-tab-confirm-dialog-show-trigger")
-    end
+      for payload <- @refused do
+        html = gate(view, payload)
 
-    test "a path of ours is fine", %{conn: conn} do
-      view = open_chat(conn, "OT7")
+        refute html =~ ~s(id="open-tab-confirm-dialog-show-trigger"),
+               "#{payload["url"]} opened the dialog"
+      end
 
       html = gate(view, %{"url" => "/play/arcade/pong", "kind" => "external"})
 

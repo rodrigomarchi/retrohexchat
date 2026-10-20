@@ -7,6 +7,7 @@ defmodule RetroHexChatWeb.Site.PagesTest do
   alias RetroHexChatWeb.Components.UI.Site.Document
   alias RetroHexChatWeb.PublicPages
   alias RetroHexChatWeb.Site.About
+  alias RetroHexChatWeb.Site.Head
   alias RetroHexChatWeb.Site.Pages.Faq
   alias RetroHexChatWeb.Site.Registry
 
@@ -32,27 +33,44 @@ defmodule RetroHexChatWeb.Site.PagesTest do
         assert html =~ ~s(id="#{unquote(heading_id)}")
       end
 
-      # The page is read before the chat starts: the first paint loads the
-      # desktop's small entry, which fetches the LiveSocket later.
-      test "GET #{path} uses the lightweight desktop JavaScript bundle", %{conn: conn} do
-        conn = get(conn, unquote(path))
-        body = html_response(conn, 200)
+      # Every check here reads the page's first response — the one a crawler
+      # indexes and a reader's first paint draws — so it is fetched once.
+      test "GET #{path} is a page of the one desktop", %{conn: conn} do
+        path = unquote(path)
+        heading_id = unquote(heading_id)
+        body = conn |> get(path) |> html_response(200)
+        document = Floki.parse_document!(body)
 
+        # The page is read before the chat starts: the first paint loads the
+        # desktop's small entry, which fetches the LiveSocket later.
         assert body =~ "/assets/js/desktop.js"
         refute body =~ "/assets/js/retrohex_content.js"
         refute body =~ "/assets/js/app.js"
-      end
 
-      test "GET #{path} renders exactly one page-level h1", %{conn: conn} do
-        conn = get(conn, unquote(path))
-        document = html_response(conn, 200) |> Floki.parse_document!()
         h1s = Floki.find(document, "h1")
-
         assert length(h1s) == 1
-        assert Floki.attribute(h1s, "id") == [unquote(heading_id)]
-
+        assert Floki.attribute(h1s, "id") == [heading_id]
         h1_classes = h1s |> Floki.attribute("class") |> Enum.join(" ")
         refute h1_classes =~ "sr-only"
+
+        assert body =~ ~s(rel="canonical" href="https://retrohexchat.app#{path}")
+
+        head = page_head(path)
+
+        assert document |> Floki.find("title") |> Floki.text() |> String.trim() ==
+                 escaped(head.title),
+               "#{path} is not titled by its head"
+
+        assert document
+               |> Floki.find(~s(meta[name="description"]))
+               |> Floki.attribute("content") == [head.description],
+               "#{path} is not described by its head"
+
+        assert_sign_in_patches(document)
+        assert_taskbar(document)
+        assert_taskbar_buttons(document)
+        assert_declared_windows(document, path, heading_id)
+        assert_about(document, path)
       end
     end
   end
@@ -60,23 +78,104 @@ defmodule RetroHexChatWeb.Site.PagesTest do
   # The sign-in window is one of the desktop's own windows: a page reaches it
   # by patching to /connect, so the chat behind it never reloads. A plain link
   # to it would throw the reader's desktop away to draw the same thing again.
-  describe "the way into the app" do
-    for {path, _heading_id} <- @landing_pages do
-      test "GET #{path} opens the sign-in window without a page load", %{conn: conn} do
-        links =
-          conn
-          |> get(unquote(path))
-          |> html_response(200)
-          |> Floki.parse_document!()
-          |> Floki.find(~s(a[href^="/connect"]))
-
-        for link <- links do
-          assert Floki.attribute(link, "data-phx-link") == ["patch"],
-                 "#{Floki.raw_html(link)} reloads the page"
-        end
-      end
+  defp assert_sign_in_patches(document) do
+    for link <- Floki.find(document, ~s(a[href^="/connect"])) do
+      assert Floki.attribute(link, "data-phx-link") == ["patch"],
+             "#{Floki.raw_html(link)} reloads the page"
     end
+  end
 
+  defp assert_taskbar(document) do
+    assert Floki.find(document, ".desktop-taskbar") != []
+
+    # The taskbar is the app's own, driven by the window manager rather than
+    # a bespoke toggle — and the manager mounts on the shell root.
+    assert Floki.find(document, "[data-window-manager]") != []
+    assert Floki.find(document, "[data-window-start]") != []
+
+    # Every page of the site is a window of the one desktop, and the Start
+    # menu reaches each of them as a patch, never a page load.
+    start_menu = Floki.find(document, "#chat-start-menu")
+    assert start_menu != []
+    hrefs = start_menu |> Floki.find("a") |> Floki.attribute("href")
+
+    assert "/faq" in hrefs
+    assert "/chat/help" in hrefs
+
+    for page <- ["/", "/features", "/privacy", "/community"] do
+      assert page in hrefs, "the Start menu lost the link to #{page}"
+    end
+  end
+
+  # A visitor's home keeps its windows closed behind the chat; the desktop
+  # icon that opens them is their way back, and their taskbar group comes
+  # with them.
+  defp assert_taskbar_buttons(document) do
+    closed =
+      document
+      |> Floki.find(~s([data-window-group-open="false"] [data-window-id]))
+      |> Floki.attribute("data-window-id")
+
+    windows =
+      document
+      |> Floki.find("[data-window-id]")
+      |> Floki.attribute("data-window-id")
+      |> MapSet.new()
+      |> MapSet.difference(MapSet.new(closed))
+
+    buttons =
+      document
+      |> Floki.find("[data-window-taskbar]")
+      |> Floki.attribute("data-window-taskbar")
+      |> MapSet.new()
+
+    assert windows != MapSet.new()
+
+    assert MapSet.equal?(windows, buttons),
+           """
+           A window with no taskbar button cannot be reopened once closed.
+
+           windows without a button: #{inspect(MapSet.difference(windows, buttons))}
+           buttons without a window: #{inspect(MapSet.difference(buttons, windows))}
+           """
+  end
+
+  # The windows a page declares (`Site.Window`) are the windows it draws —
+  # nothing drawn undeclared, nothing declared missing — and the first of
+  # them, the one in front, says what the page is.
+  defp assert_declared_windows(document, path, heading_id) do
+    drawn =
+      document
+      |> Floki.find(~s([data-testid="site-windows"] [data-window-group="site"]))
+      |> Floki.attribute("data-window-id")
+
+    declared = for window <- page_windows(path), do: "site-" <> window.id
+
+    assert drawn == declared
+
+    [first | _rest] = Floki.find(document, ~s([data-window-group="site"]))
+    assert Floki.find(first, "h1##{heading_id}") != []
+    assert first |> Floki.find("p") |> Floki.text() |> String.trim() != ""
+  end
+
+  # The site's About is a window of the desk, closed, with the language
+  # links of the address on screen.
+  defp assert_about(document, path) do
+    about = Floki.find(document, ~s([data-testid="site-window-about"]))
+    assert about != [], "#{path} missing the About window"
+    assert Floki.attribute(about, "data-window-initial-open") == ["false"]
+    assert Floki.text(about) =~ "Languages", "#{path} missing language links"
+
+    localized = if path == "/", do: "/pt-BR", else: "/pt-BR" <> path
+
+    assert Floki.find(about, ~s(a[hreflang="pt-BR"][href="#{localized}"])) != [],
+           "#{path} missing its own localized link"
+  end
+
+  # The sign-in window is one of the desktop's own windows: a page reaches it
+  # by patching to /connect, so the chat behind it never reloads. A plain link
+  # to it would throw the reader's desktop away to draw the same thing again.
+  describe "the way into the app" do
     test "the home's Welcome leads to an account", %{conn: conn} do
       document = conn |> get("/") |> html_response(200) |> Floki.parse_document!()
 
@@ -145,96 +244,7 @@ defmodule RetroHexChatWeb.Site.PagesTest do
     end
   end
 
-  describe "win98 taskbar" do
-    for {path, _heading_id} <- @landing_pages do
-      test "GET #{path} renders the taskbar, start menu and page links", %{conn: conn} do
-        conn = get(conn, unquote(path))
-        document = html_response(conn, 200) |> Floki.parse_document!()
-
-        assert Floki.find(document, ".desktop-taskbar") != []
-
-        # The taskbar is the app's own, driven by the window manager rather than
-        # a bespoke toggle — and the manager mounts on the shell root.
-        assert Floki.find(document, "[data-window-manager]") != []
-        assert Floki.find(document, "[data-window-start]") != []
-
-        # Every page of the site is a window of the one desktop, and the Start
-        # menu reaches each of them as a patch, never a page load.
-        start_menu = Floki.find(document, "#chat-start-menu")
-        assert start_menu != []
-        hrefs = start_menu |> Floki.find("a") |> Floki.attribute("href")
-
-        assert "/faq" in hrefs
-        assert "/chat/help" in hrefs
-
-        for page <- ["/", "/features", "/privacy", "/community"] do
-          assert page in hrefs, "the Start menu lost the link to #{page}"
-        end
-      end
-
-      # A visitor's home keeps its windows closed behind the chat; the desktop
-      # icon that opens them is their way back, and their taskbar group comes
-      # with them.
-      test "GET #{path} gives every window a taskbar button", %{conn: conn} do
-        conn = get(conn, unquote(path))
-        document = html_response(conn, 200) |> Floki.parse_document!()
-
-        closed =
-          document
-          |> Floki.find(~s([data-window-group-open="false"] [data-window-id]))
-          |> Floki.attribute("data-window-id")
-
-        windows =
-          document
-          |> Floki.find("[data-window-id]")
-          |> Floki.attribute("data-window-id")
-          |> MapSet.new()
-          |> MapSet.difference(MapSet.new(closed))
-
-        buttons =
-          document
-          |> Floki.find("[data-window-taskbar]")
-          |> Floki.attribute("data-window-taskbar")
-          |> MapSet.new()
-
-        assert windows != MapSet.new()
-
-        assert MapSet.equal?(windows, buttons),
-               """
-               A window with no taskbar button cannot be reopened once closed.
-
-               windows without a button: #{inspect(MapSet.difference(windows, buttons))}
-               buttons without a window: #{inspect(MapSet.difference(buttons, windows))}
-               """
-      end
-    end
-  end
-
   describe "a page's windows" do
-    for {path, heading_id} <- @landing_pages do
-      # The windows a page declares (`Site.Window`) are the windows it draws —
-      # nothing drawn undeclared, nothing declared missing — and the first of
-      # them, the one in front, says what the page is.
-      test "GET #{path} draws the windows it declares, its heading first", %{conn: conn} do
-        conn = get(conn, unquote(path))
-        document = html_response(conn, 200) |> Floki.parse_document!()
-
-        drawn =
-          document
-          |> Floki.find(~s([data-testid="site-windows"] [data-window-group="site"]))
-          |> Floki.attribute("data-window-id")
-
-        declared =
-          for window <- page_windows(unquote(path)), do: "site-" <> window.id
-
-        assert drawn == declared
-
-        [first | _rest] = Floki.find(document, ~s([data-window-group="site"]))
-        assert Floki.find(first, "h1##{unquote(heading_id)}") != []
-        assert first |> Floki.find("p") |> Floki.text() |> String.trim() != ""
-      end
-    end
-
     # A page's windows sit on one desktop with the chat's, the site's About and
     # the one-window pages; two windows sharing a DOM id would be one window
     # to the window manager.
@@ -353,31 +363,15 @@ defmodule RetroHexChatWeb.Site.PagesTest do
   end
 
   describe "sub-page SEO" do
-    for {path, _heading_id} <- @landing_pages do
-      test "GET #{path} has a self-referencing canonical URL", %{conn: conn} do
-        path = unquote(path)
-        conn = get(conn, path)
-        body = html_response(conn, 200)
-
-        assert body =~ ~s(rel="canonical" href="https://retrohexchat.app#{path}")
-      end
-    end
-
-    test "landing page titles and descriptions are unique and concise", %{conn: conn} do
+    # On the head each page is built with; each page's test above proves the
+    # page it serves carries that head.
+    test "landing page titles and descriptions are unique and concise" do
       pages =
         for {path, _heading_id} <- @landing_pages do
-          conn = get(conn, path)
-          document = html_response(conn, 200) |> Floki.parse_document!()
-          title = document |> Floki.find("title") |> Floki.text() |> String.trim()
-
-          description =
-            document
-            |> Floki.find(~s(meta[name="description"]))
-            |> Floki.attribute("content")
-            |> List.first()
+          %{title: title, description: description} = page_head(path)
 
           assert title != "", "#{path} has an empty title"
-          assert String.length(title) <= 70, "#{path} title is too long: #{title}"
+          assert String.length(escaped(title)) <= 70, "#{path} title is too long: #{title}"
           assert description != nil, "#{path} is missing meta description"
           assert String.length(description) <= 170, "#{path} description is too long"
 
@@ -438,24 +432,6 @@ defmodule RetroHexChatWeb.Site.PagesTest do
   end
 
   describe "shared layout" do
-    # The site's About is a window of the desk, closed, with the language
-    # links of the address on screen.
-    test "every page carries the site's About and its language links", %{conn: conn} do
-      for {path, _} <- @landing_pages do
-        document = conn |> get(path) |> html_response(200) |> Floki.parse_document!()
-
-        about = Floki.find(document, ~s([data-testid="site-window-about"]))
-        assert about != [], "#{path} missing the About window"
-        assert Floki.attribute(about, "data-window-initial-open") == ["false"]
-        assert Floki.text(about) =~ "Languages", "#{path} missing language links"
-
-        localized = if path == "/", do: "/pt-BR", else: "/pt-BR" <> path
-
-        assert Floki.find(about, ~s(a[hreflang="pt-BR"][href="#{localized}"])) != [],
-               "#{path} missing its own localized link"
-      end
-    end
-
     test "a localized page links the public pages in its own language", %{conn: conn} do
       # The app, the showcase and the archive have one address in every
       # language; the language menu names English on purpose, with hreflang.
@@ -618,7 +594,13 @@ defmodule RetroHexChatWeb.Site.PagesTest do
     end
   end
 
-  defp page_windows(path) do
+  defp page_windows(path), do: path |> load_page() |> Map.fetch!(:windows)
+
+  defp page_head(path), do: path |> load_page() |> Head.from_page()
+
+  defp escaped(text), do: text |> Phoenix.HTML.html_escape() |> Phoenix.HTML.safe_to_string()
+
+  defp load_page(path) do
     {page, params} =
       case path do
         "/games/" <> slug -> {RetroHexChatWeb.Site.Pages.Game, %{"slug" => slug}}
@@ -626,7 +608,7 @@ defmodule RetroHexChatWeb.Site.PagesTest do
       end
 
     {:ok, loaded} = page.load(params, %{locale: "en", visitor?: true})
-    loaded.windows
+    loaded
   end
 
   defp page_at(path) do

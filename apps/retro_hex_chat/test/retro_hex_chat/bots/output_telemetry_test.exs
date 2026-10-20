@@ -12,7 +12,6 @@ defmodule RetroHexChat.Bots.OutputTelemetryTest do
   @moduletag :integration
 
   alias RetroHexChat.Bots.Output
-  alias RetroHexChat.Bots.Pace
   alias RetroHexChat.Channels
 
   @sent [:retro_hex_chat, :bots, :output, :sent]
@@ -62,9 +61,26 @@ defmodule RetroHexChat.Bots.OutputTelemetryTest do
     assert metadata.type == "message"
   end
 
+  # Test config sets no gap between a bot's messages; this one restores a real
+  # gap, short enough not to cost seconds and wide enough to tell a wait from
+  # the time a send takes.
+  @interval_ms 200
+
+  defp with_pace_interval(interval_ms) do
+    previous = Application.get_env(:retro_hex_chat, :bot_pace_interval_ms)
+    Application.put_env(:retro_hex_chat, :bot_pace_interval_ms, interval_ms)
+
+    on_exit(fn ->
+      if previous == nil,
+        do: Application.delete_env(:retro_hex_chat, :bot_pace_interval_ms),
+        else: Application.put_env(:retro_hex_chat, :bot_pace_interval_ms, previous)
+    end)
+  end
+
   test "a batch reports what the pacer held back, and for how long", %{channel: channel} do
     bot = bot_in(channel, "Burst")
-    interval = Pace.interval_ms()
+    interval = @interval_ms
+    with_pace_interval(interval)
 
     assert :ok = Output.send_many(channel, bot, Enum.map(1..3, &output("item #{&1}")))
 
@@ -81,9 +97,10 @@ defmodule RetroHexChat.Bots.OutputTelemetryTest do
     assert_receive {:telemetry, :throttled, second, _metadata}, 5_000
     assert second.delay_ms <= interval and second.delay_ms > div(interval, 2)
 
-    refute_receive {:telemetry, :throttled, _measurements, _metadata},
-                   300,
-                   "three messages cost two waits, not three — the first one was free"
+    # send_many returns only after its last send, and telemetry handlers run in
+    # the caller, so every event it will ever emit is already in the mailbox.
+    refute_received {:telemetry, :throttled, _measurements, _metadata},
+                    "three messages cost two waits, not three — the first one was free"
   end
 
   test "a message that goes out without waiting reports no throttling", %{channel: channel} do
@@ -93,8 +110,7 @@ defmodule RetroHexChat.Bots.OutputTelemetryTest do
 
     assert_receive {:telemetry, :sent, _measurements, _metadata}, 1_000
 
-    refute_receive {:telemetry, :throttled, _measurements, _metadata},
-                   300,
-                   "a bot under the limit must not look throttled"
+    refute_received {:telemetry, :throttled, _measurements, _metadata},
+                    "a bot under the limit must not look throttled"
   end
 end

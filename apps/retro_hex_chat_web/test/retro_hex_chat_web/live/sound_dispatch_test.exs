@@ -21,7 +21,7 @@ defmodule RetroHexChatWeb.SoundDispatchTest do
     }
 
     send(view.pid, msg)
-    :timer.sleep(5)
+
     # Flush the async send_update from the message/membership stream islands so
     # any push_event from this handler is delivered before the caller asserts.
     render(view)
@@ -45,7 +45,6 @@ defmodule RetroHexChatWeb.SoundDispatchTest do
       }
     )
 
-    :timer.sleep(5)
     # Flush the async send_update from the message/membership stream islands so
     # any push_event from this handler is delivered before the caller asserts.
     render(view)
@@ -53,7 +52,6 @@ defmodule RetroHexChatWeb.SoundDispatchTest do
 
   defp send_user_joined(view, nick, channel) do
     send(view.pid, {:user_joined, %{nickname: nick, role: :regular, channel: channel}})
-    :timer.sleep(5)
     # Flush the async send_update from the message/membership stream islands so
     # any push_event from this handler is delivered before the caller asserts.
     render(view)
@@ -61,7 +59,6 @@ defmodule RetroHexChatWeb.SoundDispatchTest do
 
   defp send_user_left(view, nick, channel) do
     send(view.pid, {:user_left, %{nickname: nick, reason: nil, channel: channel}})
-    :timer.sleep(5)
     # Flush the async send_update from the message/membership stream islands so
     # any push_event from this handler is delivered before the caller asserts.
     render(view)
@@ -69,7 +66,6 @@ defmodule RetroHexChatWeb.SoundDispatchTest do
 
   defp send_user_kicked(view, operator, target) do
     send(view.pid, {:user_kicked, %{operator: operator, target: target, reason: "bye"}})
-    :timer.sleep(5)
     # Flush the async send_update from the message/membership stream islands so
     # any push_event from this handler is delivered before the caller asserts.
     render(view)
@@ -82,40 +78,26 @@ defmodule RetroHexChatWeb.SoundDispatchTest do
     end
   end
 
-  # ── Connect sound ───────────────────────────────────────────
-
-  describe "connect sound on mount" do
-    test "play_sound with connect sound on successful mount", %{conn: conn} do
-      nick = "SndCon#{uid()}"
-      {:ok, view, _html} = live(chat_conn(conn, nick), "/")
-
-      assert_push_event(view, "play_sound", %{type: "chime_short"})
-    end
+  # Every test mounts a fresh chat and first consumes the connect sound, so
+  # each also proves that a successful mount plays chime_short.
+  defp mount_chat(conn, nick) do
+    {:ok, view, _html} = live(chat_conn(conn, nick), "/")
+    assert_push_event(view, "play_sound", %{type: "chime_short"})
+    view
   end
 
-  # ── Highlight sound ─────────────────────────────────────────
+  # ── Active channel: highlight vs plain message ──────────────
 
-  describe "highlight sound dispatch" do
-    test "highlight plays alert sound (default)", %{conn: conn} do
+  describe "messages in the active channel" do
+    test "a plain message is silent and a highlight plays alert (default)", %{conn: conn} do
       nick = "SndHL#{uid()}"
-      {:ok, view, _html} = live(chat_conn(conn, nick), "/")
-      # Consume connect sound
-      assert_push_event(view, "play_sound", %{type: "chime_short"})
-
-      send_new_message(view, "Other", "hey #{nick}!", "#lobby")
-
-      assert_push_event(view, "play_sound", %{type: "alert"})
-    end
-
-    test "non-highlight message in active channel produces no sound", %{conn: conn} do
-      nick = "SndNoHL#{uid()}"
-      {:ok, view, _html} = live(chat_conn(conn, nick), "/")
-      assert_push_event(view, "play_sound", %{type: "chime_short"})
+      view = mount_chat(conn, nick)
 
       send_new_message(view, "Other", "hello world", "#lobby")
-
-      render(view)
       refute_push_event(view, "play_sound", %{})
+
+      send_new_message(view, "Other", "hey #{nick}!", "#lobby")
+      assert_push_event(view, "play_sound", %{type: "alert"})
     end
   end
 
@@ -127,8 +109,7 @@ defmodule RetroHexChatWeb.SoundDispatchTest do
       ch = "#snd_bg_#{uid()}"
       ensure_channel(ch)
 
-      {:ok, view, _html} = live(chat_conn(conn, nick), "/")
-      assert_push_event(view, "play_sound", %{type: "chime_short"})
+      view = mount_chat(conn, nick)
 
       # Join second channel and switch back to #lobby
       view
@@ -144,51 +125,28 @@ defmodule RetroHexChatWeb.SoundDispatchTest do
     end
   end
 
-  # ── PM sound ────────────────────────────────────────────────
+  # ── PM and join/part/kick sounds ────────────────────────────
 
-  describe "PM sound dispatch" do
-    test "PM from non-active conversation plays chime_high", %{conn: conn} do
-      nick = "SndPM#{uid()}"
-      {:ok, view, _html} = live(chat_conn(conn, nick), "/")
-      assert_push_event(view, "play_sound", %{type: "chime_short"})
+  # Each event is sent and its sound asserted before the next, so a sound
+  # can only be the one its own event produced.
+  describe "PM and join/part/kick sound dispatch" do
+    test "a PM plays chime_high; join and part play click; a kick plays buzz", %{conn: conn} do
+      nick = "SndEvt#{uid()}"
+      view = mount_chat(conn, nick)
 
       send_pm_activity(view, "Alice", nick, "hey there")
-
       assert_push_event(view, "play_sound", %{type: "chime_high"})
-    end
-  end
-
-  # ── Join/Part/Kick sounds ───────────────────────────────────
-
-  describe "join/part/kick sound dispatch" do
-    test "user_joined plays click sound", %{conn: conn} do
-      nick = "SndJoin#{uid()}"
-      {:ok, view, _html} = live(chat_conn(conn, nick), "/")
-      assert_push_event(view, "play_sound", %{type: "chime_short"})
 
       send_user_joined(view, "NewUser", "#lobby")
-
       assert_push_event(view, "play_sound", %{type: "click"})
-    end
-
-    test "user_left plays click sound", %{conn: conn} do
-      nick = "SndPart#{uid()}"
-      {:ok, view, _html} = live(chat_conn(conn, nick), "/")
-      assert_push_event(view, "play_sound", %{type: "chime_short"})
 
       send_user_left(view, "LeavingUser", "#lobby")
-
       assert_push_event(view, "play_sound", %{type: "click"})
-    end
-
-    test "user_kicked plays buzz sound", %{conn: conn} do
-      nick = "SndKick#{uid()}"
-      {:ok, view, _html} = live(chat_conn(conn, nick), "/")
-      assert_push_event(view, "play_sound", %{type: "chime_short"})
 
       send_user_kicked(view, "Operator", "KickedUser")
-
       assert_push_event(view, "play_sound", %{type: "buzz"})
+
+      refute_push_event(view, "play_sound", %{})
     end
   end
 end

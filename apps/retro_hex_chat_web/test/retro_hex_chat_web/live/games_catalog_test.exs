@@ -21,7 +21,10 @@ defmodule RetroHexChatWeb.GamesCatalogTest do
   alias RetroHexChat.Services.RegisteredNick
   alias RetroHexChatWeb.App.Paths
   alias RetroHexChatWeb.GameCatalog
+  alias RetroHexChatWeb.I18n.Locales
   alias RetroHexChatWeb.LiveMatchPages
+  alias RetroHexChatWeb.Site.Head
+  alias RetroHexChatWeb.Site.Pages
 
   defp document(conn, path),
     do: conn |> get(path) |> html_response(200) |> Floki.parse_document!()
@@ -37,26 +40,36 @@ defmodule RetroHexChatWeb.GamesCatalogTest do
     |> Enum.find(&(&1["@type"] == type))
   end
 
-  defp check_titles(conn, prefix) do
-    pages =
+  # The head a game's page is sent with, from the same load and head the
+  # desktop builds it from, in `locale`.
+  defp game_head(slug, locale) do
+    RetroHexChatWeb.I18n.put_locale(locale)
+    {:ok, loaded} = Pages.Game.load(%{"slug" => slug}, %{locale: locale, visitor?: true})
+    Head.from_page(loaded)
+  after
+    RetroHexChatWeb.I18n.put_locale(nil)
+  end
+
+  defp escaped(text), do: text |> Phoenix.HTML.html_escape() |> Phoenix.HTML.safe_to_string()
+
+  defp check_titles(locale) do
+    heads =
       for slug <- GameCatalog.slugs() do
-        document = document(conn, "#{prefix}/games/#{slug}")
-        title = document |> Floki.find("title") |> Floki.text() |> String.trim()
-        description = meta(document, ~s(meta[name="description"]))
+        head = game_head(slug, locale)
+        page = "#{locale} #{slug}"
+        # Measured as the document carries it, the way the rendered page was.
+        assert String.length(escaped(head.title)) <= 70,
+               "#{page} title is too long: #{head.title}"
 
-        page = "#{prefix}/games/#{slug}"
-        assert String.length(title) <= 70, "#{page} title is too long: #{title}"
-        assert String.length(description) <= 170, "#{page} description is too long"
-        assert document |> Floki.find("h1") |> length() == 1, "#{page} has more than one h1"
-
-        {title, description}
+        assert String.length(head.description) <= 170, "#{page} description is too long"
+        head
       end
 
-    assert pages |> Enum.map(&elem(&1, 0)) |> Enum.uniq() |> length() == length(pages),
-           "two game pages share a title (#{prefix})"
+    assert heads |> Enum.map(& &1.title) |> Enum.uniq() |> length() == length(heads),
+           "two game pages share a title (#{locale})"
 
-    assert pages |> Enum.map(&elem(&1, 1)) |> Enum.uniq() |> length() == length(pages),
-           "two game pages share a description (#{prefix})"
+    assert heads |> Enum.map(& &1.description) |> Enum.uniq() |> length() == length(heads),
+           "two game pages share a description (#{locale})"
   end
 
   describe "/games" do
@@ -430,14 +443,39 @@ defmodule RetroHexChatWeb.GamesCatalogTest do
   describe "every game's page" do
     # The landing suite checks one game page in English; every game has a name
     # of its own length in every language, and a title or description a search
-    # result cuts is one the page loses, so each is checked here. One test
-    # walks every language: a test holds its database connection until it
-    # ends, and one per language held most of the pool at once.
+    # result cuts is one the page loses, so each is checked here — on the head
+    # each page is built with, since rendering every game in every language
+    # costs hundreds of full pages. One page per language, a different game
+    # each, is then fetched to prove the page says what that head says.
     test "has a title and description that fit a search result, unlike any other",
          %{conn: conn} do
-      for prefix <- ["" | Enum.map(RetroHexChatWeb.SEO.localized_locale_segments(), &"/#{&1}")] do
-        check_titles(conn, prefix)
-      end
+      slugs = GameCatalog.slugs()
+
+      Locales.enabled()
+      |> Enum.with_index()
+      |> Enum.each(fn {locale, index} ->
+        check_titles(locale.code)
+
+        slug = Enum.at(slugs, rem(index, length(slugs)))
+
+        prefix =
+          if locale.code == RetroHexChatWeb.I18n.default_locale(),
+            do: "",
+            else: "/#{locale.bcp47}"
+
+        path = "#{prefix}/games/#{slug}"
+        head = game_head(slug, locale.code)
+        document = document(conn, path)
+
+        assert document |> Floki.find("title") |> Floki.text() |> String.trim() ==
+                 escaped(head.title),
+               "#{path} is not titled by its head"
+
+        assert meta(document, ~s(meta[name="description"])) == head.description,
+               "#{path} is not described by its head"
+
+        assert document |> Floki.find("h1") |> length() == 1, "#{path} has more than one h1"
+      end)
     end
   end
 
@@ -519,6 +557,9 @@ defmodule RetroHexChatWeb.GamesCatalogTest do
         |> Regex.scan(index)
         |> Enum.map(&List.last/1)
         |> Enum.map(&URI.parse(&1).path)
+        # The game pages are among the public pages; the whole sitemap is
+        # walked by `SEO.PublicUrlsTest`.
+        |> Enum.filter(&String.starts_with?(&1, "/sitemaps/public-"))
         |> Enum.map(&(conn |> get(&1) |> response(200)))
         |> Enum.join()
 

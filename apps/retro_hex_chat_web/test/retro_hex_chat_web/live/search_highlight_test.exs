@@ -15,30 +15,59 @@ defmodule RetroHexChatWeb.Live.SearchHighlightTest do
   # the queued component update) instead of relying on the event call's return
   # value for component-owned state.
 
-  describe "search_input triggers highlight push_event" do
-    test "empty search_input clears highlights", %{conn: conn} do
-      {:ok, view, _html} = live(chat_conn(conn, "SrchHL2"), "/")
-      render_click(view, "toggle_search")
-      render_change(view, "search_input", %{"query" => "hello"})
-
-      render_change(view, "search_input", %{"query" => ""})
-      assert render(view) =~ "0/0"
-    end
-  end
-
-  describe "search_highlight_count updates assigns" do
-    test "updates result count from JS hook", %{conn: conn} do
+  # Each mount carries one sequence of events, checked after every step: the
+  # counter's whole life — the hook's count, next/prev and the arrow keys with
+  # their wrap-around, an empty query — is one conversation with one search bar,
+  # and the regex error's is another. A count reported again puts the cursor
+  # back on the first match, which is what lets each step start from 1/3.
+  describe "counter and navigation" do
+    test "the hook's count drives the counter, and next/prev/arrows wrap around",
+         %{conn: conn} do
       {:ok, view, _html} = live(chat_conn(conn, "SrchHC1"), "/")
       render_click(view, "toggle_search")
 
+      # The JS hook reports the DOM match count.
       render_click(view, "search_highlight_count", %{"count" => 5})
       assert render(view) =~ "1/5"
+
+      # search_next: current index starts at 1, next goes to 2, then wraps.
+      render_click(view, "search_highlight_count", %{"count" => 3})
+      render_click(view, "search_next")
+      assert render(view) =~ "2/3"
+
+      render_click(view, "search_next")
+      assert render(view) =~ "3/3"
+
+      render_click(view, "search_next")
+      assert render(view) =~ "1/3"
+
+      # search_prev: from 1, prev wraps to 3.
+      render_click(view, "search_prev")
+      assert render(view) =~ "3/3"
+
+      render_click(view, "search_prev")
+      assert render(view) =~ "2/3"
+
+      # ArrowDown is search_next, ArrowUp is search_prev.
+      render_click(view, "search_highlight_count", %{"count" => 3})
+      render_click(view, "search_navigate", %{"key" => "ArrowDown"})
+      assert render(view) =~ "2/3"
+
+      render_click(view, "search_highlight_count", %{"count" => 3})
+      render_click(view, "search_navigate", %{"key" => "ArrowUp"})
+      assert render(view) =~ "3/3"
+
+      # An empty search_input clears the highlights and the counter.
+      render_change(view, "search_input", %{"query" => "hello"})
+      render_change(view, "search_input", %{"query" => ""})
+      assert render(view) =~ "0/0"
     end
 
-    test "shows error when JS hook reports invalid regex", %{conn: conn} do
+    test "an invalid regex is reported by the hook and by the regex toggle", %{conn: conn} do
       {:ok, view, _html} = live(chat_conn(conn, "SrchHC2"), "/")
       render_click(view, "toggle_search")
 
+      # The JS hook reports an invalid regex.
       render_click(view, "search_highlight_count", %{
         "count" => 0,
         "error" => "Invalid regex"
@@ -47,79 +76,19 @@ defmodule RetroHexChatWeb.Live.SearchHighlightTest do
       html = render(view)
       assert html =~ "Invalid regex"
       assert html =~ "text-error"
-    end
-  end
 
-  describe "search_next/search_prev navigation" do
-    test "search_next wraps around", %{conn: conn} do
-      {:ok, view, _html} = live(chat_conn(conn, "SrchNW1"), "/")
-      render_click(view, "toggle_search")
-      # Simulate JS hook reporting 3 matches
-      render_click(view, "search_highlight_count", %{"count" => 3})
+      # A new query clears it; toggling regex on over a valid query shows none.
+      render_change(view, "search_input", %{"query" => "error|warn"})
+      render_click(view, "search_toggle_filter", %{"filter" => "regex"})
+      refute render(view) =~ "text-error"
 
-      # Current index starts at 1, next goes to 2
-      render_click(view, "search_next")
-      assert render(view) =~ "2/3"
-
-      render_click(view, "search_next")
-      assert render(view) =~ "3/3"
-
-      # Wrap to 1
-      render_click(view, "search_next")
-      assert render(view) =~ "1/3"
-    end
-
-    test "search_prev wraps around", %{conn: conn} do
-      {:ok, view, _html} = live(chat_conn(conn, "SrchPW1"), "/")
-      render_click(view, "toggle_search")
-      render_click(view, "search_highlight_count", %{"count" => 3})
-
-      # From 1, prev wraps to 3
-      render_click(view, "search_prev")
-      assert render(view) =~ "3/3"
-
-      render_click(view, "search_prev")
-      assert render(view) =~ "2/3"
-    end
-  end
-
-  describe "search_navigate arrow keys" do
-    test "ArrowDown triggers search_next", %{conn: conn} do
-      {:ok, view, _html} = live(chat_conn(conn, "SrchAD1"), "/")
-      render_click(view, "toggle_search")
-      render_click(view, "search_highlight_count", %{"count" => 3})
-
-      render_click(view, "search_navigate", %{"key" => "ArrowDown"})
-      assert render(view) =~ "2/3"
-    end
-
-    test "ArrowUp triggers search_prev", %{conn: conn} do
-      {:ok, view, _html} = live(chat_conn(conn, "SrchAU1"), "/")
-      render_click(view, "toggle_search")
-      render_click(view, "search_highlight_count", %{"count" => 3})
-
-      render_click(view, "search_navigate", %{"key" => "ArrowUp"})
-      assert render(view) =~ "3/3"
-    end
-  end
-
-  describe "search_toggle_filter" do
-    test "toggling regex with invalid query shows error", %{conn: conn} do
-      {:ok, view, _html} = live(chat_conn(conn, "SrchTF2"), "/")
-      render_click(view, "toggle_search")
+      # Toggling regex on over an invalid query shows the error.
+      render_click(view, "search_toggle_filter", %{"filter" => "regex"})
       render_change(view, "search_input", %{"query" => "[invalid"})
+      refute render(view) =~ "Invalid regex"
 
       render_click(view, "search_toggle_filter", %{"filter" => "regex"})
       assert render(view) =~ "Invalid regex"
-    end
-
-    test "toggling regex with valid query does not show error", %{conn: conn} do
-      {:ok, view, _html} = live(chat_conn(conn, "SrchTF3"), "/")
-      render_click(view, "toggle_search")
-      render_change(view, "search_input", %{"query" => "error|warn"})
-
-      render_click(view, "search_toggle_filter", %{"filter" => "regex"})
-      refute render(view) =~ "text-error"
     end
   end
 
@@ -166,7 +135,8 @@ defmodule RetroHexChatWeb.Live.SearchHighlightTest do
   end
 
   describe "search_last_query persistence" do
-    test "closing search saves query, reopening restores it", %{conn: conn} do
+    test "closing search, by its button or by Escape, saves the query reopening restores",
+         %{conn: conn} do
       {:ok, view, _html} = live(chat_conn(conn, "SrchLQ1"), "/")
       render_click(view, "toggle_search")
       render_change(view, "search_input", %{"query" => "terraform"})
@@ -177,13 +147,9 @@ defmodule RetroHexChatWeb.Live.SearchHighlightTest do
       # Reopen — query should be restored
       render_click(view, "toggle_search")
       assert render(view) =~ "terraform"
-    end
 
-    test "Escape saves query before closing", %{conn: conn} do
-      {:ok, view, _html} = live(chat_conn(conn, "SrchLQ2"), "/")
-      render_click(view, "toggle_search")
+      # Escape saves the query before closing.
       render_change(view, "search_input", %{"query" => "saved"})
-
       render_click(view, "window_keydown", %{"key" => "Escape"})
 
       render_click(view, "toggle_search")

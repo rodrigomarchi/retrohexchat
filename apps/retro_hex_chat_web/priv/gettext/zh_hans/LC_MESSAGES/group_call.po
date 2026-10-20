@@ -16,13 +16,13 @@ msgstr ""
 msgid "Call"
 msgstr "调用"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:1416
+#: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:1440
 #: lib/retro_hex_chat_web/components/ui/group_call/video_surface.ex:258
 #, elixir-autogen, elixir-format
 msgid "Camera off"
 msgstr "关闭相机"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:1413
+#: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:1437
 #, elixir-autogen, elixir-format
 msgid "Camera on"
 msgstr "摄像头打开"
@@ -91,7 +91,7 @@ msgstr "结束组呼叫"
 msgid "End the group call in %{channel} for everyone? All participants will be disconnected."
 msgstr "结束小组呼叫 %{channel} 给大家看? 所有参与者都将被切断。"
 
-#: lib/retro_hex_chat_web/components/ui/chat/visitor_greeting_card.ex:103
+#: lib/retro_hex_chat_web/components/ui/chat/visitor_greeting_card.ex:109
 #: lib/retro_hex_chat_web/components/ui/group_call/channel_badge.ex:336
 #: lib/retro_hex_chat_web/components/ui/group_call/channel_badge.ex:365
 #: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:1026
@@ -180,17 +180,17 @@ msgstr "离开小组呼叫"
 msgid "Leave the group call in %{channel}? Your microphone and camera will disconnect."
 msgstr "离开小组呼叫 %{channel}你的麦克风和相机会断开。"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:1403
+#: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:1427
 #, elixir-autogen, elixir-format
 msgid "Microphone off"
 msgstr "关掉麦克风"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:1400
+#: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:1424
 #, elixir-autogen, elixir-format
 msgid "Microphone on"
 msgstr "打开麦克风"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:1342
+#: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:1366
 #, elixir-autogen, elixir-format
 msgid "Mute participant"
 msgstr "静音参与者"
@@ -231,7 +231,7 @@ msgstr "开关摄像头"
 msgid "Toggle microphone"
 msgstr "开关麦克风"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:1345
+#: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:1369
 #, elixir-autogen, elixir-format
 msgid "Unmute participant"
 msgstr "无意参与者"
@@ -371,7 +371,7 @@ msgstr "%{level} 质量:RTT %{rtt}/ms,损失%{loss}%,%{bitrate}kbps,%{fps}fps,�
 msgid "%{minutes}m"
 msgstr "%{minutes}米"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:1388
+#: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:1412
 #, elixir-autogen, elixir-format
 msgid "%{nickname} reacted with %{reaction}"
 msgstr "%{nickname}与%{reaction}反应."
@@ -499,22 +499,22 @@ msgstr "Active"
 msgid "All participants disconnect"
 msgstr "所有参与者断开"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:1362
+#: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:1386
 #, elixir-autogen, elixir-format
 msgid "Allow %{nickname} to speak"
 msgstr "允许 %{nickname} 发言"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:1351
+#: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:1375
 #, elixir-autogen, elixir-format
 msgid "Allow participant camera"
 msgstr "允许参与者相机"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:1339
+#: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:1363
 #, elixir-autogen, elixir-format
 msgid "Allow participant microphone"
 msgstr "允许参与者麦克风"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:1357
+#: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:1381
 #, elixir-autogen, elixir-format
 msgid "Allow participant screen sharing"
 msgstr "允许共享参与者屏幕"
@@ -572,7 +572,7 @@ msgstr "CPU"
 msgid "Camera"
 msgstr "摄影机"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:1410
+#: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:1434
 #, elixir-autogen, elixir-format
 msgid "Camera disabled by moderator"
 msgstr "由主持人禁用相机"
@@ -976,7 +976,7 @@ msgstr "麦克风"
 msgid "Microphone disconnects"
 msgstr "麦克风断开"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:1397
+#: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:1421
 #, elixir-autogen, elixir-format
 msgid "Microphone muted by moderator"
 msgstr "由主持人监听的麦克风"
@@ -1042,7 +1042,7 @@ msgstr "没有视频"
 msgid "None"
 msgstr "无"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:1429
+#: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:1453
 #, elixir-autogen, elixir-format
 msgid "Not sharing screen"
 msgstr "不共享屏幕"
@@ -1246,7 +1246,7 @@ msgstr "重试媒体连接"
 msgid "Room"
 msgstr "会议室"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:1423
+#: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:1447
 #: lib/retro_hex_chat_web/components/ui/group_call/screen_share_control.ex:42
 #, elixir-autogen, elixir-format
 msgid "Screen sharing disabled by moderator"
@@ -1313,7 +1313,7 @@ msgstr "服务器音轨"
 msgid "Share screen"
 msgstr "共享屏幕"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:1426
+#: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:1450
 #: lib/retro_hex_chat_web/components/ui/group_call/video_surface.ex:252
 #, elixir-autogen, elixir-format
 msgid "Sharing screen"
@@ -1359,7 +1359,7 @@ msgstr "现在说话"
 msgid "Status"
 msgstr "状态"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:1358
+#: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:1382
 #, elixir-autogen, elixir-format
 msgid "Stop participant screen sharing"
 msgstr "停止共享参与者屏幕"
@@ -1417,7 +1417,7 @@ msgstr "关闭所有级别较低的摄像头"
 msgid "Turn off cameras for all lower-ranked participants in %{channel}? They cannot turn camera back on until a moderator allows it again."
 msgstr "在%{channel}中为所有排名较低的参与者关闭相机? 除非主持人再次允许,否则他们不能打开摄像机。"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:1352
+#: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:1376
 #, elixir-autogen, elixir-format
 msgid "Turn participant camera off"
 msgstr "关闭参与者相机"
@@ -1766,7 +1766,7 @@ msgstr "此会议已结束。"
 msgid "This conference is no longer available."
 msgstr "此会议已不可用。"
 
-#: lib/retro_hex_chat_web/live/chat_live/components/chat_shell.ex:111
+#: lib/retro_hex_chat_web/live/chat_live/components/chat_shell.ex:115
 #, elixir-autogen, elixir-format
 msgid "Call: %{channel} — in another tab"
 msgstr "通话：%{channel} — 在其他标签页"
@@ -1798,7 +1798,7 @@ msgstr "你已离开 %{channel} 的会议。"
 msgid "You left the conference."
 msgstr "你已离开会议。"
 
-#: lib/retro_hex_chat_web/live/chat_live/components/chat_shell.ex:113
+#: lib/retro_hex_chat_web/live/chat_live/components/chat_shell.ex:117
 #, elixir-autogen, elixir-format
 msgid "The call in %{channel} is open in another tab of yours"
 msgstr "%{channel} 里的通话在你的另一个标签页里开着"

@@ -4,9 +4,13 @@ defmodule RetroHexChatWeb.App.CallSurfaceFlowTest do
 
   These flows used to be driven through the chat's Group Call window. There is
   no such window: a conference has one door and it is the card the chat writes
-  into the channel when the room is opened. So each test here does both halves —
-  the chat's control creates the room, and the test follows the address that
-  card carries, the way a reader does.
+  into the channel when the room is opened. A test about the chat's half — the
+  control that opens the room and writes its card, the channel's own lines and
+  membership — mounts the chat (`mount_identified/2`) and follows the address
+  that card carries, the way a reader does. Every other test is about the room
+  itself: it takes a bare seat (`seat_identified/2`) — an identified member of
+  `#lobby`, the channel a chat lands in — creates the room with the call the
+  chat's control makes, and opens `/call/:token` directly.
 
   What the chat still draws *about* a call it cannot reach — the badge, the
   glyph, the status zone — is asserted in `chat_live/group_call_flow_test.exs`.
@@ -22,7 +26,9 @@ defmodule RetroHexChatWeb.App.CallSurfaceFlowTest do
   alias RetroHexChat.GroupCall.Queries
   alias RetroHexChat.GroupCall.Registry
   alias RetroHexChat.GroupCall.RoomServer
+  alias RetroHexChat.Services.NickServ
   alias RetroHexChat.Services.RegisteredNick
+  alias RetroHexChatWeb.Components.UI.GroupCall.Panel
 
   defp unique_nick(prefix), do: "#{prefix}#{uid()}" |> String.slice(0, 16)
 
@@ -43,20 +49,56 @@ defmodule RetroHexChatWeb.App.CallSurfaceFlowTest do
     %{nick: nick, view: view}
   end
 
-  defp mount_trusted_identified(conn, prefix) do
+  # Where a participant stands when the test is about the room and not about
+  # the chat: what a pre-identified chat mount records for the room to admit
+  # them — identified, and a member of the channel the chat lands in — with no
+  # chat on top. The seat only remembers the conn the call is opened with.
+  @seat_channel "#lobby"
+
+  defp seat_identified(conn, prefix) do
+    nick = register(unique_nick(prefix))
+    take_seat(conn, nick, pre_identified: true)
+  end
+
+  defp seat_trusted_identified(conn, prefix) do
     nick = register(unique_nick(prefix))
 
     {:ok, %{device: device, cookie_value: cookie}} =
       TrustedDevices.remember_nick(nil, nick.nickname)
 
-    session_conn =
-      chat_conn(conn, nick.nickname, pre_identified: true, trusted_device_cookie: cookie)
-
-    {:ok, view, _html} = live(session_conn, "/")
-
-    Process.put({:conn, view.pid}, session_conn)
-    %{nick: nick, device: device, view: view}
+    conn
+    |> take_seat(nick, pre_identified: true, trusted_device_cookie: cookie)
+    |> Map.put(:device, device)
   end
+
+  defp take_seat(conn, nick, conn_opts) do
+    session_conn = chat_conn(conn, nick.nickname, conn_opts)
+
+    :ok = NickServ.restore_identified(nick.nickname)
+    assert NickServ.identified?(nick.nickname)
+    {:ok, _state} = join_seat_channel(nick.nickname, 3)
+
+    on_exit(fn ->
+      Server.part(@seat_channel, nick.nickname)
+      NickServ.remove_identified(nick.nickname)
+    end)
+
+    key = make_ref()
+    Process.put({:conn, key}, session_conn)
+    %{nick: nick, view: %{seat: key, nick: nick}}
+  end
+
+  # An empty unregistered channel stops on its last part, so the process found
+  # here can be gone by the time the join reaches it; a fresh one is started.
+  defp join_seat_channel(nickname, attempts) do
+    {:ok, _pid} = RetroHexChat.Channels.Supervisor.ensure_started(@seat_channel)
+    Server.join(@seat_channel, nickname, nil, identified: true)
+  catch
+    :exit, _gone when attempts > 1 -> join_seat_channel(nickname, attempts - 1)
+  end
+
+  defp seat_key(%{seat: key}), do: key
+  defp seat_key(%{pid: pid}), do: pid
 
   # The conference is a LiveView of its own, with no parent and no window in
   # the chat. Opening one is two acts and a test does both the way a person
@@ -65,7 +107,7 @@ defmodule RetroHexChatWeb.App.CallSurfaceFlowTest do
   #
   # Two independent LiveViews, so the test remembers which surface it opened
   # for which chat instead of looking for a child that does not exist.
-  defp call_view(view), do: Process.get({:call_view, view.pid})
+  defp call_view(view), do: Process.get({:call_view, seat_key(view)})
 
   # A surface that has left its page holds no call, which is the same answer as
   # never having opened one — and the honest one for a test asking whether this
@@ -86,10 +128,11 @@ defmodule RetroHexChatWeb.App.CallSurfaceFlowTest do
 
   # Both processes: a control on the call does not reach the chat, and a chat
   # control does not reach the call, so neither is settled by settling the other.
+  defp flush(%{seat: _key} = view), do: settle_call(call_view(view))
+
   defp flush(view) do
-    state = :sys.get_state(view.pid)
+    :sys.get_state(view.pid)
     settle_call(call_view(view))
-    state
   end
 
   # Leaving a conference leaves its page, so the surface is gone by the time the
@@ -133,28 +176,10 @@ defmodule RetroHexChatWeb.App.CallSurfaceFlowTest do
     on_exit(fn -> :telemetry.detach(handler_id) end)
   end
 
-  defp channel_role_rank("owner"), do: 4
-  defp channel_role_rank("operator"), do: 3
-  defp channel_role_rank("half_operator"), do: 2
-  defp channel_role_rank("voiced"), do: 1
-  defp channel_role_rank("regular"), do: 0
-  defp channel_role_rank(_role), do: nil
+  defp ui_can_moderate?(actor_role, target_role),
+    do: Panel.moderates_role?(actor_role, target_role)
 
-  defp ui_can_moderate?(actor_role, target_role) do
-    actor_rank = channel_role_rank(actor_role)
-    target_rank = channel_role_rank(target_role)
-
-    is_integer(actor_rank) and is_integer(target_rank) and
-      actor_rank >= channel_role_rank("half_operator") and actor_rank > target_rank
-  end
-
-  defp ui_can_remove?(actor_role, target_role) do
-    actor_rank = channel_role_rank(actor_role)
-    target_rank = channel_role_rank(target_role)
-
-    actor_role in ["owner", "operator"] and is_integer(actor_rank) and is_integer(target_rank) and
-      actor_rank > target_rank
-  end
+  defp ui_can_remove?(actor_role, target_role), do: Panel.removes_role?(actor_role, target_role)
 
   defp cleanup_room(token) do
     on_exit(fn ->
@@ -195,15 +220,14 @@ defmodule RetroHexChatWeb.App.CallSurfaceFlowTest do
   # exists the control is an anchor to its address, because that address is the
   # only way into a conference. Either way, entering is following the address.
   defp open_prejoin(view) do
-    channel = active_channel(view)
-    room = ensure_room(view, channel)
+    room = ensure_room(view)
     cleanup_room(room.token)
 
     # The same session the chat is on, trusted-device cookie and all: the
     # antechamber's remembered devices belong to the terminal, not the screen.
-    {:ok, call, _html} = live(Process.get({:conn, view.pid}), "/call/#{room.token}")
+    {:ok, call, _html} = live(Process.get({:conn, seat_key(view)}), "/call/#{room.token}")
 
-    Process.put({:call_view, view.pid}, call)
+    Process.put({:call_view, seat_key(view)}, call)
 
     assert has_element?(call, ~s([data-testid="group-call-prejoin"]))
     assert has_element?(call, ~s([data-testid="group-call-prejoin-form"]))
@@ -212,7 +236,19 @@ defmodule RetroHexChatWeb.App.CallSurfaceFlowTest do
     group_call_prejoin(view)
   end
 
-  defp ensure_room(view, channel) do
+  # A bare seat opens the room with the call the chat's control makes, in the
+  # channel the seat stands in.
+  defp ensure_room(%{seat: _key, nick: nick}) do
+    actor = %{user_id: nick.id, nickname: nick.nickname}
+    {:ok, _room} = GroupCall.get_or_create_channel_call(@seat_channel, actor)
+
+    GroupCall.active_room_for_channel(@seat_channel) ||
+      flunk("GroupCall did not open a room in #{@seat_channel}")
+  end
+
+  defp ensure_room(view) do
+    channel = active_channel(view)
+
     case GroupCall.active_room_for_channel(channel) do
       nil ->
         view |> element(~s([data-testid="group-call-open"])) |> render_click()
@@ -337,7 +373,7 @@ defmodule RetroHexChatWeb.App.CallSurfaceFlowTest do
     # is the authority on the seat either way — so coming back is arriving at
     # the same address and finding the seat still yours.
     test "reopening the address rejoins the seat the room still holds", %{conn: conn} do
-      %{nick: nick, view: view} = mount_identified(conn, "gchr")
+      %{nick: nick, view: view} = seat_identified(conn, "gchr")
 
       open_group_call(view)
       call = group_call_assign(view)
@@ -355,7 +391,7 @@ defmodule RetroHexChatWeb.App.CallSurfaceFlowTest do
                )
 
       {:ok, reopened, _html} =
-        live(Process.get({:conn, view.pid}), "/call/#{call.token}")
+        live(Process.get({:conn, seat_key(view)}), "/call/#{call.token}")
 
       rehydrated = :sys.get_state(reopened.pid).socket.assigns.group_call
 
@@ -374,7 +410,7 @@ defmodule RetroHexChatWeb.App.CallSurfaceFlowTest do
     end
 
     test "pre-join media defaults are applied to the call before WebRTC mounts", %{conn: conn} do
-      %{view: view} = mount_identified(conn, "gcpk")
+      %{view: view} = seat_identified(conn, "gcpk")
 
       open_group_call(view, %{
         "audio" => "false",
@@ -397,7 +433,7 @@ defmodule RetroHexChatWeb.App.CallSurfaceFlowTest do
     end
 
     test "pre-join loads trusted-device conference preferences", %{conn: conn} do
-      %{nick: nick, device: device, view: view} = mount_trusted_identified(conn, "gcpp")
+      %{nick: nick, device: device, view: view} = seat_trusted_identified(conn, "gcpp")
 
       assert :ok =
                TrustedDevices.put_device_preference(
@@ -440,7 +476,7 @@ defmodule RetroHexChatWeb.App.CallSurfaceFlowTest do
     end
 
     test "pre-join saves media and device preferences on a trusted terminal", %{conn: conn} do
-      %{nick: nick, device: device, view: view} = mount_trusted_identified(conn, "gcps")
+      %{nick: nick, device: device, view: view} = seat_trusted_identified(conn, "gcps")
 
       open_group_call(view, %{
         "audio" => "false",
@@ -468,7 +504,7 @@ defmodule RetroHexChatWeb.App.CallSurfaceFlowTest do
     end
 
     test "hook events populate participants and leave tears the window down", %{conn: conn} do
-      %{nick: nick, view: view} = mount_identified(conn, "gcfd")
+      %{nick: nick, view: view} = seat_identified(conn, "gcfd")
 
       open_group_call(view)
       open_people_section(view)
@@ -578,7 +614,7 @@ defmodule RetroHexChatWeb.App.CallSurfaceFlowTest do
     end
 
     test "conference layout controls update focus, self view, and participant rail", %{conn: conn} do
-      %{nick: nick, view: view} = mount_identified(conn, "gcfl")
+      %{nick: nick, view: view} = seat_identified(conn, "gcfl")
 
       open_group_call(view)
       open_people_section(view)
@@ -657,7 +693,7 @@ defmodule RetroHexChatWeb.App.CallSurfaceFlowTest do
     end
 
     test "advanced layouts follow speaker state and pin participants", %{conn: conn} do
-      %{nick: nick, view: view} = mount_identified(conn, "gcsp")
+      %{nick: nick, view: view} = seat_identified(conn, "gcsp")
 
       open_group_call(view)
       open_people_section(view)
@@ -747,7 +783,7 @@ defmodule RetroHexChatWeb.App.CallSurfaceFlowTest do
     test "keyboard shortcuts control active conference media, layout, focus, and leave", %{
       conn: conn
     } do
-      %{nick: nick, view: view} = mount_identified(conn, "gcks")
+      %{nick: nick, view: view} = seat_identified(conn, "gcks")
 
       open_group_call(view)
 
@@ -819,7 +855,7 @@ defmodule RetroHexChatWeb.App.CallSurfaceFlowTest do
     end
 
     test "conference exposes keyboard and screen-reader semantics", %{conn: conn} do
-      %{nick: nick, view: view} = mount_identified(conn, "gcax")
+      %{nick: nick, view: view} = seat_identified(conn, "gcax")
 
       open_group_call(view)
       open_people_section(view)
@@ -914,7 +950,7 @@ defmodule RetroHexChatWeb.App.CallSurfaceFlowTest do
     end
 
     test "conference renders rich empty and failure states with clear actions", %{conn: conn} do
-      %{view: view} = mount_identified(conn, "gcef")
+      %{view: view} = seat_identified(conn, "gcef")
 
       open_group_call(view, %{"audio" => "false", "video" => "false"})
       open_people_section(view)
@@ -994,7 +1030,7 @@ defmodule RetroHexChatWeb.App.CallSurfaceFlowTest do
     end
 
     test "mini mode keeps the WebRTC surface mounted with compact controls", %{conn: conn} do
-      %{view: view} = mount_identified(conn, "gcmi")
+      %{view: view} = seat_identified(conn, "gcmi")
 
       open_group_call(view)
       open_people_section(view)
@@ -1053,7 +1089,7 @@ defmodule RetroHexChatWeb.App.CallSurfaceFlowTest do
     end
 
     test "browser stats update the inline conference statistics section", %{conn: conn} do
-      %{view: view} = mount_identified(conn, "gcfs")
+      %{view: view} = seat_identified(conn, "gcfs")
 
       open_group_call(view)
 
@@ -1148,7 +1184,7 @@ defmodule RetroHexChatWeb.App.CallSurfaceFlowTest do
     end
 
     test "renegotiation does not downgrade a connected conference status", %{conn: conn} do
-      %{view: view} = mount_identified(conn, "gcrs")
+      %{view: view} = seat_identified(conn, "gcrs")
 
       open_group_call(view)
 
@@ -1177,7 +1213,7 @@ defmodule RetroHexChatWeb.App.CallSurfaceFlowTest do
     end
 
     test "screen share state updates controls, participant state, focus, and stats", %{conn: conn} do
-      %{nick: nick, view: view} = mount_identified(conn, "gcsh")
+      %{nick: nick, view: view} = seat_identified(conn, "gcsh")
 
       open_group_call(view)
       open_people_section(view)
@@ -1275,7 +1311,7 @@ defmodule RetroHexChatWeb.App.CallSurfaceFlowTest do
     end
 
     test "participant quality state renders active speaker and quality badges", %{conn: conn} do
-      %{nick: nick, view: view} = mount_identified(conn, "gcql")
+      %{nick: nick, view: view} = seat_identified(conn, "gcql")
 
       open_group_call(view)
       open_people_section(view)
@@ -1354,7 +1390,7 @@ defmodule RetroHexChatWeb.App.CallSurfaceFlowTest do
     end
 
     test "conference reactions render on participant rows without chat spam", %{conn: conn} do
-      %{nick: nick, view: view} = mount_identified(conn, "gcrx")
+      %{nick: nick, view: view} = seat_identified(conn, "gcrx")
 
       open_group_call(view)
       open_people_section(view)
@@ -1428,7 +1464,7 @@ defmodule RetroHexChatWeb.App.CallSurfaceFlowTest do
     end
 
     test "server stats from the SFU summary render beside browser stats", %{conn: conn} do
-      %{nick: nick, view: view} = mount_identified(conn, "gcfr")
+      %{nick: nick, view: view} = seat_identified(conn, "gcfr")
 
       open_group_call(view)
 
@@ -1571,7 +1607,7 @@ defmodule RetroHexChatWeb.App.CallSurfaceFlowTest do
     test "media warnings stay recoverable while failed connection becomes actionable error", %{
       conn: conn
     } do
-      %{view: view} = mount_identified(conn, "gcfw")
+      %{view: view} = seat_identified(conn, "gcfw")
 
       open_group_call(view)
 
@@ -1638,7 +1674,7 @@ defmodule RetroHexChatWeb.App.CallSurfaceFlowTest do
     end
 
     test "moderators see call and participant moderation controls", %{conn: conn} do
-      %{nick: nick, view: view} = mount_identified(conn, "gcfm")
+      %{nick: nick, view: view} = seat_identified(conn, "gcfm")
 
       open_group_call(view)
       open_people_section(view)
@@ -1701,7 +1737,7 @@ defmodule RetroHexChatWeb.App.CallSurfaceFlowTest do
     end
 
     test "participant moderation buttons follow the channel permission matrix", %{conn: conn} do
-      %{nick: nick, view: view} = mount_identified(conn, "gcpm")
+      %{nick: nick, view: view} = seat_identified(conn, "gcpm")
 
       open_group_call(view)
       open_people_section(view)
@@ -1709,9 +1745,12 @@ defmodule RetroHexChatWeb.App.CallSurfaceFlowTest do
       call = group_call_assign(view)
       cleanup_room(call.token)
 
-      roles = ["owner", "operator", "half_operator", "voiced", "regular"]
+      # The whole role matrix is `PanelTest`'s, against the functions the panel
+      # draws with. Here, one pair per outcome proves the rendered rows follow
+      # them: everything, moderation without removal, and nothing.
+      pairs = [{"owner", "operator"}, {"half_operator", "voiced"}, {"voiced", "regular"}]
 
-      for actor_role <- roles, target_role <- roles do
+      for {actor_role, target_role} <- pairs do
         call_click(view, "group_call_client_joined", %{
           "room" => %{
             "id" => call.room.id,

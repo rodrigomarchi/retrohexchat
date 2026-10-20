@@ -16,13 +16,13 @@ msgstr ""
 msgid "Call"
 msgstr "Appeler"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:1416
+#: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:1440
 #: lib/retro_hex_chat_web/components/ui/group_call/video_surface.ex:258
 #, elixir-autogen, elixir-format
 msgid "Camera off"
 msgstr "Caméra éteinte"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:1413
+#: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:1437
 #, elixir-autogen, elixir-format
 msgid "Camera on"
 msgstr "Caméra allumée"
@@ -93,7 +93,7 @@ msgstr ""
 "Terminer l'appel de groupe dans %{channel} pour tout le monde? Tous les "
 "participants seront déconnectés."
 
-#: lib/retro_hex_chat_web/components/ui/chat/visitor_greeting_card.ex:103
+#: lib/retro_hex_chat_web/components/ui/chat/visitor_greeting_card.ex:109
 #: lib/retro_hex_chat_web/components/ui/group_call/channel_badge.ex:336
 #: lib/retro_hex_chat_web/components/ui/group_call/channel_badge.ex:365
 #: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:1026
@@ -184,17 +184,17 @@ msgstr ""
 "Laisser l'appel de groupe dans %{channel}? Votre microphone et votre caméra "
 "seront déconnectés."
 
-#: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:1403
+#: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:1427
 #, elixir-autogen, elixir-format
 msgid "Microphone off"
 msgstr "Microphone désactivé"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:1400
+#: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:1424
 #, elixir-autogen, elixir-format
 msgid "Microphone on"
 msgstr "Microphone allumé"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:1342
+#: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:1366
 #, elixir-autogen, elixir-format
 msgid "Mute participant"
 msgstr "Participant"
@@ -235,7 +235,7 @@ msgstr "Activer/désactiver la caméra"
 msgid "Toggle microphone"
 msgstr "Activer/désactiver le micro"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:1345
+#: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:1369
 #, elixir-autogen, elixir-format
 msgid "Unmute participant"
 msgstr "Participant unique"
@@ -384,7 +384,7 @@ msgstr ""
 msgid "%{minutes}m"
 msgstr "%{minutes}m"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:1388
+#: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:1412
 #, elixir-autogen, elixir-format
 msgid "%{nickname} reacted with %{reaction}"
 msgstr "%{nickname} a réagi avec %{reaction}"
@@ -514,22 +514,22 @@ msgstr "Activité"
 msgid "All participants disconnect"
 msgstr "Tous les participants déconnectent"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:1362
+#: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:1386
 #, elixir-autogen, elixir-format
 msgid "Allow %{nickname} to speak"
 msgstr "Permettre %{nickname} de parler"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:1351
+#: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:1375
 #, elixir-autogen, elixir-format
 msgid "Allow participant camera"
 msgstr "Permettre aux participants une caméra"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:1339
+#: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:1363
 #, elixir-autogen, elixir-format
 msgid "Allow participant microphone"
 msgstr "Permettre le microphone du participant"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:1357
+#: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:1381
 #, elixir-autogen, elixir-format
 msgid "Allow participant screen sharing"
 msgstr "Permettre le partage d'écran des participants"
@@ -587,7 +587,7 @@ msgstr "CPU"
 msgid "Camera"
 msgstr "Caméra"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:1410
+#: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:1434
 #, elixir-autogen, elixir-format
 msgid "Camera disabled by moderator"
 msgstr "Caméra désactivée par modérateur"
@@ -994,7 +994,7 @@ msgstr "Microphone"
 msgid "Microphone disconnects"
 msgstr "Débranchements du microphone"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:1397
+#: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:1421
 #, elixir-autogen, elixir-format
 msgid "Microphone muted by moderator"
 msgstr "Microphone muté par modérateur"
@@ -1062,7 +1062,7 @@ msgstr "Pas de vidéo"
 msgid "None"
 msgstr "Aucune"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:1429
+#: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:1453
 #, elixir-autogen, elixir-format
 msgid "Not sharing screen"
 msgstr "Pas de partage d'écran"
@@ -1271,7 +1271,7 @@ msgstr "Réessayer la connexion des médias"
 msgid "Room"
 msgstr "conférence"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:1423
+#: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:1447
 #: lib/retro_hex_chat_web/components/ui/group_call/screen_share_control.ex:42
 #, elixir-autogen, elixir-format
 msgid "Screen sharing disabled by moderator"
@@ -1338,7 +1338,7 @@ msgstr "Pistes du serveur"
 msgid "Share screen"
 msgstr "Écran de partage"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:1426
+#: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:1450
 #: lib/retro_hex_chat_web/components/ui/group_call/video_surface.ex:252
 #, elixir-autogen, elixir-format
 msgid "Sharing screen"
@@ -1384,7 +1384,7 @@ msgstr "Parler maintenant"
 msgid "Status"
 msgstr "Statut"
 
-#: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:1358
+#: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:1382
 #, elixir-autogen, elixir-format
 msgid "Stop participant screen sharing"
 msgstr "Arrêter le partage d'écran des participants"
@@ -1445,7 +1445,7 @@ msgstr ""
 "%{channel}? Ils ne peuvent pas allumer la caméra avant qu'un modérateur ne "
 "l'autorise à nouveau."
 
-#: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:1352
+#: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:1376
 #, elixir-autogen, elixir-format
 msgid "Turn participant camera off"
 msgstr "Éteignez la caméra du participant"
@@ -1800,7 +1800,7 @@ msgstr "Cette conférence est terminée."
 msgid "This conference is no longer available."
 msgstr "Cette conférence n'est plus disponible."
 
-#: lib/retro_hex_chat_web/live/chat_live/components/chat_shell.ex:111
+#: lib/retro_hex_chat_web/live/chat_live/components/chat_shell.ex:115
 #, elixir-autogen, elixir-format
 msgid "Call: %{channel} — in another tab"
 msgstr "Appel : %{channel} — dans un autre onglet"
@@ -1830,7 +1830,7 @@ msgstr "Vous avez quitté la conférence dans %{channel}."
 msgid "You left the conference."
 msgstr "Vous avez quitté la conférence."
 
-#: lib/retro_hex_chat_web/live/chat_live/components/chat_shell.ex:113
+#: lib/retro_hex_chat_web/live/chat_live/components/chat_shell.ex:117
 #, elixir-autogen, elixir-format
 msgid "The call in %{channel} is open in another tab of yours"
 msgstr "L'appel dans %{channel} est ouvert dans un autre de vos onglets"

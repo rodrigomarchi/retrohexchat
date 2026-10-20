@@ -322,12 +322,12 @@ msgstr "(編集)"
 msgid "* %{channel} is not invite-only — anyone can join"
 msgstr "* %{channel} は招待のみではありません。"
 
-#: lib/retro_hex_chat_web/live/chat_live/pubsub_handlers/presence.ex:246
+#: lib/retro_hex_chat_web/live/chat_live/pubsub_handlers/presence.ex:263
 #, elixir-autogen, elixir-format
 msgid "* %{inviter} has invited you to %{channel}"
 msgstr "* %{inviter}は%{channel}にあなたを招待しました"
 
-#: lib/retro_hex_chat_web/live/chat_live/pubsub_handlers/presence.ex:116
+#: lib/retro_hex_chat_web/live/chat_live/pubsub_handlers/presence.ex:118
 #, elixir-autogen, elixir-format
 msgid "* %{nickname} has gone offline"
 msgstr "* %{nickname} はオフライン"
@@ -378,7 +378,7 @@ msgstr "* %{nickname} は無視されます"
 msgid "* %{nickname} is now ignored (%{type})"
 msgstr "* %{nickname}は無視されます(%{type})"
 
-#: lib/retro_hex_chat_web/live/chat_live/pubsub_handlers/presence.ex:115
+#: lib/retro_hex_chat_web/live/chat_live/pubsub_handlers/presence.ex:117
 #, elixir-autogen, elixir-format
 msgid "* %{nickname} is now online"
 msgstr "* %{nickname}はオンライン"
@@ -579,7 +579,7 @@ msgstr "* '%{target}'が見つかりません"
 msgid "* You are not a channel operator"
 msgstr "* チャネル演算子ではありません"
 
-#: lib/retro_hex_chat_web/live/chat_live/pubsub_handlers/presence.ex:223
+#: lib/retro_hex_chat_web/live/chat_live/pubsub_handlers/presence.ex:240
 #, elixir-autogen, elixir-format
 msgid "* You have been invited to %{channel} by %{inviter} (auto-joined)"
 msgstr "※%{inviter}(オートジョイント)で%{channel}に招待されている方"
@@ -986,7 +986,7 @@ msgid "Connection failed"
 msgstr "接続失敗"
 
 #: lib/retro_hex_chat_web/live/chat_live/helpers/channel.ex:361
-#: lib/retro_hex_chat_web/live/chat_live/pubsub_handlers/membership.ex:452
+#: lib/retro_hex_chat_web/live/chat_live/pubsub_handlers/membership.ex:447
 #, elixir-autogen, elixir-format
 msgid "Connection lost"
 msgstr "接続が失われた"
@@ -1376,7 +1376,7 @@ msgstr "チャネルを残す"
 #: lib/retro_hex_chat_web/live/chat_live/command_dispatch.ex:479
 #: lib/retro_hex_chat_web/live/chat_live/helpers/session.ex:594
 #: lib/retro_hex_chat_web/live/chat_live/menu_toolbar_events.ex:90
-#: lib/retro_hex_chat_web/live/desktop_live.ex:363
+#: lib/retro_hex_chat_web/live/desktop_live.ex:365
 #, elixir-autogen, elixir-format
 msgid "Leaving"
 msgstr "リベット"
@@ -1472,7 +1472,7 @@ msgstr "ネイビー"
 msgid "Next"
 msgstr "次へ"
 
-#: lib/retro_hex_chat_web/live/chat_live/components/composer.ex:1163
+#: lib/retro_hex_chat_web/live/chat_live/components/composer.ex:1181
 #, elixir-autogen, elixir-format
 msgid "Next: %{parameter}"
 msgstr "次へ: %{parameter}"
@@ -1737,7 +1737,7 @@ msgstr "%{author}への応答"
 msgid "Reset (Ctrl+Shift+X)"
 msgstr "リセット(Ctrl+Shift+X)"
 
-#: lib/retro_hex_chat_web/live/desktop_live.html.heex:352
+#: lib/retro_hex_chat_web/live/desktop_live.html.heex:356
 #, elixir-autogen
 msgid "RetroHexChat"
 msgstr "レトロヘックスチャット"
@@ -2107,7 +2107,7 @@ msgid "You are now away: %{message}"
 msgstr "あなたは今離れている: %{message}"
 
 #: lib/retro_hex_chat_web/live/chat_live/helpers/session.ex:654
-#: lib/retro_hex_chat_web/live/chat_live/pubsub_handlers/membership.ex:278
+#: lib/retro_hex_chat_web/live/chat_live/pubsub_handlers/membership.ex:273
 #, elixir-autogen, elixir-format
 msgid "You are now identified as %{nickname}"
 msgstr "%{nickname} として識別できるようになりました"
@@ -2117,7 +2117,7 @@ msgstr "%{nickname} として識別できるようになりました"
 msgid "You are now known as %{nickname}"
 msgstr "あなたは今、%{nickname}として知られています"
 
-#: lib/retro_hex_chat_web/live/chat_live/components/composer.ex:1176
+#: lib/retro_hex_chat_web/live/chat_live/components/composer.ex:1194
 #, elixir-autogen, elixir-format
 msgid "You are setting: %{flag} (%{label})"
 msgstr "設定:%{flag} (%{label})"
@@ -2242,7 +2242,7 @@ msgstr "[BotService] Bot '%{name}' を作成できませんでした: %{message}
 msgid "[ChanServ] Channel Services Online"
 msgstr "[ChanServ] チャネルサービスオンライン"
 
-#: lib/retro_hex_chat_web/live/chat_live/pubsub_handlers/membership.ex:251
+#: lib/retro_hex_chat_web/live/chat_live/pubsub_handlers/membership.ex:246
 #, elixir-autogen, elixir-format
 msgid "[NickServ] %{reason}. You are now %{nickname}"
 msgstr "[NickServ] %{reason}. 現在のところ %{nickname}"
@@ -2437,7 +2437,7 @@ msgstr "キャンセルについて"
 msgid "Channel Central"
 msgstr "チャネルの中央"
 
-#: lib/retro_hex_chat_web/live/desktop_live.html.heex:772
+#: lib/retro_hex_chat_web/live/desktop_live.html.heex:776
 #, elixir-autogen, elixir-format
 msgid "Channel Central: %{channel}"
 msgstr "チャンネル セントラル: %{channel}"
@@ -2681,7 +2681,7 @@ msgstr "チャネル演算子のみこのチャンネルを登録できます。
 msgid "Only the founder can drop a channel."
 msgstr "創設者だけがチャネルをドロップすることができます。"
 
-#: lib/retro_hex_chat_web/live/desktop_live.html.heex:353
+#: lib/retro_hex_chat_web/live/desktop_live.html.heex:357
 #, elixir-autogen, elixir-format
 msgid "Opening chat..."
 msgstr "チャットを開く..."
@@ -2986,7 +2986,7 @@ msgstr "個室をオープン..."
 
 #: lib/retro_hex_chat_web/components/ui/chat/message_row.ex:100
 #: lib/retro_hex_chat_web/components/ui/chat/message_row.ex:177
-#: lib/retro_hex_chat_web/components/ui/chat/visitor_greeting_card.ex:109
+#: lib/retro_hex_chat_web/components/ui/chat/visitor_greeting_card.ex:115
 #, elixir-autogen, elixir-format
 msgid "P2P"
 msgstr "P2P"
@@ -3017,7 +3017,7 @@ msgstr "P2Pセッション%{peer}終了"
 msgid "Private Space"
 msgstr "プライベートスペース"
 
-#: lib/retro_hex_chat_web/components/ui/chat/visitor_greeting_card.ex:97
+#: lib/retro_hex_chat_web/components/ui/chat/visitor_greeting_card.ex:103
 #: lib/retro_hex_chat_web/components/ui/space/conversation_entry.ex:44
 #: lib/retro_hex_chat_web/controllers/help_content/feature_virtual_spaces.html.heex:12
 #: lib/retro_hex_chat_web/live/app/space_live.ex:821
@@ -3485,8 +3485,8 @@ msgstr "添付ファイルアップロードは確認できません"
 
 #: lib/retro_hex_chat_web/live/chat_live/components/composer.ex:746
 #: lib/retro_hex_chat_web/live/chat_live/components/composer.ex:759
-#: lib/retro_hex_chat_web/live/chat_live/components/composer.ex:817
-#: lib/retro_hex_chat_web/live/chat_live/components/composer.ex:828
+#: lib/retro_hex_chat_web/live/chat_live/components/composer.ex:834
+#: lib/retro_hex_chat_web/live/chat_live/components/composer.ex:845
 #, elixir-autogen, elixir-format
 msgid "Attachment upload failed"
 msgstr "添付ファイルアップロード失敗"
@@ -3642,7 +3642,7 @@ msgid "Text"
 msgstr "テキスト"
 
 #: lib/retro_hex_chat_web/live/chat_live/components/composer.ex:744
-#: lib/retro_hex_chat_web/live/chat_live/components/composer.ex:820
+#: lib/retro_hex_chat_web/live/chat_live/components/composer.ex:837
 #, elixir-autogen, elixir-format
 msgid "Too many attachments"
 msgstr "添付ファイルが多すぎます"
@@ -3657,7 +3657,7 @@ msgstr "ビデオ"
 msgid "Write"
 msgstr "作成"
 
-#: lib/retro_hex_chat_web/live/chat_live/components/composer.ex:902
+#: lib/retro_hex_chat_web/live/chat_live/components/composer.ex:920
 #, elixir-autogen, elixir-format
 msgid "You"
 msgstr "あなた"
@@ -3847,7 +3847,7 @@ msgstr "このスペースは、あなたが参加していないチャンネル
 msgid "In the channel call"
 msgstr "チャンネルの通話中"
 
-#: lib/retro_hex_chat_web/live/chat_live/components/chat_shell.ex:132
+#: lib/retro_hex_chat_web/live/chat_live/components/chat_shell.ex:136
 #, elixir-autogen, elixir-format
 msgid "P2P: %{peer} — in another tab"
 msgstr "P2P: %{peer} — 別のタブ"
@@ -3898,12 +3898,12 @@ msgstr "space を開くには NickServ に登録されている必要があり�
 msgid "Register your nickname to put the space card here"
 msgstr "space のカードをここに置くにはニックネームを登録してください"
 
-#: lib/retro_hex_chat_web/live/chat_live/components/chat_shell.ex:133
+#: lib/retro_hex_chat_web/live/chat_live/components/chat_shell.ex:137
 #, elixir-autogen, elixir-format
 msgid "This P2P session is open in another tab of yours"
 msgstr "この P2P セッションはあなたの別のタブで開いています"
 
-#: lib/retro_hex_chat_web/live/chat_live/pubsub_handlers/membership.ex:301
+#: lib/retro_hex_chat_web/live/chat_live/pubsub_handlers/membership.ex:296
 #, elixir-autogen, elixir-format
 msgid "Registration dropped — you are no longer identified as %{nickname}."
 msgstr "登録は削除されます。%{nickname} として識別されることはありません。"
@@ -4118,17 +4118,17 @@ msgstr "このサーバー"
 msgid "Discard the recording"
 msgstr "録音を破棄"
 
-#: lib/retro_hex_chat_web/live/chat_live/components/composer.ex:860
+#: lib/retro_hex_chat_web/live/chat_live/components/composer.ex:878
 #, elixir-autogen, elixir-format
 msgid "This browser cannot record. Attach an audio file instead."
 msgstr "このブラウザは録音できません。代わりに音声ファイルを添付してください。"
 
-#: lib/retro_hex_chat_web/live/chat_live/components/composer.ex:854
+#: lib/retro_hex_chat_web/live/chat_live/components/composer.ex:872
 #, elixir-autogen, elixir-format
 msgid "This browser did not give access to the microphone."
 msgstr "このブラウザはマイクへのアクセスを許可しませんでした。"
 
-#: lib/retro_hex_chat_web/live/chat_live/components/composer.ex:839
+#: lib/retro_hex_chat_web/live/chat_live/components/composer.ex:853
 #, elixir-autogen, elixir-format
 msgid "This browser recorded in a format this chat cannot send"
 msgstr "このブラウザはこのチャットが送信できない形式で録音しました"
@@ -4230,7 +4230,7 @@ msgstr "録音中"
 msgid "Record a voice message"
 msgstr "音声メッセージを録音"
 
-#: lib/retro_hex_chat_web/live/chat_live/components/composer.ex:857
+#: lib/retro_hex_chat_web/live/chat_live/components/composer.ex:875
 #, elixir-autogen, elixir-format
 msgid "No microphone is available."
 msgstr "マイクは使用できません。"
@@ -5839,7 +5839,7 @@ msgctxt "space room"
 msgid "Game Room"
 msgstr "ゲームルーム"
 
-#: lib/retro_hex_chat_web/live/chat_live/visitor.ex:252
+#: lib/retro_hex_chat_web/live/chat_live/visitor.ex:270
 #, elixir-autogen, elixir-format
 msgid "%{channel} is no longer open to visitors."
 msgstr "%{channel}は、訪問者に公開されていません。"
@@ -5854,47 +5854,47 @@ msgstr "訪問者"
 msgid "Watching without an account"
 msgstr "アカウントなしで監視"
 
-#: lib/retro_hex_chat_web/live/chat_live/visitor.ex:229
+#: lib/retro_hex_chat_web/live/chat_live/visitor.ex:247
 #, elixir-autogen, elixir-format
 msgid "%{channel} cannot be watched without an account."
 msgstr "%{channel}はアカウントなしで視聴できません。"
 
-#: lib/retro_hex_chat_web/live/chat_live/visitor.ex:180
+#: lib/retro_hex_chat_web/live/chat_live/visitor.ex:188
 #, elixir-autogen, elixir-format
 msgid "Calls are for registered members."
 msgstr "会員の募集は必須です。"
 
-#: lib/retro_hex_chat_web/site/pages/connect.ex:72
+#: lib/retro_hex_chat_web/site/pages/connect.ex:76
 #, elixir-autogen, elixir-format
 msgid "Create an account or sign in, and you come back right where you were."
 msgstr "アカウントを作成したり、サインインしたり、自分がどこにいたかをすぐに返したりします。"
 
-#: lib/retro_hex_chat_web/live/chat_live/visitor.ex:179
+#: lib/retro_hex_chat_web/live/chat_live/visitor.ex:187
 #, elixir-autogen, elixir-format
 msgid "Games are for registered players."
 msgstr "ゲームは登録済みプレーヤーのためです。"
 
-#: lib/retro_hex_chat_web/live/chat_live/visitor.ex:184
+#: lib/retro_hex_chat_web/live/chat_live/visitor.ex:192
 #, elixir-autogen, elixir-format
 msgid "Private sessions are for registered members."
 msgstr "ご登録いただいた方には、プライベートセッションをご用意いたします。"
 
-#: lib/retro_hex_chat_web/live/chat_live/visitor.ex:181
+#: lib/retro_hex_chat_web/live/chat_live/visitor.ex:189
 #, elixir-autogen, elixir-format
 msgid "Spaces are for registered members."
 msgstr "スペースは登録済み会員の対象となります。"
 
-#: lib/retro_hex_chat_web/live/chat_live/visitor.ex:187
+#: lib/retro_hex_chat_web/live/chat_live/visitor.ex:195
 #, elixir-autogen, elixir-format
 msgid "This feature needs an account."
 msgstr "この機能はアカウントが必要です。"
 
-#: lib/retro_hex_chat_web/live/chat_live/visitor.ex:178
+#: lib/retro_hex_chat_web/live/chat_live/visitor.ex:186
 #, elixir-autogen, elixir-format
 msgid "Writing in the chat needs an account."
 msgstr "チャットでの書き込みにはアカウントが必要です。"
 
-#: lib/retro_hex_chat_web/live/chat_live/visitor.ex:186
+#: lib/retro_hex_chat_web/live/chat_live/visitor.ex:194
 #, elixir-autogen, elixir-format
 msgid "You need an account to open links."
 msgstr "リンクを開くにはアカウントが必要です。"
@@ -5914,7 +5914,7 @@ msgstr "訪問者として見守っています。"
 msgid "In %{conversations}, %{open} and %{popular} take you to other channels, and %{browse} lists every public one."
 msgstr "%{conversations}、%{open}、%{popular} では、他のチャンネルに転送し、%{browse} は、すべての公開チャンネルをリストします。"
 
-#: lib/retro_hex_chat_web/components/ui/chat/visitor_greeting_card.ex:91
+#: lib/retro_hex_chat_web/components/ui/chat/visitor_greeting_card.ex:97
 #, elixir-autogen, elixir-format
 msgid "Talk"
 msgstr "会話"
@@ -5945,32 +5945,33 @@ msgstr "%{channel} は訪問者としてライブしています。"
 msgid "You can read every public channel, but writing needs an account."
 msgstr "すべてのパブリックチャネルを読み込みますが、書き込みにはアカウントが必要です。"
 
-#: lib/retro_hex_chat_web/components/ui/chat/visitor_greeting_card.ex:110
+#: lib/retro_hex_chat_web/components/ui/chat/visitor_greeting_card.ex:116
 #, elixir-autogen, elixir-format
 msgid "A direct call, file transfer or game with one person."
 msgstr "直接電話、ファイル転送、または1人でゲーム。"
 
 #: lib/retro_hex_chat_web/components/ui/chat/visitor_greeting_card.ex:67
+#: lib/retro_hex_chat_web/components/ui/connect/connect_form_panel.ex:290
 #, elixir-autogen, elixir-format
 msgid "An account only needs a nickname and a password."
 msgstr "アカウントはニックネームとパスワードのみが必要です。"
 
-#: lib/retro_hex_chat_web/components/ui/chat/visitor_greeting_card.ex:104
+#: lib/retro_hex_chat_web/components/ui/chat/visitor_greeting_card.ex:110
 #, elixir-autogen, elixir-format
 msgid "An audio and video call for the whole channel."
 msgstr "全チャンネルの音声とビデオ通話。"
 
-#: lib/retro_hex_chat_web/components/ui/chat/visitor_greeting_card.ex:116
+#: lib/retro_hex_chat_web/components/ui/chat/visitor_greeting_card.ex:122
 #, elixir-autogen, elixir-format
 msgid "Doom, Quake and other classics in the browser."
 msgstr "ブラウザのドム、クエーク、その他の古典。"
 
-#: lib/retro_hex_chat_web/components/ui/chat/visitor_greeting_card.ex:98
+#: lib/retro_hex_chat_web/components/ui/chat/visitor_greeting_card.ex:104
 #, elixir-autogen, elixir-format
 msgid "Walk this channel's 8-bit world with your own character."
 msgstr "このチャンネルの8ビット世界を自分のキャラクターで歩きます。"
 
-#: lib/retro_hex_chat_web/components/ui/chat/visitor_greeting_card.ex:92
+#: lib/retro_hex_chat_web/components/ui/chat/visitor_greeting_card.ex:98
 #, elixir-autogen, elixir-format
 msgid "Write here, in any channel, or privately to anyone."
 msgstr "Write here, in any channel, or privately to anyone."

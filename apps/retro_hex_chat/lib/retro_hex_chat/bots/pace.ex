@@ -33,10 +33,22 @@ defmodule RetroHexChat.Bots.Pace do
   every other bot. A nickname that has been quiet longer than the interval gets
   a slot immediately; credit does not accumulate beyond that, so a bot idle for
   an hour still cannot open with a burst.
+
+  The gap is `interval_ms/0` unless `:bot_pace_interval_ms` is set in the
+  `:retro_hex_chat` application env, which replaces it for every reservation
+  made through this function.
   """
   @spec reserve(String.t()) :: non_neg_integer()
   def reserve(nickname) when is_binary(nickname) do
-    GenServer.call(__MODULE__, {:reserve, Nickname.key(nickname)})
+    key = Nickname.key(nickname)
+
+    message =
+      case Application.get_env(:retro_hex_chat, :bot_pace_interval_ms) do
+        nil -> {:reserve, key}
+        interval_ms -> {:reserve, key, interval_ms}
+      end
+
+    GenServer.call(__MODULE__, message)
   catch
     :exit, _reason -> 0
   end
@@ -71,11 +83,14 @@ defmodule RetroHexChat.Bots.Pace do
   end
 
   @impl GenServer
-  def handle_call({:reserve, key}, _from, state) do
+  def handle_call({:reserve, key}, from, state),
+    do: handle_call({:reserve, key, state.interval_ms}, from, state)
+
+  def handle_call({:reserve, key, interval_ms}, _from, state) do
     now = System.monotonic_time(:millisecond)
     earliest = max(Map.get(state.slots, key, now), now)
 
-    {:reply, earliest - now, put_in(state.slots[key], earliest + state.interval_ms)}
+    {:reply, earliest - now, put_in(state.slots[key], earliest + interval_ms)}
   end
 
   @impl GenServer

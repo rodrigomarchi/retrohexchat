@@ -5,7 +5,8 @@ defmodule RetroHexChatWeb.ChatLive.VoiceMessageTest do
   Three facts are under test and none of them is the audio. The first is the
   announcement — the length, the name and the content type a recording may
   carry, refused along with anything a recorder here could not have produced,
-  and bounded in number. The second is what a recording is once it lands: a
+  and bounded in number; every rule of it is `ComposerVoiceRecordingTest`'s,
+  and here only that the recorder's events reach it. The second is what a recording is once it lands: a
   message of its own, sent at once, carrying nothing that was typed and leaving
   the draft where it was. The third is where it goes: to the conversation it
   was recorded in, even when the reader has moved on.
@@ -53,40 +54,6 @@ defmodule RetroHexChatWeb.ChatLive.VoiceMessageTest do
     assert metadata == %{"voice" => true, "duration_ms" => 7_400}
   end
 
-  test "a length past the ceiling is cut down to it", ctx do
-    render_hook(strip(ctx.view), "voice_recorded", %{
-      "filename" => "voice-20260927-101501.weba",
-      "duration_ms" => 90_000,
-      "content_type" => "audio/webm"
-    })
-
-    assert %{"voice-20260927-101501.weba" => %{metadata: metadata}} =
-             composer_state(ctx.view).voice_recordings
-
-    assert metadata == %{"voice" => true, "duration_ms" => 60_000}
-  end
-
-  # Absence: a content type a recording cannot have keeps nothing at all, and
-  # says so where the composer says everything else.
-  test "a recording in an impossible format is refused", ctx do
-    render_hook(strip(ctx.view), "voice_recorded", %{
-      "filename" => "voice-20260927-101502.weba",
-      "duration_ms" => 1_000,
-      "content_type" => "application/zip"
-    })
-
-    state = composer_state(ctx.view)
-
-    assert state.voice_recordings == %{}
-    assert state.input_error =~ "format"
-  end
-
-  test "a microphone the browser refused is worded by the composer", ctx do
-    render_hook(strip(ctx.view), "voice_error", %{"reason" => "denied"})
-
-    assert composer_state(ctx.view).input_error =~ "microphone"
-  end
-
   # The whole point of a voice message: it goes on its own. Whatever is typed
   # stays in the input, and the message carries only the recording.
   test "a recording is sent the moment it lands, as a message of its own", ctx do
@@ -120,37 +87,17 @@ defmodule RetroHexChatWeb.ChatLive.VoiceMessageTest do
     assert latest_message(ctx.channel) == nil
   end
 
-  # Absence: a name the recorder here could never have produced is not kept,
-  # so nothing a client invents can sit in the composer's state.
-  test "an announcement under a name no recorder here produces is refused", ctx do
-    for filename <- ["notes.weba", "voice-2026.exe", String.duplicate("a", 5_000), 42] do
-      announce(ctx.view, filename)
-    end
-
-    assert composer_state(ctx.view).voice_recordings == %{}
-    assert composer_state(ctx.view).input_error
-  end
-
-  test "announcements are bounded by the recordings that may upload at once", ctx do
-    for second <- 10..15, do: announce(ctx.view, "voice-20261006-1645#{second}.weba")
-
-    assert map_size(composer_state(ctx.view).voice_recordings) == 3
-  end
-
   # Absence: a malformed event is refused in words, never by taking the page
-  # down with it.
+  # down with it. Which words, for every refusal and every recorder failure, is
+  # `ComposerVoiceRecordingTest`'s; this is that both events reach them.
   test "malformed recorder events leave the chat standing", ctx do
     render_hook(strip(ctx.view), "voice_recorded", %{})
+    assert composer_state(ctx.view).input_error =~ "upload failed"
+
     render_hook(strip(ctx.view), "voice_error", %{})
 
     assert Process.alive?(ctx.view.pid)
     assert composer_state(ctx.view).input_error =~ "record"
-  end
-
-  test "a microphone the machine cannot provide is not called a refusal", ctx do
-    render_hook(strip(ctx.view), "voice_error", %{"reason" => "unavailable"})
-
-    assert composer_state(ctx.view).input_error =~ "No microphone"
   end
 
   # Absence: something announced as a recording but arriving as another kind

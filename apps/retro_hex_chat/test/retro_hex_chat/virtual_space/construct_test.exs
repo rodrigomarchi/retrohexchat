@@ -15,6 +15,8 @@ defmodule RetroHexChat.VirtualSpace.ConstructTest do
 
   @moduletag :integration
 
+  @gathering_grace_ms 20
+
   setup do
     Application.put_env(:retro_hex_chat, :virtual_space_step_ms, 0)
     Application.put_env(:retro_hex_chat, :virtual_space_build_ms, 0)
@@ -72,6 +74,38 @@ defmodule RetroHexChat.VirtualSpace.ConstructTest do
 
   defp key(nickname), do: "nick:#{String.downcase(nickname)}"
 
+  # The SessionRecorder announces a gathering's end as an empty roster on the
+  # space's roster topic, after the session row is closed.
+  defp subscribe_gathering_end(space_id) do
+    Phoenix.PubSub.subscribe(RetroHexChat.PubSub, Topics.space_roster(space_id))
+  end
+
+  # Waits several graces for an end that must not come. What a stopped world
+  # broadcast before it went down is already queued, so it is flushed first.
+  defp refute_gathering_end(space_id) do
+    flush_roster(space_id)
+
+    refute_receive {:space_roster, %{space_id: ^space_id, participants: []}},
+                   @gathering_grace_ms * 4
+  end
+
+  defp assert_gathering_end(token) do
+    assert_receive {:space_roster, %{participants: []}}, 2_000
+
+    case VirtualSpace.get_session(token) do
+      {:ok, %{status: "closed"}} -> :ok
+      _still_open -> assert_gathering_end(token)
+    end
+  end
+
+  defp flush_roster(space_id) do
+    receive do
+      {:space_roster, %{space_id: ^space_id}} -> flush_roster(space_id)
+    after
+      0 -> :ok
+    end
+  end
+
   defp place(construct_id, nickname, kind, x, y) do
     VirtualSpace.build_construct(
       construct_id,
@@ -119,8 +153,11 @@ defmodule RetroHexChat.VirtualSpace.ConstructTest do
       enter(ctx.construct_id, "alice")
       enter(ctx.construct_id, "bob")
 
+      # The channel broadcasts the part while it handles the call, so the
+      # Construct has it queued; a call into the Construct settles it.
       :ok = Server.part(ctx.channel, "bob", nil)
-      Process.sleep(50)
+      {:ok, pid} = Registry.lookup({:construct_space, ctx.construct_id})
+      _ = :sys.get_state(pid)
       assert VirtualSpace.roster(ctx.construct_id) == ["alice"]
     end
   end
@@ -485,7 +522,7 @@ defmodule RetroHexChat.VirtualSpace.ConstructTest do
 
   describe "a gathering through the gate" do
     setup do
-      Application.put_env(:retro_hex_chat, :virtual_space_gathering_grace_ms, 150)
+      Application.put_env(:retro_hex_chat, :virtual_space_gathering_grace_ms, @gathering_grace_ms)
 
       on_exit(fn ->
         Application.put_env(:retro_hex_chat, :virtual_space_gathering_grace_ms, 0)
@@ -513,8 +550,9 @@ defmodule RetroHexChat.VirtualSpace.ConstructTest do
       # Through the gate: the island empties, the Construct fills.
       enter(ctx.construct_id, "alice")
       _ = :sys.get_state(VirtualSpace.SessionRecorder)
+      subscribe_gathering_end(ctx.channel)
       stop_world({:channel_space, ctx.channel})
-      Process.sleep(250)
+      refute_gathering_end(ctx.channel)
       assert {:ok, %{status: "open"}} = VirtualSpace.get_session(token)
       assert "alice" in VirtualSpace.roster(ctx.channel)
 
@@ -529,7 +567,7 @@ defmodule RetroHexChat.VirtualSpace.ConstructTest do
 
       # Everybody gone, for longer than a hop: the gathering is over.
       stop_world({:channel_space, ctx.channel})
-      Process.sleep(250)
+      assert_gathering_end(token)
 
       assert {:ok, %{status: "closed", closed_reason: "emptied"}} =
                VirtualSpace.get_session(token)
@@ -702,7 +740,7 @@ defmodule RetroHexChat.VirtualSpace.ConstructTest do
     end
 
     test "a hop into it keeps the space's gathering open", ctx do
-      Application.put_env(:retro_hex_chat, :virtual_space_gathering_grace_ms, 150)
+      Application.put_env(:retro_hex_chat, :virtual_space_gathering_grace_ms, @gathering_grace_ms)
 
       on_exit(fn ->
         Application.put_env(:retro_hex_chat, :virtual_space_gathering_grace_ms, 0)
@@ -713,12 +751,13 @@ defmodule RetroHexChat.VirtualSpace.ConstructTest do
 
       enter(ctx.office_id, "alice")
       _ = :sys.get_state(VirtualSpace.SessionRecorder)
+      subscribe_gathering_end(ctx.channel)
 
       {:ok, pid} = Registry.lookup({:channel_space, ctx.channel})
       ref = Process.monitor(pid)
       GenServer.stop(pid, :normal)
       assert_receive {:DOWN, ^ref, :process, ^pid, _reason}
-      Process.sleep(250)
+      refute_gathering_end(ctx.channel)
 
       assert {:ok, %{status: "open"}} = VirtualSpace.get_session(opened.session.token)
     end

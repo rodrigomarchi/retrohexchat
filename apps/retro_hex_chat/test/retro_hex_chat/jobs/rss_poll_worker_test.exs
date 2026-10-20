@@ -424,13 +424,16 @@ defmodule RetroHexChat.Jobs.RSSPollWorkerTest do
     |> RSSPollWorker.perform()
   end
 
+  # The worker runs in this process (perform/2 and Oban.drain_queue/1 alike),
+  # and the channel broadcasts each message before its send_message call
+  # returns, so everything the poll posted is already in the mailbox.
   @spec bot_messages() :: [map()]
   defp bot_messages do
     receive do
       %{event: "new_message", payload: %{author: "RSSWorkerBot"} = payload} ->
         [payload | bot_messages()]
     after
-      300 -> []
+      0 -> []
     end
   end
 
