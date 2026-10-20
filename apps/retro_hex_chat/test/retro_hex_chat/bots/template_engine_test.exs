@@ -29,28 +29,9 @@ defmodule RetroHexChat.Bots.TemplateEngineTest do
                "Hello {unknown}!"
     end
 
-    test "handles empty vars map" do
-      assert TemplateEngine.render("Hello {nickname}!", %{}) == "Hello {nickname}!"
-    end
-
     test "handles template with no placeholders" do
       assert TemplateEngine.render("Hello world!", %{"nickname" => "Alice"}) ==
                "Hello world!"
-    end
-
-    test "handles all standard placeholders" do
-      template = "{botname} in {channel}: Try {prefix}help, {nickname}! Topic: {topic}"
-
-      vars = %{
-        "botname" => "GreeterBot",
-        "channel" => "#help",
-        "prefix" => "!",
-        "nickname" => "Dave",
-        "topic" => "Welcome"
-      }
-
-      assert TemplateEngine.render(template, vars) ==
-               "GreeterBot in #help: Try !help, Dave! Topic: Welcome"
     end
 
     test "converts non-string values to string" do

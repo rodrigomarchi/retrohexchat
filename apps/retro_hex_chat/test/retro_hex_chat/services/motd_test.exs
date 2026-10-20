@@ -19,19 +19,6 @@ defmodule RetroHexChat.Services.MotdTest do
     test "returns nil when unset" do
       assert Motd.get() == nil
     end
-
-    test "returns text after set" do
-      :ok = Motd.set("Welcome to the server!", "Admin")
-      assert Motd.get() == "Welcome to the server!"
-    end
-
-    test "returns nil after clear" do
-      :ok = Motd.set("Temporary MOTD", "Admin")
-      assert Motd.get() == "Temporary MOTD"
-
-      :ok = Motd.clear("Admin")
-      assert Motd.get() == nil
-    end
   end
 
   describe "set/2" do

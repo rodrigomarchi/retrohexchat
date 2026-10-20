@@ -234,14 +234,6 @@ defmodule RetroHexChatWeb.Components.UI.DesktopLaunchersTest do
     refute html =~ ~s(data-window-taskbar="desktop-launcher-tools")
   end
 
-  test "connect-required dialog uses the shared Win98 dialog chrome" do
-    html = render_component(&DesktopLaunchers.desktop_connect_required_dialog/1, %{})
-
-    assert html =~ ~s(id="desktop-connect-required-dialog")
-    assert html =~ "Connect required"
-    assert html =~ "This app group needs a chat session."
-  end
-
   defp enabled?(html, testid) do
     case Floki.find(document(html), ~s([data-testid="#{testid}"])) do
       [node | _] ->

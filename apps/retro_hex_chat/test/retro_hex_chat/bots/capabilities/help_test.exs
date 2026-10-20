@@ -18,12 +18,6 @@ defmodule RetroHexChat.Bots.Capabilities.HelpTest do
     config: %{"commands" => @commands}
   }
 
-  describe "name/0" do
-    test "returns :help" do
-      assert Help.name() == :help
-    end
-  end
-
   describe "handle_message/3" do
     test "responds to !BotName help" do
       assert {:multi_reply, lines} = Help.handle_message("!HelpBot help", "Alice", @ctx)

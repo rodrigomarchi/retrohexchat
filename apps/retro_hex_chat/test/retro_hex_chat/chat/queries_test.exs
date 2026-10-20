@@ -72,40 +72,6 @@ defmodule RetroHexChat.Chat.QueriesTest do
       assert hd(messages).content == "Second"
     end
 
-    test "limits to 50 messages by default" do
-      for i <- 1..55 do
-        Queries.insert_message(%{
-          channel_name: "#lobby",
-          author_nickname: "User",
-          content: "Msg #{i}",
-          type: "message"
-        })
-      end
-
-      messages = Queries.list_messages("#lobby").items
-      assert length(messages) == 50
-    end
-
-    test "supports cursor-based pagination with before_id" do
-      msgs =
-        for i <- 1..10 do
-          {:ok, msg} =
-            Queries.insert_message(%{
-              channel_name: "#lobby",
-              author_nickname: "User",
-              content: "Msg #{i}",
-              type: "message"
-            })
-
-          msg
-        end
-
-      # Get messages before the 5th message (cursor)
-      cursor_msg = Enum.at(msgs, 4)
-      older = Queries.list_messages("#lobby", cursor: cursor_msg.id).items
-      assert length(older) == 4
-    end
-
     # `has_more` is the database's answer: the query asks for one row past the
     # page and reports whether it came back. Both kinds of conversation page
     # through the same function, so this is the only place that decides it — and

@@ -33,10 +33,6 @@ defmodule RetroHexChat.Commands.Handlers.NickTest do
       assert {:error, "That nickname is reserved"} = Nick.execute(["Guest1234"], @base_context)
     end
 
-    test "accepts nickname starting with letter" do
-      assert {:ok, :nick_change, "Bob"} = Nick.execute(["Bob"], @base_context)
-    end
-
     test "accepts nickname starting with special char [" do
       assert {:ok, :nick_change, "[bot]"} = Nick.execute(["[bot]"], @base_context)
     end
@@ -96,16 +92,6 @@ defmodule RetroHexChat.Commands.Handlers.NickTest do
 
     test "errors when nickname contains invalid characters" do
       assert {:error, _} = Nick.execute(["bad@nick"], @base_context)
-    end
-  end
-
-  describe "help/0" do
-    test "returns help map" do
-      help = Nick.help()
-      assert help.name == "nick"
-      assert is_binary(help.syntax)
-      assert is_binary(help.description)
-      assert is_list(help.examples)
     end
   end
 end

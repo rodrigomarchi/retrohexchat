@@ -55,11 +55,6 @@ defmodule RetroHexChat.Commands.Handlers.IgnoreTest do
   # ── US2: Type parameter ────────────────────────────────
 
   describe "execute/2 with type parameter (US2)" do
-    test "with nickname and type returns correct type atom" do
-      assert {:ok, :ui_action, :ignore_add, %{nickname: "SpamBot", type: :pms, duration: nil}} =
-               Ignore.execute(["SpamBot", "pms"], @context)
-    end
-
     test "with all valid types" do
       for type_str <- ~w(all messages pms invites actions notices) do
         expected_type = String.to_atom(type_str)
@@ -107,24 +102,6 @@ defmodule RetroHexChat.Commands.Handlers.IgnoreTest do
     test "negative duration format returns error" do
       assert {:error, msg} = Ignore.execute(["User", "all", "-5m"], @context)
       assert msg =~ "Invalid duration"
-    end
-  end
-
-  describe "help/0" do
-    test "returns help map with correct name" do
-      help = Ignore.help()
-      assert help.name == "ignore"
-    end
-
-    test "returns help map with syntax string" do
-      help = Ignore.help()
-      assert is_binary(help.syntax)
-      assert help.syntax =~ "/ignore"
-    end
-
-    test "returns help map with examples list" do
-      help = Ignore.help()
-      assert [_ | _] = help.examples
     end
   end
 end

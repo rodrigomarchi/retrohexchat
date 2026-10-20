@@ -18,7 +18,6 @@ defmodule RetroHexChat.Commands.RegistryTest do
   describe "list_commands/0" do
     test "returns list with all registered commands" do
       commands = Registry.list_commands()
-      assert is_list(commands)
       assert "join" in commands
       assert "part" in commands
       assert "nick" in commands
@@ -46,7 +45,6 @@ defmodule RetroHexChat.Commands.RegistryTest do
   describe "command_metadata/0" do
     test "returns all commands with metadata" do
       metadata = Registry.command_metadata()
-      assert is_list(metadata)
       assert length(metadata) == length(Registry.list_commands())
 
       join = Enum.find(metadata, &(&1.name == "join"))

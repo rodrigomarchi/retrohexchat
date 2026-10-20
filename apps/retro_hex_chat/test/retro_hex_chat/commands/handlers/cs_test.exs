@@ -367,16 +367,6 @@ defmodule RetroHexChat.Commands.Handlers.CsTest do
     end
   end
 
-  describe "help/0" do
-    test "returns help map" do
-      help = Cs.help()
-      assert help.name == "cs"
-      assert is_binary(help.syntax)
-      assert is_binary(help.description)
-      assert is_list(help.examples)
-    end
-  end
-
   # The outer setup registers CsTestUser with this password; a nickname it did
   # not register is registered with the same one.
   defp identify(nickname) do

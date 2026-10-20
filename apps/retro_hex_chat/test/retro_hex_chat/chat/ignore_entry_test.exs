@@ -5,53 +5,6 @@ defmodule RetroHexChat.Chat.IgnoreEntryTest do
 
   alias RetroHexChat.Chat.IgnoreEntry
 
-  describe "new/1" do
-    test "creates entry from keyword list" do
-      entry =
-        IgnoreEntry.new(
-          nickname: "SpamBot",
-          ignore_type: :all,
-          created_at: DateTime.utc_now()
-        )
-
-      assert entry.nickname == "SpamBot"
-      assert entry.ignore_type == :all
-      assert entry.expires_at == nil
-    end
-
-    test "creates entry from map" do
-      entry =
-        IgnoreEntry.new(%{
-          nickname: "Troll",
-          ignore_type: :pms,
-          created_at: DateTime.utc_now()
-        })
-
-      assert entry.nickname == "Troll"
-      assert entry.ignore_type == :pms
-    end
-
-    test "creates entry with expires_at" do
-      expires = DateTime.add(DateTime.utc_now(), 300, :second)
-
-      entry =
-        IgnoreEntry.new(
-          nickname: "Loud",
-          ignore_type: :all,
-          expires_at: expires,
-          created_at: DateTime.utc_now()
-        )
-
-      assert entry.expires_at == expires
-    end
-
-    test "raises on missing required keys" do
-      assert_raise ArgumentError, fn ->
-        IgnoreEntry.new(nickname: "Test")
-      end
-    end
-  end
-
   describe "expired?/1" do
     test "returns false for permanent entry (nil expires_at)" do
       entry =

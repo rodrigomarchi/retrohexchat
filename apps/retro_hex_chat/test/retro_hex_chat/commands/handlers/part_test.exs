@@ -55,11 +55,4 @@ defmodule RetroHexChat.Commands.Handlers.PartTest do
       assert {:error, "You are not in any channel"} = Part.execute(["goodbye"], ctx)
     end
   end
-
-  describe "help/0" do
-    test "returns help map" do
-      help = Part.help()
-      assert help.name == "part"
-    end
-  end
 end

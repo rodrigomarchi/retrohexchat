@@ -18,11 +18,6 @@ defmodule RetroHexChat.Lobby.OpenSessionTest do
 
   @moduletag :integration
 
-  setup do
-    on_exit(fn -> :ok end)
-    :ok
-  end
-
   defp nick(nickname) do
     {:ok, nick} =
       %RegisteredNick{}

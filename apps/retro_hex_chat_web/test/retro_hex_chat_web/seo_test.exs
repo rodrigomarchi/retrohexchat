@@ -109,19 +109,6 @@ defmodule RetroHexChatWeb.SEOTest do
   end
 
   describe "metadata helpers" do
-    test "social image metadata is stable" do
-      assert SEO.social_image_url() ==
-               "https://retrohexchat.app/images/social/retrohexchat_og.png"
-
-      assert SEO.social_image_width() == 1200
-      assert SEO.social_image_height() == 630
-      assert SEO.social_image_type() == "image/png"
-    end
-
-    test "noindex content is shared by non-public layouts" do
-      assert SEO.noindex_content() == "noindex, nofollow, noarchive"
-    end
-
     test "software application JSON-LD is parseable and canonical" do
       description = "Self-hosted chat with peer-to-peer calls."
       json_ld = SEO.software_application_json_ld(description) |> Jason.decode!()

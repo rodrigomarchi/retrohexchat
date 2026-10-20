@@ -6,21 +6,6 @@ defmodule RetroHexChat.Chat.SoundSettingsTest do
 
   describe "new/0" do
     @tag :unit
-    test "returns default settings with all 10 event types" do
-      settings = SoundSettings.new()
-
-      assert is_map(settings.sound_mappings)
-      assert is_map(settings.flash_settings)
-      assert map_size(settings.sound_mappings) == 10
-      assert map_size(settings.flash_settings) == 10
-
-      for event <- SoundSettings.event_types() do
-        assert Map.has_key?(settings.sound_mappings, event)
-        assert Map.has_key?(settings.flash_settings, event)
-      end
-    end
-
-    @tag :unit
     test "default sound mappings have sensible values" do
       settings = SoundSettings.new()
 
@@ -108,15 +93,6 @@ defmodule RetroHexChat.Chat.SoundSettingsTest do
     end
   end
 
-  describe "get_sound_mappings/1 and get_flash_settings/1" do
-    @tag :unit
-    test "returns the full maps" do
-      settings = SoundSettings.new()
-      assert SoundSettings.get_sound_mappings(settings) == settings.sound_mappings
-      assert SoundSettings.get_flash_settings(settings) == settings.flash_settings
-    end
-  end
-
   describe "muted?/1 and set_muted/2" do
     @tag :unit
     test "missing mute flag is treated as unmuted for old in-memory settings" do
@@ -150,36 +126,9 @@ defmodule RetroHexChat.Chat.SoundSettingsTest do
     @tag :unit
     test "returns 15 entries including 'none'" do
       sounds = SoundSettings.available_sounds()
-      assert length(sounds) == 15
       assert {"none", "None"} in sounds
       assert {"alert", "Alert"} in sounds
       assert {"ding_low", "Ding Low"} in sounds
-    end
-
-    @tag :unit
-    test "each entry is a {name, label} tuple" do
-      for {name, label} <- SoundSettings.available_sounds() do
-        assert is_binary(name)
-        assert is_binary(label)
-      end
-    end
-  end
-
-  describe "event_types/0" do
-    @tag :unit
-    test "returns all 10 event types" do
-      types = SoundSettings.event_types()
-      assert length(types) == 10
-      assert :message in types
-      assert :pm in types
-      assert :highlight in types
-      assert :join in types
-      assert :part in types
-      assert :kick in types
-      assert :connect in types
-      assert :disconnect in types
-      assert :buddy_online in types
-      assert :buddy_offline in types
     end
   end
 

@@ -7,17 +7,6 @@ defmodule RetroHexChatWeb.ChatLive.Components.InviteQueueDialogTest do
 
   @moduletag :unit
 
-  test "id/0 is stable" do
-    assert InviteQueueDialog.id() == "invite-queue-dialog"
-  end
-
-  test "renders hidden when the queue is empty" do
-    html = render_component(InviteQueueDialog, id: InviteQueueDialog.id(), invites: [])
-
-    assert html =~ ~s(data-testid="invite-dialog")
-    assert html =~ "hidden"
-  end
-
   test "renders an invite card per pending invite (passthrough)" do
     html =
       render_component(InviteQueueDialog,

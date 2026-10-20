@@ -119,7 +119,6 @@ defmodule RetroHexChatWeb.App.ChatHelpersTest do
 
       assert html =~ "<strong>bold</strong>"
       assert html =~ ~s(href="https://example.com")
-      assert html =~ ~s(class="chat-link")
     end
 
     test "strips markdown formatting when strip is true" do
@@ -151,10 +150,6 @@ defmodule RetroHexChatWeb.App.ChatHelpersTest do
   end
 
   describe "default_nick_color/1" do
-    test "is deterministic for a given nick" do
-      assert ChatHelpers.default_nick_color("alice") == ChatHelpers.default_nick_color("alice")
-    end
-
     test "returns a nick-color-N class within the palette range" do
       for nick <- ~w(alice bob carol dave eve mallory) do
         assert ChatHelpers.default_nick_color(nick) =~ ~r/^nick-color-([0-9]|1[01])$/

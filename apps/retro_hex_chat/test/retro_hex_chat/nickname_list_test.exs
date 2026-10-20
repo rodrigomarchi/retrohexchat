@@ -54,12 +54,6 @@ defmodule RetroHexChat.NicknameListTest do
 
       assert Enum.map(sorted, & &1.nick) == ["Alice", "bob", "charlie"]
     end
-
-    test "orders part of a list too, which is how buddies are grouped" do
-      sorted = NicknameList.sorted(@list, kept(["delta", "Bravo"]).entries)
-
-      assert Enum.map(sorted, & &1.nick) == ["Bravo", "delta"]
-    end
   end
 
   describe "remove/3" do

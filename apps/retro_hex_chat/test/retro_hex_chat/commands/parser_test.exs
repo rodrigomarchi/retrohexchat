@@ -1,6 +1,5 @@
 defmodule RetroHexChat.Commands.ParserTest do
   use ExUnit.Case, async: true
-  use ExUnitProperties
 
   @moduletag :unit
 
@@ -59,30 +58,6 @@ defmodule RetroHexChat.Commands.ParserTest do
 
       assert {:command, "msg", ["Nick", "hello  unicode áé  \x02bold\x02"]} =
                Parser.parse("/msg Nick hello  unicode áé  \x02bold\x02")
-    end
-  end
-
-  # StreamData property tests
-  describe "property tests" do
-    property "commands always start with /" do
-      check all(
-              cmd_name <- string(:alphanumeric, min_length: 1, max_length: 10),
-              args <- string(:printable, max_length: 50)
-            ) do
-        input = "/#{cmd_name} #{args}"
-        result = Parser.parse(input)
-        assert {:command, _, _} = result
-      end
-    end
-
-    property "non-slash messages are always :message" do
-      check all(
-              msg <- string(:printable, min_length: 1, max_length: 100),
-              not String.starts_with?(String.trim_leading(msg), "/") or
-                String.starts_with?(String.trim_leading(msg), "//")
-            ) do
-        assert {:message, _} = Parser.parse(msg)
-      end
     end
   end
 end

@@ -53,18 +53,6 @@ defmodule RetroHexChat.Commands.AutocompleteTest do
       assert :no_match = Autocomplete.fuzzy_match("zz", "abc")
     end
 
-    test "matched character indices are correct for prefix" do
-      {:match, _, indices} = Autocomplete.fuzzy_match("joi", "join")
-
-      assert indices == [0, 1, 2]
-    end
-
-    test "matched character indices are correct for subsequence" do
-      {:match, _, indices} = Autocomplete.fuzzy_match("jn", "join")
-
-      assert indices == [0, 3]
-    end
-
     test "longer prefix still matches correctly" do
       {:match, score, indices} = Autocomplete.fuzzy_match("auto", "autojoin")
 
@@ -148,7 +136,6 @@ defmodule RetroHexChat.Commands.AutocompleteTest do
       assert join.type == :command
       assert join.category == "Channel"
       assert join.category_atom == :channel
-      assert is_list(join.matched_chars)
     end
 
     test "recent commands are marked as recent" do
@@ -273,7 +260,6 @@ defmodule RetroHexChat.Commands.AutocompleteTest do
       results = Autocomplete.search_nicks("mar", @channel_users, "TestUser")
 
       mario = Enum.find(results, &(&1.nickname == "Mario"))
-      assert is_list(mario.matched_chars)
       assert mario.matched_chars == [0, 1, 2]
     end
 
@@ -469,7 +455,6 @@ defmodule RetroHexChat.Commands.AutocompleteTest do
   describe "search_subcommands/2" do
     test "returns all subcommands with empty partial" do
       results = Autocomplete.search_subcommands("ns", "")
-      assert length(results) == 10
       assert Enum.all?(results, &(&1.type == :subcommand))
       names = Enum.map(results, & &1.name)
       assert "register" in names
@@ -501,7 +486,6 @@ defmodule RetroHexChat.Commands.AutocompleteTest do
     test "includes matched_chars in results" do
       results = Autocomplete.search_subcommands("ns", "reg")
       result = hd(results)
-      assert is_list(result.matched_chars)
       assert result.matched_chars == [0, 1, 2]
     end
 

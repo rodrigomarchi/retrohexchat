@@ -11,19 +11,12 @@ defmodule RetroHexChat.P2P.RateLimiterTest do
   end
 
   describe "check_session_rate/2" do
-    test "allows requests within limit", %{table: table} do
-      for _ <- 1..5 do
-        assert :ok = RateLimiter.check_session_rate(table, 42)
-      end
-    end
-
     test "rejects 6th request within window", %{table: table} do
       for _ <- 1..5 do
         assert :ok = RateLimiter.check_session_rate(table, 42)
       end
 
       assert {:error, {:rate_limited, remaining}} = RateLimiter.check_session_rate(table, 42)
-      assert is_integer(remaining)
       assert remaining > 0
     end
 

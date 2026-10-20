@@ -93,11 +93,6 @@ defmodule RetroHexChat.Commands.Handlers.PerformTest do
                Perform.execute(["remove", "0"], @context)
     end
 
-    test "remove with position 5 returns perform_remove" do
-      assert {:ok, :ui_action, :perform_remove, %{position: 5}} =
-               Perform.execute(["remove", "5"], @context)
-    end
-
     test "move returns perform_move with from and to positions" do
       assert {:ok, :ui_action, :perform_move, %{from: 0, to: 2}} =
                Perform.execute(["move", "0", "2"], @context)
@@ -105,31 +100,6 @@ defmodule RetroHexChat.Commands.Handlers.PerformTest do
 
     test "clear returns perform_clear ui_action" do
       assert {:ok, :ui_action, :perform_clear, %{}} = Perform.execute(["clear"], @context)
-    end
-  end
-
-  # ── help/0 ────────────────────────────────────────────────
-
-  describe "help/0" do
-    test "returns help map with correct name" do
-      help = Perform.help()
-      assert help.name == "perform"
-    end
-
-    test "returns help map with syntax string" do
-      help = Perform.help()
-      assert is_binary(help.syntax)
-      assert help.syntax =~ "/perform"
-    end
-
-    test "returns help map with description" do
-      help = Perform.help()
-      assert is_binary(help.description)
-    end
-
-    test "returns help map with examples list" do
-      help = Perform.help()
-      assert [_ | _] = help.examples
     end
   end
 end

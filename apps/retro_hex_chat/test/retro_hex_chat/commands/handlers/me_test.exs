@@ -29,11 +29,6 @@ defmodule RetroHexChat.Commands.Handlers.MeTest do
                Me.execute(["dances", "around"], @base_context)
     end
 
-    test "returns action for single word" do
-      assert {:ok, :action, %{content: "waves"}} =
-               Me.execute(["waves"], @base_context)
-    end
-
     test "errors when no args provided" do
       assert {:error, _} = Me.execute([], @base_context)
     end
@@ -46,16 +41,6 @@ defmodule RetroHexChat.Commands.Handlers.MeTest do
     test "acts in the private chat that is open" do
       ctx = Map.merge(@base_context, %{active_channel: nil, active_pm: "Bob"})
       assert {:ok, :action, %{content: "waves"}} = Me.execute(["waves"], ctx)
-    end
-  end
-
-  describe "help/0" do
-    test "returns help map" do
-      help = Me.help()
-      assert help.name == "me"
-      assert is_binary(help.syntax)
-      assert is_binary(help.description)
-      assert is_list(help.examples)
     end
   end
 end

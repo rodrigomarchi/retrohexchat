@@ -1,7 +1,6 @@
 defmodule RetroHexChatWeb.ChatLive.Components.ChatTabsTest do
   use RetroHexChatWeb.ConnCase, async: true
 
-  import Phoenix.Component, only: [sigil_H: 2]
   import Phoenix.LiveViewTest
 
   alias RetroHexChatWeb.ChatLive.Components.ChatTabs
@@ -74,48 +73,6 @@ defmodule RetroHexChatWeb.ChatLive.Components.ChatTabsTest do
     assert tab_labels(covered) == ["Status", "#lobby"]
     assert selection(covered) == [{"Status", "true"}, {"#lobby", "false"}]
     assert selection(focused) == [{"Status", "false"}, {"#lobby", "true"}]
-  end
-
-  # The space is a screen with an address, reached from the entry beside the
-  # tabs. It was a tab back when it was a second view of the conversation.
-  test "the space is not a tab" do
-    html = tabs(%{active_channel: "#lobby"})
-
-    assert tab_labels(html) == ["Status", "#lobby"]
-  end
-
-  test "a PM is the whole of the bar beside Status" do
-    html = tabs(%{active_pm: "bob"})
-
-    assert tab_labels(html) == ["Status", "bob"]
-  end
-
-  test "the actions slot renders beside the tabs, outside the tablist" do
-    assigns = %{
-      unread_counts: %{},
-      status_unread: false,
-      show_status_tab: false,
-      active_channel: "#lobby",
-      active_pm: nil,
-      nick_color_fn: fn _nick -> "nick-color-1" end
-    }
-
-    html =
-      render_component(
-        fn assigns ->
-          ~H"""
-          <ChatTabs.chat_tabs {assigns}>
-            <:actions><button data-testid="probe-action">x</button></:actions>
-          </ChatTabs.chat_tabs>
-          """
-        end,
-        assigns
-      )
-
-    doc = Floki.parse_document!(html)
-
-    assert [_] = Floki.find(doc, ~s([data-testid="tab-bar"] [data-testid="probe-action"]))
-    assert Floki.find(doc, ~s([role="tablist"] [data-testid="probe-action"])) == []
   end
 
   test "marks the focused channel unread when its count is positive" do

@@ -32,20 +32,5 @@ defmodule RetroHexChat.Commands.Handlers.AwayTest do
     test "clears away when no args" do
       assert {:ok, :ui_action, :clear_away, %{}} = Away.execute([], @base_context)
     end
-
-    test "sets away with single word message" do
-      assert {:ok, :ui_action, :set_away, %{message: "brb"}} =
-               Away.execute(["brb"], @base_context)
-    end
-  end
-
-  describe "help/0" do
-    test "returns help map" do
-      help = Away.help()
-      assert help.name == "away"
-      assert is_binary(help.syntax)
-      assert is_binary(help.description)
-      assert is_list(help.examples)
-    end
   end
 end

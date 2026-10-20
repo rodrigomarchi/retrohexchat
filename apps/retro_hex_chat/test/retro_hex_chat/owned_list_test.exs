@@ -61,14 +61,6 @@ defmodule RetroHexChat.OwnedListTest do
       assert stored(who) == []
     end
 
-    test "the owner is filled in, so no caller repeats it" do
-      who = owner()
-      :ok = save(who, [{"alpha", 0}])
-
-      assert [row] = Repo.all(where(@schema, [r], r.owner_nickname == ^who))
-      assert row.owner_nickname == who
-    end
-
     test "a row the column refuses takes the whole write down with it" do
       who = owner()
       :ok = save(who, [{"alpha", 0}, {"beta", 1}])

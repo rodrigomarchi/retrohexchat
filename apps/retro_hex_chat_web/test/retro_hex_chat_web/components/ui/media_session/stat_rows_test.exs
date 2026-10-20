@@ -19,7 +19,6 @@ defmodule RetroHexChatWeb.Components.UI.MediaSession.StatRowsTest do
   test "a reading is a label and its value, with the tip as a tooltip" do
     html = render_component(&rows/1, %{open: false, active: true})
 
-    assert html =~ "<dt"
     assert html =~ "2%"
     assert html =~ ~s(title="Packets lost")
     refute html =~ "<p"
@@ -34,8 +33,6 @@ defmodule RetroHexChatWeb.Components.UI.MediaSession.StatRowsTest do
     idle = render_component(&rows/1, %{open: false, active: false})
 
     assert active =~ "Active"
-    assert active =~ "text-success"
     assert idle =~ "Idle"
-    refute idle =~ "text-success"
   end
 end

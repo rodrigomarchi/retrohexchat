@@ -48,14 +48,4 @@ defmodule RetroHexChat.Commands.Handlers.ClearWelcomeTest do
                ClearWelcome.execute(["ignored", "args"], @base_context)
     end
   end
-
-  describe "help/0" do
-    test "returns help map" do
-      help = ClearWelcome.help()
-      assert help.name == "clearwelcome"
-      assert is_binary(help.syntax)
-      assert is_binary(help.description)
-      assert is_list(help.examples)
-    end
-  end
 end

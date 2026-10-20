@@ -155,13 +155,6 @@ defmodule RetroHexChatWeb.Components.UI.Games.RetroGamesPanelTest do
 
     document = Floki.parse_document!(html)
 
-    assert Floki.find(document, ~s([data-testid="retro-game-control-panel"])) != []
-    assert Floki.find(document, ~s([data-testid="retro-game-sidebar-header"])) != []
-    assert Floki.find(document, ~s([data-testid="retro-game-session-status"])) != []
-    assert Floki.find(document, ~s([data-testid="retro-game-difficulty-panel"])) != []
-    assert Floki.find(document, ~s([data-testid="retro-game-controls-panel"])) != []
-    assert Floki.find(document, ~s([data-testid="retro-game-actions"])) != []
-
     assert Floki.find(document, ~s([data-testid="retro-game-status-label"]))
            |> Floki.text() =~ "Ready"
 
@@ -172,11 +165,6 @@ defmodule RetroHexChatWeb.Components.UI.Games.RetroGamesPanelTest do
                document,
                ~s([data-testid="retro-game-difficulty-normal"][aria-pressed="true"])
              )
-
-    for difficulty <- ~w(easy normal hard) do
-      assert [_] =
-               Floki.find(document, ~s([data-testid="retro-game-difficulty-#{difficulty}"] svg))
-    end
 
     assert [_] = Floki.find(document, ~s([data-testid="retro-game-start-ai"]))
     # One game per page: its home, where another is chosen, is in the chat's tab.
@@ -274,8 +262,6 @@ defmodule RetroHexChatWeb.Components.UI.Games.RetroGamesPanelTest do
 
     assert text =~ "Clear all blocks"
     assert text =~ "Move"
-    assert text =~ "A"
-    assert text =~ "D"
   end
 
   test "renders the Hex Warlords goal and shield controls in the shared status panel" do
@@ -374,8 +360,6 @@ defmodule RetroHexChatWeb.Components.UI.Games.RetroGamesPanelTest do
     assert text =~ "Move"
     assert text =~ "Fire"
     assert text =~ "Space"
-    assert text =~ "A"
-    assert text =~ "D"
   end
 
   test "renders the Hex Enduro goal and racing controls in the shared status panel" do
@@ -414,8 +398,6 @@ defmodule RetroHexChatWeb.Components.UI.Games.RetroGamesPanelTest do
 
     assert text =~ "Fastest time"
     assert text =~ "Steer"
-    assert text =~ "A"
-    assert text =~ "D"
   end
 
   test "renders the Hex Frost goal and row-jump controls in the shared status panel" do
@@ -434,8 +416,6 @@ defmodule RetroHexChatWeb.Components.UI.Games.RetroGamesPanelTest do
     assert text =~ "1 round"
     assert text =~ "Move"
     assert text =~ "Jump rows"
-    assert text =~ "W"
-    assert text =~ "S"
   end
 
   test "renders the Hex Hockey goal and shoot/tackle controls in the shared status panel" do

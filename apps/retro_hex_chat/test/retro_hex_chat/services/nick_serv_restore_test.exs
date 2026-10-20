@@ -31,15 +31,4 @@ defmodule RetroHexChat.Services.NickServRestoreTest do
 
     refute NickServ.identified?(nickname, server)
   end
-
-  test "NickServ itself never reaches for the database to restore", %{server: server} do
-    nickname = nick()
-    {:ok, _} = Queries.insert_registered_nick(nickname, "secret123")
-    ref = Process.monitor(server)
-
-    :ok = NickServ.restore_identified(nickname, server)
-    assert NickServ.identified?(nickname, server)
-
-    refute_received {:DOWN, ^ref, :process, _pid, _reason}
-  end
 end

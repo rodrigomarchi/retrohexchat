@@ -30,22 +30,4 @@ defmodule RetroHexChat.Commands.Handlers.UnignoreTest do
                Unignore.execute(["SpamBot"], @context)
     end
   end
-
-  describe "help/0" do
-    test "returns help map with correct name" do
-      help = Unignore.help()
-      assert help.name == "unignore"
-    end
-
-    test "returns help map with syntax string" do
-      help = Unignore.help()
-      assert is_binary(help.syntax)
-      assert help.syntax =~ "/unignore"
-    end
-
-    test "returns help map with examples list" do
-      help = Unignore.help()
-      assert [_ | _] = help.examples
-    end
-  end
 end

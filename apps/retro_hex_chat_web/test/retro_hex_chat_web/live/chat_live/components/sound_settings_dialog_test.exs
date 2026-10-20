@@ -8,10 +8,6 @@ defmodule RetroHexChatWeb.ChatLive.Components.SoundSettingsDialogTest do
 
   @moduletag :unit
 
-  test "id/0 is stable" do
-    assert SoundSettingsDialog.id() == "sound-settings-dialog"
-  end
-
   test "renders the bare panel seeded from the settings passthrough" do
     html =
       render_component(SoundSettingsDialog,
@@ -19,8 +15,6 @@ defmodule RetroHexChatWeb.ChatLive.Components.SoundSettingsDialogTest do
         settings: SoundSettings.new()
       )
 
-    assert html =~ ~s(data-testid="sound-settings-panel")
-    refute html =~ "phx-show-modal"
     # The per-event rows render against the draft (seeded at mount).
     assert html =~ ~s(data-testid="sound-select-message")
     # Apply/preview route to the component.

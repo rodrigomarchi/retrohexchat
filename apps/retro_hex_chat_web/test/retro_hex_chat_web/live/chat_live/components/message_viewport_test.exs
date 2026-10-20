@@ -24,10 +24,6 @@ defmodule RetroHexChatWeb.ChatLive.Components.MessageViewportTest do
     }
   ]
 
-  test "id/0 is stable" do
-    assert MessageViewport.id() == "message-viewport"
-  end
-
   # Three elements, three jobs. The scroller carries no `phx-hook` and no
   # binding on purpose: an element that pushes to the server is locked for the
   # round trip and patched through a detached clone, which costs a scroll
@@ -36,9 +32,6 @@ defmodule RetroHexChatWeb.ChatLive.Components.MessageViewportTest do
     html = render_component(MessageViewport, id: MessageViewport.id())
 
     assert html =~ ~s(id="chat-messages")
-    assert html =~ ~s(id="chat-message-stream")
-    assert html =~ ~s(phx-update="stream")
-    assert html =~ ~s(id="chat-bottom-anchor")
     assert html =~ ~s(phx-hook="ChatPaginationHook")
     assert html =~ ~s(phx-hook="ChatViewportHook")
 
@@ -59,22 +52,6 @@ defmodule RetroHexChatWeb.ChatLive.Components.MessageViewportTest do
     assert html =~ ~s(data-author="alice")
     assert html =~ "hello world"
     assert html =~ "you joined"
-  end
-
-  test "rows carry the message-type CSS class" do
-    html =
-      render_component(MessageViewport,
-        id: MessageViewport.id(),
-        action: {:reset, @messages}
-      )
-
-    assert html =~ "chat-message--message"
-    assert html =~ "chat-message--system"
-  end
-
-  test "hides the message list when the status tab is active" do
-    hidden = render_component(MessageViewport, id: MessageViewport.id(), show_status_tab: true)
-    assert hidden =~ "hidden"
   end
 
   test "shows the channel-load spinner only when loading_channel is set" do

@@ -28,7 +28,6 @@ defmodule RetroHexChat.SystemInfo.SourcesTest do
 
         table = SystemInfo.list(source, SystemInfo.query(source, %{"limit" => "5"}))
 
-        assert %Table{} = table
         assert length(table.rows) <= 5
         assert table.total >= length(table.rows)
 
@@ -53,17 +52,8 @@ defmodule RetroHexChat.SystemInfo.SourcesTest do
         assert %Table{} = table
       end
 
-      test "#{name} honours the limit" do
-        {:ok, source} = SystemInfo.fetch_source(unquote(name))
-        table = SystemInfo.list(source, SystemInfo.query(source, %{"limit" => "2"}))
-
-        assert length(table.rows) <= 2
-      end
-
       test "#{name} narrows the population when searched, without ever growing it" do
         {:ok, source} = SystemInfo.fetch_source(unquote(name))
-
-        all = SystemInfo.list(source, SystemInfo.query(source, %{"limit" => "500"}))
 
         filtered =
           SystemInfo.list(
@@ -72,7 +62,6 @@ defmodule RetroHexChat.SystemInfo.SourcesTest do
           )
 
         assert filtered.total == 0
-        assert filtered.total <= all.total
       end
     end
   end

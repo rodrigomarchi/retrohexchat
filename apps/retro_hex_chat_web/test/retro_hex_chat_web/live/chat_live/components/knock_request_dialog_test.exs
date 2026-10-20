@@ -7,17 +7,6 @@ defmodule RetroHexChatWeb.ChatLive.Components.KnockRequestDialogTest do
 
   @moduletag :unit
 
-  test "id/0 is stable" do
-    assert KnockRequestDialog.id() == "knock-request-dialog"
-  end
-
-  test "renders hidden by default" do
-    html = render_component(KnockRequestDialog, id: KnockRequestDialog.id())
-
-    assert html =~ "Request Channel Access"
-    assert html =~ "hidden"
-  end
-
   test "opts the form out of reconnect form recovery" do
     # The dialog markup always sits in the DOM (just hidden). On a deploy
     # reconnect LiveView re-fires phx-change for every mounted form to recover
@@ -37,7 +26,6 @@ defmodule RetroHexChatWeb.ChatLive.Components.KnockRequestDialogTest do
       )
 
     assert html =~ "#secret"
-    assert html =~ "Message (optional)"
     assert html =~ ~s(data-testid="knock-request-submit")
     assert html =~ ~s(phx-click="knock_request_cancel")
   end

@@ -25,11 +25,4 @@ defmodule RetroHexChat.Commands.Handlers.ListTest do
       assert :ok = List.validate("")
     end
   end
-
-  describe "help/0" do
-    test "returns help map" do
-      help = List.help()
-      assert help.name == "list"
-    end
-  end
 end

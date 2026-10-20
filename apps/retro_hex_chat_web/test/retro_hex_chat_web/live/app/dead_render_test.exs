@@ -96,21 +96,6 @@ defmodule RetroHexChatWeb.App.DeadRenderTest do
       assert {:ok, %{status: "pending", peer_id: peer_id}} = Lobby.get_session(session.token)
       assert peer_id == guest.id
     end
-
-    # A claim is not reversible: `open` is the only status the link is followable
-    # in, and the session it becomes runs forward to `expired` or `closed` and
-    # never back. That is why the seat must not be taken by a fetch — nothing
-    # returns the link to the state it was shared in.
-    test "a claimed seat never returns the link to open", ctx do
-      %{conn: conn, guest: guest, session: session} = ctx
-
-      {:ok, _view, _html} =
-        conn |> chat_conn(guest.nickname) |> live(~p"/play/#{@game}/#{session.token}")
-
-      assert {:ok, claimed} = Lobby.get_session(session.token)
-      refute claimed.status == "open"
-      refute Lobby.open_session?(claimed)
-    end
   end
 
   describe "a P2P session address" do

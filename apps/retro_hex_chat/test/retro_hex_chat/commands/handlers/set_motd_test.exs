@@ -59,22 +59,5 @@ defmodule RetroHexChat.Commands.Handlers.SetMotdTest do
       # Verify broadcast was sent
       assert_receive {:motd_updated, %{content: "Welcome to RetroHexChat!"}}
     end
-
-    test "admin can set MOTD with single word" do
-      assert {:ok, :system, %{content: "MOTD has been updated."}} =
-               SetMotd.execute(["Welcome"], @base_context)
-
-      assert Motd.get() == "Welcome"
-    end
-  end
-
-  describe "help/0" do
-    test "returns help map" do
-      help = SetMotd.help()
-      assert help.name == "setmotd"
-      assert is_binary(help.syntax)
-      assert is_binary(help.description)
-      assert is_list(help.examples)
-    end
   end
 end

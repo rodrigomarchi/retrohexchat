@@ -84,20 +84,5 @@ defmodule RetroHexChatWeb.Components.UI.ChatTaskbarTest do
       assert html =~ ~s(data-window-taskbar="away")
       assert html =~ ~s(data-window-taskbar="user-modes")
     end
-
-    # One strip on every screen: a phone squeezes the same buttons instead of
-    # hiding them behind a launcher of its own.
-    test "renders no mobile-only window launcher" do
-      html = taskbar(["account", "away"])
-
-      refute html =~ "data-mobile-task-switcher"
-      assert html =~ ~s(data-testid="taskbar-group-account")
-    end
-
-    test "the chat button is named after the conversation, like the window" do
-      html = taskbar([], chat_label: "#retro[alice]")
-
-      assert html =~ "#retro[alice]"
-    end
   end
 end

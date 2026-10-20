@@ -31,13 +31,4 @@ defmodule RetroHexChat.Commands.Handlers.NoticeRoutingTest do
                NoticeRouting.execute(["active"], @context)
     end
   end
-
-  describe "help/0" do
-    test "returns correct help map" do
-      help = NoticeRouting.help()
-      assert help.name == "notice_routing"
-      assert help.syntax =~ "/notice_routing"
-      assert is_list(help.examples)
-    end
-  end
 end

@@ -87,10 +87,8 @@ defmodule RetroHexChat.VirtualSpace.MovementTest do
       assert :ok = ChannelSpaceServer.input(ctx.channel_name, ctx.key, %{seq: 1, dx: 1, dy: 0})
 
       assert_received {[:retro_hex_chat, :virtual_space, :step], ^step_ref,
-                       %{count: 1, duration: duration},
+                       %{count: 1, duration: _},
                        %{channel: ^channel, result: :accepted, reason: :ok}}
-
-      assert is_integer(duration)
     end
 
     test "each cardinal direction sets the matching facing" do

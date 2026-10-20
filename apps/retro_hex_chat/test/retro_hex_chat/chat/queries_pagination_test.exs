@@ -20,10 +20,6 @@ defmodule RetroHexChat.Chat.QueriesPaginationTest do
   end
 
   describe "list_messages/2 cursor pagination edge cases" do
-    test "empty channel returns empty list" do
-      assert Queries.list_messages("#empty").items == []
-    end
-
     test "exactly 50 messages returns all" do
       insert_messages("#full50", 50)
 
@@ -74,13 +70,6 @@ defmodule RetroHexChat.Chat.QueriesPaginationTest do
       # Use ID 1 which would be before all messages
       result = Queries.list_messages("#small", cursor: 0).items
       assert result == []
-    end
-
-    test "custom limit is respected" do
-      insert_messages("#limited", 20)
-
-      result = Queries.list_messages("#limited", limit: 5).items
-      assert length(result) == 5
     end
   end
 end

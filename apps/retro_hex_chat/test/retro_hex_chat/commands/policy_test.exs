@@ -5,12 +5,6 @@ defmodule RetroHexChat.Commands.PolicyTest do
 
   alias RetroHexChat.Commands.Policy
 
-  describe "pre_dispatch_check/2" do
-    test "returns :ok (current stub)" do
-      assert :ok = Policy.pre_dispatch_check("join", %{nickname: "alice"})
-    end
-  end
-
   describe "require_channel/1" do
     test "returns :ok when active_channel is present" do
       assert :ok = Policy.require_channel(%{active_channel: "#lobby"})

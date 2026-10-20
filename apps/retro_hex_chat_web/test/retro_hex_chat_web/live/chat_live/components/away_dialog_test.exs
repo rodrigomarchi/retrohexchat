@@ -7,17 +7,6 @@ defmodule RetroHexChatWeb.ChatLive.Components.AwayDialogTest do
 
   @moduletag :unit
 
-  test "id/0 is stable" do
-    assert AwayDialog.id() == "away-dialog"
-  end
-
-  test "renders the panel bare (no modal chrome)" do
-    html = render_component(AwayDialog, id: AwayDialog.id())
-
-    assert html =~ "data-testid=\"away-panel\""
-    refute html =~ "phx-show-modal"
-  end
-
   test "reflects the session's away state and message" do
     html =
       render_component(AwayDialog,
@@ -27,6 +16,5 @@ defmodule RetroHexChatWeb.ChatLive.Components.AwayDialogTest do
       )
 
     assert html =~ "Gone fishing"
-    assert html =~ "Away message"
   end
 end

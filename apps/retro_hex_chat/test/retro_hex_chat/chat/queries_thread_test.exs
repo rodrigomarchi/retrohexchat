@@ -93,7 +93,7 @@ defmodule RetroHexChat.Chat.QueriesThreadTest do
       assert Enum.map(page.items, & &1.id) == [kept.id]
     end
 
-    test "reads a private conversation the same way", ctx do
+    test "reads a private conversation the same way" do
       {:ok, parent} =
         Queries.insert_private_message(%{
           sender_nickname: "Ada",
@@ -114,7 +114,6 @@ defmodule RetroHexChat.Chat.QueriesThreadTest do
 
       assert [%{id: id}] = Queries.thread_for(parent, limit: 10).items
       assert id == answer.id
-      assert ctx.channel =~ "#thr"
     end
   end
 

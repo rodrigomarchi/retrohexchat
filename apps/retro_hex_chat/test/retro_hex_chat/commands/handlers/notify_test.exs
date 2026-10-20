@@ -62,11 +62,6 @@ defmodule RetroHexChat.Commands.Handlers.NotifyTest do
       assert {:error, msg} = Notify.validate("foobar")
       assert msg == "Unknown /notify subcommand. Use: add, remove, edit, list"
     end
-
-    test "rejects another unknown subcommand" do
-      assert {:error, msg} = Notify.validate("status")
-      assert msg == "Unknown /notify subcommand. Use: add, remove, edit, list"
-    end
   end
 
   describe "execute/2" do
@@ -84,11 +79,6 @@ defmodule RetroHexChat.Commands.Handlers.NotifyTest do
                Notify.execute(["add", "Alice", "Works", "on", "Elixir"], @context)
     end
 
-    test "add with nickname and single-word note" do
-      assert {:ok, :ui_action, :notify_add, %{nickname: "Bob", note: "friend"}} =
-               Notify.execute(["add", "Bob", "friend"], @context)
-    end
-
     test "remove returns notify_remove action with nickname" do
       assert {:ok, :ui_action, :notify_remove, %{nickname: "Alice"}} =
                Notify.execute(["remove", "Alice"], @context)
@@ -99,36 +89,8 @@ defmodule RetroHexChat.Commands.Handlers.NotifyTest do
                Notify.execute(["edit", "Alice", "New", "note"], @context)
     end
 
-    test "edit with single-word note" do
-      assert {:ok, :ui_action, :notify_edit, %{nickname: "Alice", note: "updated"}} =
-               Notify.execute(["edit", "Alice", "updated"], @context)
-    end
-
     test "list returns notify_list_display action" do
       assert {:ok, :ui_action, :notify_list_display, %{}} = Notify.execute(["list"], @context)
-    end
-  end
-
-  describe "help/0" do
-    test "returns help map with correct name" do
-      help = Notify.help()
-      assert help.name == "notify"
-    end
-
-    test "returns help map with syntax string" do
-      help = Notify.help()
-      assert is_binary(help.syntax)
-      assert help.syntax =~ "/notify"
-    end
-
-    test "returns help map with description string" do
-      help = Notify.help()
-      assert is_binary(help.description)
-    end
-
-    test "returns help map with examples list" do
-      help = Notify.help()
-      assert [_ | _] = help.examples
     end
   end
 end

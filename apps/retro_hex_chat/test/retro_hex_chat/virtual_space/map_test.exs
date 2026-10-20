@@ -36,8 +36,6 @@ defmodule RetroHexChat.VirtualSpace.MapTest do
     test "every map ships the sheet tilesets and a tile legend" do
       for map_id <- @map_ids do
         {:ok, d} = SpaceMap.get(map_id)
-        assert is_list(d.tilesets)
-        assert is_map(d.tiles)
         assert Map.has_key?(d.tiles, d.ground)
       end
     end

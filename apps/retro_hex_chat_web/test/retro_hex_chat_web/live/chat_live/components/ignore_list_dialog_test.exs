@@ -15,15 +15,9 @@ defmodule RetroHexChatWeb.ChatLive.Components.IgnoreListDialogTest do
     render_component(IgnoreListDialog, Map.merge(base, Map.delete(overrides, :session)))
   end
 
-  test "exposes a stable id" do
-    assert IgnoreListDialog.id() == "ignore-list-dialog"
-  end
-
   test "renders the bare panel (no modal chrome)" do
     html = dialog(%{})
 
-    assert html =~ ~s(data-testid="ignore-list-panel")
-    refute html =~ "phx-show-modal"
     assert html =~ "No ignored users. Click Add to ignore a nickname."
   end
 

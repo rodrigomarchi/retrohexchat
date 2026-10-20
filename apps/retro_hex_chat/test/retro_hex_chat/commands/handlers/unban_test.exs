@@ -45,14 +45,4 @@ defmodule RetroHexChat.Commands.Handlers.UnbanTest do
                Unban.execute(["user"], ctx)
     end
   end
-
-  describe "help/0" do
-    test "returns help map" do
-      help = Unban.help()
-      assert help.name == "unban"
-      assert is_binary(help.syntax)
-      assert is_binary(help.description)
-      assert is_list(help.examples)
-    end
-  end
 end

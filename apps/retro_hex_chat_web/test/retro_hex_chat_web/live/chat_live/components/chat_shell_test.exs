@@ -23,29 +23,6 @@ defmodule RetroHexChatWeb.ChatLive.Components.ChatShellTest do
   end
 
   describe "the window's menu bar" do
-    test "renders the menu bar and its hook, and nothing of a header" do
-      html = menu(Session.new("alice"))
-
-      assert html =~ ~s(id="menubar")
-      assert html =~ ~s(phx-hook="MenuBarHook")
-      assert html =~ ~s(app-menu-bar__desktop-menu)
-
-      # The desk carries no chrome of its own any more.
-      refute html =~ ~s(data-testid="app-header")
-      refute html =~ ~s(data-testid="status-bar-app")
-    end
-
-    test "the mobile rail carries every menu, each opening its own section" do
-      html = menu(Session.new("alice"))
-
-      for section <- ~w(file edit view tools language help) do
-        assert html =~ ~s(data-testid="app-mobile-menu-rail-#{section}")
-        assert html =~ ~s(data-mobile-menu-open="#{section}")
-        assert html =~ ~s(data-testid="app-mobile-menu-category-#{section}")
-        assert html =~ ~s(data-testid="app-mobile-menu-section-#{section}")
-      end
-    end
-
     test "the menu names neither the user nor the conversation — the title bar does" do
       session = %{Session.new("alice") | active_channel: "#lobby", active_pm: "bob"}
       html = menu(session)

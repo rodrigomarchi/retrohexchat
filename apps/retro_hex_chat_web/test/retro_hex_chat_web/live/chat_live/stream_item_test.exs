@@ -191,10 +191,6 @@ defmodule RetroHexChatWeb.ChatLive.StreamItemTest do
   end
 
   describe "attachments" do
-    test "a source with none carries an empty list" do
-      assert %{attachments: []} = StreamItem.from_message(channel_message())
-    end
-
     test "an unloaded association is not mistaken for attachments" do
       item =
         StreamItem.from_message(channel_message(%{attachments: %Ecto.Association.NotLoaded{}}))

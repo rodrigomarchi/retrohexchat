@@ -5,12 +5,6 @@ defmodule RetroHexChat.Chat.KeyBindingsTest do
 
   describe "defaults/0" do
     @tag :unit
-    test "returns all default bindings" do
-      bindings = KeyBindings.defaults()
-      assert map_size(bindings) == 24
-    end
-
-    @tag :unit
     test "includes all original actions" do
       bindings = KeyBindings.defaults()
 
@@ -104,8 +98,6 @@ defmodule RetroHexChat.Chat.KeyBindingsTest do
     @tag :unit
     test "returns sorted list of action-label pairs for all actions" do
       actions = KeyBindings.actions()
-      assert is_list(actions)
-      assert length(actions) == 24
 
       labels = Enum.map(actions, fn {_action, label} -> label end)
       assert labels == Enum.sort(labels)
@@ -126,12 +118,6 @@ defmodule RetroHexChat.Chat.KeyBindingsTest do
         assert Map.has_key?(entry, :default_binding)
         assert Map.has_key?(entry, :customizable)
       end
-    end
-
-    @tag :unit
-    test "returns entries for default bindings" do
-      entries = KeyBindings.registry(KeyBindings.defaults())
-      assert length(entries) == 24
     end
 
     @tag :unit
@@ -380,12 +366,6 @@ defmodule RetroHexChat.Chat.KeyBindingsTest do
     test "formats Ctrl+Shift+A" do
       assert KeyBindings.to_display_string(%{key: "a", modifiers: [:ctrl, :shift]}) ==
                "Ctrl+Shift+A"
-    end
-
-    @tag :unit
-    test "formats Ctrl+Shift+F" do
-      assert KeyBindings.to_display_string(%{key: "f", modifiers: [:ctrl, :shift]}) ==
-               "Ctrl+Shift+F"
     end
 
     @tag :unit

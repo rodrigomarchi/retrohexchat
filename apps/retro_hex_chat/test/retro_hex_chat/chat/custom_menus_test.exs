@@ -5,14 +5,6 @@ defmodule RetroHexChat.Chat.CustomMenusTest do
 
   # ── Unit Tests ──────────────────────────────────────────
 
-  describe "new/0" do
-    @tag :unit
-    test "returns empty list" do
-      menus = CustomMenus.new()
-      assert menus.entries == []
-    end
-  end
-
   describe "add_entry/4" do
     @tag :unit
     test "adds a nicklist menu item" do
@@ -22,14 +14,6 @@ defmodule RetroHexChat.Chat.CustomMenusTest do
       assert length(entries) == 1
       assert hd(entries).label == "Greet"
       assert hd(entries).command == "/notice $1 Hi!"
-    end
-
-    @tag :unit
-    test "adds a channel menu item" do
-      menus = CustomMenus.new()
-      assert {:ok, updated} = CustomMenus.add_entry(menus, :channel, "Topic", "/topic $chan")
-      entries = CustomMenus.entries_for(updated, :channel)
-      assert length(entries) == 1
     end
 
     @tag :unit

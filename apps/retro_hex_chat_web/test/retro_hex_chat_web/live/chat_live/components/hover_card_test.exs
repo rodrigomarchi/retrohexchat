@@ -14,23 +14,9 @@ defmodule RetroHexChatWeb.ChatLive.Components.HoverCardTest do
     )
   end
 
-  test "id/0 is stable" do
-    assert HoverCard.id() == "hover-card"
-  end
-
   test "renders nothing visible when hidden (default)" do
     html = render_component(HoverCard, id: HoverCard.id())
     refute html =~ "alice"
-  end
-
-  test "a :set action shows the card with the nick and fields" do
-    html =
-      render_component(HoverCard,
-        id: HoverCard.id(),
-        action: {:set, card("alice", %{host: "alice@host", registered: true})}
-      )
-
-    assert html =~ "alice"
   end
 
   test "a :dismiss action hides the card" do

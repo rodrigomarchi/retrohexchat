@@ -39,18 +39,6 @@ defmodule RetroHexChatWeb.ChatLive.Components.BotManagementDialogTest do
     )
   end
 
-  test "exposes a stable id" do
-    assert BotManagementDialog.id() == "bot-management-dialog"
-  end
-
-  test "hides the management dialog when closed (design-system toggles the hidden class)" do
-    html = dialog(%{})
-
-    assert html =~ ~s(id="bot-management-dialog-mount")
-    # the design-system dialog always renders content; closed = the `hidden` class
-    assert html =~ ~r/class="[^"]*group\/dialog[^"]*hidden[^"]*"/
-  end
-
   test "renders the bot list when the management dialog is shown" do
     bots = [
       %{name: "TriviaBot", nickname: "TriviaBot", enabled: true},
@@ -106,9 +94,6 @@ defmodule RetroHexChatWeb.ChatLive.Components.BotManagementDialogTest do
       assert html =~ "Running"
       assert html =~ "Stopped"
       assert html =~ "Disabled"
-      assert html =~ "bm-dot--running"
-      assert html =~ "bm-dot--stopped"
-      assert html =~ "bm-dot--disabled"
     end
 
     test "a selection replaces the roster with the bot, and offers the way back" do

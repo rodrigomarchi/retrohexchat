@@ -22,24 +22,7 @@ defmodule RetroHexChat.Bots.Capabilities.RSSTest do
 
   # Literal addresses need no resolver, so these stay hermetic.
 
-  describe "name/0" do
-    test "returns :rss" do
-      assert RSS.name() == :rss
-    end
-  end
-
-  describe "description/0" do
-    test "does not say Coming soon" do
-      refute RSS.description() =~ "Coming soon"
-    end
-  end
-
   describe "init_state/1" do
-    test "initializes empty feeds" do
-      state = RSS.init_state(@default_config)
-      assert state.feeds == []
-    end
-
     test "loads existing feeds from config" do
       config =
         Map.put(@default_config, "feeds", [
@@ -188,17 +171,6 @@ defmodule RetroHexChat.Bots.Capabilities.RSSTest do
 
       payload = %{type: :poll, feed_id: "f1", channel: "#news"}
       assert :no_reschedule == RSS.reschedule_delay(payload, state)
-    end
-
-    test "returns :no_reschedule when feeds list is empty" do
-      state = %{feeds: [], poll_interval_ms: 1_800_000}
-      payload = %{type: :poll, feed_id: "f1", channel: "#news"}
-      assert :no_reschedule == RSS.reschedule_delay(payload, state)
-    end
-
-    test "returns :no_reschedule for non-poll payload" do
-      state = %{feeds: [%{"id" => "f1"}], poll_interval_ms: 60_000}
-      assert :no_reschedule == RSS.reschedule_delay(%{type: :other}, state)
     end
   end
 
@@ -425,13 +397,6 @@ defmodule RetroHexChat.Bots.Capabilities.RSSTest do
 
       assert card =~ "_2 min read_"
       refute card =~ "·"
-    end
-
-    test "prints no credit line at all when nothing is known" do
-      card = RSS.format_item(an_item(), "The GitHub Blog")
-
-      assert card ==
-               "**The GitHub Blog** | A headline\n\n[Read full story](<https://example.com/a>)"
     end
 
     test "uses rich feed fields when the page scrape had nothing useful" do

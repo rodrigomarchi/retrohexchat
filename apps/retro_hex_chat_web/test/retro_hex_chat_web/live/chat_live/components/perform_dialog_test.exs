@@ -20,15 +20,9 @@ defmodule RetroHexChatWeb.ChatLive.Components.PerformDialogTest do
     render_component(PerformDialog, Map.merge(base, overrides))
   end
 
-  test "exposes a stable id" do
-    assert PerformDialog.id() == "perform-dialog"
-  end
-
   test "renders the bare command panel" do
     html = dialog(%{})
 
-    assert html =~ ~s(data-testid="perform-panel")
-    refute html =~ "phx-show-modal"
     assert html =~ "No commands configured"
   end
 

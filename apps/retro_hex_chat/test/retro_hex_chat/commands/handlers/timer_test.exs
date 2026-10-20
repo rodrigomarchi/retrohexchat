@@ -65,22 +65,4 @@ defmodule RetroHexChat.Commands.Handlers.TimerTest do
       assert {:error, _} = Timer.execute(["test", "abc"], @context)
     end
   end
-
-  describe "help/0" do
-    test "returns help map with correct name" do
-      help = Timer.help()
-      assert help.name == "timer"
-    end
-
-    test "returns help map with syntax" do
-      help = Timer.help()
-      assert is_binary(help.syntax)
-      assert help.syntax =~ "/timer"
-    end
-
-    test "returns help map with examples" do
-      help = Timer.help()
-      assert [_ | _] = help.examples
-    end
-  end
 end

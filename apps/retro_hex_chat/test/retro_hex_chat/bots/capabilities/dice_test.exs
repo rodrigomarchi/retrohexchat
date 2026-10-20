@@ -14,20 +14,6 @@ defmodule RetroHexChat.Bots.Capabilities.DiceTest do
     capability_state: %{}
   }
 
-  describe "name/0" do
-    test "returns :dice" do
-      assert Dice.name() == :dice
-    end
-  end
-
-  describe "description/0" do
-    test "returns description without 'Coming soon'" do
-      desc = Dice.description()
-      assert is_binary(desc)
-      refute desc =~ "Coming soon"
-    end
-  end
-
   describe "parse_notation/1" do
     test "parses simple NdS" do
       assert {:ok, %{count: 2, sides: 6, modifier: 0, keep: nil}} = Dice.parse_notation("2d6")

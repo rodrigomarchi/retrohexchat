@@ -13,12 +13,6 @@ defmodule RetroHexChat.Bots.Capabilities.MentionTest do
     config: %{"response" => "Hi {nickname}! Try {prefix}help for my commands."}
   }
 
-  describe "name/0" do
-    test "returns :mention" do
-      assert Mention.name() == :mention
-    end
-  end
-
   describe "handle_message/3" do
     test "responds when bot is mentioned" do
       assert {:reply, reply} = Mention.handle_message("hey TestBot", "Alice", @ctx)

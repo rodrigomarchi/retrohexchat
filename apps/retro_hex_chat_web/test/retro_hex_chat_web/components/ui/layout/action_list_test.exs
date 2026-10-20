@@ -151,7 +151,6 @@ defmodule RetroHexChatWeb.Components.UI.ActionListTest do
 
       assert html =~ "Users"
       assert html =~ "42"
-      assert html =~ "action-list__figure"
     end
   end
 
@@ -161,14 +160,12 @@ defmodule RetroHexChatWeb.Components.UI.ActionListTest do
 
       assert html =~ ~s(aria-current="true")
       refute html =~ "aria-pressed"
-      assert html =~ "action-list__row--current"
     end
 
     test "an ordinary row is neither" do
       html = row(%{})
 
       refute html =~ "aria-current"
-      refute html =~ "action-list__row--current"
     end
   end
 

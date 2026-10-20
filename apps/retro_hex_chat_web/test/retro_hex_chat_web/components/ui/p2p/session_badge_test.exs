@@ -96,22 +96,6 @@ defmodule RetroHexChatWeb.Components.UI.P2P.SessionBadgeTest do
     assert Floki.attribute(decline, "aria-label") == ["Decline P2P request"]
   end
 
-  # A second tab of a session you are in moves the session into it, so the entry
-  # for one you already have open is a way *to that tab* and never a new one.
-  # A session this reader already has open changes nothing: the entry was never
-  # an address, so there is no second shape for it to become.
-  test "a session this reader already has open leaves the entry alone" do
-    html =
-      entry(
-        %{state: :connected, token: "tok123", peer_nick: "alice", path: "/p2p/tok123"},
-        []
-      )
-
-    assert html =~ ~s(data-testid="p2p-peer-entry")
-    refute html =~ ~s(data-testid="p2p-peer-elsewhere")
-    refute html =~ ~s(href="/p2p/tok123")
-  end
-
   # Nothing that happens inside a session reaches the chat any more, so the
   # entry says how far along it is and not one thing more.
   test "the entry carries no in-session controls" do

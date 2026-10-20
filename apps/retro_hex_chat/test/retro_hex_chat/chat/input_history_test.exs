@@ -4,16 +4,6 @@ defmodule RetroHexChat.Chat.InputHistoryTest do
   alias RetroHexChat.Chat.InputHistory
   alias RetroHexChat.Services.Queries
 
-  describe "new/0" do
-    @tag :unit
-    test "starts empty" do
-      history = InputHistory.new()
-
-      assert InputHistory.entries(history) == []
-      assert InputHistory.recent_commands(history) == []
-    end
-  end
-
   describe "record_submission/2" do
     @tag :unit
     test "records non-empty input most recent first and deduplicates" do

@@ -8,7 +8,6 @@ defmodule RetroHexChat.Channels.ModesTest do
   describe "new/0" do
     test "returns empty modes struct" do
       modes = Modes.new()
-      assert %Modes{} = modes
       refute Modes.moderated?(modes)
       refute Modes.invite_only?(modes)
       refute Modes.topic_locked?(modes)
@@ -120,38 +119,6 @@ defmodule RetroHexChat.Channels.ModesTest do
       result = Modes.to_string(modes)
       assert result =~ "k"
       assert result =~ "l"
-    end
-  end
-
-  describe "query functions" do
-    test "moderated?/1" do
-      refute Modes.moderated?(Modes.new())
-      {:ok, modes} = Modes.apply_changes(Modes.new(), "+m")
-      assert Modes.moderated?(modes)
-    end
-
-    test "invite_only?/1" do
-      refute Modes.invite_only?(Modes.new())
-      {:ok, modes} = Modes.apply_changes(Modes.new(), "+i")
-      assert Modes.invite_only?(modes)
-    end
-
-    test "topic_locked?/1" do
-      refute Modes.topic_locked?(Modes.new())
-      {:ok, modes} = Modes.apply_changes(Modes.new(), "+t")
-      assert Modes.topic_locked?(modes)
-    end
-
-    test "has_key?/1" do
-      refute Modes.has_key?(Modes.new())
-      {:ok, modes} = Modes.apply_changes(Modes.new(), "+k", ["secret"])
-      assert Modes.has_key?(modes)
-    end
-
-    test "has_limit?/1" do
-      refute Modes.has_limit?(Modes.new())
-      {:ok, modes} = Modes.apply_changes(Modes.new(), "+l", ["10"])
-      assert Modes.has_limit?(modes)
     end
   end
 

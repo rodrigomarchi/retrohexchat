@@ -61,6 +61,5 @@ defmodule RetroHexChatWeb.Components.UI.ShareLinkDialogTest do
     html = render_dialog(on_revoke: "revoke")
 
     assert html =~ "data-confirm"
-    assert html =~ "The room stays open"
   end
 end

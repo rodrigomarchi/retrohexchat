@@ -13,24 +13,6 @@ defmodule RetroHexChat.Bots.BotTest do
       assert cs.valid?
     end
 
-    test "name is required" do
-      cs = Bot.changeset(%Bot{}, Map.delete(@valid_attrs, :name))
-      refute cs.valid?
-      assert "can't be blank" in errors_on(cs, :name)
-    end
-
-    test "nickname is required" do
-      cs = Bot.changeset(%Bot{}, Map.delete(@valid_attrs, :nickname))
-      refute cs.valid?
-      assert "can't be blank" in errors_on(cs, :nickname)
-    end
-
-    test "created_by is required" do
-      cs = Bot.changeset(%Bot{}, Map.delete(@valid_attrs, :created_by))
-      refute cs.valid?
-      assert "can't be blank" in errors_on(cs, :created_by)
-    end
-
     test "name must be 2-16 chars" do
       cs = Bot.changeset(%Bot{}, %{@valid_attrs | name: "X"})
       refute cs.valid?
@@ -86,11 +68,5 @@ defmodule RetroHexChat.Bots.BotTest do
       cs = Bot.update_changeset(%Bot{}, %{cooldown_ms: 100})
       refute cs.valid?
     end
-  end
-
-  defp errors_on(changeset, field) do
-    changeset.errors
-    |> Keyword.get_values(field)
-    |> Enum.map(fn {msg, _opts} -> msg end)
   end
 end

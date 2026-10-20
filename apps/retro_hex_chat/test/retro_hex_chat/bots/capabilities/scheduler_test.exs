@@ -19,24 +19,7 @@ defmodule RetroHexChat.Bots.Capabilities.SchedulerTest do
     capability_state: Scheduler.init_state(@default_config)
   }
 
-  describe "name/0" do
-    test "returns :scheduler" do
-      assert Scheduler.name() == :scheduler
-    end
-  end
-
-  describe "description/0" do
-    test "does not say Coming soon" do
-      refute Scheduler.description() =~ "Coming soon"
-    end
-  end
-
   describe "init_state/1" do
-    test "initializes empty schedules from config" do
-      state = Scheduler.init_state(@default_config)
-      assert state.schedules == []
-    end
-
     test "loads existing schedules from config" do
       config =
         Map.put(@default_config, "schedules", [

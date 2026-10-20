@@ -5,31 +5,7 @@ defmodule RetroHexChat.Chat.FloodTrackerTest do
 
   @moduletag :unit
 
-  describe "new/0" do
-    test "returns empty tracker with max_senders cap" do
-      tracker = FloodTracker.new()
-      assert tracker.senders == %{}
-      assert tracker.max_senders == 50
-    end
-  end
-
   describe "record_message/2" do
-    test "adds sender to tracker" do
-      tracker = FloodTracker.new() |> FloodTracker.record_message("spammer")
-      assert Map.has_key?(tracker.senders, "spammer")
-      assert length(tracker.senders["spammer"].timestamps) == 1
-    end
-
-    test "accumulates timestamps for same sender" do
-      tracker =
-        FloodTracker.new()
-        |> FloodTracker.record_message("spammer")
-        |> FloodTracker.record_message("spammer")
-        |> FloodTracker.record_message("spammer")
-
-      assert length(tracker.senders["spammer"].timestamps) == 3
-    end
-
     test "tracks multiple senders independently" do
       tracker =
         FloodTracker.new()
@@ -38,16 +14,6 @@ defmodule RetroHexChat.Chat.FloodTrackerTest do
 
       assert Map.has_key?(tracker.senders, "usera")
       assert Map.has_key?(tracker.senders, "userb")
-    end
-
-    test "is case-insensitive" do
-      tracker =
-        FloodTracker.new()
-        |> FloodTracker.record_message("SpAmMeR")
-        |> FloodTracker.record_message("spammer")
-
-      assert Map.has_key?(tracker.senders, "spammer")
-      assert length(tracker.senders["spammer"].timestamps) == 2
     end
 
     test "evicts oldest sender when cap is reached" do

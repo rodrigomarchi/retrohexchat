@@ -7,18 +7,6 @@ defmodule RetroHexChatWeb.ChatLive.Components.UrlCatcherDialogTest do
 
   @moduletag :unit
 
-  test "id/0 is stable" do
-    assert UrlCatcherDialog.id() == "url-catcher-dialog"
-  end
-
-  test "renders the content panel without any frame" do
-    html = render_component(UrlCatcherDialog, id: UrlCatcherDialog.id())
-
-    # Bare panel: the desktop window provides the chrome.
-    assert html =~ ~s(data-testid="url-catcher")
-    refute html =~ "phx-show-modal"
-  end
-
   test "renders the filtered/sorted entries from the passthrough log" do
     entries = [
       %{

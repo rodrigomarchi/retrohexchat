@@ -5,13 +5,6 @@ defmodule RetroHexChat.Chat.IgnoreListTest do
 
   alias RetroHexChat.Chat.IgnoreList
 
-  describe "new/0" do
-    test "returns empty entries list" do
-      list = IgnoreList.new()
-      assert list.entries == []
-    end
-  end
-
   describe "add_entry/4" do
     test "adds a permanent ignore entry" do
       list = IgnoreList.new()

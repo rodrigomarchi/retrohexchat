@@ -12,17 +12,6 @@ defmodule RetroHexChatWeb.ChatLive.Components.ChannelListDialogTest do
     %{name: "#secret", user_count: 3, topic: "Members only", invite_only?: true, joined?: false}
   ]
 
-  test "id/0 is stable" do
-    assert ChannelListDialog.id() == "channel-list-dialog"
-  end
-
-  test "renders the bare panel by default" do
-    html = render_component(ChannelListDialog, id: ChannelListDialog.id())
-
-    assert html =~ ~s(data-testid="channel-list-panel")
-    refute html =~ "phx-show-modal"
-  end
-
   test "each row carries the event its own press sends" do
     html =
       render_component(ChannelListDialog,

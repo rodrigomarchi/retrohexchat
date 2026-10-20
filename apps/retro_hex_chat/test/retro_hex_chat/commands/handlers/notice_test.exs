@@ -47,21 +47,5 @@ defmodule RetroHexChat.Commands.Handlers.NoticeTest do
       assert {:ok, :notice, %{target: "#elixir", content: "Server maintenance"}} =
                Notice.execute(["#elixir", "Server", "maintenance"], @context)
     end
-
-    test "preserves single-word message" do
-      assert {:ok, :notice, %{target: "Alice", content: "hi"}} =
-               Notice.execute(["Alice", "hi"], @context)
-    end
-  end
-
-  describe "help/0" do
-    test "returns correct help map" do
-      help = Notice.help()
-      assert help.name == "notice"
-      assert help.syntax =~ "/notice"
-      assert help.description =~ "notice"
-      assert is_list(help.examples)
-      assert [_ | _] = help.examples
-    end
   end
 end

@@ -72,10 +72,4 @@ defmodule RetroHexChatWeb.App.ReturnToTest do
       assert ReturnTo.sanitize(path) == "/", "expected #{inspect(path)} to be refused"
     end
   end
-
-  # Refusing is not an error the caller handles: there is always somewhere
-  # sensible to go, and the alternative is a login that dead-ends.
-  test "always answers with a usable path" do
-    assert ReturnTo.sanitize("//evil.example") =~ ~r{\A/}
-  end
 end

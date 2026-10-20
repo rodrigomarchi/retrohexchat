@@ -69,11 +69,6 @@ defmodule RetroHexChat.Commands.Handlers.AutoJoinTest do
       assert {:error, msg} = AutoJoin.validate("unknown")
       assert msg =~ "Unknown autojoin subcommand"
     end
-
-    test "rejects another unknown subcommand" do
-      assert {:error, msg} = AutoJoin.validate("edit #foo")
-      assert msg =~ "Unknown autojoin subcommand"
-    end
   end
 
   # ── execute/2 ────────────────────────────────────────────
@@ -106,31 +101,6 @@ defmodule RetroHexChat.Commands.Handlers.AutoJoinTest do
     test "clear returns autojoin_clear ui_action" do
       assert {:ok, :ui_action, :autojoin_clear, %{}} =
                AutoJoin.execute(["clear"], @context)
-    end
-  end
-
-  # ── help/0 ────────────────────────────────────────────────
-
-  describe "help/0" do
-    test "returns help map with correct name" do
-      help = AutoJoin.help()
-      assert help.name == "autojoin"
-    end
-
-    test "returns help map with syntax string" do
-      help = AutoJoin.help()
-      assert is_binary(help.syntax)
-      assert help.syntax =~ "/autojoin"
-    end
-
-    test "returns help map with description" do
-      help = AutoJoin.help()
-      assert is_binary(help.description)
-    end
-
-    test "returns help map with examples list" do
-      help = AutoJoin.help()
-      assert [_ | _] = help.examples
     end
   end
 end

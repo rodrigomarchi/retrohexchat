@@ -97,14 +97,6 @@ defmodule RetroHexChatWeb.MediaDevicesTest do
   end
 
   describe "preferences/1" do
-    test "nothing chosen is nothing for each kind" do
-      assert MediaDevices.no_preference() == %{
-               audio_input_id: nil,
-               video_input_id: nil,
-               audio_output_id: nil
-             }
-    end
-
     test "reads a choice held at the top level" do
       assert %{audio_input_id: "mic-1"} = MediaDevices.preferences(%{audio_input_id: "mic-1"})
     end

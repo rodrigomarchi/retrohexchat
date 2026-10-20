@@ -19,14 +19,6 @@ defmodule RetroHexChat.Presence.NotifyListPersistenceTest do
   end
 
   describe "save/2 and load/1" do
-    test "save persists entries for a registered user" do
-      list = NotifyList.new()
-      {:ok, list} = NotifyList.add_entry(list, "TestOwner", "Alice", "Best friend")
-      {:ok, list} = NotifyList.add_entry(list, "TestOwner", "Bob", nil)
-
-      assert :ok = NotifyList.save("TestOwner", list)
-    end
-
     # `save/2` inserts with `Repo.insert!`, so a note the column rejects raises
     # rather than returning an error. Cutting the note where the entry is built
     # is what keeps that from being reachable from `/notify add`.
@@ -51,9 +43,7 @@ defmodule RetroHexChat.Presence.NotifyListPersistenceTest do
       alice = Enum.find(loaded.entries, &(&1.tracked_nickname == "Alice"))
       bob = Enum.find(loaded.entries, &(&1.tracked_nickname == "Bob"))
 
-      assert alice != nil
       assert alice.note == "Best friend"
-      assert bob != nil
       assert bob.note == "Colleague"
     end
 

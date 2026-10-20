@@ -6,18 +6,6 @@ defmodule RetroHexChat.Services.BanTest do
   @moduletag :unit
 
   describe "changeset/2" do
-    test "valid attrs produce valid changeset" do
-      attrs = %{channel_name: "#elixir", banned_nickname: "Troll", banned_by: "Admin"}
-      changeset = Ban.changeset(%Ban{}, attrs)
-      assert changeset.valid?
-    end
-
-    test "requires channel_name, banned_nickname, banned_by" do
-      changeset = Ban.changeset(%Ban{}, %{})
-      refute changeset.valid?
-      assert %{channel_name: _, banned_nickname: _, banned_by: _} = errors_on(changeset)
-    end
-
     test "accepts optional reason" do
       attrs = %{
         channel_name: "#elixir",

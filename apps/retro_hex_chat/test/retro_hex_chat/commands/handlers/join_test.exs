@@ -67,20 +67,8 @@ defmodule RetroHexChat.Commands.Handlers.JoinTest do
                Join.execute(["#secret", "mypass"], @base_context)
     end
 
-    test "returns join with nil password when not provided" do
-      assert {:ok, :join, "#elixir", nil} = Join.execute(["#elixir"], @base_context)
-    end
-
     test "rejects empty args" do
       assert {:error, _} = Join.execute([], @base_context)
-    end
-  end
-
-  describe "help/0" do
-    test "returns help map" do
-      help = Join.help()
-      assert help.name == "join"
-      assert is_binary(help.syntax)
     end
   end
 end

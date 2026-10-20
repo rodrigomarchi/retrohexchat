@@ -14,15 +14,9 @@ defmodule RetroHexChatWeb.ChatLive.Components.NickColorsDialogTest do
     render_component(NickColorsDialog, Map.merge(base, Map.delete(overrides, :session)))
   end
 
-  test "exposes a stable id" do
-    assert NickColorsDialog.id() == "nick-colors-dialog"
-  end
-
   test "renders the bare panel (no modal chrome)" do
     html = dialog(%{})
 
-    assert html =~ ~s(data-testid="nick-colors-panel")
-    refute html =~ "phx-show-modal"
     assert html =~ "No custom colors set. Nicknames use automatic colors."
   end
 

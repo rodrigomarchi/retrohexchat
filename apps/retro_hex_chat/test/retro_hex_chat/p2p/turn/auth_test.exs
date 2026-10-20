@@ -14,10 +14,6 @@ defmodule RetroHexChat.P2P.Turn.AuthTest do
     test "returns valid credential structure", %{config: config} do
       result = Auth.generate_credentials("user123", config)
 
-      assert is_map(result)
-      assert is_binary(result.username)
-      assert is_binary(result.password)
-      assert is_integer(result.ttl)
       assert result.ttl == config.credentials_lifetime
     end
 

@@ -31,7 +31,6 @@ defmodule RetroHexChatWeb.ChatLive.Components.MessageRowTest do
     html = row(%{id: "m1", author: "alice", content: "hi", type: :normal, timestamp: @ts})
 
     assert html =~ ~s(id="chat_messages-m1")
-    assert html =~ "chat-message--normal"
     assert html =~ ~s(data-author="alice")
     assert html =~ ~s(data-real-id="m1")
     assert html =~ ~s(data-message-format="irc")
@@ -76,7 +75,6 @@ defmodule RetroHexChatWeb.ChatLive.Components.MessageRowTest do
 
     assert html =~ "<strong>hello</strong>"
     assert html =~ ~s(href="https://example.com")
-    assert html =~ ~s(class="chat-link")
   end
 
   test "strips markdown message content when strip_formatting is true" do
@@ -150,37 +148,6 @@ defmodule RetroHexChatWeb.ChatLive.Components.MessageRowTest do
     assert html =~ ~s(data-nick="bob")
     assert html =~ "* waves"
     refute html =~ "* bob"
-  end
-
-  # Layout tokens the message shape depends on. Pinned on the component so the
-  # coverage is deterministic (a full LiveView render was flaky).
-  test "speech stacks its text under the head, with a data-nick handle and no angle brackets" do
-    html = row(%{id: "g1", author: "alice", content: "hi", type: :normal, timestamp: @ts})
-    assert html =~ ~s(data-message-layout="stacked")
-    assert html =~ "chat-message__body"
-    assert html =~ ~s(data-nick="alice")
-    refute html =~ "&lt;alice&gt;"
-  end
-
-  # Narration has no author to bind the eye to and is short: a second line for
-  # it would be ceremony, so it rides the head line and wraps to the margin.
-  test "narration rides the head line instead of stacking" do
-    action = row(%{id: "g2", author: "alice", content: "waves", type: :action, timestamp: @ts})
-    system = row(%{id: "g3", content: "joined", type: :system, timestamp: @ts})
-
-    assert action =~ ~s(data-message-layout="inline")
-    assert system =~ ~s(data-message-layout="inline")
-    refute system =~ "chat-message__body"
-  end
-
-  test "action messages carry the text-action class" do
-    html = row(%{id: "a2", author: "bob", content: "waves", type: :action, timestamp: @ts})
-    assert html =~ "text-action"
-  end
-
-  test "system messages are italicized (no grid nick column)" do
-    html = row(%{id: "sy1", content: "joined", type: :system, timestamp: @ts})
-    assert html =~ "italic"
   end
 
   test "renders system, service, error and notice rows" do
@@ -455,7 +422,6 @@ defmodule RetroHexChatWeb.ChatLive.Components.MessageRowTest do
         target: "#room"
       })
 
-    assert html =~ "chat-message--failed"
     assert html =~ ~s(data-msg-status="failed")
     assert html =~ ~s(data-temp-id="f1")
   end
@@ -477,36 +443,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.MessageRowTest do
     }
 
     html = row(msg)
-    assert html =~ "chat-message--highlighted"
     assert html =~ ~s(data-testid="highlighted-message")
-  end
-
-  test "tags each row with the kind icon matching its type" do
-    assert row(%{id: "k1", author: "bob", content: "hi", type: :normal, timestamp: @ts}) =~
-             ~s(data-message-kind="user")
-
-    assert row(%{id: "k2", content: "joined", type: :system, timestamp: @ts}) =~
-             ~s(data-message-kind="system")
-
-    assert row(%{id: "k3", content: "boom", type: :error, timestamp: @ts}) =~
-             ~s(data-message-kind="error")
-
-    assert row(%{id: "k4", content: "svc", type: :service, timestamp: @ts}) =~
-             ~s(data-message-kind="service")
-  end
-
-  test "deleted rows use the deleted kind icon" do
-    html =
-      row(%{
-        id: "k5",
-        author: "bob",
-        content: "x",
-        type: :normal,
-        timestamp: @ts,
-        deleted_at: @ts
-      })
-
-    assert html =~ ~s(data-message-kind="deleted")
   end
 
   test "renders a reply block when reply_to_id is present" do

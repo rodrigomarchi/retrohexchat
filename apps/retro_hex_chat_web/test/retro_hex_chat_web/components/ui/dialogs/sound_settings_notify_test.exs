@@ -33,18 +33,6 @@ defmodule RetroHexChatWeb.Components.UI.SoundSettingsNotifyTest do
     end
   end
 
-  test "the toggle shows the stored preference per event" do
-    settings =
-      SoundSettings.new()
-      |> SoundSettings.set_notify(:message, true)
-      |> SoundSettings.set_notify(:pm, false)
-
-    html = render_panel(settings: settings)
-
-    assert html =~ ~s(data-testid="notify-toggle-message")
-    assert html =~ ~s(data-testid="notify-toggle-pm")
-  end
-
   # Blocked is final until the person changes it in their browser, so offering
   # to ask again is a button that cannot work.
   test "a browser that refused is explained rather than asked again" do

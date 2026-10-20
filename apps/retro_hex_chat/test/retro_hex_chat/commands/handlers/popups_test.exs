@@ -24,21 +24,4 @@ defmodule RetroHexChat.Commands.Handlers.PopupsTest do
       assert {:ok, :ui_action, :open_custom_menus_dialog, %{}} = Popups.execute([], @context)
     end
   end
-
-  describe "help/0" do
-    test "returns help map with correct name" do
-      help = Popups.help()
-      assert help.name == "popups"
-    end
-
-    test "returns help map with syntax" do
-      help = Popups.help()
-      assert is_binary(help.syntax)
-    end
-
-    test "returns help map with examples" do
-      help = Popups.help()
-      assert [_ | _] = help.examples
-    end
-  end
 end

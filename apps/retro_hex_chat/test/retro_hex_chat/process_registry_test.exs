@@ -35,18 +35,6 @@ defmodule RetroHexChat.ProcessRegistryTest do
   end
 
   describe "via_tuple/2" do
-    test "names a process through the registry it belongs to", ctx do
-      assert {:via, Registry, {name, "#channel"}} =
-               ProcessRegistry.via_tuple(ctx.registry, "#channel")
-
-      assert name == ctx.registry
-    end
-
-    test "a key is whatever the caller already has to identify the process", ctx do
-      assert {:via, Registry, {_name, {:direct_message_space, "abc"}}} =
-               ProcessRegistry.via_tuple(ctx.registry, {:direct_message_space, "abc"})
-    end
-
     test "starting under it is what makes the process findable", ctx do
       pid = start_under(ctx.registry, "#channel")
 

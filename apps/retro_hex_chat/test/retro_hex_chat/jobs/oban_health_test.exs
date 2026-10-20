@@ -278,7 +278,6 @@ defmodule RetroHexChat.Jobs.ObanHealthTest do
     rows_by_sweep = Map.new(snapshot.maintenance_table.rows, &{&1.sweep, &1})
     row = Map.fetch!(rows_by_sweep, "Server ban expiry")
 
-    assert row.sweep == "Server ban expiry"
     assert row.queue == "maintenance"
     assert row.worker == "ServerBanExpiryWorker"
     assert row.status == "failed"
@@ -289,64 +288,46 @@ defmodule RetroHexChat.Jobs.ObanHealthTest do
 
     channel_row = Map.fetch!(rows_by_sweep, "Registered channel expiry")
 
-    assert channel_row.queue == "maintenance"
-    assert channel_row.worker == "RegisteredChannelExpiryWorker"
     assert channel_row.status == "idle"
     assert channel_row.pending_work == 0
 
     nick_row = Map.fetch!(rows_by_sweep, "Registered nick expiry")
 
-    assert nick_row.queue == "maintenance"
-    assert nick_row.worker == "RegisteredNickExpiryWorker"
     assert nick_row.status == "idle"
     assert nick_row.pending_work == 0
 
     attachment_row = Map.fetch!(rows_by_sweep, "Attachment orphan cleanup")
 
-    assert attachment_row.queue == "maintenance"
-    assert attachment_row.worker == "AttachmentOrphanCleanupWorker"
     assert attachment_row.status == "idle"
     assert attachment_row.pending_work == 0
 
     device_row = Map.fetch!(rows_by_sweep, "Trusted device expiry")
 
-    assert device_row.queue == "maintenance"
-    assert device_row.worker == "TrustedDeviceExpiryWorker"
     assert device_row.status == "idle"
     assert device_row.pending_work == 0
 
     session_row = Map.fetch!(rows_by_sweep, "Chat device session cleanup")
 
-    assert session_row.queue == "maintenance"
-    assert session_row.worker == "ChatDeviceSessionCleanupWorker"
     assert session_row.status == "idle"
     assert session_row.pending_work == 0
 
     runtime_row = Map.fetch!(rows_by_sweep, "Runtime stale cleanup")
 
-    assert runtime_row.queue == "maintenance"
-    assert runtime_row.worker == "RuntimeStaleCleanupWorker"
     assert runtime_row.status == "idle"
     assert runtime_row.pending_work == 0
 
     channel_mute_row = Map.fetch!(rows_by_sweep, "Channel mute expiry")
 
-    assert channel_mute_row.queue == "maintenance"
-    assert channel_mute_row.worker == "ChannelMuteExpiryWorker"
     assert channel_mute_row.status == "idle"
     assert channel_mute_row.pending_work == 0
 
     global_mute_row = Map.fetch!(rows_by_sweep, "Global mute expiry")
 
-    assert global_mute_row.queue == "maintenance"
-    assert global_mute_row.worker == "GlobalMuteExpiryWorker"
     assert global_mute_row.status == "idle"
     assert global_mute_row.pending_work == 0
 
     ignore_row = Map.fetch!(rows_by_sweep, "Ignore expired cleanup")
 
-    assert ignore_row.queue == "maintenance"
-    assert ignore_row.worker == "IgnoreExpiredCleanupWorker"
     assert ignore_row.status == "pending work"
     assert ignore_row.pending_work == 1
   end

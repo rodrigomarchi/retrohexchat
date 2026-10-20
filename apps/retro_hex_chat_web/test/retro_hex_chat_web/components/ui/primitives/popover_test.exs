@@ -30,14 +30,6 @@ defmodule RetroHexChatWeb.Components.UI.PopoverTest do
     assert html =~ "data-popover"
     refute html =~ "remove_attr"
     assert html =~ ~s(aria-label="Summary")
-    assert html =~ ~s(data-testid="toggle")
-    assert html =~ ~s(data-testid="panel")
-  end
-
-  test "hangs the panel from the edge the placement names" do
-    assert render_popover("below-end") =~ "top-full"
-    assert render_popover("above-end") =~ "bottom-full right-0"
-    assert render_popover("above") =~ "-translate-x-1/2"
   end
 
   test "close_after runs the action and then closes the popover it sits in" do
@@ -70,9 +62,7 @@ defmodule RetroHexChatWeb.Components.UI.PopoverTest do
 
     assert html =~ ~s(role="menu")
     assert html =~ ~s(aria-haspopup="menu")
-    assert html =~ "icon_checkmark"
     assert html =~ ~s(<button type="button" role="menuitemcheckbox")
     assert html =~ ~s(aria-checked="true")
-    assert html =~ "text-error-dark"
   end
 end

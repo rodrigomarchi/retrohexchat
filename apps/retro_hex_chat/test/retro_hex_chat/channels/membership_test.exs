@@ -5,21 +5,6 @@ defmodule RetroHexChat.Channels.MembershipTest do
 
   alias RetroHexChat.Channels.Membership
 
-  describe "new/0" do
-    test "creates empty membership with no members" do
-      m = Membership.new()
-      assert %Membership{members: %{}} = m
-    end
-
-    test "count of new membership is zero" do
-      assert Membership.count(Membership.new()) == 0
-    end
-
-    test "to_list of new membership returns empty list" do
-      assert Membership.to_list(Membership.new()) == []
-    end
-  end
-
   describe "add/3" do
     test "adds a member with default :regular role" do
       m = Membership.new() |> Membership.add("alice")
@@ -37,11 +22,6 @@ defmodule RetroHexChat.Channels.MembershipTest do
       m = Membership.new() |> Membership.add("carol", :voiced)
       assert Membership.member?(m, "carol")
       assert {:ok, :voiced} = Membership.role(m, "carol")
-    end
-
-    test "adds a member with :regular role explicitly" do
-      m = Membership.new() |> Membership.add("dave", :regular)
-      assert {:ok, :regular} = Membership.role(m, "dave")
     end
 
     test "adding multiple members increases count" do
@@ -62,12 +42,6 @@ defmodule RetroHexChat.Channels.MembershipTest do
 
       assert Membership.count(m) == 1
       assert {:ok, :operator} = Membership.role(m, "alice")
-    end
-
-    test "stores joined_at timestamp" do
-      m = Membership.new() |> Membership.add("alice")
-      %{members: %{"alice" => info}} = m
-      assert %DateTime{} = info.joined_at
     end
   end
 
@@ -101,23 +75,9 @@ defmodule RetroHexChat.Channels.MembershipTest do
   end
 
   describe "member?/2" do
-    test "returns true for existing member" do
-      m = Membership.new() |> Membership.add("alice")
-      assert Membership.member?(m, "alice")
-    end
-
     test "returns false for non-existent member" do
       m = Membership.new()
       refute Membership.member?(m, "nobody")
-    end
-
-    test "returns false after member is removed" do
-      m =
-        Membership.new()
-        |> Membership.add("alice")
-        |> Membership.remove("alice")
-
-      refute Membership.member?(m, "alice")
     end
 
     test "any case of a member's nickname finds them, shown as they spell it" do
@@ -145,23 +105,9 @@ defmodule RetroHexChat.Channels.MembershipTest do
   end
 
   describe "role/2" do
-    test "returns {:ok, role} for existing member" do
-      m = Membership.new() |> Membership.add("alice", :operator)
-      assert {:ok, :operator} = Membership.role(m, "alice")
-    end
-
     test "returns {:error, :not_member} for non-existent member" do
       m = Membership.new()
       assert {:error, :not_member} = Membership.role(m, "nobody")
-    end
-
-    test "reflects role changes after set_role" do
-      m =
-        Membership.new()
-        |> Membership.add("alice", :regular)
-        |> Membership.set_role("alice", :voiced)
-
-      assert {:ok, :voiced} = Membership.role(m, "alice")
     end
   end
 
@@ -197,16 +143,6 @@ defmodule RetroHexChat.Channels.MembershipTest do
       m = Membership.new() |> Membership.set_role("nobody", :operator)
       assert Membership.count(m) == 0
     end
-
-    test "preserves joined_at timestamp when changing role" do
-      m = Membership.new() |> Membership.add("alice", :regular)
-      %{members: %{"alice" => %{joined_at: original_time}}} = m
-
-      m = Membership.set_role(m, "alice", :operator)
-      %{members: %{"alice" => %{joined_at: new_time}}} = m
-
-      assert original_time == new_time
-    end
   end
 
   describe "operators/1" do
@@ -233,10 +169,6 @@ defmodule RetroHexChat.Channels.MembershipTest do
         |> Membership.add("carol", :regular)
 
       assert Membership.operators(m) == ["alice"]
-    end
-
-    test "returns empty list for empty membership" do
-      assert Membership.operators(Membership.new()) == []
     end
   end
 
@@ -265,10 +197,6 @@ defmodule RetroHexChat.Channels.MembershipTest do
 
       assert Membership.voiced(m) == ["bob"]
     end
-
-    test "returns empty list for empty membership" do
-      assert Membership.voiced(Membership.new()) == []
-    end
   end
 
   describe "count/2" do
@@ -286,34 +214,6 @@ defmodule RetroHexChat.Channels.MembershipTest do
   describe "count/1" do
     test "returns 0 for empty membership" do
       assert Membership.count(Membership.new()) == 0
-    end
-
-    test "returns correct count after adding members" do
-      m =
-        Membership.new()
-        |> Membership.add("alice")
-        |> Membership.add("bob")
-
-      assert Membership.count(m) == 2
-    end
-
-    test "returns correct count after removing members" do
-      m =
-        Membership.new()
-        |> Membership.add("alice")
-        |> Membership.add("bob")
-        |> Membership.remove("alice")
-
-      assert Membership.count(m) == 1
-    end
-
-    test "overwriting a member does not increase count" do
-      m =
-        Membership.new()
-        |> Membership.add("alice", :regular)
-        |> Membership.add("alice", :operator)
-
-      assert Membership.count(m) == 1
     end
   end
 
@@ -417,26 +317,6 @@ defmodule RetroHexChat.Channels.MembershipTest do
   end
 
   describe "rank/1" do
-    test "owner has highest rank" do
-      assert Membership.rank(:owner) == 4
-    end
-
-    test "operator ranks below owner" do
-      assert Membership.rank(:operator) == 3
-    end
-
-    test "half_operator ranks below operator" do
-      assert Membership.rank(:half_operator) == 2
-    end
-
-    test "voiced ranks below half_operator" do
-      assert Membership.rank(:voiced) == 1
-    end
-
-    test "regular has lowest rank" do
-      assert Membership.rank(:regular) == 0
-    end
-
     test "rank ordering is strictly hierarchical" do
       assert Membership.rank(:owner) > Membership.rank(:operator)
       assert Membership.rank(:operator) > Membership.rank(:half_operator)

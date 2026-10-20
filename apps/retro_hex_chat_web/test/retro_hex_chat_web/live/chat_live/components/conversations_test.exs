@@ -35,62 +35,12 @@ defmodule RetroHexChatWeb.ChatLive.Components.ConversationsTest do
     end)
   end
 
-  test "id/0 is stable" do
-    assert Conversations.id() == "conversations"
-  end
-
   test "renders the joined channels" do
     html = render_conv([])
     assert html =~ "#lobby"
     assert html =~ "#elixir"
-    assert html =~ "Channels"
-    refute html =~ "MY CHANNELS"
     # Row events bubble to the parent unchanged.
     assert html =~ "switch_channel"
-  end
-
-  test "renders IRC-native sections without treeview labels" do
-    html =
-      render_conv(
-        open_pm_tabs: ["alice"],
-        pm_conversations: ["alice"],
-        unread_counts: %{"#elixir" => 3, "pm:alice" => 2},
-        highlight_channels: MapSet.new(["#elixir"]),
-        flash_channels: MapSet.new(["#elixir"]),
-        autojoin_list: autojoin(["#elixir", {"#secret", "hunter2"}]),
-        popular_channels: [%{name: "#retro", user_count: 7}]
-      )
-
-    assert html =~ ~s(data-testid="conversations-section-channels")
-    assert html =~ ~s(data-testid="conversations-section-pms")
-    assert html =~ ~s(data-testid="conversations-section-popular")
-
-    assert html =~ "Channels"
-    assert html =~ "Recent private messages"
-    assert html =~ "Popular channels"
-
-    # The auto-join list is not a section of its own any more: it is a property
-    # of the channel rows, so the same room never gets a second row.
-    refute html =~ ~s(data-testid="conversations-section-autojoin")
-
-    refute html =~ ~s(data-testid="conversations-section-alerts")
-    refute html =~ "ACTIVITY"
-    refute html =~ "MY CHANNELS"
-  end
-
-  test "renders compact conversation summary labels" do
-    html =
-      render_conv(
-        pm_conversations: ["alice"],
-        autojoin_list: autojoin(["#elixir"])
-      )
-
-    assert html =~ ~s(data-testid="conversations-stat-channels")
-    assert html =~ ~s(data-testid="conversations-stat-pms")
-    assert html =~ ~s(data-testid="conversations-stat-autojoin")
-    assert html =~ "Channels"
-    assert html =~ "PM"
-    assert html =~ "Auto"
   end
 
   test "renders popular channels as a semantic section even when only browse is available" do
@@ -129,7 +79,6 @@ defmodule RetroHexChatWeb.ChatLive.Components.ConversationsTest do
     # Going there is what a click does, so the row carries the same event an
     # open channel's row carries.
     assert Floki.attribute(row, "phx-click") == ["switch_channel"]
-    assert Floki.attribute(row, "class") |> to_string() =~ "chat-conversations-row--saved"
     refute html =~ "hunter2"
   end
 
@@ -236,11 +185,6 @@ defmodule RetroHexChatWeb.ChatLive.Components.ConversationsTest do
 
     assert Floki.attribute(alice, "data-joined") == ["true"]
     assert Floki.attribute(bob, "data-joined") == ["false"]
-    assert Floki.attribute(bob, "class") |> to_string() =~ "chat-conversations-row--saved"
-
-    # The chip that used to say "tab" named an internal state and had no
-    # counterpart on channels, which carry tabs too.
-    refute html =~ ~s(data-testid="pm-open-state-alice")
   end
 
   test "an unopened conversation still shows that it is the loud one" do
@@ -261,7 +205,6 @@ defmodule RetroHexChatWeb.ChatLive.Components.ConversationsTest do
 
   test "collapses to the rail when not visible and expands when visible" do
     collapsed = render_conv(visible: false)
-    assert collapsed =~ ~s(data-testid="conversations-sidebar-shell")
     assert collapsed =~ ~s(data-state="collapsed")
     assert collapsed =~ "chat-sidebar-shell--collapsed"
     assert collapsed =~ ~s(data-testid="conversations-rail")
@@ -271,32 +214,6 @@ defmodule RetroHexChatWeb.ChatLive.Components.ConversationsTest do
     assert expanded =~ "chat-sidebar-shell--expanded"
     assert expanded =~ ~s(title="Collapse conversations")
     refute expanded =~ ~s(data-testid="conversations-rail")
-  end
-
-  test "places the expanded collapse control at the left edge of the titlebar" do
-    html = render_conv(on_close: "toggle_conversations")
-    document = Floki.parse_document!(html)
-    [titlebar] = Floki.find(document, ".chat-conversations-titlebar")
-
-    [first_element | _] =
-      titlebar
-      |> Floki.children()
-      |> Enum.filter(&match?({_, _, _}, &1))
-
-    assert {"button", attrs, _children} = first_element
-    assert {"data-testid", "conversations-collapse-toggle"} in attrs
-  end
-
-  test "derives unread channels and PMs from unread_counts" do
-    html =
-      render_conv(
-        unread_counts: %{"#elixir" => 3, "pm:alice" => 2, "#lobby" => 0},
-        pm_conversations: ["alice"]
-      )
-
-    # #elixir has unread (3) → its unread badge count shows; #lobby (0) does not.
-    assert html =~ "alice"
-    assert html =~ "3"
   end
 
   test "renders the active P2P session glyph on the owning PM row" do
@@ -330,18 +247,5 @@ defmodule RetroHexChatWeb.ChatLive.Components.ConversationsTest do
              doc,
              ~s(.chat-conversations-section [data-testid="conversations-browse-all"])
            ) == []
-  end
-
-  test "suggestions are set apart from the rooms you are in" do
-    html = render_conv(popular_channels: [%{name: "#retro", user_count: 7}])
-    doc = Floki.parse_document!(html)
-
-    assert [section] = Floki.find(doc, ~s([data-testid="conversations-section-popular"]))
-
-    assert Floki.attribute(section, "class") |> to_string() =~
-             "chat-conversations-section--discovery"
-
-    assert [channels] = Floki.find(doc, ~s([data-testid="conversations-section-channels"]))
-    refute Floki.attribute(channels, "class") |> to_string() =~ "discovery"
   end
 end

@@ -36,13 +36,6 @@ defmodule RetroHexChat.Commands.Handlers.PinTest do
     test "refuses when there is no channel to pin in" do
       assert {:error, _reason} = Pin.execute(["1284"], %{active_channel: nil})
     end
-
-    test "describes itself for the help window" do
-      assert %{name: "pin", syntax: syntax} = Pin.help()
-      assert syntax =~ "/pin"
-      assert Pin.category() == :channel
-      assert Pin.syntax_definition().command == "pin"
-    end
   end
 
   describe "/unpin" do
@@ -58,11 +51,6 @@ defmodule RetroHexChat.Commands.Handlers.PinTest do
 
     test "refuses something that is not an id" do
       assert {:error, _reason} = Unpin.execute(["nope"], @context)
-    end
-
-    test "describes itself for the help window" do
-      assert %{name: "unpin"} = Unpin.help()
-      assert Unpin.syntax_definition().command == "unpin"
     end
   end
 end

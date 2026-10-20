@@ -28,7 +28,6 @@ defmodule RetroHexChat.Chat.ReconnectReadMarkersTest do
 
     test "starts empty when there is nothing to normalize" do
       assert normalize(nil) == %{}
-      assert ReconnectState.new().read_markers == %{}
     end
 
     # A key that is not a conversation is a key nothing will ever look up, and

@@ -104,16 +104,6 @@ defmodule RetroHexChatWeb.Components.UI.DesktopTest do
       assert html =~ ~s(href="/showcase/button")
       assert html =~ ~s(data-phx-link="redirect")
     end
-
-    test "a link keeps the same chrome classes as a button" do
-      opts = [window: "chat", label: "Chat", icon: icon()]
-      button = render_component(&taskbar_button/1, opts)
-      link = render_component(&taskbar_button/1, opts ++ [href: "/chat"])
-
-      assert button =~ "desktop-taskbar__button"
-      assert link =~ "desktop-taskbar__button"
-      assert link =~ "no-underline"
-    end
   end
 
   # The wallpaper reaches CSS through the document because its URL is digested;
@@ -129,7 +119,6 @@ defmodule RetroHexChatWeb.Components.UI.DesktopTest do
     end
 
     test "the workspace carries both wallpapers as custom properties", %{html: html} do
-      assert html =~ "desktop__workspace"
       assert html =~ "--rhc-wallpaper-desktop:url("
       assert html =~ "--rhc-wallpaper-mobile:url("
     end

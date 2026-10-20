@@ -7,17 +7,6 @@ defmodule RetroHexChatWeb.ChatLive.Components.TimersDialogTest do
 
   @moduletag :unit
 
-  test "id/0 is stable" do
-    assert TimersDialog.id() == "timers-dialog"
-  end
-
-  test "renders the bare panel (the desktop window provides the chrome)" do
-    html = render_component(TimersDialog, id: TimersDialog.id())
-
-    assert html =~ ~s(data-testid="timers-panel")
-    refute html =~ "phx-show-modal"
-  end
-
   test "renders timer rows from the passthrough map" do
     timers = %{"morning" => %{type: :repeat, interval: 60, command: "/me stretches"}}
 

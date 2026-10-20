@@ -146,14 +146,12 @@ defmodule RetroHexChat.Games.ResultsTest do
     end
 
     test "only counts what finished since a moment", %{ana: ana, beto: beto} do
-      {:ok, old} = Results.record(p2p_match(ana, beto, "hex_pong", pong(11, 2, 1), token: "old"))
+      {:ok, _old} = Results.record(p2p_match(ana, beto, "hex_pong", pong(11, 2, 1), token: "old"))
       Repo.update_all(GameResult, set: [finished_at: ago(10 * 86_400_000)])
       {:ok, _} = Results.record(p2p_match(ana, beto, "hex_pong", pong(2, 11, 2), token: "new"))
 
       assert [%{nickname: "beto", wins: 1}, %{nickname: "ana", wins: 0}] =
                Results.standings("hex_pong", since: ago(86_400_000))
-
-      assert old.id
     end
   end
 

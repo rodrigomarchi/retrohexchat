@@ -89,14 +89,4 @@ defmodule RetroHexChat.Commands.Handlers.AutoRespondTest do
       assert {:error, _} = AutoRespond.execute(["remove", "abc"], %{})
     end
   end
-
-  describe "help/0" do
-    test "returns help map" do
-      help = AutoRespond.help()
-      assert help.name == "autorespond"
-      assert is_binary(help.syntax)
-      assert is_binary(help.description)
-      assert is_list(help.examples)
-    end
-  end
 end

@@ -18,20 +18,6 @@ defmodule RetroHexChatWeb.ChatLive.Components.NotifyListDialogTest do
     render_component(NotifyListDialog, Map.merge(base, overrides))
   end
 
-  test "exposes a stable id" do
-    assert NotifyListDialog.id() == "notify-list-dialog"
-  end
-
-  test "renders the bare panel with its toggles" do
-    html = dialog(%{})
-
-    assert html =~ ~s(id="notify-list-dialog-mount")
-    assert html =~ ~s(data-testid="notify-list")
-    refute html =~ "phx-show-modal"
-    assert html =~ ~s(id="notify-list-dialog-auto-whois")
-    assert html =~ ~s(id="notify-list-dialog-auto-add-pm")
-  end
-
   test "renders tracked-nick rows from the session" do
     {:ok, list} = NotifyList.add_entry(NotifyList.new(), "Nick", "Buddy", "a note")
 

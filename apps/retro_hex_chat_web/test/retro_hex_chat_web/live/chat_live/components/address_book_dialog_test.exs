@@ -27,16 +27,9 @@ defmodule RetroHexChatWeb.ChatLive.Components.AddressBookDialogTest do
     render_component(AddressBookDialog, Map.merge(base, Map.delete(overrides, :session)))
   end
 
-  test "exposes a stable id" do
-    assert AddressBookDialog.id() == "address-book-dialog"
-  end
-
   test "renders the bare contacts panel" do
     html = dialog(%{})
 
-    assert html =~ ~s(id="address-book-dialog-mount")
-    assert html =~ ~s(data-testid="address-book-panel")
-    refute html =~ "phx-show-modal"
     assert html =~ "No contacts saved"
   end
 

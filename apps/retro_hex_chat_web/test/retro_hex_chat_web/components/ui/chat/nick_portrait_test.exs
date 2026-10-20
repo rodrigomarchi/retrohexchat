@@ -41,6 +41,5 @@ defmodule RetroHexChatWeb.Components.UI.NickPortraitTest do
 
     assert html =~ ~s(width="#{size}")
     assert html =~ ~s(height="#{size}")
-    refute html =~ "style"
   end
 end

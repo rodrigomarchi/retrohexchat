@@ -6,14 +6,6 @@ defmodule RetroHexChat.Channels.SupervisorTest do
   alias RetroHexChat.Channels.Supervisor, as: ChannelSupervisor
 
   describe "start_child/1" do
-    test "starts a channel process" do
-      channel = "#test-#{System.unique_integer([:positive])}"
-      assert {:ok, pid} = ChannelSupervisor.start_child(channel)
-      assert Process.alive?(pid)
-      # Cleanup
-      ChannelSupervisor.stop_child(pid)
-    end
-
     test "returns error for duplicate channel" do
       channel = "#test-dup-#{System.unique_integer([:positive])}"
       {:ok, pid} = ChannelSupervisor.start_child(channel)

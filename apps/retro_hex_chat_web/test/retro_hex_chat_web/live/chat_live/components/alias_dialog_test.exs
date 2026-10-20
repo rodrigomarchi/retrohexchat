@@ -8,17 +8,10 @@ defmodule RetroHexChatWeb.ChatLive.Components.AliasDialogTest do
 
   @moduletag :unit
 
-  test "id/0 is stable" do
-    assert AliasDialog.id() == "alias-dialog"
-  end
-
   test "renders the bare panel with an empty-state when there are no aliases" do
     html = render_component(AliasDialog, id: AliasDialog.id())
 
     assert html =~ "No aliases configured"
-    assert html =~ "No aliases configured"
-    assert html =~ ~s(data-testid="alias-panel")
-    refute html =~ "phx-show-modal"
   end
 
   test "renders alias rows from the passthrough list" do

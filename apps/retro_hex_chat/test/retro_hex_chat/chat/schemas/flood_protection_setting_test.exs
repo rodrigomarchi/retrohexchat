@@ -9,20 +9,6 @@ defmodule RetroHexChat.Chat.Schemas.FloodProtectionSettingTest do
   alias RetroHexChat.Repo
 
   describe "changeset/2" do
-    test "valid changeset with all fields" do
-      attrs = %{
-        owner_nickname: "TestUser",
-        flood_threshold: 10,
-        flood_window_seconds: 15,
-        auto_ignore_duration_seconds: 300,
-        spam_threshold: 3,
-        spam_window_seconds: 10
-      }
-
-      changeset = FloodProtectionSetting.changeset(%FloodProtectionSetting{}, attrs)
-      assert changeset.valid?
-    end
-
     test "valid changeset with only owner_nickname (uses defaults)" do
       attrs = %{owner_nickname: "TestUser"}
       changeset = FloodProtectionSetting.changeset(%FloodProtectionSetting{}, attrs)
@@ -100,24 +86,6 @@ defmodule RetroHexChat.Chat.Schemas.FloodProtectionSettingTest do
       # Defaults for non-specified fields
       assert record.flood_window_seconds == 15
       assert record.auto_ignore_duration_seconds == 300
-    end
-
-    test "upsert pattern: insert then update" do
-      attrs = %{owner_nickname: "FloodUser", flood_threshold: 10}
-
-      {:ok, _} =
-        %FloodProtectionSetting{}
-        |> FloodProtectionSetting.changeset(attrs)
-        |> Repo.insert()
-
-      existing = Repo.get(FloodProtectionSetting, "FloodUser")
-
-      {:ok, updated} =
-        existing
-        |> FloodProtectionSetting.changeset(%{flood_threshold: 25})
-        |> Repo.update()
-
-      assert updated.flood_threshold == 25
     end
 
     test "cascade delete when registered nick deleted" do

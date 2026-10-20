@@ -57,14 +57,4 @@ defmodule RetroHexChat.Commands.Handlers.KickTest do
                Kick.execute(["user"], ctx)
     end
   end
-
-  describe "help/0" do
-    test "returns help map" do
-      help = Kick.help()
-      assert help.name == "kick"
-      assert is_binary(help.syntax)
-      assert is_binary(help.description)
-      assert is_list(help.examples)
-    end
-  end
 end

@@ -53,24 +53,5 @@ defmodule RetroHexChat.Commands.Handlers.AnnounceTest do
       assert_receive {:announcement,
                       %{sender: "Admin", content: "Test announcement", timestamp: %DateTime{}}}
     end
-
-    test "admin can announce single word" do
-      Phoenix.PubSub.subscribe(RetroHexChat.PubSub, "server:announcements")
-
-      assert {:ok, :system, %{content: "Announcement sent to all users."}} =
-               Announce.execute(["Maintenance"], @base_context)
-
-      assert_receive {:announcement, %{sender: "Admin", content: "Maintenance"}}
-    end
-  end
-
-  describe "help/0" do
-    test "returns help map" do
-      help = Announce.help()
-      assert help.name == "announce"
-      assert is_binary(help.syntax)
-      assert is_binary(help.description)
-      assert is_list(help.examples)
-    end
   end
 end

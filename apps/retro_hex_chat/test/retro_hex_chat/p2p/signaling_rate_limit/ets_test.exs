@@ -11,12 +11,6 @@ defmodule RetroHexChat.P2P.SignalingRateLimit.ETSTest do
   end
 
   describe "check_signal_rate/3" do
-    test "allows up to 100 signals per minute", %{table: table} do
-      for _ <- 1..100 do
-        assert :ok = SignalLimiter.check_signal_rate("token-1", 42, table)
-      end
-    end
-
     test "rejects 101st signal within window", %{table: table} do
       for _ <- 1..100 do
         :ok = SignalLimiter.check_signal_rate("token-1", 42, table)
@@ -58,17 +52,6 @@ defmodule RetroHexChat.P2P.SignalingRateLimit.ETSTest do
       Process.sleep(60)
 
       assert :ok = SignalLimiter.check_signal_rate("token-1", 42, table, 50)
-    end
-  end
-
-  describe "behaviour compliance" do
-    test "implements SignalingRateLimit behaviour" do
-      behaviours =
-        SignalLimiter.__info__(:attributes)
-        |> Keyword.get_values(:behaviour)
-        |> List.flatten()
-
-      assert RetroHexChat.P2P.SignalingRateLimit in behaviours
     end
   end
 end

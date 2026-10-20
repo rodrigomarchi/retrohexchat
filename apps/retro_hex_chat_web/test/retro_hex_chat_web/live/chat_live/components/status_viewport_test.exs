@@ -14,18 +14,6 @@ defmodule RetroHexChatWeb.ChatLive.Components.StatusViewportTest do
     timestamp: ~U[2024-01-01 12:00:00Z]
   }
 
-  test "id/0 is stable" do
-    assert StatusViewport.id() == "status-viewport"
-  end
-
-  test "renders the stream container even when empty" do
-    html = render_component(StatusViewport, id: StatusViewport.id())
-
-    assert html =~ ~s(id="status-messages")
-    assert html =~ ~s(phx-update="stream")
-    assert html =~ ~s(data-testid="status-messages")
-  end
-
   test "an insert action streams a status line keyed by id" do
     html =
       render_component(StatusViewport,

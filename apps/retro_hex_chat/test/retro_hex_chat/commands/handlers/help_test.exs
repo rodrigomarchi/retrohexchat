@@ -28,7 +28,6 @@ defmodule RetroHexChat.Commands.Handlers.HelpTest do
       assert {:ok, :ui_action, :show_help, %{commands: commands}} =
                Help.execute([], @base_context)
 
-      assert is_list(commands)
       assert "join" in commands
       assert "help" in commands
     end
@@ -45,23 +44,6 @@ defmodule RetroHexChat.Commands.Handlers.HelpTest do
 
     test "errors when command not found" do
       assert {:error, _} = Help.execute(["nonexistent"], @base_context)
-    end
-
-    test "returns help for me command" do
-      assert {:ok, :ui_action, :show_command_help, %{help: help_map}} =
-               Help.execute(["me"], @base_context)
-
-      assert help_map.name == "me"
-    end
-  end
-
-  describe "help/0" do
-    test "returns help map" do
-      help = Help.help()
-      assert help.name == "help"
-      assert is_binary(help.syntax)
-      assert is_binary(help.description)
-      assert is_list(help.examples)
     end
   end
 end

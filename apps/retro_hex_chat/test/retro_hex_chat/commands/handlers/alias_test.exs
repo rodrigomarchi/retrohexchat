@@ -62,27 +62,4 @@ defmodule RetroHexChat.Commands.Handlers.AliasTest do
       assert {:ok, :ui_action, :alias_list_display, %{}} = Alias.execute(["list"], @context)
     end
   end
-
-  describe "help/0" do
-    test "returns help map with correct name" do
-      help = Alias.help()
-      assert help.name == "alias"
-    end
-
-    test "returns help map with syntax string" do
-      help = Alias.help()
-      assert is_binary(help.syntax)
-      assert help.syntax =~ "/alias"
-    end
-
-    test "returns help map with description" do
-      help = Alias.help()
-      assert is_binary(help.description)
-    end
-
-    test "returns help map with examples list" do
-      help = Alias.help()
-      assert [_ | _] = help.examples
-    end
-  end
 end

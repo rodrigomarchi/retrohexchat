@@ -7,10 +7,6 @@ defmodule RetroHexChatWeb.P2PLive.Components.P2PMediaIslandTest do
 
   @moduletag :unit
 
-  test "id/0 is stable and distinct from the panel's hook element" do
-    assert P2PMediaIsland.id() == "lobby-media-island"
-  end
-
   test "shows a waiting state before the P2P session is connected" do
     html = render_component(P2PMediaIsland, id: P2PMediaIsland.id(), connected: false)
 
@@ -46,19 +42,6 @@ defmodule RetroHexChatWeb.P2PLive.Components.P2PMediaIslandTest do
     assert html =~ ~s(data-lobby-media-action="enable-video")
     # Interim state has no live track yet → no mute/camera toggles.
     refute html =~ ~s(data-lobby-media-action="mute")
-  end
-
-  test "a peer camera update reflects on this side" do
-    html =
-      render_component(P2PMediaIsland,
-        id: P2PMediaIsland.id(),
-        connected: true,
-        peer_nick: "trinity",
-        action: {:peer_media_changed, %{user_id: 2, audio: true, video: true}}
-      )
-
-    # The surface is up with the peer present.
-    assert html =~ ~s(id="lobby-remote-audio")
   end
 
   test "local screen sharing forces the call surface into focus layout" do

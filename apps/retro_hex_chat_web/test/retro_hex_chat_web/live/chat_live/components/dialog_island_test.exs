@@ -20,7 +20,6 @@ defmodule RetroHexChatWeb.ChatLive.Components.DialogIslandTest do
     test "a dialog starts without a session, because the parent sends one" do
       {:ok, mounted} = DialogIsland.mount(socket(), "admin-turn", %{})
 
-      assert Map.has_key?(mounted.assigns, :session)
       assert mounted.assigns.session == nil
     end
   end

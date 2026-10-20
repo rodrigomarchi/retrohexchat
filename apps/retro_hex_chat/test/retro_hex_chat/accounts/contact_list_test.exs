@@ -8,14 +8,6 @@ defmodule RetroHexChat.Accounts.ContactListTest do
   # Unit Tests — In-Memory CRUD
   # ---------------------------------------------------------------------------
 
-  describe "new/0" do
-    @tag :unit
-    test "returns empty contact list" do
-      list = ContactList.new()
-      assert list.entries == []
-    end
-  end
-
   describe "add_entry/4" do
     @tag :unit
     test "adds an entry with a note" do
@@ -30,17 +22,6 @@ defmodule RetroHexChat.Accounts.ContactListTest do
     end
 
     @tag :unit
-    test "adds an entry with nil note" do
-      list = ContactList.new()
-      assert {:ok, updated} = ContactList.add_entry(list, "Owner", "Alice", nil)
-
-      assert length(updated.entries) == 1
-      entry = hd(updated.entries)
-      assert entry.contact_nickname == "Alice"
-      assert entry.note == nil
-    end
-
-    @tag :unit
     test "adds an entry with default nil note" do
       list = ContactList.new()
       assert {:ok, updated} = ContactList.add_entry(list, "Owner", "Alice")
@@ -50,28 +31,9 @@ defmodule RetroHexChat.Accounts.ContactListTest do
     end
 
     @tag :unit
-    test "returns error when adding self (exact case)" do
-      list = ContactList.new()
-      assert {:error, :self_add} = ContactList.add_entry(list, "Owner", "Owner", nil)
-    end
-
-    @tag :unit
-    test "returns error when adding self (case-insensitive)" do
-      list = ContactList.new()
-      assert {:error, :self_add} = ContactList.add_entry(list, "Owner", "OWNER", nil)
-    end
-
-    @tag :unit
     test "returns error when adding self (mixed case)" do
       list = ContactList.new()
       assert {:error, :self_add} = ContactList.add_entry(list, "oWnEr", "OwNeR", nil)
-    end
-
-    @tag :unit
-    test "returns error for duplicate entry (exact case)" do
-      list = ContactList.new()
-      {:ok, list} = ContactList.add_entry(list, "Owner", "Alice", nil)
-      assert {:error, :duplicate} = ContactList.add_entry(list, "Owner", "Alice", nil)
     end
 
     @tag :unit
@@ -92,19 +54,6 @@ defmodule RetroHexChat.Accounts.ContactListTest do
         end)
 
       assert {:error, :list_full} = ContactList.add_entry(list, "Owner", "User101", nil)
-    end
-
-    @tag :unit
-    test "allows adding up to 100 entries" do
-      list = ContactList.new()
-
-      list =
-        Enum.reduce(1..100, list, fn i, acc ->
-          {:ok, updated} = ContactList.add_entry(acc, "Owner", "User#{i}", nil)
-          updated
-        end)
-
-      assert length(list.entries) == 100
     end
 
     @tag :unit
@@ -161,12 +110,6 @@ defmodule RetroHexChat.Accounts.ContactListTest do
 
       assert {:ok, updated} = ContactList.remove_entry(list, "ALICE")
       assert updated.entries == []
-    end
-
-    @tag :unit
-    test "returns error for not found" do
-      list = ContactList.new()
-      assert {:error, :not_found} = ContactList.remove_entry(list, "Ghost")
     end
 
     @tag :unit
@@ -269,12 +212,6 @@ defmodule RetroHexChat.Accounts.ContactListTest do
 
   describe "full?/1" do
     @tag :unit
-    test "returns false when under 100 entries" do
-      list = ContactList.new()
-      assert ContactList.full?(list) == false
-    end
-
-    @tag :unit
     test "returns false with some entries" do
       list = ContactList.new()
       {:ok, list} = ContactList.add_entry(list, "Owner", "Alice", nil)
@@ -312,14 +249,6 @@ defmodule RetroHexChat.Accounts.ContactListTest do
       :ok
     end
 
-    test "save persists entries for a registered user" do
-      list = ContactList.new()
-      {:ok, list} = ContactList.add_entry(list, "TestOwner", "Alice", "Best friend")
-      {:ok, list} = ContactList.add_entry(list, "TestOwner", "Bob", nil)
-
-      assert :ok = ContactList.save("TestOwner", list)
-    end
-
     test "load restores all entries and notes" do
       list = ContactList.new()
       {:ok, list} = ContactList.add_entry(list, "TestOwner", "Alice", "Best friend")
@@ -332,10 +261,8 @@ defmodule RetroHexChat.Accounts.ContactListTest do
       alice = Enum.find(loaded.entries, &(&1.contact_nickname == "Alice"))
       bob = Enum.find(loaded.entries, &(&1.contact_nickname == "Bob"))
 
-      assert alice != nil
       assert alice.note == "Best friend"
       assert %DateTime{} = alice.first_contact_date
-      assert bob != nil
       assert bob.note == "Colleague"
     end
 

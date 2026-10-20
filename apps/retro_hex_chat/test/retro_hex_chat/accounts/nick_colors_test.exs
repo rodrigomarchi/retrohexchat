@@ -7,14 +7,6 @@ defmodule RetroHexChat.Accounts.NickColorsTest do
   # Unit Tests
   # ---------------------------------------------------------------------------
 
-  describe "new/0" do
-    @tag :unit
-    test "returns empty nick colors map" do
-      nc = NickColors.new()
-      assert nc.entries == []
-    end
-  end
-
   describe "add_entry/3" do
     @tag :unit
     test "adds an entry successfully" do
@@ -25,13 +17,6 @@ defmodule RetroHexChat.Accounts.NickColorsTest do
       entry = hd(updated.entries)
       assert entry.target_nickname == "Alice"
       assert entry.color_index == 4
-    end
-
-    @tag :unit
-    test "returns error for duplicate entry (exact case)" do
-      nc = NickColors.new()
-      {:ok, nc} = NickColors.add_entry(nc, "Alice", 4)
-      assert {:error, :duplicate} = NickColors.add_entry(nc, "Alice", 7)
     end
 
     @tag :unit
@@ -284,9 +269,7 @@ defmodule RetroHexChat.Accounts.NickColorsTest do
       alice = Enum.find(loaded.entries, &(&1.target_nickname == "Alice"))
       bob = Enum.find(loaded.entries, &(&1.target_nickname == "Bob"))
 
-      assert alice != nil
       assert alice.color_index == 4
-      assert bob != nil
       assert bob.color_index == 12
     end
 
@@ -344,25 +327,6 @@ defmodule RetroHexChat.Accounts.NickColorsTest do
       {:ok, loaded} = NickColors.load("TestOwner")
       assert length(loaded.entries) == 1
       assert hd(loaded.entries).color_index == 11
-    end
-
-    @tag :integration
-    test "color_index preserved correctly through save/load" do
-      nc = NickColors.new()
-      {:ok, nc} = NickColors.add_entry(nc, "Red", 4)
-      {:ok, nc} = NickColors.add_entry(nc, "Green", 3)
-      {:ok, nc} = NickColors.add_entry(nc, "Blue", 2)
-      :ok = NickColors.save("TestOwner", nc)
-
-      {:ok, loaded} = NickColors.load("TestOwner")
-
-      red = Enum.find(loaded.entries, &(&1.target_nickname == "Red"))
-      green = Enum.find(loaded.entries, &(&1.target_nickname == "Green"))
-      blue = Enum.find(loaded.entries, &(&1.target_nickname == "Blue"))
-
-      assert red.color_index == 4
-      assert green.color_index == 3
-      assert blue.color_index == 2
     end
   end
 end

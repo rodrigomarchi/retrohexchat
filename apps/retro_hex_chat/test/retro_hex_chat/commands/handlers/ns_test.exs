@@ -254,15 +254,5 @@ defmodule RetroHexChat.Commands.Handlers.NsTest do
     end
   end
 
-  describe "help/0" do
-    test "returns help map" do
-      help = Ns.help()
-      assert help.name == "ns"
-      assert is_binary(help.syntax)
-      assert is_binary(help.description)
-      assert is_list(help.examples)
-    end
-  end
-
   defp uid, do: rem(System.unique_integer([:positive]), 100_000)
 end

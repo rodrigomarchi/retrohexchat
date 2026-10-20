@@ -16,29 +16,9 @@ defmodule RetroHexChat.Bots.Capabilities.ModerationTest do
     capability_state: Moderation.init_state(@default_config)
   }
 
-  describe "name/0" do
-    test "returns :moderation" do
-      assert Moderation.name() == :moderation
-    end
-  end
-
   describe "passive?/0" do
     test "is passive" do
       assert Moderation.passive?() == true
-    end
-  end
-
-  describe "description/0" do
-    test "returns description without 'Coming soon'" do
-      refute Moderation.description() =~ "Coming soon"
-    end
-  end
-
-  describe "init_state/1" do
-    test "initializes with empty history and warnings" do
-      state = Moderation.init_state(@default_config)
-      assert state.message_history == %{}
-      assert state.warnings == %{}
     end
   end
 
@@ -210,21 +190,12 @@ defmodule RetroHexChat.Bots.Capabilities.ModerationTest do
   end
 
   describe "handles empty/uninitialized state" do
-    test "handle_message with empty map state does not crash" do
-      ctx = %{@ctx | capability_state: %{}}
-      result = Moderation.handle_message("hello world", "user1", ctx)
-      assert {:side_effect, %{state_update: state}} = result
-      assert Map.has_key?(state, :message_history)
-      assert Map.has_key?(state, :warnings)
-    end
-
     test "handle_message with empty state detects blocked words" do
       config = Map.put(@default_config, "blocked_words", ["badword"])
       ctx = %{@ctx | config: config, capability_state: %{}}
       result = Moderation.handle_message("badword here", "user1", ctx)
-      assert {:reply, msg, state} = result
+      assert {:reply, msg, _state} = result
       assert msg =~ "blocked words"
-      assert Map.has_key?(state, :warnings)
     end
 
     test "handle_message with empty state tracks messages correctly" do

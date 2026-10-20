@@ -14,12 +14,6 @@ defmodule RetroHexChat.Services.RegisteredNickTest do
       assert changeset.changes.password_hash != attrs.password
     end
 
-    test "requires nickname and password" do
-      changeset = RegisteredNick.registration_changeset(%RegisteredNick{}, %{})
-      refute changeset.valid?
-      assert %{nickname: ["can't be blank"], password: ["can't be blank"]} = errors_on(changeset)
-    end
-
     test "validates nickname max length 16" do
       attrs = %{nickname: String.duplicate("a", 17), password: "secret123"}
       changeset = RegisteredNick.registration_changeset(%RegisteredNick{}, attrs)

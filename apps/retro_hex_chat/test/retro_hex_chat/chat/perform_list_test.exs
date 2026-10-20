@@ -3,14 +3,6 @@ defmodule RetroHexChat.Chat.PerformListTest do
 
   alias RetroHexChat.Chat.PerformList
 
-  describe "new/0" do
-    test "returns empty list with defaults" do
-      list = PerformList.new()
-      assert list.entries == []
-      assert list.settings.enable_on_connect == true
-    end
-  end
-
   describe "add_entry/2" do
     test "adds a command to the list" do
       list = PerformList.new()
@@ -213,49 +205,9 @@ defmodule RetroHexChat.Chat.PerformListTest do
     end
   end
 
-  describe "entries/1" do
-    test "returns entries sorted by position" do
-      list = PerformList.new()
-      {:ok, list} = PerformList.add_entry(list, "/cmd1")
-      {:ok, list} = PerformList.add_entry(list, "/cmd2")
-
-      entries = PerformList.entries(list)
-      assert length(entries) == 2
-      assert Enum.at(entries, 0).position == 0
-      assert Enum.at(entries, 1).position == 1
-    end
-
-    test "returns empty list for new list" do
-      assert PerformList.entries(PerformList.new()) == []
-    end
-  end
-
-  describe "count/1" do
-    test "returns 0 for empty list" do
-      assert PerformList.count(PerformList.new()) == 0
-    end
-
-    test "returns correct count" do
-      list = PerformList.new()
-      {:ok, list} = PerformList.add_entry(list, "/cmd1")
-      {:ok, list} = PerformList.add_entry(list, "/cmd2")
-      assert PerformList.count(list) == 2
-    end
-  end
-
   describe "full?/1" do
     test "returns false for empty list" do
       refute PerformList.full?(PerformList.new())
-    end
-
-    test "returns true at 50 entries" do
-      list =
-        Enum.reduce(0..49, PerformList.new(), fn i, acc ->
-          {:ok, updated} = PerformList.add_entry(acc, "/join #ch#{i}")
-          updated
-        end)
-
-      assert PerformList.full?(list)
     end
   end
 

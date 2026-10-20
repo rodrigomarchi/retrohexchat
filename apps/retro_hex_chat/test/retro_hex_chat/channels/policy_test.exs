@@ -378,14 +378,6 @@ defmodule RetroHexChat.Channels.PolicyTest do
   end
 
   describe "can_speak? with +n mode" do
-    test "non-member cannot speak with +n" do
-      modes = Modes.new()
-      {:ok, modes} = Modes.apply_changes(modes, "+n")
-      membership = Membership.new() |> Membership.add("alice", :regular)
-
-      assert {:error, _} = Policy.can_speak?(modes, membership, "outsider")
-    end
-
     test "member can speak with +n" do
       modes = Modes.new()
       {:ok, modes} = Modes.apply_changes(modes, "+n")

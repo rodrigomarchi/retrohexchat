@@ -40,16 +40,6 @@ defmodule RetroHexChat.Chat.QueriesPmTest do
     test "returns error for invalid attrs" do
       assert {:error, _changeset} = Queries.insert_private_message(%{})
     end
-
-    test "defaults type to message" do
-      attrs = %{
-        sender_nickname: "Alice",
-        recipient_nickname: "Bob",
-        content: "Hi!"
-      }
-
-      assert {:ok, %PrivateMessage{type: "message"}} = Queries.insert_private_message(attrs)
-    end
   end
 
   describe "list_private_messages/2" do

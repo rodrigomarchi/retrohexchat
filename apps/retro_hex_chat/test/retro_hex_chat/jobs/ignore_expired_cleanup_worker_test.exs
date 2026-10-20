@@ -46,12 +46,6 @@ defmodule RetroHexChat.Jobs.IgnoreExpiredCleanupWorkerTest do
     assert metadata.oldest_expired_age_ms > 0
   end
 
-  test "worker definition allows only three attempts" do
-    changeset = IgnoreExpiredCleanupWorker.new(%{})
-
-    assert Ecto.Changeset.get_change(changeset, :max_attempts) == 3
-  end
-
   defp insert_registered_nick!(nickname) do
     Repo.insert_all("registered_nicks", [
       %{

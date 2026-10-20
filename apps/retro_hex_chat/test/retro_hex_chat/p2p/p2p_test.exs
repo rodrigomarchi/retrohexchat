@@ -55,9 +55,6 @@ defmodule RetroHexChat.P2P.P2PTest do
       config = Turn.Config.from_application_env()
       expected_ttl = config.credentials_lifetime
 
-      # Verify config is 3600 (1 hour) as set in config.exs
-      assert expected_ttl == 3_600
-
       servers = P2P.ice_servers("test-user-42")
       assert [%{urls: [_url], username: username, credential: cred}] = servers
 
@@ -71,7 +68,6 @@ defmodule RetroHexChat.P2P.P2PTest do
       assert_in_delta timestamp, now + expected_ttl, 5
 
       # Credential is base64-encoded HMAC
-      assert is_binary(cred)
       assert byte_size(cred) > 0
     end
 

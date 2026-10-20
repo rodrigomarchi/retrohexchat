@@ -43,14 +43,12 @@ defmodule RetroHexChat.Accounts.ServerRolesTest do
 
   describe "admin_list/0" do
     test "returns configured admin list" do
-      assert is_list(ServerRoles.admin_list())
       assert "TestAdmin" in ServerRoles.admin_list()
     end
   end
 
   describe "server_operator_list/0" do
     test "returns configured operator list" do
-      assert is_list(ServerRoles.server_operator_list())
       assert "TestOper" in ServerRoles.server_operator_list()
     end
   end

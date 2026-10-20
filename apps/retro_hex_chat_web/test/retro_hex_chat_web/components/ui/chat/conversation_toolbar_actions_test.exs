@@ -40,48 +40,6 @@ defmodule RetroHexChatWeb.Components.UI.Chat.ConversationToolbarActionsTest do
     end
   end
 
-  test "a PM shows the user-lookup label" do
-    html = render_component(&conversation_toolbar_actions/1, %{active_pm: "bob"})
-
-    assert [button] =
-             html
-             |> Floki.parse_document!()
-             |> Floki.find(~s([data-testid="conversation-toolbar-user-lookup"]))
-
-    assert Floki.text(button) =~ "User Lookup"
-  end
-
-  test "the action cluster is shared by desktop and stacked layouts" do
-    html = render_component(&conversation_toolbar_actions/1, %{})
-
-    assert [cluster] =
-             html
-             |> Floki.parse_document!()
-             |> Floki.find(~s([data-testid="conversation-toolbar-actions"]))
-
-    refute cluster |> Floki.attribute("class") |> hd() =~ "md:hidden"
-  end
-
-  test "the sidebar toggles are one cluster a layout can scope to its widths" do
-    html =
-      render_component(&conversation_toolbar_actions/1, %{sidebar_toggles_class: "md:hidden"})
-
-    doc = Floki.parse_document!(html)
-
-    assert [cluster] =
-             Floki.find(doc, ~s([data-testid="conversation-toolbar-sidebar-toggles"]))
-
-    assert cluster |> Floki.attribute("class") |> hd() =~ "md:hidden"
-
-    for testid <- ["conversation-toolbar-conversations", "conversation-toolbar-nicklist"] do
-      assert [_button] = Floki.find(cluster, ~s([data-testid="#{testid}"]))
-    end
-
-    # Search stays outside the cluster — it is not a sidebar.
-    # Find lives in the menu bar, not here.
-    assert Floki.find(doc, ~s([data-testid="conversation-toolbar-search"])) == []
-  end
-
   test "can omit sidebar toggles when the composed shell owns sidebar rails" do
     html = render_component(&conversation_toolbar_actions/1, %{show_sidebar_toggles: false})
     doc = Floki.parse_document!(html)

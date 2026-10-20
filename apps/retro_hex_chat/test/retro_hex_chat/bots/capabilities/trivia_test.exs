@@ -17,25 +17,6 @@ defmodule RetroHexChat.Bots.Capabilities.TriviaTest do
     capability_state: Trivia.init_state(@default_config)
   }
 
-  describe "name/0" do
-    test "returns :trivia" do
-      assert Trivia.name() == :trivia
-    end
-  end
-
-  describe "description/0" do
-    test "does not say Coming soon" do
-      refute Trivia.description() =~ "Coming soon"
-    end
-  end
-
-  describe "init_state/1" do
-    test "initializes with empty active_games" do
-      state = Trivia.init_state(@default_config)
-      assert state.active_games == %{}
-    end
-  end
-
   describe "trivia start" do
     test "starts a trivia round" do
       result = Trivia.handle_message("!QuizBot trivia start", "user1", @ctx)
@@ -204,11 +185,6 @@ defmodule RetroHexChat.Bots.Capabilities.TriviaTest do
     test "returns questions for valid category" do
       questions = QuestionBank.random_questions("general", 5)
       assert length(questions) == 5
-    end
-
-    test "returns limited questions" do
-      questions = QuestionBank.random_questions("general", 2)
-      assert length(questions) == 2
     end
 
     test "falls back to general for unknown category" do

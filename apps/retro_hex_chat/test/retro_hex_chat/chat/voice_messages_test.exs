@@ -15,12 +15,6 @@ defmodule RetroHexChat.Chat.VoiceMessagesTest do
   @moduletag :unit
 
   describe "content_type?/1" do
-    test "accepts the containers a browser records into" do
-      for content_type <- VoiceMessages.content_types() do
-        assert VoiceMessages.content_type?(content_type)
-      end
-    end
-
     test "reads the codec parameter off the type it was given" do
       assert VoiceMessages.content_type?("audio/webm;codecs=opus")
       assert VoiceMessages.content_type?("AUDIO/WEBM")

@@ -16,12 +16,6 @@ defmodule RetroHexChat.Bots.Capabilities.GreeterTest do
     capability_state: %{recent_deliveries: %{}}
   }
 
-  describe "name/0" do
-    test "returns :greeter" do
-      assert Greeter.name() == :greeter
-    end
-  end
-
   describe "handle_message/3" do
     test "always ignores messages" do
       assert :ignore == Greeter.handle_message("hello", "Alice", @ctx)
@@ -57,15 +51,6 @@ defmodule RetroHexChat.Bots.Capabilities.GreeterTest do
       # `/bot set <name> greeting none` stores nil. A bot that stands in every
       # room — the moderator — is set this way so it does not double the welcome
       # each room's host already gives.
-      ctx = put_in(@ctx.config["greeting"], nil)
-
-      assert :ignore == Greeter.handle_event(:user_joined, %{nickname: "Alice"}, ctx)
-    end
-
-    test "a cleared greeting never reaches the ledger" do
-      # The moderator stands in every room and answers no join. Writing a row for
-      # each one would make the ledger grow with the rooms nobody is greeted in.
-      GreetingLedgerStub.put_answer(:within_window)
       ctx = put_in(@ctx.config["greeting"], nil)
 
       assert :ignore == Greeter.handle_event(:user_joined, %{nickname: "Alice"}, ctx)

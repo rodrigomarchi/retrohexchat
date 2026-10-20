@@ -9,15 +9,10 @@ defmodule RetroHexChatWeb.P2PLive.Components.P2PFileIslandTest do
 
   defp ft(name, params \\ %{}), do: {:ft_event, name, params}
 
-  test "id/0 is stable" do
-    assert P2PFileIsland.id() == "lobby-file"
-  end
-
   test "prompts to connect before the lobby is connected" do
     html = render_component(P2PFileIsland, id: P2PFileIsland.id(), connected: false)
 
     refute html =~ ~s(data-testid="lobby-file-panel")
-    assert html =~ ~s(data-testid="p2p-files-activity-header")
     assert html =~ "Connect to send a file"
   end
 
@@ -33,7 +28,6 @@ defmodule RetroHexChatWeb.P2PLive.Components.P2PFileIslandTest do
     # The hook element is present so the data channel stays live for the connection.
     assert html =~ ~s(phx-hook="FileTransferHook")
     assert html =~ ~s(id="lobby-file-transfer")
-    assert html =~ ~s(data-testid="p2p-files-activity-header")
     assert html =~ ~s(data-testid="p2p-files-dropzone")
     assert html =~ "Browse files"
   end

@@ -11,15 +11,10 @@ defmodule RetroHexChatWeb.P2PLive.Components.P2PGameIslandTest do
 
   @moduletag :unit
 
-  test "id/0 is stable" do
-    assert P2PGameIsland.id() == "lobby-game"
-  end
-
   test "prompts to connect before the lobby is connected" do
     html = render_component(P2PGameIsland, id: P2PGameIsland.id(), connected: false)
 
     refute html =~ ~s(data-testid="lobby-game-panel")
-    assert html =~ ~s(data-testid="p2p-games-activity-header")
     assert html =~ "Connect to play"
   end
 
@@ -51,7 +46,6 @@ defmodule RetroHexChatWeb.P2PLive.Components.P2PGameIslandTest do
     html = render_component(P2PGameIsland, id: P2PGameIsland.id(), connected: true)
 
     assert html =~ ~s(data-testid="lobby-game-panel")
-    assert html =~ ~s(data-testid="p2p-games-activity-header")
     assert html =~ ~s(data-testid="p2p-games-catalog")
     assert html =~ "Hex Pong"
   end

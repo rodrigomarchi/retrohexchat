@@ -17,32 +17,6 @@ defmodule RetroHexChat.Chat.FloodProtectionTest do
     end
   end
 
-  describe "getters" do
-    setup do
-      %{settings: FloodProtection.new()}
-    end
-
-    test "get_flood_threshold/1", %{settings: s} do
-      assert FloodProtection.get_flood_threshold(s) == 10
-    end
-
-    test "get_flood_window_seconds/1", %{settings: s} do
-      assert FloodProtection.get_flood_window_seconds(s) == 15
-    end
-
-    test "get_auto_ignore_duration_seconds/1", %{settings: s} do
-      assert FloodProtection.get_auto_ignore_duration_seconds(s) == 300
-    end
-
-    test "get_spam_threshold/1", %{settings: s} do
-      assert FloodProtection.get_spam_threshold(s) == 3
-    end
-
-    test "get_spam_window_seconds/1", %{settings: s} do
-      assert FloodProtection.get_spam_window_seconds(s) == 10
-    end
-  end
-
   describe "setters" do
     setup do
       %{settings: FloodProtection.new()}

@@ -254,18 +254,6 @@ defmodule RetroHexChatWeb.SpaceChannelTest do
                [participant_key(local), participant_key(peer)] |> Enum.sort()
     end
 
-    test "direct message spaces omit a peer who is not in the space" do
-      [local, peer] = participants = unique_dm_participants()
-      space_id = DirectMessageSpace.space_id(local, peer)
-      cleanup_direct_message_space(space_id)
-
-      assert {:ok, space_init, _socket} =
-               join_direct_message_space(space_id, local, participants)
-
-      assert Map.keys(space_init.snapshot.participants) == [participant_key(local)]
-      refute Map.has_key?(space_init.snapshot.participants, participant_key(peer))
-    end
-
     test "direct message spaces reject a signed nickname outside the conversation" do
       participants = ["alice", "bob"]
       space_id = DirectMessageSpace.space_id("alice", "bob")

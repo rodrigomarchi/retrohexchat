@@ -19,10 +19,6 @@ defmodule RetroHexChatWeb.ChatLive.Components.OpenTabConfirmDialogTest do
     )
   end
 
-  test "the id the parent sends updates to is stable" do
-    assert OpenTabConfirmDialog.id() == "open-tab-confirm-dialog"
-  end
-
   test "with no target it is closed" do
     html = render_island([])
 

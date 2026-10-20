@@ -23,12 +23,6 @@ defmodule RetroHexChat.Bots.Capabilities.CustomCommandsTest do
     config: %{"commands" => @commands}
   }
 
-  describe "name/0" do
-    test "returns :custom_commands" do
-      assert CustomCommands.name() == :custom_commands
-    end
-  end
-
   describe "handle_message/3" do
     test "responds to valid command" do
       assert {:reply, "Please read #rules"} =
@@ -82,11 +76,6 @@ defmodule RetroHexChat.Bots.Capabilities.CustomCommandsTest do
 
     test "ignores unknown short trigger" do
       assert :ignore == CustomCommands.handle_message("!unknown", "Alice", @ctx)
-    end
-
-    test "long format still works alongside short format" do
-      assert {:reply, "Please read #rules"} =
-               CustomCommands.handle_message("!HelpBot rules", "Alice", @ctx)
     end
   end
 

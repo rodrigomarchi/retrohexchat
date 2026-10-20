@@ -29,8 +29,6 @@ defmodule RetroHexChat.GroupCall.ScaleInspectionTest do
     assert %{generated_at: %DateTime{}, participant_results: [small, larger]} = report
     assert small.fanout.route_count == 12
     assert small.fanout.route_count == small.fanout.expected_route_count
-    assert small.fanout.build_time_us >= 0
-    assert small.fanout.reductions >= 0
 
     assert larger.fanout.route_count == 180
     assert larger.fanout.route_count == larger.fanout.expected_route_count
@@ -68,10 +66,7 @@ defmodule RetroHexChat.GroupCall.ScaleInspectionTest do
     assert sample
     assert sample.pid == inspect(self())
     assert sample.memory_bytes > 0
-    assert sample.message_queue_len >= 0
-    assert sample.reductions >= 0
     assert sample.heap_size > 0
     assert sample.total_heap_size >= sample.heap_size
-    assert sample.stack_size >= 0
   end
 end

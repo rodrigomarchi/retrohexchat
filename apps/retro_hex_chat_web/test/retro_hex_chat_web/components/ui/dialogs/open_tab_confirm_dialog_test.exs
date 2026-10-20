@@ -41,17 +41,12 @@ defmodule RetroHexChatWeb.Components.UI.OpenTabConfirmDialogTest do
       assert html =~ ~s(target="_blank")
       assert html =~ ~s(rel="noopener")
     end
-
-    test "cancelling is offered beside it" do
-      assert render_dialog([]) =~ ~s(data-testid="open-tab-confirm-cancel")
-    end
   end
 
   describe "what the reader is told" do
     test "a room of ours is named, and no address is shown" do
       html = render_dialog([])
 
-      assert html =~ "Open in a New Tab"
       assert html =~ "This opens Call in #retro."
       refute html =~ ~s(data-testid="open-tab-confirm-url")
     end

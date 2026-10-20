@@ -33,12 +33,4 @@ defmodule RetroHexChat.Commands.Handlers.QueryTest do
       assert {:error, _} = Query.execute([], @base_context)
     end
   end
-
-  describe "help/0" do
-    test "returns help map" do
-      help = Query.help()
-      assert help.name == "query"
-      assert is_binary(help.syntax)
-    end
-  end
 end

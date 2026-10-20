@@ -51,7 +51,6 @@ defmodule RetroHexChatWeb.Components.UI.P2PConnectionDiagramTest do
       })
 
     refute html =~ @emoji_regression
-    assert html =~ ~s(class="p2p-diagram__whois-svg")
     assert html =~ "Video Call"
   end
 

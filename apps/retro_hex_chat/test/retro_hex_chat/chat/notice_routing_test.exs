@@ -17,12 +17,6 @@ defmodule RetroHexChat.Chat.NoticeRoutingTest do
       settings = %{routing: :status}
       assert NoticeRouting.get_routing(settings) == :status
     end
-
-    @tag :unit
-    test "returns :active for default settings" do
-      settings = NoticeRouting.new()
-      assert NoticeRouting.get_routing(settings) == :active
-    end
   end
 
   describe "set_routing/2" do

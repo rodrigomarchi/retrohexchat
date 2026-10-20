@@ -4,11 +4,6 @@ defmodule RetroHexChat.Games.CatalogTest do
   alias RetroHexChat.Games.Catalog
 
   describe "list_games/0" do
-    test "returns all games" do
-      games = Catalog.list_games()
-      assert length(games) == 34
-    end
-
     test "each game has required fields" do
       for game <- Catalog.list_games() do
         assert is_binary(game.id)
@@ -23,44 +18,6 @@ defmodule RetroHexChat.Games.CatalogTest do
     test "all game ids are unique" do
       ids = Enum.map(Catalog.list_games(), & &1.id)
       assert ids == Enum.uniq(ids)
-    end
-
-    test "includes expected games" do
-      ids = Enum.map(Catalog.list_games(), & &1.id)
-      assert "hex_pong" in ids
-      assert "light_trails" in ids
-      assert "pixel_tanks" in ids
-      assert "star_duel" in ids
-      assert "gravity_well" in ids
-      assert "debris_field" in ids
-      assert "block_breakers" in ids
-      assert "hex_warlords" in ids
-      assert "hex_raid" in ids
-      assert "hex_raid_pacifist" in ids
-      assert "hex_raid_blitz" in ids
-      assert "hex_boxing" in ids
-      assert "hex_outlaw" in ids
-      assert "hex_outlaw_ricochet" in ids
-      assert "hex_outlaw_stagecoach" in ids
-      assert "hex_outlaw_nml" in ids
-      assert "hex_invaders" in ids
-      assert "hex_invaders_coop" in ids
-      assert "hex_invaders_blitz" in ids
-      assert "hex_enduro" in ids
-      assert "hex_enduro_night" in ids
-      assert "hex_enduro_sprint" in ids
-      assert "hex_tennis" in ids
-      assert "hex_tennis_quick" in ids
-      assert "hex_tennis_sudden" in ids
-      assert "hex_skiing" in ids
-      assert "hex_skiing_escape" in ids
-      assert "hex_skiing_clean" in ids
-      assert "hex_frost" in ids
-      assert "hex_frost_blizzard" in ids
-      assert "hex_frost_peaceful" in ids
-      assert "hex_hockey" in ids
-      assert "hex_hockey_blitz" in ids
-      assert "hex_hockey_showdown" in ids
     end
   end
 

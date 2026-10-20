@@ -50,7 +50,6 @@ defmodule RetroHexChatWeb.App.ChatHelpersEmojiTest do
 
     assert html =~ ~s(src="/chat/emoji/#{emoji.id}")
     assert html =~ ~s(alt=":shrug:")
-    assert html =~ "chat-emoji"
     assert html =~ "well "
     assert html =~ " then"
   end

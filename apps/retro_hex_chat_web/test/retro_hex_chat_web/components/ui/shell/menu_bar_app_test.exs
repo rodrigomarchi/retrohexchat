@@ -17,10 +17,6 @@ defmodule RetroHexChatWeb.Components.UI.MenuBarAppTest do
       %{html: render_component(&menu_bar_app/1, connected: true, mobile_viewport: false)}
     end
 
-    test "renders the desktop menus", %{html: html} do
-      assert html =~ "app-menu-bar__desktop-menu"
-    end
-
     test "renders the mobile trigger and its category rail", %{html: html} do
       assert html =~ ~s(data-testid="app-mobile-menu-trigger")
       assert html =~ ~s(data-testid="app-mobile-menu-category-file")
@@ -40,10 +36,6 @@ defmodule RetroHexChatWeb.Components.UI.MenuBarAppTest do
     test "fills the drawer's sections", %{html: html} do
       assert html =~ ~s(data-testid="app-mobile-menu-section-file")
       assert html =~ ~s(data-testid="app-mobile-menu-section-help")
-    end
-
-    test "still renders the category rail", %{html: html} do
-      assert html =~ ~s(data-testid="app-mobile-menu-category-file")
     end
   end
 

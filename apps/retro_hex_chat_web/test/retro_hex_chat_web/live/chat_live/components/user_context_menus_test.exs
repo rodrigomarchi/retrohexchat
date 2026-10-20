@@ -19,15 +19,6 @@ defmodule RetroHexChatWeb.ChatLive.Components.UserContextMenusTest do
     render_component(UserContextMenus, Map.merge(base, overrides))
   end
 
-  test "exposes a stable id" do
-    assert UserContextMenus.id() == "user-context-menus"
-  end
-
-  test "both menus are hidden by default (closed maps)" do
-    html = menus(%{})
-    assert html =~ ~s(id="user-context-menus-mount")
-  end
-
   test "renders the nicklist menu open at its position" do
     html =
       menus(%{

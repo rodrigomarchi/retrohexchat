@@ -24,14 +24,6 @@ defmodule RetroHexChat.Chat.IgnoreListPersistenceTest do
   end
 
   describe "save/2" do
-    test "saves ignore list entries to database" do
-      list = IgnoreList.new()
-      {:ok, list} = IgnoreList.add_entry(list, "SpamBot", :all, nil)
-      {:ok, list} = IgnoreList.add_entry(list, "Troll", :pms, nil)
-
-      assert :ok = IgnoreList.save(@owner, list)
-    end
-
     test "replaces all entries on save (delete-then-reinsert)" do
       list = IgnoreList.new()
       {:ok, list} = IgnoreList.add_entry(list, "SpamBot", :all, nil)

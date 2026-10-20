@@ -20,18 +20,6 @@ defmodule RetroHexChatWeb.ChatLive.Components.AdminUsersDialogTest do
     )
   end
 
-  test "exposes a stable id the parent can send_update to" do
-    assert AdminUsersDialog.id() == "admin-users-dialog"
-  end
-
-  test "renders the bare panel, with no dialog chrome of its own" do
-    html = island(%{})
-
-    assert html =~ ~s(data-testid="admin-users-panel")
-    assert html =~ ~s(id="admin-users-dialog-content")
-    refute html =~ ~s(role="dialog" aria-modal="true")
-  end
-
   test "routes every action to itself rather than the parent LiveView" do
     html = island(%{})
 

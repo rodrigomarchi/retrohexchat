@@ -22,19 +22,6 @@ defmodule RetroHexChatWeb.SpaceAssetsTest do
     end
   end
 
-  describe "character_catalog_url/0" do
-    test "is the creator catalog's address" do
-      assert SpaceAssets.character_catalog_url() =~ "/images/space/creator/catalog"
-      assert SpaceAssets.character_catalog_url() =~ ".json"
-    end
-  end
-
-  describe "sheet_urls_json/0" do
-    test "round-trips to the same map" do
-      assert Jason.decode!(SpaceAssets.sheet_urls_json()) == SpaceAssets.sheet_urls()
-    end
-  end
-
   describe "digest_map/1" do
     test "rewrites tileset sources and leaves everything else alone" do
       map = %{

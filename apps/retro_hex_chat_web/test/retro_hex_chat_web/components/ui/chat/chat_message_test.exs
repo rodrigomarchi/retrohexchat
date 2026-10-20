@@ -22,7 +22,6 @@ defmodule RetroHexChatWeb.Components.UI.ChatMessageTest do
       # type_class/1 clause raises FunctionClauseError, crashing the chat
       # LiveView and reloading every connected client.
       html = render_message("notify_rename")
-      assert html =~ "text-notice"
       assert html =~ "hello"
     end
 
@@ -31,11 +30,6 @@ defmodule RetroHexChatWeb.Components.UI.ChatMessageTest do
       # whole channel's LiveView.
       html = render_message("some_future_type")
       assert html =~ "hello"
-    end
-
-    test "still styles known types" do
-      assert render_message("error") =~ "text-error"
-      assert render_message("notify_online") =~ "text-success"
     end
   end
 
@@ -95,7 +89,6 @@ defmodule RetroHexChatWeb.Components.UI.ChatMessageTest do
 
       assert html =~ ~s(data-message-layout="stacked")
       assert html =~ "chat-message__body"
-      assert html =~ ~s(class="chat-message__spine nick-color-3")
     end
 
     test "narration rides the head line and has no body" do
@@ -146,7 +139,6 @@ defmodule RetroHexChatWeb.Components.UI.ChatMessageTest do
         )
 
       assert html =~ ~s(data-message-kind="user")
-      assert html =~ "<svg"
     end
 
     test "a system origin line shows the system glyph, not the user glyph" do

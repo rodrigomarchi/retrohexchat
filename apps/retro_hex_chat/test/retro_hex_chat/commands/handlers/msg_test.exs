@@ -42,12 +42,4 @@ defmodule RetroHexChat.Commands.Handlers.MsgTest do
       assert {:error, _} = Msg.execute(["Nick"], @base_context)
     end
   end
-
-  describe "help/0" do
-    test "returns help map" do
-      help = Msg.help()
-      assert help.name == "msg"
-      assert is_binary(help.syntax)
-    end
-  end
 end

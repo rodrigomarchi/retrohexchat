@@ -101,15 +101,6 @@ defmodule RetroHexChat.Commands.Handlers.ServerProvisionTest do
              inspect(%{missing: locales -- present, extra: present -- locales})
   end
 
-  test "the English base keeps its shape" do
-    {_body, _lines, parsed} = read(@base)
-    channels = for ["join", chan | _] <- parsed, uniq: true, do: String.downcase(chan)
-    bots = for ["bot", "create", name | _] <- parsed, uniq: true, do: name
-
-    assert length(channels) == 12
-    assert length(bots) == 24
-  end
-
   test "the English narrative does not drift back to the old room count or RSS bootstrap" do
     {body, _lines, _parsed} = read(@base)
 

@@ -5,14 +5,6 @@ defmodule RetroHexChat.Chat.AliasListTest do
 
   # ── Unit Tests ──────────────────────────────────────────
 
-  describe "new/0" do
-    @tag :unit
-    test "returns empty list" do
-      list = AliasList.new()
-      assert list.entries == []
-    end
-  end
-
   describe "add_entry/3" do
     @tag :unit
     test "adds an alias" do
@@ -203,24 +195,6 @@ defmodule RetroHexChat.Chat.AliasListTest do
     test "returns nil for non-existent name" do
       list = AliasList.new()
       assert nil == AliasList.find_entry(list, "nonexistent")
-    end
-  end
-
-  describe "entries/1" do
-    @tag :unit
-    test "returns entries sorted by position" do
-      list = AliasList.new()
-      {:ok, list} = AliasList.add_entry(list, "a", "/me a")
-      {:ok, list} = AliasList.add_entry(list, "b", "/me b")
-
-      entries = AliasList.entries(list)
-      assert Enum.at(entries, 0).position == 0
-      assert Enum.at(entries, 1).position == 1
-    end
-
-    @tag :unit
-    test "returns empty list for new list" do
-      assert AliasList.entries(AliasList.new()) == []
     end
   end
 

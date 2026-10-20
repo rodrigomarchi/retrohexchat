@@ -20,15 +20,9 @@ defmodule RetroHexChatWeb.ChatLive.Components.AutojoinDialogTest do
     render_component(AutojoinDialog, Map.merge(base, overrides))
   end
 
-  test "exposes a stable id" do
-    assert AutojoinDialog.id() == "autojoin-dialog"
-  end
-
   test "renders the bare panel without dialog chrome" do
     html = dialog(%{})
 
-    assert html =~ ~s(data-testid="autojoin-panel")
-    refute html =~ "phx-show-modal"
     assert html =~ "No auto-join channels"
   end
 

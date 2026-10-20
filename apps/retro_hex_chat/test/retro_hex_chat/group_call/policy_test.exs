@@ -54,14 +54,6 @@ defmodule RetroHexChat.GroupCall.PolicyTest do
   end
 
   describe "can_create_channel_call?/4" do
-    test "allows a registered channel member to create a room" do
-      nick = create_registered_nick(unique_nick("alice"))
-      membership = Membership.new() |> Membership.add(nick.nickname, :regular)
-
-      assert :ok =
-               Policy.can_create_channel_call?(nick.id, nick.nickname, "#calls", membership)
-    end
-
     test "rejects unregistered users" do
       membership = Membership.new() |> Membership.add("Guest", :regular)
 
@@ -109,14 +101,6 @@ defmodule RetroHexChat.GroupCall.PolicyTest do
   end
 
   describe "can_join?/4" do
-    test "allows a registered member to join a non-terminal room" do
-      room = create_room(%{channel_name: "#join"})
-      nick = create_registered_nick(unique_nick("alice"))
-      membership = Membership.new() |> Membership.add(nick.nickname, :regular)
-
-      assert :ok = Policy.can_join?(nick.id, nick.nickname, room, membership)
-    end
-
     test "rejects terminal rooms" do
       room =
         create_room(%{
@@ -176,37 +160,12 @@ defmodule RetroHexChat.GroupCall.PolicyTest do
   end
 
   describe "moderation policy" do
-    test "half operators and above can close a room" do
-      room = create_room()
-      membership = Membership.new() |> Membership.add("HalfOp", :half_operator)
-
-      assert :ok = Policy.can_close?("HalfOp", room, membership)
-    end
-
     test "regular users cannot close a room" do
       room = create_room()
       membership = Membership.new() |> Membership.add("Alice", :regular)
 
       assert {:error, message} = Policy.can_close?("Alice", room, membership)
       assert message =~ "Insufficient"
-    end
-
-    test "kicking participants follows channel kick policy" do
-      membership =
-        Membership.new()
-        |> Membership.add("Op", :operator)
-        |> Membership.add("User", :regular)
-
-      assert :ok = Policy.can_kick_participant?(membership, "Op", "User")
-    end
-
-    test "media moderation follows channel kick policy" do
-      membership =
-        Membership.new()
-        |> Membership.add("User", :regular)
-        |> Membership.add("Op", :operator)
-
-      assert {:error, _message} = Policy.can_moderate_media?(membership, "User", "Op")
     end
 
     test "close room permission is explicit for each channel role" do

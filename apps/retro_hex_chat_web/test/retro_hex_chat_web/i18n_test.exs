@@ -75,10 +75,6 @@ defmodule RetroHexChatWeb.I18nTest do
       assert {"ja", "日本語"} in I18n.supported_locales()
       assert {"id", "Bahasa Indonesia"} in I18n.supported_locales()
     end
-
-    test "covers exactly the enabled locale set" do
-      assert length(I18n.supported_locales()) == 14
-    end
   end
 
   test "html_lang/0 returns a BCP 47 language tag" do

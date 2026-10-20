@@ -32,12 +32,6 @@ defmodule RetroHexChat.Chat.UnreadTrackerTest do
       assert UnreadTracker.get_count(counts, "#general") == 2
       assert UnreadTracker.get_count(counts, "#random") == 1
     end
-
-    @tag :unit
-    test "works with PM keys" do
-      counts = UnreadTracker.increment(%{}, "pm:bob")
-      assert UnreadTracker.get_count(counts, "pm:bob") == 1
-    end
   end
 
   describe "reset/2" do
@@ -63,16 +57,6 @@ defmodule RetroHexChat.Chat.UnreadTrackerTest do
     @tag :unit
     test "returns 0 for non-existent key" do
       assert UnreadTracker.get_count(%{}, "#general") == 0
-    end
-
-    @tag :unit
-    test "returns the current count" do
-      counts =
-        %{}
-        |> UnreadTracker.increment("#general")
-        |> UnreadTracker.increment("#general")
-
-      assert UnreadTracker.get_count(counts, "#general") == 2
     end
   end
 

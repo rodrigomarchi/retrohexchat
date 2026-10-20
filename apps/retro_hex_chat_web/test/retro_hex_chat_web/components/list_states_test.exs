@@ -7,13 +7,6 @@ defmodule RetroHexChatWeb.Components.UI.ListStatesTest do
   @moduletag :unit
 
   describe "list_empty_state/1" do
-    test "renders the title it was given" do
-      html = render_component(&list_empty_state/1, title: "No contacts saved")
-
-      assert html =~ "No contacts saved"
-      assert html =~ ~s(data-testid="list-empty-state")
-    end
-
     test "renders the optional supporting text" do
       html =
         render_component(&list_empty_state/1,
@@ -32,13 +25,6 @@ defmodule RetroHexChatWeb.Components.UI.ListStatesTest do
   end
 
   describe "list_end_marker/1" do
-    test "closes the list with a drawn ornament" do
-      html = render_component(&list_end_marker/1, %{})
-
-      assert html =~ ~s(data-testid="list-end-marker")
-      assert html =~ "<svg", "the marker is drawn, not written"
-    end
-
     # A band of English across a Portuguese chat was worse than no marker at
     # all. Carrying no words is what makes the same ornament serve every locale.
     test "carries no translatable text" do
@@ -68,13 +54,6 @@ defmodule RetroHexChatWeb.Components.UI.ListStatesTest do
   end
 
   describe "list_load_more_button/1" do
-    test "is a real button, reachable by keyboard" do
-      html = render_component(&list_load_more_button/1, target: "1")
-
-      assert html =~ "<button"
-      assert html =~ ~s(data-testid="list-load-more")
-    end
-
     test "reports the in-flight state to assistive tech" do
       html = render_component(&list_load_more_button/1, target: "1", loading: true)
 

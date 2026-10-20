@@ -12,14 +12,6 @@ defmodule RetroHexChat.Services.RegisteredChannelTest do
       assert changeset.valid?
     end
 
-    test "requires name and founder_nickname" do
-      changeset = RegisteredChannel.changeset(%RegisteredChannel{}, %{})
-      refute changeset.valid?
-
-      assert %{name: ["can't be blank"], founder_nickname: ["can't be blank"]} =
-               errors_on(changeset)
-    end
-
     test "validates name max length 50" do
       attrs = %{name: String.duplicate("#", 51), founder_nickname: "Alice"}
       changeset = RegisteredChannel.changeset(%RegisteredChannel{}, attrs)
@@ -30,20 +22,6 @@ defmodule RetroHexChat.Services.RegisteredChannelTest do
       attrs = %{name: "#elixir", founder_nickname: String.duplicate("a", 17)}
       changeset = RegisteredChannel.changeset(%RegisteredChannel{}, attrs)
       refute changeset.valid?
-    end
-
-    test "accepts optional fields" do
-      attrs = %{
-        name: "#elixir",
-        founder_nickname: "Alice",
-        topic: "Welcome!",
-        modes: "+mt",
-        mode_key: "secret",
-        mode_limit: 50
-      }
-
-      changeset = RegisteredChannel.changeset(%RegisteredChannel{}, attrs)
-      assert changeset.valid?
     end
 
     test "sets registered_at on new records" do

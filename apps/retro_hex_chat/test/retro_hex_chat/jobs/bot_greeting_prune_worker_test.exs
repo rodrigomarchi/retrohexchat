@@ -54,12 +54,6 @@ defmodule RetroHexChat.Jobs.BotGreetingPruneWorkerTest do
     assert :first_time == Queries.record_greeting(bot.id, "#lobby", "ancient", 3600)
   end
 
-  test "worker definition allows only three attempts" do
-    changeset = BotGreetingPruneWorker.new(%{})
-
-    assert Ecto.Changeset.get_change(changeset, :max_attempts) == 3
-  end
-
   defp attach_telemetry(event) do
     test_pid = self()
     handler_id = {__MODULE__, make_ref()}

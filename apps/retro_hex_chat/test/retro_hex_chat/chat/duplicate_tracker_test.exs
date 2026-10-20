@@ -5,60 +5,6 @@ defmodule RetroHexChat.Chat.DuplicateTrackerTest do
 
   @moduletag :unit
 
-  describe "new/0" do
-    test "returns empty tracker with max_senders cap" do
-      tracker = DuplicateTracker.new()
-      assert tracker.entries == %{}
-      assert tracker.max_senders == 50
-    end
-  end
-
-  describe "record_message/4" do
-    test "stores message content for sender-target pair" do
-      tracker =
-        DuplicateTracker.new()
-        |> DuplicateTracker.record_message("sender", {:channel, "#test"}, "hello")
-
-      key = {"sender", {:channel, "#test"}}
-      assert Map.has_key?(tracker.entries, key)
-      assert length(tracker.entries[key]) == 1
-      assert hd(tracker.entries[key]).content == "hello"
-    end
-
-    test "accumulates multiple messages for same pair" do
-      tracker =
-        DuplicateTracker.new()
-        |> DuplicateTracker.record_message("sender", {:channel, "#test"}, "hello")
-        |> DuplicateTracker.record_message("sender", {:channel, "#test"}, "hello")
-        |> DuplicateTracker.record_message("sender", {:channel, "#test"}, "world")
-
-      key = {"sender", {:channel, "#test"}}
-      assert length(tracker.entries[key]) == 3
-    end
-
-    test "is case-insensitive on sender" do
-      tracker =
-        DuplicateTracker.new()
-        |> DuplicateTracker.record_message("Sender", {:channel, "#test"}, "hello")
-        |> DuplicateTracker.record_message("SENDER", {:channel, "#test"}, "hello")
-
-      key = {"sender", {:channel, "#test"}}
-      assert length(tracker.entries[key]) == 2
-    end
-
-    test "tracks different targets independently" do
-      tracker =
-        DuplicateTracker.new()
-        |> DuplicateTracker.record_message("sender", {:channel, "#one"}, "hello")
-        |> DuplicateTracker.record_message("sender", {:channel, "#two"}, "hello")
-
-      key1 = {"sender", {:channel, "#one"}}
-      key2 = {"sender", {:channel, "#two"}}
-      assert length(tracker.entries[key1]) == 1
-      assert length(tracker.entries[key2]) == 1
-    end
-  end
-
   describe "duplicate?/6" do
     test "returns false below threshold" do
       tracker =

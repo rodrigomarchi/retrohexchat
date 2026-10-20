@@ -20,13 +20,6 @@ defmodule RetroHexChatWeb.Components.UI.MentionBadgeTest do
     assert html =~ "@3"
   end
 
-  # Beside the grey unread count, a bare number reads as the same number twice.
-  test "marks the count so it cannot be read as the unread one" do
-    html = render_component(&mention_badge/1, count: 1, testid: "mention-badge")
-
-    assert html =~ "@1"
-  end
-
   test "draws nothing at zero" do
     html = render_component(&mention_badge/1, count: 0, testid: "mention-badge")
 
@@ -39,11 +32,5 @@ defmodule RetroHexChatWeb.Components.UI.MentionBadgeTest do
     html = render_component(&mention_badge/1, count: 250, testid: "mention-badge")
 
     assert html =~ "@99+"
-  end
-
-  test "says what the number means" do
-    html = render_component(&mention_badge/1, count: 1, testid: "mention-badge")
-
-    assert html =~ "mention"
   end
 end

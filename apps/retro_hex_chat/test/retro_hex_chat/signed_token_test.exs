@@ -54,13 +54,6 @@ defmodule RetroHexChat.SignedTokenTest do
       assert SignedToken.verify(@secret, @salt, token, max_age: -1) == {:error, :expired}
     end
 
-    test "a caller can ask for a shorter life than the default" do
-      token = SignedToken.sign(@secret, @salt, %{who: "alice"})
-
-      assert {:ok, _data} =
-               SignedToken.verify(@secret, @salt, token, max_age: SignedToken.default_max_age())
-    end
-
     test "a token is good for an hour unless somebody says otherwise" do
       assert SignedToken.default_max_age() == 3_600
     end

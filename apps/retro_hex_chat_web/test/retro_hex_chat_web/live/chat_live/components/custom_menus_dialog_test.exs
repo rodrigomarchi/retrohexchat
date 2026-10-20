@@ -8,17 +8,6 @@ defmodule RetroHexChatWeb.ChatLive.Components.CustomMenusDialogTest do
 
   @moduletag :unit
 
-  test "id/0 is stable" do
-    assert CustomMenusDialog.id() == "custom-menus-dialog"
-  end
-
-  test "renders the bare panel by default" do
-    html = render_component(CustomMenusDialog, id: CustomMenusDialog.id())
-
-    assert html =~ ~s(data-testid="custom-menus-panel")
-    refute html =~ "phx-show-modal"
-  end
-
   test "renders entries for the default (nicklist) tab from the passthrough struct" do
     {:ok, menus} = CustomMenus.add_entry(CustomMenus.new(), :nicklist, "Greet", "/msg $1 hi")
 

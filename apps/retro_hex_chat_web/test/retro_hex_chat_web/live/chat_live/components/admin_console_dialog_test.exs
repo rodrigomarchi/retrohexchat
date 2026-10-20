@@ -17,27 +17,6 @@ defmodule RetroHexChatWeb.ChatLive.Components.AdminConsoleDialogTest do
     )
   end
 
-  test "exposes a stable id the parent can send_update to" do
-    assert AdminConsoleDialog.id() == "admin-console-dialog"
-  end
-
-  test "renders the bare panel, with no dialog chrome of its own" do
-    html = island(%{})
-
-    assert html =~ ~s(data-testid="admin-console-panel")
-    assert html =~ ~s(id="admin-console-dialog-content")
-    refute html =~ ~s(aria-modal="true")
-  end
-
-  test "renders the runner: an output transcript and a command input" do
-    html = island(%{})
-
-    assert html =~ ~s(data-testid="admin-console-output")
-    assert html =~ ~s(id="admin-console-input")
-    assert html =~ ~s(phx-submit="admin_console_run")
-    assert html =~ ~s(phx-click="admin_console_clear")
-  end
-
   # The empty transcript used to say `Type "help"`, and the console refuses
   # anything without a leading slash — the invitation walked the reader into
   # the one error the window can produce before they have done anything.

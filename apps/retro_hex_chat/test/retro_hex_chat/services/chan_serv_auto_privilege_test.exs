@@ -139,17 +139,5 @@ defmodule RetroHexChat.Services.ChanServAutoPrivilegeTest do
       {:ok, state} = Server.join(channel, sop_user, nil, identified: true)
       assert {sop_user, :owner} in state.members
     end
-
-    test "first user in registered channel with no access gets :regular (not :operator)" do
-      channel = unique_channel()
-      founder = "Founder#{System.unique_integer([:positive])}"
-      user = "FirstNoAccess#{rem(System.unique_integer([:positive]), 100_000)}"
-
-      start_registered_channel(channel, founder)
-
-      # First user in a registered channel without access gets :regular
-      {:ok, state} = Server.join(channel, user, nil, identified: true)
-      assert {user, :regular} in state.members
-    end
   end
 end

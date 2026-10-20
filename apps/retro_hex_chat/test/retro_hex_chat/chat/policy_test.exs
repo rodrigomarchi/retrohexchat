@@ -275,10 +275,6 @@ defmodule RetroHexChat.Chat.PolicyTest do
       {:ok, table: table}
     end
 
-    test "returns :ok for first message", %{table: table} do
-      assert :ok = Policy.check_rate_limit(table, "rate_user_1")
-    end
-
     test "returns :ok for multiple messages within limit", %{table: table} do
       assert :ok = Policy.check_rate_limit(table, "rate_user_2")
       assert :ok = Policy.check_rate_limit(table, "rate_user_2")

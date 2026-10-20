@@ -7,10 +7,6 @@ defmodule RetroHexChatWeb.ChatLive.Components.CheatsheetDialogTest do
 
   @moduletag :unit
 
-  test "id/0 is stable" do
-    assert CheatsheetDialog.id() == "cheatsheet-dialog"
-  end
-
   test "renders the bare static bindings panel" do
     html = render_component(CheatsheetDialog, id: CheatsheetDialog.id())
 

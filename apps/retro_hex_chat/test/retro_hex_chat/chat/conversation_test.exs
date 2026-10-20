@@ -20,12 +20,6 @@ defmodule RetroHexChat.Chat.ConversationTest do
 
       assert Conversation.topics(pm) == [Topics.inbox("Ada"), Topics.inbox("Grace")]
     end
-
-    test "the writer hears about their own message too" do
-      pm = %PrivateMessage{sender_nickname: "Ada", recipient_nickname: "Grace"}
-
-      assert Topics.inbox("Ada") in Conversation.topics(pm)
-    end
   end
 
   describe "address/1" do

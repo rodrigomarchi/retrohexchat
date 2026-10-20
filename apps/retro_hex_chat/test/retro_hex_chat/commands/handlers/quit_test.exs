@@ -32,19 +32,5 @@ defmodule RetroHexChat.Commands.Handlers.QuitTest do
     test "returns quit with nil when no args" do
       assert {:ok, :quit, nil} = Quit.execute([], @base_context)
     end
-
-    test "returns quit with single word reason" do
-      assert {:ok, :quit, "Bye"} = Quit.execute(["Bye"], @base_context)
-    end
-  end
-
-  describe "help/0" do
-    test "returns help map" do
-      help = Quit.help()
-      assert help.name == "quit"
-      assert is_binary(help.syntax)
-      assert is_binary(help.description)
-      assert is_list(help.examples)
-    end
   end
 end

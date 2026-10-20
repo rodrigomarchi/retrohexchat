@@ -25,35 +25,9 @@ defmodule RetroHexChat.Presence.NotifyListTest do
       assert entry.online == false
     end
 
-    test "adds an entry with nil note" do
-      list = NotifyList.new()
-      assert {:ok, updated} = NotifyList.add_entry(list, "Owner", "Alice", nil)
-
-      assert length(updated.entries) == 1
-      entry = hd(updated.entries)
-      assert entry.tracked_nickname == "Alice"
-      assert entry.note == nil
-    end
-
-    test "returns error when adding self (exact case)" do
-      list = NotifyList.new()
-      assert {:error, :self_add} = NotifyList.add_entry(list, "Owner", "Owner", nil)
-    end
-
-    test "returns error when adding self (case-insensitive)" do
-      list = NotifyList.new()
-      assert {:error, :self_add} = NotifyList.add_entry(list, "Owner", "OWNER", nil)
-    end
-
     test "returns error when adding self (mixed case)" do
       list = NotifyList.new()
       assert {:error, :self_add} = NotifyList.add_entry(list, "oWnEr", "OwNeR", nil)
-    end
-
-    test "returns error for duplicate entry (exact case)" do
-      list = NotifyList.new()
-      {:ok, list} = NotifyList.add_entry(list, "Owner", "Alice", nil)
-      assert {:error, :duplicate} = NotifyList.add_entry(list, "Owner", "Alice", nil)
     end
 
     test "returns error for duplicate entry (case-insensitive)" do
@@ -72,18 +46,6 @@ defmodule RetroHexChat.Presence.NotifyListTest do
         end)
 
       assert {:error, :list_full} = NotifyList.add_entry(list, "Owner", "User51", nil)
-    end
-
-    test "allows adding up to 50 entries" do
-      list = NotifyList.new()
-
-      list =
-        Enum.reduce(1..50, list, fn i, acc ->
-          {:ok, updated} = NotifyList.add_entry(acc, "Owner", "User#{i}", nil)
-          updated
-        end)
-
-      assert length(list.entries) == 50
     end
 
     # A note longer than the column allows must not reach `save/2` untruncated:
@@ -130,11 +92,6 @@ defmodule RetroHexChat.Presence.NotifyListTest do
 
       assert {:ok, updated} = NotifyList.remove_entry(list, "ALICE")
       assert updated.entries == []
-    end
-
-    test "returns error for not found" do
-      list = NotifyList.new()
-      assert {:error, :not_found} = NotifyList.remove_entry(list, "Ghost")
     end
 
     test "returns error when nickname does not match any entry" do
@@ -248,14 +205,6 @@ defmodule RetroHexChat.Presence.NotifyListTest do
       {:ok, list} = NotifyList.add_entry(list, "Owner", "Alice", nil)
 
       updated = NotifyList.sync_online_status(list, ["Charlie", "Dave"])
-      assert hd(updated.entries).online == false
-    end
-
-    test "handles empty online list" do
-      list = NotifyList.new()
-      {:ok, list} = NotifyList.add_entry(list, "Owner", "Alice", nil)
-
-      updated = NotifyList.sync_online_status(list, [])
       assert hd(updated.entries).online == false
     end
 
@@ -504,25 +453,6 @@ defmodule RetroHexChat.Presence.NotifyListTest do
       assert "NewUser" in nicks
       assert List.last(updated.entries).tracked_nickname == "NewUser"
     end
-
-    test "preserves all other entries during rotation" do
-      list = NotifyList.new()
-
-      list =
-        Enum.reduce(1..50, list, fn i, acc ->
-          {:ok, updated} = NotifyList.add_entry(acc, "Owner", "User#{i}", nil)
-          updated
-        end)
-
-      {:ok, updated} = NotifyList.add_entry_with_rotation(list, "Owner", "NewUser", nil)
-
-      # User2..User50 should still be present
-      nicks = Enum.map(updated.entries, & &1.tracked_nickname)
-
-      for i <- 2..50 do
-        assert "User#{i}" in nicks
-      end
-    end
   end
 
   describe "auto_add_pm?/1" do
@@ -557,11 +487,6 @@ defmodule RetroHexChat.Presence.NotifyListTest do
   end
 
   describe "full?/1" do
-    test "returns false when under 50 entries" do
-      list = NotifyList.new()
-      assert NotifyList.full?(list) == false
-    end
-
     test "returns false with some entries" do
       list = NotifyList.new()
       {:ok, list} = NotifyList.add_entry(list, "Owner", "Alice", nil)

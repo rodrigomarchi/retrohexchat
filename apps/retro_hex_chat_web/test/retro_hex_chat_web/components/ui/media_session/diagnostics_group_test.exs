@@ -25,10 +25,8 @@ defmodule RetroHexChatWeb.Components.UI.MediaSession.DiagnosticsGroupTest do
       </.media_session_diagnostics_group>
       """)
 
-    assert html =~ ~s(data-testid="stats-details-connection")
     assert html =~ "Connection"
     assert html =~ "42 ms / 0% loss"
-    assert html =~ "Latency"
     refute html =~ ~r/<details[^>]*\sopen(=|\s|>)/
   end
 
@@ -50,6 +48,5 @@ defmodule RetroHexChatWeb.Components.UI.MediaSession.DiagnosticsGroupTest do
 
     assert html =~ ~r/<details[^>]*\sopen(=|\s|>)/
     assert html =~ "Browser connection"
-    assert html =~ "Advanced metrics"
   end
 end

@@ -38,10 +38,6 @@ defmodule RetroHexChat.Chat.TimeFormatterTest do
       assert TimeFormatter.format_duration(8100) == "2 hours 15 minutes"
     end
 
-    test "1 second returns less than a minute" do
-      assert TimeFormatter.format_duration(1) == "less than a minute"
-    end
-
     test "large value (86400) returns 24 hours" do
       assert TimeFormatter.format_duration(86_400) == "24 hours"
     end

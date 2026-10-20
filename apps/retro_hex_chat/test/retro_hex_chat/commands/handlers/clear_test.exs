@@ -32,14 +32,4 @@ defmodule RetroHexChat.Commands.Handlers.ClearTest do
       assert {:ok, :ui_action, :clear_chat, %{}} = Clear.execute(["extra"], @base_context)
     end
   end
-
-  describe "help/0" do
-    test "returns help map" do
-      help = Clear.help()
-      assert help.name == "clear"
-      assert is_binary(help.syntax)
-      assert is_binary(help.description)
-      assert is_list(help.examples)
-    end
-  end
 end

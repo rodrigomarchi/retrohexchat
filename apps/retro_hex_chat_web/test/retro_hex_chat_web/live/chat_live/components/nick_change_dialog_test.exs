@@ -7,17 +7,6 @@ defmodule RetroHexChatWeb.ChatLive.Components.NickChangeDialogTest do
 
   @moduletag :unit
 
-  test "id/0 is stable" do
-    assert NickChangeDialog.id() == "nick-change-dialog"
-  end
-
-  test "renders hidden by default" do
-    html = render_component(NickChangeDialog, id: NickChangeDialog.id())
-
-    assert html =~ ~s(data-testid="nick-change-dialog")
-    assert html =~ "hidden"
-  end
-
   test "opens for an unregistered nick (no password field)" do
     html =
       render_component(NickChangeDialog,

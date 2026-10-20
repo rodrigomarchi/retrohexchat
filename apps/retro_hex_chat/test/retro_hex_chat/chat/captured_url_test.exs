@@ -6,26 +6,6 @@ defmodule RetroHexChat.Chat.CapturedURLTest do
   @moduletag :unit
 
   describe "new/1" do
-    test "creates struct with auto-generated id and nil preview_title" do
-      entry =
-        CapturedURL.new(%{
-          url: "https://example.com",
-          source: "#lobby",
-          source_type: :channel,
-          posted_by: "Alice",
-          timestamp: ~U[2026-02-11 14:00:00Z]
-        })
-
-      assert entry.url == "https://example.com"
-      assert entry.source == "#lobby"
-      assert entry.source_type == :channel
-      assert entry.posted_by == "Alice"
-      assert entry.timestamp == ~U[2026-02-11 14:00:00Z]
-      assert entry.preview_title == nil
-      assert is_binary(entry.id)
-      assert String.length(entry.id) > 0
-    end
-
     test "each new entry gets a unique id" do
       attrs = %{
         url: "https://example.com",

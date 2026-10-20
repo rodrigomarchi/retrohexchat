@@ -23,10 +23,8 @@ defmodule RetroHexChat.Commands.DispatcherTest do
 
     test "dispatching a valid command with valid args returns handler result" do
       # /help always validates :ok and returns a known result
-      assert {:ok, :ui_action, :show_help, %{commands: commands}} =
+      assert {:ok, :ui_action, :show_help, %{commands: _}} =
                Dispatcher.dispatch("help", [], default_context())
-
-      assert is_list(commands)
     end
 
     test "dispatching a command that fails validation returns the validation error" do

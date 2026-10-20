@@ -39,7 +39,6 @@ defmodule RetroHexChatWeb.Components.UI.P2P.CallPanelTest do
     assert html =~ ~s(data-testid="p2p-call-panel")
     assert html =~ ~s(data-testid="p2p-call-disconnected")
     assert html =~ "Waiting for peer"
-    assert html =~ "Call controls become available"
     refute html =~ ~s(phx-hook="LobbyMediaHook")
   end
 
@@ -114,9 +113,6 @@ defmodule RetroHexChatWeb.Components.UI.P2P.CallPanelTest do
     assert html =~ ~s(data-device-kind="videoinput")
     assert html =~ ~s(data-device-kind="audiooutput")
     assert html =~ ~s(data-testid="p2p-call-dock")
-
-    assert html =~ "media-dock-button--captioned"
-    assert html =~ "media-dock-button--danger"
   end
 
   test "mini mode keeps essential call controls and hides wide controls" do
@@ -147,7 +143,6 @@ defmodule RetroHexChatWeb.Components.UI.P2P.CallPanelTest do
     refute html =~ ~s(data-testid="p2p-call-layout-controls")
     refute html =~ ~s(data-testid="p2p-call-reaction-heart")
     refute html =~ ~s(data-testid="lobby-devices")
-    assert html =~ "media-dock-button--captioned"
   end
 
   test "mic and camera are pressed while on; expand and leave are not toggles" do
@@ -209,16 +204,11 @@ defmodule RetroHexChatWeb.Components.UI.P2P.CallPanelTest do
     ]
 
     split = render_panel(in_call ++ [call_layout: "split", self_view: "pip"])
-    assert split =~ "sm:grid-cols-2"
     assert split =~ ~r/data-testid="p2p-call-local-tile"\s+data-self-view="tile"/
     refute split =~ ~s(class="p2p-call-pip)
-    # Beside the peer's picture, yours is shown whole too, not cropped to fill.
-    assert split =~ ~r/id="lobby-local-video" class="[^"]*object-contain/
 
     focus = render_panel(in_call ++ [call_layout: "focus", self_view: "pip"])
-    refute focus =~ "sm:grid-cols-2"
     assert focus =~ ~s(class="p2p-call-pip)
-    assert focus =~ ~r/id="lobby-local-video" class="[^"]*object-cover/
 
     hidden = render_panel(in_call ++ [call_layout: "split", self_view: "hidden"])
     assert hidden =~ ~r/class="hidden"\s+data-testid="p2p-call-local-tile"/

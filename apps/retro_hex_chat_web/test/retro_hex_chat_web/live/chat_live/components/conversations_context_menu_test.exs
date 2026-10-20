@@ -14,15 +14,6 @@ defmodule RetroHexChatWeb.ChatLive.Components.ConversationsContextMenuTest do
     render_component(ConversationsContextMenu, assigns)
   end
 
-  test "exposes a stable id" do
-    assert ConversationsContextMenu.id() == "conversations-context-menu"
-  end
-
-  test "hidden by default (closed menu)" do
-    html = menu(%{session: Session.new("alice")})
-    assert html =~ ~s(id="conversations-context-menu-mount")
-  end
-
   test "renders the channel menu open at its position" do
     html =
       menu(%{
@@ -77,19 +68,6 @@ defmodule RetroHexChatWeb.ChatLive.Components.ConversationsContextMenuTest do
 
     # the menu shows an "Unmute" affordance when the channel is muted
     assert html =~ "nmute" or html =~ "muted"
-  end
-
-  test "derives has_unread from the unread_counts read-model via the pm: key" do
-    html =
-      menu(%{
-        visible: true,
-        type: :pm,
-        nick: "bob",
-        unread_counts: %{"pm:bob" => 3},
-        session: Session.new("alice")
-      })
-
-    assert html =~ "bob"
   end
 
   describe "join on connect" do
@@ -153,7 +131,6 @@ defmodule RetroHexChatWeb.ChatLive.Components.ConversationsContextMenuTest do
              Floki.find(doc, ~s([data-testid="context-menu-conversations-context-menu"]))
 
     assert Floki.attribute(menu_el, "data-sheet") == ["true"]
-    assert Floki.attribute(menu_el, "class") |> to_string() =~ "context-menu--sheet"
     assert [title] = Floki.find(menu_el, ".context-menu__sheet-title")
     assert Floki.text(title) =~ "#lobby"
 

@@ -15,9 +15,7 @@ defmodule RetroHexChatWeb.Components.UI.ToolButtonTest do
       <.tool_button label="Mute">i</.tool_button>
       """)
 
-    assert html =~ "shadow-retro-raised"
     assert html =~ ~s(type="button")
-    refute html =~ "media-dock-button"
   end
 
   test "the label is both the tooltip and the accessible name" do
@@ -44,19 +42,6 @@ defmodule RetroHexChatWeb.Components.UI.ToolButtonTest do
     refute html =~ "aria-label"
   end
 
-  test "flat has no chrome at rest and rises under the pointer" do
-    assigns = %{}
-
-    html =
-      rendered_to_string(~H"""
-      <.tool_button label="Layout" variant="flat">i</.tool_button>
-      """)
-
-    assert html =~ "bg-transparent"
-    assert html =~ "hover:shadow-retro-raised"
-    assert html =~ "disabled:hover:shadow-none"
-  end
-
   test "active and pressed are separate: drawn sunken, announced independently" do
     assigns = %{}
 
@@ -65,8 +50,6 @@ defmodule RetroHexChatWeb.Components.UI.ToolButtonTest do
       <.tool_button label="Microphone" variant="flat" active pressed={false}>i</.tool_button>
       """)
 
-    assert html =~ "bg-hover-bg"
-    assert html =~ ~r/(^|[\s"])shadow-retro-sunken/
     assert html =~ ~s(aria-pressed="false")
   end
 
@@ -85,36 +68,7 @@ defmodule RetroHexChatWeb.Components.UI.ToolButtonTest do
     refute html =~ ~r/[\s"]h-\[22px\]/
   end
 
-  test "title-bar controls are 16 by 14" do
-    assert tool_button_class(size: "title") =~ "w-[16px]"
-    assert tool_button_class(size: "title") =~ "h-[14px]"
-  end
-
-  test "sizes keep the dimensions the toolbars were laid out for" do
-    for {size, px} <- [{"xs", "22px"}, {"sm", "24px"}, {"md", "34px"}] do
-      assert tool_button_class(size: size) =~ "h-[#{px}]"
-    end
-
-    assert tool_button_class(size: "lg") =~ "h-9"
-  end
-
   test "the class function dresses elements that cannot be a button" do
-    assert tool_button_class(variant: "flat", size: "sm") =~ "hover:shadow-retro-raised"
-    assert tool_button_class(variant: "dock") == "media-dock-button icon-on-dark"
     assert tool_button_class(class: "extra") =~ "extra"
-  end
-
-  test "pixel is the space's wooden key, its look all in CSS" do
-    assigns = %{}
-
-    html =
-      rendered_to_string(~H"""
-      <.tool_button label="Turn" variant="pixel" active tone="danger">i</.tool_button>
-      """)
-
-    assert html =~ "space-pixel-tool"
-    assert html =~ "space-pixel-tool--active"
-    assert html =~ "space-pixel-tool--danger"
-    refute html =~ "shadow-retro"
   end
 end

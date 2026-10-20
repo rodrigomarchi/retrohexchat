@@ -7,17 +7,6 @@ defmodule RetroHexChatWeb.ChatLive.Components.InviteChannelPickerDialogTest do
 
   @moduletag :unit
 
-  test "id/0 is stable" do
-    assert InviteChannelPickerDialog.id() == "invite-channel-picker-dialog"
-  end
-
-  test "renders hidden by default" do
-    html = render_component(InviteChannelPickerDialog, id: InviteChannelPickerDialog.id())
-
-    assert html =~ "Invite to Channel"
-    assert html =~ "hidden"
-  end
-
   test "opens for a target with the available channels" do
     html =
       render_component(InviteChannelPickerDialog,

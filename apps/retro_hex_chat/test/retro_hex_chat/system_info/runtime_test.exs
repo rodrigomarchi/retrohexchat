@@ -39,7 +39,6 @@ defmodule RetroHexChat.SystemInfo.RuntimeTest do
       usage = SystemInfo.usage()
 
       for gauge <- [usage.atoms, usage.ports, usage.processes] do
-        assert %Usage{} = gauge
         assert gauge.used > 0
         assert gauge.used <= gauge.limit
         assert gauge.percent >= 0.0 and gauge.percent <= 100.0
@@ -56,7 +55,6 @@ defmodule RetroHexChat.SystemInfo.RuntimeTest do
       usage = SystemInfo.usage()
 
       assert usage.io_run_queue == max(usage.total_run_queue - usage.cpu_run_queue, 0)
-      assert usage.io_run_queue >= 0
     end
 
     test "uptime and IO counters are non-negative and moving forward" do
@@ -65,8 +63,6 @@ defmodule RetroHexChat.SystemInfo.RuntimeTest do
       second = SystemInfo.usage()
 
       assert second.uptime_ms >= first.uptime_ms
-      assert second.input_bytes >= 0
-      assert second.output_bytes >= 0
     end
   end
 

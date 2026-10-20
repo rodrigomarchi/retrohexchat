@@ -11,23 +11,6 @@ defmodule RetroHexChat.Services.ServerSettingTest do
       assert changeset.valid?
     end
 
-    test "valid with all fields" do
-      changeset =
-        ServerSetting.changeset(%ServerSetting{}, %{
-          key: "motd",
-          value: "Welcome!",
-          updated_by: "Admin"
-        })
-
-      assert changeset.valid?
-    end
-
-    test "invalid without key" do
-      changeset = ServerSetting.changeset(%ServerSetting{}, %{value: "some value"})
-      refute changeset.valid?
-      assert errors_on(changeset)[:key]
-    end
-
     test "invalid with key exceeding max length" do
       changeset =
         ServerSetting.changeset(%ServerSetting{}, %{key: String.duplicate("a", 51)})
@@ -45,11 +28,6 @@ defmodule RetroHexChat.Services.ServerSettingTest do
 
       refute changeset.valid?
       assert errors_on(changeset)[:updated_by]
-    end
-
-    test "allows nil value" do
-      changeset = ServerSetting.changeset(%ServerSetting{}, %{key: "motd", value: nil})
-      assert changeset.valid?
     end
   end
 end

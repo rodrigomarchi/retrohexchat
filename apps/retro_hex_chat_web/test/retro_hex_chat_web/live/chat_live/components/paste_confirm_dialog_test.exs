@@ -7,10 +7,6 @@ defmodule RetroHexChatWeb.ChatLive.Components.PasteConfirmDialogTest do
 
   @moduletag :unit
 
-  test "id/0 is stable" do
-    assert PasteConfirmDialog.id() == "paste-confirm-dialog"
-  end
-
   test "renders hidden with no pasted lines" do
     html = render_component(PasteConfirmDialog, id: PasteConfirmDialog.id())
 

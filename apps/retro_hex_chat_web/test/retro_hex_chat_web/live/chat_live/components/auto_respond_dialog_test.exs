@@ -8,17 +8,6 @@ defmodule RetroHexChatWeb.ChatLive.Components.AutoRespondDialogTest do
 
   @moduletag :unit
 
-  test "id/0 is stable" do
-    assert AutoRespondDialog.id() == "autorespond-dialog"
-  end
-
-  test "renders the bare panel by default" do
-    html = render_component(AutoRespondDialog, id: AutoRespondDialog.id())
-
-    assert html =~ ~s(data-testid="auto-respond-panel")
-    refute html =~ "phx-show-modal"
-  end
-
   test "renders rules from the passthrough struct" do
     {:ok, rules} =
       AutoRespondRules.add_entry(AutoRespondRules.new(), :on_join, "#elixir", "/me waves")

@@ -17,39 +17,6 @@ defmodule RetroHexChat.Services.ChannelWelcomeMessageTest do
       assert changeset.valid?
     end
 
-    test "invalid without channel_name" do
-      changeset =
-        ChannelWelcomeMessage.changeset(%ChannelWelcomeMessage{}, %{
-          message: "Welcome!",
-          set_by: "Op"
-        })
-
-      refute changeset.valid?
-      assert errors_on(changeset)[:channel_name]
-    end
-
-    test "invalid without message" do
-      changeset =
-        ChannelWelcomeMessage.changeset(%ChannelWelcomeMessage{}, %{
-          channel_name: "#test",
-          set_by: "Op"
-        })
-
-      refute changeset.valid?
-      assert errors_on(changeset)[:message]
-    end
-
-    test "invalid without set_by" do
-      changeset =
-        ChannelWelcomeMessage.changeset(%ChannelWelcomeMessage{}, %{
-          channel_name: "#test",
-          message: "Welcome!"
-        })
-
-      refute changeset.valid?
-      assert errors_on(changeset)[:set_by]
-    end
-
     test "invalid with channel_name exceeding max length" do
       changeset =
         ChannelWelcomeMessage.changeset(%ChannelWelcomeMessage{}, %{

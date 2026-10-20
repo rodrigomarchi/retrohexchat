@@ -13,10 +13,6 @@ defmodule RetroHexChat.Chat.UserBioTest do
   end
 
   describe "save/2" do
-    test "saves a bio for a registered user", %{nick: nick} do
-      assert :ok = UserBio.save(nick, "Hello world")
-    end
-
     test "overwrites existing bio on save", %{nick: nick} do
       :ok = UserBio.save(nick, "First bio")
       :ok = UserBio.save(nick, "Updated bio")

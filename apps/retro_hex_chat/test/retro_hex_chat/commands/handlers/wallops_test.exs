@@ -65,14 +65,4 @@ defmodule RetroHexChat.Commands.Handlers.WallopsTest do
                       %{sender: "ServerOp", content: "Test wallops", timestamp: %DateTime{}}}
     end
   end
-
-  describe "help/0" do
-    test "returns help map" do
-      help = Wallops.help()
-      assert help.name == "wallops"
-      assert is_binary(help.syntax)
-      assert is_binary(help.description)
-      assert is_list(help.examples)
-    end
-  end
 end

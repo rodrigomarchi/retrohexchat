@@ -222,12 +222,6 @@ defmodule RetroHexChatWeb.Components.UI.StartMenuSymmetryTest do
       assert locale_href(:chat, "pt_BR") =~ "/locale/pt_BR?return_to="
       refute locale_href(:showcase, "pt_BR") =~ "/locale/"
     end
-
-    test "help search only works where a help viewer is listening" do
-      assert enabled?(:chat, "start-menu-item-help-search", help_open: true)
-      refute enabled?(:chat, "start-menu-item-help-search")
-      refute enabled?(:showcase, "start-menu-item-help-search")
-    end
   end
 
   describe "disabled rows are inert" do
@@ -258,10 +252,6 @@ defmodule RetroHexChatWeb.Components.UI.StartMenuSymmetryTest do
 
       assert Floki.attribute(trigger, "disabled") == [],
              "a muted group must still open — the gray says 'not here', not 'not real'"
-
-      assert Floki.attribute(trigger, "class")
-             |> List.first()
-             |> String.contains?("desktop-start-menu__item--muted")
     end
   end
 

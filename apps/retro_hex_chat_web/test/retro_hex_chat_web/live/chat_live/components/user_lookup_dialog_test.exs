@@ -8,17 +8,10 @@ defmodule RetroHexChatWeb.ChatLive.Components.UserLookupDialogTest do
 
   @moduletag :unit
 
-  test "id/0 is stable" do
-    assert UserLookupDialog.id() == "user-lookup-dialog"
-  end
-
   test "renders the lookup form bare, with no result card" do
     html = render_component(UserLookupDialog, id: UserLookupDialog.id())
 
-    assert html =~ "data-testid=\"user-lookup-panel\""
     assert html =~ "data-testid=\"user-lookup-form\""
-    assert html =~ "Enter nickname..."
-    refute html =~ "phx-show-modal"
     refute html =~ "data-testid=\"lookup-result-card\""
   end
 

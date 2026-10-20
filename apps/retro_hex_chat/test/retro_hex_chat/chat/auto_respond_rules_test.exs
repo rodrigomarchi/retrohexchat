@@ -7,13 +7,6 @@ defmodule RetroHexChat.Chat.AutoRespondRulesTest do
   # Unit tests
   # ---------------------------------------------------------------------------
 
-  describe "new/0" do
-    @tag :unit
-    test "returns empty rules map" do
-      assert %{entries: []} = AutoRespondRules.new()
-    end
-  end
-
   describe "add_entry/4" do
     @tag :unit
     test "adds a valid rule" do

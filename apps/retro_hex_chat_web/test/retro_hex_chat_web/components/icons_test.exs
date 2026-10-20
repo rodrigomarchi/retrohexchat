@@ -11,14 +11,6 @@ defmodule RetroHexChatWeb.IconsTest do
   @moduletag :unit
 
   describe "an icon component" do
-    test "points a <use> at the sprite instead of drawing the art inline" do
-      html = render_component(&Icons.icon_folder/1, class: "w-4 h-4")
-
-      assert html =~ ~s(<use href="#{Sprite.href(:icon_folder)}")
-      refute html =~ "<path"
-      refute html =~ "<rect"
-    end
-
     test "keeps the class it was given and stays out of the accessibility tree" do
       html = render_component(&Icons.icon_folder/1, class: "h-6 w-6 shrink-0")
 

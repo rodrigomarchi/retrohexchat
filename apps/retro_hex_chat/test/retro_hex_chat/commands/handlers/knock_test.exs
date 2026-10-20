@@ -41,14 +41,4 @@ defmodule RetroHexChat.Commands.Handlers.KnockTest do
       assert {:error, _} = Knock.execute(["nochannel"], @base_context)
     end
   end
-
-  describe "help/0" do
-    test "returns help map" do
-      help = Knock.help()
-      assert help.name == "knock"
-      assert is_binary(help.syntax)
-      assert is_binary(help.description)
-      assert is_list(help.examples)
-    end
-  end
 end

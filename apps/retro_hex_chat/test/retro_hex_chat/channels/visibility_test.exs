@@ -59,12 +59,6 @@ defmodule RetroHexChat.Channels.VisibilityTest do
     assert Visibility.channels_of("alice", [channel]) |> Enum.member?(channel)
   end
 
-  test "the answer is alphabetical" do
-    names = Visibility.channels_of("nobody-at-all", [])
-
-    assert names == Enum.sort(names)
-  end
-
   describe "nameable?/1 for a channel with no process" do
     # A registered channel that nobody has joined since the node started has no
     # process at all, and asking one that is not there used to answer "not

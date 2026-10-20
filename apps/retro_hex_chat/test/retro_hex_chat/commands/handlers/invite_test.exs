@@ -55,21 +55,4 @@ defmodule RetroHexChat.Commands.Handlers.InviteTest do
                Invite.execute(["auto"], ctx)
     end
   end
-
-  describe "help/0" do
-    test "returns help map" do
-      help = Invite.help()
-      assert help.name == "invite"
-      assert is_binary(help.syntax)
-      assert is_binary(help.description)
-      assert is_list(help.examples)
-    end
-
-    test "examples include all usage patterns" do
-      help = Invite.help()
-      assert "/invite Alice" in help.examples
-      assert "/invite Alice #private" in help.examples
-      assert "/invite auto" in help.examples
-    end
-  end
 end

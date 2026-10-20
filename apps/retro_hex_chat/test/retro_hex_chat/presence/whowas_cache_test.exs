@@ -85,10 +85,6 @@ defmodule RetroHexChat.Presence.WhowasCacheTest do
   end
 
   describe "size/0" do
-    test "returns 0 for empty cache" do
-      assert WhowasCache.size() == 0
-    end
-
     test "returns correct count" do
       WhowasCache.record("A", [])
       WhowasCache.record("B", [])

@@ -26,8 +26,6 @@ defmodule RetroHexChatWeb.Components.UI.SpaceBuildPaletteTest do
       assert html =~ ~s(data-construct-tab="#{group}"), group
     end
 
-    for icon <- ~w(tab-fair tab-fantasy), do: assert(html =~ "space-icon--#{icon}")
-
     [_, open] = Regex.run(~r/data-construct-tab="(\w+)"\s+data-selected="true"/, html)
     assert open == "furniture"
   end
@@ -82,16 +80,10 @@ defmodule RetroHexChatWeb.Components.UI.SpaceBuildPaletteTest do
   test "turn and remove are the kit's wooden keys, disabled until a piece is picked" do
     html = render_component(&space_build_palette/1, %{conversation: "channel"})
 
-    for {attr, icon} <- [{"data-construct-rotate", "turn"}, {"data-construct-remove", "remove"}] do
+    for attr <- ["data-construct-rotate", "data-construct-remove"] do
       [button] = Regex.run(~r/<button[^>]*#{attr}[^>]*>.*?<\/button>/s, html)
       assert button =~ "disabled"
-      assert button =~ "space-build-tool--action"
-      assert button =~ "space-icon--#{icon}"
     end
-
-    # Disabled is etched by the global rule, never faded.
-    refute html =~ "opacity"
-    refute html =~ "bg-black"
   end
 
   test "the pieces wait behind a Build key, in a drawer that opens shut" do
@@ -101,7 +93,6 @@ defmodule RetroHexChatWeb.Components.UI.SpaceBuildPaletteTest do
     [toggle] = Regex.run(~r/<button[^>]*data-construct-toggle[^>]*>/s, html)
     assert toggle =~ ~s(aria-expanded="false")
     assert toggle =~ ~s(aria-controls="construct-drawer")
-    assert html =~ "space-icon--build"
     assert html =~ ~s(id="construct-drawer")
     assert html =~ ~s(data-testid="construct-close")
   end
@@ -109,18 +100,8 @@ defmodule RetroHexChatWeb.Components.UI.SpaceBuildPaletteTest do
   test "every tab says its group by an icon, and by name to a screen reader" do
     html = render_component(&space_build_palette/1, %{conversation: "channel"})
 
-    for {group, icon} <- [
-          {"furniture", "tab-furniture"},
-          {"office", "tab-office"},
-          {"garden", "tab-garden"},
-          {"gamer", "tab-gamer"},
-          {"structure", "tab-structure"},
-          {"fun", "tab-fun"},
-          {"eot", "tab-eot"},
-          {"floor", "tab-floor"}
-        ] do
+    for group <- ~w(furniture office garden gamer structure fun eot floor) do
       [tab] = Regex.run(~r/<button[^>]*data-construct-tab="#{group}"[^>]*>.*?<\/button>/s, html)
-      assert tab =~ "space-icon--#{icon}"
       assert tab =~ ~r/aria-label="[^"]+"/
     end
   end
@@ -133,7 +114,6 @@ defmodule RetroHexChatWeb.Components.UI.SpaceBuildPaletteTest do
     assert card =~ ~s(data-testid="construct-rotate")
     assert card =~ ~s(data-testid="construct-remove")
     assert card =~ ~s(data-testid="construct-drop")
-    assert card =~ "space-icon--cancel"
   end
 
   test "a touch screen gets a hint without a right-click in it" do

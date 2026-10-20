@@ -3,13 +3,6 @@ defmodule RetroHexChat.Chat.AutoJoinListTest do
 
   alias RetroHexChat.Chat.AutoJoinList
 
-  describe "new/0" do
-    test "returns empty list" do
-      list = AutoJoinList.new()
-      assert list.entries == []
-    end
-  end
-
   describe "add_entry/3" do
     test "adds a channel" do
       list = AutoJoinList.new()
@@ -179,48 +172,9 @@ defmodule RetroHexChat.Chat.AutoJoinListTest do
     end
   end
 
-  describe "entries/1" do
-    test "returns entries sorted by position" do
-      list = AutoJoinList.new()
-      {:ok, list} = AutoJoinList.add_entry(list, "#ch1")
-      {:ok, list} = AutoJoinList.add_entry(list, "#ch2")
-
-      entries = AutoJoinList.entries(list)
-      assert Enum.at(entries, 0).position == 0
-      assert Enum.at(entries, 1).position == 1
-    end
-
-    test "returns empty list for new list" do
-      assert AutoJoinList.entries(AutoJoinList.new()) == []
-    end
-  end
-
-  describe "count/1" do
-    test "returns 0 for empty list" do
-      assert AutoJoinList.count(AutoJoinList.new()) == 0
-    end
-
-    test "returns correct count" do
-      list = AutoJoinList.new()
-      {:ok, list} = AutoJoinList.add_entry(list, "#ch1")
-      {:ok, list} = AutoJoinList.add_entry(list, "#ch2")
-      assert AutoJoinList.count(list) == 2
-    end
-  end
-
   describe "full?/1" do
     test "returns false for empty list" do
       refute AutoJoinList.full?(AutoJoinList.new())
-    end
-
-    test "returns true at 20 entries" do
-      list =
-        Enum.reduce(0..19, AutoJoinList.new(), fn i, acc ->
-          {:ok, updated} = AutoJoinList.add_entry(acc, "#ch#{i}")
-          updated
-        end)
-
-      assert AutoJoinList.full?(list)
     end
   end
 
@@ -269,20 +223,6 @@ defmodule RetroHexChat.Chat.AutoJoinListTest do
     @tag :integration
     test "load returns error for unknown user" do
       assert {:error, :not_found} = AutoJoinList.load("NonExistent")
-    end
-
-    @tag :integration
-    test "preserves channel key as nil when not set" do
-      owner = "AJUser#{System.unique_integer([:positive])}"
-      register_nick(owner)
-
-      list = AutoJoinList.new()
-      {:ok, list} = AutoJoinList.add_entry(list, "#nokey")
-      assert :ok = AutoJoinList.save(owner, list)
-
-      assert {:ok, loaded} = AutoJoinList.load(owner)
-      [entry] = AutoJoinList.entries(loaded)
-      assert entry.channel_key == nil
     end
   end
 

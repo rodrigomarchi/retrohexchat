@@ -123,16 +123,5 @@ defmodule RetroHexChat.Chat.TimerManagerTest do
       assert result =~ "once"
       assert result =~ "60"
     end
-
-    test "formats multiple timers" do
-      timers = %{
-        "a" => %{type: :once, interval: 10, command: "/me a", ref: make_ref()},
-        "b" => %{type: :repeat, interval: 30, command: "/me b", ref: make_ref()}
-      }
-
-      result = TimerManager.format_timer_list(timers)
-      assert result =~ "a"
-      assert result =~ "b"
-    end
   end
 end

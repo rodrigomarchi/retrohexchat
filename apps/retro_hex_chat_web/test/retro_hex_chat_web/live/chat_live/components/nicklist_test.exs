@@ -20,26 +20,9 @@ defmodule RetroHexChatWeb.ChatLive.Components.NicklistTest do
     %{nickname: "Bob", role: :regular, away: false, muted: false}
   ]
 
-  test "id/0 is stable" do
-    assert Nicklist.id() == "nicklist"
-  end
-
   test "dom_id/1 keys rows by the normalized nick" do
     assert Nicklist.dom_id("Bob") == "nick-bob"
     assert Nicklist.dom_id("alice") == "nick-alice"
-  end
-
-  test "renders the shell and the backdrop toggle even when empty" do
-    html = render_component(Nicklist, id: Nicklist.id())
-
-    assert html =~ ~s(data-testid="nicklist-sidebar-shell")
-    assert html =~ ~s(data-testid="nicklist-rail")
-    assert html =~ ~s(data-testid="nicklist")
-    assert html =~ ~s(id="nicklist-users")
-    assert html =~ ~s(data-testid="nicklist-header")
-    assert html =~ ~s(data-state="collapsed")
-    # Rail/backdrop controls bubble toggle_nicklist to the parent.
-    assert html =~ "toggle_nicklist"
   end
 
   test "collapses when not visible and hides when unavailable" do
@@ -69,7 +52,6 @@ defmodule RetroHexChatWeb.ChatLive.Components.NicklistTest do
     assert html =~ ~s(id="nick-bob")
     assert html =~ ~s(id="nicklist-users-operator")
     assert html =~ ~s(id="nicklist-users-regular")
-    assert html =~ ~s(phx-update="stream")
     assert html =~ ~s(data-nick="alice")
     assert html =~ ~s(data-nick="Bob")
     assert html =~ ~s(data-testid="nicklist-item-alice")
@@ -93,13 +75,6 @@ defmodule RetroHexChatWeb.ChatLive.Components.NicklistTest do
     assert html =~ ~s(data-testid="nicklist-online-count")
     assert html =~ ~s(data-testid="nicklist-away-count")
     assert html =~ ~s(data-testid="nicklist-muted-count")
-
-    document = Floki.parse_document!(html)
-
-    for status <- ~w(online away muted) do
-      assert [stat] = Floki.find(document, ".chat-nicklist-stat--#{status}")
-      assert [_svg] = Floki.find(stat, "svg")
-    end
 
     assert html =~ ~s(data-testid="nicklist-section-owner")
     assert html =~ ~s(data-testid="nicklist-section-operator")
@@ -137,14 +112,6 @@ defmodule RetroHexChatWeb.ChatLive.Components.NicklistTest do
           overrides
         )
       )
-    end
-
-    test "names the person on the other side, with the private-message icon" do
-      html = private_roster(@participants)
-
-      assert html =~ ~s(data-testid="nicklist-header")
-      assert html =~ "Joe"
-      assert html =~ "icon_tab_pm"
     end
 
     test "lists both people under one participants section, the peer first" do

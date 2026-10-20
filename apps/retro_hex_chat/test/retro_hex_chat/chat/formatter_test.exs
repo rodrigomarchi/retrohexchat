@@ -349,10 +349,6 @@ defmodule RetroHexChat.Chat.FormatterTest do
       assert html =~ "t130"
     end
 
-    test "empty string returns empty safe html" do
-      assert Formatter.to_safe_html("") == {:safe, ""}
-    end
-
     test "whitespace-only after stripping returns whitespace" do
       {:safe, html} = Formatter.to_safe_html("#{@bold}   #{@bold}")
       assert String.trim(String.replace(html, ~r/<[^>]+>/, "")) == ""

@@ -5,13 +5,6 @@ defmodule RetroHexChat.Chat.HighlightWordsTest do
 
   @moduletag :unit
 
-  describe "new/0" do
-    test "returns empty entries list" do
-      hw = HighlightWords.new()
-      assert hw.entries == []
-    end
-  end
-
   describe "add_entry/3" do
     test "adds a word with no color" do
       hw = HighlightWords.new()

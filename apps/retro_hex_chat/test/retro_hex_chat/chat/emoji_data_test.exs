@@ -6,12 +6,6 @@ defmodule RetroHexChat.Chat.EmojiDataTest do
   @moduletag :unit
 
   describe "categories/0" do
-    test "returns 8 category strings" do
-      cats = EmojiData.categories()
-      assert length(cats) == 8
-      assert Enum.all?(cats, &is_binary/1)
-    end
-
     test "includes expected categories" do
       cats = EmojiData.categories()
       assert "Smileys & Emotion" in cats
@@ -26,11 +20,6 @@ defmodule RetroHexChat.Chat.EmojiDataTest do
   end
 
   describe "all/0" do
-    test "returns map with 8 categories" do
-      all = EmojiData.all()
-      assert map_size(all) == 8
-    end
-
     test "total emoji count >= 200" do
       total =
         EmojiData.all()
@@ -58,12 +47,6 @@ defmodule RetroHexChat.Chat.EmojiDataTest do
   end
 
   describe "by_category/1" do
-    test "returns emojis for Smileys & Emotion" do
-      emojis = EmojiData.by_category("Smileys & Emotion")
-      assert emojis != []
-      assert Enum.all?(emojis, &Map.has_key?(&1, :char))
-    end
-
     test "returns empty list for unknown category" do
       assert EmojiData.by_category("Unknown") == []
     end

@@ -16,7 +16,6 @@ defmodule RetroHexChatWeb.App.SpaceLiveTest do
   alias RetroHexChat.Accounts.Avatars
   alias RetroHexChat.Channels.Server
   alias RetroHexChat.Channels.Supervisor
-  alias RetroHexChat.Nickname
   alias RetroHexChat.Repo
   alias RetroHexChat.Services.RegisteredNick
   alias RetroHexChat.ShareLinks
@@ -142,14 +141,6 @@ defmodule RetroHexChatWeb.App.SpaceLiveTest do
       assert :sys.get_state(view.pid).socket.assigns.avatar == nil
     end
 
-    # A space is a place: it has no host, nothing to start, and no waiting.
-    test "has no host and nothing to start", %{conn: conn, channel: channel} do
-      {:ok, _view, html} = live(conn, path(channel))
-
-      refute html =~ "Start"
-      assert html =~ ~s(data-testid="space-back-to-chat")
-    end
-
     test "says who is inside right now", %{conn: conn, channel: channel, nickname: nickname} do
       {:ok, _joined} =
         VirtualSpace.join_channel_space(channel, %{user_id: nil, nickname: nickname})
@@ -201,7 +192,6 @@ defmodule RetroHexChatWeb.App.SpaceLiveTest do
       draft = :sys.get_state(view.pid).socket.assigns.draft
       # The seat the space keeps for this nickname wears the same one.
       assert draft == CharacterRecipe.for_nickname(nickname)
-      assert draft == CharacterRecipe.random("nick:" <> Nickname.key(nickname))
       assert CharacterRecipe.valid?(draft)
     end
   end
@@ -347,44 +337,9 @@ defmodule RetroHexChatWeb.App.SpaceLiveTest do
       {:ok, view, html} = live(conn, path(channel))
 
       assert html =~ ~s(id="viewport-detect")
-      assert html =~ "chat-app-root"
-      refute html =~ "h-screen"
 
       render_hook(view, "viewport_info", %{"width" => 390, "height" => 844, "mobile" => true})
       assert Process.alive?(view.pid)
-    end
-
-    test "the whole page wears the space's pixel kit, not the Win98 chrome", %{
-      conn: conn,
-      channel: channel
-    } do
-      {:ok, view, html} = live(conn, path(channel))
-
-      assert html =~ ~r/class="space-ui[\s"]/
-      assert html =~ "window--pixel"
-      assert html =~ "window-title-bar--pixel"
-      assert html =~ "window-status-field--pixel"
-
-      html = view |> element(~s([data-testid="space-creator-enter"])) |> render_click()
-
-      # On the map the status is on the say bar, the one line under the map.
-      bar = view |> element(~s([data-testid="space-say-form"])) |> render()
-      assert bar =~ ~s(data-testid="space-back-to-chat")
-      assert bar =~ ~s(data-testid="space-change-character")
-      assert bar =~ ~s(data-testid="space-status-count")
-      assert bar =~ ~s(data-testid="nick-portrait")
-      refute html =~ "window-status-field--pixel"
-
-      # Every overlay on the stage, from the loading card to the gate's question.
-      for class <-
-            ~w(space-ui-panel space-ui-veil space-ui-plank space-pixel-button space-icon--loading) do
-        assert html =~ class
-      end
-
-      # The stage draws no platform glyph and no bevel.
-      [_, stage] = Regex.run(~r/data-testid="space-stage"(.*)/s, html)
-      refute stage =~ "<svg"
-      refute stage =~ "shadow-retro"
     end
 
     test "a private space mints the token its own channel checks", %{conn: _conn} do

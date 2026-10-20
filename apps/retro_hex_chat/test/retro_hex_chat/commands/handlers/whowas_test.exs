@@ -38,14 +38,4 @@ defmodule RetroHexChat.Commands.Handlers.WhowasTest do
       assert {:error, _} = Whowas.execute([], @base_context)
     end
   end
-
-  describe "help/0" do
-    test "returns help map" do
-      help = Whowas.help()
-      assert help.name == "whowas"
-      assert is_binary(help.syntax)
-      assert is_binary(help.description)
-      assert is_list(help.examples)
-    end
-  end
 end

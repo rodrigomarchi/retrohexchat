@@ -181,11 +181,6 @@ defmodule RetroHexChat.Chat.HighlightTest do
       assert {:highlight, _} =
                Highlight.check("DEPLOY NOW", "Bob", words, "Alice")
     end
-
-    @tag :unit
-    test "no highlight when custom words list is empty and nick not present" do
-      assert :no_highlight = Highlight.check("hello world", "Bob", [], "Alice")
-    end
   end
 
   describe "check/4 with special regex characters in nick" do

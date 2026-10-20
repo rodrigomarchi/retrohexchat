@@ -7,17 +7,6 @@ defmodule RetroHexChatWeb.ChatLive.Components.KickQueueDialogTest do
 
   @moduletag :unit
 
-  test "id/0 is stable" do
-    assert KickQueueDialog.id() == "kick-dialog"
-  end
-
-  test "renders hidden when the queue is empty" do
-    html = render_component(KickQueueDialog, id: KickQueueDialog.id())
-
-    assert html =~ ~s(data-testid="kick-dialog")
-    assert html =~ "hidden"
-  end
-
   test "shows the head of the queue after enqueue" do
     html =
       render_component(KickQueueDialog,

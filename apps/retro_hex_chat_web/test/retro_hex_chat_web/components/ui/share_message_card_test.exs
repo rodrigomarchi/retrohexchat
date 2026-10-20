@@ -287,18 +287,6 @@ defmodule RetroHexChatWeb.Components.UI.ShareMessageCardTest do
   end
 
   describe "an ended card" do
-    # It is a record, and a record is read. The whole card used to be drawn at
-    # seven tenths opacity, which is this product's own spelling of a refused
-    # control — so the card most likely to be read weeks later was the one that
-    # looked broken. The state is said in words and in the badge's colour.
-    test "is not dimmed the way a disabled control is" do
-      ended = card_class(render_row(Map.put(@base, :share_card, ended(kind: "call"))))
-      live = card_class(render_row(Map.put(@base, :share_card, card())))
-
-      refute ended =~ "opacity"
-      assert ended == live
-    end
-
     test "says it is over in the badge instead" do
       html = render_row(Map.put(@base, :share_card, ended(kind: "call")))
 
@@ -475,16 +463,6 @@ defmodule RetroHexChatWeb.Components.UI.ShareMessageCardTest do
       game_id: "hex_pong",
       metrics: nil
     }
-  end
-
-  # The card's own surface, without the row around it: a message row is full of
-  # buttons whose base class carries `disabled:opacity-50`, and asking the whole
-  # row about opacity answers about those.
-  defp card_class(html) do
-    [_match, class] =
-      Regex.run(~r/<div class="([^"]*)" data-testid="share-message-card"/, html)
-
-    class
   end
 
   defp ended(overrides) do

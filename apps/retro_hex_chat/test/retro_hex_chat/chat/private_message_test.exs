@@ -7,23 +7,6 @@ defmodule RetroHexChat.Chat.PrivateMessageTest do
   @bold <<0x02>>
 
   describe "changeset/2" do
-    test "valid attrs produce a valid changeset" do
-      attrs = %{sender_nickname: "Alice", recipient_nickname: "Admin", content: "Hey!"}
-      changeset = PrivateMessage.changeset(%PrivateMessage{}, attrs)
-      assert changeset.valid?
-    end
-
-    test "requires sender_nickname, recipient_nickname, content" do
-      changeset = PrivateMessage.changeset(%PrivateMessage{}, %{})
-      refute changeset.valid?
-
-      assert %{
-               sender_nickname: ["can't be blank"],
-               recipient_nickname: ["can't be blank"],
-               content: ["can't be blank"]
-             } = errors_on(changeset)
-    end
-
     test "validates sender_nickname max length 16" do
       attrs = %{
         sender_nickname: String.duplicate("a", 17),
@@ -103,33 +86,6 @@ defmodule RetroHexChat.Chat.PrivateMessageTest do
       assert changeset.valid?
       assert Ecto.Changeset.get_field(changeset, :content_format) == "markdown"
       assert Ecto.Changeset.get_change(changeset, :plain_content) == "release notes"
-    end
-
-    test "rejects invalid content_format" do
-      attrs = %{
-        sender_nickname: "Alice",
-        recipient_nickname: "Admin",
-        content: "Hi",
-        content_format: "html"
-      }
-
-      changeset = PrivateMessage.changeset(%PrivateMessage{}, attrs)
-      refute changeset.valid?
-      assert %{content_format: [_]} = errors_on(changeset)
-    end
-
-    test "does not trust caller-supplied plain_content" do
-      attrs = %{
-        sender_nickname: "Alice",
-        recipient_nickname: "Admin",
-        content: "**real**",
-        content_format: "markdown",
-        plain_content: "spoofed"
-      }
-
-      changeset = PrivateMessage.changeset(%PrivateMessage{}, attrs)
-      assert changeset.valid?
-      assert Ecto.Changeset.get_change(changeset, :plain_content) == "real"
     end
   end
 

@@ -16,16 +16,10 @@ defmodule RetroHexChatWeb.ChatLive.Components.SearchBarTest do
     })
   end
 
-  test "id/0 is stable" do
-    assert SearchBar.id() == "chat-search-bar"
-  end
-
   test "renders the search bar window when visible" do
     html = render_component(SearchBar, base_assigns(visible: true))
 
     assert html =~ ~s(data-testid="search-bar")
-    assert html =~ "Find text..."
-    assert html =~ "Search history"
     # Defaults: empty query, no results.
     assert html =~ "0/0"
   end

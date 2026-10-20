@@ -117,35 +117,12 @@ defmodule RetroHexChat.Chat.HelpTopicsTest do
     end
   end
 
-  describe "category_icon/1" do
-    test "returns icon atom for known category" do
-      assert is_atom(HelpTopics.category_icon("Getting Started"))
-      assert is_atom(HelpTopics.category_icon("Chat & Messaging"))
-    end
-  end
-
   describe "feature-channel-central topic" do
     test "exists with correct id and category" do
       topic = HelpTopics.get_topic("feature-channel-central")
       assert topic != nil
       assert topic.id == "feature-channel-central"
       assert topic.category == "Channel Settings"
-    end
-
-    test "has correct title" do
-      topic = HelpTopics.get_topic("feature-channel-central")
-      assert topic.title == "Channel Central"
-    end
-
-    test "has icon and description" do
-      topic = HelpTopics.get_topic("feature-channel-central")
-      assert is_atom(topic.icon)
-      assert topic.description != ""
-    end
-
-    test "has non-empty keywords" do
-      topic = HelpTopics.get_topic("feature-channel-central")
-      assert topic.keywords != []
     end
   end
 
@@ -156,16 +133,6 @@ defmodule RetroHexChat.Chat.HelpTopicsTest do
       assert topic.id == "feature-ban-exceptions"
       assert topic.category == "Channel Settings"
     end
-
-    test "has correct title" do
-      topic = HelpTopics.get_topic("feature-ban-exceptions")
-      assert topic.title == "Ban Exceptions (+e)"
-    end
-
-    test "has non-empty keywords" do
-      topic = HelpTopics.get_topic("feature-ban-exceptions")
-      assert topic.keywords != []
-    end
   end
 
   describe "feature-invite-exceptions topic" do
@@ -174,16 +141,6 @@ defmodule RetroHexChat.Chat.HelpTopicsTest do
       assert topic != nil
       assert topic.id == "feature-invite-exceptions"
       assert topic.category == "Channel Settings"
-    end
-
-    test "has correct title" do
-      topic = HelpTopics.get_topic("feature-invite-exceptions")
-      assert topic.title == "Invite Exceptions (+I)"
-    end
-
-    test "has non-empty keywords" do
-      topic = HelpTopics.get_topic("feature-invite-exceptions")
-      assert topic.keywords != []
     end
   end
 
@@ -194,16 +151,6 @@ defmodule RetroHexChat.Chat.HelpTopicsTest do
       assert topic.id == "cmd-perform"
       assert topic.category == "Automation"
     end
-
-    test "has correct title" do
-      topic = HelpTopics.get_topic("cmd-perform")
-      assert topic.title == "/perform"
-    end
-
-    test "has non-empty keywords" do
-      topic = HelpTopics.get_topic("cmd-perform")
-      assert topic.keywords != []
-    end
   end
 
   describe "cmd-autojoin topic" do
@@ -212,16 +159,6 @@ defmodule RetroHexChat.Chat.HelpTopicsTest do
       assert topic != nil
       assert topic.id == "cmd-autojoin"
       assert topic.category == "Automation"
-    end
-
-    test "has correct title" do
-      topic = HelpTopics.get_topic("cmd-autojoin")
-      assert topic.title == "/autojoin"
-    end
-
-    test "has non-empty keywords" do
-      topic = HelpTopics.get_topic("cmd-autojoin")
-      assert topic.keywords != []
     end
   end
 
@@ -232,16 +169,6 @@ defmodule RetroHexChat.Chat.HelpTopicsTest do
       assert topic.id == "feature-perform"
       assert topic.category == "Automation"
     end
-
-    test "has correct title" do
-      topic = HelpTopics.get_topic("feature-perform")
-      assert topic.title == "Perform / Auto-Commands"
-    end
-
-    test "has non-empty keywords" do
-      topic = HelpTopics.get_topic("feature-perform")
-      assert topic.keywords != []
-    end
   end
 
   describe "feature-auto-reconnect topic" do
@@ -250,16 +177,6 @@ defmodule RetroHexChat.Chat.HelpTopicsTest do
       assert topic != nil
       assert topic.id == "feature-auto-reconnect"
       assert topic.category == "Connection"
-    end
-
-    test "has correct title" do
-      topic = HelpTopics.get_topic("feature-auto-reconnect")
-      assert topic.title == "Auto-Reconnect"
-    end
-
-    test "has non-empty keywords" do
-      topic = HelpTopics.get_topic("feature-auto-reconnect")
-      assert topic.keywords != []
     end
   end
 

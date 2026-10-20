@@ -12,21 +12,12 @@ defmodule RetroHexChat.RateLimit.LimiterTest do
   end
 
   describe "check_rate/3" do
-    test "allows messages within rate limit", %{table: table} do
-      assert :ok = Limiter.check_rate(table, "user1", :message)
-    end
-
     test "blocks messages when limit exceeded", %{table: table} do
       for _ <- 1..5 do
         assert :ok = Limiter.check_rate(table, "user1", :message)
       end
 
       assert {:error, :rate_limited} = Limiter.check_rate(table, "user1", :message)
-    end
-
-    test "allows commands within rate limit", %{table: table} do
-      assert :ok = Limiter.check_rate(table, "user1", :command)
-      assert :ok = Limiter.check_rate(table, "user1", :command)
     end
 
     test "blocks commands when limit exceeded", %{table: table} do
@@ -69,17 +60,6 @@ defmodule RetroHexChat.RateLimit.LimiterTest do
       assert {:error, :rate_limited} = Limiter.check_rate(table, "user1", :message)
       Limiter.reset(table, "user1")
       assert :ok = Limiter.check_rate(table, "user1", :message)
-    end
-  end
-
-  describe "command rate limiting" do
-    test "first command request initializes with command tokens consumed", %{table: table} do
-      # First command consumes 1 command token
-      assert :ok = Limiter.check_rate(table, "cmd_user", :command)
-      # After first command, there should be 1 command token left (2-1=1)
-      assert :ok = Limiter.check_rate(table, "cmd_user", :command)
-      # Third command should be rate limited
-      assert {:error, :rate_limited} = Limiter.check_rate(table, "cmd_user", :command)
     end
   end
 

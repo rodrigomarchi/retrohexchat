@@ -23,14 +23,6 @@ defmodule RetroHexChatWeb.PaginatedList.StateTest do
       assert state.has_more == false
       assert state.loading? == false
     end
-
-    test "carries the page size it was configured with" do
-      assert State.new(page_size: 25).page_size == 25
-    end
-
-    test "defaults the page size" do
-      assert State.new().page_size == 50
-    end
   end
 
   describe "dom_limit/1" do

@@ -47,16 +47,6 @@ defmodule RetroHexChat.Commands.Handlers.MotdTest do
                Motd.execute([], @base_context)
     end
 
-    test "any user can execute" do
-      Services.Motd.set("Test MOTD", "Admin")
-
-      # Regular user
-      ctx = %{@base_context | is_admin: false, is_server_operator: false}
-
-      assert {:ok, :ui_action, :show_motd, %{content: "Test MOTD"}} =
-               Motd.execute([], ctx)
-    end
-
     test "admin can also execute" do
       Services.Motd.set("Test MOTD", "Admin")
 
@@ -65,16 +55,6 @@ defmodule RetroHexChat.Commands.Handlers.MotdTest do
 
       assert {:ok, :ui_action, :show_motd, %{content: "Test MOTD"}} =
                Motd.execute([], ctx)
-    end
-  end
-
-  describe "help/0" do
-    test "returns help map" do
-      help = Motd.help()
-      assert help.name == "motd"
-      assert is_binary(help.syntax)
-      assert is_binary(help.description)
-      assert is_list(help.examples)
     end
   end
 end

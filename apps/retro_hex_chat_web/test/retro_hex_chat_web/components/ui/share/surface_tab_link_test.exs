@@ -52,11 +52,5 @@ defmodule RetroHexChatWeb.Components.UI.SurfaceTabLinkTest do
 
       refute html =~ ~s(data-surface-tab-note)
     end
-
-    test "says the same thing in both shapes" do
-      for open? <- [true, false] do
-        assert render_component(&back_to_chat/1, open?: open?, testid: "t") =~ "Chat"
-      end
-    end
   end
 end

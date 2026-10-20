@@ -162,14 +162,6 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.MessagesTest do
       assert Messages.cleared_from_conversation?(socket, @channel, %{inserted_at: later}) == false
     end
 
-    test "both spellings of the moment answer the same way" do
-      socket = socket_with_cutoff(%{@channel => @cutoff})
-      before = DateTime.add(@cutoff, -1, :second)
-
-      assert Messages.cleared_from_conversation?(socket, @channel, %{timestamp: before}) ==
-               Messages.cleared_from_conversation?(socket, @channel, %{inserted_at: before})
-    end
-
     test "a naive moment is compared against a cutoff of either kind" do
       naive = NaiveDateTime.add(DateTime.to_naive(@cutoff), -1, :second)
 

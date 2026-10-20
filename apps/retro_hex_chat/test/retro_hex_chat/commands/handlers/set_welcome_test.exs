@@ -44,11 +44,6 @@ defmodule RetroHexChat.Commands.Handlers.SetWelcomeTest do
                SetWelcome.execute(["Welcome", "to", "our", "channel!"], @base_context)
     end
 
-    test "operator can set welcome with single word" do
-      assert {:ok, :ui_action, :set_welcome, %{channel: "#test", message: "Welcome"}} =
-               SetWelcome.execute(["Welcome"], @base_context)
-    end
-
     test "empty args treated as clear_welcome action" do
       assert {:ok, :ui_action, :clear_welcome, %{channel: "#test"}} =
                SetWelcome.execute([], @base_context)
@@ -59,16 +54,6 @@ defmodule RetroHexChat.Commands.Handlers.SetWelcomeTest do
 
       assert {:error, "Permission denied: you must be a channel operator."} =
                SetWelcome.execute([], ctx)
-    end
-  end
-
-  describe "help/0" do
-    test "returns help map" do
-      help = SetWelcome.help()
-      assert help.name == "setwelcome"
-      assert is_binary(help.syntax)
-      assert is_binary(help.description)
-      assert is_list(help.examples)
     end
   end
 end

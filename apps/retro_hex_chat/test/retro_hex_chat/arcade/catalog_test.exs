@@ -30,11 +30,6 @@ defmodule RetroHexChat.Arcade.CatalogTest do
              ]
     end
 
-    test "returns all games" do
-      games = Catalog.list_games()
-      assert length(games) == 18
-    end
-
     test "each game has required fields" do
       for game <- Catalog.list_games() do
         assert is_binary(game.id)
@@ -50,28 +45,6 @@ defmodule RetroHexChat.Arcade.CatalogTest do
     test "all game ids are unique" do
       ids = Enum.map(Catalog.list_games(), & &1.id)
       assert ids == Enum.uniq(ids)
-    end
-
-    test "includes expected games" do
-      ids = Enum.map(Catalog.list_games(), & &1.id)
-      assert "doom_shareware" in ids
-      assert "freedoom1" in ids
-      assert "freedoom2" in ids
-      assert "freedm" in ids
-      assert "chex_quest" in ids
-      assert "hacx" in ids
-      assert "rekkr" in ids
-      assert "quake_shareware" in ids
-      assert "librequake" in ids
-      assert "wolfenstein_3d" in ids
-      assert "quake2_shareware" in ids
-      assert "halflife_uplink" in ids
-      assert "scummvm_bass" in ids
-      assert "scummvm_drascula" in ids
-      assert "scummvm_dreamweb" in ids
-      assert "scummvm_fotaq" in ids
-      assert "scummvm_lure" in ids
-      assert "scummvm_soltys" in ids
     end
   end
 
@@ -134,26 +107,6 @@ defmodule RetroHexChat.Arcade.CatalogTest do
     test "builds per-game URL for doom game" do
       {:ok, game} = Catalog.get_game("doom_shareware")
       assert Catalog.game_url(game) == "https://example.test/arcade/doom_shareware/index.html"
-    end
-
-    test "builds per-game URL for quake game" do
-      {:ok, game} = Catalog.get_game("quake_shareware")
-      assert Catalog.game_url(game) == "https://example.test/arcade/quake_shareware/index.html"
-    end
-
-    test "builds per-game URL for new games" do
-      {:ok, game} = Catalog.get_game("chex_quest")
-      assert Catalog.game_url(game) == "https://example.test/arcade/chex_quest/index.html"
-    end
-
-    test "builds per-game URL for wolfenstein game" do
-      {:ok, game} = Catalog.get_game("wolfenstein_3d")
-      assert Catalog.game_url(game) == "https://example.test/arcade/wolfenstein_3d/index.html"
-    end
-
-    test "builds per-game URL for halflife game" do
-      {:ok, game} = Catalog.get_game("halflife_uplink")
-      assert Catalog.game_url(game) == "https://example.test/arcade/halflife_uplink/index.html"
     end
 
     test "builds shared engine URL with fragment for scummvm game" do

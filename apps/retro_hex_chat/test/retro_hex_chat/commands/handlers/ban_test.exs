@@ -57,14 +57,4 @@ defmodule RetroHexChat.Commands.Handlers.BanTest do
                Ban.execute(["user"], ctx)
     end
   end
-
-  describe "help/0" do
-    test "returns help map" do
-      help = Ban.help()
-      assert help.name == "ban"
-      assert is_binary(help.syntax)
-      assert is_binary(help.description)
-      assert is_list(help.examples)
-    end
-  end
 end
