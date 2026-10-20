@@ -10,7 +10,7 @@ Part of the [Agent Guide](../AGENT-GUIDE.md) (§13). Section numbers there are s
   files the diff can reach (`scripts/ci_test_selection.exs`); `make ci.full` runs the
   whole suite, and `make deploy` runs it before shipping. A task isn't done until it's
   green. The guard partitions the normal ExUnit suite and the LiveView feature suite by
-  default (`CI_TEST_PARTITIONS=3`, `CI_FEATURE_PARTITIONS=4`,
+  default (`CI_TEST_PARTITIONS=8`, `CI_FEATURE_PARTITIONS=6`,
   `CI_TEST_DB_POOL_SIZE=6`); use `make ci.serial` only to diagnose partition-specific issues. All
   warnings/failures are yours — never "pre-existing" without proof. `make ci.quick` (full,
   skips dialyzer) is for iteration only.

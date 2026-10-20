@@ -282,7 +282,9 @@ defmodule RetroHexChatWeb.App.PlayMatchTest do
       assert %{game_id: @game} = Activity.now()[Nickname.key(host.nickname)]
 
       :ok = Lobby.close_session(session.token, guest.id, "peer_left")
+      # Each side tracks itself as playing; both have to see the end.
       _ = :sys.get_state(host_view.pid)
+      _ = :sys.get_state(guest_view.pid)
       refute Map.has_key?(Activity.now(), Nickname.key(host.nickname))
       refute Enum.any?(Activity.live_matches(), &(&1.token == session.token))
     end

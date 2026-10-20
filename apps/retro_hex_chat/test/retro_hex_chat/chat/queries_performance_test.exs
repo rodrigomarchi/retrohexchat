@@ -7,66 +7,102 @@ defmodule RetroHexChat.Chat.QueriesPerformanceTest do
   alias RetroHexChat.Chat.{Message, Queries}
   alias RetroHexChat.Repo
 
-  describe "pagination performance with 100k messages" do
+  # A channel's history is paged by cursor on an id index, so a page costs
+  # the same at message 50 and at message 99,950. What decides
+  # that is the plan Postgres picks for the query list_messages/2 sends, not
+  # how long it took on whatever else the machine was running: a page that
+  # walks the table, or sorts it, is the regression this guards.
+  describe "pagination over 100k messages in ten channels" do
     @tag timeout: 300_000
-    test "cursor pagination query returns in under 100ms" do
-      channel = "#perf-test-#{System.unique_integer([:positive])}"
-
-      # Seed 100k messages using insert_all for speed.
-      # The messages table has: channel_name, author_nickname, content, type, inserted_at
-      # (no updated_at column).
+    test "every page is read from the channel's index, never by scanning the table" do
+      prefix = "#perf-test-#{System.unique_integer([:positive])}"
+      channel = "#{prefix}-0"
       now = DateTime.utc_now()
 
-      messages =
-        for i <- 1..100_000 do
-          %{
-            channel_name: channel,
-            author_nickname: "user_#{rem(i, 100)}",
-            content: "Performance test message number #{i}",
-            type: "message",
-            inserted_at: now
-          }
-        end
-
-      # Insert in batches of 10_000 to avoid oversized queries
-      messages
-      |> Enum.chunk_every(10_000)
-      |> Enum.each(fn batch ->
-        Repo.insert_all(Message, batch)
+      # One channel among ten, its messages interleaved with the others' the
+      # way a busy server writes them: reading the newest ids and filtering
+      # would walk nine foreign messages for every one of this channel's.
+      1..100_000
+      |> Enum.map(fn i ->
+        %{
+          channel_name: "#{prefix}-#{rem(i, 10)}",
+          author_nickname: "user_#{rem(i, 100)}",
+          content: "Performance test message number #{i}",
+          type: "message",
+          inserted_at: now
+        }
       end)
+      |> Enum.chunk_every(10_000)
+      |> Enum.each(&Repo.insert_all(Message, &1))
 
-      # Benchmark: The first page (newest 50)
-      {time_us, first_page} =
-        :timer.tc(fn -> Queries.list_messages(channel, limit: 50).items end)
+      # The planner chooses by the table's statistics; without fresh ones a
+      # table it believes small is scanned whatever the indexes say.
+      Repo.query!("ANALYZE messages")
 
-      assert length(first_page) == 50
-      time_ms = time_us / 1000
-      assert time_ms < 100, "First page query took #{time_ms}ms, expected < 100ms"
+      {first_page, first_plan} = planned(fn -> Queries.list_messages(channel, limit: 50) end)
+      assert length(first_page.items) == 50
+      assert_indexed(first_plan)
 
-      # Cursor-based pagination using a middle ID
-      last_on_page = List.last(first_page)
+      cursor = List.last(first_page.items).id
 
-      {time_us2, second_page} =
-        :timer.tc(fn ->
-          Queries.list_messages(channel, limit: 50, cursor: last_on_page.id).items
-        end)
+      {second_page, second_plan} =
+        planned(fn -> Queries.list_messages(channel, limit: 50, cursor: cursor) end)
 
-      assert length(second_page) == 50
-      time_ms2 = time_us2 / 1000
-      assert time_ms2 < 100, "Cursor pagination query took #{time_ms2}ms, expected < 100ms"
-
-      # Deep pagination (near the beginning of messages)
-      # Get the very first (oldest) message's ID by going deep
-      deep_cursor = List.last(second_page).id
-
-      {time_us3, deep_page} =
-        :timer.tc(fn ->
-          Queries.list_messages(channel, limit: 50, cursor: deep_cursor).items
-        end)
-
-      assert length(deep_page) == 50
-      time_ms3 = time_us3 / 1000
-      assert time_ms3 < 100, "Deep pagination query took #{time_ms3}ms, expected < 100ms"
+      assert length(second_page.items) == 50
+      assert Enum.all?(second_page.items, &(&1.id < cursor))
+      assert_indexed(second_plan)
     end
   end
+
+  # Runs `fun` and returns its result with the plan of the query it sent to
+  # the messages table, as Postgres would execute it.
+  defp planned(fun) do
+    parent = self()
+    handler = "queries-performance-#{System.unique_integer([:positive])}"
+
+    :ok =
+      :telemetry.attach(
+        handler,
+        [:retro_hex_chat, :repo, :query],
+        fn _event, _measurements, %{source: "messages", query: sql, params: params}, _ ->
+          send(parent, {:messages_query, sql, params})
+        end,
+        nil
+      )
+
+    result =
+      try do
+        fun.()
+      after
+        :telemetry.detach(handler)
+      end
+
+    assert_received {:messages_query, sql, params}
+    %{rows: [[[plan]]]} = Repo.query!("EXPLAIN (FORMAT JSON) " <> sql, params)
+    {result, plan["Plan"]}
+  end
+
+  defp assert_indexed(plan) do
+    nodes = plan_nodes(plan)
+    types = Enum.map(nodes, & &1["Node Type"])
+
+    refute "Seq Scan" in types, "the page scanned the table: #{inspect(types)}"
+
+    refute "Sort" in types,
+           "the page sorted rows instead of reading them in order: #{inspect(types)}"
+
+    assert Enum.any?(nodes, &index_read?/1),
+           "the page read messages without an index: #{inspect(types)}"
+  end
+
+  # Which index is the planner's call: with a channel this size it reads the
+  # primary key backwards and filters, a few hundred rows for a page, and a
+  # small channel gets its (channel_name, id) range. Either is a page read in
+  # order; a scan or a sort is the whole channel read for fifty lines.
+  defp index_read?(node) do
+    node["Node Type"] in ["Index Scan", "Index Scan Backward", "Index Only Scan"] and
+      node["Relation Name"] == "messages"
+  end
+
+  defp plan_nodes(plan), do: [plan | Enum.flat_map(plan["Plans"] || [], &plan_nodes/1)]
 end

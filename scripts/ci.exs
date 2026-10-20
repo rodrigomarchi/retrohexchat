@@ -547,8 +547,8 @@ defmodule CI do
 
   defp runner_config(opts) do
     %{
-      test_partitions: positive_int(opts[:test_partitions], "CI_TEST_PARTITIONS", 3),
-      feature_partitions: positive_int(opts[:feature_partitions], "CI_FEATURE_PARTITIONS", 4),
+      test_partitions: positive_int(opts[:test_partitions], "CI_TEST_PARTITIONS", 8),
+      feature_partitions: positive_int(opts[:feature_partitions], "CI_FEATURE_PARTITIONS", 6),
       test_db_pool_size: positive_int(nil, "CI_TEST_DB_POOL_SIZE", 6),
       # check => the test files it runs, when a selection narrowed it
       test_files: %{}

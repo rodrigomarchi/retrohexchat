@@ -10,7 +10,7 @@ defmodule RetroHexChatWeb.GroupCallChannelTest do
   alias RetroHexChatWeb.UserSocket
 
   @moduletag :integration
-  @channel_timeout 1_000
+  @channel_timeout 5_000
 
   setup do
     previous_port_range = Application.get_env(:retro_hex_chat, :sfu_ice_port_range)

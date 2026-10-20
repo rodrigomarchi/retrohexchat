@@ -72,15 +72,18 @@ Stage 3 (isolated):
   └─ dialyzer
 ```
 
-**Performance:** `make ci.full` measured `3m24s` with a warm Dialyzer PLT and an
-unchanged character creator; `make ci` took 27s–63s for one changed source file,
-depending on how much of the suite reaches it. Nearly all of the suite's time is
-in `async: false` LiveView modules, which run one at a time within a partition.
-`make ci.serial` runs the same checks with one partition per suite and takes
-roughly twice as long.
+**Performance:** `make ci.full` measured `2m05s`–`2m09s` with a warm Dialyzer
+PLT and an unchanged character creator; `make ci` took 26s–46s for one changed
+source file, depending on how much of the suite reaches it. Nearly all of the
+suite's time is in `async: false` LiveView modules, which run one at a time
+within a partition, so the partition count is what bounds a full run: eight and
+six fill a 14-core machine. A loaded machine also stretches how long a message
+takes to arrive, which is why both test helpers set `assert_receive_timeout` to
+a second — an arriving message is still matched at once. `make ci.serial` runs
+the same checks with one partition per suite and takes roughly twice as long.
 
 The normal ExUnit suite and LiveView feature suite are partitioned by default:
-`CI_TEST_PARTITIONS=3`, `CI_FEATURE_PARTITIONS=4`, and
+`CI_TEST_PARTITIONS=8`, `CI_FEATURE_PARTITIONS=6`, and
 `CI_TEST_DB_POOL_SIZE=6`. Use `make ci.serial` only to diagnose
 partition-specific issues. Partition/profile tooling writes reports under
 `tmp/ci-partition-profile/`.
