@@ -96,7 +96,7 @@ msgstr "!BotName rolar <notation>!Bot Rolo de nomes (usa notação padrão)"
 #: lib/retro_hex_chat_web/controllers/help_content/botservice.html.heex:27
 #, elixir-autogen, elixir-format
 msgid "!BotName trigger"
-msgstr "Activador !BotName"
+msgstr "Gatilho !BotName"
 
 #: lib/retro_hex_chat_web/controllers/help_content/bot_custom_commands.html.heex:65
 #, elixir-autogen, elixir-format
@@ -928,9 +928,7 @@ msgstr ""
 #: lib/retro_hex_chat_web/controllers/help_content/bot_moderation.html.heex:68
 #, elixir-autogen, elixir-format
 msgid "capability — it processes every message before active capabilities (like dice or trivia). This means:"
-msgstr ""
-"capacidade — processa todas as mensagens antes das capacidades activas (como"
-" dados ou trivias). Isto significa:"
+msgstr "capacidade — ela processa toda mensagem antes das capacidades ativas (como dados ou trivia). Isso significa:"
 
 #: lib/retro_hex_chat_web/controllers/help_content/bot_custom_commands.html.heex:21
 #, elixir-autogen, elixir-format
@@ -1128,7 +1126,7 @@ msgstr "— Fazer um bot entrar ou deixar um canal."
 #: lib/retro_hex_chat_web/controllers/help_content/bot_scheduler.html.heex:72
 #, elixir-autogen, elixir-format
 msgid "— Maximum active schedules (default: 10)"
-msgstr "— Programações máximas activas (por omissão: 10)"
+msgstr "— Máximo de agendamentos ativos (padrão: 10)"
 
 #: lib/retro_hex_chat_web/controllers/help_content/bot_rss.html.heex:72
 #, elixir-autogen, elixir-format
@@ -1309,12 +1307,7 @@ msgstr "Cada bot pode ter uma ou mais capacidades habilitadas:"
 #: lib/retro_hex_chat_web/controllers/help_content/botservice.html.heex:86
 #, elixir-autogen, elixir-format
 msgid "Each bot runs as its own process on the server. When a message arrives in a channel the bot has joined, the bot checks each capability in order. Passive capabilities (like Moderation) run on every message, while active capabilities use first-match-wins. A cooldown timer prevents the bot from responding too frequently."
-msgstr ""
-"Cada bot é executado como seu próprio processo no servidor. Quando uma "
-"mensagem chega em um canal o bot se juntou, o bot verifica cada capacidade "
-"em ordem. As capacidades passivas (como a Moderação) são executadas em cada "
-"mensagem, enquanto as capacidades activas usam os primeiros ganhos. Um timer"
-" de arrefecimento impede que o bot responda com demasiada frequência."
+msgstr "Cada bot roda como um processo próprio no servidor. Quando chega uma mensagem em um canal em que o bot entrou, ele verifica cada capacidade na ordem. As capacidades passivas (como a Moderação) rodam em toda mensagem, enquanto as capacidades ativas seguem a regra de que a primeira correspondência vence. Um timer de espera impede que o bot responda com frequência demais."
 
 #: lib/retro_hex_chat_web/controllers/help_content/botservice.html.heex:18
 #, elixir-autogen, elixir-format

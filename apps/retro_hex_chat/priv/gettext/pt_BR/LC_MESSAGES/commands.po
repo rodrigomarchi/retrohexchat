@@ -1423,8 +1423,8 @@ msgid "Hide messages from a specific user.\nTypes: all (default), messages, pms,
 msgstr ""
 "Ocultar mensagens de um usuário específico.\n"
 "Tipos: todos (padrão), mensagens, pms, ações, avisos, convites.\n"
-"Duração: Nm (minutos), Nh (horas), Nd (dias). Nenhuma duração = permanente até /unignore.\n"
-"Sem args: mostrar a sua lista de ignorar. Não podes ignorar-te."
+"Duração: Nm (minutos), Nh (horas), Nd (dias). Sem duração = permanente até /unignore.\n"
+"Sem argumentos: mostra a sua lista de ignorados. Você não pode ignorar a si mesmo."
 
 #: lib/retro_hex_chat/commands/handlers/mode.ex:67
 #, elixir-autogen, elixir-format
@@ -1955,11 +1955,11 @@ msgstr ""
 #, elixir-autogen, elixir-format
 msgid "Schedule a command to run after a delay or on a repeating interval.\nCreate: /timer <name> <seconds> <command>. Repeat: /timer <name> repeat <seconds> <command>.\nTimers run in the window that was active when they were created and do not switch your current window when they fire.\nManage: /timer list, /timer stop <name>.\nMax 5 timers. One-shot: 1-86400s. Repeat minimum: 10s. Session-only (lost on disconnect)."
 msgstr ""
-"Agende um comando para executar após um atraso ou em um intervalo repetido.\n"
+"Agende um comando para rodar após um tempo ou em intervalos repetidos.\n"
 "Criar: /timer <name> <seconds> <command>. Repetir: /timer <name> repeat <seconds> <command>.\n"
-"Os timers são executados na janela que estava ativa quando foram criados e não mudam sua janela atual quando disparam.\n"
-"Gerir: /timer list, /timer stop <name>.\n"
-"Max 5 timers. Um tiro: 1-86400s. Repetir o mínimo: 10s. Apenas sessão (perdido ao desconectar)."
+"Os timers rodam na janela que estava ativa quando foram criados e não trocam sua janela atual ao disparar.\n"
+"Gerenciar: /timer list, /timer stop <name>.\n"
+"Máx. 5 timers. Disparo único: 1-86400s. Repetição mínima: 10s. Só na sessão (perdidos ao desconectar)."
 
 #: lib/retro_hex_chat/commands/handlers/timer.ex:79
 #, elixir-autogen, elixir-format
@@ -2786,7 +2786,7 @@ msgstr "Você não está em nenhum canal"
 #: lib/retro_hex_chat/commands/handlers/ignore.ex:24
 #, elixir-autogen, elixir-format
 msgid "You cannot ignore yourself"
-msgstr "Não podes ignorar-te."
+msgstr "Você não pode ignorar a si mesmo."
 
 #: lib/retro_hex_chat/commands/handlers/ban.ex:21
 #, elixir-autogen, elixir-format
@@ -3044,7 +3044,7 @@ msgstr "#%{id} %{label} | %{browser} / %{os} | último %{last_seen}"
 #: lib/retro_hex_chat/commands/handlers/ns.ex:252
 #, elixir-autogen, elixir-format
 msgid "%{count} active sessions ended."
-msgstr "As sessões activas do %{count} terminaram."
+msgstr "%{count} sessões ativas encerradas."
 
 #: lib/retro_hex_chat/commands/handlers/ns.ex:117
 #: lib/retro_hex_chat/commands/handlers/ns.ex:368
@@ -3080,9 +3080,7 @@ msgstr ""
 #: lib/retro_hex_chat/commands/handlers/ns.ex:226
 #, elixir-autogen, elixir-format
 msgid "All trusted terminals revoked. %{count} active sessions ended."
-msgstr ""
-"Todos os terminais de confiança revogados. As sessões activas do %{count} "
-"terminaram."
+msgstr "Todos os terminais confiáveis foram revogados. %{count} sessões ativas encerradas."
 
 #: lib/retro_hex_chat/commands/handlers/ns.ex:394
 #, elixir-autogen, elixir-format
@@ -3092,7 +3090,7 @@ msgstr "Terminar uma sessão ativa"
 #: lib/retro_hex_chat/commands/handlers/ns.ex:392
 #, elixir-autogen, elixir-format
 msgid "List active sessions"
-msgstr "Listar as sessões activas"
+msgstr "Listar as sessões ativas"
 
 #: lib/retro_hex_chat/commands/handlers/ns.ex:391
 #, elixir-autogen, elixir-format
@@ -3102,12 +3100,12 @@ msgstr "Listar terminais confiáveis"
 #: lib/retro_hex_chat/commands/handlers/ns.ex:210
 #, elixir-autogen, elixir-format
 msgid "No active sessions for this nickname."
-msgstr "Sem sessões activas para esta alcunha."
+msgstr "Nenhuma sessão ativa para este apelido."
 
 #: lib/retro_hex_chat/commands/handlers/ns.ex:195
 #, elixir-autogen, elixir-format
 msgid "No trusted terminals for this nickname."
-msgstr "Não existem terminais de confiança para esta alcunha."
+msgstr "Nenhum terminal confiável para este apelido."
 
 #: lib/retro_hex_chat/commands/handlers/ns.ex:107
 #, elixir-autogen, elixir-format

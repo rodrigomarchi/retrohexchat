@@ -31,7 +31,7 @@ msgstr ""
 #: lib/retro_hex_chat_web/controllers/help_content/ui_context_menu.html.heex:16
 #, elixir-autogen, elixir-format
 msgid "Add to Contacts:"
-msgstr "Adicionar aos Contactos:"
+msgstr "Adicionar aos Contatos:"
 
 #: lib/retro_hex_chat_web/controllers/help_content/ui_toolbar.html.heex:96
 #, elixir-autogen, elixir-format
@@ -184,7 +184,7 @@ msgstr "Conversas:"
 #: lib/retro_hex_chat_web/controllers/help_content/keyboard_shortcuts.html.heex:41
 #, elixir-autogen, elixir-format
 msgid "Ctrl+C — Copy selected text"
-msgstr "Ctrl+C — Copiar o texto seleccionado"
+msgstr "Ctrl+C — Copiar o texto selecionado"
 
 #: lib/retro_hex_chat_web/controllers/help_content/keyboard_shortcuts.html.heex:43
 #, elixir-autogen, elixir-format
@@ -459,7 +459,7 @@ msgstr "Botões de acesso rápido para ações comuns."
 #: lib/retro_hex_chat_web/controllers/help_content/ui_nicklist.html.heex:20
 #, elixir-autogen, elixir-format
 msgid "Red, bold. Can manage the channel."
-msgstr "Vermelho, arrojado. Pode gerir o canal."
+msgstr "Vermelho, negrito. Pode gerenciar o canal."
 
 #: lib/retro_hex_chat_web/controllers/help_content/ui_nicklist.html.heex:30
 #, elixir-autogen, elixir-format
@@ -1087,9 +1087,7 @@ msgstr "Limpar a Janela"
 #: lib/retro_hex_chat_web/controllers/help_content/ui_overview.html.heex:14
 #, elixir-autogen, elixir-format
 msgid "Clear the active window, copy selected chat text, and open Find."
-msgstr ""
-"Limpar a janela activa, copiar o texto de conversa seleccionado e abrir a "
-"opção Procurar."
+msgstr "Limpar a janela ativa, copiar o texto selecionado do chat e abrir Localizar."
 
 #: lib/retro_hex_chat_web/controllers/help_content/ui_edit_menu.html.heex:16
 #, elixir-autogen, elixir-format
@@ -1116,10 +1114,7 @@ msgstr "Página de Comandos"
 #: lib/retro_hex_chat_web/controllers/help_content/ui_edit_menu.html.heex:39
 #, elixir-autogen, elixir-format
 msgid "Copies the current text selection from the chat log to the clipboard. The item is enabled only when selected text is inside the message log."
-msgstr ""
-"Copia a seleção de texto atual do registro de conversa para a área de "
-"transferência. O item só está activo quando o texto seleccionado estiver "
-"dentro do registo de mensagens."
+msgstr "Copia o texto selecionado no log do chat para a área de transferência. O item só fica ativo quando o texto selecionado está dentro do log de mensagens."
 
 #: lib/retro_hex_chat_web/controllers/help_content/ui_edit_menu.html.heex:37
 #: lib/retro_hex_chat_web/controllers/help_content/ui_edit_menu.html.heex:84
@@ -1199,7 +1194,7 @@ msgstr ""
 #: lib/retro_hex_chat_web/controllers/help_content/ui_toolbar.html.heex:10
 #, elixir-autogen, elixir-format
 msgid "File > Account"
-msgstr "Ficheiro > Conta"
+msgstr "Arquivo > Conta"
 
 #: lib/retro_hex_chat_web/controllers/help_content/ui_bot_management.html.heex:16
 #, elixir-autogen, elixir-format
@@ -1317,7 +1312,7 @@ msgstr "Perfil"
 #: lib/retro_hex_chat_web/controllers/help_content/ui_toolbar.html.heex:13
 #, elixir-autogen, elixir-format
 msgid "Register / Identify"
-msgstr "Registo / Identificação"
+msgstr "Registrar / Identificar"
 
 #: lib/retro_hex_chat_web/controllers/help_content/ui_timers_dialog.html.heex:25
 #, elixir-autogen, elixir-format
@@ -1531,13 +1526,12 @@ msgstr ""
 #: lib/retro_hex_chat_web/controllers/help_content/ui_toolbar.html.heex:46
 #, elixir-autogen, elixir-format
 msgid "— Clear messages from the active chat window. This cannot be undone."
-msgstr ""
-"— Limpar as mensagens da janela de chat activa. Isto não pode ser desfeito."
+msgstr "— Limpa as mensagens da janela de chat ativa. Isso não pode ser desfeito."
 
 #: lib/retro_hex_chat_web/controllers/help_content/ui_toolbar.html.heex:52
 #, elixir-autogen, elixir-format
 msgid "— Copy selected chat-log text when a selection exists."
-msgstr "— Copiar o texto do chat seleccionado quando existir uma selecção."
+msgstr "— Copia o texto selecionado do log do chat quando há uma seleção."
 
 #: lib/retro_hex_chat_web/controllers/help_content/ui_toolbar.html.heex:13
 #, elixir-autogen, elixir-format
@@ -1606,13 +1600,7 @@ msgstr "Ausente"
 #: lib/retro_hex_chat_web/controllers/help_content/ui_account_dialog.html.heex:18
 #, elixir-autogen, elixir-format
 msgid "Register claims your current nickname with NickServ. Identify logs this session into an already registered nickname. The window adapts to the nickname state: unregistered nicknames show Register, registered nicknames show Identify and Drop registration, and NickServ password errors stay inline. Ghost session disconnects a stale session after you enter that nickname and its password."
-msgstr ""
-"O registo reclama o seu apelido actual com o NickServ. Identificar os "
-"registos desta sessão num apelido já registado. A janela se adapta ao estado"
-" do apelido: apelidos não registrados mostram Registro, apelidos registrados"
-" mostram Registro de identificação e soltar, e erros de senha NickServ "
-"permanecem em linha. A sessão fantasma desconecta uma sessão antiga depois "
-"de digitar esse apelido e sua senha."
+msgstr "Registrar reivindica seu apelido atual no NickServ. Identificar conecta esta sessão a um apelido já registrado. A janela se adapta ao estado do apelido: apelidos não registrados mostram Registrar, apelidos registrados mostram Identificar e Cancelar registro, e os erros de senha do NickServ aparecem na própria janela. Sessão fantasma desconecta uma sessão antiga depois que você digita esse apelido e a senha dele."
 
 #: lib/retro_hex_chat_web/controllers/help_content/ui_account_dialog.html.heex:34
 #, elixir-autogen, elixir-format
@@ -2048,7 +2036,7 @@ msgstr ""
 #: lib/retro_hex_chat_web/controllers/help_content/ui_system_windows.html.heex:106
 #, elixir-autogen, elixir-format
 msgid "Live Log"
-msgstr "Registo ao Vivo"
+msgstr "Registro ao vivo"
 
 #: lib/retro_hex_chat_web/controllers/help_content/ui_system_windows.html.heex:57
 #, elixir-autogen, elixir-format
@@ -2194,10 +2182,7 @@ msgstr ""
 #: lib/retro_hex_chat_web/controllers/help_content/ui_start_menu.html.heex:74
 #, elixir-autogen, elixir-format
 msgid "— The windows of the screen you are on. Closing a window takes its taskbar button with it, the way Windows 98 did; this is how it comes back."
-msgstr ""
-"— As janelas do ecrã em que se encontra. Fechando uma janela leva seu botão "
-"de barra de tarefas com ele, da maneira que o Windows 98 fez; é assim que "
-"ele volta."
+msgstr "— As janelas da tela em que você está. Fechar uma janela leva junto o botão dela na barra de tarefas, como no Windows 98; é assim que ela volta."
 
 #: lib/retro_hex_chat_web/controllers/help_content/ui_start_menu.html.heex:68
 #, elixir-autogen, elixir-format
@@ -3457,7 +3442,7 @@ msgstr "Abra o canal cujo tópico você deseja alterar."
 #: lib/retro_hex_chat_web/controllers/help_content/ui_topic_bar.html.heex:47
 #, elixir-autogen, elixir-format
 msgid "Operators can also edit the topic in Channel Central, on the General tab, and press Save Topic."
-msgstr "Os operadores também podem editar o tópico no Canal Central, na guia Geral, e pressionar Salvar Tópico."
+msgstr "Os operadores também podem editar o tópico na Central do canal, na guia Geral, e pressionar Salvar Tópico."
 
 #: lib/retro_hex_chat_web/controllers/help_content/formatting_colors.html.heex:48
 #, elixir-autogen, elixir-format
@@ -3569,7 +3554,7 @@ msgstr "Cores de texto e de fundo"
 #: lib/retro_hex_chat_web/controllers/help_content/ui_edit_menu.html.heex:50
 #, elixir-autogen, elixir-format
 msgid "Text selected outside the message log, such as in the message box or a menu, is not copied. Copy stays grey in that case."
-msgstr "O texto seleccionado fora do registo de mensagens, como no campo de mensagens ou num menu, não é copiado. A cópia fica cinzenta nesse caso."
+msgstr "Texto selecionado fora do log de mensagens, como na caixa de mensagem ou em um menu, não é copiado. Nesse caso, Copiar fica cinza."
 
 #: lib/retro_hex_chat_web/controllers/help_content/formatting_colors.html.heex:96
 #, elixir-autogen, elixir-format

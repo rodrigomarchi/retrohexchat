@@ -1337,7 +1337,7 @@ msgstr "de inactividade — conecte-se regularmente para manter a sua (ver"
 #: lib/retro_hex_chat_web/controllers/help_content/channel_permissions.html.heex:84
 #, elixir-autogen, elixir-format
 msgid "rank than yours. An operator cannot kick another operator."
-msgstr "Uma patente que a tua. Um operador não pode chutar outro operador."
+msgstr "superior à sua. Um operador não pode expulsar outro operador."
 
 #: lib/retro_hex_chat_web/controllers/help_content/chanserv.html.heex:71
 #, elixir-autogen, elixir-format
@@ -1533,7 +1533,7 @@ msgstr "Central do canal"
 #: lib/retro_hex_chat_web/controllers/help_content/chanserv_register.html.heex:50
 #, elixir-autogen, elixir-format
 msgid "Channel Central Registration Tab"
-msgstr "Página de Registo Central do Canal"
+msgstr "Aba Registro da Central do canal"
 
 #: lib/retro_hex_chat_web/controllers/help_content/chanserv_ui.html.heex:2
 #, elixir-autogen, elixir-format
@@ -1547,7 +1547,7 @@ msgstr ""
 #: lib/retro_hex_chat_web/controllers/help_content/chanserv_ui.html.heex:63
 #, elixir-autogen, elixir-format
 msgid "Channel Registration"
-msgstr "Registo de canais"
+msgstr "Registro de canais"
 
 #: lib/retro_hex_chat_web/controllers/help_content/channel_transfer_ownership.html.heex:2
 #, elixir-autogen, elixir-format
@@ -1560,10 +1560,7 @@ msgstr ""
 #: lib/retro_hex_chat_web/controllers/help_content/channel_welcome_message.html.heex:2
 #, elixir-autogen, elixir-format
 msgid "Channel welcome messages are shown once to each user when they join a channel. Operators can set or clear the message from Channel Central's General tab or with commands."
-msgstr ""
-"Mensagens de boas-vindas do canal são mostradas uma vez para cada usuário "
-"quando eles se juntam a um canal. Os operadores podem definir ou limpar a "
-"mensagem da guia Geral do Canal Central ou com comandos."
+msgstr "Mensagens de boas-vindas do canal são mostradas uma vez para cada usuário quando eles se juntam a um canal. Os operadores podem definir ou limpar a mensagem da guia Geral da Central do canal ou com comandos."
 
 #: lib/retro_hex_chat_web/controllers/help_content/channel_transfer_ownership.html.heex:24
 #, elixir-autogen, elixir-format
@@ -1615,19 +1612,12 @@ msgstr "Apenas o fundador pode soltar o registro do canal."
 #: lib/retro_hex_chat_web/controllers/help_content/chanserv_register.html.heex:35
 #, elixir-autogen, elixir-format
 msgid "Open Channel Central and select Registration to see whether the channel is registered, who founded it, and when it was registered. The same tab provides Register Channel and Drop Registration controls when your permissions allow them."
-msgstr ""
-"Abra o Canal Central e selecione Registro para ver se o canal está "
-"registrado, quem o fundou e quando foi registrado. A mesma guia fornece "
-"controles de Registro de Canal e Registro de Queda quando suas permissões "
-"permitem."
+msgstr "Abra a Central do canal e selecione Registro para ver se o canal está registrado, quem o fundou e quando foi registrado. A mesma guia fornece controles de Registro de Canal e Registro de Queda quando suas permissões permitem."
 
 #: lib/retro_hex_chat_web/controllers/help_content/chanserv.html.heex:99
 #, elixir-autogen, elixir-format
 msgid "Open Channel Central and select the Registration tab to see registration status, register an unregistered channel, drop a channel as founder, and manage SOP, AOP, and VOP access lists."
-msgstr ""
-"Abra o Canal Central e selecione a guia Registro para ver o status do "
-"registro, registrar um canal não registrado, soltar um canal como fundador e"
-" gerenciar listas de acesso SOP, AOP e VOP."
+msgstr "Abra a Central do canal e selecione a guia Registro para ver o status do registro, registrar um canal não registrado, soltar um canal como fundador e gerenciar listas de acesso SOP, AOP e VOP."
 
 #: lib/retro_hex_chat_web/controllers/help_content/channel_welcome_message.html.heex:18
 #, elixir-autogen, elixir-format
@@ -1665,7 +1655,7 @@ msgstr "Register Channel executa a mesma ação que /cs register."
 #: lib/retro_hex_chat_web/controllers/help_content/chanserv_access.html.heex:28
 #, elixir-autogen, elixir-format
 msgid "Registration Tab"
-msgstr "Página de Registo"
+msgstr "Aba Registro"
 
 #: lib/retro_hex_chat_web/controllers/help_content/channel_welcome_message.html.heex:68
 #, elixir-autogen, elixir-format
@@ -1692,8 +1682,7 @@ msgstr ""
 #: lib/retro_hex_chat_web/controllers/help_content/channel_permissions.html.heex:50
 #, elixir-autogen, elixir-format
 msgid "Set welcome messages and join throttles in Channel Central"
-msgstr ""
-"Definir mensagens de boas-vindas e juntar os aceleradores no Canal Central"
+msgstr "Definir mensagens de boas-vindas e juntar os aceleradores na Central do canal"
 
 #: lib/retro_hex_chat_web/controllers/help_content/chanserv_register.html.heex:23
 #, elixir-autogen, elixir-format
@@ -1703,10 +1692,7 @@ msgstr "A página Registro só permite Registro Canal para operadores de canal."
 #: lib/retro_hex_chat_web/controllers/help_content/chanserv_ui.html.heex:49
 #, elixir-autogen, elixir-format
 msgid "The dialog disables or hides write controls when you are not identified with NickServ or your ChanServ role cannot manage the selected list."
-msgstr ""
-"A janela desactiva ou oculta os comandos de escrita quando não estiver "
-"identificado com o NickServ ou a sua função ChanServ não conseguir gerir a "
-"lista seleccionada."
+msgstr "A janela desativa ou oculta os controles de edição quando você não está identificado no NickServ ou quando sua função no ChanServ não pode gerenciar a lista selecionada."
 
 #: lib/retro_hex_chat_web/controllers/help_content/channel_transfer_ownership.html.heex:40
 #, elixir-autogen, elixir-format
@@ -1761,10 +1747,7 @@ msgstr ""
 #: lib/retro_hex_chat_web/controllers/help_content/chanserv_ui.html.heex:12
 #, elixir-autogen, elixir-format
 msgid "Open Channel Central for a channel you have joined, then choose Registration after Access Lists. The status area shows whether the channel is registered and who the founder is."
-msgstr ""
-"Abra Canal Central para um canal que você se juntou, em seguida, escolha "
-"Registro após Listas de Acesso. A área de status mostra se o canal está "
-"registrado e quem é o fundador."
+msgstr "Abra a Central do canal para um canal que você se juntou, em seguida, escolha Registro após Listas de Acesso. A área de status mostra se o canal está registrado e quem é o fundador."
 
 #: lib/retro_hex_chat_web/controllers/help_content/chanserv.html.heex:110
 #, elixir-autogen, elixir-format
@@ -1909,7 +1892,7 @@ msgstr "Altere o tópico quando o tópico estiver bloqueado."
 #: lib/retro_hex_chat_web/controllers/help_content/mode_j.html.heex:60
 #, elixir-autogen, elixir-format
 msgid "Channel Central and the slow command always allow 5 joins in the number of seconds you choose. Use the mode command to pick a different count."
-msgstr "Canal Central e o comando lento sempre permitem 5 junções no número de segundos que você escolher. Use o comando modo para escolher uma contagem diferente."
+msgstr "Central do canal e o comando lento sempre permitem 5 junções no número de segundos que você escolher. Use o comando modo para escolher uma contagem diferente."
 
 #: lib/retro_hex_chat_web/controllers/help_content/mode_c.html.heex:16
 #, elixir-autogen, elixir-format
@@ -1939,7 +1922,7 @@ msgstr "Desactivar o modo sem bater"
 #: lib/retro_hex_chat_web/controllers/help_content/mode_r.html.heex:16
 #, elixir-autogen, elixir-format
 msgid "Disable registered-only mode"
-msgstr "Desactivar o modo apenas registado"
+msgstr "Desativar o modo somente registrados"
 
 #: lib/retro_hex_chat_web/controllers/help_content/mode_t.html.heex:16
 #, elixir-autogen, elixir-format
@@ -1974,37 +1957,37 @@ msgstr "Cada pessoa vê uma vez por sessão. Sair e juntar-se novamente na mesma
 #: lib/retro_hex_chat_web/controllers/help_content/mode_c.html.heex:15
 #, elixir-autogen, elixir-format
 msgid "Enable color stripping"
-msgstr "Activar a remoção de cores"
+msgstr "Ativar a remoção de cores"
 
 #: lib/retro_hex_chat_web/controllers/help_content/mode_i.html.heex:15
 #, elixir-autogen, elixir-format
 msgid "Enable invite only"
-msgstr "Activar apenas o convite"
+msgstr "Ativar somente convidados"
 
 #: lib/retro_hex_chat_web/controllers/help_content/mode_m.html.heex:15
 #, elixir-autogen, elixir-format
 msgid "Enable moderated mode"
-msgstr "Activar o modo moderado"
+msgstr "Ativar o modo moderado"
 
 #: lib/retro_hex_chat_web/controllers/help_content/mode_n.html.heex:15
 #, elixir-autogen, elixir-format
 msgid "Enable no external messages"
-msgstr "Activar sem mensagens externas"
+msgstr "Ativar o bloqueio de mensagens externas"
 
 #: lib/retro_hex_chat_web/controllers/help_content/mode_nk.html.heex:7
 #, elixir-autogen, elixir-format
 msgid "Enable no-knock mode"
-msgstr "Activar o modo sem bater"
+msgstr "Ativar o modo sem knock"
 
 #: lib/retro_hex_chat_web/controllers/help_content/mode_r.html.heex:15
 #, elixir-autogen, elixir-format
 msgid "Enable registered-only mode"
-msgstr "Activar o modo apenas registado"
+msgstr "Ativar o modo somente registrados"
 
 #: lib/retro_hex_chat_web/controllers/help_content/mode_t.html.heex:15
 #, elixir-autogen, elixir-format
 msgid "Enable topic lock"
-msgstr "Activar o bloqueio de tópicos"
+msgstr "Ativar o bloqueio de tópico"
 
 #: lib/retro_hex_chat_web/controllers/help_content/mode_nk.html.heex:49
 #, elixir-autogen, elixir-format
@@ -2305,27 +2288,27 @@ msgstr "Operadores e proprietários podem convidar pessoas. Os semioperadores n�
 #: lib/retro_hex_chat_web/controllers/help_content/mode_i.html.heex:48
 #, elixir-autogen, elixir-format
 msgid "Operators can also open Channel Central, go to the Modes tab, tick Invite Only and choose Apply Modes."
-msgstr "Os operadores também podem abrir Canal Central, ir para a guia Modos, marcar Convidar Apenas e escolher Modos Aplicar."
+msgstr "Os operadores também podem abrir a Central do canal, ir para a guia Modos, marcar Convidar Apenas e escolher Modos Aplicar."
 
 #: lib/retro_hex_chat_web/controllers/help_content/mode_k.html.heex:50
 #, elixir-autogen, elixir-format
 msgid "Operators can also open Channel Central, go to the Modes tab, tick Key, type the key and choose Apply Modes."
-msgstr "Os operadores também podem abrir o Canal Central, ir para a guia Modos, marcar chave, digitar a chave e escolher Modos Aplicar."
+msgstr "Os operadores também podem abrir a Central do canal, ir para a guia Modos, marcar chave, digitar a chave e escolher Modos Aplicar."
 
 #: lib/retro_hex_chat_web/controllers/help_content/mode_l.html.heex:22
 #, elixir-autogen, elixir-format
 msgid "Operators can also open Channel Central, go to the Modes tab, tick Limit, type the number and choose Apply Modes."
-msgstr "Os operadores também podem abrir Canal Central, ir para a aba Modos, marcar Limite, digitar o número e escolher Modos Aplicar."
+msgstr "Os operadores também podem abrir a Central do canal, ir para a aba Modos, marcar Limite, digitar o número e escolher Modos Aplicar."
 
 #: lib/retro_hex_chat_web/controllers/help_content/mode_m.html.heex:54
 #, elixir-autogen, elixir-format
 msgid "Operators can also open Channel Central, go to the Modes tab, tick Moderated and choose Apply Modes."
-msgstr "Os operadores também podem abrir o Canal Central, acessar a aba Modos, marcar Moderado e escolher Modos Aplicar."
+msgstr "Os operadores também podem abrir a Central do canal, acessar a aba Modos, marcar Moderado e escolher Modos Aplicar."
 
 #: lib/retro_hex_chat_web/controllers/help_content/mode_t.html.heex:47
 #, elixir-autogen, elixir-format
 msgid "Operators can also open Channel Central, go to the Modes tab, tick Topic Lock and choose Apply Modes."
-msgstr "Os operadores também podem abrir o Canal Central, ir para a aba Modos, marcar Trava de Tópico e escolher Modos Aplicar."
+msgstr "Os operadores também podem abrir a Central do canal, ir para a aba Modos, marcar Trava de Tópico e escolher Modos Aplicar."
 
 #: lib/retro_hex_chat_web/controllers/help_content/mode_o.html.heex:61
 #, elixir-autogen, elixir-format
