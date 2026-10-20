@@ -332,10 +332,18 @@ defmodule RetroHexChat.Services.NickServ do
   Restores the in-memory set after a restart/deploy wiped it, keeping it in sync
   with the client's identity so downstream checks (virtual spaces, P2P) agree.
   Only takes effect for a registered nickname.
+
+  The registration is looked up here, in the caller, like every other query
+  of this module: a database error then fails the reconnect that asked, not
+  the one process holding everybody's identification.
   """
   @spec restore_identified(String.t(), GenServer.server()) :: :ok
   def restore_identified(nickname, server \\ __MODULE__) do
-    GenServer.cast(server, {:restore_identified, nickname})
+    if Queries.find_by_nickname(nickname) != nil do
+      GenServer.cast(server, {:restore_identified, nickname})
+    end
+
+    :ok
   end
 
   # -- GenServer callbacks (cheap in-memory state only: identified set + timers,
@@ -418,11 +426,7 @@ defmodule RetroHexChat.Services.NickServ do
   end
 
   def handle_cast({:restore_identified, nickname}, state) do
-    if Queries.find_by_nickname(nickname) != nil do
-      {:noreply, put_identified(state, nickname)}
-    else
-      {:noreply, state}
-    end
+    {:noreply, put_identified(state, nickname)}
   end
 
   def handle_cast({:cancel_identify_timer, nickname}, state) do
