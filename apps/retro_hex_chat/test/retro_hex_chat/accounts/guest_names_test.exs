@@ -12,12 +12,14 @@ defmodule RetroHexChat.Accounts.GuestNamesTest do
   end
 
   # A tab is a process: it claims, says which name it got, and stays open until
-  # told to close.
+  # told to close. Linked, so a claim that fails fails the test with its own
+  # reason; the wait is generous because a busy suite can stall it past the
+  # default without anything being wrong.
   defp open_tab(server, browser_id) do
     test = self()
 
     pid =
-      spawn(fn ->
+      spawn_link(fn ->
         send(test, {:claimed, self(), GuestNames.claim(browser_id, server)})
 
         receive do
@@ -25,7 +27,7 @@ defmodule RetroHexChat.Accounts.GuestNamesTest do
         end
       end)
 
-    assert_receive {:claimed, ^pid, name}
+    assert_receive {:claimed, ^pid, name}, 2_000
     {pid, name}
   end
 
