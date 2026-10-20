@@ -178,14 +178,14 @@ msgid "Connect"
 msgstr "Connetti"
 
 #: lib/retro_hex_chat_web/controllers/help_content/connecting.html.heex:67
-#: lib/retro_hex_chat_web/controllers/help_content/ui_connect_window.html.heex:61
+#: lib/retro_hex_chat_web/controllers/help_content/ui_connect_window.html.heex:65
 #, elixir-autogen, elixir-format
 msgid "Connect Authentication"
 msgstr "Collegare l'autenticazione"
 
 #: lib/retro_hex_chat_web/controllers/help_content/connect_authentication.html.heex:44
 #: lib/retro_hex_chat_web/controllers/help_content/ui_connect_window.html.heex:16
-#: lib/retro_hex_chat_web/controllers/help_content/ui_connect_window.html.heex:58
+#: lib/retro_hex_chat_web/controllers/help_content/ui_connect_window.html.heex:62
 #: lib/retro_hex_chat_web/controllers/help_content/watching_without_account.html.heex:92
 #: lib/retro_hex_chat_web/controllers/help_content/welcome.html.heex:124
 #, elixir-autogen, elixir-format
@@ -270,7 +270,7 @@ msgstr "Nick Scadenza"
 
 #: lib/retro_hex_chat_web/controllers/help_content/connect_authentication.html.heex:45
 #: lib/retro_hex_chat_web/controllers/help_content/connecting.html.heex:70
-#: lib/retro_hex_chat_web/controllers/help_content/ui_connect_window.html.heex:64
+#: lib/retro_hex_chat_web/controllers/help_content/ui_connect_window.html.heex:68
 #, elixir-autogen, elixir-format
 msgid "NickServ Overview"
 msgstr "NickServ Panoramica"
@@ -360,7 +360,7 @@ msgstr ""
 #: lib/retro_hex_chat_web/controllers/help_content/connect_authentication.html.heex:42
 #: lib/retro_hex_chat_web/controllers/help_content/connecting.html.heex:64
 #: lib/retro_hex_chat_web/controllers/help_content/private_messages.html.heex:33
-#: lib/retro_hex_chat_web/controllers/help_content/ui_connect_window.html.heex:56
+#: lib/retro_hex_chat_web/controllers/help_content/ui_connect_window.html.heex:60
 #: lib/retro_hex_chat_web/controllers/help_content/watching_without_account.html.heex:90
 #: lib/retro_hex_chat_web/controllers/help_content/welcome.html.heex:122
 #, elixir-autogen, elixir-format
@@ -586,7 +586,7 @@ msgstr ""
 msgid "Auto-Login"
 msgstr "Auto-Login"
 
-#: lib/retro_hex_chat_web/controllers/help_content/ui_connect_window.html.heex:63
+#: lib/retro_hex_chat_web/controllers/help_content/ui_connect_window.html.heex:67
 #, elixir-autogen, elixir-format
 msgid "Desktop & Windows"
 msgstr "Desktop e Windows"
@@ -596,7 +596,7 @@ msgstr "Desktop e Windows"
 msgid "Signing In"
 msgstr "Registrazione"
 
-#: lib/retro_hex_chat_web/controllers/help_content/ui_connect_window.html.heex:49
+#: lib/retro_hex_chat_web/controllers/help_content/ui_connect_window.html.heex:53
 #, elixir-autogen, elixir-format
 msgid "The Window Itself"
 msgstr "La finestra stessa"
@@ -605,14 +605,6 @@ msgstr "La finestra stessa"
 #, elixir-autogen, elixir-format
 msgid "The nickname rules are the same everywhere — see"
 msgstr "Le regole del soprannome sono le stesse ovunque — vedi"
-
-#: lib/retro_hex_chat_web/controllers/help_content/ui_connect_window.html.heex:44
-#, elixir-autogen, elixir-format
-msgid "This is per terminal and per nickname, so a shared machine can stay manual while your own signs you in. Disconnecting from the chat always returns you here rather than looping straight back in."
-msgstr ""
-"Questo è per terminale e per soprannome, quindi una macchina condivisa può "
-"rimanere manuale mentre i vostri propri segni in. Scollegare dalla chat ti "
-"restituisce sempre qui, piuttosto che andare avanti."
 
 #: lib/retro_hex_chat_web/controllers/help_content/ui_connect_window.html.heex:19
 #, elixir-autogen, elixir-format
@@ -904,7 +896,7 @@ msgstr "Tutto ciò che fa qualcosa ha bisogno di un account: scrivere, reagire, 
 msgid "A link to a game, a call or a space opens the chat with that window, and after you sign in it takes you to the link."
 msgstr "Un link a un gioco, una chiamata o uno spazio apre la chat con quella finestra, e dopo che si firma in esso prende al link."
 
-#: lib/retro_hex_chat_web/controllers/help_content/ui_connect_window.html.heex:51
+#: lib/retro_hex_chat_web/controllers/help_content/ui_connect_window.html.heex:55
 #, elixir-autogen, elixir-format
 msgid "It behaves like every other window: move it, minimize it, or bring it back from its taskbar button. Closing it takes you back to the chat; after signing in you land where you were going — the channel you were reading, or the game or call that asked you to sign in."
 msgstr "Si comporta come ogni altra finestra: spostarlo, minimizzarlo, o riportarlo dalla sua barra delle applicazioni. La chiusura ti riporta alla chat; dopo aver firmato in te terra dove stavi andando — il canale che stavi leggendo, o il gioco o la chiamata che ti ha chiesto di entrare."
@@ -978,3 +970,13 @@ msgstr "Accedi con un altro soprannome apre un campo vuoto, e Torna alla lista v
 #, elixir-autogen, elixir-format
 msgid "Tick Remember this terminal when you log in, and this browser remembers your nickname. Next time, the window lists your nicknames instead of an empty field. Click Log in beside one and you are in, without a password."
 msgstr "Tick Ricorda questo terminale quando accedi, e questo browser ricorda il tuo soprannome. La prossima volta, la finestra elenca i soprannomi invece di un campo vuoto. Fare clic su Accedi accanto a uno e sei dentro, senza una password."
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_connect_window.html.heex:48
+#, elixir-autogen, elixir-format
+msgid "After you disconnect, or when a session ends, this window opens instead of the chat. Auto-login starts again when you close the browser, or when you log in here."
+msgstr "Dopo aver scollegato, o quando una sessione termina, questa finestra si apre invece della chat. Auto-login ricomincia quando si chiude il browser, o quando si accede qui."
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_connect_window.html.heex:44
+#, elixir-autogen, elixir-format
+msgid "Auto-login is set per terminal and per nickname, so a shared computer can stay manual."
+msgstr "Auto-login è impostato per terminale e per soprannome, quindi un computer condiviso può rimanere manuale."

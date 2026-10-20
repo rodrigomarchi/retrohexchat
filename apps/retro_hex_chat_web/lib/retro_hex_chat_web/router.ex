@@ -19,6 +19,7 @@ defmodule RetroHexChatWeb.Router do
     plug RetroHexChatWeb.Plugs.PutTrustedDevice
     plug RetroHexChatWeb.Plugs.PutBrowserId
     plug RetroHexChatWeb.Plugs.PutLocale, :public
+    plug RetroHexChatWeb.Plugs.TrustedSignIn
     plug :fetch_live_flash
     plug :put_root_layout, html: {RetroHexChatWeb.Layouts, :desktop}
     plug :protect_from_forgery

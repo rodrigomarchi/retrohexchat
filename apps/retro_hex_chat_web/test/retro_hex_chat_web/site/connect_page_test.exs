@@ -107,25 +107,36 @@ defmodule RetroHexChatWeb.Site.ConnectPageTest do
       nick = "ConnClick#{uid()}"
       NickServ.register(nick, "pass123")
       {:ok, %{cookie_value: cookie}} = TrustedDevices.remember_nick(nil, nick)
+      conn = put_req_cookie(conn, TrustedDeviceCookie.name(), cookie)
 
-      {:ok, view, _html} =
-        conn |> put_req_cookie(TrustedDeviceCookie.name(), cookie) |> live("/connect")
+      {:ok, view, _html} = live(conn, "/connect")
 
-      view |> element(~s([data-testid="remembered-nick-login-#{nick}"])) |> render_click()
+      # The card's Log in is a plain form; what it posts is all it takes.
+      fields =
+        view
+        |> element(
+          ~s|#{@window} form[action="/chat/session"]:has([data-testid="remembered-nick-login-#{nick}"])|
+        )
+        |> render()
+        |> Floki.parse_fragment!()
+        |> Floki.find("input[type=hidden]")
+        |> Map.new(&{Floki.attribute(&1, "name") |> hd(), Floki.attribute(&1, "value") |> hd()})
 
-      assert_push_event(view, "submit_connect", %{})
+      assert %{"nickname" => ^nick, "trusted_device_login" => "true"} = fields
+
+      conn = post(conn, "/chat/session", fields)
+      assert redirected_to(conn) == Map.get(fields, "return_to", "/")
+      assert get_session(conn, :chat_nickname) == nick
     end
 
-    test "with auto-login submits without the reader touching anything", %{conn: conn} do
+    test "with auto-login is never shown: the browser is already signed in", %{conn: conn} do
       nick = "ConnAuto#{uid()}"
       NickServ.register(nick, "pass123")
       {:ok, %{cookie_value: cookie}} = TrustedDevices.remember_nick(nil, nick)
       :ok = TrustedDevices.set_auto_login(trusted_device_id(cookie), nick, true, nick)
 
-      {:ok, view, _html} =
-        conn |> put_req_cookie(TrustedDeviceCookie.name(), cookie) |> live("/connect")
-
-      assert_push_event(view, "submit_connect", %{})
+      assert {:error, {:redirect, %{to: "/"}}} =
+               conn |> put_req_cookie(TrustedDeviceCookie.name(), cookie) |> live("/connect")
     end
   end
 

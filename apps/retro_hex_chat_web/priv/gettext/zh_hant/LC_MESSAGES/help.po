@@ -173,14 +173,14 @@ msgid "Connect"
 msgstr "連線"
 
 #: lib/retro_hex_chat_web/controllers/help_content/connecting.html.heex:67
-#: lib/retro_hex_chat_web/controllers/help_content/ui_connect_window.html.heex:61
+#: lib/retro_hex_chat_web/controllers/help_content/ui_connect_window.html.heex:65
 #, elixir-autogen, elixir-format
 msgid "Connect Authentication"
 msgstr "連接認證"
 
 #: lib/retro_hex_chat_web/controllers/help_content/connect_authentication.html.heex:44
 #: lib/retro_hex_chat_web/controllers/help_content/ui_connect_window.html.heex:16
-#: lib/retro_hex_chat_web/controllers/help_content/ui_connect_window.html.heex:58
+#: lib/retro_hex_chat_web/controllers/help_content/ui_connect_window.html.heex:62
 #: lib/retro_hex_chat_web/controllers/help_content/watching_without_account.html.heex:92
 #: lib/retro_hex_chat_web/controllers/help_content/welcome.html.heex:124
 #, elixir-autogen, elixir-format
@@ -261,7 +261,7 @@ msgstr "暱稱過期"
 
 #: lib/retro_hex_chat_web/controllers/help_content/connect_authentication.html.heex:45
 #: lib/retro_hex_chat_web/controllers/help_content/connecting.html.heex:70
-#: lib/retro_hex_chat_web/controllers/help_content/ui_connect_window.html.heex:64
+#: lib/retro_hex_chat_web/controllers/help_content/ui_connect_window.html.heex:68
 #, elixir-autogen, elixir-format
 msgid "NickServ Overview"
 msgstr "NickServ 概覽"
@@ -347,7 +347,7 @@ msgstr ""
 #: lib/retro_hex_chat_web/controllers/help_content/connect_authentication.html.heex:42
 #: lib/retro_hex_chat_web/controllers/help_content/connecting.html.heex:64
 #: lib/retro_hex_chat_web/controllers/help_content/private_messages.html.heex:33
-#: lib/retro_hex_chat_web/controllers/help_content/ui_connect_window.html.heex:56
+#: lib/retro_hex_chat_web/controllers/help_content/ui_connect_window.html.heex:60
 #: lib/retro_hex_chat_web/controllers/help_content/watching_without_account.html.heex:90
 #: lib/retro_hex_chat_web/controllers/help_content/welcome.html.heex:122
 #, elixir-autogen, elixir-format
@@ -554,7 +554,7 @@ msgstr "一個被記住的終端可以再走一步:打開自動登錄,然後直�
 msgid "Auto-Login"
 msgstr "自動鎖定"
 
-#: lib/retro_hex_chat_web/controllers/help_content/ui_connect_window.html.heex:63
+#: lib/retro_hex_chat_web/controllers/help_content/ui_connect_window.html.heex:67
 #, elixir-autogen, elixir-format
 msgid "Desktop & Windows"
 msgstr "桌面窗口( W)"
@@ -564,7 +564,7 @@ msgstr "桌面窗口( W)"
 msgid "Signing In"
 msgstr "簽名"
 
-#: lib/retro_hex_chat_web/controllers/help_content/ui_connect_window.html.heex:49
+#: lib/retro_hex_chat_web/controllers/help_content/ui_connect_window.html.heex:53
 #, elixir-autogen, elixir-format
 msgid "The Window Itself"
 msgstr "窗口本身"
@@ -573,11 +573,6 @@ msgstr "窗口本身"
 #, elixir-autogen, elixir-format
 msgid "The nickname rules are the same everywhere — see"
 msgstr "暱稱規則隨處可見"
-
-#: lib/retro_hex_chat_web/controllers/help_content/ui_connect_window.html.heex:44
-#, elixir-autogen, elixir-format
-msgid "This is per terminal and per nickname, so a shared machine can stay manual while your own signs you in. Disconnecting from the chat always returns you here rather than looping straight back in."
-msgstr "這是每個終端和每個暱稱, 所以一個共享的機器可以保持手動 同時你自己的標誌你英寸 從聊天中斷開連接總是會讓您返回這裏,而不是直接回轉."
 
 #: lib/retro_hex_chat_web/controllers/help_content/ui_connect_window.html.heex:19
 #, elixir-autogen, elixir-format
@@ -869,7 +864,7 @@ msgstr "做某事的每件事都需要一個賬戶:寫作,反應,菜單和設置
 msgid "A link to a game, a call or a space opens the chat with that window, and after you sign in it takes you to the link."
 msgstr "一個與遊戲的鏈接,一個呼叫或一個空格打開了與該窗口的聊天,在其中籤名後,將你帶到鏈接."
 
-#: lib/retro_hex_chat_web/controllers/help_content/ui_connect_window.html.heex:51
+#: lib/retro_hex_chat_web/controllers/help_content/ui_connect_window.html.heex:55
 #, elixir-autogen, elixir-format
 msgid "It behaves like every other window: move it, minimize it, or bring it back from its taskbar button. Closing it takes you back to the chat; after signing in you land where you were going — the channel you were reading, or the game or call that asked you to sign in."
 msgstr "它的行爲就像其他的窗口:移動,最小化,或者從它的任務欄按鈕中帶回. 關閉它會帶你回到聊天中;在你在那裏註冊之後,你要去的地方——你正在讀的頻道,或者要求你報名的遊戲或電話。"
@@ -943,3 +938,13 @@ msgstr "使用另一個暱稱登錄打開一個空字段,返回列表返回 。"
 #, elixir-autogen, elixir-format
 msgid "Tick Remember this terminal when you log in, and this browser remembers your nickname. Next time, the window lists your nicknames instead of an empty field. Click Log in beside one and you are in, without a password."
 msgstr "請在登錄時記住此終端, 此瀏覽器會記住您的暱稱 。 下次,窗口會列出您的暱稱, 而不是空的字段 。 點擊登錄到一個旁邊, 您沒有密碼 。"
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_connect_window.html.heex:48
+#, elixir-autogen, elixir-format
+msgid "After you disconnect, or when a session ends, this window opens instead of the chat. Auto-login starts again when you close the browser, or when you log in here."
+msgstr "斷開後, 或當會話結束時, 此窗口會打開而不是聊天 。 自動登錄在關閉瀏覽器或在此登錄時再次開始 。"
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_connect_window.html.heex:44
+#, elixir-autogen, elixir-format
+msgid "Auto-login is set per terminal and per nickname, so a shared computer can stay manual."
+msgstr "自動日誌是每個終端和每個暱稱設定的,因此共享的計算機可以保持手動狀態."

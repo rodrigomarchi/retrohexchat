@@ -183,14 +183,14 @@ msgid "Connect"
 msgstr "Verbinden"
 
 #: lib/retro_hex_chat_web/controllers/help_content/connecting.html.heex:67
-#: lib/retro_hex_chat_web/controllers/help_content/ui_connect_window.html.heex:61
+#: lib/retro_hex_chat_web/controllers/help_content/ui_connect_window.html.heex:65
 #, elixir-autogen, elixir-format
 msgid "Connect Authentication"
 msgstr "Authentication verbinden"
 
 #: lib/retro_hex_chat_web/controllers/help_content/connect_authentication.html.heex:44
 #: lib/retro_hex_chat_web/controllers/help_content/ui_connect_window.html.heex:16
-#: lib/retro_hex_chat_web/controllers/help_content/ui_connect_window.html.heex:58
+#: lib/retro_hex_chat_web/controllers/help_content/ui_connect_window.html.heex:62
 #: lib/retro_hex_chat_web/controllers/help_content/watching_without_account.html.heex:92
 #: lib/retro_hex_chat_web/controllers/help_content/welcome.html.heex:124
 #, elixir-autogen, elixir-format
@@ -277,7 +277,7 @@ msgstr "Nick Expiration"
 
 #: lib/retro_hex_chat_web/controllers/help_content/connect_authentication.html.heex:45
 #: lib/retro_hex_chat_web/controllers/help_content/connecting.html.heex:70
-#: lib/retro_hex_chat_web/controllers/help_content/ui_connect_window.html.heex:64
+#: lib/retro_hex_chat_web/controllers/help_content/ui_connect_window.html.heex:68
 #, elixir-autogen, elixir-format
 msgid "NickServ Overview"
 msgstr "NickServ Übersicht"
@@ -367,7 +367,7 @@ msgstr ""
 #: lib/retro_hex_chat_web/controllers/help_content/connect_authentication.html.heex:42
 #: lib/retro_hex_chat_web/controllers/help_content/connecting.html.heex:64
 #: lib/retro_hex_chat_web/controllers/help_content/private_messages.html.heex:33
-#: lib/retro_hex_chat_web/controllers/help_content/ui_connect_window.html.heex:56
+#: lib/retro_hex_chat_web/controllers/help_content/ui_connect_window.html.heex:60
 #: lib/retro_hex_chat_web/controllers/help_content/watching_without_account.html.heex:90
 #: lib/retro_hex_chat_web/controllers/help_content/welcome.html.heex:122
 #, elixir-autogen, elixir-format
@@ -592,7 +592,7 @@ msgstr ""
 msgid "Auto-Login"
 msgstr "Auto-Login"
 
-#: lib/retro_hex_chat_web/controllers/help_content/ui_connect_window.html.heex:63
+#: lib/retro_hex_chat_web/controllers/help_content/ui_connect_window.html.heex:67
 #, elixir-autogen, elixir-format
 msgid "Desktop & Windows"
 msgstr "Desktop & Windows"
@@ -602,7 +602,7 @@ msgstr "Desktop & Windows"
 msgid "Signing In"
 msgstr "Anmeldung"
 
-#: lib/retro_hex_chat_web/controllers/help_content/ui_connect_window.html.heex:49
+#: lib/retro_hex_chat_web/controllers/help_content/ui_connect_window.html.heex:53
 #, elixir-autogen, elixir-format
 msgid "The Window Itself"
 msgstr "Das Fenster selbst"
@@ -611,14 +611,6 @@ msgstr "Das Fenster selbst"
 #, elixir-autogen, elixir-format
 msgid "The nickname rules are the same everywhere — see"
 msgstr "Die Spitznamenregeln sind überall gleich — siehe"
-
-#: lib/retro_hex_chat_web/controllers/help_content/ui_connect_window.html.heex:44
-#, elixir-autogen, elixir-format
-msgid "This is per terminal and per nickname, so a shared machine can stay manual while your own signs you in. Disconnecting from the chat always returns you here rather than looping straight back in."
-msgstr ""
-"Dies ist per Terminal und per Spitznamen, so kann ein geteiltes Gerät "
-"manuell bleiben, während Ihre eigenen Zeichen Sie in. Die Verbindung aus dem"
-" Chat kehrt Sie hier zurück, anstatt gerade einzuschleifen."
 
 #: lib/retro_hex_chat_web/controllers/help_content/ui_connect_window.html.heex:19
 #, elixir-autogen, elixir-format
@@ -916,7 +908,7 @@ msgstr "Alles, was etwas tut, braucht ein Konto: Schreiben, Reagieren, die Menü
 msgid "A link to a game, a call or a space opens the chat with that window, and after you sign in it takes you to the link."
 msgstr "Ein Link zu einem Spiel, einem Anruf oder einem Raum öffnet den Chat mit diesem Fenster, und nachdem Sie sich anmelden, nimmt es Sie zum Link."
 
-#: lib/retro_hex_chat_web/controllers/help_content/ui_connect_window.html.heex:51
+#: lib/retro_hex_chat_web/controllers/help_content/ui_connect_window.html.heex:55
 #, elixir-autogen, elixir-format
 msgid "It behaves like every other window: move it, minimize it, or bring it back from its taskbar button. Closing it takes you back to the chat; after signing in you land where you were going — the channel you were reading, or the game or call that asked you to sign in."
 msgstr "Es verhält sich wie jedes andere Fenster: bewegen Sie es, minimieren Sie es, oder bringen Sie es zurück von seiner Taskleiste Taste. Closing es nimmt Sie zurück zum Chat; nach der Unterzeichnung in Sie Land, wo Sie gehen — der Kanal, den Sie gelesen haben, oder das Spiel oder Anruf, die Sie gebeten, sich einzuschreiben."
@@ -990,3 +982,13 @@ msgstr "Einloggen mit einem anderen Spitznamen öffnet ein leeres Feld, und Zur�
 #, elixir-autogen, elixir-format
 msgid "Tick Remember this terminal when you log in, and this browser remembers your nickname. Next time, the window lists your nicknames instead of an empty field. Click Log in beside one and you are in, without a password."
 msgstr "Tick Remember this terminal when you log in, und dieser Browser erinnert sich Ihren Spitznamen. Das nächste Mal listet das Fenster Ihre Nicknamen statt eines leeren Feldes auf. Klicken Sie auf Anmelden neben einem und Sie sind in, ohne Passwort."
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_connect_window.html.heex:48
+#, elixir-autogen, elixir-format
+msgid "After you disconnect, or when a session ends, this window opens instead of the chat. Auto-login starts again when you close the browser, or when you log in here."
+msgstr "Nachdem Sie trennen, oder wenn eine Sitzung endet, öffnet dieses Fenster statt des Chats. Auto-Login startet wieder, wenn Sie den Browser schließen, oder wenn Sie sich hier anmelden."
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_connect_window.html.heex:44
+#, elixir-autogen, elixir-format
+msgid "Auto-login is set per terminal and per nickname, so a shared computer can stay manual."
+msgstr "Auto-Login wird pro Terminal und per Spitznamen eingestellt, so dass ein gemeinsamer Computer manuell bleiben kann."

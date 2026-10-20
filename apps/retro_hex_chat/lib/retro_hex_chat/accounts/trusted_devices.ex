@@ -28,6 +28,7 @@ defmodule RetroHexChat.Accounts.TrustedDevices do
   @default_ttl_days 90
   @default_cleanup_limit 100
   @default_session_stale_seconds 300
+  @touch_interval_seconds 300
   @max_events 20
   @default_page_size 50
   @system_actor "system"
@@ -138,15 +139,6 @@ defmodule RetroHexChat.Accounts.TrustedDevices do
     |> Repo.all()
   end
 
-  @spec auto_login_nick(integer() | nil) :: map() | nil
-  def auto_login_nick(nil), do: nil
-
-  def auto_login_nick(device_id) do
-    device_id
-    |> remembered_nicks()
-    |> Enum.find(& &1.auto_login)
-  end
-
   @spec nick_remembered?(integer() | nil, String.t()) :: boolean()
   def nick_remembered?(nil, _nickname), do: false
 
@@ -172,6 +164,38 @@ defmodule RetroHexChat.Accounts.TrustedDevices do
     else
       nil -> {:error, :not_authorized}
       {:error, reason} -> {:error, reason}
+    end
+  end
+
+  @doc """
+  The nickname a verified device signs in by itself, if one is set to.
+
+  The grant counts as used: its `last_used_at` moves and the event is logged,
+  as when the nickname is chosen from the device's list.
+  """
+  @spec auto_sign_in(TrustedDevice.t()) :: {:ok, String.t()} | {:error, :no_auto_login}
+  def auto_sign_in(%TrustedDevice{} = device) do
+    from(g in TrustedDeviceNick,
+      join: n in RegisteredNick,
+      on: n.id == g.registered_nick_id,
+      where: g.trusted_device_id == ^device.id,
+      where: g.auto_login == true,
+      where: is_nil(g.revoked_at),
+      limit: 1,
+      select: {g, n}
+    )
+    |> Repo.one()
+    |> case do
+      {grant, nick} ->
+        grant
+        |> TrustedDeviceNick.changeset(%{last_used_at: DateTime.utc_now()})
+        |> Repo.update()
+
+        log_event("device.nick.used", device, nick, nick.nickname, %{auto_login: true})
+        {:ok, nick.nickname}
+
+      nil ->
+        {:error, :no_auto_login}
     end
   end
 
@@ -923,9 +947,21 @@ defmodule RetroHexChat.Accounts.TrustedDevices do
     expected_hash == token_hash(secret)
   end
 
-  defp touch_device(device) do
+  # A device is seen on every page it loads; the time is kept to a few
+  # minutes, not written on each of them.
+  defp touch_device(%TrustedDevice{last_seen_at: %DateTime{} = seen} = device) do
+    now = DateTime.utc_now()
+
+    if DateTime.diff(now, seen) < @touch_interval_seconds,
+      do: {:ok, device},
+      else: write_last_seen(device, now)
+  end
+
+  defp touch_device(device), do: write_last_seen(device, DateTime.utc_now())
+
+  defp write_last_seen(device, now) do
     device
-    |> TrustedDevice.changeset(%{last_seen_at: DateTime.utc_now()})
+    |> TrustedDevice.changeset(%{last_seen_at: now})
     |> Repo.update()
     |> case do
       {:ok, updated} -> {:ok, updated}

@@ -178,14 +178,14 @@ msgid "Connect"
 msgstr "Hubungkan"
 
 #: lib/retro_hex_chat_web/controllers/help_content/connecting.html.heex:67
-#: lib/retro_hex_chat_web/controllers/help_content/ui_connect_window.html.heex:61
+#: lib/retro_hex_chat_web/controllers/help_content/ui_connect_window.html.heex:65
 #, elixir-autogen, elixir-format
 msgid "Connect Authentication"
 msgstr "Hubungkan Otentikasi"
 
 #: lib/retro_hex_chat_web/controllers/help_content/connect_authentication.html.heex:44
 #: lib/retro_hex_chat_web/controllers/help_content/ui_connect_window.html.heex:16
-#: lib/retro_hex_chat_web/controllers/help_content/ui_connect_window.html.heex:58
+#: lib/retro_hex_chat_web/controllers/help_content/ui_connect_window.html.heex:62
 #: lib/retro_hex_chat_web/controllers/help_content/watching_without_account.html.heex:92
 #: lib/retro_hex_chat_web/controllers/help_content/welcome.html.heex:124
 #, elixir-autogen, elixir-format
@@ -270,7 +270,7 @@ msgstr "Ekspirasi Nick"
 
 #: lib/retro_hex_chat_web/controllers/help_content/connect_authentication.html.heex:45
 #: lib/retro_hex_chat_web/controllers/help_content/connecting.html.heex:70
-#: lib/retro_hex_chat_web/controllers/help_content/ui_connect_window.html.heex:64
+#: lib/retro_hex_chat_web/controllers/help_content/ui_connect_window.html.heex:68
 #, elixir-autogen, elixir-format
 msgid "NickServ Overview"
 msgstr "Tampilan NickServ"
@@ -360,7 +360,7 @@ msgstr ""
 #: lib/retro_hex_chat_web/controllers/help_content/connect_authentication.html.heex:42
 #: lib/retro_hex_chat_web/controllers/help_content/connecting.html.heex:64
 #: lib/retro_hex_chat_web/controllers/help_content/private_messages.html.heex:33
-#: lib/retro_hex_chat_web/controllers/help_content/ui_connect_window.html.heex:56
+#: lib/retro_hex_chat_web/controllers/help_content/ui_connect_window.html.heex:60
 #: lib/retro_hex_chat_web/controllers/help_content/watching_without_account.html.heex:90
 #: lib/retro_hex_chat_web/controllers/help_content/welcome.html.heex:122
 #, elixir-autogen, elixir-format
@@ -582,7 +582,7 @@ msgstr ""
 msgid "Auto-Login"
 msgstr "Log Masuk Otomatis"
 
-#: lib/retro_hex_chat_web/controllers/help_content/ui_connect_window.html.heex:63
+#: lib/retro_hex_chat_web/controllers/help_content/ui_connect_window.html.heex:67
 #, elixir-autogen, elixir-format
 msgid "Desktop & Windows"
 msgstr "Desktop & Jendela"
@@ -592,7 +592,7 @@ msgstr "Desktop & Jendela"
 msgid "Signing In"
 msgstr "Masuk"
 
-#: lib/retro_hex_chat_web/controllers/help_content/ui_connect_window.html.heex:49
+#: lib/retro_hex_chat_web/controllers/help_content/ui_connect_window.html.heex:53
 #, elixir-autogen, elixir-format
 msgid "The Window Itself"
 msgstr "Jendela Itself"
@@ -601,14 +601,6 @@ msgstr "Jendela Itself"
 #, elixir-autogen, elixir-format
 msgid "The nickname rules are the same everywhere — see"
 msgstr "Aturan julukan sama di mana-mana - lihat"
-
-#: lib/retro_hex_chat_web/controllers/help_content/ui_connect_window.html.heex:44
-#, elixir-autogen, elixir-format
-msgid "This is per terminal and per nickname, so a shared machine can stay manual while your own signs you in. Disconnecting from the chat always returns you here rather than looping straight back in."
-msgstr ""
-"Ini adalah per terminal dan setiap nama panggilan, sehingga mesin bersama "
-"dapat tetap manual sementara tanda-tanda Anda sendiri masuk Putus dari chat "
-"selalu kembali Anda di sini daripada Looping lurus kembali masuk"
 
 #: lib/retro_hex_chat_web/controllers/help_content/ui_connect_window.html.heex:19
 #, elixir-autogen, elixir-format
@@ -900,7 +892,7 @@ msgstr "Segala sesuatu yang melakukan sesuatu membutuhkan akun: menulis, bereaks
 msgid "A link to a game, a call or a space opens the chat with that window, and after you sign in it takes you to the link."
 msgstr "Sebuah link ke permainan, panggilan atau ruang membuka percakapan dengan jendela itu, dan setelah Anda masuk itu membawa Anda ke link."
 
-#: lib/retro_hex_chat_web/controllers/help_content/ui_connect_window.html.heex:51
+#: lib/retro_hex_chat_web/controllers/help_content/ui_connect_window.html.heex:55
 #, elixir-autogen, elixir-format
 msgid "It behaves like every other window: move it, minimize it, or bring it back from its taskbar button. Closing it takes you back to the chat; after signing in you land where you were going — the channel you were reading, or the game or call that asked you to sign in."
 msgstr "Ia berperilaku seperti setiap jendela lain: memindahkannya, meminimalisir, atau membawanya kembali dari tombol taskbar. Menutup itu membawa Anda kembali ke chatting; setelah menandatangani di tanah Anda di mana Anda akan - saluran yang Anda baca, atau permainan atau panggilan yang meminta Anda untuk masuk"
@@ -974,3 +966,13 @@ msgstr "Log in dengan nama panggilan lain membuka field kosong, dan Kembali ke d
 #, elixir-autogen, elixir-format
 msgid "Tick Remember this terminal when you log in, and this browser remembers your nickname. Next time, the window lists your nicknames instead of an empty field. Click Log in beside one and you are in, without a password."
 msgstr "Tik Ingat terminal ini ketika Anda masuk, dan peramban ini mengingat nama panggilan Anda. Lain kali, jendela daftar nama panggilan Anda bukan lapangan kosong. Klik Log di samping satu dan Anda berada dalam, tanpa password."
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_connect_window.html.heex:48
+#, elixir-autogen, elixir-format
+msgid "After you disconnect, or when a session ends, this window opens instead of the chat. Auto-login starts again when you close the browser, or when you log in here."
+msgstr "Setelah Anda memutuskan, atau ketika sesi berakhir, jendela ini terbuka, bukan obrolan. Log masuk otomatis dimulai lagi ketika Anda menutup peramban, atau ketika Anda log masuk di sini."
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_connect_window.html.heex:44
+#, elixir-autogen, elixir-format
+msgid "Auto-login is set per terminal and per nickname, so a shared computer can stay manual."
+msgstr "Log masuk otomatis diatur setiap terminal dan setiap nama panggilan, sehingga komputer bersama dapat tetap manual."

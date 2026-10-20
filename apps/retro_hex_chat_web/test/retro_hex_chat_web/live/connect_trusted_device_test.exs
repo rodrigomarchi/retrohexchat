@@ -52,11 +52,34 @@ defmodule RetroHexChatWeb.ConnectTrustedDeviceTest do
     refute has_element?(view, ~s(input#nickname))
     refute has_element?(view, ~s([data-testid="connect-btn"]))
 
-    view
-    |> element(~s([data-testid="remembered-nick-login-#{nick}"]))
-    |> render_click()
+    # Log in is the row's own POST, which needs no LiveView to work.
+    assert has_element?(
+             view,
+             ~s|form[action="/chat/session"][method="post"]:not([phx-submit]) input[name="nickname"][value="#{nick}"]|
+           )
 
-    assert_push_event(view, "submit_connect", %{})
+    assert has_element?(
+             view,
+             ~s(form[action="/chat/session"] input[name="trusted_device_login"][value="true"])
+           )
+
+    assert has_element?(
+             view,
+             ~s(form[action="/chat/session"] button[type="submit"][data-testid="remembered-nick-login-#{nick}"])
+           )
+  end
+
+  test "the auto-login switch waits disabled until the window has joined", %{conn: conn} do
+    nick = "Wait#{uid()}"
+    NickServ.register(nick, "pass123")
+    {:ok, %{cookie_value: cookie}} = TrustedDevices.remember_nick(nil, nick)
+    conn = put_req_cookie(conn, TrustedDeviceCookie.name(), cookie)
+
+    dead = conn |> get(~p"/connect") |> html_response(200)
+    assert dead =~ ~r/id="trusted-auto-login-#{nick}"[^>]*disabled/
+
+    {:ok, view, _html} = live(conn, ~p"/connect")
+    refute has_element?(view, ~s([data-testid="trusted-auto-login-#{nick}"][disabled]))
   end
 
   test "remembered terminal can enable auto-login preference", %{conn: conn} do
@@ -79,7 +102,8 @@ defmodule RetroHexChatWeb.ConnectTrustedDeviceTest do
     |> element(~s([data-testid="trusted-auto-login-#{first}"]))
     |> render_click()
 
-    assert %{nickname: ^first, auto_login: true} = TrustedDevices.auto_login_nick(device.id)
+    assert %{nickname: ^first, auto_login: true} =
+             Enum.find(TrustedDevices.remembered_nicks(device.id), & &1.auto_login)
 
     html = render(view)
     assert html =~ ~s(data-testid="trusted-auto-login-#{first}")
@@ -93,49 +117,11 @@ defmodule RetroHexChatWeb.ConnectTrustedDeviceTest do
     |> element(~s([data-testid="trusted-auto-login-#{second}"]))
     |> render_click()
 
-    assert %{nickname: ^second, auto_login: true} = TrustedDevices.auto_login_nick(device.id)
+    assert %{nickname: ^second, auto_login: true} =
+             Enum.find(TrustedDevices.remembered_nicks(device.id), & &1.auto_login)
 
     remembered = TrustedDevices.remembered_nicks(device.id)
     assert %{auto_login: false} = Enum.find(remembered, &(&1.nickname == first))
-  end
-
-  test "auto-login remembered nick submits trusted login on connect", %{conn: conn} do
-    nick = "AutoGo#{uid()}"
-    NickServ.register(nick, "pass123")
-
-    {:ok, %{cookie_value: cookie, device: device}} =
-      TrustedDevices.remember_nick(nil, nick, label: "Home terminal", actor_nickname: nick)
-
-    assert :ok = TrustedDevices.set_auto_login(device.id, nick, true, nick)
-
-    {:ok, view, _html} =
-      conn
-      |> put_req_cookie(TrustedDeviceCookie.name(), cookie)
-      |> live(~p"/connect")
-
-    assert_push_event(view, "submit_connect", %{})
-  end
-
-  test "auto-login is skipped when connect opens with a reason", %{conn: conn} do
-    nick = "AutoHold#{uid()}"
-    NickServ.register(nick, "pass123")
-
-    {:ok, %{cookie_value: cookie, device: device}} =
-      TrustedDevices.remember_nick(nil, nick, label: "Home terminal", actor_nickname: nick)
-
-    assert :ok = TrustedDevices.set_auto_login(device.id, nick, true, nick)
-
-    {:ok, view, _html} =
-      conn
-      |> put_req_cookie(TrustedDeviceCookie.name(), cookie)
-      |> live(~p"/connect?reason=disconnected")
-
-    assert has_element?(
-             view,
-             ~s([data-testid="trusted-auto-login-#{nick}"][data-state="checked"])
-           )
-
-    assert has_element?(view, ~s([data-testid="remembered-nick-login-#{nick}"]))
   end
 
   test "remembered terminal screen can switch to manual nickname login", %{conn: conn} do

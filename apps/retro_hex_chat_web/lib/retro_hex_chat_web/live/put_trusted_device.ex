@@ -2,9 +2,9 @@ defmodule RetroHexChatWeb.Live.PutTrustedDevice do
   @moduledoc """
   Carries the trusted-device id from the Plug session into a LiveView.
 
-  The landing pages host the connect window, and its trusted-terminal list and
-  auto-login both key off this id. Assigning it once here keeps the seven
-  landing LiveViews from each repeating the same session read.
+  The connect window's list of remembered nicknames keys off this id, and so
+  does Trusted Terminals. Assigning it once here keeps every LiveView that
+  needs it from repeating the same session read.
 
   A visitor without the cookie gets `nil`, which every `TrustedDevices` lookup
   short-circuits — so a crawler never reaches the database for it.

@@ -42,6 +42,7 @@ defmodule RetroHexChatWeb.Components.UI.ConnectFormPanel do
   attr :csrf_token, :string, required: true
   attr :chat_session_path, :string, required: true
   attr :return_to, :string, default: nil
+  attr :live, :boolean, default: true, doc: "whether the window's LiveView has joined"
   attr :target, :any, default: nil
 
   @spec connect_form_panel(map()) :: Phoenix.LiveView.Rendered.t()
@@ -58,6 +59,10 @@ defmodule RetroHexChatWeb.Components.UI.ConnectFormPanel do
       manual_login={@manual_login}
       remember_device={@remember_device}
       device_label={@device_label}
+      csrf_token={@csrf_token}
+      chat_session_path={@chat_session_path}
+      return_to={@return_to}
+      live={@live}
       target={@target}
     />
 
@@ -84,6 +89,10 @@ defmodule RetroHexChatWeb.Components.UI.ConnectFormPanel do
   attr :manual_login, :boolean, default: false
   attr :remember_device, :boolean, default: false
   attr :device_label, :string, default: ""
+  attr :csrf_token, :string, required: true
+  attr :chat_session_path, :string, required: true
+  attr :return_to, :string, default: nil
+  attr :live, :boolean, default: true
   attr :target, :any, default: nil
 
   defp connect_step(%{step: :nickname} = assigns) do
@@ -92,6 +101,10 @@ defmodule RetroHexChatWeb.Components.UI.ConnectFormPanel do
       :if={@remembered_nicks != [] and not @manual_login}
       remembered_nicks={@remembered_nicks}
       error={@nickname_error}
+      csrf_token={@csrf_token}
+      chat_session_path={@chat_session_path}
+      return_to={@return_to}
+      live={@live}
       target={@target}
     />
 
@@ -192,11 +205,20 @@ defmodule RetroHexChatWeb.Components.UI.ConnectFormPanel do
 
   attr :remembered_nicks, :list, required: true
   attr :error, :string, default: nil
+  attr :csrf_token, :string, required: true
+  attr :chat_session_path, :string, required: true
+  attr :return_to, :string, default: nil
+  attr :live, :boolean, default: true
   attr :target, :any, default: nil
 
   # One row per nickname this browser remembers: the name, the way in and
   # whether it signs in by itself. Every row is this terminal, so nothing in
   # it describes the terminal.
+  #
+  # Log in is a plain POST of the row's own form: the terminal's cookie is the
+  # proof, so there is nothing to ask the LiveView first, and the click works
+  # from the first paint, before the window has joined. The switch has nobody to
+  # tell until then, and waits disabled.
   defp remembered_nicknames(assigns) do
     ~H"""
     <div class="space-y-retro-8">
@@ -219,20 +241,19 @@ defmodule RetroHexChatWeb.Components.UI.ConnectFormPanel do
               device_id={entry.device_id}
               on_toggle="trusted_auto_login_toggle"
               target={@target}
+              disabled={not @live}
             />
           </div>
-          <.button
-            type="button"
-            size="sm"
-            class="shrink-0"
-            phx-click="connect_remembered"
-            phx-target={@target}
-            phx-value-nickname={entry.nickname}
-            data-testid={"remembered-nick-login-#{entry.nickname}"}
-          >
-            <:icon><Icons.icon_connect class="h-4 w-4" /></:icon>
-            {dgettext("connect", "Log in")}
-          </.button>
+          <form action={@chat_session_path} method="post" class="shrink-0">
+            <input type="hidden" name="_csrf_token" value={@csrf_token} />
+            <input type="hidden" name="nickname" value={entry.nickname} />
+            <input type="hidden" name="trusted_device_login" value="true" />
+            <input :if={@return_to} type="hidden" name="return_to" value={@return_to} />
+            <.button type="submit" size="sm" data-testid={"remembered-nick-login-#{entry.nickname}"}>
+              <:icon><Icons.icon_connect class="h-4 w-4" /></:icon>
+              {dgettext("connect", "Log in")}
+            </.button>
+          </form>
         </li>
       </ul>
 

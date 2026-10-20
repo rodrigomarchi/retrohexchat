@@ -12,6 +12,10 @@ defmodule RetroHexChatWeb.ConnectForm do
   `/chat/session` so the nickname lands in the Plug session. That form and the
   hook both live inside this component, which is what lets it run inside the
   desktop's sign-in window (`Site.Pages.Connect`) without a page of its own.
+
+  A remembered nickname needs no step: its Log in posts its own form, and a
+  terminal set to Auto-login is signed in before this window would open
+  (`Plugs.TrustedSignIn`).
   """
   use RetroHexChatWeb, :live_component
 
@@ -46,10 +50,9 @@ defmodule RetroHexChatWeb.ConnectForm do
        remember_device: false,
        device_label: "",
        submit_connect: false,
-       auto_login_attempted: false,
        trusted_device_id: nil,
-       auto_login: false,
-       return_to: nil
+       return_to: nil,
+       live: false
      )}
   end
 
@@ -59,7 +62,7 @@ defmodule RetroHexChatWeb.ConnectForm do
      socket
      |> assign_context(assigns)
      |> load_remembered_nicks()
-     |> maybe_auto_login()}
+     |> assign(live: connected?(socket))}
   end
 
   defp assign_context(socket, assigns) do
@@ -67,8 +70,7 @@ defmodule RetroHexChatWeb.ConnectForm do
       trusted_device_id: Map.get(assigns, :trusted_device_id, socket.assigns.trusted_device_id),
       csrf_token: Map.get(assigns, :csrf_token, socket.assigns[:csrf_token]),
       chat_session_path: Map.get(assigns, :chat_session_path, socket.assigns[:chat_session_path]),
-      return_to: Map.get(assigns, :return_to, socket.assigns[:return_to]),
-      auto_login: Map.get(assigns, :auto_login, socket.assigns.auto_login)
+      return_to: Map.get(assigns, :return_to, socket.assigns[:return_to])
     )
   end
 
@@ -91,24 +93,6 @@ defmodule RetroHexChatWeb.ConnectForm do
 
       {:error, msg} ->
         {:noreply, assign(socket, nickname: nickname, nickname_error: msg)}
-    end
-  end
-
-  def handle_event("connect_remembered", %{"nickname" => nickname}, socket) do
-    if TrustedDevices.nick_remembered?(socket.assigns.trusted_device_id, nickname) do
-      {:noreply,
-       socket
-       |> assign(
-         nickname: nickname,
-         auth_token: nil,
-         trusted_device_login: true,
-         remember_device: false,
-         device_label: "",
-         submit_connect: true
-       )
-       |> push_event("submit_connect", %{})}
-    else
-      {:noreply, assign(socket, nickname_error: dgettext("connect", "Trusted login expired"))}
     end
   end
 
@@ -305,38 +289,6 @@ defmodule RetroHexChatWeb.ConnectForm do
     end
   end
 
-  # Auto-login fires once, on the connected mount. The dead render must not push
-  # it: the hook is not attached yet and the redirect would be lost.
-  defp maybe_auto_login(%{assigns: %{auto_login_attempted: true}} = socket), do: socket
-  defp maybe_auto_login(%{assigns: %{auto_login: false}} = socket), do: socket
-  defp maybe_auto_login(%{assigns: %{manual_login: true}} = socket), do: socket
-
-  defp maybe_auto_login(socket) do
-    if connected?(socket) do
-      socket
-      |> assign(auto_login_attempted: true)
-      |> apply_auto_login(TrustedDevices.auto_login_nick(socket.assigns.trusted_device_id))
-    else
-      socket
-    end
-  end
-
-  defp apply_auto_login(socket, %{nickname: nickname}) when is_binary(nickname) do
-    socket
-    |> assign(
-      nickname: nickname,
-      nickname_error: nil,
-      auth_token: nil,
-      trusted_device_login: true,
-      remember_device: false,
-      device_label: "",
-      submit_connect: true
-    )
-    |> push_event("submit_connect", %{})
-  end
-
-  defp apply_auto_login(socket, _auto_login_nick), do: socket
-
   defp assign_auth_success(socket, token, params) do
     assign(socket,
       auth_token: token,
@@ -356,29 +308,10 @@ defmodule RetroHexChatWeb.ConnectForm do
 
   defp truthy?(value), do: value in [true, "true", "on", "1", 1]
 
-  # The connect desktop renders a status bar outside this window, so it needs the
-  # step. Landing hosts have no status bar and opt out.
-
-  # A reader with a remembered terminal is one click from being signed in, and
-  # that click is lost if it lands before the socket is up. The public pages read
-  # this to load their LiveSocket during render instead of on first touch. It is
-  # also what makes auto-login work there: it needs a connected socket to push
-  # submit_connect, and nothing else on a landing page would open one.
-  #
-  # Everyone else — first-time readers, crawlers — stays on the lazy path.
-  defp eager_boot?(assigns), do: assigns.remembered_nicks != []
-
   @impl true
   def render(assigns) do
-    assigns = assign(assigns, :eager_boot, eager_boot?(assigns))
-
     ~H"""
-    <div
-      id={@id}
-      phx-hook="ConnectFormHook"
-      class="contents"
-      data-connect-eager={to_string(@eager_boot)}
-    >
+    <div id={@id} phx-hook="ConnectFormHook" class="contents">
       <.connect_form_panel
         step={@step}
         nickname={@nickname}
@@ -395,12 +328,10 @@ defmodule RetroHexChatWeb.ConnectForm do
         csrf_token={@csrf_token}
         chat_session_path={@chat_session_path}
         return_to={@return_to}
+        live={@live}
         target={@myself}
       />
     </div>
     """
   end
-
-  # The domain has no routes, so the link is built here. Absolute, because it is
-  # about to travel to somebody's inbox.
 end

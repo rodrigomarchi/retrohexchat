@@ -11,27 +11,27 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n==1 ? 0 : n%10>=2 && n%10<=4 && (n%100<12 || n%100>14) ? 1 : 2);\n"
 
-#: lib/retro_hex_chat_web/components/ui/connect/connect_form_panel.ex:376
+#: lib/retro_hex_chat_web/components/ui/connect/connect_form_panel.ex:454
 #, elixir-autogen, elixir-format
 msgid "Back"
 msgstr "Wstecz"
 
-#: lib/retro_hex_chat_web/components/ui/connect/connect_form_panel.ex:159
+#: lib/retro_hex_chat_web/components/ui/connect/connect_form_panel.ex:176
 #, elixir-autogen, elixir-format
 msgid "Choose a password (min. 5 characters)..."
 msgstr "Wybierz hasło (min. 5 znaków)..."
 
-#: lib/retro_hex_chat_web/components/ui/connect/connect_form_panel.ex:165
+#: lib/retro_hex_chat_web/components/ui/connect/connect_form_panel.ex:182
 #, elixir-autogen, elixir-format
 msgid "Confirm password"
 msgstr "Potwierdź hasło"
 
-#: lib/retro_hex_chat_web/components/ui/connect/connect_form_panel.ex:134
+#: lib/retro_hex_chat_web/components/ui/connect/connect_form_panel.ex:150
 #, elixir-autogen, elixir-format
 msgid "Connect"
 msgstr "Połącz"
 
-#: lib/retro_hex_chat_web/site/pages/connect.ex:42
+#: lib/retro_hex_chat_web/site/pages/connect.ex:41
 #, elixir-autogen, elixir-format
 msgid "Connect - RetroHexChat"
 msgstr "Połącz - RetroHexChat"
@@ -41,151 +41,146 @@ msgstr "Połącz - RetroHexChat"
 msgid "Connect to RetroHexChat"
 msgstr "Połącz z RetroHexChat"
 
-#: lib/retro_hex_chat_web/components/ui/connect/connect_form_panel.ex:271
+#: lib/retro_hex_chat_web/components/ui/connect/connect_form_panel.ex:304
 #, elixir-autogen, elixir-format
 msgid "Enter your nickname..."
 msgstr "Wpisz swoją ksywkę..."
 
-#: lib/retro_hex_chat_web/components/ui/connect/connect_form_panel.ex:124
+#: lib/retro_hex_chat_web/components/ui/connect/connect_form_panel.ex:140
 #, elixir-autogen, elixir-format
 msgid "Enter your password..."
 msgstr "Wpisz hasło..."
 
-#: lib/retro_hex_chat_web/live/connect_form.ex:174
+#: lib/retro_hex_chat_web/live/connect_form.ex:154
 #, elixir-autogen, elixir-format
 msgid "Incorrect password"
 msgstr "Nieprawidłowe hasło"
 
-#: lib/retro_hex_chat_web/live/connect_form.ex:254
+#: lib/retro_hex_chat_web/live/connect_form.ex:234
 #, elixir-autogen, elixir-format
 msgid "Nickname cannot be empty"
 msgstr "Nickname nie może być pusty"
 
-#: lib/retro_hex_chat_web/live/connect_form.ex:263
+#: lib/retro_hex_chat_web/live/connect_form.ex:243
 #, elixir-autogen, elixir-format
 msgid "Nickname cannot contain spaces"
 msgstr "Nickname nie może zawierać spacji"
 
-#: lib/retro_hex_chat_web/live/connect_form.ex:251
+#: lib/retro_hex_chat_web/live/connect_form.ex:231
 #, elixir-autogen, elixir-format
 msgid "Nickname must be a string"
 msgstr "Nickname musi być łańcuchem"
 
-#: lib/retro_hex_chat_web/live/connect_form.ex:257
+#: lib/retro_hex_chat_web/live/connect_form.ex:237
 #, elixir-autogen, elixir-format
 msgid "Nickname must be at most 16 characters"
 msgstr "Nickname musi mieć maksymalnie 16 znaków"
 
-#: lib/retro_hex_chat_web/live/connect_form.ex:260
+#: lib/retro_hex_chat_web/live/connect_form.ex:240
 #, elixir-autogen, elixir-format
 msgid "Nickname must start with a letter or special character"
 msgstr "Nickname musi zaczynać się literą lub znakiem specjalnym"
 
-#: lib/retro_hex_chat_web/components/ui/connect/connect_form_panel.ex:122
-#: lib/retro_hex_chat_web/components/ui/connect/connect_form_panel.ex:157
+#: lib/retro_hex_chat_web/components/ui/connect/connect_form_panel.ex:138
+#: lib/retro_hex_chat_web/components/ui/connect/connect_form_panel.ex:174
 #, elixir-autogen, elixir-format
 msgid "Password"
 msgstr "Hasło"
 
-#: lib/retro_hex_chat_web/live/connect_form.ex:191
+#: lib/retro_hex_chat_web/live/connect_form.ex:171
 #, elixir-autogen, elixir-format
 msgid "Password must be at least 5 characters"
 msgstr "Hasło musi mieć co najmniej 5 znaków"
 
-#: lib/retro_hex_chat_web/live/connect_form.ex:201
+#: lib/retro_hex_chat_web/live/connect_form.ex:181
 #, elixir-autogen, elixir-format
 msgid "Passwords do not match"
 msgstr "Hasła nie pasują"
 
-#: lib/retro_hex_chat_web/components/ui/connect/connect_form_panel.ex:182
+#: lib/retro_hex_chat_web/components/ui/connect/connect_form_panel.ex:199
 #: lib/retro_hex_chat_web/controllers/help_content/welcome.html.heex:33
 #, elixir-autogen, elixir-format
 msgid "Register & Connect"
 msgstr "Zarejestruj i podłącz"
 
-#: lib/retro_hex_chat_web/components/ui/connect/connect_form_panel.ex:167
+#: lib/retro_hex_chat_web/components/ui/connect/connect_form_panel.ex:184
 #, elixir-autogen, elixir-format
 msgid "Repeat your password..."
 msgstr "Powtórz hasło..."
 
-#: lib/retro_hex_chat_web/site/pages/connect.ex:100
+#: lib/retro_hex_chat_web/site/pages/connect.ex:107
 #, elixir-autogen, elixir-format
 msgid "Server banned"
 msgstr "Zakazany serwer"
 
-#: lib/retro_hex_chat_web/site/pages/connect.ex:99
+#: lib/retro_hex_chat_web/site/pages/connect.ex:106
 #, elixir-autogen, elixir-format
 msgid "Session ended"
 msgstr "Sesja zakończona"
 
-#: lib/retro_hex_chat_web/site/pages/connect.ex:98
+#: lib/retro_hex_chat_web/site/pages/connect.ex:105
 #, elixir-autogen, elixir-format
 msgid "Session expired"
 msgstr "Sesja wygasła"
 
-#: lib/retro_hex_chat_web/components/ui/connect/connect_form_panel.ex:147
+#: lib/retro_hex_chat_web/components/ui/connect/connect_form_panel.ex:164
 #, elixir-autogen, elixir-format
 msgid "The nickname %{nickname} is available! Choose a password to register it."
 msgstr "Przezwisko %{nickname} jest dostępny! Wybierz hasło do rejestracji."
 
-#: lib/retro_hex_chat_web/components/ui/connect/connect_form_panel.ex:112
+#: lib/retro_hex_chat_web/components/ui/connect/connect_form_panel.ex:128
 #, elixir-autogen, elixir-format
 msgid "The nickname %{nickname} is registered. Please enter your password to continue."
 msgstr ""
 "Przezwisko %{nickname} jest zarejestrowany. Proszę wpisać hasło, aby "
 "kontynuować."
 
-#: lib/retro_hex_chat_web/components/ui/connect/connect_form_panel.ex:399
+#: lib/retro_hex_chat_web/components/ui/connect/connect_form_panel.ex:477
 #, elixir-autogen, elixir-format
 msgid "Remember this terminal"
 msgstr "Zapamiętaj ten terminal"
 
-#: lib/retro_hex_chat_web/components/ui/connect/connect_form_panel.ex:408
+#: lib/retro_hex_chat_web/components/ui/connect/connect_form_panel.ex:486
 #, elixir-autogen, elixir-format
 msgid "Terminal label:"
 msgstr "Etykieta terminalowa:"
 
-#: lib/retro_hex_chat_web/live/connect_form.ex:111
-#, elixir-autogen, elixir-format
-msgid "Trusted login expired"
-msgstr "Zaufane logowanie wygasło"
-
-#: lib/retro_hex_chat_web/components/ui/connect/connect_form_panel.ex:174
+#: lib/retro_hex_chat_web/components/ui/connect/connect_form_panel.ex:191
 #, elixir-autogen, elixir-format
 msgid "Nicknames unused for %{window} are automatically released."
 msgstr "Nazwy nieużywane przez %{window} są automatycznie uwalniane."
 
-#: lib/retro_hex_chat_web/components/ui/connect/connect_form_panel.ex:305
+#: lib/retro_hex_chat_web/components/ui/connect/connect_form_panel.ex:341
 #, elixir-autogen, elixir-format
 msgid "Continue"
 msgstr "Kontynuuj"
 
-#: lib/retro_hex_chat_web/components/ui/connect/connect_form_panel.ex:301
+#: lib/retro_hex_chat_web/components/ui/connect/connect_form_panel.ex:337
 #, elixir-autogen, elixir-format
 msgid "How sessions work"
 msgstr "Jak działają sesje"
 
-#: lib/retro_hex_chat_web/components/ui/connect/connect_form_panel.ex:293
+#: lib/retro_hex_chat_web/components/ui/connect/connect_form_panel.ex:329
 #, elixir-autogen, elixir-format
 msgid "Back to the list"
 msgstr "Wróć do listy"
 
-#: lib/retro_hex_chat_web/components/ui/connect/connect_form_panel.ex:260
+#: lib/retro_hex_chat_web/components/ui/connect/connect_form_panel.ex:289
 #, elixir-autogen, elixir-format
 msgid "Log in or create an account"
 msgstr "Zaloguj się lub utwórz konto"
 
-#: lib/retro_hex_chat_web/components/ui/connect/connect_form_panel.ex:242
+#: lib/retro_hex_chat_web/components/ui/connect/connect_form_panel.ex:269
 #, elixir-autogen, elixir-format
 msgid "Log in with another nickname"
 msgstr "Zaloguj się z innym pseudonimem"
 
-#: lib/retro_hex_chat_web/components/ui/connect/connect_form_panel.ex:280
+#: lib/retro_hex_chat_web/components/ui/connect/connect_form_panel.ex:314
 #, elixir-autogen, elixir-format
 msgid "Use 1 to 16 characters. Start with A–Z. No spaces."
 msgstr "Use 1 to 16 characters. Start with A–Z. No spaces."
 
-#: lib/retro_hex_chat_web/components/ui/connect/connect_form_panel.ex:228
+#: lib/retro_hex_chat_web/components/ui/connect/connect_form_panel.ex:254
 #, elixir-autogen, elixir-format
 msgid "Log in"
 msgstr "Zaloguj"

@@ -178,14 +178,14 @@ msgid "Connect"
 msgstr "Verbinden"
 
 #: lib/retro_hex_chat_web/controllers/help_content/connecting.html.heex:67
-#: lib/retro_hex_chat_web/controllers/help_content/ui_connect_window.html.heex:61
+#: lib/retro_hex_chat_web/controllers/help_content/ui_connect_window.html.heex:65
 #, elixir-autogen, elixir-format
 msgid "Connect Authentication"
 msgstr "Aanmeldingscontrole verbinden"
 
 #: lib/retro_hex_chat_web/controllers/help_content/connect_authentication.html.heex:44
 #: lib/retro_hex_chat_web/controllers/help_content/ui_connect_window.html.heex:16
-#: lib/retro_hex_chat_web/controllers/help_content/ui_connect_window.html.heex:58
+#: lib/retro_hex_chat_web/controllers/help_content/ui_connect_window.html.heex:62
 #: lib/retro_hex_chat_web/controllers/help_content/watching_without_account.html.heex:92
 #: lib/retro_hex_chat_web/controllers/help_content/welcome.html.heex:124
 #, elixir-autogen, elixir-format
@@ -270,7 +270,7 @@ msgstr "Geldigheidsduur van Nick"
 
 #: lib/retro_hex_chat_web/controllers/help_content/connect_authentication.html.heex:45
 #: lib/retro_hex_chat_web/controllers/help_content/connecting.html.heex:70
-#: lib/retro_hex_chat_web/controllers/help_content/ui_connect_window.html.heex:64
+#: lib/retro_hex_chat_web/controllers/help_content/ui_connect_window.html.heex:68
 #, elixir-autogen, elixir-format
 msgid "NickServ Overview"
 msgstr "Overzicht van NickServ"
@@ -359,7 +359,7 @@ msgstr ""
 #: lib/retro_hex_chat_web/controllers/help_content/connect_authentication.html.heex:42
 #: lib/retro_hex_chat_web/controllers/help_content/connecting.html.heex:64
 #: lib/retro_hex_chat_web/controllers/help_content/private_messages.html.heex:33
-#: lib/retro_hex_chat_web/controllers/help_content/ui_connect_window.html.heex:56
+#: lib/retro_hex_chat_web/controllers/help_content/ui_connect_window.html.heex:60
 #: lib/retro_hex_chat_web/controllers/help_content/watching_without_account.html.heex:90
 #: lib/retro_hex_chat_web/controllers/help_content/welcome.html.heex:122
 #, elixir-autogen, elixir-format
@@ -579,7 +579,7 @@ msgstr ""
 msgid "Auto-Login"
 msgstr "Automatisch aanmelden"
 
-#: lib/retro_hex_chat_web/controllers/help_content/ui_connect_window.html.heex:63
+#: lib/retro_hex_chat_web/controllers/help_content/ui_connect_window.html.heex:67
 #, elixir-autogen, elixir-format
 msgid "Desktop & Windows"
 msgstr "Bureaubladvensters"
@@ -589,7 +589,7 @@ msgstr "Bureaubladvensters"
 msgid "Signing In"
 msgstr "Aanmelden"
 
-#: lib/retro_hex_chat_web/controllers/help_content/ui_connect_window.html.heex:49
+#: lib/retro_hex_chat_web/controllers/help_content/ui_connect_window.html.heex:53
 #, elixir-autogen, elixir-format
 msgid "The Window Itself"
 msgstr "Het venster zelf"
@@ -598,14 +598,6 @@ msgstr "Het venster zelf"
 #, elixir-autogen, elixir-format
 msgid "The nickname rules are the same everywhere — see"
 msgstr "De regels van de bijnaam zijn overal hetzelfde."
-
-#: lib/retro_hex_chat_web/controllers/help_content/ui_connect_window.html.heex:44
-#, elixir-autogen, elixir-format
-msgid "This is per terminal and per nickname, so a shared machine can stay manual while your own signs you in. Disconnecting from the chat always returns you here rather than looping straight back in."
-msgstr ""
-"Dit is per terminal en per nickname, zodat een gedeelde machine handmatig "
-"kan blijven terwijl uw eigen aanmelden. Het loskoppelen van de chat geeft je"
-" altijd hier terug in plaats van direct terug te lopen."
 
 #: lib/retro_hex_chat_web/controllers/help_content/ui_connect_window.html.heex:19
 #, elixir-autogen, elixir-format
@@ -903,7 +895,7 @@ msgstr "Alles wat iets doet heeft een account nodig: schrijven, reageren, de men
 msgid "A link to a game, a call or a space opens the chat with that window, and after you sign in it takes you to the link."
 msgstr "Een link naar een spel, een oproep of een ruimte opent de chat met dat venster, en nadat u zich aanmeldt brengt het u naar de link."
 
-#: lib/retro_hex_chat_web/controllers/help_content/ui_connect_window.html.heex:51
+#: lib/retro_hex_chat_web/controllers/help_content/ui_connect_window.html.heex:55
 #, elixir-autogen, elixir-format
 msgid "It behaves like every other window: move it, minimize it, or bring it back from its taskbar button. Closing it takes you back to the chat; after signing in you land where you were going — the channel you were reading, or the game or call that asked you to sign in."
 msgstr "Het gedraagt zich als elk ander venster: verplaatsen, minimaliseren of terughalen van de taakbalk knop. Het sluiten ervan brengt je terug naar de chat; na het ondertekenen van je land waar je naartoe ging ... het kanaal dat je aan het lezen was, of het spel of telefoontje dat je vroeg om je aan te melden."
@@ -977,3 +969,13 @@ msgstr "Log in met een andere bijnaam opent een leeg veld, en Terug naar de lijs
 #, elixir-autogen, elixir-format
 msgid "Tick Remember this terminal when you log in, and this browser remembers your nickname. Next time, the window lists your nicknames instead of an empty field. Click Log in beside one and you are in, without a password."
 msgstr "Tick Onthoud deze terminal wanneer u zich aanmeldt, en deze browser onthoudt uw bijnaam. Volgende keer toont het venster uw bijnamen in plaats van een leeg veld. Klik op Log in naast een en je bent in, zonder wachtwoord."
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_connect_window.html.heex:48
+#, elixir-autogen, elixir-format
+msgid "After you disconnect, or when a session ends, this window opens instead of the chat. Auto-login starts again when you close the browser, or when you log in here."
+msgstr "Na het verbreken van de verbinding, of wanneer een sessie eindigt, opent dit venster in plaats van het gesprek. Auto-login start opnieuw wanneer u de browser sluit of wanneer u hier inlogt."
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_connect_window.html.heex:44
+#, elixir-autogen, elixir-format
+msgid "Auto-login is set per terminal and per nickname, so a shared computer can stay manual."
+msgstr "Auto-login wordt ingesteld per terminal en per bijnaam, zodat een gedeelde computer handmatig kan blijven."

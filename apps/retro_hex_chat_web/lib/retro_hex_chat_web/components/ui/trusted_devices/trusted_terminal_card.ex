@@ -145,6 +145,7 @@ defmodule RetroHexChatWeb.Components.UI.TrustedDevices.TrustedTerminalCard do
   attr :device_id, :any, default: nil
   attr :on_toggle, :any, default: nil
   attr :target, :any, default: nil
+  attr :disabled, :boolean, default: false
 
   @doc """
   Whether a remembered nickname signs in by itself on this terminal: the
@@ -162,6 +163,7 @@ defmodule RetroHexChatWeb.Components.UI.TrustedDevices.TrustedTerminalCard do
         target={@target}
         event_value={%{nickname: @nickname, device_id: @device_id, enabled: not @enabled}}
         testid={@testid}
+        disabled={@disabled}
       />
       <.label for={@id} class="text-[11px]">{dgettext("ui", "Auto-login")}</.label>
     </div>

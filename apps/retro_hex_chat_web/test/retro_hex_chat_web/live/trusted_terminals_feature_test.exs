@@ -106,7 +106,8 @@ defmodule RetroHexChatWeb.TrustedTerminalsFeatureTest do
     |> element(~s([data-testid="trusted-device-auto-login-#{device.id}"]))
     |> render_click()
 
-    assert %{nickname: ^nick, auto_login: true} = TrustedDevices.auto_login_nick(device.id)
+    assert %{nickname: ^nick, auto_login: true} =
+             Enum.find(TrustedDevices.remembered_nicks(device.id), & &1.auto_login)
 
     assert has_element?(
              view,

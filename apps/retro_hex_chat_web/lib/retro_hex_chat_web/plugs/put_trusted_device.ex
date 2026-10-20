@@ -1,7 +1,8 @@
 defmodule RetroHexChatWeb.Plugs.PutTrustedDevice do
   @moduledoc """
   Validates the trusted-device cookie and mirrors the trusted device id into the
-  encrypted Phoenix session for LiveViews.
+  encrypted Phoenix session for LiveViews. The verified device stays on the conn
+  (`conn.private.trusted_device`) for the plugs after this one.
   """
 
   import Plug.Conn
@@ -23,7 +24,9 @@ defmodule RetroHexChatWeb.Plugs.PutTrustedDevice do
       cookie ->
         case TrustedDevices.verify_cookie(cookie) do
           {:ok, device} ->
-            put_session(conn, :trusted_device_id, device.id)
+            conn
+            |> put_session(:trusted_device_id, device.id)
+            |> put_private(:trusted_device, device)
 
           {:error, _reason} ->
             conn

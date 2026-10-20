@@ -44,7 +44,6 @@ defmodule RetroHexChatWeb.Site.Pages.Connect do
        robots: SEO.noindex_content(),
        reason_message: reason && reason_to_message(reason),
        feature: params["signup"] && Visitor.feature_named(params["signup"]),
-       auto_login: is_nil(reason),
        trusted_device_id: session["trusted_device_id"],
        return_to: return_to(params, ctx)
      }}
@@ -86,7 +85,6 @@ defmodule RetroHexChatWeb.Site.Pages.Connect do
         module={ConnectForm}
         id={ConnectForm.id()}
         trusted_device_id={@trusted_device_id}
-        auto_login={@auto_login}
         csrf_token={Plug.CSRFProtection.get_csrf_token()}
         chat_session_path={~p"/chat/session"}
         return_to={@return_to}

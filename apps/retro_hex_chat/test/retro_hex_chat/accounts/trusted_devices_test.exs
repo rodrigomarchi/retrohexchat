@@ -1,6 +1,8 @@
 defmodule RetroHexChat.Accounts.TrustedDevicesTest do
   use RetroHexChat.DataCase, async: false
 
+  import Ecto.Query
+
   alias RetroHexChat.Accounts.ChatDeviceSession
   alias RetroHexChat.Accounts.TrustedDevice
   alias RetroHexChat.Accounts.TrustedDeviceEvent
@@ -80,17 +82,68 @@ defmodule RetroHexChat.Accounts.TrustedDevicesTest do
       assert same_device.id == device.id
 
       assert :ok = TrustedDevices.set_auto_login(device.id, first, true, first)
-      assert %{nickname: ^first, auto_login: true} = TrustedDevices.auto_login_nick(device.id)
+      assert {:ok, ^first} = TrustedDevices.auto_sign_in(device)
 
       assert :ok = TrustedDevices.set_auto_login(device.id, second, true, second)
-      assert %{nickname: ^second, auto_login: true} = TrustedDevices.auto_login_nick(device.id)
+      assert {:ok, ^second} = TrustedDevices.auto_sign_in(device)
 
       remembered = TrustedDevices.remembered_nicks(device.id)
       assert %{auto_login: false} = Enum.find(remembered, &(&1.nickname == first))
       assert %{auto_login: true} = Enum.find(remembered, &(&1.nickname == second))
 
       assert :ok = TrustedDevices.set_auto_login(device.id, second, false, second)
-      assert TrustedDevices.auto_login_nick(device.id) == nil
+      assert {:error, :no_auto_login} = TrustedDevices.auto_sign_in(device)
+    end
+
+    test "signing in by itself uses the grant and logs it" do
+      nick = nick("AutoUse")
+      {:ok, _} = Queries.insert_registered_nick(nick, "secret123")
+      {:ok, %{device: device}} = TrustedDevices.remember_nick(nil, nick, actor_nickname: nick)
+      :ok = TrustedDevices.set_auto_login(device.id, nick, true, nick)
+
+      old = DateTime.add(DateTime.utc_now(), -3600, :second)
+      Repo.update_all(TrustedDeviceNick, set: [last_used_at: old])
+
+      assert {:ok, ^nick} = TrustedDevices.auto_sign_in(device)
+
+      assert [%{last_used_at: used}] = TrustedDevices.remembered_nicks(device.id)
+      assert DateTime.compare(used, old) == :gt
+
+      assert Repo.exists?(
+               from(e in TrustedDeviceEvent,
+                 where: e.trusted_device_id == ^device.id and e.action == "device.nick.used"
+               )
+             )
+    end
+
+    test "a revoked grant no longer signs in by itself" do
+      nick = nick("AutoRev")
+      {:ok, _} = Queries.insert_registered_nick(nick, "secret123")
+      {:ok, %{device: device}} = TrustedDevices.remember_nick(nil, nick, actor_nickname: nick)
+      :ok = TrustedDevices.set_auto_login(device.id, nick, true, nick)
+
+      assert :ok = TrustedDevices.revoke_device_for_nick(nick, device.id, nick)
+      assert {:error, :no_auto_login} = TrustedDevices.auto_sign_in(device)
+    end
+  end
+
+  describe "verify_cookie/1" do
+    test "writes the time a device was seen at most every few minutes" do
+      nick = nick("Seen")
+      {:ok, _} = Queries.insert_registered_nick(nick, "secret123")
+
+      {:ok, %{device: device, cookie_value: cookie}} =
+        TrustedDevices.remember_nick(nil, nick, actor_nickname: nick)
+
+      recent = DateTime.add(DateTime.utc_now(), -60, :second)
+      Repo.update_all(TrustedDevice, set: [last_seen_at: recent])
+      assert {:ok, _} = TrustedDevices.verify_cookie(cookie)
+      assert Repo.get!(TrustedDevice, device.id).last_seen_at == recent
+
+      stale = DateTime.add(DateTime.utc_now(), -600, :second)
+      Repo.update_all(TrustedDevice, set: [last_seen_at: stale])
+      assert {:ok, _} = TrustedDevices.verify_cookie(cookie)
+      assert DateTime.compare(Repo.get!(TrustedDevice, device.id).last_seen_at, stale) == :gt
     end
   end
 

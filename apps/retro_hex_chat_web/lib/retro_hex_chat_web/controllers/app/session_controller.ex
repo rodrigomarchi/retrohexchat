@@ -10,6 +10,7 @@ defmodule RetroHexChatWeb.App.SessionController do
   alias RetroHexChatWeb.App.Paths
   alias RetroHexChatWeb.App.ReturnTo
   alias RetroHexChatWeb.App.SessionHelpers
+  alias RetroHexChatWeb.App.SessionSignIn
   alias RetroHexChatWeb.App.TrustedDeviceCookie
 
   @spec create(Plug.Conn.t(), map()) :: Plug.Conn.t()
@@ -24,14 +25,12 @@ defmodule RetroHexChatWeb.App.SessionController do
 
       conn
       |> maybe_put_nick_change_flash(previous_nickname, nickname)
-      |> put_session(:chat_nickname, nickname)
-      |> put_session(:chat_pre_identified, auth.pre_identified)
-      |> put_session(:chat_session_id, new_session_id())
-      |> put_session(:chat_timezone, params["timezone"] || "Etc/UTC")
-      |> maybe_put_trusted_device_session(
+      |> SessionSignIn.put(
+        nickname,
         trusted_device_id || auth[:trusted_device_id] || existing_trusted_device_id
       )
-      |> delete_session(:chat_join_channel)
+      |> put_session(:chat_pre_identified, auth.pre_identified)
+      |> put_session(:chat_timezone, params["timezone"] || "Etc/UTC")
       |> redirect(to: redirect_path)
     else
       _ ->
@@ -50,6 +49,7 @@ defmodule RetroHexChatWeb.App.SessionController do
 
     conn
     |> clear_session()
+    |> SessionSignIn.pause()
     |> maybe_restore_locale(locale)
     |> maybe_delete_trusted_cookie(params)
     |> redirect(to: after_clear(reason))
@@ -73,10 +73,6 @@ defmodule RetroHexChatWeb.App.SessionController do
       true -> :ok
     end
   end
-
-  # Names this browser sign-in, so an identification made inside the chat (`/ns identify`)
-  # survives a reload of this session and of no other.
-  defp new_session_id, do: Base.url_encode64(:crypto.strong_rand_bytes(18), padding: false)
 
   @spec verify_identity_proof(Plug.Conn.t(), map(), String.t()) ::
           {:ok, map()} | {:error, atom()}
@@ -134,11 +130,6 @@ defmodule RetroHexChatWeb.App.SessionController do
   end
 
   defp maybe_remember_device(conn, _params, _nickname, _auth), do: {:ok, conn, nil}
-
-  defp maybe_put_trusted_device_session(conn, nil), do: delete_session(conn, :trusted_device_id)
-
-  defp maybe_put_trusted_device_session(conn, device_id),
-    do: put_session(conn, :trusted_device_id, device_id)
 
   # Where the browser lands after the session exists. `return_to` is how a
   # shared link survives the connect it forced: the surface put it in the URL,
