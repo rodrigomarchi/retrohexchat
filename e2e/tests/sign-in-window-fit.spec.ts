@@ -1,6 +1,6 @@
 /**
  * @section PW - Public Pages, Landing, And Showcase
- * @flow PW31 [done] Every step of the sign-in window — nickname, a wrong nickname, registration with Remember this terminal, password, remembered nicknames — fits a 1280x720 desktop and a phone without scrolling or spilling sideways, a visitor's reason included, and How sessions work opens the help topic
+ * @flow PW31 [done] Every step of the sign-in window — nickname, a wrong nickname, registration with Remember this terminal, password, remembered nicknames — fits a 1280x720 desktop and a phone without scrolling or spilling sideways, a visitor's reason included; How sessions work and each thing an account opens open their help topic in a new tab, leaving the window where it was
  *
  * These @flow lines are the source of truth for e2e/TEST_CATALOG.md.
  * Edit them here, then run `make e2e.catalog` to regenerate the index.
@@ -99,12 +99,30 @@ for (const profile of Object.keys(PROFILES) as Profile[]) {
         await shot(page, "visitor-reason");
         await connect.open();
 
-        // The session rules moved out of the window into their help topic.
-        await page.getByTestId("connect-sessions-help").click();
-        await expect(page.getByTestId("document-window-help")).toContainText(
+        // The session rules live in their help topic, opened in a new tab so
+        // the sign-in window stays where it was.
+        const [help] = await Promise.all([
+          context.waitForEvent("page"),
+          page.getByTestId("connect-sessions-help").click(),
+        ]);
+        await expect(help.getByTestId("document-window-help")).toContainText(
           "Three chats at a time",
         );
-        await connect.open();
+        await help.close();
+        await expect(page).toHaveURL(/\/connect$/);
+
+        // So does each thing an account opens.
+        const [feature] = await Promise.all([
+          context.waitForEvent("page"),
+          page
+            .getByTestId("connect-account-features")
+            .getByRole("link")
+            .first()
+            .click(),
+        ]);
+        await expect(feature).toHaveURL(/\/chat\/help\//);
+        await feature.close();
+        await expect(page).toHaveURL(/\/connect$/);
 
         await connect.typeNickname("1bad nick");
         await page.getByTestId("connect-btn").click();

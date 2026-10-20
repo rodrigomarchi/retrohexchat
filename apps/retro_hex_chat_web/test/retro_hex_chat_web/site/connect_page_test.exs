@@ -56,6 +56,27 @@ defmodule RetroHexChatWeb.Site.ConnectPageTest do
       assert has_element?(view, ~s([data-testid="document-window-help"]))
     end
 
+    # The window is half of a sign-in: reading about sessions, or about what an
+    # account opens, must not end it.
+    test "its help links open in a new tab", %{conn: conn} do
+      {:ok, view, _html} = live(conn, "/connect")
+
+      assert has_element?(
+               view,
+               ~s|[data-testid="connect-sessions-help"][target="_blank"][href*="/chat/help/feature-sessions"]|
+             )
+
+      refute has_element?(
+               view,
+               ~s|[data-testid="connect-account-features"] a:not([target="_blank"])|
+             )
+
+      assert has_element?(
+               view,
+               ~s|[data-testid="connect-account-features"] a[href*="/chat/help/"]|
+             )
+    end
+
     test "a reason that is not a word is no reason at all", %{conn: conn} do
       assert {:ok, view, _html} = live(conn, "/connect?reason[a]=b")
       refute has_element?(view, ~s([data-testid="session-alert"]))

@@ -330,7 +330,9 @@ defmodule RetroHexChatWeb.Components.UI.ConnectFormPanel do
         </button>
         <.link
           :if={not @show_trusted_back}
-          patch={PublicPages.localized_path("/chat/help/feature-sessions")}
+          href={PublicPages.localized_path("/chat/help/feature-sessions")}
+          target="_blank"
+          rel="noopener"
           class="text-xs underline"
           data-testid="connect-sessions-help"
         >
@@ -364,7 +366,8 @@ defmodule RetroHexChatWeb.Components.UI.ConnectFormPanel do
     """
   end
 
-  # What an account opens, as a row of icons, each leading to its help topic.
+  # What an account opens, as a row of icons, each opening its help topic in a
+  # new tab — the sign-in window stays where it was.
   defp account_features(assigns) do
     assigns = assign(assigns, :features, VisitorGreetingCard.account_features())
 
@@ -375,7 +378,9 @@ defmodule RetroHexChatWeb.Components.UI.ConnectFormPanel do
     >
       <li :for={feature <- @features}>
         <.link
-          patch={feature.path}
+          href={feature.path}
+          target="_blank"
+          rel="noopener"
           title={feature.text}
           class="flex flex-col items-center gap-retro-2 p-retro-2 text-center text-[11px] leading-tight hover:bg-white hover:shadow-retro-field"
         >
