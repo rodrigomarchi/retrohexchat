@@ -30,9 +30,9 @@ defmodule RetroHexChatWeb.ContentDatesTest do
     # as from its template, so a new row is a new date for the page.
     test "is dated by the newest of its template, the shared guide pieces and its rows" do
       sources = [
-        "apps/retro_hex_chat_web/lib/retro_hex_chat_web/live/landing_live/mirc_commands.html.heex",
-        "apps/retro_hex_chat_web/lib/retro_hex_chat_web/live/landing_live/mirc_commands.ex",
-        "apps/retro_hex_chat_web/lib/retro_hex_chat_web/live/landing_live/guides.ex",
+        "apps/retro_hex_chat_web/lib/retro_hex_chat_web/site/pages/mirc_commands.html.heex",
+        "apps/retro_hex_chat_web/lib/retro_hex_chat_web/site/pages/mirc_commands.ex",
+        "apps/retro_hex_chat_web/lib/retro_hex_chat_web/site/pages/guides.ex",
         "apps/retro_hex_chat_web/lib/retro_hex_chat_web/components/ui/landing/irc_guides.ex",
         "apps/retro_hex_chat/lib/retro_hex_chat/commands/mirc_parity.ex"
       ]
@@ -49,8 +49,8 @@ defmodule RetroHexChatWeb.ContentDatesTest do
     # answers directly.
     test "is the day the most recently changed source changed" do
       sources = [
-        "apps/retro_hex_chat_web/lib/retro_hex_chat_web/live/landing_live/game.html.heex",
-        "apps/retro_hex_chat_web/lib/retro_hex_chat_web/live/landing_live/game.ex",
+        "apps/retro_hex_chat_web/lib/retro_hex_chat_web/site/pages/game.html.heex",
+        "apps/retro_hex_chat_web/lib/retro_hex_chat_web/site/pages/game.ex",
         "apps/retro_hex_chat_web/priv/static/images/games/hex-tennis.webp",
         "apps/retro_hex_chat/lib/retro_hex_chat/arcade/catalog.ex",
         "apps/retro_hex_chat/lib/retro_hex_chat/games/catalog.ex",
