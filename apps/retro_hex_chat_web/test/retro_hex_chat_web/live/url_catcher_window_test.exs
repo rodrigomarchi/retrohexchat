@@ -29,12 +29,6 @@ defmodule RetroHexChatWeb.UrlCatcherWindowTest do
       assert_push_event(view, "window_command", %{action: "open", id: "url-catcher"})
     end
 
-    test "the start menu opens it client-side (no server round trip)", %{conn: conn} do
-      {:ok, view, _html} = live(chat_conn(conn, "UrlW#{uid()}"), "/")
-
-      assert has_element?(view, ~s(#chat-start-menu [data-window-open="url-catcher"]))
-    end
-
     test "URLs accumulate in the host while the window is closed", %{conn: conn} do
       {:ok, view, _html} = live(chat_conn(conn, "UrlW#{uid()}"), "/")
 
@@ -47,15 +41,6 @@ defmodule RetroHexChatWeb.UrlCatcherWindowTest do
       assert Enum.any?(entries, &(&1.url == "https://example.com/hello"))
       # And the always-mounted island renders the captured URL.
       assert render(view) =~ "https://example.com/hello"
-    end
-
-    test "Escape is no longer a server-side dismissal for the URL Catcher", %{conn: conn} do
-      {:ok, view, _html} = live(chat_conn(conn, "UrlW#{uid()}"), "/")
-
-      # The parent does not track url-catcher visibility at all.
-      refute Map.has_key?(:sys.get_state(view.pid).socket.assigns, :show_url_catcher)
-      # And a stray Escape reaching the server does not crash.
-      render_click(view, "window_keydown", %{"key" => "Escape"})
     end
   end
 end

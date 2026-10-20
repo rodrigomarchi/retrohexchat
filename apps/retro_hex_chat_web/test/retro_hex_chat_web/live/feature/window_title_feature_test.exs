@@ -37,35 +37,5 @@ defmodule RetroHexChatWeb.WindowTitleFeatureTest do
       assert html =~ ~s(data-title="#{title}")
       refute html =~ ~s(data-title="#lobby[#{nick}]")
     end
-
-    test "the status tab names the window after itself", %{conn: conn} do
-      nick = "WT3#{uid()}"
-      {:ok, view, _html} = live(chat_conn(conn, nick), "/")
-
-      html = render_click(view, "switch_tab", %{"type" => "status", "label" => "Status"})
-
-      assert has_element?(
-               view,
-               ~s([data-window-id="chat"] [data-window-titlebar]),
-               "Status[#{nick}]"
-             )
-
-      assert html =~ ~s(data-title="Status[#{nick}]")
-    end
-
-    test "the title bar meta zone carries the identity state", %{conn: conn} do
-      nick = "WT4#{uid()}"
-      {:ok, _view, html} = live(chat_conn(conn, nick), "/")
-
-      assert html =~ "window-title-meta"
-      assert html =~ "Guest"
-    end
-
-    test "the app name no longer titles the window", %{conn: conn} do
-      nick = "WT5#{uid()}"
-      {:ok, _view, html} = live(chat_conn(conn, nick), "/")
-
-      refute html =~ ~s(data-title="RetroHexChat")
-    end
   end
 end

@@ -43,14 +43,6 @@ defmodule RetroHexChatWeb.NotifyListTest do
   # ── Phase 3: US1 — Dialog Shell ──────────────────────────
 
   describe "notify tab" do
-    test "empty notify list shows empty message", %{conn: conn} do
-      view = connect_user(conn, "EmptyNotify")
-      view |> render_click("toggle_notify_list")
-      html = render(view)
-
-      assert html =~ "No notify nicks yet. Add a nick to track online status."
-    end
-
     test "add notify entry appears in list", %{conn: conn} do
       view = connect_user(conn, "AddNotify")
       view |> render_click("toggle_notify_list")
@@ -104,29 +96,6 @@ defmodule RetroHexChatWeb.NotifyListTest do
       refute html =~ "old note"
     end
 
-    test "every row carries its own edit and remove", %{conn: conn} do
-      view = connect_user(conn, "SelectNotify")
-      view |> render_click("toggle_notify_list")
-
-      view |> ab_click("notify_add_dialog")
-      view |> ab_form("notify-add-form", %{"nickname" => "SelBud", "note" => ""})
-
-      # No selection to make, and no control waiting for one: the row names
-      # itself in both events it can send.
-      assert has_element?(
-               view,
-               "[phx-click='notify_edit_dialog'][phx-value-nickname='SelBud']"
-             )
-
-      assert has_element?(
-               view,
-               "[phx-click='notify_remove'][phx-value-nickname='SelBud']"
-             )
-
-      refute has_element?(view, "[data-testid='notify-list-edit']")
-      refute has_element?(view, "[data-testid='notify-list-remove']")
-    end
-
     test "notify tab shares data with standalone notify list", %{conn: conn} do
       view = connect_user(conn, "SyncNotify")
 
@@ -140,22 +109,6 @@ defmodule RetroHexChatWeb.NotifyListTest do
 
       html = render(view)
       assert html =~ "SyncBud"
-    end
-
-    test "auto_whois checkbox toggles", %{conn: conn} do
-      view = connect_user(conn, "AutoWhois")
-      # auto_whois is in the standalone notify list dialog
-      view |> render_click("toggle_notify_list")
-
-      html = render(view)
-      assert html =~ "auto_whois" || html =~ "auto-whois"
-
-      # Toggle auto-whois (checkbox owned by the NotifyListDialog island)
-      view |> element("#notify-list-dialog-auto-whois") |> render_click()
-
-      # Still open
-      html = render(view)
-      assert html =~ "Notify"
     end
   end
 

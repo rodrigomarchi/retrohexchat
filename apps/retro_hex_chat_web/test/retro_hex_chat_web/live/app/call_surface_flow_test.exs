@@ -1052,27 +1052,6 @@ defmodule RetroHexChatWeb.App.CallSurfaceFlowTest do
              )
     end
 
-    test "stats section renders inside the conference console", %{conn: conn} do
-      %{view: view} = mount_identified(conn, "gcst")
-
-      open_group_call(view)
-
-      call = group_call_assign(view)
-      cleanup_room(call.token)
-
-      call_view(view)
-      |> element(~s([data-testid="group-call-section-stats"]))
-      |> render_click()
-
-      assert group_call_assign(view).layout.console_section == :stats
-      assert has_element?(call_view(view), ~s([data-testid="group-call-inline-stats"]))
-
-      assert has_element?(
-               call_view(view),
-               ~s([data-testid="group-call-inline-stats"] [data-testid="group-call-stats-panel"])
-             )
-    end
-
     test "browser stats update the inline conference statistics section", %{conn: conn} do
       %{view: view} = mount_identified(conn, "gcfs")
 

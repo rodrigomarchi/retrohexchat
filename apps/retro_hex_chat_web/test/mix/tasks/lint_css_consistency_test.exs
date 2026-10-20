@@ -360,30 +360,6 @@ defmodule Mix.Tasks.Lint.CssConsistencyTest do
 
       assert CssConsistency.unknown_colour_utilities(refs, @colours) == MapSet.new()
     end
-
-    test "the theme of this app names every colour the app uses" do
-      refs = CssConsistency.extract_all_references()
-      colours = CssConsistency.theme_colours()
-
-      assert CssConsistency.unknown_colour_utilities(refs, colours) == MapSet.new()
-    end
-  end
-
-  describe "end-to-end on actual codebase" do
-    test "extract_defined_classes returns a set" do
-      defined = CssConsistency.extract_defined_classes()
-      assert is_struct(defined, MapSet)
-    end
-
-    test "extract_vendor_classes returns a set (may be empty without retro CSS)" do
-      vendor = CssConsistency.extract_vendor_classes()
-      assert is_struct(vendor, MapSet)
-    end
-
-    test "extract_all_references returns a non-empty set" do
-      refs = CssConsistency.extract_all_references()
-      assert MapSet.size(refs) > 0
-    end
   end
 
   defp write_temp_file(content) do

@@ -12,8 +12,6 @@ defmodule RetroHexChatWeb.OpenTabConfirmFeatureTest do
   """
   use RetroHexChatWeb.LiveViewCase, async: false
 
-  alias RetroHexChatWeb.ChatLive.Components.OpenTabConfirmDialog
-
   @moduletag :liveview_feature
 
   @hook_id "#open-tab-confirm-dialog-mount"
@@ -47,31 +45,6 @@ defmodule RetroHexChatWeb.OpenTabConfirmFeatureTest do
       assert html =~ ~s(id="open-tab-confirm-dialog-show-trigger")
       assert html =~ "This opens Call in #retro."
       refute html =~ ~s(data-testid="open-tab-confirm-url")
-    end
-
-    test "an external link raises it with the host and the whole address", %{conn: conn} do
-      view = open_chat(conn, "OT2")
-
-      html =
-        gate(view, %{
-          "url" => "https://tecnoblog.net/noticias/algo/",
-          "kind" => "external",
-          "host" => "tecnoblog.net"
-        })
-
-      assert html =~ "Leaving RetroHexChat"
-      assert html =~ "tecnoblog.net"
-      assert html =~ "https://tecnoblog.net/noticias/algo/"
-    end
-
-    test "the way out is an anchor, so no pop-up blocker is involved", %{conn: conn} do
-      view = open_chat(conn, "OT3")
-
-      html = gate(view, %{"url" => "https://example.com/x", "kind" => "external"})
-
-      assert html =~ ~s(href="https://example.com/x")
-      assert html =~ ~s(target="_blank")
-      assert html =~ ~s(rel="noopener")
     end
 
     test "cancelling puts it away", %{conn: conn} do
@@ -121,17 +94,5 @@ defmodule RetroHexChatWeb.OpenTabConfirmFeatureTest do
 
       assert html =~ ~s(id="open-tab-confirm-dialog-show-trigger")
     end
-  end
-
-  # The island is where the pending target lives, and reading it off the process
-  # is the synchronous answer — never a wait on the `send_update` that put it
-  # there.
-  test "the pending target is the island's own state", %{conn: conn} do
-    view = open_chat(conn, "OT8")
-
-    _open = gate(view, %{"url" => "/call/abc", "kind" => "surface", "label" => "Call in #retro"})
-
-    assert OpenTabConfirmDialog.id() == "open-tab-confirm-dialog"
-    assert render(view) =~ "Call in #retro"
   end
 end

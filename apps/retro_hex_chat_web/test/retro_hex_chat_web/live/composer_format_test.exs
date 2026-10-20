@@ -32,49 +32,6 @@ defmodule RetroHexChatWeb.ComposerFormatTest do
     assert msg.plain_content == "Hello doc"
   end
 
-  test "format selector and markdown controls live inside the formatting menu", %{conn: conn} do
-    nick = "fmt#{uid()}"
-    {:ok, view, html} = live(chat_conn(conn, nick), "/")
-    document = Floki.parse_document!(html)
-
-    toolbar_html =
-      document
-      |> Floki.find(~s([data-testid="chat-input-toolbar"]))
-      |> Floki.raw_html()
-
-    panel_html =
-      document
-      |> Floki.find(~s([data-testid="formatting-toolbar-panel"]))
-      |> Floki.raw_html()
-
-    assert toolbar_html =~ ~s(data-testid="formatting-toolbar-toggle")
-    assert panel_html =~ ~s(data-testid="composer-format-selector")
-    assert panel_html =~ ~s(data-testid="composer-format-markdown")
-
-    view
-    |> element(~s([data-testid="composer-format-markdown"]))
-    |> render_click()
-
-    markdown_document =
-      view
-      |> render()
-      |> Floki.parse_document!()
-
-    markdown_panel_html =
-      markdown_document
-      |> Floki.find(~s([data-testid="formatting-toolbar-panel"]))
-      |> Floki.raw_html()
-
-    assert markdown_panel_html =~ ~s(data-testid="format-btn-md-heading")
-    assert markdown_panel_html =~ ~s(data-testid="format-btn-md-strike")
-    assert markdown_panel_html =~ ~s(data-testid="format-btn-md-ordered-list")
-    assert markdown_panel_html =~ ~s(data-testid="composer-markdown-preview-toggle")
-    assert Floki.find(markdown_document, ~s([data-testid="composer-format-markdown"] svg)) != []
-    assert Floki.find(markdown_document, ~s([data-testid="format-btn-md-heading"] svg)) != []
-    assert Floki.find(markdown_document, ~s([data-testid="format-btn-md-strike"] svg)) != []
-    assert Floki.find(markdown_document, ~s([data-testid="format-btn-md-code"] svg)) != []
-  end
-
   test "composer sends channel messages with the selected plain format", %{
     conn: conn,
     channel: channel

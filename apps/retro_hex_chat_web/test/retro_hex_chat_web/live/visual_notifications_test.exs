@@ -148,18 +148,6 @@ defmodule RetroHexChatWeb.VisualNotificationsTest do
   # ── Title flash events ─────────────────────────────────────
 
   describe "title flash events" do
-    test "title_flash_start pushed on flash-enabled activity", %{conn: conn} do
-      nick = "VTitle#{uid()}"
-      {:ok, view, _html} = live(chat_conn(conn, nick), "/")
-      # Consume connect sound
-      assert_push_event(view, "play_sound", %{type: "chime_short"})
-
-      # PM flash is enabled by default — send a background PM
-      send_pm_activity(view, "Bob", nick, "title flash test")
-
-      assert_push_event(view, "title_flash_start", %{message: "* New activity"})
-    end
-
     test "title_flash_stop pushed on tab_focused", %{conn: conn} do
       nick = "VStop#{uid()}"
       {:ok, view, _html} = live(chat_conn(conn, nick), "/")

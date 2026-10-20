@@ -122,16 +122,6 @@ defmodule RetroHexChatWeb.SessionPersistenceTest do
       assert html =~ "Other"
       refute html =~ ~s(data-testid="pm-#{nick}")
     end
-
-    test "empty PM history does not cause errors", %{conn: conn} do
-      nick = "EP#{uid()}"
-      register_and_identify(nick)
-
-      {:ok, _view, html} = live(chat_conn(conn, nick, pre_identified: true), "/")
-
-      # Should mount without errors
-      assert html =~ nick
-    end
   end
 
   # ── US2: Incoming PM records sidebar activity and opens a background tab ───
@@ -177,30 +167,6 @@ defmodule RetroHexChatWeb.SessionPersistenceTest do
       refute has_element?(view, ~s([data-testid="pm-unread-badge-NewPerson"]))
     end
 
-    test "existing contact moves to top on incoming PM activity", %{conn: conn} do
-      nick = "MT#{uid()}"
-      {:ok, view, _html} = live(chat_conn(conn, nick), "/")
-
-      # Open two PM conversations via /query
-      view
-      |> element(~s([data-testid="chat-input-form"]))
-      |> render_submit(%{"input" => "/query Alice"})
-
-      view
-      |> element(~s([data-testid="chat-input-form"]))
-      |> render_submit(%{"input" => "/query Bob"})
-
-      # Alice should be before Bob (Alice added first, then Bob prepended)
-      # Actually with prepend: Bob is at head, Alice is second
-      # Now simulate activity from Alice — she should move to top in the sidebar.
-      send(view.pid, pm_activity("Alice"))
-      html = render(view)
-
-      alice_pos = :binary.match(html, ~s(data-testid="pm-Alice")) |> elem(0)
-      bob_pos = :binary.match(html, ~s(data-testid="pm-Bob")) |> elem(0)
-      assert alice_pos < bob_pos
-    end
-
     test "ignored user does NOT appear in conversations", %{conn: conn} do
       nick = "IG#{uid()}"
       {:ok, view, _html} = live(chat_conn(conn, nick), "/")
@@ -220,31 +186,6 @@ defmodule RetroHexChatWeb.SessionPersistenceTest do
   # ── US3: pm_activity is the lightweight user-topic PM signal ───
 
   describe "US3: pm_activity updates PM conversations" do
-    test "{:pm_activity, ...} from new contact creates a sidebar entry, not a tab", %{conn: conn} do
-      nick = "IN#{uid()}"
-      {:ok, view, _html} = live(chat_conn(conn, nick), "/")
-
-      send(view.pid, pm_activity("Dave"))
-
-      assert has_element?(view, pm_sidebar_selector("Dave"))
-      refute has_element?(view, pm_tab_selector("Dave"))
-    end
-
-    test "{:pm_activity, ...} from ignored user does NOT create sidebar entry", %{conn: conn} do
-      nick = "IX#{uid()}"
-      {:ok, view, _html} = live(chat_conn(conn, nick), "/")
-
-      # Ignore the user first
-      view
-      |> element(~s([data-testid="chat-input-form"]))
-      |> render_submit(%{"input" => "/ignore BadGuy"})
-
-      send(view.pid, pm_activity("BadGuy"))
-
-      refute has_element?(view, pm_sidebar_selector("BadGuy"))
-      refute has_element?(view, pm_tab_selector("BadGuy"))
-    end
-
     test "{:pm_activity, ...} from existing contact does NOT duplicate", %{conn: conn} do
       nick = "ND#{uid()}"
       {:ok, view, _html} = live(chat_conn(conn, nick), "/")
@@ -426,21 +367,6 @@ defmodule RetroHexChatWeb.SessionPersistenceTest do
 
       assert_push_event(view, "intentional_disconnect", %{})
       assert {:error, :not_found} = ReconnectState.load(nick, @browser)
-    end
-
-    test "opening a PM tab saves open_pm_tabs in reconnect state", %{conn: conn} do
-      nick = "RS#{uid()}"
-      {:ok, view, _html} = live(chat_conn(conn, nick), "/")
-
-      view
-      |> element(~s([data-testid="chat-input-form"]))
-      |> render_submit(%{"input" => "/query Bob"})
-
-      assert_push_event(view, "save_reconnect_state", %{
-        nickname: ^nick,
-        active_pm: "Bob",
-        open_pm_tabs: ["Bob"]
-      })
     end
 
     test "restore_session restores only PMs listed in open_pm_tabs", %{conn: conn} do

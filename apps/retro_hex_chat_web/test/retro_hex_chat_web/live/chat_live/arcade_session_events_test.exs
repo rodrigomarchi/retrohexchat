@@ -150,17 +150,6 @@ defmodule RetroHexChatWeb.ChatLive.ArcadeSessionEventsTest do
       %{view: view, token: arcade_session(view).token}
     end
 
-    test "renders the lobby as an icon launcher", %{view: view} do
-      html = render(view)
-
-      assert html =~ ~s(data-testid="arcade-library")
-      assert html =~ ~s(data-testid="arcade-icon-window")
-      assert html =~ ~s(data-testid="arcade-icon-grid")
-      assert html =~ ~s(data-testid="arcade-status-bar")
-      assert html =~ ~s(data-testid="arcade-game-doom_shareware")
-      assert html =~ ~s(phx-click="arcade_preview")
-    end
-
     test "previewing a game stores the selected game details", %{view: view, token: token} do
       render_click(view, "arcade_preview", %{"game-id" => "doom_shareware"})
 

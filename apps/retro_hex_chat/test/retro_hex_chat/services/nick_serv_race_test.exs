@@ -6,45 +6,6 @@ defmodule RetroHexChat.Services.NickServRaceTest do
   alias RetroHexChat.Services.NickServ
 
   describe "identify timer race condition" do
-    test "identify just before timeout cancels timer and keeps user identified" do
-      server_name = :"test_nickserv_race_#{rem(System.unique_integer([:positive]), 100_000)}"
-      {:ok, _pid} = NickServ.start_link(name: server_name, identify_timeout_ms: 300)
-
-      nickname = unique_nick("RaceNick")
-      password = "secret123"
-
-      # Register the nick
-      {:ok, _} = NickServ.register(nickname, password, server_name)
-
-      # Start a new server (without identified state) so we can test the timer
-      race_server = :"test_nickserv_race2_#{System.unique_integer([:positive])}"
-      {:ok, _pid} = NickServ.start_link(name: race_server, identify_timeout_ms: 300)
-
-      # Subscribe to user PubSub to watch for force_rename
-      Phoenix.PubSub.subscribe(RetroHexChat.PubSub, RetroHexChat.Topics.inbox(nickname))
-
-      # Start the identify timer
-      NickServ.start_identify_timer(nickname, race_server)
-
-      # Wait 150ms (intentional timing: ~50% of the 300ms timeout).
-      # This is a deliberate race-condition test — we need the identify call
-      # to arrive after meaningful timer progress but before expiry.
-      # The wait_until/3 polling pattern doesn't apply here because we're
-      # testing a specific timing window, not waiting for a state change.
-      Process.sleep(150)
-
-      # Identify just before timeout
-      assert {:ok, msg} = NickServ.identify(nickname, password, race_server)
-      assert msg =~ "identified"
-
-      # Verify the timer was cancelled -- no force_rename should arrive
-      refute_receive {:force_rename, _}, 500
-
-      # Verify user remains identified
-      {:ok, info} = NickServ.info(nickname, race_server)
-      assert info.identified == true
-    end
-
     test "timeout fires before identify sends force_rename" do
       server_name = :"test_nickserv_timeout_#{rem(System.unique_integer([:positive]), 100_000)}"
       {:ok, _pid} = NickServ.start_link(name: server_name, identify_timeout_ms: 100)

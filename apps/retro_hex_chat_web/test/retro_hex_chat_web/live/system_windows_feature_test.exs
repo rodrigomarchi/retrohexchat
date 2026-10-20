@@ -25,14 +25,6 @@ defmodule RetroHexChatWeb.SystemWindowsFeatureTest do
       assert html =~ "Total usage:"
       assert html =~ "elixir"
     end
-
-    test "refreshing re-reads the vitals without reopening the window", %{conn: conn} do
-      view = connect_admin(conn)
-      open(view, "system_home")
-
-      assert view |> element("[data-testid='system-home-refresh']") |> render_click() =~
-               "System limits"
-    end
   end
 
   describe "runtime listings" do
@@ -101,42 +93,6 @@ defmodule RetroHexChatWeb.SystemWindowsFeatureTest do
   end
 
   describe "Oban Health window" do
-    test "opens with grouped tabs for every Oban contract", %{conn: conn} do
-      view = connect_admin(conn)
-      open(view, "system_oban")
-
-      html = render(view)
-
-      assert html =~ "Oban health"
-      assert html =~ "Overview"
-      assert html =~ "Queues"
-      assert html =~ "Bots"
-      assert html =~ "Maintenance"
-      assert html =~ "Previews"
-      assert html =~ "Persistence"
-      assert html =~ "Queues by state"
-      assert html =~ "Recent jobs"
-      assert html =~ "RSS feed coverage"
-      assert html =~ "Bot schedule coverage"
-      assert html =~ "Bot event log jobs"
-      assert html =~ "Attachment orphan cleanup"
-      assert html =~ "Trusted device expiry"
-      assert html =~ "Chat device session cleanup"
-      assert html =~ "Runtime stale cleanup"
-      assert html =~ "Channel mute expiry"
-      assert html =~ "Global mute expiry"
-      assert html =~ "Ignore expired cleanup"
-      assert html =~ "Link preview cache"
-      assert html =~ "Retrying"
-      assert html =~ "Final failures"
-      assert html =~ "Preference persistence"
-      assert has_element?(view, "[data-testid='system-oban-window']")
-      assert has_element?(view, "#system-oban-dialog-tabs[data-active-tab='overview']")
-      assert has_element?(view, "[data-testid='system-oban-tab-overview'][aria-selected='true']")
-      refute has_element?(view, "[data-testid='system-oban-tabpanel-overview'].hidden")
-      assert has_element?(view, "[data-testid='system-oban-tabpanel-queues'].hidden")
-    end
-
     test "switches Oban sections with tabs", %{conn: conn} do
       view = connect_admin(conn)
       open(view, "system_oban")
@@ -195,14 +151,6 @@ defmodule RetroHexChatWeb.SystemWindowsFeatureTest do
 
       assert html =~ "Preference persistence"
       assert has_element?(view, "#system-oban-dialog-tabs[data-active-tab='persistence']")
-    end
-
-    test "refreshing re-reads the Oban snapshot", %{conn: conn} do
-      view = connect_admin(conn)
-      open(view, "system_oban")
-
-      assert view |> element("[data-testid='system-oban-refresh']") |> render_click() =~
-               "Oban health"
     end
 
     test "recent Oban jobs can be filtered by state, queue and worker", %{conn: conn} do

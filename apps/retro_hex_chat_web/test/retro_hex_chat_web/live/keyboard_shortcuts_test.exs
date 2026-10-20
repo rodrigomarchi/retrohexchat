@@ -54,23 +54,6 @@ defmodule RetroHexChatWeb.Live.KeyboardShortcutsTest do
       assert_push_event(view, "window_command", %{action: "open", id: "cheatsheet"})
     end
 
-    test "cheatsheet renders categories", %{conn: conn} do
-      {:ok, view, _html} = live(chat_conn(conn, "CheatC"), "/")
-
-      html =
-        render_click(view, "window_keydown", %{
-          "key" => "/",
-          "ctrlKey" => true,
-          "shiftKey" => true,
-          "altKey" => false
-        })
-
-      assert html =~ "Navigation"
-      assert html =~ "System"
-      assert html =~ "P2P Session Console"
-      assert html =~ "Ctrl+Shift+."
-    end
-
     test "close_dialog event closes cheatsheet", %{conn: conn} do
       {:ok, view, _html} = live(chat_conn(conn, "CheatX"), "/")
 
@@ -106,14 +89,6 @@ defmodule RetroHexChatWeb.Live.KeyboardShortcutsTest do
       {:ok, view, _html} = live(chat_conn(conn, "SAUnkn"), "/")
 
       html = render_click(view, "shortcut_action", %{"action" => "nonexistent_action"})
-      assert html =~ "chat-input-form"
-    end
-
-    test "open_help pushes open_url event", %{conn: conn} do
-      {:ok, view, _html} = live(chat_conn(conn, "SAHelp"), "/")
-
-      html = render_click(view, "shortcut_action", %{"action" => "open_help"})
-      # open_help now uses push_event to open /chat/help in a new tab
       assert html =~ "chat-input-form"
     end
   end

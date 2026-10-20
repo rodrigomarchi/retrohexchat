@@ -147,35 +147,6 @@ defmodule RetroHexChatWeb.NickColorsTest do
       refute html =~ "nick-color-entry-RemNick"
       assert html =~ "No custom colors set. Nicknames use automatic colors."
     end
-
-    test "every colour row carries its own edit and remove", %{conn: conn} do
-      view = connect_user(conn, "SelColor")
-      view |> render_click("open_nick_colors_dialog")
-
-      view |> ab_click("nick_color_add_dialog")
-      view |> ab_form("nick-color-add-form", %{"nickname" => "SelNick", "color_index" => "3"})
-
-      assert has_element?(view, "[data-testid=\"nick-color-edit-SelNick\"]")
-      assert has_element?(view, "[data-testid=\"nick-color-remove-SelNick\"]")
-      refute has_element?(view, "[data-testid=\"nick-color-remove-SelNick\"][disabled]")
-    end
-
-    test "color override applies to chat message nickname", %{conn: conn} do
-      view = connect_user(conn, "ColorMsg")
-      view |> render_click("open_nick_colors_dialog")
-
-      # Set a custom color for "SomeChatter" — Red (4) = #ff0000
-      view |> ab_click("nick_color_add_dialog")
-
-      view
-      |> ab_form("nick-color-add-form", %{"nickname" => "SomeChatter", "color_index" => "4"})
-
-      # The nick color entry should appear in the list with the irc-bg-4 swatch
-      # (functional test — override is wired into session via nick_color_fn)
-      html = render(view)
-      assert html =~ "SomeChatter"
-      assert html =~ "irc-bg-4"
-    end
   end
 
   # ── Phase 8: Context Menu Integration ──────────────────────

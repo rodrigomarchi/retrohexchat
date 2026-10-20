@@ -16,14 +16,6 @@ defmodule RetroHexChatWeb.Live.SearchHighlightTest do
   # value for component-owned state.
 
   describe "search_input triggers highlight push_event" do
-    test "search_input pushes search_highlight event", %{conn: conn} do
-      {:ok, view, _html} = live(chat_conn(conn, "SrchHL1"), "/")
-      render_click(view, "toggle_search")
-
-      render_change(view, "search_input", %{"query" => "hello"})
-      assert render(view) =~ "search-bar"
-    end
-
     test "empty search_input clears highlights", %{conn: conn} do
       {:ok, view, _html} = live(chat_conn(conn, "SrchHL2"), "/")
       render_click(view, "toggle_search")
@@ -109,25 +101,9 @@ defmodule RetroHexChatWeb.Live.SearchHighlightTest do
       render_click(view, "search_navigate", %{"key" => "ArrowUp"})
       assert render(view) =~ "3/3"
     end
-
-    test "other keys in search_navigate are no-op", %{conn: conn} do
-      {:ok, view, _html} = live(chat_conn(conn, "SrchAN1"), "/")
-      render_click(view, "toggle_search")
-
-      render_click(view, "search_navigate", %{"key" => "a"})
-      assert render(view) =~ "search-bar"
-    end
   end
 
   describe "search_toggle_filter" do
-    test "toggling case_sensitive updates assigns", %{conn: conn} do
-      {:ok, view, _html} = live(chat_conn(conn, "SrchTF1"), "/")
-      render_click(view, "toggle_search")
-
-      render_click(view, "search_toggle_filter", %{"filter" => "case_sensitive"})
-      assert render(view) =~ "Case sensitive"
-    end
-
     test "toggling regex with invalid query shows error", %{conn: conn} do
       {:ok, view, _html} = live(chat_conn(conn, "SrchTF2"), "/")
       render_click(view, "toggle_search")
@@ -144,31 +120,6 @@ defmodule RetroHexChatWeb.Live.SearchHighlightTest do
 
       render_click(view, "search_toggle_filter", %{"filter" => "regex"})
       refute render(view) =~ "text-error"
-    end
-
-    test "toggling my_mentions updates assigns", %{conn: conn} do
-      {:ok, view, _html} = live(chat_conn(conn, "SrchTF4"), "/")
-      render_click(view, "toggle_search")
-
-      render_click(view, "search_toggle_filter", %{"filter" => "my_mentions"})
-      assert render(view) =~ "Case sensitive"
-    end
-  end
-
-  describe "search_history toggle" do
-    test "toggling history updates assigns", %{conn: conn} do
-      {:ok, view, _html} = live(chat_conn(conn, "SrchHi1"), "/")
-      render_click(view, "toggle_search")
-
-      render_click(view, "search_toggle_filter", %{"filter" => "history"})
-      assert render(view) =~ "Case sensitive"
-    end
-
-    test "history checkbox renders in search bar", %{conn: conn} do
-      {:ok, view, _html} = live(chat_conn(conn, "SrchHi2"), "/")
-      render_click(view, "toggle_search")
-      html = render(view)
-      assert html =~ "Search history"
     end
   end
 

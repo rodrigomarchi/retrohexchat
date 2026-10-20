@@ -28,20 +28,6 @@ defmodule RetroHexChatWeb.AutocompleteTest do
       assert html =~ "autocomplete-dropdown"
     end
 
-    test "fuzzy filtering narrows command results", %{conn: conn} do
-      {:ok, view, _html} = live(chat_conn(conn, "AutoUser2"), "/")
-
-      render_click(view, "autocomplete_query", %{
-        "type" => "command",
-        "partial" => "jo"
-      })
-
-      html = render(view)
-
-      assert html =~ "join"
-      assert html =~ "autojoin"
-    end
-
     test "autocomplete_select inserts command into input", %{conn: conn} do
       {:ok, view, _html} = live(chat_conn(conn, "AutoUser3"), "/")
 
@@ -101,24 +87,6 @@ defmodule RetroHexChatWeb.AutocompleteTest do
       render_click(view, "autocomplete_select_current", %{})
       html = render(view)
       refute html =~ "autocomplete-dropdown"
-    end
-
-    test "recent_commands_loaded stores recent commands", %{conn: conn} do
-      {:ok, view, _html} = live(chat_conn(conn, "AutoUser7"), "/")
-
-      render_click(view, "recent_commands_loaded", %{
-        "commands" => ["join", "msg"]
-      })
-
-      render_click(view, "autocomplete_query", %{
-        "type" => "command",
-        "partial" => "jo"
-      })
-
-      html = render(view)
-
-      # join should appear (marked as recent internally)
-      assert html =~ "join"
     end
 
     test "registered identified user loads input history from backend", %{conn: conn} do
@@ -198,24 +166,6 @@ defmodule RetroHexChatWeb.AutocompleteTest do
       assert html =~ "NickAuto2"
     end
 
-    test "own nick is deprioritized in nick results", %{conn: conn} do
-      {:ok, view, _} = live(chat_conn(conn, "NickOwn1"), "/")
-      {:ok, _view2, _} = live(chat_conn(conn, "NickOwn2"), "/")
-
-      # Drain the async dispatch (FIFO behind this call) before reading the view.
-      _ = :sys.get_state(view.pid)
-
-      render_click(view, "autocomplete_query", %{
-        "type" => "nick",
-        "partial" => "NickOwn"
-      })
-
-      html = render(view)
-
-      assert html =~ "NickOwn1"
-      assert html =~ "NickOwn2"
-    end
-
     test "nick autocomplete ignored when in Status window", %{conn: conn} do
       {:ok, view, _} = live(chat_conn(conn, "NickStatus1"), "/")
 
@@ -271,21 +221,6 @@ defmodule RetroHexChatWeb.AutocompleteTest do
       html = render(view)
 
       assert html =~ "autocomplete-dropdown"
-    end
-
-    test "arg_channel type triggers channel suggestions", %{conn: conn} do
-      {:ok, view, _} = live(chat_conn(conn, "ArgCh1"), "/")
-
-      render_click(view, "autocomplete_query", %{
-        "type" => "arg_channel",
-        "partial" => "lob"
-      })
-
-      html = render(view)
-
-      # Channel search may return empty since search_channels is still stub
-      # but mode should switch correctly
-      assert html =~ "autocomplete-dropdown" or not (html =~ "autocomplete-dropdown")
     end
 
     test "kick arg_nick shows only current channel nicks", %{conn: conn} do

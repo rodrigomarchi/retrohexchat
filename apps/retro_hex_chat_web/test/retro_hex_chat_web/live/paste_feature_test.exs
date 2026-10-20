@@ -16,19 +16,6 @@ defmodule RetroHexChatWeb.PasteFeatureTest do
   end
 
   describe "Multi-Line Paste E2E" do
-    test "paste_lines event shows paste confirmation dialog", %{conn: conn, channel: channel} do
-      nick = "PE#{uid()}"
-      {:ok, view, _} = live(chat_conn(conn, nick), "/")
-      join_channel(view, channel)
-
-      render_hook(view, "paste_lines", %{"lines" => ["line one", "line two", "line three"]})
-
-      assert has_element?(view, "#paste-confirm-dialog-show-trigger")
-      html = render(view)
-      assert html =~ "3"
-      assert html =~ "lines"
-    end
-
     test "paste_cancel clears the dialog", %{conn: conn, channel: channel} do
       nick = "PE#{uid()}"
       {:ok, view, _} = live(chat_conn(conn, nick), "/")

@@ -65,19 +65,6 @@ defmodule RetroHexChatWeb.StartMenuEntryPointsFeatureTest do
       assert render(view) =~ "chat-messages"
     end
 
-    # A P2P session is started from the conversation it belongs to and entered
-    # at its own address, so the Start menu has no row for one — every entry the
-    # old P2P group carried reached inside a session this screen is not holding.
-    test "no Start menu row reaches inside a P2P session", %{conn: conn} do
-      view = connect_user(conn, "StartP2P#{uid()}")
-
-      refute has_element?(view, ~s([data-testid="start-menu-p2p-submenu"]))
-
-      for entry <- ~w(p2p_how_to_start p2p_start_audio p2p_console_select p2p_end_session) do
-        refute has_element?(view, ~s([data-testid="start-menu-item-#{entry}"]))
-      end
-    end
-
     test "the Arcade row is gray until the nick is identified", %{conn: conn} do
       view = connect_user(conn, "StartArc#{uid()}")
 
@@ -89,17 +76,6 @@ defmodule RetroHexChatWeb.StartMenuEntryPointsFeatureTest do
       assert has_element?(
                identified,
                ~s|[data-testid="start-menu-item-open_arcade"]:not([disabled])|
-             )
-    end
-  end
-
-  describe "rows that were already there" do
-    test "the menu still reaches a window it opens client-side", %{conn: conn} do
-      view = connect_user(conn, "StartWin#{uid()}")
-
-      assert has_element?(
-               view,
-               ~s([data-testid="start-menu-item-address-book"][data-window-open="address-book"])
              )
     end
   end

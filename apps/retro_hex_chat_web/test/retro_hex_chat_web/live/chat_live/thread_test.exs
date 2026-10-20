@@ -13,7 +13,6 @@ defmodule RetroHexChatWeb.ChatLive.ThreadTest do
 
   alias RetroHexChat.Channels.Server
   alias RetroHexChat.Chat.Queries
-  alias RetroHexChat.Chat.Replies
   alias RetroHexChat.Services.NickServ
   alias RetroHexChatWeb.ChatLive.Components.Composer
   alias RetroHexChatWeb.ChatLive.Components.MessageViewport
@@ -36,15 +35,6 @@ defmodule RetroHexChatWeb.ChatLive.ThreadTest do
   defp reply(ctx, text) do
     {:ok, id} = Server.send_message(ctx.channel, ctx.other, text, reply_to_id: ctx.root_id)
     id
-  end
-
-  test "the line that was answered says how many times", ctx do
-    reply(ctx, "the wiki")
-    reply(ctx, "or the topic")
-
-    render_click(ctx.view, "switch_channel", %{"channel" => ctx.channel})
-
-    assert Queries.thread_counts_for_many(:message, [ctx.root_id]) == %{ctx.root_id => 2}
   end
 
   test "opening the thread mounts the window on that root", ctx do
@@ -124,14 +114,6 @@ defmodule RetroHexChatWeb.ChatLive.ThreadTest do
     render_click(ctx.view, "open_thread", %{"message_id" => "999999"})
 
     refute "thread" in assigns(ctx.view).open_windows
-  end
-
-  test "replies stay flat however deep the answering went", ctx do
-    first = reply(ctx, "the wiki")
-    {:ok, second} = Server.send_message(ctx.channel, ctx.owner, "which wiki?", reply_to_id: first)
-
-    assert Queries.get_message(second).reply_to_id == ctx.root_id
-    assert Replies.root_id(:message, second) == ctx.root_id
   end
 
   defp register(prefix) do

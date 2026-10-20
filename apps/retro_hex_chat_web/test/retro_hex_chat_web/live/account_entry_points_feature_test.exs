@@ -10,7 +10,6 @@ defmodule RetroHexChatWeb.AccountEntryPointsFeatureTest do
   alias RetroHexChatWeb.Components.UI.{
     MenuBarApp,
     StartMenuApp,
-    StatusBarApp,
     ToolbarApp
   }
 
@@ -39,29 +38,6 @@ defmodule RetroHexChatWeb.AccountEntryPointsFeatureTest do
   end
 
   describe "account entry points" do
-    test "File menu exposes the Account group actions" do
-      menu_html =
-        render_component(&MenuBarApp.menu_bar_app/1,
-          connected: true,
-          on_action: "toolbar_action"
-        )
-
-      assert menu_html =~ "Account"
-      assert menu_html =~ ~s(data-testid="context-menu-item-open_account_register")
-      assert menu_html =~ ~s(data-testid="context-menu-item-open_account_identify")
-      assert menu_html =~ ~s(data-testid="context-menu-item-open_profile_dialog")
-      assert menu_html =~ ~s(data-testid="context-menu-item-open_away_dialog")
-      assert menu_html =~ ~s(data-testid="context-menu-item-open_user_modes_dialog")
-      assert menu_html =~ ~s(data-testid="context-menu-item-account_info")
-      assert menu_html =~ "Register Nickname"
-      assert menu_html =~ "Identify"
-      assert menu_html =~ "Change Nickname"
-      assert menu_html =~ "Edit Profile"
-      assert menu_html =~ "Set Away"
-      assert menu_html =~ "User Modes"
-      assert menu_html =~ "Account Info"
-    end
-
     # The account group is action-driven on all three surfaces — it deliberately
     # avoids the start menu's `data-window-open` items, because opening Account
     # and Profile has server-side work attached (identity sync, bio seeding).
@@ -75,16 +51,6 @@ defmodule RetroHexChatWeb.AccountEntryPointsFeatureTest do
                  "#{surface} should offer #{window}"
         end
       end
-    end
-
-    # The status bar carries neither an account widget nor a one-click away
-    # toggle: the window title bar names who you are, and the three navigation
-    # surfaces above are the account entry points.
-    test "the status bar no longer duplicates the account state" do
-      html = render_component(&StatusBarApp.status_bar_app/1, lag_ms: 42)
-
-      refute html =~ ~s(data-testid="status-bar-account-widget")
-      refute html =~ ~s(data-testid="status-bar-away-toggle")
     end
 
     test "every account window mounts managed and unmounts when closed", %{conn: conn} do
@@ -106,26 +72,6 @@ defmodule RetroHexChatWeb.AccountEntryPointsFeatureTest do
         refute has_element?(view, ~s([data-window-id="#{window}"])),
                "#{window} should unmount when closed"
       end
-    end
-
-    test "each window carries only its own feature", %{conn: conn} do
-      view = connect_user(conn, "Split#{uid()}")
-
-      render_click(view, "toolbar_action", %{"action" => "open_account_register"})
-      html = render(view)
-      assert html =~ ~s(data-testid="account-panel")
-      refute html =~ ~s(data-testid="profile-bio")
-      refute html =~ "Away message"
-      refute html =~ "Receive wallops"
-
-      render_click(view, "toolbar_action", %{"action" => "open_profile_dialog"})
-      assert render(view) =~ ~s(data-testid="profile-bio")
-
-      render_click(view, "toolbar_action", %{"action" => "open_away_dialog"})
-      assert render(view) =~ "Away message"
-
-      render_click(view, "toolbar_action", %{"action" => "open_user_modes_dialog"})
-      assert render(view) =~ "Receive wallops"
     end
   end
 

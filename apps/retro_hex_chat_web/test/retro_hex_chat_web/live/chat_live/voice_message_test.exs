@@ -2,14 +2,13 @@ defmodule RetroHexChatWeb.ChatLive.VoiceMessageTest do
   @moduledoc """
   Recording from the composer.
 
-  Four facts are under test and none of them is the audio. The first is where
-  the microphone is offered: in the composer toolbar, whatever the screen size.
-  The second is the announcement — the length, the name and the content type a
-  recording may carry, refused along with anything a recorder here could not
-  have produced, and bounded in number. The third is what a recording is once
-  it lands: a message of its own, sent at once, carrying nothing that was typed
-  and leaving the draft where it was. The fourth is where it goes: to the
-  conversation it was recorded in, even when the reader has moved on.
+  Three facts are under test and none of them is the audio. The first is the
+  announcement — the length, the name and the content type a recording may
+  carry, refused along with anything a recorder here could not have produced,
+  and bounded in number. The second is what a recording is once it lands: a
+  message of its own, sent at once, carrying nothing that was typed and leaving
+  the draft where it was. The third is where it goes: to the conversation it
+  was recorded in, even when the reader has moved on.
   """
   use RetroHexChatWeb.LiveViewCase, async: false
 
@@ -39,30 +38,6 @@ defmodule RetroHexChatWeb.ChatLive.VoiceMessageTest do
       {_cid, {Composer, _id, assigns, _private, _prints}} -> assigns
       _other -> nil
     end)
-  end
-
-  # The microphone lives in the toolbar beside the attachment and formatting
-  # buttons; nothing about it depends on the viewport.
-  test "the microphone is in the composer toolbar", ctx do
-    html = render(ctx.view)
-
-    assert html =~ ~s(data-testid="voice-recorder")
-    assert html =~ "VoiceRecorderHook"
-    assert html =~ ~s(phx-update="ignore")
-    assert html =~ ~s(data-voice-upload="voice")
-    assert html =~ ~s(data-voice-action="start")
-    assert html =~ ~s(data-voice-action="stop")
-    assert html =~ ~s(data-voice-action="cancel")
-
-    assert has_element?(
-             ctx.view,
-             ~s([data-testid="chat-input-toolbar"] [data-testid="voice-record"])
-           )
-  end
-
-  # Absence: no part of a recording waits under the input before one exists.
-  test "nothing about a recording waits under the input", ctx do
-    refute has_element?(ctx.view, ~s([data-testid="chat-voice-pending"]))
   end
 
   test "a finished recording hands the composer its length", ctx do

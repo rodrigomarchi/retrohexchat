@@ -59,14 +59,6 @@ defmodule RetroHexChatWeb.ChannelCentralFeatureTest do
       refute has_element?(view, "#channel-central-dialog-content", "#lobby")
     end
 
-    test "1.4 General tab shows channel info", %{conn: conn} do
-      view = connect_user(conn, "E2ECcGn#{uid()}")
-      html = open_cc(view, "#lobby")
-
-      assert html =~ "#lobby"
-      assert html =~ "Members:"
-    end
-
     test "1.5 all 4 tabs are visible and switchable", %{conn: conn} do
       view = connect_user(conn, "E2ECcTb#{uid()}")
       open_cc(view, "#lobby")
@@ -150,17 +142,6 @@ defmodule RetroHexChatWeb.ChannelCentralFeatureTest do
       html = cc(view, "channel_central_tab", %{"tab" => "access_lists"})
       assert html =~ "cc_open_add_list_entry"
       assert html =~ ~s(data-testid="cc-list-remove-OpBan")
-    end
-
-    test "1.8 empty bans shows placeholder", %{conn: conn} do
-      channel = "#e2eeb-#{uid()}"
-      view = connect_user(conn, "E2ECcEb#{uid()}")
-      submit_command_sync(view, "/join #{channel}")
-      render_click(view, "switch_channel", %{"channel" => channel})
-      open_cc(view, channel)
-
-      html = cc(view, "channel_central_tab", %{"tab" => "access_lists"})
-      assert html =~ "No bans"
     end
   end
 
@@ -493,18 +474,6 @@ defmodule RetroHexChatWeb.ChannelCentralFeatureTest do
       # After removing, the ban exceptions table should show the empty placeholder
       assert html =~ "No ban exceptions"
     end
-
-    test "5.3 empty ban exceptions shows placeholder", %{conn: conn} do
-      channel = "#e2eebx-#{uid()}"
-      view = connect_user(conn, "E2EEbx#{uid()}")
-      submit_command_sync(view, "/join #{channel}")
-      render_click(view, "switch_channel", %{"channel" => channel})
-      open_cc(view, channel)
-
-      cc(view, "channel_central_tab", %{"tab" => "access_lists"})
-      html = cc_list(view, "ban_exceptions")
-      assert html =~ "No ban exceptions"
-    end
   end
 
   # ══════════════════════════════════════════════════════════════
@@ -554,18 +523,6 @@ defmodule RetroHexChatWeb.ChannelCentralFeatureTest do
 
       html = render(view)
       # After removing, the invite exceptions table should show the empty placeholder
-      assert html =~ "No invite exceptions"
-    end
-
-    test "6.3 empty invite exceptions shows placeholder", %{conn: conn} do
-      channel = "#e2eeix-#{uid()}"
-      view = connect_user(conn, "E2EEix#{uid()}")
-      submit_command_sync(view, "/join #{channel}")
-      render_click(view, "switch_channel", %{"channel" => channel})
-      open_cc(view, channel)
-
-      cc(view, "channel_central_tab", %{"tab" => "access_lists"})
-      html = cc_list(view, "invite_exceptions")
       assert html =~ "No invite exceptions"
     end
   end

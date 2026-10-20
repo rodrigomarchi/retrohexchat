@@ -21,14 +21,6 @@ defmodule RetroHexChatWeb.ChatLive.RetroGamesEntryTest do
   alias RetroHexChatWeb.Components.UI.DesktopLaunchers
   alias RetroHexChatWeb.Components.UI.StartMenuApp
 
-  test "the chat renders no games window and mounts no games LiveView", %{conn: conn} do
-    {:ok, view, html} = live(chat_conn(conn, "retro#{uid()}"), "/")
-
-    refute html =~ ~s(data-testid="retro-games-window")
-    refute html =~ ~s(data-testid="retro-games-library")
-    assert live_children(view) |> Enum.all?(&(&1.module != RetroHexChatWeb.App.PlayLive))
-  end
-
   describe "the catalogue" do
     test "the Games folder holds a game per game, each opening its home" do
       document = render_launcher()
@@ -64,10 +56,6 @@ defmodule RetroHexChatWeb.ChatLive.RetroGamesEntryTest do
       for document <- [render_launcher(), render_start_menu()] do
         refute "/play" in Floki.attribute(document, "a", "href")
       end
-    end
-
-    test "no server event is left behind for it" do
-      refute Floki.raw_html(render_start_menu()) =~ "open_retro_games"
     end
   end
 

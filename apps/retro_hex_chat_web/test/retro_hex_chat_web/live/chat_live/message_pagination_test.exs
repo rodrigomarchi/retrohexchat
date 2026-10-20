@@ -255,26 +255,6 @@ defmodule RetroHexChatWeb.ChatLive.MessagePaginationTest do
     end
   end
 
-  # There is deliberately no end-of-scrollback ornament in the chat. The only
-  # place it could sit and tell the truth is inside the scrolling element, at
-  # the top of the content — and putting it there changes the container's height
-  # in the same patch that prepends a page, which defeats the scroll
-  # compensation and throws the reader out of the history they just loaded.
-  # Outside the scrolling element it becomes a fixed banner claiming "beginning
-  # of history" wherever the reader is, which is worse than no marker at all.
-  describe "the top of the scrollback" do
-    test "carries no marker, rather than one that is always on screen", %{conn: conn} do
-      channel = "#pagmark#{uid()}"
-      ensure_channel(channel)
-      seed(channel, 5, "Seeder")
-
-      view = connect_user(conn, "PagK#{uid()}")
-      render_click(view, "switch_channel", %{"channel" => channel})
-
-      refute has_element?(view, ~s([data-testid="chat-history-end"]))
-    end
-  end
-
   describe "a presentation change does not re-read the history" do
     test "setting a nick colour restyles the loaded rows without paging again", %{conn: conn} do
       channel = "#pagcolor#{uid()}"

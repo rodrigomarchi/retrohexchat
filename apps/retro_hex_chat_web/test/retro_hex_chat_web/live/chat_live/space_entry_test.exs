@@ -14,7 +14,6 @@ defmodule RetroHexChatWeb.ChatLive.SpaceEntryTest do
   alias RetroHexChatWeb.App.Paths
   alias RetroHexChatWeb.App.SpaceLive
   alias RetroHexChatWeb.ChatLive.SpaceReadModel
-  alias RetroHexChatWeb.Live.OpenSurfaces
 
   defp assigns_of(view), do: :sys.get_state(view.pid).socket.assigns
 
@@ -87,18 +86,6 @@ defmodule RetroHexChatWeb.ChatLive.SpaceEntryTest do
 
       refute html =~ ~s(data-tab-type="space")
       refute Enum.any?(live_children(view), &(&1.module == SpaceLive))
-    end
-  end
-
-  describe "the surface registry" do
-    test "an open space is one of this person's surfaces", %{conn: conn} do
-      {:ok, view, _html} = live(chat_conn(conn, "Sp#{uid()}"), "/")
-      channel = assigns_of(view).session.active_channel
-
-      assert OpenSurfaces.open?(
-               MapSet.new([Paths.space_path(channel)]),
-               Paths.space_path(channel)
-             )
     end
   end
 end

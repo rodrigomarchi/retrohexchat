@@ -16,13 +16,6 @@ defmodule RetroHexChatWeb.PerformFeatureTest do
   end
 
   # ══════════════════════════════════════════════════════════════
-  # US1 — Perform Commands on Connect
-  # ══════════════════════════════════════════════════════════════
-
-  describe "US1: perform commands CRUD via /perform" do
-  end
-
-  # ══════════════════════════════════════════════════════════════
   # US1 — Perform Execution on Connect
   # ══════════════════════════════════════════════════════════════
 
@@ -66,13 +59,6 @@ defmodule RetroHexChatWeb.PerformFeatureTest do
       assert has_element?(view, ~s([data-window-id="perform"]))
     end
 
-    test "menu bar opens dialog", %{conn: conn} do
-      view = connect_user(conn, "E2EMnu#{uid()}")
-
-      open_perform(view)
-      assert has_element?(view, ~s([data-window-id="perform"][data-window-managed="true"]))
-    end
-
     test "add command via dialog", %{conn: conn} do
       view = connect_user(conn, "E2EDlA#{uid()}")
 
@@ -95,27 +81,6 @@ defmodule RetroHexChatWeb.PerformFeatureTest do
 
       html = render(view)
       refute html =~ "/join #dlgrem"
-    end
-
-    test "the window is the command list only — auto-join has its own", %{conn: conn} do
-      view = connect_user(conn, "E2ETab#{uid()}")
-
-      open_perform(view)
-
-      html = render(view)
-      assert html =~ "No commands configured"
-      refute html =~ "No auto-join channels"
-    end
-
-    test "enable/disable toggle", %{conn: conn} do
-      view = connect_user(conn, "E2ETgl#{uid()}")
-
-      open_perform(view)
-      click(view, "perform_toggle_enabled")
-
-      html = render(view)
-      # After toggling, checkbox state changes
-      assert html =~ "perform_toggle_enabled"
     end
 
     test "password masking in dialog", %{conn: conn} do

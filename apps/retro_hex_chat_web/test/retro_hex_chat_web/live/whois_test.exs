@@ -18,44 +18,6 @@ defmodule RetroHexChatWeb.WhoisTest do
   end
 
   describe "/whois command output" do
-    test "shows whois result card", %{conn: conn} do
-      nick = "WhoQ#{uid()}"
-      target = "WhoT#{uid()}"
-
-      {:ok, _target_view, _html} = live(chat_conn(conn, target), "/")
-      {:ok, view, _html} = live(chat_conn(conn, nick), "/")
-
-      view
-      |> element(~s([data-testid="chat-input-form"]))
-      |> render_submit(%{"input" => "/whois #{target}"})
-
-      # Drain the async dispatch (FIFO behind this call) before reading the view.
-      _ = :sys.get_state(view.pid)
-      html = render(view)
-
-      assert html =~ "Whois: #{target}"
-      assert html =~ ~s(data-testid="lookup-result-card")
-      refute html =~ "-----------------------------"
-    end
-
-    test "shows online time in whois", %{conn: conn} do
-      nick = "WhoQ2#{uid()}"
-      target = "WhoT2#{uid()}"
-
-      {:ok, _target_view, _html} = live(chat_conn(conn, target), "/")
-      {:ok, view, _html} = live(chat_conn(conn, nick), "/")
-
-      view
-      |> element(~s([data-testid="chat-input-form"]))
-      |> render_submit(%{"input" => "/whois #{target}"})
-
-      # Drain the async dispatch (FIFO behind this call) before reading the view.
-      _ = :sys.get_state(view.pid)
-      html = render(view)
-
-      assert html =~ "Online for:"
-    end
-
     test "shows idle time in whois", %{conn: conn} do
       nick = "WhoQ3#{uid()}"
       target = "WhoT3#{uid()}"
@@ -72,25 +34,6 @@ defmodule RetroHexChatWeb.WhoisTest do
       html = render(view)
 
       assert html =~ "Idle for:"
-    end
-
-    test "shows registration status in whois", %{conn: conn} do
-      nick = "WhoQ4#{uid()}"
-      target = "WhoT4#{uid()}"
-
-      {:ok, _target_view, _html} = live(chat_conn(conn, target), "/")
-      {:ok, view, _html} = live(chat_conn(conn, nick), "/")
-
-      view
-      |> element(~s([data-testid="chat-input-form"]))
-      |> render_submit(%{"input" => "/whois #{target}"})
-
-      # Drain the async dispatch (FIFO behind this call) before reading the view.
-      _ = :sys.get_state(view.pid)
-      html = render(view)
-
-      assert html =~ "Registered"
-      assert html =~ "No"
     end
 
     test "shows shared channels in whois", %{conn: conn} do

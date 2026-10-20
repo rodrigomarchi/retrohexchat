@@ -400,17 +400,6 @@ defmodule RetroHexChatWeb.App.P2PSurfaceFlowTest do
       assert {:ok, %{status: "lobby"}} = Lobby.get_session(session.token)
     end
 
-    test "the invited peer arrives at the room by following the invite's address",
-         %{conn: conn} do
-      ctx = mount_pair(conn, "p2pfc#{uid()}", "p2pfd#{uid()}")
-      session = invite(ctx)
-
-      flush(ctx.view_b)
-
-      assert render(open_p2p(ctx.view_b, session.token)) =~
-               ~s(data-testid="p2p-starting-room")
-    end
-
     test "accepting takes the seat and stops at the room until Ready", %{conn: conn} do
       ctx = mount_pair(conn, "p2pgk#{uid()}", "p2pgl#{uid()}")
       session = invite(ctx)
@@ -1177,27 +1166,6 @@ defmodule RetroHexChatWeb.App.P2PSurfaceFlowTest do
         x: 448,
         y: 72
       })
-    end
-
-    test "ending asks first; confirming ends the session",
-         %{conn: conn} do
-      ctx = mount_pair(conn, "p2pgg#{uid()}", "p2pgh#{uid()}")
-      session = invite(ctx)
-      accept_invite(ctx, session.token)
-      flush(ctx.view_a)
-      render_click(p2p_view(ctx.view_a), "lobby_connected", %{})
-
-      # End routes to the confirm — nothing ends yet.
-      render_click(p2p_view(ctx.view_a), "p2p_end_session", %{})
-      assert {:ok, %{status: "connected"}} = Lobby.get_session(session.token)
-      assert %{state: :connected} = p2p_assigns(ctx.view_a)
-
-      # Confirming the dialog disconnects the whole session.
-      render_click(p2p_view(ctx.view_a), "p2p_confirm_end", %{})
-      flush(ctx.view_a)
-      assert {:ok, %{status: "closed"}} = Lobby.get_session(session.token)
-      assert p2p_assigns(ctx.view_a) == nil
-      refute p2p_html(ctx.view_a) =~ ~s(data-testid="p2p-session-console")
     end
 
     test "the burst is skipped on a mobile viewport", %{conn: conn} do

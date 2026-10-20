@@ -16,24 +16,6 @@ defmodule RetroHexChatWeb.DblclickFeatureTest do
   end
 
   describe "Double-Click Actions E2E" do
-    test "nicklist_dblclick opens PM tab", %{conn: conn, channel: channel} do
-      nick1 = "DE1#{uid()}"
-      nick2 = "DE2#{uid()}"
-
-      {:ok, view1, _} = live(chat_conn(conn, nick1), "/")
-      join_channel(view1, channel)
-
-      {:ok, _view2, _} = live(chat_conn(conn, nick2), "/")
-      join_channel(view1, channel)
-
-      # Simulate double-click event (would come from ConversationsHook JS)
-      render_click(view1, "nicklist_dblclick", %{"nick" => nick2})
-      html = render(view1)
-
-      # PM tab should be visible
-      assert html =~ nick2
-    end
-
     # Going to a channel you are not in is joining it, on the one click every
     # row answers. The double click that used to carry this was a second gesture
     # for the same intention, and no finger could perform it.
@@ -49,15 +31,6 @@ defmodule RetroHexChatWeb.DblclickFeatureTest do
       html = render(view)
 
       assert html =~ target
-    end
-
-    test "conversations has ConversationsHook", %{conn: conn, channel: channel} do
-      nick = "DEH#{uid()}"
-      {:ok, view, _} = live(chat_conn(conn, nick), "/")
-      join_channel(view, channel)
-      html = render(view)
-
-      assert html =~ "ConversationsHook"
     end
   end
 

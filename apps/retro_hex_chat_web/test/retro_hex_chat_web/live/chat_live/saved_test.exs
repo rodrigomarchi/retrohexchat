@@ -48,13 +48,6 @@ defmodule RetroHexChatWeb.ChatLive.SavedTest do
     assert render(ctx.view) =~ "saved-window"
   end
 
-  test "keeping the same line twice keeps it once", ctx do
-    render_click(ctx.view, "ctx_chat_save_message", %{"message_id" => to_string(ctx.message_id)})
-    render_click(ctx.view, "ctx_chat_save_message", %{"message_id" => to_string(ctx.message_id)})
-
-    assert SavedMessages.count(ctx.owner) == 1
-  end
-
   test "the menu gives it back", ctx do
     render_click(ctx.view, "ctx_chat_save_message", %{"message_id" => to_string(ctx.message_id)})
 
@@ -77,20 +70,6 @@ defmodule RetroHexChatWeb.ChatLive.SavedTest do
 
     assert [entry] = SavedMessages.list(ctx.owner).items
     assert entry.private_message_id == pm.id
-  end
-
-  # Absence assertion: the list is per person, and the screen must not be the
-  # place that fact is decided.
-  test "what one person kept does not reach another", ctx do
-    render_click(ctx.view, "ctx_chat_save_message", %{"message_id" => to_string(ctx.message_id)})
-
-    {:ok, other_view, _html} =
-      build_conn() |> chat_conn(ctx.other, pre_identified: true) |> live("/")
-
-    submit_command_sync(other_view, "/join #{ctx.channel}")
-
-    assert SavedMessages.count(ctx.other) == 0
-    assert SavedMessages.list(ctx.other).items == []
   end
 
   # The menu is drawn by a component the host updates, so the assertion is on

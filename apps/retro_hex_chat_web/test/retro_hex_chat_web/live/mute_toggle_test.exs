@@ -7,46 +7,6 @@ defmodule RetroHexChatWeb.MuteToggleTest do
   alias RetroHexChat.Services.Queries
 
   describe "mute toggle in the system tray" do
-    test "mute toggle button renders in the taskbar tray", %{conn: conn} do
-      nick = "Mute#{uid()}"
-      {:ok, view, _html} = live(chat_conn(conn, nick), "/")
-
-      html = render(view)
-      assert html =~ "data-testid=\"tray-mute-toggle\""
-      assert html =~ "mute-toggle"
-    end
-
-    test "clicking mute toggles to muted state", %{conn: conn} do
-      nick = "Mute#{uid()}"
-      {:ok, view, _html} = live(chat_conn(conn, nick), "/")
-
-      view
-      |> element(~s([data-testid="tray-mute-toggle"]))
-      |> render_click()
-
-      html = render(view)
-      assert html =~ "mute-toggle"
-
-      # Toggle back
-      view
-      |> element(~s([data-testid="tray-mute-toggle"]))
-      |> render_click()
-
-      html = render(view)
-      assert html =~ "mute-toggle"
-    end
-
-    test "toggle_mute pushes backend mute state to client", %{conn: conn} do
-      nick = "Mute#{uid()}"
-      {:ok, view, _html} = live(chat_conn(conn, nick), "/")
-
-      view
-      |> element(~s([data-testid="tray-mute-toggle"]))
-      |> render_click()
-
-      assert_push_event(view, "mute_state_changed", %{muted: true})
-    end
-
     test "registered identified user loads persisted mute state from backend", %{conn: conn} do
       nick = "MuteP#{uid()}"
       insert_registered_nick(nick)

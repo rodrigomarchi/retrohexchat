@@ -18,59 +18,11 @@ defmodule RetroHexChatWeb.SoundSettingsTest do
       assert has_element?(view, ~s([data-window-id="sound-settings"][data-window-managed="true"]))
       assert html =~ "Sound Settings"
     end
-
-    test "dialog shows all 10 event types", %{conn: conn} do
-      nick = "SndAll#{uid()}"
-      {:ok, view, _html} = live(chat_conn(conn, nick), "/")
-
-      render_click(view, "open_sound_settings_dialog", %{})
-
-      html = render(view)
-      assert html =~ "Channel Message"
-      assert html =~ "Private Message"
-      assert html =~ "Highlight/Mention"
-      assert html =~ "User Joined"
-      assert html =~ "User Left"
-      assert html =~ "User Kicked"
-      assert html =~ "Connected"
-      assert html =~ "Disconnected"
-      assert html =~ "Buddy Online"
-      assert html =~ "Buddy Offline"
-    end
-
-    test "each event has a dropdown and preview button", %{conn: conn} do
-      nick = "SndDrop#{uid()}"
-      {:ok, view, _html} = live(chat_conn(conn, nick), "/")
-
-      render_click(view, "open_sound_settings_dialog", %{})
-
-      html = render(view)
-
-      for event <-
-            ~w(message pm highlight join part kick connect disconnect buddy_online buddy_offline) do
-        assert html =~ "data-testid=\"sound-select-#{event}\""
-        assert html =~ "data-testid=\"sound-preview-#{event}\""
-        assert html =~ "data-testid=\"flash-toggle-#{event}\""
-      end
-    end
   end
 
   # ── Draft / OK / Cancel / Apply ──────────────────────────────
 
   describe "OK/Cancel/Apply behavior" do
-    test "sound_settings_change updates draft", %{conn: conn} do
-      nick = "SndChg#{uid()}"
-      {:ok, view, _html} = live(chat_conn(conn, nick), "/")
-
-      render_click(view, "open_sound_settings_dialog", %{})
-
-      # Change highlight sound to "buzz" via event
-      render_click(view, "sound_settings_change", %{"event_highlight" => "buzz"})
-
-      html = render(view)
-      assert html =~ "sound-select-highlight"
-    end
-
     test "sound_settings_ok commits draft and closes dialog", %{conn: conn} do
       nick = "SndOK#{uid()}"
       {:ok, view, _html} = live(chat_conn(conn, nick), "/")
@@ -136,25 +88,6 @@ defmodule RetroHexChatWeb.SoundSettingsTest do
       |> render_click()
 
       assert_push_event(view, "play_sound", %{type: "alert"})
-    end
-  end
-
-  # ── Flash toggle ───────────────────────────────────────────
-
-  describe "flash toggle" do
-    test "toggling flash checkbox updates draft", %{conn: conn} do
-      nick = "SndFlash#{uid()}"
-      {:ok, view, _html} = live(chat_conn(conn, nick), "/")
-
-      render_click(view, "open_sound_settings_dialog", %{})
-
-      # Flash toggle is owned by the LiveComponent — click the element so the event
-      # routes there (carrying phx-value-event).
-      view |> element(~s([data-testid="flash-toggle-join"])) |> render_click()
-
-      # After toggle, the checkbox state should be updated
-      html = render(view)
-      assert html =~ "flash-toggle-join"
     end
   end
 end

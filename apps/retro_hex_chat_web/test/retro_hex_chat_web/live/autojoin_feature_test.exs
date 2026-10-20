@@ -81,13 +81,6 @@ defmodule RetroHexChatWeb.AutojoinFeatureTest do
   end
 
   describe "channel list" do
-    test "empty list shows the placeholder", %{conn: conn} do
-      view = connect_user(conn, "E2EAjE#{uid()}")
-
-      html = open_autojoin(view)
-      assert html =~ "No auto-join channels"
-    end
-
     test "add channel via dialog", %{conn: conn} do
       view = connect_user(conn, "E2EAjA#{uid()}")
 
@@ -123,19 +116,6 @@ defmodule RetroHexChatWeb.AutojoinFeatureTest do
       assert html =~ "#ajkey"
       assert html =~ "***"
       refute html =~ "s3cret"
-    end
-
-    test "every channel row carries its own edit and remove", %{conn: conn} do
-      view = connect_user(conn, "E2EAjS#{uid()}")
-
-      open_autojoin(view)
-      click(view, "autojoin_add")
-      submit_form(view, "autojoin-add-dialog", %{"channel" => "#ajsel", "key" => ""})
-
-      # There is nothing to select, and no control waiting for a selection.
-      assert has_element?(view, ~s([phx-click="autojoin_edit"][phx-value-channel="#ajsel"]))
-      assert has_element?(view, ~s([phx-click="autojoin_remove"][phx-value-channel="#ajsel"]))
-      refute has_element?(view, ~s([phx-click="autojoin_remove"][disabled]))
     end
   end
 

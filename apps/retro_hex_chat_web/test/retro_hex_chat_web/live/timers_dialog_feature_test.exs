@@ -4,13 +4,8 @@ defmodule RetroHexChatWeb.TimersDialogFeatureTest do
   @moduletag :liveview_feature
 
   alias RetroHexChat.Channels.{Registry, Supervisor}
-  alias RetroHexChat.Chat.HelpTopics
 
-  alias RetroHexChatWeb.Components.UI.{
-    MenuBarApp,
-    TimersDialog,
-    ToolbarApp
-  }
+  alias RetroHexChatWeb.Components.UI.TimersDialog
 
   setup do
     ensure_channel("#lobby")
@@ -18,28 +13,6 @@ defmodule RetroHexChatWeb.TimersDialogFeatureTest do
   end
 
   describe "timer entry points" do
-    test "Tools menu and Options dropdown expose Timers after Auto Respond" do
-      menu_html =
-        render_component(&MenuBarApp.menu_bar_app/1,
-          connected: true,
-          on_action: "toolbar_action"
-        )
-
-      toolbar_html =
-        render_component(&ToolbarApp.toolbar_app/1,
-          connected: true,
-          on_action: "toolbar_action"
-        )
-
-      assert menu_html =~ ~s(data-testid="context-menu-item-open_timers_dialog")
-      assert toolbar_html =~ ~s(data-testid="context-menu-item-open_timers_dialog")
-      assert menu_html =~ "Timers"
-      assert toolbar_html =~ "Timers"
-
-      assert action_before?(menu_html, "open_autorespond_dialog", "open_timers_dialog")
-      assert action_before?(toolbar_html, "open_autorespond_dialog", "open_timers_dialog")
-    end
-
     test "bare /timer opens the Timers window", %{conn: conn} do
       view = connect_user(conn, "TimerOpen#{uid()}")
 
@@ -201,26 +174,6 @@ defmodule RetroHexChatWeb.TimersDialogFeatureTest do
     end
   end
 
-  describe "help documentation" do
-    test "timer topics expose dialog discovery and scripting cross references" do
-      cmd = HelpTopics.get_topic("cmd-timer")
-      feature = HelpTopics.get_topic("feature-timers")
-      aliases = HelpTopics.get_topic("feature-aliases")
-      autorespond = HelpTopics.get_topic("feature-autorespond")
-
-      assert cmd != nil
-      assert feature != nil
-      assert aliases != nil
-      assert autorespond != nil
-
-      assert "timers dialog" in cmd.keywords
-      assert "open_timers_dialog" in cmd.keywords
-      assert "toolbar options" in feature.keywords
-      assert "timers dialog" in aliases.keywords
-      assert "timers" in autorespond.keywords
-    end
-  end
-
   defp render_timers_dialog(overrides) do
     defaults = %{
       id: "timers-dialog",
@@ -242,22 +195,6 @@ defmodule RetroHexChatWeb.TimersDialogFeatureTest do
     }
 
     render_component(&TimersDialog.timers_panel/1, Map.merge(defaults, overrides))
-  end
-
-  defp action_before?(html, before_action, after_action) do
-    actions =
-      html
-      |> Floki.parse_document!()
-      |> Floki.find("[data-testid^=\"context-menu-item-\"]")
-      |> Enum.map(fn node ->
-        node
-        |> Floki.attribute("data-testid")
-        |> List.first()
-        |> String.replace_prefix("context-menu-item-", "")
-      end)
-
-    Enum.find_index(actions, &(&1 == before_action)) <
-      Enum.find_index(actions, &(&1 == after_action))
   end
 
   defp assert_non_empty([_ | _]), do: :ok

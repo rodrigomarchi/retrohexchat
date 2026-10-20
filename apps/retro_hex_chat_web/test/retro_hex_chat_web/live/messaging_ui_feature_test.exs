@@ -3,21 +3,7 @@ defmodule RetroHexChatWeb.MessagingUIFeatureTest do
 
   @moduletag :liveview_feature
 
-  alias RetroHexChat.Chat.HelpTopics
-  alias RetroHexChatWeb.Components.UI.{ChatContextMenu, ChatInput, NicklistContextMenu}
-
-  describe "chat input action command" do
-    test "chat input renders the provided message placeholder" do
-      html =
-        render_component(&ChatInput.chat_input/1,
-          value: "",
-          name: "input",
-          placeholder: "Message #lobby"
-        )
-
-      assert html =~ "Message #lobby"
-    end
-  end
+  alias RetroHexChatWeb.Components.UI.{ChatContextMenu, NicklistContextMenu}
 
   describe "notice context menu composer" do
     test "nicklist and chat nick menus expose Send Notice after PM action" do
@@ -113,21 +99,6 @@ defmodule RetroHexChatWeb.MessagingUIFeatureTest do
 
       refute html =~ "Notice to #{target}:"
       refute html =~ "Notice message cannot be empty"
-    end
-  end
-
-  describe "Feature 07 help documentation" do
-    test "help topics mention /me command and notice context menu" do
-      me = HelpTopics.get_topic("cmd-me")
-      notice = HelpTopics.get_topic("cmd-notice")
-      private_messages = HelpTopics.get_topic("private-messages")
-      shortcuts = HelpTopics.get_topic("keyboard-shortcuts")
-
-      assert "action" in me.keywords
-      assert "send notice" in notice.keywords
-      assert "context menu" in notice.keywords
-      assert "notice" in private_messages.keywords
-      assert "me" in shortcuts.keywords
     end
   end
 

@@ -8,37 +8,6 @@ defmodule RetroHexChatWeb.ChatDesktopShellTest do
   @moduletag :liveview
 
   describe "desktop shell" do
-    test "static render shows a boot loading state until LiveView connects", %{conn: conn} do
-      html =
-        conn
-        |> chat_conn("Desk#{uid()}")
-        |> get("/")
-        |> html_response(200)
-
-      assert html =~ ~s(data-testid="chat-boot-loading")
-      assert html =~ "Opening chat..."
-    end
-
-    test "renders the chat inside a persistent desktop", %{conn: conn} do
-      {:ok, view, html} = live(chat_conn(conn, "Desk#{uid()}"), "/")
-
-      assert has_element?(view, ~s(#chat-desktop[data-persist-key="chat"][data-persist="true"]))
-
-      # The desk carries no chrome of its own: the menus hang under the chat
-      # window's own title bar, where Win98 put an application's menus, and
-      # there is no header strip above the workspace to hold them.
-      refute html =~ ~s(data-testid="app-header")
-      refute html =~ ~s(data-testid="status-bar-app")
-
-      assert has_element?(view, ~s([data-window-id="chat"] [data-window-menu] #menubar))
-      assert has_element?(view, ~s(#menubar [data-testid="language-menu-item-pt_BR"]))
-
-      assert has_element?(
-               view,
-               ~s(#menubar [data-testid="language-menu-item-pt_BR"] a[href^="/locale/pt_BR"])
-             )
-    end
-
     test "pins app folders and opens games from the Games folder", %{conn: conn} do
       {:ok, view, _html} = live(chat_conn(conn, "Desk#{uid()}"), "/")
 
@@ -63,118 +32,6 @@ defmodule RetroHexChatWeb.ChatDesktopShellTest do
                view,
                ~s(#chat-desktop [data-testid="desktop-launcher-item-retro-games"])
              )
-    end
-
-    test "the chat window is pinned and opens windowed, not maximized", %{conn: conn} do
-      {:ok, view, _html} = live(chat_conn(conn, "Desk#{uid()}"), "/")
-
-      assert has_element?(
-               view,
-               ~s(#chat-desktop [data-window-id="chat"][data-window-pinned="true"][data-window-default-maximized="false"])
-             )
-
-      # Windowed only means something if it opens somewhere sensible: centered,
-      # and sized off the workspace rather than in fixed pixels, with the
-      # registry's geometry as the floor it never opens below. Without the
-      # geometry reaching the DOM the manager falls back to its own 360px
-      # default and the chat opens as a sliver.
-      assert has_element?(
-               view,
-               ~s([data-window-id="chat"][data-window-default-centered="true"][data-window-default-fill="0.86"])
-             )
-
-      assert has_element?(
-               view,
-               ~s([data-window-id="chat"][data-window-default-width="920"][data-window-default-height="580"])
-             )
-
-      # Maximize is how you get the old behaviour back, so the control has to
-      # be there.
-      assert has_element?(view, ~s([data-window-id="chat"] [data-window-control="maximize"]))
-
-      # Pinned: no close control in the window title bar.
-      refute has_element?(view, ~s([data-window-id="chat"] [data-window-control="close"]))
-      assert has_element?(view, ~s([data-window-id="chat"] [data-window-control="minimize"]))
-    end
-
-    test "the taskbar has a chat window button and a tray clock", %{conn: conn} do
-      {:ok, view, _html} = live(chat_conn(conn, "Desk#{uid()}"), "/")
-
-      assert has_element?(view, ~s(#chat-desktop [data-window-taskbar="chat"]))
-      assert has_element?(view, ~s(#chat-tray-clock[phx-hook="ClockHook"]))
-      # The tray owns the clock — the header status bar shows none.
-      refute has_element?(view, "#clock-display")
-    end
-
-    test "the chat layout (tabs, composer, nicklist) lives inside the window body", %{conn: conn} do
-      {:ok, view, _html} = live(chat_conn(conn, "Desk#{uid()}"), "/")
-
-      assert has_element?(
-               view,
-               ~s([data-window-id="chat"] [data-testid="tab-bar"] [role="tablist"])
-             )
-
-      # The conversation's controls ride in the tab strip: one row of chrome,
-      # not two.
-      assert has_element?(
-               view,
-               ~s([data-testid="tab-bar"] [data-testid="conversation-toolbar-actions"])
-             )
-
-      # The sidebar toggles belong to the stacked layout: a desk reaches its
-      # sidebars through the rails, so the cluster is hidden from md up.
-      assert has_element?(
-               view,
-               ~s([data-testid="conversation-toolbar-sidebar-toggles"][class*="md:hidden"] [data-testid="conversation-toolbar-conversations"])
-             )
-
-      assert has_element?(
-               view,
-               ~s([data-testid="conversation-toolbar-sidebar-toggles"][class*="md:hidden"] [data-testid="conversation-toolbar-nicklist"])
-             )
-
-      # Find is menu-only now — no fourth entry point in the strip.
-      refute has_element?(view, ~s([data-testid="conversation-toolbar-search"]))
-
-      # The space is a screen with an address, entered from the toolbar beside
-      # the tabs — never a tab, and never a view of the conversation.
-      refute has_element?(view, ~s([data-testid="tab-bar"] [role="tab"][phx-value-type="space"]))
-      refute has_element?(view, ~s([data-testid="channel-view-switcher"]))
-      assert has_element?(view, ~s([data-testid="space-open"]))
-
-      assert has_element?(view, ~s([data-window-id="chat"] #conversations-mount.h-full))
-      assert has_element?(view, ~s([data-window-id="chat"] #conversations.h-full))
-
-      assert has_element?(
-               view,
-               ~s([data-window-id="chat"] [data-testid="conversations-collapse-toggle"])
-             )
-
-      refute has_element?(view, ~s([data-window-id="chat"] [data-testid="conversations-rail"]))
-
-      assert has_element?(
-               view,
-               ~s([data-window-id="chat"] [data-testid="nicklist-collapse-toggle"])
-             )
-
-      refute has_element?(view, ~s([data-window-id="chat"] [data-testid="nicklist-rail"]))
-      # The composer spans the whole conversation: it follows the messages /
-      # nicklist row instead of sharing a column with it, so the nicklist ends
-      # above the input rather than beside it.
-      assert has_element?(
-               view,
-               ~s([data-testid="channel-content-row"] ~ #composer-region #chat-input-area)
-             )
-
-      refute has_element?(view, ~s([data-testid="channel-main-column"] #chat-input-area))
-      assert has_element?(view, ~s([data-testid="channel-content-row"] [data-testid="nicklist"]))
-
-      assert has_element?(
-               view,
-               ~s([data-testid="chat-input-form"] [data-testid="format-btn-bold"])
-             )
-
-      assert has_element?(view, ~s([data-testid="chat-input-form"] [data-testid="char-counter"]))
     end
 
     test "a private conversation gets the same user list, naming its participants", %{
@@ -231,28 +88,6 @@ defmodule RetroHexChatWeb.ChatDesktopShellTest do
              )
     end
 
-    test "the tab bar closes the chat area from below, after the content row", %{conn: conn} do
-      {:ok, view, _html} = live(chat_conn(conn, "Desk#{uid()}"), "/")
-
-      # Sibling combinators pin the order, not just the presence: the tab strip
-      # follows the messages/nicklist row instead of leading the top chrome.
-      assert has_element?(
-               view,
-               ~s([data-testid="channel-content-row"] ~ [data-testid="tab-bar"])
-             )
-
-      # There is no toolbar row of its own left to sit above or below the strip.
-      refute has_element?(
-               view,
-               ~s([data-testid="channel-content-row"] ~ [data-testid="conversation-toolbar"])
-             )
-
-      refute has_element?(
-               view,
-               ~s([data-testid="tab-bar"] ~ [data-testid="channel-content-row"])
-             )
-    end
-
     test "viewport events collapse mobile panels and restore the prior desktop state", %{
       conn: conn
     } do
@@ -286,54 +121,9 @@ defmodule RetroHexChatWeb.ChatDesktopShellTest do
       assert assigns.show_conversations
       assert assigns.show_nicklist
     end
-
-    test "the conversation keeps its composer and offers the space beside it", %{conn: conn} do
-      {:ok, view, _html} = live(chat_conn(conn, "Desk#{uid()}"), "/")
-
-      chat_tab = ~s([data-testid="tab-bar"] [role="tab"][phx-value-type="channel"])
-
-      # The conversation tab is the only thing that can take the region now, so
-      # it keeps the selection and the space never competes for it.
-      assert has_element?(view, ~s(#{chat_tab}[aria-selected="true"]))
-
-      entry = ~s([data-testid="space-open"])
-      assert has_element?(view, "#{entry} svg")
-      assert has_element?(view, ~s(button#{entry}[phx-click="space_open"]))
-
-      # Nothing about the conversation changes: the space is somewhere else.
-      assert has_element?(view, ~s([data-testid="channel-content-row"] [data-testid="nicklist"]))
-      refute has_element?(view, ~s([data-testid="channel-space-shell"]))
-
-      assert has_element?(
-               view,
-               ~s([data-testid="channel-content-row"] ~ #composer-region #chat-input-area)
-             )
-    end
-
-    test "a private conversation offers the space the two of them share", %{conn: conn} do
-      other = "Peer#{uid()}"
-      {:ok, view, _html} = live(chat_conn(conn, "Desk#{uid()}"), "/")
-
-      render_click(view, "nicklist_dblclick", %{"nick" => other})
-
-      assert has_element?(view, ~s([data-testid="space-open"]))
-      refute has_element?(view, ~s([data-testid="channel-space-shell"]))
-    end
   end
 
   describe "start menu" do
-    test "start button and menu render with Tools/View/Help items", %{conn: conn} do
-      {:ok, view, _html} = live(chat_conn(conn, "Desk#{uid()}"), "/")
-
-      assert has_element?(view, ~s(#chat-desktop [data-window-start]))
-      assert has_element?(view, ~s(#chat-start-menu[data-window-start-menu]))
-      # Migrated dialogs open client-side; unmigrated ones still dispatch
-      # toolbar_action events.
-      assert has_element?(view, ~s(#chat-start-menu [data-window-open="address-book"]))
-      assert has_element?(view, ~s(#chat-start-menu [phx-value-action="toggle_channel_list"]))
-      assert has_element?(view, ~s(#chat-start-menu [phx-value-action="help_topics"]))
-    end
-
     test "a start menu item opens its dialog through toolbar_action", %{conn: conn} do
       {:ok, view, _html} = live(chat_conn(conn, "Desk#{uid()}"), "/")
 

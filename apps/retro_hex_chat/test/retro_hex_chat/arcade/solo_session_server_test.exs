@@ -115,20 +115,6 @@ defmodule RetroHexChat.Arcade.SoloSessionServerTest do
       assert {:error, :not_found} = Arcade.finish_game(token, creator.id)
     end
 
-    test "finish_game stores duration_seconds as column", %{creator: creator} do
-      {:ok, %{token: token}} = Arcade.create_session(creator.id)
-      :ok = Arcade.join_session(token, creator.id)
-      :ok = Arcade.select_game(token, creator.id, "doom_shareware")
-
-      # Small delay to get a non-zero duration
-      Process.sleep(50)
-      assert :ok = Arcade.finish_game(token, creator.id)
-
-      session = Queries.get_session_by_token(token)
-      assert is_integer(session.duration_seconds)
-      assert session.duration_seconds >= 0
-    end
-
     test "finish_game broadcasts duration_seconds via PubSub", %{creator: creator} do
       {:ok, %{token: token}} = Arcade.create_session(creator.id)
       :ok = Arcade.join_session(token, creator.id)

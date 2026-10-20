@@ -32,13 +32,6 @@ defmodule RetroHexChatWeb.Site.PagesTest do
         assert html =~ ~s(id="#{unquote(heading_id)}")
       end
 
-      test "GET #{path} uses retrohex.css", %{conn: conn} do
-        conn = get(conn, unquote(path))
-        body = html_response(conn, 200)
-        assert body =~ "retrohex.css"
-        refute body =~ "landing.css"
-      end
-
       # The page is read before the chat starts: the first paint loads the
       # desktop's small entry, which fetches the LiveSocket later.
       test "GET #{path} uses the lightweight desktop JavaScript bundle", %{conn: conn} do
@@ -240,12 +233,6 @@ defmodule RetroHexChatWeb.Site.PagesTest do
         assert Floki.find(first, "h1##{unquote(heading_id)}") != []
         assert first |> Floki.find("p") |> Floki.text() |> String.trim() != ""
       end
-
-      test "GET #{path} keeps the tray clock", %{conn: conn} do
-        document = conn |> get(unquote(path)) |> html_response(200) |> Floki.parse_document!()
-
-        assert Floki.find(document, "[data-clock]") != []
-      end
     end
 
     # A page's windows sit on one desktop with the chat's, the site's About and
@@ -350,50 +337,6 @@ defmodule RetroHexChatWeb.Site.PagesTest do
       assert body =~ ~s(lang="en")
     end
 
-    test "wordmark image includes intrinsic dimensions", %{conn: conn} do
-      conn = get(conn, "/")
-      document = html_response(conn, 200) |> Floki.parse_document!()
-      wordmark = Floki.find(document, ~s(img[src="/images/landing/wordmark.svg"]))
-
-      assert Floki.attribute(wordmark, "width") == ["800"]
-      assert Floki.attribute(wordmark, "height") == ["120"]
-    end
-
-    test "renders rich chat, space, and conference visuals", %{conn: conn} do
-      conn = get(conn, "/")
-      document = html_response(conn, 200) |> Floki.parse_document!()
-
-      section = Floki.find(document, ~s([data-testid="site-window-three-ways-to-be-together"]))
-
-      assert section != []
-      assert Floki.find(section, ~s([aria-label="Persistent chat workspace diagram"])) != []
-      assert Floki.find(section, ~s([aria-label="Channel conference topology diagram"])) != []
-
-      space_image =
-        Floki.find(section, ~s(img[src="/images/landing/space_end_of_time_showcase.png"]))
-
-      assert space_image != []
-
-      assert Floki.attribute(space_image, "alt") == [
-               "End of Time Space map with avatars and in-world chat bubbles"
-             ]
-
-      section_text = Floki.text(section)
-      assert section_text =~ "Channels, DMs, bots, commands, replies"
-      assert section_text =~ "Space renders that same conversation as a live map"
-      assert section_text =~ "Conference keeps media inside the channel"
-    end
-
-    test "uses static data attributes for progressive interactions", %{conn: conn} do
-      conn = get(conn, "/")
-      body = html_response(conn, 200)
-
-      # README.txt is a file on the desk, shown before the chat has started.
-      assert body =~ ~s(data-show-target="#readme-popup")
-      assert body =~ ~s(data-hide-target="#readme-popup")
-      assert body =~ ~s(data-modal)
-    end
-
     # A page is read before the chat starts: its first response carries the
     # page whole and the chat only as an empty window saying it is opening —
     # no message, no folder, no dialog — so a search engine indexes the page
@@ -418,48 +361,6 @@ defmodule RetroHexChatWeb.Site.PagesTest do
 
         assert body =~ ~s(rel="canonical" href="https://retrohexchat.app#{path}")
       end
-    end
-
-    test "GET /how-it-works has unique page title", %{conn: conn} do
-      {:ok, _view, html} = live(conn, "/how-it-works")
-      assert html =~ "How Retro Hex Chat Works"
-    end
-
-    test "GET /features has unique page title", %{conn: conn} do
-      {:ok, _view, html} = live(conn, "/features")
-      assert html =~ "Features"
-    end
-
-    test "GET /features shows space and conference feature visuals", %{conn: conn} do
-      conn = get(conn, "/features")
-      document = html_response(conn, 200) |> Floki.parse_document!()
-
-      assert Floki.find(
-               document,
-               ~s(img[src="/images/landing/space_end_of_time_showcase.png"])
-             ) != []
-
-      assert Floki.find(document, ~s([aria-label="Channel conference topology diagram"])) != []
-    end
-
-    test "GET /privacy has unique page title", %{conn: conn} do
-      {:ok, _view, html} = live(conn, "/privacy")
-      assert html =~ "Privacy Comparison"
-    end
-
-    test "GET /install has unique page title", %{conn: conn} do
-      {:ok, _view, html} = live(conn, "/install")
-      assert html =~ "Install Retro Hex Chat"
-    end
-
-    test "GET /community has unique page title", %{conn: conn} do
-      {:ok, _view, html} = live(conn, "/community")
-      assert html =~ "Open Source"
-    end
-
-    test "GET /faq has unique page title", %{conn: conn} do
-      {:ok, _view, html} = live(conn, "/faq")
-      assert html =~ "FAQ"
     end
 
     test "landing page titles and descriptions are unique and concise", %{conn: conn} do

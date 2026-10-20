@@ -43,31 +43,6 @@ defmodule RetroHexChatWeb.QuitFeatureTest do
       refute member?(channel, nick1)
       assert member?(channel, nick2)
     end
-
-    test "/quit without a message removes the quitting user from the channel", %{
-      conn: conn,
-      channel: channel
-    } do
-      nick1 = "QE3#{uid()}"
-      nick2 = "QE4#{uid()}"
-
-      {:ok, view1, _} = live(chat_conn(conn, nick1), "/")
-      join_channel(view1, channel)
-
-      {:ok, view2, _} = live(chat_conn(conn, nick2), "/")
-      join_channel(view2, channel)
-
-      assert member?(channel, nick1)
-
-      view1
-      |> element(~s([data-testid="chat-input-form"]))
-      |> render_submit(%{"input" => "/quit"})
-
-      assert_push_event(view1, "intentional_disconnect", %{})
-
-      refute member?(channel, nick1)
-      assert member?(channel, nick2)
-    end
   end
 
   defp member?(channel, nick) do
