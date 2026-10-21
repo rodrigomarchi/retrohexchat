@@ -297,6 +297,9 @@ defmodule RetroHexChat.Chat.HelpTopics.UserInterface do
           "left pane",
           "channels",
           "popular",
+          "games",
+          "news",
+          dgettext("help", "see more"),
           "auto-join",
           dgettext("help", "join on connect"),
           dgettext("help", "row menu")
@@ -307,7 +310,7 @@ defmodule RetroHexChat.Chat.HelpTopics.UserInterface do
             "help",
             "Switch between every joined channel and private conversation, and watch unread pile up on the ones you are not reading. Clicking a row goes there, joining the channel first if you are not in it; everything else is on the row's menu, which the [...] button, a right-click and a held finger all open."
           ),
-        see_also: ["ui-lists", "ui-tab-bar", "cmd-autojoin"]
+        see_also: ["ui-lists", "ui-tab-bar", "cmd-autojoin", "cmd-list"]
       },
       %{
         id: "ui-tab-bar",

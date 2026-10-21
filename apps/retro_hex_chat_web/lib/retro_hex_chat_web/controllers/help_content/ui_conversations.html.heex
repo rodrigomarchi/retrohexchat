@@ -1,7 +1,7 @@
 <p>
   {dgettext(
     "help_ui",
-    "The Conversations sidebar is the left IRC navigation pane: the channels you are in and the ones you join on connect, in one list ordered by recent activity; then recent private messages, then channel suggestions."
+    "The Conversations sidebar is the left IRC navigation pane: the channels you are in and the ones you join on connect, in one list ordered by recent activity; then recent private messages, then channel suggestions: games, news, and popular channels about everything else."
   )}
 </p>
 <.help_h4 icon={:icon_group_tools}>{dgettext("help_ui", "One click, every row")}</.help_h4>
@@ -33,10 +33,24 @@
     )}
   </li>
   <li>
+    <strong>{dgettext("help_ui", "GAMES")}</strong>
+    {dgettext(
+      "help_ui",
+      "- #retro-games first, then up to three matches being played right now, then the other game rooms — including the ones nobody is in yet"
+    )}
+  </li>
+  <li>
+    <strong>{dgettext("help_ui", "NEWS")}</strong>
+    {dgettext(
+      "help_ui",
+      "- Active news channels, the ones in the language you use the chat in first"
+    )}
+  </li>
+  <li>
     <strong>{dgettext("help_ui", "POPULAR CHANNELS")}</strong>
     {dgettext(
       "help_ui",
-      "- Active public channels you have not joined yet, plus a button that opens the full channel list"
+      "- Active public channels about any other subject that you have not joined yet"
     )}
   </li>
 </ul>
@@ -72,11 +86,24 @@
     "The Auto-Join window is still where the list itself is managed — the order the channels are joined in, and the keys. Open it from Start, or with /autojoin."
   )}
 </p>
+<.help_h4 icon={:icon_joystick}>{dgettext("help_ui", "Games and News")}</.help_h4>
+<p>
+  {dgettext(
+    "help_ui",
+    "The Games and News sections suggest the rooms most people come here for, without searching. The plaque in each heading says what the rooms below it are about, so the rows only carry their language flag. Click a room to join it and go there; click a match to watch it in a tab of its own."
+  )}
+</p>
+<p>
+  {dgettext(
+    "help_ui",
+    "\"See more…\" at the bottom of either section opens the Channel List set to that subject, with every room about it. Games is open for everybody until you close it; News opens by itself while you have almost no channels, like Popular Channels."
+  )}
+</p>
 <.help_h4 icon={:icon_star}>{dgettext("help_ui", "Popular Channels")}</.help_h4>
 <p>
   {dgettext(
     "help_ui",
-    "Shows active public channels you have not joined yet when the server has rooms to suggest. Click one to join it and go there. The section opens by itself while you have almost no channels and stays shut once you do — its heading reopens it whenever you want it."
+    "Shows active public channels you have not joined yet when the server has rooms to suggest — the busiest first and, among equally busy ones, the most recently used. Games and news rooms are in their own sections instead. Click one to join it and go there. The section opens by itself while you have almost no channels and stays shut once you do — its heading reopens it whenever you want it."
   )}
 </p>
 <p>

@@ -843,7 +843,7 @@ msgstr ""
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_join.html.heex:42
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_knock.html.heex:26
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_knock.html.heex:43
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_list.html.heex:29
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_list.html.heex:36
 #: lib/retro_hex_chat_web/controllers/help_content/commands_overview.html.heex:83
 #, elixir-autogen, elixir-format
 msgid "/invite"
@@ -869,7 +869,7 @@ msgstr "/invite auto"
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_autojoin.html.heex:44
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_invite.html.heex:44
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_knock.html.heex:44
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_list.html.heex:27
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_list.html.heex:34
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_part.html.heex:29
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_topic.html.heex:40
 #: lib/retro_hex_chat_web/controllers/help_content/commands_overview.html.heex:9
@@ -914,7 +914,7 @@ msgstr ""
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_invite.html.heex:45
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_join.html.heex:43
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_list.html.heex:28
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_list.html.heex:35
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_mode.html.heex:64
 #, elixir-autogen, elixir-format
 msgid "/knock"
@@ -933,7 +933,7 @@ msgstr "/knock <#channel> [message]"
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_join.html.heex:45
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_knock.html.heex:45
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_list.html.heex:8
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_list.html.heex:24
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_list.html.heex:31
 #: lib/retro_hex_chat_web/controllers/help_content/commands_overview.html.heex:20
 #, elixir-autogen, elixir-format
 msgid "/list"
@@ -961,7 +961,7 @@ msgstr "/me waves hello /me is thinking... /me grabs some coffee"
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_invite.html.heex:46
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_kick.html.heex:50
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_knock.html.heex:46
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_list.html.heex:30
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_list.html.heex:37
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_op.html.heex:65
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_slow.html.heex:86
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_topic.html.heex:39
@@ -1967,7 +1967,7 @@ msgstr ""
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_kick.html.heex:40
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_knock.html.heex:39
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_lfg.html.heex:30
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_list.html.heex:23
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_list.html.heex:30
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_me.html.heex:34
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_mode.html.heex:102
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_motd.html.heex:50
@@ -2782,7 +2782,7 @@ msgstr ""
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_join.html.heex:39
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_kick.html.heex:43
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_knock.html.heex:41
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_list.html.heex:25
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_list.html.heex:32
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_me.html.heex:36
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_mode.html.heex:104
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_motd.html.heex:52
@@ -5092,7 +5092,7 @@ msgstr ""
 "allemaal over die ene verbinding; er een beëindigen houdt de andere in "
 "leven."
 
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_list.html.heex:18
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_list.html.heex:25
 #, elixir-autogen, elixir-format
 msgid "A registered channel stays in the list even when everybody has left it. Such a room shows no user count and says instead when it was last used, so an empty row means quiet rather than gone. Joining one brings it back up exactly like any other channel."
 msgstr ""
@@ -5101,7 +5101,7 @@ msgstr ""
 " het laatst is gebruikt, dus een lege regel betekent stil, niet weg. "
 "Deelnemen start hem weer op net als elk ander kanaal."
 
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_list.html.heex:16
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_list.html.heex:23
 #, elixir-autogen, elixir-format
 msgid "Rooms With Nobody In Them"
 msgstr "Ruimtes waar niemand is"
@@ -6079,3 +6079,13 @@ msgstr "Alleen de oprichter kan de categorie van het kanaal instellen"
 #, elixir-autogen, elixir-format
 msgid "category <name>/none"
 msgstr "category <name>/none"
+
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_list.html.heex:16
+#, elixir-autogen, elixir-format
+msgid "Rooms About One Subject"
+msgstr "Ruimtes over één onderwerp"
+
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_list.html.heex:18
+#, elixir-autogen, elixir-format
+msgid "The Category list beside the search box narrows the rooms to one subject — news, games, technology and the rest — as the plaque beside each channel name says. It works together with the search: both apply at once. While a category is chosen, a line above the rooms names it; its X button shows every category again. The \"See more…\" link under a sidebar section opens this window already set to that section's subject."
+msgstr "De lijst Categorie naast het zoekvak beperkt de ruimtes tot één onderwerp — nieuws, games, technologie en de rest — zoals het plaatje naast elke kanaalnaam aangeeft. Hij werkt samen met de zoekopdracht: beide gelden tegelijk. Zolang er een categorie gekozen is, noemt een regel boven de ruimtes die; met de X-knop daarvan zie je weer alle categorieën. De link \"Meer bekijken…\" onder een sectie van de zijbalk opent dit venster meteen met het onderwerp van die sectie."

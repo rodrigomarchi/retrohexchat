@@ -221,6 +221,7 @@ defmodule RetroHexChat.Chat.HelpTopics.Commands do
           "channels",
           dgettext("help", "channel list"),
           "browse",
+          dgettext("help", "category"),
           "knock",
           dgettext("help", "request access"),
           "invite-only",
@@ -232,7 +233,7 @@ defmodule RetroHexChat.Chat.HelpTopics.Commands do
         description:
           dgettext(
             "help",
-            "Browse available channels, including registered rooms nobody is in right now, and join or request access."
+            "Browse available channels, including registered rooms nobody is in right now, narrow them by name or subject, and join or request access."
           )
       },
       %{

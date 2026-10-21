@@ -135,8 +135,8 @@ make e2e.catalog.check    # verify it is current (also runs in make ci)
 ## Coverage
 
 - **257 spec files** under `e2e/tests/`.
-- **635 Playwright `test()` cases**.
-- **581 documented flows**, 580 done, 1 not done.
+- **637 Playwright `test()` cases**.
+- **583 documented flows**, 582 done, 1 not done.
 - **Every spec documents its own flows.**
 
 ## Flow index
@@ -660,6 +660,8 @@ Grouped by section. Every row comes from an `@flow` line in the spec itself.
 | V10 | Incoming PM and typing from an ignored user do not create unread indicators, typing UI, or title flash (features P1) | `tests/chat-ignore-notifications.spec.ts` | done |
 | V11 | Incoming invite from an ignored user does not open invite UI or steal focus (features P1) | `tests/chat-ignore-notifications.spec.ts` | done |
 | V12 | Multiple simultaneous PM unread counts update independently and reset only when each PM is opened (features P1) | `tests/chat-pm-unread-multiple.spec.ts` | done |
+| V13 | A visitor's sidebar suggests by subject: a Games section opening with #retro-games and the game rooms, empty ones included, then News with the rooms in the reader's language first, then the popular channels about anything else — each row carrying only its language flag, on a desktop and on a phone | `tests/chat-conversations-sidebar.spec.ts` | done |
+| V14 | "See more…" under a featured section opens the Channel List narrowed to that subject, said by a strip above the rooms; the Category list switches the subject, the strip's X shows every room again, and a member and a visitor get the same — on a desktop and on a phone | `tests/chat-conversations-sidebar.spec.ts` | done |
 
 ### W - Presence, Identity, Nick Changes, Whois/Whowas
 

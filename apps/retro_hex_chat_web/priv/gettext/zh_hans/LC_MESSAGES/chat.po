@@ -586,7 +586,7 @@ msgstr "*你的生物: %{bio}"
 msgid "* Your notify list buddy %{old_nick} is now known as %{new_nick}"
 msgstr "* 您的通知列表好友 %{old_nick} 现在称为 %{new_nick}"
 
-#: lib/retro_hex_chat_web/components/ui/chat/conversations.ex:384
+#: lib/retro_hex_chat_web/components/ui/chat/conversations.ex:411
 #, elixir-autogen, elixir-format
 msgid "/join #channel to get started"
 msgstr "/join #channel to get started"
@@ -774,13 +774,13 @@ msgstr "机器人管理仅限服务器管理员。"
 msgid "Brown"
 msgstr "褐色"
 
-#: lib/retro_hex_chat_web/components/ui/chat/conversations.ex:509
+#: lib/retro_hex_chat_web/components/ui/chat/conversations.ex:590
 #: lib/retro_hex_chat_web/components/ui/chat/visitor_greeting_card.ex:57
 #, elixir-autogen, elixir-format
 msgid "Browse All Channels..."
 msgstr "浏览所有频道..."
 
-#: lib/retro_hex_chat_web/components/ui/chat/conversations.ex:394
+#: lib/retro_hex_chat_web/components/ui/chat/conversations.ex:421
 #, elixir-autogen, elixir-format
 msgid "Browse channels"
 msgstr "浏览频道"
@@ -883,8 +883,8 @@ msgstr "频道过滤器必须从 # 开始"
 msgid "Channel ownership transferred to %{target}."
 msgstr "频道所有权转移到%{target}."
 
-#: lib/retro_hex_chat_web/components/ui/chat/conversations.ex:358
-#: lib/retro_hex_chat_web/components/ui/chat/conversations.ex:407
+#: lib/retro_hex_chat_web/components/ui/chat/conversations.ex:385
+#: lib/retro_hex_chat_web/components/ui/chat/conversations.ex:434
 #: lib/retro_hex_chat_web/components/ui/chat/hover_card.ex:202
 #: lib/retro_hex_chat_web/live/chat_live/helpers/whois.ex:138
 #: lib/retro_hex_chat_web/live/chat_live/helpers/whois.ex:198
@@ -999,7 +999,7 @@ msgid "Contact list is full (max 100 entries)"
 msgstr "联系人列表已完整( 最多 100 个条目)"
 
 #: lib/retro_hex_chat_web/components/ui/chat/conversation_toolbar_actions.ex:82
-#: lib/retro_hex_chat_web/components/ui/chat/conversations.ex:351
+#: lib/retro_hex_chat_web/components/ui/chat/conversations.ex:378
 #: lib/retro_hex_chat_web/components/ui/chat/visitor_greeting_card.ex:54
 #, elixir-autogen, elixir-format
 msgid "Conversations"
@@ -1048,7 +1048,7 @@ msgid "Delete"
 msgstr "删除"
 
 #: lib/retro_hex_chat_web/components/ui/chat/connection_status.ex:153
-#: lib/retro_hex_chat_web/components/ui/chat/conversations.ex:630
+#: lib/retro_hex_chat_web/components/ui/chat/conversations.ex:711
 #, elixir-autogen, elixir-format
 msgid "Disconnected"
 msgstr "已断开"
@@ -1323,7 +1323,7 @@ msgstr "斜体( Ctrl+Shift+Y)"
 msgid "Item not found"
 msgstr "未找到的项目"
 
-#: lib/retro_hex_chat_web/components/ui/chat/conversations.ex:787
+#: lib/retro_hex_chat_web/components/ui/chat/conversations.ex:869
 #, elixir-autogen, elixir-format
 msgid "Join %{channel}"
 msgstr "加入 %{channel} 系统"
@@ -1368,7 +1368,7 @@ msgstr "离开频道"
 #: lib/retro_hex_chat_web/live/chat_live/command_dispatch.ex:479
 #: lib/retro_hex_chat_web/live/chat_live/helpers/session.ex:594
 #: lib/retro_hex_chat_web/live/chat_live/menu_toolbar_events.ex:90
-#: lib/retro_hex_chat_web/live/desktop_live.ex:374
+#: lib/retro_hex_chat_web/live/desktop_live.ex:377
 #, elixir-autogen, elixir-format
 msgid "Leaving"
 msgstr "离开"
@@ -1502,7 +1502,7 @@ msgstr "否"
 msgid "No auto-respond rules configured."
 msgstr "没有配置自动对应的规则 。"
 
-#: lib/retro_hex_chat_web/components/ui/chat/conversations.ex:383
+#: lib/retro_hex_chat_web/components/ui/chat/conversations.ex:410
 #, elixir-autogen, elixir-format
 msgid "No channels"
 msgstr "没有频道"
@@ -1729,7 +1729,7 @@ msgstr "对%{author}的答复"
 msgid "Reset (Ctrl+Shift+X)"
 msgstr "重置( Ctrl+Shift) 。"
 
-#: lib/retro_hex_chat_web/live/desktop_live.html.heex:363
+#: lib/retro_hex_chat_web/live/desktop_live.html.heex:365
 #, elixir-autogen
 msgid "RetroHexChat"
 msgstr "反转HexChat"
@@ -1839,7 +1839,7 @@ msgid "Source and destination are the same"
 msgstr "来源和目的地相同"
 
 #: lib/retro_hex_chat_web/components/ui/chat/chat_layout.ex:38
-#: lib/retro_hex_chat_web/components/ui/chat/conversations.ex:114
+#: lib/retro_hex_chat_web/components/ui/chat/conversations.ex:118
 #: lib/retro_hex_chat_web/live/chat_live/chat_title.ex:110
 #: lib/retro_hex_chat_web/live/chat_live/components/chat_tabs.ex:106
 #, elixir-autogen, elixir-format
@@ -2429,7 +2429,7 @@ msgstr "取消通知"
 msgid "Channel Central"
 msgstr "中央频道"
 
-#: lib/retro_hex_chat_web/live/desktop_live.html.heex:783
+#: lib/retro_hex_chat_web/live/desktop_live.html.heex:787
 #, elixir-autogen, elixir-format
 msgid "Channel Central: %{channel}"
 msgstr "频道中心：%{channel}"
@@ -2597,7 +2597,7 @@ msgstr "正在加载 %{channel}..."
 msgid "MOTD"
 msgstr "移动"
 
-#: lib/retro_hex_chat_web/live/chat_live/channel_list_events.ex:107
+#: lib/retro_hex_chat_web/live/chat_live/channel_list_events.ex:113
 #, elixir-autogen, elixir-format
 msgid "Message must be 200 characters or less"
 msgstr "信件必须是200个字符或以下"
@@ -2672,7 +2672,7 @@ msgstr "只有频道运营商可以注册此频道."
 msgid "Only the founder can drop a channel."
 msgstr "只有创始人才能丢弃一个频道."
 
-#: lib/retro_hex_chat_web/live/desktop_live.html.heex:364
+#: lib/retro_hex_chat_web/live/desktop_live.html.heex:366
 #, elixir-autogen, elixir-format
 msgid "Opening chat..."
 msgstr "正在打开聊天..."
@@ -3346,7 +3346,7 @@ msgstr "格式化工具栏"
 msgid "IRC colors"
 msgstr "IRC 颜色"
 
-#: lib/retro_hex_chat_web/components/ui/chat/conversations.ex:856
+#: lib/retro_hex_chat_web/components/ui/chat/conversations.ex:938
 #: lib/retro_hex_chat_web/components/ui/chat/nicklist.ex:133
 #: lib/retro_hex_chat_web/components/ui/chat/nicklist.ex:325
 #: lib/retro_hex_chat_web/components/ui/chat/nicklist.ex:584
@@ -3387,18 +3387,18 @@ msgstr "添加:%{url} → %{channel}"
 msgid "[BotService] Feed removed."
 msgstr "[BotService]饲料被移除."
 
-#: lib/retro_hex_chat_web/components/ui/chat/conversations.ex:372
+#: lib/retro_hex_chat_web/components/ui/chat/conversations.ex:399
 #, elixir-autogen, elixir-format
 msgid "Auto"
 msgstr "自动"
 
-#: lib/retro_hex_chat_web/components/ui/chat/conversations.ex:365
+#: lib/retro_hex_chat_web/components/ui/chat/conversations.ex:392
 #, elixir-autogen, elixir-format
 msgid "PM"
 msgstr "私信"
 
-#: lib/retro_hex_chat_web/components/ui/chat/conversations.ex:127
-#: lib/retro_hex_chat_web/components/ui/chat/conversations.ex:341
+#: lib/retro_hex_chat_web/components/ui/chat/conversations.ex:131
+#: lib/retro_hex_chat_web/components/ui/chat/conversations.ex:368
 #, elixir-autogen, elixir-format
 msgid "Collapse conversations"
 msgstr "折叠会话"
@@ -3409,12 +3409,12 @@ msgstr "折叠会话"
 msgid "Collapse user list"
 msgstr "折叠用户列表"
 
-#: lib/retro_hex_chat_web/components/ui/chat/conversations.ex:121
+#: lib/retro_hex_chat_web/components/ui/chat/conversations.ex:125
 #, elixir-autogen, elixir-format
 msgid "Conversations rail"
 msgstr "会话侧栏"
 
-#: lib/retro_hex_chat_web/components/ui/chat/conversations.ex:128
+#: lib/retro_hex_chat_web/components/ui/chat/conversations.ex:132
 #, elixir-autogen, elixir-format
 msgid "Expand conversations"
 msgstr "展开会话"
@@ -3424,21 +3424,21 @@ msgstr "展开会话"
 msgid "Expand user list"
 msgstr "展开用户列表"
 
-#: lib/retro_hex_chat_web/components/ui/chat/conversations.ex:151
-#: lib/retro_hex_chat_web/components/ui/chat/conversations.ex:357
+#: lib/retro_hex_chat_web/components/ui/chat/conversations.ex:155
+#: lib/retro_hex_chat_web/components/ui/chat/conversations.ex:384
 #: lib/retro_hex_chat_web/components/ui/chat/visitor_greeting_card.ex:55
 #, elixir-autogen, elixir-format
 msgid "Open channels"
 msgstr "已打开的频道"
 
-#: lib/retro_hex_chat_web/components/ui/chat/conversations.ex:166
-#: lib/retro_hex_chat_web/components/ui/chat/conversations.ex:475
+#: lib/retro_hex_chat_web/components/ui/chat/conversations.ex:170
+#: lib/retro_hex_chat_web/components/ui/chat/conversations.ex:556
 #: lib/retro_hex_chat_web/components/ui/chat/visitor_greeting_card.ex:56
 #, elixir-autogen, elixir-format
 msgid "Popular channels"
 msgstr "热门频道"
 
-#: lib/retro_hex_chat_web/components/ui/chat/conversations.ex:158
+#: lib/retro_hex_chat_web/components/ui/chat/conversations.ex:162
 #, elixir-autogen, elixir-format
 msgid "Private messages"
 msgstr "私人信息"
@@ -4142,13 +4142,13 @@ msgstr "space 已经打开，它的卡片就是下面这一行。"
 msgid "You already have a P2P session with %{target}. Its card is the line below."
 msgstr "你和 %{target} 已经有一个 P2P 会话，它的卡片就是下面这一行。"
 
-#: lib/retro_hex_chat_web/components/ui/chat/conversations.ex:1049
+#: lib/retro_hex_chat_web/components/ui/chat/conversations.ex:1154
 #, elixir-autogen, elixir-format
 msgid "%{channel} — %{count} person here"
 msgid_plural "%{channel} — %{count} people here"
 msgstr[0] "%{channel} — %{count} 人在此"
 
-#: lib/retro_hex_chat_web/components/ui/chat/conversations.ex:1045
+#: lib/retro_hex_chat_web/components/ui/chat/conversations.ex:1150
 #, elixir-autogen, elixir-format
 msgid "%{channel} — saved, not open. Opens when you click it."
 msgstr "%{channel}——保存,不开放. 点击时打开。"
@@ -4159,17 +4159,17 @@ msgid "%{count} unread"
 msgid_plural "%{count} unread"
 msgstr[0] "%{count} 条未读"
 
-#: lib/retro_hex_chat_web/components/ui/chat/conversations.ex:1064
+#: lib/retro_hex_chat_web/components/ui/chat/conversations.ex:1169
 #, elixir-autogen, elixir-format
 msgid "%{nick} — not open. Opens when you click it."
 msgstr "%{nick}——不开放. 点击时打开。"
 
-#: lib/retro_hex_chat_web/components/ui/chat/conversations.ex:813
+#: lib/retro_hex_chat_web/components/ui/chat/conversations.ex:895
 #, elixir-autogen, elixir-format
 msgid "Actions for %{name}"
 msgstr "用于%{name}的行动"
 
-#: lib/retro_hex_chat_web/components/ui/chat/conversations.ex:771
+#: lib/retro_hex_chat_web/components/ui/chat/conversations.ex:853
 #, elixir-autogen, elixir-format
 msgid "Join %{channel} — %{count} person here"
 msgid_plural "Join %{channel} — %{count} people here"
@@ -4180,13 +4180,13 @@ msgstr[0] "加入 %{channel} — %{count} 人在此"
 msgid "Join on connect"
 msgstr "连接时加入"
 
-#: lib/retro_hex_chat_web/components/ui/chat/conversations.ex:371
-#: lib/retro_hex_chat_web/components/ui/chat/conversations.ex:1071
+#: lib/retro_hex_chat_web/components/ui/chat/conversations.ex:398
+#: lib/retro_hex_chat_web/components/ui/chat/conversations.ex:1176
 #, elixir-autogen, elixir-format
 msgid "Joined on connect"
 msgstr "连接时加入"
 
-#: lib/retro_hex_chat_web/components/ui/chat/conversations.ex:1068
+#: lib/retro_hex_chat_web/components/ui/chat/conversations.ex:1173
 #, elixir-autogen, elixir-format
 msgid "Joined on connect, with a key"
 msgstr "连接时使用密钥加入"
@@ -4201,8 +4201,8 @@ msgstr "%{nickname}不在名单上。"
 msgid "That row carries no nickname to remove."
 msgstr "该行没有可删除的昵称。"
 
-#: lib/retro_hex_chat_web/components/ui/chat/conversations.ex:364
-#: lib/retro_hex_chat_web/components/ui/chat/conversations.ex:440
+#: lib/retro_hex_chat_web/components/ui/chat/conversations.ex:391
+#: lib/retro_hex_chat_web/components/ui/chat/conversations.ex:467
 #, elixir-autogen, elixir-format
 msgid "Recent private messages"
 msgstr "最近的私信"
@@ -5831,7 +5831,7 @@ msgctxt "space room"
 msgid "Game Room"
 msgstr "游戏房间"
 
-#: lib/retro_hex_chat_web/live/chat_live/visitor.ex:271
+#: lib/retro_hex_chat_web/live/chat_live/visitor.ex:272
 #, elixir-autogen, elixir-format
 msgid "%{channel} is no longer open to visitors."
 msgstr "%{channel}不再向访客开放."
@@ -5846,12 +5846,12 @@ msgstr "访客"
 msgid "Watching without an account"
 msgstr "没有账户的监视"
 
-#: lib/retro_hex_chat_web/live/chat_live/visitor.ex:248
+#: lib/retro_hex_chat_web/live/chat_live/visitor.ex:249
 #, elixir-autogen, elixir-format
 msgid "%{channel} cannot be watched without an account."
 msgstr "%{channel}没有账户就无法观看."
 
-#: lib/retro_hex_chat_web/live/chat_live/visitor.ex:189
+#: lib/retro_hex_chat_web/live/chat_live/visitor.ex:190
 #, elixir-autogen, elixir-format
 msgid "Calls are for registered members."
 msgstr "电话是给注册会员的。"
@@ -5861,32 +5861,32 @@ msgstr "电话是给注册会员的。"
 msgid "Create an account or sign in, and you come back right where you were."
 msgstr "创建账户或签入, 你回来就在那里。"
 
-#: lib/retro_hex_chat_web/live/chat_live/visitor.ex:188
+#: lib/retro_hex_chat_web/live/chat_live/visitor.ex:189
 #, elixir-autogen, elixir-format
 msgid "Games are for registered players."
 msgstr "游戏面向注册玩家."
 
-#: lib/retro_hex_chat_web/live/chat_live/visitor.ex:193
+#: lib/retro_hex_chat_web/live/chat_live/visitor.ex:194
 #, elixir-autogen, elixir-format
 msgid "Private sessions are for registered members."
 msgstr "注册会员可参加非公开会议。"
 
-#: lib/retro_hex_chat_web/live/chat_live/visitor.ex:190
+#: lib/retro_hex_chat_web/live/chat_live/visitor.ex:191
 #, elixir-autogen, elixir-format
 msgid "Spaces are for registered members."
 msgstr "空间是注册会员的空间."
 
-#: lib/retro_hex_chat_web/live/chat_live/visitor.ex:196
+#: lib/retro_hex_chat_web/live/chat_live/visitor.ex:197
 #, elixir-autogen, elixir-format
 msgid "This feature needs an account."
 msgstr "此特性需要一个账户 。"
 
-#: lib/retro_hex_chat_web/live/chat_live/visitor.ex:187
+#: lib/retro_hex_chat_web/live/chat_live/visitor.ex:188
 #, elixir-autogen, elixir-format
 msgid "Writing in the chat needs an account."
 msgstr "在聊天中写入需要一个账户 。"
 
-#: lib/retro_hex_chat_web/live/chat_live/visitor.ex:195
+#: lib/retro_hex_chat_web/live/chat_live/visitor.ex:196
 #, elixir-autogen, elixir-format
 msgid "You need an account to open links."
 msgstr "您需要一个账户打开链接 。"
@@ -6019,3 +6019,13 @@ msgstr "%{nickname} 移除了此频道的分类。"
 #, elixir-autogen, elixir-format
 msgid "%{nickname} set this channel's category to %{category}."
 msgstr "%{nickname} 将此频道的分类设为 %{category}。"
+
+#: lib/retro_hex_chat_web/components/ui/chat/conversations.ex:549
+#, elixir-autogen, elixir-format
+msgid "See more…"
+msgstr "查看更多…"
+
+#: lib/retro_hex_chat_web/components/ui/chat/conversations.ex:543
+#, elixir-autogen, elixir-format
+msgid "%{category}: every channel, in the Channel List"
+msgstr "%{category}：在频道列表中查看全部频道"

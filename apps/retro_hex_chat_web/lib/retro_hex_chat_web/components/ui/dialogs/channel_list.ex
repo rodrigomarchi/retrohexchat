@@ -19,8 +19,11 @@ defmodule RetroHexChatWeb.Components.UI.ChannelList do
   import RetroHexChatWeb.Components.UI.Badge
   import RetroHexChatWeb.Components.UI.ActivityIndicator
   import RetroHexChatWeb.Components.UI.DialogBanner
-  import RetroHexChatWeb.Components.UI.NickFlag, only: [channel_badges: 1]
+  import RetroHexChatWeb.Components.UI.NickFlag, only: [channel_badges: 1, channel_category: 1]
+  import RetroHexChatWeb.Components.UI.Select
+  import RetroHexChatWeb.Components.UI.ToolButton
 
+  alias RetroHexChat.Channels.Categories
   alias RetroHexChat.Chat.TimeFormatter
   alias RetroHexChatWeb.Components.Diagrams
   alias RetroHexChatWeb.Icons
@@ -29,6 +32,7 @@ defmodule RetroHexChatWeb.Components.UI.ChannelList do
   attr :id, :string, required: true
   attr :channels, :list, default: []
   attr :search, :string, default: ""
+  attr :category, :string, default: nil, doc: "the subject the list is narrowed to, or nil"
   attr :loading, :boolean, default: false, doc: "Show loading state"
   attr :on_search, :any, default: nil, doc: "Search input change callback"
   attr :on_join, :any, default: nil, doc: "Row press callback for a joinable channel"
@@ -58,7 +62,8 @@ defmodule RetroHexChatWeb.Components.UI.ChannelList do
         )}
       </.dialog_banner>
 
-      <%!-- Search --%>
+      <%!-- Search, and the subject. One form, so a change to either sends
+            both and the list is always what the two together select. --%>
       <form
         class="cl-search-form"
         phx-change={@on_search}
@@ -73,11 +78,65 @@ defmodule RetroHexChatWeb.Components.UI.ChannelList do
           name="search"
           data-testid="channel-list-search"
         />
+        <.select
+          :let={builder}
+          id={"#{@id}-category"}
+          name="category"
+          value={@category || ""}
+          label={Categories.label(@category) || dgettext("dialogs", "All categories")}
+          class="cl-category-select"
+          data-testid="channel-list-category"
+        >
+          <.select_trigger
+            builder={builder}
+            class="cl-category-trigger text-xs"
+            aria-label={dgettext("dialogs", "Category")}
+          />
+          <%!-- Every subject and "all" are more rows than the window is tall
+                at its default size; the list scrolls rather than losing the
+                last ones under the window's edge. --%>
+          <.select_content builder={builder} class="max-h-60 overflow-y-auto">
+            <.select_group>
+              <.select_item builder={builder} value="" label={dgettext("dialogs", "All categories")}>
+                {dgettext("dialogs", "All categories")}
+              </.select_item>
+              <.select_item
+                :for={code <- Categories.codes()}
+                builder={builder}
+                value={code}
+                label={Categories.label(code)}
+                data-testid={"channel-list-category-#{code}"}
+              >
+                {Categories.label(code)}
+              </.select_item>
+            </.select_group>
+          </.select_content>
+        </.select>
         <.button size="sm" variant="outline" type="submit" class="cl-search-button">
           <:icon><Icons.icon_btn_find class="w-4 h-4" /></:icon>
           {dgettext("dialogs", "Search")}
         </.button>
       </form>
+
+      <%!-- Said once above the rows, with its own way out: a list narrowed to
+            one subject that does not say so reads as the whole catalogue. --%>
+      <div :if={@category} class="cl-category-strip" data-testid="channel-list-category-strip">
+        <.channel_category category={@category} />
+        <span class="cl-category-strip__label">
+          {dgettext("dialogs", "Category: %{category}", category: Categories.label(@category))}
+        </span>
+        <.tool_button
+          label={dgettext("dialogs", "Show every category")}
+          variant="flat"
+          size="xs"
+          phx-click={@on_search}
+          phx-value-search={@search}
+          phx-value-category=""
+          data-testid="channel-list-category-clear"
+        >
+          <Icons.icon_close class="h-3 w-3" />
+        </.tool_button>
+      </div>
 
       <%!-- Channel list --%>
       <div class="cl-channel-list">

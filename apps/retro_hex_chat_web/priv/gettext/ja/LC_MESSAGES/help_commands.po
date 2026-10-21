@@ -823,7 +823,7 @@ msgstr ""
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_join.html.heex:42
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_knock.html.heex:26
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_knock.html.heex:43
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_list.html.heex:29
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_list.html.heex:36
 #: lib/retro_hex_chat_web/controllers/help_content/commands_overview.html.heex:83
 #, elixir-autogen, elixir-format
 msgid "/invite"
@@ -849,7 +849,7 @@ msgstr "/invite auto"
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_autojoin.html.heex:44
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_invite.html.heex:44
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_knock.html.heex:44
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_list.html.heex:27
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_list.html.heex:34
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_part.html.heex:29
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_topic.html.heex:40
 #: lib/retro_hex_chat_web/controllers/help_content/commands_overview.html.heex:9
@@ -894,7 +894,7 @@ msgstr ""
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_invite.html.heex:45
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_join.html.heex:43
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_list.html.heex:28
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_list.html.heex:35
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_mode.html.heex:64
 #, elixir-autogen, elixir-format
 msgid "/knock"
@@ -913,7 +913,7 @@ msgstr "/knock <#channel> [message]"
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_join.html.heex:45
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_knock.html.heex:45
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_list.html.heex:8
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_list.html.heex:24
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_list.html.heex:31
 #: lib/retro_hex_chat_web/controllers/help_content/commands_overview.html.heex:20
 #, elixir-autogen, elixir-format
 msgid "/list"
@@ -941,7 +941,7 @@ msgstr "/me waves hello /me is thinking... /me grabs some coffee"
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_invite.html.heex:46
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_kick.html.heex:50
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_knock.html.heex:46
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_list.html.heex:30
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_list.html.heex:37
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_op.html.heex:65
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_slow.html.heex:86
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_topic.html.heex:39
@@ -1912,7 +1912,7 @@ msgstr "チャットチャネルを入力してメッセージを読み、送信
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_kick.html.heex:40
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_knock.html.heex:39
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_lfg.html.heex:30
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_list.html.heex:23
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_list.html.heex:30
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_me.html.heex:34
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_mode.html.heex:102
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_motd.html.heex:50
@@ -2648,7 +2648,7 @@ msgstr ""
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_join.html.heex:39
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_kick.html.heex:43
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_knock.html.heex:41
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_list.html.heex:25
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_list.html.heex:32
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_me.html.heex:36
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_mode.html.heex:104
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_motd.html.heex:52
@@ -4750,13 +4750,13 @@ msgid "creates the session and writes the request straight into your private mes
 msgstr ""
 "はセッションを作り、その相手とのプライベートメッセージにリクエストをそのまま書き込みます。事前に何も訊かれません。その行はセッション自身のアドレスを運んでカードを描き、そのカードが二人にとっての扉です。相手も同じ扉を開くか、隣の「辞退」を押します。たどると、セッションは専用のブラウザタブで開き、まず二人が機器を選んで「準備完了」を押す部屋から始まります。ホストが「開始」を押せば、通話・ファイル・ゲーム・統計がすべてひとつの接続の上で動きます。ひとつを終わらせても、他は生きたままです。"
 
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_list.html.heex:18
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_list.html.heex:25
 #, elixir-autogen, elixir-format
 msgid "A registered channel stays in the list even when everybody has left it. Such a room shows no user count and says instead when it was last used, so an empty row means quiet rather than gone. Joining one brings it back up exactly like any other channel."
 msgstr ""
 "登録済みのチャンネルは、全員が退出したあともリストに残ります。その部屋は人数ではなく最後に使われた日時を表示するため、空の行は消えたのではなく静かだという意味です。参加すれば、ほかのチャンネルと同じように立ち上がります。"
 
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_list.html.heex:16
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_list.html.heex:23
 #, elixir-autogen, elixir-format
 msgid "Rooms With Nobody In Them"
 msgstr "誰もいない部屋"
@@ -5715,3 +5715,13 @@ msgstr "チャンネルのカテゴリーを設定できるのは創設者だけ
 #, elixir-autogen, elixir-format
 msgid "category <name>/none"
 msgstr "category <name>/none"
+
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_list.html.heex:16
+#, elixir-autogen, elixir-format
+msgid "Rooms About One Subject"
+msgstr "ひとつの話題のルーム"
+
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_list.html.heex:18
+#, elixir-autogen, elixir-format
+msgid "The Category list beside the search box narrows the rooms to one subject — news, games, technology and the rest — as the plaque beside each channel name says. It works together with the search: both apply at once. While a category is chosen, a line above the rooms names it; its X button shows every category again. The \"See more…\" link under a sidebar section opens this window already set to that section's subject."
+msgstr "検索ボックスの横にある「カテゴリー」で、ルームをひとつの話題（ニュース、ゲーム、テクノロジーなど）に絞り込めます。話題は各チャンネル名の横のプレートと同じです。検索と組み合わせて使え、両方が同時に適用されます。カテゴリーを選んでいる間は、ルームの上の行にその名前が表示され、行の X ボタンですべてのカテゴリーに戻ります。サイドバーのセクションの下にある「もっと見る…」リンクは、そのセクションの話題に絞った状態でこのウィンドウを開きます。"

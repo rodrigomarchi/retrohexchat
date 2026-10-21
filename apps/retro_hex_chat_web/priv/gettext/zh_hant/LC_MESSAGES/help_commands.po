@@ -815,7 +815,7 @@ msgstr ""
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_join.html.heex:42
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_knock.html.heex:26
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_knock.html.heex:43
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_list.html.heex:29
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_list.html.heex:36
 #: lib/retro_hex_chat_web/controllers/help_content/commands_overview.html.heex:83
 #, elixir-autogen, elixir-format
 msgid "/invite"
@@ -841,7 +841,7 @@ msgstr "/invite auto"
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_autojoin.html.heex:44
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_invite.html.heex:44
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_knock.html.heex:44
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_list.html.heex:27
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_list.html.heex:34
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_part.html.heex:29
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_topic.html.heex:40
 #: lib/retro_hex_chat_web/controllers/help_content/commands_overview.html.heex:9
@@ -886,7 +886,7 @@ msgstr ""
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_invite.html.heex:45
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_join.html.heex:43
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_list.html.heex:28
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_list.html.heex:35
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_mode.html.heex:64
 #, elixir-autogen, elixir-format
 msgid "/knock"
@@ -905,7 +905,7 @@ msgstr "/knock <#channel> [message]"
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_join.html.heex:45
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_knock.html.heex:45
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_list.html.heex:8
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_list.html.heex:24
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_list.html.heex:31
 #: lib/retro_hex_chat_web/controllers/help_content/commands_overview.html.heex:20
 #, elixir-autogen, elixir-format
 msgid "/list"
@@ -933,7 +933,7 @@ msgstr "/me waves hello /me is thinking... /me grabs some coffee"
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_invite.html.heex:46
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_kick.html.heex:50
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_knock.html.heex:46
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_list.html.heex:30
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_list.html.heex:37
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_op.html.heex:65
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_slow.html.heex:86
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_topic.html.heex:39
@@ -1894,7 +1894,7 @@ msgstr "輸入要讀取和發送消息的聊天頻道 。 如果這個頻道還�
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_kick.html.heex:40
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_knock.html.heex:39
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_lfg.html.heex:30
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_list.html.heex:23
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_list.html.heex:30
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_me.html.heex:34
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_mode.html.heex:102
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_motd.html.heex:50
@@ -2616,7 +2616,7 @@ msgstr "將命令排在延遲之後運行, 可在正常間隔中選擇重複 。
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_join.html.heex:39
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_kick.html.heex:43
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_knock.html.heex:41
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_list.html.heex:25
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_list.html.heex:32
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_me.html.heex:36
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_mode.html.heex:104
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_motd.html.heex:52
@@ -4674,13 +4674,13 @@ msgid "creates the session and writes the request straight into your private mes
 msgstr ""
 "會建立工作階段，並把請求直接寫進你與那個人的私訊裡。事先不會問你任何事。那一行帶著工作階段自己的位址並畫出一張卡片，而這張卡片是你們兩人的門——對方開的是同一扇，或者按下它旁邊的「拒絕」。點開它會在自己的瀏覽器分頁裡開啟工作階段，先進入那個房間，兩個人在那裡各自挑選裝置並按下「準備好」。主持人一按「開始」，通話、檔案、遊戲和統計就都在同一條連線上執行；結束其中一項，其他項照樣活著。"
 
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_list.html.heex:18
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_list.html.heex:25
 #, elixir-autogen, elixir-format
 msgid "A registered channel stays in the list even when everybody has left it. Such a room shows no user count and says instead when it was last used, so an empty row means quiet rather than gone. Joining one brings it back up exactly like any other channel."
 msgstr ""
 "已註冊的頻道即使所有人都離開了，也會留在清單裡。這樣的房間不顯示人數，而是顯示最近一次使用的時間，所以空行的意思是安靜，而不是消失。加入它就會像其他頻道一樣重新啟動。"
 
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_list.html.heex:16
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_list.html.heex:23
 #, elixir-autogen, elixir-format
 msgid "Rooms With Nobody In Them"
 msgstr "沒有人的房間"
@@ -5630,3 +5630,13 @@ msgstr "只有創建者才能設定頻道的分類"
 #, elixir-autogen, elixir-format
 msgid "category <name>/none"
 msgstr "category <name>/none"
+
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_list.html.heex:16
+#, elixir-autogen, elixir-format
+msgid "Rooms About One Subject"
+msgstr "同一話題的房間"
+
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_list.html.heex:18
+#, elixir-autogen, elixir-format
+msgid "The Category list beside the search box narrows the rooms to one subject — news, games, technology and the rest — as the plaque beside each channel name says. It works together with the search: both apply at once. While a category is chosen, a line above the rooms names it; its X button shows every category again. The \"See more…\" link under a sidebar section opens this window already set to that section's subject."
+msgstr "搜尋框旁的「分類」列表可將房間限定為一個話題——新聞、遊戲、科技等——與每個頻道名稱旁的標牌一致。它與搜尋一起生效：兩者同時套用。選取某個分類時，房間上方會有一行顯示它；該行的 X 按鈕可重新顯示所有分類。側邊欄某一區塊下方的「查看更多…」連結會開啟此視窗，並已設為該區塊的話題。"

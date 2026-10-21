@@ -1625,17 +1625,12 @@ msgstr "最近的一些私人言論"
 msgid "There is no dedicated keyboard shortcut for /me actions. Type /me directly in a channel input."
 msgstr "/me動作沒有專門的鍵盤快捷鍵. 在頻道輸入中直接輸入 /me."
 
-#: lib/retro_hex_chat_web/controllers/help_content/ui_conversations.html.heex:37
-#, elixir-autogen, elixir-format
-msgid "- Active public channels you have not joined yet, plus a button that opens the full channel list"
-msgstr "- 尚未加入的活躍公開頻道，以及開啟完整頻道清單的按鈕"
-
-#: lib/retro_hex_chat_web/controllers/help_content/ui_conversations.html.heex:36
+#: lib/retro_hex_chat_web/controllers/help_content/ui_conversations.html.heex:50
 #, elixir-autogen, elixir-format
 msgid "POPULAR CHANNELS"
 msgstr "熱門頻道"
 
-#: lib/retro_hex_chat_web/controllers/help_content/ui_conversations.html.heex:75
+#: lib/retro_hex_chat_web/controllers/help_content/ui_conversations.html.heex:102
 #, elixir-autogen, elixir-format
 msgid "Popular Channels"
 msgstr "熱門頻道"
@@ -2414,12 +2409,12 @@ msgstr "使用者列表是對話右側的側邊欄。它列出目前對話中的
 msgid "Who is here"
 msgstr "誰在這裡"
 
-#: lib/retro_hex_chat_web/controllers/help_content/ui_conversations.html.heex:96
+#: lib/retro_hex_chat_web/controllers/help_content/ui_conversations.html.heex:123
 #, elixir-autogen, elixir-format
 msgid "Channels work the other way: Leave Channel actually leaves, so you stop receiving what is said there until you join again."
 msgstr "頻道則相反：離開頻道是真的離開，在你再次加入之前不會收到那裡的訊息。"
 
-#: lib/retro_hex_chat_web/controllers/help_content/ui_conversations.html.heex:88
+#: lib/retro_hex_chat_web/controllers/help_content/ui_conversations.html.heex:115
 #, elixir-autogen, elixir-format
 msgid "Putting a conversation away"
 msgstr "收起對話"
@@ -2634,7 +2629,7 @@ msgstr "它告訴你什麼"
 msgid "- Every channel you are in, ordered by recent activity, plus the ones on your auto-join list that you are not in right now. Each channel appears once."
 msgstr "- 你進入的每一個頻道, 最近的活動命令, 加上你自動連接列表上的那些 你沒有現在。 每個頻道都出現過一次"
 
-#: lib/retro_hex_chat_web/controllers/help_content/ui_conversations.html.heex:58
+#: lib/retro_hex_chat_web/controllers/help_content/ui_conversations.html.heex:72
 #, elixir-autogen, elixir-format
 msgid "A channel with the auto-join marker is one you rejoin automatically every time you connect. Turn it on or off from the row's menu: Join on connect. A channel with a saved key shows the marker too, and the key itself is never displayed."
 msgstr "自動連接標記的頻道是每次連接時自動重新加入的頻道. 打開或關閉行菜單:加入連接. 一個帶保存的密鑰的頻道也顯示標記,而密鑰本身從未顯示."
@@ -2658,18 +2653,18 @@ msgstr ""
 "所有不是\"去那裏\"的東西 都在排隊的菜單上 在行尾用[.]按鈕打開,用右鍵點擊行,或用手指握住. "
 "三個都打開同一個菜單;按鈕就是在任何地方工作的按鈕."
 
-#: lib/retro_hex_chat_web/controllers/help_content/ui_conversations.html.heex:64
+#: lib/retro_hex_chat_web/controllers/help_content/ui_conversations.html.heex:78
 #, elixir-autogen, elixir-format
 msgid "If you are signed in, joining a channel puts it on that list by itself and leaving takes it off again, so most of the channels you are in carry the marker without you doing anything. The menu item is how you settle the ones that differ."
 msgstr ""
 "如果你被簽了進來,加入一個頻道會把它單獨放在那個列表上,然後離開它,所以大多數頻道你都帶着這個標記而不做任何事情. 菜單項目是你們如何解決不同的問題。"
 
-#: lib/retro_hex_chat_web/controllers/help_content/ui_conversations.html.heex:56
+#: lib/retro_hex_chat_web/controllers/help_content/ui_conversations.html.heex:70
 #, elixir-autogen, elixir-format
 msgid "Joining on connect"
 msgstr "連接中"
 
-#: lib/retro_hex_chat_web/controllers/help_content/ui_conversations.html.heex:51
+#: lib/retro_hex_chat_web/controllers/help_content/ui_conversations.html.heex:65
 #, elixir-autogen, elixir-format
 msgid "On the right, a red @ badge counts the messages that are about you, and a plain badge counts the rest. The @ badge wins when there are both, because it is the one worth interrupting for. How many people are in a channel is in the row's tooltip."
 msgstr ""
@@ -2680,48 +2675,34 @@ msgstr ""
 msgid "One click, every row"
 msgstr "每行一擊"
 
-#: lib/retro_hex_chat_web/controllers/help_content/ui_conversations.html.heex:90
+#: lib/retro_hex_chat_web/controllers/help_content/ui_conversations.html.heex:117
 #, elixir-autogen, elixir-format
 msgid "Open a private message row's menu and choose Close Conversation to take it off the list. Nothing is deleted: the messages stay, and the next line from that person puts the conversation back. It is not marked read either — if it was in bold when you closed it, it comes back in bold."
 msgstr ""
 "打開私人信件行的菜單,並選擇Close Conversation將其從列表中刪除. 沒有任何內容被刪除: 消息會留下, 下行從那個人放回對話。 "
 "它也沒有被標記出來——如果你關閉它時是黑體字,它就會以黑體字出現。"
 
-#: lib/retro_hex_chat_web/controllers/help_content/ui_conversations.html.heex:43
+#: lib/retro_hex_chat_web/controllers/help_content/ui_conversations.html.heex:57
 #, elixir-autogen, elixir-format
 msgid "Reading a row"
 msgstr "讀取行"
 
-#: lib/retro_hex_chat_web/controllers/help_content/ui_conversations.html.heex:70
+#: lib/retro_hex_chat_web/controllers/help_content/ui_conversations.html.heex:84
 #, elixir-autogen, elixir-format
 msgid "The Auto-Join window is still where the list itself is managed — the order the channels are joined in, and the keys. Open it from Start, or with /autojoin."
 msgstr "Auto-Join窗口仍然是列表本身被管理的地方——連接頻道的順序,以及密鑰. 從開始,或用/autojoin打開."
 
-#: lib/retro_hex_chat_web/controllers/help_content/ui_conversations.html.heex:2
-#, elixir-autogen, elixir-format
-msgid "The Conversations sidebar is the left IRC navigation pane: the channels you are in and the ones you join on connect, in one list ordered by recent activity; then recent private messages, then channel suggestions."
-msgstr ""
-"Conversations sidebar 是左邊的 IRC 導航面板:您所加入的頻道以及您在連接上加入的頻道, 在一個列表中, 由最近的活動命令; "
-"然後是最近私人消息, 然後是頻道建議 。"
-
-#: lib/retro_hex_chat_web/controllers/help_content/ui_conversations.html.heex:45
+#: lib/retro_hex_chat_web/controllers/help_content/ui_conversations.html.heex:59
 #, elixir-autogen, elixir-format
 msgid "The bar down the left of each row says whether the conversation is open. Filled means it is; hollow means it is on your list and one click away. Its colour says whether anything is waiting: blue for the conversation you are in, red when somebody said your name, and the unread colour otherwise."
 msgstr ""
 "每行左側的欄杆顯示對話是否開放. 填充表示它是; 空洞表示它在您的列表中, 並點擊一次。 它的顏色說明有什麼東西在等待: 藍色的你正在交談, "
 "紅色的當有人說你的名字, 和未讀的顏色別。"
 
-#: lib/retro_hex_chat_web/controllers/help_content/ui_conversations.html.heex:83
+#: lib/retro_hex_chat_web/controllers/help_content/ui_conversations.html.heex:110
 #, elixir-autogen, elixir-format
 msgid "\"Browse All Channels...\" sits at the bottom of the sidebar and opens the full channel list. It is outside the sections, so it is there whatever they are doing."
 msgstr "\"瀏覽所有頻道...\" 坐在側邊欄底部,打開完整頻道列表. 它在部分之外,所以它在那裏,不管他們在做什麼。"
-
-#: lib/retro_hex_chat_web/controllers/help_content/ui_conversations.html.heex:77
-#, elixir-autogen, elixir-format
-msgid "Shows active public channels you have not joined yet when the server has rooms to suggest. Click one to join it and go there. The section opens by itself while you have almost no channels and stays shut once you do — its heading reopens it whenever you want it."
-msgstr ""
-"顯示服務器有房間建議時尚未加入的活躍公共頻道 。 點擊一個加入,然後去那裏。 "
-"片段自己打開,而你幾乎沒有頻道,一旦關閉就保持關閉——其標題隨時隨地重新打開."
 
 #: lib/retro_hex_chat_web/controllers/help_content/formatting_colors.html.heex:83
 #, elixir-autogen, elixir-format
@@ -3497,3 +3478,53 @@ msgstr "在報名之前,主頁是聊天本身: #lobby,直播,前方沒有任何�
 #, elixir-autogen, elixir-format
 msgid "Language, under the identity, is the language the bot speaks: its flag is drawn beside the bot's nickname in the user list and on its lines. Admins pick it here, or when creating the bot, the same as /bot set with the language key; No language takes the flag away."
 msgstr "身分資訊下方的「語言」是機器人使用的語言：它的旗幟會顯示在使用者清單和機器人訊息中的暱稱旁邊。管理員可以在這裡或建立機器人時選擇，作用與帶 language 鍵的 /bot set 相同；「無語言」會移除旗幟。"
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_conversations.html.heex:37
+#, elixir-autogen, elixir-format
+msgid "- #retro-games first, then up to three matches being played right now, then the other game rooms — including the ones nobody is in yet"
+msgstr "- 先是 #retro-games，然後是最多三場正在進行的對局，再是其他遊戲房間——包括還沒有人的房間"
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_conversations.html.heex:44
+#, elixir-autogen, elixir-format
+msgid "- Active news channels, the ones in the language you use the chat in first"
+msgstr "- 活躍的新聞頻道，使用你聊天語言的頻道排在前面"
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_conversations.html.heex:51
+#, elixir-autogen, elixir-format
+msgid "- Active public channels about any other subject that you have not joined yet"
+msgstr "- 你尚未加入的、關於其他任何話題的活躍公開頻道"
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_conversations.html.heex:36
+#, elixir-autogen, elixir-format
+msgid "GAMES"
+msgstr "遊戲區"
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_conversations.html.heex:89
+#, elixir-autogen, elixir-format
+msgid "Games and News"
+msgstr "遊戲與新聞"
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_conversations.html.heex:43
+#, elixir-autogen, elixir-format
+msgid "NEWS"
+msgstr "新聞區"
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_conversations.html.heex:104
+#, elixir-autogen, elixir-format
+msgid "Shows active public channels you have not joined yet when the server has rooms to suggest — the busiest first and, among equally busy ones, the most recently used. Games and news rooms are in their own sections instead. Click one to join it and go there. The section opens by itself while you have almost no channels and stays shut once you do — its heading reopens it whenever you want it."
+msgstr "當伺服器有可推薦的房間時，顯示你尚未加入的活躍公開頻道——人數最多的排在前面，人數相同時最近使用的優先。遊戲和新聞房間在各自的區塊中。點擊一個即可加入並前往。你幾乎沒有頻道時，此區塊會自動展開，之後保持收合——隨時點擊標題即可重新展開。"
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_conversations.html.heex:2
+#, elixir-autogen, elixir-format
+msgid "The Conversations sidebar is the left IRC navigation pane: the channels you are in and the ones you join on connect, in one list ordered by recent activity; then recent private messages, then channel suggestions: games, news, and popular channels about everything else."
+msgstr "「對話」側邊欄是左側的 IRC 導覽面板：你所在的頻道和連線時自動加入的頻道，依最近活動排成一個列表；接著是最近的私訊，最後是頻道推薦：遊戲、新聞，以及關於其他一切的熱門頻道。"
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_conversations.html.heex:91
+#, elixir-autogen, elixir-format
+msgid "The Games and News sections suggest the rooms most people come here for, without searching. The plaque in each heading says what the rooms below it are about, so the rows only carry their language flag. Click a room to join it and go there; click a match to watch it in a tab of its own."
+msgstr "「遊戲」和「新聞」區塊推薦大多數人來這裡的目的房間，無需搜尋。每個標題中的標牌說明下方房間的話題，因此每一列只顯示語言旗幟。點擊房間即可加入並前往；點擊對局可在單獨的分頁中觀看。"
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_conversations.html.heex:97
+#, elixir-autogen, elixir-format
+msgid "\"See more…\" at the bottom of either section opens the Channel List set to that subject, with every room about it. Games is open for everybody until you close it; News opens by itself while you have almost no channels, like Popular Channels."
+msgstr "兩個區塊底部的「查看更多…」會開啟設為該話題的頻道列表，列出與之相關的所有房間。「遊戲」對所有人保持展開，直到你將其收合；「新聞」與「熱門頻道」一樣，在你幾乎沒有頻道時會自動展開。"

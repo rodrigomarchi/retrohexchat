@@ -1,6 +1,7 @@
 defmodule RetroHexChatWeb.ChatLive.Components.Conversations do
   @moduledoc """
-  The conversations sidebar: channel / PM / popular-channel sections with their
+  The conversations sidebar: channel / PM / featured-subject / popular-channel
+  sections with their
   unread, highlight, flash and mute states.
 
   Renders inside its own LiveComponent so change-tracking isolates it from the
@@ -10,7 +11,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.Conversations do
   The parent stays the canonical owner of the underlying maps (`unread_counts`,
   `channel_activity_order`, `highlight_channels`, `flash_channels`, `muted_channels`,
   `conversations_sections`, `channel_user_counts`, `channel_locales`, `channel_categories`,
-  `popular_channels`) because many subsystems read and write
+  `popular_channels`, `featured_channels`, `live_matches`) because many subsystems read and write
   them; they are passed in as raw values and this component derives the displayed
   lists (`unread_channels`, `unread_pms`, `collapsed_sections`,
   `autojoin_entries`) itself instead of the parent template computing them on
@@ -68,6 +69,8 @@ defmodule RetroHexChatWeb.ChatLive.Components.Conversations do
        channel_locales: %{},
        channel_categories: %{},
        popular_channels: [],
+       featured_channels: [],
+       live_matches: [],
        mobile_viewport: false,
        nick_color_fn: fn _nick -> nil end
      )}
@@ -100,6 +103,8 @@ defmodule RetroHexChatWeb.ChatLive.Components.Conversations do
       :channel_locales,
       :channel_categories,
       :popular_channels,
+      :featured_channels,
+      :live_matches,
       :mobile_viewport,
       :nick_color_fn
     ]
@@ -113,6 +118,11 @@ defmodule RetroHexChatWeb.ChatLive.Components.Conversations do
      socket
      |> assign(Map.put(merged, :id, Map.get(assigns, :id, socket.assigns.id)))
      |> put_pm_locales(merged.pm_conversations || [])}
+  end
+
+  # Every room the sidebar suggests, whichever section it is drawn in.
+  defp suggestion_count(popular, featured) do
+    length(popular) + Enum.sum(Enum.map(featured, &length(&1.channels)))
   end
 
   # Each conversation's flag, asked again only when the list of people changes —
@@ -158,7 +168,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.Conversations do
             active_pm={@active_pm}
             channel_count={length(@channels)}
             pm_count={length(@pm_conversations)}
-            popular_count={length(@popular_channels)}
+            popular_count={suggestion_count(@popular_channels, @featured_channels)}
             unread_count={@unread_total}
             on_toggle="toggle_conversations"
           />
@@ -189,6 +199,8 @@ defmodule RetroHexChatWeb.ChatLive.Components.Conversations do
           channel_locales={@channel_locales}
           channel_categories={@channel_categories}
           popular_channels={@popular_channels}
+          featured_channels={@featured_channels}
+          live_matches={@live_matches}
           collapsed_sections={@collapsed_sections}
           mobile={@mobile_viewport == true}
           on_channel_click="switch_channel"
@@ -196,6 +208,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.Conversations do
           on_toggle_section="conversations_toggle_section"
           on_browse_channels="conversations_browse_all"
           on_join_popular="conversations_join_popular"
+          on_browse_category="conversations_browse_category"
           on_close="toggle_conversations"
         />
       </.conversations_sidebar>

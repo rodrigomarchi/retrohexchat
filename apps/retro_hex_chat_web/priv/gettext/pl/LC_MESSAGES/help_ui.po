@@ -1766,19 +1766,12 @@ msgstr ""
 "Nie ma dedykowanego skrótu klawiszowego dla akcji /me. Typ /me bezpośrednio "
 "przy wejściu kanału."
 
-#: lib/retro_hex_chat_web/controllers/help_content/ui_conversations.html.heex:37
-#, elixir-autogen, elixir-format
-msgid "- Active public channels you have not joined yet, plus a button that opens the full channel list"
-msgstr ""
-"- Aktywne publiczne kanały, do których jeszcze nie dołączono, oraz przycisk "
-"otwierający pełną listę kanałów"
-
-#: lib/retro_hex_chat_web/controllers/help_content/ui_conversations.html.heex:36
+#: lib/retro_hex_chat_web/controllers/help_content/ui_conversations.html.heex:50
 #, elixir-autogen, elixir-format
 msgid "POPULAR CHANNELS"
 msgstr "POPULARNE KANAŁY"
 
-#: lib/retro_hex_chat_web/controllers/help_content/ui_conversations.html.heex:75
+#: lib/retro_hex_chat_web/controllers/help_content/ui_conversations.html.heex:102
 #, elixir-autogen, elixir-format
 msgid "Popular Channels"
 msgstr "Popularne kanały"
@@ -2781,14 +2774,14 @@ msgstr ""
 msgid "Who is here"
 msgstr "Kto tu jest"
 
-#: lib/retro_hex_chat_web/controllers/help_content/ui_conversations.html.heex:96
+#: lib/retro_hex_chat_web/controllers/help_content/ui_conversations.html.heex:123
 #, elixir-autogen, elixir-format
 msgid "Channels work the other way: Leave Channel actually leaves, so you stop receiving what is said there until you join again."
 msgstr ""
 "Kanały działają odwrotnie: Opuść kanał naprawdę go opuszcza, więc "
 "przestajesz otrzymywać to, co się tam mówi, dopóki nie dołączysz ponownie."
 
-#: lib/retro_hex_chat_web/controllers/help_content/ui_conversations.html.heex:88
+#: lib/retro_hex_chat_web/controllers/help_content/ui_conversations.html.heex:115
 #, elixir-autogen, elixir-format
 msgid "Putting a conversation away"
 msgstr "Odkładanie rozmowy"
@@ -3055,7 +3048,7 @@ msgstr ""
 "z listy auto- jointów, na których nie jesteś teraz. Każdy kanał pojawia się "
 "raz."
 
-#: lib/retro_hex_chat_web/controllers/help_content/ui_conversations.html.heex:58
+#: lib/retro_hex_chat_web/controllers/help_content/ui_conversations.html.heex:72
 #, elixir-autogen, elixir-format
 msgid "A channel with the auto-join marker is one you rejoin automatically every time you connect. Turn it on or off from the row's menu: Join on connect. A channel with a saved key shows the marker too, and the key itself is never displayed."
 msgstr ""
@@ -3087,7 +3080,7 @@ msgstr ""
 "nim palec. Wszystkie trzy otwierają to samo menu; przycisk jest tym, który "
 "działa wszędzie."
 
-#: lib/retro_hex_chat_web/controllers/help_content/ui_conversations.html.heex:64
+#: lib/retro_hex_chat_web/controllers/help_content/ui_conversations.html.heex:78
 #, elixir-autogen, elixir-format
 msgid "If you are signed in, joining a channel puts it on that list by itself and leaving takes it off again, so most of the channels you are in carry the marker without you doing anything. The menu item is how you settle the ones that differ."
 msgstr ""
@@ -3096,12 +3089,12 @@ msgstr ""
 " marker bez robienia niczego. Pozycja menu to sposób, w jaki rozwiązujesz "
 "te, które się różnią."
 
-#: lib/retro_hex_chat_web/controllers/help_content/ui_conversations.html.heex:56
+#: lib/retro_hex_chat_web/controllers/help_content/ui_conversations.html.heex:70
 #, elixir-autogen, elixir-format
 msgid "Joining on connect"
 msgstr "Dołączenie do połączenia"
 
-#: lib/retro_hex_chat_web/controllers/help_content/ui_conversations.html.heex:51
+#: lib/retro_hex_chat_web/controllers/help_content/ui_conversations.html.heex:65
 #, elixir-autogen, elixir-format
 msgid "On the right, a red @ badge counts the messages that are about you, and a plain badge counts the rest. The @ badge wins when there are both, because it is the one worth interrupting for. How many people are in a channel is in the row's tooltip."
 msgstr ""
@@ -3114,7 +3107,7 @@ msgstr ""
 msgid "One click, every row"
 msgstr "Jedno kliknięcie, każdy rząd"
 
-#: lib/retro_hex_chat_web/controllers/help_content/ui_conversations.html.heex:90
+#: lib/retro_hex_chat_web/controllers/help_content/ui_conversations.html.heex:117
 #, elixir-autogen, elixir-format
 msgid "Open a private message row's menu and choose Close Conversation to take it off the list. Nothing is deleted: the messages stay, and the next line from that person puts the conversation back. It is not marked read either — if it was in bold when you closed it, it comes back in bold."
 msgstr ""
@@ -3123,12 +3116,12 @@ msgstr ""
 " linia od tej osoby odwraca rozmowę. Nie jest też oznaczona czytelna - jeśli"
 " była pogrubiona po zamknięciu, wraca pogrubiona."
 
-#: lib/retro_hex_chat_web/controllers/help_content/ui_conversations.html.heex:43
+#: lib/retro_hex_chat_web/controllers/help_content/ui_conversations.html.heex:57
 #, elixir-autogen, elixir-format
 msgid "Reading a row"
 msgstr "Czytanie wiersza"
 
-#: lib/retro_hex_chat_web/controllers/help_content/ui_conversations.html.heex:70
+#: lib/retro_hex_chat_web/controllers/help_content/ui_conversations.html.heex:84
 #, elixir-autogen, elixir-format
 msgid "The Auto-Join window is still where the list itself is managed — the order the channels are joined in, and the keys. Open it from Start, or with /autojoin."
 msgstr ""
@@ -3136,16 +3129,7 @@ msgstr ""
 "kolejność kanałów są połączone i klucze. Otwórz od początku, albo z "
 "/autojoin."
 
-#: lib/retro_hex_chat_web/controllers/help_content/ui_conversations.html.heex:2
-#, elixir-autogen, elixir-format
-msgid "The Conversations sidebar is the left IRC navigation pane: the channels you are in and the ones you join on connect, in one list ordered by recent activity; then recent private messages, then channel suggestions."
-msgstr ""
-"Pasek boczny Rozmowy jest lewym panelem nawigacyjnym IRC: kanały, w których "
-"jesteś i te, które połączysz na podłączeniu, na jednej liście zamówionej "
-"przez ostatnie działania; następnie ostatnie prywatne wiadomości, a "
-"następnie sugestie kanału."
-
-#: lib/retro_hex_chat_web/controllers/help_content/ui_conversations.html.heex:45
+#: lib/retro_hex_chat_web/controllers/help_content/ui_conversations.html.heex:59
 #, elixir-autogen, elixir-format
 msgid "The bar down the left of each row says whether the conversation is open. Filled means it is; hollow means it is on your list and one click away. Its colour says whether anything is waiting: blue for the conversation you are in, red when somebody said your name, and the unread colour otherwise."
 msgstr ""
@@ -3155,22 +3139,12 @@ msgstr ""
 "której jesteś, czerwony, kiedy ktoś powiedział swoje imię, a kolor "
 "nieprzeczytany inaczej."
 
-#: lib/retro_hex_chat_web/controllers/help_content/ui_conversations.html.heex:83
+#: lib/retro_hex_chat_web/controllers/help_content/ui_conversations.html.heex:110
 #, elixir-autogen, elixir-format
 msgid "\"Browse All Channels...\" sits at the bottom of the sidebar and opens the full channel list. It is outside the sections, so it is there whatever they are doing."
 msgstr ""
 "\"Przeglądaj wszystkie kanały\"... siedzi na dole paska bocznego i otwiera "
 "pełną listę kanałów. Jest poza sekcjami, więc jest tam cokolwiek robią."
-
-#: lib/retro_hex_chat_web/controllers/help_content/ui_conversations.html.heex:77
-#, elixir-autogen, elixir-format
-msgid "Shows active public channels you have not joined yet when the server has rooms to suggest. Click one to join it and go there. The section opens by itself while you have almost no channels and stays shut once you do — its heading reopens it whenever you want it."
-msgstr ""
-"Pokazuje aktywne kanały publiczne, które nie zostały jeszcze połączone, gdy "
-"serwer ma pokoje do zaproponowania. Kliknij jeden, aby dołączyć do niego i "
-"przejdź tam. Sekcja otwiera się sama, podczas gdy nie masz prawie żadnych "
-"kanałów i pozostaje zamknięta, gdy już to zrobisz - jej kierunek otwiera się"
-" ponownie, kiedy tylko chcesz."
 
 #: lib/retro_hex_chat_web/controllers/help_content/formatting_colors.html.heex:83
 #, elixir-autogen, elixir-format
@@ -3946,3 +3920,53 @@ msgstr "Zanim się zalogujesz, strona główna to sam czat: #lobby, na żywo, be
 #, elixir-autogen, elixir-format
 msgid "Language, under the identity, is the language the bot speaks: its flag is drawn beside the bot's nickname in the user list and on its lines. Admins pick it here, or when creating the bot, the same as /bot set with the language key; No language takes the flag away."
 msgstr "Język, pod tożsamością, to język, którym mówi bot: jego flaga jest widoczna obok nicku bota na liście użytkowników i przy jego wiadomościach. Admini wybierają go tutaj albo przy tworzeniu bota, tak jak /bot set z kluczem language; Brak języka usuwa flagę."
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_conversations.html.heex:37
+#, elixir-autogen, elixir-format
+msgid "- #retro-games first, then up to three matches being played right now, then the other game rooms — including the ones nobody is in yet"
+msgstr "- Najpierw #retro-games, potem do trzech meczów rozgrywanych właśnie teraz, potem pozostałe pokoje gier — także te, w których jeszcze nikogo nie ma"
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_conversations.html.heex:44
+#, elixir-autogen, elixir-format
+msgid "- Active news channels, the ones in the language you use the chat in first"
+msgstr "- Aktywne kanały z wiadomościami, najpierw te w języku, w którym korzystasz z czatu"
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_conversations.html.heex:51
+#, elixir-autogen, elixir-format
+msgid "- Active public channels about any other subject that you have not joined yet"
+msgstr "- Aktywne kanały publiczne na każdy inny temat, do których jeszcze nie dołączyłeś"
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_conversations.html.heex:36
+#, elixir-autogen, elixir-format
+msgid "GAMES"
+msgstr "GRY"
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_conversations.html.heex:89
+#, elixir-autogen, elixir-format
+msgid "Games and News"
+msgstr "Gry i wiadomości"
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_conversations.html.heex:43
+#, elixir-autogen, elixir-format
+msgid "NEWS"
+msgstr "WIADOMOŚCI"
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_conversations.html.heex:104
+#, elixir-autogen, elixir-format
+msgid "Shows active public channels you have not joined yet when the server has rooms to suggest — the busiest first and, among equally busy ones, the most recently used. Games and news rooms are in their own sections instead. Click one to join it and go there. The section opens by itself while you have almost no channels and stays shut once you do — its heading reopens it whenever you want it."
+msgstr "Pokazuje aktywne kanały publiczne, do których jeszcze nie dołączyłeś, gdy serwer ma pokoje do zaproponowania — najpierw najbardziej zatłoczone, a spośród równie zatłoczonych ostatnio używane. Pokoje gier i wiadomości mają własne sekcje. Kliknij kanał, aby do niego dołączyć i przejść do niego. Sekcja otwiera się sama, dopóki masz bardzo mało kanałów, a potem pozostaje zamknięta — jej nagłówek otwiera ją ponownie, kiedy chcesz."
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_conversations.html.heex:2
+#, elixir-autogen, elixir-format
+msgid "The Conversations sidebar is the left IRC navigation pane: the channels you are in and the ones you join on connect, in one list ordered by recent activity; then recent private messages, then channel suggestions: games, news, and popular channels about everything else."
+msgstr "Pasek boczny Rozmowy to panel nawigacji IRC po lewej: kanały, w których jesteś, i te, do których dołączasz przy połączeniu, na jednej liście uporządkowanej według ostatniej aktywności; potem ostatnie wiadomości prywatne, a na końcu propozycje kanałów: gry, wiadomości i popularne kanały na wszystkie inne tematy."
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_conversations.html.heex:91
+#, elixir-autogen, elixir-format
+msgid "The Games and News sections suggest the rooms most people come here for, without searching. The plaque in each heading says what the rooms below it are about, so the rows only carry their language flag. Click a room to join it and go there; click a match to watch it in a tab of its own."
+msgstr "Sekcje Gry i Wiadomości proponują pokoje, dla których przychodzi tu większość osób — bez szukania. Plakietka w każdym nagłówku mówi, o czym są pokoje poniżej, więc wiersze pokazują tylko flagę języka. Kliknij pokój, aby do niego dołączyć i przejść do niego; kliknij mecz, aby oglądać go w osobnej karcie."
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_conversations.html.heex:97
+#, elixir-autogen, elixir-format
+msgid "\"See more…\" at the bottom of either section opens the Channel List set to that subject, with every room about it. Games is open for everybody until you close it; News opens by itself while you have almost no channels, like Popular Channels."
+msgstr "„Zobacz więcej…” na dole każdej z dwóch sekcji otwiera listę kanałów ustawioną na ten temat, ze wszystkimi jego pokojami. Gry są otwarte dla wszystkich, dopóki ich nie zamkniesz; Wiadomości otwierają się same, dopóki masz bardzo mało kanałów, tak jak Popularne kanały."

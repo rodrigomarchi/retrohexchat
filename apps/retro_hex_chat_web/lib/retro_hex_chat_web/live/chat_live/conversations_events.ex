@@ -3,7 +3,7 @@ defmodule RetroHexChatWeb.ChatLive.ConversationsEvents do
   Handle conversations sidebar events.
 
   Covers: conversations_toggle_section, conversations_join_popular,
-  conversations_browse_all.
+  conversations_browse_all, conversations_browse_category.
 
   Attached as `attach_hook(:conversations_events, :handle_event, ...)` in ChatLive.mount/3.
   Returns `{:halt, socket}` when the event is handled, `{:cont, socket}` otherwise.
@@ -14,6 +14,9 @@ defmodule RetroHexChatWeb.ChatLive.ConversationsEvents do
   alias RetroHexChatWeb.ChatLive.ChannelListEvents
   alias RetroHexChatWeb.ChatLive.ConversationsReadModel
   alias RetroHexChatWeb.ChatLive.Helpers
+
+  # The sections whose rooms are read from the directory when they open.
+  @suggestion_sections ["popular" | ConversationsReadModel.featured_categories()]
 
   # ── Section toggle ─────────────────────────────────────────
 
@@ -26,8 +29,8 @@ defmodule RetroHexChatWeb.ChatLive.ConversationsEvents do
     socket = assign(socket, conversations_sections: updated_sections)
 
     socket =
-      if section == :popular and new_expanded do
-        ConversationsReadModel.load_popular_channels(socket)
+      if new_expanded and section_str in @suggestion_sections do
+        ConversationsReadModel.load_discovery(socket)
       else
         socket
       end
@@ -45,6 +48,12 @@ defmodule RetroHexChatWeb.ChatLive.ConversationsEvents do
 
   def handle_event("conversations_browse_all", _params, socket) do
     {:halt, ChannelListEvents.open(socket)}
+  end
+
+  # A featured section's "see more": every room about its subject, in the
+  # Channel List, where the rest of them can be searched.
+  def handle_event("conversations_browse_category", %{"category" => category}, socket) do
+    {:halt, ChannelListEvents.open(socket, category: category)}
   end
 
   # ── Catch-all ──────────────────────────────────────────────

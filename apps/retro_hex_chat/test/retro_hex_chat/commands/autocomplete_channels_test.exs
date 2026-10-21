@@ -20,7 +20,8 @@ defmodule RetroHexChat.Commands.AutocompleteChannelsTest do
 
     ServiceQueries.update_registered_channel_settings(name,
       modes: Keyword.get(opts, :modes, ""),
-      topic: Keyword.get(opts, :topic, "")
+      topic: Keyword.get(opts, :topic, ""),
+      category: Keyword.get(opts, :category)
     )
 
     on_exit(fn ->
@@ -94,6 +95,38 @@ defmodule RetroHexChat.Commands.AutocompleteChannelsTest do
       start_channel(name)
 
       assert [_one] = Enum.filter(Autocomplete.list_visible_channels([]), &(&1.name == name))
+    end
+
+    test "a category keeps only the rooms about that subject" do
+      news = register_channel(unique("visinews"), category: "news")
+      games = register_channel(unique("visigames"), category: "games")
+      untold = register_channel(unique("visiuntold"))
+
+      names = [] |> Autocomplete.list_visible_channels(category: "news") |> Enum.map(& &1.name)
+
+      assert news in names
+      refute games in names
+      refute untold in names
+      assert Enum.all?(names, &String.starts_with?(&1, "#"))
+    end
+
+    test "no category, or an empty one, keeps every subject" do
+      news = register_channel(unique("visiall"), category: "news")
+      untold = register_channel(unique("visiallnone"))
+
+      for opts <- [[], [category: nil], [category: ""]] do
+        names = [] |> Autocomplete.list_visible_channels(opts) |> Enum.map(& &1.name)
+        assert news in names
+        assert untold in names
+      end
+    end
+
+    test "a private room's placeholder is never found by a subject" do
+      register_channel(unique("visiprvnews"), modes: "+p", category: "news")
+
+      rows = Autocomplete.list_visible_channels([], category: "news")
+
+      refute Enum.any?(rows, &(&1.name == "Prv"))
     end
   end
 end

@@ -3,8 +3,10 @@ defmodule RetroHexChatWeb.Components.UI.Conversations do
   Conversations sidebar component for the showcase design system.
 
   The sidebar is IRC-native: it presents joined channels ordered by recent
-  activity, recent private messages, the account auto-join list, and popular
-  channel suggestions without modeling a second workspace/navigation system. It
+  activity, recent private messages, the account auto-join list, a section of
+  suggestions for each featured subject (games, news), and popular channel
+  suggestions about everything else, without modeling a second
+  workspace/navigation system. It
   remains hook-compatible with ConversationsHook through
   `phx-hook="ConversationsHook"` plus `data-channel` / `data-nick` attributes on
   actionable rows.
@@ -49,7 +51,9 @@ defmodule RetroHexChatWeb.Components.UI.Conversations do
   import RetroHexChatWeb.Components.UI.GroupCall.ChannelBadge
   import RetroHexChatWeb.Components.UI.ListStates
   import RetroHexChatWeb.Components.UI.P2P.SessionBadge
+  import RetroHexChatWeb.Components.UI.LiveMatch, only: [live_match_link: 1]
 
+  alias RetroHexChat.Channels.Categories
   alias RetroHexChatWeb.Icons
 
   @doc """
@@ -234,7 +238,15 @@ defmodule RetroHexChatWeb.Components.UI.Conversations do
     """
   end
 
-  attr :icon, :atom, required: true
+  attr :icon, :any, required: true
+
+  defp section_icon(%{icon: {:category, category}} = assigns) do
+    assigns = assign(assigns, :category, category)
+
+    ~H"""
+    <.channel_category category={@category} />
+    """
+  end
 
   defp section_icon(%{icon: :popular} = assigns) do
     ~H"""
@@ -297,6 +309,15 @@ defmodule RetroHexChatWeb.Components.UI.Conversations do
   attr :channel_locales, :map, default: %{}, doc: "each joined channel's language, as a flag"
   attr :channel_categories, :map, default: %{}, doc: "what each joined channel is about"
   attr :popular_channels, :list, default: [], doc: "List of maps with :name and :user_count"
+
+  attr :featured_channels, :list,
+    default: [],
+    doc: "One map per featured subject: :category and its :channels, lead rooms marked :lead?"
+
+  attr :live_matches, :list,
+    default: [],
+    doc: "Retro Games matches anybody may watch now, drawn in the games section"
+
   attr :collapsed_sections, :list, default: [], doc: "List of collapsed section keys"
 
   attr :mobile, :boolean,
@@ -309,6 +330,11 @@ defmodule RetroHexChatWeb.Components.UI.Conversations do
   attr :on_close, :any, default: nil, doc: "Close/hide sidebar callback"
   attr :on_browse_channels, :any, default: nil, doc: "Browse channels callback"
   attr :on_join_popular, :any, default: nil, doc: "Join popular channel callback"
+
+  attr :on_browse_category, :any,
+    default: nil,
+    doc: "A featured section's \"see more\": the Channel List narrowed to its subject"
+
   attr :class, :string, default: nil
   attr :rest, :global
 
@@ -323,6 +349,7 @@ defmodule RetroHexChatWeb.Components.UI.Conversations do
         channel_count: length(assigns.channels),
         pm_count: length(assigns.pm_conversations),
         autojoin_count: length(assigns.autojoin_entries),
+        featured_sections: featured_sections(assigns.featured_channels, assigns.live_matches),
         popular_section_visible: popular_section_visible?(assigns),
         popular_section_count: popular_section_count(assigns.popular_channels)
       )
@@ -467,6 +494,60 @@ defmodule RetroHexChatWeb.Components.UI.Conversations do
                 variant={:more}
                 testid="conversations-pms-truncated"
               />
+            </li>
+          </.conversation_section>
+
+          <%!-- One section per featured subject, above the rest of the
+                suggestions: the rooms most people come here for, found
+                without searching. The subject is said by the section's
+                plaque, so a row carries only its language. --%>
+          <.conversation_section
+            :for={section <- @featured_sections}
+            label={Categories.label(section.category)}
+            discovery
+            section={section.category}
+            icon={{:category, section.category}}
+            count={length(section.leads) + length(section.rooms)}
+            open={section_open?(@collapsed_sections, section.category)}
+            on_toggle={@on_toggle_section}
+            testid={"conversations-section-#{section.category}"}
+          >
+            <.popular_item
+              :for={ch <- section.leads}
+              channel={ch}
+              show_category={false}
+              mobile={@mobile}
+              on_join={@on_join_popular}
+            />
+            <li
+              :for={match <- section.live}
+              class="chat-conversations-row chat-conversations-row--live"
+              data-testid="conversations-live-match"
+            >
+              <.live_match_link match={match} new_tab class="chat-conversations-live-link" />
+            </li>
+            <.popular_item
+              :for={ch <- section.rooms}
+              channel={ch}
+              show_category={false}
+              mobile={@mobile}
+              on_join={@on_join_popular}
+            />
+            <li :if={@on_browse_category}>
+              <button
+                type="button"
+                class="chat-conversations-more"
+                phx-click={@on_browse_category}
+                phx-value-category={section.category}
+                title={
+                  dgettext("chat", "%{category}: every channel, in the Channel List",
+                    category: Categories.label(section.category)
+                  )
+                }
+                data-testid={"conversations-more-#{section.category}"}
+              >
+                {dgettext("chat", "See more…")}
+              </button>
             </li>
           </.conversation_section>
 
@@ -744,6 +825,7 @@ defmodule RetroHexChatWeb.Components.UI.Conversations do
   end
 
   attr :channel, :map, required: true, doc: "Map with :name and :user_count"
+  attr :show_category, :boolean, default: true, doc: "false where the section says it"
   attr :mobile, :boolean, default: false
   attr :on_join, :any, default: nil
 
@@ -753,7 +835,7 @@ defmodule RetroHexChatWeb.Components.UI.Conversations do
         channel_name: value(assigns.channel, :name),
         user_count: value(assigns.channel, :user_count),
         locale: value(assigns.channel, :locale),
-        category: value(assigns.channel, :category)
+        category: if(assigns.show_category, do: value(assigns.channel, :category))
       )
 
     ~H"""
@@ -1011,7 +1093,30 @@ defmodule RetroHexChatWeb.Components.UI.Conversations do
 
   defp has_conversations_content?(assigns) do
     assigns.channels != [] or assigns.pm_conversations != [] or assigns.autojoin_entries != [] or
-      assigns.popular_channels != [] or present?(assigns.on_browse_channels)
+      assigns.popular_channels != [] or featured_rooms?(assigns.featured_channels) or
+      present?(assigns.on_browse_channels)
+  end
+
+  defp featured_rooms?(featured), do: Enum.any?(featured, &(&1.channels != []))
+
+  # How many matches being played the games section shows. More than that is
+  # what the game pages are for; three is already a sidebar's worth of "now".
+  @max_live_matches 3
+
+  # Each featured subject as its section draws it: the lead rooms, the matches
+  # being played (games only), then the other rooms. A subject with nothing to
+  # offer has no section — its "see more" would open on an empty list.
+  defp featured_sections(featured, live_matches) do
+    featured
+    |> Enum.map(fn %{category: category, channels: channels} ->
+      {leads, rooms} = Enum.split_with(channels, &Map.get(&1, :lead?, false))
+
+      live =
+        if category == "games", do: Enum.take(live_matches || [], @max_live_matches), else: []
+
+      %{category: category, leads: leads, rooms: rooms, live: live}
+    end)
+    |> Enum.reject(&(&1.leads == [] and &1.rooms == [] and &1.live == []))
   end
 
   defp popular_section_visible?(assigns) do

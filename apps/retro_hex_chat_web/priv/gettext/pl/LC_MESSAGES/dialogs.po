@@ -393,14 +393,14 @@ msgstr "Tryby kanału"
 #: lib/retro_hex_chat_web/components/ui/dialogs/admin_server_settings_dialog.ex:273
 #: lib/retro_hex_chat_web/components/ui/dialogs/bot_management_dialog.ex:340
 #: lib/retro_hex_chat_web/components/ui/dialogs/bot_management_dialog.ex:493
-#: lib/retro_hex_chat_web/components/ui/dialogs/channel_list.ex:99
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_list.ex:158
 #: lib/retro_hex_chat_web/components/ui/system/app_info_panel.ex:55
 #, elixir-autogen, elixir-format
 msgid "Channels"
 msgstr "Kanały"
 
 #: lib/retro_hex_chat_web/components/ui/dialogs/about_dialog.ex:52
-#: lib/retro_hex_chat_web/components/ui/dialogs/channel_list.ex:49
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_list.ex:53
 #: lib/retro_hex_chat_web/components/ui/dialogs/custom_menus_dialog.ex:182
 #, elixir-autogen, elixir-format
 msgid "Chat"
@@ -648,7 +648,7 @@ msgstr "Wygasłe"
 msgid "Expires"
 msgstr "Wygasa"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/channel_list.ex:70
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_list.ex:75
 #, elixir-autogen, elixir-format
 msgid "Filter channels..."
 msgstr "Kanały filtrujące..."
@@ -728,7 +728,7 @@ msgstr "Tylko zaproszeni (+ i)"
 msgid "Invites"
 msgstr "Zaproszenia"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/channel_list.ex:110
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_list.ex:169
 #: lib/retro_hex_chat_web/components/ui/dialogs/invite_dialog.ex:99
 #, elixir-autogen, elixir-format
 msgid "Join"
@@ -948,7 +948,7 @@ msgstr "Brak skonfigurowanych możliwości"
 msgid "No channels assigned"
 msgstr "Brak przydzielonych kanałów"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/channel_list.ex:96
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_list.ex:155
 #, elixir-autogen, elixir-format
 msgid "No channels found"
 msgstr "Nie znaleziono kanałów"
@@ -1001,8 +1001,8 @@ msgstr "Nie zdefiniowano skrótów."
 
 #: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:1057
 #: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:1081
-#: lib/retro_hex_chat_web/components/ui/dialogs/channel_list.ex:179
-#: lib/retro_hex_chat_web/components/ui/dialogs/channel_list.ex:180
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_list.ex:238
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_list.ex:239
 #, elixir-autogen, elixir-format
 msgid "No topic set"
 msgstr "Brak tematu"
@@ -1197,7 +1197,7 @@ msgstr "Scheduler"
 
 #: lib/retro_hex_chat_web/components/ui/dialogs/admin_channels_dialog.ex:134
 #: lib/retro_hex_chat_web/components/ui/dialogs/admin_users_dialog.ex:131
-#: lib/retro_hex_chat_web/components/ui/dialogs/channel_list.ex:78
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_list.ex:117
 #: lib/retro_hex_chat_web/components/ui/dialogs/url_catcher.ex:199
 #, elixir-autogen, elixir-format
 msgid "Search"
@@ -1208,7 +1208,7 @@ msgstr "Szukaj"
 msgid "Search URLs..."
 msgstr "Szukaj adresów URL..."
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/channel_list.ex:89
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_list.ex:148
 #, elixir-autogen, elixir-format
 msgid "Searching..."
 msgstr "Szukam..."
@@ -1365,7 +1365,7 @@ msgstr "Po lewej stronie użytkownika"
 
 #: lib/retro_hex_chat_web/components/ui/dialogs/admin_users_dialog.ex:63
 #: lib/retro_hex_chat_web/components/ui/dialogs/admin_users_dialog.ex:111
-#: lib/retro_hex_chat_web/components/ui/dialogs/channel_list.ex:132
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_list.ex:191
 #, elixir-autogen, elixir-format
 msgid "Users"
 msgstr "Użytkownicy"
@@ -2067,7 +2067,7 @@ msgstr "Powtórz"
 msgid "Repeating timer"
 msgstr "Czas powtarzania"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/channel_list.ex:109
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_list.ex:168
 #, elixir-autogen, elixir-format
 msgid "Request Access..."
 msgstr "Proszę o dostęp..."
@@ -2432,7 +2432,7 @@ msgstr "Domyślne"
 msgid "Duplicate limit"
 msgstr "Dwulicowy limit:"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/channel_list.ex:136
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_list.ex:195
 #, elixir-autogen, elixir-format
 msgid "Invite only"
 msgstr "Tylko zaproszeni (+ i)"
@@ -2442,7 +2442,7 @@ msgstr "Tylko zaproszeni (+ i)"
 msgid "Invited by %{inviter}"
 msgstr "Zaproszony przez %{inviter}"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/channel_list.ex:135
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_list.ex:194
 #, elixir-autogen, elixir-format
 msgid "Mode"
 msgstr "Tryb"
@@ -3861,7 +3861,7 @@ msgstr "Zadania konserwacyjne"
 msgid "No maintenance jobs are configured"
 msgstr "Nie skonfigurowano żadnych zadań konserwacyjnych"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/channel_list.ex:145
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_list.ex:204
 #, elixir-autogen, elixir-format
 msgid "Last used"
 msgstr "Ostatnio używany"
@@ -4966,7 +4966,7 @@ msgstr "Miniatura linii zwisa wątek i jego pierwsza odpowiedź"
 msgid "A miniature of the next event and when it starts"
 msgstr "Miniatura następnego zdarzenia i kiedy się zaczyna"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/channel_list.ex:51
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_list.ex:55
 #, elixir-autogen, elixir-format
 msgid "A miniature of the tab a room opens as"
 msgstr "Miniatura karty pokój otwiera jak"
@@ -5000,7 +5000,7 @@ msgstr ""
 msgid "One disagreement, start to finish"
 msgstr "Jedna różnica zdań, zacznij kończyć"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/channel_list.ex:55
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_list.ex:59
 #, elixir-autogen, elixir-format
 msgid "Pressing a row goes in and opens the room as a tab beside the ones you already have. A room marked invite-only asks to be let in instead, and the people inside decide."
 msgstr ""
@@ -5008,7 +5008,7 @@ msgstr ""
 " masz. Pokój oznaczony invite- tylko prosi, aby być wpuszczony zamiast, a "
 "ludzie wewnątrz zdecydować."
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/channel_list.ex:45
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_list.ex:49
 #, elixir-autogen, elixir-format
 msgid "Rooms you can walk into"
 msgstr "Pokoje można wejść"
@@ -5433,6 +5433,7 @@ msgstr "Jego flaga jest widoczna obok nicku bota."
 
 #: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:492
 #: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:548
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_list.ex:93
 #, elixir-autogen, elixir-format
 msgid "Category"
 msgstr "Kategoria"
@@ -5449,3 +5450,20 @@ msgstr "Brak kategorii"
 #, elixir-autogen, elixir-format
 msgid "What the channel is about. Its plaque is shown beside the channel's name, so a list of rooms can be read at a glance."
 msgstr "Czego dotyczy kanał. Jego plakietka jest widoczna obok nazwy kanału, więc listę pokojów da się ogarnąć jednym spojrzeniem."
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_list.ex:86
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_list.ex:100
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_list.ex:101
+#, elixir-autogen, elixir-format
+msgid "All categories"
+msgstr "Wszystkie kategorie"
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_list.ex:126
+#, elixir-autogen, elixir-format
+msgid "Category: %{category}"
+msgstr "Kategoria: %{category}"
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_list.ex:129
+#, elixir-autogen, elixir-format
+msgid "Show every category"
+msgstr "Pokaż wszystkie kategorie"

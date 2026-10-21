@@ -386,14 +386,14 @@ msgstr "頻道模式"
 #: lib/retro_hex_chat_web/components/ui/dialogs/admin_server_settings_dialog.ex:273
 #: lib/retro_hex_chat_web/components/ui/dialogs/bot_management_dialog.ex:340
 #: lib/retro_hex_chat_web/components/ui/dialogs/bot_management_dialog.ex:493
-#: lib/retro_hex_chat_web/components/ui/dialogs/channel_list.ex:99
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_list.ex:158
 #: lib/retro_hex_chat_web/components/ui/system/app_info_panel.ex:55
 #, elixir-autogen, elixir-format
 msgid "Channels"
 msgstr "頻道"
 
 #: lib/retro_hex_chat_web/components/ui/dialogs/about_dialog.ex:52
-#: lib/retro_hex_chat_web/components/ui/dialogs/channel_list.ex:49
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_list.ex:53
 #: lib/retro_hex_chat_web/components/ui/dialogs/custom_menus_dialog.ex:182
 #, elixir-autogen, elixir-format
 msgid "Chat"
@@ -641,7 +641,7 @@ msgstr "過期"
 msgid "Expires"
 msgstr "過期"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/channel_list.ex:70
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_list.ex:75
 #, elixir-autogen, elixir-format
 msgid "Filter channels..."
 msgstr "過濾通道..."
@@ -721,7 +721,7 @@ msgstr "只邀請 (+i)"
 msgid "Invites"
 msgstr "邀請"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/channel_list.ex:110
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_list.ex:169
 #: lib/retro_hex_chat_web/components/ui/dialogs/invite_dialog.ex:99
 #, elixir-autogen, elixir-format
 msgid "Join"
@@ -939,7 +939,7 @@ msgstr "沒有配置能力"
 msgid "No channels assigned"
 msgstr "沒有指定頻道"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/channel_list.ex:96
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_list.ex:155
 #, elixir-autogen, elixir-format
 msgid "No channels found"
 msgstr "沒有找到頻道"
@@ -991,8 +991,8 @@ msgstr "未定義快捷鍵 。"
 
 #: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:1057
 #: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:1081
-#: lib/retro_hex_chat_web/components/ui/dialogs/channel_list.ex:179
-#: lib/retro_hex_chat_web/components/ui/dialogs/channel_list.ex:180
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_list.ex:238
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_list.ex:239
 #, elixir-autogen, elixir-format
 msgid "No topic set"
 msgstr "未設定主題"
@@ -1187,7 +1187,7 @@ msgstr "調度器"
 
 #: lib/retro_hex_chat_web/components/ui/dialogs/admin_channels_dialog.ex:134
 #: lib/retro_hex_chat_web/components/ui/dialogs/admin_users_dialog.ex:131
-#: lib/retro_hex_chat_web/components/ui/dialogs/channel_list.ex:78
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_list.ex:117
 #: lib/retro_hex_chat_web/components/ui/dialogs/url_catcher.ex:199
 #, elixir-autogen, elixir-format
 msgid "Search"
@@ -1198,7 +1198,7 @@ msgstr "搜尋"
 msgid "Search URLs..."
 msgstr "搜尋網址..."
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/channel_list.ex:89
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_list.ex:148
 #, elixir-autogen, elixir-format
 msgid "Searching..."
 msgstr "正在搜索中..."
@@ -1353,7 +1353,7 @@ msgstr "左側用戶"
 
 #: lib/retro_hex_chat_web/components/ui/dialogs/admin_users_dialog.ex:63
 #: lib/retro_hex_chat_web/components/ui/dialogs/admin_users_dialog.ex:111
-#: lib/retro_hex_chat_web/components/ui/dialogs/channel_list.ex:132
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_list.ex:191
 #, elixir-autogen, elixir-format
 msgid "Users"
 msgstr "用戶"
@@ -2050,7 +2050,7 @@ msgstr "重複"
 msgid "Repeating timer"
 msgstr "重複計時器"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/channel_list.ex:109
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_list.ex:168
 #, elixir-autogen, elixir-format
 msgid "Request Access..."
 msgstr "請求訪問..."
@@ -2415,7 +2415,7 @@ msgstr "默認"
 msgid "Duplicate limit"
 msgstr "複製限制 :"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/channel_list.ex:136
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_list.ex:195
 #, elixir-autogen, elixir-format
 msgid "Invite only"
 msgstr "只邀請 (+i)"
@@ -2425,7 +2425,7 @@ msgstr "只邀請 (+i)"
 msgid "Invited by %{inviter}"
 msgstr "應邀請 %{inviter}"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/channel_list.ex:135
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_list.ex:194
 #, elixir-autogen, elixir-format
 msgid "Mode"
 msgstr "模式"
@@ -3831,7 +3831,7 @@ msgstr "維護工作"
 msgid "No maintenance jobs are configured"
 msgstr "尚未設定維護工作"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/channel_list.ex:145
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_list.ex:204
 #, elixir-autogen, elixir-format
 msgid "Last used"
 msgstr "最近使用"
@@ -4813,7 +4813,7 @@ msgstr "一條線的微小的線條被掛斷了,它的第一個答案"
 msgid "A miniature of the next event and when it starts"
 msgstr "下一個事件的微型和何時開始"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/channel_list.ex:51
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_list.ex:55
 #, elixir-autogen, elixir-format
 msgid "A miniature of the tab a room opens as"
 msgstr "一個小的標籤,一個房間打開作爲"
@@ -4838,12 +4838,12 @@ msgstr "一個事件屬於頻道,所以裏面的每個人都看到同樣的列�
 msgid "One disagreement, start to finish"
 msgstr "一個分歧,開始結束"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/channel_list.ex:55
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_list.ex:59
 #, elixir-autogen, elixir-format
 msgid "Pressing a row goes in and opens the room as a tab beside the ones you already have. A room marked invite-only asks to be let in instead, and the people inside decide."
 msgstr "按一排進去 打開房間 作爲標籤旁邊 你已經有了。 一個只被邀請的房間要求被允許進入,裏面的人決定。"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/channel_list.ex:45
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_list.ex:49
 #, elixir-autogen, elixir-format
 msgid "Rooms you can walk into"
 msgstr "房間你可以走進"
@@ -5222,6 +5222,7 @@ msgstr "它的旗幟顯示在機器人暱稱旁邊。"
 
 #: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:492
 #: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:548
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_list.ex:93
 #, elixir-autogen, elixir-format
 msgid "Category"
 msgstr "分類"
@@ -5238,3 +5239,20 @@ msgstr "無分類"
 #, elixir-autogen, elixir-format
 msgid "What the channel is about. Its plaque is shown beside the channel's name, so a list of rooms can be read at a glance."
 msgstr "頻道的主題。它的標籤顯示在頻道名稱旁邊，讓人一眼就能看懂房間清單。"
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_list.ex:86
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_list.ex:100
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_list.ex:101
+#, elixir-autogen, elixir-format
+msgid "All categories"
+msgstr "所有分類"
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_list.ex:126
+#, elixir-autogen, elixir-format
+msgid "Category: %{category}"
+msgstr "分類：%{category}"
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_list.ex:129
+#, elixir-autogen, elixir-format
+msgid "Show every category"
+msgstr "顯示所有分類"

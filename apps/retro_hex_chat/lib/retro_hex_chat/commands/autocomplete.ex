@@ -388,7 +388,9 @@ defmodule RetroHexChat.Commands.Autocomplete do
   no process at all. A room everybody left is still a place, and leaving it out
   meant the catalogue only ever showed what happened to be busy at that second.
 
-  Pass `search:` to filter by name or topic before visibility is applied.
+  Pass `search:` to filter by name or topic before visibility is applied, and
+  `category:` to keep only the rooms about one subject
+  (`RetroHexChat.Channels.Categories`); nil or `""` keeps every subject.
   """
   @spec list_visible_channels([String.t()], keyword()) :: [map()]
   def list_visible_channels(user_channels, opts \\ []) do
@@ -396,7 +398,13 @@ defmodule RetroHexChat.Commands.Autocomplete do
     |> Keyword.take([:search, :limit])
     |> Directory.catalog()
     |> Enum.flat_map(&visible_channel(&1, &1.name in user_channels))
+    |> of_category(Keyword.get(opts, :category))
   end
+
+  # After visibility, not before: a private room is shown only as a placeholder
+  # that says nothing about it, its subject included, so a subject never finds it.
+  defp of_category(channels, category) when category in [nil, ""], do: channels
+  defp of_category(channels, category), do: Enum.filter(channels, &(&1.category == category))
 
   # Secret channels are invisible to non-members; private ones appear only as a
   # placeholder row, which is why this returns a list rather than a value.

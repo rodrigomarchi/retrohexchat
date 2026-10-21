@@ -109,6 +109,10 @@ _ROWS = {
     "Previous":     ("Anterior", "Anterior", "Anterior", "Précédent", "Zurück", "Precedente", "Vorige", "Poprzedni", "Назад", "Sebelumnya", "前へ", "上一步", "上一步"),
     "Open":         ("Abrir", "Abrir", "Abrir", "Ouvrir", "Öffnen", "Apri", "Openen", "Otwórz", "Открыть", "Buka", "開く", "打开", "開啟"),
     "Search":       ("Pesquisar", "Procurar", "Buscar", "Rechercher", "Suchen", "Cerca", "Zoeken", "Szukaj", "Поиск", "Cari", "検索", "搜索", "搜尋"),
+    # The Channel List's subject filter and a sidebar section's way into it.
+    "All categories": ("Todas as categorias", "Todas as categorias", "Todas las categorías", "Toutes les catégories", "Alle Kategorien", "Tutte le categorie", "Alle categorieën", "Wszystkie kategorie", "Все категории", "Semua kategori", "すべてのカテゴリー", "所有分类", "所有分類"),
+    "Show every category": ("Mostrar todas as categorias", "Mostrar todas as categorias", "Mostrar todas las categorías", "Afficher toutes les catégories", "Alle Kategorien anzeigen", "Mostra tutte le categorie", "Alle categorieën tonen", "Pokaż wszystkie kategorie", "Показать все категории", "Tampilkan semua kategori", "すべてのカテゴリーを表示", "显示所有分类", "顯示所有分類"),
+    "See more…":    ("Ver mais…", "Ver mais…", "Ver más…", "Voir plus…", "Mehr anzeigen…", "Mostra altro…", "Meer bekijken…", "Zobacz więcej…", "Показать ещё…", "Lihat lainnya…", "もっと見る…", "查看更多…", "查看更多…"),
     "Find":         ("Localizar", "Localizar", "Buscar", "Rechercher", "Suchen", "Trova", "Zoeken", "Znajdź", "Найти", "Temukan", "検索", "查找", "尋找"),
 
     # ── Editing ───────────────────────────────────────────────

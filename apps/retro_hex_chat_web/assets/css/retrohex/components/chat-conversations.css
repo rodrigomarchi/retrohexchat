@@ -203,3 +203,34 @@
 .chat-conversations-section--discovery .chat-conversations-row__label {
   @apply text-[12px];
 }
+
+/* The rule is drawn once, above the first of the suggestion sections: the
+   ones after it are still on the same side of the line. */
+.chat-conversations-section--discovery ~ .chat-conversations-section--discovery {
+  @apply mt-0 border-t-0 pt-0;
+}
+
+/* A match being played, in the games section: the link is the row's only
+   target, so it fills the row. */
+.chat-conversations-row--live {
+  @apply text-[12px];
+}
+
+.chat-conversations-live-link {
+  @apply min-h-[40px] w-full no-underline md:min-h-0;
+}
+
+.chat-conversations-live-link:hover {
+  @apply underline;
+}
+
+/* A featured section's way to the rest of its subject. A row's height and a
+   link's voice: it goes somewhere, it is not a room. */
+.chat-conversations-more {
+  @apply flex min-h-[44px] w-full items-center justify-end px-1 text-[11px] text-link underline;
+  @apply md:min-h-[22px];
+}
+
+.chat-conversations-more:hover {
+  @apply bg-hover-bg;
+}

@@ -278,6 +278,9 @@ defmodule RetroHexChatWeb.DesktopLive do
       # restore would be worse than not writing it: it would overwrite the
       # conversation they were in with the one the mount happened to open.
       |> ChatLive.Helpers.persist_reconnect_state()
+      # The mount began with an empty session, so the suggestions were opened
+      # for an arrival; now the rooms are known, they are settled for this one.
+      |> ChatLive.ConversationsReadModel.settle_discovery_sections()
       |> ChatLive.Helpers.maybe_trigger_perform()
       |> ChatLive.P2PSessionEvents.rehydrate()
       |> ChatLive.GroupCallEvents.rehydrate()
@@ -1043,13 +1046,19 @@ defmodule RetroHexChatWeb.DesktopLive do
       # `OpenSurfaces` reads them on the connected mount.
       open_surface_paths: MapSet.new(),
       popular_channels: [],
+      featured_channels: [],
       # Suggestions are for somebody who has nowhere to go yet. Expanded they
       # are ten rows in a sidebar of fifteen, so they open for an arrival and
-      # stay shut for anybody who already has rooms — until asked for.
+      # stay shut for anybody who already has rooms — until asked for; a
+      # member's are settled once the mount knows their rooms. The
+      # games are the exception: they are what most people come here for, so
+      # their section is open for everybody until somebody closes it.
       conversations_sections: %{
         channels: true,
         pms: true,
-        popular: discovery_open?(session)
+        games: true,
+        news: ChatLive.ConversationsReadModel.discovery_open?(session),
+        popular: ChatLive.ConversationsReadModel.discovery_open?(session)
       },
       lookup_result: nil,
       cc_window_channel: nil,
@@ -1098,6 +1107,8 @@ defmodule RetroHexChatWeb.DesktopLive do
       show_invite_channel_picker: false,
       show_knock_request_dialog: false,
       channel_list_channels: [],
+      # What the Channel List was last narrowed to, kept across its closes.
+      channel_list_filter: %{search: "", category: nil},
       channel_list_loading: false,
       group_call_channels: MapSet.new(),
       group_call_channel_summaries: %{},
@@ -1112,15 +1123,6 @@ defmodule RetroHexChatWeb.DesktopLive do
   end
 
   # ── View helpers ──────────────────────────────────────────────
-
-  # Three rooms is the line between somebody finding their way in and somebody
-  # who lives here: below it the suggestions are the point of the sidebar, at
-  # it they are ten rows of something you already solved.
-  @discovery_channel_threshold 3
-
-  defp discovery_open?(session) do
-    length(session.channels) < @discovery_channel_threshold
-  end
 
   defp admin?(session), do: ChatContext.admin?(session)
 

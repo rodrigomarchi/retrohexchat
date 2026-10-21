@@ -78,7 +78,8 @@ defmodule RetroHexChatWeb.ChatLive.Visitor do
     scroll_to_reply_parent
     window_closed close_all_context_menus close_dialog
     toggle_conversations toggle_nicklist conversations_toggle_section
-    conversations_browse_all channel_list toggle_channel_list channel_list_filter
+    conversations_browse_all conversations_browse_category channel_list toggle_channel_list
+    channel_list_filter
     channel_hover switch_to_status window_next window_prev window_select
     toggle_search close_search search_input search_next search_prev
     search_navigate search_toggle_filter search_highlight_count
@@ -240,7 +241,7 @@ defmodule RetroHexChatWeb.ChatLive.Visitor do
         |> ChannelHelpers.load_channel_user_count(channel)
         |> Conversation.activate_channel(channel)
         |> then(&ChannelHelpers.maybe_show_welcome(&1, channel, &1.assigns.session))
-        |> ConversationsReadModel.load_popular_channels()
+        |> ConversationsReadModel.load_discovery()
 
       {:error, _reason} ->
         Messages.error_event(
@@ -287,7 +288,7 @@ defmodule RetroHexChatWeb.ChatLive.Visitor do
         channel_guests: Map.delete(socket.assigns.channel_guests, channel)
       )
       |> ConversationsReadModel.drop_channel_activity(channel)
-      |> ConversationsReadModel.load_popular_channels()
+      |> ConversationsReadModel.load_discovery()
 
     case session.active_channel do
       nil -> assign(socket, show_status_tab: true)

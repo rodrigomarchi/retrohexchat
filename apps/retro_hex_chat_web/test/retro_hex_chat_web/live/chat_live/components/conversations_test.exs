@@ -248,4 +248,144 @@ defmodule RetroHexChatWeb.ChatLive.Components.ConversationsTest do
              ~s(.chat-conversations-section [data-testid="conversations-browse-all"])
            ) == []
   end
+
+  describe "featured subjects" do
+    defp featured do
+      [
+        %{
+          category: "games",
+          channels: [
+            %{name: "#retro-games", user_count: 0, category: "games", locale: "en", lead?: true},
+            %{name: "#hex-pong", user_count: 2, category: "games", locale: "en", lead?: false}
+          ]
+        },
+        %{
+          category: "news",
+          channels: [%{name: "#jornal", user_count: 3, category: "news", locale: "pt_BR"}]
+        }
+      ]
+    end
+
+    defp live_match(token, players),
+      do: %{token: token, game_id: "pong", players: players, watchers: 0}
+
+    test "each subject is a section of its own, above the popular channels, games first" do
+      html =
+        render_conv(
+          featured_channels: featured(),
+          popular_channels: [%{name: "#lobby", user_count: 9}]
+        )
+
+      games = :binary.match(html, ~s(data-testid="conversations-section-games")) |> elem(0)
+      news = :binary.match(html, ~s(data-testid="conversations-section-news")) |> elem(0)
+      popular = :binary.match(html, ~s(data-testid="conversations-section-popular")) |> elem(0)
+
+      assert games < news
+      assert news < popular
+    end
+
+    test "the section says the subject once, so its rows carry only their language" do
+      doc = Floki.parse_document!(render_conv(featured_channels: featured()))
+
+      assert [header] =
+               Floki.find(
+                 doc,
+                 ~s([data-testid="conversations-section-news"] .chat-conversations-section__trigger)
+               )
+
+      assert Floki.find(header, ~s([data-category="news"])) != []
+      assert Floki.text(header) =~ "News"
+
+      assert [row] = Floki.find(doc, ~s([data-testid="popular-#jornal"]))
+      assert Floki.find(row, ~s([data-testid="channel-category"])) == []
+      assert Floki.find(row, ~s([data-testid="channel-flag"])) != []
+      assert Floki.attribute(row, "phx-click") == ["conversations_join_popular"]
+    end
+
+    test "the games section opens with the feed, then the matches being played, then the rooms" do
+      html =
+        render_conv(
+          featured_channels: featured(),
+          live_matches: [live_match("tok1", ["ana", "bob"])]
+        )
+
+      feed = :binary.match(html, ~s(data-testid="popular-#retro-games")) |> elem(0)
+      match = :binary.match(html, ~s(data-testid="conversations-live-match")) |> elem(0)
+      pong = :binary.match(html, ~s(data-testid="popular-#hex-pong")) |> elem(0)
+
+      assert feed < match
+      assert match < pong
+    end
+
+    test "at most three matches being played, and only in the games section" do
+      matches = for n <- 1..5, do: live_match("tok#{n}", ["p#{n}", "q#{n}"])
+
+      doc =
+        Floki.parse_document!(render_conv(featured_channels: featured(), live_matches: matches))
+
+      assert length(Floki.find(doc, ~s([data-testid="conversations-live-match"]))) == 3
+
+      assert Floki.find(
+               doc,
+               ~s([data-testid="conversations-section-news"] [data-testid="conversations-live-match"])
+             ) == []
+    end
+
+    test "see more opens the Channel List narrowed to the section's subject" do
+      doc = Floki.parse_document!(render_conv(featured_channels: featured()))
+
+      for category <- ["games", "news"] do
+        assert [button] = Floki.find(doc, ~s([data-testid="conversations-more-#{category}"]))
+        assert Floki.attribute(button, "phx-click") == ["conversations_browse_category"]
+        assert Floki.attribute(button, "phx-value-category") == [category]
+      end
+    end
+
+    test "a subject with nothing to offer draws no section" do
+      html =
+        render_conv(
+          featured_channels: [
+            %{category: "games", channels: []},
+            %{category: "news", channels: []}
+          ]
+        )
+
+      refute html =~ ~s(data-testid="conversations-section-games")
+      refute html =~ ~s(data-testid="conversations-section-news")
+    end
+
+    test "a games section with only matches being played is still drawn" do
+      html =
+        render_conv(
+          featured_channels: [%{category: "games", channels: []}],
+          live_matches: [live_match("tok1", ["ana", "bob"])]
+        )
+
+      assert html =~ ~s(data-testid="conversations-section-games")
+      assert html =~ ~s(data-testid="conversations-live-match")
+    end
+
+    test "the collapsed rail counts every suggestion, whichever section it is in" do
+      html =
+        render_conv(
+          visible: false,
+          featured_channels: featured(),
+          popular_channels: [%{name: "#lobby", user_count: 9}]
+        )
+
+      assert html =~ "Popular channels: 4"
+    end
+
+    test "a closed section keeps its header and drops its rows" do
+      html =
+        render_conv(
+          featured_channels: featured(),
+          conversations_sections: %{games: false, news: true}
+        )
+
+      assert html =~ ~s(data-testid="conversations-section-games")
+      refute html =~ ~s(data-testid="popular-#retro-games")
+      assert html =~ ~s(data-testid="popular-#jornal")
+    end
+  end
 end

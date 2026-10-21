@@ -105,7 +105,7 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.Channel do
     |> push_event("tip_trigger", %{tip: "first_join"})
     |> push_event("channel_joined_flash", %{channel: channel_name})
     |> SessionHelpers.push_reconnect_state()
-    |> ConversationsReadModel.load_popular_channels()
+    |> ConversationsReadModel.load_discovery()
     |> Address.sync()
   end
 
@@ -125,7 +125,7 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.Channel do
     |> load_channel_user_count(channel_name)
     |> push_event("channel_joined_flash", %{channel: channel_name})
     |> SessionHelpers.push_reconnect_state()
-    |> ConversationsReadModel.load_popular_channels()
+    |> ConversationsReadModel.load_discovery()
   end
 
   @spec part_channel(Phoenix.LiveView.Socket.t(), String.t(), String.t() | nil) ::
@@ -184,7 +184,7 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.Channel do
 
     socket
     |> SessionHelpers.push_reconnect_state()
-    |> ConversationsReadModel.load_popular_channels()
+    |> ConversationsReadModel.load_discovery()
   end
 
   @spec part_channel_after_kick(Phoenix.LiveView.Socket.t(), String.t()) ::
@@ -225,13 +225,13 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.Channel do
       socket
       |> Conversation.load_roster()
       |> load_channel_messages_with_pagination(new_session.active_channel)
-      |> ConversationsReadModel.load_popular_channels()
+      |> ConversationsReadModel.load_discovery()
     else
       socket
       |> assign(oldest_message_id: nil, has_more: false)
       |> Conversation.load_roster()
       |> MessageViewport.reset([])
-      |> ConversationsReadModel.load_popular_channels()
+      |> ConversationsReadModel.load_discovery()
     end
   end
 

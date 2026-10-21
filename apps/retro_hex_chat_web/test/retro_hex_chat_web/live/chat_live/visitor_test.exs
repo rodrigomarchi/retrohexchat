@@ -353,6 +353,15 @@ defmodule RetroHexChatWeb.ChatLive.VisitorTest do
       refute Map.has_key?(assigns(view).docs, :connect)
     end
 
+    test "a featured section's see more opens the Channel List without asking", %{conn: conn} do
+      {:ok, view, _html} = live(conn, "/")
+
+      render_click(view, "conversations_browse_category", %{"category" => "games"})
+
+      assert_push_event(view, "window_command", %{action: "open", id: "channel-list"})
+      assert assigns(view).channel_list_filter.category == "games"
+    end
+
     test "what the browser reports on its own asks nothing", %{conn: conn} do
       {:ok, view, _html} = live(conn, "/")
 

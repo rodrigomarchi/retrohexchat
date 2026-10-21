@@ -3,6 +3,7 @@ defmodule RetroHexChatWeb.ChatLive.ConversationsReadModelTest do
 
   alias RetroHexChat.Accounts.Session
   alias RetroHexChat.Channels.{Registry, Server, Supervisor}
+  alias RetroHexChat.Chat.AutoJoinList
   alias RetroHexChatWeb.ChatLive.ConversationsReadModel
 
   @moduletag :integration
@@ -79,6 +80,176 @@ defmodule RetroHexChatWeb.ChatLive.ConversationsReadModelTest do
 
       assert length(ConversationsReadModel.popular_channels(channels, [])) == 10
     end
+
+    test "of rooms as busy as each other, the one used most recently comes first" do
+      channels =
+        listing([
+          {"#alpha", 3, [last_activity_at: ~U[2026-10-01 10:00:00Z]]},
+          {"#never", 3, []},
+          {"#zulu", 3, [last_activity_at: ~U[2026-10-20 10:00:00Z]]}
+        ])
+
+      assert Enum.map(ConversationsReadModel.popular_channels(channels, []), & &1.name) ==
+               ["#zulu", "#alpha", "#never"]
+    end
+  end
+
+  defp section(sections, category) do
+    sections
+    |> Enum.find(&(&1.category == category))
+    |> Map.fetch!(:channels)
+    |> Enum.map(& &1.name)
+  end
+
+  describe "featured_channels/3" do
+    test "one section per featured subject, games first, each returned even when empty" do
+      assert [%{category: "games", channels: []}, %{category: "news", channels: []}] =
+               ConversationsReadModel.featured_channels([], [], "en")
+    end
+
+    test "the games section opens with the feed, busy or not, and keeps empty game rooms last" do
+      channels =
+        listing([
+          {"#hex-pong", 4, [category: "games"]},
+          {"#hex-snake", 0, [category: "games"]},
+          {"#retro-games", 0, [category: "games"]},
+          {"#hex-tetris", 7, [category: "games"]},
+          {"#lobby", 9, [category: "social"]}
+        ])
+
+      sections = ConversationsReadModel.featured_channels(channels, [], "pt_BR")
+
+      assert section(sections, "games") ==
+               ["#retro-games", "#hex-tetris", "#hex-pong", "#hex-snake"]
+
+      assert [%{lead?: true} | rest] =
+               Enum.find(sections, &(&1.category == "games")).channels
+
+      refute Enum.any?(rest, & &1.lead?)
+    end
+
+    test "the games section offers at most six rooms" do
+      channels = listing(for n <- 1..9, do: {"#game#{n}", n, [category: "games"]})
+
+      assert length(section(ConversationsReadModel.featured_channels(channels, [], nil), "games")) ==
+               6
+    end
+
+    test "the news section leaves out rooms nobody is in" do
+      channels =
+        listing([
+          {"#jornal", 2, [category: "news"]},
+          {"#empty-news", 0, [category: "news"]}
+        ])
+
+      assert section(ConversationsReadModel.featured_channels(channels, [], "pt_BR"), "news") ==
+               ["#jornal"]
+    end
+
+    test "news in the reader's language first, then the same language elsewhere, then the rest" do
+      channels =
+        listing([
+          {"#news", 9, [category: "news", locale: "en"]},
+          {"#ultimahora", 5, [category: "news", locale: "pt_PT"]},
+          {"#nolocale", 8, [category: "news"]},
+          {"#jornal", 1, [category: "news", locale: "pt_BR"]}
+        ])
+
+      assert section(ConversationsReadModel.featured_channels(channels, [], "pt_BR"), "news") ==
+               ["#jornal", "#ultimahora", "#news", "#nolocale"]
+    end
+
+    test "the news section offers at most five rooms" do
+      channels = listing(for n <- 1..8, do: {"#news#{n}", n, [category: "news"]})
+
+      assert length(section(ConversationsReadModel.featured_channels(channels, [], nil), "news")) ==
+               5
+    end
+
+    test "joined, invite-only and keyed rooms are not suggested in a section either" do
+      channels =
+        listing([
+          {"#retro-games", 3, [category: "games"]},
+          {"#locked", 3, [category: "games", invite_only?: true]},
+          {"#keyed", 3, [category: "games", modes: "+k"]},
+          {"#hex-pong", 0, [category: "games"]}
+        ])
+
+      assert section(
+               ConversationsReadModel.featured_channels(channels, ["#retro-games"], nil),
+               "games"
+             ) == ["#hex-pong"]
+    end
+  end
+
+  describe "discovery_open?/1 and settle_discovery_sections/1" do
+    defp with_autojoin(session, channels) do
+      list =
+        Enum.reduce(channels, AutoJoinList.new(), fn channel, list ->
+          {:ok, list} = AutoJoinList.add_entry(list, channel)
+          list
+        end)
+
+      %{session | autojoin_list: list}
+    end
+
+    defp settled(session) do
+      %Phoenix.LiveView.Socket{
+        assigns: %{
+          __changed__: %{},
+          session: session,
+          conversations_sections: %{channels: true, games: true, news: true, popular: true}
+        }
+      }
+      |> ConversationsReadModel.settle_discovery_sections()
+      |> then(& &1.assigns.conversations_sections)
+    end
+
+    test "an arrival with fewer than three rooms gets the suggestions open" do
+      session = "Newbie" |> Session.new() |> Session.add_channel("#lobby")
+
+      assert ConversationsReadModel.discovery_open?(session)
+      assert %{games: true, news: true, popular: true} = settled(session)
+    end
+
+    # The mount starts from an empty session and the account's rooms are joined
+    # a moment later: counting only the joined ones opened the suggestions for
+    # everybody, every time.
+    test "rooms the account joins on connect count before they are joined" do
+      session = "Regular" |> Session.new() |> with_autojoin(["#a", "#b", "#c"])
+
+      refute ConversationsReadModel.discovery_open?(session)
+      assert %{games: true, news: false, popular: false} = settled(session)
+    end
+
+    test "a room both joined and saved counts once" do
+      session =
+        "Twice"
+        |> Session.new()
+        |> Session.add_channel("#a")
+        |> Session.add_channel("#b")
+        |> with_autojoin(["#A", "#b"])
+
+      assert ConversationsReadModel.discovery_open?(session)
+    end
+  end
+
+  describe "suggestions/3" do
+    test "a room about a featured subject is never also a popular suggestion" do
+      channels =
+        listing(
+          [{"#lobby", 2, [category: "social"]}, {"#plain", 1, []}] ++
+            for(n <- 1..8, do: {"#news#{n}", 10 + n, [category: "news"]}) ++
+            for(n <- 1..8, do: {"#game#{n}", 10 + n, [category: "games"]})
+        )
+
+      %{featured_channels: featured, popular_channels: popular} =
+        ConversationsReadModel.suggestions(channels, [], "en")
+
+      assert Enum.map(popular, & &1.name) == ["#lobby", "#plain"]
+      assert length(section(featured, "news")) == 5
+      assert length(section(featured, "games")) == 6
+    end
   end
 
   describe "channel activity order" do
@@ -109,7 +280,7 @@ defmodule RetroHexChatWeb.ChatLive.ConversationsReadModelTest do
     end
   end
 
-  describe "load_popular_channels/1" do
+  describe "load_discovery/1" do
     test "reads the live channel directory and leaves out the joined ones" do
       popular = unique("sidebarpopular")
       joined = unique("sidebarjoined")
@@ -128,10 +299,13 @@ defmodule RetroHexChatWeb.ChatLive.ConversationsReadModelTest do
         |> Session.new()
         |> Session.add_channel(joined)
 
-      socket = session |> socket_with_session() |> ConversationsReadModel.load_popular_channels()
+      socket = session |> socket_with_session() |> ConversationsReadModel.load_discovery()
 
       names = Enum.map(socket.assigns.popular_channels, & &1.name)
       counts = Enum.map(socket.assigns.popular_channels, & &1.user_count)
+
+      assert Enum.map(socket.assigns.featured_channels, & &1.category) ==
+               ConversationsReadModel.featured_categories()
 
       # Which channels make the top ten depends on every channel the suite has
       # running, so assert the contract rather than a membership: the directory
@@ -154,7 +328,7 @@ defmodule RetroHexChatWeb.ChatLive.ConversationsReadModelTest do
         "Viewer"
         |> Session.new()
         |> socket_with_session()
-        |> ConversationsReadModel.load_popular_channels()
+        |> ConversationsReadModel.load_discovery()
 
       refute Enum.any?(socket.assigns.popular_channels, fn channel ->
                not String.starts_with?(channel.name, "#")
@@ -177,7 +351,7 @@ defmodule RetroHexChatWeb.ChatLive.ConversationsReadModelTest do
         "Viewer"
         |> Session.new()
         |> socket_with_session()
-        |> ConversationsReadModel.load_popular_channels()
+        |> ConversationsReadModel.load_discovery()
 
       names = Enum.map(socket.assigns.popular_channels, & &1.name)
 

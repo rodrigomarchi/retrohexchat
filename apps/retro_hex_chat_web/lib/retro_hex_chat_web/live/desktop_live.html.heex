@@ -169,6 +169,8 @@
             channel_locales={@channel_locales}
             channel_categories={@channel_categories}
             popular_channels={@popular_channels}
+            featured_channels={@featured_channels}
+            live_matches={@live_matches}
             nick_color_fn={@nick_color_fn}
           />
 
@@ -753,6 +755,8 @@
           module={RetroHexChatWeb.ChatLive.Components.ChannelListDialog}
           id={RetroHexChatWeb.ChatLive.Components.ChannelListDialog.id()}
           channels={@channel_list_channels}
+          search={@channel_list_filter.search}
+          category={@channel_list_filter.category}
           loading={@channel_list_loading}
         />
       </.desktop_window>
