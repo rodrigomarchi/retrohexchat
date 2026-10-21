@@ -314,11 +314,11 @@ defmodule RetroHexChatWeb.ChatLive.Components.MessageRowTest do
       }
     end
 
-    test "stands in for GameServ's sentence in a game's channel" do
+    test "stands in for the announcing bot's sentence in a game's channel" do
       html =
         row(%{
           id: 7,
-          author: "GameServ",
+          author: "Scoreboard",
           content: "ana beat beto 3 × 1 in Hex Tennis: Quick Match",
           type: :message,
           timestamp: @ts,
@@ -366,7 +366,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.MessageRowTest do
         row(
           %{
             id: 9,
-            author: "GameServ",
+            author: "Scoreboard",
             content: "ana beat beto 3 × 1 in Hex Tennis: Quick Match",
             type: :message,
             timestamp: @ts,

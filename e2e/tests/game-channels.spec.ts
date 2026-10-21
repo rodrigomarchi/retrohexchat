@@ -1,7 +1,7 @@
 /**
  * @section N - P2P, File, Call, Game
  * @flow N64 [done] A game's channel names its game under the topic, and Find a partner puts one seat's card in the channel; pressing it again points at the same card
- * @flow N65 [done] A match between two people is written down once: GameServ says it in the game's channel with a card, and the same card lands in the two players' private conversation
+ * @flow N65 [done] A match between two people is written down once: Scoreboard, the room's announcing bot, says it in the game's channel with a card, and the same card lands in the two players' private conversation
  * @flow N70 [done] A result card's game name opens the game's home, whose You tab shows the player's own rating and latest matches
  * @flow N66 [done] A visitor reads a game's channel and its public page — ranking, latest matches, the channel's last lines — and pressing Find a partner opens the sign-in window
  *
@@ -44,7 +44,8 @@ test.describe("Game channels", () => {
     const ana = await newSignedInUser(browser, "gch");
 
     try {
-      // Made by the server, as the boot job makes every game's channel.
+      // Recording a match sets the room up the way the provisioning script
+      // does: registered, archived, with Scoreboard announcing in it.
       await recordMatch(ana.page.request, {
         p1: ana.nick,
         payload: { score: { p1: 2, p2: 11 }, winner: 2 },
@@ -99,6 +100,10 @@ test.describe("Game channels", () => {
       // In the game's own channel there is no way into it.
       await expect(card.getByTestId("game-result-channel")).toHaveCount(0);
       await shot(card, "game-channel-result-card");
+
+      // The room's announcing bot said it, and stands in the room like any bot.
+      await expect(ana.chat.nicklist).toContainText("Scoreboard");
+      await shot(ana.chat.nicklist, "game-channel-nicklist-scoreboard");
 
       // The two players' conversation has the same match, with the way into
       // the game's channel.

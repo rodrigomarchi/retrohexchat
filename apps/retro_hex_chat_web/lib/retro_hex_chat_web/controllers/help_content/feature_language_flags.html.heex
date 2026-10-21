@@ -37,7 +37,8 @@
 <p>
   {dgettext(
     "help_features",
-    "Bots carry a flag too, for the language they speak. An admin gives one with /bot set followed by the bot's name, language and a code such as pt_BR, or in Bot Management. A bot nobody gave a language has no flag; GameServ, in the Retro Games channels, is English."
+    "A bot carries a flag too, for the language it speaks. An admin gives a bot its language with %{command} or in Bot Management. A bot nobody gave a language has no flag.",
+    command: "/bot set <bot> language pt_BR"
   )}
 </p>
 <.help_h4 icon={:icon_link}>{dgettext("help_features", "See Also")}</.help_h4>

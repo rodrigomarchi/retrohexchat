@@ -7,12 +7,19 @@
   )}
 </p>
 
-<.help_h4 icon={:icon_robot}>GameServ</.help_h4>
+<.help_h4 icon={:icon_robot}>{dgettext("help_games", "The bot that announces")}</.help_h4>
 <p>
   {dgettext(
     "help_games",
-    "The service %{service} keeps the game channels and sits in each one. It announces a match between two people played in the open, a personal best, and a win against the computer on hard, with a card that shows the score. Once a day it says how many matches the game had and who did best.",
-    service: "GameServ"
+    "A bot in each game channel announces a match between two people played in the open, a personal best, and a win against the computer on hard, with a card that shows the score. Once a day it says how many matches the game had and who did best, and every Monday it opens the weekly challenge."
+  )}
+</p>
+<p>
+  {dgettext(
+    "help_games",
+    "An admin turns the announcements of a bot on with %{on}, and off with %{off}. A channel with no such bot announces nothing. The game channels are ordinary channels: their founder changes the topic, the modes and the archive.",
+    on: "/bot set <bot> game_announce on",
+    off: "/bot set <bot> game_announce off"
   )}
 </p>
 <ul>

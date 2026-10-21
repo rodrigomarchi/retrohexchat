@@ -3,11 +3,12 @@ defmodule RetroHexChat.Games.AnnouncerTest do
 
   import RetroHexChat.Factory
 
+  alias RetroHexChat.Bots.Bot
   alias RetroHexChat.Channels.Registry, as: ChannelRegistry
   alias RetroHexChat.Channels.Supervisor, as: ChannelSupervisor
   alias RetroHexChat.Chat.Message
   alias RetroHexChat.Games.Announcer
-  alias RetroHexChat.Games.Channels
+  alias RetroHexChat.Games.Catalog
   alias RetroHexChat.Games.Results
   alias RetroHexChat.Games.Schema.GameResult
   alias RetroHexChat.Topics
@@ -19,12 +20,14 @@ defmodule RetroHexChat.Games.AnnouncerTest do
 
     on_exit(fn ->
       Application.delete_env(:retro_hex_chat, :game_result_min_duration_ms)
-      Enum.each(["#hex-pong", "#hex-raid", Channels.feed()], &stop_channel/1)
+
+      Enum.each(
+        ["#hex-pong", "#hex-raid", "#hex-tennis", Catalog.feed_channel()],
+        &stop_channel/1
+      )
     end)
 
-    :created = Channels.ensure("#hex-pong")
-    :created = Channels.ensure("#hex-raid")
-    :created = Channels.ensure(Channels.feed())
+    insert_game_announcer(["#hex-pong", "#hex-raid", "#hex-tennis", Catalog.feed_channel()])
 
     ana = insert(:registered_nick, nickname: "ana")
     beto = insert(:registered_nick, nickname: "beto")
@@ -63,7 +66,7 @@ defmodule RetroHexChat.Games.AnnouncerTest do
         lobby_token: "tok-ann"
       })
 
-    assert %Message{author_nickname: "GameServ", content: content, type: "message"} =
+    assert %Message{author_nickname: "Scoreboard", content: content, type: "message"} =
              Repo.get!(Message, row.channel_message_id)
 
     assert content == "ana beat beto 11 × 9 in Hex Pong"
@@ -71,7 +74,7 @@ defmodule RetroHexChat.Games.AnnouncerTest do
     assert is_integer(row.pm_message_id)
 
     # The card is attached before anybody is told about the line.
-    assert_receive %{event: "new_message", payload: %{id: id, author: "GameServ"}}
+    assert_receive %{event: "new_message", payload: %{id: id, author: "Scoreboard"}}
     assert id == row.channel_message_id
 
     assert %{^id => %{place: :channel, outcome: :p1}} =
@@ -193,7 +196,10 @@ defmodule RetroHexChat.Games.AnnouncerTest do
     assert is_integer(other.channel_message_id)
   end
 
-  test "GameServ comes back to a channel that restarted without it", %{ana: ana, beto: beto} do
+  test "the announcing bot comes back to a channel that restarted without it", %{
+    ana: ana,
+    beto: beto
+  } do
     stop_channel("#hex-pong")
 
     row =
@@ -207,5 +213,40 @@ defmodule RetroHexChat.Games.AnnouncerTest do
       })
 
     assert is_integer(row.channel_message_id)
+  end
+
+  test "a room whose bots do not announce games hears nothing, the players still do",
+       %{ana: ana, beto: beto} do
+    Repo.delete_all(Bot)
+
+    row =
+      record(%{
+        game_id: "hex_pong",
+        origin: "p2p",
+        p1: ana,
+        p2: beto,
+        payload: pong(11, 4, 1),
+        lobby_token: "tok-quiet"
+      })
+
+    assert row.channel_message_id == nil
+    assert row.feed_message_id == nil
+    assert is_integer(row.pm_message_id)
+  end
+
+  test "an announcer that turned the capability off is not asked", %{ana: ana, beto: beto} do
+    Repo.update_all(Bot, set: [capabilities: %{"game" => %{"enabled" => false}}])
+
+    row =
+      record(%{
+        game_id: "hex_pong",
+        origin: "p2p",
+        p1: ana,
+        p2: beto,
+        payload: pong(11, 5, 1),
+        lobby_token: "tok-off"
+      })
+
+    assert row.channel_message_id == nil
   end
 end

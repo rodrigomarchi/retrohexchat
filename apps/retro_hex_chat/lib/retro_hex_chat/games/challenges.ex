@@ -9,9 +9,9 @@ defmodule RetroHexChat.Games.Challenges do
   week names the variant, and the ledger already holds the matches, so the
   challenge cannot disagree with the results it is made of.
 
-  GameServ opens each week's challenge in the game's channel on Monday and
-  names last week's winner (`Jobs.GameChallengeWorker`); the game's page shows
-  the current one.
+  The bot that announces in the game's channel opens each week's challenge
+  there on Monday and names last week's winner (`Jobs.GameChallengeWorker`);
+  the game's page shows the current one.
   """
 
   use Gettext, backend: RetroHexChat.Gettext

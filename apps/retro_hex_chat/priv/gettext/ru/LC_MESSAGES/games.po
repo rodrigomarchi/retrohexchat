@@ -453,27 +453,27 @@ msgstr "Западная дуэль с отскакивающими пулями
 msgid "Western duel — two gunslingers and a cactus. Dodge bullets you can see coming. First to 10. Best of 3 rounds."
 msgstr "Западная дуэль — два стрелка и кактус. Уклоняйтесь от пуль, которые вы видите. Сначала до 10. Лучший из 3 раундов."
 
-#: lib/retro_hex_chat/games/announcer.ex:162
+#: lib/retro_hex_chat/games/announcer.ex:186
 #, elixir-autogen, elixir-format
 msgid "%{p1} and %{p2} cleared %{game} with %{p1_score} points"
 msgstr "%{p1} и %{p2} очистили %{game} с помощью точек %{p1_score}"
 
-#: lib/retro_hex_chat/games/announcer.ex:148
+#: lib/retro_hex_chat/games/announcer.ex:172
 #, elixir-autogen, elixir-format
 msgid "%{p1} beat %{p2} %{p1_score} × %{p2_score} in %{game}"
 msgstr "%{p1} победил %{p2} %{p1_score} × %{p2_score} в %{game}"
 
-#: lib/retro_hex_chat/games/announcer.ex:145
+#: lib/retro_hex_chat/games/announcer.ex:169
 #, elixir-autogen, elixir-format
 msgid "%{p1} set a personal best of %{p1_score} in %{game}"
 msgstr "%{p1} установил личный рекорд %{p1_score} в %{game}"
 
-#: lib/retro_hex_chat/games/announcer.ex:137
+#: lib/retro_hex_chat/games/announcer.ex:161
 #, elixir-autogen, elixir-format
 msgid "%{p1} vs %{p2} in %{game} ended early, %{p1_score} × %{p2_score}"
 msgstr "%{p1} против %{p2} в %{game} закончился досрочно, %{p1_score} × %{p2_score}"
 
-#: lib/retro_hex_chat/games/announcer.ex:151
+#: lib/retro_hex_chat/games/announcer.ex:175
 #, elixir-autogen, elixir-format
 msgid "%{p2} beat %{p1} %{p2_score} × %{p1_score} in %{game}"
 msgstr "%{p2} победил %{p1} %{p2_score} × %{p1_score} в %{game}"
@@ -482,11 +482,6 @@ msgstr "%{p2} победил %{p1} %{p2_score} × %{p1_score} в %{game}"
 #, elixir-autogen, elixir-format
 msgid "Best score: %{nickname} (%{best})."
 msgstr "Лучший результат: %{nickname} (%{best})."
-
-#: lib/retro_hex_chat/games/channels.ex:117
-#, elixir-autogen, elixir-format
-msgid "Every Retro Games match as it finishes. Each game has its own channel too. This channel is archived publicly."
-msgstr "Каждый матч Retro Games заканчивается. Каждая игра имеет свой канал. Этот канал архивируется публично."
 
 #: lib/retro_hex_chat/games/digest.ex:68
 #, elixir-autogen, elixir-format
@@ -504,35 +499,30 @@ msgstr[0] "Вчера в %{game}: %{count} матч."
 msgstr[1] "Вчера в %{game}: %{count} матча."
 msgstr[2] "Вчера в %{game}: %{count} матчей."
 
-#: lib/retro_hex_chat/games/announcer.ex:181
+#: lib/retro_hex_chat/games/announcer.ex:205
 #, elixir-autogen, elixir-format
 msgid "the computer"
 msgstr "компьютер"
 
-#: lib/retro_hex_chat/games/announcer.ex:179
+#: lib/retro_hex_chat/games/announcer.ex:203
 #, elixir-autogen, elixir-format
 msgid "the computer (easy)"
 msgstr "компьютер (легко)"
 
-#: lib/retro_hex_chat/games/announcer.ex:180
+#: lib/retro_hex_chat/games/announcer.ex:204
 #, elixir-autogen, elixir-format
 msgid "the computer (hard)"
 msgstr "компьютер (жесткий)"
 
-#: lib/retro_hex_chat/games/announcer.ex:166
+#: lib/retro_hex_chat/games/announcer.ex:190
 #, elixir-autogen, elixir-format
 msgid "%{p1} and %{p2} finished %{game} with %{p1_score} and %{p2_score} points"
 msgstr "%{p1} и %{p2} закончили %{game} с точками %{p1_score} и %{p2_score}"
 
-#: lib/retro_hex_chat/games/announcer.ex:155
+#: lib/retro_hex_chat/games/announcer.ex:179
 #, elixir-autogen, elixir-format
 msgid "It is a draw between %{p1} and %{p2}, %{p1_score} × %{p2_score}, in %{game}"
 msgstr "Это ничья между %{p1} и %{p2}, %{p1_score} × %{p2_score}, в %{game}"
-
-#: lib/retro_hex_chat/games/channels.ex:126
-#, elixir-autogen, elixir-format
-msgid "Results and rankings of %{game}, and people to play with. Everything said here is published in a public archive."
-msgstr "Результаты и рейтинги %{game}, и люди, с которыми можно играть. Все сказанное здесь опубликовано в публичном архиве."
 
 #: lib/retro_hex_chat/games/challenges.ex:89
 #, elixir-autogen, elixir-format
@@ -548,3 +538,9 @@ msgstr "На этой неделе вызов - %{game}. Получи лучши
 #, elixir-autogen, elixir-format
 msgid "This week's challenge is %{game}. Win the most matches against other players."
 msgstr "На этой неделе вызов - %{game}. Выиграть больше всего матчей против других игроков."
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2136
+#, elixir-autogen, elixir-format
+msgctxt "game"
+msgid "Play"
+msgstr "Играть"

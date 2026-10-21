@@ -2816,7 +2816,7 @@ msgstr "現在のチャンネルまたはPMでリアルタイムのハイライ�
 #: lib/retro_hex_chat_web/controllers/help_content/feature_key_bindings.html.heex:107
 #: lib/retro_hex_chat_web/controllers/help_content/feature_kick_notifications.html.heex:65
 #: lib/retro_hex_chat_web/controllers/help_content/feature_lag_indicator.html.heex:79
-#: lib/retro_hex_chat_web/controllers/help_content/feature_language_flags.html.heex:43
+#: lib/retro_hex_chat_web/controllers/help_content/feature_language_flags.html.heex:44
 #: lib/retro_hex_chat_web/controllers/help_content/feature_link_previews.html.heex:90
 #: lib/retro_hex_chat_web/controllers/help_content/feature_mentions.html.heex:36
 #: lib/retro_hex_chat_web/controllers/help_content/feature_message_attachments.html.heex:41
@@ -7374,5 +7374,5 @@ msgstr "ボットの言語"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_language_flags.html.heex:38
 #, elixir-autogen, elixir-format
-msgid "Bots carry a flag too, for the language they speak. An admin gives one with /bot set followed by the bot's name, language and a code such as pt_BR, or in Bot Management. A bot nobody gave a language has no flag; GameServ, in the Retro Games channels, is English."
-msgstr "ボットにも、話す言語の旗が付きます。管理者が /bot set にボット名、language、pt_BR のようなコードを付けて設定するか、ボット管理で設定します。言語のないボットには旗がありません。レトロゲームのチャンネルにいる GameServ は英語です。"
+msgid "A bot carries a flag too, for the language it speaks. An admin gives a bot its language with %{command} or in Bot Management. A bot nobody gave a language has no flag."
+msgstr "ボットは、話している言語に対してもフラグを処理します。 管理者は、%{command}またはボット管理でその言語をボットに与えます。 ボットが誰も言語にフラグがないことを与えませんでした。"

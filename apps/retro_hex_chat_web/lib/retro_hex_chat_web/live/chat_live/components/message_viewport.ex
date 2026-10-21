@@ -44,7 +44,6 @@ defmodule RetroHexChatWeb.ChatLive.Components.MessageViewport do
   alias RetroHexChat.Accounts.Avatars
   alias RetroHexChat.Accounts.NickLocales
   alias RetroHexChat.Channels.ScheduledEvents
-  alias RetroHexChat.Games.Channels, as: GameChannels
   alias RetroHexChat.Games.Results
   alias RetroHexChat.Scraper
   alias RetroHexChat.ShareLinks
@@ -544,16 +543,16 @@ defmodule RetroHexChatWeb.ChatLive.Components.MessageViewport do
   end
 
   # A match's card hangs off the line that announced it, in the game's channel
-  # or in the players' conversation — one query per kind, per screenful. Only
-  # GameServ announces in a channel, and only a P2P system line in a
-  # conversation, so a screenful with neither asks nothing.
+  # or in the players' conversation — one query per kind, per screenful. The
+  # card is found by the line's id, whoever wrote it, so a card outlives the
+  # bot that announced it. In a conversation only a P2P system line carries
+  # one, so a screenful of plain private lines asks nothing.
   @spec put_result_cards([map()]) :: [map()]
   defp put_result_cards(items) do
-    announcements = Enum.filter(items, &announces_result?/1)
-
     cards = %{
-      channel: Results.cards_for_messages(:channel, ids_from(announcements, :channel)),
-      private: Results.cards_for_messages(:private, ids_from(announcements, :private))
+      channel: Results.cards_for_messages(:channel, ids_from(items, :channel)),
+      private:
+        Results.cards_for_messages(:private, ids_from(Enum.filter(items, &p2p_line?/1), :private))
     }
 
     cards = put_player_locales(cards)
@@ -591,11 +590,8 @@ defmodule RetroHexChatWeb.ChatLive.Components.MessageViewport do
     end)
   end
 
-  defp announces_result?(%{source: :channel, author: author}),
-    do: author == GameChannels.service()
-
-  defp announces_result?(%{source: :private, type: type}), do: type == :p2p_system
-  defp announces_result?(_line), do: false
+  defp p2p_line?(%{type: type}), do: type == :p2p_system
+  defp p2p_line?(_line), do: false
 
   # Whose face goes beside each nickname, one query for the whole batch. Every
   # row reaches here — a page, a prepended page and a single arriving message —

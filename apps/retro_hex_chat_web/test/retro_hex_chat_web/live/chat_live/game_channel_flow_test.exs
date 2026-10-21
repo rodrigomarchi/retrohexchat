@@ -9,18 +9,26 @@ defmodule RetroHexChatWeb.ChatLive.GameChannelFlowTest do
   @moduletag :liveview_feature
 
   import Ecto.Query, only: [from: 2]
+  import RetroHexChat.Factory
 
   alias RetroHexChat.Channels.Registry, as: ChannelRegistry
   alias RetroHexChat.Channels.Supervisor, as: ChannelSupervisor
   alias RetroHexChat.Chat.Queries, as: ChatQueries
-  alias RetroHexChat.Games.Channels
   alias RetroHexChat.Lobby
   alias RetroHexChat.Services.RegisteredNick
   alias RetroHexChat.ShareLinks
   alias RetroHexChatWeb.LiveMatchPages
 
   setup do
-    :created = Channels.ensure("#hex-pong")
+    # As `docs/provisioning/en.md` leaves it: registered, archived, announced in.
+    insert(:registered_channel,
+      name: "#hex-pong",
+      founder_nickname: "Admin",
+      public_archive: true,
+      archive_since: DateTime.utc_now()
+    )
+
+    insert_game_announcer(["#hex-pong"])
 
     on_exit(fn ->
       case ChannelRegistry.lookup("#hex-pong") do

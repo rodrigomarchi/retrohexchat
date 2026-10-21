@@ -35,7 +35,7 @@ defmodule RetroHexChat.Accounts.NicknameValidator do
 
   # The server's own services speak under these names, in channels and in
   # replies. A person holding one could put words in a service's mouth.
-  @service_names ~w(ChanServ NickServ GameServ)
+  @service_names ~w(ChanServ NickServ)
 
   @doc "The names the server's services speak under."
   @spec service_names() :: [String.t()]

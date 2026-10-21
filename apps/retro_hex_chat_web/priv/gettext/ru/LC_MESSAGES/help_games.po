@@ -4158,7 +4158,7 @@ msgstr "Игра с кем-то"
 msgid "Ready, then Start"
 msgstr "«Готово», затем «Старт»"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_game_channels.html.heex:60
+#: lib/retro_hex_chat_web/controllers/help_content/feature_game_channels.html.heex:67
 #: lib/retro_hex_chat_web/controllers/help_content/feature_game_match_full.html.heex:25
 #: lib/retro_hex_chat_web/controllers/help_content/feature_game_match_link.html.heex:33
 #: lib/retro_hex_chat_web/controllers/help_content/feature_game_scores.html.heex:48
@@ -4273,12 +4273,12 @@ msgstr "Игровые каналы"
 msgid "How a game ranks"
 msgstr "Как игра ранжирует"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_game_channels.html.heex:62
+#: lib/retro_hex_chat_web/controllers/help_content/feature_game_channels.html.heex:69
 #, elixir-autogen, elixir-format
 msgid "Scores and Rankings"
 msgstr "Оценки и рейтинги"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_game_channels.html.heex:34
+#: lib/retro_hex_chat_web/controllers/help_content/feature_game_channels.html.heex:41
 #, elixir-autogen, elixir-format
 msgid "The strip under the topic"
 msgstr "Полоса под темой"
@@ -4288,7 +4288,7 @@ msgstr "Полоса под темой"
 msgid "What does not count"
 msgstr "Что не считается"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_game_channels.html.heex:51
+#: lib/retro_hex_chat_web/controllers/help_content/feature_game_channels.html.heex:58
 #, elixir-autogen, elixir-format
 msgid "Who can"
 msgstr "Кто может"
@@ -4298,7 +4298,7 @@ msgstr "Кто может"
 msgid "A versus game ranks wins. Hex Pong, Hex Tennis and Hex Hockey are versus games, like most of the others. A score game ranks the best score you took home, and tells you when you beat your own best. Hex Raid, Hex Invaders and Hex Enduro are score games. A co-op game ranks the score the two of you made together. Matches against the computer are ranked apart, with one ranking per difficulty."
 msgstr "Побеждает рейтинг против игры. Hex Pong, Hex Tennis и Hex Hockey противостоят играм, как и большинство других. Счетная игра оценивает лучший счет, который вы взяли домой, и говорит вам, когда вы побеждаете свой собственный лучший. Hex Raid, Hex Invaders и Hex Enduro являются играми с забитыми мячами. Кооперативная игра оценивает счет, который вы сделали вместе. Матчи против компьютера ранжируются отдельно, с одним ранжированием на сложность."
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_game_channels.html.heex:53
+#: lib/retro_hex_chat_web/controllers/help_content/feature_game_channels.html.heex:60
 #, elixir-autogen, elixir-format
 msgid "Anybody can read a game channel and its page without an account. Playing, offering a seat, challenging somebody and talking need a registered nickname that you have identified. A visitor who presses any of them sees the sign-in window."
 msgstr "Любой желающий может прочитать игровой канал и его страницу без учетной записи. Играть, предлагать место, бросать вызов кому-то и говорить нужно зарегистрированное прозвище, которое вы определили. Посетитель, который нажимает на любого из них, видит окно входа."
@@ -4368,7 +4368,7 @@ msgstr "Каждый может посмотреть матч, место кот
 msgid "Nobody can watch a private match."
 msgstr "Никто не может смотреть частный матч."
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_game_channels.html.heex:65
+#: lib/retro_hex_chat_web/controllers/help_content/feature_game_channels.html.heex:72
 #: lib/retro_hex_chat_web/controllers/help_content/feature_game_watch.html.heex:5
 #, elixir-autogen, elixir-format
 msgid "Watching a Match"
@@ -4454,22 +4454,17 @@ msgstr "Во время игры"
 msgid "You can also find a live match in the channel of its game."
 msgstr "Также можно найти живой матч в канале его игры."
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_game_channels.html.heex:27
+#: lib/retro_hex_chat_web/controllers/help_content/feature_game_channels.html.heex:34
 #, elixir-autogen, elixir-format
 msgid "Each player is announced at most once every five minutes in each game. Every match still counts in the rankings."
 msgstr "Каждый игрок объявляется не реже одного раза в пять минут в каждой игре. Каждый матч по-прежнему засчитывается в рейтинге."
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_game_channels.html.heex:12
-#, elixir-autogen, elixir-format
-msgid "The service %{service} keeps the game channels and sits in each one. It announces a match between two people played in the open, a personal best, and a win against the computer on hard, with a card that shows the score. Once a day it says how many matches the game had and who did best."
-msgstr "Сервис %{service} сохраняет игровые каналы и сидит в каждом из них. Он объявляет о матче между двумя людьми, сыгранными в открытую, личным лучшим и победой над компьютером с помощью карты, которая показывает счет. Один раз в день он говорит, сколько матчей было в игре и кто сделал лучше."
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_game_channels.html.heex:20
+#: lib/retro_hex_chat_web/controllers/help_content/feature_game_channels.html.heex:27
 #, elixir-autogen, elixir-format
 msgid "A private match is not announced."
 msgstr "Частный матч не объявлен."
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_game_channels.html.heex:21
+#: lib/retro_hex_chat_web/controllers/help_content/feature_game_channels.html.heex:28
 #, elixir-autogen, elixir-format
 msgid "The result of a private match stays in the conversation of its two players."
 msgstr "Результат частного матча остается в разговоре двух его игроков."
@@ -4499,7 +4494,7 @@ msgstr "Каждая игра имеет свой собственный адр�
 msgid "Find a partner takes you to the channel of the game and offers a seat there, like the command %{command}."
 msgstr "Найдите партнера, который доставит вас на канал игры и предложит место там, например, команду %{command}."
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_game_channels.html.heex:40
+#: lib/retro_hex_chat_web/controllers/help_content/feature_game_channels.html.heex:47
 #, elixir-autogen, elixir-format
 msgid "Play opens the game in a new tab. Find a partner puts a card with one open seat in the channel, like the command %{command}. The first person who joins plays with you."
 msgstr "Игра открывает игру в новой вкладке. Найти партнера ставит карточка с одним открытым сиденьем в канале, как у команды %{command}. Первый, кто присоединяется, играет с вами."
@@ -4529,7 +4524,7 @@ msgstr "Последняя вкладка — канал игры, с её по�
 msgid "To play with somebody you know, type their nickname and click Invite. It works like the command %{command}."
 msgstr "Чтобы играть с кем-то, кого вы знаете, введите его прозвище и нажмите «Пригласить». Работает как команда %{command}."
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_game_channels.html.heex:45
+#: lib/retro_hex_chat_web/controllers/help_content/feature_game_channels.html.heex:52
 #, elixir-autogen, elixir-format
 msgid "When somebody is playing the game in the open, a last link opens the match to watch."
 msgstr "Когда кто-то играет в открытую игру, последняя ссылка открывает матч для просмотра."
@@ -4554,7 +4549,7 @@ msgstr "Вкладка «Вы» показывает ваш рейтинг и в
 msgid "The icon of a game opens the page of the game, on top of the chat."
 msgstr "Иконка игры открывает страницу игры, поверх чата."
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_game_channels.html.heex:36
+#: lib/retro_hex_chat_web/controllers/help_content/feature_game_channels.html.heex:43
 #, elixir-autogen, elixir-format
 msgid "The name of the game opens the page of the game, on top of the chat."
 msgstr "Название игры открывает страницу игры, поверх чата."
@@ -4568,3 +4563,18 @@ msgstr "На вкладке Рейтинга перечислены лучшие
 #, elixir-autogen, elixir-format
 msgid "In the Live tab, you see who is playing and which matches you can watch."
 msgstr "На вкладке Live вы видите, кто играет, и какие матчи вы можете посмотреть."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_game_channels.html.heex:12
+#, elixir-autogen, elixir-format
+msgid "A bot in each game channel announces a match between two people played in the open, a personal best, and a win against the computer on hard, with a card that shows the score. Once a day it says how many matches the game had and who did best, and every Monday it opens the weekly challenge."
+msgstr "Бот в каждом игровом канале объявляет о матче между двумя людьми, сыгранными в открытую, личным лучшим и победой над компьютером на жесткой, с картой, которая показывает счет. Один раз в день он говорит, сколько матчей было в игре и кто сделал лучше всего, и каждый понедельник он открывает еженедельный вызов."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_game_channels.html.heex:10
+#, elixir-autogen, elixir-format
+msgid "The bot that announces"
+msgstr "Бот, который объявляет"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_game_channels.html.heex:18
+#, elixir-autogen, elixir-format
+msgid "An admin turns the announcements of a bot on with %{on}, and off with %{off}. A channel with no such bot announces nothing. The game channels are ordinary channels: their founder changes the topic, the modes and the archive."
+msgstr "Администратор включает объявления бота с %{on} и выключает с %{off}. Канал без такого бота ничего не объявляет. Каналы игры являются обычными каналами: их основатель меняет тему, режимы и архив."

@@ -1,12 +1,15 @@
 defmodule RetroHexChatWeb.E2EController do
   use RetroHexChatWeb, :controller
 
+  alias RetroHexChat.Bots.Lifecycle, as: BotLifecycle
+  alias RetroHexChat.Bots.Queries, as: BotQueries
+  alias RetroHexChat.Bots.Server, as: BotServer
   alias RetroHexChat.Channels.Server, as: ChannelServer
   alias RetroHexChat.Channels.Supervisor, as: ChannelSupervisor
+  alias RetroHexChat.Chat.Archive
   alias RetroHexChat.Chat.Content
   alias RetroHexChat.Chat.ContextualTips
   alias RetroHexChat.Games.Catalog, as: GameCatalog
-  alias RetroHexChat.Games.Channels, as: GameChannels
   alias RetroHexChat.Games.Results
   alias RetroHexChat.Services.Queries, as: ServiceQueries
 
@@ -16,6 +19,9 @@ defmodule RetroHexChatWeb.E2EController do
     "action" => :action,
     "system" => :system
   }
+
+  # The bot `docs/provisioning/en.md` puts in the Retro Games rooms.
+  @announcer "Scoreboard"
 
   @channel_pattern ~r/^#[A-Za-z0-9_-]{1,48}$/
   @nickname_pattern ~r/^[A-Za-z][A-Za-z0-9_\-\[\]\\`^{}|]{0,15}$/
@@ -62,7 +68,10 @@ defmodule RetroHexChatWeb.E2EController do
   Writes a finished Retro Games match through the real ledger, as if it had
   been played — so a spec sees its card in the game's channel and in the two
   players' conversation without driving a whole match on a canvas. The game's
-  channel is made first, as the boot job would have made it.
+  room and the feed are set up first with what `docs/provisioning/en.md` gives
+  them that the spec relies on — registered by the host, archived, with the
+  Scoreboard bot announcing in them — so the spec does not depend on a pasted
+  script.
   """
   @spec record_game_result(Plug.Conn.t(), map()) :: Plug.Conn.t()
   def record_game_result(conn, params) do
@@ -82,8 +91,8 @@ defmodule RetroHexChatWeb.E2EController do
 
     with {:ok, host} <- registered_player(p1),
          {:ok, guest} <- optional_player(Map.get(params, "p2")),
-         _created = GameChannels.ensure(GameCatalog.channel_name(game_id)),
-         _created = GameChannels.ensure(GameChannels.feed()),
+         :ok <- provision_game_room(GameCatalog.channel_name(game_id), host.nickname),
+         :ok <- provision_game_room(GameCatalog.feed_channel(), host.nickname),
          {:ok, row} <-
            Results.record(%{
              game_id: game_id,
@@ -103,6 +112,38 @@ defmodule RetroHexChatWeb.E2EController do
   end
 
   defp do_record_game_result(conn, _params), do: error(conn, :bad_request, "invalid params")
+
+  defp provision_game_room(channel, founder) do
+    if is_nil(ServiceQueries.find_registered_channel(channel)) do
+      {:ok, _row} = ServiceQueries.insert_registered_channel(channel, founder)
+      {:ok, _access} = ServiceQueries.add_access(channel, founder, "founder", founder)
+      {:ok, _published} = Archive.publish(channel)
+      _ = ChannelServer.mark_registered(channel)
+    end
+
+    announcer = BotQueries.get_bot_by_name(@announcer) || create_announcer(founder)
+
+    # What `/bot join` does: the row, then the running bot into the room.
+    with {:ok, _config} <- BotQueries.add_channel_config(announcer.id, channel),
+         {:ok, _pid} <- BotLifecycle.ensure_started(announcer) do
+      _ = BotServer.join_channel(announcer.nickname, channel)
+    end
+
+    :ok
+  end
+
+  defp create_announcer(founder) do
+    {:ok, bot} =
+      BotQueries.create_bot(%{
+        name: @announcer,
+        nickname: @announcer,
+        created_by: founder,
+        locale: "en",
+        capabilities: %{"game" => %{"enabled" => true}}
+      })
+
+    bot
+  end
 
   defp optional_player(nil), do: {:ok, nil}
   defp optional_player(nickname), do: registered_player(nickname)

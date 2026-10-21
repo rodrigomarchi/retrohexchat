@@ -214,6 +214,10 @@ class ForeignFormsTest(unittest.TestCase):
         self.assertTrue(foreign_forms("A porta leva-te de volta.", "pt_BR"))
         self.assertEqual(foreign_forms("O escritório vem mobiliado.", "pt_BR"), [])
 
+    def test_the_accented_stopping_verb_is_foreign_to_pt_br(self):
+        self.assertEqual(foreign_forms("Um administrador pára o bot.", "pt_BR"), ["pára"])
+        self.assertEqual(foreign_forms("Um administrador para o bot.", "pt_BR"), [])
+
     def test_italian_is_written_with_its_accent(self):
         self.assertEqual(italian_accents("L'ufficio e' pieno."), "L'ufficio è pieno.")
         self.assertEqual(italian_accents("E' chiuso, e' vero"), "È chiuso, è vero")

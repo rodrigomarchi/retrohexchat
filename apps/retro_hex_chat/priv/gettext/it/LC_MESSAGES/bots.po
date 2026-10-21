@@ -107,11 +107,6 @@ msgid "A trivia round is already in progress! Use 'trivia stop' to end it."
 msgstr ""
 "Un giro di trivia è già in corso! Utilizzare 'trivia stop' per terminarlo."
 
-#: lib/retro_hex_chat/bots/capabilities/game.ex:13
-#, elixir-autogen, elixir-format
-msgid "AI for P2P games — chess, tic-tac-toe, trivia (Coming soon)"
-msgstr "AI per giochi P2P — scacchi, tic-tac-toe, trivia (Coming Soon)"
-
 #: lib/retro_hex_chat/bots/capabilities/scheduler.ex:176
 #, elixir-autogen, elixir-format
 msgid "Active schedules:"
@@ -1806,3 +1801,8 @@ msgstr "Leggi l'articolo completo"
 #, elixir-autogen, elixir-format
 msgid "%{field} must be public, channel_notice, private_notice, or silent"
 msgstr "%{field} deve essere public, channel_notice, private_notice o silent"
+
+#: lib/retro_hex_chat/bots/capabilities/game.ex:23
+#, elixir-autogen, elixir-format
+msgid "Announces Retro Games matches, rankings and the weekly challenge"
+msgstr "Annunci Retro Giochi partite, classifiche e la sfida settimanale"

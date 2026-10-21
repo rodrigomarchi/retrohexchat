@@ -277,4 +277,26 @@ defmodule RetroHexChat.Bots.QueriesTest do
       assert 1 == Queries.count_greetings_before(future)
     end
   end
+
+  describe "announcers_in/1" do
+    defp bot_in(name, channel, attrs) do
+      {:ok, bot} =
+        Queries.create_bot(Map.merge(%{name: name, nickname: name, created_by: "admin"}, attrs))
+
+      {:ok, _config} = Queries.add_channel_config(bot.id, channel)
+      bot
+    end
+
+    test "names the enabled bots of a room that carry the game capability" do
+      bot_in("Score", "#hex-pong", %{capabilities: %{"game" => %{"enabled" => true}}})
+      bot_in("Bare", "#hex-pong", %{capabilities: %{"game" => %{}}})
+      bot_in("Off", "#hex-pong", %{capabilities: %{"game" => %{"enabled" => false}}})
+      bot_in("Plain", "#hex-pong", %{capabilities: %{"greeter" => %{}}})
+      bot_in("Asleep", "#hex-pong", %{enabled: false, capabilities: %{"game" => %{}}})
+      bot_in("Elsewhere", "#lobby", %{capabilities: %{"game" => %{}}})
+
+      assert Queries.announcers_in("#HEX-pong") == ["Score", "Bare"]
+      assert Queries.announcers_in("#hex-raid") == []
+    end
+  end
 end

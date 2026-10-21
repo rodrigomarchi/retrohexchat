@@ -2779,7 +2779,7 @@ msgstr "在当前频道或PM中以实时突出显示搜索消息."
 #: lib/retro_hex_chat_web/controllers/help_content/feature_key_bindings.html.heex:107
 #: lib/retro_hex_chat_web/controllers/help_content/feature_kick_notifications.html.heex:65
 #: lib/retro_hex_chat_web/controllers/help_content/feature_lag_indicator.html.heex:79
-#: lib/retro_hex_chat_web/controllers/help_content/feature_language_flags.html.heex:43
+#: lib/retro_hex_chat_web/controllers/help_content/feature_language_flags.html.heex:44
 #: lib/retro_hex_chat_web/controllers/help_content/feature_link_previews.html.heex:90
 #: lib/retro_hex_chat_web/controllers/help_content/feature_mentions.html.heex:36
 #: lib/retro_hex_chat_web/controllers/help_content/feature_message_attachments.html.heex:41
@@ -7199,5 +7199,5 @@ msgstr "机器人的语言"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_language_flags.html.heex:38
 #, elixir-autogen, elixir-format
-msgid "Bots carry a flag too, for the language they speak. An admin gives one with /bot set followed by the bot's name, language and a code such as pt_BR, or in Bot Management. A bot nobody gave a language has no flag; GameServ, in the Retro Games channels, is English."
-msgstr "机器人也有旗帜，代表它使用的语言。管理员可以用 /bot set 加上机器人名称、language 和 pt_BR 这样的代码来设置，或在机器人管理中设置。没有设置语言的机器人没有旗帜；复古游戏频道中的 GameServ 使用英语。"
+msgid "A bot carries a flag too, for the language it speaks. An admin gives a bot its language with %{command} or in Bot Management. A bot nobody gave a language has no flag."
+msgstr "机器人也带着旗子,因为它说话的语言。 管理员给一个bot语言与%{command}或Bot Management. 没有人给的机器人没有旗帜"

@@ -605,6 +605,10 @@ defmodule RetroHexChat.Games.Catalog do
   @spec channel_name(String.t()) :: String.t()
   def channel_name(game_id), do: "#" <> slug(base_id(game_id))
 
+  @doc "The channel every game's results are also announced in."
+  @spec feed_channel() :: String.t()
+  def feed_channel, do: "#retro-games"
+
   @doc "Every game channel, one per base game, in catalogue order."
   @spec channel_names() :: [String.t()]
   def channel_names,

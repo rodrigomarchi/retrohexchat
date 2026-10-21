@@ -2,6 +2,7 @@
  * @section M - Admin, Server Operations, Bots
  * @flow M23 [done] The Bot Management roster describes each bot, and selecting one drills into it
  * @flow M38 [done] An admin gives a bot a language with /bot set or Bot Management, and its flag is drawn beside its nickname in the user list, the roster and its detail
+ * @flow M39 [done] /bot set game_announce on gives a bot the Game capability, which Bot Management shows as a working capability that can be switched off
  *
  * These @flow lines are the source of truth for e2e/TEST_CATALOG.md.
  * Edit them here, then run `make e2e.catalog` to regenerate the index.
@@ -192,6 +193,42 @@ test.describe.serial("Bot Management window", () => {
         flag(admin.chat.nicklistItem(botName), "pt_BR"),
       ).toBeVisible();
       await shot(admin.chat.nicklist, "user-list-bot-flag-changed");
+    } finally {
+      await admin.chat.sendMessage(`/bot destroy ${botName}`).catch(() => {});
+      await admin.ctx.close();
+    }
+  });
+
+  test("game_announce gives a bot the Game capability (M39)", async ({
+    browser,
+  }) => {
+    const admin = await signInAdmin(browser);
+    const botName = unique("score");
+    const page = admin.page;
+
+    try {
+      await admin.chat.sendMessage(`/bot create ${botName} Announces matches`);
+      await admin.chat.expectMessageVisible(
+        `[BotService] Bot '${botName}' created successfully.`,
+      );
+      await admin.chat.sendMessage(`/bot set ${botName} game_announce on`);
+
+      await admin.chat.openBotManagementFromToolsMenu();
+      await admin.chat.botItem(botName).click();
+      await admin.chat.botManagementDialog
+        .getByRole("button", { name: "Capabilities" })
+        .click();
+
+      // A working capability: its own description, and no "not implemented".
+      const game = page.getByTestId("bot-capability-game");
+      await expect(game).toContainText("Announces Retro Games matches");
+      await expect(game).toContainText("Enabled");
+      await expect(game).not.toContainText("Declared but not implemented");
+      await shot(game, "bot-capability-game");
+
+      await page.getByTestId("toggle-cap-game").click();
+      await expect(game).toContainText("Disabled");
+      await shot(game, "bot-capability-game-off");
     } finally {
       await admin.chat.sendMessage(`/bot destroy ${botName}`).catch(() => {});
       await admin.ctx.close();

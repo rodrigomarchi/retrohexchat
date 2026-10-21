@@ -12,7 +12,7 @@ defmodule RetroHexChatWeb.ChatLive.ConversationsReadModel do
 
   alias RetroHexChat.Chat.AutoJoinList
   alias RetroHexChat.Commands.Autocomplete
-  alias RetroHexChat.Games.Channels, as: GameChannels
+  alias RetroHexChat.Games.Catalog, as: GameCatalog
 
   @max_popular_channels 10
 
@@ -182,7 +182,7 @@ defmodule RetroHexChatWeb.ChatLive.ConversationsReadModel do
   end
 
   # The room a subject's section opens with, whoever is in it.
-  defp lead("games"), do: GameChannels.feed()
+  defp lead("games"), do: GameCatalog.feed_channel()
   defp lead(_category), do: nil
 
   defp featured_rank(channel, spec, locale) do

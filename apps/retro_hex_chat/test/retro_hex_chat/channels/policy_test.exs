@@ -88,8 +88,8 @@ defmodule RetroHexChat.Channels.PolicyTest do
     # crash the channel's process mid-send.
     test "lets a bot speak in a moderated channel" do
       {:ok, modes} = Modes.apply_changes(Modes.new(), "+m", [])
-      membership = Membership.new() |> Membership.add("GameServ", :bot)
-      assert :ok = Policy.can_speak?(modes, membership, "GameServ")
+      membership = Membership.new() |> Membership.add("Scoreboard", :bot)
+      assert :ok = Policy.can_speak?(modes, membership, "Scoreboard")
     end
   end
 

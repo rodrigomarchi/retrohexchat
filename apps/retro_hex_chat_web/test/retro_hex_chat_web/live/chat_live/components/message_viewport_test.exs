@@ -2,8 +2,11 @@ defmodule RetroHexChatWeb.ChatLive.Components.MessageViewportTest do
   use RetroHexChatWeb.ConnCase, async: true
 
   import Phoenix.LiveViewTest
+  import RetroHexChat.Factory, only: [insert: 2]
 
   alias RetroHexChat.Accounts.NickLocales
+  alias RetroHexChat.Games.Results
+  alias RetroHexChat.Games.Schema.GameResult
   alias RetroHexChat.Repo
   alias RetroHexChat.Scraper.Store
   alias RetroHexChat.Services.{NickServ, RegisteredNick}
@@ -56,6 +59,51 @@ defmodule RetroHexChatWeb.ChatLive.Components.MessageViewportTest do
     assert html =~ ~s(data-author="alice")
     assert html =~ "hello world"
     assert html =~ "you joined"
+  end
+
+  # The card is found by the line's id: a line whose author is not a bot
+  # running now — one that was disabled, renamed, or a service that no longer
+  # exists — keeps its match.
+  test "a channel line that announced a match carries its card, whoever wrote it" do
+    ana = insert(:registered_nick, nickname: "ana")
+
+    {:ok, result} =
+      Results.record(%{
+        game_id: "hex_pong",
+        origin: "ai",
+        difficulty: "hard",
+        p1: %{id: ana.id, nickname: "ana"},
+        payload: %{"score" => %{"p1" => 11, "p2" => 3}, "winner" => 1},
+        started_at: DateTime.add(DateTime.utc_now(), -60, :second)
+      })
+
+    line =
+      insert(:message,
+        channel_name: "#hex-pong",
+        author_nickname: "GameServ",
+        content: "ana beat the computer 11 × 3 in Hex Pong"
+      )
+
+    Repo.update_all(GameResult, set: [channel_message_id: line.id])
+
+    html =
+      render_component(MessageViewport,
+        id: MessageViewport.id(),
+        action:
+          {:reset,
+           [
+             %{
+               id: line.id,
+               source: :channel,
+               author: "GameServ",
+               content: line.content,
+               type: :message,
+               timestamp: ~U[2026-10-21 12:00:00Z]
+             }
+           ]}
+      )
+
+    assert html =~ ~s(data-testid="game-result-card-#{result.id}")
   end
 
   test "shows the channel-load spinner only when loading_channel is set" do

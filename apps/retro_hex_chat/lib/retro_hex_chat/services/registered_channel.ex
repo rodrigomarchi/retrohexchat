@@ -28,9 +28,8 @@ defmodule RetroHexChat.Services.RegisteredChannel do
     field :public_archive, :boolean, default: false
     field :archive_since, :utc_datetime_usec
 
-    # Kept by the server rather than by a founder — a Retro Game's own channel.
-    # Nobody registered it, so it never expires for want of activity and
-    # nobody can drop it.
+    # Exempt from the expiry that clears a founder's quiet channel. No path in
+    # the application sets it: `changeset/2` never casts it.
     field :system, :boolean, default: false
 
     # The language the channel is spoken in (`"pt_BR"`), drawn as a flag
@@ -66,18 +65,6 @@ defmodule RetroHexChat.Services.RegisteredChannel do
     |> validate_inclusion(:category, Categories.codes())
     |> unique_constraint(:name, name: :idx_registered_channels_name)
     |> put_registered_at()
-  end
-
-  @doc """
-  A channel the server keeps for itself: founded by a service, published, and
-  exempt from expiry. Only the server writes one, which is why `changeset/2`
-  never casts these fields.
-  """
-  @spec system_changeset(t() | Ecto.Changeset.t(), map()) :: Ecto.Changeset.t()
-  def system_changeset(channel, attrs) do
-    channel
-    |> changeset(attrs)
-    |> change(system: true)
   end
 
   defp put_registered_at(%Ecto.Changeset{valid?: true, data: %{registered_at: nil}} = changeset) do

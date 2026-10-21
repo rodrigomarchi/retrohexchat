@@ -29,7 +29,7 @@ defmodule RetroHexChat.Commands.Handlers.NickTest do
     end
 
     test "refuses a service's name and a visitor's, in any case" do
-      assert {:error, "That nickname is reserved"} = Nick.execute(["gameserv"], @base_context)
+      assert {:error, "That nickname is reserved"} = Nick.execute(["chanserv"], @base_context)
       assert {:error, "That nickname is reserved"} = Nick.execute(["Guest1234"], @base_context)
     end
 

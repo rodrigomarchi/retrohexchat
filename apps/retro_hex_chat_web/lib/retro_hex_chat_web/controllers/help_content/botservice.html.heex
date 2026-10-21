@@ -73,11 +73,18 @@
       "to add a feed"
     )}
   </li>
+  <li>
+    <strong>{dgettext("help_bots", "Game")}</strong> {dgettext(
+      "help_bots",
+      "— announces the public Retro Games matches in the bot's channels, the daily digest and the weekly challenge. Turn it on with %{command}.",
+      command: "/bot set <bot> game_announce on"
+    )}
+  </li>
 </ul>
 <p>
   {dgettext(
     "help_bots",
-    "Additional capabilities (LLM, Script, Game) are planned for future releases."
+    "Additional capabilities (LLM, Script) are planned for future releases."
   )}
 </p>
 

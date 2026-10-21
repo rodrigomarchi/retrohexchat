@@ -3025,7 +3025,7 @@ msgstr ""
 #: lib/retro_hex_chat_web/controllers/help_content/feature_key_bindings.html.heex:107
 #: lib/retro_hex_chat_web/controllers/help_content/feature_kick_notifications.html.heex:65
 #: lib/retro_hex_chat_web/controllers/help_content/feature_lag_indicator.html.heex:79
-#: lib/retro_hex_chat_web/controllers/help_content/feature_language_flags.html.heex:43
+#: lib/retro_hex_chat_web/controllers/help_content/feature_language_flags.html.heex:44
 #: lib/retro_hex_chat_web/controllers/help_content/feature_link_previews.html.heex:90
 #: lib/retro_hex_chat_web/controllers/help_content/feature_mentions.html.heex:36
 #: lib/retro_hex_chat_web/controllers/help_content/feature_message_attachments.html.heex:41
@@ -8030,5 +8030,5 @@ msgstr "El idioma de un bot"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_language_flags.html.heex:38
 #, elixir-autogen, elixir-format
-msgid "Bots carry a flag too, for the language they speak. An admin gives one with /bot set followed by the bot's name, language and a code such as pt_BR, or in Bot Management. A bot nobody gave a language has no flag; GameServ, in the Retro Games channels, is English."
-msgstr "Los bots también tienen bandera, la del idioma que hablan. Un admin la fija con /bot set seguido del nombre del bot, language y un código como pt_BR, o en Bot Management. Un bot sin idioma no tiene bandera; GameServ, en los canales de los Juegos retro, es inglés."
+msgid "A bot carries a flag too, for the language it speaks. An admin gives a bot its language with %{command} or in Bot Management. A bot nobody gave a language has no flag."
+msgstr "Un bot también lleva una bandera, para el lenguaje que habla. Un administrador da un bot su lenguaje con %{command} o en Bot Management. Un bot que nadie dio un idioma no tiene bandera."

@@ -22,6 +22,7 @@ defmodule RetroHexChat.Commands.Handlers.Bot do
     trivia_category trivia_time trivia_questions trivia_points
     sched_max sched_min_interval
     rss_interval rss_max_feeds rss_max_items
+    game_announce
   )
 
   @delivery_modes ~w(public channel_notice private_notice silent)
@@ -667,6 +668,16 @@ defmodule RetroHexChat.Commands.Handlers.Bot do
     update_capability_int(bot, "rss", "max_items_per_poll", value, 1, @rss_max_items_limit)
   end
 
+  # ── Game settings ──
+
+  defp apply_setting(bot, "game_announce", value) when value in ["on", "off"] do
+    update_capability_field(bot, "game", "enabled", value == "on")
+  end
+
+  defp apply_setting(_bot, "game_announce", _value) do
+    {:error, dgettext("commands", "%{setting} must be on or off.", setting: "game_announce")}
+  end
+
   defp apply_setting(_bot, key, _value) do
     {:error,
      dgettext("commands", "Unknown setting '%{key}'. Valid: %{settings}",
@@ -944,8 +955,10 @@ defmodule RetroHexChat.Commands.Handlers.Bot do
       mod_words, mod_action, mod_spam, mod_flood, mod_warn,
       trivia_category, trivia_time, trivia_questions, trivia_points,
       sched_max, sched_min_interval,
-      rss_interval, rss_max_feeds, rss_max_items
+      rss_interval, rss_max_feeds, rss_max_items,
+      game_announce
     language takes a code such as pt_BR (none removes it): the flag beside the bot's name.
+    game_announce on|off: the bot says the Retro Games matches played in its channels.
     Bot text accepts IRC formatting escapes: \\c04 red, \\b bold, \\i italic,
       \\u underline, \\s strike, \\v reverse, \\o reset.
     """

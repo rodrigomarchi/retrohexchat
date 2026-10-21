@@ -15,8 +15,7 @@ defmodule RetroHexChat.Accounts.NickLocales do
     * the nickname's own row, for a registered person who is not here — the
       language they last used, so a message read after they left still has
       its flag;
-    * a bot's row, where an admin said what language it speaks, and the games
-      service, which speaks English in the channels it keeps.
+    * a bot's row, where an admin said what language it speaks.
 
   Nobody found in any of them is absent from the answer, and the reader draws
   nothing for them. Locales are kept as the codes the web layer uses
@@ -29,7 +28,6 @@ defmodule RetroHexChat.Accounts.NickLocales do
   alias RetroHexChat.Accounts.GuestNames
   alias RetroHexChat.Accounts.NicknameValidator
   alias RetroHexChat.Bots.Queries, as: BotQueries
-  alias RetroHexChat.Games.Channels, as: GameChannels
   alias RetroHexChat.Nickname
   alias RetroHexChat.Presence.Tracker
   alias RetroHexChat.Repo
@@ -144,16 +142,6 @@ defmodule RetroHexChat.Accounts.NickLocales do
     nicknames
     |> BotQueries.locales_by_nickname()
     |> Map.new(fn {nickname, locale} -> {Map.fetch!(by_key, Nickname.key(nickname)), locale} end)
-    |> Map.merge(service_locales(nicknames))
-  end
-
-  defp service_locales(nicknames) do
-    service = GameChannels.service()
-
-    for nick <- nicknames,
-        Nickname.equal?(nick, service),
-        into: %{},
-        do: {nick, GameChannels.locale()}
   end
 
   defp live_locale(nickname) do

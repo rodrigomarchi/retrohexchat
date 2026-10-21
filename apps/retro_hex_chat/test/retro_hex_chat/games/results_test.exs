@@ -7,7 +7,7 @@ defmodule RetroHexChat.Games.ResultsTest do
 
   alias RetroHexChat.Channels.Registry, as: ChannelRegistry
   alias RetroHexChat.Channels.Supervisor, as: ChannelSupervisor
-  alias RetroHexChat.Games.Channels, as: GameChannels
+  alias RetroHexChat.Games.Catalog
   alias RetroHexChat.Games.Results
   alias RetroHexChat.Games.Schema.GameResult
   alias RetroHexChat.Topics
@@ -16,7 +16,7 @@ defmodule RetroHexChat.Games.ResultsTest do
 
   setup do
     on_exit(fn ->
-      for name <- GameChannels.names(),
+      for name <- [Catalog.feed_channel() | Catalog.channel_names()],
           {:ok, pid} <- [ChannelRegistry.lookup(name)],
           do: ChannelSupervisor.stop_child(pid)
     end)

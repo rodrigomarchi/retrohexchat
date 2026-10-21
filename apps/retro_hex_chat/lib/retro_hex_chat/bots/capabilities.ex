@@ -27,10 +27,10 @@ defmodule RetroHexChat.Bots.Capabilities do
     dice: Dice
   }
 
-  # `game`, `llm` and `script` are declared but unwritten: `handle_message`
-  # returns `:ignore` and `commands` returns `[]`. They resolve like any other
+  # `llm` and `script` are declared but unwritten: `handle_message` returns
+  # `:ignore` and `commands` returns `[]`. They resolve like any other
   # capability, and the UI says so rather than presenting them as working.
-  @stubs [:game, :llm, :script]
+  @stubs [:llm, :script]
 
   @spec modules() :: %{atom() => module()}
   def modules, do: @modules

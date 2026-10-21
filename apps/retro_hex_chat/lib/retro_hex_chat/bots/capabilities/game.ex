@@ -1,6 +1,16 @@
 defmodule RetroHexChat.Bots.Capabilities.Game do
   use Gettext, backend: RetroHexChat.Gettext
-  @moduledoc "P2P game AI (Coming soon)"
+
+  @moduledoc """
+  Makes a bot the voice of the Retro Games in its rooms.
+
+  Nothing in a channel triggers it: a finished match does. `Games.Announcer`
+  asks which bot in a room carries this capability and says the match — the
+  weekly challenge and the daily digest too — under that bot's name. A room
+  with no such bot hears nothing about its games, which is how an operator
+  turns the announcements off: `/bot set <bot> game_announce off`, or
+  `/bot part`.
+  """
   @behaviour RetroHexChat.Bots.Capability
 
   @impl true
@@ -10,7 +20,7 @@ defmodule RetroHexChat.Bots.Capabilities.Game do
   @impl true
   @spec description() :: String.t()
   def description,
-    do: dgettext("bots", "AI for P2P games — chess, tic-tac-toe, trivia (Coming soon)")
+    do: dgettext("bots", "Announces Retro Games matches, rankings and the weekly challenge")
 
   @impl true
   @spec handle_message(String.t(), String.t(), RetroHexChat.Bots.Capability.bot_context()) ::
@@ -24,9 +34,7 @@ defmodule RetroHexChat.Bots.Capabilities.Game do
 
   @impl true
   @spec default_config() :: map()
-  def default_config do
-    %{"game_type" => nil, "difficulty" => "medium", "accept_challenges" => true}
-  end
+  def default_config, do: %{"enabled" => true}
 
   @impl true
   @spec validate_config(map()) :: :ok | {:error, String.t()}

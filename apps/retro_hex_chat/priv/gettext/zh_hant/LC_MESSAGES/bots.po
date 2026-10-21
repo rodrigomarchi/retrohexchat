@@ -106,11 +106,6 @@ msgstr "單字母"
 msgid "A trivia round is already in progress! Use 'trivia stop' to end it."
 msgstr "三角回合已經開始了! 用\"特里維亞停止\"來結束它。"
 
-#: lib/retro_hex_chat/bots/capabilities/game.ex:13
-#, elixir-autogen, elixir-format
-msgid "AI for P2P games — chess, tic-tac-toe, trivia (Coming soon)"
-msgstr "P2P遊戲的AI——圍棋,tic-tac-toe,trivia(即將上線)"
-
 #: lib/retro_hex_chat/bots/capabilities/scheduler.ex:176
 #, elixir-autogen, elixir-format
 msgid "Active schedules:"
@@ -1800,3 +1795,8 @@ msgstr "閱讀全文"
 #, elixir-autogen, elixir-format
 msgid "%{field} must be public, channel_notice, private_notice, or silent"
 msgstr "%{field} 必須是 public、channel_notice、private_notice 或 silent"
+
+#: lib/retro_hex_chat/bots/capabilities/game.ex:23
+#, elixir-autogen, elixir-format
+msgid "Announces Retro Games matches, rankings and the weekly challenge"
+msgstr "宣佈復古遊戲比賽、排名和每週挑戰"

@@ -397,6 +397,9 @@ _FOREIGN_FORMS: dict[str, tuple[str, ...]] = {
         # progressive and enclitic.
         "a carregar",
         "leva-te",
+        # Measured on the game channels' help: "e pára com", the stopping verb
+        # with the accent Brazil dropped in the 2009 agreement.
+        "pára",
     ),
 }
 

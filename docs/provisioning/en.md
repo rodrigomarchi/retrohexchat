@@ -1,6 +1,7 @@
 # RetroHexChat — Production Provisioning (English)
 
-Twelve channels, twenty-four bots. The room choices trace to
+Thirty channels, twenty-five bots: twelve rooms to talk in, and a room for each
+Retro Game plus `#retro-games` for all of them. The room choices trace to
 `scripts/research/irc_census` — a live `/LIST` sweep of 95 public IRC networks,
 of which 59 answered with 49,973 channels. Regenerate it with
 `scripts/research/irc_census/run.sh`.
@@ -61,7 +62,7 @@ included, is joined explicitly.
 ```
 # ══════════════════════════════════════════════════════════
 #  RetroHexChat — Production Setup
-#  12 channels · 24 bots · derived from the IRC census
+#  30 channels · 25 bots · derived from the IRC census
 #  The base script. Language scripts in this directory add rooms on top.
 # ══════════════════════════════════════════════════════════
 
@@ -214,6 +215,161 @@ included, is joined explicitly.
 /mode +tn
 
 # ══════════════════════════════════════════════════════════
+#  2c. Retro Games rooms — one per game, and the feed
+# ══════════════════════════════════════════════════════════
+# Every in-page Retro Game has a room named after it, where its matches are
+# announced and people find someone to play; the strip under the topic offers
+# a seat. #retro-games carries every game's results at once. They are ordinary
+# rooms: whoever pastes this founds them, and their topic, modes and archive are
+# the founder's to change. Scoreboard (below) announces the matches in them.
+# A game added to the catalogue later needs its room added here and pasted.
+
+/join #hex-pong
+/cs register
+/cs archive on
+/cs language en
+/cs category games
+/topic Results and rankings of Hex Pong, and people to play with. Everything said here is published in a public archive.
+/mode +tn
+
+/join #light-trails
+/cs register
+/cs archive on
+/cs language en
+/cs category games
+/topic Results and rankings of Light Trails, and people to play with. Everything said here is published in a public archive.
+/mode +tn
+
+/join #pixel-tanks
+/cs register
+/cs archive on
+/cs language en
+/cs category games
+/topic Results and rankings of Pixel Tanks, and people to play with. Everything said here is published in a public archive.
+/mode +tn
+
+/join #star-duel
+/cs register
+/cs archive on
+/cs language en
+/cs category games
+/topic Results and rankings of Star Duel, and people to play with. Everything said here is published in a public archive.
+/mode +tn
+
+/join #gravity-well
+/cs register
+/cs archive on
+/cs language en
+/cs category games
+/topic Results and rankings of Gravity Well, and people to play with. Everything said here is published in a public archive.
+/mode +tn
+
+/join #debris-field
+/cs register
+/cs archive on
+/cs language en
+/cs category games
+/topic Results and rankings of Debris Field, and people to play with. Everything said here is published in a public archive.
+/mode +tn
+
+/join #block-breakers
+/cs register
+/cs archive on
+/cs language en
+/cs category games
+/topic Results and rankings of Block Breakers, and people to play with. Everything said here is published in a public archive.
+/mode +tn
+
+/join #hex-warlords
+/cs register
+/cs archive on
+/cs language en
+/cs category games
+/topic Results and rankings of Hex Warlords, and people to play with. Everything said here is published in a public archive.
+/mode +tn
+
+/join #hex-raid
+/cs register
+/cs archive on
+/cs language en
+/cs category games
+/topic Results and rankings of Hex Raid, and people to play with. Everything said here is published in a public archive.
+/mode +tn
+
+/join #hex-boxing
+/cs register
+/cs archive on
+/cs language en
+/cs category games
+/topic Results and rankings of Hex Boxing, and people to play with. Everything said here is published in a public archive.
+/mode +tn
+
+/join #hex-outlaw
+/cs register
+/cs archive on
+/cs language en
+/cs category games
+/topic Results and rankings of Hex Outlaw, and people to play with. Everything said here is published in a public archive.
+/mode +tn
+
+/join #hex-invaders
+/cs register
+/cs archive on
+/cs language en
+/cs category games
+/topic Results and rankings of Hex Invaders, and people to play with. Everything said here is published in a public archive.
+/mode +tn
+
+/join #hex-enduro
+/cs register
+/cs archive on
+/cs language en
+/cs category games
+/topic Results and rankings of Hex Enduro, and people to play with. Everything said here is published in a public archive.
+/mode +tn
+
+/join #hex-tennis
+/cs register
+/cs archive on
+/cs language en
+/cs category games
+/topic Results and rankings of Hex Tennis, and people to play with. Everything said here is published in a public archive.
+/mode +tn
+
+/join #hex-skiing
+/cs register
+/cs archive on
+/cs language en
+/cs category games
+/topic Results and rankings of Hex Skiing, and people to play with. Everything said here is published in a public archive.
+/mode +tn
+
+/join #hex-frost
+/cs register
+/cs archive on
+/cs language en
+/cs category games
+/topic Results and rankings of Hex Frost, and people to play with. Everything said here is published in a public archive.
+/mode +tn
+
+/join #hex-hockey
+/cs register
+/cs archive on
+/cs language en
+/cs category games
+/topic Results and rankings of Hex Hockey, and people to play with. Everything said here is published in a public archive.
+/mode +tn
+
+/join #retro-games
+/cs register
+/cs archive on
+/cs language en
+/cs category games
+/topic Every Retro Games match as it finishes. Each game has its own channel too. This channel is archived publicly.
+/mode +tn
+
+
+# ══════════════════════════════════════════════════════════
 #  3. Brutus — moderation, every channel
 # ══════════════════════════════════════════════════════════
 # Every bot says its language right after it is created: /bot set <Bot>
@@ -227,7 +383,7 @@ included, is joined explicitly.
 /bot set Brutus mod_spam 5
 /bot set Brutus mod_flood 8
 /bot set Brutus mod_warn \c04\b[Brutus]\o Easy there, {nickname}. \c05Keep it civil\o or Brutus gets grumpy. And trust me, you don't want that.
-# Silent on arrival and departure. Brutus stands in all twelve rooms, so a
+# Silent on arrival and departure. Brutus stands in every room, so a
 # greeting from him would double every welcome the host bot gives — and a
 # bouncer who says hello twice reads as a glitch, not a personality.
 # Brutus warns in English and belongs to the English rooms only; each language
@@ -251,6 +407,24 @@ included, is joined explicitly.
 /bot join Brutus #science
 /bot join Brutus #anime
 /bot join Brutus #help
+/bot join Brutus #hex-pong
+/bot join Brutus #light-trails
+/bot join Brutus #pixel-tanks
+/bot join Brutus #star-duel
+/bot join Brutus #gravity-well
+/bot join Brutus #debris-field
+/bot join Brutus #block-breakers
+/bot join Brutus #hex-warlords
+/bot join Brutus #hex-raid
+/bot join Brutus #hex-boxing
+/bot join Brutus #hex-outlaw
+/bot join Brutus #hex-invaders
+/bot join Brutus #hex-enduro
+/bot join Brutus #hex-tennis
+/bot join Brutus #hex-skiing
+/bot join Brutus #hex-frost
+/bot join Brutus #hex-hockey
+/bot join Brutus #retro-games
 
 # ══════════════════════════════════════════════════════════
 #  4. Channel bots
@@ -281,7 +455,7 @@ included, is joined explicitly.
 /bot set Patches mention_response \c03\b[Patches]\o Patches here. \c10Need directions?\o !tour for the grand tour, or just ask.
 
 /bot addcmd Patches tour \c03\b[Patches]\o Talk to people in #lobby and #tech. \c10Play\o in #trivia and #arcade. \c02Read the wire\o in #news, #foss, #security, #ai, #science and #anime. #retro is for anything that booted from a floppy, #help for when you are stuck.
-/bot addcmd Patches rooms \c03\b[Patches]\o #lobby #trivia #arcade #retro #tech #news #foss #security #ai #science #anime #help — \c10twelve rooms in English\o, and more in a dozen other languages. \c02!languages\o for those.
+/bot addcmd Patches rooms \c03\b[Patches]\o #lobby #trivia #arcade #retro #tech #news #foss #security #ai #science #anime #help — \c10twelve rooms to talk in\o, a room per Retro Game like #hex-pong, and more in a dozen other languages. \c02!languages\o for those.
 /bot addcmd Patches languages \c03\b[Patches]\o This server speaks fourteen languages, {nickname}, and \c10each one has its own rooms\o. Change yours from the toolbar and the room list follows.
 /bot addcmd Patches why \c03\b[Patches]\o The median live IRC channel holds fourteen people, {nickname}, so we keep one place to talk rather than four. \c10Wire rooms\o are different: a feed gives a room something to show before it has a crowd.
 /bot addcmd Patches guides \c03\b[Patches]\o Three guides live in #lobby, {nickname}: \c07Coach\o knows the games, \c06Nova\o the virtual spaces, \c12Echo\o calls, conferences and files. Say a name and that guide tells you what it can show you.
@@ -305,7 +479,7 @@ included, is joined explicitly.
 
 /bot addcmd Coach games \c07\b[Coach]\o Retro Games run right in the browser — against the computer or against someone. Open one from the \c10Games\o menu. Every game has a room of its own, like #hex-pong, and #retro-games carries every result.
 /bot addcmd Coach play \c07\b[Coach]\o In a game's room, \c10Find a partner\o (or \c10/lfg\o) puts a card with one open seat in the channel: whoever presses Join first plays you. \c10/challenge nick\o invites one person instead.
-/bot addcmd Coach challenge \c07\b[Coach]\o Every week each game puts one of its modes up as \c10the weekly challenge\o. GameServ opens it on Monday in the game's room and names last week's winner; the game's page shows the current one.
+/bot addcmd Coach challenge \c07\b[Coach]\o Every week each game puts one of its modes up as \c10the weekly challenge\o. Scoreboard opens it on Monday in the game's room and names last week's winner; the game's page shows the current one.
 /bot addcmd Coach ranking \c07\b[Coach]\o Every match a registered, identified player finishes counts. \c10Each game's page\o has its ranking and the latest matches — versus games rank wins, score games your best score.
 /bot addcmd Coach watch \c07\b[Coach]\o A match offered to everybody shows a \c10Watch\o button on its card once the seat is taken. Watching needs no account and only shows the game.
 
@@ -726,6 +900,49 @@ included, is joined explicitly.
 /bot addcmd Harold rooms \c02\b[Harold]\o #lobby #trivia #arcade #retro #tech #news #foss #security #ai #science #anime #help — and \c03a set of rooms per language\o besides.
 
 /bot join Harold #help
+
+# ── Scoreboard — the Retro Games rooms ───────────────────
+# The one bot in a game's room besides Brutus, so it is both the welcome and the
+# voice of the matches: game_announce on gives it the `game` capability, and
+# every match worth telling, the daily digest and the weekly challenge are said
+# under its name in the rooms it joins. A room it leaves hears nothing about
+# its games; game_announce off silences it everywhere.
+/bot create Scoreboard Retro Games Announcer
+/bot set Scoreboard language en
+/bot set Scoreboard prefix !
+/bot set Scoreboard cooldown 1000
+/bot set Scoreboard game_announce on
+/bot set Scoreboard greeting \c09\b[Scoreboard]\o Welcome to {channel}, {nickname}. \c10Find a partner\o under the topic (or \c10/lfg\o) offers a seat; \c10/challenge nick\o invites one person. \c10!play\o and \c10!ranking\o say more.
+/bot set Scoreboard greeting_delivery private_notice
+/bot set Scoreboard greeter_repeat_window 3600
+/bot set Scoreboard public_greeting \c09\b[Scoreboard]\o \b{nickname}\o is here. Anyone up for a match?
+/bot set Scoreboard onboarding_1 \c14\b[{botname}]\o \c10/join #lobby\o enters a room · \c10/msg nick\o speaks privately · \c10/nick name\o changes yours.
+/bot set Scoreboard onboarding_2 \c14\b[{botname}]\o \c10/part\o leaves a room · \c10/help\o lists every command.
+/bot set Scoreboard visitor_greeting \c09\b[Scoreboard]\o Welcome, \b{nickname}\o! You're watching {channel} live: every match worth telling is said here. \c10Sign up\o to play and to rank.
+/bot set Scoreboard farewell none
+/bot set Scoreboard mention_response \c09\b[Scoreboard]\o I say the matches played here, {nickname}. \c10!play\o to find someone, \c10!ranking\o for who leads.
+
+/bot addcmd Scoreboard play \c09\b[Scoreboard]\o \c10Find a partner\o under the topic (or \c10/lfg\o) puts a card with one open seat in the room: whoever presses Join first plays you. \c10/challenge nick\o invites one person instead.
+/bot addcmd Scoreboard ranking \c09\b[Scoreboard]\o Every match a registered, identified player finishes counts. \c10The game's page\o has its ranking, the latest matches and \c10the weekly challenge\o.
+
+/bot join Scoreboard #hex-pong
+/bot join Scoreboard #light-trails
+/bot join Scoreboard #pixel-tanks
+/bot join Scoreboard #star-duel
+/bot join Scoreboard #gravity-well
+/bot join Scoreboard #debris-field
+/bot join Scoreboard #block-breakers
+/bot join Scoreboard #hex-warlords
+/bot join Scoreboard #hex-raid
+/bot join Scoreboard #hex-boxing
+/bot join Scoreboard #hex-outlaw
+/bot join Scoreboard #hex-invaders
+/bot join Scoreboard #hex-enduro
+/bot join Scoreboard #hex-tennis
+/bot join Scoreboard #hex-skiing
+/bot join Scoreboard #hex-frost
+/bot join Scoreboard #hex-hockey
+/bot join Scoreboard #retro-games
 ```
 
 ---
@@ -767,6 +984,24 @@ the capability is created by that first `/bot set`:
 | `#science` | `science` | Brutus, **Curie**, Quasar | 163 = largest `#science` on IRC |
 | `#anime` | `culture` | Brutus, **Yuki**, Sakura | 279 = largest `#anime` on IRC |
 | `#help` | `help` | Brutus, **Harold** | 40 |
+| `#hex-pong` | `games` | Brutus, **Scoreboard** | a room per game, announced by Scoreboard |
+| `#light-trails` | `games` | Brutus, **Scoreboard** | a room per game, announced by Scoreboard |
+| `#pixel-tanks` | `games` | Brutus, **Scoreboard** | a room per game, announced by Scoreboard |
+| `#star-duel` | `games` | Brutus, **Scoreboard** | a room per game, announced by Scoreboard |
+| `#gravity-well` | `games` | Brutus, **Scoreboard** | a room per game, announced by Scoreboard |
+| `#debris-field` | `games` | Brutus, **Scoreboard** | a room per game, announced by Scoreboard |
+| `#block-breakers` | `games` | Brutus, **Scoreboard** | a room per game, announced by Scoreboard |
+| `#hex-warlords` | `games` | Brutus, **Scoreboard** | a room per game, announced by Scoreboard |
+| `#hex-raid` | `games` | Brutus, **Scoreboard** | a room per game, announced by Scoreboard |
+| `#hex-boxing` | `games` | Brutus, **Scoreboard** | a room per game, announced by Scoreboard |
+| `#hex-outlaw` | `games` | Brutus, **Scoreboard** | a room per game, announced by Scoreboard |
+| `#hex-invaders` | `games` | Brutus, **Scoreboard** | a room per game, announced by Scoreboard |
+| `#hex-enduro` | `games` | Brutus, **Scoreboard** | a room per game, announced by Scoreboard |
+| `#hex-tennis` | `games` | Brutus, **Scoreboard** | a room per game, announced by Scoreboard |
+| `#hex-skiing` | `games` | Brutus, **Scoreboard** | a room per game, announced by Scoreboard |
+| `#hex-frost` | `games` | Brutus, **Scoreboard** | a room per game, announced by Scoreboard |
+| `#hex-hockey` | `games` | Brutus, **Scoreboard** | a room per game, announced by Scoreboard |
+| `#retro-games` | `games` | Brutus, **Scoreboard** | every game's results at once |
 
 All channels are `+tn`, publish their archive and are marked English
 (`/cs language en`), and each says what it is about with the `category` above
@@ -781,7 +1016,7 @@ answers orientation questions in its own language instead.
 
 | bot | channels | capabilities | role |
 |---|---|---|---|
-| **Brutus** | all 12 | `moderation` (passive), `custom_commands` | spam and flood, everywhere |
+| **Brutus** | every room | `moderation` (passive), `custom_commands` | spam and flood, everywhere |
 | **Patches** | `#lobby` | `greeter`, `dice`, `custom_commands` | doorman, explains the twelve rooms and introduces the guides |
 | **Coach** | `#lobby` | `custom_commands`, `mention` | Retro Games: playing, partners, the weekly challenge, rankings, watching |
 | **Nova** | `#lobby` | `custom_commands`, `mention` | virtual spaces: getting in, the character creator, the Construct |
@@ -805,6 +1040,7 @@ answers orientation questions in its own language instead.
 | **Quasar** | `#science` | **`rss`**, `greeter`, `custom_commands` | ScienceDaily, Space.com, Quanta, Smithsonian |
 | **Sakura** | `#anime` | **`rss`**, `greeter`, `custom_commands` | Anime Corner and MyAnimeList |
 | **Harold** | `#help` | `help`, `custom_commands` | Clippy, self-aware |
+| **Scoreboard** | the Retro Games rooms | **`game`**, `greeter`, `custom_commands` | says the matches, the digest and the weekly challenge; welcomes |
 
 Every bot also carries `greeter`, `custom_commands`, `help` and `mention` — those four
 come with creation. Every bot is also marked English: `/bot set <Bot> language en`
@@ -833,8 +1069,10 @@ record the current page; after that, only items that arrive later are posted.
 **No schedules.** `!Bot schedule add` persists now too, but nothing here needs one; a
 room that speaks on a timer with nothing to say is worse than a quiet one.
 
-**No `game`, `llm` or `script` capabilities.** All three are stubs — `handle_message`
-returns `:ignore` and `commands` returns `[]`.
+**No `llm` or `script` capabilities.** Both are stubs — `handle_message`
+returns `:ignore` and `commands` returns `[]`. `game` is real and only Scoreboard
+carries it: in a room with two announcers only the oldest speaks, so a second one
+would sit there doing nothing.
 
 **No `arcade_*` setting.** It does not exist; there is no `apply_setting` clause for it.
 The arcade is reached through the Games menu, and `!Pixel games` merely describes it.

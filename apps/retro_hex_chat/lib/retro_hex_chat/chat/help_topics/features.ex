@@ -2119,7 +2119,7 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
           dgettext("help", "find a partner"),
           "#hex-pong",
           "#retro-games",
-          "GameServ",
+          "game_announce",
           "lfg",
           "challenge",
           "channel",
@@ -2129,10 +2129,11 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
         description:
           dgettext(
             "help",
-            "Every Retro Game has a channel named after it, like %{channel}. The channel %{feed} carries the results of every game. The service %{service} keeps these channels and says what was played in the open in them. The strip under the topic names the game: the name opens the page of the game over the chat. Play opens the game. Find a partner puts a card with one open seat in the channel. A last link opens a match being played now, to watch. Anybody can read a game channel. Playing, offering a seat and talking need a registered, identified nickname.",
+            "Every Retro Game has a channel named after it, like %{channel}. The channel %{feed} carries the results of every game. A bot in each of these channels announces the public matches. An admin chooses that bot with %{command}. The strip under the topic names the game: the name opens the page of the game over the chat. %{play} opens the game. Find a partner puts a card with one open seat in the channel. A last link opens a match being played now, to watch. Anybody can read a game channel. Playing, offering a seat and talking need a registered, identified nickname.",
             channel: "#hex-pong",
             feed: "#retro-games",
-            service: "GameServ"
+            command: "/bot set <bot> game_announce on",
+            play: dpgettext("games", "game", "Play")
           ),
         see_also: [
           "feature-game-scores",

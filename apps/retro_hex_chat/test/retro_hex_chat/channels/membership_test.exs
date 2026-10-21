@@ -204,7 +204,7 @@ defmodule RetroHexChat.Channels.MembershipTest do
       m =
         Membership.new()
         |> Membership.add("alice")
-        |> Membership.add("GameServ", :bot)
+        |> Membership.add("Scoreboard", :bot)
 
       assert Membership.count(m) == 2
       assert Membership.count(m, exclude_bots: true) == 1

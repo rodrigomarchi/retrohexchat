@@ -62,8 +62,6 @@ config :retro_hex_chat, Oban,
        {"@reboot", RetroHexChat.Jobs.IgnoreExpiredCleanupWorker},
        {"@reboot", RetroHexChat.Jobs.ScrapedPagePruneWorker},
        {"@reboot", RetroHexChat.Jobs.BotGreetingPruneWorker},
-       # A game added to the catalogue gets its channel on the deploy that ships it.
-       {"@reboot", RetroHexChat.Jobs.GameChannelsWorker},
        # Every boot is a deploy or a restart: announce what the release changed.
        {"@reboot", RetroHexChat.Jobs.IndexNowWorker, args: %{"scope" => "deploy"}},
        {"@hourly", RetroHexChat.Jobs.ServerBanExpiryWorker},
@@ -80,9 +78,6 @@ config :retro_hex_chat, Oban,
        {"50 * * * *", RetroHexChat.Jobs.ScrapedPagePruneWorker},
        {"55 * * * *", RetroHexChat.Jobs.IgnoreExpiredCleanupWorker},
        {"5 4 * * *", RetroHexChat.Jobs.BotGreetingPruneWorker},
-       # A deploy's @reboot runs on whichever node leads Oban, which is the old
-       # one while it drains: the hourly pass is what reaches the new catalogue.
-       {"40 * * * *", RetroHexChat.Jobs.GameChannelsWorker},
        # Yesterday in each game's channel, once its day is complete.
        {"10 0 * * *", RetroHexChat.Jobs.GameDigestWorker},
        # Monday, after the digest: last week's challenge closes, this week's opens.

@@ -6,7 +6,9 @@ defmodule RetroHexChat.Games.Announcer do
   the line the P2P session has always left behind, now carrying the match's
   card. The matches worth telling a room about — every ranked match between
   two people in a session played in the open, and against the computer a personal best or a win on hard — are
-  also said by GameServ in the game's channel and in `#retro-games`. A loss to
+  also said in the game's channel and in `#retro-games`, by whichever bot of
+  that room carries the `game` capability (`Bots.Capabilities.Game`). A room
+  with no such bot hears nothing about its games. A loss to
   the computer on easy is nobody's news, and a channel that printed every one
   would be a log nobody reads. For the same reason a player is news in a
   game's channel at most once every few minutes: rematch after rematch, or a
@@ -24,10 +26,11 @@ defmodule RetroHexChat.Games.Announcer do
 
   require Logger
 
+  alias RetroHexChat.Bots.Queries, as: BotQueries
   alias RetroHexChat.Channels.Server, as: ChannelServer
+  alias RetroHexChat.Channels.Supervisor, as: ChannelSupervisor
   alias RetroHexChat.Chat.Service, as: ChatService
   alias RetroHexChat.Games.Catalog
-  alias RetroHexChat.Games.Channels
   alias RetroHexChat.Games.Queries
   alias RetroHexChat.Games.Results
   alias RetroHexChat.Games.Schema.GameResult
@@ -42,7 +45,7 @@ defmodule RetroHexChat.Games.Announcer do
 
     if newsworthy?(result) and not just_announced?(result) do
       in_channel(result, Catalog.channel_name(result.game_id), :channel)
-      in_channel(result, Channels.feed(), :feed)
+      in_channel(result, Catalog.feed_channel(), :feed)
     end
 
     :ok
@@ -70,24 +73,52 @@ defmodule RetroHexChat.Games.Announcer do
   end
 
   @doc """
-  Say `text` in a games channel as GameServ. `opts` are the channel's send
-  options (`:before_broadcast` to attach a card).
+  Say `text` in a games channel as the bot that announces there. `opts` are
+  the channel's send options (`:before_broadcast` to attach a card).
 
-  GameServ's membership lives in the channel's process, which forgets it on a
-  restart; one refused send puts the service back and says it again.
+  `{:error, :no_announcer}` when no bot of the room carries the `game`
+  capability: the room has chosen not to hear about its games.
+
+  A bot's membership lives in the channel's process, which forgets it on a
+  restart; one refused send puts the bot back and says it again.
+
+  Never raises: a match is written, and a digest or a challenge goes on to
+  the next game, whatever happened to the line about it.
   """
   @spec say(String.t(), String.t(), keyword()) :: :ok | {:error, term()}
   def say(channel, text, opts \\ []) do
-    send = fn -> ChannelServer.send_message(channel, Channels.service(), text, :message, opts) end
+    case BotQueries.announcers_in(channel) do
+      [] -> {:error, :no_announcer}
+      [bot | _others] -> say_as(bot, channel, text, opts)
+    end
+  rescue
+    exception ->
+      Logger.warning("Nothing was announced in #{channel}: #{Exception.message(exception)}")
+      {:error, exception}
+  end
+
+  defp say_as(bot, channel, text, opts) do
+    send = fn -> ChannelServer.send_message(channel, bot, text, :message, opts) end
 
     with {:error, _not_inside} <- safe(send),
-         :ok <- Channels.ensure_present(channel),
+         :ok <- rejoin(channel, bot),
          {:error, reason} = refused <- safe(send) do
-      Logger.warning("GameServ could not speak in #{channel}: #{inspect(reason)}")
+      Logger.warning("#{bot} could not announce in #{channel}: #{inspect(reason)}")
       refused
     else
       {:ok, _message_id} -> :ok
       {:error, _not_started} = refused -> refused
+    end
+  end
+
+  # What `Bots.Server` does when the bot is joined to a room: the bot is
+  # configured for this channel, only the channel's process lost it.
+  defp rejoin(channel, bot) do
+    with {:ok, _pid} <- ChannelSupervisor.ensure_started(channel) do
+      _joined_already_inside_or_gone =
+        safe(fn -> ChannelServer.join(channel, bot, nil, bot: true) end)
+
+      :ok
     end
   end
 

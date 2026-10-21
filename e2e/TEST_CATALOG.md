@@ -135,8 +135,8 @@ make e2e.catalog.check    # verify it is current (also runs in make ci)
 ## Coverage
 
 - **257 spec files** under `e2e/tests/`.
-- **637 Playwright `test()` cases**.
-- **583 documented flows**, 582 done, 1 not done.
+- **638 Playwright `test()` cases**.
+- **584 documented flows**, 583 done, 1 not done.
 - **Every spec documents its own flows.**
 
 ## Flow index
@@ -400,6 +400,7 @@ Grouped by section. Every row comes from an `@flow` line in the spec itself.
 | M36 | The Games folder is the catalogue: a game icon opens the game's home over the chat, and its Play opens the game in a tab of its own (features P2) | `tests/chat-retro-games.spec.ts` | done |
 | M37 | Start -> Games -> Retro Games opens the folder, and the Arcade is still a window (features P2) | `tests/chat-retro-games.spec.ts` | done |
 | M38 | An admin gives a bot a language with /bot set or Bot Management, and its flag is drawn beside its nickname in the user list, the roster and its detail | `tests/chat-bot-management-window.spec.ts` | done |
+| M39 | /bot set game_announce on gives a bot the Game capability, which Bot Management shows as a working capability that can be switched off | `tests/chat-bot-management-window.spec.ts` | done |
 
 ### N - P2P, File, Call, Game
 
@@ -469,7 +470,7 @@ Grouped by section. Every row comes from an `@flow` line in the spec itself.
 | N62 | While your conference runs in its own tab, the chat keeps up: coming back to it shows the newest lines of the channel, the call's card included, and a line you send scrolls into view (features P0) | `tests/chat-group-call.spec.ts` | done |
 | N63 | Ending the conference for everyone ends it on every page and says so: the moderator's tab says they ended it, each other participant's tab names who did, and neither points back at a room that no longer exists (features P0) | `tests/chat-group-call.spec.ts` | done |
 | N64 | A game's channel names its game under the topic, and Find a partner puts one seat's card in the channel; pressing it again points at the same card | `tests/game-channels.spec.ts` | done |
-| N65 | A match between two people is written down once: GameServ says it in the game's channel with a card, and the same card lands in the two players' private conversation | `tests/game-channels.spec.ts` | done |
+| N65 | A match between two people is written down once: Scoreboard, the room's announcing bot, says it in the game's channel with a card, and the same card lands in the two players' private conversation | `tests/game-channels.spec.ts` | done |
 | N66 | A visitor reads a game's channel and its public page — ranking, latest matches, the channel's last lines — and pressing Find a partner opens the sign-in window | `tests/game-channels.spec.ts` | done |
 | N67 | Somebody with no account watches the match being played, at its /watch address, drawn live from the host's relayed frames | `tests/game-open-lobby.spec.ts` | done |
 | N68 | The players see how many are watching and the watch link to hand on; the match is offered to watch under its game channel's topic and on the game's page | `tests/game-open-lobby.spec.ts` | done |

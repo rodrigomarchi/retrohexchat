@@ -8,7 +8,6 @@ defmodule RetroHexChat.Games.ChallengesTest do
   alias RetroHexChat.Chat.Message
   alias RetroHexChat.Games.Catalog
   alias RetroHexChat.Games.Challenges
-  alias RetroHexChat.Games.Channels
   alias RetroHexChat.Games.Queries
 
   @moduletag :integration
@@ -18,7 +17,7 @@ defmodule RetroHexChat.Games.ChallengesTest do
 
   setup do
     on_exit(fn ->
-      for name <- Channels.names(),
+      for name <- [Catalog.feed_channel() | Catalog.channel_names()],
           {:ok, pid} <- [ChannelRegistry.lookup(name)],
           do: ChannelSupervisor.stop_child(pid)
     end)
@@ -102,7 +101,7 @@ defmodule RetroHexChat.Games.ChallengesTest do
       finished_at: DateTime.add(last_week.starts_at, 1, :day)
     })
 
-    for name <- Channels.names(), do: Channels.ensure(name)
+    insert_game_announcer(Catalog.channel_names())
 
     next_monday = Date.add(@monday, 7)
     assert {:ok, %{posted: posted}} = Challenges.turn_week(next_monday)
@@ -111,7 +110,7 @@ defmodule RetroHexChat.Games.ChallengesTest do
     [line] =
       Repo.all(
         from m in Message,
-          where: m.channel_name == "#hex-hockey" and m.author_nickname == "GameServ",
+          where: m.channel_name == "#hex-hockey" and m.author_nickname == "Scoreboard",
           select: m.content
       )
 

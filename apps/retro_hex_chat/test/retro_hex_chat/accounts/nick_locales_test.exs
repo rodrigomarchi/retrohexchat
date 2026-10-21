@@ -139,7 +139,7 @@ defmodule RetroHexChat.Accounts.NickLocalesTest do
     end
 
     # Nobody registers a bot's name; its row says what it speaks.
-    test "answers for a bot from its row, and for the games service" do
+    test "answers for a bot from its row" do
       {:ok, bot} =
         BotQueries.create_bot(%{
           name: "LocBot#{System.unique_integer([:positive])}" |> String.slice(0, 16),
@@ -150,10 +150,7 @@ defmodule RetroHexChat.Accounts.NickLocalesTest do
 
       silent = "Quiet#{rem(System.unique_integer([:positive]), 10_000)}"
 
-      assert NickLocales.for_nicks([bot.nickname, "GameServ", silent]) == %{
-               bot.nickname => "ja",
-               "GameServ" => "en"
-             }
+      assert NickLocales.for_nicks([bot.nickname, silent]) == %{bot.nickname => "ja"}
 
       upper = String.upcase(bot.nickname)
       assert NickLocales.for_nicks([upper]) == %{upper => "ja"}

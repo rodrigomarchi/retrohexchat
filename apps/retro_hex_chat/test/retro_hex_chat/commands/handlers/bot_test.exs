@@ -207,6 +207,21 @@ defmodule RetroHexChat.Commands.Handlers.BotTest do
       assert %{"trivia" => %{"category" => "science"}} = capabilities()
     end
 
+    test "game_announce turns the bot's game announcements on and off" do
+      assert {:ok, :system, _} =
+               Bot.execute(["set", "BotCmdTest", "game_announce", "on"], @admin_ctx)
+
+      assert %{"game" => %{"enabled" => true}} = capabilities()
+
+      assert {:ok, :system, _} =
+               Bot.execute(["set", "BotCmdTest", "game_announce", "off"], @admin_ctx)
+
+      assert %{"game" => %{"enabled" => false}} = capabilities()
+
+      assert {:error, "[BotService] game_announce must be on or off."} =
+               Bot.execute(["set", "BotCmdTest", "game_announce", "maybe"], @admin_ctx)
+    end
+
     test "the first numeric setting keeps its value" do
       assert {:ok, :system, _} =
                Bot.execute(["set", "BotCmdTest", "dice_max_dice", "50"], @admin_ctx)

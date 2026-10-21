@@ -34,10 +34,10 @@ defmodule RetroHexChat.Bots.CapabilitiesTest do
   end
 
   describe "stub?/1" do
-    test "marks the three capabilities that answer nothing" do
-      assert Capabilities.stub?("game")
+    test "marks the two capabilities that answer nothing" do
       assert Capabilities.stub?(:llm)
       assert Capabilities.stub?("script")
+      refute Capabilities.stub?("game")
       refute Capabilities.stub?("rss")
     end
   end

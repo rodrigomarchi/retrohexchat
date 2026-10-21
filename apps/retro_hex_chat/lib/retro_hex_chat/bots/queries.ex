@@ -145,6 +145,26 @@ defmodule RetroHexChat.Bots.Queries do
     |> Repo.all()
   end
 
+  @doc """
+  The nicknames of the enabled bots that announce the Retro Games in
+  `channel`: joined there, and carrying the `game` capability without having
+  turned it off. Oldest bot first, so the same one keeps speaking when a room
+  has two.
+  """
+  @spec announcers_in(String.t()) :: [String.t()]
+  def announcers_in(channel) when is_binary(channel) do
+    Bot
+    |> join(:inner, [b], c in BotChannelConfig, on: c.bot_id == b.id)
+    |> where([b, c], b.enabled and c.enabled)
+    |> where([_b, c], fragment("lower(?)", c.channel_name) == ^String.downcase(channel))
+    |> where([b], fragment("? \\? 'game'", b.capabilities))
+    |> where([b], fragment("coalesce(?->'game'->>'enabled', 'true') <> 'false'", b.capabilities))
+    |> order_by([b], asc: b.inserted_at, asc: b.id)
+    |> limit(@max_curated)
+    |> select([b], b.nickname)
+    |> Repo.all()
+  end
+
   # ── Custom Commands ───────────────────────────────────────────
 
   @spec add_custom_command(integer(), map()) ::

@@ -4,6 +4,7 @@ defmodule RetroHexChat.Factory do
   """
   use ExMachina.Ecto, repo: RetroHexChat.Repo
 
+  alias RetroHexChat.Bots.{Bot, BotChannelConfig}
   alias RetroHexChat.Chat.{Message, PrivateMessage}
   alias RetroHexChat.Services.{AccessListEntry, Ban, RegisteredChannel, RegisteredNick}
 
@@ -59,5 +60,36 @@ defmodule RetroHexChat.Factory do
       banned_by: "Admin",
       reason: "Spamming"
     }
+  end
+
+  def bot_factory do
+    name = sequence(:bot_name, &"Bot#{&1}")
+    %Bot{name: name, nickname: name, created_by: "Admin", capabilities: %{}}
+  end
+
+  @doc """
+  A bot that announces the Retro Games in `channels`, the way
+  `docs/provisioning/en.md` sets up Scoreboard: the `game` capability on, and
+  joined to each room. Only the rows — `Games.Announcer` puts the bot inside a
+  running channel when it speaks.
+  """
+  @spec insert_game_announcer([String.t()], keyword()) :: Bot.t()
+  def insert_game_announcer(channels, attrs \\ []) do
+    bot =
+      insert(
+        :bot,
+        Keyword.merge(
+          [
+            name: "Scoreboard",
+            nickname: "Scoreboard",
+            locale: "en",
+            capabilities: %{"game" => %{"enabled" => true}}
+          ],
+          attrs
+        )
+      )
+
+    for channel <- channels, do: insert(%BotChannelConfig{bot_id: bot.id, channel_name: channel})
+    bot
   end
 end

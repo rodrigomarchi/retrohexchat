@@ -453,27 +453,27 @@ msgstr "西部決戰中彈彈出——射角度繞牆. 子彈從天花板上彈�
 msgid "Western duel — two gunslingers and a cactus. Dodge bullets you can see coming. First to 10. Best of 3 rounds."
 msgstr "西方決鬥——兩個槍手和一個仙人掌. 道奇子彈你可以看到即將來臨。 先爲十. 最好的三輪。"
 
-#: lib/retro_hex_chat/games/announcer.ex:162
+#: lib/retro_hex_chat/games/announcer.ex:186
 #, elixir-autogen, elixir-format
 msgid "%{p1} and %{p2} cleared %{game} with %{p1_score} points"
 msgstr "%{p1}和%{p2}用%{p1_score}點清除了%{game}"
 
-#: lib/retro_hex_chat/games/announcer.ex:148
+#: lib/retro_hex_chat/games/announcer.ex:172
 #, elixir-autogen, elixir-format
 msgid "%{p1} beat %{p2} %{p1_score} × %{p2_score} in %{game}"
 msgstr "%{p1}擊敗%{p2} %{p1_score} %{p2_score}在%{game}"
 
-#: lib/retro_hex_chat/games/announcer.ex:145
+#: lib/retro_hex_chat/games/announcer.ex:169
 #, elixir-autogen, elixir-format
 msgid "%{p1} set a personal best of %{p1_score} in %{game}"
 msgstr "%{p1}在%{game}中設定個人最佳%{p1_score}"
 
-#: lib/retro_hex_chat/games/announcer.ex:137
+#: lib/retro_hex_chat/games/announcer.ex:161
 #, elixir-autogen, elixir-format
 msgid "%{p1} vs %{p2} in %{game} ended early, %{p1_score} × %{p2_score}"
 msgstr "%{p1} vs %{p2}在%{game}提前結束,%{p1_score} × %{p2_score}"
 
-#: lib/retro_hex_chat/games/announcer.ex:151
+#: lib/retro_hex_chat/games/announcer.ex:175
 #, elixir-autogen, elixir-format
 msgid "%{p2} beat %{p1} %{p2_score} × %{p1_score} in %{game}"
 msgstr "%{p2}擊敗%{p1} %{p2_score} %{p1_score}在%{game}"
@@ -482,11 +482,6 @@ msgstr "%{p2}擊敗%{p1} %{p2_score} %{p1_score}在%{game}"
 #, elixir-autogen, elixir-format
 msgid "Best score: %{nickname} (%{best})."
 msgstr "最佳得分:%{nickname}(%{best})."
-
-#: lib/retro_hex_chat/games/channels.ex:117
-#, elixir-autogen, elixir-format
-msgid "Every Retro Games match as it finishes. Each game has its own channel too. This channel is archived publicly."
-msgstr "Every Retro Games match as it finishes. Each game has its own channel too. This channel is archived publicly."
 
 #: lib/retro_hex_chat/games/digest.ex:68
 #, elixir-autogen, elixir-format
@@ -500,35 +495,30 @@ msgid "Yesterday in %{game}: %{count} match."
 msgid_plural "Yesterday in %{game}: %{count} matches."
 msgstr[0] "昨天在%{game}:%{count}場比賽."
 
-#: lib/retro_hex_chat/games/announcer.ex:181
+#: lib/retro_hex_chat/games/announcer.ex:205
 #, elixir-autogen, elixir-format
 msgid "the computer"
 msgstr "電腦"
 
-#: lib/retro_hex_chat/games/announcer.ex:179
+#: lib/retro_hex_chat/games/announcer.ex:203
 #, elixir-autogen, elixir-format
 msgid "the computer (easy)"
 msgstr "計算機(容易)"
 
-#: lib/retro_hex_chat/games/announcer.ex:180
+#: lib/retro_hex_chat/games/announcer.ex:204
 #, elixir-autogen, elixir-format
 msgid "the computer (hard)"
 msgstr "計算機(硬度)"
 
-#: lib/retro_hex_chat/games/announcer.ex:166
+#: lib/retro_hex_chat/games/announcer.ex:190
 #, elixir-autogen, elixir-format
 msgid "%{p1} and %{p2} finished %{game} with %{p1_score} and %{p2_score} points"
 msgstr "%{p1}和%{p2}用%{p1_score}和%{p2_score}點完成了%{game}."
 
-#: lib/retro_hex_chat/games/announcer.ex:155
+#: lib/retro_hex_chat/games/announcer.ex:179
 #, elixir-autogen, elixir-format
 msgid "It is a draw between %{p1} and %{p2}, %{p1_score} × %{p2_score}, in %{game}"
 msgstr "它是%{p1}與%{p2},%{p1_score}×%{p2_score}之間的圖案,在%{game}中."
-
-#: lib/retro_hex_chat/games/channels.ex:126
-#, elixir-autogen, elixir-format
-msgid "Results and rankings of %{game}, and people to play with. Everything said here is published in a public archive."
-msgstr "%{game}的成績和排名,以及要玩的人. 這裏所說的一切都在公共檔案中公佈."
 
 #: lib/retro_hex_chat/games/challenges.ex:89
 #, elixir-autogen, elixir-format
@@ -544,3 +534,9 @@ msgstr "本週的挑戰是%{game}. 得到最好的分數。"
 #, elixir-autogen, elixir-format
 msgid "This week's challenge is %{game}. Win the most matches against other players."
 msgstr "本週的挑戰是%{game}. 獲得與其他玩家最激烈的比賽."
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2136
+#, elixir-autogen, elixir-format
+msgctxt "game"
+msgid "Play"
+msgstr "玩"

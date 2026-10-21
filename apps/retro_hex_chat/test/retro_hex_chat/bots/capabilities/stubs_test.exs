@@ -3,11 +3,10 @@ defmodule RetroHexChat.Bots.Capabilities.StubsTest do
 
   @moduletag :unit
 
-  # Only LLM, Script, and Game remain as stubs
+  # Only LLM and Script remain as stubs
   @stub_modules [
     RetroHexChat.Bots.Capabilities.LLM,
-    RetroHexChat.Bots.Capabilities.Script,
-    RetroHexChat.Bots.Capabilities.Game
+    RetroHexChat.Bots.Capabilities.Script
   ]
 
   @ctx %{

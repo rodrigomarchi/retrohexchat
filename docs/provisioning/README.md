@@ -5,13 +5,13 @@ program: an operator pastes its fenced block into the Admin Console and the
 console runs it line by line.
 
 **[`en.md`](en.md) runs first.** It is the base script — the only one that sets
-the server's name, description and welcome message — and the twelve English
-rooms it opens are the ones every other script assumes already exist. The rest
+the server's name, description and welcome message — and the English rooms it
+opens are the ones every other script assumes already exist. The rest
 add rooms on top and can be pasted in any order, or not at all.
 
 | script | rooms | bots | feeds | social room |
 |---|---|---|---|---|
-| [`en.md`](en.md) | 12 | 24 | 47 | `#lobby` |
+| [`en.md`](en.md) | 30 | 25 | 47 | `#lobby` |
 | [`pt_BR.md`](pt_BR.md) | 10 | 12 | 23 | `#brasil` |
 | [`pt_PT.md`](pt_PT.md) | 10 | 12 | 18 | `#portugal` |
 | [`es.md`](es.md) | 12 | 14 | 25 | `#hispano` |
@@ -51,6 +51,8 @@ which lints all fourteen files against the handlers that have to run them.
   language uses.
 - **Every room has a feed.** A room with three people and nothing happening is
   dead; a room with three people and a wire has something on it every hour.
+  The Retro Games rooms in `en.md` are the exception: their wire is the
+  matches, which Scoreboard announces.
 - **One moderator per language, in every room, silent.** A warning nobody can
   read is not a warning, which is why the English `Brutus` does not cover the
   other thirteen. A bot in every room that also greets would double every
@@ -189,8 +191,7 @@ done
 ```
 
 Setting the same category twice changes nothing either. The Retro Games
-channels are not in any script and need no line: the release sets them to
-`games` itself.
+rooms are in `en.md` like every other room, with `/cs category games`.
 
 A bot setting needs no `/join`, because `/bot set` names its bot. This gives
 every bot its language — pasted by an admin, after the release that knows
