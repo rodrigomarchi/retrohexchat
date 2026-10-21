@@ -115,6 +115,7 @@ shot, logged in as an admin who has `/identify`-ed.
 # Callado al entrar y al salir — está en las doce salas, y un portero que
 # saluda dos veces parece un fallo, no un personaje.
 /bot create Cerbero Jefe de seguridad y paz en las salas
+/bot set Cerbero language es
 /bot set Cerbero prefix !
 /bot set Cerbero cooldown 1000
 /bot set Cerbero mod_action warn
@@ -147,6 +148,7 @@ shot, logged in as an admin who has `/identify`-ed.
 # Bienvenida por notice privado: el recién llegado se orienta dentro de la sala
 # sin llenar el historial de los demás.
 /bot create Lucia Anfitriona de la sala en espanol
+/bot set Lucia language es
 /bot set Lucia prefix !
 /bot set Lucia cooldown 1000
 /bot set Lucia dice_default 1d20
@@ -180,6 +182,7 @@ shot, logged in as an admin who has `/identify`-ed.
 # ── Paco — #hispano ──────────────────────────────────────
 # Sin saludo: a los recién llegados los recibe Lucia.
 /bot create Paco Reportero de guardia
+/bot set Paco language es
 /bot set Paco prefix !
 /bot set Paco cooldown 1000
 /bot set Paco rss_interval 20
@@ -193,6 +196,7 @@ shot, logged in as an admin who has `/identify`-ed.
 
 # ── Elena — #noticias ────────────────────────────────────
 /bot create Elena Editora de la mesa nacional
+/bot set Elena language es
 /bot set Elena prefix !
 /bot set Elena cooldown 1000
 /bot set Elena rss_interval 20
@@ -213,6 +217,7 @@ shot, logged in as an admin who has `/identify`-ed.
 
 # ── Diego — #latinoamerica ───────────────────────────────
 /bot create Diego Corresponsal del cono sur
+/bot set Diego language es
 /bot set Diego prefix !
 /bot set Diego cooldown 1000
 /bot set Diego rss_interval 20
@@ -232,6 +237,7 @@ shot, logged in as an admin who has `/identify`-ed.
 
 # ── Marisol — #internacional ─────────────────────────────
 /bot create Marisol Jefa de la mesa internacional
+/bot set Marisol language es
 /bot set Marisol prefix !
 /bot set Marisol cooldown 1000
 /bot set Marisol rss_interval 30
@@ -253,6 +259,7 @@ shot, logged in as an admin who has `/identify`-ed.
 # ── Nacho — #tecno ───────────────────────────────────────
 # Cinco feeds es el máximo por bot; este llega justo al tope.
 /bot create Nacho Cacharreador profesional
+/bot set Nacho language es
 /bot set Nacho prefix !
 /bot set Nacho cooldown 1000
 /bot set Nacho rss_interval 30
@@ -276,6 +283,7 @@ shot, logged in as an admin who has `/identify`-ed.
 
 # ── Rocio — #videojuegos ─────────────────────────────────
 /bot create Rocio Operadora del salon recreativo
+/bot set Rocio language es
 /bot set Rocio prefix !
 /bot set Rocio cooldown 1000
 /bot set Rocio rss_interval 45
@@ -294,6 +302,7 @@ shot, logged in as an admin who has `/identify`-ed.
 
 # ── Ramon — #deportes ────────────────────────────────────
 /bot create Ramon Cronista de grada
+/bot set Ramon language es
 /bot set Ramon prefix !
 /bot set Ramon cooldown 1000
 /bot set Ramon rss_interval 20
@@ -313,6 +322,7 @@ shot, logged in as an admin who has `/identify`-ed.
 
 # ── Carmen — #cine ───────────────────────────────────────
 /bot create Carmen Acomodadora de la sala oscura
+/bot set Carmen language es
 /bot set Carmen prefix !
 /bot set Carmen cooldown 1000
 /bot set Carmen rss_interval 60
@@ -330,6 +340,7 @@ shot, logged in as an admin who has `/identify`-ed.
 
 # ── Teresa — #divulgacion ────────────────────────────────
 /bot create Teresa Divulgadora de guardia
+/bot set Teresa language es
 /bot set Teresa prefix !
 /bot set Teresa cooldown 1000
 /bot set Teresa rss_interval 60
@@ -347,6 +358,7 @@ shot, logged in as an admin who has `/identify`-ed.
 
 # ── Pepa — #cocina ───────────────────────────────────────
 /bot create Pepa Jefa de cocina del canal
+/bot set Pepa language es
 /bot set Pepa prefix !
 /bot set Pepa cooldown 1000
 /bot set Pepa rss_interval 90
@@ -365,6 +377,7 @@ shot, logged in as an admin who has `/identify`-ed.
 
 # ── Manolo — #motor ──────────────────────────────────────
 /bot create Manolo Mecanico de guardia
+/bot set Manolo language es
 /bot set Manolo prefix !
 /bot set Manolo cooldown 1000
 /bot set Manolo rss_interval 90
@@ -382,6 +395,7 @@ shot, logged in as an admin who has `/identify`-ed.
 
 # ── Alonso — #mercados ───────────────────────────────────
 /bot create Alonso Observador de los mercados
+/bot set Alonso language es
 /bot set Alonso prefix !
 /bot set Alonso cooldown 1000
 /bot set Alonso rss_interval 30
@@ -432,6 +446,8 @@ ceiling, so a sixth address silently refused would show up there first.
 
 **Cerbero** stands in all twelve and greets in none of them. All channels are `+tn`,
 publish their archive and are marked Spanish (`/cs language es`).
+Every bot is marked Spanish too: `/bot set <Bot> language es` follows its
+`/bot create` and draws the same flag beside its nickname.
 
 Channel names carry no accents and no `ñ`: the client only turns `#ordenadores`
 into a link when it matches `[a-zA-Z][a-zA-Z0-9_-]*`. Inside a room, nothing is

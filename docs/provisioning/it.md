@@ -101,6 +101,7 @@ shot, logged in as an admin who has `/identify`-ed.
 # Muto all'entrata e all'uscita — sta in tutti e dieci i canali, e un buttafuori
 # che saluta due volte sembra un difetto, non un personaggio.
 /bot create Guardiano Capo della quiete e della buona creanza
+/bot set Guardiano language it
 /bot set Guardiano prefix !
 /bot set Guardiano cooldown 1000
 /bot set Guardiano mod_action warn
@@ -131,6 +132,7 @@ shot, logged in as an admin who has `/identify`-ed.
 # Benvenuto in notice privato: chi arriva si orienta dentro il canale senza
 # riempire la cronologia di tutti gli altri.
 /bot create Rita Padrona di casa del canale italiano
+/bot set Rita language it
 /bot set Rita prefix !
 /bot set Rita cooldown 1000
 /bot set Rita dice_default 1d20
@@ -164,6 +166,7 @@ shot, logged in as an admin who has `/identify`-ed.
 # ── Enzo — #italia ───────────────────────────────────────
 # Nessun benvenuto: in questo canale accoglie Rita.
 /bot create Enzo Cronista di turno
+/bot set Enzo language it
 /bot set Enzo prefix !
 /bot set Enzo cooldown 1000
 /bot set Enzo rss_interval 20
@@ -177,6 +180,7 @@ shot, logged in as an admin who has `/identify`-ed.
 
 # ── Vittorio — #cronaca ──────────────────────────────────
 /bot create Vittorio Capo della cronaca
+/bot set Vittorio language it
 /bot set Vittorio prefix !
 /bot set Vittorio cooldown 1000
 /bot set Vittorio rss_interval 20
@@ -196,6 +200,7 @@ shot, logged in as an admin who has `/identify`-ed.
 
 # ── Franca — #attualita ──────────────────────────────────
 /bot create Franca Commentatrice di attualita
+/bot set Franca language it
 /bot set Franca prefix !
 /bot set Franca cooldown 1000
 /bot set Franca rss_interval 30
@@ -214,6 +219,7 @@ shot, logged in as an admin who has `/identify`-ed.
 
 # ── Gianni — #digitale ───────────────────────────────────
 /bot create Gianni Curioso di cose digitali
+/bot set Gianni language it
 /bot set Gianni prefix !
 /bot set Gianni cooldown 1000
 /bot set Gianni rss_interval 30
@@ -233,6 +239,7 @@ shot, logged in as an admin who has `/identify`-ed.
 
 # ── Nilde — #tecnologie ──────────────────────────────────
 /bot create Nilde Lettrice della stampa tecnica
+/bot set Nilde language it
 /bot set Nilde prefix !
 /bot set Nilde cooldown 1000
 /bot set Nilde rss_interval 45
@@ -253,6 +260,7 @@ shot, logged in as an admin who has `/identify`-ed.
 
 # ── Bruno — #telefonini ──────────────────────────────────
 /bot create Bruno Provinista di telefoni
+/bot set Bruno language it
 /bot set Bruno prefix !
 /bot set Bruno cooldown 1000
 /bot set Bruno rss_interval 45
@@ -271,6 +279,7 @@ shot, logged in as an admin who has `/identify`-ed.
 
 # ── Ciccio — #videogiochi ────────────────────────────────
 /bot create Ciccio Gestore della sala giochi
+/bot set Ciccio language it
 /bot set Ciccio prefix !
 /bot set Ciccio cooldown 1000
 /bot set Ciccio rss_interval 45
@@ -290,6 +299,7 @@ shot, logged in as an admin who has `/identify`-ed.
 
 # ── Toto — #calcio ───────────────────────────────────────
 /bot create Toto Cronista da tribuna
+/bot set Toto language it
 /bot set Toto prefix !
 /bot set Toto cooldown 1000
 /bot set Toto rss_interval 20
@@ -308,6 +318,7 @@ shot, logged in as an admin who has `/identify`-ed.
 
 # ── Galileo — #spazio ────────────────────────────────────
 /bot create Galileo Osservatore del cielo
+/bot set Galileo language it
 /bot set Galileo prefix !
 /bot set Galileo cooldown 1000
 /bot set Galileo rss_interval 60
@@ -325,6 +336,7 @@ shot, logged in as an admin who has `/identify`-ed.
 
 # ── Piero — #finanza ─────────────────────────────────────
 /bot create Piero Osservatore dei mercati
+/bot set Piero language it
 /bot set Piero prefix !
 /bot set Piero cooldown 1000
 /bot set Piero rss_interval 30
@@ -372,3 +384,5 @@ matters after a paste.
 
 **Guardiano** stands in all ten and greets in none of them. All channels are `+tn`,
 publish their archive and are marked Italian (`/cs language it`).
+Every bot is marked Italian too: `/bot set <Bot> language it` follows its
+`/bot create` and draws the same flag beside its nickname.

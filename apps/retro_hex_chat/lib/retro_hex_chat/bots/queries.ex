@@ -6,6 +6,7 @@ defmodule RetroHexChat.Bots.Queries do
   alias RetroHexChat.Nickname
 
   import Ecto.Query
+  import RetroHexChat.Nickname, only: [key_of: 1]
 
   alias RetroHexChat.Bots.{Bot, BotChannelConfig, BotCustomCommand, BotEventLog, BotGreeting}
   alias RetroHexChat.Page
@@ -41,6 +42,22 @@ defmodule RetroHexChat.Bots.Queries do
   @spec get_bot_by_nickname(String.t()) :: Bot.t() | nil
   def get_bot_by_nickname(nickname) do
     Repo.get_by(Bot, nickname: nickname)
+  end
+
+  @doc """
+  The languages of whichever of `nicknames` are bots with one, keyed by the
+  bot's own nickname, folded for case — one query for a whole roster.
+  """
+  @spec locales_by_nickname([String.t()]) :: %{String.t() => String.t()}
+  def locales_by_nickname([]), do: %{}
+
+  def locales_by_nickname(nicknames) do
+    Bot
+    |> where([b], key_of(b.nickname) in ^Enum.map(nicknames, &Nickname.key/1))
+    |> where([b], not is_nil(b.locale))
+    |> select([b], {b.nickname, b.locale})
+    |> Repo.all()
+    |> Map.new()
   end
 
   @doc """

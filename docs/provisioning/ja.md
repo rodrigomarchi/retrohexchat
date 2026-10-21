@@ -105,6 +105,7 @@ shot, logged in as an admin who has `/identify`-ed.
 # 入退室では黙っています — 十チャンネル全部に居るので、二度挨拶すると
 # 個性ではなく不具合に見えます。
 /bot create Kuma Shizukesa to reigi no sekininsha
+/bot set Kuma language ja
 /bot set Kuma prefix !
 /bot set Kuma cooldown 1000
 /bot set Kuma mod_action warn
@@ -135,6 +136,7 @@ shot, logged in as an admin who has `/identify`-ed.
 # 挨拶はプライベート notice で送ります。新しく来た人はチャンネルの中で
 # 案内を受け取り、他の人の履歴は汚れません。
 /bot create Hana Nihongo channel no hosuto
+/bot set Hana language ja
 /bot set Hana prefix !
 /bot set Hana cooldown 1000
 /bot set Hana dice_default 1d20
@@ -168,6 +170,7 @@ shot, logged in as an admin who has `/identify`-ed.
 # ── Taro — #nihon ────────────────────────────────────────
 # 挨拶はしません。この部屋で迎えるのは Hana です。
 /bot create Taro Toban no kisha
+/bot set Taro language ja
 /bot set Taro prefix !
 /bot set Taro cooldown 1000
 /bot set Taro rss_interval 20
@@ -181,6 +184,7 @@ shot, logged in as an admin who has `/identify`-ed.
 
 # ── Ken — #jp-tech ───────────────────────────────────────
 /bot create Ken Gijutsu tantou no kisha
+/bot set Ken language ja
 /bot set Ken prefix !
 /bot set Ken cooldown 1000
 /bot set Ken rss_interval 30
@@ -201,6 +205,7 @@ shot, logged in as an admin who has `/identify`-ed.
 
 # ── Mio — #jp-gadgets ────────────────────────────────────
 /bot create Mio Gajetto no shiyousha
+/bot set Mio language ja
 /bot set Mio prefix !
 /bot set Mio cooldown 1000
 /bot set Mio rss_interval 45
@@ -220,6 +225,7 @@ shot, logged in as an admin who has `/identify`-ed.
 
 # ── Sora — #jp-dev ───────────────────────────────────────
 /bot create Sora Tanin no komitto wo yomu hito
+/bot set Sora language ja
 /bot set Sora prefix !
 /bot set Sora cooldown 1000
 /bot set Sora rss_interval 30
@@ -239,6 +245,7 @@ shot, logged in as an admin who has `/identify`-ed.
 
 # ── Hiro — #jp-games ─────────────────────────────────────
 /bot create Hiro Geemu sentaa no tenchou
+/bot set Hiro language ja
 /bot set Hiro prefix !
 /bot set Hiro cooldown 1000
 /bot set Hiro rss_interval 45
@@ -258,6 +265,7 @@ shot, logged in as an admin who has `/identify`-ed.
 
 # ── Kenji — #jp-soccer ───────────────────────────────────
 /bot create Kenji Sutando no kirokugakari
+/bot set Kenji language ja
 /bot set Kenji prefix !
 /bot set Kenji cooldown 1000
 /bot set Kenji rss_interval 20
@@ -277,6 +285,7 @@ shot, logged in as an admin who has `/identify`-ed.
 
 # ── Daichi — #jp-yakyu ───────────────────────────────────
 /bot create Daichi Yakyuu no kirokugakari
+/bot set Daichi language ja
 /bot set Daichi prefix !
 /bot set Daichi cooldown 1000
 /bot set Daichi rss_interval 30
@@ -294,6 +303,7 @@ shot, logged in as an admin who has `/identify`-ed.
 
 # ── Nozomi — #jp-science ─────────────────────────────────
 /bot create Nozomi Kansoku no kirokugakari
+/bot set Nozomi language ja
 /bot set Nozomi prefix !
 /bot set Nozomi cooldown 1000
 /bot set Nozomi rss_interval 60
@@ -312,6 +322,7 @@ shot, logged in as an admin who has `/identify`-ed.
 
 # ── Akira — #jp-money ────────────────────────────────────
 /bot create Akira Shijou wo miru hito
+/bot set Akira language ja
 /bot set Akira prefix !
 /bot set Akira cooldown 1000
 /bot set Akira rss_interval 30
@@ -332,6 +343,7 @@ shot, logged in as an admin who has `/identify`-ed.
 
 # ── Yui — #jp-life ───────────────────────────────────────
 /bot create Yui Kurashi no tantou
+/bot set Yui language ja
 /bot set Yui prefix !
 /bot set Yui cooldown 1000
 /bot set Yui rss_interval 60
@@ -378,6 +390,8 @@ matters after a paste.
 
 **Kuma** stands in all ten and greets in none of them. All channels are `+tn`,
 publish their archive and are marked Japanese (`/cs language ja`).
+Every bot is marked Japanese too: `/bot set <Bot> language ja` follows its
+`/bot create` and draws the same flag beside its nickname.
 
 `#anime` is deliberately absent: the English script already runs it with Anime
 News Network, LiveChart, Anime Corner and MyAnimeList, and a second anime room in

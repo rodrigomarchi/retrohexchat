@@ -77,6 +77,12 @@ which lints all fourteen files against the handlers that have to run them.
   founder-only, so it takes effect only when pasted by the identified admin who
   registered the room. The code is written exactly as `config/i18n_locales.exs`
   spells it, even though the command would accept `pt-br`.
+- **Every bot says its language.** `/bot set <Bot> language <code>` follows every
+  `/bot create`, with the same code as the rooms — every bot in `pt_BR.md` is
+  `language pt_BR`, because every line it speaks is Brazilian Portuguese. It
+  draws the language's flag beside the bot's nickname, the way a person's
+  locale does. A bot that spoke another language would belong in that
+  language's script, not under a second code here.
 - **No farewells.** They become noise on reconnect churn.
 - **A bot only advertises triggers it answers.** `!fontes` in a greeting from a
   bot with no `fontes` command promises silence, and the promise reads as a bug
@@ -162,6 +168,22 @@ done
 
 `/join` on a room the admin already sits in is harmless in the console: it only
 moves the active channel, so the block can be pasted twice.
+
+A bot setting needs no `/join`, because `/bot set` names its bot. This gives
+every bot its language — pasted by an admin, after the release that knows
+`language`:
+
+```bash
+for f in docs/provisioning/*.md; do
+  locale=$(basename "$f" .md); [ "$locale" = README ] && continue
+  echo "# ── $locale ──"
+  grep -E '^/bot set [A-Za-z]+ language ' "$f"
+done
+```
+
+Setting the same language twice changes nothing, so this block can be pasted
+twice as well. It reaches only the bots the scripts create; a bot added on the
+live server by hand keeps no language until somebody sets one.
 
 ## Adding a language
 

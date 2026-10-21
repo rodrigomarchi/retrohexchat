@@ -106,6 +106,7 @@ the Admin Console in one shot, logged in as an admin who has `/identify`-ed.
 # Calado na entrada e na saída — ele está nas dez salas, e um segurança que
 # cumprimenta duas vezes parece defeito, não personalidade.
 /bot create Sansao Chefe de seguranca e paz nos canais
+/bot set Sansao language pt_BR
 /bot set Sansao prefix !
 /bot set Sansao cooldown 1000
 /bot set Sansao mod_action warn
@@ -136,6 +137,7 @@ the Admin Console in one shot, logged in as an admin who has `/identify`-ed.
 # Boas-vindas por notice privado: o recém-chegado recebe orientação dentro da
 # sala sem encher o histórico de todo mundo.
 /bot create Tiao Anfitriao do canal brasileiro
+/bot set Tiao language pt_BR
 /bot set Tiao prefix !
 /bot set Tiao cooldown 1000
 /bot set Tiao dice_default 1d20
@@ -170,6 +172,7 @@ the Admin Console in one shot, logged in as an admin who has `/identify`-ed.
 # ── Nina — #brasil ───────────────────────────────────────
 # Sem saudação: quem recebe o recém-chegado nesta sala é o Tiao.
 /bot create Nina Reporter de plantao do Brasil
+/bot set Nina language pt_BR
 /bot set Nina prefix !
 /bot set Nina cooldown 1000
 /bot set Nina rss_interval 20
@@ -183,6 +186,7 @@ the Admin Console in one shot, logged in as an admin who has `/identify`-ed.
 
 # ── Zeca — #jornal ───────────────────────────────────────
 /bot create Zeca Editor da mesa de noticias
+/bot set Zeca language pt_BR
 /bot set Zeca prefix !
 /bot set Zeca cooldown 1000
 /bot set Zeca rss_interval 20
@@ -203,6 +207,7 @@ the Admin Console in one shot, logged in as an admin who has `/identify`-ed.
 
 # ── Bento — #tecnologia ──────────────────────────────────
 /bot create Bento Curioso de tecnologia em tempo integral
+/bot set Bento language pt_BR
 /bot set Bento prefix !
 /bot set Bento cooldown 1000
 /bot set Bento rss_interval 30
@@ -223,6 +228,7 @@ the Admin Console in one shot, logged in as an admin who has `/identify`-ed.
 
 # ── Juca — #hardware ─────────────────────────────────────
 /bot create Juca Garimpeiro de silicio e gambiarra
+/bot set Juca language pt_BR
 /bot set Juca prefix !
 /bot set Juca cooldown 1000
 /bot set Juca rss_interval 60
@@ -242,6 +248,7 @@ the Admin Console in one shot, logged in as an admin who has `/identify`-ed.
 
 # ── Dora — #programacao ──────────────────────────────────
 /bot create Dora Leitora de commits alheios
+/bot set Dora language pt_BR
 /bot set Dora prefix !
 /bot set Dora cooldown 1000
 /bot set Dora rss_interval 45
@@ -261,6 +268,7 @@ the Admin Console in one shot, logged in as an admin who has `/identify`-ed.
 
 # ── Iara — #economia ─────────────────────────────────────
 /bot create Iara Plantonista do mercado
+/bot set Iara language pt_BR
 /bot set Iara prefix !
 /bot set Iara cooldown 1000
 /bot set Iara rss_interval 30
@@ -281,6 +289,7 @@ the Admin Console in one shot, logged in as an admin who has `/identify`-ed.
 
 # ── Chico — #futebol ─────────────────────────────────────
 /bot create Chico Cronista de arquibancada
+/bot set Chico language pt_BR
 /bot set Chico prefix !
 /bot set Chico cooldown 1000
 /bot set Chico rss_interval 20
@@ -300,6 +309,7 @@ the Admin Console in one shot, logged in as an admin who has `/identify`-ed.
 
 # ── Lila — #ciencia ──────────────────────────────────────
 /bot create Lila Guardia das descobertas
+/bot set Lila language pt_BR
 /bot set Lila prefix !
 /bot set Lila cooldown 1000
 /bot set Lila rss_interval 60
@@ -318,6 +328,7 @@ the Admin Console in one shot, logged in as an admin who has `/identify`-ed.
 
 # ── Tuca — #musica ───────────────────────────────────────
 /bot create Tuca Discotecaria de plantao
+/bot set Tuca language pt_BR
 /bot set Tuca prefix !
 /bot set Tuca cooldown 1000
 /bot set Tuca rss_interval 60
@@ -336,6 +347,7 @@ the Admin Console in one shot, logged in as an admin who has `/identify`-ed.
 
 # ── Vito — #jogos ────────────────────────────────────────
 /bot create Vito Operador do fliperama tupiniquim
+/bot set Vito language pt_BR
 /bot set Vito prefix !
 /bot set Vito cooldown 1000
 /bot set Vito rss_interval 60
@@ -384,6 +396,8 @@ and nowhere else.
 
 **Sansao** stands in all ten and greets in none of them. All channels are `+tn`,
 publish their archive and are marked Brazilian Portuguese (`/cs language pt_BR`).
+Every bot is marked Brazilian Portuguese too: `/bot set <Bot> language pt_BR`
+follows its `/bot create` and draws the same flag beside its nickname.
 
 Poll intervals follow the publisher, not a house default: twenty minutes for a
 newsroom, an hour for a monthly-paced magazine. A room that repeats itself reads

@@ -101,6 +101,7 @@ shot, logged in as an admin who has `/identify`-ed.
 # er geen. Stil bij binnenkomst en vertrek — hij staat in alle tien de kanalen,
 # en een uitsmijter die twee keer hallo zegt lijkt een storing.
 /bot create Poortwachter Chef rust en fatsoen
+/bot set Poortwachter language nl
 /bot set Poortwachter prefix !
 /bot set Poortwachter cooldown 1000
 /bot set Poortwachter mod_action warn
@@ -131,6 +132,7 @@ shot, logged in as an admin who has `/identify`-ed.
 # Welkom als privé-notice: wie binnenkomt krijgt de weg gewezen in het kanaal,
 # zonder de geschiedenis van alle anderen vol te zetten.
 /bot create Fenna Gastvrouw van het Nederlandstalige kanaal
+/bot set Fenna language nl
 /bot set Fenna prefix !
 /bot set Fenna cooldown 1000
 /bot set Fenna dice_default 1d20
@@ -164,6 +166,7 @@ shot, logged in as an admin who has `/identify`-ed.
 # ── Joop — #nederland ────────────────────────────────────
 # Zonder welkom: in dit kanaal ontvangt Fenna.
 /bot create Joop Verslaggever van dienst
+/bot set Joop language nl
 /bot set Joop prefix !
 /bot set Joop cooldown 1000
 /bot set Joop rss_interval 20
@@ -177,6 +180,7 @@ shot, logged in as an admin who has `/identify`-ed.
 
 # ── Sanne — #nieuws ──────────────────────────────────────
 /bot create Sanne Chef van de nieuwsdesk
+/bot set Sanne language nl
 /bot set Sanne prefix !
 /bot set Sanne cooldown 1000
 /bot set Sanne rss_interval 20
@@ -197,6 +201,7 @@ shot, logged in as an admin who has `/identify`-ed.
 
 # ── Wout — #vlaanderen ───────────────────────────────────
 /bot create Wout Correspondent in Brussel
+/bot set Wout language nl
 /bot set Wout prefix !
 /bot set Wout cooldown 1000
 /bot set Wout rss_interval 20
@@ -216,6 +221,7 @@ shot, logged in as an admin who has `/identify`-ed.
 
 # ── Bram — #achtergrond ──────────────────────────────────
 /bot create Bram Lezer van lange stukken
+/bot set Bram language nl
 /bot set Bram prefix !
 /bot set Bram cooldown 1000
 /bot set Bram rss_interval 30
@@ -235,6 +241,7 @@ shot, logged in as an admin who has `/identify`-ed.
 
 # ── Tijs — #techniek ─────────────────────────────────────
 /bot create Tijs Vaste klant van de techniekhoek
+/bot set Tijs language nl
 /bot set Tijs prefix !
 /bot set Tijs cooldown 1000
 /bot set Tijs rss_interval 30
@@ -254,6 +261,7 @@ shot, logged in as an admin who has `/identify`-ed.
 
 # ── Marijke — #beveiliging ───────────────────────────────
 /bot create Marijke Draagster van adviezen die niemand op tijd leest
+/bot set Marijke language nl
 /bot set Marijke prefix !
 /bot set Marijke cooldown 1000
 /bot set Marijke rss_interval 30
@@ -272,6 +280,7 @@ shot, logged in as an admin who has `/identify`-ed.
 
 # ── Johan — #voetbal ─────────────────────────────────────
 /bot create Johan Chroniqueur op de tribune
+/bot set Johan language nl
 /bot set Johan prefix !
 /bot set Johan cooldown 1000
 /bot set Johan rss_interval 20
@@ -292,6 +301,7 @@ shot, logged in as an admin who has `/identify`-ed.
 
 # ── Lieke — #wetenschap ──────────────────────────────────
 /bot create Lieke Hoedster van de waarnemingen
+/bot set Lieke language nl
 /bot set Lieke prefix !
 /bot set Lieke cooldown 1000
 /bot set Lieke rss_interval 60
@@ -310,6 +320,7 @@ shot, logged in as an admin who has `/identify`-ed.
 
 # ── Daan — #ondernemen ───────────────────────────────────
 /bot create Daan Volger van de handel
+/bot set Daan language nl
 /bot set Daan prefix !
 /bot set Daan cooldown 1000
 /bot set Daan rss_interval 45
@@ -328,6 +339,7 @@ shot, logged in as an admin who has `/identify`-ed.
 
 # ── Kees — #auto ─────────────────────────────────────────
 /bot create Kees Sleutelaar van dienst
+/bot set Kees language nl
 /bot set Kees prefix !
 /bot set Kees cooldown 1000
 /bot set Kees rss_interval 90
@@ -374,3 +386,5 @@ that matters after a paste.
 
 **Poortwachter** stands in all ten and greets in none of them. All channels are `+tn`,
 publish their archive and are marked Dutch (`/cs language nl`).
+Every bot is marked Dutch too: `/bot set <Bot> language nl` follows its
+`/bot create` and draws the same flag beside its nickname.

@@ -4,8 +4,10 @@ defmodule RetroHexChat.Bots.Lifecycle do
   """
   use Gettext, backend: RetroHexChat.Gettext
 
+  alias RetroHexChat.Accounts.NickLocales
   alias RetroHexChat.Bots.{Bot, Queries, Registry, Server, Supervisor}
   alias RetroHexChat.Bots.Capabilities.Scheduler.Durable, as: ScheduleJobs
+  alias RetroHexChat.Locales
 
   @spec ensure_started(Bot.t()) :: {:ok, pid()} | {:error, term()}
   def ensure_started(%Bot{enabled: false}), do: {:error, :disabled}
@@ -41,6 +43,29 @@ defmodule RetroHexChat.Bots.Lifecycle do
       bot
       |> ensure_started()
       |> normalize_ok()
+  end
+
+  @doc """
+  Sets the language `bot` speaks — a code the chat offers, written however
+  (`pt-br`, `PT_BR`) — or clears it with `nil`, and tells every open screen,
+  which draws the flag beside the bot's nickname again.
+  """
+  @spec set_locale(Bot.t(), String.t() | nil) ::
+          {:ok, Bot.t()} | {:error, :unknown_locale | Ecto.Changeset.t()}
+  def set_locale(%Bot{} = bot, nil), do: put_locale(bot, nil)
+
+  def set_locale(%Bot{} = bot, locale) do
+    case Locales.normalize(locale) do
+      nil -> {:error, :unknown_locale}
+      code -> put_locale(bot, code)
+    end
+  end
+
+  defp put_locale(bot, locale) do
+    with {:ok, updated} <- Queries.update_bot(bot, %{locale: locale}) do
+      if bot.locale != locale, do: NickLocales.announce(bot.nickname, locale)
+      {:ok, updated}
+    end
   end
 
   @spec destroy_bot(Bot.t()) :: {:ok, Bot.t()} | {:error, Ecto.Changeset.t()}

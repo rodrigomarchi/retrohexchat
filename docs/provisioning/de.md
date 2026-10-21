@@ -101,6 +101,7 @@ shot, logged in as an admin who has `/identify`-ed.
 # liest, ist keine. Still beim Kommen und Gehen — er steht in allen zehn Räumen,
 # und ein Türsteher, der zweimal Hallo sagt, wirkt wie ein Fehler.
 /bot create Wachtmeister Chef fuer Ordnung und Ruhe
+/bot set Wachtmeister language de
 /bot set Wachtmeister prefix !
 /bot set Wachtmeister cooldown 1000
 /bot set Wachtmeister mod_action warn
@@ -131,6 +132,7 @@ shot, logged in as an admin who has `/identify`-ed.
 # Begrüßung als private Notice: Neuankömmlinge bekommen die Orientierung im
 # Raum, ohne dass der Verlauf aller anderen vollläuft.
 /bot create Fritzi Gastgeberin des deutschsprachigen Raums
+/bot set Fritzi language de
 /bot set Fritzi prefix !
 /bot set Fritzi cooldown 1000
 /bot set Fritzi dice_default 1d20
@@ -164,6 +166,7 @@ shot, logged in as an admin who has `/identify`-ed.
 # ── Klaus — #deutschland ─────────────────────────────────
 # Ohne Begrüßung: In diesem Raum empfängt Fritzi.
 /bot create Klaus Reporter im Bereitschaftsdienst
+/bot set Klaus language de
 /bot set Klaus prefix !
 /bot set Klaus cooldown 1000
 /bot set Klaus rss_interval 20
@@ -177,6 +180,7 @@ shot, logged in as an admin who has `/identify`-ed.
 
 # ── Greta — #nachrichten ─────────────────────────────────
 /bot create Greta Leiterin des Nachrichtentisches
+/bot set Greta language de
 /bot set Greta prefix !
 /bot set Greta cooldown 1000
 /bot set Greta rss_interval 20
@@ -198,6 +202,7 @@ shot, logged in as an admin who has `/identify`-ed.
 
 # ── Heidi — #dach ────────────────────────────────────────
 /bot create Heidi Korrespondentin aus Wien und Zuerich
+/bot set Heidi language de
 /bot set Heidi prefix !
 /bot set Heidi cooldown 1000
 /bot set Heidi rss_interval 30
@@ -216,6 +221,7 @@ shot, logged in as an admin who has `/identify`-ed.
 
 # ── Werner — #technik ────────────────────────────────────
 /bot create Werner Techniktisch mit Kaffeefleck
+/bot set Werner language de
 /bot set Werner prefix !
 /bot set Werner cooldown 1000
 /bot set Werner rss_interval 30
@@ -235,6 +241,7 @@ shot, logged in as an admin who has `/identify`-ed.
 
 # ── Lotte — #netz ────────────────────────────────────────
 /bot create Lotte Beobachterin der Netzpolitik
+/bot set Lotte language de
 /bot set Lotte prefix !
 /bot set Lotte cooldown 1000
 /bot set Lotte rss_interval 45
@@ -253,6 +260,7 @@ shot, logged in as an admin who has `/identify`-ed.
 
 # ── Konrad — #computer ───────────────────────────────────
 /bot create Konrad Schrauber am Gehaeuse
+/bot set Konrad language de
 /bot set Konrad prefix !
 /bot set Konrad cooldown 1000
 /bot set Konrad rss_interval 60
@@ -271,6 +279,7 @@ shot, logged in as an admin who has `/identify`-ed.
 
 # ── Ilse — #wirtschaft ───────────────────────────────────
 /bot create Ilse Beobachterin der Maerkte
+/bot set Ilse language de
 /bot set Ilse prefix !
 /bot set Ilse cooldown 1000
 /bot set Ilse rss_interval 30
@@ -290,6 +299,7 @@ shot, logged in as an admin who has `/identify`-ed.
 
 # ── Otto — #wissenschaft ─────────────────────────────────
 /bot create Otto Huter der Beobachtungen
+/bot set Otto language de
 /bot set Otto prefix !
 /bot set Otto cooldown 1000
 /bot set Otto rss_interval 60
@@ -308,6 +318,7 @@ shot, logged in as an admin who has `/identify`-ed.
 
 # ── Uwe — #sport ─────────────────────────────────────────
 /bot create Uwe Chronist von der Tribuene
+/bot set Uwe language de
 /bot set Uwe prefix !
 /bot set Uwe cooldown 1000
 /bot set Uwe rss_interval 20
@@ -327,6 +338,7 @@ shot, logged in as an admin who has `/identify`-ed.
 
 # ── Jonas — #spiele ──────────────────────────────────────
 /bot create Jonas Betreiber der Spielhalle
+/bot set Jonas language de
 /bot set Jonas prefix !
 /bot set Jonas cooldown 1000
 /bot set Jonas rss_interval 45
@@ -374,6 +386,8 @@ that matters after a paste.
 
 **Wachtmeister** stands in all ten and greets in none of them. All channels are `+tn`,
 publish their archive and are marked German (`/cs language de`).
+Every bot is marked German too: `/bot set <Bot> language de` follows its
+`/bot create` and draws the same flag beside its nickname.
 
 Room names carry no umlauts: the client only linkifies `[a-zA-Z][a-zA-Z0-9_-]*`,
 so `#räume` would be typed and never clickable. Everything inside a room is

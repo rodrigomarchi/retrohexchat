@@ -427,6 +427,7 @@ defmodule RetroHexChatWeb.Components.UI.ChannelCentralDialog do
               id="cc-language-select"
               name="locale"
               value={@channel_locale || ""}
+              default-value=""
               label={language_label(@channel_locale)}
               placeholder={dgettext("dialogs", "No language")}
               class="w-56"

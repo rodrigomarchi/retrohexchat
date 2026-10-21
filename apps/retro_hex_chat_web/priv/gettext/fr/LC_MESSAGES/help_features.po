@@ -3055,7 +3055,7 @@ msgstr ""
 #: lib/retro_hex_chat_web/controllers/help_content/feature_key_bindings.html.heex:107
 #: lib/retro_hex_chat_web/controllers/help_content/feature_kick_notifications.html.heex:65
 #: lib/retro_hex_chat_web/controllers/help_content/feature_lag_indicator.html.heex:79
-#: lib/retro_hex_chat_web/controllers/help_content/feature_language_flags.html.heex:34
+#: lib/retro_hex_chat_web/controllers/help_content/feature_language_flags.html.heex:43
 #: lib/retro_hex_chat_web/controllers/help_content/feature_link_previews.html.heex:90
 #: lib/retro_hex_chat_web/controllers/help_content/feature_mentions.html.heex:36
 #: lib/retro_hex_chat_web/controllers/help_content/feature_message_attachments.html.heex:41
@@ -8089,3 +8089,13 @@ msgstr "Un salon peut aussi avoir un drapeau : la langue qu'on y parle, à côt�
 #, elixir-autogen, elixir-format
 msgid "A channel whose founder has not chosen one has no flag. The Retro Games channels are English."
 msgstr "Un salon dont le fondateur n'a pas choisi de langue n'a pas de drapeau. Les salons des Jeux rétro sont en anglais."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_language_flags.html.heex:35
+#, elixir-autogen, elixir-format
+msgid "A Bot's Language"
+msgstr "La langue d'un bot"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_language_flags.html.heex:38
+#, elixir-autogen, elixir-format
+msgid "Bots carry a flag too, for the language they speak. An admin gives one with /bot set followed by the bot's name, language and a code such as pt_BR, or in Bot Management. A bot nobody gave a language has no flag; GameServ, in the Retro Games channels, is English."
+msgstr "Les bots ont aussi un drapeau, celui de la langue qu'ils parlent. Un admin le définit avec /bot set suivi du nom du bot, de language et d'un code comme pt_BR, ou dans Gestion du bot. Un bot sans langue n'a pas de drapeau ; GameServ, dans les salons des Jeux rétro, est anglais."

@@ -7,9 +7,10 @@ defmodule RetroHexChatWeb.Components.UI.BotManagementDialog do
   alive, what it is for, where it works, what it can do. A selection replaces the
   roster with that bot's detail; going back clears the selection.
 
-  Nothing here writes. Configuration is applied through `/bot set`, and each
-  capability panel names the key it would take, so what is read on screen and
-  what is typed in the console are the same word.
+  Capability configuration is applied through `/bot set`, and each capability
+  panel names the key it would take, so what is read on screen and what is typed
+  in the console are the same word. The bot's language is the exception an
+  administrator picks here, from the same list `/bot set <bot> language` takes.
   """
   use RetroHexChatWeb.Component
 
@@ -20,10 +21,13 @@ defmodule RetroHexChatWeb.Components.UI.BotManagementDialog do
   import RetroHexChatWeb.Components.UI.Button
   import RetroHexChatWeb.Components.UI.Separator
   import RetroHexChatWeb.Components.UI.DialogBanner
+  import RetroHexChatWeb.Components.UI.NickFlag
+  import RetroHexChatWeb.Components.UI.Select
 
   alias RetroHexChat.Bots.Capabilities
   alias RetroHexChat.Chat.Content
   alias RetroHexChat.Chat.TimeFormatter
+  alias RetroHexChat.Locales
   alias RetroHexChatWeb.Components.Diagrams
   alias RetroHexChatWeb.Icons
   alias RetroHexChatWeb.PaginatedList.State
@@ -179,6 +183,7 @@ defmodule RetroHexChatWeb.Components.UI.BotManagementDialog do
 
             <div class="bm-roster-main">
               <div class="bm-roster-line">
+                <.nick_flag locale={bot_locale(bot)} />
                 <span class="bm-roster-name">{bot_name(bot)}</span>
                 <span :if={bot_nickname(bot) != bot_name(bot)} class="bm-roster-nick">
                   {bot_nickname(bot)}
@@ -278,6 +283,7 @@ defmodule RetroHexChatWeb.Components.UI.BotManagementDialog do
 
         <div class="bm-detail-identity">
           <div class="bm-detail-line">
+            <.nick_flag locale={bot_locale(@selected)} />
             <span class="bm-detail-name">{bot_name(@selected)}</span>
             <span :if={bot_nickname(@selected) != bot_name(@selected)} class="bm-roster-nick">
               {bot_nickname(@selected)}
@@ -345,7 +351,13 @@ defmodule RetroHexChatWeb.Components.UI.BotManagementDialog do
         </div>
 
         <.tabs_content value="general" class="bm-tab-pane">
-          <.general_tab selected={@selected} running={@running} stats={@stats} channels={@channels} />
+          <.general_tab
+            selected={@selected}
+            running={@running}
+            stats={@stats}
+            channels={@channels}
+            is_admin={@is_admin}
+          />
         </.tabs_content>
 
         <.tabs_content value="capabilities" class="bm-tab-pane">
@@ -378,6 +390,7 @@ defmodule RetroHexChatWeb.Components.UI.BotManagementDialog do
   attr :running, :list, default: []
   attr :stats, :any, default: nil
   attr :channels, :list, default: []
+  attr :is_admin, :boolean, default: false
 
   @spec general_tab(map()) :: Phoenix.LiveView.Rendered.t()
   defp general_tab(assigns) do
@@ -435,6 +448,17 @@ defmodule RetroHexChatWeb.Components.UI.BotManagementDialog do
             <dd>{format_ms(Map.get(@selected, :cooldown_ms))}</dd>
           </div>
           <div class="bm-fact">
+            <dt>{dgettext("dialogs", "Language")}</dt>
+            <dd :if={not @is_admin} data-testid="bot-language-value">
+              <.nick_flag locale={bot_locale(@selected)} class="mr-1" />{language_label(
+                bot_locale(@selected)
+              )}
+            </dd>
+            <dd :if={@is_admin}>
+              <.bot_language_form selected={@selected} />
+            </dd>
+          </div>
+          <div class="bm-fact">
             <dt>{dgettext("dialogs", "Created by")}</dt>
             <dd>{Map.get(@selected, :created_by) || "—"}</dd>
           </div>
@@ -475,6 +499,65 @@ defmodule RetroHexChatWeb.Components.UI.BotManagementDialog do
         </div>
       </section>
     </div>
+    """
+  end
+
+  # The language the bot speaks, drawn as the flag beside its nickname in every
+  # nicklist. Picking one applies it at once, the way the channel's own language
+  # is set in Channel Central.
+  attr :selected, :any, required: true
+
+  @spec bot_language_form(map()) :: Phoenix.LiveView.Rendered.t()
+  defp bot_language_form(assigns) do
+    assigns =
+      assigns
+      |> assign(:locale, bot_locale(assigns.selected))
+      |> assign(:language_options, Locales.enabled())
+
+    ~H"""
+    <form
+      id="bot-language-form"
+      phx-change="bot_set_locale"
+      class="flex items-center gap-retro-4"
+      data-testid="bot-language-form"
+    >
+      <input type="hidden" name="bot_name" value={bot_name(@selected)} />
+      <.nick_flag locale={@locale} />
+      <.select
+        :let={builder}
+        id="bot-language-select"
+        name="locale"
+        value={@locale || ""}
+        default-value=""
+        label={language_label(@locale)}
+        placeholder={dgettext("dialogs", "No language")}
+        class="w-56"
+        data-testid="bot-language-select"
+      >
+        <.select_trigger builder={builder} class="h-7 text-xs" />
+        <.select_content builder={builder}>
+          <.select_group>
+            <.select_item
+              builder={builder}
+              value=""
+              label={dgettext("dialogs", "No language")}
+              data-testid="bot-language-option"
+            >
+              {dgettext("dialogs", "No language")}
+            </.select_item>
+            <.select_item
+              :for={locale <- @language_options}
+              builder={builder}
+              value={locale.code}
+              label={locale.label}
+              data-testid="bot-language-option"
+            >
+              {locale.label}
+            </.select_item>
+          </.select_group>
+        </.select_content>
+      </.select>
+    </form>
     """
   end
 
@@ -806,6 +889,12 @@ defmodule RetroHexChatWeb.Components.UI.BotManagementDialog do
 
   @spec bot_nickname(map()) :: String.t()
   defp bot_nickname(bot), do: Map.get(bot, :nickname) || bot_name(bot)
+
+  @spec bot_locale(map()) :: String.t() | nil
+  defp bot_locale(bot), do: Map.get(bot, :locale)
+
+  @spec language_label(String.t() | nil) :: String.t()
+  defp language_label(locale), do: language(locale) || dgettext("dialogs", "No language")
 
   @spec bot_prefix(map()) :: String.t()
   defp bot_prefix(bot), do: Map.get(bot, :command_prefix) || "!"

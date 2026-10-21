@@ -108,6 +108,7 @@ shot, logged in as an admin who has `/identify`-ed.
 # pas un. Muette à l'arrivée comme au départ — elle est dans les onze salons,
 # et un videur qui dit bonjour deux fois passe pour un bug.
 /bot create Vigie Chef de la securite et de la paix
+/bot set Vigie language fr
 /bot set Vigie prefix !
 /bot set Vigie cooldown 1000
 /bot set Vigie mod_action warn
@@ -139,6 +140,7 @@ shot, logged in as an admin who has `/identify`-ed.
 # Accueil en notice privé : le nouveau venu s'oriente dans le salon sans
 # encombrer l'historique de tout le monde.
 /bot create Margot Hotesse du salon francophone
+/bot set Margot language fr
 /bot set Margot prefix !
 /bot set Margot cooldown 1000
 /bot set Margot dice_default 1d20
@@ -172,6 +174,7 @@ shot, logged in as an admin who has `/identify`-ed.
 # ── Gaspard — #france ────────────────────────────────────
 # Pas d'accueil : dans ce salon, c'est Margot qui reçoit.
 /bot create Gaspard Reporter de permanence
+/bot set Gaspard language fr
 /bot set Gaspard prefix !
 /bot set Gaspard cooldown 1000
 /bot set Gaspard rss_interval 20
@@ -185,6 +188,7 @@ shot, logged in as an admin who has `/identify`-ed.
 
 # ── Colette — #actualites ────────────────────────────────
 /bot create Colette Redactrice en chef du fil
+/bot set Colette language fr
 /bot set Colette prefix !
 /bot set Colette cooldown 1000
 /bot set Colette rss_interval 20
@@ -205,6 +209,7 @@ shot, logged in as an admin who has `/identify`-ed.
 
 # ── Renaud — #monde ──────────────────────────────────────
 /bot create Renaud Correspondant a l etranger
+/bot set Renaud language fr
 /bot set Renaud prefix !
 /bot set Renaud cooldown 1000
 /bot set Renaud rss_interval 30
@@ -223,6 +228,7 @@ shot, logged in as an admin who has `/identify`-ed.
 
 # ── Blaise — #informatique ───────────────────────────────
 /bot create Blaise Veilleur informatique
+/bot set Blaise language fr
 /bot set Blaise prefix !
 /bot set Blaise cooldown 1000
 /bot set Blaise rss_interval 30
@@ -244,6 +250,7 @@ shot, logged in as an admin who has `/identify`-ed.
 
 # ── Amelie — #mobile ─────────────────────────────────────
 /bot create Amelie Testeuse de telephones
+/bot set Amelie language fr
 /bot set Amelie prefix !
 /bot set Amelie cooldown 1000
 /bot set Amelie rss_interval 45
@@ -262,6 +269,7 @@ shot, logged in as an admin who has `/identify`-ed.
 
 # ── Ambroise — #libre ────────────────────────────────────
 /bot create Ambroise Gardien des notes de version
+/bot set Ambroise language fr
 /bot set Ambroise prefix !
 /bot set Ambroise cooldown 1000
 /bot set Ambroise rss_interval 45
@@ -281,6 +289,7 @@ shot, logged in as an admin who has `/identify`-ed.
 
 # ── Denis — #developpement ───────────────────────────────
 /bot create Denis Lecteur de commits des autres
+/bot set Denis language fr
 /bot set Denis prefix !
 /bot set Denis cooldown 1000
 /bot set Denis rss_interval 60
@@ -298,6 +307,7 @@ shot, logged in as an admin who has `/identify`-ed.
 
 # ── Lulu — #jeuxvideo ────────────────────────────────────
 /bot create Lulu Patronne de la salle d arcade
+/bot set Lulu language fr
 /bot set Lulu prefix !
 /bot set Lulu cooldown 1000
 /bot set Lulu rss_interval 45
@@ -317,6 +327,7 @@ shot, logged in as an admin who has `/identify`-ed.
 
 # ── Jacques — #culture ───────────────────────────────────
 /bot create Jacques Ouvreur de la salle obscure
+/bot set Jacques language fr
 /bot set Jacques prefix !
 /bot set Jacques cooldown 1000
 /bot set Jacques rss_interval 60
@@ -336,6 +347,7 @@ shot, logged in as an admin who has `/identify`-ed.
 
 # ── Camille — #sciences ──────────────────────────────────
 /bot create Camille Gardienne des observations
+/bot set Camille language fr
 /bot set Camille prefix !
 /bot set Camille cooldown 1000
 /bot set Camille rss_interval 60
@@ -354,6 +366,7 @@ shot, logged in as an admin who has `/identify`-ed.
 
 # ── Odile — #economie ────────────────────────────────────
 /bot create Odile Observatrice des marches
+/bot set Odile language fr
 /bot set Odile prefix !
 /bot set Odile cooldown 1000
 /bot set Odile rss_interval 30
@@ -403,6 +416,8 @@ that matters after a paste.
 
 **Vigie** stands in all eleven and greets in none of them. All channels are `+tn`,
 publish their archive and are marked French (`/cs language fr`).
+Every bot is marked French too: `/bot set <Bot> language fr` follows its
+`/bot create` and draws the same flag beside its nickname.
 
 `#sciences` is plural where the English `#science` is singular — that is what
 keeps them from colliding, and it happens to be the natural French word anyway.

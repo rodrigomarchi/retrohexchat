@@ -161,7 +161,7 @@ msgid ", welcome to"
 msgstr ", selamat datang"
 
 #: lib/retro_hex_chat_web/controllers/help_content/bot_command.html.heex:2
-#: lib/retro_hex_chat_web/controllers/help_content/bot_command.html.heex:108
+#: lib/retro_hex_chat_web/controllers/help_content/bot_command.html.heex:116
 #: lib/retro_hex_chat_web/controllers/help_content/botservice.html.heex:178
 #, elixir-autogen, elixir-format
 msgid "/bot"
@@ -195,13 +195,13 @@ msgstr ""
 msgid "/bot addcmd FAQ welcome Hello"
 msgstr "/bot addcmd FAQ welcome Hello"
 
-#: lib/retro_hex_chat_web/controllers/help_content/bot_command.html.heex:89
+#: lib/retro_hex_chat_web/controllers/help_content/bot_command.html.heex:97
 #, elixir-autogen, elixir-format
 msgid "/bot addcmd GreeterBot rules Please read #rules /bot delcmd GreeterBot rules"
 msgstr ""
 "/bot addcmd GreeterBot rules Please read #rules /bot delcmd GreeterBot rules"
 
-#: lib/retro_hex_chat_web/controllers/help_content/bot_command.html.heex:81
+#: lib/retro_hex_chat_web/controllers/help_content/bot_command.html.heex:89
 #, elixir-autogen, elixir-format
 msgid "/bot commands GreeterBot"
 msgstr "/bot commands GreeterBot"
@@ -231,7 +231,7 @@ msgstr "/bot join GreeterBot #general /bot part GreeterBot #help"
 msgid "/bot list"
 msgstr "/bot list"
 
-#: lib/retro_hex_chat_web/controllers/help_content/bot_command.html.heex:92
+#: lib/retro_hex_chat_web/controllers/help_content/bot_command.html.heex:100
 #, elixir-autogen, elixir-format
 msgid "/bot list /bot info GreeterBot /bot create GreeterBot Welcomes new users /bot join GreeterBot #general /bot addcmd GreeterBot rules Please read #rules"
 msgstr ""
@@ -328,7 +328,7 @@ msgstr "Jawaban tidak sensitif."
 msgid "Available trivia categories:"
 msgstr "Kategori trivia tersedia:"
 
-#: lib/retro_hex_chat_web/controllers/help_content/bot_command.html.heex:121
+#: lib/retro_hex_chat_web/controllers/help_content/bot_command.html.heex:129
 #: lib/retro_hex_chat_web/controllers/help_content/botservice.html.heex:193
 #, elixir-autogen, elixir-format
 msgid "Bot Custom Commands"
@@ -359,12 +359,12 @@ msgstr "Bot Trivia"
 msgid "Bot cooldown applies — rapid invocations may be ignored"
 msgstr "Bot cooldown berlaku - doa cepat mungkin diabaikan"
 
-#: lib/retro_hex_chat_web/controllers/help_content/bot_command.html.heex:96
+#: lib/retro_hex_chat_web/controllers/help_content/bot_command.html.heex:104
 #, elixir-autogen, elixir-format
 msgid "Bot names must be 2–16 characters, unique"
 msgstr "Nama Bot harus 2- 16 karakter, unik"
 
-#: lib/retro_hex_chat_web/controllers/help_content/bot_command.html.heex:118
+#: lib/retro_hex_chat_web/controllers/help_content/bot_command.html.heex:126
 #: lib/retro_hex_chat_web/controllers/help_content/bot_custom_commands.html.heex:93
 #: lib/retro_hex_chat_web/controllers/help_content/bot_dice.html.heex:82
 #: lib/retro_hex_chat_web/controllers/help_content/bot_moderation.html.heex:106
@@ -411,7 +411,7 @@ msgstr "ChanServ"
 msgid "Command"
 msgstr "Perintah"
 
-#: lib/retro_hex_chat_web/controllers/help_content/bot_command.html.heex:98
+#: lib/retro_hex_chat_web/controllers/help_content/bot_command.html.heex:106
 #, elixir-autogen, elixir-format
 msgid "Command prefix can be 1–3 characters (default:"
 msgstr "Prefiks perintah dapat berupa karakter 1- 3 (baku:"
@@ -439,7 +439,7 @@ msgstr "Perintah"
 msgid "Configuration"
 msgstr "Konfigurasi"
 
-#: lib/retro_hex_chat_web/controllers/help_content/bot_command.html.heex:100
+#: lib/retro_hex_chat_web/controllers/help_content/bot_command.html.heex:108
 #, elixir-autogen, elixir-format
 msgid "Cooldown minimum is 500ms (default: 2000ms)"
 msgstr "Minimum cooldown adalah 500ms (baku: 2000ms)"
@@ -467,7 +467,7 @@ msgstr "Deskripsi"
 msgid "Detection Types"
 msgstr "Tipe Deteksi"
 
-#: lib/retro_hex_chat_web/controllers/help_content/bot_command.html.heex:123
+#: lib/retro_hex_chat_web/controllers/help_content/bot_command.html.heex:131
 #: lib/retro_hex_chat_web/controllers/help_content/botservice.html.heex:36
 #: lib/retro_hex_chat_web/controllers/help_content/botservice.html.heex:195
 #, elixir-autogen, elixir-format
@@ -502,7 +502,7 @@ msgstr "Setiap jadwal memiliki ID unik yang ditampilkan dalam perintah daftar"
 msgid "Example"
 msgstr "Contoh"
 
-#: lib/retro_hex_chat_web/controllers/help_content/bot_command.html.heex:91
+#: lib/retro_hex_chat_web/controllers/help_content/bot_command.html.heex:99
 #: lib/retro_hex_chat_web/controllers/help_content/bot_dice.html.heex:77
 #: lib/retro_hex_chat_web/controllers/help_content/bot_rss.html.heex:82
 #: lib/retro_hex_chat_web/controllers/help_content/bot_scheduler.html.heex:82
@@ -589,7 +589,7 @@ msgstr "Daftar semua feed yang dikonfigurasi"
 msgid "Managing via Dialog"
 msgstr "Mengelola via Dialog"
 
-#: lib/retro_hex_chat_web/controllers/help_content/bot_command.html.heex:127
+#: lib/retro_hex_chat_web/controllers/help_content/bot_command.html.heex:135
 #: lib/retro_hex_chat_web/controllers/help_content/botservice.html.heex:44
 #: lib/retro_hex_chat_web/controllers/help_content/botservice.html.heex:199
 #, elixir-autogen, elixir-format
@@ -674,7 +674,7 @@ msgstr "Buka dialog Manajemen Bot ("
 msgid "Polling timers automatically reschedule after each poll"
 msgstr "Penghitung mundur otomatis setelah setiap jajak pendapat"
 
-#: lib/retro_hex_chat_web/controllers/help_content/bot_command.html.heex:126
+#: lib/retro_hex_chat_web/controllers/help_content/bot_command.html.heex:134
 #: lib/retro_hex_chat_web/controllers/help_content/botservice.html.heex:67
 #: lib/retro_hex_chat_web/controllers/help_content/botservice.html.heex:198
 #, elixir-autogen, elixir-format
@@ -711,13 +711,13 @@ msgstr "Putar dadu N dengan sisi S"
 msgid "Rules"
 msgstr "Aturan"
 
-#: lib/retro_hex_chat_web/controllers/help_content/bot_command.html.heex:94
+#: lib/retro_hex_chat_web/controllers/help_content/bot_command.html.heex:102
 #: lib/retro_hex_chat_web/controllers/help_content/bot_custom_commands.html.heex:67
 #, elixir-autogen, elixir-format
 msgid "Rules & Limits"
 msgstr "Aturan & Batas"
 
-#: lib/retro_hex_chat_web/controllers/help_content/bot_command.html.heex:108
+#: lib/retro_hex_chat_web/controllers/help_content/bot_command.html.heex:116
 #, elixir-autogen, elixir-format
 msgid "Running"
 msgstr "Berjalan"
@@ -727,7 +727,7 @@ msgstr "Berjalan"
 msgid "Schedule Types"
 msgstr "Tipe Jadwal"
 
-#: lib/retro_hex_chat_web/controllers/help_content/bot_command.html.heex:125
+#: lib/retro_hex_chat_web/controllers/help_content/bot_command.html.heex:133
 #: lib/retro_hex_chat_web/controllers/help_content/botservice.html.heex:61
 #: lib/retro_hex_chat_web/controllers/help_content/botservice.html.heex:197
 #, elixir-autogen, elixir-format
@@ -744,7 +744,7 @@ msgstr "Skema bertahan di seluruh robot memulai ulang"
 msgid "Scores reset when a new round starts"
 msgstr "Nilai reset ketika ronde baru dimulai"
 
-#: lib/retro_hex_chat_web/controllers/help_content/bot_command.html.heex:113
+#: lib/retro_hex_chat_web/controllers/help_content/bot_command.html.heex:121
 #: lib/retro_hex_chat_web/controllers/help_content/bot_custom_commands.html.heex:91
 #: lib/retro_hex_chat_web/controllers/help_content/bot_dice.html.heex:80
 #: lib/retro_hex_chat_web/controllers/help_content/bot_moderation.html.heex:104
@@ -878,7 +878,7 @@ msgstr "Manajemen PirBot"
 msgid "Triggers must be unique per bot (case-sensitive)"
 msgstr "Triggers harus unik per bot (case-sensitive)"
 
-#: lib/retro_hex_chat_web/controllers/help_content/bot_command.html.heex:124
+#: lib/retro_hex_chat_web/controllers/help_content/bot_command.html.heex:132
 #: lib/retro_hex_chat_web/controllers/help_content/botservice.html.heex:51
 #: lib/retro_hex_chat_web/controllers/help_content/botservice.html.heex:196
 #, elixir-autogen, elixir-format
@@ -906,7 +906,7 @@ msgstr ""
 msgid "Word Filter"
 msgstr "Filter Kata"
 
-#: lib/retro_hex_chat_web/controllers/help_content/bot_command.html.heex:84
+#: lib/retro_hex_chat_web/controllers/help_content/bot_command.html.heex:92
 #, elixir-autogen, elixir-format
 msgid "addcmd / delcmd"
 msgstr "addcmd / delcmd"
@@ -1005,7 +1005,7 @@ msgstr "untuk menghapus yang ada."
 msgid "— Action on violation:"
 msgstr "- Aksi pelanggaran:"
 
-#: lib/retro_hex_chat_web/controllers/help_content/bot_command.html.heex:84
+#: lib/retro_hex_chat_web/controllers/help_content/bot_command.html.heex:92
 #, elixir-autogen, elixir-format
 msgid "— Add or remove a custom command."
 msgstr "- Tambah atau hapus perintah gubahan."
@@ -1107,7 +1107,7 @@ msgstr "- Ambang deteksi Banjir (baku: 5)"
 msgid "— Historical events and figures"
 msgstr "- Peristiwa bersejarah dan angka"
 
-#: lib/retro_hex_chat_web/controllers/help_content/bot_command.html.heex:76
+#: lib/retro_hex_chat_web/controllers/help_content/bot_command.html.heex:84
 #, elixir-autogen, elixir-format
 msgid "— List custom commands for a bot. Available to all users."
 msgstr "- Daftar perintah custom untuk robot. Tersedia untuk semua pengguna."
@@ -1529,7 +1529,7 @@ msgstr ""
 msgid "/bot enable GreeterBot /bot disable GreeterBot"
 msgstr "/bot enable GreeterBot /bot disable GreeterBot"
 
-#: lib/retro_hex_chat_web/controllers/help_content/bot_command.html.heex:116
+#: lib/retro_hex_chat_web/controllers/help_content/bot_command.html.heex:124
 #: lib/retro_hex_chat_web/controllers/help_content/botservice.html.heex:188
 #, elixir-autogen, elixir-format
 msgid "Bot Management Dialog"
@@ -1545,7 +1545,7 @@ msgstr "menu, Opsi toolbar dropdown, atau dengan mengetik"
 msgid "— Toggle a bot globally."
 msgstr "- Jungkitkan robot secara global."
 
-#: lib/retro_hex_chat_web/controllers/help_content/bot_command.html.heex:73
+#: lib/retro_hex_chat_web/controllers/help_content/bot_command.html.heex:81
 #, elixir-autogen, elixir-format
 msgid "!"
 msgstr "!"
@@ -1562,12 +1562,12 @@ msgstr ""
 msgid "/bot addcmd FAQ rules \\c04\\bRead this:\\o Please read #rules"
 msgstr "/bot addcmd FAQ rules \\c04\\bRead this:\\o Please read #rules"
 
-#: lib/retro_hex_chat_web/controllers/help_content/bot_command.html.heex:73
+#: lib/retro_hex_chat_web/controllers/help_content/bot_command.html.heex:81
 #, elixir-autogen, elixir-format
 msgid "/bot set GreeterBot greeting \\c03\\bWelcome\\o"
 msgstr "/bot set GreeterBot greeting \\c03\\bWelcome\\o"
 
-#: lib/retro_hex_chat_web/controllers/help_content/bot_command.html.heex:66
+#: lib/retro_hex_chat_web/controllers/help_content/bot_command.html.heex:74
 #, elixir-autogen, elixir-format
 msgid "Bot chat text accepts IRC formatting escapes:"
 msgstr "Teks bot di obrolan menerima escape pemformatan IRC:"
@@ -1587,17 +1587,17 @@ msgstr "untuk tebal, dan"
 msgid "for colour,"
 msgstr "untuk warna,"
 
-#: lib/retro_hex_chat_web/controllers/help_content/bot_command.html.heex:69
+#: lib/retro_hex_chat_web/controllers/help_content/bot_command.html.heex:77
 #, elixir-autogen, elixir-format
 msgid "italic,"
 msgstr "miring,"
 
-#: lib/retro_hex_chat_web/controllers/help_content/bot_command.html.heex:71
+#: lib/retro_hex_chat_web/controllers/help_content/bot_command.html.heex:79
 #, elixir-autogen, elixir-format
 msgid "resets formatting."
 msgstr "mengatur ulang pemformatan."
 
-#: lib/retro_hex_chat_web/controllers/help_content/bot_command.html.heex:67
+#: lib/retro_hex_chat_web/controllers/help_content/bot_command.html.heex:75
 #, elixir-autogen, elixir-format
 msgid "sets a colour,"
 msgstr "menetapkan warna,"
@@ -1607,12 +1607,12 @@ msgstr "menetapkan warna,"
 msgid "to reset formatting."
 msgstr "untuk mengatur ulang pemformatan."
 
-#: lib/retro_hex_chat_web/controllers/help_content/bot_command.html.heex:68
+#: lib/retro_hex_chat_web/controllers/help_content/bot_command.html.heex:76
 #, elixir-autogen, elixir-format
 msgid "toggles bold,"
 msgstr "mengaktifkan tebal,"
 
-#: lib/retro_hex_chat_web/controllers/help_content/bot_command.html.heex:70
+#: lib/retro_hex_chat_web/controllers/help_content/bot_command.html.heex:78
 #, elixir-autogen, elixir-format
 msgid "underline, and"
 msgstr "garis bawah, dan"
@@ -1638,7 +1638,7 @@ msgstr ""
 "bot berbicara tanpa pengawasan, di ruang yang bahkan tidak perlu dimasuki "
 "pembuatnya."
 
-#: lib/retro_hex_chat_web/controllers/help_content/bot_command.html.heex:102
+#: lib/retro_hex_chat_web/controllers/help_content/bot_command.html.heex:110
 #, elixir-autogen, elixir-format
 msgid "Only admins and server operators can use /bot at all — listing bots, reading a bot's info or its feeds included"
 msgstr ""
@@ -1663,7 +1663,7 @@ msgstr ""
 "hanya membaca: menjalankan /bot tanpa argumen membuka Manajemen Bot, dan "
 "siapa pun selain itu akan ditolak."
 
-#: lib/retro_hex_chat_web/controllers/help_content/bot_command.html.heex:109
+#: lib/retro_hex_chat_web/controllers/help_content/bot_command.html.heex:117
 #, elixir-autogen, elixir-format
 msgid "with no arguments opens the Bot Management dialog"
 msgstr "tanpa argumen membuka dialog Manajemen Bot"
@@ -1889,3 +1889,18 @@ msgstr "Ini dikirim setiap kali mereka membuka saluran."
 #, elixir-autogen, elixir-format
 msgid "Only the visitor sees it."
 msgstr "Hanya pengunjung yang melihatnya."
+
+#: lib/retro_hex_chat_web/controllers/help_content/bot_command.html.heex:72
+#, elixir-autogen, elixir-format
+msgid "/bot set GreeterBot language pt_BR"
+msgstr "/bot set GreeterBot language pt_BR"
+
+#: lib/retro_hex_chat_web/controllers/help_content/bot_command.html.heex:138
+#, elixir-autogen, elixir-format
+msgid "Language Flags"
+msgstr "Bendera bahasa"
+
+#: lib/retro_hex_chat_web/controllers/help_content/bot_command.html.heex:67
+#, elixir-autogen, elixir-format
+msgid "— the language the bot speaks, such as pt_BR or ja. Its flag is drawn beside the bot's nickname, in the user list and on its lines; none takes it away."
+msgstr "— bahasa yang dipakai bot, misalnya pt_BR atau ja. Benderanya tampil di samping nama panggilan bot, di daftar pengguna, dan di pesannya; none menghapusnya."

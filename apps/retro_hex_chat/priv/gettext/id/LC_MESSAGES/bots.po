@@ -239,12 +239,12 @@ msgstr "Blok"
 msgid "Blue aliens"
 msgstr "Alien biru"
 
-#: lib/retro_hex_chat/bots/lifecycle.ex:85
+#: lib/retro_hex_chat/bots/lifecycle.ex:110
 #, elixir-autogen, elixir-format
 msgid "Bot destroyed"
 msgstr "Bot hancur"
 
-#: lib/retro_hex_chat/bots/server.ex:950
+#: lib/retro_hex_chat/bots/server.ex:964
 #, elixir-autogen, elixir-format
 msgid "Bot leaving"
 msgstr "Bot meninggalkan"
@@ -430,7 +430,7 @@ msgstr "Filosofi Jerman"
 msgid "Greenland"
 msgstr "Greenland"
 
-#: lib/retro_hex_chat/bots/capabilities/greeter.ex:46
+#: lib/retro_hex_chat/bots/capabilities/greeter.ex:51
 #, elixir-autogen, elixir-format
 msgid "Greet users on join, say goodbye on part"
 msgstr "Sambut pengguna saat bergabung, ucapkan selamat tinggal pada bagian"
@@ -461,7 +461,7 @@ msgstr "Hex = enam"
 msgid "Hey {nickname}, please keep it civil."
 msgstr "Hey {nickname}, please keep it civil."
 
-#: lib/retro_hex_chat/bots/capabilities/mention.ex:60
+#: lib/retro_hex_chat/bots/capabilities/mention.ex:62
 #, elixir-autogen, elixir-format
 msgid "Hi {nickname}! Try {prefix}help for my commands."
 msgstr "Hi {julukan}! Coba {prefix} bantu perintah saya."
@@ -941,12 +941,12 @@ msgstr "Hapus asupan RSS"
 msgid "Renaissance"
 msgstr "Renaissance"
 
-#: lib/retro_hex_chat/bots/capabilities/mention.ex:17
+#: lib/retro_hex_chat/bots/capabilities/mention.ex:19
 #, elixir-autogen, elixir-format
 msgid "Respond when mentioned by name"
 msgstr "Jawab ketika disebutkan dengan nama"
 
-#: lib/retro_hex_chat/bots/capabilities/mention.ex:55
+#: lib/retro_hex_chat/bots/capabilities/mention.ex:57
 #, elixir-autogen, elixir-format
 msgid "Response must be a non-empty string"
 msgstr "Respon harus berupa string tidak kosong"
@@ -1221,7 +1221,7 @@ msgstr "Web"
 msgid "Web pages"
 msgstr "Halaman web"
 
-#: lib/retro_hex_chat/bots/capabilities/greeter.ex:212
+#: lib/retro_hex_chat/bots/capabilities/greeter.ex:227
 #, elixir-autogen, elixir-format
 msgid "Welcome, {nickname}!"
 msgstr "Selamat datang, {nama panggilan}!"
@@ -1691,12 +1691,12 @@ msgstr "max _ dice harus antara 1 dan 1000"
 msgid "max_sides must be between 2 and 10_000"
 msgstr "max _ sides harus antara 2 dan 10 _ 000"
 
-#: lib/retro_hex_chat/bots/bot.ex:46
+#: lib/retro_hex_chat/bots/bot.ex:60
 #, elixir-autogen, elixir-format
 msgid "must start with a letter"
 msgstr "harus mulai dengan surat"
 
-#: lib/retro_hex_chat/bots/bot.ex:43
+#: lib/retro_hex_chat/bots/bot.ex:57
 #: lib/retro_hex_chat/bots/bot_custom_command.ex:32
 #, elixir-autogen, elixir-format
 msgid "only letters, numbers, _ and -"
@@ -1747,7 +1747,7 @@ msgstr "RSS"
 msgid "Refusing %{url}: %{reason}"
 msgstr "Menolak %{url}: %{reason}"
 
-#: lib/retro_hex_chat/bots/capabilities/greeter.ex:106
+#: lib/retro_hex_chat/bots/capabilities/greeter.ex:121
 #, elixir-autogen, elixir-format
 msgid "Repeat window must be a non-negative number of seconds"
 msgstr "Jendela pengulangan harus berupa jumlah detik non-negatif"
@@ -1802,7 +1802,7 @@ msgstr "%{count}mnt lalu"
 msgid "Read full story"
 msgstr "Baca selengkapnya"
 
-#: lib/retro_hex_chat/bots/capabilities/greeter.ex:243
+#: lib/retro_hex_chat/bots/capabilities/greeter.ex:258
 #, elixir-autogen, elixir-format
 msgid "%{field} must be public, channel_notice, private_notice, or silent"
 msgstr "%{field} harus public, channel_notice, private_notice, atau silent"

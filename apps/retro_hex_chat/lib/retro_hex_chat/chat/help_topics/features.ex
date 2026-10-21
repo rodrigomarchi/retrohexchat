@@ -144,7 +144,9 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
           dgettext("help", "language flag"),
           dgettext("help", "change my flag"),
           "cs language",
-          dgettext("help", "channel language")
+          dgettext("help", "channel language"),
+          "bot language",
+          dgettext("help", "bot language")
         ],
         icon: :icon_globe,
         description:
@@ -158,7 +160,8 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
           "ui-start-menu",
           "ui-nicklist",
           "cmd-cs",
-          "chanserv-ui"
+          "chanserv-ui",
+          "bot-command"
         ]
       },
       %{

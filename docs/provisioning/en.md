@@ -203,7 +203,11 @@ included, is joined explicitly.
 # ══════════════════════════════════════════════════════════
 #  3. Brutus — moderation, every channel
 # ══════════════════════════════════════════════════════════
+# Every bot says its language right after it is created: /bot set <Bot>
+# language en draws the English flag beside its nickname, as /cs language en
+# does beside each room's name.
 /bot create Brutus Chief of Vibe Protection and Chat Safety
+/bot set Brutus language en
 /bot set Brutus prefix !
 /bot set Brutus cooldown 1000
 /bot set Brutus mod_action warn
@@ -248,6 +252,7 @@ included, is joined explicitly.
 # day: the window is only long enough to absorb a reconnect, so a flaky
 # connection does not replay the same lines several times in a minute.
 /bot create Patches Lobby Attendant and Channel Tour Guide
+/bot set Patches language en
 /bot set Patches prefix !
 /bot set Patches cooldown 1000
 /bot set Patches dice_default 1d20
@@ -278,6 +283,7 @@ included, is joined explicitly.
 # a guide speaks when somebody asks, by command or by saying its name.
 
 /bot create Coach Retro Games Guide
+/bot set Coach language en
 /bot set Coach prefix !
 /bot set Coach cooldown 1000
 /bot set Coach greeting none
@@ -293,6 +299,7 @@ included, is joined explicitly.
 /bot join Coach #lobby
 
 /bot create Nova Virtual Spaces Guide
+/bot set Nova language en
 /bot set Nova prefix !
 /bot set Nova cooldown 1000
 /bot set Nova greeting none
@@ -308,6 +315,7 @@ included, is joined explicitly.
 /bot join Nova #lobby
 
 /bot create Echo Calls and P2P Guide
+/bot set Echo language en
 /bot set Echo prefix !
 /bot set Echo cooldown 1000
 /bot set Echo greeting none
@@ -323,6 +331,7 @@ included, is joined explicitly.
 
 # ── Wanda — #trivia host (the retention engine) ──────────
 /bot create Wanda Quizmistress and Keeper of the Scoreboard
+/bot set Wanda language en
 /bot set Wanda prefix !
 /bot set Wanda cooldown 1000
 /bot set Wanda trivia_category general
@@ -347,6 +356,7 @@ included, is joined explicitly.
 
 # ── Pixel — #arcade and #retro ───────────────────────────
 /bot create Pixel Arcade Operator and Retro Gaming Enthusiast
+/bot set Pixel language en
 /bot set Pixel prefix !
 /bot set Pixel cooldown 1000
 /bot set Pixel greeting \c12\b[Pixel]\o Welcome to the arcade, {nickname}! I'm Pixel. \c10!games\o for the catalogue, !controls if the keys fight back.
@@ -372,6 +382,7 @@ included, is joined explicitly.
 
 # ── Murphy — #tech, the pessimistic sysadmin ─────────────
 /bot create Murphy Senior Incident Survivor and Professional Pessimist
+/bot set Murphy language en
 /bot set Murphy prefix !
 /bot set Murphy cooldown 1000
 /bot set Murphy greeting \c14\b[Murphy]\o Welcome to #tech, {nickname}. \c04Everything is on fire\o but that's normal. Try !deploy, !fix, !tabs, or !wisdom. *eye twitch*
@@ -400,6 +411,7 @@ included, is joined explicitly.
 # The first poll of a new feed publishes the page it receives, records it, then
 # reports only what arrives afterwards.
 /bot create Gazeta Editor of the wire desk
+/bot set Gazeta language en
 /bot set Gazeta prefix !
 /bot set Gazeta cooldown 1000
 /bot set Gazeta rss_interval 20
@@ -440,6 +452,7 @@ included, is joined explicitly.
 
 # ── Freeman — #foss ──────────────────────────────────────
 /bot create Freeman Keeper of the release notes
+/bot set Freeman language en
 /bot set Freeman prefix !
 /bot set Freeman cooldown 1000
 /bot set Freeman rss_interval 30
@@ -459,6 +472,7 @@ included, is joined explicitly.
 
 # ── Cassandra — #security ────────────────────────────────
 /bot create Cassandra Bearer of advisories nobody reads in time
+/bot set Cassandra language en
 /bot set Cassandra prefix !
 /bot set Cassandra cooldown 1000
 /bot set Cassandra rss_interval 30
@@ -478,6 +492,7 @@ included, is joined explicitly.
 
 # ── Ada — #ai ────────────────────────────────────────────
 /bot create Ada Reader of preprints
+/bot set Ada language en
 /bot set Ada prefix !
 /bot set Ada cooldown 1000
 /bot set Ada rss_interval 60
@@ -497,6 +512,7 @@ included, is joined explicitly.
 
 # ── Curie — #science ─────────────────────────────────────
 /bot create Curie Keeper of the observations
+/bot set Curie language en
 /bot set Curie prefix !
 /bot set Curie cooldown 1000
 /bot set Curie rss_interval 60
@@ -515,6 +531,7 @@ included, is joined explicitly.
 
 # ── Yuki — #anime ────────────────────────────────────────
 /bot create Yuki Watcher of the seasonal charts
+/bot set Yuki language en
 /bot set Yuki prefix !
 /bot set Yuki cooldown 1000
 /bot set Yuki rss_interval 30
@@ -543,6 +560,7 @@ included, is joined explicitly.
 
 # ── Joystick — #arcade gaming wire ───────────────────────
 /bot create Joystick Cabinet Newsrunner
+/bot set Joystick language en
 /bot set Joystick prefix !
 /bot set Joystick cooldown 1000
 /bot set Joystick rss_interval 45
@@ -556,6 +574,7 @@ included, is joined explicitly.
 
 # ── Sprite — #retro computing wire ───────────────────────
 /bot create Sprite Retro Wire Courier
+/bot set Sprite language en
 /bot set Sprite prefix !
 /bot set Sprite cooldown 1000
 /bot set Sprite rss_interval 90
@@ -570,6 +589,7 @@ included, is joined explicitly.
 
 # ── Byte — #tech general technology wire ─────────────────
 /bot create Byte Tech Desk Runner
+/bot set Byte language en
 /bot set Byte prefix !
 /bot set Byte cooldown 1000
 /bot set Byte rss_interval 30
@@ -585,6 +605,7 @@ included, is joined explicitly.
 
 # ── Atlas — #news world wire ─────────────────────────────
 /bot create Atlas World Wire Editor
+/bot set Atlas language en
 /bot set Atlas prefix !
 /bot set Atlas cooldown 1000
 /bot set Atlas rss_interval 20
@@ -598,6 +619,7 @@ included, is joined explicitly.
 
 # ── Tux — #foss distro and desktop wire ──────────────────
 /bot create Tux Distro Wire Penguin
+/bot set Tux language en
 /bot set Tux prefix !
 /bot set Tux cooldown 1000
 /bot set Tux rss_interval 30
@@ -612,6 +634,7 @@ included, is joined explicitly.
 
 # ── Sentinel — #security research wire ───────────────────
 /bot create Sentinel Research Watch Officer
+/bot set Sentinel language en
 /bot set Sentinel prefix !
 /bot set Sentinel cooldown 1000
 /bot set Sentinel rss_interval 30
@@ -626,6 +649,7 @@ included, is joined explicitly.
 
 # ── Vega — #ai lab wire ──────────────────────────────────
 /bot create Vega Lab Release Tracker
+/bot set Vega language en
 /bot set Vega prefix !
 /bot set Vega cooldown 1000
 /bot set Vega rss_interval 60
@@ -641,6 +665,7 @@ included, is joined explicitly.
 
 # ── Quasar — #science discovery wire ─────────────────────
 /bot create Quasar Discovery Desk
+/bot set Quasar language en
 /bot set Quasar prefix !
 /bot set Quasar cooldown 1000
 /bot set Quasar rss_interval 60
@@ -656,6 +681,7 @@ included, is joined explicitly.
 
 # ── Sakura — #anime news wire ────────────────────────────
 /bot create Sakura Anime Wire Host
+/bot set Sakura language en
 /bot set Sakura prefix !
 /bot set Sakura cooldown 1000
 /bot set Sakura rss_interval 30
@@ -669,6 +695,7 @@ included, is joined explicitly.
 
 # ── Harold — #help ───────────────────────────────────────
 /bot create Harold Senior Assistant to the Help Department
+/bot set Harold language en
 /bot set Harold prefix !
 /bot set Harold cooldown 1000
 /bot set Harold greeting \c02\b[Harold]\o It looks like you need help, {nickname}! I'm Harold — try !faq, !commands, or !stuck. \c03I live to assist\o.
@@ -766,7 +793,8 @@ answers orientation questions in its own language instead.
 | **Harold** | `#help` | `help`, `custom_commands` | Clippy, self-aware |
 
 Every bot also carries `greeter`, `custom_commands`, `help` and `mention` — those four
-come with creation.
+come with creation. Every bot is also marked English: `/bot set <Bot> language en`
+follows its `/bot create` and draws the English flag beside its nickname.
 
 ---
 

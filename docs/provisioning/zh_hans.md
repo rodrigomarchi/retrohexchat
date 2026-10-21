@@ -105,6 +105,7 @@ shot, logged in as an admin who has `/identify`-ed.
 # 每种语言配自己的值守：看不懂的警告不算警告。进出时不出声 —— 它站在十个
 # 频道里，打两次招呼看起来像故障，不像性格。
 /bot create Weishi Anjing yu limao de fuzeren
+/bot set Weishi language zh_hans
 /bot set Weishi prefix !
 /bot set Weishi cooldown 1000
 /bot set Weishi mod_action warn
@@ -134,6 +135,7 @@ shot, logged in as an admin who has `/identify`-ed.
 # ══════════════════════════════════════════════════════════
 # 欢迎语走私密 notice：新来的人在频道里拿到指引，别人的记录不会被刷屏。
 /bot create Xiaomei Zhongwen pindao de zhuren
+/bot set Xiaomei language zh_hans
 /bot set Xiaomei prefix !
 /bot set Xiaomei cooldown 1000
 /bot set Xiaomei dice_default 1d20
@@ -165,6 +167,7 @@ shot, logged in as an admin who has `/identify`-ed.
 # ── Ahua — #zhongwen ─────────────────────────────────────
 # 不打招呼：这个频道里迎客的是 Xiaomei。
 /bot create Ahua Zhiban jizhe
+/bot set Ahua language zh_hans
 /bot set Ahua prefix !
 /bot set Ahua cooldown 1000
 /bot set Ahua rss_interval 20
@@ -179,6 +182,7 @@ shot, logged in as an admin who has `/identify`-ed.
 
 # ── Lifeng — #cn-tech ────────────────────────────────────
 /bot create Lifeng Keji tiaomu de bianji
+/bot set Lifeng language zh_hans
 /bot set Lifeng prefix !
 /bot set Lifeng cooldown 1000
 /bot set Lifeng rss_interval 30
@@ -199,6 +203,7 @@ shot, logged in as an admin who has `/identify`-ed.
 
 # ── Xiaolong — #cn-digital ───────────────────────────────
 /bot create Xiaolong Shuma chanpin guanchazhe
+/bot set Xiaolong language zh_hans
 /bot set Xiaolong prefix !
 /bot set Xiaolong cooldown 1000
 /bot set Xiaolong rss_interval 45
@@ -217,6 +222,7 @@ shot, logged in as an admin who has `/identify`-ed.
 
 # ── Meili — #cn-apps ─────────────────────────────────────
 /bot create Meili Ruanjian tuijian bianji
+/bot set Meili language zh_hans
 /bot set Meili prefix !
 /bot set Meili cooldown 1000
 /bot set Meili rss_interval 60
@@ -235,6 +241,7 @@ shot, logged in as an admin who has `/identify`-ed.
 
 # ── Laowang — #cn-blog ───────────────────────────────────
 /bot create Laowang Duli boke de dujing ren
+/bot set Laowang language zh_hans
 /bot set Laowang prefix !
 /bot set Laowang cooldown 1000
 /bot set Laowang rss_interval 120
@@ -254,6 +261,7 @@ shot, logged in as an admin who has `/identify`-ed.
 
 # ── Dabing — #cn-dev ─────────────────────────────────────
 /bot create Dabing Kan bieren daima de ren
+/bot set Dabing language zh_hans
 /bot set Dabing prefix !
 /bot set Dabing cooldown 1000
 /bot set Dabing rss_interval 45
@@ -271,6 +279,7 @@ shot, logged in as an admin who has `/identify`-ed.
 
 # ── Kaiyuan — #cn-open ───────────────────────────────────
 /bot create Kaiyuan Fabu riji de kanshouren
+/bot set Kaiyuan language zh_hans
 /bot set Kaiyuan prefix !
 /bot set Kaiyuan cooldown 1000
 /bot set Kaiyuan rss_interval 45
@@ -289,6 +298,7 @@ shot, logged in as an admin who has `/identify`-ed.
 
 # ── Zhineng — #cn-ai ─────────────────────────────────────
 /bot create Zhineng Moxing fabu genzongzhe
+/bot set Zhineng language zh_hans
 /bot set Zhineng prefix !
 /bot set Zhineng cooldown 1000
 /bot set Zhineng rss_interval 60
@@ -307,6 +317,7 @@ shot, logged in as an admin who has `/identify`-ed.
 
 # ── Youxi — #cn-games ────────────────────────────────────
 /bot create Youxi Youxiting de kanchang
+/bot set Youxi language zh_hans
 /bot set Youxi prefix !
 /bot set Youxi cooldown 1000
 /bot set Youxi rss_interval 60
@@ -326,6 +337,7 @@ shot, logged in as an admin who has `/identify`-ed.
 
 # ── Qianbao — #cn-money ──────────────────────────────────
 /bot create Qianbao Shangye guanchazhe
+/bot set Qianbao language zh_hans
 /bot set Qianbao prefix !
 /bot set Qianbao cooldown 1000
 /bot set Qianbao rss_interval 45
@@ -373,6 +385,8 @@ matters after a paste.
 
 **Weishi** stands in all ten and greets in none of them. All channels are `+tn`,
 publish their archive and are marked Simplified Chinese (`/cs language zh_hans`).
+Every bot is marked Simplified Chinese too: `/bot set <Bot> language zh_hans`
+follows its `/bot create` and draws the same flag beside its nickname.
 
 `#cn-blog` polls every two hours on purpose: those writers publish a few posts a
 week, and knocking every half hour costs both sides bandwidth for nothing.

@@ -7,6 +7,7 @@ defmodule RetroHexChat.Commands.Handlers.BotTest do
   alias RetroHexChat.Bots.{Queries, Registry, Supervisor}
   alias RetroHexChat.Commands.Handlers.Bot
   alias RetroHexChat.Jobs.RSSPollWorker
+  alias RetroHexChat.Topics
 
   @bold <<0x02>>
   @colour <<0x03>>
@@ -105,6 +106,38 @@ defmodule RetroHexChat.Commands.Handlers.BotTest do
 
       assert {:ok, :system, %{content: c2}} = Bot.execute(["enable", "BotCmdTest"], @admin_ctx)
       assert c2 =~ "enabled"
+    end
+  end
+
+  describe "execute set language" do
+    test "sets the language written loosely, tells every screen, and clears it" do
+      Bot.execute(["create", "BotCmdTest"], @admin_ctx)
+      Phoenix.PubSub.subscribe(RetroHexChat.PubSub, Topics.presence())
+      nickname = Queries.get_bot_by_name("BotCmdTest").nickname
+
+      assert {:ok, :system, %{content: c}} =
+               Bot.execute(["set", "BotCmdTest", "language", "pt-br"], @admin_ctx)
+
+      assert c =~ "Português (Brasil)"
+      assert Queries.get_bot_by_name("BotCmdTest").locale == "pt_BR"
+      assert_receive {:locale_changed, %{nickname: ^nickname, locale: "pt_BR"}}
+
+      assert {:ok, :system, %{content: info}} = Bot.execute(["info", "BotCmdTest"], @admin_ctx)
+      assert info =~ "Language: Português (Brasil)"
+
+      assert {:ok, :system, _} =
+               Bot.execute(["set", "BotCmdTest", "language", "none"], @admin_ctx)
+
+      assert Queries.get_bot_by_name("BotCmdTest").locale == nil
+      assert_receive {:locale_changed, %{nickname: ^nickname, locale: nil}}
+    end
+
+    test "refuses a language the chat does not speak" do
+      Bot.execute(["create", "BotCmdTest"], @admin_ctx)
+
+      assert {:error, msg} = Bot.execute(["set", "BotCmdTest", "language", "xx"], @admin_ctx)
+      assert msg =~ "Unknown language: xx"
+      assert Queries.get_bot_by_name("BotCmdTest").locale == nil
     end
   end
 

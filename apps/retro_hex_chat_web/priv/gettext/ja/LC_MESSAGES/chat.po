@@ -160,7 +160,7 @@ msgid "%{count} user"
 msgid_plural "%{count} users"
 msgstr[0] "%{count} ユーザー"
 
-#: lib/retro_hex_chat_web/live/chat_live/bot_events.ex:632
+#: lib/retro_hex_chat_web/live/chat_live/bot_events.ex:713
 #, elixir-autogen, elixir-format
 msgid "%{field}: %{errors}"
 msgstr "%{field}: %{errors}"
@@ -765,12 +765,12 @@ msgstr "ボールド(Ctrl+Shift+B)"
 msgid "Bot"
 msgstr "ボット"
 
-#: lib/retro_hex_chat_web/live/chat_live/bot_events.ex:403
+#: lib/retro_hex_chat_web/live/chat_live/bot_events.ex:420
 #, elixir-autogen, elixir-format
 msgid "Bot already in %{channel}."
 msgstr "%{channel} で既にボット。"
 
-#: lib/retro_hex_chat_web/live/chat_live/bot_events.ex:72
+#: lib/retro_hex_chat_web/live/chat_live/bot_events.ex:75
 #: lib/retro_hex_chat_web/live/chat_live/ui_actions/bots.ex:39
 #, elixir-autogen, elixir-format
 msgid "Bot management is restricted to server administrators."
@@ -928,7 +928,7 @@ msgstr "色(Ctrl+Shift+D)"
 msgid "Colors"
 msgstr "カラー"
 
-#: lib/retro_hex_chat_web/live/chat_live/bot_events.ex:287
+#: lib/retro_hex_chat_web/live/chat_live/bot_events.ex:304
 #, elixir-autogen, elixir-format
 msgid "Command '%{trigger}' already exists."
 msgstr "コマンド '%{trigger}' は既に存在します。"
@@ -1143,7 +1143,7 @@ msgstr "perform コマンドを追加できませんでした: %{reason}"
 msgid "Failed to send. Click to retry"
 msgstr "送信失敗しました。 クリックして再試行"
 
-#: lib/retro_hex_chat_web/live/chat_live/bot_events.ex:520
+#: lib/retro_hex_chat_web/live/chat_live/bot_events.ex:601
 #, elixir-autogen, elixir-format
 msgid "Failed to update capability."
 msgstr "更新機能に失敗しました。"
@@ -2192,47 +2192,47 @@ msgstr "サーバーのロールが変更されました: %{role}"
 msgid "[Auto-Whois] %{nickname}:"
 msgstr "[自動倉庫] %{nickname}:"
 
-#: lib/retro_hex_chat_web/live/chat_live/bot_events.ex:579
+#: lib/retro_hex_chat_web/live/chat_live/bot_events.ex:660
 #, elixir-autogen, elixir-format
 msgid "[BotService] Bot '%{name}' %{action}."
 msgstr "[BotService] ボット '%{name}' %{action}."
 
-#: lib/retro_hex_chat_web/live/chat_live/bot_events.ex:210
+#: lib/retro_hex_chat_web/live/chat_live/bot_events.ex:227
 #, elixir-autogen, elixir-format
 msgid "[BotService] Bot '%{name}' created."
 msgstr "[BotService] '%{name}' が作成されました。"
 
-#: lib/retro_hex_chat_web/live/chat_live/bot_events.ex:154
+#: lib/retro_hex_chat_web/live/chat_live/bot_events.ex:157
 #, elixir-autogen, elixir-format
 msgid "[BotService] Bot '%{name}' destroyed."
 msgstr "[BotService] ボット '%{name}' が破壊されました。"
 
-#: lib/retro_hex_chat_web/live/chat_live/bot_events.ex:396
+#: lib/retro_hex_chat_web/live/chat_live/bot_events.ex:413
 #, elixir-autogen, elixir-format
 msgid "[BotService] Bot '%{name}' joined %{channel}."
 msgstr "[BotService] ボット '%{name}' が %{channel} に加わりました。"
 
-#: lib/retro_hex_chat_web/live/chat_live/bot_events.ex:248
+#: lib/retro_hex_chat_web/live/chat_live/bot_events.ex:265
 #, elixir-autogen, elixir-format
 msgid "[BotService] Bot '%{name}' left %{channel}."
 msgstr "[BotService] ボット '%{name}' 左 %{channel}."
 
-#: lib/retro_hex_chat_web/live/chat_live/bot_events.ex:513
+#: lib/retro_hex_chat_web/live/chat_live/bot_events.ex:594
 #, elixir-autogen, elixir-format
 msgid "[BotService] Capability '%{capability}' %{action}."
 msgstr "[BotService] 機能 '%{capability}' %{action}。"
 
-#: lib/retro_hex_chat_web/live/chat_live/bot_events.ex:281
+#: lib/retro_hex_chat_web/live/chat_live/bot_events.ex:298
 #, elixir-autogen, elixir-format
 msgid "[BotService] Command '%{trigger}' added."
 msgstr "[BotService] コマンド '%{trigger}' を追加しました。"
 
-#: lib/retro_hex_chat_web/live/chat_live/bot_events.ex:306
+#: lib/retro_hex_chat_web/live/chat_live/bot_events.ex:323
 #, elixir-autogen, elixir-format
 msgid "[BotService] Command '%{trigger}' removed."
 msgstr "[BotService] コマンド '%{trigger}' を削除しました。"
 
-#: lib/retro_hex_chat_web/live/chat_live/bot_events.ex:217
+#: lib/retro_hex_chat_web/live/chat_live/bot_events.ex:234
 #, elixir-autogen, elixir-format
 msgid "[BotService] Failed to create bot '%{name}': %{message}"
 msgstr "[BotService] Bot '%{name}' を作成できませんでした: %{message}"
@@ -2283,15 +2283,15 @@ msgstr "すべて"
 msgid "click to insert"
 msgstr "インサートをクリック"
 
-#: lib/retro_hex_chat_web/live/chat_live/bot_events.ex:507
-#: lib/retro_hex_chat_web/live/chat_live/bot_events.ex:574
+#: lib/retro_hex_chat_web/live/chat_live/bot_events.ex:588
+#: lib/retro_hex_chat_web/live/chat_live/bot_events.ex:655
 #: lib/retro_hex_chat_web/live/chat_live/ui_actions/invite.ex:35
 #, elixir-autogen, elixir-format
 msgid "disabled"
 msgstr "バリアフリー"
 
-#: lib/retro_hex_chat_web/live/chat_live/bot_events.ex:508
-#: lib/retro_hex_chat_web/live/chat_live/bot_events.ex:574
+#: lib/retro_hex_chat_web/live/chat_live/bot_events.ex:589
+#: lib/retro_hex_chat_web/live/chat_live/bot_events.ex:655
 #: lib/retro_hex_chat_web/live/chat_live/ui_actions/invite.ex:34
 #, elixir-autogen, elixir-format
 msgid "enabled"
@@ -2528,7 +2528,7 @@ msgstr "新しいニックネームを入力してください。"
 msgid "Error"
 msgstr "エラー"
 
-#: lib/retro_hex_chat_web/live/chat_live/bot_events.ex:586
+#: lib/retro_hex_chat_web/live/chat_live/bot_events.ex:667
 #, elixir-autogen, elixir-format
 msgid "Failed to update bot status."
 msgstr "ボットステータスを更新できなかった。"
@@ -3372,24 +3372,25 @@ msgstr "テキストフォーマット"
 msgid "User lookup"
 msgstr "ユーザー検索"
 
-#: lib/retro_hex_chat_web/live/chat_live/bot_events.ex:471
-#: lib/retro_hex_chat_web/live/chat_live/bot_events.ex:487
+#: lib/retro_hex_chat_web/live/chat_live/bot_events.ex:488
+#: lib/retro_hex_chat_web/live/chat_live/bot_events.ex:504
 #, elixir-autogen, elixir-format
 msgid "[BotService] %{reason}"
 msgstr "[ボットサービス] %{reason}"
 
-#: lib/retro_hex_chat_web/live/chat_live/bot_events.ex:455
-#: lib/retro_hex_chat_web/live/chat_live/bot_events.ex:476
+#: lib/retro_hex_chat_web/live/chat_live/bot_events.ex:175
+#: lib/retro_hex_chat_web/live/chat_live/bot_events.ex:472
+#: lib/retro_hex_chat_web/live/chat_live/bot_events.ex:493
 #, elixir-autogen, elixir-format
 msgid "[BotService] Bot not found."
 msgstr "[ボットサービス] ボットが見つかりません。"
 
-#: lib/retro_hex_chat_web/live/chat_live/bot_events.ex:464
+#: lib/retro_hex_chat_web/live/chat_live/bot_events.ex:481
 #, elixir-autogen, elixir-format
 msgid "[BotService] Feed added: %{url} → %{channel}"
 msgstr "[BotService] フィード追加: %{url} → %{channel}"
 
-#: lib/retro_hex_chat_web/live/chat_live/bot_events.ex:484
+#: lib/retro_hex_chat_web/live/chat_live/bot_events.ex:501
 #, elixir-autogen, elixir-format
 msgid "[BotService] Feed removed."
 msgstr "[BotService] フィードを削除しました。"
@@ -5996,3 +5997,23 @@ msgstr "%{nickname} がこのチャンネルの言語を解除しました。"
 #, elixir-autogen, elixir-format
 msgid "%{nickname} set this channel's language to %{language}."
 msgstr "%{nickname} がこのチャンネルの言語を %{language} に設定しました。"
+
+#: lib/retro_hex_chat_web/live/chat_live/bot_events.ex:541
+#, elixir-autogen, elixir-format
+msgid "[BotService] Bot '%{name}' has no language now."
+msgstr "[BotService] ボット '%{name}' の言語を解除しました。"
+
+#: lib/retro_hex_chat_web/live/chat_live/bot_events.ex:545
+#, elixir-autogen, elixir-format
+msgid "[BotService] Bot '%{name}' speaks %{language} now."
+msgstr "[BotService] ボット '%{name}' の言語を %{language} にしました。"
+
+#: lib/retro_hex_chat_web/live/chat_live/bot_events.ex:557
+#, elixir-autogen, elixir-format
+msgid "[BotService] Failed to set the language: %{message}"
+msgstr "[BotService] 言語を設定できませんでした: %{message}"
+
+#: lib/retro_hex_chat_web/live/chat_live/bot_events.ex:553
+#, elixir-autogen, elixir-format
+msgid "[BotService] Unknown language '%{language}'."
+msgstr "[BotService] 不明な言語 '%{language}'。"

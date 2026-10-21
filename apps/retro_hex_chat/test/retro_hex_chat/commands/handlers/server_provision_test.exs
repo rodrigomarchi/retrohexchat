@@ -278,6 +278,56 @@ defmodule RetroHexChat.Commands.Handlers.ServerProvisionTest do
     end
   end
 
+  # The language draws the flag beside the bot's nickname. Every bot a script
+  # creates speaks that script's language, so it carries the same code as the
+  # rooms, set once and right after the bot exists.
+  test "every bot it creates says its script's language, once", %{scripts: scripts} do
+    for path <- scripts do
+      {_body, _lines, parsed} = read(path)
+      file = Path.basename(path)
+      locale = Path.basename(path, ".md")
+
+      created = for ["bot", "create", name | _] <- parsed, uniq: true, do: name
+
+      spoken =
+        Enum.reduce(parsed, %{}, fn
+          ["bot", "set", bot, "language" | codes], acc ->
+            Map.update(acc, bot, [codes], &[codes | &1])
+
+          _line, acc ->
+            acc
+        end)
+
+      wrong =
+        for bot <- created,
+            codes = Map.get(spoken, bot, []),
+            codes != [[locale]],
+            do: {bot, Enum.reverse(codes)}
+
+      assert wrong == [],
+             "#{file}: every bot needs exactly one /bot set <Bot> language #{locale}: " <>
+               inspect(wrong)
+
+      uncreated = Map.keys(spoken) -- created
+
+      assert uncreated == [],
+             "#{file} sets a language on bots it never creates: #{inspect(uncreated)}"
+
+      misplaced =
+        parsed
+        |> Enum.chunk_every(2, 1, [[]])
+        |> Enum.filter(&match?([["bot", "create" | _], _next], &1))
+        |> Enum.reject(fn [["bot", "create", bot | _], next] ->
+          next == ["bot", "set", bot, "language", locale]
+        end)
+        |> Enum.map(fn [["bot", "create", bot | _], _next] -> bot end)
+
+      assert misplaced == [],
+             "#{file}: /bot set <Bot> language #{locale} belongs right after each " <>
+               "/bot create, these bots do not have it there: #{inspect(misplaced)}"
+    end
+  end
+
   test "every /bot set uses a key /bot set accepts", %{scripts: scripts} do
     for path <- scripts do
       {_body, _lines, parsed} = read(path)

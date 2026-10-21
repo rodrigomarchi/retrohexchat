@@ -207,6 +207,88 @@ defmodule RetroHexChatWeb.BotManagementEntryPointsFeatureTest do
     end
   end
 
+  describe "the bot's language" do
+    test "a bot created with a language is stored speaking it", %{conn: conn} do
+      bot_name = "Lang#{uid()}"
+      view = connect_admin(conn)
+
+      render_click(view, "create_bot", %{
+        "name" => bot_name,
+        "nickname" => bot_name,
+        "description" => "",
+        "prefix" => "!",
+        "cooldown" => "3",
+        "locale" => "pt_BR"
+      })
+
+      assert Queries.get_bot_by_name(bot_name).locale == "pt_BR"
+    end
+
+    test "a bot created with no language has none", %{conn: conn} do
+      bot_name = "Mute#{uid()}"
+      view = connect_admin(conn)
+
+      render_click(view, "create_bot", %{
+        "name" => bot_name,
+        "nickname" => bot_name,
+        "prefix" => "!",
+        "cooldown" => "3",
+        "locale" => ""
+      })
+
+      assert Queries.get_bot_by_name(bot_name).locale == nil
+    end
+
+    test "picking a language in the detail stores it, and No language clears it",
+         %{conn: conn} do
+      bot_name = "Poly#{uid()}"
+      {:ok, bot} = Queries.create_bot(%{name: bot_name, nickname: bot_name, created_by: "admin"})
+
+      view = connect_admin(conn)
+      render_click(view, "toolbar_action", %{"action" => "open_bot_dialog"})
+      render_click(view, "bot_select", %{"name" => bot.name})
+
+      view |> form("#bot-language-form", %{"locale" => "ja"}) |> render_change()
+      assert Queries.get_bot_by_name(bot_name).locale == "ja"
+
+      assert has_element?(
+               view,
+               ~s(#bot-language-form [data-testid="nick-flag"][data-locale="ja"])
+             )
+
+      view |> form("#bot-language-form", %{"locale" => ""}) |> render_change()
+      assert Queries.get_bot_by_name(bot_name).locale == nil
+    end
+
+    test "an unknown language is refused and the bot keeps its own", %{conn: conn} do
+      bot_name = "Keep#{uid()}"
+
+      {:ok, _bot} =
+        Queries.create_bot(%{
+          name: bot_name,
+          nickname: bot_name,
+          created_by: "admin",
+          locale: "ja"
+        })
+
+      view = connect_admin(conn)
+      render_click(view, "bot_set_locale", %{"bot_name" => bot_name, "locale" => "klingon"})
+
+      assert Queries.get_bot_by_name(bot_name).locale == "ja"
+      assert render(view) =~ "Unknown language"
+    end
+
+    test "a non-admin cannot change a bot's language", %{conn: conn} do
+      bot_name = "Fixed#{uid()}"
+      {:ok, _bot} = Queries.create_bot(%{name: bot_name, nickname: bot_name, created_by: "admin"})
+
+      view = connect_user(conn, "Rando#{uid()}")
+      render_click(view, "bot_set_locale", %{"bot_name" => bot_name, "locale" => "ja"})
+
+      assert Queries.get_bot_by_name(bot_name).locale == nil
+    end
+  end
+
   defp connect_admin(conn) do
     {:ok, view, _html} = live(chat_conn(conn, "TestAdmin", pre_identified: true), "/")
     view

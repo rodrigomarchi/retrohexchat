@@ -45,7 +45,8 @@ defmodule RetroHexChat.Chat.HelpTopics.Bots do
           dgettext("help", "bot set"),
           dgettext("help", "bot addcmd"),
           dgettext("help", "bot delcmd"),
-          "bot management"
+          "bot management",
+          dgettext("help", "bot language")
         ],
         icon: :icon_terminal,
         description:

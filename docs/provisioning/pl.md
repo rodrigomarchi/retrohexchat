@@ -100,6 +100,7 @@ shot, logged in as an admin who has `/identify`-ed.
 # jest ostrzeżeniem. Milczy przy wejściu i wyjściu — stoi we wszystkich dziesięciu
 # kanałach, a bramkarz witający dwa razy wygląda na usterkę.
 /bot create Stroz Szef spokoju i dobrych manier
+/bot set Stroz language pl
 /bot set Stroz prefix !
 /bot set Stroz cooldown 1000
 /bot set Stroz mod_action warn
@@ -130,6 +131,7 @@ shot, logged in as an admin who has `/identify`-ed.
 # Powitanie prywatnym notice: nowy dostaje wskazówki w kanale, nie zaśmiecając
 # historii wszystkim pozostałym.
 /bot create Kasia Gospodyni kanalu polskiego
+/bot set Kasia language pl
 /bot set Kasia prefix !
 /bot set Kasia cooldown 1000
 /bot set Kasia dice_default 1d20
@@ -163,6 +165,7 @@ shot, logged in as an admin who has `/identify`-ed.
 # ── Marek — #polska ──────────────────────────────────────
 # Bez powitania: w tym kanale wita Kasia.
 /bot create Marek Reporter na dyzurze
+/bot set Marek language pl
 /bot set Marek prefix !
 /bot set Marek cooldown 1000
 /bot set Marek rss_interval 20
@@ -176,6 +179,7 @@ shot, logged in as an admin who has `/identify`-ed.
 
 # ── Zofia — #wiadomosci ──────────────────────────────────
 /bot create Zofia Szefowa dzialu wiadomosci
+/bot set Zofia language pl
 /bot set Zofia prefix !
 /bot set Zofia cooldown 1000
 /bot set Zofia rss_interval 20
@@ -196,6 +200,7 @@ shot, logged in as an admin who has `/identify`-ed.
 
 # ── Jacek — #technologie ─────────────────────────────────
 /bot create Jacek Obserwator branzy
+/bot set Jacek language pl
 /bot set Jacek prefix !
 /bot set Jacek cooldown 1000
 /bot set Jacek rss_interval 30
@@ -215,6 +220,7 @@ shot, logged in as an admin who has `/identify`-ed.
 
 # ── Bogdan — #komputery ──────────────────────────────────
 /bot create Bogdan Skladacz komputerow
+/bot set Bogdan language pl
 /bot set Bogdan prefix !
 /bot set Bogdan cooldown 1000
 /bot set Bogdan rss_interval 45
@@ -235,6 +241,7 @@ shot, logged in as an admin who has `/identify`-ed.
 
 # ── Iwona — #bezpieczenstwo ──────────────────────────────
 /bot create Iwona Nosicielka ostrzezen czytanych za pozno
+/bot set Iwona language pl
 /bot set Iwona prefix !
 /bot set Iwona cooldown 1000
 /bot set Iwona rss_interval 30
@@ -254,6 +261,7 @@ shot, logged in as an admin who has `/identify`-ed.
 
 # ── Rafal — #gry ─────────────────────────────────────────
 /bot create Rafal Operator salonu gier
+/bot set Rafal language pl
 /bot set Rafal prefix !
 /bot set Rafal cooldown 1000
 /bot set Rafal rss_interval 45
@@ -273,6 +281,7 @@ shot, logged in as an admin who has `/identify`-ed.
 
 # ── Lech — #kibic ────────────────────────────────────────
 /bot create Lech Kronikarz z trybuny
+/bot set Lech language pl
 /bot set Lech prefix !
 /bot set Lech cooldown 1000
 /bot set Lech rss_interval 20
@@ -293,6 +302,7 @@ shot, logged in as an admin who has `/identify`-ed.
 
 # ── Kopernik — #nauka ────────────────────────────────────
 /bot create Kopernik Straznik obserwacji
+/bot set Kopernik language pl
 /bot set Kopernik prefix !
 /bot set Kopernik cooldown 1000
 /bot set Kopernik rss_interval 60
@@ -311,6 +321,7 @@ shot, logged in as an admin who has `/identify`-ed.
 
 # ── Halina — #gospodarka ─────────────────────────────────
 /bot create Halina Obserwatorka rynkow
+/bot set Halina language pl
 /bot set Halina prefix !
 /bot set Halina cooldown 1000
 /bot set Halina rss_interval 30
@@ -331,6 +342,7 @@ shot, logged in as an admin who has `/identify`-ed.
 
 # ── Ewa — #film ──────────────────────────────────────────
 /bot create Ewa Bileterka sali kinowej
+/bot set Ewa language pl
 /bot set Ewa prefix !
 /bot set Ewa cooldown 1000
 /bot set Ewa rss_interval 60
@@ -377,6 +389,8 @@ matters after a paste.
 
 **Stroz** stands in all ten and greets in none of them. All channels are `+tn`,
 publish their archive and are marked Polish (`/cs language pl`).
+Every bot is marked Polish too: `/bot set <Bot> language pl` follows its
+`/bot create` and draws the same flag beside its nickname.
 
 Room names drop the Polish diacritics — `#wiadomosci`, `#bezpieczenstwo` — because
 the client only turns ASCII channel mentions into links. Topics, greetings and

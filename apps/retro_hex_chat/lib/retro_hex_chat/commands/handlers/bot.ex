@@ -8,12 +8,13 @@ defmodule RetroHexChat.Commands.Handlers.Bot do
   alias RetroHexChat.ChangesetErrors
   alias RetroHexChat.Chat.IrcEscapes
   alias RetroHexChat.Commands.Handler
+  alias RetroHexChat.Locales
 
   # Setting names are identifiers a user types verbatim, so they are interpolated
   # rather than translated. Handed to a catalog they came back as prose — the
   # Portuguese entry offered "data *" for `dice_*`, the French "dés *".
   @setting_keys ~w(
-    prefix cooldown description greeting farewell mention_response
+    prefix cooldown description language greeting farewell mention_response
     public_greeting onboarding_1 onboarding_2 onboarding_3 onboarding_4 visitor_greeting
     greeting_delivery onboarding_delivery farewell_delivery greeter_repeat_window
     dice_max_dice dice_max_sides dice_default
@@ -327,6 +328,9 @@ defmodule RetroHexChat.Commands.Handlers.Bot do
               command_prefix: bot.command_prefix
             ),
             dgettext("commands", "  Cooldown: %{cooldown_ms}ms", cooldown_ms: bot.cooldown_ms),
+            dgettext("commands", "  Language: %{language}",
+              language: Locales.label(bot.locale) || dgettext("commands", "none")
+            ),
             dgettext("commands", "  Created by: %{created_by}", created_by: bot.created_by),
             dgettext("commands", "  Channels: %{channels_count}",
               channels_count: length(channels)
@@ -474,6 +478,32 @@ defmodule RetroHexChat.Commands.Handlers.Bot do
   defp apply_setting(bot, "description", value) do
     Queries.update_bot(bot, %{description: value})
     {:ok, dgettext("commands", "Description updated.")}
+  end
+
+  # `none` clears it, as every other text setting reads it.
+  defp apply_setting(bot, "language", value) do
+    case Lifecycle.set_locale(bot, if(value in ["none", ""], do: nil, else: value)) do
+      {:ok, %{locale: nil}} ->
+        {:ok, dgettext("commands", "%{name} no longer has a language.", name: bot.name)}
+
+      {:ok, %{locale: locale}} ->
+        {:ok,
+         dgettext("commands", "%{name} speaks %{language} (%{code}).",
+           name: bot.name,
+           language: Locales.label(locale),
+           code: locale
+         )}
+
+      {:error, :unknown_locale} ->
+        {:error,
+         dgettext("commands", "Unknown language: %{code}. Languages: %{codes}",
+           code: value,
+           codes: Enum.join(Locales.codes(), ", ")
+         )}
+
+      {:error, _changeset} ->
+        {:error, dgettext("commands", "The language could not be saved.")}
+    end
   end
 
   defp apply_setting(bot, "greeting", value) do
@@ -907,7 +937,7 @@ defmodule RetroHexChat.Commands.Handlers.Bot do
       /bot commands <bot> — List bot's custom commands
       /bot addcmd <bot> <trigger> <response> — Add custom command
       /bot delcmd <bot> <trigger> — Remove custom command
-    Settings: prefix, cooldown, description, greeting, farewell, mention_response,
+    Settings: prefix, cooldown, description, language, greeting, farewell, mention_response,
       public_greeting, onboarding_1, onboarding_2, onboarding_3, onboarding_4,
       visitor_greeting, greeting_delivery, onboarding_delivery, farewell_delivery, greeter_repeat_window,
       dice_max_dice, dice_max_sides, dice_default,
@@ -915,6 +945,7 @@ defmodule RetroHexChat.Commands.Handlers.Bot do
       trivia_category, trivia_time, trivia_questions, trivia_points,
       sched_max, sched_min_interval,
       rss_interval, rss_max_feeds, rss_max_items
+    language takes a code such as pt_BR (none removes it): the flag beside the bot's name.
     Bot text accepts IRC formatting escapes: \\c04 red, \\b bold, \\i italic,
       \\u underline, \\s strike, \\v reverse, \\o reset.
     """

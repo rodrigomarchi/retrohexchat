@@ -511,7 +511,7 @@ msgstr "Разделы"
 #: lib/retro_hex_chat_web/controllers/help_content/formatting_overview.html.heex:117
 #: lib/retro_hex_chat_web/controllers/help_content/keyboard_shortcuts.html.heex:83
 #: lib/retro_hex_chat_web/controllers/help_content/ui_account_dialog.html.heex:60
-#: lib/retro_hex_chat_web/controllers/help_content/ui_bot_management.html.heex:64
+#: lib/retro_hex_chat_web/controllers/help_content/ui_bot_management.html.heex:70
 #: lib/retro_hex_chat_web/controllers/help_content/ui_context_menu.html.heex:65
 #: lib/retro_hex_chat_web/controllers/help_content/ui_desktop.html.heex:93
 #: lib/retro_hex_chat_web/controllers/help_content/ui_edit_menu.html.heex:77
@@ -906,7 +906,7 @@ msgstr "/away"
 msgid "/bio"
 msgstr "/bio"
 
-#: lib/retro_hex_chat_web/controllers/help_content/ui_bot_management.html.heex:73
+#: lib/retro_hex_chat_web/controllers/help_content/ui_bot_management.html.heex:79
 #, elixir-autogen, elixir-format
 msgid "/bot Command Reference"
 msgstr "/bot Command Reference"
@@ -1039,7 +1039,7 @@ msgstr ""
 "можете перетаскивать, изменять размер, минимизировать до панели задач и "
 "закрывать с помощью панели заголовков X."
 
-#: lib/retro_hex_chat_web/controllers/help_content/ui_bot_management.html.heex:58
+#: lib/retro_hex_chat_web/controllers/help_content/ui_bot_management.html.heex:64
 #, elixir-autogen, elixir-format
 msgid "Bot Management is visible only to identified server admins and server operators. Regular users can still list bots, inspect bot info, and view custom commands with /bot list, /bot info, and /bot commands."
 msgstr ""
@@ -1049,12 +1049,12 @@ msgstr ""
 "пользовательские команды с помощью /bot список, /bot информация, и /bot "
 "команды."
 
-#: lib/retro_hex_chat_web/controllers/help_content/ui_bot_management.html.heex:70
+#: lib/retro_hex_chat_web/controllers/help_content/ui_bot_management.html.heex:76
 #, elixir-autogen, elixir-format
 msgid "BotService Overview"
 msgstr "Обзор BotService"
 
-#: lib/retro_hex_chat_web/controllers/help_content/ui_bot_management.html.heex:24
+#: lib/retro_hex_chat_web/controllers/help_content/ui_bot_management.html.heex:30
 #, elixir-autogen, elixir-format
 msgid "Capabilities Tab"
 msgstr "Возможности Tab"
@@ -1069,7 +1069,7 @@ msgstr "Изменить имя / Edit Profile / Set Away"
 msgid "Channel Conference"
 msgstr "Канал конференции"
 
-#: lib/retro_hex_chat_web/controllers/help_content/ui_bot_management.html.heex:32
+#: lib/retro_hex_chat_web/controllers/help_content/ui_bot_management.html.heex:38
 #, elixir-autogen, elixir-format
 msgid "Channels Tab"
 msgstr "Вкладка каналов"
@@ -1108,7 +1108,7 @@ msgstr "Командный эквивалент"
 msgid "Command Mapping"
 msgstr "Командная карта"
 
-#: lib/retro_hex_chat_web/controllers/help_content/ui_bot_management.html.heex:40
+#: lib/retro_hex_chat_web/controllers/help_content/ui_bot_management.html.heex:46
 #, elixir-autogen, elixir-format
 msgid "Commands Tab"
 msgstr "Обсуждение Commands Tab"
@@ -1145,7 +1145,7 @@ msgstr ""
 "следующего участника Ctrl+Shift+Q — Оставить подтверждение Держите "
 "Ctrl+Shift+Z — Нажмите, чтобы поговорить, пока приглушенный"
 
-#: lib/retro_hex_chat_web/controllers/help_content/ui_bot_management.html.heex:67
+#: lib/retro_hex_chat_web/controllers/help_content/ui_bot_management.html.heex:73
 #: lib/retro_hex_chat_web/controllers/help_content/ui_overview.html.heex:48
 #: lib/retro_hex_chat_web/controllers/help_content/ui_site_pages.html.heex:68
 #: lib/retro_hex_chat_web/controllers/help_content/ui_start_menu.html.heex:116
@@ -1176,7 +1176,7 @@ msgstr "Редактировать меню"
 msgid "Edit Menu:"
 msgstr "Редактировать меню:"
 
-#: lib/retro_hex_chat_web/controllers/help_content/ui_bot_management.html.heex:48
+#: lib/retro_hex_chat_web/controllers/help_content/ui_bot_management.html.heex:54
 #, elixir-autogen, elixir-format
 msgid "Events Tab"
 msgstr "События Tab"
@@ -1297,7 +1297,7 @@ msgstr ""
 "Открывает или закрывает витрину Find для поиска сообщений. Вы также можете "
 "нажать Ctrl+Shift+F."
 
-#: lib/retro_hex_chat_web/controllers/help_content/ui_bot_management.html.heex:56
+#: lib/retro_hex_chat_web/controllers/help_content/ui_bot_management.html.heex:62
 #: lib/retro_hex_chat_web/controllers/help_content/ui_message_of_the_day.html.heex:82
 #, elixir-autogen, elixir-format
 msgid "Permissions"
@@ -1358,7 +1358,7 @@ msgstr "Начать меню"
 msgid "Taskbar"
 msgstr "панель задач"
 
-#: lib/retro_hex_chat_web/controllers/help_content/ui_bot_management.html.heex:34
+#: lib/retro_hex_chat_web/controllers/help_content/ui_bot_management.html.heex:40
 #, elixir-autogen, elixir-format
 msgid "The Channels tab shows where the bot is configured to join. Admins can add a channel or remove an existing channel assignment."
 msgstr ""
@@ -1371,7 +1371,7 @@ msgstr ""
 msgid "The Chat Window"
 msgstr "Чатовое окно"
 
-#: lib/retro_hex_chat_web/controllers/help_content/ui_bot_management.html.heex:42
+#: lib/retro_hex_chat_web/controllers/help_content/ui_bot_management.html.heex:48
 #, elixir-autogen, elixir-format
 msgid "The Commands tab shows custom command triggers and responses. Admins can add a new custom command or remove an existing trigger."
 msgstr ""
@@ -1457,7 +1457,7 @@ msgstr "Диалог Тимеров"
 msgid "Timers are lost on disconnect or page reload"
 msgstr "Тимеры теряются при отключении или перезагрузке страницы"
 
-#: lib/retro_hex_chat_web/controllers/help_content/ui_bot_management.html.heex:76
+#: lib/retro_hex_chat_web/controllers/help_content/ui_bot_management.html.heex:82
 #: lib/retro_hex_chat_web/controllers/help_content/ui_desktop.html.heex:102
 #: lib/retro_hex_chat_web/controllers/help_content/ui_edit_menu.html.heex:83
 #: lib/retro_hex_chat_web/controllers/help_content/ui_overview.html.heex:53
@@ -2257,7 +2257,7 @@ msgstr ""
 "об этом, а не показывает нули. Администраторы могут кнопкой «Включить» или "
 "«Отключить» в заголовке переключить бота глобально либо удалить его."
 
-#: lib/retro_hex_chat_web/controllers/help_content/ui_bot_management.html.heex:26
+#: lib/retro_hex_chat_web/controllers/help_content/ui_bot_management.html.heex:32
 #, elixir-autogen, elixir-format
 msgid "The Capabilities tab gives each capability a panel: what it does, whether it is on, and its configuration. Settings are listed under the exact key /bot set takes, so what is read here is what is typed in the console. Text a bot was configured to say is shown with its colours rendered, not as raw control codes. Admins can turn individual capabilities on or off; changes are reloaded into the bot process."
 msgstr ""
@@ -2268,7 +2268,7 @@ msgstr ""
 "сырыми управляющими кодами. Администраторы могут включать и выключать "
 "отдельные возможности; изменения перезагружаются в процесс бота."
 
-#: lib/retro_hex_chat_web/controllers/help_content/ui_bot_management.html.heex:50
+#: lib/retro_hex_chat_web/controllers/help_content/ui_bot_management.html.heex:56
 #, elixir-autogen, elixir-format
 msgid "The Events tab is the bot's own log: what it did, in which channel, and how long ago. It loads when a bot is selected and pages further back as you scroll."
 msgstr ""
@@ -3957,3 +3957,8 @@ msgstr "Те же страницы из меню «Пуск»."
 #, elixir-autogen, elixir-format
 msgid "Before you sign in, the home page is the chat itself: #lobby, live, with nothing in front of it. The home's own windows — what RetroHexChat is, the problem it solves, how it works — open from the Welcome icon, from Start ▸ Navigate ▸ Home, or when you go back to the home from another page; Create an account in the first of them opens the Connect window."
 msgstr "Перед входом на главную страницу находится сам чат: #lobby, live, ничего перед ним. Собственные окна дома — что такое RetroHexChat, проблема, которую он решает, как он работает — открываются от значка Welcome, от Start ▸ Navigate ▸ Home или когда вы возвращаетесь домой с другой страницы; Создайте учетную запись в первом из них открывает окно Connect."
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_bot_management.html.heex:24
+#, elixir-autogen, elixir-format
+msgid "Language, under the identity, is the language the bot speaks: its flag is drawn beside the bot's nickname in the user list and on its lines. Admins pick it here, or when creating the bot, the same as /bot set with the language key; No language takes the flag away."
+msgstr "«Язык» под идентичностью — это язык, на котором говорит бот: его флаг виден рядом с ником бота в списке пользователей и в его сообщениях. Админы выбирают его здесь или при создании бота — так же, как /bot set с ключом language; «Без языка» убирает флаг."

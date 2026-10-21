@@ -59,9 +59,17 @@
 
 <p>
   <strong>set</strong>
-  {dgettext("help_bots", "— Change a bot setting. Valid keys include:")} <code>greeting</code>, <code>farewell</code>, <code>greeting_delivery</code>, <code>farewell_delivery</code>, <code>greeter_repeat_window</code>, <code>mention_response</code>, <code>prefix</code>, <code>cooldown</code>, <code>description</code>.
+  {dgettext("help_bots", "— Change a bot setting. Valid keys include:")} <code>greeting</code>, <code>farewell</code>, <code>greeting_delivery</code>, <code>farewell_delivery</code>, <code>greeter_repeat_window</code>, <code>mention_response</code>, <code>prefix</code>, <code>cooldown</code>, <code>description</code>, <code>language</code>.
 </p>
 <pre>{dgettext("help_bots", "/bot set GreeterBot greeting Welcome,")} {"{nickname}"}{dgettext("help_bots", "! /bot set GreeterBot greeting_delivery private_notice /bot set GreeterBot greeter_repeat_window 3600 /bot set GreeterBot prefix ?")}</pre>
+<p>
+  <code>language</code>
+  {dgettext(
+    "help_bots",
+    "— the language the bot speaks, such as pt_BR or ja. Its flag is drawn beside the bot's nickname, in the user list and on its lines; none takes it away."
+  )}
+</p>
+<pre>{dgettext("help_bots", "/bot set GreeterBot language pt_BR")}</pre>
 <p>
   {dgettext("help_bots", "Bot chat text accepts IRC formatting escapes:")} <code>\c04</code>
   {dgettext("help_bots", "sets a colour,")} <code>\b</code>
@@ -125,4 +133,8 @@
   · <.help_link topic="bot-scheduler">{dgettext("help_bots", "Scheduler")}</.help_link>
   · <.help_link topic="bot-rss">{dgettext("help_bots", "RSS")}</.help_link>
   · <.help_link topic="bot-moderation">{dgettext("help_bots", "Moderation")}</.help_link>
+  ·
+  <.help_link topic="feature-language-flags">
+    {dgettext("help_bots", "Language Flags")}
+  </.help_link>
 </p>

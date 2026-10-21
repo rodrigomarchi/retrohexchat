@@ -2780,7 +2780,7 @@ msgstr "在當前頻道或PM中以實時突出顯示搜索消息."
 #: lib/retro_hex_chat_web/controllers/help_content/feature_key_bindings.html.heex:107
 #: lib/retro_hex_chat_web/controllers/help_content/feature_kick_notifications.html.heex:65
 #: lib/retro_hex_chat_web/controllers/help_content/feature_lag_indicator.html.heex:79
-#: lib/retro_hex_chat_web/controllers/help_content/feature_language_flags.html.heex:34
+#: lib/retro_hex_chat_web/controllers/help_content/feature_language_flags.html.heex:43
 #: lib/retro_hex_chat_web/controllers/help_content/feature_link_previews.html.heex:90
 #: lib/retro_hex_chat_web/controllers/help_content/feature_mentions.html.heex:36
 #: lib/retro_hex_chat_web/controllers/help_content/feature_message_attachments.html.heex:41
@@ -7192,3 +7192,13 @@ msgstr "頻道也可以有旗幟：即頻道裡使用的語言，顯示在頻道
 #, elixir-autogen, elixir-format
 msgid "A channel whose founder has not chosen one has no flag. The Retro Games channels are English."
 msgstr "創建者尚未選擇語言的頻道沒有旗幟。復古遊戲的頻道使用英語。"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_language_flags.html.heex:35
+#, elixir-autogen, elixir-format
+msgid "A Bot's Language"
+msgstr "機器人的語言"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_language_flags.html.heex:38
+#, elixir-autogen, elixir-format
+msgid "Bots carry a flag too, for the language they speak. An admin gives one with /bot set followed by the bot's name, language and a code such as pt_BR, or in Bot Management. A bot nobody gave a language has no flag; GameServ, in the Retro Games channels, is English."
+msgstr "機器人也有旗幟，代表它使用的語言。管理員可以用 /bot set 加上機器人名稱、language 和 pt_BR 這樣的代碼來設定，或在機器人管理中設定。沒有設定語言的機器人沒有旗幟；復古遊戲頻道中的 GameServ 使用英語。"

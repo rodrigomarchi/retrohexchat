@@ -99,6 +99,7 @@ shot, logged in as an admin who has `/identify`-ed.
 # 每種語言配自己的值班：看不懂的警告不算警告。進出時不出聲 —— 它站在十個
 # 頻道裡，打兩次招呼看起來像故障，不像個性。
 /bot create Baoan Anjing yu limao de fuzeren
+/bot set Baoan language zh_hant
 /bot set Baoan prefix !
 /bot set Baoan cooldown 1000
 /bot set Baoan mod_action warn
@@ -128,6 +129,7 @@ shot, logged in as an admin who has `/identify`-ed.
 # ══════════════════════════════════════════════════════════
 # 歡迎詞走私訊 notice：新來的人在頻道裡拿到指引，別人的紀錄不會被洗版。
 /bot create Meiling Zhengti zhongwen pindao de zhuren
+/bot set Meiling language zh_hant
 /bot set Meiling prefix !
 /bot set Meiling cooldown 1000
 /bot set Meiling dice_default 1d20
@@ -159,6 +161,7 @@ shot, logged in as an admin who has `/identify`-ed.
 # ── Ahsiung — #fanti ─────────────────────────────────────
 # 不打招呼：這個頻道裡迎客的是 Meiling。
 /bot create Ahsiung Zhiban jizhe
+/bot set Ahsiung language zh_hant
 /bot set Ahsiung prefix !
 /bot set Ahsiung cooldown 1000
 /bot set Ahsiung rss_interval 20
@@ -172,6 +175,7 @@ shot, logged in as an admin who has `/identify`-ed.
 
 # ── Chunhua — #tw-news ───────────────────────────────────
 /bot create Chunhua Xinwen zhuobian
+/bot set Chunhua language zh_hant
 /bot set Chunhua prefix !
 /bot set Chunhua cooldown 1000
 /bot set Chunhua rss_interval 20
@@ -192,6 +196,7 @@ shot, logged in as an admin who has `/identify`-ed.
 
 # ── Ahfai — #hongkong ────────────────────────────────────
 /bot create Ahfai Xianggang zhuanlan de kanshouren
+/bot set Ahfai language zh_hant
 /bot set Ahfai prefix !
 /bot set Ahfai cooldown 1000
 /bot set Ahfai rss_interval 30
@@ -209,6 +214,7 @@ shot, logged in as an admin who has `/identify`-ed.
 
 # ── Shijie — #tw-world ───────────────────────────────────
 /bot create Shijie Guoji xinwen bianji
+/bot set Shijie language zh_hant
 /bot set Shijie prefix !
 /bot set Shijie cooldown 1000
 /bot set Shijie rss_interval 30
@@ -227,6 +233,7 @@ shot, logged in as an admin who has `/identify`-ed.
 
 # ── Keji — #tw-tech ──────────────────────────────────────
 /bot create Keji Keji tiaomu de bianji
+/bot set Keji language zh_hant
 /bot set Keji prefix !
 /bot set Keji cooldown 1000
 /bot set Keji rss_interval 30
@@ -248,6 +255,7 @@ shot, logged in as an admin who has `/identify`-ed.
 
 # ── Dianwan — #tw-games ──────────────────────────────────
 /bot create Dianwan Youyichang de kanchang
+/bot set Dianwan language zh_hant
 /bot set Dianwan prefix !
 /bot set Dianwan cooldown 1000
 /bot set Dianwan rss_interval 45
@@ -267,6 +275,7 @@ shot, logged in as an admin who has `/identify`-ed.
 
 # ── Yundong — #tw-sports ─────────────────────────────────
 /bot create Yundong Kanpai shang de jiluzhe
+/bot set Yundong language zh_hant
 /bot set Yundong prefix !
 /bot set Yundong cooldown 1000
 /bot set Yundong rss_interval 20
@@ -286,6 +295,7 @@ shot, logged in as an admin who has `/identify`-ed.
 
 # ── Caijing — #tw-money ──────────────────────────────────
 /bot create Caijing Shichang guanchazhe
+/bot set Caijing language zh_hant
 /bot set Caijing prefix !
 /bot set Caijing cooldown 1000
 /bot set Caijing rss_interval 30
@@ -305,6 +315,7 @@ shot, logged in as an admin who has `/identify`-ed.
 
 # ── Kexue — #tw-science ──────────────────────────────────
 /bot create Kexue Guancha jilu de kanshouren
+/bot set Kexue language zh_hant
 /bot set Kexue prefix !
 /bot set Kexue cooldown 1000
 /bot set Kexue rss_interval 90
@@ -322,6 +333,7 @@ shot, logged in as an admin who has `/identify`-ed.
 
 # ── Shenghuo — #tw-life ──────────────────────────────────
 /bot create Shenghuo Shenghuo banmian de bianji
+/bot set Shenghuo language zh_hant
 /bot set Shenghuo prefix !
 /bot set Shenghuo cooldown 1000
 /bot set Shenghuo rss_interval 60
@@ -369,3 +381,5 @@ matters after a paste.
 
 **Baoan** stands in all ten and greets in none of them. All channels are `+tn`,
 publish their archive and are marked Traditional Chinese (`/cs language zh_hant`).
+Every bot is marked Traditional Chinese too: `/bot set <Bot> language zh_hant`
+follows its `/bot create` and draws the same flag beside its nickname.

@@ -234,12 +234,12 @@ msgstr "Blocks"
 msgid "Blue aliens"
 msgstr "Blue aliens"
 
-#: lib/retro_hex_chat/bots/lifecycle.ex:85
+#: lib/retro_hex_chat/bots/lifecycle.ex:110
 #, elixir-autogen, elixir-format
 msgid "Bot destroyed"
 msgstr "Bot destroyed"
 
-#: lib/retro_hex_chat/bots/server.ex:950
+#: lib/retro_hex_chat/bots/server.ex:964
 #, elixir-autogen, elixir-format
 msgid "Bot leaving"
 msgstr "Bot leaving"
@@ -425,7 +425,7 @@ msgstr "German philosopher"
 msgid "Greenland"
 msgstr "Greenland"
 
-#: lib/retro_hex_chat/bots/capabilities/greeter.ex:46
+#: lib/retro_hex_chat/bots/capabilities/greeter.ex:51
 #, elixir-autogen, elixir-format
 msgid "Greet users on join, say goodbye on part"
 msgstr "Greet users on join, say goodbye on part"
@@ -456,7 +456,7 @@ msgstr "Hex = six"
 msgid "Hey {nickname}, please keep it civil."
 msgstr "Hey {nickname}, please keep it civil."
 
-#: lib/retro_hex_chat/bots/capabilities/mention.ex:60
+#: lib/retro_hex_chat/bots/capabilities/mention.ex:62
 #, elixir-autogen, elixir-format
 msgid "Hi {nickname}! Try {prefix}help for my commands."
 msgstr "Hi {nickname}! Try {prefix}help for my commands."
@@ -934,12 +934,12 @@ msgstr "Remove an RSS feed"
 msgid "Renaissance"
 msgstr "Renaissance"
 
-#: lib/retro_hex_chat/bots/capabilities/mention.ex:17
+#: lib/retro_hex_chat/bots/capabilities/mention.ex:19
 #, elixir-autogen, elixir-format
 msgid "Respond when mentioned by name"
 msgstr "Respond when mentioned by name"
 
-#: lib/retro_hex_chat/bots/capabilities/mention.ex:55
+#: lib/retro_hex_chat/bots/capabilities/mention.ex:57
 #, elixir-autogen, elixir-format
 msgid "Response must be a non-empty string"
 msgstr "Response must be a non-empty string"
@@ -1210,7 +1210,7 @@ msgstr "Web"
 msgid "Web pages"
 msgstr "Web pages"
 
-#: lib/retro_hex_chat/bots/capabilities/greeter.ex:212
+#: lib/retro_hex_chat/bots/capabilities/greeter.ex:227
 #, elixir-autogen, elixir-format
 msgid "Welcome, {nickname}!"
 msgstr "Welcome, {nickname}!"
@@ -1680,12 +1680,12 @@ msgstr "max_dice must be between 1 and 1000"
 msgid "max_sides must be between 2 and 10_000"
 msgstr "max_sides must be between 2 and 10_000"
 
-#: lib/retro_hex_chat/bots/bot.ex:46
+#: lib/retro_hex_chat/bots/bot.ex:60
 #, elixir-autogen, elixir-format
 msgid "must start with a letter"
 msgstr "must start with a letter"
 
-#: lib/retro_hex_chat/bots/bot.ex:43
+#: lib/retro_hex_chat/bots/bot.ex:57
 #: lib/retro_hex_chat/bots/bot_custom_command.ex:32
 #, elixir-autogen, elixir-format
 msgid "only letters, numbers, _ and -"
@@ -1736,7 +1736,7 @@ msgstr "RSS"
 msgid "Refusing %{url}: %{reason}"
 msgstr "Refusing %{url}: %{reason}"
 
-#: lib/retro_hex_chat/bots/capabilities/greeter.ex:106
+#: lib/retro_hex_chat/bots/capabilities/greeter.ex:121
 #, elixir-autogen, elixir-format
 msgid "Repeat window must be a non-negative number of seconds"
 msgstr "Repeat window must be a non-negative number of seconds"
@@ -1791,7 +1791,7 @@ msgstr "%{count}m ago"
 msgid "Read full story"
 msgstr "Read full story"
 
-#: lib/retro_hex_chat/bots/capabilities/greeter.ex:243
+#: lib/retro_hex_chat/bots/capabilities/greeter.ex:258
 #, elixir-autogen, elixir-format
 msgid "%{field} must be public, channel_notice, private_notice, or silent"
 msgstr "%{field} must be public, channel_notice, private_notice, or silent"

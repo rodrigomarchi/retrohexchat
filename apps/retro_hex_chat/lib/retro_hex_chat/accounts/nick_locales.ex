@@ -14,7 +14,9 @@ defmodule RetroHexChat.Accounts.NickLocales do
       guest name — they have no presence entry and no row;
     * the nickname's own row, for a registered person who is not here — the
       language they last used, so a message read after they left still has
-      its flag.
+      its flag;
+    * a bot's row, where an admin said what language it speaks, and the games
+      service, which speaks English in the channels it keeps.
 
   Nobody found in any of them is absent from the answer, and the reader draws
   nothing for them. Locales are kept as the codes the web layer uses
@@ -26,6 +28,8 @@ defmodule RetroHexChat.Accounts.NickLocales do
 
   alias RetroHexChat.Accounts.GuestNames
   alias RetroHexChat.Accounts.NicknameValidator
+  alias RetroHexChat.Bots.Queries, as: BotQueries
+  alias RetroHexChat.Games.Channels, as: GameChannels
   alias RetroHexChat.Nickname
   alias RetroHexChat.Presence.Tracker
   alias RetroHexChat.Repo
@@ -62,14 +66,22 @@ defmodule RetroHexChat.Accounts.NickLocales do
         :ok
 
       true ->
-        Phoenix.PubSub.broadcast(
-          RetroHexChat.PubSub,
-          Topics.presence(),
-          {:locale_changed, %{nickname: nickname, locale: locale}}
-        )
-
-        :ok
+        announce(nickname, locale)
     end
+  end
+
+  @doc """
+  Tells every open session that `nickname` now speaks `locale` — nil when it
+  no longer has one — so the rows already drawn are drawn again. For a
+  language kept somewhere this module does not write, such as a bot's.
+  """
+  @spec announce(String.t(), String.t() | nil) :: :ok
+  def announce(nickname, locale) do
+    Phoenix.PubSub.broadcast(
+      RetroHexChat.PubSub,
+      Topics.presence(),
+      {:locale_changed, %{nickname: nickname, locale: locale}}
+    )
   end
 
   @doc """
@@ -114,9 +126,34 @@ defmodule RetroHexChat.Accounts.NickLocales do
       |> Enum.reject(&Map.has_key?(live, &1))
       |> Enum.split_with(&NicknameValidator.guest?/1)
 
+    stored = stored(members)
+
     live
     |> Map.merge(guest_locales(guests))
-    |> Map.merge(stored(members))
+    |> Map.merge(stored)
+    |> Map.merge(bots(Enum.reject(members, &Map.has_key?(stored, &1))))
+  end
+
+  # Nobody registers a bot's nickname, so a name the rows did not answer for
+  # may be one; the bot's own spelling is matched back to the one asked for.
+  defp bots([]), do: %{}
+
+  defp bots(nicknames) do
+    by_key = Map.new(nicknames, &{Nickname.key(&1), &1})
+
+    nicknames
+    |> BotQueries.locales_by_nickname()
+    |> Map.new(fn {nickname, locale} -> {Map.fetch!(by_key, Nickname.key(nickname)), locale} end)
+    |> Map.merge(service_locales(nicknames))
+  end
+
+  defp service_locales(nicknames) do
+    service = GameChannels.service()
+
+    for nick <- nicknames,
+        Nickname.equal?(nick, service),
+        into: %{},
+        do: {nick, GameChannels.locale()}
   end
 
   defp live_locale(nickname) do

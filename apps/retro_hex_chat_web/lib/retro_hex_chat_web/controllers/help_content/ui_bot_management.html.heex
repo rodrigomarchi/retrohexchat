@@ -20,6 +20,12 @@
     "The General tab reports what the running process has actually done — uptime, messages handled, commands processed — followed by the bot's identity: nickname, command prefix, cooldown, who created it and when. A bot with no process says so instead of reporting zeroes. Admins can use the Enable or Disable button in the header to toggle the bot globally, or Delete to destroy it."
   )}
 </p>
+<p>
+  {dgettext(
+    "help_ui",
+    "Language, under the identity, is the language the bot speaks: its flag is drawn beside the bot's nickname in the user list and on its lines. Admins pick it here, or when creating the bot, the same as /bot set with the language key; No language takes the flag away."
+  )}
+</p>
 
 <.help_h4 icon={:icon_tab_control}>{dgettext("help_ui", "Capabilities Tab")}</.help_h4>
 <p>

@@ -491,7 +491,7 @@ msgstr "節"
 #: lib/retro_hex_chat_web/controllers/help_content/formatting_overview.html.heex:117
 #: lib/retro_hex_chat_web/controllers/help_content/keyboard_shortcuts.html.heex:83
 #: lib/retro_hex_chat_web/controllers/help_content/ui_account_dialog.html.heex:60
-#: lib/retro_hex_chat_web/controllers/help_content/ui_bot_management.html.heex:64
+#: lib/retro_hex_chat_web/controllers/help_content/ui_bot_management.html.heex:70
 #: lib/retro_hex_chat_web/controllers/help_content/ui_context_menu.html.heex:65
 #: lib/retro_hex_chat_web/controllers/help_content/ui_desktop.html.heex:93
 #: lib/retro_hex_chat_web/controllers/help_content/ui_edit_menu.html.heex:77
@@ -863,7 +863,7 @@ msgstr "/away"
 msgid "/bio"
 msgstr "/bio"
 
-#: lib/retro_hex_chat_web/controllers/help_content/ui_bot_management.html.heex:73
+#: lib/retro_hex_chat_web/controllers/help_content/ui_bot_management.html.heex:79
 #, elixir-autogen, elixir-format
 msgid "/bot Command Reference"
 msgstr "/bot Command Reference"
@@ -988,19 +988,19 @@ msgstr ""
 "Bot Management是創建,檢查,啓用和維護服務器側bots的管理員窗口. 從工具打開 > Bot 管理、 啓動菜單管理員組、 "
 "工具欄選項下拉或輸入 /bot 沒有參數作爲管理員或服務器操作員。 它作爲桌面窗口打開,您可以拖動,調整大小,最小化到任務欄,並關閉其標題欄X."
 
-#: lib/retro_hex_chat_web/controllers/help_content/ui_bot_management.html.heex:58
+#: lib/retro_hex_chat_web/controllers/help_content/ui_bot_management.html.heex:64
 #, elixir-autogen, elixir-format
 msgid "Bot Management is visible only to identified server admins and server operators. Regular users can still list bots, inspect bot info, and view custom commands with /bot list, /bot info, and /bot commands."
 msgstr ""
 "Bot Management只可見於已識別的服務器管理員和服務器操作員. 普通用戶仍可以列出bots,檢查bot信息,並查看自定義命令 /bot "
 "列表中, /bot 信息,和 /bot 命令。"
 
-#: lib/retro_hex_chat_web/controllers/help_content/ui_bot_management.html.heex:70
+#: lib/retro_hex_chat_web/controllers/help_content/ui_bot_management.html.heex:76
 #, elixir-autogen, elixir-format
 msgid "BotService Overview"
 msgstr "BotService 概覽"
 
-#: lib/retro_hex_chat_web/controllers/help_content/ui_bot_management.html.heex:24
+#: lib/retro_hex_chat_web/controllers/help_content/ui_bot_management.html.heex:30
 #, elixir-autogen, elixir-format
 msgid "Capabilities Tab"
 msgstr "能力標籤"
@@ -1015,7 +1015,7 @@ msgstr "更改暱稱/ 編輯配置文件/ 設置出局"
 msgid "Channel Conference"
 msgstr "頻道會議"
 
-#: lib/retro_hex_chat_web/controllers/help_content/ui_bot_management.html.heex:32
+#: lib/retro_hex_chat_web/controllers/help_content/ui_bot_management.html.heex:38
 #, elixir-autogen, elixir-format
 msgid "Channels Tab"
 msgstr "頻道分頁"
@@ -1051,7 +1051,7 @@ msgstr "命令等效"
 msgid "Command Mapping"
 msgstr "命令繪圖"
 
-#: lib/retro_hex_chat_web/controllers/help_content/ui_bot_management.html.heex:40
+#: lib/retro_hex_chat_web/controllers/help_content/ui_bot_management.html.heex:46
 #, elixir-autogen, elixir-format
 msgid "Commands Tab"
 msgstr "圖標標籤"
@@ -1083,7 +1083,7 @@ msgstr ""
 " – 下一場佈局 Ctrl+Shift+ArrowDown – 聚焦下一場參與者 Ctrl+Shift++Q – 離開確認 Hold "
 "Ctrl+Shift+Z – 在變音時按住說話"
 
-#: lib/retro_hex_chat_web/controllers/help_content/ui_bot_management.html.heex:67
+#: lib/retro_hex_chat_web/controllers/help_content/ui_bot_management.html.heex:73
 #: lib/retro_hex_chat_web/controllers/help_content/ui_overview.html.heex:48
 #: lib/retro_hex_chat_web/controllers/help_content/ui_site_pages.html.heex:68
 #: lib/retro_hex_chat_web/controllers/help_content/ui_start_menu.html.heex:116
@@ -1114,7 +1114,7 @@ msgstr "編輯菜單"
 msgid "Edit Menu:"
 msgstr "編輯菜單 :"
 
-#: lib/retro_hex_chat_web/controllers/help_content/ui_bot_management.html.heex:48
+#: lib/retro_hex_chat_web/controllers/help_content/ui_bot_management.html.heex:54
 #, elixir-autogen, elixir-format
 msgid "Events Tab"
 msgstr "事件標籤"
@@ -1223,7 +1223,7 @@ msgstr "開幕"
 msgid "Opens or closes the in-window Find bar for searching messages. You can also press Ctrl+Shift+F."
 msgstr "打開或關閉用於搜索消息的窗口查找欄。 也可以按下Ctrl+Shift+F."
 
-#: lib/retro_hex_chat_web/controllers/help_content/ui_bot_management.html.heex:56
+#: lib/retro_hex_chat_web/controllers/help_content/ui_bot_management.html.heex:62
 #: lib/retro_hex_chat_web/controllers/help_content/ui_message_of_the_day.html.heex:82
 #, elixir-autogen, elixir-format
 msgid "Permissions"
@@ -1280,7 +1280,7 @@ msgstr "啓動菜單"
 msgid "Taskbar"
 msgstr "任務欄"
 
-#: lib/retro_hex_chat_web/controllers/help_content/ui_bot_management.html.heex:34
+#: lib/retro_hex_chat_web/controllers/help_content/ui_bot_management.html.heex:40
 #, elixir-autogen, elixir-format
 msgid "The Channels tab shows where the bot is configured to join. Admins can add a channel or remove an existing channel assignment."
 msgstr "Channels標籤顯示該機器人的配置位置。 管理員可以添加一個頻道,也可以刪除現有的頻道任務."
@@ -1290,7 +1290,7 @@ msgstr "Channels標籤顯示該機器人的配置位置。 管理員可以添加
 msgid "The Chat Window"
 msgstr "聊天窗口"
 
-#: lib/retro_hex_chat_web/controllers/help_content/ui_bot_management.html.heex:42
+#: lib/retro_hex_chat_web/controllers/help_content/ui_bot_management.html.heex:48
 #, elixir-autogen, elixir-format
 msgid "The Commands tab shows custom command triggers and responses. Admins can add a new custom command or remove an existing trigger."
 msgstr "命令標籤顯示自定義命令觸發和響應 。 管理員可以添加新的自定義命令,也可以刪除已有的觸發器."
@@ -1359,7 +1359,7 @@ msgstr "計時器對話框"
 msgid "Timers are lost on disconnect or page reload"
 msgstr "斷開或重新裝入頁面時丟失計時器"
 
-#: lib/retro_hex_chat_web/controllers/help_content/ui_bot_management.html.heex:76
+#: lib/retro_hex_chat_web/controllers/help_content/ui_bot_management.html.heex:82
 #: lib/retro_hex_chat_web/controllers/help_content/ui_desktop.html.heex:102
 #: lib/retro_hex_chat_web/controllers/help_content/ui_edit_menu.html.heex:83
 #: lib/retro_hex_chat_web/controllers/help_content/ui_overview.html.heex:53
@@ -2009,14 +2009,14 @@ msgid "The General tab reports what the running process has actually done — up
 msgstr ""
 "「一般」標籤頁報告執行中的行程實際做了什麼——執行時間、已處理訊息、已處理命令——接著是機器人的身分資訊：暱稱、命令前綴、冷卻時間、建立者與建立時間。沒有行程的機器人會直接說明，而不是顯示一堆零。管理員可用標題列的「啟用」或「停用」按鈕全域切換機器人，或用「刪除」銷毀它。"
 
-#: lib/retro_hex_chat_web/controllers/help_content/ui_bot_management.html.heex:26
+#: lib/retro_hex_chat_web/controllers/help_content/ui_bot_management.html.heex:32
 #, elixir-autogen, elixir-format
 msgid "The Capabilities tab gives each capability a panel: what it does, whether it is on, and its configuration. Settings are listed under the exact key /bot set takes, so what is read here is what is typed in the console. Text a bot was configured to say is shown with its colours rendered, not as raw control codes. Admins can turn individual capabilities on or off; changes are reloaded into the bot process."
 msgstr ""
 "「功能」標籤頁為每個功能提供一個面板：它做什麼、是否開啟，以及它的設定。設定以 /bot set "
 "接受的確切鍵名列出，因此這裡讀到的就是主控台裡輸入的。機器人被設定要說的文字會算繪出顏色，而不是顯示原始控制碼。管理員可以逐個開啟或關閉功能；變更會重新載入機器人行程。"
 
-#: lib/retro_hex_chat_web/controllers/help_content/ui_bot_management.html.heex:50
+#: lib/retro_hex_chat_web/controllers/help_content/ui_bot_management.html.heex:56
 #, elixir-autogen, elixir-format
 msgid "The Events tab is the bot's own log: what it did, in which channel, and how long ago. It loads when a bot is selected and pages further back as you scroll."
 msgstr "「事件」標籤頁是機器人自己的日誌：它做了什麼、在哪個頻道、多久以前。選擇機器人時載入，捲動時繼續往前翻頁。"
@@ -3492,3 +3492,8 @@ msgstr "——\"開始\"菜單的同頁."
 #, elixir-autogen, elixir-format
 msgid "Before you sign in, the home page is the chat itself: #lobby, live, with nothing in front of it. The home's own windows — what RetroHexChat is, the problem it solves, how it works — open from the Welcome icon, from Start ▸ Navigate ▸ Home, or when you go back to the home from another page; Create an account in the first of them opens the Connect window."
 msgstr "在報名之前,主頁是聊天本身: #lobby,直播,前方沒有任何內容. 家的自有窗口——什麼是RetroHexChat,它解決的問題,如何工作——從歡迎圖標,Start ▸ Navigate ▸ Home打開,或者當你從另一頁回到家時; 在其中的第一個頁面創建一個賬戶打開連接窗口."
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_bot_management.html.heex:24
+#, elixir-autogen, elixir-format
+msgid "Language, under the identity, is the language the bot speaks: its flag is drawn beside the bot's nickname in the user list and on its lines. Admins pick it here, or when creating the bot, the same as /bot set with the language key; No language takes the flag away."
+msgstr "身分資訊下方的「語言」是機器人使用的語言：它的旗幟會顯示在使用者清單和機器人訊息中的暱稱旁邊。管理員可以在這裡或建立機器人時選擇，作用與帶 language 鍵的 /bot set 相同；「無語言」會移除旗幟。"

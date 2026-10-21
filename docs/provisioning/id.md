@@ -103,6 +103,7 @@ shot, logged in as an admin who has `/identify`-ed.
 # peringatan. Diam saat orang masuk dan keluar — dia ada di sepuluh kanal, dan
 # penjaga yang menyapa dua kali terlihat seperti kerusakan.
 /bot create Satpam Kepala keamanan dan ketenangan kanal
+/bot set Satpam language id
 /bot set Satpam prefix !
 /bot set Satpam cooldown 1000
 /bot set Satpam mod_action warn
@@ -133,6 +134,7 @@ shot, logged in as an admin who has `/identify`-ed.
 # Sambutan lewat notice pribadi: pendatang baru dapat arahan di dalam kanal
 # tanpa memenuhi riwayat obrolan orang lain.
 /bot create Ayu Tuan rumah kanal Indonesia
+/bot set Ayu language id
 /bot set Ayu prefix !
 /bot set Ayu cooldown 1000
 /bot set Ayu dice_default 1d20
@@ -166,6 +168,7 @@ shot, logged in as an admin who has `/identify`-ed.
 # ── Bagus — #indonesia ───────────────────────────────────
 # Tanpa sambutan: di kanal ini yang menyambut adalah Ayu.
 /bot create Bagus Wartawan piket
+/bot set Bagus language id
 /bot set Bagus prefix !
 /bot set Bagus cooldown 1000
 /bot set Bagus rss_interval 20
@@ -179,6 +182,7 @@ shot, logged in as an admin who has `/identify`-ed.
 
 # ── Rina — #berita ───────────────────────────────────────
 /bot create Rina Redaktur meja berita
+/bot set Rina language id
 /bot set Rina prefix !
 /bot set Rina cooldown 1000
 /bot set Rina rss_interval 20
@@ -199,6 +203,7 @@ shot, logged in as an admin who has `/identify`-ed.
 
 # ── Joko — #politik ──────────────────────────────────────
 /bot create Joko Pengamat Senayan
+/bot set Joko language id
 /bot set Joko prefix !
 /bot set Joko cooldown 1000
 /bot set Joko rss_interval 20
@@ -218,6 +223,7 @@ shot, logged in as an admin who has `/identify`-ed.
 
 # ── Dewi — #dunia ────────────────────────────────────────
 /bot create Dewi Koresponden luar negeri
+/bot set Dewi language id
 /bot set Dewi prefix !
 /bot set Dewi cooldown 1000
 /bot set Dewi rss_interval 30
@@ -236,6 +242,7 @@ shot, logged in as an admin who has `/identify`-ed.
 
 # ── Adi — #teknologi ─────────────────────────────────────
 /bot create Adi Pemerhati teknologi
+/bot set Adi language id
 /bot set Adi prefix !
 /bot set Adi cooldown 1000
 /bot set Adi rss_interval 30
@@ -257,6 +264,7 @@ shot, logged in as an admin who has `/identify`-ed.
 
 # ── Yusuf — #olahraga ────────────────────────────────────
 /bot create Yusuf Juru catat tribun
+/bot set Yusuf language id
 /bot set Yusuf prefix !
 /bot set Yusuf cooldown 1000
 /bot set Yusuf rss_interval 20
@@ -279,6 +287,7 @@ shot, logged in as an admin who has `/identify`-ed.
 # ── Sari — #ekonomi ──────────────────────────────────────
 # Lima feed adalah batas per bot; yang ini pas di batasnya.
 /bot create Sari Pemantau pasar
+/bot set Sari language id
 /bot set Sari prefix !
 /bot set Sari cooldown 1000
 /bot set Sari rss_interval 30
@@ -302,6 +311,7 @@ shot, logged in as an admin who has `/identify`-ed.
 
 # ── Wayan — #hiburan ─────────────────────────────────────
 /bot create Wayan Penjaga meja hiburan
+/bot set Wayan language id
 /bot set Wayan prefix !
 /bot set Wayan cooldown 1000
 /bot set Wayan rss_interval 45
@@ -321,6 +331,7 @@ shot, logged in as an admin who has `/identify`-ed.
 
 # ── Intan — #gayahidup ───────────────────────────────────
 /bot create Intan Penjaga rubrik gaya hidup
+/bot set Intan language id
 /bot set Intan prefix !
 /bot set Intan cooldown 1000
 /bot set Intan rss_interval 60
@@ -339,6 +350,7 @@ shot, logged in as an admin who has `/identify`-ed.
 
 # ── Rizky — #gim ─────────────────────────────────────────
 /bot create Rizky Penjaga ruang gim
+/bot set Rizky language id
 /bot set Rizky prefix !
 /bot set Rizky cooldown 1000
 /bot set Rizky rss_interval 60
@@ -387,3 +399,5 @@ ceiling, so a sixth address silently refused would show up there first.
 
 **Satpam** stands in all ten and greets in none of them. All channels are `+tn`,
 publish their archive and are marked Indonesian (`/cs language id`).
+Every bot is marked Indonesian too: `/bot set <Bot> language id` follows its
+`/bot create` and draws the same flag beside its nickname.

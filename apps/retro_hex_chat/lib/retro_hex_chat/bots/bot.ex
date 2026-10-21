@@ -7,6 +7,7 @@ defmodule RetroHexChat.Bots.Bot do
   import Ecto.Changeset
 
   alias RetroHexChat.Bots.{BotChannelConfig, BotCustomCommand}
+  alias RetroHexChat.Locales
 
   @type t :: %__MODULE__{}
 
@@ -21,6 +22,10 @@ defmodule RetroHexChat.Bots.Bot do
     field :capabilities, :map, default: %{}
     field :stats, :map, default: %{"messages_handled" => 0, "commands_processed" => 0}
 
+    # The language the bot speaks (`"pt_BR"`), drawn as a flag beside its
+    # nickname. Nil draws none.
+    field :locale, :string
+
     has_many :channel_configs, BotChannelConfig
     has_many :custom_commands, BotCustomCommand
 
@@ -28,7 +33,15 @@ defmodule RetroHexChat.Bots.Bot do
   end
 
   @required_fields [:name, :nickname, :created_by]
-  @optional_fields [:description, :command_prefix, :enabled, :cooldown_ms, :capabilities, :stats]
+  @optional_fields [
+    :description,
+    :command_prefix,
+    :enabled,
+    :cooldown_ms,
+    :capabilities,
+    :stats,
+    :locale
+  ]
 
   @spec changeset(t() | Ecto.Changeset.t(), map()) :: Ecto.Changeset.t()
   def changeset(bot, attrs) do
@@ -39,6 +52,7 @@ defmodule RetroHexChat.Bots.Bot do
     |> validate_length(:nickname, min: 2, max: 16)
     |> validate_length(:command_prefix, min: 1, max: 3)
     |> validate_number(:cooldown_ms, greater_than_or_equal_to: 500)
+    |> validate_inclusion(:locale, Locales.codes())
     |> validate_format(:name, ~r/^[a-zA-Z0-9_-]+$/,
       message: dgettext("bots", "only letters, numbers, _ and -")
     )
@@ -55,5 +69,6 @@ defmodule RetroHexChat.Bots.Bot do
     |> cast(attrs, @optional_fields)
     |> validate_length(:command_prefix, min: 1, max: 3)
     |> validate_number(:cooldown_ms, greater_than_or_equal_to: 500)
+    |> validate_inclusion(:locale, Locales.codes())
   end
 end

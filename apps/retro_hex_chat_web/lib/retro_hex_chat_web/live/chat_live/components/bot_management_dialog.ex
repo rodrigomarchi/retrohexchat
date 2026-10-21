@@ -43,6 +43,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.BotManagementDialog do
     stats: nil,
     tab: :general,
     show_new_bot: false,
+    new_bot_locale: nil,
     show_add_command: false,
     show_add_channel: false,
     show_add_feed: false
@@ -128,7 +129,12 @@ defmodule RetroHexChatWeb.ChatLive.Components.BotManagementDialog do
         is_admin={@is_admin}
       />
 
-      <.new_bot_dialog id="new-bot-dialog" show={@show_new_bot} on_close="close_new_bot_dialog" />
+      <.new_bot_dialog
+        id="new-bot-dialog"
+        show={@show_new_bot}
+        locale={@new_bot_locale}
+        on_close="close_new_bot_dialog"
+      />
 
       <.add_command_dialog
         id="add-command-dialog"

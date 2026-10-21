@@ -21,6 +21,7 @@ defmodule RetroHexChatWeb.ChatLive.BotEvents do
   alias RetroHexChat.Bots.{Feeds, Lifecycle, Queries, Server, Supervisor}
   alias RetroHexChat.ChangesetErrors
   alias RetroHexChat.Chat.{IrcEscapes, TimeFormatter}
+  alias RetroHexChat.Locales
   alias RetroHexChatWeb.ChatLive.ChatContext
   alias RetroHexChatWeb.ChatLive.Components.BotManagementDialog
   alias RetroHexChatWeb.ChatLive.Windows
@@ -39,6 +40,8 @@ defmodule RetroHexChatWeb.ChatLive.BotEvents do
     open_new_bot_dialog
     close_new_bot_dialog
     create_bot
+    bot_new_language
+    bot_set_locale
     bot_add_channel
     bot_remove_channel
     bot_add_command
@@ -158,7 +161,20 @@ defmodule RetroHexChatWeb.ChatLive.BotEvents do
   end
 
   defp authorized("open_new_bot_dialog", _params, socket) do
-    put_bot(socket, show_new_bot: true)
+    put_bot(socket, show_new_bot: true, new_bot_locale: nil)
+  end
+
+  # The language picked in the New Bot form, held so the select's face names it;
+  # the form itself still carries the choice when it is sent.
+  defp authorized("bot_new_language", %{"locale" => locale}, socket) do
+    put_bot(socket, new_bot_locale: blank_to_nil(locale))
+  end
+
+  defp authorized("bot_set_locale", %{"bot_name" => bot_name, "locale" => locale}, socket) do
+    case Queries.get_bot_by_name(bot_name) do
+      nil -> error_event(socket, dgettext("chat", "[BotService] Bot not found."))
+      bot -> do_set_locale(bot, blank_to_nil(locale), socket)
+    end
   end
 
   defp authorized("close_new_bot_dialog", _params, socket) do
@@ -203,10 +219,11 @@ defmodule RetroHexChatWeb.ChatLive.BotEvents do
         }
 
         Supervisor.start_bot(bot_data)
+        socket = apply_new_bot_locale(bot, blank_to_nil(Map.get(params, "locale")), socket)
         bots = Queries.list_bots_with_associations()
 
         socket
-        |> put_bot(show_new_bot: false, bots: bots)
+        |> put_bot(show_new_bot: false, new_bot_locale: nil, bots: bots)
         |> system_event(dgettext("chat", "[BotService] Bot '%{name}' created.", name: name))
 
       {:error, changeset} ->
@@ -487,6 +504,70 @@ defmodule RetroHexChatWeb.ChatLive.BotEvents do
         error_event(socket, dgettext("chat", "[BotService] %{reason}", reason: reason))
     end
   end
+
+  # A new bot starts with no language; one picked in the form is set through the
+  # same domain call `/bot set <bot> language` makes, after the bot exists, so a
+  # bad code costs the language and never the bot.
+  @spec apply_new_bot_locale(
+          RetroHexChat.Bots.Bot.t(),
+          String.t() | nil,
+          Phoenix.LiveView.Socket.t()
+        ) :: Phoenix.LiveView.Socket.t()
+  defp apply_new_bot_locale(_bot, nil, socket), do: socket
+
+  defp apply_new_bot_locale(bot, locale, socket) do
+    case Lifecycle.set_locale(bot, locale) do
+      {:ok, _bot} -> socket
+      {:error, reason} -> error_event(socket, locale_error(reason, locale))
+    end
+  end
+
+  @spec do_set_locale(RetroHexChat.Bots.Bot.t(), String.t() | nil, Phoenix.LiveView.Socket.t()) ::
+          Phoenix.LiveView.Socket.t()
+  defp do_set_locale(bot, locale, socket) do
+    case Lifecycle.set_locale(bot, locale) do
+      {:ok, updated} ->
+        socket
+        |> put_bot(bots: Queries.list_bots_with_associations(), selected: updated)
+        |> system_event(locale_set_message(updated))
+
+      {:error, reason} ->
+        error_event(socket, locale_error(reason, locale))
+    end
+  end
+
+  @spec locale_set_message(RetroHexChat.Bots.Bot.t()) :: String.t()
+  defp locale_set_message(%{locale: nil} = bot) do
+    dgettext("chat", "[BotService] Bot '%{name}' has no language now.", name: bot.name)
+  end
+
+  defp locale_set_message(bot) do
+    dgettext("chat", "[BotService] Bot '%{name}' speaks %{language} now.",
+      name: bot.name,
+      language: Locales.label(bot.locale) || bot.locale
+    )
+  end
+
+  @spec locale_error(:unknown_locale | Ecto.Changeset.t(), String.t() | nil) :: String.t()
+  defp locale_error(:unknown_locale, locale) do
+    dgettext("chat", "[BotService] Unknown language '%{language}'.", language: locale)
+  end
+
+  defp locale_error(%Ecto.Changeset{} = changeset, _locale) do
+    dgettext("chat", "[BotService] Failed to set the language: %{message}",
+      message: format_changeset_errors(changeset)
+    )
+  end
+
+  @spec blank_to_nil(term()) :: String.t() | nil
+  defp blank_to_nil(value) when is_binary(value) do
+    case String.trim(value) do
+      "" -> nil
+      trimmed -> trimmed
+    end
+  end
+
+  defp blank_to_nil(_value), do: nil
 
   defp do_toggle_capability(nil, _cap_name, socket), do: socket
 

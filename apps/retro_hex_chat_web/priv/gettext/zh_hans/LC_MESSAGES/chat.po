@@ -160,7 +160,7 @@ msgid "%{count} user"
 msgid_plural "%{count} users"
 msgstr[0] "%{count} 用户"
 
-#: lib/retro_hex_chat_web/live/chat_live/bot_events.ex:632
+#: lib/retro_hex_chat_web/live/chat_live/bot_events.ex:713
 #, elixir-autogen, elixir-format
 msgid "%{field}: %{errors}"
 msgstr "%{field}: %{errors} (英语)."
@@ -757,12 +757,12 @@ msgstr "粗体( Ctrl+Shift+B)"
 msgid "Bot"
 msgstr "机器人"
 
-#: lib/retro_hex_chat_web/live/chat_live/bot_events.ex:403
+#: lib/retro_hex_chat_web/live/chat_live/bot_events.ex:420
 #, elixir-autogen, elixir-format
 msgid "Bot already in %{channel}."
 msgstr "机器人已在 %{channel} 中。"
 
-#: lib/retro_hex_chat_web/live/chat_live/bot_events.ex:72
+#: lib/retro_hex_chat_web/live/chat_live/bot_events.ex:75
 #: lib/retro_hex_chat_web/live/chat_live/ui_actions/bots.ex:39
 #, elixir-autogen, elixir-format
 msgid "Bot management is restricted to server administrators."
@@ -920,7 +920,7 @@ msgstr "颜色 (Ctrl+Shift+D)"
 msgid "Colors"
 msgstr "颜色"
 
-#: lib/retro_hex_chat_web/live/chat_live/bot_events.ex:287
+#: lib/retro_hex_chat_web/live/chat_live/bot_events.ex:304
 #, elixir-autogen, elixir-format
 msgid "Command '%{trigger}' already exists."
 msgstr "命令“ %{trigger}” 已经存在 。"
@@ -1135,7 +1135,7 @@ msgstr "无法添加 perform 命令：%{reason}"
 msgid "Failed to send. Click to retry"
 msgstr "发送失败 。 单击重试"
 
-#: lib/retro_hex_chat_web/live/chat_live/bot_events.ex:520
+#: lib/retro_hex_chat_web/live/chat_live/bot_events.ex:601
 #, elixir-autogen, elixir-format
 msgid "Failed to update capability."
 msgstr "更新能力失败 。"
@@ -2184,47 +2184,47 @@ msgstr "您的服务器角色已更改为: %{role}"
 msgid "[Auto-Whois] %{nickname}:"
 msgstr "[Auto-Whois] (美国英语). %{nickname}:"
 
-#: lib/retro_hex_chat_web/live/chat_live/bot_events.ex:579
+#: lib/retro_hex_chat_web/live/chat_live/bot_events.ex:660
 #, elixir-autogen, elixir-format
 msgid "[BotService] Bot '%{name}' %{action}."
 msgstr "[BotService] 机器人“%{name}”%{action}。"
 
-#: lib/retro_hex_chat_web/live/chat_live/bot_events.ex:210
+#: lib/retro_hex_chat_web/live/chat_live/bot_events.ex:227
 #, elixir-autogen, elixir-format
 msgid "[BotService] Bot '%{name}' created."
 msgstr "[BotService] 机器人“%{name}”已创建。"
 
-#: lib/retro_hex_chat_web/live/chat_live/bot_events.ex:154
+#: lib/retro_hex_chat_web/live/chat_live/bot_events.ex:157
 #, elixir-autogen, elixir-format
 msgid "[BotService] Bot '%{name}' destroyed."
 msgstr "[BotService] 机器人“%{name}”已销毁。"
 
-#: lib/retro_hex_chat_web/live/chat_live/bot_events.ex:396
+#: lib/retro_hex_chat_web/live/chat_live/bot_events.ex:413
 #, elixir-autogen, elixir-format
 msgid "[BotService] Bot '%{name}' joined %{channel}."
 msgstr "[BotService] 机器人“%{name}”加入了 %{channel}。"
 
-#: lib/retro_hex_chat_web/live/chat_live/bot_events.ex:248
+#: lib/retro_hex_chat_web/live/chat_live/bot_events.ex:265
 #, elixir-autogen, elixir-format
 msgid "[BotService] Bot '%{name}' left %{channel}."
 msgstr "[BotService] 机器人“%{name}”离开了 %{channel}。"
 
-#: lib/retro_hex_chat_web/live/chat_live/bot_events.ex:513
+#: lib/retro_hex_chat_web/live/chat_live/bot_events.ex:594
 #, elixir-autogen, elixir-format
 msgid "[BotService] Capability '%{capability}' %{action}."
 msgstr "[BotService] 能力 '%{capability}' %{action}。"
 
-#: lib/retro_hex_chat_web/live/chat_live/bot_events.ex:281
+#: lib/retro_hex_chat_web/live/chat_live/bot_events.ex:298
 #, elixir-autogen, elixir-format
 msgid "[BotService] Command '%{trigger}' added."
 msgstr "[BotService] 命令\"%{trigger}\"添加."
 
-#: lib/retro_hex_chat_web/live/chat_live/bot_events.ex:306
+#: lib/retro_hex_chat_web/live/chat_live/bot_events.ex:323
 #, elixir-autogen, elixir-format
 msgid "[BotService] Command '%{trigger}' removed."
 msgstr "[BotService] 命令'%{trigger}''被移除."
 
-#: lib/retro_hex_chat_web/live/chat_live/bot_events.ex:217
+#: lib/retro_hex_chat_web/live/chat_live/bot_events.ex:234
 #, elixir-autogen, elixir-format
 msgid "[BotService] Failed to create bot '%{name}': %{message}"
 msgstr "[BotService] 无法创建机器人 '%{name}'：%{message}"
@@ -2275,15 +2275,15 @@ msgstr "全部"
 msgid "click to insert"
 msgstr "单击以插入"
 
-#: lib/retro_hex_chat_web/live/chat_live/bot_events.ex:507
-#: lib/retro_hex_chat_web/live/chat_live/bot_events.ex:574
+#: lib/retro_hex_chat_web/live/chat_live/bot_events.ex:588
+#: lib/retro_hex_chat_web/live/chat_live/bot_events.ex:655
 #: lib/retro_hex_chat_web/live/chat_live/ui_actions/invite.ex:35
 #, elixir-autogen, elixir-format
 msgid "disabled"
 msgstr "已禁用"
 
-#: lib/retro_hex_chat_web/live/chat_live/bot_events.ex:508
-#: lib/retro_hex_chat_web/live/chat_live/bot_events.ex:574
+#: lib/retro_hex_chat_web/live/chat_live/bot_events.ex:589
+#: lib/retro_hex_chat_web/live/chat_live/bot_events.ex:655
 #: lib/retro_hex_chat_web/live/chat_live/ui_actions/invite.ex:34
 #, elixir-autogen, elixir-format
 msgid "enabled"
@@ -2520,7 +2520,7 @@ msgstr "输入新昵称 。"
 msgid "Error"
 msgstr "错误"
 
-#: lib/retro_hex_chat_web/live/chat_live/bot_events.ex:586
+#: lib/retro_hex_chat_web/live/chat_live/bot_events.ex:667
 #, elixir-autogen, elixir-format
 msgid "Failed to update bot status."
 msgstr "更新 bot 状态失败 。"
@@ -3364,24 +3364,25 @@ msgstr "文本格式化"
 msgid "User lookup"
 msgstr "用户查询"
 
-#: lib/retro_hex_chat_web/live/chat_live/bot_events.ex:471
-#: lib/retro_hex_chat_web/live/chat_live/bot_events.ex:487
+#: lib/retro_hex_chat_web/live/chat_live/bot_events.ex:488
+#: lib/retro_hex_chat_web/live/chat_live/bot_events.ex:504
 #, elixir-autogen, elixir-format
 msgid "[BotService] %{reason}"
 msgstr "[业务]%{reason}"
 
-#: lib/retro_hex_chat_web/live/chat_live/bot_events.ex:455
-#: lib/retro_hex_chat_web/live/chat_live/bot_events.ex:476
+#: lib/retro_hex_chat_web/live/chat_live/bot_events.ex:175
+#: lib/retro_hex_chat_web/live/chat_live/bot_events.ex:472
+#: lib/retro_hex_chat_web/live/chat_live/bot_events.ex:493
 #, elixir-autogen, elixir-format
 msgid "[BotService] Bot not found."
 msgstr "[BotService] 未找到机器人。"
 
-#: lib/retro_hex_chat_web/live/chat_live/bot_events.ex:464
+#: lib/retro_hex_chat_web/live/chat_live/bot_events.ex:481
 #, elixir-autogen, elixir-format
 msgid "[BotService] Feed added: %{url} → %{channel}"
 msgstr "添加:%{url} → %{channel}"
 
-#: lib/retro_hex_chat_web/live/chat_live/bot_events.ex:484
+#: lib/retro_hex_chat_web/live/chat_live/bot_events.ex:501
 #, elixir-autogen, elixir-format
 msgid "[BotService] Feed removed."
 msgstr "[BotService]饲料被移除."
@@ -5988,3 +5989,23 @@ msgstr "%{nickname} 移除了此频道的语言。"
 #, elixir-autogen, elixir-format
 msgid "%{nickname} set this channel's language to %{language}."
 msgstr "%{nickname} 将此频道的语言设为 %{language}。"
+
+#: lib/retro_hex_chat_web/live/chat_live/bot_events.ex:541
+#, elixir-autogen, elixir-format
+msgid "[BotService] Bot '%{name}' has no language now."
+msgstr "[BotService] 机器人 '%{name}' 已不再设置语言。"
+
+#: lib/retro_hex_chat_web/live/chat_live/bot_events.ex:545
+#, elixir-autogen, elixir-format
+msgid "[BotService] Bot '%{name}' speaks %{language} now."
+msgstr "[BotService] 机器人 '%{name}' 现在使用 %{language}。"
+
+#: lib/retro_hex_chat_web/live/chat_live/bot_events.ex:557
+#, elixir-autogen, elixir-format
+msgid "[BotService] Failed to set the language: %{message}"
+msgstr "[BotService] 设置语言失败：%{message}"
+
+#: lib/retro_hex_chat_web/live/chat_live/bot_events.ex:553
+#, elixir-autogen, elixir-format
+msgid "[BotService] Unknown language '%{language}'."
+msgstr "[BotService] 未知语言 '%{language}'。"

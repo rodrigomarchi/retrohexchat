@@ -236,12 +236,12 @@ msgstr "塊"
 msgid "Blue aliens"
 msgstr "藍色外星人"
 
-#: lib/retro_hex_chat/bots/lifecycle.ex:85
+#: lib/retro_hex_chat/bots/lifecycle.ex:110
 #, elixir-autogen, elixir-format
 msgid "Bot destroyed"
 msgstr "機器人已銷毀"
 
-#: lib/retro_hex_chat/bots/server.ex:950
+#: lib/retro_hex_chat/bots/server.ex:964
 #, elixir-autogen, elixir-format
 msgid "Bot leaving"
 msgstr "炸彈離開"
@@ -427,7 +427,7 @@ msgstr "德國哲學家"
 msgid "Greenland"
 msgstr "格陵蘭"
 
-#: lib/retro_hex_chat/bots/capabilities/greeter.ex:46
+#: lib/retro_hex_chat/bots/capabilities/greeter.ex:51
 #, elixir-autogen, elixir-format
 msgid "Greet users on join, say goodbye on part"
 msgstr "歡呼用戶加入, 說再見"
@@ -458,7 +458,7 @@ msgstr "十六歲=六歲"
 msgid "Hey {nickname}, please keep it civil."
 msgstr "嘿,請保持文明。"
 
-#: lib/retro_hex_chat/bots/capabilities/mention.ex:60
+#: lib/retro_hex_chat/bots/capabilities/mention.ex:62
 #, elixir-autogen, elixir-format
 msgid "Hi {nickname}! Try {prefix}help for my commands."
 msgstr "嗨 {暱稱}! 嘗試 {prefix} 幫助我的命令 。"
@@ -936,12 +936,12 @@ msgstr "刪除 RSS 種子"
 msgid "Renaissance"
 msgstr "文藝復興"
 
-#: lib/retro_hex_chat/bots/capabilities/mention.ex:17
+#: lib/retro_hex_chat/bots/capabilities/mention.ex:19
 #, elixir-autogen, elixir-format
 msgid "Respond when mentioned by name"
 msgstr "名字提及時回覆"
 
-#: lib/retro_hex_chat/bots/capabilities/mention.ex:55
+#: lib/retro_hex_chat/bots/capabilities/mention.ex:57
 #, elixir-autogen, elixir-format
 msgid "Response must be a non-empty string"
 msgstr "響應必須是非空字符串"
@@ -1215,7 +1215,7 @@ msgstr "網頁"
 msgid "Web pages"
 msgstr "網頁"
 
-#: lib/retro_hex_chat/bots/capabilities/greeter.ex:212
+#: lib/retro_hex_chat/bots/capabilities/greeter.ex:227
 #, elixir-autogen, elixir-format
 msgid "Welcome, {nickname}!"
 msgstr "歡迎,{暱稱}!"
@@ -1685,12 +1685,12 @@ msgstr "最大位數必須在 1 到 1000 之間"
 msgid "max_sides must be between 2 and 10_000"
 msgstr "最大邊數必須在 2 到 10 000 之間"
 
-#: lib/retro_hex_chat/bots/bot.ex:46
+#: lib/retro_hex_chat/bots/bot.ex:60
 #, elixir-autogen, elixir-format
 msgid "must start with a letter"
 msgstr "必須以字母開頭"
 
-#: lib/retro_hex_chat/bots/bot.ex:43
+#: lib/retro_hex_chat/bots/bot.ex:57
 #: lib/retro_hex_chat/bots/bot_custom_command.ex:32
 #, elixir-autogen, elixir-format
 msgid "only letters, numbers, _ and -"
@@ -1741,7 +1741,7 @@ msgstr "RSS"
 msgid "Refusing %{url}: %{reason}"
 msgstr "拒絕 %{url}：%{reason}"
 
-#: lib/retro_hex_chat/bots/capabilities/greeter.ex:106
+#: lib/retro_hex_chat/bots/capabilities/greeter.ex:121
 #, elixir-autogen, elixir-format
 msgid "Repeat window must be a non-negative number of seconds"
 msgstr "重複視窗必須是非負的秒數"
@@ -1796,7 +1796,7 @@ msgstr "%{count}分鐘前"
 msgid "Read full story"
 msgstr "閱讀全文"
 
-#: lib/retro_hex_chat/bots/capabilities/greeter.ex:243
+#: lib/retro_hex_chat/bots/capabilities/greeter.ex:258
 #, elixir-autogen, elixir-format
 msgid "%{field} must be public, channel_notice, private_notice, or silent"
 msgstr "%{field} 必須是 public、channel_notice、private_notice 或 silent"

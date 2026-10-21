@@ -10,6 +10,8 @@ defmodule RetroHexChatWeb.ChatLive.LocaleFlagsTest do
   @moduletag :liveview
 
   alias RetroHexChat.Accounts.NickLocales
+  alias RetroHexChat.Bots.Lifecycle
+  alias RetroHexChat.Bots.Queries, as: BotQueries
   alias RetroHexChat.Channels.Server
   alias RetroHexChat.Presence.Tracker
   alias RetroHexChat.Repo
@@ -60,6 +62,28 @@ defmodule RetroHexChatWeb.ChatLive.LocaleFlagsTest do
 
     assert Enum.find(assigns(ctx.view).conversation_members, &(&1.nickname == ctx.author)).locale ==
              "de"
+  end
+
+  # A bot is in the user list like anybody; an admin said what it speaks.
+  test "a bot carries the flag of the language it was given", ctx do
+    nickname = "Bt#{uid()}"
+
+    {:ok, _bot} =
+      BotQueries.create_bot(%{name: nickname, nickname: nickname, created_by: "Admin"})
+
+    {:ok, _state} = Server.join(ctx.channel, nickname, nil, bot: true)
+    _ = render(ctx.view)
+
+    bot_member = fn ->
+      Enum.find(assigns(ctx.view).conversation_members, &(&1.nickname == nickname))
+    end
+
+    assert bot_member.().locale == nil
+
+    {:ok, _bot} = Lifecycle.set_locale(BotQueries.get_bot_by_name(nickname), "es")
+    _ = render(ctx.view)
+
+    assert bot_member.().locale == "es"
   end
 
   # Absence: somebody nobody knows a language for gets no stand-in flag.

@@ -167,7 +167,7 @@ msgid_plural "%{count} users"
 msgstr[0] "%{count} gebruiker"
 msgstr[1] "%{count} gebruikers"
 
-#: lib/retro_hex_chat_web/live/chat_live/bot_events.ex:632
+#: lib/retro_hex_chat_web/live/chat_live/bot_events.ex:713
 #, elixir-autogen, elixir-format
 msgid "%{field}: %{errors}"
 msgstr "%{field}: %{errors}"
@@ -772,12 +772,12 @@ msgstr "Vet (Ctrl + Shift + B)"
 msgid "Bot"
 msgstr "Bot"
 
-#: lib/retro_hex_chat_web/live/chat_live/bot_events.ex:403
+#: lib/retro_hex_chat_web/live/chat_live/bot_events.ex:420
 #, elixir-autogen, elixir-format
 msgid "Bot already in %{channel}."
 msgstr "Bot al in %{channel}."
 
-#: lib/retro_hex_chat_web/live/chat_live/bot_events.ex:72
+#: lib/retro_hex_chat_web/live/chat_live/bot_events.ex:75
 #: lib/retro_hex_chat_web/live/chat_live/ui_actions/bots.ex:39
 #, elixir-autogen, elixir-format
 msgid "Bot management is restricted to server administrators."
@@ -936,7 +936,7 @@ msgstr "Kleur (Ctrl+Shift+D)"
 msgid "Colors"
 msgstr "Kleuren"
 
-#: lib/retro_hex_chat_web/live/chat_live/bot_events.ex:287
+#: lib/retro_hex_chat_web/live/chat_live/bot_events.ex:304
 #, elixir-autogen, elixir-format
 msgid "Command '%{trigger}' already exists."
 msgstr "Opdracht '%{trigger}' bestaat al."
@@ -1151,7 +1151,7 @@ msgstr "Toevoegen van opdracht is mislukt: %{reason}"
 msgid "Failed to send. Click to retry"
 msgstr "Verzenden mislukt. Klik om opnieuw te proberen"
 
-#: lib/retro_hex_chat_web/live/chat_live/bot_events.ex:520
+#: lib/retro_hex_chat_web/live/chat_live/bot_events.ex:601
 #, elixir-autogen, elixir-format
 msgid "Failed to update capability."
 msgstr "Bijwerken van capaciteit is mislukt."
@@ -2210,47 +2210,47 @@ msgstr "Uw serverrol is gewijzigd naar: %{role}"
 msgid "[Auto-Whois] %{nickname}:"
 msgstr "[Auto-wies] %{nickname}:"
 
-#: lib/retro_hex_chat_web/live/chat_live/bot_events.ex:579
+#: lib/retro_hex_chat_web/live/chat_live/bot_events.ex:660
 #, elixir-autogen, elixir-format
 msgid "[BotService] Bot '%{name}' %{action}."
 msgstr "Bot%{name}' %{action}."
 
-#: lib/retro_hex_chat_web/live/chat_live/bot_events.ex:210
+#: lib/retro_hex_chat_web/live/chat_live/bot_events.ex:227
 #, elixir-autogen, elixir-format
 msgid "[BotService] Bot '%{name}' created."
 msgstr "[BotService] Bot '%{name}' aangemaakt."
 
-#: lib/retro_hex_chat_web/live/chat_live/bot_events.ex:154
+#: lib/retro_hex_chat_web/live/chat_live/bot_events.ex:157
 #, elixir-autogen, elixir-format
 msgid "[BotService] Bot '%{name}' destroyed."
 msgstr "[BotService] Bot '%{name}' vernietigd."
 
-#: lib/retro_hex_chat_web/live/chat_live/bot_events.ex:396
+#: lib/retro_hex_chat_web/live/chat_live/bot_events.ex:413
 #, elixir-autogen, elixir-format
 msgid "[BotService] Bot '%{name}' joined %{channel}."
 msgstr "[BotService] Bot '%{name}' is toegevoegd %{channel}."
 
-#: lib/retro_hex_chat_web/live/chat_live/bot_events.ex:248
+#: lib/retro_hex_chat_web/live/chat_live/bot_events.ex:265
 #, elixir-autogen, elixir-format
 msgid "[BotService] Bot '%{name}' left %{channel}."
 msgstr "[BotService] Bot '%{name}' links %{channel}."
 
-#: lib/retro_hex_chat_web/live/chat_live/bot_events.ex:513
+#: lib/retro_hex_chat_web/live/chat_live/bot_events.ex:594
 #, elixir-autogen, elixir-format
 msgid "[BotService] Capability '%{capability}' %{action}."
 msgstr "[BotService] Capaciteit '%{capability}' %{action}."
 
-#: lib/retro_hex_chat_web/live/chat_live/bot_events.ex:281
+#: lib/retro_hex_chat_web/live/chat_live/bot_events.ex:298
 #, elixir-autogen, elixir-format
 msgid "[BotService] Command '%{trigger}' added."
 msgstr "[BotService] Commando '%{trigger}' toegevoegd."
 
-#: lib/retro_hex_chat_web/live/chat_live/bot_events.ex:306
+#: lib/retro_hex_chat_web/live/chat_live/bot_events.ex:323
 #, elixir-autogen, elixir-format
 msgid "[BotService] Command '%{trigger}' removed."
 msgstr "[BotService] Commando '%{trigger}' verwijderd."
 
-#: lib/retro_hex_chat_web/live/chat_live/bot_events.ex:217
+#: lib/retro_hex_chat_web/live/chat_live/bot_events.ex:234
 #, elixir-autogen, elixir-format
 msgid "[BotService] Failed to create bot '%{name}': %{message}"
 msgstr "Aanmaken bot \"%{name}' mislukt: %{message}"
@@ -2303,15 +2303,15 @@ msgstr "alle"
 msgid "click to insert"
 msgstr "klik om in te voegen"
 
-#: lib/retro_hex_chat_web/live/chat_live/bot_events.ex:507
-#: lib/retro_hex_chat_web/live/chat_live/bot_events.ex:574
+#: lib/retro_hex_chat_web/live/chat_live/bot_events.ex:588
+#: lib/retro_hex_chat_web/live/chat_live/bot_events.ex:655
 #: lib/retro_hex_chat_web/live/chat_live/ui_actions/invite.ex:35
 #, elixir-autogen, elixir-format
 msgid "disabled"
 msgstr "uitgeschakeld"
 
-#: lib/retro_hex_chat_web/live/chat_live/bot_events.ex:508
-#: lib/retro_hex_chat_web/live/chat_live/bot_events.ex:574
+#: lib/retro_hex_chat_web/live/chat_live/bot_events.ex:589
+#: lib/retro_hex_chat_web/live/chat_live/bot_events.ex:655
 #: lib/retro_hex_chat_web/live/chat_live/ui_actions/invite.ex:34
 #, elixir-autogen, elixir-format
 msgid "enabled"
@@ -2548,7 +2548,7 @@ msgstr "Geef de nieuwe nick."
 msgid "Error"
 msgstr "Fout"
 
-#: lib/retro_hex_chat_web/live/chat_live/bot_events.ex:586
+#: lib/retro_hex_chat_web/live/chat_live/bot_events.ex:667
 #, elixir-autogen, elixir-format
 msgid "Failed to update bot status."
 msgstr "Bijwerken van botstatus is mislukt."
@@ -3396,24 +3396,25 @@ msgstr "Tekstopmaak"
 msgid "User lookup"
 msgstr "Gebruikersopzoeken"
 
-#: lib/retro_hex_chat_web/live/chat_live/bot_events.ex:471
-#: lib/retro_hex_chat_web/live/chat_live/bot_events.ex:487
+#: lib/retro_hex_chat_web/live/chat_live/bot_events.ex:488
+#: lib/retro_hex_chat_web/live/chat_live/bot_events.ex:504
 #, elixir-autogen, elixir-format
 msgid "[BotService] %{reason}"
 msgstr "[BotService] %{reason}"
 
-#: lib/retro_hex_chat_web/live/chat_live/bot_events.ex:455
-#: lib/retro_hex_chat_web/live/chat_live/bot_events.ex:476
+#: lib/retro_hex_chat_web/live/chat_live/bot_events.ex:175
+#: lib/retro_hex_chat_web/live/chat_live/bot_events.ex:472
+#: lib/retro_hex_chat_web/live/chat_live/bot_events.ex:493
 #, elixir-autogen, elixir-format
 msgid "[BotService] Bot not found."
 msgstr "[BotService] Bot niet gevonden."
 
-#: lib/retro_hex_chat_web/live/chat_live/bot_events.ex:464
+#: lib/retro_hex_chat_web/live/chat_live/bot_events.ex:481
 #, elixir-autogen, elixir-format
 msgid "[BotService] Feed added: %{url} → %{channel}"
 msgstr "[BotService] Feed toegevoegd: %{url} → %{channel}"
 
-#: lib/retro_hex_chat_web/live/chat_live/bot_events.ex:484
+#: lib/retro_hex_chat_web/live/chat_live/bot_events.ex:501
 #, elixir-autogen, elixir-format
 msgid "[BotService] Feed removed."
 msgstr "[BotService] Feed verwijderd."
@@ -6038,3 +6039,23 @@ msgstr "%{nickname} heeft de taal van dit kanaal verwijderd."
 #, elixir-autogen, elixir-format
 msgid "%{nickname} set this channel's language to %{language}."
 msgstr "%{nickname} heeft de taal van dit kanaal ingesteld op %{language}."
+
+#: lib/retro_hex_chat_web/live/chat_live/bot_events.ex:541
+#, elixir-autogen, elixir-format
+msgid "[BotService] Bot '%{name}' has no language now."
+msgstr "[BotService] Bot '%{name}' heeft geen taal meer."
+
+#: lib/retro_hex_chat_web/live/chat_live/bot_events.ex:545
+#, elixir-autogen, elixir-format
+msgid "[BotService] Bot '%{name}' speaks %{language} now."
+msgstr "[BotService] Bot '%{name}' spreekt nu %{language}."
+
+#: lib/retro_hex_chat_web/live/chat_live/bot_events.ex:557
+#, elixir-autogen, elixir-format
+msgid "[BotService] Failed to set the language: %{message}"
+msgstr "[BotService] Taal instellen mislukt: %{message}"
+
+#: lib/retro_hex_chat_web/live/chat_live/bot_events.ex:553
+#, elixir-autogen, elixir-format
+msgid "[BotService] Unknown language '%{language}'."
+msgstr "[BotService] Onbekende taal '%{language}'."

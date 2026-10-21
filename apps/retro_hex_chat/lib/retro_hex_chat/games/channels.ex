@@ -39,6 +39,10 @@ defmodule RetroHexChat.Games.Channels do
   @spec feed() :: String.t()
   def feed, do: @feed
 
+  @doc "The language the games channels — and the service in them — speak."
+  @spec locale() :: String.t()
+  def locale, do: @locale
+
   @doc "Every channel the games service keeps: each game's, then the feed."
   @spec names() :: [String.t()]
   def names, do: Catalog.channel_names() ++ [@feed]

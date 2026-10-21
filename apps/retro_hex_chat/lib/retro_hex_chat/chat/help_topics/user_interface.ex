@@ -566,7 +566,8 @@ defmodule RetroHexChat.Chat.HelpTopics.UserInterface do
           "bot roster",
           "/bot",
           "automation",
-          dgettext("help", "Tools menu")
+          dgettext("help", "Tools menu"),
+          dgettext("help", "bot language")
         ],
         icon: :icon_btn_bot_management,
         description:

@@ -104,6 +104,7 @@ shot, logged in as an admin who has `/identify`-ed.
 # предупреждение. Молчит на входе и выходе — он стоит во всех десяти каналах, а
 # вышибала, здоровающийся дважды, выглядит как сбой.
 /bot create Storozh Nachalnik tishiny i vezhlivosti
+/bot set Storozh language ru
 /bot set Storozh prefix !
 /bot set Storozh cooldown 1000
 /bot set Storozh mod_action warn
@@ -134,6 +135,7 @@ shot, logged in as an admin who has `/identify`-ed.
 # Приветствие приватным notice: новичок получает подсказки внутри канала, не
 # засоряя историю остальным.
 /bot create Alyona Hozyayka russkogo kanala
+/bot set Alyona language ru
 /bot set Alyona prefix !
 /bot set Alyona cooldown 1000
 /bot set Alyona dice_default 1d20
@@ -167,6 +169,7 @@ shot, logged in as an admin who has `/identify`-ed.
 # ── Fedya — #russkiy ─────────────────────────────────────
 # Без приветствия: в этом канале встречает Alyona.
 /bot create Fedya Reporter na dezhurstve
+/bot set Fedya language ru
 /bot set Fedya prefix !
 /bot set Fedya cooldown 1000
 /bot set Fedya rss_interval 20
@@ -180,6 +183,7 @@ shot, logged in as an admin who has `/identify`-ed.
 
 # ── Grisha — #novosti ────────────────────────────────────
 /bot create Grisha Redaktor novostnogo stola
+/bot set Grisha language ru
 /bot set Grisha prefix !
 /bot set Grisha cooldown 1000
 /bot set Grisha rss_interval 20
@@ -201,6 +205,7 @@ shot, logged in as an admin who has `/identify`-ed.
 
 # ── Semyon — #tehnologii ─────────────────────────────────
 /bot create Semyon Obozrevatel tehnologiy
+/bot set Semyon language ru
 /bot set Semyon prefix !
 /bot set Semyon cooldown 1000
 /bot set Semyon rss_interval 30
@@ -220,6 +225,7 @@ shot, logged in as an admin who has `/identify`-ed.
 
 # ── Zhora — #zhelezo ─────────────────────────────────────
 /bot create Zhora Sobiratel sistemnykh blokov
+/bot set Zhora language ru
 /bot set Zhora prefix !
 /bot set Zhora cooldown 1000
 /bot set Zhora rss_interval 45
@@ -239,6 +245,7 @@ shot, logged in as an admin who has `/identify`-ed.
 
 # ── Kolya — #razrabotka ──────────────────────────────────
 /bot create Kolya Chitatel chuzhikh kommitov
+/bot set Kolya language ru
 /bot set Kolya prefix !
 /bot set Kolya cooldown 1000
 /bot set Kolya rss_interval 30
@@ -257,6 +264,7 @@ shot, logged in as an admin who has `/identify`-ed.
 
 # ── Pingvin — #opensource ────────────────────────────────
 /bot create Pingvin Hranitel relizov
+/bot set Pingvin language ru
 /bot set Pingvin prefix !
 /bot set Pingvin cooldown 1000
 /bot set Pingvin rss_interval 30
@@ -275,6 +283,7 @@ shot, logged in as an admin who has `/identify`-ed.
 
 # ── Vitya — #igry ────────────────────────────────────────
 /bot create Vitya Operator igrovogo zala
+/bot set Vitya language ru
 /bot set Vitya prefix !
 /bot set Vitya cooldown 1000
 /bot set Vitya rss_interval 45
@@ -294,6 +303,7 @@ shot, logged in as an admin who has `/identify`-ed.
 
 # ── Sofya — #nauchpop ───────────────────────────────────────
 /bot create Sofya Hranitelnitsa nablyudeniy
+/bot set Sofya language ru
 /bot set Sofya prefix !
 /bot set Sofya cooldown 1000
 /bot set Sofya rss_interval 60
@@ -313,6 +323,7 @@ shot, logged in as an admin who has `/identify`-ed.
 
 # ── Larisa — #ekonomika ──────────────────────────────────
 /bot create Larisa Nablyudatelnitsa rynkov
+/bot set Larisa language ru
 /bot set Larisa prefix !
 /bot set Larisa cooldown 1000
 /bot set Larisa rss_interval 30
@@ -332,6 +343,7 @@ shot, logged in as an admin who has `/identify`-ed.
 
 # ── Valera — #futbol ─────────────────────────────────────
 /bot create Valera Letopisets s tribuny
+/bot set Valera language ru
 /bot set Valera prefix !
 /bot set Valera cooldown 1000
 /bot set Valera rss_interval 20
@@ -379,6 +391,8 @@ matters after a paste.
 
 **Storozh** stands in all ten and greets in none of them. All channels are `+tn`,
 publish their archive and are marked Russian (`/cs language ru`).
+Every bot is marked Russian too: `/bot set <Bot> language ru` follows its
+`/bot create` and draws the same flag beside its nickname.
 
 Bot nicknames are Latin because the schema requires it — `[a-zA-Z][a-zA-Z0-9_-]*`
 — but every line they speak is Cyrillic.

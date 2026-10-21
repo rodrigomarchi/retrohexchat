@@ -111,6 +111,50 @@ defmodule RetroHexChatWeb.ChatLive.Components.BotManagementDialogTest do
     end
   end
 
+  describe "the bot's language" do
+    test "the roster draws the flag of the language a bot speaks beside its name" do
+      html =
+        panel(%{
+          bots: [bot(name: "Falante", nickname: "Falante", locale: "pt_BR"), bot([])]
+        })
+
+      assert html =~ ~r/data-testid="nick-flag"[^>]*data-locale="pt_BR"/
+      # a bot with no language draws no flag rather than a placeholder
+      assert length(Regex.scan(~r/data-testid="nick-flag"/, html)) == 1
+    end
+
+    test "an administrator can pick the language in the detail, starting from the current one" do
+      html = panel(%{selected: bot(locale: "ja"), is_admin: true})
+
+      assert html =~ ~s(data-testid="bot-language-select")
+      assert html =~ ~s(phx-change="bot_set_locale")
+      assert html =~ ~r/<input[^>]*name="locale"[^>]*value="ja"[^>]*checked/
+      assert html =~ ~r/data-testid="nick-flag"[^>]*data-locale="ja"/
+    end
+
+    test "an onlooker reads the language but gets no select" do
+      html = panel(%{selected: bot(locale: "ja"), is_admin: false})
+
+      refute html =~ ~s(data-testid="bot-language-select")
+      assert html =~ ~s(data-testid="bot-language-value")
+    end
+
+    test "the New Bot form offers the languages, with no language picked" do
+      html = dialog(%{show_new_bot: true})
+
+      assert html =~ ~s(data-testid="bot-create-language")
+      assert html =~ ~r/<input[^>]*name="locale"[^>]*value=""[^>]*checked/
+      assert html =~ ~s(value="pt_BR")
+    end
+
+    test "the New Bot form names the language picked so far" do
+      html = dialog(%{show_new_bot: true, new_bot_locale: "pt_BR"})
+
+      assert html =~ ~r/<input[^>]*name="locale"[^>]*value="pt_BR"[^>]*checked/
+      assert html =~ ~r/data-testid="nick-flag"[^>]*data-locale="pt_BR"/
+    end
+  end
+
   describe "the detail screen" do
     test "reports the bot's own prefix rather than the default" do
       html = panel(%{selected: bot(command_prefix: "."), is_admin: true})

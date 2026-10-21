@@ -98,6 +98,7 @@ shot, logged in as an admin who has `/identify`-ed.
 #  2. Sentinela — moderação, todos os canais
 # ══════════════════════════════════════════════════════════
 /bot create Sentinela Responsavel pela ordem nas salas
+/bot set Sentinela language pt_PT
 /bot set Sentinela prefix !
 /bot set Sentinela cooldown 1000
 /bot set Sentinela mod_action warn
@@ -126,6 +127,7 @@ shot, logged in as an admin who has `/identify`-ed.
 #  3. Fernao — anfitrião do #portugal
 # ══════════════════════════════════════════════════════════
 /bot create Fernao Anfitriao do canal portugues
+/bot set Fernao language pt_PT
 /bot set Fernao prefix !
 /bot set Fernao cooldown 1000
 /bot set Fernao dice_default 1d20
@@ -159,6 +161,7 @@ shot, logged in as an admin who has `/identify`-ed.
 # ── Vasco — #portugal ────────────────────────────────────
 # Sem saudação: quem recebe os recém-chegados nesta sala é o Fernao.
 /bot create Vasco Jornalista de servico
+/bot set Vasco language pt_PT
 /bot set Vasco prefix !
 /bot set Vasco cooldown 1000
 /bot set Vasco rss_interval 20
@@ -172,6 +175,7 @@ shot, logged in as an admin who has `/identify`-ed.
 
 # ── Duarte — #actualidade ────────────────────────────────
 /bot create Duarte Editor da mesa de actualidade
+/bot set Duarte language pt_PT
 /bot set Duarte prefix !
 /bot set Duarte cooldown 1000
 /bot set Duarte rss_interval 20
@@ -191,6 +195,7 @@ shot, logged in as an admin who has `/identify`-ed.
 
 # ── Leonor — #ultimahora ─────────────────────────────────
 /bot create Leonor Plantao de ultima hora
+/bot set Leonor language pt_PT
 /bot set Leonor prefix !
 /bot set Leonor cooldown 1000
 /bot set Leonor rss_interval 20
@@ -209,6 +214,7 @@ shot, logged in as an admin who has `/identify`-ed.
 
 # ── Gil — #informatica ───────────────────────────────────
 /bot create Gil Curioso de informatica
+/bot set Gil language pt_PT
 /bot set Gil prefix !
 /bot set Gil cooldown 1000
 /bot set Gil rss_interval 30
@@ -228,6 +234,7 @@ shot, logged in as an admin who has `/identify`-ed.
 
 # ── Mafalda — #gadgets ───────────────────────────────────
 /bot create Mafalda Testadora de bugigangas
+/bot set Mafalda language pt_PT
 /bot set Mafalda prefix !
 /bot set Mafalda cooldown 1000
 /bot set Mafalda rss_interval 45
@@ -246,6 +253,7 @@ shot, logged in as an admin who has `/identify`-ed.
 
 # ── Afonso — #negocios ───────────────────────────────────
 /bot create Afonso Cronista de economia
+/bot set Afonso language pt_PT
 /bot set Afonso prefix !
 /bot set Afonso cooldown 1000
 /bot set Afonso rss_interval 30
@@ -264,6 +272,7 @@ shot, logged in as an admin who has `/identify`-ed.
 
 # ── Beatriz — #bolsa ─────────────────────────────────────
 /bot create Beatriz Observadora dos mercados
+/bot set Beatriz language pt_PT
 /bot set Beatriz prefix !
 /bot set Beatriz cooldown 1000
 /bot set Beatriz rss_interval 30
@@ -282,6 +291,7 @@ shot, logged in as an admin who has `/identify`-ed.
 
 # ── Eusebio — #desporto ──────────────────────────────────
 /bot create Eusebio Cronista de bancada
+/bot set Eusebio language pt_PT
 /bot set Eusebio prefix !
 /bot set Eusebio cooldown 1000
 /bot set Eusebio rss_interval 20
@@ -301,6 +311,7 @@ shot, logged in as an admin who has `/identify`-ed.
 
 # ── Amalia — #cultura ────────────────────────────────────
 /bot create Amalia Guardia da agenda cultural
+/bot set Amalia language pt_PT
 /bot set Amalia prefix !
 /bot set Amalia cooldown 1000
 /bot set Amalia rss_interval 60
@@ -319,6 +330,7 @@ shot, logged in as an admin who has `/identify`-ed.
 
 # ── Ines — #natureza ─────────────────────────────────────
 /bot create Ines Vigilante do territorio
+/bot set Ines language pt_PT
 /bot set Ines prefix !
 /bot set Ines cooldown 1000
 /bot set Ines rss_interval 120
@@ -365,3 +377,5 @@ that matters after a paste.
 
 **Sentinela** stands in all ten and greets in none of them. All channels are `+tn`,
 publish their archive and are marked European Portuguese (`/cs language pt_PT`).
+Every bot is marked European Portuguese too: `/bot set <Bot> language pt_PT`
+follows its `/bot create` and draws the same flag beside its nickname.

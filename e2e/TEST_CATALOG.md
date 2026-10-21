@@ -135,8 +135,8 @@ make e2e.catalog.check    # verify it is current (also runs in make ci)
 ## Coverage
 
 - **257 spec files** under `e2e/tests/`.
-- **633 Playwright `test()` cases**.
-- **579 documented flows**, 578 done, 1 not done.
+- **634 Playwright `test()` cases**.
+- **580 documented flows**, 579 done, 1 not done.
 - **Every spec documents its own flows.**
 
 ## Flow index
@@ -399,6 +399,7 @@ Grouped by section. Every row comes from an `@flow` line in the spec itself.
 | M35 | The system windows coexist on one desktop | `tests/chat-system-windows.spec.ts` | done |
 | M36 | The Games folder is the catalogue: a game icon opens the game's home over the chat, and its Play opens the game in a tab of its own (features P2) | `tests/chat-retro-games.spec.ts` | done |
 | M37 | Start -> Games -> Retro Games opens the folder, and the Arcade is still a window (features P2) | `tests/chat-retro-games.spec.ts` | done |
+| M38 | An admin gives a bot a language with /bot set or Bot Management, and its flag is drawn beside its nickname in the user list, the roster and its detail | `tests/chat-bot-management-window.spec.ts` | done |
 
 ### N - P2P, File, Call, Game
 
