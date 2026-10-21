@@ -60,12 +60,18 @@ defmodule RetroHexChat.Chat.QueriesPerformanceTest do
     parent = self()
     handler = "queries-performance-#{System.unique_integer([:positive])}"
 
+    # Every query anybody in the VM sends reaches this handler, and a handler
+    # that raises on one is detached for good: matching only the messages
+    # query in the head made the first foreign query — another test, a
+    # background job — switch it off, and the page's query never arrived.
     :ok =
       :telemetry.attach(
         handler,
         [:retro_hex_chat, :repo, :query],
-        fn _event, _measurements, %{source: "messages", query: sql, params: params}, _ ->
-          send(parent, {:messages_query, sql, params})
+        fn _event, _measurements, metadata, _ ->
+          if self() == parent and metadata[:source] == "messages" do
+            send(parent, {:messages_query, metadata.query, metadata.params})
+          end
         end,
         nil
       )
