@@ -27,11 +27,18 @@ const GAP = 4;
 
 /**
  * Where a panel goes, in viewport pixels, for a trigger rect and a placement —
- * kept on screen with a small margin. A pure function so the geometry can be
- * tested without a layout engine.
+ * kept on screen with a small margin. A panel with no room on its own side of
+ * the trigger opens on the other side when that one has room, rather than
+ * being pushed back over the trigger it belongs to. A pure function so the
+ * geometry can be tested without a layout engine.
  */
 export function panelPosition(trigger, panel, placement, viewport) {
-  const above = placement.startsWith("above");
+  const fitsAbove = trigger.top - GAP - panel.height >= GAP;
+  const fitsBelow = trigger.bottom + GAP + panel.height <= viewport.height - GAP;
+  let above = placement.startsWith("above");
+  if (above && !fitsAbove && fitsBelow) above = false;
+  else if (!above && !fitsBelow && fitsAbove) above = true;
+
   let top = above ? trigger.top - GAP - panel.height : trigger.bottom + GAP;
   let left;
   if (placement.endsWith("-end")) left = trigger.right - panel.width;

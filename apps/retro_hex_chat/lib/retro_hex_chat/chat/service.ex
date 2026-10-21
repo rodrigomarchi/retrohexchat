@@ -6,17 +6,23 @@ defmodule RetroHexChat.Chat.Service do
 
   require Logger
 
+  alias RetroHexChat.Admin.GlobalMutes
+  alias RetroHexChat.Channels.Server
+
   alias RetroHexChat.Chat.{
     Attachments,
     Content,
     Conversation,
+    Message,
     Policy,
+    PrivateMessage,
     Queries,
     Reactions,
     Replies,
     SendOptions
   }
 
+  alias RetroHexChat.Nickname
   alias RetroHexChat.Notifications
   alias RetroHexChat.Observability
   alias RetroHexChat.Presence.Tracker
@@ -152,11 +158,33 @@ defmodule RetroHexChat.Chat.Service do
 
   defp do_toggle_reaction(message, nickname, emoji) do
     with %{} = message <- message || {:error, dgettext("chat", "Message not found.")},
+         :ok <- may_react?(message, nickname, Reactions.intent(message, nickname, emoji)),
          {:ok, state} <- Reactions.toggle(message, nickname, emoji) do
       broadcast_to_conversation(message, "reaction_changed", state)
       {:ok, state}
     end
   end
+
+  # A channel line is answered by the people in the room, under the room's own
+  # rules, and not by somebody an administrator muted; a private line only by
+  # the two people in the conversation.
+  @spec may_react?(Message.t() | PrivateMessage.t(), String.t(), :add | :remove) ::
+          :ok | {:error, String.t()}
+  defp may_react?(%PrivateMessage{} = pm, nickname, _intent) do
+    if Nickname.equal?(pm.sender_nickname, nickname) or
+         Nickname.equal?(pm.recipient_nickname, nickname),
+       do: :ok,
+       else: {:error, dgettext("chat", "Message not found.")}
+  end
+
+  defp may_react?(%Message{channel_name: channel}, nickname, :add) do
+    if GlobalMutes.muted?(nickname),
+      do: {:error, dgettext("chat", "You are muted by an administrator")},
+      else: Server.can_react?(channel, nickname, :add)
+  end
+
+  defp may_react?(%Message{channel_name: channel}, nickname, :remove),
+    do: Server.can_react?(channel, nickname, :remove)
 
   @spec delete_message(integer(), String.t()) ::
           {:ok, RetroHexChat.Chat.Message.t()} | {:error, String.t()}

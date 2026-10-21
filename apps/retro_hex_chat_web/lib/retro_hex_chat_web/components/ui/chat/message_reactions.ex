@@ -2,10 +2,16 @@ defmodule RetroHexChatWeb.Components.UI.MessageReactions do
   @moduledoc """
   The reactions under a message, and the quick picks that add one.
 
-  Two components, composed from the button primitive rather than drawn: a chip
-  is a small two-state button, which is what the design system already has, and
-  a second look-alike built out of raw markup would drift from it the first
-  time the retro bevel changes.
+  Composed from the button primitive rather than drawn: a chip is a small
+  two-state button, which is what the design system already has, and a
+  look-alike built out of raw markup would drift from its focus, disabled and
+  sizing rules. Chips and picks use its frameless `link` variant and draw the
+  emoji alone — a row of framed squares under every line is louder than the
+  conversation.
+
+  The picker is a smiley at the right end of the line's head, drawn on every
+  stored message and on every screen, so reaching it needs no hover a touch
+  screen does not have.
 
   The strip renders only when there is something in it. A blank row under every
   line is fifty blank rows in a page of history, and the row this sits in
@@ -25,13 +31,15 @@ defmodule RetroHexChatWeb.Components.UI.MessageReactions do
         on_toggle="toggle_reaction"
       />
 
-      <.message_reaction_bar message_id={42} on_toggle="toggle_reaction" />
+      <.message_reaction_picker message_id={42} author="Bo" on_toggle="toggle_reaction" />
   """
   use RetroHexChatWeb.Component
 
   import RetroHexChatWeb.Components.UI.Button
+  import RetroHexChatWeb.Components.UI.Popover
 
   alias RetroHexChat.Chat.EmojiData
+  alias RetroHexChatWeb.Icons
 
   # The five a person reaches for without thinking. Deliberately fixed rather
   # than "most used on this server": a ranking would be a query on the render
@@ -53,6 +61,11 @@ defmodule RetroHexChatWeb.Components.UI.MessageReactions do
     doc: "emoji => %{count:, actors: []}; nil when there are none"
 
   attr :viewer, :string, default: nil, doc: "whose chips are drawn as pressed"
+
+  attr :source, :atom,
+    default: nil,
+    doc: "`:channel` or `:private` — the two are numbered apart, so the id alone is ambiguous"
+
   attr :on_toggle, :any, default: nil
   attr :class, :any, default: nil
 
@@ -68,13 +81,14 @@ defmodule RetroHexChatWeb.Components.UI.MessageReactions do
     >
       <.button
         :for={{emoji, count, actors} <- @entries}
-        variant="outline"
+        variant="link"
         size="sm"
         class={classes(["message-reaction", mine?(actors, @viewer) && "message-reaction--mine"])}
         aria-pressed={to_string(mine?(actors, @viewer))}
         title={actors_title(actors)}
         phx-click={@on_toggle}
         phx-value-message_id={@message_id}
+        phx-value-source={@source}
         phx-value-emoji={emoji}
         data-testid={"message-reaction-#{@message_id}-#{emoji}"}
       >
@@ -85,35 +99,51 @@ defmodule RetroHexChatWeb.Components.UI.MessageReactions do
     """
   end
 
-  @doc "Renders the handful of emoji offered without opening anything."
+  @doc "Renders the smiley that opens the handful of emoji offered for a message."
   attr :message_id, :any, required: true
+
+  attr :source, :atom,
+    default: nil,
+    doc: "`:channel` or `:private` — the two are numbered apart, so the id alone is ambiguous"
+
+  attr :author, :string,
+    default: nil,
+    doc: "who wrote the line, so each row's trigger has a name of its own"
+
   attr :on_toggle, :any, default: nil
   attr :class, :any, default: nil
 
-  @spec message_reaction_bar(map()) :: Phoenix.LiveView.Rendered.t()
-  def message_reaction_bar(assigns) do
+  @spec message_reaction_picker(map()) :: Phoenix.LiveView.Rendered.t()
+  def message_reaction_picker(assigns) do
     assigns = assign(assigns, :quick_picks, quick_picks())
 
     ~H"""
-    <div
-      class={classes(["message-reaction-bar", @class])}
-      data-testid={"message-reaction-bar-#{@message_id}"}
+    <.popover
+      label={picker_label(@author)}
+      placement="above-end"
+      class={classes(["message-react", @class])}
+      trigger_class="message-react-trigger"
+      trigger_testid={"message-react-trigger-#{@message_id}"}
+      panel_class="message-reaction-bar"
+      panel_testid={"message-reaction-bar-#{@message_id}"}
     >
+      <:trigger><Icons.icon_fmt_emoji class="h-3.5 w-3.5" /></:trigger>
       <.button
         :for={emoji <- @quick_picks}
-        variant="outline"
+        variant="link"
         size="sm"
         class="message-reaction"
         title={dgettext("chat", "React with %{emoji}", emoji: emoji)}
-        phx-click={@on_toggle}
+        aria-label={dgettext("chat", "React with %{emoji}", emoji: emoji)}
+        phx-click={@on_toggle && close_after(@on_toggle)}
         phx-value-message_id={@message_id}
+        phx-value-source={@source}
         phx-value-emoji={emoji}
         data-testid={"message-reaction-pick-#{@message_id}-#{emoji}"}
       >
         <:icon>{emoji}</:icon>
-        <span class="sr-only">{dgettext("chat", "React")}</span>
       </.button>
-    </div>
+    </.popover>
     """
   end
 
@@ -127,6 +157,10 @@ defmodule RetroHexChatWeb.Components.UI.MessageReactions do
   """
   @spec quick_picks() :: [String.t()]
   def quick_picks, do: Enum.filter(@quick_picks, &EmojiData.known?/1)
+
+  @spec picker_label(String.t() | nil) :: String.t()
+  defp picker_label(nil), do: dgettext("chat", "React")
+  defp picker_label(author), do: dgettext("chat", "React to %{nick}", nick: author)
 
   @spec entries(map() | nil) :: [{String.t(), non_neg_integer(), [String.t()]}]
   defp entries(reactions) when is_map(reactions) do

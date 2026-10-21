@@ -120,6 +120,17 @@ describe("resolveComposerKey — Tab", () => {
     );
   });
 
+  // The input would otherwise be a keyboard trap: Tab always completes.
+  it("lets Shift+Tab leave the input when nothing is being completed", () => {
+    expect(resolveComposerKey(key("Tab", { shiftKey: true }), state({ value: "hi" }))).toEqual([]);
+  });
+
+  it("keeps Shift+Tab inside an open completion", () => {
+    expect(
+      pushes(resolveComposerKey(key("Tab", { shiftKey: true }), state({ dropdownVisible: true }))),
+    ).toContain("autocomplete_select_current");
+  });
+
   it("otherwise asks the server to complete", () => {
     const intents = resolveComposerKey(key("Tab"), state({ value: "/jo" }));
     const push = intents.find((i) => i.type === INTENT.PUSH);

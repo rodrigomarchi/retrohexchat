@@ -450,8 +450,8 @@ export async function pointAt(page: Page, target: Locator) {
 
 /**
  * Parks the pointer where it hovers nothing. A pointer left where the last
- * click landed keeps that spot's hover state on screen — a message's reaction
- * bar, a button's highlight.
+ * click landed keeps that spot's hover state on screen — a nick's hover card,
+ * a button's highlight.
  */
 export async function restCursor(page: Page) {
   await page.mouse.move(CAMERA.css.width - 4, CAMERA.css.height / 2, {

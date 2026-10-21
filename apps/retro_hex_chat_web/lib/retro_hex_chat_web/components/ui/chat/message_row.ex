@@ -224,6 +224,18 @@ defmodule RetroHexChatWeb.Components.UI.MessageRow do
             avatar={@show_avatars && Map.get(@msg, :avatar)}
             layout={card_layout(@msg)}
           >
+            <%!-- On the head line of every stored message, on every screen:
+                  the head has room to its right, and the picks open in the
+                  browser, so reaching them costs no round trip. A row that
+                  failed to send has no id to react to. --%>
+            <:actions :if={reactable?(@msg)}>
+              <.message_reaction_picker
+                message_id={@msg.id}
+                source={Map.get(@msg, :source)}
+                author={@msg.author}
+                on_toggle="toggle_reaction"
+              />
+            </:actions>
             <span :if={is_nil(result_card(@msg, @strip_formatting))}>
               {raw(formatted_content(@msg, @strip_formatting))}
             </span>
@@ -251,16 +263,14 @@ defmodule RetroHexChatWeb.Components.UI.MessageRow do
               on_retry="retry_message"
             />
             <%!-- The cheapest answer there is, under the line it answers. The
-                  strip draws nothing when nobody has reacted; the quick picks
-                  are always in the markup and CSS decides when they show, so
-                  hovering a line costs no round trip. --%>
+                  strip draws nothing when nobody has reacted. --%>
             <.message_reactions
               message_id={@msg.id}
               reactions={Map.get(@msg, :reactions)}
+              source={Map.get(@msg, :source)}
               viewer={@viewer}
               on_toggle="toggle_reaction"
             />
-            <.message_reaction_bar message_id={@msg.id} on_toggle="toggle_reaction" />
             <%!-- What the line collected, said once under it. The replies stay
                   in the conversation where they were written — this only says
                   that they happened, so a small room never has to choose
@@ -294,6 +304,12 @@ defmodule RetroHexChatWeb.Components.UI.MessageRow do
     </div>
     """
   end
+
+  # Only a stored message can carry a reaction. A row that failed to send keeps
+  # a placeholder id ("pending_3") the database has never seen; a row still
+  # pending already carries the id the server returned.
+  @spec reactable?(map()) :: boolean()
+  defp reactable?(msg), do: is_integer(msg.id)
 
   defp help_url(topic_id), do: PublicPages.localized_path("/chat/help/#{topic_id}")
 

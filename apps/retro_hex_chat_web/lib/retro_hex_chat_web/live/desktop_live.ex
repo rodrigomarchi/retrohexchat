@@ -995,6 +995,7 @@ defmodule RetroHexChatWeb.DesktopLive do
       # Which message the emoji picker was opened for, when it was opened from a
       # message rather than from the composer. Cleared as soon as it is used.
       reaction_target_id: nil,
+      reaction_target_source: nil,
       # Whether this server can send a push at all, and whether this browser has
       # asked it to. The first is the server's configuration and never changes
       # within a session; the second is the browser's own fact, reported by the

@@ -67,6 +67,15 @@ defmodule RetroHexChat.Chat.Reactions do
     end
   end
 
+  @doc """
+  Whether a toggle by `nickname` would add `emoji` or take it back — the two
+  are allowed under different rules.
+  """
+  @spec intent(Message.t() | PrivateMessage.t(), String.t(), String.t()) :: :add | :remove
+  def intent(message, nickname, emoji) do
+    if existing(message, nickname, emoji), do: :remove, else: :add
+  end
+
   @doc "Every emoji on one message, with who put it there."
   @spec summary_for(Message.t() | PrivateMessage.t()) :: summary()
   def summary_for(message) do

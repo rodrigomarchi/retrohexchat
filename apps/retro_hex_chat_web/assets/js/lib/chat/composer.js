@@ -57,7 +57,7 @@ export function resolveComposerKey(event, state) {
   if (key === "ArrowUp") return arrowIntents(state, "up");
   if (key === "ArrowDown") return arrowIntents(state, "down");
 
-  if (key === "Tab") return tabIntents(state);
+  if (key === "Tab") return tabIntents(event, state);
 
   if (event.ctrlKey && event.shiftKey && !event.altKey && !event.metaKey) {
     const code = SHORTCUT_FORMAT_MAP[key.toLowerCase()];
@@ -143,7 +143,12 @@ function arrowIntents(state, direction) {
   return intents;
 }
 
-function tabIntents(state) {
+// Tab completes a nickname, mIRC-style, so it never leaves the input. Shift+Tab
+// is the way out: outside an open completion it is the browser's own, and a few
+// presses back — past the composer's own buttons — reach the conversation.
+function tabIntents(event, state) {
+  if (event.shiftKey && !state.dropdownVisible && !state.tabCycleActive) return [];
+
   const intents = [preventDefault()];
 
   if (state.dropdownVisible) {

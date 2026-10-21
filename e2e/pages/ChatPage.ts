@@ -1145,10 +1145,11 @@ export class ChatPage {
       .first();
   }
 
-  // The quick picks are revealed by hover, so reacting starts by hovering the
-  // row rather than by opening anything.
+  // The quick picks open from the smiley that is always on the row's head line.
   async reactTo(text: string, emoji: string) {
-    await this.messageRowByText(text).hover();
+    await this.messageRowByText(text)
+      .locator('[data-testid^="message-react-trigger-"]')
+      .click();
     await this.reactionQuickPick(text, emoji).click();
   }
 

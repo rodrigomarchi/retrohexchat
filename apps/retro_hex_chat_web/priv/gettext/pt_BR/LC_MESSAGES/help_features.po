@@ -1400,7 +1400,7 @@ msgstr "Menu de Contexto:"
 #: lib/retro_hex_chat_web/controllers/help_content/feature_copy.html.heex:79
 #: lib/retro_hex_chat_web/controllers/help_content/feature_interactive_elements.html.heex:51
 #: lib/retro_hex_chat_web/controllers/help_content/feature_nick_colors.html.heex:30
-#: lib/retro_hex_chat_web/controllers/help_content/feature_reactions.html.heex:44
+#: lib/retro_hex_chat_web/controllers/help_content/feature_reactions.html.heex:51
 #: lib/retro_hex_chat_web/controllers/help_content/feature_user_lookup.html.heex:22
 #: lib/retro_hex_chat_web/controllers/help_content/feature_user_lookup.html.heex:45
 #, elixir-autogen, elixir-format
@@ -3031,7 +3031,7 @@ msgstr ""
 #: lib/retro_hex_chat_web/controllers/help_content/feature_privacy_settings.html.heex:43
 #: lib/retro_hex_chat_web/controllers/help_content/feature_public_archive.html.heex:48
 #: lib/retro_hex_chat_web/controllers/help_content/feature_quit_message.html.heex:76
-#: lib/retro_hex_chat_web/controllers/help_content/feature_reactions.html.heex:37
+#: lib/retro_hex_chat_web/controllers/help_content/feature_reactions.html.heex:44
 #: lib/retro_hex_chat_web/controllers/help_content/feature_saved_messages.html.heex:30
 #: lib/retro_hex_chat_web/controllers/help_content/feature_search.html.heex:67
 #: lib/retro_hex_chat_web/controllers/help_content/feature_server_broadcasts.html.heex:82
@@ -6192,7 +6192,7 @@ msgstr ""
 "Uma reação é uma resposta a uma mensagem que custa um clique. Ela chega a "
 "quem escreveu a linha e nunca pede que alguém leia nada."
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_reactions.html.heex:32
+#: lib/retro_hex_chat_web/controllers/help_content/feature_reactions.html.heex:39
 #, elixir-autogen, elixir-format
 msgid "A reaction plays no sound, marks nothing unread and wakes no device. That is deliberate: the cheapest thing you can say here should stay cheap for the person receiving it too."
 msgstr ""
@@ -6200,12 +6200,12 @@ msgstr ""
 "nenhum. Isso é de propósito: a coisa mais barata que você pode dizer aqui "
 "também tem que ser barata para quem recebe."
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_reactions.html.heex:21
+#: lib/retro_hex_chat_web/controllers/help_content/feature_reactions.html.heex:28
 #, elixir-autogen, elixir-format
 msgid "Click your own reaction again to take it back"
 msgstr "Clique de novo na sua própria reação para tirá-la"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_reactions.html.heex:40
+#: lib/retro_hex_chat_web/controllers/help_content/feature_reactions.html.heex:47
 #: lib/retro_hex_chat_web/controllers/help_content/feature_server_emoji.html.heex:30
 #, elixir-autogen, elixir-format
 msgid "Emoji Picker"
@@ -6216,34 +6216,12 @@ msgstr "Emoji Picker"
 msgid "How to React"
 msgstr "Como reagir"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_reactions.html.heex:30
+#: lib/retro_hex_chat_web/controllers/help_content/feature_reactions.html.heex:37
 #, elixir-autogen, elixir-format
 msgid "It Notifies Nobody"
 msgstr "Não avisa ninguém"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_reactions.html.heex:10
-#, elixir-autogen, elixir-format
-msgid "On a computer: hover a message and pick one of the emoji that appear under it"
-msgstr ""
-"No computador: passe o mouse sobre a mensagem e escolha um dos emoji que "
-"aparecem embaixo dela"
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_reactions.html.heex:16
-#, elixir-autogen, elixir-format
-msgid "On a phone: press and hold the message and choose React, then pick any emoji"
-msgstr ""
-"No celular: pressione e segure a mensagem, escolha Reagir e depois qualquer "
-"emoji"
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_reactions.html.heex:25
-#, elixir-autogen, elixir-format
-msgid "The number beside an emoji is how many people chose it, and hovering it names them. Your own reactions are drawn pressed. One person counts once per emoji, however many times they click."
-msgstr ""
-"O número ao lado de um emoji é quantas pessoas o escolheram, e passar o "
-"mouse sobre ele mostra os nomes. As suas reações aparecem afundadas. Uma "
-"pessoa conta uma vez por emoji, por mais que clique."
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_reactions.html.heex:23
+#: lib/retro_hex_chat_web/controllers/help_content/feature_reactions.html.heex:30
 #, elixir-autogen, elixir-format
 msgid "What the Numbers Mean"
 msgstr "O que os números querem dizer"
@@ -7957,3 +7935,23 @@ msgstr "O idioma de um bot"
 #, elixir-autogen, elixir-format
 msgid "A bot carries a flag too, for the language it speaks. An admin gives a bot its language with %{command} or in Bot Management. A bot nobody gave a language has no flag."
 msgstr "Um bot carrega uma bandeira também, para a língua que fala. Um administrador dá a um bot a sua linguagem com %{command} ou em Gestão de Bots. Um bot ninguém deu uma língua não tem bandeira."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_reactions.html.heex:16
+#, elixir-autogen, elixir-format
+msgid "For any other emoji, right-click the message (on a phone, press and hold it) and choose %{item}"
+msgstr "Para qualquer outro emoji, clique com o botão direito do mouse na mensagem (no telefone, pressione e segure) e escolha %{item}"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_reactions.html.heex:23
+#, elixir-autogen, elixir-format
+msgid "With the keyboard: from the message box press Shift+Tab until a message is selected, move to the one you want with the arrow keys and press Enter"
+msgstr "Com o teclado: da caixa de mensagem pressione Shift+Tab até que uma mensagem seja selecionada, mova para a que você deseja com as teclas de seta e pressione Enter"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_reactions.html.heex:10
+#, elixir-autogen, elixir-format
+msgid "Click the smiley face at the end of the line with the author's name, then choose one of the emoji it offers"
+msgstr "Clique no rosto sorridente no final da linha com o nome do autor, em seguida, escolha um dos emoji que ele oferece"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_reactions.html.heex:32
+#, elixir-autogen, elixir-format
+msgid "The number beside an emoji shows how many people chose it. Point at it to see their names. In your own reactions the number uses bold text. Each person counts only once per emoji, even after many clicks."
+msgstr "O número ao lado de um emoji mostra quantas pessoas o escolheram. Aponte para ver os nomes deles. Nas suas próprias reações, o número usa texto em negrito. Cada pessoa conta apenas uma vez por emoji, mesmo depois de muitos cliques."

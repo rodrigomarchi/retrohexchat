@@ -5,6 +5,7 @@
  * @flow MB7 [done] Message deletion confirms and cancels from the long-press menu
  * @flow MB8 [done] PM reply, edit, and delete work from touch message actions
  * @flow MB9 [done] Nicklist and conversation actions open by long press
+ * @flow MB12 [done] A reaction is picked from the smiley every message shows, without hover
  *
  * These @flow lines are the source of truth for e2e/TEST_CATALOG.md.
  * Edit them here, then run `make e2e.catalog` to regenerate the index.
@@ -21,6 +22,7 @@ import {
 import { ConnectPage, uniqueNickname } from "../pages/ConnectPage";
 import { ChatPage } from "../pages/ChatPage";
 import { e2eBaseURL } from "../helpers/env";
+import { shot } from "../helpers/screenshots";
 
 const PIXEL_5 = devices["Pixel 5"];
 const PHONE = {
@@ -153,6 +155,35 @@ test.describe("mobile chat message flow", () => {
 
     await chat.chatSendButton.click();
     await chat.expectMessageVisible("🐶");
+  });
+
+  test("reacts from the smiley every message shows, with no hover to reveal it", async ({
+    page,
+  }) => {
+    const { chat } = await signedInUser(page, "mreact");
+    const line = `mobile-react-${Date.now()}`;
+    const thumbs = "\u{1F44D}";
+
+    await chat.sendMessage(line);
+    await chat.expectMessageVisible(line);
+
+    const row = chat.messageRowByText(line);
+    const trigger = row.locator('[data-testid^="message-react-trigger-"]');
+    await expect(trigger).toBeVisible();
+    await shot(page, "mobile-reaction-trigger");
+
+    await trigger.tap();
+    await expect(chat.reactionQuickPick(line, thumbs)).toBeVisible();
+    await shot(page, "mobile-reaction-picks-open");
+
+    await chat.reactionQuickPick(line, thumbs).tap();
+    await expect(chat.messageReaction(line, thumbs)).toBeVisible();
+    await expect(chat.messageReaction(line, thumbs)).toHaveAttribute(
+      "aria-pressed",
+      "true",
+    );
+    await expect(chat.reactionQuickPick(line, thumbs)).toBeHidden();
+    await shot(page, "mobile-reaction-chip");
   });
 
   test("uses long press for reply and edit without a hardware keyboard", async ({

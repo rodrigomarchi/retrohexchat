@@ -4,7 +4,8 @@
  * @flow O9 [done] Edit last own message with ArrowUp; submit edit updates message (features P1)
  * @flow O10 [done] Delete own message marks deleted placeholder for both users (features P1)
  * @flow O11 [done] Retry failed pending message appears when send rejected by mode/mute (features P2)
- * @flow O28 [done] Reacting from the hover bar reaches the other person's screen, and clicking again removes it
+ * @flow O28 [done] Reacting from the smiley on the line reaches the other person's screen, and clicking again removes it
+ * @flow O33 [done] The conversation is one Tab stop: arrows move between lines, Enter reacts, Shift+F10 opens the line's menu
  *
  * These @flow lines are the source of truth for e2e/TEST_CATALOG.md.
  * Edit them here, then run `make e2e.catalog` to regenerate the index.
@@ -83,7 +84,17 @@ test.describe("Message actions", () => {
       // been reacted to must take no room at all.
       await expect(alice.chat.messageReaction(line, THUMBS)).toHaveCount(0);
 
-      await alice.chat.reactTo(line, THUMBS);
+      // The smiley is on the row without hovering anything.
+      const row = alice.chat.messageRowByText(line);
+      const trigger = row.locator('[data-testid^="message-react-trigger-"]');
+      await row.page().mouse.move(0, 0);
+      await expect(trigger).toBeVisible();
+      await shot(row, "reaction-trigger-at-rest");
+
+      await trigger.click();
+      await expect(alice.chat.reactionQuickPick(line, THUMBS)).toBeVisible();
+      await shot(row.page(), "reaction-picks-open");
+      await alice.chat.reactionQuickPick(line, THUMBS).click();
 
       await expect(alice.chat.messageReaction(line, THUMBS)).toBeVisible();
       await expect(alice.chat.messageReaction(line, THUMBS)).toHaveAttribute(
@@ -91,12 +102,16 @@ test.describe("Message actions", () => {
         "true",
       );
 
-      // The bevel that says "this one is yours" is one pixel of Win98 and does
-      // not survive a screenshot of a 16px chip, so it is asserted rather than
-      // looked at: a pressed chip and an unpressed one must not draw the same.
+      // A chip is the bare emoji and its count, so "this one is yours" is the
+      // count's colour and weight. It is asserted rather than looked at: a
+      // pressed chip and an unpressed one must not draw the same.
+      const markOf = (el: Element) => {
+        const style = getComputedStyle(el);
+        return `${style.color} ${style.fontWeight}`;
+      };
       const pressed = await alice.chat
         .messageReaction(line, THUMBS)
-        .evaluate((el) => getComputedStyle(el).boxShadow);
+        .evaluate(markOf);
 
       await shot(alice.chat.messageRowByText(line), "reaction-own-chip");
 
@@ -109,7 +124,7 @@ test.describe("Message actions", () => {
 
       const unpressed = await bob.chat
         .messageReaction(line, THUMBS)
-        .evaluate((el) => getComputedStyle(el).boxShadow);
+        .evaluate(markOf);
 
       expect(pressed).not.toBe(unpressed);
 
@@ -122,6 +137,51 @@ test.describe("Message actions", () => {
     } finally {
       await Promise.all([alice.ctx.close(), bob.ctx.close()]);
     }
+  });
+
+  test("the conversation is one Tab stop the keyboard moves through (O33)", async ({
+    page,
+  }) => {
+    const { chat } = await signedInUser(page, "kbd");
+    const marker = Date.now();
+    const older = `kbd-older-${marker}`;
+    const newer = `kbd-newer-${marker}`;
+    const thumbs = "\u{1F44D}";
+
+    await chat.sendMessage(older);
+    await chat.sendMessage(newer);
+    await chat.expectMessageVisible(newer);
+
+    // Backwards from the composer, the conversation is reached in a handful of
+    // presses however many lines it holds, and it is reached on its newest one.
+    await chat.chatInput.focus();
+    const focusedRow = () =>
+      page.evaluate(
+        () =>
+          document.activeElement?.classList.contains("chat-message") ?? false,
+      );
+    let presses = 0;
+    while (!(await focusedRow()) && presses < 12) {
+      await page.keyboard.press("Shift+Tab");
+      presses += 1;
+    }
+    expect(await focusedRow()).toBe(true);
+    await expect(chat.messageRowByText(newer)).toBeFocused();
+
+    await page.keyboard.press("ArrowUp");
+    await expect(chat.messageRowByText(older)).toBeFocused();
+    await shot(chat.messageRowByText(older), "keyboard-line-focused");
+
+    await page.keyboard.press("Enter");
+    await expect(chat.reactionQuickPick(older, thumbs)).toBeFocused();
+    await shot(page, "keyboard-picks-open");
+    await page.keyboard.press("Enter");
+    await expect(chat.messageReaction(older, thumbs)).toBeVisible();
+
+    await chat.messageRowByText(older).focus();
+    await page.keyboard.press("Shift+F10");
+    await expect(chat.chatContextMenu).toBeVisible();
+    await shot(page, "keyboard-context-menu");
   });
 
   test("reply via message context menu creates a reply bar, sends a reply block, and dismiss cancels (O8)", async ({

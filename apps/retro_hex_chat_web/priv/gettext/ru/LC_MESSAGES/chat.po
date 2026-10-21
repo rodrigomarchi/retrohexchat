@@ -3958,17 +3958,19 @@ msgstr "Никс истекает через %{window} бездействия"
 msgid "Copy Invite Link"
 msgstr "Копировать ссылку-приглашение"
 
-#: lib/retro_hex_chat_web/components/ui/chat/message_reactions.ex:114
+#: lib/retro_hex_chat_web/components/ui/chat/message_reactions.ex:162
 #, elixir-autogen, elixir-format
 msgid "React"
 msgstr "Отреагировать"
 
-#: lib/retro_hex_chat_web/components/ui/chat/message_reactions.ex:107
+#: lib/retro_hex_chat_web/components/ui/chat/message_reactions.ex:136
+#: lib/retro_hex_chat_web/components/ui/chat/message_reactions.ex:137
 #, elixir-autogen, elixir-format
 msgid "React with %{emoji}"
 msgstr "Отреагировать с %{emoji}"
 
 #: lib/retro_hex_chat_web/components/ui/chat/chat_context_menu.ex:315
+#: lib/retro_hex_chat_web/controllers/help_content/feature_reactions.html.heex:19
 #, elixir-autogen, elixir-format
 msgid "React..."
 msgstr "Отреагировать..."
@@ -6090,3 +6092,13 @@ msgstr "Показать ещё…"
 #, elixir-autogen, elixir-format
 msgid "%{category}: every channel, in the Channel List"
 msgstr "%{category}: все каналы — в списке каналов"
+
+#: lib/retro_hex_chat_web/live/chat_live/reaction_events.ex:90
+#, elixir-autogen, elixir-format
+msgid "Message not found."
+msgstr "Сообщение не найдено."
+
+#: lib/retro_hex_chat_web/components/ui/chat/message_reactions.ex:163
+#, elixir-autogen, elixir-format
+msgid "React to %{nick}"
+msgstr "Отреагировать на сообщение %{nick}"

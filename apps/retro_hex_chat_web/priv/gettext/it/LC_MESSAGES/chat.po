@@ -3953,17 +3953,19 @@ msgstr "• Nicks scade dopo %{window} di inattività"
 msgid "Copy Invite Link"
 msgstr "Copia link di invito"
 
-#: lib/retro_hex_chat_web/components/ui/chat/message_reactions.ex:114
+#: lib/retro_hex_chat_web/components/ui/chat/message_reactions.ex:162
 #, elixir-autogen, elixir-format
 msgid "React"
 msgstr "Reagisci"
 
-#: lib/retro_hex_chat_web/components/ui/chat/message_reactions.ex:107
+#: lib/retro_hex_chat_web/components/ui/chat/message_reactions.ex:136
+#: lib/retro_hex_chat_web/components/ui/chat/message_reactions.ex:137
 #, elixir-autogen, elixir-format
 msgid "React with %{emoji}"
 msgstr "Reagisci con %{emoji}"
 
 #: lib/retro_hex_chat_web/components/ui/chat/chat_context_menu.ex:315
+#: lib/retro_hex_chat_web/controllers/help_content/feature_reactions.html.heex:19
 #, elixir-autogen, elixir-format
 msgid "React..."
 msgstr "Reagisci..."
@@ -6080,3 +6082,13 @@ msgstr "Mostra altro…"
 #, elixir-autogen, elixir-format
 msgid "%{category}: every channel, in the Channel List"
 msgstr "%{category}: tutti i canali, nell'elenco dei canali"
+
+#: lib/retro_hex_chat_web/live/chat_live/reaction_events.ex:90
+#, elixir-autogen, elixir-format
+msgid "Message not found."
+msgstr "Messaggio non trovato."
+
+#: lib/retro_hex_chat_web/components/ui/chat/message_reactions.ex:163
+#, elixir-autogen, elixir-format
+msgid "React to %{nick}"
+msgstr "Reagisci al messaggio di %{nick}"

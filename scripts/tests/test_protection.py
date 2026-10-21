@@ -46,6 +46,26 @@ class ProtectTest(unittest.TestCase):
             self.assertIn(glyph, replacements.values())
             self.assertEqual(restore(protected, replacements), text)
 
+    def test_masks_key_chords(self):
+        # pt_BR: "Shift+Tab" came back as "Shift+ Aba".
+        for text, chord in [
+            ("Press Shift+Tab to go back", "Shift+Tab"),
+            ("Shift+F10 opens the menu", "Shift+F10"),
+            ("Ctrl+Shift+F finds", "Ctrl+Shift+F"),
+            ("Ctrl+Shift+] next window", "Ctrl+Shift+]"),
+            ("F10 alone", "F10"),
+        ]:
+            protected, replacements = protect(text)
+
+            self.assertNotIn(chord, protected)
+            self.assertIn(chord, replacements.values())
+            self.assertEqual(restore(protected, replacements), text)
+
+    def test_leaves_words_that_look_like_keys_alone(self):
+        _, replacements = protect("Shifting priorities and F-sharp")
+
+        self.assertEqual(replacements, {})
+
     def test_masks_mirc_and_irc(self):
         _, replacements = protect("A chat in the style of mIRC, not an IRC network")
 

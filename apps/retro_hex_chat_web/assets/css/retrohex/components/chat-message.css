@@ -318,50 +318,81 @@
 
 /* ── Reactions ──────────────────────────────────────────────────────────────
    The cheapest answer in the product, and its cost on screen has to match. A
-   chip is the button primitive shrunk to what it holds, so it keeps the same
-   bevel every other control has and needs no colour of its own. */
+   chip is the emoji and its count with no frame around them: a bevelled
+   square under every line that was reacted to is louder than the line. */
 .message-reaction {
+  @apply text-foreground;
   height: auto;
   min-height: 0;
   gap: 2px;
-  padding: 0 4px;
-  font-size: 11px;
+  padding: 0 2px;
+  font-size: 12px;
   line-height: 16px;
 }
 
+.message-reaction:hover,
+.message-reaction:focus-visible {
+  text-decoration: none;
+}
+
 .message-reaction > span:first-child {
-  width: 14px;
-  height: 14px;
-  font-size: 12px;
+  width: 16px;
+  height: 16px;
+  font-size: 14px;
 }
 
-/* Yours reads pressed, the way a toggled toolbar button does here. Written as a
-   compound selector on purpose: the button primitive already carries
-   `shadow-retro-raised`, and two utility classes of equal specificity are
-   settled by whichever the generated stylesheet emits last — which is not a
-   thing this file gets to decide. */
+/* Yours carries its count in bold selection navy. Compound selector so it
+   outranks the link variant's own text colour whatever order the generated
+   stylesheet emits them in. */
 .message-reaction.message-reaction--mine {
-  @apply bg-accent text-accent-foreground shadow-retro-sunken;
-  padding: 1px 3px 0 5px;
+  @apply font-bold text-selection-bg;
 }
 
+/* Frameless chips need air between them, or "❤️1👀1" reads as one token. */
 .message-reactions {
-  @apply mt-1 flex flex-wrap items-center gap-1;
+  @apply mt-1 flex flex-wrap items-center gap-x-2 gap-y-1;
 }
 
-/* The quick picks are always in the markup and hidden by CSS rather than
-   fetched on hover: a round trip to find out which five emoji exist would make
-   the cheapest gesture the slowest one. On a touch screen there is no hover at
-   all, so they stay hidden there and the long-press menu is the way in. */
-.message-reaction-bar {
-  @apply mt-1 hidden flex-wrap items-center gap-1;
+/* The smiley that opens the picks rides the right end of the head line on
+   every screen, so reacting never depends on a hover a phone does not have.
+   Floated, not flexed: the head is inline flow (see above), and a float is
+   how an inline line gives up its right edge without growing a row. */
+.chat-message__actions {
+  float: right;
+  margin-left: 6px;
 }
 
-@media (hover: hover) and (pointer: fine) {
-  .chat-message:hover .message-reaction-bar,
-  .chat-message:focus-within .message-reaction-bar {
-    display: flex;
+/* The head contains its float, so a trigger taller than the line pushes the
+   body down instead of narrowing it. */
+.chat-message__head:has(> .chat-message__actions) {
+  display: flow-root;
+}
+
+.message-react-trigger {
+  @apply inline-flex cursor-pointer items-center justify-center text-muted-foreground;
+  width: 20px;
+  height: 18px;
+}
+
+/* A finger needs more than a 14px glyph to land on. The negative bottom margin
+   hands the extra height back below the line, so the target grows without
+   growing the line or reaching into the row above. */
+@media (pointer: coarse) {
+  .message-react-trigger {
+    width: 32px;
+    height: 26px;
+    margin-bottom: -8px;
   }
+}
+
+.message-react-trigger:hover,
+.message-react-trigger:focus-visible,
+.message-react[open] > .message-react-trigger {
+  @apply text-foreground;
+}
+
+.message-reaction-bar {
+  @apply flex items-center gap-1 border border-border bg-surface p-1 shadow-retro-raised;
 }
 
 /* ── Server emoji ───────────────────────────────────────────────────────────

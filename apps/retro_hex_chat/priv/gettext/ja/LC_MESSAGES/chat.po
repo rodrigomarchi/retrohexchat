@@ -136,9 +136,10 @@ msgstr "メッセージは空にすることはできません"
 msgid "Message has already been deleted."
 msgstr "メッセージは既に削除されました。"
 
-#: lib/retro_hex_chat/chat/service.ex:106
-#: lib/retro_hex_chat/chat/service.ex:154
-#: lib/retro_hex_chat/chat/service.ex:190
+#: lib/retro_hex_chat/chat/service.ex:112
+#: lib/retro_hex_chat/chat/service.ex:160
+#: lib/retro_hex_chat/chat/service.ex:177
+#: lib/retro_hex_chat/chat/service.ex:218
 #, elixir-autogen, elixir-format
 msgid "Message not found."
 msgstr "メッセージが見つかりません。"
@@ -238,7 +239,7 @@ msgstr "Open/close 無視リスト"
 msgid "Open/close the keyboard shortcut cheatsheet"
 msgstr "Open/close キーボードショートカットチートシート"
 
-#: lib/retro_hex_chat/chat/service.ex:271
+#: lib/retro_hex_chat/chat/service.ex:299
 #, elixir-autogen, elixir-format
 msgid "Original message not found."
 msgstr "元のメッセージが見つかりませんでした。"
@@ -330,7 +331,7 @@ msgid "Switch to window 9"
 msgstr "ウィンドウに切り替える 9"
 
 #: lib/retro_hex_chat/chat/key_bindings.ex:281
-#: lib/retro_hex_chat/chat/service.ex:213
+#: lib/retro_hex_chat/chat/service.ex:241
 #, elixir-autogen, elixir-format
 msgid "System"
 msgstr "システム"
@@ -494,8 +495,8 @@ msgstr "トグル会議カメラ"
 msgid "Toggle Conference Microphone"
 msgstr "トグル会議マイク"
 
-#: lib/retro_hex_chat/channels/server.ex:1822
-#: lib/retro_hex_chat/chat/service.ex:366
+#: lib/retro_hex_chat/channels/server.ex:1885
+#: lib/retro_hex_chat/chat/service.ex:394
 #, elixir-autogen, elixir-format
 msgid "Attachment could not be attached to the message"
 msgstr "添付ファイルがメッセージに添付できません"
@@ -555,18 +556,18 @@ msgstr[0] "%{count}分"
 msgid "Reaction could not be saved."
 msgstr "リアクションを保存できませんでした。"
 
-#: lib/retro_hex_chat/chat/reactions.ex:107
+#: lib/retro_hex_chat/chat/reactions.ex:116
 #, elixir-autogen, elixir-format
 msgid "That is not an emoji you can react with."
 msgstr "それはリアクションに使えない絵文字です。"
 
-#: lib/retro_hex_chat/chat/reactions.ex:110
+#: lib/retro_hex_chat/chat/reactions.ex:119
 #: lib/retro_hex_chat/chat/saved_messages.ex:252
 #, elixir-autogen, elixir-format
 msgid "That message was deleted."
 msgstr "そのメッセージは削除されました。"
 
-#: lib/retro_hex_chat/chat/reactions.ex:114
+#: lib/retro_hex_chat/chat/reactions.ex:123
 #, elixir-autogen, elixir-format
 msgid "This message already has %{count} different reactions."
 msgstr "このメッセージにはすでに %{count} 種類のリアクションがあります。"
@@ -664,6 +665,7 @@ msgstr "このプライベートな空間は、他の2人に帰属します。"
 msgid "Type something to say first."
 msgstr "最初に言うべき何かをタイプして下さい。"
 
+#: lib/retro_hex_chat/chat/service.ex:182
 #: lib/retro_hex_chat/virtual_space/speech.ex:50
 #, elixir-autogen, elixir-format
 msgid "You are muted by an administrator"

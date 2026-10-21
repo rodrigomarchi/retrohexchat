@@ -248,6 +248,38 @@ defmodule RetroHexChat.Channels.Server do
   end
 
   @doc """
+  Whether `nickname` may react to a line of this channel.
+
+  Adding a reaction follows the rule for speaking, with one difference: it
+  always needs a seat in the room, even where outside messages are allowed. A
+  moderated room asks for voice, and a member the operators muted is muted
+  here too. Taking one's own reaction back (`:remove`) only needs the seat —
+  nobody is kept stuck behind an answer they no longer mean.
+
+  Goes through the channel process because the membership, the modes and the
+  mutes all live there.
+  """
+  @spec can_react?(String.t(), String.t(), :add | :remove) :: :ok | {:error, String.t()}
+  def can_react?(channel_name, nickname, intent \\ :add) do
+    case Registry.lookup(channel_name) do
+      {:ok, pid} -> GenServer.call(pid, {:can_react, nickname, intent})
+      {:error, :not_found} -> {:error, dgettext("channels", "You are not in this channel")}
+    end
+  catch
+    # The room stopped before or while answering: nobody is in it.
+    :exit, {reason, {GenServer, :call, _args}} when reason in [:noproc, :normal, :shutdown] ->
+      {:error, dgettext("channels", "You are not in this channel")}
+
+    :exit, {{:shutdown, _detail}, {GenServer, :call, _args}} ->
+      {:error, dgettext("channels", "You are not in this channel")}
+
+    # A timeout or a crash is not an empty room; the reader is told it failed.
+    :exit, reason ->
+      Logger.error("Reaction check failed for #{channel_name}: #{inspect(reason)}")
+      {:error, dgettext("channels", "The channel did not answer. Try again.")}
+  end
+
+  @doc """
   Opens or closes the channel's public archive. Founder only.
 
   Goes through the channel process rather than straight to the table because
@@ -678,6 +710,20 @@ defmodule RetroHexChat.Channels.Server do
   # Backward compat: old 4-element tuple without opts
   def handle_call({:send_message, nickname, content, type}, from, state) do
     handle_call({:send_message, nickname, content, type, []}, from, state)
+  end
+
+  def handle_call({:can_react, nickname, :remove}, _from, state) do
+    {:reply, seated(state, nickname), state}
+  end
+
+  def handle_call({:can_react, nickname, :add}, _from, state) do
+    result =
+      with :ok <- seated(state, nickname),
+           :ok <- voiced_if_moderated(state, nickname) do
+        check_channel_mute(state, nickname)
+      end
+
+    {:reply, result, state}
   end
 
   def handle_call(:get_state, _from, state) do
@@ -1521,6 +1567,23 @@ defmodule RetroHexChat.Channels.Server do
 
   defp process_user_flag(_, flag, acc, []) when flag in ~w(o v k l q h j), do: {acc, []}
   defp process_user_flag(_, _, acc, remaining), do: {acc, remaining}
+
+  # The speaking rule's +m clause, worded for a reaction.
+  defp voiced_if_moderated(state, nickname) do
+    case Policy.can_speak?(state.modes, state.membership, nickname) do
+      :ok ->
+        :ok
+
+      {:error, _speaking_reason} ->
+        {:error, dgettext("channels", "Channel is moderated (+m). You need voice (+v) to react.")}
+    end
+  end
+
+  defp seated(state, nickname) do
+    if Membership.member?(state.membership, nickname),
+      do: :ok,
+      else: {:error, dgettext("channels", "You are not in this channel")}
+  end
 
   defp check_channel_mute(state, nickname) do
     if Nickname.member?(state.channel_mutes, nickname) do

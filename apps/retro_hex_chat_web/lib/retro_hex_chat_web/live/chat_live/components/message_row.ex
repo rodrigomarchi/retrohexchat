@@ -38,8 +38,12 @@ defmodule RetroHexChatWeb.ChatLive.Components.MessageRow do
   @spec message_row(map()) :: Phoenix.LiveView.Rendered.t()
   def message_row(assigns) do
     ~H"""
+    <%!-- An article, because the keyboard moves through the conversation one
+          row at a time (lib/chat/message_keyboard.js) and a focused row has to
+          say what it is. --%>
     <div
       id={@dom_id}
+      role="article"
       class={message_classes(@msg, @edit_mode_message_id)}
       data-testid={if(Map.get(@msg, :highlighted), do: "highlighted-message", else: nil)}
       data-author={Map.get(@msg, :author)}

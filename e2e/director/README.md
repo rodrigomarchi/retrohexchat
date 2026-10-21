@@ -77,7 +77,7 @@ database (`FRESH=1`) or another `DIRECTOR_NICK`.
 - **`playwright.config.ts` must not import a module that imports `test`.** The
   camera constants live in `camera.ts`, which imports nothing from Playwright.
 - **A pointer left where it clicked keeps that spot's hover state on screen** —
-  a message's reaction bar, a highlighted button. `restCursor()` after clicks
+  a nick's hover card, a highlighted button. `restCursor()` after clicks
   that end a beat; `pointAt()` to direct the eye on purpose.
 - **Hover cards leak the filming machine.** Pointing at a user in the list
   opened their profile card, showing the OS, browser and the machine's time

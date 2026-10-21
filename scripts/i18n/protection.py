@@ -35,6 +35,14 @@ ALIAS_VARIABLE_RE = re.compile(r"\$[A-Za-z0-9]+\b")
 # and swaps them for a box ("Iniciar □ Navegar"), so they travel masked.
 UI_GLYPH_RE = re.compile("[▸◂▾▴↻←→↑↓✓✕]")
 
+# A key chord or a function key as pressed (Shift+Tab, Ctrl+Shift+F, F10): the
+# reader looks for those labels on the keyboard. Unmasked, pt_BR rendered
+# "Shift+Tab" as "Shift+ Aba" and the Japanese model split it apart.
+KEY_CHORD_RE = re.compile(
+    r"\b(?:Ctrl|Shift|Alt|Cmd|Meta)(?:\+(?:Ctrl|Shift|Alt|Cmd|Meta|F\d{1,2}|[A-Z][a-z]*|[A-Za-z0-9./\[\]]))+"
+    r"|\bF(?:[1-9]|1[0-2])\b"
+)
+
 PROTECTED_PATTERNS = (
     re.compile(r"https?://[^\s<>\"]+"),
     re.compile(r"`[^`]+`"),
@@ -47,6 +55,7 @@ PROTECTED_PATTERNS = (
     MODE_RE,
     ALIAS_VARIABLE_RE,
     UI_GLYPH_RE,
+    KEY_CHORD_RE,
 )
 
 SENTINEL_TEMPLATE = "XPH{index}X"

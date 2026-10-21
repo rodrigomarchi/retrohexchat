@@ -92,9 +92,26 @@ defmodule RetroHexChatWeb.Components.UI.MessageReactionsTest do
   end
 
   describe "the quick picks" do
+    # The way in is in the markup of every row: a touch screen has no hover to
+    # reveal it with.
+    test "open from a smiley that is always in the markup" do
+      html =
+        render_component(&message_reaction_picker/1,
+          message_id: 42,
+          on_toggle: "toggle_reaction"
+        )
+
+      doc = Floki.parse_fragment!(html)
+
+      assert [_] = Floki.find(doc, ~s(summary[data-testid="message-react-trigger-42"]))
+
+      assert [_] =
+               Floki.find(doc, ~s(details[data-popover] [data-testid="message-reaction-bar-42"]))
+    end
+
     test "offer a handful of emoji, each carrying the message it is for" do
       html =
-        render_component(&message_reaction_bar/1,
+        render_component(&message_reaction_picker/1,
           message_id: 42,
           on_toggle: "toggle_reaction"
         )
@@ -103,6 +120,59 @@ defmodule RetroHexChatWeb.Components.UI.MessageReactionsTest do
 
       assert chips != []
       assert Enum.all?(chips, &(Floki.attribute(&1, "phx-value-message_id") == ["42"]))
+    end
+
+    # One trigger per line, so each needs a name that says which line it is.
+    test "name the trigger after the line's author" do
+      html =
+        render_component(&message_reaction_picker/1,
+          message_id: 42,
+          author: "Bo",
+          on_toggle: "toggle_reaction"
+        )
+
+      assert [label] =
+               html
+               |> Floki.parse_fragment!()
+               |> Floki.find(~s([data-testid="message-react-trigger-42"]))
+               |> Floki.attribute("aria-label")
+
+      assert label =~ "Bo"
+    end
+
+    # A pick both reacts and closes the panel it sits in; a pick that only
+    # reacted would leave the picks floating over the conversation.
+    test "a pick pushes the toggle and closes its popover" do
+      html =
+        render_component(&message_reaction_picker/1,
+          message_id: 42,
+          on_toggle: "toggle_reaction"
+        )
+
+      [click | _] =
+        html
+        |> Floki.parse_fragment!()
+        |> Floki.find("button")
+        |> Enum.flat_map(&Floki.attribute(&1, "phx-click"))
+
+      assert click =~ "toggle_reaction"
+      assert click =~ "rhc:popover-close"
+    end
+
+    test "a pick names the emoji it adds" do
+      html =
+        render_component(&message_reaction_picker/1,
+          message_id: 42,
+          on_toggle: "toggle_reaction"
+        )
+
+      labels =
+        html
+        |> Floki.parse_fragment!()
+        |> Floki.find("button")
+        |> Enum.flat_map(&Floki.attribute(&1, "aria-label"))
+
+      assert Enum.any?(labels, &(&1 =~ @thumbs))
     end
 
     # The bar filters itself against the catalog, so a pick that is not in it
@@ -114,7 +184,7 @@ defmodule RetroHexChatWeb.Components.UI.MessageReactionsTest do
 
     test "every quick pick is an emoji the catalog knows" do
       html =
-        render_component(&message_reaction_bar/1,
+        render_component(&message_reaction_picker/1,
           message_id: 42,
           on_toggle: "toggle_reaction"
         )

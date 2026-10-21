@@ -9,13 +9,20 @@
   <li>
     {dgettext(
       "help_features",
-      "On a computer: hover a message and pick one of the emoji that appear under it"
+      "Click the smiley face at the end of the line with the author's name, then choose one of the emoji it offers"
     )}
   </li>
   <li>
     {dgettext(
       "help_features",
-      "On a phone: press and hold the message and choose React, then pick any emoji"
+      "For any other emoji, right-click the message (on a phone, press and hold it) and choose %{item}",
+      item: dgettext("chat", "React...")
+    )}
+  </li>
+  <li>
+    {dgettext(
+      "help_features",
+      "With the keyboard: from the message box press Shift+Tab until a message is selected, move to the one you want with the arrow keys and press Enter"
     )}
   </li>
   <li>{dgettext("help_features", "Click your own reaction again to take it back")}</li>
@@ -24,7 +31,7 @@
 <p>
   {dgettext(
     "help_features",
-    "The number beside an emoji is how many people chose it, and hovering it names them. Your own reactions are drawn pressed. One person counts once per emoji, however many times they click."
+    "The number beside an emoji shows how many people chose it. Point at it to see their names. In your own reactions the number uses bold text. Each person counts only once per emoji, even after many clicks."
   )}
 </p>
 <.help_h4 icon={:icon_mute}>{dgettext("help_features", "It Notifies Nobody")}</.help_h4>

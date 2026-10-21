@@ -285,9 +285,27 @@ describe("ui/popover", () => {
       });
     });
 
-    it("keeps the panel on screen at the edges", () => {
-      const corner = { top: 10, bottom: 32, left: 2, right: 24, width: 22 };
-      expect(panelPosition(corner, panel, "above-end", viewport)).toEqual({ top: 4, left: 4 });
+    it("keeps the panel on screen at the side edges", () => {
+      const corner = { top: 400, bottom: 422, left: 2, right: 24, width: 22 };
+      expect(panelPosition(corner, panel, "above-end", viewport).left).toBe(4);
+    });
+
+    // A panel pushed back on screen at the top would cover its own trigger and
+    // the line it belongs to; below has room, so it opens there.
+    it("opens below when there is no room above", () => {
+      const top = { top: 10, bottom: 32, left: 900, right: 922, width: 22 };
+      expect(panelPosition(top, panel, "above-end", viewport)).toEqual({ top: 36, left: 634 });
+    });
+
+    it("opens above when there is no room below", () => {
+      const bottom = { top: 780, bottom: 802, left: 900, right: 922, width: 22 };
+      expect(panelPosition(bottom, panel, "below-start", viewport).top).toBe(780 - 4 - 120);
+    });
+
+    it("keeps its own side when neither side has room", () => {
+      const short = { width: 1366, height: 200 };
+      const middle = { top: 60, bottom: 82, left: 900, right: 922, width: 22 };
+      expect(panelPosition(middle, panel, "above-end", short).top).toBe(4);
     });
   });
 });

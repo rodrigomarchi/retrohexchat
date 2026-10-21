@@ -141,9 +141,10 @@ msgstr "Il messaggio non può essere vuoto"
 msgid "Message has already been deleted."
 msgstr "Il messaggio è già stato cancellato."
 
-#: lib/retro_hex_chat/chat/service.ex:106
-#: lib/retro_hex_chat/chat/service.ex:154
-#: lib/retro_hex_chat/chat/service.ex:190
+#: lib/retro_hex_chat/chat/service.ex:112
+#: lib/retro_hex_chat/chat/service.ex:160
+#: lib/retro_hex_chat/chat/service.ex:177
+#: lib/retro_hex_chat/chat/service.ex:218
 #, elixir-autogen, elixir-format
 msgid "Message not found."
 msgstr "Messaggio non trovato."
@@ -243,7 +244,7 @@ msgstr "Aprire la lista di ignorare"
 msgid "Open/close the keyboard shortcut cheatsheet"
 msgstr "Open/close il cheatsheet della tastiera"
 
-#: lib/retro_hex_chat/chat/service.ex:271
+#: lib/retro_hex_chat/chat/service.ex:299
 #, elixir-autogen, elixir-format
 msgid "Original message not found."
 msgstr "Messaggio originale non trovato."
@@ -336,7 +337,7 @@ msgid "Switch to window 9"
 msgstr "Passare alla finestra 9"
 
 #: lib/retro_hex_chat/chat/key_bindings.ex:281
-#: lib/retro_hex_chat/chat/service.ex:213
+#: lib/retro_hex_chat/chat/service.ex:241
 #, elixir-autogen, elixir-format
 msgid "System"
 msgstr "Sistema"
@@ -500,8 +501,8 @@ msgstr "Toggle Camera di conferenza"
 msgid "Toggle Conference Microphone"
 msgstr "Microfono di conferenza di Toggle"
 
-#: lib/retro_hex_chat/channels/server.ex:1822
-#: lib/retro_hex_chat/chat/service.ex:366
+#: lib/retro_hex_chat/channels/server.ex:1885
+#: lib/retro_hex_chat/chat/service.ex:394
 #, elixir-autogen, elixir-format
 msgid "Attachment could not be attached to the message"
 msgstr "L'allegato non può essere allegato al messaggio"
@@ -564,18 +565,18 @@ msgstr[1] "%{count} minuti"
 msgid "Reaction could not be saved."
 msgstr "Non è stato possibile salvare la reazione."
 
-#: lib/retro_hex_chat/chat/reactions.ex:107
+#: lib/retro_hex_chat/chat/reactions.ex:116
 #, elixir-autogen, elixir-format
 msgid "That is not an emoji you can react with."
 msgstr "Quello non è un emoji con cui puoi reagire."
 
-#: lib/retro_hex_chat/chat/reactions.ex:110
+#: lib/retro_hex_chat/chat/reactions.ex:119
 #: lib/retro_hex_chat/chat/saved_messages.ex:252
 #, elixir-autogen, elixir-format
 msgid "That message was deleted."
 msgstr "Quel messaggio è stato eliminato."
 
-#: lib/retro_hex_chat/chat/reactions.ex:114
+#: lib/retro_hex_chat/chat/reactions.ex:123
 #, elixir-autogen, elixir-format
 msgid "This message already has %{count} different reactions."
 msgstr "Questo messaggio ha già %{count} reazioni diverse."
@@ -673,6 +674,7 @@ msgstr "Questo spazio privato appartiene ad altre due persone."
 msgid "Type something to say first."
 msgstr "Digitare qualcosa da dire prima."
 
+#: lib/retro_hex_chat/chat/service.ex:182
 #: lib/retro_hex_chat/virtual_space/speech.ex:50
 #, elixir-autogen, elixir-format
 msgid "You are muted by an administrator"

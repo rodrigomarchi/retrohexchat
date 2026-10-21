@@ -3915,17 +3915,19 @@ msgstr "• 尼克在%{window}无活动后过期"
 msgid "Copy Invite Link"
 msgstr "复制邀请链接"
 
-#: lib/retro_hex_chat_web/components/ui/chat/message_reactions.ex:114
+#: lib/retro_hex_chat_web/components/ui/chat/message_reactions.ex:162
 #, elixir-autogen, elixir-format
 msgid "React"
 msgstr "回应"
 
-#: lib/retro_hex_chat_web/components/ui/chat/message_reactions.ex:107
+#: lib/retro_hex_chat_web/components/ui/chat/message_reactions.ex:136
+#: lib/retro_hex_chat_web/components/ui/chat/message_reactions.ex:137
 #, elixir-autogen, elixir-format
 msgid "React with %{emoji}"
 msgstr "用 %{emoji} 回应"
 
 #: lib/retro_hex_chat_web/components/ui/chat/chat_context_menu.ex:315
+#: lib/retro_hex_chat_web/controllers/help_content/feature_reactions.html.heex:19
 #, elixir-autogen, elixir-format
 msgid "React..."
 msgstr "回应..."
@@ -6029,3 +6031,13 @@ msgstr "查看更多…"
 #, elixir-autogen, elixir-format
 msgid "%{category}: every channel, in the Channel List"
 msgstr "%{category}：在频道列表中查看全部频道"
+
+#: lib/retro_hex_chat_web/live/chat_live/reaction_events.ex:90
+#, elixir-autogen, elixir-format
+msgid "Message not found."
+msgstr "找不到信件 。"
+
+#: lib/retro_hex_chat_web/components/ui/chat/message_reactions.ex:163
+#, elixir-autogen, elixir-format
+msgid "React to %{nick}"
+msgstr "回应 %{nick} 的消息"

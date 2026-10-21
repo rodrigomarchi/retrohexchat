@@ -48,6 +48,7 @@ import { t } from "../../lib/i18n.js";
 import { createLongPress } from "../../lib/input/long_press.js";
 import { createMarkdownImageRevealer } from "../../lib/chat/markdown_images.js";
 import { createViewportScroller } from "../../lib/chat/viewport_scroll.js";
+import { createMessageKeyboard } from "../../lib/chat/message_keyboard.js";
 
 const ChatViewportHook = {
   mounted() {
@@ -68,6 +69,7 @@ const ChatViewportHook = {
       anchor: this.anchor,
     });
     this.viewport.mount();
+    this.keyboard = createMessageKeyboard(this.scroller, this.stream);
     this.markdownImages = createMarkdownImageRevealer(this.el.ownerDocument?.body || this.scroller);
     this.markdownImages.mount();
     this.bindServerEvents();
@@ -76,6 +78,7 @@ const ChatViewportHook = {
 
   destroyed() {
     this.longPress.cancel();
+    this.keyboard.destroy();
     this.markdownImages.destroy();
     this.viewport.destroy();
     this.listeners.forEach(([el, type, fn, opts]) => el.removeEventListener(type, fn, opts));

@@ -304,8 +304,8 @@ defmodule RetroHexChatWeb.Components.UI.ChatContextMenu do
       <:icon><Icons.icon_code class="w-[14px] h-[14px]" /></:icon>
       {dgettext("chat", "Copy Source")}
     </.context_menu_item>
-    <%!-- The way in on a phone: there is no hover there, and this menu is what
-          a long press already opens. --%>
+    <%!-- The way to any emoji beyond the quick picks, through the menu a
+          right-click or a long press already opens. --%>
     <.context_menu_item
       on_click={@on_action}
       action="ctx_chat_react"

@@ -521,6 +521,29 @@ defmodule RetroHexChatWeb.Components.UI.ShareMessageCardTest do
     |> Map.merge(Map.new(Keyword.delete(overrides, :reason)))
   end
 
+  # The reaction picker rides the row of every stored message. A row that
+  # failed to send carries a placeholder id the server cannot react to.
+  describe "the reaction picker on a row" do
+    test "is drawn on a stored message" do
+      html = render_row(%{id: 7, author: "Ana", content: "hi", timestamp: DateTime.utc_now()})
+
+      assert html =~ ~s(data-testid="message-react-trigger-7")
+    end
+
+    test "is not drawn on a message that failed to send" do
+      html =
+        render_row(%{
+          id: "pending_3",
+          author: "Ana",
+          content: "hi",
+          status: :failed,
+          timestamp: DateTime.utc_now()
+        })
+
+      refute html =~ "message-react-trigger"
+    end
+  end
+
   defp render_row(msg, opts \\ []) do
     render_component(&MessageRow.message_row_body/1,
       msg: msg,

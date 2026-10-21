@@ -12,6 +12,7 @@ defmodule RetroHexChat.Chat.ServiceReactionsTest do
 
   @moduletag :integration
 
+  alias RetroHexChat.Channels.{Server, Supervisor}
   alias RetroHexChat.Chat.Queries
   alias RetroHexChat.Chat.Service
   alias RetroHexChat.Services.RegisteredNick
@@ -19,12 +20,15 @@ defmodule RetroHexChat.Chat.ServiceReactionsTest do
 
   @thumbs "\u{1F44D}"
 
+  # A channel line is answered by the people in the room, so Ana takes a seat.
   setup do
-    %{
-      channel: "#react#{System.unique_integer([:positive])}",
-      ana: register("Ana"),
-      bo: register("Bo")
-    }
+    channel = "#react#{System.unique_integer([:positive])}"
+    ana = register("Ana")
+    {:ok, pid} = Supervisor.start_child(channel)
+    on_exit(fn -> if Process.alive?(pid), do: Supervisor.stop_child(pid) end)
+    {:ok, _} = Server.join(channel, ana)
+
+    %{channel: channel, ana: ana, bo: register("Bo")}
   end
 
   describe "toggle_reaction/3" do

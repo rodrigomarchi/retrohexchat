@@ -135,8 +135,8 @@ make e2e.catalog.check    # verify it is current (also runs in make ci)
 ## Coverage
 
 - **257 spec files** under `e2e/tests/`.
-- **638 Playwright `test()` cases**.
-- **585 documented flows**, 584 done, 1 not done.
+- **640 Playwright `test()` cases**.
+- **587 documented flows**, 586 done, 1 not done.
 - **Every spec documents its own flows.**
 
 ## Flow index
@@ -509,11 +509,12 @@ Grouped by section. Every row comes from an `@flow` line in the spec itself.
 | O25 | A pasted link grows the RSS card under the message, live and again after a reload | `tests/chat-link-card.spec.ts` | done |
 | O26 | A card landing decorates its message in place, without reordering the conversation | `tests/chat-link-card.spec.ts` | done |
 | O27 | A link in the first private message is captured and carded on both sides, once | `tests/chat-pm-link-card.spec.ts` | done |
-| O28 | Reacting from the hover bar reaches the other person's screen, and clicking again removes it | `tests/chat-message-actions.spec.ts` | done |
+| O28 | Reacting from the smiley on the line reaches the other person's screen, and clicking again removes it | `tests/chat-message-actions.spec.ts` | done |
 | O29 | A link posted in a channel asks before opening a tab, naming the host and the whole address | `tests/chat-open-tab-confirm.spec.ts` | done |
 | O30 | Cancelling the question opens nothing and leaves the conversation where it was | `tests/chat-open-tab-confirm.spec.ts` | done |
 | O31 | Ctrl-clicking a link skips the question, because it already asked for a tab | `tests/chat-open-tab-confirm.spec.ts` | done |
 | O32 | On a desktop the composer toolbar offers the microphone; a discarded take sends nothing, a finished one is sent alone — even with a file attached mid-take, which stays pending — and a file attached alone sends without text | `tests/chat-voice-messages.spec.ts` | done |
+| O33 | The conversation is one Tab stop: arrows move between lines, Enter reacts, Shift+F10 opens the line's menu | `tests/chat-message-actions.spec.ts` | done |
 
 ### P - Persistence, Reconnect, History, No-Focus-Steal
 
@@ -756,6 +757,7 @@ Grouped by section. Every row comes from an `@flow` line in the spec itself.
 | MB9 | Nicklist and conversation actions open by long press | `tests/chat-mobile-message-flow.spec.ts` | done |
 | MB10 | Every tab and control fits the phone's tab strip without clipping | `tests/chat-mobile-desktop.spec.ts` | done |
 | MB11 | A voice message is recorded from the microphone in the phone composer's single toolbar row and sent on its own, keeping the typed draft | `tests/chat-mobile-voice.spec.ts` | done |
+| MB12 | A reaction is picked from the smiley every message shows, without hover | `tests/chat-mobile-message-flow.spec.ts` | done |
 
 ### SP - Virtual Spaces
 

@@ -66,6 +66,31 @@ defmodule RetroHexChatWeb.ChatLive.ReactionsTest do
     assert {:halt, _socket} = PubsubHandlers.handle_info(message, inactive_socket())
   end
 
+  # The thread window can hold a channel line while a private conversation is
+  # the one on screen; the pick says which kind of line it is, so it is not
+  # filed against an unrelated private message that shares the number.
+  test "a pick names its line's kind, whatever conversation is on screen", ctx do
+    message = last_message(ctx.channel)
+    submit_command_sync(ctx.view, "/query #{ctx.other}")
+
+    render_click(ctx.view, "toggle_reaction", %{
+      "message_id" => to_string(message.id),
+      "source" => "channel",
+      "emoji" => @thumbs
+    })
+
+    assert %{@thumbs => %{count: 1}} = Reactions.summary_for(message)
+  end
+
+  # A row that failed to send keeps a client placeholder for its id. Reaching
+  # the database with it would raise and take the whole chat down.
+  test "a placeholder id is refused, not cast", ctx do
+    render_click(ctx.view, "toggle_reaction", %{"message_id" => "pending_3", "emoji" => @thumbs})
+
+    assert Process.alive?(ctx.view.pid)
+    assert render(ctx.view) =~ "chat-desktop"
+  end
+
   test "an emoji outside the catalog changes nothing", ctx do
     message = last_message(ctx.channel)
 

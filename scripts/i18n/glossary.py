@@ -146,6 +146,9 @@ _ROWS = {
     # The accessible name of a row's remove button. Two words and a placeholder,
     # so the engine has no sentence to read the word order from, and German,
     # Dutch and Japanese all put the verb after the subject.
+    # The smiley on every chat line, named after the line's author so each
+    # trigger says which line it answers.
+    "React to %{nick}": ("Reagir à mensagem de %{nick}", "Reagir à mensagem de %{nick}", "Reaccionar al mensaje de %{nick}", "Réagir au message de %{nick}", "Auf die Nachricht von %{nick} reagieren", "Reagisci al messaggio di %{nick}", "Reageren op het bericht van %{nick}", "Zareaguj na wiadomość od %{nick}", "Отреагировать на сообщение %{nick}", "Beri reaksi ke pesan %{nick}", "%{nick} のメッセージにリアクション", "回应 %{nick} 的消息", "回應 %{nick} 的訊息"),
     "Remove %{nickname}": ("Remover %{nickname}", "Remover %{nickname}", "Quitar %{nickname}", "Retirer %{nickname}", "%{nickname} entfernen", "Rimuovi %{nickname}", "%{nickname} verwijderen", "Usuń %{nickname}", "Удалить %{nickname}", "Hapus %{nickname}", "%{nickname} を削除", "移除 %{nickname}", "移除 %{nickname}"),
     "Remove %{mask}": ("Remover %{mask}", "Remover %{mask}", "Quitar %{mask}", "Retirer %{mask}", "%{mask} entfernen", "Rimuovi %{mask}", "%{mask} verwijderen", "Usuń %{mask}", "Удалить %{mask}", "Hapus %{mask}", "%{mask} を削除", "移除 %{mask}", "移除 %{mask}"),
     "Remove %{name}": ("Remover %{name}", "Remover %{name}", "Quitar %{name}", "Retirer %{name}", "%{name} entfernen", "Rimuovi %{name}", "%{name} verwijderen", "Usuń %{name}", "Удалить %{name}", "Hapus %{name}", "%{name} を削除", "移除 %{name}", "移除 %{name}"),
