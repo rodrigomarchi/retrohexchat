@@ -115,14 +115,6 @@
   @apply text-muted-foreground;
 }
 
-.chat-nicklist-row__role {
-  @apply inline-flex h-5 w-5 shrink-0 items-center justify-center bg-white shadow-retro-status;
-}
-
-.chat-nicklist-row[data-current="true"] .chat-nicklist-row__role {
-  @apply shadow-retro-sunken;
-}
-
 .chat-nicklist-row__nick {
   @apply min-w-0 flex-1 truncate font-mono font-bold;
 }

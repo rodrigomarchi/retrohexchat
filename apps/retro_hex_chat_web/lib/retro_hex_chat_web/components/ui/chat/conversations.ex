@@ -234,6 +234,26 @@ defmodule RetroHexChatWeb.Components.UI.Conversations do
     """
   end
 
+  attr :icon, :atom, required: true
+
+  defp section_icon(%{icon: :popular} = assigns) do
+    ~H"""
+    <Icons.icon_star class="h-3 w-3" />
+    """
+  end
+
+  defp section_icon(%{icon: :pm} = assigns) do
+    ~H"""
+    <Icons.icon_tab_pm class="h-3 w-3" />
+    """
+  end
+
+  defp section_icon(assigns) do
+    ~H"""
+    <Icons.icon_tab_channel class="h-3 w-3" />
+    """
+  end
+
   @doc "Renders the conversations sidebar with IRC-native semantic sections."
   attr :id, :string, default: "conversations"
   attr :channels, :list, default: []
@@ -386,6 +406,7 @@ defmodule RetroHexChatWeb.Components.UI.Conversations do
             :if={@channel_rows != []}
             label={dgettext("chat", "Channels")}
             section="channels"
+            icon={:channel}
             count={length(@channel_rows)}
             open={section_open?(@collapsed_sections, "channels")}
             on_toggle={@on_toggle_section}
@@ -418,6 +439,7 @@ defmodule RetroHexChatWeb.Components.UI.Conversations do
             :if={@pm_conversations != []}
             label={dgettext("chat", "Recent private messages")}
             section="pms"
+            icon={:pm}
             count={length(@pm_conversations)}
             open={section_open?(@collapsed_sections, "pms")}
             on_toggle={@on_toggle_section}
@@ -453,6 +475,7 @@ defmodule RetroHexChatWeb.Components.UI.Conversations do
             label={dgettext("chat", "Popular channels")}
             discovery
             section="popular"
+            icon={:popular}
             count={@popular_section_count}
             open={section_open?(@collapsed_sections, "popular")}
             on_toggle={@on_toggle_section}
@@ -500,6 +523,10 @@ defmodule RetroHexChatWeb.Components.UI.Conversations do
     default: false,
     doc: "Rooms you are not in: set apart from the lists of rooms you are"
 
+  attr :icon, :atom,
+    required: true,
+    doc: "what every row in it is, said once here rather than on each row"
+
   attr :testid, :string, required: true
   slot :inner_block, required: true
 
@@ -521,6 +548,9 @@ defmodule RetroHexChatWeb.Components.UI.Conversations do
       >
         <span class="chat-conversations-section__toggle">
           {if @open, do: "-", else: "+"}
+        </span>
+        <span class="chat-conversations-section__icon" aria-hidden="true">
+          <.section_icon icon={@icon} />
         </span>
         <span class="chat-conversations-section__label">{@label}</span>
         <span
@@ -592,11 +622,14 @@ defmodule RetroHexChatWeb.Components.UI.Conversations do
       tabindex="0"
       aria-current={if @active, do: "page"}
     >
-      <span class="chat-conversations-row__icon">
-        <span :if={@disconnected} title={dgettext("chat", "Disconnected")}>
-          <Icons.icon_warning class="w-3 h-3 text-warning-alt" />
-        </span>
-        <Icons.icon_tab_channel :if={!@disconnected} class="w-3 h-3" />
+      <%!-- What the row is, its section already says. Only a state the
+            section cannot — a connection lost — takes the place before it. --%>
+      <span
+        :if={@disconnected}
+        class="chat-conversations-row__icon"
+        title={dgettext("chat", "Disconnected")}
+      >
+        <Icons.icon_warning class="w-3 h-3 text-warning-alt" />
       </span>
       <.channel_badges category={@category} locale={@locale} />
       <span class="chat-conversations-row__label">{@name}</span>
@@ -687,9 +720,6 @@ defmodule RetroHexChatWeb.Components.UI.Conversations do
             chip that used to say "tab" here named a thing the sidebar knows and
             the reader does not, and channels carry tabs too without ever having
             said so. --%>
-      <span class="chat-conversations-row__icon">
-        <Icons.icon_tab_pm class="w-3 h-3" />
-      </span>
       <.nick_flag locale={@locale} />
       <span class={["chat-conversations-row__label", !@active && @nick_color]}>{@nick}</span>
       <.row_status
@@ -749,9 +779,6 @@ defmodule RetroHexChatWeb.Components.UI.Conversations do
       }
       tabindex="0"
     >
-      <span class="chat-conversations-row__icon">
-        <Icons.icon_tab_channel class="w-3 h-3" />
-      </span>
       <.channel_badges category={@category} locale={@locale} />
       <span class="chat-conversations-row__label">{@channel_name}</span>
       <span class="chat-conversations-row__count">({@user_count})</span>

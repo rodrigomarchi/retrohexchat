@@ -53,6 +53,10 @@
   @apply inline-flex h-[11px] w-[11px] shrink-0 items-center justify-center border border-muted-foreground bg-white text-[9px] leading-none text-foreground;
 }
 
+.chat-conversations-section__icon {
+  @apply inline-flex shrink-0 items-center;
+}
+
 .chat-conversations-section__label {
   @apply min-w-0 flex-1 truncate;
 }
@@ -108,11 +112,10 @@
 }
 
 /* …and said by shape too, not only by the grey it shares with muted: the
-   glyph of a place you have not walked into is drawn in a dashed frame. */
+   name of a place you have not walked into is set in italics. */
 .chat-conversations-row--saved:not(.chat-conversations-row--active)
-  .chat-conversations-row__icon {
-  outline: 1px dashed #808080;
-  outline-offset: -1px;
+  .chat-conversations-row__label {
+  @apply italic;
 }
 
 /* Somebody said your name. It wins over the grey of a place you have not

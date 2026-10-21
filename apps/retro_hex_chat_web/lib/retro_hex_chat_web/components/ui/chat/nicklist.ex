@@ -370,9 +370,6 @@ defmodule RetroHexChatWeb.Components.UI.Nicklist do
           data-current={to_string(guest == @current)}
           title={dgettext("chat", "Watching without an account")}
         >
-          <span class="chat-nicklist-row__role" aria-hidden="true">
-            <Icons.icon_watching class="h-3 w-3" />
-          </span>
           <.nick_flag locale={Map.get(@locales, guest)} />
           <span class="chat-nicklist-row__nick text-muted-foreground">{guest}</span>
         </div>
@@ -530,9 +527,8 @@ defmodule RetroHexChatWeb.Components.UI.Nicklist do
       data-in-call={to_string(@in_call)}
       {@rest}
     >
-      <span class="chat-nicklist-row__role" aria-hidden="true">
-        {role_icon(assigns)}
-      </span>
+      <%!-- The role is the section's: its header carries the icon, so the row
+            does not say it again. --%>
       <.nick_portrait avatar={@avatar} nickname={@nick} />
       <.nick_flag locale={@locale} />
       <span class={["chat-nicklist-row__nick", @nick_color || "text-text"]}>

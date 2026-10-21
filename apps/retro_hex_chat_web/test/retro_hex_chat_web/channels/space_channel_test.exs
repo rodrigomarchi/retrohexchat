@@ -404,13 +404,16 @@ defmodule RetroHexChatWeb.SpaceChannelTest do
       channel = unique_channel()
       {:ok, _pid} = start_channel(channel)
       member = "flagmember#{uid()}"
+      # A name of its own: presence is global, and other tests track an "alice"
+      # in another language.
+      viewer = "flagviewer#{uid()}"
       {:ok, _} = NickServ.register(member, "password123")
       :ok = NickLocales.remember(member, "ja", store: true)
-      {:ok, _} = Server.join(channel, "alice")
+      {:ok, _} = Server.join(channel, viewer)
       {:ok, _} = Server.join(channel, member)
-      assert {:ok, _ref} = Tracker.track_user("presence:global", "alice", %{locale: "es"})
+      assert {:ok, _ref} = Tracker.track_user("presence:global", viewer, %{locale: "es"})
 
-      assert {:ok, init, _socket} = join_channel_space(channel, "alice")
+      assert {:ok, init, _socket} = join_channel_space(channel, viewer)
 
       assert init.snapshot.participants[init.self_key].locale == "es"
       assert init.snapshot.participants[participant_key(member)].locale == "ja"
