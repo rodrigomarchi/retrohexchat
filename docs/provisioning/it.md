@@ -28,6 +28,7 @@ shot, logged in as an admin who has `/identify`-ed.
 /cs register
 /cs archive on
 /cs language it
+/cs category social
 /topic Canale italiano — entra, siediti, si chiacchiera. Il caffè lo offre la casa.
 /mode +tn
 
@@ -35,6 +36,7 @@ shot, logged in as an admin who has `/identify`-ed.
 /cs register
 /cs archive on
 /cs language it
+/cs category news
 /topic Cronaca — Corriere e Adnkronos, direttamente dal feed. !Vittorio fonti mostra l'elenco.
 /mode +tn
 
@@ -42,6 +44,7 @@ shot, logged in as an admin who has `/identify`-ed.
 /cs register
 /cs archive on
 /cs language it
+/cs category news
 /topic Attualità — Il Fatto Quotidiano e Open. Il commento, dopo che la cronaca è passata.
 /mode +tn
 
@@ -49,6 +52,7 @@ shot, logged in as an admin who has `/identify`-ed.
 /cs register
 /cs archive on
 /cs language it
+/cs category tech
 /topic Digitale — DDay, HDblog e Wired Italia. Prodotti, servizi e il mondo che ci gira intorno.
 /mode +tn
 
@@ -56,6 +60,7 @@ shot, logged in as an admin who has `/identify`-ed.
 /cs register
 /cs archive on
 /cs language it
+/cs category tech
 /topic Tecnologie — Punto Informatico, Il Software e Tom's Hardware. Il supporto di un progetto sta nel progetto; qui si parla.
 /mode +tn
 
@@ -63,6 +68,7 @@ shot, logged in as an admin who has `/identify`-ed.
 /cs register
 /cs archive on
 /cs language it
+/cs category tech
 /topic Telefonini — AndroidWorld e SmartWorld. Telefoni, orologi e caricabatterie che non entrano da nessuna parte.
 /mode +tn
 
@@ -70,6 +76,7 @@ shot, logged in as an admin who has `/identify`-ed.
 /cs register
 /cs archive on
 /cs language it
+/cs category games
 /topic Videogiochi — Everyeye e SpazioGames. Per giocare davvero apri il menu Games: 18 classici nel browser.
 /mode +tn
 
@@ -77,6 +84,7 @@ shot, logged in as an admin who has `/identify`-ed.
 /cs register
 /cs archive on
 /cs language it
+/cs category sports
 /topic Calcio — la Gazzetta sul filo. Classifica, mercato e la discussione di sempre.
 /mode +tn
 
@@ -84,6 +92,7 @@ shot, logged in as an admin who has `/identify`-ed.
 /cs register
 /cs archive on
 /cs language it
+/cs category science
 /topic Spazio — Media INAF. Astrofisica, missioni e cielo osservato per mestiere.
 /mode +tn
 
@@ -91,6 +100,7 @@ shot, logged in as an admin who has `/identify`-ed.
 /cs register
 /cs archive on
 /cs language it
+/cs category money
 /topic Finanza — Il Sole 24 Ore. Un titolo non è un consiglio.
 /mode +tn
 
@@ -369,20 +379,23 @@ matters after a paste.
 
 ## Channel reference
 
-| channel | host / wire bot | feeds |
-|---|---|---|
-| `#italia` | **Rita**, Enzo | ANSA, Rai News |
-| `#cronaca` | **Vittorio** | Corriere, Adnkronos |
-| `#attualita` | **Franca** | Il Fatto Quotidiano, Open |
-| `#digitale` | **Gianni** | DDay, HDblog, Wired Italia |
-| `#tecnologie` | **Nilde** | Punto Informatico, Il Software, Tom's Hardware |
-| `#telefonini` | **Bruno** | AndroidWorld, SmartWorld |
-| `#videogiochi` | **Ciccio** | Everyeye, SpazioGames |
-| `#calcio` | **Toto** | Gazzetta dello Sport |
-| `#spazio` | **Galileo** | Media INAF |
-| `#finanza` | **Piero** | Il Sole 24 Ore |
+| channel | category | host / wire bot | feeds |
+|---|---|---|---|
+| `#italia` | `social` | **Rita**, Enzo | ANSA, Rai News |
+| `#cronaca` | `news` | **Vittorio** | Corriere, Adnkronos |
+| `#attualita` | `news` | **Franca** | Il Fatto Quotidiano, Open |
+| `#digitale` | `tech` | **Gianni** | DDay, HDblog, Wired Italia |
+| `#tecnologie` | `tech` | **Nilde** | Punto Informatico, Il Software, Tom's Hardware |
+| `#telefonini` | `tech` | **Bruno** | AndroidWorld, SmartWorld |
+| `#videogiochi` | `games` | **Ciccio** | Everyeye, SpazioGames |
+| `#calcio` | `sports` | **Toto** | Gazzetta dello Sport |
+| `#spazio` | `science` | **Galileo** | Media INAF |
+| `#finanza` | `money` | **Piero** | Il Sole 24 Ore |
 
 **Guardiano** stands in all ten and greets in none of them. All channels are `+tn`,
 publish their archive and are marked Italian (`/cs language it`).
 Every bot is marked Italian too: `/bot set <Bot> language it` follows its
 `/bot create` and draws the same flag beside its nickname.
+Every room also says what it is about: the `category` column is the
+`/cs category` that follows its `/cs language`, and draws a subject plaque beside
+the flag.

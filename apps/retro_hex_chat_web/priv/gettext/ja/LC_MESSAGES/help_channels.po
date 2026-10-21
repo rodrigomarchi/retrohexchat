@@ -189,6 +189,7 @@ msgstr "プライベート (+p)"
 msgid "Secret (+s)"
 msgstr "シークレット (+s)"
 
+#: lib/retro_hex_chat_web/controllers/help_content/channel_categories.html.heex:42
 #: lib/retro_hex_chat_web/controllers/help_content/channel_modes_overview.html.heex:121
 #: lib/retro_hex_chat_web/controllers/help_content/channel_permissions.html.heex:201
 #: lib/retro_hex_chat_web/controllers/help_content/channel_transfer_ownership.html.heex:64
@@ -197,7 +198,7 @@ msgstr "シークレット (+s)"
 #: lib/retro_hex_chat_web/controllers/help_content/chanserv.html.heex:133
 #: lib/retro_hex_chat_web/controllers/help_content/chanserv_access.html.heex:45
 #: lib/retro_hex_chat_web/controllers/help_content/chanserv_register.html.heex:41
-#: lib/retro_hex_chat_web/controllers/help_content/chanserv_ui.html.heex:55
+#: lib/retro_hex_chat_web/controllers/help_content/chanserv_ui.html.heex:61
 #: lib/retro_hex_chat_web/controllers/help_content/mode_c.html.heex:62
 #: lib/retro_hex_chat_web/controllers/help_content/mode_h.html.heex:65
 #: lib/retro_hex_chat_web/controllers/help_content/mode_i.html.heex:72
@@ -748,7 +749,7 @@ msgstr "チャンサーブ自動保証"
 #: lib/retro_hex_chat_web/controllers/help_content/channel_permissions.html.heex:203
 #: lib/retro_hex_chat_web/controllers/help_content/chanserv_access.html.heex:47
 #: lib/retro_hex_chat_web/controllers/help_content/chanserv_register.html.heex:43
-#: lib/retro_hex_chat_web/controllers/help_content/chanserv_ui.html.heex:60
+#: lib/retro_hex_chat_web/controllers/help_content/chanserv_ui.html.heex:66
 #, elixir-autogen, elixir-format
 msgid "ChanServ Overview"
 msgstr "ChanServの概要"
@@ -1406,7 +1407,7 @@ msgstr "AOP ユーザーは VOP リストを管理できます。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/channel_transfer_ownership.html.heex:76
 #: lib/retro_hex_chat_web/controllers/help_content/chanserv.html.heex:140
-#: lib/retro_hex_chat_web/controllers/help_content/chanserv_ui.html.heex:65
+#: lib/retro_hex_chat_web/controllers/help_content/chanserv_ui.html.heex:71
 #: lib/retro_hex_chat_web/controllers/help_content/mode_m.html.heex:75
 #: lib/retro_hex_chat_web/controllers/help_content/mode_o.html.heex:85
 #: lib/retro_hex_chat_web/controllers/help_content/mode_q.html.heex:66
@@ -1457,7 +1458,7 @@ msgstr ""
 #: lib/retro_hex_chat_web/controllers/help_content/channel_welcome_message.html.heex:90
 #: lib/retro_hex_chat_web/controllers/help_content/chanserv.html.heex:96
 #: lib/retro_hex_chat_web/controllers/help_content/chanserv_register.html.heex:32
-#: lib/retro_hex_chat_web/controllers/help_content/chanserv_ui.html.heex:58
+#: lib/retro_hex_chat_web/controllers/help_content/chanserv_ui.html.heex:64
 #: lib/retro_hex_chat_web/controllers/help_content/mode_i.html.heex:46
 #: lib/retro_hex_chat_web/controllers/help_content/mode_j.html.heex:52
 #: lib/retro_hex_chat_web/controllers/help_content/mode_j.html.heex:89
@@ -1484,7 +1485,7 @@ msgstr ""
 
 #: lib/retro_hex_chat_web/controllers/help_content/chanserv.html.heex:136
 #: lib/retro_hex_chat_web/controllers/help_content/chanserv_access.html.heex:50
-#: lib/retro_hex_chat_web/controllers/help_content/chanserv_ui.html.heex:63
+#: lib/retro_hex_chat_web/controllers/help_content/chanserv_ui.html.heex:69
 #, elixir-autogen, elixir-format
 msgid "Channel Registration"
 msgstr "Channel Registration"
@@ -1511,7 +1512,7 @@ msgstr "コマンド"
 msgid "Controls"
 msgstr "操作"
 
-#: lib/retro_hex_chat_web/controllers/help_content/chanserv_ui.html.heex:47
+#: lib/retro_hex_chat_web/controllers/help_content/chanserv_ui.html.heex:53
 #, elixir-autogen, elixir-format
 msgid "Disabled Controls"
 msgstr "無効なコントロール"
@@ -1623,7 +1624,7 @@ msgstr "ウェルカムメッセージを設定し、チャンネルセントラ
 msgid "The Registration tab only enables Register Channel for channel operators."
 msgstr "登録タブは、チャンネル事業者の登録チャネルのみを有効にします。"
 
-#: lib/retro_hex_chat_web/controllers/help_content/chanserv_ui.html.heex:49
+#: lib/retro_hex_chat_web/controllers/help_content/chanserv_ui.html.heex:55
 #, elixir-autogen, elixir-format
 msgid "The dialog disables or hides write controls when you are not identified with NickServ or your ChanServ role cannot manage the selected list."
 msgstr ""
@@ -2739,7 +2740,8 @@ msgstr "Capital letters do not matter"
 msgid "It is shown as you type it."
 msgstr "型として表示されます。"
 
-#: lib/retro_hex_chat_web/controllers/help_content/chanserv_ui.html.heex:68
+#: lib/retro_hex_chat_web/controllers/help_content/channel_categories.html.heex:51
+#: lib/retro_hex_chat_web/controllers/help_content/chanserv_ui.html.heex:74
 #, elixir-autogen, elixir-format
 msgid "Language Flags"
 msgstr "言語の旗"
@@ -2748,3 +2750,68 @@ msgstr "言語の旗"
 #, elixir-autogen, elixir-format
 msgid "Language, shown to the founder, runs the same action as /cs language. Everybody else sees which language the channel is spoken in."
 msgstr "創設者に表示される「言語」は /cs language と同じ操作をします。ほかの人には、そのチャンネルで話される言語が表示されます。"
+
+#: lib/retro_hex_chat_web/controllers/help_content/channel_categories.html.heex:44
+#, elixir-autogen, elixir-format
+msgid "/cs"
+msgstr "/cs"
+
+#: lib/retro_hex_chat_web/controllers/help_content/channel_categories.html.heex:15
+#, elixir-autogen, elixir-format
+msgid "/cs category news"
+msgstr "/cs category news"
+
+#: lib/retro_hex_chat_web/controllers/help_content/channel_categories.html.heex:2
+#, elixir-autogen, elixir-format
+msgid "A channel can carry a small coloured plaque beside its name that says what it is about — news, games, sport — so a list of rooms can be read at a glance. It sits ahead of the channel's language flag in its tab, the conversations list, the channel list, above the conversation and in its public archive."
+msgstr "チャンネル名の横には、そのチャンネルの話題（ニュース、ゲーム、スポーツなど）を示す小さな色付きラベルを付けられ、ルームの一覧をひと目で把握できます。ラベルはチャンネルの言語の旗の前に置かれ、タブ、会話リスト、チャンネルリスト、会話の上部、公開アーカイブに表示されます。"
+
+#: lib/retro_hex_chat_web/controllers/help_content/channel_categories.html.heex:28
+#, elixir-autogen, elixir-format
+msgid "A channel nobody gave a category shows no plaque."
+msgstr "カテゴリーが設定されていないチャンネルにはラベルが表示されません。"
+
+#: lib/retro_hex_chat_web/controllers/help_content/chanserv_ui.html.heex:46
+#, elixir-autogen, elixir-format
+msgid "Category, shown to the founder, runs the same action as /cs category. Everybody else sees what the channel is about."
+msgstr "創設者に表示される「カテゴリー」は /cs category と同じ操作をします。ほかの人には、そのチャンネルの話題が表示されます。"
+
+#: lib/retro_hex_chat_web/controllers/help_content/channel_categories.html.heex:47
+#, elixir-autogen, elixir-format
+msgid "ChanServ in Channel Central"
+msgstr "チャンネルセントラルでチャンサーブ"
+
+#: lib/retro_hex_chat_web/controllers/help_content/chanserv_ui.html.heex:78
+#, elixir-autogen, elixir-format
+msgid "Channel Categories"
+msgstr "チャンネルのカテゴリー"
+
+#: lib/retro_hex_chat_web/controllers/help_content/channel_categories.html.heex:34
+#, elixir-autogen, elixir-format
+msgid "Only the founder can set it, and only on a registered channel. Dropping the registration takes it away."
+msgstr "設定できるのは創設者だけで、登録済みチャンネルに限ります。登録を取り消すとカテゴリーも解除されます。"
+
+#: lib/retro_hex_chat_web/controllers/help_content/channel_categories.html.heex:25
+#, elixir-autogen, elixir-format
+msgid "Rules & Limits"
+msgstr "ルールと制限"
+
+#: lib/retro_hex_chat_web/controllers/help_content/channel_categories.html.heex:8
+#, elixir-autogen, elixir-format
+msgid "Setting It"
+msgstr "設定方法"
+
+#: lib/retro_hex_chat_web/controllers/help_content/channel_categories.html.heex:17
+#, elixir-autogen, elixir-format
+msgid "The Categories"
+msgstr "カテゴリー一覧"
+
+#: lib/retro_hex_chat_web/controllers/help_content/channel_categories.html.heex:39
+#, elixir-autogen, elixir-format
+msgid "The Retro Games channels are about games."
+msgstr "レトロゲームのチャンネルはゲームがテーマです。"
+
+#: lib/retro_hex_chat_web/controllers/help_content/channel_categories.html.heex:10
+#, elixir-autogen, elixir-format
+msgid "The founder of a registered channel chooses it with /cs category followed by one of the names below, or under Channel Central ▸ Registration ▸ Category. /cs category none takes it away, and /cs category alone shows the current one."
+msgstr "登録済みチャンネルの創設者が /cs category に下の名前のどれかを付けて選ぶか、チャンネルセントラル ▸ 登録 ▸ カテゴリー で選びます。/cs category none で解除し、/cs category だけなら現在のカテゴリーを表示します。"

@@ -199,6 +199,7 @@ msgstr "Pribadi (+ p)"
 msgid "Secret (+s)"
 msgstr "Rahasia (+ s)"
 
+#: lib/retro_hex_chat_web/controllers/help_content/channel_categories.html.heex:42
 #: lib/retro_hex_chat_web/controllers/help_content/channel_modes_overview.html.heex:121
 #: lib/retro_hex_chat_web/controllers/help_content/channel_permissions.html.heex:201
 #: lib/retro_hex_chat_web/controllers/help_content/channel_transfer_ownership.html.heex:64
@@ -207,7 +208,7 @@ msgstr "Rahasia (+ s)"
 #: lib/retro_hex_chat_web/controllers/help_content/chanserv.html.heex:133
 #: lib/retro_hex_chat_web/controllers/help_content/chanserv_access.html.heex:45
 #: lib/retro_hex_chat_web/controllers/help_content/chanserv_register.html.heex:41
-#: lib/retro_hex_chat_web/controllers/help_content/chanserv_ui.html.heex:55
+#: lib/retro_hex_chat_web/controllers/help_content/chanserv_ui.html.heex:61
 #: lib/retro_hex_chat_web/controllers/help_content/mode_c.html.heex:62
 #: lib/retro_hex_chat_web/controllers/help_content/mode_h.html.heex:65
 #: lib/retro_hex_chat_web/controllers/help_content/mode_i.html.heex:72
@@ -773,7 +774,7 @@ msgstr "ChanServ AutoGrant"
 #: lib/retro_hex_chat_web/controllers/help_content/channel_permissions.html.heex:203
 #: lib/retro_hex_chat_web/controllers/help_content/chanserv_access.html.heex:47
 #: lib/retro_hex_chat_web/controllers/help_content/chanserv_register.html.heex:43
-#: lib/retro_hex_chat_web/controllers/help_content/chanserv_ui.html.heex:60
+#: lib/retro_hex_chat_web/controllers/help_content/chanserv_ui.html.heex:66
 #, elixir-autogen, elixir-format
 msgid "ChanServ Overview"
 msgstr "Tampilan ChanServ"
@@ -1461,7 +1462,7 @@ msgstr "Pengguna AOP dapat mengelola daftar VOP."
 
 #: lib/retro_hex_chat_web/controllers/help_content/channel_transfer_ownership.html.heex:76
 #: lib/retro_hex_chat_web/controllers/help_content/chanserv.html.heex:140
-#: lib/retro_hex_chat_web/controllers/help_content/chanserv_ui.html.heex:65
+#: lib/retro_hex_chat_web/controllers/help_content/chanserv_ui.html.heex:71
 #: lib/retro_hex_chat_web/controllers/help_content/mode_m.html.heex:75
 #: lib/retro_hex_chat_web/controllers/help_content/mode_o.html.heex:85
 #: lib/retro_hex_chat_web/controllers/help_content/mode_q.html.heex:66
@@ -1518,7 +1519,7 @@ msgstr ""
 #: lib/retro_hex_chat_web/controllers/help_content/channel_welcome_message.html.heex:90
 #: lib/retro_hex_chat_web/controllers/help_content/chanserv.html.heex:96
 #: lib/retro_hex_chat_web/controllers/help_content/chanserv_register.html.heex:32
-#: lib/retro_hex_chat_web/controllers/help_content/chanserv_ui.html.heex:58
+#: lib/retro_hex_chat_web/controllers/help_content/chanserv_ui.html.heex:64
 #: lib/retro_hex_chat_web/controllers/help_content/mode_i.html.heex:46
 #: lib/retro_hex_chat_web/controllers/help_content/mode_j.html.heex:52
 #: lib/retro_hex_chat_web/controllers/help_content/mode_j.html.heex:89
@@ -1546,7 +1547,7 @@ msgstr ""
 
 #: lib/retro_hex_chat_web/controllers/help_content/chanserv.html.heex:136
 #: lib/retro_hex_chat_web/controllers/help_content/chanserv_access.html.heex:50
-#: lib/retro_hex_chat_web/controllers/help_content/chanserv_ui.html.heex:63
+#: lib/retro_hex_chat_web/controllers/help_content/chanserv_ui.html.heex:69
 #, elixir-autogen, elixir-format
 msgid "Channel Registration"
 msgstr "Registrasi Saluran"
@@ -1576,7 +1577,7 @@ msgstr "Perintah"
 msgid "Controls"
 msgstr "Kontrol"
 
-#: lib/retro_hex_chat_web/controllers/help_content/chanserv_ui.html.heex:47
+#: lib/retro_hex_chat_web/controllers/help_content/chanserv_ui.html.heex:53
 #, elixir-autogen, elixir-format
 msgid "Disabled Controls"
 msgstr "Kontrol Dinonaktifkan"
@@ -1701,7 +1702,7 @@ msgid "The Registration tab only enables Register Channel for channel operators.
 msgstr ""
 "Tab Pendaftaran hanya memungkinkan Saluran Register untuk operator saluran."
 
-#: lib/retro_hex_chat_web/controllers/help_content/chanserv_ui.html.heex:49
+#: lib/retro_hex_chat_web/controllers/help_content/chanserv_ui.html.heex:55
 #, elixir-autogen, elixir-format
 msgid "The dialog disables or hides write controls when you are not identified with NickServ or your ChanServ role cannot manage the selected list."
 msgstr ""
@@ -2824,7 +2825,8 @@ msgstr "Huruf kapital tidak masalah"
 msgid "It is shown as you type it."
 msgstr "Hal ini ditampilkan sebagai Anda mengetik itu."
 
-#: lib/retro_hex_chat_web/controllers/help_content/chanserv_ui.html.heex:68
+#: lib/retro_hex_chat_web/controllers/help_content/channel_categories.html.heex:51
+#: lib/retro_hex_chat_web/controllers/help_content/chanserv_ui.html.heex:74
 #, elixir-autogen, elixir-format
 msgid "Language Flags"
 msgstr "Bendera bahasa"
@@ -2833,3 +2835,68 @@ msgstr "Bendera bahasa"
 #, elixir-autogen, elixir-format
 msgid "Language, shown to the founder, runs the same action as /cs language. Everybody else sees which language the channel is spoken in."
 msgstr "Bahasa, yang tampil untuk pendiri, menjalankan aksi yang sama dengan /cs language. Yang lain melihat bahasa apa yang dipakai di saluran."
+
+#: lib/retro_hex_chat_web/controllers/help_content/channel_categories.html.heex:44
+#, elixir-autogen, elixir-format
+msgid "/cs"
+msgstr "/cs"
+
+#: lib/retro_hex_chat_web/controllers/help_content/channel_categories.html.heex:15
+#, elixir-autogen, elixir-format
+msgid "/cs category news"
+msgstr "/cs category news"
+
+#: lib/retro_hex_chat_web/controllers/help_content/channel_categories.html.heex:2
+#, elixir-autogen, elixir-format
+msgid "A channel can carry a small coloured plaque beside its name that says what it is about — news, games, sport — so a list of rooms can be read at a glance. It sits ahead of the channel's language flag in its tab, the conversations list, the channel list, above the conversation and in its public archive."
+msgstr "Saluran bisa membawa label kecil berwarna di samping namanya yang menunjukkan topiknya — berita, permainan, olahraga — agar daftar ruang bisa dipahami sekilas. Label itu ada sebelum bendera bahasa saluran pada tabnya, di daftar percakapan, di daftar saluran, di atas percakapan, dan di arsip publiknya."
+
+#: lib/retro_hex_chat_web/controllers/help_content/channel_categories.html.heex:28
+#, elixir-autogen, elixir-format
+msgid "A channel nobody gave a category shows no plaque."
+msgstr "Saluran yang belum diberi kategori tidak menampilkan label."
+
+#: lib/retro_hex_chat_web/controllers/help_content/chanserv_ui.html.heex:46
+#, elixir-autogen, elixir-format
+msgid "Category, shown to the founder, runs the same action as /cs category. Everybody else sees what the channel is about."
+msgstr "Kategori, yang tampil untuk pendiri, menjalankan aksi yang sama dengan /cs category. Yang lain melihat topik saluran."
+
+#: lib/retro_hex_chat_web/controllers/help_content/channel_categories.html.heex:47
+#, elixir-autogen, elixir-format
+msgid "ChanServ in Channel Central"
+msgstr "ChanServ di Channel Central"
+
+#: lib/retro_hex_chat_web/controllers/help_content/chanserv_ui.html.heex:78
+#, elixir-autogen, elixir-format
+msgid "Channel Categories"
+msgstr "Kategori saluran"
+
+#: lib/retro_hex_chat_web/controllers/help_content/channel_categories.html.heex:34
+#, elixir-autogen, elixir-format
+msgid "Only the founder can set it, and only on a registered channel. Dropping the registration takes it away."
+msgstr "Hanya pendiri yang dapat mengaturnya, dan hanya di saluran terdaftar. Membatalkan pendaftaran akan menghapusnya."
+
+#: lib/retro_hex_chat_web/controllers/help_content/channel_categories.html.heex:25
+#, elixir-autogen, elixir-format
+msgid "Rules & Limits"
+msgstr "Aturan & Batas"
+
+#: lib/retro_hex_chat_web/controllers/help_content/channel_categories.html.heex:8
+#, elixir-autogen, elixir-format
+msgid "Setting It"
+msgstr "Cara mengatur"
+
+#: lib/retro_hex_chat_web/controllers/help_content/channel_categories.html.heex:17
+#, elixir-autogen, elixir-format
+msgid "The Categories"
+msgstr "Daftar kategori"
+
+#: lib/retro_hex_chat_web/controllers/help_content/channel_categories.html.heex:39
+#, elixir-autogen, elixir-format
+msgid "The Retro Games channels are about games."
+msgstr "Saluran Game Retro bertopik permainan."
+
+#: lib/retro_hex_chat_web/controllers/help_content/channel_categories.html.heex:10
+#, elixir-autogen, elixir-format
+msgid "The founder of a registered channel chooses it with /cs category followed by one of the names below, or under Channel Central ▸ Registration ▸ Category. /cs category none takes it away, and /cs category alone shows the current one."
+msgstr "Pendiri saluran terdaftar memilihnya dengan /cs category diikuti salah satu nama di bawah, atau lewat Pusat Saluran ▸ Pendaftaran ▸ Kategori. /cs category none menghapusnya, dan /cs category saja menampilkan kategori saat ini."

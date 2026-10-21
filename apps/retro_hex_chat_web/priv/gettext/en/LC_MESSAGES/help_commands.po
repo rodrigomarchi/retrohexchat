@@ -876,7 +876,7 @@ msgid "/me waves hello /me is thinking... /me grabs some coffee"
 msgstr "/me waves hello /me is thinking... /me grabs some coffee"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_ban.html.heex:53
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_cs.html.heex:73
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_cs.html.heex:81
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_deop.html.heex:65
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_devoice.html.heex:64
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_invite.html.heex:46
@@ -1053,7 +1053,7 @@ msgstr "/notify add Alice My friend from #elixir /notify add Bob /notify edit Al
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_ns.html.heex:48
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_bio.html.heex:39
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_cs.html.heex:72
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_cs.html.heex:80
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_nick.html.heex:39
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_perform.html.heex:41
 #: lib/retro_hex_chat_web/controllers/help_content/commands_overview.html.heex:89
@@ -1433,7 +1433,7 @@ msgstr "1 to 16 characters long"
 msgid "= max 3 joins per 10 seconds)."
 msgstr "= max 3 joins per 10 seconds)."
 
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_cs.html.heex:62
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_cs.html.heex:69
 #, elixir-autogen, elixir-format
 msgid "Access hierarchy: Owner > SOP > AOP > VOP"
 msgstr "Access hierarchy: Owner > SOP > AOP > VOP"
@@ -1606,7 +1606,7 @@ msgstr "Categories"
 msgid "ChanServ"
 msgstr "ChanServ"
 
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_cs.html.heex:74
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_cs.html.heex:82
 #, elixir-autogen, elixir-format
 msgid "ChanServ Overview"
 msgstr "ChanServ Overview"
@@ -1639,7 +1639,7 @@ msgid "Channel Modes"
 msgstr "Channel Modes"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_ban.html.heex:56
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_cs.html.heex:81
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_cs.html.heex:89
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_deop.html.heex:73
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_devoice.html.heex:69
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_kick.html.heex:53
@@ -1806,7 +1806,7 @@ msgstr "Enter a chat channel to read and send messages. If the channel doesn't e
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_clear.html.heex:53
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_clearmotd.html.heex:54
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_clearwelcome.html.heex:52
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_cs.html.heex:68
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_cs.html.heex:76
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_deop.html.heex:54
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_devoice.html.heex:53
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_event.html.heex:50
@@ -2447,7 +2447,7 @@ msgstr "Root admins cannot be demoted via commands"
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_clear.html.heex:35
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_clearmotd.html.heex:37
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_clearwelcome.html.heex:37
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_cs.html.heex:58
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_cs.html.heex:65
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_deop.html.heex:38
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_devoice.html.heex:32
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_event.html.heex:35
@@ -2524,7 +2524,7 @@ msgstr "Schedule a command to run after a delay, optionally repeating at a regul
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_clear.html.heex:55
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_clearmotd.html.heex:56
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_clearwelcome.html.heex:54
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_cs.html.heex:70
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_cs.html.heex:78
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_deop.html.heex:57
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_devoice.html.heex:56
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_event.html.heex:55
@@ -2949,12 +2949,12 @@ msgstr "You exit the channel and other members see that you left, along with you
 msgid "You must be a channel operator or owner"
 msgstr "You must be a channel operator or owner"
 
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_cs.html.heex:61
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_cs.html.heex:68
 #, elixir-autogen, elixir-format
 msgid "You must be a channel operator to register a channel"
 msgstr "You must be a channel operator to register a channel"
 
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_cs.html.heex:60
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_cs.html.heex:67
 #, elixir-autogen, elixir-format
 msgid "You must be a registered user to use ChanServ"
 msgstr "You must be a registered user to use ChanServ"
@@ -4093,17 +4093,17 @@ msgstr "— Show help"
 msgid "— View/set channel topic"
 msgstr "— View/set channel topic"
 
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_cs.html.heex:52
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_cs.html.heex:59
 #, elixir-autogen, elixir-format
 msgid "- Manage Auto Operators (get operator on join)."
 msgstr "- Manage Auto Operators (get operator on join)."
 
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_cs.html.heex:56
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_cs.html.heex:63
 #, elixir-autogen, elixir-format
 msgid "- Manage Auto Voice (get voice on join)."
 msgstr "- Manage Auto Voice (get voice on join)."
 
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_cs.html.heex:48
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_cs.html.heex:55
 #, elixir-autogen, elixir-format
 msgid "- Manage Super Operators (can manage AOP and VOP lists)."
 msgstr "- Manage Super Operators (can manage AOP and VOP lists)."
@@ -4123,7 +4123,7 @@ msgstr "- Unregister the current channel, giving up ownership."
 msgid "- View current-channel registration details."
 msgstr "- View current-channel registration details."
 
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_cs.html.heex:69
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_cs.html.heex:77
 #, elixir-autogen, elixir-format
 msgid "/join #mychannel /cs register /cs info /cs aop add Alice /cs aop list /cs vop add Bob /cs drop"
 msgstr "/join #mychannel /cs register /cs info /cs aop add Alice /cs aop list /cs vop add Bob /cs drop"
@@ -4179,7 +4179,7 @@ msgstr "Auto Respond"
 msgid "ChanServ administration: drop channel registrations, transfer founders, and manage access lists. The Admin Console Channels tab provides command-backed ChanServ info, drop, transfer, access list, add, and remove controls. Requires server administrator role."
 msgstr "ChanServ administration: drop channel registrations, transfer founders, and manage access lists. The Admin Console Channels tab provides command-backed ChanServ info, drop, transfer, access list, add, and remove controls. Requires server administrator role."
 
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_cs.html.heex:77
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_cs.html.heex:85
 #, elixir-autogen, elixir-format
 msgid "Channel Central Registration Tab"
 msgstr "Channel Central Registration Tab"
@@ -4358,7 +4358,7 @@ msgstr "View server information and manage server settings from /admin server or
 msgid "When you knock on a channel, all operators and owners in that channel receive a notification showing your nickname and optional message. The Channel List marks invite-only channels with a +i badge and changes Join to Request Access..., which opens the same knock request flow with an optional 200-character message. Operators can then decide whether to invite you using"
 msgstr "When you knock on a channel, all operators and owners in that channel receive a notification showing your nickname and optional message. The Channel List marks invite-only channels with a +i badge and changes Join to Request Access..., which opens the same knock request flow with an optional 200-character message. Operators can then decide whether to invite you using"
 
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_cs.html.heex:50
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_cs.html.heex:57
 #, elixir-autogen, elixir-format
 msgid "aop add/del/list <nick>"
 msgstr "aop add/del/list <nick>"
@@ -4398,12 +4398,12 @@ msgstr "shows the current policy."
 msgid "shows the fixed active-window routing policy"
 msgstr "shows the fixed active-window routing policy"
 
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_cs.html.heex:46
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_cs.html.heex:53
 #, elixir-autogen, elixir-format
 msgid "sop add/del/list <nick>"
 msgstr "sop add/del/list <nick>"
 
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_cs.html.heex:54
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_cs.html.heex:61
 #, elixir-autogen, elixir-format
 msgid "vop add/del/list <nick>"
 msgstr "vop add/del/list <nick>"
@@ -4742,12 +4742,12 @@ msgstr "— What the channel is going to do. Up to 120 characters."
 msgid "- Publish the channel's public archive, a page per day anybody can read (founder only). Without on or off it shows whether the archive is on."
 msgstr "- Publish the channel's public archive, a page per day anybody can read (founder only). Without on or off it shows whether the archive is on."
 
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_cs.html.heex:64
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_cs.html.heex:71
 #, elixir-autogen, elixir-format
 msgid "Only the founder can drop the channel or switch its archive"
 msgstr "Only the founder can drop the channel or switch its archive"
 
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_cs.html.heex:85
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_cs.html.heex:93
 #, elixir-autogen, elixir-format
 msgid "Public Channel Archive"
 msgstr "Public Channel Archive"
@@ -5459,12 +5459,12 @@ msgstr "The first player who presses Join plays you"
 msgid "- Say which language the channel is spoken in, such as pt_BR or ja (founder only). Its flag is drawn beside the channel's name. none takes it away; without a code it shows the language and every code you can use."
 msgstr "- Say which language the channel is spoken in, such as pt_BR or ja (founder only). Its flag is drawn beside the channel's name. none takes it away; without a code it shows the language and every code you can use."
 
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_cs.html.heex:89
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_cs.html.heex:97
 #, elixir-autogen, elixir-format
 msgid "Language Flags"
 msgstr "Language Flags"
 
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_cs.html.heex:66
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_cs.html.heex:73
 #, elixir-autogen, elixir-format
 msgid "Only the founder can set the channel's language"
 msgstr "Only the founder can set the channel's language"
@@ -5473,3 +5473,23 @@ msgstr "Only the founder can set the channel's language"
 #, elixir-autogen, elixir-format
 msgid "language <code>/none"
 msgstr "language <code>/none"
+
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_cs.html.heex:48
+#, elixir-autogen, elixir-format
+msgid "- Say what the channel is about, such as news or games (founder only). Its plaque is drawn beside the channel's name, ahead of the language flag. none takes it away; without a name it shows the category and every name you can use."
+msgstr "- Say what the channel is about, such as news or games (founder only). Its plaque is drawn beside the channel's name, ahead of the language flag. none takes it away; without a name it shows the category and every name you can use."
+
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_cs.html.heex:101
+#, elixir-autogen, elixir-format
+msgid "Channel Categories"
+msgstr "Channel Categories"
+
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_cs.html.heex:74
+#, elixir-autogen, elixir-format
+msgid "Only the founder can set the channel's category"
+msgstr "Only the founder can set the channel's category"
+
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_cs.html.heex:46
+#, elixir-autogen, elixir-format
+msgid "category <name>/none"
+msgstr "category <name>/none"

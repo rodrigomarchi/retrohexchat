@@ -77,6 +77,14 @@ which lints all fourteen files against the handlers that have to run them.
   founder-only, so it takes effect only when pasted by the identified admin who
   registered the room. The code is written exactly as `config/i18n_locales.exs`
   spells it, even though the command would accept `pt-br`.
+- **Every room says what it is about.** `/cs category <code>` follows every
+  `/cs language`, with one of the codes in
+  `RetroHexChat.Channels.Categories.codes()`, chosen from the room's name, topic
+  and feed — `#futebol` is `sports`, `#foss` is `dev`, a language's social room
+  is `social`. It draws a subject plaque beside the room's flag, so a list of
+  rooms can be read at a glance. The set is closed — every code is a drawing —
+  so a script cannot invent one. It is founder-only like the language, so it
+  takes effect only when pasted by the same identified admin.
 - **Every bot says its language.** `/bot set <Bot> language <code>` follows every
   `/bot create`, with the same code as the rooms — every bot in `pt_BR.md` is
   `language pt_BR`, because every line it speaks is Brazilian Portuguese. It
@@ -168,6 +176,21 @@ done
 
 `/join` on a room the admin already sits in is harmless in the console: it only
 moves the active channel, so the block can be pasted twice.
+
+Every room's category comes out the same way — pasted by the founder, after the
+release that knows `/cs category`:
+
+```bash
+for f in docs/provisioning/*.md; do
+  locale=$(basename "$f" .md); [ "$locale" = README ] && continue
+  echo "# ── $locale ──"
+  grep -E '^/(join #|cs category )' "$f"
+done
+```
+
+Setting the same category twice changes nothing either. The Retro Games
+channels are not in any script and need no line: the release sets them to
+`games` itself.
 
 A bot setting needs no `/join`, because `/bot set` names its bot. This gives
 every bot its language — pasted by an admin, after the release that knows

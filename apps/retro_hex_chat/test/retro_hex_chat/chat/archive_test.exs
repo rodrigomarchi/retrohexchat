@@ -265,7 +265,7 @@ defmodule RetroHexChat.Chat.ArchiveTest do
 
       assert %{days: [_], locale: "pt_BR"} = Archive.index_for(ctx.channel)
       assert %{locale: "pt_BR"} = Archive.page_for(ctx.channel, ctx.day)
-      assert %{name: ctx.channel, locale: "pt_BR"} in Archive.published_rooms()
+      assert %{name: ctx.channel, locale: "pt_BR", category: nil} in Archive.published_rooms()
     end
 
     test "is nil until the founder names one", ctx do
@@ -277,7 +277,7 @@ defmodule RetroHexChat.Chat.ArchiveTest do
       set_locale(ctx.channel, "pt_BR")
       {:ok, _} = Archive.unpublish(ctx.channel)
 
-      assert Archive.index_for(ctx.channel) == %{days: [], locale: nil}
+      assert Archive.index_for(ctx.channel) == %{days: [], locale: nil, category: nil}
       assert %{locale: nil} = Archive.page_for(ctx.channel, ctx.day)
     end
   end

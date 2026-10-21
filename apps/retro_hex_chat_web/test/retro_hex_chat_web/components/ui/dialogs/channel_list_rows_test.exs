@@ -97,6 +97,23 @@ defmodule RetroHexChatWeb.Components.UI.ChannelListRowsTest do
     end
   end
 
+  describe "the room's category" do
+    test "its plaque is drawn ahead of the language flag" do
+      html = render_list([row(name: "#papo", locale: "pt_BR", category: "news")])
+
+      [row_html] = rows(html, "#papo")
+
+      assert row_html =~
+               ~r/data-testid="channel-category"[^>]*data-category="news".*data-testid="channel-flag"/s
+    end
+
+    test "a room with no category draws no plaque" do
+      html = render_list([row(name: "#lobby", locale: "en")])
+
+      refute html =~ ~s(data-testid="channel-category")
+    end
+  end
+
   defp rows(html, name) do
     html
     |> LazyHTML.from_fragment()

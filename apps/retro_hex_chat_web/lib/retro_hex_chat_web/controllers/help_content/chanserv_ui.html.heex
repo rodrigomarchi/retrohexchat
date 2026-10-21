@@ -42,6 +42,12 @@
       "Language, shown to the founder, runs the same action as /cs language. Everybody else sees which language the channel is spoken in."
     )}
   </li>
+  <li>
+    {dgettext(
+      "help_channels",
+      "Category, shown to the founder, runs the same action as /cs category. Everybody else sees what the channel is about."
+    )}
+  </li>
 </ul>
 
 <.help_h4 icon={:icon_rules}>{dgettext("help_channels", "Disabled Controls")}</.help_h4>
@@ -66,5 +72,9 @@
   ·
   <.help_link topic="feature-language-flags">
     {dgettext("help_channels", "Language Flags")}
+  </.help_link>
+  ·
+  <.help_link topic="channel-categories">
+    {dgettext("help_channels", "Channel Categories")}
   </.help_link>
 </p>

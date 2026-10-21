@@ -28,6 +28,7 @@ shot, logged in as an admin who has `/identify`-ed.
 /cs register
 /cs archive on
 /cs language nl
+/cs category social
 /topic Nederlandstalig kanaal — kom binnen, ga zitten, er wordt gepraat. Koffie van het huis.
 /mode +tn
 
@@ -35,6 +36,7 @@ shot, logged in as an admin who has `/identify`-ed.
 /cs register
 /cs archive on
 /cs language nl
+/cs category news
 /topic Nieuws — AD, Volkskrant en Trouw, rechtstreeks uit de feed. !Sanne bronnen toont de lijst.
 /mode +tn
 
@@ -42,6 +44,7 @@ shot, logged in as an admin who has `/identify`-ed.
 /cs register
 /cs archive on
 /cs language nl
+/cs category news
 /topic Vlaanderen — VRT NWS, De Morgen en HLN. Andere voorpagina, zelfde taal.
 /mode +tn
 
@@ -49,6 +52,7 @@ shot, logged in as an admin who has `/identify`-ed.
 /cs register
 /cs archive on
 /cs language nl
+/cs category news
 /topic Achtergrond — NRC, Het Parool en RTL Nieuws. Het verhaal achter de kop.
 /mode +tn
 
@@ -56,6 +60,7 @@ shot, logged in as an admin who has `/identify`-ed.
 /cs register
 /cs archive on
 /cs language nl
+/cs category tech
 /topic Techniek — Tweakers en Bright. Support voor een project hoort bij het project; hier wordt gepraat.
 /mode +tn
 
@@ -63,6 +68,7 @@ shot, logged in as an admin who has `/identify`-ed.
 /cs register
 /cs archive on
 /cs language nl
+/cs category security
 /topic Beveiliging — Security.NL aan de lijn. Lezen voordat je patcht, niet erna.
 /mode +tn
 
@@ -70,6 +76,7 @@ shot, logged in as an admin who has `/identify`-ed.
 /cs register
 /cs archive on
 /cs language nl
+/cs category sports
 /topic Voetbal — VI, VoetbalPrimeur en HLN Sport. Stand, transfers en het gebruikelijke gelijk.
 /mode +tn
 
@@ -77,6 +84,7 @@ shot, logged in as an admin who has `/identify`-ed.
 /cs register
 /cs archive on
 /cs language nl
+/cs category science
 /topic Wetenschap — Scientias en New Scientist. Domme vragen bestaan niet, ongestelde wel.
 /mode +tn
 
@@ -84,6 +92,7 @@ shot, logged in as an admin who has `/identify`-ed.
 /cs register
 /cs archive on
 /cs language nl
+/cs category money
 /topic Ondernemen — Emerce aan de lijn. Een kop is geen advies.
 /mode +tn
 
@@ -91,6 +100,7 @@ shot, logged in as an admin who has `/identify`-ed.
 /cs register
 /cs archive on
 /cs language nl
+/cs category life
 /topic Auto — Autoblog aan de lijn. Rijden, sleutelen en meningen van wie de trein neemt.
 /mode +tn
 
@@ -371,20 +381,23 @@ that matters after a paste.
 
 ## Channel reference
 
-| channel | host / wire bot | feeds |
-|---|---|---|
-| `#nederland` | **Fenna**, Joop | NOS, NU.nl |
-| `#nieuws` | **Sanne** | AD, Volkskrant, Trouw |
-| `#vlaanderen` | **Wout** | VRT NWS, De Morgen, HLN |
-| `#achtergrond` | **Bram** | NRC, Het Parool, RTL Nieuws |
-| `#techniek` | **Tijs** | Tweakers, Bright |
-| `#beveiliging` | **Marijke** | Security.NL |
-| `#voetbal` | **Johan** | VI, VoetbalPrimeur, HLN Sport |
-| `#wetenschap` | **Lieke** | Scientias, New Scientist NL |
-| `#ondernemen` | **Daan** | Emerce |
-| `#auto` | **Kees** | Autoblog |
+| channel | category | host / wire bot | feeds |
+|---|---|---|---|
+| `#nederland` | `social` | **Fenna**, Joop | NOS, NU.nl |
+| `#nieuws` | `news` | **Sanne** | AD, Volkskrant, Trouw |
+| `#vlaanderen` | `news` | **Wout** | VRT NWS, De Morgen, HLN |
+| `#achtergrond` | `news` | **Bram** | NRC, Het Parool, RTL Nieuws |
+| `#techniek` | `tech` | **Tijs** | Tweakers, Bright |
+| `#beveiliging` | `security` | **Marijke** | Security.NL |
+| `#voetbal` | `sports` | **Johan** | VI, VoetbalPrimeur, HLN Sport |
+| `#wetenschap` | `science` | **Lieke** | Scientias, New Scientist NL |
+| `#ondernemen` | `money` | **Daan** | Emerce |
+| `#auto` | `life` | **Kees** | Autoblog |
 
 **Poortwachter** stands in all ten and greets in none of them. All channels are `+tn`,
 publish their archive and are marked Dutch (`/cs language nl`).
 Every bot is marked Dutch too: `/bot set <Bot> language nl` follows its
 `/bot create` and draws the same flag beside its nickname.
+Every room also says what it is about: the `category` column is the
+`/cs category` that follows its `/cs language`, and draws a subject plaque beside
+the flag.

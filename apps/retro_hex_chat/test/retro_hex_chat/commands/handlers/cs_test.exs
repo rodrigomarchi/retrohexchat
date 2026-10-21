@@ -274,6 +274,68 @@ defmodule RetroHexChat.Commands.Handlers.CsTest do
     end
   end
 
+  describe "execute/2 - category" do
+    setup ctx do
+      channel = "#cscat#{rem(System.unique_integer([:positive]), 100_000)}"
+      {:ok, _pid} = Channels.Supervisor.start_child(channel)
+      Phoenix.PubSub.subscribe(RetroHexChat.PubSub, "channel:#{channel}")
+
+      context = %{
+        ctx.context
+        | active_channel: channel,
+          channels: [channel],
+          operator_in: [channel]
+      }
+
+      {:ok, :system, _} = Cs.execute(["register"], context)
+      identify(context.nickname)
+      %{context: context, channel: channel}
+    end
+
+    test "the founder sets it, in any case, and the room hears", ctx do
+      assert {:ok, :system, %{content: content}} = Cs.execute(["category", "NEWS"], ctx.context)
+      assert content =~ "is about News (news)"
+      assert Queries.find_registered_channel(ctx.channel).category == "news"
+      assert {:ok, %{category: "news"}} = Channels.Server.get_state(ctx.channel)
+      assert_receive {:channel_category_changed, %{nickname: "CsTestUser", category: "news"}}
+    end
+
+    test "none clears it, and a name outside the set is refused with the list", ctx do
+      {:ok, :system, _} = Cs.execute(["category", "games"], ctx.context)
+      assert {:ok, :system, %{content: c}} = Cs.execute(["category", "none"], ctx.context)
+      assert c =~ "no longer has a category"
+      assert Queries.find_registered_channel(ctx.channel).category == nil
+
+      assert {:error, msg} = Cs.execute(["category", "cooking"], ctx.context)
+      assert msg =~ "Unknown category: cooking"
+      assert msg =~ "science"
+    end
+
+    test "nobody but the founder may", ctx do
+      identify("NotTheFounder")
+      stranger = %{ctx.context | nickname: "NotTheFounder"}
+
+      assert {:error, msg} = Cs.execute(["category", "news"], stranger)
+      assert msg =~ "founder"
+    end
+
+    test "alone it reports the category and the choices", ctx do
+      assert {:ok, :system, %{content: content}} = Cs.execute(["category"], ctx.context)
+      assert content =~ "has no category set"
+      assert content =~ "/cs category <name|none>"
+    end
+
+    test "dropping the registration takes both badges with it", ctx do
+      {:ok, :system, _} = Cs.execute(["category", "tech"], ctx.context)
+      {:ok, :system, _} = Cs.execute(["language", "fr"], ctx.context)
+
+      {:ok, :system, _} = Cs.execute(["drop"], ctx.context)
+
+      assert_receive {:channel_category_changed, %{nickname: nil, category: nil}}
+      assert {:ok, %{category: nil, locale: nil}} = Channels.Server.get_state(ctx.channel)
+    end
+  end
+
   describe "execute/2 - info" do
     test "returns channel info", ctx do
       {:ok, :system, _} = Cs.execute(["register"], ctx.context)

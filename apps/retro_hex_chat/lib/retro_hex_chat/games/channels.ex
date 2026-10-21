@@ -109,7 +109,8 @@ defmodule RetroHexChat.Games.Channels do
             founder_nickname: @service,
             topic: topic(name),
             modes: "+nt",
-            locale: @locale
+            locale: @locale,
+            category: "games"
           })
           |> Repo.insert()
 

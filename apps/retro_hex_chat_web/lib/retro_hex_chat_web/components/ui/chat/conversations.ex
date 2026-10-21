@@ -275,6 +275,7 @@ defmodule RetroHexChatWeb.Components.UI.Conversations do
   attr :nick_color_fn, :any, default: nil, doc: "Function(nick) -> CSS class for nick coloring"
   attr :channel_user_counts, :map, default: %{}, doc: "Map of channel name to user count"
   attr :channel_locales, :map, default: %{}, doc: "each joined channel's language, as a flag"
+  attr :channel_categories, :map, default: %{}, doc: "what each joined channel is about"
   attr :popular_channels, :list, default: [], doc: "List of maps with :name and :user_count"
   attr :collapsed_sections, :list, default: [], doc: "List of collapsed section keys"
 
@@ -408,6 +409,7 @@ defmodule RetroHexChatWeb.Components.UI.Conversations do
               group_call_summary={Map.get(@group_call_summaries || %{}, row.name)}
               user_count={Map.get(@channel_user_counts || %{}, row.name)}
               locale={Map.get(@channel_locales, row.name)}
+              category={Map.get(@channel_categories, row.name)}
               on_click={@on_channel_click}
             />
           </.conversation_section>
@@ -551,6 +553,7 @@ defmodule RetroHexChatWeb.Components.UI.Conversations do
   attr :group_call_summary, :map, default: nil
   attr :user_count, :integer, default: nil
   attr :locale, :string, default: nil, doc: "the language the channel is spoken in"
+  attr :category, :string, default: nil, doc: "what the channel is about"
   attr :on_click, :any, default: nil
   attr :testid, :string, default: nil
   attr :unread_badge_testid, :string, default: nil
@@ -595,7 +598,7 @@ defmodule RetroHexChatWeb.Components.UI.Conversations do
         </span>
         <Icons.icon_tab_channel :if={!@disconnected} class="w-3 h-3" />
       </span>
-      <.channel_flag locale={@locale} />
+      <.channel_badges category={@category} locale={@locale} />
       <span class="chat-conversations-row__label">{@name}</span>
       <%!-- The auto-join list, said on the channel itself. It is an attribute of
             a place, and it used to be a section of its own listing the same
@@ -719,7 +722,8 @@ defmodule RetroHexChatWeb.Components.UI.Conversations do
       assign(assigns,
         channel_name: value(assigns.channel, :name),
         user_count: value(assigns.channel, :user_count),
-        locale: value(assigns.channel, :locale)
+        locale: value(assigns.channel, :locale),
+        category: value(assigns.channel, :category)
       )
 
     ~H"""
@@ -748,7 +752,7 @@ defmodule RetroHexChatWeb.Components.UI.Conversations do
       <span class="chat-conversations-row__icon">
         <Icons.icon_tab_channel class="w-3 h-3" />
       </span>
-      <.channel_flag locale={@locale} />
+      <.channel_badges category={@category} locale={@locale} />
       <span class="chat-conversations-row__label">{@channel_name}</span>
       <span class="chat-conversations-row__count">({@user_count})</span>
       <.tool_button

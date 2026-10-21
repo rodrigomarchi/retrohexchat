@@ -2288,7 +2288,7 @@ msgstr ""
 msgid "Your browser is given a random name so the server can tell your phone from your desktop. It identifies a browser, never a person: nothing is stored against it but which channels that screen had open and where in them you had read to, and a different browser on the same machine gets a different one. It follows you nowhere, because it only exists on this server."
 msgstr ""
 
-#: lib/retro_hex_chat_web/site/pages/archive.ex:230
+#: lib/retro_hex_chat_web/site/pages/archive.ex:245
 #: lib/retro_hex_chat_web/site/pages/archive_index.html.heex:6
 #, elixir-autogen, elixir-format
 msgid "%{channel} archive"
@@ -2299,7 +2299,7 @@ msgstr ""
 msgid "%{channel} on %{date}"
 msgstr ""
 
-#: lib/retro_hex_chat_web/site/pages/archive.ex:244
+#: lib/retro_hex_chat_web/site/pages/archive.ex:259
 #, elixir-autogen, elixir-format
 msgid "%{channel} on %{date}: %{opening}"
 msgstr ""
@@ -2319,7 +2319,7 @@ msgstr ""
 msgid "Everything said here since the channel opened its archive, one page per day. Nothing from before it was opened is published."
 msgstr ""
 
-#: lib/retro_hex_chat_web/site/pages/archive.ex:133
+#: lib/retro_hex_chat_web/site/pages/archive.ex:148
 #, elixir-autogen, elixir-format
 msgid "Everything said in %{channel} since it opened its archive, one page per day."
 msgstr ""
@@ -2335,7 +2335,7 @@ msgstr ""
 msgid "(attachment)"
 msgstr ""
 
-#: lib/retro_hex_chat_web/site/pages/archive.ex:209
+#: lib/retro_hex_chat_web/site/pages/archive.ex:224
 #, elixir-autogen, elixir-format
 msgid "%{title} — from %{time}"
 msgstr ""
@@ -2480,7 +2480,7 @@ msgstr ""
 msgid "Can I run my own server?"
 msgstr ""
 
-#: lib/retro_hex_chat_web/site/pages/irc_chat.ex:81
+#: lib/retro_hex_chat_web/site/pages/irc_chat.ex:86
 #, elixir-autogen, elixir-format
 msgid "Channels whose names start with #, operators who keep order, and nicknames you can register — the way IRC has always worked, in a browser tab, free and with nothing to install."
 msgstr ""
@@ -2526,17 +2526,17 @@ msgid "Here"
 msgstr ""
 
 #: lib/retro_hex_chat_web/public_pages.ex:109
-#: lib/retro_hex_chat_web/site/pages/irc_chat.ex:76
+#: lib/retro_hex_chat_web/site/pages/irc_chat.ex:81
 #, elixir-autogen, elixir-format
 msgid "IRC chat"
 msgstr ""
 
-#: lib/retro_hex_chat_web/site/pages/irc_chat.ex:58
+#: lib/retro_hex_chat_web/site/pages/irc_chat.ex:63
 #, elixir-autogen, elixir-format
 msgid "IRC chat rooms in your browser — Retro Hex Chat"
 msgstr ""
 
-#: lib/retro_hex_chat_web/site/pages/irc_chat.ex:73
+#: lib/retro_hex_chat_web/site/pages/irc_chat.ex:78
 #, elixir-autogen, elixir-format
 msgid "IRC-style chat rooms in your browser"
 msgstr ""
@@ -2643,7 +2643,7 @@ msgstr ""
 msgid "Your mIRC commands, in the browser"
 msgstr ""
 
-#: lib/retro_hex_chat_web/site/pages/irc_chat.ex:96
+#: lib/retro_hex_chat_web/site/pages/irc_chat.ex:101
 #: lib/retro_hex_chat_web/site/pages/irc_chat/keep_your_nickname.html.heex:1
 #, elixir-autogen, elixir-format
 msgid "Your nickname"
@@ -2686,12 +2686,12 @@ msgstr ""
 msgid "A chat room is a channel, and its name starts with #. /list shows every public channel with its topic and how many people are in it; /join enters one, and creates it when nobody has yet. Whoever creates a channel owns it."
 msgstr ""
 
-#: lib/retro_hex_chat_web/site/pages/irc_chat.ex:86
+#: lib/retro_hex_chat_web/site/pages/irc_chat.ex:91
 #, elixir-autogen, elixir-format
 msgid "Chat rooms open to anyone"
 msgstr ""
 
-#: lib/retro_hex_chat_web/site/pages/irc_chat.ex:88
+#: lib/retro_hex_chat_web/site/pages/irc_chat.ex:93
 #: lib/retro_hex_chat_web/site/pages/irc_chat/rooms.html.heex:1
 #, elixir-autogen, elixir-format
 msgid "How a chat room works"
@@ -2702,7 +2702,7 @@ msgstr ""
 msgid "Modes shape the chat room: +m lets only users with voice speak, +i lets in only who is invited, +k asks for a key, +t keeps the topic for operators. ChanServ remembers who gets operator or voice when they come back."
 msgstr ""
 
-#: lib/retro_hex_chat_web/site/pages/irc_chat.ex:109
+#: lib/retro_hex_chat_web/site/pages/irc_chat.ex:114
 #: lib/retro_hex_chat_web/site/pages/irc_chat/open_rooms.html.heex:1
 #, elixir-autogen, elixir-format
 msgid "Read a chat room first"
@@ -2713,7 +2713,7 @@ msgstr ""
 msgid "These chat rooms publish what is said in them, so you can read the conversation before you join."
 msgstr ""
 
-#: lib/retro_hex_chat_web/site/pages/irc_chat.ex:92
+#: lib/retro_hex_chat_web/site/pages/irc_chat.ex:97
 #: lib/retro_hex_chat_web/site/pages/irc_chat/who_runs.html.heex:1
 #, elixir-autogen, elixir-format
 msgid "Who runs a chat room"
@@ -2769,7 +2769,7 @@ msgstr ""
 msgid "Free of charge, nothing to install"
 msgstr ""
 
-#: lib/retro_hex_chat_web/site/pages/irc_chat.ex:60
+#: lib/retro_hex_chat_web/site/pages/irc_chat.ex:65
 #, elixir-autogen, elixir-format
 msgid "IRC-style chat rooms in the browser: #channels, operators and voice, channel modes, NickServ and ChanServ. Free of charge, with nothing to install."
 msgstr ""

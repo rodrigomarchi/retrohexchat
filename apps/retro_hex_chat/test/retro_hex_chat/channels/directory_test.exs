@@ -24,7 +24,8 @@ defmodule RetroHexChat.Channels.DirectoryTest do
     ServiceQueries.update_registered_channel_settings(name,
       modes: Keyword.get(opts, :modes, ""),
       topic: Keyword.get(opts, :topic, ""),
-      locale: Keyword.get(opts, :locale)
+      locale: Keyword.get(opts, :locale),
+      category: Keyword.get(opts, :category)
     )
 
     on_exit(fn ->
@@ -221,14 +222,16 @@ defmodule RetroHexChat.Channels.DirectoryTest do
     test "a channel's language travels on its row, live or cold" do
       cold = unique("langcold")
       live = unique("langlive")
-      register_channel(cold, locale: "ja")
-      register_channel(live, locale: "pt_BR")
+      register_channel(cold, locale: "ja", category: "news")
+      register_channel(live, locale: "pt_BR", category: "games")
       start_channel(live)
 
       catalog = Directory.catalog()
 
       assert Enum.find(catalog, &(&1.name == cold)).locale == "ja"
       assert Enum.find(catalog, &(&1.name == live)).locale == "pt_BR"
+      assert Enum.find(catalog, &(&1.name == cold)).category == "news"
+      assert Enum.find(catalog, &(&1.name == live)).category == "games"
     end
 
     # A registered channel keeps its process after the last person leaves, so a

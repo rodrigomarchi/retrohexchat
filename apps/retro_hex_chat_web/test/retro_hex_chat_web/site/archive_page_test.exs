@@ -207,6 +207,24 @@ defmodule RetroHexChatWeb.Site.ArchivePageTest do
       end
     end
 
+    test "the heading leads with the category's plaque, and a new one changes the etag", ctx do
+      for path <- [~p"/archive/#{ctx.slug}", ~p"/archive/#{ctx.slug}/#{ctx.date}"] do
+        [before] = build_conn() |> get(path) |> get_resp_header("etag")
+        set_category(ctx.channel, "science")
+        conn = build_conn() |> get(path)
+
+        assert [plaque] =
+                 conn
+                 |> html_response(200)
+                 |> heading()
+                 |> Floki.find(~s([data-testid="channel-category"]))
+
+        assert Floki.attribute(plaque, "data-category") == ["science"]
+        refute [before] == get_resp_header(conn, "etag")
+        set_category(ctx.channel, nil)
+      end
+    end
+
     test "a changed day gets a different etag", ctx do
       [before] =
         build_conn() |> get(~p"/archive/#{ctx.slug}/#{ctx.date}") |> get_resp_header("etag")
@@ -377,6 +395,13 @@ defmodule RetroHexChatWeb.Site.ArchivePageTest do
     RegisteredChannel
     |> Repo.get_by!(name: name)
     |> Ecto.Changeset.change(locale: locale)
+    |> Repo.update!()
+  end
+
+  defp set_category(name, category) do
+    RegisteredChannel
+    |> Repo.get_by!(name: name)
+    |> Ecto.Changeset.change(category: category)
     |> Repo.update!()
   end
 

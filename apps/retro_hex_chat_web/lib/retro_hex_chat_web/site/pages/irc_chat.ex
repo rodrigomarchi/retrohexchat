@@ -9,7 +9,7 @@ defmodule RetroHexChatWeb.Site.Pages.IrcChat do
   """
   use RetroHexChatWeb.Site.Page
 
-  import RetroHexChatWeb.Components.UI.NickFlag, only: [channel_flag: 1]
+  import RetroHexChatWeb.Components.UI.NickFlag, only: [channel_badges: 1]
 
   alias RetroHexChat.Chat.Archive
   alias RetroHexChatWeb.App.Paths
@@ -43,7 +43,12 @@ defmodule RetroHexChatWeb.Site.Pages.IrcChat do
     rooms =
       Enum.map(
         Archive.published_rooms(),
-        &%{name: &1.name, locale: &1.locale, path: Paths.archive_path(&1.name)}
+        &%{
+          name: &1.name,
+          locale: &1.locale,
+          category: &1.category,
+          path: Paths.archive_path(&1.name)
+        }
       )
 
     {:ok,

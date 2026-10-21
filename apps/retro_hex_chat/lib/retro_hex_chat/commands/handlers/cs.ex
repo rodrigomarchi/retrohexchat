@@ -5,6 +5,7 @@ defmodule RetroHexChat.Commands.Handlers.Cs do
 
   import RetroHexChat.Commands.Handler.Guards, only: [require_operator: 3]
 
+  alias RetroHexChat.Channels.Categories
   alias RetroHexChat.Channels.Server
   alias RetroHexChat.Chat.Archive
   alias RetroHexChat.Commands.Handler
@@ -25,7 +26,7 @@ defmodule RetroHexChat.Commands.Handlers.Cs do
     {:error,
      dgettext(
        "commands",
-       "Usage: /cs <register|drop|info|archive|language|sop|aop|vop|help> [args]"
+       "Usage: /cs <register|drop|info|archive|language|category|sop|aop|vop|help> [args]"
      )}
   end
 
@@ -78,6 +79,18 @@ defmodule RetroHexChat.Commands.Handlers.Cs do
     end
   end
 
+  def execute(["category", code | _], context) do
+    with :ok <- Policy.require_channel(context) do
+      call_set_category(context.active_channel, context.nickname, code)
+    end
+  end
+
+  def execute(["category" | _], context) do
+    with :ok <- Policy.require_channel(context) do
+      call_category_status(context.active_channel)
+    end
+  end
+
   def execute([level, "add", target | _], context) when level in @access_levels do
     call_manage_access(
       context.active_channel,
@@ -126,7 +139,7 @@ defmodule RetroHexChat.Commands.Handlers.Cs do
       description:
         dgettext(
           "commands",
-          "Manage channel registration and access lists through ChanServ.\nSubcommands: register, drop, info, archive on|off, language <code|none>, sop/aop/vop add|del|list, help. Must be in a channel.\nAccess hierarchy: SOP (super-operator) > AOP (auto-operator) > VOP (auto-voice).\nRegister requires channel operator. Drop, archive and language require being the channel founder."
+          "Manage channel registration and access lists through ChanServ.\nSubcommands: register, drop, info, archive on|off, language <code|none>, category <name|none>, sop/aop/vop add|del|list, help. Must be in a channel.\nAccess hierarchy: SOP (super-operator) > AOP (auto-operator) > VOP (auto-voice).\nRegister requires channel operator. Drop, archive, language and category require being the channel founder."
         ),
       examples: [
         dgettext("commands", "/cs register"),
@@ -134,6 +147,7 @@ defmodule RetroHexChat.Commands.Handlers.Cs do
         dgettext("commands", "/cs info"),
         dgettext("commands", "/cs archive on"),
         dgettext("commands", "/cs language pt_BR"),
+        dgettext("commands", "/cs category news"),
         dgettext("commands", "/cs sop add nick"),
         dgettext("commands", "/cs aop del nick"),
         dgettext("commands", "/cs vop list")
@@ -302,6 +316,71 @@ defmodule RetroHexChat.Commands.Handlers.Cs do
     )
   end
 
+  defp call_set_category(channel, nickname, code) when code in ~w(none off) do
+    case Server.set_category(channel, nickname, nil) do
+      :ok ->
+        {:ok, :system,
+         %{
+           content:
+             dgettext("commands", "[ChanServ] %{channel} no longer has a category.",
+               channel: channel
+             )
+         }}
+
+      {:error, msg} ->
+        {:error, dgettext("commands", "[ChanServ] %{message}", message: msg)}
+    end
+  end
+
+  defp call_set_category(channel, nickname, code) do
+    case Categories.normalize(code) do
+      nil ->
+        {:error,
+         dgettext("commands", "[ChanServ] Unknown category: %{code}. Categories: %{codes}",
+           code: code,
+           codes: Enum.join(Categories.codes(), ", ")
+         )}
+
+      category ->
+        case Server.set_category(channel, nickname, category) do
+          :ok -> {:ok, :system, %{content: category_state(channel, category)}}
+          {:error, msg} -> {:error, dgettext("commands", "[ChanServ] %{message}", message: msg)}
+        end
+    end
+  end
+
+  defp call_category_status(channel) do
+    category =
+      case Queries.find_registered_channel(channel) do
+        %{category: category} -> category
+        nil -> nil
+      end
+
+    text =
+      Enum.join(
+        [
+          category_state(channel, category),
+          dgettext("commands", "Usage: /cs category <name|none>"),
+          dgettext("commands", "Categories: %{codes}", codes: Enum.join(Categories.codes(), ", "))
+        ],
+        "\n"
+      )
+
+    {:ok, :system, %{content: text}}
+  end
+
+  defp category_state(channel, nil) do
+    dgettext("commands", "[ChanServ] %{channel} has no category set.", channel: channel)
+  end
+
+  defp category_state(channel, category) do
+    dgettext("commands", "[ChanServ] %{channel} is about %{category} (%{code}).",
+      channel: channel,
+      category: Categories.label(category),
+      code: category
+    )
+  end
+
   defp call_manage_access(channel, action, level, target, requester, server) do
     case ChanServ.manage_access(channel, action, level, target, requester, server) do
       {:ok, msg} ->
@@ -374,7 +453,7 @@ defmodule RetroHexChat.Commands.Handlers.Cs do
           description:
             dgettext(
               "commands",
-              "Subcommand: register, drop, info, archive, language, sop, aop, vop"
+              "Subcommand: register, drop, info, archive, language, category, sop, aop, vop"
             )
         },
         %Parameter{
@@ -391,6 +470,7 @@ defmodule RetroHexChat.Commands.Handlers.Cs do
         dgettext("commands", "/cs info"),
         dgettext("commands", "/cs archive on"),
         dgettext("commands", "/cs language pt_BR"),
+        dgettext("commands", "/cs category news"),
         dgettext("commands", "/cs sop add nick"),
         dgettext("commands", "/cs aop del nick"),
         dgettext("commands", "/cs vop list")
@@ -407,6 +487,14 @@ defmodule RetroHexChat.Commands.Handlers.Cs do
           name: "language",
           description:
             dgettext("commands", "Set the language the channel is spoken in (code|none)")
+        },
+        %{
+          name: "category",
+          description:
+            dgettext(
+              "commands",
+              "Set what the channel is about, such as news or games (name|none)"
+            )
         },
         %{name: "sop", description: dgettext("commands", "Manage super-operator access list")},
         %{name: "aop", description: dgettext("commands", "Manage auto-operator access list")},

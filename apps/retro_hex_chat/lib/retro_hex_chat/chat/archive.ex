@@ -57,12 +57,14 @@ defmodule RetroHexChat.Chat.Archive do
 
   @typedoc """
   One page of a day, the way back to the page before it, and the language the
-  channel's founder says it speaks (nil until they say).
+  channel's founder says it speaks and what it is about (each nil until they
+  say).
   """
   @type day_page :: %{
           page: Page.t(),
           previous: nil | :start | integer(),
-          locale: String.t() | nil
+          locale: String.t() | nil,
+          category: String.t() | nil
         }
 
   @doc """
@@ -117,15 +119,19 @@ defmodule RetroHexChat.Chat.Archive do
   def days_for(channel_name), do: index_for(channel_name).days
 
   @doc """
-  `days_for/1` and the language the channel's founder says it speaks
-  (`locale`, nil until they say), read from the one channel row both need —
-  what a channel's archive index draws.
+  `days_for/1` and the language the channel's founder says it speaks and
+  what it is about (`locale` and `category`, each nil until they say), read
+  from the one channel row all need — what a channel's archive index draws.
   """
-  @spec index_for(String.t()) :: %{days: [String.t()], locale: String.t() | nil}
+  @spec index_for(String.t()) :: %{
+          days: [String.t()],
+          locale: String.t() | nil,
+          category: String.t() | nil
+        }
   def index_for(channel_name) do
     case publishing_channel(channel_name) do
       nil ->
-        %{days: [], locale: nil}
+        %{days: [], locale: nil, category: nil}
 
       channel ->
         days =
@@ -137,7 +143,7 @@ defmodule RetroHexChat.Chat.Archive do
           |> Repo.all()
           |> Enum.map(&Date.to_iso8601/1)
 
-        %{days: days, locale: channel.locale}
+        %{days: days, locale: channel.locale, category: channel.category}
     end
   end
 
@@ -178,9 +184,14 @@ defmodule RetroHexChat.Chat.Archive do
         |> Page.new(limit, & &1.id)
         |> Page.map(&entry/1)
 
-      %{page: page, previous: previous(query, cursor, limit), locale: channel.locale}
+      %{
+        page: page,
+        previous: previous(query, cursor, limit),
+        locale: channel.locale,
+        category: channel.category
+      }
     else
-      _ -> %{page: Page.empty(), previous: nil, locale: nil}
+      _ -> %{page: Page.empty(), previous: nil, locale: nil, category: nil}
     end
   end
 
@@ -233,17 +244,19 @@ defmodule RetroHexChat.Chat.Archive do
   def published_channels, do: Enum.map(published_rooms(), & &1.name)
 
   @doc """
-  `published_channels/0` with each channel's language (`locale`, nil until
-  its founder says), for a list that draws the flag beside the name.
+  `published_channels/0` with each channel's language and category (each nil
+  until its founder says), for a list that draws the badges beside the name.
   """
-  @spec published_rooms() :: [%{name: String.t(), locale: String.t() | nil}]
+  @spec published_rooms() :: [
+          %{name: String.t(), locale: String.t() | nil, category: String.t() | nil}
+        ]
   def published_rooms do
     RegisteredChannel
     |> where([c], c.public_archive == true and not is_nil(c.archive_since))
     |> order_by([c], asc: c.name)
     |> Repo.all()
     |> Enum.filter(&Repo.exists?(publishable_messages(&1)))
-    |> Enum.map(&%{name: &1.name, locale: &1.locale})
+    |> Enum.map(&%{name: &1.name, locale: &1.locale, category: &1.category})
   end
 
   @doc "The channel row, when it exists and is publishing; otherwise nil."

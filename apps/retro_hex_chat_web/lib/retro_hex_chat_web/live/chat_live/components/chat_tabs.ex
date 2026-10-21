@@ -44,6 +44,10 @@ defmodule RetroHexChatWeb.ChatLive.Components.ChatTabs do
     default: %{},
     doc: "each joined channel's language; a channel tab draws its flag"
 
+  attr :channel_categories, :map,
+    default: %{},
+    doc: "what each joined channel is about; a channel tab draws its plaque"
+
   attr :on_switch, :any, default: "switch_tab"
   attr :on_close, :any, default: "close_tab"
   slot :actions
@@ -75,6 +79,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.ChatTabs do
         closeable={tab.closeable}
         nick_color={tab.nick_color}
         locale={tab.locale}
+        category={tab.category}
         p2p={tab.p2p}
         group_call={tab.group_call}
         group_call_summary={tab.group_call_summary}
@@ -104,6 +109,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.ChatTabs do
       closeable: false,
       nick_color: nil,
       locale: nil,
+      category: nil,
       p2p: false,
       p2p_state: nil,
       p2p_session: nil,
@@ -130,6 +136,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.ChatTabs do
       closeable: true,
       nick_color: nil,
       locale: Map.get(assigns.channel_locales, channel),
+      category: Map.get(assigns.channel_categories, channel),
       p2p: false,
       p2p_state: nil,
       p2p_session: nil,
@@ -150,6 +157,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.ChatTabs do
       closeable: true,
       nick_color: assigns.nick_color_fn.(pm),
       locale: NickFlags.member_locale(assigns.members, pm),
+      category: nil,
       p2p: pm_p2p_session != nil,
       p2p_state: pm_p2p_state,
       p2p_session: pm_p2p_session,

@@ -9,7 +9,8 @@ defmodule RetroHexChatWeb.ChatLive.Components.Conversations do
 
   The parent stays the canonical owner of the underlying maps (`unread_counts`,
   `channel_activity_order`, `highlight_channels`, `flash_channels`, `muted_channels`,
-  `conversations_sections`, `channel_user_counts`, `channel_locales`, `popular_channels`) because many subsystems read and write
+  `conversations_sections`, `channel_user_counts`, `channel_locales`, `channel_categories`,
+  `popular_channels`) because many subsystems read and write
   them; they are passed in as raw values and this component derives the displayed
   lists (`unread_channels`, `unread_pms`, `collapsed_sections`,
   `autojoin_entries`) itself instead of the parent template computing them on
@@ -65,6 +66,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.Conversations do
        conversations_sections: %{},
        channel_user_counts: %{},
        channel_locales: %{},
+       channel_categories: %{},
        popular_channels: [],
        mobile_viewport: false,
        nick_color_fn: fn _nick -> nil end
@@ -96,6 +98,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.Conversations do
       :conversations_sections,
       :channel_user_counts,
       :channel_locales,
+      :channel_categories,
       :popular_channels,
       :mobile_viewport,
       :nick_color_fn
@@ -184,6 +187,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.Conversations do
           nick_color_fn={@nick_color_fn}
           channel_user_counts={@channel_user_counts}
           channel_locales={@channel_locales}
+          channel_categories={@channel_categories}
           popular_channels={@popular_channels}
           collapsed_sections={@collapsed_sections}
           mobile={@mobile_viewport == true}

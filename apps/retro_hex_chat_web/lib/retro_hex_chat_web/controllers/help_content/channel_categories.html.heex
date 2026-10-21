@@ -1,0 +1,53 @@
+<p>
+  {dgettext(
+    "help_channels",
+    "A channel can carry a small coloured plaque beside its name that says what it is about — news, games, sport — so a list of rooms can be read at a glance. It sits ahead of the channel's language flag in its tab, the conversations list, the channel list, above the conversation and in its public archive."
+  )}
+</p>
+
+<.help_h4 icon={:icon_tab_general}>{dgettext("help_channels", "Setting It")}</.help_h4>
+<p>
+  {dgettext(
+    "help_channels",
+    "The founder of a registered channel chooses it with /cs category followed by one of the names below, or under Channel Central ▸ Registration ▸ Category. /cs category none takes it away, and /cs category alone shows the current one."
+  )}
+</p>
+<pre>{dgettext("help_channels", "/cs category news")}</pre>
+
+<.help_h4 icon={:icon_tab_channel}>{dgettext("help_channels", "The Categories")}</.help_h4>
+<ul>
+  <li :for={category <- Categories.codes()}>
+    <.channel_category category={category} class="mr-1" /><code>{category}</code>
+    — {Categories.label(category)}
+  </li>
+</ul>
+
+<.help_h4 icon={:icon_rules}>{dgettext("help_channels", "Rules & Limits")}</.help_h4>
+<ul>
+  <li>
+    {dgettext(
+      "help_channels",
+      "A channel nobody gave a category shows no plaque."
+    )}
+  </li>
+  <li>
+    {dgettext(
+      "help_channels",
+      "Only the founder can set it, and only on a registered channel. Dropping the registration takes it away."
+    )}
+  </li>
+  <li>{dgettext("help_channels", "The Retro Games channels are about games.")}</li>
+</ul>
+
+<.help_h4 icon={:icon_link}>{dgettext("help_channels", "See Also")}</.help_h4>
+<p>
+  <.help_link topic="cmd-cs">{dgettext("help_channels", "/cs")}</.help_link>
+  ·
+  <.help_link topic="chanserv-ui">
+    {dgettext("help_channels", "ChanServ in Channel Central")}
+  </.help_link>
+  ·
+  <.help_link topic="feature-language-flags">
+    {dgettext("help_channels", "Language Flags")}
+  </.help_link>
+</p>

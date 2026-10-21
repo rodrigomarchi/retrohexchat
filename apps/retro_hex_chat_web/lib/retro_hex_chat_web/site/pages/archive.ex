@@ -48,7 +48,12 @@ defmodule RetroHexChatWeb.Site.Pages.Archive do
     channel = channel_name(slug)
 
     with {:ok, cursor} <- cursor(params),
-         %{page: %{items: [first | _] = entries} = page, previous: previous, locale: locale} <-
+         %{
+           page: %{items: [first | _] = entries} = page,
+           previous: previous,
+           locale: locale,
+           category: category
+         } <-
            Archive.page_for(channel, date, after: cursor) do
       day_path = "/archive/#{slug}/#{date}"
 
@@ -57,6 +62,7 @@ defmodule RetroHexChatWeb.Site.Pages.Archive do
          kind: :day,
          channel: channel,
          channel_locale: locale,
+         channel_category: category,
          slug: slug,
          date: date,
          cursor: cursor,
@@ -80,12 +86,13 @@ defmodule RetroHexChatWeb.Site.Pages.Archive do
       %{days: []} ->
         :not_found
 
-      %{days: days, locale: locale} ->
+      %{days: days, locale: locale, category: category} ->
         {:ok,
          %{
            kind: :index,
            channel: channel,
            channel_locale: locale,
+           channel_category: category,
            slug: slug,
            days: days,
            path: "/archive/#{slug}"
@@ -96,12 +103,19 @@ defmodule RetroHexChatWeb.Site.Pages.Archive do
   @doc """
   The `etag` of what `data/1` returned: the text of the lines a page shows —
   so a second edit of an already edited line still changes it — the flags
-  beside its authors and beside the channel's name, and the release, so a fix
+  beside its authors and the badges beside the channel's name, and the release, so a fix
   to how a page is drawn reaches a robot that holds the old one.
   """
   @spec etag(map()) :: String.t()
   def etag(%{kind: :index} = data),
-    do: hash([data.channel, data.channel_locale, data.days, BuildInfo.version()])
+    do:
+      hash([
+        data.channel,
+        data.channel_locale,
+        data.channel_category,
+        data.days,
+        BuildInfo.version()
+      ])
 
   def etag(%{kind: :day} = data) do
     hash([
@@ -112,7 +126,8 @@ defmodule RetroHexChatWeb.Site.Pages.Archive do
       BuildInfo.version(),
       Enum.map(data.entries, &{&1.id, &1.text}),
       data.locales,
-      data.channel_locale
+      data.channel_locale,
+      data.channel_category
     ])
   end
 

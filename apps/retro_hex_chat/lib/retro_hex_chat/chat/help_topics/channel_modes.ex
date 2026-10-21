@@ -82,6 +82,26 @@ defmodule RetroHexChat.Chat.HelpTopics.ChannelModes do
           )
       },
       %{
+        id: "channel-categories",
+        title: dgettext("help", "Channel Categories"),
+        category: dgettext("help", "Channels"),
+        keywords: [
+          "category",
+          "cs category",
+          "subject",
+          "plaque",
+          dgettext("help", "channel category"),
+          dgettext("help", "what a channel is about")
+        ],
+        icon: :icon_tab_channel,
+        description:
+          dgettext(
+            "help",
+            "The coloured plaque beside a channel's name says what it is about. Its founder sets it with /cs category or in Channel Central."
+          ),
+        see_also: ["cmd-cs", "chanserv-ui", "feature-language-flags"]
+      },
+      %{
         id: "channel-transfer-ownership",
         title: dgettext("help", "Transfer Channel Ownership"),
         category: dgettext("help", "Channels"),

@@ -72,6 +72,28 @@ defmodule RetroHexChatWeb.ChatLive.ChannelLanguageTest do
     refute has_element?(ctx.view, "[data-testid='cc-language-value']")
   end
 
+  # The category is set beside the language, the same way.
+  test "the founder chooses a category, and its plaque leads the channel's name", ctx do
+    assert has_element?(ctx.view, "[data-testid='cc-category-option'] input[value='news']")
+
+    ctx.view
+    |> form("[data-testid='cc-category-form']", %{"category" => "news"})
+    |> render_change()
+
+    assert Queries.find_registered_channel(ctx.channel).category == "news"
+
+    assert has_element?(
+             ctx.view,
+             "[data-testid='cc-cs-status'] [data-testid='channel-category'][data-category='news']"
+           )
+
+    ctx.view
+    |> form("[data-testid='cc-category-form']", %{"category" => ""})
+    |> render_change()
+
+    assert Queries.find_registered_channel(ctx.channel).category == nil
+  end
+
   defp open_cc(view, channel) do
     render_click(view, "open_channel_central", %{"cc_channel" => channel})
     render(view)

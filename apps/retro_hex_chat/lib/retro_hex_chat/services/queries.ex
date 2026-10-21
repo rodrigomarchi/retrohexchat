@@ -248,6 +248,7 @@ defmodule RetroHexChat.Services.Queries do
             name: String.t(),
             topic: String.t() | nil,
             locale: String.t() | nil,
+            category: String.t() | nil,
             modes: String.t(),
             last_activity_at: DateTime.t()
           }
@@ -262,6 +263,7 @@ defmodule RetroHexChat.Services.Queries do
       name: c.name,
       topic: c.topic,
       locale: c.locale,
+      category: c.category,
       modes: c.modes,
       last_activity_at: c.last_activity_at
     })

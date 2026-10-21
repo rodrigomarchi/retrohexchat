@@ -178,6 +178,7 @@ msgstr "私人 (+p)"
 msgid "Secret (+s)"
 msgstr "密語( +s)"
 
+#: lib/retro_hex_chat_web/controllers/help_content/channel_categories.html.heex:42
 #: lib/retro_hex_chat_web/controllers/help_content/channel_modes_overview.html.heex:121
 #: lib/retro_hex_chat_web/controllers/help_content/channel_permissions.html.heex:201
 #: lib/retro_hex_chat_web/controllers/help_content/channel_transfer_ownership.html.heex:64
@@ -186,7 +187,7 @@ msgstr "密語( +s)"
 #: lib/retro_hex_chat_web/controllers/help_content/chanserv.html.heex:133
 #: lib/retro_hex_chat_web/controllers/help_content/chanserv_access.html.heex:45
 #: lib/retro_hex_chat_web/controllers/help_content/chanserv_register.html.heex:41
-#: lib/retro_hex_chat_web/controllers/help_content/chanserv_ui.html.heex:55
+#: lib/retro_hex_chat_web/controllers/help_content/chanserv_ui.html.heex:61
 #: lib/retro_hex_chat_web/controllers/help_content/mode_c.html.heex:62
 #: lib/retro_hex_chat_web/controllers/help_content/mode_h.html.heex:65
 #: lib/retro_hex_chat_web/controllers/help_content/mode_i.html.heex:72
@@ -730,7 +731,7 @@ msgstr "ChanServ 自動贈款"
 #: lib/retro_hex_chat_web/controllers/help_content/channel_permissions.html.heex:203
 #: lib/retro_hex_chat_web/controllers/help_content/chanserv_access.html.heex:47
 #: lib/retro_hex_chat_web/controllers/help_content/chanserv_register.html.heex:43
-#: lib/retro_hex_chat_web/controllers/help_content/chanserv_ui.html.heex:60
+#: lib/retro_hex_chat_web/controllers/help_content/chanserv_ui.html.heex:66
 #, elixir-autogen, elixir-format
 msgid "ChanServ Overview"
 msgstr "ChanServ 概覽"
@@ -1379,7 +1380,7 @@ msgstr "AOP用戶可以管理VOP列表."
 
 #: lib/retro_hex_chat_web/controllers/help_content/channel_transfer_ownership.html.heex:76
 #: lib/retro_hex_chat_web/controllers/help_content/chanserv.html.heex:140
-#: lib/retro_hex_chat_web/controllers/help_content/chanserv_ui.html.heex:65
+#: lib/retro_hex_chat_web/controllers/help_content/chanserv_ui.html.heex:71
 #: lib/retro_hex_chat_web/controllers/help_content/mode_m.html.heex:75
 #: lib/retro_hex_chat_web/controllers/help_content/mode_o.html.heex:85
 #: lib/retro_hex_chat_web/controllers/help_content/mode_q.html.heex:66
@@ -1429,7 +1430,7 @@ msgstr "ChanServ註冊爲當前頻道指派了創建者,並保留頻道所有權
 #: lib/retro_hex_chat_web/controllers/help_content/channel_welcome_message.html.heex:90
 #: lib/retro_hex_chat_web/controllers/help_content/chanserv.html.heex:96
 #: lib/retro_hex_chat_web/controllers/help_content/chanserv_register.html.heex:32
-#: lib/retro_hex_chat_web/controllers/help_content/chanserv_ui.html.heex:58
+#: lib/retro_hex_chat_web/controllers/help_content/chanserv_ui.html.heex:64
 #: lib/retro_hex_chat_web/controllers/help_content/mode_i.html.heex:46
 #: lib/retro_hex_chat_web/controllers/help_content/mode_j.html.heex:52
 #: lib/retro_hex_chat_web/controllers/help_content/mode_j.html.heex:89
@@ -1455,7 +1456,7 @@ msgstr "Channel Central包括一個註冊標籤,將 ChanServ 註冊和訪問列�
 
 #: lib/retro_hex_chat_web/controllers/help_content/chanserv.html.heex:136
 #: lib/retro_hex_chat_web/controllers/help_content/chanserv_access.html.heex:50
-#: lib/retro_hex_chat_web/controllers/help_content/chanserv_ui.html.heex:63
+#: lib/retro_hex_chat_web/controllers/help_content/chanserv_ui.html.heex:69
 #, elixir-autogen, elixir-format
 msgid "Channel Registration"
 msgstr "頻道註冊"
@@ -1481,7 +1482,7 @@ msgstr "命令"
 msgid "Controls"
 msgstr "控制"
 
-#: lib/retro_hex_chat_web/controllers/help_content/chanserv_ui.html.heex:47
+#: lib/retro_hex_chat_web/controllers/help_content/chanserv_ui.html.heex:53
 #, elixir-autogen, elixir-format
 msgid "Disabled Controls"
 msgstr "禁用控件"
@@ -1587,7 +1588,7 @@ msgstr "在中央頻道設置歡迎信息並加入油門"
 msgid "The Registration tab only enables Register Channel for channel operators."
 msgstr "註冊標籤只允許頻道操作員使用註冊頻道。"
 
-#: lib/retro_hex_chat_web/controllers/help_content/chanserv_ui.html.heex:49
+#: lib/retro_hex_chat_web/controllers/help_content/chanserv_ui.html.heex:55
 #, elixir-autogen, elixir-format
 msgid "The dialog disables or hides write controls when you are not identified with NickServ or your ChanServ role cannot manage the selected list."
 msgstr "對話框在未識別到 NickServ 或您的 ChanServ 角色時會禁用或隱藏寫入控件 。"
@@ -2697,7 +2698,8 @@ msgstr "大寫字母不重要"
 msgid "It is shown as you type it."
 msgstr "它顯示爲您輸入它。"
 
-#: lib/retro_hex_chat_web/controllers/help_content/chanserv_ui.html.heex:68
+#: lib/retro_hex_chat_web/controllers/help_content/channel_categories.html.heex:51
+#: lib/retro_hex_chat_web/controllers/help_content/chanserv_ui.html.heex:74
 #, elixir-autogen, elixir-format
 msgid "Language Flags"
 msgstr "語言旗幟"
@@ -2706,3 +2708,68 @@ msgstr "語言旗幟"
 #, elixir-autogen, elixir-format
 msgid "Language, shown to the founder, runs the same action as /cs language. Everybody else sees which language the channel is spoken in."
 msgstr "「語言」僅向創建者顯示，作用與 /cs language 相同。其他人會看到頻道使用的語言。"
+
+#: lib/retro_hex_chat_web/controllers/help_content/channel_categories.html.heex:44
+#, elixir-autogen, elixir-format
+msgid "/cs"
+msgstr "/cs"
+
+#: lib/retro_hex_chat_web/controllers/help_content/channel_categories.html.heex:15
+#, elixir-autogen, elixir-format
+msgid "/cs category news"
+msgstr "/cs category news"
+
+#: lib/retro_hex_chat_web/controllers/help_content/channel_categories.html.heex:2
+#, elixir-autogen, elixir-format
+msgid "A channel can carry a small coloured plaque beside its name that says what it is about — news, games, sport — so a list of rooms can be read at a glance. It sits ahead of the channel's language flag in its tab, the conversations list, the channel list, above the conversation and in its public archive."
+msgstr "頻道名稱旁邊可以帶一個小小的彩色標籤，說明頻道的主題——新聞、遊戲、體育——讓人一眼就能看懂房間清單。它位於頻道語言旗幟之前，顯示在頻道分頁、對話清單、頻道清單、對話上方以及公開存檔中。"
+
+#: lib/retro_hex_chat_web/controllers/help_content/channel_categories.html.heex:28
+#, elixir-autogen, elixir-format
+msgid "A channel nobody gave a category shows no plaque."
+msgstr "沒有設定分類的頻道不顯示標籤。"
+
+#: lib/retro_hex_chat_web/controllers/help_content/chanserv_ui.html.heex:46
+#, elixir-autogen, elixir-format
+msgid "Category, shown to the founder, runs the same action as /cs category. Everybody else sees what the channel is about."
+msgstr "「分類」僅向創建者顯示，作用與 /cs category 相同。其他人會看到頻道的主題。"
+
+#: lib/retro_hex_chat_web/controllers/help_content/channel_categories.html.heex:47
+#, elixir-autogen, elixir-format
+msgid "ChanServ in Channel Central"
+msgstr "中央頻道的ChanServ"
+
+#: lib/retro_hex_chat_web/controllers/help_content/chanserv_ui.html.heex:78
+#, elixir-autogen, elixir-format
+msgid "Channel Categories"
+msgstr "頻道分類"
+
+#: lib/retro_hex_chat_web/controllers/help_content/channel_categories.html.heex:34
+#, elixir-autogen, elixir-format
+msgid "Only the founder can set it, and only on a registered channel. Dropping the registration takes it away."
+msgstr "只有創建者才能設定，且僅限已註冊頻道。取消註冊會將其移除。"
+
+#: lib/retro_hex_chat_web/controllers/help_content/channel_categories.html.heex:25
+#, elixir-autogen, elixir-format
+msgid "Rules & Limits"
+msgstr "規則和限制"
+
+#: lib/retro_hex_chat_web/controllers/help_content/channel_categories.html.heex:8
+#, elixir-autogen, elixir-format
+msgid "Setting It"
+msgstr "設定方法"
+
+#: lib/retro_hex_chat_web/controllers/help_content/channel_categories.html.heex:17
+#, elixir-autogen, elixir-format
+msgid "The Categories"
+msgstr "分類列表"
+
+#: lib/retro_hex_chat_web/controllers/help_content/channel_categories.html.heex:39
+#, elixir-autogen, elixir-format
+msgid "The Retro Games channels are about games."
+msgstr "復古遊戲的頻道以遊戲為主題。"
+
+#: lib/retro_hex_chat_web/controllers/help_content/channel_categories.html.heex:10
+#, elixir-autogen, elixir-format
+msgid "The founder of a registered channel chooses it with /cs category followed by one of the names below, or under Channel Central ▸ Registration ▸ Category. /cs category none takes it away, and /cs category alone shows the current one."
+msgstr "已註冊頻道的創建者可以用 /cs category 加上下面的某個名稱來選擇，或在 中央頻道 ▸ 註冊 ▸ 分類 中選擇。/cs category none 會移除它，單獨輸入 /cs category 會顯示目前分類。"

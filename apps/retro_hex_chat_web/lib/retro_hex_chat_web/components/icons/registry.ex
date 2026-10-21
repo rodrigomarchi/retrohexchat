@@ -379,6 +379,20 @@ defmodule RetroHexChatWeb.Icons.Registry do
     {:icon_flag_it, RetroHexChatWeb.Icons.Flags},
     {:icon_flag_pl, RetroHexChatWeb.Icons.Flags},
     {:icon_flag_nl, RetroHexChatWeb.Icons.Flags},
+    {:icon_category_social, RetroHexChatWeb.Icons.Categories},
+    {:icon_category_news, RetroHexChatWeb.Icons.Categories},
+    {:icon_category_tech, RetroHexChatWeb.Icons.Categories},
+    {:icon_category_dev, RetroHexChatWeb.Icons.Categories},
+    {:icon_category_security, RetroHexChatWeb.Icons.Categories},
+    {:icon_category_ai, RetroHexChatWeb.Icons.Categories},
+    {:icon_category_science, RetroHexChatWeb.Icons.Categories},
+    {:icon_category_games, RetroHexChatWeb.Icons.Categories},
+    {:icon_category_sports, RetroHexChatWeb.Icons.Categories},
+    {:icon_category_money, RetroHexChatWeb.Icons.Categories},
+    {:icon_category_culture, RetroHexChatWeb.Icons.Categories},
+    {:icon_category_life, RetroHexChatWeb.Icons.Categories},
+    {:icon_category_retro, RetroHexChatWeb.Icons.Categories},
+    {:icon_category_help, RetroHexChatWeb.Icons.Categories},
 
     # New button icons (showcase design system)
     {:icon_btn_open, RetroHexChatWeb.Icons.Files},
@@ -468,6 +482,25 @@ defmodule RetroHexChatWeb.Icons.Registry do
     "scummvm_soltys" => :icon_game_soltys
   }
 
+  # A channel's subject plaque. No fallback: a channel with no category, or
+  # one this set does not draw, gets no plaque at all.
+  @categories %{
+    "social" => :icon_category_social,
+    "news" => :icon_category_news,
+    "tech" => :icon_category_tech,
+    "dev" => :icon_category_dev,
+    "security" => :icon_category_security,
+    "ai" => :icon_category_ai,
+    "science" => :icon_category_science,
+    "games" => :icon_category_games,
+    "sports" => :icon_category_sports,
+    "money" => :icon_category_money,
+    "culture" => :icon_category_culture,
+    "life" => :icon_category_life,
+    "retro" => :icon_category_retro,
+    "help" => :icon_category_help
+  }
+
   @flag_fallback :icon_globe
   @game_fallback :icon_game_generic
 
@@ -488,6 +521,10 @@ defmodule RetroHexChatWeb.Icons.Registry do
   """
   @spec flag(String.t()) :: atom()
   def flag(locale), do: Map.get(@flags, locale, @flag_fallback)
+
+  @doc "The subject plaque for a channel category, or nil when there is none."
+  @spec category(String.t() | nil) :: atom() | nil
+  def category(code), do: Map.get(@categories, code)
 
   @doc """
   The box art for a game id, falling back to a generic cartridge.

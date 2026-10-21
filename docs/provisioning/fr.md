@@ -28,6 +28,7 @@ shot, logged in as an admin who has `/identify`-ed.
 /cs register
 /cs archive on
 /cs language fr
+/cs category social
 /topic Salon francophone — de Lille à Montréal. Entrez, asseyez-vous, on discute.
 /mode +tn
 
@@ -35,6 +36,7 @@ shot, logged in as an admin who has `/identify`-ed.
 /cs register
 /cs archive on
 /cs language fr
+/cs category news
 /topic Actualités — Le Figaro, Libération et L'Obs, directement du flux. !Colette sources pour la liste.
 /mode +tn
 
@@ -42,6 +44,7 @@ shot, logged in as an admin who has `/identify`-ed.
 /cs register
 /cs archive on
 /cs language fr
+/cs category news
 /topic Monde — France 24 et RFI. L'international, en français.
 /mode +tn
 
@@ -49,6 +52,7 @@ shot, logged in as an admin who has `/identify`-ed.
 /cs register
 /cs archive on
 /cs language fr
+/cs category tech
 /topic Informatique — Next, Numerama, Les Numériques et 01net. Le support d'un projet reste chez le projet ; ici, on cause.
 /mode +tn
 
@@ -56,6 +60,7 @@ shot, logged in as an admin who has `/identify`-ed.
 /cs register
 /cs archive on
 /cs language fr
+/cs category tech
 /topic Mobile — Frandroid et Journal du Geek. Téléphones, montres et chargeurs incompatibles.
 /mode +tn
 
@@ -63,6 +68,7 @@ shot, logged in as an admin who has `/identify`-ed.
 /cs register
 /cs archive on
 /cs language fr
+/cs category dev
 /topic Logiciel libre — LinuxFr et Korben. Les nouvelles, pas le dépannage : le dépannage appartient au projet.
 /mode +tn
 
@@ -70,6 +76,7 @@ shot, logged in as an admin who has `/identify`-ed.
 /cs register
 /cs archive on
 /cs language fr
+/cs category dev
 /topic Développement — Developpez.com sur le fil. Le bistrot, pas le service client.
 /mode +tn
 
@@ -77,6 +84,7 @@ shot, logged in as an admin who has `/identify`-ed.
 /cs register
 /cs archive on
 /cs language fr
+/cs category games
 /topic Jeux vidéo — JeuxVideo.com et Gamekult. Pour jouer vraiment, ouvrez le menu Games : 18 classiques dans le navigateur.
 /mode +tn
 
@@ -84,6 +92,7 @@ shot, logged in as an admin who has `/identify`-ed.
 /cs register
 /cs archive on
 /cs language fr
+/cs category culture
 /topic Culture — AlloCiné, Télérama et Les Inrocks. Cinéma, séries, musique, expositions.
 /mode +tn
 
@@ -91,6 +100,7 @@ shot, logged in as an admin who has `/identify`-ed.
 /cs register
 /cs archive on
 /cs language fr
+/cs category science
 /topic Sciences — Futura et Sciences et Avenir. Aucune question bête, seulement des questions non posées.
 /mode +tn
 
@@ -98,6 +108,7 @@ shot, logged in as an admin who has `/identify`-ed.
 /cs register
 /cs archive on
 /cs language fr
+/cs category money
 /topic Économie — La Tribune et L'Usine Digitale. Un titre n'est pas un conseil.
 /mode +tn
 
@@ -400,24 +411,27 @@ that matters after a paste.
 
 ## Channel reference
 
-| channel | host / wire bot | feeds |
-|---|---|---|
-| `#france` | **Margot**, Gaspard | Le Monde, France Info |
-| `#actualites` | **Colette** | Le Figaro, Libération, L'Obs |
-| `#monde` | **Renaud** | France 24, RFI |
-| `#informatique` | **Blaise** | Next, Numerama, Les Numériques, 01net |
-| `#mobile` | **Amelie** | Frandroid, Journal du Geek |
-| `#libre` | **Ambroise** | LinuxFr, Korben |
-| `#developpement` | **Denis** | Developpez.com |
-| `#jeuxvideo` | **Lulu** | JeuxVideo.com, Gamekult |
-| `#culture` | **Jacques** | AlloCiné, Télérama, Les Inrocks |
-| `#sciences` | **Camille** | Futura, Sciences et Avenir |
-| `#economie` | **Odile** | La Tribune, L'Usine Digitale |
+| channel | category | host / wire bot | feeds |
+|---|---|---|---|
+| `#france` | `social` | **Margot**, Gaspard | Le Monde, France Info |
+| `#actualites` | `news` | **Colette** | Le Figaro, Libération, L'Obs |
+| `#monde` | `news` | **Renaud** | France 24, RFI |
+| `#informatique` | `tech` | **Blaise** | Next, Numerama, Les Numériques, 01net |
+| `#mobile` | `tech` | **Amelie** | Frandroid, Journal du Geek |
+| `#libre` | `dev` | **Ambroise** | LinuxFr, Korben |
+| `#developpement` | `dev` | **Denis** | Developpez.com |
+| `#jeuxvideo` | `games` | **Lulu** | JeuxVideo.com, Gamekult |
+| `#culture` | `culture` | **Jacques** | AlloCiné, Télérama, Les Inrocks |
+| `#sciences` | `science` | **Camille** | Futura, Sciences et Avenir |
+| `#economie` | `money` | **Odile** | La Tribune, L'Usine Digitale |
 
 **Vigie** stands in all eleven and greets in none of them. All channels are `+tn`,
 publish their archive and are marked French (`/cs language fr`).
 Every bot is marked French too: `/bot set <Bot> language fr` follows its
 `/bot create` and draws the same flag beside its nickname.
+Every room also says what it is about: the `category` column is the
+`/cs category` that follows its `/cs language`, and draws a subject plaque beside
+the flag.
 
 `#sciences` is plural where the English `#science` is singular — that is what
 keeps them from colliding, and it happens to be the natural French word anyway.

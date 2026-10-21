@@ -7,7 +7,7 @@
 </p>
 <ul class="text-sm columns-2 gap-4" data-testid="open-rooms">
   <li :for={room <- @rooms}>
-    <.channel_flag locale={room.locale} class="mr-1" />
+    <.channel_badges category={room.category} locale={room.locale} class="mr-1" />
     <.link patch={room.path} class="underline">{room.name}</.link>
   </li>
 </ul>

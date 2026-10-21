@@ -28,6 +28,7 @@ shot, logged in as an admin who has `/identify`-ed.
 /cs register
 /cs archive on
 /cs language de
+/cs category social
 /topic Deutschsprachiger Raum — reinkommen, hinsetzen, reden. Der Kaffee geht aufs Haus.
 /mode +tn
 
@@ -35,6 +36,7 @@ shot, logged in as an admin who has `/identify`-ed.
 /cs register
 /cs archive on
 /cs language de
+/cs category news
 /topic Nachrichten — Spiegel, SZ, FAZ und Deutschlandfunk, direkt aus dem Feed. !Greta quellen zeigt die Liste.
 /mode +tn
 
@@ -42,6 +44,7 @@ shot, logged in as an admin who has `/identify`-ed.
 /cs register
 /cs archive on
 /cs language de
+/cs category news
 /topic Österreich und Schweiz — Der Standard und NZZ. Deutschsprachig ist nicht dasselbe wie deutsch.
 /mode +tn
 
@@ -49,6 +52,7 @@ shot, logged in as an admin who has `/identify`-ed.
 /cs register
 /cs archive on
 /cs language de
+/cs category tech
 /topic Technik — heise und Golem. Projekt-Support gehört zum Projekt; hier wird geredet.
 /mode +tn
 
@@ -56,6 +60,7 @@ shot, logged in as an admin who has `/identify`-ed.
 /cs register
 /cs archive on
 /cs language de
+/cs category tech
 /topic Netz — netzpolitik.org und t3n. Digitalpolitik, Plattformen, das Kleingedruckte.
 /mode +tn
 
@@ -63,6 +68,7 @@ shot, logged in as an admin who has `/identify`-ed.
 /cs register
 /cs archive on
 /cs language de
+/cs category tech
 /topic Computer — ComputerBase am Draht. Hardware, Bauteile, Bastelei.
 /mode +tn
 
@@ -70,6 +76,7 @@ shot, logged in as an admin who has `/identify`-ed.
 /cs register
 /cs archive on
 /cs language de
+/cs category money
 /topic Wirtschaft — Handelsblatt und WirtschaftsWoche. Eine Schlagzeile ist keine Empfehlung.
 /mode +tn
 
@@ -77,6 +84,7 @@ shot, logged in as an admin who has `/identify`-ed.
 /cs register
 /cs archive on
 /cs language de
+/cs category science
 /topic Wissenschaft — Spektrum und wissenschaft.de. Dumme Fragen gibt es nicht, nur ungestellte.
 /mode +tn
 
@@ -84,6 +92,7 @@ shot, logged in as an admin who has `/identify`-ed.
 /cs register
 /cs archive on
 /cs language de
+/cs category sports
 /topic Sport — kicker und Sportschau. Tabelle, Transfers und die übliche Diskussion.
 /mode +tn
 
@@ -91,6 +100,7 @@ shot, logged in as an admin who has `/identify`-ed.
 /cs register
 /cs archive on
 /cs language de
+/cs category games
 /topic Spiele — Eurogamer.de am Draht. Wer wirklich spielen will: Menü Games, 18 Klassiker im Browser.
 /mode +tn
 
@@ -371,23 +381,26 @@ that matters after a paste.
 
 ## Channel reference
 
-| channel | host / wire bot | feeds |
-|---|---|---|
-| `#deutschland` | **Fritzi**, Klaus | Tagesschau, Die Zeit |
-| `#nachrichten` | **Greta** | Spiegel, SZ, FAZ, Deutschlandfunk |
-| `#dach` | **Heidi** | Der Standard, NZZ |
-| `#technik` | **Werner** | heise, Golem |
-| `#netz` | **Lotte** | netzpolitik.org, t3n |
-| `#computer` | **Konrad** | ComputerBase |
-| `#wirtschaft` | **Ilse** | Handelsblatt, WirtschaftsWoche |
-| `#wissenschaft` | **Otto** | Spektrum, wissenschaft.de |
-| `#sport` | **Uwe** | kicker, Sportschau |
-| `#spiele` | **Jonas** | Eurogamer.de |
+| channel | category | host / wire bot | feeds |
+|---|---|---|---|
+| `#deutschland` | `social` | **Fritzi**, Klaus | Tagesschau, Die Zeit |
+| `#nachrichten` | `news` | **Greta** | Spiegel, SZ, FAZ, Deutschlandfunk |
+| `#dach` | `news` | **Heidi** | Der Standard, NZZ |
+| `#technik` | `tech` | **Werner** | heise, Golem |
+| `#netz` | `tech` | **Lotte** | netzpolitik.org, t3n |
+| `#computer` | `tech` | **Konrad** | ComputerBase |
+| `#wirtschaft` | `money` | **Ilse** | Handelsblatt, WirtschaftsWoche |
+| `#wissenschaft` | `science` | **Otto** | Spektrum, wissenschaft.de |
+| `#sport` | `sports` | **Uwe** | kicker, Sportschau |
+| `#spiele` | `games` | **Jonas** | Eurogamer.de |
 
 **Wachtmeister** stands in all ten and greets in none of them. All channels are `+tn`,
 publish their archive and are marked German (`/cs language de`).
 Every bot is marked German too: `/bot set <Bot> language de` follows its
 `/bot create` and draws the same flag beside its nickname.
+Every room also says what it is about: the `category` column is the
+`/cs category` that follows its `/cs language`, and draws a subject plaque beside
+the flag.
 
 Room names carry no umlauts: the client only linkifies `[a-zA-Z][a-zA-Z0-9_-]*`,
 so `#räume` would be typed and never clickable. Everything inside a room is

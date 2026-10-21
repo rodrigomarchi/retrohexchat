@@ -79,13 +79,15 @@ included, is joined explicitly.
 # holds 14 people, so a split crowd is an empty crowd.
 # Joined explicitly rather than assumed: the console starts on whatever channel
 # the admin happens to be in, and /cs register acts on the active one.
-# Every room then publishes its archive and says its language: /cs language en
-# draws the English flag beside the name. Both are founder-only, and the founder
-# is whoever pasted this.
+# Every room then publishes its archive, says its language and says what it is
+# about: /cs language en draws the English flag beside the name, /cs category a
+# subject plaque beside the flag. All three are founder-only, and the founder is
+# whoever pasted this.
 /join #lobby
 /cs register
 /cs archive on
 /cs language en
+/cs category social
 /topic The lobby — one room, everyone in it. Pull up a chair, the pixels are warm.
 /mode +tn
 
@@ -95,6 +97,7 @@ included, is joined explicitly.
 /cs register
 /cs archive on
 /cs language en
+/cs category games
 /topic Trivia — !Wanda trivia start to begin, !Wanda answer <guess> to play, !Wanda trivia score for the board. Six categories.
 /mode +tn
 
@@ -104,6 +107,7 @@ included, is joined explicitly.
 /cs register
 /cs archive on
 /cs language en
+/cs category games
 /topic Arcade — 18 classics running in your browser. Open the Games menu, or ask !Pixel games for the catalogue.
 /mode +tn
 
@@ -113,6 +117,7 @@ included, is joined explicitly.
 /cs register
 /cs archive on
 /cs language en
+/cs category retro
 /topic Retro computing — Amiga, C64, Atari, DOS, demoscene, BBS. If it booted from a floppy, it belongs here.
 /mode +tn
 
@@ -122,6 +127,7 @@ included, is joined explicitly.
 /cs register
 /cs archive on
 /cs language en
+/cs category tech
 /topic Tech talk — hardware, self-hosting, sysadmin war stories. Project support lives upstream; this is the pub.
 /mode +tn
 
@@ -131,6 +137,7 @@ included, is joined explicitly.
 /cs register
 /cs archive on
 /cs language en
+/cs category news
 /topic News — headlines pulled from feeds by Gazeta. !Gazeta rss list to see the sources.
 /mode +tn
 
@@ -140,6 +147,7 @@ included, is joined explicitly.
 /cs register
 /cs archive on
 /cs language en
+/cs category help
 /topic Lost? Ask here. !Harold faq for the basics, or /help for the manual.
 /mode +tn
 
@@ -160,6 +168,7 @@ included, is joined explicitly.
 /cs register
 /cs archive on
 /cs language en
+/cs category dev
 /topic Free software news — releases, kernels, distros. Fed by LWN, Phoronix and It's FOSS.
 /mode +tn
 
@@ -170,6 +179,7 @@ included, is joined explicitly.
 /cs register
 /cs archive on
 /cs language en
+/cs category security
 /topic Security advisories — Krebs, The Hacker News, BleepingComputer and research feeds. Read before you patch.
 /mode +tn
 
@@ -179,6 +189,7 @@ included, is joined explicitly.
 /cs register
 /cs archive on
 /cs language en
+/cs category ai
 /topic Machine learning — arXiv preprints and model releases as they land.
 /mode +tn
 
@@ -188,6 +199,7 @@ included, is joined explicitly.
 /cs register
 /cs archive on
 /cs language en
+/cs category science
 /topic Science — arXiv astrophysics, NASA, Live Science and discovery feeds. Bring questions.
 /mode +tn
 
@@ -197,6 +209,7 @@ included, is joined explicitly.
 /cs register
 /cs archive on
 /cs language en
+/cs category culture
 /topic Anime — news and episode releases via Anime News Network and LiveChart.
 /mode +tn
 
@@ -740,24 +753,25 @@ the capability is created by that first `/bot set`:
 
 ## Channel reference
 
-| channel | bots | census target |
-|---|---|---|
-| `#lobby` | Brutus, **Patches**, Coach, Nova, Echo | 91 = top 10% of IRC social rooms |
-| `#trivia` | Brutus, **Wanda** | 100 would make it the 4th largest trivia room on IRC |
-| `#arcade` | Brutus, **Pixel**, Joystick | 16 = largest `#arcade` on IRC |
-| `#retro` | Brutus, **Pixel**, Sprite | 26 = largest `#retro` on IRC · 84 = largest retro room of any name |
-| `#tech` | Brutus, **Murphy**, Byte | 60 |
-| `#news` | Brutus, **Gazeta**, Atlas | 77 = top 10% of news rooms |
-| `#foss` | Brutus, **Freeman**, Tux | the census found no live `#foss` room anywhere |
-| `#security` | Brutus, **Cassandra**, Sentinel | 178 = p90, the densest subject measured |
-| `#ai` | Brutus, **Ada**, Vega | 7 live rooms exist on all of IRC |
-| `#science` | Brutus, **Curie**, Quasar | 163 = largest `#science` on IRC |
-| `#anime` | Brutus, **Yuki**, Sakura | 279 = largest `#anime` on IRC |
-| `#help` | Brutus, **Harold** | 40 |
+| channel | category | bots | census target |
+|---|---|---|---|
+| `#lobby` | `social` | Brutus, **Patches**, Coach, Nova, Echo | 91 = top 10% of IRC social rooms |
+| `#trivia` | `games` | Brutus, **Wanda** | 100 would make it the 4th largest trivia room on IRC |
+| `#arcade` | `games` | Brutus, **Pixel**, Joystick | 16 = largest `#arcade` on IRC |
+| `#retro` | `retro` | Brutus, **Pixel**, Sprite | 26 = largest `#retro` on IRC · 84 = largest retro room of any name |
+| `#tech` | `tech` | Brutus, **Murphy**, Byte | 60 |
+| `#news` | `news` | Brutus, **Gazeta**, Atlas | 77 = top 10% of news rooms |
+| `#foss` | `dev` | Brutus, **Freeman**, Tux | the census found no live `#foss` room anywhere |
+| `#security` | `security` | Brutus, **Cassandra**, Sentinel | 178 = p90, the densest subject measured |
+| `#ai` | `ai` | Brutus, **Ada**, Vega | 7 live rooms exist on all of IRC |
+| `#science` | `science` | Brutus, **Curie**, Quasar | 163 = largest `#science` on IRC |
+| `#anime` | `culture` | Brutus, **Yuki**, Sakura | 279 = largest `#anime` on IRC |
+| `#help` | `help` | Brutus, **Harold** | 40 |
 
 All channels are `+tn`, publish their archive and are marked English
-(`/cs language en`). Rules live in `!Brutus rules` and the `#lobby` topic rather
-than a moderated `#rules` nobody reads.
+(`/cs language en`), and each says what it is about with the `category` above
+(`/cs category`). Rules live in `!Brutus rules` and the `#lobby` topic rather than
+a moderated `#rules` nobody reads.
 
 `#help` is deliberately English-only in this script: it is where someone goes when
 they are lost, and each language script opens no second help desk — its host bot
@@ -831,7 +845,8 @@ copies nothing.
 
 ## Adding a channel later
 
-`/join #new`, `/cs register`, `/cs archive on`, `/cs language en`, `/topic`,
+`/join #new`, `/cs register`, `/cs archive on`, `/cs language en`,
+`/cs category <code>` (one of `RetroHexChat.Channels.Categories.codes()`), `/topic`,
 `/mode +tn`, then `/bot join Brutus #new` and whichever channel bot fits. Before
 adding one, check the census: if the room cannot plausibly hold fourteen people, it
 will read as abandoned, and an abandoned room costs more than a missing one.

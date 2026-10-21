@@ -31,6 +31,7 @@ shot, logged in as an admin who has `/identify`-ed.
 /cs register
 /cs archive on
 /cs language ru
+/cs category social
 /topic Русскоязычный канал — заходи, садись, разговариваем. Кофе за счёт заведения.
 /mode +tn
 
@@ -38,6 +39,7 @@ shot, logged in as an admin who has `/identify`-ed.
 /cs register
 /cs archive on
 /cs language ru
+/cs category news
 /topic Новости — ТАСС, «Интерфакс», «Коммерсантъ» и «Медуза», прямо из лент. !Grisha istochniki покажет список.
 /mode +tn
 
@@ -45,6 +47,7 @@ shot, logged in as an admin who has `/identify`-ed.
 /cs register
 /cs archive on
 /cs language ru
+/cs category tech
 /topic Технологии — 3DNews и CNews. Поддержка проекта живёт у проекта; здесь просто разговор.
 /mode +tn
 
@@ -52,6 +55,7 @@ shot, logged in as an admin who has `/identify`-ed.
 /cs register
 /cs archive on
 /cs language ru
+/cs category tech
 /topic Железо — iXBT и Overclockers. Платы, корпуса, разгон и то, что из этого выходит.
 /mode +tn
 
@@ -59,6 +63,7 @@ shot, logged in as an admin who has `/identify`-ed.
 /cs register
 /cs archive on
 /cs language ru
+/cs category dev
 /topic Разработка — «Хабр» и «Код». Байки, разборы и чужие коммиты.
 /mode +tn
 
@@ -66,6 +71,7 @@ shot, logged in as an admin who has `/identify`-ed.
 /cs register
 /cs archive on
 /cs language ru
+/cs category dev
 /topic Открытый код — OpenNET на проводе. Релизы, ядра, дистрибутивы.
 /mode +tn
 
@@ -73,6 +79,7 @@ shot, logged in as an admin who has `/identify`-ed.
 /cs register
 /cs archive on
 /cs language ru
+/cs category games
 /topic Игры — DTF и StopGame. А поиграть по-настоящему — меню Games: 18 классических игр прямо в браузере.
 /mode +tn
 
@@ -80,6 +87,7 @@ shot, logged in as an admin who has `/identify`-ed.
 /cs register
 /cs archive on
 /cs language ru
+/cs category science
 /topic Научпоп — N+1, «Элементы» и Naked Science. Глупых вопросов не бывает, бывают незаданные.
 /mode +tn
 
@@ -87,6 +95,7 @@ shot, logged in as an admin who has `/identify`-ed.
 /cs register
 /cs archive on
 /cs language ru
+/cs category money
 /topic Экономика — РБК и vc.ru. Заголовок — это не рекомендация.
 /mode +tn
 
@@ -94,6 +103,7 @@ shot, logged in as an admin who has `/identify`-ed.
 /cs register
 /cs archive on
 /cs language ru
+/cs category sports
 /topic Футбол — «Чемпионат» на проводе. Таблица, трансферы и обычный спор.
 /mode +tn
 
@@ -376,23 +386,26 @@ matters after a paste.
 
 ## Channel reference
 
-| channel | host / wire bot | feeds |
-|---|---|---|
-| `#russkiy` | **Alyona**, Fedya | Лента.ру, РИА Новости |
-| `#novosti` | **Grisha** | ТАСС, Интерфакс, Коммерсантъ, Медуза |
-| `#tehnologii` | **Semyon** | 3DNews, CNews |
-| `#zhelezo` | **Zhora** | iXBT, Overclockers |
-| `#razrabotka` | **Kolya** | Хабр, Код |
-| `#opensource` | **Pingvin** | OpenNET |
-| `#igry` | **Vitya** | DTF, StopGame |
-| `#nauchpop` | **Sofya** | N+1, Элементы, Naked Science |
-| `#ekonomika` | **Larisa** | РБК, vc.ru |
-| `#futbol` | **Valera** | Чемпионат |
+| channel | category | host / wire bot | feeds |
+|---|---|---|---|
+| `#russkiy` | `social` | **Alyona**, Fedya | Лента.ру, РИА Новости |
+| `#novosti` | `news` | **Grisha** | ТАСС, Интерфакс, Коммерсантъ, Медуза |
+| `#tehnologii` | `tech` | **Semyon** | 3DNews, CNews |
+| `#zhelezo` | `tech` | **Zhora** | iXBT, Overclockers |
+| `#razrabotka` | `dev` | **Kolya** | Хабр, Код |
+| `#opensource` | `dev` | **Pingvin** | OpenNET |
+| `#igry` | `games` | **Vitya** | DTF, StopGame |
+| `#nauchpop` | `science` | **Sofya** | N+1, Элементы, Naked Science |
+| `#ekonomika` | `money` | **Larisa** | РБК, vc.ru |
+| `#futbol` | `sports` | **Valera** | Чемпионат |
 
 **Storozh** stands in all ten and greets in none of them. All channels are `+tn`,
 publish their archive and are marked Russian (`/cs language ru`).
 Every bot is marked Russian too: `/bot set <Bot> language ru` follows its
 `/bot create` and draws the same flag beside its nickname.
+Every room also says what it is about: the `category` column is the
+`/cs category` that follows its `/cs language`, and draws a subject plaque beside
+the flag.
 
 Bot nicknames are Latin because the schema requires it — `[a-zA-Z][a-zA-Z0-9_-]*`
 — but every line they speak is Cyrillic.

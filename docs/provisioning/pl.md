@@ -27,6 +27,7 @@ shot, logged in as an admin who has `/identify`-ed.
 /cs register
 /cs archive on
 /cs language pl
+/cs category social
 /topic Kanał polski — wchodź, siadaj, rozmawiamy. Kawa na koszt firmy.
 /mode +tn
 
@@ -34,6 +35,7 @@ shot, logged in as an admin who has `/identify`-ed.
 /cs register
 /cs archive on
 /cs language pl
+/cs category news
 /topic Wiadomości — Interia, Polsat News i Wprost, prosto z kanału RSS. !Zofia zrodla pokazuje listę.
 /mode +tn
 
@@ -41,6 +43,7 @@ shot, logged in as an admin who has `/identify`-ed.
 /cs register
 /cs archive on
 /cs language pl
+/cs category tech
 /topic Technologie — Spider's Web i Antyweb. Wsparcie projektu jest w projekcie; tutaj się rozmawia.
 /mode +tn
 
@@ -48,6 +51,7 @@ shot, logged in as an admin who has `/identify`-ed.
 /cs register
 /cs archive on
 /cs language pl
+/cs category tech
 /topic Komputery — Benchmark, PurePC i Komputer Świat. Podzespoły, składanie i modyfikacje.
 /mode +tn
 
@@ -55,6 +59,7 @@ shot, logged in as an admin who has `/identify`-ed.
 /cs register
 /cs archive on
 /cs language pl
+/cs category security
 /topic Bezpieczeństwo — Niebezpiecznik i Sekurak. Czytaj przed łataniem, nie po.
 /mode +tn
 
@@ -62,6 +67,7 @@ shot, logged in as an admin who has `/identify`-ed.
 /cs register
 /cs archive on
 /cs language pl
+/cs category games
 /topic Gry — CD-Action i Eurogamer Polska. Żeby naprawdę zagrać, otwórz menu Games: 18 klasyków w przeglądarce.
 /mode +tn
 
@@ -69,6 +75,7 @@ shot, logged in as an admin who has `/identify`-ed.
 /cs register
 /cs archive on
 /cs language pl
+/cs category sports
 /topic Kibic — Przegląd Sportowy, Sportowe Fakty i TVP Sport. Tabela, transfery i wiadomo co.
 /mode +tn
 
@@ -76,6 +83,7 @@ shot, logged in as an admin who has `/identify`-ed.
 /cs register
 /cs archive on
 /cs language pl
+/cs category science
 /topic Nauka — Crazy Nauka i National Geographic Polska. Głupich pytań nie ma, są niezadane.
 /mode +tn
 
@@ -83,6 +91,7 @@ shot, logged in as an admin who has `/identify`-ed.
 /cs register
 /cs archive on
 /cs language pl
+/cs category money
 /topic Gospodarka — Bankier, Money.pl i Business Insider Polska. Nagłówek to nie rekomendacja.
 /mode +tn
 
@@ -90,6 +99,7 @@ shot, logged in as an admin who has `/identify`-ed.
 /cs register
 /cs archive on
 /cs language pl
+/cs category culture
 /topic Film — Filmweb na łączach. Premiery, seriale i spory o zakończenia.
 /mode +tn
 
@@ -374,23 +384,26 @@ matters after a paste.
 
 ## Channel reference
 
-| channel | host / wire bot | feeds |
-|---|---|---|
-| `#polska` | **Kasia**, Marek | RMF24, Onet |
-| `#wiadomosci` | **Zofia** | Interia, Polsat News, Wprost |
-| `#technologie` | **Jacek** | Spider's Web, Antyweb |
-| `#komputery` | **Bogdan** | Benchmark, PurePC, Komputer Świat |
-| `#bezpieczenstwo` | **Iwona** | Niebezpiecznik, Sekurak |
-| `#gry` | **Rafal** | CD-Action, Eurogamer Polska |
-| `#kibic` | **Lech** | Przegląd Sportowy, Sportowe Fakty, TVP Sport |
-| `#nauka` | **Kopernik** | Crazy Nauka, National Geographic Polska |
-| `#gospodarka` | **Halina** | Bankier, Money.pl, Business Insider Polska |
-| `#film` | **Ewa** | Filmweb |
+| channel | category | host / wire bot | feeds |
+|---|---|---|---|
+| `#polska` | `social` | **Kasia**, Marek | RMF24, Onet |
+| `#wiadomosci` | `news` | **Zofia** | Interia, Polsat News, Wprost |
+| `#technologie` | `tech` | **Jacek** | Spider's Web, Antyweb |
+| `#komputery` | `tech` | **Bogdan** | Benchmark, PurePC, Komputer Świat |
+| `#bezpieczenstwo` | `security` | **Iwona** | Niebezpiecznik, Sekurak |
+| `#gry` | `games` | **Rafal** | CD-Action, Eurogamer Polska |
+| `#kibic` | `sports` | **Lech** | Przegląd Sportowy, Sportowe Fakty, TVP Sport |
+| `#nauka` | `science` | **Kopernik** | Crazy Nauka, National Geographic Polska |
+| `#gospodarka` | `money` | **Halina** | Bankier, Money.pl, Business Insider Polska |
+| `#film` | `culture` | **Ewa** | Filmweb |
 
 **Stroz** stands in all ten and greets in none of them. All channels are `+tn`,
 publish their archive and are marked Polish (`/cs language pl`).
 Every bot is marked Polish too: `/bot set <Bot> language pl` follows its
 `/bot create` and draws the same flag beside its nickname.
+Every room also says what it is about: the `category` column is the
+`/cs category` that follows its `/cs language`, and draws a subject plaque beside
+the flag.
 
 Room names drop the Polish diacritics — `#wiadomosci`, `#bezpieczenstwo` — because
 the client only turns ASCII channel mentions into links. Topics, greetings and

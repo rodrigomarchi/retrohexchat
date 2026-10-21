@@ -1033,6 +1033,8 @@ defmodule RetroHexChatWeb.DesktopLive do
       channel_user_counts: %{},
       # Each joined channel's language, drawn as a flag beside its name.
       channel_locales: %{},
+      # And what each one is about, drawn as a plaque beside the flag.
+      channel_categories: %{},
       channel_guests: %{},
       visitor?: false,
       visitor_nick: nil,

@@ -127,7 +127,8 @@ defmodule RetroHexChat.Chat.HelpTopics.Services do
           "chanserv",
           "chanserv-register",
           "chanserv-access",
-          "feature-language-flags"
+          "feature-language-flags",
+          "channel-categories"
         ]
       }
     ]

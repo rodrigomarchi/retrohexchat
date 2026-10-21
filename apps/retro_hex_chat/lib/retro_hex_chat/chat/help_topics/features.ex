@@ -161,7 +161,8 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
           "ui-nicklist",
           "cmd-cs",
           "chanserv-ui",
-          "bot-command"
+          "bot-command",
+          "channel-categories"
         ]
       },
       %{

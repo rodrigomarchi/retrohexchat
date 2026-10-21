@@ -19,7 +19,7 @@ defmodule RetroHexChatWeb.Components.UI.ChannelList do
   import RetroHexChatWeb.Components.UI.Badge
   import RetroHexChatWeb.Components.UI.ActivityIndicator
   import RetroHexChatWeb.Components.UI.DialogBanner
-  import RetroHexChatWeb.Components.UI.NickFlag, only: [channel_flag: 1]
+  import RetroHexChatWeb.Components.UI.NickFlag, only: [channel_badges: 1]
 
   alias RetroHexChat.Chat.TimeFormatter
   alias RetroHexChatWeb.Components.Diagrams
@@ -116,7 +116,7 @@ defmodule RetroHexChatWeb.Components.UI.ChannelList do
                   <%!-- The language the founder says the room speaks, ahead
                         of its name as a nickname's flag is. The title is a
                         flex row, so its gap does the spacing. --%>
-                  <.channel_flag locale={Map.get(ch, :locale)} />
+                  <.channel_badges category={Map.get(ch, :category)} locale={Map.get(ch, :locale)} />
                   {ch.name}
                   <.badge
                     :if={invite_only?(ch)}

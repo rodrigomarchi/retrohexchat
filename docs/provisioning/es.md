@@ -28,6 +28,7 @@ shot, logged in as an admin who has `/identify`-ed.
 /cs register
 /cs archive on
 /cs language es
+/cs category social
 /topic Sala en español — de Madrid a Montevideo. Pasa, siéntate, aquí se charla.
 /mode +tn
 
@@ -35,6 +36,7 @@ shot, logged in as an admin who has `/identify`-ed.
 /cs register
 /cs archive on
 /cs language es
+/cs category news
 /topic Noticias de España — 20minutos, elDiario.es y El Mundo, directo del feed. !Elena fuentes para la lista.
 /mode +tn
 
@@ -42,6 +44,7 @@ shot, logged in as an admin who has `/identify`-ed.
 /cs register
 /cs archive on
 /cs language es
+/cs category news
 /topic Latinoamérica — Clarín, La Nación e Infobae. La portada de allá, que no es la de aquí.
 /mode +tn
 
@@ -49,6 +52,7 @@ shot, logged in as an admin who has `/identify`-ed.
 /cs register
 /cs archive on
 /cs language es
+/cs category news
 /topic Internacional — BBC Mundo, ABC, El Confidencial y La Vanguardia. El mundo, en español.
 /mode +tn
 
@@ -56,6 +60,7 @@ shot, logged in as an admin who has `/identify`-ed.
 /cs register
 /cs archive on
 /cs language es
+/cs category tech
 /topic Tecnología — Xataka, Genbeta, Hipertextual, Microsiervos y Applesfera. !Nacho fuentes para la lista.
 /mode +tn
 
@@ -63,6 +68,7 @@ shot, logged in as an admin who has `/identify`-ed.
 /cs register
 /cs archive on
 /cs language es
+/cs category games
 /topic Videojuegos — Vida Extra en el cable. Para jugar de verdad, abre el menú Games: 18 clásicos en el navegador.
 /mode +tn
 
@@ -70,6 +76,7 @@ shot, logged in as an admin who has `/identify`-ed.
 /cs register
 /cs archive on
 /cs language es
+/cs category sports
 /topic Deportes — Marca y Mundo Deportivo. Liga, fichajes y la discusión de siempre.
 /mode +tn
 
@@ -77,6 +84,7 @@ shot, logged in as an admin who has `/identify`-ed.
 /cs register
 /cs archive on
 /cs language es
+/cs category culture
 /topic Cine y series — Espinof en el cable. Estrenos, temporadas y spoilers avisados.
 /mode +tn
 
@@ -84,6 +92,7 @@ shot, logged in as an admin who has `/identify`-ed.
 /cs register
 /cs archive on
 /cs language es
+/cs category science
 /topic Divulgación — Muy Interesante. Preguntas tontas no hay; hay preguntas sin hacer.
 /mode +tn
 
@@ -91,6 +100,7 @@ shot, logged in as an admin who has `/identify`-ed.
 /cs register
 /cs archive on
 /cs language es
+/cs category life
 /topic Cocina — Directo al Paladar. Recetas, técnica y discusiones sobre la tortilla.
 /mode +tn
 
@@ -98,6 +108,7 @@ shot, logged in as an admin who has `/identify`-ed.
 /cs register
 /cs archive on
 /cs language es
+/cs category life
 /topic Motor — Motorpasión. Coches, motos y opiniones de quien va en metro.
 /mode +tn
 
@@ -105,6 +116,7 @@ shot, logged in as an admin who has `/identify`-ed.
 /cs register
 /cs archive on
 /cs language es
+/cs category money
 /topic Mercados — Expansión en el cable. Un titular no es una recomendación.
 /mode +tn
 
@@ -429,25 +441,28 @@ ceiling, so a sixth address silently refused would show up there first.
 
 ## Channel reference
 
-| channel | host / wire bot | feeds |
-|---|---|---|
-| `#hispano` | **Lucia**, Paco | El País, RTVE |
-| `#noticias` | **Elena** | 20minutos, elDiario.es, El Mundo |
-| `#latinoamerica` | **Diego** | Clarín, La Nación, Infobae |
-| `#internacional` | **Marisol** | BBC Mundo, ABC, El Confidencial, La Vanguardia |
-| `#tecno` | **Nacho** | Xataka, Genbeta, Hipertextual, Microsiervos, Applesfera |
-| `#videojuegos` | **Rocio** | Vida Extra |
-| `#deportes` | **Ramon** | Marca, Mundo Deportivo |
-| `#cine` | **Carmen** | Espinof |
-| `#divulgacion` | **Teresa** | Muy Interesante |
-| `#cocina` | **Pepa** | Directo al Paladar |
-| `#motor` | **Manolo** | Motorpasión |
-| `#mercados` | **Alonso** | Expansión |
+| channel | category | host / wire bot | feeds |
+|---|---|---|---|
+| `#hispano` | `social` | **Lucia**, Paco | El País, RTVE |
+| `#noticias` | `news` | **Elena** | 20minutos, elDiario.es, El Mundo |
+| `#latinoamerica` | `news` | **Diego** | Clarín, La Nación, Infobae |
+| `#internacional` | `news` | **Marisol** | BBC Mundo, ABC, El Confidencial, La Vanguardia |
+| `#tecno` | `tech` | **Nacho** | Xataka, Genbeta, Hipertextual, Microsiervos, Applesfera |
+| `#videojuegos` | `games` | **Rocio** | Vida Extra |
+| `#deportes` | `sports` | **Ramon** | Marca, Mundo Deportivo |
+| `#cine` | `culture` | **Carmen** | Espinof |
+| `#divulgacion` | `science` | **Teresa** | Muy Interesante |
+| `#cocina` | `life` | **Pepa** | Directo al Paladar |
+| `#motor` | `life` | **Manolo** | Motorpasión |
+| `#mercados` | `money` | **Alonso** | Expansión |
 
 **Cerbero** stands in all twelve and greets in none of them. All channels are `+tn`,
 publish their archive and are marked Spanish (`/cs language es`).
 Every bot is marked Spanish too: `/bot set <Bot> language es` follows its
 `/bot create` and draws the same flag beside its nickname.
+Every room also says what it is about: the `category` column is the
+`/cs category` that follows its `/cs language`, and draws a subject plaque beside
+the flag.
 
 Channel names carry no accents and no `ñ`: the client only turns `#ordenadores`
 into a link when it matches `[a-zA-Z][a-zA-Z0-9_-]*`. Inside a room, nothing is

@@ -32,6 +32,7 @@ the Admin Console in one shot, logged in as an admin who has `/identify`-ed.
 /cs register
 /cs archive on
 /cs language pt_BR
+/cs category social
 /topic Canal brasileiro — bate-papo em português. Chega aí, senta e fica à vontade.
 /mode +tn
 
@@ -40,6 +41,7 @@ the Admin Console in one shot, logged in as an admin who has `/identify`-ed.
 /cs register
 /cs archive on
 /cs language pt_BR
+/cs category news
 /topic Jornal — manchetes de Folha, BBC Brasil e Poder360, direto do feed. !Zeca fontes lista tudo.
 /mode +tn
 
@@ -47,6 +49,7 @@ the Admin Console in one shot, logged in as an admin who has `/identify`-ed.
 /cs register
 /cs archive on
 /cs language pt_BR
+/cs category tech
 /topic Tecnologia — Tecnoblog, Canaltech, Olhar Digital e Manual do Usuário. !Bento fontes para a lista.
 /mode +tn
 
@@ -54,6 +57,7 @@ the Admin Console in one shot, logged in as an admin who has `/identify`-ed.
 /cs register
 /cs archive on
 /cs language pt_BR
+/cs category tech
 /topic Hardware — placa, gabinete, gambiarra e upgrade. Fofoca de silício por conta do !Juca.
 /mode +tn
 
@@ -61,6 +65,7 @@ the Admin Console in one shot, logged in as an admin who has `/identify`-ed.
 /cs register
 /cs archive on
 /cs language pt_BR
+/cs category dev
 /topic Programação — TabNews e Meio Bit no fio. Dúvida de linguagem é com o projeto dela; aqui é o boteco.
 /mode +tn
 
@@ -68,6 +73,7 @@ the Admin Console in one shot, logged in as an admin who has `/identify`-ed.
 /cs register
 /cs archive on
 /cs language pt_BR
+/cs category money
 /topic Economia — InfoMoney, Exame e Valor. !Iara fontes mostra de onde vem cada manchete.
 /mode +tn
 
@@ -75,6 +81,7 @@ the Admin Console in one shot, logged in as an admin who has `/identify`-ed.
 /cs register
 /cs archive on
 /cs language pt_BR
+/cs category sports
 /topic Futebol — ge e Trivela no ar. Tabela, bola rolando e opinião de quem não joga há vinte anos.
 /mode +tn
 
@@ -82,6 +89,7 @@ the Admin Console in one shot, logged in as an admin who has `/identify`-ed.
 /cs register
 /cs archive on
 /cs language pt_BR
+/cs category science
 /topic Ciência — Superinteressante e Galileu. Pergunta idiota não existe, existe pergunta não feita.
 /mode +tn
 
@@ -89,6 +97,7 @@ the Admin Console in one shot, logged in as an admin who has `/identify`-ed.
 /cs register
 /cs archive on
 /cs language pt_BR
+/cs category culture
 /topic Música — POPline e TMDQA no fio. Lançamento, show e briga de fandom.
 /mode +tn
 
@@ -96,6 +105,7 @@ the Admin Console in one shot, logged in as an admin who has `/identify`-ed.
 /cs register
 /cs archive on
 /cs language pt_BR
+/cs category games
 /topic Jogos — Adrenaline no fio. Para jogar de verdade, abre o menu Games: 18 clássicos rodando no navegador.
 /mode +tn
 
@@ -381,23 +391,26 @@ and nowhere else.
 
 ## Channel reference
 
-| channel | host / wire bot | feeds |
-|---|---|---|
-| `#brasil` | **Tiao**, Nina | G1, Agência Brasil |
-| `#jornal` | **Zeca** | Folha, BBC Brasil, Poder360 |
-| `#tecnologia` | **Bento** | Tecnoblog, Canaltech, Olhar Digital, Manual do Usuário |
-| `#hardware` | **Juca** | Hardware.com.br, Mundo Conectado |
-| `#programacao` | **Dora** | TabNews, Meio Bit |
-| `#economia` | **Iara** | InfoMoney, Exame, Valor |
-| `#futebol` | **Chico** | ge, Trivela |
-| `#ciencia` | **Lila** | Superinteressante, Galileu |
-| `#musica` | **Tuca** | POPline, TMDQA |
-| `#jogos` | **Vito** | Adrenaline |
+| channel | category | host / wire bot | feeds |
+|---|---|---|---|
+| `#brasil` | `social` | **Tiao**, Nina | G1, Agência Brasil |
+| `#jornal` | `news` | **Zeca** | Folha, BBC Brasil, Poder360 |
+| `#tecnologia` | `tech` | **Bento** | Tecnoblog, Canaltech, Olhar Digital, Manual do Usuário |
+| `#hardware` | `tech` | **Juca** | Hardware.com.br, Mundo Conectado |
+| `#programacao` | `dev` | **Dora** | TabNews, Meio Bit |
+| `#economia` | `money` | **Iara** | InfoMoney, Exame, Valor |
+| `#futebol` | `sports` | **Chico** | ge, Trivela |
+| `#ciencia` | `science` | **Lila** | Superinteressante, Galileu |
+| `#musica` | `culture` | **Tuca** | POPline, TMDQA |
+| `#jogos` | `games` | **Vito** | Adrenaline |
 
 **Sansao** stands in all ten and greets in none of them. All channels are `+tn`,
 publish their archive and are marked Brazilian Portuguese (`/cs language pt_BR`).
 Every bot is marked Brazilian Portuguese too: `/bot set <Bot> language pt_BR`
 follows its `/bot create` and draws the same flag beside its nickname.
+Every room also says what it is about: the `category` column is the
+`/cs category` that follows its `/cs language`, and draws a subject plaque beside
+the flag.
 
 Poll intervals follow the publisher, not a house default: twenty minutes for a
 newsroom, an hour for a monthly-paced magazine. A room that repeats itself reads

@@ -52,6 +52,31 @@ defmodule RetroHexChatWeb.ChatLive.ChannelLocaleFlagsTest do
     refute flagged?(html, "channel-#{ctx.channel}")
   end
 
+  test "the category's plaque is drawn ahead of the flag", ctx do
+    submit_command_sync(ctx.view, "/cs language ja")
+    submit_command_sync(ctx.view, "/cs category games")
+    html = render(ctx.view)
+
+    assert assigns(ctx.view).channel_categories[ctx.channel] == "games"
+
+    for testid <- ["tab-bar", "topic-bar", "channel-#{ctx.channel}"] do
+      [badges] =
+        html
+        |> Floki.parse_document!()
+        |> Floki.find(~s([data-testid="#{testid}"]))
+        |> Enum.take(1)
+
+      order =
+        badges
+        |> Floki.find(~s([data-testid="channel-category"], [data-testid="channel-flag"]))
+        |> Enum.map(&(Floki.attribute(&1, "data-testid") |> hd()))
+
+      assert order == ["channel-category", "channel-flag"], testid
+    end
+
+    assert html =~ "set this channel&#39;s category to Games"
+  end
+
   # Whether the element whose test id is `testid` holds a channel flag — of
   # `locale`, when one is given. Scoped, because the sidebar suggests other
   # rooms, and the Retro Games ones are English.

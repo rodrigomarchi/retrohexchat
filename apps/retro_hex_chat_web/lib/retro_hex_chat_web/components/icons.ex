@@ -38,6 +38,7 @@ defmodule RetroHexChatWeb.Icons do
   | `Icons.Formatting` | Text formatting (bold, italic, color, etc.) |
   | `Icons.Games`    | P2P game icons (32×32 pixel art)              |
   | `Icons.Flags`    | Language flags for the locale menu (14×14)    |
+  | `Icons.Categories` | Channel subject plaques (14×14)             |
 
   ## Icon Sizes
 
@@ -158,6 +159,18 @@ defmodule RetroHexChatWeb.Icons do
   @spec flag_icon(map()) :: Phoenix.LiveView.Rendered.t()
   def flag_icon(assigns) do
     assigns |> Map.put(:name, Registry.flag(assigns.locale)) |> sprite_ref()
+  end
+
+  attr :category, :string, required: true
+  attr :class, :any, default: nil
+
+  @doc """
+  The subject plaque for a channel category. Only called for a category the
+  set draws — `RetroHexChatWeb.Icons.Registry.category/1` says which.
+  """
+  @spec category_icon(map()) :: Phoenix.LiveView.Rendered.t()
+  def category_icon(assigns) do
+    assigns |> Map.put(:name, Registry.category(assigns.category)) |> sprite_ref()
   end
 
   attr :game_id, :string, required: true

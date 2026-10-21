@@ -3,6 +3,7 @@
  * @flow W18 [done] Everybody's nickname carries the flag of the language they use the chat in: the user list, their lines, the hover card and a private conversation's row and tab, on a desktop and on a phone
  * @flow W19 [done] A visitor watching without an account is listed under Visitors with the flag of the language the chat is shown to them in
  * @flow W20 [done] The tools that list people draw the same flag: autocomplete, whois, the address book, notify list, nick colours, ignore list, URL catcher, mentions, pinned lines, Channel Central and a private conversation's typing line
+ * @flow W22 [done] A channel's founder says what it is about with /cs category or Channel Central, and its coloured plaque is drawn ahead of the language flag beside the channel's name: the tab, the topic bar, the conversations list, the channel list and the public archive; the help lists every plaque
  * @flow W21 [done] A channel's founder sets the language it is spoken in with /cs language or Channel Central's Registration tab, and its flag is drawn beside the channel's name: the tab, the topic bar, the conversations list, the channel list and the public archive, on a desktop and on a phone
  *
  * These @flow lines are the source of truth for e2e/TEST_CATALOG.md.
@@ -374,6 +375,98 @@ test.describe("Language flags beside nicknames", () => {
         channelFlag(phone.page.getByTestId("tab-bar"), "ja"),
       ).toBeVisible();
       await shot(phone.page, "channel-language-phone");
+    } finally {
+      await closeUsers([phone]);
+    }
+  });
+
+  test("a channel's category plaque leads its language flag (W22)", async ({
+    browser,
+  }) => {
+    const alice = await signedInIn(browser, "w22a", "en");
+    const channel = uniqueChannel("assunto");
+    const slug = channel.slice(1);
+    const page = alice.page;
+    const badges = (scope: ReturnType<Page["locator"]>) =>
+      scope.locator(
+        '[data-testid="channel-category"], [data-testid="channel-flag"]',
+      );
+
+    try {
+      await alice.chat.sendMessage(`/join ${channel}`);
+      await alice.chat.expectTabVisible(channel);
+      await alice.chat.sendMessage("/cs register");
+      await alice.chat.sendMessage("/cs archive on");
+      await alice.chat.sendMessage("/cs language pt_BR");
+      await alice.chat.sendMessage("/cs category news");
+
+      // Plaque first, flag second, then the name — in every place.
+      for (const testid of ["tab-bar", "topic-bar", `channel-${channel}`]) {
+        const pair = badges(page.getByTestId(testid));
+        await expect(pair).toHaveCount(2);
+        await expect(pair.nth(0)).toHaveAttribute("data-category", "news");
+        await expect(pair.nth(1)).toHaveAttribute("data-locale", "pt_BR");
+      }
+      await shot(page, "channel-category-desktop");
+      await shot(page.getByTestId("topic-bar"), "topic-bar-badges");
+      await shot(page.getByTestId("tab-bar"), "tab-badges");
+
+      // Channel Central: the founder's Category select.
+      await page.getByTestId("conversation-toolbar-channel-central").click();
+      await expect(alice.chat.channelCentralDialog).toBeVisible();
+      await alice.chat.switchChannelCentralToTab("registration");
+      const control = page.getByTestId("cc-category-switch");
+      await expect(control).toBeVisible();
+      await control.locator(".retro-combo").click();
+      await shot(
+        alice.chat.channelCentralDialog,
+        "channel-central-category-open",
+      );
+      await page
+        .locator("#cc-category-select-content label[role=option]", {
+          hasText: "Games",
+        })
+        .click();
+      await expect(
+        page
+          .getByTestId("tab-bar")
+          .locator('[data-testid="channel-category"][data-category="games"]'),
+      ).toBeVisible();
+      await page.keyboard.press("Escape");
+
+      // The channel list.
+      await alice.chat.sendMessage("/list");
+      await expect(alice.chat.channelListDialog).toBeVisible();
+      await expect(badges(alice.chat.channelListRow(channel))).toHaveCount(2);
+      await shot(alice.chat.channelListDialog, "channel-list-badges");
+      await alice.chat.closeChannelList();
+
+      // The public archive's heading.
+      await alice.chat.sendMessage("a line for the archive");
+      const reader = await alice.ctx.newPage();
+      await reader.goto(`/archive/${slug}`);
+      await expect(badges(reader.locator("#archive-heading"))).toHaveCount(2);
+      await shot(reader, "archive-heading-badges");
+
+      // Every plaque, side by side, in the help topic that lists them.
+      await reader.goto("/chat/help/channel-categories");
+      const list = reader.locator('[data-testid="channel-category"]');
+      await expect(list).toHaveCount(14);
+      await shot(
+        reader.locator("ul", { has: reader.getByTestId("channel-category") }),
+        "help-every-plaque",
+      );
+      await reader.close();
+    } finally {
+      await closeUsers([alice]);
+    }
+
+    const phone = await signedInIn(browser, "w22p", "en", PHONE);
+    try {
+      await phone.chat.sendMessage(`/join ${channel}`);
+      await phone.chat.expectTabVisible(channel);
+      await expect(badges(phone.page.getByTestId("tab-bar"))).toHaveCount(2);
+      await shot(phone.page, "channel-category-phone");
     } finally {
       await closeUsers([phone]);
     }

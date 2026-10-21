@@ -28,6 +28,7 @@ shot, logged in as an admin who has `/identify`-ed.
 /cs register
 /cs archive on
 /cs language pt_PT
+/cs category social
 /topic Canal português — conversa à portuguesa. Entra, senta-te, o café é por conta da casa.
 /mode +tn
 
@@ -35,6 +36,7 @@ shot, logged in as an admin who has `/identify`-ed.
 /cs register
 /cs archive on
 /cs language pt_PT
+/cs category news
 /topic Actualidade — Observador e SAPO 24 directamente do feed. !Duarte fontes mostra de onde vem.
 /mode +tn
 
@@ -42,6 +44,7 @@ shot, logged in as an admin who has `/identify`-ed.
 /cs register
 /cs archive on
 /cs language pt_PT
+/cs category news
 /topic Última hora — Notícias ao Minuto e TVI. Chega primeiro aqui, contexto vem depois no #actualidade.
 /mode +tn
 
@@ -49,6 +52,7 @@ shot, logged in as an admin who has `/identify`-ed.
 /cs register
 /cs archive on
 /cs language pt_PT
+/cs category tech
 /topic Informática — SAPO Tek e Pplware no fio. Suporte de projecto é com o projecto; aqui é conversa.
 /mode +tn
 
@@ -56,6 +60,7 @@ shot, logged in as an admin who has `/identify`-ed.
 /cs register
 /cs archive on
 /cs language pt_PT
+/cs category tech
 /topic Gadgets — 4gnews e Leak. Telemóveis, relógios e coisas que não precisas mas queres.
 /mode +tn
 
@@ -63,6 +68,7 @@ shot, logged in as an admin who has `/identify`-ed.
 /cs register
 /cs archive on
 /cs language pt_PT
+/cs category money
 /topic Negócios — ECO e Jornal de Negócios. !Afonso fontes lista os feeds.
 /mode +tn
 
@@ -70,6 +76,7 @@ shot, logged in as an admin who has `/identify`-ed.
 /cs register
 /cs archive on
 /cs language pt_PT
+/cs category money
 /topic Bolsa — Dinheiro Vivo no fio. Manchete não é conselho de investimento.
 /mode +tn
 
@@ -77,6 +84,7 @@ shot, logged in as an admin who has `/identify`-ed.
 /cs register
 /cs archive on
 /cs language pt_PT
+/cs category sports
 /topic Desporto — Record e Mais Futebol. Bola, tabela e a discussão do costume.
 /mode +tn
 
@@ -84,6 +92,7 @@ shot, logged in as an admin who has `/identify`-ed.
 /cs register
 /cs archive on
 /cs language pt_PT
+/cs category culture
 /topic Cultura — Visão e Sábado. Livros, cinema, exposições e o que anda a dar.
 /mode +tn
 
@@ -91,6 +100,7 @@ shot, logged in as an admin who has `/identify`-ed.
 /cs register
 /cs archive on
 /cs language pt_PT
+/cs category science
 /topic Natureza — Wilder no fio. Aves, plantas, bichos e o território que os aguenta.
 /mode +tn
 
@@ -362,20 +372,23 @@ that matters after a paste.
 
 ## Channel reference
 
-| channel | host / wire bot | feeds |
-|---|---|---|
-| `#portugal` | **Fernao**, Vasco | Público, RTP |
-| `#actualidade` | **Duarte** | Observador, SAPO 24 |
-| `#ultimahora` | **Leonor** | Notícias ao Minuto, TVI |
-| `#informatica` | **Gil** | SAPO Tek, Pplware |
-| `#gadgets` | **Mafalda** | 4gnews, Leak |
-| `#negocios` | **Afonso** | ECO, Jornal de Negócios |
-| `#bolsa` | **Beatriz** | Dinheiro Vivo |
-| `#desporto` | **Eusebio** | Record, Mais Futebol |
-| `#cultura` | **Amalia** | Visão, Sábado |
-| `#natureza` | **Ines** | Wilder |
+| channel | category | host / wire bot | feeds |
+|---|---|---|---|
+| `#portugal` | `social` | **Fernao**, Vasco | Público, RTP |
+| `#actualidade` | `news` | **Duarte** | Observador, SAPO 24 |
+| `#ultimahora` | `news` | **Leonor** | Notícias ao Minuto, TVI |
+| `#informatica` | `tech` | **Gil** | SAPO Tek, Pplware |
+| `#gadgets` | `tech` | **Mafalda** | 4gnews, Leak |
+| `#negocios` | `money` | **Afonso** | ECO, Jornal de Negócios |
+| `#bolsa` | `money` | **Beatriz** | Dinheiro Vivo |
+| `#desporto` | `sports` | **Eusebio** | Record, Mais Futebol |
+| `#cultura` | `culture` | **Amalia** | Visão, Sábado |
+| `#natureza` | `science` | **Ines** | Wilder |
 
 **Sentinela** stands in all ten and greets in none of them. All channels are `+tn`,
 publish their archive and are marked European Portuguese (`/cs language pt_PT`).
 Every bot is marked European Portuguese too: `/bot set <Bot> language pt_PT`
 follows its `/bot create` and draws the same flag beside its nickname.
+Every room also says what it is about: the `category` column is the
+`/cs category` that follows its `/cs language`, and draws a subject plaque beside
+the flag.

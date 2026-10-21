@@ -27,6 +27,7 @@ shot, logged in as an admin who has `/identify`-ed.
 /cs register
 /cs archive on
 /cs language zh_hant
+/cs category social
 /topic 正體中文頻道 — 進來坐，聊聊天。咖啡算店裡的。
 /mode +tn
 
@@ -34,6 +35,7 @@ shot, logged in as an admin who has `/identify`-ed.
 /cs register
 /cs archive on
 /cs language zh_hant
+/cs category news
 /topic 新聞 — 聯合新聞網、Yahoo 奇摩、中央廣播電臺，直接來自訂閱來源。!Chunhua sources 顯示清單。
 /mode +tn
 
@@ -41,6 +43,7 @@ shot, logged in as an admin who has `/identify`-ed.
 /cs register
 /cs archive on
 /cs language zh_hant
+/cs category news
 /topic 香港 — 獨立媒體在線上。另一座城市的頭條，同一種文字。
 /mode +tn
 
@@ -48,6 +51,7 @@ shot, logged in as an admin who has `/identify`-ed.
 /cs register
 /cs archive on
 /cs language zh_hant
+/cs category news
 /topic 國際 — 中央社國際新聞與 BBC 中文網。世界的事，用自己的字看。
 /mode +tn
 
@@ -55,6 +59,7 @@ shot, logged in as an admin who has `/identify`-ed.
 /cs register
 /cs archive on
 /cs language zh_hant
+/cs category tech
 /topic 科技 — TechNews、iThome、中央社科技、INSIDE。專案的技術支援在專案那邊；這裡是聊天。
 /mode +tn
 
@@ -62,6 +67,7 @@ shot, logged in as an admin who has `/identify`-ed.
 /cs register
 /cs archive on
 /cs language zh_hant
+/cs category games
 /topic 遊戲 — 巴哈姆特 GNN 與 4Gamers。真要玩的話，打開 Games 選單：18 款經典直接在瀏覽器裡跑。
 /mode +tn
 
@@ -69,6 +75,7 @@ shot, logged in as an admin who has `/identify`-ed.
 /cs register
 /cs archive on
 /cs language zh_hant
+/cs category sports
 /topic 體育 — 中央社體育與自由時報體育。戰績、轉隊，還有老掉牙的爭論。
 /mode +tn
 
@@ -76,6 +83,7 @@ shot, logged in as an admin who has `/identify`-ed.
 /cs register
 /cs archive on
 /cs language zh_hant
+/cs category money
 /topic 財經 — 中央社財經與自由時報財經。標題不是投資建議。
 /mode +tn
 
@@ -83,6 +91,7 @@ shot, logged in as an admin who has `/identify`-ed.
 /cs register
 /cs archive on
 /cs language zh_hant
+/cs category science
 /topic 科學 — 泛科學在線上。沒有笨問題，只有沒問出口的問題。
 /mode +tn
 
@@ -90,6 +99,7 @@ shot, logged in as an admin who has `/identify`-ed.
 /cs register
 /cs archive on
 /cs language zh_hant
+/cs category life
 /topic 生活 — 中央社生活與自由時報娛樂。吃飯、看戲、身體健康。
 /mode +tn
 
@@ -366,20 +376,23 @@ matters after a paste.
 
 ## Channel reference
 
-| channel | host / wire bot | feeds |
-|---|---|---|
-| `#fanti` | **Meiling**, Ahsiung | 自由時報, 公視新聞網 |
-| `#tw-news` | **Chunhua** | 聯合新聞網, Yahoo 奇摩新聞, 中央廣播電臺 |
-| `#hongkong` | **Ahfai** | 香港獨立媒體網 |
-| `#tw-world` | **Shijie** | 中央社國際, BBC 中文網 |
-| `#tw-tech` | **Keji** | 科技新報, iThome, 中央社科技, INSIDE |
-| `#tw-games` | **Dianwan** | 巴哈姆特 GNN, 4Gamers |
-| `#tw-sports` | **Yundong** | 中央社體育, 自由時報體育 |
-| `#tw-money` | **Caijing** | 中央社財經, 自由時報財經 |
-| `#tw-science` | **Kexue** | 泛科學 |
-| `#tw-life` | **Shenghuo** | 中央社生活, 自由時報娛樂 |
+| channel | category | host / wire bot | feeds |
+|---|---|---|---|
+| `#fanti` | `social` | **Meiling**, Ahsiung | 自由時報, 公視新聞網 |
+| `#tw-news` | `news` | **Chunhua** | 聯合新聞網, Yahoo 奇摩新聞, 中央廣播電臺 |
+| `#hongkong` | `news` | **Ahfai** | 香港獨立媒體網 |
+| `#tw-world` | `news` | **Shijie** | 中央社國際, BBC 中文網 |
+| `#tw-tech` | `tech` | **Keji** | 科技新報, iThome, 中央社科技, INSIDE |
+| `#tw-games` | `games` | **Dianwan** | 巴哈姆特 GNN, 4Gamers |
+| `#tw-sports` | `sports` | **Yundong** | 中央社體育, 自由時報體育 |
+| `#tw-money` | `money` | **Caijing** | 中央社財經, 自由時報財經 |
+| `#tw-science` | `science` | **Kexue** | 泛科學 |
+| `#tw-life` | `life` | **Shenghuo** | 中央社生活, 自由時報娛樂 |
 
 **Baoan** stands in all ten and greets in none of them. All channels are `+tn`,
 publish their archive and are marked Traditional Chinese (`/cs language zh_hant`).
 Every bot is marked Traditional Chinese too: `/bot set <Bot> language zh_hant`
 follows its `/bot create` and draws the same flag beside its nickname.
+Every room also says what it is about: the `category` column is the
+`/cs category` that follows its `/cs language`, and draws a subject plaque beside
+the flag.

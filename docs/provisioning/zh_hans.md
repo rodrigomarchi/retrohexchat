@@ -33,6 +33,7 @@ shot, logged in as an admin who has `/identify`-ed.
 /cs register
 /cs archive on
 /cs language zh_hans
+/cs category social
 /topic 中文频道 — 进来坐，聊聊天。咖啡算店里的。
 /mode +tn
 
@@ -40,6 +41,7 @@ shot, logged in as an admin who has `/identify`-ed.
 /cs register
 /cs archive on
 /cs language zh_hans
+/cs category tech
 /topic 科技 — cnBeta、IT之家、Solidot，直接来自订阅源。!Lifeng sources 显示清单。
 /mode +tn
 
@@ -47,6 +49,7 @@ shot, logged in as an admin who has `/identify`-ed.
 /cs register
 /cs archive on
 /cs language zh_hans
+/cs category tech
 /topic 数码 — 爱范儿和极客公园。产品、评测，以及围绕它们的生意。
 /mode +tn
 
@@ -54,6 +57,7 @@ shot, logged in as an admin who has `/identify`-ed.
 /cs register
 /cs archive on
 /cs language zh_hans
+/cs category tech
 /topic 软件 — 少数派和小众软件。工具、玩法、值得装的东西。
 /mode +tn
 
@@ -61,6 +65,7 @@ shot, logged in as an admin who has `/identify`-ed.
 /cs register
 /cs archive on
 /cs language zh_hans
+/cs category tech
 /topic 博客 — 月光博客、阮一峰、酷壳。比任何平台都活得久的独立写作。
 /mode +tn
 
@@ -68,6 +73,7 @@ shot, logged in as an admin who has `/identify`-ed.
 /cs register
 /cs archive on
 /cs language zh_hans
+/cs category dev
 /topic 开发 — InfoQ 中文站在线上。项目的支持在项目那边；这里是闲聊。
 /mode +tn
 
@@ -75,6 +81,7 @@ shot, logged in as an admin who has `/identify`-ed.
 /cs register
 /cs archive on
 /cs language zh_hans
+/cs category dev
 /topic 开源 — 开源中国。发布、内核、发行版。
 /mode +tn
 
@@ -82,6 +89,7 @@ shot, logged in as an admin who has `/identify`-ed.
 /cs register
 /cs archive on
 /cs language zh_hans
+/cs category ai
 /topic 人工智能 — 雷锋网和量子位。模型、论文、落地和吹牛。
 /mode +tn
 
@@ -89,6 +97,7 @@ shot, logged in as an admin who has `/identify`-ed.
 /cs register
 /cs archive on
 /cs language zh_hans
+/cs category games
 /topic 游戏 — 机核和游研社。真要玩的话，打开 Games 菜单：18 款经典直接在浏览器里跑。
 /mode +tn
 
@@ -96,6 +105,7 @@ shot, logged in as an admin who has `/identify`-ed.
 /cs register
 /cs archive on
 /cs language zh_hans
+/cs category money
 /topic 商业 — 钛媒体在线上。标题不是投资建议。
 /mode +tn
 
@@ -370,23 +380,26 @@ matters after a paste.
 
 ## Channel reference
 
-| channel | host / wire bot | feeds |
-|---|---|---|
-| `#zhongwen` | **Xiaomei**, Ahua | 中新网, BBC 中文网, 纽约时报中文网 |
-| `#cn-tech` | **Lifeng** | cnBeta, IT之家, Solidot |
-| `#cn-digital` | **Xiaolong** | 爱范儿, 极客公园 |
-| `#cn-apps` | **Meili** | 少数派, 小众软件 |
-| `#cn-blog` | **Laowang** | 月光博客, 阮一峰, 酷壳 |
-| `#cn-dev` | **Dabing** | InfoQ 中文站 |
-| `#cn-open` | **Kaiyuan** | 开源中国 |
-| `#cn-ai` | **Zhineng** | 雷锋网, 量子位 |
-| `#cn-games` | **Youxi** | 机核, 游研社 |
-| `#cn-money` | **Qianbao** | 钛媒体 |
+| channel | category | host / wire bot | feeds |
+|---|---|---|---|
+| `#zhongwen` | `social` | **Xiaomei**, Ahua | 中新网, BBC 中文网, 纽约时报中文网 |
+| `#cn-tech` | `tech` | **Lifeng** | cnBeta, IT之家, Solidot |
+| `#cn-digital` | `tech` | **Xiaolong** | 爱范儿, 极客公园 |
+| `#cn-apps` | `tech` | **Meili** | 少数派, 小众软件 |
+| `#cn-blog` | `tech` | **Laowang** | 月光博客, 阮一峰, 酷壳 |
+| `#cn-dev` | `dev` | **Dabing** | InfoQ 中文站 |
+| `#cn-open` | `dev` | **Kaiyuan** | 开源中国 |
+| `#cn-ai` | `ai` | **Zhineng** | 雷锋网, 量子位 |
+| `#cn-games` | `games` | **Youxi** | 机核, 游研社 |
+| `#cn-money` | `money` | **Qianbao** | 钛媒体 |
 
 **Weishi** stands in all ten and greets in none of them. All channels are `+tn`,
 publish their archive and are marked Simplified Chinese (`/cs language zh_hans`).
 Every bot is marked Simplified Chinese too: `/bot set <Bot> language zh_hans`
 follows its `/bot create` and draws the same flag beside its nickname.
+Every room also says what it is about: the `category` column is the
+`/cs category` that follows its `/cs language`, and draws a subject plaque beside
+the flag.
 
 `#cn-blog` polls every two hours on purpose: those writers publish a few posts a
 week, and knocking every half hour costs both sides bandwidth for nothing.

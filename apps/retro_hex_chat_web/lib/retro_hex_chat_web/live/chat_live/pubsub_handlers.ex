@@ -108,6 +108,9 @@ defmodule RetroHexChatWeb.ChatLive.PubsubHandlers do
   def handle_info({:channel_locale_changed, _} = msg, socket),
     do: ChannelState.handle_info(msg, socket)
 
+  def handle_info({:channel_category_changed, _} = msg, socket),
+    do: ChannelState.handle_info(msg, socket)
+
   def handle_info({:event_scheduled, _} = msg, socket),
     do: ChannelState.handle_info(msg, socket)
 

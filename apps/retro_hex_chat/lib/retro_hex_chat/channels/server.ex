@@ -13,6 +13,7 @@ defmodule RetroHexChat.Channels.Server do
   require Logger
 
   alias RetroHexChat.Channels.{
+    Categories,
     Directory,
     Events,
     Masks,
@@ -45,6 +46,7 @@ defmodule RetroHexChat.Channels.Server do
           topic_set_by: String.t() | nil,
           topic_set_at: DateTime.t() | nil,
           locale: String.t() | nil,
+          category: String.t() | nil,
           membership: Membership.t(),
           modes: Modes.t(),
           bans: MapSet.t(String.t()),
@@ -60,6 +62,10 @@ defmodule RetroHexChat.Channels.Server do
         }
 
   @pubsub RetroHexChat.PubSub
+
+  # What a founder draws beside the channel's name: its language and its
+  # category, both kept on the registration row.
+  @badges [:locale, :category]
 
   # ──────────────────────────────────────────────────────────────
   # Public API
@@ -286,18 +292,43 @@ defmodule RetroHexChat.Channels.Server do
   @spec set_locale(String.t(), String.t(), String.t() | nil) :: :ok | {:error, String.t()}
   def set_locale(channel_name, nickname, locale) do
     with {:ok, locale} <- offered_locale(locale) do
-      case Registry.lookup(channel_name) do
-        {:ok, pid} -> GenServer.call(pid, {:set_locale, nickname, locale})
-        {:error, :not_found} -> {:error, dgettext("channels", "Channel not found")}
-      end
+      set_badge(channel_name, :locale, nickname, locale)
+    end
+  end
+
+  @doc """
+  Sets what the channel is about — one of `RetroHexChat.Channels.Categories`
+  — or clears it with `nil`. Founder only, and told to every screen that
+  draws the channel's name, as its language is.
+  """
+  @spec set_category(String.t(), String.t(), String.t() | nil) :: :ok | {:error, String.t()}
+  def set_category(channel_name, nickname, category) do
+    with {:ok, category} <- offered_category(category) do
+      set_badge(channel_name, :category, nickname, category)
+    end
+  end
+
+  defp set_badge(channel_name, key, nickname, value) do
+    case Registry.lookup(channel_name) do
+      {:ok, pid} -> GenServer.call(pid, {:set_badge, key, nickname, value})
+      {:error, :not_found} -> {:error, dgettext("channels", "Channel not found")}
     end
   catch
     :exit, {:noproc, _call} ->
       {:error, dgettext("channels", "Channel not found")}
 
     :exit, reason ->
-      Logger.error("Channel language change failed for #{channel_name}: #{inspect(reason)}")
+      Logger.error("Channel #{key} change failed for #{channel_name}: #{inspect(reason)}")
       {:error, dgettext("channels", "The channel did not answer. Try again.")}
+  end
+
+  defp offered_category(nil), do: {:ok, nil}
+
+  defp offered_category(category) do
+    case Categories.normalize(category) do
+      nil -> {:error, dgettext("channels", "Unknown category: %{code}", code: category)}
+      code -> {:ok, code}
+    end
   end
 
   # Only a language the chat speaks, however it was written; nil clears it.
@@ -542,6 +573,7 @@ defmodule RetroHexChat.Channels.Server do
       topic_set_by: nil,
       topic_set_at: nil,
       locale: nil,
+      category: nil,
       membership: Membership.new(),
       modes: Modes.new(),
       bans: MapSet.new(),
@@ -1033,24 +1065,30 @@ defmodule RetroHexChat.Channels.Server do
     reply({:ok, state.welcome_message}, state)
   end
 
-  # The row may already say what language the room speaks — a Retro Games
-  # channel is written with one — so the flag comes from it.
+  # The row may already say what language the room speaks and what it is
+  # about — a Retro Games channel is written with both — so the badges come
+  # from it.
   def handle_call(:mark_registered, _from, state) do
     new_state = %{state | registered: true}
     maybe_persist_channel_settings(new_state)
-    reply(:ok, put_locale(new_state, registered_locale(state.name), nil))
-  end
+    row = ServiceQueries.find_registered_channel(state.name)
 
-  def handle_call(:mark_unregistered, _from, state) do
-    new_state = put_locale(%{state | registered: false}, nil, nil)
+    new_state =
+      Enum.reduce(@badges, new_state, &put_badge(&2, &1, row && Map.get(row, &1), nil))
+
     reply(:ok, new_state)
   end
 
-  def handle_call({:set_locale, nickname, locale}, _from, state) do
-    with :ok <- identified?(nickname, :locale),
-         :ok <- founder?(state.name, nickname, :locale) do
-      ServiceQueries.update_registered_channel_settings(state.name, locale: locale)
-      reply(:ok, put_locale(state, locale, nickname))
+  def handle_call(:mark_unregistered, _from, state) do
+    new_state = Enum.reduce(@badges, %{state | registered: false}, &put_badge(&2, &1, nil, nil))
+    reply(:ok, new_state)
+  end
+
+  def handle_call({:set_badge, key, nickname, value}, _from, state) when key in @badges do
+    with :ok <- identified?(nickname, key),
+         :ok <- founder?(state.name, nickname, key) do
+      ServiceQueries.update_registered_channel_settings(state.name, [{key, value}])
+      reply(:ok, put_badge(state, key, value, nickname))
     else
       {:error, reason} -> reply({:error, reason}, state)
     end
@@ -1506,6 +1544,7 @@ defmodule RetroHexChat.Channels.Server do
       name: state.name,
       topic: state.topic,
       locale: state.locale,
+      category: state.category,
       # Bots count: a channel a feed keeps publishing in is a live one.
       member_count: Membership.count(state.membership),
       watcher_count: watcher_count(state),
@@ -1680,6 +1719,7 @@ defmodule RetroHexChat.Channels.Server do
       topic_set_by: state.topic_set_by,
       topic_set_at: state.topic_set_at,
       locale: state.locale,
+      category: state.category,
       welcome_message: state.welcome_message,
       members: Membership.to_list(state.membership),
       member_count: Membership.count(state.membership),
@@ -1960,18 +2000,14 @@ defmodule RetroHexChat.Channels.Server do
     end
   end
 
-  defp registered_locale(channel_name) do
-    case ServiceQueries.find_registered_channel(channel_name) do
-      %{locale: locale} -> locale
-      nil -> nil
-    end
-  end
-
   defp unidentified_message(:archive),
     do: dgettext("channels", "Identify with NickServ before changing the public archive")
 
   defp unidentified_message(:locale),
     do: dgettext("channels", "Identify with NickServ before changing the channel's language")
+
+  defp unidentified_message(:category),
+    do: dgettext("channels", "Identify with NickServ before changing the channel's category")
 
   defp not_founder_message(:archive),
     do: dgettext("channels", "Only the channel founder can change the public archive")
@@ -1979,21 +2015,28 @@ defmodule RetroHexChat.Channels.Server do
   defp not_founder_message(:locale),
     do: dgettext("channels", "Only the founder of a registered channel can set its language")
 
-  # Every screen that draws the channel's name draws its flag: the room is told,
-  # and the directory the channel list reads is rewritten. Saying nothing when
-  # nothing changed keeps a dropped channel that never had one quiet.
-  defp put_locale(%{locale: locale} = state, locale, _nickname), do: state
+  defp not_founder_message(:category),
+    do: dgettext("channels", "Only the founder of a registered channel can set its category")
 
-  defp put_locale(state, locale, nickname) do
-    new_state = refresh_directory(%{state | locale: locale})
-
-    broadcast(
-      state.name,
-      {:channel_locale_changed, %{channel: state.name, nickname: nickname, locale: locale}}
-    )
-
-    new_state
+  # Every screen that draws the channel's name draws its badges — the flag of
+  # its language and the plaque of its category: the room is told, and the
+  # directory the channel list reads is rewritten. Saying nothing when nothing
+  # changed keeps a dropped channel that never had one quiet.
+  defp put_badge(state, key, value, nickname) do
+    if Map.fetch!(state, key) == value do
+      state
+    else
+      new_state = refresh_directory(Map.put(state, key, value))
+      broadcast(state.name, badge_changed(key, state.name, nickname, value))
+      new_state
+    end
   end
+
+  defp badge_changed(:locale, channel, nickname, locale),
+    do: {:channel_locale_changed, %{channel: channel, nickname: nickname, locale: locale}}
+
+  defp badge_changed(:category, channel, nickname, category),
+    do: {:channel_category_changed, %{channel: channel, nickname: nickname, category: category}}
 
   defp toggle_archive(channel_name, true), do: Archive.publish(channel_name)
   defp toggle_archive(channel_name, false), do: Archive.unpublish(channel_name)
@@ -2038,6 +2081,7 @@ defmodule RetroHexChat.Channels.Server do
           state
           | topic: persisted.topic,
             locale: persisted.locale,
+            category: persisted.category,
             modes: modes,
             bans: bans,
             ban_exceptions: ban_exceptions,

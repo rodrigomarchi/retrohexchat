@@ -18,6 +18,7 @@ defmodule RetroHexChatWeb.Components.UI.NickFlag do
   """
   use RetroHexChatWeb.Component
 
+  alias RetroHexChat.Channels.Categories
   alias RetroHexChatWeb.Icons
   alias RetroHexChatWeb.Icons.Registry
   alias RetroHexChatWeb.Icons.Sprite
@@ -45,6 +46,59 @@ defmodule RetroHexChatWeb.Components.UI.NickFlag do
   def channel_flag(assigns) do
     ~H"""
     <.flag locale={@locale} class={@class} testid="channel-flag" {@rest} />
+    """
+  end
+
+  @doc """
+  The plaque of what a channel is about — news, games, sport — set by its
+  founder (`/cs category`), and absent until they do. Its tooltip names the
+  category in the reader's language.
+  """
+  attr :category, :string, default: nil, doc: "one of RetroHexChat.Channels.Categories, or nil"
+  attr :class, :any, default: nil
+  attr :rest, :global
+
+  @spec channel_category(map()) :: Phoenix.LiveView.Rendered.t()
+  def channel_category(assigns) do
+    assigns =
+      assign(
+        assigns,
+        :label,
+        Registry.category(assigns.category) && Categories.label(assigns.category)
+      )
+
+    ~H"""
+    <span
+      :if={@label}
+      class={classes(["rh-nick-flag", @class])}
+      title={@label}
+      role="img"
+      aria-label={@label}
+      data-testid="channel-category"
+      data-category={@category}
+      {@rest}
+    >
+      <Icons.category_icon category={@category} class="rh-nick-flag__icon" />
+    </span>
+    """
+  end
+
+  @doc """
+  Both of a channel's badges, in the order they are read beside its name:
+  what it is about, then the language it is spoken in. Each is drawn only
+  when its founder set it.
+  """
+  attr :category, :string, default: nil
+  attr :locale, :string, default: nil
+  attr :class, :any, default: nil, doc: "classes for each badge"
+
+  @spec channel_badges(map()) :: Phoenix.LiveView.Rendered.t()
+  def channel_badges(assigns) do
+    ~H"""
+    <.channel_category category={@category} class={@class} /><.channel_flag
+      locale={@locale}
+      class={@class}
+    />
     """
   end
 

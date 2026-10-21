@@ -17,6 +17,7 @@ defmodule RetroHexChatWeb.ChatLive.PubsubHandlers.ChannelState do
       load_channel_messages_with_pagination: 2
     ]
 
+  alias RetroHexChat.Channels.Categories
   alias RetroHexChat.Channels.Server
   alias RetroHexChat.Chat.Roster
   alias RetroHexChatWeb.ChatLive.Components.ChannelCentralDialog
@@ -276,6 +277,22 @@ defmodule RetroHexChatWeb.ChatLive.PubsubHandlers.ChannelState do
       |> maybe_refresh_cc(channel)
 
     case locale_changed_message(payload) do
+      nil -> {:halt, socket}
+      msg -> {:halt, system_event(socket, msg)}
+    end
+  end
+
+  # The plaque beside the flag, drawn and told the same way.
+  def handle_info(
+        {:channel_category_changed, %{channel: channel, category: category} = payload},
+        socket
+      ) do
+    socket =
+      socket
+      |> assign(channel_categories: Map.put(socket.assigns.channel_categories, channel, category))
+      |> maybe_refresh_cc(channel)
+
+    case category_changed_message(payload) do
       nil -> {:halt, socket}
       msg -> {:halt, system_event(socket, msg)}
     end
@@ -756,6 +773,19 @@ defmodule RetroHexChatWeb.ChatLive.PubsubHandlers.ChannelState do
     dgettext("chat", "%{nickname} set this channel's language to %{language}.",
       nickname: nickname,
       language: NickFlag.language(locale) || locale
+    )
+  end
+
+  defp category_changed_message(%{nickname: nil}), do: nil
+
+  defp category_changed_message(%{nickname: nickname, category: nil}) do
+    dgettext("chat", "%{nickname} removed this channel's category.", nickname: nickname)
+  end
+
+  defp category_changed_message(%{nickname: nickname, category: category}) do
+    dgettext("chat", "%{nickname} set this channel's category to %{category}.",
+      nickname: nickname,
+      category: Categories.label(category) || category
     )
   end
 end

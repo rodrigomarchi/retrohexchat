@@ -41,6 +41,7 @@ defmodule RetroHexChat.Games.ChannelsTest do
     assert channel.topic =~ "Hex Pong"
     # Talked about in English, whichever language the players use the chat in.
     assert channel.locale == "en"
+    assert channel.category == "games"
     assert Archive.published?("#hex-pong")
     assert gameserv_inside?("#hex-pong")
     assert gameserv_inside?(Channels.feed())

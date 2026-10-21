@@ -32,6 +32,7 @@ shot, logged in as an admin who has `/identify`-ed.
 /cs register
 /cs archive on
 /cs language ja
+/cs category social
 /topic 日本語チャンネル — どうぞお入りください。座って、話しましょう。コーヒーは店のおごりです。
 /mode +tn
 
@@ -39,6 +40,7 @@ shot, logged in as an admin who has `/identify`-ed.
 /cs register
 /cs archive on
 /cs language ja
+/cs category tech
 /topic テクノロジー — GIGAZINE、ITmedia、ASCII をフィードから直接。!Ken sources で一覧が出ます。
 /mode +tn
 
@@ -46,6 +48,7 @@ shot, logged in as an admin who has `/identify`-ed.
 /cs register
 /cs archive on
 /cs language ja
+/cs category tech
 /topic ガジェット — ギズモード・ジャパン、ITmedia NEWS、Mogura VR。製品、レビュー、そして VR の話。
 /mode +tn
 
@@ -53,6 +56,7 @@ shot, logged in as an admin who has `/identify`-ed.
 /cs register
 /cs archive on
 /cs language ja
+/cs category dev
 /topic 開発 — Publickey、Zenn、Qiita。プロジェクトのサポートはプロジェクトへ。ここは雑談です。
 /mode +tn
 
@@ -60,6 +64,7 @@ shot, logged in as an admin who has `/identify`-ed.
 /cs register
 /cs archive on
 /cs language ja
+/cs category games
 /topic ゲーム — AUTOMATON と電ファミニコゲーマー。実際に遊ぶなら Games メニュー、18本の名作がブラウザで動きます。
 /mode +tn
 
@@ -67,6 +72,7 @@ shot, logged in as an admin who has `/identify`-ed.
 /cs register
 /cs archive on
 /cs language ja
+/cs category sports
 /topic サッカー — サッカーキングとフットボールチャンネル。順位表、移籍、いつもの議論。
 /mode +tn
 
@@ -74,6 +80,7 @@ shot, logged in as an admin who has `/identify`-ed.
 /cs register
 /cs archive on
 /cs language ja
+/cs category sports
 /topic 野球 — ベースボールチャンネル。順位、開幕から日本シリーズまで。
 /mode +tn
 
@@ -81,6 +88,7 @@ shot, logged in as an admin who has `/identify`-ed.
 /cs register
 /cs archive on
 /cs language ja
+/cs category science
 /topic 科学 — sorae とナゾロジー。宇宙開発と、まだ答えの出ていない話。
 /mode +tn
 
@@ -88,6 +96,7 @@ shot, logged in as an admin who has `/identify`-ed.
 /cs register
 /cs archive on
 /cs language ja
+/cs category money
 /topic 経済 — 東洋経済、ダイヤモンド、Business Insider Japan。見出しは推奨ではありません。
 /mode +tn
 
@@ -95,6 +104,7 @@ shot, logged in as an admin who has `/identify`-ed.
 /cs register
 /cs archive on
 /cs language ja
+/cs category life
 /topic 暮らし — ライフハッカー・ジャパン。道具、習慣、少しだけ楽をする方法。
 /mode +tn
 
@@ -375,23 +385,26 @@ matters after a paste.
 
 ## Channel reference
 
-| channel | host / wire bot | feeds |
-|---|---|---|
-| `#nihon` | **Hana**, Taro | NHK, Yahoo!ニュース |
-| `#jp-tech` | **Ken** | GIGAZINE, ITmedia, ASCII.jp |
-| `#jp-gadgets` | **Mio** | ギズモード・ジャパン, ITmedia NEWS, Mogura VR |
-| `#jp-dev` | **Sora** | Publickey, Zenn, Qiita |
-| `#jp-games` | **Hiro** | AUTOMATON, 電ファミニコゲーマー |
-| `#jp-soccer` | **Kenji** | サッカーキング, フットボールチャンネル |
-| `#jp-yakyu` | **Daichi** | ベースボールチャンネル |
-| `#jp-science` | **Nozomi** | sorae, ナゾロジー |
-| `#jp-money` | **Akira** | 東洋経済, ダイヤモンド, Business Insider Japan |
-| `#jp-life` | **Yui** | ライフハッカー・ジャパン |
+| channel | category | host / wire bot | feeds |
+|---|---|---|---|
+| `#nihon` | `social` | **Hana**, Taro | NHK, Yahoo!ニュース |
+| `#jp-tech` | `tech` | **Ken** | GIGAZINE, ITmedia, ASCII.jp |
+| `#jp-gadgets` | `tech` | **Mio** | ギズモード・ジャパン, ITmedia NEWS, Mogura VR |
+| `#jp-dev` | `dev` | **Sora** | Publickey, Zenn, Qiita |
+| `#jp-games` | `games` | **Hiro** | AUTOMATON, 電ファミニコゲーマー |
+| `#jp-soccer` | `sports` | **Kenji** | サッカーキング, フットボールチャンネル |
+| `#jp-yakyu` | `sports` | **Daichi** | ベースボールチャンネル |
+| `#jp-science` | `science` | **Nozomi** | sorae, ナゾロジー |
+| `#jp-money` | `money` | **Akira** | 東洋経済, ダイヤモンド, Business Insider Japan |
+| `#jp-life` | `life` | **Yui** | ライフハッカー・ジャパン |
 
 **Kuma** stands in all ten and greets in none of them. All channels are `+tn`,
 publish their archive and are marked Japanese (`/cs language ja`).
 Every bot is marked Japanese too: `/bot set <Bot> language ja` follows its
 `/bot create` and draws the same flag beside its nickname.
+Every room also says what it is about: the `category` column is the
+`/cs category` that follows its `/cs language`, and draws a subject plaque beside
+the flag.
 
 `#anime` is deliberately absent: the English script already runs it with Anime
 News Network, LiveChart, Anime Corner and MyAnimeList, and a second anime room in

@@ -18,6 +18,7 @@ defmodule RetroHexChat.Commands.Handlers.ServerProvisionTest do
   @moduletag :unit
 
   alias RetroHexChat.Bots.Capabilities.Trivia.QuestionBank
+  alias RetroHexChat.Channels.Categories
   alias RetroHexChat.Chat.{Formatter, IrcEscapes}
   alias RetroHexChat.Commands.Handlers.Bot
   alias RetroHexChat.Commands.Handlers.Cs
@@ -277,6 +278,61 @@ defmodule RetroHexChat.Commands.Handlers.ServerProvisionTest do
                "#{length(misplaced)} room(s) do not have it there"
     end
   end
+
+  # The category draws the subject plaque beside the room's flag. The set is
+  # closed, so the code has to be one of them as written, and each room names
+  # exactly one, right after its language.
+  test "every registered room says what it is about, once", %{scripts: scripts} do
+    categories = Categories.codes()
+
+    for path <- scripts do
+      {_body, _lines, parsed} = read(path)
+      file = Path.basename(path)
+
+      {_current, registered, about} =
+        Enum.reduce(parsed, {nil, [], %{}}, fn
+          ["join", chan | _], {_cur, reg, about} ->
+            {String.downcase(chan), reg, about}
+
+          ["cs", "register" | _], {cur, reg, about} ->
+            {cur, [cur | reg], about}
+
+          ["cs", "category" | codes], {cur, reg, about} ->
+            {cur, reg, Map.update(about, cur, [codes], &[codes | &1])}
+
+          _line, acc ->
+            acc
+        end)
+
+      wrong =
+        for chan <- Enum.uniq(registered),
+            codes = Map.get(about, chan, []),
+            not one_category?(codes, categories),
+            do: {chan, Enum.reverse(codes)}
+
+      assert wrong == [],
+             "#{file}: every registered room needs exactly one /cs category <code>, " <>
+               "one of #{inspect(categories)}: " <> inspect(wrong)
+
+      unregistered = Map.keys(about) -- registered
+
+      assert unregistered == [],
+             "#{file} sets a category on rooms it never registers: #{inspect(unregistered)}"
+
+      misplaced =
+        parsed
+        |> Enum.chunk_every(2, 1, [[]])
+        |> Enum.filter(&match?([["cs", "language" | _], _next], &1))
+        |> Enum.reject(&match?([_language, ["cs", "category", _code]], &1))
+
+      assert misplaced == [],
+             "#{file}: /cs category belongs right after each /cs language, " <>
+               "#{length(misplaced)} room(s) do not have it there"
+    end
+  end
+
+  defp one_category?([[code]], categories), do: code in categories
+  defp one_category?(_codes, _categories), do: false
 
   # The language draws the flag beside the bot's nickname. Every bot a script
   # creates speaks that script's language, so it carries the same code as the

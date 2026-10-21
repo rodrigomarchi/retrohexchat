@@ -22,6 +22,7 @@ defmodule RetroHexChat.Channels.Queries do
         %{
           topic: channel.topic || "",
           locale: channel.locale,
+          category: channel.category,
           modes: channel.modes || "",
           mode_key: channel.mode_key,
           mode_limit: channel.mode_limit,
