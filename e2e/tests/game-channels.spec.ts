@@ -1,6 +1,7 @@
 /**
  * @section N - P2P, File, Call, Game
  * @flow N64 [done] A game's channel names its game under the topic, and Find a partner puts one seat's card in the channel; pressing it again points at the same card
+ * @flow N71 [done] Whoever enters a game's channel is told by Scoreboard what the game is and where its weekly challenge stands, and !ranking is answered in the room from the game's own data
  * @flow N65 [done] A match between two people is written down once: Scoreboard, the room's announcing bot, says it in the game's channel with a card, and the same card lands in the two players' private conversation
  * @flow N70 [done] A result card's game name opens the game's home, whose You tab shows the player's own rating and latest matches
  * @flow N66 [done] A visitor reads a game's channel and its public page — ranking, latest matches, the channel's last lines — and pressing Find a partner opens the sign-in window
@@ -53,6 +54,12 @@ test.describe("Game channels", () => {
       });
 
       await openGameChannel(ana);
+
+      // Scoreboard tells whoever arrives what this game is, from the game's
+      // own data rather than a line pasted into a script (N71).
+      await expect(
+        ana.chat.messageRowByText("This week's challenge is").first(),
+      ).toBeVisible();
       await shot(ana.page, "game-channel-open");
       const bar = ana.page.getByTestId("game-channel-bar");
       await expect(bar).toContainText("Hex Pong");
@@ -72,6 +79,17 @@ test.describe("Game channels", () => {
         ana.page.getByText(`${ana.nick} is looking for a partner in Hex Pong`),
       ).toHaveCount(1);
       await shot(ana.page, "game-channel-seat-pointed-at");
+
+      // The room's questions are answered in the room (N71).
+      // Whatever earlier runs left in the ledger: an empty ranking or a list.
+      await ana.chat.sendMessage("!ranking");
+      await expect(
+        ana.page
+          .locator(".chat-message__text")
+          .filter({ hasText: /Hex Pong (has no ranking yet|— 1\.)/ })
+          .last(),
+      ).toBeVisible();
+      await shot(ana.page, "game-channel-ranking-answer");
     } finally {
       await closeUsers([ana]);
     }

@@ -211,6 +211,16 @@ defmodule RetroHexChat.Games.Queries do
     |> Repo.all()
   end
 
+  @doc "The latest public matches of every game, newest first."
+  @spec recent_any(pos_integer()) :: [GameResult.t()]
+  def recent_any(limit) do
+    GameResult
+    |> where([r], r.public)
+    |> order_by([r], desc: r.finished_at, desc: r.id)
+    |> limit(^limit)
+    |> Repo.all()
+  end
+
   @doc "How many matches of a game and its modes finished since `since`."
   @spec count_since(String.t(), DateTime.t()) :: non_neg_integer()
   def count_since(base_id, since) do

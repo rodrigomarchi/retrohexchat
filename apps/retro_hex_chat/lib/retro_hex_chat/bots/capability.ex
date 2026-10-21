@@ -89,6 +89,18 @@ defmodule RetroHexChat.Bots.Capability do
             ) :: map()
 
   @doc """
+  Called by Server when the bot comes into `channel` after it started, to set
+  up what `init_timers/4` would have for a channel it had from the start.
+  """
+  @callback init_channel_timers(
+              server_state :: map(),
+              cap_name :: atom(),
+              config :: map(),
+              cap_state :: map(),
+              channel :: String.t()
+            ) :: map()
+
+  @doc """
   Called after a timer fires to determine if it should be rescheduled.
   Returns `{:reschedule, delay_ms, new_payload}` or `:no_reschedule`.
   """
@@ -115,6 +127,7 @@ defmodule RetroHexChat.Bots.Capability do
     handle_timer: 3,
     passive?: 0,
     init_timers: 4,
+    init_channel_timers: 5,
     reschedule_delay: 2,
     durable_keys: 0
   ]

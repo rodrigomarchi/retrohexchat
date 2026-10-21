@@ -33,11 +33,11 @@ defmodule RetroHexChat.Bots.Server do
     :dice,
     :rss,
     :scheduler,
-    :game,
     :llm,
     :script,
     :help,
     :greeter,
+    :game,
     :moderation,
     :mention
   ]
@@ -163,7 +163,8 @@ defmodule RetroHexChat.Bots.Server do
         Map.put(state.channels, channel_name, %{enabled: true, capability_overrides: %{}})
 
       join_channel_process(channel_name, state.nickname)
-      {:reply, :ok, %{state | channels: new_channels}}
+      state = init_channel_timers(%{state | channels: new_channels}, channel_name)
+      {:reply, :ok, state}
     end
   end
 
@@ -363,11 +364,10 @@ defmodule RetroHexChat.Bots.Server do
          channel_enabled?(state, channel) do
       context = build_context(state, channel)
 
-      {result, state} =
-        dispatch_active_capabilities(:event, event, payload, context, state)
+      {results, state} = dispatch_event(event, payload, context, state)
 
       maybe_log_event(state.bot_id, event, channel, nickname)
-      respond_without_cooldown(state, channel, result)
+      Enum.reduce(results, state, &respond_without_cooldown(&2, channel, &1))
     else
       state
     end
@@ -429,6 +429,32 @@ defmodule RetroHexChat.Bots.Server do
         do: {:cont, {:ignore, acc}},
         else: dispatch_event_to_cap(name, cap_mod, config, event, payload, context, acc)
     end)
+  end
+
+  # An arrival is answered by every capability that has something to say about
+  # it, in priority order — the greeter's welcome, then what the game rooms
+  # tell about their game. Any other event stops at the first answer.
+  @arrivals [:user_joined, :visitor_arrived]
+
+  @spec dispatch_event(atom(), map(), map(), state()) ::
+          {[RetroHexChat.Bots.Capability.capability_result()], state()}
+  defp dispatch_event(event, payload, context, state) when event in @arrivals do
+    {results, state} =
+      state.capabilities
+      |> Enum.reject(fn {_name, cap_mod, _config} -> capability_passive?(cap_mod) end)
+      |> Enum.reduce({[], state}, fn {name, cap_mod, config}, {results, acc} ->
+        {_halt_or_cont, {result, acc}} =
+          dispatch_event_to_cap(name, cap_mod, config, event, payload, context, acc)
+
+        {[result | results], acc}
+      end)
+
+    {Enum.reverse(results), state}
+  end
+
+  defp dispatch_event(event, payload, context, state) do
+    {result, state} = dispatch_active_capabilities(:event, event, payload, context, state)
+    {[result], state}
   end
 
   defp dispatch_message_to_cap(name, cap_mod, config, content, author, context, acc) do
@@ -850,6 +876,17 @@ defmodule RetroHexChat.Bots.Server do
         end
 
       {name, cap_state}
+    end)
+  end
+
+  @spec init_channel_timers(state(), String.t()) :: state()
+  defp init_channel_timers(state, channel) do
+    Enum.reduce(state.capabilities, state, fn {name, cap_mod, config}, acc ->
+      cap_state = Map.get(acc.capability_states, name, %{})
+
+      if function_exported?(cap_mod, :init_channel_timers, 5),
+        do: cap_mod.init_channel_timers(acc, name, config, cap_state, channel),
+        else: acc
     end)
   end
 

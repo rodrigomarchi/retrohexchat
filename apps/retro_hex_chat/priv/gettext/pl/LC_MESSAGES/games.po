@@ -453,27 +453,27 @@ msgstr "Zachodni pojedynek z odbijającymi się kulami - ogień pod kątem, aby 
 msgid "Western duel — two gunslingers and a cactus. Dodge bullets you can see coming. First to 10. Best of 3 rounds."
 msgstr "Zachodni pojedynek - dwóch strzelców i kaktus. Dodge kule można zobaczyć nadchodzi. Najpierw 10. Najlepsze trzy rundy."
 
-#: lib/retro_hex_chat/games/announcer.ex:186
+#: lib/retro_hex_chat/games/announcer.ex:193
 #, elixir-autogen, elixir-format
 msgid "%{p1} and %{p2} cleared %{game} with %{p1_score} points"
 msgstr "%{p1} i %{p2} oczyszczone %{game} z punktów %{p1_score}"
 
-#: lib/retro_hex_chat/games/announcer.ex:172
+#: lib/retro_hex_chat/games/announcer.ex:179
 #, elixir-autogen, elixir-format
 msgid "%{p1} beat %{p2} %{p1_score} × %{p2_score} in %{game}"
 msgstr "%{p1} pokonać %{p2} %{p1_score} × %{p2_score} w %{game}"
 
-#: lib/retro_hex_chat/games/announcer.ex:169
+#: lib/retro_hex_chat/games/announcer.ex:176
 #, elixir-autogen, elixir-format
 msgid "%{p1} set a personal best of %{p1_score} in %{game}"
 msgstr "%{p1} ustawić osobisty najlepszy %{p1_score} w %{game}"
 
-#: lib/retro_hex_chat/games/announcer.ex:161
+#: lib/retro_hex_chat/games/announcer.ex:168
 #, elixir-autogen, elixir-format
 msgid "%{p1} vs %{p2} in %{game} ended early, %{p1_score} × %{p2_score}"
 msgstr "%{p1} vs %{p2} w %{game} zakończyło się wcześnie, %{p1_score} × %{p2_score}"
 
-#: lib/retro_hex_chat/games/announcer.ex:175
+#: lib/retro_hex_chat/games/announcer.ex:182
 #, elixir-autogen, elixir-format
 msgid "%{p2} beat %{p1} %{p2_score} × %{p1_score} in %{game}"
 msgstr "%{p2} pokonać %{p1} %{p2_score} × %{p1_score} w %{game}"
@@ -499,27 +499,27 @@ msgstr[0] "Wczoraj w %{game}: %{count} mecz."
 msgstr[1] "Wczoraj w %{game}: %{count} mecze."
 msgstr[2] "Wczoraj w %{game}: %{count} meczy."
 
-#: lib/retro_hex_chat/games/announcer.ex:205
+#: lib/retro_hex_chat/games/announcer.ex:212
 #, elixir-autogen, elixir-format
 msgid "the computer"
 msgstr "komputer"
 
-#: lib/retro_hex_chat/games/announcer.ex:203
+#: lib/retro_hex_chat/games/announcer.ex:210
 #, elixir-autogen, elixir-format
 msgid "the computer (easy)"
 msgstr "komputer (łatwy)"
 
-#: lib/retro_hex_chat/games/announcer.ex:204
+#: lib/retro_hex_chat/games/announcer.ex:211
 #, elixir-autogen, elixir-format
 msgid "the computer (hard)"
 msgstr "komputer (twardy)"
 
-#: lib/retro_hex_chat/games/announcer.ex:190
+#: lib/retro_hex_chat/games/announcer.ex:197
 #, elixir-autogen, elixir-format
 msgid "%{p1} and %{p2} finished %{game} with %{p1_score} and %{p2_score} points"
 msgstr "%{p1} i %{p2} ukończone %{game} z punktami %{p1_score} i %{p2_score}"
 
-#: lib/retro_hex_chat/games/announcer.ex:179
+#: lib/retro_hex_chat/games/announcer.ex:186
 #, elixir-autogen, elixir-format
 msgid "It is a draw between %{p1} and %{p2}, %{p1_score} × %{p2_score}, in %{game}"
 msgstr "Jest to remis między %{p1} i %{p2}, %{p1_score} × %{p2_score}, w %{game}"
@@ -529,18 +529,86 @@ msgstr "Jest to remis między %{p1} i %{p2}, %{p1_score} × %{p2_score}, w %{gam
 msgid "%{nickname} won last week's challenge in %{game}."
 msgstr "%{nickname} wygrał ubiegłotygodniowe wyzwanie w %{game}."
 
-#: lib/retro_hex_chat/games/challenges.ex:106
+#: lib/retro_hex_chat/games/challenges.ex:108
 #, elixir-autogen, elixir-format
 msgid "This week's challenge is %{game}. Get the best score."
 msgstr "Tegotygodniowe wyzwanie to %{game}. Zdobądź najlepszy wynik."
 
-#: lib/retro_hex_chat/games/challenges.ex:101
+#: lib/retro_hex_chat/games/challenges.ex:103
 #, elixir-autogen, elixir-format
 msgid "This week's challenge is %{game}. Win the most matches against other players."
 msgstr "Tegotygodniowe wyzwanie to %{game}. Wygraj najwięcej meczów z innymi graczami."
 
-#: lib/retro_hex_chat/chat/help_topics/features.ex:2136
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2138
 #, elixir-autogen, elixir-format
 msgctxt "game"
 msgid "Play"
 msgstr "Graj"
+
+#: lib/retro_hex_chat/games/room_facts.ex:210
+#, elixir-autogen, elixir-format
+msgid "%{nickname} (%{count} win)"
+msgid_plural "%{nickname} (%{count} wins)"
+msgstr[0] "%{nickname} (%{count} wygrana)"
+msgstr[1] "%{nickname} (%{count} wygrane)"
+msgstr[2] "%{nickname} (%{count} wygranych)"
+
+#: lib/retro_hex_chat/games/room_facts.ex:136
+#, elixir-autogen, elixir-format
+msgid "Ask %{commands} for more."
+msgstr "Poproś %{commands} o więcej."
+
+#: lib/retro_hex_chat/games/room_facts.ex:158
+#, elixir-autogen, elixir-format
+msgid "Latest: %{line}"
+msgstr "Ostatnia: %{line}"
+
+#: lib/retro_hex_chat/games/room_facts.ex:157
+#, elixir-autogen, elixir-format
+msgid "No public match has been played yet."
+msgstr "Nie rozegrano jeszcze meczu publicznego."
+
+#: lib/retro_hex_chat/games/room_facts.ex:101
+#, elixir-autogen, elixir-format
+msgid "No public match of %{game} yet."
+msgstr "Nie ma jeszcze publicznego meczu %{game}."
+
+#: lib/retro_hex_chat/games/room_facts.ex:169
+#, elixir-autogen, elixir-format
+msgid "Nobody leads it yet."
+msgstr "Nikt go jeszcze nie prowadzi."
+
+#: lib/retro_hex_chat/games/room_facts.ex:129
+#, elixir-autogen, elixir-format
+msgid "Press Play under the topic to start, or Find a partner to play with someone here."
+msgstr "Naciśnij Zagraj pod tematem, aby rozpocząć, lub Znajdź partnera do gry z kimś tutaj."
+
+#: lib/retro_hex_chat/games/room_facts.ex:189
+#, elixir-autogen, elixir-format
+msgid "%{game} has no ranking yet."
+msgstr "%{game} nie ma jeszcze rankingu."
+
+#: lib/retro_hex_chat/games/room_facts.ex:143
+#, elixir-autogen, elixir-format
+msgid "Every notable Retro Games match is announced here when it ends."
+msgstr "Każdy wybitny mecz Retro Games jest ogłoszony tutaj, kiedy to się skończy."
+
+#: lib/retro_hex_chat/games/room_facts.ex:205
+#, elixir-autogen, elixir-format
+msgid "Finish a ranked match to enter it."
+msgstr "Finish a ranked match to enter it."
+
+#: lib/retro_hex_chat/games/room_facts.ex:152
+#, elixir-autogen, elixir-format
+msgid "Each game also has its own room."
+msgstr "Każda gra ma również swój własny pokój."
+
+#: lib/retro_hex_chat/games/room_facts.ex:172
+#, elixir-autogen, elixir-format
+msgid "%{player} leads it."
+msgstr "%{player} prowadzi."
+
+#: lib/retro_hex_chat/games/room_facts.ex:204
+#, elixir-autogen, elixir-format
+msgid "Win a match against another player to enter it."
+msgstr "Wygraj mecz z innym graczem, aby go wprowadzić."

@@ -907,12 +907,17 @@ included, is joined explicitly.
 # every match worth telling, the daily digest and the weekly challenge are said
 # under its name in the rooms it joins. A room it leaves hears nothing about
 # its games; game_announce off silences it everywhere.
+# The capability also talks about each room's own game, from the game's data
+# rather than from this script: after the greeting below it tells a newcomer
+# what the game is and where its weekly challenge stands, it answers !ranking,
+# !challenge, !recent and !howto, and a room nothing was said in yet gets one
+# line saying what it is for. That is why none of those are addcmds here.
 /bot create Scoreboard Retro Games Announcer
 /bot set Scoreboard language en
 /bot set Scoreboard prefix !
 /bot set Scoreboard cooldown 1000
 /bot set Scoreboard game_announce on
-/bot set Scoreboard greeting \c09\b[Scoreboard]\o Welcome to {channel}, {nickname}. \c10Find a partner\o under the topic (or \c10/lfg\o) offers a seat; \c10/challenge nick\o invites one person. \c10!play\o and \c10!ranking\o say more.
+/bot set Scoreboard greeting \c09\b[Scoreboard]\o Welcome to {channel}, {nickname}. \c10Find a partner\o under the topic (or \c10/lfg\o) offers a seat; \c10/challenge nick\o invites one person.
 /bot set Scoreboard greeting_delivery private_notice
 /bot set Scoreboard greeter_repeat_window 3600
 /bot set Scoreboard public_greeting \c09\b[Scoreboard]\o \b{nickname}\o is here. Anyone up for a match?
@@ -920,10 +925,9 @@ included, is joined explicitly.
 /bot set Scoreboard onboarding_2 \c14\b[{botname}]\o \c10/part\o leaves a room · \c10/help\o lists every command.
 /bot set Scoreboard visitor_greeting \c09\b[Scoreboard]\o Welcome, \b{nickname}\o! You're watching {channel} live: every match worth telling is said here. \c10Sign up\o to play and to rank.
 /bot set Scoreboard farewell none
-/bot set Scoreboard mention_response \c09\b[Scoreboard]\o I say the matches played here, {nickname}. \c10!play\o to find someone, \c10!ranking\o for who leads.
+/bot set Scoreboard mention_response \c09\b[Scoreboard]\o I keep the score here, {nickname}. \c10!ranking\o, \c10!challenge\o, \c10!recent\o and \c10!howto\o — or \c10!play\o to find someone.
 
 /bot addcmd Scoreboard play \c09\b[Scoreboard]\o \c10Find a partner\o under the topic (or \c10/lfg\o) puts a card with one open seat in the room: whoever presses Join first plays you. \c10/challenge nick\o invites one person instead.
-/bot addcmd Scoreboard ranking \c09\b[Scoreboard]\o Every match a registered, identified player finishes counts. \c10The game's page\o has its ranking, the latest matches and \c10the weekly challenge\o.
 
 /bot join Scoreboard #hex-pong
 /bot join Scoreboard #light-trails

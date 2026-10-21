@@ -4083,7 +4083,7 @@ msgstr "Playing a Game with Somebody"
 msgid "Ready, then Start"
 msgstr "Ready, then Start"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_game_channels.html.heex:67
+#: lib/retro_hex_chat_web/controllers/help_content/feature_game_channels.html.heex:83
 #: lib/retro_hex_chat_web/controllers/help_content/feature_game_match_full.html.heex:25
 #: lib/retro_hex_chat_web/controllers/help_content/feature_game_match_link.html.heex:33
 #: lib/retro_hex_chat_web/controllers/help_content/feature_game_scores.html.heex:48
@@ -4233,12 +4233,12 @@ msgstr "Game Channels"
 msgid "How a game ranks"
 msgstr "How a game ranks"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_game_channels.html.heex:69
+#: lib/retro_hex_chat_web/controllers/help_content/feature_game_channels.html.heex:85
 #, elixir-autogen, elixir-format
 msgid "Scores and Rankings"
 msgstr "Scores and Rankings"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_game_channels.html.heex:41
+#: lib/retro_hex_chat_web/controllers/help_content/feature_game_channels.html.heex:57
 #, elixir-autogen, elixir-format
 msgid "The strip under the topic"
 msgstr "The strip under the topic"
@@ -4248,7 +4248,7 @@ msgstr "The strip under the topic"
 msgid "What does not count"
 msgstr "What does not count"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_game_channels.html.heex:58
+#: lib/retro_hex_chat_web/controllers/help_content/feature_game_channels.html.heex:74
 #, elixir-autogen, elixir-format
 msgid "Who can"
 msgstr "Who can"
@@ -4258,7 +4258,7 @@ msgstr "Who can"
 msgid "A versus game ranks wins. Hex Pong, Hex Tennis and Hex Hockey are versus games, like most of the others. A score game ranks the best score you took home, and tells you when you beat your own best. Hex Raid, Hex Invaders and Hex Enduro are score games. A co-op game ranks the score the two of you made together. Matches against the computer are ranked apart, with one ranking per difficulty."
 msgstr "A versus game ranks wins. Hex Pong, Hex Tennis and Hex Hockey are versus games, like most of the others. A score game ranks the best score you took home, and tells you when you beat your own best. Hex Raid, Hex Invaders and Hex Enduro are score games. A co-op game ranks the score the two of you made together. Matches against the computer are ranked apart, with one ranking per difficulty."
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_game_channels.html.heex:60
+#: lib/retro_hex_chat_web/controllers/help_content/feature_game_channels.html.heex:76
 #, elixir-autogen, elixir-format
 msgid "Anybody can read a game channel and its page without an account. Playing, offering a seat, challenging somebody and talking need a registered nickname that you have identified. A visitor who presses any of them sees the sign-in window."
 msgstr "Anybody can read a game channel and its page without an account. Playing, offering a seat, challenging somebody and talking need a registered nickname that you have identified. A visitor who presses any of them sees the sign-in window."
@@ -4328,7 +4328,7 @@ msgstr "Anybody can watch a match whose seat was offered to everybody."
 msgid "Nobody can watch a private match."
 msgstr "Nobody can watch a private match."
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_game_channels.html.heex:72
+#: lib/retro_hex_chat_web/controllers/help_content/feature_game_channels.html.heex:88
 #: lib/retro_hex_chat_web/controllers/help_content/feature_game_watch.html.heex:5
 #, elixir-autogen, elixir-format
 msgid "Watching a Match"
@@ -4454,7 +4454,7 @@ msgstr "Every game has an address of its own, such as %{address}. Send someone t
 msgid "Find a partner takes you to the channel of the game and offers a seat there, like the command %{command}."
 msgstr "Find a partner takes you to the channel of the game and offers a seat there, like the command %{command}."
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_game_channels.html.heex:47
+#: lib/retro_hex_chat_web/controllers/help_content/feature_game_channels.html.heex:63
 #, elixir-autogen, elixir-format
 msgid "Play opens the game in a new tab. Find a partner puts a card with one open seat in the channel, like the command %{command}. The first person who joins plays with you."
 msgstr "Play opens the game in a new tab. Find a partner puts a card with one open seat in the channel, like the command %{command}. The first person who joins plays with you."
@@ -4484,7 +4484,7 @@ msgstr "The last tab is the channel of the game, with its latest lines."
 msgid "To play with somebody you know, type their nickname and click Invite. It works like the command %{command}."
 msgstr "To play with somebody you know, type their nickname and click Invite. It works like the command %{command}."
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_game_channels.html.heex:52
+#: lib/retro_hex_chat_web/controllers/help_content/feature_game_channels.html.heex:68
 #, elixir-autogen, elixir-format
 msgid "When somebody is playing the game in the open, a last link opens the match to watch."
 msgstr "When somebody is playing the game in the open, a last link opens the match to watch."
@@ -4509,7 +4509,7 @@ msgstr "The You tab shows your rating and your latest results."
 msgid "The icon of a game opens the page of the game, on top of the chat."
 msgstr "The icon of a game opens the page of the game, on top of the chat."
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_game_channels.html.heex:43
+#: lib/retro_hex_chat_web/controllers/help_content/feature_game_channels.html.heex:59
 #, elixir-autogen, elixir-format
 msgid "The name of the game opens the page of the game, on top of the chat."
 msgstr "The name of the game opens the page of the game, on top of the chat."
@@ -4538,3 +4538,33 @@ msgstr "The bot that announces"
 #, elixir-autogen, elixir-format
 msgid "An admin turns the announcements of a bot on with %{on}, and off with %{off}. A channel with no such bot announces nothing. The game channels are ordinary channels: their founder changes the topic, the modes and the archive."
 msgstr "An admin turns the announcements of a bot on with %{on}, and off with %{off}. A channel with no such bot announces nothing. The game channels are ordinary channels: their founder changes the topic, the modes and the archive."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_game_channels.html.heex:41
+#, elixir-autogen, elixir-format
+msgid "Asking the bot"
+msgstr "Asking the bot"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_game_channels.html.heex:43
+#, elixir-autogen, elixir-format
+msgid "When you enter a game channel, the bot tells you privately what the game is and who leads the weekly challenge. In the channel, type one of these and it answers for everyone:"
+msgstr "When you enter a game channel, the bot tells you privately what the game is and who leads the weekly challenge. In the channel, type one of these and it answers for everyone:"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_game_channels.html.heex:54
+#, elixir-autogen, elixir-format
+msgid "— the controls, and how to start"
+msgstr "— the controls, and how to start"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_game_channels.html.heex:53
+#, elixir-autogen, elixir-format
+msgid "— the latest public matches"
+msgstr "— the latest public matches"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_game_channels.html.heex:49
+#, elixir-autogen, elixir-format
+msgid "— the ranking of the game"
+msgstr "— the ranking of the game"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_game_channels.html.heex:51
+#, elixir-autogen, elixir-format
+msgid "— this week's challenge and who leads it"
+msgstr "— this week's challenge and who leads it"

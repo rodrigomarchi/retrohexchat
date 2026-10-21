@@ -93,7 +93,9 @@ defmodule RetroHexChat.Games.Challenges do
     end
   end
 
-  defp opening(challenge) do
+  @doc "The sentence that names `challenge` and what wins it."
+  @spec opening(t()) :: String.t()
+  def opening(challenge) do
     game = game_name(challenge.game_id)
 
     if Catalog.ranking(challenge.game_id) == :versus,

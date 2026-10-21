@@ -729,6 +729,107 @@ defmodule RetroHexChat.Bots.ServerTest do
     end
   end
 
+  describe "a game room's bot" do
+    @game_bot %{
+      id: 993,
+      name: "Scoreboard",
+      nickname: "Scoreboard",
+      command_prefix: "!",
+      created_by: "admin",
+      enabled: true,
+      cooldown_ms: 0,
+      capabilities: %{
+        "greeter" => %{
+          "greeting" => "Welcome to {channel}, {nickname}.",
+          "greeting_delivery" => "private_notice",
+          "repeat_window_sec" => 3600,
+          "enabled" => true
+        },
+        "game" => %{"enabled" => true}
+      },
+      channel_configs: [
+        %{channel_name: "#hex-pong", enabled: true, capability_overrides: %{}}
+      ],
+      custom_commands: []
+    }
+
+    setup do
+      {:ok, pid} = RetroHexChat.Channels.Supervisor.start_child("#hex-pong")
+      Phoenix.PubSub.subscribe(RetroHexChat.PubSub, "channel:#hex-pong")
+      Phoenix.PubSub.subscribe(RetroHexChat.PubSub, RetroHexChat.Topics.inbox("newcomer"))
+
+      on_exit(fn ->
+        Supervisor.stop_bot("Scoreboard")
+        if Process.alive?(pid), do: RetroHexChat.Channels.Supervisor.stop_child(pid)
+      end)
+
+      :ok
+    end
+
+    test "says what the room is for when nothing has been said in it yet" do
+      {:ok, _pid} = Supervisor.start_bot(@game_bot)
+
+      assert_receive %{event: "new_message", payload: %{author: "Scoreboard", content: intro}},
+                     2000
+
+      assert intro =~ "Hex Pong: "
+      assert intro =~ "!ranking"
+    end
+
+    test "a room with history gets no introduction" do
+      {:ok, _} =
+        RetroHexChat.Channels.Server.join("#hex-pong", "regular")
+
+      {:ok, _} = RetroHexChat.Channels.Server.send_message("#hex-pong", "regular", "hi")
+      {:ok, _pid} = Supervisor.start_bot(@game_bot)
+
+      refute_receive %{event: "new_message", payload: %{author: "Scoreboard"}}, 300
+    end
+
+    test "a newcomer is welcomed, then told about the game, once an hour" do
+      {:ok, _pid} = Supervisor.start_bot(@game_bot)
+      assert_receive %{event: "new_message", payload: %{author: "Scoreboard"}}, 2000
+
+      {:ok, _} = RetroHexChat.Channels.Server.join("#hex-pong", "newcomer")
+
+      # In this order: the greeter's welcome, then what the game is, then its week.
+      assert [welcome, about, week] = notices_within(1000)
+      assert welcome == "Welcome to #hex-pong, newcomer."
+      assert about =~ "Hex Pong: "
+      assert week =~ "This week's challenge is"
+
+      _ = RetroHexChat.Channels.Server.part("#hex-pong", "newcomer")
+      {:ok, _} = RetroHexChat.Channels.Server.join("#hex-pong", "newcomer")
+
+      # The greeter keeps its own window (the ledger, stubbed here); the game's
+      # lines are not told twice within the hour.
+      assert_receive %{event: "new_notice", payload: %{author: "Scoreboard"}}, 2000
+      refute Enum.any?(notices_within(300), &(&1 =~ "Hex Pong: "))
+    end
+
+    defp notices_within(ms) do
+      receive do
+        %{event: "new_notice", payload: %{author: "Scoreboard", content: content}} ->
+          [content | notices_within(ms)]
+      after
+        ms -> []
+      end
+    end
+
+    test "answers the game's questions in the room" do
+      {:ok, _pid} = Supervisor.start_bot(@game_bot)
+      assert_receive %{event: "new_message", payload: %{author: "Scoreboard"}}, 2000
+
+      {:ok, _} = RetroHexChat.Channels.Server.join("#hex-pong", "asker")
+      {:ok, _} = RetroHexChat.Channels.Server.send_message("#hex-pong", "asker", "!ranking")
+
+      assert_receive %{event: "new_message", payload: %{author: "Scoreboard", content: answer}},
+                     2000
+
+      assert answer =~ "Hex Pong has no ranking yet."
+    end
+  end
+
   describe "a command addressed to the bot beats its mention response" do
     @command_bot %{
       id: 992,

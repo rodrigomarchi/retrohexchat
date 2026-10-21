@@ -136,7 +136,7 @@ make e2e.catalog.check    # verify it is current (also runs in make ci)
 
 - **257 spec files** under `e2e/tests/`.
 - **638 Playwright `test()` cases**.
-- **584 documented flows**, 583 done, 1 not done.
+- **585 documented flows**, 584 done, 1 not done.
 - **Every spec documents its own flows.**
 
 ## Flow index
@@ -476,6 +476,7 @@ Grouped by section. Every row comes from an `@flow` line in the spec itself.
 | N68 | The players see how many are watching and the watch link to hand on; the match is offered to watch under its game channel's topic and on the game's page | `tests/game-open-lobby.spec.ts` | done |
 | N69 | A full match's link, a playing nickname's menu and the game's page each lead to watching it; a member's Play on the game's page opens beside the desktop | `tests/game-open-lobby.spec.ts` | done |
 | N70 | A result card's game name opens the game's home, whose You tab shows the player's own rating and latest matches | `tests/game-channels.spec.ts` | done |
+| N71 | Whoever enters a game's channel is told by Scoreboard what the game is and where its weekly challenge stands, and !ranking is answered in the room from the game's own data | `tests/game-channels.spec.ts` | done |
 
 ### O - Chat UI Micro-Journeys
 

@@ -238,7 +238,7 @@ msgstr "Extranjeros azules"
 msgid "Bot destroyed"
 msgstr "Bot destroyed"
 
-#: lib/retro_hex_chat/bots/server.ex:964
+#: lib/retro_hex_chat/bots/server.ex:1000
 #, elixir-autogen, elixir-format
 msgid "Bot leaving"
 msgstr "Bot saliendo"
@@ -804,7 +804,7 @@ msgstr "No Sydney"
 msgid "Not Toronto"
 msgstr "No Toronto"
 
-#: lib/retro_hex_chat/bots/server.ex:177
+#: lib/retro_hex_chat/bots/server.ex:178
 #, elixir-autogen, elixir-format
 msgid "Not in channel"
 msgstr "No en canal"
@@ -1803,7 +1803,27 @@ msgstr "Leer artículo completo"
 msgid "%{field} must be public, channel_notice, private_notice, or silent"
 msgstr "%{field} debe ser public, channel_notice, private_notice o silent"
 
-#: lib/retro_hex_chat/bots/capabilities/game.ex:23
+#: lib/retro_hex_chat/bots/capabilities/game.ex:37
 #, elixir-autogen, elixir-format
 msgid "Announces Retro Games matches, rankings and the weekly challenge"
 msgstr "anuncia partidos, rankings y el desafío semanal"
+
+#: lib/retro_hex_chat/bots/capabilities/game.ex:122
+#, elixir-autogen, elixir-format
+msgid "The game's ranking"
+msgstr "La clasificación del juego"
+
+#: lib/retro_hex_chat/bots/capabilities/game.ex:127
+#, elixir-autogen, elixir-format
+msgid "The latest public matches"
+msgstr "Los últimos partidos públicos"
+
+#: lib/retro_hex_chat/bots/capabilities/game.ex:125
+#, elixir-autogen, elixir-format
+msgid "This week's challenge and who leads it"
+msgstr "El desafío de esta semana y quién lo lidera"
+
+#: lib/retro_hex_chat/bots/capabilities/game.ex:128
+#, elixir-autogen, elixir-format
+msgid "Controls and how to start"
+msgstr "Controles y cómo empezar"

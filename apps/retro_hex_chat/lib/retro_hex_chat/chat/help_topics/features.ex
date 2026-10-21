@@ -2120,6 +2120,8 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
           "#hex-pong",
           "#retro-games",
           "game_announce",
+          "!ranking",
+          "!challenge",
           "lfg",
           "challenge",
           "channel",

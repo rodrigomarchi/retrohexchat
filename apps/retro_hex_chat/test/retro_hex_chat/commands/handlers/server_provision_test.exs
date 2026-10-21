@@ -23,6 +23,7 @@ defmodule RetroHexChat.Commands.Handlers.ServerProvisionTest do
   alias RetroHexChat.Commands.Handlers.Bot
   alias RetroHexChat.Commands.Handlers.Cs
   alias RetroHexChat.Commands.Registry
+  alias RetroHexChat.Games.RoomFacts
   alias RetroHexChat.Locales
 
   @dir Path.expand("../../../../../../docs/provisioning", __DIR__)
@@ -74,6 +75,22 @@ defmodule RetroHexChat.Commands.Handlers.ServerProvisionTest do
   end
 
   defp visible_line(line), do: line |> IrcEscapes.decode() |> Formatter.strip()
+
+  # What each bot answers: its custom commands, and the game rooms' questions
+  # for a bot given the `game` capability.
+  defp owned_triggers(parsed) do
+    Enum.reduce(parsed, %{}, fn
+      ["bot", "addcmd", bot, trigger | _], acc ->
+        Map.update(acc, bot, MapSet.new([trigger]), &MapSet.put(&1, trigger))
+
+      ["bot", "set", bot, "game_announce", "on"], acc ->
+        game = MapSet.new(RoomFacts.commands())
+        Map.update(acc, bot, game, &MapSet.union(&1, game))
+
+      _line, acc ->
+        acc
+    end)
+  end
 
   defp triggers_advertised(text) do
     ~r/(?<![\w!])!(\w+)/
@@ -488,14 +505,7 @@ defmodule RetroHexChat.Commands.Handlers.ServerProvisionTest do
       {_body, _lines, parsed} = read(path)
       bots = for ["bot", "create", name | _] <- parsed, into: MapSet.new(), do: name
 
-      owned =
-        Enum.reduce(parsed, %{}, fn
-          ["bot", "addcmd", bot, trigger | _], acc ->
-            Map.update(acc, bot, MapSet.new([trigger]), &MapSet.put(&1, trigger))
-
-          _line, acc ->
-            acc
-        end)
+      owned = owned_triggers(parsed)
 
       speech =
         for ["bot", verb, bot | rest] <- parsed,
@@ -519,14 +529,7 @@ defmodule RetroHexChat.Commands.Handlers.ServerProvisionTest do
       {_body, lines, parsed} = read(path)
       bots = for ["bot", "create", name | _] <- parsed, into: MapSet.new(), do: name
 
-      owned =
-        Enum.reduce(parsed, %{}, fn
-          ["bot", "addcmd", bot, trigger | _], acc ->
-            Map.update(acc, bot, MapSet.new([trigger]), &MapSet.put(&1, trigger))
-
-          _line, acc ->
-            acc
-        end)
+      owned = owned_triggers(parsed)
 
       residents =
         Enum.reduce(parsed, %{}, fn
