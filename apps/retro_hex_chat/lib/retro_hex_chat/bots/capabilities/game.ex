@@ -136,7 +136,7 @@ defmodule RetroHexChat.Bots.Capabilities.Game do
   defp parse_command(content, ctx) do
     prefix = String.downcase(ctx.command_prefix)
     words = content |> String.trim() |> String.downcase() |> String.split()
-    bot = String.downcase(prefix <> ctx.bot_nickname)
+    bot = prefix <> Nickname.key(ctx.bot_nickname)
 
     case words do
       [^bot, command] -> {:ok, command}
