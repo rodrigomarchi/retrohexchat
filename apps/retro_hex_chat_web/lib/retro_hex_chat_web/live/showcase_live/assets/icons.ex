@@ -153,7 +153,7 @@ defmodule RetroHexChatWeb.ShowcaseLive.Assets.Icons do
     ~H"""
     <div class="flex flex-col items-center gap-1 overflow-hidden" title={to_string(@name)}>
       <div class={[
-        "flex items-center justify-center shadow-retro-sunken",
+        "flex items-center justify-center",
         container_dim(@size),
         bg_class(@size)
       ]}>

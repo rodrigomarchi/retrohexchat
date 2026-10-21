@@ -172,7 +172,7 @@ defmodule RetroHexChatWeb.Components.UI.P2P.SessionBadge do
       :if={@active}
       class={
         classes([
-          "relative h-4 w-4 shrink-0 inline-flex items-center justify-center shadow-retro-sunken",
+          "relative h-4 w-4 shrink-0 inline-flex items-center justify-center",
           status_class(@status),
           @class
         ])

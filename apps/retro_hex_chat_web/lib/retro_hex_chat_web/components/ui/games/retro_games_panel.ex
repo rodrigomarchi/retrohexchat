@@ -213,7 +213,7 @@ defmodule RetroHexChatWeb.Components.UI.RetroGamesPanel do
                 <Icons.icon_chart_bars class="h-4 w-4 shrink-0" />
                 {dgettext("games", "Difficulty")}
               </h4>
-              <span class="flex shrink-0 items-center gap-retro-3 bg-white px-retro-4 py-px text-[11px] font-bold shadow-retro-status">
+              <span class="flex shrink-0 items-center gap-retro-3 bg-white px-retro-4 py-px text-[11px] font-bold border border-border">
                 <.difficulty_icon difficulty={@difficulty} class="h-3.5 w-3.5 shrink-0" />
                 {difficulty_label(@difficulty)}
               </span>

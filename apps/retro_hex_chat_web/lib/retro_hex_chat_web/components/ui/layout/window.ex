@@ -166,7 +166,7 @@ defmodule RetroHexChatWeb.Components.UI.Window do
         classes([
           if(@skin == "pixel",
             do: "window-status-field--pixel",
-            else: "shadow-retro-status px-[3px] py-[2px] text-sm"
+            else: "border border-border px-[3px] py-[2px] text-sm"
           ),
           "truncate",
           @grow && "flex-grow",

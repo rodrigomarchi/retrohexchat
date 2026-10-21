@@ -1,7 +1,8 @@
 defmodule RetroHexChatWeb.Components.UI.IconWell do
   @moduledoc """
-  The pressed-in square a panel's picture sits in: the game in a match card,
-  the terminal in a trusted device, the camera on a notice.
+  The square a panel's picture sits in: the game in a match card, the
+  terminal in a trusted device, the camera on a notice. Flat — the picture
+  is framed by the space around it, not by a bevel.
 
   Three sizes, matched to what is drawn in them — `sm` (32 px) holds a 16–20 px
   icon beside one line of title, `md` (40 px) a 24 px icon beside two, `lg`
@@ -18,14 +19,14 @@ defmodule RetroHexChatWeb.Components.UI.IconWell do
   attr :rest, :global
   slot :inner_block, required: true
 
-  @doc "Renders an icon in a sunken square."
+  @doc "Renders an icon in a square of its size."
   @spec icon_well(map()) :: Phoenix.LiveView.Rendered.t()
   def icon_well(assigns) do
     ~H"""
     <span
       class={
         classes([
-          "inline-flex shrink-0 items-center justify-center bg-surface shadow-retro-sunken",
+          "inline-flex shrink-0 items-center justify-center",
           size_class(@size),
           @class
         ])

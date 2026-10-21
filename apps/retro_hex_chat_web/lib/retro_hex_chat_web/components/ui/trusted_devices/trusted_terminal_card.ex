@@ -185,7 +185,7 @@ defmodule RetroHexChatWeb.Components.UI.TrustedDevices.TrustedTerminalCard do
 
   defp terminal_fact(assigns) do
     ~H"""
-    <span class="inline-flex min-w-0 items-center gap-retro-3 bg-white px-1 py-px shadow-retro-status">
+    <span class="inline-flex min-w-0 items-center gap-retro-3 border border-border bg-white px-1 py-px">
       <.trusted_terminal_icon icon={@fact.icon} class="h-3.5 w-3.5 shrink-0" />
       <span class="shrink-0 font-bold">{@fact.label}:</span>
       <span class="min-w-0 truncate text-muted-foreground">{@fact.value}</span>

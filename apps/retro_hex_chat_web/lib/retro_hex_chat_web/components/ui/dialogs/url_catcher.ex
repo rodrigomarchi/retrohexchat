@@ -292,7 +292,7 @@ defmodule RetroHexChatWeb.Components.UI.UrlCatcher do
           </div>
 
           <%!-- Status line --%>
-          <div class="uc-status-line shadow-retro-status shrink-0 px-retro-4 py-[2px] text-xs text-muted-foreground">
+          <div class="uc-status-line border-t border-border shrink-0 px-retro-4 py-[2px] text-xs text-muted-foreground">
             {entry_count_label(@entry_count)}
           </div>
         </div>

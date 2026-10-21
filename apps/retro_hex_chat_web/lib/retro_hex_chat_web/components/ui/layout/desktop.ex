@@ -796,7 +796,7 @@ defmodule RetroHexChatWeb.Components.UI.Desktop do
   @spec start_menu_separator(map()) :: Phoenix.LiveView.Rendered.t()
   def start_menu_separator(assigns) do
     ~H"""
-    <div class={classes(["shadow-retro-status my-[2px] h-[2px]", @class])}></div>
+    <div class={classes(["my-[2px] h-px bg-border", @class])}></div>
     """
   end
 
@@ -815,7 +815,7 @@ defmodule RetroHexChatWeb.Components.UI.Desktop do
     <div
       class={
         classes([
-          "shadow-retro-status flex shrink-0 items-center gap-2 px-2 py-[2px] text-xs",
+          "flex shrink-0 items-center gap-2 border border-border px-2 py-[2px] text-xs",
           @class
         ])
       }

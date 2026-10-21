@@ -102,17 +102,17 @@ defmodule RetroHexChatWeb.Components.UI.GroupCall.ChannelBadge do
         </.entry_popover_header>
 
         <div class="mt-2 grid grid-cols-2 gap-1 text-[11px]">
-          <div class="shadow-retro-status bg-white px-1 py-px">
+          <div class="border border-border bg-white px-1 py-px">
             <span class="font-bold">{dgettext("group_call", "Participants")}</span>
             <span class="float-right">{@participant_count}/{@max_participants || "?"}</span>
           </div>
-          <div class="shadow-retro-status bg-white px-1 py-px">
+          <div class="border border-border bg-white px-1 py-px">
             <span class="font-bold">{dgettext("group_call", "Speaker")}</span>
             <span class="float-right truncate max-w-[9ch]">{@speaker_name || "-"}</span>
           </div>
         </div>
 
-        <div class="mt-2 shadow-retro-sunken bg-white p-1">
+        <div class="mt-2 border border-border bg-white p-1">
           <div class="mb-1 flex items-center gap-1 text-[10px] font-bold">
             <Icons.icon_status_user class="h-3 w-3" />
             <span>{dgettext("group_call", "In conference")}</span>

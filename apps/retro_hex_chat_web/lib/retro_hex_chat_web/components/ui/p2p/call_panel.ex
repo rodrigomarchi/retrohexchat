@@ -72,7 +72,7 @@ defmodule RetroHexChatWeb.Components.UI.P2P.CallPanel do
         class="flex h-full min-h-[136px] flex-col items-center justify-center gap-2 border border-border bg-surface p-3 text-center shadow-retro-sunken"
         data-testid="p2p-call-disconnected"
       >
-        <span class="flex h-20 w-20 items-center justify-center shadow-retro-sunken">
+        <span class="flex h-20 w-20 items-center justify-center">
           <Icons.icon_protocol_p2p_compact class="h-16 w-16" />
         </span>
         <div class="font-bold">{dgettext("p2p", "Waiting for peer")}</div>
@@ -139,7 +139,7 @@ defmodule RetroHexChatWeb.Components.UI.P2P.CallPanel do
                 <div
                   :if={quality_label(@call) && !@peer_left}
                   class={[
-                    "icon-on-dark absolute right-2 top-2 z-10 flex items-center gap-1 bg-black/70 px-1.5 py-0.5 font-bold shadow-retro-sunken",
+                    "icon-on-dark absolute right-2 top-2 z-10 flex items-center gap-1 bg-black/70 px-1.5 py-0.5 font-bold",
                     quality_class(quality_level(@call))
                   ]}
                   data-testid="lobby-call-quality"
@@ -367,7 +367,7 @@ defmodule RetroHexChatWeb.Components.UI.P2P.CallPanel do
       data-testid="p2p-call-idle"
     >
       <div class="flex min-h-[120px] flex-1 flex-col items-center justify-center gap-2 text-center">
-        <span class="flex h-11 w-11 items-center justify-center shadow-retro-sunken">
+        <span class="flex h-11 w-11 items-center justify-center">
           <CallControls.icon_call_webrtc class="h-6 w-6" />
         </span>
         <div :if={@peer_in_call} class="font-bold" data-testid="p2p-call-peer-in-call">

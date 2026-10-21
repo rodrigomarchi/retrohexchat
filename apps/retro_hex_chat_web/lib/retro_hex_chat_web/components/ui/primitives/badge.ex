@@ -5,8 +5,8 @@ defmodule RetroHexChatWeb.Components.UI.Badge do
   alias RetroHexChatWeb.Components.UI.Variants
 
   @doc """
-  Renders a badge — a small, non-interactive status label styled as a
-  Win98 status-bar panel (sunken inset, compact).
+  Renders a badge — a small, non-interactive status label: a flat, compact
+  panel with a one-pixel border.
 
   ## Examples
 
@@ -19,9 +19,8 @@ defmodule RetroHexChatWeb.Components.UI.Badge do
       </.badge>
 
   `size="xs"` with `bevel="sunken"` is the status pill a panel header carries
-  in its facets — "Offline", "Playing", "Incoming": one word of state, drawn
-  pressed into the header rather than standing on it, with a border in the
-  variant's colour so the state reads before the word does.
+  in its facets — "Offline", "Playing", "Incoming": one word of state with a
+  border in the variant's colour, so the state reads before the word does.
 
       <.badge variant="success" size="xs" bevel="sunken">Playing</.badge>
   """
@@ -37,7 +36,7 @@ defmodule RetroHexChatWeb.Components.UI.Badge do
   attr :bevel, :string,
     values: ~w(field sunken),
     default: "field",
-    doc: "`sunken` pressed in with a border in the variant's colour — the status pill"
+    doc: "`sunken` takes a border in the variant's colour — the status pill"
 
   attr :rest, :global
   slot :icon, doc: "optional leading icon"
@@ -88,11 +87,11 @@ defmodule RetroHexChatWeb.Components.UI.Badge do
   defp size_class("xs"), do: "px-1.5 py-0.5 text-[10px]"
   defp size_class(_default), do: "px-1.5 py-px text-[11px]"
 
-  defp bevel_class("sunken"), do: "border shadow-retro-sunken"
-  defp bevel_class(_field), do: "shadow-retro-field"
+  defp bevel_class("sunken"), do: "border"
+  defp bevel_class(_field), do: "border border-border"
 
-  # Pressed in, the badge's colour moves to its border, and a state that wants
-  # an answer — an incoming offer, a failure — tints the well it sits in.
+  # As a status pill the badge's colour moves to its border, and a state that
+  # wants an answer — an incoming offer, a failure — tints the pill.
   defp sunken_variant("success"), do: "border-success bg-white text-success"
   defp sunken_variant("warning"), do: "border-warning bg-warning-bg text-foreground"
   defp sunken_variant("destructive"), do: "border-destructive bg-destructive/10 text-destructive"

@@ -84,7 +84,7 @@ defmodule RetroHexChatWeb.ShowcaseLive.Primitives.Card do
         <div class="max-w-sm">
           <.card_button class="p-3">
             <span class="flex items-start gap-3">
-              <span class="inline-flex h-10 w-10 shrink-0 items-center justify-center shadow-retro-sunken">
+              <span class="inline-flex h-10 w-10 shrink-0 items-center justify-center">
                 <Icons.icon_laptop class="h-6 w-6" />
               </span>
               <span class="min-w-0">

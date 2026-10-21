@@ -223,8 +223,6 @@ module.exports = {
           "inset -1px -1px #0a0a0a, inset 1px 1px #dfdfdf, inset -2px -2px #808080, inset 2px 2px #ffffff",
         "retro-field":
           "inset -1px -1px #ffffff, inset 1px 1px #808080, inset -2px -2px #dfdfdf, inset 2px 2px #0a0a0a",
-        "retro-status":
-          "inset -1px -1px #dfdfdf, inset 1px 1px #808080",
         "retro-tab":
           "inset -1px 0 #0a0a0a, inset 1px 1px #dfdfdf, inset -2px 0 #808080, inset 2px 2px #ffffff",
         "retro-default-raised":

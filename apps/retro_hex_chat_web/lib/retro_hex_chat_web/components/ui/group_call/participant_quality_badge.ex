@@ -20,7 +20,7 @@ defmodule RetroHexChatWeb.Components.UI.GroupCall.ParticipantQualityBadge do
     <span
       :if={@level != :unknown}
       class={[
-        "flex h-8 w-8 items-center justify-center shadow-retro-sunken",
+        "flex h-8 w-8 items-center justify-center",
         quality_class(@level)
       ]}
       title={@title}

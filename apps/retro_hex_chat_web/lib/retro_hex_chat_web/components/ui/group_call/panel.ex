@@ -681,7 +681,7 @@ defmodule RetroHexChatWeb.Components.UI.GroupCall.Panel do
       <div class="space-y-1">
         <div
           :for={{participant, index} <- Enum.with_index(@raised_participants, 1)}
-          class="flex min-w-0 items-center justify-between gap-2 border border-border bg-white px-2 py-1 shadow-retro-status"
+          class="flex min-w-0 items-center justify-between gap-2 border border-border bg-white px-2 py-1"
           data-testid={"group-call-raised-hand-#{participant.id}"}
         >
           <span class="inline-flex min-w-0 items-center gap-2">
@@ -746,7 +746,7 @@ defmodule RetroHexChatWeb.Components.UI.GroupCall.Panel do
               />
               <span
                 :if={participant_hand_raised?(@participant)}
-                class="inline-flex h-6 min-w-6 shrink-0 items-center justify-center border border-warning bg-warning-bg px-1 text-[9px] font-bold text-foreground shadow-retro-status"
+                class="inline-flex h-6 min-w-6 shrink-0 items-center justify-center border border-warning bg-warning-bg px-1 text-[9px] font-bold text-foreground"
                 title={dgettext("group_call", "Hand raised")}
                 aria-label={dgettext("group_call", "Hand raised")}
                 data-testid={"group-call-participant-hand-#{@participant.id}"}
@@ -755,7 +755,7 @@ defmodule RetroHexChatWeb.Components.UI.GroupCall.Panel do
               </span>
               <span
                 :if={@latest_reaction}
-                class="group-call-participant-reaction inline-flex h-6 min-w-6 shrink-0 items-center justify-center border border-border bg-warning-bg px-1 leading-none shadow-retro-status"
+                class="group-call-participant-reaction inline-flex h-6 min-w-6 shrink-0 items-center justify-center border border-border bg-warning-bg px-1 leading-none"
                 title={participant_reaction_title(@latest_reaction)}
                 aria-label={participant_reaction_title(@latest_reaction)}
                 data-testid={"group-call-participant-reaction-#{@participant.id}"}
@@ -913,7 +913,7 @@ defmodule RetroHexChatWeb.Components.UI.GroupCall.Panel do
     ~H"""
     <span
       class={[
-        "flex h-7 w-7 items-center justify-center shadow-retro-sunken",
+        "flex h-7 w-7 items-center justify-center",
         @enabled && "bg-surface",
         !@enabled && "bg-muted text-muted-foreground",
         @moderated && "bg-destructive text-destructive-foreground"

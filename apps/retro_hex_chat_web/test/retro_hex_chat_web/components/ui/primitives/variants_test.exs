@@ -93,7 +93,7 @@ defmodule RetroHexChatWeb.Components.UI.VariantsTest do
       html = badge(%{variant: "no-such-variant"})
 
       assert html =~ "text-primary"
-      assert html =~ "shadow-retro-field"
+      assert html =~ "border border-border"
     end
 
     test "the caller's own class still lands" do
