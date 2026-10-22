@@ -95,7 +95,7 @@ async function cleanupBot(admin: TestUser, botName: string, channel?: string) {
 async function createBot(admin: TestUser, botName: string) {
   await admin.chat.sendMessage(`/bot create ${botName} E2E bot ${botName}`);
   await admin.chat.expectMessageVisible(
-    `[BotService] Bot '${botName}' created successfully.`,
+    `[BotService] Bot '${botName}' created.`,
   );
 }
 

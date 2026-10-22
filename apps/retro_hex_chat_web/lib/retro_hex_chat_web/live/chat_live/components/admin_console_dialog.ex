@@ -36,7 +36,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.AdminConsoleDialog do
   # pastes a batch this size. At 200 the transcript dropped its own opening
   # lines, so the one question worth asking — did all of it work? — could not be
   # answered from the thing that ran it.
-  @max_results 600
+  @max_results 2_000
 
   @spec id() :: String.t()
   def id, do: @id

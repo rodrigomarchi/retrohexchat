@@ -40,14 +40,20 @@ defmodule RetroHexChat.Bots.Lifecycle do
 
   @doc """
   Stops a running bot and starts it again from the database; a bot that is
-  not running stays stopped.
+  not running stays stopped. A disabled bot that is still running (disabling
+  only silences it) comes back running and disabled, as it was.
   """
   @spec restart_if_running(Bot.t()) :: :ok | {:error, term()}
   def restart_if_running(%Bot{} = bot) do
     case Registry.lookup(bot.nickname) do
       {:ok, _pid} ->
         Supervisor.stop_bot(bot.nickname)
-        bot |> ensure_started() |> normalize_ok()
+
+        bot
+        |> runtime_data()
+        |> Supervisor.start_bot()
+        |> normalize_start()
+        |> normalize_ok()
 
       {:error, :not_found} ->
         :ok

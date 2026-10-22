@@ -499,7 +499,7 @@ test.describe("dialog gallery, administrator", () => {
       `/bot create ${runningBot} Answers questions about the rules`,
     );
     await admin.chat.expectMessageVisible(
-      `[BotService] Bot '${runningBot}' created successfully.`,
+      `[BotService] Bot '${runningBot}' created.`,
     );
     await admin.chat.sendMessage(`/bot join ${runningBot} ${channel}`);
     await admin.chat.expectMessageVisible(
@@ -516,7 +516,7 @@ test.describe("dialog gallery, administrator", () => {
       `/bot create ${stoppedBot} Posts the weekly tournament bracket`,
     );
     await admin.chat.expectMessageVisible(
-      `[BotService] Bot '${stoppedBot}' created successfully.`,
+      `[BotService] Bot '${stoppedBot}' created.`,
     );
     await admin.chat.sendMessage(`/bot disable ${stoppedBot}`);
     await admin.page.waitForTimeout(600);

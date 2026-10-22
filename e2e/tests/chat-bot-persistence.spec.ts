@@ -115,7 +115,7 @@ test.describe("Bot persistence", () => {
         `/bot create ${botName} E2E bot ${botName}`,
       );
       await operator.chat.expectMessageVisible(
-        `[BotService] Bot '${botName}' created successfully.`,
+        `[BotService] Bot '${botName}' created.`,
       );
 
       await openBotDialogAndSelect(operator, botName);

@@ -86,6 +86,16 @@ defmodule RetroHexChat.Bots.BotLifecycleTest do
       assert {:error, :not_found} = Registry.lookup(bot.nickname)
     end
 
+    test "restart_if_running/1 brings a disabled but running bot back, still disabled" do
+      {:ok, bot} =
+        Lifecycle.create(%{name: "LcDisabled", nickname: "LcDisabled", created_by: "admin"})
+
+      {:ok, bot} = Queries.update_bot(bot, %{enabled: false})
+
+      assert :ok = Lifecycle.restart_if_running(bot)
+      assert {:ok, _pid} = Registry.lookup(bot.nickname)
+    end
+
     test "if_running/2 only calls through for a running bot" do
       assert :ok = Lifecycle.if_running("NobodyRunsThis", fn _ -> flunk("called") end)
     end

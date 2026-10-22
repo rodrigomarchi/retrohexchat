@@ -127,6 +127,7 @@ defmodule RetroHexChat.NicknameList do
   @doc "A note cut to what the list holds, rather than refused for being long."
   @spec truncate_note(t(), String.t() | nil) :: String.t() | nil
   def truncate_note(_spec, nil), do: nil
+  def truncate_note(%__MODULE__{max_note_length: nil}, note), do: note
 
   def truncate_note(%__MODULE__{max_note_length: max}, note) when is_binary(note),
     do: String.slice(note, 0, max)

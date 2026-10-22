@@ -55,7 +55,7 @@ test.describe.serial("Bot Management window", () => {
 
       await admin.chat.sendMessage(`/bot create ${botName} ${description}`);
       await admin.chat.expectMessageVisible(
-        `[BotService] Bot '${botName}' created successfully.`,
+        `[BotService] Bot '${botName}' created.`,
       );
       await admin.chat.sendMessage(`/bot set ${botName} prefix .`);
       await admin.chat.sendMessage(`/bot join ${botName} ${channel}`);
@@ -209,7 +209,7 @@ test.describe.serial("Bot Management window", () => {
     try {
       await admin.chat.sendMessage(`/bot create ${botName} Announces matches`);
       await admin.chat.expectMessageVisible(
-        `[BotService] Bot '${botName}' created successfully.`,
+        `[BotService] Bot '${botName}' created.`,
       );
       await admin.chat.sendMessage(`/bot set ${botName} game_announce on`);
 

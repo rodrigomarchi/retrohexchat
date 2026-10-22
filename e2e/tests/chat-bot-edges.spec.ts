@@ -75,7 +75,7 @@ test.describe("Bot edge cases", () => {
 
       await admin.chat.sendMessage(`/bot create ${botName} E2E bot ${botName}`);
       await admin.chat.expectMessageVisible(
-        `[BotService] Bot '${botName}' created successfully.`,
+        `[BotService] Bot '${botName}' created.`,
       );
 
       await admin.chat.sendMessage(`/bot create ${botName} duplicate`);

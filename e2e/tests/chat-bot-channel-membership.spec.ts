@@ -110,7 +110,7 @@ test.describe("Bot channel membership", () => {
         `/bot create ${botName} E2E bot ${botName}`,
       );
       await operator.chat.expectMessageVisible(
-        `[BotService] Bot '${botName}' created successfully.`,
+        `[BotService] Bot '${botName}' created.`,
       );
 
       await operator.chat.sendMessage(`/bot join ${botName} ${channelA}`);

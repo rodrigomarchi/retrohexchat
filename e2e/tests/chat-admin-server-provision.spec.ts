@@ -30,45 +30,25 @@ import { shot } from "../helpers/screenshots";
 
 const PROVISION_DOC = path.resolve(__dirname, "../../docs/provisioning/en.md");
 
-// Every bot en.md creates. An incomplete list leaves survivors behind, and the
-// next run fails on `/bot create` for a name that already exists.
-const BOTS = [
-  "Brutus",
-  "Patches",
-  "Wanda",
-  "Pixel",
-  "Murphy",
-  "Gazeta",
-  "Freeman",
-  "Cassandra",
-  "Ada",
-  "Curie",
-  "Yuki",
-  "Harold",
-  "Joystick",
-  "Sprite",
-  "Byte",
-  "Atlas",
-  "Tux",
-  "Sentinel",
-  "Vega",
-  "Quasar",
-  "Sakura",
-];
-const CHANNELS = [
-  "#lobby",
-  "#trivia",
-  "#arcade",
-  "#retro",
-  "#tech",
-  "#news",
-  "#foss",
-  "#security",
-  "#ai",
-  "#science",
-  "#anime",
-  "#help",
-];
+// What en.md creates, read from en.md itself: a list kept here by hand fell
+// behind the moment the script gained the game and arcade rooms, and the next
+// run failed on `/cs register` for every room the teardown did not know.
+const BOTS = unique(
+  commandLines(provisioningScript()).flatMap((line) => {
+    const created = line.match(/^\/bot create (\S+)/);
+    return created ? [created[1]] : [];
+  }),
+);
+const CHANNELS = unique(
+  commandLines(provisioningScript()).flatMap((line) => {
+    const joined = line.match(/^\/join (#\S+)/);
+    return joined ? [joined[1]] : [];
+  }),
+);
+
+function unique(values: string[]): string[] {
+  return [...new Set(values)];
+}
 
 /** The first fenced block that carries the provisioning banner. */
 function provisioningScript(): string {
