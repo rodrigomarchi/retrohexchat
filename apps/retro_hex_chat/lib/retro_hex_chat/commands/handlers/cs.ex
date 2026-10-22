@@ -3,13 +3,12 @@ defmodule RetroHexChat.Commands.Handlers.Cs do
   use Gettext, backend: RetroHexChat.Gettext
   @behaviour RetroHexChat.Commands.Handler
 
-  import RetroHexChat.Commands.Handler.Guards, only: [require_operator: 3]
+  import RetroHexChat.Commands.Handler.Guards, only: [require_channel: 1, require_operator: 3]
 
   alias RetroHexChat.Channels.Categories
   alias RetroHexChat.Channels.Server
   alias RetroHexChat.Chat.Archive
   alias RetroHexChat.Commands.Handler
-  alias RetroHexChat.Commands.Policy
   alias RetroHexChat.Commands.Timestamp
   alias RetroHexChat.Locales
   alias RetroHexChat.Services.{ChanServ, Queries}
@@ -33,7 +32,7 @@ defmodule RetroHexChat.Commands.Handlers.Cs do
   # Registering makes the channel yours for good, so it is for whoever already runs it — the
   # same bar as the Registration tab in Channel Central, which offers it to operators only.
   def execute(["register" | _], context) do
-    with :ok <- Policy.require_channel(context),
+    with {:ok, _channel} <- require_channel(context),
          :ok <-
            require_operator(
              context,
@@ -56,37 +55,37 @@ defmodule RetroHexChat.Commands.Handlers.Cs do
   end
 
   def execute(["archive", state | _], context) when state in ~w(on off) do
-    with :ok <- Policy.require_channel(context) do
+    with {:ok, _channel} <- require_channel(context) do
       call_set_archive(context.active_channel, context.nickname, state == "on")
     end
   end
 
   def execute(["archive" | _], context) do
-    with :ok <- Policy.require_channel(context) do
+    with {:ok, _channel} <- require_channel(context) do
       call_archive_status(context.active_channel)
     end
   end
 
   def execute(["language", code | _], context) do
-    with :ok <- Policy.require_channel(context) do
+    with {:ok, _channel} <- require_channel(context) do
       call_set_language(context.active_channel, context.nickname, code)
     end
   end
 
   def execute(["language" | _], context) do
-    with :ok <- Policy.require_channel(context) do
+    with {:ok, _channel} <- require_channel(context) do
       call_language_status(context.active_channel)
     end
   end
 
   def execute(["category", code | _], context) do
-    with :ok <- Policy.require_channel(context) do
+    with {:ok, _channel} <- require_channel(context) do
       call_set_category(context.active_channel, context.nickname, code)
     end
   end
 
   def execute(["category" | _], context) do
-    with :ok <- Policy.require_channel(context) do
+    with {:ok, _channel} <- require_channel(context) do
       call_category_status(context.active_channel)
     end
   end

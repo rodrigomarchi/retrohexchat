@@ -39,6 +39,33 @@ defmodule RetroHexChat.Commands.Handler.Guards do
   end
 
   @doc """
+  Requires channel ownership.
+  """
+  @spec require_owner(Handler.context(), String.t(), String.t() | nil) ::
+          :ok | {:error, String.t()}
+  def require_owner(context, channel, message \\ nil) do
+    if channel in Map.get(context, :owner_in, []) do
+      :ok
+    else
+      {:error,
+       message || dgettext("commands", "You must be the channel owner to use this command")}
+    end
+  end
+
+  @doc """
+  Requires a nickname identified with NickServ.
+  """
+  @spec require_identified(Handler.context(), String.t() | nil) :: :ok | {:error, String.t()}
+  def require_identified(context, message \\ nil)
+  def require_identified(%{identified: true}, _message), do: :ok
+
+  def require_identified(_context, message) do
+    {:error,
+     message ||
+       dgettext("commands", "You must be identified with NickServ to use this command")}
+  end
+
+  @doc """
   Requires half-operator status or above.
   """
   @spec require_half_op_or_above(Handler.context(), String.t(), String.t() | nil) ::

@@ -88,4 +88,24 @@ defmodule RetroHexChat.Commands.Handler.GuardsTest do
                )
     end
   end
+
+  describe "require_identified/2" do
+    test "passes an identified nickname" do
+      assert :ok = require_identified(%{identified: true})
+    end
+
+    test "refuses one that is not, or has no word on it, in the command's terms when given" do
+      assert {:error, _} = require_identified(%{identified: false})
+      assert {:error, _} = require_identified(%{})
+      assert {:error, "Identify first"} = require_identified(%{}, "Identify first")
+    end
+  end
+
+  describe "require_owner/3" do
+    test "passes the channel's owner and refuses anyone else" do
+      assert :ok = require_owner(%{owner_in: ["#lobby"]}, "#lobby")
+      assert {:error, _} = require_owner(%{owner_in: ["#other"]}, "#lobby")
+      assert {:error, _} = require_owner(%{}, "#lobby")
+    end
+  end
 end

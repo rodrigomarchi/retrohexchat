@@ -27,14 +27,14 @@ defmodule RetroHexChat.Commands.Handlers.ClearWelcomeTest do
     test "no channel error" do
       ctx = %{@base_context | active_channel: nil}
 
-      assert {:error, "You must be in a channel to use this command."} =
+      assert {:error, "You are not in any channel"} =
                ClearWelcome.execute([], ctx)
     end
 
     test "non-operator rejected" do
       ctx = %{@base_context | operator_in: []}
 
-      assert {:error, "Permission denied: you must be a channel operator."} =
+      assert {:error, "You must be a channel operator to use this command"} =
                ClearWelcome.execute([], ctx)
     end
 

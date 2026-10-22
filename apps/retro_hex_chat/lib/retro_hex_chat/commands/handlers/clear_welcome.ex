@@ -4,6 +4,7 @@ defmodule RetroHexChat.Commands.Handlers.ClearWelcome do
   @behaviour RetroHexChat.Commands.Handler
 
   alias RetroHexChat.Commands.Handler
+  alias RetroHexChat.Commands.Handler.Guards
 
   @impl true
   @spec validate(String.t()) :: :ok | {:error, String.t()}
@@ -11,15 +12,10 @@ defmodule RetroHexChat.Commands.Handlers.ClearWelcome do
 
   @impl true
   @spec execute([String.t()], Handler.context()) :: Handler.result()
-  def execute(_args, %{active_channel: nil}) do
-    {:error, dgettext("commands", "You must be in a channel to use this command.")}
-  end
-
-  def execute(_args, %{active_channel: channel} = context) do
-    if channel in context.operator_in do
+  def execute(_args, context) do
+    with {:ok, channel} <- Guards.require_channel(context),
+         :ok <- Guards.require_operator(context, channel) do
       {:ok, :ui_action, :clear_welcome, %{channel: channel}}
-    else
-      {:error, dgettext("commands", "Permission denied: you must be a channel operator.")}
     end
   end
 

@@ -4,6 +4,7 @@ defmodule RetroHexChat.Commands.Handlers.SetWelcome do
   @behaviour RetroHexChat.Commands.Handler
 
   alias RetroHexChat.Commands.Handler
+  alias RetroHexChat.Commands.Handler.Guards
 
   @impl true
   @spec validate(String.t()) :: :ok | {:error, String.t()}
@@ -11,24 +12,13 @@ defmodule RetroHexChat.Commands.Handlers.SetWelcome do
 
   @impl true
   @spec execute([String.t()], Handler.context()) :: Handler.result()
-  def execute(_args, %{active_channel: nil}) do
-    {:error, dgettext("commands", "You must be in a channel to use this command.")}
-  end
-
-  def execute([], %{active_channel: channel} = context) do
-    if operator_or_owner?(channel, context) do
-      {:ok, :ui_action, :clear_welcome, %{channel: channel}}
-    else
-      {:error, dgettext("commands", "Permission denied: you must be a channel operator.")}
-    end
-  end
-
-  def execute(args, %{active_channel: channel} = context) do
-    if operator_or_owner?(channel, context) do
-      message = Enum.join(args, " ")
-      {:ok, :ui_action, :set_welcome, %{channel: channel, message: message}}
-    else
-      {:error, dgettext("commands", "Permission denied: you must be a channel operator.")}
+  def execute(args, context) do
+    with {:ok, channel} <- Guards.require_channel(context),
+         :ok <- Guards.require_operator(context, channel) do
+      case args do
+        [] -> {:ok, :ui_action, :clear_welcome, %{channel: channel}}
+        _ -> {:ok, :ui_action, :set_welcome, %{channel: channel, message: Enum.join(args, " ")}}
+      end
     end
   end
 
@@ -50,10 +40,6 @@ defmodule RetroHexChat.Commands.Handlers.SetWelcome do
         ),
       examples: [dgettext("commands", "/setwelcome Welcome to our channel!")]
     }
-  end
-
-  defp operator_or_owner?(channel, context) do
-    channel in context.operator_in
   end
 
   @impl true

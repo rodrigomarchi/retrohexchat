@@ -5,6 +5,7 @@ defmodule RetroHexChat.Commands.Handlers.Lobby do
   @behaviour RetroHexChat.Commands.Handler
 
   alias RetroHexChat.Commands.Handler
+  alias RetroHexChat.Commands.Handler.Guards
   alias RetroHexChat.Nickname
   alias RetroHexChat.Presence.Tracker
   alias RetroHexChat.Services.Queries
@@ -20,7 +21,11 @@ defmodule RetroHexChat.Commands.Handlers.Lobby do
   def execute([], _context), do: {:error, dgettext("commands", "Usage: /p2p <nickname>")}
 
   def execute([target | _rest], context) do
-    with :ok <- validate_identified(context),
+    with :ok <-
+           Guards.require_identified(
+             context,
+             dgettext("commands", "You must be identified to use /p2p.")
+           ),
          :ok <- validate_not_self(target, context),
          {:ok, target_id} <- resolve_registered_nick(target),
          :ok <- validate_target_online(target),
@@ -81,11 +86,6 @@ defmodule RetroHexChat.Commands.Handlers.Lobby do
       examples: [dgettext("commands", "/p2p mario")]
     }
   end
-
-  defp validate_identified(%{identified: true}), do: :ok
-
-  defp validate_identified(_),
-    do: {:error, dgettext("commands", "You must be identified to use /p2p.")}
 
   defp validate_not_self(target, %{nickname: nick}) do
     if Nickname.equal?(target, nick) do

@@ -62,14 +62,4 @@ defmodule RetroHexChat.Commands.Handlers.Transfer do
       examples: [dgettext("commands", "/transfer alice")]
     }
   end
-
-  defp require_owner(context, channel) do
-    owner_in = Map.get(context, :owner_in, [])
-
-    if channel in owner_in do
-      :ok
-    else
-      {:error, dgettext("commands", "You must be the channel owner to use this command")}
-    end
-  end
 end

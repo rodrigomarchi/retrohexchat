@@ -5,6 +5,7 @@ defmodule RetroHexChat.Commands.Handlers.Ns do
 
   alias RetroHexChat.Accounts.TrustedDevices
   alias RetroHexChat.Commands.Handler
+  alias RetroHexChat.Commands.Handler.Guards
   alias RetroHexChat.Commands.Timestamp
   alias RetroHexChat.Services.NickServ
 
@@ -270,11 +271,13 @@ defmodule RetroHexChat.Commands.Handlers.Ns do
   defp revoke_device_usage, do: dgettext("commands", "Usage: /ns revoke-device <id|all>")
   defp kill_session_usage, do: dgettext("commands", "Usage: /ns kill-session <id|all>")
 
-  defp require_identified(%{identified: true}, fun), do: fun.()
+  defp require_identified(context, fun) do
+    message =
+      nickserv_message(
+        dgettext("commands", "You must be identified to manage trusted terminals.")
+      )
 
-  defp require_identified(_context, _fun) do
-    {:error,
-     nickserv_message(dgettext("commands", "You must be identified to manage trusted terminals."))}
+    with :ok <- Guards.require_identified(context, message), do: fun.()
   end
 
   defp service_message(message), do: {:ok, :system, %{content: nickserv_message(message)}}

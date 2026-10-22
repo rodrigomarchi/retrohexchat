@@ -21,17 +21,16 @@ defmodule RetroHexChat.Commands.Handlers.Lfg do
   @impl true
   @spec execute([String.t()], Handler.context()) :: Handler.result()
   def execute(args, context) do
-    with :ok <- require_identified(context),
+    with :ok <-
+           Guards.require_identified(
+             context,
+             dgettext("commands", "You must be identified to look for a match.")
+           ),
          {:ok, %{channel: channel, game_id: game_id}} <-
            Guards.require_game_channel(context, args) do
       {:ok, :ui_action, :game_lfg, %{channel: channel, game_id: game_id}}
     end
   end
-
-  defp require_identified(%{identified: true}), do: :ok
-
-  defp require_identified(_context),
-    do: {:error, dgettext("commands", "You must be identified to look for a match.")}
 
   @impl true
   @spec help() :: %{
