@@ -100,7 +100,7 @@ shot, logged in as an admin who has `/identify`-ed.
 /cs register
 /cs archive on
 /cs language de
-/cs category games
+/cs category news
 /topic Spiele — Eurogamer.de am Draht. Wer wirklich spielen will: Menü Games, 18 Klassiker im Browser.
 /mode +tn
 

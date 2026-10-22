@@ -68,7 +68,7 @@ shot, logged in as an admin who has `/identify`-ed.
 /cs register
 /cs archive on
 /cs language es
-/cs category games
+/cs category news
 /topic Videojuegos — Vida Extra en el cable. Para jugar de verdad, abre el menú Games: 18 clásicos en el navegador.
 /mode +tn
 

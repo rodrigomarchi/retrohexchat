@@ -97,7 +97,7 @@ shot, logged in as an admin who has `/identify`-ed.
 /cs register
 /cs archive on
 /cs language zh_hans
-/cs category games
+/cs category news
 /topic 游戏 — 机核和游研社。真要玩的话，打开 Games 菜单：18 款经典直接在浏览器里跑。
 /mode +tn
 

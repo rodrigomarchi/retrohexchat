@@ -64,7 +64,7 @@ shot, logged in as an admin who has `/identify`-ed.
 /cs register
 /cs archive on
 /cs language ja
-/cs category games
+/cs category news
 /topic ゲーム — AUTOMATON と電ファミニコゲーマー。実際に遊ぶなら Games メニュー、18本の名作がブラウザで動きます。
 /mode +tn
 

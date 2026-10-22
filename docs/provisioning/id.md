@@ -102,7 +102,7 @@ shot, logged in as an admin who has `/identify`-ed.
 /cs register
 /cs archive on
 /cs language id
-/cs category games
+/cs category news
 /topic Gim — Gamebrott di saluran. Mau benar-benar main? Buka menu Games: 18 klasik langsung di peramban.
 /mode +tn
 

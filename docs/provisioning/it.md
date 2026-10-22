@@ -76,7 +76,7 @@ shot, logged in as an admin who has `/identify`-ed.
 /cs register
 /cs archive on
 /cs language it
-/cs category games
+/cs category news
 /topic Videogiochi — Everyeye e SpazioGames. Per giocare davvero apri il menu Games: 18 classici nel browser.
 /mode +tn
 

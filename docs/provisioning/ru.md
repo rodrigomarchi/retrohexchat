@@ -79,7 +79,7 @@ shot, logged in as an admin who has `/identify`-ed.
 /cs register
 /cs archive on
 /cs language ru
-/cs category games
+/cs category news
 /topic Игры — DTF и StopGame. А поиграть по-настоящему — меню Games: 18 классических игр прямо в браузере.
 /mode +tn
 

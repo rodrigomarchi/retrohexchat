@@ -105,7 +105,7 @@ the Admin Console in one shot, logged in as an admin who has `/identify`-ed.
 /cs register
 /cs archive on
 /cs language pt_BR
-/cs category games
+/cs category news
 /topic Jogos — Adrenaline no fio. Para jogar de verdade, abre o menu Games: 18 clássicos rodando no navegador.
 /mode +tn
 

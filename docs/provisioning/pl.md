@@ -67,7 +67,7 @@ shot, logged in as an admin who has `/identify`-ed.
 /cs register
 /cs archive on
 /cs language pl
-/cs category games
+/cs category news
 /topic Gry — CD-Action i Eurogamer Polska. Żeby naprawdę zagrać, otwórz menu Games: 18 klasyków w przeglądarce.
 /mode +tn
 

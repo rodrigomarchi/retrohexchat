@@ -84,7 +84,7 @@ shot, logged in as an admin who has `/identify`-ed.
 /cs register
 /cs archive on
 /cs language fr
-/cs category games
+/cs category news
 /topic Jeux vidéo — JeuxVideo.com et Gamekult. Pour jouer vraiment, ouvrez le menu Games : 18 classiques dans le navigateur.
 /mode +tn
 

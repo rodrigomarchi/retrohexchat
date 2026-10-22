@@ -67,7 +67,7 @@ shot, logged in as an admin who has `/identify`-ed.
 /cs register
 /cs archive on
 /cs language zh_hant
-/cs category games
+/cs category news
 /topic 遊戲 — 巴哈姆特 GNN 與 4Gamers。真要玩的話，打開 Games 選單：18 款經典直接在瀏覽器裡跑。
 /mode +tn
 
