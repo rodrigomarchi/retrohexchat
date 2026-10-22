@@ -131,6 +131,9 @@ defmodule RetroHexChatWeb.App.ChatHelpers do
   def format_time(%DateTime{} = dt, :dd_mm_hh_mm, tz),
     do: dt |> Timezone.shift(tz) |> Calendar.strftime("%d/%m %H:%M")
 
+  def format_time(%DateTime{} = dt, :dd_mm_yyyy, tz),
+    do: dt |> Timezone.shift(tz) |> Calendar.strftime("%d/%m/%Y")
+
   def format_time(_, :none, _tz), do: ""
 
   def format_time(%DateTime{} = dt, _, tz),
@@ -164,9 +167,9 @@ defmodule RetroHexChatWeb.App.ChatHelpers do
     secs = rem(seconds, 60)
 
     if hours > 0 do
-      "#{hours}h #{pad2(minutes)}m"
+      dgettext("chat", "%{hours}h %{minutes}m", hours: hours, minutes: pad2(minutes))
     else
-      "#{pad2(minutes)}m #{pad2(secs)}s"
+      dgettext("chat", "%{minutes}m %{seconds}s", minutes: pad2(minutes), seconds: pad2(secs))
     end
   end
 

@@ -105,4 +105,20 @@ defmodule RetroHexChatWeb.Components.UI.Games.SoloLobbyTest do
 
     assert [_] = Floki.find(document, ~s([data-testid="solo-session-end"]))
   end
+
+  test "says when a game started in the player's own time" do
+    html =
+      render_component(&solo_lobby/1,
+        id: "arcade-lobby",
+        groups: GameCatalog.arcade_groups(),
+        session_status: "playing",
+        game_name: "DOOM",
+        game_id: "doom_shareware",
+        game_started_at: "2026-10-22T15:04:05Z",
+        timezone: "America/Sao_Paulo"
+      )
+
+    assert html =~ "12:04:05"
+    refute html =~ "15:04:05"
+  end
 end

@@ -10,8 +10,8 @@ defmodule RetroHexChatWeb.Components.UI.TrustedDevices.TrustedTerminalCard do
   import RetroHexChatWeb.Components.UI.Label
   import RetroHexChatWeb.Components.UI.Switch
 
+  alias RetroHexChatWeb.App.ChatHelpers
   alias RetroHexChatWeb.Icons
-  alias RetroHexChatWeb.Timezone
 
   attr :entry, :map, required: true
   attr :nickname, :string, default: nil
@@ -430,11 +430,8 @@ defmodule RetroHexChatWeb.Components.UI.TrustedDevices.TrustedTerminalCard do
 
   defp format_dt(nil, _timezone), do: dgettext("ui", "Never")
 
-  defp format_dt(%DateTime{} = dt, timezone) do
-    dt
-    |> Timezone.shift(timezone)
-    |> Calendar.strftime("%d/%m %H:%M")
-  end
+  defp format_dt(%DateTime{} = dt, timezone),
+    do: ChatHelpers.format_time(dt, :dd_mm_hh_mm, timezone)
 
   defp format_dt(_dt, _timezone), do: dgettext("ui", "Unknown")
 end

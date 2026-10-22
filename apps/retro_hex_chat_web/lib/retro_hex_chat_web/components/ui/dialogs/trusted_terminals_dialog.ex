@@ -15,10 +15,10 @@ defmodule RetroHexChatWeb.Components.UI.TrustedTerminalsDialog do
   import RetroHexChatWeb.Components.UI.TrustedDevices.TrustedTerminalCard
   import RetroHexChatWeb.Components.UI.DialogBanner
 
+  alias RetroHexChatWeb.App.ChatHelpers
   alias RetroHexChatWeb.Components.Diagrams
   alias RetroHexChatWeb.Icons
   alias RetroHexChatWeb.PaginatedList.State
-  alias RetroHexChatWeb.Timezone
 
   attr :id, :string, required: true
   attr :target, :any, default: nil
@@ -854,11 +854,8 @@ defmodule RetroHexChatWeb.Components.UI.TrustedTerminalsDialog do
 
   defp format_dt(nil, _timezone), do: dgettext("dialogs", "Never")
 
-  defp format_dt(%DateTime{} = dt, timezone) do
-    dt
-    |> Timezone.shift(timezone)
-    |> Calendar.strftime("%d/%m %H:%M")
-  end
+  defp format_dt(%DateTime{} = dt, timezone),
+    do: ChatHelpers.format_time(dt, :dd_mm_hh_mm, timezone)
 
   defp format_dt(_dt, _timezone), do: dgettext("dialogs", "Unknown")
 

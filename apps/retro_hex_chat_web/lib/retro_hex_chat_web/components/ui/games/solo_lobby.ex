@@ -2,6 +2,7 @@ defmodule RetroHexChatWeb.Components.UI.SoloLobby do
   @moduledoc false
   use RetroHexChatWeb.Component
 
+  alias RetroHexChatWeb.App.ChatHelpers
   alias RetroHexChatWeb.App.Paths
   alias RetroHexChatWeb.Components.UI.GameSheet
   alias RetroHexChatWeb.Components.UI.Landing.GameCards
@@ -27,6 +28,7 @@ defmodule RetroHexChatWeb.Components.UI.SoloLobby do
   attr :game_id, :string, default: nil
   attr :game_started_at, :string, default: nil
   attr :game_duration, :integer, default: nil
+  attr :timezone, :string, default: "Etc/UTC", doc: "The player's, for the start time"
   attr :inactivity_warning, :boolean, default: false
   attr :on_select_game, :any, default: nil
   attr :on_back, :any, default: nil
@@ -72,6 +74,7 @@ defmodule RetroHexChatWeb.Components.UI.SoloLobby do
         game_name={@game_name}
         game_id={@game_id}
         game_started_at={@game_started_at}
+        timezone={@timezone}
         on_back_to_launcher={@on_back_to_launcher}
         on_close={@on_close}
       />
@@ -211,6 +214,7 @@ defmodule RetroHexChatWeb.Components.UI.SoloLobby do
   attr :game_name, :string, required: true
   attr :game_id, :string, required: true
   attr :game_started_at, :string, default: nil
+  attr :timezone, :string, default: "Etc/UTC"
   attr :on_back_to_launcher, :any, default: nil
   attr :on_close, :any, default: nil
 
@@ -230,7 +234,7 @@ defmodule RetroHexChatWeb.Components.UI.SoloLobby do
           </span>
         </.badge>
         <p :if={@game_started_at} class="text-[10px] font-mono text-muted-foreground">
-          {dgettext("games", "Started %{time}", time: format_started(@game_started_at))}
+          {dgettext("games", "Started %{time}", time: format_started(@game_started_at, @timezone))}
         </p>
       </div>
 
@@ -297,7 +301,8 @@ defmodule RetroHexChatWeb.Components.UI.SoloLobby do
         <div :if={@game_duration} class="flex items-center gap-retro-6 text-xs text-muted-foreground">
           <Icons.icon_clock class="w-4 h-4 flex-shrink-0" />
           <span>
-            {dgettext("games", "Play time:")} <strong>{format_duration(@game_duration)}</strong>
+            {dgettext("games", "Play time:")}
+            <strong>{ChatHelpers.format_duration(@game_duration)}</strong>
           </span>
         </div>
       </div>
@@ -318,39 +323,18 @@ defmodule RetroHexChatWeb.Components.UI.SoloLobby do
 
   # ── Helpers ─────────────────────────────────────────────
 
-  # The domain sends the raw start instant (DateTime or ISO8601 string); show a
-  # readable wall-clock time rather than the full microsecond ISO timestamp.
-  @spec format_started(DateTime.t() | String.t() | nil) :: String.t() | nil
-  defp format_started(%DateTime{} = dt), do: Calendar.strftime(dt, "%H:%M:%S")
+  # The domain sends the raw start instant (DateTime or ISO8601 string); show the
+  # wall-clock time it was where the player is.
+  @spec format_started(DateTime.t() | String.t() | nil, String.t()) :: String.t() | nil
+  defp format_started(%DateTime{} = dt, timezone),
+    do: ChatHelpers.format_time(dt, :hh_mm_ss, timezone)
 
-  defp format_started(iso) when is_binary(iso) do
+  defp format_started(iso, timezone) when is_binary(iso) do
     case DateTime.from_iso8601(iso) do
-      {:ok, dt, _offset} -> Calendar.strftime(dt, "%H:%M:%S")
+      {:ok, dt, _offset} -> format_started(dt, timezone)
       _ -> iso
     end
   end
 
-  defp format_started(_), do: nil
-
-  @spec format_duration(integer()) :: String.t()
-  defp format_duration(seconds) when seconds < 60,
-    do: dgettext("games", "%{seconds}s", seconds: seconds)
-
-  defp format_duration(seconds) do
-    minutes = div(seconds, 60)
-    secs = rem(seconds, 60)
-
-    if minutes >= 60 do
-      hours = div(minutes, 60)
-      mins = rem(minutes, 60)
-
-      dgettext("games", "%{hours}h %{minutes}m %{seconds}s",
-        hours: hours,
-        minutes: mins,
-        seconds: secs
-      )
-    else
-      dgettext("games", "%{minutes}m %{seconds}s", minutes: minutes, seconds: secs)
-    end
-  end
+  defp format_started(_, _timezone), do: nil
 end

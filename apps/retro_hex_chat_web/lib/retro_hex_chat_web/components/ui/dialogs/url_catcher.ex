@@ -20,6 +20,7 @@ defmodule RetroHexChatWeb.Components.UI.UrlCatcher do
   import RetroHexChatWeb.Components.UI.DialogBanner
   import RetroHexChatWeb.Components.UI.NickFlag
 
+  alias RetroHexChatWeb.App.ChatHelpers
   alias RetroHexChatWeb.Components.Diagrams
   alias RetroHexChatWeb.Icons
 
@@ -342,7 +343,7 @@ defmodule RetroHexChatWeb.Components.UI.UrlCatcher do
 
   @spec format_timestamp(any(), String.t() | nil) :: String.t()
   defp format_timestamp(%DateTime{} = dt, timezone) when is_binary(timezone) do
-    dt |> RetroHexChatWeb.Timezone.shift(timezone) |> Calendar.strftime("%H:%M")
+    ChatHelpers.format_time(dt, :hh_mm, timezone)
   end
 
   defp format_timestamp(val, _timezone) when is_binary(val), do: val

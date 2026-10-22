@@ -21,6 +21,7 @@ defmodule RetroHexChatWeb.Components.UI.NotifyList do
   import RetroHexChatWeb.Components.UI.DialogBanner
   import RetroHexChatWeb.Components.UI.NickFlag
 
+  alias RetroHexChatWeb.App.ChatHelpers
   alias RetroHexChatWeb.Components.Diagrams
   alias RetroHexChatWeb.Icons
 
@@ -448,19 +449,8 @@ defmodule RetroHexChatWeb.Components.UI.NotifyList do
     case Map.get(entry, :last_seen_at) do
       nil -> dgettext("dialogs", "Never")
       "" -> dgettext("dialogs", "Never")
-      %DateTime{} = value -> value |> shift_timezone(timezone) |> Calendar.strftime("%d/%m %H:%M")
+      %DateTime{} = value -> ChatHelpers.format_time(value, :dd_mm_hh_mm, timezone)
       value -> to_string(value)
-    end
-  end
-
-  @spec shift_timezone(DateTime.t(), String.t() | nil) :: DateTime.t()
-  defp shift_timezone(dt, nil), do: dt
-  defp shift_timezone(dt, "Etc/UTC"), do: dt
-
-  defp shift_timezone(dt, timezone) do
-    case DateTime.shift_zone(dt, timezone) do
-      {:ok, shifted} -> shifted
-      {:error, _} -> dt
     end
   end
 

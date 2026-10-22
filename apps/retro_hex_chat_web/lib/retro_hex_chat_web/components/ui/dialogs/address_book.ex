@@ -24,6 +24,7 @@ defmodule RetroHexChatWeb.Components.UI.AddressBook do
   import RetroHexChatWeb.Components.UI.DialogBanner
   import RetroHexChatWeb.Components.UI.NickFlag
 
+  alias RetroHexChatWeb.App.ChatHelpers
   alias RetroHexChatWeb.Components.Diagrams
   alias RetroHexChatWeb.Icons
 
@@ -350,22 +351,7 @@ defmodule RetroHexChatWeb.Components.UI.AddressBook do
   @spec format_contact_date(DateTime.t() | nil, String.t() | nil) :: String.t()
   defp format_contact_date(nil, _timezone), do: ""
 
-  defp format_contact_date(dt, timezone) do
-    dt
-    |> shift_timezone(timezone)
-    |> Calendar.strftime("%d/%m/%Y")
-  end
-
-  @spec shift_timezone(DateTime.t(), String.t() | nil) :: DateTime.t()
-  defp shift_timezone(dt, nil), do: dt
-  defp shift_timezone(dt, "Etc/UTC"), do: dt
-
-  defp shift_timezone(dt, timezone) do
-    case DateTime.shift_zone(dt, timezone) do
-      {:ok, shifted} -> shifted
-      {:error, _} -> dt
-    end
-  end
+  defp format_contact_date(dt, timezone), do: ChatHelpers.format_time(dt, :dd_mm_yyyy, timezone)
 
   # A contact is read as a card, which is why the miniature is one.
   @spec contact_lines([map()]) :: [map()]
