@@ -90,19 +90,23 @@ defmodule DeployAll do
 
   # --- CI ---
 
+  # Through the Makefile target rather than scripts/ci.exs directly: `make
+  # ci.full` is also where the test database port and the partition counts are
+  # set, and a deploy that ran the script bare validated a CI nobody runs by
+  # hand. One target, one definition of "the full CI".
   defp run_ci(project_root) do
     IO.puts("  #{c(:cyan)}Phase 1: CI Validation#{c(:reset)}\n")
-    IO.puts("    #{c(:dim)}⟳#{c(:reset)} Running make ci...")
+    IO.puts("    #{c(:dim)}⟳#{c(:reset)} Running make ci.full...")
     start = System.monotonic_time(:millisecond)
 
     port =
       Port.open(
-        {:spawn_executable, System.find_executable("elixir")},
+        {:spawn_executable, System.find_executable("make")},
         [
           :binary,
           :exit_status,
           :stderr_to_stdout,
-          args: ["scripts/ci.exs"],
+          args: ["ci.full"],
           cd: project_root
         ]
       )
