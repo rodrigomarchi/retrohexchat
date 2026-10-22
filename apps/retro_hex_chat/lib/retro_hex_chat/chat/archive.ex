@@ -51,7 +51,7 @@ defmodule RetroHexChat.Chat.Archive do
           text: String.t(),
           at: DateTime.t(),
           action?: boolean(),
-          edited?: boolean(),
+          edited_at: DateTime.t() | nil,
           attachment?: boolean()
         }
 
@@ -382,7 +382,7 @@ defmodule RetroHexChat.Chat.Archive do
       text: row.plain_content || row.content || "",
       at: row.at,
       action?: row.type == "action",
-      edited?: not is_nil(row.edited_at),
+      edited_at: row.edited_at,
       attachment?: row.attachment?
     }
   end

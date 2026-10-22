@@ -164,7 +164,7 @@ defmodule RetroHexChat.Chat.ArchiveTest do
       said = message(ctx.channel, "first go")
       {:ok, _} = Queries.update_content(said, "second go", DateTime.utc_now())
 
-      assert [%{edited?: true, text: "second go"}] =
+      assert [%{edited_at: %DateTime{}, text: "second go"}] =
                lines(ctx.channel, day_of(said))
     end
 

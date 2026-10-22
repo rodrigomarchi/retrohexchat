@@ -1135,7 +1135,7 @@ msgstr "Failed to add ignore: %{reason}"
 msgid "Failed to add perform command: %{reason}"
 msgstr "Failed to add perform command: %{reason}"
 
-#: lib/retro_hex_chat_web/components/ui/chat/message_indicators.ex:106
+#: lib/retro_hex_chat_web/components/ui/chat/message_indicators.ex:123
 #, elixir-autogen, elixir-format
 msgid "Failed to send. Click to retry"
 msgstr "Failed to send. Click to retry"
@@ -1529,7 +1529,7 @@ msgstr "No contact selected"
 msgid "No results"
 msgstr "No results"
 
-#: lib/retro_hex_chat_web/components/ui/chat/topic_bar.ex:66
+#: lib/retro_hex_chat_web/components/ui/chat/topic_bar.ex:76
 #: lib/retro_hex_chat_web/controllers/help_content/ui_topic_bar.html.heex:20
 #: lib/retro_hex_chat_web/live/chat_live/ui_actions/core.ex:109
 #, elixir-autogen, elixir-format
@@ -1866,6 +1866,7 @@ msgstr "Symbols"
 #: lib/retro_hex_chat_web/live/chat_live/helpers/messages.ex:91
 #: lib/retro_hex_chat_web/live/chat_live/helpers/messages.ex:116
 #: lib/retro_hex_chat_web/live/chat_live/window_registry.ex:393
+#: lib/retro_hex_chat_web/site/pages/archive_index.html.heex:12
 #, elixir-autogen, elixir-format
 msgid "System"
 msgstr "System"
@@ -3454,6 +3455,7 @@ msgid "User list rail"
 msgstr "User list rail"
 
 #: lib/retro_hex_chat_web/components/ui/chat/attachment_tile.ex:376
+#: lib/retro_hex_chat_web/site/pages/archive_index.html.heex:5
 #, elixir-autogen, elixir-format
 msgid "Archive"
 msgstr "Archive"
@@ -4038,7 +4040,7 @@ msgstr ""
 "%{nickname} opened this channel's public archive. Everything said from now "
 "on is published at a page anybody can read."
 
-#: lib/retro_hex_chat_web/components/ui/chat/message_indicators.ex:82
+#: lib/retro_hex_chat_web/components/ui/chat/message_indicators.ex:99
 #, elixir-autogen, elixir-format
 msgid "%{count} reply"
 msgid_plural "%{count} replies"
@@ -6062,3 +6064,8 @@ msgstr "Message not found."
 #, elixir-autogen, elixir-format
 msgid "React to %{nick}"
 msgstr "React to %{nick}"
+
+#: lib/retro_hex_chat_web/components/ui/chat/message_indicators.ex:67
+#, elixir-autogen, elixir-format
+msgid "(attachment)"
+msgstr "(attachment)"

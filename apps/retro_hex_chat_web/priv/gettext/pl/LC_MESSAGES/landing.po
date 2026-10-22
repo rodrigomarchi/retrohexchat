@@ -2331,76 +2331,49 @@ msgstr ""
 "inna przeglądarka na tej samej maszynie dostaje inną. Nie chodzi za tobą "
 "nigdzie, bo istnieje tylko na tym serwerze."
 
-#: lib/retro_hex_chat_web/site/pages/archive.ex:245
-#: lib/retro_hex_chat_web/site/pages/archive_index.html.heex:6
+#: lib/retro_hex_chat_web/site/pages/archive.ex:269
 #, elixir-autogen, elixir-format
 msgid "%{channel} archive"
 msgstr "Archiwum %{channel}"
 
-#: lib/retro_hex_chat_web/site/pages/archive_day.html.heex:6
-#, elixir-autogen, elixir-format
-msgid "%{channel} on %{date}"
-msgstr "%{channel} dnia %{date}"
-
-#: lib/retro_hex_chat_web/site/pages/archive.ex:259
+#: lib/retro_hex_chat_web/site/pages/archive.ex:283
 #, elixir-autogen, elixir-format
 msgid "%{channel} on %{date}: %{opening}"
 msgstr "%{channel} dnia %{date}: %{opening}"
 
-#: lib/retro_hex_chat_web/site/pages/archive_day.html.heex:33
-#, elixir-autogen, elixir-format
-msgid "(edited)"
-msgstr "(edytowano)"
-
-#: lib/retro_hex_chat_web/site/pages/archive_day.html.heex:55
+#: lib/retro_hex_chat_web/site/pages/archive_day.html.heex:50
 #, elixir-autogen, elixir-format
 msgid "All days"
 msgstr "Wszystkie dni"
 
-#: lib/retro_hex_chat_web/site/pages/archive_index.html.heex:9
+#: lib/retro_hex_chat_web/site/pages/archive_index.html.heex:13
 #, elixir-autogen, elixir-format
 msgid "Everything said here since the channel opened its archive, one page per day. Nothing from before it was opened is published."
 msgstr ""
 "Wszystko, co powiedziano tutaj, odkąd kanał otworzył archiwum — jedna strona"
 " dziennie. Nic sprzed otwarcia nie jest publikowane."
 
-#: lib/retro_hex_chat_web/site/pages/archive.ex:148
+#: lib/retro_hex_chat_web/site/pages/archive.ex:158
 #, elixir-autogen, elixir-format
 msgid "Everything said in %{channel} since it opened its archive, one page per day."
 msgstr ""
 "Wszystko, co powiedziano na %{channel}, odkąd otwarto archiwum — jedna "
 "strona dziennie."
 
-#: lib/retro_hex_chat_web/site/pages/archive_day.html.heex:59
-#: lib/retro_hex_chat_web/site/pages/archive_index.html.heex:25
+#: lib/retro_hex_chat_web/site/pages/archive.ex:212
 #, elixir-autogen, elixir-format
 msgid "Join %{channel}"
 msgstr "Dołącz do %{channel}"
 
-#: lib/retro_hex_chat_web/site/pages/archive_day.html.heex:30
-#, elixir-autogen, elixir-format
-msgid "(attachment)"
-msgstr "(załącznik)"
-
-#: lib/retro_hex_chat_web/site/pages/archive.ex:224
+#: lib/retro_hex_chat_web/site/pages/archive.ex:248
 #, elixir-autogen, elixir-format
 msgid "%{title} — from %{time}"
 msgstr "%{title} — od %{time}"
 
-#: lib/retro_hex_chat_web/site/pages/archive_day.html.heex:49
-#, elixir-autogen, elixir-format
-msgid "Later →"
-msgstr "Później →"
-
-#: lib/retro_hex_chat_web/site/pages/archive_day.html.heex:42
+#: lib/retro_hex_chat_web/site/pages/archive_day.html.heex:36
 #, elixir-autogen, elixir-format
 msgid "Pages of this day"
 msgstr "Strony tego dnia"
-
-#: lib/retro_hex_chat_web/site/pages/archive_day.html.heex:46
-#, elixir-autogen, elixir-format
-msgid "← Earlier"
-msgstr "← Wcześniej"
 
 #: lib/retro_hex_chat_web/site/pages/features.ex:83
 #: lib/retro_hex_chat_web/site/pages/games.ex:73
@@ -3245,3 +3218,13 @@ msgstr "Każdy w kanale może chodzić w nim razem."
 #, elixir-autogen, elixir-format
 msgid "Walk with the arrow keys, WASD or the pad on the screen. Press Enter to write a message."
 msgstr "Spacer z klawiszy strzałek, WASD lub pad na ekranie. Naciśnij Enter, aby napisać wiadomość."
+
+#: lib/retro_hex_chat_web/site/pages/archive_day.html.heex:41
+#, elixir-autogen, elixir-format
+msgid "Earlier"
+msgstr "Wcześniej"
+
+#: lib/retro_hex_chat_web/site/pages/archive_day.html.heex:45
+#, elixir-autogen, elixir-format
+msgid "Later"
+msgstr "Później"

@@ -108,9 +108,9 @@ _ROWS = {
     "Channel operators": ("Operadores de canal", "Operadores de canal", "Operadores de canal", "Opérateurs de canal", "Kanal-Operatoren", "Operatori del canale", "Kanaaloperators", "Operatorzy kanału", "Операторы канала", "Operator kanal", "チャンネルオペレーター", "频道管理员", "頻道管理員"),
 
     # The pager between the pages of one archive day: earlier and later lines,
-    # not a previous and next step in a flow.
-    "← Earlier":    ("← Antes", "← Antes", "← Antes", "← Plus tôt", "← Früher", "← Prima", "← Eerder", "← Wcześniej", "← Раньше", "← Sebelumnya", "← 前へ", "← 更早", "← 更早"),
-    "Later →":      ("Depois →", "Depois →", "Después →", "Plus tard →", "Später →", "Dopo →", "Later →", "Później →", "Позже →", "Berikutnya →", "次へ →", "更晚 →", "更晚 →"),
+    # not a previous and next step in a flow. The buttons draw the arrows.
+    "Earlier":      ("Antes", "Antes", "Antes", "Plus tôt", "Früher", "Prima", "Eerder", "Wcześniej", "Раньше", "Sebelumnya", "前へ", "更早", "更早"),
+    "Later":        ("Depois", "Depois", "Después", "Plus tard", "Später", "Dopo", "Later", "Później", "Позже", "Berikutnya", "次へ", "更晚", "更晚"),
     "Back":         ("Voltar", "Voltar", "Atrás", "Retour", "Zurück", "Indietro", "Terug", "Wstecz", "Назад", "Kembali", "戻る", "返回", "返回"),
     "Next":         ("Próximo", "Próximo", "Siguiente", "Suivant", "Weiter", "Avanti", "Volgende", "Dalej", "Далее", "Berikutnya", "次へ", "下一步", "下一步"),
     "Previous":     ("Anterior", "Anterior", "Anterior", "Précédent", "Zurück", "Precedente", "Vorige", "Poprzedni", "Назад", "Sebelumnya", "前へ", "上一步", "上一步"),

@@ -2332,76 +2332,49 @@ msgstr ""
 "Anda membacanya, dan peramban lain di mesin yang sama mendapat nama berbeda."
 " Ia tidak mengikuti Anda ke mana pun, karena hanya ada di server ini."
 
-#: lib/retro_hex_chat_web/site/pages/archive.ex:245
-#: lib/retro_hex_chat_web/site/pages/archive_index.html.heex:6
+#: lib/retro_hex_chat_web/site/pages/archive.ex:269
 #, elixir-autogen, elixir-format
 msgid "%{channel} archive"
 msgstr "Arsip %{channel}"
 
-#: lib/retro_hex_chat_web/site/pages/archive_day.html.heex:6
-#, elixir-autogen, elixir-format
-msgid "%{channel} on %{date}"
-msgstr "%{channel} pada %{date}"
-
-#: lib/retro_hex_chat_web/site/pages/archive.ex:259
+#: lib/retro_hex_chat_web/site/pages/archive.ex:283
 #, elixir-autogen, elixir-format
 msgid "%{channel} on %{date}: %{opening}"
 msgstr "%{channel} pada %{date}: %{opening}"
 
-#: lib/retro_hex_chat_web/site/pages/archive_day.html.heex:33
-#, elixir-autogen, elixir-format
-msgid "(edited)"
-msgstr "(disunting)"
-
-#: lib/retro_hex_chat_web/site/pages/archive_day.html.heex:55
+#: lib/retro_hex_chat_web/site/pages/archive_day.html.heex:50
 #, elixir-autogen, elixir-format
 msgid "All days"
 msgstr "Semua hari"
 
-#: lib/retro_hex_chat_web/site/pages/archive_index.html.heex:9
+#: lib/retro_hex_chat_web/site/pages/archive_index.html.heex:13
 #, elixir-autogen, elixir-format
 msgid "Everything said here since the channel opened its archive, one page per day. Nothing from before it was opened is published."
 msgstr ""
 "Semua yang dikatakan di sini sejak kanal membuka arsipnya, satu halaman per "
 "hari. Tidak ada yang dari sebelum dibuka yang diterbitkan."
 
-#: lib/retro_hex_chat_web/site/pages/archive.ex:148
+#: lib/retro_hex_chat_web/site/pages/archive.ex:158
 #, elixir-autogen, elixir-format
 msgid "Everything said in %{channel} since it opened its archive, one page per day."
 msgstr ""
 "Semua yang dikatakan di %{channel} sejak membuka arsipnya, satu halaman per "
 "hari."
 
-#: lib/retro_hex_chat_web/site/pages/archive_day.html.heex:59
-#: lib/retro_hex_chat_web/site/pages/archive_index.html.heex:25
+#: lib/retro_hex_chat_web/site/pages/archive.ex:212
 #, elixir-autogen, elixir-format
 msgid "Join %{channel}"
 msgstr "Gabung %{channel}"
 
-#: lib/retro_hex_chat_web/site/pages/archive_day.html.heex:30
-#, elixir-autogen, elixir-format
-msgid "(attachment)"
-msgstr "(lampiran)"
-
-#: lib/retro_hex_chat_web/site/pages/archive.ex:224
+#: lib/retro_hex_chat_web/site/pages/archive.ex:248
 #, elixir-autogen, elixir-format
 msgid "%{title} — from %{time}"
 msgstr "%{title} — mulai %{time}"
 
-#: lib/retro_hex_chat_web/site/pages/archive_day.html.heex:49
-#, elixir-autogen, elixir-format
-msgid "Later →"
-msgstr "Berikutnya →"
-
-#: lib/retro_hex_chat_web/site/pages/archive_day.html.heex:42
+#: lib/retro_hex_chat_web/site/pages/archive_day.html.heex:36
 #, elixir-autogen, elixir-format
 msgid "Pages of this day"
 msgstr "Halaman tanggal ini"
-
-#: lib/retro_hex_chat_web/site/pages/archive_day.html.heex:46
-#, elixir-autogen, elixir-format
-msgid "← Earlier"
-msgstr "← Sebelumnya"
 
 #: lib/retro_hex_chat_web/site/pages/features.ex:83
 #: lib/retro_hex_chat_web/site/pages/games.ex:73
@@ -3232,3 +3205,13 @@ msgstr "Semua orang di saluran dapat berjalan-jalan di dalamnya bersama-sama."
 #, elixir-autogen, elixir-format
 msgid "Walk with the arrow keys, WASD or the pad on the screen. Press Enter to write a message."
 msgstr "Berjalan dengan tombol panah, WASD atau pad di layar. Tekan Enter untuk menulis pesan."
+
+#: lib/retro_hex_chat_web/site/pages/archive_day.html.heex:41
+#, elixir-autogen, elixir-format
+msgid "Earlier"
+msgstr "Sebelumnya"
+
+#: lib/retro_hex_chat_web/site/pages/archive_day.html.heex:45
+#, elixir-autogen, elixir-format
+msgid "Later"
+msgstr "Berikutnya"

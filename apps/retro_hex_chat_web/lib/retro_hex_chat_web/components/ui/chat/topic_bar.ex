@@ -33,6 +33,11 @@ defmodule RetroHexChatWeb.Components.UI.TopicBar do
   attr :channel_name, :string, default: nil
   attr :locale, :string, default: nil, doc: "the language the channel is spoken in"
   attr :category, :string, default: nil, doc: "what the channel is about"
+
+  attr :heading_id, :string,
+    default: nil,
+    doc: "makes the name and topic the page's heading, under this id, where the bar heads a page"
+
   attr :class, :string, default: nil
   attr :rest, :global
 
@@ -54,17 +59,23 @@ defmodule RetroHexChatWeb.Components.UI.TopicBar do
     >
       <.topic_icon variant={@variant} />
 
-      <.channel_badges
-        :if={@variant == "channel"}
-        category={@category}
-        locale={@locale}
-        class="shrink-0"
-      />
-      <span :if={@channel_name} class="font-bold shrink-0">{@channel_name}</span>
+      <.dynamic_tag
+        tag_name={if @heading_id, do: "h1", else: "span"}
+        id={@heading_id}
+        class="contents"
+      >
+        <.channel_badges
+          :if={@variant == "channel"}
+          category={@category}
+          locale={@locale}
+          class="shrink-0"
+        />
+        <span :if={@channel_name} class="font-bold shrink-0">{@channel_name}</span>
 
-      <span class="flex-1 truncate text-muted-foreground">
-        {if @topic == "", do: dgettext("chat", "No topic set"), else: @topic}
-      </span>
+        <span class="flex-1 truncate text-muted-foreground">
+          {if @topic == "", do: dgettext("chat", "No topic set"), else: @topic}
+        </span>
+      </.dynamic_tag>
 
       <.badge :for={mode <- @mode_badges} variant="outline" class="text-[10px] px-1 py-0 shrink-0">
         {mode}

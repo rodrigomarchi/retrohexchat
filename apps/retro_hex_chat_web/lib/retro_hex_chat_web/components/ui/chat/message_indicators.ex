@@ -52,6 +52,23 @@ defmodule RetroHexChatWeb.Components.UI.MessageIndicators do
     """
   end
 
+  @doc "Renders an (attachment) note, for a line whose file is not shown where it is read."
+  attr :class, :any, default: nil
+  attr :rest, :global
+
+  @spec attachment_placeholder(map()) :: Phoenix.LiveView.Rendered.t()
+  def attachment_placeholder(assigns) do
+    ~H"""
+    <span
+      class={classes(["italic text-muted-foreground", @class])}
+      data-testid="attachment-placeholder"
+      {@rest}
+    >
+      {dgettext("chat", "(attachment)")}
+    </span>
+    """
+  end
+
   @doc """
   Renders the "N replies" a message collected, which opens its thread.
 

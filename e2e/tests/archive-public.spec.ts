@@ -46,6 +46,10 @@ test("a channel opens its archive, and closing it takes the pages down (PW20)", 
   await shot(page, "archive-switch-on");
 
   await chat.sendMessage("said after the switch, and published");
+  await chat.sendMessage("/me reads the day back from the archive");
+  await chat.sendMessage(
+    "a longer line, so the page shows how the conversation wraps when somebody writes more than one row of text in it",
+  );
 
   const open = await reader.goto(`/archive/${slug}`);
   expect(open?.status()).toBe(200);
@@ -61,6 +65,11 @@ test("a channel opens its archive, and closing it takes the pages down (PW20)", 
     "said before the switch",
   );
   await shot(reader, "archive-day");
+
+  // The same page on a phone, where the window fills the screen.
+  await reader.setViewportSize({ width: 390, height: 844 });
+  await shot(reader, "archive-day-phone");
+  await reader.setViewportSize({ width: 1280, height: 720 });
 
   // Switching it off takes the pages down.
   await page.getByTestId("cc-archive-toggle").click();

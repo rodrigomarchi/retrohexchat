@@ -1,28 +1,32 @@
-<section id="archive-index" class="p-retro-8" aria-labelledby="archive-heading">
-  <h1 id="archive-heading" class="text-sm font-bold mb-2">
-    <%!-- The language the founder says the room speaks, ahead of the
-          heading that opens with its name, the way a nickname's is. --%>
-    <.channel_badges category={@channel_category} locale={@channel_locale} class="mr-1" />
-    {dgettext("landing", "%{channel} archive", channel: @channel)}
-  </h1>
-  <p class="text-sm mb-4">
-    {dgettext(
-      "landing",
-      "Everything said here since the channel opened its archive, one page per day. Nothing from before it was opened is published."
-    )}
-  </p>
+<section id="archive-index" class="flex h-full min-h-0 flex-col" aria-labelledby="archive-heading">
+  <.topic_bar
+    heading_id="archive-heading"
+    channel_name={@channel}
+    topic={dgettext("chat", "Archive")}
+    locale={@channel_locale}
+    category={@channel_category}
+    class="shrink-0"
+  />
 
-  <ul class="space-y-1" data-testid="archive-days">
-    <li :for={day <- @days} class="text-sm">
-      <.link patch={~p"/archive/#{@slug}/#{day}"} class="underline">
-        {day}
+  <.chat_message_list fill testid="archive-index-list">
+    <.chat_message type="system" source={dgettext("chat", "System")}>
+      * {dgettext(
+        "landing",
+        "Everything said here since the channel opened its archive, one page per day. Nothing from before it was opened is published."
+      )}
+    </.chat_message>
+
+    <%!-- The rows the help window's tree lists its topics in, inside the
+          conversation's own field, each a link so a robot follows it to the day. --%>
+    <nav class="mt-retro-4" data-testid="archive-days">
+      <.link :for={day <- @days} patch={~p"/archive/#{@slug}/#{day}"} class="block no-underline">
+        <.tree_view_item>
+          <:icon><Icons.icon_tab_channel class="h-3 w-3" /></:icon>
+          <span class="tabular-nums">{day}</span>
+        </.tree_view_item>
       </.link>
-    </li>
-  </ul>
+    </nav>
+  </.chat_message_list>
 
-  <p class="text-sm mt-4">
-    <.link patch={~p"/join/#{@slug}"} class="underline">
-      {dgettext("landing", "Join %{channel}", channel: @channel)}
-    </.link>
-  </p>
+  <.archive_actions slug={@slug} channel={@channel} />
 </section>

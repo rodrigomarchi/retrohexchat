@@ -1130,7 +1130,7 @@ msgstr "添加忽略失敗: %{reason}"
 msgid "Failed to add perform command: %{reason}"
 msgstr "添加執行命令失敗 : %{reason}"
 
-#: lib/retro_hex_chat_web/components/ui/chat/message_indicators.ex:106
+#: lib/retro_hex_chat_web/components/ui/chat/message_indicators.ex:123
 #, elixir-autogen, elixir-format
 msgid "Failed to send. Click to retry"
 msgstr "發送失敗 。 單擊重試"
@@ -1523,7 +1523,7 @@ msgstr "未選擇聯繫人"
 msgid "No results"
 msgstr "無結果"
 
-#: lib/retro_hex_chat_web/components/ui/chat/topic_bar.ex:66
+#: lib/retro_hex_chat_web/components/ui/chat/topic_bar.ex:76
 #: lib/retro_hex_chat_web/controllers/help_content/ui_topic_bar.html.heex:20
 #: lib/retro_hex_chat_web/live/chat_live/ui_actions/core.ex:109
 #, elixir-autogen, elixir-format
@@ -1858,6 +1858,7 @@ msgstr "符號"
 #: lib/retro_hex_chat_web/live/chat_live/helpers/messages.ex:91
 #: lib/retro_hex_chat_web/live/chat_live/helpers/messages.ex:116
 #: lib/retro_hex_chat_web/live/chat_live/window_registry.ex:393
+#: lib/retro_hex_chat_web/site/pages/archive_index.html.heex:12
 #, elixir-autogen, elixir-format
 msgid "System"
 msgstr "系統"
@@ -3444,6 +3445,7 @@ msgid "User list rail"
 msgstr "使用者清單側欄"
 
 #: lib/retro_hex_chat_web/components/ui/chat/attachment_tile.ex:376
+#: lib/retro_hex_chat_web/site/pages/archive_index.html.heex:5
 #, elixir-autogen, elixir-format
 msgid "Archive"
 msgstr "壓縮檔"
@@ -4022,7 +4024,7 @@ msgstr "%{nickname} 關閉了這個頻道的公開封存。那些頁面已經無
 msgid "%{nickname} opened this channel's public archive. Everything said from now on is published at a page anybody can read."
 msgstr "%{nickname} 開啟了這個頻道的公開封存。從現在起說的每一句話都會發布在任何人都能讀到的頁面上。"
 
-#: lib/retro_hex_chat_web/components/ui/chat/message_indicators.ex:82
+#: lib/retro_hex_chat_web/components/ui/chat/message_indicators.ex:99
 #, elixir-autogen, elixir-format
 msgid "%{count} reply"
 msgid_plural "%{count} replies"
@@ -6039,3 +6041,8 @@ msgstr "找不到信件 。"
 #, elixir-autogen, elixir-format
 msgid "React to %{nick}"
 msgstr "回應 %{nick} 的訊息"
+
+#: lib/retro_hex_chat_web/components/ui/chat/message_indicators.ex:67
+#, elixir-autogen, elixir-format
+msgid "(attachment)"
+msgstr "(附件)"

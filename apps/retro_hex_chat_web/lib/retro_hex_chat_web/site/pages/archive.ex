@@ -29,11 +29,21 @@ defmodule RetroHexChatWeb.Site.Pages.Archive do
     router: RetroHexChatWeb.Router,
     statics: RetroHexChatWeb.static_paths()
 
-  import RetroHexChatWeb.Components.UI.NickFlag
+  import RetroHexChatWeb.Components.UI.Button
+  import RetroHexChatWeb.Components.UI.ChatMessage
+
+  import RetroHexChatWeb.Components.UI.MessageIndicators,
+    only: [attachment_placeholder: 1, edited_tag: 1]
+
+  import RetroHexChatWeb.Components.UI.Toolbar
+  import RetroHexChatWeb.Components.UI.TopicBar
+  import RetroHexChatWeb.Components.UI.TreeView, only: [tree_view_item: 1]
 
   alias RetroHexChat.Accounts.NickLocales
   alias RetroHexChat.Chat.Archive
+  alias RetroHexChatWeb.App.ChatHelpers
   alias RetroHexChatWeb.BuildInfo
+  alias RetroHexChatWeb.Icons
   alias RetroHexChatWeb.SEO
 
   @impl RetroHexChatWeb.Site.Page
@@ -167,7 +177,7 @@ defmodule RetroHexChatWeb.Site.Pages.Archive do
   defp common(data) do
     Map.merge(data, %{
       windows: [
-        Window.new("archive", data.channel, :icon_channels,
+        Window.new("archive", data.channel, :icon_chat,
           width: 760,
           height: 560,
           body: body(data.kind)
@@ -185,18 +195,32 @@ defmodule RetroHexChatWeb.Site.Pages.Archive do
   defp body(:index), do: &archive_index/1
   defp body(:day), do: &archive_day/1
 
-  @doc "The day a reader is most likely to want: the newest one."
-  @spec newest_day([String.t()]) :: String.t() | nil
-  def newest_day([day | _rest]), do: day
-  def newest_day(_days), do: nil
+  # The archive is drawn with the chat's own pieces — the topic bar, the
+  # conversation's white field and rows, a toolbar of buttons where the
+  # composer would be — so a page read from a search result is the channel,
+  # not a page about it.
+  attr :channel, :string, required: true
+  attr :slug, :string, required: true
+  slot :inner_block
 
-  @doc "`14:03` in UTC — the archive has no reader whose zone it could know."
-  @spec at(DateTime.t()) :: String.t()
-  def at(%DateTime{} = datetime) do
-    datetime
-    |> DateTime.to_time()
-    |> Calendar.strftime("%H:%M")
+  defp archive_actions(assigns) do
+    ~H"""
+    <.toolbar class="shrink-0 flex-wrap gap-retro-4 p-[2px]" data-testid="archive-actions">
+      {render_slot(@inner_block)}
+      <.button patch={~p"/join/#{@slug}"} size="sm" class="ml-auto">
+        <:icon><Icons.icon_btn_join class="h-4 w-4" /></:icon>
+        {dgettext("landing", "Join %{channel}", channel: @channel)}
+      </.button>
+    </.toolbar>
+    """
   end
+
+  # The archive has no reader whose zone it could know, so it speaks UTC.
+  @utc "Etc/UTC"
+
+  defp at(datetime), do: ChatHelpers.format_time(datetime, :hh_mm, @utc)
+  defp at_full(datetime), do: ChatHelpers.format_datetime(datetime, @utc)
+  defp edited_at(datetime), do: ChatHelpers.format_edit_timestamp(datetime, @utc)
 
   # `after` is the id of the line the page follows. Anything that is not a
   # whole number is a URL nobody was ever given.

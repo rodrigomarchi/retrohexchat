@@ -1146,7 +1146,7 @@ msgstr "Toevoegen negeren is mislukt: %{reason}"
 msgid "Failed to add perform command: %{reason}"
 msgstr "Toevoegen van opdracht is mislukt: %{reason}"
 
-#: lib/retro_hex_chat_web/components/ui/chat/message_indicators.ex:106
+#: lib/retro_hex_chat_web/components/ui/chat/message_indicators.ex:123
 #, elixir-autogen, elixir-format
 msgid "Failed to send. Click to retry"
 msgstr "Verzenden mislukt. Klik om opnieuw te proberen"
@@ -1544,7 +1544,7 @@ msgstr "Geen contact geselecteerd"
 msgid "No results"
 msgstr "Geen resultaten"
 
-#: lib/retro_hex_chat_web/components/ui/chat/topic_bar.ex:66
+#: lib/retro_hex_chat_web/components/ui/chat/topic_bar.ex:76
 #: lib/retro_hex_chat_web/controllers/help_content/ui_topic_bar.html.heex:20
 #: lib/retro_hex_chat_web/live/chat_live/ui_actions/core.ex:109
 #, elixir-autogen, elixir-format
@@ -1883,6 +1883,7 @@ msgstr "Symbolen"
 #: lib/retro_hex_chat_web/live/chat_live/helpers/messages.ex:91
 #: lib/retro_hex_chat_web/live/chat_live/helpers/messages.ex:116
 #: lib/retro_hex_chat_web/live/chat_live/window_registry.ex:393
+#: lib/retro_hex_chat_web/site/pages/archive_index.html.heex:12
 #, elixir-autogen, elixir-format
 msgid "System"
 msgstr "Systeem"
@@ -3474,6 +3475,7 @@ msgid "User list rail"
 msgstr "Gebruikerslijstbalk"
 
 #: lib/retro_hex_chat_web/components/ui/chat/attachment_tile.ex:376
+#: lib/retro_hex_chat_web/site/pages/archive_index.html.heex:5
 #, elixir-autogen, elixir-format
 msgid "Archive"
 msgstr "Archief"
@@ -4061,7 +4063,7 @@ msgstr ""
 "%{nickname} heeft het openbare archief van dit kanaal geopend. Alles wat "
 "vanaf nu wordt gezegd, verschijnt op een pagina die iedereen kan lezen."
 
-#: lib/retro_hex_chat_web/components/ui/chat/message_indicators.ex:82
+#: lib/retro_hex_chat_web/components/ui/chat/message_indicators.ex:99
 #, elixir-autogen, elixir-format
 msgid "%{count} reply"
 msgid_plural "%{count} replies"
@@ -6087,3 +6089,8 @@ msgstr "Bericht niet gevonden."
 #, elixir-autogen, elixir-format
 msgid "React to %{nick}"
 msgstr "Reageren op het bericht van %{nick}"
+
+#: lib/retro_hex_chat_web/components/ui/chat/message_indicators.ex:67
+#, elixir-autogen, elixir-format
+msgid "(attachment)"
+msgstr "(bijlage)"

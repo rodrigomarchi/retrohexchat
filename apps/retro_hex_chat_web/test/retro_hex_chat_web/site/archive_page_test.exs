@@ -90,7 +90,6 @@ defmodule RetroHexChatWeb.Site.ArchivePageTest do
       body = build_conn() |> get(~p"/archive/#{ctx.slug}/#{day_of(said)}") |> html_response(200)
 
       assert body =~ "attachment"
-      refute body =~ ~s(<span class="break-words">\n            \n            \n          </span>)
     end
 
     # What a search result shows is the words somebody wrote, so a line with
@@ -160,7 +159,7 @@ defmodule RetroHexChatWeb.Site.ArchivePageTest do
 
       body = build_conn() |> get(~p"/archive/#{ctx.slug}/#{ctx.date}") |> html_response(200)
 
-      assert body =~ ~r/data-locale="fr".*?&lt;Speaker&gt;/s
+      assert body =~ ~r/data-locale="fr".*?data-nick="Speaker"/s
     end
 
     test "a flag that changed gets a different etag", ctx do
