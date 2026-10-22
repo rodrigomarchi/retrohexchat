@@ -90,6 +90,27 @@ test("the arcade is listed under its engines on every page that lists it (PW22)"
   await expect(arcade.getByTestId("game-card-scummvm-bass")).toBeVisible();
   await shot(page, "games-catalogue-arcade");
 
+  // Taller than the desk, the window stops at its bottom and its body
+  // scrolls to the last card, rather than the frame growing past the cap
+  // and the last rows being cut off with nothing to scroll.
+  const body = arcade.locator(".site-window__body");
+  const [windowBottom, deskBottom] = await arcade.evaluate((el) => [
+    el.getBoundingClientRect().bottom,
+    el.closest(".desktop__workspace")!.getBoundingClientRect().bottom,
+  ]);
+  expect(windowBottom).toBeLessThanOrEqual(deskBottom + 1);
+  await body.hover();
+  await page.mouse.wheel(0, 10_000);
+  await expect
+    .poll(() =>
+      body.evaluate(
+        (el) => el.scrollTop + el.clientHeight >= el.scrollHeight - 1,
+      ),
+    )
+    .toBe(true);
+  await expect(arcade.getByTestId("game-card-scummvm-soltys")).toBeInViewport();
+  await shot(page, "games-catalogue-arcade-scrolled");
+
   await page.goto("/features");
   await bringForward(page, "site-solo-arcade");
   const summary = page.getByTestId("site-window-solo-arcade");

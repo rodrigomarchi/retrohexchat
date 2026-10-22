@@ -135,7 +135,7 @@ make e2e.catalog.check    # verify it is current (also runs in make ci)
 ## Coverage
 
 - **257 spec files** under `e2e/tests/`.
-- **644 Playwright `test()` cases**.
+- **645 Playwright `test()` cases**.
 - **588 documented flows**, 587 done, 1 not done.
 - **Every spec documents its own flows.**
 
@@ -824,7 +824,7 @@ Grouped by section. Every row comes from an `@flow` line in the spec itself.
 | PW1 | The home loads the desktop's small first-paint bundle, README.txt on the desk opens in place, and a desktop icon moves to another page without a page load | `tests/landing-public.spec.ts` | done |
 | PW2 | On a phone a page shows its first window, and the taskbar's group for the page brings any other window of it to the screen | `tests/landing-public.spec.ts` | done |
 | PW3 | The Start menu reaches every page as windows of the desktop, and closing a page's last window hands the address back to the chat | `tests/landing-public.spec.ts` | done |
-| PW4 | The sign-in window and help wear the same phone chrome (one case per window with a menu bar) | `tests/shell-chrome-parity.spec.ts` | done |
+| PW4 | Help wears the phone chrome of a window with a menu bar; the sign-in window carries no menu bar | `tests/shell-chrome-parity.spec.ts` | done |
 | PW5 | A rail button opens the shared drawer on its own section | `tests/shell-chrome-parity.spec.ts` | done |
 | PW6 | A page of the site carries no menu bar of its own; Start ▸ Open the app is there and inert on the desktop | `tests/shell-chrome-parity.spec.ts` | done |
 | PW7 | The showcase drives the page as a window and carries the layout across pages | `tests/showcase-desktop.spec.ts` | done |

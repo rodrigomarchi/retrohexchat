@@ -66,8 +66,17 @@
   height: var(--win-h, auto);
   z-index: var(--win-z, 10);
   /* An auto-height window is as tall as what it holds — but never taller than
-     the desk it sits on. Past that the body (overflow-auto) scrolls instead. */
+     the desk it sits on. Past that the body (overflow-auto) scrolls instead.
+     The frame's `h-full` has no height to resolve against in an auto-height
+     window, so the window is a flex column: the frame shrinks to the cap and
+     its body takes the scroll, rather than the frame growing past the cap
+     and its last rows being cut off with nothing to scroll. */
   max-height: calc(100% - var(--win-y, 24px));
+  display: flex;
+  flex-direction: column;
+}
+.desktop-window > * {
+  min-height: 0;
 }
 .desktop-window--pending {
   position: absolute;

@@ -1,6 +1,6 @@
 /**
  * @section PW - Public Pages, Landing, And Showcase
- * @flow PW4 [done] The sign-in window and help wear the same phone chrome (one case per window with a menu bar)
+ * @flow PW4 [done] Help wears the phone chrome of a window with a menu bar; the sign-in window carries no menu bar
  * @flow PW5 [done] A rail button opens the shared drawer on its own section
  * @flow PW6 [done] A page of the site carries no menu bar of its own; Start ▸ Open the app is there and inert on the desktop
  *
@@ -26,12 +26,6 @@ import { shot } from "../helpers/screenshots";
 const PHONE = { width: 390, height: 780 };
 
 const SHELLS = [
-  {
-    name: "connect",
-    path: "/connect",
-    rail: 2,
-    window: "document-window-connect",
-  },
   { name: "help", path: "/chat/help", rail: 4, window: "document-window-help" },
 ];
 
@@ -90,6 +84,16 @@ test.describe("Shell chrome parity", () => {
       expect(failures).toEqual([]);
     });
   }
+
+  // Signing in is one narrow column with nothing to choose from a menu, so
+  // its window carries none — on a phone no more than on a desktop.
+  test("the sign-in window carries no menu bar", async ({ page }) => {
+    await page.goto("/connect");
+    const connect = page.getByTestId("document-window-connect");
+    await expect(connect).toBeVisible();
+    await expect(connect.locator("[data-window-menu]")).toHaveCount(0);
+    await expect(page.locator(".desktop--stacked")).toHaveCount(1);
+  });
 
   test("a rail button opens the shared drawer on its own section", async ({
     page,

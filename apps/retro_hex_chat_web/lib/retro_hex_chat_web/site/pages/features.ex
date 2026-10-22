@@ -76,7 +76,7 @@ defmodule RetroHexChatWeb.Site.Pages.Features do
            status: [{:check, dgettext("landing", "34 games")}]
          ),
          Window.new("solo-arcade", dgettext("landing", "Arcade"), :icon_game_arcade,
-           width: 460,
+           width: 700,
            body: &solo_arcade/1,
            status: [
              {:check,
