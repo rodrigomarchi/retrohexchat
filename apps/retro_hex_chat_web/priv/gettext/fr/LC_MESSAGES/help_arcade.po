@@ -3544,7 +3544,7 @@ msgstr "%{arcade} exécute des jeux d'action classiques et des aventures directe
 msgid "No downloads, no plugins: the game engine runs natively in your browser."
 msgstr "Pas de téléchargements, pas de plugins: le moteur de jeu fonctionne nativement dans votre navigateur."
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_arcade_channels.html.heex:61
+#: lib/retro_hex_chat_web/controllers/help_content/feature_arcade_channels.html.heex:72
 #, elixir-autogen, elixir-format
 msgid "Anybody can read an arcade channel and the page of the game without an account. Playing and talking need a registered nickname that you have identified. A visitor who presses %{play} sees the sign-in window, and comes back to the same game."
 msgstr "N'importe qui peut lire un canal d'arcade et la page du jeu sans compte. Jouer et parler ont besoin d'un surnom enregistré que vous avez identifié. Un visiteur qui appuie sur %{play} voit la fenêtre de connexion, et revient au même jeu."
@@ -3554,7 +3554,7 @@ msgstr "N'importe qui peut lire un canal d'arcade et la page du jeu sans compte.
 msgid "Arcade Channels"
 msgstr "Canaux de l'Arcade"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_arcade_channels.html.heex:53
+#: lib/retro_hex_chat_web/controllers/help_content/feature_arcade_channels.html.heex:64
 #, elixir-autogen, elixir-format
 msgid "Beside the details of the game, its page shows who played it lately, who started it most often this week and of all time, how many times you started it, and the last lines of its channel."
 msgstr "Beside the details of the game, its page shows who played it lately, who started it most often this week and of all time, how many times you started it, and the last lines of its channel."
@@ -3574,7 +3574,7 @@ msgstr "Chaque joueur est annoncé au plus une fois toutes les cinq minutes dans
 msgid "Every arcade game has its own channel, named like its page: %{channel} for %{game}. The people who play it talk there. The channel %{feed} hears about every arcade game."
 msgstr "Chaque jeu d'arcade a son propre canal, nommé comme sa page: %{channel} pour %{game}. Les gens qui y jouent parlent. Le canal %{feed} entend parler de chaque jeu d'arcade."
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_arcade_channels.html.heex:73
+#: lib/retro_hex_chat_web/controllers/help_content/feature_arcade_channels.html.heex:84
 #, elixir-autogen, elixir-format
 msgid "Game Channels"
 msgstr "Canaux de jeu"
@@ -3589,7 +3589,7 @@ msgstr "Une fois par jour, le robot dit aussi combien de fois le jeu a commencé
 msgid "Only the start is announced. The game runs in a tab of its own, so the chat never knows a score or how long you played."
 msgstr "Seul le départ est annoncé. Le jeu fonctionne dans un onglet de son propre, de sorte que le chat ne connaît jamais un score ou combien de temps vous avez joué."
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_arcade_channels.html.heex:69
+#: lib/retro_hex_chat_web/controllers/help_content/feature_arcade_channels.html.heex:80
 #, elixir-autogen, elixir-format
 msgid "See also:"
 msgstr "Voir aussi:"
@@ -3599,17 +3599,17 @@ msgstr "Voir aussi:"
 msgid "The bot that announces"
 msgstr "Le robot qui annonce"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_arcade_channels.html.heex:47
+#: lib/retro_hex_chat_web/controllers/help_content/feature_arcade_channels.html.heex:58
 #, elixir-autogen, elixir-format
 msgid "The name of the game opens the page of the game, on top of the chat."
 msgstr "Le nom du jeu ouvre la page du jeu, en plus du chat."
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_arcade_channels.html.heex:51
+#: lib/retro_hex_chat_web/controllers/help_content/feature_arcade_channels.html.heex:62
 #, elixir-autogen, elixir-format
 msgid "The page of the game"
 msgstr "La page du jeu"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_arcade_channels.html.heex:45
+#: lib/retro_hex_chat_web/controllers/help_content/feature_arcade_channels.html.heex:56
 #, elixir-autogen, elixir-format
 msgid "The strip under the topic"
 msgstr "La bande sous le sujet"
@@ -3619,7 +3619,7 @@ msgstr "La bande sous le sujet"
 msgid "When somebody presses %{play} on an arcade game, a bot says so in the channel of the game and in %{feed}. A card under the line has %{play}, to start the same game, and in %{feed} the name of the channel of the game."
 msgstr "Quand quelqu'un presse %{play} sur un jeu d'arcade, un bot le dit dans le canal du jeu et dans %{feed}. Une carte sous la ligne a %{play}, pour démarrer le même jeu, et dans %{feed} le nom du canal du jeu."
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_arcade_channels.html.heex:59
+#: lib/retro_hex_chat_web/controllers/help_content/feature_arcade_channels.html.heex:70
 #, elixir-autogen, elixir-format
 msgid "Who can"
 msgstr "Qui peut"
@@ -3629,7 +3629,7 @@ msgstr "Qui peut"
 msgid "An admin enables the announcements with %{command}."
 msgstr "Un administrateur permet les annonces avec %{command}."
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_arcade_channels.html.heex:48
+#: lib/retro_hex_chat_web/controllers/help_content/feature_arcade_channels.html.heex:59
 #, elixir-autogen, elixir-format
 msgid "%{play} opens the game."
 msgstr "%{play} ouvre le jeu."
@@ -3638,3 +3638,18 @@ msgstr "%{play} ouvre le jeu."
 #, elixir-autogen, elixir-format
 msgid "Only channels with this bot get the announcements."
 msgstr "Seuls les canaux avec ce bot obtiennent les annonces."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_arcade_channels.html.heex:45
+#, elixir-autogen, elixir-format
+msgid "Asking the bot"
+msgstr "Demander au bot"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_arcade_channels.html.heex:51
+#, elixir-autogen, elixir-format
+msgid "Type %{command} in the channel to see the controls again."
+msgstr "Tapez %{command} dans le canal pour revoir les commandes."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_arcade_channels.html.heex:47
+#, elixir-autogen, elixir-format
+msgid "When you join the channel of an arcade game, the bot privately tells you what the game is and how to control it."
+msgstr "Lorsque vous rejoignez le canal d'un jeu d'arcade, le bot vous dit en privé ce qu'est le jeu et comment le contrôler."

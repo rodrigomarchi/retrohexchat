@@ -1,6 +1,6 @@
 /**
  * @section N - P2P, File, Call, Game
- * @flow N72 [done] An arcade game's channel names its game under the topic; Play opens the in-app Arcade on that game, and starting it is said by Pixel in the game's channel and in #arcade, each line with its card
+ * @flow N72 [done] An arcade game's channel names its game under the topic and Pixel tells whoever arrives what the game is and its controls; Play opens the in-app Arcade on that game, and starting it is said by Pixel in the game's channel and in #arcade, each line with its card
  * @flow N73 [done] An arcade game's page is its home: Play with the game's sheet, who played it lately, who plays it most, the reader's own plays and the channel's last lines
  * @flow N74 [done] A visitor reads an arcade game's channel and its page; pressing Play opens the sign-in window, which returns to the same game
  *
@@ -57,6 +57,10 @@ test.describe("Arcade channels", () => {
       await expect(bar).toBeVisible();
       await expect(bar).toContainText(GAME_NAME);
       await expect(ana.page.getByTestId("game-channel-lfg")).toHaveCount(0);
+      // Pixel tells whoever arrives what the game is and how to control it.
+      await expect(
+        ana.chat.messageRowByText(`${GAME_NAME} controls:`).first(),
+      ).toBeVisible();
       await shot(ana.page, "arcade-channel-open");
       await shot(bar, "arcade-channel-bar");
 

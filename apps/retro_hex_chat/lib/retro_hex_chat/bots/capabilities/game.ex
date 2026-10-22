@@ -19,8 +19,10 @@ defmodule RetroHexChat.Bots.Capabilities.Game do
     already in the room is told again the next time they arrive;
   - `!ranking`, `!challenge`, `!recent` and `!howto` are answered in the room;
   - a room nothing has been said in yet gets one line saying what it is for,
-    when the bot comes into it, so nobody opens it to a blank page. That line
-    is all an arcade game's room gets: it has no ledger to ask about.
+    when the bot comes into it, so nobody opens it to a blank page.
+
+  An arcade game's room gets what the game is and its controls, on arrival, as its
+  opening line and to `!howto`; it keeps no score, so nothing else.
   """
   @behaviour RetroHexChat.Bots.Capability
 

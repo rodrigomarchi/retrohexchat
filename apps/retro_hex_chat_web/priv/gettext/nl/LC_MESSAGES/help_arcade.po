@@ -3459,7 +3459,7 @@ msgstr "%{arcade} draait klassieke actiegames en avonturen direct in uw browser 
 msgid "No downloads, no plugins: the game engine runs natively in your browser."
 msgstr "Geen downloads, geen plugins: de game engine draait in uw browser."
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_arcade_channels.html.heex:61
+#: lib/retro_hex_chat_web/controllers/help_content/feature_arcade_channels.html.heex:72
 #, elixir-autogen, elixir-format
 msgid "Anybody can read an arcade channel and the page of the game without an account. Playing and talking need a registered nickname that you have identified. A visitor who presses %{play} sees the sign-in window, and comes back to the same game."
 msgstr "Iedereen kan lezen een arcade kanaal en de pagina van het spel zonder een account. Spelen en praten hebben een geregistreerde bijnaam nodig die je hebt geïdentificeerd. Een bezoeker die op %{play} drukt ziet het aanmeldvenster, en komt terug naar hetzelfde spel."
@@ -3469,7 +3469,7 @@ msgstr "Iedereen kan lezen een arcade kanaal en de pagina van het spel zonder ee
 msgid "Arcade Channels"
 msgstr "Arcade-kanalen"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_arcade_channels.html.heex:53
+#: lib/retro_hex_chat_web/controllers/help_content/feature_arcade_channels.html.heex:64
 #, elixir-autogen, elixir-format
 msgid "Beside the details of the game, its page shows who played it lately, who started it most often this week and of all time, how many times you started it, and the last lines of its channel."
 msgstr "Naast de details van het spel, laat de pagina zien wie het speelde de laatste tijd, die begon het meest vaak deze week en aller tijden, hoe vaak je begon, en de laatste lijnen van zijn kanaal."
@@ -3489,7 +3489,7 @@ msgstr "Elke speler wordt in elk spel maximaal om de vijf minuten aangekondigd."
 msgid "Every arcade game has its own channel, named like its page: %{channel} for %{game}. The people who play it talk there. The channel %{feed} hears about every arcade game."
 msgstr "Elk arcade spel heeft zijn eigen kanaal, genoemd als zijn pagina: %{channel} voor %{game}. De mensen die het spelen praten daar. Het kanaal %{feed} hoort over elk arcadespel."
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_arcade_channels.html.heex:73
+#: lib/retro_hex_chat_web/controllers/help_content/feature_arcade_channels.html.heex:84
 #, elixir-autogen, elixir-format
 msgid "Game Channels"
 msgstr "Spelkanalen"
@@ -3504,7 +3504,7 @@ msgstr "Eenmaal per dag zegt de bot ook hoe vaak het spel werd gestart de dag er
 msgid "Only the start is announced. The game runs in a tab of its own, so the chat never knows a score or how long you played."
 msgstr "Alleen het begin wordt aangekondigd. Het spel draait in een tabblad van zijn eigen, zodat de chat nooit weet een score of hoe lang je gespeeld."
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_arcade_channels.html.heex:69
+#: lib/retro_hex_chat_web/controllers/help_content/feature_arcade_channels.html.heex:80
 #, elixir-autogen, elixir-format
 msgid "See also:"
 msgstr "Zie ook:"
@@ -3514,17 +3514,17 @@ msgstr "Zie ook:"
 msgid "The bot that announces"
 msgstr "De bot die aankondigt"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_arcade_channels.html.heex:47
+#: lib/retro_hex_chat_web/controllers/help_content/feature_arcade_channels.html.heex:58
 #, elixir-autogen, elixir-format
 msgid "The name of the game opens the page of the game, on top of the chat."
 msgstr "De naam van het spel opent de pagina van het spel, bovenop de chat."
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_arcade_channels.html.heex:51
+#: lib/retro_hex_chat_web/controllers/help_content/feature_arcade_channels.html.heex:62
 #, elixir-autogen, elixir-format
 msgid "The page of the game"
 msgstr "De pagina van het spel"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_arcade_channels.html.heex:45
+#: lib/retro_hex_chat_web/controllers/help_content/feature_arcade_channels.html.heex:56
 #, elixir-autogen, elixir-format
 msgid "The strip under the topic"
 msgstr "De strip onder het onderwerp"
@@ -3534,7 +3534,7 @@ msgstr "De strip onder het onderwerp"
 msgid "When somebody presses %{play} on an arcade game, a bot says so in the channel of the game and in %{feed}. A card under the line has %{play}, to start the same game, and in %{feed} the name of the channel of the game."
 msgstr "Als iemand op %{play} drukt op een arcadespel, zegt een bot dat in het kanaal van het spel en in %{feed}. Een kaart onder de lijn heeft %{play}, om hetzelfde spel te starten, en in %{feed} de naam van het kanaal van het spel."
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_arcade_channels.html.heex:59
+#: lib/retro_hex_chat_web/controllers/help_content/feature_arcade_channels.html.heex:70
 #, elixir-autogen, elixir-format
 msgid "Who can"
 msgstr "Wie kan"
@@ -3544,7 +3544,7 @@ msgstr "Wie kan"
 msgid "An admin enables the announcements with %{command}."
 msgstr "Een beheerder maakt de aankondigingen met %{command} mogelijk."
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_arcade_channels.html.heex:48
+#: lib/retro_hex_chat_web/controllers/help_content/feature_arcade_channels.html.heex:59
 #, elixir-autogen, elixir-format
 msgid "%{play} opens the game."
 msgstr "%{play} opent het spel."
@@ -3553,3 +3553,18 @@ msgstr "%{play} opent het spel."
 #, elixir-autogen, elixir-format
 msgid "Only channels with this bot get the announcements."
 msgstr "Alleen kanalen met deze bot krijgen de aankondigingen."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_arcade_channels.html.heex:45
+#, elixir-autogen, elixir-format
+msgid "Asking the bot"
+msgstr "Vragen aan de bot"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_arcade_channels.html.heex:51
+#, elixir-autogen, elixir-format
+msgid "Type %{command} in the channel to see the controls again."
+msgstr "Typ %{command} in het kanaal om de knoppen weer te zien."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_arcade_channels.html.heex:47
+#, elixir-autogen, elixir-format
+msgid "When you join the channel of an arcade game, the bot privately tells you what the game is and how to control it."
+msgstr "Wanneer je lid wordt van het kanaal van een arcade spel, vertelt de bot je privé wat het spel is en hoe het te controleren."

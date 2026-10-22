@@ -482,12 +482,14 @@ defmodule RetroHexChatWeb.GamesCatalogTest do
                  ~s([data-testid="game-home-play"] [data-testid="game-controls"])
                )
 
-      refute json_ld(document, "VideoGame")["interactionStatistic"]
+      # The times it was started stand for the matches a Retro Game counts.
+      assert json_ld(document, "VideoGame")["interactionStatistic"]["userInteractionCount"] == 3
     end
 
     test "a game nobody played says so", %{conn: conn} do
       document = document(conn, "/games/scummvm-soltys")
       assert [_] = Floki.find(document, ~s([data-testid="arcade-home-recent-none"]))
+      refute json_ld(document, "VideoGame")["interactionStatistic"]
     end
 
     test "the You tab counts the reader's own plays, for a proved nickname only", %{conn: conn} do

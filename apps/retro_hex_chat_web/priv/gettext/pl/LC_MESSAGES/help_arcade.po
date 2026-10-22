@@ -3463,7 +3463,7 @@ msgstr "%{arcade} uruchamia klasyczne gry akcji i przygody bezpośrednio w przeg
 msgid "No downloads, no plugins: the game engine runs natively in your browser."
 msgstr "Brak plików do pobrania, brak wtyczek: silnik gry działa naiwnie w przeglądarce."
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_arcade_channels.html.heex:61
+#: lib/retro_hex_chat_web/controllers/help_content/feature_arcade_channels.html.heex:72
 #, elixir-autogen, elixir-format
 msgid "Anybody can read an arcade channel and the page of the game without an account. Playing and talking need a registered nickname that you have identified. A visitor who presses %{play} sees the sign-in window, and comes back to the same game."
 msgstr "Każdy może przeczytać kanał arcade i stronę gry bez konta. Granie i gadanie potrzebuje zarejestrowanej ksywki, którą zidentyfikowaliście. Gość, który naciska %{play} widzi znak w oknie i wraca do tej samej gry."
@@ -3473,7 +3473,7 @@ msgstr "Każdy może przeczytać kanał arcade i stronę gry bez konta. Granie i
 msgid "Arcade Channels"
 msgstr "Kanały Arcade"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_arcade_channels.html.heex:53
+#: lib/retro_hex_chat_web/controllers/help_content/feature_arcade_channels.html.heex:64
 #, elixir-autogen, elixir-format
 msgid "Beside the details of the game, its page shows who played it lately, who started it most often this week and of all time, how many times you started it, and the last lines of its channel."
 msgstr "Poza szczegółami gry, jego strona pokazuje, kto grał go ostatnio, kto zaczął go najczęściej w tym tygodniu i przez cały czas, ile razy zaczął go, i ostatnie linie jego kanału."
@@ -3493,7 +3493,7 @@ msgstr "Każdy gracz jest ogłaszany co najwyżej raz na pięć minut w każdej 
 msgid "Every arcade game has its own channel, named like its page: %{channel} for %{game}. The people who play it talk there. The channel %{feed} hears about every arcade game."
 msgstr "Każda gra arcade ma swój własny kanał, nazwany jak jego strona: %{channel} dla %{game}. Ludzie, którzy tam grają, rozmawiają. Kanał %{feed} słyszy o każdej grze arcade."
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_arcade_channels.html.heex:73
+#: lib/retro_hex_chat_web/controllers/help_content/feature_arcade_channels.html.heex:84
 #, elixir-autogen, elixir-format
 msgid "Game Channels"
 msgstr "Kanały gier"
@@ -3508,7 +3508,7 @@ msgstr "Raz dziennie bot mówi również, ile razy gra została rozpoczęta dzie
 msgid "Only the start is announced. The game runs in a tab of its own, so the chat never knows a score or how long you played."
 msgstr "Tylko początek jest ogłoszony. Gra działa w zakładce własnej, więc czat nigdy nie wie wynik lub jak długo grał."
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_arcade_channels.html.heex:69
+#: lib/retro_hex_chat_web/controllers/help_content/feature_arcade_channels.html.heex:80
 #, elixir-autogen, elixir-format
 msgid "See also:"
 msgstr "Patrz również:"
@@ -3518,17 +3518,17 @@ msgstr "Patrz również:"
 msgid "The bot that announces"
 msgstr "Bot, który ogłasza"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_arcade_channels.html.heex:47
+#: lib/retro_hex_chat_web/controllers/help_content/feature_arcade_channels.html.heex:58
 #, elixir-autogen, elixir-format
 msgid "The name of the game opens the page of the game, on top of the chat."
 msgstr "Nazwa gry otwiera stronę gry, na szczycie czatu."
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_arcade_channels.html.heex:51
+#: lib/retro_hex_chat_web/controllers/help_content/feature_arcade_channels.html.heex:62
 #, elixir-autogen, elixir-format
 msgid "The page of the game"
 msgstr "Strona gry"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_arcade_channels.html.heex:45
+#: lib/retro_hex_chat_web/controllers/help_content/feature_arcade_channels.html.heex:56
 #, elixir-autogen, elixir-format
 msgid "The strip under the topic"
 msgstr "Pasek pod tematem"
@@ -3538,7 +3538,7 @@ msgstr "Pasek pod tematem"
 msgid "When somebody presses %{play} on an arcade game, a bot says so in the channel of the game and in %{feed}. A card under the line has %{play}, to start the same game, and in %{feed} the name of the channel of the game."
 msgstr "Kiedy ktoś naciska %{play} na grę arcade, bot mówi tak w kanale gry i w %{feed}. Karta pod linią ma %{play}, aby rozpocząć tę samą grę, a w %{feed} nazwa kanału gry."
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_arcade_channels.html.heex:59
+#: lib/retro_hex_chat_web/controllers/help_content/feature_arcade_channels.html.heex:70
 #, elixir-autogen, elixir-format
 msgid "Who can"
 msgstr "Kto może"
@@ -3548,7 +3548,7 @@ msgstr "Kto może"
 msgid "An admin enables the announcements with %{command}."
 msgstr "Administrator umożliwia ogłoszenie z %{command}."
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_arcade_channels.html.heex:48
+#: lib/retro_hex_chat_web/controllers/help_content/feature_arcade_channels.html.heex:59
 #, elixir-autogen, elixir-format
 msgid "%{play} opens the game."
 msgstr "%{play} otwiera grę."
@@ -3557,3 +3557,18 @@ msgstr "%{play} otwiera grę."
 #, elixir-autogen, elixir-format
 msgid "Only channels with this bot get the announcements."
 msgstr "Tylko kanały z tym botem dostają ogłoszenia."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_arcade_channels.html.heex:45
+#, elixir-autogen, elixir-format
+msgid "Asking the bot"
+msgstr "Pytania bot"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_arcade_channels.html.heex:51
+#, elixir-autogen, elixir-format
+msgid "Type %{command} in the channel to see the controls again."
+msgstr "Wpisz %{command} w kanale, aby zobaczyć sterowniki ponownie."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_arcade_channels.html.heex:47
+#, elixir-autogen, elixir-format
+msgid "When you join the channel of an arcade game, the bot privately tells you what the game is and how to control it."
+msgstr "Kiedy dołączysz do kanału gry arcade, bot prywatnie mówi, czym jest gra i jak ją kontrolować."

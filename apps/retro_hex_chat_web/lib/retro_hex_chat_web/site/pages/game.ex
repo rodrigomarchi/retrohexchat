@@ -256,7 +256,9 @@ defmodule RetroHexChatWeb.Site.Pages.Game do
   defp matches_played(%{kind: :multiplayer, id: game_id}),
     do: Results.count_since(game_id, ~U[2000-01-01 00:00:00Z])
 
-  defp matches_played(_arcade_game), do: nil
+  # An arcade game keeps no matches; the times it was started stand for them.
+  defp matches_played(%{kind: :arcade, id: game_id}),
+    do: Arcade.play_count_since(game_id, ~U[2000-01-01 00:00:00Z])
 
   # A visitor's Play asks for an account first, naming games, and comes back
   # to the game once they have one. A member whose nickname is not identified

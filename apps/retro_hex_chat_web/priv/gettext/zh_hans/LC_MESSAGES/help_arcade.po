@@ -2980,7 +2980,7 @@ msgstr "%{arcade}通过WebAssembly在您的浏览器中直接运行经典的动�
 msgid "No downloads, no plugins: the game engine runs natively in your browser."
 msgstr "没有下载,没有插件:游戏引擎在您的浏览器中以本土运行."
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_arcade_channels.html.heex:61
+#: lib/retro_hex_chat_web/controllers/help_content/feature_arcade_channels.html.heex:72
 #, elixir-autogen, elixir-format
 msgid "Anybody can read an arcade channel and the page of the game without an account. Playing and talking need a registered nickname that you have identified. A visitor who presses %{play} sees the sign-in window, and comes back to the same game."
 msgstr "任何人都可以在没有帐号的情况下读取一个街机频道和游戏的页面. 玩耍和说话需要你确认的注册昵称 按%{play}的访客看到登录窗口,回到同一个游戏."
@@ -2990,7 +2990,7 @@ msgstr "任何人都可以在没有帐号的情况下读取一个街机频道和
 msgid "Arcade Channels"
 msgstr "街机频道"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_arcade_channels.html.heex:53
+#: lib/retro_hex_chat_web/controllers/help_content/feature_arcade_channels.html.heex:64
 #, elixir-autogen, elixir-format
 msgid "Beside the details of the game, its page shows who played it lately, who started it most often this week and of all time, how many times you started it, and the last lines of its channel."
 msgstr "除了游戏的细节外,它的页面还展示了最近谁播放,谁最经常本周和所有时间开始游戏,你开始游戏的次数,以及其频道的最后几行."
@@ -3010,7 +3010,7 @@ msgstr "Each player is announced at most once every five minutes in each game."
 msgid "Every arcade game has its own channel, named like its page: %{channel} for %{game}. The people who play it talk there. The channel %{feed} hears about every arcade game."
 msgstr "每款街机游戏都有自己的频道,命名方式与其页面相同:%{channel}为%{game}. 演奏它的人在那里说话。 %{feed}频道听到每场街机游戏."
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_arcade_channels.html.heex:73
+#: lib/retro_hex_chat_web/controllers/help_content/feature_arcade_channels.html.heex:84
 #, elixir-autogen, elixir-format
 msgid "Game Channels"
 msgstr "游戏频道"
@@ -3025,7 +3025,7 @@ msgstr "一天一次的机器人也说游戏在前一天发动了多少次,以�
 msgid "Only the start is announced. The game runs in a tab of its own, so the chat never knows a score or how long you played."
 msgstr "只宣布开始. 游戏在自己的标签中运行,因此聊天中永远不知道一个分数,也不知道你玩了多久."
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_arcade_channels.html.heex:69
+#: lib/retro_hex_chat_web/controllers/help_content/feature_arcade_channels.html.heex:80
 #, elixir-autogen, elixir-format
 msgid "See also:"
 msgstr "另见:"
@@ -3035,17 +3035,17 @@ msgstr "另见:"
 msgid "The bot that announces"
 msgstr "宣布的机器人"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_arcade_channels.html.heex:47
+#: lib/retro_hex_chat_web/controllers/help_content/feature_arcade_channels.html.heex:58
 #, elixir-autogen, elixir-format
 msgid "The name of the game opens the page of the game, on top of the chat."
 msgstr "游戏名称打开游戏的页面,放在聊天的顶部."
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_arcade_channels.html.heex:51
+#: lib/retro_hex_chat_web/controllers/help_content/feature_arcade_channels.html.heex:62
 #, elixir-autogen, elixir-format
 msgid "The page of the game"
 msgstr "游戏的页面"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_arcade_channels.html.heex:45
+#: lib/retro_hex_chat_web/controllers/help_content/feature_arcade_channels.html.heex:56
 #, elixir-autogen, elixir-format
 msgid "The strip under the topic"
 msgstr "专题下的条条"
@@ -3055,7 +3055,7 @@ msgstr "专题下的条条"
 msgid "When somebody presses %{play} on an arcade game, a bot says so in the channel of the game and in %{feed}. A card under the line has %{play}, to start the same game, and in %{feed} the name of the channel of the game."
 msgstr "当有人在街机游戏上按下%{play}时,一个机器人在游戏频道和%{feed}中都这么说. 线路下的一张卡片有%{play},以开始同一游戏,在%{feed}中,游戏频道的名称."
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_arcade_channels.html.heex:59
+#: lib/retro_hex_chat_web/controllers/help_content/feature_arcade_channels.html.heex:70
 #, elixir-autogen, elixir-format
 msgid "Who can"
 msgstr "谁能"
@@ -3065,7 +3065,7 @@ msgstr "谁能"
 msgid "An admin enables the announcements with %{command}."
 msgstr "一个管理员可以使用 %{command} 发布通知。"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_arcade_channels.html.heex:48
+#: lib/retro_hex_chat_web/controllers/help_content/feature_arcade_channels.html.heex:59
 #, elixir-autogen, elixir-format
 msgid "%{play} opens the game."
 msgstr "%{play}开启游戏."
@@ -3074,3 +3074,18 @@ msgstr "%{play}开启游戏."
 #, elixir-autogen, elixir-format
 msgid "Only channels with this bot get the announcements."
 msgstr "只有有这个机器人的频道才能收到通知"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_arcade_channels.html.heex:45
+#, elixir-autogen, elixir-format
+msgid "Asking the bot"
+msgstr "问机器人"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_arcade_channels.html.heex:51
+#, elixir-autogen, elixir-format
+msgid "Type %{command} in the channel to see the controls again."
+msgstr "在频道中键入%{command}以再次看到控制器."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_arcade_channels.html.heex:47
+#, elixir-autogen, elixir-format
+msgid "When you join the channel of an arcade game, the bot privately tells you what the game is and how to control it."
+msgstr "当加入街机游戏的频道时,机器人私下告诉你游戏是什么,如何控制."

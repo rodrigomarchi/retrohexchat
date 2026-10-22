@@ -101,16 +101,29 @@ defmodule RetroHexChat.Games.RoomFactsTest do
   end
 
   describe "an arcade game's room" do
-    test "opens with what the game is and how to start it, and nothing else" do
+    test "opens with what the game is, its keys and how to start it" do
       intro = RoomFacts.intro("#doom-shareware")
       assert intro =~ "DOOM: Knee-Deep in the Dead: The original Episode 1 of DOOM"
+      assert intro =~ "DOOM: Knee-Deep in the Dead controls: WASD move, Mouse aim"
       assert intro =~ "Press Play under the topic to start it in your browser."
       refute intro =~ "!ranking"
-
       assert RoomFacts.room?("#doom-shareware")
-      assert RoomFacts.welcome("#doom-shareware") == []
-      assert RoomFacts.answer("ranking", "#doom-shareware") == :unknown
-      assert RoomFacts.answer("howto", "#doom-shareware") == :unknown
+    end
+
+    test "tells whoever arrives the game and its keys, and answers !howto with them" do
+      assert [about, keys] = RoomFacts.welcome("#scummvm-bass")
+      assert about =~ "Beneath a Steel Sky:"
+      assert keys =~ "Beneath a Steel Sky controls: "
+      assert keys =~ "Press Play under the topic"
+
+      assert {:ok, howto} = RoomFacts.answer("howto", "#scummvm-bass")
+      assert howto =~ "Beneath a Steel Sky controls: "
+    end
+
+    test "has no score to ask about" do
+      for question <- ~w(ranking challenge recent) do
+        assert RoomFacts.answer(question, "#doom-shareware") == :unknown
+      end
     end
 
     test "the arcade's own room is no game's room" do

@@ -7,9 +7,10 @@ defmodule RetroHexChat.Games.RoomFacts do
   against anybody for a score or co-op game. The challenge is the week's, as
   the game's page and the Monday announcement name it.
 
-  An arcade game's room has one fact: the line that opens it while nothing
-  has been said there yet. An arcade game has no ledger to ask about, and its
-  room's greeting is the arcade bot's own.
+  An arcade game's room has fewer facts: what the game is, its controls and how to
+  start it — told privately to whoever arrives, said once in a room nothing has
+  been said in yet, and answered to `!howto`. An arcade game keeps no score, so
+  there is no ranking, challenge or latest match to ask about.
 
   Every line is English, the language the game rooms are spoken in, whoever
   reads it. A channel that is none of these rooms has no facts.
@@ -55,7 +56,10 @@ defmodule RetroHexChat.Games.RoomFacts do
         :feed ->
           [feed_about(), latest_line()]
 
-        _arcade_or_none ->
+        {:arcade, game} ->
+          [about(game), Enum.join([controls(game), how_to_start_arcade()], " ")]
+
+        :none ->
           []
       end
     end)
@@ -76,7 +80,7 @@ defmodule RetroHexChat.Games.RoomFacts do
           feed_about()
 
         {:arcade, game} ->
-          Enum.join([about(game), how_to_start_arcade()], " ")
+          Enum.join([about(game), controls(game), how_to_start_arcade()], " ")
 
         :none ->
           nil
@@ -97,7 +101,10 @@ defmodule RetroHexChat.Games.RoomFacts do
       :feed when command in @commands ->
         {:ok, in_english(fn -> answer_in(command, :feed) end)}
 
-      _arcade_or_none ->
+      {:arcade, game} when command == "howto" ->
+        {:ok, in_english(fn -> "#{controls(game)} #{how_to_start_arcade()}" end)}
+
+      _other_question_or_room ->
         :unknown
     end
   end
@@ -150,6 +157,13 @@ defmodule RetroHexChat.Games.RoomFacts do
       dgettext(
         "games",
         "Press Play under the topic to start, or Find a partner to play with someone here."
+      )
+
+  defp controls(game),
+    do:
+      dgettext("games", "%{game} controls: %{controls}.",
+        game: game.name,
+        controls: game.controls
       )
 
   defp how_to_start_arcade,

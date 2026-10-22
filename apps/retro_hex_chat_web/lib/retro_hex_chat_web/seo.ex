@@ -284,8 +284,8 @@ defmodule RetroHexChatWeb.SEO do
   A game's page as `VideoGame` structured data. Its `url` and `inLanguage` are
   the page's own: on `/pt-BR/games/x` they name that page, not the English one.
   There is no rating to offer, so the markup describes rather than competes for
-  a rich result. `plays` is how many matches have been played, when the game
-  keeps count.
+  a rich result. `plays` is how many matches have been played — for an arcade
+  game, how many times it was started — when the game keeps count.
   """
   @spec video_game_json_ld(map(), String.t(), non_neg_integer() | nil) :: String.t()
   def video_game_json_ld(game, path, plays \\ nil) do

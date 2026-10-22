@@ -42,6 +42,17 @@
   </li>
 </ul>
 
+<.help_h4 icon={:icon_chat}>{dgettext("help_arcade", "Asking the bot")}</.help_h4>
+<p>
+  {dgettext(
+    "help_arcade",
+    "When you join the channel of an arcade game, the bot privately tells you what the game is and how to control it."
+  )}
+  {dgettext("help_arcade", "Type %{command} in the channel to see the controls again.",
+    command: "!howto"
+  )}
+</p>
+
 <.help_h4 icon={:icon_joystick}>{dgettext("help_arcade", "The strip under the topic")}</.help_h4>
 <p>
   {dgettext("help_arcade", "The name of the game opens the page of the game, on top of the chat.")}

@@ -3495,7 +3495,7 @@ msgstr "%{arcade} запускает классические экшн-игры 
 msgid "No downloads, no plugins: the game engine runs natively in your browser."
 msgstr "Никаких загрузок, никаких плагинов: игровой движок работает в вашем браузере."
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_arcade_channels.html.heex:61
+#: lib/retro_hex_chat_web/controllers/help_content/feature_arcade_channels.html.heex:72
 #, elixir-autogen, elixir-format
 msgid "Anybody can read an arcade channel and the page of the game without an account. Playing and talking need a registered nickname that you have identified. A visitor who presses %{play} sees the sign-in window, and comes back to the same game."
 msgstr "Любой желающий может прочитать аркадный канал и страницу игры без учетной записи. Игры и разговоры нуждаются в зарегистрированном прозвище, которое вы определили. Посетитель, который нажимает %{play}, видит окно входа и возвращается в ту же игру."
@@ -3505,7 +3505,7 @@ msgstr "Любой желающий может прочитать аркадны
 msgid "Arcade Channels"
 msgstr "Каналы аркады"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_arcade_channels.html.heex:53
+#: lib/retro_hex_chat_web/controllers/help_content/feature_arcade_channels.html.heex:64
 #, elixir-autogen, elixir-format
 msgid "Beside the details of the game, its page shows who played it lately, who started it most often this week and of all time, how many times you started it, and the last lines of its channel."
 msgstr "Помимо деталей игры, на ее странице показано, кто играл в нее в последнее время, кто ее начинал чаще всего на этой неделе и всех времен, сколько раз вы ее запускали, и последние строки ее канала."
@@ -3525,7 +3525,7 @@ msgstr "Каждый игрок объявляется не реже одног�
 msgid "Every arcade game has its own channel, named like its page: %{channel} for %{game}. The people who play it talk there. The channel %{feed} hears about every arcade game."
 msgstr "Каждая аркадная игра имеет свой канал, названный как ее страница: %{channel} для %{game}. Люди, которые там играют, говорят. Канал %{feed} слышит о каждой аркадной игре."
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_arcade_channels.html.heex:73
+#: lib/retro_hex_chat_web/controllers/help_content/feature_arcade_channels.html.heex:84
 #, elixir-autogen, elixir-format
 msgid "Game Channels"
 msgstr "Игровые каналы"
@@ -3540,7 +3540,7 @@ msgstr "Один раз в день бот также говорит, сколь
 msgid "Only the start is announced. The game runs in a tab of its own, so the chat never knows a score or how long you played."
 msgstr "Объявлен только старт. Игра работает на собственной вкладке, поэтому чат никогда не знает счет или как долго вы играли."
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_arcade_channels.html.heex:69
+#: lib/retro_hex_chat_web/controllers/help_content/feature_arcade_channels.html.heex:80
 #, elixir-autogen, elixir-format
 msgid "See also:"
 msgstr "Смотрите также:"
@@ -3550,17 +3550,17 @@ msgstr "Смотрите также:"
 msgid "The bot that announces"
 msgstr "Бот, который объявляет"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_arcade_channels.html.heex:47
+#: lib/retro_hex_chat_web/controllers/help_content/feature_arcade_channels.html.heex:58
 #, elixir-autogen, elixir-format
 msgid "The name of the game opens the page of the game, on top of the chat."
 msgstr "Название игры открывает страницу игры, поверх чата."
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_arcade_channels.html.heex:51
+#: lib/retro_hex_chat_web/controllers/help_content/feature_arcade_channels.html.heex:62
 #, elixir-autogen, elixir-format
 msgid "The page of the game"
 msgstr "Страница игры"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_arcade_channels.html.heex:45
+#: lib/retro_hex_chat_web/controllers/help_content/feature_arcade_channels.html.heex:56
 #, elixir-autogen, elixir-format
 msgid "The strip under the topic"
 msgstr "Полоса под темой"
@@ -3570,7 +3570,7 @@ msgstr "Полоса под темой"
 msgid "When somebody presses %{play} on an arcade game, a bot says so in the channel of the game and in %{feed}. A card under the line has %{play}, to start the same game, and in %{feed} the name of the channel of the game."
 msgstr "Когда кто-то нажимает %{play} на аркадную игру, бот говорит об этом в канале игры и в %{feed}. Карта под линией имеет %{play}, чтобы запустить ту же игру, а в %{feed} название канала игры."
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_arcade_channels.html.heex:59
+#: lib/retro_hex_chat_web/controllers/help_content/feature_arcade_channels.html.heex:70
 #, elixir-autogen, elixir-format
 msgid "Who can"
 msgstr "Кто может"
@@ -3580,7 +3580,7 @@ msgstr "Кто может"
 msgid "An admin enables the announcements with %{command}."
 msgstr "Администратор позволяет делать объявления с помощью %{command}."
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_arcade_channels.html.heex:48
+#: lib/retro_hex_chat_web/controllers/help_content/feature_arcade_channels.html.heex:59
 #, elixir-autogen, elixir-format
 msgid "%{play} opens the game."
 msgstr "%{play} открывает игру."
@@ -3589,3 +3589,18 @@ msgstr "%{play} открывает игру."
 #, elixir-autogen, elixir-format
 msgid "Only channels with this bot get the announcements."
 msgstr "Только каналы с этим ботом получают объявления."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_arcade_channels.html.heex:45
+#, elixir-autogen, elixir-format
+msgid "Asking the bot"
+msgstr "Спросить бота"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_arcade_channels.html.heex:51
+#, elixir-autogen, elixir-format
+msgid "Type %{command} in the channel to see the controls again."
+msgstr "Введите %{command} в канал, чтобы снова увидеть элементы управления."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_arcade_channels.html.heex:47
+#, elixir-autogen, elixir-format
+msgid "When you join the channel of an arcade game, the bot privately tells you what the game is and how to control it."
+msgstr "Когда вы присоединяетесь к каналу аркадной игры, бот в частном порядке рассказывает вам, что такое игра и как ее контролировать."

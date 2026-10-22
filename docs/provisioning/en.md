@@ -719,8 +719,9 @@ included, is joined explicitly.
 # ── Pixel — #arcade, #retro and the arcade rooms ─────────
 # game_announce on gives Pixel the `game` capability: whoever starts an arcade
 # game is said under its name in that game's room and in #arcade, and each
-# room's day in the daily digest. A room nothing was said in yet gets one line
-# saying which game it is about. In #retro it has nothing to announce.
+# room's day in the daily digest. In a game's room it also tells whoever
+# arrives what the game is and its controls, answers !howto with them, and opens a
+# room nothing was said in yet with the same. In #retro it has nothing to say.
 /bot create Pixel Arcade Operator and Retro Gaming Enthusiast
 /bot set Pixel language en
 /bot set Pixel game_announce on
@@ -730,6 +731,7 @@ included, is joined explicitly.
 /bot set Pixel greeting_delivery private_notice
 /bot set Pixel greeter_repeat_window 43200
 /bot set Pixel public_greeting \c12\b[Pixel]\o \b{nickname}\o just hit the arcade.
+/bot set Pixel visitor_greeting \c12\b[Pixel]\o Welcome, \b{nickname}\o! You're watching {channel} live. \c10Sign up\o to play the arcade's classics in your browser and to talk here.
 /bot set Pixel onboarding_1 \c14\b[{botname}]\o \c10/join #lobby\o enters a room · \c10/msg nick\o speaks privately · \c10/nick name\o changes yours.
 /bot set Pixel onboarding_2 \c14\b[{botname}]\o \c10/part\o leaves a room · \c10/help\o lists every command.
 /bot set Pixel farewell none

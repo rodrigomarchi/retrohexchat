@@ -538,80 +538,84 @@ msgid "This week's challenge is %{game}. Win the most matches against other play
 msgstr "Die Herausforderung dieser Woche ist %{game}. Gewinnen Sie die meisten Spiele gegen andere Spieler."
 
 #: lib/retro_hex_chat/chat/help_topics/features.ex:2137
-#: lib/retro_hex_chat/chat/help_topics/features.ex:3350
 #, elixir-autogen, elixir-format
 msgctxt "game"
 msgid "Play"
 msgstr "Spielen"
 
-#: lib/retro_hex_chat/games/room_facts.ex:234
+#: lib/retro_hex_chat/games/room_facts.ex:248
 #, elixir-autogen, elixir-format
 msgid "%{nickname} (%{count} win)"
 msgid_plural "%{nickname} (%{count} wins)"
 msgstr[0] "%{nickname} (%{count} gewinnen)"
 msgstr[1] "%{nickname} (%{count} gewinnt)"
 
-#: lib/retro_hex_chat/games/room_facts.ex:160
+#: lib/retro_hex_chat/games/room_facts.ex:174
 #, elixir-autogen, elixir-format
 msgid "Ask %{commands} for more."
 msgstr "Fragen Sie %{commands} nach mehr."
 
-#: lib/retro_hex_chat/games/room_facts.ex:182
+#: lib/retro_hex_chat/games/room_facts.ex:196
 #, elixir-autogen, elixir-format
 msgid "Latest: %{line}"
 msgstr "Neueste: %{line}"
 
-#: lib/retro_hex_chat/games/room_facts.ex:181
+#: lib/retro_hex_chat/games/room_facts.ex:195
 #, elixir-autogen, elixir-format
 msgid "No public match has been played yet."
 msgstr "Es wurde noch kein öffentliches Spiel gespielt."
 
-#: lib/retro_hex_chat/games/room_facts.ex:117
+#: lib/retro_hex_chat/games/room_facts.ex:124
 #, elixir-autogen, elixir-format
 msgid "No public match of %{game} yet."
 msgstr "Noch kein öffentliches Spiel von %{game}."
 
-#: lib/retro_hex_chat/games/room_facts.ex:193
+#: lib/retro_hex_chat/games/room_facts.ex:207
 #, elixir-autogen, elixir-format
 msgid "Nobody leads it yet."
 msgstr "Niemand führt es noch."
 
-#: lib/retro_hex_chat/games/room_facts.ex:150
+#: lib/retro_hex_chat/games/room_facts.ex:157
 #, elixir-autogen, elixir-format
 msgid "Press Play under the topic to start, or Find a partner to play with someone here."
 msgstr "Klicken Sie unter dem Thema zu starten, oder finden Sie einen Partner, um mit jemandem hier zu spielen."
 
-#: lib/retro_hex_chat/games/room_facts.ex:213
+#: lib/retro_hex_chat/games/room_facts.ex:227
 #, elixir-autogen, elixir-format
 msgid "%{game} has no ranking yet."
 msgstr "%{game} hat noch keine Rangliste."
 
-#: lib/retro_hex_chat/games/room_facts.ex:167
+#: lib/retro_hex_chat/games/room_facts.ex:181
 #, elixir-autogen, elixir-format
 msgid "Every notable Retro Games match is announced here when it ends."
 msgstr "Jedes bemerkenswerte Retro Games Spiel wird hier angekündigt, wenn es endet."
 
-#: lib/retro_hex_chat/games/room_facts.ex:229
+#: lib/retro_hex_chat/games/room_facts.ex:243
 #, elixir-autogen, elixir-format
 msgid "Finish a ranked match to enter it."
 msgstr "Beenden Sie eine Rangfolge, um sie einzutragen."
 
-#: lib/retro_hex_chat/games/room_facts.ex:176
+#: lib/retro_hex_chat/games/room_facts.ex:190
 #, elixir-autogen, elixir-format
 msgid "Each game also has its own room."
 msgstr "Each game also has its own room."
 
-#: lib/retro_hex_chat/games/room_facts.ex:196
+#: lib/retro_hex_chat/games/room_facts.ex:210
 #, elixir-autogen, elixir-format
 msgid "%{player} leads it."
 msgstr "%{player} führt es."
 
-#: lib/retro_hex_chat/games/room_facts.ex:228
+#: lib/retro_hex_chat/games/room_facts.ex:242
 #, elixir-autogen, elixir-format
 msgid "Win a match against another player to enter it."
 msgstr "Gewinnen Sie ein Spiel gegen einen anderen Spieler, um es einzugeben."
 
-#: lib/retro_hex_chat/games/room_facts.ex:156
+#: lib/retro_hex_chat/games/room_facts.ex:170
 #, elixir-autogen, elixir-format
 msgid "Press Play under the topic to start it in your browser."
 msgstr "Press Play unter dem Thema, um es in Ihrem Browser zu starten."
+
+#: lib/retro_hex_chat/games/room_facts.ex:164
+#, elixir-autogen, elixir-format
+msgid "%{game} controls: %{controls}."
+msgstr "%{game}-Steuerelemente: %{controls}."
