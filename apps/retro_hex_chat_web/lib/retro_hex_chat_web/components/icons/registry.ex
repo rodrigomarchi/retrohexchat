@@ -282,6 +282,7 @@ defmodule RetroHexChatWeb.Icons.Registry do
     {:icon_btn_help_topics, RetroHexChatWeb.Icons.Alerts},
 
     # Symbols
+    {:icon_add_reaction, RetroHexChatWeb.Icons.Symbols},
     {:icon_dollar, RetroHexChatWeb.Icons.Symbols},
     {:icon_chart_bars, RetroHexChatWeb.Icons.Symbols},
     {:icon_star, RetroHexChatWeb.Icons.Symbols},

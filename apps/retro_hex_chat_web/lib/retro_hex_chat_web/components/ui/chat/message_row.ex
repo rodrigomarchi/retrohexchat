@@ -224,18 +224,6 @@ defmodule RetroHexChatWeb.Components.UI.MessageRow do
             avatar={@show_avatars && Map.get(@msg, :avatar)}
             layout={card_layout(@msg)}
           >
-            <%!-- On the head line of every stored message, on every screen:
-                  the head has room to its right, and the picks open in the
-                  browser, so reaching them costs no round trip. A row that
-                  failed to send has no id to react to. --%>
-            <:actions :if={reactable?(@msg)}>
-              <.message_reaction_picker
-                message_id={@msg.id}
-                source={Map.get(@msg, :source)}
-                author={@msg.author}
-                on_toggle="toggle_reaction"
-              />
-            </:actions>
             <span :if={is_nil(result_card(@msg, @strip_formatting))}>
               {raw(formatted_content(@msg, @strip_formatting))}
             </span>
@@ -262,13 +250,17 @@ defmodule RetroHexChatWeb.Components.UI.MessageRow do
               target={Map.get(@msg, :target, "")}
               on_retry="retry_message"
             />
-            <%!-- The cheapest answer there is, under the line it answers. The
-                  strip draws nothing when nobody has reacted. --%>
+            <%!-- The cheapest answer there is, under the line it answers: the
+                  chips, then the smiley that adds one, in the place the next
+                  one will take. A row that failed to send has no id to react
+                  to, so it gets no smiley. --%>
             <.message_reactions
               message_id={@msg.id}
               reactions={Map.get(@msg, :reactions)}
               source={Map.get(@msg, :source)}
               viewer={@viewer}
+              pickable={reactable?(@msg)}
+              author={@msg.author}
               on_toggle="toggle_reaction"
             />
             <%!-- What the line collected, said once under it. The replies stay

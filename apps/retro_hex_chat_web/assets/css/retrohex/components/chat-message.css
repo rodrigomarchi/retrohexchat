@@ -353,42 +353,50 @@
   @apply mt-1 flex flex-wrap items-center gap-x-2 gap-y-1;
 }
 
-/* The smiley that opens the picks rides the right end of the head line on
-   every screen, so reacting never depends on a hover a phone does not have.
-   Floated, not flexed: the head is inline flow (see above), and a float is
-   how an inline line gives up its right edge without growing a row. */
-.chat-message__actions {
-  float: right;
-  margin-left: 6px;
-}
-
-/* The head contains its float, so a trigger taller than the line pushes the
-   body down instead of narrowing it. */
-.chat-message__head:has(> .chat-message__actions) {
-  display: flow-root;
-}
-
+/* The smiley that adds a reaction ends the strip, in the place the next chip
+   will take. Grey at rest so a column of them does not shout; on hover it goes
+   dark and hops a pixel, which is what says "this is pressable" here without
+   drawing a frame. */
 .message-react-trigger {
   @apply inline-flex cursor-pointer items-center justify-center text-muted-foreground;
   width: 20px;
   height: 18px;
 }
 
-/* A finger needs more than a 14px glyph to land on. The negative bottom margin
-   hands the extra height back below the line, so the target grows without
-   growing the line or reaching into the row above. */
-@media (pointer: coarse) {
-  .message-react-trigger {
-    width: 32px;
-    height: 26px;
-    margin-bottom: -8px;
-  }
-}
-
 .message-react-trigger:hover,
 .message-react-trigger:focus-visible,
 .message-react[open] > .message-react-trigger {
   @apply text-foreground;
+}
+
+.message-react-trigger:hover > svg {
+  animation: message-react-hop 220ms steps(2, end);
+}
+
+@keyframes message-react-hop {
+  50% {
+    transform: translateY(-1px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .message-react-trigger:hover > svg {
+    animation: none;
+  }
+}
+
+/* While the picks are open over it, they are the focus mark; the dotted
+   rectangle around the smiley underneath would only frame a covered icon. */
+.message-react[open] > .message-react-trigger {
+  outline: none;
+}
+
+/* A finger needs more than a 16px glyph to land on. */
+@media (pointer: coarse) {
+  .message-react-trigger {
+    width: 32px;
+    height: 26px;
+  }
 }
 
 .message-reaction-bar {

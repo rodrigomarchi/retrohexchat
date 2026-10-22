@@ -110,10 +110,6 @@ defmodule RetroHexChatWeb.Components.UI.ChatMessage do
   attr :class, :any, default: nil
   attr :rest, :global
   slot :inner_block, required: true
-
-  slot :actions,
-    doc: "Controls pinned to the right end of the head line, such as the reaction picker"
-
   @spec chat_message(map()) :: Phoenix.LiveView.Rendered.t()
   def chat_message(assigns) do
     assigns = assign(assigns, :stacked?, stacked?(assigns.layout, assigns.nick, assigns.type))
@@ -153,9 +149,6 @@ defmodule RetroHexChatWeb.Components.UI.ChatMessage do
         >
           {@timestamp}
         </time>
-        <div :if={@actions != []} class="chat-message__actions">
-          {render_slot(@actions)}
-        </div>
         <span :if={!@stacked?} class={["chat-message__text", message_body_class(@type)]}>
           {render_slot(@inner_block)}
         </span>

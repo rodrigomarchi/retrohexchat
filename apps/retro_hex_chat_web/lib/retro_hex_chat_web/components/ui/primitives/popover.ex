@@ -16,7 +16,9 @@ defmodule RetroHexChatWeb.Components.UI.Popover do
       later patch and so close the popover each time it was reopened.
     * **It opens where there is room.** `placement` says which edge of the
       trigger the panel hangs from; a control at the bottom of a window opens
-      upwards (`above-end`), one over a video opens centred above (`above`).
+      upwards (`above-end`), one over a video opens centred above (`above`),
+      and a row of choices that replaces its own trigger opens over it, on the
+      same line, from its left edge (`over-start`).
       Once open, the panel is pinned to the viewport from the trigger's
       position, so a scrolling strip around the trigger cannot clip it.
 
@@ -31,7 +33,7 @@ defmodule RetroHexChatWeb.Components.UI.Popover do
   """
   use RetroHexChatWeb.Component
 
-  @placements ~w(below-end below-start above-end above-start above)
+  @placements ~w(below-end below-start above-end above-start above over-start)
 
   attr :label, :string, required: true, doc: "the trigger's tooltip and accessible name"
   attr :trigger_class, :any, default: nil
@@ -101,4 +103,5 @@ defmodule RetroHexChatWeb.Components.UI.Popover do
   defp placement_class("above-end"), do: "absolute bottom-full right-0 z-50 mb-1"
   defp placement_class("above-start"), do: "absolute bottom-full left-0 z-50 mb-1"
   defp placement_class("above"), do: "absolute bottom-full left-1/2 z-50 mb-1.5 -translate-x-1/2"
+  defp placement_class("over-start"), do: "absolute left-0 top-1/2 z-50 -translate-y-1/2"
 end

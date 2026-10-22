@@ -91,6 +91,53 @@ defmodule RetroHexChatWeb.Components.UI.MessageReactionsTest do
     assert title =~ "Bo"
   end
 
+  # The smiley sits where the next reaction will appear: after the chips, and
+  # alone on a line nobody has reacted to yet.
+  describe "the strip with its smiley" do
+    test "is drawn on a line nobody reacted to yet" do
+      html = render_strip(reactions: %{}, pickable: true)
+
+      doc = Floki.parse_fragment!(html)
+
+      assert [_] = Floki.find(doc, ~s([data-testid="message-reactions-42"]))
+      assert [_] = Floki.find(doc, ~s([data-testid="message-react-trigger-42"]))
+    end
+
+    test "puts the smiley after the chips" do
+      html = render_strip(reactions: %{@thumbs => %{count: 1, actors: ["Bo"]}}, pickable: true)
+
+      testids =
+        html
+        |> Floki.parse_fragment!()
+        |> Floki.find("[data-testid]")
+        |> Enum.flat_map(&Floki.attribute(&1, "data-testid"))
+
+      chip = Enum.find_index(testids, &(&1 == "message-reaction-42-#{@thumbs}"))
+      smiley = Enum.find_index(testids, &(&1 == "message-react-trigger-42"))
+      assert chip < smiley
+    end
+
+    # A new emoji lands where the reader clicked instead of jumping into a
+    # place sorted by count.
+    test "keeps the chips in the order their emoji arrived" do
+      html =
+        render_strip(
+          reactions: %{
+            @thumbs => %{count: 3, actors: ["Ana", "Bo", "Cy"], position: 1},
+            @heart => %{count: 1, actors: ["Bo"], position: 0}
+          }
+        )
+
+      testids =
+        html
+        |> Floki.parse_fragment!()
+        |> Floki.find("button[data-testid]")
+        |> Enum.flat_map(&Floki.attribute(&1, "data-testid"))
+
+      assert testids == ["message-reaction-42-#{@heart}", "message-reaction-42-#{@thumbs}"]
+    end
+  end
+
   describe "the quick picks" do
     # The way in is in the markup of every row: a touch screen has no hover to
     # reveal it with.

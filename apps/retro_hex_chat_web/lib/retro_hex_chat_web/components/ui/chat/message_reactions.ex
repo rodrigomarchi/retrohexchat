@@ -9,14 +9,14 @@ defmodule RetroHexChatWeb.Components.UI.MessageReactions do
   emoji alone — a row of framed squares under every line is louder than the
   conversation.
 
-  The picker is a smiley at the right end of the line's head, drawn on every
-  stored message and on every screen, so reaching it needs no hover a touch
-  screen does not have.
+  The picker is a smiley at the end of the strip, drawn on every stored
+  message and on every screen, so reaching it needs no hover a touch screen does
+  not have. It sits where the next reaction will appear: the chips keep the
+  order their emoji first arrived in, so a pick lands in the smiley's place and
+  the smiley steps one along. The picks open over it, on the same line.
 
-  The strip renders only when there is something in it. A blank row under every
-  line is fifty blank rows in a page of history, and the row this sits in
-  distinguishes "no reactions" from "no reactions yet" by simply not being
-  there.
+  Without a picker (a line nobody can react to) the strip renders only when
+  there is something in it.
 
   Whether a chip is the reader's own is decided here, from the list of people
   in it, so the server stores one summary for a message instead of one per
@@ -31,7 +31,7 @@ defmodule RetroHexChatWeb.Components.UI.MessageReactions do
         on_toggle="toggle_reaction"
       />
 
-      <.message_reaction_picker message_id={42} author="Bo" on_toggle="toggle_reaction" />
+      <.message_reactions message_id={42} reactions={nil} pickable author="Bo" on_toggle="toggle_reaction" />
   """
   use RetroHexChatWeb.Component
 
@@ -66,6 +66,8 @@ defmodule RetroHexChatWeb.Components.UI.MessageReactions do
     default: nil,
     doc: "`:channel` or `:private` — the two are numbered apart, so the id alone is ambiguous"
 
+  attr :pickable, :boolean, default: false, doc: "whether the smiley that adds one is drawn"
+  attr :author, :string, default: nil, doc: "who wrote the line, for the smiley's name"
   attr :on_toggle, :any, default: nil
   attr :class, :any, default: nil
 
@@ -75,7 +77,7 @@ defmodule RetroHexChatWeb.Components.UI.MessageReactions do
 
     ~H"""
     <div
-      :if={@entries != []}
+      :if={@entries != [] or @pickable}
       class={classes(["message-reactions", @class])}
       data-testid={"message-reactions-#{@message_id}"}
     >
@@ -95,6 +97,13 @@ defmodule RetroHexChatWeb.Components.UI.MessageReactions do
         <:icon>{emoji}</:icon>
         {count}
       </.button>
+      <.message_reaction_picker
+        :if={@pickable}
+        message_id={@message_id}
+        source={@source}
+        author={@author}
+        on_toggle={@on_toggle}
+      />
     </div>
     """
   end
@@ -120,14 +129,14 @@ defmodule RetroHexChatWeb.Components.UI.MessageReactions do
     ~H"""
     <.popover
       label={picker_label(@author)}
-      placement="above-end"
+      placement="over-start"
       class={classes(["message-react", @class])}
       trigger_class="message-react-trigger"
       trigger_testid={"message-react-trigger-#{@message_id}"}
       panel_class="message-reaction-bar"
       panel_testid={"message-reaction-bar-#{@message_id}"}
     >
-      <:trigger><Icons.icon_fmt_emoji class="h-3.5 w-3.5" /></:trigger>
+      <:trigger><Icons.icon_add_reaction class="h-4 w-4" /></:trigger>
       <.button
         :for={emoji <- @quick_picks}
         variant="link"
@@ -162,14 +171,14 @@ defmodule RetroHexChatWeb.Components.UI.MessageReactions do
   defp picker_label(nil), do: dgettext("chat", "React")
   defp picker_label(author), do: dgettext("chat", "React to %{nick}", nick: author)
 
+  # In the order the emoji first arrived, so a new one appears where the smiley
+  # was rather than jumping to a place sorted by count.
   @spec entries(map() | nil) :: [{String.t(), non_neg_integer(), [String.t()]}]
   defp entries(reactions) when is_map(reactions) do
     reactions
-    |> Enum.map(fn {emoji, %{count: count} = entry} ->
-      {emoji, count, Map.get(entry, :actors, [])}
-    end)
-    |> Enum.reject(fn {_emoji, count, _actors} -> count == 0 end)
-    |> Enum.sort_by(fn {emoji, count, _actors} -> {-count, emoji} end)
+    |> Enum.reject(fn {_emoji, entry} -> entry.count == 0 end)
+    |> Enum.sort_by(fn {emoji, entry} -> {Map.get(entry, :position, :infinity), emoji} end)
+    |> Enum.map(fn {emoji, entry} -> {emoji, entry.count, Map.get(entry, :actors, [])} end)
   end
 
   defp entries(_reactions), do: []

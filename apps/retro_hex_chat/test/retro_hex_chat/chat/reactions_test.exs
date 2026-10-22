@@ -125,6 +125,19 @@ defmodule RetroHexChat.Chat.ReactionsTest do
       assert summaries[hd(ids)][@thumbs].count == 1
     end
 
+    # A new emoji lands at the end of the row, where the reader just clicked,
+    # rather than jumping into a place sorted by count.
+    test "remembers the order the emoji first arrived in", ctx do
+      {:ok, _} = Reactions.toggle(ctx.message, ctx.ana, @thumbs)
+      {:ok, _} = Reactions.toggle(ctx.message, ctx.ana, @heart)
+      {:ok, _} = Reactions.toggle(ctx.message, ctx.bo, @heart)
+
+      summary = Reactions.summary_for(ctx.message)
+
+      assert summary[@thumbs].position == 0
+      assert summary[@heart].position == 1
+    end
+
     test "says nothing about a message nobody reacted to", ctx do
       assert Reactions.summary_for_many(:message, [ctx.message.id]) == %{}
     end

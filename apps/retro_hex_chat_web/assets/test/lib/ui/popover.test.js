@@ -302,6 +302,21 @@ describe("ui/popover", () => {
       expect(panelPosition(bottom, panel, "below-start", viewport).top).toBe(780 - 4 - 120);
     });
 
+    // The reaction picks open over the smiley they replace, on its line.
+    it("opens an over-start panel over the trigger, from its left edge", () => {
+      expect(panelPosition(trigger, { width: 160, height: 30 }, "over-start", viewport)).toEqual({
+        top: 711 - 15,
+        left: 900 - 4,
+      });
+    });
+
+    it("keeps an over-start panel on screen at the right edge", () => {
+      const edge = { top: 400, bottom: 422, left: 1300, right: 1322, width: 22 };
+      expect(panelPosition(edge, { width: 160, height: 30 }, "over-start", viewport).left).toBe(
+        1366 - 160 - 4,
+      );
+    });
+
     it("keeps its own side when neither side has room", () => {
       const short = { width: 1366, height: 200 };
       const middle = { top: 60, bottom: 82, left: 900, right: 922, width: 22 };

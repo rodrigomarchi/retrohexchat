@@ -33,6 +33,8 @@ const GAP = 4;
  * geometry can be tested without a layout engine.
  */
 export function panelPosition(trigger, panel, placement, viewport) {
+  if (placement === "over-start") return overStart(trigger, panel, viewport);
+
   const fitsAbove = trigger.top - GAP - panel.height >= GAP;
   const fitsBelow = trigger.bottom + GAP + panel.height <= viewport.height - GAP;
   let above = placement.startsWith("above");
@@ -47,6 +49,21 @@ export function panelPosition(trigger, panel, placement, viewport) {
 
   left = Math.min(Math.max(left, GAP), viewport.width - panel.width - GAP);
   top = Math.min(Math.max(top, GAP), viewport.height - panel.height - GAP);
+  return { top: Math.round(top), left: Math.round(left) };
+}
+
+/**
+ * Over the trigger, on its line, from its left edge: a row of choices that
+ * takes the trigger's own place. The panel's padding is stepped back so its
+ * first choice sits where the trigger was.
+ */
+function overStart(trigger, panel, viewport) {
+  const middle = (trigger.top + trigger.bottom) / 2;
+  const top = Math.min(
+    Math.max(middle - panel.height / 2, GAP),
+    viewport.height - panel.height - GAP,
+  );
+  const left = Math.min(Math.max(trigger.left - GAP, GAP), viewport.width - panel.width - GAP);
   return { top: Math.round(top), left: Math.round(left) };
 }
 

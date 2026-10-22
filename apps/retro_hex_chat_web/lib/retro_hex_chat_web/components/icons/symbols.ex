@@ -126,6 +126,46 @@ defmodule RetroHexChatWeb.Icons.Symbols do
 
   attr :class, :string, default: nil
 
+  @doc "A smiley with a plus: add a reaction. 16×16, drawn in the text colour."
+  @spec icon_add_reaction(map()) :: Phoenix.LiveView.Rendered.t()
+  def icon_add_reaction(assigns) do
+    ~H"""
+    <svg
+      class={@class}
+      viewBox="0 0 16 16"
+      shape-rendering="crispEdges"
+      fill="currentColor"
+      aria-hidden="true"
+    >
+      <!-- Face outline -->
+      <rect x="4" y="3" width="5" height="1" />
+      <rect x="2" y="4" width="2" height="1" />
+      <rect x="9" y="4" width="2" height="1" />
+      <rect x="1" y="5" width="1" height="2" />
+      <rect x="11" y="5" width="1" height="2" />
+      <rect x="0" y="7" width="1" height="5" />
+      <rect x="12" y="7" width="1" height="5" />
+      <rect x="1" y="12" width="1" height="2" />
+      <rect x="11" y="12" width="1" height="2" />
+      <rect x="2" y="14" width="2" height="1" />
+      <rect x="9" y="14" width="2" height="1" />
+      <rect x="4" y="15" width="5" height="1" />
+      <!-- Eyes -->
+      <rect x="4" y="7" width="1" height="2" />
+      <rect x="8" y="7" width="1" height="2" />
+      <!-- Smile -->
+      <rect x="3" y="11" width="1" height="1" />
+      <rect x="9" y="11" width="1" height="1" />
+      <rect x="4" y="12" width="5" height="1" />
+      <!-- Plus -->
+      <rect x="13" y="0" width="1" height="5" />
+      <rect x="11" y="2" width="5" height="1" />
+    </svg>
+    """
+  end
+
+  attr :class, :string, default: nil
+
   @spec icon_heart(map()) :: Phoenix.LiveView.Rendered.t()
   def icon_heart(assigns) do
     ~H"""

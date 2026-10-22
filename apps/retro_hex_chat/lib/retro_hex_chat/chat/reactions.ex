@@ -31,8 +31,18 @@ defmodule RetroHexChat.Chat.Reactions do
 
   @max_distinct 20
 
-  @typedoc "What a message's reactions look like to a reader."
-  @type summary :: %{String.t() => %{count: non_neg_integer(), actors: [String.t()]}}
+  @typedoc """
+  What a message's reactions look like to a reader. `position` is the order the
+  emoji first arrived in, so a new one lands at the end of the row — where the
+  reader just clicked — instead of jumping into a sorted place.
+  """
+  @type summary :: %{
+          String.t() => %{
+            count: non_neg_integer(),
+            actors: [String.t()],
+            position: non_neg_integer()
+          }
+        }
 
   @typedoc "Which of the two message tables a reaction hangs off."
   @type kind :: :message | :private_message
@@ -175,12 +185,21 @@ defmodule RetroHexChat.Chat.Reactions do
 
   @spec group_emoji([{integer(), String.t(), String.t()}]) :: summary()
   defp group_emoji(rows) do
+    positions =
+      rows
+      |> Enum.map(fn {_parent_id, emoji, _nick} -> emoji end)
+      |> Enum.uniq()
+      |> Enum.with_index()
+      |> Map.new()
+
     rows
     |> Enum.group_by(
       fn {_parent_id, emoji, _nick} -> emoji end,
       fn {_parent_id, _emoji, nick} -> nick end
     )
-    |> Map.new(fn {emoji, actors} -> {emoji, %{count: length(actors), actors: actors}} end)
+    |> Map.new(fn {emoji, actors} ->
+      {emoji, %{count: length(actors), actors: actors, position: Map.fetch!(positions, emoji)}}
+    end)
   end
 
   @spec parent(Message.t() | PrivateMessage.t()) :: {kind(), integer()}

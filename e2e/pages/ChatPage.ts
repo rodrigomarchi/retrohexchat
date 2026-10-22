@@ -1141,7 +1141,7 @@ export class ChatPage {
 
   messageReaction(text: string, emoji: string): Locator {
     return this.messageRowByText(text)
-      .locator(`.message-reactions [data-testid$="-${emoji}"]`)
+      .locator(`.message-reactions > [data-testid$="-${emoji}"]`)
       .first();
   }
 
