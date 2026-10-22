@@ -65,50 +65,8 @@ defmodule RetroHexChat.Services.ChanExpiry do
 
   defp cleanup_channels(names) do
     names
-    |> Enum.map(&cleanup_channel/1)
+    |> Enum.map(&Queries.purge_channel_records/1)
     |> Enum.reduce(empty_cleanup(), &merge_cleanup/2)
-  end
-
-  defp cleanup_channel(channel_name) do
-    access_removed =
-      channel_name
-      |> Queries.all_access()
-      |> Enum.count(fn entry -> Queries.remove_access(channel_name, entry.nickname) == :ok end)
-
-    bans_removed =
-      channel_name
-      |> Queries.all_bans()
-      |> Enum.count(fn ban -> Queries.remove_ban(channel_name, ban.banned_nickname) == :ok end)
-
-    ban_exceptions_removed =
-      channel_name
-      |> Queries.all_ban_exceptions()
-      |> Enum.count(fn entry ->
-        Queries.remove_ban_exception(channel_name, entry.nickname) == :ok
-      end)
-
-    invite_exceptions_removed =
-      channel_name
-      |> Queries.all_invite_exceptions()
-      |> Enum.count(fn entry ->
-        Queries.remove_invite_exception(channel_name, entry.nickname) == :ok
-      end)
-
-    welcome_messages_removed =
-      if Queries.get_welcome_message(channel_name) do
-        Queries.delete_welcome_message(channel_name)
-        1
-      else
-        0
-      end
-
-    %{
-      access_removed: access_removed,
-      bans_removed: bans_removed,
-      ban_exceptions_removed: ban_exceptions_removed,
-      invite_exceptions_removed: invite_exceptions_removed,
-      welcome_messages_removed: welcome_messages_removed
-    }
   end
 
   defp empty_cleanup do

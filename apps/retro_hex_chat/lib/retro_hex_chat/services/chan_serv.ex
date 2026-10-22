@@ -201,7 +201,7 @@ defmodule RetroHexChat.Services.ChanServ do
     with :ok <- check_identified(nickname, state),
          {:ok, channel} <- find_channel_or_error(channel_name),
          :ok <- verify_founder(channel, nickname) do
-      cleanup_channel(channel_name)
+      Queries.purge_channel_records(channel_name)
       Queries.delete_registered_channel(channel)
 
       {:reply,
@@ -259,7 +259,7 @@ defmodule RetroHexChat.Services.ChanServ do
   def handle_call({:admin_drop, channel_name}, _from, state) do
     case find_channel_or_error(channel_name) do
       {:ok, channel} ->
-        cleanup_channel(channel_name)
+        Queries.purge_channel_records(channel_name)
         Queries.delete_registered_channel(channel)
 
         {:reply,
@@ -347,44 +347,6 @@ defmodule RetroHexChat.Services.ChanServ do
     else
       {:error, dgettext("services", "Only the founder can drop a channel")}
     end
-  end
-
-  defp cleanup_channel(channel_name) do
-    Enum.each(Queries.all_access(channel_name), fn entry ->
-      case Queries.remove_access(channel_name, entry.nickname) do
-        :ok ->
-          :ok
-
-        {:error, reason} ->
-          Logger.warning(
-            "Failed to remove access for #{entry.nickname} in #{channel_name}: #{inspect(reason)}"
-          )
-      end
-    end)
-
-    Enum.each(Queries.all_bans(channel_name), fn ban ->
-      case Queries.remove_ban(channel_name, ban.banned_nickname) do
-        :ok ->
-          :ok
-
-        {:error, reason} ->
-          Logger.warning(
-            "Failed to remove ban for #{ban.banned_nickname} in #{channel_name}: #{inspect(reason)}"
-          )
-      end
-    end)
-
-    cleanup_exceptions(channel_name)
-  end
-
-  defp cleanup_exceptions(channel_name) do
-    Enum.each(Queries.all_ban_exceptions(channel_name), fn entry ->
-      Queries.remove_ban_exception(channel_name, entry.nickname)
-    end)
-
-    Enum.each(Queries.all_invite_exceptions(channel_name), fn entry ->
-      Queries.remove_invite_exception(channel_name, entry.nickname)
-    end)
   end
 
   defp check_hierarchy(channel_name, requester_nick, target_level) do

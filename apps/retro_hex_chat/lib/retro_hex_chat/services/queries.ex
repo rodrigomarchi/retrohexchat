@@ -704,4 +704,40 @@ defmodule RetroHexChat.Services.Queries do
 
     :ok
   end
+
+  # ── Channel records ──────────────────────────────────────
+
+  @type purged_channel_records :: %{
+          access_removed: non_neg_integer(),
+          bans_removed: non_neg_integer(),
+          ban_exceptions_removed: non_neg_integer(),
+          invite_exceptions_removed: non_neg_integer(),
+          welcome_messages_removed: non_neg_integer()
+        }
+
+  @doc """
+  Deletes every row a registration kept for a channel: access entries, bans,
+  ban and invite exceptions, and the welcome message. Every way a registration
+  ends (a founder's drop, an admin's drop, an expiry) goes through here, so
+  none of them leaves rows behind. The registered channel row itself is left
+  to the caller.
+  """
+  @spec purge_channel_records(String.t()) :: purged_channel_records()
+  def purge_channel_records(channel_name) do
+    %{
+      access_removed: delete_for_channel(AccessListEntry, channel_name),
+      bans_removed: delete_for_channel(Ban, channel_name),
+      ban_exceptions_removed: delete_for_channel(BanException, channel_name),
+      invite_exceptions_removed: delete_for_channel(InviteException, channel_name),
+      welcome_messages_removed: delete_for_channel(ChannelWelcomeMessage, channel_name)
+    }
+  end
+
+  defp delete_for_channel(schema, channel_name) do
+    {count, _} =
+      from(r in schema, where: r.channel_name == ^channel_name)
+      |> Repo.delete_all()
+
+    count
+  end
 end

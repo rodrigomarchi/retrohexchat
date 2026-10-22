@@ -129,6 +129,30 @@ defmodule RetroHexChat.Services.ChanServTest do
       assert Queries.list_ban_exceptions("#excchan") == []
       assert Queries.list_invite_exceptions("#excchan") == []
     end
+
+    test "dropping channel removes its welcome message", ctx do
+      alias RetroHexChat.Services.Queries
+
+      register_and_identify("CsWelF", "pass123", ctx.nick_server)
+      {:ok, _} = ChanServ.register("#welchan", "CsWelF", ctx.server)
+      {:ok, _} = Queries.upsert_welcome_message("#welchan", "Hello!", "CsWelF")
+
+      assert {:ok, _} = ChanServ.drop("#welchan", "CsWelF", ctx.server)
+
+      assert Queries.get_welcome_message("#welchan") == nil
+    end
+
+    test "an admin drop removes the welcome message too", ctx do
+      alias RetroHexChat.Services.Queries
+
+      register_and_identify("CsWelA", "pass123", ctx.nick_server)
+      {:ok, _} = ChanServ.register("#welchan2", "CsWelA", ctx.server)
+      {:ok, _} = Queries.upsert_welcome_message("#welchan2", "Hello!", "CsWelA")
+
+      assert {:ok, _} = ChanServ.admin_drop("#welchan2", ctx.server)
+
+      assert Queries.get_welcome_message("#welchan2") == nil
+    end
   end
 
   describe "info/2" do
