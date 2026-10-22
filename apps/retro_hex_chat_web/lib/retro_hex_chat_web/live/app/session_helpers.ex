@@ -4,7 +4,7 @@ defmodule RetroHexChatWeb.App.SessionHelpers do
   gate the in-chat arcade) and client-info parsing.
   """
 
-  alias RetroHexChat.Services.RegisteredNick
+  alias RetroHexChat.Services.{NickServ, RegisteredNick}
   alias RetroHexChatWeb.App.SessionNickname
 
   @allowed_client_keys %{
@@ -26,6 +26,31 @@ defmodule RetroHexChatWeb.App.SessionHelpers do
       nick -> {:ok, nick.id}
     end
   end
+
+  @doc """
+  Whether `nickname` may mint a share link. Only a registered nickname can: the
+  record carries who made it, and a link nobody is accountable for is one
+  nobody can be asked about.
+  """
+  @spec sharable?(String.t() | nil) :: boolean()
+  def sharable?(nickname) when is_binary(nickname) and nickname != "",
+    do: match?({:ok, _id}, resolve_user_id(nickname))
+
+  def sharable?(_nickname), do: false
+
+  @doc """
+  `:ok` when NickServ holds `nickname` identified, else `{:error, message}`.
+
+  Identification is not the chat's private fact: NickServ keeps the set and a
+  chat session's `identified` mirrors it, so every surface (a call, a P2P
+  session, a group call started from the chat) asks the same authority.
+  """
+  @spec require_identified(String.t() | nil, String.t()) :: :ok | {:error, String.t()}
+  def require_identified(nickname, message) when is_binary(nickname) do
+    if NickServ.identified?(nickname), do: :ok, else: {:error, message}
+  end
+
+  def require_identified(_nickname, message), do: {:error, message}
 
   @doc """
   The account behind `nickname` when this browser session has proved it, as the

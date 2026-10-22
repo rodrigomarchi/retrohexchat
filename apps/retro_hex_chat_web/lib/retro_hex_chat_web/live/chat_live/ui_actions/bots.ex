@@ -7,7 +7,7 @@ defmodule RetroHexChatWeb.ChatLive.UiActions.Bots do
 
   import RetroHexChatWeb.ChatLive.Helpers, only: [error_event: 2]
 
-  alias RetroHexChat.Accounts.ServerRoles
+  alias RetroHexChatWeb.ChatLive.ChatContext
   alias RetroHexChatWeb.ChatLive.Components.BotManagementDialog
   alias RetroHexChatWeb.ChatLive.Windows
 
@@ -19,7 +19,7 @@ defmodule RetroHexChatWeb.ChatLive.UiActions.Bots do
   def handle_ui_action(socket, :open_server_emoji_dialog, _payload) do
     session = socket.assigns.session
 
-    if admin?(session) do
+    if ChatContext.admin?(session) do
       Windows.open(socket, "server-emoji")
     else
       error_event(socket, dgettext("chat", "Server emoji are managed by administrators."))
@@ -29,7 +29,7 @@ defmodule RetroHexChatWeb.ChatLive.UiActions.Bots do
   def handle_ui_action(socket, :open_bot_dialog, _payload) do
     session = socket.assigns.session
 
-    if admin?(session) do
+    if ChatContext.admin?(session) do
       # The /bot command routes here — open the managed window; the island loads
       # its own bot list on mount (same as the menu-bar path).
       Windows.open(socket, BotManagementDialog.id())
@@ -39,10 +39,5 @@ defmodule RetroHexChatWeb.ChatLive.UiActions.Bots do
         dgettext("chat", "Bot management is restricted to server administrators.")
       )
     end
-  end
-
-  defp admin?(session) do
-    ServerRoles.admin?(session.nickname, session.identified) or
-      ServerRoles.server_operator?(session.nickname, session.identified)
   end
 end

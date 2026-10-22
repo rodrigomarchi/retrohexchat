@@ -37,7 +37,6 @@ defmodule RetroHexChatWeb.App.P2PLive do
   alias RetroHexChat.Games.Catalog
   alias RetroHexChat.Lobby
   alias RetroHexChat.Lobby.Schema.Session, as: LobbySession
-  alias RetroHexChat.Services.NickServ
   alias RetroHexChat.ShareLinks
   alias RetroHexChatWeb.App.Paths
   alias RetroHexChatWeb.App.SessionHelpers
@@ -191,7 +190,7 @@ defmodule RetroHexChatWeb.App.P2PLive do
             module={ShareControl}
             id="share-p2p"
             url={@share_url}
-            available={sharable?(@nickname)}
+            available={SessionHelpers.sharable?(@nickname)}
             on_share="share_p2p"
             on_revoke="revoke_p2p"
             class="justify-start"
@@ -536,19 +535,13 @@ defmodule RetroHexChatWeb.App.P2PLive do
   # for a nickname that is. Registration alone is not enough at this door:
   # being a participant is recorded as a `registered_nicks` id, so whoever is
   # merely holding the nickname would otherwise walk into a session that
-  # belongs to the person who owns it. Identification is not the chat's private
-  # fact — NickServ keeps the set, and this asks the same authority the
-  # conference does.
-  defp require_identified(nickname) when is_binary(nickname) do
-    if NickServ.identified?(nickname) do
-      :ok
-    else
-      {:error, dgettext("p2p", "You must be identified with NickServ to use P2P sessions.")}
-    end
+  # belongs to the person who owns it.
+  defp require_identified(nickname) do
+    SessionHelpers.require_identified(
+      nickname,
+      dgettext("p2p", "You must be identified with NickServ to use P2P sessions.")
+    )
   end
-
-  defp require_identified(_nickname),
-    do: {:error, dgettext("p2p", "You must be identified with NickServ to use P2P sessions.")}
 
   defp require_registered(nickname) when is_binary(nickname) do
     case SessionHelpers.resolve_user_id(nickname) do
@@ -584,14 +577,6 @@ defmodule RetroHexChatWeb.App.P2PLive do
     do: %{"game_id" => game_id, "session_token" => token}
 
   defp share_target(token, _no_game), do: %{"session_token" => token}
-
-  # Only a registered nickname can mint a link: the record carries who made it,
-  # and a link nobody is accountable for is one nobody can be asked about.
-  defp sharable?(nickname) when is_binary(nickname) and nickname != "" do
-    match?({:ok, _id}, SessionHelpers.resolve_user_id(nickname))
-  end
-
-  defp sharable?(_nickname), do: false
 
   # Nothing refused, nothing finished and nothing to draw: the seat is still
   # being taken.

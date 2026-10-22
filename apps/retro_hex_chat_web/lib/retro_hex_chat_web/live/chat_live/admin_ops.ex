@@ -15,6 +15,7 @@ defmodule RetroHexChatWeb.ChatLive.AdminOps do
 
   alias RetroHexChat.Accounts.ServerRoles
   alias RetroHexChat.Commands.Dispatcher
+  alias RetroHexChatWeb.ChatLive.ChatContext
 
   @doc """
   Whether the session may operate the admin windows.
@@ -24,10 +25,22 @@ defmodule RetroHexChatWeb.ChatLive.AdminOps do
   """
   @spec admin?(Phoenix.LiveView.Socket.t()) :: boolean()
   def admin?(socket) do
-    session = socket.assigns.session
+    ChatContext.admin?(socket.assigns.session)
+  end
 
-    ServerRoles.admin?(session.nickname, session.identified) or
-      ServerRoles.server_operator?(session.nickname, session.identified)
+  @doc """
+  Runs an admin window's handler, or refuses it in the window's own error
+  line when the session may not operate the admin windows. `run` returns the
+  handler's `{:noreply, socket}`.
+  """
+  @spec guarded(Phoenix.LiveView.Socket.t(), (-> {:noreply, Phoenix.LiveView.Socket.t()})) ::
+          {:noreply, Phoenix.LiveView.Socket.t()}
+  def guarded(socket, run) do
+    if admin?(socket) do
+      run.()
+    else
+      {:noreply, error_event(socket, restricted_message())}
+    end
   end
 
   @doc "The refusal shown when a non-admin reaches an admin window's handler."

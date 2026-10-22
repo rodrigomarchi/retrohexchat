@@ -44,11 +44,11 @@ defmodule RetroHexChatWeb.ChatLive.Components.AdminServerSettingsDialog do
   @spec handle_event(String.t(), map(), Phoenix.LiveView.Socket.t()) ::
           {:noreply, Phoenix.LiveView.Socket.t()}
   def handle_event("admin_server_settings_refresh", _params, socket) do
-    guarded(socket, fn -> {:noreply, assign_snapshot(socket, nil)} end)
+    AdminOps.guarded(socket, fn -> {:noreply, assign_snapshot(socket, nil)} end)
   end
 
   def handle_event("admin_server_settings_save", params, socket) do
-    guarded(socket, fn ->
+    AdminOps.guarded(socket, fn ->
       changes = Admin.server_setting_changes(socket.assigns.values, submitted(params))
       {:noreply, assign_snapshot(socket, save(changes, socket))}
     end)
@@ -74,14 +74,6 @@ defmodule RetroHexChatWeb.ChatLive.Components.AdminServerSettingsDialog do
       />
     </div>
     """
-  end
-
-  defp guarded(socket, run) do
-    if AdminOps.admin?(socket) do
-      run.()
-    else
-      {:noreply, AdminOps.error_event(socket, AdminOps.restricted_message())}
-    end
   end
 
   defp assign_snapshot(socket, result) do

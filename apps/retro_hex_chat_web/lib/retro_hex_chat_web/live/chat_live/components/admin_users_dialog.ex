@@ -55,7 +55,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.AdminUsersDialog do
   @spec handle_event(String.t(), map(), Phoenix.LiveView.Socket.t()) ::
           {:noreply, Phoenix.LiveView.Socket.t()}
   def handle_event("admin_users_refresh", params, socket) do
-    guarded(socket, fn -> {:noreply, assign_snapshot(socket, params, nil)} end)
+    AdminOps.guarded(socket, fn -> {:noreply, assign_snapshot(socket, params, nil)} end)
   end
 
   @doc """
@@ -65,7 +65,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.AdminUsersDialog do
   by id would skip and repeat rows.
   """
   def handle_event("admin_users_load_more", _params, socket) do
-    guarded(socket, fn ->
+    AdminOps.guarded(socket, fn ->
       case socket.assigns.users_table && Table.next_cursor(socket.assigns.users_table) do
         nil -> {:noreply, socket}
         cursor -> {:noreply, append_users_page(socket, cursor)}
@@ -74,7 +74,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.AdminUsersDialog do
   end
 
   def handle_event("admin_users_info", %{"nick" => nick}, socket) do
-    guarded(socket, fn ->
+    AdminOps.guarded(socket, fn ->
       nick = trim(nick)
 
       result =
@@ -170,22 +170,15 @@ defmodule RetroHexChatWeb.ChatLive.Components.AdminUsersDialog do
 
   # Every mutating handler runs through one of these. The disabled controls in
   # the markup are a hint; this is the check that holds against a forged event.
-  defp guarded(socket, run) do
-    if AdminOps.admin?(socket) do
-      run.()
-    else
-      {:noreply, AdminOps.error_event(socket, AdminOps.restricted_message())}
-    end
-  end
 
   defp moderate(socket, action, params) do
-    guarded(socket, fn ->
+    AdminOps.guarded(socket, fn ->
       {:noreply, assign_snapshot(socket, %{}, moderation_result(socket, action, params))}
     end)
   end
 
   defp act(socket, result_fun) do
-    guarded(socket, fn -> {:noreply, assign_snapshot(socket, %{}, result_fun.())} end)
+    AdminOps.guarded(socket, fn -> {:noreply, assign_snapshot(socket, %{}, result_fun.())} end)
   end
 
   # ── Snapshot ─────────────────────────────────────────────────────

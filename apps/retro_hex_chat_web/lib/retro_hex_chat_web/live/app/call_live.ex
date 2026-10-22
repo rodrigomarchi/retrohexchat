@@ -32,7 +32,6 @@ defmodule RetroHexChatWeb.App.CallLive do
   alias RetroHexChat.Channels.Server
   alias RetroHexChat.Chat.KeyBindings
   alias RetroHexChat.GroupCall
-  alias RetroHexChat.Services.NickServ
   alias RetroHexChat.ShareLinks
   alias RetroHexChat.Topics
   alias RetroHexChatWeb.App.Paths
@@ -173,7 +172,7 @@ defmodule RetroHexChatWeb.App.CallLive do
             module={ShareControl}
             id="share-call-prejoin"
             url={@share_url}
-            available={sharable?(@nickname)}
+            available={SessionHelpers.sharable?(@nickname)}
             on_share="share_call"
             on_revoke="revoke_call"
             variant="outline"
@@ -195,7 +194,7 @@ defmodule RetroHexChatWeb.App.CallLive do
                 module={ShareControl}
                 id="share-call"
                 url={@share_url}
-                available={sharable?(@nickname)}
+                available={SessionHelpers.sharable?(@nickname)}
                 on_share="share_call"
                 on_revoke="revoke_call"
               />
@@ -503,20 +502,12 @@ defmodule RetroHexChatWeb.App.CallLive do
     end
   end
 
-  # Identification is not the chat's private fact: NickServ keeps the set, and
-  # the chat's `session.identified` is a mirror of it. A surface with no chat
-  # behind it asks the same question of the same authority.
-  defp require_identified(nickname) when is_binary(nickname) do
-    if NickServ.identified?(nickname) do
-      :ok
-    else
-      {:error, dgettext("group_call", "You must be identified with NickServ to use group calls.")}
-    end
+  defp require_identified(nickname) do
+    SessionHelpers.require_identified(
+      nickname,
+      dgettext("group_call", "You must be identified with NickServ to use group calls.")
+    )
   end
-
-  defp require_identified(_nickname),
-    do:
-      {:error, dgettext("group_call", "You must be identified with NickServ to use group calls.")}
 
   # Asked before identification, because a nickname that is not registered can
   # never be identified — inverting the two makes this refusal unreachable and
@@ -535,14 +526,6 @@ defmodule RetroHexChatWeb.App.CallLive do
   defp require_registered(_nickname),
     do:
       {:error, dgettext("group_call", "You must be registered with NickServ to use group calls.")}
-
-  # Only a registered nickname can mint a link: the record carries who made it,
-  # and a link nobody is accountable for is one nobody can be asked about.
-  defp sharable?(nickname) when is_binary(nickname) and nickname != "" do
-    match?({:ok, _id}, SessionHelpers.resolve_user_id(nickname))
-  end
-
-  defp sharable?(_nickname), do: false
 
   defp channel_membership(channel_name) do
     case Server.get_state(channel_name) do

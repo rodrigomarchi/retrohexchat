@@ -44,11 +44,11 @@ defmodule RetroHexChatWeb.ChatLive.Components.SystemSourceDialog do
   @spec handle_event(String.t(), map(), Phoenix.LiveView.Socket.t()) ::
           {:noreply, Phoenix.LiveView.Socket.t()}
   def handle_event("system_source_search", params, socket) do
-    guarded(socket, fn -> load(socket, params) end)
+    AdminOps.guarded(socket, fn -> {:noreply, load(socket, params)} end)
   end
 
   def handle_event("system_source_refresh", _params, socket) do
-    guarded(socket, fn -> reload(socket) end)
+    AdminOps.guarded(socket, fn -> {:noreply, reload(socket)} end)
   end
 
   @doc """
@@ -59,10 +59,10 @@ defmodule RetroHexChatWeb.ChatLive.Components.SystemSourceDialog do
   table on every desktop has, expressed once.
   """
   def handle_event("system_source_sort", %{"column" => column}, socket) do
-    guarded(socket, fn ->
+    AdminOps.guarded(socket, fn ->
       case resolve_column(socket, column) do
-        nil -> socket
-        key -> socket |> update_query(&Query.toggle_sort(&1, key)) |> reload()
+        nil -> {:noreply, socket}
+        key -> {:noreply, socket |> update_query(&Query.toggle_sort(&1, key)) |> reload()}
       end
     end)
   end
@@ -95,13 +95,6 @@ defmodule RetroHexChatWeb.ChatLive.Components.SystemSourceDialog do
 
   # Every listing walks the whole node, so a caller without the role must not
   # be able to trigger one by forging an event at the island.
-  defp guarded(socket, fun) do
-    if AdminOps.admin?(socket) do
-      {:noreply, fun.()}
-    else
-      {:noreply, AdminOps.error_event(socket, AdminOps.restricted_message())}
-    end
-  end
 
   defp load(socket, params) do
     {:ok, module} = SystemInfo.fetch_source(socket.assigns.source)

@@ -45,15 +45,15 @@ defmodule RetroHexChatWeb.ChatLive.Components.AdminDangerZoneDialog do
   @spec handle_event(String.t(), map(), Phoenix.LiveView.Socket.t()) ::
           {:noreply, Phoenix.LiveView.Socket.t()}
   def handle_event("admin_danger_zone_preview", _params, socket) do
-    guarded(socket, fn -> {:noreply, assign_preview(socket, nil)} end)
+    AdminOps.guarded(socket, fn -> {:noreply, assign_preview(socket, nil)} end)
   end
 
   def handle_event("admin_danger_zone_change", %{"confirm" => confirm}, socket) do
-    guarded(socket, fn -> {:noreply, assign(socket, confirm: confirm)} end)
+    AdminOps.guarded(socket, fn -> {:noreply, assign(socket, confirm: confirm)} end)
   end
 
   def handle_event("admin_danger_zone_execute", %{"confirm" => confirm}, socket) do
-    guarded(socket, fn ->
+    AdminOps.guarded(socket, fn ->
       if confirm == Admin.server_name() do
         result = AdminOps.dispatch(socket, "admin", ["nuke", "--confirm"])
 
@@ -96,14 +96,6 @@ defmodule RetroHexChatWeb.ChatLive.Components.AdminDangerZoneDialog do
       />
     </div>
     """
-  end
-
-  defp guarded(socket, run) do
-    if AdminOps.admin?(socket) do
-      run.()
-    else
-      {:noreply, AdminOps.error_event(socket, AdminOps.restricted_message())}
-    end
   end
 
   defp assign_preview(socket, result) do

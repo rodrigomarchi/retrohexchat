@@ -52,11 +52,11 @@ defmodule RetroHexChatWeb.ChatLive.Components.AdminChannelsDialog do
   @spec handle_event(String.t(), map(), Phoenix.LiveView.Socket.t()) ::
           {:noreply, Phoenix.LiveView.Socket.t()}
   def handle_event("admin_channels_refresh", params, socket) do
-    guarded(socket, fn -> {:noreply, assign_snapshot(socket, params, nil)} end)
+    AdminOps.guarded(socket, fn -> {:noreply, assign_snapshot(socket, params, nil)} end)
   end
 
   def handle_event("admin_channels_info", %{"channel" => channel}, socket) do
-    guarded(socket, fn ->
+    AdminOps.guarded(socket, fn ->
       channel = trim(channel)
 
       result =
@@ -71,7 +71,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.AdminChannelsDialog do
   end
 
   def handle_event("admin_channels_create", %{"channel" => channel}, socket) do
-    guarded(socket, fn ->
+    AdminOps.guarded(socket, fn ->
       channel = trim(channel)
 
       result =
@@ -161,16 +161,8 @@ defmodule RetroHexChatWeb.ChatLive.Components.AdminChannelsDialog do
 
   # ── Authorization ────────────────────────────────────────────────
 
-  defp guarded(socket, run) do
-    if AdminOps.admin?(socket) do
-      run.()
-    else
-      {:noreply, AdminOps.error_event(socket, AdminOps.restricted_message())}
-    end
-  end
-
   defp destructive(socket, action, params) do
-    guarded(socket, fn ->
+    AdminOps.guarded(socket, fn ->
       channel = param(params, "channel")
       result = destructive_result(socket, action, channel, params)
 
@@ -189,7 +181,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.AdminChannelsDialog do
   end
 
   defp chanserv(socket, snapshot_params, result_fun) do
-    guarded(socket, fn ->
+    AdminOps.guarded(socket, fn ->
       {:noreply, assign_snapshot(socket, snapshot_params(snapshot_params), result_fun.())}
     end)
   end

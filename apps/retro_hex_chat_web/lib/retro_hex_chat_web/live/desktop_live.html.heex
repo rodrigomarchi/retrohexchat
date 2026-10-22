@@ -920,7 +920,7 @@
           server-side authz for a forged window_open; the render guard here is
           the second line of defense (no admin content for non-admins). --%>
       <.desktop_window
-        :if={admin?(@session) and "admin-console" in @open_windows}
+        :if={ChatContext.admin?(@session) and "admin-console" in @open_windows}
         {WindowRegistry.attrs("admin-console")}
         body_class="flex min-h-0 flex-col p-2"
         data-testid="admin-console-window"
@@ -937,7 +937,7 @@
           admin console: the open event gates, the render guard is the second
           line of defense against a forged window_open. --%>
       <.desktop_window
-        :if={admin?(@session) and "admin-users" in @open_windows}
+        :if={ChatContext.admin?(@session) and "admin-users" in @open_windows}
         {WindowRegistry.attrs("admin-users")}
         body_class="flex min-h-0 flex-col p-2"
         data-testid="admin-users-window"
@@ -953,7 +953,7 @@
       <%!-- Admin Channels — server-managed, admin-gated. Same authz model as the
           admin console. --%>
       <.desktop_window
-        :if={admin?(@session) and "admin-channels" in @open_windows}
+        :if={ChatContext.admin?(@session) and "admin-channels" in @open_windows}
         {WindowRegistry.attrs("admin-channels")}
         body_class="flex min-h-0 flex-col p-2"
         data-testid="admin-channels-window"
@@ -968,7 +968,7 @@
 
       <%!-- Admin Server Settings — server-managed, admin-gated. --%>
       <.desktop_window
-        :if={admin?(@session) and "admin-server-settings" in @open_windows}
+        :if={ChatContext.admin?(@session) and "admin-server-settings" in @open_windows}
         {WindowRegistry.attrs("admin-server-settings")}
         body_class="flex min-h-0 flex-col p-2"
         data-testid="admin-server-settings-window"
@@ -983,7 +983,7 @@
 
       <%!-- Admin Audit Log — server-managed, admin-gated. --%>
       <.desktop_window
-        :if={admin?(@session) and "admin-audit-log" in @open_windows}
+        :if={ChatContext.admin?(@session) and "admin-audit-log" in @open_windows}
         {WindowRegistry.attrs("admin-audit-log")}
         body_class="flex min-h-0 flex-col p-2"
         data-testid="admin-audit-log-window"
@@ -998,7 +998,7 @@
 
       <%!-- Admin MOTD — server-managed, admin-gated. --%>
       <.desktop_window
-        :if={admin?(@session) and "admin-motd" in @open_windows}
+        :if={ChatContext.admin?(@session) and "admin-motd" in @open_windows}
         {WindowRegistry.attrs("admin-motd")}
         body_class="flex min-h-0 flex-col p-2"
         data-testid="admin-motd-window"
@@ -1013,7 +1013,7 @@
 
       <%!-- Admin TURN — server-managed, admin-gated. --%>
       <.desktop_window
-        :if={admin?(@session) and "admin-turn" in @open_windows}
+        :if={ChatContext.admin?(@session) and "admin-turn" in @open_windows}
         {WindowRegistry.attrs("admin-turn")}
         body_class="flex min-h-0 flex-col p-2"
         data-testid="admin-turn-window"
@@ -1028,7 +1028,7 @@
 
       <%!-- Admin Broadcast — server-managed, admin-gated. --%>
       <.desktop_window
-        :if={admin?(@session) and "admin-broadcast" in @open_windows}
+        :if={ChatContext.admin?(@session) and "admin-broadcast" in @open_windows}
         {WindowRegistry.attrs("admin-broadcast")}
         body_class="flex min-h-0 flex-col p-2"
         data-testid="admin-broadcast-window"
@@ -1043,7 +1043,7 @@
 
       <%!-- Admin Danger Zone — server-managed, admin-gated. --%>
       <.desktop_window
-        :if={admin?(@session) and "admin-danger-zone" in @open_windows}
+        :if={ChatContext.admin?(@session) and "admin-danger-zone" in @open_windows}
         {WindowRegistry.attrs("admin-danger-zone")}
         body_class="flex min-h-0 flex-col p-2"
         data-testid="admin-danger-zone-window"
@@ -1058,7 +1058,7 @@
 
       <%!-- System Home — the node's vitals; server-managed, admin-gated. --%>
       <.desktop_window
-        :if={admin?(@session) and "system-home" in @open_windows}
+        :if={ChatContext.admin?(@session) and "system-home" in @open_windows}
         {WindowRegistry.attrs("system-home")}
         body_class="flex min-h-0 flex-col p-2"
         data-testid="system-home-window"
@@ -1100,7 +1100,7 @@
             }
           ]
         }
-        :if={admin?(@session) and reading.id in @open_windows}
+        :if={ChatContext.admin?(@session) and reading.id in @open_windows}
         {WindowRegistry.attrs(reading.id)}
         body_class="flex min-h-0 flex-col p-2"
         data-testid={"#{reading.id}-window"}
@@ -1130,7 +1130,7 @@
             %{id: "system-allocators", source: :allocators}
           ]
         }
-        :if={admin?(@session) and listing.id in @open_windows}
+        :if={ChatContext.admin?(@session) and listing.id in @open_windows}
         {WindowRegistry.attrs(listing.id)}
         body_class="flex min-h-0 flex-col p-2"
         data-testid={"#{listing.id}-window"}
@@ -1149,7 +1149,7 @@
       <%!-- Bot Management — server-managed, admin-gated (same authz model as the
           admin console: the open event gates; the render guard is defense-in-depth). --%>
       <.desktop_window
-        :if={admin?(@session) and "bot-management-dialog" in @open_windows}
+        :if={ChatContext.admin?(@session) and "bot-management-dialog" in @open_windows}
         {WindowRegistry.attrs("bot-management-dialog")}
         body_class="flex min-h-0 flex-col p-2"
         data-testid="bot-management-window"
@@ -1158,7 +1158,7 @@
         <.live_component
           module={RetroHexChatWeb.ChatLive.Components.BotManagementDialog}
           id={RetroHexChatWeb.ChatLive.Components.BotManagementDialog.id()}
-          is_admin={admin?(@session)}
+          is_admin={ChatContext.admin?(@session)}
         />
       </.desktop_window>
     <% end %>
@@ -1170,7 +1170,7 @@
       :if={@live_ready}
       screen={:chat}
       help_open={Map.has_key?(@docs, :help)}
-      is_admin={admin?(@session)}
+      is_admin={ChatContext.admin?(@session)}
       windows={[
         %{
           id: "chat",
@@ -1195,7 +1195,7 @@
       <.chat_taskbar
         chat_label={ChatTitle.window_title(@session, @show_status_tab)}
         open_windows={@open_windows}
-        is_admin={admin?(@session)}
+        is_admin={ChatContext.admin?(@session)}
         online_buddy_count={ChatShell.online_buddy_count(@session.notify_list)}
         mention_count={Enum.sum(Map.values(@mention_counts))}
         lag_ms={@lag_ms}

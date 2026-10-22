@@ -45,8 +45,7 @@ defmodule RetroHexChat.Bots.Policy do
   def admin?(nickname) when is_binary(nickname) do
     identified = Identity.impl().identified?(nickname)
 
-    ServerRoles.admin?(nickname, identified) or
-      ServerRoles.server_operator?(nickname, identified)
+    ServerRoles.elevated?(nickname, identified)
   catch
     :exit, _reason -> false
   end

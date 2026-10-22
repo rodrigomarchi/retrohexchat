@@ -58,8 +58,7 @@ defmodule RetroHexChatWeb.ChatLive.ChatContext do
   """
   @spec admin?(Session.t()) :: boolean()
   def admin?(%Session{} = session) do
-    ServerRoles.admin?(session.nickname, session.identified) or
-      ServerRoles.server_operator?(session.nickname, session.identified)
+    ServerRoles.elevated?(session.nickname, session.identified)
   end
 
   @doc """

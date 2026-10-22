@@ -25,6 +25,15 @@ defmodule RetroHexChat.Accounts.ServerRoles do
          Nickname.member?(config_server_operator_list(), nickname))
   end
 
+  @doc """
+  Whether `nickname` holds any server privilege: an admin or a server
+  operator. The gate for the admin windows and the bot controls, which
+  operators open too.
+  """
+  @spec elevated?(String.t(), boolean()) :: boolean()
+  def elevated?(nickname, identified),
+    do: admin?(nickname, identified) or server_operator?(nickname, identified)
+
   @spec root_admin?(String.t()) :: boolean()
   def root_admin?(nickname) do
     Nickname.member?(root_admin_list(), nickname)

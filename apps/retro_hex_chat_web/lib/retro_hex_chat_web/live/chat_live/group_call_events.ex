@@ -157,9 +157,10 @@ defmodule RetroHexChatWeb.ChatLive.GroupCallEvents do
   defp active_channel(_socket),
     do: {:error, dgettext("group_call", "Open a channel before starting a group call.")}
 
-  defp require_identified(%{assigns: %{session: %{identified: true}}}), do: :ok
-
-  defp require_identified(_socket),
-    do:
-      {:error, dgettext("group_call", "You must be identified with NickServ to use group calls.")}
+  defp require_identified(socket) do
+    SessionHelpers.require_identified(
+      socket.assigns.session.nickname,
+      dgettext("group_call", "You must be identified with NickServ to use group calls.")
+    )
+  end
 end

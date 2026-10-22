@@ -68,7 +68,7 @@ defmodule RetroHexChatWeb.ChatLive.BotEvents do
   @spec handle_event(String.t(), map(), Phoenix.LiveView.Socket.t()) ::
           {:cont | :halt, Phoenix.LiveView.Socket.t()}
   def handle_event(event, params, socket) when event in @bot_events do
-    if admin?(socket.assigns.session) do
+    if ChatContext.admin?(socket.assigns.session) do
       {:halt, authorized(event, params, socket)}
     else
       {:halt,
@@ -642,9 +642,4 @@ defmodule RetroHexChatWeb.ChatLive.BotEvents do
     end)
     |> Enum.join("; ")
   end
-
-  # The same predicate the window's render guard uses, so what is visible and what
-  # is permitted cannot drift apart.
-  @spec admin?(RetroHexChat.Accounts.Session.t()) :: boolean()
-  defp admin?(session), do: ChatContext.admin?(session)
 end

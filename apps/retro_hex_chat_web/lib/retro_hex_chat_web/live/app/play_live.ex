@@ -62,7 +62,7 @@ defmodule RetroHexChatWeb.App.PlayLive do
         record: nil,
         player: SessionHelpers.identified_player(session, socket.assigns.surface_nickname),
         host_id: host_id(socket.assigns.surface_nickname),
-        sharable: sharable?(socket.assigns.surface_nickname),
+        sharable: SessionHelpers.sharable?(socket.assigns.surface_nickname),
         match_started_at: nil,
         error_message: nil,
         match_error: nil
@@ -423,14 +423,6 @@ defmodule RetroHexChatWeb.App.PlayLive do
 
   defp normalize_difficulty(difficulty) when difficulty in @difficulties, do: difficulty
   defp normalize_difficulty(_difficulty), do: "normal"
-
-  # Only a registered nickname can mint a link: the record carries who made it,
-  # and a link nobody is accountable for is one nobody can be asked about.
-  defp sharable?(nickname) when is_binary(nickname) and nickname != "" do
-    match?({:ok, _id}, SessionHelpers.resolve_user_id(nickname))
-  end
-
-  defp sharable?(_nickname), do: false
 
   # Who may open a match room: the room's own door asks NickServ whether the
   # nickname is identified, so this asks the same question.

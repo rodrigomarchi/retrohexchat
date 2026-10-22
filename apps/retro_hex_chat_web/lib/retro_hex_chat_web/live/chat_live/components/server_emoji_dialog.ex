@@ -144,8 +144,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.ServerEmojiDialog do
 
   defp admin?(%{assigns: %{nickname: nickname, identified: identified}})
        when is_binary(nickname) do
-    ServerRoles.admin?(nickname, identified) or
-      ServerRoles.server_operator?(nickname, identified)
+    ServerRoles.elevated?(nickname, identified)
   end
 
   defp admin?(_socket), do: false

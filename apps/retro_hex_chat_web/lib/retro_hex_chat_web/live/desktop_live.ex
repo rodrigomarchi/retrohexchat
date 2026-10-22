@@ -1133,8 +1133,6 @@ defmodule RetroHexChatWeb.DesktopLive do
 
   # ── View helpers ──────────────────────────────────────────────
 
-  defp admin?(session), do: ChatContext.admin?(session)
-
   # The arcade under its engines, as the public catalogue shows it.
   defp arcade_groups, do: GameCatalog.arcade_groups()
 
