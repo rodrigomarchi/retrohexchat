@@ -1,6 +1,8 @@
 defmodule RetroHexChat.Chat.Content.Markdown do
   @moduledoc false
 
+  alias RetroHexChat.Chat.Content.Html
+
   @type safe_html :: {:safe, String.t()}
 
   @markdown_extension_options [
@@ -40,7 +42,7 @@ defmodule RetroHexChat.Chat.Content.Markdown do
     ~r/<a\b[^>]*\shref="([^"]+)"[^>]*>/i
     |> Regex.scan(html, capture: :all_but_first)
     |> List.flatten()
-    |> Enum.map(&decode_html_attr/1)
+    |> Enum.map(&Html.unescape/1)
     |> Enum.filter(&String.match?(&1, ~r/^https?:\/\//i))
   end
 
@@ -83,8 +85,8 @@ defmodule RetroHexChat.Chat.Content.Markdown do
       else
         attrs
         |> attr_value("alt")
-        |> decode_html_attr()
-        |> html_escape()
+        |> Html.unescape()
+        |> Html.escape()
       end
     end)
   end
@@ -97,7 +99,7 @@ defmodule RetroHexChat.Chat.Content.Markdown do
   @spec safe_image_src?(String.t()) :: boolean()
   defp safe_image_src?(attrs) do
     case attr_value(attrs, "src") do
-      src when is_binary(src) -> String.match?(decode_html_attr(src), ~r/^https?:\/\//i)
+      src when is_binary(src) -> String.match?(Html.unescape(src), ~r/^https?:\/\//i)
       nil -> false
     end
   end
@@ -161,27 +163,5 @@ defmodule RetroHexChat.Chat.Content.Markdown do
       nil ->
         attrs <> ~s( class="#{class_name}")
     end
-  end
-
-  @spec decode_html_attr(String.t() | nil) :: String.t()
-  defp decode_html_attr(nil), do: ""
-
-  defp decode_html_attr(value) do
-    value
-    |> String.replace("&amp;", "&")
-    |> String.replace("&quot;", "\"")
-    |> String.replace("&#39;", "'")
-    |> String.replace("&lt;", "<")
-    |> String.replace("&gt;", ">")
-  end
-
-  @spec html_escape(String.t()) :: String.t()
-  defp html_escape(value) do
-    value
-    |> String.replace("&", "&amp;")
-    |> String.replace("<", "&lt;")
-    |> String.replace(">", "&gt;")
-    |> String.replace("\"", "&quot;")
-    |> String.replace("'", "&#39;")
   end
 end

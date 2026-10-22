@@ -14,6 +14,29 @@ defmodule RetroHexChat.Chat.Content.Html do
   layer, down to the same list of protected tags; only the rewriting differed.
   """
 
+  @unescapes %{"&amp;" => "&", "&quot;" => "\"", "&#39;" => "'", "&lt;" => "<", "&gt;" => ">"}
+
+  @doc """
+  Escapes text for HTML, attribute values included: `&`, `<`, `>`, `"` and `'`.
+  The one escape for every fragment the chat builds by hand.
+  """
+  @spec escape(String.t()) :: String.t()
+  def escape(text) when is_binary(text) do
+    text
+    |> Phoenix.HTML.html_escape()
+    |> Phoenix.HTML.safe_to_string()
+  end
+
+  @doc """
+  Reverses `escape/1`, in one pass: `&amp;lt;` is the text `&lt;`, never `<`.
+  """
+  @spec unescape(String.t() | nil) :: String.t()
+  def unescape(nil), do: ""
+
+  def unescape(text) when is_binary(text) do
+    Regex.replace(~r/&(?:amp|quot|#39|lt|gt);/, text, &Map.fetch!(@unescapes, &1))
+  end
+
   # Inside these, text is already a link or is being quoted. Either way it is
   # not ours to change.
   @protected_tags ~w(a code pre)

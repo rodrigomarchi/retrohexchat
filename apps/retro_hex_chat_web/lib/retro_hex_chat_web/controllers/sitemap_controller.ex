@@ -4,6 +4,7 @@ defmodule RetroHexChatWeb.SitemapController do
   """
   use RetroHexChatWeb, :controller
 
+  alias RetroHexChat.Chat.Content.Html
   alias RetroHexChat.Chat.HelpTopics
   alias RetroHexChatWeb.SEO
   alias RetroHexChatWeb.SEO.PublicUrls
@@ -223,13 +224,6 @@ defmodule RetroHexChatWeb.SitemapController do
     end
   end
 
-  defp xml_escape(value) do
-    value
-    |> to_string()
-    |> String.replace("&", "&amp;")
-    |> String.replace("<", "&lt;")
-    |> String.replace(">", "&gt;")
-    |> String.replace("\"", "&quot;")
-    |> String.replace("'", "&apos;")
-  end
+  # HTML's escapes are XML's too: the numeric `&#39;` is as valid as `&apos;`.
+  defp xml_escape(value), do: value |> to_string() |> Html.escape()
 end

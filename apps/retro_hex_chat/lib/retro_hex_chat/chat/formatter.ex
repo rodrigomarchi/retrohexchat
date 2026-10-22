@@ -13,6 +13,8 @@ defmodule RetroHexChat.Chat.Formatter do
   - 0x1F — Underline (toggle)
   """
 
+  alias RetroHexChat.Chat.Content.Html
+
   @type safe_html :: {:safe, String.t()}
 
   @default_max_codes 128
@@ -246,7 +248,7 @@ defmodule RetroHexChat.Chat.Formatter do
   end
 
   defp render_tokens([{:text, text} | rest], state, acc) do
-    escaped = html_escape(text)
+    escaped = Html.escape(text)
 
     if has_active_formatting?(state) do
       # Text within an active formatting span
@@ -366,12 +368,4 @@ defmodule RetroHexChat.Chat.Formatter do
 
   defp maybe_add(list, true, class), do: [class | list]
   defp maybe_add(list, false, _class), do: list
-
-  # ── HTML escaping ────────────────────────────────────────────────────
-
-  defp html_escape(text) do
-    text
-    |> Phoenix.HTML.html_escape()
-    |> Phoenix.HTML.safe_to_string()
-  end
 end

@@ -43,7 +43,7 @@ defmodule RetroHexChat.Chat.URLDetector do
   """
   @spec linkify(String.t()) :: String.t()
   def linkify(text) when is_binary(text) do
-    linkify_text(text, &html_escape/1)
+    linkify_text(text, &Html.escape/1)
   end
 
   @doc """
@@ -170,29 +170,13 @@ defmodule RetroHexChat.Chat.URLDetector do
   @spec build_link(String.t()) :: String.t()
   defp build_link(url) do
     display = truncate_display(url)
-    escaped_href = html_escape_attr(url)
+    escaped_href = Html.escape(url)
 
     ~s(<a href="#{escaped_href}" target="_blank" rel="noopener noreferrer" class="chat-link" title="#{escaped_href}" data-url="#{escaped_href}">#{display}</a>)
   end
 
   @spec truncate_display(String.t()) :: String.t()
   defp truncate_display(url) when byte_size(url) > 0 do
-    url |> Text.truncate(@max_display_length) |> html_escape()
-  end
-
-  @spec html_escape(String.t()) :: String.t()
-  defp html_escape(text) do
-    text
-    |> Phoenix.HTML.html_escape()
-    |> Phoenix.HTML.safe_to_string()
-  end
-
-  @spec html_escape_attr(String.t()) :: String.t()
-  defp html_escape_attr(text) do
-    text
-    |> String.replace("&", "&amp;")
-    |> String.replace("\"", "&quot;")
-    |> String.replace("<", "&lt;")
-    |> String.replace(">", "&gt;")
+    url |> Text.truncate(@max_display_length) |> Html.escape()
   end
 end

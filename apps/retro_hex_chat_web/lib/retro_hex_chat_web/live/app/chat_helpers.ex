@@ -102,7 +102,7 @@ defmodule RetroHexChatWeb.App.ChatHelpers do
   # The name is an administrator's input and it lands inside two attributes, so
   # it is escaped here rather than trusted for having come from an administrator.
   defp emoji_img(emoji) do
-    label = Phoenix.HTML.html_escape(":#{emoji.name}:") |> Phoenix.HTML.safe_to_string()
+    label = Html.escape(":#{emoji.name}:")
 
     ~s(<img class="chat-emoji" src="/chat/emoji/#{emoji.id}" alt="#{label}" ) <>
       ~s(title="#{label}" data-emoji-id="#{emoji.id}" loading="lazy" />)

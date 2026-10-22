@@ -227,6 +227,12 @@ defmodule RetroHexChat.Chat.ContentTest do
 
       assert Content.extract_urls(markdown, :markdown) == ["https://real.example"]
     end
+
+    test "decodes a Markdown link's address once, never twice" do
+      assert Content.extract_urls("[y](https://e.com/?q=&amp;lt;)", :markdown) == [
+               "https://e.com/?q=&lt;"
+             ]
+    end
   end
 
   describe "validate_message/4" do
