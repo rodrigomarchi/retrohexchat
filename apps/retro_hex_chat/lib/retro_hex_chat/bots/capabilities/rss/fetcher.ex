@@ -36,12 +36,11 @@ defmodule RetroHexChat.Bots.Capabilities.RSS.Fetcher.HTTP do
 
   @behaviour RetroHexChat.Bots.Capabilities.RSS.Fetcher
 
-  alias RetroHexChat.Net.URLGuard
+  alias RetroHexChat.Net.GuardedRequest
 
   @max_redirects 3
   @max_body_size 2_000_000
   @timeout_ms 15_000
-  @redirect_statuses [301, 302, 303, 307, 308]
 
   @impl true
   @spec fetch(String.t(), String.t() | nil, String.t() | nil) ::
@@ -50,35 +49,36 @@ defmodule RetroHexChat.Bots.Capabilities.RSS.Fetcher.HTTP do
     # Checked again at fetch time, not only when the feed was added: a name that
     # resolved to a public address last month can be re-pointed at loopback
     # today, and the poll would follow it.
-    request(url, etag, last_modified, @max_redirects)
+    url
+    |> GuardedRequest.get(
+      headers: conditional_headers(etag, last_modified),
+      max_body_size: @max_body_size,
+      timeout_ms: @timeout_ms,
+      max_redirects: @max_redirects,
+      overrides: :rss_req_options
+    )
+    |> case do
+      {:ok, response, _final_url} ->
+        handle_response(response)
+
+      {:error, {:blocked, reason}} ->
+        {:error, {:blocked, reason}}
+
+      {:error, :too_many_redirects} ->
+        {:error, dgettext("bots", "too many redirects")}
+
+      {:error, :redirect_without_location} ->
+        {:error, dgettext("bots", "redirect without location")}
+
+      {:error, {:transport, reason}} ->
+        {:error, reason}
+    end
   rescue
     e -> {:error, Exception.message(e)}
   end
 
-  @spec request(String.t(), String.t() | nil, String.t() | nil, integer()) ::
-          RetroHexChat.Bots.Capabilities.RSS.Fetcher.result()
-  defp request(_url, _etag, _last_modified, redirects_left) when redirects_left < 0,
-    do: {:error, dgettext("bots", "too many redirects")}
-
-  defp request(url, etag, last_modified, redirects_left) do
-    with {:ok, target} <- URLGuard.fetch_target(url),
-         {:ok, response} <- Req.get(request_options(target, etag, last_modified)) do
-      handle_response(response, url, etag, last_modified, redirects_left)
-    else
-      {:error, reason} when is_binary(reason) -> {:error, {:blocked, reason}}
-      {:error, reason} -> {:error, reason}
-    end
-  end
-
-  @spec handle_response(
-          Req.Response.t(),
-          String.t(),
-          String.t() | nil,
-          String.t() | nil,
-          integer()
-        ) ::
-          RetroHexChat.Bots.Capabilities.RSS.Fetcher.result()
-  defp handle_response(response, url, etag, last_modified, redirects_left) do
+  @spec handle_response(Req.Response.t()) :: RetroHexChat.Bots.Capabilities.RSS.Fetcher.result()
+  defp handle_response(response) do
     case response do
       %{status: 200, body: body} when is_binary(body) and byte_size(body) >= @max_body_size ->
         {:error, dgettext("bots", "feed body too large")}
@@ -89,71 +89,9 @@ defmodule RetroHexChat.Bots.Capabilities.RSS.Fetcher.HTTP do
       %{status: 304} ->
         {:not_modified}
 
-      %{status: status, headers: headers} when status in @redirect_statuses ->
-        follow_redirect(url, headers, etag, last_modified, redirects_left)
-
       %{status: status} ->
         {:error, {:http_status, status}}
     end
-  end
-
-  @spec request_options(URLGuard.fetch_target(), String.t() | nil, String.t() | nil) :: keyword()
-  defp request_options(target, etag, last_modified) do
-    options = [
-      url: target.url,
-      headers: conditional_headers(etag, last_modified),
-      redirect: false,
-      compressed: false,
-      decode_body: false,
-      max_retries: 0,
-      into: &collect_limited_body/2,
-      connect_options: Keyword.put(target.connect_options, :timeout, @timeout_ms),
-      receive_timeout: @timeout_ms
-    ]
-
-    if Map.get(target, :inet6?) do
-      Keyword.put(options, :inet6, true)
-    else
-      options
-    end
-  end
-
-  @spec follow_redirect(String.t(), map(), String.t() | nil, String.t() | nil, integer()) ::
-          RetroHexChat.Bots.Capabilities.RSS.Fetcher.result()
-  defp follow_redirect(url, headers, etag, last_modified, redirects_left) do
-    case redirect_url(url, first_header(headers, "location")) do
-      nil -> {:error, dgettext("bots", "redirect without location")}
-      next_url -> request(next_url, etag, last_modified, redirects_left - 1)
-    end
-  end
-
-  @spec collect_limited_body(
-          {:data, binary()},
-          {Req.Request.t(), Req.Response.t()}
-        ) ::
-          {:cont | :halt, {Req.Request.t(), Req.Response.t()}}
-  defp collect_limited_body({:data, data}, {request, response}) do
-    current = if is_binary(response.body), do: response.body, else: ""
-    remaining = max(@max_body_size - byte_size(current), 0)
-    data = binary_part(data, 0, min(byte_size(data), remaining))
-    response = %{response | body: current <> data}
-
-    if byte_size(response.body) >= @max_body_size do
-      {:halt, {request, response}}
-    else
-      {:cont, {request, response}}
-    end
-  end
-
-  @spec redirect_url(String.t(), String.t() | nil) :: String.t() | nil
-  defp redirect_url(_url, nil), do: nil
-
-  defp redirect_url(url, location) do
-    url
-    |> URI.merge(String.trim(location))
-    |> URI.to_string()
-  rescue
-    _ -> nil
   end
 
   @spec conditional_headers(String.t() | nil, String.t() | nil) :: [{String.t(), String.t()}]
@@ -165,15 +103,9 @@ defmodule RetroHexChat.Bots.Capabilities.RSS.Fetcher.HTTP do
 
   @spec cache_headers(map()) :: RetroHexChat.Bots.Capabilities.RSS.Fetcher.headers()
   defp cache_headers(headers) do
-    %{etag: first_header(headers, "etag"), last_modified: first_header(headers, "last-modified")}
-  end
-
-  @spec first_header(map(), String.t()) :: String.t() | nil
-  defp first_header(headers, name) do
-    case Map.get(headers, name) do
-      [value | _] -> value
-      value when is_binary(value) -> value
-      _ -> nil
-    end
+    %{
+      etag: GuardedRequest.first_header(headers, "etag"),
+      last_modified: GuardedRequest.first_header(headers, "last-modified")
+    }
   end
 end

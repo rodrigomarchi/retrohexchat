@@ -10,8 +10,8 @@ defmodule RetroHexChat.Bots.Feeds do
 
   alias RetroHexChat.Bots.Capabilities.RSS
   alias RetroHexChat.Bots.Capabilities.RSS.Scheduler
-  alias RetroHexChat.Bots.Capabilities.RSS.UrlGuard
   alias RetroHexChat.Bots.{Lifecycle, Queries}
+  alias RetroHexChat.Net.URLGuard
 
   require Logger
 
@@ -37,7 +37,7 @@ defmodule RetroHexChat.Bots.Feeds do
     url = String.trim(url)
     channel = channel |> String.trim() |> ensure_hash()
 
-    with :ok <- UrlGuard.check(url),
+    with :ok <- URLGuard.check(url),
          :ok <- check_channel(channel),
          :ok <- check_membership(bot, channel),
          :ok <- check_room(bot) do

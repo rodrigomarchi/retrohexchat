@@ -15,8 +15,8 @@ defmodule RetroHexChat.Bots.Capabilities.RSS do
   alias RetroHexChat.Bots.Capabilities.RSS.FeedParser
   alias RetroHexChat.Bots.Capabilities.RSS.Fetcher
   alias RetroHexChat.Bots.Capabilities.RSS.Scheduler
-  alias RetroHexChat.Bots.Capabilities.RSS.UrlGuard
   alias RetroHexChat.Bots.Policy
+  alias RetroHexChat.Net.URLGuard
   alias RetroHexChat.Scraper
   alias RetroHexChat.Scraper.Card
   alias RetroHexChat.Scraper.Markup
@@ -275,7 +275,7 @@ defmodule RetroHexChat.Bots.Capabilities.RSS do
   @spec add_feed(String.t(), String.t(), map()) ::
           RetroHexChat.Bots.Capability.capability_result()
   defp add_feed(url, channel, state) do
-    case UrlGuard.check(url) do
+    case URLGuard.check(url) do
       :ok ->
         do_add_feed(url, channel, state)
 

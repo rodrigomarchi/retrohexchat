@@ -22,6 +22,7 @@ defmodule RetroHexChat.Scraper.HTTP do
 
   @behaviour RetroHexChat.Scraper.Client
 
+  alias RetroHexChat.Net.GuardedRequest
   alias RetroHexChat.Net.URLGuard
   alias RetroHexChat.Scraper.Client
   alias RetroHexChat.Scraper.Markup
@@ -85,14 +86,13 @@ defmodule RetroHexChat.Scraper.HTTP do
   @html_accept "text/html, application/xhtml+xml;q=0.9, */*;q=0.1"
   @json_accept "application/json, application/*+json;q=0.9, */*;q=0.1"
   @user_agent "RetroHexChat-Scraper/1.0"
-  @redirect_statuses [301, 302, 303, 307, 308]
 
   @impl true
   @spec scrape(String.t(), Client.opts()) ::
           {:ok, Client.scrape()} | {:not_modified} | {:error, fetch_error()}
   def scrape(url, opts \\ []) do
     with {:ok, html, final_url, headers, status} <- fetch_resource(url, :html, opts),
-         true <- html_content?(first_header(headers, "content-type")),
+         true <- html_content?(GuardedRequest.first_header(headers, "content-type")),
          {:ok, document} <- parse_document(html),
          hints = metadata_hints(opts),
          {:ok, metadata, sources, oembed_url, image_selection} <-
@@ -159,7 +159,7 @@ defmodule RetroHexChat.Scraper.HTTP do
   defp bot_challenge?(html, headers) do
     # Cloudflare states it outright in a header; the rest are recognised by the
     # script their interstitial loads.
-    first_header(headers, "cf-mitigated") != nil or
+    GuardedRequest.first_header(headers, "cf-mitigated") != nil or
       html
       |> String.slice(0, @challenge_scan_bytes)
       |> String.downcase()
@@ -205,9 +205,9 @@ defmodule RetroHexChat.Scraper.HTTP do
       metadata: metadata,
       final_url: final_url,
       http_status: status,
-      content_type: first_header(headers, "content-type"),
-      etag: first_header(headers, "etag"),
-      last_modified: first_header(headers, "last-modified"),
+      content_type: GuardedRequest.first_header(headers, "content-type"),
+      etag: GuardedRequest.first_header(headers, "etag"),
+      last_modified: GuardedRequest.first_header(headers, "last-modified"),
       excerpt: content.excerpt,
       author: author,
       published_at: published_at,
@@ -818,113 +818,41 @@ defmodule RetroHexChat.Scraper.HTTP do
            | {:error, fetch_error()}
 
   @spec fetch_resource(String.t(), :html | :json, Client.opts()) :: resource()
-  defp fetch_resource(url, kind, opts),
-    do: fetch_resource(url, kind, opts, @max_redirects)
+  defp fetch_resource(url, kind, opts) do
+    url
+    |> GuardedRequest.get(
+      headers: request_headers(kind) ++ conditional_headers(opts),
+      max_body_size: max_body_size(kind),
+      timeout_ms: @timeout_ms,
+      max_redirects: @max_redirects,
+      overrides: :scraper_req_options
+    )
+    |> case do
+      {:ok, %{status: status, body: body, headers: headers}, final_url} when status in 200..299 ->
+        {:ok, decode_body(body, GuardedRequest.first_header(headers, "content-type")), final_url,
+         headers, status}
 
-  @spec fetch_resource(String.t(), :html | :json, Client.opts(), non_neg_integer()) :: resource()
-  defp fetch_resource(url, kind, opts, redirects_left) do
-    case URLGuard.fetch_target(url) do
-      {:ok, target} -> fetch_resource_target(target, url, kind, opts, redirects_left)
-      {:error, _reason} -> {:error, :blocked}
-    end
-  end
+      # The publisher says the page is exactly what we already stored. Nothing was
+      # transferred, so there is nothing to parse — only a row to renew.
+      {:ok, %{status: 304}, _final_url} ->
+        {:not_modified}
 
-  @spec fetch_resource_target(
-          URLGuard.fetch_target(),
-          String.t(),
-          :html | :json,
-          Client.opts(),
-          non_neg_integer()
-        ) :: resource()
-  defp fetch_resource_target(target, url, kind, opts, redirects_left) do
-    case request_once(target, kind, opts) do
-      {:ok, response} ->
-        handle_resource_response(response, url, kind, opts, redirects_left)
+      {:ok, %{status: status}, _final_url} ->
+        {:error, {:http_status, status}}
 
-      {:error, reason} ->
+      {:error, {:blocked, _reason}} ->
+        {:error, :blocked}
+
+      {:error, :too_many_redirects} ->
+        {:error, :too_many_redirects}
+
+      {:error, :redirect_without_location} ->
+        {:error, :server_error}
+
+      {:error, {:transport, reason}} ->
         Logger.warning("scrape_transport_error url=#{url} reason=#{inspect(reason)}")
         {:error, :fetch_failed}
     end
-  end
-
-  @spec handle_resource_response(
-          Req.Response.t(),
-          String.t(),
-          :html | :json,
-          Client.opts(),
-          non_neg_integer()
-        ) :: resource()
-  defp handle_resource_response(
-         %{status: status, body: body, headers: headers},
-         url,
-         _kind,
-         _opts,
-         _redirects_left
-       )
-       when status in 200..299 do
-    {:ok, decode_body(body, first_header(headers, "content-type")), url, headers, status}
-  end
-
-  # The publisher says the page is exactly what we already stored. Nothing was
-  # transferred, so there is nothing to parse — only a row to renew.
-  defp handle_resource_response(%{status: 304}, _url, _kind, _opts, _redirects_left),
-    do: {:not_modified}
-
-  defp handle_resource_response(
-         %{status: status, headers: headers},
-         url,
-         kind,
-         opts,
-         redirects_left
-       )
-       when status in @redirect_statuses do
-    follow_redirect(url, headers, kind, opts, redirects_left)
-  end
-
-  defp handle_resource_response(%{status: status}, _url, _kind, _opts, _redirects_left)
-       when is_integer(status),
-       do: {:error, {:http_status, status}}
-
-  @spec request_once(URLGuard.fetch_target(), :html | :json, Client.opts()) ::
-          {:ok, Req.Response.t()} | {:error, term()}
-  defp request_once(target, kind, opts) do
-    Req.get(request_options(target, kind, opts))
-  end
-
-  @spec request_options(URLGuard.fetch_target(), :html | :json, Client.opts()) :: keyword()
-  defp request_options(target, kind, opts) do
-    target
-    |> base_request_options(kind, opts)
-    |> merge_request_overrides()
-  end
-
-  @spec base_request_options(URLGuard.fetch_target(), :html | :json, Client.opts()) :: keyword()
-  defp base_request_options(target, kind, opts) do
-    options = [
-      url: target.url,
-      headers: request_headers(kind) ++ conditional_headers(opts),
-      redirect: false,
-      compressed: false,
-      decode_body: false,
-      max_retries: 0,
-      connect_options: Keyword.put(target.connect_options, :timeout, @timeout_ms),
-      receive_timeout: @timeout_ms,
-      into: collector(kind, opts)
-    ]
-
-    if Map.get(target, :inet6?) do
-      Keyword.put(options, :inet6, true)
-    else
-      options
-    end
-  end
-
-  @spec merge_request_overrides(keyword()) :: keyword()
-  defp merge_request_overrides(options) do
-    Keyword.merge(options, request_overrides(), fn
-      :connect_options, left, right -> Keyword.merge(left, right)
-      _key, _left, right -> right
-    end)
   end
 
   @spec request_headers(:html | :json) :: [{String.t(), String.t()}]
@@ -940,60 +868,13 @@ defmodule RetroHexChat.Scraper.HTTP do
     |> Enum.filter(fn {_name, value} -> is_binary(value) and value != "" end)
   end
 
-  @spec request_overrides() :: keyword()
-  defp request_overrides do
-    Application.get_env(:retro_hex_chat, :scraper_req_options, [])
-  end
-
   # Read the whole document, not just its head. The head carries the preview
   # fields, but the body carries the article — and having paid for the connection,
   # the round trip and the transfer, stopping early only guarantees a second visit
   # the day anything wants to read what the page actually said.
-  @spec collector(:html | :json, Client.opts()) :: function()
-  defp collector(:json, _opts), do: &collect_limited_body(&1, &2, @max_oembed_size)
-  defp collector(:html, _opts), do: &collect_limited_body(&1, &2, @max_body_size)
-
-  @spec collect_limited_body(
-          {:data, binary()},
-          {Req.Request.t(), Req.Response.t()},
-          pos_integer()
-        ) ::
-          {:cont | :halt, {Req.Request.t(), Req.Response.t()}}
-  defp collect_limited_body({:data, data}, {request, response}, max_size) do
-    current = if is_binary(response.body), do: response.body, else: ""
-    remaining = max(max_size - byte_size(current), 0)
-    data = binary_part(data, 0, min(byte_size(data), remaining))
-    body = current <> data
-    response = %{response | body: body}
-
-    if byte_size(body) >= max_size do
-      {:halt, {request, response}}
-    else
-      {:cont, {request, response}}
-    end
-  end
-
-  @spec follow_redirect(String.t(), map(), :html | :json, Client.opts(), non_neg_integer()) ::
-          resource()
-  defp follow_redirect(_url, _headers, _kind, _opts, 0), do: {:error, :too_many_redirects}
-
-  defp follow_redirect(url, headers, kind, opts, redirects_left) do
-    case redirect_url(url, first_header(headers, "location")) do
-      nil -> {:error, :server_error}
-      next_url -> fetch_resource(next_url, kind, opts, redirects_left - 1)
-    end
-  end
-
-  @spec redirect_url(String.t(), String.t() | nil) :: String.t() | nil
-  defp redirect_url(_url, nil), do: nil
-
-  defp redirect_url(url, location) do
-    url
-    |> URI.merge(String.trim(location))
-    |> URI.to_string()
-  rescue
-    _ -> nil
-  end
+  @spec max_body_size(:html | :json) :: pos_integer()
+  defp max_body_size(:json), do: @max_oembed_size
+  defp max_body_size(:html), do: @max_body_size
 
   @spec parse_document(String.t()) :: {:ok, Floki.html_tree()} | {:error, :parse_failed}
   defp parse_document(html) do
@@ -2348,7 +2229,7 @@ defmodule RetroHexChat.Scraper.HTTP do
   @spec fetch_oembed(String.t(), String.t()) :: {:ok, metadata()} | {:error, atom()}
   defp fetch_oembed(url, page_url) do
     with {:ok, body, _final_url, headers, _status} <- fetch_resource(url, :json, []),
-         true <- json_content?(first_header(headers, "content-type")),
+         true <- json_content?(GuardedRequest.first_header(headers, "content-type")),
          {:ok, data} <- Jason.decode(body) do
       metadata =
         %{}
@@ -2539,15 +2420,6 @@ defmodule RetroHexChat.Scraper.HTTP do
   defp json_content?(content_type) do
     content_type = String.downcase(content_type)
     String.contains?(content_type, "application/json") or String.contains?(content_type, "+json")
-  end
-
-  @spec first_header(map(), String.t()) :: String.t() | nil
-  defp first_header(headers, name) do
-    case Map.get(headers, String.downcase(name)) || Map.get(headers, name) do
-      [value | _] -> value
-      value when is_binary(value) -> value
-      _ -> nil
-    end
   end
 
   @spec header_values(map(), String.t()) :: [String.t()]
