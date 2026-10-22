@@ -15,7 +15,10 @@ defmodule RetroHexChat.VirtualSpace.ConstructTest do
 
   @moduletag :integration
 
-  @gathering_grace_ms 20
+  # Long enough that a hop through the gate fits inside it on a loaded CI
+  # machine: at 20 ms the island's restart sometimes arrived after the
+  # gathering had already closed.
+  @gathering_grace_ms 200
 
   setup do
     Application.put_env(:retro_hex_chat, :virtual_space_step_ms, 0)
