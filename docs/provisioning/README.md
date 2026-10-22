@@ -11,7 +11,7 @@ add rooms on top and can be pasted in any order, or not at all.
 
 | script | rooms | bots | feeds | social room |
 |---|---|---|---|---|
-| [`en.md`](en.md) | 30 | 25 | 47 | `#lobby` |
+| [`en.md`](en.md) | 48 | 25 | 47 | `#lobby` |
 | [`pt_BR.md`](pt_BR.md) | 10 | 12 | 23 | `#brasil` |
 | [`pt_PT.md`](pt_PT.md) | 10 | 12 | 18 | `#portugal` |
 | [`es.md`](es.md) | 12 | 14 | 25 | `#hispano` |
@@ -51,8 +51,9 @@ which lints all fourteen files against the handlers that have to run them.
   language uses.
 - **Every room has a feed.** A room with three people and nothing happening is
   dead; a room with three people and a wire has something on it every hour.
-  The Retro Games rooms in `en.md` are the exception: their wire is the
-  matches, which Scoreboard announces.
+  The game rooms in `en.md` are the exception: a Retro Game's wire is its
+  matches, which Scoreboard announces, and an arcade game's is whoever starts
+  it, which Pixel announces.
 - **One moderator per language, in every room, silent.** A warning nobody can
   read is not a warning, which is why the English `Brutus` does not cover the
   other thirteen. A bot in every room that also greets would double every
@@ -191,7 +192,8 @@ done
 ```
 
 Setting the same category twice changes nothing either. The Retro Games
-rooms are in `en.md` like every other room, with `/cs category games`.
+rooms and the arcade rooms are in `en.md` like every other room, with
+`/cs category games`.
 
 A bot setting needs no `/join`, because `/bot set` names its bot. This gives
 every bot its language — pasted by an admin, after the release that knows

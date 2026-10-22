@@ -22,9 +22,16 @@ defmodule RetroHexChat.Arcade.Schema.SoloSession do
     field :duration_seconds, :integer
     field :closed_at, :utc_datetime_usec
     field :closed_reason, :string
+    # The lines that said the game was started, in its channel and in `#arcade`.
+    field :channel_message_id, :integer
+    field :feed_message_id, :integer
 
     timestamps(type: :utc_datetime_usec)
   end
+
+  @spec message_changeset(t() | Ecto.Changeset.t(), map()) :: Ecto.Changeset.t()
+  def message_changeset(session, attrs),
+    do: cast(session, attrs, [:channel_message_id, :feed_message_id])
 
   @spec changeset(t() | Ecto.Changeset.t(), map()) :: Ecto.Changeset.t()
   def changeset(session, attrs) do

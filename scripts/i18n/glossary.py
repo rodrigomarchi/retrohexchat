@@ -702,6 +702,13 @@ _ROWS = {
     # ── A game's channel and its results ──────────────────────
     # "Draw" is the result of a match, never the verb.
     "Ranking":        ("Ranking", "Classificação", "Clasificación", "Classement", "Rangliste", "Classifica", "Ranglijst", "Ranking", "Рейтинг", "Peringkat", "ランキング", "排行榜", "排行榜"),
+    # An arcade game's home: who started it, and who starts it most.
+    "Who played":      ("Quem jogou", "Quem jogou", "Quién jugó", "Qui a joué", "Wer gespielt hat", "Chi ha giocato", "Wie speelde", "Kto grał", "Кто играл", "Siapa yang bermain", "プレイした人", "谁玩过", "誰玩過"),
+    "Top players":     ("Quem mais joga", "Quem mais joga", "Quién más juega", "Qui joue le plus", "Wer am meisten spielt", "Chi gioca di più", "Wie het meest speelt", "Kto gra najwięcej", "Кто играет чаще", "Paling sering main", "よく遊ぶ人", "玩得最多的人", "玩得最多的人"),
+    "This week":       ("Esta semana", "Esta semana", "Esta semana", "Cette semaine", "Diese Woche", "Questa settimana", "Deze week", "W tym tygodniu", "На этой неделе", "Minggu ini", "今週", "本周", "本週"),
+    "All time":        ("De todos os tempos", "De todos os tempos", "De todos los tiempos", "Depuis toujours", "Insgesamt", "Di sempre", "Aller tijden", "Od początku", "За всё время", "Sepanjang masa", "累計", "历来", "歷來"),
+    "Game Channels":   ("Canais de Jogo", "Canais de Jogo", "Canales de juego", "Canaux de jeu", "Spielkanäle", "Canali di gioco", "Spelkanalen", "Kanały gier", "Игровые каналы", "Kanal Permainan", "ゲームチャンネル", "游戏频道", "遊戲頻道"),
+    "Arcade Channels": ("Canais do Arcade", "Canais do Arcade", "Canales del Arcade", "Canaux de l'Arcade", "Arcade-Kanäle", "Canali dell'Arcade", "Arcade-kanalen", "Kanały Arcade", "Каналы аркады", "Kanal Arcade", "アーケードのチャンネル", "街机频道", "街機頻道"),
     "Rematch":        ("Revanche", "Desforra", "Revancha", "Revanche", "Revanche", "Rivincita", "Revanche", "Rewanż", "Реванш", "Tanding ulang", "再戦", "再战", "再戰"),
     "Draw":           ("Empate", "Empate", "Empate", "Match nul", "Unentschieden", "Pareggio", "Gelijkspel", "Remis", "Ничья", "Seri", "引き分け", "平局", "平手"),
     "Find a partner": ("Procurar parceiro", "Procurar parceiro", "Buscar compañero", "Trouver un partenaire", "Mitspieler finden", "Trova un compagno", "Medespeler zoeken", "Znajdź partnera", "Найти партнёра", "Cari lawan main", "相手を探す", "寻找对手", "尋找對手"),

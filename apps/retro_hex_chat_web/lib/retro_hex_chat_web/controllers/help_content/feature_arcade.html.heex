@@ -52,6 +52,16 @@
     end_session: dgettext("games", "End Session")
   )}
 </p>
+<p>
+  {dgettext(
+    "help_arcade",
+    "Each game has a channel of its own, like %{channel}, where a bot says who starts it.",
+    channel: "#doom-shareware"
+  )}
+  <.help_link topic="feature-arcade-channels">
+    {dgettext("help_arcade", "Arcade Channels")}
+  </.help_link>
+</p>
 <.help_game_list kind={:arcade} />
 <.help_h4 icon={:icon_webrtc}>{dgettext("help_arcade", "Technology")}</.help_h4>
 <p>

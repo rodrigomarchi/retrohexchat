@@ -11,6 +11,7 @@ defmodule RetroHexChatWeb.ChatLive.GameChannelFlowTest do
   import Ecto.Query, only: [from: 2]
   import RetroHexChat.Factory
 
+  alias RetroHexChat.Arcade.SoloSessionServer
   alias RetroHexChat.Channels.Registry, as: ChannelRegistry
   alias RetroHexChat.Channels.Supervisor, as: ChannelSupervisor
   alias RetroHexChat.Chat.Queries, as: ChatQueries
@@ -170,19 +171,91 @@ defmodule RetroHexChatWeb.ChatLive.GameChannelFlowTest do
     {:ok, %{token: token}} =
       Lobby.create_open_session(host.id, metadata: %{"game_id" => "hex_pong"})
 
-    on_exit(fn -> Lobby.close_session(token, host.id, "test_cleanup") end)
     LiveMatchPages.playing([host.nickname], "hex_pong", token)
 
-    {:ok, view, _html} = live(chat_conn(conn, "viewer#{uid()}"), "/c/hex-pong")
+    # Closed before the test ends rather than in `on_exit`: by the time an
+    # `on_exit` callback runs, the shared sandbox owner may already be gone,
+    # and closing a session reads the database.
+    try do
+      {:ok, view, _html} = live(chat_conn(conn, "viewer#{uid()}"), "/c/hex-pong")
 
-    render_click(view, "nick_right_click", %{"nick" => host.nickname, "x" => 10, "y" => 10})
-    assert render(view) =~ "context-menu-item-context_watch"
+      render_click(view, "nick_right_click", %{"nick" => host.nickname, "x" => 10, "y" => 10})
+      assert render(view) =~ "context-menu-item-context_watch"
 
-    render_click(view, "context_watch", %{"nick" => host.nickname})
-    assert render(view) =~ "/watch/#{token}"
+      render_click(view, "context_watch", %{"nick" => host.nickname})
+      assert render(view) =~ "/watch/#{token}"
 
-    # Somebody who is not playing has nothing to watch.
-    render_click(view, "nick_right_click", %{"nick" => "idle#{uid()}", "x" => 10, "y" => 10})
-    refute render(view) =~ "context-menu-item-context_watch"
+      # Somebody who is not playing has nothing to watch.
+      render_click(view, "nick_right_click", %{"nick" => "idle#{uid()}", "x" => 10, "y" => 10})
+      refute render(view) =~ "context-menu-item-context_watch"
+    after
+      Lobby.close_session(token, host.id, "test_cleanup")
+    end
+  end
+
+  describe "an arcade game's channel" do
+    setup do
+      insert(:registered_channel,
+        name: "#doom-shareware",
+        founder_nickname: "Admin",
+        public_archive: true,
+        archive_since: DateTime.utc_now()
+      )
+
+      insert_game_announcer(["#doom-shareware", "#arcade"], name: "Pixel", nickname: "Pixel")
+
+      on_exit(fn ->
+        for name <- ["#doom-shareware", "#arcade"] do
+          case ChannelRegistry.lookup(name) do
+            {:ok, pid} -> ChannelSupervisor.stop_child(pid)
+            {:error, :not_found} -> :ok
+          end
+        end
+      end)
+    end
+
+    test "Play opens the arcade on the game, and starting it is said in the room with its card",
+         %{conn: conn} do
+      nick = register("arc#{uid()}" |> String.slice(0, 16))
+
+      {:ok, view, _html} =
+        live(chat_conn(conn, nick.nickname, pre_identified: true), "/c/doom-shareware")
+
+      assert has_element?(
+               view,
+               ~s([data-testid="game-channel-bar"][data-game-id="doom_shareware"])
+             )
+
+      refute has_element?(view, ~s([data-testid="game-channel-lfg"]))
+
+      view |> element(~s([data-testid="game-channel-play"])) |> render_click()
+      assert has_element?(view, ~s([data-testid="solo-game-start-doom_shareware"]))
+
+      render_click(view, "arcade_select_game", %{"game-id" => "doom_shareware"})
+      %{arcade_session: %{token: token}} = :sys.get_state(view.pid).socket.assigns
+      {:ok, _state} = SoloSessionServer.get_state(token)
+
+      assert [line] =
+               "#doom-shareware"
+               |> ChatQueries.list_messages(limit: 10)
+               |> Map.fetch!(:items)
+               |> Enum.filter(&(&1.content =~ "started the game"))
+
+      assert line.content == "#{nick.nickname} started the game DOOM: Knee-Deep in the Dead"
+
+      # The line reaches the open room with its card already attached.
+      _ = :sys.get_state(view.pid)
+      assert render(view) =~ "arcade-play-card-"
+
+      render_click(view, "arcade_leave", %{})
+    end
+
+    test "a visitor sees the strip, and Play asks for an account, then lands on the game",
+         %{conn: conn} do
+      {:ok, view, _html} = live(conn, "/c/doom-shareware")
+
+      view |> element(~s([data-testid="game-channel-play"])) |> render_click()
+      assert_patch(view, "/connect?return_to=%2F%3Farcade%3Ddoom_shareware&signup=games")
+    end
   end
 end

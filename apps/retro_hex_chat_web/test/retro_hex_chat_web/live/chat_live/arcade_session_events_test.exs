@@ -60,6 +60,17 @@ defmodule RetroHexChatWeb.ChatLive.ArcadeSessionEventsTest do
       refute "arcade-games" in open_windows(view)
     end
 
+    # Play in a game's channel, or on a card about it, names the game: signing
+    # in comes back to that game rather than to the catalogue.
+    test "an unidentified nickname pressing Play on a game comes back to it", %{conn: conn} do
+      {:ok, view, _} = live(chat_conn(conn, "guest#{uid()}"), "/")
+
+      render_click(view, "open_arcade", %{"game-id" => "hacx"})
+
+      assert_patch(view, "/connect?return_to=%2F%3Farcade%3Dhacx&signup=games")
+      assert arcade_session(view) == nil
+    end
+
     test "a game id opens the window already previewing that game", %{conn: conn} do
       nick = "arcd#{uid()}"
       register(nick)

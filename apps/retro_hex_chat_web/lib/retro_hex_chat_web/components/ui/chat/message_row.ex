@@ -15,6 +15,7 @@ defmodule RetroHexChatWeb.Components.UI.MessageRow do
   use RetroHexChatWeb.Component
 
   import Phoenix.HTML, only: [raw: 1]
+  import RetroHexChatWeb.Components.UI.ArcadePlayCard
   import RetroHexChatWeb.Components.UI.ChatMessage
   import RetroHexChatWeb.Components.UI.ChatAttachment
   import RetroHexChatWeb.Components.UI.EventCard
@@ -224,12 +225,15 @@ defmodule RetroHexChatWeb.Components.UI.MessageRow do
             avatar={@show_avatars && Map.get(@msg, :avatar)}
             layout={card_layout(@msg)}
           >
-            <span :if={is_nil(result_card(@msg, @strip_formatting))}>
+            <span :if={is_nil(card_of(@msg, @strip_formatting))}>
               {raw(formatted_content(@msg, @strip_formatting))}
             </span>
             <%!-- A line the games service wrote about a match, in the game's
                   channel or in the one every game's results go to. --%>
             <.game_result_card card={result_card(@msg, @strip_formatting)} />
+            <%!-- A line saying somebody started an arcade game, in the game's
+                  channel or in #arcade. --%>
+            <.arcade_play_card card={play_card(@msg, @strip_formatting)} />
             <.link_preview_card
               card={Map.get(@msg, :link_preview)}
               strip_formatting={@strip_formatting}
@@ -308,15 +312,23 @@ defmodule RetroHexChatWeb.Components.UI.MessageRow do
   # A card is a block of its own and cannot ride the head line beside the
   # narration, so a row carrying one is stacked whatever its type would choose.
   defp card_layout(msg) do
-    if Map.get(msg, :share_card) || Map.get(msg, :event_card) || Map.get(msg, :result_card),
-      do: "stacked",
-      else: "auto"
+    if Map.get(msg, :share_card) || Map.get(msg, :event_card) || Map.get(msg, :result_card) ||
+         Map.get(msg, :play_card),
+       do: "stacked",
+       else: "auto"
   end
 
   # The match card stands in for the sentence about the match, except for the
   # reader who asked for plain text: they get the sentence.
   defp result_card(_msg, true = _strip_formatting), do: nil
   defp result_card(msg, _strip_formatting), do: Map.get(msg, :result_card)
+
+  defp play_card(_msg, true = _strip_formatting), do: nil
+  defp play_card(msg, _strip_formatting), do: Map.get(msg, :play_card)
+
+  # Whichever games card stands in for the line's sentence.
+  defp card_of(msg, strip_formatting),
+    do: result_card(msg, strip_formatting) || play_card(msg, strip_formatting)
 
   attr :msg, :map, required: true
   attr :strip_formatting, :boolean, required: true

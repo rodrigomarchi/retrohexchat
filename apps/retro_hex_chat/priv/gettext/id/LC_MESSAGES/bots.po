@@ -239,7 +239,7 @@ msgstr "Alien biru"
 msgid "Bot destroyed"
 msgstr "Bot hancur"
 
-#: lib/retro_hex_chat/bots/server.ex:1000
+#: lib/retro_hex_chat/bots/server.ex:1001
 #, elixir-autogen, elixir-format
 msgid "Bot leaving"
 msgstr "Bot meninggalkan"
@@ -1802,27 +1802,27 @@ msgstr "Baca selengkapnya"
 msgid "%{field} must be public, channel_notice, private_notice, or silent"
 msgstr "%{field} harus public, channel_notice, private_notice, atau silent"
 
-#: lib/retro_hex_chat/bots/capabilities/game.ex:37
-#, elixir-autogen, elixir-format
-msgid "Announces Retro Games matches, rankings and the weekly challenge"
-msgstr "Mengumumkan pertandingan Retro, peringkat dan tantangan mingguan"
-
-#: lib/retro_hex_chat/bots/capabilities/game.ex:122
+#: lib/retro_hex_chat/bots/capabilities/game.ex:131
 #, elixir-autogen, elixir-format
 msgid "The game's ranking"
 msgstr "Peringkat permainan"
 
-#: lib/retro_hex_chat/bots/capabilities/game.ex:127
+#: lib/retro_hex_chat/bots/capabilities/game.ex:136
 #, elixir-autogen, elixir-format
 msgid "The latest public matches"
 msgstr "Pertandingan publik terbaru"
 
-#: lib/retro_hex_chat/bots/capabilities/game.ex:125
+#: lib/retro_hex_chat/bots/capabilities/game.ex:134
 #, elixir-autogen, elixir-format
 msgid "This week's challenge and who leads it"
 msgstr "Tantangan minggu ini dan siapa yang memimpin"
 
-#: lib/retro_hex_chat/bots/capabilities/game.ex:128
+#: lib/retro_hex_chat/bots/capabilities/game.ex:137
 #, elixir-autogen, elixir-format
 msgid "Controls and how to start"
 msgstr "Kontrol dan bagaimana memulai"
+
+#: lib/retro_hex_chat/bots/capabilities/game.ex:42
+#, elixir-autogen, elixir-format
+msgid "Announces Retro Games matches and arcade games as they start, rankings and the weekly challenge"
+msgstr "Mengumumkan pertandingan Retro dan game arcade karena mereka mulai, peringkat dan tantangan mingguan"

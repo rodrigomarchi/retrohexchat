@@ -536,73 +536,79 @@ msgid "This week's challenge is %{game}. Win the most matches against other play
 msgstr "本週的挑戰是%{game}. 獲得與其他玩家最激烈的比賽."
 
 #: lib/retro_hex_chat/chat/help_topics/features.ex:2137
+#: lib/retro_hex_chat/chat/help_topics/features.ex:3350
 #, elixir-autogen, elixir-format
 msgctxt "game"
 msgid "Play"
 msgstr "玩"
 
-#: lib/retro_hex_chat/games/room_facts.ex:210
+#: lib/retro_hex_chat/games/room_facts.ex:234
 #, elixir-autogen, elixir-format
 msgid "%{nickname} (%{count} win)"
 msgid_plural "%{nickname} (%{count} wins)"
 msgstr[0] "%{nickname}(%{count}勝)"
 
-#: lib/retro_hex_chat/games/room_facts.ex:136
+#: lib/retro_hex_chat/games/room_facts.ex:160
 #, elixir-autogen, elixir-format
 msgid "Ask %{commands} for more."
 msgstr "問%{commands}更多."
 
-#: lib/retro_hex_chat/games/room_facts.ex:158
+#: lib/retro_hex_chat/games/room_facts.ex:182
 #, elixir-autogen, elixir-format
 msgid "Latest: %{line}"
 msgstr "最近報告:%{line}"
 
-#: lib/retro_hex_chat/games/room_facts.ex:157
+#: lib/retro_hex_chat/games/room_facts.ex:181
 #, elixir-autogen, elixir-format
 msgid "No public match has been played yet."
 msgstr "還沒有公開比賽"
 
-#: lib/retro_hex_chat/games/room_facts.ex:101
+#: lib/retro_hex_chat/games/room_facts.ex:117
 #, elixir-autogen, elixir-format
 msgid "No public match of %{game} yet."
 msgstr "%{game}還沒有公開比賽"
 
-#: lib/retro_hex_chat/games/room_facts.ex:169
+#: lib/retro_hex_chat/games/room_facts.ex:193
 #, elixir-autogen, elixir-format
 msgid "Nobody leads it yet."
 msgstr "沒有人領導它。"
 
-#: lib/retro_hex_chat/games/room_facts.ex:129
+#: lib/retro_hex_chat/games/room_facts.ex:150
 #, elixir-autogen, elixir-format
 msgid "Press Play under the topic to start, or Find a partner to play with someone here."
 msgstr "按下主題下的 Play 開始, 或者找一個搭檔和這裏的人一起玩."
 
-#: lib/retro_hex_chat/games/room_facts.ex:189
+#: lib/retro_hex_chat/games/room_facts.ex:213
 #, elixir-autogen, elixir-format
 msgid "%{game} has no ranking yet."
 msgstr "%{game}還沒有排名."
 
-#: lib/retro_hex_chat/games/room_facts.ex:143
+#: lib/retro_hex_chat/games/room_facts.ex:167
 #, elixir-autogen, elixir-format
 msgid "Every notable Retro Games match is announced here when it ends."
 msgstr "Every notable Retro Games match is announced here when it ends."
 
-#: lib/retro_hex_chat/games/room_facts.ex:205
+#: lib/retro_hex_chat/games/room_facts.ex:229
 #, elixir-autogen, elixir-format
 msgid "Finish a ranked match to enter it."
 msgstr "完成一個排序匹配以輸入它 。"
 
-#: lib/retro_hex_chat/games/room_facts.ex:152
+#: lib/retro_hex_chat/games/room_facts.ex:176
 #, elixir-autogen, elixir-format
 msgid "Each game also has its own room."
 msgstr "每場比賽也有自己的房間."
 
-#: lib/retro_hex_chat/games/room_facts.ex:172
+#: lib/retro_hex_chat/games/room_facts.ex:196
 #, elixir-autogen, elixir-format
 msgid "%{player} leads it."
 msgstr "%{player}領先."
 
-#: lib/retro_hex_chat/games/room_facts.ex:204
+#: lib/retro_hex_chat/games/room_facts.ex:228
 #, elixir-autogen, elixir-format
 msgid "Win a match against another player to enter it."
 msgstr "贏得對另一個玩家的比賽才能進入."
+
+#: lib/retro_hex_chat/games/room_facts.ex:156
+#, elixir-autogen, elixir-format
+msgid "Press Play under the topic to start it in your browser."
+msgstr "按下主題下的 Play 在您的瀏覽器中啓動 。"

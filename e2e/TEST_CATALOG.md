@@ -134,9 +134,9 @@ make e2e.catalog.check    # verify it is current (also runs in make ci)
 
 ## Coverage
 
-- **257 spec files** under `e2e/tests/`.
-- **645 Playwright `test()` cases**.
-- **588 documented flows**, 587 done, 1 not done.
+- **258 spec files** under `e2e/tests/`.
+- **648 Playwright `test()` cases**.
+- **591 documented flows**, 590 done, 1 not done.
 - **Every spec documents its own flows.**
 
 ## Flow index
@@ -478,6 +478,9 @@ Grouped by section. Every row comes from an `@flow` line in the spec itself.
 | N69 | A full match's link, a playing nickname's menu and the game's page each lead to watching it; a member's Play on the game's page opens beside the desktop | `tests/game-open-lobby.spec.ts` | done |
 | N70 | A result card's game name opens the game's home, whose You tab shows the player's own rating and latest matches | `tests/game-channels.spec.ts` | done |
 | N71 | Whoever enters a game's channel is told by Scoreboard what the game is and where its weekly challenge stands, and !ranking is answered in the room from the game's own data | `tests/game-channels.spec.ts` | done |
+| N72 | An arcade game's channel names its game under the topic; Play opens the in-app Arcade on that game, and starting it is said by Pixel in the game's channel and in #arcade, each line with its card | `tests/arcade-channels.spec.ts` | done |
+| N73 | An arcade game's page is its home: Play with the game's sheet, who played it lately, who plays it most, the reader's own plays and the channel's last lines | `tests/arcade-channels.spec.ts` | done |
+| N74 | A visitor reads an arcade game's channel and its page; pressing Play opens the sign-in window, which returns to the same game | `tests/arcade-channels.spec.ts` | done |
 
 ### O - Chat UI Micro-Journeys
 

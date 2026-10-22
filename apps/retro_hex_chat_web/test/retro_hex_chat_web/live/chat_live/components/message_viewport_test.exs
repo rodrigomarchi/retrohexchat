@@ -5,6 +5,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.MessageViewportTest do
   import RetroHexChat.Factory, only: [insert: 2]
 
   alias RetroHexChat.Accounts.NickLocales
+  alias RetroHexChat.Arcade.Queries, as: ArcadeQueries
   alias RetroHexChat.Games.Results
   alias RetroHexChat.Games.Schema.GameResult
   alias RetroHexChat.Repo
@@ -104,6 +105,48 @@ defmodule RetroHexChatWeb.ChatLive.Components.MessageViewportTest do
       )
 
     assert html =~ ~s(data-testid="game-result-card-#{result.id}")
+  end
+
+  test "a channel line that said an arcade game was started carries its card" do
+    ana = insert(:registered_nick, nickname: "ana")
+
+    line =
+      insert(:message,
+        channel_name: "#arcade",
+        author_nickname: "Pixel",
+        content: "ana started the game HacX: Twitch 'n Kill"
+      )
+
+    {:ok, session} =
+      ArcadeQueries.insert_session(%{
+        token: "viewport-play",
+        creator_id: ana.id,
+        status: "playing",
+        game_id: "hacx",
+        game_started_at: DateTime.utc_now()
+      })
+
+    {:ok, _session} = ArcadeQueries.attach_message(session, %{feed_message_id: line.id})
+
+    html =
+      render_component(MessageViewport,
+        id: MessageViewport.id(),
+        action:
+          {:reset,
+           [
+             %{
+               id: line.id,
+               source: :channel,
+               author: "Pixel",
+               content: line.content,
+               type: :message,
+               timestamp: ~U[2026-10-21 12:00:00Z]
+             }
+           ]}
+      )
+
+    assert html =~ ~s(data-testid="arcade-play-card-#{session.id}")
+    assert html =~ ~s(phx-value-channel="#hacx")
   end
 
   test "shows the channel-load spinner only when loading_channel is set" do

@@ -187,6 +187,8 @@ defmodule RetroHexChatWeb.DesktopLive do
     Phoenix.PubSub.subscribe(RetroHexChat.PubSub, Topics.games_playing())
     # A game's home open on this desktop follows its matches as they end.
     Phoenix.PubSub.subscribe(RetroHexChat.PubSub, Topics.game_results())
+    # And an arcade game's home, the players who start it.
+    Phoenix.PubSub.subscribe(RetroHexChat.PubSub, Topics.arcade_plays())
     # After the first render, when the user list exists to be told.
     send(self(), :refresh_games_playing)
     Phoenix.PubSub.subscribe(RetroHexChat.PubSub, Topics.announcements())

@@ -10,7 +10,7 @@ defmodule RetroHexChat.Arcade.SoloSessionServer do
 
   require Logger
 
-  alias RetroHexChat.Arcade.{Queries, Registry}
+  alias RetroHexChat.Arcade.{Announcer, Queries, Registry}
   alias RetroHexChat.Arcade.Schema.SoloSession
   alias RetroHexChat.NamedTimers
 
@@ -141,7 +141,8 @@ defmodule RetroHexChat.Arcade.SoloSessionServer do
     else
       Logger.debug("Arcade select: session_id=#{state.session.id}, game=#{game_id}")
       state = do_transition(state, "playing", game_id)
-      {:reply, :ok, state}
+      # Said after the reply: the player's Play is not kept waiting on a room.
+      {:reply, :ok, state, {:continue, :announce_play}}
     end
   end
 
@@ -157,6 +158,12 @@ defmodule RetroHexChat.Arcade.SoloSessionServer do
         state = do_finish(state)
         {:stop, :normal, :ok, state}
     end
+  end
+
+  @impl true
+  def handle_continue(:announce_play, state) do
+    Announcer.started(state.session)
+    {:noreply, state}
   end
 
   @impl true

@@ -51,7 +51,7 @@ defmodule RetroHexChatWeb.ChatLive.ArcadeSessionEvents do
   def handle_event("open_arcade", params, socket) do
     socket =
       socket
-      |> open_arcade()
+      |> open_arcade(game_id_of(params))
       |> maybe_preview_game(params)
 
     {:halt, socket}
@@ -225,6 +225,11 @@ defmodule RetroHexChatWeb.ChatLive.ArcadeSessionEvents do
   # is sent to the sign-in window, which comes back to the arcade — on the
   # game a link named, when it named one.
   @spec open_arcade(Socket.t(), String.t()) :: Socket.t()
+  # A Play that named a game — in a game's channel, on a card about it —
+  # comes back to that game once the nickname is identified.
+  defp game_id_of(%{"game-id" => game_id}) when is_binary(game_id), do: game_id
+  defp game_id_of(_params), do: ""
+
   defp open_arcade(socket, game_id \\ "") do
     cond do
       socket.assigns[:arcade_session] ->

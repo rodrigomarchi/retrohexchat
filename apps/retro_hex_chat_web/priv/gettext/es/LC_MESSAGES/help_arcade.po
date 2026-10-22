@@ -1099,7 +1099,7 @@ msgstr ""
 msgid "PWAD compatible"
 msgstr "PWAD compatible"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_arcade.html.heex:84
+#: lib/retro_hex_chat_web/controllers/help_content/feature_arcade.html.heex:94
 #, elixir-autogen, elixir-format
 msgid "Pending sessions expire in 5 minutes. The lobby expires after 15 minutes of inactivity (with a warning at 10 minutes)."
 msgstr ""
@@ -1556,7 +1556,7 @@ msgstr "Guarda la escopeta"
 msgid "ScummVM"
 msgstr "ScummVM"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_arcade.html.heex:109
+#: lib/retro_hex_chat_web/controllers/help_content/feature_arcade.html.heex:119
 #: lib/retro_hex_chat_web/controllers/help_content/feature_arcade_scummvm_bass.html.heex:122
 #: lib/retro_hex_chat_web/controllers/help_content/feature_arcade_scummvm_drascula.html.heex:99
 #: lib/retro_hex_chat_web/controllers/help_content/feature_arcade_scummvm_dreamweb.html.heex:108
@@ -1585,7 +1585,7 @@ msgstr "Fuego secundario es clave"
 msgid "Secret hunt"
 msgstr "Caza secreta"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_arcade.html.heex:89
+#: lib/retro_hex_chat_web/controllers/help_content/feature_arcade.html.heex:99
 #: lib/retro_hex_chat_web/controllers/help_content/feature_arcade_chex_quest.html.heex:102
 #: lib/retro_hex_chat_web/controllers/help_content/feature_arcade_doom.html.heex:147
 #: lib/retro_hex_chat_web/controllers/help_content/feature_arcade_doom_shareware.html.heex:112
@@ -1614,7 +1614,7 @@ msgstr "Caza secreta"
 msgid "See Also"
 msgstr "Ver también"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_arcade.html.heex:82
+#: lib/retro_hex_chat_web/controllers/help_content/feature_arcade.html.heex:92
 #, elixir-autogen, elixir-format
 msgid "Session Timeouts"
 msgstr "Períodos de sesiones"
@@ -1751,7 +1751,7 @@ msgstr "Habla con todos exhaustivamente"
 msgid "Talk to everyone twice"
 msgstr "Habla con todos dos veces"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_arcade.html.heex:56
+#: lib/retro_hex_chat_web/controllers/help_content/feature_arcade.html.heex:66
 #, elixir-autogen, elixir-format
 msgid "Technology"
 msgstr "Tecnología"
@@ -3446,36 +3446,36 @@ msgstr "Juegos"
 msgid "menu and choose"
 msgstr "menú y elegir"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_arcade.html.heex:68
-#: lib/retro_hex_chat_web/controllers/help_content/feature_arcade.html.heex:71
+#: lib/retro_hex_chat_web/controllers/help_content/feature_arcade.html.heex:78
+#: lib/retro_hex_chat_web/controllers/help_content/feature_arcade.html.heex:81
 #, elixir-autogen, elixir-format
 msgid "%{engine} games are powered by"
 msgstr "Los juegos %{engine} funcionan con"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_arcade.html.heex:58
-#: lib/retro_hex_chat_web/controllers/help_content/feature_arcade.html.heex:63
-#: lib/retro_hex_chat_web/controllers/help_content/feature_arcade.html.heex:74
+#: lib/retro_hex_chat_web/controllers/help_content/feature_arcade.html.heex:68
+#: lib/retro_hex_chat_web/controllers/help_content/feature_arcade.html.heex:73
+#: lib/retro_hex_chat_web/controllers/help_content/feature_arcade.html.heex:84
 #, elixir-autogen, elixir-format
 msgid "%{game} is powered by"
 msgstr "%{game} funciona con"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_arcade.html.heex:65
+#: lib/retro_hex_chat_web/controllers/help_content/feature_arcade.html.heex:75
 #, elixir-autogen, elixir-format
 msgid "(%{engine} compiled to WebAssembly via Emscripten)."
 msgstr "(%{engine} compilado a WebAssembly mediante Emscripten)."
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_arcade.html.heex:70
-#: lib/retro_hex_chat_web/controllers/help_content/feature_arcade.html.heex:73
+#: lib/retro_hex_chat_web/controllers/help_content/feature_arcade.html.heex:80
+#: lib/retro_hex_chat_web/controllers/help_content/feature_arcade.html.heex:83
 #, elixir-autogen, elixir-format
 msgid "(%{engine} compiled to WebAssembly)."
 msgstr "(%{engine} compilado a WebAssembly)."
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_arcade.html.heex:76
+#: lib/retro_hex_chat_web/controllers/help_content/feature_arcade.html.heex:86
 #, elixir-autogen, elixir-format
 msgid "(%{engine} compiled to WebAssembly). All support keyboard, mouse, and gamepad input."
 msgstr "(%{engine} compilado a WebAssembly). Todos admiten teclado, mouse y gamepad."
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_arcade.html.heex:60
+#: lib/retro_hex_chat_web/controllers/help_content/feature_arcade.html.heex:70
 #, elixir-autogen, elixir-format
 msgid "(%{engine} reimplementation compiled to WebAssembly)."
 msgstr "(reimplementación de %{engine} compilada a WebAssembly)."
@@ -3529,3 +3529,98 @@ msgstr "%{arcade} ejecuta juegos de acción clásicos y aventuras directamente e
 #, elixir-autogen, elixir-format
 msgid "No downloads, no plugins: the game engine runs natively in your browser."
 msgstr "Sin descargas, sin plugins: el motor del juego funciona nativamente en su navegador."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_arcade_channels.html.heex:61
+#, elixir-autogen, elixir-format
+msgid "Anybody can read an arcade channel and the page of the game without an account. Playing and talking need a registered nickname that you have identified. A visitor who presses %{play} sees the sign-in window, and comes back to the same game."
+msgstr "Cualquiera puede leer un canal de arcade y la página del juego sin una cuenta. Jugar y hablar necesita un apodo registrado que usted ha identificado. Un visitante que presiona %{play} ve la ventana de entrada y vuelve al mismo juego."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_arcade.html.heex:62
+#, elixir-autogen, elixir-format
+msgid "Arcade Channels"
+msgstr "Canales del Arcade"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_arcade_channels.html.heex:53
+#, elixir-autogen, elixir-format
+msgid "Beside the details of the game, its page shows who played it lately, who started it most often this week and of all time, how many times you started it, and the last lines of its channel."
+msgstr "Aparte de los detalles del juego, su página muestra quién lo jugó últimamente, quién lo empezó más a menudo esta semana y de todos los tiempos, cuántas veces lo empezaste, y las últimas líneas de su canal."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_arcade.html.heex:56
+#, elixir-autogen, elixir-format
+msgid "Each game has a channel of its own, like %{channel}, where a bot says who starts it."
+msgstr "Cada juego tiene un canal propio, como %{channel}, donde un bot dice quién lo inicia."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_arcade_channels.html.heex:32
+#, elixir-autogen, elixir-format
+msgid "Each player is announced at most once every five minutes in each game."
+msgstr "Cada jugador se anuncia al máximo cada cinco minutos en cada juego."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_arcade_channels.html.heex:2
+#, elixir-autogen, elixir-format
+msgid "Every arcade game has its own channel, named like its page: %{channel} for %{game}. The people who play it talk there. The channel %{feed} hears about every arcade game."
+msgstr "Cada juego de arcade tiene su propio canal, llamado como su página: %{channel} para %{game}. La gente que lo toca habla allí. El canal %{feed} escucha sobre cada juego de arcade."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_arcade_channels.html.heex:73
+#, elixir-autogen, elixir-format
+msgid "Game Channels"
+msgstr "Canales de juego"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_arcade_channels.html.heex:19
+#, elixir-autogen, elixir-format
+msgid "Once a day the bot also says how many times the game was started the day before, and by how many people."
+msgstr "Una vez al día el bot también dice cuántas veces el juego comenzó el día anterior, y por cuánta gente."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_arcade_channels.html.heex:26
+#, elixir-autogen, elixir-format
+msgid "Only the start is announced. The game runs in a tab of its own, so the chat never knows a score or how long you played."
+msgstr "Sólo se anuncia el comienzo. El juego se ejecuta en una ficha propia, por lo que el chat nunca sabe una puntuación o cuánto tiempo has jugado."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_arcade_channels.html.heex:69
+#, elixir-autogen, elixir-format
+msgid "See also:"
+msgstr "Véase también:"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_arcade_channels.html.heex:11
+#, elixir-autogen, elixir-format
+msgid "The bot that announces"
+msgstr "El bot que anuncia"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_arcade_channels.html.heex:47
+#, elixir-autogen, elixir-format
+msgid "The name of the game opens the page of the game, on top of the chat."
+msgstr "El nombre del juego abre la página del juego, en la parte superior del chat."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_arcade_channels.html.heex:51
+#, elixir-autogen, elixir-format
+msgid "The page of the game"
+msgstr "La página del juego"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_arcade_channels.html.heex:45
+#, elixir-autogen, elixir-format
+msgid "The strip under the topic"
+msgstr "La tira bajo el tema"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_arcade_channels.html.heex:13
+#, elixir-autogen, elixir-format
+msgid "When somebody presses %{play} on an arcade game, a bot says so in the channel of the game and in %{feed}. A card under the line has %{play}, to start the same game, and in %{feed} the name of the channel of the game."
+msgstr "Cuando alguien presiona %{play} en un juego de arcade, un bot lo dice en el canal del juego y en %{feed}. Una tarjeta bajo la línea tiene %{play}, para iniciar el mismo juego, y en %{feed} el nombre del canal del juego."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_arcade_channels.html.heex:59
+#, elixir-autogen, elixir-format
+msgid "Who can"
+msgstr "Quien puede"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_arcade_channels.html.heex:38
+#, elixir-autogen, elixir-format
+msgid "An admin enables the announcements with %{command}."
+msgstr "Un administrador permite los anuncios con %{command}."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_arcade_channels.html.heex:48
+#, elixir-autogen, elixir-format
+msgid "%{play} opens the game."
+msgstr "%{play} abre el juego."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_arcade_channels.html.heex:41
+#, elixir-autogen, elixir-format
+msgid "Only channels with this bot get the announcements."
+msgstr "Sólo los canales con este bot reciben los anuncios."

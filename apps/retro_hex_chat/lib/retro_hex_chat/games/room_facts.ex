@@ -7,12 +7,17 @@ defmodule RetroHexChat.Games.RoomFacts do
   against anybody for a score or co-op game. The challenge is the week's, as
   the game's page and the Monday announcement name it.
 
+  An arcade game's room has one fact: the line that opens it while nothing
+  has been said there yet. An arcade game has no ledger to ask about, and its
+  room's greeting is the arcade bot's own.
+
   Every line is English, the language the game rooms are spoken in, whoever
-  reads it. A channel that is neither a game's room nor the feed has no facts.
+  reads it. A channel that is none of these rooms has no facts.
   """
 
   use Gettext, backend: RetroHexChat.Gettext
 
+  alias RetroHexChat.Arcade
   alias RetroHexChat.Games.Announcer
   alias RetroHexChat.Games.Catalog
   alias RetroHexChat.Games.Challenges
@@ -22,12 +27,13 @@ defmodule RetroHexChat.Games.RoomFacts do
   @locale "en"
   @ranking_size 5
   @recent_size 3
+  @commands ~w(howto ranking challenge recent)
 
   @doc "The words that ask a game's room for its facts, without the prefix."
   @spec commands() :: [String.t()]
-  def commands, do: ~w(howto ranking challenge recent)
+  def commands, do: @commands
 
-  @doc "Whether `channel` is a game's room or the feed."
+  @doc "Whether `channel` is a game's room — a Retro Game's or an arcade game's — or the feed."
   @spec room?(String.t()) :: boolean()
   def room?(channel), do: room(channel) != :none
 
@@ -49,7 +55,7 @@ defmodule RetroHexChat.Games.RoomFacts do
         :feed ->
           [feed_about(), latest_line()]
 
-        :none ->
+        _arcade_or_none ->
           []
       end
     end)
@@ -69,6 +75,9 @@ defmodule RetroHexChat.Games.RoomFacts do
         :feed ->
           feed_about()
 
+        {:arcade, game} ->
+          Enum.join([about(game), how_to_start_arcade()], " ")
+
         :none ->
           nil
       end
@@ -81,9 +90,16 @@ defmodule RetroHexChat.Games.RoomFacts do
   """
   @spec answer(String.t(), String.t()) :: {:ok, String.t()} | :unknown
   def answer(command, channel) do
-    if command in commands() and room?(channel),
-      do: {:ok, in_english(fn -> answer_in(command, room(channel)) end)},
-      else: :unknown
+    case room(channel) do
+      {:game, _game} = room when command in @commands ->
+        {:ok, in_english(fn -> answer_in(command, room) end)}
+
+      :feed when command in @commands ->
+        {:ok, in_english(fn -> answer_in(command, :feed) end)}
+
+      _arcade_or_none ->
+        :unknown
+    end
   end
 
   defp answer_in("howto", {:game, game}) do
@@ -117,6 +133,11 @@ defmodule RetroHexChat.Games.RoomFacts do
         {:ok, game} = Catalog.get_game(id)
         {:game, game}
 
+      match?({:ok, _id}, Arcade.game_for_channel(channel)) ->
+        {:ok, id} = Arcade.game_for_channel(channel)
+        {:ok, game} = Arcade.get_game(id)
+        {:arcade, game}
+
       true ->
         :none
     end
@@ -130,6 +151,9 @@ defmodule RetroHexChat.Games.RoomFacts do
         "games",
         "Press Play under the topic to start, or Find a partner to play with someone here."
       )
+
+  defp how_to_start_arcade,
+    do: dgettext("games", "Press Play under the topic to start it in your browser.")
 
   defp commands_hint,
     do:

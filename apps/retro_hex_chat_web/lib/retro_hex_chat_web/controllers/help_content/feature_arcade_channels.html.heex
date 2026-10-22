@@ -1,0 +1,75 @@
+<p>
+  {dgettext(
+    "help_arcade",
+    "Every arcade game has its own channel, named like its page: %{channel} for %{game}. The people who play it talk there. The channel %{feed} hears about every arcade game.",
+    channel: "#doom-shareware",
+    game: "DOOM",
+    feed: "#arcade"
+  )}
+</p>
+
+<.help_h4 icon={:icon_robot}>{dgettext("help_arcade", "The bot that announces")}</.help_h4>
+<p>
+  {dgettext(
+    "help_arcade",
+    "When somebody presses %{play} on an arcade game, a bot says so in the channel of the game and in %{feed}. A card under the line has %{play}, to start the same game, and in %{feed} the name of the channel of the game.",
+    play: dpgettext("games", "game", "Play"),
+    feed: "#arcade"
+  )}
+  {dgettext(
+    "help_arcade",
+    "Once a day the bot also says how many times the game was started the day before, and by how many people."
+  )}
+</p>
+<ul>
+  <li>
+    {dgettext(
+      "help_arcade",
+      "Only the start is announced. The game runs in a tab of its own, so the chat never knows a score or how long you played."
+    )}
+  </li>
+  <li>
+    {dgettext(
+      "help_arcade",
+      "Each player is announced at most once every five minutes in each game."
+    )}
+  </li>
+  <li>
+    {dgettext("help_arcade", "An admin enables the announcements with %{command}.",
+      command: "/bot set <bot> game_announce on"
+    )}
+    {dgettext("help_arcade", "Only channels with this bot get the announcements.")}
+  </li>
+</ul>
+
+<.help_h4 icon={:icon_joystick}>{dgettext("help_arcade", "The strip under the topic")}</.help_h4>
+<p>
+  {dgettext("help_arcade", "The name of the game opens the page of the game, on top of the chat.")}
+  {dgettext("help_arcade", "%{play} opens the game.", play: dpgettext("games", "game", "Play"))}
+</p>
+
+<.help_h4 icon={:icon_star}>{dgettext("help_arcade", "The page of the game")}</.help_h4>
+<p>
+  {dgettext(
+    "help_arcade",
+    "Beside the details of the game, its page shows who played it lately, who started it most often this week and of all time, how many times you started it, and the last lines of its channel."
+  )}
+</p>
+
+<.help_h4 icon={:icon_lock}>{dgettext("help_arcade", "Who can")}</.help_h4>
+<p>
+  {dgettext(
+    "help_arcade",
+    "Anybody can read an arcade channel and the page of the game without an account. Playing and talking need a registered nickname that you have identified. A visitor who presses %{play} sees the sign-in window, and comes back to the same game.",
+    play: dpgettext("games", "game", "Play")
+  )}
+</p>
+
+<p>
+  {dgettext("help_arcade", "See also:")}
+  <.help_link topic="feature-arcade">{dgettext("ui", "Arcade")}</.help_link>
+  ·
+  <.help_link topic="feature-game-channels">
+    {dgettext("help_arcade", "Game Channels")}
+  </.help_link>
+</p>

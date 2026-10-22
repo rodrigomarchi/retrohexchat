@@ -1894,3 +1894,24 @@ msgstr "↑ / W"
 #, elixir-autogen, elixir-format
 msgid "↓ / S"
 msgstr "↓ / S"
+
+#: lib/retro_hex_chat/arcade/digest.ex:47
+#, elixir-autogen, elixir-format
+msgid "%{count} player"
+msgid_plural "%{count} players"
+msgstr[0] "%{count} gracz"
+msgstr[1] "%{count} graczy"
+msgstr[2] "%{count} graczy"
+
+#: lib/retro_hex_chat/arcade/digest.ex:40
+#, elixir-autogen, elixir-format
+msgid "Yesterday, %{game} was started once by %{players}."
+msgid_plural "Yesterday, %{game} was started %{count} times by %{players}."
+msgstr[0] "Wczoraj %{game} został uruchomiony raz przez %{players}."
+msgstr[1] "Wczoraj %{game} został uruchomiony %{count} razy przez %{players}."
+msgstr[2] "Wczoraj %{game} został uruchomiony %{count} razy przez %{players}."
+
+#: lib/retro_hex_chat/arcade/announcer.ex:83
+#, elixir-autogen, elixir-format
+msgid "%{nickname} started the game %{game}"
+msgstr "%{nickname} rozpoczął grę %{game}"

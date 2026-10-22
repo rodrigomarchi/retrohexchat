@@ -1195,7 +1195,7 @@ msgstr "灰色"
 msgid "Half-Op"
 msgstr "半业务"
 
-#: lib/retro_hex_chat_web/components/ui/chat/message_row.ex:155
+#: lib/retro_hex_chat_web/components/ui/chat/message_row.ex:156
 #: lib/retro_hex_chat_web/live/chat_live/helpers/messages.ex:195
 #, elixir-autogen, elixir-format
 msgid "Help"
@@ -1368,7 +1368,7 @@ msgstr "离开频道"
 #: lib/retro_hex_chat_web/live/chat_live/command_dispatch.ex:479
 #: lib/retro_hex_chat_web/live/chat_live/helpers/session.ex:594
 #: lib/retro_hex_chat_web/live/chat_live/menu_toolbar_events.ex:90
-#: lib/retro_hex_chat_web/live/desktop_live.ex:382
+#: lib/retro_hex_chat_web/live/desktop_live.ex:384
 #, elixir-autogen, elixir-format
 msgid "Leaving"
 msgstr "离开"
@@ -1795,7 +1795,7 @@ msgid "Send"
 msgstr "发送"
 
 #: lib/retro_hex_chat_web/components/ui/chat/hover_card.ex:151
-#: lib/retro_hex_chat_web/components/ui/chat/message_row.ex:146
+#: lib/retro_hex_chat_web/components/ui/chat/message_row.ex:147
 #: lib/retro_hex_chat_web/live/chat_live/pubsub_handlers/server_messages.ex:22
 #, elixir-autogen, elixir-format
 msgid "Server"
@@ -1806,7 +1806,7 @@ msgstr "服务器"
 msgid "Server setting '%{key}' changed to '%{value}'."
 msgstr "服务器设置\"%{key}\"改为\"%{value}\"."
 
-#: lib/retro_hex_chat_web/components/ui/chat/message_row.ex:117
+#: lib/retro_hex_chat_web/components/ui/chat/message_row.ex:118
 #: lib/retro_hex_chat_web/live/chat_live/command_dispatch.ex:510
 #: lib/retro_hex_chat_web/live/chat_live/components/status_viewport.ex:106
 #, elixir-autogen, elixir-format
@@ -1852,8 +1852,8 @@ msgid "Symbols"
 msgstr "符号"
 
 #: lib/retro_hex_chat_web/components/ui/chat/chat_taskbar.ex:285
-#: lib/retro_hex_chat_web/components/ui/chat/message_row.ex:74
-#: lib/retro_hex_chat_web/components/ui/chat/message_row.ex:170
+#: lib/retro_hex_chat_web/components/ui/chat/message_row.ex:75
+#: lib/retro_hex_chat_web/components/ui/chat/message_row.ex:171
 #: lib/retro_hex_chat_web/live/chat_live/components/status_viewport.ex:104
 #: lib/retro_hex_chat_web/live/chat_live/helpers/messages.ex:91
 #: lib/retro_hex_chat_web/live/chat_live/helpers/messages.ex:116
@@ -2316,7 +2316,7 @@ msgid "is typing..."
 msgstr "正在输入..."
 
 #: lib/retro_hex_chat_web/live/chat_live/components/ignore_list_dialog.ex:165
-#: lib/retro_hex_chat_web/live/chat_live/components/message_viewport.ex:333
+#: lib/retro_hex_chat_web/live/chat_live/components/message_viewport.ex:334
 #, elixir-autogen, elixir-format
 msgid "messages"
 msgstr "信件"
@@ -2465,7 +2465,7 @@ msgstr "联系说明"
 msgid "Custom Menus"
 msgstr "自定义菜单"
 
-#: lib/retro_hex_chat_web/components/ui/chat/message_row.ex:212
+#: lib/retro_hex_chat_web/components/ui/chat/message_row.ex:213
 #, elixir-autogen, elixir-format
 msgid "Deleted"
 msgstr "删除"
@@ -2514,7 +2514,7 @@ msgstr "输入当前昵称 。"
 msgid "Enter the new nick."
 msgstr "输入新昵称 。"
 
-#: lib/retro_hex_chat_web/components/ui/chat/message_row.ex:126
+#: lib/retro_hex_chat_web/components/ui/chat/message_row.ex:127
 #: lib/retro_hex_chat_web/live/chat_live/components/status_viewport.ex:105
 #, elixir-autogen, elixir-format
 msgid "Error"
@@ -2586,7 +2586,7 @@ msgstr "最后在线：%{target}"
 msgid "Last seen"
 msgstr "最后一次见到"
 
-#: lib/retro_hex_chat_web/live/chat_live/components/message_viewport.ex:332
+#: lib/retro_hex_chat_web/live/chat_live/components/message_viewport.ex:333
 #, elixir-autogen, elixir-format
 msgid "Loading %{channel}..."
 msgstr "正在加载 %{channel}..."
@@ -2975,8 +2975,8 @@ msgstr "下一个 P2P 版式"
 msgid "Opening private room..."
 msgstr "打开私人房间..."
 
-#: lib/retro_hex_chat_web/components/ui/chat/message_row.ex:102
-#: lib/retro_hex_chat_web/components/ui/chat/message_row.ex:180
+#: lib/retro_hex_chat_web/components/ui/chat/message_row.ex:103
+#: lib/retro_hex_chat_web/components/ui/chat/message_row.ex:181
 #: lib/retro_hex_chat_web/components/ui/chat/visitor_greeting_card.ex:115
 #, elixir-autogen, elixir-format
 msgid "P2P"
@@ -3213,7 +3213,7 @@ msgstr "%{peer}接受了P2P请求 - 连接."
 msgid "Auto-Join"
 msgstr "自动加入"
 
-#: lib/retro_hex_chat_web/components/ui/chat/message_row.ex:184
+#: lib/retro_hex_chat_web/components/ui/chat/message_row.ex:185
 #, elixir-autogen, elixir-format
 msgid "P2P request"
 msgstr "P2P请求"
@@ -3223,7 +3223,7 @@ msgstr "P2P请求"
 msgid "P2P request from %{from} - join it from the PM header."
 msgstr "p2P请求来自%{from} - 从PM头加入."
 
-#: lib/retro_hex_chat_web/components/ui/chat/message_row.ex:186
+#: lib/retro_hex_chat_web/components/ui/chat/message_row.ex:187
 #, elixir-autogen, elixir-format
 msgid "Use the P2P control in this private message."
 msgstr "在此私有信件中使用 P2P 控制 。"

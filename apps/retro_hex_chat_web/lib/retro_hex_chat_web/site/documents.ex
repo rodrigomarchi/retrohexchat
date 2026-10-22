@@ -37,9 +37,11 @@ defmodule RetroHexChatWeb.Site.Documents do
   import Phoenix.Component, only: [assign: 2]
   import Phoenix.LiveView
 
+  alias RetroHexChat.Arcade
   alias RetroHexChat.Channels.Visibility
   alias RetroHexChat.Games.Catalog, as: Games
   alias RetroHexChatWeb.ChatLive.ChatTitle
+  alias RetroHexChatWeb.Components.UI.ArcadePlayCard
   alias RetroHexChatWeb.Components.UI.GameResultCard
   alias RetroHexChatWeb.Components.UI.Site.Document
   alias RetroHexChatWeb.PublicPages
@@ -319,9 +321,10 @@ defmodule RetroHexChatWeb.Site.Documents do
 
   # A game's channel says which game it is about in a shared link's preview.
   defp game_named(channel) do
-    case Games.game_for_channel(channel) do
-      {:ok, game_id} -> GameResultCard.game_title(game_id)
-      :error -> nil
+    case {Games.game_for_channel(channel), Arcade.game_for_channel(channel)} do
+      {{:ok, game_id}, _arcade} -> GameResultCard.game_title(game_id)
+      {:error, {:ok, game_id}} -> ArcadePlayCard.game_title(game_id)
+      {:error, :error} -> nil
     end
   end
 
@@ -368,6 +371,18 @@ defmodule RetroHexChatWeb.Site.Documents do
   defp info({:game_result_recorded, %{base_id: base_id}}, socket) do
     case socket.assigns.docs[:site] do
       %{page: Pages.Game, assigns: %{game: %{id: ^base_id}}} ->
+        {:halt, refresh(socket, Pages.Game)}
+
+      _other_page ->
+        {:halt, socket}
+    end
+  end
+
+  # Somebody started the arcade game whose page is open: its latest players
+  # and its week have moved.
+  defp info({:arcade_play_started, %{game_id: game_id}}, socket) do
+    case socket.assigns.docs[:site] do
+      %{page: Pages.Game, assigns: %{game: %{kind: :arcade, id: ^game_id}}} ->
         {:halt, refresh(socket, Pages.Game)}
 
       _other_page ->

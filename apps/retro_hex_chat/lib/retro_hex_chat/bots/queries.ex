@@ -146,8 +146,8 @@ defmodule RetroHexChat.Bots.Queries do
   end
 
   @doc """
-  The nicknames of the enabled bots that announce the Retro Games in
-  `channel`: joined there, and carrying the `game` capability without having
+  The nicknames of the enabled bots that announce the games in `channel` —
+  Retro Games matches and arcade plays alike: joined there, and carrying the `game` capability without having
   turned it off. Oldest bot first, so the same one keeps speaking when a room
   has two.
   """

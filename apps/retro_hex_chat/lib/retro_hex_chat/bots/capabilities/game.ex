@@ -2,12 +2,13 @@ defmodule RetroHexChat.Bots.Capabilities.Game do
   use Gettext, backend: RetroHexChat.Gettext
 
   @moduledoc """
-  Makes a bot the voice of the Retro Games in its rooms.
+  Makes a bot the voice of the games in its rooms.
 
-  A finished match is said by `Games.Announcer`, which asks which bot in a
-  room carries this capability and speaks under its name — the weekly
-  challenge and the daily digest too. A room with no such bot hears nothing
-  about its games: `/bot set <bot> game_announce off`, or `/bot part`.
+  A finished match is said by `Games.Announcer`, and an arcade game somebody
+  started by `Arcade.Announcer`; each asks which bot in a room carries this
+  capability and speaks under its name — the weekly challenge and the daily
+  digests too. A room with no such bot hears nothing about its games:
+  `/bot set <bot> game_announce off`, or `/bot part`.
 
   In a game's room, and in the feed, the bot also talks about the game itself,
   from `Games.RoomFacts`:
@@ -18,7 +19,8 @@ defmodule RetroHexChat.Bots.Capabilities.Game do
     already in the room is told again the next time they arrive;
   - `!ranking`, `!challenge`, `!recent` and `!howto` are answered in the room;
   - a room nothing has been said in yet gets one line saying what it is for,
-    when the bot comes into it, so nobody opens it to a blank page.
+    when the bot comes into it, so nobody opens it to a blank page. That line
+    is all an arcade game's room gets: it has no ledger to ask about.
   """
   @behaviour RetroHexChat.Bots.Capability
 
@@ -36,7 +38,11 @@ defmodule RetroHexChat.Bots.Capabilities.Game do
   @impl true
   @spec description() :: String.t()
   def description,
-    do: dgettext("bots", "Announces Retro Games matches, rankings and the weekly challenge")
+    do:
+      dgettext(
+        "bots",
+        "Announces Retro Games matches and arcade games as they start, rankings and the weekly challenge"
+      )
 
   @impl true
   @spec handle_message(String.t(), String.t(), RetroHexChat.Bots.Capability.bot_context()) ::

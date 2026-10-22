@@ -380,6 +380,74 @@ defmodule RetroHexChatWeb.ChatLive.Components.MessageRowTest do
     end
   end
 
+  describe "an arcade play's card" do
+    defp play_card(place) do
+      %{
+        play_id: 52,
+        game_id: "doom_shareware",
+        nickname: "ana",
+        started_at: @ts,
+        place: place,
+        locale: "pt_BR"
+      }
+    end
+
+    defp play_row(place, opts \\ %{}) do
+      row(
+        %{
+          id: 12,
+          author: "Pixel",
+          content: "ana started the game DOOM: Knee-Deep in the Dead",
+          type: :message,
+          timestamp: @ts,
+          play_card: play_card(place)
+        },
+        opts
+      )
+    end
+
+    test "stands in for the sentence: who, which game, and the way to play it" do
+      html = play_row(:channel)
+      doc = Floki.parse_fragment!(html)
+
+      assert html =~ ~s(data-testid="arcade-play-card-52")
+      assert html =~ "DOOM Engine"
+
+      assert doc
+             |> Floki.find(~s([data-testid="arcade-play-who"]))
+             |> Floki.text()
+             |> String.split()
+             |> Enum.join(" ") == "ana started the game"
+
+      assert doc
+             |> Floki.find(~s([data-testid="arcade-play-who"] [data-testid="nick-flag"]))
+             |> Floki.attribute("data-locale") == ["pt_BR"]
+
+      assert [home] = Floki.find(doc, ~s([data-testid="arcade-play-home"]))
+      assert Floki.attribute(home, "href") == ["/games/doom-shareware"]
+
+      assert [play] = Floki.find(doc, ~s([data-testid="arcade-play-play"]))
+      assert Floki.attribute(play, "phx-click") == ["open_arcade"]
+      assert Floki.attribute(play, "phx-value-game-id") == ["doom_shareware"]
+
+      refute doc |> Floki.find(".chat-message__text") |> Floki.text() =~ "started the game DOOM"
+      # Already in the game's channel: no way into it.
+      refute html =~ ~s(data-testid="arcade-play-channel")
+    end
+
+    test "in #arcade it also leads to the game's own channel" do
+      html = play_row(:feed)
+      assert html =~ ~s(data-testid="arcade-play-channel")
+      assert html =~ ~s(phx-value-channel="#doom-shareware")
+    end
+
+    test "a reader who asked for plain text gets the sentence instead" do
+      html = play_row(:channel, %{strip_formatting: true})
+      assert html =~ "ana started the game DOOM"
+      refute html =~ "arcade-play-card"
+    end
+  end
+
   test "renders a deleted placeholder instead of content" do
     html =
       row(%{

@@ -12,7 +12,7 @@ msgstr ""
 "Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<12 || n%100>14) ? 1 : 2);\n"
 
 #: lib/retro_hex_chat_web/controllers/help_content/bot_trivia.html.heex:34
-#: lib/retro_hex_chat_web/controllers/help_content/botservice.html.heex:163
+#: lib/retro_hex_chat_web/controllers/help_content/botservice.html.heex:164
 #, elixir-autogen, elixir-format
 msgid "!Bot answer <text>"
 msgstr "Ответ бота <text>"
@@ -58,13 +58,13 @@ msgid "!Bot schedule remove <id>"
 msgstr "Расписание ботов удалено <id>"
 
 #: lib/retro_hex_chat_web/controllers/help_content/bot_trivia.html.heex:30
-#: lib/retro_hex_chat_web/controllers/help_content/botservice.html.heex:162
+#: lib/retro_hex_chat_web/controllers/help_content/botservice.html.heex:163
 #, elixir-autogen, elixir-format
 msgid "!Bot trivia score"
 msgstr "!Бот тривиальный счет"
 
 #: lib/retro_hex_chat_web/controllers/help_content/bot_trivia.html.heex:18
-#: lib/retro_hex_chat_web/controllers/help_content/botservice.html.heex:162
+#: lib/retro_hex_chat_web/controllers/help_content/botservice.html.heex:163
 #, elixir-autogen, elixir-format
 msgid "!Bot trivia start"
 msgstr "Начало игры Bot Trivia"
@@ -75,7 +75,7 @@ msgid "!Bot trivia start <category>"
 msgstr "Начало игры Bot Trivia <category>"
 
 #: lib/retro_hex_chat_web/controllers/help_content/bot_trivia.html.heex:26
-#: lib/retro_hex_chat_web/controllers/help_content/botservice.html.heex:162
+#: lib/retro_hex_chat_web/controllers/help_content/botservice.html.heex:163
 #, elixir-autogen, elixir-format
 msgid "!Bot trivia stop"
 msgstr "!Бот мелочь остановить"
@@ -165,7 +165,7 @@ msgstr "Добро пожаловать"
 
 #: lib/retro_hex_chat_web/controllers/help_content/bot_command.html.heex:2
 #: lib/retro_hex_chat_web/controllers/help_content/bot_command.html.heex:116
-#: lib/retro_hex_chat_web/controllers/help_content/botservice.html.heex:185
+#: lib/retro_hex_chat_web/controllers/help_content/botservice.html.heex:186
 #, elixir-autogen, elixir-format
 msgid "/bot"
 msgstr "/bot"
@@ -176,7 +176,7 @@ msgstr "/bot"
 #: lib/retro_hex_chat_web/controllers/help_content/bot_rss.html.heex:118
 #: lib/retro_hex_chat_web/controllers/help_content/bot_scheduler.html.heex:96
 #: lib/retro_hex_chat_web/controllers/help_content/bot_trivia.html.heex:87
-#: lib/retro_hex_chat_web/controllers/help_content/botservice.html.heex:197
+#: lib/retro_hex_chat_web/controllers/help_content/botservice.html.heex:198
 #, elixir-autogen, elixir-format
 msgid "/bot Command Reference"
 msgstr "/bot Command Reference"
@@ -332,7 +332,7 @@ msgid "Available trivia categories:"
 msgstr "Доступные категории мелочей:"
 
 #: lib/retro_hex_chat_web/controllers/help_content/bot_command.html.heex:129
-#: lib/retro_hex_chat_web/controllers/help_content/botservice.html.heex:200
+#: lib/retro_hex_chat_web/controllers/help_content/botservice.html.heex:201
 #, elixir-autogen, elixir-format
 msgid "Bot Custom Commands"
 msgstr "Обычные команды Bot Custom"
@@ -403,7 +403,7 @@ msgid "Categories"
 msgstr "Категории"
 
 #: lib/retro_hex_chat_web/controllers/help_content/bot_moderation.html.heex:108
-#: lib/retro_hex_chat_web/controllers/help_content/botservice.html.heex:207
+#: lib/retro_hex_chat_web/controllers/help_content/botservice.html.heex:208
 #, elixir-autogen, elixir-format
 msgid "ChanServ"
 msgstr "Чан-Сервис"
@@ -473,13 +473,13 @@ msgstr "Типы обнаружения"
 
 #: lib/retro_hex_chat_web/controllers/help_content/bot_command.html.heex:131
 #: lib/retro_hex_chat_web/controllers/help_content/botservice.html.heex:36
-#: lib/retro_hex_chat_web/controllers/help_content/botservice.html.heex:202
+#: lib/retro_hex_chat_web/controllers/help_content/botservice.html.heex:203
 #, elixir-autogen, elixir-format
 msgid "Dice"
 msgstr "Кофе"
 
 #: lib/retro_hex_chat_web/controllers/help_content/bot_dice.html.heex:11
-#: lib/retro_hex_chat_web/controllers/help_content/botservice.html.heex:116
+#: lib/retro_hex_chat_web/controllers/help_content/botservice.html.heex:117
 #, elixir-autogen, elixir-format
 msgid "Dice Notation"
 msgstr "Кофейная нотация"
@@ -597,7 +597,7 @@ msgstr "Управление через Диалог"
 
 #: lib/retro_hex_chat_web/controllers/help_content/bot_command.html.heex:135
 #: lib/retro_hex_chat_web/controllers/help_content/botservice.html.heex:44
-#: lib/retro_hex_chat_web/controllers/help_content/botservice.html.heex:206
+#: lib/retro_hex_chat_web/controllers/help_content/botservice.html.heex:207
 #, elixir-autogen, elixir-format
 msgid "Moderation"
 msgstr "Модерация"
@@ -613,31 +613,31 @@ msgid "Multiple violations in one message trigger only one action"
 msgstr "Несколько нарушений в одном сообщении вызывают только одно действие"
 
 #: lib/retro_hex_chat_web/controllers/help_content/bot_dice.html.heex:22
-#: lib/retro_hex_chat_web/controllers/help_content/botservice.html.heex:120
+#: lib/retro_hex_chat_web/controllers/help_content/botservice.html.heex:121
 #, elixir-autogen, elixir-format
 msgid "NdS"
 msgstr "NdS"
 
 #: lib/retro_hex_chat_web/controllers/help_content/bot_dice.html.heex:32
-#: lib/retro_hex_chat_web/controllers/help_content/botservice.html.heex:132
+#: lib/retro_hex_chat_web/controllers/help_content/botservice.html.heex:133
 #, elixir-autogen, elixir-format
 msgid "NdS+M"
 msgstr "NdS+M"
 
 #: lib/retro_hex_chat_web/controllers/help_content/bot_dice.html.heex:37
-#: lib/retro_hex_chat_web/controllers/help_content/botservice.html.heex:135
+#: lib/retro_hex_chat_web/controllers/help_content/botservice.html.heex:136
 #, elixir-autogen, elixir-format
 msgid "NdS-M"
 msgstr "НДС-М"
 
 #: lib/retro_hex_chat_web/controllers/help_content/bot_dice.html.heex:42
-#: lib/retro_hex_chat_web/controllers/help_content/botservice.html.heex:141
+#: lib/retro_hex_chat_web/controllers/help_content/botservice.html.heex:142
 #, elixir-autogen, elixir-format
 msgid "NdSkhK"
 msgstr "NdskhK"
 
 #: lib/retro_hex_chat_web/controllers/help_content/bot_dice.html.heex:47
-#: lib/retro_hex_chat_web/controllers/help_content/botservice.html.heex:147
+#: lib/retro_hex_chat_web/controllers/help_content/botservice.html.heex:148
 #, elixir-autogen, elixir-format
 msgid "NdSklK"
 msgstr "NdSklK"
@@ -682,7 +682,7 @@ msgstr "Таймеры голосования автоматически пер�
 
 #: lib/retro_hex_chat_web/controllers/help_content/bot_command.html.heex:134
 #: lib/retro_hex_chat_web/controllers/help_content/botservice.html.heex:67
-#: lib/retro_hex_chat_web/controllers/help_content/botservice.html.heex:205
+#: lib/retro_hex_chat_web/controllers/help_content/botservice.html.heex:206
 #, elixir-autogen, elixir-format
 msgid "RSS"
 msgstr "RSS"
@@ -735,7 +735,7 @@ msgstr "Типы расписания"
 
 #: lib/retro_hex_chat_web/controllers/help_content/bot_command.html.heex:133
 #: lib/retro_hex_chat_web/controllers/help_content/botservice.html.heex:61
-#: lib/retro_hex_chat_web/controllers/help_content/botservice.html.heex:204
+#: lib/retro_hex_chat_web/controllers/help_content/botservice.html.heex:205
 #, elixir-autogen, elixir-format
 msgid "Scheduler"
 msgstr "планировщик"
@@ -757,7 +757,7 @@ msgstr "Сброс баллов, когда начинается новый ра
 #: lib/retro_hex_chat_web/controllers/help_content/bot_rss.html.heex:115
 #: lib/retro_hex_chat_web/controllers/help_content/bot_scheduler.html.heex:93
 #: lib/retro_hex_chat_web/controllers/help_content/bot_trivia.html.heex:84
-#: lib/retro_hex_chat_web/controllers/help_content/botservice.html.heex:192
+#: lib/retro_hex_chat_web/controllers/help_content/botservice.html.heex:193
 #, elixir-autogen, elixir-format
 msgid "See Also"
 msgstr "См. также"
@@ -804,7 +804,7 @@ msgid "Syntax"
 msgstr "синтаксис"
 
 #: lib/retro_hex_chat_web/controllers/help_content/bot_custom_commands.html.heex:35
-#: lib/retro_hex_chat_web/controllers/help_content/botservice.html.heex:166
+#: lib/retro_hex_chat_web/controllers/help_content/botservice.html.heex:167
 #, elixir-autogen, elixir-format
 msgid "Template Placeholders"
 msgstr "Заполнители шаблонов"
@@ -886,7 +886,7 @@ msgstr "Триггеры должны быть уникальными для б�
 
 #: lib/retro_hex_chat_web/controllers/help_content/bot_command.html.heex:132
 #: lib/retro_hex_chat_web/controllers/help_content/botservice.html.heex:51
-#: lib/retro_hex_chat_web/controllers/help_content/botservice.html.heex:203
+#: lib/retro_hex_chat_web/controllers/help_content/botservice.html.heex:204
 #, elixir-autogen, elixir-format
 msgid "Trivia"
 msgstr "Тривиальность"
@@ -942,13 +942,13 @@ msgstr "Диалог управления ботом или Bot Management:"
 
 #: lib/retro_hex_chat_web/controllers/help_content/bot_dice.html.heex:34
 #: lib/retro_hex_chat_web/controllers/help_content/botservice.html.heex:37
-#: lib/retro_hex_chat_web/controllers/help_content/botservice.html.heex:132
+#: lib/retro_hex_chat_web/controllers/help_content/botservice.html.heex:133
 #, elixir-autogen, elixir-format
 msgid "d20+5"
 msgstr "d20+5"
 
 #: lib/retro_hex_chat_web/controllers/help_content/bot_dice.html.heex:27
-#: lib/retro_hex_chat_web/controllers/help_content/botservice.html.heex:126
+#: lib/retro_hex_chat_web/controllers/help_content/botservice.html.heex:127
 #, elixir-autogen, elixir-format
 msgid "dS"
 msgstr "dS"
@@ -1253,14 +1253,14 @@ msgstr "!Имя начиналось"
 msgid "). Use"
 msgstr "). Использовать"
 
-#: lib/retro_hex_chat_web/controllers/help_content/botservice.html.heex:156
+#: lib/retro_hex_chat_web/controllers/help_content/botservice.html.heex:157
 #, elixir-autogen, elixir-format
 msgid "Available trivia categories: general, science, history, geography, technology, entertainment."
 msgstr ""
 "Доступны тривиальные категории: общая, наука, история, география, "
 "технологии, развлечения."
 
-#: lib/retro_hex_chat_web/controllers/help_content/botservice.html.heex:167
+#: lib/retro_hex_chat_web/controllers/help_content/botservice.html.heex:168
 #, elixir-autogen, elixir-format
 msgid "Bot responses support these placeholders:"
 msgstr "Ответы Bot поддерживают эти заполнители:"
@@ -1274,7 +1274,7 @@ msgstr ""
 "выполняют пользовательские команды. Боты построены на подключаемой системе "
 "возможностей — каждый бот может быть настроен с различным поведением."
 
-#: lib/retro_hex_chat_web/controllers/help_content/botservice.html.heex:99
+#: lib/retro_hex_chat_web/controllers/help_content/botservice.html.heex:100
 #, elixir-autogen, elixir-format
 msgid "Bots appear in the channel nicklist with a"
 msgstr "Боты появляются в никлисте канала с"
@@ -1284,7 +1284,7 @@ msgstr "Боты появляются в никлисте канала с"
 msgid "Capabilities"
 msgstr "Возможности"
 
-#: lib/retro_hex_chat_web/controllers/help_content/botservice.html.heex:162
+#: lib/retro_hex_chat_web/controllers/help_content/botservice.html.heex:163
 #, elixir-autogen, elixir-format
 msgid "Commands:"
 msgstr "Команды:"
@@ -1299,7 +1299,7 @@ msgstr "Пользовательские команды"
 msgid "Each bot can have one or more capabilities enabled:"
 msgstr "Каждый бот может иметь одну или несколько возможностей:"
 
-#: lib/retro_hex_chat_web/controllers/help_content/botservice.html.heex:93
+#: lib/retro_hex_chat_web/controllers/help_content/botservice.html.heex:94
 #, elixir-autogen, elixir-format
 msgid "Each bot runs as its own process on the server. When a message arrives in a channel the bot has joined, the bot checks each capability in order. Passive capabilities (like Moderation) run on every message, while active capabilities use first-match-wins. A cooldown timer prevents the bot from responding too frequently."
 msgstr ""
@@ -1320,12 +1320,12 @@ msgstr "Гритер"
 msgid "Help"
 msgstr "Справка"
 
-#: lib/retro_hex_chat_web/controllers/help_content/botservice.html.heex:91
+#: lib/retro_hex_chat_web/controllers/help_content/botservice.html.heex:92
 #, elixir-autogen, elixir-format
 msgid "How Bots Work"
 msgstr "Как работают боты"
 
-#: lib/retro_hex_chat_web/controllers/help_content/botservice.html.heex:180
+#: lib/retro_hex_chat_web/controllers/help_content/botservice.html.heex:181
 #, elixir-autogen, elixir-format
 msgid "Management Dialog"
 msgstr "Диалог управления"
@@ -1335,32 +1335,32 @@ msgstr "Диалог управления"
 msgid "Mentions"
 msgstr "Упоминания"
 
-#: lib/retro_hex_chat_web/controllers/help_content/botservice.html.heex:108
+#: lib/retro_hex_chat_web/controllers/help_content/botservice.html.heex:109
 #, elixir-autogen, elixir-format
 msgid "Only"
 msgstr "Только"
 
-#: lib/retro_hex_chat_web/controllers/help_content/botservice.html.heex:182
+#: lib/retro_hex_chat_web/controllers/help_content/botservice.html.heex:183
 #, elixir-autogen, elixir-format
 msgid "Open the Bot Management dialog from the"
 msgstr "Откройте диалог Bot Management"
 
-#: lib/retro_hex_chat_web/controllers/help_content/botservice.html.heex:106
+#: lib/retro_hex_chat_web/controllers/help_content/botservice.html.heex:107
 #, elixir-autogen, elixir-format
 msgid "Permissions"
 msgstr "Разрешения"
 
-#: lib/retro_hex_chat_web/controllers/help_content/botservice.html.heex:117
+#: lib/retro_hex_chat_web/controllers/help_content/botservice.html.heex:118
 #, elixir-autogen, elixir-format
 msgid "The Dice capability supports standard RPG notation:"
 msgstr "Функция Dice поддерживает стандартную нотацию RPG:"
 
-#: lib/retro_hex_chat_web/controllers/help_content/botservice.html.heex:183
+#: lib/retro_hex_chat_web/controllers/help_content/botservice.html.heex:184
 #, elixir-autogen, elixir-format
 msgid "Tools"
 msgstr "Инструменты"
 
-#: lib/retro_hex_chat_web/controllers/help_content/botservice.html.heex:154
+#: lib/retro_hex_chat_web/controllers/help_content/botservice.html.heex:155
 #, elixir-autogen, elixir-format
 msgid "Trivia Categories"
 msgstr "Категории Trivia"
@@ -1375,14 +1375,14 @@ msgstr "Команда, в которой перечислены доступн�
 msgid "commands with configurable responses"
 msgstr "команды с настраиваемыми ответами"
 
-#: lib/retro_hex_chat_web/controllers/help_content/botservice.html.heex:100
+#: lib/retro_hex_chat_web/controllers/help_content/botservice.html.heex:101
 #, elixir-autogen, elixir-format
 msgid "prefix and are grouped below regular users. They can be kicked or banned from channels like normal users."
 msgstr ""
 "префикс и сгруппированы ниже обычных пользователей. Они могут быть "
 "заблокированы или удалены из каналов, как обычные пользователи."
 
-#: lib/retro_hex_chat_web/controllers/help_content/botservice.html.heex:109
+#: lib/retro_hex_chat_web/controllers/help_content/botservice.html.heex:110
 #, elixir-autogen, elixir-format
 msgid "server operators"
 msgstr "Серверные операторы"
@@ -1402,7 +1402,7 @@ msgstr "Чтобы начать раунд"
 msgid "to roll dice"
 msgstr "играть в кости"
 
-#: lib/retro_hex_chat_web/controllers/help_content/botservice.html.heex:186
+#: lib/retro_hex_chat_web/controllers/help_content/botservice.html.heex:187
 #, elixir-autogen, elixir-format
 msgid "with no arguments (admin only). The dialog shows all bots with a split-view: select a bot on the left to see its details, channels, commands, and event hooks on the right."
 msgstr ""
@@ -1415,7 +1415,7 @@ msgstr ""
 msgid "— RPG dice rolling with standard notation ("
 msgstr "— RPG-игровые кости с стандартной нотацией ("
 
-#: lib/retro_hex_chat_web/controllers/help_content/botservice.html.heex:132
+#: lib/retro_hex_chat_web/controllers/help_content/botservice.html.heex:133
 #, elixir-autogen, elixir-format
 msgid "— add modifier (e.g.,"
 msgstr "- добавить модификатор (например,"
@@ -1439,12 +1439,12 @@ msgid "— interactive quiz with 6 categories, scoring, and timers. Use"
 msgstr ""
 "- интерактивная викторина с 6 категориями, счетами и таймерами. Использовать"
 
-#: lib/retro_hex_chat_web/controllers/help_content/botservice.html.heex:141
+#: lib/retro_hex_chat_web/controllers/help_content/botservice.html.heex:142
 #, elixir-autogen, elixir-format
 msgid "— keep highest K dice (e.g.,"
 msgstr "- хранить самые высокие кости (например,"
 
-#: lib/retro_hex_chat_web/controllers/help_content/botservice.html.heex:147
+#: lib/retro_hex_chat_web/controllers/help_content/botservice.html.heex:148
 #, elixir-autogen, elixir-format
 msgid "— keep lowest K dice (e.g.,"
 msgstr "- хранить самые низкие кости K (например,"
@@ -1468,42 +1468,42 @@ msgstr ""
 msgid "— responds when someone mentions the bot by name"
 msgstr "Отвечает, когда кто-то упоминает бота по имени"
 
-#: lib/retro_hex_chat_web/controllers/help_content/botservice.html.heex:120
+#: lib/retro_hex_chat_web/controllers/help_content/botservice.html.heex:121
 #, elixir-autogen, elixir-format
 msgid "— roll N dice with S sides (e.g.,"
 msgstr "- ролл N кости со сторонами S (например,"
 
-#: lib/retro_hex_chat_web/controllers/help_content/botservice.html.heex:126
+#: lib/retro_hex_chat_web/controllers/help_content/botservice.html.heex:127
 #, elixir-autogen, elixir-format
 msgid "— shorthand for 1 die (e.g.,"
 msgstr "- сокращение для 1 гибнет (например,"
 
-#: lib/retro_hex_chat_web/controllers/help_content/botservice.html.heex:135
+#: lib/retro_hex_chat_web/controllers/help_content/botservice.html.heex:136
 #, elixir-autogen, elixir-format
 msgid "— subtract modifier (e.g.,"
 msgstr "- модификатор вычитания (например,"
 
-#: lib/retro_hex_chat_web/controllers/help_content/botservice.html.heex:175
+#: lib/retro_hex_chat_web/controllers/help_content/botservice.html.heex:176
 #, elixir-autogen, elixir-format
 msgid "— the bot's command prefix (e.g.,"
 msgstr "- префикс команды бота (например,"
 
-#: lib/retro_hex_chat_web/controllers/help_content/botservice.html.heex:177
+#: lib/retro_hex_chat_web/controllers/help_content/botservice.html.heex:178
 #, elixir-autogen, elixir-format
 msgid "— the bot's display name"
 msgstr "- отображаемое имя бота"
 
-#: lib/retro_hex_chat_web/controllers/help_content/botservice.html.heex:172
+#: lib/retro_hex_chat_web/controllers/help_content/botservice.html.heex:173
 #, elixir-autogen, elixir-format
 msgid "— the current channel name"
 msgstr "Текущее название канала"
 
-#: lib/retro_hex_chat_web/controllers/help_content/botservice.html.heex:173
+#: lib/retro_hex_chat_web/controllers/help_content/botservice.html.heex:174
 #, elixir-autogen, elixir-format
 msgid "— the current channel topic"
 msgstr "Актуальная тема канала"
 
-#: lib/retro_hex_chat_web/controllers/help_content/botservice.html.heex:170
+#: lib/retro_hex_chat_web/controllers/help_content/botservice.html.heex:171
 #, elixir-autogen, elixir-format
 msgid "— the user who triggered the response"
 msgstr "Пользователь, который вызвал ответ"
@@ -1535,12 +1535,12 @@ msgid "/bot enable GreeterBot /bot disable GreeterBot"
 msgstr "/bot enable GreeterBot /bot disable GreeterBot"
 
 #: lib/retro_hex_chat_web/controllers/help_content/bot_command.html.heex:124
-#: lib/retro_hex_chat_web/controllers/help_content/botservice.html.heex:195
+#: lib/retro_hex_chat_web/controllers/help_content/botservice.html.heex:196
 #, elixir-autogen, elixir-format
 msgid "Bot Management Dialog"
 msgstr "Диалог управления Bot"
 
-#: lib/retro_hex_chat_web/controllers/help_content/botservice.html.heex:184
+#: lib/retro_hex_chat_web/controllers/help_content/botservice.html.heex:185
 #, elixir-autogen, elixir-format
 msgid "menu, the toolbar Options dropdown, or by typing"
 msgstr "меню, панель инструментов Options dropdown, или путем ввода"
@@ -1651,7 +1651,7 @@ msgstr ""
 "Использовать /bot вообще могут только администраторы и операторы сервера — "
 "включая просмотр списка ботов, сведений о боте и его лент"
 
-#: lib/retro_hex_chat_web/controllers/help_content/botservice.html.heex:110
+#: lib/retro_hex_chat_web/controllers/help_content/botservice.html.heex:111
 #, elixir-autogen, elixir-format
 msgid "can create, modify, delete or inspect bots — a bot is server configuration, so managing one is not something channel ops inherit. Everyone can still talk to a bot: its dice, trivia and custom commands are open to the room."
 msgstr ""
@@ -1911,7 +1911,7 @@ msgstr "Флаги языка"
 msgid "— the language the bot speaks, such as pt_BR or ja. Its flag is drawn beside the bot's nickname, in the user list and on its lines; none takes it away."
 msgstr "— язык, на котором говорит бот, например pt_BR или ja. Его флаг виден рядом с ником бота, в списке пользователей и в его сообщениях; none убирает его."
 
-#: lib/retro_hex_chat_web/controllers/help_content/botservice.html.heex:85
+#: lib/retro_hex_chat_web/controllers/help_content/botservice.html.heex:86
 #, elixir-autogen, elixir-format
 msgid "Additional capabilities (LLM, Script) are planned for future releases."
 msgstr "На будущие релизы запланированы дополнительные возможности (LLM, Script)."
@@ -1925,3 +1925,8 @@ msgstr "Играть"
 #, elixir-autogen, elixir-format
 msgid "— announces the public Retro Games matches in the bot's channels, the daily digest and the weekly challenge. Turn it on with %{command}."
 msgstr "— объявляет о публичных матчах Retro Games в каналах бота, ежедневном дайджесте и еженедельном вызове. Включите его с %{command}."
+
+#: lib/retro_hex_chat_web/controllers/help_content/botservice.html.heex:82
+#, elixir-autogen, elixir-format
+msgid "The bot also announces the arcade games that people start."
+msgstr "Также бот анонсирует аркадные игры, которые запускают люди."

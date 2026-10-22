@@ -78,4 +78,28 @@ defmodule RetroHexChatWeb.Components.UI.GameChannelBarTest do
     refute render_component(&game_channel_bar/1, channel: "#lobby") =~ "game-channel-bar"
     refute render_component(&game_channel_bar/1, channel: nil) =~ "game-channel-bar"
   end
+
+  test "an arcade game's channel offers the game itself, and nobody to play with" do
+    document =
+      render_component(&game_channel_bar/1, channel: "#doom-shareware") |> Floki.parse_document!()
+
+    assert [_] =
+             Floki.find(
+               document,
+               ~s([data-testid="game-channel-bar"][data-game-id="doom_shareware"])
+             )
+
+    assert Floki.text(document) =~ "DOOM: Knee-Deep in the Dead"
+
+    assert [home] = Floki.find(document, ~s([data-testid="game-channel-home"]))
+    assert Floki.attribute(home, "href") == ["/games/doom-shareware"]
+
+    # Play opens the in-app Arcade on the game, as the Games menu does.
+    assert [play] = Floki.find(document, ~s([data-testid="game-channel-play"]))
+    assert Floki.attribute(play, "phx-click") == ["open_arcade"]
+    assert Floki.attribute(play, "phx-value-game-id") == ["doom_shareware"]
+
+    assert Floki.find(document, ~s([data-testid="game-channel-lfg"])) == []
+    assert render_component(&game_channel_bar/1, channel: "#arcade") == ""
+  end
 end

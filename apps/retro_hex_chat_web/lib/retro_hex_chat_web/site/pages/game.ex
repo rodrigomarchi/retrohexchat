@@ -4,8 +4,10 @@ defmodule RetroHexChatWeb.Site.Pages.Game do
 
   This is the page a search for "play DOOM in the browser" should land on, so
   it says that in its title and shows the game itself. An arcade game's page
-  is its sheet (`GameSheet`) — what it is, its keys, its tips — the same one
-  the in-app Arcade opens on once the reader has a nickname.
+  is its home in the desktop (`Landing.ArcadeHome`): its sheet (`GameSheet`) —
+  what it is, its keys, its tips — the same one the in-app Arcade opens on
+  once the reader has a nickname, and beside it who started it lately, who
+  plays it most and what its channel says.
 
   A Retro Game's page is its home in the desktop (`Landing.GameHome`): one
   window, where every way into the game leads — the Retro Games folder, the
@@ -15,10 +17,12 @@ defmodule RetroHexChatWeb.Site.Pages.Game do
   """
   use RetroHexChatWeb.Site.Page
 
+  import RetroHexChatWeb.Components.UI.Landing.ArcadeHome
   import RetroHexChatWeb.Components.UI.Landing.GameCards
   import RetroHexChatWeb.Components.UI.Landing.GameHome
 
   alias RetroHexChat.Accounts.NickLocales
+  alias RetroHexChat.Arcade
   alias RetroHexChat.Chat.Archive
   alias RetroHexChat.Games.Activity
   alias RetroHexChat.Games.Catalog
@@ -35,6 +39,7 @@ defmodule RetroHexChatWeb.Site.Pages.Game do
   # A search result cuts a title at about 70 characters, so the longest form
   # that fits wins: the site's name goes when a game's name is long.
   @title_limit 70
+  @recent_plays 10
 
   @impl RetroHexChatWeb.Site.Page
   def load(%{"slug" => slug}, ctx) do
@@ -71,8 +76,9 @@ defmodule RetroHexChatWeb.Site.Pages.Game do
      }}
   end
 
-  # A Retro Game is one window, its home. An arcade game has no channel, no
-  # ledger and nobody to play with: its page is the game and the games beside it.
+  # A Retro Game is one window, its home. An arcade game's home is the same
+  # window with less in it — nobody to play with and no result to rank, only
+  # who started it — and the games beside it.
   defp windows(%{kind: :multiplayer, id: game_id} = game, ctx) do
     channel = Catalog.channel_name(game_id)
     week_ago = DateTime.add(DateTime.utc_now(), -7, :day)
@@ -127,13 +133,40 @@ defmodule RetroHexChatWeb.Site.Pages.Game do
     ]
   end
 
-  defp windows(game, _ctx) do
+  defp windows(%{kind: :arcade, id: game_id} = game, ctx) do
+    channel = Arcade.channel_name(game_id)
+    week_ago = DateTime.add(DateTime.utc_now(), -7, :day)
+    week_count = Arcade.play_count_since(game_id, week_ago)
+
     [
       Window.new("game", game.name, :game_icon,
         icon_attrs: %{game_id: game.id},
         width: 880,
-        body: &game_detail/1,
-        status: [kind_label(game), dgettext("landing", "Free, in the browser")]
+        body: &arcade_home/1,
+        status: [
+          kind_label(game),
+          dgettext("landing", "Free, in the browser"),
+          dngettext(
+            "landing",
+            "%{count} game played this week",
+            "%{count} games played this week",
+            week_count,
+            count: week_count
+          )
+        ],
+        assigns:
+          put_play_locales(%{
+            you: your_plays(game_id, ctx),
+            identified: Map.get(ctx, :identified?, false),
+            register_path: PublicPages.localized_path("/chat/help/nickserv"),
+            channel: channel,
+            channel_path: Paths.chat_path(channel),
+            recent: Arcade.recent_plays(game_id, @recent_plays),
+            week: Arcade.most_played(game_id, week_ago, 5),
+            all_time: Arcade.most_played(game_id, ~U[2000-01-01 00:00:00Z], 5),
+            chatter: Archive.recent(channel, 5),
+            week_count: week_count
+          })
       ),
       Window.new("more-games", dgettext("landing", "More games"), :icon_joystick,
         width: 360,
@@ -163,6 +196,14 @@ defmodule RetroHexChatWeb.Site.Pages.Game do
     Map.put(assigns, :nick_locales, NickLocales.for_nicks(nicks))
   end
 
+  defp put_play_locales(assigns) do
+    nicks =
+      Enum.map(assigns.recent ++ assigns.week ++ assigns.all_time, & &1.nickname) ++
+        Enum.map(assigns.chatter, & &1.author)
+
+    Map.put(assigns, :nick_locales, NickLocales.for_nicks(nicks))
+  end
+
   @doc """
   Whether who is playing the game of a loaded home, or which of its matches
   may be watched, is no longer what the page shows — the one part of it that
@@ -188,6 +229,15 @@ defmodule RetroHexChatWeb.Site.Pages.Game do
   end
 
   defp your_record(_game_id, _ctx), do: nil
+
+  defp your_plays(game_id, %{identified?: true, nickname: nickname}) when is_binary(nickname) do
+    case SessionHelpers.resolve_user_id(nickname) do
+      {:ok, player_id} -> Arcade.player_plays(game_id, player_id)
+      _unregistered -> nil
+    end
+  end
+
+  defp your_plays(_game_id, _ctx), do: nil
 
   # One way in per mode, the game itself first. Each opens in a tab of its
   # own: against the computer at the game's address, and a match room —

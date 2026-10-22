@@ -188,7 +188,7 @@ msgid "Goal"
 msgstr "Sasaran"
 
 #: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:180
-#: lib/retro_hex_chat_web/components/ui/landing/game_home.ex:192
+#: lib/retro_hex_chat_web/components/ui/landing/game_home.ex:194
 #, elixir-autogen, elixir-format
 msgid "Mode"
 msgstr "Mode"
@@ -442,6 +442,7 @@ msgstr "Maju"
 msgid "WebAssembly"
 msgstr "WebAssembly"
 
+#: lib/retro_hex_chat_web/components/ui/games/arcade_play_card.ex:57
 #: lib/retro_hex_chat_web/components/ui/games/game_sheet.ex:36
 #: lib/retro_hex_chat_web/components/ui/landing/game_cards.ex:128
 #: lib/retro_hex_chat_web/components/ui/landing/game_cards.ex:156
@@ -544,8 +545,8 @@ msgstr "Seri"
 msgid "Ended early"
 msgstr "Berakhir lebih awal"
 
-#: lib/retro_hex_chat_web/components/ui/games/game_channel_bar.ex:88
-#: lib/retro_hex_chat_web/components/ui/landing/game_home.ex:150
+#: lib/retro_hex_chat_web/components/ui/games/game_channel_bar.ex:108
+#: lib/retro_hex_chat_web/components/ui/landing/game_home.ex:152
 #, elixir-autogen, elixir-format
 msgid "Find a partner"
 msgstr "Cari lawan main"
@@ -557,8 +558,8 @@ msgstr "Cari lawan main"
 msgid "Match over"
 msgstr "Pertandingan selesai"
 
-#: lib/retro_hex_chat_web/components/ui/games/game_channel_bar.ex:83
-#: lib/retro_hex_chat_web/components/ui/landing/game_home.ex:142
+#: lib/retro_hex_chat_web/components/ui/games/game_channel_bar.ex:103
+#: lib/retro_hex_chat_web/components/ui/landing/game_home.ex:144
 #, elixir-autogen, elixir-format
 msgid "Offer a seat to this channel: whoever presses Join first plays you"
 msgstr "Menawarkan tempat duduk ke saluran ini: siapa pun menekan Bergabung pertama memainkan Anda"
@@ -575,7 +576,7 @@ msgstr "Dari kehidupan"
 msgid "Personal best"
 msgstr "Rekor pribadi"
 
-#: lib/retro_hex_chat_web/components/ui/landing/game_home.ex:233
+#: lib/retro_hex_chat_web/components/ui/landing/game_home.ex:235
 #, elixir-autogen, elixir-format
 msgid "Ranking"
 msgstr "Peringkat"
@@ -600,9 +601,15 @@ msgstr "Anda tidak dapat membuka kursi sekarang."
 msgid "Your seat is the line below."
 msgstr "Kursi Anda adalah garis di bawah ini."
 
-#: lib/retro_hex_chat_web/components/ui/games/game_channel_bar.ex:76
+#: lib/retro_hex_chat_web/components/ui/games/arcade_play_card.ex:78
+#: lib/retro_hex_chat_web/components/ui/games/game_channel_bar.ex:83
+#: lib/retro_hex_chat_web/components/ui/games/game_channel_bar.ex:95
 #: lib/retro_hex_chat_web/components/ui/games/game_result_card.ex:79
-#: lib/retro_hex_chat_web/components/ui/landing/game_home.ex:231
+#: lib/retro_hex_chat_web/components/ui/landing/arcade_home.ex:82
+#: lib/retro_hex_chat_web/components/ui/landing/game_home.ex:233
+#: lib/retro_hex_chat_web/controllers/help_content/feature_arcade_channels.html.heex:16
+#: lib/retro_hex_chat_web/controllers/help_content/feature_arcade_channels.html.heex:48
+#: lib/retro_hex_chat_web/controllers/help_content/feature_arcade_channels.html.heex:64
 #: lib/retro_hex_chat_web/space_panels.ex:117
 #, elixir-autogen, elixir-format
 msgctxt "game"
@@ -685,8 +692,8 @@ msgctxt "match"
 msgid "Ended"
 msgstr "Selesai"
 
-#: lib/retro_hex_chat_web/components/ui/landing/game_home.ex:325
-#: lib/retro_hex_chat_web/components/ui/landing/game_home.ex:326
+#: lib/retro_hex_chat_web/components/ui/landing/game_home.ex:327
+#: lib/retro_hex_chat_web/components/ui/landing/game_home.ex:328
 #: lib/retro_hex_chat_web/live/app/watch_live.ex:216
 #, elixir-autogen, elixir-format
 msgctxt "match"
@@ -717,89 +724,92 @@ msgid "Watch"
 msgstr "Tonton"
 
 #: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:128
-#: lib/retro_hex_chat_web/components/ui/landing/game_home.ex:175
-#: lib/retro_hex_chat_web/components/ui/landing/game_home.ex:256
+#: lib/retro_hex_chat_web/components/ui/landing/arcade_home.ex:153
+#: lib/retro_hex_chat_web/components/ui/landing/game_home.ex:177
+#: lib/retro_hex_chat_web/components/ui/landing/game_home.ex:258
 #, elixir-autogen, elixir-format
 msgid "How to register"
 msgstr "Cara mendaftar"
 
-#: lib/retro_hex_chat_web/components/ui/landing/game_home.ex:130
-#: lib/retro_hex_chat_web/components/ui/landing/game_home.ex:295
+#: lib/retro_hex_chat_web/components/ui/landing/game_home.ex:132
+#: lib/retro_hex_chat_web/components/ui/landing/game_home.ex:297
 #, elixir-autogen, elixir-format
 msgid "Against the computer"
 msgstr "Lawan komputer"
 
-#: lib/retro_hex_chat_web/components/ui/landing/game_home.ex:209
+#: lib/retro_hex_chat_web/components/ui/landing/game_home.ex:211
 #, elixir-autogen, elixir-format
 msgid "Invite"
 msgstr "Undang"
 
-#: lib/retro_hex_chat_web/components/ui/landing/game_home.ex:202
-#: lib/retro_hex_chat_web/components/ui/landing/game_home.ex:203
+#: lib/retro_hex_chat_web/components/ui/landing/game_home.ex:204
+#: lib/retro_hex_chat_web/components/ui/landing/game_home.ex:205
 #, elixir-autogen, elixir-format
 msgid "Nickname"
 msgstr "Nama panggilan"
 
-#: lib/retro_hex_chat_web/components/ui/landing/game_home.ex:181
+#: lib/retro_hex_chat_web/components/ui/landing/game_home.ex:183
 #, elixir-autogen, elixir-format
 msgid "Play with somebody you know"
 msgstr "Main dengan orang yang dikenal"
 
-#: lib/retro_hex_chat_web/components/ui/landing/game_home.ex:160
+#: lib/retro_hex_chat_web/components/ui/landing/game_home.ex:162
 #: lib/retro_hex_chat_web/controllers/help_content/feature_retro_games.html.heex:50
 #, elixir-autogen, elixir-format
 msgid "Create a match link"
 msgstr "Buat tautan pertandingan"
 
-#: lib/retro_hex_chat_web/components/ui/landing/game_home.ex:294
+#: lib/retro_hex_chat_web/components/ui/landing/game_home.ex:296
 #, elixir-autogen, elixir-format
 msgid "Against people"
 msgstr "Lawan orang"
 
-#: lib/retro_hex_chat_web/components/ui/landing/game_home.ex:310
+#: lib/retro_hex_chat_web/components/ui/landing/game_home.ex:312
 #, elixir-autogen, elixir-format
 msgid "Best score"
 msgstr "Skor terbaik"
 
-#: lib/retro_hex_chat_web/components/ui/landing/game_home.ex:283
+#: lib/retro_hex_chat_web/components/ui/landing/game_home.ex:285
 #, elixir-autogen, elixir-format
 msgid "Draws"
 msgstr "Seri"
 
-#: lib/retro_hex_chat_web/components/ui/landing/game_home.ex:283
+#: lib/retro_hex_chat_web/components/ui/landing/game_home.ex:285
 #, elixir-autogen, elixir-format
 msgid "Losses"
 msgstr "Kalah"
 
-#: lib/retro_hex_chat_web/components/ui/landing/game_home.ex:300
+#: lib/retro_hex_chat_web/components/ui/landing/game_home.ex:302
 #, elixir-autogen, elixir-format
 msgid "Matches"
 msgstr "Pertandingan"
 
-#: lib/retro_hex_chat_web/components/ui/landing/game_home.ex:276
+#: lib/retro_hex_chat_web/components/ui/landing/game_home.ex:278
 #, elixir-autogen, elixir-format
 msgid "Place %{rank} of %{players}"
 msgstr "Peringkat %{rank} dari %{players}"
 
-#: lib/retro_hex_chat_web/components/ui/landing/game_home.ex:283
-#: lib/retro_hex_chat_web/components/ui/landing/game_home.ex:305
+#: lib/retro_hex_chat_web/components/ui/landing/game_home.ex:285
+#: lib/retro_hex_chat_web/components/ui/landing/game_home.ex:307
 #, elixir-autogen, elixir-format
 msgid "Wins"
 msgstr "Menang"
 
-#: lib/retro_hex_chat_web/components/ui/landing/game_home.ex:317
+#: lib/retro_hex_chat_web/components/ui/landing/game_home.ex:319
 #, elixir-autogen, elixir-format
 msgid "Your latest matches"
 msgstr "Pertandingan terakhir Anda"
 
-#: lib/retro_hex_chat_web/components/ui/landing/game_home.ex:234
+#: lib/retro_hex_chat_web/components/ui/landing/arcade_home.ex:85
+#: lib/retro_hex_chat_web/components/ui/landing/game_home.ex:236
 #, elixir-autogen, elixir-format
 msgctxt "player"
 msgid "You"
 msgstr "Kamu"
 
 #: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:120
-#: lib/retro_hex_chat_web/components/ui/landing/game_home.ex:244
+#: lib/retro_hex_chat_web/components/ui/landing/arcade_home.ex:141
+#: lib/retro_hex_chat_web/components/ui/landing/game_home.ex:246
 #, elixir-autogen, elixir-format
 msgid "Only registered nicknames appear in the ranking."
 msgstr "Hanya nama panggilan terdaftar muncul dalam peringkat."
@@ -824,3 +834,8 @@ msgstr "Main sekarang"
 #, elixir-autogen, elixir-format
 msgid "Arcade"
 msgstr "Arcade"
+
+#: lib/retro_hex_chat_web/components/ui/games/arcade_play_card.ex:62
+#, elixir-autogen, elixir-format
+msgid "%{nickname} started the game"
+msgstr "%{nickname} memulai permainan"

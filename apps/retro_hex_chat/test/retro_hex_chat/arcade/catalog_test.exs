@@ -125,4 +125,25 @@ defmodule RetroHexChat.Arcade.CatalogTest do
       assert Catalog.engine_name(:quake2) == "Quake II"
     end
   end
+
+  describe "channels" do
+    test "each game's channel is named after its page, and leads back to the game" do
+      assert Catalog.channel_name("doom_shareware") == "#doom-shareware"
+      assert Catalog.game_for_channel("#doom-shareware") == {:ok, "doom_shareware"}
+      assert Catalog.game_for_channel("#DOOM-Shareware") == {:ok, "doom_shareware"}
+      assert Catalog.game_for_channel("#arcade") == :error
+      assert Catalog.game_for_channel("doom-shareware") == :error
+      assert length(Catalog.channel_names()) == length(Catalog.game_ids())
+    end
+
+    test "no arcade channel is a Retro Game's" do
+      retro =
+        MapSet.new([
+          RetroHexChat.Games.Catalog.feed_channel() | RetroHexChat.Games.Catalog.channel_names()
+        ])
+
+      assert Enum.filter(Catalog.channel_names(), &MapSet.member?(retro, &1)) == []
+      refute MapSet.member?(retro, Catalog.feed_channel())
+    end
+  end
 end

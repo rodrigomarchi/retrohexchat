@@ -4,7 +4,7 @@ defmodule RetroHexChat.Arcade do
   Single-player WASM games with isolated session management.
   """
 
-  alias RetroHexChat.Arcade.{Catalog, Content, Queries, Service}
+  alias RetroHexChat.Arcade.{Catalog, Content, Plays, Queries, Service}
   alias RetroHexChat.Arcade.Schema.SoloSession
 
   # --- Session lifecycle ---
@@ -45,8 +45,39 @@ defmodule RetroHexChat.Arcade do
   @spec get_game(String.t()) :: {:ok, Catalog.game()} | {:error, :not_found}
   defdelegate get_game(game_id), to: Catalog
 
+  @spec engine_name(atom()) :: String.t()
+  defdelegate engine_name(engine), to: Catalog
+
   @spec game_url(Catalog.game()) :: String.t()
   defdelegate game_url(game), to: Catalog
+
+  # --- Channels ---
+
+  @spec channel_name(String.t()) :: String.t()
+  defdelegate channel_name(game_id), to: Catalog
+
+  @spec feed_channel() :: String.t()
+  defdelegate feed_channel, to: Catalog
+
+  @spec game_for_channel(String.t()) :: {:ok, String.t()} | :error
+  defdelegate game_for_channel(channel), to: Catalog
+
+  # --- Plays ---
+
+  @spec play_cards_for_messages([integer()]) :: %{integer() => Plays.card()}
+  defdelegate play_cards_for_messages(ids), to: Plays, as: :cards_for_messages
+
+  @spec recent_plays(String.t(), pos_integer()) :: [map()]
+  defdelegate recent_plays(game_id, limit), to: Plays, as: :recent
+
+  @spec most_played(String.t(), DateTime.t(), pos_integer()) :: [map()]
+  defdelegate most_played(game_id, since, limit), to: Plays
+
+  @spec play_count_since(String.t(), DateTime.t()) :: non_neg_integer()
+  defdelegate play_count_since(game_id, since), to: Plays, as: :count_since
+
+  @spec player_plays(String.t(), integer()) :: map()
+  defdelegate player_plays(game_id, player_id), to: Plays, as: :player_record
 
   # --- Content ---
 

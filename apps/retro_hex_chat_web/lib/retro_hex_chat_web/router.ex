@@ -43,6 +43,7 @@ defmodule RetroHexChatWeb.Router do
       post "/e2e/channel-messages", E2EController, :create_channel_message
       post "/e2e/contextual-tips/suppress", E2EController, :suppress_contextual_tips
       post "/e2e/game-results", E2EController, :record_game_result
+      post "/e2e/arcade-rooms", E2EController, :provision_arcade_rooms
 
       post "/e2e/group-call-peer/terminate",
            E2EFaultController,

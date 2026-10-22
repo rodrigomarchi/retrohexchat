@@ -137,20 +137,16 @@ defmodule RetroHexChatWeb.Components.UI.Landing.GameCommunity do
     """
   end
 
-  @doc "The game's channel: how busy it is, its last lines, and the way in."
+  @doc """
+  The game's channel: how busy it is, its last lines, and the way in. The
+  same corner closes an arcade game's home, where a game played is a game
+  somebody started.
+  """
   @spec channel_corner(map()) :: Phoenix.LiveView.Rendered.t()
   def channel_corner(assigns) do
     ~H"""
     <h2 id="game-community-heading" class="text-sm font-bold mb-1">{@channel}</h2>
-    <p class="text-sm mb-3" data-testid="game-community-count">
-      {dngettext(
-        "landing",
-        "%{count} game played this week",
-        "%{count} games played this week",
-        @week_count,
-        count: @week_count
-      )}
-    </p>
+    <p class="text-sm mb-3" data-testid="game-community-count">{week_count(@week_count)}</p>
 
     <div :if={@chatter != []} class="mb-3" data-testid="game-community-chatter">
       <h3 class="text-sm font-bold mb-1">{dgettext("landing", "In the channel")}</h3>
@@ -193,12 +189,19 @@ defmodule RetroHexChatWeb.Components.UI.Landing.GameCommunity do
   # so the flagged name goes where the translation put it.
   @name_mark "\u{E000}"
 
-  defp name_mark, do: @name_mark
+  @doc "What a sentence passed to `around_name/1` is translated with, where the name goes."
+  @spec name_mark() :: String.t()
+  def name_mark, do: @name_mark
 
   attr :text, :string, required: true, doc: "a translation with `name_mark/0` where the name goes"
   slot :inner_block, required: true
 
-  defp around_name(assigns) do
+  @doc """
+  A translated sentence with the name — its flag before it — drawn where the
+  translation put `name_mark/0`, whatever the language's word order.
+  """
+  @spec around_name(map()) :: Phoenix.LiveView.Rendered.t()
+  def around_name(assigns) do
     {before, rest} =
       case String.split(assigns.text, @name_mark, parts: 2) do
         [before, rest] -> {before, rest}
@@ -223,6 +226,16 @@ defmodule RetroHexChatWeb.Components.UI.Landing.GameCommunity do
     </span>
     """
   end
+
+  defp week_count(count),
+    do:
+      dngettext(
+        "landing",
+        "%{count} game played this week",
+        "%{count} games played this week",
+        count,
+        count: count
+      )
 
   defp standing_value(row, :wins),
     do: dngettext("landing", "%{count} win", "%{count} wins", row.wins, count: row.wins)

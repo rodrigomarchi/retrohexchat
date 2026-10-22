@@ -132,6 +132,13 @@ defmodule RetroHexChat.Topics do
   @spec games_playing() :: String.t()
   def games_playing, do: "games:playing"
 
+  @doc """
+  Every arcade game as somebody starts it, whoever and whichever game: what a
+  game's public page open on a desktop follows to list its latest players.
+  """
+  @spec arcade_plays() :: String.t()
+  def arcade_plays, do: "arcade:plays"
+
   @doc "Server-wide announcements (`/announce`), heard by every chat, signed in or not."
   @spec announcements() :: String.t()
   def announcements, do: "server:announcements"

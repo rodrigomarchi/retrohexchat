@@ -43,6 +43,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.MessageViewport do
 
   alias RetroHexChat.Accounts.Avatars
   alias RetroHexChat.Accounts.NickLocales
+  alias RetroHexChat.Arcade
   alias RetroHexChat.Channels.ScheduledEvents
   alias RetroHexChat.Games.Results
   alias RetroHexChat.Scraper
@@ -556,12 +557,36 @@ defmodule RetroHexChatWeb.ChatLive.Components.MessageViewport do
     }
 
     cards = put_player_locales(cards)
+    plays = items |> ids_from(:channel) |> Arcade.play_cards_for_messages() |> put_play_locales()
 
     Enum.map(items, fn item ->
+      item = put_play_card(item, plays)
+
       case get_in(cards, [Map.get(item, :source) || :none, Map.get(item, :id)]) do
         nil -> item
         card -> Map.put(item, :result_card, card)
       end
+    end)
+  end
+
+  # An arcade game somebody started hangs its card off the line that said so,
+  # in the game's channel or in `#arcade`, found the same way as a match's.
+  defp put_play_card(%{source: :channel, id: id} = item, plays) do
+    case Map.get(plays, id) do
+      nil -> item
+      card -> Map.put(item, :play_card, card)
+    end
+  end
+
+  defp put_play_card(item, _plays), do: item
+
+  defp put_play_locales(plays) when plays == %{}, do: plays
+
+  defp put_play_locales(plays) do
+    locales = plays |> Map.values() |> Enum.map(& &1.nickname) |> NickLocales.for_nicks()
+
+    Map.new(plays, fn {id, card} ->
+      {id, Map.put(card, :locale, Map.get(locales, card.nickname))}
     end)
   end
 

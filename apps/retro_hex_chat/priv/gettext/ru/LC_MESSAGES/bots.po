@@ -240,7 +240,7 @@ msgstr "Голубые пришельцы"
 msgid "Bot destroyed"
 msgstr "Бот уничтожен"
 
-#: lib/retro_hex_chat/bots/server.ex:1000
+#: lib/retro_hex_chat/bots/server.ex:1001
 #, elixir-autogen, elixir-format
 msgid "Bot leaving"
 msgstr "Бот уходит"
@@ -1803,27 +1803,27 @@ msgstr "Читать полностью"
 msgid "%{field} must be public, channel_notice, private_notice, or silent"
 msgstr "%{field} должно быть public, channel_notice, private_notice или silent"
 
-#: lib/retro_hex_chat/bots/capabilities/game.ex:37
-#, elixir-autogen, elixir-format
-msgid "Announces Retro Games matches, rankings and the weekly challenge"
-msgstr "Анонсирует матчи Retro Games, рейтинги и еженедельный вызов"
-
-#: lib/retro_hex_chat/bots/capabilities/game.ex:122
+#: lib/retro_hex_chat/bots/capabilities/game.ex:131
 #, elixir-autogen, elixir-format
 msgid "The game's ranking"
 msgstr "Рейтинг игры"
 
-#: lib/retro_hex_chat/bots/capabilities/game.ex:127
+#: lib/retro_hex_chat/bots/capabilities/game.ex:136
 #, elixir-autogen, elixir-format
 msgid "The latest public matches"
 msgstr "Последние публичные матчи"
 
-#: lib/retro_hex_chat/bots/capabilities/game.ex:125
+#: lib/retro_hex_chat/bots/capabilities/game.ex:134
 #, elixir-autogen, elixir-format
 msgid "This week's challenge and who leads it"
 msgstr "Проблемы этой недели и кто их решает"
 
-#: lib/retro_hex_chat/bots/capabilities/game.ex:128
+#: lib/retro_hex_chat/bots/capabilities/game.ex:137
 #, elixir-autogen, elixir-format
 msgid "Controls and how to start"
 msgstr "Контроль и как начать"
+
+#: lib/retro_hex_chat/bots/capabilities/game.ex:42
+#, elixir-autogen, elixir-format
+msgid "Announces Retro Games matches and arcade games as they start, rankings and the weekly challenge"
+msgstr "Анонсирует матчи Retro Games и аркадные игры по мере их запуска, рейтинга и еженедельного вызова"

@@ -2141,7 +2141,8 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
           "feature-game-watch",
           "cmd-lfg",
           "cmd-challenge",
-          "feature-game-match-link"
+          "feature-game-match-link",
+          "feature-arcade-channels"
         ]
       },
       %{
@@ -3312,6 +3313,7 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
               play: dgettext("help", "Play now")
             ),
         see_also: [
+          "feature-arcade-channels",
           "feature-arcade-doom",
           "feature-arcade-quake",
           "feature-arcade-quake2",
@@ -3324,6 +3326,34 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
           "feature-arcade-wolfenstein-3d",
           "feature-arcade-halflife-uplink"
         ]
+      },
+      %{
+        id: "feature-arcade-channels",
+        title: dgettext("help", "Arcade Channels"),
+        category: dgettext("help", "Arcade: FPS"),
+        keywords: [
+          "arcade",
+          "#arcade",
+          "#doom-shareware",
+          dgettext("help", "game channel"),
+          "game_announce",
+          "channel",
+          "community"
+        ],
+        icon: :icon_chat,
+        description:
+          dgettext(
+            "help",
+            "Every arcade game has a channel with its name, like %{channel}. When somebody starts the game, a bot says it there and in %{feed}.",
+            channel: "#doom-shareware",
+            feed: "#arcade"
+          ) <>
+            " " <>
+            dgettext(
+              "help",
+              "The strip under the topic opens the game. The page of the game shows who played it."
+            ),
+        see_also: ["feature-arcade", "feature-game-channels"]
       },
       %{
         id: "feature-arcade-doom",

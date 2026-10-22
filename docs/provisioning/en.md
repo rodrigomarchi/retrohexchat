@@ -1,7 +1,8 @@
 # RetroHexChat — Production Provisioning (English)
 
-Thirty channels, twenty-five bots: twelve rooms to talk in, and a room for each
-Retro Game plus `#retro-games` for all of them. The room choices trace to
+Forty-eight channels, twenty-five bots: twelve rooms to talk in, a room for each
+Retro Game plus `#retro-games` for all of them, and a room for each arcade game,
+whose plays `#arcade` also hears. The room choices trace to
 `scripts/research/irc_census` — a live `/LIST` sweep of 95 public IRC networks,
 of which 59 answered with 49,973 channels. Regenerate it with
 `scripts/research/irc_census/run.sh`.
@@ -62,7 +63,7 @@ included, is joined explicitly.
 ```
 # ══════════════════════════════════════════════════════════
 #  RetroHexChat — Production Setup
-#  30 channels · 25 bots · derived from the IRC census
+#  48 channels · 25 bots · derived from the IRC census
 #  The base script. Language scripts in this directory add rooms on top.
 # ══════════════════════════════════════════════════════════
 
@@ -109,7 +110,7 @@ included, is joined explicitly.
 /cs archive on
 /cs language en
 /cs category games
-/topic Arcade — 18 classics running in your browser. Open the Games menu, or ask !Pixel games for the catalogue.
+/topic Arcade — 18 classics running in your browser, and who just started one. Each game has its own room too. Open the Games menu, or ask !Pixel games for the catalogue.
 /mode +tn
 
 # #retro — the lowest bar on IRC: the biggest #retro anywhere holds 25 people,
@@ -370,6 +371,162 @@ included, is joined explicitly.
 
 
 # ══════════════════════════════════════════════════════════
+#  2d. Arcade rooms — one per arcade game
+# ══════════════════════════════════════════════════════════
+# Every arcade game has a room named after it, the same name as its page
+# (/games/doom-shareware is #doom-shareware). Pixel (below) says in it whoever
+# starts the game, and says it again in #arcade. That is all there is to say:
+# an arcade game runs in a tab of its own and never reports a score or how long
+# it was played. The strip under the topic opens the game. Like the Retro Games
+# rooms they are ordinary rooms, founded by whoever pastes this; a game added
+# to the arcade later needs its room added here and pasted.
+
+/join #doom-shareware
+/cs register
+/cs archive on
+/cs language en
+/cs category games
+/topic DOOM: Knee-Deep in the Dead in your browser: press Play under the topic. Whoever starts it is announced here. Everything said here is published in a public archive.
+/mode +tn
+
+/join #freedoom1
+/cs register
+/cs archive on
+/cs language en
+/cs category games
+/topic Freedoom: Phase 1 in your browser: press Play under the topic. Whoever starts it is announced here. Everything said here is published in a public archive.
+/mode +tn
+
+/join #freedoom2
+/cs register
+/cs archive on
+/cs language en
+/cs category games
+/topic Freedoom: Phase 2 in your browser: press Play under the topic. Whoever starts it is announced here. Everything said here is published in a public archive.
+/mode +tn
+
+/join #freedm
+/cs register
+/cs archive on
+/cs language en
+/cs category games
+/topic FreeDM in your browser: press Play under the topic. Whoever starts it is announced here. Everything said here is published in a public archive.
+/mode +tn
+
+/join #chex-quest
+/cs register
+/cs archive on
+/cs language en
+/cs category games
+/topic Chex Quest in your browser: press Play under the topic. Whoever starts it is announced here. Everything said here is published in a public archive.
+/mode +tn
+
+/join #hacx
+/cs register
+/cs archive on
+/cs language en
+/cs category games
+/topic HacX: Twitch 'n Kill in your browser: press Play under the topic. Whoever starts it is announced here. Everything said here is published in a public archive.
+/mode +tn
+
+/join #rekkr
+/cs register
+/cs archive on
+/cs language en
+/cs category games
+/topic REKKR: Sunken Land in your browser: press Play under the topic. Whoever starts it is announced here. Everything said here is published in a public archive.
+/mode +tn
+
+/join #quake-shareware
+/cs register
+/cs archive on
+/cs language en
+/cs category games
+/topic Quake: Dimension of the Doomed in your browser: press Play under the topic. Whoever starts it is announced here. Everything said here is published in a public archive.
+/mode +tn
+
+/join #librequake
+/cs register
+/cs archive on
+/cs language en
+/cs category games
+/topic LibreQuake in your browser: press Play under the topic. Whoever starts it is announced here. Everything said here is published in a public archive.
+/mode +tn
+
+/join #quake2-shareware
+/cs register
+/cs archive on
+/cs language en
+/cs category games
+/topic Quake II: The Invasion in your browser: press Play under the topic. Whoever starts it is announced here. Everything said here is published in a public archive.
+/mode +tn
+
+/join #wolfenstein-3d
+/cs register
+/cs archive on
+/cs language en
+/cs category games
+/topic Wolfenstein 3D: Escape from Castle in your browser: press Play under the topic. Whoever starts it is announced here. Everything said here is published in a public archive.
+/mode +tn
+
+/join #halflife-uplink
+/cs register
+/cs archive on
+/cs language en
+/cs category games
+/topic Half-Life: Uplink in your browser: press Play under the topic. Whoever starts it is announced here. Everything said here is published in a public archive.
+/mode +tn
+
+/join #scummvm-bass
+/cs register
+/cs archive on
+/cs language en
+/cs category games
+/topic Beneath a Steel Sky in your browser: press Play under the topic. Whoever starts it is announced here. Everything said here is published in a public archive.
+/mode +tn
+
+/join #scummvm-drascula
+/cs register
+/cs archive on
+/cs language en
+/cs category games
+/topic Drascula: The Vampire Strikes Back in your browser: press Play under the topic. Whoever starts it is announced here. Everything said here is published in a public archive.
+/mode +tn
+
+/join #scummvm-dreamweb
+/cs register
+/cs archive on
+/cs language en
+/cs category games
+/topic Dreamweb in your browser: press Play under the topic. Whoever starts it is announced here. Everything said here is published in a public archive.
+/mode +tn
+
+/join #scummvm-fotaq
+/cs register
+/cs archive on
+/cs language en
+/cs category games
+/topic Flight of the Amazon Queen in your browser: press Play under the topic. Whoever starts it is announced here. Everything said here is published in a public archive.
+/mode +tn
+
+/join #scummvm-lure
+/cs register
+/cs archive on
+/cs language en
+/cs category games
+/topic Lure of the Temptress in your browser: press Play under the topic. Whoever starts it is announced here. Everything said here is published in a public archive.
+/mode +tn
+
+/join #scummvm-soltys
+/cs register
+/cs archive on
+/cs language en
+/cs category games
+/topic Soltys in your browser: press Play under the topic. Whoever starts it is announced here. Everything said here is published in a public archive.
+/mode +tn
+
+
+# ══════════════════════════════════════════════════════════
 #  3. Brutus — moderation, every channel
 # ══════════════════════════════════════════════════════════
 # Every bot says its language right after it is created: /bot set <Bot>
@@ -425,6 +582,24 @@ included, is joined explicitly.
 /bot join Brutus #hex-frost
 /bot join Brutus #hex-hockey
 /bot join Brutus #retro-games
+/bot join Brutus #doom-shareware
+/bot join Brutus #freedoom1
+/bot join Brutus #freedoom2
+/bot join Brutus #freedm
+/bot join Brutus #chex-quest
+/bot join Brutus #hacx
+/bot join Brutus #rekkr
+/bot join Brutus #quake-shareware
+/bot join Brutus #librequake
+/bot join Brutus #quake2-shareware
+/bot join Brutus #wolfenstein-3d
+/bot join Brutus #halflife-uplink
+/bot join Brutus #scummvm-bass
+/bot join Brutus #scummvm-drascula
+/bot join Brutus #scummvm-dreamweb
+/bot join Brutus #scummvm-fotaq
+/bot join Brutus #scummvm-lure
+/bot join Brutus #scummvm-soltys
 
 # ══════════════════════════════════════════════════════════
 #  4. Channel bots
@@ -541,9 +716,14 @@ included, is joined explicitly.
 
 /bot join Wanda #trivia
 
-# ── Pixel — #arcade and #retro ───────────────────────────
+# ── Pixel — #arcade, #retro and the arcade rooms ─────────
+# game_announce on gives Pixel the `game` capability: whoever starts an arcade
+# game is said under its name in that game's room and in #arcade, and each
+# room's day in the daily digest. A room nothing was said in yet gets one line
+# saying which game it is about. In #retro it has nothing to announce.
 /bot create Pixel Arcade Operator and Retro Gaming Enthusiast
 /bot set Pixel language en
+/bot set Pixel game_announce on
 /bot set Pixel prefix !
 /bot set Pixel cooldown 1000
 /bot set Pixel greeting \c12\b[Pixel]\o Welcome to the arcade, {nickname}! I'm Pixel. \c10!games\o for the catalogue, !controls if the keys fight back.
@@ -562,6 +742,24 @@ included, is joined explicitly.
 
 /bot join Pixel #arcade
 /bot join Pixel #retro
+/bot join Pixel #doom-shareware
+/bot join Pixel #freedoom1
+/bot join Pixel #freedoom2
+/bot join Pixel #freedm
+/bot join Pixel #chex-quest
+/bot join Pixel #hacx
+/bot join Pixel #rekkr
+/bot join Pixel #quake-shareware
+/bot join Pixel #librequake
+/bot join Pixel #quake2-shareware
+/bot join Pixel #wolfenstein-3d
+/bot join Pixel #halflife-uplink
+/bot join Pixel #scummvm-bass
+/bot join Pixel #scummvm-drascula
+/bot join Pixel #scummvm-dreamweb
+/bot join Pixel #scummvm-fotaq
+/bot join Pixel #scummvm-lure
+/bot join Pixel #scummvm-soltys
 # Low-volume feeds: a couple of posts a week, so a two-hour cadence is plenty.
 /bot set Pixel rss_interval 120
 /bot rss add Pixel https://hackaday.com/category/retrocomputing/feed/ #retro
@@ -978,7 +1176,7 @@ the capability is created by that first `/bot set`:
 |---|---|---|---|
 | `#lobby` | `social` | Brutus, **Patches**, Coach, Nova, Echo | 91 = top 10% of IRC social rooms |
 | `#trivia` | `games` | Brutus, **Wanda** | 100 would make it the 4th largest trivia room on IRC |
-| `#arcade` | `games` | Brutus, **Pixel**, Joystick | 16 = largest `#arcade` on IRC |
+| `#arcade` | `games` | Brutus, **Pixel**, Joystick | 16 = largest `#arcade` on IRC; every arcade game's plays |
 | `#retro` | `retro` | Brutus, **Pixel**, Sprite | 26 = largest `#retro` on IRC · 84 = largest retro room of any name |
 | `#tech` | `tech` | Brutus, **Murphy**, Byte | 60 |
 | `#news` | `news` | Brutus, **Gazeta**, Atlas | 77 = top 10% of news rooms |
@@ -1006,6 +1204,24 @@ the capability is created by that first `/bot set`:
 | `#hex-frost` | `games` | Brutus, **Scoreboard** | a room per game, announced by Scoreboard |
 | `#hex-hockey` | `games` | Brutus, **Scoreboard** | a room per game, announced by Scoreboard |
 | `#retro-games` | `games` | Brutus, **Scoreboard** | every game's results at once |
+| `#doom-shareware` | `games` | Brutus, **Pixel** | a room per arcade game, announced by Pixel |
+| `#freedoom1` | `games` | Brutus, **Pixel** | a room per arcade game, announced by Pixel |
+| `#freedoom2` | `games` | Brutus, **Pixel** | a room per arcade game, announced by Pixel |
+| `#freedm` | `games` | Brutus, **Pixel** | a room per arcade game, announced by Pixel |
+| `#chex-quest` | `games` | Brutus, **Pixel** | a room per arcade game, announced by Pixel |
+| `#hacx` | `games` | Brutus, **Pixel** | a room per arcade game, announced by Pixel |
+| `#rekkr` | `games` | Brutus, **Pixel** | a room per arcade game, announced by Pixel |
+| `#quake-shareware` | `games` | Brutus, **Pixel** | a room per arcade game, announced by Pixel |
+| `#librequake` | `games` | Brutus, **Pixel** | a room per arcade game, announced by Pixel |
+| `#quake2-shareware` | `games` | Brutus, **Pixel** | a room per arcade game, announced by Pixel |
+| `#wolfenstein-3d` | `games` | Brutus, **Pixel** | a room per arcade game, announced by Pixel |
+| `#halflife-uplink` | `games` | Brutus, **Pixel** | a room per arcade game, announced by Pixel |
+| `#scummvm-bass` | `games` | Brutus, **Pixel** | a room per arcade game, announced by Pixel |
+| `#scummvm-drascula` | `games` | Brutus, **Pixel** | a room per arcade game, announced by Pixel |
+| `#scummvm-dreamweb` | `games` | Brutus, **Pixel** | a room per arcade game, announced by Pixel |
+| `#scummvm-fotaq` | `games` | Brutus, **Pixel** | a room per arcade game, announced by Pixel |
+| `#scummvm-lure` | `games` | Brutus, **Pixel** | a room per arcade game, announced by Pixel |
+| `#scummvm-soltys` | `games` | Brutus, **Pixel** | a room per arcade game, announced by Pixel |
 
 All channels are `+tn`, publish their archive and are marked English
 (`/cs language en`), and each says what it is about with the `category` above
@@ -1026,7 +1242,7 @@ answers orientation questions in its own language instead.
 | **Nova** | `#lobby` | `custom_commands`, `mention` | virtual spaces: getting in, the character creator, the Construct |
 | **Echo** | `#lobby` | `custom_commands`, `mention` | P2P sessions, calls, conferences, file transfer, voice messages |
 | **Wanda** | `#trivia` | **`trivia`**, `dice`, `greeter` | quiz host with a scoreboard |
-| **Pixel** | `#arcade`, `#retro` | **`rss`**, `greeter`, `custom_commands` | arcade catalogue; Hackaday and Vintage Computing |
+| **Pixel** | `#arcade`, `#retro`, the arcade rooms | **`game`**, **`rss`**, `greeter`, `custom_commands` | arcade catalogue; says who starts each arcade game; Hackaday and Vintage Computing |
 | **Murphy** | `#tech` | **`rss`**, `greeter`, `custom_commands` | pub talk; Hacker News and the GitHub blog |
 | **Gazeta** | `#news` | **`rss`**, `greeter`, `custom_commands` | the wire desk; feeds survive a restart |
 | **Freeman** | `#foss` | **`rss`**, `greeter`, `custom_commands` | LWN, Phoronix, It's FOSS |
@@ -1074,8 +1290,9 @@ record the current page; after that, only items that arrive later are posted.
 room that speaks on a timer with nothing to say is worse than a quiet one.
 
 **No `llm` or `script` capabilities.** Both are stubs — `handle_message`
-returns `:ignore` and `commands` returns `[]`. `game` is real and only Scoreboard
-carries it: in a room with two announcers only the oldest speaks, so a second one
+returns `:ignore` and `commands` returns `[]`. `game` is real and two bots carry
+it, each in rooms of its own: Scoreboard in the Retro Games rooms, Pixel in the
+arcade's. In a room with two announcers only the oldest speaks, so a second one
 would sit there doing nothing.
 
 **No `arcade_*` setting.** It does not exist; there is no `apply_setting` clause for it.

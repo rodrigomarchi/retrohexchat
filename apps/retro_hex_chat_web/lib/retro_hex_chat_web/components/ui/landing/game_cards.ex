@@ -210,10 +210,11 @@ defmodule RetroHexChatWeb.Components.UI.Landing.GameCards do
   attr :visitor, :boolean, default: false, doc: "Play asks for a nickname first"
 
   @doc """
-  An arcade game's page: the game's sheet (`GameSheet`), the same one the
-  in-app Arcade shows, with the way in beside the name. A visitor's Play opens
-  the sign-in window, which lands them on the game once they have an account.
-  A Retro Game's page is its home (`Landing.GameHome`).
+  An arcade game's sheet (`GameSheet`), the same one the in-app Arcade shows,
+  with the way in beside the name: the Play tab of the game's home
+  (`Landing.ArcadeHome`). A visitor's Play opens the sign-in window, which
+  lands them on the game once they have an account. A Retro Game's page is
+  its home (`Landing.GameHome`).
   """
   @spec game_detail(map()) :: Phoenix.LiveView.Rendered.t()
   def game_detail(assigns) do

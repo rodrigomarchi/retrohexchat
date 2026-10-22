@@ -1,6 +1,7 @@
 defmodule RetroHexChatWeb.E2EController do
   use RetroHexChatWeb, :controller
 
+  alias RetroHexChat.Arcade
   alias RetroHexChat.Bots.Lifecycle, as: BotLifecycle
   alias RetroHexChat.Bots.Queries, as: BotQueries
   alias RetroHexChat.Bots.Server, as: BotServer
@@ -20,8 +21,10 @@ defmodule RetroHexChatWeb.E2EController do
     "system" => :system
   }
 
-  # The bot `docs/provisioning/en.md` puts in the Retro Games rooms.
+  # The bots `docs/provisioning/en.md` puts in the Retro Games rooms and in
+  # the arcade's.
   @announcer "Scoreboard"
+  @arcade_announcer "Pixel"
 
   @channel_pattern ~r/^#[A-Za-z0-9_-]{1,48}$/
   @nickname_pattern ~r/^[A-Za-z][A-Za-z0-9_\-\[\]\\`^{}|]{0,15}$/
@@ -91,8 +94,8 @@ defmodule RetroHexChatWeb.E2EController do
 
     with {:ok, host} <- registered_player(p1),
          {:ok, guest} <- optional_player(Map.get(params, "p2")),
-         :ok <- provision_game_room(GameCatalog.channel_name(game_id), host.nickname),
-         :ok <- provision_game_room(GameCatalog.feed_channel(), host.nickname),
+         :ok <- provision_game_room(GameCatalog.channel_name(game_id), host.nickname, @announcer),
+         :ok <- provision_game_room(GameCatalog.feed_channel(), host.nickname, @announcer),
          {:ok, row} <-
            Results.record(%{
              game_id: game_id,
@@ -113,7 +116,36 @@ defmodule RetroHexChatWeb.E2EController do
 
   defp do_record_game_result(conn, _params), do: error(conn, :bad_request, "invalid params")
 
-  defp provision_game_room(channel, founder) do
+  @doc """
+  Sets an arcade game's room and `#arcade` up as `docs/provisioning/en.md`
+  leaves them — registered by `founder`, archived, with Pixel announcing in
+  them — so a spec that starts the game sees the line and its card.
+  """
+  @spec provision_arcade_rooms(Plug.Conn.t(), map()) :: Plug.Conn.t()
+  def provision_arcade_rooms(conn, params) do
+    if Application.get_env(:retro_hex_chat, :e2e_fault_injection?, false) do
+      do_provision_arcade_rooms(conn, params)
+    else
+      not_found(conn)
+    end
+  end
+
+  defp do_provision_arcade_rooms(conn, %{"game_id" => game_id, "founder" => founder})
+       when is_binary(game_id) and is_binary(founder) do
+    with {:ok, _game} <- Arcade.get_game(game_id),
+         {:ok, owner} <- registered_player(founder),
+         :ok <-
+           provision_game_room(Arcade.channel_name(game_id), owner.nickname, @arcade_announcer),
+         :ok <- provision_game_room(Arcade.feed_channel(), owner.nickname, @arcade_announcer) do
+      json(conn, %{status: "created", channel: Arcade.channel_name(game_id)})
+    else
+      {:error, reason} -> error(conn, :unprocessable_entity, inspect(reason))
+    end
+  end
+
+  defp do_provision_arcade_rooms(conn, _params), do: error(conn, :bad_request, "invalid params")
+
+  defp provision_game_room(channel, founder, announcer_name) do
     if is_nil(ServiceQueries.find_registered_channel(channel)) do
       {:ok, _row} = ServiceQueries.insert_registered_channel(channel, founder)
       {:ok, _access} = ServiceQueries.add_access(channel, founder, "founder", founder)
@@ -121,7 +153,8 @@ defmodule RetroHexChatWeb.E2EController do
       _ = ChannelServer.mark_registered(channel)
     end
 
-    announcer = BotQueries.get_bot_by_name(@announcer) || create_announcer(founder)
+    announcer =
+      BotQueries.get_bot_by_name(announcer_name) || create_announcer(announcer_name, founder)
 
     # What `/bot join` does: the row, then the running bot into the room.
     with {:ok, _config} <- BotQueries.add_channel_config(announcer.id, channel),
@@ -132,11 +165,11 @@ defmodule RetroHexChatWeb.E2EController do
     :ok
   end
 
-  defp create_announcer(founder) do
+  defp create_announcer(name, founder) do
     {:ok, bot} =
       BotQueries.create_bot(%{
-        name: @announcer,
-        nickname: @announcer,
+        name: name,
+        nickname: name,
         created_by: founder,
         locale: "en",
         capabilities: %{"game" => %{"enabled" => true}}

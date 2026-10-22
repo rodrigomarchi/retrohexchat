@@ -47,7 +47,9 @@ defmodule RetroHexChatWeb.Components.UI.Landing.GameHome do
     </div>
 
     <.tabs :let={builder} id={"game-home-#{@game.id}"} default="play" data-testid="game-home">
-      <.tabs_list>
+      <%!-- Five tabs are wider than a phone: they wrap onto a second row,
+            as a Win98 tab control does, rather than pushing the panel sideways. --%>
+      <.tabs_list class="flex-wrap gap-y-retro-2">
         <.tabs_trigger
           :for={{value, label, icon} <- tabs(@live, @channel)}
           builder={builder}

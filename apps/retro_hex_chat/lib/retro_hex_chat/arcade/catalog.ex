@@ -333,6 +333,36 @@ defmodule RetroHexChat.Arcade.Catalog do
   @spec game_ids() :: [String.t()]
   def game_ids, do: Enum.map(@games, & &1.id)
 
+  @doc """
+  The address-safe name of a game: `"doom-shareware"` for `"doom_shareware"`.
+  Its public page and its channel are both named after it.
+  """
+  @spec slug(String.t()) :: String.t()
+  def slug(game_id), do: String.replace(game_id, "_", "-")
+
+  @doc "The channel where `game_id` is talked about and its plays are announced: `#doom-shareware`."
+  @spec channel_name(String.t()) :: String.t()
+  def channel_name(game_id), do: "#" <> slug(game_id)
+
+  @doc "The channel every arcade game's plays are also announced in."
+  @spec feed_channel() :: String.t()
+  def feed_channel, do: "#arcade"
+
+  @doc "Every game's channel, in catalogue order."
+  @spec channel_names() :: [String.t()]
+  def channel_names, do: Enum.map(@games, &channel_name(&1.id))
+
+  @doc "The game a channel belongs to; `:error` for any other channel."
+  @spec game_for_channel(String.t()) :: {:ok, String.t()} | :error
+  def game_for_channel("#" <> name) do
+    case Enum.find(@games, &(slug(&1.id) == String.downcase(name))) do
+      %{id: id} -> {:ok, id}
+      nil -> :error
+    end
+  end
+
+  def game_for_channel(_name), do: :error
+
   # ScummVM game ID → directory and ScummVM gameid mapping for URL fragment auto-start
   @scummvm_games %{
     "scummvm_bass" => {"bass", "sky"},

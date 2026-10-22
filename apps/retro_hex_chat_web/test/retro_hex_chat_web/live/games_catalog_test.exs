@@ -13,6 +13,7 @@ defmodule RetroHexChatWeb.GamesCatalogTest do
 
   @moduletag :liveview
 
+  alias RetroHexChat.Arcade.Queries, as: ArcadeQueries
   alias RetroHexChat.Chat.HelpTopics
   alias RetroHexChat.Games.Catalog
   alias RetroHexChat.Games.Queries, as: GameQueries
@@ -423,11 +424,98 @@ defmodule RetroHexChatWeb.GamesCatalogTest do
       assert view |> element(~s([data-testid="game-community-playing"])) |> render() =~
                beto.nickname
     end
+  end
 
-    test "an arcade game has no community window", %{conn: conn} do
-      document = document(conn, "/games/doom-shareware")
-      assert Floki.find(document, ~s([data-testid="game-community-channel"])) == []
+  describe "an arcade game's home" do
+    defp arcade_player(nickname) do
+      {:ok, nick} =
+        RetroHexChat.Repo.insert(%RegisteredNick{
+          nickname: nickname,
+          password_hash: "x",
+          registered_at: DateTime.utc_now(),
+          last_seen_at: DateTime.utc_now()
+        })
+
+      %{id: nick.id, nickname: nickname}
+    end
+
+    # A play is a session somebody pressed Play in. Written straight to the
+    # sessions: starting one through `Arcade` would also announce it in a
+    # channel process this async test does not own.
+    defp played(player, game_id, minutes_ago) do
+      {:ok, _session} =
+        ArcadeQueries.insert_session(%{
+          token: "t#{System.unique_integer([:positive])}",
+          creator_id: player.id,
+          status: "playing",
+          game_id: game_id,
+          game_started_at: DateTime.add(DateTime.utc_now(), -minutes_ago, :minute)
+        })
+    end
+
+    test "who played it and who plays it most are in the page a visitor is sent", %{conn: conn} do
+      ana = arcade_player("ana#{System.unique_integer([:positive])}")
+      beto = arcade_player("beto#{System.unique_integer([:positive])}")
+      played(ana, "hacx", 30)
+      played(ana, "hacx", 20)
+      played(beto, "hacx", 5)
+
+      document = document(conn, "/games/hacx")
+
+      assert [recent] = Floki.find(document, ~s([data-testid="arcade-home-recent"]))
+      [first, _second, _third] = Floki.find(recent, "li")
+      assert Floki.text(first) =~ beto.nickname
+
+      assert [week] = Floki.find(document, ~s([data-testid="arcade-home-week"]))
+      assert Floki.text(week) =~ ~r/#{ana.nickname}\s+started 2 times/
+
+      assert [channel] = Floki.find(document, ~s([data-testid="game-community-channel"]))
+      assert Floki.attribute(channel, "href") == ["/c/hacx"]
+
+      assert document |> Floki.find(~s([data-testid="game-community-count"])) |> Floki.text() =~
+               "3 games played this week"
+
+      # Still the game's whole sheet, under Play.
+      assert [_] =
+               Floki.find(
+                 document,
+                 ~s([data-testid="game-home-play"] [data-testid="game-controls"])
+               )
+
       refute json_ld(document, "VideoGame")["interactionStatistic"]
+    end
+
+    test "a game nobody played says so", %{conn: conn} do
+      document = document(conn, "/games/scummvm-soltys")
+      assert [_] = Floki.find(document, ~s([data-testid="arcade-home-recent-none"]))
+    end
+
+    test "the You tab counts the reader's own plays, for a proved nickname only", %{conn: conn} do
+      ana = arcade_player("ana#{System.unique_integer([:positive])}")
+      played(ana, "rekkr", 90)
+      played(ana, "rekkr", 10)
+
+      {:ok, view, _html} =
+        conn |> chat_conn(ana.nickname, pre_identified: true) |> live("/games/rekkr")
+
+      assert view |> element(~s([data-testid="game-you-plays"])) |> render() =~
+               "You have started this game 2 times."
+
+      {:ok, unproved, _html} =
+        build_conn() |> chat_conn(ana.nickname, pre_identified: false) |> live("/games/rekkr")
+
+      assert has_element?(unproved, ~s([data-testid="game-you-unranked"]))
+    end
+
+    test "an open home follows the players who start its game", %{conn: conn} do
+      ana = arcade_player("ana#{System.unique_integer([:positive])}")
+      {:ok, view, _html} = conn |> chat_conn(ana.nickname) |> live("/games/chex-quest")
+      assert has_element?(view, ~s([data-testid="arcade-home-recent-none"]))
+
+      played(ana, "chex_quest", 0)
+      send(view.pid, {:arcade_play_started, %{game_id: "chex_quest"}})
+
+      assert view |> element(~s([data-testid="arcade-home-recent"])) |> render() =~ ana.nickname
     end
   end
 

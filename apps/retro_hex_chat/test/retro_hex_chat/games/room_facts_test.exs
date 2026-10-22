@@ -99,4 +99,23 @@ defmodule RetroHexChat.Games.RoomFactsTest do
       assert RoomFacts.answer("roll", "#hex-pong") == :unknown
     end
   end
+
+  describe "an arcade game's room" do
+    test "opens with what the game is and how to start it, and nothing else" do
+      intro = RoomFacts.intro("#doom-shareware")
+      assert intro =~ "DOOM: Knee-Deep in the Dead: The original Episode 1 of DOOM"
+      assert intro =~ "Press Play under the topic to start it in your browser."
+      refute intro =~ "!ranking"
+
+      assert RoomFacts.room?("#doom-shareware")
+      assert RoomFacts.welcome("#doom-shareware") == []
+      assert RoomFacts.answer("ranking", "#doom-shareware") == :unknown
+      assert RoomFacts.answer("howto", "#doom-shareware") == :unknown
+    end
+
+    test "the arcade's own room is no game's room" do
+      refute RoomFacts.room?("#arcade")
+      assert RoomFacts.intro("#arcade") == nil
+    end
+  end
 end
