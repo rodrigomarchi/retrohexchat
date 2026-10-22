@@ -11,6 +11,7 @@ defmodule RetroHexChat.Bots.Capabilities.RSSTest do
     bot_nickname: "FeedBot",
     bot_name: "FeedBot",
     channel: "#general",
+    joined_channels: ["#general", "#news"],
     command_prefix: "!",
     config: @default_config,
     capability_state: RSS.init_state(@default_config),
@@ -44,6 +45,25 @@ defmodule RetroHexChat.Bots.Capabilities.RSSTest do
       assert length(new_state.feeds) == 1
       assert hd(new_state.feeds)["url"] == "https://93.184.216.34/feed"
       assert hd(new_state.feeds)["channel"] == "#news"
+    end
+
+    test "refuses a channel the bot is not in, as the admin dialog does" do
+      assert {:reply, text} =
+               RSS.handle_message(
+                 "!FeedBot rss add https://93.184.216.34/feed #nowhere",
+                 "admin",
+                 @ctx
+               )
+
+      assert text =~ "not in #nowhere"
+    end
+
+    test "refuses a bare # for a channel" do
+      assert {:reply, text} =
+               RSS.handle_message("!FeedBot rss add https://93.184.216.34/feed #", "admin", @ctx)
+
+      assert text =~ "channel"
+      refute text =~ "added"
     end
 
     test "rejects invalid URL" do

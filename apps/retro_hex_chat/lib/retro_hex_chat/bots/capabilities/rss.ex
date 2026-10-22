@@ -15,8 +15,8 @@ defmodule RetroHexChat.Bots.Capabilities.RSS do
   alias RetroHexChat.Bots.Capabilities.RSS.FeedParser
   alias RetroHexChat.Bots.Capabilities.RSS.Fetcher
   alias RetroHexChat.Bots.Capabilities.RSS.Scheduler
+  alias RetroHexChat.Bots.Feeds
   alias RetroHexChat.Bots.Policy
-  alias RetroHexChat.Net.URLGuard
   alias RetroHexChat.Scraper
   alias RetroHexChat.Scraper.Card
   alias RetroHexChat.Scraper.Markup
@@ -135,7 +135,7 @@ defmodule RetroHexChat.Bots.Capabilities.RSS do
         if_admin(ctx, fn -> handle_list(state) end)
 
       {:rss, "add " <> rest} ->
-        if_admin(ctx, fn -> handle_add(rest, state, config) end)
+        if_admin(ctx, fn -> handle_add(rest, state, ctx) end)
 
       {:rss, "remove " <> id} ->
         if_admin(ctx, fn -> handle_remove(String.trim(id), state, ctx) end)
@@ -253,60 +253,36 @@ defmodule RetroHexChat.Bots.Capabilities.RSS do
   end
 
   @spec handle_add(String.t(), map(), map()) :: RetroHexChat.Bots.Capability.capability_result()
-  defp handle_add(rest, state, config) do
-    max = Map.get(config, "max_feeds", 5)
-
-    if length(state.feeds) >= max do
-      {:reply, dgettext("bots", "Maximum %{max} feeds reached.", max: max)}
-    else
-      case String.split(rest, " ", parts: 2) do
-        [url, channel] ->
-          add_feed(url, ensure_hash(String.trim(channel)), state)
-
-        [_url] ->
-          {:reply, dgettext("bots", "Missing channel. Usage: rss add <url> <#channel>")}
-
-        _ ->
-          {:reply, dgettext("bots", "Usage: rss add <url> <#channel>")}
-      end
+  defp handle_add(rest, state, ctx) do
+    case String.split(rest, " ", parts: 2) do
+      [url, channel] -> add_feed(url, channel, state, ctx)
+      [_url] -> {:reply, dgettext("bots", "Missing channel. Usage: rss add <url> <#channel>")}
+      _ -> {:reply, dgettext("bots", "Usage: rss add <url> <#channel>")}
     end
   end
 
-  @spec add_feed(String.t(), String.t(), map()) ::
+  @spec add_feed(String.t(), String.t(), map(), map()) ::
           RetroHexChat.Bots.Capability.capability_result()
-  defp add_feed(url, channel, state) do
-    case URLGuard.check(url) do
-      :ok ->
-        do_add_feed(url, channel, state)
-
-      {:error, reason} ->
-        {:reply, dgettext("bots", "Refusing %{url}: %{reason}", url: url, reason: reason)}
-    end
-  end
-
-  @spec do_add_feed(String.t(), String.t(), map()) ::
-          RetroHexChat.Bots.Capability.capability_result()
-  defp do_add_feed(url, channel, state) do
-    id = generate_id()
-
-    feed = %{
-      "id" => id,
-      "url" => url,
-      "channel" => channel,
-      "title" => nil,
-      "seen" => [],
-      "etag" => nil,
-      "last_modified" => nil,
-      "last_polled_at" => nil,
-      "last_error" => nil
+  defp add_feed(url, channel, state, ctx) do
+    request = %{
+      bot_name: ctx.bot_name,
+      joined_channels: Map.get(ctx, :joined_channels, []),
+      feeds: state.feeds,
+      max_feeds: Feeds.max_feeds(ctx.config)
     }
 
-    {:reply,
-     dgettext("bots", "Feed '%{id}' added: %{url} → %{channel}",
-       id: id,
-       url: url,
-       channel: channel
-     ), %{state | feeds: state.feeds ++ [feed]}}
+    case Feeds.build(request, url, channel) do
+      {:ok, feed} ->
+        {:reply,
+         dgettext("bots", "Feed '%{id}' added: %{url} → %{channel}",
+           id: feed["id"],
+           url: feed["url"],
+           channel: feed["channel"]
+         ), %{state | feeds: state.feeds ++ [feed]}}
+
+      {:error, reason} ->
+        {:reply, reason}
+    end
   end
 
   @spec handle_remove(String.t(), map(), map()) ::
@@ -746,13 +722,4 @@ defmodule RetroHexChat.Bots.Capabilities.RSS do
     new_feeds = Enum.map(state.feeds, fn f -> if f["id"] == id, do: updated_feed, else: f end)
     %{state | feeds: new_feeds}
   end
-
-  @spec generate_id() :: String.t()
-  defp generate_id do
-    "f" <> (:crypto.strong_rand_bytes(3) |> Base.encode16(case: :lower))
-  end
-
-  @spec ensure_hash(String.t()) :: String.t()
-  defp ensure_hash("#" <> _ = ch), do: ch
-  defp ensure_hash(ch), do: "#" <> ch
 end

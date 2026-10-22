@@ -798,6 +798,7 @@ defmodule RetroHexChat.Bots.Server do
       bot_name: state.name,
       bot_id: state.bot_id,
       channel: channel,
+      joined_channels: Map.keys(state.channels),
       command_prefix: state.command_prefix,
       config: %{},
       capability_state: %{},

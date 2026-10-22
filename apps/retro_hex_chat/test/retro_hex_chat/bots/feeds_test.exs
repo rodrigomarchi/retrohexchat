@@ -73,7 +73,7 @@ defmodule RetroHexChat.Bots.FeedsTest do
         })
 
       assert {:error, reason} = Feeds.add(full, @public, "#news")
-      assert reason =~ "maximum"
+      assert reason =~ "Maximum 2 feeds"
     end
 
     test "works on a bot whose rss capability was only just switched on" do
