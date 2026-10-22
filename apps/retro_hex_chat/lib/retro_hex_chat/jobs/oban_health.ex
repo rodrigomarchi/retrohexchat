@@ -1335,7 +1335,7 @@ defmodule RetroHexChat.Jobs.ObanHealth do
   defp maybe_worker(query, ""), do: query
 
   defp maybe_worker(query, worker) do
-    pattern = "%#{worker}%"
+    pattern = Repo.contains_pattern(worker)
     where(query, [job], ilike(job.worker, ^pattern))
   end
 

@@ -285,7 +285,7 @@ defmodule RetroHexChat.Chat.Queries do
     PrivateMessage
     |> between(nick_a, nick_b)
     |> where([pm], pm.type == "p2p_invite")
-    |> where([pm], like(pm.content, ^"%#{token}%"))
+    |> where([pm], like(pm.content, ^Repo.contains_pattern(token)))
     |> order_by([pm], desc: pm.id)
     |> limit(1)
     |> Repo.one()

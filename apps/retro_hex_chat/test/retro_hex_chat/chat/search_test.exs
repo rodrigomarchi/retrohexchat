@@ -83,6 +83,23 @@ defmodule RetroHexChat.Chat.SearchTest do
       assert Search.count_matches("#lobby", "GREAT", case_sensitive: true) == 1
     end
 
+    test "searches backslashes, percent signs and underscores literally" do
+      for content <- ["C:\\temp\\new", "C:tempnew", "50% off", "50 off", "a_b", "axb"] do
+        {:ok, _} =
+          Queries.insert_message(%{
+            channel_name: "#lobby",
+            author_nickname: "Ada",
+            content: content,
+            type: "message"
+          })
+      end
+
+      assert Search.count_matches("#lobby", "\\temp") == 1
+      assert Search.count_matches("#lobby", "50%") == 1
+      assert Search.count_matches("#lobby", "a_b") == 1
+      assert Search.count_matches("#lobby", "\\temp", case_sensitive: true) == 1
+    end
+
     test "searches Markdown messages by visible text, not source markup" do
       {:ok, _msg} =
         Queries.insert_message(%{

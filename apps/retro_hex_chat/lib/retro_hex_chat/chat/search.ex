@@ -51,7 +51,7 @@ defmodule RetroHexChat.Chat.Search do
 
   def list_mentions(nick, channels, opts) do
     limit = Keyword.get(opts, :limit, @default_limit)
-    pattern = "%#{sanitize(nick)}%"
+    pattern = Repo.contains_pattern(nick)
 
     Message
     |> where([m], m.channel_name in ^channels)
@@ -85,7 +85,7 @@ defmodule RetroHexChat.Chat.Search do
         where(queryable, [m], fragment("coalesce(?, ?) ~* ?", m.plain_content, m.content, ^query))
 
       {false, true} ->
-        pattern = "%#{sanitize(query)}%"
+        pattern = Repo.contains_pattern(query)
 
         where(
           queryable,
@@ -94,7 +94,7 @@ defmodule RetroHexChat.Chat.Search do
         )
 
       {false, false} ->
-        pattern = "%#{sanitize(query)}%"
+        pattern = Repo.contains_pattern(query)
 
         where(
           queryable,
@@ -117,7 +117,7 @@ defmodule RetroHexChat.Chat.Search do
         queryable
 
       nick ->
-        pattern = "%#{sanitize(nick)}%"
+        pattern = Repo.contains_pattern(nick)
 
         where(
           queryable,
@@ -129,10 +129,4 @@ defmodule RetroHexChat.Chat.Search do
 
   defp maybe_before(queryable, nil), do: queryable
   defp maybe_before(queryable, cursor), do: where(queryable, [m], m.id < ^cursor)
-
-  defp sanitize(query) do
-    query
-    |> String.replace("%", "\\%")
-    |> String.replace("_", "\\_")
-  end
 end

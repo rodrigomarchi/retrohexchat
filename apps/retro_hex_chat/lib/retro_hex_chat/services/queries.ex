@@ -317,7 +317,7 @@ defmodule RetroHexChat.Services.Queries do
         queryable
 
       trimmed ->
-        pattern = "%" <> escape_like(trimmed) <> "%"
+        pattern = Repo.contains_pattern(trimmed)
 
         where(
           queryable,
@@ -325,13 +325,6 @@ defmodule RetroHexChat.Services.Queries do
           ilike(c.name, ^pattern) or ilike(coalesce(c.topic, ""), ^pattern)
         )
     end
-  end
-
-  defp escape_like(term) do
-    term
-    |> String.replace("\\", "\\\\")
-    |> String.replace("%", "\\%")
-    |> String.replace("_", "\\_")
   end
 
   @spec list_channels_for_founder(String.t()) :: [String.t()]
@@ -626,7 +619,7 @@ defmodule RetroHexChat.Services.Queries do
   defp maybe_search_nick(query, nil), do: query
 
   defp maybe_search_nick(query, search) do
-    pattern = "%#{search}%"
+    pattern = Repo.contains_pattern(search)
     where(query, [n], ilike(n.nickname, ^pattern))
   end
 
