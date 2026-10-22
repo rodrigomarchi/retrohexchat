@@ -87,7 +87,7 @@ defmodule RetroHexChat.Games.Challenges do
 
       %{nickname: nickname} ->
         dgettext("games", "%{nickname} won last week's challenge in %{game}.",
-          game: game_name(challenge.game_id),
+          game: Catalog.game_name(challenge.game_id),
           nickname: nickname
         )
     end
@@ -96,7 +96,7 @@ defmodule RetroHexChat.Games.Challenges do
   @doc "The sentence that names `challenge` and what wins it."
   @spec opening(t()) :: String.t()
   def opening(challenge) do
-    game = game_name(challenge.game_id)
+    game = Catalog.game_name(challenge.game_id)
 
     if Catalog.ranking(challenge.game_id) == :versus,
       do:
@@ -106,10 +106,5 @@ defmodule RetroHexChat.Games.Challenges do
           game: game
         ),
       else: dgettext("games", "This week's challenge is %{game}. Get the best score.", game: game)
-  end
-
-  defp game_name(game_id) do
-    {:ok, game} = Catalog.get_game(game_id)
-    game.name
   end
 end

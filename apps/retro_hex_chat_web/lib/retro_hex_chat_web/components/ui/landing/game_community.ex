@@ -24,6 +24,7 @@ defmodule RetroHexChatWeb.Components.UI.Landing.GameCommunity do
   import RetroHexChatWeb.Components.UI.NickFlag
 
   alias RetroHexChat.Chat.TimeFormatter
+  alias RetroHexChat.Games.Catalog
   alias RetroHexChatWeb.Components.UI.GameResultCard
   alias RetroHexChatWeb.Icons
 
@@ -62,7 +63,7 @@ defmodule RetroHexChatWeb.Components.UI.Landing.GameCommunity do
     <div class="mb-3" data-testid="game-community-challenge">
       <h3 class="text-sm font-bold mb-1">
         {dgettext("landing", "Challenge of the week: %{game}",
-          game: GameResultCard.game_title(@challenge.game_id)
+          game: Catalog.game_name(@challenge.game_id)
         )}
       </h3>
       <p :if={@challenge_leader} class="text-sm">

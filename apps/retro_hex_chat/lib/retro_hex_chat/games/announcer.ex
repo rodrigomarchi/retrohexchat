@@ -153,7 +153,7 @@ defmodule RetroHexChat.Games.Announcer do
   @spec line(GameResult.t()) :: String.t()
   def line(%GameResult{} = result) do
     bindings = %{
-      game: game_name(result.game_id),
+      game: Catalog.game_name(result.game_id),
       p1: result.p1_nickname,
       p2: result.p2_nickname || computer(result.difficulty),
       p1_score: result.p1_score,
@@ -199,13 +199,6 @@ defmodule RetroHexChat.Games.Announcer do
         "%{p1} and %{p2} finished %{game} with %{p1_score} and %{p2_score} points",
         bindings
       )
-
-  defp game_name(game_id) do
-    case Catalog.get_game(game_id) do
-      {:ok, game} -> game.name
-      {:error, :not_found} -> game_id
-    end
-  end
 
   defp computer("easy"), do: dgettext("games", "the computer (easy)")
   defp computer("hard"), do: dgettext("games", "the computer (hard)")

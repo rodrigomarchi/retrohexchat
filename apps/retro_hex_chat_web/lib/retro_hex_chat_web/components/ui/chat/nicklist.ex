@@ -6,8 +6,8 @@ defmodule RetroHexChatWeb.Components.UI.Nicklist do
   import RetroHexChatWeb.Components.UI.NickPortrait
 
   alias RetroHexChat.Channels.Modes
+  alias RetroHexChat.Games.Catalog
   alias RetroHexChatWeb.Components.UI.Chat.Role
-  alias RetroHexChatWeb.Components.UI.GameResultCard
   import RetroHexChatWeb.Components.UI.ToolButton
 
   alias RetroHexChatWeb.Icons
@@ -552,7 +552,7 @@ defmodule RetroHexChatWeb.Components.UI.Nicklist do
       <span
         :if={@playing_game}
         class="chat-nicklist-row__badge chat-nicklist-row__badge--playing"
-        title={dgettext("chat", "Playing %{game}", game: GameResultCard.game_title(@playing_game))}
+        title={dgettext("chat", "Playing %{game}", game: Catalog.game_name(@playing_game))}
         data-testid={"nicklist-playing-#{@nick}"}
         data-game-id={@playing_game}
         aria-hidden="true"

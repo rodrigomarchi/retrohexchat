@@ -48,7 +48,7 @@ defmodule RetroHexChatWeb.Components.UI.ArcadePlayCard do
           class="underline"
           data-testid="arcade-play-home"
         >
-          {game_title(@card.game_id)}
+          {Arcade.game_name(@card.game_id)}
         </.link>
       </:title>
 
@@ -98,15 +98,6 @@ defmodule RetroHexChatWeb.Components.UI.ArcadePlayCard do
     case Arcade.get_game(game_id) do
       {:ok, game} -> Arcade.engine_name(game.engine)
       {:error, :not_found} -> nil
-    end
-  end
-
-  @doc "An arcade game's full name: `DOOM: Knee-Deep in the Dead`."
-  @spec game_title(String.t()) :: String.t()
-  def game_title(game_id) do
-    case Arcade.get_game(game_id) do
-      {:ok, game} -> game.name
-      {:error, :not_found} -> game_id
     end
   end
 end

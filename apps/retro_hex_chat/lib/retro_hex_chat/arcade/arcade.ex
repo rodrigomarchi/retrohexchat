@@ -45,6 +45,9 @@ defmodule RetroHexChat.Arcade do
   @spec get_game(String.t()) :: {:ok, Catalog.game()} | {:error, :not_found}
   defdelegate get_game(game_id), to: Catalog
 
+  @spec game_name(String.t()) :: String.t()
+  defdelegate game_name(game_id), to: Catalog
+
   @spec engine_name(atom()) :: String.t()
   defdelegate engine_name(engine), to: Catalog
 

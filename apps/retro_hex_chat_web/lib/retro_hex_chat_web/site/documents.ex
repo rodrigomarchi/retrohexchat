@@ -42,8 +42,6 @@ defmodule RetroHexChatWeb.Site.Documents do
   alias RetroHexChat.Channels.Visibility
   alias RetroHexChat.Games.Catalog, as: Games
   alias RetroHexChatWeb.ChatLive.ChatTitle
-  alias RetroHexChatWeb.Components.UI.ArcadePlayCard
-  alias RetroHexChatWeb.Components.UI.GameResultCard
   alias RetroHexChatWeb.Components.UI.Site.Document
   alias RetroHexChatWeb.PublicPages
   alias RetroHexChatWeb.Site.Address
@@ -323,8 +321,8 @@ defmodule RetroHexChatWeb.Site.Documents do
   # A game's channel says which game it is about in a shared link's preview.
   defp game_named(channel) do
     case {Games.game_for_channel(channel), Arcade.game_for_channel(channel)} do
-      {{:ok, game_id}, _arcade} -> GameResultCard.game_title(game_id)
-      {:error, {:ok, game_id}} -> ArcadePlayCard.game_title(game_id)
+      {{:ok, game_id}, _arcade} -> Games.game_name(game_id)
+      {:error, {:ok, game_id}} -> Arcade.game_name(game_id)
       {:error, :error} -> nil
     end
   end

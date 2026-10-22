@@ -27,8 +27,8 @@ defmodule RetroHexChatWeb.Components.UI.LiveMatch do
   import RetroHexChatWeb.Components.UI.NickFlag
 
   alias RetroHexChat.Accounts.NickLocales
+  alias RetroHexChat.Games.Catalog
   alias RetroHexChatWeb.App.Paths
-  alias RetroHexChatWeb.Components.UI.GameResultCard
   alias RetroHexChatWeb.Icons
 
   attr :match, :map, required: true
@@ -81,7 +81,7 @@ defmodule RetroHexChatWeb.Components.UI.LiveMatch do
     <Icons.icon_watching class="h-4 w-4 shrink-0" />
     <span class="shrink-0">{dpgettext("games", "match", "Watch")}</span>
     <span :if={@show_game} class="shrink-0 font-bold">
-      {GameResultCard.game_title(@match.game_id)}
+      {Catalog.game_name(@match.game_id)}
     </span>
     <span class="truncate"><.match_players players={@match.players} locales={@locales} /></span>
     <span :if={@match.watchers > 0} class="text-muted-foreground shrink-0">

@@ -23,8 +23,8 @@ defmodule RetroHexChatWeb.Components.UI.P2P.SessionBadge do
   import RetroHexChatWeb.Components.UI.Popover
   import RetroHexChatWeb.Components.UI.ToolButton
 
+  alias RetroHexChat.Games.Catalog
   alias RetroHexChatWeb.Components.UI.EntryPopover
-  alias RetroHexChatWeb.Components.UI.GameResultCard
   alias RetroHexChatWeb.Icons
 
   attr :peer, :string, required: true
@@ -249,7 +249,7 @@ defmodule RetroHexChatWeb.Components.UI.P2P.SessionBadge do
   # A game in progress is what the session is doing, so it is what the entry
   # says: "P2P Session · Playing Hex Pong" rather than "Connected".
   defp status_label(:live, %{status: :playing, game_id: game_id}),
-    do: dgettext("p2p", "Playing %{game}", game: GameResultCard.game_title(game_id))
+    do: dgettext("p2p", "Playing %{game}", game: Catalog.game_name(game_id))
 
   defp status_label(status, _game), do: status_label(status)
 

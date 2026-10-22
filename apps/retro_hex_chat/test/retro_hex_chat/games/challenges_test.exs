@@ -51,6 +51,12 @@ defmodule RetroHexChat.Games.ChallengesTest do
       )
   end
 
+  test "a challenge for a game no longer in the catalogue is still announced, by its id" do
+    challenge = %{Challenges.for_week("hex_hockey", @monday) | game_id: "retired_game"}
+
+    assert Challenges.opening(challenge) =~ "retired_game"
+  end
+
   test "each week puts the next variant of the game up, the same all week" do
     this_week = Challenges.for_week("hex_hockey", @monday)
 

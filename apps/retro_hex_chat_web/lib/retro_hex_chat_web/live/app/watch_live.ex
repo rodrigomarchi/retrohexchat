@@ -191,7 +191,7 @@ defmodule RetroHexChatWeb.App.WatchLive do
               <%!-- The game's home: every way to play it, from the computer to
                     a seat in its channel. --%>
               <.link href={Paths.game_page_path(@game_id)} class="underline" data-testid="watch-play">
-                {dgettext("games", "Play %{game} yourself", game: GameResultCard.game_title(@game_id))}
+                {dgettext("games", "Play %{game} yourself", game: Catalog.game_name(@game_id))}
               </.link>
               <.link
                 href={Paths.chat_path(Catalog.channel_name(@game_id))}
@@ -211,7 +211,7 @@ defmodule RetroHexChatWeb.App.WatchLive do
   defp window_title(nil), do: dgettext("games", "Watching a match")
 
   defp window_title(game_id),
-    do: dgettext("games", "Watching %{game}", game: GameResultCard.game_title(game_id))
+    do: dgettext("games", "Watching %{game}", game: Catalog.game_name(game_id))
 
   defp status_label("playing"), do: dpgettext("games", "match", "Live")
   defp status_label("finished"), do: dgettext("games", "Match over")

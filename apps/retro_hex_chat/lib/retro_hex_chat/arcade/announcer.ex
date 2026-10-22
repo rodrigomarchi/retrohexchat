@@ -88,14 +88,7 @@ defmodule RetroHexChat.Arcade.Announcer do
   def line(nickname, game_id) do
     dgettext("arcade", "%{nickname} started the game %{game}",
       nickname: nickname,
-      game: game_name(game_id)
+      game: Catalog.game_name(game_id)
     )
-  end
-
-  defp game_name(game_id) do
-    case Catalog.get_game(game_id) do
-      {:ok, game} -> game.name
-      {:error, :not_found} -> game_id
-    end
   end
 end

@@ -327,6 +327,15 @@ defmodule RetroHexChat.Arcade.Catalog do
     end
   end
 
+  @doc "A game's name, or its id when the catalogue no longer has it."
+  @spec game_name(String.t()) :: String.t()
+  def game_name(id) do
+    case get_game(id) do
+      {:ok, game} -> game.name
+      {:error, :not_found} -> id
+    end
+  end
+
   @spec valid_game_id?(String.t()) :: boolean()
   def valid_game_id?(id), do: Enum.any?(@games, &(&1.id == id))
 

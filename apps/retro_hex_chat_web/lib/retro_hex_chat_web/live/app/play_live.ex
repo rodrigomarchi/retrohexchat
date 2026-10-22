@@ -37,7 +37,6 @@ defmodule RetroHexChatWeb.App.PlayLive do
   alias RetroHexChatWeb.App.Paths
   alias RetroHexChatWeb.App.SessionHelpers
   alias RetroHexChatWeb.Components.UI.Button
-  alias RetroHexChatWeb.Components.UI.GameResultCard
   alias RetroHexChatWeb.Icons
   alias RetroHexChatWeb.Live.OpenSurfaces
   alias RetroHexChatWeb.Live.ShareControl
@@ -116,7 +115,7 @@ defmodule RetroHexChatWeb.App.PlayLive do
                 class="underline"
                 data-testid="play-game-home"
               >
-                {GameResultCard.game_title(Catalog.base_id(@selected_game.id))}
+                {Catalog.game_name(Catalog.base_id(@selected_game.id))}
               </.link>
             </.window_status_bar_field>
             <.window_status_bar_field>

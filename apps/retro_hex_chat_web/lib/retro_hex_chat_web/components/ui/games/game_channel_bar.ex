@@ -26,8 +26,6 @@ defmodule RetroHexChatWeb.Components.UI.GameChannelBar do
   alias RetroHexChat.Arcade
   alias RetroHexChat.Games.Catalog
   alias RetroHexChatWeb.App.Paths
-  alias RetroHexChatWeb.Components.UI.ArcadePlayCard
-  alias RetroHexChatWeb.Components.UI.GameResultCard
   alias RetroHexChatWeb.Icons
 
   attr :channel, :string, default: nil
@@ -88,7 +86,7 @@ defmodule RetroHexChatWeb.Components.UI.GameChannelBar do
       <.surface_link
         :if={@kind == :retro}
         href={Paths.play_path(@game_id)}
-        label={GameResultCard.game_title(@game_id)}
+        label={Catalog.game_name(@game_id)}
         class="shrink-0"
         data-testid="game-channel-play"
       >
@@ -132,8 +130,8 @@ defmodule RetroHexChatWeb.Components.UI.GameChannelBar do
 
   defp game_of(_no_channel), do: {nil, nil}
 
-  defp game_title(:arcade, game_id), do: ArcadePlayCard.game_title(game_id)
-  defp game_title(:retro, game_id), do: GameResultCard.game_title(game_id)
+  defp game_title(:arcade, game_id), do: Arcade.game_name(game_id)
+  defp game_title(:retro, game_id), do: Catalog.game_name(game_id)
 
   defp live_match(matches, game_id) do
     base_id = Catalog.base_id(game_id)

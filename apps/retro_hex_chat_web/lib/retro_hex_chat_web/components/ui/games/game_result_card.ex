@@ -50,7 +50,7 @@ defmodule RetroHexChatWeb.Components.UI.GameResultCard do
           class="underline"
           data-testid="game-result-home"
         >
-          {game_title(@card.game_id)}
+          {Catalog.game_name(@card.game_id)}
         </.link>
       </:title>
       <:badge :if={@card.personal_best}>
@@ -73,7 +73,7 @@ defmodule RetroHexChatWeb.Components.UI.GameResultCard do
       <:actions>
         <.surface_link
           href={Paths.play_path(@card.game_id)}
-          label={game_title(@card.game_id)}
+          label={Catalog.game_name(@card.game_id)}
           data-testid="game-result-play"
         >
           {dpgettext("games", "game", "Play")}
@@ -93,15 +93,6 @@ defmodule RetroHexChatWeb.Components.UI.GameResultCard do
       </:actions>
     </.chat_card>
     """
-  end
-
-  @doc "A game's or a mode's full name: `Hex Tennis: Quick Match`."
-  @spec game_title(String.t()) :: String.t()
-  def game_title(game_id) do
-    case Catalog.get_game(game_id) do
-      {:ok, game} -> game.name
-      {:error, :not_found} -> game_id
-    end
   end
 
   @doc "Both sides and both scores, host first: `ana 11 × 7 beto`."

@@ -12,10 +12,10 @@ defmodule RetroHexChatWeb.ChatLive.UiActions.Games do
 
   import RetroHexChatWeb.ChatLive.Helpers, only: [error_event: 2, system_event: 2]
 
+  alias RetroHexChat.Games.Catalog
   alias RetroHexChat.Games.Seats
   alias RetroHexChatWeb.App.SessionHelpers
   alias RetroHexChatWeb.ChatLive.Helpers.CardDoor
-  alias RetroHexChatWeb.Components.UI.GameResultCard
   alias RetroHexChatWeb.ShareLinkRef
 
   @spec handle_ui_action(Phoenix.LiveView.Socket.t(), atom(), map()) ::
@@ -28,7 +28,7 @@ defmodule RetroHexChatWeb.ChatLive.UiActions.Games do
       line =
         dgettext("games", "%{nickname} is looking for a partner in %{game} — %{url}",
           nickname: nickname,
-          game: GameResultCard.game_title(game_id),
+          game: Catalog.game_name(game_id),
           url: ShareLinkRef.url(link.slug)
         )
 
