@@ -6,7 +6,7 @@
        test.js test.js.changed test.js.related test.js.watch \
        ci ci.full ci.quick ci.changed ci.serial ci.quick.serial ci.partition-profile ci.partition-profile.plan \
        umbrella.boundary-audit \
-       i18n.audit i18n.audit.check i18n.status i18n.catalog.check i18n.catalog.size.check i18n.placeholder.check i18n.source-fallback.check i18n.quality.check i18n.glossary i18n.repair i18n.venv i18n.translate i18n.repair.plurals games.shots spaces.shots seo.snapshot seo.snapshot.all seo.compare seo.console seo.indexnow seo.sitemap.submit seo.test i18n.tooling.test i18n.locales.add i18n.wave1.add i18n.gettext.extract i18n.gettext.merge i18n.gettext.rebuild i18n.gettext.check \
+       i18n.audit i18n.audit.check i18n.status i18n.catalog.check i18n.catalog.size.check i18n.placeholder.check i18n.source-fallback.check i18n.quality.check i18n.glossary i18n.repair i18n.venv i18n.translate i18n.repair.plurals games.shots spaces.shots dup.report dup.test seo.snapshot seo.snapshot.all seo.compare seo.console seo.indexnow seo.sitemap.submit seo.test i18n.tooling.test i18n.locales.add i18n.wave1.add i18n.gettext.extract i18n.gettext.merge i18n.gettext.rebuild i18n.gettext.check \
        lint format format.check credo dialyzer lint.js lint.js.changed lint.js.fix lint.css lint.bundle space.ui space.ui.check space.creator space.creator.check precommit compile \
        assets.setup assets.build assets.deploy \
        clean clean.deps clean.build clean.all \
@@ -322,6 +322,12 @@ seo.sitemap.submit: ## Ask Google to read the sitemap again (needs GOOGLE_SERVIC
 
 seo.test: ## Run the SEO tooling tests (no network)
 	python3 -m unittest discover -s scripts -t scripts -p 'test_seo*.py'
+
+dup.report: ## Measure duplication (ExDNA, jscpd, helper census, plan markers) into reports/duplication/<UTC stamp>.{json,md}, compared with the previous run (BASELINE=path.json)
+	python3 scripts/duplication_report.py $(if $(BASELINE),--baseline $(BASELINE))
+
+dup.test: ## Run the duplication report's tests (no mix, no network)
+	python3 -m unittest discover -s scripts -t scripts -p 'test_duplication*.py'
 
 games.shots: ## Capture a real screenshot of every catalogue game (ONLY=slug,slug; multiplayer needs the e2e server up)
 	mkdir -p tmp
