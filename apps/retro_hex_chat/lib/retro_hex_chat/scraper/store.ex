@@ -24,6 +24,7 @@ defmodule RetroHexChat.Scraper.Store do
   import Ecto.Query
 
   alias Ecto.Adapters.SQL
+  alias RetroHexChat.Jobs.ResultMetadata
   alias RetroHexChat.Net.HTTPRetry
   alias RetroHexChat.Repo
   alias RetroHexChat.Scraper.ScrapedPage
@@ -436,7 +437,7 @@ defmodule RetroHexChat.Scraper.Store do
       image_thumbnail_height: nil,
       image_thumbnail_fetched_at: nil,
       image_thumbnail_attempted_at: now,
-      image_thumbnail_error_reason: error_reason(reason),
+      image_thumbnail_error_reason: ResultMetadata.error_reason(reason),
       image_thumbnail_error_detail: error_detail(reason)
     })
     |> Repo.update()
@@ -459,7 +460,7 @@ defmodule RetroHexChat.Scraper.Store do
       %{
         status: "pending",
         raw_metadata: %{},
-        error_reason: error_reason(reason),
+        error_reason: ResultMetadata.error_reason(reason),
         error_detail: error_detail(reason),
         attempts: attempt,
         last_attempted_at: now,
@@ -481,7 +482,7 @@ defmodule RetroHexChat.Scraper.Store do
       %{
         status: "failed",
         raw_metadata: %{},
-        error_reason: error_reason(reason),
+        error_reason: ResultMetadata.error_reason(reason),
         error_detail: error_detail(reason),
         attempts: attempt,
         last_attempted_at: now,
@@ -509,13 +510,6 @@ defmodule RetroHexChat.Scraper.Store do
   defp failure_ttl_seconds(:bot_challenge), do: @deterministic_error_ttl_seconds
 
   defp failure_ttl_seconds(_reason), do: @transient_error_ttl_seconds
-
-  @spec error_reason(fetch_error()) :: String.t()
-  def error_reason({:http_status, status}) when is_integer(status), do: "http_#{status}"
-  def error_reason({reason, _detail}) when is_atom(reason), do: Atom.to_string(reason)
-  def error_reason(reason) when is_atom(reason), do: Atom.to_string(reason)
-  def error_reason(reason) when is_binary(reason), do: reason
-  def error_reason(_reason), do: "unknown"
 
   @spec retryable_error?(fetch_error()) :: boolean()
   def retryable_error?(reason), do: HTTPRetry.retryable?(reason)

@@ -23,6 +23,7 @@ defmodule RetroHexChat.Jobs.ScrapedImageWorker do
     cap_seconds: 5 * 60,
     step_seconds: 15
 
+  alias RetroHexChat.Jobs.ResultMetadata
   alias RetroHexChat.Net.HTTPRetry
   alias RetroHexChat.Observability
   alias RetroHexChat.Scraper.ImageCache
@@ -76,17 +77,17 @@ defmodule RetroHexChat.Jobs.ScrapedImageWorker do
     if retryable?(reason) and job.attempt < job.max_attempts do
       Logger.warning(
         "scrape_image_retry url_hash=#{page.url_hash} " <>
-          "reason=#{Store.error_reason(reason)} attempt=#{job.attempt}"
+          "reason=#{ResultMetadata.error_reason(reason)} attempt=#{job.attempt}"
       )
 
       {:error, reason}
     else
       Logger.info(
         "scrape_image_stop url_hash=#{page.url_hash} result=failed " <>
-          "reason=#{Store.error_reason(reason)} attempt=#{job.attempt}"
+          "reason=#{ResultMetadata.error_reason(reason)} attempt=#{job.attempt}"
       )
 
-      {:cancel, Store.error_reason(reason)}
+      {:cancel, ResultMetadata.error_reason(reason)}
     end
   end
 
@@ -104,5 +105,5 @@ defmodule RetroHexChat.Jobs.ScrapedImageWorker do
   defp result_metadata({:cancel, reason}), do: %{result: "failed", reason: reason}
 
   defp result_metadata({:error, reason}),
-    do: %{result: "retry", reason: Store.error_reason(reason)}
+    do: %{result: "retry", reason: ResultMetadata.error_reason(reason)}
 end

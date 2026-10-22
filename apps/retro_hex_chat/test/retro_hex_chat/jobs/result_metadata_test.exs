@@ -19,6 +19,14 @@ defmodule RetroHexChat.Jobs.ResultMetadataTest do
       assert "RuntimeError" = ResultMetadata.error_reason(%RuntimeError{})
     end
 
+    test "names an HTTP status by its number, so every worker reports it alike" do
+      assert "http_503" = ResultMetadata.error_reason({:http_status, 503})
+    end
+
+    test "names a tagged reason by its tag" do
+      assert "blocked" = ResultMetadata.error_reason({:blocked, "loopback"})
+    end
+
     test "falls back to a fixed label rather than an inspected term" do
       assert "unknown" = ResultMetadata.error_reason({:tuple, :of, :things})
       assert "unknown" = ResultMetadata.error_reason(42)

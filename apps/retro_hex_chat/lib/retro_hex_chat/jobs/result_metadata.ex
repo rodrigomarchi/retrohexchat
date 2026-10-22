@@ -19,6 +19,8 @@ defmodule RetroHexChat.Jobs.ResultMetadata do
   """
   @spec error_reason(term()) :: String.t()
   def error_reason(%Ecto.Changeset{}), do: "changeset_error"
+  def error_reason({:http_status, status}) when is_integer(status), do: "http_#{status}"
+  def error_reason({reason, _detail}) when is_atom(reason), do: Atom.to_string(reason)
   def error_reason(reason) when is_atom(reason), do: Atom.to_string(reason)
   def error_reason(reason) when is_binary(reason), do: reason
   def error_reason(%module{}), do: module |> Module.split() |> List.last()

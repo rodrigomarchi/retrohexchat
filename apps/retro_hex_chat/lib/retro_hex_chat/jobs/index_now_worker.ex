@@ -109,7 +109,9 @@ defmodule RetroHexChat.Jobs.IndexNowWorker do
     do: {:snooze, @verification_wait_seconds}
 
   defp settle({:error, reason}, _attempt) do
-    if HTTPRetry.retryable?(reason), do: {:error, reason}, else: {:cancel, reason_label(reason)}
+    if HTTPRetry.retryable?(reason),
+      do: {:error, reason},
+      else: {:cancel, ResultMetadata.error_reason(reason)}
   end
 
   @spec source() :: module()
@@ -130,10 +132,5 @@ defmodule RetroHexChat.Jobs.IndexNowWorker do
     do: %{result: "snooze", reason: "verification_pending"}
 
   defp result_metadata({:error, reason}),
-    do: %{result: "error", reason: reason_label(reason)}
-
-  # A status is a label of its own; anything else goes through the shared names.
-  @spec reason_label(term()) :: String.t()
-  defp reason_label({:http_status, status}), do: "http_#{status}"
-  defp reason_label(reason), do: ResultMetadata.error_reason(reason)
+    do: %{result: "error", reason: ResultMetadata.error_reason(reason)}
 end

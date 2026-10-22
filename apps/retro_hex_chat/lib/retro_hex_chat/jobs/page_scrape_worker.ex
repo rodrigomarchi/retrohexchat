@@ -31,6 +31,7 @@ defmodule RetroHexChat.Jobs.PageScrapeWorker do
     cap_seconds: 5 * 60,
     step_seconds: 15
 
+  alias RetroHexChat.Jobs.ResultMetadata
   alias RetroHexChat.Observability
   alias RetroHexChat.Scraper
   alias RetroHexChat.Scraper.Store
@@ -71,7 +72,7 @@ defmodule RetroHexChat.Jobs.PageScrapeWorker do
     if Store.retryable_error?(reason) and job.attempt < job.max_attempts do
       Logger.warning(
         "scrape_retry url_hash=#{job.args["url_hash"]} " <>
-          "reason=#{Store.error_reason(reason)} attempt=#{job.attempt}"
+          "reason=#{ResultMetadata.error_reason(reason)} attempt=#{job.attempt}"
       )
 
       {:error, reason}
@@ -80,7 +81,7 @@ defmodule RetroHexChat.Jobs.PageScrapeWorker do
 
       Logger.info(
         "scrape_stop url_hash=#{job.args["url_hash"]} result=failed " <>
-          "reason=#{Store.error_reason(reason)} attempt=#{job.attempt}"
+          "reason=#{ResultMetadata.error_reason(reason)} attempt=#{job.attempt}"
       )
 
       {:ok, :failed}
@@ -104,5 +105,5 @@ defmodule RetroHexChat.Jobs.PageScrapeWorker do
 
   @spec log_reason(term()) :: String.t()
   defp log_reason(%Ecto.Changeset{}), do: "changeset_error"
-  defp log_reason(reason), do: Store.error_reason(reason)
+  defp log_reason(reason), do: ResultMetadata.error_reason(reason)
 end
