@@ -11,74 +11,74 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<12 || n%100>14) ? 1 : 2);\n"
 
-#: lib/retro_hex_chat/commands/handlers/bot.ex:787
+#: lib/retro_hex_chat/commands/handlers/bot.ex:769
 #, elixir-autogen, elixir-format
 msgid "  %{command_prefix}%{bot_name} %{trigger} — %{cmd_description_cmd_response}%{status}"
 msgstr ""
 "%{command_prefix}%{bot_name} %{trigger} — "
 "%{cmd_description_cmd_response}%{status}"
 
-#: lib/retro_hex_chat/commands/handlers/bot.ex:910
+#: lib/retro_hex_chat/commands/handlers/bot.ex:866
 #, elixir-autogen, elixir-format
 msgid "  %{name} [%{status}] — %{description}"
 msgstr "%{name} [%{status}] — %{description}"
 
-#: lib/retro_hex_chat/commands/handlers/cs.ex:424
+#: lib/retro_hex_chat/commands/handlers/cs.ex:423
 #, elixir-autogen, elixir-format
 msgid "  %{nickname} [%{level}] (added by %{added_by})"
 msgstr "  %{nickname} [%{level}] (добавлено %{added_by})"
 
-#: lib/retro_hex_chat/commands/handlers/cs.ex:420
+#: lib/retro_hex_chat/commands/handlers/cs.ex:419
 #, elixir-autogen, elixir-format
 msgid "  (empty)"
 msgstr "(пустая)"
 
-#: lib/retro_hex_chat/commands/handlers/bot.ex:337
+#: lib/retro_hex_chat/commands/handlers/bot.ex:319
 #, elixir-autogen, elixir-format
 msgid "  Channels: %{channels_count}"
 msgstr "  Каналы: %{channels_count}"
 
-#: lib/retro_hex_chat/commands/handlers/bot.ex:340
+#: lib/retro_hex_chat/commands/handlers/bot.ex:322
 #, elixir-autogen, elixir-format
 msgid "  Commands: %{commands_count}"
 msgstr "  Команды: %{commands_count}"
 
-#: lib/retro_hex_chat/commands/handlers/bot.ex:332
+#: lib/retro_hex_chat/commands/handlers/bot.ex:314
 #, elixir-autogen, elixir-format
 msgid "  Cooldown: %{cooldown_ms}ms"
 msgstr "  Охлаждение: %{cooldown_ms}мс"
 
-#: lib/retro_hex_chat/commands/handlers/bot.ex:336
+#: lib/retro_hex_chat/commands/handlers/bot.ex:318
 #, elixir-autogen, elixir-format
 msgid "  Created by: %{created_by}"
 msgstr "  Создано: %{created_by}"
 
-#: lib/retro_hex_chat/commands/handlers/bot.ex:930
+#: lib/retro_hex_chat/commands/handlers/bot.ex:886
 #, elixir-autogen, elixir-format
 msgid "  Description: %{desc}"
 msgstr "  Описание: %{desc}"
 
-#: lib/retro_hex_chat/commands/handlers/bot.ex:327
+#: lib/retro_hex_chat/commands/handlers/bot.ex:309
 #, elixir-autogen, elixir-format
 msgid "  Nickname: %{nickname}"
 msgstr "  Прозвище: %{nickname}"
 
-#: lib/retro_hex_chat/commands/handlers/bot.ex:329
+#: lib/retro_hex_chat/commands/handlers/bot.ex:311
 #, elixir-autogen, elixir-format
 msgid "  Prefix: %{command_prefix}"
 msgstr "  Приставка: %{command_prefix}"
 
-#: lib/retro_hex_chat/commands/handlers/bot.ex:328
+#: lib/retro_hex_chat/commands/handlers/bot.ex:310
 #, elixir-autogen, elixir-format
 msgid "  Status: %{status}"
 msgstr "  Статус: %{status}"
 
-#: lib/retro_hex_chat/commands/handlers/bot.ex:734
+#: lib/retro_hex_chat/commands/handlers/bot.ex:716
 #, elixir-autogen, elixir-format
 msgid "%{cap_name}.%{field} set to %{display}."
 msgstr "%{cap_name}.%{field} устанавливать %{display}."
 
-#: lib/retro_hex_chat/commands/handlers/bot.ex:921
+#: lib/retro_hex_chat/commands/handlers/bot.ex:877
 #, elixir-autogen, elixir-format
 msgid "%{field}: %{errors}"
 msgstr "%{field}: %{errors}"
@@ -348,44 +348,44 @@ msgstr "/bot list"
 msgid "/bot set GreeterBot greeting Welcome, {nickname}!"
 msgstr "/bot set GreeterBot greeting Welcome, {nickname}!"
 
-#: lib/retro_hex_chat/commands/handlers/cs.ex:138
-#: lib/retro_hex_chat/commands/handlers/cs.ex:443
+#: lib/retro_hex_chat/commands/handlers/cs.ex:137
+#: lib/retro_hex_chat/commands/handlers/cs.ex:442
 #, elixir-autogen, elixir-format
 msgid "/cs <subcommand> [args]"
 msgstr "/cs <subcommand> [args]"
 
-#: lib/retro_hex_chat/commands/handlers/cs.ex:152
-#: lib/retro_hex_chat/commands/handlers/cs.ex:475
+#: lib/retro_hex_chat/commands/handlers/cs.ex:151
+#: lib/retro_hex_chat/commands/handlers/cs.ex:474
 #, elixir-autogen, elixir-format
 msgid "/cs aop del nick"
 msgstr "/cs aop del nick"
 
-#: lib/retro_hex_chat/commands/handlers/cs.ex:146
-#: lib/retro_hex_chat/commands/handlers/cs.ex:469
+#: lib/retro_hex_chat/commands/handlers/cs.ex:145
+#: lib/retro_hex_chat/commands/handlers/cs.ex:468
 #, elixir-autogen, elixir-format
 msgid "/cs drop"
 msgstr "/cs drop"
 
-#: lib/retro_hex_chat/commands/handlers/cs.ex:147
-#: lib/retro_hex_chat/commands/handlers/cs.ex:470
+#: lib/retro_hex_chat/commands/handlers/cs.ex:146
+#: lib/retro_hex_chat/commands/handlers/cs.ex:469
 #, elixir-autogen, elixir-format
 msgid "/cs info"
 msgstr "/cs info"
 
-#: lib/retro_hex_chat/commands/handlers/cs.ex:145
-#: lib/retro_hex_chat/commands/handlers/cs.ex:468
+#: lib/retro_hex_chat/commands/handlers/cs.ex:144
+#: lib/retro_hex_chat/commands/handlers/cs.ex:467
 #, elixir-autogen, elixir-format
 msgid "/cs register"
 msgstr "/cs register"
 
-#: lib/retro_hex_chat/commands/handlers/cs.ex:151
-#: lib/retro_hex_chat/commands/handlers/cs.ex:474
+#: lib/retro_hex_chat/commands/handlers/cs.ex:150
+#: lib/retro_hex_chat/commands/handlers/cs.ex:473
 #, elixir-autogen, elixir-format
 msgid "/cs sop add nick"
 msgstr "/cs sop add nick"
 
-#: lib/retro_hex_chat/commands/handlers/cs.ex:153
-#: lib/retro_hex_chat/commands/handlers/cs.ex:476
+#: lib/retro_hex_chat/commands/handlers/cs.ex:152
+#: lib/retro_hex_chat/commands/handlers/cs.ex:475
 #, elixir-autogen, elixir-format
 msgid "/cs vop list"
 msgstr "/cs vop list"
@@ -678,38 +678,38 @@ msgstr "/notify list"
 msgid "/notify remove Alice"
 msgstr "/notify remove Alice"
 
-#: lib/retro_hex_chat/commands/handlers/ns.ex:105
-#: lib/retro_hex_chat/commands/handlers/ns.ex:335
+#: lib/retro_hex_chat/commands/handlers/ns.ex:107
+#: lib/retro_hex_chat/commands/handlers/ns.ex:330
 #, elixir-autogen, elixir-format
 msgid "/ns <subcommand> [args]"
 msgstr "/ns <subcommand> [args]"
 
-#: lib/retro_hex_chat/commands/handlers/ns.ex:116
-#: lib/retro_hex_chat/commands/handlers/ns.ex:367
+#: lib/retro_hex_chat/commands/handlers/ns.ex:118
+#: lib/retro_hex_chat/commands/handlers/ns.ex:362
 #, elixir-autogen, elixir-format
 msgid "/ns drop mypassword"
 msgstr "/ns drop mypassword"
 
-#: lib/retro_hex_chat/commands/handlers/ns.ex:114
-#: lib/retro_hex_chat/commands/handlers/ns.ex:365
+#: lib/retro_hex_chat/commands/handlers/ns.ex:116
+#: lib/retro_hex_chat/commands/handlers/ns.ex:360
 #, elixir-autogen, elixir-format
 msgid "/ns ghost othernick mypassword"
 msgstr "/ns ghost othernick mypassword"
 
-#: lib/retro_hex_chat/commands/handlers/ns.ex:113
-#: lib/retro_hex_chat/commands/handlers/ns.ex:364
+#: lib/retro_hex_chat/commands/handlers/ns.ex:115
+#: lib/retro_hex_chat/commands/handlers/ns.ex:359
 #, elixir-autogen, elixir-format
 msgid "/ns identify mypassword"
 msgstr "/ns identify mypassword"
 
-#: lib/retro_hex_chat/commands/handlers/ns.ex:115
-#: lib/retro_hex_chat/commands/handlers/ns.ex:366
+#: lib/retro_hex_chat/commands/handlers/ns.ex:117
+#: lib/retro_hex_chat/commands/handlers/ns.ex:361
 #, elixir-autogen, elixir-format
 msgid "/ns info"
 msgstr "/ns info"
 
-#: lib/retro_hex_chat/commands/handlers/ns.ex:112
-#: lib/retro_hex_chat/commands/handlers/ns.ex:363
+#: lib/retro_hex_chat/commands/handlers/ns.ex:114
+#: lib/retro_hex_chat/commands/handlers/ns.ex:358
 #, elixir-autogen, elixir-format
 msgid "/ns register mypassword"
 msgstr "/ns register mypassword"
@@ -726,14 +726,14 @@ msgstr "/op <nickname>"
 msgid "/op alice"
 msgstr "/op alice"
 
-#: lib/retro_hex_chat/commands/handlers/lobby.ex:44
-#: lib/retro_hex_chat/commands/handlers/lobby.ex:65
+#: lib/retro_hex_chat/commands/handlers/lobby.ex:49
+#: lib/retro_hex_chat/commands/handlers/lobby.ex:70
 #, elixir-autogen, elixir-format
 msgid "/p2p <nickname>"
 msgstr "/p2p <nickname>"
 
-#: lib/retro_hex_chat/commands/handlers/lobby.ex:50
-#: lib/retro_hex_chat/commands/handlers/lobby.ex:81
+#: lib/retro_hex_chat/commands/handlers/lobby.ex:55
+#: lib/retro_hex_chat/commands/handlers/lobby.ex:86
 #, elixir-autogen, elixir-format
 msgid "/p2p mario"
 msgstr "/p2p mario"
@@ -834,14 +834,14 @@ msgstr "/setmotd <text>"
 msgid "/setmotd Welcome to RetroHexChat!"
 msgstr "/setmotd Welcome to RetroHexChat!"
 
-#: lib/retro_hex_chat/commands/handlers/set_welcome.ex:45
-#: lib/retro_hex_chat/commands/handlers/set_welcome.ex:70
+#: lib/retro_hex_chat/commands/handlers/set_welcome.ex:35
+#: lib/retro_hex_chat/commands/handlers/set_welcome.ex:56
 #, elixir-autogen, elixir-format
 msgid "/setwelcome <message>"
 msgstr "/setwelcome <message>"
 
-#: lib/retro_hex_chat/commands/handlers/set_welcome.ex:51
-#: lib/retro_hex_chat/commands/handlers/set_welcome.ex:86
+#: lib/retro_hex_chat/commands/handlers/set_welcome.ex:41
+#: lib/retro_hex_chat/commands/handlers/set_welcome.ex:72
 #, elixir-autogen, elixir-format
 msgid "/setwelcome Welcome to our channel!"
 msgstr "/setwelcome Welcome to our channel!"
@@ -1025,7 +1025,7 @@ msgstr "/whowas SomeUser"
 msgid "5:%{seconds}"
 msgstr "5:%{seconds}"
 
-#: lib/retro_hex_chat/commands/handlers/bot.ex:614
+#: lib/retro_hex_chat/commands/handlers/bot.ex:596
 #, elixir-autogen, elixir-format
 msgid "Action must be: warn, mute, or kick."
 msgstr "Действие должно быть: предупреждать, молчать или пинать."
@@ -1065,7 +1065,7 @@ msgstr "продвинутый"
 msgid "Announcement sent to all users."
 msgstr "Объявление рассылается всем пользователям."
 
-#: lib/retro_hex_chat/commands/handlers/ns.ex:380
+#: lib/retro_hex_chat/commands/handlers/ns.ex:375
 #, elixir-autogen, elixir-format
 msgid "Authenticate with your registered password"
 msgstr "Аутентификация с вашим зарегистрированным паролем"
@@ -1199,7 +1199,7 @@ msgstr "Channel to leave (неисправности к текущему)"
 msgid "Channel to request access to"
 msgstr "Канал запросить доступ к"
 
-#: lib/retro_hex_chat/commands/handlers/set_welcome.ex:83
+#: lib/retro_hex_chat/commands/handlers/set_welcome.ex:69
 #, elixir-autogen, elixir-format
 msgid "Channel welcome message"
 msgstr "Добро пожаловать на канал"
@@ -1237,12 +1237,12 @@ msgstr "конфигурация"
 msgid "Configuration: [repeat] <seconds> <command>"
 msgstr "Конфигурация: [повторить] <seconds> <command>"
 
-#: lib/retro_hex_chat/commands/handlers/bot.ex:476
+#: lib/retro_hex_chat/commands/handlers/bot.ex:458
 #, elixir-autogen, elixir-format
 msgid "Cooldown must be a number."
 msgstr "Охлаждение должно быть номером."
 
-#: lib/retro_hex_chat/commands/handlers/bot.ex:469
+#: lib/retro_hex_chat/commands/handlers/bot.ex:451
 #, elixir-autogen, elixir-format
 msgid "Cooldown set to %{ms}ms."
 msgstr "Cooldown готовится к %{ms}Мисс."
@@ -1278,22 +1278,22 @@ msgstr "Создавайте, управляйте и настраивайте �
 msgid "Debug info (connections, processes, memory)"
 msgstr "Отладочная информация (связи, процессы, память)"
 
-#: lib/retro_hex_chat/commands/handlers/ns.ex:390
+#: lib/retro_hex_chat/commands/handlers/ns.ex:385
 #, elixir-autogen, elixir-format
 msgid "Delete your nickname registration"
 msgstr "Удалите свою регистрацию никнейма"
 
-#: lib/retro_hex_chat/commands/handlers/bot.ex:482
+#: lib/retro_hex_chat/commands/handlers/bot.ex:464
 #, elixir-autogen, elixir-format
 msgid "Description updated."
 msgstr "Описание обновлено."
 
-#: lib/retro_hex_chat/commands/handlers/bot.ex:311
+#: lib/retro_hex_chat/commands/handlers/bot.ex:293
 #, elixir-autogen, elixir-format
 msgid "Disabled"
 msgstr "инвалид"
 
-#: lib/retro_hex_chat/commands/handlers/ns.ex:384
+#: lib/retro_hex_chat/commands/handlers/ns.ex:379
 #, elixir-autogen, elixir-format
 msgid "Disconnect a stale session using its password"
 msgstr "Отключите устаревший сеанс с помощью своего пароля"
@@ -1312,7 +1312,7 @@ msgstr ""
 "Отключитесь от сервера и вернитесь на экран подключения. Другие пользователи"
 " видят ваше необязательное сообщение об отказе."
 
-#: lib/retro_hex_chat/commands/handlers/cs.ex:480
+#: lib/retro_hex_chat/commands/handlers/cs.ex:479
 #, elixir-autogen, elixir-format
 msgid "Drop channel registration"
 msgstr "Регистрация канала Drop"
@@ -1337,7 +1337,7 @@ msgstr "Продолжительность: 5м, 1ч, 2д"
 msgid "Edit a user's note"
 msgstr "Редактировать заметку пользователя"
 
-#: lib/retro_hex_chat/commands/handlers/bot.ex:310
+#: lib/retro_hex_chat/commands/handlers/bot.ex:292
 #, elixir-autogen, elixir-format
 msgid "Enabled"
 msgstr "включенный"
@@ -1357,12 +1357,12 @@ msgid "Factory reset — destroy all data except admin infrastructure"
 msgstr ""
 "Сброс фабрики — уничтожение всех данных, кроме инфраструктуры администратора"
 
-#: lib/retro_hex_chat/commands/handlers/bot.ex:560
+#: lib/retro_hex_chat/commands/handlers/bot.ex:542
 #, elixir-autogen, elixir-format
 msgid "Farewell disabled."
 msgstr "Прощай, инвалид."
 
-#: lib/retro_hex_chat/commands/handlers/bot.ex:558
+#: lib/retro_hex_chat/commands/handlers/bot.ex:540
 #, elixir-autogen, elixir-format
 msgid "Farewell set to '%{farewell}'."
 msgstr "Прощание с \"%{farewell}'."
@@ -1406,12 +1406,12 @@ msgstr "Оператор Гранта"
 msgid "Grant voice to speak in +m"
 msgstr "Голос, чтобы говорить в +m"
 
-#: lib/retro_hex_chat/commands/handlers/bot.ex:513
+#: lib/retro_hex_chat/commands/handlers/bot.ex:495
 #, elixir-autogen, elixir-format
 msgid "Greeting disabled."
 msgstr "Приветствую инвалидов."
 
-#: lib/retro_hex_chat/commands/handlers/bot.ex:514
+#: lib/retro_hex_chat/commands/handlers/bot.ex:496
 #, elixir-autogen, elixir-format
 msgid "Greeting set to '%{greeting}'."
 msgstr "Приветствую тебя.%{greeting}'."
@@ -1436,7 +1436,7 @@ msgstr "Недостаточные привилегии для настройк�
 msgid "Invalid channel name. Channel names must start with #"
 msgstr "Недействительное название канала. Каналы должны начинаться с #"
 
-#: lib/retro_hex_chat/commands/handlers/bot.ex:472
+#: lib/retro_hex_chat/commands/handlers/bot.ex:454
 #, elixir-autogen, elixir-format
 msgid "Invalid cooldown value."
 msgstr "Недействительное значение охлаждения."
@@ -1451,7 +1451,7 @@ msgstr "Недействительное положение: %{string_trim_rest}
 msgid "Invalid positions. Must be numbers."
 msgstr "Недействительные позиции. Должно быть, цифры."
 
-#: lib/retro_hex_chat/commands/handlers/bot.ex:459
+#: lib/retro_hex_chat/commands/handlers/bot.ex:441
 #, elixir-autogen, elixir-format
 msgid "Invalid prefix."
 msgstr "Недействительный пристав."
@@ -1524,22 +1524,22 @@ msgstr "MOTD был очищен."
 msgid "MOTD has been updated."
 msgstr "MOTD был обновлен."
 
-#: lib/retro_hex_chat/commands/handlers/cs.ex:500
+#: lib/retro_hex_chat/commands/handlers/cs.ex:499
 #, elixir-autogen, elixir-format
 msgid "Manage auto-operator access list"
 msgstr "Управление списком доступа автооператора"
 
-#: lib/retro_hex_chat/commands/handlers/cs.ex:501
+#: lib/retro_hex_chat/commands/handlers/cs.ex:500
 #, elixir-autogen, elixir-format
 msgid "Manage auto-voice access list"
 msgstr "Управление списком доступа к автоголосу"
 
-#: lib/retro_hex_chat/commands/handlers/cs.ex:445
+#: lib/retro_hex_chat/commands/handlers/cs.ex:444
 #, elixir-autogen, elixir-format
 msgid "Manage channel registration and access lists through ChanServ."
 msgstr "Управление регистрацией каналов и списками доступа через ChanServ."
 
-#: lib/retro_hex_chat/commands/handlers/cs.ex:499
+#: lib/retro_hex_chat/commands/handlers/cs.ex:498
 #, elixir-autogen, elixir-format
 msgid "Manage super-operator access list"
 msgstr "Управление списком доступа супероператоров"
@@ -1558,7 +1558,7 @@ msgstr ""
 "Отметьте себя как временно недоступный, с дополнительным сообщением, показанным в /whois.\n"
 "С посланием: уводит вас в сторону. Без аргументов: очистите свой статус и отметьте себя как спину."
 
-#: lib/retro_hex_chat/commands/handlers/bot.ex:586
+#: lib/retro_hex_chat/commands/handlers/bot.ex:568
 #, elixir-autogen, elixir-format
 msgid "Mention response updated."
 msgstr "Ответ на упоминание обновлен."
@@ -1656,7 +1656,7 @@ msgstr "Прозвище слишком длинное (максимум 16 си
 msgid "No MOTD has been set."
 msgstr "МОТД не установлен."
 
-#: lib/retro_hex_chat/commands/handlers/bot.ex:908
+#: lib/retro_hex_chat/commands/handlers/bot.ex:864
 #, elixir-autogen, elixir-format
 msgid "No description"
 msgstr "Нет описания"
@@ -1682,12 +1682,12 @@ msgstr "Уведомление о содержании"
 msgid "Notices are always routed to the active window."
 msgstr "Уведомления всегда направляются в активное окно."
 
-#: lib/retro_hex_chat/commands/handlers/bot.ex:907
+#: lib/retro_hex_chat/commands/handlers/bot.ex:863
 #, elixir-autogen, elixir-format
 msgid "OFF"
 msgstr "вылет"
 
-#: lib/retro_hex_chat/commands/handlers/bot.ex:907
+#: lib/retro_hex_chat/commands/handlers/bot.ex:863
 #, elixir-autogen, elixir-format
 msgid "ON"
 msgstr "ОН"
@@ -1753,13 +1753,6 @@ msgstr ""
 "Постоянно блокируйте пользователя с канала. Запрет сохраняется до тех пор, пока не будет снят с /mode -Б.\n"
 "Требуется: оператор канала. Должно быть в канале."
 
-#: lib/retro_hex_chat/commands/handlers/clear_welcome.ex:22
-#: lib/retro_hex_chat/commands/handlers/set_welcome.ex:22
-#: lib/retro_hex_chat/commands/handlers/set_welcome.ex:31
-#, elixir-autogen, elixir-format
-msgid "Permission denied: you must be a channel operator."
-msgstr "Разрешение отказано: вы должны быть оператором канала."
-
 #: lib/retro_hex_chat/commands/handlers/announce.ex:18
 #: lib/retro_hex_chat/commands/handlers/clear_motd.ex:16
 #: lib/retro_hex_chat/commands/handlers/set_motd.ex:16
@@ -1772,12 +1765,12 @@ msgstr "Отказано в разрешении: вы должны быть а�
 msgid "Permission denied: you must be a server operator."
 msgstr "Отказано в разрешении: вы должны быть оператором сервера."
 
-#: lib/retro_hex_chat/commands/handlers/bot.ex:456
+#: lib/retro_hex_chat/commands/handlers/bot.ex:438
 #, elixir-autogen, elixir-format
 msgid "Prefix set to '%{value}'."
 msgstr "Префикс установлен на '%{value}'."
 
-#: lib/retro_hex_chat/commands/handlers/bot.ex:321
+#: lib/retro_hex_chat/commands/handlers/bot.ex:303
 #, elixir-autogen, elixir-format
 msgid "Process: Not running"
 msgstr "Процесс: не работает"
@@ -1812,19 +1805,19 @@ msgstr "Недавно отключенный пользователь"
 msgid "Recipient (nickname or channel)"
 msgstr "Получатель (никнейм или канал)"
 
-#: lib/retro_hex_chat/commands/handlers/ns.ex:337
+#: lib/retro_hex_chat/commands/handlers/ns.ex:332
 #, elixir-autogen, elixir-format
 msgid "Register and protect your nickname with a password through NickServ, the nickname services bot."
 msgstr ""
 "Зарегистрируйте и защитите свое прозвище с помощью пароля через бот службы "
 "никсерв."
 
-#: lib/retro_hex_chat/commands/handlers/cs.ex:479
+#: lib/retro_hex_chat/commands/handlers/cs.ex:478
 #, elixir-autogen, elixir-format
 msgid "Register the current channel"
 msgstr "Зарегистрируйте текущий канал"
 
-#: lib/retro_hex_chat/commands/handlers/ns.ex:376
+#: lib/retro_hex_chat/commands/handlers/ns.ex:371
 #, elixir-autogen, elixir-format
 msgid "Register your nickname with a password"
 msgstr "Зарегистрируйте свое прозвище с помощью пароля"
@@ -1906,14 +1899,14 @@ msgstr ""
 "Удалите сообщение сервера, чтобы новые пользователи не видели MOTD. Только "
 "администратор."
 
-#: lib/retro_hex_chat/commands/handlers/clear_welcome.ex:58
+#: lib/retro_hex_chat/commands/handlers/clear_welcome.ex:54
 #, elixir-autogen, elixir-format
 msgid "Remove the welcome message from the current channel so new joiners won't see one."
 msgstr ""
 "Удалите приветственное сообщение с текущего канала, чтобы новые участники не"
 " увидели его."
 
-#: lib/retro_hex_chat/commands/handlers/clear_welcome.ex:38
+#: lib/retro_hex_chat/commands/handlers/clear_welcome.ex:34
 #, elixir-autogen, elixir-format
 msgid "Remove the welcome message from the current channel so new joiners won't see one.\nRequires: channel operator. Must be in a channel."
 msgstr ""
@@ -2043,14 +2036,14 @@ msgstr ""
 msgid "Server info and settings"
 msgstr "Информация о сервере и настройки"
 
-#: lib/retro_hex_chat/commands/handlers/set_welcome.ex:72
+#: lib/retro_hex_chat/commands/handlers/set_welcome.ex:58
 #, elixir-autogen, elixir-format
 msgid "Set a message shown once to each user when they join the current channel."
 msgstr ""
 "Установите сообщение, показанное один раз каждому пользователю при "
 "подключении к текущему каналу."
 
-#: lib/retro_hex_chat/commands/handlers/set_welcome.ex:47
+#: lib/retro_hex_chat/commands/handlers/set_welcome.ex:37
 #, elixir-autogen, elixir-format
 msgid "Set a message shown once to each user when they join the current channel.\nRequires: channel operator. Must be in a channel.\nWith no args: clears the welcome message (same as /clearwelcome)."
 msgstr ""
@@ -2134,12 +2127,12 @@ msgstr ""
 "Общее использование: /perform добавлять /ns идентифицировать mypassword\n"
 "Позиции - это индексные номера на основе 0. Пароли маскируются на дисплее списка."
 
-#: lib/retro_hex_chat/commands/handlers/cs.ex:502
+#: lib/retro_hex_chat/commands/handlers/cs.ex:501
 #, elixir-autogen, elixir-format
 msgid "Show ChanServ help"
 msgstr "Показать ChanServ помочь"
 
-#: lib/retro_hex_chat/commands/handlers/ns.ex:395
+#: lib/retro_hex_chat/commands/handlers/ns.ex:390
 #, elixir-autogen, elixir-format
 msgid "Show NickServ help"
 msgstr "Показать NickServ помочь"
@@ -2197,9 +2190,9 @@ msgstr ""
 #: lib/retro_hex_chat/commands/handlers/alias.ex:110
 #: lib/retro_hex_chat/commands/handlers/auto_respond.ex:179
 #: lib/retro_hex_chat/commands/handlers/autojoin.ex:132
-#: lib/retro_hex_chat/commands/handlers/cs.ex:464
+#: lib/retro_hex_chat/commands/handlers/cs.ex:463
 #: lib/retro_hex_chat/commands/handlers/notify.ex:122
-#: lib/retro_hex_chat/commands/handlers/ns.ex:359
+#: lib/retro_hex_chat/commands/handlers/ns.ex:354
 #: lib/retro_hex_chat/commands/handlers/perform.ex:155
 #, elixir-autogen, elixir-format
 msgid "Subcommand arguments"
@@ -2255,7 +2248,7 @@ msgstr "Целевой канал (недостатки текущего кан�
 msgid "Target nickname (for +o, +v, +b)"
 msgstr "Прозвище цели (для +o, +v, +b)"
 
-#: lib/retro_hex_chat/commands/handlers/lobby.ex:78
+#: lib/retro_hex_chat/commands/handlers/lobby.ex:83
 #, elixir-autogen, elixir-format
 msgid "Target user"
 msgstr "Целевой пользователь"
@@ -2342,7 +2335,7 @@ msgstr ""
 "Неизвестный подкомандный администратор: %{subcmd}Попробуйте: сервер, "
 "пользователь, канал, ns, cs, отладка, журнал, поворот, ядерная бомба"
 
-#: lib/retro_hex_chat/commands/handlers/bot.ex:684
+#: lib/retro_hex_chat/commands/handlers/bot.ex:666
 #, elixir-autogen, elixir-format
 msgid "Unknown setting '%{key}'. Valid: %{settings}"
 msgstr "Неизвестная настройка «%{key}». Допустимые: %{settings}"
@@ -2352,7 +2345,7 @@ msgstr "Неизвестная настройка «%{key}». Допустимы
 msgid "Unknown user mode: %{flag}"
 msgstr "Неизвестный пользовательский режим: %{flag}"
 
-#: lib/retro_hex_chat/commands/handlers/bot.ex:316
+#: lib/retro_hex_chat/commands/handlers/bot.ex:298
 #, elixir-autogen, elixir-format
 msgid "Uptime stats: %{state_stats_messages_handled} msgs handled"
 msgstr "Статистика Uptime: %{state_stats_messages_handled} msgs обработанный"
@@ -2505,22 +2498,22 @@ msgstr "Использование: /notify редактировать <nickname
 msgid "Usage: /notify remove <nickname>"
 msgstr "Использование: /notify удалять <nickname>"
 
-#: lib/retro_hex_chat/commands/handlers/ns.ex:69
+#: lib/retro_hex_chat/commands/handlers/ns.ex:71
 #, elixir-autogen, elixir-format
 msgid "Usage: /ns drop <password>"
 msgstr "Использование: /ns капать <password>"
 
-#: lib/retro_hex_chat/commands/handlers/ns.ex:51
+#: lib/retro_hex_chat/commands/handlers/ns.ex:53
 #, elixir-autogen, elixir-format
 msgid "Usage: /ns ghost <nickname> <password>"
 msgstr "Использование: /ns призрак <nickname> <password>"
 
-#: lib/retro_hex_chat/commands/handlers/ns.ex:39
+#: lib/retro_hex_chat/commands/handlers/ns.ex:41
 #, elixir-autogen, elixir-format
 msgid "Usage: /ns identify <password>"
 msgstr "Использование: /ns определять <password>"
 
-#: lib/retro_hex_chat/commands/handlers/ns.ex:29
+#: lib/retro_hex_chat/commands/handlers/ns.ex:31
 #, elixir-autogen, elixir-format
 msgid "Usage: /ns register <password>"
 msgstr "Использование: /ns регистрировать <password>"
@@ -2530,8 +2523,8 @@ msgstr "Использование: /ns регистрировать <password>"
 msgid "Usage: /op <nickname>"
 msgstr "Использование: /op <nickname>"
 
-#: lib/retro_hex_chat/commands/handlers/lobby.ex:15
-#: lib/retro_hex_chat/commands/handlers/lobby.ex:20
+#: lib/retro_hex_chat/commands/handlers/lobby.ex:16
+#: lib/retro_hex_chat/commands/handlers/lobby.ex:21
 #, elixir-autogen, elixir-format
 msgid "Usage: /p2p <nickname>"
 msgstr "Использование: /p2p <nickname>"
@@ -2710,7 +2703,7 @@ msgstr "Пользователь Unmute"
 msgid "View audit log"
 msgstr "Посмотреть журнал аудита"
 
-#: lib/retro_hex_chat/commands/handlers/cs.ex:481
+#: lib/retro_hex_chat/commands/handlers/cs.ex:480
 #, elixir-autogen, elixir-format
 msgid "View channel registration info"
 msgstr "Посмотреть информацию о регистрации канала"
@@ -2739,7 +2732,7 @@ msgstr ""
 "No args: показывает актуальную тему. С текстом: задает новую тему.\n"
 "Должно быть в канале. Если канал имеет режим +t, изменить тему могут только операторы."
 
-#: lib/retro_hex_chat/commands/handlers/ns.ex:388
+#: lib/retro_hex_chat/commands/handlers/ns.ex:383
 #, elixir-autogen, elixir-format
 msgid "View registration info for a nickname"
 msgstr "Посмотреть регистрационную информацию для никнейма"
@@ -2775,14 +2768,14 @@ msgid "You are already using that nickname"
 msgstr "Вы уже используете это прозвище."
 
 #: lib/retro_hex_chat/commands/handler/guards.ex:23
-#: lib/retro_hex_chat/commands/handlers/event.ex:49
+#: lib/retro_hex_chat/commands/handlers/event.ex:50
 #: lib/retro_hex_chat/commands/handlers/me.ex:20
 #: lib/retro_hex_chat/commands/handlers/part.ex:16
 #: lib/retro_hex_chat/commands/handlers/part.ex:33
-#: lib/retro_hex_chat/commands/handlers/pin.ex:24
+#: lib/retro_hex_chat/commands/handlers/pin.ex:25
 #: lib/retro_hex_chat/commands/handlers/topic.ex:16
 #: lib/retro_hex_chat/commands/handlers/topic.ex:24
-#: lib/retro_hex_chat/commands/handlers/unpin.ex:25
+#: lib/retro_hex_chat/commands/handlers/unpin.ex:26
 #, elixir-autogen, elixir-format
 msgid "You are not in any channel"
 msgstr "Вас нет ни в одном канале."
@@ -2813,192 +2806,173 @@ msgid "You must be a channel operator to unban users"
 msgstr "Вы должны быть оператором канала для запрета пользователей."
 
 #: lib/retro_hex_chat/commands/handler/guards.ex:37
-#: lib/retro_hex_chat/commands/policy.ex:34
 #, elixir-autogen, elixir-format
 msgid "You must be a channel operator to use this command"
 msgstr "Вы должны быть оператором канала, чтобы использовать эту команду."
 
 #: lib/retro_hex_chat/commands/handlers/admin.ex:27
-#: lib/retro_hex_chat/commands/policy.ex:39
 #, elixir-autogen, elixir-format
 msgid "You must be a server administrator to use this command"
 msgstr ""
 "Вы должны быть администратором сервера, чтобы использовать эту команду."
 
-#: lib/retro_hex_chat/commands/handler/guards.ex:55
+#: lib/retro_hex_chat/commands/handler/guards.ex:82
 #, elixir-autogen, elixir-format
 msgid "You must be at least a half-operator to use this command"
 msgstr ""
 "Вы должны быть хотя бы полуоператором, чтобы использовать эту команду."
 
-#: lib/retro_hex_chat/commands/handlers/lobby.ex:88
+#: lib/retro_hex_chat/commands/handlers/lobby.ex:27
 #, elixir-autogen, elixir-format
 msgid "You must be identified to use /p2p."
 msgstr "Вы должны быть идентифицированы для использования /p2p."
 
-#: lib/retro_hex_chat/commands/policy.ex:27
+#: lib/retro_hex_chat/commands/handler/guards.ex:65
 #, elixir-autogen, elixir-format
 msgid "You must be identified with NickServ to use this command"
 msgstr ""
 "Вы должны быть идентифицированы с NickServ, чтобы использовать эту команду."
 
-#: lib/retro_hex_chat/commands/policy.ex:18
-#, elixir-autogen, elixir-format
-msgid "You must be in a channel to use this command"
-msgstr "Вы должны быть в канале, чтобы использовать эту команду."
-
-#: lib/retro_hex_chat/commands/handlers/clear_welcome.ex:15
-#: lib/retro_hex_chat/commands/handlers/set_welcome.ex:15
-#, elixir-autogen, elixir-format
-msgid "You must be in a channel to use this command."
-msgstr "Вы должны быть в канале, чтобы использовать эту команду."
-
-#: lib/retro_hex_chat/commands/handlers/transfer.ex:72
-#: lib/retro_hex_chat/commands/policy.ex:48
+#: lib/retro_hex_chat/commands/handler/guards.ex:51
 #, elixir-autogen, elixir-format
 msgid "You must be the channel owner to use this command"
 msgstr "Вы должны быть владельцем канала, чтобы использовать эту команду."
 
-#: lib/retro_hex_chat/commands/handlers/bot.ex:443
-#: lib/retro_hex_chat/commands/handlers/bot.ex:446
+#: lib/retro_hex_chat/commands/handlers/bot.ex:425
+#: lib/retro_hex_chat/commands/handlers/bot.ex:428
 #, elixir-autogen, elixir-format
 msgid "[BotService] %{message}"
 msgstr "[Бот-Сервис] %{message}"
 
-#: lib/retro_hex_chat/commands/handlers/bot.ex:772
+#: lib/retro_hex_chat/commands/handlers/bot.ex:754
 #, elixir-autogen, elixir-format
 msgid "[BotService] %{name} has no custom commands."
 msgstr "[Бот-Сервис] %{name} У него нет пользовательских команд."
 
-#: lib/retro_hex_chat/commands/handlers/bot.ex:425
+#: lib/retro_hex_chat/commands/handlers/bot.ex:407
 #, elixir-autogen, elixir-format
 msgid "[BotService] Bot '%{name}' %{action}."
 msgstr "[Служба Бота]%{name}' %{action}."
 
-#: lib/retro_hex_chat/commands/handlers/bot.ex:236
-#, elixir-autogen, elixir-format
-msgid "[BotService] Bot '%{name}' created successfully."
-msgstr "[Служба Бота]%{name}Создан успешно."
-
-#: lib/retro_hex_chat/commands/handlers/bot.ex:294
+#: lib/retro_hex_chat/commands/handlers/bot.ex:276
 #, elixir-autogen, elixir-format
 msgid "[BotService] Bot '%{name}' destroyed."
 msgstr "[Служба Бота]%{name}Уничтожен."
 
-#: lib/retro_hex_chat/commands/handlers/bot.ex:380
+#: lib/retro_hex_chat/commands/handlers/bot.ex:362
 #, elixir-autogen, elixir-format
 msgid "[BotService] Bot '%{name}' is already in %{channel}."
 msgstr "[Служба Бота]%{name}«Уже в...» %{channel}."
 
-#: lib/retro_hex_chat/commands/handlers/bot.ex:372
+#: lib/retro_hex_chat/commands/handlers/bot.ex:354
 #, elixir-autogen, elixir-format
 msgid "[BotService] Bot '%{name}' joined %{channel}."
 msgstr "[Служба Бота]%{name}присоединяется %{channel}."
 
-#: lib/retro_hex_chat/commands/handlers/bot.ex:402
+#: lib/retro_hex_chat/commands/handlers/bot.ex:384
 #, elixir-autogen, elixir-format
 msgid "[BotService] Bot '%{name}' left %{channel}."
 msgstr "[Служба Бота]%{name}слева %{channel}."
 
 #: lib/retro_hex_chat/commands/handlers/bot.ex:115
-#: lib/retro_hex_chat/commands/handlers/bot.ex:253
-#: lib/retro_hex_chat/commands/handlers/bot.ex:288
-#: lib/retro_hex_chat/commands/handlers/bot.ex:302
-#: lib/retro_hex_chat/commands/handlers/bot.ex:357
-#: lib/retro_hex_chat/commands/handlers/bot.ex:393
-#: lib/retro_hex_chat/commands/handlers/bot.ex:414
-#: lib/retro_hex_chat/commands/handlers/bot.ex:437
-#: lib/retro_hex_chat/commands/handlers/bot.ex:760
-#: lib/retro_hex_chat/commands/handlers/bot.ex:802
-#: lib/retro_hex_chat/commands/handlers/bot.ex:836
+#: lib/retro_hex_chat/commands/handlers/bot.ex:235
+#: lib/retro_hex_chat/commands/handlers/bot.ex:270
+#: lib/retro_hex_chat/commands/handlers/bot.ex:284
+#: lib/retro_hex_chat/commands/handlers/bot.ex:339
+#: lib/retro_hex_chat/commands/handlers/bot.ex:375
+#: lib/retro_hex_chat/commands/handlers/bot.ex:396
+#: lib/retro_hex_chat/commands/handlers/bot.ex:419
+#: lib/retro_hex_chat/commands/handlers/bot.ex:742
+#: lib/retro_hex_chat/commands/handlers/bot.ex:784
+#: lib/retro_hex_chat/commands/handlers/bot.ex:818
 #, elixir-autogen, elixir-format
 msgid "[BotService] Bot '%{name}' not found."
 msgstr "[Служба Бота]%{name}Не найдено."
 
-#: lib/retro_hex_chat/commands/handlers/bot.ex:326
+#: lib/retro_hex_chat/commands/handlers/bot.ex:308
 #, elixir-autogen, elixir-format
 msgid "[BotService] Bot Info: %{name}"
 msgstr "[BotService] Информация о боте: %{name}"
 
-#: lib/retro_hex_chat/commands/handlers/bot.ex:900
+#: lib/retro_hex_chat/commands/handlers/bot.ex:856
 #, elixir-autogen, elixir-format
 msgid "[BotService] Bots:"
 msgstr "[Бот-Сервис] Боты:"
 
-#: lib/retro_hex_chat/commands/handlers/bot.ex:845
+#: lib/retro_hex_chat/commands/handlers/bot.ex:827
 #, elixir-autogen, elixir-format
 msgid "[BotService] Command '%{trigger}' removed from %{name}."
 msgstr "[Бот-Сервис] Командование%{trigger}\"удаленный из %{name}."
 
-#: lib/retro_hex_chat/commands/handlers/bot.ex:814
+#: lib/retro_hex_chat/commands/handlers/bot.ex:796
 #, elixir-autogen, elixir-format
 msgid "[BotService] Command '%{trigger}' set for %{name}."
 msgstr "[Бот-Сервис] Командование%{trigger}установленный для %{name}."
 
-#: lib/retro_hex_chat/commands/handlers/bot.ex:778
+#: lib/retro_hex_chat/commands/handlers/bot.ex:760
 #, elixir-autogen, elixir-format
 msgid "[BotService] Commands for %{bot_name}:"
 msgstr "Командование для %{bot_name}:"
 
-#: lib/retro_hex_chat/commands/handlers/bot.ex:824
+#: lib/retro_hex_chat/commands/handlers/bot.ex:806
 #, elixir-autogen, elixir-format
 msgid "[BotService] Failed to add command '%{trigger}': %{message}"
 msgstr "[BotService] Не удалось добавить команду%{trigger}': %{message}"
 
-#: lib/retro_hex_chat/commands/handlers/bot.ex:243
+#: lib/retro_hex_chat/commands/handlers/bot.ex:225
 #, elixir-autogen, elixir-format
 msgid "[BotService] Failed to create bot: %{message}"
 msgstr "[Бот-Сервис] Не удалось создать бота: %{message}"
 
-#: lib/retro_hex_chat/commands/handlers/bot.ex:896
+#: lib/retro_hex_chat/commands/handlers/bot.ex:852
 #, elixir-autogen, elixir-format
 msgid "[BotService] No bots configured."
 msgstr "[Бот-Сервис] Никаких ботов."
 
-#: lib/retro_hex_chat/commands/handlers/cs.ex:41
-#: lib/retro_hex_chat/commands/handlers/cs.ex:166
-#: lib/retro_hex_chat/commands/handlers/cs.ex:169
-#: lib/retro_hex_chat/commands/handlers/cs.ex:177
-#: lib/retro_hex_chat/commands/handlers/cs.ex:180
-#: lib/retro_hex_chat/commands/handlers/cs.ex:199
-#: lib/retro_hex_chat/commands/handlers/cs.ex:209
-#: lib/retro_hex_chat/commands/handlers/cs.ex:260
-#: lib/retro_hex_chat/commands/handlers/cs.ex:269
-#: lib/retro_hex_chat/commands/handlers/cs.ex:331
-#: lib/retro_hex_chat/commands/handlers/cs.ex:347
-#: lib/retro_hex_chat/commands/handlers/cs.ex:387
-#: lib/retro_hex_chat/commands/handlers/cs.ex:390
-#: lib/retro_hex_chat/commands/handlers/cs.ex:400
+#: lib/retro_hex_chat/commands/handlers/cs.ex:40
+#: lib/retro_hex_chat/commands/handlers/cs.ex:165
+#: lib/retro_hex_chat/commands/handlers/cs.ex:168
+#: lib/retro_hex_chat/commands/handlers/cs.ex:176
+#: lib/retro_hex_chat/commands/handlers/cs.ex:179
+#: lib/retro_hex_chat/commands/handlers/cs.ex:198
+#: lib/retro_hex_chat/commands/handlers/cs.ex:208
+#: lib/retro_hex_chat/commands/handlers/cs.ex:259
+#: lib/retro_hex_chat/commands/handlers/cs.ex:268
+#: lib/retro_hex_chat/commands/handlers/cs.ex:330
+#: lib/retro_hex_chat/commands/handlers/cs.ex:346
+#: lib/retro_hex_chat/commands/handlers/cs.ex:386
+#: lib/retro_hex_chat/commands/handlers/cs.ex:389
+#: lib/retro_hex_chat/commands/handlers/cs.ex:399
 #, elixir-autogen, elixir-format
 msgid "[ChanServ] %{message}"
 msgstr "[ЧанСерв] %{message}"
 
-#: lib/retro_hex_chat/commands/handlers/cs.ex:188
+#: lib/retro_hex_chat/commands/handlers/cs.ex:187
 #, elixir-autogen, elixir-format
 msgid "[ChanServ] %{name}: founder=%{founder}, registered=%{registered_at}"
 msgstr ""
 "[ЧанСерв] %{name}Основатель =%{founder}зарегистрированный =%{registered_at}"
 
-#: lib/retro_hex_chat/commands/handlers/cs.ex:411
+#: lib/retro_hex_chat/commands/handlers/cs.ex:410
 #, elixir-autogen, elixir-format
 msgid "[ChanServ] Access list for %{channel} (%{level})"
 msgstr "[ЧанСерв] Список доступа для %{channel} (%{level})"
 
-#: lib/retro_hex_chat/commands/handlers/ns.ex:131
-#: lib/retro_hex_chat/commands/handlers/ns.ex:134
-#: lib/retro_hex_chat/commands/handlers/ns.ex:142
-#: lib/retro_hex_chat/commands/handlers/ns.ex:145
-#: lib/retro_hex_chat/commands/handlers/ns.ex:156
-#: lib/retro_hex_chat/commands/handlers/ns.ex:159
-#: lib/retro_hex_chat/commands/handlers/ns.ex:178
-#: lib/retro_hex_chat/commands/handlers/ns.ex:185
-#: lib/retro_hex_chat/commands/handlers/ns.ex:188
-#: lib/retro_hex_chat/commands/handlers/ns.ex:283
+#: lib/retro_hex_chat/commands/handlers/ns.ex:133
+#: lib/retro_hex_chat/commands/handlers/ns.ex:136
+#: lib/retro_hex_chat/commands/handlers/ns.ex:144
+#: lib/retro_hex_chat/commands/handlers/ns.ex:147
+#: lib/retro_hex_chat/commands/handlers/ns.ex:158
+#: lib/retro_hex_chat/commands/handlers/ns.ex:161
+#: lib/retro_hex_chat/commands/handlers/ns.ex:180
+#: lib/retro_hex_chat/commands/handlers/ns.ex:187
+#: lib/retro_hex_chat/commands/handlers/ns.ex:190
+#: lib/retro_hex_chat/commands/handlers/ns.ex:287
 #, elixir-autogen, elixir-format
 msgid "[NickServ] %{message}"
 msgstr "[НикСерв] %{message}"
 
-#: lib/retro_hex_chat/commands/handlers/ns.ex:167
+#: lib/retro_hex_chat/commands/handlers/ns.ex:169
 #, elixir-autogen, elixir-format
 msgid "[NickServ] %{nickname}: registered %{registered_at}, identified: %{identified}"
 msgstr ""
@@ -3022,14 +2996,14 @@ msgstr "Настройка, команды, Addcmd, delcmd, помощь."
 msgid "User '%{nickname}' is offline."
 msgstr "Пользователь '%{nickname}' не в сети."
 
-#: lib/retro_hex_chat/commands/handlers/lobby.ex:67
+#: lib/retro_hex_chat/commands/handlers/lobby.ex:72
 #, elixir-autogen, elixir-format
 msgid "Open a P2P session that hosts calls, file transfers, and games together over one connection.\nRequires: both users must be registered and identified (/ns identify)."
 msgstr ""
 "Откройте P2P-сессию, которая размещает вызовы, передачу файлов и игры вместе через одно соединение.\n"
 "Требования: оба пользователя должны быть зарегистрированы и идентифицированы (/ns идентификация)."
 
-#: lib/retro_hex_chat/commands/handlers/lobby.ex:46
+#: lib/retro_hex_chat/commands/handlers/lobby.ex:51
 #, elixir-autogen, elixir-format
 msgid "Open a P2P session with another user: one persistent connection that runs an audio/video call, file transfers, and games all at the same time.\nRequires: both users must be registered and identified (/ns identify)."
 msgstr ""
@@ -3041,86 +3015,86 @@ msgstr ""
 msgid "You cannot start a P2P session with yourself."
 msgstr "Вы не можете начать P2P-сессию самостоятельно."
 
-#: lib/retro_hex_chat/commands/handlers/ns.ex:296
+#: lib/retro_hex_chat/commands/handlers/ns.ex:291
 #, elixir-autogen, elixir-format
 msgid "#%{id} %{label} | %{browser} / %{os} | active %{sessions} | last %{last_seen}"
 msgstr ""
 "#%{id} %{label} | %{browser} / %{os} | активные сеансы %{sessions} | "
 "последний %{last_seen}"
 
-#: lib/retro_hex_chat/commands/handlers/ns.ex:309
+#: lib/retro_hex_chat/commands/handlers/ns.ex:304
 #, elixir-autogen, elixir-format
 msgid "#%{id} %{label} | %{browser} / %{os} | last %{last_seen}"
 msgstr "#%{id} %{label} | %{browser} / %{os} | последний %{last_seen}"
 
-#: lib/retro_hex_chat/commands/handlers/ns.ex:252
+#: lib/retro_hex_chat/commands/handlers/ns.ex:254
 #, elixir-autogen, elixir-format
 msgid "%{count} active sessions ended."
 msgstr "Активные сеансы %{count} закончились."
 
-#: lib/retro_hex_chat/commands/handlers/ns.ex:117
-#: lib/retro_hex_chat/commands/handlers/ns.ex:368
+#: lib/retro_hex_chat/commands/handlers/ns.ex:119
+#: lib/retro_hex_chat/commands/handlers/ns.ex:363
 #, elixir-autogen, elixir-format
 msgid "/ns devices"
 msgstr "/ns devices"
 
-#: lib/retro_hex_chat/commands/handlers/ns.ex:120
-#: lib/retro_hex_chat/commands/handlers/ns.ex:371
+#: lib/retro_hex_chat/commands/handlers/ns.ex:122
+#: lib/retro_hex_chat/commands/handlers/ns.ex:366
 #, elixir-autogen, elixir-format
 msgid "/ns kill-session 44"
 msgstr "/ns kill-session 44"
 
-#: lib/retro_hex_chat/commands/handlers/ns.ex:119
-#: lib/retro_hex_chat/commands/handlers/ns.ex:370
+#: lib/retro_hex_chat/commands/handlers/ns.ex:121
+#: lib/retro_hex_chat/commands/handlers/ns.ex:365
 #, elixir-autogen, elixir-format
 msgid "/ns revoke-device 12"
 msgstr "/ns revoke-device 12"
 
-#: lib/retro_hex_chat/commands/handlers/ns.ex:118
-#: lib/retro_hex_chat/commands/handlers/ns.ex:369
+#: lib/retro_hex_chat/commands/handlers/ns.ex:120
+#: lib/retro_hex_chat/commands/handlers/ns.ex:364
 #, elixir-autogen, elixir-format
 msgid "/ns sessions"
 msgstr "/ns sessions"
 
-#: lib/retro_hex_chat/commands/handlers/ns.ex:218
+#: lib/retro_hex_chat/commands/handlers/ns.ex:220
 #, elixir-autogen, elixir-format
 msgid "Active sessions:\n%{lines}"
 msgstr ""
 "Активные сеансы:\n"
 "%{lines}"
 
-#: lib/retro_hex_chat/commands/handlers/ns.ex:226
+#: lib/retro_hex_chat/commands/handlers/ns.ex:228
 #, elixir-autogen, elixir-format
 msgid "All trusted terminals revoked. %{count} active sessions ended."
 msgstr ""
 "Все доверенные терминалы отменены. Активные сеансы %{count} закончились."
 
-#: lib/retro_hex_chat/commands/handlers/ns.ex:394
+#: lib/retro_hex_chat/commands/handlers/ns.ex:389
 #, elixir-autogen, elixir-format
 msgid "End an active session"
 msgstr "Завершение активной сессии"
 
-#: lib/retro_hex_chat/commands/handlers/ns.ex:392
+#: lib/retro_hex_chat/commands/handlers/ns.ex:387
 #, elixir-autogen, elixir-format
 msgid "List active sessions"
 msgstr "Список активных сеансов"
 
-#: lib/retro_hex_chat/commands/handlers/ns.ex:391
+#: lib/retro_hex_chat/commands/handlers/ns.ex:386
 #, elixir-autogen, elixir-format
 msgid "List trusted terminals"
 msgstr "Список доверенных терминалов"
 
-#: lib/retro_hex_chat/commands/handlers/ns.ex:210
+#: lib/retro_hex_chat/commands/handlers/ns.ex:212
 #, elixir-autogen, elixir-format
 msgid "No active sessions for this nickname."
 msgstr "Никаких активных сеансов для этого прозвища."
 
-#: lib/retro_hex_chat/commands/handlers/ns.ex:195
+#: lib/retro_hex_chat/commands/handlers/ns.ex:197
 #, elixir-autogen, elixir-format
 msgid "No trusted terminals for this nickname."
 msgstr "Нет надежных терминалов для этого прозвища."
 
-#: lib/retro_hex_chat/commands/handlers/ns.ex:107
+#: lib/retro_hex_chat/commands/handlers/ns.ex:109
 #, elixir-autogen, elixir-format
 msgid "Register and protect your nickname with a password through NickServ.\nSubcommands: register <password>, identify <password>, ghost <nick> <password>, info [nick], drop <password>, devices, sessions, revoke-device <id|all>, kill-session <id|all>, help.\nRegister: claims current nickname. Identify: authenticates each session.\nGhost: disconnects a stale session using the registered nickname's password."
 msgstr ""
@@ -3129,48 +3103,48 @@ msgstr ""
 "Регистр: утверждает текущее прозвище. Идентификация: аутентифицирует каждый сеанс.\n"
 "Ghost: отключает устаревший сеанс, используя пароль зарегистрированного никнейма."
 
-#: lib/retro_hex_chat/commands/handlers/ns.ex:393
+#: lib/retro_hex_chat/commands/handlers/ns.ex:388
 #, elixir-autogen, elixir-format
 msgid "Revoke a trusted terminal"
 msgstr "Отзыв доверенного терминала"
 
-#: lib/retro_hex_chat/commands/handlers/ns.ex:258
+#: lib/retro_hex_chat/commands/handlers/ns.ex:260
 #, elixir-autogen, elixir-format
 msgid "Session %{id} ended."
 msgstr "Сессия %{id} завершилась."
 
-#: lib/retro_hex_chat/commands/handlers/ns.ex:349
+#: lib/retro_hex_chat/commands/handlers/ns.ex:344
 #, elixir-autogen, elixir-format
 msgid "Subcommand: register, identify, ghost, info, drop, devices, sessions, revoke-device, kill-session"
 msgstr ""
 "Подкомиссия: регистрация, идентификация, призрак, информация, падение, "
 "устройства, сеансы, устройство отзыва, сеанс убийства"
 
-#: lib/retro_hex_chat/commands/handlers/ns.ex:237
+#: lib/retro_hex_chat/commands/handlers/ns.ex:239
 #, elixir-autogen, elixir-format
 msgid "Trusted terminal %{id} revoked."
 msgstr "Доверенный терминал %{id} отменен."
 
-#: lib/retro_hex_chat/commands/handlers/ns.ex:203
+#: lib/retro_hex_chat/commands/handlers/ns.ex:205
 #, elixir-autogen, elixir-format
 msgid "Trusted terminals:\n%{lines}"
 msgstr ""
 "Доверенные терминалы:\n"
 "%{lines}"
 
-#: lib/retro_hex_chat/commands/handlers/ns.ex:302
-#: lib/retro_hex_chat/commands/handlers/ns.ex:315
+#: lib/retro_hex_chat/commands/handlers/ns.ex:297
+#: lib/retro_hex_chat/commands/handlers/ns.ex:310
 #, elixir-autogen, elixir-format
 msgid "Unknown OS"
 msgstr "Неизвестная ОС"
 
-#: lib/retro_hex_chat/commands/handlers/ns.ex:301
-#: lib/retro_hex_chat/commands/handlers/ns.ex:314
+#: lib/retro_hex_chat/commands/handlers/ns.ex:296
+#: lib/retro_hex_chat/commands/handlers/ns.ex:309
 #, elixir-autogen, elixir-format
 msgid "Unknown browser"
 msgstr "Неизвестный браузер"
 
-#: lib/retro_hex_chat/commands/handlers/ns.ex:19
+#: lib/retro_hex_chat/commands/handlers/ns.ex:21
 #, elixir-autogen, elixir-format
 msgid "Usage: /ns <register|identify|ghost|info|drop|devices|sessions|revoke-device|kill-session|help> [args]"
 msgstr ""
@@ -3178,24 +3152,24 @@ msgstr ""
 "<register|identify|ghost|info|drop|devices|sessions|revoke-device|kill-"
 "session|help> [args]"
 
-#: lib/retro_hex_chat/commands/handlers/ns.ex:271
+#: lib/retro_hex_chat/commands/handlers/ns.ex:273
 #, elixir-autogen, elixir-format
 msgid "Usage: /ns kill-session <id|all>"
 msgstr "Использование: /ns kill-session <id|all>"
 
-#: lib/retro_hex_chat/commands/handlers/ns.ex:270
+#: lib/retro_hex_chat/commands/handlers/ns.ex:272
 #, elixir-autogen, elixir-format
 msgid "Usage: /ns revoke-device <id|all>"
 msgstr "Использование: /ns отозванное устройство <id|all>"
 
-#: lib/retro_hex_chat/commands/handlers/ns.ex:277
+#: lib/retro_hex_chat/commands/handlers/ns.ex:278
 #, elixir-autogen, elixir-format
 msgid "You must be identified to manage trusted terminals."
 msgstr ""
 "Вы должны быть идентифицированы для управления доверенными терминалами."
 
-#: lib/retro_hex_chat/commands/handlers/bot.ex:278
-#: lib/retro_hex_chat/commands/handlers/ns.ex:320
+#: lib/retro_hex_chat/commands/handlers/bot.ex:260
+#: lib/retro_hex_chat/commands/handlers/ns.ex:315
 #, elixir-autogen, elixir-format
 msgid "never"
 msgstr "никогда"
@@ -3205,17 +3179,17 @@ msgstr "никогда"
 msgid "unknown"
 msgstr "неизвестный"
 
-#: lib/retro_hex_chat/commands/handlers/bot.ex:274
+#: lib/retro_hex_chat/commands/handlers/bot.ex:256
 #, elixir-autogen, elixir-format
 msgid "  %{id} | %{channel} | %{url} | last checked: %{when}"
 msgstr "  %{id} | %{channel} | %{url} | последняя проверка: %{when}"
 
-#: lib/retro_hex_chat/commands/handlers/bot.ex:268
+#: lib/retro_hex_chat/commands/handlers/bot.ex:250
 #, elixir-autogen, elixir-format
 msgid "[BotService] %{name} carries no feeds."
 msgstr "%{name} не несет фиды."
 
-#: lib/retro_hex_chat/commands/handlers/bot.ex:261
+#: lib/retro_hex_chat/commands/handlers/bot.ex:243
 #, elixir-autogen, elixir-format
 msgid "[BotService] %{reason}"
 msgstr "[BotService] %{reason}"
@@ -3230,172 +3204,172 @@ msgstr "[BotService] Фид '%{id}' удален из %{name}."
 msgid "[BotService] Feed added to %{name}: %{url} → %{channel}"
 msgstr "[BotService] Лента добавлена в %{name}: %{url} → %{channel}"
 
-#: lib/retro_hex_chat/commands/handlers/bot.ex:282
+#: lib/retro_hex_chat/commands/handlers/bot.ex:264
 #, elixir-autogen, elixir-format
 msgid "[BotService] Feeds for %{name}:"
 msgstr "[BotService] Фиды для %{name}:"
 
-#: lib/retro_hex_chat/commands/handlers/bot.ex:709
+#: lib/retro_hex_chat/commands/handlers/bot.ex:691
 #, elixir-autogen, elixir-format
 msgid "%{field} must be one of: %{modes}."
 msgstr "%{field} должно быть одним из: %{modes}."
 
-#: lib/retro_hex_chat/commands/handlers/bot.ex:542
+#: lib/retro_hex_chat/commands/handlers/bot.ex:524
 #, elixir-autogen, elixir-format
 msgid "Onboarding line %{key} cleared."
 msgstr "Вводная строка %{key} очищена."
 
-#: lib/retro_hex_chat/commands/handlers/bot.ex:546
+#: lib/retro_hex_chat/commands/handlers/bot.ex:528
 #, elixir-autogen, elixir-format
 msgid "Onboarding line %{key} set to '%{line}'."
 msgstr "Вводная строка %{key} задана как '%{line}'."
 
-#: lib/retro_hex_chat/commands/handlers/bot.ex:521
+#: lib/retro_hex_chat/commands/handlers/bot.ex:503
 #, elixir-autogen, elixir-format
 msgid "Public greeting disabled."
 msgstr "Публичное приветствие отключено."
 
-#: lib/retro_hex_chat/commands/handlers/bot.ex:524
+#: lib/retro_hex_chat/commands/handlers/bot.ex:506
 #, elixir-autogen, elixir-format
 msgid "Public greeting set to '%{greeting}'."
 msgstr "Публичное приветствие задано как '%{greeting}'."
 
-#: lib/retro_hex_chat/commands/handlers/pin.ex:50
-#: lib/retro_hex_chat/commands/handlers/pin.ex:71
+#: lib/retro_hex_chat/commands/handlers/pin.ex:45
+#: lib/retro_hex_chat/commands/handlers/pin.ex:66
 #, elixir-autogen, elixir-format
 msgid "/pin <message id>"
 msgstr "/pin <id сообщения>"
 
-#: lib/retro_hex_chat/commands/handlers/unpin.ex:51
-#: lib/retro_hex_chat/commands/handlers/unpin.ex:72
+#: lib/retro_hex_chat/commands/handlers/unpin.ex:46
+#: lib/retro_hex_chat/commands/handlers/unpin.ex:67
 #, elixir-autogen, elixir-format
 msgid "/unpin <message id>"
 msgstr "/unpin <id сообщения>"
 
-#: lib/retro_hex_chat/commands/handlers/pin.ex:80
+#: lib/retro_hex_chat/commands/handlers/pin.ex:75
 #, elixir-autogen, elixir-format
 msgid "Id of the message to keep"
 msgstr "Id сообщения, которое нужно сохранить"
 
-#: lib/retro_hex_chat/commands/handlers/unpin.ex:81
+#: lib/retro_hex_chat/commands/handlers/unpin.ex:76
 #, elixir-autogen, elixir-format
 msgid "Id of the message to stop keeping"
 msgstr "Id сообщения, которое больше не хранить"
 
-#: lib/retro_hex_chat/commands/handlers/pin.ex:52
+#: lib/retro_hex_chat/commands/handlers/pin.ex:47
 #, elixir-autogen, elixir-format
 msgid "Keep a message in view for the whole channel — the rules, a link, what was agreed.\nPinned messages are listed in the Pinned window and stay findable after they scroll away.\nOperators only. A channel keeps up to 50."
 msgstr "Держит сообщение на виду у всего канала — правила, ссылку, договорённость.\nЗакреплённые сообщения перечислены в окне «Закреплённые» и остаются находимыми после того, как уйдут вверх.\nТолько операторы. Канал хранит до 50."
 
-#: lib/retro_hex_chat/commands/handlers/pin.ex:72
+#: lib/retro_hex_chat/commands/handlers/pin.ex:67
 #, elixir-autogen, elixir-format
 msgid "Keep a message in view for the whole channel."
 msgstr "Держит сообщение на виду у всего канала."
 
-#: lib/retro_hex_chat/commands/handlers/unpin.ex:73
+#: lib/retro_hex_chat/commands/handlers/unpin.ex:68
 #, elixir-autogen, elixir-format
 msgid "Stop keeping a message in view."
 msgstr "Перестаёт держать сообщение на виду."
 
-#: lib/retro_hex_chat/commands/handlers/unpin.ex:53
+#: lib/retro_hex_chat/commands/handlers/unpin.ex:48
 #, elixir-autogen, elixir-format
 msgid "Stop keeping a message in view. The message itself stays where it is — only the pin goes.\nOperators only."
 msgstr "Перестаёт держать сообщение на виду. Само сообщение остаётся на месте — уходит только закрепление.\nТолько операторы."
 
-#: lib/retro_hex_chat/commands/handlers/pin.ex:36
-#: lib/retro_hex_chat/commands/handlers/unpin.ex:37
+#: lib/retro_hex_chat/commands/handlers/pin.ex:29
+#: lib/retro_hex_chat/commands/handlers/unpin.ex:30
 #, elixir-autogen, elixir-format
 msgid "That is not a message id"
 msgstr "Это не id сообщения"
 
-#: lib/retro_hex_chat/commands/handlers/pin.ex:18
+#: lib/retro_hex_chat/commands/handlers/pin.ex:19
 #, elixir-autogen, elixir-format
 msgid "Which message? Use /pin <id>, or pin it from its right-click menu."
 msgstr "Какое сообщение? Используйте /pin <id> или закрепите его через контекстное меню."
 
-#: lib/retro_hex_chat/commands/handlers/unpin.ex:16
+#: lib/retro_hex_chat/commands/handlers/unpin.ex:17
 #, elixir-autogen, elixir-format
 msgid "Which message? Use /unpin <id>, or unpin it from the Pinned window."
 msgstr "Какое сообщение? Используйте /unpin <id> или открепите его в окне «Закреплённые»."
 
-#: lib/retro_hex_chat/commands/handlers/event.ex:88
-#: lib/retro_hex_chat/commands/handlers/event.ex:114
+#: lib/retro_hex_chat/commands/handlers/event.ex:82
+#: lib/retro_hex_chat/commands/handlers/event.ex:108
 #, elixir-autogen, elixir-format
 msgid "/event [<when> <title> | cancel <id>]"
 msgstr "/event [<when> <title> | cancel <id>]"
 
-#: lib/retro_hex_chat/commands/handlers/event.ex:60
+#: lib/retro_hex_chat/commands/handlers/event.ex:61
 #, elixir-autogen, elixir-format
 msgid "An event has to start later than now."
 msgstr "Событие должно начинаться позже, чем сейчас."
 
-#: lib/retro_hex_chat/commands/handlers/event.ex:123
+#: lib/retro_hex_chat/commands/handlers/event.ex:117
 #, elixir-autogen, elixir-format
 msgid "How long from now it starts: 2h, 30m, 3d"
 msgstr "Через сколько начнётся: 2h, 30m, 3d"
 
-#: lib/retro_hex_chat/commands/handlers/event.ex:90
+#: lib/retro_hex_chat/commands/handlers/event.ex:84
 #, elixir-autogen, elixir-format
 msgid "Schedule something the channel will do together, and announce it in the room.\nThe time is a delay from now — 2h, 30m, 3d — so it means the same instant for everybody reading it.\nEveryone sees the card and can say they are going; whoever said so is reminded shortly before it starts.\nOperators only. With no arguments it opens the Events window."
 msgstr "Запланируйте то, что канал сделает вместе, и объявите об этом в комнате.\nВремя указывается как промежуток от текущего момента — 2h, 30m, 3d — поэтому оно означает один и тот же миг для всех, кто его читает.\nКарточку видят все и могут сказать, что придут; тем, кто сказал, придёт напоминание незадолго до начала.\nТолько операторы. Без аргументов открывается окно «События»."
 
-#: lib/retro_hex_chat/commands/handlers/event.ex:115
+#: lib/retro_hex_chat/commands/handlers/event.ex:109
 #, elixir-autogen, elixir-format
 msgid "Schedule something the channel will do together."
 msgstr "Запланируйте то, что канал сделает вместе."
 
-#: lib/retro_hex_chat/commands/handlers/event.ex:74
+#: lib/retro_hex_chat/commands/handlers/event.ex:26
 #, elixir-autogen, elixir-format
 msgid "That is not an event id"
 msgstr "Это не идентификатор события"
 
-#: lib/retro_hex_chat/commands/handlers/event.ex:66
+#: lib/retro_hex_chat/commands/handlers/event.ex:67
 #, elixir-autogen, elixir-format
 msgid "What is it called? Use /event <when> <title>."
 msgstr "Как оно называется? Используйте /event <когда> <название>."
 
-#: lib/retro_hex_chat/commands/handlers/event.ex:130
+#: lib/retro_hex_chat/commands/handlers/event.ex:124
 #, elixir-autogen, elixir-format
 msgid "What the channel is going to do"
 msgstr "Что канал собирается сделать"
 
-#: lib/retro_hex_chat/commands/handlers/event.ex:54
+#: lib/retro_hex_chat/commands/handlers/event.ex:55
 #, elixir-autogen, elixir-format
 msgid "When? Give it as a delay from now, like 2h, 30m or 3d."
 msgstr "Когда? Укажите как промежуток от текущего момента: 2h, 30m или 3d."
 
-#: lib/retro_hex_chat/commands/handlers/event.ex:20
+#: lib/retro_hex_chat/commands/handlers/event.ex:21
 #, elixir-autogen, elixir-format
 msgid "Which one? Use /event cancel <id>."
 msgstr "Какое? Используйте /event cancel <id>."
 
-#: lib/retro_hex_chat/commands/handlers/cs.ex:148
-#: lib/retro_hex_chat/commands/handlers/cs.ex:471
+#: lib/retro_hex_chat/commands/handlers/cs.ex:147
+#: lib/retro_hex_chat/commands/handlers/cs.ex:470
 #, elixir-autogen, elixir-format
 msgid "/cs archive on"
 msgstr "/cs archive on"
 
-#: lib/retro_hex_chat/commands/handlers/cs.ex:484
+#: lib/retro_hex_chat/commands/handlers/cs.ex:483
 #, elixir-autogen, elixir-format
 msgid "Publish the channel's public archive (on|off)"
 msgstr "Публиковать публичный архив канала (on|off)"
 
-#: lib/retro_hex_chat/commands/handlers/cs.ex:218
+#: lib/retro_hex_chat/commands/handlers/cs.ex:217
 #, elixir-autogen, elixir-format
 msgid "Usage: /cs archive <on|off>"
 msgstr "Использование: /cs archive <on|off>"
 
-#: lib/retro_hex_chat/commands/handlers/cs.ex:243
+#: lib/retro_hex_chat/commands/handlers/cs.ex:242
 #, elixir-autogen, elixir-format
 msgid "[ChanServ] The public archive of %{channel} is off."
 msgstr "[ChanServ] Публичный архив %{channel} выключен."
 
-#: lib/retro_hex_chat/commands/handlers/cs.ex:229
+#: lib/retro_hex_chat/commands/handlers/cs.ex:228
 #, elixir-autogen, elixir-format
 msgid "[ChanServ] The public archive of %{channel} is on: what is said from now on is published."
 msgstr "[ChanServ] Публичный архив %{channel} включён: всё, что будет сказано с этого момента, публикуется."
 
-#: lib/retro_hex_chat/commands/handlers/cs.ex:239
+#: lib/retro_hex_chat/commands/handlers/cs.ex:238
 #, elixir-autogen, elixir-format
 msgid "[ChanServ] The public archive of %{channel} is on."
 msgstr "[ChanServ] Публичный архив %{channel} включён."
@@ -3551,12 +3525,12 @@ msgstr ""
 "Опишите, что вы делаете, как «Твой Ник что-то делает». Работает в каналах и в частных чатах.\n"
 "Требуется текст действия."
 
-#: lib/retro_hex_chat/commands/handlers/cs.ex:43
+#: lib/retro_hex_chat/commands/handlers/cs.ex:42
 #, elixir-autogen, elixir-format
 msgid "You must be a channel operator to register the channel"
 msgstr "Вы должны быть оператором канала для регистрации канала."
 
-#: lib/retro_hex_chat/commands/handler/guards.ex:96
+#: lib/retro_hex_chat/commands/handler/guards.ex:123
 #, elixir-autogen, elixir-format
 msgid "%{game} has no mode called %{mode}."
 msgstr "%{game} не имеет режима под названием %{mode}."
@@ -3579,26 +3553,26 @@ msgstr "/challenge mario"
 msgid "/challenge mario quick"
 msgstr "/challenge mario quick"
 
-#: lib/retro_hex_chat/commands/handlers/lfg.ex:52
-#: lib/retro_hex_chat/commands/handlers/lfg.ex:84
+#: lib/retro_hex_chat/commands/handlers/lfg.ex:51
+#: lib/retro_hex_chat/commands/handlers/lfg.ex:83
 #, elixir-autogen, elixir-format
 msgid "/lfg"
 msgstr "/lfg"
 
-#: lib/retro_hex_chat/commands/handlers/lfg.ex:46
-#: lib/retro_hex_chat/commands/handlers/lfg.ex:67
+#: lib/retro_hex_chat/commands/handlers/lfg.ex:45
+#: lib/retro_hex_chat/commands/handlers/lfg.ex:66
 #, elixir-autogen, elixir-format
 msgid "/lfg [mode]"
 msgstr "/lfg [mode]"
 
-#: lib/retro_hex_chat/commands/handlers/lfg.ex:52
-#: lib/retro_hex_chat/commands/handlers/lfg.ex:84
+#: lib/retro_hex_chat/commands/handlers/lfg.ex:51
+#: lib/retro_hex_chat/commands/handlers/lfg.ex:83
 #, elixir-autogen, elixir-format
 msgid "/lfg blitz"
 msgstr "/lfg blitz"
 
 #: lib/retro_hex_chat/commands/handlers/challenge.ex:88
-#: lib/retro_hex_chat/commands/handlers/lfg.ex:81
+#: lib/retro_hex_chat/commands/handlers/lfg.ex:80
 #, elixir-autogen, elixir-format
 msgid "A mode of the game, like blitz"
 msgstr "Режим игры, как блиц"
@@ -3610,7 +3584,7 @@ msgstr ""
 "Пригласите кого-нибудь сыграть в игру канала во время P2P-сессии.\n"
 "Требования: оба пользователя должны быть зарегистрированы и идентифицированы (идентификатор /ns)."
 
-#: lib/retro_hex_chat/commands/handlers/lfg.ex:69
+#: lib/retro_hex_chat/commands/handlers/lfg.ex:68
 #, elixir-autogen, elixir-format
 msgid "Look for someone to play the channel's game with: a card with one open seat appears in the channel.\nRequires: a registered, identified nickname."
 msgstr ""
@@ -3627,7 +3601,7 @@ msgstr "Это прозвище зарезервировано"
 msgid "Usage: /challenge <nickname> [mode]"
 msgstr "Использование: /challenge <nickname> [режим]"
 
-#: lib/retro_hex_chat/commands/handler/guards.ex:81
+#: lib/retro_hex_chat/commands/handler/guards.ex:108
 #, elixir-autogen, elixir-format
 msgid "Use this in a game's own channel, like %{channel}."
 msgstr "Используйте это в собственном канале игры, например, %{channel}."
@@ -3637,7 +3611,7 @@ msgstr "Используйте это в собственном канале и�
 msgid "Who to play"
 msgstr "Кого играть"
 
-#: lib/retro_hex_chat/commands/handlers/lfg.ex:34
+#: lib/retro_hex_chat/commands/handlers/lfg.ex:27
 #, elixir-autogen, elixir-format
 msgid "You must be identified to look for a match."
 msgstr "Вы должны быть идентифицированы, чтобы найти совпадение."
@@ -3650,7 +3624,7 @@ msgstr ""
 "Назовите режим игры вместо стандартной игры.\n"
 "Требования: оба пользователя должны быть зарегистрированы и идентифицированы (идентификатор /ns)."
 
-#: lib/retro_hex_chat/commands/handlers/lfg.ex:48
+#: lib/retro_hex_chat/commands/handlers/lfg.ex:47
 #, elixir-autogen, elixir-format
 msgid "Look for someone to play the channel's game with. Run it in a game's channel: a card with one open seat appears in the channel, and whoever presses Join first plays you.\nName a mode to play it instead of the standard game.\nRequires: a registered, identified nickname."
 msgstr ""
@@ -3658,95 +3632,95 @@ msgstr ""
 "Назовите режим игры вместо стандартной игры.\n"
 "Требуется: зарегистрированное, идентифицированное прозвище."
 
-#: lib/retro_hex_chat/commands/handlers/bot.ex:535
+#: lib/retro_hex_chat/commands/handlers/bot.ex:517
 #, elixir-autogen, elixir-format
 msgid "The bot will greet visitors with '%{greeting}'."
 msgstr "Бот будет приветствовать посетителей с помощью %{greeting}."
 
-#: lib/retro_hex_chat/commands/handlers/bot.ex:531
+#: lib/retro_hex_chat/commands/handlers/bot.ex:513
 #, elixir-autogen, elixir-format
 msgid "The bot will not greet visitors."
 msgstr "Бот не будет приветствовать посетителей."
 
-#: lib/retro_hex_chat/commands/handlers/cs.ex:149
-#: lib/retro_hex_chat/commands/handlers/cs.ex:472
+#: lib/retro_hex_chat/commands/handlers/cs.ex:148
+#: lib/retro_hex_chat/commands/handlers/cs.ex:471
 #, elixir-autogen, elixir-format
 msgid "/cs language pt_BR"
 msgstr "/cs language pt_BR"
 
-#: lib/retro_hex_chat/commands/handlers/cs.ex:285
+#: lib/retro_hex_chat/commands/handlers/cs.ex:284
 #, elixir-autogen, elixir-format
 msgid "Languages: %{codes}"
 msgstr "Языки: %{codes}"
 
-#: lib/retro_hex_chat/commands/handlers/cs.ex:489
+#: lib/retro_hex_chat/commands/handlers/cs.ex:488
 #, elixir-autogen, elixir-format
 msgid "Set the language the channel is spoken in (code|none)"
 msgstr "Задать язык, на котором говорят в канале (код|none)"
 
-#: lib/retro_hex_chat/commands/handlers/bot.ex:501
-#: lib/retro_hex_chat/commands/handlers/cs.ex:297
+#: lib/retro_hex_chat/commands/handlers/bot.ex:483
+#: lib/retro_hex_chat/commands/handlers/cs.ex:296
 #, elixir-autogen, elixir-format
 msgid "Unknown language: %{code}. Languages: %{codes}"
 msgstr "Неизвестный язык: %{code}. Языки: %{codes}"
 
-#: lib/retro_hex_chat/commands/handlers/cs.ex:284
+#: lib/retro_hex_chat/commands/handlers/cs.ex:283
 #, elixir-autogen, elixir-format
 msgid "Usage: /cs language <code|none>"
 msgstr "Использование: /cs language <code|none>"
 
-#: lib/retro_hex_chat/commands/handlers/cs.ex:308
+#: lib/retro_hex_chat/commands/handlers/cs.ex:307
 #, elixir-autogen, elixir-format
 msgid "[ChanServ] %{channel} has no language set."
 msgstr "[ChanServ] У %{channel} язык не задан."
 
-#: lib/retro_hex_chat/commands/handlers/cs.ex:312
+#: lib/retro_hex_chat/commands/handlers/cs.ex:311
 #, elixir-autogen, elixir-format
 msgid "[ChanServ] %{channel} is spoken in %{language} (%{code})."
 msgstr "[ChanServ] В %{channel} говорят на языке: %{language} (%{code})."
 
-#: lib/retro_hex_chat/commands/handlers/cs.ex:254
+#: lib/retro_hex_chat/commands/handlers/cs.ex:253
 #, elixir-autogen, elixir-format
 msgid "[ChanServ] %{channel} no longer has a language."
 msgstr "[ChanServ] У %{channel} больше нет языка."
 
-#: lib/retro_hex_chat/commands/handlers/bot.ex:333
+#: lib/retro_hex_chat/commands/handlers/bot.ex:315
 #, elixir-autogen, elixir-format
 msgid "  Language: %{language}"
 msgstr "  Язык: %{language}"
 
-#: lib/retro_hex_chat/commands/handlers/bot.ex:489
+#: lib/retro_hex_chat/commands/handlers/bot.ex:471
 #, elixir-autogen, elixir-format
 msgid "%{name} no longer has a language."
 msgstr "У %{name} больше нет языка."
 
-#: lib/retro_hex_chat/commands/handlers/bot.ex:493
+#: lib/retro_hex_chat/commands/handlers/bot.ex:475
 #, elixir-autogen, elixir-format
 msgid "%{name} speaks %{language} (%{code})."
 msgstr "%{name} говорит на языке: %{language} (%{code})."
 
-#: lib/retro_hex_chat/commands/handlers/bot.ex:507
+#: lib/retro_hex_chat/commands/handlers/bot.ex:489
 #, elixir-autogen, elixir-format
 msgid "The language could not be saved."
 msgstr "Не удалось сохранить язык."
 
-#: lib/retro_hex_chat/commands/handlers/bot.ex:334
+#: lib/retro_hex_chat/commands/handlers/bot.ex:316
 #, elixir-autogen, elixir-format
 msgid "none"
 msgstr "нет"
 
-#: lib/retro_hex_chat/commands/handlers/cs.ex:150
-#: lib/retro_hex_chat/commands/handlers/cs.ex:473
+#: lib/retro_hex_chat/commands/handlers/cs.ex:149
+#: lib/retro_hex_chat/commands/handlers/cs.ex:472
 #, elixir-autogen, elixir-format
 msgid "/cs category news"
 msgstr "/cs category news"
 
-#: lib/retro_hex_chat/commands/handlers/cs.ex:364
+#: lib/retro_hex_chat/commands/handlers/cs.ex:363
 #, elixir-autogen, elixir-format
 msgid "Categories: %{codes}"
 msgstr "Категории: %{codes}"
 
-#: lib/retro_hex_chat/commands/handlers/cs.ex:140
+#: lib/retro_hex_chat/commands/handlers/cs.ex:139
 #, elixir-autogen, elixir-format
 msgid "Manage channel registration and access lists through ChanServ.\nSubcommands: register, drop, info, archive on|off, language <code|none>, category <name|none>, sop/aop/vop add|del|list, help. Must be in a channel.\nAccess hierarchy: SOP (super-operator) > AOP (auto-operator) > VOP (auto-voice).\nRegister requires channel operator. Drop, archive, language and category require being the channel founder."
 msgstr ""
@@ -3755,47 +3729,47 @@ msgstr ""
 "Иерархия доступа: SOP (супероператор) > AOP (автооператор) > VOP (автоголос).\n"
 "Для register нужны права оператора канала. Для drop, archive, language и category нужно быть основателем канала."
 
-#: lib/retro_hex_chat/commands/handlers/cs.ex:494
+#: lib/retro_hex_chat/commands/handlers/cs.ex:493
 #, elixir-autogen, elixir-format
 msgid "Set what the channel is about, such as news or games (name|none)"
 msgstr "Задать тему канала, например news или games (название|none)"
 
-#: lib/retro_hex_chat/commands/handlers/cs.ex:454
+#: lib/retro_hex_chat/commands/handlers/cs.ex:453
 #, elixir-autogen, elixir-format
 msgid "Subcommand: register, drop, info, archive, language, category, sop, aop, vop"
 msgstr "Подкоманда: register, drop, info, archive, language, category, sop, aop, vop"
 
-#: lib/retro_hex_chat/commands/handlers/cs.ex:27
+#: lib/retro_hex_chat/commands/handlers/cs.ex:26
 #, elixir-autogen, elixir-format
 msgid "Usage: /cs <register|drop|info|archive|language|category|sop|aop|vop|help> [args]"
 msgstr "Использование: /cs <register|drop|info|archive|language|category|sop|aop|vop|help> [args]"
 
-#: lib/retro_hex_chat/commands/handlers/cs.ex:363
+#: lib/retro_hex_chat/commands/handlers/cs.ex:362
 #, elixir-autogen, elixir-format
 msgid "Usage: /cs category <name|none>"
 msgstr "Использование: /cs category <name|none>"
 
-#: lib/retro_hex_chat/commands/handlers/cs.ex:373
+#: lib/retro_hex_chat/commands/handlers/cs.ex:372
 #, elixir-autogen, elixir-format
 msgid "[ChanServ] %{channel} has no category set."
 msgstr "[ChanServ] У %{channel} категория не задана."
 
-#: lib/retro_hex_chat/commands/handlers/cs.ex:377
+#: lib/retro_hex_chat/commands/handlers/cs.ex:376
 #, elixir-autogen, elixir-format
 msgid "[ChanServ] %{channel} is about %{category} (%{code})."
 msgstr "[ChanServ] Тема %{channel}: %{category} (%{code})."
 
-#: lib/retro_hex_chat/commands/handlers/cs.ex:325
+#: lib/retro_hex_chat/commands/handlers/cs.ex:324
 #, elixir-autogen, elixir-format
 msgid "[ChanServ] %{channel} no longer has a category."
 msgstr "[ChanServ] У %{channel} больше нет категории."
 
-#: lib/retro_hex_chat/commands/handlers/cs.ex:339
+#: lib/retro_hex_chat/commands/handlers/cs.ex:338
 #, elixir-autogen, elixir-format
 msgid "[ChanServ] Unknown category: %{code}. Categories: %{codes}"
 msgstr "[ChanServ] Неизвестная категория: %{code}. Категории: %{codes}"
 
-#: lib/retro_hex_chat/commands/handlers/bot.ex:679
+#: lib/retro_hex_chat/commands/handlers/bot.ex:661
 #, elixir-autogen, elixir-format
 msgid "%{setting} must be on or off."
 msgstr "%{setting} должен быть включен или выключен."
@@ -3804,3 +3778,8 @@ msgstr "%{setting} должен быть включен или выключен.
 #, elixir-autogen, elixir-format
 msgid "Write the channel name after the #."
 msgstr "Напишите название канала после #."
+
+#: lib/retro_hex_chat/commands/handlers/bot.ex:219
+#, elixir-autogen, elixir-format
+msgid "[BotService] Bot '%{name}' created."
+msgstr "Бот \"%{name}\" создан."

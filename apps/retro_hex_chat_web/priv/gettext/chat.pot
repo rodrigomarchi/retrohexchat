@@ -164,7 +164,7 @@ msgid_plural "%{count} users"
 msgstr[0] ""
 msgstr[1] ""
 
-#: lib/retro_hex_chat_web/live/chat_live/bot_events.ex:702
+#: lib/retro_hex_chat_web/live/chat_live/bot_events.ex:638
 #, elixir-autogen, elixir-format
 msgid "%{field}: %{errors}"
 msgstr ""
@@ -564,8 +564,8 @@ msgstr ""
 msgid "* Timer '%{name}' target window is no longer available"
 msgstr ""
 
-#: lib/retro_hex_chat_web/live/chat_live/helpers/channel.ex:382
 #: lib/retro_hex_chat_web/live/chat_live/helpers/channel.ex:386
+#: lib/retro_hex_chat_web/live/chat_live/helpers/channel.ex:390
 #, elixir-autogen, elixir-format
 msgid "* User '%{target}' not found"
 msgstr ""
@@ -656,7 +656,7 @@ msgstr ""
 msgid "Alias not found"
 msgstr ""
 
-#: lib/retro_hex_chat_web/live/chat_live/command_dispatch.ex:352
+#: lib/retro_hex_chat_web/live/chat_live/command_dispatch.ex:353
 #, elixir-autogen, elixir-format
 msgid "Alias recursion limit reached (max 5 levels)"
 msgstr ""
@@ -676,7 +676,7 @@ msgstr ""
 msgid "Attempt %{attempt} of %{max_attempts}"
 msgstr ""
 
-#: lib/retro_hex_chat_web/live/chat_live/command_dispatch.ex:539
+#: lib/retro_hex_chat_web/live/chat_live/command_dispatch.ex:540
 #, elixir-autogen, elixir-format
 msgid "Auto-join list is full (20 channels). %{channel} was not added to auto-join."
 msgstr ""
@@ -759,7 +759,7 @@ msgstr ""
 msgid "Bot"
 msgstr ""
 
-#: lib/retro_hex_chat_web/live/chat_live/bot_events.ex:422
+#: lib/retro_hex_chat_web/live/chat_live/bot_events.ex:408
 #, elixir-autogen, elixir-format
 msgid "Bot already in %{channel}."
 msgstr ""
@@ -816,7 +816,7 @@ msgstr ""
 msgid "Cannot add yourself to the notify list"
 msgstr ""
 
-#: lib/retro_hex_chat_web/live/chat_live/command_dispatch.ex:155
+#: lib/retro_hex_chat_web/live/chat_live/command_dispatch.ex:156
 #: lib/retro_hex_chat_web/live/chat_live/helpers/pm.ex:157
 #, elixir-autogen, elixir-format
 msgid "Cannot send text to status window. Use /commands."
@@ -922,7 +922,7 @@ msgstr ""
 msgid "Colors"
 msgstr ""
 
-#: lib/retro_hex_chat_web/live/chat_live/bot_events.ex:306
+#: lib/retro_hex_chat_web/live/chat_live/bot_events.ex:292
 #, elixir-autogen, elixir-format
 msgid "Command '%{trigger}' already exists."
 msgstr ""
@@ -979,7 +979,7 @@ msgstr ""
 msgid "Connection failed"
 msgstr ""
 
-#: lib/retro_hex_chat_web/live/chat_live/helpers/channel.ex:367
+#: lib/retro_hex_chat_web/live/chat_live/helpers/channel.ex:371
 #: lib/retro_hex_chat_web/live/chat_live/pubsub_handlers/membership.ex:447
 #, elixir-autogen, elixir-format
 msgid "Connection lost"
@@ -1137,7 +1137,7 @@ msgstr ""
 msgid "Failed to send. Click to retry"
 msgstr ""
 
-#: lib/retro_hex_chat_web/live/chat_live/bot_events.ex:593
+#: lib/retro_hex_chat_web/live/chat_live/bot_events.ex:554
 #, elixir-autogen, elixir-format
 msgid "Failed to update capability."
 msgstr ""
@@ -1367,7 +1367,7 @@ msgstr ""
 msgid "Leave Channel"
 msgstr ""
 
-#: lib/retro_hex_chat_web/live/chat_live/command_dispatch.ex:479
+#: lib/retro_hex_chat_web/live/chat_live/command_dispatch.ex:480
 #: lib/retro_hex_chat_web/live/chat_live/helpers/session.ex:594
 #: lib/retro_hex_chat_web/live/chat_live/menu_toolbar_events.ex:90
 #: lib/retro_hex_chat_web/live/desktop_live.ex:385
@@ -1487,7 +1487,7 @@ msgstr ""
 msgid "NickServ protects your nickname with a password so nobody else can use it."
 msgstr ""
 
-#: lib/retro_hex_chat_web/live/chat_live/command_dispatch.ex:400
+#: lib/retro_hex_chat_web/live/chat_live/command_dispatch.ex:401
 #: lib/retro_hex_chat_web/live/chat_live/core_events.ex:657
 #, elixir-autogen, elixir-format
 msgid "Nickname %{nickname} is already in use"
@@ -1809,7 +1809,7 @@ msgid "Server setting '%{key}' changed to '%{value}'."
 msgstr ""
 
 #: lib/retro_hex_chat_web/components/ui/chat/message_row.ex:118
-#: lib/retro_hex_chat_web/live/chat_live/command_dispatch.ex:510
+#: lib/retro_hex_chat_web/live/chat_live/command_dispatch.ex:511
 #: lib/retro_hex_chat_web/live/chat_live/components/status_viewport.ex:106
 #, elixir-autogen, elixir-format
 msgid "Service"
@@ -2084,9 +2084,9 @@ msgid "Yes"
 msgstr ""
 
 #: lib/retro_hex_chat_web/components/ui/space_build_palette.ex:512
-#: lib/retro_hex_chat_web/live/chat_live/command_dispatch.ex:215
-#: lib/retro_hex_chat_web/live/chat_live/command_dispatch.ex:236
-#: lib/retro_hex_chat_web/live/chat_live/command_dispatch.ex:261
+#: lib/retro_hex_chat_web/live/chat_live/command_dispatch.ex:216
+#: lib/retro_hex_chat_web/live/chat_live/command_dispatch.ex:237
+#: lib/retro_hex_chat_web/live/chat_live/command_dispatch.ex:262
 #, elixir-autogen, elixir-format
 msgid "You are muted by an administrator"
 msgstr ""
@@ -2187,12 +2187,12 @@ msgstr ""
 msgid "[Auto-Whois] %{nickname}:"
 msgstr ""
 
-#: lib/retro_hex_chat_web/live/chat_live/bot_events.ex:652
+#: lib/retro_hex_chat_web/live/chat_live/bot_events.ex:588
 #, elixir-autogen, elixir-format
 msgid "[BotService] Bot '%{name}' %{action}."
 msgstr ""
 
-#: lib/retro_hex_chat_web/live/chat_live/bot_events.ex:229
+#: lib/retro_hex_chat_web/live/chat_live/bot_events.ex:215
 #, elixir-autogen, elixir-format
 msgid "[BotService] Bot '%{name}' created."
 msgstr ""
@@ -2202,32 +2202,32 @@ msgstr ""
 msgid "[BotService] Bot '%{name}' destroyed."
 msgstr ""
 
-#: lib/retro_hex_chat_web/live/chat_live/bot_events.ex:415
+#: lib/retro_hex_chat_web/live/chat_live/bot_events.ex:401
 #, elixir-autogen, elixir-format
 msgid "[BotService] Bot '%{name}' joined %{channel}."
 msgstr ""
 
-#: lib/retro_hex_chat_web/live/chat_live/bot_events.ex:267
+#: lib/retro_hex_chat_web/live/chat_live/bot_events.ex:253
 #, elixir-autogen, elixir-format
 msgid "[BotService] Bot '%{name}' left %{channel}."
 msgstr ""
 
-#: lib/retro_hex_chat_web/live/chat_live/bot_events.ex:586
+#: lib/retro_hex_chat_web/live/chat_live/bot_events.ex:547
 #, elixir-autogen, elixir-format
 msgid "[BotService] Capability '%{capability}' %{action}."
 msgstr ""
 
-#: lib/retro_hex_chat_web/live/chat_live/bot_events.ex:300
+#: lib/retro_hex_chat_web/live/chat_live/bot_events.ex:286
 #, elixir-autogen, elixir-format
 msgid "[BotService] Command '%{trigger}' added."
 msgstr ""
 
-#: lib/retro_hex_chat_web/live/chat_live/bot_events.ex:325
+#: lib/retro_hex_chat_web/live/chat_live/bot_events.ex:311
 #, elixir-autogen, elixir-format
 msgid "[BotService] Command '%{trigger}' removed."
 msgstr ""
 
-#: lib/retro_hex_chat_web/live/chat_live/bot_events.ex:236
+#: lib/retro_hex_chat_web/live/chat_live/bot_events.ex:222
 #, elixir-autogen, elixir-format
 msgid "[BotService] Failed to create bot '%{name}': %{message}"
 msgstr ""
@@ -2257,7 +2257,7 @@ msgstr ""
 msgid "[Wallops] %{sender}: %{content}"
 msgstr ""
 
-#: lib/retro_hex_chat_web/live/chat_live/helpers/channel.ex:335
+#: lib/retro_hex_chat_web/live/chat_live/helpers/channel.ex:339
 #, elixir-autogen, elixir-format
 msgid "[Welcome] %{message}"
 msgstr ""
@@ -2278,15 +2278,15 @@ msgstr ""
 msgid "click to insert"
 msgstr ""
 
-#: lib/retro_hex_chat_web/live/chat_live/bot_events.ex:580
-#: lib/retro_hex_chat_web/live/chat_live/bot_events.ex:647
+#: lib/retro_hex_chat_web/live/chat_live/bot_events.ex:541
+#: lib/retro_hex_chat_web/live/chat_live/bot_events.ex:583
 #: lib/retro_hex_chat_web/live/chat_live/ui_actions/invite.ex:35
 #, elixir-autogen, elixir-format
 msgid "disabled"
 msgstr ""
 
-#: lib/retro_hex_chat_web/live/chat_live/bot_events.ex:581
-#: lib/retro_hex_chat_web/live/chat_live/bot_events.ex:647
+#: lib/retro_hex_chat_web/live/chat_live/bot_events.ex:542
+#: lib/retro_hex_chat_web/live/chat_live/bot_events.ex:583
 #: lib/retro_hex_chat_web/live/chat_live/ui_actions/invite.ex:34
 #, elixir-autogen, elixir-format
 msgid "enabled"
@@ -2523,7 +2523,7 @@ msgstr ""
 msgid "Error"
 msgstr ""
 
-#: lib/retro_hex_chat_web/live/chat_live/bot_events.ex:659
+#: lib/retro_hex_chat_web/live/chat_live/bot_events.ex:595
 #, elixir-autogen, elixir-format
 msgid "Failed to update bot status."
 msgstr ""
@@ -2898,7 +2898,7 @@ msgstr ""
 msgid "%{peer} lost the P2P connection — waiting for them to return..."
 msgstr ""
 
-#: lib/retro_hex_chat_web/live/chat_live/arcade_session_events.ex:339
+#: lib/retro_hex_chat_web/live/chat_live/arcade_session_events.ex:340
 #, elixir-autogen, elixir-format
 msgid "Arcade session ended."
 msgstr ""
@@ -2923,7 +2923,7 @@ msgstr ""
 msgid "Could not start the P2P invite."
 msgstr ""
 
-#: lib/retro_hex_chat_web/live/chat_live/arcade_session_events.ex:262
+#: lib/retro_hex_chat_web/live/chat_live/arcade_session_events.ex:263
 #, elixir-autogen, elixir-format
 msgid "Could not start the arcade session. Please try again."
 msgstr ""
@@ -3362,25 +3362,25 @@ msgstr ""
 msgid "User lookup"
 msgstr ""
 
-#: lib/retro_hex_chat_web/live/chat_live/bot_events.ex:490
-#: lib/retro_hex_chat_web/live/chat_live/bot_events.ex:506
+#: lib/retro_hex_chat_web/live/chat_live/bot_events.ex:451
+#: lib/retro_hex_chat_web/live/chat_live/bot_events.ex:467
 #, elixir-autogen, elixir-format
 msgid "[BotService] %{reason}"
 msgstr ""
 
 #: lib/retro_hex_chat_web/live/chat_live/bot_events.ex:177
-#: lib/retro_hex_chat_web/live/chat_live/bot_events.ex:474
-#: lib/retro_hex_chat_web/live/chat_live/bot_events.ex:495
+#: lib/retro_hex_chat_web/live/chat_live/bot_events.ex:435
+#: lib/retro_hex_chat_web/live/chat_live/bot_events.ex:456
 #, elixir-autogen, elixir-format
 msgid "[BotService] Bot not found."
 msgstr ""
 
-#: lib/retro_hex_chat_web/live/chat_live/bot_events.ex:483
+#: lib/retro_hex_chat_web/live/chat_live/bot_events.ex:444
 #, elixir-autogen, elixir-format
 msgid "[BotService] Feed added: %{url} → %{channel}"
 msgstr ""
 
-#: lib/retro_hex_chat_web/live/chat_live/bot_events.ex:503
+#: lib/retro_hex_chat_web/live/chat_live/bot_events.ex:464
 #, elixir-autogen, elixir-format
 msgid "[BotService] Feed removed."
 msgstr ""
@@ -6002,22 +6002,22 @@ msgstr ""
 msgid "%{nickname} set this channel's language to %{language}."
 msgstr ""
 
-#: lib/retro_hex_chat_web/live/chat_live/bot_events.ex:543
+#: lib/retro_hex_chat_web/live/chat_live/bot_events.ex:504
 #, elixir-autogen, elixir-format
 msgid "[BotService] Bot '%{name}' has no language now."
 msgstr ""
 
-#: lib/retro_hex_chat_web/live/chat_live/bot_events.ex:547
+#: lib/retro_hex_chat_web/live/chat_live/bot_events.ex:508
 #, elixir-autogen, elixir-format
 msgid "[BotService] Bot '%{name}' speaks %{language} now."
 msgstr ""
 
-#: lib/retro_hex_chat_web/live/chat_live/bot_events.ex:559
+#: lib/retro_hex_chat_web/live/chat_live/bot_events.ex:520
 #, elixir-autogen, elixir-format
 msgid "[BotService] Failed to set the language: %{message}"
 msgstr ""
 
-#: lib/retro_hex_chat_web/live/chat_live/bot_events.ex:555
+#: lib/retro_hex_chat_web/live/chat_live/bot_events.ex:516
 #, elixir-autogen, elixir-format
 msgid "[BotService] Unknown language '%{language}'."
 msgstr ""
