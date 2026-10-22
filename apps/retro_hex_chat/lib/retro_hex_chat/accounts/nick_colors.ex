@@ -6,17 +6,17 @@ defmodule RetroHexChat.Accounts.NickColors do
   plus persistence functions that delegate to Ecto/Repo for database storage.
   """
 
-  alias RetroHexChat.Nickname
   use Gettext, backend: RetroHexChat.Gettext
 
   import Ecto.Query
   import RetroHexChat.Nickname, only: [matches: 2]
 
   alias RetroHexChat.Accounts.{NickColor, NickColorEntry}
+  alias RetroHexChat.NicknameList
   alias RetroHexChat.OwnedList
   alias RetroHexChat.Repo
 
-  @max_entries 50
+  @list NicknameList.new(field: :target_nickname, max_entries: 50)
 
   @irc_color_names %{
     0 => dgettext("accounts", "White"),
@@ -65,7 +65,7 @@ defmodule RetroHexChat.Accounts.NickColors do
       not valid_color?(color_index) ->
         {:error, :invalid_color}
 
-      has_entry?(nick_colors, target_nickname) ->
+      NicknameList.member?(@list, nick_colors, target_nickname) ->
         {:error, :duplicate}
 
       full?(nick_colors) ->
@@ -78,19 +78,8 @@ defmodule RetroHexChat.Accounts.NickColors do
   end
 
   @spec remove_entry(map(), String.t()) :: {:ok, map()} | {:error, :not_found}
-  def remove_entry(nick_colors, target_nickname) do
-    downcased = Nickname.key(target_nickname)
-
-    case Enum.split_with(nick_colors.entries, fn e ->
-           Nickname.key(e.target_nickname) == downcased
-         end) do
-      {[], _rest} ->
-        {:error, :not_found}
-
-      {_found, remaining} ->
-        {:ok, %{nick_colors | entries: remaining}}
-    end
-  end
+  def remove_entry(nick_colors, target_nickname),
+    do: NicknameList.remove(@list, nick_colors, target_nickname)
 
   @spec update_color(map(), String.t(), non_neg_integer()) ::
           {:ok, map()} | {:error, :not_found | :invalid_color}
@@ -102,23 +91,13 @@ defmodule RetroHexChat.Accounts.NickColors do
       do: {:error, :invalid_color}
 
   def update_color(nick_colors, target_nickname, color_index) do
-    downcased = Nickname.key(target_nickname)
-
-    case find_and_update(nick_colors.entries, downcased, fn entry ->
-           %{entry | color_index: color_index}
-         end) do
-      {:ok, updated_entries} ->
-        {:ok, %{nick_colors | entries: updated_entries}}
-
-      :not_found ->
-        {:error, :not_found}
-    end
+    NicknameList.update(@list, nick_colors, target_nickname, &%{&1 | color_index: color_index})
   end
 
   @spec add_or_update(map(), String.t(), non_neg_integer()) ::
           {:ok, map()} | {:error, :list_full | :invalid_nickname | :invalid_color}
   def add_or_update(nick_colors, target_nickname, color_index) do
-    if has_entry?(nick_colors, target_nickname) do
+    if NicknameList.member?(@list, nick_colors, target_nickname) do
       update_color(nick_colors, target_nickname, color_index)
     else
       add_entry(nick_colors, target_nickname, color_index)
@@ -127,20 +106,14 @@ defmodule RetroHexChat.Accounts.NickColors do
 
   @spec color_index_for(map(), String.t()) :: non_neg_integer() | nil
   def color_index_for(nick_colors, nickname) do
-    downcased = Nickname.key(nickname)
-
-    case Enum.find(nick_colors.entries, fn e ->
-           Nickname.key(e.target_nickname) == downcased
-         end) do
+    case NicknameList.find(@list, nick_colors, nickname) do
       nil -> nil
       entry -> entry.color_index
     end
   end
 
   @spec sorted_entries(map()) :: [NickColor.t()]
-  def sorted_entries(nick_colors) do
-    Enum.sort_by(nick_colors.entries, &Nickname.key(&1.target_nickname))
-  end
+  def sorted_entries(nick_colors), do: NicknameList.sorted(@list, nick_colors.entries)
 
   @spec count(map()) :: non_neg_integer()
   def count(nick_colors) do
@@ -148,9 +121,7 @@ defmodule RetroHexChat.Accounts.NickColors do
   end
 
   @spec full?(map()) :: boolean()
-  def full?(nick_colors) do
-    count(nick_colors) >= @max_entries
-  end
+  def full?(nick_colors), do: NicknameList.full?(@list, nick_colors)
 
   # ---------------------------------------------------------------------------
   # Persistence
@@ -218,15 +189,6 @@ defmodule RetroHexChat.Accounts.NickColors do
   # Private helpers
   # ---------------------------------------------------------------------------
 
-  @spec has_entry?(map(), String.t()) :: boolean()
-  defp has_entry?(nick_colors, target_nickname) do
-    downcased = Nickname.key(target_nickname)
-
-    Enum.any?(nick_colors.entries, fn e ->
-      Nickname.key(e.target_nickname) == downcased
-    end)
-  end
-
   @spec valid_nickname?(String.t()) :: boolean()
   defp valid_nickname?(nickname) do
     is_binary(nickname) and byte_size(nickname) > 0 and String.length(nickname) <= 16
@@ -235,24 +197,5 @@ defmodule RetroHexChat.Accounts.NickColors do
   @spec valid_color?(non_neg_integer()) :: boolean()
   defp valid_color?(color_index) do
     is_integer(color_index) and color_index >= 0 and color_index <= 15
-  end
-
-  @spec find_and_update([NickColor.t()], String.t(), (NickColor.t() -> NickColor.t())) ::
-          {:ok, [NickColor.t()]} | :not_found
-  defp find_and_update(entries, downcased_nick, update_fn) do
-    {found, updated} =
-      Enum.reduce(entries, {false, []}, fn entry, {found?, acc} ->
-        if Nickname.key(entry.target_nickname) == downcased_nick do
-          {true, [update_fn.(entry) | acc]}
-        else
-          {found?, [entry | acc]}
-        end
-      end)
-
-    if found do
-      {:ok, Enum.reverse(updated)}
-    else
-      :not_found
-    end
   end
 end

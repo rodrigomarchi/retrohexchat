@@ -37,6 +37,18 @@ defmodule RetroHexChat.NicknameListTest do
     end
   end
 
+  describe "find/3" do
+    test "answers the entry however the nickname was typed, and nil for nobody" do
+      assert %Entry{nick: "Alice"} = NicknameList.find(@list, kept(["Alice", "Bob"]), "aLiCe")
+      assert NicknameList.find(@list, kept(["Alice"]), "Carol") == nil
+    end
+  end
+
+  test "a list with no notes needs no note length" do
+    list = NicknameList.new(field: :nick, max_entries: 2)
+    assert NicknameList.member?(list, kept(["Alice"]), "alice")
+  end
+
   describe "full?/2" do
     test "there is room until the cap is reached" do
       refute NicknameList.full?(@list, kept(["a", "b"]))

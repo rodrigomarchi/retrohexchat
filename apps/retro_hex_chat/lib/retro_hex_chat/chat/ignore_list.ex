@@ -12,10 +12,11 @@ defmodule RetroHexChat.Chat.IgnoreList do
 
   alias RetroHexChat.Chat.IgnoreEntry
   alias RetroHexChat.Chat.Schemas.IgnoreListEntry
+  alias RetroHexChat.NicknameList
   alias RetroHexChat.OwnedList
   alias RetroHexChat.Repo
 
-  @max_entries 100
+  @list NicknameList.new(field: :nickname, max_entries: 100)
   @default_cleanup_limit 500
 
   @type cleanup_summary :: %{
@@ -41,7 +42,7 @@ defmodule RetroHexChat.Chat.IgnoreList do
       not IgnoreEntry.valid_type?(ignore_type) ->
         {:error, :invalid_type}
 
-      has_entry?(ignore_list, nickname) ->
+      NicknameList.member?(@list, ignore_list, nickname) ->
         {:ok, upsert_entry(ignore_list, nickname, ignore_type, expires_at)}
 
       full?(ignore_list) ->
@@ -61,19 +62,7 @@ defmodule RetroHexChat.Chat.IgnoreList do
   end
 
   @spec remove_entry(map(), String.t()) :: {:ok, map()} | {:error, :not_found}
-  def remove_entry(ignore_list, nickname) do
-    downcased = Nickname.key(nickname)
-
-    case Enum.split_with(ignore_list.entries, fn e ->
-           Nickname.key(e.nickname) == downcased
-         end) do
-      {[], _rest} ->
-        {:error, :not_found}
-
-      {_found, remaining} ->
-        {:ok, %{ignore_list | entries: remaining}}
-    end
-  end
+  def remove_entry(ignore_list, nickname), do: NicknameList.remove(@list, ignore_list, nickname)
 
   @spec ignored?(map(), String.t(), atom()) :: boolean()
   def ignored?(ignore_list, nickname, message_type) do
@@ -87,34 +76,18 @@ defmodule RetroHexChat.Chat.IgnoreList do
   end
 
   @spec get_entry(map(), String.t()) :: IgnoreEntry.t() | nil
-  def get_entry(ignore_list, nickname) do
-    downcased = Nickname.key(nickname)
-
-    Enum.find(ignore_list.entries, fn entry ->
-      Nickname.key(entry.nickname) == downcased
-    end)
-  end
+  def get_entry(ignore_list, nickname), do: NicknameList.find(@list, ignore_list, nickname)
 
   @spec update_nickname(map(), String.t(), String.t()) :: map()
   def update_nickname(ignore_list, old_nick, new_nick) do
-    downcased_old = Nickname.key(old_nick)
-
-    updated_entries =
-      Enum.map(ignore_list.entries, fn entry ->
-        if Nickname.key(entry.nickname) == downcased_old do
-          %{entry | nickname: new_nick}
-        else
-          entry
-        end
-      end)
-
-    %{ignore_list | entries: updated_entries}
+    case NicknameList.update(@list, ignore_list, old_nick, &%{&1 | nickname: new_nick}) do
+      {:ok, updated} -> updated
+      {:error, :not_found} -> ignore_list
+    end
   end
 
   @spec sorted_entries(map()) :: [IgnoreEntry.t()]
-  def sorted_entries(ignore_list) do
-    Enum.sort_by(ignore_list.entries, fn e -> Nickname.key(e.nickname) end)
-  end
+  def sorted_entries(ignore_list), do: NicknameList.sorted(@list, ignore_list.entries)
 
   @spec count(map()) :: non_neg_integer()
   def count(ignore_list) do
@@ -122,9 +95,7 @@ defmodule RetroHexChat.Chat.IgnoreList do
   end
 
   @spec full?(map()) :: boolean()
-  def full?(ignore_list) do
-    count(ignore_list) >= @max_entries
-  end
+  def full?(ignore_list), do: NicknameList.full?(@list, ignore_list)
 
   @spec remove_expired(map()) :: {map(), [String.t()]}
   def remove_expired(ignore_list) do
@@ -255,22 +226,15 @@ defmodule RetroHexChat.Chat.IgnoreList do
   end
 
   defp upsert_entry(ignore_list, nickname, ignore_type, expires_at) do
-    downcased = Nickname.key(nickname)
+    {:ok, updated} =
+      NicknameList.update(
+        @list,
+        ignore_list,
+        nickname,
+        &%{&1 | ignore_type: ignore_type, expires_at: expires_at}
+      )
 
-    updated_entries =
-      Enum.map(ignore_list.entries, fn entry ->
-        if Nickname.key(entry.nickname) == downcased do
-          %{entry | ignore_type: ignore_type, expires_at: expires_at}
-        else
-          entry
-        end
-      end)
-
-    %{ignore_list | entries: updated_entries}
-  end
-
-  defp has_entry?(ignore_list, nickname) do
-    get_entry(ignore_list, nickname) != nil
+    updated
   end
 
   defp type_matches?(:all, _message_type), do: true

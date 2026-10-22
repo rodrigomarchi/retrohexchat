@@ -2,7 +2,8 @@ defmodule RetroHexChat.NicknameList do
   @moduledoc """
   A list of people someone keeps, by nickname, with a note against each.
 
-  The address book and the notify list are both one of these. They differ in
+  The address book, the notify list, the nick colours and the ignore list are
+  all one of these. They differ in
   what they are for — one remembers who you have talked to, the other watches
   who comes online — and in how many entries they hold, but the list itself
   behaves the same way in both: a nickname appears once regardless of case, the
@@ -25,13 +26,13 @@ defmodule RetroHexChat.NicknameList do
   @type t :: %__MODULE__{
           field: atom(),
           max_entries: pos_integer(),
-          max_note_length: pos_integer()
+          max_note_length: pos_integer() | nil
         }
 
   @typedoc "Whatever holds the entries. Each list keeps its own extras beside them."
   @type kept :: %{required(:entries) => [struct()], optional(any()) => any()}
 
-  @enforce_keys [:field, :max_entries, :max_note_length]
+  @enforce_keys [:field, :max_entries]
   defstruct [:field, :max_entries, :max_note_length]
 
   @doc "Declares a list's shape. Cheap enough to hold in a module attribute."
@@ -40,16 +41,20 @@ defmodule RetroHexChat.NicknameList do
     %__MODULE__{
       field: Keyword.fetch!(opts, :field),
       max_entries: Keyword.fetch!(opts, :max_entries),
-      max_note_length: Keyword.fetch!(opts, :max_note_length)
+      max_note_length: Keyword.get(opts, :max_note_length)
     }
   end
 
   @doc "Whether `nickname` is already on the list, however it was typed."
   @spec member?(t(), kept(), String.t()) :: boolean()
-  def member?(spec, list, nickname) do
+  def member?(spec, list, nickname), do: find(spec, list, nickname) != nil
+
+  @doc "The entry for `nickname`, however it was typed, or `nil`."
+  @spec find(t(), kept(), String.t()) :: struct() | nil
+  def find(spec, list, nickname) do
     wanted = Nickname.key(nickname)
 
-    Enum.any?(list.entries, &(nickname_of(spec, &1) == wanted))
+    Enum.find(list.entries, &(nickname_of(spec, &1) == wanted))
   end
 
   @doc "Whether the list has no room left."
