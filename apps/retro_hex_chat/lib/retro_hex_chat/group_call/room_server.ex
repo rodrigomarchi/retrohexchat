@@ -290,7 +290,7 @@ defmodule RetroHexChat.GroupCall.RoomServer do
   def handle_call({:join, actor, signal_pid, client_info, _media_constraints}, _from, state) do
     with :ok <- check_enabled(state),
          {:ok, channel_state} <- Channels.Server.get_state(state.room.channel_name),
-         membership = membership_from_channel_state(channel_state),
+         membership = Membership.from_members(channel_state.members),
          :ok <-
            Policy.can_join?(actor.user_id, actor.nickname, state.room, membership,
              seat_held: seat_held?(state, actor, nil)
@@ -315,7 +315,7 @@ defmodule RetroHexChat.GroupCall.RoomServer do
       ) do
     with :ok <- check_enabled(state),
          {:ok, channel_state} <- Channels.Server.get_state(state.room.channel_name),
-         membership = membership_from_channel_state(channel_state),
+         membership = Membership.from_members(channel_state.members),
          :ok <-
            Policy.can_join?(actor.user_id, actor.nickname, state.room, membership,
              seat_held: seat_held?(state, actor, previous_participant_id)
@@ -1419,7 +1419,7 @@ defmodule RetroHexChat.GroupCall.RoomServer do
 
   defp current_membership(state) do
     with {:ok, channel_state} <- Channels.Server.get_state(state.room.channel_name) do
-      {:ok, membership_from_channel_state(channel_state)}
+      {:ok, Membership.from_members(channel_state.members)}
     end
   end
 
@@ -2550,11 +2550,5 @@ defmodule RetroHexChat.GroupCall.RoomServer do
 
   defp telemetry(event, measurements, metadata) do
     :telemetry.execute([:retro_hex_chat, :group_call, event], measurements, metadata)
-  end
-
-  defp membership_from_channel_state(%{members: members}) do
-    Enum.reduce(members, Membership.new(), fn {nickname, role}, membership ->
-      Membership.add(membership, nickname, role)
-    end)
   end
 end

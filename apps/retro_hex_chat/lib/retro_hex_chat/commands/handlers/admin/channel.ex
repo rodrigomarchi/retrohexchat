@@ -7,12 +7,13 @@ defmodule RetroHexChat.Commands.Handlers.Admin.Channel do
   alias RetroHexChat.Channels.Directory
   alias RetroHexChat.Channels.Server
   alias RetroHexChat.Commands.Handler
+  alias RetroHexChat.Commands.Handler.Args
   alias RetroHexChat.Services.Queries
   alias RetroHexChat.Table
 
   @spec execute([String.t()], Handler.context()) :: Handler.result()
   def execute(["list" | opts], context) do
-    search = find_opt(opts, "--search")
+    search = Args.option(opts, "--search")
     AuditLogs.log(context.nickname, "channel.list")
 
     # The directory snapshot each channel publishes already carries the member
@@ -95,8 +96,8 @@ defmodule RetroHexChat.Commands.Handlers.Admin.Channel do
   end
 
   def execute(["purge", channel | opts], context) do
-    from = find_opt(opts, "--from")
-    purge_opts = if from, do: [from: strip_at(from)], else: []
+    from = Args.option(opts, "--from")
+    purge_opts = if from, do: [from: Args.nickname(from)], else: []
 
     {:ok, msg} = Admin.purge_channel(channel, purge_opts, context.nickname)
     {:ok, :system, %{content: dgettext("admin", "*** %{message}", message: msg)}}
@@ -170,15 +171,5 @@ defmodule RetroHexChat.Commands.Handlers.Admin.Channel do
 
   defp format_ban_entry(nick) do
     "  #{nick}"
-  end
-
-  defp strip_at("@" <> nick), do: nick
-  defp strip_at(nick), do: nick
-
-  defp find_opt(opts, flag) do
-    case Enum.find_index(opts, &(&1 == flag)) do
-      nil -> nil
-      idx -> Enum.at(opts, idx + 1)
-    end
   end
 end

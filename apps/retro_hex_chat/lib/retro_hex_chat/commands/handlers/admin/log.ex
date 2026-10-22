@@ -4,19 +4,20 @@ defmodule RetroHexChat.Commands.Handlers.Admin.Log do
 
   alias RetroHexChat.Admin.AuditLogs
   alias RetroHexChat.Commands.Handler
+  alias RetroHexChat.Commands.Handler.Args
   alias RetroHexChat.Table
 
   @spec execute([String.t()], Handler.context()) :: Handler.result()
   def execute(opts, _context) do
     last = parse_int_opt(opts, "--last", 20)
-    user = find_opt(opts, "--user")
+    user = Args.option(opts, "--user")
     # The audit log window asks for the page after a row it already has. The
     # flag is how a window reaches page two without a second code path for
     # reading the log.
     before = parse_int_opt(opts, "--before", nil)
 
     query_opts = [last: last]
-    query_opts = if user, do: [{:actor, strip_at(user)} | query_opts], else: query_opts
+    query_opts = if user, do: [{:actor, Args.nickname(user)} | query_opts], else: query_opts
     query_opts = if before, do: [{:cursor, before} | query_opts], else: query_opts
 
     page = AuditLogs.list(query_opts)
@@ -100,18 +101,8 @@ defmodule RetroHexChat.Commands.Handlers.Admin.Log do
   defp format_detail_value(value) when is_binary(value), do: value
   defp format_detail_value(value), do: inspect(value)
 
-  defp strip_at("@" <> nick), do: nick
-  defp strip_at(nick), do: nick
-
-  defp find_opt(opts, flag) do
-    case Enum.find_index(opts, &(&1 == flag)) do
-      nil -> nil
-      idx -> Enum.at(opts, idx + 1)
-    end
-  end
-
   defp parse_int_opt(opts, flag, default) do
-    case find_opt(opts, flag) do
+    case Args.option(opts, flag) do
       nil -> default
       str -> String.to_integer(str)
     end

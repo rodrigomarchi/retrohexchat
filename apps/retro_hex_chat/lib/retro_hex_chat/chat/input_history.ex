@@ -138,7 +138,7 @@ defmodule RetroHexChat.Chat.InputHistory do
   defp normalize_entries(entries) when is_list(entries) do
     entries
     |> Enum.filter(&valid_entry?/1)
-    |> dedupe()
+    |> Enum.uniq()
     |> Enum.take(@max_entries)
   end
 
@@ -148,7 +148,7 @@ defmodule RetroHexChat.Chat.InputHistory do
     commands
     |> Enum.filter(&valid_command?/1)
     |> Enum.map(&String.downcase/1)
-    |> dedupe()
+    |> Enum.uniq()
     |> Enum.take(@max_recent_commands)
   end
 
@@ -171,18 +171,5 @@ defmodule RetroHexChat.Chat.InputHistory do
   defp prepend_unique(value, values, limit) do
     [value | Enum.reject(values, &(&1 == value))]
     |> Enum.take(limit)
-  end
-
-  defp dedupe(values) do
-    values
-    |> Enum.reduce({MapSet.new(), []}, fn value, {seen, acc} ->
-      if MapSet.member?(seen, value) do
-        {seen, acc}
-      else
-        {MapSet.put(seen, value), [value | acc]}
-      end
-    end)
-    |> elem(1)
-    |> Enum.reverse()
   end
 end

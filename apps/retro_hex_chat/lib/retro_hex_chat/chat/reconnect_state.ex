@@ -207,7 +207,7 @@ defmodule RetroHexChat.Chat.ReconnectState do
   defp normalize_channels(channels) when is_list(channels) do
     channels
     |> Enum.filter(&Name.valid?/1)
-    |> dedupe()
+    |> Enum.uniq()
     |> Enum.take(@max_channels)
   end
 
@@ -216,7 +216,7 @@ defmodule RetroHexChat.Chat.ReconnectState do
   defp normalize_nick_list(nicks) when is_list(nicks) do
     nicks
     |> Enum.filter(&valid_nick?/1)
-    |> dedupe()
+    |> Enum.uniq()
     |> Enum.take(@max_open_pm_tabs)
   end
 
@@ -242,17 +242,4 @@ defmodule RetroHexChat.Chat.ReconnectState do
   end
 
   defp valid_nick?(_nick), do: false
-
-  defp dedupe(values) do
-    values
-    |> Enum.reduce({MapSet.new(), []}, fn value, {seen, acc} ->
-      if MapSet.member?(seen, value) do
-        {seen, acc}
-      else
-        {MapSet.put(seen, value), [value | acc]}
-      end
-    end)
-    |> elem(1)
-    |> Enum.reverse()
-  end
 end

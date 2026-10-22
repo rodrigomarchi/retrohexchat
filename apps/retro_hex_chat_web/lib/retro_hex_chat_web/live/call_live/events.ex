@@ -1511,16 +1511,10 @@ defmodule RetroHexChatWeb.CallLive.Events do
 
   defp authorize_channel_ban(call, actor, target) do
     with {:ok, channel_state} <- Server.get_state(call.channel_name) do
-      channel_state
-      |> membership_from_channel_state()
+      channel_state.members
+      |> Membership.from_members()
       |> ChannelPolicy.can_ban?(actor.nickname, target.nickname)
     end
-  end
-
-  defp membership_from_channel_state(%{members: members}) do
-    Enum.reduce(members, Membership.new(), fn {nickname, role}, membership ->
-      Membership.add(membership, nickname, role)
-    end)
   end
 
   defp close_room(socket) do

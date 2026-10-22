@@ -117,25 +117,12 @@ defmodule RetroHexChat.Chat.ContextualTips do
   defp normalize_seen_tips(seen_tips) when is_list(seen_tips) do
     seen_tips
     |> Enum.filter(&(&1 in @known_tip_ids))
-    |> dedupe()
+    |> Enum.uniq()
   end
 
   defp normalize_seen_tips(_seen_tips), do: []
 
   defp append_unique(seen_tips, tip_id) do
     if tip_id in seen_tips, do: seen_tips, else: seen_tips ++ [tip_id]
-  end
-
-  defp dedupe(values) do
-    values
-    |> Enum.reduce({MapSet.new(), []}, fn value, {seen, acc} ->
-      if MapSet.member?(seen, value) do
-        {seen, acc}
-      else
-        {MapSet.put(seen, value), [value | acc]}
-      end
-    end)
-    |> elem(1)
-    |> Enum.reverse()
   end
 end

@@ -5,6 +5,7 @@ defmodule RetroHexChat.Commands.Handlers.Ns do
 
   alias RetroHexChat.Accounts.TrustedDevices
   alias RetroHexChat.Commands.Handler
+  alias RetroHexChat.Commands.Handler.Args
   alias RetroHexChat.Commands.Handler.Guards
   alias RetroHexChat.Commands.Timestamp
   alias RetroHexChat.Services.NickServ
@@ -233,7 +234,7 @@ defmodule RetroHexChat.Commands.Handlers.Ns do
   end
 
   defp call_revoke_device([id], nickname) do
-    with {:ok, device_id} <- parse_id(id),
+    with {:ok, device_id} <- Args.positive_id(id, :invalid_id),
          :ok <- TrustedDevices.revoke_device_for_nick(nickname, device_id, nickname) do
       service_message(dgettext("commands", "Trusted terminal %{id} revoked.", id: id))
     else
@@ -254,7 +255,7 @@ defmodule RetroHexChat.Commands.Handlers.Ns do
   end
 
   defp call_kill_session([id], nickname) do
-    with {:ok, session_id} <- parse_id(id),
+    with {:ok, session_id} <- Args.positive_id(id, :invalid_id),
          :ok <- TrustedDevices.kill_session(nickname, session_id, nickname) do
       service_message(dgettext("commands", "Session %{id} ended.", id: id))
     else
@@ -285,15 +286,6 @@ defmodule RetroHexChat.Commands.Handlers.Ns do
   defp nickserv_message(message) do
     dgettext("commands", "[NickServ] %{message}", message: message)
   end
-
-  defp parse_id(id) when is_binary(id) do
-    case Integer.parse(id) do
-      {parsed, ""} when parsed > 0 -> {:ok, parsed}
-      _ -> {:error, :invalid_id}
-    end
-  end
-
-  defp parse_id(_id), do: {:error, :invalid_id}
 
   defp format_device_line(device) do
     dgettext(

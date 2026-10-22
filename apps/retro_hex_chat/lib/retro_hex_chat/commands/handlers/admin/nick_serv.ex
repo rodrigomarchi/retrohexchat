@@ -5,12 +5,13 @@ defmodule RetroHexChat.Commands.Handlers.Admin.NickServ do
   alias RetroHexChat.Admin
   alias RetroHexChat.Admin.AuditLogs
   alias RetroHexChat.Commands.Handler
+  alias RetroHexChat.Commands.Handler.Args
   alias RetroHexChat.Commands.Timestamp
   alias RetroHexChat.Services.NickServ
 
   @spec execute([String.t()], Handler.context()) :: Handler.result()
   def execute(["drop", nick], context) do
-    nick = strip_at(nick)
+    nick = Args.nickname(nick)
 
     case Admin.drop_nick(nick, context.nickname) do
       {:ok, msg} -> {:ok, :system, %{content: dgettext("admin", "*** %{message}", message: msg)}}
@@ -19,7 +20,7 @@ defmodule RetroHexChat.Commands.Handlers.Admin.NickServ do
   end
 
   def execute(["info", nick], context) do
-    nick = strip_at(nick)
+    nick = Args.nickname(nick)
     AuditLogs.log(context.nickname, "ns.info", {"user", nick})
 
     case NickServ.info(nick) do
@@ -42,7 +43,7 @@ defmodule RetroHexChat.Commands.Handlers.Admin.NickServ do
   end
 
   def execute(["resetpass", nick, new_password], context) do
-    nick = strip_at(nick)
+    nick = Args.nickname(nick)
 
     case Admin.reset_password(nick, new_password, context.nickname) do
       {:ok, msg} -> {:ok, :system, %{content: dgettext("admin", "*** %{message}", message: msg)}}
@@ -57,7 +58,4 @@ defmodule RetroHexChat.Commands.Handlers.Admin.NickServ do
   def execute([subcmd | _], _context) do
     {:error, "Unknown ns subcommand: #{subcmd}. Try: drop, info, resetpass"}
   end
-
-  defp strip_at("@" <> nick), do: nick
-  defp strip_at(nick), do: nick
 end

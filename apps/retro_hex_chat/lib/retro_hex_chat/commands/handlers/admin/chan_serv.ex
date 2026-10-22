@@ -5,6 +5,7 @@ defmodule RetroHexChat.Commands.Handlers.Admin.ChanServ do
   alias RetroHexChat.Admin
   alias RetroHexChat.Admin.AuditLogs
   alias RetroHexChat.Commands.Handler
+  alias RetroHexChat.Commands.Handler.Args
   alias RetroHexChat.Commands.Timestamp
   alias RetroHexChat.Services.{ChanServ, Queries}
 
@@ -49,7 +50,7 @@ defmodule RetroHexChat.Commands.Handlers.Admin.ChanServ do
   end
 
   def execute(["transfer", channel, nick], context) do
-    nick = strip_at(nick)
+    nick = Args.nickname(nick)
 
     case Admin.transfer_channel(channel, nick, context.nickname) do
       {:ok, msg} -> {:ok, :system, %{content: dgettext("admin", "*** %{message}", message: msg)}}
@@ -83,7 +84,7 @@ defmodule RetroHexChat.Commands.Handlers.Admin.ChanServ do
   end
 
   def execute(["access", channel, "add", level, nick], context) do
-    nick = strip_at(nick)
+    nick = Args.nickname(nick)
 
     case Admin.manage_channel_access(channel, :add, level, nick, context.nickname) do
       {:ok, msg} -> {:ok, :system, %{content: dgettext("admin", "*** %{message}", message: msg)}}
@@ -92,7 +93,7 @@ defmodule RetroHexChat.Commands.Handlers.Admin.ChanServ do
   end
 
   def execute(["access", channel, "del", level, nick], context) do
-    nick = strip_at(nick)
+    nick = Args.nickname(nick)
 
     case Admin.manage_channel_access(channel, :remove, level, nick, context.nickname) do
       {:ok, msg} -> {:ok, :system, %{content: dgettext("admin", "*** %{message}", message: msg)}}
@@ -115,7 +116,4 @@ defmodule RetroHexChat.Commands.Handlers.Admin.ChanServ do
       added_by: e.added_by
     )
   end
-
-  defp strip_at("@" <> nick), do: nick
-  defp strip_at(nick), do: nick
 end

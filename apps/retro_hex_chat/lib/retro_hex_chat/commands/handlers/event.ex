@@ -5,6 +5,7 @@ defmodule RetroHexChat.Commands.Handlers.Event do
 
   alias RetroHexChat.Commands.Duration
   alias RetroHexChat.Commands.Handler
+  alias RetroHexChat.Commands.Handler.Args
 
   @impl true
   @spec validate(String.t()) :: :ok | {:error, String.t()}
@@ -22,7 +23,7 @@ defmodule RetroHexChat.Commands.Handlers.Event do
 
   def execute(["cancel", raw_id | _rest], context) do
     with :ok <- in_channel(context),
-         {:ok, id} <- parse_id(raw_id) do
+         {:ok, id} <- Args.positive_id(raw_id, dgettext("commands", "That is not an event id")) do
       {:ok, :ui_action, :cancel_event, %{channel: context.active_channel, event_id: id}}
     end
   end
@@ -65,13 +66,6 @@ defmodule RetroHexChat.Commands.Handlers.Event do
     case parts |> Enum.join(" ") |> String.trim() do
       "" -> {:error, dgettext("commands", "What is it called? Use /event <when> <title>.")}
       title -> {:ok, title}
-    end
-  end
-
-  defp parse_id(raw) do
-    case Integer.parse(String.trim(raw)) do
-      {id, ""} when id > 0 -> {:ok, id}
-      _other -> {:error, dgettext("commands", "That is not an event id")}
     end
   end
 

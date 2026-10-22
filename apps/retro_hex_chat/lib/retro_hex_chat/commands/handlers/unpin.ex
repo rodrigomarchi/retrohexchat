@@ -4,6 +4,7 @@ defmodule RetroHexChat.Commands.Handlers.Unpin do
   @behaviour RetroHexChat.Commands.Handler
 
   alias RetroHexChat.Commands.Handler
+  alias RetroHexChat.Commands.Handler.Args
 
   @impl true
   @spec validate(String.t()) :: :ok | {:error, String.t()}
@@ -25,16 +26,10 @@ defmodule RetroHexChat.Commands.Handlers.Unpin do
         {:error, dgettext("commands", "You are not in any channel")}
 
       channel ->
-        with {:ok, id} <- parse_id(raw_id) do
+        with {:ok, id} <-
+               Args.positive_id(raw_id, dgettext("commands", "That is not a message id")) do
           {:ok, :ui_action, :unpin_message, %{channel: channel, message_id: id}}
         end
-    end
-  end
-
-  defp parse_id(raw) do
-    case Integer.parse(String.trim(raw)) do
-      {id, ""} when id > 0 -> {:ok, id}
-      _other -> {:error, dgettext("commands", "That is not a message id")}
     end
   end
 

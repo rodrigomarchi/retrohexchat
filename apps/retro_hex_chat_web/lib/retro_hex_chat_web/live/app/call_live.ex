@@ -547,9 +547,7 @@ defmodule RetroHexChatWeb.App.CallLive do
   defp channel_membership(channel_name) do
     case Server.get_state(channel_name) do
       {:ok, %{members: members}} ->
-        Enum.reduce(members, Membership.new(), fn {nickname, role}, membership ->
-          Membership.add(membership, nickname, role)
-        end)
+        Membership.from_members(members)
 
       _absent ->
         Membership.new()

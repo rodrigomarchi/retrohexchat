@@ -20,6 +20,14 @@ defmodule RetroHexChat.Channels.Membership do
   @spec new() :: t()
   def new, do: %__MODULE__{}
 
+  @doc "A membership holding every `{nickname, role}` pair, as a channel's state lists them."
+  @spec from_members(Enumerable.t({String.t(), role()})) :: t()
+  def from_members(members) do
+    Enum.reduce(members, new(), fn {nickname, role}, membership ->
+      add(membership, nickname, role)
+    end)
+  end
+
   @spec add(t(), String.t(), role()) :: t()
   def add(%__MODULE__{members: members} = m, nickname, role \\ :regular) do
     info = %{nick: nickname, role: role, joined_at: DateTime.utc_now()}

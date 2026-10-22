@@ -5,6 +5,7 @@ defmodule RetroHexChat.Commands.Handlers.Admin.User do
   alias RetroHexChat.Accounts.ServerRoles
   alias RetroHexChat.Admin
   alias RetroHexChat.Admin.{AuditLogs, ServerBans}
+  alias RetroHexChat.Commands.Handler.Args
   alias RetroHexChat.Commands.{Duration, Handler, Timestamp}
   alias RetroHexChat.Page
   alias RetroHexChat.Presence.Tracker
@@ -40,7 +41,7 @@ defmodule RetroHexChat.Commands.Handlers.Admin.User do
   end
 
   def execute(["info", nick], context) do
-    nick = strip_at(nick)
+    nick = Args.nickname(nick)
     AuditLogs.log(context.nickname, "user.info", {"user", nick})
 
     case Queries.find_by_nickname(nick) do
@@ -78,7 +79,7 @@ defmodule RetroHexChat.Commands.Handlers.Admin.User do
   end
 
   def execute(["ban", nick | opts], context) do
-    nick = strip_at(nick)
+    nick = Args.nickname(nick)
     {reason, duration} = parse_ban_opts(opts)
 
     case Admin.ban_user(nick, context.nickname, reason, duration) do
@@ -88,7 +89,7 @@ defmodule RetroHexChat.Commands.Handlers.Admin.User do
   end
 
   def execute(["unban", nick], context) do
-    nick = strip_at(nick)
+    nick = Args.nickname(nick)
 
     case Admin.unban_user(nick, context.nickname) do
       {:ok, msg} -> {:ok, :system, %{content: dgettext("admin", "*** %{message}", message: msg)}}
@@ -97,7 +98,7 @@ defmodule RetroHexChat.Commands.Handlers.Admin.User do
   end
 
   def execute(["kick", nick | opts], context) do
-    nick = strip_at(nick)
+    nick = Args.nickname(nick)
     reason = parse_reason(opts)
 
     case Admin.kick_user(nick, context.nickname, reason) do
@@ -106,7 +107,7 @@ defmodule RetroHexChat.Commands.Handlers.Admin.User do
   end
 
   def execute(["mute", nick | opts], context) do
-    nick = strip_at(nick)
+    nick = Args.nickname(nick)
     duration = parse_duration_opt(opts)
 
     case Admin.mute_user(nick, context.nickname, nil, duration) do
@@ -115,7 +116,7 @@ defmodule RetroHexChat.Commands.Handlers.Admin.User do
   end
 
   def execute(["unmute", nick], context) do
-    nick = strip_at(nick)
+    nick = Args.nickname(nick)
 
     case Admin.unmute_user(nick, context.nickname) do
       {:ok, msg} -> {:ok, :system, %{content: dgettext("admin", "*** %{message}", message: msg)}}
@@ -123,7 +124,7 @@ defmodule RetroHexChat.Commands.Handlers.Admin.User do
   end
 
   def execute(["rename", old_nick, new_nick], context) do
-    old_nick = strip_at(old_nick)
+    old_nick = Args.nickname(old_nick)
 
     case Admin.rename_user(old_nick, new_nick, context.nickname) do
       {:ok, msg} -> {:ok, :system, %{content: dgettext("admin", "*** %{message}", message: msg)}}
@@ -132,7 +133,7 @@ defmodule RetroHexChat.Commands.Handlers.Admin.User do
   end
 
   def execute(["role", nick, role], context) do
-    nick = strip_at(nick)
+    nick = Args.nickname(nick)
 
     root_admins = Application.get_env(:retro_hex_chat, :root_admins, [])
 
@@ -152,7 +153,7 @@ defmodule RetroHexChat.Commands.Handlers.Admin.User do
   def execute(["banlist" | opts], _context) do
     page = ServerBans.list_active_bans()
     bans = page.items
-    search = find_opt(opts, "--search")
+    search = Args.option(opts, "--search")
 
     filtered =
       if search do
@@ -277,9 +278,6 @@ defmodule RetroHexChat.Commands.Handlers.Admin.User do
     )
   end
 
-  defp strip_at("@" <> nick), do: nick
-  defp strip_at(nick), do: nick
-
   defp online_nicknames do
     Tracker.list_users(Topics.presence())
     |> Enum.map(& &1.nickname)
@@ -287,17 +285,17 @@ defmodule RetroHexChat.Commands.Handlers.Admin.User do
   end
 
   defp parse_list_opts(opts) do
-    search = find_opt(opts, "--search")
+    search = Args.option(opts, "--search")
     online = "--online" in opts
     # The Users window asks for the page after the last nickname it holds. The
     # cursor is the nickname because the listing is ordered by it.
-    after_nick = find_opt(opts, "--after")
+    after_nick = Args.option(opts, "--after")
     {search, online, after_nick}
   end
 
   defp parse_ban_opts(opts) do
-    reason = find_opt(opts, "--reason")
-    duration_str = find_opt(opts, "--duration")
+    reason = Args.option(opts, "--reason")
+    duration_str = Args.option(opts, "--duration")
     duration = if duration_str, do: Duration.parse(duration_str), else: nil
     {reason, duration}
   end
@@ -305,21 +303,14 @@ defmodule RetroHexChat.Commands.Handlers.Admin.User do
   defp parse_reason([]), do: nil
 
   defp parse_reason(opts) do
-    reason = find_opt(opts, "--reason")
+    reason = Args.option(opts, "--reason")
     if reason, do: reason, else: Enum.join(opts, " ")
   end
 
   defp parse_duration_opt(opts) do
-    case find_opt(opts, "--duration") do
+    case Args.option(opts, "--duration") do
       nil -> :permanent
       str -> Duration.parse(str)
-    end
-  end
-
-  defp find_opt(opts, flag) do
-    case Enum.find_index(opts, &(&1 == flag)) do
-      nil -> nil
-      idx -> Enum.at(opts, idx + 1)
     end
   end
 end

@@ -45,7 +45,7 @@ defmodule RetroHexChat.GroupCall do
     with :ok <- check_enabled(config),
          :ok <- RateLimiter.check_create_rate(actor.user_id),
          {:ok, channel_state} <- Channels.Server.get_state(channel_name),
-         membership = membership_from_channel_state(channel_state),
+         membership = Membership.from_members(channel_state.members),
          :ok <-
            Policy.can_create_channel_call?(
              actor.user_id,
@@ -685,11 +685,5 @@ defmodule RetroHexChat.GroupCall do
         })
       end
     )
-  end
-
-  defp membership_from_channel_state(%{members: members}) do
-    Enum.reduce(members, Membership.new(), fn {nickname, role}, membership ->
-      Membership.add(membership, nickname, role)
-    end)
   end
 end
