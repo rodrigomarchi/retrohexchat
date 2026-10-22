@@ -12,6 +12,7 @@ from i18n.quality import (
     batch_is_contaminated,
     find_collapses,
     find_shared_headings,
+    glued_words,
     has_entity_residue,
     has_trailing_stop,
     introduced_degeneration,
@@ -21,6 +22,7 @@ from i18n.quality import (
     introduced_replacement_box,
     is_usable_translation,
     looks_like_mojibake,
+    stops_mid_sentence,
 )
 
 
@@ -32,6 +34,29 @@ class ReplacementBoxTest(unittest.TestCase):
 
     def test_keeps_a_box_the_source_has(self):
         self.assertFalse(introduced_replacement_box("Draw a □ here", "Desenhe um □ aqui"))
+
+
+class GluedWordsTest(unittest.TestCase):
+    def test_rejects_and_the_run_together_in_portuguese(self):
+        self.assertTrue(glued_words("Escolha um chapéu eo rosto", "pt_BR"))
+        self.assertFalse(glued_words("Escolha um chapéu e o rosto", "pt_BR"))
+
+    def test_other_languages_are_not_judged(self):
+        self.assertFalse(glued_words("Video eo audio", "it"))
+
+
+class StopsMidSentenceTest(unittest.TestCase):
+    def test_rejects_a_sentence_cut_off_at_a_comma(self):
+        # ja: "Design your character, then go in." -> "キャラクターをデザインし、"
+        source = "Design your character, then go in."
+        self.assertTrue(stops_mid_sentence(source, "キャラクターをデザインし、"))
+        self.assertFalse(is_usable_translation(source, "キャラクターをデザインし、", {}))
+
+    def test_keeps_a_whole_sentence_and_a_label_ending_in_a_colon(self):
+        self.assertFalse(
+            stops_mid_sentence("Design your character, then go in.", "キャラクターをデザインして入ります。")
+        )
+        self.assertFalse(stops_mid_sentence("Pictures of every place:", "Fotos de cada lugar:"))
 
 
 class DegenerateTest(unittest.TestCase):

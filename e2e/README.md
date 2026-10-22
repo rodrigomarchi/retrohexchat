@@ -93,6 +93,9 @@ e2e/
 ├── scripts/capture-game-shots.mjs
 │                          Screenshots for the public game pages (`make games.shots`):
 │                          a tool that writes into priv/static, not a test
+├── scripts/lib/images.mjs WebP and share-card encoding both captures use
+├── capture/               Pictures for public pages, taken from the real product
+│                          (`make spaces.shots`): run only by that target, not a test
 ├── package.json
 ├── playwright.config.ts
 ├── tsconfig.json

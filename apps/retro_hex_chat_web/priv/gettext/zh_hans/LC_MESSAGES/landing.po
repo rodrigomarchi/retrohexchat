@@ -260,7 +260,7 @@ msgstr "关闭。 盲目相信他们"
 msgid "Code"
 msgstr "代码"
 
-#: lib/retro_hex_chat_web/public_pages.ex:105
+#: lib/retro_hex_chat_web/public_pages.ex:111
 #: lib/retro_hex_chat_web/site/about.html.heex:50
 #: lib/retro_hex_chat_web/site/pages/community.ex:18
 #: lib/retro_hex_chat_web/site/pages/community.ex:71
@@ -376,7 +376,7 @@ msgstr "恩杜罗"
 msgid "Extensible"
 msgstr "可扩展"
 
-#: lib/retro_hex_chat_web/public_pages.ex:106
+#: lib/retro_hex_chat_web/public_pages.ex:112
 #: lib/retro_hex_chat_web/site/pages/faq.ex:195
 #: lib/retro_hex_chat_web/site/pages/faq.ex:231
 #, elixir-autogen, elixir-format
@@ -388,7 +388,7 @@ msgstr "财务问题"
 msgid "FAQ — Retro Hex Chat"
 msgstr "FAQ — 逆向十六进制聊天"
 
-#: lib/retro_hex_chat_web/public_pages.ex:101
+#: lib/retro_hex_chat_web/public_pages.ex:106
 #: lib/retro_hex_chat_web/site/pages/features.ex:29
 #: lib/retro_hex_chat_web/site/pages/features.ex:113
 #, elixir-autogen, elixir-format
@@ -466,7 +466,7 @@ msgstr "帮助恢复Hex Chat的生命。"
 msgid "Hockey"
 msgstr "冰球"
 
-#: lib/retro_hex_chat_web/public_pages.ex:100
+#: lib/retro_hex_chat_web/public_pages.ex:105
 #: lib/retro_hex_chat_web/site/pages/how_it_works.ex:18
 #: lib/retro_hex_chat_web/site/pages/how_it_works.ex:94
 #, elixir-autogen, elixir-format
@@ -508,7 +508,7 @@ msgstr "如果无法建立直接连接（严格的防火墙），"
 msgid "Inspired by the IRC of the 2000s and the freedom it represented."
 msgstr "受到2000年代的IRC及其所代表的自由的启发."
 
-#: lib/retro_hex_chat_web/public_pages.ex:104
+#: lib/retro_hex_chat_web/public_pages.ex:110
 #: lib/retro_hex_chat_web/site/pages/install.ex:16
 #: lib/retro_hex_chat_web/site/pages/install.ex:51
 #, elixir-autogen, elixir-format
@@ -800,7 +800,7 @@ msgstr "邮递SQL"
 msgid "Powerful IRC-style commands."
 msgstr "强大的IRC风格的命令."
 
-#: lib/retro_hex_chat_web/public_pages.ex:103
+#: lib/retro_hex_chat_web/public_pages.ex:109
 #: lib/retro_hex_chat_web/site/pages/privacy.ex:16
 #: lib/retro_hex_chat_web/site/pages/privacy.ex:86
 #, elixir-autogen, elixir-format
@@ -911,7 +911,7 @@ msgstr "通过 WebRTC 数据频道实时同步"
 msgid "Repository:"
 msgstr "仓库 :"
 
-#: lib/retro_hex_chat_web/components/ui/site/section.ex:61
+#: lib/retro_hex_chat_web/components/ui/site/section.ex:86
 #: lib/retro_hex_chat_web/site/pages/privacy.ex:40
 #, elixir-autogen, elixir-format
 msgid "Retro Hex Chat"
@@ -1570,14 +1570,14 @@ msgid "34 multiplayer games via WebRTC."
 msgstr "34次多人游戏通过WebRTC."
 
 #: lib/retro_hex_chat_web/site/pages/features.ex:78
-#: lib/retro_hex_chat_web/site/pages/game.ex:272
+#: lib/retro_hex_chat_web/site/pages/game.ex:274
 #: lib/retro_hex_chat_web/site/pages/games.ex:35
 #: lib/retro_hex_chat_web/site/pages/index.ex:94
 #, elixir-autogen, elixir-format
 msgid "Arcade"
 msgstr "街机"
 
-#: lib/retro_hex_chat_web/public_pages.ex:102
+#: lib/retro_hex_chat_web/public_pages.ex:107
 #: lib/retro_hex_chat_web/site/pages/game.ex:69
 #: lib/retro_hex_chat_web/site/pages/games.ex:24
 #: lib/retro_hex_chat_web/site/pages/games.ex:46
@@ -1585,7 +1585,7 @@ msgstr "街机"
 msgid "Games"
 msgstr "游戏"
 
-#: lib/retro_hex_chat_web/public_pages.ex:99
+#: lib/retro_hex_chat_web/public_pages.ex:104
 #: lib/retro_hex_chat_web/site/pages/community.ex:70
 #: lib/retro_hex_chat_web/site/pages/faq.ex:230
 #: lib/retro_hex_chat_web/site/pages/features.ex:112
@@ -1595,6 +1595,7 @@ msgstr "游戏"
 #: lib/retro_hex_chat_web/site/pages/how_it_works.ex:93
 #: lib/retro_hex_chat_web/site/pages/install.ex:50
 #: lib/retro_hex_chat_web/site/pages/privacy.ex:85
+#: lib/retro_hex_chat_web/site/pages/spaces.ex:86
 #, elixir-autogen, elixir-format
 msgid "Home"
 msgstr "页 次"
@@ -1695,7 +1696,7 @@ msgstr "聊天,Spaces,私人P2P通话,频道会议,以及复古游戏."
 msgid "Choose an avatar before entering the shared map"
 msgstr "在输入共享地图前选择一个化身"
 
-#: lib/retro_hex_chat_web/site/pages/index/three_ways_to_be_together.html.heex:57
+#: lib/retro_hex_chat_web/site/pages/index/three_ways_to_be_together.html.heex:60
 #, elixir-autogen, elixir-format
 msgid "Conference"
 msgstr "会议"
@@ -1991,7 +1992,10 @@ msgstr "空间"
 msgid "Space runtime"
 msgstr "空间运行时间"
 
+#: lib/retro_hex_chat_web/public_pages.ex:108
 #: lib/retro_hex_chat_web/site/pages/community.ex:56
+#: lib/retro_hex_chat_web/site/pages/spaces.ex:58
+#: lib/retro_hex_chat_web/site/pages/spaces.ex:87
 #, elixir-autogen, elixir-format
 msgid "Spaces"
 msgstr "空间"
@@ -2012,11 +2016,6 @@ msgstr ""
 #, elixir-autogen, elixir-format
 msgid "Spatial chat"
 msgstr "空间聊天"
-
-#: lib/retro_hex_chat_web/site/pages/features/virtual_spaces.html.heex:19
-#, elixir-autogen, elixir-format
-msgid "Switch between Chat and Space from the channel topic bar"
-msgstr "从频道主题栏切换聊天和空间"
 
 #: lib/retro_hex_chat_web/site/pages/how_it_works/virtual_spaces.html.heex:12
 #, elixir-autogen, elixir-format
@@ -2105,7 +2104,7 @@ msgid "— Open the SFU UDP port range 50000–50100 for channel conferences"
 msgstr "——打开SFU UDP端口范围为50000–50100频道会议."
 
 #: lib/retro_hex_chat_web/site/pages/features/channel_conferences.html.heex:7
-#: lib/retro_hex_chat_web/site/pages/index/three_ways_to_be_together.html.heex:62
+#: lib/retro_hex_chat_web/site/pages/index/three_ways_to_be_together.html.heex:65
 #, elixir-autogen, elixir-format
 msgid "Channel conference topology diagram"
 msgstr "频道会议地形图"
@@ -2115,7 +2114,7 @@ msgstr "频道会议地形图"
 msgid "Channels, DMs, bots, commands, replies, reactions, and moderation stay in one durable conversation history."
 msgstr "海峡、DM、bots、命令、答复、反应和温和,都停留在一个持久的对话历史中。"
 
-#: lib/retro_hex_chat_web/site/pages/index/three_ways_to_be_together.html.heex:67
+#: lib/retro_hex_chat_web/site/pages/index/three_ways_to_be_together.html.heex:70
 #, elixir-autogen, elixir-format
 msgid "Conference keeps media inside the channel: participants join from the room, operators moderate, and your SFU routes the streams."
 msgstr "会议将媒体保留在频道内:参与者从房间加入,操作员温和,以及您的SFU路线流."
@@ -2131,7 +2130,7 @@ msgstr "时空地图末端带有浮雕和世界聊天泡"
 msgid "Persistent chat workspace diagram"
 msgstr "持续聊天工作空间图"
 
-#: lib/retro_hex_chat_web/site/pages/index/three_ways_to_be_together.html.heex:47
+#: lib/retro_hex_chat_web/site/pages/index/three_ways_to_be_together.html.heex:50
 #, elixir-autogen, elixir-format
 msgid "Space renders that same conversation as a live map: avatars move, messages bubble in-world, and the channel or DM stays the source of truth."
 msgstr "空间使这种对话与直播地图相同:异形者移动,信息在世界上产生泡沫,而频道或DM则保持真理的来源."
@@ -2151,7 +2150,7 @@ msgstr "安装"
 msgid "Three ways"
 msgstr "三种方式"
 
-#: lib/retro_hex_chat_web/public_pages.ex:96
+#: lib/retro_hex_chat_web/public_pages.ex:101
 #: lib/retro_hex_chat_web/site/pages/index.ex:40
 #, elixir-autogen, elixir-format
 msgid "Welcome"
@@ -2278,7 +2277,7 @@ msgid "%{count} game"
 msgid_plural "%{count} games"
 msgstr[0] "%{count} 个游戏"
 
-#: lib/retro_hex_chat_web/components/ui/landing/game_cards.ex:198
+#: lib/retro_hex_chat_web/components/ui/landing/game_cards.ex:185
 #, elixir-autogen, elixir-format
 msgid "All games"
 msgstr "全部游戏"
@@ -2289,11 +2288,12 @@ msgid "DOOM, Quake, Wolfenstein 3D, Half-Life and classic adventures in the brow
 msgstr "在浏览器中玩 DOOM、Quake、Wolfenstein 3D、Half-Life 和经典冒险游戏，还有可与朋友对战的多人街机游戏 — 免费，无需安装。"
 
 #: lib/retro_hex_chat_web/site/pages/game.ex:148
+#: lib/retro_hex_chat_web/site/pages/spaces.ex:61
 #, elixir-autogen, elixir-format
 msgid "Free, in the browser"
 msgstr "免费，在浏览器中"
 
-#: lib/retro_hex_chat_web/components/ui/landing/game_cards.ex:232
+#: lib/retro_hex_chat_web/components/ui/landing/game_cards.ex:219
 #: lib/retro_hex_chat_web/components/ui/landing/game_home.ex:224
 #, elixir-autogen, elixir-format
 msgid "How to play"
@@ -2304,18 +2304,18 @@ msgstr "玩法"
 msgid "More games"
 msgstr "更多游戏"
 
-#: lib/retro_hex_chat_web/site/pages/game.ex:277
+#: lib/retro_hex_chat_web/site/pages/game.ex:279
 #, elixir-autogen, elixir-format
 msgid "Play %{name} in your browser"
 msgstr "在浏览器中玩 %{name}"
 
-#: lib/retro_hex_chat_web/site/pages/game.ex:276
+#: lib/retro_hex_chat_web/site/pages/game.ex:278
 #, elixir-autogen, elixir-format
 msgid "Play %{name} in your browser — Retro Hex Chat"
 msgstr "在浏览器中玩 %{name} — Retro Hex Chat"
 
 #: lib/retro_hex_chat_web/components/ui/landing/arcade_home.ex:145
-#: lib/retro_hex_chat_web/components/ui/landing/game_cards.ex:227
+#: lib/retro_hex_chat_web/components/ui/landing/game_cards.ex:214
 #: lib/retro_hex_chat_web/components/ui/landing/game_home.ex:121
 #: lib/retro_hex_chat_web/components/ui/landing/game_home.ex:250
 #, elixir-autogen, elixir-format
@@ -2332,13 +2332,13 @@ msgstr "浏览器里的复古游戏"
 msgid "Retro games you can play in your browser — Retro Hex Chat"
 msgstr "可在浏览器中玩的复古游戏 — Retro Hex Chat"
 
-#: lib/retro_hex_chat_web/components/ui/landing/game_cards.ex:51
-#: lib/retro_hex_chat_web/site/pages/game.ex:291
+#: lib/retro_hex_chat_web/components/ui/landing/game_cards.ex:52
+#: lib/retro_hex_chat_web/site/pages/game.ex:293
 #, elixir-autogen, elixir-format
 msgid "Screenshot of %{name}"
 msgstr "%{name} 的截图"
 
-#: lib/retro_hex_chat_web/components/ui/landing/game_cards.ex:257
+#: lib/retro_hex_chat_web/components/ui/landing/game_cards.ex:244
 #, elixir-autogen, elixir-format
 msgid "See every game in the catalogue"
 msgstr "在目录中查看全部游戏"
@@ -2434,7 +2434,7 @@ msgstr "在这里玩游戏"
 msgid "Here"
 msgstr "这里"
 
-#: lib/retro_hex_chat_web/public_pages.ex:109
+#: lib/retro_hex_chat_web/public_pages.ex:115
 #: lib/retro_hex_chat_web/site/pages/irc_chat.ex:81
 #, elixir-autogen, elixir-format
 msgid "IRC chat"
@@ -2558,7 +2558,7 @@ msgstr "您的 mIRC 命令, 在浏览器中"
 msgid "Your nickname"
 msgstr "Your nickname"
 
-#: lib/retro_hex_chat_web/public_pages.ex:107
+#: lib/retro_hex_chat_web/public_pages.ex:113
 #: lib/retro_hex_chat_web/site/pages/mirc_commands.ex:35
 #, elixir-autogen, elixir-format
 msgid "mIRC commands"
@@ -2569,7 +2569,7 @@ msgstr "mIRC 命令"
 msgid "mIRC commands that work in your browser — Retro Hex Chat"
 msgstr "mIRC命令在您的浏览器中工作 — Retro Hex Chat"
 
-#: lib/retro_hex_chat_web/public_pages.ex:108
+#: lib/retro_hex_chat_web/public_pages.ex:114
 #: lib/retro_hex_chat_web/site/pages/mirc_online.ex:50
 #, elixir-autogen, elixir-format
 msgid "mIRC online"
@@ -2796,7 +2796,7 @@ msgstr "等级分"
 msgid "Live now"
 msgstr "现在活着"
 
-#: lib/retro_hex_chat_web/components/ui/landing/game_cards.ex:228
+#: lib/retro_hex_chat_web/components/ui/landing/game_cards.ex:215
 #, elixir-autogen, elixir-format
 msgid "Play now"
 msgstr "立即游玩"
@@ -2912,3 +2912,188 @@ msgstr "最近开始: %{when}"
 msgid "You have started this game %{count} time."
 msgid_plural "You have started this game %{count} times."
 msgstr[0] "你已经开始了%{count}次比赛。"
+
+#: lib/retro_hex_chat_web/site/pages/spaces/intro.html.heex:33
+#: lib/retro_hex_chat_web/site/pages/spaces/places.html.heex:28
+#: lib/retro_hex_chat_web/site/pages/spaces/places.html.heex:50
+#: lib/retro_hex_chat_web/site/pages/spaces/places.html.heex:72
+#, elixir-autogen, elixir-format
+msgid "How it works"
+msgstr "如何运作"
+
+#: lib/retro_hex_chat_web/site/pages/spaces.ex:71
+#, elixir-autogen, elixir-format
+msgid "How to get in"
+msgstr "如何进入"
+
+#: lib/retro_hex_chat_web/site/pages/features/virtual_spaces.html.heex:19
+#, elixir-autogen, elixir-format
+msgid "Open a channel's Space with the Space button next to its tab"
+msgstr "在频道标签旁边打开空间按钮"
+
+#: lib/retro_hex_chat_web/site/pages/features/virtual_spaces.html.heex:40
+#: lib/retro_hex_chat_web/site/pages/index/three_ways_to_be_together.html.heex:47
+#: lib/retro_hex_chat_web/site/pages/spaces.ex:63
+#, elixir-autogen, elixir-format
+msgid "Places to go"
+msgstr "可去的地方"
+
+#: lib/retro_hex_chat_web/site/pages/spaces/places.html.heex:4
+#, elixir-autogen, elixir-format
+msgid "The Construct"
+msgstr "Construct"
+
+#: lib/retro_hex_chat_web/site/pages/spaces/places.html.heex:35
+#, elixir-autogen, elixir-format
+msgid "The Game Room"
+msgstr "游戏房间"
+
+#: lib/retro_hex_chat_web/site/pages/spaces/places.html.heex:57
+#, elixir-autogen, elixir-format
+msgid "The Office"
+msgstr "办公室"
+
+#: lib/retro_hex_chat_web/site/pages/spaces/creator.html.heex:5
+#, elixir-autogen, elixir-format
+msgid "The character creator, with a wizard in a violet robe"
+msgstr "角色创造者 穿着紫色长袍的巫师"
+
+#: lib/retro_hex_chat_web/site/pages/spaces.ex:67
+#, elixir-autogen, elixir-format
+msgid "Your character"
+msgstr "你的角色"
+
+#: lib/retro_hex_chat_web/site/pages/spaces/intro.html.heex:2
+#, elixir-autogen, elixir-format
+msgid "A pixel-art world for every chat room"
+msgstr "每个聊天室都有一个像素艺术的世界"
+
+#: lib/retro_hex_chat_web/site/pages/spaces/creator.html.heex:18
+#, elixir-autogen, elixir-format
+msgid "Choose a colour for each piece."
+msgstr "为每块选择颜色 。"
+
+#: lib/retro_hex_chat_web/site/pages/spaces/how.html.heex:21
+#, elixir-autogen, elixir-format
+msgid "Each channel has its own Space, and so does each private conversation."
+msgstr "每个频道都有自己的空间,每个私人对话也一样."
+
+#: lib/retro_hex_chat_web/site/pages/spaces/places.html.heex:46
+#, elixir-autogen, elixir-format
+msgid "Each machine opens the games of the channel."
+msgstr "每台机器打开频道的游戏."
+
+#: lib/retro_hex_chat_web/site/pages/spaces/intro.html.heex:5
+#, elixir-autogen, elixir-format
+msgid "Every channel opens onto a Space, a pixel-art world."
+msgstr "每个频道打开一个空间,一个像素艺术的世界."
+
+#: lib/retro_hex_chat_web/site/pages/spaces/intro.html.heex:9
+#, elixir-autogen, elixir-format
+msgid "Everybody arrives on the island at the End of Time."
+msgstr "每个人都到达岛上 在End of Time。"
+
+#: lib/retro_hex_chat_web/site/pages/spaces/places.html.heex:40
+#: lib/retro_hex_chat_web/site/pages/spaces/places.html.heex:45
+#, elixir-autogen, elixir-format
+msgid "Inside there are arcade games and a pool table."
+msgstr "里面有街机游戏和台球台"
+
+#: lib/retro_hex_chat_web/site/pages/spaces/places.html.heex:67
+#, elixir-autogen, elixir-format
+msgid "Inside there are work desks and a meeting table."
+msgstr "内部有工作台和会议桌。"
+
+#: lib/retro_hex_chat_web/site/pages/spaces/places.html.heex:68
+#, elixir-autogen, elixir-format
+msgid "It is a place to meet and to talk about work."
+msgstr "这是一个见面和谈论工作的地方。"
+
+#: lib/retro_hex_chat_web/site/pages/spaces/how.html.heex:6
+#, elixir-autogen, elixir-format
+msgid "Open a channel and press the Space button next to its tab."
+msgstr "打开频道并按其标签旁的空间按钮。"
+
+#: lib/retro_hex_chat_web/site/pages/spaces.ex:90
+#, elixir-autogen, elixir-format
+msgid "Spaces: a pixel-art world for every chat room"
+msgstr "空间:每个聊天室的像素艺术世界"
+
+#: lib/retro_hex_chat_web/site/pages/spaces/places.html.heex:18
+#, elixir-autogen, elixir-format
+msgid "Through the gate there is an empty white floor."
+msgstr "通过大门,有一个空的白色地板。"
+
+#: lib/retro_hex_chat_web/site/pages/spaces/intro.html.heex:8
+#, elixir-autogen, elixir-format
+msgid "What you type shows up above your character and in the chat."
+msgstr "你打的字出现在你的角色和聊天中"
+
+#: lib/retro_hex_chat_web/site/pages/spaces/places.html.heex:24
+#, elixir-autogen, elixir-format
+msgid "Your buildings stay in the channel, and everybody can see them."
+msgstr "你们的建筑留在频道里 每个人都能看到"
+
+#: lib/retro_hex_chat_web/site/pages/spaces/intro.html.heex:7
+#, elixir-autogen, elixir-format
+msgid "Make a character, then go in and chat."
+msgstr "做个角色 然后进去聊天"
+
+#: lib/retro_hex_chat_web/site/pages/spaces.ex:82
+#: lib/retro_hex_chat_web/site/pages/spaces/intro.html.heex:40
+#, elixir-autogen, elixir-format
+msgid "Three characters talking on an island, in pixel art"
+msgstr "三个人物在岛上说话,像素艺术"
+
+#: lib/retro_hex_chat_web/site/pages/spaces.ex:92
+#, elixir-autogen, elixir-format
+msgid "Walk around a pixel-art world with the people of a chat room, in your browser. Make a character, talk and build together for free."
+msgstr "在你的浏览器里 和聊天室里的人一起 环游一个像素艺术的世界 做一个角色,谈话和建设一起免费."
+
+#: lib/retro_hex_chat_web/site/pages/spaces/creator.html.heex:11
+#: lib/retro_hex_chat_web/site/pages/spaces/how.html.heex:11
+#, elixir-autogen, elixir-format
+msgid "Make your character"
+msgstr "创建你的角色"
+
+#: lib/retro_hex_chat_web/site/pages/spaces/places.html.heex:19
+#, elixir-autogen, elixir-format
+msgid "Choose furniture, plants and games in the %{build} menu and place them anywhere."
+msgstr "在%{build}菜单中选择家具,植物和游戏,并放在任何地方."
+
+#: lib/retro_hex_chat_web/site/pages/spaces/creator.html.heex:15
+#, elixir-autogen, elixir-format
+msgid "Choose the skin, the outfit, the hair, a hat and the face."
+msgstr "选择皮肤,服装,头发,帽子和脸."
+
+#: lib/retro_hex_chat_web/site/pages/spaces/intro.html.heex:15
+#: lib/retro_hex_chat_web/site/pages/spaces/intro.html.heex:21
+#: lib/retro_hex_chat_web/site/pages/spaces/intro.html.heex:25
+#, elixir-autogen, elixir-format
+msgid "Open the Space of %{channel}"
+msgstr "打开 %{channel} 的空间"
+
+#: lib/retro_hex_chat_web/site/pages/spaces/places.html.heex:10
+#, elixir-autogen, elixir-format
+msgid "The Construct, an empty white floor, with its %{build} menu open"
+msgstr "Construct是一个空的白色地板,它的%{build}菜单打开"
+
+#: lib/retro_hex_chat_web/site/pages/spaces/places.html.heex:62
+#, elixir-autogen, elixir-format
+msgid "An office with computers and a meeting table"
+msgstr "有电脑和会议桌的办公室"
+
+#: lib/retro_hex_chat_web/site/pages/spaces/how.html.heex:7
+#, elixir-autogen, elixir-format
+msgid "Press %{join} on the card to open the Space in a new tab."
+msgstr "按下%{join}在卡片上以新的标签打开空间."
+
+#: lib/retro_hex_chat_web/site/pages/spaces/intro.html.heex:6
+#, elixir-autogen, elixir-format
+msgid "Everyone in the channel can walk around in it together."
+msgstr "频道里每个人都可以一起走"
+
+#: lib/retro_hex_chat_web/site/pages/spaces/how.html.heex:13
+#, elixir-autogen, elixir-format
+msgid "Walk with the arrow keys, WASD or the pad on the screen. Press Enter to write a message."
+msgstr "随箭键走,WASD或屏幕上的垫. 按 Enter 键写入信件 。"

@@ -12,7 +12,11 @@ defmodule RetroHexChat.VirtualSpace do
   require Logger
 
   alias RetroHexChat.Admin.GlobalMutes
+  alias RetroHexChat.Channels.Server, as: ChannelServer
+  alias RetroHexChat.Channels.Supervisor, as: ChannelSupervisor
+  alias RetroHexChat.Channels.Visibility
   alias RetroHexChat.Observability
+  alias RetroHexChat.Surfaces
   alias RetroHexChat.VirtualSpace.ChannelSpaceServer
   alias RetroHexChat.VirtualSpace.Construct
   alias RetroHexChat.VirtualSpace.Construct.Layout
@@ -463,6 +467,42 @@ defmodule RetroHexChat.VirtualSpace do
   def space_kind(space_id) do
     if Construct.construct?(space_id), do: :construct, else: :channel
   end
+
+  @doc """
+  Put `nickname` into the channel whose Space they opened without being in it
+  — a link someone shared, the public Spaces page — the way `/join` would.
+
+  Only a channel anybody could have found and walked into: one a stranger may
+  see named, so neither secret, private nor invite-only — or the server's
+  default channel, the one every chat puts everybody in on arrival, which the
+  chat would start too. A key or a ban still refuses, as `/join` does. Nothing
+  here starts any other channel that does not exist.
+
+  The membership lasts while the person has any screen open: it is left with
+  the rest when the last one closes (`Surfaces`), whether or not a chat was
+  ever opened.
+  """
+  @spec enter_channel(String.t(), String.t()) :: :ok | {:error, :not_open | String.t()}
+  def enter_channel(channel_name, nickname) do
+    with true <- open_to_all?(channel_name) || {:error, :not_open},
+         {:ok, _pid} <- ChannelSupervisor.ensure_started(channel_name),
+         {:ok, _state} <- ChannelServer.join(channel_name, nickname, nil, identified: true) do
+      Surfaces.part_when_last_closes(
+        nickname,
+        channel_name,
+        dgettext("channels", "Left the space")
+      )
+    end
+  end
+
+  @doc """
+  Whether anybody may be put into `channel_name` by opening its Space: the
+  server's default channel, or one a stranger may see named. What
+  `enter_channel/2` asks before it joins anybody.
+  """
+  @spec open_to_all?(String.t()) :: boolean()
+  def open_to_all?(channel_name),
+    do: channel_name == ChannelServer.default_channel() or Visibility.nameable?(channel_name)
 
   @doc """
   One gathering by its token, whether it is still going or long over.

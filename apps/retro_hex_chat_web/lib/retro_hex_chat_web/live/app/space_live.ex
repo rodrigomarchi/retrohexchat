@@ -689,7 +689,7 @@ defmodule RetroHexChatWeb.App.SpaceLive do
   defp resolve_space(socket, %{"slug" => slug}, _session) do
     with {:ok, space_id} <- decode_slug(slug),
          {:ok, space} <- build_space(space_id),
-         :ok <- allowed?(space, socket.assigns.nickname) do
+         :ok <- allowed?(space, socket) do
       {:ok, space}
     end
   end
@@ -741,10 +741,10 @@ defmodule RetroHexChatWeb.App.SpaceLive do
 
   # The same two doors the space's own channel checks at join, asked one screen
   # earlier so the refusal is a sentence rather than a canvas that never boots.
-  defp allowed?(%{mode: "construct", parent: parent}, nickname), do: allowed?(parent, nickname)
+  defp allowed?(%{mode: "construct", parent: parent}, socket), do: allowed?(parent, socket)
 
-  defp allowed?(%{mode: "direct_message", participants: participants}, nickname) do
-    if DirectMessageSpace.member?(participants, nickname || "") do
+  defp allowed?(%{mode: "direct_message", participants: participants}, socket) do
+    if DirectMessageSpace.member?(participants, socket.assigns.nickname || "") do
       :ok
     else
       {:error, dgettext("chat", "This private space belongs to two other people.")}
@@ -756,9 +756,23 @@ defmodule RetroHexChatWeb.App.SpaceLive do
   # reads by accident — a sentence on screen is the product saying it out loud,
   # and a secret channel's name is the one thing this refusal must not be the
   # place somebody learns. Same rule the shared card applies, same function.
-  defp allowed?(%{mode: "channel", id: channel_name}, nickname) do
+  #
+  # Somebody not in a channel anybody could walk into is put in it, as `/join`
+  # would: a shared link or the public Spaces page leads to the Space, not to
+  # a refusal. Only once the socket is up — the first render is a page, not a
+  # visit, and must not join anybody to anything.
+  defp allowed?(%{mode: "channel", id: channel_name}, socket) do
+    nickname = socket.assigns.nickname
+
     cond do
       channel_member?(channel_name, nickname) ->
+        :ok
+
+      not connected?(socket) and VirtualSpace.open_to_all?(channel_name) ->
+        :ok
+
+      connected?(socket) and is_binary(nickname) and
+          VirtualSpace.enter_channel(channel_name, nickname) == :ok ->
         :ok
 
       Visibility.nameable?(channel_name) ->

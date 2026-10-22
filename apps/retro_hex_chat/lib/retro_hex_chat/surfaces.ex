@@ -15,6 +15,11 @@ defmodule RetroHexChat.Surfaces do
   here with `defer_part/3`, and this process runs it when the surface that
   outlived it goes down.
 
+  A surface can also be what put somebody in a channel: the Space of a channel
+  they followed a link into, with no chat open. That channel is left with the
+  rest when the last surface closes (`part_when_last_closes/4`), and a chat
+  coming back does not cancel it, because the chat never knew it.
+
   Surfaces are **monitored**, not asked to report. `terminate/2` does not run on
   every path a LiveView leaves by, and a crash must count out exactly like a
   close.
@@ -182,6 +187,22 @@ defmodule RetroHexChat.Surfaces do
   end
 
   @doc """
+  Remember that a surface — not the chat — put `nickname` into `channel`: the
+  Space of a channel somebody followed a link into, without the chat ever having
+  joined it. The channel is left with the rest when the last surface goes.
+
+  Kept apart from a chat's handed-over departure on purpose: a chat that comes
+  back cancels its own departure, but it never knew about this channel, so
+  cancelling it too would leave the membership behind for good.
+  """
+  @spec part_when_last_closes(String.t(), String.t(), String.t() | nil, GenServer.server()) ::
+          :ok
+  def part_when_last_closes(nickname, channel, reason, server \\ __MODULE__)
+      when is_binary(nickname) and is_binary(channel) do
+    GenServer.call(server, {:joined, key(nickname), nickname, channel, reason})
+  end
+
+  @doc """
   Drop a handed-over departure.
 
   A chat that comes back owns the lifetime of the membership again, so what the
@@ -274,7 +295,11 @@ defmodule RetroHexChat.Surfaces do
         {:reply, :ok, state}
 
       {entry, by_nick} ->
-        entry = %{entry | deferred: renamed_departure(entry.deferred, new_nickname)}
+        entry = %{
+          entry
+          | deferred: renamed_departure(entry.deferred, new_nickname),
+            joined: renamed_departure(entry.joined, new_nickname)
+        }
 
         state = %{
           state
@@ -291,6 +316,18 @@ defmodule RetroHexChat.Surfaces do
         )
 
         {:reply, :ok, announce(state, new_key)}
+    end
+  end
+
+  def handle_call({:joined, key, nickname, channel, reason}, _from, state) do
+    case Map.get(state.by_nick, key) do
+      nil ->
+        run_deferred(%{nickname: nickname, channels: [channel], reason: reason})
+        {:reply, :ok, state}
+
+      entry ->
+        joined = add_channel(entry.joined, nickname, channel, reason)
+        {:reply, :ok, %{state | by_nick: Map.put(state.by_nick, key, %{entry | joined: joined})}}
     end
   end
 
@@ -332,9 +369,16 @@ defmodule RetroHexChat.Surfaces do
   defp merge_entries(existing, entry) do
     %{
       pids: Map.merge(existing.pids, entry.pids),
-      deferred: existing.deferred || entry.deferred
+      deferred: existing.deferred || entry.deferred,
+      joined: existing.joined || entry.joined
     }
   end
+
+  defp add_channel(nil, nickname, channel, reason),
+    do: %{nickname: nickname, channels: [channel], reason: reason}
+
+  defp add_channel(joined, _nickname, channel, _reason),
+    do: %{joined | channels: Enum.uniq([channel | joined.channels])}
 
   defp rekey_refs(by_ref, old_key, new_key) do
     Map.new(by_ref, fn
@@ -343,7 +387,8 @@ defmodule RetroHexChat.Surfaces do
     end)
   end
 
-  defp entry(state, key), do: Map.get(state.by_nick, key, %{pids: %{}, deferred: nil})
+  defp entry(state, key),
+    do: Map.get(state.by_nick, key, %{pids: %{}, deferred: nil, joined: nil})
 
   defp surfaces(state, key), do: entry(state, key).pids
 
@@ -374,6 +419,7 @@ defmodule RetroHexChat.Surfaces do
 
         if entry.pids == %{} do
           run_deferred(entry.deferred)
+          run_deferred(entry.joined)
           Map.delete(by_nick, key)
         else
           Map.put(by_nick, key, entry)

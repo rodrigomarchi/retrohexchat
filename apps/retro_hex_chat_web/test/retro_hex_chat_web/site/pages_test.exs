@@ -17,6 +17,7 @@ defmodule RetroHexChatWeb.Site.PagesTest do
     {"/features", "features-heading"},
     {"/games", "games-heading"},
     {"/games/doom-shareware", "game-heading"},
+    {"/spaces", "spaces-heading"},
     {"/privacy", "privacy-heading"},
     {"/install", "install-heading"},
     {"/community", "community-heading"},

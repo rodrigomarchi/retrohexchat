@@ -3,6 +3,7 @@ defmodule RetroHexChatWeb.HelpContent.Helpers do
   use Phoenix.Component
   use Gettext, backend: RetroHexChatWeb.Gettext
 
+  alias RetroHexChatWeb.Components.UI.Site.Section
   alias RetroHexChatWeb.GameCatalog
   alias RetroHexChatWeb.Icons
   alias RetroHexChatWeb.PublicPages
@@ -29,13 +30,17 @@ defmodule RetroHexChatWeb.HelpContent.Helpers do
   def help_link(assigns) do
     ~H"""
     <.link
-      patch={PublicPages.localized_path("/chat/help/#{@topic}")}
+      patch={PublicPages.help_topic_path(@topic)}
       class="text-link hover:underline"
     >
       {render_slot(@inner_block)}
     </.link>
     """
   end
+
+  @doc "Link to one of the site's public pages, by its name: `<.page_link page={:spaces}>`."
+  @spec page_link(map()) :: Phoenix.LiveView.Rendered.t()
+  defdelegate page_link(assigns), to: Section
 
   @doc """
   The games of the catalogue, read from it so the help never lists fewer than

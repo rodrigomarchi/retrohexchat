@@ -61,7 +61,7 @@ defmodule RetroHexChatWeb.Site.Pages.MircCommands do
     Map.put(
       row,
       :help_path,
-      row.help_topic && PublicPages.localized_path("/chat/help/#{row.help_topic}")
+      row.help_topic && PublicPages.help_topic_path(row.help_topic)
     )
   end
 end

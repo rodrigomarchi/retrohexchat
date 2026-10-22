@@ -70,7 +70,7 @@ defmodule RetroHexChatWeb.Components.UI.VisitorGreetingCard do
         <.button
           size="sm"
           variant="secondary"
-          patch={topic_path("watching-without-account")}
+          patch={PublicPages.help_topic_path("watching-without-account")}
           data-testid="visitor-greeting-help"
         >
           <:icon><Icons.icon_btn_help_topics class="h-4 w-4" /></:icon>
@@ -93,36 +93,34 @@ defmodule RetroHexChatWeb.Components.UI.VisitorGreetingCard do
     [
       %{
         icon: :icon_chat,
-        path: topic_path("channels"),
+        path: PublicPages.help_topic_path("channels"),
         name: dgettext("chat", "Talk"),
         text: dgettext("chat", "Write here, in any channel, or privately to anyone.")
       },
       %{
         icon: :icon_toolbar_community,
-        path: topic_path("feature-virtual-spaces"),
+        path: PublicPages.help_topic_path("feature-virtual-spaces"),
         name: dgettext("chat", "Space"),
         text: dgettext("chat", "Walk this channel's 8-bit world with your own character.")
       },
       %{
         icon: :icon_toolbar_conference,
-        path: topic_path("feature-channel-conference"),
+        path: PublicPages.help_topic_path("feature-channel-conference"),
         name: dgettext("group_call", "Group Call"),
         text: dgettext("chat", "An audio and video call for the whole channel.")
       },
       %{
         icon: :icon_p2p,
-        path: topic_path("feature-universal-lobby"),
+        path: PublicPages.help_topic_path("feature-universal-lobby"),
         name: dgettext("chat", "P2P"),
         text: dgettext("chat", "A direct call, file transfer or game with one person.")
       },
       %{
         icon: :icon_game_arcade,
-        path: topic_path("feature-arcade"),
+        path: PublicPages.help_topic_path("feature-arcade"),
         name: dgettext("ui", "Arcade"),
         text: dgettext("chat", "Doom, Quake and other classics in the browser.")
       }
     ]
   end
-
-  defp topic_path(topic), do: PublicPages.localized_path("/chat/help/#{topic}")
 end

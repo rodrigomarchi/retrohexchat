@@ -18,7 +18,7 @@
  * A single frame is a gamble — the DOOM demo is as likely to show a wall as a
  * room — so several frames are taken a few seconds apart and the one with the
  * most detail (the largest PNG) is kept. Chromium itself converts it to WebP,
- * which spares the repository an image toolchain.
+ * which spares the repository an image toolchain (`lib/images.mjs`).
  *
  * A game the capture cannot reach (a 195 MB download, an engine that will not
  * start headless) takes a published screenshot instead:
@@ -39,6 +39,7 @@ import { chromium } from "@playwright/test";
 import { readFileSync, writeFileSync, mkdirSync, existsSync } from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
+import { sortKeys, toCard, toWebp } from "./lib/images.mjs";
 
 const here = path.dirname(fileURLToPath(import.meta.url));
 const outDir = path.resolve(
@@ -109,7 +110,15 @@ try {
     if (!slug || !file || !source)
       throw new Error("usage: --import <slug> <file> <source-url> [x,y,w,h]");
     const clip = crop ? crop.split(",").map(Number) : null;
-    const { webp, width, height } = await toWebp(readFileSync(file), clip);
+    const { webp, width, height } = await toWebp(
+      converter,
+      readFileSync(file),
+      {
+        quality: WEBP_QUALITY,
+        maxWidth: MAX_WIDTH,
+        clip,
+      },
+    );
     writeFileSync(path.join(outDir, `${slug}.webp`), webp);
     manifest[slug] = { width, height, source, og: await writeCard(slug, webp) };
     console.log(
@@ -167,7 +176,10 @@ async function capture(target, takeFrames) {
     // The most detailed of the frames that are pictures at all. PNG size is
     // the measure: it grows with everything a frame has to show.
     const best = frames.reduce((a, b) => (b.length > a.length ? b : a));
-    const { webp, width, height } = await toWebp(best);
+    const { webp, width, height } = await toWebp(converter, best, {
+      quality: WEBP_QUALITY,
+      maxWidth: MAX_WIDTH,
+    });
     writeFileSync(path.join(outDir, `${target.slug}.webp`), webp);
     manifest[target.slug] = {
       width,
@@ -343,118 +355,15 @@ async function connectWithNewNick(page) {
   await page.waitForURL(/\/chat/, { timeout: 30_000 });
 }
 
-async function toWebp(png, clip = null) {
-  const result = await converter.evaluate(
-    async ({ base64, maxWidth, quality, clip }) => {
-      const image = new Image();
-      image.src = `data:image/png;base64,${base64}`;
-      await image.decode();
-
-      const [sx, sy, sw, sh] = clip || [
-        0,
-        0,
-        image.naturalWidth,
-        image.naturalHeight,
-      ];
-      const scale = Math.min(1, maxWidth / sw);
-      const canvas = document.createElement("canvas");
-      canvas.width = Math.round(sw * scale);
-      canvas.height = Math.round(sh * scale);
-
-      const context = canvas.getContext("2d");
-      // Pixel art stays pixel art when it is scaled down.
-      context.imageSmoothingEnabled = scale < 1;
-      context.drawImage(
-        image,
-        sx,
-        sy,
-        sw,
-        sh,
-        0,
-        0,
-        canvas.width,
-        canvas.height,
-      );
-
-      const webp = canvas.toDataURL("image/webp", quality);
-
-      if (!webp.startsWith("data:image/webp"))
-        throw new Error("this Chromium cannot encode WebP");
-
-      return {
-        base64: webp.split(",")[1],
-        width: canvas.width,
-        height: canvas.height,
-      };
-    },
-    {
-      base64: png.toString("base64"),
-      maxWidth: MAX_WIDTH,
-      quality: WEBP_QUALITY,
-      clip,
-    },
-  );
-
-  return {
-    webp: Buffer.from(result.base64, "base64"),
-    width: result.width,
-    height: result.height,
-  };
-}
-
-// The share card: the picture centred on black at the size every platform
-// crops a large card to, so nothing of the game is cut off.
 async function writeCard(slug, webp) {
-  const base64 = await converter.evaluate(
-    async ({ source, width, height, quality }) => {
-      const image = new Image();
-      image.src = `data:image/webp;base64,${source}`;
-      await image.decode();
-
-      const canvas = document.createElement("canvas");
-      canvas.width = width;
-      canvas.height = height;
-      const context = canvas.getContext("2d");
-      context.fillStyle = "black";
-      context.fillRect(0, 0, width, height);
-
-      const scale = Math.min(
-        width / image.naturalWidth,
-        height / image.naturalHeight,
-      );
-      const drawnWidth = Math.round(image.naturalWidth * scale);
-      const drawnHeight = Math.round(image.naturalHeight * scale);
-      context.drawImage(
-        image,
-        (width - drawnWidth) / 2,
-        (height - drawnHeight) / 2,
-        drawnWidth,
-        drawnHeight,
-      );
-
-      return canvas.toDataURL("image/jpeg", quality).split(",")[1];
-    },
-    {
-      source: webp.toString("base64"),
-      width: CARD_WIDTH,
-      height: CARD_HEIGHT,
-      quality: CARD_QUALITY,
-    },
-  );
-
-  writeFileSync(
-    path.join(outDir, "og", `${slug}.jpg`),
-    Buffer.from(base64, "base64"),
-  );
+  const card = await toCard(converter, webp, {
+    width: CARD_WIDTH,
+    height: CARD_HEIGHT,
+    quality: CARD_QUALITY,
+    fit: "contain",
+  });
+  writeFileSync(path.join(outDir, "og", `${slug}.jpg`), card);
   return { width: CARD_WIDTH, height: CARD_HEIGHT };
-}
-
-function sortKeys(object) {
-  return Object.fromEntries(
-    Object.keys(object)
-      .sort()
-      .map((key) => [key, object[key]]),
-  );
 }
 
 function seconds(since) {

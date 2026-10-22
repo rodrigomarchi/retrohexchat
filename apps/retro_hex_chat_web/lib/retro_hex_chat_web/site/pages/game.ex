@@ -59,7 +59,7 @@ defmodule RetroHexChatWeb.Site.Pages.Game do
        path: path,
        play_path: play_path(game, ctx),
        visitor: ctx.visitor?,
-       how_to_play_path: PublicPages.localized_path("/chat/help/#{game.help_topic}"),
+       how_to_play_path: PublicPages.help_topic_path(game.help_topic),
        windows: windows(game, ctx),
        canonical_path: path,
        og_image: og_image(game),

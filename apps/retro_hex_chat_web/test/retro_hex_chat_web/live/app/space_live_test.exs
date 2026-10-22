@@ -69,16 +69,45 @@ defmodule RetroHexChatWeb.App.SpaceLiveTest do
       assert html =~ "does not name a space"
     end
 
-    test "someone who is not in the channel is told which door is shut", %{conn: conn} do
+    # A shared link or the public Spaces page leads to the Space of a channel
+    # the reader is not in yet; an open channel takes them in, as /join would.
+    test "someone who is not in an open channel is put in it and walks in", %{conn: conn} do
       nickname = "In#{uid()}" |> String.slice(0, 16)
       outsider = "Out#{uid()}" |> String.slice(0, 16)
       channel = start_channel(nickname)
+      stop_space(channel)
+
+      {:ok, view, _html} = conn |> chat_conn(outsider) |> live(path(channel))
+
+      assert has_element?(view, ~s([data-testid="space-character-creator"]))
+      refute has_element?(view, ~s([data-testid="space-denied"]))
+      assert {:ok, %{members: members}} = Server.get_state(channel)
+      assert Enum.any?(members, fn {member, _role} -> member == outsider end)
+    end
+
+    test "a key still shuts the door, and the refusal names it", %{conn: conn} do
+      nickname = "In#{uid()}" |> String.slice(0, 16)
+      outsider = "Out#{uid()}" |> String.slice(0, 16)
+      channel = start_channel(nickname)
+      :ok = Server.set_mode(channel, nickname, "+k", ["sesame"])
 
       {:ok, _view, html} = conn |> chat_conn(outsider) |> live(path(channel))
 
       assert html =~ ~s(data-testid="space-denied")
       assert html =~ channel
       refute html =~ ~s(data-testid="space-character-creator")
+    end
+
+    test "an invite-only channel refuses without naming itself", %{conn: conn} do
+      nickname = "In#{uid()}" |> String.slice(0, 16)
+      outsider = "Out#{uid()}" |> String.slice(0, 16)
+      channel = start_channel(nickname)
+      :ok = Server.set_mode(channel, nickname, "+i")
+
+      {:ok, _view, html} = conn |> chat_conn(outsider) |> live(path(channel))
+
+      assert html =~ ~s(data-testid="space-denied")
+      refute html =~ channel
     end
 
     # A private space has no membership record: its id *is* the pair, so the
@@ -765,8 +794,13 @@ defmodule RetroHexChatWeb.App.SpaceLiveTest do
       refute html =~ ~s(data-testid="construct-palette")
     end
 
-    test "the Construct keeps the door its space keeps", %{conn: conn, channel: channel} do
+    test "the Construct keeps the door its space keeps", %{
+      conn: conn,
+      channel: channel,
+      nickname: nickname
+    } do
       outsider = "Out#{uid()}" |> String.slice(0, 16)
+      :ok = Server.set_mode(channel, nickname, "+i")
 
       {:ok, _view, html} =
         conn

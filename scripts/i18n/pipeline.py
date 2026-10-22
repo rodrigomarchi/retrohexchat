@@ -15,6 +15,7 @@ from dataclasses import dataclass, field
 from .protection import BATCH_SEPARATOR, protect, restore, should_machine_translate
 from .quality import (
     batch_is_contaminated,
+    glued_words,
     invented_break,
     is_usable_translation,
     keep_lowercase_start,
@@ -90,6 +91,7 @@ class Pipeline:
             missing_terms(source, translated, self.locale_code)
             or foreign_forms(translated, self.locale_code)
             or lost_negation(source, translated, self.locale_code)
+            or glued_words(translated, self.locale_code)
         ):
             return False
 

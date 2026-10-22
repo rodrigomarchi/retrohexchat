@@ -14,6 +14,7 @@ defmodule RetroHexChatWeb.Components.UI.Landing.GameCards do
 
   import RetroHexChatWeb.Components.UI.Button
   import RetroHexChatWeb.Components.UI.Card
+  import RetroHexChatWeb.Components.UI.Landing.Screenshot
 
   alias RetroHexChatWeb.Components.UI.GameSheet
   alias RetroHexChatWeb.Icons
@@ -42,29 +43,15 @@ defmodule RetroHexChatWeb.Components.UI.Landing.GameCards do
     """
   end
 
-  def game_screenshot(%{main: true} = assigns) do
-    ~H"""
-    <img
-      src={@game.screenshot.path}
-      width={@game.screenshot.width}
-      height={@game.screenshot.height}
-      alt={dgettext("landing", "Screenshot of %{name}", name: @game.name)}
-      fetchpriority="high"
-      class={classes(["block h-auto w-full bg-black", @class])}
-    />
-    """
-  end
-
   def game_screenshot(assigns) do
     ~H"""
-    <img
+    <.screenshot
       src={@game.screenshot.path}
       width={@game.screenshot.width}
       height={@game.screenshot.height}
-      alt=""
-      loading="lazy"
-      decoding="async"
-      class={classes(["block h-auto w-full bg-black", @class])}
+      alt={if @main, do: dgettext("landing", "Screenshot of %{name}", name: @game.name), else: ""}
+      main={@main}
+      class={@class}
     />
     """
   end

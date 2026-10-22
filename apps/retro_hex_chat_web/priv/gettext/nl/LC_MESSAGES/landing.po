@@ -271,7 +271,7 @@ msgstr "Gesloten. Vertrouw ze blind."
 msgid "Code"
 msgstr "Code"
 
-#: lib/retro_hex_chat_web/public_pages.ex:105
+#: lib/retro_hex_chat_web/public_pages.ex:111
 #: lib/retro_hex_chat_web/site/about.html.heex:50
 #: lib/retro_hex_chat_web/site/pages/community.ex:18
 #: lib/retro_hex_chat_web/site/pages/community.ex:71
@@ -387,7 +387,7 @@ msgstr "Enduro"
 msgid "Extensible"
 msgstr "Extensible"
 
-#: lib/retro_hex_chat_web/public_pages.ex:106
+#: lib/retro_hex_chat_web/public_pages.ex:112
 #: lib/retro_hex_chat_web/site/pages/faq.ex:195
 #: lib/retro_hex_chat_web/site/pages/faq.ex:231
 #, elixir-autogen, elixir-format
@@ -399,7 +399,7 @@ msgstr "Veelgestelde vragen"
 msgid "FAQ — Retro Hex Chat"
 msgstr "Veelgestelde vragen Retro Hex Chat"
 
-#: lib/retro_hex_chat_web/public_pages.ex:101
+#: lib/retro_hex_chat_web/public_pages.ex:106
 #: lib/retro_hex_chat_web/site/pages/features.ex:29
 #: lib/retro_hex_chat_web/site/pages/features.ex:113
 #, elixir-autogen, elixir-format
@@ -477,7 +477,7 @@ msgstr "Help Retro Hex Chat in leven te houden."
 msgid "Hockey"
 msgstr "Hockey"
 
-#: lib/retro_hex_chat_web/public_pages.ex:100
+#: lib/retro_hex_chat_web/public_pages.ex:105
 #: lib/retro_hex_chat_web/site/pages/how_it_works.ex:18
 #: lib/retro_hex_chat_web/site/pages/how_it_works.ex:94
 #, elixir-autogen, elixir-format
@@ -521,7 +521,7 @@ msgstr ""
 "Geïnspireerd door de IRC van de jaren 2000 en de vrijheid die het "
 "vertegenwoordigde."
 
-#: lib/retro_hex_chat_web/public_pages.ex:104
+#: lib/retro_hex_chat_web/public_pages.ex:110
 #: lib/retro_hex_chat_web/site/pages/install.ex:16
 #: lib/retro_hex_chat_web/site/pages/install.ex:51
 #, elixir-autogen, elixir-format
@@ -817,7 +817,7 @@ msgstr "PostgreSQL"
 msgid "Powerful IRC-style commands."
 msgstr "Krachtige IRC-stijl opdrachten."
 
-#: lib/retro_hex_chat_web/public_pages.ex:103
+#: lib/retro_hex_chat_web/public_pages.ex:109
 #: lib/retro_hex_chat_web/site/pages/privacy.ex:16
 #: lib/retro_hex_chat_web/site/pages/privacy.ex:86
 #, elixir-autogen, elixir-format
@@ -928,7 +928,7 @@ msgstr "Real-time synchroniseren via WebRTC DataChannel"
 msgid "Repository:"
 msgstr "Repository:"
 
-#: lib/retro_hex_chat_web/components/ui/site/section.ex:61
+#: lib/retro_hex_chat_web/components/ui/site/section.ex:86
 #: lib/retro_hex_chat_web/site/pages/privacy.ex:40
 #, elixir-autogen, elixir-format
 msgid "Retro Hex Chat"
@@ -1618,14 +1618,14 @@ msgid "34 multiplayer games via WebRTC."
 msgstr "34 multiplayer games via WebRTC."
 
 #: lib/retro_hex_chat_web/site/pages/features.ex:78
-#: lib/retro_hex_chat_web/site/pages/game.ex:272
+#: lib/retro_hex_chat_web/site/pages/game.ex:274
 #: lib/retro_hex_chat_web/site/pages/games.ex:35
 #: lib/retro_hex_chat_web/site/pages/index.ex:94
 #, elixir-autogen, elixir-format
 msgid "Arcade"
 msgstr "Arcade"
 
-#: lib/retro_hex_chat_web/public_pages.ex:102
+#: lib/retro_hex_chat_web/public_pages.ex:107
 #: lib/retro_hex_chat_web/site/pages/game.ex:69
 #: lib/retro_hex_chat_web/site/pages/games.ex:24
 #: lib/retro_hex_chat_web/site/pages/games.ex:46
@@ -1633,7 +1633,7 @@ msgstr "Arcade"
 msgid "Games"
 msgstr "Spelletjes"
 
-#: lib/retro_hex_chat_web/public_pages.ex:99
+#: lib/retro_hex_chat_web/public_pages.ex:104
 #: lib/retro_hex_chat_web/site/pages/community.ex:70
 #: lib/retro_hex_chat_web/site/pages/faq.ex:230
 #: lib/retro_hex_chat_web/site/pages/features.ex:112
@@ -1643,6 +1643,7 @@ msgstr "Spelletjes"
 #: lib/retro_hex_chat_web/site/pages/how_it_works.ex:93
 #: lib/retro_hex_chat_web/site/pages/install.ex:50
 #: lib/retro_hex_chat_web/site/pages/privacy.ex:85
+#: lib/retro_hex_chat_web/site/pages/spaces.ex:86
 #, elixir-autogen, elixir-format
 msgid "Home"
 msgstr "Begin"
@@ -1746,7 +1747,7 @@ msgstr ""
 msgid "Choose an avatar before entering the shared map"
 msgstr "Kies een avatar voordat u de gedeelde kaart invoert"
 
-#: lib/retro_hex_chat_web/site/pages/index/three_ways_to_be_together.html.heex:57
+#: lib/retro_hex_chat_web/site/pages/index/three_ways_to_be_together.html.heex:60
 #, elixir-autogen, elixir-format
 msgid "Conference"
 msgstr "Conferentie"
@@ -2086,7 +2087,10 @@ msgstr "Ruimte"
 msgid "Space runtime"
 msgstr "Spatieduur"
 
+#: lib/retro_hex_chat_web/public_pages.ex:108
 #: lib/retro_hex_chat_web/site/pages/community.ex:56
+#: lib/retro_hex_chat_web/site/pages/spaces.ex:58
+#: lib/retro_hex_chat_web/site/pages/spaces.ex:87
 #, elixir-autogen, elixir-format
 msgid "Spaces"
 msgstr "Ruimten"
@@ -2109,11 +2113,6 @@ msgstr ""
 #, elixir-autogen, elixir-format
 msgid "Spatial chat"
 msgstr "Ruimtelijke chat"
-
-#: lib/retro_hex_chat_web/site/pages/features/virtual_spaces.html.heex:19
-#, elixir-autogen, elixir-format
-msgid "Switch between Chat and Space from the channel topic bar"
-msgstr "Wisselen tussen Chat en Spatie vanuit de kanaal topic bar"
 
 #: lib/retro_hex_chat_web/site/pages/how_it_works/virtual_spaces.html.heex:12
 #, elixir-autogen, elixir-format
@@ -2214,7 +2213,7 @@ msgid "— Open the SFU UDP port range 50000–50100 for channel conferences"
 msgstr "Open het SFU UDP-poortbereik 50000"
 
 #: lib/retro_hex_chat_web/site/pages/features/channel_conferences.html.heex:7
-#: lib/retro_hex_chat_web/site/pages/index/three_ways_to_be_together.html.heex:62
+#: lib/retro_hex_chat_web/site/pages/index/three_ways_to_be_together.html.heex:65
 #, elixir-autogen, elixir-format
 msgid "Channel conference topology diagram"
 msgstr "Topologiediagram van de Kanaalconferentie"
@@ -2226,7 +2225,7 @@ msgstr ""
 "Kanalen, DM's, bots, commando's, antwoorden, reacties en matiging blijven in"
 " één duurzame gespreksgeschiedenis."
 
-#: lib/retro_hex_chat_web/site/pages/index/three_ways_to_be_together.html.heex:67
+#: lib/retro_hex_chat_web/site/pages/index/three_ways_to_be_together.html.heex:70
 #, elixir-autogen, elixir-format
 msgid "Conference keeps media inside the channel: participants join from the room, operators moderate, and your SFU routes the streams."
 msgstr ""
@@ -2244,7 +2243,7 @@ msgstr "Einde van de tijd Ruimtekaart met avatars en in-world chat bubbels"
 msgid "Persistent chat workspace diagram"
 msgstr "Persistent chatwerkbladdiagram"
 
-#: lib/retro_hex_chat_web/site/pages/index/three_ways_to_be_together.html.heex:47
+#: lib/retro_hex_chat_web/site/pages/index/three_ways_to_be_together.html.heex:50
 #, elixir-autogen, elixir-format
 msgid "Space renders that same conversation as a live map: avatars move, messages bubble in-world, and the channel or DM stays the source of truth."
 msgstr ""
@@ -2267,7 +2266,7 @@ msgstr "Installatie"
 msgid "Three ways"
 msgstr "Drie manieren"
 
-#: lib/retro_hex_chat_web/public_pages.ex:96
+#: lib/retro_hex_chat_web/public_pages.ex:101
 #: lib/retro_hex_chat_web/site/pages/index.ex:40
 #, elixir-autogen, elixir-format
 msgid "Welcome"
@@ -2411,7 +2410,7 @@ msgid_plural "%{count} games"
 msgstr[0] "%{count} spel"
 msgstr[1] "%{count} spellen"
 
-#: lib/retro_hex_chat_web/components/ui/landing/game_cards.ex:198
+#: lib/retro_hex_chat_web/components/ui/landing/game_cards.ex:185
 #, elixir-autogen, elixir-format
 msgid "All games"
 msgstr "Alle spellen"
@@ -2422,11 +2421,12 @@ msgid "DOOM, Quake, Wolfenstein 3D, Half-Life and classic adventures in the brow
 msgstr "DOOM, Quake, Wolfenstein 3D, Half-Life en klassieke adventures in je browser, plus multiplayer-arcadegames met vrienden — gratis, niets te installeren."
 
 #: lib/retro_hex_chat_web/site/pages/game.ex:148
+#: lib/retro_hex_chat_web/site/pages/spaces.ex:61
 #, elixir-autogen, elixir-format
 msgid "Free, in the browser"
 msgstr "Gratis, in je browser"
 
-#: lib/retro_hex_chat_web/components/ui/landing/game_cards.ex:232
+#: lib/retro_hex_chat_web/components/ui/landing/game_cards.ex:219
 #: lib/retro_hex_chat_web/components/ui/landing/game_home.ex:224
 #, elixir-autogen, elixir-format
 msgid "How to play"
@@ -2437,18 +2437,18 @@ msgstr "Zo speel je"
 msgid "More games"
 msgstr "Meer spellen"
 
-#: lib/retro_hex_chat_web/site/pages/game.ex:277
+#: lib/retro_hex_chat_web/site/pages/game.ex:279
 #, elixir-autogen, elixir-format
 msgid "Play %{name} in your browser"
 msgstr "Speel %{name} in je browser"
 
-#: lib/retro_hex_chat_web/site/pages/game.ex:276
+#: lib/retro_hex_chat_web/site/pages/game.ex:278
 #, elixir-autogen, elixir-format
 msgid "Play %{name} in your browser — Retro Hex Chat"
 msgstr "Speel %{name} in je browser — Retro Hex Chat"
 
 #: lib/retro_hex_chat_web/components/ui/landing/arcade_home.ex:145
-#: lib/retro_hex_chat_web/components/ui/landing/game_cards.ex:227
+#: lib/retro_hex_chat_web/components/ui/landing/game_cards.ex:214
 #: lib/retro_hex_chat_web/components/ui/landing/game_home.ex:121
 #: lib/retro_hex_chat_web/components/ui/landing/game_home.ex:250
 #, elixir-autogen, elixir-format
@@ -2465,13 +2465,13 @@ msgstr "Retrogames in je browser"
 msgid "Retro games you can play in your browser — Retro Hex Chat"
 msgstr "Retrogames om in je browser te spelen — Retro Hex Chat"
 
-#: lib/retro_hex_chat_web/components/ui/landing/game_cards.ex:51
-#: lib/retro_hex_chat_web/site/pages/game.ex:291
+#: lib/retro_hex_chat_web/components/ui/landing/game_cards.ex:52
+#: lib/retro_hex_chat_web/site/pages/game.ex:293
 #, elixir-autogen, elixir-format
 msgid "Screenshot of %{name}"
 msgstr "Schermafbeelding van %{name}"
 
-#: lib/retro_hex_chat_web/components/ui/landing/game_cards.ex:257
+#: lib/retro_hex_chat_web/components/ui/landing/game_cards.ex:244
 #, elixir-autogen, elixir-format
 msgid "See every game in the catalogue"
 msgstr "Bekijk alle games in de catalogus"
@@ -2568,7 +2568,7 @@ msgstr "Spelletjes die je hier kunt spelen"
 msgid "Here"
 msgstr "Hier"
 
-#: lib/retro_hex_chat_web/public_pages.ex:109
+#: lib/retro_hex_chat_web/public_pages.ex:115
 #: lib/retro_hex_chat_web/site/pages/irc_chat.ex:81
 #, elixir-autogen, elixir-format
 msgid "IRC chat"
@@ -2692,7 +2692,7 @@ msgstr "Uw mIRC-opdrachten, in de browser"
 msgid "Your nickname"
 msgstr "Uw bijnaam"
 
-#: lib/retro_hex_chat_web/public_pages.ex:107
+#: lib/retro_hex_chat_web/public_pages.ex:113
 #: lib/retro_hex_chat_web/site/pages/mirc_commands.ex:35
 #, elixir-autogen, elixir-format
 msgid "mIRC commands"
@@ -2703,7 +2703,7 @@ msgstr "mIRC-opdrachten"
 msgid "mIRC commands that work in your browser — Retro Hex Chat"
 msgstr "mIRC commands that work in your browser — Retro Hex Chat"
 
-#: lib/retro_hex_chat_web/public_pages.ex:108
+#: lib/retro_hex_chat_web/public_pages.ex:114
 #: lib/retro_hex_chat_web/site/pages/mirc_online.ex:50
 #, elixir-autogen, elixir-format
 msgid "mIRC online"
@@ -2931,7 +2931,7 @@ msgstr "Elo-rating"
 msgid "Live now"
 msgstr "Leef nu"
 
-#: lib/retro_hex_chat_web/components/ui/landing/game_cards.ex:228
+#: lib/retro_hex_chat_web/components/ui/landing/game_cards.ex:215
 #, elixir-autogen, elixir-format
 msgid "Play now"
 msgstr "Nu spelen"
@@ -3051,3 +3051,188 @@ msgid "You have started this game %{count} time."
 msgid_plural "You have started this game %{count} times."
 msgstr[0] "Je bent %{count} keer met dit spel begonnen."
 msgstr[1] "Je hebt dit spel %{count} keer gestart."
+
+#: lib/retro_hex_chat_web/site/pages/spaces/intro.html.heex:33
+#: lib/retro_hex_chat_web/site/pages/spaces/places.html.heex:28
+#: lib/retro_hex_chat_web/site/pages/spaces/places.html.heex:50
+#: lib/retro_hex_chat_web/site/pages/spaces/places.html.heex:72
+#, elixir-autogen, elixir-format
+msgid "How it works"
+msgstr "Hoe het werkt"
+
+#: lib/retro_hex_chat_web/site/pages/spaces.ex:71
+#, elixir-autogen, elixir-format
+msgid "How to get in"
+msgstr "Hoe kom je binnen"
+
+#: lib/retro_hex_chat_web/site/pages/features/virtual_spaces.html.heex:19
+#, elixir-autogen, elixir-format
+msgid "Open a channel's Space with the Space button next to its tab"
+msgstr "De ruimte van een kanaal openen met de knop Ruimte naast het tabblad"
+
+#: lib/retro_hex_chat_web/site/pages/features/virtual_spaces.html.heex:40
+#: lib/retro_hex_chat_web/site/pages/index/three_ways_to_be_together.html.heex:47
+#: lib/retro_hex_chat_web/site/pages/spaces.ex:63
+#, elixir-autogen, elixir-format
+msgid "Places to go"
+msgstr "Plekken om te bezoeken"
+
+#: lib/retro_hex_chat_web/site/pages/spaces/places.html.heex:4
+#, elixir-autogen, elixir-format
+msgid "The Construct"
+msgstr "De Construct"
+
+#: lib/retro_hex_chat_web/site/pages/spaces/places.html.heex:35
+#, elixir-autogen, elixir-format
+msgid "The Game Room"
+msgstr "De speelkamer"
+
+#: lib/retro_hex_chat_web/site/pages/spaces/places.html.heex:57
+#, elixir-autogen, elixir-format
+msgid "The Office"
+msgstr "Het kantoor"
+
+#: lib/retro_hex_chat_web/site/pages/spaces/creator.html.heex:5
+#, elixir-autogen, elixir-format
+msgid "The character creator, with a wizard in a violet robe"
+msgstr "De karakterschepper, met een tovenaar in een violette mantel"
+
+#: lib/retro_hex_chat_web/site/pages/spaces.ex:67
+#, elixir-autogen, elixir-format
+msgid "Your character"
+msgstr "Je personage"
+
+#: lib/retro_hex_chat_web/site/pages/spaces/intro.html.heex:2
+#, elixir-autogen, elixir-format
+msgid "A pixel-art world for every chat room"
+msgstr "Een pixel-art wereld voor elke chatruimte"
+
+#: lib/retro_hex_chat_web/site/pages/spaces/creator.html.heex:18
+#, elixir-autogen, elixir-format
+msgid "Choose a colour for each piece."
+msgstr "Kies een kleur voor elk stuk."
+
+#: lib/retro_hex_chat_web/site/pages/spaces/how.html.heex:21
+#, elixir-autogen, elixir-format
+msgid "Each channel has its own Space, and so does each private conversation."
+msgstr "Elk kanaal heeft zijn eigen Ruimte, en ook elk privégesprek."
+
+#: lib/retro_hex_chat_web/site/pages/spaces/places.html.heex:46
+#, elixir-autogen, elixir-format
+msgid "Each machine opens the games of the channel."
+msgstr "Elke machine opent de spellen van het kanaal."
+
+#: lib/retro_hex_chat_web/site/pages/spaces/intro.html.heex:5
+#, elixir-autogen, elixir-format
+msgid "Every channel opens onto a Space, a pixel-art world."
+msgstr "Elk kanaal opent zich op een Space, een pixel-art wereld."
+
+#: lib/retro_hex_chat_web/site/pages/spaces/intro.html.heex:9
+#, elixir-autogen, elixir-format
+msgid "Everybody arrives on the island at the End of Time."
+msgstr "Iedereen arriveert op het eiland bij de End of Time."
+
+#: lib/retro_hex_chat_web/site/pages/spaces/places.html.heex:40
+#: lib/retro_hex_chat_web/site/pages/spaces/places.html.heex:45
+#, elixir-autogen, elixir-format
+msgid "Inside there are arcade games and a pool table."
+msgstr "Binnen zijn er arcade spelletjes en een pooltafel."
+
+#: lib/retro_hex_chat_web/site/pages/spaces/places.html.heex:67
+#, elixir-autogen, elixir-format
+msgid "Inside there are work desks and a meeting table."
+msgstr "Binnen zijn er bureau's en een vergadertafel."
+
+#: lib/retro_hex_chat_web/site/pages/spaces/places.html.heex:68
+#, elixir-autogen, elixir-format
+msgid "It is a place to meet and to talk about work."
+msgstr "Het is een plek om te ontmoeten en over werk te praten."
+
+#: lib/retro_hex_chat_web/site/pages/spaces/how.html.heex:6
+#, elixir-autogen, elixir-format
+msgid "Open a channel and press the Space button next to its tab."
+msgstr "Open een kanaal en druk op de knop Ruimte naast het tabblad."
+
+#: lib/retro_hex_chat_web/site/pages/spaces.ex:90
+#, elixir-autogen, elixir-format
+msgid "Spaces: a pixel-art world for every chat room"
+msgstr "Spaties: een pixel-art wereld voor elke chatruimte"
+
+#: lib/retro_hex_chat_web/site/pages/spaces/places.html.heex:18
+#, elixir-autogen, elixir-format
+msgid "Through the gate there is an empty white floor."
+msgstr "Door de poort is er een lege witte vloer."
+
+#: lib/retro_hex_chat_web/site/pages/spaces/intro.html.heex:8
+#, elixir-autogen, elixir-format
+msgid "What you type shows up above your character and in the chat."
+msgstr "Wat je typt, verschijnt boven je karakter en in de chat."
+
+#: lib/retro_hex_chat_web/site/pages/spaces/places.html.heex:24
+#, elixir-autogen, elixir-format
+msgid "Your buildings stay in the channel, and everybody can see them."
+msgstr "Je gebouwen blijven in het kanaal, en iedereen kan ze zien."
+
+#: lib/retro_hex_chat_web/site/pages/spaces/intro.html.heex:7
+#, elixir-autogen, elixir-format
+msgid "Make a character, then go in and chat."
+msgstr "Maak een personage, ga dan naar binnen en praat."
+
+#: lib/retro_hex_chat_web/site/pages/spaces.ex:82
+#: lib/retro_hex_chat_web/site/pages/spaces/intro.html.heex:40
+#, elixir-autogen, elixir-format
+msgid "Three characters talking on an island, in pixel art"
+msgstr "Drie personages spreken op een eiland, in pixel art"
+
+#: lib/retro_hex_chat_web/site/pages/spaces.ex:92
+#, elixir-autogen, elixir-format
+msgid "Walk around a pixel-art world with the people of a chat room, in your browser. Make a character, talk and build together for free."
+msgstr "Loop rond een pixel-art wereld met de mensen van een chatroom, in uw browser. Maak een personage, praat en bouw samen gratis."
+
+#: lib/retro_hex_chat_web/site/pages/spaces/creator.html.heex:11
+#: lib/retro_hex_chat_web/site/pages/spaces/how.html.heex:11
+#, elixir-autogen, elixir-format
+msgid "Make your character"
+msgstr "Maak je personage"
+
+#: lib/retro_hex_chat_web/site/pages/spaces/places.html.heex:19
+#, elixir-autogen, elixir-format
+msgid "Choose furniture, plants and games in the %{build} menu and place them anywhere."
+msgstr "Kies meubels, planten en games in het %{build} menu en plaats ze overal."
+
+#: lib/retro_hex_chat_web/site/pages/spaces/creator.html.heex:15
+#, elixir-autogen, elixir-format
+msgid "Choose the skin, the outfit, the hair, a hat and the face."
+msgstr "Kies de huid, de outfit, het haar, een hoed en het gezicht."
+
+#: lib/retro_hex_chat_web/site/pages/spaces/intro.html.heex:15
+#: lib/retro_hex_chat_web/site/pages/spaces/intro.html.heex:21
+#: lib/retro_hex_chat_web/site/pages/spaces/intro.html.heex:25
+#, elixir-autogen, elixir-format
+msgid "Open the Space of %{channel}"
+msgstr "Open de ruimte van %{channel}"
+
+#: lib/retro_hex_chat_web/site/pages/spaces/places.html.heex:10
+#, elixir-autogen, elixir-format
+msgid "The Construct, an empty white floor, with its %{build} menu open"
+msgstr "De Construct, een lege witte vloer, met zijn %{build}-menu geopend"
+
+#: lib/retro_hex_chat_web/site/pages/spaces/places.html.heex:62
+#, elixir-autogen, elixir-format
+msgid "An office with computers and a meeting table"
+msgstr "Een kantoor met computers en een vergadertafel"
+
+#: lib/retro_hex_chat_web/site/pages/spaces/how.html.heex:7
+#, elixir-autogen, elixir-format
+msgid "Press %{join} on the card to open the Space in a new tab."
+msgstr "Druk op %{join} op de kaart om de Spatie te openen in een nieuw tabblad."
+
+#: lib/retro_hex_chat_web/site/pages/spaces/intro.html.heex:6
+#, elixir-autogen, elixir-format
+msgid "Everyone in the channel can walk around in it together."
+msgstr "Iedereen in het kanaal kan er samen in rondlopen."
+
+#: lib/retro_hex_chat_web/site/pages/spaces/how.html.heex:13
+#, elixir-autogen, elixir-format
+msgid "Walk with the arrow keys, WASD or the pad on the screen. Press Enter to write a message."
+msgstr "Loop met de pijltjestoetsen, WASD of het pad op het scherm. Druk op Enter om een bericht te schrijven."

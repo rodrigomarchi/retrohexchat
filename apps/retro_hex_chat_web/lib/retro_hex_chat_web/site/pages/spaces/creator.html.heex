@@ -1,0 +1,22 @@
+<div class="grid grid-cols-1 items-start gap-retro-12 md:grid-cols-2">
+  <.inset tone="screen" class="p-1">
+    <.screenshot
+      {@shots["creator"]}
+      alt={dgettext("landing", "The character creator, with a wizard in a violet robe")}
+      sizes="(min-width: 768px) 360px, 100vw"
+    />
+  </.inset>
+  <div>
+    <.section_heading id="spaces-creator">
+      {dgettext("landing", "Make your character")}
+    </.section_heading>
+    <.feature_list>
+      <:item icon={:icon_palette}>
+        {dgettext("landing", "Choose the skin, the outfit, the hair, a hat and the face.")}
+      </:item>
+      <:item icon={:icon_palette}>
+        {dgettext("landing", "Choose a colour for each piece.")}
+      </:item>
+    </.feature_list>
+  </div>
+</div>

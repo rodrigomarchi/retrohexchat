@@ -15,6 +15,7 @@
 |---|---|
 | [Chat](https://retrohexchat.app/connect) | Join a channel with just a nickname |
 | [Games](https://retrohexchat.app/games) | The arcade and the multiplayer catalog |
+| [Spaces](https://retrohexchat.app/spaces) | The pixel-art world every channel opens onto |
 | [mIRC commands](https://retrohexchat.app/mirc-commands) | The classic `/` commands that work here |
 | [mIRC online](https://retrohexchat.app/mirc-online) · [IRC chat](https://retrohexchat.app/irc-chat) | What it is, for people coming from mIRC |
 

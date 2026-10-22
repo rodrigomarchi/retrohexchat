@@ -702,6 +702,18 @@ _ROWS = {
     # ── A game's channel and its results ──────────────────────
     # "Draw" is the result of a match, never the verb.
     "Ranking":        ("Ranking", "Classificação", "Clasificación", "Classement", "Rangliste", "Classifica", "Ranglijst", "Ranking", "Рейтинг", "Peringkat", "ランキング", "排行榜", "排行榜"),
+    # The Spaces page and the places of a Space. "Space" alone stays out: it is
+    # also the space bar in the games' key tables. ru had "Космос" (outer
+    # space), ja "Constructの特長", it "Gli Costrutto", de "The Konstrukt".
+    "Spaces":          ("Espaços", "Espaços", "Espacios", "Espaces", "Räume", "Spazi", "Ruimten", "Przestrzenie", "Пространства", "Ruang", "スペース", "空间", "空間"),
+    "The Construct":   ("O Constructo", "O Constructo", "El Constructo", "Le Construct", "Das Konstrukt", "Il Costrutto", "De Construct", "Konstrukt", "Конструкт", "Konstruk", "コンストラクト", "Construct", "Construct"),
+    "The Game Room":   ("A sala de jogos", "A sala de jogos", "La sala de juegos", "La salle de jeux", "Der Spieleraum", "La sala giochi", "De speelkamer", "Pokój gier", "Игровая комната", "Ruang permainan", "ゲームルーム", "游戏房间", "遊戲房間"),
+    "The Office":      ("O escritório", "O escritório", "La oficina", "Le bureau", "Das Büro", "L'ufficio", "Het kantoor", "Biuro", "Офис", "Kantor", "オフィス", "办公室", "辦公室"),
+    "Places to go":    ("Lugares para visitar", "Lugares para visitar", "Lugares para visitar", "Lieux à visiter", "Orte zum Besuchen", "Luoghi da visitare", "Plekken om te bezoeken", "Miejsca do odwiedzenia", "Куда пойти", "Tempat untuk dikunjungi", "行ける場所", "可去的地方", "可去的地方"),
+    "Your character":  ("Seu personagem", "A tua personagem", "Tu personaje", "Votre personnage", "Dein Charakter", "Il tuo personaggio", "Je personage", "Twoja postać", "Ваш персонаж", "Karaktermu", "あなたのキャラクター", "你的角色", "你的角色"),
+    "How to get in":   ("Como entrar", "Como entrar", "Cómo entrar", "Comment entrer", "So kommst du hinein", "Come entrare", "Hoe kom je binnen", "Jak wejść", "Как войти", "Cara masuk", "入り方", "如何进入", "如何進入"),
+    "Make your character": ("Crie seu personagem", "Cria a tua personagem", "Crea tu personaje", "Créez votre personnage", "Erstelle deinen Charakter", "Crea il tuo personaggio", "Maak je personage", "Stwórz swoją postać", "Создайте персонажа", "Buat karaktermu", "キャラクターを作る", "创建你的角色", "建立你的角色"),
+    "How it works":    ("Como funciona", "Como funciona", "Cómo funciona", "Comment ça marche", "So funktioniert es", "Come funziona", "Hoe het werkt", "Jak to działa", "Как это работает", "Cara kerjanya", "仕組み", "如何运作", "如何運作"),
     # An arcade game's home: who started it, and who starts it most.
     "Who played":      ("Quem jogou", "Quem jogou", "Quién jugó", "Qui a joué", "Wer gespielt hat", "Chi ha giocato", "Wie speelde", "Kto grał", "Кто играл", "Siapa yang bermain", "プレイした人", "谁玩过", "誰玩過"),
     "Top players":     ("Quem mais joga", "Quem mais joga", "Quién más juega", "Qui joue le plus", "Wer am meisten spielt", "Chi gioca di più", "Wie het meest speelt", "Kto gra najwięcej", "Кто играет чаще", "Paling sering main", "よく遊ぶ人", "玩得最多的人", "玩得最多的人"),

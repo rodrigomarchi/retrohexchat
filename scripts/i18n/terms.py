@@ -330,11 +330,28 @@ _TERMS: dict[str, dict[str, tuple[str, ...]]] = {
     r"\btips\b": {
         "es": ("consejo",),
     },
-    r"\bnew tab\b": {
+    # Measured on the Spaces page: "opens in a new browser tab" came back in
+    # Portuguese as "numa nova página do navegador", a page rather than a tab.
+    r"\bnew (?:browser )?tab\b": {
         "pt": ("aba", "separador", "guia"),
         "es": ("pestaña",),
         "fr": ("onglet",),
-        "de": ("tab",),
+        "de": ("tab", "registerkarte"),
+    },
+    # The Space a channel opens onto: the product's word, never outer space.
+    # Japanese gave "宇宙の場所を見る" and Russian "на острове Космоса" for
+    # "the places of a Space". The space bar is a key, and keeps its own word.
+    r"\b(?:a|the|its|each|every|this|of|own)\s+spaces?\b(?!\s*(?:bar|key))|\bspaces\b(?!\s*(?:bar|key))": {
+        "ru": ("пространств",),
+        "ja": ("スペース",),
+        "zh_hans": ("空间",),
+        "zh_hant": ("空間",),
+    },
+    # An account on the server, never a bank account: Russian gave "Это все,
+    # что нужно для счета" — the bill.
+    r"\baccounts?\b": {
+        "ru": ("аккаунт", "учётн", "учетн"),
+        "ja": ("アカウント",),
     },
 }
 
@@ -453,6 +470,10 @@ _FOREIGN_FORMS: dict[str, tuple[str, ...]] = {
         "pede-lhe",
         "registado",
         "registada",
+        # Measured on the Spaces page: "Um escritório com secretárias" — the
+        # European word for a desk, which in Brazil is a secretary.
+        "secretária",
+        "secretárias",
     ),
 }
 

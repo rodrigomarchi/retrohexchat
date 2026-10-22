@@ -154,7 +154,36 @@ def is_usable_translation(source: str, translated: str, replacements: dict[str, 
     if introduced_replacement_box(source, translated):
         return False
 
+    if stops_mid_sentence(source, translated):
+        return False
+
     return all(value in translated for value in replacements.values())
+
+
+# Pauses a sentence cannot end on. The Japanese model gave "Design your
+# character, then go in." as "キャラクターをデザインし、" — the first clause
+# and its comma, the rest dropped.
+CLAUSE_PAUSES = ("、", "，", ",", ";", "；", ":", "：")
+
+
+def stops_mid_sentence(source: str, translated: str) -> bool:
+    """True when a whole sentence came back cut off at a comma."""
+    return source.rstrip().endswith((".", "!", "?")) and translated.rstrip().endswith(
+        CLAUSE_PAUSES
+    )
+
+
+# Two words the engine glued into one that the language does not have. The
+# Portuguese model wrote "um chapéu eo rosto" for "a hat and the face".
+GLUED_WORDS = {"pt": re.compile(r"\beo\b", re.IGNORECASE)}
+
+
+def glued_words(translated: str, locale_code: str | None) -> bool:
+    """True when the output carries two words run together into a non-word."""
+    if not locale_code:
+        return False
+    pattern = GLUED_WORDS.get(locale_code.split("_")[0])
+    return bool(pattern and pattern.search(translated))
 
 
 # What a model writes for a glyph it could not carry: "Iniciar □ Navegar".

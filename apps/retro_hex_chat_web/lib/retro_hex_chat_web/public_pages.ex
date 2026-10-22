@@ -35,6 +35,7 @@ defmodule RetroHexChatWeb.PublicPages do
     {:how_it_works, "/how-it-works", :icon_server, Pages.HowItWorks},
     {:features, "/features", :icon_chat, Pages.Features},
     {:games, "/games", :icon_joystick, Pages.Games},
+    {:spaces, "/spaces", :icon_group_view, Pages.Spaces},
     {:privacy, "/privacy", :icon_lock, Pages.Privacy},
     {:install, "/install", :icon_terminal, Pages.Install},
     {:community, "/community", :icon_code, Pages.Community},
@@ -80,6 +81,10 @@ defmodule RetroHexChatWeb.PublicPages do
     end
   end
 
+  @doc "A help topic's page, in the reader's language: `/pt-BR/chat/help/feature-arcade`."
+  @spec help_topic_path(String.t()) :: String.t()
+  def help_topic_path(topic_id), do: localized_path("/chat/help/" <> topic_id)
+
   @doc """
   `path` in the reader's language. Linking the localized address directly spares
   a crawler, and a reader, the redirect an unprefixed one would cost.
@@ -100,6 +105,7 @@ defmodule RetroHexChatWeb.PublicPages do
   defp label(:how_it_works), do: dgettext("landing", "How It Works")
   defp label(:features), do: dgettext("landing", "Features")
   defp label(:games), do: dgettext("landing", "Games")
+  defp label(:spaces), do: dgettext("landing", "Spaces")
   defp label(:privacy), do: dgettext("landing", "Privacy")
   defp label(:install), do: dgettext("landing", "Install")
   defp label(:community), do: dgettext("landing", "Community")

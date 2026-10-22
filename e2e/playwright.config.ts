@@ -53,6 +53,26 @@ export default defineConfig({
         },
       },
     },
+    // Captures the pictures public pages show (e2e/capture/). Not a test
+    // either: it exists only under `make spaces.shots`.
+    ...(process.env.E2E_CAPTURE
+      ? [
+          {
+            name: "capture",
+            testDir: "./capture",
+            testMatch: /.*\.capture\.ts/,
+            retries: 0,
+            use: {
+              ...devices["Desktop Chrome"],
+              viewport: { width: 1280, height: 720 },
+              deviceScaleFactor: 1,
+              trace: "off" as const,
+              screenshot: "off" as const,
+              video: "off" as const,
+            },
+          },
+        ]
+      : []),
     // Films scenes for the YouTube channel (e2e/director/). Not a test
     // category: it exists only under `make e2e.director`, so no plain
     // `playwright test`, batch or sweep can pick it up.

@@ -210,7 +210,7 @@ defmodule RetroHexChatWeb.Components.UI.Help.HelpViewer do
       <ul class="list-none m-0 p-0 flex flex-wrap gap-x-4 gap-y-1">
         <li :for={topic <- @related}>
           <.link
-            patch={help_topic_path(topic.id)}
+            patch={PublicPages.help_topic_path(topic.id)}
             class="inline-flex items-center gap-1 text-xs text-link hover:underline no-underline"
           >
             {apply(Icons, topic.icon, [%{class: "w-3 h-3 shrink-0"}])}
@@ -321,7 +321,7 @@ defmodule RetroHexChatWeb.Components.UI.Help.HelpViewer do
             <:icon>{apply(Icons, cat_icon, [%{class: "w-4 h-4"}])}</:icon>
             <.link
               :for={topic <- tree_topics(@full_tree, @selected_topic, category, topics)}
-              patch={help_topic_path(topic.id)}
+              patch={PublicPages.help_topic_path(topic.id)}
               class="block no-underline"
             >
               <.tree_view_item active={@selected_topic != nil && @selected_topic.id == topic.id}>
@@ -403,7 +403,7 @@ defmodule RetroHexChatWeb.Components.UI.Help.HelpViewer do
     ~H"""
     <li>
       <.link
-        patch={help_topic_path(@topic.id)}
+        patch={PublicPages.help_topic_path(@topic.id)}
         class={[
           "flex items-center gap-1.5 px-2 py-1 no-underline text-xs",
           if(@active, do: "bg-selection-bg text-selection-fg", else: "hover:bg-hover-bg text-text")
@@ -455,6 +455,4 @@ defmodule RetroHexChatWeb.Components.UI.Help.HelpViewer do
       "[&_td]:border [&_td]:border-gray-300 [&_td]:px-2 [&_td]:py-1"
     ]
   end
-
-  defp help_topic_path(topic_id), do: PublicPages.localized_path("/chat/help/#{topic_id}")
 end

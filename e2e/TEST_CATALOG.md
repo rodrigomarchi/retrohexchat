@@ -134,9 +134,9 @@ make e2e.catalog.check    # verify it is current (also runs in make ci)
 
 ## Coverage
 
-- **258 spec files** under `e2e/tests/`.
-- **648 Playwright `test()` cases**.
-- **591 documented flows**, 590 done, 1 not done.
+- **259 spec files** under `e2e/tests/`.
+- **650 Playwright `test()` cases**.
+- **593 documented flows**, 592 done, 1 not done.
 - **Every spec documents its own flows.**
 
 ## Flow index
@@ -856,6 +856,8 @@ Grouped by section. Every row comes from an `@flow` line in the spec itself.
 | PW30 | A visitor reads on arrival what a member reads: the server's message of the day in the Status window and a channel's own welcome (/setwelcome) when they open it | `tests/chat-public-visitor.spec.ts` | done |
 | PW31 | Every step of the sign-in window — nickname, a wrong nickname, registration with Remember this terminal, password, remembered nicknames — fits a 1280x720 desktop and a phone without scrolling or spilling sideways, a visitor's reason included; How sessions work and each thing an account opens open their help topic in a new tab, leaving the window where it was | `tests/sign-in-window-fit.spec.ts` | done |
 | PW32 | A trusted terminal set to Auto-login is signed in by the first page it opens after the browser restarts, with no sign-in window or form in between; Log out keeps it out until the browser closes; Log in beside a remembered nickname works before the chat's socket has joined — on a desktop and on a phone | `tests/trusted-terminal-return.spec.ts` | done |
+| PW33 | The public Spaces page shows the world in real pictures — the island, the Construct, the Game Room, the Office and the character creator — on a desktop and a phone, and its way in takes a visitor through creating an account straight into the #lobby Space, put in the channel on arrival | `tests/spaces-page.spec.ts` | done |
+| PW34 | A member's way in on the Spaces page opens the #lobby Space in a tab of its own, and the features window and the home page lead to the Spaces page | `tests/spaces-page.spec.ts` | done |
 
 ### Dialog Gallery
 

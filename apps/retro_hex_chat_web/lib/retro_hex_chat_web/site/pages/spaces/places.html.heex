@@ -1,0 +1,76 @@
+<div class="grid grid-cols-1 gap-retro-12 md:grid-cols-3" data-testid="spaces-places">
+  <section>
+    <.section_heading id="spaces-construct">
+      {dgettext("landing", "The Construct")}
+    </.section_heading>
+    <.inset tone="screen" class="p-1">
+      <.screenshot
+        {@shots["construct"]}
+        alt={
+          dgettext("landing", "The Construct, an empty white floor, with its %{build} menu open",
+            build: dgettext("chat", "Build")
+          )
+        }
+        sizes="(min-width: 768px) 280px, 100vw"
+      />
+    </.inset>
+    <p class="text-sm mt-retro-6">
+      {dgettext("landing", "Through the gate there is an empty white floor.")}
+      {dgettext(
+        "landing",
+        "Choose furniture, plants and games in the %{build} menu and place them anywhere.",
+        build: dgettext("chat", "Build")
+      )}
+      {dgettext("landing", "Your buildings stay in the channel, and everybody can see them.")}
+    </p>
+    <p class="text-xs mt-retro-4">
+      <.link patch={@help["feature-space-construct"].path} class="underline">
+        {dgettext("landing", "How it works")}
+      </.link>
+    </p>
+  </section>
+
+  <section>
+    <.section_heading id="spaces-game-room">
+      {dgettext("landing", "The Game Room")}
+    </.section_heading>
+    <.inset tone="screen" class="p-1">
+      <.screenshot
+        {@shots["game_room"]}
+        alt={dgettext("landing", "Inside there are arcade games and a pool table.")}
+        sizes="(min-width: 768px) 280px, 100vw"
+      />
+    </.inset>
+    <p class="text-sm mt-retro-6">
+      {dgettext("landing", "Inside there are arcade games and a pool table.")}
+      {dgettext("landing", "Each machine opens the games of the channel.")}
+    </p>
+    <p class="text-xs mt-retro-4">
+      <.link patch={@help["feature-space-game-room"].path} class="underline">
+        {dgettext("landing", "How it works")}
+      </.link>
+    </p>
+  </section>
+
+  <section>
+    <.section_heading id="spaces-office">
+      {dgettext("landing", "The Office")}
+    </.section_heading>
+    <.inset tone="screen" class="p-1">
+      <.screenshot
+        {@shots["office"]}
+        alt={dgettext("landing", "An office with computers and a meeting table")}
+        sizes="(min-width: 768px) 280px, 100vw"
+      />
+    </.inset>
+    <p class="text-sm mt-retro-6">
+      {dgettext("landing", "Inside there are work desks and a meeting table.")}
+      {dgettext("landing", "It is a place to meet and to talk about work.")}
+    </p>
+    <p class="text-xs mt-retro-4">
+      <.link patch={@help["feature-space-office"].path} class="underline">
+        {dgettext("landing", "How it works")}
+      </.link>
+    </p>
+  </section>
+</div>

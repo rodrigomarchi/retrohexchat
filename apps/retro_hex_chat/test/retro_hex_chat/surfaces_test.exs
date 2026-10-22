@@ -367,6 +367,53 @@ defmodule RetroHexChat.SurfacesTest do
     end
   end
 
+  # The Space of a channel somebody followed a link into, with no chat open,
+  # put them in the channel. Nothing else will ever take them out of it.
+  describe "a channel a surface put somebody in" do
+    setup do
+      nickname = unique_nick("spj")
+      channel = open_channel("#surf#{System.unique_integer([:positive])}")
+      {:ok, _state} = Server.join(channel, nickname, nil, identified: true)
+
+      %{nickname: nickname, channel: channel}
+    end
+
+    test "is left when the last surface goes", %{nickname: nickname, channel: channel} do
+      space = start_surface(nickname, RetroHexChatWeb.App.SpaceLive)
+      Surfaces.part_when_last_closes(nickname, channel, "Left the space")
+      assert nickname in members(channel)
+
+      close(space)
+
+      assert_eventually(fn -> nickname not in members(channel) end)
+    end
+
+    # The chat cancels the departure it handed over, and only that: it never
+    # knew this channel, so it would never part it either.
+    test "is not cancelled by a chat coming back", %{nickname: nickname, channel: channel} do
+      space = start_surface(nickname, RetroHexChatWeb.App.SpaceLive)
+      Surfaces.part_when_last_closes(nickname, channel, "Left the space")
+
+      chat = start_surface(nickname, RetroHexChatWeb.DesktopLive)
+      Surfaces.cancel_deferred(nickname)
+
+      close(space)
+      assert nickname in members(channel)
+
+      close(chat)
+      assert_eventually(fn -> nickname not in members(channel) end)
+    end
+
+    test "is left at once when nothing of theirs is open", %{
+      nickname: nickname,
+      channel: channel
+    } do
+      Surfaces.part_when_last_closes(nickname, channel, "Left the space")
+
+      assert_eventually(fn -> nickname not in members(channel) end)
+    end
+  end
+
   # A nick change moves presence, the inbox and the channel memberships. This
   # is the fourth thing it moves, and the one whose absence is silent: a tab
   # left registered under the old name is a tab nothing counts.

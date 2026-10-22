@@ -1,0 +1,43 @@
+<ol class="list-decimal space-y-retro-4 pl-retro-16 text-sm" data-testid="spaces-steps">
+  <li>
+    {dgettext("chat", "An account only needs a nickname and a password.")}
+  </li>
+  <li>
+    {dgettext("landing", "Open a channel and press the Space button next to its tab.")}
+    {dgettext("landing", "Press %{join} on the card to open the Space in a new tab.",
+      join: dgettext("share", "Join")
+    )}
+  </li>
+  <li>{dgettext("landing", "Make your character")}</li>
+  <li>
+    {dgettext(
+      "landing",
+      "Walk with the arrow keys, WASD or the pad on the screen. Press Enter to write a message."
+    )}
+  </li>
+</ol>
+
+<p class="text-sm mt-retro-8">
+  {dgettext(
+    "landing",
+    "Each channel has its own Space, and so does each private conversation."
+  )}
+</p>
+
+<ul class="text-sm mt-retro-8 space-y-retro-2" data-testid="spaces-help">
+  <li>
+    <.link patch={@help["feature-virtual-spaces"].path} class="underline">
+      {@help["feature-virtual-spaces"].title}
+    </.link>
+  </li>
+  <li>
+    <.link patch={@help["feature-space-talk"].path} class="underline">
+      {@help["feature-space-talk"].title}
+    </.link>
+  </li>
+  <li>
+    <.link patch={@help["feature-space-share"].path} class="underline">
+      {@help["feature-space-share"].title}
+    </.link>
+  </li>
+</ul>

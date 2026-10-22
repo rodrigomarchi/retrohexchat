@@ -69,6 +69,7 @@ defmodule RetroHexChatWeb.Router do
         live "/faq", DesktopLive, :faq
         live "/games", DesktopLive, :games
         live "/games/:slug", DesktopLive, :game
+        live "/spaces", DesktopLive, :spaces
         live "/mirc-commands", DesktopLive, :mirc_commands
         live "/mirc-online", DesktopLive, :mirc_online
         live "/irc-chat", DesktopLive, :irc_chat

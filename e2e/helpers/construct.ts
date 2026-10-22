@@ -179,16 +179,28 @@ export async function mapDrawn(space: Page) {
   });
 }
 
-/** From the End of Time's island, through the gate, into the Construct. */
-export async function enterConstruct(walker: Walker) {
+/**
+ * From the End of Time's island through one of its doors — the gate, the
+ * Office's, the Game Room's — into the room behind it: walk to the tile in
+ * front of it, press E, say yes, and wait for the room's map.
+ */
+export async function enterRoom(
+  walker: Walker,
+  before: { x: number; y: number },
+) {
   const space = walker.page;
-  await walker.goTo(BEFORE_GATE);
+  await walker.goTo(before);
   await space.keyboard.press("e");
   await expect(space.getByTestId("space-modal-yes")).toBeVisible();
   await space.getByTestId("space-modal-yes").click();
   await expect(space).toHaveURL(/\?avatar=/, { timeout: 15_000 });
   await mapDrawn(space);
-  await expect(space.getByTestId("construct-palette")).toBeVisible();
+}
+
+/** From the End of Time's island, through the gate, into the Construct. */
+export async function enterConstruct(walker: Walker) {
+  await enterRoom(walker, BEFORE_GATE);
+  await expect(walker.page.getByTestId("construct-palette")).toBeVisible();
 }
 
 /** Into a channel's Space and straight through its gate. */

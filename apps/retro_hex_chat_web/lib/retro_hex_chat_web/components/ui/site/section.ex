@@ -7,7 +7,8 @@ defmodule RetroHexChatWeb.Components.UI.Site.Section do
   window's own assigns on top and the window itself as `@window`.
 
   The pieces a body is built from are here too, so every window of the site
-  reads alike: its heading and its comparison table. The list of features and
+  reads alike: its heading, its comparison table and its links to the other
+  pages. The list of features and
   the inset panel are the UI's own (`Components.UI.FeatureList`,
   `Components.UI.Inset`), shared with the chat.
   """
@@ -15,6 +16,30 @@ defmodule RetroHexChatWeb.Components.UI.Site.Section do
 
   import RetroHexChatWeb.Components.UI.Inset
   import RetroHexChatWeb.Components.UI.Table
+
+  alias RetroHexChatWeb.PublicPages
+
+  attr :page, :atom, required: true, doc: "a public page by its name, as `PublicPages` lists it"
+  attr :class, :any, default: "underline"
+  slot :inner_block, required: true
+
+  @doc """
+  A link to one of the site's public pages, in the reader's language, named by
+  the page rather than spelt as a path: a page that does not exist fails here
+  instead of quietly leading home.
+  """
+  @spec page_link(map()) :: Phoenix.LiveView.Rendered.t()
+  def page_link(assigns) do
+    %{path: path} =
+      PublicPages.find(assigns.page) ||
+        raise ArgumentError, "no public page #{inspect(assigns.page)}"
+
+    assigns = assign(assigns, :path, PublicPages.localized_path(path))
+
+    ~H"""
+    <.link patch={@path} class={@class}>{render_slot(@inner_block)}</.link>
+    """
+  end
 
   attr :window, RetroHexChatWeb.Site.Window, required: true, doc: "its title is the page's h1"
   attr :heading_id, :string, required: true

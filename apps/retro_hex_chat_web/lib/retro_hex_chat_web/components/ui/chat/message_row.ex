@@ -161,7 +161,7 @@ defmodule RetroHexChatWeb.Components.UI.MessageRow do
           <.inline_help_card
             topic_id={@msg.topic_id}
             topic_title={@msg.topic_title}
-            help_url={help_url(@msg.topic_id)}
+            help_url={PublicPages.help_topic_path(@msg.topic_id)}
           />
         </.chat_message>
       <% :visitor_greeting -> %>
@@ -306,8 +306,6 @@ defmodule RetroHexChatWeb.Components.UI.MessageRow do
   # pending already carries the id the server returned.
   @spec reactable?(map()) :: boolean()
   defp reactable?(msg), do: is_integer(msg.id)
-
-  defp help_url(topic_id), do: PublicPages.localized_path("/chat/help/#{topic_id}")
 
   # A card is a block of its own and cannot ride the head line beside the
   # narration, so a row carrying one is stacked whatever its type would choose.

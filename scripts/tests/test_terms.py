@@ -32,6 +32,29 @@ class MissingTermsTest(unittest.TestCase):
         self.assertTrue(missing_terms("No match is being played.", "Non c'è nessuna corrispondenza.", "it"))
         self.assertTrue(missing_terms("It opens a new match.", "Il ouvre une nouvelle correspondance.", "fr"))
 
+    def test_a_browser_tab_is_not_a_page(self):
+        source = "The Space opens in a new browser tab."
+        self.assertTrue(missing_terms(source, "O Espaço abre numa nova página do navegador.", "pt_BR"))
+        self.assertEqual(missing_terms(source, "O Espaço abre em uma nova aba do navegador.", "pt_BR"), [])
+
+    def test_a_german_tab_may_be_a_registerkarte(self):
+        source = "Press Join on the card to open the Space in a new tab."
+        self.assertEqual(missing_terms(source, "Öffnen Sie den Raum in einer neuen Registerkarte.", "de"), [])
+
+    def test_a_space_is_the_product_not_outer_space(self):
+        source = "See the places of a Space"
+        self.assertTrue(missing_terms(source, "宇宙の場所を見る", "ja"))
+        self.assertTrue(missing_terms("Talking in a Space", "Разговор в космосе", "ru"))
+        self.assertEqual(missing_terms(source, "スペースの場所を見る", "ja"), [])
+
+    def test_the_space_bar_keeps_its_own_word(self):
+        self.assertEqual(missing_terms("Press the space bar to jump.", "Нажмите пробел.", "ru"), [])
+
+    def test_an_account_is_not_a_bill(self):
+        source = "That is all the account needs."
+        self.assertTrue(missing_terms(source, "Это все, что нужно для счета.", "ru"))
+        self.assertEqual(missing_terms(source, "Это всё, что нужно аккаунту.", "ru"), [])
+
     def test_matching_is_not_held_to_the_game(self):
         for source in [
             "Passwords do not match",
@@ -265,6 +288,9 @@ class ForeignFormsTest(unittest.TestCase):
         self.assertEqual(italian_accents("E' chiuso, e' vero"), "È chiuso, è vero")
         # An apostrophe that elides a word is left alone.
         self.assertEqual(italian_accents("l'ufficio e l'arcade"), "l'ufficio e l'arcade")
+
+    def test_a_desk_is_not_a_secretary_in_brazil(self):
+        self.assertTrue(foreign_forms("Um escritório com secretárias e uma mesa", "pt_BR"))
 
     def test_brazilian_text_passes(self):
         self.assertEqual(foreign_forms("Escolha um apelido e pronto.", "pt_BR"), [])

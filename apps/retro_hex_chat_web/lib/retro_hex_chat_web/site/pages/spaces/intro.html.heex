@@ -1,0 +1,44 @@
+<h1 id="spaces-heading" class="text-lg font-bold mb-retro-8 text-text">
+  {dgettext("landing", "A pixel-art world for every chat room")}
+</h1>
+<p class="text-sm max-w-3xl mb-retro-12">
+  {dgettext("landing", "Every channel opens onto a Space, a pixel-art world.")}
+  {dgettext("landing", "Everyone in the channel can walk around in it together.")}
+  {dgettext("landing", "Make a character, then go in and chat.")}
+  {dgettext("landing", "What you type shows up above your character and in the chat.")}
+  {dgettext("landing", "Everybody arrives on the island at the End of Time.")}
+</p>
+
+<div class="flex flex-wrap items-center gap-retro-8 mb-retro-12" data-testid="spaces-actions">
+  <.button :if={@visitor} patch={@enter_path} class="font-bold" data-testid="spaces-enter">
+    <:icon><Icons.icon_group_view class="h-4 w-4" /></:icon>
+    {dgettext("landing", "Open the Space of %{channel}", channel: @channel)}
+  </.button>
+  <.surface_link
+    :if={not @visitor}
+    as={:button}
+    href={@enter_path}
+    label={dgettext("landing", "Open the Space of %{channel}", channel: @channel)}
+    data-testid="spaces-enter"
+  >
+    <:icon><Icons.icon_group_view class="h-4 w-4" /></:icon>
+    {dgettext("landing", "Open the Space of %{channel}", channel: @channel)}
+  </.surface_link>
+  <.button
+    variant="outline"
+    patch={@help["feature-virtual-spaces"].path}
+    data-testid="spaces-how"
+  >
+    <:icon><Icons.icon_question class="h-4 w-4" /></:icon>
+    {dgettext("landing", "How it works")}
+  </.button>
+</div>
+
+<.inset tone="screen" class="p-1">
+  <.screenshot
+    {@shots["island"]}
+    alt={dgettext("landing", "Three characters talking on an island, in pixel art")}
+    sizes="(min-width: 900px) 880px, 100vw"
+    main
+  />
+</.inset>
