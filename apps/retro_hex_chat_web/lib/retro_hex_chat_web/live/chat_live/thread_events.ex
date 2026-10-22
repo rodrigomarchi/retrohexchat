@@ -34,6 +34,7 @@ defmodule RetroHexChatWeb.ChatLive.ThreadEvents do
   alias RetroHexChatWeb.ChatLive.Helpers.Messages
   alias RetroHexChatWeb.ChatLive.StreamItem
   alias RetroHexChatWeb.ChatLive.Windows
+  alias RetroHexChatWeb.Params
 
   @window "thread"
 
@@ -42,7 +43,7 @@ defmodule RetroHexChatWeb.ChatLive.ThreadEvents do
   def handle_event("open_thread", %{"message_id" => raw_id}, socket) do
     kind = kind(socket)
 
-    case Replies.root_id(reply_kind(kind), to_integer(raw_id)) do
+    case Replies.root_id(reply_kind(kind), Params.integer(raw_id, 0)) do
       nil ->
         {:halt,
          Messages.error_event(socket, dgettext("chat", "That message could not be found."))}
@@ -94,7 +95,7 @@ defmodule RetroHexChatWeb.ChatLive.ThreadEvents do
   def reply_count(socket, message_id) do
     socket
     |> kind()
-    |> Queries.thread_counts_for_many([to_integer(message_id)])
+    |> Queries.thread_counts_for_many([Params.integer(message_id, 0)])
     |> Map.values()
     |> List.first()
     |> Kernel.||(0)
@@ -163,15 +164,4 @@ defmodule RetroHexChatWeb.ChatLive.ThreadEvents do
 
     socket
   end
-
-  defp to_integer(value) when is_integer(value), do: value
-
-  defp to_integer(value) when is_binary(value) do
-    case Integer.parse(value) do
-      {id, _rest} -> id
-      :error -> 0
-    end
-  end
-
-  defp to_integer(_value), do: 0
 end

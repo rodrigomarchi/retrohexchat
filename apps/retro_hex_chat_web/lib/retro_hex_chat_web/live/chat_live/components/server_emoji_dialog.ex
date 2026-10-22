@@ -23,6 +23,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.ServerEmojiDialog do
   alias RetroHexChat.Accounts.ServerRoles
   alias RetroHexChat.Chat.Attachments
   alias RetroHexChat.Chat.CustomEmojis
+  alias RetroHexChatWeb.Params
 
   @id "server-emoji-dialog"
 
@@ -81,7 +82,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.ServerEmojiDialog do
 
   def handle_event("server_emoji_remove", %{"id" => id}, socket) do
     if admin?(socket) do
-      id |> to_integer() |> CustomEmojis.remove()
+      id |> Params.integer(0) |> CustomEmojis.remove()
       {:noreply, assign(socket, emojis: CustomEmojis.all(), error: nil)}
     else
       {:noreply, assign(socket, error: dgettext("dialogs", "Server administrators only."))}
@@ -148,15 +149,4 @@ defmodule RetroHexChatWeb.ChatLive.Components.ServerEmojiDialog do
   end
 
   defp admin?(_socket), do: false
-
-  defp to_integer(value) when is_integer(value), do: value
-
-  defp to_integer(value) when is_binary(value) do
-    case Integer.parse(value) do
-      {id, _rest} -> id
-      :error -> 0
-    end
-  end
-
-  defp to_integer(_value), do: 0
 end

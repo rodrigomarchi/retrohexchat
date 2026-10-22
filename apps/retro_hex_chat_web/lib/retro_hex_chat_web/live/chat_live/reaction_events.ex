@@ -27,6 +27,7 @@ defmodule RetroHexChatWeb.ChatLive.ReactionEvents do
   alias RetroHexChat.Chat.Service
   alias RetroHexChatWeb.ChatLive.Components.EmojiPickerDialog
   alias RetroHexChatWeb.ChatLive.Components.MessageViewport
+  alias RetroHexChatWeb.Params
 
   @spec handle_event(String.t(), map(), Phoenix.LiveView.Socket.t()) ::
           {:halt, Phoenix.LiveView.Socket.t()} | {:cont, Phoenix.LiveView.Socket.t()}
@@ -85,8 +86,10 @@ defmodule RetroHexChatWeb.ChatLive.ReactionEvents do
   defp react(socket, message_id, emoji, source) do
     nickname = socket.assigns.session.nickname
 
+    # The id arrives from the page, where a row still being sent carries a
+    # placeholder ("pending_3") the database cannot cast.
     result =
-      case parse_id(message_id) do
+      case Params.integer(message_id) do
         nil -> {:error, dgettext("chat", "Message not found.")}
         id -> toggle(source, id, nickname, emoji)
       end
@@ -112,18 +115,4 @@ defmodule RetroHexChatWeb.ChatLive.ReactionEvents do
 
   defp source(_given, socket),
     do: if(socket.assigns.session.active_pm, do: :private, else: :channel)
-
-  # The id arrives from the page, where a row still being sent carries a
-  # placeholder ("pending_3") the database cannot cast.
-  @spec parse_id(term()) :: integer() | nil
-  defp parse_id(id) when is_integer(id), do: id
-
-  defp parse_id(id) when is_binary(id) do
-    case Integer.parse(id) do
-      {int, ""} -> int
-      _ -> nil
-    end
-  end
-
-  defp parse_id(_id), do: nil
 end

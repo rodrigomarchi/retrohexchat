@@ -63,6 +63,7 @@ defmodule RetroHexChatWeb.P2PLive.Events do
   alias RetroHexChatWeb.P2PLive.Components.P2PFileIsland
   alias RetroHexChatWeb.P2PLive.Components.P2PGameIsland
   alias RetroHexChatWeb.P2PLive.Components.P2PMediaIsland
+  alias RetroHexChatWeb.Params
   alias RetroHexChatWeb.SEO
 
   @pubsub RetroHexChat.PubSub
@@ -1814,20 +1815,7 @@ defmodule RetroHexChatWeb.P2PLive.Events do
     end
   end
 
-  defp integer_param(map, key) do
-    case value(map, key) do
-      value when is_integer(value) -> value
-      value when is_binary(value) -> parse_integer(value)
-      _ -> nil
-    end
-  end
-
-  defp parse_integer(value) do
-    case Integer.parse(value) do
-      {integer, ""} -> integer
-      _ -> nil
-    end
-  end
+  defp integer_param(map, key), do: Params.integer(value(map, key))
 
   defp truthy?(value), do: value in [true, "true", "1", 1, "on"]
 

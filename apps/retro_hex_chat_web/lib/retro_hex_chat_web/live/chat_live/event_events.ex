@@ -27,6 +27,7 @@ defmodule RetroHexChatWeb.ChatLive.EventEvents do
   alias RetroHexChatWeb.ChatLive.Helpers.Messages
   alias RetroHexChatWeb.ChatLive.StreamItem
   alias RetroHexChatWeb.ChatLive.Windows
+  alias RetroHexChatWeb.Params
 
   @window "events"
   @pubsub RetroHexChat.PubSub
@@ -110,7 +111,7 @@ defmodule RetroHexChatWeb.ChatLive.EventEvents do
           Phoenix.LiveView.Socket.t()
   defp answer(socket, raw_id, action) do
     nickname = socket.assigns.session.nickname
-    id = to_integer(raw_id)
+    id = Params.integer(raw_id, 0)
 
     case apply_answer(id, nickname, action) do
       :ok ->
@@ -141,15 +142,4 @@ defmodule RetroHexChatWeb.ChatLive.EventEvents do
         )
     end
   end
-
-  defp to_integer(value) when is_integer(value), do: value
-
-  defp to_integer(value) when is_binary(value) do
-    case Integer.parse(value) do
-      {id, _rest} -> id
-      :error -> 0
-    end
-  end
-
-  defp to_integer(_value), do: 0
 end

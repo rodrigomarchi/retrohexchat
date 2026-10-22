@@ -17,6 +17,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.TrustedTerminalsDialog do
   alias RetroHexChat.Accounts.TrustedDevices
   alias RetroHexChat.Page
   alias RetroHexChatWeb.PaginatedList
+  alias RetroHexChatWeb.Params
 
   @id "trusted-terminals-dialog"
 
@@ -311,18 +312,14 @@ defmodule RetroHexChatWeb.ChatLive.Components.TrustedTerminalsDialog do
 
   defp nickname(socket), do: socket.assigns.session.nickname
 
-  defp parse_id(id) when is_integer(id), do: {:ok, id}
-
-  defp parse_id(id) when is_binary(id) do
-    case Integer.parse(id) do
-      {parsed, ""} -> {:ok, parsed}
-      _ -> {:error, :invalid_id}
-    end
-  end
-
-  defp parse_id(_id), do: {:error, :invalid_id}
-
   defp parse_bool(value) when value in [true, "true"], do: {:ok, true}
   defp parse_bool(value) when value in [false, "false"], do: {:ok, false}
   defp parse_bool(_value), do: {:error, :invalid_bool}
+
+  defp parse_id(id) do
+    case Params.integer(id) do
+      nil -> {:error, :invalid_id}
+      parsed -> {:ok, parsed}
+    end
+  end
 end

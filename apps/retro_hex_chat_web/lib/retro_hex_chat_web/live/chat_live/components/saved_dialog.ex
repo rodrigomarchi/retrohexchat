@@ -19,6 +19,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.SavedDialog do
   alias RetroHexChat.Chat.SavedMessages
   alias RetroHexChatWeb.ChatLive.Helpers.NickFlags
   alias RetroHexChatWeb.PaginatedList
+  alias RetroHexChatWeb.Params
 
   @id "saved-dialog"
   @page_size 25
@@ -77,7 +78,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.SavedDialog do
        %{
          channel: params["channel"],
          counterpart: params["counterpart"],
-         message_id: to_integer(params["message_id"])
+         message_id: Params.integer(params["message_id"], 0)
        }}
     )
 
@@ -85,12 +86,12 @@ defmodule RetroHexChatWeb.ChatLive.Components.SavedDialog do
   end
 
   def handle_event("saved_remove", %{"saved_id" => id}, socket) do
-    send(self(), {:remove_saved, to_integer(id)})
+    send(self(), {:remove_saved, Params.integer(id, 0)})
     {:noreply, socket}
   end
 
   def handle_event("saved_note", %{"saved_id" => id, "note" => note}, socket) do
-    send(self(), {:set_saved_note, to_integer(id), note})
+    send(self(), {:set_saved_note, Params.integer(id, 0), note})
     {:noreply, socket}
   end
 
@@ -132,16 +133,4 @@ defmodule RetroHexChatWeb.ChatLive.Components.SavedDialog do
     # The flag beside each author, one lookup for the whole page.
     NickFlags.put_author_locales(page, :author_nickname)
   end
-
-  @spec to_integer(term()) :: integer()
-  defp to_integer(value) when is_integer(value), do: value
-
-  defp to_integer(value) when is_binary(value) do
-    case Integer.parse(value) do
-      {id, _rest} -> id
-      :error -> 0
-    end
-  end
-
-  defp to_integer(_value), do: 0
 end

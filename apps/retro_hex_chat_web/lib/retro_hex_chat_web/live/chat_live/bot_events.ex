@@ -27,6 +27,7 @@ defmodule RetroHexChatWeb.ChatLive.BotEvents do
   alias RetroHexChatWeb.ChatLive.ChatContext
   alias RetroHexChatWeb.ChatLive.Components.BotManagementDialog
   alias RetroHexChatWeb.ChatLive.Windows
+  alias RetroHexChatWeb.Params
 
   # The events this hook owns. Membership decides two things at once: that the
   # hook claims the event (`:halt`), and that the claim is gated. An event added
@@ -188,7 +189,7 @@ defmodule RetroHexChatWeb.ChatLive.BotEvents do
     nickname = Map.get(params, "nickname", name) |> String.trim()
     description = Map.get(params, "description", "") |> String.trim()
     prefix = Map.get(params, "prefix", "!") |> String.trim()
-    cooldown_seconds = Map.get(params, "cooldown", "3") |> parse_int(3)
+    cooldown_seconds = Map.get(params, "cooldown", "3") |> Params.integer(3)
     cooldown = cooldown_seconds * 1000
 
     default_caps = build_default_capabilities(params)
@@ -624,13 +625,6 @@ defmodule RetroHexChatWeb.ChatLive.BotEvents do
   end
 
   defp format_uptime(_started_at), do: nil
-
-  defp parse_int(str, default) do
-    case Integer.parse(str) do
-      {n, _} -> n
-      :error -> default
-    end
-  end
 
   defp format_changeset_errors(changeset) do
     ChangesetErrors.by_field(changeset)

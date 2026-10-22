@@ -19,6 +19,7 @@ defmodule RetroHexChatWeb.ChatLive.PinEvents do
   alias RetroHexChatWeb.ChatLive.Components.UserContextMenus
   alias RetroHexChatWeb.ChatLive.Helpers.Messages
   alias RetroHexChatWeb.ChatLive.Windows
+  alias RetroHexChatWeb.Params
 
   @spec handle_event(String.t(), map(), Phoenix.LiveView.Socket.t()) ::
           {:halt, Phoenix.LiveView.Socket.t()} | {:cont, Phoenix.LiveView.Socket.t()}
@@ -49,7 +50,7 @@ defmodule RetroHexChatWeb.ChatLive.PinEvents do
     nickname = socket.assigns.session.nickname
 
     socket =
-      case Server.unpin_message(channel, nickname, to_integer(message_id)) do
+      case Server.unpin_message(channel, nickname, Params.integer(message_id, 0)) do
         :ok ->
           assign(socket, pinned_count: Pins.count(channel))
 
@@ -75,7 +76,7 @@ defmodule RetroHexChatWeb.ChatLive.PinEvents do
   defp change_pin(socket, raw_id, action) do
     channel = socket.assigns.session.active_channel
     nickname = socket.assigns.session.nickname
-    id = to_integer(raw_id)
+    id = Params.integer(raw_id, 0)
 
     result =
       case action do
@@ -88,15 +89,4 @@ defmodule RetroHexChatWeb.ChatLive.PinEvents do
       {:error, message} -> Messages.error_event(socket, message)
     end
   end
-
-  defp to_integer(value) when is_integer(value), do: value
-
-  defp to_integer(value) when is_binary(value) do
-    case Integer.parse(value) do
-      {id, _rest} -> id
-      :error -> 0
-    end
-  end
-
-  defp to_integer(_value), do: 0
 end

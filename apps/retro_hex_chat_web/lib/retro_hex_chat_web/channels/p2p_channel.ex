@@ -34,6 +34,7 @@ defmodule RetroHexChatWeb.P2PChannel do
   alias RetroHexChat.P2P
   alias RetroHexChat.P2P.SignalingRateLimit
   alias RetroHexChat.Topics
+  alias RetroHexChatWeb.Params
 
   @pubsub RetroHexChat.PubSub
 
@@ -234,20 +235,7 @@ defmodule RetroHexChatWeb.P2PChannel do
     Map.get(params, key) in [true, "true", "on", "1", 1]
   end
 
-  defp integer_param(params, key) do
-    case Map.get(params, key) do
-      value when is_integer(value) -> value
-      value when is_binary(value) -> parse_integer(value)
-      _absent -> nil
-    end
-  end
-
-  defp parse_integer(value) do
-    case Integer.parse(value) do
-      {integer, ""} -> integer
-      _other -> nil
-    end
-  end
+  defp integer_param(params, key), do: Params.integer(Map.get(params, key))
 
   defp short_string(params, key, max) do
     case Map.get(params, key) do

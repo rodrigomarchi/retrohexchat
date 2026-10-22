@@ -28,6 +28,7 @@ defmodule RetroHexChatWeb.ChatLive.SaveEvents do
   alias RetroHexChatWeb.ChatLive.Helpers.Conversation
   alias RetroHexChatWeb.ChatLive.Helpers.Messages
   alias RetroHexChatWeb.ChatLive.Windows
+  alias RetroHexChatWeb.Params
 
   @spec handle_event(String.t(), map(), Phoenix.LiveView.Socket.t()) ::
           {:halt, Phoenix.LiveView.Socket.t()} | {:cont, Phoenix.LiveView.Socket.t()}
@@ -161,7 +162,7 @@ defmodule RetroHexChatWeb.ChatLive.SaveEvents do
 
   @spec message(Phoenix.LiveView.Socket.t(), term()) :: struct() | nil
   defp message(socket, raw_id) do
-    id = to_integer(raw_id)
+    id = Params.integer(raw_id, 0)
 
     if socket.assigns.session.active_pm,
       do: Queries.get_private_message(id),
@@ -172,16 +173,4 @@ defmodule RetroHexChatWeb.ChatLive.SaveEvents do
   defp scroll_to(socket, message_id) do
     push_event(socket, "scroll_to_message", %{message_id: to_string(message_id)})
   end
-
-  @spec to_integer(term()) :: integer()
-  defp to_integer(value) when is_integer(value), do: value
-
-  defp to_integer(value) when is_binary(value) do
-    case Integer.parse(value) do
-      {id, _rest} -> id
-      :error -> 0
-    end
-  end
-
-  defp to_integer(_value), do: 0
 end
