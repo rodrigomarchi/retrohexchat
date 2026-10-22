@@ -9,7 +9,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.IgnoreListDialog do
   timers, so the work bubbles up:
 
     * `{:ab_session, session, :ignore}` — parent assigns + persists.
-    * `{:ab_status, level, msg}` — chat-surface status / error lines.
+    * `DialogIsland.bubble/3` — chat-surface status / error lines.
     * `{:ab_ignore_timer, op, ...}` — the parent owns the ignore debounce timers.
   """
 
@@ -60,11 +60,11 @@ defmodule RetroHexChatWeb.ChatLive.Components.IgnoreListDialog do
     cond do
       Nickname.equal?(String.trim(nick), session.nickname) ->
         {:noreply,
-         bubble_status(socket, :error_event, dgettext("chat", "You cannot ignore yourself"))}
+         DialogIsland.bubble(socket, :error_event, dgettext("chat", "You cannot ignore yourself"))}
 
       duration_str not in [nil, ""] and match?({nil, nil}, parse_dialog_duration(duration_str)) ->
         {:noreply,
-         bubble_status(
+         DialogIsland.bubble(
            socket,
            :error_event,
            dgettext("chat", "Invalid duration format. Use: 5m, 2h, or 1d")
@@ -81,7 +81,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.IgnoreListDialog do
              socket
              |> assign(show_add_dialog: false)
              |> put_session(Session.set_ignore_list(session, updated_list))
-             |> bubble_status(
+             |> DialogIsland.bubble(
                :system_event,
                dgettext("chat", "* %{nickname} is now ignored (%{type})",
                  nickname: nick,
@@ -91,7 +91,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.IgnoreListDialog do
 
           {:error, reason} ->
             {:noreply,
-             bubble_status(
+             DialogIsland.bubble(
                socket,
                :error_event,
                dgettext("chat", "Failed to add ignore: %{reason}", reason: reason)
@@ -110,7 +110,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.IgnoreListDialog do
       {:noreply,
        socket
        |> put_session(Session.set_ignore_list(session, updated_list))
-       |> bubble_status(
+       |> DialogIsland.bubble(
          :system_event,
          dgettext("chat", "* %{nickname} is no longer ignored", nickname: nick)
        )}
@@ -154,11 +154,6 @@ defmodule RetroHexChatWeb.ChatLive.Components.IgnoreListDialog do
   defp put_locales(socket) do
     nicks = Enum.map(IgnoreList.sorted_entries(socket.assigns.session.ignore_list), & &1.nickname)
     NickFlags.assign_locales(socket, nicks, :entry_locales, :entry_locales_cache)
-  end
-
-  defp bubble_status(socket, level, message) do
-    send(self(), {:ab_status, level, message})
-    socket
   end
 
   defp ignore_type_label(:all), do: dgettext("chat", "all")

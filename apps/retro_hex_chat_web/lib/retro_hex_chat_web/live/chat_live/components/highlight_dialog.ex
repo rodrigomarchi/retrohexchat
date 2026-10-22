@@ -24,7 +24,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.HighlightDialog do
   the new session via `send(self(), {:highlight_dialog_session, session})`; the
   parent assigns it + fires the fire-and-forget persist. Validation errors go to
   the status bar (a parent-owned surface) via
-  `send(self(), {:highlight_status_error, msg})`.
+  `DialogIsland.bubble/3`.
   """
   use RetroHexChatWeb, :live_component
 
@@ -32,6 +32,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.HighlightDialog do
 
   alias RetroHexChat.Accounts.Session
   alias RetroHexChat.Chat.HighlightWords
+  alias RetroHexChatWeb.ChatLive.Components.DialogIsland
 
   @id "highlight-dialog"
 
@@ -197,10 +198,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.HighlightDialog do
     assign(socket, session: session)
   end
 
-  defp bubble_status_error(socket, message) do
-    send(self(), {:highlight_status_error, message})
-    socket
-  end
+  defp bubble_status_error(socket, message), do: DialogIsland.bubble(socket, :error, message)
 
   @spec parse_optional_color(String.t() | nil) :: non_neg_integer() | nil
   defp parse_optional_color(nil), do: nil

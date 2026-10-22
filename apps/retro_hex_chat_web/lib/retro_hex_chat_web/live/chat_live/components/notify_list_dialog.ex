@@ -18,7 +18,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.NotifyListDialog do
 
   Session lives on the parent (the central read-model). The dialog runs the
   `NotifyOps` mutation and bubbles: `{:notify_dialog_session, session}` (parent
-  assigns + persists), `{:notify_dialog_status, msg}` (status bar), and
+  assigns + persists), `DialogIsland.bubble/3` (status bar), and
   `{:notify_dialog_cancel_timer, nick}` on remove (the parent owns the debounce
   timers).
   """
@@ -27,6 +27,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.NotifyListDialog do
   import RetroHexChatWeb.Components.UI.NotifyList
 
   alias RetroHexChat.Presence.NotifyList
+  alias RetroHexChatWeb.ChatLive.Components.DialogIsland
   alias RetroHexChatWeb.ChatLive.Helpers.NickFlags
   alias RetroHexChatWeb.ChatLive.NotifyOps
 
@@ -200,8 +201,5 @@ defmodule RetroHexChatWeb.ChatLive.Components.NotifyListDialog do
     NickFlags.assign_locales(socket, nicks, :entry_locales, :entry_locales_cache)
   end
 
-  defp bubble_status(socket, message) do
-    send(self(), {:notify_dialog_status, message})
-    socket
-  end
+  defp bubble_status(socket, message), do: DialogIsland.bubble(socket, :system, message)
 end

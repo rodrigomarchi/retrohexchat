@@ -37,6 +37,24 @@ defmodule RetroHexChatWeb.ChatLive.Components.DialogIsland do
   @spec update(socket(), map()) :: {:ok, socket()}
   def update(socket, assigns), do: {:ok, assign(socket, assigns)}
 
+  @typedoc """
+  Where a dialog's words land in the chat around it: the status bar
+  (`:system`, `:error`) or the conversation, as a line (`:system_event`,
+  `:error_event`).
+  """
+  @type said :: :system | :error | :system_event | :error_event
+
+  @doc """
+  Says `message` in the chat around the dialog. The chat owns its status bar
+  and its conversation, so a dialog sends rather than assigns; the desktop
+  turns `{:dialog_said, kind, message}` into the line or the status.
+  """
+  @spec bubble(socket(), said(), String.t()) :: socket()
+  def bubble(socket, kind, message) when kind in [:system, :error, :system_event, :error_event] do
+    send(self(), {:dialog_said, kind, message})
+    socket
+  end
+
   @doc """
   A dialog that reads from the server, doing so on the first update only.
 

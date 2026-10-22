@@ -580,22 +580,21 @@ defmodule RetroHexChatWeb.DesktopLive do
     {:noreply, ChatLive.Helpers.system_event(socket, message)}
   end
 
-  # Channel Central bubbles errors that belong to the chat surface (system lines).
-  def handle_info({:cc_system_error, message}, socket) do
-    {:noreply, ChatLive.Helpers.error_event(socket, message)}
+  # What a dialog island says in the chat around it (`DialogIsland.bubble/3`):
+  # the status bar, or a line in the conversation.
+  def handle_info({:dialog_said, :system, message}, socket) do
+    {:noreply, ChatLive.Helpers.push_status_message(socket, message, :system)}
   end
 
-  # Admin Console bubbles the same way.
-  def handle_info({:admin_system_error, message}, socket) do
-    {:noreply, ChatLive.Helpers.error_event(socket, message)}
+  def handle_info({:dialog_said, :error, message}, socket) do
+    {:noreply, ChatLive.Helpers.push_status_message(socket, message, :error)}
   end
 
-  # Perform and Auto-Join bubble validation errors to the chat surface.
-  def handle_info({:perform_system_error, message}, socket) do
-    {:noreply, ChatLive.Helpers.error_event(socket, message)}
+  def handle_info({:dialog_said, :system_event, message}, socket) do
+    {:noreply, ChatLive.Helpers.system_event(socket, message)}
   end
 
-  def handle_info({:autojoin_system_error, message}, socket) do
+  def handle_info({:dialog_said, :error_event, message}, socket) do
     {:noreply, ChatLive.Helpers.error_event(socket, message)}
   end
 
@@ -635,10 +634,6 @@ defmodule RetroHexChatWeb.DesktopLive do
      |> ChatLive.Helpers.maybe_persist_highlight_words(session)}
   end
 
-  def handle_info({:highlight_status_error, message}, socket) do
-    {:noreply, ChatLive.Helpers.push_status_message(socket, message, :error)}
-  end
-
   # Notify List dialog: the island owns the work; the parent owns the session
   # read-model + persistence, the status bar, and the notify debounce timers.
   def handle_info({:notify_dialog_session, session}, socket) do
@@ -646,10 +641,6 @@ defmodule RetroHexChatWeb.DesktopLive do
      socket
      |> assign(session: session)
      |> ChatLive.Helpers.maybe_persist_notify_list(session)}
-  end
-
-  def handle_info({:notify_dialog_status, message}, socket) do
-    {:noreply, ChatLive.Helpers.push_status_message(socket, message, :system)}
   end
 
   def handle_info({:notify_dialog_cancel_timer, nick}, socket) do
@@ -687,22 +678,6 @@ defmodule RetroHexChatWeb.DesktopLive do
      socket
      |> assign(session: session)
      |> ChatLive.Helpers.maybe_persist_notify_list(session)}
-  end
-
-  def handle_info({:ab_status, :system, msg}, socket) do
-    {:noreply, ChatLive.Helpers.push_status_message(socket, msg, :system)}
-  end
-
-  def handle_info({:ab_status, :error, msg}, socket) do
-    {:noreply, ChatLive.Helpers.push_status_message(socket, msg, :error)}
-  end
-
-  def handle_info({:ab_status, :system_event, msg}, socket) do
-    {:noreply, ChatLive.Helpers.system_event(socket, msg)}
-  end
-
-  def handle_info({:ab_status, :error_event, msg}, socket) do
-    {:noreply, ChatLive.Helpers.error_event(socket, msg)}
   end
 
   def handle_info({:ab_ignore_timer, :restart, nick, duration}, socket) do

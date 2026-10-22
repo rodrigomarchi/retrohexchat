@@ -17,7 +17,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.ChannelCentralDialog do
   anti-pattern, §0a-anti, fixed at the root instead of worked around).
 
   Effects that belong to the chat surface rather than the dialog (system error
-  lines) bubble to the parent via `send(self(), {:cc_system_error, msg})`; the
+  lines) bubble to the parent via `DialogIsland.bubble/3`; the
   parent runs `error_event`. Inline errors (ChanServ, transfer, welcome notice)
   stay in the dialog's own assigns.
   """
@@ -30,6 +30,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.ChannelCentralDialog do
   alias RetroHexChat.Services.ChanServ
   alias RetroHexChat.Text
   alias RetroHexChatWeb.App.ChatHelpers
+  alias RetroHexChatWeb.ChatLive.Components.DialogIsland
   alias RetroHexChatWeb.ChatLive.Helpers.NickFlags
 
   @id "channel-central-dialog"
@@ -734,10 +735,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.ChannelCentralDialog do
     [Map.get(registration, :founder) | access]
   end
 
-  defp bubble_error(socket, message) do
-    send(self(), {:cc_system_error, message})
-    socket
-  end
+  defp bubble_error(socket, message), do: DialogIsland.bubble(socket, :error_event, message)
 
   # ── Access list helpers ──────────────────────────────────────────
 

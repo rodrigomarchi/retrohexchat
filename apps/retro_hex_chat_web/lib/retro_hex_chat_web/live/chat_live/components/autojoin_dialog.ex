@@ -18,7 +18,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.AutojoinDialog do
   new session up via `send(self(), {:autojoin_dialog_session, session})`; the
   parent assigns it and fires the fire-and-forget persistence. Validation errors
   that belong to the chat surface bubble via
-  `send(self(), {:autojoin_system_error, msg})`.
+  `DialogIsland.bubble/3`.
   """
   use RetroHexChatWeb, :live_component
 
@@ -159,8 +159,5 @@ defmodule RetroHexChatWeb.ChatLive.Components.AutojoinDialog do
     assign(socket, session: session)
   end
 
-  defp bubble_error(socket, message) do
-    send(self(), {:autojoin_system_error, message})
-    socket
-  end
+  defp bubble_error(socket, message), do: DialogIsland.bubble(socket, :error_event, message)
 end

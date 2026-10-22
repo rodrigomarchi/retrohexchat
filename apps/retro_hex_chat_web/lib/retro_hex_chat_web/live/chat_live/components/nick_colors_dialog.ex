@@ -68,10 +68,11 @@ defmodule RetroHexChatWeb.ChatLive.Components.NickColorsDialog do
        |> put_session(Session.set_nick_colors(session, updated))}
     else
       :error ->
-        {:noreply, bubble_status(socket, :error, nick_color_add_error(:invalid_color, nickname))}
+        {:noreply,
+         DialogIsland.bubble(socket, :error, nick_color_add_error(:invalid_color, nickname))}
 
       {:error, reason} ->
-        {:noreply, bubble_status(socket, :error, nick_color_add_error(reason, nickname))}
+        {:noreply, DialogIsland.bubble(socket, :error, nick_color_add_error(reason, nickname))}
     end
   end
 
@@ -99,10 +100,11 @@ defmodule RetroHexChatWeb.ChatLive.Components.NickColorsDialog do
        |> put_session(Session.set_nick_colors(session, updated))}
     else
       {:error, :not_found} ->
-        {:noreply, bubble_status(socket, :error, dgettext("chat", "Nick color entry not found"))}
+        {:noreply,
+         DialogIsland.bubble(socket, :error, dgettext("chat", "Nick color entry not found"))}
 
       _invalid_color ->
-        {:noreply, bubble_status(socket, :error, dgettext("chat", "Invalid color"))}
+        {:noreply, DialogIsland.bubble(socket, :error, dgettext("chat", "Invalid color"))}
     end
   end
 
@@ -116,14 +118,14 @@ defmodule RetroHexChatWeb.ChatLive.Components.NickColorsDialog do
          socket
          |> assign(selected: nil)
          |> put_session(Session.set_nick_colors(session, updated))
-         |> bubble_status(
+         |> DialogIsland.bubble(
            :system,
            dgettext("chat", "Removed custom color for %{nickname}", nickname: nick)
          )}
 
       {:error, :not_found} ->
         {:noreply,
-         bubble_status(
+         DialogIsland.bubble(
            socket,
            :system,
            dgettext("chat", "%{nickname} has no custom color", nickname: nick)
@@ -176,11 +178,6 @@ defmodule RetroHexChatWeb.ChatLive.Components.NickColorsDialog do
       )
 
     NickFlags.assign_locales(socket, nicks, :entry_locales, :entry_locales_cache)
-  end
-
-  defp bubble_status(socket, level, message) do
-    send(self(), {:ab_status, level, message})
-    socket
   end
 
   # The swatches are a radio group, so a form submitted before anything was

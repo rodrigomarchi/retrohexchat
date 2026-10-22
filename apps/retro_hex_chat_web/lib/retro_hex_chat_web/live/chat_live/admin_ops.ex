@@ -16,6 +16,7 @@ defmodule RetroHexChatWeb.ChatLive.AdminOps do
   alias RetroHexChat.Accounts.ServerRoles
   alias RetroHexChat.Commands.Dispatcher
   alias RetroHexChatWeb.ChatLive.ChatContext
+  alias RetroHexChatWeb.ChatLive.Components.DialogIsland
 
   @doc """
   Whether the session may operate the admin windows.
@@ -147,8 +148,5 @@ defmodule RetroHexChatWeb.ChatLive.AdminOps do
   there sends rather than assigns.
   """
   @spec error_event(Phoenix.LiveView.Socket.t(), String.t()) :: Phoenix.LiveView.Socket.t()
-  def error_event(socket, message) do
-    send(self(), {:admin_system_error, message})
-    socket
-  end
+  def error_event(socket, message), do: DialogIsland.bubble(socket, :error_event, message)
 end

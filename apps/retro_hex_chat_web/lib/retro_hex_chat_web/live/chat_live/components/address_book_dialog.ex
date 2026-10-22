@@ -9,7 +9,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.AddressBookDialog do
   `session` (the central read-model), so the work bubbles up:
 
     * `{:ab_session, session, :contacts}` — parent assigns + persists.
-    * `{:ab_status, level, msg}` — chat-surface status / system / error lines.
+    * `DialogIsland.bubble/3` — chat-surface status / system / error lines.
 
   Every event targets this component, and the two window-scoped sub-form modals
   get `phx-target={@myself}` threaded through the design-system
@@ -19,6 +19,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.AddressBookDialog do
 
   alias RetroHexChat.Nickname
   alias RetroHexChat.Text
+  alias RetroHexChatWeb.ChatLive.Components.DialogIsland
   use RetroHexChatWeb, :live_component
 
   import RetroHexChatWeb.Components.UI.AddressBook
@@ -75,13 +76,13 @@ defmodule RetroHexChatWeb.ChatLive.Components.AddressBookDialog do
          socket
          |> assign(show_contact_add_dialog: false)
          |> put_session(Session.set_contacts(session, contacts))
-         |> bubble_status(
+         |> DialogIsland.bubble(
            :system,
            dgettext("chat", "Added %{nickname} to contacts", nickname: nickname)
          )}
 
       {:error, reason} ->
-        {:noreply, bubble_status(socket, :system, contact_add_error(reason, nickname))}
+        {:noreply, DialogIsland.bubble(socket, :system, contact_add_error(reason, nickname))}
     end
   end
 
@@ -104,7 +105,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.AddressBookDialog do
     note = Text.blank_to_nil(note)
 
     if is_nil(nickname) do
-      {:noreply, bubble_status(socket, :system, dgettext("chat", "No contact selected"))}
+      {:noreply, DialogIsland.bubble(socket, :system, dgettext("chat", "No contact selected"))}
     else
       case ContactList.update_note(session.contacts, nickname, note) do
         {:ok, contacts} ->
@@ -112,14 +113,14 @@ defmodule RetroHexChatWeb.ChatLive.Components.AddressBookDialog do
            socket
            |> assign(show_contact_edit_dialog: false, selected_contact_note: note || "")
            |> put_session(Session.set_contacts(session, contacts))
-           |> bubble_status(
+           |> DialogIsland.bubble(
              :system,
              dgettext("chat", "Updated note for %{nickname}", nickname: nickname)
            )}
 
         {:error, :not_found} ->
           {:noreply,
-           bubble_status(
+           DialogIsland.bubble(
              socket,
              :system,
              dgettext("chat", "%{nickname} is not in your contacts", nickname: nickname)
@@ -138,14 +139,14 @@ defmodule RetroHexChatWeb.ChatLive.Components.AddressBookDialog do
          socket
          |> assign(selected: nil)
          |> put_session(Session.set_contacts(session, contacts))
-         |> bubble_status(
+         |> DialogIsland.bubble(
            :system,
            dgettext("chat", "Removed %{nickname} from contacts", nickname: nick)
          )}
 
       {:error, :not_found} ->
         {:noreply,
-         bubble_status(
+         DialogIsland.bubble(
            socket,
            :system,
            dgettext("chat", "%{nickname} is not in your contacts", nickname: nick)
@@ -194,11 +195,6 @@ defmodule RetroHexChatWeb.ChatLive.Components.AddressBookDialog do
   defp put_locales(socket) do
     nicks = Enum.map(socket.assigns.session.contacts.entries, & &1.contact_nickname)
     NickFlags.assign_locales(socket, nicks, :contact_locales, :contact_locales_cache)
-  end
-
-  defp bubble_status(socket, level, message) do
-    send(self(), {:ab_status, level, message})
-    socket
   end
 
   # ── Local helpers ────────────────────────────────────────────────

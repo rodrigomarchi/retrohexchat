@@ -270,7 +270,7 @@ defmodule RetroHexChatWeb.ChatLive.PubsubHandlers do
   # Swallow stray async `Task` results (`{ref, result}`, ref is a reference) and
   # their `:DOWN`s so they don't fall through. The `is_reference/1` guard is load
   # bearing: without it this clause halts EVERY 2-tuple, swallowing island→parent
-  # bubbles like `{:cc_system_error, msg}` before they reach the LiveView.
+  # bubbles like `{:dialog_said, kind, msg}` before they reach the LiveView.
 
   def handle_info({ref, _result}, socket) when is_reference(ref), do: {:halt, socket}
   def handle_info({:DOWN, _ref, :process, _pid, _reason}, socket), do: {:halt, socket}

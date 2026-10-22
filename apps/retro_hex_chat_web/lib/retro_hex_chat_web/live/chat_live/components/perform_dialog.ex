@@ -18,7 +18,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.PerformDialog do
   new session up via `send(self(), {:perform_dialog_session, session})`; the
   parent assigns it and fires the fire-and-forget persistence. Validation errors
   that belong to the chat surface bubble via
-  `send(self(), {:perform_system_error, msg})`.
+  `DialogIsland.bubble/3`.
   """
   use RetroHexChatWeb, :live_component
 
@@ -201,10 +201,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.PerformDialog do
     assign(socket, session: session)
   end
 
-  defp bubble_error(socket, message) do
-    send(self(), {:perform_system_error, message})
-    socket
-  end
+  defp bubble_error(socket, message), do: DialogIsland.bubble(socket, :error_event, message)
 
   # A row sends its position as a `phx-value-*` string; the list keys on the
   # integer.
