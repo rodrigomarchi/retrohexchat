@@ -28,9 +28,72 @@ NAMES: dict[str, dict[str, str]] = {
         "zh_hans": "构造空间",
         "zh_hant": "構造空間",
     },
+    # A news feed, never fodder: translated as a word it came back as
+    # "Alimentação", "Futtermittel", "pasza", "кормить" and "种子" (a seed).
+    # Masked and swapped, every sentence keeps the news source it means.
+    "feed": {
+        "pt": "feed",
+        "es": "feed",
+        "fr": "flux",
+        "de": "Feed",
+        "it": "feed",
+        "nl": "feed",
+        "pl": "feed",
+        "ru": "фид",
+        "id": "feed",
+        "ja": "フィード",
+        "zh_hans": "订阅源",
+        "zh_hant": "訂閱源",
+    },
+    "feeds": {
+        "pt": "feeds",
+        "es": "feeds",
+        "fr": "flux",
+        "de": "Feeds",
+        "it": "feed",
+        "nl": "feeds",
+        "pl": "feedy",
+        "ru": "фиды",
+        "id": "feed",
+        "ja": "フィード",
+        "zh_hans": "订阅源",
+        "zh_hant": "訂閱源",
+    },
+    "Feed": {
+        "pt": "Feed",
+        "es": "Feed",
+        "fr": "Flux",
+        "de": "Feed",
+        "it": "Feed",
+        "nl": "Feed",
+        "pl": "Feed",
+        "ru": "Фид",
+        "id": "Feed",
+        "ja": "フィード",
+        "zh_hans": "订阅源",
+        "zh_hant": "訂閱源",
+    },
+    "Feeds": {
+        "pt": "Feeds",
+        "es": "Feeds",
+        "fr": "Flux",
+        "de": "Feeds",
+        "it": "Feed",
+        "nl": "Feeds",
+        "pl": "Feedy",
+        "ru": "Фиды",
+        "id": "Feed",
+        "ja": "フィード",
+        "zh_hans": "订阅源",
+        "zh_hant": "訂閱源",
+    },
 }
 
-_NAME_RE = {name: re.compile(rf"\b{re.escape(name)}\b") for name in NAMES}
+# Bounded by Latin letters only: Japanese and Chinese write a name with no space
+# around it ("feedは"), and to `\b` a kana is a word character like any other.
+_NAME_RE = {
+    name: re.compile(rf"(?<![A-Za-z]){re.escape(name)}(?![A-Za-z])") for name in NAMES
+}
 
 
 def form(name: str, locale_code: str) -> str:

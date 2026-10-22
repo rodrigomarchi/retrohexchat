@@ -121,7 +121,7 @@ defmodule RetroHexChat.Bots.Feeds do
 
   @spec check_channel(String.t()) :: :ok | {:error, String.t()}
   defp check_channel("#"),
-    do: {:error, dgettext("bots", "Name the channel the feed should post to.")}
+    do: {:error, dgettext("bots", "Write the channel name after the #.")}
 
   defp check_channel(_), do: :ok
 
@@ -135,7 +135,7 @@ defmodule RetroHexChat.Bots.Feeds do
       :ok
     else
       {:error,
-       dgettext("bots", "%{bot} is not in %{channel} — add the channel to the bot first.",
+       dgettext("bots", "%{bot} has not joined %{channel}. Add %{channel} to the bot first.",
          bot: bot_name,
          channel: channel
        )}

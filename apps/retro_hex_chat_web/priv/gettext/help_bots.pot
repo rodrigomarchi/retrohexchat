@@ -163,7 +163,7 @@ msgstr ""
 #: lib/retro_hex_chat_web/controllers/help_content/bot_custom_commands.html.heex:94
 #: lib/retro_hex_chat_web/controllers/help_content/bot_dice.html.heex:83
 #: lib/retro_hex_chat_web/controllers/help_content/bot_moderation.html.heex:107
-#: lib/retro_hex_chat_web/controllers/help_content/bot_rss.html.heex:118
+#: lib/retro_hex_chat_web/controllers/help_content/bot_rss.html.heex:121
 #: lib/retro_hex_chat_web/controllers/help_content/bot_scheduler.html.heex:96
 #: lib/retro_hex_chat_web/controllers/help_content/bot_trivia.html.heex:87
 #: lib/retro_hex_chat_web/controllers/help_content/botservice.html.heex:198
@@ -329,7 +329,7 @@ msgstr ""
 msgid "Bot RSS"
 msgstr ""
 
-#: lib/retro_hex_chat_web/controllers/help_content/bot_rss.html.heex:119
+#: lib/retro_hex_chat_web/controllers/help_content/bot_rss.html.heex:122
 #, elixir-autogen, elixir-format
 msgid "Bot Scheduler"
 msgstr ""
@@ -353,7 +353,7 @@ msgstr ""
 #: lib/retro_hex_chat_web/controllers/help_content/bot_custom_commands.html.heex:93
 #: lib/retro_hex_chat_web/controllers/help_content/bot_dice.html.heex:82
 #: lib/retro_hex_chat_web/controllers/help_content/bot_moderation.html.heex:106
-#: lib/retro_hex_chat_web/controllers/help_content/bot_rss.html.heex:117
+#: lib/retro_hex_chat_web/controllers/help_content/bot_rss.html.heex:120
 #: lib/retro_hex_chat_web/controllers/help_content/bot_scheduler.html.heex:95
 #: lib/retro_hex_chat_web/controllers/help_content/bot_trivia.html.heex:86
 #, elixir-autogen, elixir-format
@@ -500,7 +500,7 @@ msgstr ""
 msgid "Feeds are polled at a configurable interval (default: every 30 minutes)"
 msgstr ""
 
-#: lib/retro_hex_chat_web/controllers/help_content/bot_rss.html.heex:112
+#: lib/retro_hex_chat_web/controllers/help_content/bot_rss.html.heex:115
 #, elixir-autogen, elixir-format
 msgid "Fetch errors are logged but do not stop future polls"
 msgstr ""
@@ -644,7 +644,7 @@ msgstr ""
 msgid "Open the Bot Management dialog ("
 msgstr ""
 
-#: lib/retro_hex_chat_web/controllers/help_content/bot_rss.html.heex:99
+#: lib/retro_hex_chat_web/controllers/help_content/bot_rss.html.heex:102
 #, elixir-autogen, elixir-format
 msgid "Polling timers automatically reschedule after each poll"
 msgstr ""
@@ -723,7 +723,7 @@ msgstr ""
 #: lib/retro_hex_chat_web/controllers/help_content/bot_custom_commands.html.heex:91
 #: lib/retro_hex_chat_web/controllers/help_content/bot_dice.html.heex:80
 #: lib/retro_hex_chat_web/controllers/help_content/bot_moderation.html.heex:104
-#: lib/retro_hex_chat_web/controllers/help_content/bot_rss.html.heex:115
+#: lib/retro_hex_chat_web/controllers/help_content/bot_rss.html.heex:118
 #: lib/retro_hex_chat_web/controllers/help_content/bot_scheduler.html.heex:93
 #: lib/retro_hex_chat_web/controllers/help_content/bot_trivia.html.heex:84
 #: lib/retro_hex_chat_web/controllers/help_content/botservice.html.heex:193
@@ -1555,12 +1555,12 @@ msgstr ""
 msgid "with no arguments opens the Bot Management dialog"
 msgstr ""
 
-#: lib/retro_hex_chat_web/controllers/help_content/bot_rss.html.heex:122
+#: lib/retro_hex_chat_web/controllers/help_content/bot_rss.html.heex:125
 #, elixir-autogen, elixir-format
 msgid "Link Previews"
 msgstr ""
 
-#: lib/retro_hex_chat_web/controllers/help_content/bot_rss.html.heex:101
+#: lib/retro_hex_chat_web/controllers/help_content/bot_rss.html.heex:104
 #, elixir-autogen, elixir-format
 msgid "Preview metadata comes from page standards such as Open Graph, Schema.org JSON-LD, oEmbed discovery, article headings, article images, and readable body text"
 msgstr ""
@@ -1570,7 +1570,7 @@ msgstr ""
 msgid "Items are posted as rich Markdown link previews with a source label, linked title, optional local thumbnail or unavailable-image placeholder, optional description, and article details when the publisher exposes them"
 msgstr ""
 
-#: lib/retro_hex_chat_web/controllers/help_content/bot_rss.html.heex:107
+#: lib/retro_hex_chat_web/controllers/help_content/bot_rss.html.heex:110
 #, elixir-autogen, elixir-format
 msgid "The shared page archive stores extracted descriptions, image alt text, local thumbnail metadata, thumbnail failure details, article sections, tags, dates, and article text so later previews can reuse them"
 msgstr ""
@@ -1810,4 +1810,9 @@ msgstr ""
 #: lib/retro_hex_chat_web/controllers/help_content/botservice.html.heex:82
 #, elixir-autogen, elixir-format
 msgid "The bot also announces the arcade games that people start."
+msgstr ""
+
+#: lib/retro_hex_chat_web/controllers/help_content/bot_rss.html.heex:100
+#, elixir-autogen, elixir-format
+msgid "A feed can only post to a channel the bot has joined"
 msgstr ""

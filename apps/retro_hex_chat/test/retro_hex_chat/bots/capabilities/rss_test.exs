@@ -55,7 +55,7 @@ defmodule RetroHexChat.Bots.Capabilities.RSSTest do
                  @ctx
                )
 
-      assert text =~ "not in #nowhere"
+      assert text =~ "has not joined #nowhere"
     end
 
     test "refuses a bare # for a channel" do

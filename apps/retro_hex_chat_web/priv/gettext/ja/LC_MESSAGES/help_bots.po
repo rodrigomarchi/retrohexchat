@@ -170,7 +170,7 @@ msgstr "/bot"
 #: lib/retro_hex_chat_web/controllers/help_content/bot_custom_commands.html.heex:94
 #: lib/retro_hex_chat_web/controllers/help_content/bot_dice.html.heex:83
 #: lib/retro_hex_chat_web/controllers/help_content/bot_moderation.html.heex:107
-#: lib/retro_hex_chat_web/controllers/help_content/bot_rss.html.heex:118
+#: lib/retro_hex_chat_web/controllers/help_content/bot_rss.html.heex:121
 #: lib/retro_hex_chat_web/controllers/help_content/bot_scheduler.html.heex:96
 #: lib/retro_hex_chat_web/controllers/help_content/bot_trivia.html.heex:87
 #: lib/retro_hex_chat_web/controllers/help_content/botservice.html.heex:198
@@ -344,7 +344,7 @@ msgstr "ボットダイス"
 msgid "Bot RSS"
 msgstr "ボットRSS"
 
-#: lib/retro_hex_chat_web/controllers/help_content/bot_rss.html.heex:119
+#: lib/retro_hex_chat_web/controllers/help_content/bot_rss.html.heex:122
 #, elixir-autogen, elixir-format
 msgid "Bot Scheduler"
 msgstr "ボットスケジューラ"
@@ -368,7 +368,7 @@ msgstr "ボット名は2–16文字、ユニークでなければなりません
 #: lib/retro_hex_chat_web/controllers/help_content/bot_custom_commands.html.heex:93
 #: lib/retro_hex_chat_web/controllers/help_content/bot_dice.html.heex:82
 #: lib/retro_hex_chat_web/controllers/help_content/bot_moderation.html.heex:106
-#: lib/retro_hex_chat_web/controllers/help_content/bot_rss.html.heex:117
+#: lib/retro_hex_chat_web/controllers/help_content/bot_rss.html.heex:120
 #: lib/retro_hex_chat_web/controllers/help_content/bot_scheduler.html.heex:95
 #: lib/retro_hex_chat_web/controllers/help_content/bot_trivia.html.heex:86
 #, elixir-autogen, elixir-format
@@ -517,7 +517,7 @@ msgstr "フィードのタイトルはフィードメタデータから自動検
 msgid "Feeds are polled at a configurable interval (default: every 30 minutes)"
 msgstr "フィードはコンフィギュレーション可能な間隔でポーリングされます(デフォルト:30分ごとに)"
 
-#: lib/retro_hex_chat_web/controllers/help_content/bot_rss.html.heex:112
+#: lib/retro_hex_chat_web/controllers/help_content/bot_rss.html.heex:115
 #, elixir-autogen, elixir-format
 msgid "Fetch errors are logged but do not stop future polls"
 msgstr "エラーが記録されているが、将来の投票を停止しない"
@@ -661,7 +661,7 @@ msgstr "一度にチャネルごとに1回だけアクティブにすること�
 msgid "Open the Bot Management dialog ("
 msgstr "Bot Management ダイアログを開きます。"
 
-#: lib/retro_hex_chat_web/controllers/help_content/bot_rss.html.heex:99
+#: lib/retro_hex_chat_web/controllers/help_content/bot_rss.html.heex:102
 #, elixir-autogen, elixir-format
 msgid "Polling timers automatically reschedule after each poll"
 msgstr "ポーリングタイマーは各ポーリングの後で自動的にreschedule再調節します"
@@ -740,7 +740,7 @@ msgstr "新しいラウンドが始まるとスコアがリセットされます
 #: lib/retro_hex_chat_web/controllers/help_content/bot_custom_commands.html.heex:91
 #: lib/retro_hex_chat_web/controllers/help_content/bot_dice.html.heex:80
 #: lib/retro_hex_chat_web/controllers/help_content/bot_moderation.html.heex:104
-#: lib/retro_hex_chat_web/controllers/help_content/bot_rss.html.heex:115
+#: lib/retro_hex_chat_web/controllers/help_content/bot_rss.html.heex:118
 #: lib/retro_hex_chat_web/controllers/help_content/bot_scheduler.html.heex:93
 #: lib/retro_hex_chat_web/controllers/help_content/bot_trivia.html.heex:84
 #: lib/retro_hex_chat_web/controllers/help_content/botservice.html.heex:193
@@ -1600,12 +1600,12 @@ msgstr ""
 msgid "with no arguments opens the Bot Management dialog"
 msgstr "を引数なしで実行するとボット管理ダイアログが開きます"
 
-#: lib/retro_hex_chat_web/controllers/help_content/bot_rss.html.heex:122
+#: lib/retro_hex_chat_web/controllers/help_content/bot_rss.html.heex:125
 #, elixir-autogen, elixir-format
 msgid "Link Previews"
 msgstr "リンクプレビュー"
 
-#: lib/retro_hex_chat_web/controllers/help_content/bot_rss.html.heex:101
+#: lib/retro_hex_chat_web/controllers/help_content/bot_rss.html.heex:104
 #, elixir-autogen, elixir-format
 msgid "Preview metadata comes from page standards such as Open Graph, Schema.org JSON-LD, oEmbed discovery, article headings, article images, and readable body text"
 msgstr ""
@@ -1619,7 +1619,7 @@ msgstr ""
 "項目は、出典ラベル、リンク付きの見出し、任意のローカルサムネイルまたは画像なしのプレースホルダー、任意の説明、そして配信元が公開していれば記事の詳細を備えた、リッチな"
 " Markdown のリンクプレビューとして投稿されます"
 
-#: lib/retro_hex_chat_web/controllers/help_content/bot_rss.html.heex:107
+#: lib/retro_hex_chat_web/controllers/help_content/bot_rss.html.heex:110
 #, elixir-autogen, elixir-format
 msgid "The shared page archive stores extracted descriptions, image alt text, local thumbnail metadata, thumbnail failure details, article sections, tags, dates, and article text so later previews can reuse them"
 msgstr ""
@@ -1880,3 +1880,8 @@ msgstr "— ボットのチャンネル、毎日のダイジェスト、ウィ�
 #, elixir-autogen, elixir-format
 msgid "The bot also announces the arcade games that people start."
 msgstr "ボットはまた、人々が始めるアーケードゲームを発表しました。"
+
+#: lib/retro_hex_chat_web/controllers/help_content/bot_rss.html.heex:100
+#, elixir-autogen, elixir-format
+msgid "A feed can only post to a channel the bot has joined"
+msgstr "フィードは、ボットが結合したチャネルにのみ投稿できます"

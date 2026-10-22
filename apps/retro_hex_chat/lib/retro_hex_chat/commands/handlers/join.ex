@@ -120,7 +120,7 @@ defmodule RetroHexChat.Commands.Handlers.Join do
         dgettext("commands", "Invalid channel name. Channel names must start with #")
 
       {:error, :empty} ->
-        dgettext("commands", "Name the channel after the #")
+        dgettext("commands", "Write the channel name after the #.")
 
       {:error, :too_long} ->
         dgettext("commands", "Channel name too long (max 50 characters)")

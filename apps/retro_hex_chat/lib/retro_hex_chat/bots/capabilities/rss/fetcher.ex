@@ -81,7 +81,7 @@ defmodule RetroHexChat.Bots.Capabilities.RSS.Fetcher.HTTP do
   defp handle_response(response) do
     case response do
       %{status: 200, body: body} when is_binary(body) and byte_size(body) >= @max_body_size ->
-        {:error, dgettext("bots", "feed body too large")}
+        {:error, dgettext("bots", "This feed is too large.")}
 
       %{status: 200, body: body, headers: resp_headers} ->
         {:ok, to_string(body), cache_headers(resp_headers)}

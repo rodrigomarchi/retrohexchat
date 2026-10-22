@@ -173,7 +173,7 @@ msgstr "/bot"
 #: lib/retro_hex_chat_web/controllers/help_content/bot_custom_commands.html.heex:94
 #: lib/retro_hex_chat_web/controllers/help_content/bot_dice.html.heex:83
 #: lib/retro_hex_chat_web/controllers/help_content/bot_moderation.html.heex:107
-#: lib/retro_hex_chat_web/controllers/help_content/bot_rss.html.heex:118
+#: lib/retro_hex_chat_web/controllers/help_content/bot_rss.html.heex:121
 #: lib/retro_hex_chat_web/controllers/help_content/bot_scheduler.html.heex:96
 #: lib/retro_hex_chat_web/controllers/help_content/bot_trivia.html.heex:87
 #: lib/retro_hex_chat_web/controllers/help_content/botservice.html.heex:198
@@ -291,7 +291,7 @@ msgstr "Добавить повторяющийся график"
 #: lib/retro_hex_chat_web/controllers/help_content/bot_rss.html.heex:25
 #, elixir-autogen, elixir-format
 msgid "Add an RSS/Atom feed"
-msgstr "Добавить RSS/Atom кормить"
+msgstr "Добавить RSS/Atom фид"
 
 #: lib/retro_hex_chat_web/controllers/help_content/bot_dice.html.heex:33
 #, elixir-autogen, elixir-format
@@ -347,7 +347,7 @@ msgstr "Бот Дайс"
 msgid "Bot RSS"
 msgstr "Бот RSS"
 
-#: lib/retro_hex_chat_web/controllers/help_content/bot_rss.html.heex:119
+#: lib/retro_hex_chat_web/controllers/help_content/bot_rss.html.heex:122
 #, elixir-autogen, elixir-format
 msgid "Bot Scheduler"
 msgstr "Bot Scheduler"
@@ -372,7 +372,7 @@ msgstr "Имена ботов должны быть 2-16 символов, ун�
 #: lib/retro_hex_chat_web/controllers/help_content/bot_custom_commands.html.heex:93
 #: lib/retro_hex_chat_web/controllers/help_content/bot_dice.html.heex:82
 #: lib/retro_hex_chat_web/controllers/help_content/bot_moderation.html.heex:106
-#: lib/retro_hex_chat_web/controllers/help_content/bot_rss.html.heex:117
+#: lib/retro_hex_chat_web/controllers/help_content/bot_rss.html.heex:120
 #: lib/retro_hex_chat_web/controllers/help_content/bot_scheduler.html.heex:95
 #: lib/retro_hex_chat_web/controllers/help_content/bot_trivia.html.heex:86
 #, elixir-autogen, elixir-format
@@ -519,16 +519,14 @@ msgstr "Примеры"
 #: lib/retro_hex_chat_web/controllers/help_content/bot_rss.html.heex:54
 #, elixir-autogen, elixir-format
 msgid "Feed titles are auto-detected from the feed metadata"
-msgstr "Названия кормов автоматически обнаруживаются из метаданных корма"
+msgstr "Заголовки Фид автоматически обнаруживаются из метаданных фид"
 
 #: lib/retro_hex_chat_web/controllers/help_content/bot_rss.html.heex:45
 #, elixir-autogen, elixir-format
 msgid "Feeds are polled at a configurable interval (default: every 30 minutes)"
-msgstr ""
-"Опрос кормов проводится с настраиваемым интервалом (по умолчанию: каждые 30 "
-"минут)."
+msgstr "Опрос Фиды проводится с настраиваемым интервалом (по умолчанию каждые 30 минут)."
 
-#: lib/retro_hex_chat_web/controllers/help_content/bot_rss.html.heex:112
+#: lib/retro_hex_chat_web/controllers/help_content/bot_rss.html.heex:115
 #, elixir-autogen, elixir-format
 msgid "Fetch errors are logged but do not stop future polls"
 msgstr "Ошибки фиксируются, но не останавливают будущие опросы"
@@ -541,7 +539,7 @@ msgstr "Обнаружение наводнения"
 #: lib/retro_hex_chat_web/controllers/help_content/bot_rss.html.heex:37
 #, elixir-autogen, elixir-format
 msgid "Force-check a feed immediately"
-msgstr "Немедленно проверьте корм"
+msgstr "Проверить фид немедленно"
 
 #: lib/retro_hex_chat_web/controllers/help_content/bot_moderation.html.heex:65
 #: lib/retro_hex_chat_web/controllers/help_content/bot_rss.html.heex:42
@@ -588,7 +586,7 @@ msgstr "Перечислите все активные графики"
 #: lib/retro_hex_chat_web/controllers/help_content/bot_rss.html.heex:29
 #, elixir-autogen, elixir-format
 msgid "List all configured feeds"
-msgstr "Перечислите все настроенные каналы"
+msgstr "Список всех сконфигурированных фиды"
 
 #: lib/retro_hex_chat_web/controllers/help_content/bot_custom_commands.html.heex:75
 #, elixir-autogen, elixir-format
@@ -675,7 +673,7 @@ msgstr "Только один раунд может быть активным н
 msgid "Open the Bot Management dialog ("
 msgstr "Открыть диалог по управлению ботом"
 
-#: lib/retro_hex_chat_web/controllers/help_content/bot_rss.html.heex:99
+#: lib/retro_hex_chat_web/controllers/help_content/bot_rss.html.heex:102
 #, elixir-autogen, elixir-format
 msgid "Polling timers automatically reschedule after each poll"
 msgstr "Таймеры голосования автоматически переносятся после каждого опроса"
@@ -695,7 +693,7 @@ msgstr "Удалить"
 #: lib/retro_hex_chat_web/controllers/help_content/bot_rss.html.heex:33
 #, elixir-autogen, elixir-format
 msgid "Remove a feed by ID"
-msgstr "Удалить корм по ID"
+msgstr "Удалить фид по ID"
 
 #: lib/retro_hex_chat_web/controllers/help_content/bot_scheduler.html.heex:45
 #, elixir-autogen, elixir-format
@@ -754,7 +752,7 @@ msgstr "Сброс баллов, когда начинается новый ра
 #: lib/retro_hex_chat_web/controllers/help_content/bot_custom_commands.html.heex:91
 #: lib/retro_hex_chat_web/controllers/help_content/bot_dice.html.heex:80
 #: lib/retro_hex_chat_web/controllers/help_content/bot_moderation.html.heex:104
-#: lib/retro_hex_chat_web/controllers/help_content/bot_rss.html.heex:115
+#: lib/retro_hex_chat_web/controllers/help_content/bot_rss.html.heex:118
 #: lib/retro_hex_chat_web/controllers/help_content/bot_scheduler.html.heex:93
 #: lib/retro_hex_chat_web/controllers/help_content/bot_trivia.html.heex:84
 #: lib/retro_hex_chat_web/controllers/help_content/botservice.html.heex:193
@@ -839,9 +837,7 @@ msgstr ""
 #: lib/retro_hex_chat_web/controllers/help_content/bot_rss.html.heex:2
 #, elixir-autogen, elixir-format
 msgid "The RSS capability monitors RSS and Atom feeds and automatically posts new items to designated channels."
-msgstr ""
-"Функция RSS контролирует RSS и Atom и автоматически отправляет новые "
-"элементы в назначенные каналы."
+msgstr "RSS отслеживает RSS и Atom фиды и автоматически отправляет новые элементы по назначенным каналам."
 
 #: lib/retro_hex_chat_web/controllers/help_content/bot_scheduler.html.heex:2
 #, elixir-autogen, elixir-format
@@ -1134,7 +1130,7 @@ msgstr "Максимальный активный график (по умолч�
 #: lib/retro_hex_chat_web/controllers/help_content/bot_rss.html.heex:72
 #, elixir-autogen, elixir-format
 msgid "— Maximum feeds per bot (default: 5)"
-msgstr "Максимальное количество кормов на бота (по умолчанию: 5)"
+msgstr "Максимальный фиды на бота (по умолчанию: 5)"
 
 #: lib/retro_hex_chat_web/controllers/help_content/bot_rss.html.heex:75
 #, elixir-autogen, elixir-format
@@ -1390,7 +1386,7 @@ msgstr "Серверные операторы"
 #: lib/retro_hex_chat_web/controllers/help_content/botservice.html.heex:71
 #, elixir-autogen, elixir-format
 msgid "to add a feed"
-msgstr "Добавить корм"
+msgstr "добавить фид"
 
 #: lib/retro_hex_chat_web/controllers/help_content/botservice.html.heex:55
 #, elixir-autogen, elixir-format
@@ -1452,9 +1448,7 @@ msgstr "- хранить самые низкие кости K (например,
 #: lib/retro_hex_chat_web/controllers/help_content/botservice.html.heex:67
 #, elixir-autogen, elixir-format
 msgid "— monitors RSS/Atom feeds and posts new items to channels. Use"
-msgstr ""
-"— мониторы RSS/Atom Посылает и публикует новые материалы для каналов. "
-"Использовать"
+msgstr "— отслеживает RSS/Atom фиды и размещает новые элементы на каналах. Использовать"
 
 #: lib/retro_hex_chat_web/controllers/help_content/botservice.html.heex:61
 #, elixir-autogen, elixir-format
@@ -1674,12 +1668,12 @@ msgstr ""
 msgid "with no arguments opens the Bot Management dialog"
 msgstr "без аргументов открывает диалог «Управление ботом»"
 
-#: lib/retro_hex_chat_web/controllers/help_content/bot_rss.html.heex:122
+#: lib/retro_hex_chat_web/controllers/help_content/bot_rss.html.heex:125
 #, elixir-autogen, elixir-format
 msgid "Link Previews"
 msgstr "Ссылка Previews"
 
-#: lib/retro_hex_chat_web/controllers/help_content/bot_rss.html.heex:101
+#: lib/retro_hex_chat_web/controllers/help_content/bot_rss.html.heex:104
 #, elixir-autogen, elixir-format
 msgid "Preview metadata comes from page standards such as Open Graph, Schema.org JSON-LD, oEmbed discovery, article headings, article images, and readable body text"
 msgstr "Метаданные предпросмотра берутся из стандартов страницы: Open Graph, Schema.org JSON-LD, обнаружение oEmbed, заголовки статьи, изображения статьи и читаемый текст"
@@ -1689,7 +1683,7 @@ msgstr "Метаданные предпросмотра берутся из ст
 msgid "Items are posted as rich Markdown link previews with a source label, linked title, optional local thumbnail or unavailable-image placeholder, optional description, and article details when the publisher exposes them"
 msgstr "Материалы публикуются как насыщенные предпросмотры ссылок в Markdown: с меткой источника, заголовком-ссылкой, необязательной локальной миниатюрой или заглушкой недоступного изображения, необязательным описанием и сведениями о статье, когда издатель их предоставляет"
 
-#: lib/retro_hex_chat_web/controllers/help_content/bot_rss.html.heex:107
+#: lib/retro_hex_chat_web/controllers/help_content/bot_rss.html.heex:110
 #, elixir-autogen, elixir-format
 msgid "The shared page archive stores extracted descriptions, image alt text, local thumbnail metadata, thumbnail failure details, article sections, tags, dates, and article text so later previews can reuse them"
 msgstr "Общий архив страниц хранит извлечённые описания, альтернативный текст изображений, метаданные локальной миниатюры, подробности сбоя миниатюры, разделы статьи, теги, даты и текст статьи, чтобы последующие предпросмотры могли их переиспользовать"
@@ -1930,3 +1924,8 @@ msgstr "— объявляет о публичных матчах Retro Games в
 #, elixir-autogen, elixir-format
 msgid "The bot also announces the arcade games that people start."
 msgstr "Также бот анонсирует аркадные игры, которые запускают люди."
+
+#: lib/retro_hex_chat_web/controllers/help_content/bot_rss.html.heex:100
+#, elixir-autogen, elixir-format
+msgid "A feed can only post to a channel the bot has joined"
+msgstr "фид может отправлять сообщения только по каналу, к которому подключился бот."

@@ -44,7 +44,7 @@ defmodule RetroHexChat.Bots.FeedsTest do
 
     test "refuses a room the bot has not joined" do
       assert {:error, reason} = Feeds.add(bot(), @public, "#nowhere")
-      assert reason =~ "not in #nowhere"
+      assert reason =~ "has not joined #nowhere"
     end
 
     test "refuses an address inside the host's own network" do

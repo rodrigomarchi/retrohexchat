@@ -171,7 +171,7 @@ msgstr "/bot"
 #: lib/retro_hex_chat_web/controllers/help_content/bot_custom_commands.html.heex:94
 #: lib/retro_hex_chat_web/controllers/help_content/bot_dice.html.heex:83
 #: lib/retro_hex_chat_web/controllers/help_content/bot_moderation.html.heex:107
-#: lib/retro_hex_chat_web/controllers/help_content/bot_rss.html.heex:118
+#: lib/retro_hex_chat_web/controllers/help_content/bot_rss.html.heex:121
 #: lib/retro_hex_chat_web/controllers/help_content/bot_scheduler.html.heex:96
 #: lib/retro_hex_chat_web/controllers/help_content/bot_trivia.html.heex:87
 #: lib/retro_hex_chat_web/controllers/help_content/botservice.html.heex:198
@@ -289,7 +289,7 @@ msgstr "增加一個經常性時間表"
 #: lib/retro_hex_chat_web/controllers/help_content/bot_rss.html.heex:25
 #, elixir-autogen, elixir-format
 msgid "Add an RSS/Atom feed"
-msgstr "添加 RSS/Atom 種子"
+msgstr "添加一個 RSS/Atom 訂閱源"
 
 #: lib/retro_hex_chat_web/controllers/help_content/bot_dice.html.heex:33
 #, elixir-autogen, elixir-format
@@ -345,7 +345,7 @@ msgstr "機器人骰子"
 msgid "Bot RSS"
 msgstr "機器人 RSS"
 
-#: lib/retro_hex_chat_web/controllers/help_content/bot_rss.html.heex:119
+#: lib/retro_hex_chat_web/controllers/help_content/bot_rss.html.heex:122
 #, elixir-autogen, elixir-format
 msgid "Bot Scheduler"
 msgstr "機器人定時任務"
@@ -369,7 +369,7 @@ msgstr "機器人名稱必須為 2–16 個字元，且唯一"
 #: lib/retro_hex_chat_web/controllers/help_content/bot_custom_commands.html.heex:93
 #: lib/retro_hex_chat_web/controllers/help_content/bot_dice.html.heex:82
 #: lib/retro_hex_chat_web/controllers/help_content/bot_moderation.html.heex:106
-#: lib/retro_hex_chat_web/controllers/help_content/bot_rss.html.heex:117
+#: lib/retro_hex_chat_web/controllers/help_content/bot_rss.html.heex:120
 #: lib/retro_hex_chat_web/controllers/help_content/bot_scheduler.html.heex:95
 #: lib/retro_hex_chat_web/controllers/help_content/bot_trivia.html.heex:86
 #, elixir-autogen, elixir-format
@@ -509,14 +509,14 @@ msgstr "實例"
 #: lib/retro_hex_chat_web/controllers/help_content/bot_rss.html.heex:54
 #, elixir-autogen, elixir-format
 msgid "Feed titles are auto-detected from the feed metadata"
-msgstr "從種子元數據自動檢測種子標題"
+msgstr "訂閱源 標題由 訂閱源 元數據自動檢測"
 
 #: lib/retro_hex_chat_web/controllers/help_content/bot_rss.html.heex:45
 #, elixir-autogen, elixir-format
 msgid "Feeds are polled at a configurable interval (default: every 30 minutes)"
-msgstr "飼料在可配置的間隔時間( 默認: 每30分鐘) 進行授粉"
+msgstr "Feeds在可配置的間隔( 默認: 每30分鐘) 接受調查"
 
-#: lib/retro_hex_chat_web/controllers/help_content/bot_rss.html.heex:112
+#: lib/retro_hex_chat_web/controllers/help_content/bot_rss.html.heex:115
 #, elixir-autogen, elixir-format
 msgid "Fetch errors are logged but do not stop future polls"
 msgstr "獲取錯誤已被記錄, 但不會停止未來的民調"
@@ -529,7 +529,7 @@ msgstr "洪水探測"
 #: lib/retro_hex_chat_web/controllers/help_content/bot_rss.html.heex:37
 #, elixir-autogen, elixir-format
 msgid "Force-check a feed immediately"
-msgstr "立即檢查一個消息"
+msgstr "立即檢查feed"
 
 #: lib/retro_hex_chat_web/controllers/help_content/bot_moderation.html.heex:65
 #: lib/retro_hex_chat_web/controllers/help_content/bot_rss.html.heex:42
@@ -575,7 +575,7 @@ msgstr "列出所有活動時間表"
 #: lib/retro_hex_chat_web/controllers/help_content/bot_rss.html.heex:29
 #, elixir-autogen, elixir-format
 msgid "List all configured feeds"
-msgstr "列出所有配置的種子"
+msgstr "列出所有配置的 訂閱源"
 
 #: lib/retro_hex_chat_web/controllers/help_content/bot_custom_commands.html.heex:75
 #, elixir-autogen, elixir-format
@@ -660,7 +660,7 @@ msgstr "每個頻道每次只有一回合有效"
 msgid "Open the Bot Management dialog ("
 msgstr "打開 Bot 管理對話框( E)"
 
-#: lib/retro_hex_chat_web/controllers/help_content/bot_rss.html.heex:99
+#: lib/retro_hex_chat_web/controllers/help_content/bot_rss.html.heex:102
 #, elixir-autogen, elixir-format
 msgid "Polling timers automatically reschedule after each poll"
 msgstr "投票計時器在每次投票後自動重新安排"
@@ -680,7 +680,7 @@ msgstr "移除"
 #: lib/retro_hex_chat_web/controllers/help_content/bot_rss.html.heex:33
 #, elixir-autogen, elixir-format
 msgid "Remove a feed by ID"
-msgstr "通過 ID 刪除種子"
+msgstr "通過 ID 刪除 訂閱源"
 
 #: lib/retro_hex_chat_web/controllers/help_content/bot_scheduler.html.heex:45
 #, elixir-autogen, elixir-format
@@ -739,7 +739,7 @@ msgstr "新回合開始時重置分數"
 #: lib/retro_hex_chat_web/controllers/help_content/bot_custom_commands.html.heex:91
 #: lib/retro_hex_chat_web/controllers/help_content/bot_dice.html.heex:80
 #: lib/retro_hex_chat_web/controllers/help_content/bot_moderation.html.heex:104
-#: lib/retro_hex_chat_web/controllers/help_content/bot_rss.html.heex:115
+#: lib/retro_hex_chat_web/controllers/help_content/bot_rss.html.heex:118
 #: lib/retro_hex_chat_web/controllers/help_content/bot_scheduler.html.heex:93
 #: lib/retro_hex_chat_web/controllers/help_content/bot_trivia.html.heex:84
 #: lib/retro_hex_chat_web/controllers/help_content/botservice.html.heex:193
@@ -818,7 +818,7 @@ msgstr "溫和能力提供自動聊天節奏. 它作爲被動能力運行,處理
 #: lib/retro_hex_chat_web/controllers/help_content/bot_rss.html.heex:2
 #, elixir-autogen, elixir-format
 msgid "The RSS capability monitors RSS and Atom feeds and automatically posts new items to designated channels."
-msgstr "RSS能力監測RSS和Atom的輸入,並自動向指定的頻道發佈新項目."
+msgstr "RSS能力監測RSS和Atom 訂閱源,並自動將新物品投放到指定的頻道."
 
 #: lib/retro_hex_chat_web/controllers/help_content/bot_scheduler.html.heex:2
 #, elixir-autogen, elixir-format
@@ -1327,7 +1327,7 @@ msgstr "服務器操作員"
 #: lib/retro_hex_chat_web/controllers/help_content/botservice.html.heex:71
 #, elixir-autogen, elixir-format
 msgid "to add a feed"
-msgstr "添加種子"
+msgstr "添加 訂閱源"
 
 #: lib/retro_hex_chat_web/controllers/help_content/botservice.html.heex:55
 #, elixir-autogen, elixir-format
@@ -1383,7 +1383,7 @@ msgstr "——保持最低K骰子(例如,"
 #: lib/retro_hex_chat_web/controllers/help_content/botservice.html.heex:67
 #, elixir-autogen, elixir-format
 msgid "— monitors RSS/Atom feeds and posts new items to channels. Use"
-msgstr "——監控RSS/Atom的輸入,並將新項目發佈到頻道. 使用"
+msgstr "——監控RSS/Atom 訂閱源,並將新項目發佈到頻道. 使用"
 
 #: lib/retro_hex_chat_web/controllers/help_content/botservice.html.heex:61
 #, elixir-autogen, elixir-format
@@ -1586,12 +1586,12 @@ msgstr ""
 msgid "with no arguments opens the Bot Management dialog"
 msgstr "不帶參數執行會開啟機器人管理對話框"
 
-#: lib/retro_hex_chat_web/controllers/help_content/bot_rss.html.heex:122
+#: lib/retro_hex_chat_web/controllers/help_content/bot_rss.html.heex:125
 #, elixir-autogen, elixir-format
 msgid "Link Previews"
 msgstr "鏈接預覽"
 
-#: lib/retro_hex_chat_web/controllers/help_content/bot_rss.html.heex:101
+#: lib/retro_hex_chat_web/controllers/help_content/bot_rss.html.heex:104
 #, elixir-autogen, elixir-format
 msgid "Preview metadata comes from page standards such as Open Graph, Schema.org JSON-LD, oEmbed discovery, article headings, article images, and readable body text"
 msgstr "預覽中繼資料來自頁面標準，例如 Open Graph、Schema.org JSON-LD、oEmbed 探索、文章標題、文章圖片和可讀正文"
@@ -1601,7 +1601,7 @@ msgstr "預覽中繼資料來自頁面標準，例如 Open Graph、Schema.org JS
 msgid "Items are posted as rich Markdown link previews with a source label, linked title, optional local thumbnail or unavailable-image placeholder, optional description, and article details when the publisher exposes them"
 msgstr "項目會作為豐富的 Markdown 連結預覽發佈，帶有來源標籤、附連結的標題、可選的本機縮圖或圖片無法使用的預留位置、可選的描述，以及發佈方公開時的文章詳情"
 
-#: lib/retro_hex_chat_web/controllers/help_content/bot_rss.html.heex:107
+#: lib/retro_hex_chat_web/controllers/help_content/bot_rss.html.heex:110
 #, elixir-autogen, elixir-format
 msgid "The shared page archive stores extracted descriptions, image alt text, local thumbnail metadata, thumbnail failure details, article sections, tags, dates, and article text so later previews can reuse them"
 msgstr "共享頁面封存會保存擷取到的描述、圖片替代文字、本機縮圖中繼資料、縮圖失敗詳情、文章章節、標籤、日期和文章正文，以便後續預覽重複使用"
@@ -1842,3 +1842,8 @@ msgstr "——在博特的頻道,每日文摘和每週挑戰中宣佈公開的�
 #, elixir-autogen, elixir-format
 msgid "The bot also announces the arcade games that people start."
 msgstr "機器人還宣佈了人們開始的街機遊戲."
+
+#: lib/retro_hex_chat_web/controllers/help_content/bot_rss.html.heex:100
+#, elixir-autogen, elixir-format
+msgid "A feed can only post to a channel the bot has joined"
+msgstr "訂閱源 只能發送到該機器人加入的頻道"

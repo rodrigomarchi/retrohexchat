@@ -43,11 +43,16 @@ KEY_CHORD_RE = re.compile(
     r"|\bF(?:[1-9]|1[0-2])\b"
 )
 
+# A news feed is masked like a name and written in each language's form
+# (`names.py`); a camera's or a video's feed is a picture and is left alone.
+FEED_RE = re.compile(r"(?<![Cc]amera )(?<![Vv]ideo )\b[Ff]eeds?\b")
+
 PROTECTED_PATTERNS = (
     re.compile(r"https?://[^\s<>\"]+"),
     re.compile(r"`[^`]+`"),
     re.compile(r"</?[^>]+>"),
     BRAND_RE,
+    FEED_RE,
     DOTTED_KEY_RE,
     re.compile(r"/[A-Za-z][A-Za-z0-9_-]*"),
     re.compile(r"#[A-Za-z0-9_-]+"),

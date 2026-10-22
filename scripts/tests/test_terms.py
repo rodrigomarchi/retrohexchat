@@ -116,6 +116,51 @@ class MissingTermsTest(unittest.TestCase):
         self.assertEqual(missing_terms("Sign in to continue.", "Entre para continuar.", "pt_BR"), [])
         self.assertEqual(missing_terms("Sign-up is closed.", "O cadastro está fechado.", "pt_BR"), [])
 
+    def test_a_feed_is_a_news_source_not_fodder(self):
+        source = "Add an RSS/Atom feed"
+
+        # What the engines shipped: animal feed, and a seed.
+        self.assertTrue(missing_terms(source, "Dodaj paszę RSS/Atom", "pl"))
+        self.assertTrue(missing_terms(source, "Добавить RSS/Atom кормить", "ru"))
+        self.assertTrue(missing_terms(source, "添加 RSS/Atom 种子", "zh_hans"))
+        self.assertEqual(missing_terms(source, "Ajouter un flux RSS/Atom", "fr"), [])
+        self.assertEqual(missing_terms(source, "Добавить RSS/Atom ленту", "ru"), [])
+
+    def test_a_feed_travels_masked_and_comes_back_in_the_languages_form(self):
+        from i18n.pipeline import Pipeline
+        from i18n.protection import protect
+
+        masked, replacements = protect("Feed removed. Add another feed.")
+        self.assertNotIn("eed", masked)
+        self.assertEqual(sorted(replacements.values()), ["Feed", "feed"])
+
+        class Echo:
+            def translate(self, text):
+                return text.replace("removed. Add another", "supprimé. Ajoutez un autre")
+
+        pipeline = Pipeline(Echo(), locale_code="fr")
+        self.assertEqual(
+            pipeline.translate_one("Feed removed. Add another feed."),
+            "Flux supprimé. Ajoutez un autre flux.",
+        )
+
+    def test_a_feed_with_no_space_around_it_is_still_swapped(self):
+        from i18n import names
+
+        self.assertEqual(names.localize("feedは大きすぎます。", "ja"), "フィードは大きすぎます。")
+        self.assertEqual(names.localize("feedback", "ja"), "feedback")
+
+    def test_a_camera_feed_is_not_masked(self):
+        from i18n.protection import protect
+
+        _, replacements = protect("Your screen is replacing the camera feed.")
+        self.assertNotIn("feed", replacements.values())
+
+    def test_a_camera_feed_is_a_picture_not_a_news_feed(self):
+        source = "Your screen is replacing the camera feed."
+
+        self.assertEqual(missing_terms(source, "Je scherm vervangt de camerabeelden.", "nl"), [])
+
     def test_a_die_is_the_games_cube_not_death(self):
         self.assertTrue(missing_terms("rolled the die: 5", "rodó la muerte: 5", "es"))
         self.assertEqual(missing_terms("rolled the dice and got 5", "rodó los dados y sacó 5", "es"), [])

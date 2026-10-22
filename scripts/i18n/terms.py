@@ -19,7 +19,7 @@ from __future__ import annotations
 
 import re
 
-from .protection import protect
+from .protection import FEED_RE, protect, restore
 
 # English term pattern -> accepted forms per locale. `pt` covers both
 # Portuguese locales; a locale with no entry is not checked for that term.
@@ -89,6 +89,25 @@ _TERMS: dict[str, dict[str, tuple[str, ...]]] = {
         "ja": ("チャンネル", "チャネル"),
         "zh_hans": ("频道",),
         "zh_hant": ("頻道",),
+    },
+    # A feed is a source of news, never fodder: the engine gave "Alimentar",
+    # "pasza" and "кормить" (to feed an animal), and "种子" (a seed). The word
+    # travels masked (`protection.FEED_RE`) and comes back as "feed" until
+    # `names.localize` writes it in the language's form, so both are accepted.
+    # A camera or video feed is a picture, and needs no news word.
+    r"(?<!camera )(?<!video )\bfeeds?\b": {
+        "pt": ("feed", "fonte"),
+        "es": ("feed", "fuente"),
+        "fr": ("flux", "feed"),
+        "de": ("feed",),
+        "it": ("feed", "flusso", "fonte"),
+        "nl": ("feed",),
+        "pl": ("feed", "kanał rss", "kanału rss", "źródł"),
+        "ru": ("лент", "фид", "feed"),
+        "id": ("feed", "umpan"),
+        "ja": ("フィード", "feed"),
+        "zh_hans": ("订阅", "源", "feed"),
+        "zh_hant": ("訂閱", "源", "feed"),
     },
     r"\bnicknames?\b": {
         "pt": ("apelido", "alcunha", "nick"),
@@ -369,8 +388,10 @@ def missing_terms(source: str, translated: str, locale_code: str) -> list[str]:
 
     The source is read masked, so a term inside a command or placeholder
     (`/nick`, `%{channel}`) is syntax, not vocabulary, and asks for nothing.
+    A feed travels masked too, but it is vocabulary, so it is put back.
     """
-    masked, _ = protect(source)
+    masked, replacements = protect(source)
+    masked = restore(masked, {k: v for k, v in replacements.items() if FEED_RE.fullmatch(v)})
     text = translated.lower()
     missing = []
 
