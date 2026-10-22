@@ -21,6 +21,7 @@ defmodule RetroHexChat.Bots.Capability do
   """
 
   @type bot_context :: %{
+          optional(:joined_channels) => [String.t()],
           bot_nickname: String.t(),
           bot_name: String.t(),
           bot_id: integer(),

@@ -10,6 +10,7 @@ defmodule RetroHexChat.Chat.PreferencePersistence do
   import Ecto.Query
 
   alias RetroHexChat.Accounts.{ContactList, NickColors}
+  alias RetroHexChat.Jobs.ResultMetadata
 
   alias RetroHexChat.Chat.{
     AliasList,
@@ -341,9 +342,12 @@ defmodule RetroHexChat.Chat.PreferencePersistence do
     |> byte_size()
   end
 
-  defp error_reason(%Ecto.Changeset{}), do: "changeset_error"
-  defp error_reason(%module{}), do: module |> Module.split() |> List.last()
-  defp error_reason(reason) when is_atom(reason), do: Atom.to_string(reason)
-  defp error_reason(reason) when is_binary(reason), do: reason
-  defp error_reason(reason), do: inspect(reason)
+  # Stored for whoever reads a failed request, not grouped in a metric: what
+  # the shared labels cannot name is kept whole rather than called "unknown".
+  defp error_reason(reason) do
+    case ResultMetadata.error_reason(reason) do
+      "unknown" -> inspect(reason)
+      label -> label
+    end
+  end
 end

@@ -150,6 +150,19 @@ class MissingTermsTest(unittest.TestCase):
         self.assertEqual(names.localize("feedは大きすぎます。", "ja"), "フィードは大きすぎます。")
         self.assertEqual(names.localize("feedback", "ja"), "feedback")
 
+    def test_a_url_a_placeholder_a_command_and_a_channel_keep_their_feed(self):
+        from i18n import names
+        from i18n.protection import protect, restore
+
+        text = "dans %{feed}. Voir https://blog.example.com/feed.xml #feeds /feed le feed"
+        self.assertEqual(
+            names.localize(text, "fr"),
+            "dans %{feed}. Voir https://blog.example.com/feed.xml #feeds /feed le flux",
+        )
+
+        masked, replacements = protect("Join #feeds or run /feed now")
+        self.assertEqual(restore(masked, replacements), "Join #feeds or run /feed now")
+
     def test_a_camera_feed_is_not_masked(self):
         from i18n.protection import protect
 

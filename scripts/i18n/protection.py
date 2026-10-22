@@ -52,11 +52,13 @@ PROTECTED_PATTERNS = (
     re.compile(r"`[^`]+`"),
     re.compile(r"</?[^>]+>"),
     BRAND_RE,
-    FEED_RE,
     DOTTED_KEY_RE,
     re.compile(r"/[A-Za-z][A-Za-z0-9_-]*"),
     re.compile(r"#[A-Za-z0-9_-]+"),
     re.compile(r"%\{[A-Za-z0-9_]+\}"),
+    # After commands, channels and placeholders: `/feed`, `#feeds` and
+    # `%{feed}` are syntax, and a mask inside a mask would not come back.
+    FEED_RE,
     MODE_RE,
     ALIAS_VARIABLE_RE,
     UI_GLYPH_RE,

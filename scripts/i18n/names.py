@@ -89,10 +89,11 @@ NAMES: dict[str, dict[str, str]] = {
     },
 }
 
-# Bounded by Latin letters only: Japanese and Chinese write a name with no space
-# around it ("feedは"), and to `\b` a kana is a word character like any other.
+# Bounded by Latin letters, digits and "_" only: Japanese and Chinese write a
+# name with no space around it ("feedは"), and to `\b` a kana is a word
+# character like any other.
 _NAME_RE = {
-    name: re.compile(rf"(?<![A-Za-z]){re.escape(name)}(?![A-Za-z])") for name in NAMES
+    name: re.compile(rf"(?<![A-Za-z0-9_]){re.escape(name)}(?![A-Za-z0-9_])") for name in NAMES
 }
 
 
@@ -103,11 +104,23 @@ def form(name: str, locale_code: str) -> str:
 
 
 def localize(text: str, locale_code: str | None) -> str:
-    """Every product name in an already translated text, in the locale's form."""
+    """Every product name in an already translated text, in the locale's form.
+
+    Only prose is touched: a URL (`/feed.xml`), a placeholder (`%{feed}`), a
+    command or a channel keeps its spelling, so the text is masked first and
+    only the names are let back in to be swapped.
+    """
     if not locale_code or locale_code == "en":
         return text
 
-    for name, pattern in _NAME_RE.items():
-        text = pattern.sub(form(name, locale_code), text)
+    from .protection import protect, restore
 
-    return text
+    masked, replacements = protect(text)
+    names = {token: value for token, value in replacements.items() if value in NAMES}
+    syntax = {token: value for token, value in replacements.items() if value not in NAMES}
+    prose = restore(masked, names)
+
+    for name, pattern in _NAME_RE.items():
+        prose = pattern.sub(form(name, locale_code), prose)
+
+    return restore(prose, syntax)

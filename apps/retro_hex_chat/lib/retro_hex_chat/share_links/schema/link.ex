@@ -26,8 +26,6 @@ defmodule RetroHexChat.ShareLinks.Schema.Link do
 
   @kinds ~w(call channel space p2p play)
 
-  # Matches the `size: 50` the channel tables are declared with.
-
   schema "share_links" do
     field :slug, :string
     field :kind, :string

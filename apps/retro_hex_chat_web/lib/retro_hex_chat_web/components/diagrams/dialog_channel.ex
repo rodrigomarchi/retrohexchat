@@ -11,6 +11,8 @@ defmodule RetroHexChatWeb.Components.Diagrams.DialogChannel do
   use Phoenix.Component
   use Gettext, backend: RetroHexChatWeb.Gettext
 
+  alias RetroHexChat.Text
+
   @chars_per_line 26
   @max_lines 4
 
@@ -109,13 +111,8 @@ defmodule RetroHexChatWeb.Components.Diagrams.DialogChannel do
   @spec clip(String.t() | nil, pos_integer()) :: String.t()
   defp clip(nil, _limit), do: ""
 
-  defp clip(text, limit) when is_binary(text) do
-    trimmed = String.trim(text)
-
-    if String.length(trimmed) > limit,
-      do: String.slice(trimmed, 0, limit - 1) <> "…",
-      else: trimmed
-  end
+  defp clip(text, limit) when is_binary(text),
+    do: text |> String.trim() |> Text.truncate(limit, omission: "…")
 
   @spec wrap(String.t() | nil) :: [String.t()]
   defp wrap(nil), do: []

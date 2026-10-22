@@ -11,6 +11,8 @@ defmodule RetroHexChatWeb.Components.Diagrams.DialogAccount do
   use Phoenix.Component
   use Gettext, backend: RetroHexChatWeb.Gettext
 
+  alias RetroHexChat.Text
+
   @doc "Renders the identity card for one of the three account states."
   attr :class, :string, default: nil
   attr :nickname, :string, default: ""
@@ -154,9 +156,7 @@ defmodule RetroHexChatWeb.Components.Diagrams.DialogAccount do
   defp shackle_fill(_), do: "#808080"
 
   @spec truncate(String.t()) :: String.t()
-  defp truncate(nickname) when is_binary(nickname) do
-    if String.length(nickname) > 9, do: String.slice(nickname, 0, 8) <> "…", else: nickname
-  end
+  defp truncate(nickname) when is_binary(nickname), do: Text.truncate(nickname, 9, omission: "…")
 
   defp truncate(_), do: ""
 
