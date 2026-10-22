@@ -21,6 +21,7 @@ defmodule RetroHexChatWeb.ChatLive.ContextMenuEvents do
   """
 
   alias RetroHexChat.Nickname
+  alias RetroHexChatWeb.Params
 
   import Phoenix.Component, only: [assign: 2]
   import Phoenix.LiveView, only: [push_event: 3, send_update: 2]
@@ -783,19 +784,8 @@ defmodule RetroHexChatWeb.ChatLive.ContextMenuEvents do
     channel = socket.assigns.session.active_channel
 
     is_binary(channel) and is_nil(socket.assigns.session.active_pm) and
-      Pins.pinned?(channel, to_message_id(message_id))
+      Pins.pinned?(channel, Params.integer(message_id, 0))
   end
-
-  defp to_message_id(value) when is_integer(value), do: value
-
-  defp to_message_id(value) when is_binary(value) do
-    case Integer.parse(value) do
-      {id, _rest} -> id
-      :error -> 0
-    end
-  end
-
-  defp to_message_id(_value), do: 0
 
   defp close_chat_context_menu(socket) do
     put_menu(socket, chat_context_menu: UserContextMenus.chat_closed())

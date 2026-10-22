@@ -22,6 +22,7 @@ defmodule RetroHexChatWeb.App.GroupCallShape do
 
   alias RetroHexChatWeb.App.GroupCallStats
   alias RetroHexChatWeb.MediaDevices
+  alias RetroHexChatWeb.Params
 
   @spec normalize_room(map() | nil) :: map() | nil
   def normalize_room(nil), do: nil
@@ -50,7 +51,7 @@ defmodule RetroHexChatWeb.App.GroupCallShape do
 
   def normalize_participant(participant) when is_map(participant) do
     %{
-      id: normalize_id(value(participant, :id)),
+      id: Params.integer(value(participant, :id)),
       nickname: value(participant, :nickname),
       status: value(participant, :status),
       media_state: normalize_media(value(participant, :media_state)),
@@ -68,8 +69,8 @@ defmodule RetroHexChatWeb.App.GroupCallShape do
 
   def normalize_track(track) when is_map(track) do
     %{
-      id: normalize_id(value(track, :id)),
-      participant_id: normalize_id(value(track, :participant_id)),
+      id: Params.integer(value(track, :id)),
+      participant_id: Params.integer(value(track, :participant_id)),
       kind: value(track, :kind),
       source: value(track, :source),
       status: value(track, :status),
@@ -131,7 +132,7 @@ defmodule RetroHexChatWeb.App.GroupCallShape do
 
   @spec normalize_group_call_reaction(map(), map() | nil) :: map() | nil
   def normalize_group_call_reaction(call, payload) when is_map(payload) do
-    participant_id = normalize_id(value(payload, :participant_id))
+    participant_id = Params.integer(value(payload, :participant_id))
     participant = Enum.find(call.participants || [], &(&1.id == participant_id))
 
     %{
@@ -180,7 +181,7 @@ defmodule RetroHexChatWeb.App.GroupCallShape do
 
   def normalize_participant_quality(quality) when is_map(quality) do
     %{
-      participant_id: normalize_id(value(quality, :participant_id)),
+      participant_id: Params.integer(value(quality, :participant_id)),
       level: normalize_quality_level(value(quality, :level)),
       speaking: truthy?(value(quality, :speaking)),
       rtt_ms: integer_value(value(quality, :rtt_ms)),
@@ -206,17 +207,6 @@ defmodule RetroHexChatWeb.App.GroupCallShape do
     end
   end
 
-  @spec normalize_id(term()) :: integer() | nil
-  def normalize_id(id) when is_integer(id), do: id
-
-  def normalize_id(id) when is_binary(id) do
-    case Integer.parse(id) do
-      {value, ""} -> value
-      _error -> nil
-    end
-  end
-
-  def normalize_id(_id), do: nil
   @spec normalize_media(map() | nil) :: map()
   def normalize_media(nil), do: %{}
 
@@ -265,7 +255,7 @@ defmodule RetroHexChatWeb.App.GroupCallShape do
   @spec normalize_pinned_participant_ids(term()) :: [integer()]
   def normalize_pinned_participant_ids(participant_ids) when is_list(participant_ids) do
     participant_ids
-    |> Enum.map(&normalize_id/1)
+    |> Enum.map(&Params.integer/1)
     |> Enum.reject(&is_nil/1)
     |> Enum.uniq()
     |> Enum.take(4)

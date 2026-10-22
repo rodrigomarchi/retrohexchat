@@ -36,12 +36,10 @@ defmodule RetroHexChatWeb.ChatLive.Components.AdminBroadcastDialog do
         %{"broadcast_type" => type, "message" => message},
         socket
       ) do
-    if AdminOps.admin?(socket) do
+    AdminOps.guarded(socket, fn ->
       result = AdminOps.dispatch(socket, command(type), args(message))
       {:noreply, assign(socket, result: AdminOps.result_entry(result))}
-    else
-      {:noreply, AdminOps.error_event(socket, AdminOps.restricted_message())}
-    end
+    end)
   end
 
   @spec render(map()) :: Phoenix.LiveView.Rendered.t()

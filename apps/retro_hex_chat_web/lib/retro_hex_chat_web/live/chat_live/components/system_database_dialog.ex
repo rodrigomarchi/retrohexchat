@@ -51,11 +51,9 @@ defmodule RetroHexChatWeb.ChatLive.Components.SystemDatabaseDialog do
   end
 
   def handle_event("system_database_select", %{"report" => report}, socket) do
-    if AdminOps.admin?(socket) do
+    AdminOps.guarded(socket, fn ->
       {:noreply, run(socket, report)}
-    else
-      {:noreply, AdminOps.error_event(socket, AdminOps.restricted_message())}
-    end
+    end)
   end
 
   @spec render(map()) :: Phoenix.LiveView.Rendered.t()

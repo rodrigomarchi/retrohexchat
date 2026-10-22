@@ -16,6 +16,7 @@ defmodule RetroHexChatWeb.GroupCallChannel do
   alias RetroHexChat.GroupCall
   alias RetroHexChat.GroupCall.JoinToken
   alias RetroHexChat.GroupCall.RateLimiter
+  alias RetroHexChatWeb.Params
 
   @impl true
   def join("group_call:" <> room_token, params, socket) do
@@ -244,19 +245,8 @@ defmodule RetroHexChatWeb.GroupCallChannel do
   defp previous_participant_id(payload) when is_map(payload) do
     payload
     |> Map.get("previous_participant_id", Map.get(payload, :previous_participant_id))
-    |> normalize_participant_id()
+    |> Params.integer()
   end
-
-  defp normalize_participant_id(value) when is_integer(value), do: value
-
-  defp normalize_participant_id(value) when is_binary(value) do
-    case Integer.parse(value) do
-      {participant_id, ""} -> participant_id
-      _other -> nil
-    end
-  end
-
-  defp normalize_participant_id(_value), do: nil
 
   defp fetch_participant_id(socket) do
     case socket.assigns[:participant_id] do

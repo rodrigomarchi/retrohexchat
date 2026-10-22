@@ -26,6 +26,7 @@ defmodule RetroHexChatWeb.DesktopLive do
 
   alias RetroHexChat.Channels.Name
   alias RetroHexChatWeb.ChatLive.Components.ChatShell
+  alias RetroHexChatWeb.Params
   import RetroHexChatWeb.ChatLive.Components.ChatTabs
 
   # ── Chat components ──────────────────────────────────────────
@@ -307,7 +308,7 @@ defmodule RetroHexChatWeb.DesktopLive do
     %{
       timezone: resolve_timezone(http_session, socket),
       client_info: SessionHelpers.parse_client_info(get_connect_params(socket) || %{}),
-      trusted_device_id: normalize_trusted_device_id(http_session["trusted_device_id"]),
+      trusted_device_id: Params.integer(http_session["trusted_device_id"]),
       browser_id: normalize_browser_id(http_session["browser_id"])
     }
   end
@@ -318,7 +319,7 @@ defmodule RetroHexChatWeb.DesktopLive do
     |> assign(
       timezone: Timezone.validate(http_session["chat_timezone"]),
       client_info: %{},
-      trusted_device_id: normalize_trusted_device_id(http_session["trusted_device_id"]),
+      trusted_device_id: Params.integer(http_session["trusted_device_id"]),
       browser_id: normalize_browser_id(http_session["browser_id"]),
       chat_device_session_ref: nil,
       last_device_session_touch_at: nil
@@ -797,17 +798,6 @@ defmodule RetroHexChatWeb.DesktopLive do
   defp subscribe_chat_device_session(session_ref) do
     Phoenix.PubSub.subscribe(RetroHexChat.PubSub, Topics.chat_device_session(session_ref))
   end
-
-  defp normalize_trusted_device_id(id) when is_integer(id), do: id
-
-  defp normalize_trusted_device_id(id) when is_binary(id) do
-    case Integer.parse(id) do
-      {parsed, ""} -> parsed
-      _ -> nil
-    end
-  end
-
-  defp normalize_trusted_device_id(_id), do: nil
 
   defp load_reconnect_state(nil, _browser_id), do: nil
 

@@ -58,32 +58,26 @@ defmodule RetroHexChatWeb.ChatLive.Components.SystemObanDialog do
   @spec handle_event(String.t(), map(), Phoenix.LiveView.Socket.t()) ::
           {:noreply, Phoenix.LiveView.Socket.t()}
   def handle_event("system_oban_refresh", _params, socket) do
-    if AdminOps.admin?(socket) do
+    AdminOps.guarded(socket, fn ->
       {:noreply, refresh_async(socket)}
-    else
-      {:noreply, AdminOps.error_event(socket, AdminOps.restricted_message())}
-    end
+    end)
   end
 
   def handle_event("system_oban_filter", params, socket) do
-    if AdminOps.admin?(socket) do
+    AdminOps.guarded(socket, fn ->
       {:noreply,
        socket
        |> assign(:job_filter, Map.get(params, "filter", @default_filter))
        |> assign(:job_queue_filter, Map.get(params, "queue", ""))
        |> assign(:job_worker_filter, Map.get(params, "worker", ""))
        |> refresh_async()}
-    else
-      {:noreply, AdminOps.error_event(socket, AdminOps.restricted_message())}
-    end
+    end)
   end
 
   def handle_event("system_oban_tab", %{"tab" => tab}, socket) do
-    if AdminOps.admin?(socket) do
+    AdminOps.guarded(socket, fn ->
       {:noreply, assign(socket, :active_tab, normalize_tab(tab))}
-    else
-      {:noreply, AdminOps.error_event(socket, AdminOps.restricted_message())}
-    end
+    end)
   end
 
   @impl true

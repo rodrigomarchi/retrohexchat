@@ -68,12 +68,10 @@ defmodule RetroHexChatWeb.ChatLive.Components.AdminMotdDialog do
   end
 
   defp dispatch_and_reload(socket, command, args) do
-    if AdminOps.admin?(socket) do
+    AdminOps.guarded(socket, fn ->
       result = AdminOps.dispatch(socket, command, args)
       {:noreply, assign_snapshot(socket, AdminOps.result_entry(result))}
-    else
-      {:noreply, AdminOps.error_event(socket, AdminOps.restricted_message())}
-    end
+    end)
   end
 
   defp assign_snapshot(socket, result) do

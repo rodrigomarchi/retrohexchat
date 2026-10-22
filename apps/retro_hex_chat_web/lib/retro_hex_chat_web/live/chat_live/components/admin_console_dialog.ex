@@ -52,7 +52,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.AdminConsoleDialog do
   @spec handle_event(String.t(), map(), Phoenix.LiveView.Socket.t()) ::
           {:noreply, Phoenix.LiveView.Socket.t()}
   def handle_event("admin_console_run", %{"input" => input}, socket) do
-    if AdminOps.admin?(socket) do
+    AdminOps.guarded(socket, fn ->
       combined = socket.assigns.results ++ execute_batch(input, socket)
       results = cap(combined)
 
@@ -61,18 +61,14 @@ defmodule RetroHexChatWeb.ChatLive.Components.AdminConsoleDialog do
       dropped = socket.assigns.dropped + max(length(combined) - length(results), 0)
 
       {:noreply, assign(socket, results: results, dropped: dropped)}
-    else
-      {:noreply, AdminOps.error_event(socket, AdminOps.restricted_message())}
-    end
+    end)
   end
 
   def handle_event("admin_console_clear", _params, socket) do
-    if AdminOps.admin?(socket) do
+    AdminOps.guarded(socket, fn ->
       # Clearing the transcript clears the record of what fell off it too.
       {:noreply, assign(socket, results: [], dropped: 0)}
-    else
-      {:noreply, AdminOps.error_event(socket, AdminOps.restricted_message())}
-    end
+    end)
   end
 
   @spec render(map()) :: Phoenix.LiveView.Rendered.t()

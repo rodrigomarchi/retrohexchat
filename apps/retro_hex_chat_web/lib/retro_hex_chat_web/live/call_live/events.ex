@@ -41,6 +41,7 @@ defmodule RetroHexChatWeb.CallLive.Events do
   alias RetroHexChatWeb.Live.GroupCallConfirmDialog
   alias RetroHexChatWeb.Live.Surface
   alias RetroHexChatWeb.MediaDevices
+  alias RetroHexChatWeb.Params
 
   @prejoin_preference_namespace "group_call_prejoin"
   @layout_modes ~w(auto grid focus speaker)
@@ -472,9 +473,7 @@ defmodule RetroHexChatWeb.CallLive.Events do
       |> merge_existing_participant_media(call)
 
     participant_id =
-      GroupCallShape.normalize_id(
-        GroupCallShape.value(payload, :participant_id) || participant.id
-      )
+      Params.integer(GroupCallShape.value(payload, :participant_id) || participant.id)
 
     {:halt,
      socket
@@ -733,7 +732,7 @@ defmodule RetroHexChatWeb.CallLive.Events do
       summary
       |> GroupCallShape.value(:room)
       |> GroupCallShape.value(:id)
-      |> GroupCallShape.normalize_id()
+      |> Params.integer()
 
     with room_id when is_integer(room_id) <- room_id,
          participant when not is_nil(participant) <-
@@ -1144,7 +1143,7 @@ defmodule RetroHexChatWeb.CallLive.Events do
   end
 
   defp focus_participant(socket, participant_id) do
-    with {participant_id, ""} <- Integer.parse(to_string(participant_id)),
+    with participant_id when is_integer(participant_id) <- Params.integer(participant_id),
          true <- participant_id in Enum.map(socket.assigns.group_call.participants, & &1.id) do
       update_call(socket, fn call ->
         layout =
@@ -1180,7 +1179,7 @@ defmodule RetroHexChatWeb.CallLive.Events do
   end
 
   defp toggle_pin_participant(socket, participant_id) do
-    with {participant_id, ""} <- Integer.parse(to_string(participant_id)),
+    with participant_id when is_integer(participant_id) <- Params.integer(participant_id),
          true <- participant_id in Enum.map(socket.assigns.group_call.participants, & &1.id) do
       update_call(socket, fn call ->
         layout = layout(call)
@@ -1271,7 +1270,7 @@ defmodule RetroHexChatWeb.CallLive.Events do
   defp maybe_push_speaker_layout(socket), do: socket
 
   defp moderate_audio(socket, participant_id) do
-    with {participant_id, ""} <- Integer.parse(to_string(participant_id)),
+    with participant_id when is_integer(participant_id) <- Params.integer(participant_id),
          {:ok, target} <- find_participant(socket.assigns.group_call, participant_id),
          {:ok, actor} <- actor(socket),
          {:ok, participant} <- set_target_audio(socket.assigns.group_call, actor, target) do
@@ -1289,7 +1288,7 @@ defmodule RetroHexChatWeb.CallLive.Events do
   end
 
   defp moderate_video(socket, participant_id) do
-    with {participant_id, ""} <- Integer.parse(to_string(participant_id)),
+    with participant_id when is_integer(participant_id) <- Params.integer(participant_id),
          {:ok, target} <- find_participant(socket.assigns.group_call, participant_id),
          {:ok, actor} <- actor(socket),
          {:ok, participant} <- set_target_video(socket.assigns.group_call, actor, target) do
@@ -1307,7 +1306,7 @@ defmodule RetroHexChatWeb.CallLive.Events do
   end
 
   defp moderate_screen(socket, participant_id) do
-    with {participant_id, ""} <- Integer.parse(to_string(participant_id)),
+    with participant_id when is_integer(participant_id) <- Params.integer(participant_id),
          {:ok, target} <- find_participant(socket.assigns.group_call, participant_id),
          {:ok, actor} <- actor(socket),
          {:ok, participant} <- set_target_screen_share(socket.assigns.group_call, actor, target) do
@@ -1327,7 +1326,7 @@ defmodule RetroHexChatWeb.CallLive.Events do
   end
 
   defp allow_speak(socket, participant_id) do
-    with {participant_id, ""} <- Integer.parse(to_string(participant_id)),
+    with participant_id when is_integer(participant_id) <- Params.integer(participant_id),
          {:ok, _target} <- find_participant(socket.assigns.group_call, participant_id),
          {:ok, actor} <- actor(socket),
          {:ok, participant} <-
@@ -1444,7 +1443,7 @@ defmodule RetroHexChatWeb.CallLive.Events do
   defp locked?(_call), do: false
 
   defp open_kick_confirm(socket, participant_id) do
-    with {participant_id, ""} <- Integer.parse(to_string(participant_id)),
+    with participant_id when is_integer(participant_id) <- Params.integer(participant_id),
          {:ok, target} <- find_participant(socket.assigns.group_call, participant_id),
          {:ok, actor} <- actor(socket),
          :ok <- authorize_channel_ban(socket.assigns.group_call, actor, target) do
@@ -1472,7 +1471,7 @@ defmodule RetroHexChatWeb.CallLive.Events do
   end
 
   defp kick_participant(socket, participant_id) do
-    with {participant_id, ""} <- Integer.parse(to_string(participant_id)),
+    with participant_id when is_integer(participant_id) <- Params.integer(participant_id),
          {:ok, target} <- find_participant(socket.assigns.group_call, participant_id),
          {:ok, actor} <- actor(socket),
          :ok <- remove_participant_from_channel_call(socket.assigns.group_call, actor, target) do
@@ -1796,7 +1795,7 @@ defmodule RetroHexChatWeb.CallLive.Events do
       end)
 
     active_speaker_id =
-      GroupCallShape.normalize_id(GroupCallShape.value(payload, :active_speaker_participant_id))
+      Params.integer(GroupCallShape.value(payload, :active_speaker_participant_id))
 
     active_speaker_id =
       if MapSet.member?(valid_ids, active_speaker_id), do: active_speaker_id, else: nil

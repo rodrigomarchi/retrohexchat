@@ -32,11 +32,9 @@ defmodule RetroHexChatWeb.ChatLive.Components.AdminTurnDialog do
   @spec handle_event(String.t(), map(), Phoenix.LiveView.Socket.t()) ::
           {:noreply, Phoenix.LiveView.Socket.t()}
   def handle_event("admin_turn_refresh", _params, socket) do
-    if AdminOps.admin?(socket) do
+    AdminOps.guarded(socket, fn ->
       {:noreply, assign_snapshot(socket)}
-    else
-      {:noreply, AdminOps.error_event(socket, AdminOps.restricted_message())}
-    end
+    end)
   end
 
   @spec render(map()) :: Phoenix.LiveView.Rendered.t()

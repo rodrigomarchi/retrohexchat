@@ -43,11 +43,9 @@ defmodule RetroHexChatWeb.ChatLive.Components.AdminAuditLogDialog do
   @spec handle_event(String.t(), map(), Phoenix.LiveView.Socket.t()) ::
           {:noreply, Phoenix.LiveView.Socket.t()}
   def handle_event("admin_audit_log_refresh", params, socket) do
-    if AdminOps.admin?(socket) do
+    AdminOps.guarded(socket, fn ->
       {:noreply, assign_snapshot(socket, params)}
-    else
-      {:noreply, AdminOps.error_event(socket, AdminOps.restricted_message())}
-    end
+    end)
   end
 
   @doc """

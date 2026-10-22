@@ -66,18 +66,6 @@ defmodule RetroHexChatWeb.App.GroupCallShapeTest do
     end
   end
 
-  describe "normalize_id/1" do
-    test "accepts what the browser sends as a string" do
-      assert Shape.normalize_id("42") == 42
-      assert Shape.normalize_id(42) == 42
-    end
-
-    test "refuses what is not an id" do
-      assert Shape.normalize_id("abc") == nil
-      assert Shape.normalize_id(nil) == nil
-    end
-  end
-
   describe "truthy?/1" do
     # The browser sends checkbox state as "on", a JSON payload sends true, and a
     # form sends "1". All three mean yes.
