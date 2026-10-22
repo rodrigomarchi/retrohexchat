@@ -16,6 +16,8 @@ defmodule RetroHexChatWeb.ChatLive.Components.InviteChannelPickerDialog do
   """
   use RetroHexChatWeb, :live_component
 
+  alias RetroHexChatWeb.ChatLive.Components.DialogIsland
+
   import RetroHexChatWeb.Components.UI.InviteChannelPickerDialog
 
   @id "invite-channel-picker-dialog"
@@ -41,10 +43,11 @@ defmodule RetroHexChatWeb.ChatLive.Components.InviteChannelPickerDialog do
   @impl true
   @spec update(map(), Phoenix.LiveView.Socket.t()) :: {:ok, Phoenix.LiveView.Socket.t()}
   def update(%{action: action} = assigns, socket) do
-    {:ok, socket |> assign_passthrough(assigns) |> dispatch(action)}
+    {:ok, socket |> DialogIsland.take(assigns, [:visible, :channels]) |> dispatch(action)}
   end
 
-  def update(assigns, socket), do: {:ok, assign_passthrough(socket, assigns)}
+  def update(assigns, socket),
+    do: {:ok, DialogIsland.take(socket, assigns, [:visible, :channels])}
 
   @impl true
   @spec render(map()) :: Phoenix.LiveView.Rendered.t()
@@ -63,14 +66,6 @@ defmodule RetroHexChatWeb.ChatLive.Components.InviteChannelPickerDialog do
       />
     </div>
     """
-  end
-
-  @spec assign_passthrough(Phoenix.LiveView.Socket.t(), map()) :: Phoenix.LiveView.Socket.t()
-  defp assign_passthrough(socket, assigns) do
-    assign(socket,
-      visible: Map.get(assigns, :visible, socket.assigns.visible),
-      channels: Map.get(assigns, :channels, socket.assigns.channels)
-    )
   end
 
   @spec dispatch(Phoenix.LiveView.Socket.t(), term()) :: Phoenix.LiveView.Socket.t()

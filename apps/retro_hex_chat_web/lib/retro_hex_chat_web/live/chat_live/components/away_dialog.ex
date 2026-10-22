@@ -8,6 +8,8 @@ defmodule RetroHexChatWeb.ChatLive.Components.AwayDialog do
   """
   use RetroHexChatWeb, :live_component
 
+  alias RetroHexChatWeb.ChatLive.Components.DialogIsland
+
   import RetroHexChatWeb.Components.UI.AwayDialog
 
   @id "away-dialog"
@@ -25,13 +27,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.AwayDialog do
   @impl true
   @spec update(map(), Phoenix.LiveView.Socket.t()) :: {:ok, Phoenix.LiveView.Socket.t()}
   def update(assigns, socket) do
-    {:ok,
-     assign(socket,
-       id: Map.get(assigns, :id, socket.assigns.id),
-       nickname: Map.get(assigns, :nickname, socket.assigns.nickname),
-       away: Map.get(assigns, :away, socket.assigns.away),
-       away_message: Map.get(assigns, :away_message, socket.assigns.away_message)
-     )}
+    {:ok, DialogIsland.take(socket, assigns, [:id, :nickname, :away, :away_message])}
   end
 
   @impl true

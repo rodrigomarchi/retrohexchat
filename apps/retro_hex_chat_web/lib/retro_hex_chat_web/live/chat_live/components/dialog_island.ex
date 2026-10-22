@@ -37,6 +37,13 @@ defmodule RetroHexChatWeb.ChatLive.Components.DialogIsland do
   @spec update(socket(), map()) :: {:ok, socket()}
   def update(socket, assigns), do: {:ok, assign(socket, assigns)}
 
+  @doc """
+  The socket with only `keys` taken from what the parent sent: a dialog whose
+  parent re-renders with a partial set keeps the rest as it was.
+  """
+  @spec take(socket(), map(), [atom()]) :: socket()
+  def take(socket, assigns, keys), do: assign(socket, Map.take(assigns, keys))
+
   @typedoc """
   Where a dialog's words land in the chat around it: the status bar
   (`:system`, `:error`) or the conversation, as a line (`:system_event`,

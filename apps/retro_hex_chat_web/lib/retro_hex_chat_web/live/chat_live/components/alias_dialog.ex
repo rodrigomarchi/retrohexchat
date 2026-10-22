@@ -22,6 +22,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.AliasDialog do
   import RetroHexChatWeb.Components.UI.AliasDialog
 
   alias RetroHexChat.Chat.AliasList
+  alias RetroHexChatWeb.ChatLive.Components.DialogIsland
 
   @id "alias-dialog"
 
@@ -48,10 +49,10 @@ defmodule RetroHexChatWeb.ChatLive.Components.AliasDialog do
   @impl true
   @spec update(map(), Phoenix.LiveView.Socket.t()) :: {:ok, Phoenix.LiveView.Socket.t()}
   def update(%{action: action} = assigns, socket) do
-    {:ok, socket |> assign_passthrough(assigns) |> dispatch(action)}
+    {:ok, socket |> DialogIsland.take(assigns, [:aliases]) |> dispatch(action)}
   end
 
-  def update(assigns, socket), do: {:ok, assign_passthrough(socket, assigns)}
+  def update(assigns, socket), do: {:ok, DialogIsland.take(socket, assigns, [:aliases])}
 
   @impl true
   @spec handle_event(String.t(), map(), Phoenix.LiveView.Socket.t()) ::
@@ -114,13 +115,6 @@ defmodule RetroHexChatWeb.ChatLive.Components.AliasDialog do
       />
     </div>
     """
-  end
-
-  @spec assign_passthrough(Phoenix.LiveView.Socket.t(), map()) :: Phoenix.LiveView.Socket.t()
-  defp assign_passthrough(socket, assigns) do
-    assign(socket,
-      aliases: Map.get(assigns, :aliases, socket.assigns.aliases)
-    )
   end
 
   @spec dispatch(Phoenix.LiveView.Socket.t(), term()) :: Phoenix.LiveView.Socket.t()

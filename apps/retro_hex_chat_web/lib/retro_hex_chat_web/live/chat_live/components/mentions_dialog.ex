@@ -20,6 +20,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.MentionsDialog do
   import RetroHexChatWeb.Components.UI.MentionsDialog
 
   alias RetroHexChat.Chat.Search
+  alias RetroHexChatWeb.ChatLive.Components.DialogIsland
   alias RetroHexChatWeb.ChatLive.Helpers.NickFlags
   alias RetroHexChatWeb.PaginatedList
 
@@ -51,15 +52,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.MentionsDialog do
 
   @impl true
   @spec update(map(), Phoenix.LiveView.Socket.t()) :: {:ok, Phoenix.LiveView.Socket.t()}
-  def update(assigns, socket) do
-    socket = assign(socket, assigns)
-
-    if socket.assigns.loaded? do
-      {:ok, socket}
-    else
-      {:ok, socket |> assign(loaded?: true) |> load_first_page()}
-    end
-  end
+  def update(assigns, socket), do: DialogIsland.load_once(socket, assigns, &load_first_page/1)
 
   @impl true
   @spec handle_event(String.t(), map(), Phoenix.LiveView.Socket.t()) ::
