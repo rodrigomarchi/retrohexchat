@@ -92,7 +92,11 @@ defmodule RetroHexChatWeb.PerfBudgets do
   # it replaced — the desktop's own folders, menus and dialogs arrive with the
   # chat, not with the page. The Start menu's groups are there from the first
   # paint, empty, so the menu does not rearrange itself when the chat starts.
-  def html_bytes(:home), do: 167_000
+  # Raised on 2026-10-22, when the Arcade window began listing its games under
+  # their engines, each a link to its page, as the Multiplayer window beside it
+  # lists its own: 167_369 B and 1_668 elements measured with the list, the
+  # baseline these two budgets now hold 10% above.
+  def html_bytes(:home), do: 184_000
   # The largest page of the site — `/features`, twelve windows, 167_275 B raw
   # and 1_652 elements measured on 2026-10-16 (235_526 B as a page of its own).
   # Each section is a window of its own now, with the title bar, controls and
@@ -118,7 +122,7 @@ defmodule RetroHexChatWeb.PerfBudgets do
   def dom_nodes(:space), do: 120
   def dom_nodes(:p2p), do: 270
   def dom_nodes(:join), do: 1_040
-  def dom_nodes(:home), do: 1_620
+  def dom_nodes(:home), do: 1_840
   def dom_nodes(:page), do: 1_800
   def dom_nodes(:channel), do: 640
 

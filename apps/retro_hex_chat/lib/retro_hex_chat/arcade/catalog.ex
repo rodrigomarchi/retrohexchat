@@ -297,6 +297,25 @@ defmodule RetroHexChat.Arcade.Catalog do
     }
   ]
 
+  # Each engine's own name — a proper noun, the same in every language — in
+  # the order the catalogue lists its games.
+  @engines [
+    doom: "DOOM",
+    quake: "Quake",
+    quake2: "Quake II",
+    wolfenstein: "Wolf3D",
+    halflife: "Half-Life",
+    scummvm: "ScummVM"
+  ]
+
+  @doc "Every engine, in the order the catalogue lists its games."
+  @spec engines() :: [atom()]
+  def engines, do: Keyword.keys(@engines)
+
+  @doc "An engine's own name: `:quake2` is \"Quake II\"."
+  @spec engine_name(atom()) :: String.t()
+  def engine_name(engine), do: Keyword.fetch!(@engines, engine)
+
   @spec list_games() :: [game()]
   def list_games, do: Enum.map(@games, &translate_game/1)
 

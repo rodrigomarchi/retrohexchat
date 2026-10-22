@@ -61,12 +61,7 @@ msgstr ""
 "(1996) — Hilarious Spanish point & click parodia of Dracula. Versione "
 "completa con voce MP3 recitazione."
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_arcade.html.heex:24
-#, elixir-autogen, elixir-format
-msgid ") to play."
-msgstr ") giocare."
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_arcade.html.heex:24
+#: lib/retro_hex_chat_web/controllers/help_content/feature_arcade.html.heex:36
 #, elixir-autogen, elixir-format
 msgid "/ns identify"
 msgstr "/ns identify"
@@ -198,31 +193,6 @@ msgstr "Tasti freccia / W"
 #, elixir-autogen, elixir-format
 msgid "Available Games"
 msgstr "Giochi disponibili"
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_arcade.html.heex:55
-#, elixir-autogen, elixir-format
-msgid "Available Games — DOOM Engine"
-msgstr "Giochi disponibili — Motore DOOM"
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_arcade.html.heex:33
-#, elixir-autogen, elixir-format
-msgid "Available Games — Half-Life Engine"
-msgstr "Giochi disponibili — Motore di mezza vita"
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_arcade.html.heex:100
-#, elixir-autogen, elixir-format
-msgid "Available Games — Quake Engine"
-msgstr "Giochi disponibili — Quake Engine"
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_arcade.html.heex:117
-#, elixir-autogen, elixir-format
-msgid "Available Games — Quake II Engine"
-msgstr "Giochi disponibili — Quake II Engine"
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_arcade.html.heex:44
-#, elixir-autogen, elixir-format
-msgid "Available Games — Wolf3D Engine"
-msgstr "Giochi disponibili — Wolf3D Engine"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_arcade_librequake.html.heex:75
 #, elixir-autogen, elixir-format
@@ -1133,7 +1103,7 @@ msgstr ""
 msgid "PWAD compatible"
 msgstr "Compatibile con PWAD"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_arcade.html.heex:155
+#: lib/retro_hex_chat_web/controllers/help_content/feature_arcade.html.heex:84
 #, elixir-autogen, elixir-format
 msgid "Pending sessions expire in 5 minutes. The lobby expires after 15 minutes of inactivity (with a warning at 10 minutes)."
 msgstr ""
@@ -1590,7 +1560,7 @@ msgstr "Salvare il fucile"
 msgid "ScummVM"
 msgstr "ScummV"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_arcade.html.heex:180
+#: lib/retro_hex_chat_web/controllers/help_content/feature_arcade.html.heex:109
 #: lib/retro_hex_chat_web/controllers/help_content/feature_arcade_scummvm_bass.html.heex:122
 #: lib/retro_hex_chat_web/controllers/help_content/feature_arcade_scummvm_drascula.html.heex:99
 #: lib/retro_hex_chat_web/controllers/help_content/feature_arcade_scummvm_dreamweb.html.heex:108
@@ -1619,7 +1589,7 @@ msgstr "Il fuoco secondario è la chiave"
 msgid "Secret hunt"
 msgstr "Caccia segreta"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_arcade.html.heex:160
+#: lib/retro_hex_chat_web/controllers/help_content/feature_arcade.html.heex:89
 #: lib/retro_hex_chat_web/controllers/help_content/feature_arcade_chex_quest.html.heex:102
 #: lib/retro_hex_chat_web/controllers/help_content/feature_arcade_doom.html.heex:147
 #: lib/retro_hex_chat_web/controllers/help_content/feature_arcade_doom_shareware.html.heex:112
@@ -1648,7 +1618,7 @@ msgstr "Caccia segreta"
 msgid "See Also"
 msgstr "Vedi anche"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_arcade.html.heex:153
+#: lib/retro_hex_chat_web/controllers/help_content/feature_arcade.html.heex:82
 #, elixir-autogen, elixir-format
 msgid "Session Timeouts"
 msgstr "Timeout di sessione"
@@ -1688,16 +1658,6 @@ msgstr "Semplice interfaccia"
 msgid "Social stratification"
 msgstr "Stratificazioni sociali"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_arcade_doom.html.heex:149
-#: lib/retro_hex_chat_web/controllers/help_content/feature_arcade_halflife.html.heex:104
-#: lib/retro_hex_chat_web/controllers/help_content/feature_arcade_quake.html.heex:108
-#: lib/retro_hex_chat_web/controllers/help_content/feature_arcade_quake2.html.heex:102
-#: lib/retro_hex_chat_web/controllers/help_content/feature_arcade_scummvm.html.heex:172
-#: lib/retro_hex_chat_web/controllers/help_content/feature_arcade_wolfenstein.html.heex:104
-#, elixir-autogen, elixir-format
-msgid "Solo Arcade"
-msgstr "Arcade in solitaria"
-
 #: lib/retro_hex_chat_web/controllers/help_content/feature_arcade_scummvm_soltys.html.heex:2
 #, elixir-autogen, elixir-format
 msgid "Soltys (1995) is a surreal Polish puzzle adventure by LK Avalon — rescue your grandfather from underground pirates in a charmingly absurd world of bizarre characters and dream logic."
@@ -1736,7 +1696,7 @@ msgstr "Spazio"
 msgid "Standalone IWAD"
 msgstr "IWAD standalone"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_arcade.html.heex:7
+#: lib/retro_hex_chat_web/controllers/help_content/feature_arcade.html.heex:12
 #, elixir-autogen, elixir-format
 msgid "Starting an Arcade Session"
 msgstr "Avvio di una sessione Arcade"
@@ -1795,7 +1755,7 @@ msgstr "Parla con tutti esaustivamente"
 msgid "Talk to everyone twice"
 msgstr "Parla con tutti due volte"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_arcade.html.heex:127
+#: lib/retro_hex_chat_web/controllers/help_content/feature_arcade.html.heex:56
 #, elixir-autogen, elixir-format
 msgid "Technology"
 msgstr "Tecnologia"
@@ -1831,14 +1791,6 @@ msgstr ""
 "open iwad project\". La comunità ha deciso di ricreare ogni asset in DOOM da"
 " zero — sprite, texture, suoni, musica e livelli — producendo un gioco "
 "completo e standalone che non richiede file di dati commerciali."
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_arcade.html.heex:2
-#, elixir-autogen, elixir-format
-msgid "The Solo Arcade lets you play classic FPS games directly in your browser via WebAssembly. No downloads, no plugins — the game engine runs natively in your browser."
-msgstr ""
-"Il Solo Arcade ti permette di giocare ai classici giochi FPS direttamente "
-"nel tuo browser tramite WebAssembly. Nessun download, nessun plugins — il "
-"motore di gioco funziona nativo nel tuo browser."
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_arcade_quake2.html.heex:94
 #, elixir-autogen, elixir-format
@@ -2208,25 +2160,10 @@ msgstr ""
 "id Software ha rilasciato il codice sorgente completo di Wolfenstein 3D nel "
 "1995, decennali di porte e mod sorgente."
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_arcade.html.heex:78
-#, elixir-autogen, elixir-format
-msgid "— 32 deathmatch arenas (BSD license)"
-msgstr "— 32 arene di deathmatch (autorizzazione BSD)"
-
 #: lib/retro_hex_chat_web/controllers/help_content/feature_arcade_doom.html.heex:39
 #, elixir-autogen, elixir-format
 msgid "— 32 deathmatch-focused arena maps. BSD license."
 msgstr "— 32 mappe dell'arena focalizzate sulla morte. Patente BSD."
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_arcade.html.heex:74
-#, elixir-autogen, elixir-format
-msgid "— 32 levels, Doom II compatible (BSD license)"
-msgstr "— 32 livelli, Doom II compatibile (scheda BSD)"
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_arcade.html.heex:68
-#, elixir-autogen, elixir-format
-msgid "— 36 levels of open-source DOOM (BSD license)"
-msgstr "— 36 livelli di DOOM open source ( licenza BSD)"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_arcade_doom.html.heex:63
 #, elixir-autogen, elixir-format
@@ -2416,11 +2353,6 @@ msgstr ""
 #, elixir-autogen, elixir-format
 msgid "— Crouch"
 msgstr "— Crocco"
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_arcade.html.heex:90
-#, elixir-autogen, elixir-format
-msgid "— Cyberpunk total conversion"
-msgstr "— Conversione totale Cyberpunk"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_arcade_hacx.html.heex:70
 #, elixir-autogen, elixir-format
@@ -2869,11 +2801,6 @@ msgstr ""
 msgid "— Open verb menu"
 msgstr "— Menu verbo aperto"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_arcade.html.heex:113
-#, elixir-autogen, elixir-format
-msgid "— Open-source Quake replacement (BSD license)"
-msgstr "— Sostituzione di Quake open-source (autorizzazione BSD)"
-
 #: lib/retro_hex_chat_web/controllers/help_content/feature_arcade_scummvm_bass.html.heex:57
 #: lib/retro_hex_chat_web/controllers/help_content/feature_arcade_scummvm_drascula.html.heex:45
 #: lib/retro_hex_chat_web/controllers/help_content/feature_arcade_scummvm_dreamweb.html.heex:45
@@ -3137,11 +3064,6 @@ msgstr ""
 "— I nemici di Strogg conducono i loro colpi. Continuare a muoversi "
 "lateralmente durante il fuoco per evitare danni."
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_arcade.html.heex:84
-#, elixir-autogen, elixir-format
-msgid "— The 1996 cereal box classic"
-msgstr "— il classico della scatola di cereali del 1996"
-
 #: lib/retro_hex_chat_web/controllers/help_content/feature_arcade_quake.html.heex:72
 #, elixir-autogen, elixir-format
 msgid "— The Super Nailgun is one of the most ammo-efficient weapons. Prioritize finding it."
@@ -3242,16 +3164,6 @@ msgstr ""
 "— La demo ufficiale della Valve (1999) con 3 livelli unici ambientati nei "
 "laboratori sotterranei di Black Mesa. Liberamente ridistribuibile."
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_arcade.html.heex:40
-#, elixir-autogen, elixir-format
-msgid "— The official Valve demo with 3 unique missions (1999)"
-msgstr "— La demo ufficiale della Valve con 3 missioni uniche (1999)"
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_arcade.html.heex:124
-#, elixir-autogen, elixir-format
-msgid "— The official demo (1997) — Unit 1 of the singleplayer campaign"
-msgstr "— La demo ufficiale (1997) — Unità 1 della campagna singleplayer"
-
 #: lib/retro_hex_chat_web/controllers/help_content/feature_arcade_quake2.html.heex:14
 #, elixir-autogen, elixir-format
 msgid "— The official demo (1997). Unit 1 of the singleplayer campaign — fight the Strogg invasion. Freely redistributable shareware."
@@ -3279,21 +3191,6 @@ msgid "— The original Episode 1 shareware (9 levels on Phobos). Freely redistr
 msgstr ""
 "— Il shareware originale dell'episodio 1 (9 livelli su Phobos). Liberamente "
 "ridistribuibile."
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_arcade.html.heex:62
-#, elixir-autogen, elixir-format
-msgid "— The original shareware Episode 1 (1993)"
-msgstr "— The original shareware Episodio 1 (1993)"
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_arcade.html.heex:107
-#, elixir-autogen, elixir-format
-msgid "— The original shareware Episode 1 (1996)"
-msgstr "— The original shareware Episodio 1 (1996)"
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_arcade.html.heex:51
-#, elixir-autogen, elixir-format
-msgid "— The shareware Episode 1 (1992) — the grandfather of FPS games"
-msgstr "— The shareware Episodio 1 (1992) — Il nonno dei giochi FPS"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_arcade_doom.html.heex:106
 #, elixir-autogen, elixir-format
@@ -3412,11 +3309,6 @@ msgstr ""
 msgid "— Verb menu / examine"
 msgstr "— Menù verbale / esame"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_arcade.html.heex:96
-#, elixir-autogen, elixir-format
-msgid "— Viking-themed standalone"
-msgstr "— standalone a tema vichingo"
-
 #: lib/retro_hex_chat_web/controllers/help_content/feature_arcade_hacx.html.heex:77
 #, elixir-autogen, elixir-format
 msgid "— Visually complex levels with lots of detail. Explore thoroughly for secrets."
@@ -3533,56 +3425,62 @@ msgstr ""
 "backend ufficiale Emscripten, compilato su WebAssembly (GPL-3.0). I dati del"
 " gioco vengono caricati on-demand tramite filesystem HTTP."
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_arcade.html.heex:18
+#: lib/retro_hex_chat_web/controllers/help_content/feature_arcade.html.heex:23
 #, elixir-autogen, elixir-format
 msgid "."
 msgstr "."
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_arcade.html.heex:15
+#: lib/retro_hex_chat_web/controllers/help_content/feature_arcade.html.heex:20
+#: lib/retro_hex_chat_web/controllers/help_content/feature_arcade_doom.html.heex:149
+#: lib/retro_hex_chat_web/controllers/help_content/feature_arcade_halflife.html.heex:104
+#: lib/retro_hex_chat_web/controllers/help_content/feature_arcade_quake.html.heex:108
+#: lib/retro_hex_chat_web/controllers/help_content/feature_arcade_quake2.html.heex:102
+#: lib/retro_hex_chat_web/controllers/help_content/feature_arcade_scummvm.html.heex:172
+#: lib/retro_hex_chat_web/controllers/help_content/feature_arcade_wolfenstein.html.heex:104
 #, elixir-autogen, elixir-format
 msgid "Arcade"
 msgstr "Arcade"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_arcade.html.heex:12
+#: lib/retro_hex_chat_web/controllers/help_content/feature_arcade.html.heex:17
 #, elixir-autogen, elixir-format
 msgid "Games"
 msgstr "Giochi"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_arcade.html.heex:12
+#: lib/retro_hex_chat_web/controllers/help_content/feature_arcade.html.heex:17
 #, elixir-autogen, elixir-format
 msgid "menu and choose"
 msgstr "menu e scegliere"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_arcade.html.heex:139
-#: lib/retro_hex_chat_web/controllers/help_content/feature_arcade.html.heex:142
+#: lib/retro_hex_chat_web/controllers/help_content/feature_arcade.html.heex:68
+#: lib/retro_hex_chat_web/controllers/help_content/feature_arcade.html.heex:71
 #, elixir-autogen, elixir-format
 msgid "%{engine} games are powered by"
 msgstr "I giochi %{engine} sono basati su"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_arcade.html.heex:129
-#: lib/retro_hex_chat_web/controllers/help_content/feature_arcade.html.heex:134
-#: lib/retro_hex_chat_web/controllers/help_content/feature_arcade.html.heex:145
+#: lib/retro_hex_chat_web/controllers/help_content/feature_arcade.html.heex:58
+#: lib/retro_hex_chat_web/controllers/help_content/feature_arcade.html.heex:63
+#: lib/retro_hex_chat_web/controllers/help_content/feature_arcade.html.heex:74
 #, elixir-autogen, elixir-format
 msgid "%{game} is powered by"
 msgstr "%{game} è basato su"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_arcade.html.heex:136
+#: lib/retro_hex_chat_web/controllers/help_content/feature_arcade.html.heex:65
 #, elixir-autogen, elixir-format
 msgid "(%{engine} compiled to WebAssembly via Emscripten)."
 msgstr "(%{engine} compilato in WebAssembly tramite Emscripten)."
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_arcade.html.heex:141
-#: lib/retro_hex_chat_web/controllers/help_content/feature_arcade.html.heex:144
+#: lib/retro_hex_chat_web/controllers/help_content/feature_arcade.html.heex:70
+#: lib/retro_hex_chat_web/controllers/help_content/feature_arcade.html.heex:73
 #, elixir-autogen, elixir-format
 msgid "(%{engine} compiled to WebAssembly)."
 msgstr "(%{engine} compilato in WebAssembly)."
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_arcade.html.heex:147
+#: lib/retro_hex_chat_web/controllers/help_content/feature_arcade.html.heex:76
 #, elixir-autogen, elixir-format
 msgid "(%{engine} compiled to WebAssembly). All support keyboard, mouse, and gamepad input."
 msgstr "(%{engine} compilato in WebAssembly). Tutti supportano tastiera, mouse e gamepad."
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_arcade.html.heex:131
+#: lib/retro_hex_chat_web/controllers/help_content/feature_arcade.html.heex:60
 #, elixir-autogen, elixir-format
 msgid "(%{engine} reimplementation compiled to WebAssembly)."
 msgstr "(reimplementazione di %{engine} compilata in WebAssembly)."
@@ -3592,17 +3490,47 @@ msgstr "(reimplementazione di %{engine} compilata in WebAssembly)."
 msgid "ScummVM (Script Creation Utility for Maniac Mansion Virtual Machine) began in 2001 as a project to run LucasArts adventure games on modern systems. It has since grown to support over 300 games across dozens of engines, from Sierra's AGI/SCI to Revolution Software's Virtual Theatre. The games available here — from %{first_game} to %{last_game} — represent the golden age of point & click adventures (1992–1996)."
 msgstr "ScummVM (Script Creation Utility for Maniac Mansion Virtual Machine) è nato nel 2001 come progetto per eseguire le avventure LucasArts sui sistemi moderni. Da allora è cresciuto fino a supportare oltre 300 giochi su decine di engine, dall'AGI/SCI di Sierra al Virtual Theatre di Revolution Software. I giochi disponibili qui — da %{first_game} a %{last_game} — rappresentano l'età d'oro delle avventure punta e clicca (1992–1996)."
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_arcade.html.heex:21
-#, elixir-autogen, elixir-format
-msgid "A window opens right on the chat desktop with game icons. Choose an icon to review the game details, then press Start Game, which opens the game in a browser tab of its own. You must be registered and identified ("
-msgstr "Una finestra si apre proprio sul desktop della chat con le icone dei giochi. Scegli un'icona per rivedere i dettagli del gioco, poi premi Avvia gioco, che apre il gioco in una scheda del browser tutta sua. Devi essere registrato e identificato ("
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_arcade.html.heex:27
-#, elixir-autogen, elixir-format
-msgid "The game's tab is yours, not the chat's: closing it does not end the session, and the chat cannot close it for you. While a game is running, Open the game tab brings the address back if you closed it, Back returns to the icon launcher, and End Session finishes the session — as does leaving it alone for a while."
-msgstr "La scheda del gioco è tua, non della chat: chiuderla non chiude la sessione, e la chat non può chiuderla al posto tuo. Mentre un gioco è in corso, Apri la scheda del gioco riporta l'indirizzo se l'hai chiusa, Indietro torna al lanciatore di icone, e Termina sessione chiude la sessione — come fa anche lasciarla in pace per un po'."
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_arcade.html.heex:9
+#: lib/retro_hex_chat_web/controllers/help_content/feature_arcade.html.heex:14
 #, elixir-autogen, elixir-format
 msgid "Double-click the Arcade desktop icon, or open the "
 msgstr "Fai doppio clic sull'icona Arcade del desktop, oppure apri il "
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_arcade.html.heex:30
+#, elixir-autogen, elixir-format
+msgid "Then press %{play}, which opens the game in a browser tab of its own."
+msgstr "Quindi premere %{play}, che apre il gioco in una scheda del browser propria."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_arcade.html.heex:35
+#, elixir-autogen, elixir-format
+msgid "To play, you must be registered and identified:"
+msgstr "Per giocare, devi essere registrato e identificato:"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_arcade.html.heex:26
+#, elixir-autogen, elixir-format
+msgid "A window opens right on the chat desktop with every game, grouped by engine as in the catalogue on the site. Choose one to see its details: a screenshot, the keyboard controls and tips, as on its page."
+msgstr "Una finestra si apre proprio sul desktop di chat con ogni gioco, raggruppato per motore come nel catalogo sul sito. Scegli uno per vedere i suoi dettagli: uno screenshot, la tastiera controlla e suggerimenti, come nella sua pagina."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_arcade.html.heex:49
+#, elixir-autogen, elixir-format
+msgid "%{end_session} finishes the session, and so does leaving it alone for a while."
+msgstr "%{end_session} termina la sessione, e così lo lascia da solo per un po '."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_arcade.html.heex:39
+#, elixir-autogen, elixir-format
+msgid "The game's tab is yours, not the chat's: closing it does not end the session, and the chat cannot close it for you."
+msgstr "La scheda del gioco è tua, non la chat: chiuderla non termina la sessione, e la chat non può chiuderla per te."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_arcade.html.heex:43
+#, elixir-autogen, elixir-format
+msgid "While a game is running, %{open_tab} brings the address back if you closed it and %{back} returns to the list of games."
+msgstr "Mentre un gioco è in esecuzione, %{open_tab} riporta l'indirizzo indietro se lo hai chiuso e %{back} ritorna alla lista dei giochi."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_arcade.html.heex:2
+#, elixir-autogen, elixir-format
+msgid "%{arcade} runs classic action games and adventures directly in your browser via WebAssembly."
+msgstr "%{arcade} esegue giochi d'azione classici e avventure direttamente nel browser tramite WebAssembly."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_arcade.html.heex:7
+#, elixir-autogen, elixir-format
+msgid "No downloads, no plugins: the game engine runs natively in your browser."
+msgstr "Nessun download, nessun plugin: il motore di gioco funziona in modo nativo nel tuo browser."

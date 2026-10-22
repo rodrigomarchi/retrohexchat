@@ -363,6 +363,10 @@ defmodule RetroHexChatWeb.ChatLive.Visitor do
     )
   end
 
+  # The arcade asks for an account and, once there is one, opens.
+  defp gate("open_arcade", _params, socket),
+    do: {:halt, ask_to_sign_in(socket, :games, Paths.chat_arcade_path())}
+
   # A link of ours names where it led: signing in lands there.
   defp gate("visitor_link", %{"path" => path} = params, socket),
     do: {:halt, ask_to_sign_in(socket, feature_of("visitor_link", params), path)}
@@ -379,7 +383,6 @@ defmodule RetroHexChatWeb.ChatLive.Visitor do
   defp feature_of("visitor_sign_in", _params), do: :chat
   defp feature_of("visitor_link", %{"feature" => feature}), do: feature_named(feature)
   defp feature_of(event, _params) when event in ~w(visitor_link confirm_open_tab), do: :links
-  defp feature_of("open_arcade", _params), do: :games
   defp feature_of("arcade_" <> _rest, _params), do: :games
   defp feature_of("game_" <> _rest, _params), do: :games
   defp feature_of("p2p_" <> _rest, _params), do: :p2p

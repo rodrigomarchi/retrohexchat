@@ -52,3 +52,76 @@ test("a game's public page signs a reader in and lands them on the game (PW22)",
   await expect(page).toHaveURL(/\/play\/hex_tennis$/, { timeout: 15000 });
   await expect(page.getByRole("button", { name: "Play vs AI" })).toBeVisible();
 });
+
+test("an arcade game's page is the same sheet the in-app Arcade shows (PW22)", async ({
+  page,
+}) => {
+  await page.goto("/games/freedoom1");
+  await expect(page.locator("#game-heading")).toHaveText("Freedoom: Phase 1");
+
+  // The screenshot, what the game is, every key and the tips — before any
+  // nickname, exactly as the Arcade window shows them after one.
+  const sheet = page.locator('[data-testid="site-window-game"]');
+  await expect(sheet.locator('img[src*="freedoom1"]')).toBeVisible();
+  await expect(
+    sheet.getByTestId("game-controls").locator("kbd").first(),
+  ).toBeVisible();
+  await expect(sheet).toContainText(
+    "Freedoom serves both as a standalone game",
+  );
+  await expect(sheet.getByTestId("game-play")).toBeVisible();
+  await expect(sheet.getByTestId("game-how-to-play")).toBeVisible();
+  await shot(page, "arcade-game-page");
+
+  await page.setViewportSize({ width: 390, height: 844 });
+  await expect(sheet.getByTestId("game-play")).toBeVisible();
+  await shot(page, "arcade-game-page-phone");
+  await sheet.getByTestId("game-controls").scrollIntoViewIfNeeded();
+  await shot(page, "arcade-game-page-phone-keys");
+});
+
+test("the arcade is listed under its engines on every page that lists it (PW22)", async ({
+  page,
+}) => {
+  await page.goto("/games");
+  await bringForward(page, "site-arcade");
+  const arcade = page.getByTestId("site-window-arcade");
+  await expect(arcade.getByTestId("game-group-scummvm")).toBeVisible();
+  await expect(arcade.getByTestId("game-card-scummvm-bass")).toBeVisible();
+  await shot(page, "games-catalogue-arcade");
+
+  await page.goto("/features");
+  await bringForward(page, "site-solo-arcade");
+  const summary = page.getByTestId("site-window-solo-arcade");
+  await expect(summary.getByTestId("arcade-link-freedoom1")).toBeVisible();
+  await shot(summary, "features-arcade");
+
+  // The home's windows wait closed behind the chat; the list is there all
+  // the same, every game under its engine.
+  await page.goto("/");
+  await expect(
+    page
+      .getByTestId("index-arcade-games")
+      .locator('[data-testid^="arcade-link-"]'),
+  ).toHaveCount(18);
+
+  // The help lists the same games, from the same catalogue, each opening
+  // its page.
+  await page.goto("/chat/help/feature-arcade");
+  const help = page.getByTestId("help-games-scummvm");
+  await help.scrollIntoViewIfNeeded();
+  await expect(help.locator('a[href="/games/scummvm-bass"]')).toBeVisible();
+  await shot(page, "help-arcade-games");
+  await page.goto("/chat/help/feature-retro-games");
+  await expect(
+    page
+      .getByTestId("help-games-multiplayer")
+      .locator('a[href="/games/hex-tennis"]'),
+  ).toBeVisible();
+  await shot(page, "help-retro-games");
+
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.goto("/games");
+  await bringForward(page, "site-arcade");
+  await shot(page, "games-catalogue-arcade-phone");
+});

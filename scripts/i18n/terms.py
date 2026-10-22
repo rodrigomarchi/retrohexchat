@@ -160,8 +160,10 @@ _TERMS: dict[str, dict[str, tuple[str, ...]]] = {
     # Signing in to an account that exists: German gave "Registrieren", which
     # is creating one.
     r"\bsign(?:s|ed|ing)? in\b": {
-        "de": ("anmeld", "einlogg"),
-        "nl": ("aanmeld", "inlog"),
+        # The separable verbs split around "zu" / "te" in an infinitive:
+        # "sich zuerst anzumelden", "om je eerst aan te melden".
+        "de": ("anmeld", "anzumeld", "einlogg"),
+        "nl": ("aanmeld", "aan te meld", "inlog"),
         "pl": ("zaloguj", "logow"),
     },
     # The Construct's pieces, measured on their help and their panels: a
@@ -294,6 +296,40 @@ _TERMS: dict[str, dict[str, tuple[str, ...]]] = {
         "zh_hans": ("玩", "对战"),
         "zh_hant": ("玩", "對戰"),
     },
+    # The Arcade is the window's name. Spanish made it an arch ("Arcada") and
+    # Chinese an archway ("拱门"), German dropped it from "Arcade flow diagram".
+    r"\bArcade\b": {
+        "pt": ("arcade",),
+        "es": ("arcade",),
+        "fr": ("arcade",),
+        "de": ("arcade",),
+        "it": ("arcade",),
+        "nl": ("arcade",),
+        "pl": ("arcade",),
+        "ru": ("аркад",),
+        "id": ("arcade",),
+        "ja": ("アーケード",),
+        "zh_hans": ("街机",),
+        "zh_hant": ("街機",),
+    },
+    # A shooter is a game: Portuguese gave "atiradores", the people shooting.
+    r"\bshooters?\b": {
+        "pt": ("tiro", "shooter"),
+        "es": ("disparo", "tiro", "shooter"),
+        "fr": ("tir", "shooter"),
+        "de": ("shooter",),
+        "it": ("sparatutto", "shooter"),
+    },
+    # Looking a game over, never a critic's review: Spanish gave "reseña",
+    # Russian "обзор".
+    r"\breview details\b": {
+        "es": ("revis",),
+        "ru": ("просмотр", "изуч", "ознаком"),
+    },
+    # Advice, not the ends of things: Spanish gave "las puntas".
+    r"\btips\b": {
+        "es": ("consejo",),
+    },
     r"\bnew tab\b": {
         "pt": ("aba", "separador", "guia"),
         "es": ("pestaña",),
@@ -400,6 +436,23 @@ _FOREIGN_FORMS: dict[str, tuple[str, ...]] = {
         # Measured on the game channels' help: "e pára com", the stopping verb
         # with the accent Brazil dropped in the 2009 agreement.
         "pára",
+        # Measured on the Arcade's help: the European enclitics of "permits
+        # you" and "opens it", Portugal's verb for sharing, its window
+        # manager, and the subjunctive of reviewing ("Reveja") where Brazil
+        # writes "Revise".
+        "permite-lhe",
+        "abre-o",
+        "abre-a",
+        "partilhar",
+        "partilha",
+        "partilham",
+        "gestor de janelas",
+        "reveja",
+        # And on the Start menu's help: "pede-lhe para iniciar sessão quando
+        # o seu não está registado".
+        "pede-lhe",
+        "registado",
+        "registada",
     ),
 }
 

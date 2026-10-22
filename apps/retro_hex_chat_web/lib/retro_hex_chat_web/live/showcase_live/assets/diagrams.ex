@@ -46,13 +46,12 @@ defmodule RetroHexChatWeb.ShowcaseLive.Assets.Diagrams do
       {dgettext("showcase", "Voice"), dgettext("showcase", "Voice/video call mockups"),
        &String.starts_with?(&1, "diagram_voice_")},
       {dgettext("showcase", "Game Flows"),
-       dgettext("showcase", "P2P multiplayer and solo arcade flow"),
+       dgettext("showcase", "P2P multiplayer and arcade flow"),
        &(&1 in ["diagram_p2p_games", "diagram_arcade_flow"])},
       {dgettext("showcase", "Game Screens"),
        dgettext("showcase", "Win98-style game screen illustrations"),
        &String.starts_with?(&1, "diagram_game_")},
-      {dgettext("showcase", "Arcade Logos"),
-       dgettext("showcase", "Solo Arcade game logos/cover art"),
+      {dgettext("showcase", "Arcade Logos"), dgettext("showcase", "Arcade game logos/cover art"),
        &(String.starts_with?(&1, "diagram_arcade_") and &1 != "diagram_arcade_flow")}
     ]
 

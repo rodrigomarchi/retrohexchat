@@ -46,8 +46,8 @@ defmodule I18nMarkStaticDataNoop do
     "P2P & Calls",
     "P2P Games: Action",
     "P2P Games: Sports",
-    "Solo Arcade: FPS",
-    "Solo Arcade: Adventures"
+    "Arcade: FPS",
+    "Arcade: Adventures"
   ]
 
   def run do

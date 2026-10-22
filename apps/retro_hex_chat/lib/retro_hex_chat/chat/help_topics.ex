@@ -61,8 +61,8 @@ defmodule RetroHexChat.Chat.HelpTopics do
     dgettext_noop("help", "Retro Games") => :icon_game_pong,
     dgettext_noop("help", "P2P Games: Action") => :icon_game_generic,
     dgettext_noop("help", "P2P Games: Sports") => :icon_game_tennis,
-    dgettext_noop("help", "Solo Arcade: FPS") => :icon_game_arcade,
-    dgettext_noop("help", "Solo Arcade: Adventures") => :icon_game_bass
+    dgettext_noop("help", "Arcade: FPS") => :icon_game_arcade,
+    dgettext_noop("help", "Arcade: Adventures") => :icon_game_bass
   }
 
   @categories [
@@ -91,8 +91,8 @@ defmodule RetroHexChat.Chat.HelpTopics do
     dgettext_noop("help", "Retro Games"),
     dgettext_noop("help", "P2P Games: Action"),
     dgettext_noop("help", "P2P Games: Sports"),
-    dgettext_noop("help", "Solo Arcade: FPS"),
-    dgettext_noop("help", "Solo Arcade: Adventures")
+    dgettext_noop("help", "Arcade: FPS"),
+    dgettext_noop("help", "Arcade: Adventures")
   ]
 
   @doc "Return all help topics."

@@ -59,9 +59,12 @@ defmodule RetroHexChatWeb.App.Paths do
   def visitor_sign_in_path(feature, return_to) when is_atom(feature) and is_binary(return_to),
     do: localized(~p"/connect?#{[signup: feature, return_to: return_to]}")
 
-  @doc "The desktop with the solo arcade open on one game, by its catalogue id."
+  @doc """
+  The desktop with the arcade open on one game, by its catalogue id — or,
+  with no id, on its catalogue.
+  """
   @spec chat_arcade_path(String.t()) :: String.t()
-  def chat_arcade_path(game_id), do: localized(~p"/?arcade=#{game_id}")
+  def chat_arcade_path(game_id \\ ""), do: localized(~p"/?arcade=#{game_id}")
 
   @doc "`path` in the language of the current reader."
   @spec localized(String.t()) :: String.t()

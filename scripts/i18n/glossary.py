@@ -83,6 +83,13 @@ _ROWS = {
     "More games":   ("Mais jogos", "Mais jogos", "Más juegos", "Plus de jeux", "Weitere Spiele", "Altri giochi", "Meer spellen", "Więcej gier", "Ещё игры", "Game lainnya", "その他のゲーム", "更多游戏", "更多遊戲"),
     "How to play":  ("Como jogar", "Como jogar", "Cómo jugar", "Comment jouer", "So wird gespielt", "Come si gioca", "Zo speel je", "Jak grać", "Как играть", "Cara bermain", "遊び方", "玩法", "玩法"),
     "Solo arcade":  ("Arcade solo", "Arcade a solo", "Arcade en solitario", "Arcade en solo", "Solo-Arcade", "Arcade in solitaria", "Solo-arcade", "Arcade solo", "Одиночная аркада", "Arkade solo", "ソロアーケード", "单人街机", "單人街機"),
+    # The Arcade's help categories, its diagram and its heading: "Arcade" is
+    # the window's name, never an arch ("Arcada", "拱门").
+    "Arcade: FPS":  ("Arcade: FPS", "Arcade: FPS", "Arcade: FPS", "Arcade : FPS", "Arcade: FPS", "Arcade: FPS", "Arcade: FPS", "Arcade: FPS", "Аркада: FPS", "Arcade: FPS", "アーケード: FPS", "街机：FPS", "街機：FPS"),
+    "Arcade: Adventures": ("Arcade: Aventuras", "Arcade: Aventuras", "Arcade: Aventuras", "Arcade : Aventures", "Arcade: Abenteuer", "Arcade: Avventure", "Arcade: Avonturen", "Arcade: Przygody", "Аркада: Приключения", "Arcade: Petualangan", "アーケード: アドベンチャー", "街机：冒险", "街機：冒險"),
+    "Arcade flow diagram": ("Diagrama do fluxo do Arcade", "Diagrama do fluxo do Arcade", "Diagrama del flujo del Arcade", "Diagramme du parcours de l'Arcade", "Ablaufdiagramm des Arcade", "Diagramma del flusso dell'Arcade", "Stroomdiagram van de Arcade", "Schemat działania Arcade", "Схема работы Аркады", "Diagram alur Arcade", "アーケードの流れ図", "街机流程图", "街機流程圖"),
+    "Arcade - Pick a Game": ("Arcade - Escolha um jogo", "Arcade - Escolha um jogo", "Arcade - Elige un juego", "Arcade - Choisissez un jeu", "Arcade - Spiel auswählen", "Arcade - Scegli un gioco", "Arcade - Kies een spel", "Arcade - Wybierz grę", "Аркада - выберите игру", "Arcade - Pilih game", "アーケード - ゲームを選ぶ", "街机 - 选择游戏", "街機 - 選擇遊戲"),
+    "Available Games": ("Jogos disponíveis", "Jogos disponíveis", "Juegos disponibles", "Jeux disponibles", "Verfügbare Spiele", "Giochi disponibili", "Beschikbare spellen", "Dostępne gry", "Доступные игры", "Game yang tersedia", "遊べるゲーム", "可玩的游戏", "可玩的遊戲"),
     "Controls":     ("Controles", "Controlos", "Controles", "Commandes", "Steuerung", "Comandi", "Besturing", "Sterowanie", "Управление", "Kontrol", "操作", "控制", "控制"),
     "Modes":        ("Modos", "Modos", "Modos", "Modes", "Moden", "Modalità", "Modi", "Tryby", "Режимы", "Mode", "モード", "模式", "模式"),
 

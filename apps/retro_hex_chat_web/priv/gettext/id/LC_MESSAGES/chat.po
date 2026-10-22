@@ -1381,7 +1381,7 @@ msgstr "Tinggalkan Kanal"
 #: lib/retro_hex_chat_web/live/chat_live/command_dispatch.ex:479
 #: lib/retro_hex_chat_web/live/chat_live/helpers/session.ex:594
 #: lib/retro_hex_chat_web/live/chat_live/menu_toolbar_events.ex:90
-#: lib/retro_hex_chat_web/live/desktop_live.ex:377
+#: lib/retro_hex_chat_web/live/desktop_live.ex:382
 #, elixir-autogen, elixir-format
 msgid "Leaving"
 msgstr "Meninggalkan"
@@ -1870,7 +1870,7 @@ msgstr "Status"
 msgid "Symbols"
 msgstr "Simbol"
 
-#: lib/retro_hex_chat_web/components/ui/chat/chat_taskbar.ex:291
+#: lib/retro_hex_chat_web/components/ui/chat/chat_taskbar.ex:285
 #: lib/retro_hex_chat_web/components/ui/chat/message_row.ex:74
 #: lib/retro_hex_chat_web/components/ui/chat/message_row.ex:170
 #: lib/retro_hex_chat_web/live/chat_live/components/status_viewport.ex:104
@@ -2405,7 +2405,7 @@ msgstr "* Saluran undangan hilang"
 msgid "* Missing invite target"
 msgstr "* Hilang target undangan"
 
-#: lib/retro_hex_chat_web/components/ui/chat/chat_taskbar.ex:292
+#: lib/retro_hex_chat_web/components/ui/chat/chat_taskbar.ex:286
 #: lib/retro_hex_chat_web/live/chat_live/window_registry.ex:294
 #, elixir-autogen, elixir-format
 msgid "Account"
@@ -2452,7 +2452,7 @@ msgstr "Batalkan pemberitahuan"
 msgid "Channel Central"
 msgstr "Pusat Saluran"
 
-#: lib/retro_hex_chat_web/live/desktop_live.html.heex:787
+#: lib/retro_hex_chat_web/live/desktop_live.html.heex:786
 #, elixir-autogen, elixir-format
 msgid "Channel Central: %{channel}"
 msgstr "Pusat Kanal: %{channel}"
@@ -2918,7 +2918,7 @@ msgstr "%{peer} meninggalkan sesi P2P."
 msgid "%{peer} lost the P2P connection — waiting for them to return..."
 msgstr "%{peer} kehilangan koneksi P2P - menunggu mereka kembali..."
 
-#: lib/retro_hex_chat_web/live/chat_live/arcade_session_events.ex:350
+#: lib/retro_hex_chat_web/live/chat_live/arcade_session_events.ex:334
 #, elixir-autogen, elixir-format
 msgid "Arcade session ended."
 msgstr "Sesi arkade berakhir."
@@ -2943,7 +2943,7 @@ msgstr "Tidak bisa memuat permainan. Tolong coba lagi."
 msgid "Could not start the P2P invite."
 msgstr "Tak bisa memulai undangan P2P."
 
-#: lib/retro_hex_chat_web/live/chat_live/arcade_session_events.ex:255
+#: lib/retro_hex_chat_web/live/chat_live/arcade_session_events.ex:257
 #, elixir-autogen, elixir-format
 msgid "Could not start the arcade session. Please try again."
 msgstr "Tidak dapat memulai sesi arcade. Tolong coba lagi."
@@ -3089,13 +3089,6 @@ msgstr "Jungkitkan Mikrofon P2P"
 #, elixir-autogen, elixir-format
 msgid "Toggle P2P Screen Share"
 msgstr "Jungkitkan Berbagi Layar P2P"
-
-#: lib/retro_hex_chat_web/live/chat_live/arcade_session_events.ex:228
-#, elixir-autogen, elixir-format
-msgid "You must be registered and identified to play. Use /ns register and /ns identify first."
-msgstr ""
-"Anda harus terdaftar dan diidentifikasi untuk bermain. Gunakan /ns register "
-"dan /ns identifikasi pertama."
 
 #: lib/retro_hex_chat_web/live/p2p_live/events.ex:1649
 #, elixir-autogen, elixir-format
@@ -3279,17 +3272,17 @@ msgstr "Abaikan Daftar"
 msgid "Nick Colors"
 msgstr "Warna Nick"
 
-#: lib/retro_hex_chat_web/components/ui/chat/chat_taskbar.ex:290
+#: lib/retro_hex_chat_web/components/ui/chat/chat_taskbar.ex:284
 #, elixir-autogen, elixir-format
 msgid "Admin"
 msgstr "Admin"
 
-#: lib/retro_hex_chat_web/components/ui/chat/chat_taskbar.ex:293
+#: lib/retro_hex_chat_web/components/ui/chat/chat_taskbar.ex:287
 #, elixir-autogen, elixir-format
 msgid "Contacts"
 msgstr "Kontak"
 
-#: lib/retro_hex_chat_web/components/ui/chat/chat_taskbar.ex:294
+#: lib/retro_hex_chat_web/components/ui/chat/chat_taskbar.ex:288
 #, elixir-autogen, elixir-format
 msgid "On Connect"
 msgstr "Menyambung"
@@ -3647,9 +3640,9 @@ msgid "Strikethrough"
 msgstr "Coret"
 
 #: lib/retro_hex_chat_web/components/ui/chat/formatting_toolbar.ex:342
-#: lib/retro_hex_chat_web/components/ui/shell/desktop_launchers.ex:513
+#: lib/retro_hex_chat_web/components/ui/shell/desktop_launchers.ex:509
 #: lib/retro_hex_chat_web/components/ui/shell/menu_bar_app.ex:338
-#: lib/retro_hex_chat_web/components/ui/shell/start_menu_app.ex:144
+#: lib/retro_hex_chat_web/components/ui/shell/start_menu_app.ex:140
 #, elixir-autogen, elixir-format
 msgid "Strip Formatting"
 msgstr "Hapus format"
@@ -3766,7 +3759,7 @@ msgstr "Gambar mini tidak dapat dimuat"
 msgid "Thumbnail is being prepared"
 msgstr "Gambar mini sedang disiapkan"
 
-#: lib/retro_hex_chat_web/components/ui/chat/chat_taskbar.ex:228
+#: lib/retro_hex_chat_web/components/ui/chat/chat_taskbar.ex:222
 #, elixir-autogen, elixir-format
 msgid "Round-trip to the server"
 msgstr "Waktu pulang pergi ke server"
@@ -4117,7 +4110,7 @@ msgid "Where"
 msgstr "Di mana"
 
 #: lib/retro_hex_chat_web/components/ui/shell/menu_bar_app.ex:346
-#: lib/retro_hex_chat_web/components/ui/shell/start_menu_app.ex:151
+#: lib/retro_hex_chat_web/components/ui/shell/start_menu_app.ex:147
 #, elixir-autogen, elixir-format
 msgid "Character Portraits"
 msgstr "Potret karakter"

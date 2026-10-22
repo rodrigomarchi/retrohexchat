@@ -3,19 +3,25 @@ defmodule RetroHexChatWeb.Site.Pages.Features do
   use RetroHexChatWeb.Site.Page
 
   import RetroHexChatWeb.Components.Diagrams
-  import RetroHexChatWeb.Components.UI.Landing.GameCards, only: [catalogue_link: 1]
+
+  import RetroHexChatWeb.Components.UI.Landing.GameCards,
+    only: [arcade_game_links: 1, catalogue_link: 1]
 
   alias RetroHexChatWeb.Endpoint
+  alias RetroHexChatWeb.GameCatalog
   alias RetroHexChatWeb.Icons
   alias RetroHexChatWeb.PublicPages
   alias RetroHexChatWeb.SEO
 
   @impl RetroHexChatWeb.Site.Page
   def load(_params, _ctx) do
+    arcade_count = length(GameCatalog.list(:arcade))
+
     {:ok,
      %{
        active_page: :features,
        catalogue_path: PublicPages.localized_path("/games"),
+       arcade: GameCatalog.arcade_cards(),
        mirc_commands_path: PublicPages.localized_path(PublicPages.path(:mirc_commands)),
        windows: [
          Window.new("intro", dgettext("landing", "Retro Hex Chat Features"), :icon_chat,
@@ -69,10 +75,15 @@ defmodule RetroHexChatWeb.Site.Pages.Features do
            body: &multiplayer_games/1,
            status: [{:check, dgettext("landing", "34 games")}]
          ),
-         Window.new("solo-arcade", dgettext("landing", "Solo Arcade"), :icon_game_arcade,
+         Window.new("solo-arcade", dgettext("landing", "Arcade"), :icon_game_arcade,
            width: 460,
            body: &solo_arcade/1,
-           status: [{:check, dgettext("landing", "18 games")}]
+           status: [
+             {:check,
+              dngettext("landing", "%{count} game", "%{count} games", arcade_count,
+                count: arcade_count
+              )}
+           ]
          ),
          Window.new("bots", dgettext("landing", "Bots"), :icon_robot,
            width: 460,
@@ -106,7 +117,7 @@ defmodule RetroHexChatWeb.Site.Pages.Features do
        page_description:
          dgettext(
            "landing",
-           "Explore real-time channels, Spaces, private P2P calls, channel conferences, 34 multiplayer games, 18 arcade games, bots, commands, and help."
+           "Explore real-time channels, Spaces, private P2P calls, channel conferences, 34 multiplayer games, classic arcade games, bots, commands, and help."
          )
      }}
   end

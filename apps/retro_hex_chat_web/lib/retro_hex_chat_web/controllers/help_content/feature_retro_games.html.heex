@@ -1,17 +1,5 @@
-<p>
-  {dgettext(
-    "help_games",
-    "Retro Games are browser-native RetroHexChat games you play without a peer session. Hex Pong, Light Trails, Star Duel variants, Block Breakers, Hex Warlords, Hex Raid variants, Hex Outlaw variants, Hex Tennis variants, Hex Invaders variants, Hex Enduro variants, Hex Skiing variants, Hex Frost variants, and Hex Hockey variants use the same game engine foundation as P2P play with an AI controller on the remote side."
-  )}
-  {dgettext(
-    "help_games",
-    "Hex Boxing also runs there with an AI boxer on the remote side."
-  )}
-  {dgettext(
-    "help_games",
-    "Pixel Tanks also runs there with an AI tank on the remote side."
-  )}
-</p>
+<.help_h4 icon={:icon_joystick}>{dgettext("help_games", "Available Games")}</.help_h4>
+<.help_game_list kind={:multiplayer} />
 
 <.help_h4 icon={:icon_game_pong}>{dgettext("help_games", "How to Open a Game")}</.help_h4>
 <ul>
@@ -152,24 +140,7 @@
 
 <.help_h4 icon={:icon_link}>{dgettext("help_games", "See Also")}</.help_h4>
 <p>
-  <.help_link topic="feature-hex-pong">{dgettext("help_games", "Hex Pong")}</.help_link>
-  · <.help_link topic="feature-pixel-tanks">{dgettext("help_games", "Pixel Tanks")}</.help_link>
-  · <.help_link topic="feature-star-duel">{dgettext("help_games", "Star Duel")}</.help_link>
-  ·
-  <.help_link topic="feature-block-breakers">
-    {dgettext("help_games", "Block Breakers")}
-  </.help_link>
-  · <.help_link topic="feature-hex-warlords">{dgettext("help_games", "Hex Warlords")}</.help_link>
-  · <.help_link topic="feature-hex-raid">{dgettext("help_games", "Hex Raid")}</.help_link>
-  · <.help_link topic="feature-hex-boxing">{dgettext("help_games", "Hex Boxing")}</.help_link>
-  · <.help_link topic="feature-hex-outlaw">{dgettext("help_games", "Hex Outlaw")}</.help_link>
-  · <.help_link topic="feature-hex-tennis">{dgettext("help_games", "Hex Tennis")}</.help_link>
-  · <.help_link topic="feature-hex-invaders">{dgettext("help_games", "Hex Invaders")}</.help_link>
-  · <.help_link topic="feature-hex-enduro">{dgettext("help_games", "Hex Enduro")}</.help_link>
-  · <.help_link topic="feature-hex-skiing">{dgettext("help_games", "Hex Skiing")}</.help_link>
-  · <.help_link topic="feature-hex-frost">{dgettext("help_games", "Hex Frost")}</.help_link>
-  · <.help_link topic="feature-hex-hockey">{dgettext("help_games", "Hex Hockey")}</.help_link>
-  · <.help_link topic="feature-arcade">{dgettext("help_games", "Solo Arcade")}</.help_link>
+  <.help_link topic="feature-arcade">{dgettext("help_games", "Arcade")}</.help_link>
   ·
   <.help_link topic="feature-universal-lobby">
     {dgettext("help_games", "P2P Session")}

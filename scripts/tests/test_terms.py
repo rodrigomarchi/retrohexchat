@@ -147,6 +147,38 @@ class MissingTermsTest(unittest.TestCase):
         self.assertTrue(missing_terms(source, "Registrieren oder ein Konto erstellen", "de"))
         self.assertEqual(missing_terms(source, "Anmelden oder ein Konto erstellen", "de"), [])
 
+    # Measured on the Arcade's strings.
+    def test_the_arcade_is_the_windows_name_not_an_arch(self):
+        self.assertTrue(missing_terms("Arcade: Adventures", "Arcada: Aventuras", "es"))
+        self.assertTrue(missing_terms("Arcade: FPS", "拱门:FPS", "zh_hans"))
+        self.assertTrue(missing_terms("Arcade flow diagram", "Ablaufdiagramm", "de"))
+        self.assertEqual(missing_terms("Arcade: FPS", "街机：FPS", "zh_hans"), [])
+        self.assertEqual(missing_terms("Arcade: FPS", "Аркада: FPS", "ru"), [])
+
+    def test_a_shooter_is_a_game_not_a_marksman(self):
+        source = "The Arcade lets you play classic shooters and adventures."
+        self.assertTrue(missing_terms(source, "O Arcade permite jogar atiradores clássicos.", "pt_BR"))
+        self.assertEqual(
+            missing_terms(source, "O Arcade permite jogar clássicos de tiro e aventuras.", "pt_BR"),
+            [],
+        )
+
+    def test_reviewing_details_is_not_a_critics_review(self):
+        source = "Review details, then press %{play}"
+        self.assertTrue(missing_terms(source, "Detalles de la reseña, luego presione %{play}", "es"))
+        self.assertTrue(missing_terms(source, "Подробности обзора, затем нажмите %{play}", "ru"))
+        self.assertEqual(missing_terms(source, "Revise los detalles y pulse %{play}", "es"), [])
+
+    def test_tips_are_advice_not_ends(self):
+        self.assertTrue(missing_terms("its keyboard controls and tips", "sus controles y las puntas", "es"))
+        self.assertEqual(missing_terms("its keyboard controls and tips", "sus controles y consejos", "es"), [])
+
+    def test_a_separable_sign_in_verb_still_signs_in(self):
+        source = "so it asks you to sign in first"
+        self.assertEqual(missing_terms(source, "so dass es Sie bittet, sich zuerst anzumelden", "de"), [])
+        self.assertEqual(missing_terms(source, "dus vraagt het je om je eerst aan te melden", "nl"), [])
+        self.assertTrue(missing_terms(source, "więc prosi o wpisanie się najpierw", "pl"))
+
     def test_portuguese_locales_share_their_forms(self):
         self.assertEqual(missing_terms("Your nickname", "A sua alcunha", "pt_PT"), [])
         self.assertTrue(missing_terms("Your nickname", "Seu nome", "pt_BR"))
@@ -213,6 +245,16 @@ class ForeignFormsTest(unittest.TestCase):
         self.assertTrue(foreign_forms("A carregar o escritório...", "pt_BR"))
         self.assertTrue(foreign_forms("A porta leva-te de volta.", "pt_BR"))
         self.assertEqual(foreign_forms("O escritório vem mobiliado.", "pt_BR"), [])
+
+    def test_the_arcades_european_forms_are_foreign_to_pt_br(self):
+        for text in (
+            "O Arcade permite-lhe jogar no navegador.",
+            "O botão abre-o numa aba.",
+            "Estes partilham o mesmo gestor de janelas.",
+            "Reveja os detalhes.",
+            "Por isso pede-lhe para entrar quando o seu não está registado.",
+        ):
+            self.assertTrue(foreign_forms(text, "pt_BR"), text)
 
     def test_the_accented_stopping_verb_is_foreign_to_pt_br(self):
         self.assertEqual(foreign_forms("Um administrador pára o bot.", "pt_BR"), ["pára"])

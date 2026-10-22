@@ -1368,7 +1368,7 @@ msgstr "離開頻道"
 #: lib/retro_hex_chat_web/live/chat_live/command_dispatch.ex:479
 #: lib/retro_hex_chat_web/live/chat_live/helpers/session.ex:594
 #: lib/retro_hex_chat_web/live/chat_live/menu_toolbar_events.ex:90
-#: lib/retro_hex_chat_web/live/desktop_live.ex:377
+#: lib/retro_hex_chat_web/live/desktop_live.ex:382
 #, elixir-autogen, elixir-format
 msgid "Leaving"
 msgstr "離開"
@@ -1851,7 +1851,7 @@ msgstr "狀態"
 msgid "Symbols"
 msgstr "符號"
 
-#: lib/retro_hex_chat_web/components/ui/chat/chat_taskbar.ex:291
+#: lib/retro_hex_chat_web/components/ui/chat/chat_taskbar.ex:285
 #: lib/retro_hex_chat_web/components/ui/chat/message_row.ex:74
 #: lib/retro_hex_chat_web/components/ui/chat/message_row.ex:170
 #: lib/retro_hex_chat_web/live/chat_live/components/status_viewport.ex:104
@@ -2382,7 +2382,7 @@ msgstr "* 缺少邀請頻道"
 msgid "* Missing invite target"
 msgstr "* 缺少邀請目標"
 
-#: lib/retro_hex_chat_web/components/ui/chat/chat_taskbar.ex:292
+#: lib/retro_hex_chat_web/components/ui/chat/chat_taskbar.ex:286
 #: lib/retro_hex_chat_web/live/chat_live/window_registry.ex:294
 #, elixir-autogen, elixir-format
 msgid "Account"
@@ -2429,7 +2429,7 @@ msgstr "取消通知"
 msgid "Channel Central"
 msgstr "中央頻道"
 
-#: lib/retro_hex_chat_web/live/desktop_live.html.heex:787
+#: lib/retro_hex_chat_web/live/desktop_live.html.heex:786
 #, elixir-autogen, elixir-format
 msgid "Channel Central: %{channel}"
 msgstr "頻道中心:%{channel}"
@@ -2895,7 +2895,7 @@ msgstr "%{peer}離開P2P會話."
 msgid "%{peer} lost the P2P connection — waiting for them to return..."
 msgstr "%{peer}失去了P2P連接——等待他們返回......"
 
-#: lib/retro_hex_chat_web/live/chat_live/arcade_session_events.ex:350
+#: lib/retro_hex_chat_web/live/chat_live/arcade_session_events.ex:334
 #, elixir-autogen, elixir-format
 msgid "Arcade session ended."
 msgstr "場景結束"
@@ -2920,7 +2920,7 @@ msgstr "無法裝入遊戲 。 請再試一次"
 msgid "Could not start the P2P invite."
 msgstr "無法啓動 P2P 邀請 。"
 
-#: lib/retro_hex_chat_web/live/chat_live/arcade_session_events.ex:255
+#: lib/retro_hex_chat_web/live/chat_live/arcade_session_events.ex:257
 #, elixir-autogen, elixir-format
 msgid "Could not start the arcade session. Please try again."
 msgstr "無法啓動街機會話 。 請再試一次"
@@ -3065,11 +3065,6 @@ msgstr "切換 P2P 麥克風"
 #, elixir-autogen, elixir-format
 msgid "Toggle P2P Screen Share"
 msgstr "切換 P2P 屏幕共享"
-
-#: lib/retro_hex_chat_web/live/chat_live/arcade_session_events.ex:228
-#, elixir-autogen, elixir-format
-msgid "You must be registered and identified to play. Use /ns register and /ns identify first."
-msgstr "您必須註冊和識別 玩。 使用/ns登記和/ns先識別。"
 
 #: lib/retro_hex_chat_web/live/p2p_live/events.ex:1649
 #, elixir-autogen, elixir-format
@@ -3253,17 +3248,17 @@ msgstr "忽略列表"
 msgid "Nick Colors"
 msgstr "暱稱顏色"
 
-#: lib/retro_hex_chat_web/components/ui/chat/chat_taskbar.ex:290
+#: lib/retro_hex_chat_web/components/ui/chat/chat_taskbar.ex:284
 #, elixir-autogen, elixir-format
 msgid "Admin"
 msgstr "管理"
 
-#: lib/retro_hex_chat_web/components/ui/chat/chat_taskbar.ex:293
+#: lib/retro_hex_chat_web/components/ui/chat/chat_taskbar.ex:287
 #, elixir-autogen, elixir-format
 msgid "Contacts"
 msgstr "聯繫人"
 
-#: lib/retro_hex_chat_web/components/ui/chat/chat_taskbar.ex:294
+#: lib/retro_hex_chat_web/components/ui/chat/chat_taskbar.ex:288
 #, elixir-autogen, elixir-format
 msgid "On Connect"
 msgstr "連接時"
@@ -3621,9 +3616,9 @@ msgid "Strikethrough"
 msgstr "刪除線"
 
 #: lib/retro_hex_chat_web/components/ui/chat/formatting_toolbar.ex:342
-#: lib/retro_hex_chat_web/components/ui/shell/desktop_launchers.ex:513
+#: lib/retro_hex_chat_web/components/ui/shell/desktop_launchers.ex:509
 #: lib/retro_hex_chat_web/components/ui/shell/menu_bar_app.ex:338
-#: lib/retro_hex_chat_web/components/ui/shell/start_menu_app.ex:144
+#: lib/retro_hex_chat_web/components/ui/shell/start_menu_app.ex:140
 #, elixir-autogen, elixir-format
 msgid "Strip Formatting"
 msgstr "清除格式"
@@ -3740,7 +3735,7 @@ msgstr "無法載入縮圖"
 msgid "Thumbnail is being prepared"
 msgstr "正在準備縮圖"
 
-#: lib/retro_hex_chat_web/components/ui/chat/chat_taskbar.ex:228
+#: lib/retro_hex_chat_web/components/ui/chat/chat_taskbar.ex:222
 #, elixir-autogen, elixir-format
 msgid "Round-trip to the server"
 msgstr "與伺服器的往返時間"
@@ -4086,7 +4081,7 @@ msgid "Where"
 msgstr "在哪"
 
 #: lib/retro_hex_chat_web/components/ui/shell/menu_bar_app.ex:346
-#: lib/retro_hex_chat_web/components/ui/shell/start_menu_app.ex:151
+#: lib/retro_hex_chat_web/components/ui/shell/start_menu_app.ex:147
 #, elixir-autogen, elixir-format
 msgid "Character Portraits"
 msgstr "角色頭像"

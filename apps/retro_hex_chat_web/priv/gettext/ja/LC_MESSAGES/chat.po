@@ -1376,7 +1376,7 @@ msgstr "チャネルを残す"
 #: lib/retro_hex_chat_web/live/chat_live/command_dispatch.ex:479
 #: lib/retro_hex_chat_web/live/chat_live/helpers/session.ex:594
 #: lib/retro_hex_chat_web/live/chat_live/menu_toolbar_events.ex:90
-#: lib/retro_hex_chat_web/live/desktop_live.ex:377
+#: lib/retro_hex_chat_web/live/desktop_live.ex:382
 #, elixir-autogen, elixir-format
 msgid "Leaving"
 msgstr "リベット"
@@ -1859,7 +1859,7 @@ msgstr "ステータス"
 msgid "Symbols"
 msgstr "シンボル"
 
-#: lib/retro_hex_chat_web/components/ui/chat/chat_taskbar.ex:291
+#: lib/retro_hex_chat_web/components/ui/chat/chat_taskbar.ex:285
 #: lib/retro_hex_chat_web/components/ui/chat/message_row.ex:74
 #: lib/retro_hex_chat_web/components/ui/chat/message_row.ex:170
 #: lib/retro_hex_chat_web/live/chat_live/components/status_viewport.ex:104
@@ -2390,7 +2390,7 @@ msgstr "* 招待チャンネルを見逃すこと"
 msgid "* Missing invite target"
 msgstr "* 招待対象を見逃すこと"
 
-#: lib/retro_hex_chat_web/components/ui/chat/chat_taskbar.ex:292
+#: lib/retro_hex_chat_web/components/ui/chat/chat_taskbar.ex:286
 #: lib/retro_hex_chat_web/live/chat_live/window_registry.ex:294
 #, elixir-autogen, elixir-format
 msgid "Account"
@@ -2437,7 +2437,7 @@ msgstr "キャンセルについて"
 msgid "Channel Central"
 msgstr "チャネルの中央"
 
-#: lib/retro_hex_chat_web/live/desktop_live.html.heex:787
+#: lib/retro_hex_chat_web/live/desktop_live.html.heex:786
 #, elixir-autogen, elixir-format
 msgid "Channel Central: %{channel}"
 msgstr "チャンネル セントラル: %{channel}"
@@ -2903,7 +2903,7 @@ msgstr "%{peer} は P2P セッションを残します。"
 msgid "%{peer} lost the P2P connection — waiting for them to return..."
 msgstr "%{peer} は P2P 接続を失いました。"
 
-#: lib/retro_hex_chat_web/live/chat_live/arcade_session_events.ex:350
+#: lib/retro_hex_chat_web/live/chat_live/arcade_session_events.ex:334
 #, elixir-autogen, elixir-format
 msgid "Arcade session ended."
 msgstr "アーケードセッション終了"
@@ -2928,7 +2928,7 @@ msgstr "Could not load the game. Please try again."
 msgid "Could not start the P2P invite."
 msgstr "P2Pの招待を開始できません。"
 
-#: lib/retro_hex_chat_web/live/chat_live/arcade_session_events.ex:255
+#: lib/retro_hex_chat_web/live/chat_live/arcade_session_events.ex:257
 #, elixir-autogen, elixir-format
 msgid "Could not start the arcade session. Please try again."
 msgstr "アーケードセッションを開始できません。 お問い合わせ"
@@ -3073,11 +3073,6 @@ msgstr "P2Pマイクを切り替える"
 #, elixir-autogen, elixir-format
 msgid "Toggle P2P Screen Share"
 msgstr "P2P画面共有を切り替える"
-
-#: lib/retro_hex_chat_web/live/chat_live/arcade_session_events.ex:228
-#, elixir-autogen, elixir-format
-msgid "You must be registered and identified to play. Use /ns register and /ns identify first."
-msgstr "プレイに登録して確認する必要があります。 /ns レジスタおよび /ns を最初に特定して下さい。"
 
 #: lib/retro_hex_chat_web/live/p2p_live/events.ex:1649
 #, elixir-autogen, elixir-format
@@ -3261,17 +3256,17 @@ msgstr "無視リスト"
 msgid "Nick Colors"
 msgstr "ニックカラー"
 
-#: lib/retro_hex_chat_web/components/ui/chat/chat_taskbar.ex:290
+#: lib/retro_hex_chat_web/components/ui/chat/chat_taskbar.ex:284
 #, elixir-autogen, elixir-format
 msgid "Admin"
 msgstr "管理"
 
-#: lib/retro_hex_chat_web/components/ui/chat/chat_taskbar.ex:293
+#: lib/retro_hex_chat_web/components/ui/chat/chat_taskbar.ex:287
 #, elixir-autogen, elixir-format
 msgid "Contacts"
 msgstr "コンタクト"
 
-#: lib/retro_hex_chat_web/components/ui/chat/chat_taskbar.ex:294
+#: lib/retro_hex_chat_web/components/ui/chat/chat_taskbar.ex:288
 #, elixir-autogen, elixir-format
 msgid "On Connect"
 msgstr "オンコネクト"
@@ -3629,9 +3624,9 @@ msgid "Strikethrough"
 msgstr "取り消し線"
 
 #: lib/retro_hex_chat_web/components/ui/chat/formatting_toolbar.ex:342
-#: lib/retro_hex_chat_web/components/ui/shell/desktop_launchers.ex:513
+#: lib/retro_hex_chat_web/components/ui/shell/desktop_launchers.ex:509
 #: lib/retro_hex_chat_web/components/ui/shell/menu_bar_app.ex:338
-#: lib/retro_hex_chat_web/components/ui/shell/start_menu_app.ex:144
+#: lib/retro_hex_chat_web/components/ui/shell/start_menu_app.ex:140
 #, elixir-autogen, elixir-format
 msgid "Strip Formatting"
 msgstr "書式を解除"
@@ -3748,7 +3743,7 @@ msgstr "サムネイルを読み込めませんでした"
 msgid "Thumbnail is being prepared"
 msgstr "サムネイルを準備しています"
 
-#: lib/retro_hex_chat_web/components/ui/chat/chat_taskbar.ex:228
+#: lib/retro_hex_chat_web/components/ui/chat/chat_taskbar.ex:222
 #, elixir-autogen, elixir-format
 msgid "Round-trip to the server"
 msgstr "サーバーとの往復時間"
@@ -4094,7 +4089,7 @@ msgid "Where"
 msgstr "場所"
 
 #: lib/retro_hex_chat_web/components/ui/shell/menu_bar_app.ex:346
-#: lib/retro_hex_chat_web/components/ui/shell/start_menu_app.ex:151
+#: lib/retro_hex_chat_web/components/ui/shell/start_menu_app.ex:147
 #, elixir-autogen, elixir-format
 msgid "Character Portraits"
 msgstr "キャラクターの肖像"

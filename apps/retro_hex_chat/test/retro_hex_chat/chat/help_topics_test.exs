@@ -91,8 +91,8 @@ defmodule RetroHexChat.Chat.HelpTopicsTest do
       assert "Text Formatting" in names
       assert "User Interface" in names
       assert "P2P & Calls" in names
-      assert "Solo Arcade: FPS" in names
-      assert "Solo Arcade: Adventures" in names
+      assert "Arcade: FPS" in names
+      assert "Arcade: Adventures" in names
 
       # Each entry is a 3-tuple with category icon
       for {name, icon, topics} <- categories do

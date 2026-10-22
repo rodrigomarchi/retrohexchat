@@ -9,10 +9,10 @@ defmodule RetroHexChatWeb.GameCatalog do
   with one sentence changed, so each game's page lists its modes instead.
 
   No text is written here. Names, taglines and descriptions are the ones the
-  in-app library already shows and already translates. The longer arcade prose
-  in `Arcade.Content` is deliberately not used: it is what each game's help
-  page says, and the same paragraphs on two public URLs would leave a search
-  engine to pick one of them, quite possibly the help page.
+  in-app library already shows and already translates. An arcade game also
+  carries its sheet — the paragraphs, the key table and the tips of
+  `Arcade.Content` — because its public page and the in-app Arcade show the
+  same sheet (`GameSheet`), so a reader finds the same game in both places.
 
   A game's picture is a screenshot, captured by `make games.shots` (or, for a
   game the capture cannot reach, imported from a published one) into
@@ -24,9 +24,11 @@ defmodule RetroHexChatWeb.GameCatalog do
   """
 
   alias RetroHexChat.Arcade.Catalog, as: Arcade
+  alias RetroHexChat.Arcade.Content
   alias RetroHexChat.Games.Catalog, as: Games
   alias RetroHexChatWeb.App.Paths
   alias RetroHexChatWeb.Endpoint
+  alias RetroHexChatWeb.PublicPages
 
   @shots_dir Path.expand("../../priv/static/images/games", __DIR__)
   @manifest_path Path.join(@shots_dir, "manifest.json")
@@ -47,6 +49,7 @@ defmodule RetroHexChatWeb.GameCatalog do
           og_height: pos_integer()
         }
   @type mode :: %{id: String.t(), name: String.t(), tagline: String.t()}
+  @type group :: %{engine: atom(), name: String.t(), games: [game()]}
   @type game :: %{
           id: String.t(),
           slug: String.t(),
@@ -55,8 +58,12 @@ defmodule RetroHexChatWeb.GameCatalog do
           tagline: String.t(),
           description: String.t(),
           controls: String.t(),
+          about: [String.t()],
+          keys: [{String.t(), String.t()}],
+          tips: [String.t()],
           modes: [mode()],
           engine: atom() | nil,
+          engine_name: String.t() | nil,
           icon: String.t(),
           help_topic: String.t(),
           screenshot: screenshot() | nil
@@ -75,6 +82,40 @@ defmodule RetroHexChatWeb.GameCatalog do
   @spec get(String.t()) :: {:ok, game()} | :error
   def get(slug) when is_binary(slug) do
     case Enum.find(list(), &(&1.slug == slug)) do
+      nil -> :error
+      game -> {:ok, game}
+    end
+  end
+
+  @doc """
+  The arcade's games under their engines, in the catalogue's order — the one
+  grouping the public catalogue, the in-app Arcade and its help all show.
+  """
+  @spec arcade_groups() :: [group()]
+  def arcade_groups do
+    games = Enum.group_by(arcade_games(), & &1.engine)
+
+    for engine <- Arcade.engines(), Map.has_key?(games, engine) do
+      %{engine: engine, name: Arcade.engine_name(engine), games: Map.fetch!(games, engine)}
+    end
+  end
+
+  @doc """
+  `arcade_groups/0` as a list of links: each game beside its page, in the
+  reader's language — what every public list of the arcade draws.
+  """
+  @spec arcade_cards() :: [%{engine: atom(), name: String.t(), cards: [map()]}]
+  def arcade_cards do
+    for group <- arcade_groups() do
+      cards = Enum.map(group.games, &%{game: &1, path: PublicPages.localized_path(page_path(&1))})
+      %{engine: group.engine, name: group.name, cards: cards}
+    end
+  end
+
+  @doc "An arcade game by its catalogue id, as the in-app Arcade opens it."
+  @spec get_arcade(String.t()) :: {:ok, game()} | :error
+  def get_arcade(id) when is_binary(id) do
+    case Enum.find(arcade_games(), &(&1.id == id)) do
       nil -> :error
       game -> {:ok, game}
     end
@@ -129,6 +170,8 @@ defmodule RetroHexChatWeb.GameCatalog do
 
   defp arcade_games do
     Enum.map(Arcade.list_games(), fn game ->
+      sheet = sheet(game)
+
       %{
         id: game.id,
         slug: slug(game.id),
@@ -137,8 +180,12 @@ defmodule RetroHexChatWeb.GameCatalog do
         tagline: game.tagline,
         description: game.description,
         controls: game.controls,
+        about: sheet.about,
+        keys: sheet.controls,
+        tips: sheet.tips,
         modes: [],
         engine: game.engine,
+        engine_name: Arcade.engine_name(game.engine),
         icon: game.icon,
         help_topic: "feature-arcade-" <> slug(game.id),
         screenshot: screenshot(slug(game.id))
@@ -161,13 +208,26 @@ defmodule RetroHexChatWeb.GameCatalog do
         tagline: game.tagline,
         description: game.description,
         controls: game.controls,
+        about: [],
+        keys: [],
+        tips: [],
         modes: modes,
         engine: nil,
+        engine_name: nil,
         icon: game.icon,
         help_topic: "feature-" <> slug(game.id),
         screenshot: screenshot(slug(game.id))
       }
     end)
+  end
+
+  # A game without written content still has a sheet: its description is
+  # the About.
+  defp sheet(game) do
+    case Content.get_content(game.id) do
+      {:ok, content} -> content
+      {:error, :not_found} -> %{about: [game.description], controls: [], tips: []}
+    end
   end
 
   # A mode is named "Hex Tennis: Quick Match"; on the game's own page the game

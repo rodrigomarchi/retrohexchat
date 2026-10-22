@@ -43,10 +43,6 @@ defmodule RetroHexChatWeb.Components.UI.ChatTaskbar do
   attr :muted, :boolean, default: false
   attr :on_mute_toggle, :any, default: "toggle_mute"
 
-  attr :arcade_available, :boolean,
-    default: false,
-    doc: "Enables Start ▸ Games ▸ Arcade (needs a registered + identified nick)"
-
   attr :arcade_session, :map, default: nil
   attr :cc_window_channel, :string, default: nil
 
@@ -90,7 +86,6 @@ defmodule RetroHexChatWeb.Components.UI.ChatTaskbar do
           full={@live_ready}
           help_open={Enum.any?(@documents, &(&1.slot == :help))}
           is_admin={@is_admin}
-          arcade_available={@arcade_available}
           windows={[
             %{id: "chat", label: @chat_label, icon_fn: :icon_chat} | start_documents(@documents)
           ]}
@@ -101,7 +96,6 @@ defmodule RetroHexChatWeb.Components.UI.ChatTaskbar do
         :if={@live_ready}
         screen={:chat}
         is_admin={@is_admin}
-        arcade_available={@arcade_available}
         windows={[%{id: "chat", label: @chat_label, icon_fn: :icon_chat}]}
       />
 

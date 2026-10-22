@@ -3,9 +3,9 @@ defmodule RetroHexChatWeb.Site.Pages.Game do
   One game's public page: what it is, what it looks like, and the way in.
 
   This is the page a search for "play DOOM in the browser" should land on, so
-  it says that in its title and shows the game itself. How to play in depth —
-  every control, tips — stays in the in-app help, which this page links to
-  rather than repeats.
+  it says that in its title and shows the game itself. An arcade game's page
+  is its sheet (`GameSheet`) — what it is, its keys, its tips — the same one
+  the in-app Arcade opens on once the reader has a nickname.
 
   A Retro Game's page is its home in the desktop (`Landing.GameHome`): one
   window, where every way into the game leads — the Retro Games folder, the
@@ -131,7 +131,7 @@ defmodule RetroHexChatWeb.Site.Pages.Game do
     [
       Window.new("game", game.name, :game_icon,
         icon_attrs: %{game_id: game.id},
-        width: 760,
+        width: 880,
         body: &game_detail/1,
         status: [kind_label(game), dgettext("landing", "Free, in the browser")]
       ),
@@ -209,7 +209,8 @@ defmodule RetroHexChatWeb.Site.Pages.Game do
   defp matches_played(_arcade_game), do: nil
 
   # A visitor's Play asks for an account first, naming games, and comes back
-  # to the game once they have one.
+  # to the game once they have one. A member whose nickname is not identified
+  # is asked by the Arcade itself, which knows by then.
   defp play_path(game, %{visitor?: true}),
     do: Paths.visitor_sign_in_path(:games, GameCatalog.play_path(game))
 
@@ -218,7 +219,7 @@ defmodule RetroHexChatWeb.Site.Pages.Game do
   defp card(game),
     do: %{game: game, path: PublicPages.localized_path(GameCatalog.page_path(game))}
 
-  defp kind_label(%{kind: :arcade}), do: dgettext("landing", "Solo arcade")
+  defp kind_label(%{kind: :arcade}), do: dgettext("landing", "Arcade")
 
   defp title(game) do
     candidates = [

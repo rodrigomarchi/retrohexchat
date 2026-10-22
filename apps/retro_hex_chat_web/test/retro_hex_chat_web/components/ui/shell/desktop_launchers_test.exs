@@ -7,17 +7,6 @@ defmodule RetroHexChatWeb.Components.UI.DesktopLaunchersTest do
 
   @moduletag :unit
 
-  @group_icon_ids ~w(
-    desktop-icon-site
-    desktop-icon-view
-    desktop-icon-tools
-    desktop-icon-automation
-    desktop-icon-games
-    desktop-icon-account
-    desktop-icon-language
-    desktop-icon-help
-  )
-
   # Programs that are not folders sit beside the folder they belong with, so
   # the arcade follows Retro Games rather than trailing the column.
   @shortcut_ids ~w(
@@ -38,6 +27,7 @@ defmodule RetroHexChatWeb.Components.UI.DesktopLaunchersTest do
     desktop-icon-tools
     desktop-icon-automation
     desktop-icon-games
+    desktop-icon-arcade
     desktop-icon-account
     desktop-icon-admin
     desktop-icon-system
@@ -48,7 +38,7 @@ defmodule RetroHexChatWeb.Components.UI.DesktopLaunchersTest do
   test "desktop icons render the visible app groups in order" do
     html = render_component(&DesktopLaunchers.desktop_launcher_icons/1, screen: :chat)
 
-    assert testids(html, "[data-window-shortcut]") == @group_icon_ids
+    assert testids(html, "[data-window-shortcut]") == @shortcut_ids
     assert html =~ ~s(data-window-shortcut="desktop-launcher-games")
     refute html =~ ~s(data-testid="desktop-icon-windows")
     refute html =~ ~s(data-testid="desktop-icon-navigate")
@@ -167,26 +157,18 @@ defmodule RetroHexChatWeb.Components.UI.DesktopLaunchersTest do
     admin_html =
       render_component(&DesktopLaunchers.desktop_launcher_windows/1,
         screen: :chat,
-        is_admin: true,
-        arcade_available: true
+        is_admin: true
       )
 
     assert enabled?(admin_html, "desktop-launcher-item-open_admin_users")
     assert enabled?(admin_html, "desktop-launcher-item-open_system_home")
   end
 
-  # The arcade is not a folder, so its gate is on the desktop icon that runs
-  # it: live once the nick is identified, present and gray until then.
-  test "the arcade icon waits for an identified nick" do
-    guest_html = render_component(&DesktopLaunchers.desktop_launcher_icons/1, screen: :chat)
-
+  # The arcade is not a folder: its desktop icon runs it, for every reader of
+  # the chat — the arcade asks for an account itself when it needs one.
+  test "the arcade icon runs the arcade" do
     identified_html =
-      render_component(&DesktopLaunchers.desktop_launcher_icons/1,
-        screen: :chat,
-        arcade_available: true
-      )
-
-    refute enabled?(guest_html, "desktop-icon-arcade")
+      render_component(&DesktopLaunchers.desktop_launcher_icons/1, screen: :chat)
 
     assert enabled?(identified_html, "desktop-icon-arcade")
 

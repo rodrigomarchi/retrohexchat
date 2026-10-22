@@ -8,8 +8,9 @@ defmodule RetroHexChatWeb.ChatLive.ArcadeSessionEvents do
 
   Opening "Games → Arcade" (registered + identified only) creates a solo session
   (`Arcade.create_session` + `join_session`), subscribes to `"arcade:\#{token}"`
-  and opens the managed "arcade-games" window with the icon launcher. Choosing
-  an icon opens that game's preview; starting from the preview drives the domain
+  and opens the managed "arcade-games" window with the catalogue's cards. A card
+  is the Arcade's own address on its game (`/?arcade=<id>`), which opens that
+  game's sheet; starting from the sheet drives the domain
   (`Arcade.select_game`) and, in the same click, follows an anchor to
   `/play/arcade/:game` — the game's own address — in a tab of its own.
 
@@ -33,9 +34,12 @@ defmodule RetroHexChatWeb.ChatLive.ArcadeSessionEvents do
   alias Phoenix.LiveView.Socket
   alias RetroHexChat.Arcade
   alias RetroHexChat.Arcade.Schema.SoloSession
+  alias RetroHexChatWeb.App.Paths
   alias RetroHexChatWeb.App.SessionHelpers
   alias RetroHexChatWeb.ChatLive.Helpers.Messages
+  alias RetroHexChatWeb.ChatLive.Visitor
   alias RetroHexChatWeb.ChatLive.Windows
+  alias RetroHexChatWeb.GameCatalog
   alias RetroHexChatWeb.Site.Address
 
   @pubsub RetroHexChat.PubSub
@@ -51,14 +55,6 @@ defmodule RetroHexChatWeb.ChatLive.ArcadeSessionEvents do
       |> maybe_preview_game(params)
 
     {:halt, socket}
-  end
-
-  def handle_event(
-        "arcade_preview",
-        %{"game-id" => game_id},
-        %{assigns: %{arcade_session: %{status: "lobby"}}} = socket
-      ) do
-    {:halt, preview_game(socket, game_id)}
   end
 
   def handle_event("arcade_back", _params, %{assigns: %{arcade_session: %{} = s}} = socket) do
@@ -118,15 +114,24 @@ defmodule RetroHexChatWeb.ChatLive.ArcadeSessionEvents do
 
   @spec handle_info(term(), Socket.t()) :: {:cont | :halt, Socket.t()}
   # A link that named an arcade game — the public game page's way in — opens
-  # the arcade on that game once the chat is up, as the menu would. The
-  # parameter is then dropped from the address: left there, every reconnect
-  # would mount on it again and open a new arcade session.
+  # the arcade on that game once the chat is up, as the menu would; one that
+  # names none (`?arcade=`, where a visitor's sign-in returns) opens its
+  # catalogue. The parameter is dropped from the address first: left there,
+  # every reconnect would mount on it again and open a new arcade session. The
+  # window opens on the next message, after the patch has brought the chat
+  # forward, so the arcade ends up in front of it rather than behind.
   def handle_info({:open_arcade_link, game_id}, socket) do
-    socket = push_patch(socket, to: Address.chat_address(socket.assigns), replace: true)
+    send(self(), {:open_arcade_game, game_id})
+    {:halt, push_patch(socket, to: Address.chat_address(socket.assigns), replace: true)}
+  end
 
+  def handle_info({:open_arcade_game, game_id}, socket) do
     case Arcade.get_game(game_id) do
       {:ok, _game} ->
-        {:halt, socket |> open_arcade() |> maybe_preview_game(%{"game-id" => game_id})}
+        {:halt, socket |> open_arcade(game_id) |> maybe_preview_game(%{"game-id" => game_id})}
+
+      {:error, :not_found} when game_id == "" ->
+        {:halt, open_arcade(socket)}
 
       {:error, :not_found} ->
         {:halt, socket}
@@ -216,20 +221,17 @@ defmodule RetroHexChatWeb.ChatLive.ArcadeSessionEvents do
 
   # ── Internal ──────────────────────────────────────────────────
 
-  @spec open_arcade(Socket.t()) :: Socket.t()
-  defp open_arcade(socket) do
+  # The arcade keeps scores against a nickname, so one that is not identified
+  # is sent to the sign-in window, which comes back to the arcade — on the
+  # game a link named, when it named one.
+  @spec open_arcade(Socket.t(), String.t()) :: Socket.t()
+  defp open_arcade(socket, game_id \\ "") do
     cond do
       socket.assigns[:arcade_session] ->
         Windows.open(socket, @window)
 
       not identified?(socket) ->
-        Messages.system_event(
-          socket,
-          dgettext(
-            "chat",
-            "You must be registered and identified to play. Use /ns register and /ns identify first."
-          )
-        )
+        Visitor.ask_to_sign_in(socket, :games, Paths.chat_arcade_path(game_id))
 
       true ->
         start_session(socket)
@@ -296,32 +298,14 @@ defmodule RetroHexChatWeb.ChatLive.ArcadeSessionEvents do
     end
   end
 
-  @spec preview_for_game(String.t() | nil) :: map() | nil
-  defp preview_for_game(game_id) when is_binary(game_id) do
-    case Arcade.get_game(game_id) do
-      {:ok, game} ->
-        content =
-          case Arcade.get_game_content(game_id) do
-            {:ok, c} -> c
-            {:error, _} -> %{about: [game.description], controls: [], tips: []}
-          end
-
-        %{
-          id: game.id,
-          name: game.name,
-          description: Map.get(game, :tagline, game.description),
-          engine: game.engine,
-          about: content.about,
-          controls: content.controls,
-          tips: content.tips
-        }
-
-      {:error, _} ->
-        nil
+  # The preview is the game's sheet, the same one its public page shows.
+  @spec preview_for_game(String.t()) :: GameCatalog.game() | nil
+  defp preview_for_game(game_id) do
+    case GameCatalog.get_arcade(game_id) do
+      {:ok, game} -> game
+      :error -> nil
     end
   end
-
-  defp preview_for_game(_game_id), do: nil
 
   @spec close_arcade(Socket.t(), String.t()) :: Socket.t()
   defp close_arcade(socket, reason) do

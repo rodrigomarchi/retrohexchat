@@ -1,24 +1,19 @@
 <h3 class="text-sm font-bold mb-2">
-  {dgettext("landing", "18 classic games. Running in your browser.")}
+  {dgettext("landing", "Classic games in your browser.")}
 </h3>
 <.inset
   class="p-3 mb-2"
-  aria-label={dgettext("landing", "Solo arcade flow diagram")}
+  aria-label={dgettext("landing", "Arcade flow diagram")}
 >
   <.diagram_arcade_flow class="w-full max-w-lg mx-auto" />
 </.inset>
-<p class="text-sm">
-  {dgettext("landing", "Open the")}
-  <strong>{dgettext("landing", "Games")}</strong> {dgettext(
+<p class="text-sm mb-retro-8">
+  {dgettext(
     "landing",
-    "menu and choose"
+    "Pick a game to see its screenshot, keyboard controls and tips, then press %{play}.",
+    play: dgettext("games", "Play now")
   )}
-  <strong>{dgettext("landing", "Arcade")}</strong> {dgettext(
-    "landing",
-    "to review details for DOOM, Quake, Wolfenstein 3D, Half-Life, and ScummVM adventures, then start any game as"
-  )}
-  <strong>{dgettext("landing", "WebAssembly")}</strong> {dgettext(
-    "landing",
-    "in your browser. No downloads."
-  )}
+  {dgettext("landing", "It runs in your browser, with nothing to download.")}
 </p>
+<.arcade_game_links groups={@arcade} data-testid="index-arcade-games" />
+<.catalogue_link path={@catalogue_path} data-testid="index-arcade-catalogue-link" />

@@ -1,7 +1,12 @@
 <p>
   {dgettext(
     "help_arcade",
-    "The Solo Arcade lets you play classic FPS games directly in your browser via WebAssembly. No downloads, no plugins — the game engine runs natively in your browser."
+    "%{arcade} runs classic action games and adventures directly in your browser via WebAssembly.",
+    arcade: dgettext("ui", "Arcade")
+  )}
+  {dgettext(
+    "help_arcade",
+    "No downloads, no plugins: the game engine runs natively in your browser."
   )}
 </p>
 <.help_h4 icon={:icon_send}>{dgettext("help_arcade", "Starting an Arcade Session")}</.help_h4>
@@ -20,110 +25,34 @@
 <p>
   {dgettext(
     "help_arcade",
-    "A window opens right on the chat desktop with game icons. Choose an icon to review the game details, then press Start Game, which opens the game in a browser tab of its own. You must be registered and identified ("
-  )}<code>{dgettext("help_arcade", "/ns identify")}</code>{dgettext("help_arcade", ") to play.")}
+    "A window opens right on the chat desktop with every game, grouped by engine as in the catalogue on the site. Choose one to see its details: a screenshot, the keyboard controls and tips, as on its page."
+  )}
+  {dgettext(
+    "help_arcade",
+    "Then press %{play}, which opens the game in a browser tab of its own.",
+    play: dgettext("games", "Play now")
+  )}
+  {dgettext("help_arcade", "To play, you must be registered and identified:")}
+  <code>{dgettext("help_arcade", "/ns identify")}</code>
 </p>
 <p>
   {dgettext(
     "help_arcade",
-    "The game's tab is yours, not the chat's: closing it does not end the session, and the chat cannot close it for you. While a game is running, Open the game tab brings the address back if you closed it, Back returns to the icon launcher, and End Session finishes the session — as does leaving it alone for a while."
+    "The game's tab is yours, not the chat's: closing it does not end the session, and the chat cannot close it for you."
+  )}
+  {dgettext(
+    "help_arcade",
+    "While a game is running, %{open_tab} brings the address back if you closed it and %{back} returns to the list of games.",
+    open_tab: dgettext("games", "Open the game tab"),
+    back: dgettext("games", "Back")
+  )}
+  {dgettext(
+    "help_arcade",
+    "%{end_session} finishes the session, and so does leaving it alone for a while.",
+    end_session: dgettext("games", "End Session")
   )}
 </p>
-<.help_h4 icon={:icon_game_halflife}>
-  {dgettext("help_arcade", "Available Games — Half-Life Engine")}
-</.help_h4>
-<ul>
-  <li>
-    <.help_link topic="feature-arcade-halflife-uplink">
-      Half-Life: Uplink
-    </.help_link>
-    {dgettext("help_arcade", "— The official Valve demo with 3 unique missions (1999)")}
-  </li>
-</ul>
-<.help_h4 icon={:icon_game_wolfenstein}>
-  {dgettext("help_arcade", "Available Games — Wolf3D Engine")}
-</.help_h4>
-<ul>
-  <li>
-    <.help_link topic="feature-arcade-wolfenstein-3d">
-      Wolfenstein 3D: Escape from Castle
-    </.help_link>
-    {dgettext("help_arcade", "— The shareware Episode 1 (1992) — the grandfather of FPS games")}
-  </li>
-</ul>
-<.help_h4 icon={:icon_game_arcade}>
-  {dgettext("help_arcade", "Available Games — DOOM Engine")}
-</.help_h4>
-<ul>
-  <li>
-    <.help_link topic="feature-arcade-doom-shareware">
-      DOOM: Knee-Deep in the Dead
-    </.help_link>
-    {dgettext("help_arcade", "— The original shareware Episode 1 (1993)")}
-  </li>
-  <li>
-    <.help_link topic="feature-arcade-freedoom1">
-      Freedoom: Phase 1
-    </.help_link>
-    {dgettext("help_arcade", "— 36 levels of open-source DOOM (BSD license)")}
-  </li>
-  <li>
-    <.help_link topic="feature-arcade-freedoom2">
-      Freedoom: Phase 2
-    </.help_link>
-    {dgettext("help_arcade", "— 32 levels, Doom II compatible (BSD license)")}
-  </li>
-  <li>
-    <.help_link topic="feature-arcade-freedm">FreeDM</.help_link>
-    {dgettext("help_arcade", "— 32 deathmatch arenas (BSD license)")}
-  </li>
-  <li>
-    <.help_link topic="feature-arcade-chex-quest">
-      Chex Quest
-    </.help_link>
-    {dgettext("help_arcade", "— The 1996 cereal box classic")}
-  </li>
-  <li>
-    <.help_link topic="feature-arcade-hacx">
-      HacX: Twitch 'n Kill
-    </.help_link>
-    {dgettext("help_arcade", "— Cyberpunk total conversion")}
-  </li>
-  <li>
-    <.help_link topic="feature-arcade-rekkr">
-      REKKR: Sunken Land
-    </.help_link>
-    {dgettext("help_arcade", "— Viking-themed standalone")}
-  </li>
-</ul>
-<.help_h4 icon={:icon_game_quake}>
-  {dgettext("help_arcade", "Available Games — Quake Engine")}
-</.help_h4>
-<ul>
-  <li>
-    <.help_link topic="feature-arcade-quake-shareware">
-      Quake: Dimension of the Doomed
-    </.help_link>
-    {dgettext("help_arcade", "— The original shareware Episode 1 (1996)")}
-  </li>
-  <li>
-    <.help_link topic="feature-arcade-librequake">
-      LibreQuake
-    </.help_link>
-    {dgettext("help_arcade", "— Open-source Quake replacement (BSD license)")}
-  </li>
-</ul>
-<.help_h4 icon={:icon_game_quake2}>
-  {dgettext("help_arcade", "Available Games — Quake II Engine")}
-</.help_h4>
-<ul>
-  <li>
-    <.help_link topic="feature-arcade-quake2-shareware">
-      Quake II: The Invasion
-    </.help_link>
-    {dgettext("help_arcade", "— The official demo (1997) — Unit 1 of the singleplayer campaign")}
-  </li>
-</ul>
+<.help_game_list kind={:arcade} />
 <.help_h4 icon={:icon_webrtc}>{dgettext("help_arcade", "Technology")}</.help_h4>
 <p>
   {dgettext("help_arcade", "%{game} is powered by", game: "Half-Life: Uplink")}

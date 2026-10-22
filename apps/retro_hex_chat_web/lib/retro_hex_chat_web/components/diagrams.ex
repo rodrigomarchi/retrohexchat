@@ -25,7 +25,7 @@ defmodule RetroHexChatWeb.Components.Diagrams do
   | `Diagrams.GameArcadeFlow`  | Solo arcade game flow                      |
   | `Diagrams.GameScreens`     | Shared `win98_chrome/1` helper only        |
   | `Diagrams.Game*`           | Win98-style game screen (1 per game)       |
-  | `Diagrams.Arcade*`         | Solo Arcade game logos/cover art (1 per game) |
+  | `Diagrams.Arcade*`         | Arcade game logos/cover art (1 per game) |
   | `Diagrams.DialogPreview`   | The shared dialog banner miniature         |
   | `Diagrams.Dialog*`         | A dialog banner needing art of its own     |
   """

@@ -42,7 +42,6 @@ defmodule RetroHexChatWeb.Components.UI.DesktopLaunchers do
     doc: "which desktop the icons are rendered on"
 
   attr :is_admin, :boolean, default: false
-  attr :arcade_available, :boolean, default: false
   attr :windows, :list, default: []
   attr :current_path, :string, default: nil
   attr :language_return_to, :string, default: nil
@@ -222,7 +221,6 @@ defmodule RetroHexChatWeb.Components.UI.DesktopLaunchers do
 
   attr :screen, :atom, required: true, values: @screens
   attr :is_admin, :boolean, default: false
-  attr :arcade_available, :boolean, default: false
   attr :windows, :list, default: []
   attr :current_path, :string, default: nil
   attr :language_return_to, :string, default: nil
@@ -279,7 +277,6 @@ defmodule RetroHexChatWeb.Components.UI.DesktopLaunchers do
 
   attr :screen, :atom, required: true, values: @screens
   attr :is_admin, :boolean, default: false
-  attr :arcade_available, :boolean, default: false
   attr :windows, :list, default: []
   attr :current_path, :string, default: nil
   attr :language_return_to, :string, default: nil
@@ -440,9 +437,9 @@ defmodule RetroHexChatWeb.Components.UI.DesktopLaunchers do
         # The server opens this window: a session has to exist before there is
         # anything to draw, so the icon pushes the event and the window follows.
         action: "open_arcade",
-        # An arcade session belongs to an account, so it needs a nick that is
-        # registered and identified — a chat alone is not enough.
-        enabled?: cap.arcade_available?
+        # Open to every reader of the chat: the arcade itself asks for an
+        # account, or for the nickname to be identified, when it needs one.
+        enabled?: cap.chat?
       }
     ]
   end
@@ -479,7 +476,6 @@ defmodule RetroHexChatWeb.Components.UI.DesktopLaunchers do
       screen: screen,
       chat?: chat?,
       help?: assigns[:help_open] == true,
-      arcade_available?: chat? and assigns.arcade_available,
       admin?: chat? and assigns.is_admin,
       current_path: assigns.current_path,
       language_return_to: assigns.language_return_to,

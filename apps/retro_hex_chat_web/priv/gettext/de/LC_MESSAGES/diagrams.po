@@ -24,11 +24,6 @@ msgstr "👨"
 msgid "👩"
 msgstr "👩"
 
-#: lib/retro_hex_chat_web/components/diagrams/game_arcade_flow.ex:346
-#, elixir-autogen, elixir-format
-msgid "18 classic games · Runs in your browser via WebAssembly"
-msgstr "18 klassische Spiele · Runs in Ihrem Browser über WebAssembly"
-
 #: lib/retro_hex_chat_web/components/diagrams/game_frost.ex:55
 #, elixir-autogen, elixir-format
 msgid "32° R2"
@@ -56,7 +51,7 @@ msgstr "Alice (du)"
 msgid "Alice wants to call Bob"
 msgstr "Alice will Bob anrufen"
 
-#: lib/retro_hex_chat_web/components/diagrams/game_arcade_flow.ex:171
+#: lib/retro_hex_chat_web/components/diagrams/game_arcade_flow.ex:173
 #, elixir-autogen, elixir-format
 msgid "BASS"
 msgstr "BASS"
@@ -118,7 +113,7 @@ msgstr "Verbunden"
 msgid "DAY 1 2:15"
 msgstr "ZAHL 1 2:15"
 
-#: lib/retro_hex_chat_web/components/diagrams/game_arcade_flow.ex:137
+#: lib/retro_hex_chat_web/components/diagrams/game_arcade_flow.ex:139
 #, elixir-autogen, elixir-format
 msgid "DOOM"
 msgstr "DOOM"
@@ -174,7 +169,7 @@ msgstr "HALF-LIFE"
 msgid "HTTPS / WSS"
 msgstr "HTTPS / WSS"
 
-#: lib/retro_hex_chat_web/components/diagrams/game_arcade_flow.ex:193
+#: lib/retro_hex_chat_web/components/diagrams/game_arcade_flow.ex:195
 #, elixir-autogen, elixir-format
 msgid "HacX"
 msgstr "HacX"
@@ -469,12 +464,12 @@ msgstr "QUAKE"
 msgid "QUAKE II"
 msgstr "QUAKE II"
 
-#: lib/retro_hex_chat_web/components/diagrams/game_arcade_flow.ex:148
+#: lib/retro_hex_chat_web/components/diagrams/game_arcade_flow.ex:150
 #, elixir-autogen, elixir-format
 msgid "Quake"
 msgstr "Quark"
 
-#: lib/retro_hex_chat_web/components/diagrams/game_arcade_flow.ex:182
+#: lib/retro_hex_chat_web/components/diagrams/game_arcade_flow.ex:184
 #, elixir-autogen, elixir-format
 msgid "Quake II"
 msgstr "Quark II"
@@ -550,7 +545,7 @@ msgid "ScummVM arcade logo: point and click adventure scene with cursor"
 msgstr ""
 "ScummVM Arcade Logo: Punkt und klicken Sie auf Abenteuer Szene mit Cursor"
 
-#: lib/retro_hex_chat_web/components/diagrams/game_arcade_flow.ex:79
+#: lib/retro_hex_chat_web/components/diagrams/game_arcade_flow.ex:81
 #: lib/retro_hex_chat_web/components/diagrams/game_p2p_flow.ex:84
 #, elixir-autogen, elixir-format
 msgid "Send"
@@ -651,7 +646,7 @@ msgstr "WAVE 3"
 msgid "WOLFENSTEIN 3D"
 msgstr "WOLFENSTEIN 3D"
 
-#: lib/retro_hex_chat_web/components/diagrams/game_arcade_flow.ex:321
+#: lib/retro_hex_chat_web/components/diagrams/game_arcade_flow.ex:325
 #, elixir-autogen, elixir-format
 msgid "WebAssembly"
 msgstr "WebAssembly"
@@ -666,7 +661,7 @@ msgstr "WebRTC Datenverarbeitung"
 msgid "WebRTC P2P"
 msgstr "WebRTC P2P"
 
-#: lib/retro_hex_chat_web/components/diagrams/game_arcade_flow.ex:159
+#: lib/retro_hex_chat_web/components/diagrams/game_arcade_flow.ex:161
 #, elixir-autogen, elixir-format
 msgid "Wolf3D"
 msgstr "Wolf3D"
@@ -723,7 +718,7 @@ msgstr "/p2p bob"
 msgid "34 games · Real-time sync · No server"
 msgstr "34 Spiele · Echtzeit-Sync · Kein Server"
 
-#: lib/retro_hex_chat_web/components/diagrams/game_arcade_flow.ex:54
+#: lib/retro_hex_chat_web/components/diagrams/game_arcade_flow.ex:56
 #, elixir-autogen, elixir-format
 msgid "Games menu"
 msgstr "Spiele-Menü"
@@ -735,7 +730,7 @@ msgstr ""
 "P2P Multiplayer-Spiele fließen: Typ /p2p Befehl, schalten Sie Lobby, wählen "
 "Sie Spiel, spielen Sie über WebRTC DataChannel zwischen zwei Spielern"
 
-#: lib/retro_hex_chat_web/components/diagrams/game_arcade_flow.ex:65
+#: lib/retro_hex_chat_web/components/diagrams/game_arcade_flow.ex:67
 #, elixir-autogen, elixir-format
 msgid "▸ Arcade"
 msgstr "▸ Arcade"
@@ -890,31 +885,12 @@ msgstr "Raum ist live"
 msgid "P2P Session"
 msgstr "P2P-Sitzung"
 
-#: lib/retro_hex_chat_web/components/diagrams/game_arcade_flow.ex:118
-#: lib/retro_hex_chat_web/components/diagrams/game_arcade_flow.ex:214
-#, elixir-autogen, elixir-format
-msgid "Arcade - Pick an Icon"
-msgstr "Arcade - Symbol wählen"
-
-#: lib/retro_hex_chat_web/components/diagrams/game_arcade_flow.ex:247
+#: lib/retro_hex_chat_web/components/diagrams/game_arcade_flow.ex:249
 #, elixir-autogen, elixir-format
 msgid "Game Details"
 msgstr "Spieldetails"
 
-#: lib/retro_hex_chat_web/components/diagrams/game_arcade_flow.ex:261
-#, elixir-autogen, elixir-format
-msgid "Review details, then Start Game"
-msgstr "Details prüfen, dann Spiel starten"
-
-#: lib/retro_hex_chat_web/components/diagrams/game_arcade_flow.ex:18
-#, elixir-autogen, elixir-format
-msgid "Solo arcade flow: open the Games menu and choose Arcade, pick a game icon, review details, press Start Game, then the WASM game runs in a browser window"
-msgstr ""
-"Solo-Arcade-Ablauf: Spiele-Menü öffnen und Arcade wählen, ein Spielsymbol "
-"auswählen, Details prüfen, Spiel starten drücken, dann läuft das WASM-Spiel "
-"in einem Browserfenster"
-
-#: lib/retro_hex_chat_web/components/diagrams/game_arcade_flow.ex:331
+#: lib/retro_hex_chat_web/components/diagrams/game_arcade_flow.ex:335
 #, elixir-autogen, elixir-format
 msgid "Engine: %{engine} · Running in browser"
 msgstr "Engine: %{engine} · Läuft im Browser"
@@ -1050,3 +1026,24 @@ msgid "A miniature of a conversation with a grey bar where the hidden line was"
 msgstr ""
 "Eine Miniatur eines Gesprächs mit einer grauen Bar, wo die versteckte Linie "
 "war"
+
+#: lib/retro_hex_chat_web/components/diagrams/game_arcade_flow.ex:120
+#: lib/retro_hex_chat_web/components/diagrams/game_arcade_flow.ex:216
+#, elixir-autogen, elixir-format
+msgid "Arcade - Pick a Game"
+msgstr "Arcade - Spiel auswählen"
+
+#: lib/retro_hex_chat_web/components/diagrams/game_arcade_flow.ex:350
+#, elixir-autogen, elixir-format
+msgid "Classic games · Runs in your browser via WebAssembly"
+msgstr "Klassische Spiele · Runs in Ihrem Browser über WebAssembly"
+
+#: lib/retro_hex_chat_web/components/diagrams/game_arcade_flow.ex:263
+#, elixir-autogen, elixir-format
+msgid "Check the details, then press %{play}"
+msgstr "Überprüfen Sie die Details, dann drücken Sie %{play}"
+
+#: lib/retro_hex_chat_web/components/diagrams/game_arcade_flow.ex:18
+#, elixir-autogen, elixir-format
+msgid "%{arcade} flow: open the Games menu and choose %{arcade}, pick a game, check its details, press %{play}, then the WASM game runs in a browser tab of its own"
+msgstr "%{arcade} Flow: Öffnen Sie das Games-Menü und wählen Sie %{arcade}, wählen Sie ein Spiel, überprüfen Sie seine Details, drücken Sie %{play}, dann läuft das WASM-Spiel in einem Browser-Tab seiner eigenen"

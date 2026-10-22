@@ -6,53 +6,47 @@ defmodule RetroHexChatWeb.Components.UI.Games.SoloLobbyTest do
 
   @moduletag :unit
 
-  alias RetroHexChat.Arcade
+  alias RetroHexChatWeb.GameCatalog
 
-  test "renders the lobby as a Windows-style icon launcher" do
-    games = Arcade.list_games() |> Enum.take(3)
+  # The same cards, under the same engines, as the public catalogue.
+  test "renders the lobby as the catalogue's cards, under their engines" do
+    groups = GameCatalog.arcade_groups()
 
     html =
       render_component(&solo_lobby/1,
         id: "arcade-lobby",
-        games: games,
+        groups: groups,
         session_status: "lobby",
-        on_preview_game: "arcade_preview",
         on_close: "arcade_leave"
       )
 
     document = Floki.parse_document!(html)
-    text = Floki.text(document)
 
-    for game <- games do
-      assert [_] =
+    for group <- groups, game <- group.games do
+      assert [card] =
                Floki.find(
                  document,
-                 ~s([data-testid="arcade-game-#{game.id}"][aria-label="#{game.name}"][phx-click="arcade_preview"])
+                 ~s([data-testid="game-group-#{group.engine}"] a[data-testid="arcade-game-#{game.id}"][href="/?arcade=#{game.id}"])
                )
 
-      assert text =~ game.name
+      # The engine is the h3; each game's name sits one level below it.
+      assert card |> Floki.find("h4") |> Floki.text() |> String.trim() == game.name
+      assert Floki.text(card) =~ game.tagline
+      assert [_] = Floki.find(card, ~s(img[src="#{game.screenshot.path}"]))
     end
 
     assert Floki.find(document, ~s([data-testid^="solo-game-"])) == []
   end
 
-  test "renders the selected game preview before starting" do
-    game = Arcade.list_games() |> List.first()
+  test "renders the selected game's sheet before starting" do
+    {:ok, game} = GameCatalog.get_arcade("freedoom1")
 
     html =
       render_component(&solo_lobby/1,
         id: "arcade-lobby",
-        games: Arcade.list_games(),
+        groups: GameCatalog.arcade_groups(),
         session_status: "lobby",
-        previewed_game: %{
-          id: game.id,
-          name: game.name,
-          description: game.tagline,
-          engine: game.engine,
-          about: ["About #{game.name}"],
-          controls: [{"Space", "Action"}],
-          tips: ["Start from the menu"]
-        },
+        previewed_game: game,
         on_select_game: "arcade_select_game",
         on_back: "arcade_back",
         on_close: "arcade_leave"
@@ -63,8 +57,16 @@ defmodule RetroHexChatWeb.Components.UI.Games.SoloLobbyTest do
 
     assert [_] = Floki.find(document, ~s([data-testid="arcade-game-preview"]))
     assert text =~ game.name
-    assert text =~ "About #{game.name}"
-    assert text =~ "Start from the menu"
+    assert text =~ hd(game.about)
+    assert text =~ hd(game.tips)
+    assert [_] = Floki.find(document, ~s(img[src="#{game.screenshot.path}"]))
+    assert [_ | _] = Floki.find(document, ~s([data-testid="game-controls"] kbd))
+
+    assert [_] =
+             Floki.find(
+               document,
+               ~s([data-testid="arcade-how-to-play"][href="/chat/help/feature-arcade-freedoom1"])
+             )
 
     assert [_] =
              Floki.find(
@@ -83,7 +85,7 @@ defmodule RetroHexChatWeb.Components.UI.Games.SoloLobbyTest do
     html =
       render_component(&solo_lobby/1,
         id: "arcade-lobby",
-        games: Arcade.list_games(),
+        groups: GameCatalog.arcade_groups(),
         session_status: "playing",
         game_name: "DOOM",
         game_id: "doom_shareware",

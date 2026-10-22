@@ -1,6 +1,7 @@
 /**
  * @section M - Admin, Server Operations, Bots
- * @flow M20 [done] The Arcade desktop icon opens an icon launcher, game details, then launches a WASM session through a noopener anchor at its own address
+ * @flow M20 [done] The Arcade desktop icon opens the catalogue's cards under their engines, a game's sheet, then launches a WASM session through a noopener anchor at its own address
+ * @flow M40 [done] Play on an arcade game's public page opens the Arcade on that game for a member, and asks a visitor to sign in from the Arcade icon
  *
  * These @flow lines are the source of truth for e2e/TEST_CATALOG.md.
  * Edit them here, then run `make e2e.catalog` to regenerate the index.
@@ -65,6 +66,7 @@ test.describe("In-chat Arcade", () => {
       await expect(
         user.page.getByTestId("solo-game-doom_shareware"),
       ).toHaveCount(0);
+      await expect(user.page.getByTestId("game-group-scummvm")).toBeVisible();
       await shot(user.chat.arcadeWindow, "arcade-icon-launcher");
 
       const doomIcon = user.page.getByTestId("arcade-game-doom_shareware");
@@ -75,7 +77,17 @@ test.describe("In-chat Arcade", () => {
       await expect(
         user.page.getByTestId("solo-game-start-doom_shareware"),
       ).toBeVisible();
+      // The same sheet as the game's public page: its screenshot, its keys,
+      // and the help topic one click away.
+      const preview = user.page.getByTestId("arcade-game-preview");
+      await expect(preview.locator('img[src*="doom-shareware"]')).toBeVisible();
+      await expect(
+        preview.getByTestId("game-controls").locator("kbd").first(),
+      ).toBeVisible();
+      await expect(preview.getByTestId("arcade-how-to-play")).toBeVisible();
       await shot(user.chat.arcadeWindow, "doom-game-preview");
+      await preview.getByTestId("game-controls").scrollIntoViewIfNeeded();
+      await shot(user.chat.arcadeWindow, "doom-game-preview-keys");
 
       // The game opens through an anchor with `rel="noopener"`, which is what
       // buys it an event loop of its own — measured at 1203 ms against 12 ms.
@@ -120,5 +132,59 @@ test.describe("In-chat Arcade", () => {
     } finally {
       await user.ctx.close();
     }
+  });
+
+  test("Play on a game's public page opens the Arcade on that game (M40)", async ({
+    browser,
+  }) => {
+    const user = await knownSignedInUser(browser, ADMIN_NICK, ADMIN_PW);
+
+    try {
+      // A member reads the game's page on the same desktop; Play is a patch
+      // to the desktop's own address, which opens the Arcade on the game.
+      await user.page.goto("/games/freedoom1");
+      await expect(user.page.locator("#game-heading")).toHaveText(
+        "Freedoom: Phase 1",
+      );
+      await user.page.getByTestId("game-play").click();
+
+      await expect(user.chat.arcadeWindow).toBeVisible();
+      await expect(
+        user.page.getByTestId("solo-game-start-freedoom1"),
+      ).toBeVisible();
+      // In front of the chat the patch brought forward, not behind it.
+      const box = await user.chat.arcadeWindow.boundingBox();
+      expect(box).not.toBeNull();
+      const onTop = await user.page.evaluate(
+        ([x, y]) =>
+          Boolean(
+            document
+              .elementFromPoint(x, y)
+              ?.closest('[data-testid="arcade-games-window"]'),
+          ),
+        [box!.x + box!.width / 2, box!.y + box!.height / 2],
+      );
+      expect(onTop).toBe(true);
+      await shot(user.page, "arcade-opened-from-game-page");
+    } finally {
+      await user.ctx.close();
+    }
+  });
+
+  test("a visitor's Arcade icon asks for an account (M40)", async ({
+    page,
+  }) => {
+    await page.goto("/chat");
+    const icon = page.getByTestId("desktop-icon-arcade");
+    await expect(icon).toBeVisible();
+    await icon.dblclick();
+
+    await expect(
+      page.locator('[data-testid="document-window-connect"]'),
+    ).toBeVisible();
+    await expect(page).toHaveURL(
+      /\/connect\?(?=.*signup=games)(?=.*return_to=%2F%3Farcade%3D)/,
+    );
+    await shot(page, "visitor-arcade-asks-to-sign-in");
   });
 });

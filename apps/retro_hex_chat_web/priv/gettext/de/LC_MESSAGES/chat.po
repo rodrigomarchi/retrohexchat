@@ -1387,7 +1387,7 @@ msgstr "Hinter dem Kanal"
 #: lib/retro_hex_chat_web/live/chat_live/command_dispatch.ex:479
 #: lib/retro_hex_chat_web/live/chat_live/helpers/session.ex:594
 #: lib/retro_hex_chat_web/live/chat_live/menu_toolbar_events.ex:90
-#: lib/retro_hex_chat_web/live/desktop_live.ex:377
+#: lib/retro_hex_chat_web/live/desktop_live.ex:382
 #, elixir-autogen, elixir-format
 msgid "Leaving"
 msgstr "Leasing"
@@ -1876,7 +1876,7 @@ msgstr "Status"
 msgid "Symbols"
 msgstr "Symbole"
 
-#: lib/retro_hex_chat_web/components/ui/chat/chat_taskbar.ex:291
+#: lib/retro_hex_chat_web/components/ui/chat/chat_taskbar.ex:285
 #: lib/retro_hex_chat_web/components/ui/chat/message_row.ex:74
 #: lib/retro_hex_chat_web/components/ui/chat/message_row.ex:170
 #: lib/retro_hex_chat_web/live/chat_live/components/status_viewport.ex:104
@@ -2411,7 +2411,7 @@ msgstr "* Fehlender Einladekanal"
 msgid "* Missing invite target"
 msgstr "* Fehlende Einladung Ziel"
 
-#: lib/retro_hex_chat_web/components/ui/chat/chat_taskbar.ex:292
+#: lib/retro_hex_chat_web/components/ui/chat/chat_taskbar.ex:286
 #: lib/retro_hex_chat_web/live/chat_live/window_registry.ex:294
 #, elixir-autogen, elixir-format
 msgid "Account"
@@ -2458,7 +2458,7 @@ msgstr "Kündigungsfrist"
 msgid "Channel Central"
 msgstr "Kanal Central"
 
-#: lib/retro_hex_chat_web/live/desktop_live.html.heex:787
+#: lib/retro_hex_chat_web/live/desktop_live.html.heex:786
 #, elixir-autogen, elixir-format
 msgid "Channel Central: %{channel}"
 msgstr "Kanalzentrale: %{channel}"
@@ -2925,7 +2925,7 @@ msgstr "%{peer} die P2P-Sitzung verlassen."
 msgid "%{peer} lost the P2P connection — waiting for them to return..."
 msgstr "%{peer} verloren die P2P-Verbindung – warten auf sie zurück..."
 
-#: lib/retro_hex_chat_web/live/chat_live/arcade_session_events.ex:350
+#: lib/retro_hex_chat_web/live/chat_live/arcade_session_events.ex:334
 #, elixir-autogen, elixir-format
 msgid "Arcade session ended."
 msgstr "Arcade-Session endete."
@@ -2950,7 +2950,7 @@ msgstr "Könnte das Spiel nicht laden. Bitte versuchen Sie es noch mal."
 msgid "Could not start the P2P invite."
 msgstr "Die P2P-Einladung konnte nicht starten."
 
-#: lib/retro_hex_chat_web/live/chat_live/arcade_session_events.ex:255
+#: lib/retro_hex_chat_web/live/chat_live/arcade_session_events.ex:257
 #, elixir-autogen, elixir-format
 msgid "Could not start the arcade session. Please try again."
 msgstr ""
@@ -3097,13 +3097,6 @@ msgstr "Toggle P2P Mikrofon"
 #, elixir-autogen, elixir-format
 msgid "Toggle P2P Screen Share"
 msgstr "P2P Bildschirm teilen"
-
-#: lib/retro_hex_chat_web/live/chat_live/arcade_session_events.ex:228
-#, elixir-autogen, elixir-format
-msgid "You must be registered and identified to play. Use /ns register and /ns identify first."
-msgstr ""
-"Sie müssen registriert und identifiziert werden, um zu spielen. Verwenden "
-"Sie /ns Register und /ns identifizieren zuerst."
 
 #: lib/retro_hex_chat_web/live/p2p_live/events.ex:1649
 #, elixir-autogen, elixir-format
@@ -3289,17 +3282,17 @@ msgstr "Ignorieren der Liste"
 msgid "Nick Colors"
 msgstr "Nick Farben"
 
-#: lib/retro_hex_chat_web/components/ui/chat/chat_taskbar.ex:290
+#: lib/retro_hex_chat_web/components/ui/chat/chat_taskbar.ex:284
 #, elixir-autogen, elixir-format
 msgid "Admin"
 msgstr "Admin"
 
-#: lib/retro_hex_chat_web/components/ui/chat/chat_taskbar.ex:293
+#: lib/retro_hex_chat_web/components/ui/chat/chat_taskbar.ex:287
 #, elixir-autogen, elixir-format
 msgid "Contacts"
 msgstr "Ansprechpartner"
 
-#: lib/retro_hex_chat_web/components/ui/chat/chat_taskbar.ex:294
+#: lib/retro_hex_chat_web/components/ui/chat/chat_taskbar.ex:288
 #, elixir-autogen, elixir-format
 msgid "On Connect"
 msgstr "Auf Connect"
@@ -3657,9 +3650,9 @@ msgid "Strikethrough"
 msgstr "Durchgestrichen"
 
 #: lib/retro_hex_chat_web/components/ui/chat/formatting_toolbar.ex:342
-#: lib/retro_hex_chat_web/components/ui/shell/desktop_launchers.ex:513
+#: lib/retro_hex_chat_web/components/ui/shell/desktop_launchers.ex:509
 #: lib/retro_hex_chat_web/components/ui/shell/menu_bar_app.ex:338
-#: lib/retro_hex_chat_web/components/ui/shell/start_menu_app.ex:144
+#: lib/retro_hex_chat_web/components/ui/shell/start_menu_app.ex:140
 #, elixir-autogen, elixir-format
 msgid "Strip Formatting"
 msgstr "Formatierung entfernen"
@@ -3776,7 +3769,7 @@ msgstr "Vorschaubild konnte nicht geladen werden"
 msgid "Thumbnail is being prepared"
 msgstr "Vorschaubild wird vorbereitet"
 
-#: lib/retro_hex_chat_web/components/ui/chat/chat_taskbar.ex:228
+#: lib/retro_hex_chat_web/components/ui/chat/chat_taskbar.ex:222
 #, elixir-autogen, elixir-format
 msgid "Round-trip to the server"
 msgstr "Paketumlaufzeit zum Server"
@@ -4134,7 +4127,7 @@ msgid "Where"
 msgstr "Wo"
 
 #: lib/retro_hex_chat_web/components/ui/shell/menu_bar_app.ex:346
-#: lib/retro_hex_chat_web/components/ui/shell/start_menu_app.ex:151
+#: lib/retro_hex_chat_web/components/ui/shell/start_menu_app.ex:147
 #, elixir-autogen, elixir-format
 msgid "Character Portraits"
 msgstr "Charakterporträts"

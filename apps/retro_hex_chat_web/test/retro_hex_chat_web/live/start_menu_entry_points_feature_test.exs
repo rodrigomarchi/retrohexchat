@@ -65,18 +65,15 @@ defmodule RetroHexChatWeb.StartMenuEntryPointsFeatureTest do
       assert render(view) =~ "chat-messages"
     end
 
-    test "the Arcade row is gray until the nick is identified", %{conn: conn} do
+    # The row is live for every reader of the chat; a nickname not proven
+    # is sent to the sign-in window, which comes back to the arcade.
+    test "the Arcade row asks an unidentified nick to sign in", %{conn: conn} do
       view = connect_user(conn, "StartArc#{uid()}")
 
-      assert has_element?(view, ~s([data-testid="start-menu-item-open_arcade"][disabled]))
+      assert has_element?(view, ~s|[data-testid="start-menu-item-open_arcade"]:not([disabled])|)
 
-      # The same row on the same screen, once the nick is proven.
-      identified = connect_identified(conn, "StartArcId#{uid()}")
-
-      assert has_element?(
-               identified,
-               ~s|[data-testid="start-menu-item-open_arcade"]:not([disabled])|
-             )
+      click(view, "open_arcade")
+      assert_patch(view, "/connect?return_to=%2F%3Farcade%3D&signup=games")
     end
   end
 
@@ -92,11 +89,6 @@ defmodule RetroHexChatWeb.StartMenuEntryPointsFeatureTest do
 
   defp connect_user(conn, nick) do
     {:ok, view, _html} = live(chat_conn(conn, nick), "/")
-    view
-  end
-
-  defp connect_identified(conn, nick) do
-    {:ok, view, _html} = live(chat_conn(conn, nick, pre_identified: true), "/")
     view
   end
 

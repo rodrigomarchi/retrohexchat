@@ -36,7 +36,7 @@ defmodule RetroHexChat.Arcade.CatalogTest do
         assert is_binary(game.name)
         assert is_binary(game.tagline)
         assert is_binary(game.description)
-        assert game.engine in [:doom, :quake, :quake2, :wolfenstein, :halflife, :scummvm]
+        assert game.engine in Catalog.engines()
         assert is_binary(game.controls)
         assert is_binary(game.icon)
       end
@@ -114,6 +114,15 @@ defmodule RetroHexChat.Arcade.CatalogTest do
 
       assert Catalog.game_url(game) ==
                "https://example.test/arcade/scummvm/index.html#-p /data/games/bass/ sky"
+    end
+  end
+
+  describe "engines/0" do
+    test "names every engine its games run on, in the order they are listed" do
+      listed = Catalog.list_games() |> Enum.map(& &1.engine) |> Enum.dedup()
+
+      assert listed == Catalog.engines()
+      assert Catalog.engine_name(:quake2) == "Quake II"
     end
   end
 end

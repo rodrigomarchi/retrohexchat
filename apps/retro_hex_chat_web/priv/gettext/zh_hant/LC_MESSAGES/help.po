@@ -131,7 +131,7 @@ msgstr "4. 用途"
 msgid "4. Your nickname is registered and you join the chat already identified."
 msgstr "4. 您的暱稱已註冊, 您加入已確認的聊天 。"
 
-#: lib/retro_hex_chat_web/components/ui/help/help_viewer.ex:411
+#: lib/retro_hex_chat_web/components/ui/help/help_viewer.ex:427
 #, elixir-autogen, elixir-format
 msgid "Breadcrumb"
 msgstr "麪包屑"
@@ -206,13 +206,13 @@ msgstr "每個暱稱在進入聊天前都必須註冊. 與新暱稱連接時,會
 #: lib/retro_hex_chat_web/components/ui/help/help_menu_bar.ex:89
 #: lib/retro_hex_chat_web/components/ui/help/help_status_bar.ex:55
 #: lib/retro_hex_chat_web/components/ui/help/help_status_bar.ex:57
-#: lib/retro_hex_chat_web/components/ui/help/help_viewer.ex:413
+#: lib/retro_hex_chat_web/components/ui/help/help_viewer.ex:429
 #: lib/retro_hex_chat_web/site/pages/help.ex:87
 #, elixir-autogen, elixir-format
 msgid "Help"
 msgstr "說明"
 
-#: lib/retro_hex_chat_web/components/ui/help/help_viewer.ex:275
+#: lib/retro_hex_chat_web/components/ui/help/help_viewer.ex:291
 #, elixir-autogen, elixir-format
 msgid "Help navigation"
 msgstr "幫助導航"
@@ -343,7 +343,7 @@ msgid "RetroHexChat is a web-based IRC client with an authentic retro look and f
 msgstr ""
 "RetroHexChat是一個基於網絡的IRC客戶端,具有真實的retro外觀和感覺. 它支持頻道,私人信息,文本格式化,暱稱服務,以及更多."
 
-#: lib/retro_hex_chat_web/components/ui/help/help_viewer.ex:192
+#: lib/retro_hex_chat_web/components/ui/help/help_viewer.ex:208
 #: lib/retro_hex_chat_web/controllers/help_content/connect_authentication.html.heex:42
 #: lib/retro_hex_chat_web/controllers/help_content/connecting.html.heex:64
 #: lib/retro_hex_chat_web/controllers/help_content/private_messages.html.heex:33
@@ -456,22 +456,22 @@ msgid "About RetroHexChat"
 msgstr "關於反轉HexChat"
 
 #: lib/retro_hex_chat_web/components/ui/help/help_menu_bar.ex:104
-#: lib/retro_hex_chat_web/components/ui/help/help_viewer.ex:219
-#: lib/retro_hex_chat_web/components/ui/shell/start_menu_app.ex:546
+#: lib/retro_hex_chat_web/components/ui/help/help_viewer.ex:235
+#: lib/retro_hex_chat_web/components/ui/shell/start_menu_app.ex:542
 #, elixir-autogen, elixir-format
 msgid "Back"
 msgstr "返回"
 
-#: lib/retro_hex_chat_web/components/ui/shell/start_menu_app.ex:596
-#: lib/retro_hex_chat_web/components/ui/shell/start_menu_app.ex:603
+#: lib/retro_hex_chat_web/components/ui/shell/start_menu_app.ex:592
+#: lib/retro_hex_chat_web/components/ui/shell/start_menu_app.ex:599
 #, elixir-autogen, elixir-format
 msgid "Back to chat"
 msgstr "繼續聊天"
 
 #: lib/retro_hex_chat_web/components/ui/help/help_menu_bar.ex:122
-#: lib/retro_hex_chat_web/components/ui/help/help_viewer.ex:282
-#: lib/retro_hex_chat_web/components/ui/shell/desktop_launchers.ex:524
-#: lib/retro_hex_chat_web/components/ui/shell/start_menu_app.ex:178
+#: lib/retro_hex_chat_web/components/ui/help/help_viewer.ex:298
+#: lib/retro_hex_chat_web/components/ui/shell/desktop_launchers.ex:520
+#: lib/retro_hex_chat_web/components/ui/shell/start_menu_app.ex:174
 #, elixir-autogen, elixir-format
 msgid "Contents"
 msgstr "目錄"
@@ -482,24 +482,24 @@ msgid "For a lightweight message that does not open a PM tab on the recipient's 
 msgstr "對於不打開收件人一側的 PM 標籤的輕量級信件,請從暱稱上下文菜單中選擇發送通知或使用"
 
 #: lib/retro_hex_chat_web/components/ui/help/help_menu_bar.ex:108
-#: lib/retro_hex_chat_web/components/ui/help/help_viewer.ex:222
-#: lib/retro_hex_chat_web/components/ui/shell/start_menu_app.ex:552
+#: lib/retro_hex_chat_web/components/ui/help/help_viewer.ex:238
+#: lib/retro_hex_chat_web/components/ui/shell/start_menu_app.ex:548
 #, elixir-autogen, elixir-format
 msgid "Forward"
 msgstr "前進"
 
 #: lib/retro_hex_chat_web/components/ui/help/help_menu_bar.ex:98
-#: lib/retro_hex_chat_web/components/ui/help/help_viewer.ex:228
-#: lib/retro_hex_chat_web/components/ui/help/help_viewer.ex:229
+#: lib/retro_hex_chat_web/components/ui/help/help_viewer.ex:244
+#: lib/retro_hex_chat_web/components/ui/help/help_viewer.ex:245
 #: lib/retro_hex_chat_web/site/pages/help.ex:87
 #, elixir-autogen, elixir-format
 msgid "Home"
 msgstr "頁 次"
 
 #: lib/retro_hex_chat_web/components/ui/help/help_menu_bar.ex:131
-#: lib/retro_hex_chat_web/components/ui/help/help_viewer.ex:288
-#: lib/retro_hex_chat_web/components/ui/shell/desktop_launchers.ex:531
-#: lib/retro_hex_chat_web/components/ui/shell/start_menu_app.ex:188
+#: lib/retro_hex_chat_web/components/ui/help/help_viewer.ex:304
+#: lib/retro_hex_chat_web/components/ui/shell/desktop_launchers.ex:527
+#: lib/retro_hex_chat_web/components/ui/shell/start_menu_app.ex:184
 #, elixir-autogen, elixir-format
 msgid "Index"
 msgstr "指數"
@@ -510,7 +510,7 @@ msgstr "指數"
 msgid "Navigate"
 msgstr "導覽"
 
-#: lib/retro_hex_chat_web/components/ui/help/help_viewer.ex:336
+#: lib/retro_hex_chat_web/components/ui/help/help_viewer.ex:352
 #, elixir-autogen, elixir-format
 msgid "No topics match \"%{query}\"."
 msgstr "沒有話題匹配\"%{query}\"."
@@ -521,19 +521,19 @@ msgid "Notice Command"
 msgstr "通知命令"
 
 #: lib/retro_hex_chat_web/components/ui/help/help_menu_bar.ex:140
-#: lib/retro_hex_chat_web/components/ui/help/help_viewer.ex:294
-#: lib/retro_hex_chat_web/components/ui/shell/desktop_launchers.ex:538
-#: lib/retro_hex_chat_web/components/ui/shell/start_menu_app.ex:198
+#: lib/retro_hex_chat_web/components/ui/help/help_viewer.ex:310
+#: lib/retro_hex_chat_web/components/ui/shell/desktop_launchers.ex:534
+#: lib/retro_hex_chat_web/components/ui/shell/start_menu_app.ex:194
 #, elixir-autogen, elixir-format
 msgid "Search"
 msgstr "搜尋"
 
-#: lib/retro_hex_chat_web/components/ui/help/help_viewer.ex:248
+#: lib/retro_hex_chat_web/components/ui/help/help_viewer.ex:264
 #, elixir-autogen, elixir-format
 msgid "Search topics..."
 msgstr "搜索話題..."
 
-#: lib/retro_hex_chat_web/components/ui/help/help_viewer.ex:329
+#: lib/retro_hex_chat_web/components/ui/help/help_viewer.ex:345
 #, elixir-autogen, elixir-format
 msgid "Type in the search box to find topics."
 msgstr "在搜索框中鍵入查找話題。"
@@ -954,27 +954,27 @@ msgstr "你不需要一個賬戶來查看周圍。 打開聊天,你降落在#lob
 msgid "Nothing is kept for a visitor; a new visit gets a new guest name"
 msgstr "Nothing is kept for a visitor; a new visit gets a new guest name"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_language_flags.html.heex:46
+#: lib/retro_hex_chat_web/controllers/help_content/feature_language_flags.html.heex:47
 #, elixir-autogen, elixir-format
 msgid "Character Portraits"
 msgstr "角色頭像"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_language_flags.html.heex:50
+#: lib/retro_hex_chat_web/controllers/help_content/feature_language_flags.html.heex:51
 #, elixir-autogen, elixir-format
 msgid "The Start Menu"
 msgstr "啓動菜單"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_language_flags.html.heex:52
+#: lib/retro_hex_chat_web/controllers/help_content/feature_language_flags.html.heex:53
 #, elixir-autogen, elixir-format
 msgid "/cs"
 msgstr "/cs"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_language_flags.html.heex:56
+#: lib/retro_hex_chat_web/controllers/help_content/feature_language_flags.html.heex:57
 #, elixir-autogen, elixir-format
 msgid "ChanServ in Channel Central"
 msgstr "中央頻道的ChanServ"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_language_flags.html.heex:53
+#: lib/retro_hex_chat_web/controllers/help_content/feature_language_flags.html.heex:54
 #, elixir-autogen, elixir-format
 msgid "/bot"
 msgstr "/bot"

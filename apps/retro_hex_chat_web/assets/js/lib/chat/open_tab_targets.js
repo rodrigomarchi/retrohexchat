@@ -93,7 +93,7 @@ export function describeTarget(anchor, origin) {
 /**
  * The click the door was going to make, held back until the reader confirms.
  *
- * A door can be more than a link: the arcade's Start Game both follows an
+ * A door can be more than a link: the arcade's Play now both follows an
  * address and tells the server a game began. Swallowing the first click would
  * swallow that too, and letting it through would start a game the reader then
  * cancelled. So the anchor declares it, the dialog replays it on confirm, and

@@ -22,6 +22,14 @@ defmodule RetroHexChatWeb.ChatLive.ArcadeSessionEventsTest do
     nick
   end
 
+  # A card in the launcher is the Arcade's address on its game: the patch
+  # opens the sheet one message later, after the address is put back.
+  defp preview(view, game_id) do
+    render_patch(view, "/?arcade=#{game_id}")
+    _ = render(view)
+    render(view)
+  end
+
   defp arcade_session(view), do: :sys.get_state(view.pid).socket.assigns.arcade_session
   defp open_windows(view), do: :sys.get_state(view.pid).socket.assigns.open_windows
 
@@ -39,12 +47,15 @@ defmodule RetroHexChatWeb.ChatLive.ArcadeSessionEventsTest do
       assert {:ok, %{status: "lobby"}} = Arcade.get_session(token)
     end
 
-    test "a guest (unidentified) user does not start a session", %{conn: conn} do
+    # Scores are kept against a nickname: one not identified is sent to the
+    # sign-in window, which comes back to the arcade.
+    test "an unidentified nickname is asked to sign in, and starts no session", %{conn: conn} do
       nick = "guest#{uid()}"
       {:ok, view, _} = live(chat_conn(conn, nick), "/")
 
       render_click(view, "toolbar_action", %{"action" => "open_arcade"})
 
+      assert_patch(view, "/connect?return_to=%2F%3Farcade%3D&signup=games")
       assert arcade_session(view) == nil
       refute "arcade-games" in open_windows(view)
     end
@@ -115,28 +126,16 @@ defmodule RetroHexChatWeb.ChatLive.ArcadeSessionEventsTest do
   # Launching the arcade is the Start menu's job — it opens a program of its
   # own, not something the chat window acts on.
   describe "Start menu ▸ Games" do
-    defp start_menu(arcade_available) do
-      render_component(&StartMenuApp.start_menu_app/1,
-        screen: :chat,
-        windows: [],
-        arcade_available: arcade_available
-      )
+    defp start_menu do
+      render_component(&StartMenuApp.start_menu_app/1, screen: :chat, windows: [])
       |> Floki.parse_document!()
     end
 
     test "shows Arcade as a single launcher entry, never one row per game" do
-      document = start_menu(true)
+      document = start_menu()
 
       assert [row] = Floki.find(document, ~s([data-testid="start-menu-item-open_arcade"]))
       assert Floki.attribute([row], "disabled") == []
-      assert Floki.find(document, ~s([data-testid^="menu-game-"])) == []
-    end
-
-    test "grays the entry when the arcade is unavailable, and still lists no games" do
-      document = start_menu(false)
-
-      assert [row] = Floki.find(document, ~s([data-testid="start-menu-item-open_arcade"]))
-      assert Floki.attribute([row], "disabled") != []
       assert Floki.find(document, ~s([data-testid^="menu-game-"])) == []
     end
   end
@@ -151,12 +150,17 @@ defmodule RetroHexChatWeb.ChatLive.ArcadeSessionEventsTest do
     end
 
     test "previewing a game stores the selected game details", %{view: view, token: token} do
-      render_click(view, "arcade_preview", %{"game-id" => "doom_shareware"})
+      preview(view, "doom_shareware")
 
       assert %{
                status: "lobby",
                token: ^token,
-               previewed_game: %{id: "doom_shareware", about: [_ | _], controls: [_ | _]}
+               previewed_game: %{
+                 id: "doom_shareware",
+                 about: [_ | _],
+                 keys: [_ | _],
+                 tips: [_ | _]
+               }
              } = arcade_session(view)
 
       assert {:ok, %{status: "lobby", game_id: nil}} = Arcade.get_session(token)
@@ -173,7 +177,7 @@ defmodule RetroHexChatWeb.ChatLive.ArcadeSessionEventsTest do
     end
 
     test "starting the previewed game drives the domain to playing", %{view: view, token: token} do
-      render_click(view, "arcade_preview", %{"game-id" => "doom_shareware"})
+      preview(view, "doom_shareware")
       render_click(view, "arcade_select_game", %{"game-id" => "doom_shareware"})
 
       # The domain is authoritative and updated synchronously by select_game;
@@ -189,7 +193,7 @@ defmodule RetroHexChatWeb.ChatLive.ArcadeSessionEventsTest do
       view: view,
       token: token
     } do
-      render_click(view, "arcade_preview", %{"game-id" => "doom_shareware"})
+      preview(view, "doom_shareware")
       render_click(view, "arcade_select_game", %{"game-id" => "doom_shareware"})
       render(view)
 

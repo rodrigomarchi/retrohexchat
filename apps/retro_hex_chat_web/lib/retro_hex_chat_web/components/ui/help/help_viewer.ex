@@ -155,16 +155,30 @@ defmodule RetroHexChatWeb.Components.UI.Help.HelpViewer do
     """
   end
 
-  defp catalogue_path("feature-retro-games"), do: PublicPages.localized_path("/games")
+  # Every topic about the games leads to the catalogue: a game's own topic to
+  # its page, the Arcade, an engine and the Retro Games to the whole catalogue.
+  defp catalogue_path(topic_id) when topic_id in ~w(feature-retro-games feature-arcade),
+    do: PublicPages.localized_path("/games")
 
-  defp catalogue_path("feature-arcade-" <> slug) do
-    case GameCatalog.get(slug) do
-      {:ok, game} -> PublicPages.localized_path(GameCatalog.page_path(game))
-      :error -> nil
+  defp catalogue_path(topic_id) do
+    case Enum.find(GameCatalog.list(), &(&1.help_topic == topic_id)) do
+      %{} = game -> PublicPages.localized_path(GameCatalog.page_path(game))
+      nil -> engine_catalogue_path(topic_id)
     end
   end
 
-  defp catalogue_path(_topic_id), do: nil
+  defp engine_catalogue_path("feature-arcade-" <> _engine),
+    do: PublicPages.localized_path("/games")
+
+  defp engine_catalogue_path(_topic_id), do: nil
+
+  # The topics a body lists from the catalogue (`help_game_list`) rather than
+  # writing out, which the template scan cannot see.
+  defp listed("feature-arcade"), do: help_topics(:arcade)
+  defp listed("feature-retro-games"), do: help_topics(:multiplayer)
+  defp listed(_topic_id), do: MapSet.new()
+
+  defp help_topics(kind), do: kind |> GameCatalog.list() |> MapSet.new(& &1.help_topic)
 
   attr :topic_id, :string, default: nil
   attr :see_also, :list, default: []
@@ -175,7 +189,9 @@ defmodule RetroHexChatWeb.Components.UI.Help.HelpViewer do
   @spec see_also_section(map()) :: Phoenix.LiveView.Rendered.t()
   def see_also_section(assigns) do
     linked =
-      if assigns.topic_id, do: ContentIndex.body_links(assigns.topic_id), else: MapSet.new()
+      if assigns.topic_id,
+        do: MapSet.union(ContentIndex.body_links(assigns.topic_id), listed(assigns.topic_id)),
+        else: MapSet.new()
 
     assigns =
       assigns

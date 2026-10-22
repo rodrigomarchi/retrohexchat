@@ -1,5 +1,5 @@
 defmodule RetroHexChatWeb.Components.Diagrams.GameArcadeFlow do
-  @moduledoc "SVG diagram for Solo Arcade games flow."
+  @moduledoc "SVG diagram for the Arcade games flow."
   use Phoenix.Component
   use Gettext, backend: RetroHexChatWeb.Gettext
 
@@ -17,7 +17,9 @@ defmodule RetroHexChatWeb.Components.Diagrams.GameArcadeFlow do
       aria-label={
         dgettext(
           "diagrams",
-          "Solo arcade flow: open the Games menu and choose Arcade, pick a game icon, review details, press Start Game, then the WASM game runs in a browser window"
+          "%{arcade} flow: open the Games menu and choose %{arcade}, pick a game, check its details, press %{play}, then the WASM game runs in a browser tab of its own",
+          arcade: dgettext("ui", "Arcade"),
+          play: dgettext("games", "Play now")
         )
       }
     >
@@ -115,7 +117,7 @@ defmodule RetroHexChatWeb.Components.Diagrams.GameArcadeFlow do
         font-family="Tahoma,sans-serif"
         font-weight="bold"
       >
-        {dgettext("diagrams", "Arcade - Pick an Icon")}
+        {dgettext("diagrams", "Arcade - Pick a Game")}
       </text>
       <%!-- Content inset --%>
       <rect x="66" y="100" width="288" height="52" fill="#dfdfdf" stroke="#000" stroke-width="1" />
@@ -211,7 +213,7 @@ defmodule RetroHexChatWeb.Components.Diagrams.GameArcadeFlow do
         font-size="8"
         font-family="Tahoma,sans-serif"
       >
-        {dgettext("diagrams", "Arcade - Pick an Icon")}
+        {dgettext("diagrams", "Arcade - Pick a Game")}
       </text>
 
       <%!-- Front window (game details) --%>
@@ -258,7 +260,9 @@ defmodule RetroHexChatWeb.Components.Diagrams.GameArcadeFlow do
         font-size="8"
         font-family="Tahoma,sans-serif"
       >
-        {dgettext("diagrams", "Review details, then Start Game")}
+        {dgettext("diagrams", "Check the details, then press %{play}",
+          play: dgettext("games", "Play now")
+        )}
       </text>
 
       <%!-- Arrow 3 → 4 (green accent) --%>
@@ -343,7 +347,7 @@ defmodule RetroHexChatWeb.Components.Diagrams.GameArcadeFlow do
         font-size="9"
         font-family="Tahoma,sans-serif"
       >
-        {dgettext("diagrams", "18 classic games · Runs in your browser via WebAssembly")}
+        {dgettext("diagrams", "Classic games · Runs in your browser via WebAssembly")}
       </text>
     </svg>
     """

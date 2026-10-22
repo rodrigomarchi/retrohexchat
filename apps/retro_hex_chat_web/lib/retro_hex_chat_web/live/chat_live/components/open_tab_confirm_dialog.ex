@@ -70,7 +70,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.OpenTabConfirmDialog do
 
   # Confirming is one or two pushes on the same anchor. The second is always the
   # clear; the first exists only for a door that was doing something besides
-  # linking — the arcade's Start Game also tells the domain a game began, and
+  # linking — the arcade's Play now also tells the domain a game began, and
   # that call belongs on this click rather than on the one that only asked the
   # question. Cancelling never sends it, which is the whole point of holding it.
   @spec open_command(map() | nil, %Phoenix.LiveComponent.CID{}) :: Phoenix.LiveView.JS.t()

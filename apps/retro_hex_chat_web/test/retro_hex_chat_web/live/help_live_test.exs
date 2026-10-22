@@ -28,8 +28,8 @@ defmodule RetroHexChatWeb.HelpLiveTest do
       assert html =~ "User Interface"
       assert html =~ "Retro Games"
       assert html =~ "P2P Games: Action"
-      assert html =~ "Solo Arcade: FPS"
-      assert html =~ "Solo Arcade: Adventures"
+      assert html =~ "Arcade: FPS"
+      assert html =~ "Arcade: Adventures"
     end
 
     test "defaults to welcome topic", %{conn: conn} do

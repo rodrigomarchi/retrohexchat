@@ -3,6 +3,8 @@ defmodule RetroHexChatWeb.Components.UI.SoloLobby do
   use RetroHexChatWeb.Component
 
   alias RetroHexChatWeb.App.Paths
+  alias RetroHexChatWeb.Components.UI.GameSheet
+  alias RetroHexChatWeb.Components.UI.Landing.GameCards
   alias RetroHexChatWeb.Icons
 
   import RetroHexChatWeb.Components.UI.Badge
@@ -18,7 +20,7 @@ defmodule RetroHexChatWeb.Components.UI.SoloLobby do
   platform primitives (Button, Badge, Icons).
   """
   attr :id, :string, required: true
-  attr :games, :list, required: true
+  attr :groups, :list, required: true, doc: "`RetroHexChatWeb.GameCatalog.arcade_groups/0`"
   attr :session_status, :string, default: "lobby"
   attr :previewed_game, :map, default: nil
   attr :game_name, :string, default: nil
@@ -26,7 +28,6 @@ defmodule RetroHexChatWeb.Components.UI.SoloLobby do
   attr :game_started_at, :string, default: nil
   attr :game_duration, :integer, default: nil
   attr :inactivity_warning, :boolean, default: false
-  attr :on_preview_game, :any, default: nil
   attr :on_select_game, :any, default: nil
   attr :on_back, :any, default: nil
   attr :on_back_to_launcher, :any, default: nil
@@ -54,8 +55,7 @@ defmodule RetroHexChatWeb.Components.UI.SoloLobby do
 
       <.lobby_launcher
         :if={@session_status == "lobby" && !@previewed_game}
-        games={@games}
-        on_preview_game={@on_preview_game}
+        groups={@groups}
         on_close={@on_close}
       />
 
@@ -90,17 +90,21 @@ defmodule RetroHexChatWeb.Components.UI.SoloLobby do
 
   # ── Lobby: Game Launcher ────────────────────────────────
 
-  attr :games, :list, required: true
-  attr :on_preview_game, :any, default: nil
+  attr :groups, :list, required: true
   attr :on_close, :any, default: nil
 
+  # The same cards, under the same engines, as the public catalogue; a card
+  # opens the game's sheet here instead of its page.
   defp lobby_launcher(assigns) do
+    assigns =
+      assign(assigns, :card_groups, Enum.map(assigns.groups, &card_group/1))
+
     ~H"""
     <div data-testid="arcade-library" class="flex min-h-0 flex-1 flex-col gap-retro-8">
       <div class="flex items-center gap-retro-12">
         <Icons.icon_game_arcade class="h-8 w-8 flex-shrink-0" />
         <div class="min-w-0">
-          <p class="text-sm font-bold">{dgettext("games", "Retro Arcade")}</p>
+          <p class="text-sm font-bold">{dgettext("games", "Arcade")}</p>
           <p class="text-xs text-muted-foreground">
             {dgettext("games", "Classic games running in your browser via WebAssembly")}
           </p>
@@ -108,30 +112,11 @@ defmodule RetroHexChatWeb.Components.UI.SoloLobby do
       </div>
 
       <.inset data-testid="arcade-icon-window" class="min-h-0 flex-1 overflow-auto p-retro-10">
-        <div
-          data-testid="arcade-icon-grid"
-          class="grid grid-cols-[repeat(auto-fill,minmax(92px,1fr))] content-start gap-x-retro-8 gap-y-retro-12"
-        >
-          <button
-            :for={game <- @games}
-            type="button"
-            phx-click={@on_preview_game}
-            phx-value-game-id={game.id}
-            title={game.description}
-            aria-label={game.name}
-            class={[
-              "group flex min-h-[88px] flex-col items-center justify-start gap-retro-4 px-retro-4 py-retro-6 text-center",
-              "cursor-pointer hover:bg-hover-bg active:shadow-retro-sunken"
-            ]}
-            data-testid={"arcade-game-#{game.id}"}
-          >
-            <span class="grid h-12 w-12 place-items-center">
-              <Icons.game_icon game_id={game.id} class="h-12 w-12 shrink-0" />
-            </span>
-            <span class="max-w-full text-[11px] font-bold leading-tight [overflow-wrap:anywhere]">
-              {game.name}
-            </span>
-          </button>
+        <div data-testid="arcade-icon-grid">
+          <GameCards.game_card_groups
+            groups={@card_groups}
+            columns="grid-cols-2 md:grid-cols-3 lg:grid-cols-4"
+          />
         </div>
       </.inset>
 
@@ -146,6 +131,18 @@ defmodule RetroHexChatWeb.Components.UI.SoloLobby do
     """
   end
 
+  # Each card is the Arcade's own address on its game (`/?arcade=<id>`), so it
+  # can be opened, shared or bookmarked like the public page's.
+  defp card_group(group) do
+    cards =
+      Enum.map(
+        group.games,
+        &%{game: &1, path: Paths.chat_arcade_path(&1.id), testid: "arcade-game-#{&1.id}"}
+      )
+
+    %{engine: group.engine, name: group.name, cards: cards}
+  end
+
   # ── Lobby: Game Preview ─────────────────────────────────
 
   attr :previewed_game, :map, required: true
@@ -157,29 +154,10 @@ defmodule RetroHexChatWeb.Components.UI.SoloLobby do
     ~H"""
     <div
       data-testid="arcade-game-preview"
-      class="flex min-h-0 flex-1 flex-col gap-retro-10"
+      class="min-h-0 flex-1 overflow-auto bg-surface p-retro-10 shadow-retro-sunken"
     >
-      <.inset class="flex shrink-0 items-center gap-retro-12 p-retro-10">
-        <Icons.game_icon game_id={@previewed_game.id} class="h-12 w-12 flex-shrink-0" />
-        <div class="min-w-0 flex-1 space-y-retro-2">
-          <h3 class="truncate text-base font-bold leading-tight">{@previewed_game.name}</h3>
-          <p class="text-xs leading-snug text-muted-foreground">{@previewed_game.description}</p>
-          <.badge variant="secondary">
-            {dgettext("games", "%{engine} Engine",
-              engine: String.upcase(to_string(@previewed_game.engine))
-            )}
-          </.badge>
-        </div>
-        <div class="flex shrink-0 flex-wrap justify-end gap-retro-6">
-          <.button
-            variant="outline"
-            size="sm"
-            phx-click={@on_back}
-            data-testid="arcade-preview-back"
-          >
-            <:icon><Icons.icon_btn_prev class="w-4 h-4" /></:icon>
-            {dgettext("games", "Back")}
-          </.button>
+      <GameSheet.game_sheet game={@previewed_game}>
+        <:actions>
           <%!-- An anchor, not a scripted `window.open`: `rel="noopener"` is
                 what gives the game its own event loop, and without it the tab
                 shares this one — measured at 1203 ms against 12 ms.
@@ -192,7 +170,6 @@ defmodule RetroHexChatWeb.Components.UI.SoloLobby do
                 (no JavaScript at all), where the anchor and the click go
                 together exactly as they used to. --%>
           <.button
-            size="sm"
             class="font-bold"
             href={Paths.arcade_path(@previewed_game.id)}
             target="_blank"
@@ -205,78 +182,26 @@ defmodule RetroHexChatWeb.Components.UI.SoloLobby do
             data-testid={"solo-game-start-#{@previewed_game.id}"}
           >
             <:icon><Icons.icon_btn_join class="w-4 h-4" /></:icon>
-            {dgettext("games", "Start Game")}
+            {dgettext("games", "Play now")}
           </.button>
-          <.button variant="outline" size="sm" phx-click={@on_close}>
+          <.button
+            variant="outline"
+            patch={Paths.localized("/chat/help/" <> @previewed_game.help_topic)}
+            data-testid="arcade-how-to-play"
+          >
+            <:icon><Icons.icon_question class="w-4 h-4" /></:icon>
+            {dgettext("games", "How to play")}
+          </.button>
+          <.button variant="outline" phx-click={@on_back} data-testid="arcade-preview-back">
+            <:icon><Icons.icon_btn_prev class="w-4 h-4" /></:icon>
+            {dgettext("games", "Back")}
+          </.button>
+          <.button variant="outline" phx-click={@on_close}>
             <:icon><Icons.icon_close class="w-4 h-4" /></:icon>
             {dgettext("games", "Leave")}
           </.button>
-        </div>
-      </.inset>
-
-      <div class="min-h-0 flex-1 overflow-auto bg-white p-retro-10 shadow-retro-sunken">
-        <div class="grid min-h-full grid-cols-1 items-stretch gap-retro-10 md:grid-cols-[repeat(auto-fit,minmax(18rem,1fr))]">
-          <fieldset
-            :if={@previewed_game[:about] && @previewed_game.about != []}
-            class="retro-fieldset min-h-[160px] min-w-0 p-retro-8"
-          >
-            <legend class="px-retro-4 text-xs font-bold">{dgettext("games", "About")}</legend>
-            <div class="pr-retro-4">
-              <p
-                :for={paragraph <- @previewed_game.about}
-                class="mb-retro-6 text-xs leading-relaxed last:mb-0"
-              >
-                {paragraph}
-              </p>
-            </div>
-          </fieldset>
-
-          <fieldset
-            :if={@previewed_game[:controls] && @previewed_game.controls != []}
-            class="retro-fieldset min-h-[160px] min-w-0 p-retro-8"
-          >
-            <legend class="px-retro-4 text-xs font-bold">
-              {dgettext("games", "Keyboard Controls")}
-            </legend>
-            <div class="pr-retro-2">
-              <table class="w-full text-[11px] leading-snug">
-                <thead>
-                  <tr>
-                    <th class="w-[7.75rem] border-b border-gray-400 py-retro-2 pr-retro-6 text-left font-bold">
-                      {dgettext("games", "Key")}
-                    </th>
-                    <th class="border-b border-gray-400 py-retro-2 text-left font-bold">
-                      {dgettext("games", "Action")}
-                    </th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr :for={{key, action} <- @previewed_game.controls}>
-                    <td class="w-[7.75rem] whitespace-nowrap py-retro-2 pr-retro-6 align-top">
-                      <kbd class="shadow-retro-raised bg-surface px-retro-4 font-mono text-[11px]">
-                        {key}
-                      </kbd>
-                    </td>
-                    <td class="py-retro-2 align-top">{action}</td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-          </fieldset>
-
-          <fieldset
-            :if={@previewed_game[:tips] && @previewed_game.tips != []}
-            class="retro-fieldset min-h-[160px] min-w-0 p-retro-8"
-          >
-            <legend class="px-retro-4 text-xs font-bold">{dgettext("games", "Tips")}</legend>
-            <div class="pr-retro-4">
-              <ul class="list-disc space-y-retro-4 pl-retro-16 text-xs leading-relaxed">
-                <li :for={tip <- @previewed_game.tips}>{tip}</li>
-              </ul>
-            </div>
-          </fieldset>
-        </div>
-      </div>
+        </:actions>
+      </GameSheet.game_sheet>
     </div>
     """
   end

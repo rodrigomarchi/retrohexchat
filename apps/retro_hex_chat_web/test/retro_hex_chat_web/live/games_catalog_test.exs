@@ -131,16 +131,19 @@ defmodule RetroHexChatWeb.GamesCatalogTest do
       assert game["image"] =~ "doom-shareware.webp"
     end
 
-    # The help page is already indexed with the arcade's long prose; the
-    # catalogue says what the game is in its own words, so a search engine is
-    # never left to choose between two URLs saying the same thing.
-    test "does not repeat the help page's prose", %{conn: conn} do
-      help = conn |> get("/chat/help/feature-arcade-doom-shareware") |> html_response(200)
+    # The page is the same sheet the in-app Arcade opens on: what the game is,
+    # every key and the tips, read before signing in.
+    test "shows the game's whole sheet", %{conn: conn} do
       page = conn |> get("/games/doom-shareware") |> html_response(200)
+      document = Floki.parse_document!(page)
+      {:ok, game} = GameCatalog.get_arcade("doom_shareware")
 
-      opening = "the game that launched the FPS genre into the mainstream"
-      assert help =~ opening
-      refute page =~ opening
+      assert page =~ "the game that launched the FPS genre into the mainstream"
+      tip = game.tips |> hd() |> Phoenix.HTML.html_escape() |> Phoenix.HTML.safe_to_string()
+      assert page =~ tip
+
+      assert length(Floki.find(document, ~s([data-testid="game-controls"] tbody tr))) ==
+               length(game.keys)
     end
 
     test "playing goes through the sign-in window, which lands on the game", %{conn: conn} do
@@ -541,10 +544,56 @@ defmodule RetroHexChatWeb.GamesCatalogTest do
              |> Floki.attribute("href") == ["/games/doom-shareware"]
     end
 
-    test "a topic that is not a game links nowhere new", %{conn: conn} do
-      document = document(conn, "/chat/help/feature-arcade-doom")
+    test "a Retro Game's help page links to its home", %{conn: conn} do
+      document = document(conn, "/chat/help/feature-hex-tennis")
+
+      assert document
+             |> Floki.find(~s([data-testid="help-catalogue-link"] a))
+             |> Floki.attribute("href") == ["/games/hex-tennis"]
+    end
+
+    test "the Arcade's and an engine's help pages link to the whole catalogue", %{conn: conn} do
+      for topic <- ~w(feature-arcade feature-arcade-doom) do
+        assert conn
+               |> document("/chat/help/#{topic}")
+               |> Floki.find(~s([data-testid="help-catalogue-link"] a))
+               |> Floki.attribute("href") == ["/games"]
+      end
+    end
+
+    # The lists are built from the catalogue, so the See Also under them must
+    # know which topics they already link.
+    test "a game listed in the help is not linked again under See Also", %{conn: conn} do
+      for {topic, game_topic} <- [
+            {"feature-retro-games", "feature-hex-tennis"},
+            {"feature-arcade", "feature-arcade-doom-shareware"}
+          ] do
+        document = document(conn, "/chat/help/#{topic}")
+        link = ~s(a[href="/chat/help/#{game_topic}"])
+
+        assert [_ | _] = Floki.find(document, ~s([data-testid^="help-games-"] #{link}))
+        assert Floki.find(document, ~s([data-testid="help-see-also"] #{link})) == []
+      end
+    end
+
+    test "a topic that is not about games links nowhere new", %{conn: conn} do
+      document = document(conn, "/chat/help/nickserv")
 
       assert Floki.find(document, ~s([data-testid="help-catalogue-link"])) == []
+    end
+
+    # The list is read from the catalogue: every game is in it, under its
+    # engine, and its name opens its page.
+    test "the Arcade's help lists every game, each linking to its page", %{conn: conn} do
+      document = document(conn, "/chat/help/feature-arcade")
+
+      for group <- GameCatalog.arcade_groups(), game <- group.games do
+        assert [_] =
+                 Floki.find(
+                   document,
+                   ~s([data-testid="help-games-#{group.engine}"] a[href="/games/#{game.slug}"])
+                 )
+      end
     end
   end
 

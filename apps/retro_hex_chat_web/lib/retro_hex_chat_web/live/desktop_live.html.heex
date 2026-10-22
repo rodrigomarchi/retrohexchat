@@ -710,7 +710,7 @@
         <:icon><Icons.icon_game_arcade class="h-4 w-4" /></:icon>
         <.solo_lobby
           id="arcade-lobby"
-          games={arcade_games()}
+          groups={arcade_groups()}
           session_status={@arcade_session.status}
           previewed_game={@arcade_session.previewed_game}
           game_name={@arcade_session.game_name}
@@ -718,7 +718,6 @@
           game_started_at={@arcade_session.game_started_at}
           game_duration={@arcade_session.game_duration}
           inactivity_warning={@arcade_session.inactivity_warning}
-          on_preview_game="arcade_preview"
           on_select_game="arcade_select_game"
           on_back="arcade_back"
           on_back_to_launcher="arcade_back_to_launcher"
@@ -1171,7 +1170,6 @@
       screen={:chat}
       help_open={Map.has_key?(@docs, :help)}
       is_admin={admin?(@session)}
-      arcade_available={@session.identified == true}
       windows={[
         %{
           id: "chat",
@@ -1185,7 +1183,6 @@
       <.desktop_launcher_icons
         screen={:chat}
         visitor={@visitor?}
-        arcade_available={@session.identified == true}
       />
     </:shortcuts>
 
@@ -1198,7 +1195,6 @@
         chat_label={ChatTitle.window_title(@session, @show_status_tab)}
         open_windows={@open_windows}
         is_admin={admin?(@session)}
-        arcade_available={@session.identified == true}
         online_buddy_count={ChatShell.online_buddy_count(@session.notify_list)}
         mention_count={Enum.sum(Map.values(@mention_counts))}
         lag_ms={@lag_ms}

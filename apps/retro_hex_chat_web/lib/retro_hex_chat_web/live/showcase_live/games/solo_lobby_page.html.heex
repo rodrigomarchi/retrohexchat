@@ -8,14 +8,14 @@
     <div class="max-w-lg">
       <.solo_lobby
         id="lobby-picker"
-        games={@sample_games}
+        groups={@sample_groups}
         session_status="lobby"
       />
     </div>
     <.code_example>
       &lt;.solo_lobby
       id="lobby-picker"
-      games=&#123;@games&#125;
+      groups=&#123;@groups&#125;
       session_status="lobby"
       /&gt;
     </.code_example>
@@ -26,14 +26,14 @@
     description={
       dgettext(
         "showcase",
-        "Detail view after clicking a game icon, showing about, controls, tips, and Start Game."
+        "Detail view after clicking a game icon, showing the game sheet and Play now."
       )
     }
   >
     <div class="max-w-lg">
       <.solo_lobby
         id="lobby-preview"
-        games={@sample_games}
+        groups={@sample_groups}
         session_status="lobby"
         previewed_game={@sample_preview}
         on_select_game="arcade_select_game"
@@ -44,7 +44,7 @@
     <.code_example>
       &lt;.solo_lobby
       id="lobby-preview"
-      games=&#123;@games&#125;
+      groups=&#123;@groups&#125;
       session_status="lobby"
       previewed_game=&#123;@previewed_game&#125;
       on_select_game="arcade_select_game"
@@ -61,7 +61,7 @@
     <div class="max-w-lg">
       <.solo_lobby
         id="lobby-playing"
-        games={@sample_games}
+        groups={@sample_groups}
         session_status="playing"
         game_name="DOOM"
         game_id="doom_shareware"
@@ -71,7 +71,7 @@
     <.code_example>
       &lt;.solo_lobby
       id="lobby-playing"
-      games=&#123;@games&#125;
+      groups=&#123;@groups&#125;
       session_status="playing"
       game_name="DOOM"
       game_id="doom_shareware"
@@ -87,7 +87,7 @@
     <div class="max-w-lg">
       <.solo_lobby
         id="lobby-finished"
-        games={@sample_games}
+        groups={@sample_groups}
         session_status="finished"
         game_name="DOOM"
         game_id="doom_shareware"
@@ -112,7 +112,7 @@
     <div class="max-w-lg">
       <.solo_lobby
         id="lobby-inactivity"
-        games={@sample_games}
+        groups={@sample_groups}
         session_status="lobby"
         inactivity_warning={true}
       />
@@ -120,7 +120,7 @@
     <.code_example>
       &lt;.solo_lobby
       id="lobby-inactivity"
-      games=&#123;@games&#125;
+      groups=&#123;@groups&#125;
       session_status="lobby"
       inactivity_warning=&#123;true&#125;
       /&gt;

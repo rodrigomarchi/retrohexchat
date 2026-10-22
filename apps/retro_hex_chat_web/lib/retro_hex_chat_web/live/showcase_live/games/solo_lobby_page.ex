@@ -11,73 +11,7 @@ defmodule RetroHexChatWeb.ShowcaseLive.Games.SoloLobbyPage do
   import RetroHexChatWeb.Components.UI.SoloLobby
   import RetroHexChatWeb.ShowcaseHelpers
 
-  @sample_games [
-    %{
-      id: "doom_shareware",
-      name: "DOOM",
-      description: dgettext("showcase", "Episode 1"),
-      engine: dgettext("showcase", "DOOM Engine")
-    },
-    %{
-      id: "freedoom1",
-      name: "Freedoom Phase 1",
-      description: dgettext("showcase", "36 levels"),
-      engine: dgettext("showcase", "DOOM Engine")
-    },
-    %{
-      id: "librequake",
-      name: "LibreQuake",
-      description: dgettext("showcase", "Open-source Quake"),
-      engine: dgettext("showcase", "Quake Engine")
-    },
-    %{
-      id: "wolfenstein_3d",
-      name: "Wolfenstein 3D",
-      description: dgettext("showcase", "Shareware Classic"),
-      engine: dgettext("showcase", "Wolf3D Engine")
-    },
-    %{
-      id: "scummvm_bass",
-      name: "Beneath a Steel Sky",
-      description: dgettext("showcase", "Point & Click"),
-      engine: dgettext("showcase", "ScummVM")
-    },
-    %{
-      id: "chex_quest",
-      name: "Chex Quest",
-      description: dgettext("showcase", "Cereal box classic"),
-      engine: dgettext("showcase", "DOOM Engine")
-    }
-  ]
-
-  @sample_preview %{
-    id: "doom_shareware",
-    name: "DOOM",
-    description: dgettext("showcase", "Episode 1 — The Original"),
-    engine: dgettext("showcase", "DOOM Engine (PrBoom+)"),
-    about: [
-      dgettext(
-        "showcase",
-        "The original first-person shooter that defined the genre."
-      ),
-      dgettext(
-        "showcase",
-        "Fight through hordes of demons from Hell in this classic 1993 game."
-      )
-    ],
-    controls: [
-      {"WASD", dgettext("showcase", "Move")},
-      {"Mouse", dgettext("showcase", "Look / Aim")},
-      {"Left Click", dgettext("showcase", "Fire")},
-      {"E", dgettext("showcase", "Use / Open doors")},
-      {"1-7", dgettext("showcase", "Switch weapons")}
-    ],
-    tips: [
-      dgettext("showcase", "Look for secret walls by pressing Use against suspicious textures"),
-      dgettext("showcase", "Save often - ammo and health can be scarce"),
-      dgettext("showcase", "The chainsaw is surprisingly effective against Pinkies")
-    ]
-  }
+  alias RetroHexChatWeb.GameCatalog
 
   @impl true
   def mount(_params, _session, socket) do
@@ -85,9 +19,15 @@ defmodule RetroHexChatWeb.ShowcaseLive.Games.SoloLobbyPage do
      assign(socket,
        page_title: dgettext("showcase", "Solo Lobby"),
        active_page: "solo-lobby",
-       sample_games: @sample_games,
-       sample_preview: @sample_preview
+       sample_groups: GameCatalog.arcade_groups(),
+       sample_preview: sample_preview()
      )}
+  end
+
+  # The preview is a real game's sheet, screenshot and all.
+  defp sample_preview do
+    {:ok, game} = GameCatalog.get_arcade("doom_shareware")
+    game
   end
 
   # A showcase page renders the component and nothing behind it, so the

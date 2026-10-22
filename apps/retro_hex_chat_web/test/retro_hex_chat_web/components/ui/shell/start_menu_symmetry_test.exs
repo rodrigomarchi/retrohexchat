@@ -174,12 +174,10 @@ defmodule RetroHexChatWeb.Components.UI.StartMenuSymmetryTest do
       end
     end
 
-    test "the arcade needs an identified nick, not just a chat" do
-      refute enabled?(:chat, "start-menu-item-open_arcade")
-      assert enabled?(:chat, "start-menu-item-open_arcade", arcade_available: true)
-
-      # The capability without the screen is still nothing to act on.
-      refute enabled?(:showcase, "start-menu-item-open_arcade", arcade_available: true)
+    # The arcade asks for an account itself, so it only needs a chat.
+    test "the arcade needs a chat" do
+      assert enabled?(:chat, "start-menu-item-open_arcade")
+      refute enabled?(:showcase, "start-menu-item-open_arcade")
     end
 
     test "the chat window's own menu needs the chat window" do

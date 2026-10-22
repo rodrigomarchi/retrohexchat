@@ -1,7 +1,9 @@
 defmodule RetroHexChatWeb.HelpContent.Helpers do
   @moduledoc false
   use Phoenix.Component
+  use Gettext, backend: RetroHexChatWeb.Gettext
 
+  alias RetroHexChatWeb.GameCatalog
   alias RetroHexChatWeb.Icons
   alias RetroHexChatWeb.PublicPages
 
@@ -32,6 +34,63 @@ defmodule RetroHexChatWeb.HelpContent.Helpers do
     >
       {render_slot(@inner_block)}
     </.link>
+    """
+  end
+
+  @doc """
+  The games of the catalogue, read from it so the help never lists fewer than
+  there are: the arcade under its engines, or the Retro Games. Each name opens
+  the game's page — its screenshot, keys and tips — and How to play opens its
+  topic.
+  """
+  attr :kind, :atom, required: true, values: [:arcade, :multiplayer]
+
+  @spec help_game_list(map()) :: Phoenix.LiveView.Rendered.t()
+  def help_game_list(%{kind: :arcade} = assigns) do
+    assigns = assign(assigns, :groups, GameCatalog.arcade_cards())
+
+    ~H"""
+    <section :for={group <- @groups} data-testid={"help-games-#{group.engine}"}>
+      <h4 class="flex items-center gap-1.5 text-sm font-bold mt-4 mb-1.5 text-text">
+        <Icons.game_icon game_id={hd(group.cards).game.id} class="w-3.5 h-3.5 flex-shrink-0" />
+        {dgettext("games", "%{engine} Engine", engine: group.name)}
+      </h4>
+      <ul>
+        <.help_game_item :for={card <- group.cards} card={card} />
+      </ul>
+    </section>
+    """
+  end
+
+  def help_game_list(%{kind: :multiplayer} = assigns) do
+    assigns =
+      assign(
+        assigns,
+        :cards,
+        Enum.map(
+          GameCatalog.list(:multiplayer),
+          &%{game: &1, path: PublicPages.localized_path(GameCatalog.page_path(&1))}
+        )
+      )
+
+    ~H"""
+    <ul data-testid="help-games-multiplayer">
+      <.help_game_item :for={card <- @cards} card={card} />
+    </ul>
+    """
+  end
+
+  attr :card, :map, required: true
+
+  defp help_game_item(assigns) do
+    ~H"""
+    <li>
+      <.link patch={@card.path} class="text-link hover:underline font-bold">
+        {@card.game.name}
+      </.link>
+      — {@card.game.tagline} ·
+      <.help_link topic={@card.game.help_topic}>{dgettext("games", "How to play")}</.help_link>
+    </li>
     """
   end
 

@@ -85,6 +85,7 @@ defmodule RetroHexChatWeb.DesktopLive do
   alias RetroHexChatWeb.ChatLive.P2PReadModel
   alias RetroHexChatWeb.ChatLive.SpaceReadModel
   alias RetroHexChatWeb.ChatLive.Visitor
+  alias RetroHexChatWeb.GameCatalog
   alias RetroHexChatWeb.Site
 
   alias RetroHexChatWeb.ChatLive.Components.{
@@ -323,13 +324,17 @@ defmodule RetroHexChatWeb.DesktopLive do
 
   # Every move on the desktop is an address: a page of the site opens its
   # window (`Site.Documents`), a channel's comes to the front. What a link asks
-  # for once (`?arcade=`) is acted on in mount and then dropped by a patch.
+  # for once (`?arcade=`) is acted on — in mount for the address the desktop
+  # opened at, here for one a link patched to — and then dropped by a patch.
   @impl true
   def handle_params(params, uri, socket) do
     socket =
       params
       |> Site.Documents.handle_params(uri, socket)
       |> enter_channel(params)
+
+    if socket.assigns[:address_ready?] == true and is_binary(params["arcade"]),
+      do: send(self(), {:open_arcade_link, params["arcade"]})
 
     {:noreply, assign(socket, address_ready?: connected?(socket))}
   end
@@ -1127,8 +1132,8 @@ defmodule RetroHexChatWeb.DesktopLive do
 
   defp admin?(session), do: ChatContext.admin?(session)
 
-  # Static solo-arcade catalog for the in-chat Arcade window body.
-  defp arcade_games, do: RetroHexChat.Arcade.list_games()
+  # The arcade under its engines, as the public catalogue shows it.
+  defp arcade_groups, do: GameCatalog.arcade_groups()
 
   defp maybe_broadcast_nick_changed(socket, old_nickname, new_nickname)
        when is_binary(old_nickname) and old_nickname != "" and old_nickname != new_nickname do

@@ -135,8 +135,8 @@ make e2e.catalog.check    # verify it is current (also runs in make ci)
 ## Coverage
 
 - **257 spec files** under `e2e/tests/`.
-- **640 Playwright `test()` cases**.
-- **587 documented flows**, 586 done, 1 not done.
+- **644 Playwright `test()` cases**.
+- **588 documented flows**, 587 done, 1 not done.
 - **Every spec documents its own flows.**
 
 ## Flow index
@@ -381,7 +381,7 @@ Grouped by section. Every row comes from an `@flow` line in the spec itself.
 | M17 | Bot enable/disable/destroy changes response behavior and cleans up (features P2) | `tests/chat-bots.spec.ts` | done |
 | M18 | `/announce` broadcasts to connected users and bypasses ignore (features P1) | `tests/chat-announce.spec.ts` | done |
 | M19 | Regular user admin-only commands show permission errors (features P1) | `tests/chat-admin-permissions.spec.ts` | done |
-| M20 | The Arcade desktop icon opens an icon launcher, game details, then launches a WASM session through a noopener anchor at its own address | `tests/chat-arcade.spec.ts` | done |
+| M20 | The Arcade desktop icon opens the catalogue's cards under their engines, a game's sheet, then launches a WASM session through a noopener anchor at its own address | `tests/chat-arcade.spec.ts` | done |
 | M21 | The production provisioning script runs end to end with every line accepted by the Admin Console | `tests/chat-admin-server-provision.spec.ts` | done |
 | M22 | A newcomer joining a provisioned channel is greeted, and every advertised bot trigger answers | `tests/chat-admin-server-provision.spec.ts` | done |
 | M23 | The Bot Management roster describes each bot, and selecting one drills into it | `tests/chat-bot-management-window.spec.ts` | done |
@@ -401,6 +401,7 @@ Grouped by section. Every row comes from an `@flow` line in the spec itself.
 | M37 | Start -> Games -> Retro Games opens the folder, and the Arcade is still a window (features P2) | `tests/chat-retro-games.spec.ts` | done |
 | M38 | An admin gives a bot a language with /bot set or Bot Management, and its flag is drawn beside its nickname in the user list, the roster and its detail | `tests/chat-bot-management-window.spec.ts` | done |
 | M39 | /bot set game_announce on gives a bot the Game capability, which Bot Management shows as a working capability that can be switched off | `tests/chat-bot-management-window.spec.ts` | done |
+| M40 | Play on an arcade game's public page opens the Arcade on that game for a member, and asks a visitor to sign in from the Arcade icon | `tests/chat-arcade.spec.ts` | done |
 
 ### N - P2P, File, Call, Game
 

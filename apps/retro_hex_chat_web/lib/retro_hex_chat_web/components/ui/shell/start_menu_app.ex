@@ -66,10 +66,6 @@ defmodule RetroHexChatWeb.Components.UI.StartMenuApp do
 
   attr :is_admin, :boolean, default: false
 
-  attr :arcade_available, :boolean,
-    default: false,
-    doc: "Enables the Arcade entry (needs a registered + identified nick)"
-
   attr :windows, :list,
     default: [],
     doc: "%{id, label, icon_fn} windows of THIS desktop, listed under Windows"
@@ -372,15 +368,15 @@ defmodule RetroHexChatWeb.Components.UI.StartMenuApp do
               disabled={!@chat?}
               testid="start-menu-item-retro-games"
             />
-            <%!-- An arcade session belongs to an account, so it needs a nick
-              that is registered and identified — a chat alone is not enough.
-              It is a catalogue of its own and stays one row. --%>
+            <%!-- Open to every reader of the chat: the arcade asks for an
+              account, or an identified nickname, when it needs one. It is a
+              catalogue of its own and stays one row. --%>
             <.app_item
               action="open_arcade"
               on_action={@on_action}
-              label={dgettext("ui", "Arcade...")}
+              label={dgettext("ui", "Arcade")}
               icon_fn={:icon_game_arcade}
-              disabled={!@chat? or !@arcade_available}
+              disabled={!@chat?}
             />
           <% end %>
         </.start_menu_submenu>
