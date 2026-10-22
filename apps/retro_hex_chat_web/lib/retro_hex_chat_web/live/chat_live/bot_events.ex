@@ -22,6 +22,7 @@ defmodule RetroHexChatWeb.ChatLive.BotEvents do
   alias RetroHexChat.ChangesetErrors
   alias RetroHexChat.Chat.{IrcEscapes, TimeFormatter}
   alias RetroHexChat.Locales
+  alias RetroHexChat.Text
   alias RetroHexChatWeb.ChatLive.ChatContext
   alias RetroHexChatWeb.ChatLive.Components.BotManagementDialog
   alias RetroHexChatWeb.ChatLive.Windows
@@ -167,13 +168,13 @@ defmodule RetroHexChatWeb.ChatLive.BotEvents do
   # The language picked in the New Bot form, held so the select's face names it;
   # the form itself still carries the choice when it is sent.
   defp authorized("bot_new_language", %{"locale" => locale}, socket) do
-    put_bot(socket, new_bot_locale: blank_to_nil(locale))
+    put_bot(socket, new_bot_locale: Text.blank_to_nil(locale))
   end
 
   defp authorized("bot_set_locale", %{"bot_name" => bot_name, "locale" => locale}, socket) do
     case Queries.get_bot_by_name(bot_name) do
       nil -> error_event(socket, dgettext("chat", "[BotService] Bot not found."))
-      bot -> do_set_locale(bot, blank_to_nil(locale), socket)
+      bot -> do_set_locale(bot, Text.blank_to_nil(locale), socket)
     end
   end
 
@@ -219,7 +220,7 @@ defmodule RetroHexChatWeb.ChatLive.BotEvents do
         }
 
         Supervisor.start_bot(bot_data)
-        socket = apply_new_bot_locale(bot, blank_to_nil(Map.get(params, "locale")), socket)
+        socket = apply_new_bot_locale(bot, Text.blank_to_nil(Map.get(params, "locale")), socket)
         bots = Queries.list_bots_with_associations()
 
         socket
@@ -558,16 +559,6 @@ defmodule RetroHexChatWeb.ChatLive.BotEvents do
       message: format_changeset_errors(changeset)
     )
   end
-
-  @spec blank_to_nil(term()) :: String.t() | nil
-  defp blank_to_nil(value) when is_binary(value) do
-    case String.trim(value) do
-      "" -> nil
-      trimmed -> trimmed
-    end
-  end
-
-  defp blank_to_nil(_value), do: nil
 
   defp do_toggle_capability(nil, _cap_name, socket), do: socket
 

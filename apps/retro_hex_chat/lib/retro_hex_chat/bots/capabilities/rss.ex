@@ -19,6 +19,8 @@ defmodule RetroHexChat.Bots.Capabilities.RSS do
   alias RetroHexChat.Bots.Policy
   alias RetroHexChat.Scraper
   alias RetroHexChat.Scraper.Card
+  alias RetroHexChat.Scraper.Markup
+  alias RetroHexChat.Text
 
   require Logger
 
@@ -242,7 +244,7 @@ defmodule RetroHexChat.Bots.Capabilities.RSS do
             id: f["id"],
             title: title,
             channel: f["channel"],
-            url: truncate(f["url"], 40)
+            url: Text.truncate(f["url"], 40)
           )
         end)
 
@@ -690,7 +692,7 @@ defmodule RetroHexChat.Bots.Capabilities.RSS do
     |> maybe_put_hint(:author, Scraper.Client.byline(Map.get(item, :author)))
     |> maybe_put_hint(:published_at, feed_item_published_at(item))
     |> maybe_put_hint(:tags, Map.get(item, :categories))
-    |> maybe_put_hint(:word_count, word_count(content_text))
+    |> maybe_put_hint(:word_count, Text.word_count(content_text))
   end
 
   @spec merge_card_metadata(Scraper.Client.metadata(), Scraper.Client.metadata()) ::
@@ -717,79 +719,12 @@ defmodule RetroHexChat.Bots.Capabilities.RSS do
 
   defp excerpt(text) do
     text
-    |> truncate(@feed_card_excerpt_length)
-    |> blank_to_nil()
+    |> Text.truncate(@feed_card_excerpt_length)
+    |> Text.blank_to_nil()
   end
-
-  @spec blank_to_nil(String.t()) :: String.t() | nil
-  defp blank_to_nil(""), do: nil
-  defp blank_to_nil(value), do: value
-
-  @spec word_count(String.t() | nil) :: non_neg_integer() | nil
-  defp word_count(text) when is_binary(text) and text != "" do
-    text |> String.split() |> length()
-  end
-
-  defp word_count(_text), do: nil
 
   @spec feed_item_published_at(FeedParser.feed_item()) :: DateTime.t() | nil
-  defp feed_item_published_at(item), do: item |> Map.get(:published) |> parse_feed_datetime()
-
-  @spec parse_feed_datetime(String.t() | nil) :: DateTime.t() | nil
-  defp parse_feed_datetime(nil), do: nil
-
-  defp parse_feed_datetime(value) when is_binary(value) do
-    value = String.trim(value)
-
-    cond do
-      value == "" ->
-        nil
-
-      datetime = iso8601_datetime(value) ->
-        datetime
-
-      datetime = rfc_datetime(value) ->
-        datetime
-
-      true ->
-        nil
-    end
-  end
-
-  defp parse_feed_datetime(_value), do: nil
-
-  @spec iso8601_datetime(String.t()) :: DateTime.t() | nil
-  defp iso8601_datetime(value) do
-    case DateTime.from_iso8601(value) do
-      {:ok, datetime, _offset} ->
-        datetime
-
-      {:error, _reason} ->
-        case Date.from_iso8601(value) do
-          {:ok, date} -> DateTime.new!(date, ~T[00:00:00], "Etc/UTC")
-          {:error, _reason} -> nil
-        end
-    end
-  rescue
-    _ -> nil
-  end
-
-  @spec rfc_datetime(String.t()) :: DateTime.t() | nil
-  defp rfc_datetime(value) do
-    case :httpd_util.convert_request_date(String.to_charlist(value)) do
-      {{year, month, day}, {hour, minute, second}} ->
-        DateTime.new!(
-          Date.new!(year, month, day),
-          Time.new!(hour, minute, second),
-          "Etc/UTC"
-        )
-
-      _other ->
-        nil
-    end
-  rescue
-    _ -> nil
-  end
+  defp feed_item_published_at(item), do: item |> Map.get(:published) |> Markup.parse_datetime()
 
   @doc """
   The label a feed's items carry.
@@ -815,15 +750,6 @@ defmodule RetroHexChat.Bots.Capabilities.RSS do
   @spec generate_id() :: String.t()
   defp generate_id do
     "f" <> (:crypto.strong_rand_bytes(3) |> Base.encode16(case: :lower))
-  end
-
-  @spec truncate(String.t(), pos_integer()) :: String.t()
-  defp truncate(str, max) do
-    if String.length(str) > max do
-      String.slice(str, 0, max - 3) <> "..."
-    else
-      str
-    end
   end
 
   @spec ensure_hash(String.t()) :: String.t()

@@ -19,6 +19,7 @@ defmodule RetroHexChat.Scraper.Card do
 
   alias RetroHexChat.Scraper.Client
   alias RetroHexChat.Scraper.ScrapedPage
+  alias RetroHexChat.Text
 
   @source_limit 48
   @headline_limit 180
@@ -106,7 +107,7 @@ defmodule RetroHexChat.Scraper.Card do
   defp card_source(metadata, fallback_source, url) do
     case present(metadata[:site_name]) || present(fallback_source) || host_label(url) do
       nil -> nil
-      source -> source |> collapse_space() |> truncate(@source_limit)
+      source -> source |> collapse_space() |> Text.truncate(@source_limit)
     end
   end
 
@@ -144,7 +145,7 @@ defmodule RetroHexChat.Scraper.Card do
         title
         |> collapse_space()
         |> strip_source(source)
-        |> truncate(@headline_limit)
+        |> Text.truncate(@headline_limit)
     end
   end
 
@@ -266,7 +267,7 @@ defmodule RetroHexChat.Scraper.Card do
        when is_binary(description) and byte_size(description) > 0 do
     description
     |> collapse_space()
-    |> truncate(@description_limit)
+    |> Text.truncate(@description_limit)
   end
 
   defp card_description(_metadata), do: nil
@@ -322,7 +323,7 @@ defmodule RetroHexChat.Scraper.Card do
     text
     |> collapse_space()
     |> String.replace(~r/[\[\]\(\)]/, "")
-    |> truncate(@headline_limit)
+    |> Text.truncate(@headline_limit)
   end
 
   @spec image_alt(String.t() | nil) :: String.t()
@@ -356,13 +357,4 @@ defmodule RetroHexChat.Scraper.Card do
   # a headline that carries them breaks the line before it is truncated.
   @spec collapse_space(String.t()) :: String.t()
   defp collapse_space(text), do: text |> String.split() |> Enum.join(" ")
-
-  @spec truncate(String.t(), pos_integer()) :: String.t()
-  defp truncate(str, max) do
-    if String.length(str) > max do
-      String.slice(str, 0, max - 3) <> "..."
-    else
-      str
-    end
-  end
 end

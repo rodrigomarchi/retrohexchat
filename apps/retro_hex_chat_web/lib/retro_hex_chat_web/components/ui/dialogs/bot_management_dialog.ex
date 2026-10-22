@@ -28,6 +28,7 @@ defmodule RetroHexChatWeb.Components.UI.BotManagementDialog do
   alias RetroHexChat.Chat.Content
   alias RetroHexChat.Chat.TimeFormatter
   alias RetroHexChat.Locales
+  alias RetroHexChat.Text
   alias RetroHexChatWeb.Components.Diagrams
   alias RetroHexChatWeb.Icons
   alias RetroHexChatWeb.PaginatedList.State
@@ -677,7 +678,7 @@ defmodule RetroHexChatWeb.Components.UI.BotManagementDialog do
             <div class="bm-object-primary">
               <span class="bm-object-label">{dgettext("dialogs", "Feed")}</span>
               <span class="bm-object-value">
-                {feed["title"] || truncate(feed["url"], 48)}
+                {feed["title"] || Text.truncate(feed["url"] || "", 48, omission: "…")}
               </span>
             </div>
             <div class="bm-object-meta">
@@ -904,7 +905,7 @@ defmodule RetroHexChatWeb.Components.UI.BotManagementDialog do
     case Map.get(bot, :description) do
       nil -> nil
       "" -> nil
-      text -> truncate(text, @description_preview)
+      text -> Text.truncate(text, @description_preview, omission: "…")
     end
   end
 
@@ -1166,13 +1167,6 @@ defmodule RetroHexChatWeb.Components.UI.BotManagementDialog do
   end
 
   # ── Formatting ───────────────────────────────────────────
-
-  @spec truncate(String.t() | nil, pos_integer()) :: String.t()
-  defp truncate(nil, _max), do: ""
-
-  defp truncate(text, max) do
-    if String.length(text) > max, do: String.slice(text, 0, max - 1) <> "…", else: text
-  end
 
   # Units stay as symbols rather than words: they sit in a dense column of
   # numbers, and "43200 s" is worse than "12h" in every language.

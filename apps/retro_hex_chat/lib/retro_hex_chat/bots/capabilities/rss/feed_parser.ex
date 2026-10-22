@@ -6,6 +6,9 @@ defmodule RetroHexChat.Bots.Capabilities.RSS.FeedParser do
 
   use Gettext, backend: RetroHexChat.Gettext
 
+  alias RetroHexChat.Scraper.Markup
+  alias RetroHexChat.Text
+
   @type feed_item :: %{
           required(:title) => String.t(),
           required(:link) => String.t(),
@@ -418,40 +421,8 @@ defmodule RetroHexChat.Bots.Capabilities.RSS.FeedParser do
       Map.get(attrs, "src"),
       Map.get(attrs, "data-src"),
       Map.get(attrs, "data-original"),
-      attrs |> Map.get("srcset") |> srcset_url()
+      attrs |> Map.get("srcset") |> Markup.srcset_url()
     ])
-  end
-
-  @spec srcset_url(String.t() | nil) :: String.t() | nil
-  defp srcset_url(nil), do: nil
-
-  defp srcset_url(srcset) do
-    srcset
-    |> String.split(",")
-    |> Enum.map(&String.trim/1)
-    |> Enum.reject(&(&1 == ""))
-    |> Enum.map(fn entry ->
-      case String.split(entry) do
-        [url, width | _] -> {url, srcset_width(width)}
-        [url] -> {url, 0}
-        _ -> nil
-      end
-    end)
-    |> Enum.reject(&is_nil/1)
-    |> Enum.max_by(&elem(&1, 1), fn -> nil end)
-    |> case do
-      {url, _width} -> url
-      nil -> nil
-    end
-  end
-
-  @spec srcset_width(String.t()) :: non_neg_integer()
-  defp srcset_width(width) do
-    width
-    |> String.trim_trailing("w")
-    |> String.to_integer()
-  rescue
-    _ -> 0
   end
 
   @spec image_type?(String.t() | nil) :: boolean()
@@ -486,7 +457,7 @@ defmodule RetroHexChat.Bots.Capabilities.RSS.FeedParser do
   @spec clean_item_text(term(), pos_integer()) :: String.t() | nil
   defp clean_item_text(value, max) when is_binary(value) do
     value
-    |> decode_html_entities()
+    |> Markup.decode_entities()
     |> String.replace(~r/<[^>]*>/u, "")
     |> String.replace(<<0xC2, 0xA0>>, " ")
     |> String.replace(~r/\s+/u, " ")
@@ -494,7 +465,7 @@ defmodule RetroHexChat.Bots.Capabilities.RSS.FeedParser do
     |> String.trim()
     |> case do
       "" -> nil
-      clean -> truncate_text(clean, max)
+      clean -> Text.truncate(clean, max)
     end
   end
 
@@ -506,14 +477,14 @@ defmodule RetroHexChat.Bots.Capabilities.RSS.FeedParser do
   @spec clean_fragment_text(term(), pos_integer()) :: String.t() | nil
   defp clean_fragment_text(value, max) when is_binary(value) do
     value
-    |> decode_html_entities()
+    |> Markup.decode_entities()
     |> fragment_text()
     |> String.replace(<<0xC2, 0xA0>>, " ")
     |> String.replace(~r/\s+/u, " ")
     |> String.replace(~r/\s+([,.;:!?])/u, "\\1")
     |> String.trim()
-    |> blank_to_nil()
-    |> truncate_text(max)
+    |> Text.blank_to_nil()
+    |> Text.truncate(max)
   end
 
   defp clean_fragment_text(value, max) when is_number(value),
@@ -535,25 +506,6 @@ defmodule RetroHexChat.Bots.Capabilities.RSS.FeedParser do
       end
     else
       text
-    end
-  end
-
-  @spec blank_to_nil(String.t()) :: String.t() | nil
-  defp blank_to_nil(""), do: nil
-  defp blank_to_nil(value), do: value
-
-  @spec truncate_text(String.t() | nil, non_neg_integer()) :: String.t() | nil
-  defp truncate_text(nil, _max), do: nil
-
-  defp truncate_text(text, max) do
-    if String.length(text) <= max do
-      text
-    else
-      text
-      |> String.graphemes()
-      |> Enum.take(max)
-      |> Enum.join()
-      |> Kernel.<>("...")
     end
   end
 
@@ -713,34 +665,4 @@ defmodule RetroHexChat.Bots.Capabilities.RSS.FeedParser do
   end
 
   defp get_attribute(_, _), do: nil
-
-  @entity_map %{
-    "amp" => "&",
-    "apos" => "'",
-    "gt" => ">",
-    "hellip" => "...",
-    "lt" => "<",
-    "nbsp" => " ",
-    "quot" => "\""
-  }
-
-  @spec decode_html_entities(String.t()) :: String.t()
-  defp decode_html_entities(text) do
-    text = Regex.replace(~r/&#x([0-9a-fA-F]+);/, text, fn _match, hex -> codepoint(hex, 16) end)
-    text = Regex.replace(~r/&#([0-9]+);/, text, fn _match, int -> codepoint(int, 10) end)
-
-    Regex.replace(~r/&([a-zA-Z][a-zA-Z0-9]+);/, text, fn match, name ->
-      Map.get(@entity_map, String.downcase(name), match)
-    end)
-  end
-
-  @spec codepoint(String.t(), 10 | 16) :: String.t()
-  defp codepoint(value, base) do
-    value
-    |> String.to_integer(base)
-    |> List.wrap()
-    |> List.to_string()
-  rescue
-    _ -> ""
-  end
 end

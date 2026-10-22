@@ -121,8 +121,8 @@ defmodule RetroHexChat.Chat.ContentTest do
 
   describe "preview/3" do
     test "builds previews from visible text" do
-      assert Content.preview("**abcdef**", :markdown, max_length: 4) == "abcd..."
-      assert Content.preview("#{@bold}abcdef#{@bold}", :irc, max_length: 4) == "abcd..."
+      assert Content.preview("**abcdefgh**", :markdown, max_length: 7) == "abcd..."
+      assert Content.preview("#{@bold}abcdefgh#{@bold}", :irc, max_length: 7) == "abcd..."
     end
   end
 

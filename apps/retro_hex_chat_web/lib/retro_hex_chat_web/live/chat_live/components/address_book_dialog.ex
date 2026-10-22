@@ -18,6 +18,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.AddressBookDialog do
   """
 
   alias RetroHexChat.Nickname
+  alias RetroHexChat.Text
   use RetroHexChatWeb, :live_component
 
   import RetroHexChatWeb.Components.UI.AddressBook
@@ -66,7 +67,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.AddressBookDialog do
 
   def handle_event("contact_add", %{"nickname" => nickname} = params, socket) do
     session = socket.assigns.session
-    note = blank_to_nil(params["note"])
+    note = Text.blank_to_nil(params["note"])
 
     case ContactList.add_entry(session.contacts, Session.owner(session), nickname, note) do
       {:ok, contacts} ->
@@ -100,7 +101,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.AddressBookDialog do
   def handle_event("contact_edit", %{"note" => note} = params, socket) do
     session = socket.assigns.session
     nickname = present_string(params["nickname"]) || socket.assigns.selected
-    note = blank_to_nil(note)
+    note = Text.blank_to_nil(note)
 
     if is_nil(nickname) do
       {:noreply, bubble_status(socket, :system, dgettext("chat", "No contact selected"))}
@@ -210,9 +211,6 @@ defmodule RetroHexChatWeb.ChatLive.Components.AddressBookDialog do
   end
 
   defp present_string(_value), do: nil
-
-  defp blank_to_nil(value) when value in ["", nil], do: nil
-  defp blank_to_nil(value), do: value
 
   defp contact_note(contact_list, nick) when is_binary(nick) do
     downcased = Nickname.key(nick)

@@ -10,6 +10,7 @@ defmodule RetroHexChat.Chat.Queries do
   alias RetroHexChat.Nickname
   alias RetroHexChat.Page
   alias RetroHexChat.Repo
+  alias RetroHexChat.Text
 
   # What a public preview is allowed to show: people talking, and nothing the
   # room said about itself.
@@ -189,11 +190,7 @@ defmodule RetroHexChat.Chat.Queries do
   end
 
   defp truncate_preview(%{content: content} = line) do
-    if String.length(content) > @preview_line_length do
-      %{line | content: String.slice(content, 0, @preview_line_length - 1) <> "…"}
-    else
-      line
-    end
+    %{line | content: Text.truncate(content, @preview_line_length, omission: "…")}
   end
 
   @spec get_message(integer()) :: Message.t() | nil

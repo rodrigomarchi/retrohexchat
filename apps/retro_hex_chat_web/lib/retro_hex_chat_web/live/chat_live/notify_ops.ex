@@ -13,6 +13,7 @@ defmodule RetroHexChatWeb.ChatLive.NotifyOps do
   """
 
   alias RetroHexChat.Nickname
+  alias RetroHexChat.Text
   use Gettext, backend: RetroHexChatWeb.Gettext
 
   alias RetroHexChat.Accounts.Session
@@ -23,7 +24,7 @@ defmodule RetroHexChatWeb.ChatLive.NotifyOps do
 
   @spec add(Session.t(), String.t(), String.t() | nil) :: result()
   def add(session, nick, note) do
-    note = blank_to_nil(note)
+    note = Text.blank_to_nil(note)
 
     case NotifyList.add_entry(session.notify_list, Session.owner(session), nick, note) do
       {:ok, list} ->
@@ -57,7 +58,7 @@ defmodule RetroHexChatWeb.ChatLive.NotifyOps do
 
   @spec update_note(Session.t(), String.t(), String.t() | nil) :: result()
   def update_note(session, nick, note) do
-    note = blank_to_nil(note)
+    note = Text.blank_to_nil(note)
 
     case NotifyList.update_note(session.notify_list, nick, note) do
       {:ok, list} ->
@@ -106,7 +107,4 @@ defmodule RetroHexChatWeb.ChatLive.NotifyOps do
       notify_list
     end
   end
-
-  defp blank_to_nil(value) when value in ["", nil], do: nil
-  defp blank_to_nil(value), do: value
 end

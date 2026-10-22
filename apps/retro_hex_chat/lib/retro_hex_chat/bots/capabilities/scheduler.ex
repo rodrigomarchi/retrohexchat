@@ -18,6 +18,7 @@ defmodule RetroHexChat.Bots.Capabilities.Scheduler do
 
   alias RetroHexChat.Bots.Capabilities.Scheduler.Durable
   alias RetroHexChat.Bots.Policy
+  alias RetroHexChat.Text
 
   require Logger
 
@@ -169,7 +170,7 @@ defmodule RetroHexChat.Bots.Capabilities.Scheduler do
             id: s["id"],
             type: type_str,
             channel: s["channel"],
-            message: truncate(s["message"], 40)
+            message: Text.truncate(s["message"], 40)
           )
         end)
 
@@ -365,15 +366,6 @@ defmodule RetroHexChat.Bots.Capabilities.Scheduler do
     do: dgettext("bots", "daily@%{time}", time: time)
 
   defp format_schedule_type(_), do: "unknown"
-
-  @spec truncate(String.t(), pos_integer()) :: String.t()
-  defp truncate(str, max) do
-    if String.length(str) > max do
-      String.slice(str, 0, max - 3) <> "..."
-    else
-      str
-    end
-  end
 
   @spec ensure_hash(String.t()) :: String.t()
   defp ensure_hash("#" <> _ = ch), do: ch

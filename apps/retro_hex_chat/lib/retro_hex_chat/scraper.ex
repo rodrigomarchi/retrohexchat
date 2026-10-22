@@ -32,6 +32,7 @@ defmodule RetroHexChat.Scraper do
   alias RetroHexChat.Jobs.PageScrapeWorker
   alias RetroHexChat.Observability
   alias RetroHexChat.Scraper.{Cache, Card, Client, ImageCache, ScrapedPage, Store}
+  alias RetroHexChat.Text
 
   require Logger
 
@@ -469,7 +470,7 @@ defmodule RetroHexChat.Scraper do
 
   @spec richer_content_hint?(ScrapedPage.t(), map()) :: boolean()
   defp richer_content_hint?(%ScrapedPage{} = page, hints) do
-    hint_words = hints |> hint_value(:content_text) |> word_count()
+    hint_words = hints |> hint_value(:content_text) |> Text.word_count()
     stored_words = page.content_word_count || 0
 
     is_integer(hint_words) and hint_words > stored_words
@@ -485,13 +486,6 @@ defmodule RetroHexChat.Scraper do
   @spec empty_tags?([String.t()] | nil) :: boolean()
   defp empty_tags?(tags) when is_list(tags), do: not Enum.any?(tags, &present_text?/1)
   defp empty_tags?(_tags), do: true
-
-  @spec word_count(String.t() | nil) :: non_neg_integer() | nil
-  defp word_count(text) when is_binary(text) and text != "" do
-    text |> String.split() |> length()
-  end
-
-  defp word_count(_text), do: nil
 
   @spec weak_stored_image?(ScrapedPage.t()) :: boolean()
   defp weak_stored_image?(%ScrapedPage{image_url: nil}), do: true

@@ -55,7 +55,7 @@ defmodule RetroHexChat.Scraper.ExtractorTest do
     test "truncates title over 200 chars" do
       long_title = String.duplicate("a", 250)
       {:ok, %{title: title}} = HTTP.parse_metadata("<title>#{long_title}</title>")
-      assert String.length(title) == 203
+      assert String.length(title) == 200
       assert String.ends_with?(title, "...")
     end
 

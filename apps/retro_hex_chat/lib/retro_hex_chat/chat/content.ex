@@ -10,6 +10,7 @@ defmodule RetroHexChat.Chat.Content do
   use Gettext, backend: RetroHexChat.Gettext
 
   alias RetroHexChat.Chat.Content.{Irc, Markdown, Plain}
+  alias RetroHexChat.Text
 
   @type format :: :irc | :markdown | :plain
   @type format_input :: format() | String.t()
@@ -52,7 +53,7 @@ defmodule RetroHexChat.Chat.Content do
     |> plain_text(format)
     |> String.replace(~r/\s+/, " ")
     |> String.trim()
-    |> truncate(max_length)
+    |> Text.truncate(max_length)
   end
 
   @doc """
@@ -69,11 +70,11 @@ defmodule RetroHexChat.Chat.Content do
   """
   @spec reply_preview(map()) :: String.t()
   def reply_preview(%{plain_content: plain_content}) when is_binary(plain_content) do
-    truncate_reply(plain_content)
+    Text.truncate(plain_content, @reply_preview_length)
   end
 
   def reply_preview(%{content: content, content_format: content_format}) do
-    preview(content, content_format, max_length: @reply_preview_length - 3)
+    preview(content, content_format, max_length: @reply_preview_length)
   end
 
   @doc """
@@ -189,31 +190,4 @@ defmodule RetroHexChat.Chat.Content do
   defp renderer(:irc), do: Irc
   defp renderer(:markdown), do: Markdown
   defp renderer(:plain), do: Plain
-
-  @spec truncate(String.t(), non_neg_integer()) :: String.t()
-  # A quote is cut so the ellipsis fits inside the budget rather than extending
-  # past it, which is what keeps every quote the same width on screen.
-  defp truncate_reply(content) when byte_size(content) == 0, do: ""
-
-  defp truncate_reply(content) do
-    if String.length(content) > @reply_preview_length do
-      String.slice(content, 0, @reply_preview_length - 3) <> "..."
-    else
-      content
-    end
-  end
-
-  defp truncate(_text, max_length) when max_length <= 0, do: ""
-
-  defp truncate(text, max_length) do
-    if String.length(text) > max_length do
-      text
-      |> String.graphemes()
-      |> Enum.take(max_length)
-      |> Enum.join()
-      |> Kernel.<>("...")
-    else
-      text
-    end
-  end
 end

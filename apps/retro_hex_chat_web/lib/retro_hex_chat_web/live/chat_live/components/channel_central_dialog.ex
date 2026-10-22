@@ -28,6 +28,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.ChannelCentralDialog do
   alias Phoenix.LiveView.JS
   alias RetroHexChat.Channels.Server
   alias RetroHexChat.Services.ChanServ
+  alias RetroHexChat.Text
   alias RetroHexChatWeb.App.ChatHelpers
   alias RetroHexChatWeb.ChatLive.Helpers.NickFlags
 
@@ -141,7 +142,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.ChannelCentralDialog do
     channel = socket.assigns.channel_central_channel
     nickname = socket.assigns.session.nickname
 
-    case Server.set_locale(channel, nickname, blank_to_nil(params["locale"])) do
+    case Server.set_locale(channel, nickname, Text.blank_to_nil(params["locale"])) do
       :ok ->
         {:noreply,
          socket
@@ -162,7 +163,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.ChannelCentralDialog do
     channel = socket.assigns.channel_central_channel
     nickname = socket.assigns.session.nickname
 
-    case Server.set_category(channel, nickname, blank_to_nil(params["category"])) do
+    case Server.set_category(channel, nickname, Text.blank_to_nil(params["category"])) do
       :ok ->
         {:noreply,
          socket
@@ -1071,9 +1072,6 @@ defmodule RetroHexChatWeb.ChatLive.Components.ChannelCentralDialog do
   defp channel_central_badge(%{} = registration, _state, key), do: Map.get(registration, key)
   defp channel_central_badge(nil, %{} = state, key), do: Map.get(state, key)
   defp channel_central_badge(nil, nil, _key), do: nil
-
-  defp blank_to_nil(value) when value in [nil, ""], do: nil
-  defp blank_to_nil(value), do: value
 
   defp channel_central_member_count(nil), do: 0
   defp channel_central_member_count(state), do: Map.get(state, :member_count, 0)

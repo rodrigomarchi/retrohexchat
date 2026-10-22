@@ -26,6 +26,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.AutojoinDialog do
 
   alias RetroHexChat.Accounts.Session
   alias RetroHexChat.Chat.AutoJoinList
+  alias RetroHexChat.Text
   alias RetroHexChatWeb.ChatLive.Components.DialogIsland
 
   @id "autojoin-dialog"
@@ -74,7 +75,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.AutojoinDialog do
 
   def handle_event("autojoin_add_confirm", %{"channel" => channel} = params, socket) do
     session = socket.assigns.session
-    key = blank_to_nil(params["key"])
+    key = Text.blank_to_nil(params["key"])
 
     case AutoJoinList.add_entry(session.autojoin_list, channel, key) do
       {:ok, updated_list} ->
@@ -96,7 +97,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.AutojoinDialog do
 
   def handle_event("autojoin_edit_confirm", %{"channel" => channel} = params, socket) do
     session = socket.assigns.session
-    key = blank_to_nil(params["key"])
+    key = Text.blank_to_nil(params["key"])
 
     case AutoJoinList.update_entry(session.autojoin_list, channel, key) do
       {:ok, updated_list} ->
@@ -162,7 +163,4 @@ defmodule RetroHexChatWeb.ChatLive.Components.AutojoinDialog do
     send(self(), {:autojoin_system_error, message})
     socket
   end
-
-  defp blank_to_nil(""), do: nil
-  defp blank_to_nil(value), do: value
 end

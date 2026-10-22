@@ -28,6 +28,8 @@ defmodule RetroHexChatWeb.Components.Diagrams.DialogPreview do
   use Phoenix.Component
   use Gettext, backend: RetroHexChatWeb.Gettext
 
+  alias RetroHexChat.Text
+
   @kinds [
     :status,
     :query,
@@ -517,11 +519,10 @@ defmodule RetroHexChatWeb.Components.Diagrams.DialogPreview do
   defp clip(nil, _limit), do: ""
 
   defp clip(text, limit) when is_binary(text) do
-    trimmed = text |> String.replace(~r/\s+/, " ") |> String.trim()
-
-    if String.length(trimmed) > limit,
-      do: String.slice(trimmed, 0, limit - 1) <> "…",
-      else: trimmed
+    text
+    |> String.replace(~r/\s+/, " ")
+    |> String.trim()
+    |> Text.truncate(limit, omission: "…")
   end
 
   @spec kind_label(atom()) :: String.t()

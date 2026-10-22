@@ -285,6 +285,25 @@ defmodule RetroHexChat.Bots.Capabilities.RSS.FeedParserTest do
       assert second.title == "Ação, coração e emoção"
     end
 
+    test "decodes the typographic entities a summary carries escaped" do
+      xml = """
+      <?xml version="1.0" encoding="UTF-8"?>
+      <rss version="2.0">
+        <channel>
+          <title>Blog</title>
+          <item>
+            <title>Post</title>
+            <link>https://example.com/p</link>
+            <description>It&amp;rsquo;s &amp;ldquo;here&amp;rdquo; &amp;mdash; at last&amp;hellip; &amp;copy; 2026</description>
+          </item>
+        </channel>
+      </rss>
+      """
+
+      assert {:ok, %{items: [item]}} = FeedParser.parse(xml)
+      assert item.description == "It’s “here” — at last… © 2026"
+    end
+
     test "keeps the publisher's own identity for each item" do
       {:ok, feed} = FeedParser.parse(@typographic)
 

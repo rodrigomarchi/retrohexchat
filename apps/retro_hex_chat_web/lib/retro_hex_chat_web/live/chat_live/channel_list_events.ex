@@ -16,6 +16,7 @@ defmodule RetroHexChatWeb.ChatLive.ChannelListEvents do
 
   alias RetroHexChat.Channels.Categories
   alias RetroHexChat.Commands.Autocomplete
+  alias RetroHexChat.Text
   alias RetroHexChatWeb.ChatLive.Components.KnockRequestDialog
   alias RetroHexChatWeb.ChatLive.Helpers.Channel, as: ChannelHelpers
   alias RetroHexChatWeb.ChatLive.UiActions.Core
@@ -133,7 +134,7 @@ defmodule RetroHexChatWeb.ChatLive.ChannelListEvents do
   defp apply_filter(socket, filter) do
     channels =
       Autocomplete.list_visible_channels(socket.assigns.session.channels,
-        search: blank_to_nil(filter.search),
+        search: Text.blank_to_nil(filter.search),
         category: filter.category
       )
 
@@ -143,12 +144,6 @@ defmodule RetroHexChatWeb.ChatLive.ChannelListEvents do
       channel_list_loading: false
     )
   end
-
-  defp blank_to_nil(text) when is_binary(text) do
-    if String.trim(text) == "", do: nil, else: text
-  end
-
-  defp blank_to_nil(_text), do: nil
 
   defp knock_error(socket, message, error) do
     send_update(KnockRequestDialog,

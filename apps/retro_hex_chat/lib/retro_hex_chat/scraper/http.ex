@@ -24,6 +24,8 @@ defmodule RetroHexChat.Scraper.HTTP do
 
   alias RetroHexChat.Net.URLGuard
   alias RetroHexChat.Scraper.Client
+  alias RetroHexChat.Scraper.Markup
+  alias RetroHexChat.Text
 
   require Logger
 
@@ -257,7 +259,7 @@ defmodule RetroHexChat.Scraper.HTTP do
         ) :: content_info()
   defp enrich_content_info(content, hints) do
     hint_text = hint_content_text(hints)
-    hint_words = word_count(hint_text) || 0
+    hint_words = Text.word_count(hint_text) || 0
     page_words = content.word_count || 0
 
     if present?(hint_text) and hint_words > page_words do
@@ -347,7 +349,7 @@ defmodule RetroHexChat.Scraper.HTTP do
         %{
           text: text,
           strategy: strategy,
-          word_count: word_count(full_text),
+          word_count: Text.word_count(full_text),
           excerpt: excerpt(text)
         }
     end
@@ -478,13 +480,6 @@ defmodule RetroHexChat.Scraper.HTTP do
   @spec collapse_whitespace(String.t()) :: String.t()
   defp collapse_whitespace(text), do: text |> String.split() |> Enum.join(" ")
 
-  @spec word_count(String.t() | nil) :: non_neg_integer() | nil
-  defp word_count(text) when is_binary(text) and text != "" do
-    text |> String.split() |> length()
-  end
-
-  defp word_count(_text), do: nil
-
   @spec cap_content(String.t()) :: String.t() | nil
   defp cap_content(""), do: nil
 
@@ -495,8 +490,8 @@ defmodule RetroHexChat.Scraper.HTTP do
 
   defp excerpt(text) do
     text
-    |> truncate_text(@max_excerpt_length)
-    |> blank_to_nil()
+    |> Text.truncate(@max_excerpt_length)
+    |> Text.blank_to_nil()
   end
 
   # `twitter:creator` is deliberately absent. It is as often the publication's own
@@ -537,30 +532,7 @@ defmodule RetroHexChat.Scraper.HTTP do
       document |> Floki.find("time[datetime]") |> Floki.attribute("datetime") |> List.first()
     ]
     |> first_present()
-    |> parse_datetime()
-  end
-
-  # Publishers write dates in whatever their CMS emits. ISO 8601 covers nearly
-  # all of them; a bare date is the common remainder and is worth the extra
-  # clause. Anything else is left `nil` rather than guessed at.
-  @spec parse_datetime(String.t() | nil) :: DateTime.t() | nil
-  defp parse_datetime(nil), do: nil
-
-  defp parse_datetime(value) do
-    value = String.trim(value)
-
-    case DateTime.from_iso8601(value) do
-      {:ok, datetime, _offset} ->
-        datetime
-
-      {:error, _reason} ->
-        case Date.from_iso8601(value) do
-          {:ok, date} -> DateTime.new!(date, ~T[00:00:00], "Etc/UTC")
-          {:error, _reason} -> nil
-        end
-    end
-  rescue
-    _ -> nil
+    |> Markup.parse_datetime()
   end
 
   @spec modified_at([map()], [map()], Floki.html_tree()) :: DateTime.t() | nil
@@ -579,7 +551,7 @@ defmodule RetroHexChat.Scraper.HTTP do
       |> List.first()
     ]
     |> first_present()
-    |> parse_datetime()
+    |> Markup.parse_datetime()
   end
 
   @spec lang(Floki.html_tree(), [map()], [map()]) :: String.t() | nil
@@ -1308,7 +1280,7 @@ defmodule RetroHexChat.Scraper.HTTP do
   defp hint_datetime(hints, key) do
     case hint_value(hints, key) do
       %DateTime{} = datetime -> datetime
-      value when is_binary(value) -> parse_datetime(value)
+      value when is_binary(value) -> Markup.parse_datetime(value)
       _other -> nil
     end
   end
@@ -1823,40 +1795,8 @@ defmodule RetroHexChat.Scraper.HTTP do
       Map.get(attrs, "data-src"),
       Map.get(attrs, "data-original"),
       Map.get(attrs, "data-lazy-src"),
-      attrs |> Map.get("srcset") |> srcset_url()
+      attrs |> Map.get("srcset") |> Markup.srcset_url()
     ])
-  end
-
-  @spec srcset_url(String.t() | nil) :: String.t() | nil
-  defp srcset_url(nil), do: nil
-
-  defp srcset_url(srcset) do
-    srcset
-    |> String.split(",")
-    |> Enum.map(&String.trim/1)
-    |> Enum.reject(&(&1 == ""))
-    |> Enum.map(fn entry ->
-      case String.split(entry) do
-        [url, width | _] -> {url, srcset_width(width)}
-        [url] -> {url, 0}
-        _ -> nil
-      end
-    end)
-    |> Enum.reject(&is_nil/1)
-    |> Enum.max_by(&elem(&1, 1), fn -> nil end)
-    |> case do
-      {url, _width} -> url
-      nil -> nil
-    end
-  end
-
-  @spec srcset_width(String.t()) :: non_neg_integer()
-  defp srcset_width(width) do
-    width
-    |> String.trim_trailing("w")
-    |> String.to_integer()
-  rescue
-    _ -> 0
   end
 
   @spec dimension(term()) :: pos_integer() | nil
@@ -2058,7 +1998,7 @@ defmodule RetroHexChat.Scraper.HTTP do
     |> Enum.map(&readable_text([&1]))
     |> Enum.join(" ")
     |> collapse_whitespace()
-    |> blank_to_nil()
+    |> Text.blank_to_nil()
   end
 
   @spec microdata_author_node(Floki.html_node()) :: String.t() | nil
@@ -2531,13 +2471,13 @@ defmodule RetroHexChat.Scraper.HTTP do
 
     value
     |> to_string()
-    |> decode_html_entities()
+    |> Markup.decode_entities()
     |> String.replace(~r/<[^>]*>/u, "")
     |> String.replace(<<0xC2, 0xA0>>, " ")
     |> String.replace(~r/\s+/u, " ")
     |> String.trim()
-    |> blank_to_nil()
-    |> truncate_text(max)
+    |> Text.blank_to_nil()
+    |> Text.truncate(max)
   end
 
   @spec clean_url(term()) :: String.t() | nil
@@ -2546,9 +2486,9 @@ defmodule RetroHexChat.Scraper.HTTP do
   defp clean_url(value) do
     value
     |> to_string()
-    |> decode_html_entities()
+    |> Markup.decode_entities()
     |> String.trim()
-    |> blank_to_nil()
+    |> Text.blank_to_nil()
   end
 
   @spec first_present([term()]) :: String.t() | nil
@@ -2563,25 +2503,6 @@ defmodule RetroHexChat.Scraper.HTTP do
 
   @spec present?(term()) :: boolean()
   defp present?(value), do: is_binary(value) and String.trim(value) != ""
-
-  @spec blank_to_nil(String.t()) :: String.t() | nil
-  defp blank_to_nil(""), do: nil
-  defp blank_to_nil(value), do: value
-
-  @spec truncate_text(String.t() | nil, non_neg_integer()) :: String.t() | nil
-  defp truncate_text(nil, _max), do: nil
-
-  defp truncate_text(text, max) do
-    if String.length(text) <= max do
-      text
-    else
-      text
-      |> String.graphemes()
-      |> Enum.take(max)
-      |> Enum.join()
-      |> Kernel.<>("...")
-    end
-  end
 
   @spec normalize_key(term()) :: String.t()
   defp normalize_key(value), do: value |> to_string() |> String.downcase() |> String.trim()
@@ -2677,46 +2598,5 @@ defmodule RetroHexChat.Scraper.HTTP do
       nil ->
         nil
     end
-  end
-
-  @entity_map %{
-    "amp" => "&",
-    "apos" => "'",
-    "copy" => "©",
-    "gt" => ">",
-    "hellip" => "…",
-    "laquo" => "«",
-    "ldquo" => "“",
-    "lsquo" => "‘",
-    "lt" => "<",
-    "mdash" => "—",
-    "nbsp" => " ",
-    "ndash" => "–",
-    "quot" => "\"",
-    "raquo" => "»",
-    "rdquo" => "”",
-    "reg" => "®",
-    "rsquo" => "’",
-    "trade" => "™"
-  }
-
-  @spec decode_html_entities(String.t()) :: String.t()
-  defp decode_html_entities(text) do
-    text = Regex.replace(~r/&#x([0-9a-fA-F]+);/, text, fn _match, hex -> codepoint(hex, 16) end)
-    text = Regex.replace(~r/&#([0-9]+);/, text, fn _match, int -> codepoint(int, 10) end)
-
-    Regex.replace(~r/&([a-zA-Z][a-zA-Z0-9]+);/, text, fn match, name ->
-      Map.get(@entity_map, String.downcase(name), match)
-    end)
-  end
-
-  @spec codepoint(String.t(), 10 | 16) :: String.t()
-  defp codepoint(value, base) do
-    value
-    |> String.to_integer(base)
-    |> List.wrap()
-    |> List.to_string()
-  rescue
-    _ -> ""
   end
 end

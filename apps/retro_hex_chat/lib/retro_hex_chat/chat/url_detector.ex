@@ -10,6 +10,7 @@ defmodule RetroHexChat.Chat.URLDetector do
 
   alias RetroHexChat.Chat.Content.Html
   alias RetroHexChat.Chat.Formatter
+  alias RetroHexChat.Text
 
   @max_display_length 100
 
@@ -176,11 +177,7 @@ defmodule RetroHexChat.Chat.URLDetector do
 
   @spec truncate_display(String.t()) :: String.t()
   defp truncate_display(url) when byte_size(url) > 0 do
-    if String.length(url) > @max_display_length do
-      url |> String.slice(0, @max_display_length) |> html_escape() |> Kernel.<>("...")
-    else
-      html_escape(url)
-    end
+    url |> Text.truncate(@max_display_length) |> html_escape()
   end
 
   @spec html_escape(String.t()) :: String.t()
