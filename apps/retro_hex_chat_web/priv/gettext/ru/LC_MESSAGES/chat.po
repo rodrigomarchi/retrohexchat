@@ -2219,47 +2219,47 @@ msgstr "[Авто-Куис] %{nickname}:"
 #: lib/retro_hex_chat_web/live/chat_live/bot_events.ex:660
 #, elixir-autogen, elixir-format
 msgid "[BotService] Bot '%{name}' %{action}."
-msgstr "[Служба Бота]%{name}' %{action}."
+msgstr "[BotService] Bot '%{name}' %{action}."
 
 #: lib/retro_hex_chat_web/live/chat_live/bot_events.ex:227
 #, elixir-autogen, elixir-format
 msgid "[BotService] Bot '%{name}' created."
-msgstr "[Служба Бота]%{name}Создан."
+msgstr "Создан [BotService] Bot '%{name}'."
 
 #: lib/retro_hex_chat_web/live/chat_live/bot_events.ex:157
 #, elixir-autogen, elixir-format
 msgid "[BotService] Bot '%{name}' destroyed."
-msgstr "[Служба Бота]%{name}Уничтожен."
+msgstr "[BotService] Bot '%{name}' уничтожен."
 
 #: lib/retro_hex_chat_web/live/chat_live/bot_events.ex:413
 #, elixir-autogen, elixir-format
 msgid "[BotService] Bot '%{name}' joined %{channel}."
-msgstr "[Служба Бота]%{name}присоединяется %{channel}."
+msgstr "[BotService] Bot '%{name}' присоединился к %{channel}."
 
 #: lib/retro_hex_chat_web/live/chat_live/bot_events.ex:265
 #, elixir-autogen, elixir-format
 msgid "[BotService] Bot '%{name}' left %{channel}."
-msgstr "[Служба Бота]%{name}слева %{channel}."
+msgstr "[BotService] Bot '%{name}' покинул %{channel}."
 
 #: lib/retro_hex_chat_web/live/chat_live/bot_events.ex:594
 #, elixir-autogen, elixir-format
 msgid "[BotService] Capability '%{capability}' %{action}."
-msgstr "[БотСервис] Способность%{capability}' %{action}."
+msgstr "[BotService] Возможность %{capability} %{action}."
 
 #: lib/retro_hex_chat_web/live/chat_live/bot_events.ex:298
 #, elixir-autogen, elixir-format
 msgid "[BotService] Command '%{trigger}' added."
-msgstr "[Бот-Сервис] Командование%{trigger}Добавлено."
+msgstr "Добавлена команда [BotService] «%{trigger}»."
 
 #: lib/retro_hex_chat_web/live/chat_live/bot_events.ex:323
 #, elixir-autogen, elixir-format
 msgid "[BotService] Command '%{trigger}' removed."
-msgstr "[Бот-Сервис] Командование%{trigger}Убрали."
+msgstr "Команда [BotService] \"%{trigger}\" удалена."
 
 #: lib/retro_hex_chat_web/live/chat_live/bot_events.ex:234
 #, elixir-autogen, elixir-format
 msgid "[BotService] Failed to create bot '%{name}': %{message}"
-msgstr "[Бот-Сервис] Не удалось создать бота%{name}': %{message}"
+msgstr "[BotService] не удалось создать бота %{name}: %{message}"
 
 #: lib/retro_hex_chat_web/live/chat_live/arrival.ex:104
 #, elixir-autogen
@@ -2269,7 +2269,7 @@ msgstr "[ChanServ] Каналы онлайн"
 #: lib/retro_hex_chat_web/live/chat_live/pubsub_handlers/membership.ex:246
 #, elixir-autogen, elixir-format
 msgid "[NickServ] %{reason}. You are now %{nickname}"
-msgstr "[НикСерв] %{reason}Ты теперь здесь. %{nickname}"
+msgstr "[NickServ] %{reason}. Теперь вы %{nickname}"
 
 #: lib/retro_hex_chat_web/live/chat_live/arrival.ex:130
 #, elixir-autogen
@@ -2279,9 +2279,7 @@ msgstr "[NickServ] Прозвище онлайн"
 #: lib/retro_hex_chat_web/live/chat_live/helpers/session.ex:662
 #, elixir-autogen, elixir-format
 msgid "[NickServ] This nickname is registered. You have 60 seconds to identify via /ns identify <password> or you will be renamed."
-msgstr ""
-"[НикСерв] Это прозвище зарегистрировано. У вас есть 60 секунд, чтобы "
-"идентифицировать /ns определять <password> Или вы будете переименованы."
+msgstr "[NickServ]X Это прозвище зарегистрировано. У вас есть 60 секунд, чтобы идентифицировать через /ns идентифицировать <password> или вы будете переименованы."
 
 #: lib/retro_hex_chat_web/live/chat_live/pubsub_handlers/server_messages.ex:38
 #, elixir-autogen, elixir-format
@@ -3409,7 +3407,7 @@ msgstr "[BotService] %{reason}"
 #: lib/retro_hex_chat_web/live/chat_live/bot_events.ex:493
 #, elixir-autogen, elixir-format
 msgid "[BotService] Bot not found."
-msgstr "[Бот-Сервис] Бот не найден."
+msgstr "[BotService]X Бот не найден."
 
 #: lib/retro_hex_chat_web/live/chat_live/bot_events.ex:481
 #, elixir-autogen, elixir-format
@@ -3419,7 +3417,7 @@ msgstr "[BotService] Фид добавил: %{url} → %{channel}"
 #: lib/retro_hex_chat_web/live/chat_live/bot_events.ex:501
 #, elixir-autogen, elixir-format
 msgid "[BotService] Feed removed."
-msgstr "[БотСервис] Фид удален."
+msgstr "[BotService] Фид удален."
 
 #: lib/retro_hex_chat_web/components/ui/chat/conversations.ex:399
 #, elixir-autogen, elixir-format

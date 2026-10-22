@@ -2846,7 +2846,7 @@ msgstr "[BotService] %{name} heeft geen aangepaste opdrachten."
 #: lib/retro_hex_chat/commands/handlers/bot.ex:407
 #, elixir-autogen, elixir-format
 msgid "[BotService] Bot '%{name}' %{action}."
-msgstr "Bot%{name}' %{action}."
+msgstr "[BotService] Bot '%{name}' %{action}."
 
 #: lib/retro_hex_chat/commands/handlers/bot.ex:276
 #, elixir-autogen, elixir-format
@@ -2916,7 +2916,7 @@ msgstr "[BotService] Kon de opdracht \"%{trigger}' niet toevoegen: %{message}"
 #: lib/retro_hex_chat/commands/handlers/bot.ex:225
 #, elixir-autogen, elixir-format
 msgid "[BotService] Failed to create bot: %{message}"
-msgstr "Aanmaken bot mislukt: %{message}"
+msgstr "Aanmaken van bot [BotService] is mislukt: %{message}"
 
 #: lib/retro_hex_chat/commands/handlers/bot.ex:852
 #, elixir-autogen, elixir-format
@@ -3178,7 +3178,7 @@ msgstr "  %{id} | %{channel} | %{url} | laatst gecontroleerd: %{when}"
 #: lib/retro_hex_chat/commands/handlers/bot.ex:250
 #, elixir-autogen, elixir-format
 msgid "[BotService] %{name} carries no feeds."
-msgstr "%{name} heeft geen feeds."
+msgstr "[BotService] %{name} draagt geen feeds."
 
 #: lib/retro_hex_chat/commands/handlers/bot.ex:243
 #, elixir-autogen, elixir-format
@@ -3773,4 +3773,4 @@ msgstr "Schrijf de kanaalnaam naar de #."
 #: lib/retro_hex_chat/commands/handlers/bot.ex:219
 #, elixir-autogen, elixir-format
 msgid "[BotService] Bot '%{name}' created."
-msgstr "Bot '%{name}' aangemaakt."
+msgstr "[BotService] Bot '%{name}' aangemaakt."

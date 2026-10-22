@@ -31,6 +31,13 @@ class ProtectTest(unittest.TestCase):
         self.assertIn("NickServ", replacements.values())
         self.assertIn("ChanServ", replacements.values())
 
+    def test_masks_a_services_reply_prefix_whole(self):
+        # es dropped "[BotService]"; id answered 'Font color = "# 404040" BotService:'.
+        masked, replacements = protect("[BotService] Feed added: %{url}")
+        self.assertIn("[BotService]", replacements.values())
+        self.assertNotIn("BotService", masked)
+        self.assertEqual(restore(masked, replacements), "[BotService] Feed added: %{url}")
+
     def test_masks_the_end_of_time_as_a_name(self):
         # pt: "Fim de Tempo", a translation of a place the game named.
         _, replacements = protect("Go back to the End of Time?")

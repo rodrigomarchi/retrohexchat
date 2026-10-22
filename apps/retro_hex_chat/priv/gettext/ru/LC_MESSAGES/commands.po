@@ -2842,37 +2842,37 @@ msgstr "Вы должны быть владельцем канала, чтобы
 #: lib/retro_hex_chat/commands/handlers/bot.ex:428
 #, elixir-autogen, elixir-format
 msgid "[BotService] %{message}"
-msgstr "[Бот-Сервис] %{message}"
+msgstr "[BotService] %{message}"
 
 #: lib/retro_hex_chat/commands/handlers/bot.ex:754
 #, elixir-autogen, elixir-format
 msgid "[BotService] %{name} has no custom commands."
-msgstr "[Бот-Сервис] %{name} У него нет пользовательских команд."
+msgstr "[BotService] %{name} не имеет пользовательских команд."
 
 #: lib/retro_hex_chat/commands/handlers/bot.ex:407
 #, elixir-autogen, elixir-format
 msgid "[BotService] Bot '%{name}' %{action}."
-msgstr "[Служба Бота]%{name}' %{action}."
+msgstr "[BotService] Bot '%{name}' %{action}."
 
 #: lib/retro_hex_chat/commands/handlers/bot.ex:276
 #, elixir-autogen, elixir-format
 msgid "[BotService] Bot '%{name}' destroyed."
-msgstr "[Служба Бота]%{name}Уничтожен."
+msgstr "[BotService] Bot '%{name}' уничтожен."
 
 #: lib/retro_hex_chat/commands/handlers/bot.ex:362
 #, elixir-autogen, elixir-format
 msgid "[BotService] Bot '%{name}' is already in %{channel}."
-msgstr "[Служба Бота]%{name}«Уже в...» %{channel}."
+msgstr "[BotService] Bot '%{name}' уже в %{channel}."
 
 #: lib/retro_hex_chat/commands/handlers/bot.ex:354
 #, elixir-autogen, elixir-format
 msgid "[BotService] Bot '%{name}' joined %{channel}."
-msgstr "[Служба Бота]%{name}присоединяется %{channel}."
+msgstr "[BotService] Bot '%{name}' присоединился к %{channel}."
 
 #: lib/retro_hex_chat/commands/handlers/bot.ex:384
 #, elixir-autogen, elixir-format
 msgid "[BotService] Bot '%{name}' left %{channel}."
-msgstr "[Служба Бота]%{name}слева %{channel}."
+msgstr "[BotService] Bot '%{name}' покинул %{channel}."
 
 #: lib/retro_hex_chat/commands/handlers/bot.ex:115
 #: lib/retro_hex_chat/commands/handlers/bot.ex:235
@@ -2887,7 +2887,7 @@ msgstr "[Служба Бота]%{name}слева %{channel}."
 #: lib/retro_hex_chat/commands/handlers/bot.ex:818
 #, elixir-autogen, elixir-format
 msgid "[BotService] Bot '%{name}' not found."
-msgstr "[Служба Бота]%{name}Не найдено."
+msgstr "[BotService] Bot '%{name}' не найден."
 
 #: lib/retro_hex_chat/commands/handlers/bot.ex:308
 #, elixir-autogen, elixir-format
@@ -2897,22 +2897,22 @@ msgstr "[BotService] Информация о боте: %{name}"
 #: lib/retro_hex_chat/commands/handlers/bot.ex:856
 #, elixir-autogen, elixir-format
 msgid "[BotService] Bots:"
-msgstr "[Бот-Сервис] Боты:"
+msgstr "Боты [BotService]:"
 
 #: lib/retro_hex_chat/commands/handlers/bot.ex:827
 #, elixir-autogen, elixir-format
 msgid "[BotService] Command '%{trigger}' removed from %{name}."
-msgstr "[Бот-Сервис] Командование%{trigger}\"удаленный из %{name}."
+msgstr "Команда [BotService] '%{trigger}' удалена из %{name}."
 
 #: lib/retro_hex_chat/commands/handlers/bot.ex:796
 #, elixir-autogen, elixir-format
 msgid "[BotService] Command '%{trigger}' set for %{name}."
-msgstr "[Бот-Сервис] Командование%{trigger}установленный для %{name}."
+msgstr "Команда [BotService] '%{trigger}' установлена для %{name}."
 
 #: lib/retro_hex_chat/commands/handlers/bot.ex:760
 #, elixir-autogen, elixir-format
 msgid "[BotService] Commands for %{bot_name}:"
-msgstr "Командование для %{bot_name}:"
+msgstr "Команды [BotService] для %{bot_name}:"
 
 #: lib/retro_hex_chat/commands/handlers/bot.ex:806
 #, elixir-autogen, elixir-format
@@ -2922,12 +2922,12 @@ msgstr "[BotService] Не удалось добавить команду%{trigge
 #: lib/retro_hex_chat/commands/handlers/bot.ex:225
 #, elixir-autogen, elixir-format
 msgid "[BotService] Failed to create bot: %{message}"
-msgstr "[Бот-Сервис] Не удалось создать бота: %{message}"
+msgstr "[BotService] не удалось создать бота: %{message}"
 
 #: lib/retro_hex_chat/commands/handlers/bot.ex:852
 #, elixir-autogen, elixir-format
 msgid "[BotService] No bots configured."
-msgstr "[Бот-Сервис] Никаких ботов."
+msgstr "[BotService]X Никаких ботов."
 
 #: lib/retro_hex_chat/commands/handlers/cs.ex:40
 #: lib/retro_hex_chat/commands/handlers/cs.ex:165
@@ -2945,18 +2945,17 @@ msgstr "[Бот-Сервис] Никаких ботов."
 #: lib/retro_hex_chat/commands/handlers/cs.ex:399
 #, elixir-autogen, elixir-format
 msgid "[ChanServ] %{message}"
-msgstr "[ЧанСерв] %{message}"
+msgstr "[ChanServ] %{message}"
 
 #: lib/retro_hex_chat/commands/handlers/cs.ex:187
 #, elixir-autogen, elixir-format
 msgid "[ChanServ] %{name}: founder=%{founder}, registered=%{registered_at}"
-msgstr ""
-"[ЧанСерв] %{name}Основатель =%{founder}зарегистрированный =%{registered_at}"
+msgstr "[ChanServ] %{name}: основатель = %{founder}, зарегистрирован = %{registered_at}"
 
 #: lib/retro_hex_chat/commands/handlers/cs.ex:410
 #, elixir-autogen, elixir-format
 msgid "[ChanServ] Access list for %{channel} (%{level})"
-msgstr "[ЧанСерв] Список доступа для %{channel} (%{level})"
+msgstr "Список доступа [ChanServ] для %{channel} (%{level})"
 
 #: lib/retro_hex_chat/commands/handlers/ns.ex:133
 #: lib/retro_hex_chat/commands/handlers/ns.ex:136
@@ -2970,14 +2969,12 @@ msgstr "[ЧанСерв] Список доступа для %{channel} (%{level}
 #: lib/retro_hex_chat/commands/handlers/ns.ex:287
 #, elixir-autogen, elixir-format
 msgid "[NickServ] %{message}"
-msgstr "[НикСерв] %{message}"
+msgstr "[NickServ] %{message}"
 
 #: lib/retro_hex_chat/commands/handlers/ns.ex:169
 #, elixir-autogen, elixir-format
 msgid "[NickServ] %{nickname}: registered %{registered_at}, identified: %{identified}"
-msgstr ""
-"[НикСерв] %{nickname}зарегистрированный %{registered_at}Выявлено: "
-"%{identified}"
+msgstr "[NickServ] %{nickname}: зарегистрированный %{registered_at}, идентифицированный: %{identified}"
 
 #: lib/retro_hex_chat/commands/handlers/admin.ex:100
 #, elixir-autogen, elixir-format
@@ -3187,7 +3184,7 @@ msgstr "  %{id} | %{channel} | %{url} | последняя проверка: %{w
 #: lib/retro_hex_chat/commands/handlers/bot.ex:250
 #, elixir-autogen, elixir-format
 msgid "[BotService] %{name} carries no feeds."
-msgstr "%{name} не несет фиды."
+msgstr "[BotService] %{name} не несет фиды."
 
 #: lib/retro_hex_chat/commands/handlers/bot.ex:243
 #, elixir-autogen, elixir-format
@@ -3782,4 +3779,4 @@ msgstr "Напишите название канала после #."
 #: lib/retro_hex_chat/commands/handlers/bot.ex:219
 #, elixir-autogen, elixir-format
 msgid "[BotService] Bot '%{name}' created."
-msgstr "Бот \"%{name}\" создан."
+msgstr "Создан [BotService] Bot '%{name}'."

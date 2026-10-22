@@ -47,7 +47,13 @@ KEY_CHORD_RE = re.compile(
 # (`names.py`); a camera's or a video's feed is a picture and is left alone.
 FEED_RE = re.compile(r"(?<![Cc]amera )(?<![Vv]ideo )\b[Ff]eeds?\b")
 
+# The prefix a service's reply carries ("[BotService] Feed added."): the reader
+# sees which service is speaking by it. Masked whole, brackets included, or the
+# engines drop it, translate it, or wrap it in markup they invent.
+SERVICE_TAG_RE = re.compile(r"\[(?:BotService|ChanServ|NickServ|MemoServ|OperServ|HostServ)\]")
+
 PROTECTED_PATTERNS = (
+    SERVICE_TAG_RE,
     re.compile(r"https?://[^\s<>\"]+"),
     re.compile(r"`[^`]+`"),
     re.compile(r"</?[^>]+>"),

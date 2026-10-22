@@ -5,8 +5,8 @@ defmodule RetroHexChat.Commands.Handlers.Admin.User do
   alias RetroHexChat.Accounts.ServerRoles
   alias RetroHexChat.Admin
   alias RetroHexChat.Admin.{AuditLogs, ServerBans}
-  alias RetroHexChat.Commands.Handler.Args
   alias RetroHexChat.Commands.{Duration, Handler, Timestamp}
+  alias RetroHexChat.Commands.Handler.Args
   alias RetroHexChat.Page
   alias RetroHexChat.Presence.Tracker
   alias RetroHexChat.Services.{NickServ, Queries}
