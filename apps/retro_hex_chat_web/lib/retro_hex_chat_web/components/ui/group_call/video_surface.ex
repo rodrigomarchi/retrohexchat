@@ -11,6 +11,7 @@ defmodule RetroHexChatWeb.Components.UI.GroupCall.VideoSurface do
   import RetroHexChatWeb.Components.UI.MediaSession.ReactionPicker, only: [reaction_icon: 1]
   import RetroHexChatWeb.Components.UI.NickFlag
 
+  alias RetroHexChatWeb.Components.UI.GroupCall.MediaState
   alias RetroHexChatWeb.Icons
   alias RetroHexChatWeb.Icons.CallControls
 
@@ -27,8 +28,8 @@ defmodule RetroHexChatWeb.Components.UI.GroupCall.VideoSurface do
       data-group-call-token={@call.token}
       data-join-token={@call.join_token}
       data-participant-id={@call.participant_id}
-      data-audio={to_string(media_enabled?(@call, :audio))}
-      data-video={to_string(media_enabled?(@call, :video))}
+      data-audio={to_string(MediaState.enabled?(@call, :audio))}
+      data-video={to_string(MediaState.enabled?(@call, :video))}
       data-audio-input-id={device_preference(@call, :audio_input_id)}
       data-video-input-id={device_preference(@call, :video_input_id)}
       data-audio-output-id={device_preference(@call, :audio_output_id)}
@@ -74,9 +75,9 @@ defmodule RetroHexChatWeb.Components.UI.GroupCall.VideoSurface do
           data-group-call-local-tile
           data-participant-id={@call.participant_id}
           data-local="true"
-          data-media-audio={media_enabled?(@call, :audio)}
-          data-media-video={media_enabled?(@call, :video)}
-          data-media-screen={media_enabled?(@call, :screen)}
+          data-media-audio={MediaState.enabled?(@call, :audio)}
+          data-media-video={MediaState.enabled?(@call, :video)}
+          data-media-screen={MediaState.enabled?(@call, :screen)}
           data-track-source="camera"
           data-active-speaker="false"
           data-quality-level="unknown"
@@ -245,20 +246,15 @@ defmodule RetroHexChatWeb.Components.UI.GroupCall.VideoSurface do
   defp self_view(%{layout: %{self_view: mode}}) when mode in [:tile, :pip, :hidden], do: mode
   defp self_view(_call), do: :tile
 
-  defp media_enabled?(%{media: media}, :screen), do: Map.get(media, :screen, false) == true
-  defp media_enabled?(%{media: media}, key), do: Map.get(media, key, true) == true
-  defp media_enabled?(_call, :screen), do: false
-  defp media_enabled?(_call, _key), do: true
-
   defp local_empty_title(call) do
     cond do
-      media_enabled?(call, :screen) ->
+      MediaState.enabled?(call, :screen) ->
         dgettext("group_call", "Sharing screen")
 
-      !media_enabled?(call, :audio) && !media_enabled?(call, :video) ->
+      !MediaState.enabled?(call, :audio) && !MediaState.enabled?(call, :video) ->
         dgettext("group_call", "Receive-only mode")
 
-      !media_enabled?(call, :video) ->
+      !MediaState.enabled?(call, :video) ->
         dgettext("group_call", "Camera off")
 
       true ->
@@ -268,13 +264,13 @@ defmodule RetroHexChatWeb.Components.UI.GroupCall.VideoSurface do
 
   defp local_empty_detail(call) do
     cond do
-      media_enabled?(call, :screen) ->
+      MediaState.enabled?(call, :screen) ->
         dgettext("group_call", "Your screen is replacing the camera feed.")
 
-      !media_enabled?(call, :audio) && !media_enabled?(call, :video) ->
+      !MediaState.enabled?(call, :audio) && !MediaState.enabled?(call, :video) ->
         dgettext("group_call", "Your microphone and camera are off.")
 
-      !media_enabled?(call, :video) ->
+      !MediaState.enabled?(call, :video) ->
         dgettext("group_call", "Your camera is not being sent.")
 
       true ->

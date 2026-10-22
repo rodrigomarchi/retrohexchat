@@ -24,6 +24,7 @@ defmodule RetroHexChatWeb.Components.UI.GroupCall.Panel do
   alias RetroHexChatWeb.Components.UI.GroupCall.{
     ActiveSpeakerRing,
     LayoutControls,
+    MediaState,
     ParticipantQualityBadge,
     ScreenShareControl,
     StatsPanel,
@@ -348,25 +349,25 @@ defmodule RetroHexChatWeb.Components.UI.GroupCall.Panel do
       <.tool_button
         label={dgettext("group_call", "Toggle microphone")}
         variant="dock"
-        active={!media_enabled?(@call, :audio)}
-        pressed={media_enabled?(@call, :audio)}
+        active={!MediaState.enabled?(@call, :audio)}
+        pressed={MediaState.enabled?(@call, :audio)}
         phx-click={@on_toggle_audio}
         data-testid="group-call-audio-toggle"
       >
-        <CallControls.icon_call_microphone :if={media_enabled?(@call, :audio)} class="h-4 w-4" />
-        <CallControls.icon_call_mute :if={!media_enabled?(@call, :audio)} class="h-4 w-4" />
+        <CallControls.icon_call_microphone :if={MediaState.enabled?(@call, :audio)} class="h-4 w-4" />
+        <CallControls.icon_call_mute :if={!MediaState.enabled?(@call, :audio)} class="h-4 w-4" />
       </.tool_button>
 
       <.tool_button
         label={dgettext("group_call", "Toggle camera")}
         variant="dock"
-        active={!media_enabled?(@call, :video)}
-        pressed={media_enabled?(@call, :video)}
+        active={!MediaState.enabled?(@call, :video)}
+        pressed={MediaState.enabled?(@call, :video)}
         phx-click={@on_toggle_video}
         data-testid="group-call-video-toggle"
       >
-        <CallControls.icon_call_camera :if={media_enabled?(@call, :video)} class="h-4 w-4" />
-        <CallControls.icon_call_camera_off :if={!media_enabled?(@call, :video)} class="h-4 w-4" />
+        <CallControls.icon_call_camera :if={MediaState.enabled?(@call, :video)} class="h-4 w-4" />
+        <CallControls.icon_call_camera_off :if={!MediaState.enabled?(@call, :video)} class="h-4 w-4" />
       </.tool_button>
 
       <ScreenShareControl.screen_share_control call={@call} variant="dock" />
@@ -431,24 +432,27 @@ defmodule RetroHexChatWeb.Components.UI.GroupCall.Panel do
         <.tool_button
           label={dgettext("group_call", "Toggle microphone")}
           variant="flat"
-          active={!media_enabled?(@call, :audio)}
-          pressed={media_enabled?(@call, :audio)}
+          active={!MediaState.enabled?(@call, :audio)}
+          pressed={MediaState.enabled?(@call, :audio)}
           phx-click={@on_toggle_audio}
           data-testid="group-call-mini-audio-toggle"
         >
-          <CallControls.icon_call_microphone :if={media_enabled?(@call, :audio)} class="h-4 w-4" />
-          <CallControls.icon_call_mute :if={!media_enabled?(@call, :audio)} class="h-4 w-4" />
+          <CallControls.icon_call_microphone :if={MediaState.enabled?(@call, :audio)} class="h-4 w-4" />
+          <CallControls.icon_call_mute :if={!MediaState.enabled?(@call, :audio)} class="h-4 w-4" />
         </.tool_button>
         <.tool_button
           label={dgettext("group_call", "Toggle camera")}
           variant="flat"
-          active={!media_enabled?(@call, :video)}
-          pressed={media_enabled?(@call, :video)}
+          active={!MediaState.enabled?(@call, :video)}
+          pressed={MediaState.enabled?(@call, :video)}
           phx-click={@on_toggle_video}
           data-testid="group-call-mini-video-toggle"
         >
-          <CallControls.icon_call_camera :if={media_enabled?(@call, :video)} class="h-4 w-4" />
-          <CallControls.icon_call_camera_off :if={!media_enabled?(@call, :video)} class="h-4 w-4" />
+          <CallControls.icon_call_camera :if={MediaState.enabled?(@call, :video)} class="h-4 w-4" />
+          <CallControls.icon_call_camera_off
+            :if={!MediaState.enabled?(@call, :video)}
+            class="h-4 w-4"
+          />
         </.tool_button>
         <.tool_button
           label={dgettext("group_call", "Expand conference")}
@@ -1133,9 +1137,6 @@ defmodule RetroHexChatWeb.Components.UI.GroupCall.Panel do
   defp self_view_label(%{layout: %{self_view: :pip}}), do: dgettext("group_call", "PiP")
   defp self_view_label(%{layout: %{self_view: :hidden}}), do: dgettext("group_call", "Hidden")
   defp self_view_label(_call), do: dgettext("group_call", "Tile")
-
-  defp media_enabled?(%{media: media}, key), do: Map.get(media, key, true) == true
-  defp media_enabled?(_call, _key), do: true
 
   defp participant_count(call), do: length(participants(call))
   # The languages are looked up when the roster changes (`GroupCallSummary.put_nick_locales/2`),
