@@ -18,6 +18,7 @@ defmodule RetroHexChat.Bots.Capabilities.Scheduler do
 
   alias RetroHexChat.Bots.Capabilities.Scheduler.Durable
   alias RetroHexChat.Bots.Policy
+  alias RetroHexChat.Channels.Name
   alias RetroHexChat.Text
 
   require Logger
@@ -280,12 +281,12 @@ defmodule RetroHexChat.Bots.Capabilities.Scheduler do
     case String.split(rest, " ", parts: 4) do
       ["interval", min_str, channel, message] ->
         case Integer.parse(min_str) do
-          {min, _} -> {:interval, min, ensure_hash(channel), message}
+          {min, _} -> {:interval, min, Name.ensure_prefix(channel), message}
           :error -> :error
         end
 
       ["daily", time, channel, message] ->
-        {:daily, time, ensure_hash(channel), message}
+        {:daily, time, Name.ensure_prefix(channel), message}
 
       _ ->
         :error
@@ -366,8 +367,4 @@ defmodule RetroHexChat.Bots.Capabilities.Scheduler do
     do: dgettext("bots", "daily@%{time}", time: time)
 
   defp format_schedule_type(_), do: "unknown"
-
-  @spec ensure_hash(String.t()) :: String.t()
-  defp ensure_hash("#" <> _ = ch), do: ch
-  defp ensure_hash(ch), do: "#" <> ch
 end

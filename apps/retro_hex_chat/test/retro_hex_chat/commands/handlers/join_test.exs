@@ -34,6 +34,11 @@ defmodule RetroHexChat.Commands.Handlers.JoinTest do
       assert {:error, _} = Join.execute(["elixir"], @base_context)
     end
 
+    test "rejects a bare # with nothing after it" do
+      assert {:error, message} = Join.execute(["#"], @base_context)
+      assert message =~ "after the #"
+    end
+
     test "rejects channel name too long" do
       long_name = "#" <> String.duplicate("a", 50)
       assert {:error, _} = Join.execute([long_name], @base_context)

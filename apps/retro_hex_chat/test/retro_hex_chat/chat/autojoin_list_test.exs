@@ -71,6 +71,12 @@ defmodule RetroHexChat.Chat.AutoJoinListTest do
       assert {:error, :invalid_channel} = AutoJoinList.add_entry(list, "#")
     end
 
+    test "rejects a name /join would refuse for its length" do
+      list = AutoJoinList.new()
+      too_long = "#" <> String.duplicate("a", 60)
+      assert {:error, :invalid_channel} = AutoJoinList.add_entry(list, too_long)
+    end
+
     test "rejects duplicate channels (case-insensitive)" do
       list = AutoJoinList.new()
       {:ok, list} = AutoJoinList.add_entry(list, "#Elixir")

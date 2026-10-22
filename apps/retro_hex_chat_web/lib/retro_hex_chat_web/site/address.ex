@@ -19,11 +19,6 @@ defmodule RetroHexChatWeb.Site.Address do
   def channel_path("#" <> name), do: "/c/" <> URI.encode(name, &URI.char_unreserved?/1)
   def channel_path(name) when is_binary(name), do: channel_path("#" <> name)
 
-  @doc "The channel a `/c/:channel` param names."
-  @spec channel_name(String.t()) :: String.t()
-  def channel_name("#" <> _rest = name), do: name
-  def channel_name(name) when is_binary(name), do: "#" <> name
-
   @doc "The address of the conversation on screen, in the current locale."
   @spec chat_address(map()) :: String.t()
   def chat_address(assigns), do: assigns |> chat_path() |> localized()

@@ -38,6 +38,7 @@ defmodule RetroHexChatWeb.Site.Documents do
   import Phoenix.LiveView
 
   alias RetroHexChat.Arcade
+  alias RetroHexChat.Channels.Name
   alias RetroHexChat.Channels.Visibility
   alias RetroHexChat.Games.Catalog, as: Games
   alias RetroHexChatWeb.ChatLive.ChatTitle
@@ -308,7 +309,7 @@ defmodule RetroHexChatWeb.Site.Documents do
   # A channel names itself only when a stranger could have listed it anyway:
   # the title of an address is what a shared link unfurls into.
   defp chat_title(_assigns, "/c/" <> _ = path) do
-    channel = path |> String.replace_prefix("/c/", "") |> URI.decode() |> Address.channel_name()
+    channel = path |> String.replace_prefix("/c/", "") |> URI.decode() |> Name.ensure_prefix()
 
     cond do
       not Visibility.nameable?(channel) -> "RetroHexChat"

@@ -6,6 +6,7 @@ defmodule RetroHexChat.Chat.AutoRespondRules do
   Persistence functions (save/2, load/1) require database access.
   """
 
+  alias RetroHexChat.Channels.Name
   alias RetroHexChat.Chat.AliasExpander
   alias RetroHexChat.Chat.AutoRespondRule
   alias RetroHexChat.Chat.Positions
@@ -36,7 +37,7 @@ defmodule RetroHexChat.Chat.AutoRespondRules do
     cond do
       full?(rules) -> {:error, :list_full}
       trigger_event not in @valid_triggers -> {:error, :invalid_trigger}
-      trimmed_filter != nil and not valid_channel?(trimmed_filter) -> {:error, :invalid_channel}
+      trimmed_filter != nil and not Name.valid?(trimmed_filter) -> {:error, :invalid_channel}
       trimmed_cmd == "" -> {:error, :invalid_command}
       String.length(trimmed_cmd) > @max_command_length -> {:error, :command_too_long}
       AliasExpander.contains_chaining?(trimmed_cmd) -> {:error, :command_chaining}
@@ -184,10 +185,6 @@ defmodule RetroHexChat.Chat.AutoRespondRules do
 
   defp full?(rules) do
     length(rules.entries) >= @max_entries
-  end
-
-  defp valid_channel?(filter) do
-    String.starts_with?(filter, "#")
   end
 
   defp find_by_position(rules, position) do

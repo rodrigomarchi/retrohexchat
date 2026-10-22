@@ -12,6 +12,7 @@ defmodule RetroHexChat.Chat.ReconnectState do
   blocks the cookie sends and what every row written before this existed holds.
   """
 
+  alias RetroHexChat.Channels.Name
   alias RetroHexChat.Chat.Schemas.ReconnectState, as: ReconnectStateSchema
   alias RetroHexChat.Repo
 
@@ -205,7 +206,7 @@ defmodule RetroHexChat.Chat.ReconnectState do
 
   defp normalize_channels(channels) when is_list(channels) do
     channels
-    |> Enum.filter(&valid_channel?/1)
+    |> Enum.filter(&Name.valid?/1)
     |> dedupe()
     |> Enum.take(@max_channels)
   end
@@ -235,13 +236,6 @@ defmodule RetroHexChat.Chat.ReconnectState do
 
   defp normalize_optional_string(value) when is_binary(value) and value != "", do: value
   defp normalize_optional_string(_value), do: nil
-
-  defp valid_channel?(channel) when is_binary(channel) do
-    String.starts_with?(channel, "#") and String.trim(channel) == channel and
-      byte_size(channel) <= 128
-  end
-
-  defp valid_channel?(_channel), do: false
 
   defp valid_nick?(nick) when is_binary(nick) do
     String.trim(nick) == nick and nick != "" and byte_size(nick) <= 128

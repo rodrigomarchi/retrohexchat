@@ -6,6 +6,7 @@ defmodule RetroHexChat.Chat.AutoJoinList do
   Persistence functions (save/2, load/1) require database access.
   """
 
+  alias RetroHexChat.Channels.Name
   alias RetroHexChat.Chat.AutoJoinEntry
   alias RetroHexChat.Chat.Positions
   alias RetroHexChat.Chat.Schemas.AutojoinListEntry
@@ -27,7 +28,7 @@ defmodule RetroHexChat.Chat.AutoJoinList do
       full?(autojoin_list) ->
         {:error, :list_full}
 
-      not valid_channel?(trimmed) ->
+      not Name.valid?(trimmed) ->
         {:error, :invalid_channel}
 
       duplicate?(autojoin_list, trimmed) ->
@@ -126,12 +127,6 @@ defmodule RetroHexChat.Chat.AutoJoinList do
   # ---------------------------------------------------------------------------
   # Private Helpers
   # ---------------------------------------------------------------------------
-
-  defp valid_channel?(name) do
-    String.starts_with?(name, "#") and
-      String.length(name) >= 2 and
-      not String.contains?(name, " ")
-  end
 
   defp duplicate?(autojoin_list, channel_name) do
     downcased = String.downcase(channel_name)

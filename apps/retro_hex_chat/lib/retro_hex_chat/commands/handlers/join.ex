@@ -4,6 +4,7 @@ defmodule RetroHexChat.Commands.Handlers.Join do
   @behaviour RetroHexChat.Commands.Handler
 
   alias RetroHexChat.Admin
+  alias RetroHexChat.Channels.Name
   alias RetroHexChat.Commands.Handler
 
   @default_max_channels 10
@@ -22,14 +23,8 @@ defmodule RetroHexChat.Commands.Handlers.Join do
     password = List.first(rest)
 
     cond do
-      not String.starts_with?(channel_name, "#") ->
-        {:error, dgettext("commands", "Invalid channel name. Channel names must start with #")}
-
-      String.length(channel_name) > 50 ->
-        {:error, dgettext("commands", "Channel name too long (max 50 characters)")}
-
-      String.contains?(channel_name, " ") ->
-        {:error, dgettext("commands", "Channel name cannot contain spaces")}
+      problem = name_problem(channel_name) ->
+        {:error, problem}
 
       length(context.channels) >= max_channels() ->
         {:error, "Maximum channel limit reached (#{max_channels()})"}
@@ -112,6 +107,26 @@ defmodule RetroHexChat.Commands.Handlers.Join do
     case Integer.parse(Admin.server_setting("max_channels")) do
       {count, ""} when count > 0 -> count
       _other -> @default_max_channels
+    end
+  end
+
+  @spec name_problem(String.t()) :: String.t() | nil
+  defp name_problem(channel_name) do
+    case Name.check(channel_name) do
+      :ok ->
+        nil
+
+      {:error, :no_prefix} ->
+        dgettext("commands", "Invalid channel name. Channel names must start with #")
+
+      {:error, :empty} ->
+        dgettext("commands", "Name the channel after the #")
+
+      {:error, :too_long} ->
+        dgettext("commands", "Channel name too long (max 50 characters)")
+
+      {:error, :whitespace} ->
+        dgettext("commands", "Channel name cannot contain spaces")
     end
   end
 end

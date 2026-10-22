@@ -19,6 +19,7 @@ defmodule RetroHexChat.ShareLinks.Schema.Link do
 
   import Ecto.Changeset
 
+  alias RetroHexChat.Channels.Name
   alias RetroHexChat.ShareLinks.Slug
 
   @type t :: %__MODULE__{}
@@ -26,7 +27,6 @@ defmodule RetroHexChat.ShareLinks.Schema.Link do
   @kinds ~w(call channel space p2p play)
 
   # Matches the `size: 50` the channel tables are declared with.
-  @max_channel_name 50
 
   schema "share_links" do
     field :slug, :string
@@ -74,15 +74,11 @@ defmodule RetroHexChat.ShareLinks.Schema.Link do
   end
 
   defp validate_channel_name(changeset, name) do
-    cond do
-      not String.starts_with?(name, "#") ->
-        add_error(changeset, :target, "channel name must start with #")
-
-      String.length(name) > @max_channel_name ->
-        add_error(changeset, :target, "channel name is too long")
-
-      true ->
-        changeset
+    case Name.check(name) do
+      :ok -> changeset
+      {:error, :no_prefix} -> add_error(changeset, :target, "channel name must start with #")
+      {:error, :too_long} -> add_error(changeset, :target, "channel name is too long")
+      {:error, _problem} -> add_error(changeset, :target, "is not a channel name")
     end
   end
 

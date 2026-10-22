@@ -13,6 +13,7 @@ defmodule RetroHexChat.Bots.Feeds do
   alias RetroHexChat.Bots.Capabilities.RSS
   alias RetroHexChat.Bots.Capabilities.RSS.Scheduler
   alias RetroHexChat.Bots.{Lifecycle, Queries}
+  alias RetroHexChat.Channels.Name
   alias RetroHexChat.Net.URLGuard
 
   require Logger
@@ -67,7 +68,7 @@ defmodule RetroHexChat.Bots.Feeds do
   @spec build(build_request(), String.t(), String.t()) :: {:ok, feed()} | {:error, String.t()}
   def build(request, url, channel) do
     url = String.trim(url)
-    channel = channel |> String.trim() |> ensure_hash()
+    channel = channel |> String.trim() |> Name.ensure_prefix()
 
     with :ok <- check_url(url),
          :ok <- check_channel(channel),
@@ -187,10 +188,6 @@ defmodule RetroHexChat.Bots.Feeds do
         :ok
     end
   end
-
-  @spec ensure_hash(String.t()) :: String.t()
-  defp ensure_hash("#" <> _ = channel), do: channel
-  defp ensure_hash(channel), do: "#" <> channel
 
   @spec generate_id() :: String.t()
   defp generate_id, do: "f" <> (:crypto.strong_rand_bytes(3) |> Base.encode16(case: :lower))

@@ -20,6 +20,7 @@ defmodule RetroHexChatWeb.ChatLive.BotEvents do
   alias RetroHexChat.Bots.Capabilities.{RSS, Scheduler, Trivia}
   alias RetroHexChat.Bots.{Feeds, Lifecycle, Queries, Server, Supervisor}
   alias RetroHexChat.ChangesetErrors
+  alias RetroHexChat.Channels.Name
   alias RetroHexChat.Chat.{IrcEscapes, TimeFormatter}
   alias RetroHexChat.Locales
   alias RetroHexChat.Text
@@ -241,7 +242,7 @@ defmodule RetroHexChatWeb.ChatLive.BotEvents do
   end
 
   defp authorized("bot_add_channel", %{"channel" => channel, "bot_name" => bot_name}, socket) do
-    channel = ensure_hash(channel)
+    channel = Name.ensure_prefix(channel)
     bot = Queries.get_bot_by_name(bot_name)
 
     if bot do
@@ -687,9 +688,6 @@ defmodule RetroHexChatWeb.ChatLive.BotEvents do
   end
 
   defp format_uptime(_started_at), do: nil
-
-  defp ensure_hash("#" <> _ = ch), do: ch
-  defp ensure_hash(ch), do: "#" <> ch
 
   defp parse_int(str, default) do
     case Integer.parse(str) do

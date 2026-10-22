@@ -40,6 +40,7 @@ defmodule RetroHexChatWeb.Site.Pages.Archive do
   import RetroHexChatWeb.Components.UI.TreeView, only: [tree_view_item: 1]
 
   alias RetroHexChat.Accounts.NickLocales
+  alias RetroHexChat.Channels.Name
   alias RetroHexChat.Chat.Archive
   alias RetroHexChatWeb.App.ChatHelpers
   alias RetroHexChatWeb.BuildInfo
@@ -55,7 +56,7 @@ defmodule RetroHexChatWeb.Site.Pages.Archive do
   """
   @spec data(map()) :: {:ok, map()} | :not_found
   def data(%{"channel" => slug, "date" => date} = params) do
-    channel = channel_name(slug)
+    channel = Name.ensure_prefix(slug)
 
     with {:ok, cursor} <- cursor(params),
          %{
@@ -90,7 +91,7 @@ defmodule RetroHexChatWeb.Site.Pages.Archive do
   end
 
   def data(%{"channel" => slug}) do
-    channel = channel_name(slug)
+    channel = Name.ensure_prefix(slug)
 
     case Archive.index_for(channel) do
       %{days: []} ->
@@ -260,10 +261,6 @@ defmodule RetroHexChatWeb.Site.Pages.Archive do
 
     ~s(W/"#{hash}")
   end
-
-  # A URL cannot carry the `#`: everything after it belongs to the browser.
-  defp channel_name("#" <> _rest = name), do: name
-  defp channel_name(slug) when is_binary(slug), do: "#" <> slug
 
   defp page_title(channel) do
     dgettext("landing", "%{channel} archive", channel: channel)

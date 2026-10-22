@@ -24,6 +24,7 @@ defmodule RetroHexChatWeb.DesktopLive do
   # ── Shell + tab glue (compose the design-system shell/tab components) ─────────
   import RetroHexChatWeb.ChatLive.Components.ChatShell
 
+  alias RetroHexChat.Channels.Name
   alias RetroHexChatWeb.ChatLive.Components.ChatShell
   import RetroHexChatWeb.ChatLive.Components.ChatTabs
 
@@ -368,7 +369,7 @@ defmodule RetroHexChatWeb.DesktopLive do
   defp enter_channel(socket, _params), do: socket
 
   defp channel_param(%{"channel" => channel}) when is_binary(channel) and channel != "",
-    do: Site.Address.channel_name(channel)
+    do: Name.ensure_prefix(channel)
 
   defp channel_param(_params), do: nil
 

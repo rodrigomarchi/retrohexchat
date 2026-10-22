@@ -45,6 +45,7 @@ defmodule RetroHexChatWeb.ChatLive.Visitor do
 
   alias RetroHexChat.Accounts.GuestNames
   alias RetroHexChat.Accounts.Session
+  alias RetroHexChat.Channels.Name
   alias RetroHexChat.Channels.Server
   alias RetroHexChat.Chat.KeyBindings
   alias RetroHexChat.Topics
@@ -158,7 +159,7 @@ defmodule RetroHexChatWeb.ChatLive.Visitor do
     socket
     |> assign(visitor_nick: guest)
     |> watch_channel(default_channel)
-    |> maybe_watch(params["channel"] && Address.channel_name(params["channel"]), default_channel)
+    |> maybe_watch(params["channel"] && Name.ensure_prefix(params["channel"]), default_channel)
   end
 
   @doc """

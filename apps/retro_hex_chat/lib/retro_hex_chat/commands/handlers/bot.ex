@@ -6,6 +6,7 @@ defmodule RetroHexChat.Commands.Handlers.Bot do
   alias RetroHexChat.Bots.Capabilities.{CustomCommands, Greeter, Help, Mention}
   alias RetroHexChat.Bots.{Feeds, Lifecycle, Policy, Queries, Server, Supervisor}
   alias RetroHexChat.ChangesetErrors
+  alias RetroHexChat.Channels.Name
   alias RetroHexChat.Chat.IrcEscapes
   alias RetroHexChat.Commands.Handler
   alias RetroHexChat.Locales
@@ -349,7 +350,7 @@ defmodule RetroHexChat.Commands.Handlers.Bot do
 
   @spec do_join(String.t(), String.t()) :: Handler.result()
   defp do_join(bot_name, channel) do
-    channel = ensure_hash(channel)
+    channel = Name.ensure_prefix(channel)
 
     case Queries.get_bot_by_name(bot_name) do
       nil ->
@@ -385,7 +386,7 @@ defmodule RetroHexChat.Commands.Handlers.Bot do
 
   @spec do_part(String.t(), String.t()) :: Handler.result()
   defp do_part(bot_name, channel) do
-    channel = ensure_hash(channel)
+    channel = Name.ensure_prefix(channel)
 
     case Queries.get_bot_by_name(bot_name) do
       nil ->
@@ -921,10 +922,6 @@ defmodule RetroHexChat.Commands.Handlers.Bot do
     end)
     |> Enum.join("; ")
   end
-
-  @spec ensure_hash(String.t()) :: String.t()
-  defp ensure_hash("#" <> _ = channel), do: channel
-  defp ensure_hash(channel), do: "#" <> channel
 
   @spec maybe_add_description([String.t()], String.t() | nil) :: [String.t()]
   defp maybe_add_description(lines, nil), do: lines
