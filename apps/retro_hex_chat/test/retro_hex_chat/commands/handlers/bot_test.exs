@@ -371,7 +371,7 @@ defmodule RetroHexChat.Commands.Handlers.BotTest do
       assert {:error, msg} =
                Bot.execute(["rss", "add", "BotCmdTest", @public, "#elsewhere"], @admin_ctx)
 
-      assert msg =~ "not in #elsewhere"
+      assert msg =~ "has not joined #elsewhere"
     end
 
     test "a regular user cannot point a bot at a URL" do
