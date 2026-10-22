@@ -5,6 +5,7 @@ defmodule RetroHexChat.P2P.RateLimiter do
   """
 
   alias RetroHexChat.P2P.RateLimitTable
+  alias RetroHexChat.RateLimit.Window
 
   @spec check_session_rate(integer()) :: :ok | {:error, {:rate_limited, pos_integer()}}
   def check_session_rate(user_id) do
@@ -16,38 +17,13 @@ defmodule RetroHexChat.P2P.RateLimiter do
 
   @spec check_session_rate(:ets.tid() | atom(), integer(), {pos_integer(), pos_integer()}) ::
           :ok | {:error, {:rate_limited, pos_integer()}}
-  def check_session_rate(table, user_id, {max_count, window_ms} \\ {5, 600_000}) do
-    key = {:session_create, user_id}
-    now = System.monotonic_time(:millisecond)
-
-    case :ets.lookup(table, key) do
-      [] ->
-        :ets.insert(table, {key, 1, now})
-        :ok
-
-      [{^key, count, window_start}] ->
-        elapsed = now - window_start
-
-        cond do
-          elapsed >= window_ms ->
-            :ets.insert(table, {key, 1, now})
-            :ok
-
-          count < max_count ->
-            :ets.insert(table, {key, count + 1, window_start})
-            :ok
-
-          true ->
-            remaining_ms = window_ms - elapsed
-            remaining_seconds = max(1, ceil(remaining_ms / 1_000))
-            {:error, {:rate_limited, remaining_seconds}}
-        end
+  def check_session_rate(table, user_id, limit \\ {5, 600_000}) do
+    case Window.check(table, {:session_create, user_id}, limit) do
+      :ok -> :ok
+      {:error, {:rate_limited, ms}} -> {:error, {:rate_limited, Window.seconds(ms)}}
     end
   end
 
   @spec reset(:ets.tid() | atom(), integer()) :: :ok
-  def reset(table, user_id) do
-    :ets.delete(table, {:session_create, user_id})
-    :ok
-  end
+  def reset(table, user_id), do: Window.reset(table, {:session_create, user_id})
 end

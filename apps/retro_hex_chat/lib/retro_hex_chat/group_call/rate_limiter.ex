@@ -8,6 +8,7 @@ defmodule RetroHexChat.GroupCall.RateLimiter do
   """
 
   alias RetroHexChat.RateLimit.Table
+  alias RetroHexChat.RateLimit.Window
 
   @type table :: :ets.tid() | atom()
   @type limit :: {pos_integer(), pos_integer()}
@@ -38,36 +39,13 @@ defmodule RetroHexChat.GroupCall.RateLimiter do
   end
 
   @spec check(table(), term(), limit()) :: :ok | {:error, {:rate_limited, pos_integer()}}
-  def check(table, key, {max_count, window_ms}) do
-    now = System.monotonic_time(:millisecond)
-
-    case :ets.lookup(table, key) do
-      [] ->
-        :ets.insert(table, {key, 1, now})
-        :ok
-
-      [{^key, count, window_start}] ->
-        elapsed = now - window_start
-
-        cond do
-          elapsed >= window_ms ->
-            :ets.insert(table, {key, 1, now})
-            :ok
-
-          count < max_count ->
-            :ets.insert(table, {key, count + 1, window_start})
-            :ok
-
-          true ->
-            remaining_ms = window_ms - elapsed
-            {:error, {:rate_limited, max(1, ceil(remaining_ms / 1_000))}}
-        end
+  def check(table, key, limit) do
+    case Window.check(table, key, limit) do
+      :ok -> :ok
+      {:error, {:rate_limited, ms}} -> {:error, {:rate_limited, Window.seconds(ms)}}
     end
   end
 
   @spec reset(table(), term()) :: :ok
-  def reset(table, key) do
-    :ets.delete(table, key)
-    :ok
-  end
+  defdelegate reset(table, key), to: Window
 end

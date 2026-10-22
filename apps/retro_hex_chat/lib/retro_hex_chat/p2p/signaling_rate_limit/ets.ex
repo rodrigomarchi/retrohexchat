@@ -7,6 +7,7 @@ defmodule RetroHexChat.P2P.SignalingRateLimit.ETS do
   @behaviour RetroHexChat.P2P.SignalingRateLimit
 
   alias RetroHexChat.P2P.RateLimitTable
+  alias RetroHexChat.RateLimit.Window
 
   @default_max_count 100
   @default_window_ms 60_000
@@ -30,34 +31,12 @@ defmodule RetroHexChat.P2P.SignalingRateLimit.ETS do
     do_check(user_id, table, window_ms)
   end
 
+  # The refusal carries how long the window still blocks, in milliseconds: a
+  # caller that cannot say when to try again leaves the client retrying into a
+  # closed door.
   @spec do_check(integer(), :ets.tid() | atom(), pos_integer()) ::
           :ok | {:error, {:rate_limited, non_neg_integer()}}
   defp do_check(user_id, table, window_ms) do
-    key = {:signal, user_id}
-    now = System.monotonic_time(:millisecond)
-
-    case :ets.lookup(table, key) do
-      [] ->
-        :ets.insert(table, {key, 1, now})
-        :ok
-
-      [{^key, count, window_start}] ->
-        elapsed = now - window_start
-
-        cond do
-          elapsed >= window_ms ->
-            :ets.insert(table, {key, 1, now})
-            :ok
-
-          count < @default_max_count ->
-            :ets.insert(table, {key, count + 1, window_start})
-            :ok
-
-          true ->
-            # How long the window still blocks. A caller that cannot say when to
-            # try again leaves the client retrying into a closed door.
-            {:error, {:rate_limited, window_ms - elapsed}}
-        end
-    end
+    Window.check(table, {:signal, user_id}, {@default_max_count, window_ms})
   end
 end
