@@ -37,6 +37,7 @@ defmodule RetroHexChatWeb.ChatLive.CommandDispatch do
   alias RetroHexChat.Accounts.{ServerRoles, Session}
   alias RetroHexChat.Admin.GlobalMutes
   alias RetroHexChat.Observability
+  alias RetroHexChat.Topics
 
   alias RetroHexChat.Chat.{
     AliasExpander,
@@ -493,7 +494,7 @@ defmodule RetroHexChatWeb.ChatLive.CommandDispatch do
 
     Enum.each(session.channels, fn channel ->
       try do
-        safe_untrack_user("channel:#{channel}", session.nickname)
+        safe_untrack_user(Topics.channel(channel), session.nickname)
         Server.part(channel, session.nickname, truncated)
       rescue
         e ->

@@ -663,7 +663,7 @@ defmodule RetroHexChat.Admin do
     Enum.each(session_refs, fn session_ref ->
       Phoenix.PubSub.broadcast(
         @pubsub,
-        "chat_device_session:#{session_ref}",
+        Topics.chat_device_session(session_ref),
         {:force_disconnect, Map.put(payload, :session_ref, session_ref)}
       )
     end)
@@ -727,7 +727,7 @@ defmodule RetroHexChat.Admin do
   end
 
   defp broadcast_channel(channel_name, message) do
-    Phoenix.PubSub.broadcast(@pubsub, "channel:#{channel_name}", message)
+    Phoenix.PubSub.broadcast(@pubsub, Topics.channel(channel_name), message)
   rescue
     e -> Logger.warning("Admin broadcast to channel:#{channel_name} failed: #{inspect(e)}")
   end

@@ -1714,7 +1714,7 @@ defmodule RetroHexChat.Channels.Server do
     {event, metadata} = broadcast_observability(channel_name, message)
 
     Observability.span(event, metadata, fn ->
-      case Phoenix.PubSub.broadcast(@pubsub, "channel:#{channel_name}", message) do
+      case Phoenix.PubSub.broadcast(@pubsub, Topics.channel(channel_name), message) do
         :ok ->
           :ok
 

@@ -21,6 +21,7 @@ defmodule RetroHexChat.Accounts.TrustedDevices do
   alias RetroHexChat.Repo
   alias RetroHexChat.Services.Queries
   alias RetroHexChat.Services.RegisteredNick
+  alias RetroHexChat.Topics
 
   @pubsub RetroHexChat.PubSub
   @selector_bytes 18
@@ -614,7 +615,7 @@ defmodule RetroHexChat.Accounts.TrustedDevices do
   def end_session(session_ref, payload) when is_binary(session_ref) and is_map(payload) do
     Phoenix.PubSub.broadcast(
       @pubsub,
-      "chat_device_session:#{session_ref}",
+      Topics.chat_device_session(session_ref),
       {:force_disconnect, Map.put(payload, :session_ref, session_ref)}
     )
 
@@ -1275,7 +1276,7 @@ defmodule RetroHexChat.Accounts.TrustedDevices do
   defp broadcast_session_disconnect(session_ref, reason) do
     Phoenix.PubSub.broadcast(
       @pubsub,
-      "chat_device_session:#{session_ref}",
+      Topics.chat_device_session(session_ref),
       {:force_disconnect, %{reason: reason}}
     )
   end

@@ -34,6 +34,7 @@ defmodule RetroHexChatWeb.ChatLive.ArcadeSessionEvents do
   alias Phoenix.LiveView.Socket
   alias RetroHexChat.Arcade
   alias RetroHexChat.Arcade.Schema.SoloSession
+  alias RetroHexChat.Topics
   alias RetroHexChatWeb.App.Paths
   alias RetroHexChatWeb.App.SessionHelpers
   alias RetroHexChatWeb.ChatLive.Helpers.Messages
@@ -110,7 +111,7 @@ defmodule RetroHexChatWeb.ChatLive.ArcadeSessionEvents do
 
   def handle_event(_event, _params, socket), do: {:cont, socket}
 
-  # ── PubSub events (topic "arcade:#{token}") ───────────────────
+  # ── PubSub events (`Topics.arcade/1`) ───────────────────
 
   @spec handle_info(term(), Socket.t()) :: {:cont | :halt, Socket.t()}
   # A link that named an arcade game — the public game page's way in — opens
@@ -249,7 +250,7 @@ defmodule RetroHexChatWeb.ChatLive.ArcadeSessionEvents do
 
     with {:ok, user_id} <- SessionHelpers.resolve_user_id(nickname),
          {:ok, %{token: token}} <- Arcade.create_session(user_id) do
-      Phoenix.PubSub.subscribe(@pubsub, "arcade:#{token}")
+      Phoenix.PubSub.subscribe(@pubsub, Topics.arcade(token))
       Arcade.join_session(token, user_id)
 
       socket
@@ -324,7 +325,7 @@ defmodule RetroHexChatWeb.ChatLive.ArcadeSessionEvents do
   @spec close_current_arcade(Socket.t(), map(), String.t()) :: Socket.t()
   defp close_current_arcade(socket, s, reason) do
     _ = Arcade.close_session(s.token, s.user_id, reason)
-    Phoenix.PubSub.unsubscribe(@pubsub, "arcade:#{s.token}")
+    Phoenix.PubSub.unsubscribe(@pubsub, Topics.arcade(s.token))
     assign(socket, arcade_session: nil)
   end
 
@@ -333,7 +334,7 @@ defmodule RetroHexChatWeb.ChatLive.ArcadeSessionEvents do
   # and unmount the window.
   @spec clear_arcade(Socket.t(), map()) :: Socket.t()
   defp clear_arcade(socket, s) do
-    Phoenix.PubSub.unsubscribe(@pubsub, "arcade:#{s.token}")
+    Phoenix.PubSub.unsubscribe(@pubsub, Topics.arcade(s.token))
 
     socket
     |> Messages.system_event(dgettext("chat", "Arcade session ended."))

@@ -16,6 +16,7 @@ defmodule RetroHexChat.SystemInfo.Instance do
   alias RetroHexChat.Channels
   alias RetroHexChat.Presence.Tracker
   alias RetroHexChat.Table
+  alias RetroHexChat.Topics
 
   @type t :: %__MODULE__{
           channel_count: non_neg_integer(),
@@ -83,7 +84,7 @@ defmodule RetroHexChat.SystemInfo.Instance do
   end
 
   defp nicknames(channel) do
-    "channel:#{channel}"
+    Topics.channel(channel)
     |> Tracker.list()
     |> Map.keys()
   end

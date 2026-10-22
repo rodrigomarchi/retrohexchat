@@ -139,6 +139,18 @@ defmodule RetroHexChat.Topics do
   @spec arcade_plays() :: String.t()
   def arcade_plays, do: "arcade:plays"
 
+  @doc "One solo arcade session: its state and its end, for the chat that started it."
+  @spec arcade(String.t()) :: String.t()
+  def arcade(session_token) when is_binary(session_token), do: "arcade:" <> session_token
+
+  @doc """
+  One chat session of a signed-in person, for whatever must end it from
+  outside: a session limit, a revoked terminal, an admin's disconnect.
+  """
+  @spec chat_device_session(String.t()) :: String.t()
+  def chat_device_session(session_ref) when is_binary(session_ref),
+    do: "chat_device_session:" <> session_ref
+
   @doc "Server-wide announcements (`/announce`), heard by every chat, signed in or not."
   @spec announcements() :: String.t()
   def announcements, do: "server:announcements"

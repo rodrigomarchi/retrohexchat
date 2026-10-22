@@ -9,6 +9,7 @@ defmodule RetroHexChatWeb.Admin.AppInfoPage do
 
   alias RetroHexChat.Channels
   alias RetroHexChat.Presence.Tracker
+  alias RetroHexChat.Topics
 
   @impl true
   def menu_link(_, _) do
@@ -22,7 +23,7 @@ defmodule RetroHexChatWeb.Admin.AppInfoPage do
 
     channel_fields =
       Enum.map(channels, fn name ->
-        users = Tracker.list_users("channel:#{name}")
+        users = Tracker.list_users(Topics.channel(name))
 
         {dgettext("admin", "#%{name}", name: name),
          dgettext("admin", "%{users_count} users", users_count: length(users))}
@@ -71,7 +72,7 @@ defmodule RetroHexChatWeb.Admin.AppInfoPage do
   defp count_connected_users(channels) do
     channels
     |> Enum.flat_map(fn name ->
-      Tracker.list_users("channel:#{name}")
+      Tracker.list_users(Topics.channel(name))
       |> Enum.map(& &1.nickname)
     end)
     |> Enum.uniq()

@@ -16,6 +16,7 @@ defmodule RetroHexChat.Bots.Server do
   alias RetroHexChat.Channels
   alias RetroHexChat.Jobs
   alias RetroHexChat.Jobs.BotEventLogWorker
+  alias RetroHexChat.Topics
 
   @pubsub RetroHexChat.PubSub
 
@@ -132,7 +133,7 @@ defmodule RetroHexChat.Bots.Server do
 
     # Subscribe to channels and join channel processes
     Enum.each(state.channels, fn {channel_name, _} ->
-      Phoenix.PubSub.subscribe(@pubsub, "channel:#{channel_name}")
+      Phoenix.PubSub.subscribe(@pubsub, Topics.channel(channel_name))
       join_channel_process(channel_name, state.nickname)
     end)
 
@@ -157,7 +158,7 @@ defmodule RetroHexChat.Bots.Server do
     if Map.has_key?(state.channels, channel_name) do
       {:reply, {:error, dgettext("bots", "Already in channel")}, state}
     else
-      Phoenix.PubSub.subscribe(@pubsub, "channel:#{channel_name}")
+      Phoenix.PubSub.subscribe(@pubsub, Topics.channel(channel_name))
 
       new_channels =
         Map.put(state.channels, channel_name, %{enabled: true, capability_overrides: %{}})
@@ -170,7 +171,7 @@ defmodule RetroHexChat.Bots.Server do
 
   def handle_call({:part_channel, channel_name}, _from, state) do
     if Map.has_key?(state.channels, channel_name) do
-      Phoenix.PubSub.unsubscribe(@pubsub, "channel:#{channel_name}")
+      Phoenix.PubSub.unsubscribe(@pubsub, Topics.channel(channel_name))
       part_channel_process(channel_name, state.nickname)
       new_channels = Map.delete(state.channels, channel_name)
       {:reply, :ok, %{state | channels: new_channels}}
@@ -282,7 +283,7 @@ defmodule RetroHexChat.Bots.Server do
     if payload.nickname == state.nickname do
       # Bot was kicked — remove channel
       channel = payload.channel
-      Phoenix.PubSub.unsubscribe(@pubsub, "channel:#{channel}")
+      Phoenix.PubSub.unsubscribe(@pubsub, Topics.channel(channel))
       {:noreply, %{state | channels: Map.delete(state.channels, channel)}}
     else
       {:noreply, state}

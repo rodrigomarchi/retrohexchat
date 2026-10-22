@@ -13,6 +13,7 @@ defmodule RetroHexChat.Arcade.SoloSessionServer do
   alias RetroHexChat.Arcade.{Announcer, Queries, Registry}
   alias RetroHexChat.Arcade.Schema.SoloSession
   alias RetroHexChat.NamedTimers
+  alias RetroHexChat.Topics
 
   @pending_timeout :timer.minutes(5)
   @lobby_warning_timeout :timer.minutes(10)
@@ -336,7 +337,7 @@ defmodule RetroHexChat.Arcade.SoloSessionServer do
   end
 
   defp broadcast(token, event, payload) do
-    Phoenix.PubSub.broadcast(@pubsub, "arcade:#{token}", %{
+    Phoenix.PubSub.broadcast(@pubsub, Topics.arcade(token), %{
       event: event,
       payload: Map.put(payload, :token, token)
     })

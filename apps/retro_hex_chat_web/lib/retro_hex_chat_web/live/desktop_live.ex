@@ -820,7 +820,7 @@ defmodule RetroHexChatWeb.DesktopLive do
   defp subscribe_chat_device_session(nil), do: :ok
 
   defp subscribe_chat_device_session(session_ref) do
-    Phoenix.PubSub.subscribe(RetroHexChat.PubSub, "chat_device_session:#{session_ref}")
+    Phoenix.PubSub.subscribe(RetroHexChat.PubSub, Topics.chat_device_session(session_ref))
   end
 
   defp normalize_trusted_device_id(id) when is_integer(id), do: id
@@ -968,7 +968,7 @@ defmodule RetroHexChatWeb.DesktopLive do
       # After PubsubHandlers: it consumes "lobby_invite" first; this one owns
       # the other two sentences a session says on the reader's own topic.
       {:p2p_session_info, &ChatLive.P2PSessionEvents.handle_info/2},
-      # Owns the "arcade:#{token}" topic events for the in-chat solo arcade.
+      # Owns the `Topics.arcade/1` events for the in-chat solo arcade.
       {:arcade_session_info, &ChatLive.ArcadeSessionEvents.handle_info/2},
       # Owns the space-roster topics the conversation's cards subscribe to, and
       # the viewport saying which of them it is still rendering.

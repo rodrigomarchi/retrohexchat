@@ -77,10 +77,10 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.Channel do
     # where every other switch settles this.
     socket = ReadMarkers.advance(socket)
 
-    Phoenix.PubSub.subscribe(RetroHexChat.PubSub, "channel:#{channel_name}")
+    Phoenix.PubSub.subscribe(RetroHexChat.PubSub, Topics.channel(channel_name))
     Phoenix.PubSub.subscribe(RetroHexChat.PubSub, Topics.channel_calls(channel_name))
     client_meta = PresenceHelpers.session_meta(socket)
-    PresenceHelpers.safe_track_user("channel:#{channel_name}", session.nickname, client_meta)
+    PresenceHelpers.safe_track_user(Topics.channel(channel_name), session.nickname, client_meta)
 
     new_session =
       session
@@ -110,10 +110,10 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.Channel do
   end
 
   defp setup_joined_channel(socket, channel_name, session, :background) do
-    Phoenix.PubSub.subscribe(RetroHexChat.PubSub, "channel:#{channel_name}")
+    Phoenix.PubSub.subscribe(RetroHexChat.PubSub, Topics.channel(channel_name))
     Phoenix.PubSub.subscribe(RetroHexChat.PubSub, Topics.channel_calls(channel_name))
     client_meta = PresenceHelpers.session_meta(socket)
-    PresenceHelpers.safe_track_user("channel:#{channel_name}", session.nickname, client_meta)
+    PresenceHelpers.safe_track_user(Topics.channel(channel_name), session.nickname, client_meta)
 
     new_session = Session.add_channel(session, channel_name)
 
@@ -141,9 +141,9 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.Channel do
         :ok
     end
 
-    Phoenix.PubSub.unsubscribe(RetroHexChat.PubSub, "channel:#{channel_name}")
+    Phoenix.PubSub.unsubscribe(RetroHexChat.PubSub, Topics.channel(channel_name))
     Phoenix.PubSub.unsubscribe(RetroHexChat.PubSub, Topics.channel_calls(channel_name))
-    PresenceHelpers.safe_untrack_user("channel:#{channel_name}", session.nickname)
+    PresenceHelpers.safe_untrack_user(Topics.channel(channel_name), session.nickname)
 
     # Leaving takes the room off the auto-join list, and it does so here rather
     # than at one caller, because there is more than one way to leave: the
@@ -205,9 +205,13 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.Channel do
   end
 
   def part_channel_after_kick(socket, channel_name) do
-    Phoenix.PubSub.unsubscribe(RetroHexChat.PubSub, "channel:#{channel_name}")
+    Phoenix.PubSub.unsubscribe(RetroHexChat.PubSub, Topics.channel(channel_name))
     Phoenix.PubSub.unsubscribe(RetroHexChat.PubSub, Topics.channel_calls(channel_name))
-    PresenceHelpers.safe_untrack_user("channel:#{channel_name}", socket.assigns.session.nickname)
+
+    PresenceHelpers.safe_untrack_user(
+      Topics.channel(channel_name),
+      socket.assigns.session.nickname
+    )
 
     new_session =
       socket.assigns.session
