@@ -32,8 +32,9 @@ defmodule RetroHexChat.Arcade.Announcer do
   @interval_ms :timer.minutes(5)
 
   @doc """
-  Announce that `session`'s game was just started. Never raises: the game is
-  already open in the player's tab, whatever happens to the line about it.
+  Announce that `session`'s game was just started. Never raises or exits: the
+  game is already open in the player's tab, whatever happens to the line
+  about it.
   """
   @spec started(SoloSession.t()) :: :ok
   def started(%SoloSession{game_id: game_id, game_started_at: %DateTime{}} = session)
@@ -54,15 +55,20 @@ defmodule RetroHexChat.Arcade.Announcer do
 
     :ok
   rescue
-    exception ->
-      Logger.warning(
-        "Arcade play #{session.id} was not announced: #{Exception.message(exception)}"
-      )
-
-      :ok
+    exception -> not_announced(session, Exception.message(exception))
+  catch
+    # A database or a channel that does not answer exits rather than raises;
+    # the session that called would die with it, and its supervisor with
+    # enough of them.
+    :exit, reason -> not_announced(session, inspect(reason))
   end
 
   def started(_session_without_a_game), do: :ok
+
+  defp not_announced(session, why) do
+    Logger.warning("Arcade play #{session.id} was not announced: #{why}")
+    :ok
+  end
 
   defp just_announced?(session) do
     interval = Application.get_env(:retro_hex_chat, :game_announce_interval_ms, @interval_ms)
