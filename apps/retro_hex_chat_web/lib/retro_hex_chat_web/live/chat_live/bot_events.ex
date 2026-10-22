@@ -18,7 +18,7 @@ defmodule RetroHexChatWeb.ChatLive.BotEvents do
 
   alias RetroHexChat.Bots.Capabilities.{CustomCommands, Dice, Greeter, Help, Mention, Moderation}
   alias RetroHexChat.Bots.Capabilities.{RSS, Scheduler, Trivia}
-  alias RetroHexChat.Bots.{Feeds, Lifecycle, Queries, Server, Supervisor}
+  alias RetroHexChat.Bots.{Feeds, Lifecycle, Queries, Server}
   alias RetroHexChat.ChangesetErrors
   alias RetroHexChat.Channels.Name
   alias RetroHexChat.Chat.{IrcEscapes, TimeFormatter}
@@ -205,22 +205,8 @@ defmodule RetroHexChatWeb.ChatLive.BotEvents do
       capabilities: default_caps
     }
 
-    case Queries.create_bot(attrs) do
+    case Lifecycle.create(attrs) do
       {:ok, bot} ->
-        bot_data = %{
-          id: bot.id,
-          name: bot.name,
-          nickname: bot.nickname,
-          command_prefix: bot.command_prefix,
-          created_by: bot.created_by,
-          enabled: bot.enabled,
-          cooldown_ms: bot.cooldown_ms,
-          capabilities: bot.capabilities,
-          channel_configs: [],
-          custom_commands: []
-        }
-
-        Supervisor.start_bot(bot_data)
         socket = apply_new_bot_locale(bot, Text.blank_to_nil(Map.get(params, "locale")), socket)
         bots = Queries.list_bots_with_associations()
 
@@ -257,7 +243,7 @@ defmodule RetroHexChatWeb.ChatLive.BotEvents do
 
     if bot do
       Queries.remove_channel_config(bot.id, channel)
-      notify_bot_if_running(bot.nickname, &Server.part_channel(&1, channel))
+      Lifecycle.if_running(bot.nickname, &Server.part_channel(&1, channel))
 
       channels = Queries.list_channel_configs(bot.id)
 
@@ -291,7 +277,7 @@ defmodule RetroHexChatWeb.ChatLive.BotEvents do
 
       case Queries.add_custom_command(bot.id, attrs) do
         {:ok, _} ->
-          reload_bot_commands(bot)
+          Lifecycle.reload_commands(bot)
           commands = Queries.list_custom_commands(bot.id)
 
           socket
@@ -316,7 +302,7 @@ defmodule RetroHexChatWeb.ChatLive.BotEvents do
 
     if bot do
       Queries.remove_custom_command(bot.id, trigger)
-      reload_bot_commands(bot)
+      Lifecycle.reload_commands(bot)
       commands = Queries.list_custom_commands(bot.id)
 
       socket
@@ -406,7 +392,7 @@ defmodule RetroHexChatWeb.ChatLive.BotEvents do
   defp handle_add_channel_result(bot, channel, bot_name, socket) do
     case Queries.add_channel_config(bot.id, channel) do
       {:ok, _} ->
-        notify_bot_if_running(bot.nickname, &Server.join_channel(&1, channel))
+        Lifecycle.if_running(bot.nickname, &Server.join_channel(&1, channel))
         channels = Queries.list_channel_configs(bot.id)
 
         socket
@@ -443,31 +429,6 @@ defmodule RetroHexChatWeb.ChatLive.BotEvents do
         caps
       end
     end)
-  end
-
-  defp reload_bot_commands(bot) do
-    notify_bot_if_running(bot.nickname, fn nickname ->
-      commands = Queries.list_custom_commands(bot.id)
-
-      cmd_map =
-        Map.new(commands, fn cmd ->
-          {cmd.trigger,
-           %{
-             "response" => cmd.response,
-             "description" => cmd.description || "",
-             "enabled" => cmd.enabled
-           }}
-        end)
-
-      Server.reload_commands(nickname, cmd_map)
-    end)
-  end
-
-  defp notify_bot_if_running(nickname, fun) do
-    case RetroHexChat.Bots.Registry.lookup(nickname) do
-      {:ok, _} -> fun.(nickname)
-      {:error, :not_found} -> :ok
-    end
   end
 
   defp do_rss_add(nil, _url, _channel, socket) do
@@ -573,7 +534,7 @@ defmodule RetroHexChatWeb.ChatLive.BotEvents do
     case Queries.update_bot(bot, %{capabilities: new_caps}) do
       {:ok, updated_bot} ->
         maybe_cancel_scheduler_jobs(updated_bot, cap_name, currently_enabled)
-        restart_bot_if_running(updated_bot)
+        Lifecycle.restart_if_running(updated_bot)
 
         action =
           if currently_enabled,
@@ -591,31 +552,6 @@ defmodule RetroHexChatWeb.ChatLive.BotEvents do
 
       {:error, _} ->
         error_event(socket, dgettext("chat", "Failed to update capability."))
-    end
-  end
-
-  defp restart_bot_if_running(bot) do
-    case RetroHexChat.Bots.Registry.lookup(bot.nickname) do
-      {:ok, _} ->
-        Supervisor.stop_bot(bot.nickname)
-
-        bot_with_assocs = %{
-          id: bot.id,
-          name: bot.name,
-          nickname: bot.nickname,
-          command_prefix: bot.command_prefix,
-          created_by: bot.created_by,
-          enabled: bot.enabled,
-          cooldown_ms: bot.cooldown_ms,
-          capabilities: bot.capabilities,
-          channel_configs: Queries.list_channel_configs(bot.id),
-          custom_commands: Queries.list_custom_commands(bot.id)
-        }
-
-        Supervisor.start_bot(bot_with_assocs)
-
-      {:error, :not_found} ->
-        :ok
     end
   end
 
@@ -640,7 +576,7 @@ defmodule RetroHexChatWeb.ChatLive.BotEvents do
 
     case Queries.update_bot(bot, %{enabled: new_enabled}) do
       {:ok, updated_bot} ->
-        notify_bot_if_running(bot.nickname, &Server.set_enabled(&1, new_enabled))
+        Lifecycle.if_running(bot.nickname, &Server.set_enabled(&1, new_enabled))
         reconcile_bot_jobs_for_enabled_state(updated_bot)
 
         action =

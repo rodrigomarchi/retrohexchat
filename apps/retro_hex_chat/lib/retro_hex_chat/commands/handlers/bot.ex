@@ -4,7 +4,7 @@ defmodule RetroHexChat.Commands.Handlers.Bot do
   @behaviour RetroHexChat.Commands.Handler
 
   alias RetroHexChat.Bots.Capabilities.{CustomCommands, Greeter, Help, Mention}
-  alias RetroHexChat.Bots.{Feeds, Lifecycle, Policy, Queries, Server, Supervisor}
+  alias RetroHexChat.Bots.{Feeds, Lifecycle, Policy, Queries, Server}
   alias RetroHexChat.ChangesetErrors
   alias RetroHexChat.Channels.Name
   alias RetroHexChat.Chat.IrcEscapes
@@ -213,28 +213,10 @@ defmodule RetroHexChat.Commands.Handlers.Bot do
       capabilities: default_caps
     }
 
-    case Queries.create_bot(attrs) do
-      {:ok, bot} ->
-        bot_data = %{
-          id: bot.id,
-          name: bot.name,
-          nickname: bot.nickname,
-          command_prefix: bot.command_prefix,
-          created_by: bot.created_by,
-          enabled: bot.enabled,
-          cooldown_ms: bot.cooldown_ms,
-          capabilities: bot.capabilities,
-          channel_configs: [],
-          custom_commands: []
-        }
-
-        Supervisor.start_bot(bot_data)
-
+    case Lifecycle.create(attrs) do
+      {:ok, _bot} ->
         {:ok, :system,
-         %{
-           content:
-             dgettext("commands", "[BotService] Bot '%{name}' created successfully.", name: name)
-         }}
+         %{content: dgettext("commands", "[BotService] Bot '%{name}' created.", name: name)}}
 
       {:error, changeset} ->
         msg = format_changeset_errors(changeset)
@@ -364,7 +346,7 @@ defmodule RetroHexChat.Commands.Handlers.Bot do
   defp join_bot_to_channel(bot, bot_name, channel) do
     case Queries.add_channel_config(bot.id, channel) do
       {:ok, _} ->
-        notify_bot_if_running(bot.nickname, &Server.join_channel(&1, channel))
+        Lifecycle.if_running(bot.nickname, &Server.join_channel(&1, channel))
 
         {:ok, :system,
          %{
@@ -394,7 +376,7 @@ defmodule RetroHexChat.Commands.Handlers.Bot do
 
       bot ->
         Queries.remove_channel_config(bot.id, channel)
-        notify_bot_if_running(bot.nickname, &Server.part_channel(&1, channel))
+        Lifecycle.if_running(bot.nickname, &Server.part_channel(&1, channel))
 
         {:ok, :system,
          %{
@@ -415,7 +397,7 @@ defmodule RetroHexChat.Commands.Handlers.Bot do
 
       bot ->
         Queries.update_bot(bot, %{enabled: enabled})
-        notify_bot_if_running(bot.nickname, &Server.set_enabled(&1, enabled))
+        Lifecycle.if_running(bot.nickname, &Server.set_enabled(&1, enabled))
 
         action = if enabled, do: "enabled", else: "disabled"
 
@@ -806,7 +788,7 @@ defmodule RetroHexChat.Commands.Handlers.Bot do
 
         case Queries.add_custom_command(bot.id, attrs) do
           {:ok, _} ->
-            reload_bot_commands(bot)
+            Lifecycle.reload_commands(bot)
 
             {:ok, :system,
              %{
@@ -837,7 +819,7 @@ defmodule RetroHexChat.Commands.Handlers.Bot do
 
       bot ->
         Queries.remove_custom_command(bot.id, trigger)
-        reload_bot_commands(bot)
+        Lifecycle.reload_commands(bot)
 
         {:ok, :system,
          %{
@@ -850,28 +832,9 @@ defmodule RetroHexChat.Commands.Handlers.Bot do
     end
   end
 
-  @spec reload_bot_commands(map()) :: :ok
-  defp reload_bot_commands(bot) do
-    notify_bot_if_running(bot.nickname, fn nickname ->
-      commands = Queries.list_custom_commands(bot.id)
-
-      cmd_map =
-        Map.new(commands, fn cmd ->
-          {cmd.trigger,
-           %{
-             "response" => cmd.response,
-             "description" => cmd.description || "",
-             "enabled" => cmd.enabled
-           }}
-        end)
-
-      Server.reload_commands(nickname, cmd_map)
-    end)
-  end
-
   @spec reload_bot_capabilities(map()) :: :ok
   defp reload_bot_capabilities(bot) do
-    notify_bot_if_running(bot.nickname, fn nickname ->
+    Lifecycle.if_running(bot.nickname, fn nickname ->
       fresh = Queries.get_bot_by_name(bot.name)
       if fresh, do: Server.reload_capabilities(nickname, fresh.capabilities)
     end)
@@ -879,14 +842,7 @@ defmodule RetroHexChat.Commands.Handlers.Bot do
 
   @spec maybe_update_running(String.t(), map()) :: :ok
   defp maybe_update_running(nickname, updates) do
-    notify_bot_if_running(nickname, &Server.update_config(&1, updates))
-  end
-
-  defp notify_bot_if_running(nickname, fun) do
-    case RetroHexChat.Bots.Registry.lookup(nickname) do
-      {:ok, _} -> fun.(nickname)
-      {:error, :not_found} -> :ok
-    end
+    Lifecycle.if_running(nickname, &Server.update_config(&1, updates))
   end
 
   @spec format_bot_list() :: String.t()

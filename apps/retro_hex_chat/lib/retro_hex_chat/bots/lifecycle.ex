@@ -25,6 +25,66 @@ defmodule RetroHexChat.Bots.Lifecycle do
     end
   end
 
+  @doc """
+  Creates a bot from `attrs` and starts it. Every way a bot is made (the
+  `/bot create` command and the Bot Management dialog) ends here, so a new bot
+  is always running with what the database says it has.
+  """
+  @spec create(map()) :: {:ok, Bot.t()} | {:error, Ecto.Changeset.t()}
+  def create(attrs) do
+    with {:ok, bot} <- Queries.create_bot(attrs) do
+      _ = ensure_started(bot)
+      {:ok, bot}
+    end
+  end
+
+  @doc """
+  Stops a running bot and starts it again from the database; a bot that is
+  not running stays stopped.
+  """
+  @spec restart_if_running(Bot.t()) :: :ok | {:error, term()}
+  def restart_if_running(%Bot{} = bot) do
+    case Registry.lookup(bot.nickname) do
+      {:ok, _pid} ->
+        Supervisor.stop_bot(bot.nickname)
+        bot |> ensure_started() |> normalize_ok()
+
+      {:error, :not_found} ->
+        :ok
+    end
+  end
+
+  @doc "Hands the running bot its custom commands again, read from the database."
+  @spec reload_commands(Bot.t()) :: :ok
+  def reload_commands(%Bot{} = bot) do
+    if_running(bot.nickname, fn nickname ->
+      commands =
+        Map.new(Queries.list_custom_commands(bot.id), fn cmd ->
+          {cmd.trigger,
+           %{
+             "response" => cmd.response,
+             "description" => cmd.description || "",
+             "enabled" => cmd.enabled
+           }}
+        end)
+
+      Server.reload_commands(nickname, commands)
+    end)
+  end
+
+  @doc """
+  Calls `fun` with the bot's nickname when its process is running, and does
+  nothing otherwise: a change saved while the bot is stopped reaches it at its
+  next start.
+  """
+  @spec if_running(String.t(), (String.t() -> term())) :: term()
+  def if_running(nickname, fun) do
+    case Registry.lookup(nickname) do
+      {:ok, _pid} -> fun.(nickname)
+      {:error, :not_found} -> :ok
+    end
+  end
+
   @spec reload_capabilities_or_start(Bot.t()) :: :ok | {:error, term()}
   def reload_capabilities_or_start(%Bot{enabled: false}), do: :ok
 

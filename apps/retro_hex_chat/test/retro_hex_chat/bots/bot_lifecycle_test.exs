@@ -3,7 +3,7 @@ defmodule RetroHexChat.Bots.BotLifecycleTest do
 
   @moduletag :integration
 
-  alias RetroHexChat.Bots.{Queries, Registry, Server, Supervisor}
+  alias RetroHexChat.Bots.{Lifecycle, Queries, Registry, Server, Supervisor}
   alias RetroHexChat.Jobs.{BotEventLogWorker, BotScheduledMessageWorker}
 
   @base_caps %{
@@ -56,6 +56,39 @@ defmodule RetroHexChat.Bots.BotLifecycleTest do
       )
 
     Supervisor.start_bot(bot_data)
+  end
+
+  describe "Lifecycle" do
+    test "create/1 stores the bot and starts it" do
+      assert {:ok, bot} =
+               Lifecycle.create(%{
+                 name: "LcCreate",
+                 nickname: "LcCreate",
+                 created_by: "admin",
+                 capabilities: @base_caps
+               })
+
+      assert {:ok, _pid} = Registry.lookup(bot.nickname)
+      assert Queries.get_bot_by_name("LcCreate")
+    end
+
+    test "restart_if_running/1 starts a fresh process, and leaves a stopped bot stopped" do
+      {:ok, bot} =
+        Lifecycle.create(%{name: "LcRestart", nickname: "LcRestart", created_by: "admin"})
+
+      {:ok, before} = Registry.lookup(bot.nickname)
+      assert :ok = Lifecycle.restart_if_running(bot)
+      {:ok, later} = Registry.lookup(bot.nickname)
+      refute before == later
+
+      Supervisor.stop_bot(bot.nickname)
+      assert :ok = Lifecycle.restart_if_running(bot)
+      assert {:error, :not_found} = Registry.lookup(bot.nickname)
+    end
+
+    test "if_running/2 only calls through for a running bot" do
+      assert :ok = Lifecycle.if_running("NobodyRunsThis", fn _ -> flunk("called") end)
+    end
   end
 
   describe "full bot lifecycle" do

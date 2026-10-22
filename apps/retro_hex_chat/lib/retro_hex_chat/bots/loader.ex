@@ -7,7 +7,7 @@ defmodule RetroHexChat.Bots.Loader do
 
   require Logger
 
-  alias RetroHexChat.Bots.{Queries, Supervisor}
+  alias RetroHexChat.Bots.{Lifecycle, Queries}
 
   @spec start_link(keyword()) :: {:ok, pid()}
   def start_link(_opts) do
@@ -20,20 +20,7 @@ defmodule RetroHexChat.Bots.Loader do
     Logger.info("BotLoader: loading #{length(bots)} enabled bots")
 
     Enum.each(bots, fn bot ->
-      bot_data = %{
-        id: bot.id,
-        name: bot.name,
-        nickname: bot.nickname,
-        command_prefix: bot.command_prefix,
-        created_by: bot.created_by,
-        enabled: bot.enabled,
-        cooldown_ms: bot.cooldown_ms,
-        capabilities: bot.capabilities,
-        channel_configs: bot.channel_configs,
-        custom_commands: bot.custom_commands
-      }
-
-      case Supervisor.start_bot(bot_data) do
+      case Lifecycle.ensure_started(bot) do
         {:ok, _pid} ->
           Logger.debug("BotLoader: started bot #{bot.nickname}")
 

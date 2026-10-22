@@ -25,11 +25,18 @@ defmodule RetroHexChat.ProcessRegistry do
   @spec via_tuple(atom(), key()) :: via()
   def via_tuple(registry, key), do: {:via, Registry, {registry, key}}
 
-  @doc "The process registered under `key`, if one is still alive."
+  @doc """
+  The process registered under `key`, if one is still alive.
+
+  A registry forgets a process only when it handles the exit, a moment after
+  the process is gone: a lookup straight after stopping one would otherwise
+  hand back the pid that just died, and a restart would mistake it for the
+  new process.
+  """
   @spec lookup(atom(), key()) :: {:ok, pid()} | {:error, :not_found}
   def lookup(registry, key) do
     case Registry.lookup(registry, key) do
-      [{pid, _value}] -> {:ok, pid}
+      [{pid, _value}] -> if Process.alive?(pid), do: {:ok, pid}, else: {:error, :not_found}
       [] -> {:error, :not_found}
     end
   end
