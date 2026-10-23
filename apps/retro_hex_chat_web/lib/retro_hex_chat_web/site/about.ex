@@ -1,13 +1,16 @@
 defmodule RetroHexChatWeb.Site.About do
   @moduledoc """
-  The site's About, a window of the desktop of its own: the project, its
-  community, the legal notes and every language the address on screen exists
-  in. It stands beside the pages rather than in one — closed until the
-  desktop's About icon, the About this site folder or Start ▸ Help opens it.
+  The one About, a window of the desktop of its own: what RetroHexChat is and
+  which version is running, the project, its community, the legal notes and
+  every language the address on screen exists in. It stands beside the pages
+  rather than in one — closed until the desktop's About icon, the About this
+  site folder, Start ▸ Help, the Help menu or the logo opens it.
   """
   use Phoenix.Component
   use Gettext, backend: RetroHexChatWeb.Gettext
 
+  alias RetroHexChatWeb.BuildInfo
+  alias RetroHexChatWeb.Endpoint
   alias RetroHexChatWeb.I18n
   alias RetroHexChatWeb.I18n.Locales
   alias RetroHexChatWeb.Icons
@@ -21,7 +24,7 @@ defmodule RetroHexChatWeb.Site.About do
     Window.new("about", dgettext("landing", "About"), :icon_lightbulb,
       width: 640,
       body: &about/1,
-      status: [dgettext("landing", "MIT License"), dgettext("landing", "v0.1.0")]
+      status: [dgettext("landing", "MIT License"), BuildInfo.version()]
     )
   end
 

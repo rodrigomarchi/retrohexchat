@@ -1,8 +1,29 @@
 <footer>
+  <div class="flex items-center gap-3 mb-3" data-testid="about-identity">
+    <img
+      src={Endpoint.static_path("/images/landing/logo-compact.svg")}
+      alt={dgettext("dialogs", "RetroHexChat")}
+      class="w-12 h-12 shrink-0"
+      draggable="false"
+    />
+    <div class="min-w-0">
+      <p class="text-base font-bold leading-tight">
+        <span class="text-text">{dgettext("dialogs", "Retro")}</span><span class="text-desktop">{dgettext("dialogs", "Hex")}</span><span class="text-selection-bg">{dgettext("dialogs", "Chat")}</span>
+      </p>
+      <p class="text-xs text-muted-foreground" data-testid="about-version">
+        {dgettext("dialogs", "Version %{version}", version: BuildInfo.version())}
+      </p>
+    </div>
+  </div>
+
+  <p class="text-sm mb-1 font-bold">{dgettext("dialogs", "Public Chat Platform")}</p>
   <p class="text-sm mb-3">
-    {dgettext("landing", "Retro Hex Chat is free software, licensed under MIT.")}<br />
-    {dgettext("landing", "Built with Elixir, Phoenix, and LiveView.")}<br />
-    {dgettext("landing", "Inspired by the IRC of the 2000s and the freedom it represented.")}
+    {dgettext(
+      "dialogs",
+      "A retro-styled IRC chat platform inspired by the classic desktop chat clients of the late '90s. Real-time messaging, channels, peer-to-peer sessions, and arcade games — all in the browser."
+    )}
+    {dgettext("landing", "Retro Hex Chat is free software, licensed under MIT.")}
+    {dgettext("landing", "Built with Elixir, Phoenix, and LiveView.")}
   </p>
 
   <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 text-xs mb-3">
@@ -97,7 +118,7 @@
     </div>
   </div>
 
-  <div class="border-t border-gray-400 pt-3 mb-3">
+  <div class="border-t border-border pt-3 mb-3">
     <h3 class="font-bold text-xs mb-2">
       <Icons.icon_link class="w-3 h-3 inline" /> {dgettext("landing", "Languages")}
     </h3>
@@ -116,9 +137,8 @@
     {dgettext("landing", "“Your data. Your rules. Nobody in between.”")}
   </p>
 
-  <div class="flex justify-center gap-4 text-xs text-gray-600">
-    <span>{dgettext("landing", "v0.1.0")}</span>
+  <div class="flex flex-wrap justify-center gap-x-4 text-xs text-muted-foreground">
     <span>{dgettext("landing", "Made by humans")}</span>
-    <span>{dgettext("landing", "2025–2026")}</span>
+    <span>{dgettext("dialogs", "© 2024–2026 RetroHexChat Contributors")}</span>
   </div>
 </footer>

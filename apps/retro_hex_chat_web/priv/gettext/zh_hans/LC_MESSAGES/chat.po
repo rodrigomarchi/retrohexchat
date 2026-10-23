@@ -201,7 +201,7 @@ msgid "%{nickname} has no custom color"
 msgstr "%{nickname} 没有自定义颜色"
 
 #: lib/retro_hex_chat_web/live/chat_live/components/address_book_dialog.ex:228
-#: lib/retro_hex_chat_web/live/chat_live/context_menu_events.ex:270
+#: lib/retro_hex_chat_web/live/chat_live/context_menu_events.ex:271
 #, elixir-autogen, elixir-format
 msgid "%{nickname} is already in your contacts"
 msgstr "%{nickname} 已经在您的联系人中"
@@ -345,8 +345,8 @@ msgid "* %{nickname} is no longer auto-ignored"
 msgstr "* %{nickname}不再自动受电"
 
 #: lib/retro_hex_chat_web/live/chat_live/components/ignore_list_dialog.ex:115
-#: lib/retro_hex_chat_web/live/chat_live/context_menu_events.ex:334
-#: lib/retro_hex_chat_web/live/chat_live/context_menu_events.ex:815
+#: lib/retro_hex_chat_web/live/chat_live/context_menu_events.ex:335
+#: lib/retro_hex_chat_web/live/chat_live/context_menu_events.ex:805
 #: lib/retro_hex_chat_web/live/chat_live/ui_actions/ignore.ex:91
 #, elixir-autogen, elixir-format
 msgid "* %{nickname} is no longer ignored"
@@ -357,9 +357,9 @@ msgstr "* %{nickname}不再被忽略"
 msgid "* %{nickname} is no longer ignored (timer expired)"
 msgstr "* %{nickname}不再被忽略(计时器过期)"
 
-#: lib/retro_hex_chat_web/live/chat_live/context_menu_events.ex:307
-#: lib/retro_hex_chat_web/live/chat_live/context_menu_events.ex:492
-#: lib/retro_hex_chat_web/live/chat_live/context_menu_events.ex:684
+#: lib/retro_hex_chat_web/live/chat_live/context_menu_events.ex:308
+#: lib/retro_hex_chat_web/live/chat_live/context_menu_events.ex:493
+#: lib/retro_hex_chat_web/live/chat_live/context_menu_events.ex:685
 #, elixir-autogen, elixir-format
 msgid "* %{nickname} is now ignored"
 msgstr "* %{nickname} 现在被忽略"
@@ -612,8 +612,8 @@ msgid "Add to Contacts"
 msgstr "添加到联系人"
 
 #: lib/retro_hex_chat_web/live/chat_live/components/address_book_dialog.ex:81
-#: lib/retro_hex_chat_web/live/chat_live/context_menu_events.ex:261
-#: lib/retro_hex_chat_web/live/chat_live/context_menu_events.ex:513
+#: lib/retro_hex_chat_web/live/chat_live/context_menu_events.ex:262
+#: lib/retro_hex_chat_web/live/chat_live/context_menu_events.ex:514
 #, elixir-autogen, elixir-format
 msgid "Added %{nickname} to contacts"
 msgstr "添加到联系人的 %{nickname}"
@@ -803,7 +803,7 @@ msgid "Cannot add highlight: %{reason}"
 msgstr "无法添加突出显示: %{reason}"
 
 #: lib/retro_hex_chat_web/live/chat_live/components/address_book_dialog.ex:225
-#: lib/retro_hex_chat_web/live/chat_live/context_menu_events.ex:278
+#: lib/retro_hex_chat_web/live/chat_live/context_menu_events.ex:279
 #, elixir-autogen, elixir-format
 msgid "Cannot add yourself to contacts"
 msgstr "无法添加到联系人中"
@@ -1031,13 +1031,13 @@ msgstr "复制昵称"
 msgid "Copy URL"
 msgstr "复制 URL"
 
-#: lib/retro_hex_chat_web/live/chat_live/context_menu_events.ex:285
-#: lib/retro_hex_chat_web/live/chat_live/context_menu_events.ex:522
+#: lib/retro_hex_chat_web/live/chat_live/context_menu_events.ex:286
+#: lib/retro_hex_chat_web/live/chat_live/context_menu_events.ex:523
 #, elixir-autogen, elixir-format
 msgid "Could not add %{nickname} to contacts"
 msgstr "无法在联系人中添加 %{nickname}"
 
-#: lib/retro_hex_chat_web/live/chat_live/context_menu_events.ex:377
+#: lib/retro_hex_chat_web/live/chat_live/context_menu_events.ex:378
 #, elixir-autogen, elixir-format
 msgid "Could not set color for %{nickname}"
 msgstr "无法设置 %{nickname} 的颜色"
@@ -1228,7 +1228,7 @@ msgstr "忽略"
 msgid "Ignore Sender"
 msgstr "忽略发件人"
 
-#: lib/retro_hex_chat_web/live/chat_live/context_menu_events.ex:313
+#: lib/retro_hex_chat_web/live/chat_live/context_menu_events.ex:314
 #: lib/retro_hex_chat_web/live/chat_live/ui_actions/ignore.ex:72
 #, elixir-autogen, elixir-format
 msgid "Ignore list is full (max 100 entries)"
@@ -1345,7 +1345,7 @@ msgstr "已经加入 %{channel}"
 msgid "Kick"
 msgstr "踢出"
 
-#: lib/retro_hex_chat_web/live/chat_live/context_menu_events.ex:881
+#: lib/retro_hex_chat_web/live/chat_live/context_menu_events.ex:871
 #, elixir-autogen, elixir-format
 msgid "Kicked"
 msgstr "脚踢"
@@ -1475,7 +1475,7 @@ msgid "Nick color entry not found"
 msgstr "找不到昵称颜色条目"
 
 #: lib/retro_hex_chat_web/live/chat_live/components/nick_colors_dialog.ex:199
-#: lib/retro_hex_chat_web/live/chat_live/context_menu_events.ex:370
+#: lib/retro_hex_chat_web/live/chat_live/context_menu_events.ex:371
 #, elixir-autogen, elixir-format
 msgid "Nick color list is full (max 50)"
 msgstr "昵称颜色列表是满的( 最大 50)"
@@ -1530,7 +1530,7 @@ msgstr "无结果"
 msgid "No topic set"
 msgstr "未设定主题"
 
-#: lib/retro_hex_chat_web/live/chat_live/components/admin_console_dialog.ex:143
+#: lib/retro_hex_chat_web/live/chat_live/components/admin_console_dialog.ex:139
 #, elixir-autogen, elixir-format
 msgid "Not a command (must start with /)"
 msgstr "没有命令( 必须从 / 开始)"
@@ -1813,7 +1813,7 @@ msgstr "服务器设置\"%{key}\"改为\"%{value}\"."
 msgid "Service"
 msgstr "服务"
 
-#: lib/retro_hex_chat_web/live/chat_live/context_menu_events.ex:359
+#: lib/retro_hex_chat_web/live/chat_live/context_menu_events.ex:360
 #, elixir-autogen, elixir-format
 msgid "Set %{nickname}'s color to %{color}"
 msgstr "将 %{nickname} 的颜色设定为 %{color}"
@@ -1945,7 +1945,7 @@ msgstr "输入命令 - / 用于列表"
 msgid "Type a message..."
 msgstr "键入信件..."
 
-#: lib/retro_hex_chat_web/live/chat_live/context_menu_events.ex:634
+#: lib/retro_hex_chat_web/live/chat_live/context_menu_events.ex:635
 #, elixir-autogen, elixir-format
 msgid "URL saved to URL Catcher"
 msgstr "URL 保存到 URL 抓取器"
@@ -1966,7 +1966,7 @@ msgstr "下划线 (Ctrl+Shift+U)"
 msgid "Unignore"
 msgstr "无效"
 
-#: lib/retro_hex_chat_web/live/chat_live/context_menu_events.ex:616
+#: lib/retro_hex_chat_web/live/chat_live/context_menu_events.ex:617
 #: lib/retro_hex_chat_web/live/chat_live/hover_events.ex:173
 #: lib/retro_hex_chat_web/live/chat_live/hover_events.ex:182
 #: lib/retro_hex_chat_web/live/chat_live/hover_events.ex:187
@@ -2835,7 +2835,7 @@ msgstr "%{target} 的 Whois"
 msgid "You are already using that nickname"
 msgstr "你已经在用这个绰号了"
 
-#: lib/retro_hex_chat_web/live/chat_live/context_menu_events.ex:946
+#: lib/retro_hex_chat_web/live/chat_live/context_menu_events.ex:936
 #, elixir-autogen, elixir-format
 msgid "You are not in any channel"
 msgstr "你没有在任何频道"
@@ -2850,7 +2850,7 @@ msgstr "您没有权限管理此列表 。"
 msgid "You must be a channel operator to change this setting."
 msgstr "您必须是频道操作员来更改此设置 。"
 
-#: lib/retro_hex_chat_web/live/chat_live/context_menu_events.ex:942
+#: lib/retro_hex_chat_web/live/chat_live/context_menu_events.ex:932
 #, elixir-autogen, elixir-format
 msgid "You must be a channel operator to use this command"
 msgstr "您必须是频道操作员才能使用此命令"
@@ -3618,9 +3618,9 @@ msgid "Strikethrough"
 msgstr "删除线"
 
 #: lib/retro_hex_chat_web/components/ui/chat/formatting_toolbar.ex:342
-#: lib/retro_hex_chat_web/components/ui/shell/desktop_launchers.ex:509
-#: lib/retro_hex_chat_web/components/ui/shell/menu_bar_app.ex:338
-#: lib/retro_hex_chat_web/components/ui/shell/start_menu_app.ex:140
+#: lib/retro_hex_chat_web/components/ui/shell/desktop_launchers.ex:508
+#: lib/retro_hex_chat_web/components/ui/shell/menu_bar_app.ex:337
+#: lib/retro_hex_chat_web/components/ui/shell/start_menu_app.ex:139
 #, elixir-autogen, elixir-format
 msgid "Strip Formatting"
 msgstr "清除格式"
@@ -4082,8 +4082,8 @@ msgstr "我要参加"
 msgid "Where"
 msgstr "在哪"
 
-#: lib/retro_hex_chat_web/components/ui/shell/menu_bar_app.ex:346
-#: lib/retro_hex_chat_web/components/ui/shell/start_menu_app.ex:147
+#: lib/retro_hex_chat_web/components/ui/shell/menu_bar_app.ex:345
+#: lib/retro_hex_chat_web/components/ui/shell/start_menu_app.ex:146
 #, elixir-autogen, elixir-format
 msgid "Character Portraits"
 msgstr "角色头像"

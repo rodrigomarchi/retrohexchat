@@ -50,7 +50,6 @@ defmodule RetroHexChatWeb.DesktopLive do
   import RetroHexChatWeb.Components.UI.SoloLobby
 
   # ── Dialog components ────────────────────────────────────────
-  import RetroHexChatWeb.Components.UI.AboutDialog
 
   # ── The pages of the site, as windows ────────────────────────
   import RetroHexChatWeb.Components.UI.Site.Document, only: [site_documents: 1, site_window: 1]

@@ -135,8 +135,8 @@ make e2e.catalog.check    # verify it is current (also runs in make ci)
 ## Coverage
 
 - **259 spec files** under `e2e/tests/`.
-- **651 Playwright `test()` cases**.
-- **595 documented flows**, 594 done, 1 not done.
+- **652 Playwright `test()` cases**.
+- **596 documented flows**, 595 done, 1 not done.
 - **Every spec documents its own flows.**
 
 ## Flow index
@@ -608,6 +608,7 @@ Grouped by section. Every row comes from an `@flow` line in the spec itself.
 | T1 | File/View/Tools/Help menu items open the same shell surfaces as keyboard equivalents where both exist (features P1) | `tests/chat-menu-toolbar-parity.spec.ts` | done |
 | T2 | Menus keep chat input focus and intentional dialog inputs own focus (features P1) | `tests/chat-menu-focus.spec.ts` | done |
 | T3 | About dialog opens from the Help menu and from Start, closes cleanly, and restores chat input focus (features P2) | `tests/chat-about-dialog.spec.ts` | done |
+| T3b | The one About, opened from Start and from the About this site folder, is photographed | `tests/chat-about-dialog.spec.ts` | done |
 | T4 | View menu toggles conversations, nicklist, channel list, and search without losing active tab or unread state (features P1) | `tests/chat-view-menu.spec.ts` | done |
 | T5 | Tools menu opens Address Book, Highlights, URL Catcher, Channel Central, Perform, Sound, Flood Protection, Alias, Custom Menus, and Autorespond (features P1) | `tests/chat-tools-menu.spec.ts` | done |
 | T6 | Escape closes only the topmost dialog/menu layer and preserves underlying state (features P1) | `tests/chat-dialog-keyboard.spec.ts` | done |

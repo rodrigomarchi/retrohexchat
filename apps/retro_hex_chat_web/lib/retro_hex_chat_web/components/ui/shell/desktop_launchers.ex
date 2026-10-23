@@ -18,7 +18,6 @@ defmodule RetroHexChatWeb.Components.UI.DesktopLaunchers do
   import RetroHexChatWeb.Components.UI.ToolButton
 
   import RetroHexChatWeb.Components.UI.Desktop
-  import RetroHexChatWeb.Components.UI.Dialog
   import RetroHexChatWeb.Components.UI.Window
 
   alias RetroHexChat.Games.Catalog
@@ -751,7 +750,10 @@ defmodule RetroHexChatWeb.Components.UI.DesktopLaunchers do
   end
 
   defp about_item(_cap) do
-    modal("about-dialog", dgettext("ui", "About RetroHexChat"), :icon_dialog_about,
+    window(
+      Document.window_id(About.window()),
+      dgettext("ui", "About RetroHexChat"),
+      :icon_dialog_about,
       testid: "desktop-launcher-item-show_about"
     )
   end
@@ -839,17 +841,6 @@ defmodule RetroHexChatWeb.Components.UI.DesktopLaunchers do
       disabled: Keyword.get(opts, :disabled, false),
       testid: "desktop-launcher-item-copy_selection"
     }
-
-  defp modal(id, label, icon_fn, opts) do
-    %{
-      kind: :modal,
-      modal_id: id,
-      label: label,
-      icon_fn: icon_fn,
-      testid: Keyword.fetch!(opts, :testid),
-      disabled: Keyword.get(opts, :disabled, false)
-    }
-  end
 
   defp separator, do: %{kind: :separator}
 
@@ -961,24 +952,6 @@ defmodule RetroHexChatWeb.Components.UI.DesktopLaunchers do
       aria-disabled="true"
       data-menubar-copy-selection={!@item.disabled && "true"}
       data-copy-disabled="true"
-      data-testid={@item.testid}
-    >
-      <.launcher_item_icon item={@item} class="h-8 w-8" />
-      <span class="desktop-launcher-item__label">{@item.label}</span>
-    </button>
-    """
-  end
-
-  defp launcher_item(%{item: %{kind: :modal}} = assigns) do
-    assigns = assign_item_class(assigns)
-
-    ~H"""
-    <button
-      type="button"
-      class={@item_class}
-      disabled={@item.disabled}
-      aria-disabled={@item.disabled && "true"}
-      phx-click={!@item.disabled && show_modal(@item.modal_id)}
       data-testid={@item.testid}
     >
       <.launcher_item_icon item={@item} class="h-8 w-8" />

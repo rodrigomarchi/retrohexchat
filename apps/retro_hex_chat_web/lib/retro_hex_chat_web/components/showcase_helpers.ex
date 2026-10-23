@@ -8,7 +8,7 @@ defmodule RetroHexChatWeb.ShowcaseHelpers do
   import RetroHexChatWeb.Components.UI.DesktopLaunchers
   import RetroHexChatWeb.Components.UI.MenuBarApp
   import RetroHexChatWeb.Components.UI.StartMenuApp
-  import RetroHexChatWeb.Components.UI.AboutDialog
+  import RetroHexChatWeb.Components.UI.Site.Document, only: [site_window: 1]
 
   alias RetroHexChatWeb.Icons
   alias RetroHexChatWeb.ShowcaseCatalog
@@ -82,6 +82,14 @@ defmodule RetroHexChatWeb.ShowcaseHelpers do
           current_path={ShowcaseCatalog.canonical_path(@active_page)}
         />
 
+        <%!-- The same About window the chat's desktop carries, for the Start
+              menu's and the Help menu's About to open. --%>
+        <.site_window
+          window={RetroHexChatWeb.Site.About.window()}
+          page_assigns={%{current_path: ShowcaseCatalog.root()}}
+          open={false}
+        />
+
         <:shortcuts>
           <.desktop_launcher_icons
             screen={:showcase}
@@ -139,8 +147,6 @@ defmodule RetroHexChatWeb.ShowcaseHelpers do
           </.taskbar>
         </:taskbar>
       </.desktop>
-
-      <.about_dialog id="about-dialog" />
     </div>
     """
   end

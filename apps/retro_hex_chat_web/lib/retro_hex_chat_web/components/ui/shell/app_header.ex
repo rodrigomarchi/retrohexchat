@@ -7,7 +7,7 @@ defmodule RetroHexChatWeb.Components.UI.AppHeader do
 
   ## Usage
 
-      <.app_header on_logo_click={show_modal("about-dialog")}>
+      <.app_header logo_window="site-about">
         <:panels>
           <.menu_bar_app connected={true} on_action="toolbar_action" />
           <.status_bar_app class="ml-auto" ... />

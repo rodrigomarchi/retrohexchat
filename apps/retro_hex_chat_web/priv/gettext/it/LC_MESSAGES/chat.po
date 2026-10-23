@@ -207,7 +207,7 @@ msgid "%{nickname} has no custom color"
 msgstr "%{nickname} non ha colore personalizzato"
 
 #: lib/retro_hex_chat_web/live/chat_live/components/address_book_dialog.ex:228
-#: lib/retro_hex_chat_web/live/chat_live/context_menu_events.ex:270
+#: lib/retro_hex_chat_web/live/chat_live/context_menu_events.ex:271
 #, elixir-autogen, elixir-format
 msgid "%{nickname} is already in your contacts"
 msgstr "%{nickname} è già nei tuoi contatti"
@@ -354,8 +354,8 @@ msgid "* %{nickname} is no longer auto-ignored"
 msgstr "* %{nickname} non è più auto-ignorato"
 
 #: lib/retro_hex_chat_web/live/chat_live/components/ignore_list_dialog.ex:115
-#: lib/retro_hex_chat_web/live/chat_live/context_menu_events.ex:334
-#: lib/retro_hex_chat_web/live/chat_live/context_menu_events.ex:815
+#: lib/retro_hex_chat_web/live/chat_live/context_menu_events.ex:335
+#: lib/retro_hex_chat_web/live/chat_live/context_menu_events.ex:805
 #: lib/retro_hex_chat_web/live/chat_live/ui_actions/ignore.ex:91
 #, elixir-autogen, elixir-format
 msgid "* %{nickname} is no longer ignored"
@@ -366,9 +366,9 @@ msgstr "* %{nickname} non è più ignorato"
 msgid "* %{nickname} is no longer ignored (timer expired)"
 msgstr "* %{nickname} non è più ignorato (timer scaduto)"
 
-#: lib/retro_hex_chat_web/live/chat_live/context_menu_events.ex:307
-#: lib/retro_hex_chat_web/live/chat_live/context_menu_events.ex:492
-#: lib/retro_hex_chat_web/live/chat_live/context_menu_events.ex:684
+#: lib/retro_hex_chat_web/live/chat_live/context_menu_events.ex:308
+#: lib/retro_hex_chat_web/live/chat_live/context_menu_events.ex:493
+#: lib/retro_hex_chat_web/live/chat_live/context_menu_events.ex:685
 #, elixir-autogen, elixir-format
 msgid "* %{nickname} is now ignored"
 msgstr "* %{nickname} è ora ignorato"
@@ -626,8 +626,8 @@ msgid "Add to Contacts"
 msgstr "Aggiungi ai contatti"
 
 #: lib/retro_hex_chat_web/live/chat_live/components/address_book_dialog.ex:81
-#: lib/retro_hex_chat_web/live/chat_live/context_menu_events.ex:261
-#: lib/retro_hex_chat_web/live/chat_live/context_menu_events.ex:513
+#: lib/retro_hex_chat_web/live/chat_live/context_menu_events.ex:262
+#: lib/retro_hex_chat_web/live/chat_live/context_menu_events.ex:514
 #, elixir-autogen, elixir-format
 msgid "Added %{nickname} to contacts"
 msgstr "Aggiunto %{nickname} a contatti"
@@ -819,7 +819,7 @@ msgid "Cannot add highlight: %{reason}"
 msgstr "Non è possibile aggiungere evidenziazione: %{reason}"
 
 #: lib/retro_hex_chat_web/live/chat_live/components/address_book_dialog.ex:225
-#: lib/retro_hex_chat_web/live/chat_live/context_menu_events.ex:278
+#: lib/retro_hex_chat_web/live/chat_live/context_menu_events.ex:279
 #, elixir-autogen, elixir-format
 msgid "Cannot add yourself to contacts"
 msgstr "Non puoi aggiungere te stesso ai contatti"
@@ -1048,13 +1048,13 @@ msgstr "Copia il nome"
 msgid "Copy URL"
 msgstr "Copia URL"
 
-#: lib/retro_hex_chat_web/live/chat_live/context_menu_events.ex:285
-#: lib/retro_hex_chat_web/live/chat_live/context_menu_events.ex:522
+#: lib/retro_hex_chat_web/live/chat_live/context_menu_events.ex:286
+#: lib/retro_hex_chat_web/live/chat_live/context_menu_events.ex:523
 #, elixir-autogen, elixir-format
 msgid "Could not add %{nickname} to contacts"
 msgstr "Non posso aggiungere %{nickname} a contatti"
 
-#: lib/retro_hex_chat_web/live/chat_live/context_menu_events.ex:377
+#: lib/retro_hex_chat_web/live/chat_live/context_menu_events.ex:378
 #, elixir-autogen, elixir-format
 msgid "Could not set color for %{nickname}"
 msgstr "Non poteva impostare il colore per %{nickname}"
@@ -1246,7 +1246,7 @@ msgstr "Ignora"
 msgid "Ignore Sender"
 msgstr "Ignora Sender"
 
-#: lib/retro_hex_chat_web/live/chat_live/context_menu_events.ex:313
+#: lib/retro_hex_chat_web/live/chat_live/context_menu_events.ex:314
 #: lib/retro_hex_chat_web/live/chat_live/ui_actions/ignore.ex:72
 #, elixir-autogen, elixir-format
 msgid "Ignore list is full (max 100 entries)"
@@ -1364,7 +1364,7 @@ msgstr "Entrata %{channel}"
 msgid "Kick"
 msgstr "Espelli"
 
-#: lib/retro_hex_chat_web/live/chat_live/context_menu_events.ex:881
+#: lib/retro_hex_chat_web/live/chat_live/context_menu_events.ex:871
 #, elixir-autogen, elixir-format
 msgid "Kicked"
 msgstr "Colpiti"
@@ -1494,7 +1494,7 @@ msgid "Nick color entry not found"
 msgstr "Nick colore non trovato"
 
 #: lib/retro_hex_chat_web/live/chat_live/components/nick_colors_dialog.ex:199
-#: lib/retro_hex_chat_web/live/chat_live/context_menu_events.ex:370
+#: lib/retro_hex_chat_web/live/chat_live/context_menu_events.ex:371
 #, elixir-autogen, elixir-format
 msgid "Nick color list is full (max 50)"
 msgstr "Nick elenco di colori è pieno (max 50)"
@@ -1551,7 +1551,7 @@ msgstr "Nessun risultato"
 msgid "No topic set"
 msgstr "Nessun argomento impostato"
 
-#: lib/retro_hex_chat_web/live/chat_live/components/admin_console_dialog.ex:143
+#: lib/retro_hex_chat_web/live/chat_live/components/admin_console_dialog.ex:139
 #, elixir-autogen, elixir-format
 msgid "Not a command (must start with /)"
 msgstr "Non un comando (deve iniziare con /)"
@@ -1837,7 +1837,7 @@ msgstr "Impostazione server '%{key}È cambiato.%{value}'."
 msgid "Service"
 msgstr "Servizio"
 
-#: lib/retro_hex_chat_web/live/chat_live/context_menu_events.ex:359
+#: lib/retro_hex_chat_web/live/chat_live/context_menu_events.ex:360
 #, elixir-autogen, elixir-format
 msgid "Set %{nickname}'s color to %{color}"
 msgstr "Set %{nickname}il colore a %{color}"
@@ -1971,7 +1971,7 @@ msgstr "Digitare un comando — / per l'elenco"
 msgid "Type a message..."
 msgstr "Digitare un messaggio..."
 
-#: lib/retro_hex_chat_web/live/chat_live/context_menu_events.ex:634
+#: lib/retro_hex_chat_web/live/chat_live/context_menu_events.ex:635
 #, elixir-autogen, elixir-format
 msgid "URL saved to URL Catcher"
 msgstr "URL salvato per URL Catcher"
@@ -1992,7 +1992,7 @@ msgstr "Sottolinea (Ctrl+Shift+U)"
 msgid "Unignore"
 msgstr "Unignore"
 
-#: lib/retro_hex_chat_web/live/chat_live/context_menu_events.ex:616
+#: lib/retro_hex_chat_web/live/chat_live/context_menu_events.ex:617
 #: lib/retro_hex_chat_web/live/chat_live/hover_events.ex:173
 #: lib/retro_hex_chat_web/live/chat_live/hover_events.ex:182
 #: lib/retro_hex_chat_web/live/chat_live/hover_events.ex:187
@@ -2863,7 +2863,7 @@ msgstr "Whois di %{target}"
 msgid "You are already using that nickname"
 msgstr "Stai già usando quel soprannome"
 
-#: lib/retro_hex_chat_web/live/chat_live/context_menu_events.ex:946
+#: lib/retro_hex_chat_web/live/chat_live/context_menu_events.ex:936
 #, elixir-autogen, elixir-format
 msgid "You are not in any channel"
 msgstr "Non sei in nessun canale"
@@ -2878,7 +2878,7 @@ msgstr "Non hai il permesso di gestire questa lista."
 msgid "You must be a channel operator to change this setting."
 msgstr "Devi essere un operatore di canale per cambiare questa impostazione."
 
-#: lib/retro_hex_chat_web/live/chat_live/context_menu_events.ex:942
+#: lib/retro_hex_chat_web/live/chat_live/context_menu_events.ex:932
 #, elixir-autogen, elixir-format
 msgid "You must be a channel operator to use this command"
 msgstr "Devi essere un operatore di canale per usare questo comando"
@@ -3651,9 +3651,9 @@ msgid "Strikethrough"
 msgstr "Barrato"
 
 #: lib/retro_hex_chat_web/components/ui/chat/formatting_toolbar.ex:342
-#: lib/retro_hex_chat_web/components/ui/shell/desktop_launchers.ex:509
-#: lib/retro_hex_chat_web/components/ui/shell/menu_bar_app.ex:338
-#: lib/retro_hex_chat_web/components/ui/shell/start_menu_app.ex:140
+#: lib/retro_hex_chat_web/components/ui/shell/desktop_launchers.ex:508
+#: lib/retro_hex_chat_web/components/ui/shell/menu_bar_app.ex:337
+#: lib/retro_hex_chat_web/components/ui/shell/start_menu_app.ex:139
 #, elixir-autogen, elixir-format
 msgid "Strip Formatting"
 msgstr "Rimuovi formattazione"
@@ -4126,8 +4126,8 @@ msgstr "Ci sarò"
 msgid "Where"
 msgstr "Dove"
 
-#: lib/retro_hex_chat_web/components/ui/shell/menu_bar_app.ex:346
-#: lib/retro_hex_chat_web/components/ui/shell/start_menu_app.ex:147
+#: lib/retro_hex_chat_web/components/ui/shell/menu_bar_app.ex:345
+#: lib/retro_hex_chat_web/components/ui/shell/start_menu_app.ex:146
 #, elixir-autogen, elixir-format
 msgid "Character Portraits"
 msgstr "Ritratti dei personaggi"

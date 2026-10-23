@@ -212,7 +212,7 @@ msgid "%{nickname} has no custom color"
 msgstr "%{nickname} Нет привычного цвета"
 
 #: lib/retro_hex_chat_web/live/chat_live/components/address_book_dialog.ex:228
-#: lib/retro_hex_chat_web/live/chat_live/context_menu_events.ex:270
+#: lib/retro_hex_chat_web/live/chat_live/context_menu_events.ex:271
 #, elixir-autogen, elixir-format
 msgid "%{nickname} is already in your contacts"
 msgstr "%{nickname} Уже в ваших контактах"
@@ -357,8 +357,8 @@ msgid "* %{nickname} is no longer auto-ignored"
 msgstr "* %{nickname} больше не является автоматическим"
 
 #: lib/retro_hex_chat_web/live/chat_live/components/ignore_list_dialog.ex:115
-#: lib/retro_hex_chat_web/live/chat_live/context_menu_events.ex:334
-#: lib/retro_hex_chat_web/live/chat_live/context_menu_events.ex:815
+#: lib/retro_hex_chat_web/live/chat_live/context_menu_events.ex:335
+#: lib/retro_hex_chat_web/live/chat_live/context_menu_events.ex:805
 #: lib/retro_hex_chat_web/live/chat_live/ui_actions/ignore.ex:91
 #, elixir-autogen, elixir-format
 msgid "* %{nickname} is no longer ignored"
@@ -369,9 +369,9 @@ msgstr "* %{nickname} Больше не игнорируется"
 msgid "* %{nickname} is no longer ignored (timer expired)"
 msgstr "* %{nickname} больше не игнорируется (срок давности истек)"
 
-#: lib/retro_hex_chat_web/live/chat_live/context_menu_events.ex:307
-#: lib/retro_hex_chat_web/live/chat_live/context_menu_events.ex:492
-#: lib/retro_hex_chat_web/live/chat_live/context_menu_events.ex:684
+#: lib/retro_hex_chat_web/live/chat_live/context_menu_events.ex:308
+#: lib/retro_hex_chat_web/live/chat_live/context_menu_events.ex:493
+#: lib/retro_hex_chat_web/live/chat_live/context_menu_events.ex:685
 #, elixir-autogen, elixir-format
 msgid "* %{nickname} is now ignored"
 msgstr "* %{nickname} Сейчас игнорируется"
@@ -630,8 +630,8 @@ msgid "Add to Contacts"
 msgstr "Добавить в Контакты"
 
 #: lib/retro_hex_chat_web/live/chat_live/components/address_book_dialog.ex:81
-#: lib/retro_hex_chat_web/live/chat_live/context_menu_events.ex:261
-#: lib/retro_hex_chat_web/live/chat_live/context_menu_events.ex:513
+#: lib/retro_hex_chat_web/live/chat_live/context_menu_events.ex:262
+#: lib/retro_hex_chat_web/live/chat_live/context_menu_events.ex:514
 #, elixir-autogen, elixir-format
 msgid "Added %{nickname} to contacts"
 msgstr "Добавлено %{nickname} Контакты"
@@ -823,7 +823,7 @@ msgid "Cannot add highlight: %{reason}"
 msgstr "Не могу добавить изюминку: %{reason}"
 
 #: lib/retro_hex_chat_web/live/chat_live/components/address_book_dialog.ex:225
-#: lib/retro_hex_chat_web/live/chat_live/context_menu_events.ex:278
+#: lib/retro_hex_chat_web/live/chat_live/context_menu_events.ex:279
 #, elixir-autogen, elixir-format
 msgid "Cannot add yourself to contacts"
 msgstr "Нельзя добавлять себя в контакты"
@@ -1051,13 +1051,13 @@ msgstr "Копия Nickname"
 msgid "Copy URL"
 msgstr "Копировать URL"
 
-#: lib/retro_hex_chat_web/live/chat_live/context_menu_events.ex:285
-#: lib/retro_hex_chat_web/live/chat_live/context_menu_events.ex:522
+#: lib/retro_hex_chat_web/live/chat_live/context_menu_events.ex:286
+#: lib/retro_hex_chat_web/live/chat_live/context_menu_events.ex:523
 #, elixir-autogen, elixir-format
 msgid "Could not add %{nickname} to contacts"
 msgstr "Не могу добавить %{nickname} Контакты"
 
-#: lib/retro_hex_chat_web/live/chat_live/context_menu_events.ex:377
+#: lib/retro_hex_chat_web/live/chat_live/context_menu_events.ex:378
 #, elixir-autogen, elixir-format
 msgid "Could not set color for %{nickname}"
 msgstr "Невозможно установить цвет для %{nickname}"
@@ -1249,7 +1249,7 @@ msgstr "Игнорировать"
 msgid "Ignore Sender"
 msgstr "Игнорировать датчика"
 
-#: lib/retro_hex_chat_web/live/chat_live/context_menu_events.ex:313
+#: lib/retro_hex_chat_web/live/chat_live/context_menu_events.ex:314
 #: lib/retro_hex_chat_web/live/chat_live/ui_actions/ignore.ex:72
 #, elixir-autogen, elixir-format
 msgid "Ignore list is full (max 100 entries)"
@@ -1369,7 +1369,7 @@ msgstr "присоединяться %{channel}"
 msgid "Kick"
 msgstr "Выгнать"
 
-#: lib/retro_hex_chat_web/live/chat_live/context_menu_events.ex:881
+#: lib/retro_hex_chat_web/live/chat_live/context_menu_events.ex:871
 #, elixir-autogen, elixir-format
 msgid "Kicked"
 msgstr "избитый"
@@ -1499,7 +1499,7 @@ msgid "Nick color entry not found"
 msgstr "Ник Цветной вход не найден"
 
 #: lib/retro_hex_chat_web/live/chat_live/components/nick_colors_dialog.ex:199
-#: lib/retro_hex_chat_web/live/chat_live/context_menu_events.ex:370
+#: lib/retro_hex_chat_web/live/chat_live/context_menu_events.ex:371
 #, elixir-autogen, elixir-format
 msgid "Nick color list is full (max 50)"
 msgstr "Список цветов Ника полный (максимум 50)"
@@ -1556,7 +1556,7 @@ msgstr "Нет результатов"
 msgid "No topic set"
 msgstr "Нет темы"
 
-#: lib/retro_hex_chat_web/live/chat_live/components/admin_console_dialog.ex:143
+#: lib/retro_hex_chat_web/live/chat_live/components/admin_console_dialog.ex:139
 #, elixir-autogen, elixir-format
 msgid "Not a command (must start with /)"
 msgstr "Не команда (должна начинаться с /)"
@@ -1842,7 +1842,7 @@ msgstr "Настройка сервера%{key}Изменился на%{value}'.
 msgid "Service"
 msgstr "Сервис"
 
-#: lib/retro_hex_chat_web/live/chat_live/context_menu_events.ex:359
+#: lib/retro_hex_chat_web/live/chat_live/context_menu_events.ex:360
 #, elixir-autogen, elixir-format
 msgid "Set %{nickname}'s color to %{color}"
 msgstr "Настройка %{nickname}Цвет для %{color}"
@@ -1976,7 +1976,7 @@ msgstr "Введите команду - / для списка"
 msgid "Type a message..."
 msgstr "Введите сообщение..."
 
-#: lib/retro_hex_chat_web/live/chat_live/context_menu_events.ex:634
+#: lib/retro_hex_chat_web/live/chat_live/context_menu_events.ex:635
 #, elixir-autogen, elixir-format
 msgid "URL saved to URL Catcher"
 msgstr "URL сохранен в URL Catcher"
@@ -1997,7 +1997,7 @@ msgstr "Подчеркните (Ctrl+Shift+U)"
 msgid "Unignore"
 msgstr "Невежество"
 
-#: lib/retro_hex_chat_web/live/chat_live/context_menu_events.ex:616
+#: lib/retro_hex_chat_web/live/chat_live/context_menu_events.ex:617
 #: lib/retro_hex_chat_web/live/chat_live/hover_events.ex:173
 #: lib/retro_hex_chat_web/live/chat_live/hover_events.ex:182
 #: lib/retro_hex_chat_web/live/chat_live/hover_events.ex:187
@@ -2866,7 +2866,7 @@ msgstr "Whois для %{target}"
 msgid "You are already using that nickname"
 msgstr "Вы уже используете это прозвище."
 
-#: lib/retro_hex_chat_web/live/chat_live/context_menu_events.ex:946
+#: lib/retro_hex_chat_web/live/chat_live/context_menu_events.ex:936
 #, elixir-autogen, elixir-format
 msgid "You are not in any channel"
 msgstr "Вас нет ни в одном канале."
@@ -2881,7 +2881,7 @@ msgstr "У вас нет разрешения управлять этим спи
 msgid "You must be a channel operator to change this setting."
 msgstr "Вы должны быть оператором канала, чтобы изменить эту настройку."
 
-#: lib/retro_hex_chat_web/live/chat_live/context_menu_events.ex:942
+#: lib/retro_hex_chat_web/live/chat_live/context_menu_events.ex:932
 #, elixir-autogen, elixir-format
 msgid "You must be a channel operator to use this command"
 msgstr "Вы должны быть оператором канала, чтобы использовать эту команду."
@@ -3654,9 +3654,9 @@ msgid "Strikethrough"
 msgstr "Зачёркнутый"
 
 #: lib/retro_hex_chat_web/components/ui/chat/formatting_toolbar.ex:342
-#: lib/retro_hex_chat_web/components/ui/shell/desktop_launchers.ex:509
-#: lib/retro_hex_chat_web/components/ui/shell/menu_bar_app.ex:338
-#: lib/retro_hex_chat_web/components/ui/shell/start_menu_app.ex:140
+#: lib/retro_hex_chat_web/components/ui/shell/desktop_launchers.ex:508
+#: lib/retro_hex_chat_web/components/ui/shell/menu_bar_app.ex:337
+#: lib/retro_hex_chat_web/components/ui/shell/start_menu_app.ex:139
 #, elixir-autogen, elixir-format
 msgid "Strip Formatting"
 msgstr "Убрать форматирование"
@@ -4133,8 +4133,8 @@ msgstr "Я приду"
 msgid "Where"
 msgstr "Где"
 
-#: lib/retro_hex_chat_web/components/ui/shell/menu_bar_app.ex:346
-#: lib/retro_hex_chat_web/components/ui/shell/start_menu_app.ex:147
+#: lib/retro_hex_chat_web/components/ui/shell/menu_bar_app.ex:345
+#: lib/retro_hex_chat_web/components/ui/shell/start_menu_app.ex:146
 #, elixir-autogen, elixir-format
 msgid "Character Portraits"
 msgstr "Портреты персонажей"

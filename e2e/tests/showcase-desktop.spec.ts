@@ -161,8 +161,8 @@ test.describe("Showcase desktop", () => {
       startMenu.getByTestId("start-menu-item-address-book"),
     ).toBeDisabled();
 
-    // About is live here: the showcase mounts the same `about-dialog` the chat
-    // and connect screens do, so the entry has something to open. The menu is
+    // About is live here: the showcase carries the same About window the chat
+    // does, so the entry has something to open. The menu is
     // still open — hovering a group does not close it, and clicking Start again
     // would toggle the whole menu shut.
     await startMenu
@@ -170,8 +170,7 @@ test.describe("Showcase desktop", () => {
       .filter({ hasText: "Help" })
       .hover();
     await startMenu.getByTestId("start-menu-item-show_about").click();
-    // The wrapper keeps its `hidden` class; the panel inside it is what shows.
-    await expect(page.locator('#about-dialog [role="dialog"]')).toBeVisible();
+    await expect(page.getByTestId("site-window-about")).toBeVisible();
 
     expect(failures).toEqual([]);
   });

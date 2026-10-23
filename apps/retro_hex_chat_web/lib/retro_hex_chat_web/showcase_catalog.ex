@@ -630,13 +630,6 @@ defmodule RetroHexChatWeb.ShowcaseCatalog do
       icon: :icon_btn_link
     },
     %{
-      id: "about-dialog",
-      group: :dialogs,
-      module: Dialogs.AboutDialogPage,
-      label: dgettext_noop("showcase", "About Dialog"),
-      icon: :icon_lightbulb
-    },
-    %{
       id: "channel-list",
       group: :dialogs,
       module: Dialogs.ChannelListPage,

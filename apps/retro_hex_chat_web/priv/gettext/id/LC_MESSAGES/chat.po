@@ -202,7 +202,7 @@ msgid "%{nickname} has no custom color"
 msgstr "%{nickname} tidak memiliki warna gubahan"
 
 #: lib/retro_hex_chat_web/live/chat_live/components/address_book_dialog.ex:228
-#: lib/retro_hex_chat_web/live/chat_live/context_menu_events.ex:270
+#: lib/retro_hex_chat_web/live/chat_live/context_menu_events.ex:271
 #, elixir-autogen, elixir-format
 msgid "%{nickname} is already in your contacts"
 msgstr "%{nickname} sudah ada dalam kontakmu"
@@ -351,8 +351,8 @@ msgid "* %{nickname} is no longer auto-ignored"
 msgstr "* %{nickname} tidak lagi auto- diabaikan"
 
 #: lib/retro_hex_chat_web/live/chat_live/components/ignore_list_dialog.ex:115
-#: lib/retro_hex_chat_web/live/chat_live/context_menu_events.ex:334
-#: lib/retro_hex_chat_web/live/chat_live/context_menu_events.ex:815
+#: lib/retro_hex_chat_web/live/chat_live/context_menu_events.ex:335
+#: lib/retro_hex_chat_web/live/chat_live/context_menu_events.ex:805
 #: lib/retro_hex_chat_web/live/chat_live/ui_actions/ignore.ex:91
 #, elixir-autogen, elixir-format
 msgid "* %{nickname} is no longer ignored"
@@ -363,9 +363,9 @@ msgstr "* %{nickname} tidak lagi diabaikan"
 msgid "* %{nickname} is no longer ignored (timer expired)"
 msgstr "* %{nickname} tidak lagi diabaikan (waktu habis)"
 
-#: lib/retro_hex_chat_web/live/chat_live/context_menu_events.ex:307
-#: lib/retro_hex_chat_web/live/chat_live/context_menu_events.ex:492
-#: lib/retro_hex_chat_web/live/chat_live/context_menu_events.ex:684
+#: lib/retro_hex_chat_web/live/chat_live/context_menu_events.ex:308
+#: lib/retro_hex_chat_web/live/chat_live/context_menu_events.ex:493
+#: lib/retro_hex_chat_web/live/chat_live/context_menu_events.ex:685
 #, elixir-autogen, elixir-format
 msgid "* %{nickname} is now ignored"
 msgstr "* %{nickname} sekarang diabaikan"
@@ -620,8 +620,8 @@ msgid "Add to Contacts"
 msgstr "Tambahkan ke Kontak"
 
 #: lib/retro_hex_chat_web/live/chat_live/components/address_book_dialog.ex:81
-#: lib/retro_hex_chat_web/live/chat_live/context_menu_events.ex:261
-#: lib/retro_hex_chat_web/live/chat_live/context_menu_events.ex:513
+#: lib/retro_hex_chat_web/live/chat_live/context_menu_events.ex:262
+#: lib/retro_hex_chat_web/live/chat_live/context_menu_events.ex:514
 #, elixir-autogen, elixir-format
 msgid "Added %{nickname} to contacts"
 msgstr "Ditambahkan %{nickname} ke kontak"
@@ -813,7 +813,7 @@ msgid "Cannot add highlight: %{reason}"
 msgstr "Tidak dapat menambahkan penyorotan: %{reason}"
 
 #: lib/retro_hex_chat_web/live/chat_live/components/address_book_dialog.ex:225
-#: lib/retro_hex_chat_web/live/chat_live/context_menu_events.ex:278
+#: lib/retro_hex_chat_web/live/chat_live/context_menu_events.ex:279
 #, elixir-autogen, elixir-format
 msgid "Cannot add yourself to contacts"
 msgstr "Tidak dapat menambahkan diri ke kontak"
@@ -1041,13 +1041,13 @@ msgstr "Salin Nama Panggilan"
 msgid "Copy URL"
 msgstr "Salin URL"
 
-#: lib/retro_hex_chat_web/live/chat_live/context_menu_events.ex:285
-#: lib/retro_hex_chat_web/live/chat_live/context_menu_events.ex:522
+#: lib/retro_hex_chat_web/live/chat_live/context_menu_events.ex:286
+#: lib/retro_hex_chat_web/live/chat_live/context_menu_events.ex:523
 #, elixir-autogen, elixir-format
 msgid "Could not add %{nickname} to contacts"
 msgstr "Tidak dapat menambahkan %{nickname} ke kontak"
 
-#: lib/retro_hex_chat_web/live/chat_live/context_menu_events.ex:377
+#: lib/retro_hex_chat_web/live/chat_live/context_menu_events.ex:378
 #, elixir-autogen, elixir-format
 msgid "Could not set color for %{nickname}"
 msgstr "Tidak dapat menset warna untuk %{nickname}"
@@ -1239,7 +1239,7 @@ msgstr "Abaikan"
 msgid "Ignore Sender"
 msgstr "Abaikan Pengirim"
 
-#: lib/retro_hex_chat_web/live/chat_live/context_menu_events.ex:313
+#: lib/retro_hex_chat_web/live/chat_live/context_menu_events.ex:314
 #: lib/retro_hex_chat_web/live/chat_live/ui_actions/ignore.ex:72
 #, elixir-autogen, elixir-format
 msgid "Ignore list is full (max 100 entries)"
@@ -1358,7 +1358,7 @@ msgstr "%{channel} Bergabung"
 msgid "Kick"
 msgstr "Keluarkan"
 
-#: lib/retro_hex_chat_web/live/chat_live/context_menu_events.ex:881
+#: lib/retro_hex_chat_web/live/chat_live/context_menu_events.ex:871
 #, elixir-autogen, elixir-format
 msgid "Kicked"
 msgstr "Ditendang"
@@ -1488,7 +1488,7 @@ msgid "Nick color entry not found"
 msgstr "Entri warna Nick tidak ditemukan"
 
 #: lib/retro_hex_chat_web/live/chat_live/components/nick_colors_dialog.ex:199
-#: lib/retro_hex_chat_web/live/chat_live/context_menu_events.ex:370
+#: lib/retro_hex_chat_web/live/chat_live/context_menu_events.ex:371
 #, elixir-autogen, elixir-format
 msgid "Nick color list is full (max 50)"
 msgstr "Daftar warna Nick penuh (maksimal 50)"
@@ -1545,7 +1545,7 @@ msgstr "Tidak ada hasil"
 msgid "No topic set"
 msgstr "Tidak ada topik yang diset"
 
-#: lib/retro_hex_chat_web/live/chat_live/components/admin_console_dialog.ex:143
+#: lib/retro_hex_chat_web/live/chat_live/components/admin_console_dialog.ex:139
 #, elixir-autogen, elixir-format
 msgid "Not a command (must start with /)"
 msgstr "Bukan perintah (harus dimulai dengan /)"
@@ -1832,7 +1832,7 @@ msgstr "Pengaturan server '%{key}' berubah menjadi '%{value}'."
 msgid "Service"
 msgstr "Layanan"
 
-#: lib/retro_hex_chat_web/live/chat_live/context_menu_events.ex:359
+#: lib/retro_hex_chat_web/live/chat_live/context_menu_events.ex:360
 #, elixir-autogen, elixir-format
 msgid "Set %{nickname}'s color to %{color}"
 msgstr "Atur warna %{nickname} ke %{color}"
@@ -1964,7 +1964,7 @@ msgstr "Ketik perintah - / untuk daftar"
 msgid "Type a message..."
 msgstr "Ketik pesan..."
 
-#: lib/retro_hex_chat_web/live/chat_live/context_menu_events.ex:634
+#: lib/retro_hex_chat_web/live/chat_live/context_menu_events.ex:635
 #, elixir-autogen, elixir-format
 msgid "URL saved to URL Catcher"
 msgstr "URL disimpan ke URL Catcher"
@@ -1985,7 +1985,7 @@ msgstr "Garis bawah (Ctrl + Shift + U)"
 msgid "Unignore"
 msgstr "Unignore"
 
-#: lib/retro_hex_chat_web/live/chat_live/context_menu_events.ex:616
+#: lib/retro_hex_chat_web/live/chat_live/context_menu_events.ex:617
 #: lib/retro_hex_chat_web/live/chat_live/hover_events.ex:173
 #: lib/retro_hex_chat_web/live/chat_live/hover_events.ex:182
 #: lib/retro_hex_chat_web/live/chat_live/hover_events.ex:187
@@ -2858,7 +2858,7 @@ msgstr "Whois untuk %{target}"
 msgid "You are already using that nickname"
 msgstr "Anda sudah menggunakan nama panggilan itu"
 
-#: lib/retro_hex_chat_web/live/chat_live/context_menu_events.ex:946
+#: lib/retro_hex_chat_web/live/chat_live/context_menu_events.ex:936
 #, elixir-autogen, elixir-format
 msgid "You are not in any channel"
 msgstr "Anda tidak dalam saluran apapun"
@@ -2873,7 +2873,7 @@ msgstr "Anda tidak memiliki izin untuk mengelola daftar ini."
 msgid "You must be a channel operator to change this setting."
 msgstr "Anda harus menjadi operator saluran untuk mengubah pengaturan ini."
 
-#: lib/retro_hex_chat_web/live/chat_live/context_menu_events.ex:942
+#: lib/retro_hex_chat_web/live/chat_live/context_menu_events.ex:932
 #, elixir-autogen, elixir-format
 msgid "You must be a channel operator to use this command"
 msgstr "Anda harus menjadi operator saluran untuk menggunakan perintah ini"
@@ -3642,9 +3642,9 @@ msgid "Strikethrough"
 msgstr "Coret"
 
 #: lib/retro_hex_chat_web/components/ui/chat/formatting_toolbar.ex:342
-#: lib/retro_hex_chat_web/components/ui/shell/desktop_launchers.ex:509
-#: lib/retro_hex_chat_web/components/ui/shell/menu_bar_app.ex:338
-#: lib/retro_hex_chat_web/components/ui/shell/start_menu_app.ex:140
+#: lib/retro_hex_chat_web/components/ui/shell/desktop_launchers.ex:508
+#: lib/retro_hex_chat_web/components/ui/shell/menu_bar_app.ex:337
+#: lib/retro_hex_chat_web/components/ui/shell/start_menu_app.ex:139
 #, elixir-autogen, elixir-format
 msgid "Strip Formatting"
 msgstr "Hapus format"
@@ -4111,8 +4111,8 @@ msgstr "Saya ikut"
 msgid "Where"
 msgstr "Di mana"
 
-#: lib/retro_hex_chat_web/components/ui/shell/menu_bar_app.ex:346
-#: lib/retro_hex_chat_web/components/ui/shell/start_menu_app.ex:147
+#: lib/retro_hex_chat_web/components/ui/shell/menu_bar_app.ex:345
+#: lib/retro_hex_chat_web/components/ui/shell/start_menu_app.ex:146
 #, elixir-autogen, elixir-format
 msgid "Character Portraits"
 msgstr "Potret karakter"

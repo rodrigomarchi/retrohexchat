@@ -1239,6 +1239,7 @@ const WindowManagerCore = {
   closeWindow(id) {
     const win = this.windows[id];
     if (win.pinned) return;
+    const heldKeyboard = win.el?.contains(document.activeElement);
     // A managed window's lifecycle is server-owned: hide it right away for
     // snappy feedback, then tell the host so it unmounts the island (the patch
     // then prunes the registry).
@@ -1251,6 +1252,16 @@ const WindowManagerCore = {
     this.applyAll();
     this.persist();
     this.reportDocumentClosed(id);
+    if (heldKeyboard) this.handKeyboardTo(this.focusedId);
+  },
+
+  // The keyboard a closed window held goes to the one in front: to what it
+  // marks `autofocus` (the chat's composer), else as `focusDialogInside` does.
+  handKeyboardTo(id) {
+    const el = this.windows[id]?.el;
+    const target = el?.querySelector("[autofocus]:not([disabled])");
+    if (target) requestAnimationFrame(() => target.focus());
+    else this.focusDialogInside(el);
   },
 
   // The last open window of a page closed: the page is gone from the desk, and

@@ -1,6 +1,5 @@
 import MenuBarHook from "./ui/menu_bar_hook";
 import WindowManagerHook from "./ui/window_manager_hook";
-import FocusChatInputOnClickHook from "./ui/focus_chat_input_on_click_hook";
 import ClockHook from "./connection/clock_hook";
 import HighlightHook from "./showcase/highlight_hook";
 
@@ -9,7 +8,6 @@ import HighlightHook from "./showcase/highlight_hook";
 export const showcaseHooks = {
   MenuBarHook: MenuBarHook,
   WindowManagerHook: WindowManagerHook,
-  FocusChatInputOnClickHook: FocusChatInputOnClickHook,
   ClockHook: ClockHook,
   Highlight: HighlightHook,
 };

@@ -43,7 +43,6 @@ defmodule RetroHexChatWeb.Components.UI.StartMenuApp do
   use RetroHexChatWeb.Component
 
   import RetroHexChatWeb.Components.UI.Desktop
-  import RetroHexChatWeb.Components.UI.Dialog, only: [show_modal: 1]
 
   alias RetroHexChatWeb.ChatLive.WindowRegistry
   alias RetroHexChatWeb.Components.UI.LanguageMenu
@@ -761,14 +760,14 @@ defmodule RetroHexChatWeb.Components.UI.StartMenuApp do
     """
   end
 
-  # About is live on every screen: each mounts `about_dialog id="about-dialog"`,
-  # so the same modal command reaches it from all of them.
+  # About is the site's About window, which every screen of the desktop carries
+  # once the chat is live (`Site.Documents.carries_about?/2`).
   attr :screen, :atom, required: true
 
   defp about_item(assigns) do
     ~H"""
     <.start_menu_item
-      phx-click={show_modal("about-dialog")}
+      data-window-open="site-about"
       label={dgettext("ui", "About RetroHexChat")}
       data-testid="start-menu-item-show_about"
     >

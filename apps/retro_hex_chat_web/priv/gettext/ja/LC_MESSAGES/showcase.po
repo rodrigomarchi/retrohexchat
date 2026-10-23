@@ -194,19 +194,6 @@ msgstr "新たにバージョンアップしました。"
 msgid "A retro-styled chat application built with Phoenix LiveView."
 msgstr "フェニックスライブビューで構築されたレトロなスタイルのチャットアプリケーション。"
 
-#: lib/retro_hex_chat_web/live/showcase_live/dialogs/about_dialog_page.ex:35
-#, elixir-autogen, elixir-format
-msgid "About"
-msgstr "バージョン情報"
-
-#: lib/retro_hex_chat_web/live/showcase_live/dialogs/about_dialog_page.ex:20
-#: lib/retro_hex_chat_web/live/showcase_live/dialogs/about_dialog_page.ex:27
-#: lib/retro_hex_chat_web/live/showcase_live/dialogs/about_dialog_page.ex:30
-#: lib/retro_hex_chat_web/showcase_catalog.ex:636
-#, elixir-autogen, elixir-format
-msgid "About Dialog"
-msgstr "Dialogについて"
-
 #: lib/retro_hex_chat_web/live/showcase_live/primitives/accordion.ex:67
 #, elixir-autogen, elixir-format
 msgid "Absolutely. All components are local source code you can modify freely."
@@ -298,7 +285,7 @@ msgid "Admin"
 msgstr "管理"
 
 #: lib/retro_hex_chat_web/live/showcase_live/dialogs/admin_console_dialog_page.ex:61
-#: lib/retro_hex_chat_web/showcase_catalog.ex:783
+#: lib/retro_hex_chat_web/showcase_catalog.ex:776
 #, elixir-autogen, elixir-format
 msgid "Admin Console"
 msgstr "管理者コンソール"
@@ -335,7 +322,7 @@ msgstr "アラート"
 
 #: lib/retro_hex_chat_web/live/showcase_live/dialogs/alias_dialog_page.ex:29
 #: lib/retro_hex_chat_web/live/showcase_live/dialogs/alias_dialog_page.ex:45
-#: lib/retro_hex_chat_web/showcase_catalog.ex:678
+#: lib/retro_hex_chat_web/showcase_catalog.ex:671
 #, elixir-autogen, elixir-format
 msgid "Alias Dialog"
 msgstr "エイリアス・ダイアログ"
@@ -481,7 +468,7 @@ msgstr "音声通話"
 msgid "Audio, video, devices"
 msgstr "オーディオ、ビデオ、デバイス"
 
-#: lib/retro_hex_chat_web/showcase_catalog.ex:706
+#: lib/retro_hex_chat_web/showcase_catalog.ex:699
 #, elixir-autogen, elixir-format
 msgid "Auto Respond"
 msgstr "自動応答"
@@ -649,7 +636,7 @@ msgstr "ボーダーの半径"
 
 #: lib/retro_hex_chat_web/live/showcase_live/layout/menu_page.html.heex:84
 #: lib/retro_hex_chat_web/live/showcase_live/layout/menu_page.html.heex:251
-#: lib/retro_hex_chat_web/showcase_catalog.ex:846
+#: lib/retro_hex_chat_web/showcase_catalog.ex:839
 #, elixir-autogen, elixir-format
 msgid "Bot Management"
 msgstr "ボット管理"
@@ -800,7 +787,7 @@ msgid "Channel"
 msgstr "チャンネル"
 
 #: lib/retro_hex_chat_web/live/showcase_live/layout/menu_page.html.heex:217
-#: lib/retro_hex_chat_web/showcase_catalog.ex:776
+#: lib/retro_hex_chat_web/showcase_catalog.ex:769
 #, elixir-autogen, elixir-format
 msgid "Channel Central"
 msgstr "チャネルの中央"
@@ -822,7 +809,7 @@ msgstr "チャネルはろ過しました"
 #: lib/retro_hex_chat_web/live/showcase_live/layout/menu_page.html.heex:12
 #: lib/retro_hex_chat_web/live/showcase_live/layout/menu_page.html.heex:46
 #: lib/retro_hex_chat_web/live/showcase_live/layout/menu_page.html.heex:184
-#: lib/retro_hex_chat_web/showcase_catalog.ex:643
+#: lib/retro_hex_chat_web/showcase_catalog.ex:636
 #, elixir-autogen, elixir-format
 msgid "Channel List"
 msgstr "チャンネルリスト"
@@ -934,7 +921,7 @@ msgid "Chat-specific components — messages, nicklist, emoji picker, formatting
 msgstr "チャット固有のコンポーネント — メッセージ、ニックネーム、絵文字ピッカー、ツールバー、コンテキストメニューなど。"
 
 #: lib/retro_hex_chat_web/live/showcase_live/dialogs/cheatsheet_dialog_page.ex:74
-#: lib/retro_hex_chat_web/showcase_catalog.ex:748
+#: lib/retro_hex_chat_web/showcase_catalog.ex:741
 #, elixir-autogen, elixir-format
 msgid "Cheatsheet"
 msgstr "チーフシート"
@@ -1077,8 +1064,8 @@ msgid "Component Showcase"
 msgstr "コンポーネントのショーケース"
 
 #: lib/retro_hex_chat_web/components/showcase_helpers.ex:70
-#: lib/retro_hex_chat_web/components/showcase_helpers.ex:110
-#: lib/retro_hex_chat_web/components/showcase_helpers.ex:124
+#: lib/retro_hex_chat_web/components/showcase_helpers.ex:118
+#: lib/retro_hex_chat_web/components/showcase_helpers.ex:132
 #: lib/retro_hex_chat_web/live/showcase_live/primitives/breadcrumb_page.ex:75
 #, elixir-autogen, elixir-format
 msgid "Components"
@@ -1285,7 +1272,7 @@ msgid "Custom Max Length"
 msgstr "習慣の最大長さ"
 
 #: lib/retro_hex_chat_web/live/showcase_live/layout/menu_page.html.heex:238
-#: lib/retro_hex_chat_web/showcase_catalog.ex:713
+#: lib/retro_hex_chat_web/showcase_catalog.ex:706
 #, elixir-autogen, elixir-format
 msgid "Custom Menus"
 msgstr "カスタムメニュー"
@@ -1395,7 +1382,7 @@ msgstr "アカウントの削除"
 msgid "Delete Channel"
 msgstr "チャネルの削除"
 
-#: lib/retro_hex_chat_web/showcase_catalog.ex:664
+#: lib/retro_hex_chat_web/showcase_catalog.ex:657
 #, elixir-autogen, elixir-format
 msgid "Delete Confirm"
 msgstr "削除 確認"
@@ -1418,8 +1405,8 @@ msgstr "メッセージの削除"
 msgid "Description"
 msgstr "説明"
 
-#: lib/retro_hex_chat_web/components/showcase_helpers.ex:157
-#: lib/retro_hex_chat_web/components/ui/shell/start_menu_app.ex:571
+#: lib/retro_hex_chat_web/components/showcase_helpers.ex:163
+#: lib/retro_hex_chat_web/components/ui/shell/start_menu_app.ex:570
 #, elixir-autogen, elixir-format
 msgid "Design System"
 msgstr "デザインシステム"
@@ -1443,7 +1430,7 @@ msgstr "開発ディスカッション"
 
 #: lib/retro_hex_chat_web/live/showcase_live/assets/diagrams.ex:21
 #: lib/retro_hex_chat_web/live/showcase_live/assets/diagrams.ex:69
-#: lib/retro_hex_chat_web/showcase_catalog.ex:888
+#: lib/retro_hex_chat_web/showcase_catalog.ex:881
 #, elixir-autogen, elixir-format
 msgid "Diagrams"
 msgstr "図形"
@@ -1516,7 +1503,7 @@ msgstr "障害者用品"
 msgid "Disconnect"
 msgstr "切断"
 
-#: lib/retro_hex_chat_web/showcase_catalog.ex:671
+#: lib/retro_hex_chat_web/showcase_catalog.ex:664
 #, elixir-autogen, elixir-format
 msgid "Disconnect Confirm"
 msgstr "切断確認"
@@ -1728,7 +1715,7 @@ msgstr "フィールドセット"
 
 #: lib/retro_hex_chat_web/live/showcase_live/p2p/file_transfer_page.ex:18
 #: lib/retro_hex_chat_web/live/showcase_live/p2p/file_transfer_page.ex:27
-#: lib/retro_hex_chat_web/showcase_catalog.ex:860
+#: lib/retro_hex_chat_web/showcase_catalog.ex:853
 #, elixir-autogen, elixir-format
 msgid "File Transfer"
 msgstr "ファイル転送"
@@ -1770,7 +1757,7 @@ msgid "Flash taskbar"
 msgstr "フラッシュタスクバー"
 
 #: lib/retro_hex_chat_web/live/showcase_live/layout/menu_page.html.heex:230
-#: lib/retro_hex_chat_web/showcase_catalog.ex:685
+#: lib/retro_hex_chat_web/showcase_catalog.ex:678
 #, elixir-autogen, elixir-format
 msgid "Flood Protection"
 msgstr "洪水の保護"
@@ -1882,7 +1869,7 @@ msgstr "完全なサイドバー"
 
 #: lib/retro_hex_chat_web/live/showcase_live/games/game_cards_page.ex:20
 #: lib/retro_hex_chat_web/live/showcase_live/games/game_cards_page.html.heex:2
-#: lib/retro_hex_chat_web/showcase_catalog.ex:867
+#: lib/retro_hex_chat_web/showcase_catalog.ex:860
 #, elixir-autogen, elixir-format
 msgid "Game Cards"
 msgstr "ゲームカード"
@@ -2013,7 +2000,7 @@ msgstr "隠し項目2"
 
 #: lib/retro_hex_chat_web/live/showcase_live/dialogs/highlight_dialog_page.ex:22
 #: lib/retro_hex_chat_web/live/showcase_live/dialogs/highlight_dialog_page.ex:36
-#: lib/retro_hex_chat_web/showcase_catalog.ex:650
+#: lib/retro_hex_chat_web/showcase_catalog.ex:643
 #, elixir-autogen, elixir-format
 msgid "Highlight Dialog"
 msgstr "ハイライトダイアログ"
@@ -2095,7 +2082,7 @@ msgstr "アイコンサイズ"
 
 #: lib/retro_hex_chat_web/live/showcase_live/assets/icons.ex:81
 #: lib/retro_hex_chat_web/live/showcase_live/assets/icons.ex:105
-#: lib/retro_hex_chat_web/showcase_catalog.ex:881
+#: lib/retro_hex_chat_web/showcase_catalog.ex:874
 #, elixir-autogen, elixir-format
 msgid "Icons"
 msgstr "アイコン"
@@ -2191,7 +2178,7 @@ msgstr ""
 
 #: lib/retro_hex_chat_web/live/showcase_live/dialogs/invite_dialog_page.ex:22
 #: lib/retro_hex_chat_web/live/showcase_live/dialogs/invite_dialog_page.ex:37
-#: lib/retro_hex_chat_web/showcase_catalog.ex:734
+#: lib/retro_hex_chat_web/showcase_catalog.ex:727
 #, elixir-autogen, elixir-format
 msgid "Invite Dialog"
 msgstr "招待ダイアログ"
@@ -2244,7 +2231,7 @@ msgstr "キック"
 
 #: lib/retro_hex_chat_web/live/showcase_live/dialogs/kick_dialog_page.ex:20
 #: lib/retro_hex_chat_web/live/showcase_live/dialogs/kick_dialog_page.ex:27
-#: lib/retro_hex_chat_web/showcase_catalog.ex:657
+#: lib/retro_hex_chat_web/showcase_catalog.ex:650
 #, elixir-autogen, elixir-format
 msgid "Kick Dialog"
 msgstr "キックダイアログ"
@@ -2549,7 +2536,7 @@ msgstr "新しいチップが利用可能"
 msgid "Next tab"
 msgstr "次のタブ"
 
-#: lib/retro_hex_chat_web/showcase_catalog.ex:755
+#: lib/retro_hex_chat_web/showcase_catalog.ex:748
 #, elixir-autogen, elixir-format
 msgid "Nick Change"
 msgstr "ニック・チェンジ"
@@ -2682,7 +2669,7 @@ msgstr "通知、情報、警告"
 #: lib/retro_hex_chat_web/live/showcase_live/dialogs/notify_list_page.ex:43
 #: lib/retro_hex_chat_web/live/showcase_live/dialogs/notify_list_page.ex:46
 #: lib/retro_hex_chat_web/live/showcase_live/dialogs/notify_list_page.ex:51
-#: lib/retro_hex_chat_web/showcase_catalog.ex:692
+#: lib/retro_hex_chat_web/showcase_catalog.ex:685
 #, elixir-autogen, elixir-format
 msgid "Notify List"
 msgstr "リストを通知する"
@@ -2989,7 +2976,7 @@ msgstr "ペースト5ライン"
 msgid "Paste Blocked"
 msgstr "ペーストブロック"
 
-#: lib/retro_hex_chat_web/showcase_catalog.ex:741
+#: lib/retro_hex_chat_web/showcase_catalog.ex:734
 #, elixir-autogen, elixir-format
 msgid "Paste Confirm"
 msgstr "ペースト 確認"
@@ -3018,7 +3005,7 @@ msgstr "パフォーマンス"
 #: lib/retro_hex_chat_web/live/showcase_live/dialogs/perform_dialog_page.ex:21
 #: lib/retro_hex_chat_web/live/showcase_live/dialogs/perform_dialog_page.html.heex:2
 #: lib/retro_hex_chat_web/live/showcase_live/dialogs/perform_dialog_page.html.heex:5
-#: lib/retro_hex_chat_web/showcase_catalog.ex:762
+#: lib/retro_hex_chat_web/showcase_catalog.ex:755
 #, elixir-autogen, elixir-format
 msgid "Perform Dialog"
 msgstr "Dialog を実行する"
@@ -3604,7 +3591,7 @@ msgstr "スモール"
 
 #: lib/retro_hex_chat_web/live/showcase_live/games/solo_lobby_page.ex:20
 #: lib/retro_hex_chat_web/live/showcase_live/games/solo_lobby_page.html.heex:2
-#: lib/retro_hex_chat_web/showcase_catalog.ex:874
+#: lib/retro_hex_chat_web/showcase_catalog.ex:867
 #, elixir-autogen, elixir-format
 msgid "Solo Lobby"
 msgstr "ソロロビー"
@@ -3625,7 +3612,7 @@ msgstr "Nick(Ascending)の順に並べ替え"
 msgid "Sound"
 msgstr "サウンド"
 
-#: lib/retro_hex_chat_web/showcase_catalog.ex:727
+#: lib/retro_hex_chat_web/showcase_catalog.ex:720
 #, elixir-autogen, elixir-format
 msgid "Sound Settings"
 msgstr "サウンド設定"
@@ -4100,7 +4087,7 @@ msgstr "タイポグラフィ"
 #: lib/retro_hex_chat_web/live/showcase_live/dialogs/url_catcher_page.ex:79
 #: lib/retro_hex_chat_web/live/showcase_live/layout/menu_page.html.heex:75
 #: lib/retro_hex_chat_web/live/showcase_live/layout/menu_page.html.heex:213
-#: lib/retro_hex_chat_web/showcase_catalog.ex:699
+#: lib/retro_hex_chat_web/showcase_catalog.ex:692
 #, elixir-autogen, elixir-format
 msgid "URL Catcher"
 msgstr "URLキャッチャー"
@@ -4677,7 +4664,7 @@ msgstr "コンパクト — ビデオコール"
 msgid "Compact — Waiting"
 msgstr "コンパクト — 待ち合わせ"
 
-#: lib/retro_hex_chat_web/showcase_catalog.ex:853
+#: lib/retro_hex_chat_web/showcase_catalog.ex:846
 #, elixir-autogen, elixir-format
 msgid "Connection Diagram"
 msgstr "接続図"
@@ -4786,7 +4773,7 @@ msgstr ""
 "グレイス"
 
 #: lib/retro_hex_chat_web/live/showcase_live/dialogs/admin_channels_dialog_page.ex:44
-#: lib/retro_hex_chat_web/showcase_catalog.ex:797
+#: lib/retro_hex_chat_web/showcase_catalog.ex:790
 #, elixir-autogen, elixir-format
 msgid "Admin Channels"
 msgstr "管理者チャネル"
@@ -4798,7 +4785,7 @@ msgid "Admin Channels Dialog"
 msgstr "管理者チャネルダイアログ"
 
 #: lib/retro_hex_chat_web/live/showcase_live/dialogs/admin_users_dialog_page.ex:44
-#: lib/retro_hex_chat_web/showcase_catalog.ex:790
+#: lib/retro_hex_chat_web/showcase_catalog.ex:783
 #, elixir-autogen, elixir-format
 msgid "Admin Users"
 msgstr "管理者ユーザー"
@@ -4810,7 +4797,7 @@ msgid "Admin Users Dialog"
 msgstr "管理者ユーザーダイアログ"
 
 #: lib/retro_hex_chat_web/live/showcase_live/dialogs/admin_audit_log_dialog_page.ex:42
-#: lib/retro_hex_chat_web/showcase_catalog.ex:811
+#: lib/retro_hex_chat_web/showcase_catalog.ex:804
 #, elixir-autogen, elixir-format
 msgid "Audit Log"
 msgstr "監査ログ"
@@ -4822,7 +4809,7 @@ msgid "Audit Log Dialog"
 msgstr "監査ログダイアログ"
 
 #: lib/retro_hex_chat_web/live/showcase_live/dialogs/admin_broadcast_dialog_page.ex:42
-#: lib/retro_hex_chat_web/showcase_catalog.ex:832
+#: lib/retro_hex_chat_web/showcase_catalog.ex:825
 #, elixir-autogen, elixir-format
 msgid "Broadcast"
 msgstr "ブロードキャスト"
@@ -4834,7 +4821,7 @@ msgid "Broadcast Dialog"
 msgstr "放送ダイアログ"
 
 #: lib/retro_hex_chat_web/live/showcase_live/dialogs/admin_danger_zone_dialog_page.ex:42
-#: lib/retro_hex_chat_web/showcase_catalog.ex:839
+#: lib/retro_hex_chat_web/showcase_catalog.ex:832
 #, elixir-autogen, elixir-format
 msgid "Danger Zone"
 msgstr "危険ゾーン"
@@ -4846,7 +4833,7 @@ msgid "Danger Zone Dialog"
 msgstr "危険ゾーンダイアログ"
 
 #: lib/retro_hex_chat_web/live/showcase_live/dialogs/admin_motd_dialog_page.ex:42
-#: lib/retro_hex_chat_web/showcase_catalog.ex:818
+#: lib/retro_hex_chat_web/showcase_catalog.ex:811
 #, elixir-autogen, elixir-format
 msgid "MOTD"
 msgstr "モットD"
@@ -4898,7 +4885,7 @@ msgid "Open TURN"
 msgstr "オープンターン"
 
 #: lib/retro_hex_chat_web/live/showcase_live/dialogs/admin_server_settings_dialog_page.ex:42
-#: lib/retro_hex_chat_web/showcase_catalog.ex:804
+#: lib/retro_hex_chat_web/showcase_catalog.ex:797
 #, elixir-autogen, elixir-format
 msgid "Server Settings"
 msgstr "サーバー設定"
@@ -4910,7 +4897,7 @@ msgid "Server Settings Dialog"
 msgstr "サーバー設定ダイアログ"
 
 #: lib/retro_hex_chat_web/live/showcase_live/dialogs/admin_turn_dialog_page.ex:42
-#: lib/retro_hex_chat_web/showcase_catalog.ex:825
+#: lib/retro_hex_chat_web/showcase_catalog.ex:818
 #, elixir-autogen, elixir-format
 msgid "TURN"
 msgstr "ターンン"
@@ -4949,7 +4936,7 @@ msgstr "登録"
 #: lib/retro_hex_chat_web/live/showcase_live/dialogs/autojoin_dialog_page.ex:21
 #: lib/retro_hex_chat_web/live/showcase_live/dialogs/autojoin_dialog_page.html.heex:2
 #: lib/retro_hex_chat_web/live/showcase_live/dialogs/autojoin_dialog_page.html.heex:5
-#: lib/retro_hex_chat_web/showcase_catalog.ex:769
+#: lib/retro_hex_chat_web/showcase_catalog.ex:762
 #, elixir-autogen, elixir-format
 msgid "Auto-Join Dialog"
 msgstr "自動ジョイントダイアログ"
@@ -5107,7 +5094,7 @@ msgstr "通常のラグ"
 msgid "Online Buddies"
 msgstr "オンラインの連絡先"
 
-#: lib/retro_hex_chat_web/showcase_catalog.ex:985
+#: lib/retro_hex_chat_web/showcase_catalog.ex:978
 #, elixir-autogen, elixir-format
 msgid "%{component} — a %{category} component in the RetroHexChat UI kit, with a live example and its Win98 styling."
 msgstr ""
@@ -5123,7 +5110,7 @@ msgstr "アーケードのコンポーネント — ゲームカードとソロ�
 msgid "Complex dialog composites — channel settings, perform, address book, sound settings, and the admin console family."
 msgstr "複雑なダイアログ複合体 — チャンネル設定、perform、アドレス帳、サウンド設定、および管理コンソール一式。"
 
-#: lib/retro_hex_chat_web/showcase_catalog.ex:976
+#: lib/retro_hex_chat_web/showcase_catalog.ex:969
 #, elixir-autogen, elixir-format
 msgid "Every UI component behind RetroHexChat: Win98-style windows, dialogs, chat widgets and form controls, each with a live example."
 msgstr ""
@@ -5349,7 +5336,7 @@ msgstr "スケジュールされたコマンド"
 
 #: lib/retro_hex_chat_web/live/showcase_live/dialogs/timers_dialog_page.ex:18
 #: lib/retro_hex_chat_web/live/showcase_live/dialogs/timers_dialog_page.ex:34
-#: lib/retro_hex_chat_web/showcase_catalog.ex:720
+#: lib/retro_hex_chat_web/showcase_catalog.ex:713
 #, elixir-autogen, elixir-format
 msgid "Timers"
 msgstr "タイマー"

@@ -618,11 +618,12 @@ export class ChatPage {
       "delete-confirm-dialog-confirm",
     );
     this.deleteCancelButton = page.getByTestId("delete-confirm-dialog-cancel");
-    this.aboutDialog = page.locator('#about-dialog [role="dialog"]');
-    this.aboutOkButton = this.aboutDialog.getByRole("button", {
-      name: "OK",
-      exact: true,
-    });
+    // The one About is the site's window (Start ▸ Help, the Help menu and the
+    // desktop's About this site folder all open it).
+    this.aboutDialog = page.getByTestId("site-window-about");
+    this.aboutOkButton = page.locator(
+      '[data-window-id="site-about"] [data-window-control="close"]',
+    );
     this.cheatsheetDialog = page.getByTestId("cheatsheet-window");
     this.cheatsheetCloseButton = page
       .getByTestId("cheatsheet-window")

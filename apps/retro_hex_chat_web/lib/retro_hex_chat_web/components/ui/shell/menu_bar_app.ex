@@ -15,7 +15,6 @@ defmodule RetroHexChatWeb.Components.UI.MenuBarApp do
   import RetroHexChatWeb.Components.UI.ContextMenu
   import RetroHexChatWeb.Components.UI.MenuBar
   import RetroHexChatWeb.Components.UI.LanguageMenu
-  import RetroHexChatWeb.Components.UI.Dialog, only: [show_modal: 1]
 
   # ── Public ──────────────────────────────────────────
 
@@ -492,7 +491,7 @@ defmodule RetroHexChatWeb.Components.UI.MenuBarApp do
       on_action={@on_action}
     />
     <.context_menu_separator />
-    <.context_menu_item on_click={show_modal("about-dialog")} action="show_about">
+    <.context_menu_item data-window-open="site-about" action="show_about">
       <:icon>{apply(Icons, :icon_dialog_about, [%{class: "w-[14px] h-[14px]"}])}</:icon>
       {dgettext("ui", "About RetroHexChat")}
     </.context_menu_item>

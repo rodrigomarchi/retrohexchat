@@ -165,8 +165,8 @@ defmodule RetroHexChatWeb.Components.UI.StartMenuSymmetryTest do
       assert enabled?(:chat, "start-menu-item-design-system")
     end
 
-    # Both screens mount the `about-dialog` modal. There is no screen that
-    # cannot say what this program is.
+    # Both screens carry the site's About window, and the entry opens it. There
+    # is no screen that cannot say what this program is.
     test "About works from everywhere" do
       for screen <- @screens do
         assert enabled?(screen, "start-menu-item-show_about"),

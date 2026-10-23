@@ -17,7 +17,6 @@ defmodule RetroHexChatWeb.Components.UI.Help.HelpMenuBar do
   import RetroHexChatWeb.Components.UI.MenuBar
   import RetroHexChatWeb.Components.UI.ContextMenu
   import RetroHexChatWeb.Components.UI.LanguageMenu
-  import RetroHexChatWeb.Components.UI.Dialog, only: [show_modal: 1]
 
   attr :id, :string, default: "help-menubar"
   attr :current_path, :string, default: "/chat/help"
@@ -144,7 +143,7 @@ defmodule RetroHexChatWeb.Components.UI.Help.HelpMenuBar do
 
   defp about_menu_items(assigns) do
     ~H"""
-    <.context_menu_item on_click={show_modal("about-dialog")} data-testid="help-menu-about">
+    <.context_menu_item data-window-open="site-about" data-testid="help-menu-about">
       <:icon><Icons.icon_dialog_about class="h-[14px] w-[14px]" /></:icon>
       {dgettext("help", "About RetroHexChat")}
     </.context_menu_item>

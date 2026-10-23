@@ -238,6 +238,36 @@ describe("WindowManager", () => {
     expect(win("call").classList.contains("u-hidden")).toBe(true);
   });
 
+  // Closing the window the keyboard was in hands the keyboard to the window
+  // in front: to what it marks autofocus (the chat's composer), else to its
+  // first control. The About, a dialog once, used to do this on its own.
+  it("hands the keyboard to the window in front when the one holding it closes", async () => {
+    hook.stacked = false;
+    win("chat").querySelector("[data-window-content]").innerHTML =
+      '<button id="first"></button><input id="composer" autofocus />';
+    command({ action: "open", id: "call" });
+    const closeBtn = win("call").querySelector('[data-window-control="close"]');
+    closeBtn.focus();
+
+    hook.closeWindow("call");
+    await new Promise((resolve) => requestAnimationFrame(resolve));
+
+    expect(document.activeElement.id).toBe("composer");
+  });
+
+  it("leaves the keyboard alone when a window closes that did not hold it", async () => {
+    hook.stacked = false;
+    win("chat").querySelector("[data-window-content]").innerHTML =
+      '<input id="composer" autofocus /><input id="elsewhere" />';
+    command({ action: "open", id: "call" });
+    document.getElementById("elsewhere").focus();
+
+    hook.closeWindow("call");
+    await new Promise((resolve) => requestAnimationFrame(resolve));
+
+    expect(document.activeElement.id).toBe("elsewhere");
+  });
+
   describe("stacked (mobile) mode", () => {
     it("shows only the focused window, hiding other open windows", () => {
       hook.stacked = true;

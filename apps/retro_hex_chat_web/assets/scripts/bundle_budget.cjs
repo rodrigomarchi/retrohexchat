@@ -62,9 +62,20 @@ const BUDGETS = {
 
 // Chunks that legitimately exceed the generic feature budget. The generic
 // budget stays tight on purpose: raising it for everyone would let the next new
-// hook ship at 100kb unnoticed. An entry here needs a reason — a number raised
+// hook ship at 100kb unnoticed. An entry with an `input` applies only to the
+// chunk that bundles that module. An entry here needs a reason — a number raised
 // without one turns the budget into a rubber stamp.
 const CHUNK_OVERRIDES = [
+  {
+    // A shared chunk's name is a hash, so this one is known by what it holds.
+    pattern: /^desktop-chunk-/,
+    input: "js/lib/window_manager/window_manager.js",
+    budget: 94 * KIB,
+    reason:
+      "the desktop's shared chunk is the window manager the chat's LiveSocket and the site's " +
+      "pages both load (lib/window_manager/window_manager.js, with the menu bar): every " +
+      "window's placement, focus and keyboard hand-over",
+  },
   {
     pattern: /^desktop-live_boot-/,
     budget: 475 * KIB,
@@ -121,12 +132,18 @@ function errorLine(message) {
   process.stderr.write(`${message}\n`);
 }
 
-function budgetFor(filename) {
+function overrideFor(filename, inputs) {
+  return CHUNK_OVERRIDES.find(
+    (entry) => entry.pattern.test(filename) && (!entry.input || entry.input in inputs),
+  );
+}
+
+function budgetFor(filename, inputs) {
   if (filename === "app.js") return BUDGETS.entry;
   if (filename === "desktop.js") return BUDGETS.publicEntry;
   if (filename === "faro_entry.js") return BUDGETS.faroEntry;
 
-  const override = CHUNK_OVERRIDES.find((entry) => entry.pattern.test(filename));
+  const override = overrideFor(filename, inputs);
   if (override) return override.budget;
 
   if (LOCALE_CHUNK_PATTERN.test(filename)) return BUDGETS.localeChunk;
@@ -134,8 +151,8 @@ function budgetFor(filename) {
   return BUDGETS.asyncChunk;
 }
 
-function overrideReasonFor(filename) {
-  const override = CHUNK_OVERRIDES.find((entry) => entry.pattern.test(filename));
+function overrideReasonFor(filename, inputs) {
+  const override = overrideFor(filename, inputs);
   return override ? override.reason : null;
 }
 
@@ -173,11 +190,12 @@ function outputRows(meta) {
       const filename = path.basename(file);
       const bytes = output.bytes;
       const gzipBytes = zlib.gzipSync(fs.readFileSync(file)).length;
-      const budget = budgetFor(filename);
+      const budget = budgetFor(filename, output.inputs);
 
       return {
         file,
         filename,
+        inputs: output.inputs,
         bytes,
         gzipBytes,
         budget,
@@ -212,7 +230,7 @@ function checkBudget(rows) {
 
   for (const row of rows) {
     if (row.overBudget) {
-      const reason = overrideReasonFor(row.filename);
+      const reason = overrideReasonFor(row.filename, row.inputs);
       failures.push(
         `${row.filename} is ${kib(row.bytes)}, ` +
           `${kib(row.bytes - row.budget)} over its ${kib(row.budget)} budget` +
