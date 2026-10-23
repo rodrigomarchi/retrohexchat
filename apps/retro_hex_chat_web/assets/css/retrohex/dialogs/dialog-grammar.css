@@ -45,11 +45,7 @@
   height: 32px;
   place-items: center;
   background: #ffffff;
-  box-shadow:
-    inset -1px -1px #ffffff,
-    inset 1px 1px #808080,
-    inset -2px -2px #dfdfdf,
-    inset 2px 2px #0a0a0a;
+  @apply shadow-retro-field;
 }
 
 .dlg-message__copy {
@@ -114,7 +110,7 @@
 .dlg-message__label {
   margin: 0;
   min-width: 0;
-  color: #303030;
+  color: #222222;
   font-size: 12px;
   font-weight: 700;
   line-height: 1.35;

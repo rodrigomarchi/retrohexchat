@@ -34,11 +34,7 @@
   overscroll-behavior: contain;
   padding: 6px;
   background: #ffffff;
-  box-shadow:
-    inset -1px -1px #ffffff,
-    inset 1px 1px #808080,
-    inset -2px -2px #dfdfdf,
-    inset 2px 2px #0a0a0a;
+  @apply shadow-retro-field;
 }
 
 .nl-sub-form {
@@ -62,7 +58,7 @@
 }
 
 .nl-status--online .nl-status-dot {
-  background: #008000;
+  background: #009300;
 }
 
 .nl-status--offline {

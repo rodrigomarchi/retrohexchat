@@ -40,7 +40,7 @@
 
 .ul-field-label {
   min-width: 0;
-  color: #202020;
+  color: #222222;
   font-size: 12px;
   font-weight: 700;
   line-height: 1.35;
@@ -61,7 +61,7 @@
 
 .ul-error {
   margin: 0;
-  color: var(--color-destructive, #a40000);
+  color: var(--color-destructive, #990000);
   font-size: 12px;
   line-height: 1.35;
   overflow-wrap: anywhere;
@@ -103,7 +103,7 @@
   flex: 0 0 auto;
   align-items: center;
   gap: 4px;
-  color: #202020;
+  color: #222222;
   font-size: 12px;
   font-weight: 700;
   line-height: 1.35;
@@ -122,11 +122,7 @@
   overscroll-behavior: contain;
   padding: 8px;
   background: #ffffff;
-  box-shadow:
-    inset -1px -1px #ffffff,
-    inset 1px 1px #808080,
-    inset -2px -2px #dfdfdf,
-    inset 2px 2px #0a0a0a;
+  @apply shadow-retro-field;
 }
 
 .ul-result-row {
@@ -146,12 +142,12 @@
 }
 
 .ul-result-label {
-  color: #202020;
+  color: #222222;
   font-weight: 700;
 }
 
 .ul-result-value {
-  color: #202020;
+  color: #222222;
 }
 
 .desktop--stacked .ul-panel {

@@ -27,11 +27,7 @@
   overscroll-behavior: contain;
   padding: 6px;
   background: #ffffff;
-  box-shadow:
-    inset -1px -1px #ffffff,
-    inset 1px 1px #808080,
-    inset -2px -2px #dfdfdf,
-    inset 2px 2px #0a0a0a;
+  @apply shadow-retro-field;
 }
 
 .al-form-label,
@@ -63,7 +59,7 @@
 .al-warning {
   padding: 6px 8px;
   border: 1px solid #808080;
-  background: #ffffcc;
+  background: #ffffd0;
 }
 
 .al-action-row,

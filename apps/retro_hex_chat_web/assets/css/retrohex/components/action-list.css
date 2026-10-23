@@ -71,11 +71,7 @@
   align-self: flex-start;
   color: #000000;
   background: #ffffff;
-  box-shadow:
-    inset -1px -1px #ffffff,
-    inset 1px 1px #808080,
-    inset -2px -2px #dfdfdf,
-    inset 2px 2px #0a0a0a;
+  @apply shadow-retro-field;
 }
 
 .action-list__copy {
@@ -100,7 +96,7 @@
 
 .action-list__meta {
   min-width: 0;
-  color: #303030;
+  color: #222222;
   font-size: 12px;
   line-height: 1.35;
   overflow-wrap: anywhere;

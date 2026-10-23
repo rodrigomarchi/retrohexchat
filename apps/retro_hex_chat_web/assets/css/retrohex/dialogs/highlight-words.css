@@ -27,11 +27,7 @@
   overscroll-behavior: contain;
   padding: 6px;
   background: #ffffff;
-  box-shadow:
-    inset -1px -1px #ffffff,
-    inset 1px 1px #808080,
-    inset -2px -2px #dfdfdf,
-    inset 2px 2px #0a0a0a;
+  @apply shadow-retro-field;
 }
 
 .hl-own-entry,
@@ -53,11 +49,7 @@
   background: #c0c0c0;
   color: #000000;
   text-align: left;
-  box-shadow:
-    inset -1px -1px #ffffff,
-    inset 1px 1px #808080,
-    inset -2px -2px #dfdfdf,
-    inset 2px 2px #0a0a0a;
+  @apply shadow-retro-field;
 }
 
 .hl-own-entry {
@@ -101,7 +93,7 @@
   width: 18px;
   height: 18px;
   flex: 0 0 auto;
-  border: 1px solid #404040;
+  border: 1px solid #444444;
 }
 
 .hl-action-row,

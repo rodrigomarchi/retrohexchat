@@ -12,19 +12,19 @@
 }
 
 .bm-text-ok {
-  color: #007000;
+  color: #006000;
 }
 
 .bm-text-warn {
-  color: #8a6100;
+  color: #996600;
 }
 
 .bm-text-danger {
-  color: #a00000;
+  color: #990000;
 }
 
 .bm-link-danger {
-  color: #a00000;
+  color: #990000;
   white-space: nowrap;
 }
 
@@ -49,13 +49,13 @@
   height: 10px;
   flex: 0 0 auto;
   margin-top: 3px;
-  border: 1px solid #404040;
+  border: 1px solid #444444;
   border-radius: 50%;
 }
 
 .bm-dot--running {
   background: #00a000;
-  box-shadow: inset -1px -1px #007000;
+  box-shadow: inset -1px -1px #006000;
 }
 
 .bm-dot--stopped {
@@ -64,8 +64,8 @@
 }
 
 .bm-dot--disabled {
-  background: #a0a0a0;
-  box-shadow: inset -1px -1px #707070;
+  background: #999999;
+  box-shadow: inset -1px -1px #666666;
 }
 
 .bm-chip {
@@ -89,7 +89,7 @@
 
 .bm-chip--capability {
   border-color: #808080;
-  color: #202020;
+  color: #222222;
 }
 
 .bm-chip--muted {
@@ -138,11 +138,7 @@
 
 .bm-roster-scroll {
   background: #ffffff;
-  box-shadow:
-    inset -1px -1px #ffffff,
-    inset 1px 1px #808080,
-    inset -2px -2px #dfdfdf,
-    inset 2px 2px #0a0a0a;
+  @apply shadow-retro-field;
 }
 
 .bm-roster-list {
@@ -165,7 +161,7 @@
 
 .bm-roster-row:hover,
 .bm-roster-row:focus-visible {
-  background: #e8e8f8;
+  background: #f0f0f0;
   outline: none;
 }
 
@@ -209,7 +205,7 @@
 
 .bm-roster-desc {
   margin: 0;
-  color: #404040;
+  color: #444444;
   font-size: 12px;
   line-height: 1.35;
   overflow-wrap: anywhere;
@@ -263,7 +259,7 @@
 
 .bm-detail-desc {
   margin: 0;
-  color: #404040;
+  color: #444444;
   font-size: 12px;
   line-height: 1.35;
   overflow-wrap: anywhere;
@@ -307,7 +303,7 @@
 
 .bm-subsection-title {
   margin-top: 6px;
-  color: #404040;
+  color: #444444;
 }
 
 .bm-facts {
@@ -326,7 +322,7 @@
 }
 
 .bm-fact dt {
-  color: #404040;
+  color: #444444;
   font-weight: 700;
 }
 
@@ -366,16 +362,16 @@
 }
 
 .bm-cap-state--on {
-  color: #007000;
+  color: #006000;
 }
 
 .bm-cap-state--off {
-  color: #a00000;
+  color: #990000;
 }
 
 .bm-cap-desc {
   margin: 0;
-  color: #404040;
+  color: #444444;
   font-size: 12px;
   line-height: 1.35;
 }
@@ -388,11 +384,7 @@
   gap: 3px;
   padding: 6px 8px;
   background: #ffffff;
-  box-shadow:
-    inset -1px -1px #ffffff,
-    inset 1px 1px #808080,
-    inset -2px -2px #dfdfdf,
-    inset 2px 2px #0a0a0a;
+  @apply shadow-retro-field;
 }
 
 .bm-config-row {
@@ -438,11 +430,7 @@
   overflow-y: auto;
   overscroll-behavior: contain;
   background: #ffffff;
-  box-shadow:
-    inset -1px -1px #ffffff,
-    inset 1px 1px #808080,
-    inset -2px -2px #dfdfdf,
-    inset 2px 2px #0a0a0a;
+  @apply shadow-retro-field;
 }
 
 .bm-object-entry {
@@ -479,7 +467,7 @@
 }
 
 .bm-object-meta {
-  color: #404040;
+  color: #444444;
 }
 
 .bm-object-label {
@@ -675,11 +663,7 @@
   padding: 10px;
   border: 1px solid #808080;
   background: #ffffff;
-  box-shadow:
-    inset -1px -1px #ffffff,
-    inset 1px 1px #808080,
-    inset -2px -2px #dfdfdf,
-    inset 2px 2px #0a0a0a;
+  @apply shadow-retro-field;
 }
 
 .desktop--stacked .bm-object-primary,

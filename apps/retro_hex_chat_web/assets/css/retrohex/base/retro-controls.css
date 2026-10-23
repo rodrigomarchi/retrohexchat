@@ -137,11 +137,7 @@
   background-color: #ffffff;
   background-position: center;
   background-repeat: no-repeat;
-  box-shadow:
-    inset -1px -1px #ffffff,
-    inset 1px 1px #808080,
-    inset -2px -2px #dfdfdf,
-    inset 2px 2px #0a0a0a;
+  @apply shadow-retro-field;
   cursor: default;
 }
 :where(input[type="checkbox"]):checked {
@@ -190,11 +186,7 @@
    same face to the `select` primitive's trigger button. */
 :where(select:not([multiple], [size]), .retro-combo) {
   border: 0;
-  box-shadow:
-    inset -1px -1px #ffffff,
-    inset 1px 1px #808080,
-    inset -2px -2px #dfdfdf,
-    inset 2px 2px #0a0a0a;
+  @apply shadow-retro-field;
 }
 :is(select:not([multiple], [size]), .retro-combo) {
   --rhc-combo-arrow: url("data:image/svg+xml,%3Csvg xmlns='http://www%2Ew3%2Eorg/2000/svg' width='7' height='4' shape-rendering='crispEdges'%3E%3Cpath fill='%23000' d='M0 0h7v1H0zM1 1h5v1H1zM2 2h3v1H2zM3 3h1v1H3z'/%3E%3C/svg%3E");
@@ -348,11 +340,7 @@ input[type="range"] {
 input[type="range"]::-webkit-slider-runnable-track {
   height: 4px;
   background: #c0c0c0;
-  box-shadow:
-    inset -1px -1px #ffffff,
-    inset 1px 1px #808080,
-    inset -2px -2px #dfdfdf,
-    inset 2px 2px #0a0a0a;
+  @apply shadow-retro-field;
 }
 input[type="range"]::-webkit-slider-thumb {
   appearance: none;
@@ -365,11 +353,7 @@ input[type="range"]::-webkit-slider-thumb {
 input[type="range"]::-moz-range-track {
   height: 4px;
   background: #c0c0c0;
-  box-shadow:
-    inset -1px -1px #ffffff,
-    inset 1px 1px #808080,
-    inset -2px -2px #dfdfdf,
-    inset 2px 2px #0a0a0a;
+  @apply shadow-retro-field;
 }
 input[type="range"]::-moz-range-thumb {
   width: 11px;
