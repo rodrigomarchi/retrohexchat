@@ -2,6 +2,8 @@ defmodule RetroHexChat.Arcade.Content.QuakeShareware do
   @moduledoc false
   use Gettext, backend: RetroHexChat.Gettext
 
+  alias RetroHexChat.Arcade.Content.Controls
+
   @spec data() :: map()
   def data do
     %{
@@ -19,19 +21,7 @@ defmodule RetroHexChat.Arcade.Content.QuakeShareware do
           "This shareware release features the complete first episode (8 levels plus a secret level) running on the QuakeSpasm engine compiled to WebAssembly. The engine delivers the full Quake experience with mouselook and modern controls."
         )
       ],
-      controls: [
-        {dgettext("arcade", "W / ↑"), dgettext("arcade", "Move forward")},
-        {dgettext("arcade", "S / ↓"), dgettext("arcade", "Move backward")},
-        {"A", dgettext("arcade", "Strafe left")},
-        {"D", dgettext("arcade", "Strafe right")},
-        {dgettext("arcade", "Mouse"), dgettext("arcade", "Aim / look")},
-        {dgettext("arcade", "Left Click"), dgettext("arcade", "Fire weapon")},
-        {"E", dgettext("arcade", "Use / interact")},
-        {dgettext("arcade", "Space"), dgettext("arcade", "Jump")},
-        {"1–8", dgettext("arcade", "Select weapon")},
-        {"Tab", dgettext("arcade", "Show scores")},
-        {dgettext("arcade", "Esc"), dgettext("arcade", "Menu")}
-      ],
+      controls: Controls.adapt(Controls.quake()),
       tips: [
         dgettext(
           "arcade",

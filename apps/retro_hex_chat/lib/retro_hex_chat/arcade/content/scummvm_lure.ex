@@ -2,6 +2,8 @@ defmodule RetroHexChat.Arcade.Content.ScummvmLure do
   @moduledoc false
   use Gettext, backend: RetroHexChat.Gettext
 
+  alias RetroHexChat.Arcade.Content.Controls
+
   @spec data() :: map()
   def data do
     %{
@@ -19,14 +21,11 @@ defmodule RetroHexChat.Arcade.Content.ScummvmLure do
           "Made freeware by Revolution Software, Lure of the Temptress is a piece of adventure game history. While shorter and rougher than later Revolution games (Beneath a Steel Sky, Broken Sword), its autonomous NPC system was years ahead of its time."
         )
       ],
-      controls: [
-        {dgettext("arcade", "Left Click"), dgettext("arcade", "Walk / interact")},
-        {dgettext("arcade", "Right Click"), dgettext("arcade", "Open verb menu")},
-        {"F5", dgettext("arcade", "Save / load game")},
-        {dgettext("arcade", "Esc"), dgettext("arcade", "Skip cutscene")},
-        {dgettext("arcade", "Space"), dgettext("arcade", "Pause game")},
-        {".", dgettext("arcade", "Skip dialogue line")}
-      ],
+      controls:
+        Controls.adapt(Controls.scummvm(),
+          walk: {dgettext("arcade", "Left Click"), dgettext("arcade", "Walk / interact")},
+          examine: {dgettext("arcade", "Right Click"), dgettext("arcade", "Open verb menu")}
+        ),
       tips: [
         dgettext(
           "arcade",

@@ -2,6 +2,8 @@ defmodule RetroHexChat.Arcade.Content.HalflifeUplink do
   @moduledoc false
   use Gettext, backend: RetroHexChat.Gettext
 
+  alias RetroHexChat.Arcade.Content.Controls
+
   @spec data() :: map()
   def data do
     %{
@@ -19,23 +21,21 @@ defmodule RetroHexChat.Arcade.Content.HalflifeUplink do
           "Uplink was freely distributed by Valve as a standalone demo and remains freely redistributable. It runs on the Xash3D engine (GoldSrc-compatible) compiled to WebAssembly, delivering the full Half-Life experience in your browser."
         )
       ],
-      controls: [
-        {dgettext("arcade", "W / ↑"), dgettext("arcade", "Move forward")},
-        {dgettext("arcade", "S / ↓"), dgettext("arcade", "Move backward")},
-        {"A", dgettext("arcade", "Strafe left")},
-        {"D", dgettext("arcade", "Strafe right")},
-        {dgettext("arcade", "Mouse"), dgettext("arcade", "Aim / look")},
-        {dgettext("arcade", "Left Click"), dgettext("arcade", "Primary fire")},
-        {dgettext("arcade", "Right Click"), dgettext("arcade", "Secondary fire / alt-fire")},
-        {"E", dgettext("arcade", "Use / interact")},
-        {dgettext("arcade", "Space"), dgettext("arcade", "Jump")},
-        {dgettext("arcade", "Shift"), dgettext("arcade", "Crouch (hold)")},
-        {"R", dgettext("arcade", "Reload")},
-        {"1–5", dgettext("arcade", "Weapon category")},
-        {"Q", dgettext("arcade", "Last weapon used")},
-        {"F", dgettext("arcade", "Flashlight toggle")},
-        {dgettext("arcade", "Esc"), dgettext("arcade", "Menu")}
-      ],
+      controls:
+        Controls.adapt(Controls.quake(),
+          fire: [
+            {dgettext("arcade", "Left Click"), dgettext("arcade", "Primary fire")},
+            {dgettext("arcade", "Right Click"), dgettext("arcade", "Secondary fire / alt-fire")}
+          ],
+          weapons: [
+            {dgettext("arcade", "Shift"), dgettext("arcade", "Crouch (hold)")},
+            {"R", dgettext("arcade", "Reload")},
+            {"1–5", dgettext("arcade", "Weapon category")},
+            {"Q", dgettext("arcade", "Last weapon used")},
+            {"F", dgettext("arcade", "Flashlight toggle")}
+          ],
+          scores: nil
+        ),
       tips: [
         dgettext(
           "arcade",

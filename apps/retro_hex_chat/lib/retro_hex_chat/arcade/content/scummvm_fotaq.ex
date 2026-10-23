@@ -2,6 +2,8 @@ defmodule RetroHexChat.Arcade.Content.ScummvmFotaq do
   @moduledoc false
   use Gettext, backend: RetroHexChat.Gettext
 
+  alias RetroHexChat.Arcade.Content.Controls
+
   @spec data() :: map()
   def data do
     %{
@@ -19,14 +21,7 @@ defmodule RetroHexChat.Arcade.Content.ScummvmFotaq do
           "Made freeware by the developers, Flight of the Amazon Queen features full voice acting on the CD version. It runs on ScummVM and is considered one of the hidden gems of the 90s adventure game era."
         )
       ],
-      controls: [
-        {dgettext("arcade", "Left Click"), dgettext("arcade", "Walk / interact with object")},
-        {dgettext("arcade", "Right Click"), dgettext("arcade", "Examine object")},
-        {"F5", dgettext("arcade", "Save / load game")},
-        {dgettext("arcade", "Esc"), dgettext("arcade", "Skip cutscene")},
-        {dgettext("arcade", "Space"), dgettext("arcade", "Pause game")},
-        {".", dgettext("arcade", "Skip dialogue line")}
-      ],
+      controls: Controls.adapt(Controls.scummvm()),
       tips: [
         dgettext(
           "arcade",

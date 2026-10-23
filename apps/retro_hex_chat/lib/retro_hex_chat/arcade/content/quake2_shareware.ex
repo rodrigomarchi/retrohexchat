@@ -2,6 +2,8 @@ defmodule RetroHexChat.Arcade.Content.Quake2Shareware do
   @moduledoc false
   use Gettext, backend: RetroHexChat.Gettext
 
+  alias RetroHexChat.Arcade.Content.Controls
+
   @spec data() :: map()
   def data do
     %{
@@ -19,21 +21,15 @@ defmodule RetroHexChat.Arcade.Content.Quake2Shareware do
           "This demo includes the complete first unit with multiple interconnected levels. The engine supports mouselook, crouching, and weapon reloading — features that were revolutionary for 1997."
         )
       ],
-      controls: [
-        {dgettext("arcade", "W / ↑"), dgettext("arcade", "Move forward")},
-        {dgettext("arcade", "S / ↓"), dgettext("arcade", "Move backward")},
-        {"A", dgettext("arcade", "Strafe left")},
-        {"D", dgettext("arcade", "Strafe right")},
-        {dgettext("arcade", "Mouse"), dgettext("arcade", "Aim / look")},
-        {dgettext("arcade", "Left Click"), dgettext("arcade", "Fire weapon")},
-        {"E", dgettext("arcade", "Use / interact")},
-        {dgettext("arcade", "Space"), dgettext("arcade", "Jump")},
-        {"C", dgettext("arcade", "Crouch")},
-        {"R", dgettext("arcade", "Reload")},
-        {"1–9", dgettext("arcade", "Select weapon")},
-        {"Tab", dgettext("arcade", "Inventory")},
-        {dgettext("arcade", "Esc"), dgettext("arcade", "Menu")}
-      ],
+      controls:
+        Controls.adapt(Controls.quake(),
+          weapons: [
+            {"C", dgettext("arcade", "Crouch")},
+            {"R", dgettext("arcade", "Reload")},
+            {"1–9", dgettext("arcade", "Select weapon")}
+          ],
+          scores: {"Tab", dgettext("arcade", "Inventory")}
+        ),
       tips: [
         dgettext(
           "arcade",

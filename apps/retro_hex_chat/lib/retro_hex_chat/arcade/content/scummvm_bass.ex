@@ -2,6 +2,8 @@ defmodule RetroHexChat.Arcade.Content.ScummvmBass do
   @moduledoc false
   use Gettext, backend: RetroHexChat.Gettext
 
+  alias RetroHexChat.Arcade.Content.Controls
+
   @spec data() :: map()
   def data do
     %{
@@ -19,16 +21,17 @@ defmodule RetroHexChat.Arcade.Content.ScummvmBass do
           "Made freeware by Revolution Software in 2003, Beneath a Steel Sky is widely considered one of the greatest point-and-click adventures ever made. It runs on ScummVM with full CD voice acting."
         )
       ],
-      controls: [
-        {dgettext("arcade", "Left Click"), dgettext("arcade", "Walk / interact with object")},
-        {dgettext("arcade", "Right Click"), dgettext("arcade", "Examine / open verb menu")},
-        {dgettext("arcade", "Drag item"), dgettext("arcade", "Combine inventory items")},
-        {"F5", dgettext("arcade", "Save / load game")},
-        {dgettext("arcade", "Ctrl + F5"), dgettext("arcade", "ScummVM options")},
-        {dgettext("arcade", "Esc"), dgettext("arcade", "Skip cutscene")},
-        {dgettext("arcade", "Space"), dgettext("arcade", "Pause game")},
-        {".", dgettext("arcade", "Skip dialogue line")}
-      ],
+      controls:
+        Controls.adapt(Controls.scummvm(),
+          examine: [
+            {dgettext("arcade", "Right Click"), dgettext("arcade", "Examine / open verb menu")},
+            {dgettext("arcade", "Drag item"), dgettext("arcade", "Combine inventory items")}
+          ],
+          save: [
+            {"F5", dgettext("arcade", "Save / load game")},
+            {dgettext("arcade", "Ctrl + F5"), dgettext("arcade", "ScummVM options")}
+          ]
+        ),
       tips: [
         dgettext(
           "arcade",

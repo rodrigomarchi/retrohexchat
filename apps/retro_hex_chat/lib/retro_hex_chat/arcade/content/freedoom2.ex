@@ -2,6 +2,8 @@ defmodule RetroHexChat.Arcade.Content.Freedoom2 do
   @moduledoc false
   use Gettext, backend: RetroHexChat.Gettext
 
+  alias RetroHexChat.Arcade.Content.Controls
+
   @spec data() :: map()
   def data do
     %{
@@ -19,20 +21,7 @@ defmodule RetroHexChat.Arcade.Content.Freedoom2 do
           "Phase 2 is fully compatible with the massive library of DOOM II PWADs — thousands of community-made map packs and total conversions work seamlessly with this free IWAD."
         )
       ],
-      controls: [
-        {dgettext("arcade", "W / ↑"), dgettext("arcade", "Move forward")},
-        {dgettext("arcade", "S / ↓"), dgettext("arcade", "Move backward")},
-        {"A", dgettext("arcade", "Strafe left")},
-        {"D", dgettext("arcade", "Strafe right")},
-        {dgettext("arcade", "Mouse"), dgettext("arcade", "Aim / turn")},
-        {dgettext("arcade", "Left Click"), dgettext("arcade", "Fire weapon")},
-        {"E", dgettext("arcade", "Use / open doors")},
-        {dgettext("arcade", "Space"), dgettext("arcade", "Jump (PrBoom+)")},
-        {"1–7", dgettext("arcade", "Select weapon")},
-        {"Tab", dgettext("arcade", "Toggle automap")},
-        {dgettext("arcade", "Shift"), dgettext("arcade", "Run (hold)")},
-        {dgettext("arcade", "Esc"), dgettext("arcade", "Menu")}
-      ],
+      controls: Controls.adapt(Controls.doom()),
       tips: [
         dgettext(
           "arcade",

@@ -2,6 +2,8 @@ defmodule RetroHexChat.Arcade.Content.ScummvmSoltys do
   @moduledoc false
   use Gettext, backend: RetroHexChat.Gettext
 
+  alias RetroHexChat.Arcade.Content.Controls
+
   @spec data() :: map()
   def data do
     %{
@@ -19,13 +21,7 @@ defmodule RetroHexChat.Arcade.Content.ScummvmSoltys do
           "Originally a Polish commercial release, Soltys was later made freeware. It's a beloved piece of Polish gaming history and a hidden gem of the European adventure game scene. Runs on ScummVM via the CGE engine."
         )
       ],
-      controls: [
-        {dgettext("arcade", "Left Click"), dgettext("arcade", "Walk / interact with object")},
-        {dgettext("arcade", "Right Click"), dgettext("arcade", "Examine object")},
-        {"F5", dgettext("arcade", "Save / load game")},
-        {dgettext("arcade", "Esc"), dgettext("arcade", "Skip cutscene")},
-        {dgettext("arcade", "Space"), dgettext("arcade", "Pause game")}
-      ],
+      controls: Controls.adapt(Controls.scummvm(), skip_line: nil),
       tips: [
         dgettext(
           "arcade",

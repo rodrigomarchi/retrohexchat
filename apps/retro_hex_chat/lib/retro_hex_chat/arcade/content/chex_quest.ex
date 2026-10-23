@@ -2,6 +2,8 @@ defmodule RetroHexChat.Arcade.Content.ChexQuest do
   @moduledoc false
   use Gettext, backend: RetroHexChat.Gettext
 
+  alias RetroHexChat.Arcade.Content.Controls
+
   @spec data() :: map()
   def data do
     %{
@@ -19,19 +21,12 @@ defmodule RetroHexChat.Arcade.Content.ChexQuest do
           "The game replaces all DOOM violence with family-friendly \"zorching\" — enemies aren't killed, they're teleported away. All blood and gore is replaced with green slime. It's a genuine piece of 90s gaming history."
         )
       ],
-      controls: [
-        {dgettext("arcade", "W / ↑"), dgettext("arcade", "Move forward")},
-        {dgettext("arcade", "S / ↓"), dgettext("arcade", "Move backward")},
-        {"A", dgettext("arcade", "Strafe left")},
-        {"D", dgettext("arcade", "Strafe right")},
-        {dgettext("arcade", "Mouse"), dgettext("arcade", "Aim / turn")},
-        {dgettext("arcade", "Left Click"), dgettext("arcade", "Fire Zorcher")},
-        {"E", dgettext("arcade", "Use / open doors")},
-        {"1–5", dgettext("arcade", "Select Zorcher type")},
-        {"Tab", dgettext("arcade", "Toggle automap")},
-        {dgettext("arcade", "Shift"), dgettext("arcade", "Run (hold)")},
-        {dgettext("arcade", "Esc"), dgettext("arcade", "Menu")}
-      ],
+      controls:
+        Controls.adapt(Controls.doom(),
+          fire: {dgettext("arcade", "Left Click"), dgettext("arcade", "Fire Zorcher")},
+          jump: nil,
+          weapons: {"1–5", dgettext("arcade", "Select Zorcher type")}
+        ),
       tips: [
         dgettext(
           "arcade",

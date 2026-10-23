@@ -2,6 +2,8 @@ defmodule RetroHexChat.Arcade.Content.Rekkr do
   @moduledoc false
   use Gettext, backend: RetroHexChat.Gettext
 
+  alias RetroHexChat.Arcade.Content.Controls
+
   @spec data() :: map()
   def data do
     %{
@@ -19,20 +21,10 @@ defmodule RetroHexChat.Arcade.Content.Rekkr do
           "Created by Matthew Little (Revae), REKKR won a Cacoward in 2018 for its exceptional quality. The standalone IWAD version runs independently of any commercial DOOM files."
         )
       ],
-      controls: [
-        {dgettext("arcade", "W / ↑"), dgettext("arcade", "Move forward")},
-        {dgettext("arcade", "S / ↓"), dgettext("arcade", "Move backward")},
-        {"A", dgettext("arcade", "Strafe left")},
-        {"D", dgettext("arcade", "Strafe right")},
-        {dgettext("arcade", "Mouse"), dgettext("arcade", "Aim / turn")},
-        {dgettext("arcade", "Left Click"), dgettext("arcade", "Fire / swing weapon")},
-        {"E", dgettext("arcade", "Use / open doors")},
-        {dgettext("arcade", "Space"), dgettext("arcade", "Jump (PrBoom+)")},
-        {"1–7", dgettext("arcade", "Select weapon")},
-        {"Tab", dgettext("arcade", "Toggle automap")},
-        {dgettext("arcade", "Shift"), dgettext("arcade", "Run (hold)")},
-        {dgettext("arcade", "Esc"), dgettext("arcade", "Menu")}
-      ],
+      controls:
+        Controls.adapt(Controls.doom(),
+          fire: {dgettext("arcade", "Left Click"), dgettext("arcade", "Fire / swing weapon")}
+        ),
       tips: [
         dgettext(
           "arcade",

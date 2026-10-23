@@ -2,6 +2,8 @@ defmodule RetroHexChat.Arcade.Content.ScummvmDrascula do
   @moduledoc false
   use Gettext, backend: RetroHexChat.Gettext
 
+  alias RetroHexChat.Arcade.Content.Controls
+
   @spec data() :: map()
   def data do
     %{
@@ -19,14 +21,7 @@ defmodule RetroHexChat.Arcade.Content.ScummvmDrascula do
           "Originally a Spanish commercial release, Drascula was later made freeware by its developers. The full game features voice acting and runs on ScummVM with CD audio support."
         )
       ],
-      controls: [
-        {dgettext("arcade", "Left Click"), dgettext("arcade", "Walk / interact with object")},
-        {dgettext("arcade", "Right Click"), dgettext("arcade", "Examine object")},
-        {"F5", dgettext("arcade", "Save / load game")},
-        {dgettext("arcade", "Esc"), dgettext("arcade", "Skip cutscene")},
-        {dgettext("arcade", "Space"), dgettext("arcade", "Pause game")},
-        {".", dgettext("arcade", "Skip dialogue line")}
-      ],
+      controls: Controls.adapt(Controls.scummvm()),
       tips: [
         dgettext(
           "arcade",

@@ -2,6 +2,8 @@ defmodule RetroHexChat.Arcade.Content.DoomShareware do
   @moduledoc false
   use Gettext, backend: RetroHexChat.Gettext
 
+  alias RetroHexChat.Arcade.Content.Controls
+
   @spec data() :: map()
   def data do
     %{
@@ -19,20 +21,7 @@ defmodule RetroHexChat.Arcade.Content.DoomShareware do
           "This is the freely distributable shareware release — Episode 1 of the original DOOM, exactly as id Software released it in December 1993. It runs on the PrBoom+ engine compiled to WebAssembly."
         )
       ],
-      controls: [
-        {dgettext("arcade", "W / ↑"), dgettext("arcade", "Move forward")},
-        {dgettext("arcade", "S / ↓"), dgettext("arcade", "Move backward")},
-        {"A", dgettext("arcade", "Strafe left")},
-        {"D", dgettext("arcade", "Strafe right")},
-        {dgettext("arcade", "Mouse"), dgettext("arcade", "Aim / turn")},
-        {dgettext("arcade", "Left Click"), dgettext("arcade", "Fire weapon")},
-        {"E", dgettext("arcade", "Use / open doors")},
-        {dgettext("arcade", "Space"), dgettext("arcade", "Jump (PrBoom+)")},
-        {"1–7", dgettext("arcade", "Select weapon")},
-        {"Tab", dgettext("arcade", "Toggle automap")},
-        {dgettext("arcade", "Shift"), dgettext("arcade", "Run (hold)")},
-        {dgettext("arcade", "Esc"), dgettext("arcade", "Menu")}
-      ],
+      controls: Controls.adapt(Controls.doom()),
       tips: [
         dgettext(
           "arcade",

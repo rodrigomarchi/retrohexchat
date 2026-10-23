@@ -2,6 +2,8 @@ defmodule RetroHexChat.Arcade.Content.ScummvmDreamweb do
   @moduledoc false
   use Gettext, backend: RetroHexChat.Gettext
 
+  alias RetroHexChat.Arcade.Content.Controls
+
   @spec data() :: map()
   def data do
     %{
@@ -19,14 +21,10 @@ defmodule RetroHexChat.Arcade.Content.ScummvmDreamweb do
           "This is the full CD version with voice acting, made freeware by Empire Interactive. Dreamweb was ahead of its time in narrative ambition and remains a cult favorite among adventure game enthusiasts."
         )
       ],
-      controls: [
-        {dgettext("arcade", "Left Click"), dgettext("arcade", "Walk / interact")},
-        {dgettext("arcade", "Right Click"), dgettext("arcade", "Examine object")},
-        {"F5", dgettext("arcade", "Save / load game")},
-        {dgettext("arcade", "Esc"), dgettext("arcade", "Skip cutscene")},
-        {dgettext("arcade", "Space"), dgettext("arcade", "Pause game")},
-        {".", dgettext("arcade", "Skip dialogue line")}
-      ],
+      controls:
+        Controls.adapt(Controls.scummvm(),
+          walk: {dgettext("arcade", "Left Click"), dgettext("arcade", "Walk / interact")}
+        ),
       tips: [
         dgettext(
           "arcade",

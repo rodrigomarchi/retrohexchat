@@ -2,6 +2,8 @@ defmodule RetroHexChat.Arcade.Content.Librequake do
   @moduledoc false
   use Gettext, backend: RetroHexChat.Gettext
 
+  alias RetroHexChat.Arcade.Content.Controls
+
   @spec data() :: map()
   def data do
     %{
@@ -19,19 +21,7 @@ defmodule RetroHexChat.Arcade.Content.Librequake do
           "LibreQuake runs on the same QuakeSpasm engine as the original, delivering full 3D gameplay with mouselook, jumping, and all the movement mechanics Quake is known for."
         )
       ],
-      controls: [
-        {dgettext("arcade", "W / ↑"), dgettext("arcade", "Move forward")},
-        {dgettext("arcade", "S / ↓"), dgettext("arcade", "Move backward")},
-        {"A", dgettext("arcade", "Strafe left")},
-        {"D", dgettext("arcade", "Strafe right")},
-        {dgettext("arcade", "Mouse"), dgettext("arcade", "Aim / look")},
-        {dgettext("arcade", "Left Click"), dgettext("arcade", "Fire weapon")},
-        {"E", dgettext("arcade", "Use / interact")},
-        {dgettext("arcade", "Space"), dgettext("arcade", "Jump")},
-        {"1–8", dgettext("arcade", "Select weapon")},
-        {"Tab", dgettext("arcade", "Show scores")},
-        {dgettext("arcade", "Esc"), dgettext("arcade", "Menu")}
-      ],
+      controls: Controls.adapt(Controls.quake()),
       tips: [
         dgettext(
           "arcade",
