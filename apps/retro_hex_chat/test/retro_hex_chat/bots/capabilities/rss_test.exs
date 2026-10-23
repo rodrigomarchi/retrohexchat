@@ -54,6 +54,18 @@ defmodule RetroHexChat.Bots.Capabilities.RSSTest do
       assert hd(new_state.feeds)["channel"] == "#news"
     end
 
+    # A feed's path is case-sensitive on most servers.
+    test "keeps the address as it was typed" do
+      assert {:reply, _text, new_state} =
+               RSS.handle_message(
+                 "!FeedBot rss Add https://93.184.216.34/Feeds/Main.XML #news",
+                 "admin",
+                 @ctx
+               )
+
+      assert hd(new_state.feeds)["url"] == "https://93.184.216.34/Feeds/Main.XML"
+    end
+
     test "refuses a channel the bot is not in, as the admin dialog does" do
       assert {:reply, text} =
                RSS.handle_message(

@@ -142,7 +142,7 @@ defmodule RetroHexChat.Bots.Capabilities.Scheduler do
   @spec parse_command(String.t(), String.t(), String.t()) :: {:schedule, String.t()} | :ignore
   defp parse_command(content, prefix, bot_name) do
     case Capability.subcommand(content, prefix, bot_name, "schedule") do
-      {:ok, sub} -> {:schedule, String.downcase(sub)}
+      {:ok, sub} -> {:schedule, Capability.downcase_verb(sub)}
       :error -> :ignore
     end
   end

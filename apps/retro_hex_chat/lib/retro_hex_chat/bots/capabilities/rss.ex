@@ -215,7 +215,7 @@ defmodule RetroHexChat.Bots.Capabilities.RSS do
   @spec parse_command(String.t(), String.t(), String.t()) :: {:rss, String.t()} | :ignore
   defp parse_command(content, prefix, bot_name) do
     case Capability.subcommand(content, prefix, bot_name, "rss") do
-      {:ok, sub} -> {:rss, String.downcase(sub)}
+      {:ok, sub} -> {:rss, Capability.downcase_verb(sub)}
       :error -> :ignore
     end
   end

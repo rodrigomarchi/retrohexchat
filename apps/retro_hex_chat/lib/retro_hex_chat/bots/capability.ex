@@ -160,4 +160,17 @@ defmodule RetroHexChat.Bots.Capability do
       end
     end)
   end
+
+  @doc """
+  A subcommand with its verb lowercased and the rest as typed:
+  `"ADD https://x/Feed #c"` is `"add https://x/Feed #c"`. Matching ignores
+  case; an address or a message must not.
+  """
+  @spec downcase_verb(String.t()) :: String.t()
+  def downcase_verb(sub) do
+    case String.split(sub, " ", parts: 2) do
+      [verb, rest] -> String.downcase(verb) <> " " <> rest
+      [verb] -> String.downcase(verb)
+    end
+  end
 end

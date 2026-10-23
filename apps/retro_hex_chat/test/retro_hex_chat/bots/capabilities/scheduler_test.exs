@@ -53,6 +53,18 @@ defmodule RetroHexChat.Bots.Capabilities.SchedulerTest do
       assert hd(new_state.schedules)["type"] == "interval"
     end
 
+    # The verb is read in any case; what follows it is the person's own text.
+    test "keeps the message as it was typed" do
+      assert {:reply, _text, new_state} =
+               Scheduler.handle_message(
+                 "!SchedBot schedule ADD interval 30 #general Take a Break!",
+                 "admin",
+                 @ctx
+               )
+
+      assert hd(new_state.schedules)["message"] == "Take a Break!"
+    end
+
     test "rejects interval below minimum" do
       result =
         Scheduler.handle_message("!SchedBot schedule add interval 2 #general hi", "admin", @ctx)
