@@ -389,16 +389,8 @@ defmodule RetroHexChat.Services.Queries do
   end
 
   @spec remove_access(String.t(), String.t()) :: :ok | {:error, :not_found}
-  def remove_access(channel_name, nickname) do
-    from(a in AccessListEntry,
-      where: a.channel_name == ^channel_name and matches(a.nickname, nickname)
-    )
-    |> Repo.delete_all()
-    |> case do
-      {1, _} -> :ok
-      {0, _} -> {:error, :not_found}
-    end
-  end
+  def remove_access(channel_name, nickname),
+    do: remove_for_nick(AccessListEntry, :nickname, channel_name, nickname)
 
   @doc """
   A channel's access list, by level.
@@ -445,16 +437,8 @@ defmodule RetroHexChat.Services.Queries do
   end
 
   @spec remove_ban(String.t(), String.t()) :: :ok | {:error, :not_found}
-  def remove_ban(channel_name, nickname) do
-    from(b in Ban,
-      where: b.channel_name == ^channel_name and matches(b.banned_nickname, nickname)
-    )
-    |> Repo.delete_all()
-    |> case do
-      {1, _} -> :ok
-      {0, _} -> {:error, :not_found}
-    end
-  end
+  def remove_ban(channel_name, nickname),
+    do: remove_for_nick(Ban, :banned_nickname, channel_name, nickname)
 
   @doc """
   **Every** ban on a channel, for enforcement and cleanup.
@@ -513,27 +497,12 @@ defmodule RetroHexChat.Services.Queries do
   end
 
   @spec remove_ban_exception(String.t(), String.t()) :: :ok | {:error, :not_found}
-  def remove_ban_exception(channel_name, nickname) do
-    from(e in BanException,
-      where: e.channel_name == ^channel_name and matches(e.nickname, nickname)
-    )
-    |> Repo.delete_all()
-    |> case do
-      {1, _} -> :ok
-      {0, _} -> {:error, :not_found}
-    end
-  end
+  def remove_ban_exception(channel_name, nickname),
+    do: remove_for_nick(BanException, :nickname, channel_name, nickname)
 
   @doc "A channel's ban exceptions. Curated by operators, so bounded."
   @spec list_ban_exceptions(String.t()) :: [BanException.t()]
-  def list_ban_exceptions(channel_name) do
-    from(e in BanException,
-      where: e.channel_name == ^channel_name,
-      order_by: e.inserted_at,
-      limit: @max_curated
-    )
-    |> Repo.all()
-  end
+  def list_ban_exceptions(channel_name), do: list_curated(BanException, channel_name)
 
   # ── Invite exceptions ─────────────────────────────────────
 
@@ -550,9 +519,17 @@ defmodule RetroHexChat.Services.Queries do
   end
 
   @spec remove_invite_exception(String.t(), String.t()) :: :ok | {:error, :not_found}
-  def remove_invite_exception(channel_name, nickname) do
-    from(e in InviteException,
-      where: e.channel_name == ^channel_name and matches(e.nickname, nickname)
+  def remove_invite_exception(channel_name, nickname),
+    do: remove_for_nick(InviteException, :nickname, channel_name, nickname)
+
+  @doc "A channel's invite exceptions. Curated by operators, so bounded."
+  @spec list_invite_exceptions(String.t()) :: [InviteException.t()]
+  def list_invite_exceptions(channel_name), do: list_curated(InviteException, channel_name)
+
+  # One person's row on one channel's list, gone; `:not_found` when they had none.
+  defp remove_for_nick(schema, field, channel_name, nickname) do
+    from(r in schema,
+      where: r.channel_name == ^channel_name and matches(field(r, ^field), nickname)
     )
     |> Repo.delete_all()
     |> case do
@@ -561,12 +538,11 @@ defmodule RetroHexChat.Services.Queries do
     end
   end
 
-  @doc "A channel's invite exceptions. Curated by operators, so bounded."
-  @spec list_invite_exceptions(String.t()) :: [InviteException.t()]
-  def list_invite_exceptions(channel_name) do
-    from(e in InviteException,
-      where: e.channel_name == ^channel_name,
-      order_by: e.inserted_at,
+  # A list operators curate by hand, oldest entry first, bounded.
+  defp list_curated(schema, channel_name) do
+    from(r in schema,
+      where: r.channel_name == ^channel_name,
+      order_by: r.inserted_at,
       limit: @max_curated
     )
     |> Repo.all()

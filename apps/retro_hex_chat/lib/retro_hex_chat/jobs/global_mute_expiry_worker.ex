@@ -12,52 +12,22 @@ defmodule RetroHexChat.Jobs.GlobalMuteExpiryWorker do
     step_seconds: 30
 
   alias RetroHexChat.Admin.GlobalMutes
-  alias RetroHexChat.Jobs.ResultMetadata
-  alias RetroHexChat.Jobs.WorkerArgs
-  alias RetroHexChat.Observability
+  alias RetroHexChat.Jobs.MuteExpiry
   alias RetroHexChat.Topics
 
   @pubsub RetroHexChat.PubSub
 
   @impl Oban.Worker
-  @spec perform(Oban.Job.t()) ::
-          {:ok, :expired | :noop}
-          | {:snooze, pos_integer()}
-          | {:cancel, String.t()}
-          | {:error, term()}
-  def perform(%Oban.Job{args: %{"mute_id" => mute_id}}) do
-    Observability.span(
-      [:retro_hex_chat, :admin, :global_mutes, :expire],
-      %{mute_id: mute_id},
-      fn -> expire(WorkerArgs.positive_id(mute_id)) end,
-      &ResultMetadata.expiry/1
-    )
-  end
-
-  defp expire({:ok, mute_id}) do
-    case GlobalMutes.expire_due(mute_id) do
-      {:ok, {:expired, mute}} ->
-        broadcast_unmuted(mute.nickname)
-        {:ok, :expired}
-
-      {:ok, {:noop, _mute}} ->
-        {:ok, :noop}
-
-      {:ok, {:not_due, _mute, seconds}} ->
-        {:snooze, seconds}
-
-      {:error, :not_found} ->
-        {:cancel, "global mute not found"}
-
-      {:error, :permanent_restriction} ->
-        {:cancel, "global mute is permanent"}
-
-      {:error, reason} ->
-        {:error, reason}
-    end
-  end
-
-  defp expire(:error), do: {:cancel, "invalid global mute id"}
+  @spec perform(Oban.Job.t()) :: MuteExpiry.outcome()
+  def perform(%Oban.Job{args: %{"mute_id" => mute_id}}),
+    do:
+      MuteExpiry.run(
+        [:retro_hex_chat, :admin, :global_mutes, :expire],
+        "global mute",
+        mute_id,
+        &GlobalMutes.expire_due/1,
+        &broadcast_unmuted(&1.nickname)
+      )
 
   defp broadcast_unmuted(nickname) do
     Phoenix.PubSub.broadcast(

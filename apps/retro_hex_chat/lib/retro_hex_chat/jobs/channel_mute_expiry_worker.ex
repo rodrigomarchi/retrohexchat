@@ -12,47 +12,17 @@ defmodule RetroHexChat.Jobs.ChannelMuteExpiryWorker do
     step_seconds: 30
 
   alias RetroHexChat.Channels.{Mutes, Server}
-  alias RetroHexChat.Jobs.ResultMetadata
-  alias RetroHexChat.Jobs.WorkerArgs
-  alias RetroHexChat.Observability
+  alias RetroHexChat.Jobs.MuteExpiry
 
   @impl Oban.Worker
-  @spec perform(Oban.Job.t()) ::
-          {:ok, :expired | :noop}
-          | {:snooze, pos_integer()}
-          | {:cancel, String.t()}
-          | {:error, term()}
-  def perform(%Oban.Job{args: %{"mute_id" => mute_id}}) do
-    Observability.span(
-      [:retro_hex_chat, :channels, :mutes, :expire],
-      %{mute_id: mute_id},
-      fn -> expire(WorkerArgs.positive_id(mute_id)) end,
-      &ResultMetadata.expiry/1
-    )
-  end
-
-  defp expire({:ok, mute_id}) do
-    case Mutes.expire_due(mute_id) do
-      {:ok, {:expired, mute}} ->
-        Server.apply_channel_mute_expired(mute.channel_name, mute.target_nickname, mute.id)
-        {:ok, :expired}
-
-      {:ok, {:noop, _mute}} ->
-        {:ok, :noop}
-
-      {:ok, {:not_due, _mute, seconds}} ->
-        {:snooze, seconds}
-
-      {:error, :not_found} ->
-        {:cancel, "channel mute not found"}
-
-      {:error, :permanent_restriction} ->
-        {:cancel, "channel mute is permanent"}
-
-      {:error, reason} ->
-        {:error, reason}
-    end
-  end
-
-  defp expire(:error), do: {:cancel, "invalid channel mute id"}
+  @spec perform(Oban.Job.t()) :: MuteExpiry.outcome()
+  def perform(%Oban.Job{args: %{"mute_id" => mute_id}}),
+    do:
+      MuteExpiry.run(
+        [:retro_hex_chat, :channels, :mutes, :expire],
+        "channel mute",
+        mute_id,
+        &Mutes.expire_due/1,
+        &Server.apply_channel_mute_expired(&1.channel_name, &1.target_nickname, &1.id)
+      )
 end
