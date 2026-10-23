@@ -97,8 +97,9 @@ defmodule RetroHexChatWeb.Site.Documents do
 
     cond do
       # A banned nickname keeps the site — anyone can read it — but not the
-      # chat's own addresses, which send it to the sign-in window saying why.
-      socket.assigns[:banned?] == true and action in [:channel, :join] ->
+      # chat's own addresses (the home is one), which send it to the sign-in
+      # window saying why.
+      socket.assigns[:banned?] == true and action in [:home, :channel, :join] ->
         redirect(socket, to: Address.localized("/connect?reason=banned"))
 
       action == :home and not socket.assigns.visitor? ->

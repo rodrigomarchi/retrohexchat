@@ -281,5 +281,14 @@ defmodule RetroHexChatWeb.Site.AddressBridgeTest do
 
       assert {:error, {:redirect, %{to: "/connect?reason=banned"}}} = live(conn, "/c/lobby")
     end
+
+    # The home is the chat's own address too: a session that was signed in
+    # when the ban came is told why at the door, not shown the chat as a
+    # visitor with no word about it.
+    test "is sent to the sign-in window from the home", %{conn: conn, nick: nick} do
+      conn = Plug.Test.init_test_session(conn, %{"chat_nickname" => nick})
+
+      assert {:error, {:redirect, %{to: "/connect?reason=banned"}}} = live(conn, "/")
+    end
   end
 end
