@@ -403,10 +403,10 @@ defmodule RetroHexChatWeb.SpaceChannelTest do
     test "every seat carries its person's language, and the join names the flags" do
       channel = unique_channel()
       {:ok, _pid} = start_channel(channel)
-      member = "flagmember#{uid()}"
+      member = "flm#{uid()}"
       # A name of its own: presence is global, and other tests track an "alice"
       # in another language.
-      viewer = "flagviewer#{uid()}"
+      viewer = "flv#{uid()}"
       {:ok, _} = NickServ.register(member, "password123")
       :ok = NickLocales.remember(member, "ja", store: true)
       {:ok, _} = Server.join(channel, viewer)
