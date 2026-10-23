@@ -3,7 +3,7 @@
 // Keep it dependency-light: no LiveSocket, no highlight.js. The chat's socket is
 // a dynamic import, started by `lib/site/boot_policy.js`.
 
-import { createPlausibleTracker } from "./lib/analytics/plausible";
+import { installPlausible } from "./lib/analytics/plausible";
 import { formatTime, CLOCK_INTERVAL } from "./lib/connection/clock.js";
 import { log } from "./lib/logger";
 import { mountSiteMenuBar } from "./lib/ui/site_menu_bar";
@@ -261,10 +261,4 @@ scheduleBoot({
 });
 installRetroTooltips(document);
 
-const plausibleEnv = document.querySelector('meta[name="plausible-env"]')?.content || "prod";
-const plausible = createPlausibleTracker({
-  domain: "retrohexchat.app",
-  defaultProps: { env: plausibleEnv },
-});
-plausible.attachAutoTracking();
-window.plausible = plausible;
+installPlausible();

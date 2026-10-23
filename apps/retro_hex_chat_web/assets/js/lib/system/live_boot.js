@@ -22,6 +22,7 @@ import { loadCurrentLocaleCatalog } from "../i18n";
 import { S3DirectUploader } from "../uploads/s3_direct";
 import { loadRetroChrome } from "../ui/retro_chrome_loader";
 import { keepDisclosureStateAcrossPatch } from "../ui/disclosure_state";
+import { LONG_POLL_FALLBACK_MS } from "./socket_timing";
 
 let liveSocket = null;
 
@@ -30,13 +31,7 @@ export async function bootLiveSocket() {
   if (liveSocket) return liveSocket;
 
   liveSocket = new LiveSocket("/live", Socket, {
-    // The fallback exists for networks that block WebSocket outright, and those
-    // fail fast: the socket errors and LiveView falls back without waiting out
-    // this timer. The timer only decides how long a *working but slow*
-    // handshake gets, so it has to clear intercontinental latency — cutting it
-    // short strands the session on long-polling for its whole lifetime, and
-    // WebRTC signalling rides this socket.
-    longPollFallbackMs: 10_000,
+    longPollFallbackMs: LONG_POLL_FALLBACK_MS,
     params: () => ({
       _csrf_token: document.querySelector("meta[name='csrf-token']").getAttribute("content"),
       timezone: Intl.DateTimeFormat().resolvedOptions().timeZone || "Etc/UTC",

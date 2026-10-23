@@ -2,17 +2,11 @@
 // application's LiveSocket, connected at once. The desktop has its own entry
 // (`desktop.js`) and imports the same socket from `lib/system/live_boot.js`.
 
-import { createPlausibleTracker } from "./lib/analytics/plausible";
+import { installPlausible } from "./lib/analytics/plausible";
 import { registerServiceWorker } from "./lib/system/service_worker.js";
 import { bootLiveSocket } from "./lib/system/live_boot";
 
-const plausibleEnv = document.querySelector('meta[name="plausible-env"]')?.content || "prod";
-const plausible = createPlausibleTracker({
-  domain: "retrohexchat.app",
-  defaultProps: { env: plausibleEnv },
-});
-plausible.attachAutoTracking();
-window.plausible = plausible;
+installPlausible();
 
 await bootLiveSocket();
 

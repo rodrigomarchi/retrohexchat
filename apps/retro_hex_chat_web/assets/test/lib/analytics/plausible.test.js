@@ -5,7 +5,7 @@
  * preferred path, the fetch fallback, the localhost short-circuit, and
  * the auto-tracking listeners for LiveView navigation and outbound clicks.
  */
-import { createPlausibleTracker } from "../../../js/lib/analytics/plausible";
+import { createPlausibleTracker, installPlausible } from "../../../js/lib/analytics/plausible";
 
 /**
  * Build a stub window object with a controllable location and an
@@ -224,5 +224,42 @@ describe("createPlausibleTracker", () => {
     expect(payload.name).toBe("Outbound Link: Click");
     expect(payload.props.url).toBe("https://github.com/rodrigomarchi");
     detach();
+  });
+});
+
+// Every page's entry starts the same tracker the same way: the site's domain,
+// the environment the page's meta names, page views tracked as the address
+// changes, and the tracker left on window for the custom events.
+describe("installPlausible", () => {
+  it("reads the environment from the page and leaves the tracker on window", () => {
+    const meta = document.createElement("meta");
+    meta.name = "plausible-env";
+    meta.content = "staging";
+    document.head.appendChild(meta);
+    const win = {};
+    const created = [];
+
+    const tracker = installPlausible(document, win, (options) => {
+      const fake = { attachAutoTracking: vi.fn(), options };
+      created.push(fake);
+      return fake;
+    });
+
+    expect(created[0].options).toEqual({
+      domain: "retrohexchat.app",
+      defaultProps: { env: "staging" },
+    });
+    expect(tracker.attachAutoTracking).toHaveBeenCalledOnce();
+    expect(win.plausible).toBe(tracker);
+    meta.remove();
+  });
+
+  it("calls an environment the page does not name prod", () => {
+    const tracker = installPlausible(document, {}, (options) => ({
+      attachAutoTracking() {},
+      options,
+    }));
+
+    expect(tracker.options.defaultProps).toEqual({ env: "prod" });
   });
 });

@@ -153,3 +153,22 @@ export function createPlausibleTracker({
 
   return { trackPageview, trackEvent, attachAutoTracking };
 }
+
+/**
+ * Start the site's tracker on a page: the environment its
+ * `<meta name="plausible-env">` names ("prod" when none), page views tracked
+ * as the address changes, and the tracker left on `win.plausible` for custom
+ * events. Every entry point (the chat, the desktop, the showcase) calls this.
+ *
+ * @param {Document} [doc]
+ * @param {object} [win]
+ * @param {typeof createPlausibleTracker} [create] - Tracker factory (DI for tests).
+ * @returns {ReturnType<typeof createPlausibleTracker>}
+ */
+export function installPlausible(doc = document, win = window, create = createPlausibleTracker) {
+  const env = doc.querySelector('meta[name="plausible-env"]')?.content || "prod";
+  const tracker = create({ domain: "retrohexchat.app", defaultProps: { env } });
+  tracker.attachAutoTracking();
+  win.plausible = tracker;
+  return tracker;
+}
