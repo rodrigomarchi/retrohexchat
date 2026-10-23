@@ -37,7 +37,7 @@ defmodule RetroHexChatWeb.ShowcaseLive.Dialogs.TimersDialogPage do
         title={dgettext("showcase", "Scheduled commands")}
         description="Pressing a row opens it in the editor beside the list. Stop belongs to the timer it stops; Add belongs to the panel, because it has no timer to belong to."
       >
-        <div class="h-[320px] shadow-retro-field overflow-hidden p-2">
+        <div class="relative h-[320px] shadow-retro-field overflow-hidden p-2">
           <.timers_panel id="timers-demo" timers={@timers} />
         </div>
         <.code_example>
@@ -50,7 +50,7 @@ defmodule RetroHexChatWeb.ShowcaseLive.Dialogs.TimersDialogPage do
         title={dgettext("showcase", "Editing a timer")}
         description="The row the form is about stays marked while the editor is open."
       >
-        <div class="h-[420px] shadow-retro-field overflow-hidden p-2">
+        <div class="relative h-[420px] shadow-retro-field overflow-hidden p-2">
           <.timers_panel
             id="timers-editing"
             timers={@timers}
@@ -68,7 +68,7 @@ defmodule RetroHexChatWeb.ShowcaseLive.Dialogs.TimersDialogPage do
         title={dgettext("showcase", "Nothing scheduled")}
         description="The empty state names what the reader can do about it."
       >
-        <div class="h-[200px] shadow-retro-field overflow-hidden p-2">
+        <div class="relative h-[200px] shadow-retro-field overflow-hidden p-2">
           <.timers_panel id="timers-empty" timers={%{}} />
         </div>
       </.showcase_card>

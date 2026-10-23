@@ -18,58 +18,9 @@ defmodule RetroHexChatWeb.Components.UI.AdminUsersDialog do
   import RetroHexChatWeb.Components.UI.DialogBanner
   import RetroHexChatWeb.Components.UI.RetroTable
   import RetroHexChatWeb.Components.UI.Button
-  import RetroHexChatWeb.Components.UI.Dialog
 
   alias RetroHexChatWeb.Components.Diagrams
   alias RetroHexChatWeb.Icons
-
-  attr :id, :string, required: true
-  attr :show, :boolean, default: false
-  attr :target, :any, default: nil
-  attr :text, :string, default: nil
-  attr :banlist_text, :string, default: nil
-  attr :table, :any, default: nil, doc: "%Table{} for the user list"
-  attr :banlist_table, :any, default: nil, doc: "%Table{} for the ban list"
-  attr :result, :any, default: nil
-  attr :search, :string, default: ""
-  attr :online_only, :boolean, default: false
-  attr :info_nick, :string, default: ""
-  attr :can_refresh, :boolean, default: false
-  attr :can_set_admin_role, :boolean, default: false
-  attr :on_refresh, :any, default: nil
-  attr :on_load_more, :string, default: nil
-  attr :on_info, :any, default: nil
-  attr :on_ban, :any, default: nil
-  attr :on_unban, :any, default: nil
-  attr :on_kick, :any, default: nil
-  attr :on_mute, :any, default: nil
-  attr :on_unmute, :any, default: nil
-  attr :on_rename, :any, default: nil
-  attr :on_role, :any, default: nil
-  attr :on_ns_info, :any, default: nil
-  attr :on_ns_drop, :any, default: nil
-  attr :on_ns_resetpass, :any, default: nil
-  attr :on_cancel, :any, default: nil
-
-  @doc """
-  Framed variant with dialog chrome — used by the showcase page.
-
-  The chat mounts `admin_users_panel/1` inside a desktop window instead, which
-  supplies its own title bar and close control.
-  """
-  @spec admin_users_dialog(map()) :: Phoenix.LiveView.Rendered.t()
-  def admin_users_dialog(assigns) do
-    ~H"""
-    <.dialog id={@id} show={@show} on_cancel={@on_cancel} class="max-w-3xl">
-      <.dialog_header id={@id} title={dgettext("dialogs", "Users")} on_close={@on_cancel}>
-        <:icon><Icons.icon_community class="w-[16px] h-[16px]" /></:icon>
-      </.dialog_header>
-      <.dialog_body>
-        <.admin_users_panel {assigns} />
-      </.dialog_body>
-    </.dialog>
-    """
-  end
 
   attr :id, :string, required: true
   attr :target, :any, default: nil

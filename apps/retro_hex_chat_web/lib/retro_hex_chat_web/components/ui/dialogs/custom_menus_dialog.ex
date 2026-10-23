@@ -8,7 +8,7 @@ defmodule RetroHexChatWeb.Components.UI.CustomMenusDialog do
 
   ## Usage
 
-      <.custom_menus_dialog
+      <.custom_menus_panel
         id="custom-menus"
         show={true}
         entries={@entries}
@@ -30,67 +30,6 @@ defmodule RetroHexChatWeb.Components.UI.CustomMenusDialog do
 
   alias RetroHexChatWeb.Components.Diagrams
   alias RetroHexChatWeb.Icons
-
-  @doc "Renders the custom menus dialog with Nicklist/Channel tabs."
-  attr :id, :string, required: true
-  attr :show, :boolean, default: false
-
-  attr :active_tab, :atom,
-    default: :nicklist,
-    values: [:nicklist, :channel, :chat],
-    doc: "Currently active tab"
-
-  attr :entries, :list,
-    default: [],
-    doc: "List of %{label, command, menu_type, position} maps"
-
-  attr :selected_item, :string, default: nil, doc: "Currently selected entry label"
-  attr :editing, :boolean, default: false, doc: "True when edit form is visible"
-  attr :draft_label, :string, default: "", doc: "Draft label for edit form"
-  attr :draft_command, :string, default: "", doc: "Draft command for edit form"
-  attr :error_message, :string, default: nil, doc: "Validation error to display in the form"
-
-  attr :on_tab, :any, default: nil, doc: "Tab change callback (phx-value-tab)"
-  attr :on_add, :any, default: nil, doc: "Add button callback"
-  attr :on_edit, :any, default: nil, doc: "Edit button callback"
-  attr :on_delete, :any, default: nil, doc: "Remove button callback"
-  attr :on_save, :any, default: nil, doc: "Save edit callback"
-  attr :on_cancel_edit, :any, default: nil, doc: "Cancel edit callback"
-  attr :on_close, :any, default: nil, doc: "Close (X) button callback"
-
-  @spec custom_menus_dialog(map()) :: Phoenix.LiveView.Rendered.t()
-  def custom_menus_dialog(assigns) do
-    assigns =
-      assign(assigns, :active_tab_str, Atom.to_string(assigns.active_tab))
-
-    ~H"""
-    <.dialog id={@id} show={@show} on_cancel={@on_close}>
-      <.dialog_header id={@id} title={dgettext("dialogs", "Custom Menus")} on_close={@on_close}>
-        <:icon><Icons.icon_dialog_custom_menus class="w-4 h-4" /></:icon>
-      </.dialog_header>
-
-      <.dialog_body>
-        <.custom_menus_panel
-          id={@id}
-          active_tab={@active_tab}
-          entries={@entries}
-          selected_item={@selected_item}
-          editing={@editing}
-          draft_label={@draft_label}
-          draft_command={@draft_command}
-          error_message={@error_message}
-          on_tab={@on_tab}
-          on_add={@on_add}
-          on_edit={@on_edit}
-          on_delete={@on_delete}
-          on_save={@on_save}
-          on_cancel_edit={@on_cancel_edit}
-          sub_scope={:viewport}
-        />
-      </.dialog_body>
-    </.dialog>
-    """
-  end
 
   @doc """
   Renders the custom menus editor (tabs + CRUD + edit form) without any frame — compose it inside a dialog or a

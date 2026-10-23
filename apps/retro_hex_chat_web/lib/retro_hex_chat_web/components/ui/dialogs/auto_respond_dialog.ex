@@ -8,7 +8,7 @@ defmodule RetroHexChatWeb.Components.UI.AutoRespondDialog do
 
   ## Usage
 
-      <.auto_respond_dialog
+      <.auto_respond_panel
         id="auto-respond"
         show={true}
         rules={@rules}
@@ -33,60 +33,6 @@ defmodule RetroHexChatWeb.Components.UI.AutoRespondDialog do
   alias RetroHexChatWeb.Icons
 
   @trigger_keys ~w(on_join on_part on_nick_change)
-
-  @doc "Renders the auto-respond rules dialog."
-  attr :id, :string, required: true
-  attr :show, :boolean, default: false
-
-  attr :rules, :list,
-    default: [],
-    doc: "List of %{trigger, channel, command, enabled, position} maps"
-
-  attr :selected_position, :integer, default: nil, doc: "Currently selected rule position"
-  attr :editing, :boolean, default: false, doc: "True when edit form is visible"
-  attr :draft_trigger, :string, default: "on_join", doc: "Draft trigger type for edit form"
-  attr :draft_channel, :string, default: "", doc: "Draft channel filter for edit form"
-  attr :draft_command, :string, default: "", doc: "Draft command for edit form"
-  attr :error_message, :string, default: nil, doc: "Validation error to display in the form"
-
-  attr :on_toggle, :any, default: nil, doc: "Enable checkbox callback (phx-value-position)"
-  attr :on_add, :any, default: nil, doc: "Add button callback"
-  attr :on_edit, :any, default: nil, doc: "Edit button callback"
-  attr :on_delete, :any, default: nil, doc: "Remove button callback"
-  attr :on_save, :any, default: nil, doc: "Save edit callback"
-  attr :on_cancel_edit, :any, default: nil, doc: "Cancel edit callback"
-  attr :on_close, :any, default: nil, doc: "Close (X) button callback"
-
-  @spec auto_respond_dialog(map()) :: Phoenix.LiveView.Rendered.t()
-  def auto_respond_dialog(assigns) do
-    ~H"""
-    <.dialog id={@id} show={@show} on_cancel={@on_close}>
-      <.dialog_header id={@id} title={dgettext("dialogs", "Auto Respond")} on_close={@on_close}>
-        <:icon><Icons.icon_dialog_auto_respond class="w-4 h-4" /></:icon>
-      </.dialog_header>
-
-      <.dialog_body>
-        <.auto_respond_panel
-          id={@id}
-          rules={@rules}
-          selected_position={@selected_position}
-          editing={@editing}
-          draft_trigger={@draft_trigger}
-          draft_channel={@draft_channel}
-          draft_command={@draft_command}
-          error_message={@error_message}
-          on_toggle={@on_toggle}
-          on_add={@on_add}
-          on_edit={@on_edit}
-          on_delete={@on_delete}
-          on_save={@on_save}
-          on_cancel_edit={@on_cancel_edit}
-          sub_scope={:viewport}
-        />
-      </.dialog_body>
-    </.dialog>
-    """
-  end
 
   @doc """
   Renders the auto-respond rules editor (list + edit form) without any frame — compose it inside a dialog or a

@@ -17,58 +17,9 @@ defmodule RetroHexChatWeb.Components.UI.AdminChannelsDialog do
   import RetroHexChatWeb.Components.UI.DialogBanner
   import RetroHexChatWeb.Components.UI.RetroTable
   import RetroHexChatWeb.Components.UI.Button
-  import RetroHexChatWeb.Components.UI.Dialog
 
   alias RetroHexChatWeb.Components.Diagrams
   alias RetroHexChatWeb.Icons
-
-  attr :id, :string, required: true
-  attr :show, :boolean, default: false
-  attr :target, :any, default: nil
-  attr :text, :string, default: nil
-  attr :table, :any, default: nil, doc: "%Table{} for the channel list"
-  attr :banlist_text, :string, default: nil
-  attr :result, :any, default: nil
-  attr :search, :string, default: ""
-  attr :info_channel, :string, default: ""
-  attr :create_name, :string, default: ""
-  attr :can_refresh, :boolean, default: false
-
-  attr :action_channel, :string,
-    default: "",
-    doc: "Channel the destructive forms keep after an action they refused"
-
-  attr :on_refresh, :any, default: nil
-  attr :on_info, :any, default: nil
-  attr :on_create, :any, default: nil
-  attr :on_delete, :any, default: nil
-  attr :on_purge, :any, default: nil
-  attr :on_cs_info, :any, default: nil
-  attr :on_cs_drop, :any, default: nil
-  attr :on_cs_transfer, :any, default: nil
-  attr :on_cs_access_list, :any, default: nil
-  attr :on_cs_access_add, :any, default: nil
-  attr :on_cs_access_del, :any, default: nil
-  attr :on_cancel, :any, default: nil
-
-  @doc """
-  Framed variant with dialog chrome — used by the showcase page.
-
-  The chat mounts `admin_channels_panel/1` inside a desktop window instead.
-  """
-  @spec admin_channels_dialog(map()) :: Phoenix.LiveView.Rendered.t()
-  def admin_channels_dialog(assigns) do
-    ~H"""
-    <.dialog id={@id} show={@show} on_cancel={@on_cancel} class="max-w-3xl">
-      <.dialog_header id={@id} title={dgettext("dialogs", "Channels")} on_close={@on_cancel}>
-        <:icon><Icons.icon_channels class="w-[16px] h-[16px]" /></:icon>
-      </.dialog_header>
-      <.dialog_body>
-        <.admin_channels_panel {assigns} />
-      </.dialog_body>
-    </.dialog>
-    """
-  end
 
   attr :id, :string, required: true
   attr :target, :any, default: nil

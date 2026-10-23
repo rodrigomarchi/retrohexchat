@@ -9,11 +9,7 @@ defmodule RetroHexChatWeb.ShowcaseLive.Dialogs.AliasDialogPage do
     statics: RetroHexChatWeb.static_paths()
 
   import RetroHexChatWeb.Components.UI.AliasDialog
-  import RetroHexChatWeb.Components.UI.Button
-  import RetroHexChatWeb.Components.UI.Dialog, only: [show_modal: 1]
   import RetroHexChatWeb.ShowcaseHelpers
-
-  alias RetroHexChatWeb.Icons
 
   @sample_aliases [
     %{name: "hi", expansion: dgettext("showcase", "/msg $1 hello!")},
@@ -48,13 +44,11 @@ defmodule RetroHexChatWeb.ShowcaseLive.Dialogs.AliasDialogPage do
         title={dgettext("showcase", "Default State")}
         description="Alias editor with sample entries. No row selected — Edit and Remove buttons are disabled."
       >
-        <.button variant="outline" phx-click={show_modal("alias-dialog-default")}>
-          <:icon><Icons.icon_dialog_alias class="w-4 h-4" /></:icon>
-          {dgettext("showcase", "Open Alias Editor")}
-        </.button>
-        <.alias_dialog id="alias-dialog-default" aliases={@aliases} />
+        <div class="relative h-[380px] shadow-retro-field overflow-hidden p-2">
+          <.alias_panel id="alias-dialog-default" aliases={@aliases} />
+        </div>
         <.code_example>
-          &lt;.alias_dialog
+          &lt;.alias_panel
           id="aliases"
           aliases=&#123;@aliases&#125;
           on_add="alias_add"
@@ -62,7 +56,6 @@ defmodule RetroHexChatWeb.ShowcaseLive.Dialogs.AliasDialogPage do
           on_delete="alias_delete"
           on_save="alias_save"
           on_cancel_edit="alias_cancel"
-          on_close="close_alias_dialog"
           /&gt;
         </.code_example>
       </.showcase_card>
@@ -71,59 +64,49 @@ defmodule RetroHexChatWeb.ShowcaseLive.Dialogs.AliasDialogPage do
         title={dgettext("showcase", "Row Selected")}
         description="A row is selected (highlighted). Edit and Remove buttons become active."
       >
-        <.button variant="outline" phx-click={show_modal("alias-dialog-selected")}>
-          <:icon><Icons.icon_dialog_alias class="w-4 h-4" /></:icon>
-          {dgettext("showcase", "Open (Row Selected)")}
-        </.button>
-        <.alias_dialog
-          id="alias-dialog-selected"
-          aliases={@aliases}
-        />
+        <div class="relative h-[380px] shadow-retro-field overflow-hidden p-2">
+          <.alias_panel id="alias-dialog-selected" aliases={@aliases} selected_alias="hi" />
+        </div>
       </.showcase_card>
 
       <.showcase_card
         title={dgettext("showcase", "Editing State")}
         description="Edit form panel is visible below the table. Form shows 'Edit Alias' with pre-filled values."
       >
-        <.button variant="outline" phx-click={show_modal("alias-dialog-editing")}>
-          <:icon><Icons.icon_dialog_alias class="w-4 h-4" /></:icon>
-          {dgettext("showcase", "Open (Editing)")}
-        </.button>
-        <.alias_dialog
-          id="alias-dialog-editing"
-          aliases={@aliases}
-          editing={true}
-          draft_name="hi"
-          draft_expansion="/msg $1 hello!"
-        />
+        <div class="relative h-[380px] shadow-retro-field overflow-hidden p-2">
+          <.alias_panel
+            id="alias-dialog-editing"
+            aliases={@aliases}
+            selected_alias="hi"
+            editing={true}
+            draft_name="hi"
+            draft_expansion="/msg $1 hello!"
+          />
+        </div>
       </.showcase_card>
 
       <.showcase_card
         title={dgettext("showcase", "Adding New Alias")}
         description="Edit form in 'add' mode — name field is editable, form shows 'Add Alias'."
       >
-        <.button variant="outline" phx-click={show_modal("alias-dialog-adding")}>
-          <:icon><Icons.icon_dialog_alias class="w-4 h-4" /></:icon>
-          {dgettext("showcase", "Open (Adding)")}
-        </.button>
-        <.alias_dialog
-          id="alias-dialog-adding"
-          aliases={@aliases}
-          editing={true}
-          draft_name=""
-          draft_expansion=""
-        />
+        <div class="relative h-[380px] shadow-retro-field overflow-hidden p-2">
+          <.alias_panel
+            id="alias-dialog-adding"
+            aliases={@aliases}
+            editing={true}
+            draft_name=""
+            draft_expansion=""
+          />
+        </div>
       </.showcase_card>
 
       <.showcase_card
         title={dgettext("showcase", "Empty List")}
         description="No aliases configured — table shows empty state message."
       >
-        <.button variant="outline" phx-click={show_modal("alias-dialog-empty")}>
-          <:icon><Icons.icon_dialog_alias class="w-4 h-4" /></:icon>
-          {dgettext("showcase", "Open (Empty)")}
-        </.button>
-        <.alias_dialog id="alias-dialog-empty" aliases={[]} />
+        <div class="relative h-[380px] shadow-retro-field overflow-hidden p-2">
+          <.alias_panel id="alias-dialog-empty" aliases={[]} />
+        </div>
       </.showcase_card>
     </.showcase_layout>
     """

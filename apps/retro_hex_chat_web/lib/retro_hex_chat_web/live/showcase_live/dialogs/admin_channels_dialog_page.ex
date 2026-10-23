@@ -9,23 +9,15 @@ defmodule RetroHexChatWeb.ShowcaseLive.Dialogs.AdminChannelsDialogPage do
     statics: RetroHexChatWeb.static_paths()
 
   import RetroHexChatWeb.Components.UI.AdminChannelsDialog
-  import RetroHexChatWeb.Components.UI.Button
   import RetroHexChatWeb.ShowcaseHelpers
-  alias RetroHexChatWeb.Icons
 
   @impl true
   def mount(_params, _session, socket) do
     {:ok,
      assign(socket,
        page_title: dgettext("showcase", "Admin Channels Dialog"),
-       active_page: "admin-channels-dialog",
-       show_channels: false
+       active_page: "admin-channels-dialog"
      )}
-  end
-
-  @impl true
-  def handle_event("toggle_channels", _params, socket) do
-    {:noreply, assign(socket, show_channels: !socket.assigns.show_channels)}
   end
 
   # A showcase page renders the component and nothing behind it, so the
@@ -44,27 +36,21 @@ defmodule RetroHexChatWeb.ShowcaseLive.Dialogs.AdminChannelsDialogPage do
         title={dgettext("showcase", "Admin Channels")}
         description="Channel registry, destructive operations and ChanServ administration."
       >
-        <.button variant="outline" phx-click="toggle_channels">
-          <:icon><Icons.icon_channels class="w-4 h-4" /></:icon>
-          {dgettext("showcase", "Open Admin Channels")}
-        </.button>
-        <.admin_channels_dialog
-          id="admin-channels-demo"
-          show={@show_channels}
-          text={dgettext("showcase", "*** Channel List (2 results) ***\n  #lobby\n  #dev")}
-          banlist_text={dgettext("showcase", "*** No bans in #lobby")}
-          search="lo"
-          info_channel="#lobby"
-          can_refresh={true}
-          on_cancel="toggle_channels"
-        />
+        <div class="relative h-[380px] shadow-retro-field overflow-hidden p-2">
+          <.admin_channels_panel
+            id="admin-channels-demo"
+            text={dgettext("showcase", "*** Channel List (2 results) ***\n  #lobby\n  #dev")}
+            banlist_text={dgettext("showcase", "*** No bans in #lobby")}
+            search="lo"
+            info_channel="#lobby"
+            can_refresh={true}
+          />
+        </div>
         <.code_example>
-          &lt;.admin_channels_dialog
+          &lt;.admin_channels_panel
           id="admin-channels"
-          show=&#123;@show_channels&#125;
           text=&#123;@channels_text&#125;
           can_refresh=&#123;true&#125;
-          on_cancel="close_admin_channels"
           /&gt;
         </.code_example>
       </.showcase_card>

@@ -7,7 +7,7 @@ defmodule RetroHexChatWeb.Components.UI.AliasDialog do
 
   ## Usage
 
-      <.alias_dialog
+      <.alias_panel
         id="aliases"
         show={true}
         aliases={[%{name: "hi", expansion: "/msg $1 hello!"}]}
@@ -32,61 +32,6 @@ defmodule RetroHexChatWeb.Components.UI.AliasDialog do
 
   alias RetroHexChatWeb.Components.Diagrams
   alias RetroHexChatWeb.Icons
-
-  @doc "Renders the alias configuration CRUD dialog."
-  attr :id, :string, required: true
-  attr :show, :boolean, default: false
-
-  attr :aliases, :list,
-    default: [],
-    doc: "List of alias maps with :name and :expansion keys"
-
-  attr :selected_alias, :string, default: nil, doc: "Name of the currently selected alias"
-  attr :editing, :boolean, default: false, doc: "True when the edit form is visible"
-  attr :draft_name, :string, default: "", doc: "Current value of the name input in the edit form"
-
-  attr :draft_expansion, :string,
-    default: "",
-    doc: "Current value of the expansion input in the edit form"
-
-  attr :warning_message, :string, default: nil, doc: "Optional warning message to display"
-  attr :error_message, :string, default: nil, doc: "Optional error message inside the edit form"
-  attr :on_add, :any, default: nil, doc: "Add button callback"
-  attr :on_edit, :any, default: nil, doc: "Edit button callback"
-  attr :on_delete, :any, default: nil, doc: "Remove button callback"
-  attr :on_save, :any, default: nil, doc: "Save button callback inside the edit form"
-  attr :on_cancel_edit, :any, default: nil, doc: "Cancel edit button callback"
-  attr :on_close, :any, default: nil, doc: "Close button callback"
-
-  @spec alias_dialog(map()) :: Phoenix.LiveView.Rendered.t()
-  def alias_dialog(assigns) do
-    ~H"""
-    <.dialog id={@id} show={@show} on_cancel={@on_close}>
-      <.dialog_header id={@id} title={dgettext("dialogs", "Alias Editor")} on_close={@on_close}>
-        <:icon><Icons.icon_dialog_alias class="w-4 h-4" /></:icon>
-      </.dialog_header>
-
-      <.dialog_body>
-        <.alias_panel
-          id={@id}
-          aliases={@aliases}
-          selected_alias={@selected_alias}
-          editing={@editing}
-          draft_name={@draft_name}
-          draft_expansion={@draft_expansion}
-          warning_message={@warning_message}
-          error_message={@error_message}
-          on_add={@on_add}
-          on_edit={@on_edit}
-          on_delete={@on_delete}
-          on_save={@on_save}
-          on_cancel_edit={@on_cancel_edit}
-          sub_scope={:viewport}
-        />
-      </.dialog_body>
-    </.dialog>
-    """
-  end
 
   @doc """
   Renders the alias editor content (table + CRUD + edit form) without any

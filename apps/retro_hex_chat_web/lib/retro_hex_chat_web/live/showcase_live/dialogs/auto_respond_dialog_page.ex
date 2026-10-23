@@ -9,10 +9,7 @@ defmodule RetroHexChatWeb.ShowcaseLive.Dialogs.AutoRespondDialogPage do
     statics: RetroHexChatWeb.static_paths()
 
   import RetroHexChatWeb.Components.UI.AutoRespondDialog
-  import RetroHexChatWeb.Components.UI.Button
-  import RetroHexChatWeb.Components.UI.Dialog, only: [show_modal: 1]
   import RetroHexChatWeb.ShowcaseHelpers
-  alias RetroHexChatWeb.Icons
 
   @impl true
   def mount(_params, _session, socket) do
@@ -62,13 +59,11 @@ defmodule RetroHexChatWeb.ShowcaseLive.Dialogs.AutoRespondDialogPage do
         title={dgettext("showcase", "Default State")}
         description="Auto-respond rules list. Rules can be enabled/disabled per row with the checkbox. Trigger types: On Join, On Part, On Nick Change."
       >
-        <.button variant="outline" phx-click={show_modal("auto-respond-demo")}>
-          <:icon><Icons.icon_dialog_auto_respond class="w-4 h-4" /></:icon>
-          {dgettext("showcase", "Open Auto Respond")}
-        </.button>
-        <.auto_respond_dialog id="auto-respond-demo" rules={@rules} />
+        <div class="relative h-[380px] shadow-retro-field overflow-hidden p-2">
+          <.auto_respond_panel id="auto-respond-demo" rules={@rules} />
+        </div>
         <.code_example>
-          &lt;.auto_respond_dialog
+          &lt;.auto_respond_panel
           id="auto-respond"
           rules=&#123;@rules&#125;
           on_toggle="ar-toggle"
@@ -77,7 +72,6 @@ defmodule RetroHexChatWeb.ShowcaseLive.Dialogs.AutoRespondDialogPage do
           on_delete="ar-delete"
           on_save="ar-save"
           on_cancel_edit="ar-cancel"
-          on_close="ar-close"
           /&gt;
         </.code_example>
       </.showcase_card>
@@ -86,29 +80,25 @@ defmodule RetroHexChatWeb.ShowcaseLive.Dialogs.AutoRespondDialogPage do
         title={dgettext("showcase", "Editing State")}
         description="Edit form panel visible on the right. The draft fields are pre-populated for editing an existing rule."
       >
-        <.button variant="outline" phx-click={show_modal("auto-respond-editing")}>
-          <:icon><Icons.icon_dialog_auto_respond class="w-4 h-4" /></:icon>
-          {dgettext("showcase", "Open Auto Respond (Editing)")}
-        </.button>
-        <.auto_respond_dialog
-          id="auto-respond-editing"
-          rules={@rules}
-          editing={true}
-          draft_trigger="on_join"
-          draft_channel="#lobby"
-          draft_command="/notice $nick Hello!"
-        />
+        <div class="relative h-[380px] shadow-retro-field overflow-hidden p-2">
+          <.auto_respond_panel
+            id="auto-respond-editing"
+            rules={@rules}
+            editing={true}
+            draft_trigger="on_join"
+            draft_channel="#lobby"
+            draft_command="/notice $nick Hello!"
+          />
+        </div>
       </.showcase_card>
 
       <.showcase_card
         title={dgettext("showcase", "Empty State")}
         description="Auto-respond dialog with no rules configured yet."
       >
-        <.button variant="outline" phx-click={show_modal("auto-respond-empty")}>
-          <:icon><Icons.icon_dialog_auto_respond class="w-4 h-4" /></:icon>
-          {dgettext("showcase", "Open Auto Respond (Empty)")}
-        </.button>
-        <.auto_respond_dialog id="auto-respond-empty" rules={[]} />
+        <div class="relative h-[380px] shadow-retro-field overflow-hidden p-2">
+          <.auto_respond_panel id="auto-respond-empty" rules={[]} />
+        </div>
       </.showcase_card>
     </.showcase_layout>
     """
