@@ -10,6 +10,7 @@ import { test, expect } from "@playwright/test";
 import { ConnectPage, uniqueNickname } from "../pages/ConnectPage";
 import { ChatPage } from "../pages/ChatPage";
 import { CHAT_URL } from "../helpers/urls";
+import { shot } from "../helpers/screenshots";
 
 test.describe("Returning user (registered nick)", () => {
   test("register, log out, reconnect with correct password lands in the chat (B)", async ({
@@ -62,6 +63,10 @@ test.describe("Returning user (registered nick)", () => {
     await connect.authPasswordInput.fill("wrong-password");
     await connect.authButton.click();
     await expect(connect.authError).toContainText("Incorrect password");
+    await shot(
+      connect.authError.locator("xpath=ancestor::form[1]"),
+      "wrong-password",
+    );
 
     // The server clears the password field on failure; retrying with the
     // correct password submits once and then navigates to chat.

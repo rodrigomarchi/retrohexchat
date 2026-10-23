@@ -403,7 +403,7 @@ defmodule RetroHexChatWeb.Components.UI.ConnectFormPanel do
   # NickServ password it would then fill into the nickname field.
   defp password_field(assigns) do
     ~H"""
-    <div class="space-y-retro-3">
+    <div class="space-y-retro-4">
       <.label for={@id}>{@label}</.label>
       <.input
         type="text"
@@ -432,7 +432,7 @@ defmodule RetroHexChatWeb.Components.UI.ConnectFormPanel do
     <p
       :if={@message}
       id={@id}
-      class="flex items-start gap-retro-3 text-xs text-destructive"
+      class="flex items-start gap-retro-4 text-xs text-destructive"
       role="alert"
       data-testid={@testid}
     >

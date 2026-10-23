@@ -213,7 +213,7 @@ defmodule RetroHexChatWeb.Components.UI.RetroGamesPanel do
                 <Icons.icon_chart_bars class="h-4 w-4 shrink-0" />
                 {dgettext("games", "Difficulty")}
               </h4>
-              <span class="flex shrink-0 items-center gap-retro-3 bg-white px-retro-4 py-px text-[11px] font-bold border border-border">
+              <span class="flex shrink-0 items-center gap-retro-4 bg-white px-retro-4 py-px text-[11px] font-bold border border-border">
                 <.difficulty_icon difficulty={@difficulty} class="h-3.5 w-3.5 shrink-0" />
                 {difficulty_label(@difficulty)}
               </span>
@@ -229,7 +229,7 @@ defmodule RetroHexChatWeb.Components.UI.RetroGamesPanel do
                 size="md"
                 active={@difficulty == difficulty}
                 pressed={@difficulty == difficulty}
-                class="h-8 min-h-0 w-auto min-w-0 gap-retro-3 px-retro-4 text-[11px] font-bold leading-none"
+                class="h-8 min-h-0 w-auto min-w-0 gap-retro-4 px-retro-4 text-[11px] font-bold leading-none"
                 phx-click="retro_games_set_difficulty"
                 phx-value-difficulty={difficulty}
                 disabled={@status == "playing"}
@@ -254,7 +254,7 @@ defmodule RetroHexChatWeb.Components.UI.RetroGamesPanel do
               class="grid grid-cols-[auto_minmax(0,1fr)] items-center gap-retro-6 text-[11px]"
             >
               <span class="text-muted-foreground">{row.label}</span>
-              <span class="flex min-w-0 flex-wrap gap-retro-3">
+              <span class="flex min-w-0 flex-wrap gap-retro-4">
                 <span
                   :for={key <- row.keys}
                   class="min-w-5 bg-surface px-retro-4 py-retro-2 text-center font-bold shadow-retro-sunken"
