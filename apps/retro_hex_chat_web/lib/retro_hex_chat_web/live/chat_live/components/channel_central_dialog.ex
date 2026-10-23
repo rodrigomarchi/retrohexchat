@@ -368,7 +368,10 @@ defmodule RetroHexChatWeb.ChatLive.Components.ChannelCentralDialog do
 
       {:error, msg} ->
         {:noreply,
-         bubble_error(socket, dgettext("chat", "Topic error: %{message}", message: msg))}
+         DialogIsland.bubble_error(
+           socket,
+           dgettext("chat", "Topic error: %{message}", message: msg)
+         )}
     end
   end
 
@@ -477,7 +480,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.ChannelCentralDialog do
          |> refresh_channel_central()}
 
       {:error, msg} ->
-        {:noreply, bubble_error(socket, add_error_message(list_type, msg))}
+        {:noreply, DialogIsland.bubble_error(socket, add_error_message(list_type, msg))}
     end
   end
 
@@ -496,7 +499,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.ChannelCentralDialog do
            |> refresh_channel_central()}
 
         {:error, msg} ->
-          {:noreply, bubble_error(socket, remove_error_message(list_type, msg))}
+          {:noreply, DialogIsland.bubble_error(socket, remove_error_message(list_type, msg))}
       end
     else
       {:noreply, socket}
@@ -626,7 +629,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.ChannelCentralDialog do
           |> put_locales()
           |> push_event("window_command", %{action: "open", id: "channel-central"})
         else
-          bubble_error(
+          DialogIsland.bubble_error(
             socket,
             dgettext("chat", "You must be a member of %{channel} to open Channel Central",
               channel: channel
@@ -635,7 +638,10 @@ defmodule RetroHexChatWeb.ChatLive.Components.ChannelCentralDialog do
         end
 
       {:error, _} ->
-        bubble_error(socket, dgettext("chat", "Channel %{channel} not found", channel: channel))
+        DialogIsland.bubble_error(
+          socket,
+          dgettext("chat", "Channel %{channel} not found", channel: channel)
+        )
     end
   end
 
@@ -734,8 +740,6 @@ defmodule RetroHexChatWeb.ChatLive.Components.ChannelCentralDialog do
 
     [Map.get(registration, :founder) | access]
   end
-
-  defp bubble_error(socket, message), do: DialogIsland.bubble(socket, :error_event, message)
 
   # ── Access list helpers ──────────────────────────────────────────
 
@@ -874,7 +878,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.ChannelCentralDialog do
           acc
 
         {:error, msg} ->
-          bubble_error(acc, dgettext("chat", "Mode error: %{message}", message: msg))
+          DialogIsland.bubble_error(acc, dgettext("chat", "Mode error: %{message}", message: msg))
       end
     end)
   end
@@ -943,7 +947,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.ChannelCentralDialog do
         |> assign(
           channel_central_notice: dgettext("chat", "Welcome error: %{message}", message: msg)
         )
-        |> bubble_error(dgettext("chat", "Welcome error: %{message}", message: msg))
+        |> DialogIsland.bubble_error(dgettext("chat", "Welcome error: %{message}", message: msg))
     end
   end
 
@@ -962,7 +966,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.ChannelCentralDialog do
         |> assign(
           channel_central_notice: dgettext("chat", "Welcome error: %{message}", message: msg)
         )
-        |> bubble_error(dgettext("chat", "Welcome error: %{message}", message: msg))
+        |> DialogIsland.bubble_error(dgettext("chat", "Welcome error: %{message}", message: msg))
     end
   end
 
@@ -988,7 +992,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.ChannelCentralDialog do
         |> assign(
           channel_central_notice: dgettext("chat", "Throttle error: %{message}", message: msg)
         )
-        |> bubble_error(dgettext("chat", "Throttle error: %{message}", message: msg))
+        |> DialogIsland.bubble_error(dgettext("chat", "Throttle error: %{message}", message: msg))
     end
   end
 

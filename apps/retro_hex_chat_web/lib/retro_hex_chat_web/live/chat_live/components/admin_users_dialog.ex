@@ -26,6 +26,9 @@ defmodule RetroHexChatWeb.ChatLive.Components.AdminUsersDialog do
 
   alias RetroHexChatWeb.ChatLive.Components.DialogIsland
 
+  import RetroHexChatWeb.ChatLive.AdminOps,
+    only: [param: 2, trim: 1, error_result: 1, flag_args: 3]
+
   @id "admin-users-dialog"
 
   @spec id() :: String.t()
@@ -81,7 +84,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.AdminUsersDialog do
         if nick == "" do
           %{status: :error, message: dgettext("chat", "Enter a nick to inspect.")}
         else
-          dispatch(socket, ["user", "info", nick])
+          AdminOps.admin_entry(socket, ["user", "info", nick])
         end
 
       {:noreply,
@@ -190,8 +193,8 @@ defmodule RetroHexChatWeb.ChatLive.Components.AdminUsersDialog do
     search = search_term(socket, params)
     online_only = online_only?(socket, params)
 
-    list = dispatch_raw(socket, list_args(search, online_only))
-    banlist = dispatch_raw(socket, ["user", "banlist"] ++ search_args(search))
+    list = AdminOps.admin_dispatch(socket, list_args(search, online_only))
+    banlist = AdminOps.admin_dispatch(socket, ["user", "banlist"] ++ search_args(search))
 
     assign(socket,
       users_text: AdminOps.result_message(list),
@@ -209,7 +212,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.AdminUsersDialog do
       list_args(socket.assigns.users_search, socket.assigns.users_online_only) ++
         ["--after", to_string(cursor)]
 
-    result = dispatch_raw(socket, args)
+    result = AdminOps.admin_dispatch(socket, args)
 
     case AdminOps.result_table(result) do
       %Table{} = next ->
@@ -243,7 +246,9 @@ defmodule RetroHexChatWeb.ChatLive.Components.AdminUsersDialog do
   # ── Action results ───────────────────────────────────────────────
 
   defp moderation_result(socket, action, params) do
-    with_nick(params, fn nick -> dispatch(socket, moderation_args(action, nick, params)) end)
+    with_nick(params, fn nick ->
+      AdminOps.admin_entry(socket, moderation_args(action, nick, params))
+    end)
   end
 
   defp moderation_args("ban", nick, params) do
@@ -264,7 +269,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.AdminUsersDialog do
     cond do
       old_nick == "" -> error_result(dgettext("chat", "Enter the current nick."))
       new_nick == "" -> error_result(dgettext("chat", "Enter the new nick."))
-      true -> dispatch(socket, ["user", "rename", old_nick, new_nick])
+      true -> AdminOps.admin_entry(socket, ["user", "rename", old_nick, new_nick])
     end
   end
 
@@ -275,12 +280,12 @@ defmodule RetroHexChatWeb.ChatLive.Components.AdminUsersDialog do
     cond do
       nick == "" -> error_result(dgettext("chat", "Enter a nick for this action."))
       role == "" -> error_result(dgettext("chat", "Choose a role."))
-      true -> dispatch(socket, ["user", "role", nick, role])
+      true -> AdminOps.admin_entry(socket, ["user", "role", nick, role])
     end
   end
 
   defp nickserv_result(socket, action, params) do
-    with_nick(params, fn nick -> dispatch(socket, ["ns", action, nick]) end)
+    with_nick(params, fn nick -> AdminOps.admin_entry(socket, ["ns", action, nick]) end)
   end
 
   defp resetpass_result(socket, params) do
@@ -290,15 +295,11 @@ defmodule RetroHexChatWeb.ChatLive.Components.AdminUsersDialog do
     cond do
       nick == "" -> error_result(dgettext("chat", "Enter a nick for this action."))
       password == "" -> error_result(dgettext("chat", "Enter a new password."))
-      true -> dispatch(socket, ["ns", "resetpass", nick, password])
+      true -> AdminOps.admin_entry(socket, ["ns", "resetpass", nick, password])
     end
   end
 
   # ── Dispatch + params ────────────────────────────────────────────
-
-  defp dispatch(socket, args), do: socket |> dispatch_raw(args) |> AdminOps.result_entry()
-
-  defp dispatch_raw(socket, args), do: AdminOps.dispatch(socket, "admin", args)
 
   # Nearly every action needs the same "a nick is required" guard.
   defp with_nick(params, run) do
@@ -310,17 +311,4 @@ defmodule RetroHexChatWeb.ChatLive.Components.AdminUsersDialog do
 
   defp reason_args(params), do: flag_args(params, "reason", "--reason")
   defp duration_args(params), do: flag_args(params, "duration", "--duration")
-
-  defp flag_args(params, key, flag) do
-    case param(params, key) do
-      "" -> []
-      value -> [flag, value]
-    end
-  end
-
-  defp param(params, key), do: params |> Map.get(key, "") |> trim()
-
-  defp trim(value), do: value |> to_string() |> String.trim()
-
-  defp error_result(message), do: %{status: :error, message: message}
 end

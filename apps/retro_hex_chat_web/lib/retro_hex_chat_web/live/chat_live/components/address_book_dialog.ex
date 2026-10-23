@@ -17,7 +17,6 @@ defmodule RetroHexChatWeb.ChatLive.Components.AddressBookDialog do
   (§0a-anti).
   """
 
-  alias RetroHexChat.Nickname
   alias RetroHexChat.Text
   alias RetroHexChatWeb.ChatLive.Components.DialogIsland
   use RetroHexChatWeb, :live_component
@@ -209,13 +208,9 @@ defmodule RetroHexChatWeb.ChatLive.Components.AddressBookDialog do
   defp present_string(_value), do: nil
 
   defp contact_note(contact_list, nick) when is_binary(nick) do
-    downcased = Nickname.key(nick)
-
-    contact_list.entries
-    |> Enum.find(&(Nickname.key(&1.contact_nickname) == downcased))
-    |> case do
+    case ContactList.get_entry(contact_list, nick) do
       nil -> ""
-      entry -> Map.get(entry, :note) || ""
+      entry -> entry.note || ""
     end
   end
 

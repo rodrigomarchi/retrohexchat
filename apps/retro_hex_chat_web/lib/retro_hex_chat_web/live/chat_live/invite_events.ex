@@ -18,7 +18,7 @@ defmodule RetroHexChatWeb.ChatLive.InviteEvents do
 
   use Gettext, backend: RetroHexChatWeb.Gettext
 
-  alias RetroHexChat.Channels.Server
+  alias RetroHexChatWeb.ChatLive.Helpers.PendingInvite
 
   @spec accept(Phoenix.LiveView.Socket.t(), String.t()) :: Phoenix.LiveView.Socket.t()
   def accept(socket, channel) do
@@ -32,7 +32,7 @@ defmodule RetroHexChatWeb.ChatLive.InviteEvents do
       invite ->
         Process.cancel_timer(invite.timer_ref)
         remaining = Enum.reject(pending, &(&1.channel == channel))
-        try_remove_invite_exception(channel, session.nickname)
+        PendingInvite.remove_exception(channel, session.nickname)
 
         socket
         |> assign(pending_invites: remaining)
@@ -59,7 +59,7 @@ defmodule RetroHexChatWeb.ChatLive.InviteEvents do
       invite ->
         Process.cancel_timer(invite.timer_ref)
         remaining = Enum.reject(pending, &(&1.channel == channel))
-        try_remove_invite_exception(channel, session.nickname)
+        PendingInvite.remove_exception(channel, session.nickname)
 
         socket
         |> assign(pending_invites: remaining)
@@ -74,13 +74,5 @@ defmodule RetroHexChatWeb.ChatLive.InviteEvents do
 
   defp find_invite(pending, channel) do
     Enum.find(pending, &(&1.channel == channel))
-  end
-
-  defp try_remove_invite_exception(channel, nickname) do
-    Server.remove_invite_exception(channel, nickname, nickname)
-  rescue
-    _ -> :ok
-  catch
-    :exit, _ -> :ok
   end
 end

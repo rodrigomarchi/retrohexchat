@@ -97,11 +97,10 @@ defmodule RetroHexChatWeb.ChatLive.NotifyOps do
 
   def note_for(_notify_list, _nick), do: ""
 
+  @doc "Marks `nickname` online in the list when they are on the server now."
   @spec sync_entry_online(map(), String.t()) :: map()
-  defp sync_entry_online(notify_list, nickname) do
-    online_nicks = Tracker.list_users(Topics.presence()) |> Enum.map(& &1.nickname)
-
-    if Enum.any?(online_nicks, &Nickname.equal?(&1, nickname)) do
+  def sync_entry_online(notify_list, nickname) do
+    if Tracker.online?(Topics.presence(), nickname) do
       NotifyList.set_online(notify_list, nickname, true)
     else
       notify_list

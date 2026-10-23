@@ -62,6 +62,10 @@ defmodule RetroHexChatWeb.ChatLive.Components.DialogIsland do
     socket
   end
 
+  @doc "Says `message` in the chat as an error, the way every dialog reports a failure."
+  @spec bubble_error(Phoenix.LiveView.Socket.t(), String.t()) :: Phoenix.LiveView.Socket.t()
+  def bubble_error(socket, message), do: bubble(socket, :error_event, message)
+
   @doc """
   A dialog that reads from the server, doing so on the first update only.
 

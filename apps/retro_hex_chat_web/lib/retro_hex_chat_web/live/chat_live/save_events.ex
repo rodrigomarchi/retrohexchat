@@ -37,11 +37,11 @@ defmodule RetroHexChatWeb.ChatLive.SaveEvents do
   end
 
   def handle_event("ctx_chat_save_message", %{"message_id" => id}, socket) do
-    {:halt, socket |> change_saved(id, :save) |> close_menu()}
+    {:halt, socket |> change_saved(id, :save) |> UserContextMenus.close_chat()}
   end
 
   def handle_event("ctx_chat_unsave_message", %{"message_id" => id}, socket) do
-    {:halt, socket |> change_saved(id, :unsave) |> close_menu()}
+    {:halt, socket |> change_saved(id, :unsave) |> UserContextMenus.close_chat()}
   end
 
   def handle_event(_event, _params, socket), do: {:cont, socket}
@@ -113,15 +113,6 @@ defmodule RetroHexChatWeb.ChatLive.SaveEvents do
   # A menu item that has done its job must go away. Left standing it covers the
   # next line, so the second right-click lands on the menu instead of the
   # message — which is exactly what it did.
-  @spec close_menu(Phoenix.LiveView.Socket.t()) :: Phoenix.LiveView.Socket.t()
-  defp close_menu(socket) do
-    send_update(UserContextMenus,
-      id: UserContextMenus.id(),
-      chat_context_menu: UserContextMenus.chat_closed()
-    )
-
-    socket
-  end
 
   @spec change_saved(Phoenix.LiveView.Socket.t(), term(), :save | :unsave) ::
           Phoenix.LiveView.Socket.t()

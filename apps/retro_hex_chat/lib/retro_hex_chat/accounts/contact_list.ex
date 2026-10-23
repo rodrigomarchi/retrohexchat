@@ -57,6 +57,10 @@ defmodule RetroHexChat.Accounts.ContactList do
     end
   end
 
+  @doc "The contact for `nickname`, in any case, or `nil`."
+  @spec get_entry(map(), String.t()) :: Contact.t() | nil
+  def get_entry(contact_list, nickname), do: NicknameList.find(@list, contact_list, nickname)
+
   @spec remove_entry(map(), String.t()) :: {:ok, map()} | {:error, :not_found}
   def remove_entry(contact_list, contact_nickname),
     do: NicknameList.remove(@list, contact_list, contact_nickname)

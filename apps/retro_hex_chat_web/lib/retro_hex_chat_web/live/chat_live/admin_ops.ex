@@ -148,5 +148,39 @@ defmodule RetroHexChatWeb.ChatLive.AdminOps do
   there sends rather than assigns.
   """
   @spec error_event(Phoenix.LiveView.Socket.t(), String.t()) :: Phoenix.LiveView.Socket.t()
-  def error_event(socket, message), do: DialogIsland.bubble(socket, :error_event, message)
+  def error_event(socket, message), do: DialogIsland.bubble_error(socket, message)
+
+  # ── Form params and admin commands, shared by every admin window ──
+
+  @doc "A form field as trimmed text; a missing one is `\"\"`."
+  @spec param(map(), String.t()) :: String.t()
+  def param(params, key), do: params |> Map.get(key, "") |> trim()
+
+  @doc "Any value as trimmed text."
+  @spec trim(term()) :: String.t()
+  def trim(value), do: value |> to_string() |> String.trim()
+
+  @doc "`[flag, value]` when the field holds something, else nothing to add."
+  @spec flag_args(map(), String.t(), String.t()) :: [String.t()]
+  def flag_args(params, key, flag) do
+    case param(params, key) do
+      "" -> []
+      value -> [flag, value]
+    end
+  end
+
+  @doc "Runs `/admin` with `args` and returns the dispatcher's reply."
+  @spec admin_dispatch(Phoenix.LiveView.Socket.t(), [String.t()]) :: term()
+  def admin_dispatch(socket, args), do: dispatch(socket, "admin", args)
+
+  @doc "Runs `/admin` with `args` and returns the reply as a result entry."
+  @spec admin_entry(Phoenix.LiveView.Socket.t(), [String.t()]) :: %{
+          status: :ok | :error,
+          message: String.t()
+        }
+  def admin_entry(socket, args), do: socket |> admin_dispatch(args) |> result_entry()
+
+  @doc "A failure the window found before running anything."
+  @spec error_result(String.t()) :: %{status: :error, message: String.t()}
+  def error_result(message), do: %{status: :error, message: message}
 end

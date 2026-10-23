@@ -88,7 +88,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.AutojoinDialog do
 
       {:error, reason} ->
         {:noreply,
-         bubble_error(
+         DialogIsland.bubble_error(
            socket,
            dgettext("chat", "Failed to add auto-join channel: %{reason}", reason: reason)
          )}
@@ -158,6 +158,4 @@ defmodule RetroHexChatWeb.ChatLive.Components.AutojoinDialog do
     send(self(), {:autojoin_dialog_session, session})
     assign(socket, session: session)
   end
-
-  defp bubble_error(socket, message), do: DialogIsland.bubble(socket, :error_event, message)
 end

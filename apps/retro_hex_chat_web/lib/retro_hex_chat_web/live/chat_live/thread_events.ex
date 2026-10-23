@@ -49,7 +49,7 @@ defmodule RetroHexChatWeb.ChatLive.ThreadEvents do
          Messages.error_event(socket, dgettext("chat", "That message could not be found."))}
 
       root_id ->
-        {:halt, socket |> open(kind, root_id) |> close_menu()}
+        {:halt, socket |> open(kind, root_id) |> UserContextMenus.close_chat()}
     end
   end
 
@@ -155,13 +155,4 @@ defmodule RetroHexChatWeb.ChatLive.ThreadEvents do
   # `:private_message`. One of them has to translate, and it is not the domain.
   defp reply_kind(:private_message), do: :pm
   defp reply_kind(:message), do: :message
-
-  defp close_menu(socket) do
-    send_update(UserContextMenus,
-      id: UserContextMenus.id(),
-      chat_context_menu: UserContextMenus.chat_closed()
-    )
-
-    socket
-  end
 end

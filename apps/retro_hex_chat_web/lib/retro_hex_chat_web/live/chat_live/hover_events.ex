@@ -9,6 +9,7 @@ defmodule RetroHexChatWeb.ChatLive.HoverEvents do
   Attached as `attach_hook(:hover_events, :handle_event, ...)` in ChatLive.mount/3.
   """
 
+  alias RetroHexChat.Accounts.ContactList
   alias RetroHexChat.Nickname
 
   import Phoenix.LiveView, only: [push_event: 3, send_update: 2]
@@ -226,9 +227,5 @@ defmodule RetroHexChatWeb.ChatLive.HoverEvents do
     end
   end
 
-  defp find_contact(nick, contacts) do
-    nick_lower = Nickname.key(nick)
-
-    Enum.find(contacts.entries, &(Nickname.key(&1.contact_nickname) == nick_lower))
-  end
+  defp find_contact(nick, contacts), do: ContactList.get_entry(contacts, nick)
 end

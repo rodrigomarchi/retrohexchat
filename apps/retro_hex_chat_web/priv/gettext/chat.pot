@@ -21,7 +21,7 @@ msgstr ""
 msgid "  %{index}: %{command}"
 msgstr ""
 
-#: lib/retro_hex_chat_web/live/chat_live/ui_actions/notify.ex:134
+#: lib/retro_hex_chat_web/live/chat_live/ui_actions/notify.ex:131
 #, elixir-autogen, elixir-format
 msgid "  %{nickname} [%{status}]%{note}"
 msgstr ""
@@ -121,12 +121,12 @@ msgstr ""
 msgid " (warning: %{warnings})"
 msgstr ""
 
-#: lib/retro_hex_chat_web/live/chat_live/ui_actions/notify.ex:132
+#: lib/retro_hex_chat_web/live/chat_live/ui_actions/notify.ex:129
 #, elixir-autogen, elixir-format
 msgid " - %{note}"
 msgstr ""
 
-#: lib/retro_hex_chat_web/live/chat_live/helpers/whois.ex:260
+#: lib/retro_hex_chat_web/live/chat_live/helpers/whois.ex:256
 #, elixir-autogen, elixir-format
 msgid "%{browser} — %{os}"
 msgstr ""
@@ -204,14 +204,14 @@ msgstr ""
 msgid "%{nickname} has no custom color"
 msgstr ""
 
-#: lib/retro_hex_chat_web/live/chat_live/components/address_book_dialog.ex:228
+#: lib/retro_hex_chat_web/live/chat_live/components/address_book_dialog.ex:223
 #: lib/retro_hex_chat_web/live/chat_live/context_menu_events.ex:271
 #, elixir-autogen, elixir-format
 msgid "%{nickname} is already in your contacts"
 msgstr ""
 
 #: lib/retro_hex_chat_web/live/chat_live/notify_ops.ex:40
-#: lib/retro_hex_chat_web/live/chat_live/ui_actions/notify.ex:56
+#: lib/retro_hex_chat_web/live/chat_live/ui_actions/notify.ex:53
 #, elixir-autogen, elixir-format
 msgid "%{nickname} is already in your notify list"
 msgstr ""
@@ -221,8 +221,8 @@ msgstr ""
 msgid "%{nickname} is away: %{message}"
 msgstr ""
 
-#: lib/retro_hex_chat_web/live/chat_live/components/address_book_dialog.ex:126
-#: lib/retro_hex_chat_web/live/chat_live/components/address_book_dialog.ex:152
+#: lib/retro_hex_chat_web/live/chat_live/components/address_book_dialog.ex:125
+#: lib/retro_hex_chat_web/live/chat_live/components/address_book_dialog.ex:151
 #, elixir-autogen, elixir-format
 msgid "%{nickname} is not in your contacts"
 msgstr ""
@@ -234,8 +234,8 @@ msgstr ""
 
 #: lib/retro_hex_chat_web/live/chat_live/notify_ops.ex:55
 #: lib/retro_hex_chat_web/live/chat_live/notify_ops.ex:69
-#: lib/retro_hex_chat_web/live/chat_live/ui_actions/notify.ex:87
-#: lib/retro_hex_chat_web/live/chat_live/ui_actions/notify.ex:111
+#: lib/retro_hex_chat_web/live/chat_live/ui_actions/notify.ex:84
+#: lib/retro_hex_chat_web/live/chat_live/ui_actions/notify.ex:108
 #, elixir-autogen, elixir-format
 msgid "%{nickname} is not in your notify list"
 msgstr ""
@@ -318,12 +318,12 @@ msgstr ""
 msgid "* %{channel} is not invite-only — anyone can join"
 msgstr ""
 
-#: lib/retro_hex_chat_web/live/chat_live/pubsub_handlers/presence.ex:262
+#: lib/retro_hex_chat_web/live/chat_live/pubsub_handlers/presence.ex:263
 #, elixir-autogen, elixir-format
 msgid "* %{inviter} has invited you to %{channel}"
 msgstr ""
 
-#: lib/retro_hex_chat_web/live/chat_live/pubsub_handlers/presence.ex:105
+#: lib/retro_hex_chat_web/live/chat_live/pubsub_handlers/presence.ex:106
 #, elixir-autogen, elixir-format
 msgid "* %{nickname} has gone offline"
 msgstr ""
@@ -350,7 +350,7 @@ msgstr ""
 
 #: lib/retro_hex_chat_web/live/chat_live/components/ignore_list_dialog.ex:115
 #: lib/retro_hex_chat_web/live/chat_live/context_menu_events.ex:335
-#: lib/retro_hex_chat_web/live/chat_live/context_menu_events.ex:805
+#: lib/retro_hex_chat_web/live/chat_live/context_menu_events.ex:777
 #: lib/retro_hex_chat_web/live/chat_live/ui_actions/ignore.ex:91
 #, elixir-autogen, elixir-format
 msgid "* %{nickname} is no longer ignored"
@@ -362,8 +362,7 @@ msgid "* %{nickname} is no longer ignored (timer expired)"
 msgstr ""
 
 #: lib/retro_hex_chat_web/live/chat_live/context_menu_events.ex:308
-#: lib/retro_hex_chat_web/live/chat_live/context_menu_events.ex:493
-#: lib/retro_hex_chat_web/live/chat_live/context_menu_events.ex:685
+#: lib/retro_hex_chat_web/live/chat_live/context_menu_events.ex:978
 #, elixir-autogen, elixir-format
 msgid "* %{nickname} is now ignored"
 msgstr ""
@@ -374,7 +373,7 @@ msgstr ""
 msgid "* %{nickname} is now ignored (%{type})"
 msgstr ""
 
-#: lib/retro_hex_chat_web/live/chat_live/pubsub_handlers/presence.ex:104
+#: lib/retro_hex_chat_web/live/chat_live/pubsub_handlers/presence.ex:105
 #, elixir-autogen, elixir-format
 msgid "* %{nickname} is now online"
 msgstr ""
@@ -575,7 +574,7 @@ msgstr ""
 msgid "* You are not a channel operator"
 msgstr ""
 
-#: lib/retro_hex_chat_web/live/chat_live/pubsub_handlers/presence.ex:239
+#: lib/retro_hex_chat_web/live/chat_live/pubsub_handlers/presence.ex:240
 #, elixir-autogen, elixir-format
 msgid "* You have been invited to %{channel} by %{inviter} (auto-joined)"
 msgstr ""
@@ -615,15 +614,15 @@ msgstr ""
 msgid "Add to Contacts"
 msgstr ""
 
-#: lib/retro_hex_chat_web/live/chat_live/components/address_book_dialog.ex:81
+#: lib/retro_hex_chat_web/live/chat_live/components/address_book_dialog.ex:80
 #: lib/retro_hex_chat_web/live/chat_live/context_menu_events.ex:262
-#: lib/retro_hex_chat_web/live/chat_live/context_menu_events.ex:514
+#: lib/retro_hex_chat_web/live/chat_live/context_menu_events.ex:501
 #, elixir-autogen, elixir-format
 msgid "Added %{nickname} to contacts"
 msgstr ""
 
 #: lib/retro_hex_chat_web/live/chat_live/notify_ops.ex:34
-#: lib/retro_hex_chat_web/live/chat_live/ui_actions/notify.ex:42
+#: lib/retro_hex_chat_web/live/chat_live/ui_actions/notify.ex:39
 #, elixir-autogen, elixir-format
 msgid "Added %{nickname} to notify list"
 msgstr ""
@@ -713,7 +712,7 @@ msgstr ""
 #: lib/retro_hex_chat_web/live/chat_live/away_events.ex:33
 #: lib/retro_hex_chat_web/live/chat_live/components/hover_card.ex:121
 #: lib/retro_hex_chat_web/live/chat_live/helpers/whois.ex:160
-#: lib/retro_hex_chat_web/live/chat_live/hover_events.ex:136
+#: lib/retro_hex_chat_web/live/chat_live/hover_events.ex:137
 #: lib/retro_hex_chat_web/live/chat_live/window_registry.ex:306
 #, elixir-autogen, elixir-format
 msgid "Away"
@@ -725,13 +724,13 @@ msgstr ""
 msgid "Ban"
 msgstr ""
 
-#: lib/retro_hex_chat_web/live/chat_live/components/channel_central_dialog.ex:772
+#: lib/retro_hex_chat_web/live/chat_live/components/channel_central_dialog.ex:776
 #, elixir-autogen, elixir-format
 msgid "Ban error: %{message}"
 msgstr ""
 
-#: lib/retro_hex_chat_web/live/chat_live/components/channel_central_dialog.ex:775
-#: lib/retro_hex_chat_web/live/chat_live/components/channel_central_dialog.ex:784
+#: lib/retro_hex_chat_web/live/chat_live/components/channel_central_dialog.ex:779
+#: lib/retro_hex_chat_web/live/chat_live/components/channel_central_dialog.ex:788
 #, elixir-autogen, elixir-format
 msgid "Ban exception error: %{message}"
 msgstr ""
@@ -804,14 +803,14 @@ msgstr ""
 msgid "Cannot add highlight: %{reason}"
 msgstr ""
 
-#: lib/retro_hex_chat_web/live/chat_live/components/address_book_dialog.ex:225
+#: lib/retro_hex_chat_web/live/chat_live/components/address_book_dialog.ex:220
 #: lib/retro_hex_chat_web/live/chat_live/context_menu_events.ex:279
 #, elixir-autogen, elixir-format
 msgid "Cannot add yourself to contacts"
 msgstr ""
 
 #: lib/retro_hex_chat_web/live/chat_live/notify_ops.ex:37
-#: lib/retro_hex_chat_web/live/chat_live/ui_actions/notify.ex:49
+#: lib/retro_hex_chat_web/live/chat_live/ui_actions/notify.ex:46
 #, elixir-autogen, elixir-format
 msgid "Cannot add yourself to the notify list"
 msgstr ""
@@ -858,7 +857,7 @@ msgstr ""
 msgid "Channel %{channel} history was purged by %{admin}."
 msgstr ""
 
-#: lib/retro_hex_chat_web/live/chat_live/components/channel_central_dialog.ex:638
+#: lib/retro_hex_chat_web/live/chat_live/components/channel_central_dialog.ex:643
 #, elixir-autogen, elixir-format
 msgid "Channel %{channel} not found"
 msgstr ""
@@ -879,7 +878,7 @@ msgstr ""
 msgid "Channel filter must start with #"
 msgstr ""
 
-#: lib/retro_hex_chat_web/live/chat_live/components/channel_central_dialog.ex:457
+#: lib/retro_hex_chat_web/live/chat_live/components/channel_central_dialog.ex:460
 #: lib/retro_hex_chat_web/live/chat_live/ui_actions/core.ex:236
 #, elixir-autogen, elixir-format
 msgid "Channel ownership transferred to %{target}."
@@ -995,7 +994,7 @@ msgstr ""
 msgid "Contact"
 msgstr ""
 
-#: lib/retro_hex_chat_web/live/chat_live/components/address_book_dialog.ex:231
+#: lib/retro_hex_chat_web/live/chat_live/components/address_book_dialog.ex:226
 #, elixir-autogen, elixir-format
 msgid "Contact list is full (max 100 entries)"
 msgstr ""
@@ -1034,7 +1033,7 @@ msgid "Copy URL"
 msgstr ""
 
 #: lib/retro_hex_chat_web/live/chat_live/context_menu_events.ex:286
-#: lib/retro_hex_chat_web/live/chat_live/context_menu_events.ex:523
+#: lib/retro_hex_chat_web/live/chat_live/context_menu_events.ex:510
 #, elixir-autogen, elixir-format
 msgid "Could not add %{nickname} to contacts"
 msgstr ""
@@ -1287,7 +1286,7 @@ msgstr ""
 msgid "Invalid name. Use letters, numbers, hyphens, underscores."
 msgstr ""
 
-#: lib/retro_hex_chat_web/live/chat_live/components/address_book_dialog.ex:233
+#: lib/retro_hex_chat_web/live/chat_live/components/address_book_dialog.ex:228
 #: lib/retro_hex_chat_web/live/chat_live/components/nick_colors_dialog.ex:201
 #, elixir-autogen, elixir-format
 msgid "Invalid nickname"
@@ -1309,8 +1308,8 @@ msgstr ""
 msgid "Invalid trigger event"
 msgstr ""
 
-#: lib/retro_hex_chat_web/live/chat_live/components/channel_central_dialog.ex:778
-#: lib/retro_hex_chat_web/live/chat_live/components/channel_central_dialog.ex:787
+#: lib/retro_hex_chat_web/live/chat_live/components/channel_central_dialog.ex:782
+#: lib/retro_hex_chat_web/live/chat_live/components/channel_central_dialog.ex:791
 #, elixir-autogen, elixir-format
 msgid "Invite exception error: %{message}"
 msgstr ""
@@ -1347,7 +1346,7 @@ msgstr ""
 msgid "Kick"
 msgstr ""
 
-#: lib/retro_hex_chat_web/live/chat_live/context_menu_events.ex:871
+#: lib/retro_hex_chat_web/live/chat_live/context_menu_events.ex:843
 #, elixir-autogen, elixir-format
 msgid "Kicked"
 msgstr ""
@@ -1420,7 +1419,7 @@ msgstr ""
 msgid "Message to %{target} — / for commands"
 msgstr ""
 
-#: lib/retro_hex_chat_web/live/chat_live/components/channel_central_dialog.ex:877
+#: lib/retro_hex_chat_web/live/chat_live/components/channel_central_dialog.ex:881
 #, elixir-autogen, elixir-format
 msgid "Mode error: %{message}"
 msgstr ""
@@ -1514,7 +1513,7 @@ msgstr ""
 msgid "No command at position %{position}"
 msgstr ""
 
-#: lib/retro_hex_chat_web/live/chat_live/components/address_book_dialog.ex:108
+#: lib/retro_hex_chat_web/live/chat_live/components/address_book_dialog.ex:107
 #, elixir-autogen, elixir-format
 msgid "No contact selected"
 msgstr ""
@@ -1543,7 +1542,7 @@ msgid "Note"
 msgstr ""
 
 #: lib/retro_hex_chat_web/live/chat_live/notify_ops.ex:43
-#: lib/retro_hex_chat_web/live/chat_live/ui_actions/notify.ex:63
+#: lib/retro_hex_chat_web/live/chat_live/ui_actions/notify.ex:60
 #, elixir-autogen, elixir-format
 msgid "Notify list is full (max 50 entries)"
 msgstr ""
@@ -1690,13 +1689,13 @@ msgstr ""
 msgid "Registered"
 msgstr ""
 
-#: lib/retro_hex_chat_web/live/chat_live/components/address_book_dialog.ex:144
+#: lib/retro_hex_chat_web/live/chat_live/components/address_book_dialog.ex:143
 #, elixir-autogen, elixir-format
 msgid "Removed %{nickname} from contacts"
 msgstr ""
 
 #: lib/retro_hex_chat_web/live/chat_live/notify_ops.ex:52
-#: lib/retro_hex_chat_web/live/chat_live/ui_actions/notify.ex:80
+#: lib/retro_hex_chat_web/live/chat_live/ui_actions/notify.ex:77
 #, elixir-autogen, elixir-format
 msgid "Removed %{nickname} from notify list"
 msgstr ""
@@ -1906,7 +1905,7 @@ msgstr ""
 msgid "Tip: Go to Help > Help Topics for the full documentation."
 msgstr ""
 
-#: lib/retro_hex_chat_web/live/chat_live/components/channel_central_dialog.ex:371
+#: lib/retro_hex_chat_web/live/chat_live/components/channel_central_dialog.ex:373
 #, elixir-autogen, elixir-format
 msgid "Topic error: %{message}"
 msgstr ""
@@ -1947,12 +1946,12 @@ msgstr ""
 msgid "Type a message..."
 msgstr ""
 
-#: lib/retro_hex_chat_web/live/chat_live/context_menu_events.ex:635
+#: lib/retro_hex_chat_web/live/chat_live/context_menu_events.ex:622
 #, elixir-autogen, elixir-format
 msgid "URL saved to URL Catcher"
 msgstr ""
 
-#: lib/retro_hex_chat_web/live/chat_live/components/channel_central_dialog.ex:781
+#: lib/retro_hex_chat_web/live/chat_live/components/channel_central_dialog.ex:785
 #, elixir-autogen, elixir-format
 msgid "Unban error: %{message}"
 msgstr ""
@@ -1968,11 +1967,11 @@ msgstr ""
 msgid "Unignore"
 msgstr ""
 
-#: lib/retro_hex_chat_web/live/chat_live/context_menu_events.ex:617
-#: lib/retro_hex_chat_web/live/chat_live/hover_events.ex:173
-#: lib/retro_hex_chat_web/live/chat_live/hover_events.ex:182
-#: lib/retro_hex_chat_web/live/chat_live/hover_events.ex:187
-#: lib/retro_hex_chat_web/live/chat_live/hover_events.ex:192
+#: lib/retro_hex_chat_web/live/chat_live/context_menu_events.ex:604
+#: lib/retro_hex_chat_web/live/chat_live/hover_events.ex:174
+#: lib/retro_hex_chat_web/live/chat_live/hover_events.ex:183
+#: lib/retro_hex_chat_web/live/chat_live/hover_events.ex:188
+#: lib/retro_hex_chat_web/live/chat_live/hover_events.ex:193
 #, elixir-autogen, elixir-format
 msgid "Unknown"
 msgstr ""
@@ -1993,9 +1992,9 @@ msgstr ""
 msgid "Unmute PM"
 msgstr ""
 
-#: lib/retro_hex_chat_web/live/chat_live/components/address_book_dialog.ex:118
+#: lib/retro_hex_chat_web/live/chat_live/components/address_book_dialog.ex:117
 #: lib/retro_hex_chat_web/live/chat_live/notify_ops.ex:66
-#: lib/retro_hex_chat_web/live/chat_live/ui_actions/notify.ex:104
+#: lib/retro_hex_chat_web/live/chat_live/ui_actions/notify.ex:101
 #, elixir-autogen, elixir-format
 msgid "Updated note for %{nickname}"
 msgstr ""
@@ -2137,7 +2136,7 @@ msgstr ""
 msgid "You have been unmuted by an administrator."
 msgstr ""
 
-#: lib/retro_hex_chat_web/live/chat_live/components/channel_central_dialog.ex:631
+#: lib/retro_hex_chat_web/live/chat_live/components/channel_central_dialog.ex:634
 #, elixir-autogen, elixir-format
 msgid "You must be a member of %{channel} to open Channel Central"
 msgstr ""
@@ -2167,7 +2166,7 @@ msgstr ""
 msgid "Your nickname was changed to %{nickname} by an administrator."
 msgstr ""
 
-#: lib/retro_hex_chat_web/live/chat_live/ui_actions/notify.ex:122
+#: lib/retro_hex_chat_web/live/chat_live/ui_actions/notify.ex:119
 #, elixir-autogen, elixir-format
 msgid "Your notify list is empty"
 msgstr ""
@@ -2334,7 +2333,7 @@ msgstr ""
 msgid "notices"
 msgstr ""
 
-#: lib/retro_hex_chat_web/live/chat_live/ui_actions/notify.ex:131
+#: lib/retro_hex_chat_web/live/chat_live/ui_actions/notify.ex:128
 #, elixir-autogen, elixir-format
 msgid "offline"
 msgstr ""
@@ -2344,7 +2343,7 @@ msgstr ""
 msgid "one-shot"
 msgstr ""
 
-#: lib/retro_hex_chat_web/live/chat_live/ui_actions/notify.ex:131
+#: lib/retro_hex_chat_web/live/chat_live/ui_actions/notify.ex:128
 #, elixir-autogen, elixir-format
 msgid "online"
 msgstr ""
@@ -2448,12 +2447,12 @@ msgstr ""
 msgid "Channel not found"
 msgstr ""
 
-#: lib/retro_hex_chat_web/live/chat_live/components/admin_users_dialog.ex:277
+#: lib/retro_hex_chat_web/live/chat_live/components/admin_users_dialog.ex:282
 #, elixir-autogen, elixir-format
 msgid "Choose a role."
 msgstr ""
 
-#: lib/retro_hex_chat_web/live/chat_live/components/admin_channels_dialog.ex:298
+#: lib/retro_hex_chat_web/live/chat_live/components/admin_channels_dialog.ex:303
 #, elixir-autogen, elixir-format
 msgid "Choose an access level."
 msgstr ""
@@ -2473,46 +2472,46 @@ msgstr ""
 msgid "Deleted"
 msgstr ""
 
-#: lib/retro_hex_chat_web/live/chat_live/components/admin_channels_dialog.ex:234
-#: lib/retro_hex_chat_web/live/chat_live/components/admin_channels_dialog.ex:290
+#: lib/retro_hex_chat_web/live/chat_live/components/admin_channels_dialog.ex:239
+#: lib/retro_hex_chat_web/live/chat_live/components/admin_channels_dialog.ex:295
 #, elixir-autogen, elixir-format
 msgid "Enter a channel for this action."
 msgstr ""
 
-#: lib/retro_hex_chat_web/live/chat_live/components/admin_channels_dialog.ex:79
+#: lib/retro_hex_chat_web/live/chat_live/components/admin_channels_dialog.ex:82
 #, elixir-autogen, elixir-format
 msgid "Enter a channel to create."
 msgstr ""
 
-#: lib/retro_hex_chat_web/live/chat_live/components/admin_channels_dialog.ex:64
+#: lib/retro_hex_chat_web/live/chat_live/components/admin_channels_dialog.ex:67
 #, elixir-autogen, elixir-format
 msgid "Enter a channel to inspect."
 msgstr ""
 
-#: lib/retro_hex_chat_web/live/chat_live/components/admin_users_dialog.ex:292
+#: lib/retro_hex_chat_web/live/chat_live/components/admin_users_dialog.ex:297
 #, elixir-autogen, elixir-format
 msgid "Enter a new password."
 msgstr ""
 
-#: lib/retro_hex_chat_web/live/chat_live/components/admin_channels_dialog.ex:294
-#: lib/retro_hex_chat_web/live/chat_live/components/admin_users_dialog.ex:276
-#: lib/retro_hex_chat_web/live/chat_live/components/admin_users_dialog.ex:291
-#: lib/retro_hex_chat_web/live/chat_live/components/admin_users_dialog.ex:306
+#: lib/retro_hex_chat_web/live/chat_live/components/admin_channels_dialog.ex:299
+#: lib/retro_hex_chat_web/live/chat_live/components/admin_users_dialog.ex:281
+#: lib/retro_hex_chat_web/live/chat_live/components/admin_users_dialog.ex:296
+#: lib/retro_hex_chat_web/live/chat_live/components/admin_users_dialog.ex:307
 #, elixir-autogen, elixir-format
 msgid "Enter a nick for this action."
 msgstr ""
 
-#: lib/retro_hex_chat_web/live/chat_live/components/admin_users_dialog.ex:82
+#: lib/retro_hex_chat_web/live/chat_live/components/admin_users_dialog.ex:85
 #, elixir-autogen, elixir-format
 msgid "Enter a nick to inspect."
 msgstr ""
 
-#: lib/retro_hex_chat_web/live/chat_live/components/admin_users_dialog.ex:265
+#: lib/retro_hex_chat_web/live/chat_live/components/admin_users_dialog.ex:270
 #, elixir-autogen, elixir-format
 msgid "Enter the current nick."
 msgstr ""
 
-#: lib/retro_hex_chat_web/live/chat_live/components/admin_users_dialog.ex:266
+#: lib/retro_hex_chat_web/live/chat_live/components/admin_users_dialog.ex:271
 #, elixir-autogen, elixir-format
 msgid "Enter the new nick."
 msgstr ""
@@ -2548,17 +2547,17 @@ msgstr ""
 msgid "Invite to Channel..."
 msgstr ""
 
-#: lib/retro_hex_chat_web/live/chat_live/components/channel_central_dialog.ex:401
+#: lib/retro_hex_chat_web/live/chat_live/components/channel_central_dialog.ex:404
 #, elixir-autogen, elixir-format
 msgid "Join throttle disabled."
 msgstr ""
 
-#: lib/retro_hex_chat_web/live/chat_live/components/channel_central_dialog.ex:972
+#: lib/retro_hex_chat_web/live/chat_live/components/channel_central_dialog.ex:976
 #, elixir-autogen, elixir-format
 msgid "Join throttle must be a non-negative integer."
 msgstr ""
 
-#: lib/retro_hex_chat_web/live/chat_live/components/channel_central_dialog.ex:409
+#: lib/retro_hex_chat_web/live/chat_live/components/channel_central_dialog.ex:412
 #, elixir-autogen, elixir-format
 msgid "Join throttle set to %{seconds} seconds."
 msgstr ""
@@ -2611,7 +2610,7 @@ msgstr ""
 msgid "Mute (channel)"
 msgstr ""
 
-#: lib/retro_hex_chat_web/live/chat_live/helpers/whois.ex:265
+#: lib/retro_hex_chat_web/live/chat_live/helpers/whois.ex:261
 #, elixir-autogen, elixir-format
 msgid "Nickname"
 msgstr ""
@@ -2622,7 +2621,7 @@ msgid "Nickname is required"
 msgstr ""
 
 #: lib/retro_hex_chat_web/live/chat_live/components/channel_central_dialog.ex:307
-#: lib/retro_hex_chat_web/live/chat_live/components/channel_central_dialog.ex:443
+#: lib/retro_hex_chat_web/live/chat_live/components/channel_central_dialog.ex:446
 #: lib/retro_hex_chat_web/live/chat_live/user_lookup_events.ex:91
 #, elixir-autogen, elixir-format
 msgid "Nickname is required."
@@ -2665,7 +2664,7 @@ msgstr ""
 msgid "Online for"
 msgstr ""
 
-#: lib/retro_hex_chat_web/live/chat_live/components/channel_central_dialog.ex:1083
+#: lib/retro_hex_chat_web/live/chat_live/components/channel_central_dialog.ex:1087
 #, elixir-autogen, elixir-format
 msgid "Only channel operators can register this channel."
 msgstr ""
@@ -2756,8 +2755,8 @@ msgstr ""
 msgid "Sound Settings"
 msgstr ""
 
-#: lib/retro_hex_chat_web/live/chat_live/components/channel_central_dialog.ex:989
-#: lib/retro_hex_chat_web/live/chat_live/components/channel_central_dialog.ex:991
+#: lib/retro_hex_chat_web/live/chat_live/components/channel_central_dialog.ex:993
+#: lib/retro_hex_chat_web/live/chat_live/components/channel_central_dialog.ex:995
 #, elixir-autogen, elixir-format
 msgid "Throttle error: %{message}"
 msgstr ""
@@ -2777,7 +2776,7 @@ msgstr ""
 msgid "Timezone"
 msgstr ""
 
-#: lib/retro_hex_chat_web/live/chat_live/components/admin_channels_dialog.ex:312
+#: lib/retro_hex_chat_web/live/chat_live/components/admin_channels_dialog.ex:317
 #, elixir-autogen, elixir-format
 msgid "Type the channel name to confirm."
 msgstr ""
@@ -2809,20 +2808,20 @@ msgstr ""
 msgid "Wallops"
 msgstr ""
 
-#: lib/retro_hex_chat_web/live/chat_live/components/channel_central_dialog.ex:944
-#: lib/retro_hex_chat_web/live/chat_live/components/channel_central_dialog.ex:946
-#: lib/retro_hex_chat_web/live/chat_live/components/channel_central_dialog.ex:963
-#: lib/retro_hex_chat_web/live/chat_live/components/channel_central_dialog.ex:965
+#: lib/retro_hex_chat_web/live/chat_live/components/channel_central_dialog.ex:948
+#: lib/retro_hex_chat_web/live/chat_live/components/channel_central_dialog.ex:950
+#: lib/retro_hex_chat_web/live/chat_live/components/channel_central_dialog.ex:967
+#: lib/retro_hex_chat_web/live/chat_live/components/channel_central_dialog.ex:969
 #, elixir-autogen, elixir-format
 msgid "Welcome error: %{message}"
 msgstr ""
 
-#: lib/retro_hex_chat_web/live/chat_live/components/channel_central_dialog.ex:957
+#: lib/retro_hex_chat_web/live/chat_live/components/channel_central_dialog.ex:961
 #, elixir-autogen, elixir-format
 msgid "Welcome message cleared."
 msgstr ""
 
-#: lib/retro_hex_chat_web/live/chat_live/components/channel_central_dialog.ex:938
+#: lib/retro_hex_chat_web/live/chat_live/components/channel_central_dialog.ex:942
 #, elixir-autogen, elixir-format
 msgid "Welcome message saved."
 msgstr ""
@@ -2837,27 +2836,27 @@ msgstr ""
 msgid "You are already using that nickname"
 msgstr ""
 
-#: lib/retro_hex_chat_web/live/chat_live/context_menu_events.ex:936
+#: lib/retro_hex_chat_web/live/chat_live/context_menu_events.ex:908
 #, elixir-autogen, elixir-format
 msgid "You are not in any channel"
 msgstr ""
 
-#: lib/retro_hex_chat_web/live/chat_live/components/channel_central_dialog.ex:1089
+#: lib/retro_hex_chat_web/live/chat_live/components/channel_central_dialog.ex:1093
 #, elixir-autogen, elixir-format
 msgid "You do not have permission to manage this list."
 msgstr ""
 
-#: lib/retro_hex_chat_web/live/chat_live/components/channel_central_dialog.ex:1080
+#: lib/retro_hex_chat_web/live/chat_live/components/channel_central_dialog.ex:1084
 #, elixir-autogen, elixir-format
 msgid "You must be a channel operator to change this setting."
 msgstr ""
 
-#: lib/retro_hex_chat_web/live/chat_live/context_menu_events.ex:932
+#: lib/retro_hex_chat_web/live/chat_live/context_menu_events.ex:904
 #, elixir-autogen, elixir-format
 msgid "You must be a channel operator to use this command"
 msgstr ""
 
-#: lib/retro_hex_chat_web/live/chat_live/components/channel_central_dialog.ex:1086
+#: lib/retro_hex_chat_web/live/chat_live/components/channel_central_dialog.ex:1090
 #, elixir-autogen, elixir-format
 msgid "You must be identified with NickServ to use ChanServ."
 msgstr ""
@@ -4011,7 +4010,7 @@ msgstr ""
 msgid "Saved Messages"
 msgstr ""
 
-#: lib/retro_hex_chat_web/live/chat_live/save_events.ex:133
+#: lib/retro_hex_chat_web/live/chat_live/save_events.ex:124
 #: lib/retro_hex_chat_web/live/chat_live/thread_events.ex:49
 #, elixir-autogen, elixir-format
 msgid "That message could not be found."
@@ -4199,12 +4198,12 @@ msgstr ""
 msgid "Joined on connect, with a key"
 msgstr ""
 
-#: lib/retro_hex_chat_web/live/chat_live/components/channel_central_dialog.ex:835
+#: lib/retro_hex_chat_web/live/chat_live/components/channel_central_dialog.ex:839
 #, elixir-autogen, elixir-format
 msgid "%{nickname} is not on this list."
 msgstr ""
 
-#: lib/retro_hex_chat_web/live/chat_live/components/channel_central_dialog.ex:829
+#: lib/retro_hex_chat_web/live/chat_live/components/channel_central_dialog.ex:833
 #, elixir-autogen, elixir-format
 msgid "That row carries no nickname to remove."
 msgstr ""

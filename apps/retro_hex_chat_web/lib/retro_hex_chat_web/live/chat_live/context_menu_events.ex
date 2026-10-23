@@ -481,20 +481,7 @@ defmodule RetroHexChatWeb.ChatLive.ContextMenuEvents do
        |> close_chat_context_menu()
        |> ctx_chat_unignore(nick)}
     else
-      case IgnoreList.add_entry(session.ignore_list, nick, :all, nil) do
-        {:ok, updated_list} ->
-          new_session = Session.set_ignore_list(session, updated_list)
-
-          {:halt,
-           socket
-           |> close_chat_context_menu()
-           |> assign(session: new_session)
-           |> maybe_persist_ignore_list(new_session)
-           |> system_event(dgettext("chat", "* %{nickname} is now ignored", nickname: nick))}
-
-        {:error, _reason} ->
-          {:halt, close_chat_context_menu(socket)}
-      end
+      {:halt, ignore_nick(socket, session, nick)}
     end
   end
 
@@ -671,22 +658,7 @@ defmodule RetroHexChatWeb.ChatLive.ContextMenuEvents do
   end
 
   def handle_event("ctx_chat_ignore_sender", %{"nick" => nick}, socket) do
-    session = socket.assigns.session
-
-    case IgnoreList.add_entry(session.ignore_list, nick, :all, nil) do
-      {:ok, updated_list} ->
-        new_session = Session.set_ignore_list(session, updated_list)
-
-        {:halt,
-         socket
-         |> close_chat_context_menu()
-         |> assign(session: new_session)
-         |> maybe_persist_ignore_list(new_session)
-         |> system_event(dgettext("chat", "* %{nickname} is now ignored", nickname: nick))}
-
-      {:error, _reason} ->
-        {:halt, close_chat_context_menu(socket)}
-    end
+    {:halt, ignore_nick(socket, socket.assigns.session, nick)}
   end
 
   # ---------------------------------------------------------------------------
@@ -989,6 +961,24 @@ defmodule RetroHexChatWeb.ChatLive.ContextMenuEvents do
     case Activity.watch_token(nick) do
       nil -> socket
       token -> OpenTabEvents.confirm(socket, Paths.watch_path(token))
+    end
+  end
+
+  # Ignore everything from `nick`, close the menu and say so; a list that is
+  # full or already holds the nick just closes the menu.
+  defp ignore_nick(socket, session, nick) do
+    case IgnoreList.add_entry(session.ignore_list, nick, :all, nil) do
+      {:ok, updated_list} ->
+        new_session = Session.set_ignore_list(session, updated_list)
+
+        socket
+        |> close_chat_context_menu()
+        |> assign(session: new_session)
+        |> maybe_persist_ignore_list(new_session)
+        |> system_event(dgettext("chat", "* %{nickname} is now ignored", nickname: nick))
+
+      {:error, _reason} ->
+        close_chat_context_menu(socket)
     end
   end
 end

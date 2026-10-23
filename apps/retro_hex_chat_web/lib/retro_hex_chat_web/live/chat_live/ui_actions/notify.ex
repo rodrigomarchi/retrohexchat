@@ -3,8 +3,6 @@ defmodule RetroHexChatWeb.ChatLive.UiActions.Notify do
   Notify list UI actions: add, remove, edit, list display, open dialog.
   """
 
-  alias RetroHexChat.Nickname
-
   import Phoenix.Component, only: [assign: 2]
 
   use Gettext, backend: RetroHexChatWeb.Gettext
@@ -16,9 +14,8 @@ defmodule RetroHexChatWeb.ChatLive.UiActions.Notify do
     ]
 
   alias RetroHexChat.Accounts.Session
-  alias RetroHexChat.Presence.{NotifyList, Tracker}
-  alias RetroHexChat.Topics
-  alias RetroHexChatWeb.ChatLive.NotifyEvents
+  alias RetroHexChat.Presence.NotifyList
+  alias RetroHexChatWeb.ChatLive.{NotifyEvents, NotifyOps}
 
   @spec handle_ui_action(Phoenix.LiveView.Socket.t(), atom(), map()) ::
           Phoenix.LiveView.Socket.t()
@@ -32,7 +29,7 @@ defmodule RetroHexChatWeb.ChatLive.UiActions.Notify do
 
     case NotifyList.add_entry(session.notify_list, Session.owner(session), nick, note) do
       {:ok, updated_list} ->
-        updated_list = sync_entry_online(updated_list, nick)
+        updated_list = NotifyOps.sync_entry_online(updated_list, nick)
         new_session = Session.set_notify_list(session, updated_list)
 
         socket
@@ -136,18 +133,5 @@ defmodule RetroHexChatWeb.ChatLive.UiActions.Notify do
       status: status,
       note: note
     )
-  end
-
-  @spec sync_entry_online(map(), String.t()) :: map()
-  defp sync_entry_online(notify_list, nickname) do
-    online_nicks =
-      Tracker.list_users(Topics.presence())
-      |> Enum.map(& &1.nickname)
-
-    if Enum.any?(online_nicks, &Nickname.equal?(&1, nickname)) do
-      NotifyList.set_online(notify_list, nickname, true)
-    else
-      notify_list
-    end
   end
 end

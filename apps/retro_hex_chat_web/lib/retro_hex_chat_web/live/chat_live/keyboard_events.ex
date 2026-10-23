@@ -12,7 +12,6 @@ defmodule RetroHexChatWeb.ChatLive.KeyboardEvents do
   import Phoenix.Component, only: [assign: 2]
   import Phoenix.LiveView, only: [push_event: 3, send_update: 2]
 
-  alias RetroHexChat.Channels.Server
   alias RetroHexChat.Chat.KeyBindings
 
   alias RetroHexChatWeb.ChatLive.Components.{
@@ -22,6 +21,7 @@ defmodule RetroHexChatWeb.ChatLive.KeyboardEvents do
   }
 
   alias RetroHexChatWeb.ChatLive.AddressBookEvents
+  alias RetroHexChatWeb.ChatLive.Helpers.PendingInvite
   alias RetroHexChatWeb.ChatLive.NavigationEvents
   alias RetroHexChatWeb.ChatLive.PerformEvents
   alias RetroHexChatWeb.ChatLive.SearchEvents
@@ -166,7 +166,7 @@ defmodule RetroHexChatWeb.ChatLive.KeyboardEvents do
     last = List.last(socket.assigns.pending_invites)
     Process.cancel_timer(last.timer_ref)
     remaining = List.delete_at(socket.assigns.pending_invites, -1)
-    try_remove_invite_exception(last.channel, socket.assigns.session.nickname)
+    PendingInvite.remove_exception(last.channel, socket.assigns.session.nickname)
     assign(socket, pending_invites: remaining)
   end
 
@@ -197,13 +197,5 @@ defmodule RetroHexChatWeb.ChatLive.KeyboardEvents do
     String.to_existing_atom(action_string)
   rescue
     ArgumentError -> nil
-  end
-
-  defp try_remove_invite_exception(channel, nickname) do
-    Server.remove_invite_exception(channel, nickname, nickname)
-  rescue
-    _ -> :ok
-  catch
-    :exit, _ -> :ok
   end
 end

@@ -10,7 +10,7 @@ defmodule RetroHexChatWeb.ChatLive.PinEvents do
   """
 
   import Phoenix.Component, only: [assign: 2]
-  import Phoenix.LiveView, only: [push_event: 3, send_update: 2]
+  import Phoenix.LiveView, only: [push_event: 3]
 
   use Gettext, backend: RetroHexChatWeb.Gettext
 
@@ -31,11 +31,11 @@ defmodule RetroHexChatWeb.ChatLive.PinEvents do
   # how a pin is actually made. The channel checks the permission again when the
   # pin arrives — the menu item only decides whether to draw a button.
   def handle_event("ctx_chat_pin_message", %{"message_id" => id}, socket) do
-    {:halt, socket |> change_pin(id, :pin) |> close_menu()}
+    {:halt, socket |> change_pin(id, :pin) |> UserContextMenus.close_chat()}
   end
 
   def handle_event("ctx_chat_unpin_message", %{"message_id" => id}, socket) do
-    {:halt, socket |> change_pin(id, :unpin) |> close_menu()}
+    {:halt, socket |> change_pin(id, :unpin) |> UserContextMenus.close_chat()}
   end
 
   def handle_event(_event, _params, socket), do: {:cont, socket}
@@ -64,14 +64,6 @@ defmodule RetroHexChatWeb.ChatLive.PinEvents do
   def handle_info(_message, socket), do: {:cont, socket}
 
   # A menu item that has done its job must go away, or it covers the next line.
-  defp close_menu(socket) do
-    send_update(UserContextMenus,
-      id: UserContextMenus.id(),
-      chat_context_menu: UserContextMenus.chat_closed()
-    )
-
-    socket
-  end
 
   defp change_pin(socket, raw_id, action) do
     channel = socket.assigns.session.active_channel

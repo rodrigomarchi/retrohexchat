@@ -38,6 +38,7 @@ defmodule RetroHexChatWeb.ChatLive.PubsubHandlers.Presence do
   alias RetroHexChatWeb.ChatLive.Components.Nicklist
   alias RetroHexChatWeb.ChatLive.Helpers.Conversation
   alias RetroHexChatWeb.ChatLive.Helpers.NickFlags
+  alias RetroHexChatWeb.ChatLive.Helpers.PendingInvite
   alias RetroHexChatWeb.Components.UI.LiveMatch
   alias RetroHexChatWeb.Site.Documents
   alias RetroHexChatWeb.Site.Pages
@@ -245,7 +246,7 @@ defmodule RetroHexChatWeb.ChatLive.PubsubHandlers.Presence do
       {:halt, socket}
     else
       pending = socket.assigns.pending_invites
-      {pending, _old} = cancel_existing_invite(pending, channel)
+      {pending, _old} = PendingInvite.cancel(pending, channel)
       timer_ref = Process.send_after(self(), {:invite_expired, channel}, 300_000)
 
       invite = %{
@@ -267,17 +268,6 @@ defmodule RetroHexChatWeb.ChatLive.PubsubHandlers.Presence do
         )
 
       {:halt, socket}
-    end
-  end
-
-  defp cancel_existing_invite(pending, channel) do
-    case Enum.split_with(pending, &(&1.channel == channel)) do
-      {[existing], rest} ->
-        Process.cancel_timer(existing.timer_ref)
-        {rest, existing}
-
-      {[], _} ->
-        {pending, nil}
     end
   end
 

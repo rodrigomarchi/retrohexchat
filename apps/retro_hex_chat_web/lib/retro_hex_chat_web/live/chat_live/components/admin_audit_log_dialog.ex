@@ -18,6 +18,8 @@ defmodule RetroHexChatWeb.ChatLive.Components.AdminAuditLogDialog do
 
   alias RetroHexChatWeb.ChatLive.Components.DialogIsland
 
+  import RetroHexChatWeb.ChatLive.AdminOps, only: [trim: 1]
+
   @id "admin-audit-log-dialog"
   @default_last "20"
 
@@ -140,6 +142,4 @@ defmodule RetroHexChatWeb.ChatLive.Components.AdminAuditLogDialog do
   defp error_only(result) do
     if AdminOps.result_status(result) == :error, do: AdminOps.result_entry(result)
   end
-
-  defp trim(value), do: value |> to_string() |> String.trim()
 end

@@ -23,6 +23,9 @@ defmodule RetroHexChatWeb.ChatLive.Components.AdminChannelsDialog do
 
   alias RetroHexChatWeb.ChatLive.Components.DialogIsland
 
+  import RetroHexChatWeb.ChatLive.AdminOps,
+    only: [param: 2, trim: 1, error_result: 1, flag_args: 3]
+
   @id "admin-channels-dialog"
 
   @spec id() :: String.t()
@@ -63,7 +66,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.AdminChannelsDialog do
         if channel == "" do
           error_result(dgettext("chat", "Enter a channel to inspect."))
         else
-          dispatch(socket, ["channel", "info", channel])
+          AdminOps.admin_entry(socket, ["channel", "info", channel])
         end
 
       {:noreply, assign_snapshot(socket, %{"info_channel" => channel}, result)}
@@ -78,7 +81,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.AdminChannelsDialog do
         if channel == "" do
           error_result(dgettext("chat", "Enter a channel to create."))
         else
-          dispatch(socket, ["channel", "create", channel])
+          AdminOps.admin_entry(socket, ["channel", "create", channel])
         end
 
       {:noreply, assign_snapshot(socket, %{"create_channel" => channel}, result)}
@@ -223,7 +226,9 @@ defmodule RetroHexChatWeb.ChatLive.Components.AdminChannelsDialog do
   defp search_args(search), do: ["--search", search]
 
   defp banlist_result(_socket, ""), do: nil
-  defp banlist_result(socket, channel), do: dispatch_raw(socket, ["channel", "banlist", channel])
+
+  defp banlist_result(socket, channel),
+    do: AdminOps.admin_dispatch(socket, ["channel", "banlist", channel])
 
   defp banlist_text(nil), do: ""
   defp banlist_text(result), do: AdminOps.result_message(result)
@@ -236,7 +241,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.AdminChannelsDialog do
 
   defp destructive_result(socket, action, channel, params) do
     case confirmation(channel, params) do
-      :ok -> dispatch(socket, destructive_args(action, channel, params))
+      :ok -> AdminOps.admin_entry(socket, destructive_args(action, channel, params))
       error -> error
     end
   end
@@ -249,20 +254,20 @@ defmodule RetroHexChatWeb.ChatLive.Components.AdminChannelsDialog do
 
   defp cs_simple_result(socket, action, params) do
     with {:ok, channel} <- require_channel(params) do
-      dispatch(socket, ["cs", action, channel])
+      AdminOps.admin_entry(socket, ["cs", action, channel])
     end
   end
 
   defp cs_access_list_result(socket, params) do
     with {:ok, channel} <- require_channel(params) do
-      dispatch(socket, ["cs", "access", channel])
+      AdminOps.admin_entry(socket, ["cs", "access", channel])
     end
   end
 
   defp cs_transfer_result(socket, params) do
     with {:ok, channel} <- require_channel(params),
          {:ok, nick} <- require_nick(params) do
-      dispatch(socket, ["cs", "transfer", channel, nick])
+      AdminOps.admin_entry(socket, ["cs", "transfer", channel, nick])
     end
   end
 
@@ -270,14 +275,14 @@ defmodule RetroHexChatWeb.ChatLive.Components.AdminChannelsDialog do
     with {:ok, channel} <- require_channel(params),
          {:ok, nick} <- require_nick(params),
          {:ok, level} <- require_level(params) do
-      dispatch(socket, ["cs", "access", channel, action, level, nick])
+      AdminOps.admin_entry(socket, ["cs", "access", channel, action, level, nick])
     end
   end
 
   defp cs_drop_result(socket, params) do
     with {:ok, channel} <- require_channel(params),
          :ok <- confirmation(channel, params) do
-      dispatch(socket, ["cs", "drop", channel])
+      AdminOps.admin_entry(socket, ["cs", "drop", channel])
     end
   end
 
@@ -315,20 +320,5 @@ defmodule RetroHexChatWeb.ChatLive.Components.AdminChannelsDialog do
 
   # ── Dispatch + params ────────────────────────────────────────────
 
-  defp dispatch(socket, args), do: socket |> dispatch_raw(args) |> AdminOps.result_entry()
-
-  defp dispatch_raw(socket, args), do: AdminOps.dispatch(socket, "admin", args)
-
-  defp from_args(params) do
-    case param(params, "from") do
-      "" -> []
-      from -> ["--from", from]
-    end
-  end
-
-  defp param(params, key), do: params |> Map.get(key, "") |> trim()
-
-  defp trim(value), do: value |> to_string() |> String.trim()
-
-  defp error_result(message), do: %{status: :error, message: message}
+  defp from_args(params), do: flag_args(params, "from", "--from")
 end

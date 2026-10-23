@@ -3,7 +3,7 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.Whois do
   Whois and Whowas lookup output helpers.
   """
 
-  alias RetroHexChat.Nickname
+  alias RetroHexChat.Accounts.ContactList
 
   import Phoenix.Component, only: [assign: 2]
 
@@ -242,11 +242,7 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.Whois do
   end
 
   defp contact_note(session, target) do
-    target_lower = Nickname.key(target)
-
-    session.contacts.entries
-    |> Enum.find(&(Nickname.key(&1.contact_nickname) == target_lower))
-    |> case do
+    case ContactList.get_entry(session.contacts, target) do
       nil -> nil
       entry -> entry.note
     end

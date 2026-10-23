@@ -57,6 +57,13 @@ defmodule RetroHexChatWeb.ChatLive.Components.UserContextMenus do
   @spec chat_closed() :: map()
   def chat_closed, do: @chat_closed
 
+  @doc "Closes the chat area's context menu from outside it; returns `socket` unchanged."
+  @spec close_chat(Phoenix.LiveView.Socket.t()) :: Phoenix.LiveView.Socket.t()
+  def close_chat(socket) do
+    Phoenix.LiveView.send_update(__MODULE__, id: @id, chat_context_menu: @chat_closed)
+    socket
+  end
+
   @spec nick_closed() :: map()
   def nick_closed, do: @nick_closed
 

@@ -35,10 +35,10 @@ defmodule RetroHexChatWeb.ChatLive.TimerHandlers do
     PerformList
   }
 
-  alias RetroHexChat.Channels.Server
   alias RetroHexChat.Commands.Parser
   alias RetroHexChatWeb.ChatLive.CommandDispatch
   alias RetroHexChatWeb.ChatLive.Helpers.Conversation
+  alias RetroHexChatWeb.ChatLive.Helpers.PendingInvite
   alias RetroHexChatWeb.ChatLive.Helpers.PM
   alias RetroHexChatWeb.ChatLive.Helpers.Session, as: SessionHelpers
   alias RetroHexChatWeb.Site.Address
@@ -224,14 +224,14 @@ defmodule RetroHexChatWeb.ChatLive.TimerHandlers do
   # ── Invite expired ────────────────────────────────────────
 
   def handle_info({:invite_expired, channel}, socket) do
-    {pending, expired} = cancel_existing_invite(socket.assigns.pending_invites, channel)
+    {pending, expired} = PendingInvite.cancel(socket.assigns.pending_invites, channel)
 
     socket = assign(socket, pending_invites: pending)
 
     socket =
       if expired do
         nickname = socket.assigns.session.nickname
-        try_remove_invite_exception(channel, nickname)
+        PendingInvite.remove_exception(channel, nickname)
 
         push_status_message(
           socket,
@@ -496,24 +496,5 @@ defmodule RetroHexChatWeb.ChatLive.TimerHandlers do
       true ->
         socket
     end
-  end
-
-  defp cancel_existing_invite(pending, channel) do
-    case Enum.split_with(pending, &(&1.channel == channel)) do
-      {[existing], rest} ->
-        Process.cancel_timer(existing.timer_ref)
-        {rest, existing}
-
-      {[], _} ->
-        {pending, nil}
-    end
-  end
-
-  defp try_remove_invite_exception(channel, nickname) do
-    Server.remove_invite_exception(channel, nickname, nickname)
-  rescue
-    _ -> :ok
-  catch
-    :exit, _ -> :ok
   end
 end

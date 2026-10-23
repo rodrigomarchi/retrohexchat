@@ -87,7 +87,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.PerformDialog do
 
       {:error, reason} ->
         {:noreply,
-         bubble_error(
+         DialogIsland.bubble_error(
            socket,
            dgettext("chat", "Failed to add perform command: %{reason}", reason: reason)
          )}
@@ -201,8 +201,6 @@ defmodule RetroHexChatWeb.ChatLive.Components.PerformDialog do
     send(self(), {:perform_dialog_session, session})
     assign(socket, session: session)
   end
-
-  defp bubble_error(socket, message), do: DialogIsland.bubble(socket, :error_event, message)
 
   # A row sends its position as a `phx-value-*` string; the list keys on the
   # integer.
