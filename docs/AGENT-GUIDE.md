@@ -774,3 +774,41 @@ a move that renames one is caught before commit.
 ## 19. Surfaces: an address of their own
 
 **→ [`guide/surfaces.md`](guide/surfaces.md)** — Read when adding a screen that can live in a browser tab of its own, or changing how one is reached. **No surface has a mount inside the chat**: a screen with an address is reached only at that address, through the card the chat writes into the conversation.
+
+---
+
+## 20. Before writing a helper
+
+Most duplication in this codebase began as a private function written beside one
+that already existed. Before adding a helper, look here for its home; extend the
+canonical module instead of copying it.
+
+| Need | Canonical home |
+|---|---|
+| PubSub topic names | `RetroHexChat.Topics` |
+| Nickname folding, comparison, `matches/2` in queries | `RetroHexChat.Nickname` |
+| Channel name rules | `RetroHexChat.Channels.Name` |
+| "Is there anything in this string", truncation, word count | `RetroHexChat.Text` |
+| HTML escaping of chat content | `RetroHexChat.Chat.Content.Html` |
+| Dates and times shown to a reader | `RetroHexChat.Chat.TimeFormatter`, `RetroHexChatWeb.App.ChatHelpers` |
+| Reading an event's params: integers, yes/no, atom-or-string keys | `RetroHexChatWeb.Params` |
+| A dialog island's id, initial assigns, mount, load-once update | `use RetroHexChatWeb.ChatLive.Components.DialogIsland` |
+| Admin windows: form params, `/admin` dispatch, result strip | `RetroHexChatWeb.ChatLive.AdminOps` |
+| Empty and loading list states | `RetroHexChatWeb.Components.UI.ListStates` |
+| A confirmation | `RetroHexChatWeb.Components.UI.ConfirmDialog` |
+| A sunken frame | `RetroHexChatWeb.Components.UI.Inset` |
+| List-and-editor panel attributes | `RetroHexChatWeb.Components.UI.EditorAttrs` |
+| A `/` command's declaration (help, tooltip, category) | `use RetroHexChat.Commands.Handler` |
+| A command aimed at a person or a message in the channel | `RetroHexChat.Commands.Handler.Guards` |
+| Starting or stopping a bot | `RetroHexChat.Bots.Lifecycle` |
+| A bot capability's subcommand parsing | `RetroHexChat.Bots.Capability.subcommand/4` |
+| A maintenance Oban worker's options | `use RetroHexChat.Jobs.MaintenanceWorker` |
+| Arcade game controls | `RetroHexChat.Arcade.Content.Controls` |
+| Editable-target checks in JS | `js/lib/ui/dom.js` |
+| Game networking, audio, HUD, lifecycle | `js/lib/games/net_protocol.js`, `synth.js`, `hud.js`, `js/lib/game_engine.js` |
+
+**Measure before and after a feature.** `make dup.report` (about 15 s) writes
+`reports/duplication/<UTC>.{json,md}` and compares it with the previous run; pass
+`BASELINE=reports/duplication/<file>.json` to compare with a fixed point. A
+feature should not raise exact clones, near-miss clones or the JS duplication
+percentage; when it does, the report names the files.
