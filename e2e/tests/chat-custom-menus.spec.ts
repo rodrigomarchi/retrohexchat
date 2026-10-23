@@ -1,6 +1,7 @@
 /**
  * @section L - Config, Scripting, Timers, Custom Menus
  * @flow L18 [done] `/popups` custom menu dialog and custom menu execution (features P2)
+ * @flow L18b [done] A tabbed window opened after the page loaded marks its first tab active and shows only that tab's panel
  *
  * These @flow lines are the source of truth for e2e/TEST_CATALOG.md.
  * Edit them here, then run `make e2e.catalog` to regenerate the index.
@@ -99,4 +100,40 @@ test.describe("Custom menus", () => {
       await closeUsers([owner, peer]);
     }
   });
+});
+
+// The window manager builds a window opened later off the document and then
+// puts it in place; the tabs mark their default tab as the window mounts, so
+// they have to find it inside themselves, not by id in a document they are
+// not in yet.
+test("a tabbed window opened after load marks its first tab and shows only its panel (L18b)", async ({
+  browser,
+}) => {
+  const user = await newSignedInUser(browser, "tab");
+  try {
+    await user.chat.sendMessage("/popups");
+    const dialog = user.chat.customMenusDialog;
+    await expect(dialog).toBeVisible();
+
+    await expect(
+      dialog.locator('.tabs-trigger[data-state="active"]'),
+    ).toHaveAttribute("data-target", "nicklist");
+    await expect(dialog.locator(".tabs-content:visible")).toHaveCount(1);
+    await expect(
+      dialog.locator('.tabs-content[value="nicklist"]'),
+    ).toBeVisible();
+
+    // A tab picked by hand stays picked when the server patches the window.
+    await dialog.locator('.tabs-trigger[data-target="chat"]').click();
+    await expect(
+      dialog.locator('.tabs-trigger[data-state="active"]'),
+    ).toHaveAttribute("data-target", "chat");
+    await user.chat.sendMessage("/me patches the window");
+    await expect(
+      dialog.locator('.tabs-trigger[data-state="active"]'),
+    ).toHaveAttribute("data-target", "chat");
+    await expect(dialog.locator(".tabs-content:visible")).toHaveCount(1);
+  } finally {
+    await user.ctx.close();
+  }
 });

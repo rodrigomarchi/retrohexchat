@@ -82,6 +82,7 @@ defmodule RetroHexChatWeb.Components.UI.Tabs do
         ])
       }
       data-target={@value}
+      data-state={@builder[:default] == @value && "active"}
       {@rest}
       phx-click={@click}
     >
@@ -133,7 +134,11 @@ defmodule RetroHexChatWeb.Components.UI.Tabs do
 
   # Set selected tab to active
   # show appropriate tab content (uses hidden class instead of inline style
-  # so initial server-rendered state survives LiveView re-renders)
+  # so initial server-rendered state survives LiveView re-renders). The
+  # default tab's state is also rendered by the server (`tabs_trigger`,
+  # `tabs_content`): a window opened after the page loaded is built off the
+  # document and put in place afterwards, and this mount command does not
+  # reach it.
   defp show_tab(root, value) do
     %JS{}
     |> JS.set_attribute({"data-state", ""}, to: "##{root} .tabs-trigger[data-state=active]")
