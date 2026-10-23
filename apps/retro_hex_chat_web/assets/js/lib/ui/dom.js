@@ -1,3 +1,5 @@
+import { log } from "../logger.js";
+
 /**
  * DOM interaction utilities shared across hooks.
  *
@@ -50,9 +52,28 @@ export function isEditableTarget(target) {
  * Write text to the clipboard. Thin wrapper so hooks don't reach for
  * navigator.clipboard directly (a controller-in-disguise primitive).
  *
+ * It always answers with a promise: a page without the async clipboard (an
+ * insecure origin) rejects instead of throwing out of reach of the caller's
+ * `.catch`. With a `fallback` (`document.execCommand("copy")` on a selection,
+ * say), a refused or missing clipboard runs it and resolves.
+ *
  * @param {string} text
+ * @param {{ fallback?: () => void }} [options]
  * @returns {Promise<void>}
  */
-export function copyText(text) {
-  return navigator.clipboard.writeText(text);
+export function copyText(text, { fallback } = {}) {
+  const clipboard = typeof navigator === "undefined" ? undefined : navigator.clipboard;
+
+  if (!clipboard || typeof clipboard.writeText !== "function") {
+    if (!fallback) return Promise.reject(new Error("the clipboard is not available here"));
+    fallback();
+    return Promise.resolve();
+  }
+
+  if (!fallback) return clipboard.writeText(text);
+
+  return clipboard.writeText(text).catch((error) => {
+    log.debug("[clipboard] write refused, falling back", error);
+    fallback();
+  });
 }

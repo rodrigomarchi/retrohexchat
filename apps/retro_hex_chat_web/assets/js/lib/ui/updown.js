@@ -12,6 +12,8 @@
  * focus to the button, and the caret belongs in the field.
  */
 
+import { log } from "../logger.js";
+
 const REPEAT_DELAY_MS = 400;
 const REPEAT_INTERVAL_MS = 60;
 
@@ -32,7 +34,7 @@ export function stepNumberField(input, direction) {
   } catch (error) {
     // `stepUp` throws on a field whose value is not a number yet (or whose type
     // was changed under it). Start from the bound the arrow points away from.
-    console.debug("[updown] step refused, starting from the field's bound", error);
+    log.debug("[updown] step refused, starting from the field's bound", error);
     input.value = direction === "up" ? input.min || "0" : input.max || "0";
   }
 

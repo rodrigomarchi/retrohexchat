@@ -17,6 +17,9 @@
  * selection on the page would copy the menu's own label as often as a message.
  */
 
+import { log } from "../logger.js";
+import { copyText } from "./dom.js";
+
 const CHAT_LOG_ID = "chat-messages";
 
 /** The selected text, but only when the selection lies inside the chat log. */
@@ -39,7 +42,7 @@ export function selectedChatLogText() {
     // A range can go stale between the check and the read if the log patched
     // underneath it. Treating that as "nothing selected" is right, but it is
     // still worth saying so rather than swallowing it.
-    console.debug("[copy_selection] unreadable selection range", error);
+    log.debug("[copy_selection] unreadable selection range", error);
     return "";
   }
 }
@@ -74,15 +77,7 @@ export function copyCurrentSelection() {
   const text = selectedChatLogText();
   if (!text) return;
 
-  if (navigator.clipboard && typeof navigator.clipboard.writeText === "function") {
-    navigator.clipboard.writeText(text).catch((error) => {
-      console.debug("[copy_selection] clipboard write refused, falling back", error);
-      copySelectionFallback();
-    });
-    return;
-  }
-
-  copySelectionFallback();
+  copyText(text, { fallback: copySelectionFallback });
 }
 
 function copySelectionFallback() {

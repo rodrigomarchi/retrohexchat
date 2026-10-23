@@ -1,4 +1,4 @@
-import { findClosestWithData, isEditableTarget } from "../../../js/lib/ui/dom.js";
+import { copyText, findClosestWithData, isEditableTarget } from "../../../js/lib/ui/dom.js";
 
 describe("findClosestWithData", () => {
   it("returns data attribute from matching ancestor", () => {
@@ -80,5 +80,46 @@ describe("isEditableTarget", () => {
     const host = document.createElement("div");
     host.innerHTML = '<div contenteditable="false"></div>';
     expect(isEditableTarget(host.firstChild)).toBe(false);
+  });
+});
+
+describe("copyText", () => {
+  afterEach(() => vi.unstubAllGlobals());
+
+  it("writes to the clipboard", async () => {
+    const writeText = vi.fn().mockResolvedValue(undefined);
+    vi.stubGlobal("navigator", { clipboard: { writeText } });
+
+    await copyText("hello");
+
+    expect(writeText).toHaveBeenCalledWith("hello");
+  });
+
+  it("runs the fallback when the clipboard refuses, and resolves", async () => {
+    vi.stubGlobal("navigator", {
+      clipboard: { writeText: vi.fn().mockRejectedValue(new Error("no")) },
+    });
+    const fallback = vi.fn();
+
+    await copyText("hello", { fallback });
+
+    expect(fallback).toHaveBeenCalledOnce();
+  });
+
+  // A page without the async clipboard (an insecure origin) used to throw
+  // synchronously, out of reach of the caller's .catch.
+  it("rejects, rather than throwing, when there is no clipboard", async () => {
+    vi.stubGlobal("navigator", {});
+
+    await expect(copyText("hello")).rejects.toThrow("clipboard");
+  });
+
+  it("runs the fallback when there is no clipboard", async () => {
+    vi.stubGlobal("navigator", {});
+    const fallback = vi.fn();
+
+    await copyText("hello", { fallback });
+
+    expect(fallback).toHaveBeenCalledOnce();
   });
 });

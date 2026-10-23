@@ -44,6 +44,7 @@ import {
 } from "../../lib/chat/interactive.js";
 import { showFeedbackToast } from "../../lib/notifications/feedback_toast.js";
 import { copyText } from "../../lib/ui/dom.js";
+import { log } from "../../lib/logger.js";
 import { t } from "../../lib/i18n.js";
 import { createLongPress } from "../../lib/input/long_press.js";
 import { createMarkdownImageRevealer } from "../../lib/chat/markdown_images.js";
@@ -135,14 +136,14 @@ const ChatViewportHook = {
     this.handleEvent("dismiss_hover_card", () => cancelNickHoverTimer());
 
     this.handleEvent("clipboard_copy", ({ text }) => {
-      copyText(text).then(() => showFeedbackToast(this.el, t("Copied!"), 2000));
+      this.copyAndSay(text);
     });
 
     this.handleEvent("clipboard_copy_selection", () => {
       const selection = window.getSelection().toString();
       if (!selection) return;
 
-      copyText(selection).then(() => showFeedbackToast(this.el, t("Copied!"), 2000));
+      this.copyAndSay(selection);
     });
 
     this.handleEvent("open_url", ({ url }) => {
@@ -355,6 +356,13 @@ const ChatViewportHook = {
     cancelNickHoverTimer();
     removeTooltip();
     this.detectAndPushContextMenu({ target, clientX: x, clientY: y }, msgEl);
+  },
+
+  // A refused clipboard is said out loud: the menu entry looked like it worked.
+  copyAndSay(text) {
+    copyText(text)
+      .then(() => showFeedbackToast(this.el, t("Copied!"), 2000))
+      .catch((error) => log.warn("[chat] the browser refused the clipboard", error));
   },
 };
 
