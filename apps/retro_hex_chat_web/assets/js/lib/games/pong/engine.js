@@ -4,12 +4,11 @@
  * @module games/pong_engine
  */
 
-import { GameEngine } from "../../game_engine.js";
+import { GameEngine, keymap } from "../../game_engine.js";
 import { createPongAI, normalizePongAIDifficulty } from "./ai.js";
 import {
   MSG_TYPE,
   PHASE,
-  INPUT_KEY,
   encodeGameState,
   decodeGameState,
   encodeGameEnd,
@@ -57,6 +56,11 @@ export class PongEngine extends GameEngine {
   static FINAL_PHASE = PHASE.FINISHED;
 
   static INPUT_BITS = { up: 0, down: 1 };
+
+  static KEYMAP = keymap({
+    up: ["ArrowUp", "w", "W"],
+    down: ["ArrowDown", "s", "S"],
+  });
 
   static INTERPOLATION = { keys: ["ballX", "ballY", "paddle1Y", "paddle2Y"] };
 
@@ -174,30 +178,6 @@ export class PongEngine extends GameEngine {
         break;
       }
     }
-  }
-
-  _handleKeyDown(e) {
-    const keyCode = this._mapKey(e.key);
-    if (keyCode === null) return;
-    e.preventDefault();
-
-    if (keyCode === INPUT_KEY.UP) this.localInputs.up = true;
-    if (keyCode === INPUT_KEY.DOWN) this.localInputs.down = true;
-  }
-
-  _handleKeyUp(e) {
-    const keyCode = this._mapKey(e.key);
-    if (keyCode === null) return;
-
-    if (keyCode === INPUT_KEY.UP) this.localInputs.up = false;
-    if (keyCode === INPUT_KEY.DOWN) this.localInputs.down = false;
-  }
-
-  /** Map keyboard key to INPUT_KEY enum. */
-  _mapKey(key) {
-    if (key === "ArrowUp" || key === "w" || key === "W") return INPUT_KEY.UP;
-    if (key === "ArrowDown" || key === "s" || key === "S") return INPUT_KEY.DOWN;
-    return null;
   }
 
   /** Host: start countdown phase. */

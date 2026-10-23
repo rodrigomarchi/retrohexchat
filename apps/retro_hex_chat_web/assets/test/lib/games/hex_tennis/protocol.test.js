@@ -2,7 +2,6 @@ import { describe, it, expect } from "vitest";
 import {
   MSG_TYPE,
   PHASE,
-  INPUT_KEY,
   GAME_MODE,
   ANNOUNCEMENT,
   OUT_TYPE,
@@ -374,15 +373,6 @@ describe("tennis_protocol", () => {
       expect(Object.keys(PHASE)).toHaveLength(7);
       expect(PHASE.WAITING).toBe(0);
       expect(PHASE.GAME_OVER).toBe(6);
-    });
-
-    it("INPUT_KEY enum has 5 values", () => {
-      expect(Object.keys(INPUT_KEY)).toHaveLength(5);
-      expect(INPUT_KEY.UP).toBe(0);
-      expect(INPUT_KEY.DOWN).toBe(1);
-      expect(INPUT_KEY.LEFT).toBe(2);
-      expect(INPUT_KEY.RIGHT).toBe(3);
-      expect(INPUT_KEY.SERVE).toBe(4);
     });
 
     it("GAME_MODE enum has 3 values", () => {

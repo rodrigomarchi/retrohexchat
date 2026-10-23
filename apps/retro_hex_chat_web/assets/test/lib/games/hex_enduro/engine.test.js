@@ -3,7 +3,6 @@ import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
 import {
   PHASE,
   MSG_TYPE,
-  INPUT_KEY,
   GAME_MODE,
   EVENT,
   encodeGameState,
@@ -388,30 +387,30 @@ describe("HexEnduroEngine", () => {
   describe("input handling", () => {
     it("maps arrow keys to input codes", () => {
       engine = new HexEnduroEngine(canvas, channel, "hex_enduro", true, null);
-      expect(engine._mapKey("ArrowLeft")).toBe(INPUT_KEY.LEFT);
-      expect(engine._mapKey("ArrowRight")).toBe(INPUT_KEY.RIGHT);
-      expect(engine._mapKey("ArrowUp")).toBe(INPUT_KEY.ACCEL);
-      expect(engine._mapKey("ArrowDown")).toBe(INPUT_KEY.BRAKE);
-      expect(engine._mapKey(" ")).toBe(INPUT_KEY.TURBO);
-      expect(engine._mapKey("Shift")).toBe(INPUT_KEY.TURBO);
+      expect(engine._keyInput({ key: "ArrowLeft" })).toBe("left");
+      expect(engine._keyInput({ key: "ArrowRight" })).toBe("right");
+      expect(engine._keyInput({ key: "ArrowUp" })).toBe("accel");
+      expect(engine._keyInput({ key: "ArrowDown" })).toBe("brake");
+      expect(engine._keyInput({ key: " " })).toBe("turbo");
+      expect(engine._keyInput({ key: "Shift" })).toBe("turbo");
     });
 
     it("maps WASD keys", () => {
       engine = new HexEnduroEngine(canvas, channel, "hex_enduro", true, null);
-      expect(engine._mapKey("a")).toBe(INPUT_KEY.LEFT);
-      expect(engine._mapKey("A")).toBe(INPUT_KEY.LEFT);
-      expect(engine._mapKey("d")).toBe(INPUT_KEY.RIGHT);
-      expect(engine._mapKey("D")).toBe(INPUT_KEY.RIGHT);
-      expect(engine._mapKey("w")).toBe(INPUT_KEY.ACCEL);
-      expect(engine._mapKey("W")).toBe(INPUT_KEY.ACCEL);
-      expect(engine._mapKey("s")).toBe(INPUT_KEY.BRAKE);
-      expect(engine._mapKey("S")).toBe(INPUT_KEY.BRAKE);
+      expect(engine._keyInput({ key: "a" })).toBe("left");
+      expect(engine._keyInput({ key: "A" })).toBe("left");
+      expect(engine._keyInput({ key: "d" })).toBe("right");
+      expect(engine._keyInput({ key: "D" })).toBe("right");
+      expect(engine._keyInput({ key: "w" })).toBe("accel");
+      expect(engine._keyInput({ key: "W" })).toBe("accel");
+      expect(engine._keyInput({ key: "s" })).toBe("brake");
+      expect(engine._keyInput({ key: "S" })).toBe("brake");
     });
 
     it("returns null for unmapped keys", () => {
       engine = new HexEnduroEngine(canvas, channel, "hex_enduro", true, null);
-      expect(engine._mapKey("Enter")).toBeNull();
-      expect(engine._mapKey("z")).toBeNull();
+      expect(engine._keyInput({ key: "Enter" })).toBeNull();
+      expect(engine._keyInput({ key: "z" })).toBeNull();
     });
 
     it("host sets local inputs on keydown", () => {

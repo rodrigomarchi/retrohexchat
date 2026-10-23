@@ -8,13 +8,12 @@
  * Peer sends input only and renders received state.
  */
 
-import { GameEngine } from "../../game_engine.js";
+import { GameEngine, keymap } from "../../game_engine.js";
 import { normalizeFrostAIDifficulty } from "./difficulty.js";
 import {
   MSG_TYPE,
   PHASE,
   GAME_MODE,
-  INPUT_KEY,
   EVENT,
   getMessageType,
   encodeGameState,
@@ -80,6 +79,13 @@ export class HexFrostEngine extends GameEngine {
   static FINAL_PHASE = PHASE.FINISHED;
 
   static INPUT_BITS = { left: 0, right: 1, up: 2, down: 3 };
+
+  static KEYMAP = keymap({
+    left: ["ArrowLeft", "a", "A"],
+    right: ["ArrowRight", "d", "D"],
+    up: ["ArrowUp", "w", "W"],
+    down: ["ArrowDown", "s", "S"],
+  });
 
   /**
    * @param {HTMLCanvasElement} canvas
@@ -185,51 +191,6 @@ export class HexFrostEngine extends GameEngine {
   }
 
   // ── Input handling ───────────────────────────────────────────
-
-  _handleKeyDown(event) {
-    const key = this._mapKey(event);
-    if (key === null) return;
-    event.preventDefault();
-
-    if (key === INPUT_KEY.LEFT) this.localInputs.left = true;
-    if (key === INPUT_KEY.RIGHT) this.localInputs.right = true;
-    if (key === INPUT_KEY.UP) this.localInputs.up = true;
-    if (key === INPUT_KEY.DOWN) this.localInputs.down = true;
-  }
-
-  _handleKeyUp(event) {
-    const key = this._mapKey(event);
-    if (key === null) return;
-    event.preventDefault();
-
-    if (key === INPUT_KEY.LEFT) this.localInputs.left = false;
-    if (key === INPUT_KEY.RIGHT) this.localInputs.right = false;
-    if (key === INPUT_KEY.UP) this.localInputs.up = false;
-    if (key === INPUT_KEY.DOWN) this.localInputs.down = false;
-  }
-
-  _mapKey(event) {
-    switch (event.key) {
-      case "ArrowLeft":
-      case "a":
-      case "A":
-        return INPUT_KEY.LEFT;
-      case "ArrowRight":
-      case "d":
-      case "D":
-        return INPUT_KEY.RIGHT;
-      case "ArrowUp":
-      case "w":
-      case "W":
-        return INPUT_KEY.UP;
-      case "ArrowDown":
-      case "s":
-      case "S":
-        return INPUT_KEY.DOWN;
-      default:
-        return null;
-    }
-  }
 
   // ── Game lifecycle ───────────────────────────────────────────
 

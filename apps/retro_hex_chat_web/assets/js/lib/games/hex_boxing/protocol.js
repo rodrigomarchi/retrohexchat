@@ -25,15 +25,6 @@ export const PHASE = {
   MATCH_OVER: 5,
 };
 
-// Input key enum
-export const INPUT_KEY = {
-  UP: 0,
-  DOWN: 1,
-  LEFT: 2,
-  RIGHT: 3,
-  PUNCH: 4,
-};
-
 // Punch state enum
 export const PUNCH_STATE = {
   IDLE: 0,

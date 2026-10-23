@@ -4,7 +4,6 @@ import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
 import {
   PHASE,
   MSG_TYPE,
-  INPUT_KEY,
   GAME_MODE,
   encodeGameState,
   encodeGameEnd,
@@ -425,40 +424,40 @@ describe("HexInvadersEngine", () => {
   // ── Input Handling ──
 
   describe("input handling", () => {
-    describe("_mapKey", () => {
+    describe("KEYMAP", () => {
       it("maps ArrowLeft to LEFT", () => {
         engine = new HexInvadersEngine(canvas, channel, "hex_invaders", true, null);
-        expect(engine._mapKey("ArrowLeft")).toBe(INPUT_KEY.LEFT);
+        expect(engine._keyInput({ key: "ArrowLeft" })).toBe("left");
       });
 
       it("maps 'a' and 'A' to LEFT", () => {
         engine = new HexInvadersEngine(canvas, channel, "hex_invaders", true, null);
-        expect(engine._mapKey("a")).toBe(INPUT_KEY.LEFT);
-        expect(engine._mapKey("A")).toBe(INPUT_KEY.LEFT);
+        expect(engine._keyInput({ key: "a" })).toBe("left");
+        expect(engine._keyInput({ key: "A" })).toBe("left");
       });
 
       it("maps ArrowRight to RIGHT", () => {
         engine = new HexInvadersEngine(canvas, channel, "hex_invaders", true, null);
-        expect(engine._mapKey("ArrowRight")).toBe(INPUT_KEY.RIGHT);
+        expect(engine._keyInput({ key: "ArrowRight" })).toBe("right");
       });
 
       it("maps 'd' and 'D' to RIGHT", () => {
         engine = new HexInvadersEngine(canvas, channel, "hex_invaders", true, null);
-        expect(engine._mapKey("d")).toBe(INPUT_KEY.RIGHT);
-        expect(engine._mapKey("D")).toBe(INPUT_KEY.RIGHT);
+        expect(engine._keyInput({ key: "d" })).toBe("right");
+        expect(engine._keyInput({ key: "D" })).toBe("right");
       });
 
       it("maps Space to FIRE", () => {
         engine = new HexInvadersEngine(canvas, channel, "hex_invaders", true, null);
-        expect(engine._mapKey(" ")).toBe(INPUT_KEY.FIRE);
-        expect(engine._mapKey("Spacebar")).toBe(INPUT_KEY.FIRE);
+        expect(engine._keyInput({ key: " " })).toBe("fire");
+        expect(engine._keyInput({ key: "Spacebar" })).toBe("fire");
       });
 
       it("returns null for unrecognized keys", () => {
         engine = new HexInvadersEngine(canvas, channel, "hex_invaders", true, null);
-        expect(engine._mapKey("x")).toBeNull();
-        expect(engine._mapKey("Enter")).toBeNull();
-        expect(engine._mapKey("Shift")).toBeNull();
+        expect(engine._keyInput({ key: "x" })).toBeNull();
+        expect(engine._keyInput({ key: "Enter" })).toBeNull();
+        expect(engine._keyInput({ key: "Shift" })).toBeNull();
       });
 
       it("prevents browser defaults only for captured game keys", () => {

@@ -5,13 +5,12 @@
  */
 import { log } from "../../logger.js";
 
-import { GameEngine } from "../../game_engine.js";
+import { GameEngine, keymap } from "../../game_engine.js";
 import { normalizeEnduroAIDifficulty } from "./difficulty.js";
 import {
   MSG_TYPE,
   PHASE,
   GAME_MODE,
-  INPUT_KEY,
   EVENT,
   encodeGameState,
   decodeGameState,
@@ -77,6 +76,14 @@ export class HexEnduroEngine extends GameEngine {
 
   static INPUT_BITS = { left: 0, right: 1, accel: 2, brake: 3, turbo: 4 };
 
+  static KEYMAP = keymap({
+    left: ["ArrowLeft", "a", "A"],
+    right: ["ArrowRight", "d", "D"],
+    accel: ["ArrowUp", "w", "W"],
+    brake: ["ArrowDown", "s", "S"],
+    turbo: [" ", "Shift"],
+  });
+
   constructor(canvas, channel, gameId, isHost, onGameEnd, options = {}) {
     super(canvas, channel, gameId, isHost, options);
     this.onGameEnd = onGameEnd;
@@ -129,68 +136,6 @@ export class HexEnduroEngine extends GameEngine {
   }
 
   // ── Input Handling ──
-
-  _mapKey(key) {
-    switch (key) {
-      case "ArrowLeft":
-      case "a":
-      case "A":
-        return INPUT_KEY.LEFT;
-      case "ArrowRight":
-      case "d":
-      case "D":
-        return INPUT_KEY.RIGHT;
-      case "ArrowUp":
-      case "w":
-      case "W":
-        return INPUT_KEY.ACCEL;
-      case "ArrowDown":
-      case "s":
-      case "S":
-        return INPUT_KEY.BRAKE;
-      case " ":
-      case "Shift":
-        return INPUT_KEY.TURBO;
-      default:
-        return null;
-    }
-  }
-
-  _handleKeyDown(e) {
-    const k = this._mapKey(e.key);
-    if (k === null) return;
-    e.preventDefault();
-
-    this._setInput(this.localInputs, k, true);
-  }
-
-  _handleKeyUp(e) {
-    const k = this._mapKey(e.key);
-    if (k === null) return;
-    e.preventDefault();
-
-    this._setInput(this.localInputs, k, false);
-  }
-
-  _setInput(inputs, keyCode, pressed) {
-    switch (keyCode) {
-      case INPUT_KEY.LEFT:
-        inputs.left = pressed;
-        break;
-      case INPUT_KEY.RIGHT:
-        inputs.right = pressed;
-        break;
-      case INPUT_KEY.ACCEL:
-        inputs.accel = pressed;
-        break;
-      case INPUT_KEY.BRAKE:
-        inputs.brake = pressed;
-        break;
-      case INPUT_KEY.TURBO:
-        inputs.turbo = pressed;
-        break;
-    }
-  }
 
   // ── Network Messages ──
 

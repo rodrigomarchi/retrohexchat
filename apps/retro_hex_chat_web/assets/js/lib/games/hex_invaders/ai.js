@@ -15,8 +15,8 @@ import {
   DIVIDER_X,
   HALF_W,
 } from "./physics.js";
+import { clamp, normalizeDifficulty } from "../ai_common.js";
 
-const DEFAULT_DIFFICULTY = "normal";
 const UFO_W = 24;
 const NEUTRAL_INPUTS = Object.freeze({
   left: false,
@@ -68,12 +68,7 @@ export const INVADERS_AI_DIFFICULTIES = Object.freeze({
  * @returns {"easy"|"normal"|"hard"}
  */
 export function normalizeInvadersAIDifficulty(difficulty) {
-  if (typeof difficulty !== "string") return DEFAULT_DIFFICULTY;
-
-  const key = difficulty.toLowerCase();
-  return Object.prototype.hasOwnProperty.call(INVADERS_AI_DIFFICULTIES, key)
-    ? key
-    : DEFAULT_DIFFICULTY;
+  return normalizeDifficulty(difficulty, INVADERS_AI_DIFFICULTIES);
 }
 
 /**
@@ -359,16 +354,6 @@ function dodgeTarget(state, player, threat, config) {
     kind: "dodge",
     x: clamp(targetX, bounds.min, bounds.max),
   };
-}
-
-/**
- * @param {number} value
- * @param {number} min
- * @param {number} max
- * @returns {number}
- */
-function clamp(value, min, max) {
-  return Math.max(min, Math.min(max, value));
 }
 
 /**

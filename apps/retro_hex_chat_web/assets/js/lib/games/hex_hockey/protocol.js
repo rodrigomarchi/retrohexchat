@@ -33,14 +33,6 @@ export const GAME_MODE = {
   SHOWDOWN: 2,
 };
 
-export const INPUT_KEY = {
-  LEFT: 0,
-  RIGHT: 1,
-  UP: 2,
-  DOWN: 3,
-  ACTION: 4,
-};
-
 // Bitmask flags for audio event triggers (16-bit, sent once per frame).
 export const EVENT = {
   GOAL_P1: 1 << 0,

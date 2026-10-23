@@ -2,7 +2,6 @@ import { describe, it, expect } from "vitest";
 import {
   MSG_TYPE,
   PHASE,
-  INPUT_KEY,
   GAME_MODE,
   WEATHER,
   CAR_TYPE,
@@ -413,14 +412,6 @@ describe("Hex Enduro Protocol", () => {
       for (const v of values) {
         expect(v & (v - 1)).toBe(0); // power of 2
       }
-    });
-
-    it("INPUT_KEY has all expected values", () => {
-      expect(INPUT_KEY.LEFT).toBe(0);
-      expect(INPUT_KEY.RIGHT).toBe(1);
-      expect(INPUT_KEY.ACCEL).toBe(2);
-      expect(INPUT_KEY.BRAKE).toBe(3);
-      expect(INPUT_KEY.TURBO).toBe(4);
     });
   });
 

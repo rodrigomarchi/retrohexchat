@@ -637,7 +637,7 @@ describe("StarDuelEngine", () => {
       engine = new StarDuelEngine(canvas, channel, "star_duel", true, null);
       engine.start();
       engine._onKeyDown({ key: "ArrowLeft", preventDefault: vi.fn(), repeat: false, target: null });
-      engine._onKeyUp({ key: "ArrowLeft", repeat: false, target: null });
+      engine._onKeyUp({ key: "ArrowLeft", repeat: false, target: null, preventDefault: () => {} });
       expect(engine.localInputs.rotateLeft).toBe(false);
     });
 
@@ -668,7 +668,7 @@ describe("StarDuelEngine", () => {
 
       engine._onKeyDown({ key: "ArrowUp", preventDefault: vi.fn(), repeat: false, target: null });
       channel.send.mockClear();
-      engine._onKeyUp({ key: "ArrowUp", repeat: false, target: null });
+      engine._onKeyUp({ key: "ArrowUp", repeat: false, target: null, preventDefault: () => {} });
 
       const lastCall = channel.send.mock.calls[channel.send.mock.calls.length - 1];
       const buf = lastCall[0];

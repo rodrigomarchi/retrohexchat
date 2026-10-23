@@ -4,12 +4,11 @@
  * @module games/warlords_engine
  */
 
-import { GameEngine } from "../../game_engine.js";
+import { GameEngine, keymap } from "../../game_engine.js";
 import { createWarlordAI, normalizeWarlordAIDifficulty } from "./ai.js";
 import {
   MSG_TYPE,
   PHASE,
-  INPUT_KEY,
   encodeGameState,
   decodeGameState,
   encodeGameEnd,
@@ -64,6 +63,12 @@ export class WarlordEngine extends GameEngine {
   static FINAL_PHASE = PHASE.FINISHED;
 
   static INPUT_BITS = { up: 0, down: 1, space: 2 };
+
+  static KEYMAP = keymap({
+    up: ["ArrowUp", "w", "W"],
+    down: ["ArrowDown", "s", "S"],
+    space: [" "],
+  });
 
   static INTERPOLATION = {
     keys: ["fireballX", "fireballY", "shield1Y", "shield2Y"],
@@ -224,44 +229,6 @@ export class WarlordEngine extends GameEngine {
         this.gameState.p2Bricks[i].alive = decoded.p2BricksAlive[i] || false;
       }
     }
-  }
-
-  /** Override base key handling to send binary input on peer side. */
-  _handleKeyDown(e) {
-    const keyCode = this._mapKey(e.key);
-    if (keyCode === null) return;
-    e.preventDefault();
-
-    if (keyCode === INPUT_KEY.UP) this.localInputs.up = true;
-    if (keyCode === INPUT_KEY.DOWN) this.localInputs.down = true;
-    if (keyCode === INPUT_KEY.SPACE) this.localInputs.space = true;
-  }
-
-  _handleKeyUp(e) {
-    const keyCode = this._mapKey(e.key);
-    if (keyCode === null) return;
-
-    if (keyCode === INPUT_KEY.UP) this.localInputs.up = false;
-    if (keyCode === INPUT_KEY.DOWN) this.localInputs.down = false;
-    if (keyCode === INPUT_KEY.SPACE) {
-      this.localInputs.space = false;
-      // Host released space while holding fireball → release
-      if (this.isHost && this.gameState.caughtBy === 1) {
-        this.gameState = releaseBall(this.gameState, 1);
-        if (this.gameState.released) {
-          this.audio.playLaunch();
-          this.gameState.released = false;
-        }
-      }
-    }
-  }
-
-  /** Map keyboard key to INPUT_KEY enum. */
-  _mapKey(key) {
-    if (key === "ArrowUp" || key === "w" || key === "W") return INPUT_KEY.UP;
-    if (key === "ArrowDown" || key === "s" || key === "S") return INPUT_KEY.DOWN;
-    if (key === " ") return INPUT_KEY.SPACE;
-    return null;
   }
 
   /**
@@ -513,6 +480,18 @@ export class WarlordEngine extends GameEngine {
   }
 
   // ── Connection Resilience ──
+
+  _handleKeyUp(event) {
+    super._handleKeyUp(event);
+    // Host released space while holding fireball → release
+    if (this._keyInput(event) === "space" && this.isHost && this.gameState.caughtBy === 1) {
+      this.gameState = releaseBall(this.gameState, 1);
+      if (this.gameState.released) {
+        this.audio.playLaunch();
+        this.gameState.released = false;
+      }
+    }
+  }
 
   _disconnectResult() {
     return {

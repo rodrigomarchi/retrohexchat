@@ -25,14 +25,6 @@ export const PHASE = {
   MATCH_OVER: 5,
 };
 
-// Input key enum
-export const INPUT_KEY = {
-  ROTATE_LEFT: 0,
-  ROTATE_RIGHT: 1,
-  FORWARD: 2,
-  FIRE: 3,
-};
-
 // Game mode enum (protocol-ready for future modes)
 export const GAME_MODE = {
   CLASSIC: 0,

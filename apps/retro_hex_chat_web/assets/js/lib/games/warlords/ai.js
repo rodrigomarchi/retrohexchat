@@ -16,8 +16,8 @@ import {
   SHIELD_H,
   SHIELD_SPEED,
 } from "./physics.js";
+import { clamp, normalizeDifficulty } from "../ai_common.js";
 
-const DEFAULT_DIFFICULTY = "normal";
 const FIREBALL_MIN_Y = FIREBALL_SIZE / 2;
 const FIREBALL_MAX_Y = CANVAS_H - FIREBALL_SIZE / 2;
 const SHIELD_MIN_CENTER_Y = SHIELD_H / 2;
@@ -63,12 +63,7 @@ export const WARLORD_AI_DIFFICULTIES = Object.freeze({
  * @returns {"easy"|"normal"|"hard"}
  */
 export function normalizeWarlordAIDifficulty(difficulty) {
-  if (typeof difficulty !== "string") return DEFAULT_DIFFICULTY;
-
-  const key = difficulty.toLowerCase();
-  return Object.prototype.hasOwnProperty.call(WARLORD_AI_DIFFICULTIES, key)
-    ? key
-    : DEFAULT_DIFFICULTY;
+  return normalizeDifficulty(difficulty, WARLORD_AI_DIFFICULTIES);
 }
 
 /**
@@ -288,8 +283,4 @@ function randomUnit(rng) {
   const value = Number(rng());
   if (!Number.isFinite(value)) return 0;
   return Math.max(0, Math.min(value, 0.999999999));
-}
-
-function clamp(value, min, max) {
-  return Math.max(min, Math.min(max, value));
 }

@@ -2,7 +2,6 @@ import { describe, it, expect } from "vitest";
 import {
   MSG_TYPE,
   PHASE,
-  INPUT_KEY,
   encodeGameState,
   decodeGameState,
   encodeGameEnd,
@@ -237,12 +236,6 @@ describe("pong_protocol", () => {
       expect(Object.keys(PHASE)).toHaveLength(6);
       expect(PHASE.WAITING).toBe(0);
       expect(PHASE.FINISHED).toBe(5);
-    });
-
-    it("input key enum has 2 values", () => {
-      expect(Object.keys(INPUT_KEY)).toHaveLength(2);
-      expect(INPUT_KEY.UP).toBe(0);
-      expect(INPUT_KEY.DOWN).toBe(1);
     });
   });
 });

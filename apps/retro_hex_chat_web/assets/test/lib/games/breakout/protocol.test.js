@@ -2,7 +2,6 @@ import { describe, it, expect } from "vitest";
 import {
   MSG_TYPE,
   PHASE,
-  INPUT_KEY,
   TOTAL_BLOCKS,
   encodeBlockBitmap,
   decodeBlockBitmap,
@@ -222,10 +221,6 @@ describe("breakout_protocol", () => {
 
     it("has 6 phases", () => {
       expect(Object.keys(PHASE)).toHaveLength(6);
-    });
-
-    it("has 2 input keys", () => {
-      expect(Object.keys(INPUT_KEY)).toHaveLength(2);
     });
   });
 });

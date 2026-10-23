@@ -4,7 +4,6 @@ import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
 import {
   PHASE,
   GAME_MODE,
-  INPUT_KEY,
   MSG_TYPE,
   EVENT,
   encodeGameReady,
@@ -383,44 +382,44 @@ describe("HexSkiingEngine", () => {
   // ── Input Handling ──
 
   describe("input handling", () => {
-    describe("_mapKey", () => {
+    describe("KEYMAP", () => {
       it("maps ArrowLeft to LEFT", () => {
         const canvas = createMockCanvas();
         const channel = createMockChannel();
         engine = new HexSkiingEngine(canvas, channel, "hex_skiing", true, null);
-        expect(engine._mapKey({ key: "ArrowLeft" })).toBe(INPUT_KEY.LEFT);
+        expect(engine._keyInput({ key: "ArrowLeft" })).toBe("left");
       });
 
       it("maps 'a' and 'A' to LEFT", () => {
         const canvas = createMockCanvas();
         const channel = createMockChannel();
         engine = new HexSkiingEngine(canvas, channel, "hex_skiing", true, null);
-        expect(engine._mapKey({ key: "a" })).toBe(INPUT_KEY.LEFT);
-        expect(engine._mapKey({ key: "A" })).toBe(INPUT_KEY.LEFT);
+        expect(engine._keyInput({ key: "a" })).toBe("left");
+        expect(engine._keyInput({ key: "A" })).toBe("left");
       });
 
       it("maps ArrowRight to RIGHT", () => {
         const canvas = createMockCanvas();
         const channel = createMockChannel();
         engine = new HexSkiingEngine(canvas, channel, "hex_skiing", true, null);
-        expect(engine._mapKey({ key: "ArrowRight" })).toBe(INPUT_KEY.RIGHT);
+        expect(engine._keyInput({ key: "ArrowRight" })).toBe("right");
       });
 
       it("maps 'd' and 'D' to RIGHT", () => {
         const canvas = createMockCanvas();
         const channel = createMockChannel();
         engine = new HexSkiingEngine(canvas, channel, "hex_skiing", true, null);
-        expect(engine._mapKey({ key: "d" })).toBe(INPUT_KEY.RIGHT);
-        expect(engine._mapKey({ key: "D" })).toBe(INPUT_KEY.RIGHT);
+        expect(engine._keyInput({ key: "d" })).toBe("right");
+        expect(engine._keyInput({ key: "D" })).toBe("right");
       });
 
       it("returns null for unrecognized keys", () => {
         const canvas = createMockCanvas();
         const channel = createMockChannel();
         engine = new HexSkiingEngine(canvas, channel, "hex_skiing", true, null);
-        expect(engine._mapKey({ key: "ArrowUp" })).toBeNull();
-        expect(engine._mapKey({ key: " " })).toBeNull();
-        expect(engine._mapKey({ key: "Enter" })).toBeNull();
+        expect(engine._keyInput({ key: "ArrowUp" })).toBeNull();
+        expect(engine._keyInput({ key: " " })).toBeNull();
+        expect(engine._keyInput({ key: "Enter" })).toBeNull();
       });
     });
 

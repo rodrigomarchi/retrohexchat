@@ -14,8 +14,8 @@ import {
   TANK_RADIUS,
   WALL_SIZE,
 } from "./physics.js";
+import { clamp, normalizeDifficulty } from "../ai_common.js";
 
-const DEFAULT_DIFFICULTY = "normal";
 const TWO_PI = Math.PI * 2;
 const PATH_LOOKAHEAD_CELLS = 3;
 
@@ -76,12 +76,7 @@ export const PIXEL_TANKS_AI_DIFFICULTIES = Object.freeze({
  * @returns {"easy"|"normal"|"hard"}
  */
 export function normalizePixelTanksAIDifficulty(difficulty) {
-  if (typeof difficulty !== "string") return DEFAULT_DIFFICULTY;
-
-  const key = difficulty.toLowerCase();
-  return Object.prototype.hasOwnProperty.call(PIXEL_TANKS_AI_DIFFICULTIES, key)
-    ? key
-    : DEFAULT_DIFFICULTY;
+  return normalizeDifficulty(difficulty, PIXEL_TANKS_AI_DIFFICULTIES);
 }
 
 /**
@@ -523,8 +518,4 @@ function normalizeAngle(angle) {
   let value = angle % TWO_PI;
   if (value < 0) value += TWO_PI;
   return value;
-}
-
-function clamp(value, min, max) {
-  return Math.max(min, Math.min(max, value));
 }

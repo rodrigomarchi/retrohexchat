@@ -10,12 +10,11 @@
  */
 import { log } from "../../logger.js";
 
-import { GameEngine } from "../../game_engine.js";
+import { GameEngine, keymap } from "../../game_engine.js";
 import { normalizeRaidAIDifficulty } from "./difficulty.js";
 import {
   MSG_TYPE,
   PHASE,
-  INPUT_KEY,
   GAME_MODE,
   encodeGameState,
   decodeGameState,
@@ -89,6 +88,15 @@ export class HexRaidEngine extends GameEngine {
   static FINAL_PHASE = PHASE.FINISHED;
 
   static INPUT_BITS = { left: 0, right: 1, accel: 2, decel: 3, fire: 4, mine: 5 };
+
+  static KEYMAP = keymap({
+    left: ["ArrowLeft", "a", "A"],
+    right: ["ArrowRight", "d", "D"],
+    accel: ["ArrowUp", "w", "W"],
+    decel: ["ArrowDown", "s", "S"],
+    fire: [" "],
+    mine: ["Shift", "q", "Q"],
+  });
 
   /**
    * @param {HTMLCanvasElement} canvas
@@ -303,41 +311,6 @@ export class HexRaidEngine extends GameEngine {
     this.gameState.seed = decoded.seed;
 
     this._playPhaseAudio(prevPhase, decoded.phase);
-  }
-
-  _handleKeyDown(e) {
-    const keyCode = this._mapKey(e.key);
-    if (keyCode === null) return;
-    e.preventDefault();
-
-    this._setLocalInput(keyCode, true);
-  }
-
-  _handleKeyUp(e) {
-    const keyCode = this._mapKey(e.key);
-    if (keyCode === null) return;
-    e.preventDefault();
-
-    this._setLocalInput(keyCode, false);
-  }
-
-  _setLocalInput(keyCode, pressed) {
-    if (keyCode === INPUT_KEY.LEFT) this.localInputs.left = pressed;
-    else if (keyCode === INPUT_KEY.RIGHT) this.localInputs.right = pressed;
-    else if (keyCode === INPUT_KEY.ACCEL) this.localInputs.accel = pressed;
-    else if (keyCode === INPUT_KEY.DECEL) this.localInputs.decel = pressed;
-    else if (keyCode === INPUT_KEY.FIRE) this.localInputs.fire = pressed;
-    else if (keyCode === INPUT_KEY.MINE) this.localInputs.mine = pressed;
-  }
-
-  _mapKey(key) {
-    if (key === "ArrowLeft" || key === "a" || key === "A") return INPUT_KEY.LEFT;
-    if (key === "ArrowRight" || key === "d" || key === "D") return INPUT_KEY.RIGHT;
-    if (key === "ArrowUp" || key === "w" || key === "W") return INPUT_KEY.ACCEL;
-    if (key === "ArrowDown" || key === "s" || key === "S") return INPUT_KEY.DECEL;
-    if (key === " ") return INPUT_KEY.FIRE;
-    if (key === "Shift" || key === "q" || key === "Q") return INPUT_KEY.MINE;
-    return null;
   }
 
   // --- Phase management (host only) ---

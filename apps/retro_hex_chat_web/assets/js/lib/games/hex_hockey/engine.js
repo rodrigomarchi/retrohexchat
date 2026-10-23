@@ -9,13 +9,12 @@
  */
 import { log } from "../../logger.js";
 
-import { GameEngine } from "../../game_engine.js";
+import { GameEngine, keymap } from "../../game_engine.js";
 import { createHockeyAI, normalizeHockeyAIDifficulty } from "./ai.js";
 import {
   MSG_TYPE,
   PHASE,
   GAME_MODE,
-  INPUT_KEY,
   EVENT,
   getMessageType,
   encodeGameState,
@@ -85,6 +84,14 @@ export class HexHockeyEngine extends GameEngine {
   static FINAL_PHASE = PHASE.FINISHED;
 
   static INPUT_BITS = { left: 0, right: 1, up: 2, down: 3, action: 4 };
+
+  static KEYMAP = keymap({
+    left: ["ArrowLeft", "a", "A"],
+    right: ["ArrowRight", "d", "D"],
+    up: ["ArrowUp", "w", "W"],
+    down: ["ArrowDown", "s", "S"],
+    action: [" ", "Spacebar", "Shift"],
+  });
 
   /**
    * @param {HTMLCanvasElement} canvas
@@ -215,60 +222,6 @@ export class HexHockeyEngine extends GameEngine {
   }
 
   // ── Input handling ───────────────────────────────────────────
-
-  _handleKeyDown(event) {
-    const key = this._mapKey(event);
-    if (key === null) return;
-    event.preventDefault();
-
-    if (key === INPUT_KEY.LEFT) this.localInputs.left = true;
-    else if (key === INPUT_KEY.RIGHT) this.localInputs.right = true;
-    else if (key === INPUT_KEY.UP) this.localInputs.up = true;
-    else if (key === INPUT_KEY.DOWN) this.localInputs.down = true;
-    else if (key === INPUT_KEY.ACTION) {
-      this.localInputs.action = true;
-      this.actionHandled = false;
-    }
-  }
-
-  _handleKeyUp(event) {
-    const key = this._mapKey(event);
-    if (key === null) return;
-    event.preventDefault();
-
-    if (key === INPUT_KEY.LEFT) this.localInputs.left = false;
-    else if (key === INPUT_KEY.RIGHT) this.localInputs.right = false;
-    else if (key === INPUT_KEY.UP) this.localInputs.up = false;
-    else if (key === INPUT_KEY.DOWN) this.localInputs.down = false;
-    else if (key === INPUT_KEY.ACTION) this.localInputs.action = false;
-  }
-
-  _mapKey(event) {
-    switch (event.key) {
-      case "ArrowLeft":
-      case "a":
-      case "A":
-        return INPUT_KEY.LEFT;
-      case "ArrowRight":
-      case "d":
-      case "D":
-        return INPUT_KEY.RIGHT;
-      case "ArrowUp":
-      case "w":
-      case "W":
-        return INPUT_KEY.UP;
-      case "ArrowDown":
-      case "s":
-      case "S":
-        return INPUT_KEY.DOWN;
-      case " ":
-      case "Spacebar":
-      case "Shift":
-        return INPUT_KEY.ACTION;
-      default:
-        return null;
-    }
-  }
 
   // ── Game lifecycle ───────────────────────────────────────────
 
@@ -602,6 +555,11 @@ export class HexHockeyEngine extends GameEngine {
 
   _onMatchAbandoned() {
     this.audio.stopSuddenDeath();
+  }
+
+  _handleKeyDown(event) {
+    super._handleKeyDown(event);
+    if (this._keyInput(event) === "action") this.actionHandled = false;
   }
 
   _disconnectResult() {

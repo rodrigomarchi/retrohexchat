@@ -15,8 +15,8 @@ import {
   PADDLE_SPEED,
   PADDLE_W,
 } from "./physics.js";
+import { clamp, normalizeDifficulty } from "../ai_common.js";
 
-const DEFAULT_DIFFICULTY = "normal";
 const BALL_MIN_X = BALL_SIZE / 2;
 const BALL_MAX_X = CANVAS_W - BALL_SIZE / 2;
 const PADDLE_MIN_CENTER_X = PADDLE_W / 2;
@@ -55,12 +55,7 @@ export const BREAKOUT_AI_DIFFICULTIES = Object.freeze({
  * @returns {"easy"|"normal"|"hard"}
  */
 export function normalizeBreakoutAIDifficulty(difficulty) {
-  if (typeof difficulty !== "string") return DEFAULT_DIFFICULTY;
-
-  const key = difficulty.toLowerCase();
-  return Object.prototype.hasOwnProperty.call(BREAKOUT_AI_DIFFICULTIES, key)
-    ? key
-    : DEFAULT_DIFFICULTY;
+  return normalizeDifficulty(difficulty, BREAKOUT_AI_DIFFICULTIES);
 }
 
 /**
@@ -232,8 +227,4 @@ function randomUnit(rng) {
   const value = Number(rng());
   if (!Number.isFinite(value)) return 0;
   return Math.max(0, Math.min(value, 0.999999999));
-}
-
-function clamp(value, min, max) {
-  return Math.max(min, Math.min(max, value));
 }

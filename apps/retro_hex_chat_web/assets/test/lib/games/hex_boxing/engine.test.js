@@ -5,7 +5,6 @@ import {
   PHASE,
   PUNCH_STATE,
   MSG_TYPE,
-  INPUT_KEY,
   encodeGameState,
   encodeGameEnd,
   encodeGameReady,
@@ -319,40 +318,40 @@ describe("BoxingEngine", () => {
     });
   });
 
-  // ── _mapKey ──
+  // ── KEYMAP ──
 
-  describe("_mapKey", () => {
+  describe("KEYMAP", () => {
     it("maps arrow keys correctly", () => {
       engine = new BoxingEngine(canvas, channel, "hex_boxing", true, null);
-      expect(engine._mapKey("ArrowUp")).toBe(INPUT_KEY.UP);
-      expect(engine._mapKey("ArrowDown")).toBe(INPUT_KEY.DOWN);
-      expect(engine._mapKey("ArrowLeft")).toBe(INPUT_KEY.LEFT);
-      expect(engine._mapKey("ArrowRight")).toBe(INPUT_KEY.RIGHT);
-      expect(engine._mapKey(" ")).toBe(INPUT_KEY.PUNCH);
-      expect(engine._mapKey("Shift")).toBe(INPUT_KEY.PUNCH);
+      expect(engine._keyInput({ key: "ArrowUp" })).toBe("up");
+      expect(engine._keyInput({ key: "ArrowDown" })).toBe("down");
+      expect(engine._keyInput({ key: "ArrowLeft" })).toBe("left");
+      expect(engine._keyInput({ key: "ArrowRight" })).toBe("right");
+      expect(engine._keyInput({ key: " " })).toBe("punch");
+      expect(engine._keyInput({ key: "Shift" })).toBe("punch");
     });
 
     it("maps WASD keys correctly", () => {
       engine = new BoxingEngine(canvas, channel, "hex_boxing", true, null);
-      expect(engine._mapKey("w")).toBe(INPUT_KEY.UP);
-      expect(engine._mapKey("s")).toBe(INPUT_KEY.DOWN);
-      expect(engine._mapKey("a")).toBe(INPUT_KEY.LEFT);
-      expect(engine._mapKey("d")).toBe(INPUT_KEY.RIGHT);
+      expect(engine._keyInput({ key: "w" })).toBe("up");
+      expect(engine._keyInput({ key: "s" })).toBe("down");
+      expect(engine._keyInput({ key: "a" })).toBe("left");
+      expect(engine._keyInput({ key: "d" })).toBe("right");
     });
 
     it("maps uppercase WASD keys", () => {
       engine = new BoxingEngine(canvas, channel, "hex_boxing", true, null);
-      expect(engine._mapKey("W")).toBe(INPUT_KEY.UP);
-      expect(engine._mapKey("S")).toBe(INPUT_KEY.DOWN);
-      expect(engine._mapKey("A")).toBe(INPUT_KEY.LEFT);
-      expect(engine._mapKey("D")).toBe(INPUT_KEY.RIGHT);
+      expect(engine._keyInput({ key: "W" })).toBe("up");
+      expect(engine._keyInput({ key: "S" })).toBe("down");
+      expect(engine._keyInput({ key: "A" })).toBe("left");
+      expect(engine._keyInput({ key: "D" })).toBe("right");
     });
 
     it("returns null for unmapped keys", () => {
       engine = new BoxingEngine(canvas, channel, "hex_boxing", true, null);
-      expect(engine._mapKey("q")).toBeNull();
-      expect(engine._mapKey("z")).toBeNull();
-      expect(engine._mapKey("Enter")).toBeNull();
+      expect(engine._keyInput({ key: "q" })).toBeNull();
+      expect(engine._keyInput({ key: "z" })).toBeNull();
+      expect(engine._keyInput({ key: "Enter" })).toBeNull();
     });
 
     it("prevents global shortcuts for Boxing keys while captured", () => {
@@ -1214,7 +1213,7 @@ describe("BoxingEngine", () => {
       engine.start();
       engine._onKeyDown({ key: "ArrowLeft", preventDefault: vi.fn(), repeat: false, target: null });
       expect(engine.localInputs.left).toBe(true);
-      engine._onKeyUp({ key: "ArrowLeft", repeat: false, target: null });
+      engine._onKeyUp({ key: "ArrowLeft", repeat: false, target: null, preventDefault: () => {} });
       expect(engine.localInputs.left).toBe(false);
     });
 
@@ -1232,7 +1231,7 @@ describe("BoxingEngine", () => {
       channel.send.mockClear();
       engine._onKeyDown({ key: "d", preventDefault: vi.fn(), repeat: false, target: null });
       channel.send.mockClear();
-      engine._onKeyUp({ key: "d", repeat: false, target: null });
+      engine._onKeyUp({ key: "d", repeat: false, target: null, preventDefault: () => {} });
       expect(channel.send).toHaveBeenCalledTimes(1);
       const sent = channel.send.mock.calls[0][0];
       expect(decodeInputState(sent).mask).toBe(0);

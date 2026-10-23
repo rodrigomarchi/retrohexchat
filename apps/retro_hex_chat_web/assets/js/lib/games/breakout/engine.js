@@ -4,12 +4,11 @@
  * @module games/breakout_engine
  */
 
-import { GameEngine } from "../../game_engine.js";
+import { GameEngine, keymap } from "../../game_engine.js";
 import { createBreakoutAI, normalizeBreakoutAIDifficulty } from "./ai.js";
 import {
   MSG_TYPE,
   PHASE,
-  INPUT_KEY,
   encodeGameState,
   decodeGameState,
   encodeGameEnd,
@@ -54,6 +53,11 @@ export class BreakoutEngine extends GameEngine {
   static FINAL_PHASE = PHASE.FINISHED;
 
   static INPUT_BITS = { left: 0, right: 1 };
+
+  static KEYMAP = keymap({
+    left: ["ArrowLeft", "a", "A"],
+    right: ["ArrowRight", "d", "D"],
+  });
 
   static INTERPOLATION = {
     keys: ["ballX", "ballY", "paddle1X", "paddle2X"],
@@ -184,30 +188,6 @@ export class BreakoutEngine extends GameEngine {
         this.gameState.blocks[i].alive = decoded.blocksAlive[i] || false;
       }
     }
-  }
-
-  _handleKeyDown(e) {
-    const keyCode = this._mapKey(e.key);
-    if (keyCode === null) return;
-    e.preventDefault();
-
-    if (keyCode === INPUT_KEY.LEFT) this.localInputs.left = true;
-    if (keyCode === INPUT_KEY.RIGHT) this.localInputs.right = true;
-  }
-
-  _handleKeyUp(e) {
-    const keyCode = this._mapKey(e.key);
-    if (keyCode === null) return;
-
-    if (keyCode === INPUT_KEY.LEFT) this.localInputs.left = false;
-    if (keyCode === INPUT_KEY.RIGHT) this.localInputs.right = false;
-  }
-
-  /** Map keyboard key to INPUT_KEY enum. */
-  _mapKey(key) {
-    if (key === "ArrowLeft" || key === "a" || key === "A") return INPUT_KEY.LEFT;
-    if (key === "ArrowRight" || key === "d" || key === "D") return INPUT_KEY.RIGHT;
-    return null;
   }
 
   beginMatch(options = {}) {

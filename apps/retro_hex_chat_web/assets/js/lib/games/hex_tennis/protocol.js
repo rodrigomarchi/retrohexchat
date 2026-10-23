@@ -26,15 +26,6 @@ export const PHASE = {
   GAME_OVER: 6,
 };
 
-// Input key enum
-export const INPUT_KEY = {
-  UP: 0,
-  DOWN: 1,
-  LEFT: 2,
-  RIGHT: 3,
-  SERVE: 4,
-};
-
 // Game mode enum
 export const GAME_MODE = {
   CLASSIC: 0,

@@ -25,12 +25,6 @@ export const PHASE = {
   FINISHED: 5,
 };
 
-// Input key enum
-export const INPUT_KEY = {
-  UP: 0,
-  DOWN: 1,
-};
-
 // --- Sizes ---
 const GAME_STATE_SIZE = 25;
 const GAME_END_SIZE = 4;

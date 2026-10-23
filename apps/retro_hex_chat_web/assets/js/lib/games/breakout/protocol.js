@@ -25,12 +25,6 @@ export const PHASE = {
   FINISHED: 5,
 };
 
-// Input key enum
-export const INPUT_KEY = {
-  LEFT: 0,
-  RIGHT: 1,
-};
-
 // Block grid dimensions
 export const BLOCK_ROWS = 5;
 export const BLOCK_COLS = 10;

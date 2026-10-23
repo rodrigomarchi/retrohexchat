@@ -4,7 +4,6 @@ import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
 import {
   PHASE,
   GAME_MODE,
-  INPUT_KEY,
   MSG_TYPE,
   encodeGameState,
   encodeGameReady,
@@ -394,15 +393,8 @@ describe("TennisEngine", () => {
         vi.fn(),
       );
       e.start();
-      const keys = [
-        [INPUT_KEY.UP, "up"],
-        [INPUT_KEY.DOWN, "down"],
-        [INPUT_KEY.LEFT, "left"],
-        [INPUT_KEY.RIGHT, "right"],
-        [INPUT_KEY.SERVE, "serve"],
-      ];
       let seq = 0;
-      for (const [, prop] of keys) {
+      for (const prop of ["up", "down", "left", "right", "serve"]) {
         seq += 1;
         e._onChannelMessage({ data: inputDatagram(TennisEngine, { [prop]: true }, seq) });
         expect(e.remoteInputs[prop]).toBe(true);

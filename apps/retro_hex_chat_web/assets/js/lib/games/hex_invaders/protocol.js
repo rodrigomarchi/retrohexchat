@@ -25,13 +25,6 @@ export const PHASE = {
   FINISHED: 5,
 };
 
-// Input key enum
-export const INPUT_KEY = {
-  LEFT: 0,
-  RIGHT: 1,
-  FIRE: 2,
-};
-
 // Game mode enum
 export const GAME_MODE = {
   INVASION_WAR: 0,

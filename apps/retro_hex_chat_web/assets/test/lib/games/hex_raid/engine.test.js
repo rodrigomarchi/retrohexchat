@@ -3,7 +3,6 @@ import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
 import {
   PHASE,
   MSG_TYPE,
-  INPUT_KEY,
   GAME_MODE,
   ENEMY_TYPE,
   encodeGameState,
@@ -336,27 +335,27 @@ describe("HexRaidEngine", () => {
   describe("input handling", () => {
     it("maps arrow keys to input codes", () => {
       engine = new HexRaidEngine(canvas, channel, "hex_raid", true, null);
-      expect(engine._mapKey("ArrowLeft")).toBe(INPUT_KEY.LEFT);
-      expect(engine._mapKey("ArrowRight")).toBe(INPUT_KEY.RIGHT);
-      expect(engine._mapKey("ArrowUp")).toBe(INPUT_KEY.ACCEL);
-      expect(engine._mapKey("ArrowDown")).toBe(INPUT_KEY.DECEL);
-      expect(engine._mapKey(" ")).toBe(INPUT_KEY.FIRE);
-      expect(engine._mapKey("Shift")).toBe(INPUT_KEY.MINE);
+      expect(engine._keyInput({ key: "ArrowLeft" })).toBe("left");
+      expect(engine._keyInput({ key: "ArrowRight" })).toBe("right");
+      expect(engine._keyInput({ key: "ArrowUp" })).toBe("accel");
+      expect(engine._keyInput({ key: "ArrowDown" })).toBe("decel");
+      expect(engine._keyInput({ key: " " })).toBe("fire");
+      expect(engine._keyInput({ key: "Shift" })).toBe("mine");
     });
 
     it("maps WASD + Q keys", () => {
       engine = new HexRaidEngine(canvas, channel, "hex_raid", true, null);
-      expect(engine._mapKey("a")).toBe(INPUT_KEY.LEFT);
-      expect(engine._mapKey("d")).toBe(INPUT_KEY.RIGHT);
-      expect(engine._mapKey("w")).toBe(INPUT_KEY.ACCEL);
-      expect(engine._mapKey("s")).toBe(INPUT_KEY.DECEL);
-      expect(engine._mapKey("q")).toBe(INPUT_KEY.MINE);
+      expect(engine._keyInput({ key: "a" })).toBe("left");
+      expect(engine._keyInput({ key: "d" })).toBe("right");
+      expect(engine._keyInput({ key: "w" })).toBe("accel");
+      expect(engine._keyInput({ key: "s" })).toBe("decel");
+      expect(engine._keyInput({ key: "q" })).toBe("mine");
     });
 
     it("returns null for unmapped keys", () => {
       engine = new HexRaidEngine(canvas, channel, "hex_raid", true, null);
-      expect(engine._mapKey("Enter")).toBeNull();
-      expect(engine._mapKey("z")).toBeNull();
+      expect(engine._keyInput({ key: "Enter" })).toBeNull();
+      expect(engine._keyInput({ key: "z" })).toBeNull();
     });
 
     it("peer sends input over channel", () => {
@@ -1063,24 +1062,6 @@ describe("HexRaidEngine", () => {
       channel.send.mockClear();
       engine._onKeyUp({ key: "Enter", preventDefault: vi.fn(), repeat: false, target: null });
       expect(channel.send).not.toHaveBeenCalled();
-    });
-  });
-
-  describe("_setLocalInput for all keys", () => {
-    it("sets accel input", () => {
-      engine = new HexRaidEngine(canvas, channel, "hex_raid", true, null);
-      engine._setLocalInput(INPUT_KEY.ACCEL, true);
-      expect(engine.localInputs.accel).toBe(true);
-      engine._setLocalInput(INPUT_KEY.ACCEL, false);
-      expect(engine.localInputs.accel).toBe(false);
-    });
-
-    it("sets decel input", () => {
-      engine = new HexRaidEngine(canvas, channel, "hex_raid", true, null);
-      engine._setLocalInput(INPUT_KEY.DECEL, true);
-      expect(engine.localInputs.decel).toBe(true);
-      engine._setLocalInput(INPUT_KEY.DECEL, false);
-      expect(engine.localInputs.decel).toBe(false);
     });
   });
 

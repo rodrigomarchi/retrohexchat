@@ -14,8 +14,8 @@ import {
   RING_RIGHT,
   RING_TOP,
 } from "./physics.js";
+import { clamp, normalizeDifficulty } from "../ai_common.js";
 
-const DEFAULT_DIFFICULTY = "normal";
 const PLAYER_HALF_SIZE = BOXER_BODY_RADIUS;
 const PLAYER_MIN_X = RING_LEFT + PLAYER_HALF_SIZE;
 const PLAYER_MAX_X = RING_RIGHT - PLAYER_HALF_SIZE;
@@ -74,12 +74,7 @@ export const BOXING_AI_DIFFICULTIES = Object.freeze({
  * @returns {"easy"|"normal"|"hard"}
  */
 export function normalizeBoxingAIDifficulty(difficulty) {
-  if (typeof difficulty !== "string") return DEFAULT_DIFFICULTY;
-
-  const key = difficulty.toLowerCase();
-  return Object.prototype.hasOwnProperty.call(BOXING_AI_DIFFICULTIES, key)
-    ? key
-    : DEFAULT_DIFFICULTY;
+  return normalizeDifficulty(difficulty, BOXING_AI_DIFFICULTIES);
 }
 
 /**
@@ -281,8 +276,4 @@ function applyTargetError(target, amount, rng) {
     x: clamp(target.x + offsetX, PLAYER_MIN_X, PLAYER_MAX_X),
     y: clamp(target.y + offsetY, PLAYER_MIN_Y, PLAYER_MAX_Y),
   };
-}
-
-function clamp(value, min, max) {
-  return Math.max(min, Math.min(max, value));
 }

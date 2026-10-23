@@ -2,7 +2,6 @@ import { describe, it, expect } from "vitest";
 import {
   PHASE,
   MSG_TYPE,
-  INPUT_KEY,
   BRICKS_PER_CASTLE,
   INITIAL_LIVES,
   encodeBrickBitmap,
@@ -206,12 +205,6 @@ describe("Warlords Protocol", () => {
       expect(PHASE.PLAYING).toBe(2);
       expect(PHASE.KING_HIT).toBe(3);
       expect(PHASE.FINISHED).toBe(4);
-    });
-
-    it("has all input keys", () => {
-      expect(INPUT_KEY.UP).toBe(0);
-      expect(INPUT_KEY.DOWN).toBe(1);
-      expect(INPUT_KEY.SPACE).toBe(2);
     });
   });
 });

@@ -7,7 +7,6 @@ import {
   encodeGameState,
   encodeGameReady,
   encodeGameEnd,
-  INPUT_KEY,
 } from "../../../../js/lib/games/hex_outlaw/protocol.js";
 import { createInitialState, BULLET_SPEED_X } from "../../../../js/lib/games/hex_outlaw/physics.js";
 
@@ -189,36 +188,36 @@ describe("OutlawEngine", () => {
     expect(engine.running).toBe(false);
   });
 
-  it("_mapKey maps arrow keys correctly", () => {
+  it("KEYMAP maps arrow keys correctly", () => {
     const engine = new OutlawEngine(canvas, channel, "hex_outlaw", true, null);
-    expect(engine._mapKey("ArrowUp")).toBe(0); // UP
-    expect(engine._mapKey("ArrowDown")).toBe(1); // DOWN
-    expect(engine._mapKey("ArrowLeft")).toBe(2); // LEFT
-    expect(engine._mapKey("ArrowRight")).toBe(3); // RIGHT
-    expect(engine._mapKey(" ")).toBe(4); // FIRE
-    expect(engine._mapKey("Shift")).toBe(4); // FIRE
+    expect(engine._keyInput({ key: "ArrowUp" })).toBe("up");
+    expect(engine._keyInput({ key: "ArrowDown" })).toBe("down");
+    expect(engine._keyInput({ key: "ArrowLeft" })).toBe("left");
+    expect(engine._keyInput({ key: "ArrowRight" })).toBe("right");
+    expect(engine._keyInput({ key: " " })).toBe("fire");
+    expect(engine._keyInput({ key: "Shift" })).toBe("fire");
   });
 
-  it("_mapKey maps WASD keys correctly", () => {
+  it("KEYMAP maps WASD keys correctly", () => {
     const engine = new OutlawEngine(canvas, channel, "hex_outlaw", true, null);
-    expect(engine._mapKey("w")).toBe(0);
-    expect(engine._mapKey("s")).toBe(1);
-    expect(engine._mapKey("a")).toBe(2);
-    expect(engine._mapKey("d")).toBe(3);
+    expect(engine._keyInput({ key: "w" })).toBe("up");
+    expect(engine._keyInput({ key: "s" })).toBe("down");
+    expect(engine._keyInput({ key: "a" })).toBe("left");
+    expect(engine._keyInput({ key: "d" })).toBe("right");
   });
 
-  it("_mapKey maps uppercase WASD keys", () => {
+  it("KEYMAP maps uppercase WASD keys", () => {
     const engine = new OutlawEngine(canvas, channel, "hex_outlaw", true, null);
-    expect(engine._mapKey("W")).toBe(0);
-    expect(engine._mapKey("S")).toBe(1);
-    expect(engine._mapKey("A")).toBe(2);
-    expect(engine._mapKey("D")).toBe(3);
+    expect(engine._keyInput({ key: "W" })).toBe("up");
+    expect(engine._keyInput({ key: "S" })).toBe("down");
+    expect(engine._keyInput({ key: "A" })).toBe("left");
+    expect(engine._keyInput({ key: "D" })).toBe("right");
   });
 
-  it("_mapKey returns null for unmapped keys", () => {
+  it("KEYMAP returns null for unmapped keys", () => {
     const engine = new OutlawEngine(canvas, channel, "hex_outlaw", true, null);
-    expect(engine._mapKey("q")).toBeNull();
-    expect(engine._mapKey("z")).toBeNull();
+    expect(engine._keyInput({ key: "q" })).toBeNull();
+    expect(engine._keyInput({ key: "z" })).toBeNull();
   });
 
   it("_safeSend handles closed channel gracefully", () => {
@@ -442,22 +441,6 @@ describe("OutlawEngine", () => {
     it("ignores empty ArrayBuffer", () => {
       const engine = new OutlawEngine(canvas, channel, "hex_outlaw", true, null);
       expect(() => engine._onChannelMessage({ data: new ArrayBuffer(0) })).not.toThrow();
-    });
-  });
-
-  describe("_setLocalInput", () => {
-    it("sets all input types", () => {
-      const engine = new OutlawEngine(canvas, channel, "hex_outlaw", true, null);
-      engine._setLocalInput(INPUT_KEY.UP, true);
-      engine._setLocalInput(INPUT_KEY.DOWN, true);
-      engine._setLocalInput(INPUT_KEY.LEFT, true);
-      engine._setLocalInput(INPUT_KEY.RIGHT, true);
-      engine._setLocalInput(INPUT_KEY.FIRE, true);
-      expect(engine.localInputs.up).toBe(true);
-      expect(engine.localInputs.down).toBe(true);
-      expect(engine.localInputs.left).toBe(true);
-      expect(engine.localInputs.right).toBe(true);
-      expect(engine.localInputs.fire).toBe(true);
     });
   });
 

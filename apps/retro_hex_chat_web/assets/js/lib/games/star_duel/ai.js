@@ -16,8 +16,8 @@ import {
   STAR_X,
   STAR_Y,
 } from "./physics.js";
+import { clamp, normalizeDifficulty } from "../ai_common.js";
 
-const DEFAULT_DIFFICULTY = "normal";
 const TWO_PI = Math.PI * 2;
 const NEUTRAL_INPUTS = Object.freeze({
   rotateLeft: false,
@@ -86,12 +86,7 @@ export const STAR_DUEL_AI_DIFFICULTIES = Object.freeze({
  * @returns {"easy"|"normal"|"hard"}
  */
 export function normalizeStarDuelAIDifficulty(difficulty) {
-  if (typeof difficulty !== "string") return DEFAULT_DIFFICULTY;
-
-  const key = difficulty.toLowerCase();
-  return Object.prototype.hasOwnProperty.call(STAR_DUEL_AI_DIFFICULTIES, key)
-    ? key
-    : DEFAULT_DIFFICULTY;
+  return normalizeDifficulty(difficulty, STAR_DUEL_AI_DIFFICULTIES);
 }
 
 /**
@@ -426,8 +421,4 @@ function randomUnit(rng) {
 
 function wrap(value, max) {
   return ((value % max) + max) % max;
-}
-
-function clamp(value, min, max) {
-  return Math.max(min, Math.min(max, value));
 }

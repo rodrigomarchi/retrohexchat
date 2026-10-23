@@ -7,8 +7,8 @@
 
 import { CELL } from "./physics.js";
 import { DIR, GRID_H, GRID_W, PHASE } from "./protocol.js";
+import { normalizeDifficulty } from "../ai_common.js";
 
-const DEFAULT_DIFFICULTY = "normal";
 const GRID_AREA = GRID_W * GRID_H;
 const TABLE_CENTER = Object.freeze({
   x: (GRID_W - 1) / 2,
@@ -62,12 +62,7 @@ export const SURROUND_AI_DIFFICULTIES = Object.freeze({
  * @returns {"easy"|"normal"|"hard"}
  */
 export function normalizeSurroundAIDifficulty(difficulty) {
-  if (typeof difficulty !== "string") return DEFAULT_DIFFICULTY;
-
-  const key = difficulty.toLowerCase();
-  return Object.prototype.hasOwnProperty.call(SURROUND_AI_DIFFICULTIES, key)
-    ? key
-    : DEFAULT_DIFFICULTY;
+  return normalizeDifficulty(difficulty, SURROUND_AI_DIFFICULTIES);
 }
 
 /**

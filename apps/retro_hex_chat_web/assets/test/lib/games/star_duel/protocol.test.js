@@ -2,7 +2,6 @@ import { describe, it, expect } from "vitest";
 import {
   MSG_TYPE,
   PHASE,
-  INPUT_KEY,
   GAME_MODE,
   encodeShipFlags,
   decodeShipFlags,
@@ -519,12 +518,6 @@ describe("star_duel_protocol", () => {
       expect(Object.keys(PHASE)).toHaveLength(6);
       expect(PHASE.WAITING).toBe(0);
       expect(PHASE.FINISHED).toBe(5);
-    });
-
-    it("INPUT_KEY enum has 5 values (0-4)", () => {
-      expect(Object.keys(INPUT_KEY)).toHaveLength(5);
-      expect(INPUT_KEY.ROTATE_LEFT).toBe(0);
-      expect(INPUT_KEY.WARP).toBe(4);
     });
 
     it("GAME_MODE enum has 3 values (0-2)", () => {

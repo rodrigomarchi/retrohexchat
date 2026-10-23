@@ -24,13 +24,6 @@ export const PHASE = {
   FINISHED: 4,
 };
 
-// Input key enum
-export const INPUT_KEY = {
-  UP: 0,
-  DOWN: 1,
-  SPACE: 2,
-};
-
 // Castle constants
 export const BRICKS_ROWS = 6;
 export const BRICKS_COLS = 4;

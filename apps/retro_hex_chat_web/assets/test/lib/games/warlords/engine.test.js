@@ -480,7 +480,7 @@ describe("WarlordEngine", () => {
       engine = new WarlordEngine(canvas, channel, "hex_warlords", true, null);
       engine.start();
       engine._onKeyDown({ key: "ArrowUp", preventDefault: vi.fn(), repeat: false, target: null });
-      engine._onKeyUp({ key: "ArrowUp", repeat: false, target: null });
+      engine._onKeyUp({ key: "ArrowUp", repeat: false, target: null, preventDefault: () => {} });
       expect(engine.localInputs.up).toBe(false);
     });
 
@@ -519,7 +519,7 @@ describe("WarlordEngine", () => {
 
       engine._onKeyDown({ key: "ArrowDown", preventDefault: vi.fn(), repeat: false, target: null });
       channel.send.mockClear();
-      engine._onKeyUp({ key: "ArrowDown", repeat: false, target: null });
+      engine._onKeyUp({ key: "ArrowDown", repeat: false, target: null, preventDefault: () => {} });
 
       const lastCall = channel.send.mock.calls[channel.send.mock.calls.length - 1];
       const buf = lastCall[0];
@@ -890,7 +890,7 @@ describe("WarlordEngine", () => {
       // Press space first
       engine._onKeyDown({ key: " ", preventDefault: vi.fn(), repeat: false, target: null });
       // Release space
-      engine._onKeyUp({ key: " ", repeat: false, target: null });
+      engine._onKeyUp({ key: " ", repeat: false, target: null, preventDefault: () => {} });
 
       expect(engine.gameState.caughtBy).toBe(0);
       expect(engine.audio.playLaunch).toHaveBeenCalled();
@@ -903,7 +903,7 @@ describe("WarlordEngine", () => {
       engine.gameState.caughtBy = 0;
 
       engine._onKeyDown({ key: " ", preventDefault: vi.fn(), repeat: false, target: null });
-      engine._onKeyUp({ key: " ", repeat: false, target: null });
+      engine._onKeyUp({ key: " ", repeat: false, target: null, preventDefault: () => {} });
 
       expect(engine.audio.playLaunch).not.toHaveBeenCalled();
     });

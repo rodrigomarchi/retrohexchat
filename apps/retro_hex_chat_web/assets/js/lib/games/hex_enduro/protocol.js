@@ -24,15 +24,6 @@ export const PHASE = {
   FINISHED: 4,
 };
 
-// Input key enum
-export const INPUT_KEY = {
-  LEFT: 0,
-  RIGHT: 1,
-  ACCEL: 2,
-  BRAKE: 3,
-  TURBO: 4,
-};
-
 // Game mode enum
 export const GAME_MODE = {
   CLASSIC_DUEL: 0,

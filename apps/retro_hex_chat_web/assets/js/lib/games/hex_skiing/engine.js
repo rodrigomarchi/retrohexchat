@@ -8,13 +8,12 @@
  * Peer sends input only and renders received state.
  */
 
-import { GameEngine } from "../../game_engine.js";
+import { GameEngine, keymap } from "../../game_engine.js";
 import { normalizeSkiingAIDifficulty } from "./difficulty.js";
 import {
   MSG_TYPE,
   PHASE,
   GAME_MODE,
-  INPUT_KEY,
   EVENT,
   getMessageType,
   encodeGameState,
@@ -67,6 +66,11 @@ export class HexSkiingEngine extends GameEngine {
   static FINAL_PHASE = PHASE.FINISHED;
 
   static INPUT_BITS = { left: 0, right: 1 };
+
+  static KEYMAP = keymap({
+    left: ["ArrowLeft", "a", "A"],
+    right: ["ArrowRight", "d", "D"],
+  });
 
   /**
    * @param {HTMLCanvasElement} canvas
@@ -173,49 +177,6 @@ export class HexSkiingEngine extends GameEngine {
   }
 
   // ── Input handling ───────────────────────────────────────────
-
-  _handleKeyDown(event) {
-    const key = this._mapKey(event);
-    if (key === null) return;
-    event.preventDefault();
-
-    if (this.isHost) {
-      if (key === INPUT_KEY.LEFT) this.localInputs.left = true;
-      if (key === INPUT_KEY.RIGHT) this.localInputs.right = true;
-    } else {
-      if (key === INPUT_KEY.LEFT) this.localInputs.left = true;
-      if (key === INPUT_KEY.RIGHT) this.localInputs.right = true;
-    }
-  }
-
-  _handleKeyUp(event) {
-    const key = this._mapKey(event);
-    if (key === null) return;
-    event.preventDefault();
-
-    if (this.isHost) {
-      if (key === INPUT_KEY.LEFT) this.localInputs.left = false;
-      if (key === INPUT_KEY.RIGHT) this.localInputs.right = false;
-    } else {
-      if (key === INPUT_KEY.LEFT) this.localInputs.left = false;
-      if (key === INPUT_KEY.RIGHT) this.localInputs.right = false;
-    }
-  }
-
-  _mapKey(event) {
-    switch (event.key) {
-      case "ArrowLeft":
-      case "a":
-      case "A":
-        return INPUT_KEY.LEFT;
-      case "ArrowRight":
-      case "d":
-      case "D":
-        return INPUT_KEY.RIGHT;
-      default:
-        return null;
-    }
-  }
 
   // ── Game lifecycle ───────────────────────────────────────────
 

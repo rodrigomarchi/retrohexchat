@@ -5,13 +5,12 @@
  */
 import { log } from "../../logger.js";
 
-import { GameEngine } from "../../game_engine.js";
+import { GameEngine, keymap } from "../../game_engine.js";
 import { createHexInvadersAI, normalizeInvadersAIDifficulty } from "./ai.js";
 import {
   MSG_TYPE,
   PHASE,
   GAME_MODE,
-  INPUT_KEY,
   encodeGameState,
   decodeGameState,
   encodeGameEnd,
@@ -76,6 +75,12 @@ export class HexInvadersEngine extends GameEngine {
   static FINAL_PHASE = PHASE.FINISHED;
 
   static INPUT_BITS = { left: 0, right: 1, fire: 2 };
+
+  static KEYMAP = keymap({
+    left: ["ArrowLeft", "a", "A"],
+    right: ["ArrowRight", "d", "D"],
+    fire: [" ", "Spacebar"],
+  });
 
   /**
    * @param {HTMLCanvasElement} canvas
@@ -155,44 +160,6 @@ export class HexInvadersEngine extends GameEngine {
   }
 
   // ── Input Handling ──
-
-  _mapKey(key) {
-    switch (key) {
-      case "ArrowLeft":
-      case "a":
-      case "A":
-        return INPUT_KEY.LEFT;
-      case "ArrowRight":
-      case "d":
-      case "D":
-        return INPUT_KEY.RIGHT;
-      case " ":
-      case "Spacebar":
-        return INPUT_KEY.FIRE;
-      default:
-        return null;
-    }
-  }
-
-  _handleKeyDown(e) {
-    const k = this._mapKey(e.key);
-    if (k === null) return;
-    e.preventDefault();
-
-    if (k === INPUT_KEY.LEFT) this.localInputs.left = true;
-    else if (k === INPUT_KEY.RIGHT) this.localInputs.right = true;
-    else if (k === INPUT_KEY.FIRE) this.localInputs.fire = true;
-  }
-
-  _handleKeyUp(e) {
-    const k = this._mapKey(e.key);
-    if (k === null) return;
-    e.preventDefault();
-
-    if (k === INPUT_KEY.LEFT) this.localInputs.left = false;
-    else if (k === INPUT_KEY.RIGHT) this.localInputs.right = false;
-    else if (k === INPUT_KEY.FIRE) this.localInputs.fire = false;
-  }
 
   // ── Network Messages ──
 

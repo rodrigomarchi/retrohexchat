@@ -17,8 +17,8 @@ import {
   SERVICE_LINE_TOP,
   HIT_ZONE_H,
 } from "./physics.js";
+import { clamp, normalizeDifficulty } from "../ai_common.js";
 
-const DEFAULT_DIFFICULTY = "normal";
 const PLAYER_HALF_SIZE = 12;
 const PLAYER_MIN_X = COURT_LEFT + PLAYER_HALF_SIZE;
 const PLAYER_MAX_X = COURT_RIGHT - PLAYER_HALF_SIZE;
@@ -70,12 +70,7 @@ export const TENNIS_AI_DIFFICULTIES = Object.freeze({
  * @returns {"easy"|"normal"|"hard"}
  */
 export function normalizeTennisAIDifficulty(difficulty) {
-  if (typeof difficulty !== "string") return DEFAULT_DIFFICULTY;
-
-  const key = difficulty.toLowerCase();
-  return Object.prototype.hasOwnProperty.call(TENNIS_AI_DIFFICULTIES, key)
-    ? key
-    : DEFAULT_DIFFICULTY;
+  return normalizeDifficulty(difficulty, TENNIS_AI_DIFFICULTIES);
 }
 
 /**
@@ -318,14 +313,4 @@ function playerMaxY(player) {
 function errorOffset(amount, rng) {
   if (amount <= 0) return 0;
   return (rng() * 2 - 1) * amount;
-}
-
-/**
- * @param {number} value
- * @param {number} min
- * @param {number} max
- * @returns {number}
- */
-function clamp(value, min, max) {
-  return Math.max(min, Math.min(max, value));
 }

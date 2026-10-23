@@ -30,13 +30,6 @@ export const GAME_MODE = {
   PEACEFUL: 2,
 };
 
-export const INPUT_KEY = {
-  LEFT: 0,
-  RIGHT: 1,
-  UP: 2,
-  DOWN: 3,
-};
-
 export const BLOCK_STATE = {
   WHITE: 0,
   BLUE_P1: 1,

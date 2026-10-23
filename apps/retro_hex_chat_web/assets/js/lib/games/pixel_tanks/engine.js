@@ -4,11 +4,10 @@
  * @module games/pixel_tanks_engine
  */
 
-import { GameEngine } from "../../game_engine.js";
+import { GameEngine, keymap } from "../../game_engine.js";
 import {
   MSG_TYPE,
   PHASE,
-  INPUT_KEY,
   GAME_MODE,
   encodeGameState,
   decodeGameState,
@@ -68,6 +67,13 @@ export class PixelTanksEngine extends GameEngine {
   static FINAL_PHASE = PHASE.MATCH_OVER;
 
   static INPUT_BITS = { rotateLeft: 0, rotateRight: 1, forward: 2, fire: 3 };
+
+  static KEYMAP = keymap({
+    rotateLeft: ["ArrowLeft", "a", "A"],
+    rotateRight: ["ArrowRight", "d", "D"],
+    forward: ["ArrowUp", "w", "W"],
+    fire: [" ", "Shift"],
+  });
 
   static INTERPOLATION = {
     keys: ["tank1X", "tank1Y", "tank2X", "tank2Y", "m1X", "m1Y", "m2X", "m2Y"],
@@ -237,36 +243,6 @@ export class PixelTanksEngine extends GameEngine {
     this.gameState.roundTimer = decoded.roundTimer;
 
     this._playPhaseAudio(prevPhase, decoded.phase);
-  }
-
-  _handleKeyDown(e) {
-    const keyCode = this._mapKey(e.key);
-    if (keyCode === null) return;
-    e.preventDefault();
-
-    this._setLocalInput(keyCode, true);
-  }
-
-  _handleKeyUp(e) {
-    const keyCode = this._mapKey(e.key);
-    if (keyCode === null) return;
-
-    this._setLocalInput(keyCode, false);
-  }
-
-  _setLocalInput(keyCode, pressed) {
-    if (keyCode === INPUT_KEY.ROTATE_LEFT) this.localInputs.rotateLeft = pressed;
-    else if (keyCode === INPUT_KEY.ROTATE_RIGHT) this.localInputs.rotateRight = pressed;
-    else if (keyCode === INPUT_KEY.FORWARD) this.localInputs.forward = pressed;
-    else if (keyCode === INPUT_KEY.FIRE) this.localInputs.fire = pressed;
-  }
-
-  _mapKey(key) {
-    if (key === "ArrowLeft" || key === "a" || key === "A") return INPUT_KEY.ROTATE_LEFT;
-    if (key === "ArrowRight" || key === "d" || key === "D") return INPUT_KEY.ROTATE_RIGHT;
-    if (key === "ArrowUp" || key === "w" || key === "W") return INPUT_KEY.FORWARD;
-    if (key === " " || key === "Shift") return INPUT_KEY.FIRE;
-    return null;
   }
 
   // --- Phase management (host only) ---

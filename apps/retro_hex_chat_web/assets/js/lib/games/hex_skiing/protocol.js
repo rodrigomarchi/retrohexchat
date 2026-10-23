@@ -30,11 +30,6 @@ export const GAME_MODE = {
   CLEAN_RUN: 2,
 };
 
-export const INPUT_KEY = {
-  LEFT: 0,
-  RIGHT: 1,
-};
-
 export const SKIER_STATE = {
   SKIING: 0,
   CRASHED: 1,

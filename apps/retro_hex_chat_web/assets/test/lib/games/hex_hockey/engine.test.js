@@ -4,7 +4,6 @@ import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
 import {
   PHASE,
   GAME_MODE,
-  INPUT_KEY,
   MSG_TYPE,
   EVENT,
   encodeGameState,
@@ -295,19 +294,19 @@ describe("hex_hockey_engine", () => {
 
   it("maps WASD and arrow keys correctly", () => {
     const { engine } = createEngine("hex_hockey", true);
-    expect(engine._mapKey({ key: "ArrowLeft" })).toBe(INPUT_KEY.LEFT);
-    expect(engine._mapKey({ key: "a" })).toBe(INPUT_KEY.LEFT);
-    expect(engine._mapKey({ key: "A" })).toBe(INPUT_KEY.LEFT);
-    expect(engine._mapKey({ key: "ArrowRight" })).toBe(INPUT_KEY.RIGHT);
-    expect(engine._mapKey({ key: "d" })).toBe(INPUT_KEY.RIGHT);
-    expect(engine._mapKey({ key: "ArrowUp" })).toBe(INPUT_KEY.UP);
-    expect(engine._mapKey({ key: "w" })).toBe(INPUT_KEY.UP);
-    expect(engine._mapKey({ key: "ArrowDown" })).toBe(INPUT_KEY.DOWN);
-    expect(engine._mapKey({ key: "s" })).toBe(INPUT_KEY.DOWN);
-    expect(engine._mapKey({ key: " " })).toBe(INPUT_KEY.ACTION);
-    expect(engine._mapKey({ key: "Spacebar" })).toBe(INPUT_KEY.ACTION);
-    expect(engine._mapKey({ key: "Shift" })).toBe(INPUT_KEY.ACTION);
-    expect(engine._mapKey({ key: "x" })).toBeNull();
+    expect(engine._keyInput({ key: "ArrowLeft" })).toBe("left");
+    expect(engine._keyInput({ key: "a" })).toBe("left");
+    expect(engine._keyInput({ key: "A" })).toBe("left");
+    expect(engine._keyInput({ key: "ArrowRight" })).toBe("right");
+    expect(engine._keyInput({ key: "d" })).toBe("right");
+    expect(engine._keyInput({ key: "ArrowUp" })).toBe("up");
+    expect(engine._keyInput({ key: "w" })).toBe("up");
+    expect(engine._keyInput({ key: "ArrowDown" })).toBe("down");
+    expect(engine._keyInput({ key: "s" })).toBe("down");
+    expect(engine._keyInput({ key: " " })).toBe("action");
+    expect(engine._keyInput({ key: "Spacebar" })).toBe("action");
+    expect(engine._keyInput({ key: "Shift" })).toBe("action");
+    expect(engine._keyInput({ key: "x" })).toBeNull();
     engine.stop();
   });
 

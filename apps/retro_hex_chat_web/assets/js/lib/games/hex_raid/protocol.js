@@ -23,16 +23,6 @@ export const PHASE = {
   FINISHED: 5, // kept at 5 for protocol backward compat
 };
 
-// Input key enum
-export const INPUT_KEY = {
-  LEFT: 0,
-  RIGHT: 1,
-  ACCEL: 2,
-  DECEL: 3,
-  FIRE: 4,
-  MINE: 5,
-};
-
 // Game mode enum
 export const GAME_MODE = {
   RIVER_DUEL: 0,

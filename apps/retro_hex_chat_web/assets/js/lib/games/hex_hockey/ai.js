@@ -18,8 +18,8 @@ import {
   GOAL_LINE_LEFT,
   GOAL_LINE_RIGHT,
 } from "./physics.js";
+import { clamp, normalizeDifficulty } from "../ai_common.js";
 
-const DEFAULT_DIFFICULTY = "normal";
 const PLAYER_HALF_SIZE = 4;
 const PLAYER_MIN_X = RINK_LEFT + PLAYER_HALF_SIZE;
 const PLAYER_MAX_X = RINK_RIGHT - PLAYER_HALF_SIZE;
@@ -75,12 +75,7 @@ export const HOCKEY_AI_DIFFICULTIES = Object.freeze({
  * @returns {"easy"|"normal"|"hard"}
  */
 export function normalizeHockeyAIDifficulty(difficulty) {
-  if (typeof difficulty !== "string") return DEFAULT_DIFFICULTY;
-
-  const key = difficulty.toLowerCase();
-  return Object.prototype.hasOwnProperty.call(HOCKEY_AI_DIFFICULTIES, key)
-    ? key
-    : DEFAULT_DIFFICULTY;
+  return normalizeDifficulty(difficulty, HOCKEY_AI_DIFFICULTIES);
 }
 
 /**
@@ -350,14 +345,4 @@ function distance(a, b) {
  */
 function errorOffset(amount, rng) {
   return (rng() * 2 - 1) * amount;
-}
-
-/**
- * @param {number} value
- * @param {number} min
- * @param {number} max
- * @returns {number}
- */
-function clamp(value, min, max) {
-  return Math.max(min, Math.min(max, value));
 }

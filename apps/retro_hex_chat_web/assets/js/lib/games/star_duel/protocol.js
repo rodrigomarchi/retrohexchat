@@ -30,15 +30,6 @@ export const PHASE = {
   FINISHED: 5,
 };
 
-// Input key enum
-export const INPUT_KEY = {
-  ROTATE_LEFT: 0,
-  ROTATE_RIGHT: 1,
-  THRUST: 2,
-  FIRE: 3,
-  WARP: 4,
-};
-
 // Game mode enum
 export const GAME_MODE = {
   OPEN_SPACE: 0,

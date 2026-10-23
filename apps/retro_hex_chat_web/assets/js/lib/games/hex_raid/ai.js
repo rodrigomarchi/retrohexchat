@@ -18,6 +18,7 @@ import {
   SPEED_MIN,
   getBankAtWorld,
 } from "./physics.js";
+import { clamp } from "../ai_common.js";
 
 const SAFE_MARGIN = JET_RADIUS + 18;
 const TARGET_LOOKAHEAD_Y = 120;
@@ -485,8 +486,4 @@ function createSeededRng(seed) {
     t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
     return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
   };
-}
-
-function clamp(value, min, max) {
-  return Math.max(min, Math.min(max, value));
 }

@@ -4,12 +4,11 @@
  * @module games/hex_boxing_engine
  */
 
-import { GameEngine } from "../../game_engine.js";
+import { GameEngine, keymap } from "../../game_engine.js";
 import { createBoxingAI, normalizeBoxingAIDifficulty } from "./ai.js";
 import {
   MSG_TYPE,
   PHASE,
-  INPUT_KEY,
   encodeGameState,
   decodeGameState,
   encodeGameEnd,
@@ -62,6 +61,14 @@ export class BoxingEngine extends GameEngine {
   static FINAL_PHASE = PHASE.MATCH_OVER;
 
   static INPUT_BITS = { up: 0, down: 1, left: 2, right: 3, punch: 4 };
+
+  static KEYMAP = keymap({
+    up: ["ArrowUp", "w", "W"],
+    down: ["ArrowDown", "s", "S"],
+    left: ["ArrowLeft", "a", "A"],
+    right: ["ArrowRight", "d", "D"],
+    punch: [" ", "Shift"],
+  });
 
   static INTERPOLATION = {
     keys: ["b1x", "b1y", "b2x", "b2y"],
@@ -225,38 +232,6 @@ export class BoxingEngine extends GameEngine {
     }
 
     this._playPhaseAudio(prevPhase, decoded.phase);
-  }
-
-  _handleKeyDown(e) {
-    const keyCode = this._mapKey(e.key);
-    if (keyCode === null) return;
-    e.preventDefault();
-
-    this._setLocalInput(keyCode, true);
-  }
-
-  _handleKeyUp(e) {
-    const keyCode = this._mapKey(e.key);
-    if (keyCode === null) return;
-
-    this._setLocalInput(keyCode, false);
-  }
-
-  _setLocalInput(keyCode, pressed) {
-    if (keyCode === INPUT_KEY.UP) this.localInputs.up = pressed;
-    else if (keyCode === INPUT_KEY.DOWN) this.localInputs.down = pressed;
-    else if (keyCode === INPUT_KEY.LEFT) this.localInputs.left = pressed;
-    else if (keyCode === INPUT_KEY.RIGHT) this.localInputs.right = pressed;
-    else if (keyCode === INPUT_KEY.PUNCH) this.localInputs.punch = pressed;
-  }
-
-  _mapKey(key) {
-    if (key === "ArrowUp" || key === "w" || key === "W") return INPUT_KEY.UP;
-    if (key === "ArrowDown" || key === "s" || key === "S") return INPUT_KEY.DOWN;
-    if (key === "ArrowLeft" || key === "a" || key === "A") return INPUT_KEY.LEFT;
-    if (key === "ArrowRight" || key === "d" || key === "D") return INPUT_KEY.RIGHT;
-    if (key === " " || key === "Shift") return INPUT_KEY.PUNCH;
-    return null;
   }
 
   // --- Direction from input state ---

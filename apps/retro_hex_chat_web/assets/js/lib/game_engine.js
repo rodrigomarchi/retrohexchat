@@ -61,6 +61,9 @@ const KEYBOARD_CAPTURE_OPTIONS = true;
  * - `static INPUT_BITS` maps this game's held inputs to bit positions; the base
  *   then owns input transport entirely. Games whose input is a discrete command
  *   leave it empty and call `_sendInputEdge()`.
+ * - `static KEYMAP` maps keys to those inputs; the base holds and releases
+ *   them. A game overrides `_handleKeyDown`/`_handleKeyUp` only for what a
+ *   key does beyond holding its input.
  * - `static INTERPOLATION` declares the state keys that read as motion, so the
  *   guest can smooth them between snapshots.
  * - `_gameLoop()` runs exactly one simulation step. Never schedule the next one
@@ -75,12 +78,28 @@ const KEYBOARD_CAPTURE_OPTIONS = true;
  * - `phaseTimer` holds the one pending phase change (a countdown, a pause
  *   between rounds); the base clears it on stop and on disconnect.
  */
+/**
+ * A `static KEYMAP` from each input's keys, read the way a person says it.
+ * @param {Record<string, string[]>} keysByInput - e.g. `{ up: ["ArrowUp", "w", "W"] }`
+ * @returns {Record<string, string>}
+ */
+export function keymap(keysByInput) {
+  const map = {};
+  for (const [input, keys] of Object.entries(keysByInput)) {
+    for (const key of keys) map[key] = input;
+  }
+  return Object.freeze(map);
+}
+
 export class GameEngine {
   /** @type {Record<string, number>} held-input name to bit position */
   static INPUT_BITS = {};
 
   /** @type {{keys: string[], snapDistance?: number}} guest-side smoothing */
   static INTERPOLATION = { keys: [] };
+
+  /** @type {Record<string, string>} `KeyboardEvent.key` to held-input name; build it with `keymap()` */
+  static KEYMAP = {};
 
   /** The phase a match ends in, from the game's own phase enum. */
   static FINAL_PHASE = null;
@@ -725,16 +744,38 @@ export class GameEngine {
   _idleStep() {}
 
   /**
-   * @param {KeyboardEvent} _event
-   * @returns {void}
+   * The held input a key drives, from `static KEYMAP`, or null.
+   * @param {KeyboardEvent} event
+   * @returns {string|null}
    */
-  _handleKeyDown(_event) {}
+  _keyInput(event) {
+    return Object.hasOwn(this.constructor.KEYMAP, event.key)
+      ? this.constructor.KEYMAP[event.key]
+      : null;
+  }
 
   /**
-   * @param {KeyboardEvent} _event
+   * A mapped key holds its input down, and the page never sees it.
+   * @param {KeyboardEvent} event
    * @returns {void}
    */
-  _handleKeyUp(_event) {}
+  _handleKeyDown(event) {
+    const input = this._keyInput(event);
+    if (input === null) return;
+    event.preventDefault();
+    this.localInputs[input] = true;
+  }
+
+  /**
+   * @param {KeyboardEvent} event
+   * @returns {void}
+   */
+  _handleKeyUp(event) {
+    const input = this._keyInput(event);
+    if (input === null) return;
+    event.preventDefault();
+    this.localInputs[input] = false;
+  }
 
   /**
    * Apply a deduplicated discrete command from the guest. Only games with

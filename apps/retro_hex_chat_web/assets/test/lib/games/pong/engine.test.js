@@ -489,7 +489,7 @@ describe("PongEngine", () => {
       engine = new PongEngine(canvas, channel, "hex_pong", true, null);
       engine.start();
       engine._onKeyDown({ key: "ArrowUp", preventDefault: vi.fn(), repeat: false, target: null });
-      engine._onKeyUp({ key: "ArrowUp", repeat: false, target: null });
+      engine._onKeyUp({ key: "ArrowUp", repeat: false, target: null, preventDefault: () => {} });
       expect(engine.localInputs.up).toBe(false);
     });
 
@@ -520,7 +520,7 @@ describe("PongEngine", () => {
 
       engine._onKeyDown({ key: "ArrowDown", repeat: false, target: null, preventDefault: vi.fn() });
       channel.send.mockClear();
-      engine._onKeyUp({ key: "ArrowDown", target: null });
+      engine._onKeyUp({ key: "ArrowDown", target: null, preventDefault: () => {} });
 
       const lastCall = channel.send.mock.calls[channel.send.mock.calls.length - 1];
       expect(decodeInputState(lastCall[0]).mask).toBe(0);

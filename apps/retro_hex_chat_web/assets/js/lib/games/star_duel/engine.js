@@ -5,12 +5,11 @@
  * @module games/star_duel_engine
  */
 
-import { GameEngine } from "../../game_engine.js";
+import { GameEngine, keymap } from "../../game_engine.js";
 import { createStarDuelAI, normalizeStarDuelAIDifficulty } from "./ai.js";
 import {
   MSG_TYPE,
   PHASE,
-  INPUT_KEY,
   GAME_MODE,
   encodeGameState,
   decodeGameState,
@@ -88,6 +87,14 @@ export class StarDuelEngine extends GameEngine {
   static FINAL_PHASE = PHASE.FINISHED;
 
   static INPUT_BITS = { rotateLeft: 0, rotateRight: 1, thrust: 2, fire: 3, warp: 4 };
+
+  static KEYMAP = keymap({
+    rotateLeft: ["ArrowLeft", "a", "A"],
+    rotateRight: ["ArrowRight", "d", "D"],
+    thrust: ["ArrowUp", "w", "W"],
+    fire: [" "],
+    warp: ["ArrowDown", "s", "S"],
+  });
 
   /**
    * @param {HTMLCanvasElement} canvas
@@ -230,39 +237,6 @@ export class StarDuelEngine extends GameEngine {
         break;
       }
     }
-  }
-
-  _handleKeyDown(e) {
-    const keyCode = this._mapKey(e.key);
-    if (keyCode === null) return;
-    e.preventDefault();
-
-    if (keyCode === INPUT_KEY.ROTATE_LEFT) this.localInputs.rotateLeft = true;
-    if (keyCode === INPUT_KEY.ROTATE_RIGHT) this.localInputs.rotateRight = true;
-    if (keyCode === INPUT_KEY.THRUST) this.localInputs.thrust = true;
-    if (keyCode === INPUT_KEY.FIRE) this.localInputs.fire = true;
-    if (keyCode === INPUT_KEY.WARP) this.localInputs.warp = true;
-  }
-
-  _handleKeyUp(e) {
-    const keyCode = this._mapKey(e.key);
-    if (keyCode === null) return;
-
-    if (keyCode === INPUT_KEY.ROTATE_LEFT) this.localInputs.rotateLeft = false;
-    if (keyCode === INPUT_KEY.ROTATE_RIGHT) this.localInputs.rotateRight = false;
-    if (keyCode === INPUT_KEY.THRUST) this.localInputs.thrust = false;
-    if (keyCode === INPUT_KEY.FIRE) this.localInputs.fire = false;
-    if (keyCode === INPUT_KEY.WARP) this.localInputs.warp = false;
-  }
-
-  /** Map keyboard key to INPUT_KEY enum. */
-  _mapKey(key) {
-    if (key === "ArrowLeft" || key === "a" || key === "A") return INPUT_KEY.ROTATE_LEFT;
-    if (key === "ArrowRight" || key === "d" || key === "D") return INPUT_KEY.ROTATE_RIGHT;
-    if (key === "ArrowUp" || key === "w" || key === "W") return INPUT_KEY.THRUST;
-    if (key === " ") return INPUT_KEY.FIRE;
-    if (key === "ArrowDown" || key === "s" || key === "S") return INPUT_KEY.WARP;
-    return null;
   }
 
   /** Clear all inputs on window blur (prevents stuck keys). */

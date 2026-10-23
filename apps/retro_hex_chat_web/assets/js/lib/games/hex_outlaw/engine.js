@@ -4,12 +4,11 @@
  * @module games/hex_outlaw_engine
  */
 
-import { GameEngine } from "../../game_engine.js";
+import { GameEngine, keymap } from "../../game_engine.js";
 import { createOutlawAI, normalizeOutlawAIDifficulty } from "./ai.js";
 import {
   MSG_TYPE,
   PHASE,
-  INPUT_KEY,
   GAME_MODE,
   encodeGameState,
   decodeGameState,
@@ -83,6 +82,14 @@ export class OutlawEngine extends GameEngine {
   static FINAL_PHASE = PHASE.MATCH_OVER;
 
   static INPUT_BITS = { up: 0, down: 1, left: 2, right: 3, fire: 4 };
+
+  static KEYMAP = keymap({
+    up: ["ArrowUp", "w", "W"],
+    down: ["ArrowDown", "s", "S"],
+    left: ["ArrowLeft", "a", "A"],
+    right: ["ArrowRight", "d", "D"],
+    fire: [" ", "Shift"],
+  });
 
   static INTERPOLATION = {
     keys: ["p1x", "p1y", "p2x", "p2y", "b1x", "b1y", "b2x", "b2y"],
@@ -253,52 +260,6 @@ export class OutlawEngine extends GameEngine {
     }
 
     this._playPhaseAudio(prevPhase, decoded.phase);
-  }
-
-  _handleKeyDown(e) {
-    const keyCode = this._mapKey(e.key);
-    if (keyCode === null) return;
-    e.preventDefault();
-
-    this._setLocalInput(keyCode, true);
-
-    // Track aim direction for ricochet: last vertical input determines angle
-    if (keyCode === INPUT_KEY.UP) this._localAimUp = true;
-    if (keyCode === INPUT_KEY.DOWN) this._localAimUp = false;
-  }
-
-  _handleKeyUp(e) {
-    const keyCode = this._mapKey(e.key);
-    if (keyCode === null) return;
-
-    this._setLocalInput(keyCode, false);
-  }
-
-  _setLocalInput(keyCode, pressed) {
-    if (keyCode === INPUT_KEY.UP) this.localInputs.up = pressed;
-    else if (keyCode === INPUT_KEY.DOWN) this.localInputs.down = pressed;
-    else if (keyCode === INPUT_KEY.LEFT) this.localInputs.left = pressed;
-    else if (keyCode === INPUT_KEY.RIGHT) this.localInputs.right = pressed;
-    else if (keyCode === INPUT_KEY.FIRE) this.localInputs.fire = pressed;
-  }
-
-  _mapKey(key) {
-    if (key === "ArrowUp" || key === "w" || key === "W") {
-      return INPUT_KEY.UP;
-    }
-    if (key === "ArrowDown" || key === "s" || key === "S") {
-      return INPUT_KEY.DOWN;
-    }
-    if (key === "ArrowLeft" || key === "a" || key === "A") {
-      return INPUT_KEY.LEFT;
-    }
-    if (key === "ArrowRight" || key === "d" || key === "D") {
-      return INPUT_KEY.RIGHT;
-    }
-    if (key === " " || key === "Shift") {
-      return INPUT_KEY.FIRE;
-    }
-    return null;
   }
 
   _handleBlur() {
@@ -553,6 +514,14 @@ export class OutlawEngine extends GameEngine {
   }
 
   // ── Connection Resilience ──
+
+  _handleKeyDown(event) {
+    super._handleKeyDown(event);
+    // Track aim direction for ricochet: last vertical input determines angle
+    const input = this._keyInput(event);
+    if (input === "up") this._localAimUp = true;
+    if (input === "down") this._localAimUp = false;
+  }
 
   _disconnectResult() {
     return {

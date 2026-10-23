@@ -15,8 +15,8 @@ import {
   PADDLE_W,
 } from "./physics.js";
 import { PHASE } from "./protocol.js";
+import { clamp, normalizeDifficulty } from "../ai_common.js";
 
-const DEFAULT_DIFFICULTY = "normal";
 const BALL_MIN_Y = BALL_SIZE / 2;
 const BALL_MAX_Y = CANVAS_H - BALL_SIZE / 2;
 const PADDLE_MIN_CENTER_Y = PADDLE_H / 2;
@@ -50,10 +50,7 @@ export const PONG_AI_DIFFICULTIES = Object.freeze({
  * @returns {"easy"|"normal"|"hard"}
  */
 export function normalizePongAIDifficulty(difficulty) {
-  if (typeof difficulty !== "string") return DEFAULT_DIFFICULTY;
-
-  const key = difficulty.toLowerCase();
-  return Object.prototype.hasOwnProperty.call(PONG_AI_DIFFICULTIES, key) ? key : DEFAULT_DIFFICULTY;
+  return normalizeDifficulty(difficulty, PONG_AI_DIFFICULTIES);
 }
 
 /**
@@ -200,8 +197,4 @@ function isMovementFrame(frame, config) {
   if (config.movementDuty >= 1) return true;
 
   return (frame % 10) / 10 < config.movementDuty;
-}
-
-function clamp(value, min, max) {
-  return Math.max(min, Math.min(max, value));
 }

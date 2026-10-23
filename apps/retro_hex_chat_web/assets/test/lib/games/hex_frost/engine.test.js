@@ -4,7 +4,6 @@ import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
 import {
   PHASE,
   MSG_TYPE,
-  INPUT_KEY,
   GAME_MODE,
   EVENT,
   encodeGameState,
@@ -436,48 +435,48 @@ describe("HexFrostEngine", () => {
   // ── 4. Input handling ──────────────────────────────────────────
 
   describe("input handling", () => {
-    describe("_mapKey", () => {
-      it("maps ArrowLeft to INPUT_KEY.LEFT", () => {
+    describe("KEYMAP", () => {
+      it("maps ArrowLeft to left", () => {
         const { engine } = createEngine();
-        expect(engine._mapKey({ key: "ArrowLeft" })).toBe(INPUT_KEY.LEFT);
+        expect(engine._keyInput({ key: "ArrowLeft" })).toBe("left");
       });
 
-      it("maps a/A to INPUT_KEY.LEFT", () => {
+      it("maps a/A to left", () => {
         const { engine } = createEngine();
-        expect(engine._mapKey({ key: "a" })).toBe(INPUT_KEY.LEFT);
-        expect(engine._mapKey({ key: "A" })).toBe(INPUT_KEY.LEFT);
+        expect(engine._keyInput({ key: "a" })).toBe("left");
+        expect(engine._keyInput({ key: "A" })).toBe("left");
       });
 
-      it("maps ArrowRight to INPUT_KEY.RIGHT", () => {
+      it("maps ArrowRight to right", () => {
         const { engine } = createEngine();
-        expect(engine._mapKey({ key: "ArrowRight" })).toBe(INPUT_KEY.RIGHT);
+        expect(engine._keyInput({ key: "ArrowRight" })).toBe("right");
       });
 
-      it("maps d/D to INPUT_KEY.RIGHT", () => {
+      it("maps d/D to right", () => {
         const { engine } = createEngine();
-        expect(engine._mapKey({ key: "d" })).toBe(INPUT_KEY.RIGHT);
-        expect(engine._mapKey({ key: "D" })).toBe(INPUT_KEY.RIGHT);
+        expect(engine._keyInput({ key: "d" })).toBe("right");
+        expect(engine._keyInput({ key: "D" })).toBe("right");
       });
 
-      it("maps ArrowUp / w / W to INPUT_KEY.UP", () => {
+      it("maps ArrowUp / w / W to up", () => {
         const { engine } = createEngine();
-        expect(engine._mapKey({ key: "ArrowUp" })).toBe(INPUT_KEY.UP);
-        expect(engine._mapKey({ key: "w" })).toBe(INPUT_KEY.UP);
-        expect(engine._mapKey({ key: "W" })).toBe(INPUT_KEY.UP);
+        expect(engine._keyInput({ key: "ArrowUp" })).toBe("up");
+        expect(engine._keyInput({ key: "w" })).toBe("up");
+        expect(engine._keyInput({ key: "W" })).toBe("up");
       });
 
-      it("maps ArrowDown / s / S to INPUT_KEY.DOWN", () => {
+      it("maps ArrowDown / s / S to down", () => {
         const { engine } = createEngine();
-        expect(engine._mapKey({ key: "ArrowDown" })).toBe(INPUT_KEY.DOWN);
-        expect(engine._mapKey({ key: "s" })).toBe(INPUT_KEY.DOWN);
-        expect(engine._mapKey({ key: "S" })).toBe(INPUT_KEY.DOWN);
+        expect(engine._keyInput({ key: "ArrowDown" })).toBe("down");
+        expect(engine._keyInput({ key: "s" })).toBe("down");
+        expect(engine._keyInput({ key: "S" })).toBe("down");
       });
 
       it("returns null for unknown keys", () => {
         const { engine } = createEngine();
-        expect(engine._mapKey({ key: " " })).toBeNull();
-        expect(engine._mapKey({ key: "Enter" })).toBeNull();
-        expect(engine._mapKey({ key: "x" })).toBeNull();
+        expect(engine._keyInput({ key: " " })).toBeNull();
+        expect(engine._keyInput({ key: "Enter" })).toBeNull();
+        expect(engine._keyInput({ key: "x" })).toBeNull();
       });
     });
 

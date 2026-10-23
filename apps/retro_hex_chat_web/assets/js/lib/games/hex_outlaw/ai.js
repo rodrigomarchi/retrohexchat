@@ -20,8 +20,8 @@ import {
   RICOCHET_ANGLE,
   getObstacleRect,
 } from "./physics.js";
+import { clamp, normalizeDifficulty } from "../ai_common.js";
 
-const DEFAULT_DIFFICULTY = "normal";
 const NEUTRAL_INPUTS = Object.freeze({
   up: false,
   down: false,
@@ -74,12 +74,7 @@ export const OUTLAW_AI_DIFFICULTIES = Object.freeze({
  * @returns {"easy"|"normal"|"hard"}
  */
 export function normalizeOutlawAIDifficulty(difficulty) {
-  if (typeof difficulty !== "string") return DEFAULT_DIFFICULTY;
-
-  const key = difficulty.toLowerCase();
-  return Object.prototype.hasOwnProperty.call(OUTLAW_AI_DIFFICULTIES, key)
-    ? key
-    : DEFAULT_DIFFICULTY;
+  return normalizeDifficulty(difficulty, OUTLAW_AI_DIFFICULTIES);
 }
 
 /**
@@ -464,8 +459,4 @@ function randomUnit(rng) {
   const value = Number(rng());
   if (!Number.isFinite(value)) return 0;
   return Math.max(0, Math.min(value, 0.999999999));
-}
-
-function clamp(value, min, max) {
-  return Math.max(min, Math.min(max, value));
 }

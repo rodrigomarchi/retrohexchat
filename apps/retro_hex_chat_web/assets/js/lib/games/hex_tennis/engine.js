@@ -5,13 +5,12 @@
  */
 import { log } from "../../logger.js";
 
-import { GameEngine } from "../../game_engine.js";
+import { GameEngine, keymap } from "../../game_engine.js";
 import { createTennisAI, normalizeTennisAIDifficulty } from "./ai.js";
 import {
   MSG_TYPE,
   PHASE,
   GAME_MODE,
-  INPUT_KEY,
   encodeGameState,
   decodeGameState,
   encodeGameEnd,
@@ -75,6 +74,14 @@ export class TennisEngine extends GameEngine {
   static FINAL_PHASE = PHASE.GAME_OVER;
 
   static INPUT_BITS = { up: 0, down: 1, left: 2, right: 3, serve: 4 };
+
+  static KEYMAP = keymap({
+    up: ["ArrowUp", "w", "W"],
+    down: ["ArrowDown", "s", "S"],
+    left: ["ArrowLeft", "a", "A"],
+    right: ["ArrowRight", "d", "D"],
+    serve: [" ", "Shift"],
+  });
 
   /**
    * @param {HTMLCanvasElement} canvas
@@ -161,56 +168,6 @@ export class TennisEngine extends GameEngine {
   }
 
   // ── Input Handling ──
-
-  _mapKey(key) {
-    switch (key) {
-      case "ArrowUp":
-      case "w":
-      case "W":
-        return INPUT_KEY.UP;
-      case "ArrowDown":
-      case "s":
-      case "S":
-        return INPUT_KEY.DOWN;
-      case "ArrowLeft":
-      case "a":
-      case "A":
-        return INPUT_KEY.LEFT;
-      case "ArrowRight":
-      case "d":
-      case "D":
-        return INPUT_KEY.RIGHT;
-      case " ":
-      case "Shift":
-        return INPUT_KEY.SERVE;
-      default:
-        return null;
-    }
-  }
-
-  _handleKeyDown(e) {
-    const k = this._mapKey(e.key);
-    if (k === null) return;
-    e.preventDefault();
-
-    if (k === INPUT_KEY.UP) this.localInputs.up = true;
-    else if (k === INPUT_KEY.DOWN) this.localInputs.down = true;
-    else if (k === INPUT_KEY.LEFT) this.localInputs.left = true;
-    else if (k === INPUT_KEY.RIGHT) this.localInputs.right = true;
-    else if (k === INPUT_KEY.SERVE) this.localInputs.serve = true;
-  }
-
-  _handleKeyUp(e) {
-    const k = this._mapKey(e.key);
-    if (k === null) return;
-    e.preventDefault();
-
-    if (k === INPUT_KEY.UP) this.localInputs.up = false;
-    else if (k === INPUT_KEY.DOWN) this.localInputs.down = false;
-    else if (k === INPUT_KEY.LEFT) this.localInputs.left = false;
-    else if (k === INPUT_KEY.RIGHT) this.localInputs.right = false;
-    else if (k === INPUT_KEY.SERVE) this.localInputs.serve = false;
-  }
 
   // ── Network Messages ──
 

@@ -3,7 +3,6 @@ import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
 import {
   PHASE,
   MSG_TYPE,
-  INPUT_KEY,
   GAME_MODE,
   encodeGameState,
   encodeGameEnd,
@@ -309,24 +308,24 @@ describe("PixelTanksEngine", () => {
   describe("input handling", () => {
     it("maps arrow keys to input codes", () => {
       engine = new PixelTanksEngine(canvas, channel, "pixel_tanks", true, null);
-      expect(engine._mapKey("ArrowLeft")).toBe(INPUT_KEY.ROTATE_LEFT);
-      expect(engine._mapKey("ArrowRight")).toBe(INPUT_KEY.ROTATE_RIGHT);
-      expect(engine._mapKey("ArrowUp")).toBe(INPUT_KEY.FORWARD);
-      expect(engine._mapKey(" ")).toBe(INPUT_KEY.FIRE);
+      expect(engine._keyInput({ key: "ArrowLeft" })).toBe("rotateLeft");
+      expect(engine._keyInput({ key: "ArrowRight" })).toBe("rotateRight");
+      expect(engine._keyInput({ key: "ArrowUp" })).toBe("forward");
+      expect(engine._keyInput({ key: " " })).toBe("fire");
     });
 
     it("maps WASD keys", () => {
       engine = new PixelTanksEngine(canvas, channel, "pixel_tanks", true, null);
-      expect(engine._mapKey("a")).toBe(INPUT_KEY.ROTATE_LEFT);
-      expect(engine._mapKey("d")).toBe(INPUT_KEY.ROTATE_RIGHT);
-      expect(engine._mapKey("w")).toBe(INPUT_KEY.FORWARD);
-      expect(engine._mapKey("Shift")).toBe(INPUT_KEY.FIRE);
+      expect(engine._keyInput({ key: "a" })).toBe("rotateLeft");
+      expect(engine._keyInput({ key: "d" })).toBe("rotateRight");
+      expect(engine._keyInput({ key: "w" })).toBe("forward");
+      expect(engine._keyInput({ key: "Shift" })).toBe("fire");
     });
 
     it("returns null for unmapped keys", () => {
       engine = new PixelTanksEngine(canvas, channel, "pixel_tanks", true, null);
-      expect(engine._mapKey("q")).toBeNull();
-      expect(engine._mapKey("Enter")).toBeNull();
+      expect(engine._keyInput({ key: "q" })).toBeNull();
+      expect(engine._keyInput({ key: "Enter" })).toBeNull();
     });
 
     it("peer sends input over channel", () => {
