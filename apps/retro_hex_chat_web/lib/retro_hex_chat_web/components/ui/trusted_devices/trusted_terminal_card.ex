@@ -1,6 +1,13 @@
 defmodule RetroHexChatWeb.Components.UI.TrustedDevices.TrustedTerminalCard do
   @moduledoc """
   Shared trusted-terminal card used anywhere a remembered device identity is shown.
+
+  A terminal, a live session and a security event are described with the same
+  facts — the browser, the screen, when it was last seen — so the pieces they
+  are drawn from are public here: `terminal_spec/1` for a device fact as a
+  badge, `terminal_fact/1` for a labelled one, `terminal_icon/1` for the
+  picture each fact wears, and `device_specs/1` for the device facts a record
+  carries. A fact read in two windows is then drawn, worded and pictured once.
   """
   use RetroHexChatWeb.Component
 
@@ -40,7 +47,7 @@ defmodule RetroHexChatWeb.Components.UI.TrustedDevices.TrustedTerminalCard do
       |> assign(:auto_login, entry_field(assigns.entry, :auto_login) == true)
       |> assign(:auto_login_id, auto_login_id(assigns.entry, assigns.nickname))
       |> assign(:auto_login_testid, auto_login_testid(assigns))
-      |> assign(:primary_specs, primary_specs(assigns.entry))
+      |> assign(:primary_specs, device_specs(assigns.entry))
       |> assign(:trust_specs, trust_specs(assigns.entry, display_timezone(assigns)))
       |> assign(:audit_specs, audit_specs(assigns.entry, display_timezone(assigns)))
       |> assign(:card_context, card_context(assigns))
@@ -60,7 +67,7 @@ defmodule RetroHexChatWeb.Components.UI.TrustedDevices.TrustedTerminalCard do
           </.icon_well>
 
           <div class="min-w-0">
-            <div class="mb-retro-4 flex min-w-0 flex-wrap items-center gap-retro-3">
+            <div class="mb-retro-4 flex min-w-0 flex-wrap items-center gap-retro-4">
               <.badge :if={@current} variant="success">
                 <:icon><Icons.icon_checkmark class="h-3 w-3" /></:icon>
                 {dgettext("ui", "This device")}
@@ -78,8 +85,8 @@ defmodule RetroHexChatWeb.Components.UI.TrustedDevices.TrustedTerminalCard do
             <span class="block truncate text-base font-bold leading-tight">
               {@terminal_label}
             </span>
-            <div class="mt-retro-3 flex min-w-0 flex-wrap items-center gap-retro-3">
-              <span :if={@nickname != ""} class="inline-flex min-w-0 items-center gap-retro-3">
+            <div class="mt-retro-4 flex min-w-0 flex-wrap items-center gap-retro-4">
+              <span :if={@nickname != ""} class="inline-flex min-w-0 items-center gap-retro-4">
                 <Icons.icon_status_user class="h-4 w-4 shrink-0" />
                 <span class="truncate text-sm font-bold">{@nickname}</span>
               </span>
@@ -112,21 +119,21 @@ defmodule RetroHexChatWeb.Components.UI.TrustedDevices.TrustedTerminalCard do
 
       <div
         :if={@primary_specs != []}
-        class="mt-3 flex flex-wrap gap-retro-3 border-t border-border pt-2"
+        class="mt-3 flex flex-wrap gap-retro-4 border-t border-border pt-2"
       >
-        <.terminal_spec_badge :for={spec <- @primary_specs} spec={spec} />
+        <.terminal_spec :for={spec <- @primary_specs} spec={spec} />
       </div>
 
       <div
         :if={@trust_specs != []}
-        class="mt-3 grid gap-retro-3 border-t border-border pt-2 sm:grid-cols-3"
+        class="mt-3 grid gap-retro-4 border-t border-border pt-2 sm:grid-cols-3"
       >
         <.terminal_fact :for={fact <- @trust_specs} fact={fact} />
       </div>
 
       <div
         :if={@show_audit_metadata and @audit_specs != []}
-        class="mt-3 grid gap-retro-3 border-t border-border pt-2 sm:grid-cols-2 lg:grid-cols-3"
+        class="mt-3 grid gap-retro-4 border-t border-border pt-2 sm:grid-cols-2 lg:grid-cols-3"
       >
         <.terminal_fact :for={fact <- @audit_specs} fact={fact} />
       </div>
@@ -170,23 +177,27 @@ defmodule RetroHexChatWeb.Components.UI.TrustedDevices.TrustedTerminalCard do
     """
   end
 
-  attr :spec, :map, required: true
+  attr :spec, :map, required: true, doc: "`%{icon: atom, value: String.t()}`"
 
-  defp terminal_spec_badge(assigns) do
+  @doc "A device fact as a badge: its picture and its value."
+  @spec terminal_spec(map()) :: Phoenix.LiveView.Rendered.t()
+  def terminal_spec(assigns) do
     ~H"""
     <.badge variant="secondary" class="max-w-full">
-      <:icon><.trusted_terminal_icon icon={@spec.icon} class="h-3 w-3" /></:icon>
+      <:icon><.terminal_icon icon={@spec.icon} class="h-3 w-3" /></:icon>
       <span class="truncate">{@spec.value}</span>
     </.badge>
     """
   end
 
-  attr :fact, :map, required: true
+  attr :fact, :map, required: true, doc: "`%{icon: atom, label: String.t(), value: String.t()}`"
 
-  defp terminal_fact(assigns) do
+  @doc "A labelled fact: its picture, what it is, and its value."
+  @spec terminal_fact(map()) :: Phoenix.LiveView.Rendered.t()
+  def terminal_fact(assigns) do
     ~H"""
-    <span class="inline-flex min-w-0 items-center gap-retro-3 border border-border bg-white px-1 py-px">
-      <.trusted_terminal_icon icon={@fact.icon} class="h-3.5 w-3.5 shrink-0" />
+    <span class="inline-flex min-w-0 items-center gap-retro-4 border border-border bg-white px-1 py-px">
+      <.terminal_icon icon={@fact.icon} class="h-3.5 w-3.5 shrink-0" />
       <span class="shrink-0 font-bold">{@fact.label}:</span>
       <span class="min-w-0 truncate text-muted-foreground">{@fact.value}</span>
     </span>
@@ -196,60 +207,74 @@ defmodule RetroHexChatWeb.Components.UI.TrustedDevices.TrustedTerminalCard do
   attr :icon, :atom, required: true
   attr :class, :string, default: nil
 
-  defp trusted_terminal_icon(%{icon: :browser} = assigns),
+  @doc "The picture a terminal's fact wears, by the fact it is."
+  @spec terminal_icon(map()) :: Phoenix.LiveView.Rendered.t()
+  def terminal_icon(%{icon: :browser} = assigns),
     do: ~H"<Icons.icon_browser class={@class} />"
 
-  defp trusted_terminal_icon(%{icon: :os} = assigns),
+  def terminal_icon(%{icon: :os} = assigns),
     do: ~H"<Icons.icon_operating_system class={@class} />"
 
-  defp trusted_terminal_icon(%{icon: :display} = assigns),
+  def terminal_icon(%{icon: :display} = assigns),
     do: ~H"<Icons.icon_tab_display class={@class} />"
 
-  defp trusted_terminal_icon(%{icon: :timezone} = assigns),
+  def terminal_icon(%{icon: :timezone} = assigns),
     do: ~H"<Icons.icon_globe class={@class} />"
 
-  defp trusted_terminal_icon(%{icon: :type} = assigns),
+  def terminal_icon(%{icon: :type} = assigns),
     do: ~H"<Icons.icon_devices class={@class} />"
 
-  defp trusted_terminal_icon(%{icon: :language} = assigns),
+  def terminal_icon(%{icon: :language} = assigns),
     do: ~H"<Icons.icon_globe class={@class} />"
 
-  defp trusted_terminal_icon(%{icon: :color_depth} = assigns),
+  def terminal_icon(%{icon: :color_depth} = assigns),
     do: ~H"<Icons.icon_palette class={@class} />"
 
-  defp trusted_terminal_icon(%{icon: :cores} = assigns),
+  def terminal_icon(%{icon: :cores} = assigns),
     do: ~H"<Icons.icon_database class={@class} />"
 
-  defp trusted_terminal_icon(%{icon: :grant} = assigns),
+  def terminal_icon(%{icon: :grant} = assigns),
     do: ~H"<Icons.icon_shield class={@class} />"
 
-  defp trusted_terminal_icon(%{icon: :connect} = assigns),
+  def terminal_icon(%{icon: :connect} = assigns),
     do: ~H"<Icons.icon_connect class={@class} />"
 
-  defp trusted_terminal_icon(%{icon: :expires} = assigns),
+  def terminal_icon(%{icon: :expires} = assigns),
     do: ~H"<Icons.icon_warning class={@class} />"
 
-  defp trusted_terminal_icon(%{icon: :touch} = assigns),
+  def terminal_icon(%{icon: :touch} = assigns),
     do: ~H"<Icons.icon_call_devices class={@class} />"
 
-  defp trusted_terminal_icon(%{icon: :first_seen} = assigns),
+  def terminal_icon(%{icon: :first_seen} = assigns),
     do: ~H"<Icons.icon_clock class={@class} />"
 
-  defp trusted_terminal_icon(%{icon: :last_seen} = assigns),
+  def terminal_icon(%{icon: :last_seen} = assigns),
     do: ~H"<Icons.icon_btn_refresh class={@class} />"
 
-  defp trusted_terminal_icon(%{icon: :active} = assigns),
+  def terminal_icon(%{icon: :active} = assigns),
     do: ~H"<Icons.icon_status_signal class={@class} />"
 
-  defp trusted_terminal_icon(%{icon: :id} = assigns),
+  def terminal_icon(%{icon: :id} = assigns),
     do: ~H"<Icons.icon_tag class={@class} />"
 
-  defp trusted_terminal_icon(%{icon: :fingerprint} = assigns),
+  def terminal_icon(%{icon: :fingerprint} = assigns),
     do: ~H"<Icons.icon_tag class={@class} />"
 
-  defp trusted_terminal_icon(assigns), do: ~H"<Icons.icon_tag class={@class} />"
+  def terminal_icon(%{icon: :actor} = assigns),
+    do: ~H"<Icons.icon_status_user class={@class} />"
 
-  defp primary_specs(entry) do
+  def terminal_icon(%{icon: :terminal} = assigns),
+    do: ~H"<Icons.icon_laptop class={@class} />"
+
+  def terminal_icon(assigns), do: ~H"<Icons.icon_tag class={@class} />"
+
+  @doc """
+  The device facts `entry` carries — browser, system, kind, screen, language,
+  time zone, colour depth, cores, touch — leaving out the ones it does not
+  know. A terminal and a session both carry them.
+  """
+  @spec device_specs(map()) :: [%{icon: atom(), value: String.t()}]
+  def device_specs(entry) do
     [
       %{icon: :browser, value: entry_field(entry, :browser)},
       %{icon: :os, value: entry_field(entry, :os)},
@@ -268,17 +293,17 @@ defmodule RetroHexChatWeb.Components.UI.TrustedDevices.TrustedTerminalCard do
     [
       %{
         icon: :connect,
-        label: dgettext("ui", "Used"),
+        label: dgettext("ui", "Last login"),
         value: format_dt(entry_field(entry, :last_used_at), timezone)
       },
       %{
         icon: :grant,
-        label: dgettext("ui", "Remembered"),
+        label: dgettext("ui", "Trusted since"),
         value: format_dt(entry_field(entry, :granted_at), timezone)
       },
       %{
         icon: :expires,
-        label: dgettext("ui", "Expires"),
+        label: dgettext("ui", "Trust expires"),
         value: format_dt(entry_field(entry, :expires_at), timezone)
       }
     ]
@@ -288,17 +313,17 @@ defmodule RetroHexChatWeb.Components.UI.TrustedDevices.TrustedTerminalCard do
     [
       %{
         icon: :first_seen,
-        label: dgettext("ui", "First"),
+        label: dgettext("ui", "First visit"),
         value: format_dt(entry_field(entry, :first_seen_at), timezone)
       },
       %{
         icon: :last_seen,
-        label: dgettext("ui", "Last"),
+        label: dgettext("ui", "Last activity"),
         value: format_dt(entry_field(entry, :last_seen_at), timezone)
       },
       %{
         icon: :active,
-        label: dgettext("ui", "Active"),
+        label: dgettext("ui", "Active sessions"),
         value: active_sessions_label(entry_field(entry, :active_sessions))
       },
       %{
@@ -419,19 +444,23 @@ defmodule RetroHexChatWeb.Components.UI.TrustedDevices.TrustedTerminalCard do
   defp terminal_id_label(id) when is_integer(id), do: "##{id}"
   defp terminal_id_label(_id), do: nil
 
-  defp short_fingerprint(nil), do: nil
-  defp short_fingerprint(""), do: nil
+  @doc "The first characters of a hash or reference: enough to tell two apart."
+  @spec short_fingerprint(term()) :: String.t() | nil
+  def short_fingerprint(nil), do: nil
+  def short_fingerprint(""), do: nil
 
-  defp short_fingerprint(value) when is_binary(value) do
+  def short_fingerprint(value) when is_binary(value) do
     String.slice(value, 0, 12)
   end
 
-  defp short_fingerprint(_value), do: nil
+  def short_fingerprint(_value), do: nil
 
-  defp format_dt(nil, _timezone), do: dgettext("ui", "Never")
+  @doc "When something happened, in `timezone`; \"Never\" when it has not."
+  @spec format_dt(DateTime.t() | nil | term(), String.t()) :: String.t()
+  def format_dt(nil, _timezone), do: dgettext("ui", "Never")
 
-  defp format_dt(%DateTime{} = dt, timezone),
+  def format_dt(%DateTime{} = dt, timezone),
     do: ChatHelpers.format_time(dt, :dd_mm_hh_mm, timezone)
 
-  defp format_dt(_dt, _timezone), do: dgettext("ui", "Unknown")
+  def format_dt(_dt, _timezone), do: dgettext("ui", "Unknown")
 end

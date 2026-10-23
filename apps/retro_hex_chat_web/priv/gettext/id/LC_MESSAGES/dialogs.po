@@ -402,7 +402,7 @@ msgstr "Bersihkan"
 #: lib/retro_hex_chat_web/components/ui/dialogs/bot_management_dialog.ex:85
 #: lib/retro_hex_chat_web/components/ui/dialogs/notify_list.ex:82
 #: lib/retro_hex_chat_web/components/ui/dialogs/notify_list.ex:245
-#: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:570
+#: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:440
 #: lib/retro_hex_chat_web/components/ui/dialogs/url_catcher.ex:85
 #, elixir-autogen, elixir-format
 msgid "Close"
@@ -733,8 +733,8 @@ msgid "Kicked from Channel"
 msgstr "Ditendang dari Kanal"
 
 #: lib/retro_hex_chat_web/components/ui/dialogs/custom_menus_dialog.ex:254
-#: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:875
-#: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:876
+#: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:637
+#: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:638
 #, elixir-autogen, elixir-format
 msgid "Label"
 msgstr "Label"
@@ -829,7 +829,6 @@ msgstr "Nama"
 
 #: lib/retro_hex_chat_web/components/ui/dialogs/notify_list.ex:452
 #: lib/retro_hex_chat_web/components/ui/dialogs/notify_list.ex:453
-#: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:855
 #, elixir-autogen, elixir-format
 msgid "Never"
 msgstr "Tidak pernah"
@@ -1286,7 +1285,6 @@ msgstr "Trivia"
 #: lib/retro_hex_chat_web/components/ui/dialogs/ignore_list_dialog.ex:119
 #: lib/retro_hex_chat_web/components/ui/dialogs/ignore_list_dialog.ex:146
 #: lib/retro_hex_chat_web/components/ui/dialogs/ignore_list_dialog.ex:213
-#: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:362
 #, elixir-autogen, elixir-format
 msgid "Type"
 msgstr "Tipe"
@@ -1303,7 +1301,6 @@ msgstr "Penangkap URL"
 
 #: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:386
 #: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:1004
-#: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:860
 #, elixir-autogen, elixir-format
 msgid "Unknown"
 msgstr "Tak dikenal"
@@ -2304,7 +2301,7 @@ msgid "min 10s for repeating timers"
 msgstr "min 10s for repeting timers"
 
 #: lib/retro_hex_chat_web/components/ui/dialogs/timers_dialog.ex:339
-#: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:890
+#: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:652
 #, elixir-autogen, elixir-format
 msgid "no"
 msgstr "tidak"
@@ -2354,7 +2351,7 @@ msgstr "vop"
 
 #: lib/retro_hex_chat_web/components/ui/dialogs/timers_dialog.ex:337
 #: lib/retro_hex_chat_web/components/ui/dialogs/timers_dialog.ex:338
-#: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:889
+#: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:651
 #, elixir-autogen, elixir-format
 msgid "yes"
 msgstr "ya"
@@ -2560,12 +2557,12 @@ msgstr "%{count} baris sebelumnya dibuang"
 msgid "Active Sessions"
 msgstr "Sesi aktif"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:910
+#: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:672
 #, elixir-autogen, elixir-format
 msgid "All terminals revoked"
 msgstr "Semua terminal dicabut"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:550
+#: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:420
 #, elixir-autogen, elixir-format
 msgid "Could not load more activity."
 msgstr "Tidak dapat memuat aktivitas lainnya."
@@ -2576,17 +2573,17 @@ msgstr "Tidak dapat memuat aktivitas lainnya."
 msgid "Could not load more events."
 msgstr "Tidak dapat memuat peristiwa lainnya."
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:451
+#: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:364
 #, elixir-autogen, elixir-format
 msgid "Could not load more sessions."
 msgstr "Tidak dapat memuat sesi lainnya."
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:326
+#: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:323
 #, elixir-autogen, elixir-format
 msgid "Current"
 msgstr "Saat ini"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:434
+#: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:347
 #, elixir-autogen, elixir-format
 msgid "End"
 msgstr "Akhiri"
@@ -2606,7 +2603,7 @@ msgstr "Lupakan"
 msgid "Identify with NickServ to manage trusted terminals."
 msgstr "Identifikasi diri di NickServ untuk mengelola terminal tepercaya."
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:898
+#: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:660
 #, elixir-autogen, elixir-format
 msgid "Nick remembered"
 msgstr "Nick diingat"
@@ -2646,7 +2643,7 @@ msgstr "Tidak ada entri log audit ditemukan"
 msgid "No server settings configured"
 msgstr "Belum ada pengaturan server"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:466
+#: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:379
 #, elixir-autogen, elixir-format
 msgid "No terminal activity yet."
 msgstr "Belum ada aktivitas terminal."
@@ -2666,7 +2663,7 @@ msgstr "Tidak ada pengguna ditemukan"
 msgid "Not identified"
 msgstr "Belum teridentifikasi"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:803
+#: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:555
 #, elixir-autogen, elixir-format
 msgid "Not remembered"
 msgstr "Tidak diingat"
@@ -2676,7 +2673,7 @@ msgstr "Tidak diingat"
 msgid "Recent Activity"
 msgstr "Aktivitas terbaru"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:804
+#: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:556
 #, elixir-autogen, elixir-format
 msgid "Remembered"
 msgstr "Diingat"
@@ -2691,17 +2688,18 @@ msgstr "Cabut"
 msgid "Revoke All"
 msgstr "Cabut semua"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:912
+#: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:674
 #, elixir-autogen, elixir-format
 msgid "Session ended"
 msgstr "Sesi diakhiri"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:911
+#: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:589
+#: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:673
 #, elixir-autogen, elixir-format
 msgid "Session started"
 msgstr "Sesi dimulai"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:913
+#: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:675
 #, elixir-autogen, elixir-format
 msgid "Sessions ended"
 msgstr "Sesi diakhiri"
@@ -2711,12 +2709,12 @@ msgstr "Sesi diakhiri"
 msgid "Shared links will appear here."
 msgstr "Tautan yang dibagikan akan muncul di sini."
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:914
+#: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:676
 #, elixir-autogen, elixir-format
 msgid "Terminal activity"
 msgstr "Aktivitas terminal"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:897
+#: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:659
 #, elixir-autogen, elixir-format
 msgid "Terminal created"
 msgstr "Terminal dibuat"
@@ -2726,17 +2724,17 @@ msgstr "Terminal dibuat"
 msgid "Terminal label"
 msgstr "Nama terminal"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:907
+#: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:669
 #, elixir-autogen, elixir-format
 msgid "Terminal renamed"
 msgstr "Terminal diganti nama"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:908
+#: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:670
 #, elixir-autogen, elixir-format
 msgid "Terminal revoked"
 msgstr "Terminal dicabut"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:909
+#: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:671
 #, elixir-autogen, elixir-format
 msgid "Terminal signed out"
 msgstr "Terminal keluar"
@@ -2751,100 +2749,44 @@ msgstr "Terminal ini:"
 msgid "Trusted Terminals"
 msgstr "Terminal tepercaya"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:899
+#: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:661
 #, elixir-autogen, elixir-format
 msgid "Trusted login"
 msgstr "Login tepercaya"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:356
-#, elixir-autogen, elixir-format
-msgid "Unknown OS"
-msgstr "OS tidak dikenal"
-
-#: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:351
-#, elixir-autogen, elixir-format
-msgid "Unknown browser"
-msgstr "Peramban tidak dikenal"
-
-#: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:376
-#, elixir-autogen, elixir-format
-msgid "Unknown screen"
-msgstr "Layar tidak dikenal"
-
-#: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:381
-#, elixir-autogen, elixir-format
-msgid "Unknown timezone"
-msgstr "Zona waktu tidak dikenal"
-
-#: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:817
-#, elixir-autogen, elixir-format
-msgid "%{bits}-bit"
-msgstr "%{bits}- bit"
-
-#: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:823
-#, elixir-autogen, elixir-format
-msgid "%{count} cores"
-msgstr "%{count} inti"
-
-#: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:519
+#: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:624
 #, elixir-autogen, elixir-format
 msgid "Action"
 msgstr "Aksi"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:505
+#: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:617
 #, elixir-autogen, elixir-format
 msgid "Actor"
 msgstr "Aktor"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:905
+#: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:667
 #, elixir-autogen, elixir-format
 msgid "Auto-login disabled"
 msgstr "Log masuk otomatis dinonaktifkan"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:902
+#: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:664
 #, elixir-autogen, elixir-format
 msgid "Auto-login enabled"
 msgstr "Log masuk otomatis diaktifkan"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:350
-#, elixir-autogen, elixir-format
-msgid "Browser"
-msgstr "Peramban"
-
-#: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:396
 #: lib/retro_hex_chat_web/components/ui/system/home_panel.ex:112
 #, elixir-autogen, elixir-format
 msgid "CPU"
 msgstr "CPU"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:408
-#, elixir-autogen, elixir-format
-msgid "Connected: %{time}"
-msgstr "Terhubung: %{time}"
-
-#: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:871
-#: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:872
+#: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:633
+#: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:634
 #, elixir-autogen, elixir-format
 msgid "Count"
 msgstr "Cacah"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:387
-#, elixir-autogen, elixir-format
-msgid "Depth"
-msgstr "Kedalaman"
-
-#: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:810
-#, elixir-autogen, elixir-format
-msgid "Desktop"
-msgstr "Desktop"
-
-#: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:493
-#, elixir-autogen, elixir-format
-msgid "Event ID: #%{id}"
-msgstr "ID peristiwa: #%{id}"
-
-#: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:873
-#: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:874
+#: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:635
+#: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:636
 #, elixir-autogen, elixir-format
 msgid "Grant ID"
 msgstr "ID Grant"
@@ -2853,127 +2795,26 @@ msgstr "ID Grant"
 #: lib/retro_hex_chat_web/components/ui/dialogs/bot_management_dialog.ex:458
 #: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:427
 #: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:453
-#: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:370
 #, elixir-autogen, elixir-format
 msgid "Language"
 msgstr "Bahasa"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:506
-#, elixir-autogen, elixir-format
-msgid "No actor"
-msgstr "Tidak ada aktor"
-
-#: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:342
-#, elixir-autogen, elixir-format
-msgid "No ref"
-msgstr "Tidak ada wasit"
-
-#: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:515
-#, elixir-autogen, elixir-format
-msgid "No terminal"
-msgstr "Tak ada terminal"
-
-#: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:355
-#, elixir-autogen, elixir-format
-msgid "OS"
-msgstr "OS"
-
-#: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:338
+#: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:579
 #, elixir-autogen, elixir-format
 msgid "Ref"
 msgstr "Ref"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:375
-#, elixir-autogen, elixir-format
-msgid "Screen"
-msgstr "Layar"
-
-#: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:416
-#, elixir-autogen, elixir-format
-msgid "Seen: %{time}"
-msgstr "Terlihat: %{time}"
-
-#: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:877
-#: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:878
+#: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:576
+#: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:639
+#: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:640
 #, elixir-autogen, elixir-format
 msgid "Session ID"
-msgstr "ID Sesi"
+msgstr "ID sesi"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:332
-#, elixir-autogen, elixir-format
-msgid "Session ID: #%{id}"
-msgstr "ID sesi: #%{id}"
-
-#: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:380
-#, elixir-autogen, elixir-format
-msgid "TZ"
-msgstr "TZ"
-
-#: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:514
+#: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:623
 #, elixir-autogen, elixir-format
 msgid "Terminal"
 msgstr "Terminal"
-
-#: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:842
-#: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:845
-#, elixir-autogen, elixir-format
-msgid "Terminal ID: #%{id}"
-msgstr "ID terminal: #%{id}"
-
-#: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:841
-#, elixir-autogen, elixir-format
-msgid "Terminal ID: guest"
-msgstr "ID Terminal: tamu"
-
-#: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:844
-#, elixir-autogen, elixir-format
-msgid "Terminal ID: none"
-msgstr "ID Terminal: kosong"
-
-#: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:498
-#, elixir-autogen, elixir-format
-msgid "Time: %{time}"
-msgstr "Waktu: %{time}"
-
-#: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:811
-#, elixir-autogen, elixir-format
-msgid "Touch"
-msgstr "Sentuh"
-
-#: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:403
-#, elixir-autogen, elixir-format
-msgid "Touch unknown"
-msgstr "Sentuh yang tidak diketahui"
-
-#: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:829
-#, elixir-autogen, elixir-format
-msgid "Touch: No"
-msgstr "Sentuh: tidak"
-
-#: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:828
-#, elixir-autogen, elixir-format
-msgid "Touch: Yes"
-msgstr "Sentuh: ya"
-
-#: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:398
-#, elixir-autogen, elixir-format
-msgid "Unknown CPU"
-msgstr "CPU tidak dikenal"
-
-#: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:391
-#, elixir-autogen, elixir-format
-msgid "Unknown depth"
-msgstr "Kedalaman warna tidak dikenal"
-
-#: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:371
-#, elixir-autogen, elixir-format
-msgid "Unknown language"
-msgstr "Bahasa tidak dikenal"
-
-#: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:366
-#, elixir-autogen, elixir-format
-msgid "Unknown type"
-msgstr "Jenis tidak dikenal"
 
 #: lib/retro_hex_chat_web/components/ui/dialogs/bot_management_dialog.ex:652
 #, elixir-autogen, elixir-format
@@ -4519,7 +4360,7 @@ msgstr ""
 msgid "This channel is not registered"
 msgstr "Saluran ini tidak terdaftar"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:921
+#: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:683
 #, elixir-autogen, elixir-format
 msgid "Unnamed terminal"
 msgstr "Terminal tak bernama"
@@ -5444,3 +5285,29 @@ msgstr "Kategori: %{category}"
 #, elixir-autogen, elixir-format
 msgid "Show every category"
 msgstr "Tampilkan semua kategori"
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:611
+#, elixir-autogen, elixir-format
+msgid "Event ID"
+msgstr "ID peristiwa"
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:584
+#: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:620
+#, elixir-autogen, elixir-format
+msgid "Terminal ID"
+msgstr "ID terminal"
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:585
+#, elixir-autogen, elixir-format
+msgid "guest"
+msgstr "tamu"
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:614
+#, elixir-autogen, elixir-format
+msgid "Date of the event"
+msgstr "Tanggal peristiwa"
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:594
+#, elixir-autogen, elixir-format
+msgid "Last activity"
+msgstr "Aktivitas terakhir"

@@ -442,6 +442,25 @@ test.describe("dialog gallery", () => {
         chat.trustedTerminalsDialog,
         "trusted-terminals",
       );
+
+      // The other two tabs draw a session and an event out of the same facts
+      // a terminal's card is drawn from.
+      for (const tab of ["sessions", "events"]) {
+        await page.getByTestId(`trusted-terminals-tab-${tab}`).click();
+        await expect(
+          page.locator(`[data-testid^="trusted-${tab.slice(0, -1)}-"]`).first(),
+        ).toBeVisible();
+        await shoot(
+          page,
+          chat.trustedTerminalsDialog,
+          `trusted-terminals-${tab}`,
+        );
+        await shootOnPhone(
+          page,
+          chat.trustedTerminalsDialog,
+          `trusted-terminals-${tab}`,
+        );
+      }
     } finally {
       await remembered.close();
     }

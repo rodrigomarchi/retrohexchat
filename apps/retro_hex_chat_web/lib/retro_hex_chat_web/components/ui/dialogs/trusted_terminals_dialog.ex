@@ -9,13 +9,13 @@ defmodule RetroHexChatWeb.Components.UI.TrustedTerminalsDialog do
 
   import RetroHexChatWeb.Components.UI.ListStates
 
+  import RetroHexChatWeb.Components.UI.Badge
   import RetroHexChatWeb.Components.UI.Button
   import RetroHexChatWeb.Components.UI.Input
   import RetroHexChatWeb.Components.UI.Tabs
   import RetroHexChatWeb.Components.UI.TrustedDevices.TrustedTerminalCard
   import RetroHexChatWeb.Components.UI.DialogBanner
 
-  alias RetroHexChatWeb.App.ChatHelpers
   alias RetroHexChatWeb.Components.Diagrams
   alias RetroHexChatWeb.Icons
   alias RetroHexChatWeb.PaginatedList.State
@@ -314,109 +314,22 @@ defmodule RetroHexChatWeb.Components.UI.TrustedTerminalsDialog do
                       data-testid={"trusted-session-#{session.id}"}
                     >
                       <div class="flex items-start justify-between gap-retro-6">
-                        <div class="min-w-0">
+                        <div class="min-w-0 flex-1">
                           <div class="flex items-center gap-retro-4">
                             <Icons.icon_status_signal class="h-4 w-4" />
                             <span class="truncate font-bold">{session.label}</span>
-                            <span
-                              :if={session.current?}
-                              class="inline-flex items-center gap-1 bg-selection-bg px-1 text-selection-fg"
-                            >
-                              <Icons.icon_checkmark class="h-3 w-3" />
+                            <.badge :if={session.current?} variant="success">
+                              <:icon><Icons.icon_checkmark class="h-3 w-3" /></:icon>
                               {dgettext("dialogs", "Current")}
-                            </span>
+                            </.badge>
                           </div>
-                          <div class="mt-2 grid gap-retro-2 text-muted-foreground sm:grid-cols-2 lg:grid-cols-4">
-                            <.metadata_item
-                              icon={:id}
-                              value={dgettext("dialogs", "Session ID: #%{id}", id: session.id)}
-                            />
-                            <.metadata_item
-                              icon={:fingerprint}
-                              value={
-                                field_label(
-                                  dgettext("dialogs", "Ref"),
-                                  short_fingerprint(session.session_ref)
-                                )
-                              }
-                              fallback={dgettext("dialogs", "No ref")}
-                            />
-                            <.metadata_item
-                              icon={:id}
-                              value={session_device_id_label(session.device_id)}
-                            />
-                            <.metadata_item
-                              icon={:browser}
-                              value={field_label(dgettext("dialogs", "Browser"), session.browser)}
-                              fallback={dgettext("dialogs", "Unknown browser")}
-                            />
-                            <.metadata_item
-                              icon={:os}
-                              value={field_label(dgettext("dialogs", "OS"), session.os)}
-                              fallback={dgettext("dialogs", "Unknown OS")}
-                            />
-                            <.metadata_item
-                              icon={:type}
-                              value={
-                                field_label(
-                                  dgettext("dialogs", "Type"),
-                                  device_type_label(session.device_type)
-                                )
-                              }
-                              fallback={dgettext("dialogs", "Unknown type")}
-                            />
-                            <.metadata_item
-                              icon={:language}
-                              value={field_label(dgettext("dialogs", "Language"), session.language)}
-                              fallback={dgettext("dialogs", "Unknown language")}
-                            />
-                            <.metadata_item
-                              icon={:display}
-                              value={field_label(dgettext("dialogs", "Screen"), session.screen)}
-                              fallback={dgettext("dialogs", "Unknown screen")}
-                            />
-                            <.metadata_item
-                              icon={:timezone}
-                              value={field_label(dgettext("dialogs", "TZ"), session.timezone)}
-                              fallback={dgettext("dialogs", "Unknown timezone")}
-                            />
-                            <.metadata_item
-                              icon={:color_depth}
-                              value={
-                                field_label(
-                                  dgettext("dialogs", "Depth"),
-                                  color_depth_label(session.color_depth)
-                                )
-                              }
-                              fallback={dgettext("dialogs", "Unknown depth")}
-                            />
-                            <.metadata_item
-                              icon={:cores}
-                              value={
-                                field_label(dgettext("dialogs", "CPU"), cores_label(session.cores))
-                              }
-                              fallback={dgettext("dialogs", "Unknown CPU")}
-                            />
-                            <.metadata_item
-                              icon={:touch}
-                              value={touch_label(session.touch)}
-                              fallback={dgettext("dialogs", "Touch unknown")}
-                            />
-                            <.metadata_item
-                              icon={:connect}
-                              value={
-                                dgettext("dialogs", "Connected: %{time}",
-                                  time: format_dt(session.connected_at, @timezone)
-                                )
-                              }
-                            />
-                            <.metadata_item
-                              icon={:last_seen}
-                              value={
-                                dgettext("dialogs", "Seen: %{time}",
-                                  time: format_dt(session.last_seen_at, @timezone)
-                                )
-                              }
+                          <div class="mt-2 flex flex-wrap gap-retro-4">
+                            <.terminal_spec :for={spec <- device_specs(session)} spec={spec} />
+                          </div>
+                          <div class="mt-2 grid gap-retro-4 sm:grid-cols-2">
+                            <.terminal_fact
+                              :for={fact <- session_facts(session, @timezone)}
+                              fact={fact}
                             />
                           </div>
                         </div>
@@ -487,51 +400,8 @@ defmodule RetroHexChatWeb.Components.UI.TrustedTerminalsDialog do
                         <.event_icon action={event.action} class="h-4 w-4 shrink-0" />
                         <span class="font-bold">{event_label(event.action)}</span>
                       </div>
-                      <div class="grid gap-retro-2 text-muted-foreground sm:grid-cols-2 lg:grid-cols-4">
-                        <.metadata_item
-                          icon={:id}
-                          value={dgettext("dialogs", "Event ID: #%{id}", id: event.id)}
-                        />
-                        <.metadata_item
-                          icon={:clock}
-                          value={
-                            dgettext("dialogs", "Time: %{time}",
-                              time: format_dt(event.inserted_at, @timezone)
-                            )
-                          }
-                        />
-                        <.metadata_item
-                          icon={:actor}
-                          value={field_label(dgettext("dialogs", "Actor"), event.actor_nickname)}
-                          fallback={dgettext("dialogs", "No actor")}
-                        />
-                        <.metadata_item
-                          icon={:id}
-                          value={event_device_id_label(event.device_id)}
-                        />
-                        <.metadata_item
-                          icon={:devices}
-                          value={field_label(dgettext("dialogs", "Terminal"), event.device_label)}
-                          fallback={dgettext("dialogs", "No terminal")}
-                        />
-                        <.metadata_item
-                          icon={:tag}
-                          value={field_label(dgettext("dialogs", "Action"), event.action)}
-                        />
-                      </div>
-
-                      <div
-                        :if={event_details(event.details) != []}
-                        class="flex flex-wrap gap-retro-4 text-muted-foreground"
-                      >
-                        <span
-                          :for={{key, value} <- event_details(event.details)}
-                          class="inline-flex min-w-0 items-center gap-retro-4"
-                        >
-                          <Icons.icon_tag class="h-3.5 w-3.5 shrink-0" />
-                          <span class="font-bold">{key}:</span>
-                          <span class="truncate font-mono">{value}</span>
-                        </span>
+                      <div class="grid gap-retro-4 sm:grid-cols-2">
+                        <.terminal_fact :for={fact <- event_facts(event, @timezone)} fact={fact} />
                       </div>
                     </div>
                   </div>
@@ -606,124 +476,6 @@ defmodule RetroHexChatWeb.Components.UI.TrustedTerminalsDialog do
   defp current_terminal_icon(assigns) do
     ~H"""
     <Icons.icon_laptop class={@class} />
-    """
-  end
-
-  attr :icon, :atom, required: true
-  attr :value, :any, default: nil
-  attr :fallback, :string, default: nil
-
-  defp metadata_item(assigns) do
-    ~H"""
-    <span class="inline-flex min-w-0 items-center gap-retro-4">
-      <.metadata_icon icon={@icon} class="h-3.5 w-3.5 shrink-0" />
-      <span class="truncate">{metadata_value(@value, @fallback)}</span>
-    </span>
-    """
-  end
-
-  attr :icon, :atom, required: true
-  attr :class, :string, default: nil
-
-  defp metadata_icon(%{icon: :browser} = assigns) do
-    ~H"""
-    <Icons.icon_browser class={@class} />
-    """
-  end
-
-  defp metadata_icon(%{icon: :os} = assigns) do
-    ~H"""
-    <Icons.icon_operating_system class={@class} />
-    """
-  end
-
-  defp metadata_icon(%{icon: :display} = assigns) do
-    ~H"""
-    <Icons.icon_tab_display class={@class} />
-    """
-  end
-
-  defp metadata_icon(%{icon: :timezone} = assigns) do
-    ~H"""
-    <Icons.icon_globe class={@class} />
-    """
-  end
-
-  defp metadata_icon(%{icon: :type} = assigns) do
-    ~H"""
-    <Icons.icon_devices class={@class} />
-    """
-  end
-
-  defp metadata_icon(%{icon: :language} = assigns) do
-    ~H"""
-    <Icons.icon_globe class={@class} />
-    """
-  end
-
-  defp metadata_icon(%{icon: :color_depth} = assigns) do
-    ~H"""
-    <Icons.icon_tab_colors class={@class} />
-    """
-  end
-
-  defp metadata_icon(%{icon: :cores} = assigns) do
-    ~H"""
-    <Icons.icon_database class={@class} />
-    """
-  end
-
-  defp metadata_icon(%{icon: :touch} = assigns) do
-    ~H"""
-    <Icons.icon_call_devices class={@class} />
-    """
-  end
-
-  defp metadata_icon(%{icon: :grant} = assigns) do
-    ~H"""
-    <Icons.icon_shield class={@class} />
-    """
-  end
-
-  defp metadata_icon(%{icon: :connect} = assigns) do
-    ~H"""
-    <Icons.icon_connect class={@class} />
-    """
-  end
-
-  defp metadata_icon(%{icon: :expires} = assigns) do
-    ~H"""
-    <Icons.icon_warning class={@class} />
-    """
-  end
-
-  defp metadata_icon(%{icon: :last_seen} = assigns) do
-    ~H"""
-    <Icons.icon_clock class={@class} />
-    """
-  end
-
-  defp metadata_icon(%{icon: :clock} = assigns) do
-    ~H"""
-    <Icons.icon_clock class={@class} />
-    """
-  end
-
-  defp metadata_icon(%{icon: :actor} = assigns) do
-    ~H"""
-    <Icons.icon_status_user class={@class} />
-    """
-  end
-
-  defp metadata_icon(%{icon: :devices} = assigns) do
-    ~H"""
-    <Icons.icon_laptop class={@class} />
-    """
-  end
-
-  defp metadata_icon(assigns) do
-    ~H"""
-    <Icons.icon_tag class={@class} />
     """
   end
 
@@ -803,61 +555,9 @@ defmodule RetroHexChatWeb.Components.UI.TrustedTerminalsDialog do
   defp current_terminal_label(nil), do: dgettext("dialogs", "Not remembered")
   defp current_terminal_label(_id), do: dgettext("dialogs", "Remembered")
 
-  defp field_label(_label, nil), do: nil
-  defp field_label(_label, ""), do: nil
-  defp field_label(label, value), do: "#{label}: #{value}"
-
-  defp device_type_label("desktop"), do: dgettext("dialogs", "Desktop")
-  defp device_type_label("touch"), do: dgettext("dialogs", "Touch")
-  defp device_type_label("unknown"), do: nil
-  defp device_type_label(nil), do: nil
-  defp device_type_label(type), do: type
-
-  defp color_depth_label(bits) when is_integer(bits) and bits > 0 do
-    dgettext("dialogs", "%{bits}-bit", bits: bits)
-  end
-
-  defp color_depth_label(_bits), do: nil
-
-  defp cores_label(count) when is_integer(count) and count > 0 do
-    dgettext("dialogs", "%{count} cores", count: count)
-  end
-
-  defp cores_label(_count), do: nil
-
-  defp touch_label(true), do: dgettext("dialogs", "Touch: Yes")
-  defp touch_label(false), do: dgettext("dialogs", "Touch: No")
-  defp touch_label(_value), do: nil
-
-  defp short_fingerprint(nil), do: nil
-  defp short_fingerprint(""), do: nil
-
-  defp short_fingerprint(value) when is_binary(value) do
-    String.slice(value, 0, 12)
-  end
-
-  defp short_fingerprint(_value), do: nil
-
-  defp session_device_id_label(nil), do: dgettext("dialogs", "Terminal ID: guest")
-  defp session_device_id_label(id), do: dgettext("dialogs", "Terminal ID: #%{id}", id: id)
-
-  defp event_device_id_label(nil), do: dgettext("dialogs", "Terminal ID: none")
-  defp event_device_id_label(id), do: dgettext("dialogs", "Terminal ID: #%{id}", id: id)
-
-  defp metadata_value(nil, fallback), do: fallback
-  defp metadata_value("", fallback), do: fallback
-  defp metadata_value(value, _fallback), do: value
-
   defp status_class(:error), do: "text-error"
   defp status_class(:ok), do: "text-success"
   defp status_class(_kind), do: "text-muted-foreground"
-
-  defp format_dt(nil, _timezone), do: dgettext("dialogs", "Never")
-
-  defp format_dt(%DateTime{} = dt, timezone),
-    do: ChatHelpers.format_time(dt, :dd_mm_hh_mm, timezone)
-
-  defp format_dt(_dt, _timezone), do: dgettext("dialogs", "Unknown")
 
   defp event_details(details) when is_map(details) do
     details
@@ -867,6 +567,68 @@ defmodule RetroHexChatWeb.Components.UI.TrustedTerminalsDialog do
   end
 
   defp event_details(_details), do: []
+
+  # What is known about a live session besides its device: which one it is,
+  # the terminal it runs on, and when it came and was last heard from.
+  @spec session_facts(map(), String.t()) :: [map()]
+  defp session_facts(session, timezone) do
+    [
+      %{icon: :id, label: dgettext("dialogs", "Session ID"), value: "##{session.id}"},
+      %{
+        icon: :fingerprint,
+        label: dgettext("dialogs", "Ref"),
+        value: short_fingerprint(session.session_ref)
+      },
+      %{
+        icon: :id,
+        label: dgettext("dialogs", "Terminal ID"),
+        value: terminal_id(session.device_id, dgettext("dialogs", "guest"))
+      },
+      %{
+        icon: :connect,
+        label: dgettext("dialogs", "Session started"),
+        value: format_dt(session.connected_at, timezone)
+      },
+      %{
+        icon: :last_seen,
+        label: dgettext("dialogs", "Last activity"),
+        value: format_dt(session.last_seen_at, timezone)
+      }
+    ]
+    |> Enum.reject(&blank?(&1.value))
+  end
+
+  # What an event records: when, who did it, to which terminal, and the
+  # details the action carried.
+  @spec event_facts(map(), String.t()) :: [map()]
+  defp event_facts(event, timezone) do
+    details =
+      Enum.map(event_details(event.details), fn {key, value} ->
+        %{icon: :tag, label: key, value: value}
+      end)
+
+    ([
+       %{icon: :id, label: dgettext("dialogs", "Event ID"), value: "##{event.id}"},
+       %{
+         icon: :first_seen,
+         label: dgettext("dialogs", "Date of the event"),
+         value: format_dt(event.inserted_at, timezone)
+       },
+       %{icon: :actor, label: dgettext("dialogs", "Actor"), value: event.actor_nickname},
+       %{
+         icon: :id,
+         label: dgettext("dialogs", "Terminal ID"),
+         value: terminal_id(event.device_id, nil)
+       },
+       %{icon: :terminal, label: dgettext("dialogs", "Terminal"), value: event.device_label},
+       %{icon: :tag, label: dgettext("dialogs", "Action"), value: event.action}
+     ] ++ details)
+    |> Enum.reject(&blank?(&1.value))
+  end
+
+  @spec terminal_id(integer() | nil, String.t() | nil) :: String.t() | nil
+  defp terminal_id(nil, fallback), do: fallback
+  defp terminal_id(id, _fallback), do: "##{id}"
 
   defp event_detail_key("count"), do: dgettext("dialogs", "Count")
   defp event_detail_key(:count), do: dgettext("dialogs", "Count")
