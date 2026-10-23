@@ -15,6 +15,30 @@ defmodule RetroHexChat.ProcessRegistry do
   than a fault.
   """
 
+  @doc """
+  Defines `via_tuple/1`, `lookup/1` and `registry_name/0` over `:registry`;
+  `:key` is the type of what the processes register under.
+
+      use RetroHexChat.ProcessRegistry, registry: RetroHexChat.Lobby.SessionRegistry, key: String.t()
+  """
+  defmacro __using__(opts) do
+    registry = Keyword.fetch!(opts, :registry)
+    key = Keyword.get(opts, :key, quote(do: RetroHexChat.ProcessRegistry.key()))
+
+    quote do
+      @registry unquote(registry)
+
+      @spec via_tuple(unquote(key)) :: RetroHexChat.ProcessRegistry.via()
+      def via_tuple(key), do: RetroHexChat.ProcessRegistry.via_tuple(@registry, key)
+
+      @spec lookup(unquote(key)) :: {:ok, pid()} | {:error, :not_found}
+      def lookup(key), do: RetroHexChat.ProcessRegistry.lookup(@registry, key)
+
+      @spec registry_name() :: atom()
+      def registry_name, do: @registry
+    end
+  end
+
   @typedoc "Whatever a process registers itself under."
   @type key :: term()
 

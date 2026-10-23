@@ -55,6 +55,13 @@ defmodule RetroHexChat.Chat.Attachments.Preview do
   @unsafe_code_types ~w(text/html application/xhtml+xml application/xml text/xml)
   @unsafe_inline_types ~w(image/svg+xml text/html application/xhtml+xml application/xml text/xml)
 
+  @inline_types %{
+    "image" => @safe_image_types,
+    "video" => @video_types,
+    "audio" => @audio_types,
+    "pdf" => @pdf_types
+  }
+
   @spec kinds() :: [String.t()]
   def kinds, do: @preview_kinds
 
@@ -97,57 +104,32 @@ defmodule RetroHexChat.Chat.Attachments.Preview do
   def inline?(_file), do: false
 
   defp classify_safe(ext, type) do
-    Enum.find_value(classifiers(), fn classifier -> classifier.(ext, type) end) || "download"
+    Enum.find_value(families(), "download", fn {kind, types, extensions} ->
+      if type_in?(type, types) or ext in extensions, do: kind
+    end)
   end
 
-  defp classifiers do
+  # A family is recognised by its content type or by its extension, and the
+  # first family that claims the file wins.
+  defp families do
     [
-      &classify_image/2,
+      {"image", @safe_image_types, @image_extensions},
       # Audio before video: the WebM and MP4 containers hold either, and a
       # recording arrives as `audio/webm` with a `.webm` name — asking the
       # extension first would file it as a video and draw a black rectangle
       # where a player belongs.
-      &classify_audio/2,
-      &classify_video/2,
-      &classify_pdf/2,
-      &classify_office/2,
-      &classify_archive/2,
-      &classify_code/2,
-      &classify_text/2
+      {"audio", @audio_types, @audio_extensions},
+      {"video", @video_types, @video_extensions},
+      {"pdf", @pdf_types, @pdf_extensions},
+      {"office", &office_type?/1, @office_extensions},
+      {"archive", @archive_types, @archive_extensions},
+      {"code", &code_type?/1, @code_extensions},
+      {"text", @text_types, @text_extensions}
     ]
   end
 
-  defp classify_image(_ext, type) when type in @safe_image_types, do: "image"
-  defp classify_image(ext, _type) when ext in @image_extensions, do: "image"
-  defp classify_image(_ext, _type), do: nil
-
-  defp classify_video(_ext, type) when type in @video_types, do: "video"
-  defp classify_video(ext, _type) when ext in @video_extensions, do: "video"
-  defp classify_video(_ext, _type), do: nil
-
-  defp classify_audio(_ext, type) when type in @audio_types, do: "audio"
-  defp classify_audio(ext, _type) when ext in @audio_extensions, do: "audio"
-  defp classify_audio(_ext, _type), do: nil
-
-  defp classify_pdf(_ext, type) when type in @pdf_types, do: "pdf"
-  defp classify_pdf(ext, _type) when ext in @pdf_extensions, do: "pdf"
-  defp classify_pdf(_ext, _type), do: nil
-
-  defp classify_office(ext, type) do
-    if office_type?(type) or ext in @office_extensions, do: "office"
-  end
-
-  defp classify_archive(_ext, type) when type in @archive_types, do: "archive"
-  defp classify_archive(ext, _type) when ext in @archive_extensions, do: "archive"
-  defp classify_archive(_ext, _type), do: nil
-
-  defp classify_code(ext, type) do
-    if code_type?(type) or ext in @code_extensions, do: "code"
-  end
-
-  defp classify_text(_ext, type) when type in @text_types, do: "text"
-  defp classify_text(ext, _type) when ext in @text_extensions, do: "text"
-  defp classify_text(_ext, _type), do: nil
+  defp type_in?(type, types) when is_list(types), do: type in types
+  defp type_in?(type, matches?) when is_function(matches?, 1), do: matches?.(type)
 
   defp classify_unsafe(ext, type) when ext in ~w(.html .htm .xml) or type in @unsafe_code_types,
     do: "code"
@@ -158,19 +140,12 @@ defmodule RetroHexChat.Chat.Attachments.Preview do
     ext in @unsafe_inline_extensions or type in @unsafe_inline_types
   end
 
-  defp safe_inline_content_type?("image", content_type),
-    do: normalize_content_type(content_type) in @safe_image_types
-
-  defp safe_inline_content_type?("video", content_type),
-    do: normalize_content_type(content_type) in @video_types
-
-  defp safe_inline_content_type?("audio", content_type),
-    do: normalize_content_type(content_type) in @audio_types
-
-  defp safe_inline_content_type?("pdf", content_type),
-    do: normalize_content_type(content_type) in @pdf_types
-
-  defp safe_inline_content_type?(_kind, _content_type), do: false
+  defp safe_inline_content_type?(kind, content_type) do
+    case Map.fetch(@inline_types, kind) do
+      {:ok, types} -> normalize_content_type(content_type) in types
+      :error -> false
+    end
+  end
 
   defp code_type?(type) do
     type in ~w(application/json application/javascript text/javascript text/css) or

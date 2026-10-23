@@ -5,15 +5,7 @@ defmodule RetroHexChat.Bots.Registry do
 
   alias RetroHexChat.Nickname
 
-  alias RetroHexChat.ProcessRegistry
-
-  @registry RetroHexChat.Bots.BotRegistry
-
-  @spec via_tuple(String.t()) :: ProcessRegistry.via()
-  def via_tuple(bot_nickname), do: ProcessRegistry.via_tuple(@registry, bot_nickname)
-
-  @spec lookup(String.t()) :: {:ok, pid()} | {:error, :not_found}
-  def lookup(bot_nickname), do: ProcessRegistry.lookup(@registry, bot_nickname)
+  use RetroHexChat.ProcessRegistry, registry: RetroHexChat.Bots.BotRegistry, key: String.t()
 
   @spec registered_bots() :: [String.t()]
   def registered_bots do

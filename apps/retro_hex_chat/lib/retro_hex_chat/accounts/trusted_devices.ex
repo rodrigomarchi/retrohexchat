@@ -21,6 +21,7 @@ defmodule RetroHexChat.Accounts.TrustedDevices do
   alias RetroHexChat.Repo
   alias RetroHexChat.Services.Queries
   alias RetroHexChat.Services.RegisteredNick
+  alias RetroHexChat.Sweep
   alias RetroHexChat.Topics
 
   @pubsub RetroHexChat.PubSub
@@ -384,27 +385,13 @@ defmodule RetroHexChat.Accounts.TrustedDevices do
   @spec expire_devices(keyword()) :: {:ok, device_expiry_summary()} | {:error, term()}
   def expire_devices(opts \\ []) do
     now = Keyword.get_lazy(opts, :now, &DateTime.utc_now/0)
-    limit = positive_opt(opts, :limit, @default_cleanup_limit)
+    limit = Sweep.positive_option(opts, :limit, @default_cleanup_limit)
     devices = list_expired_devices(now, limit)
 
-    devices
-    |> Enum.reduce_while(initial_device_expiry_summary(length(devices)), fn device,
-                                                                            {:ok, summary} ->
+    Sweep.tally(devices, %{expired_devices: 0, revoked_grants: 0, skipped: 0}, fn device ->
       case expire_device(device.id, now) do
-        {:ok, {:expired, revoked_grants}} ->
-          {:cont,
-           {:ok,
-            %{
-              summary
-              | expired_devices: summary.expired_devices + 1,
-                revoked_grants: summary.revoked_grants + revoked_grants
-            }}}
-
-        {:ok, :skipped} ->
-          {:cont, {:ok, %{summary | skipped: summary.skipped + 1}}}
-
-        {:error, reason} ->
-          {:halt, {:error, reason}}
+        {:ok, {:expired, revoked}} -> {:ok, %{expired_devices: 1, revoked_grants: revoked}}
+        other -> other
       end
     end)
   end
@@ -422,7 +409,7 @@ defmodule RetroHexChat.Accounts.TrustedDevices do
   @spec close_stale_sessions(keyword()) :: {:ok, stale_session_summary()} | {:error, term()}
   def close_stale_sessions(opts \\ []) do
     cutoff = Keyword.get_lazy(opts, :cutoff, fn -> stale_session_cutoff(opts) end)
-    limit = positive_opt(opts, :limit, @default_cleanup_limit)
+    limit = Sweep.positive_option(opts, :limit, @default_cleanup_limit)
     sessions = list_stale_sessions(cutoff, limit)
     ids = Enum.map(sessions, & &1.id)
 
@@ -914,17 +901,6 @@ defmodule RetroHexChat.Accounts.TrustedDevices do
   defp stale_session_cutoff(opts) do
     seconds = Keyword.get(opts, :stale_after_seconds, @default_session_stale_seconds)
     DateTime.utc_now() |> DateTime.add(-seconds, :second)
-  end
-
-  defp positive_opt(opts, key, default) do
-    case Keyword.get(opts, key, default) do
-      value when is_integer(value) and value > 0 -> value
-      _value -> default
-    end
-  end
-
-  defp initial_device_expiry_summary(candidate_count) do
-    {:ok, %{candidates: candidate_count, expired_devices: 0, revoked_grants: 0, skipped: 0}}
   end
 
   defp parse_cookie(cookie_value) do

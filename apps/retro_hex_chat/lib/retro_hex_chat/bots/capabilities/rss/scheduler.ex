@@ -63,48 +63,21 @@ defmodule RetroHexChat.Bots.Capabilities.RSS.Scheduler.Oban do
   alias RetroHexChat.Jobs
   alias RetroHexChat.Jobs.RSSPollWorker
 
-  require Logger
-
   @behaviour RetroHexChat.Bots.Capabilities.RSS.Scheduler
-
-  @follow_up_unique_states [:available, :scheduled, :retryable, :suspended]
 
   @impl true
   @spec schedule_poll(integer(), String.t(), non_neg_integer()) :: :ok | {:error, term()}
   def schedule_poll(bot_id, feed_id, delay_ms) do
-    schedule(bot_id, feed_id, delay_ms, [])
+    Jobs.schedule_in(RSSPollWorker, args(bot_id, feed_id), delay_ms, "rss_poll_schedule")
   end
 
   @impl true
   @spec schedule_follow_up_poll(integer(), String.t(), non_neg_integer()) ::
           :ok | {:error, term()}
   def schedule_follow_up_poll(bot_id, feed_id, delay_ms) do
-    schedule(bot_id, feed_id, delay_ms, unique: [states: @follow_up_unique_states])
-  end
-
-  @spec schedule(integer(), String.t(), non_neg_integer(), keyword()) :: :ok | {:error, term()}
-  defp schedule(bot_id, feed_id, delay_ms, opts) do
-    delay_s = delay_ms |> div(1_000) |> max(1)
-
-    %{bot_id: bot_id, feed_id: feed_id}
-    |> RSSPollWorker.new(Keyword.put(opts, :schedule_in, delay_s))
-    |> Jobs.insert()
-    |> case do
-      {:ok, job} ->
-        Logger.info(
-          "rss_poll_schedule bot_id=#{bot_id} feed_id=#{feed_id} queue=#{job.queue} " <>
-            "state=#{job.state} conflict=#{job.conflict?} delay_s=#{delay_s}"
-        )
-
-        :ok
-
-      {:error, changeset} ->
-        Logger.warning(
-          "rss_poll_schedule_error bot_id=#{bot_id} feed_id=#{feed_id} reason=changeset_error"
-        )
-
-        {:error, changeset}
-    end
+    Jobs.schedule_in(RSSPollWorker, args(bot_id, feed_id), delay_ms, "rss_poll_schedule",
+      follow_up: true
+    )
   end
 
   @impl true
@@ -115,4 +88,6 @@ defmodule RetroHexChat.Bots.Capabilities.RSS.Scheduler.Oban do
 
     :ok
   end
+
+  defp args(bot_id, feed_id), do: [bot_id: bot_id, feed_id: feed_id]
 end

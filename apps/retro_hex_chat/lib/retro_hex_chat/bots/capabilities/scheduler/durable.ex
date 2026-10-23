@@ -72,11 +72,7 @@ defmodule RetroHexChat.Bots.Capabilities.Scheduler.Durable.Oban do
   alias RetroHexChat.Jobs
   alias RetroHexChat.Jobs.BotScheduledMessageWorker
 
-  require Logger
-
   @behaviour RetroHexChat.Bots.Capabilities.Scheduler.Durable
-
-  @follow_up_unique_states [:available, :scheduled, :retryable, :suspended]
 
   @impl true
   @spec reconcile(integer(), [map()]) :: :ok | {:error, term()}
@@ -110,7 +106,7 @@ defmodule RetroHexChat.Bots.Capabilities.Scheduler.Durable.Oban do
   @impl true
   @spec schedule_follow_up(integer(), String.t(), non_neg_integer()) :: :ok | {:error, term()}
   def schedule_follow_up(bot_id, schedule_id, delay_ms) do
-    do_schedule(bot_id, schedule_id, delay_ms, unique: [states: @follow_up_unique_states])
+    do_schedule(bot_id, schedule_id, delay_ms, follow_up: true)
   end
 
   @impl true
@@ -134,29 +130,14 @@ defmodule RetroHexChat.Bots.Capabilities.Scheduler.Durable.Oban do
     :ok
   end
 
-  @spec do_schedule(integer(), String.t(), non_neg_integer(), keyword()) :: :ok | {:error, term()}
   defp do_schedule(bot_id, schedule_id, delay_ms, opts) do
-    delay_s = delay_ms |> div(1_000) |> max(1)
-
-    %{bot_id: bot_id, schedule_id: schedule_id}
-    |> BotScheduledMessageWorker.new(Keyword.put(opts, :schedule_in, delay_s))
-    |> Jobs.insert()
-    |> case do
-      {:ok, job} ->
-        Logger.info(
-          "bot_schedule_job_schedule bot_id=#{bot_id} schedule_id=#{schedule_id} " <>
-            "queue=#{job.queue} state=#{job.state} conflict=#{job.conflict?} delay_s=#{delay_s}"
-        )
-
-        :ok
-
-      {:error, changeset} ->
-        Logger.warning(
-          "bot_schedule_job_schedule_error bot_id=#{bot_id} schedule_id=#{schedule_id} reason=changeset_error"
-        )
-
-        {:error, changeset}
-    end
+    Jobs.schedule_in(
+      BotScheduledMessageWorker,
+      [bot_id: bot_id, schedule_id: schedule_id],
+      delay_ms,
+      "bot_schedule_job_schedule",
+      opts
+    )
   end
 
   defp valid_schedule?(%{"id" => id}) when is_binary(id) and id != "", do: true

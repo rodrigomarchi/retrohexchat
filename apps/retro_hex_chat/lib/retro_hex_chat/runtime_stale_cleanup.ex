@@ -11,6 +11,7 @@ defmodule RetroHexChat.RuntimeStaleCleanup do
   alias RetroHexChat.Arcade.Queries, as: ArcadeQueries
   alias RetroHexChat.GroupCall.Queries, as: GroupCallQueries
   alias RetroHexChat.Lobby.Queries, as: LobbyQueries
+  alias RetroHexChat.Sweep
   alias RetroHexChat.VirtualSpace.Queries, as: SpaceQueries
 
   @default_limit 100
@@ -47,7 +48,7 @@ defmodule RetroHexChat.RuntimeStaleCleanup do
   @doc "Expires stale non-terminal lobby, arcade, group-call and space records."
   @spec cleanup(keyword()) :: {:ok, summary()} | {:error, term()}
   def cleanup(opts \\ []) do
-    limit = positive_opt(opts, :limit, @default_limit)
+    limit = Sweep.positive_option(opts, :limit, @default_limit)
     cutoff = cutoff(opts)
 
     with {:ok, lobby} <- cleanup_lobby(cutoff, limit),
@@ -110,15 +111,7 @@ defmodule RetroHexChat.RuntimeStaleCleanup do
   end
 
   defp cleanup_candidates(candidates, expire_fun) do
-    initial = %{candidates: length(candidates), expired: 0, skipped: 0}
-
-    Enum.reduce_while(candidates, {:ok, initial}, fn candidate, {:ok, summary} ->
-      case expire_fun.(candidate) do
-        {:ok, :expired} -> {:cont, {:ok, Map.update!(summary, :expired, &(&1 + 1))}}
-        {:ok, :skipped} -> {:cont, {:ok, Map.update!(summary, :skipped, &(&1 + 1))}}
-        {:error, reason} -> {:halt, {:error, reason}}
-      end
-    end)
+    Sweep.tally(candidates, %{expired: 0, skipped: 0}, expire_fun)
   end
 
   defp cutoff(opts) do
@@ -130,16 +123,9 @@ defmodule RetroHexChat.RuntimeStaleCleanup do
         now = Keyword.get_lazy(opts, :now, &DateTime.utc_now/0)
 
         stale_after_seconds =
-          positive_opt(opts, :stale_after_seconds, @default_stale_after_seconds)
+          Sweep.positive_option(opts, :stale_after_seconds, @default_stale_after_seconds)
 
         DateTime.add(now, -stale_after_seconds, :second)
-    end
-  end
-
-  defp positive_opt(opts, key, default) do
-    case Keyword.get(opts, key) do
-      value when is_integer(value) and value > 0 -> value
-      _value -> default
     end
   end
 end

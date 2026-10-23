@@ -15,6 +15,7 @@ defmodule RetroHexChat.Chat.IgnoreList do
   alias RetroHexChat.NicknameList
   alias RetroHexChat.OwnedList
   alias RetroHexChat.Repo
+  alias RetroHexChat.Sweep
 
   @list NicknameList.new(field: :nickname, max_entries: 100)
   @default_cleanup_limit 500
@@ -148,7 +149,7 @@ defmodule RetroHexChat.Chat.IgnoreList do
   @spec cleanup_expired_entries(keyword()) :: {:ok, cleanup_summary()} | {:error, term()}
   def cleanup_expired_entries(opts \\ []) do
     now = Keyword.get_lazy(opts, :now, &DateTime.utc_now/0)
-    limit = positive_opt(opts, :limit, @default_cleanup_limit)
+    limit = Sweep.positive_option(opts, :limit, @default_cleanup_limit)
 
     Repo.transaction(fn ->
       entries = list_expired_entries(now, limit)
@@ -216,13 +217,6 @@ defmodule RetroHexChat.Chat.IgnoreList do
 
   defp oldest_expired_age_ms([%IgnoreListEntry{expires_at: expires_at} | _entries], now) do
     max(DateTime.diff(now, expires_at, :millisecond), 0)
-  end
-
-  defp positive_opt(opts, key, default) do
-    case Keyword.get(opts, key, default) do
-      value when is_integer(value) and value > 0 -> value
-      _value -> default
-    end
   end
 
   defp upsert_entry(ignore_list, nickname, ignore_type, expires_at) do

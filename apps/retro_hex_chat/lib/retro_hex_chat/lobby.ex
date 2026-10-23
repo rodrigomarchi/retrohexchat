@@ -11,6 +11,7 @@ defmodule RetroHexChat.Lobby do
   alias RetroHexChat.Lobby.{Policy, Queries, Service, SessionServer}
   alias RetroHexChat.Lobby.Schema.Session
   alias RetroHexChat.Services.Queries, as: ServiceQueries
+  alias RetroHexChat.Sweep
 
   @typedoc """
   Resolved, presentation-ready summary of a lobby session for a chat invite
@@ -306,24 +307,12 @@ defmodule RetroHexChat.Lobby do
     now = Keyword.get_lazy(opts, :now, &DateTime.utc_now/0)
     limit = Keyword.get(opts, :limit, 100)
 
-    candidates = Queries.list_expired_open_sessions(now, limit: limit)
-    initial = %{candidates: length(candidates), expired: 0, skipped: 0}
-
-    # A row somebody claimed between the listing and the write is skipped; a
-    # write that failed is not, because a sweep that reports "ok" over a broken
-    # database is one nothing will ever retry.
-    candidates
-    |> Enum.reduce_while({:ok, initial}, fn session, {:ok, acc} ->
-      case Queries.expire_open_session(session, now) do
-        {:ok, :expired} ->
-          Service.seat_changed(session)
-          {:cont, {:ok, Map.update!(acc, :expired, &(&1 + 1))}}
-
-        {:ok, :skipped} ->
-          {:cont, {:ok, Map.update!(acc, :skipped, &(&1 + 1))}}
-
-        {:error, reason} ->
-          {:halt, {:error, reason}}
+    now
+    |> Queries.list_expired_open_sessions(limit: limit)
+    |> Sweep.tally(%{expired: 0, skipped: 0}, fn session ->
+      with {:ok, :expired} <- Queries.expire_open_session(session, now) do
+        Service.seat_changed(session)
+        {:ok, :expired}
       end
     end)
     |> case do

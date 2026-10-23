@@ -10,6 +10,7 @@ defmodule RetroHexChat.Chat.Attachments do
   alias RetroHexChat.Chat.Attachments.Preview
   alias RetroHexChat.Chat.Message
   alias RetroHexChat.Chat.VoiceMessages
+  alias RetroHexChat.Sweep
 
   @default_content_type "application/octet-stream"
   @default_max_size_mb 25
@@ -128,23 +129,10 @@ defmodule RetroHexChat.Chat.Attachments do
     limit = Keyword.get(opts, :limit, @default_cleanup_limit)
     candidates = Queries.list_orphan_uploaded_files(cutoff, limit)
 
-    candidates
-    |> Enum.reduce_while(initial_cleanup_summary(length(candidates)), fn file, {:ok, summary} ->
+    Sweep.tally(candidates, %{deleted: 0, skipped: 0, bytes_deleted: 0}, fn file ->
       case cleanup_orphan_upload(file, cutoff) do
-        {:ok, {:deleted, bytes}} ->
-          {:cont,
-           {:ok,
-            %{
-              summary
-              | deleted: summary.deleted + 1,
-                bytes_deleted: summary.bytes_deleted + bytes
-            }}}
-
-        {:ok, :skipped} ->
-          {:cont, {:ok, %{summary | skipped: summary.skipped + 1}}}
-
-        {:error, reason} ->
-          {:halt, {:error, reason}}
+        {:ok, {:deleted, bytes}} -> {:ok, %{deleted: 1, bytes_deleted: bytes}}
+        other -> other
       end
     end)
   end
@@ -265,10 +253,6 @@ defmodule RetroHexChat.Chat.Attachments do
     else
       {:error, reason} -> RetroHexChat.Repo.rollback(reason)
     end
-  end
-
-  defp initial_cleanup_summary(candidate_count) do
-    {:ok, %{candidates: candidate_count, deleted: 0, skipped: 0, bytes_deleted: 0}}
   end
 
   defp orphan_cutoff(opts) do

@@ -5,6 +5,10 @@ defmodule RetroHexChat.ProcessRegistryTest do
 
   alias RetroHexChat.ProcessRegistry
 
+  defmodule Named do
+    use RetroHexChat.ProcessRegistry, registry: :process_registry_use_test, key: String.t()
+  end
+
   setup do
     name = :"process_registry_test_#{rem(System.unique_integer([:positive]), 100_000)}"
     start_supervised!({Registry, keys: :unique, name: name})
@@ -65,6 +69,17 @@ defmodule RetroHexChat.ProcessRegistryTest do
       assert ProcessRegistry.lookup(ctx.registry, "#one") == {:ok, first}
       assert ProcessRegistry.lookup(ctx.registry, "#two") == {:ok, second}
       refute first == second
+    end
+  end
+
+  describe "use" do
+    test "a registry module names its registry and finds what started under it" do
+      start_supervised!({Registry, keys: :unique, name: :process_registry_use_test})
+      {:ok, pid} = Agent.start_link(fn -> :registered end, name: Named.via_tuple("#used"))
+
+      assert Named.registry_name() == :process_registry_use_test
+      assert Named.lookup("#used") == {:ok, pid}
+      assert Named.lookup("#other") == {:error, :not_found}
     end
   end
 end
