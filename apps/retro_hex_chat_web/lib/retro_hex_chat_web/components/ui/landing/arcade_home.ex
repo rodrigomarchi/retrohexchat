@@ -23,7 +23,10 @@ defmodule RetroHexChatWeb.Components.UI.Landing.ArcadeHome do
 
   import RetroHexChatWeb.Components.UI.Button
   import RetroHexChatWeb.Components.UI.Landing.GameCards, only: [game_detail: 1]
-  import RetroHexChatWeb.Components.UI.Landing.GameCommunity, only: [channel_corner: 1]
+
+  import RetroHexChatWeb.Components.UI.Landing.GameCommunity,
+    only: [channel_corner: 1, standings: 1]
+
   import RetroHexChatWeb.Components.UI.NickFlag
   import RetroHexChatWeb.Components.UI.Tabs
 
@@ -63,9 +66,19 @@ defmodule RetroHexChatWeb.Components.UI.Landing.ArcadeHome do
       </.tabs_content>
       <.tabs_content builder={builder} value="ranking" data-testid="game-home-ranking">
         <h3 class="text-sm font-bold mb-1">{dgettext("landing", "This week")}</h3>
-        <.most_played rows={@week} nick_locales={@nick_locales} testid="arcade-home-week" />
+        <.standings
+          standings={@week}
+          ranking={:plays}
+          locales={@nick_locales}
+          testid="arcade-home-week"
+        />
         <h3 class="text-sm font-bold mb-1 mt-3">{dgettext("landing", "All time")}</h3>
-        <.most_played rows={@all_time} nick_locales={@nick_locales} testid="arcade-home-all-time" />
+        <.standings
+          standings={@all_time}
+          ranking={:plays}
+          locales={@nick_locales}
+          testid="arcade-home-all-time"
+        />
       </.tabs_content>
       <.tabs_content builder={builder} value="you" data-testid="game-home-you">
         <.your_plays {assigns} />
@@ -107,29 +120,6 @@ defmodule RetroHexChatWeb.Components.UI.Landing.ArcadeHome do
         <span class="text-muted-foreground">· {TimeFormatter.format_relative(play.started_at)}</span>
       </li>
     </ul>
-    """
-  end
-
-  attr :rows, :list, required: true
-  attr :nick_locales, :map, required: true
-  attr :testid, :string, required: true
-
-  defp most_played(assigns) do
-    ~H"""
-    <p :if={@rows == []} class="text-sm text-muted-foreground">
-      {dgettext("landing", "Nobody yet.")}
-    </p>
-    <ol :if={@rows != []} class="text-sm list-decimal pl-5" data-testid={@testid}>
-      <li :for={row <- @rows}>
-        <.nick_flag locale={Map.get(@nick_locales, row.nickname)} />
-        <strong>{row.nickname}</strong>
-        <span class="text-muted-foreground">
-          {dngettext("landing", "started %{count} time", "started %{count} times", row.plays,
-            count: row.plays
-          )}
-        </span>
-      </li>
-    </ol>
     """
   end
 

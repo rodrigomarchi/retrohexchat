@@ -167,11 +167,21 @@ defmodule RetroHexChatWeb.Components.UI.Landing.GameCommunity do
   end
 
   attr :standings, :list, required: true
-  attr :ranking, :atom, required: true
+
+  attr :ranking, :atom,
+    required: true,
+    values: [:wins, :best, :plays],
+    doc: "what each row is ranked by: wins, best score, or games started"
+
   attr :locales, :map, default: %{}
   attr :testid, :string, required: true
 
-  defp standings(assigns) do
+  @doc """
+  A ranked list of nicknames, each with its flag and what it is ranked by —
+  the board every game's home draws, a multiplayer game's or an arcade's.
+  """
+  @spec standings(map()) :: Phoenix.LiveView.Rendered.t()
+  def standings(assigns) do
     ~H"""
     <p :if={@standings == []} class="text-sm text-muted-foreground">
       {dgettext("landing", "Nobody yet.")}
@@ -243,4 +253,10 @@ defmodule RetroHexChatWeb.Components.UI.Landing.GameCommunity do
 
   defp standing_value(row, :best),
     do: dgettext("landing", "best score: %{score}", score: row.best)
+
+  defp standing_value(row, :plays),
+    do:
+      dngettext("landing", "started %{count} time", "started %{count} times", row.plays,
+        count: row.plays
+      )
 end

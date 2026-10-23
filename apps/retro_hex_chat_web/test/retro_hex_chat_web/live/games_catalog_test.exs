@@ -467,7 +467,9 @@ defmodule RetroHexChatWeb.GamesCatalogTest do
       assert Floki.text(first) =~ beto.nickname
 
       assert [week] = Floki.find(document, ~s([data-testid="arcade-home-week"]))
-      assert Floki.text(week) =~ ~r/#{ana.nickname}\s+started 2 times/
+      [top | _rest] = Floki.find(week, "li")
+      assert Floki.find(top, "strong") |> Floki.text() == ana.nickname
+      assert Floki.text(top) =~ "started 2 times"
 
       assert [channel] = Floki.find(document, ~s([data-testid="game-community-channel"]))
       assert Floki.attribute(channel, "href") == ["/c/hacx"]

@@ -2302,7 +2302,7 @@ msgstr "%{name} をブラウザでプレイ"
 msgid "Play %{name} in your browser — Retro Hex Chat"
 msgstr "%{name} をブラウザでプレイ — Retro Hex Chat"
 
-#: lib/retro_hex_chat_web/components/ui/landing/arcade_home.ex:145
+#: lib/retro_hex_chat_web/components/ui/landing/arcade_home.ex:135
 #: lib/retro_hex_chat_web/components/ui/landing/game_cards.ex:214
 #: lib/retro_hex_chat_web/components/ui/landing/game_home.ex:121
 #: lib/retro_hex_chat_web/components/ui/landing/game_home.ex:250
@@ -2707,7 +2707,7 @@ msgstr "このサイトについて"
 msgid "Create an account"
 msgstr "アカウントの作成"
 
-#: lib/retro_hex_chat_web/components/ui/landing/game_community.ex:242
+#: lib/retro_hex_chat_web/components/ui/landing/game_community.ex:252
 #, elixir-autogen, elixir-format
 msgid "%{count} win"
 msgid_plural "%{count} wins"
@@ -2734,11 +2734,10 @@ msgstr "最新の試合"
 msgid "No matches yet. Play the first one."
 msgstr "まだマッチしません。 最初の1つを再生します。"
 
-#: lib/retro_hex_chat_web/components/ui/landing/arcade_home.ex:96
-#: lib/retro_hex_chat_web/components/ui/landing/arcade_home.ex:120
+#: lib/retro_hex_chat_web/components/ui/landing/arcade_home.ex:109
 #: lib/retro_hex_chat_web/components/ui/landing/game_community.ex:40
 #: lib/retro_hex_chat_web/components/ui/landing/game_community.ex:87
-#: lib/retro_hex_chat_web/components/ui/landing/game_community.ex:177
+#: lib/retro_hex_chat_web/components/ui/landing/game_community.ex:187
 #, elixir-autogen, elixir-format
 msgid "Nobody yet."
 msgstr "まだ誰もいません。"
@@ -2753,7 +2752,7 @@ msgstr "チャンネルを開く"
 msgid "This week, between players"
 msgstr "今週は、プレイヤーの間で"
 
-#: lib/retro_hex_chat_web/components/ui/landing/game_community.ex:245
+#: lib/retro_hex_chat_web/components/ui/landing/game_community.ex:255
 #, elixir-autogen, elixir-format
 msgid "best score: %{score}"
 msgstr "最高のスコア: %{score}"
@@ -2789,7 +2788,7 @@ msgstr "今すぐライブ"
 msgid "Play now"
 msgstr "今すぐ遊ぶ"
 
-#: lib/retro_hex_chat_web/components/ui/landing/game_community.ex:233
+#: lib/retro_hex_chat_web/components/ui/landing/game_community.ex:243
 #: lib/retro_hex_chat_web/site/pages/game.ex:95
 #: lib/retro_hex_chat_web/site/pages/game.ex:149
 #, elixir-autogen, elixir-format
@@ -2859,43 +2858,43 @@ msgstr "お使いのブラウザで古典的なゲーム。"
 msgid "Open %{arcade} on the desktop, or pick a game in the catalogue"
 msgstr "デスクトップで%{arcade}を開くか、カタログでゲームを選ぶ"
 
-#: lib/retro_hex_chat_web/components/ui/landing/arcade_home.ex:67
+#: lib/retro_hex_chat_web/components/ui/landing/arcade_home.ex:75
 #, elixir-autogen, elixir-format
 msgid "All time"
 msgstr "累計"
 
-#: lib/retro_hex_chat_web/components/ui/landing/arcade_home.ex:65
+#: lib/retro_hex_chat_web/components/ui/landing/arcade_home.ex:68
 #, elixir-autogen, elixir-format
 msgid "This week"
 msgstr "今週"
 
-#: lib/retro_hex_chat_web/components/ui/landing/arcade_home.ex:83
+#: lib/retro_hex_chat_web/components/ui/landing/arcade_home.ex:96
 #, elixir-autogen, elixir-format
 msgid "Who played"
 msgstr "プレイした人"
 
-#: lib/retro_hex_chat_web/components/ui/landing/arcade_home.ex:84
+#: lib/retro_hex_chat_web/components/ui/landing/arcade_home.ex:97
 #, elixir-autogen, elixir-format
 msgid "Top players"
 msgstr "よく遊ぶ人"
 
-#: lib/retro_hex_chat_web/components/ui/landing/arcade_home.ex:161
+#: lib/retro_hex_chat_web/components/ui/landing/arcade_home.ex:151
 #, elixir-autogen, elixir-format
 msgid "You have not started this game yet."
 msgstr "まだこのゲームを始めたことではありません。"
 
-#: lib/retro_hex_chat_web/components/ui/landing/arcade_home.ex:127
+#: lib/retro_hex_chat_web/components/ui/landing/game_community.ex:259
 #, elixir-autogen, elixir-format
 msgid "started %{count} time"
 msgid_plural "started %{count} times"
 msgstr[0] "開始%{count}回"
 
-#: lib/retro_hex_chat_web/components/ui/landing/arcade_home.ex:178
+#: lib/retro_hex_chat_web/components/ui/landing/arcade_home.ex:168
 #, elixir-autogen, elixir-format
 msgid "Most recent start: %{when}"
 msgstr "最近のスタート: %{when}"
 
-#: lib/retro_hex_chat_web/components/ui/landing/arcade_home.ex:169
+#: lib/retro_hex_chat_web/components/ui/landing/arcade_home.ex:159
 #, elixir-autogen, elixir-format
 msgid "You have started this game %{count} time."
 msgid_plural "You have started this game %{count} times."
