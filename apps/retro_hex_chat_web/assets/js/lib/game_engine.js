@@ -15,6 +15,7 @@ import {
   packInputs,
   unpackInputs,
 } from "./games/net_protocol.js";
+import { isEditableTarget } from "./ui/dom.js";
 
 /**
  * Game engine base — owns the frame clock, the presentation loop, input
@@ -49,7 +50,6 @@ const IDLE_INPUT_RESTATES = 10;
 const READY_RETRY_MS = 250;
 
 /** Elements whose keystrokes belong to the user, never to the game. */
-const TEXT_ENTRY_TAGS = new Set(["INPUT", "TEXTAREA", "SELECT"]);
 
 /** Keyboard listener options shared by add/removeEventListener. */
 const KEYBOARD_CAPTURE_OPTIONS = true;
@@ -611,9 +611,7 @@ export class GameEngine {
    * @returns {boolean}
    */
   _isTextEntry(target) {
-    if (!target) return false;
-    if (target.isContentEditable === true) return true;
-    return TEXT_ENTRY_TAGS.has(target.tagName);
+    return isEditableTarget(target);
   }
 
   // ── Subclass hooks ──

@@ -347,8 +347,13 @@ describe("GameEngine", () => {
       engine._handleKeyDown = (event) => handled.push(event.key);
 
       // The game runs in a window beside the chat composer.
-      engine._onKeyDown({ key: "ArrowUp", repeat: false, target: { tagName: "INPUT" } });
-      engine._onKeyDown({ key: "ArrowUp", repeat: false, target: { isContentEditable: true } });
+      const input = document.createElement("input");
+      const editable = document.createElement("div");
+      editable.setAttribute("contenteditable", "true");
+      const select = document.createElement("select");
+      for (const target of [input, editable, select]) {
+        engine._onKeyDown({ key: "ArrowUp", repeat: false, target });
+      }
 
       expect(handled).toEqual([]);
     });

@@ -11,6 +11,8 @@
  * @module space/input
  */
 
+import { isEditableTarget } from "../ui/dom.js";
+
 const KEY_MAP = {
   ArrowUp: { dx: 0, dy: -1, dir: "up" },
   ArrowDown: { dx: 0, dy: 1, dir: "down" },
@@ -157,8 +159,5 @@ function normalizeKey(key) {
 }
 
 function typingInField() {
-  const el = document.activeElement;
-  if (!el) return false;
-  const tag = el.tagName;
-  return tag === "INPUT" || tag === "TEXTAREA" || el.isContentEditable === true;
+  return isEditableTarget(document.activeElement);
 }

@@ -31,16 +31,9 @@ import {
   togglePiP,
 } from "./media.js";
 import { t } from "../i18n.js";
+import { isEditableTarget } from "../ui/dom.js";
 
 const noopEvent = null;
-
-function isEditableTarget(target) {
-  if (!(target instanceof Element)) return false;
-
-  return !!target.closest(
-    'input, textarea, select, [contenteditable=""], [contenteditable="true"], [role="textbox"]',
-  );
-}
 
 function normalizeConfig(config) {
   return {

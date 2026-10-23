@@ -26,6 +26,7 @@ import {
 } from "./picking.js";
 import { createBuildPalette } from "./palette.js";
 import { renderPanel } from "./panels.js";
+import { isEditableTarget } from "../../ui/dom.js";
 
 export class ConstructController {
   /**
@@ -291,8 +292,5 @@ export class ConstructController {
 }
 
 function typingInField() {
-  const el = document.activeElement;
-  if (!el) return false;
-  const tag = el.tagName;
-  return tag === "INPUT" || tag === "TEXTAREA" || el.isContentEditable === true;
+  return isEditableTarget(document.activeElement);
 }

@@ -56,6 +56,7 @@ describe("isEditableTarget", () => {
       "<select></select>",
       '<div contenteditable="true"></div>',
       '<div contenteditable=""></div>',
+      '<div contenteditable="plaintext-only"></div>',
       '<div role="textbox"></div>',
     ]) {
       const host = document.createElement("div");

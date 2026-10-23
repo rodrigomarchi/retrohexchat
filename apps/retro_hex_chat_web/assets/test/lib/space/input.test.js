@@ -61,6 +61,27 @@ describe("InputController", () => {
     field.remove();
   });
 
+  // The arrows pick an option in a select; they never walked the avatar
+  // meanwhile, and the same goes for anything that says it takes text.
+  it("suppresses capture while a select or a role=textbox is focused", () => {
+    const select = document.createElement("select");
+    select.innerHTML = "<option>a</option><option>b</option>";
+    document.body.appendChild(select);
+    select.focus();
+    window.dispatchEvent(keydown("ArrowDown"));
+    expect(intents).toHaveLength(0);
+    select.remove();
+
+    const box = document.createElement("div");
+    box.setAttribute("role", "textbox");
+    box.tabIndex = 0;
+    document.body.appendChild(box);
+    box.focus();
+    window.dispatchEvent(keydown("ArrowDown"));
+    expect(intents).toHaveLength(0);
+    box.remove();
+  });
+
   it("reports the current pressed direction and clears on release", () => {
     window.dispatchEvent(keydown("ArrowLeft"));
     expect(controller.currentIntent()).toEqual({ dx: -1, dy: 0, dir: "left" });
