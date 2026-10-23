@@ -13,6 +13,7 @@ defmodule RetroHexChatWeb.Components.UI.AutojoinDialog do
   import RetroHexChatWeb.Components.UI.DialogBanner
   import RetroHexChatWeb.Components.UI.Button
   import RetroHexChatWeb.Components.UI.Input
+  import RetroHexChatWeb.Components.UI.ListStates, only: [list_empty_state: 1]
 
   alias RetroHexChatWeb.Components.Diagrams
   alias RetroHexChatWeb.Icons
@@ -120,9 +121,10 @@ defmodule RetroHexChatWeb.Components.UI.AutojoinDialog do
           </.dialog_banner>
 
           <div class="aj-entry-list min-h-0 flex-1 overflow-y-auto">
-            <div :if={@entries == []} class="aj-empty-state text-center text-muted-foreground">
-              {dgettext("dialogs", "No auto-join channels. Click Add to create one.")}
-            </div>
+            <.list_empty_state
+              :if={@entries == []}
+              title={dgettext("dialogs", "No auto-join channels. Click Add to create one.")}
+            />
 
             <.action_list
               :if={@entries != []}

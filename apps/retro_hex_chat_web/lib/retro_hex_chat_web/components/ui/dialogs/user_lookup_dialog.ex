@@ -9,6 +9,7 @@ defmodule RetroHexChatWeb.Components.UI.UserLookupDialog do
   import RetroHexChatWeb.Components.UI.Button
   import RetroHexChatWeb.Components.UI.Input
   import RetroHexChatWeb.Components.UI.DialogBanner
+  import RetroHexChatWeb.Components.UI.ListStates, only: [list_empty_state: 1]
   import RetroHexChatWeb.Components.UI.NickFlag
 
   alias RetroHexChatWeb.Components.Diagrams
@@ -124,9 +125,12 @@ defmodule RetroHexChatWeb.Components.UI.UserLookupDialog do
           on_whowas={@on_result_whowas}
           on_query={@on_result_query}
         />
-        <div :if={!@result} class="ul-empty-state" data-testid="user-lookup-empty">
-          {dgettext("dialogs", "No lookup yet.")}
-        </div>
+        <.list_empty_state
+          :if={!@result}
+          icon={:people}
+          title={dgettext("dialogs", "No lookup yet.")}
+          data-testid="user-lookup-empty"
+        />
       </div>
     </div>
     """

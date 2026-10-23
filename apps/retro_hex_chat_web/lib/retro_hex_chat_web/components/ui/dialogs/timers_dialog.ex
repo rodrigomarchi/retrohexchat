@@ -15,6 +15,7 @@ defmodule RetroHexChatWeb.Components.UI.TimersDialog do
   import RetroHexChatWeb.Components.UI.Button
   import RetroHexChatWeb.Components.UI.Checkbox
   import RetroHexChatWeb.Components.UI.Input
+  import RetroHexChatWeb.Components.UI.ListStates, only: [list_empty_state: 1]
   import RetroHexChatWeb.Components.UI.Textarea
 
   alias RetroHexChat.Chat.TimerManager
@@ -90,9 +91,10 @@ defmodule RetroHexChatWeb.Components.UI.TimersDialog do
           }>
             <div class="tm-list-pane min-h-0">
               <div class="tm-timer-list overflow-y-auto">
-                <div :if={@rows == []} class="tm-empty-state text-center text-muted-foreground">
-                  {dgettext("dialogs", "No active timers. Click Add to schedule one.")}
-                </div>
+                <.list_empty_state
+                  :if={@rows == []}
+                  title={dgettext("dialogs", "No active timers. Click Add to schedule one.")}
+                />
 
                 <.action_list
                   :if={@rows != []}

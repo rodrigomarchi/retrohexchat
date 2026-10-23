@@ -74,8 +74,7 @@
   overscroll-behavior: contain;
 }
 
-.cl-loading-state,
-.cl-empty-state {
+.cl-loading-state {
   display: grid;
   min-height: 120px;
   place-items: center;
@@ -87,12 +86,6 @@
   box-shadow:
     inset -1px -1px #ffffff,
     inset 1px 1px #808080;
-}
-
-.cl-empty-state p {
-  margin: 0;
-  font-size: 12px;
-  line-height: 1.35;
 }
 
 .cl-channel-badge {

@@ -52,8 +52,7 @@
     inset 2px 2px #dfdfdf;
 }
 
-.iv-invite-main,
-.iv-empty-state {
+.iv-invite-main {
   display: grid;
   grid-template-columns: auto minmax(0, 1fr);
   align-items: start;
@@ -81,8 +80,7 @@
 }
 
 .iv-invite-channel,
-.iv-invite-meta,
-.iv-empty-state p {
+.iv-invite-meta {
   min-width: 0;
   margin: 0;
   overflow-wrap: anywhere;
@@ -95,8 +93,7 @@
   line-height: 1.35;
 }
 
-.iv-invite-meta,
-.iv-empty-state p {
+.iv-invite-meta {
   color: #303030;
   font-size: 12px;
   line-height: 1.35;

@@ -161,9 +161,10 @@ defmodule RetroHexChatWeb.Components.UI.BotManagementDialog do
       </div>
 
       <div class="bm-roster-scroll min-h-0 flex-1 overflow-y-auto">
-        <p :if={@bots == []} class="bm-empty">
-          {dgettext("dialogs", "No bots yet. Create one and it will appear here.")}
-        </p>
+        <.list_empty_state
+          :if={@bots == []}
+          title={dgettext("dialogs", "No bots yet. Create one and it will appear here.")}
+        />
 
         <ul :if={@bots != []} class="bm-roster-list" data-testid="bot-list">
           <li
@@ -325,7 +326,12 @@ defmodule RetroHexChatWeb.Components.UI.BotManagementDialog do
         </div>
       </div>
 
-      <.tabs id="bot-tabs" default="general" class="bm-tabs flex min-h-0 flex-1 flex-col">
+      <.tabs
+        :let={builder}
+        id="bot-tabs"
+        default="general"
+        class="bm-tabs flex min-h-0 flex-1 flex-col"
+      >
         <div class="bm-tabs-shell">
           <.tabs_list class="bm-main-tabs gap-0">
             <.tabs_trigger builder={%{id: "bot-tabs", default: "general"}} value="general">
@@ -351,7 +357,7 @@ defmodule RetroHexChatWeb.Components.UI.BotManagementDialog do
           </.tabs_list>
         </div>
 
-        <.tabs_content value="general" class="bm-tab-pane">
+        <.tabs_content value="general" builder={builder} class="bm-tab-pane">
           <.general_tab
             selected={@selected}
             running={@running}
@@ -361,19 +367,19 @@ defmodule RetroHexChatWeb.Components.UI.BotManagementDialog do
           />
         </.tabs_content>
 
-        <.tabs_content value="capabilities" class="bm-tab-pane">
+        <.tabs_content value="capabilities" builder={builder} class="bm-tab-pane">
           <.capabilities_tab selected={@selected} is_admin={@is_admin} />
         </.tabs_content>
 
-        <.tabs_content value="channels" class="bm-tab-pane">
+        <.tabs_content value="channels" builder={builder} class="bm-tab-pane">
           <.channels_tab selected={@selected} channels={@channels} is_admin={@is_admin} />
         </.tabs_content>
 
-        <.tabs_content value="commands" class="bm-tab-pane">
+        <.tabs_content value="commands" builder={builder} class="bm-tab-pane">
           <.commands_tab selected={@selected} commands={@commands} is_admin={@is_admin} />
         </.tabs_content>
 
-        <.tabs_content value="events" class="bm-tab-pane">
+        <.tabs_content value="events" builder={builder} class="bm-tab-pane">
           <.events_tab
             events={@events}
             events_state={@events_state}

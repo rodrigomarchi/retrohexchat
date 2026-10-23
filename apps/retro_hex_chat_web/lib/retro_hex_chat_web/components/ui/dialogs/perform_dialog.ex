@@ -12,6 +12,7 @@ defmodule RetroHexChatWeb.Components.UI.PerformDialog do
   import RetroHexChatWeb.Components.UI.DialogBanner
   import RetroHexChatWeb.Components.UI.Button
   import RetroHexChatWeb.Components.UI.Checkbox
+  import RetroHexChatWeb.Components.UI.ListStates, only: [list_empty_state: 1]
   import RetroHexChatWeb.Components.UI.Separator
   import RetroHexChatWeb.Components.UI.Textarea
 
@@ -139,9 +140,10 @@ defmodule RetroHexChatWeb.Components.UI.PerformDialog do
           </.dialog_banner>
 
           <div class="pf-entry-list min-h-0 flex-1 overflow-y-auto">
-            <div :if={@entries == []} class="pf-empty-state text-center text-muted-foreground">
-              {dgettext("dialogs", "No commands configured. Click Add to create one.")}
-            </div>
+            <.list_empty_state
+              :if={@entries == []}
+              title={dgettext("dialogs", "No commands configured. Click Add to create one.")}
+            />
 
             <.action_list
               :if={@entries != []}

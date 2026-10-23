@@ -41,7 +41,6 @@
     inset 2px 2px #0a0a0a;
 }
 
-.nl-empty-state,
 .nl-sub-form {
   min-width: 0;
   overflow-wrap: anywhere;
@@ -77,16 +76,6 @@
 .nl-entry-meta-label {
   margin-right: 3px;
   font-weight: 700;
-}
-
-.nl-empty-state {
-  display: grid;
-  min-height: 112px;
-  place-items: center;
-  padding: 12px;
-  border: 1px dashed #808080;
-  background: #dfdfdf;
-  font-size: 12px;
 }
 
 .nl-action-row,

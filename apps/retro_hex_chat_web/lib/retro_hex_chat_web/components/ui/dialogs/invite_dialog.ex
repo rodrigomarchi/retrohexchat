@@ -24,6 +24,7 @@ defmodule RetroHexChatWeb.Components.UI.InviteDialog do
   import RetroHexChatWeb.Components.UI.Dialog
   import RetroHexChatWeb.Components.UI.DialogMessage
   import RetroHexChatWeb.Components.UI.Button
+  import RetroHexChatWeb.Components.UI.ListStates, only: [list_empty_state: 1]
 
   alias RetroHexChatWeb.Icons
 
@@ -112,12 +113,10 @@ defmodule RetroHexChatWeb.Components.UI.InviteDialog do
               </div>
             </div>
 
-            <div :if={@invites == []} class="iv-empty-state">
-              <span class="iv-invite-icon" aria-hidden="true">
-                <Icons.icon_dialog_invite class="w-4 h-4" />
-              </span>
-              <p>{dgettext("dialogs", "No pending invites.")}</p>
-            </div>
+            <.list_empty_state
+              :if={@invites == []}
+              title={dgettext("dialogs", "No pending invites.")}
+            />
           </div>
         </.dialog_body>
       </.dialog>

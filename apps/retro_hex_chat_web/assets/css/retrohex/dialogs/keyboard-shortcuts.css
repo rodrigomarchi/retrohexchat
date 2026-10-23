@@ -29,18 +29,6 @@
   padding-right: 2px;
 }
 
-.cs-empty-state {
-  display: flex;
-  min-height: 120px;
-  align-items: center;
-  justify-content: center;
-  border: 1px dashed #808080;
-  color: #606060;
-  font-size: 12px;
-  line-height: 1.35;
-  text-align: center;
-}
-
 .cs-group {
   display: grid;
   gap: 6px;
@@ -136,8 +124,7 @@
 .desktop--stacked .cs-group-title,
 .desktop--stacked .cs-shortcut-action,
 .desktop--stacked .cs-shortcut-key,
-.desktop--stacked .cs-shortcut-description,
-.desktop--stacked .cs-empty-state {
+.desktop--stacked .cs-shortcut-description {
   font-size: 13px;
 }
 

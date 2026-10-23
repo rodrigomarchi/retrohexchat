@@ -19,6 +19,7 @@ defmodule RetroHexChatWeb.Components.UI.ChannelList do
   import RetroHexChatWeb.Components.UI.Badge
   import RetroHexChatWeb.Components.UI.ActivityIndicator
   import RetroHexChatWeb.Components.UI.DialogBanner
+  import RetroHexChatWeb.Components.UI.ListStates, only: [list_empty_state: 1]
   import RetroHexChatWeb.Components.UI.NickFlag, only: [channel_badges: 1, channel_category: 1]
   import RetroHexChatWeb.Components.UI.Select
   import RetroHexChatWeb.Components.UI.ToolButton
@@ -150,10 +151,7 @@ defmodule RetroHexChatWeb.Components.UI.ChannelList do
           </div>
         <% else %>
           <%= if @channels == [] do %>
-            <div class="cl-empty-state">
-              <Icons.icon_channels class="w-4 h-4" />
-              <p>{dgettext("dialogs", "No channels found")}</p>
-            </div>
+            <.list_empty_state icon={:channels} title={dgettext("dialogs", "No channels found")} />
           <% else %>
             <.action_list id={"#{@id}-rows"} label={dgettext("dialogs", "Channels")}>
               <.action_row

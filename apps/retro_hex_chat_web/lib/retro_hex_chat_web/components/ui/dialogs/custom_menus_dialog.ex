@@ -21,6 +21,7 @@ defmodule RetroHexChatWeb.Components.UI.CustomMenusDialog do
   use RetroHexChatWeb.Component
 
   import RetroHexChatWeb.Components.UI.Dialog
+  import RetroHexChatWeb.Components.UI.ListStates, only: [list_empty_state: 1]
   import RetroHexChatWeb.Components.UI.Tabs
   import RetroHexChatWeb.Components.UI.ActionList
   import RetroHexChatWeb.Components.UI.Button
@@ -185,7 +186,7 @@ defmodule RetroHexChatWeb.Components.UI.CustomMenusDialog do
             </div>
 
             <%!-- Nicklist Tab --%>
-            <.tabs_content value="nicklist" class="cm-tab-content">
+            <.tabs_content value="nicklist" builder={builder} class="cm-tab-content">
               <.menu_entries_section
                 id={@id}
                 entries={filter_entries(@entries, :nicklist)}
@@ -197,7 +198,7 @@ defmodule RetroHexChatWeb.Components.UI.CustomMenusDialog do
             </.tabs_content>
 
             <%!-- Channel Tab --%>
-            <.tabs_content value="channel" class="cm-tab-content">
+            <.tabs_content value="channel" builder={builder} class="cm-tab-content">
               <.menu_entries_section
                 id={@id}
                 entries={filter_entries(@entries, :channel)}
@@ -209,7 +210,7 @@ defmodule RetroHexChatWeb.Components.UI.CustomMenusDialog do
             </.tabs_content>
 
             <%!-- Chat Tab --%>
-            <.tabs_content value="chat" class="cm-tab-content">
+            <.tabs_content value="chat" builder={builder} class="cm-tab-content">
               <.menu_entries_section
                 id={@id}
                 entries={filter_entries(@entries, :chat)}
@@ -330,9 +331,10 @@ defmodule RetroHexChatWeb.Components.UI.CustomMenusDialog do
           class="cm-entry-list max-h-[220px] overflow-y-auto"
           aria-label={dgettext("dialogs", "Custom menu entries")}
         >
-          <div :if={@entries == []} class="cm-empty-state text-center text-muted-foreground">
-            {dgettext("dialogs", "No custom menu entries yet.")}
-          </div>
+          <.list_empty_state
+            :if={@entries == []}
+            title={dgettext("dialogs", "No custom menu entries yet.")}
+          />
 
           <.action_list
             :if={@entries != []}

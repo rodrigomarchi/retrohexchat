@@ -24,6 +24,7 @@ defmodule RetroHexChatWeb.Components.UI.HighlightDialog do
   import RetroHexChatWeb.Components.UI.Button
   import RetroHexChatWeb.Components.UI.Input
   import RetroHexChatWeb.Components.UI.DialogBanner
+  import RetroHexChatWeb.Components.UI.ListStates, only: [list_empty_state: 1]
 
   alias RetroHexChatWeb.Components.Diagrams
   alias RetroHexChatWeb.Icons
@@ -153,12 +154,12 @@ defmodule RetroHexChatWeb.Components.UI.HighlightDialog do
                   </span>
                 </div>
 
-                <div
+                <.list_empty_state
                   :if={@words == []}
-                  class="hl-empty-state text-center text-muted-foreground"
-                >
-                  {dgettext("dialogs", "No highlight words configured. Click Add to create one.")}
-                </div>
+                  title={
+                    dgettext("dialogs", "No highlight words configured. Click Add to create one.")
+                  }
+                />
 
                 <.action_list
                   :if={@words != []}

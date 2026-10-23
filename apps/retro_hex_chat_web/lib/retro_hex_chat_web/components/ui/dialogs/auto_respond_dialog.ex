@@ -23,6 +23,7 @@ defmodule RetroHexChatWeb.Components.UI.AutoRespondDialog do
   import RetroHexChatWeb.Components.UI.DialogBanner
   import RetroHexChatWeb.Components.UI.Button
   import RetroHexChatWeb.Components.UI.Input
+  import RetroHexChatWeb.Components.UI.ListStates, only: [list_empty_state: 1]
   import RetroHexChatWeb.Components.UI.Textarea
   import RetroHexChatWeb.Components.UI.Checkbox
   import RetroHexChatWeb.Components.UI.Label
@@ -150,9 +151,12 @@ defmodule RetroHexChatWeb.Components.UI.AutoRespondDialog do
           }>
             <div class="ar-list-pane min-h-0">
               <div class="ar-rule-list overflow-y-auto">
-                <div :if={@rules == []} class="ar-empty-state text-center text-muted-foreground">
-                  {dgettext("dialogs", "No auto-respond rules configured. Click Add to create one.")}
-                </div>
+                <.list_empty_state
+                  :if={@rules == []}
+                  title={
+                    dgettext("dialogs", "No auto-respond rules configured. Click Add to create one.")
+                  }
+                />
 
                 <.action_list
                   :if={@rules != []}

@@ -37,7 +37,6 @@
 .hl-own-entry,
 .hl-entry-word,
 .hl-entry-color,
-.hl-empty-state,
 .hl-sub-form {
   min-width: 0;
   overflow-wrap: anywhere;
@@ -103,16 +102,6 @@
   height: 18px;
   flex: 0 0 auto;
   border: 1px solid #404040;
-}
-
-.hl-empty-state {
-  display: grid;
-  min-height: 76px;
-  place-items: center;
-  padding: 12px;
-  border: 1px dashed #808080;
-  background: #dfdfdf;
-  font-size: 12px;
 }
 
 .hl-action-row,

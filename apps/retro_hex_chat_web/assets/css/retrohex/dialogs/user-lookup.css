@@ -89,17 +89,6 @@
   flex-direction: column;
 }
 
-.ul-empty-state {
-  display: flex;
-  min-height: 96px;
-  align-items: center;
-  justify-content: center;
-  border: 1px dashed #808080;
-  color: #606060;
-  font-size: 12px;
-  line-height: 1.35;
-}
-
 .ul-result-card {
   display: flex;
   min-height: 0;
@@ -172,7 +161,6 @@
 .desktop--stacked .ul-field-label,
 .desktop--stacked .ul-error,
 .desktop--stacked .ul-result-header,
-.desktop--stacked .ul-empty-state,
 .desktop--stacked .ul-result-label,
 .desktop--stacked .ul-result-value {
   font-size: 13px;

@@ -17,6 +17,7 @@ defmodule RetroHexChatWeb.Components.UI.NotifyList do
   import RetroHexChatWeb.Components.UI.Button
   import RetroHexChatWeb.Components.UI.Checkbox
   import RetroHexChatWeb.Components.UI.Input
+  import RetroHexChatWeb.Components.UI.ListStates, only: [list_empty_state: 1]
   import RetroHexChatWeb.Components.UI.Textarea
   import RetroHexChatWeb.Components.UI.DialogBanner
   import RetroHexChatWeb.Components.UI.NickFlag
@@ -170,9 +171,10 @@ defmodule RetroHexChatWeb.Components.UI.NotifyList do
 
           <%!-- Entries list --%>
           <div class="nl-entry-list flex-1 overflow-y-auto">
-            <div :if={@entries == []} class="nl-empty-state text-center text-muted-foreground">
-              {dgettext("dialogs", "No notify nicks yet. Add a nick to track online status.")}
-            </div>
+            <.list_empty_state
+              :if={@entries == []}
+              title={dgettext("dialogs", "No notify nicks yet. Add a nick to track online status.")}
+            />
 
             <.action_list
               :if={@entries != []}

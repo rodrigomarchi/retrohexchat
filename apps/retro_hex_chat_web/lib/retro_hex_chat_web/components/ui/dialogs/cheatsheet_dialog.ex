@@ -23,6 +23,8 @@ defmodule RetroHexChatWeb.Components.UI.CheatsheetDialog do
   """
   use RetroHexChatWeb.Component
 
+  import RetroHexChatWeb.Components.UI.ListStates, only: [list_empty_state: 1]
+
   @doc "Renders the keyboard shortcuts cheatsheet dialog."
   attr :id, :string, required: true
 
@@ -38,9 +40,7 @@ defmodule RetroHexChatWeb.Components.UI.CheatsheetDialog do
       data-testid="cheatsheet-dialog"
       class="cs-panel"
     >
-      <div :if={@bindings == []} class="cs-empty-state">
-        {dgettext("dialogs", "No shortcuts defined.")}
-      </div>
+      <.list_empty_state :if={@bindings == []} title={dgettext("dialogs", "No shortcuts defined.")} />
 
       <section
         :for={{group, group_index} <- Enum.with_index(@bindings)}

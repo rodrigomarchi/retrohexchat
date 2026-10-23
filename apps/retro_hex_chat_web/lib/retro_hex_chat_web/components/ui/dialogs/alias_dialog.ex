@@ -27,6 +27,7 @@ defmodule RetroHexChatWeb.Components.UI.AliasDialog do
   import RetroHexChatWeb.Components.UI.DialogBanner
   import RetroHexChatWeb.Components.UI.Button
   import RetroHexChatWeb.Components.UI.Input
+  import RetroHexChatWeb.Components.UI.ListStates, only: [list_empty_state: 1]
   import RetroHexChatWeb.Components.UI.Textarea
 
   alias RetroHexChatWeb.Components.Diagrams
@@ -149,9 +150,10 @@ defmodule RetroHexChatWeb.Components.UI.AliasDialog do
           }>
             <div class="al-list-pane min-h-0">
               <div class="al-entry-list overflow-y-auto">
-                <div :if={@aliases == []} class="al-empty-state text-center text-muted-foreground">
-                  {dgettext("dialogs", "No aliases configured. Click \"Add\" to create one.")}
-                </div>
+                <.list_empty_state
+                  :if={@aliases == []}
+                  title={dgettext("dialogs", "No aliases configured. Click \"Add\" to create one.")}
+                />
 
                 <.action_list
                   :if={@aliases != []}
