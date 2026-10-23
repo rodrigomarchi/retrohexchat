@@ -31,10 +31,10 @@ defmodule RetroHexChatWeb.Components.UI.MentionsDialog do
 
   import RetroHexChatWeb.Components.UI.ListStates
   import RetroHexChatWeb.Components.UI.DialogBanner
-  import RetroHexChatWeb.Components.UI.NickFlag
+  import RetroHexChatWeb.Components.UI.MessageRefRow, only: [message_ref_row: 1]
 
-  alias RetroHexChatWeb.App.ChatHelpers
   alias RetroHexChatWeb.Components.Diagrams
+  alias RetroHexChatWeb.Components.UI.MessageRefRow
   alias RetroHexChatWeb.Icons
   alias RetroHexChatWeb.PaginatedList.State
 
@@ -96,30 +96,22 @@ defmodule RetroHexChatWeb.Components.UI.MentionsDialog do
         data-has-more={to_string(State.more?(@state))}
         data-loading={to_string(State.loading?(@state))}
       >
-        <button
+        <.message_ref_row
           :for={{dom_id, mention} <- @mentions}
           id={dom_id}
-          type="button"
-          class="mentions-row w-full border-b border-border p-2 text-left last:border-b-0"
+          testid={"mention-row-#{mention.id}"}
+          author={mention.author_nickname}
+          author_locale={Map.get(mention, :author_locale)}
+          nick_color_fn={@nick_color_fn}
+          where={mention.channel_name}
+          at={mention.inserted_at}
+          timezone={@timezone}
+          text={MessageRefRow.preview(mention)}
           phx-click={@on_open}
           phx-target={@target}
           phx-value-channel={mention.channel_name}
           phx-value-message_id={mention.id}
-          data-testid={"mention-row-#{mention.id}"}
-        >
-          <span class="mentions-row__head flex items-center gap-retro-4">
-            <Icons.icon_channels class="h-3 w-3 shrink-0" />
-            <span class="font-bold">{mention.channel_name}</span>
-            <.nick_flag locale={Map.get(mention, :author_locale)} />
-            <span class={["truncate", nick_class(@nick_color_fn, mention.author_nickname)]}>
-              {mention.author_nickname}
-            </span>
-            <span class="ml-auto shrink-0 text-muted-foreground">
-              {ChatHelpers.format_datetime(mention.inserted_at, @timezone)}
-            </span>
-          </span>
-          <span class="mentions-row__body mt-1 block break-words">{preview(mention)}</span>
-        </button>
+        />
       </div>
 
       <.list_load_more_button
@@ -141,18 +133,6 @@ defmodule RetroHexChatWeb.Components.UI.MentionsDialog do
     """
   end
 
-  # The stored plain text when there is one — a mention shown with its IRC
-  # control bytes intact would print the colour's digits as text.
-  @spec preview(map()) :: String.t()
-  defp preview(mention) do
-    (Map.get(mention, :plain_content) || Map.get(mention, :content) || "")
-    |> String.slice(0, 200)
-  end
-
-  @spec nick_class(function() | nil, String.t()) :: String.t() | nil
-  defp nick_class(nil, _nick), do: nil
-  defp nick_class(nick_color_fn, nick), do: nick_color_fn.(nick)
-
   # The newest mention, drawn where it happened. The island passes the row
   # because a stream cannot be read back out of the component.
   @spec mention_lines(map() | nil) :: [map()]
@@ -161,15 +141,7 @@ defmodule RetroHexChatWeb.Components.UI.MentionsDialog do
   defp mention_lines(row) do
     [
       %{text: Map.get(row, :author_nickname, ""), tone: :muted},
-      %{text: row_text(row), tone: :danger}
+      %{text: MessageRefRow.preview(row, 60), tone: :danger}
     ]
-  end
-
-  # Both the pin list and the banner read the same field, and a row that
-  # carries no plain text still has to draw as something.
-  @spec row_text(map()) :: String.t()
-  defp row_text(row) do
-    (Map.get(row, :plain_content) || Map.get(row, :content) || "")
-    |> String.slice(0, 60)
   end
 end

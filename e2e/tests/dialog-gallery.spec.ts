@@ -3,6 +3,7 @@
  * @flow DG1 [done] Every reworked dialog body opens and is photographed into e2e/screenshots/dialog-gallery for visual audit
  * @flow DG2 [done] Every list dialog is photographed empty, on a desktop and on a phone, so its empty state is judged by eye
  * @flow DG3 [done] The confirmations are photographed on a phone as well as on a desktop
+ * @flow DG4 [done] Mentions, Pinned and Saved, which share one message row, are photographed filled on a phone too
  *
  * These @flow lines are the source of truth for e2e/TEST_CATALOG.md.
  * Edit them here, then run `make e2e.catalog` to regenerate the index.
@@ -78,6 +79,16 @@ async function shootWithBanner(
   if (await art.isVisible().catch(() => false)) {
     await art.screenshot({ path: `${SHOTS}/art/${name}.png` });
   }
+}
+
+// The same window at a phone's width, then back: a row that fits a desktop
+// window can still crowd its buttons off a phone.
+async function shootOnPhone(page: Page, target: Locator, name: string) {
+  const desktop = page.viewportSize();
+  await page.setViewportSize({ width: 390, height: 844 });
+  await expect(target).toBeVisible();
+  await shoot(page, target, `${name}-phone`);
+  if (desktop) await page.setViewportSize(desktop);
 }
 
 /**
@@ -323,6 +334,7 @@ test.describe("dialog gallery", () => {
 
     await user.chat.openSavedFromStartMenu();
     await shootWithBanner(user.page, user.chat.savedDialog, "saved");
+    await shootOnPhone(user.page, user.chat.savedDialog, "saved");
     await user.page.keyboard.press("Escape");
   });
 
@@ -346,6 +358,7 @@ test.describe("dialog gallery", () => {
 
     await user.chat.openMentionsFromTray();
     await shootWithBanner(user.page, user.chat.mentionsDialog, "mentions");
+    await shootOnPhone(user.page, user.chat.mentionsDialog, "mentions");
     await user.page.keyboard.press("Escape");
   });
 
@@ -356,6 +369,7 @@ test.describe("dialog gallery", () => {
     await user.page.waitForTimeout(600);
     await user.chat.openPinnedFromToolbar();
     await shootWithBanner(user.page, user.chat.pinnedDialog, "pinned");
+    await shootOnPhone(user.page, user.chat.pinnedDialog, "pinned");
     await user.page.keyboard.press("Escape");
   });
 

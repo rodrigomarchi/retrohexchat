@@ -979,7 +979,7 @@ msgid "No topic set"
 msgstr "トピックセットなし"
 
 #: lib/retro_hex_chat_web/components/ui/dialogs/notify_list.ex:197
-#: lib/retro_hex_chat_web/components/ui/dialogs/saved_dialog.ex:150
+#: lib/retro_hex_chat_web/components/ui/dialogs/saved_dialog.ex:132
 #, elixir-autogen, elixir-format
 msgid "Note"
 msgstr "Note"
@@ -1108,7 +1108,7 @@ msgstr "RSS"
 #: lib/retro_hex_chat_web/components/ui/dialogs/bot_management_dialog.ex:828
 #: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:678
 #: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:1483
-#: lib/retro_hex_chat_web/components/ui/dialogs/saved_dialog.ex:166
+#: lib/retro_hex_chat_web/components/ui/dialogs/saved_dialog.ex:148
 #: lib/retro_hex_chat_web/components/ui/dialogs/server_emoji_dialog.ex:148
 #, elixir-autogen, elixir-format
 msgid "Remove"
@@ -3832,7 +3832,7 @@ msgstr "このブラウザーはこのサイトの通知をブロックしてい
 msgid "Notify me on this device even when Retro Hex Chat is closed"
 msgstr "Retro Hex Chat を閉じていても、この端末に通知する"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/mentions_dialog.ex:137
+#: lib/retro_hex_chat_web/components/ui/dialogs/mentions_dialog.ex:129
 #, elixir-autogen, elixir-format
 msgid "Could not load more mentions."
 msgstr "これ以上のメンションを読み込めませんでした。"
@@ -3852,7 +3852,7 @@ msgstr "まだ誰もあなたに言及していません。"
 msgid "An operator can pin a message — the rules, a link, what was agreed — and it stays findable here after it scrolls away."
 msgstr "運営者はメッセージを固定できます——決まりごと、リンク、合意した内容。スクロールで流れたあとも、ここから見つけられます。"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/pinned_dialog.ex:159
+#: lib/retro_hex_chat_web/components/ui/dialogs/pinned_dialog.ex:147
 #, elixir-autogen, elixir-format
 msgid "Could not load more pinned messages."
 msgstr "固定メッセージをこれ以上読み込めませんでした。"
@@ -3862,17 +3862,17 @@ msgstr "固定メッセージをこれ以上読み込めませんでした。"
 msgid "This channel is not keeping anything yet."
 msgstr "このチャンネルはまだ何も保持していません。"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/pinned_dialog.ex:142
+#: lib/retro_hex_chat_web/components/ui/dialogs/pinned_dialog.ex:129
 #, elixir-autogen, elixir-format
 msgid "Unpin"
 msgstr "固定を解除"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/pinned_dialog.ex:127
+#: lib/retro_hex_chat_web/components/ui/dialogs/pinned_dialog.ex:117
 #, elixir-autogen, elixir-format
 msgid "pinned by %{nickname}"
 msgstr "%{nickname} が固定"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/saved_dialog.ex:183
+#: lib/retro_hex_chat_web/components/ui/dialogs/saved_dialog.ex:166
 #, elixir-autogen, elixir-format
 msgid "Could not load more saved messages."
 msgstr "保存したメッセージをこれ以上読み込めませんでした。"
@@ -3884,12 +3884,12 @@ msgstr ""
 "メッセージを右クリックし、[保存]を選択して、ここに保存します。 "
 "他の人は、あなたが維持しているものを見ることができず、それは会話が離れてスクロールした後にとどまります。"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/saved_dialog.ex:134
+#: lib/retro_hex_chat_web/components/ui/chat/message_ref_row.ex:80
 #, elixir-autogen, elixir-format
 msgid "This message was deleted."
 msgstr "このメッセージは削除されました。"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/saved_dialog.ex:149
+#: lib/retro_hex_chat_web/components/ui/dialogs/saved_dialog.ex:131
 #, elixir-autogen, elixir-format
 msgid "Why you kept it (optional)"
 msgstr "保存した理由（任意）"
@@ -3899,7 +3899,7 @@ msgstr "保存した理由（任意）"
 msgid "You have not kept anything yet."
 msgstr "まだ何も保存していません。"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/saved_dialog.ex:196
+#: lib/retro_hex_chat_web/components/ui/dialogs/saved_dialog.ex:179
 #, elixir-autogen, elixir-format
 msgid "with %{nickname}"
 msgstr "%{nickname} との会話"
@@ -4792,12 +4792,12 @@ msgstr "%{nick} が今オフライン"
 msgid "%{nick} is now online"
 msgstr "%{nick} が今オンライン"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/saved_dialog.ex:228
+#: lib/retro_hex_chat_web/components/ui/dialogs/saved_dialog.ex:199
 #, elixir-autogen, elixir-format
 msgid "kept from %{channel}"
 msgstr "%{channel}から保存"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/saved_dialog.ex:227
+#: lib/retro_hex_chat_web/components/ui/dialogs/saved_dialog.ex:198
 #, elixir-autogen, elixir-format
 msgid "kept from a private conversation"
 msgstr "プライベートな会話から守られた"

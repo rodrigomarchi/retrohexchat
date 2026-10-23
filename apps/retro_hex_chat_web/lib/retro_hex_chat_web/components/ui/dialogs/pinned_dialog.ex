@@ -33,10 +33,10 @@ defmodule RetroHexChatWeb.Components.UI.PinnedDialog do
   import RetroHexChatWeb.Components.UI.Button
   import RetroHexChatWeb.Components.UI.ListStates
   import RetroHexChatWeb.Components.UI.DialogBanner
-  import RetroHexChatWeb.Components.UI.NickFlag
+  import RetroHexChatWeb.Components.UI.MessageRefRow, only: [message_ref_row: 1]
 
-  alias RetroHexChatWeb.App.ChatHelpers
   alias RetroHexChatWeb.Components.Diagrams
+  alias RetroHexChatWeb.Components.UI.MessageRefRow
   alias RetroHexChatWeb.Icons
   alias RetroHexChatWeb.PaginatedList.State
 
@@ -99,49 +99,37 @@ defmodule RetroHexChatWeb.Components.UI.PinnedDialog do
         data-has-more={to_string(State.more?(@state))}
         data-loading={to_string(State.loading?(@state))}
       >
-        <div
+        <.message_ref_row
           :for={{dom_id, pin} <- @pins}
           id={dom_id}
-          class="mentions-row flex w-full items-start gap-retro-4 border-b border-border p-2 last:border-b-0"
-          data-testid={"pinned-row-#{pin.message_id}"}
+          testid={"pinned-row-#{pin.message_id}"}
+          open_testid={"pinned-open-#{pin.message_id}"}
+          author={pin.author_nickname}
+          author_locale={Map.get(pin, :author_locale)}
+          nick_color_fn={@nick_color_fn}
+          at={pin.inserted_at}
+          timezone={@timezone}
+          text={MessageRefRow.preview(pin)}
+          phx-click={@on_open}
+          phx-target={@target}
+          phx-value-message_id={pin.message_id}
         >
-          <button
-            type="button"
-            class="flex-1 text-left"
-            phx-click={@on_open}
-            phx-target={@target}
-            phx-value-message_id={pin.message_id}
-            data-testid={"pinned-open-#{pin.message_id}"}
-          >
-            <span class="mentions-row__head flex items-center gap-retro-4">
-              <.nick_flag locale={Map.get(pin, :author_locale)} />
-              <span class={["truncate font-bold", nick_class(@nick_color_fn, pin.author_nickname)]}>
-                {pin.author_nickname}
-              </span>
-              <span class="ml-auto shrink-0 text-muted-foreground">
-                {ChatHelpers.format_datetime(pin.inserted_at, @timezone)}
-              </span>
-            </span>
-            <span class="mentions-row__body mt-1 block break-words">{preview(pin)}</span>
-            <span class="mt-1 block text-muted-foreground">
-              {dgettext("dialogs", "pinned by %{nickname}", nickname: pin.pinned_by)}
-            </span>
-          </button>
-
-          <.button
-            :if={@can_unpin}
-            type="button"
-            size="sm"
-            variant="outline"
-            phx-click="pinned_unpin"
-            phx-target={@target}
-            phx-value-message_id={pin.message_id}
-            data-testid={"pinned-unpin-#{pin.message_id}"}
-          >
-            <:icon><Icons.icon_reject class="h-4 w-4" /></:icon>
-            {dgettext("dialogs", "Unpin")}
-          </.button>
-        </div>
+          <:footer>{dgettext("dialogs", "pinned by %{nickname}", nickname: pin.pinned_by)}</:footer>
+          <:action :if={@can_unpin}>
+            <.button
+              type="button"
+              size="sm"
+              variant="outline"
+              phx-click="pinned_unpin"
+              phx-target={@target}
+              phx-value-message_id={pin.message_id}
+              data-testid={"pinned-unpin-#{pin.message_id}"}
+            >
+              <:icon><Icons.icon_reject class="h-4 w-4" /></:icon>
+              {dgettext("dialogs", "Unpin")}
+            </.button>
+          </:action>
+        </.message_ref_row>
       </div>
 
       <.list_load_more_button
@@ -163,25 +151,13 @@ defmodule RetroHexChatWeb.Components.UI.PinnedDialog do
     """
   end
 
-  # The stored plain text when there is one — a line shown with its IRC control
-  # bytes intact would print the colour's digits as text.
-  @spec preview(map()) :: String.t()
-  defp preview(pin) do
-    (Map.get(pin, :plain_content) || Map.get(pin, :content) || "")
-    |> String.slice(0, 200)
-  end
-
-  @spec nick_class(function() | nil, String.t()) :: String.t() | nil
-  defp nick_class(nil, _nick), do: nil
-  defp nick_class(nick_color_fn, nick), do: nick_color_fn.(nick)
-
   # What the room is actually wearing above its messages.
   @spec pin_lines(map() | nil) :: [map()]
   defp pin_lines(nil), do: []
 
   defp pin_lines(row) do
     [
-      %{text: preview(row), tone: :accent},
+      %{text: MessageRefRow.preview(row), tone: :accent},
       %{text: Map.get(row, :author_nickname, ""), tone: :muted}
     ]
   end

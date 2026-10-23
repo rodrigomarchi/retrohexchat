@@ -33,10 +33,10 @@ defmodule RetroHexChatWeb.Components.UI.SavedDialog do
   import RetroHexChatWeb.Components.UI.Button
   import RetroHexChatWeb.Components.UI.ListStates
   import RetroHexChatWeb.Components.UI.DialogBanner
-  import RetroHexChatWeb.Components.UI.NickFlag
+  import RetroHexChatWeb.Components.UI.MessageRefRow, only: [message_ref_row: 1]
 
-  alias RetroHexChatWeb.App.ChatHelpers
   alias RetroHexChatWeb.Components.Diagrams
+  alias RetroHexChatWeb.Components.UI.MessageRefRow
   alias RetroHexChatWeb.Icons
   alias RetroHexChatWeb.PaginatedList.State
 
@@ -98,46 +98,28 @@ defmodule RetroHexChatWeb.Components.UI.SavedDialog do
         data-has-more={to_string(State.more?(@state))}
         data-loading={to_string(State.loading?(@state))}
       >
-        <div
+        <.message_ref_row
           :for={{dom_id, entry} <- @entries}
           id={dom_id}
-          class="mentions-row flex w-full items-start gap-retro-4 border-b border-border p-2 last:border-b-0"
-          data-testid={"saved-row-#{entry.id}"}
+          testid={"saved-row-#{entry.id}"}
+          open_testid={"saved-open-#{entry.id}"}
+          author={entry.author_nickname}
+          author_locale={Map.get(entry, :author_locale)}
+          nick_color_fn={@nick_color_fn}
+          where={where(entry)}
+          at={entry.inserted_at}
+          timezone={@timezone}
+          text={MessageRefRow.preview(entry)}
+          deleted={entry.deleted?}
+          deleted_testid={"saved-deleted-#{entry.id}"}
+          phx-click={@on_open}
+          phx-target={@target}
+          phx-value-saved_id={entry.id}
+          phx-value-channel={entry.channel_name}
+          phx-value-counterpart={entry.counterpart}
+          phx-value-message_id={entry.message_id || entry.private_message_id}
         >
-          <div class="flex min-w-0 flex-1 flex-col gap-retro-4">
-            <button
-              type="button"
-              class="text-left"
-              phx-click={@on_open}
-              phx-target={@target}
-              phx-value-saved_id={entry.id}
-              phx-value-channel={entry.channel_name}
-              phx-value-counterpart={entry.counterpart}
-              phx-value-message_id={entry.message_id || entry.private_message_id}
-              data-testid={"saved-open-#{entry.id}"}
-            >
-              <span class="mentions-row__head flex items-center gap-retro-4">
-                <.nick_flag locale={Map.get(entry, :author_locale)} />
-                <span class={["truncate font-bold", nick_class(@nick_color_fn, entry.author_nickname)]}>
-                  {entry.author_nickname}
-                </span>
-                <span class="truncate text-muted-foreground">{where(entry)}</span>
-                <span class="ml-auto shrink-0 text-muted-foreground">
-                  {ChatHelpers.format_datetime(entry.inserted_at, @timezone)}
-                </span>
-              </span>
-              <span
-                :if={entry.deleted?}
-                class="mentions-row__body mt-1 block italic text-muted-foreground"
-                data-testid={"saved-deleted-#{entry.id}"}
-              >
-                {dgettext("dialogs", "This message was deleted.")}
-              </span>
-              <span :if={not entry.deleted?} class="mentions-row__body mt-1 block break-words">
-                {preview(entry)}
-              </span>
-            </button>
-
+          <:footer>
             <form phx-submit="saved_note" phx-target={@target}>
               <input type="hidden" name="saved_id" value={entry.id} />
               <input
@@ -151,21 +133,22 @@ defmodule RetroHexChatWeb.Components.UI.SavedDialog do
                 data-testid={"saved-note-#{entry.id}"}
               />
             </form>
-          </div>
-
-          <.button
-            type="button"
-            size="sm"
-            variant="outline"
-            phx-click="saved_remove"
-            phx-target={@target}
-            phx-value-saved_id={entry.id}
-            data-testid={"saved-remove-#{entry.id}"}
-          >
-            <:icon><Icons.icon_reject class="h-4 w-4" /></:icon>
-            {dgettext("dialogs", "Remove")}
-          </.button>
-        </div>
+          </:footer>
+          <:action>
+            <.button
+              type="button"
+              size="sm"
+              variant="outline"
+              phx-click="saved_remove"
+              phx-target={@target}
+              phx-value-saved_id={entry.id}
+              data-testid={"saved-remove-#{entry.id}"}
+            >
+              <:icon><Icons.icon_reject class="h-4 w-4" /></:icon>
+              {dgettext("dialogs", "Remove")}
+            </.button>
+          </:action>
+        </.message_ref_row>
       </div>
 
       <.list_load_more_button
@@ -198,25 +181,13 @@ defmodule RetroHexChatWeb.Components.UI.SavedDialog do
 
   defp where(_entry), do: ""
 
-  # The stored plain text when there is one — a line shown with its IRC control
-  # bytes intact would print the colour's digits as text.
-  @spec preview(map()) :: String.t()
-  defp preview(entry) do
-    (Map.get(entry, :plain_content) || Map.get(entry, :content) || "")
-    |> String.slice(0, 200)
-  end
-
-  @spec nick_class(function() | nil, String.t() | nil) :: String.t() | nil
-  defp nick_class(nil, _nick), do: nil
-  defp nick_class(nick_color_fn, nick), do: nick_color_fn.(nick)
-
   # The newest clipping and where it was cut from.
   @spec clipping_lines(map() | nil) :: [map()]
   defp clipping_lines(nil), do: []
 
   defp clipping_lines(row) do
     [
-      %{text: row_text(row), tone: :accent},
+      %{text: MessageRefRow.preview(row, 60), tone: :accent},
       %{text: origin_label(row), tone: :muted}
     ]
   end
@@ -227,13 +198,5 @@ defmodule RetroHexChatWeb.Components.UI.SavedDialog do
       nil -> dgettext("dialogs", "kept from a private conversation")
       channel -> dgettext("dialogs", "kept from %{channel}", channel: channel)
     end
-  end
-
-  # Both the pin list and the banner read the same field, and a row that
-  # carries no plain text still has to draw as something.
-  @spec row_text(map()) :: String.t()
-  defp row_text(row) do
-    (Map.get(row, :plain_content) || Map.get(row, :content) || "")
-    |> String.slice(0, 60)
   end
 end

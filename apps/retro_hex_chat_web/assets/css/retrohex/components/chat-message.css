@@ -542,29 +542,43 @@
   line-height: 14px;
 }
 
-/* A row in the Mentions window is a door, so it is a button — and a button in
-   a list needs the hover and focus a list row has, not the bevel a control
-   has. */
-.mentions-row {
-  @apply bg-transparent;
-  cursor: pointer;
+/* A row pointing at a message said elsewhere (Mentions, Pinned, Saved). Its
+   head and text are a door, so they are a button — and a button in a list
+   needs the hover and focus a list row has, not the bevel a control has. */
+.message-ref-row {
+  @apply flex w-full items-start gap-retro-4 border-b border-border p-2 last:border-b-0;
 }
 
-.mentions-row:hover,
-.mentions-row:focus-visible {
+.message-ref-row:hover,
+.message-ref-row:focus-within {
   @apply bg-hover-bg;
 }
 
-.mentions-row__head {
-  @apply text-text;
+.message-ref-row__main {
+  @apply flex min-w-0 flex-1 flex-col gap-retro-4;
+}
+
+.message-ref-row__open {
+  @apply block w-full bg-transparent text-left;
+  cursor: pointer;
+}
+
+.message-ref-row__head {
+  @apply flex items-center gap-retro-4 text-text;
   font-size: 11px;
   line-height: 1.3;
 }
 
-.mentions-row__body {
-  @apply text-text;
+.message-ref-row__body {
+  @apply mt-1 block text-text;
   font-size: 12px;
   line-height: 1.4;
+}
+
+.message-ref-row__footer {
+  @apply text-muted-foreground;
+  font-size: 11px;
+  line-height: 1.3;
 }
 
 /* ── Where you stopped reading ──────────────────────────────────────────────
