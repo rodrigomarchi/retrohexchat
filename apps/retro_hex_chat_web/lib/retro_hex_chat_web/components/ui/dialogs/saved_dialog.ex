@@ -30,6 +30,7 @@ defmodule RetroHexChatWeb.Components.UI.SavedDialog do
   """
   use RetroHexChatWeb.Component
 
+  import RetroHexChatWeb.Components.UI.Inset
   import RetroHexChatWeb.Components.UI.Button
   import RetroHexChatWeb.Components.UI.ListStates
   import RetroHexChatWeb.Components.UI.DialogBanner
@@ -86,10 +87,10 @@ defmodule RetroHexChatWeb.Components.UI.SavedDialog do
         }
       />
 
-      <div
+      <.inset
         :if={not State.empty?(@state)}
         id={"#{@id}-list"}
-        class="min-h-[200px] flex-1 overflow-y-auto bg-white p-1 shadow-retro-field"
+        class="min-h-[200px] flex-1 overflow-y-auto p-1"
         phx-hook="InfiniteScrollHook"
         phx-update="stream"
         data-edge="bottom"
@@ -149,7 +150,7 @@ defmodule RetroHexChatWeb.Components.UI.SavedDialog do
             </.button>
           </:action>
         </.message_ref_row>
-      </div>
+      </.inset>
 
       <.list_load_more_button
         :if={State.more?(@state)}

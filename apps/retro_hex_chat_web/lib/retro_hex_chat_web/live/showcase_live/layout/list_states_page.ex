@@ -8,6 +8,7 @@ defmodule RetroHexChatWeb.ShowcaseLive.Layout.ListStatesPage do
     router: RetroHexChatWeb.Router,
     statics: RetroHexChatWeb.static_paths()
 
+  import RetroHexChatWeb.Components.UI.Inset
   import RetroHexChatWeb.Components.UI.ListStates
   import RetroHexChatWeb.ShowcaseHelpers
 
@@ -40,13 +41,13 @@ defmodule RetroHexChatWeb.ShowcaseLive.Layout.ListStatesPage do
         title={dgettext("showcase", "Empty State")}
         description="Shown in place of the rows. Pass text only when the reader can act on it."
       >
-        <div class="shadow-retro-field bg-white">
+        <.inset>
           <.list_empty_state
             title={dgettext("showcase", "No channels found")}
             text={dgettext("showcase", "Try a different filter.")}
             icon={:channels}
           />
-        </div>
+        </.inset>
         <.code_example>
           &lt;.list_empty_state title="No channels found" text="Try a different filter."
           icon=&#123;:channels&#125; /&gt;
@@ -57,10 +58,10 @@ defmodule RetroHexChatWeb.ShowcaseLive.Layout.ListStatesPage do
         title={dgettext("showcase", "End Marker")}
         description="Closes a paginated list. Drawn rather than written, so the same ornament serves every locale — the spoken equivalent is the announcer. `start` says this is all there is; `more` says there is more you cannot reach."
       >
-        <div class="shadow-retro-field bg-white">
+        <.inset>
           <.list_end_marker variant={:start} />
           <.list_end_marker variant={:more} />
-        </div>
+        </.inset>
         <.code_example>&lt;.list_end_marker variant=&#123;:start&#125; /&gt;</.code_example>
       </.showcase_card>
 
@@ -68,10 +69,10 @@ defmodule RetroHexChatWeb.ShowcaseLive.Layout.ListStatesPage do
         title={dgettext("showcase", "Load More")}
         description="The keyboard path to pagination. Kept alongside scroll loading, never instead of it."
       >
-        <div class="shadow-retro-field bg-white">
+        <.inset>
           <.list_load_more_button target={nil} />
           <.list_load_more_button target={nil} loading={true} />
-        </div>
+        </.inset>
         <.code_example>
           &lt;.list_load_more_button target=&#123;@myself&#125; loading=&#123;@loading&#125; /&gt;
         </.code_example>
@@ -81,9 +82,9 @@ defmodule RetroHexChatWeb.ShowcaseLive.Layout.ListStatesPage do
         title={dgettext("showcase", "Count Strip")}
         description="Discloses truncation. Renders nothing when the whole list is on screen, so it reads as a warning rather than furniture."
       >
-        <div class="shadow-retro-field bg-white">
+        <.inset>
           <.list_count_strip shown={100} total={5000} />
-        </div>
+        </.inset>
         <.code_example>
           &lt;.list_count_strip shown=&#123;100&#125; total=&#123;@page.total&#125; /&gt;
         </.code_example>
@@ -93,9 +94,9 @@ defmodule RetroHexChatWeb.ShowcaseLive.Layout.ListStatesPage do
         title={dgettext("showcase", "Error & Retry")}
         description="The one list state announced assertively — a failed page must not be scrolled past unnoticed."
       >
-        <div class="shadow-retro-field bg-white">
+        <.inset>
           <.list_error_retry on_retry="noop" target={nil} />
-        </div>
+        </.inset>
         <.code_example>
           &lt;.list_error_retry on_retry="reload_bans" target=&#123;@myself&#125; /&gt;
         </.code_example>
@@ -105,9 +106,9 @@ defmodule RetroHexChatWeb.ShowcaseLive.Layout.ListStatesPage do
         title={dgettext("showcase", "First-load Skeleton")}
         description="Reserves the space the rows will occupy, so the panel does not jump when they land."
       >
-        <div class="shadow-retro-field bg-white">
+        <.inset>
           <.list_skeleton rows={5} />
-        </div>
+        </.inset>
         <.code_example>&lt;.list_skeleton rows=&#123;5&#125; /&gt;</.code_example>
       </.showcase_card>
 
@@ -115,10 +116,10 @@ defmodule RetroHexChatWeb.ShowcaseLive.Layout.ListStatesPage do
         title={dgettext("showcase", "Announcer")}
         description="A visually hidden live region that reports what arrived — not merely that loading happened. Nothing to see here by design."
       >
-        <div class="shadow-retro-field bg-white p-2 text-xs text-muted-foreground">
+        <.inset class="p-2 text-xs text-muted-foreground">
           {dgettext("showcase", "(screen-reader only)")}
           <.list_announcer message={dgettext("showcase", "20 items loaded")} />
-        </div>
+        </.inset>
         <.code_example>&lt;.list_announcer message=&#123;@announcement&#125; /&gt;</.code_example>
       </.showcase_card>
     </.showcase_layout>

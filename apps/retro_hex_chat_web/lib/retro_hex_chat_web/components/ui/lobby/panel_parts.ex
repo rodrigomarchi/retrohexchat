@@ -12,6 +12,7 @@ defmodule RetroHexChatWeb.Components.UI.Lobby.PanelParts do
   """
   use RetroHexChatWeb.Component
 
+  import RetroHexChatWeb.Components.UI.Inset
   import RetroHexChatWeb.Components.UI.Badge
   import RetroHexChatWeb.Components.UI.IconWell
   import RetroHexChatWeb.Components.UI.MediaSession.StatusHeader
@@ -43,12 +44,12 @@ defmodule RetroHexChatWeb.Components.UI.Lobby.PanelParts do
         </:facets>
       </.media_session_status_header>
 
-      <div class="shadow-retro-field flex min-h-0 flex-1 items-center justify-center bg-white p-4 text-center text-xs text-muted-foreground">
+      <.inset class="flex min-h-0 flex-1 items-center justify-center p-4 text-center text-xs text-muted-foreground">
         <div class="max-w-[18rem] space-y-2">
           {apply(Icons, @icon, [%{class: "mx-auto h-6 w-6"}])}
           <p>{@text}</p>
         </div>
-      </div>
+      </.inset>
     </section>
     """
   end

@@ -9,6 +9,7 @@ defmodule RetroHexChatWeb.Components.UI.Lobby.FilePanel do
   """
   use RetroHexChatWeb.Component
 
+  import RetroHexChatWeb.Components.UI.Inset
   import RetroHexChatWeb.Components.UI.Badge
   import RetroHexChatWeb.Components.UI.FileTransfer
   import RetroHexChatWeb.Components.UI.MediaSession.ActionButton
@@ -72,23 +73,23 @@ defmodule RetroHexChatWeb.Components.UI.Lobby.FilePanel do
         </:facets>
       </.media_session_status_header>
 
-      <div
+      <.inset
         :if={!@file_transfer}
-        class="shadow-retro-field flex min-h-[180px] flex-1 items-center justify-center bg-white p-4 text-center text-xs text-muted-foreground sm:min-h-[240px]"
+        class="flex min-h-[180px] flex-1 items-center justify-center p-4 text-center text-xs text-muted-foreground sm:min-h-[240px]"
         data-testid="p2p-files-preparing"
       >
         <div class="max-w-[18rem] space-y-2">
           <Icons.icon_clock class="mx-auto h-5 w-5 animate-spin" />
           <p>{dgettext("lobby", "Preparing file transfer.")}</p>
         </div>
-      </div>
+      </.inset>
 
-      <div
+      <.inset
         :if={
           @file_transfer && @file_transfer[:status] in ["ready", "validation_error"] &&
             !@file_transfer[:file_name]
         }
-        class="shadow-retro-field flex min-h-[220px] flex-1 items-center justify-center bg-white p-4 text-center text-xs sm:min-h-[300px]"
+        class="flex min-h-[220px] flex-1 items-center justify-center p-4 text-center text-xs sm:min-h-[300px]"
         data-testid="p2p-files-dropzone"
       >
         <div class="max-w-[28rem] space-y-3">
@@ -118,7 +119,7 @@ defmodule RetroHexChatWeb.Components.UI.Lobby.FilePanel do
             <span>{dgettext("lobby", "Browse files")}</span>
           </label>
         </div>
-      </div>
+      </.inset>
 
       <div
         :if={@file_transfer && @file_transfer[:file_name]}

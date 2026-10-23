@@ -23,6 +23,8 @@ defmodule RetroHexChatWeb.Components.UI.SyntaxTooltip do
   """
   use RetroHexChatWeb.Component
 
+  import RetroHexChatWeb.Components.UI.Inset
+
   @doc "Renders the command syntax tooltip."
 
   attr :tooltip, :any,
@@ -65,15 +67,15 @@ defmodule RetroHexChatWeb.Components.UI.SyntaxTooltip do
         </p>
 
         <%!-- Sub-options --%>
-        <div
+        <.inset
           :if={@tooltip.sub_options && @tooltip.sub_options != []}
-          class="shadow-retro-field bg-white p-retro-4 space-y-retro-2"
+          class="p-retro-4 space-y-retro-2"
         >
           <div :for={opt <- @tooltip.sub_options} class="flex gap-retro-4 text-xs">
             <span class="font-mono font-bold shrink-0">{opt.flag}</span>
             <span class="text-muted-foreground">{opt.description}</span>
           </div>
-        </div>
+        </.inset>
 
         <%!-- Context message --%>
         <p :if={@tooltip.context_message} class="text-xs italic text-muted-foreground">

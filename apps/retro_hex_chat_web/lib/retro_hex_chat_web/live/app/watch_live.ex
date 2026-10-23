@@ -20,6 +20,7 @@ defmodule RetroHexChatWeb.App.WatchLive do
   """
   use RetroHexChatWeb, :live_view
 
+  import RetroHexChatWeb.Components.UI.Inset
   import RetroHexChatWeb.Components.UI.Desktop
   import RetroHexChatWeb.Components.UI.LiveMatch
   import RetroHexChatWeb.Components.UI.Window
@@ -168,9 +169,9 @@ defmodule RetroHexChatWeb.App.WatchLive do
               </div>
             </div>
 
-            <div
+            <.inset
               :if={not (@watchable? and @status == "playing")}
-              class="flex min-h-[220px] flex-1 flex-col items-center justify-center gap-retro-8 bg-white p-retro-12 text-center shadow-retro-field"
+              class="flex min-h-[220px] flex-1 flex-col items-center justify-center gap-retro-8 p-retro-12 text-center"
               data-testid="watch-idle"
             >
               <Icons.game_icon :if={@game_id} game_id={@game_id} class="h-16 w-16" />
@@ -185,7 +186,7 @@ defmodule RetroHexChatWeb.App.WatchLive do
                   <li :for={match <- @others}><.live_match_link match={match} /></li>
                 </ul>
               </div>
-            </div>
+            </.inset>
 
             <div :if={@game_id} class="flex flex-wrap items-center gap-retro-8 text-xs">
               <%!-- The game's home: every way to play it, from the computer to

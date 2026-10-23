@@ -7,6 +7,7 @@ defmodule RetroHexChatWeb.Components.UI.TrustedTerminalsDialog do
   """
   use RetroHexChatWeb.Component
 
+  import RetroHexChatWeb.Components.UI.Inset
   import RetroHexChatWeb.Components.UI.ListStates
 
   import RetroHexChatWeb.Components.UI.Badge
@@ -220,7 +221,7 @@ defmodule RetroHexChatWeb.Components.UI.TrustedTerminalsDialog do
                 </.tabs_list>
 
                 <.tabs_content value="devices" builder={builder} class="flex min-h-0 flex-1 flex-col">
-                  <div class="min-h-[240px] flex-1 overflow-y-auto bg-white p-1 shadow-retro-field">
+                  <.inset class="min-h-[240px] flex-1 overflow-y-auto p-1">
                     <.list_empty_state
                       :if={@devices == []}
                       title={dgettext("dialogs", "No trusted terminals for this nickname.")}
@@ -282,7 +283,7 @@ defmodule RetroHexChatWeb.Components.UI.TrustedTerminalsDialog do
                         </form>
                       </:management>
                     </.trusted_terminal_card>
-                  </div>
+                  </.inset>
                 </.tabs_content>
 
                 <.tabs_content
@@ -295,10 +296,10 @@ defmodule RetroHexChatWeb.Components.UI.TrustedTerminalsDialog do
                     icon={:people}
                     title={dgettext("dialogs", "No active sessions.")}
                   />
-                  <div
+                  <.inset
                     :if={not State.empty?(@sessions_state)}
                     id={"#{@id}-sessions"}
-                    class="min-h-[240px] flex-1 overflow-y-auto bg-white p-1 shadow-retro-field"
+                    class="min-h-[240px] flex-1 overflow-y-auto p-1"
                     phx-hook="InfiniteScrollHook"
                     phx-update="stream"
                     data-edge="bottom"
@@ -348,7 +349,7 @@ defmodule RetroHexChatWeb.Components.UI.TrustedTerminalsDialog do
                         </.button>
                       </div>
                     </div>
-                  </div>
+                  </.inset>
                   <.list_load_more_button
                     :if={State.more?(@sessions_state)}
                     target={@target}
@@ -378,10 +379,10 @@ defmodule RetroHexChatWeb.Components.UI.TrustedTerminalsDialog do
                     :if={State.empty?(@events_state)}
                     title={dgettext("dialogs", "No terminal activity yet.")}
                   />
-                  <div
+                  <.inset
                     :if={not State.empty?(@events_state)}
                     id={"#{@id}-events"}
-                    class="min-h-[240px] flex-1 overflow-y-auto bg-white p-1 shadow-retro-field"
+                    class="min-h-[240px] flex-1 overflow-y-auto p-1"
                     phx-hook="InfiniteScrollHook"
                     phx-update="stream"
                     data-edge="bottom"
@@ -404,7 +405,7 @@ defmodule RetroHexChatWeb.Components.UI.TrustedTerminalsDialog do
                         <.terminal_fact :for={fact <- event_facts(event, @timezone)} fact={fact} />
                       </div>
                     </div>
-                  </div>
+                  </.inset>
                   <.list_load_more_button
                     :if={State.more?(@events_state)}
                     target={@target}

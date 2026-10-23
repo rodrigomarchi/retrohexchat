@@ -8,6 +8,7 @@ defmodule RetroHexChatWeb.ShowcaseLive.Dialogs.AutojoinDialogPage do
     router: RetroHexChatWeb.Router,
     statics: RetroHexChatWeb.static_paths()
 
+  import RetroHexChatWeb.Components.UI.Inset
   import RetroHexChatWeb.Components.UI.AutojoinDialog
   import RetroHexChatWeb.Components.UI.Button
   import RetroHexChatWeb.Components.UI.Dialog, only: [show_modal: 1]

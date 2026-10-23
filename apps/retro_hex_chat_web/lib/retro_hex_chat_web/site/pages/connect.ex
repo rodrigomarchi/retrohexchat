@@ -64,9 +64,9 @@ defmodule RetroHexChatWeb.Site.Pages.Connect do
         <span>{@reason_message}</span>
       </p>
 
-      <div
+      <.inset
         :if={@feature}
-        class="flex items-start gap-retro-6 bg-white p-retro-6 text-xs shadow-retro-field"
+        class="flex items-start gap-retro-6 p-retro-6 text-xs"
         data-testid="visitor-connect-reason"
       >
         {apply(Icons, Visitor.feature_icon(@feature), [%{class: "h-5 w-5 shrink-0"}])}
@@ -79,7 +79,7 @@ defmodule RetroHexChatWeb.Site.Pages.Connect do
             )}
           </p>
         </div>
-      </div>
+      </.inset>
 
       <.live_component
         module={ConnectForm}

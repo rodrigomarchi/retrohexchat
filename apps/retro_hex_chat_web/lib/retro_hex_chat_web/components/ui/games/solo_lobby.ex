@@ -224,7 +224,7 @@ defmodule RetroHexChatWeb.Components.UI.SoloLobby do
       data-testid="arcade-playing-state"
       class="flex flex-1 flex-col items-center justify-center gap-retro-16 py-retro-16 text-center"
     >
-      <div class="flex flex-col items-center gap-retro-8 shadow-retro-field bg-white px-retro-16 py-retro-12 min-w-[240px]">
+      <.inset class="flex flex-col items-center gap-retro-8 px-retro-16 py-retro-12 min-w-[240px]">
         <Icons.game_icon game_id={@game_id} class="w-20 h-20 shrink-0" />
         <h3 class="text-base font-bold">{@game_name}</h3>
         <.badge variant="secondary">
@@ -236,9 +236,9 @@ defmodule RetroHexChatWeb.Components.UI.SoloLobby do
         <p :if={@game_started_at} class="text-[10px] font-mono text-muted-foreground">
           {dgettext("games", "Started %{time}", time: format_started(@game_started_at, @timezone))}
         </p>
-      </div>
+      </.inset>
 
-      <div class="flex items-start gap-retro-8 shadow-retro-field bg-white px-retro-12 py-retro-8 text-xs max-w-sm text-left">
+      <.inset class="flex items-start gap-retro-8 px-retro-12 py-retro-8 text-xs max-w-sm text-left">
         <Icons.icon_btn_open class="w-4 h-4 flex-shrink-0 mt-[1px]" />
         <span>
           {dgettext(
@@ -246,7 +246,7 @@ defmodule RetroHexChatWeb.Components.UI.SoloLobby do
             "The game runs in a tab of its own, with its own address. Closing that tab does not end the session — End Session does, and so does leaving it alone for a while."
           )}
         </span>
-      </div>
+      </.inset>
 
       <div class="flex flex-wrap items-center justify-center gap-retro-8">
         <%!-- The way back into a tab that was closed, and the address itself:
@@ -289,7 +289,7 @@ defmodule RetroHexChatWeb.Components.UI.SoloLobby do
       data-testid="arcade-finished-state"
       class="flex flex-1 flex-col items-center justify-center gap-retro-16 py-retro-16 text-center"
     >
-      <div class="flex flex-col items-center gap-retro-8 shadow-retro-field bg-white px-retro-16 py-retro-12 min-w-[240px]">
+      <.inset class="flex flex-col items-center gap-retro-8 px-retro-16 py-retro-12 min-w-[240px]">
         <Icons.game_icon game_id={@game_id} class="w-20 h-20 shrink-0" />
         <h3 class="text-base font-bold">{@game_name}</h3>
         <.badge variant="secondary">
@@ -305,7 +305,7 @@ defmodule RetroHexChatWeb.Components.UI.SoloLobby do
             <strong>{ChatHelpers.format_duration(@game_duration)}</strong>
           </span>
         </div>
-      </div>
+      </.inset>
 
       <div class="flex flex-wrap items-center justify-center gap-retro-8">
         <.button variant="outline" phx-click={@on_back_to_launcher} data-testid="arcade-back">

@@ -10,9 +10,9 @@
         <:icon><Icons.icon_tab_status class="w-[16px] h-[16px]" /></:icon>
       </.window_title_bar>
       <.window_body>
-        <div class="shadow-retro-field bg-white p-2 min-h-[40px]">
+        <.inset class="p-2 min-h-[40px]">
           <p class="text-sm font-mono">{dgettext("showcase", "Content area")}</p>
-        </div>
+        </.inset>
       </.window_body>
       <.window_status_bar>
         <.window_status_bar_field grow>{dgettext("showcase", "Ready")}</.window_status_bar_field>
@@ -95,11 +95,11 @@
         <:icon><Icons.icon_chat class="w-[16px] h-[16px]" /></:icon>
       </.window_title_bar>
       <.window_body>
-        <div class="shadow-retro-field bg-white p-2 min-h-[60px]">
+        <.inset class="p-2 min-h-[60px]">
           <p class="text-sm font-mono text-gray-500 italic">
             {dgettext("showcase", "Chat content area...")}
           </p>
-        </div>
+        </.inset>
       </.window_body>
       <.window_status_bar>
         <.window_status_bar_field>

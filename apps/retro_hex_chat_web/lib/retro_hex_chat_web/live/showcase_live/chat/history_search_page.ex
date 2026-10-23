@@ -8,6 +8,7 @@ defmodule RetroHexChatWeb.ShowcaseLive.Chat.HistorySearchPage do
     router: RetroHexChatWeb.Router,
     statics: RetroHexChatWeb.static_paths()
 
+  import RetroHexChatWeb.Components.UI.Inset
   import RetroHexChatWeb.Components.UI.HistorySearch
   import RetroHexChatWeb.ShowcaseHelpers
 
@@ -40,11 +41,11 @@ defmodule RetroHexChatWeb.ShowcaseLive.Chat.HistorySearchPage do
         title={dgettext("showcase", "Hidden")}
         description="Nothing rendered when visible is false."
       >
-        <div class="shadow-retro-field bg-white p-3 min-h-[40px] flex items-center justify-center">
+        <.inset class="p-3 min-h-[40px] flex items-center justify-center">
           <span class="text-xs text-muted-foreground">
             {dgettext("showcase", "(empty — history_search renders nothing)")}
           </span>
-        </div>
+        </.inset>
         <.history_search visible={false} />
         <.code_example>
           &lt;.history_search visible={false} /&gt;

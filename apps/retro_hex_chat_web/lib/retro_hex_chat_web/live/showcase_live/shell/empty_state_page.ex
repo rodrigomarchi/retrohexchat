@@ -8,6 +8,7 @@ defmodule RetroHexChatWeb.ShowcaseLive.Shell.EmptyStatePage do
     router: RetroHexChatWeb.Router,
     statics: RetroHexChatWeb.static_paths()
 
+  import RetroHexChatWeb.Components.UI.Inset
   import RetroHexChatWeb.Components.UI.EmptyState
   import RetroHexChatWeb.Components.UI.Button
   import RetroHexChatWeb.ShowcaseHelpers
@@ -30,7 +31,7 @@ defmodule RetroHexChatWeb.ShowcaseLive.Shell.EmptyStatePage do
         title={dgettext("showcase", "Basic")}
         description="Empty state with icon, title, and description."
       >
-        <div class="shadow-retro-field bg-white">
+        <.inset>
           <.empty_state>
             <:icon><Icons.icon_chat class="w-8 h-8" /></:icon>
             <:title>{dgettext("showcase", "No messages yet")}</:title>
@@ -38,7 +39,7 @@ defmodule RetroHexChatWeb.ShowcaseLive.Shell.EmptyStatePage do
               {dgettext("showcase", "Start a conversation to see messages here.")}
             </:description>
           </.empty_state>
-        </div>
+        </.inset>
         <.code_example>
           &lt;.empty_state&gt;
           &lt;:icon&gt;&lt;Icons.icon_chat class="w-8 h-8" /&gt;&lt;/:icon&gt;
@@ -52,7 +53,7 @@ defmodule RetroHexChatWeb.ShowcaseLive.Shell.EmptyStatePage do
         title={dgettext("showcase", "With Action")}
         description="Empty state with a call-to-action button."
       >
-        <div class="shadow-retro-field bg-white">
+        <.inset>
           <.empty_state>
             <:icon><Icons.icon_channels class="w-8 h-8" /></:icon>
             <:title>{dgettext("showcase", "No channels joined")}</:title>
@@ -66,7 +67,7 @@ defmodule RetroHexChatWeb.ShowcaseLive.Shell.EmptyStatePage do
               </.button>
             </:action>
           </.empty_state>
-        </div>
+        </.inset>
         <.code_example>
           &lt;.empty_state&gt;
           &lt;:icon&gt;&lt;Icons.icon_channels class="w-8 h-8" /&gt;&lt;/:icon&gt;
@@ -84,20 +85,20 @@ defmodule RetroHexChatWeb.ShowcaseLive.Shell.EmptyStatePage do
         description="Different icons and contexts for empty states."
       >
         <div class="grid grid-cols-2 gap-4">
-          <div class="shadow-retro-field bg-white">
+          <.inset>
             <.empty_state>
               <:icon><Icons.icon_btn_search class="w-8 h-8" /></:icon>
               <:title>{dgettext("showcase", "No results")}</:title>
               <:description>{dgettext("showcase", "Try a different search term.")}</:description>
             </.empty_state>
-          </div>
-          <div class="shadow-retro-field bg-white">
+          </.inset>
+          <.inset>
             <.empty_state>
               <:icon><Icons.icon_tab_contacts class="w-8 h-8" /></:icon>
               <:title>{dgettext("showcase", "No contacts")}</:title>
               <:description>{dgettext("showcase", "Add users to your address book.")}</:description>
             </.empty_state>
-          </div>
+          </.inset>
         </div>
         <.code_example>
           &lt;.empty_state&gt;

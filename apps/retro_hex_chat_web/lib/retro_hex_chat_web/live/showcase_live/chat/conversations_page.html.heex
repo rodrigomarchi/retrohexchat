@@ -5,7 +5,7 @@
     title={dgettext("showcase", "Full Sidebar")}
     description="IRC-native conversations sidebar. One channel list holds the rooms you are in and the ones you join on connect, activity-sorted, each name once and pinned where the auto-join list holds it. Then recent PMs and channel suggestions. Every row answers a click by going there, and carries the menu button that opens what right-click opens."
   >
-    <div class="max-w-[260px] shadow-retro-field bg-white">
+    <.inset class="max-w-[260px]">
       <.conversations
         id="demo-full"
         channels={["#lobby", "#help", "#random", "#dev", "#music"]}
@@ -34,7 +34,7 @@
           %{name: "#movies", user_count: 18}
         ]}
       />
-    </div>
+    </.inset>
     <.code_example>
       &lt;.conversations
       channels=&#123;["#lobby", "#help"]&#125;
@@ -54,30 +54,30 @@
     title={dgettext("showcase", "Empty State")}
     description="When there are no channels, PMs or discovery rows. Shows 'Browse channels' when on_browse_channels is set."
   >
-    <div class="max-w-[260px] shadow-retro-field bg-white">
+    <.inset class="max-w-[260px]">
       <.conversations id="demo-empty" on_browse_channels="open_channel_list" />
-    </div>
+    </.inset>
   </.showcase_card>
 
   <.showcase_card
     title={dgettext("showcase", "Channels Only")}
     description="Sidebar with joined channels but no PMs or discovery rows."
   >
-    <div class="max-w-[260px] shadow-retro-field bg-white">
+    <.inset class="max-w-[260px]">
       <.conversations
         id="demo-channels"
         channels={["#general", "#announcements"]}
         active_channel="#general"
         channel_user_counts={%{"#general" => 34, "#announcements" => 12}}
       />
-    </div>
+    </.inset>
   </.showcase_card>
 
   <.showcase_card
     title={dgettext("showcase", "Channel States")}
     description="Visual states: normal, active, unread, highlight, muted, disconnected, and flash."
   >
-    <div class="max-w-[260px] shadow-retro-field bg-white">
+    <.inset class="max-w-[260px]">
       <.conversations
         id="demo-states"
         channels={["#normal", "#active", "#unread", "#highlight", "#muted", "#disconnected"]}
@@ -88,6 +88,6 @@
         muted_channels={["#muted"]}
         disconnected_channels={["#disconnected"]}
       />
-    </div>
+    </.inset>
   </.showcase_card>
 </.showcase_layout>

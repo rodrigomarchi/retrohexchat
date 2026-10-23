@@ -13,6 +13,7 @@ defmodule RetroHexChatWeb.Components.UI.ChannelCentralDialog do
   """
   use RetroHexChatWeb.Component
 
+  import RetroHexChatWeb.Components.UI.Inset
   import RetroHexChatWeb.Components.UI.ToolButton
 
   import RetroHexChatWeb.Components.UI.ActionList
@@ -350,7 +351,7 @@ defmodule RetroHexChatWeb.Components.UI.ChannelCentralDialog do
         )}
       </.dialog_banner>
 
-      <div class="cc-status-card shadow-retro-field bg-white p-2" data-testid="cc-cs-status">
+      <.inset class="cc-status-card p-2" data-testid="cc-cs-status">
         <div class="cc-dialog-heading flex items-center gap-2 mb-2">
           <Icons.icon_shield class="w-[16px] h-[16px]" />
           <span class="cc-dialog-title text-sm font-bold">
@@ -606,7 +607,7 @@ defmodule RetroHexChatWeb.Components.UI.ChannelCentralDialog do
             </div>
           </div>
         </div>
-      </div>
+      </.inset>
 
       <p
         :if={@error_message && !@access_adding}
@@ -636,7 +637,7 @@ defmodule RetroHexChatWeb.Components.UI.ChannelCentralDialog do
           </.tool_button>
         </div>
 
-        <div class="cc-list-table-wrap overflow-y-auto max-h-[160px] shadow-retro-field bg-white">
+        <.inset class="cc-list-table-wrap overflow-y-auto max-h-[160px]">
           <.table class="cc-mobile-list-table" data-cc-mobile-list-table>
             <.table_header>
               <.table_row>
@@ -694,7 +695,7 @@ defmodule RetroHexChatWeb.Components.UI.ChannelCentralDialog do
               </tr>
             </.table_body>
           </.table>
-        </div>
+        </.inset>
 
         <div :if={@can_manage_active?} class="cc-action-row flex justify-end">
           <.button
@@ -986,7 +987,7 @@ defmodule RetroHexChatWeb.Components.UI.ChannelCentralDialog do
         )}
       </.dialog_banner>
 
-      <div class="cc-status-card shadow-retro-field bg-white p-2">
+      <.inset class="cc-status-card p-2">
         <div class="cc-dialog-heading flex items-center gap-2 mb-2">
           <Icons.icon_tab_channel class="w-[16px] h-[16px]" />
           <span class="cc-dialog-title text-sm font-bold">
@@ -1007,7 +1008,7 @@ defmodule RetroHexChatWeb.Components.UI.ChannelCentralDialog do
           </span>
           <span class="cc-status-value">{@member_count}</span>
         </div>
-      </div>
+      </.inset>
 
       <.dialog_section
         legend={dgettext("dialogs", "Topic")}
@@ -1259,7 +1260,7 @@ defmodule RetroHexChatWeb.Components.UI.ChannelCentralDialog do
       </.dialog_banner>
 
       <form :if={@operator} phx-submit={@on_mode_apply} phx-target={@target}>
-        <div class="cc-settings-panel shadow-retro-field bg-white p-2">
+        <.inset class="cc-settings-panel p-2">
           <p class="text-xs font-bold mb-2">{dgettext("dialogs", "Channel Modes")}:</p>
 
           <div class="cc-mode-list space-y-1">
@@ -1329,7 +1330,7 @@ defmodule RetroHexChatWeb.Components.UI.ChannelCentralDialog do
               data-testid="cc-limit-input"
             />
           </div>
-        </div>
+        </.inset>
 
         <div class="cc-action-row flex gap-1 mt-2">
           <.button type="submit" size="sm" class="cc-action-button">
@@ -1339,7 +1340,7 @@ defmodule RetroHexChatWeb.Components.UI.ChannelCentralDialog do
         </div>
       </form>
 
-      <div :if={!@operator} class="cc-settings-panel shadow-retro-field bg-white p-2">
+      <.inset :if={!@operator} class="cc-settings-panel p-2">
         <p class="text-xs font-bold mb-2">{dgettext("dialogs", "Channel Modes")}:</p>
         <div class="space-y-1">
           <label class="inline-flex items-center gap-2 text-xs">
@@ -1376,7 +1377,7 @@ defmodule RetroHexChatWeb.Components.UI.ChannelCentralDialog do
         <p class="text-[10px] text-muted-foreground italic mt-2">
           {dgettext("dialogs", "You must be a channel operator to change modes.")}
         </p>
-      </div>
+      </.inset>
     </div>
     """
   end
@@ -1440,7 +1441,7 @@ defmodule RetroHexChatWeb.Components.UI.ChannelCentralDialog do
         </.tool_button>
       </div>
 
-      <div class="cc-list-table-wrap overflow-y-auto max-h-[180px] shadow-retro-field bg-white">
+      <.inset class="cc-list-table-wrap overflow-y-auto max-h-[180px]">
         <.table class="cc-mobile-list-table" data-cc-mobile-list-table>
           <.table_header>
             <.table_row>
@@ -1497,7 +1498,7 @@ defmodule RetroHexChatWeb.Components.UI.ChannelCentralDialog do
             </tr>
           </.table_body>
         </.table>
-      </div>
+      </.inset>
 
       <.list_count_strip
         shown={length(@entries)}

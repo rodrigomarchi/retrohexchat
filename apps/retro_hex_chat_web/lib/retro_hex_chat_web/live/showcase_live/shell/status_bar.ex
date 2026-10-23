@@ -8,6 +8,7 @@ defmodule RetroHexChatWeb.ShowcaseLive.Shell.StatusBar do
     router: RetroHexChatWeb.Router,
     statics: RetroHexChatWeb.static_paths()
 
+  import RetroHexChatWeb.Components.UI.Inset
   import RetroHexChatWeb.Components.UI.Window
   import RetroHexChatWeb.ShowcaseHelpers
   alias RetroHexChatWeb.Icons

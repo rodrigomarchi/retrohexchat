@@ -18,6 +18,7 @@ defmodule RetroHexChatWeb.Components.UI.ThreadDialog do
   """
   use RetroHexChatWeb.Component
 
+  import RetroHexChatWeb.Components.UI.Inset
   import RetroHexChatWeb.Components.UI.Button
   import RetroHexChatWeb.Components.UI.ListStates
   import RetroHexChatWeb.Components.UI.MessageRow
@@ -73,9 +74,9 @@ defmodule RetroHexChatWeb.Components.UI.ThreadDialog do
         }
       />
 
-      <div
+      <.inset
         :if={@root}
-        class="shrink-0 border-b-2 border-border bg-white p-2 shadow-retro-field"
+        class="shrink-0 border-b-2 border-border p-2"
         data-testid="thread-root"
       >
         <.message_row_body
@@ -86,7 +87,7 @@ defmodule RetroHexChatWeb.Components.UI.ThreadDialog do
           strip_formatting={@strip_formatting}
           viewer={@viewer}
         />
-      </div>
+      </.inset>
 
       <.list_empty_state
         :if={@root && State.empty?(@state)}
@@ -95,10 +96,10 @@ defmodule RetroHexChatWeb.Components.UI.ThreadDialog do
         text={dgettext("dialogs", "Your reply starts the thread, and stays in the room as well.")}
       />
 
-      <div
+      <.inset
         :if={@root && not State.empty?(@state)}
         id={"#{@id}-list"}
-        class="min-h-[160px] flex-1 overflow-y-auto bg-white p-1 shadow-retro-field"
+        class="min-h-[160px] flex-1 overflow-y-auto p-1"
         phx-hook="InfiniteScrollHook"
         phx-update="stream"
         data-edge="bottom"
@@ -123,7 +124,7 @@ defmodule RetroHexChatWeb.Components.UI.ThreadDialog do
             viewer={@viewer}
           />
         </div>
-      </div>
+      </.inset>
 
       <.list_load_more_button
         :if={State.more?(@state)}

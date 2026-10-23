@@ -8,6 +8,7 @@ defmodule RetroHexChatWeb.ShowcaseLive.Layout.FieldsetPage do
     router: RetroHexChatWeb.Router,
     statics: RetroHexChatWeb.static_paths()
 
+  import RetroHexChatWeb.Components.UI.Inset
   import RetroHexChatWeb.Components.UI.Button
   import RetroHexChatWeb.Components.UI.Checkbox
   import RetroHexChatWeb.Components.UI.Fieldset

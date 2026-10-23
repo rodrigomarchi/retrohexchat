@@ -8,6 +8,7 @@ defmodule RetroHexChatWeb.ShowcaseLive.Layout.Window do
     router: RetroHexChatWeb.Router,
     statics: RetroHexChatWeb.static_paths()
 
+  import RetroHexChatWeb.Components.UI.Inset
   import RetroHexChatWeb.Components.UI.Button
   import RetroHexChatWeb.Components.UI.Window
   import RetroHexChatWeb.ShowcaseHelpers

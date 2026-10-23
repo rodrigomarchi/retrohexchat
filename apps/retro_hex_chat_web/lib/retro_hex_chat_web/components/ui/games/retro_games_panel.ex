@@ -2,6 +2,7 @@ defmodule RetroHexChatWeb.Components.UI.RetroGamesPanel do
   @moduledoc false
   use RetroHexChatWeb.Component
 
+  import RetroHexChatWeb.Components.UI.Inset
   import RetroHexChatWeb.Components.UI.Keycap
   import RetroHexChatWeb.Components.UI.ToolButton
 
@@ -87,9 +88,9 @@ defmodule RetroHexChatWeb.Components.UI.RetroGamesPanel do
             </div>
           </div>
 
-          <div
+          <.inset
             :if={@status == "finished"}
-            class="flex aspect-[4/3] min-h-[220px] w-full flex-col items-center justify-center gap-retro-8 bg-white p-retro-12 text-center shadow-retro-field"
+            class="flex aspect-[4/3] min-h-[220px] w-full flex-col items-center justify-center gap-retro-8 p-retro-12 text-center"
             data-testid="retro-game-result"
           >
             <Icons.game_icon game_id={@game.id} class="h-16 w-16" />
@@ -147,17 +148,17 @@ defmodule RetroHexChatWeb.Components.UI.RetroGamesPanel do
                 {Catalog.channel_name(@game.id)}
               </.link>
             </p>
-          </div>
+          </.inset>
 
-          <div
+          <.inset
             :if={@status == "error"}
-            class="flex aspect-[4/3] min-h-[220px] w-full flex-col items-center justify-center gap-retro-8 bg-white p-retro-12 text-center shadow-retro-field"
+            class="flex aspect-[4/3] min-h-[220px] w-full flex-col items-center justify-center gap-retro-8 p-retro-12 text-center"
             data-testid="retro-game-error"
           >
             <Icons.icon_warning class="h-10 w-10 text-destructive" />
             <h4 class="text-sm font-bold">{dgettext("games", "Could not start this game")}</h4>
             <p class="text-xs text-muted-foreground">{@error_message}</p>
-          </div>
+          </.inset>
         </div>
 
         <aside class="flex min-h-0 flex-col gap-retro-8" data-testid="retro-game-control-panel">

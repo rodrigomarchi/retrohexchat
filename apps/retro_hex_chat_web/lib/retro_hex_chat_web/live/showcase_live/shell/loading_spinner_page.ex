@@ -8,6 +8,7 @@ defmodule RetroHexChatWeb.ShowcaseLive.Shell.LoadingSpinnerPage do
     router: RetroHexChatWeb.Router,
     statics: RetroHexChatWeb.static_paths()
 
+  import RetroHexChatWeb.Components.UI.Inset
   import RetroHexChatWeb.Components.UI.LoadingSpinner
   import RetroHexChatWeb.Components.UI.Button
   import RetroHexChatWeb.ShowcaseHelpers
@@ -53,15 +54,15 @@ defmodule RetroHexChatWeb.ShowcaseLive.Shell.LoadingSpinnerPage do
         description="Small, default, and large size variants."
       >
         <div class="space-y-4">
-          <div class="shadow-retro-field bg-white p-2">
+          <.inset class="p-2">
             <.loading_spinner size="sm" text={dgettext("showcase", "Small")} />
-          </div>
-          <div class="shadow-retro-field bg-white p-2">
+          </.inset>
+          <.inset class="p-2">
             <.loading_spinner size="default" text={dgettext("showcase", "Default")} />
-          </div>
-          <div class="shadow-retro-field bg-white p-2">
+          </.inset>
+          <.inset class="p-2">
             <.loading_spinner size="lg" text={dgettext("showcase", "Large")} />
-          </div>
+          </.inset>
         </div>
         <.code_example>
           &lt;.loading_spinner size="sm" text="Small" /&gt;

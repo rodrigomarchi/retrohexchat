@@ -13,6 +13,7 @@ defmodule RetroHexChatWeb.Components.UI.ServerEmojiDialog do
   """
   use RetroHexChatWeb.Component
 
+  import RetroHexChatWeb.Components.UI.Inset
   import RetroHexChatWeb.Components.UI.Button
   import RetroHexChatWeb.Components.UI.ListStates
   import RetroHexChatWeb.Components.UI.DialogBanner
@@ -118,9 +119,9 @@ defmodule RetroHexChatWeb.Components.UI.ServerEmojiDialog do
         }
       />
 
-      <div
+      <.inset
         :if={@emojis != []}
-        class="min-h-[120px] flex-1 overflow-y-auto bg-white p-1 shadow-retro-field"
+        class="min-h-[120px] flex-1 overflow-y-auto p-1"
         data-testid="server-emoji-list"
       >
         <div
@@ -148,7 +149,7 @@ defmodule RetroHexChatWeb.Components.UI.ServerEmojiDialog do
             {dgettext("dialogs", "Remove")}
           </.button>
         </div>
-      </div>
+      </.inset>
     </div>
     """
   end

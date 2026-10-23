@@ -8,6 +8,7 @@ defmodule RetroHexChatWeb.ShowcaseLive.Layout.ScrollAreaPage do
     router: RetroHexChatWeb.Router,
     statics: RetroHexChatWeb.static_paths()
 
+  import RetroHexChatWeb.Components.UI.Inset
   import RetroHexChatWeb.ShowcaseHelpers
 
   @impl true
@@ -26,7 +27,7 @@ defmodule RetroHexChatWeb.ShowcaseLive.Layout.ScrollAreaPage do
         title={dgettext("showcase", "Retro Scrollbar")}
         description="Win98-style scrollbar with arrow buttons and dithered track. Every scrollable container gets it; there is no class to apply."
       >
-        <div class="shadow-retro-field bg-white h-[200px] overflow-y-auto p-2">
+        <.inset class="h-[200px] overflow-y-auto p-2">
           <div class="text-xs space-y-1">
             <p :for={i <- 1..30} class="text-foreground">
               {dgettext("showcase", "Line")} {i}{dgettext(
@@ -35,7 +36,7 @@ defmodule RetroHexChatWeb.ShowcaseLive.Layout.ScrollAreaPage do
               )}
             </p>
           </div>
-        </div>
+        </.inset>
         <.code_example>
           &lt;div class="overflow-y-auto h-[200px]"&gt;
           &lt;!-- scrollable content --&gt;
@@ -47,7 +48,7 @@ defmodule RetroHexChatWeb.ShowcaseLive.Layout.ScrollAreaPage do
         title={dgettext("showcase", "Horizontal Scrollbar")}
         description="Horizontal scrollbar with left/right arrow buttons."
       >
-        <div class="shadow-retro-field bg-white h-[100px] overflow-x-auto p-2">
+        <.inset class="h-[100px] overflow-x-auto p-2">
           <div class="text-xs whitespace-nowrap w-[1200px]">
             <p>
               {dgettext(
@@ -62,7 +63,7 @@ defmodule RetroHexChatWeb.ShowcaseLive.Layout.ScrollAreaPage do
               )}
             </p>
           </div>
-        </div>
+        </.inset>
         <.code_example>
           &lt;div class="overflow-x-auto"&gt;
           &lt;!-- wide content --&gt;
@@ -74,7 +75,7 @@ defmodule RetroHexChatWeb.ShowcaseLive.Layout.ScrollAreaPage do
         title={dgettext("showcase", "Both Directions")}
         description="Container with both vertical and horizontal scrollbars."
       >
-        <div class="shadow-retro-field bg-white h-[200px] overflow-auto p-2">
+        <.inset class="h-[200px] overflow-auto p-2">
           <div class="text-xs w-[800px]">
             <p :for={i <- 1..25} class="text-foreground whitespace-nowrap">
               {dgettext("showcase", "Line")} {i}{dgettext(
@@ -83,7 +84,7 @@ defmodule RetroHexChatWeb.ShowcaseLive.Layout.ScrollAreaPage do
               )}
             </p>
           </div>
-        </div>
+        </.inset>
         <.code_example>
           &lt;div class="overflow-auto h-[200px]"&gt;
           &lt;!-- content exceeds both axes --&gt;

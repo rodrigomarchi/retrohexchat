@@ -2,6 +2,8 @@ defmodule RetroHexChatWeb.Components.UI.Menu do
   @moduledoc false
   use RetroHexChatWeb.Component
 
+  import RetroHexChatWeb.Components.UI.Inset
+
   @doc "Renders a Win98-style context menu container."
   attr :class, :any, default: nil
   attr :rest, :global
@@ -11,9 +13,9 @@ defmodule RetroHexChatWeb.Components.UI.Menu do
   def menu(assigns) do
     ~H"""
     <div class={classes(["shadow-retro-window bg-surface p-[3px] min-w-[140px]", @class])} {@rest}>
-      <div class="shadow-retro-field bg-white p-[2px]">
+      <.inset class="p-[2px]">
         {render_slot(@inner_block)}
-      </div>
+      </.inset>
     </div>
     """
   end

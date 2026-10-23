@@ -29,6 +29,7 @@ defmodule RetroHexChatWeb.Components.UI.MentionsDialog do
   """
   use RetroHexChatWeb.Component
 
+  import RetroHexChatWeb.Components.UI.Inset
   import RetroHexChatWeb.Components.UI.ListStates
   import RetroHexChatWeb.Components.UI.DialogBanner
   import RetroHexChatWeb.Components.UI.MessageRefRow, only: [message_ref_row: 1]
@@ -84,10 +85,10 @@ defmodule RetroHexChatWeb.Components.UI.MentionsDialog do
         }
       />
 
-      <div
+      <.inset
         :if={not State.empty?(@state)}
         id={"#{@id}-list"}
-        class="min-h-[200px] flex-1 overflow-y-auto bg-white p-1 shadow-retro-field"
+        class="min-h-[200px] flex-1 overflow-y-auto p-1"
         phx-hook="InfiniteScrollHook"
         phx-update="stream"
         data-edge="bottom"
@@ -112,7 +113,7 @@ defmodule RetroHexChatWeb.Components.UI.MentionsDialog do
           phx-value-channel={mention.channel_name}
           phx-value-message_id={mention.id}
         />
-      </div>
+      </.inset>
 
       <.list_load_more_button
         :if={State.more?(@state)}

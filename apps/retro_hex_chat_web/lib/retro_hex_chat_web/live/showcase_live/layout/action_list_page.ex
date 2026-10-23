@@ -8,6 +8,7 @@ defmodule RetroHexChatWeb.ShowcaseLive.Layout.ActionListPage do
     router: RetroHexChatWeb.Router,
     statics: RetroHexChatWeb.static_paths()
 
+  import RetroHexChatWeb.Components.UI.Inset
   import RetroHexChatWeb.Components.UI.ActionList
   import RetroHexChatWeb.Components.UI.Button
   import RetroHexChatWeb.ShowcaseHelpers
@@ -49,7 +50,7 @@ defmodule RetroHexChatWeb.ShowcaseLive.Layout.ActionListPage do
         title={dgettext("showcase", "A door")}
         description="One action, and the whole row is it. The list of rooms, the list of saved links: press it and you are there."
       >
-        <div class="shadow-retro-field bg-white p-2">
+        <.inset class="p-2">
           <.action_list id="showcase-door" label={dgettext("showcase", "Rooms")}>
             <.action_row
               :for={room <- rooms()}
@@ -68,7 +69,7 @@ defmodule RetroHexChatWeb.ShowcaseLive.Layout.ActionListPage do
               </:cta>
             </.action_row>
           </.action_list>
-        </div>
+        </.inset>
         <.code_example>
           &lt;.action_row on_activate=&#123;@on_join&#125; value=&#123;%&#123;"channel" =&gt; name&#125;&#125;&gt;
           &lt;:title&gt;&#123;name&#125;&lt;/:title&gt; &lt;:cta label="Join"&gt;&lt;Icons.icon_btn_add
@@ -80,7 +81,7 @@ defmodule RetroHexChatWeb.ShowcaseLive.Layout.ActionListPage do
         title={dgettext("showcase", "An editor")}
         description="The press opens the row in the panel beside the list, and `current` says which one is open. Remove belongs to the row; Add belongs to the panel, because it has no row to belong to."
       >
-        <div class="shadow-retro-field bg-white p-2 space-y-retro-8">
+        <.inset class="p-2 space-y-retro-8">
           <.action_list id="showcase-editor" label={dgettext("showcase", "Aliases")}>
             <.action_row
               :for={entry <- aliases()}
@@ -108,7 +109,7 @@ defmodule RetroHexChatWeb.ShowcaseLive.Layout.ActionListPage do
               {dgettext("showcase", "Add")}
             </.button>
           </div>
-        </div>
+        </.inset>
         <.code_example>
           &lt;.action_row current=&#123;@editing == name&#125; …&gt; &lt;:action event=&#123;@on_remove&#125;
           label="Remove"&gt;&lt;Icons.icon_btn_remove /&gt;&lt;/:action&gt; &lt;/.action_row&gt;
@@ -119,7 +120,7 @@ defmodule RetroHexChatWeb.ShowcaseLive.Layout.ActionListPage do
         title={dgettext("showcase", "More than one action")}
         description="Reordering is the case the old shape charged the most for: select, cross the dialog, press Up, cross back. On the row it is one press per step. A button that cannot apply is disabled in place, so the controls do not shift between rows."
       >
-        <div class="shadow-retro-field bg-white p-2">
+        <.inset class="p-2">
           <.action_list id="showcase-many" label={dgettext("showcase", "Perform commands")}>
             <.action_row
               :for={{command, index} <- Enum.with_index(commands())}
@@ -151,7 +152,7 @@ defmodule RetroHexChatWeb.ShowcaseLive.Layout.ActionListPage do
               </:action>
             </.action_row>
           </.action_list>
-        </div>
+        </.inset>
         <.code_example>
           &lt;:action event=&#123;@on_move_up&#125; label="Move up" disabled=&#123;first?&#125;&gt;
           &lt;Icons.icon_btn_up /&gt; &lt;/:action&gt;
