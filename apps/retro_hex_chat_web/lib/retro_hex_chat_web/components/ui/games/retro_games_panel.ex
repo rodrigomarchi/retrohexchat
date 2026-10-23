@@ -206,7 +206,10 @@ defmodule RetroHexChatWeb.Components.UI.RetroGamesPanel do
             </dl>
           </section>
 
-          <.inset bevel="sunken" tone="surface" as="section"
+          <.inset
+            bevel="sunken"
+            tone="surface"
+            as="section"
             class="order-2 grid gap-retro-6 p-retro-8"
             data-testid="retro-game-difficulty-panel"
           >
@@ -263,7 +266,10 @@ defmodule RetroHexChatWeb.Components.UI.RetroGamesPanel do
             <p class="text-[11px] leading-relaxed text-muted-foreground">{@game.controls}</p>
           </section>
 
-          <.inset bevel="sunken" tone="surface" as="section"
+          <.inset
+            bevel="sunken"
+            tone="surface"
+            as="section"
             class="order-3 grid grid-cols-[minmax(0,1fr)_112px] gap-retro-4 p-retro-6 lg:order-4 lg:mt-auto lg:grid-cols-1 lg:gap-retro-6 lg:p-retro-8"
             data-testid="retro-game-actions"
           >

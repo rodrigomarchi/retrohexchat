@@ -151,7 +151,9 @@ defmodule RetroHexChatWeb.Components.UI.AdminChannelsDialog do
             </div>
           </form>
 
-          <.inset bevel="sunken" tone="paper"
+          <.inset
+            bevel="sunken"
+            tone="paper"
             id="admin-channels-output"
             class="min-h-[120px] max-h-[190px] overflow-y-auto"
           >

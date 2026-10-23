@@ -580,7 +580,10 @@ defmodule RetroHexChatWeb.Components.UI.GroupCall.Panel do
 
   defp conference_stats_panel(assigns) do
     ~H"""
-    <.inset bevel="sunken" tone="none" as="section"
+    <.inset
+      bevel="sunken"
+      tone="none"
+      as="section"
       id="group-call-inline-stats-scroll"
       phx-hook="PreserveScrollHook"
       data-preserve-scroll-target="self"

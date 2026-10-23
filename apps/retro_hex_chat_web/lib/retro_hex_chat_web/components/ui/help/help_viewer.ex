@@ -312,7 +312,11 @@ defmodule RetroHexChatWeb.Components.UI.Help.HelpViewer do
         />
       </div>
 
-      <.inset bevel="sunken" tone="paper" class="flex-1 min-h-0 max-h-56 md:max-h-none overflow-y-auto p-1">
+      <.inset
+        bevel="sunken"
+        tone="paper"
+        class="flex-1 min-h-0 max-h-56 md:max-h-none overflow-y-auto p-1"
+      >
         <.tree_view :if={@nav_tab == :contents} class="!shadow-none !p-0 !bg-transparent">
           <.tree_view_group
             :for={{category, cat_icon, topics} <- @topics_by_category}

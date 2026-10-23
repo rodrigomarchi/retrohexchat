@@ -80,7 +80,9 @@ defmodule RetroHexChatWeb.Components.UI.AdminMotdDialog do
         <div class="space-y-retro-8">
           <div>
             <div class="text-xs font-bold mb-retro-4">{dgettext("dialogs", "Current MOTD")}</div>
-            <.inset bevel="sunken" tone="paper"
+            <.inset
+              bevel="sunken"
+              tone="paper"
               id="admin-motd-current"
               class="min-h-[82px] max-h-[120px] overflow-y-auto p-retro-8 text-sm whitespace-pre-wrap"
             >

@@ -125,7 +125,9 @@ defmodule RetroHexChatWeb.Components.UI.AdminAuditLogDialog do
             </div>
           </form>
 
-          <.inset bevel="sunken" tone="paper"
+          <.inset
+            bevel="sunken"
+            tone="paper"
             id="admin-audit-log-output"
             class="min-h-[190px] max-h-[260px] overflow-y-auto"
           >

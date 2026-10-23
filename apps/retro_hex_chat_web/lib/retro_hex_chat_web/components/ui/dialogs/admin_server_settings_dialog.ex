@@ -195,7 +195,9 @@ defmodule RetroHexChatWeb.Components.UI.AdminServerSettingsDialog do
             </div>
             <div>
               <div class="text-xs font-bold mb-retro-4">{dgettext("dialogs", "Settings")}</div>
-              <.inset bevel="sunken" tone="paper"
+              <.inset
+                bevel="sunken"
+                tone="paper"
                 id="admin-server-settings-output"
                 class="min-h-[120px] max-h-[180px] overflow-y-auto"
               >

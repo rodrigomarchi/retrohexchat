@@ -79,7 +79,9 @@ defmodule RetroHexChatWeb.Components.UI.AdminConsoleDialog do
 
       <div class="adm-scroll min-h-0 flex-1 overflow-y-auto">
         <div class="space-y-retro-8">
-          <.inset bevel="sunken" tone="screen"
+          <.inset
+            bevel="sunken"
+            tone="screen"
             class="text-green-400 font-mono text-xs p-retro-8 h-[240px] overflow-y-auto"
             id="admin-console-output"
             data-testid="admin-console-output"

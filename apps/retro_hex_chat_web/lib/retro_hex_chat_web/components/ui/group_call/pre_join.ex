@@ -117,7 +117,9 @@ defmodule RetroHexChatWeb.Components.UI.GroupCall.PreJoin do
                 </div>
               </.inset>
 
-              <.inset bevel="sunken" tone="none"
+              <.inset
+                bevel="sunken"
+                tone="none"
                 class="grid min-w-0 gap-2 border border-border p-2"
                 data-testid="group-call-prejoin-devices"
               >
@@ -202,7 +204,11 @@ defmodule RetroHexChatWeb.Components.UI.GroupCall.PreJoin do
                     </div>
                   </.inset>
 
-                  <.inset bevel="sunken" tone="surface" class="flex min-w-0 items-start gap-2 border border-border p-2">
+                  <.inset
+                    bevel="sunken"
+                    tone="surface"
+                    class="flex min-w-0 items-start gap-2 border border-border p-2"
+                  >
                     <.icon_well size="sm">
                       <Icons.icon_protocol_conference class="h-5 w-5" />
                     </.icon_well>
@@ -250,7 +256,9 @@ defmodule RetroHexChatWeb.Components.UI.GroupCall.PreJoin do
   # empty room says so in words: a blank list reads as "still loading".
   defp inside_now(assigns) do
     ~H"""
-    <.inset bevel="sunken" tone="none"
+    <.inset
+      bevel="sunken"
+      tone="none"
       class="grid min-w-0 gap-1 border border-border p-2 text-xs"
       data-testid="group-call-prejoin-roster"
     >

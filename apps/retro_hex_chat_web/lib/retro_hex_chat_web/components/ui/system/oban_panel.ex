@@ -202,7 +202,11 @@ defmodule RetroHexChatWeb.Components.UI.System.ObanPanel do
             role="tabpanel"
             data-testid={"#{@testid}-tabpanel-overview"}
           >
-            <.inset bevel="sunken" tone="surface" class="grid gap-retro-4 border border-border p-2 text-[11px] sm:grid-cols-2">
+            <.inset
+              bevel="sunken"
+              tone="surface"
+              class="grid gap-retro-4 border border-border p-2 text-[11px] sm:grid-cols-2"
+            >
               <.config_item label={dgettext("dialogs", "Supervisor")} value={@snapshot.config.name} />
               <.config_item label={dgettext("dialogs", "Node")} value={@snapshot.config.node} />
               <.config_item label={dgettext("dialogs", "Engine")} value={@snapshot.config.engine} />
@@ -493,7 +497,11 @@ defmodule RetroHexChatWeb.Components.UI.System.ObanPanel do
           </.system_section_heading>
         </section>
 
-        <.inset bevel="sunken" tone="paper" class="flex min-h-[260px] flex-1 items-center justify-center">
+        <.inset
+          bevel="sunken"
+          tone="paper"
+          class="flex min-h-[260px] flex-1 items-center justify-center"
+        >
           <.loading_spinner text={dgettext("dialogs", "Loading Oban health...")} />
         </.inset>
       <% end %>

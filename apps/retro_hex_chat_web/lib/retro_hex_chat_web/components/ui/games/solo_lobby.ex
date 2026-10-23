@@ -155,7 +155,9 @@ defmodule RetroHexChatWeb.Components.UI.SoloLobby do
 
   defp lobby_preview(assigns) do
     ~H"""
-    <.inset bevel="sunken" tone="surface"
+    <.inset
+      bevel="sunken"
+      tone="surface"
       data-testid="arcade-game-preview"
       class="min-h-0 flex-1 overflow-auto p-retro-10"
     >

@@ -158,7 +158,9 @@ defmodule RetroHexChatWeb.Components.UI.AdminUsersDialog do
             </div>
           </form>
 
-          <.inset bevel="sunken" tone="paper"
+          <.inset
+            bevel="sunken"
+            tone="paper"
             id="admin-users-output"
             class="min-h-[140px] max-h-[210px] overflow-y-auto"
           >
@@ -360,7 +362,9 @@ defmodule RetroHexChatWeb.Components.UI.AdminUsersDialog do
 
           <div>
             <div class="text-xs font-bold mb-retro-4">{dgettext("dialogs", "Ban list")}</div>
-            <.inset bevel="sunken" tone="paper"
+            <.inset
+              bevel="sunken"
+              tone="paper"
               id="admin-users-banlist"
               class="min-h-[84px] max-h-[150px] overflow-y-auto"
             >

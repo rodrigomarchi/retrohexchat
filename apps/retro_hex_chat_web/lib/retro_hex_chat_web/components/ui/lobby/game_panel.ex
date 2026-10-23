@@ -155,7 +155,11 @@ defmodule RetroHexChatWeb.Components.UI.Lobby.GamePanel do
           <.badge variant="default">{outcome_label(@game)}</.badge>
         </div>
         <:detail>
-          <.inset bevel="sunken" tone="none" class="mt-3 flex items-center justify-center gap-4 border border-border px-2 py-2 text-sm">
+          <.inset
+            bevel="sunken"
+            tone="none"
+            class="mt-3 flex items-center justify-center gap-4 border border-border px-2 py-2 text-sm"
+          >
             <span class={["font-bold", score_class(@game, :p1)]}>
               {dgettext("lobby", "P1 %{score}", score: score_of(@game, :p1))}
             </span>

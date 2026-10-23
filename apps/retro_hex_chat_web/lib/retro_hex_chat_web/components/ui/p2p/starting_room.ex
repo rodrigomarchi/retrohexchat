@@ -109,8 +109,11 @@ defmodule RetroHexChatWeb.Components.UI.P2P.StartingRoom do
           <section class="grid min-w-0 content-start gap-2">
             <.roster occupants={@occupants} room={@room} />
 
-            <.inset bevel="sunken" tone="none" as="section"
+            <.inset
               :if={!@game}
+              bevel="sunken"
+              tone="none"
+              as="section"
               class="grid min-w-0 gap-2 border border-border p-2"
             >
               <div class="flex items-center gap-1 font-bold">
@@ -143,8 +146,11 @@ defmodule RetroHexChatWeb.Components.UI.P2P.StartingRoom do
               </div>
             </.inset>
 
-            <.inset bevel="sunken" tone="none" as="section"
+            <.inset
               :if={!@game}
+              bevel="sunken"
+              tone="none"
+              as="section"
               class="grid min-w-0 gap-2 border border-border p-2"
             >
               <DeviceSelect.device_select
@@ -280,7 +286,10 @@ defmodule RetroHexChatWeb.Components.UI.P2P.StartingRoom do
 
   defp roster(assigns) do
     ~H"""
-    <.inset bevel="sunken" tone="none" as="section"
+    <.inset
+      bevel="sunken"
+      tone="none"
+      as="section"
       class="grid min-w-0 gap-1 border border-border p-2"
       data-testid="p2p-room-roster"
     >
@@ -319,7 +328,10 @@ defmodule RetroHexChatWeb.Components.UI.P2P.StartingRoom do
   # offering another one would be the room contradicting the way in.
   defp match_subject(assigns) do
     ~H"""
-    <.inset bevel="sunken" tone="none" as="section"
+    <.inset
+      bevel="sunken"
+      tone="none"
+      as="section"
       class="grid min-w-0 content-start gap-2 self-start border border-border p-2"
       data-testid="p2p-room-game"
     >
@@ -350,7 +362,10 @@ defmodule RetroHexChatWeb.Components.UI.P2P.StartingRoom do
 
   defp room_preview(assigns) do
     ~H"""
-    <.inset bevel="sunken" tone="none" as="section"
+    <.inset
+      bevel="sunken"
+      tone="none"
+      as="section"
       id="p2p-setup-preview"
       phx-hook="P2PSetupHook"
       data-prejoin-prefix="p2p-setup"

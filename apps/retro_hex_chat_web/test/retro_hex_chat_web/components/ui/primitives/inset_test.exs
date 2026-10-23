@@ -20,9 +20,7 @@ defmodule RetroHexChatWeb.Components.UI.InsetTest do
     assigns = %{}
 
     html =
-      rendered_to_string(
-        ~H|<.inset bevel="sunken" tone="surface" as="section" id="s">x</.inset>|
-      )
+      rendered_to_string(~H|<.inset bevel="sunken" tone="surface" as="section" id="s">x</.inset>|)
 
     assert html =~ ~s(<section id="s" class="shadow-retro-sunken bg-surface">)
   end

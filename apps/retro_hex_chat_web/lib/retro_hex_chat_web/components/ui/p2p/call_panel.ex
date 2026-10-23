@@ -69,8 +69,10 @@ defmodule RetroHexChatWeb.Components.UI.P2P.CallPanel do
       data-testid="p2p-call-panel"
       data-call-mini={to_string(@mini)}
     >
-      <.inset bevel="sunken" tone="surface"
+      <.inset
         :if={!@connected}
+        bevel="sunken"
+        tone="surface"
         class="flex h-full min-h-[136px] flex-col items-center justify-center gap-2 border border-border p-3 text-center"
         data-testid="p2p-call-disconnected"
       >
@@ -166,8 +168,10 @@ defmodule RetroHexChatWeb.Components.UI.P2P.CallPanel do
                 >
                 </video>
 
-                <.inset bevel="sunken" tone="surface"
+                <.inset
                   :if={@peer_left}
+                  bevel="sunken"
+                  tone="surface"
                   data-testid="p2p-call-peer-left"
                   class="absolute inset-0 flex flex-col items-center justify-center gap-2 p-4 text-center"
                 >
@@ -183,8 +187,10 @@ defmodule RetroHexChatWeb.Components.UI.P2P.CallPanel do
                   </p>
                 </.inset>
 
-                <.inset bevel="sunken" tone="surface"
+                <.inset
                   :if={@peer_camera_off and not @peer_left}
+                  bevel="sunken"
+                  tone="surface"
                   data-testid="lobby-peer-camera-off"
                   class="absolute inset-0 flex flex-col items-center justify-center gap-2 p-4 text-center"
                 >
@@ -268,8 +274,10 @@ defmodule RetroHexChatWeb.Components.UI.P2P.CallPanel do
             </div>
           </div>
 
-          <.inset bevel="sunken" tone="surface"
+          <.inset
             :if={@peer_muted}
+            bevel="sunken"
+            tone="surface"
             data-testid="lobby-peer-muted"
             class="flex items-center gap-1 border border-border px-2 py-1 font-bold"
           >
@@ -364,7 +372,9 @@ defmodule RetroHexChatWeb.Components.UI.P2P.CallPanel do
 
   defp idle_call_state(assigns) do
     ~H"""
-    <.inset bevel="sunken" tone="surface"
+    <.inset
+      bevel="sunken"
+      tone="surface"
       class="flex min-h-0 flex-1 flex-col justify-between gap-2 border border-border p-2"
       data-testid="p2p-call-idle"
     >

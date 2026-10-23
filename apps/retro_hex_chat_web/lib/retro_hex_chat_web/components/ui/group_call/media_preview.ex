@@ -35,7 +35,10 @@ defmodule RetroHexChatWeb.Components.UI.GroupCall.MediaPreview do
   @spec media_preview(map()) :: Phoenix.LiveView.Rendered.t()
   def media_preview(assigns) do
     ~H"""
-    <.inset bevel="sunken" tone="none" as="section"
+    <.inset
+      bevel="sunken"
+      tone="none"
+      as="section"
       id="group-call-prejoin-preview"
       phx-hook="GroupCallPreJoinHook"
       data-audio={to_string(MediaState.enabled?(@media, :audio))}

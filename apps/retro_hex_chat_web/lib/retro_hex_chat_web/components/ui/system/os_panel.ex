@@ -149,7 +149,9 @@ defmodule RetroHexChatWeb.Components.UI.System.OsPanel do
 
   defp host_gauge(assigns) do
     ~H"""
-    <.inset bevel="sunken" tone="surface"
+    <.inset
+      bevel="sunken"
+      tone="surface"
       class="min-w-0 shrink-0 border border-border p-2"
       data-testid={@testid}
     >

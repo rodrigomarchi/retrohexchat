@@ -118,7 +118,9 @@ defmodule RetroHexChatWeb.Components.UI.System.LogPanel do
         )}
       </p>
 
-      <.inset bevel="sunken" tone="screen"
+      <.inset
+        bevel="sunken"
+        tone="screen"
         id={"#{@id}-stream"}
         class="min-h-0 flex-1 overflow-auto p-retro-6 font-mono text-xs"
         data-testid="system-log-stream"

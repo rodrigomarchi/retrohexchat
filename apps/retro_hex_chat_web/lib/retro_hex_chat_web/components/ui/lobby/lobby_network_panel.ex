@@ -432,7 +432,9 @@ defmodule RetroHexChatWeb.Components.UI.Lobby.LobbyNetworkPanel do
 
   defp session_header(assigns) do
     ~H"""
-    <.inset bevel="sunken" tone="surface"
+    <.inset
+      bevel="sunken"
+      tone="surface"
       class="grid gap-1 p-2"
       data-testid="p2p-stats-session-header"
     >

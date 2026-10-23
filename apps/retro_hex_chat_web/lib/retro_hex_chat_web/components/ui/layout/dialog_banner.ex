@@ -36,7 +36,7 @@ defmodule RetroHexChatWeb.Components.UI.DialogBanner do
       data-dialog-banner
       {@rest}
     >
-      <.inset bevel="sunken" tone="none" :if={@art != []} class="dlg-banner__art">
+      <.inset :if={@art != []} bevel="sunken" tone="none" class="dlg-banner__art">
         {render_slot(@art)}
       </.inset>
 

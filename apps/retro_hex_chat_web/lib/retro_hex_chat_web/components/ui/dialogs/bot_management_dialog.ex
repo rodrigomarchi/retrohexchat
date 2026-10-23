@@ -818,7 +818,9 @@ defmodule RetroHexChatWeb.Components.UI.BotManagementDialog do
   defp events_tab(assigns) do
     ~H"""
     <div class="bm-pane">
-      <.inset bevel="sunken" tone="paper"
+      <.inset
+        bevel="sunken"
+        tone="paper"
         id="bm-events-list"
         class="bm-events-list overflow-y-auto p-retro-2"
         phx-hook="InfiniteScrollHook"
