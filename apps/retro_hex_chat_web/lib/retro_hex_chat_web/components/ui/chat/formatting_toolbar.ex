@@ -20,26 +20,8 @@ defmodule RetroHexChatWeb.Components.UI.FormattingToolbar do
   import RetroHexChatWeb.Components.UI.ToolButton
 
   alias RetroHexChat.Chat.Content
+  alias RetroHexChatWeb.Components.UI.ColorPicker
   alias RetroHexChatWeb.Icons
-
-  @color_keys [
-    :white,
-    :black,
-    :navy,
-    :green,
-    :red,
-    :brown,
-    :purple,
-    :orange,
-    :yellow,
-    :light_green,
-    :teal,
-    :light_cyan,
-    :blue,
-    :pink,
-    :grey,
-    :light_grey
-  ]
 
   @doc "Renders the formatting toolbar."
   attr :id, :string, default: "formatting-toolbar"
@@ -62,7 +44,7 @@ defmodule RetroHexChatWeb.Components.UI.FormattingToolbar do
   def formatting_toolbar(assigns) do
     assigns =
       assigns
-      |> assign(:color_names, Enum.map(@color_keys, &color_name/1))
+      |> assign(:color_names, Enum.map(ColorPicker.irc_colors(), &elem(&1, 0)))
       |> assign(:panel_id, "#{assigns.id}-panel")
       |> assign(:color_panel_id, "#{assigns.id}-color-panel")
       |> assign(:content_format, content_format(assigns.content_format))
@@ -386,23 +368,6 @@ defmodule RetroHexChatWeb.Components.UI.FormattingToolbar do
     </div>
     """
   end
-
-  defp color_name(:white), do: dgettext("chat", "White")
-  defp color_name(:black), do: dgettext("chat", "Black")
-  defp color_name(:navy), do: dgettext("chat", "Navy")
-  defp color_name(:green), do: dgettext("chat", "Green")
-  defp color_name(:red), do: dgettext("chat", "Red")
-  defp color_name(:brown), do: dgettext("chat", "Brown")
-  defp color_name(:purple), do: dgettext("chat", "Purple")
-  defp color_name(:orange), do: dgettext("chat", "Orange")
-  defp color_name(:yellow), do: dgettext("chat", "Yellow")
-  defp color_name(:light_green), do: dgettext("chat", "Light Green")
-  defp color_name(:teal), do: dgettext("chat", "Teal")
-  defp color_name(:light_cyan), do: dgettext("chat", "Light Cyan")
-  defp color_name(:blue), do: dgettext("chat", "Blue")
-  defp color_name(:pink), do: dgettext("chat", "Pink")
-  defp color_name(:grey), do: dgettext("chat", "Grey")
-  defp color_name(:light_grey), do: dgettext("chat", "Light Grey")
 
   defp content_format_options, do: ~w(irc markdown plain)
 

@@ -22,37 +22,22 @@ defmodule RetroHexChatWeb.ChatLive.Components.SystemMetricsDialog do
   import RetroHexChatWeb.Components.UI.System.MetricsPanel
 
   alias RetroHexChatWeb.ChatLive.AdminOps
+  alias RetroHexChatWeb.ChatLive.Components.DialogIsland
   alias RetroHexChatWeb.SystemMetrics.Collector
   alias RetroHexChatWeb.Telemetry
 
-  use RetroHexChatWeb.ChatLive.Components.DialogIsland, id: "system-metrics-dialog"
-  @refresh_ms 1_000
+  use RetroHexChatWeb.ChatLive.Components.DialogIsland,
+    id: "system-metrics-dialog",
+    initial: %{groups: [], group: nil, charts: [], collector: nil, timer: nil, loaded?: false}
 
-  @spec mount(Phoenix.LiveView.Socket.t()) :: {:ok, Phoenix.LiveView.Socket.t()}
-  def mount(socket) do
-    {:ok,
-     socket
-     |> assign(:id, @id)
-     |> assign(groups: [], group: nil, charts: [], collector: nil, timer: nil)}
-  end
+  @refresh_ms 1_000
 
   @spec update(map(), Phoenix.LiveView.Socket.t()) :: {:ok, Phoenix.LiveView.Socket.t()}
   def update(%{tick: true}, socket) do
     {:ok, socket |> push_series() |> schedule()}
   end
 
-  def update(assigns, socket) do
-    socket = assign(socket, assigns)
-
-    if socket.assigns.groups == [] do
-      grouped = grouped_metrics()
-      groups = Map.keys(grouped)
-
-      {:ok, socket |> assign(groups: groups, grouped: grouped) |> select(List.first(groups))}
-    else
-      {:ok, socket}
-    end
-  end
+  def update(assigns, socket), do: DialogIsland.load_once(socket, assigns, &load_groups/1)
 
   @spec handle_event(String.t(), map(), Phoenix.LiveView.Socket.t()) ::
           {:noreply, Phoenix.LiveView.Socket.t()}
@@ -188,4 +173,11 @@ defmodule RetroHexChatWeb.ChatLive.Components.SystemMetricsDialog do
   defp unit_label(%{unit: :unit}), do: ""
   defp unit_label(%{unit: {_from, to}}), do: to_string(to)
   defp unit_label(%{unit: unit}), do: to_string(unit)
+
+  defp load_groups(socket) do
+    grouped = grouped_metrics()
+    groups = Map.keys(grouped)
+
+    socket |> assign(groups: groups, grouped: grouped) |> select(List.first(groups))
+  end
 end

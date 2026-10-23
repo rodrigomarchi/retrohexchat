@@ -12,11 +12,9 @@ defmodule RetroHexChatWeb.ChatLive.Components.DeleteConfirmDialog do
 
   import RetroHexChatWeb.Components.UI.DeleteConfirmDialog
 
-  use RetroHexChatWeb.ChatLive.Components.DialogIsland, id: "delete-confirm-dialog"
-
-  @impl true
-  @spec mount(Phoenix.LiveView.Socket.t()) :: {:ok, Phoenix.LiveView.Socket.t()}
-  def mount(socket), do: {:ok, assign(socket, id: @id, message_id: nil)}
+  use RetroHexChatWeb.ChatLive.Components.DialogIsland,
+    id: "delete-confirm-dialog",
+    initial: %{message_id: nil}
 
   @impl true
   @spec update(map(), Phoenix.LiveView.Socket.t()) :: {:ok, Phoenix.LiveView.Socket.t()}

@@ -20,26 +20,10 @@ defmodule RetroHexChatWeb.ChatLive.Components.SystemDatabaseDialog do
   alias RetroHexChat.{Repo, SystemInfo}
   alias RetroHexChatWeb.ChatLive.AdminOps
 
-  use RetroHexChatWeb.ChatLive.Components.DialogIsland, id: "system-database-dialog"
-
-  @spec mount(Phoenix.LiveView.Socket.t()) :: {:ok, Phoenix.LiveView.Socket.t()}
-  def mount(socket) do
-    {:ok,
-     socket
-     |> assign(:id, @id)
-     |> assign(reports: nil, selected: nil, table: nil, error: nil)}
-  end
-
-  @spec update(map(), Phoenix.LiveView.Socket.t()) :: {:ok, Phoenix.LiveView.Socket.t()}
-  def update(assigns, socket) do
-    socket = assign(socket, assigns)
-
-    if socket.assigns.reports do
-      {:ok, socket}
-    else
-      {:ok, assign(socket, reports: SystemInfo.database_reports(Repo))}
-    end
-  end
+  use RetroHexChatWeb.ChatLive.Components.DialogIsland,
+    id: "system-database-dialog",
+    initial: %{reports: nil, selected: nil, table: nil, error: nil, loaded?: false},
+    load: &load_reports/1
 
   @spec handle_event(String.t(), map(), Phoenix.LiveView.Socket.t()) ::
           {:noreply, Phoenix.LiveView.Socket.t()}
@@ -94,4 +78,6 @@ defmodule RetroHexChatWeb.ChatLive.Components.SystemDatabaseDialog do
         )
     end
   end
+
+  defp load_reports(socket), do: assign(socket, reports: SystemInfo.database_reports(Repo))
 end

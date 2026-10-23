@@ -14,19 +14,10 @@ defmodule RetroHexChatWeb.ChatLive.Components.SystemAppInfoDialog do
   alias RetroHexChat.SystemInfo
   alias RetroHexChatWeb.ChatLive.AdminOps
 
-  use RetroHexChatWeb.ChatLive.Components.DialogIsland, id: "system-app-info-dialog"
-
-  @spec mount(Phoenix.LiveView.Socket.t()) :: {:ok, Phoenix.LiveView.Socket.t()}
-  def mount(socket) do
-    {:ok, socket |> assign(:id, @id) |> assign(instance: nil, table: nil)}
-  end
-
-  @spec update(map(), Phoenix.LiveView.Socket.t()) :: {:ok, Phoenix.LiveView.Socket.t()}
-  def update(assigns, socket) do
-    socket = assign(socket, assigns)
-
-    if socket.assigns.instance, do: {:ok, socket}, else: {:ok, read(socket)}
-  end
+  use RetroHexChatWeb.ChatLive.Components.DialogIsland,
+    id: "system-app-info-dialog",
+    initial: %{instance: nil, table: nil, loaded?: false},
+    load: &read/1
 
   @spec handle_event(String.t(), map(), Phoenix.LiveView.Socket.t()) ::
           {:noreply, Phoenix.LiveView.Socket.t()}

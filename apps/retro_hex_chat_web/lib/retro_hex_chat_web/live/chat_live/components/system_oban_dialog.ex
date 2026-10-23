@@ -16,28 +16,22 @@ defmodule RetroHexChatWeb.ChatLive.Components.SystemObanDialog do
   alias RetroHexChat.Jobs.ObanHealth
   alias RetroHexChatWeb.ChatLive.AdminOps
 
-  use RetroHexChatWeb.ChatLive.Components.DialogIsland, id: "system-oban-dialog"
   @default_tab "overview"
   @default_filter "active"
-  @tabs ~w(overview queues bots maintenance previews persistence)
+  use RetroHexChatWeb.ChatLive.Components.DialogIsland,
+    id: "system-oban-dialog",
+    initial: %{
+      snapshot: nil,
+      snapshot_loading: false,
+      snapshot_request: nil,
+      filters: ObanHealth.job_filters(),
+      active_tab: @default_tab,
+      job_filter: @default_filter,
+      job_queue_filter: "",
+      job_worker_filter: ""
+    }
 
-  @impl true
-  @spec mount(Phoenix.LiveView.Socket.t()) :: {:ok, Phoenix.LiveView.Socket.t()}
-  def mount(socket) do
-    {:ok,
-     socket
-     |> assign(:id, @id)
-     |> assign(
-       snapshot: nil,
-       snapshot_loading: false,
-       snapshot_request: nil,
-       filters: ObanHealth.job_filters(),
-       active_tab: @default_tab,
-       job_filter: @default_filter,
-       job_queue_filter: "",
-       job_worker_filter: ""
-     )}
-  end
+  @tabs ~w(overview queues bots maintenance previews persistence)
 
   @impl true
   @spec update(map(), Phoenix.LiveView.Socket.t()) :: {:ok, Phoenix.LiveView.Socket.t()}

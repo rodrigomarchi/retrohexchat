@@ -125,7 +125,7 @@ defmodule RetroHexChatWeb.Components.UI.ColorPicker do
     Enum.map(@irc_colors, fn {color, hex} -> {color_name(color), hex} end)
   end
 
-  # The same names the formatting toolbar shows for the same 16 colours, so a
+  # The formatting toolbar names its swatches through `irc_colors/0` too, so a
   # colour is called one thing everywhere.
   defp color_name(:white), do: dgettext("chat", "White")
   defp color_name(:black), do: dgettext("chat", "Black")

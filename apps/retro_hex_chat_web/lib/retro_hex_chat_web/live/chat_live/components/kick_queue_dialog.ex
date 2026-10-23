@@ -13,11 +13,9 @@ defmodule RetroHexChatWeb.ChatLive.Components.KickQueueDialog do
 
   import RetroHexChatWeb.Components.UI.KickDialog
 
-  use RetroHexChatWeb.ChatLive.Components.DialogIsland, id: "kick-dialog"
-
-  @impl true
-  @spec mount(Phoenix.LiveView.Socket.t()) :: {:ok, Phoenix.LiveView.Socket.t()}
-  def mount(socket), do: {:ok, assign(socket, id: @id, queue: [])}
+  use RetroHexChatWeb.ChatLive.Components.DialogIsland,
+    id: "kick-dialog",
+    initial: %{queue: []}
 
   @impl true
   @spec update(map(), Phoenix.LiveView.Socket.t()) :: {:ok, Phoenix.LiveView.Socket.t()}

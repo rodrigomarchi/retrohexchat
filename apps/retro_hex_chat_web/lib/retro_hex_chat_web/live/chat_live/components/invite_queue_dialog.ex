@@ -21,11 +21,9 @@ defmodule RetroHexChatWeb.ChatLive.Components.InviteQueueDialog do
 
   alias Phoenix.LiveView.JS
 
-  use RetroHexChatWeb.ChatLive.Components.DialogIsland, id: "invite-queue-dialog"
-
-  @impl true
-  @spec mount(Phoenix.LiveView.Socket.t()) :: {:ok, Phoenix.LiveView.Socket.t()}
-  def mount(socket), do: {:ok, assign(socket, id: @id, invites: [])}
+  use RetroHexChatWeb.ChatLive.Components.DialogIsland,
+    id: "invite-queue-dialog",
+    initial: %{invites: []}
 
   @impl true
   @spec update(map(), Phoenix.LiveView.Socket.t()) :: {:ok, Phoenix.LiveView.Socket.t()}

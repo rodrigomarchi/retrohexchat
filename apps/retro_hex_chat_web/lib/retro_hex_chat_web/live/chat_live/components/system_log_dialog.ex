@@ -21,20 +21,15 @@ defmodule RetroHexChatWeb.ChatLive.Components.SystemLogDialog do
   alias RetroHexChatWeb.ChatLive.AdminOps
   alias RetroHexChatWeb.SystemLog.Handler
 
-  use RetroHexChatWeb.ChatLive.Components.DialogIsland, id: "system-log-dialog"
+  use RetroHexChatWeb.ChatLive.Components.DialogIsland,
+    id: "system-log-dialog",
+    initial: %{entries: [], streaming: false, level: :info, dropped: 0}
+
   @buffer 200
   @levels [:debug, :info, :warning, :error]
 
   @spec levels() :: [atom()]
   def levels, do: @levels
-
-  @spec mount(Phoenix.LiveView.Socket.t()) :: {:ok, Phoenix.LiveView.Socket.t()}
-  def mount(socket) do
-    {:ok,
-     socket
-     |> assign(:id, @id)
-     |> assign(entries: [], streaming: false, level: :info, dropped: 0)}
-  end
 
   @spec update(map(), Phoenix.LiveView.Socket.t()) :: {:ok, Phoenix.LiveView.Socket.t()}
   def update(%{log_entry: entry}, socket) do

@@ -11,11 +11,9 @@ defmodule RetroHexChatWeb.ChatLive.Components.DisconnectConfirmDialog do
 
   import RetroHexChatWeb.Components.UI.DisconnectConfirmDialog
 
-  use RetroHexChatWeb.ChatLive.Components.DialogIsland, id: "disconnect-confirm-dialog"
-
-  @impl true
-  @spec mount(Phoenix.LiveView.Socket.t()) :: {:ok, Phoenix.LiveView.Socket.t()}
-  def mount(socket), do: {:ok, assign(socket, id: @id, show: false)}
+  use RetroHexChatWeb.ChatLive.Components.DialogIsland,
+    id: "disconnect-confirm-dialog",
+    initial: %{show: false}
 
   @impl true
   @spec update(map(), Phoenix.LiveView.Socket.t()) :: {:ok, Phoenix.LiveView.Socket.t()}
