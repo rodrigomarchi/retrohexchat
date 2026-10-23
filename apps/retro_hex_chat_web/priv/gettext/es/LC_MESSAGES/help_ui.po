@@ -114,7 +114,7 @@ msgstr "Lista de canales"
 msgid "Chat Area:"
 msgstr "Chat Area:"
 
-#: lib/retro_hex_chat_web/controllers/help_content/formatting_overview.html.heex:89
+#: lib/retro_hex_chat_web/controllers/help_content/formatting_overview.html.heex:103
 #: lib/retro_hex_chat_web/controllers/help_content/ui_status_tab.html.heex:37
 #, elixir-autogen, elixir-format
 msgid "Click the"
@@ -131,7 +131,7 @@ msgid "Color Palette"
 msgstr "Paleta de color"
 
 #: lib/retro_hex_chat_web/controllers/help_content/formatting_message_formats.html.heex:59
-#: lib/retro_hex_chat_web/controllers/help_content/formatting_overview.html.heex:123
+#: lib/retro_hex_chat_web/controllers/help_content/formatting_overview.html.heex:137
 #, elixir-autogen, elixir-format
 msgid "Colors"
 msgstr "Colores"
@@ -504,7 +504,7 @@ msgstr "Secciones"
 #: lib/retro_hex_chat_web/controllers/help_content/empty_states.html.heex:85
 #: lib/retro_hex_chat_web/controllers/help_content/formatting_colors.html.heex:121
 #: lib/retro_hex_chat_web/controllers/help_content/formatting_message_formats.html.heex:53
-#: lib/retro_hex_chat_web/controllers/help_content/formatting_overview.html.heex:117
+#: lib/retro_hex_chat_web/controllers/help_content/formatting_overview.html.heex:131
 #: lib/retro_hex_chat_web/controllers/help_content/keyboard_shortcuts.html.heex:85
 #: lib/retro_hex_chat_web/controllers/help_content/ui_account_dialog.html.heex:60
 #: lib/retro_hex_chat_web/controllers/help_content/ui_bot_management.html.heex:70
@@ -595,7 +595,7 @@ msgstr "Status Bar"
 msgid "Status Bar:"
 msgstr "Status Bar:"
 
-#: lib/retro_hex_chat_web/controllers/help_content/formatting_overview.html.heex:87
+#: lib/retro_hex_chat_web/controllers/help_content/formatting_overview.html.heex:101
 #, elixir-autogen, elixir-format
 msgid "Strip Formatting"
 msgstr "Quitar formato"
@@ -764,7 +764,7 @@ msgstr "Ventanas y diálogos"
 msgid "and an \"Browse channels\" button."
 msgstr "y un botón \"Browse canales\"."
 
-#: lib/retro_hex_chat_web/controllers/help_content/formatting_overview.html.heex:90
+#: lib/retro_hex_chat_web/controllers/help_content/formatting_overview.html.heex:104
 #, elixir-autogen, elixir-format
 msgid "button in the formatting toolbar to strip all formatting from incoming messages."
 msgstr ""
@@ -1895,7 +1895,7 @@ msgid "Message Format"
 msgstr "Formato del mensaje"
 
 #: lib/retro_hex_chat_web/controllers/help_content/formatting_colors.html.heex:128
-#: lib/retro_hex_chat_web/controllers/help_content/formatting_overview.html.heex:120
+#: lib/retro_hex_chat_web/controllers/help_content/formatting_overview.html.heex:134
 #, elixir-autogen, elixir-format
 msgid "Message Formats"
 msgstr "Formatos de mensaje"
@@ -3208,7 +3208,7 @@ msgstr "Negro"
 msgid "Blue"
 msgstr "Azul"
 
-#: lib/retro_hex_chat_web/controllers/help_content/formatting_overview.html.heex:70
+#: lib/retro_hex_chat_web/controllers/help_content/formatting_overview.html.heex:72
 #, elixir-autogen, elixir-format
 msgid "Bold"
 msgstr "Negrita"
@@ -3258,7 +3258,7 @@ msgstr "Haga clic en el botón Color en la barra de herramientas de formato, lue
 msgid "Click the Formatting Toolbar button beside the message box. A small panel opens."
 msgstr "Haga clic en el botón Formatting Toolbar junto al cuadro de mensaje. Se abre un pequeño panel."
 
-#: lib/retro_hex_chat_web/controllers/help_content/formatting_overview.html.heex:74
+#: lib/retro_hex_chat_web/controllers/help_content/formatting_overview.html.heex:84
 #, elixir-autogen, elixir-format
 msgid "Color. Type a color number right after it."
 msgstr "Color. Escriba un número de color justo después de él."
@@ -3328,7 +3328,7 @@ msgstr "Si no está en la pestaña Estado, está marcado como no leído. Abra la
 msgid "If your text starts with a digit, that digit can join the color number. Write the color with two digits, such as %{example}, to avoid this."
 msgstr "Si su texto comienza con un dígito, ese dígito puede unirse al número de color. Escribe el color con dos dígitos, como %{example}, para evitarlo."
 
-#: lib/retro_hex_chat_web/controllers/help_content/formatting_overview.html.heex:104
+#: lib/retro_hex_chat_web/controllers/help_content/formatting_overview.html.heex:118
 #, elixir-autogen, elixir-format
 msgid "In a channel with mode %{mode}, the server removes all formatting from new messages and saves them as plain text."
 msgstr "En un canal con modo %{mode}, el servidor elimina todo el formato de nuevos mensajes y los guarda como texto simple."
@@ -3343,7 +3343,7 @@ msgstr "En un canal con modo %{mode}, el servidor elimina todo el formato, los c
 msgid "It also explains that shared links will appear there. It collects the links people post while you are connected."
 msgstr "También explica que los enlaces compartidos aparecerán allí. Recopila los enlaces que la gente publica mientras usted está conectado."
 
-#: lib/retro_hex_chat_web/controllers/help_content/formatting_overview.html.heex:71
+#: lib/retro_hex_chat_web/controllers/help_content/formatting_overview.html.heex:76
 #, elixir-autogen, elixir-format
 msgid "Italic"
 msgstr "Cursiva"
@@ -3404,7 +3404,7 @@ msgstr "Nada se muestra cuando se conecta mientras no se establece MOTD."
 msgid "Only the channel owner and operators can pin or unpin. Other members do not see these menu items."
 msgstr "Sólo el propietario del canal y los operadores pueden pinar o desenganchar. Otros miembros no ven estos elementos del menú."
 
-#: lib/retro_hex_chat_web/controllers/help_content/formatting_overview.html.heex:111
+#: lib/retro_hex_chat_web/controllers/help_content/formatting_overview.html.heex:125
 #, elixir-autogen, elixir-format
 msgid "Only the first 128 IRC formatting codes in a message are shown."
 msgstr "Sólo se muestran los primeros 128 códigos de formato IRC en un mensaje."
@@ -3494,12 +3494,12 @@ msgstr "Púrpura"
 msgid "Red"
 msgstr "Rojo"
 
-#: lib/retro_hex_chat_web/controllers/help_content/formatting_overview.html.heex:79
+#: lib/retro_hex_chat_web/controllers/help_content/formatting_overview.html.heex:92
 #, elixir-autogen, elixir-format
 msgid "Reset all formatting"
 msgstr "Reiniciar todo formato"
 
-#: lib/retro_hex_chat_web/controllers/help_content/formatting_overview.html.heex:77
+#: lib/retro_hex_chat_web/controllers/help_content/formatting_overview.html.heex:88
 #, elixir-autogen, elixir-format
 msgid "Reverse. Swaps the text and background colors."
 msgstr "Inverso. Cierra el texto y los colores de fondo."
@@ -3510,7 +3510,7 @@ msgid "Right-click the message in the channel."
 msgstr "Haga clic derecho en el mensaje en el canal."
 
 #: lib/retro_hex_chat_web/controllers/help_content/formatting_colors.html.heex:80
-#: lib/retro_hex_chat_web/controllers/help_content/formatting_overview.html.heex:101
+#: lib/retro_hex_chat_web/controllers/help_content/formatting_overview.html.heex:115
 #: lib/retro_hex_chat_web/controllers/help_content/ui_message_of_the_day.html.heex:54
 #: lib/retro_hex_chat_web/controllers/help_content/ui_pinned_window.html.heex:49
 #: lib/retro_hex_chat_web/controllers/help_content/ui_topic_bar.html.heex:53
@@ -3531,7 +3531,7 @@ msgid "Saved Messages says you have not kept anything yet. Right-click any messa
 msgstr "Mensajes guardados dice que aún no has guardado nada. Haga clic con el botón derecho en cualquier mensaje y seleccione Guardar para más tarde para añadirlo. Sólo puedes ver tus mensajes guardados."
 
 #: lib/retro_hex_chat_web/controllers/help_content/formatting_colors.html.heex:130
-#: lib/retro_hex_chat_web/controllers/help_content/formatting_overview.html.heex:124
+#: lib/retro_hex_chat_web/controllers/help_content/formatting_overview.html.heex:138
 #, elixir-autogen, elixir-format
 msgid "Strip Colors"
 msgstr "Colores de la raya"
@@ -3571,7 +3571,7 @@ msgstr "El MOTD es una nota corta de las personas que ejecutan el servidor. A me
 msgid "The Pinned window explains that the channel is not keeping anything yet. Only an operator can pin a message. Right-click the message and choose Pin."
 msgstr "La ventana Pinned explica que el canal no mantiene nada todavía. Sólo un operador puede marcar un mensaje. Haga clic derecho en el mensaje y seleccione Pin."
 
-#: lib/retro_hex_chat_web/controllers/help_content/formatting_overview.html.heex:96
+#: lib/retro_hex_chat_web/controllers/help_content/formatting_overview.html.heex:110
 #, elixir-autogen, elixir-format
 msgid "The button is called Strip Formatting. The same switch is in the View menu. It changes only how messages look on your screen. Other people still see the formatting."
 msgstr "El botón se llama Formato de tira. El mismo interruptor está en el menú Vista. Sólo cambia cómo los mensajes se ven en la pantalla. Otras personas todavía ven el formato."
@@ -3646,7 +3646,7 @@ msgstr "El texto del tema. Un largo tema se corta al final de la barra. Cuando u
 msgid "The window stays clear when you switch to another conversation and come back."
 msgstr "La ventana se mantiene clara cuando cambias a otra conversación y vuelves."
 
-#: lib/retro_hex_chat_web/controllers/help_content/formatting_overview.html.heex:82
+#: lib/retro_hex_chat_web/controllers/help_content/formatting_overview.html.heex:96
 #, elixir-autogen, elixir-format
 msgid "These shortcuts insert IRC control codes at the cursor, so use them with the IRC format. Bold, italic, underline and reverse are switches: press the same shortcut again to turn the style off."
 msgstr "Estos atajos insertan códigos de control IRC en el cursor, por lo que utilizarlos con el formato IRC. Bold, itálico, subline y reverso son interruptores: presione el mismo atajo de nuevo para apagar el estilo."
@@ -3698,7 +3698,7 @@ msgstr "Escriba el texto que desee en la barra de búsqueda, luego utilice Prev 
 msgid "Type your text and press Enter to send it."
 msgstr "Escriba su texto y pulse Enter para enviarlo."
 
-#: lib/retro_hex_chat_web/controllers/help_content/formatting_overview.html.heex:72
+#: lib/retro_hex_chat_web/controllers/help_content/formatting_overview.html.heex:80
 #, elixir-autogen, elixir-format
 msgid "Underline"
 msgstr "Subrayado"

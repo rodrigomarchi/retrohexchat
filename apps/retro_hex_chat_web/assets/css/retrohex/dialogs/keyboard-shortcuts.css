@@ -82,25 +82,12 @@
   overflow-wrap: anywhere;
 }
 
+/* The key itself is a Keycap; the entry only sizes it to its column. */
 .cs-shortcut-key {
-  display: inline-flex;
-  max-width: 100%;
   flex: 0 1 auto;
-  align-items: center;
-  justify-content: center;
-  background: #dfdfdf;
-  color: #202020;
-  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
   font-size: 12px;
-  line-height: 1.2;
-  padding: 2px 5px;
+  white-space: normal;
   overflow-wrap: anywhere;
-  text-align: center;
-  box-shadow:
-    inset -1px -1px #0a0a0a,
-    inset 1px 1px #ffffff,
-    inset -2px -2px #808080,
-    inset 2px 2px #dfdfdf;
 }
 
 .cs-shortcut-description {

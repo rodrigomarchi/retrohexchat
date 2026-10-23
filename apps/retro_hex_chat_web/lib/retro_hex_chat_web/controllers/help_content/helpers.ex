@@ -42,6 +42,10 @@ defmodule RetroHexChatWeb.HelpContent.Helpers do
   @spec page_link(map()) :: Phoenix.LiveView.Rendered.t()
   defdelegate page_link(assigns), to: Section
 
+  @doc "A key the topic names, drawn as the key (`Components.UI.Keycap`)."
+  @spec keycap(map()) :: Phoenix.LiveView.Rendered.t()
+  defdelegate keycap(assigns), to: RetroHexChatWeb.Components.UI.Keycap
+
   @doc """
   The games of the catalogue, read from it so the help never lists fewer than
   there are: the arcade under its engines, or the Retro Games. Each name opens

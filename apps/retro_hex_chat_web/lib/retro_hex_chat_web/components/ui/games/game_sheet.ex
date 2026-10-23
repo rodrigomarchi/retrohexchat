@@ -8,6 +8,7 @@ defmodule RetroHexChatWeb.Components.UI.GameSheet do
   """
   use RetroHexChatWeb.Component
 
+  import RetroHexChatWeb.Components.UI.Keycap
   import RetroHexChatWeb.Components.UI.Badge
   import RetroHexChatWeb.Components.UI.Landing.GameCards, only: [game_screenshot: 1]
 
@@ -79,9 +80,7 @@ defmodule RetroHexChatWeb.Components.UI.GameSheet do
             <tbody>
               <tr :for={{key, action} <- @game.keys}>
                 <td class="w-[7.75rem] whitespace-nowrap py-retro-2 pr-retro-6 align-top">
-                  <kbd class="shadow-retro-raised bg-surface px-retro-4 font-mono text-[11px]">
-                    {key}
-                  </kbd>
+                  <.keycap>{key}</.keycap>
                 </td>
                 <td class="py-retro-2 align-top">{action}</td>
               </tr>

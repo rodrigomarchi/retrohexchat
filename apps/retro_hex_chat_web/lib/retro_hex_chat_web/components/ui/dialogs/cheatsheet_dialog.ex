@@ -23,6 +23,7 @@ defmodule RetroHexChatWeb.Components.UI.CheatsheetDialog do
   """
   use RetroHexChatWeb.Component
 
+  import RetroHexChatWeb.Components.UI.Keycap
   import RetroHexChatWeb.Components.UI.ListStates, only: [list_empty_state: 1]
 
   @doc "Renders the keyboard shortcuts cheatsheet dialog."
@@ -61,9 +62,9 @@ defmodule RetroHexChatWeb.Components.UI.CheatsheetDialog do
               <span class="cs-shortcut-action">
                 {item.action}
               </span>
-              <kbd class="cs-shortcut-key">
+              <.keycap class="cs-shortcut-key">
                 {item.keys}
-              </kbd>
+              </.keycap>
             </div>
             <p class="cs-shortcut-description">
               {item.description}

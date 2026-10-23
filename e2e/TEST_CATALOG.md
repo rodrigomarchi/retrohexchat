@@ -134,9 +134,9 @@ make e2e.catalog.check    # verify it is current (also runs in make ci)
 
 ## Coverage
 
-- **259 spec files** under `e2e/tests/`.
-- **652 Playwright `test()` cases**.
-- **597 documented flows**, 596 done, 1 not done.
+- **260 spec files** under `e2e/tests/`.
+- **655 Playwright `test()` cases**.
+- **598 documented flows**, 597 done, 1 not done.
 - **Every spec documents its own flows.**
 
 ## Flow index
@@ -616,6 +616,7 @@ Grouped by section. Every row comes from an `@flow` line in the spec itself.
 | T8 | Tab focus stays inside major modal dialogs (features P2) | `tests/chat-dialog-keyboard.spec.ts` | done |
 | T9 | Window switch shortcuts skip Status and cycle channels/PMs in stable order (features P1) | `tests/chat-window-shortcuts.spec.ts` | done |
 | T10 | Shortcut cheatsheet opens from Help menu and shortcut, lists active bindings, and does not submit draft input (features P2) | `tests/chat-cheatsheet.spec.ts` | done |
+| T10b | A key is drawn the same way wherever it is named — the cheatsheet, a game's page, the help — and each is photographed | `tests/keycaps.spec.ts` | done |
 | T11 | Dialog title close, cancel buttons, and backdrop paths close major dialogs consistently (features P2) | `tests/chat-dialog-close.spec.ts` | done |
 | T12 | Reconnect state disables destructive shell menus while keeping Help accessible and preserving draft input (features P1) | `tests/chat-reconnect-shell.spec.ts` | done |
 | T13 | Taskbar collapses a window family into one grouped entry, expands it, and drops back to a plain button (features P2) | `tests/chat-taskbar-groups.spec.ts` | done |

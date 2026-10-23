@@ -110,7 +110,7 @@ msgstr "頻道列表"
 msgid "Chat Area:"
 msgstr "聊天區域 :"
 
-#: lib/retro_hex_chat_web/controllers/help_content/formatting_overview.html.heex:89
+#: lib/retro_hex_chat_web/controllers/help_content/formatting_overview.html.heex:103
 #: lib/retro_hex_chat_web/controllers/help_content/ui_status_tab.html.heex:37
 #, elixir-autogen, elixir-format
 msgid "Click the"
@@ -127,7 +127,7 @@ msgid "Color Palette"
 msgstr "顏色調色板"
 
 #: lib/retro_hex_chat_web/controllers/help_content/formatting_message_formats.html.heex:59
-#: lib/retro_hex_chat_web/controllers/help_content/formatting_overview.html.heex:123
+#: lib/retro_hex_chat_web/controllers/help_content/formatting_overview.html.heex:137
 #, elixir-autogen, elixir-format
 msgid "Colors"
 msgstr "顏色"
@@ -488,7 +488,7 @@ msgstr "節"
 #: lib/retro_hex_chat_web/controllers/help_content/empty_states.html.heex:85
 #: lib/retro_hex_chat_web/controllers/help_content/formatting_colors.html.heex:121
 #: lib/retro_hex_chat_web/controllers/help_content/formatting_message_formats.html.heex:53
-#: lib/retro_hex_chat_web/controllers/help_content/formatting_overview.html.heex:117
+#: lib/retro_hex_chat_web/controllers/help_content/formatting_overview.html.heex:131
 #: lib/retro_hex_chat_web/controllers/help_content/keyboard_shortcuts.html.heex:85
 #: lib/retro_hex_chat_web/controllers/help_content/ui_account_dialog.html.heex:60
 #: lib/retro_hex_chat_web/controllers/help_content/ui_bot_management.html.heex:70
@@ -579,7 +579,7 @@ msgstr "狀態欄"
 msgid "Status Bar:"
 msgstr "狀態欄 :"
 
-#: lib/retro_hex_chat_web/controllers/help_content/formatting_overview.html.heex:87
+#: lib/retro_hex_chat_web/controllers/help_content/formatting_overview.html.heex:101
 #, elixir-autogen, elixir-format
 msgid "Strip Formatting"
 msgstr "清除格式"
@@ -738,7 +738,7 @@ msgstr "窗口對話框( D)"
 msgid "and an \"Browse channels\" button."
 msgstr "還有\"瀏覽頻道\"按鈕"
 
-#: lib/retro_hex_chat_web/controllers/help_content/formatting_overview.html.heex:90
+#: lib/retro_hex_chat_web/controllers/help_content/formatting_overview.html.heex:104
 #, elixir-autogen, elixir-format
 msgid "button in the formatting toolbar to strip all formatting from incoming messages."
 msgstr "按鈕在格式化工具欄中將所有格式從收到的信件中剝離。"
@@ -1713,7 +1713,7 @@ msgid "Message Format"
 msgstr "訊息格式"
 
 #: lib/retro_hex_chat_web/controllers/help_content/formatting_colors.html.heex:128
-#: lib/retro_hex_chat_web/controllers/help_content/formatting_overview.html.heex:120
+#: lib/retro_hex_chat_web/controllers/help_content/formatting_overview.html.heex:134
 #, elixir-autogen, elixir-format
 msgid "Message Formats"
 msgstr "訊息格式"
@@ -2730,7 +2730,7 @@ msgstr "黑色"
 msgid "Blue"
 msgstr "藍色"
 
-#: lib/retro_hex_chat_web/controllers/help_content/formatting_overview.html.heex:70
+#: lib/retro_hex_chat_web/controllers/help_content/formatting_overview.html.heex:72
 #, elixir-autogen, elixir-format
 msgid "Bold"
 msgstr "粗體"
@@ -2780,7 +2780,7 @@ msgstr "單擊格式工具欄中的顏色按鈕,然後從網格中選擇顏色�
 msgid "Click the Formatting Toolbar button beside the message box. A small panel opens."
 msgstr "單擊信息框旁的“格式工具欄”按鈕。 一個小面板打開。"
 
-#: lib/retro_hex_chat_web/controllers/help_content/formatting_overview.html.heex:74
+#: lib/retro_hex_chat_web/controllers/help_content/formatting_overview.html.heex:84
 #, elixir-autogen, elixir-format
 msgid "Color. Type a color number right after it."
 msgstr "Color. Type a color number right after it."
@@ -2850,7 +2850,7 @@ msgstr "如果您不在狀態標籤上, 它會被標記爲未讀 。 打開狀�
 msgid "If your text starts with a digit, that digit can join the color number. Write the color with two digits, such as %{example}, to avoid this."
 msgstr "如果文本以數字開頭,該數字可以加入顏色數字。 將顏色寫成兩個數字,如%{example},以避免出現這種情況."
 
-#: lib/retro_hex_chat_web/controllers/help_content/formatting_overview.html.heex:104
+#: lib/retro_hex_chat_web/controllers/help_content/formatting_overview.html.heex:118
 #, elixir-autogen, elixir-format
 msgid "In a channel with mode %{mode}, the server removes all formatting from new messages and saves them as plain text."
 msgstr "在具有%{mode}模式的頻道中,服務器從新消息中刪除所有格式化,並保存爲純文本."
@@ -2865,7 +2865,7 @@ msgstr "在具有%{mode}模式的頻道中,服務器從新消息中刪除所有�
 msgid "It also explains that shared links will appear there. It collects the links people post while you are connected."
 msgstr "它還解釋說,共享鏈接將在那裏出現。 它收集了連接時的鏈接。"
 
-#: lib/retro_hex_chat_web/controllers/help_content/formatting_overview.html.heex:71
+#: lib/retro_hex_chat_web/controllers/help_content/formatting_overview.html.heex:76
 #, elixir-autogen, elixir-format
 msgid "Italic"
 msgstr "斜體"
@@ -2926,7 +2926,7 @@ msgstr "連接時沒有顯示任何內容, 沒有設置 MOTD 。"
 msgid "Only the channel owner and operators can pin or unpin. Other members do not see these menu items."
 msgstr "Only the channel owner and operators can pin or unpin. Other members do not see these menu items."
 
-#: lib/retro_hex_chat_web/controllers/help_content/formatting_overview.html.heex:111
+#: lib/retro_hex_chat_web/controllers/help_content/formatting_overview.html.heex:125
 #, elixir-autogen, elixir-format
 msgid "Only the first 128 IRC formatting codes in a message are shown."
 msgstr "只顯示消息中前128個IRC格式化代碼."
@@ -3016,12 +3016,12 @@ msgstr "紫色"
 msgid "Red"
 msgstr "紅色"
 
-#: lib/retro_hex_chat_web/controllers/help_content/formatting_overview.html.heex:79
+#: lib/retro_hex_chat_web/controllers/help_content/formatting_overview.html.heex:92
 #, elixir-autogen, elixir-format
 msgid "Reset all formatting"
 msgstr "重置所有格式"
 
-#: lib/retro_hex_chat_web/controllers/help_content/formatting_overview.html.heex:77
+#: lib/retro_hex_chat_web/controllers/help_content/formatting_overview.html.heex:88
 #, elixir-autogen, elixir-format
 msgid "Reverse. Swaps the text and background colors."
 msgstr "轉身 交換文本和背景顏色。"
@@ -3032,7 +3032,7 @@ msgid "Right-click the message in the channel."
 msgstr "右鍵單擊頻道中的消息。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/formatting_colors.html.heex:80
-#: lib/retro_hex_chat_web/controllers/help_content/formatting_overview.html.heex:101
+#: lib/retro_hex_chat_web/controllers/help_content/formatting_overview.html.heex:115
 #: lib/retro_hex_chat_web/controllers/help_content/ui_message_of_the_day.html.heex:54
 #: lib/retro_hex_chat_web/controllers/help_content/ui_pinned_window.html.heex:49
 #: lib/retro_hex_chat_web/controllers/help_content/ui_topic_bar.html.heex:53
@@ -3053,7 +3053,7 @@ msgid "Saved Messages says you have not kept anything yet. Right-click any messa
 msgstr "保存的消息說您還沒有保存任何信息 。 右鍵單擊任何信件並選擇“保存”以添加它。 只有你能看到你保存的消息。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/formatting_colors.html.heex:130
-#: lib/retro_hex_chat_web/controllers/help_content/formatting_overview.html.heex:124
+#: lib/retro_hex_chat_web/controllers/help_content/formatting_overview.html.heex:138
 #, elixir-autogen, elixir-format
 msgid "Strip Colors"
 msgstr "條紋顏色"
@@ -3093,7 +3093,7 @@ msgstr "MOTD是運行服務器的人的簡短註釋. 它經常持有房屋規則
 msgid "The Pinned window explains that the channel is not keeping anything yet. Only an operator can pin a message. Right-click the message and choose Pin."
 msgstr "The Pinned window explains that the channel is not keeping anything yet. Only an operator can pin a message. Right-click the message and choose Pin."
 
-#: lib/retro_hex_chat_web/controllers/help_content/formatting_overview.html.heex:96
+#: lib/retro_hex_chat_web/controllers/help_content/formatting_overview.html.heex:110
 #, elixir-autogen, elixir-format
 msgid "The button is called Strip Formatting. The same switch is in the View menu. It changes only how messages look on your screen. Other people still see the formatting."
 msgstr "按鈕叫做脫衣格式。 同一開關在視圖菜單中. 它只會改變您屏幕上的信息的外觀 。 其他人仍然看到格式化."
@@ -3168,7 +3168,7 @@ msgstr "主題文本。 一個長的話題在酒吧的盡頭被剪斷. 當一個
 msgid "The window stays clear when you switch to another conversation and come back."
 msgstr "The window stays clear when you switch to another conversation and come back."
 
-#: lib/retro_hex_chat_web/controllers/help_content/formatting_overview.html.heex:82
+#: lib/retro_hex_chat_web/controllers/help_content/formatting_overview.html.heex:96
 #, elixir-autogen, elixir-format
 msgid "These shortcuts insert IRC control codes at the cursor, so use them with the IRC format. Bold, italic, underline and reverse are switches: press the same shortcut again to turn the style off."
 msgstr "這些快捷鍵在光標處插入IRC控制碼,因此使用IRC格式. 粗體,斜體,下劃線和反向是開關:再次按同樣的快捷鍵關閉樣式."
@@ -3220,7 +3220,7 @@ msgstr "在“查找”欄中鍵入您想要的文本,然後使用“前導”�
 msgid "Type your text and press Enter to send it."
 msgstr "鍵入文本並按 Enter 鍵發送。"
 
-#: lib/retro_hex_chat_web/controllers/help_content/formatting_overview.html.heex:72
+#: lib/retro_hex_chat_web/controllers/help_content/formatting_overview.html.heex:80
 #, elixir-autogen, elixir-format
 msgid "Underline"
 msgstr "底線"

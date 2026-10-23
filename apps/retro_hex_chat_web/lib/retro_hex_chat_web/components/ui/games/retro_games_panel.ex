@@ -2,6 +2,7 @@ defmodule RetroHexChatWeb.Components.UI.RetroGamesPanel do
   @moduledoc false
   use RetroHexChatWeb.Component
 
+  import RetroHexChatWeb.Components.UI.Keycap
   import RetroHexChatWeb.Components.UI.ToolButton
 
   alias RetroHexChat.Games.Catalog
@@ -255,12 +256,7 @@ defmodule RetroHexChatWeb.Components.UI.RetroGamesPanel do
             >
               <span class="text-muted-foreground">{row.label}</span>
               <span class="flex min-w-0 flex-wrap gap-retro-4">
-                <span
-                  :for={key <- row.keys}
-                  class="min-w-5 bg-surface px-retro-4 py-retro-2 text-center font-bold shadow-retro-sunken"
-                >
-                  {key}
-                </span>
+                <.keycap :for={key <- row.keys}>{key}</.keycap>
               </span>
             </div>
             <p class="text-[11px] leading-relaxed text-muted-foreground">{@game.controls}</p>

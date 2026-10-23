@@ -996,7 +996,7 @@ msgid "Auto-respond rules automatically execute commands when specific events oc
 msgstr "ユーザーがチャンネルに参加したり、チャンネルを離れるなど、特定のイベントが発生したときに自動応答ルールが自動的にコマンドを実行します。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_command_syntax_tooltip.html.heex:50
-#: lib/retro_hex_chat_web/controllers/help_content/feature_smart_input.html.heex:130
+#: lib/retro_hex_chat_web/controllers/help_content/feature_smart_input.html.heex:160
 #, elixir-autogen, elixir-format
 msgid "Autocomplete"
 msgstr "オートコンプリート"
@@ -1172,7 +1172,7 @@ msgstr ""
 msgid "Channels are automatically remembered for registered users. When you join a channel with"
 msgstr "チャンネルは登録済みユーザーに自動的に記憶されます。 チャンネルに参加するとき"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_smart_input.html.heex:126
+#: lib/retro_hex_chat_web/controllers/help_content/feature_smart_input.html.heex:156
 #, elixir-autogen, elixir-format
 msgid "Character Counter"
 msgstr "キャラクターカウンター"
@@ -1236,7 +1236,7 @@ msgid "Command Autocomplete"
 msgstr "コマンドオートコンプリート"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_autocomplete.html.heex:80
-#: lib/retro_hex_chat_web/controllers/help_content/feature_smart_input.html.heex:122
+#: lib/retro_hex_chat_web/controllers/help_content/feature_smart_input.html.heex:152
 #, elixir-autogen, elixir-format
 msgid "Command Syntax Tooltip"
 msgstr "コマンド同期ツールチップ"
@@ -1595,7 +1595,7 @@ msgstr "有効/無効"
 msgid "Enable auto-whois to automatically look up user info when they come online."
 msgstr "auto-whois を有効にすると、オンライン時にユーザーの情報を自動的に検索できます。"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_smart_input.html.heex:118
+#: lib/retro_hex_chat_web/controllers/help_content/feature_smart_input.html.heex:148
 #, elixir-autogen, elixir-format
 msgid "Enhanced History"
 msgstr "高められた歴史"
@@ -1998,7 +1998,7 @@ msgstr "参加"
 msgid "Key Behaviors"
 msgstr "主な行動規範"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_cheatsheet.html.heex:88
+#: lib/retro_hex_chat_web/controllers/help_content/feature_cheatsheet.html.heex:94
 #, elixir-autogen, elixir-format
 msgid "Key Bindings"
 msgstr "キーの結合"
@@ -2021,12 +2021,12 @@ msgid "Keyboard Navigation"
 msgstr "キーボードの運行"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_autocomplete.html.heex:76
-#: lib/retro_hex_chat_web/controllers/help_content/feature_cheatsheet.html.heex:84
+#: lib/retro_hex_chat_web/controllers/help_content/feature_cheatsheet.html.heex:90
 #: lib/retro_hex_chat_web/controllers/help_content/feature_context_menus.html.heex:98
 #: lib/retro_hex_chat_web/controllers/help_content/feature_contextual_tips.html.heex:47
 #: lib/retro_hex_chat_web/controllers/help_content/feature_display_settings.html.heex:66
 #: lib/retro_hex_chat_web/controllers/help_content/feature_enhanced_history.html.heex:59
-#: lib/retro_hex_chat_web/controllers/help_content/feature_key_bindings.html.heex:110
+#: lib/retro_hex_chat_web/controllers/help_content/feature_key_bindings.html.heex:130
 #: lib/retro_hex_chat_web/controllers/help_content/feature_message_delete.html.heex:41
 #: lib/retro_hex_chat_web/controllers/help_content/feature_message_edit.html.heex:56
 #: lib/retro_hex_chat_web/controllers/help_content/feature_message_reply.html.heex:57
@@ -2166,7 +2166,7 @@ msgstr "メッセージ削除"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_message_delete.html.heex:37
 #: lib/retro_hex_chat_web/controllers/help_content/feature_message_reply.html.heex:49
-#: lib/retro_hex_chat_web/controllers/help_content/feature_smart_input.html.heex:134
+#: lib/retro_hex_chat_web/controllers/help_content/feature_smart_input.html.heex:164
 #, elixir-autogen, elixir-format
 msgid "Message Edit"
 msgstr "メッセージ編集"
@@ -2315,7 +2315,7 @@ msgstr "通常の操作 — サーバーに接続されます。"
 #: lib/retro_hex_chat_web/controllers/help_content/feature_display_settings.html.heex:56
 #: lib/retro_hex_chat_web/controllers/help_content/feature_interactive_elements.html.heex:41
 #: lib/retro_hex_chat_web/controllers/help_content/feature_lag_indicator.html.heex:72
-#: lib/retro_hex_chat_web/controllers/help_content/feature_smart_input.html.heex:108
+#: lib/retro_hex_chat_web/controllers/help_content/feature_smart_input.html.heex:138
 #, elixir-autogen, elixir-format
 msgid "Notes"
 msgstr "インフォメーション"
@@ -2793,7 +2793,7 @@ msgstr "現在のチャンネルまたはPMでリアルタイムのハイライ�
 #: lib/retro_hex_chat_web/controllers/help_content/feature_channel_invites.html.heex:37
 #: lib/retro_hex_chat_web/controllers/help_content/feature_char_counter.html.heex:52
 #: lib/retro_hex_chat_web/controllers/help_content/feature_character_portraits.html.heex:28
-#: lib/retro_hex_chat_web/controllers/help_content/feature_cheatsheet.html.heex:81
+#: lib/retro_hex_chat_web/controllers/help_content/feature_cheatsheet.html.heex:87
 #: lib/retro_hex_chat_web/controllers/help_content/feature_closed_app_notifications.html.heex:43
 #: lib/retro_hex_chat_web/controllers/help_content/feature_command_syntax_tooltip.html.heex:47
 #: lib/retro_hex_chat_web/controllers/help_content/feature_connection_diagram.html.heex:75
@@ -2813,7 +2813,7 @@ msgstr "現在のチャンネルまたはPMでリアルタイムのハイライ�
 #: lib/retro_hex_chat_web/controllers/help_content/feature_ignore_list.html.heex:58
 #: lib/retro_hex_chat_web/controllers/help_content/feature_interactive_elements.html.heex:48
 #: lib/retro_hex_chat_web/controllers/help_content/feature_invite_exceptions.html.heex:25
-#: lib/retro_hex_chat_web/controllers/help_content/feature_key_bindings.html.heex:107
+#: lib/retro_hex_chat_web/controllers/help_content/feature_key_bindings.html.heex:127
 #: lib/retro_hex_chat_web/controllers/help_content/feature_kick_notifications.html.heex:65
 #: lib/retro_hex_chat_web/controllers/help_content/feature_lag_indicator.html.heex:79
 #: lib/retro_hex_chat_web/controllers/help_content/feature_language_flags.html.heex:44
@@ -2840,7 +2840,7 @@ msgstr "現在のチャンネルまたはPMでリアルタイムのハイライ�
 #: lib/retro_hex_chat_web/controllers/help_content/feature_server_broadcasts.html.heex:82
 #: lib/retro_hex_chat_web/controllers/help_content/feature_server_emoji.html.heex:28
 #: lib/retro_hex_chat_web/controllers/help_content/feature_session_cards.html.heex:44
-#: lib/retro_hex_chat_web/controllers/help_content/feature_smart_input.html.heex:115
+#: lib/retro_hex_chat_web/controllers/help_content/feature_smart_input.html.heex:145
 #: lib/retro_hex_chat_web/controllers/help_content/feature_sounds.html.heex:76
 #: lib/retro_hex_chat_web/controllers/help_content/feature_special_messages.html.heex:78
 #: lib/retro_hex_chat_web/controllers/help_content/feature_status_bar.html.heex:28
@@ -2938,7 +2938,7 @@ msgstr "シャドーイング警告"
 msgid "Shift+Enter"
 msgstr "シフト+ お問い合わせ"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_key_bindings.html.heex:114
+#: lib/retro_hex_chat_web/controllers/help_content/feature_key_bindings.html.heex:134
 #: lib/retro_hex_chat_web/controllers/help_content/feature_search.html.heex:74
 #, elixir-autogen, elixir-format
 msgid "Shortcut Cheatsheet"
@@ -2960,10 +2960,10 @@ msgid "Single-click:"
 msgstr "シングルクリック:"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_char_counter.html.heex:54
-#: lib/retro_hex_chat_web/controllers/help_content/feature_cheatsheet.html.heex:91
+#: lib/retro_hex_chat_web/controllers/help_content/feature_cheatsheet.html.heex:97
 #: lib/retro_hex_chat_web/controllers/help_content/feature_command_syntax_tooltip.html.heex:53
 #: lib/retro_hex_chat_web/controllers/help_content/feature_enhanced_history.html.heex:56
-#: lib/retro_hex_chat_web/controllers/help_content/feature_key_bindings.html.heex:117
+#: lib/retro_hex_chat_web/controllers/help_content/feature_key_bindings.html.heex:137
 #: lib/retro_hex_chat_web/controllers/help_content/feature_paste_dialog.html.heex:95
 #, elixir-autogen, elixir-format
 msgid "Smart Input"
@@ -6287,12 +6287,12 @@ msgstr "キーの組み合わせがないアクションは、キーの代わり
 msgid "An announcement appears in the conversation that each person has on screen, sent by Server."
 msgstr "An announcement appears in the conversation that each person has on screen, sent by Server."
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_smart_input.html.heex:101
+#: lib/retro_hex_chat_web/controllers/help_content/feature_smart_input.html.heex:115
 #, elixir-autogen, elixir-format
 msgid "Bold"
 msgstr "太字"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_smart_input.html.heex:58
+#: lib/retro_hex_chat_web/controllers/help_content/feature_smart_input.html.heex:62
 #, elixir-autogen, elixir-format
 msgid "Browse the messages and commands you sent before."
 msgstr "送信したメッセージとコマンドを閲覧します。"
@@ -6367,17 +6367,17 @@ msgstr "emoji をクリックします。 カーソルがどこにあるか追�
 msgid "Click the speaker icon in the taskbar tray to mute. Click it again to unmute."
 msgstr "タスクバートレイのスピーカーアイコンをクリックしてミュートします。 もう一度クリックして、ミュートしません。"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_smart_input.html.heex:85
+#: lib/retro_hex_chat_web/controllers/help_content/feature_smart_input.html.heex:97
 #, elixir-autogen, elixir-format
 msgid "Close the suggestion list or the history search, or cancel an edit."
 msgstr "提案リストや履歴検索を閉じたり、編集をキャンセルしたりします。"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_smart_input.html.heex:104
+#: lib/retro_hex_chat_web/controllers/help_content/feature_smart_input.html.heex:127
 #, elixir-autogen, elixir-format
 msgid "Color"
 msgstr "カラー"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_smart_input.html.heex:76
+#: lib/retro_hex_chat_web/controllers/help_content/feature_smart_input.html.heex:86
 #, elixir-autogen, elixir-format
 msgid "Complete a nickname. Press it again to cycle through the matches."
 msgstr "Complete a nickname. Press it again to cycle through the matches."
@@ -6447,7 +6447,7 @@ msgstr "クリップボードへのコピーは、視界から出てきます。
 msgid "Default Shortcuts"
 msgstr "デフォルトショートカット"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_key_bindings.html.heex:68
+#: lib/retro_hex_chat_web/controllers/help_content/feature_key_bindings.html.heex:88
 #, elixir-autogen, elixir-format
 msgid "During a conference, the arrow keys with %{keys} control your microphone, camera, layout and focus. The cheatsheet lists each one."
 msgstr "会議中に、%{keys}で矢印キーがマイク、カメラ、レイアウト、フォーカスをコントロールします。 cheatsheet はそれぞれをリストします。"
@@ -6497,7 +6497,7 @@ msgstr "ファイルメニュー、Disconnect: ダイアログが確認するよ
 msgid "Fixed Bindings"
 msgstr "固定結合"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_smart_input.html.heex:93
+#: lib/retro_hex_chat_web/controllers/help_content/feature_smart_input.html.heex:105
 #, elixir-autogen, elixir-format
 msgid "Formatting Keys"
 msgstr "キーのフォーマット"
@@ -6583,7 +6583,7 @@ msgstr "約3秒間タイピングを停止すると、チャットは止まっ�
 msgid "In a private conversation, it tells you that an answer is on the way. You can wait for it instead of sending another message at the same time."
 msgstr "プライベートな会話では、答えが途中にあることを伝えます。 別のメッセージを同時に送信するのではなく、待ちます。"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_smart_input.html.heex:63
+#: lib/retro_hex_chat_web/controllers/help_content/feature_smart_input.html.heex:69
 #, elixir-autogen, elixir-format
 msgid "In an empty input, edit your last message in this conversation."
 msgstr "空の入力で、最後のメッセージをこの会話で編集します。"
@@ -6608,7 +6608,7 @@ msgstr "Soundsウィンドウで選択肢を変更しません。 ミュート�
 msgid "It has no settings. The relay is configured on the server, not here."
 msgstr "設定はありません。 リレーはサーバーで設定されています。"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_smart_input.html.heex:102
+#: lib/retro_hex_chat_web/controllers/help_content/feature_smart_input.html.heex:119
 #, elixir-autogen, elixir-format
 msgid "Italic"
 msgstr "斜体"
@@ -6619,7 +6619,7 @@ msgstr "斜体"
 msgid "Keys"
 msgstr "キー"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_key_bindings.html.heex:75
+#: lib/retro_hex_chat_web/controllers/help_content/feature_key_bindings.html.heex:95
 #, elixir-autogen, elixir-format
 msgid "Keys Without %{keys}"
 msgstr "%{keys}のないキー"
@@ -6655,7 +6655,7 @@ msgstr "Multi-Line Paste Dialog"
 msgid "Mute silences every sound the chat plays, such as the sounds for new messages, private messages, joins and kicks."
 msgstr "新しいメッセージ、プライベートメッセージ、参加、キックのための音など、チャットが再生するすべての音をミュートします。"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_key_bindings.html.heex:101
+#: lib/retro_hex_chat_web/controllers/help_content/feature_key_bindings.html.heex:121
 #, elixir-autogen, elixir-format
 msgid "No function key is bound. The browser keeps them, including the key that opens the browser help."
 msgstr "関数キーはバインドしません。 ブラウザは、ブラウザのヘルプを開くキーを含む、それらを保持します。"
@@ -6670,7 +6670,7 @@ msgstr "ノーマル:"
 msgid "Not the Same as /mute"
 msgstr "/muteと同じではありません"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_smart_input.html.heex:110
+#: lib/retro_hex_chat_web/controllers/help_content/feature_smart_input.html.heex:140
 #, elixir-autogen, elixir-format
 msgid "On a narrow screen such as a phone, the input grows up to 3 lines instead of 5. A message can be edited only within 5 minutes after you send it."
 msgstr "電話のような狭い画面では、入力は5の代わりに3行まで成長します。 送信後5分以内にメッセージを編集できます。"
@@ -6690,7 +6690,7 @@ msgstr "プライベートメッセージのみが返信をトリガーします
 msgid "Only the first %{count} characters of the message are shown to others."
 msgstr "メッセージの最初の%{count}文字のみが他の人に表示されます。"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_key_bindings.html.heex:39
+#: lib/retro_hex_chat_web/controllers/help_content/feature_key_bindings.html.heex:43
 #, elixir-autogen, elixir-format
 msgid "Open or close the address book."
 msgstr "アドレス帳を開くか、閉じる。"
@@ -6720,7 +6720,7 @@ msgstr "[スタート]メニューを開き、[管理者]、[ターン] を開�
 msgid "Open the Start menu, then Help, then Shortcut Cheatsheet."
 msgstr "[スタート]メニューを開き、[ヘルプ]、[ショートカット]シートを開きます。"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_key_bindings.html.heex:51
+#: lib/retro_hex_chat_web/controllers/help_content/feature_key_bindings.html.heex:61
 #, elixir-autogen, elixir-format
 msgid "Open the URL catcher."
 msgstr "URL のキャッチャーを開きます。"
@@ -6730,22 +6730,22 @@ msgstr "URL のキャッチャーを開きます。"
 msgid "Open the View menu in the chat window."
 msgstr "チャットウィンドウで表示メニューを開きます。"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_key_bindings.html.heex:55
+#: lib/retro_hex_chat_web/controllers/help_content/feature_key_bindings.html.heex:67
 #, elixir-autogen, elixir-format
 msgid "Open the auto-perform settings."
 msgstr "自動パーフォーム設定を開きます。"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_key_bindings.html.heex:47
+#: lib/retro_hex_chat_web/controllers/help_content/feature_key_bindings.html.heex:55
 #, elixir-autogen, elixir-format
 msgid "Open the highlight word settings."
 msgstr "ハイライトワードの設定を開きます。"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_key_bindings.html.heex:43
+#: lib/retro_hex_chat_web/controllers/help_content/feature_key_bindings.html.heex:49
 #, elixir-autogen, elixir-format
 msgid "Open the ignore list."
 msgstr "無視リストを開きます。"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_key_bindings.html.heex:35
+#: lib/retro_hex_chat_web/controllers/help_content/feature_key_bindings.html.heex:37
 #, elixir-autogen, elixir-format
 msgid "Open the search bar."
 msgstr "検索バーを開きます。"
@@ -6770,7 +6770,7 @@ msgstr "カテゴリ タブを選択するか、検索 emoji ボックスに少�
 msgid "Point at an emoji to preview it in the bar at the bottom of the picker."
 msgstr "絵文字でポイントして、ピッカーの下部にあるバーにプレビューします。"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_key_bindings.html.heex:78
+#: lib/retro_hex_chat_web/controllers/help_content/feature_key_bindings.html.heex:98
 #, elixir-autogen, elixir-format
 msgid "Press %{key} to close the topmost dialog or menu. In the chat input, the arrow keys, %{tab} and %{enter} have their own jobs. The Smart Input topic explains them."
 msgstr "%{key}を押して、一番上のダイアログやメニューを閉じます。 チャット入力では、矢印キー、%{tab}、%{enter}は独自のジョブを持っています。 スマートインプットのトピックでは、それらを説明します。"
@@ -6790,12 +6790,12 @@ msgstr "エモジで反応する"
 msgid "Reacting to a Message"
 msgstr "メッセージへの反応"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_smart_input.html.heex:106
+#: lib/retro_hex_chat_web/controllers/help_content/feature_smart_input.html.heex:135
 #, elixir-autogen, elixir-format
 msgid "Reset formatting"
 msgstr "リセットフォーマット"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_smart_input.html.heex:105
+#: lib/retro_hex_chat_web/controllers/help_content/feature_smart_input.html.heex:131
 #, elixir-autogen, elixir-format
 msgid "Reverse"
 msgstr "バックアップ"
@@ -6821,7 +6821,7 @@ msgid "Rules"
 msgstr "ルール"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_admin_turn.html.heex:45
-#: lib/retro_hex_chat_web/controllers/help_content/feature_key_bindings.html.heex:86
+#: lib/retro_hex_chat_web/controllers/help_content/feature_key_bindings.html.heex:106
 #: lib/retro_hex_chat_web/controllers/help_content/feature_paste_dialog.html.heex:67
 #: lib/retro_hex_chat_web/controllers/help_content/feature_quit_message.html.heex:60
 #: lib/retro_hex_chat_web/controllers/help_content/feature_server_broadcasts.html.heex:74
@@ -6840,7 +6840,7 @@ msgstr "検索のヒント"
 msgid "Search looks at each emoji's name and keywords, in English and in your chosen language. While a search is active, the results replace the category grid. Clear the box or pick a category tab to go back."
 msgstr "英語と選択した言語で、各 emoji の名前とキーワードを検索します。 検索が有効である間、結果はカテゴリグリッドを置き換えます。 ボックスをクリアするか、カテゴリタブを選択して戻ります。"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_smart_input.html.heex:71
+#: lib/retro_hex_chat_web/controllers/help_content/feature_smart_input.html.heex:79
 #, elixir-autogen, elixir-format
 msgid "Search your input history."
 msgstr "入力履歴を検索します。"
@@ -6890,12 +6890,12 @@ msgstr "ステップバイステップ"
 msgid "Strip Formatting:"
 msgstr "ストリップのフォーマット:"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_key_bindings.html.heex:63
+#: lib/retro_hex_chat_web/controllers/help_content/feature_key_bindings.html.heex:83
 #, elixir-autogen, elixir-format
 msgid "Switch to the channel or PM at that position."
 msgstr "その位置でチャンネルまたはPMに切り替えます。"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_key_bindings.html.heex:59
+#: lib/retro_hex_chat_web/controllers/help_content/feature_key_bindings.html.heex:75
 #, elixir-autogen, elixir-format
 msgid "Switch to the next or previous channel or PM."
 msgstr "次のチャネルか前のチャネルかPMに転換して下さい。"
@@ -6935,7 +6935,7 @@ msgstr "Statsのペインは、リレーアドレス、リスニングポート�
 msgid "The Status window does not accept text. Pasted lines sent there are rejected."
 msgstr "ステータスウィンドウはテキストを受け入れません。 送信された行は拒否されます。"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_cheatsheet.html.heex:75
+#: lib/retro_hex_chat_web/controllers/help_content/feature_cheatsheet.html.heex:81
 #, elixir-autogen, elixir-format
 msgid "The arrow keys browse what you sent before. The Smart Input topic covers them."
 msgstr "矢印キーは、以前に送信したものを閲覧します。 スマート入力のトピックはそれらをカバーします。"
@@ -6980,7 +6980,7 @@ msgstr "最初の例はデフォルトメッセージで終了します。 他�
 msgid "The first line sets you away with a message. The second line, with no text, marks you as back."
 msgstr "最初の行はメッセージであなたを離れます。 テキストなしの2番目の行は、あなたに戻ってマークします。"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_key_bindings.html.heex:95
+#: lib/retro_hex_chat_web/controllers/help_content/feature_key_bindings.html.heex:115
 #, elixir-autogen, elixir-format
 msgid "The global shortcuts avoid combinations that the browser needs, such as copy, paste and new tab."
 msgstr "グローバルショートカットは、コピー、ペースト、新規タブなど、ブラウザが必要とする組み合わせを回避します。"
@@ -7055,7 +7055,7 @@ msgstr "同じ数字はコマンドとして利用できます。"
 msgid "The same picker opens when you choose React... in a message's context menu. In that case the emoji you pick is added as a reaction to the message, not to your input."
 msgstr "同じピッカーは、メッセージのコンテキストメニューでReact...を選択したときに開きます。 その場合、選択する emoji は、メッセージへの反応として追加されます。"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_key_bindings.html.heex:89
+#: lib/retro_hex_chat_web/controllers/help_content/feature_key_bindings.html.heex:109
 #, elixir-autogen, elixir-format
 msgid "The shortcuts cannot be changed. Every user has the same set."
 msgstr "ショートカットは変更できません。 すべてのユーザは同じセットを持っています。"
@@ -7090,7 +7090,7 @@ msgstr "The window is titled Kicked from Channel. It names the channel, then lis
 msgid "The window opens with a snapshot taken when it opened. Only server administrators can press Refresh."
 msgstr "開いたときに撮影されたスナップショットでウィンドウが開きます。 サーバ管理者のみが、サーバーのリピートをプレスできます。"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_smart_input.html.heex:95
+#: lib/retro_hex_chat_web/controllers/help_content/feature_smart_input.html.heex:107
 #, elixir-autogen, elixir-format
 msgid "These keys insert an IRC formatting code at the cursor. Type your text after the code."
 msgstr "これらのキーは、カーソルでIRCフォーマットコードをインサートします。 コードの後のテキストを入力します。"
@@ -7130,7 +7130,7 @@ msgstr "コマンド - / リスト"
 msgid "Type the text in the Message box."
 msgstr "メッセージボックスにテキストを入力します。"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_smart_input.html.heex:103
+#: lib/retro_hex_chat_web/controllers/help_content/feature_smart_input.html.heex:123
 #, elixir-autogen, elixir-format
 msgid "Underline"
 msgstr "下線"
@@ -7260,7 +7260,7 @@ msgstr "PMの最初のキープレスは、あなたが入力している相手�
 msgid "YourNick is away: Gone for lunch"
 msgstr "YourNick is away: Gone for lunch"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_cheatsheet.html.heex:72
+#: lib/retro_hex_chat_web/controllers/help_content/feature_cheatsheet.html.heex:78
 #, elixir-autogen, elixir-format
 msgid "completes a nickname, or picks the selected suggestion."
 msgstr "completes a nickname, or picks the selected suggestion."
@@ -7275,12 +7275,12 @@ msgstr "行を時間と著者のニックネームでコピーします。"
 msgid "copies the original text with its formatting codes. It appears only when the source differs from what you see."
 msgstr "元のテキストをフォーマットコードでコピーします。 ソースが表示されるものとは異なるときだけ表示されます。"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_cheatsheet.html.heex:68
+#: lib/retro_hex_chat_web/controllers/help_content/feature_cheatsheet.html.heex:70
 #, elixir-autogen, elixir-format
 msgid "sends the message."
 msgstr "メッセージを送信します。"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_cheatsheet.html.heex:69
+#: lib/retro_hex_chat_web/controllers/help_content/feature_cheatsheet.html.heex:74
 #, elixir-autogen, elixir-format
 msgid "starts a new line."
 msgstr "新規ラインを立ち上げる"
