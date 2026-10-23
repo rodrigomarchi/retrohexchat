@@ -245,17 +245,13 @@ export const PL = {
   Unknown: "Nieznany",
   "Use ↑ to edit your last message": "Użyj ↑ do edycji ostatniej wiadomości",
   "VICTORY!": "ZWYCIĘSTWO!",
-  "WAITING FOR OPPONENT": "OCZEKIWANIE NA PRZECIWNIKA",
   "WAITING FOR OPPONENT%{0}": "OCZEKIWANIE NA PRZECIWNIKA%{0}",
-  "WAITING FOR OPPONENT...": "OCZEKIWANIE NA PRZECIWNIKA...",
   "WAITING FOR PARTNER%{0}": "OCZEKIWANIE NA PARTNERA%{0}",
   "WAVE %{0}": "FALA %{0}",
   "WAVE %{0} CLEARED": "FALA %{0} UKOŃCZONA",
   "Wait for configuration to load and try again.": "Poczekaj na konfigurację i spróbuj ponownie.",
   "Waiting for media offer. Requesting a fresh offer.":
     "Czekam na ofertę medialną. Proszę o nową ofertę.",
-  "Waiting for opponent%{0}": "Oczekiwanie na przeciwnika%{0}",
-  "Waiting for opponent...": "Czekając na przeciwnika...",
   You: "Ty",
   "Your camera is not being sent.": "Twoja kamera nie jest wysyłana.",
   "Your camera is unavailable. Check your video devices.":

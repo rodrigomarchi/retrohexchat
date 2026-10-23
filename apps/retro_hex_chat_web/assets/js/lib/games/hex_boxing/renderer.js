@@ -22,7 +22,8 @@ import {
 } from "./physics.js";
 import { PHASE, PUNCH_STATE } from "./protocol.js";
 import { t, jt } from "../../i18n.js";
-import { gameColor } from "../../game_colors.js";
+import { gameColor, readGameColors } from "../../game_colors.js";
+import { drawBackground } from "../hud.js";
 
 /**
  * Read CSS custom properties from the canvas element.
@@ -30,18 +31,17 @@ import { gameColor } from "../../game_colors.js";
  * @returns {object}
  */
 export function getColors(canvas) {
-  const s = getComputedStyle(canvas);
-  return {
-    bg: s.getPropertyValue("--game-bg-color").trim() || gameColor("0a0808"),
-    fg: s.getPropertyValue("--game-fg-color").trim() || gameColor("39ff14"),
-    accent: s.getPropertyValue("--game-accent-color").trim() || gameColor("00e5ff"),
-    muted: s.getPropertyValue("--game-muted-color").trim() || gameColor("2a1a1a"),
-    glow: s.getPropertyValue("--game-glow-color").trim() || "rgba(57, 255, 20, 0.15)",
-    warning: s.getPropertyValue("--game-warning-color").trim() || gameColor("ff4444"),
-    rope: s.getPropertyValue("--game-rope-color").trim() || gameColor("aaaaaa"),
-    ring: s.getPropertyValue("--game-ring-color").trim() || gameColor("1a1208"),
-    hit: s.getPropertyValue("--game-hit-color").trim() || gameColor("ffffff"),
-  };
+  return readGameColors(canvas, {
+    bg: ["--game-bg-color", "0a0808"],
+    fg: ["--game-fg-color", "39ff14"],
+    accent: ["--game-accent-color", "00e5ff"],
+    muted: ["--game-muted-color", "2a1a1a"],
+    glow: ["--game-glow-color", "rgba(57, 255, 20, 0.15)"],
+    warning: ["--game-warning-color", "ff4444"],
+    rope: ["--game-rope-color", "aaaaaa"],
+    ring: ["--game-ring-color", "1a1208"],
+    hit: ["--game-hit-color", "ffffff"],
+  });
 }
 
 /**
@@ -53,7 +53,7 @@ export function getColors(canvas) {
  * @param {Array} particles
  */
 export function render(ctx, state, colors, _frameCount, particles) {
-  drawBackground(ctx, colors);
+  drawBackground(ctx, colors, CANVAS_W, CANVAS_H);
   drawRing(ctx, colors);
   drawBoxer(ctx, state, 1, colors.fg, colors);
   drawBoxer(ctx, state, 2, colors.accent, colors);
@@ -63,11 +63,6 @@ export function render(ctx, state, colors, _frameCount, particles) {
 }
 
 // --- Background & Ring ---
-
-function drawBackground(ctx, colors) {
-  ctx.fillStyle = colors.bg;
-  ctx.fillRect(0, 0, CANVAS_W, CANVAS_H);
-}
 
 function drawRing(ctx, colors) {
   // Ring floor

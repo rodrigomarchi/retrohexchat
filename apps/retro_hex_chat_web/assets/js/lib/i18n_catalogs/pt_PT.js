@@ -244,9 +244,7 @@ export const PT_PT = {
   Unknown: "Desconhecido",
   "Use ↑ to edit your last message": "Use ↑ para editar sua última mensagem",
   "VICTORY!": "VITÓRIA!",
-  "WAITING FOR OPPONENT": "À ESPERA DO ADVERSÁRIO",
   "WAITING FOR OPPONENT%{0}": "À ESPERA DO ADVERSÁRIO%{0}",
-  "WAITING FOR OPPONENT...": "À ESPERA DO ADVERSÁRIO...",
   "WAITING FOR PARTNER%{0}": "À ESPERA DO PARCEIRO%{0}",
   "WAVE %{0}": "ONDA %{0}",
   "WAVE %{0} CLEARED": "VAGA %{0} LIMPA",
@@ -254,8 +252,6 @@ export const PT_PT = {
     "Aguarde a configuração para carregar e tente novamente.",
   "Waiting for media offer. Requesting a fresh offer.":
     "À espera da oferta dos media. Solicitando uma nova oferta.",
-  "Waiting for opponent%{0}": "À espera do adversário%{0}",
-  "Waiting for opponent...": "À espera do adversário...",
   You: "Você",
   "Your camera is not being sent.": "A tua câmara não está a ser enviada.",
   "Your camera is unavailable. Check your video devices.":

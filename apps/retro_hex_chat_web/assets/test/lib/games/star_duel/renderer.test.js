@@ -9,7 +9,6 @@ import {
 import {
   getColors,
   render,
-  drawBackground,
   drawStarfield,
   drawShip,
   drawMissiles,
@@ -17,14 +16,11 @@ import {
   drawExplosion,
   drawGravityStar,
   drawAsteroids,
-  drawCountdown,
-  drawWaiting,
   drawSpawning,
   drawRoundOver,
   drawWinner,
   drawWarpEffect,
   drawHUD,
-  drawScanlines,
   drawVignette,
 } from "../../../../js/lib/games/star_duel/renderer.js";
 
@@ -118,14 +114,6 @@ describe("star_duel_renderer", () => {
       expect(result.explosion).toBe("#ff4444");
 
       document.body.removeChild(canvas);
-    });
-  });
-
-  describe("drawBackground", () => {
-    it("fills the entire canvas", () => {
-      drawBackground(ctx, colors);
-      expect(ctx.fillRect).toHaveBeenCalledWith(0, 0, CANVAS_W, CANVAS_H);
-      expect(ctx.fillStyle).toBe(colors.bg);
     });
   });
 
@@ -254,24 +242,6 @@ describe("star_duel_renderer", () => {
     });
   });
 
-  describe("drawCountdown", () => {
-    it("draws number", () => {
-      drawCountdown(ctx, 3, colors, 0);
-      expect(ctx.fillText).toHaveBeenCalled();
-      const texts = ctx.fillText.mock.calls.map((c) => c[0]);
-      expect(texts).toContain("3");
-    });
-  });
-
-  describe("drawWaiting", () => {
-    it("draws text", () => {
-      drawWaiting(ctx, colors, 0);
-      expect(ctx.fillText).toHaveBeenCalled();
-      const text = ctx.fillText.mock.calls[0][0];
-      expect(text).toContain("WAITING FOR OPPONENT");
-    });
-  });
-
   describe("drawSpawning", () => {
     it("draws GET READY", () => {
       drawSpawning(ctx, colors, 0);
@@ -376,14 +346,6 @@ describe("star_duel_renderer", () => {
       drawHUD(ctx, state, colors, 0);
       const texts = ctx.fillText.mock.calls.map((c) => c[0]);
       expect(texts).toContain("DEBRIS FIELD");
-    });
-  });
-
-  describe("drawScanlines", () => {
-    it("draws horizontal lines across canvas", () => {
-      drawScanlines(ctx);
-      expect(ctx.fillRect).toHaveBeenCalled();
-      expect(ctx.fillRect.mock.calls.length).toBe(CANVAS_H / 2);
     });
   });
 

@@ -7,7 +7,8 @@
 import { PHASE, GAME_MODE, ALIEN_TYPE } from "./protocol.js";
 import { CANVAS_W, CANVAS_H, INITIAL_LIVES, SHIELD_SEGMENTS } from "./physics.js";
 import { t, jt } from "../../i18n.js";
-import { gameColor } from "../../game_colors.js";
+import { gameColor, readGameColors } from "../../game_colors.js";
+import { drawScanlines, waitingText } from "../hud.js";
 
 const DIVIDER_X = 320;
 const CANNON_Y = 450;
@@ -34,18 +35,17 @@ const UFO_TRAIL_COLORS = [
  * @returns {object} color palette
  */
 export function getColors(canvas) {
-  const s = getComputedStyle(canvas);
-  return {
-    bg: s.getPropertyValue("--game-bg-color").trim() || gameColor("000008"),
-    p1: s.getPropertyValue("--game-fg-color").trim() || gameColor("39ff14"),
-    p2: s.getPropertyValue("--game-accent-color").trim() || gameColor("00e5ff"),
-    muted: s.getPropertyValue("--game-muted-color").trim() || gameColor("0a1a0a"),
-    glow: s.getPropertyValue("--game-glow-color").trim() || "rgba(57,255,20,0.2)",
-    warning: s.getPropertyValue("--game-warning-color").trim() || gameColor("ff4444"),
-    shield: s.getPropertyValue("--game-shield-color").trim() || gameColor("39ff14"),
-    ufo: s.getPropertyValue("--game-ufo-color").trim() || gameColor("ff00ff"),
-    drop: s.getPropertyValue("--game-drop-color").trim() || gameColor("ff3333"),
-  };
+  return readGameColors(canvas, {
+    bg: ["--game-bg-color", "000008"],
+    p1: ["--game-fg-color", "39ff14"],
+    p2: ["--game-accent-color", "00e5ff"],
+    muted: ["--game-muted-color", "0a1a0a"],
+    glow: ["--game-glow-color", "rgba(57,255,20,0.2)"],
+    warning: ["--game-warning-color", "ff4444"],
+    shield: ["--game-shield-color", "39ff14"],
+    ufo: ["--game-ufo-color", "ff00ff"],
+    drop: ["--game-drop-color", "ff3333"],
+  });
 }
 
 /**
@@ -73,7 +73,7 @@ export function render(ctx, state, colors, time) {
 
   // Phase overlays
   if (state.phase === PHASE.WAITING) {
-    drawOverlayText(ctx, colors, t("WAITING FOR OPPONENT..."), colors.p1);
+    drawOverlayText(ctx, colors, waitingText(), colors.p1);
   } else if (state.phase === PHASE.COUNTDOWN) {
     drawOverlayText(ctx, colors, String(state.countdown), colors.warning, 64);
   } else if (state.phase === PHASE.WAVE_CLEAR) {
@@ -84,7 +84,7 @@ export function render(ctx, state, colors, time) {
     drawGameOver(ctx, state, colors);
   }
 
-  drawScanlines(ctx);
+  drawScanlines(ctx, CANVAS_W, CANVAS_H, { alpha: 0.06, step: 3 });
   drawVignette(ctx);
 }
 
@@ -514,13 +514,6 @@ function drawGameOver(ctx, state, colors) {
 }
 
 // ── CRT Effects ──
-
-function drawScanlines(ctx) {
-  ctx.fillStyle = "rgba(0,0,0,0.06)";
-  for (let y = 0; y < CANVAS_H; y += 3) {
-    ctx.fillRect(0, y, CANVAS_W, 1);
-  }
-}
 
 function drawVignette(ctx) {
   const grd = ctx.createRadialGradient(

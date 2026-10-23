@@ -34,7 +34,8 @@ import {
 } from "./physics.js";
 import { PHASE, GAME_MODE, BAILEY_STATE, ENEMY_TYPE, BLOCK_STATE } from "./protocol.js";
 import { t, jt } from "../../i18n.js";
-import { gameColor } from "../../game_colors.js";
+import { gameColor, readGameColors } from "../../game_colors.js";
+import { waitingText } from "../hud.js";
 
 // ── Color reading ──────────────────────────────────────────────
 
@@ -42,26 +43,24 @@ import { gameColor } from "../../game_colors.js";
  * Read CSS custom properties from the canvas element.
  */
 export function readColors(canvas) {
-  const s = getComputedStyle(canvas);
-  const get = (name) => s.getPropertyValue(name).trim() || null;
-  return {
-    bg: get("--game-bg-color") || gameColor("060818"),
-    fg: get("--game-fg-color") || gameColor("39ff14"),
-    accent: get("--game-accent-color") || gameColor("00e5ff"),
-    muted: get("--game-muted-color") || gameColor("0e1a2e"),
-    glow: get("--game-glow-color") || "rgba(57,255,20,0.15)",
-    warning: get("--game-warning-color") || gameColor("ff4444"),
-    shore: get("--game-shore-color") || gameColor("2a3040"),
-    water: get("--game-water-color") || gameColor("0a1020"),
-    blockWhite: get("--game-block-white") || gameColor("c0d8e8"),
-    blockP1: get("--game-block-p1") || gameColor("40ff80"),
-    blockP2: get("--game-block-p2") || gameColor("40d0ff"),
-    iglooP1: get("--game-igloo-p1") || gameColor("30cc60"),
-    iglooP2: get("--game-igloo-p2") || gameColor("30a0cc"),
-    bear: get("--game-bear-color") || gameColor("e0e0e0"),
-    crab: get("--game-crab-color") || gameColor("ff4040"),
-    fish: get("--game-fish-color") || gameColor("ff8800"),
-  };
+  return readGameColors(canvas, {
+    bg: ["--game-bg-color", "060818"],
+    fg: ["--game-fg-color", "39ff14"],
+    accent: ["--game-accent-color", "00e5ff"],
+    muted: ["--game-muted-color", "0e1a2e"],
+    glow: ["--game-glow-color", "rgba(57,255,20,0.15)"],
+    warning: ["--game-warning-color", "ff4444"],
+    shore: ["--game-shore-color", "2a3040"],
+    water: ["--game-water-color", "0a1020"],
+    blockWhite: ["--game-block-white", "c0d8e8"],
+    blockP1: ["--game-block-p1", "40ff80"],
+    blockP2: ["--game-block-p2", "40d0ff"],
+    iglooP1: ["--game-igloo-p1", "30cc60"],
+    iglooP2: ["--game-igloo-p2", "30a0cc"],
+    bear: ["--game-bear-color", "e0e0e0"],
+    crab: ["--game-crab-color", "ff4040"],
+    fish: ["--game-fish-color", "ff8800"],
+  });
 }
 
 /**
@@ -146,7 +145,7 @@ function drawWaitingScreen(ctx, colors, frameCount) {
   ctx.globalAlpha = pulse;
   ctx.font = "bold 16px monospace";
   ctx.textAlign = "center";
-  ctx.fillText(t("WAITING FOR OPPONENT..."), CANVAS_W / 2, CANVAS_H / 2);
+  ctx.fillText(waitingText(), CANVAS_W / 2, CANVAS_H / 2);
   ctx.globalAlpha = 1;
 }
 

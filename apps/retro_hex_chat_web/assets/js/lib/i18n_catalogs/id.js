@@ -240,17 +240,13 @@ export const ID = {
   Unknown: "Tidak diketahui",
   "Use ↑ to edit your last message": "Gunakan Singapura untuk menyunting pesan terakhir Anda",
   "VICTORY!": "MENANG!",
-  "WAITING FOR OPPONENT": "MENUNGGU LAWAN",
   "WAITING FOR OPPONENT%{0}": "MENUNGGU LAWAN%{0}",
-  "WAITING FOR OPPONENT...": "MENUNGGU LAWAN...",
   "WAITING FOR PARTNER%{0}": "MENUNGGU PARTNER%{0}",
   "WAVE %{0}": "GELOMBANG %{0}",
   "WAVE %{0} CLEARED": "GELOMBANG %{0} SELESAI",
   "Wait for configuration to load and try again.": "Tunggu konfigurasi untuk dimuat dan coba lagi.",
   "Waiting for media offer. Requesting a fresh offer.":
     "Menunggu tawaran media. Meminta tawaran baru.",
-  "Waiting for opponent%{0}": "Menunggu lawan%{0}",
-  "Waiting for opponent...": "Menunggu lawan...",
   You: "Anda",
   "Your camera is not being sent.": "Kamera Anda tidak sedang dikirim.",
   "Your camera is unavailable. Check your video devices.":

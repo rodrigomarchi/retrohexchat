@@ -20,7 +20,8 @@ import {
   P2_KING_Y,
 } from "./physics.js";
 import { t, jt } from "../../i18n.js";
-import { gameColor } from "../../game_colors.js";
+import { gameColor, readGameColors } from "../../game_colors.js";
+import { drawBackground, drawCountdown, drawScanlines, drawWaiting } from "../hud.js";
 
 /**
  * Read CSS custom properties from canvas computed style.
@@ -28,15 +29,14 @@ import { gameColor } from "../../game_colors.js";
  * @returns {object} color palette
  */
 export function getColors(canvas) {
-  const s = getComputedStyle(canvas);
-  return {
-    bg: s.getPropertyValue("--game-bg-color").trim() || gameColor("0a0a1a"),
-    fg: s.getPropertyValue("--game-fg-color").trim() || gameColor("00ff66"),
-    accent: s.getPropertyValue("--game-accent-color").trim() || gameColor("00ccff"),
-    muted: s.getPropertyValue("--game-muted-color").trim() || gameColor("1a3a4a"),
-    glow: s.getPropertyValue("--game-glow-color").trim() || "rgba(0,255,102,0.2)",
-    warning: s.getPropertyValue("--game-warning-color").trim() || gameColor("ffaa00"),
-  };
+  return readGameColors(canvas, {
+    bg: ["--game-bg-color", "0a0a1a"],
+    fg: ["--game-fg-color", "00ff66"],
+    accent: ["--game-accent-color", "00ccff"],
+    muted: ["--game-muted-color", "1a3a4a"],
+    glow: ["--game-glow-color", "rgba(0,255,102,0.2)"],
+    warning: ["--game-warning-color", "ffaa00"],
+  });
 }
 
 /**
@@ -47,7 +47,7 @@ export function getColors(canvas) {
  * @param {number} time - timestamp for animations
  */
 export function render(ctx, state, colors, time) {
-  drawBackground(ctx, colors);
+  drawBackground(ctx, colors, CANVAS_W, CANVAS_H);
   drawGrid(ctx, colors);
 
   // Draw castles
@@ -84,25 +84,17 @@ export function render(ctx, state, colors, time) {
 
   // Phase overlays
   if (state.phase === PHASE.COUNTDOWN) {
-    drawCountdown(ctx, state.countdown, colors, time);
+    drawCountdown(ctx, state.countdown, colors, time, CANVAS_W, CANVAS_H);
   } else if (state.phase === PHASE.WAITING) {
-    drawWaiting(ctx, colors, time);
+    drawWaiting(ctx, colors, time, CANVAS_W, CANVAS_H);
   } else if (state.phase === PHASE.KING_HIT) {
     drawKingHitOverlay(ctx, state, colors, time);
   } else if (state.phase === PHASE.FINISHED) {
     drawFinished(ctx, state, colors, time);
   }
 
-  drawScanlines(ctx);
+  drawScanlines(ctx, CANVAS_W, CANVAS_H);
   drawVignette(ctx);
-}
-
-/**
- * Fill background.
- */
-export function drawBackground(ctx, colors) {
-  ctx.fillStyle = colors.bg;
-  ctx.fillRect(0, 0, CANVAS_W, CANVAS_H);
 }
 
 /**
@@ -346,41 +338,6 @@ function drawLives(ctx, startX, y, lives, color) {
 }
 
 /**
- * Draw countdown number with pulse animation.
- */
-export function drawCountdown(ctx, count, colors, time) {
-  const pulse = 1.0 + 0.15 * Math.sin(time * 0.015);
-  const size = Math.floor(80 * pulse);
-
-  ctx.save();
-  ctx.shadowColor = colors.warning;
-  ctx.shadowBlur = 20;
-  ctx.fillStyle = colors.warning;
-  ctx.font = `bold ${size}px monospace`;
-  ctx.textAlign = "center";
-  ctx.textBaseline = "middle";
-  ctx.fillText(String(count), CANVAS_W / 2, CANVAS_H / 2);
-  ctx.restore();
-}
-
-/**
- * Draw waiting message.
- */
-export function drawWaiting(ctx, colors, time) {
-  const dots = ".".repeat(Math.floor((time / 500) % 4));
-
-  ctx.save();
-  ctx.shadowColor = colors.muted;
-  ctx.shadowBlur = 8;
-  ctx.fillStyle = colors.muted;
-  ctx.font = "18px monospace";
-  ctx.textAlign = "center";
-  ctx.textBaseline = "middle";
-  ctx.fillText(jt`WAITING FOR OPPONENT${dots}`, CANVAS_W / 2, CANVAS_H / 2);
-  ctx.restore();
-}
-
-/**
  * Draw king hit overlay (brief flash).
  */
 export function drawKingHitOverlay(ctx, state, colors, time) {
@@ -462,16 +419,6 @@ export function drawParticles(ctx, particles) {
     ctx.fillRect(p.x - 2, p.y - 2, 4, 4);
   }
   ctx.globalAlpha = 1.0;
-}
-
-/**
- * Draw CRT scanline overlay.
- */
-export function drawScanlines(ctx) {
-  ctx.fillStyle = "rgba(0,0,0,0.08)";
-  for (let y = 0; y < CANVAS_H; y += 2) {
-    ctx.fillRect(0, y, CANVAS_W, 1);
-  }
 }
 
 /**

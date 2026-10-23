@@ -21,7 +21,8 @@ import {
   BALL_RADIUS,
 } from "./physics.js";
 import { t, jt } from "../../i18n.js";
-import { gameColor } from "../../game_colors.js";
+import { gameColor, readGameColors } from "../../game_colors.js";
+import { drawBackground, drawScanlines, waitingText } from "../hud.js";
 
 // Point display names
 const POINT_DISPLAY = ["LOVE", "15", "30", "40"];
@@ -38,19 +39,18 @@ const OUT_MESSAGES = ["", "OUT!", "LONG!", "ACE!", "DEAD BALL"];
  * @returns {object} color palette
  */
 export function getColors(canvas) {
-  const s = getComputedStyle(canvas);
-  return {
-    bg: s.getPropertyValue("--game-bg-color").trim() || gameColor("0a0a14"),
-    fg: s.getPropertyValue("--game-fg-color").trim() || gameColor("39ff14"),
-    accent: s.getPropertyValue("--game-accent-color").trim() || gameColor("00e5ff"),
-    muted: s.getPropertyValue("--game-muted-color").trim() || gameColor("1a1a2a"),
-    glow: s.getPropertyValue("--game-glow-color").trim() || "rgba(57,255,20,0.15)",
-    warning: s.getPropertyValue("--game-warning-color").trim() || gameColor("ffaa00"),
-    courtColor: s.getPropertyValue("--game-court-color").trim() || gameColor("0e1a0e"),
-    lineColor: s.getPropertyValue("--game-line-color").trim() || gameColor("39ff1480"),
-    netColor: s.getPropertyValue("--game-net-color").trim() || gameColor("ff006688"),
-    ballColor: s.getPropertyValue("--game-ball-color").trim() || gameColor("ffee00"),
-  };
+  return readGameColors(canvas, {
+    bg: ["--game-bg-color", "0a0a14"],
+    fg: ["--game-fg-color", "39ff14"],
+    accent: ["--game-accent-color", "00e5ff"],
+    muted: ["--game-muted-color", "1a1a2a"],
+    glow: ["--game-glow-color", "rgba(57,255,20,0.15)"],
+    warning: ["--game-warning-color", "ffaa00"],
+    courtColor: ["--game-court-color", "0e1a0e"],
+    lineColor: ["--game-line-color", "39ff1480"],
+    netColor: ["--game-net-color", "ff006688"],
+    ballColor: ["--game-ball-color", "ffee00"],
+  });
 }
 
 /**
@@ -76,7 +76,7 @@ export function getPointText(points, opponentPoints, isTiebreak) {
  * @param {number} time
  */
 export function render(ctx, state, colors, time) {
-  drawBackground(ctx, colors);
+  drawBackground(ctx, colors, CANVAS_W, CANVAS_H);
   drawCourt(ctx, colors);
   drawNet(ctx, colors, time);
 
@@ -137,16 +137,11 @@ export function render(ctx, state, colors, time) {
     }
   }
 
-  drawScanlines(ctx);
+  drawScanlines(ctx, CANVAS_W, CANVAS_H, { step: 3 });
   drawVignette(ctx);
 }
 
 // --- Drawing functions ---
-
-function drawBackground(ctx, colors) {
-  ctx.fillStyle = colors.bg;
-  ctx.fillRect(0, 0, CANVAS_W, CANVAS_H);
-}
 
 function drawCourt(ctx, colors) {
   // Court surface
@@ -387,7 +382,7 @@ function drawWaiting(ctx, colors, time) {
   ctx.shadowColor = colors.fg;
   ctx.shadowBlur = 10;
   ctx.fillStyle = colors.fg;
-  ctx.fillText(t("WAITING FOR OPPONENT"), CANVAS_W / 2, CANVAS_H / 2);
+  ctx.fillText(waitingText(), CANVAS_W / 2, CANVAS_H / 2);
   ctx.restore();
 }
 
@@ -461,13 +456,6 @@ function drawWinner(ctx, state, colors, time) {
   ctx.fillText(t("GAME OVER"), CANVAS_W / 2, CANVAS_H / 2 + 40);
 
   ctx.restore();
-}
-
-function drawScanlines(ctx) {
-  ctx.fillStyle = "rgba(0,0,0,0.08)";
-  for (let y = 0; y < CANVAS_H; y += 3) {
-    ctx.fillRect(0, y, CANVAS_W, 1);
-  }
 }
 
 function drawVignette(ctx) {

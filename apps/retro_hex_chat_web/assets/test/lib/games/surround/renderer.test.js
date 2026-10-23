@@ -8,18 +8,14 @@ import {
 import {
   getColors,
   render,
-  drawBackground,
   drawArena,
   drawGrid,
   drawTrails,
   drawHeads,
   drawParticles,
   drawHUD,
-  drawCountdown,
   drawRoundOver,
   drawMatchOver,
-  drawWaiting,
-  drawScanlines,
   drawVignette,
 } from "../../../../js/lib/games/surround/renderer.js";
 
@@ -93,14 +89,6 @@ describe("surround_renderer", () => {
       expect(result.accent).toBe("#00d4ff");
 
       document.body.removeChild(canvas);
-    });
-  });
-
-  describe("drawBackground", () => {
-    it("fills the entire canvas", () => {
-      drawBackground(ctx, colors);
-      expect(ctx.fillRect).toHaveBeenCalledWith(0, 0, CANVAS_W, CANVAS_H);
-      expect(ctx.fillStyle).toBe(colors.bg);
     });
   });
 
@@ -179,13 +167,6 @@ describe("surround_renderer", () => {
     });
   });
 
-  describe("drawCountdown", () => {
-    it("draws countdown number", () => {
-      drawCountdown(ctx, 3, colors, 0);
-      expect(ctx.fillText).toHaveBeenCalledWith("3", CANVAS_W / 2, CANVAS_H / 2);
-    });
-  });
-
   describe("drawRoundOver", () => {
     it("draws round over text for P1 win", () => {
       const state = { p1Dead: false, p2Dead: true, score1: 1, score2: 0 };
@@ -215,23 +196,6 @@ describe("surround_renderer", () => {
       drawMatchOver(ctx, state, colors, 0);
       const texts = ctx.fillText.mock.calls.map((c) => c[0]);
       expect(texts).toContain("P2 VICTORY!");
-    });
-  });
-
-  describe("drawWaiting", () => {
-    it("draws waiting message", () => {
-      drawWaiting(ctx, colors, 0);
-      expect(ctx.fillText).toHaveBeenCalled();
-      const text = ctx.fillText.mock.calls[0][0];
-      expect(text).toContain("WAITING FOR PARTNER");
-    });
-  });
-
-  describe("drawScanlines", () => {
-    it("draws horizontal lines across canvas", () => {
-      drawScanlines(ctx);
-      expect(ctx.fillRect).toHaveBeenCalled();
-      expect(ctx.fillRect.mock.calls.length).toBe(CANVAS_H / 2);
     });
   });
 

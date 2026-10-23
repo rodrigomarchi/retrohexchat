@@ -23,31 +23,30 @@ import {
 } from "./physics.js";
 import { PHASE, GAME_MODE, SKIER_STATE } from "./protocol.js";
 import { t, jt } from "../../i18n.js";
-import { gameColor } from "../../game_colors.js";
+import { gameColor, readGameColors } from "../../game_colors.js";
+import { waitingText } from "../hud.js";
 
 /**
  * Read CSS custom properties from the canvas element.
  */
 export function readColors(canvas) {
-  const s = getComputedStyle(canvas);
-  const get = (name) => s.getPropertyValue(name).trim() || null;
-  return {
-    bg: get("--game-bg-color") || gameColor("0a0a14"),
-    fg: get("--game-fg-color") || gameColor("39ff14"),
-    accent: get("--game-accent-color") || gameColor("00e5ff"),
-    muted: get("--game-muted-color") || gameColor("1a1a2a"),
-    glow: get("--game-glow-color") || "rgba(57,255,20,0.15)",
-    warning: get("--game-warning-color") || gameColor("ff4444"),
-    snow: get("--game-snow-color") || gameColor("1a1a2e"),
-    tree: get("--game-tree-color") || gameColor("1a3a1a"),
-    rock: get("--game-rock-color") || gameColor("555566"),
-    avalanche: get("--game-avalanche-color") || gameColor("2a2a3a"),
-    gateLeft: get("--game-gate-left") || gameColor("4488ff"),
-    gateRight: get("--game-gate-right") || gameColor("ff4444"),
-    boost: get("--game-boost-color") || gameColor("ffee00"),
-    ice: get("--game-ice-color") || gameColor("00ccff"),
-    trail: get("--game-trail-color") || "rgba(57,255,20,0.3)",
-  };
+  return readGameColors(canvas, {
+    bg: ["--game-bg-color", "0a0a14"],
+    fg: ["--game-fg-color", "39ff14"],
+    accent: ["--game-accent-color", "00e5ff"],
+    muted: ["--game-muted-color", "1a1a2a"],
+    glow: ["--game-glow-color", "rgba(57,255,20,0.15)"],
+    warning: ["--game-warning-color", "ff4444"],
+    snow: ["--game-snow-color", "1a1a2e"],
+    tree: ["--game-tree-color", "1a3a1a"],
+    rock: ["--game-rock-color", "555566"],
+    avalanche: ["--game-avalanche-color", "2a2a3a"],
+    gateLeft: ["--game-gate-left", "4488ff"],
+    gateRight: ["--game-gate-right", "ff4444"],
+    boost: ["--game-boost-color", "ffee00"],
+    ice: ["--game-ice-color", "00ccff"],
+    trail: ["--game-trail-color", "rgba(57,255,20,0.3)"],
+  });
 }
 
 /**
@@ -598,7 +597,7 @@ function drawWaitingScreen(ctx, colors, frameCount) {
   ctx.fillStyle = colors.muted;
   ctx.font = "11px monospace";
   const dots = ".".repeat((Math.floor(frameCount / 30) % 3) + 1);
-  ctx.fillText(jt`Waiting for opponent${dots}`, CANVAS_W / 2, CANVAS_H / 2 + 30);
+  ctx.fillText(waitingText(dots), CANVAS_W / 2, CANVAS_H / 2 + 30);
 
   // Decorative mountains
   ctx.fillStyle = gameColor("151525");

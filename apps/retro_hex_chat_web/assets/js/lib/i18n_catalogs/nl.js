@@ -243,9 +243,7 @@ export const NL = {
   Unknown: "Onbekend",
   "Use ↑ to edit your last message": "Gebruik ↑ om uw laatste bericht te bewerken",
   "VICTORY!": "OVERWINNING!",
-  "WAITING FOR OPPONENT": "WACHTEN OP TEGENSTANDER",
   "WAITING FOR OPPONENT%{0}": "WACHTEN OP TEGENSTANDER%{0}",
-  "WAITING FOR OPPONENT...": "WACHTEN OP TEGENSTANDER...",
   "WAITING FOR PARTNER%{0}": "Wacht op PARTNER%{0}",
   "WAVE %{0}": "GOLF %{0}",
   "WAVE %{0} CLEARED": "GOLF %{0} GERUIMD",
@@ -253,8 +251,6 @@ export const NL = {
     "Wacht tot de configuratie geladen is en probeer het opnieuw.",
   "Waiting for media offer. Requesting a fresh offer.":
     "Wachten op mediaaanbod. Verzoek om een nieuw aanbod.",
-  "Waiting for opponent%{0}": "Wachten op tegenstander%{0}",
-  "Waiting for opponent...": "Wachten op tegenstander...",
   You: "Jij",
   "Your camera is not being sent.": "Je camera wordt niet verstuurd.",
   "Your camera is unavailable. Check your video devices.":

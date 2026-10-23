@@ -21,7 +21,7 @@ import {
   LANE_COUNT,
 } from "./physics.js";
 import { t, jt } from "../../i18n.js";
-import { gameColor } from "../../game_colors.js";
+import { gameColor, readGameColors } from "../../game_colors.js";
 
 // ── Road colors (per weather) ──
 const SKY_COLORS = {
@@ -54,21 +54,20 @@ const WEATHER_LABELS = {
  * @returns {object} color palette
  */
 export function getColors(canvas) {
-  const s = getComputedStyle(canvas);
-  return {
-    bg: s.getPropertyValue("--game-bg-color").trim() || gameColor("0a0a1a"),
-    p1: s.getPropertyValue("--game-fg-color").trim() || gameColor("39ff14"),
-    p2: s.getPropertyValue("--game-accent-color").trim() || gameColor("00e5ff"),
-    muted: s.getPropertyValue("--game-muted-color").trim() || gameColor("1a1a2a"),
-    glow: s.getPropertyValue("--game-glow-color").trim() || "rgba(57,255,20,0.15)",
-    warning: s.getPropertyValue("--game-warning-color").trim() || gameColor("ff4444"),
-    road1: s.getPropertyValue("--game-road-color-1").trim() || gameColor("2a2a3a"),
-    road2: s.getPropertyValue("--game-road-color-2").trim() || gameColor("1a1a2a"),
-    lane: s.getPropertyValue("--game-lane-color").trim() || gameColor("555566"),
-    mountain: s.getPropertyValue("--game-mountain-color").trim() || gameColor("151525"),
-    carAi: s.getPropertyValue("--game-car-ai").trim() || gameColor("ff8c00"),
-    fuel: s.getPropertyValue("--game-fuel-color").trim() || gameColor("ffee00"),
-  };
+  return readGameColors(canvas, {
+    bg: ["--game-bg-color", "0a0a1a"],
+    p1: ["--game-fg-color", "39ff14"],
+    p2: ["--game-accent-color", "00e5ff"],
+    muted: ["--game-muted-color", "1a1a2a"],
+    glow: ["--game-glow-color", "rgba(57,255,20,0.15)"],
+    warning: ["--game-warning-color", "ff4444"],
+    road1: ["--game-road-color-1", "2a2a3a"],
+    road2: ["--game-road-color-2", "1a1a2a"],
+    lane: ["--game-lane-color", "555566"],
+    mountain: ["--game-mountain-color", "151525"],
+    carAi: ["--game-car-ai", "ff8c00"],
+    fuel: ["--game-fuel-color", "ffee00"],
+  });
 }
 
 /**

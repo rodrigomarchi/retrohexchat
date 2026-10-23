@@ -15,8 +15,9 @@ import {
   getBankAtWorld,
   formatFuel,
 } from "./physics.js";
-import { t, jt } from "../../i18n.js";
-import { gameColor } from "../../game_colors.js";
+import { jt } from "../../i18n.js";
+import { gameColor, readGameColors } from "../../game_colors.js";
+import { drawBackground, drawScanlines, waitingText } from "../hud.js";
 
 /**
  * Read CSS custom properties from canvas computed style.
@@ -24,19 +25,18 @@ import { gameColor } from "../../game_colors.js";
  * @returns {object} color palette
  */
 export function getColors(canvas) {
-  const s = getComputedStyle(canvas);
-  return {
-    bg: s.getPropertyValue("--game-bg-color").trim() || gameColor("0a0e14"),
-    p1: s.getPropertyValue("--game-fg-color").trim() || gameColor("39ff14"),
-    p2: s.getPropertyValue("--game-accent-color").trim() || gameColor("00e5ff"),
-    water: s.getPropertyValue("--game-muted-color").trim() || gameColor("0a1a2a"),
-    glow: s.getPropertyValue("--game-glow-color").trim() || "rgba(57,255,20,0.15)",
-    warning: s.getPropertyValue("--game-warning-color").trim() || gameColor("ff8c00"),
-    bank: s.getPropertyValue("--game-wall-color").trim() || gameColor("1a2a1a"),
-    bankHi: s.getPropertyValue("--game-wall-highlight").trim() || gameColor("2a4a2a"),
-    missile: s.getPropertyValue("--game-missile-color").trim() || gameColor("ffee00"),
-    explosion: s.getPropertyValue("--game-explosion-color").trim() || gameColor("ff4444"),
-  };
+  return readGameColors(canvas, {
+    bg: ["--game-bg-color", "0a0e14"],
+    p1: ["--game-fg-color", "39ff14"],
+    p2: ["--game-accent-color", "00e5ff"],
+    water: ["--game-muted-color", "0a1a2a"],
+    glow: ["--game-glow-color", "rgba(57,255,20,0.15)"],
+    warning: ["--game-warning-color", "ff8c00"],
+    bank: ["--game-wall-color", "1a2a1a"],
+    bankHi: ["--game-wall-highlight", "2a4a2a"],
+    missile: ["--game-missile-color", "ffee00"],
+    explosion: ["--game-explosion-color", "ff4444"],
+  });
 }
 
 /**
@@ -48,7 +48,7 @@ export function getColors(canvas) {
  * @param {Array} particles
  */
 export function render(ctx, state, colors, time, particles) {
-  drawBackground(ctx, colors);
+  drawBackground(ctx, colors, CANVAS_W, CANVAS_H);
   drawWater(ctx, state, colors, time);
   drawBanks(ctx, state, colors);
   drawFuelStations(ctx, state, colors, time);
@@ -66,23 +66,18 @@ export function render(ctx, state, colors, time, particles) {
 
   // Phase overlays
   if (state.phase === PHASE.WAITING) {
-    drawOverlayText(ctx, colors, t("WAITING FOR OPPONENT..."), colors.p1);
+    drawOverlayText(ctx, colors, waitingText(), colors.p1);
   } else if (state.phase === PHASE.COUNTDOWN) {
     drawOverlayText(ctx, colors, String(state.countdown), colors.warning, 64);
   } else if (state.phase === PHASE.FINISHED) {
     drawGameOver(ctx, state, colors);
   }
 
-  drawScanlines(ctx);
+  drawScanlines(ctx, CANVAS_W, CANVAS_H, { alpha: 0.06, step: 3 });
   drawVignette(ctx);
 }
 
 // --- Background layers ---
-
-function drawBackground(ctx, colors) {
-  ctx.fillStyle = colors.bg;
-  ctx.fillRect(0, 0, CANVAS_W, CANVAS_H);
-}
 
 function drawWater(ctx, state, colors, time) {
   // Toxic water with subtle animated wave lines
@@ -718,13 +713,6 @@ function drawGameOver(ctx, state, colors) {
 }
 
 // --- CRT effects ---
-
-function drawScanlines(ctx) {
-  ctx.fillStyle = "rgba(0, 0, 0, 0.06)";
-  for (let y = 0; y < CANVAS_H; y += 3) {
-    ctx.fillRect(0, y, CANVAS_W, 1);
-  }
-}
 
 function drawVignette(ctx) {
   const gradient = ctx.createRadialGradient(

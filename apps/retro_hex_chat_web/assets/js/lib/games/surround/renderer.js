@@ -7,7 +7,8 @@
 import { PHASE, GRID_W, GRID_H } from "./protocol.js";
 import { CANVAS_W, CANVAS_H, CELL_SIZE, GRID_OFFSET_X, GRID_OFFSET_Y, CELL } from "./physics.js";
 import { t, jt } from "../../i18n.js";
-import { gameColor } from "../../game_colors.js";
+import { gameColor, readGameColors } from "../../game_colors.js";
+import { drawBackground, drawCountdown, drawScanlines, drawWaiting } from "../hud.js";
 
 // Bitmap digits 5x7 for retro score display (each row is a 5-bit mask)
 const DIGITS = [
@@ -29,15 +30,14 @@ const DIGITS = [
  * @returns {object} color palette
  */
 export function getColors(canvas) {
-  const s = getComputedStyle(canvas);
-  return {
-    bg: s.getPropertyValue("--game-bg-color").trim() || gameColor("050510"),
-    fg: s.getPropertyValue("--game-fg-color").trim() || gameColor("00ff41"),
-    accent: s.getPropertyValue("--game-accent-color").trim() || gameColor("00d4ff"),
-    muted: s.getPropertyValue("--game-muted-color").trim() || gameColor("0a1628"),
-    glow: s.getPropertyValue("--game-glow-color").trim() || "rgba(0,255,65,0.2)",
-    warning: s.getPropertyValue("--game-warning-color").trim() || gameColor("ffaa00"),
-  };
+  return readGameColors(canvas, {
+    bg: ["--game-bg-color", "050510"],
+    fg: ["--game-fg-color", "00ff41"],
+    accent: ["--game-accent-color", "00d4ff"],
+    muted: ["--game-muted-color", "0a1628"],
+    glow: ["--game-glow-color", "rgba(0,255,65,0.2)"],
+    warning: ["--game-warning-color", "ffaa00"],
+  });
 }
 
 /**
@@ -48,7 +48,7 @@ export function getColors(canvas) {
  * @param {number} time - timestamp for animations
  */
 export function render(ctx, state, colors, time) {
-  drawBackground(ctx, colors);
+  drawBackground(ctx, colors, CANVAS_W, CANVAS_H);
   drawArena(ctx, colors);
   drawGrid(ctx, colors);
   drawTrails(ctx, state, colors, time);
@@ -61,25 +61,17 @@ export function render(ctx, state, colors, time) {
   drawHUD(ctx, state, colors);
 
   if (state.phase === PHASE.COUNTDOWN) {
-    drawCountdown(ctx, state.countdown, colors, time);
+    drawCountdown(ctx, state.countdown, colors, time, CANVAS_W, CANVAS_H);
   } else if (state.phase === PHASE.ROUND_OVER) {
     drawRoundOver(ctx, state, colors, time);
   } else if (state.phase === PHASE.MATCH_OVER) {
     drawMatchOver(ctx, state, colors, time);
   } else if (state.phase === PHASE.WAITING) {
-    drawWaiting(ctx, colors, time);
+    drawWaiting(ctx, colors, time, CANVAS_W, CANVAS_H);
   }
 
-  drawScanlines(ctx);
+  drawScanlines(ctx, CANVAS_W, CANVAS_H);
   drawVignette(ctx);
-}
-
-/**
- * Fill background.
- */
-export function drawBackground(ctx, colors) {
-  ctx.fillStyle = colors.bg;
-  ctx.fillRect(0, 0, CANVAS_W, CANVAS_H);
 }
 
 /**
@@ -287,24 +279,6 @@ function drawDigit(ctx, digit, x, y, pixelSize) {
 }
 
 /**
- * Draw countdown number with pulse animation.
- */
-export function drawCountdown(ctx, count, colors, time) {
-  const pulse = 1.0 + 0.15 * Math.sin(time * 0.015);
-  const size = Math.floor(80 * pulse);
-
-  ctx.save();
-  ctx.shadowColor = colors.warning;
-  ctx.shadowBlur = 20;
-  ctx.fillStyle = colors.warning;
-  ctx.font = `bold ${size}px monospace`;
-  ctx.textAlign = "center";
-  ctx.textBaseline = "middle";
-  ctx.fillText(String(count), CANVAS_W / 2, CANVAS_H / 2);
-  ctx.restore();
-}
-
-/**
  * Draw round over overlay with winner indication.
  */
 export function drawRoundOver(ctx, state, colors, _time) {
@@ -393,33 +367,6 @@ export function drawMatchOver(ctx, state, colors, time) {
   ctx.fillText(`${state.score1} - ${state.score2}`, CANVAS_W / 2, CANVAS_H / 2 + 40);
 
   ctx.restore();
-}
-
-/**
- * Draw waiting message.
- */
-export function drawWaiting(ctx, colors, time) {
-  const dots = ".".repeat(Math.floor((time / 500) % 4));
-
-  ctx.save();
-  ctx.shadowColor = colors.muted;
-  ctx.shadowBlur = 8;
-  ctx.fillStyle = colors.muted;
-  ctx.font = "18px monospace";
-  ctx.textAlign = "center";
-  ctx.textBaseline = "middle";
-  ctx.fillText(jt`WAITING FOR PARTNER${dots}`, CANVAS_W / 2, CANVAS_H / 2);
-  ctx.restore();
-}
-
-/**
- * Draw CRT scanline overlay.
- */
-export function drawScanlines(ctx) {
-  ctx.fillStyle = "rgba(0,0,0,0.08)";
-  for (let y = 0; y < CANVAS_H; y += 2) {
-    ctx.fillRect(0, y, CANVAS_W, 1);
-  }
 }
 
 /**

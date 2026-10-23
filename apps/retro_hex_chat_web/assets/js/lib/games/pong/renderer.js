@@ -7,7 +7,8 @@
 import { PHASE } from "./protocol.js";
 import { CANVAS_W, CANVAS_H, PADDLE_W, PADDLE_H, PADDLE_MARGIN, BALL_SIZE } from "./physics.js";
 import { t, jt } from "../../i18n.js";
-import { gameColor } from "../../game_colors.js";
+import { gameColor, readGameColors } from "../../game_colors.js";
+import { drawBackground, drawCountdown, drawScanlines, drawWaiting } from "../hud.js";
 
 // Bitmap digits 5x7 for retro score display (each row is a 5-bit mask)
 const DIGITS = [
@@ -29,15 +30,14 @@ const DIGITS = [
  * @returns {object} color palette
  */
 export function getColors(canvas) {
-  const s = getComputedStyle(canvas);
-  return {
-    bg: s.getPropertyValue("--game-bg-color").trim() || gameColor("0a0a1a"),
-    fg: s.getPropertyValue("--game-fg-color").trim() || gameColor("00ffcc"),
-    accent: s.getPropertyValue("--game-accent-color").trim() || gameColor("ff0066"),
-    muted: s.getPropertyValue("--game-muted-color").trim() || gameColor("1a3a4a"),
-    glow: s.getPropertyValue("--game-glow-color").trim() || "rgba(0,255,204,0.2)",
-    warning: s.getPropertyValue("--game-warning-color").trim() || gameColor("ffaa00"),
-  };
+  return readGameColors(canvas, {
+    bg: ["--game-bg-color", "0a0a1a"],
+    fg: ["--game-fg-color", "00ffcc"],
+    accent: ["--game-accent-color", "ff0066"],
+    muted: ["--game-muted-color", "1a3a4a"],
+    glow: ["--game-glow-color", "rgba(0,255,204,0.2)"],
+    warning: ["--game-warning-color", "ffaa00"],
+  });
 }
 
 /**
@@ -50,7 +50,7 @@ export function getColors(canvas) {
  * @param {"p2p_host"|"p2p_guest"|"solo"} [options.mode]
  */
 export function render(ctx, state, colors, time, options = {}) {
-  drawBackground(ctx, colors);
+  drawBackground(ctx, colors, CANVAS_W, CANVAS_H);
   drawGrid(ctx, colors);
   drawCenterLine(ctx, colors, time);
 
@@ -68,25 +68,17 @@ export function render(ctx, state, colors, time, options = {}) {
   drawScore(ctx, state.score1, state.score2, colors);
 
   if (state.phase === PHASE.COUNTDOWN) {
-    drawCountdown(ctx, state.countdown, colors, time);
+    drawCountdown(ctx, state.countdown, colors, time, CANVAS_W, CANVAS_H);
   } else if (state.phase === PHASE.SERVING) {
     drawServing(ctx, colors, time);
   } else if (state.phase === PHASE.WAITING) {
-    drawWaiting(ctx, colors, time, options);
+    drawWaiting(ctx, colors, time, CANVAS_W, CANVAS_H, { solo: options.mode === "solo" });
   } else if (state.phase === PHASE.FINISHED) {
     drawWinner(ctx, state.winner, colors, time);
   }
 
-  drawScanlines(ctx);
+  drawScanlines(ctx, CANVAS_W, CANVAS_H);
   drawVignette(ctx);
-}
-
-/**
- * Fill background.
- */
-export function drawBackground(ctx, colors) {
-  ctx.fillStyle = colors.bg;
-  ctx.fillRect(0, 0, CANVAS_W, CANVAS_H);
 }
 
 /**
@@ -257,24 +249,6 @@ function drawDigit(ctx, digit, x, y, pixelSize) {
 }
 
 /**
- * Draw countdown number with pulse animation.
- */
-export function drawCountdown(ctx, count, colors, time) {
-  const pulse = 1.0 + 0.15 * Math.sin(time * 0.015);
-  const size = Math.floor(80 * pulse);
-
-  ctx.save();
-  ctx.shadowColor = colors.warning;
-  ctx.shadowBlur = 20;
-  ctx.fillStyle = colors.warning;
-  ctx.font = `bold ${size}px monospace`;
-  ctx.textAlign = "center";
-  ctx.textBaseline = "middle";
-  ctx.fillText(String(count), CANVAS_W / 2, CANVAS_H / 2);
-  ctx.restore();
-}
-
-/**
  * Draw "GET READY" with flicker effect.
  */
 export function drawServing(ctx, colors, time) {
@@ -289,25 +263,6 @@ export function drawServing(ctx, colors, time) {
   ctx.textAlign = "center";
   ctx.textBaseline = "middle";
   ctx.fillText(t("GET READY"), CANVAS_W / 2, CANVAS_H / 2);
-  ctx.restore();
-}
-
-/**
- * Draw waiting message.
- */
-export function drawWaiting(ctx, colors, time, options = {}) {
-  const dots = ".".repeat(Math.floor((time / 500) % 4));
-  const solo = options.mode === "solo";
-  const text = solo ? t("GET READY") : jt`WAITING FOR OPPONENT${dots}`;
-
-  ctx.save();
-  ctx.shadowColor = solo ? colors.fg : colors.muted;
-  ctx.shadowBlur = solo ? 12 : 8;
-  ctx.fillStyle = solo ? colors.fg : colors.muted;
-  ctx.font = `${solo ? "bold " : ""}18px monospace`;
-  ctx.textAlign = "center";
-  ctx.textBaseline = "middle";
-  ctx.fillText(text, CANVAS_W / 2, CANVAS_H / 2);
   ctx.restore();
 }
 
@@ -364,16 +319,6 @@ export function drawParticles(ctx, particles, colors) {
     ctx.fillRect(p.x - 2, p.y - 2, 4, 4);
   }
   ctx.globalAlpha = 1.0;
-}
-
-/**
- * Draw CRT scanline overlay.
- */
-export function drawScanlines(ctx) {
-  ctx.fillStyle = "rgba(0,0,0,0.08)";
-  for (let y = 0; y < CANVAS_H; y += 2) {
-    ctx.fillRect(0, y, CANVAS_W, 1);
-  }
 }
 
 /**

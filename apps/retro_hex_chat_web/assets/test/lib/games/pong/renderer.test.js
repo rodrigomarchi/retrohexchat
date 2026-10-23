@@ -4,18 +4,14 @@ import { CANVAS_W, CANVAS_H, createInitialState } from "../../../../js/lib/games
 import {
   getColors,
   render,
-  drawBackground,
   drawGrid,
   drawCenterLine,
   drawPaddle,
   drawBall,
   drawScore,
-  drawCountdown,
   drawServing,
-  drawWaiting,
   drawWinner,
   drawParticles,
-  drawScanlines,
   drawVignette,
 } from "../../../../js/lib/games/pong/renderer.js";
 
@@ -91,14 +87,6 @@ describe("pong_renderer", () => {
     });
   });
 
-  describe("drawBackground", () => {
-    it("fills the entire canvas", () => {
-      drawBackground(ctx, colors);
-      expect(ctx.fillRect).toHaveBeenCalledWith(0, 0, CANVAS_W, CANVAS_H);
-      expect(ctx.fillStyle).toBe(colors.bg);
-    });
-  });
-
   describe("drawGrid", () => {
     it("draws grid lines", () => {
       drawGrid(ctx, colors);
@@ -142,30 +130,9 @@ describe("pong_renderer", () => {
     });
   });
 
-  describe("drawCountdown", () => {
-    it("draws countdown number", () => {
-      drawCountdown(ctx, 3, colors, 0);
-      expect(ctx.fillText).toHaveBeenCalledWith("3", CANVAS_W / 2, CANVAS_H / 2);
-    });
-  });
-
   describe("drawServing", () => {
     it("draws GET READY text", () => {
       drawServing(ctx, colors, 0);
-      expect(ctx.fillText).toHaveBeenCalledWith("GET READY", CANVAS_W / 2, CANVAS_H / 2);
-    });
-  });
-
-  describe("drawWaiting", () => {
-    it("draws P2P waiting message", () => {
-      drawWaiting(ctx, colors, 0);
-      expect(ctx.fillText).toHaveBeenCalled();
-      const text = ctx.fillText.mock.calls[0][0];
-      expect(text).toContain("WAITING FOR OPPONENT");
-    });
-
-    it("draws solo ready message", () => {
-      drawWaiting(ctx, colors, 0, { mode: "solo" });
       expect(ctx.fillText).toHaveBeenCalledWith("GET READY", CANVAS_W / 2, CANVAS_H / 2);
     });
   });
@@ -194,14 +161,6 @@ describe("pong_renderer", () => {
       drawParticles(ctx, particles, colors);
       expect(ctx.fillRect).toHaveBeenCalledTimes(2);
       expect(ctx.globalAlpha).toBe(1.0);
-    });
-  });
-
-  describe("drawScanlines", () => {
-    it("draws horizontal lines across canvas", () => {
-      drawScanlines(ctx);
-      expect(ctx.fillRect).toHaveBeenCalled();
-      expect(ctx.fillRect.mock.calls.length).toBe(CANVAS_H / 2);
     });
   });
 

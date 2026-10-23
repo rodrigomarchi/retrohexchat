@@ -242,9 +242,7 @@ export const DE = {
   Unknown: "Unbekannt",
   "Use ↑ to edit your last message": "Verwenden Sie ↑, um Ihre letzte Nachricht zu bearbeiten",
   "VICTORY!": "SIEG!",
-  "WAITING FOR OPPONENT": "WARTE AUF GEGNER",
   "WAITING FOR OPPONENT%{0}": "WARTE AUF GEGNER%{0}",
-  "WAITING FOR OPPONENT...": "WARTE AUF GEGNER...",
   "WAITING FOR PARTNER%{0}": "WARTE AUF PARTNER%{0}",
   "WAVE %{0}": "WELLE %{0}",
   "WAVE %{0} CLEARED": "WELLE %{0} GERÄUMT",
@@ -252,8 +250,6 @@ export const DE = {
     "Warten Sie auf Konfiguration laden und versuchen Sie es erneut.",
   "Waiting for media offer. Requesting a fresh offer.":
     "Warten auf Medienangebot. Bitte um ein frisches Angebot.",
-  "Waiting for opponent%{0}": "Warte auf Gegner%{0}",
-  "Waiting for opponent...": "Warten auf Gegner...",
   You: "Du",
   "Your camera is not being sent.": "Ihre Kamera wird nicht gesendet.",
   "Your camera is unavailable. Check your video devices.":

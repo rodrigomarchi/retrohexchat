@@ -17,7 +17,8 @@ import {
   formatTimer,
 } from "./physics.js";
 import { t, jt } from "../../i18n.js";
-import { gameColor } from "../../game_colors.js";
+import { gameColor, readGameColors } from "../../game_colors.js";
+import { drawBackground, drawScanlines, waitingText } from "../hud.js";
 
 /**
  * Read CSS custom properties from canvas computed style.
@@ -25,19 +26,18 @@ import { gameColor } from "../../game_colors.js";
  * @returns {object} color palette
  */
 export function getColors(canvas) {
-  const s = getComputedStyle(canvas);
-  return {
-    bg: s.getPropertyValue("--game-bg-color").trim() || gameColor("0a0e0a"),
-    fg: s.getPropertyValue("--game-fg-color").trim() || gameColor("39ff14"),
-    accent: s.getPropertyValue("--game-accent-color").trim() || gameColor("00e5ff"),
-    muted: s.getPropertyValue("--game-muted-color").trim() || gameColor("1a2a1a"),
-    glow: s.getPropertyValue("--game-glow-color").trim() || "rgba(57,255,20,0.15)",
-    warning: s.getPropertyValue("--game-warning-color").trim() || gameColor("ff8c00"),
-    wall: s.getPropertyValue("--game-wall-color").trim() || gameColor("2a2a2a"),
-    wallHi: s.getPropertyValue("--game-wall-highlight").trim() || gameColor("3a3a3a"),
-    missile: s.getPropertyValue("--game-missile-color").trim() || gameColor("ffee00"),
-    explosion: s.getPropertyValue("--game-explosion-color").trim() || gameColor("ff4444"),
-  };
+  return readGameColors(canvas, {
+    bg: ["--game-bg-color", "0a0e0a"],
+    fg: ["--game-fg-color", "39ff14"],
+    accent: ["--game-accent-color", "00e5ff"],
+    muted: ["--game-muted-color", "1a2a1a"],
+    glow: ["--game-glow-color", "rgba(57,255,20,0.15)"],
+    warning: ["--game-warning-color", "ff8c00"],
+    wall: ["--game-wall-color", "2a2a2a"],
+    wallHi: ["--game-wall-highlight", "3a3a3a"],
+    missile: ["--game-missile-color", "ffee00"],
+    explosion: ["--game-explosion-color", "ff4444"],
+  });
 }
 
 /**
@@ -50,7 +50,7 @@ export function getColors(canvas) {
  * @param {Array} particles - particle array
  */
 export function render(ctx, state, colors, walls, time, particles) {
-  drawBackground(ctx, colors);
+  drawBackground(ctx, colors, CANVAS_W, CANVAS_H);
   drawGrid(ctx, colors);
   drawWalls(ctx, walls, colors);
 
@@ -100,16 +100,11 @@ export function render(ctx, state, colors, walls, time, particles) {
   }
 
   // CRT effects
-  drawScanlines(ctx);
+  drawScanlines(ctx, CANVAS_W, CANVAS_H, { alpha: 0.06, step: 3 });
   drawVignette(ctx);
 }
 
 // --- Drawing functions ---
-
-function drawBackground(ctx, colors) {
-  ctx.fillStyle = colors.bg;
-  ctx.fillRect(0, 0, CANVAS_W, CANVAS_H);
-}
 
 function drawGrid(ctx, colors) {
   ctx.strokeStyle = colors.muted;
@@ -285,7 +280,7 @@ function drawWaiting(ctx, colors) {
   ctx.font = "bold 16px monospace";
   ctx.textAlign = "center";
   ctx.textBaseline = "middle";
-  ctx.fillText(t("WAITING FOR OPPONENT..."), CANVAS_W / 2, CANVAS_H / 2);
+  ctx.fillText(waitingText(), CANVAS_W / 2, CANVAS_H / 2);
 }
 
 function drawCountdown(ctx, countdown, colors) {
@@ -360,13 +355,6 @@ function drawMatchOver(ctx, state, colors) {
 function drawOverlay(ctx, alpha) {
   ctx.fillStyle = `rgba(0, 0, 0, ${alpha})`;
   ctx.fillRect(0, 0, CANVAS_W, CANVAS_H);
-}
-
-function drawScanlines(ctx) {
-  ctx.fillStyle = "rgba(0, 0, 0, 0.06)";
-  for (let y = 0; y < CANVAS_H; y += 3) {
-    ctx.fillRect(0, y, CANVAS_W, 1);
-  }
 }
 
 function drawVignette(ctx) {

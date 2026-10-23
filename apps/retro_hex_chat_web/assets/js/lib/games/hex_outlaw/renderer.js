@@ -19,7 +19,8 @@ import {
 } from "./physics.js";
 import { PHASE, GAME_MODE } from "./protocol.js";
 import { t, jt } from "../../i18n.js";
-import { gameColor } from "../../game_colors.js";
+import { gameColor, readGameColors } from "../../game_colors.js";
+import { waitingText } from "../hud.js";
 
 /**
  * Read CSS custom properties from the canvas element.
@@ -27,18 +28,17 @@ import { gameColor } from "../../game_colors.js";
  * @returns {object}
  */
 export function getColors(canvas) {
-  const s = getComputedStyle(canvas);
-  return {
-    bg: s.getPropertyValue("--game-bg-color").trim() || gameColor("1a0a1e"),
-    fg: s.getPropertyValue("--game-fg-color").trim() || gameColor("39ff14"),
-    accent: s.getPropertyValue("--game-accent-color").trim() || gameColor("00e5ff"),
-    muted: s.getPropertyValue("--game-muted-color").trim() || gameColor("3d1f0a"),
-    glow: s.getPropertyValue("--game-glow-color").trim() || "rgba(255, 140, 0, 0.15)",
-    warning: s.getPropertyValue("--game-warning-color").trim() || gameColor("ff4444"),
-    rope: s.getPropertyValue("--game-rope-color").trim() || gameColor("c4956a"),
-    ring: s.getPropertyValue("--game-ring-color").trim() || gameColor("2a1508"),
-    hit: s.getPropertyValue("--game-hit-color").trim() || gameColor("ffffff"),
-  };
+  return readGameColors(canvas, {
+    bg: ["--game-bg-color", "1a0a1e"],
+    fg: ["--game-fg-color", "39ff14"],
+    accent: ["--game-accent-color", "00e5ff"],
+    muted: ["--game-muted-color", "3d1f0a"],
+    glow: ["--game-glow-color", "rgba(255, 140, 0, 0.15)"],
+    warning: ["--game-warning-color", "ff4444"],
+    rope: ["--game-rope-color", "c4956a"],
+    ring: ["--game-ring-color", "2a1508"],
+    hit: ["--game-hit-color", "ffffff"],
+  });
 }
 
 /**
@@ -492,7 +492,7 @@ function drawHUD(ctx, state, colors) {
 function drawPhaseOverlay(ctx, state, colors, frameCount) {
   switch (state.phase) {
     case PHASE.WAITING:
-      drawCenterText(ctx, t("WAITING FOR OPPONENT"), 16, colors.rope);
+      drawCenterText(ctx, waitingText(), 16, colors.rope);
       break;
     case PHASE.COUNTDOWN:
       drawCenterText(ctx, `${state.countdown}`, 48, colors.hit);

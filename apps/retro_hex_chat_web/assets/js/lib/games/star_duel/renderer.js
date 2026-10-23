@@ -18,7 +18,8 @@ import {
   WARP_COOLDOWN,
 } from "./physics.js";
 import { t, jt } from "../../i18n.js";
-import { gameColor } from "../../game_colors.js";
+import { gameColor, readGameColors } from "../../game_colors.js";
+import { drawBackground, drawCountdown, drawScanlines, drawWaiting } from "../hud.js";
 
 // --- Deterministic starfield (golden ratio distribution, no flickering) ---
 
@@ -41,19 +42,18 @@ for (let i = 0; i < STAR_COUNT; i++) {
  * @returns {object} color palette
  */
 export function getColors(canvas) {
-  const s = getComputedStyle(canvas);
-  return {
-    bg: s.getPropertyValue("--game-bg-color").trim() || gameColor("0a0a1a"),
-    p1: s.getPropertyValue("--game-fg-color").trim() || gameColor("39ff14"), // toxic green
-    p2: s.getPropertyValue("--game-accent-color").trim() || gameColor("00e5ff"), // electric cyan
-    muted: s.getPropertyValue("--game-muted-color").trim() || gameColor("1a3a4a"),
-    glow: s.getPropertyValue("--game-glow-color").trim() || "rgba(57,255,20,0.2)",
-    warning: s.getPropertyValue("--game-warning-color").trim() || gameColor("ffaa00"),
-    star: s.getPropertyValue("--game-star-color").trim() || gameColor("ff8c00"),
-    asteroid: s.getPropertyValue("--game-asteroid-color").trim() || gameColor("8b4513"),
-    missile: s.getPropertyValue("--game-missile-color").trim() || gameColor("ffffff"),
-    explosion: s.getPropertyValue("--game-explosion-color").trim() || gameColor("ff4444"),
-  };
+  return readGameColors(canvas, {
+    bg: ["--game-bg-color", "0a0a1a"],
+    p1: ["--game-fg-color", "39ff14"], // toxic green
+    p2: ["--game-accent-color", "00e5ff"], // electric cyan
+    muted: ["--game-muted-color", "1a3a4a"],
+    glow: ["--game-glow-color", "rgba(57,255,20,0.2)"],
+    warning: ["--game-warning-color", "ffaa00"],
+    star: ["--game-star-color", "ff8c00"],
+    asteroid: ["--game-asteroid-color", "8b4513"],
+    missile: ["--game-missile-color", "ffffff"],
+    explosion: ["--game-explosion-color", "ff4444"],
+  });
 }
 
 // --- Main render ---
@@ -66,7 +66,7 @@ export function getColors(canvas) {
  * @param {number} time - timestamp for animations
  */
 export function render(ctx, state, colors, time) {
-  drawBackground(ctx, colors);
+  drawBackground(ctx, colors, CANVAS_W, CANVAS_H);
   drawStarfield(ctx, colors, time);
 
   // Mode-specific elements
@@ -103,27 +103,23 @@ export function render(ctx, state, colors, time) {
   drawHUD(ctx, state, colors, time);
 
   // Phase overlays
-  if (state.phase === PHASE.WAITING) drawWaiting(ctx, colors, time);
-  else if (state.phase === PHASE.COUNTDOWN) drawCountdown(ctx, state.countdown, colors, time);
-  else if (state.phase === PHASE.SPAWNING) drawSpawning(ctx, colors, time);
-  else if (state.phase === PHASE.ROUND_OVER) drawRoundOver(ctx, state, colors, time);
-  else if (state.phase === PHASE.FINISHED) drawWinner(ctx, state, colors, time);
+  if (state.phase === PHASE.WAITING) {
+    drawWaiting(ctx, colors, time, CANVAS_W, CANVAS_H);
+  } else if (state.phase === PHASE.COUNTDOWN) {
+    drawCountdown(ctx, state.countdown, colors, time, CANVAS_W, CANVAS_H);
+  } else if (state.phase === PHASE.SPAWNING) {
+    drawSpawning(ctx, colors, time);
+  } else if (state.phase === PHASE.ROUND_OVER) {
+    drawRoundOver(ctx, state, colors, time);
+  } else if (state.phase === PHASE.FINISHED) {
+    drawWinner(ctx, state, colors, time);
+  }
 
-  drawScanlines(ctx);
+  drawScanlines(ctx, CANVAS_W, CANVAS_H);
   drawVignette(ctx);
 }
 
 // --- Individual draw functions ---
-
-/**
- * Fill canvas with background color.
- * @param {CanvasRenderingContext2D} ctx
- * @param {object} colors
- */
-export function drawBackground(ctx, colors) {
-  ctx.fillStyle = colors.bg;
-  ctx.fillRect(0, 0, CANVAS_W, CANVAS_H);
-}
 
 /**
  * Draw deterministic starfield with twinkling effect.
@@ -471,48 +467,6 @@ export function drawHUD(ctx, state, colors, _time) {
 }
 
 /**
- * Draw countdown number with pulse animation.
- * @param {CanvasRenderingContext2D} ctx
- * @param {number} count - countdown value
- * @param {object} colors
- * @param {number} time
- */
-export function drawCountdown(ctx, count, colors, time) {
-  const pulse = 1.0 + 0.15 * Math.sin(time * 0.015);
-  const size = Math.floor(80 * pulse);
-
-  ctx.save();
-  ctx.shadowColor = colors.warning;
-  ctx.shadowBlur = 20;
-  ctx.fillStyle = colors.warning;
-  ctx.font = `bold ${size}px monospace`;
-  ctx.textAlign = "center";
-  ctx.textBaseline = "middle";
-  ctx.fillText(String(count), CANVAS_W / 2, CANVAS_H / 2);
-  ctx.restore();
-}
-
-/**
- * Draw "WAITING FOR OPPONENT..." with animated dots.
- * @param {CanvasRenderingContext2D} ctx
- * @param {object} colors
- * @param {number} time
- */
-export function drawWaiting(ctx, colors, time) {
-  const dots = ".".repeat(Math.floor((time / 500) % 4));
-
-  ctx.save();
-  ctx.shadowColor = colors.muted;
-  ctx.shadowBlur = 8;
-  ctx.fillStyle = colors.muted;
-  ctx.font = "18px monospace";
-  ctx.textAlign = "center";
-  ctx.textBaseline = "middle";
-  ctx.fillText(jt`WAITING FOR OPPONENT${dots}`, CANVAS_W / 2, CANVAS_H / 2);
-  ctx.restore();
-}
-
-/**
  * Draw "GET READY" with flicker effect.
  * @param {CanvasRenderingContext2D} ctx
  * @param {object} colors
@@ -619,17 +573,6 @@ export function drawWinner(ctx, state, colors, time) {
   ctx.fillText(jt`FIRST TO ${WIN_SCORE}`, CANVAS_W / 2, CANVAS_H / 2 + 40);
 
   ctx.restore();
-}
-
-/**
- * Draw CRT scanline overlay.
- * @param {CanvasRenderingContext2D} ctx
- */
-export function drawScanlines(ctx) {
-  ctx.fillStyle = "rgba(0,0,0,0.08)";
-  for (let y = 0; y < CANVAS_H; y += 2) {
-    ctx.fillRect(0, y, CANVAS_W, 1);
-  }
 }
 
 /**

@@ -33,7 +33,8 @@ import {
 } from "./physics.js";
 import { PHASE, GAME_MODE } from "./protocol.js";
 import { t, jt } from "../../i18n.js";
-import { gameColor } from "../../game_colors.js";
+import { gameColor, readGameColors } from "../../game_colors.js";
+import { waitingText } from "../hud.js";
 
 // ── Direction vectors for stick drawing ────────────────────────
 const SQRT2 = Math.SQRT1_2;
@@ -46,23 +47,21 @@ const DIR_VY = [0, SQRT2, 1, SQRT2, 0, -SQRT2, -1, -SQRT2];
  * Read CSS custom properties from the canvas element.
  */
 export function readColors(canvas) {
-  const s = getComputedStyle(canvas);
-  const get = (name) => s.getPropertyValue(name).trim() || null;
-  return {
-    bg: get("--game-bg-color") || gameColor("060812"),
-    fg: get("--game-fg-color") || gameColor("39ff14"),
-    accent: get("--game-accent-color") || gameColor("00e5ff"),
-    muted: get("--game-muted-color") || gameColor("0e1420"),
-    glow: get("--game-glow-color") || "rgba(57,255,20,0.15)",
-    warning: get("--game-warning-color") || gameColor("ff4444"),
-    rinkLine: get("--game-rink-line") || gameColor("39ff1460"),
-    goalColor: get("--game-goal-color") || gameColor("ff2222"),
-    goalieP1: get("--game-goalie-p1") || gameColor("20aa0a"),
-    goalieP2: get("--game-goalie-p2") || gameColor("0090aa"),
-    puck: get("--game-puck-color") || gameColor("ffffff"),
-    puckTrail: get("--game-puck-trail") || "rgba(255,255,255,0.3)",
-    iceScratch: get("--game-ice-scratch") || gameColor("ffffff08"),
-  };
+  return readGameColors(canvas, {
+    bg: ["--game-bg-color", "060812"],
+    fg: ["--game-fg-color", "39ff14"],
+    accent: ["--game-accent-color", "00e5ff"],
+    muted: ["--game-muted-color", "0e1420"],
+    glow: ["--game-glow-color", "rgba(57,255,20,0.15)"],
+    warning: ["--game-warning-color", "ff4444"],
+    rinkLine: ["--game-rink-line", "39ff1460"],
+    goalColor: ["--game-goal-color", "ff2222"],
+    goalieP1: ["--game-goalie-p1", "20aa0a"],
+    goalieP2: ["--game-goalie-p2", "0090aa"],
+    puck: ["--game-puck-color", "ffffff"],
+    puckTrail: ["--game-puck-trail", "rgba(255,255,255,0.3)"],
+    iceScratch: ["--game-ice-scratch", "ffffff08"],
+  });
 }
 
 /**
@@ -610,7 +609,7 @@ function drawWaitingScreen(ctx, colors, frameCount) {
   ctx.textBaseline = "middle";
   ctx.fillStyle = colors.fg;
   ctx.globalAlpha = 0.5 + 0.3 * Math.sin(frameCount * 0.05);
-  ctx.fillText(t("Waiting for opponent..."), RINK_CX, RINK_CY);
+  ctx.fillText(waitingText(), RINK_CX, RINK_CY);
   ctx.globalAlpha = 1.0;
   ctx.textBaseline = "alphabetic";
 }

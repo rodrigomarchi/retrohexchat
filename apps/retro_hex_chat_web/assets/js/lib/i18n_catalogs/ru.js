@@ -242,9 +242,7 @@ export const RU = {
   Unknown: "Неизвестно",
   "Use ↑ to edit your last message": "Используйте ↑ для редактирования последнего сообщения",
   "VICTORY!": "Победа!",
-  "WAITING FOR OPPONENT": "Ожидание соперника",
   "WAITING FOR OPPONENT%{0}": "Ожидание соперника%{0}",
-  "WAITING FOR OPPONENT...": "Ожидание соперника...",
   "WAITING FOR PARTNER%{0}": "ОЖИДАНИЕ ПАРТНЕРА%{0}",
   "WAVE %{0}": "ВОЛНА %{0}",
   "WAVE %{0} CLEARED": "Волна %{0} зачищена",
@@ -252,8 +250,6 @@ export const RU = {
     "Дождитесь загрузки конфигурации и попробуйте снова.",
   "Waiting for media offer. Requesting a fresh offer.":
     "Ждем предложения от СМИ. Запросить свежее предложение.",
-  "Waiting for opponent%{0}": "Ожидание соперника%{0}",
-  "Waiting for opponent...": "В ожидании соперника...",
   You: "Вы",
   "Your camera is not being sent.": "Ваша камера не отправляется.",
   "Your camera is unavailable. Check your video devices.":

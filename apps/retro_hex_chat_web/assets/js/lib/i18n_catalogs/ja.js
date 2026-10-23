@@ -239,9 +239,7 @@ export const JA = {
   Unknown: "不明",
   "Use ↑ to edit your last message": "↑ を使用して最後のメッセージを編集します",
   "VICTORY!": "勝利！",
-  "WAITING FOR OPPONENT": "対戦相手を待っています",
   "WAITING FOR OPPONENT%{0}": "対戦相手を待っています%{0}",
-  "WAITING FOR OPPONENT...": "対戦相手を待っています...",
   "WAITING FOR PARTNER%{0}": "パートナーを待機中%{0}",
   "WAVE %{0}": "ウェーブ %{0}",
   "WAVE %{0} CLEARED": "ウェーブ %{0} クリア",
@@ -249,8 +247,6 @@ export const JA = {
     "設定を待ってから、再びロードして試してみてください。",
   "Waiting for media offer. Requesting a fresh offer.":
     "メディア提供の待ち合わせ 新鮮なオファーをリクエストする。",
-  "Waiting for opponent%{0}": "対戦相手を待っています%{0}",
-  "Waiting for opponent...": "相手の待ち合わせ",
   You: "あなた",
   "Your camera is not being sent.": "カメラが送信されていない",
   "Your camera is unavailable. Check your video devices.":

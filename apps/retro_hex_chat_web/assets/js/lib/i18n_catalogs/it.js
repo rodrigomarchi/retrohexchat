@@ -247,9 +247,7 @@ export const IT = {
   Unknown: "Sconosciuto",
   "Use ↑ to edit your last message": "Utilizzare ↑ per modificare il tuo ultimo messaggio",
   "VICTORY!": "VITTORIA!",
-  "WAITING FOR OPPONENT": "IN ATTESA DELL'AVVERSARIO",
   "WAITING FOR OPPONENT%{0}": "IN ATTESA DELL'AVVERSARIO%{0}",
-  "WAITING FOR OPPONENT...": "IN ATTESA DELL'AVVERSARIO...",
   "WAITING FOR PARTNER%{0}": "IN ATTESA DEL PARTNER%{0}",
   "WAVE %{0}": "ONDATA %{0}",
   "WAVE %{0} CLEARED": "ONDATA %{0} COMPLETATA",
@@ -257,8 +255,6 @@ export const IT = {
     "Attendere la configurazione per caricare e riprovare.",
   "Waiting for media offer. Requesting a fresh offer.":
     "In attesa di offerta media. Richiedo una nuova offerta.",
-  "Waiting for opponent%{0}": "In attesa dell'avversario%{0}",
-  "Waiting for opponent...": "Aspettando l'avversario...",
   You: "Tu",
   "Your camera is not being sent.": "La tua macchina fotografica non viene inviata.",
   "Your camera is unavailable. Check your video devices.":
