@@ -18,8 +18,6 @@ defmodule RetroHexChatWeb.ChatLive.Components.AdminServerSettingsDialog do
   alias RetroHexChat.Admin
   alias RetroHexChatWeb.ChatLive.{AdminOps, ChatContext}
 
-  alias RetroHexChatWeb.ChatLive.Components.DialogIsland
-
   use RetroHexChatWeb.ChatLive.Components.DialogIsland,
     id: "admin-server-settings-dialog",
     initial: %{
@@ -29,11 +27,8 @@ defmodule RetroHexChatWeb.ChatLive.Components.AdminServerSettingsDialog do
       values: %{},
       result: nil,
       loaded?: false
-    }
-
-  @spec update(map(), Phoenix.LiveView.Socket.t()) :: {:ok, Phoenix.LiveView.Socket.t()}
-  def update(assigns, socket),
-    do: DialogIsland.load_once(socket, assigns, &assign_snapshot(&1, nil))
+    },
+    load: &assign_snapshot(&1, nil)
 
   @spec handle_event(String.t(), map(), Phoenix.LiveView.Socket.t()) ::
           {:noreply, Phoenix.LiveView.Socket.t()}

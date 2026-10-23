@@ -1271,83 +1271,59 @@ defmodule RetroHexChatWeb.CallLive.Events do
   defp maybe_push_speaker_layout(socket), do: socket
 
   defp moderate_audio(socket, participant_id) do
-    with participant_id when is_integer(participant_id) <- Params.integer(participant_id),
-         {:ok, target} <- find_participant(socket.assigns.group_call, participant_id),
-         {:ok, actor} <- actor(socket),
-         {:ok, participant} <- set_target_audio(socket.assigns.group_call, actor, target) do
-      update_call(socket, &put_participant(&1, GroupCallShape.normalize_participant(participant)))
-    else
-      {:error, message} when is_binary(message) ->
-        Surface.error(socket, message)
-
-      _error ->
-        Surface.error(
-          socket,
-          dgettext("group_call", "Could not update participant media.")
-        )
-    end
+    moderate_participant(
+      socket,
+      participant_id,
+      &set_target_audio(socket.assigns.group_call, &1, &2),
+      dgettext("group_call", "Could not update participant media.")
+    )
   end
 
   defp moderate_video(socket, participant_id) do
-    with participant_id when is_integer(participant_id) <- Params.integer(participant_id),
-         {:ok, target} <- find_participant(socket.assigns.group_call, participant_id),
-         {:ok, actor} <- actor(socket),
-         {:ok, participant} <- set_target_video(socket.assigns.group_call, actor, target) do
-      update_call(socket, &put_participant(&1, GroupCallShape.normalize_participant(participant)))
-    else
-      {:error, message} when is_binary(message) ->
-        Surface.error(socket, message)
-
-      _error ->
-        Surface.error(
-          socket,
-          dgettext("group_call", "Could not update participant camera.")
-        )
-    end
+    moderate_participant(
+      socket,
+      participant_id,
+      &set_target_video(socket.assigns.group_call, &1, &2),
+      dgettext("group_call", "Could not update participant camera.")
+    )
   end
 
   defp moderate_screen(socket, participant_id) do
-    with participant_id when is_integer(participant_id) <- Params.integer(participant_id),
-         {:ok, target} <- find_participant(socket.assigns.group_call, participant_id),
-         {:ok, actor} <- actor(socket),
-         {:ok, participant} <- set_target_screen_share(socket.assigns.group_call, actor, target) do
-      socket
-      |> update_call(&put_participant(&1, GroupCallShape.normalize_participant(participant)))
-      |> push_group_call_layout()
-    else
-      {:error, message} when is_binary(message) ->
-        Surface.error(socket, message)
-
-      _error ->
-        Surface.error(
-          socket,
-          dgettext("group_call", "Could not update participant screen sharing.")
-        )
-    end
+    moderate_participant(
+      socket,
+      participant_id,
+      &set_target_screen_share(socket.assigns.group_call, &1, &2),
+      dgettext("group_call", "Could not update participant screen sharing."),
+      &push_group_call_layout/1
+    )
   end
 
   defp allow_speak(socket, participant_id) do
+    moderate_participant(
+      socket,
+      participant_id,
+      fn actor, target ->
+        GroupCall.allow_participant_speak(socket.assigns.group_call.token, actor, target.id)
+      end,
+      dgettext("group_call", "Could not allow participant to speak."),
+      &push_group_call_layout/1
+    )
+  end
+
+  # A moderator acting on one participant: find them, act as the moderator,
+  # draw the participant as the server now has them. A refusal says why when
+  # the server said; anything else is `failure`.
+  defp moderate_participant(socket, participant_id, apply, failure, after_update \\ & &1) do
     with participant_id when is_integer(participant_id) <- Params.integer(participant_id),
-         {:ok, _target} <- find_participant(socket.assigns.group_call, participant_id),
+         {:ok, target} <- find_participant(socket.assigns.group_call, participant_id),
          {:ok, actor} <- actor(socket),
-         {:ok, participant} <-
-           GroupCall.allow_participant_speak(
-             socket.assigns.group_call.token,
-             actor,
-             participant_id
-           ) do
+         {:ok, participant} <- apply.(actor, target) do
       socket
       |> update_call(&put_participant(&1, GroupCallShape.normalize_participant(participant)))
-      |> push_group_call_layout()
+      |> after_update.()
     else
-      {:error, message} when is_binary(message) ->
-        Surface.error(socket, message)
-
-      _error ->
-        Surface.error(
-          socket,
-          dgettext("group_call", "Could not allow participant to speak.")
-        )
+      {:error, message} when is_binary(message) -> Surface.error(socket, message)
+      _error -> Surface.error(socket, failure)
     end
   end
 

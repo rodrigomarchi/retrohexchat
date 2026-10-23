@@ -14,14 +14,10 @@ defmodule RetroHexChatWeb.ChatLive.Components.AdminTurnDialog do
 
   alias RetroHexChatWeb.ChatLive.{AdminOps, ChatContext}
 
-  alias RetroHexChatWeb.ChatLive.Components.DialogIsland
-
   use RetroHexChatWeb.ChatLive.Components.DialogIsland,
     id: "admin-turn-dialog",
-    initial: %{stats: nil, allocations: nil, result: nil, loaded?: false}
-
-  @spec update(map(), Phoenix.LiveView.Socket.t()) :: {:ok, Phoenix.LiveView.Socket.t()}
-  def update(assigns, socket), do: DialogIsland.load_once(socket, assigns, &assign_snapshot(&1))
+    initial: %{stats: nil, allocations: nil, result: nil, loaded?: false},
+    load: &assign_snapshot(&1)
 
   @spec handle_event(String.t(), map(), Phoenix.LiveView.Socket.t()) ::
           {:noreply, Phoenix.LiveView.Socket.t()}

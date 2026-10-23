@@ -21,8 +21,6 @@ defmodule RetroHexChatWeb.ChatLive.Components.AdminChannelsDialog do
 
   alias RetroHexChatWeb.ChatLive.{AdminOps, ChatContext}
 
-  alias RetroHexChatWeb.ChatLive.Components.DialogIsland
-
   use RetroHexChatWeb.ChatLive.Components.DialogIsland,
     id: "admin-channels-dialog",
     initial: %{
@@ -35,14 +33,11 @@ defmodule RetroHexChatWeb.ChatLive.Components.AdminChannelsDialog do
       channels_create_name: "",
       channels_action_channel: "",
       loaded?: false
-    }
+    },
+    load: &assign_snapshot(&1, %{}, nil)
 
   import RetroHexChatWeb.ChatLive.AdminOps,
     only: [param: 2, trim: 1, error_result: 1, flag_args: 3]
-
-  @spec update(map(), Phoenix.LiveView.Socket.t()) :: {:ok, Phoenix.LiveView.Socket.t()}
-  def update(assigns, socket),
-    do: DialogIsland.load_once(socket, assigns, &assign_snapshot(&1, %{}, nil))
 
   # ── Registry ─────────────────────────────────────────────────────
 

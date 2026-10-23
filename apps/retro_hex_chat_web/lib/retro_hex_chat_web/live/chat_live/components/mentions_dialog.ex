@@ -20,11 +20,13 @@ defmodule RetroHexChatWeb.ChatLive.Components.MentionsDialog do
   import RetroHexChatWeb.Components.UI.MentionsDialog
 
   alias RetroHexChat.Chat.Search
-  alias RetroHexChatWeb.ChatLive.Components.DialogIsland
   alias RetroHexChatWeb.ChatLive.Helpers.NickFlags
   alias RetroHexChatWeb.PaginatedList
 
-  use RetroHexChatWeb.ChatLive.Components.DialogIsland, id: "mentions-dialog"
+  use RetroHexChatWeb.ChatLive.Components.DialogIsland,
+    id: "mentions-dialog",
+    load: &load_first_page/1
+
   @page_size 30
 
   @impl true
@@ -45,10 +47,6 @@ defmodule RetroHexChatWeb.ChatLive.Components.MentionsDialog do
        dom_id: &"mention-#{&1.id}"
      )}
   end
-
-  @impl true
-  @spec update(map(), Phoenix.LiveView.Socket.t()) :: {:ok, Phoenix.LiveView.Socket.t()}
-  def update(assigns, socket), do: DialogIsland.load_once(socket, assigns, &load_first_page/1)
 
   @impl true
   @spec handle_event(String.t(), map(), Phoenix.LiveView.Socket.t()) ::

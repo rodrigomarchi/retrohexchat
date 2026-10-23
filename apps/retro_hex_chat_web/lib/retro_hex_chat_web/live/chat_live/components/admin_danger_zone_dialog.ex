@@ -19,8 +19,6 @@ defmodule RetroHexChatWeb.ChatLive.Components.AdminDangerZoneDialog do
   alias RetroHexChat.Admin
   alias RetroHexChatWeb.ChatLive.{AdminOps, ChatContext}
 
-  alias RetroHexChatWeb.ChatLive.Components.DialogIsland
-
   @fallback_server_name "RetroHexChat"
 
   use RetroHexChatWeb.ChatLive.Components.DialogIsland,
@@ -31,11 +29,8 @@ defmodule RetroHexChatWeb.ChatLive.Components.AdminDangerZoneDialog do
       confirm: "",
       server_name: @fallback_server_name,
       loaded?: false
-    }
-
-  @spec update(map(), Phoenix.LiveView.Socket.t()) :: {:ok, Phoenix.LiveView.Socket.t()}
-  def update(assigns, socket),
-    do: DialogIsland.load_once(socket, assigns, &assign_preview(&1, nil))
+    },
+    load: &assign_preview(&1, nil)
 
   @spec handle_event(String.t(), map(), Phoenix.LiveView.Socket.t()) ::
           {:noreply, Phoenix.LiveView.Socket.t()}

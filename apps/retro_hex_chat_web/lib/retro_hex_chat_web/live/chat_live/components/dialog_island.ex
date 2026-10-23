@@ -23,7 +23,9 @@ defmodule RetroHexChatWeb.ChatLive.Components.DialogIsland do
   Declares a dialog island's id and the `id/0` every island answers the same
   way; given `initial:`, also its initial assigns and `mount/1`. Both stay
   readable in the island as `@id` and `@initial`. An island with a mount of
-  its own passes `id:` alone.
+  its own passes `id:` alone. Given `load:` (a function of the socket), the
+  island's `update/2` takes what the parent sends and loads once with it
+  (`load_once/3`).
 
       use RetroHexChatWeb.ChatLive.Components.DialogIsland,
         id: "admin-motd-dialog",
@@ -54,6 +56,19 @@ defmodule RetroHexChatWeb.ChatLive.Components.DialogIsland do
 
       :error ->
         identity
+    end
+    |> with_loader(Keyword.get(opts, :load))
+  end
+
+  defp with_loader(code, nil), do: code
+
+  defp with_loader(code, load) do
+    quote do
+      unquote(code)
+
+      @spec update(map(), Phoenix.LiveView.Socket.t()) :: {:ok, Phoenix.LiveView.Socket.t()}
+      def update(assigns, socket),
+        do: unquote(__MODULE__).load_once(socket, assigns, unquote(load))
     end
   end
 

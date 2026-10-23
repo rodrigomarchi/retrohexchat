@@ -16,8 +16,6 @@ defmodule RetroHexChatWeb.ChatLive.Components.AdminAuditLogDialog do
   alias RetroHexChat.Table
   alias RetroHexChatWeb.ChatLive.{AdminOps, ChatContext}
 
-  alias RetroHexChatWeb.ChatLive.Components.DialogIsland
-
   @default_last "20"
 
   use RetroHexChatWeb.ChatLive.Components.DialogIsland,
@@ -29,13 +27,10 @@ defmodule RetroHexChatWeb.ChatLive.Components.AdminAuditLogDialog do
       last: @default_last,
       user: "",
       loaded?: false
-    }
+    },
+    load: &assign_snapshot(&1, %{})
 
   import RetroHexChatWeb.ChatLive.AdminOps, only: [trim: 1]
-
-  @spec update(map(), Phoenix.LiveView.Socket.t()) :: {:ok, Phoenix.LiveView.Socket.t()}
-  def update(assigns, socket),
-    do: DialogIsland.load_once(socket, assigns, &assign_snapshot(&1, %{}))
 
   @spec handle_event(String.t(), map(), Phoenix.LiveView.Socket.t()) ::
           {:noreply, Phoenix.LiveView.Socket.t()}
