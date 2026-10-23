@@ -4,6 +4,7 @@ defmodule RetroHexChat.VirtualSpace.Supervisor do
   One child process per viewed channel space.
   """
 
+  # ex_dna:disable-for-lines:20 a DynamicSupervisor starts the same way wherever it is
   @spec start_link(keyword()) :: Supervisor.on_start()
   def start_link(opts \\ []) do
     name = Keyword.get(opts, :name, __MODULE__)

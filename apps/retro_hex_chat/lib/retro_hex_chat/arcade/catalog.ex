@@ -316,6 +316,7 @@ defmodule RetroHexChat.Arcade.Catalog do
   @spec engine_name(atom()) :: String.t()
   def engine_name(engine), do: Keyword.fetch!(@engines, engine)
 
+  # ex_dna:disable-for-lines:24 two catalogues, one lookup API each over its own @games
   @spec list_games() :: [game()]
   def list_games, do: Enum.map(@games, &translate_game/1)
 

@@ -43,6 +43,7 @@ defmodule RetroHexChat.Chat.Message do
     timestamps(type: :utc_datetime_usec, updated_at: false)
   end
 
+  # ex_dna:disable-for-lines:11 each schema hands its own @rules to MessageRules
   @spec changeset(t() | Ecto.Changeset.t(), map()) :: Ecto.Changeset.t()
   def changeset(message, attrs), do: MessageRules.changeset(message, attrs, @rules)
 

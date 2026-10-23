@@ -33,6 +33,7 @@ defmodule RetroHexChat.P2P.Turn.Attributes.XORPeerAddress do
   end
 
   @impl true
+  # ex_dna:disable-for-next-line both XOR attributes encode as XOR-MAPPED-ADDRESS under their own type
   def to_raw(%__MODULE__{} = attribute, message) do
     mapped_address = %XORMappedAddress{
       port: attribute.port,

@@ -17,6 +17,7 @@ defmodule RetroHexChat.Services.InviteException do
     timestamps(type: :utc_datetime_usec, updated_at: false)
   end
 
+  # ex_dna:disable-for-lines:13 two exception lists, two tables and two constraint names
   @spec changeset(t() | Ecto.Changeset.t(), map()) :: Ecto.Changeset.t()
   def changeset(exception, attrs) do
     exception

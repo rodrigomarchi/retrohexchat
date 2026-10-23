@@ -442,9 +442,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.MessageViewport do
       |> Enum.filter(fn {msg, card} -> is_map(card) and card != msg.share_card end)
       |> Enum.map(fn {msg, card} -> Map.put(msg, :share_card, card) end)
 
-    socket
-    |> track(fn rendered -> Enum.reduce(changed, rendered, &upsert(&2, &1)) end)
-    |> then(&Enum.reduce(changed, &1, fn msg, acc -> stream_insert(acc, :chat_messages, msg) end))
+    replace_rows(socket, changed)
   end
 
   # A card described again is the same person's: the flag looked up with the
@@ -779,13 +777,17 @@ defmodule RetroHexChatWeb.ChatLive.Components.MessageViewport do
          markdown when is_binary(markdown) <- Scraper.card(page) do
       decorated = Enum.map(waiting, &Map.put(&1, :link_preview, markdown))
 
-      socket
-      |> track(fn rendered -> Enum.reduce(decorated, rendered, &upsert(&2, &1)) end)
-      |> then(
-        &Enum.reduce(decorated, &1, fn msg, acc -> stream_insert(acc, :chat_messages, msg) end)
-      )
+      replace_rows(socket, decorated)
     else
       _ -> socket
     end
+  end
+
+  # Rows already on screen, drawn again in place: the mirror and the stream
+  # change together.
+  defp replace_rows(socket, msgs) do
+    socket
+    |> track(fn rendered -> Enum.reduce(msgs, rendered, &upsert(&2, &1)) end)
+    |> then(&Enum.reduce(msgs, &1, fn msg, acc -> stream_insert(acc, :chat_messages, msg) end))
   end
 end

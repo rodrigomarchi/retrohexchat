@@ -75,6 +75,7 @@ defmodule RetroHexChat.Chat.AutoJoinList do
     end
   end
 
+  # ex_dna:disable-for-lines:15 each list keeps its own public API over Positions
   @spec clear(map()) :: {:ok, map()}
   def clear(autojoin_list) do
     {:ok, %{autojoin_list | entries: []}}

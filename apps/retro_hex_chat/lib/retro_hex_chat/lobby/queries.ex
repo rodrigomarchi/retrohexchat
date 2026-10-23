@@ -190,6 +190,7 @@ defmodule RetroHexChat.Lobby.Queries do
     |> Repo.all()
   end
 
+  # ex_dna:disable-for-lines:12 each context names its own stale API over StaleRecords
   @spec list_stale_sessions(DateTime.t(), keyword()) :: [Session.t()]
   def list_stale_sessions(before_datetime, opts \\ []),
     do: StaleRecords.list(@stale, before_datetime, opts)

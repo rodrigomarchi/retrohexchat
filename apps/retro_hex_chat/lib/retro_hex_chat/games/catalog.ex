@@ -524,6 +524,7 @@ defmodule RetroHexChat.Games.Catalog do
     }
   ]
 
+  # ex_dna:disable-for-lines:27 two catalogues, one lookup API each over its own @games
   @spec list_games() :: [game()]
   def list_games, do: Enum.map(@games, &translate_game/1)
 

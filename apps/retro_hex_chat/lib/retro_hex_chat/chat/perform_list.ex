@@ -90,6 +90,7 @@ defmodule RetroHexChat.Chat.PerformList do
     end
   end
 
+  # ex_dna:disable-for-lines:15 each list keeps its own public API over Positions
   @spec clear(map()) :: {:ok, map()}
   def clear(perform_list) do
     {:ok, %{perform_list | entries: []}}

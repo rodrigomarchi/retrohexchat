@@ -31,6 +31,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.AutojoinDialog do
 
   @id "autojoin-dialog"
 
+  # ex_dna:disable-for-lines:12 island skeleton; the behaviour is DialogIsland's
   @spec id() :: String.t()
   def id, do: @id
 

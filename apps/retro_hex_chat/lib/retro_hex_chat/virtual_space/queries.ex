@@ -86,6 +86,7 @@ defmodule RetroHexChat.VirtualSpace.Queries do
     |> Repo.aggregate(:count, :id)
   end
 
+  # ex_dna:disable-for-lines:13 each context names its own stale API over StaleRecords
   @spec list_stale_sessions(DateTime.t(), keyword()) :: [Session.t()]
   def list_stale_sessions(before_datetime, opts \\ []),
     do: StaleRecords.list(@stale_sessions, before_datetime, opts)
