@@ -21,27 +21,7 @@
     <script>
       document.documentElement.classList.remove("no-js");
     </script>
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="csrf-token" content={get_csrf_token()} />
-    <meta
-      name="plausible-env"
-      content={Application.get_env(:retro_hex_chat_web, :plausible_env, "prod")}
-    />
-    <meta
-      name="faro-enabled"
-      content={to_string(Application.get_env(:retro_hex_chat_web, :faro_enabled, false))}
-    />
-    <meta
-      name="faro-collector-url"
-      content={Application.get_env(:retro_hex_chat_web, :faro_collector_url, "/faro/collect")}
-    />
-    <meta name="faro-app-version" content={RetroHexChatWeb.BuildInfo.version()} />
-    <%!-- Faro's tracing instrumentation adopts this as the parent of the
-          page-load trace, so the browser's spans and the server's land in one
-          trace instead of two that never reference each other. --%>
-    <%= if traceparent = RetroHexChatWeb.TraceContext.traceparent() do %>
-      <meta name="traceparent" content={traceparent} />
-    <% end %>
+    <.head_meta />
 
     <%!-- The tab's title has one writer once the desktop is live:
           DocumentTitleHook, which layers the chat's activity flash over the
@@ -122,12 +102,7 @@
     <%!-- Fonts and the icon sprite --%>
     <.head_assets />
 
-    <%!-- Favicon --%>
-    <link rel="manifest" href={~p"/manifest.webmanifest"} />
-    <meta name="theme-color" content="#000080" />
-    <link rel="apple-touch-icon" href={~p"/images/app_icon_192.png"} />
-    <link rel="icon" type="image/svg+xml" href={~p"/images/favicon.svg"} />
-    <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+    <.app_icons />
 
     <link phx-track-static rel="stylesheet" href={~p"/assets/css/retrohex.css"} />
     <%!-- The desktop's first-paint bundle: the window manager, the menus and

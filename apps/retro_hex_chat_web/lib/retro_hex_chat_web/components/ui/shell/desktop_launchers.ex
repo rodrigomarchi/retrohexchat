@@ -32,7 +32,6 @@ defmodule RetroHexChatWeb.Components.UI.DesktopLaunchers do
   alias RetroHexChatWeb.Site.About
 
   @screens [:chat, :showcase]
-  @app_screens [:chat]
   @connect_dialog_id "desktop-connect-required-dialog"
 
   attr :screen, :atom,
@@ -654,19 +653,19 @@ defmodule RetroHexChatWeb.Components.UI.DesktopLaunchers do
   end
 
   defp admin_items(cap) do
-    for {action, label, icon_fn} <- admin_entries() do
+    for {action, label, icon_fn} <- WindowRegistry.menu_entries(:admin) do
       action(cap, action, label, icon_fn, disabled: !cap.admin?)
     end
   end
 
   defp system_items(cap) do
-    for {action, label, icon_fn} <- system_entries() do
+    for {action, label, icon_fn} <- WindowRegistry.menu_entries(:system) do
       action(cap, action, label, icon_fn, disabled: !cap.admin?)
     end
   end
 
   defp language_items(cap) do
-    Enum.map(locales(cap), fn locale ->
+    Enum.map(LanguageMenu.shell_locale_links(cap), fn locale ->
       link(locale.href, locale.label, :icon_globe,
         icon_kind: :flag,
         locale: locale.code,
@@ -756,24 +755,6 @@ defmodule RetroHexChatWeb.Components.UI.DesktopLaunchers do
       :icon_dialog_about,
       testid: "desktop-launcher-item-show_about"
     )
-  end
-
-  defp locales(%{screen: screen} = cap) when screen in @app_screens do
-    LanguageMenu.locale_links(:app, nil, cap.language_return_to || default_return_to(screen))
-  end
-
-  defp locales(cap), do: LanguageMenu.locale_links(:public, cap.current_path, nil)
-
-  defp default_return_to(:chat), do: "/"
-
-  defp admin_entries, do: menu_entries(&(&1.family == :admin or &1.id == "bot-management-dialog"))
-  defp system_entries, do: menu_entries(&(&1.family == :system))
-
-  defp menu_entries(filter) do
-    for window <- WindowRegistry.windows(),
-        window.opener,
-        filter.(window),
-        do: {window.opener, window.title, window.icon}
   end
 
   defp window(id, label, icon_fn, opts) do

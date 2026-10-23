@@ -19,6 +19,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.StatusViewport do
   import RetroHexChatWeb.Components.UI.ChatMessage
 
   alias RetroHexChatWeb.App.ChatHelpers
+  alias RetroHexChatWeb.ChatLive.Components.DialogIsland
 
   @id "status-viewport"
   @status_limit 500
@@ -61,12 +62,9 @@ defmodule RetroHexChatWeb.ChatLive.Components.StatusViewport do
   def update(assigns, socket) do
     keys = [:timestamp_format, :timezone, :show_status_tab]
 
-    merged =
-      Enum.reduce(keys, %{}, fn key, acc ->
-        Map.put(acc, key, Map.get(assigns, key, socket.assigns[key]))
-      end)
+    merged = DialogIsland.known(socket, assigns, keys)
 
-    {:ok, assign(socket, Map.put(merged, :id, Map.get(assigns, :id, socket.assigns.id)))}
+    {:ok, assign(socket, merged)}
   end
 
   @impl true

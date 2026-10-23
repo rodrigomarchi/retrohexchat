@@ -19,6 +19,7 @@ defmodule RetroHexChatWeb.Components.UI.FormattingToolbar do
   import RetroHexChatWeb.Components.UI.Toolbar
   import RetroHexChatWeb.Components.UI.ToolButton
 
+  alias RetroHexChat.Chat.Content
   alias RetroHexChatWeb.Icons
 
   @color_keys [
@@ -64,7 +65,7 @@ defmodule RetroHexChatWeb.Components.UI.FormattingToolbar do
       |> assign(:color_names, Enum.map(@color_keys, &color_name/1))
       |> assign(:panel_id, "#{assigns.id}-panel")
       |> assign(:color_panel_id, "#{assigns.id}-color-panel")
-      |> assign(:content_format, normalize_content_format(assigns.content_format))
+      |> assign(:content_format, content_format(assigns.content_format))
       |> assign(:composer_view, normalize_composer_view(assigns.composer_view))
 
     ~H"""
@@ -419,8 +420,14 @@ defmodule RetroHexChatWeb.Components.UI.FormattingToolbar do
 
   defp preview_toggle_class(false), do: "formatting-toolbar__preview-button"
 
-  defp normalize_content_format(format) when format in ~w(irc markdown plain), do: format
-  defp normalize_content_format(_format), do: "irc"
+  @doc "A composer's content format as the string the toolbar and composer use; \"irc\" for anything unknown."
+  @spec content_format(term()) :: String.t()
+  def content_format(format) do
+    case Content.normalize_format(format) do
+      {:ok, normalized} -> Atom.to_string(normalized)
+      :error -> "irc"
+    end
+  end
 
   defp normalize_composer_view(:preview), do: :preview
   defp normalize_composer_view("preview"), do: :preview

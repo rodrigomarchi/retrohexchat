@@ -391,13 +391,15 @@ defmodule RetroHexChatWeb.Components.UI.AutoRespondDialog do
   defp respond_lines(_rules), do: []
 
   @spec trigger_caption(String.t()) :: String.t()
-  defp trigger_caption("on_join"), do: system_line(dgettext("dialogs", "somebody joined"))
-  defp trigger_caption("on_part"), do: system_line(dgettext("dialogs", "somebody left"))
-  defp trigger_caption(_other), do: system_line(dgettext("dialogs", "something happened"))
+  defp trigger_caption("on_join"),
+    do: Diagrams.system_line(dgettext("dialogs", "somebody joined"))
+
+  defp trigger_caption("on_part"), do: Diagrams.system_line(dgettext("dialogs", "somebody left"))
+
+  defp trigger_caption(_other),
+    do: Diagrams.system_line(dgettext("dialogs", "something happened"))
 
   # The chat's own marker for a line nobody typed. It is punctuation, not
   # prose: inside a msgid the engine reads it as list markup and mangles the
   # sentence after it, so it is prefixed here instead.
-  @spec system_line(String.t()) :: String.t()
-  defp system_line(text), do: "* " <> text
 end

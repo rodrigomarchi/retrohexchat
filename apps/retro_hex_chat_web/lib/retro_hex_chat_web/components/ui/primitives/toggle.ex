@@ -36,7 +36,7 @@ defmodule RetroHexChatWeb.Components.UI.Toggle do
       |> assign_new(:checked, fn ->
         HTMLForm.normalize_value("checkbox", assigns.value)
       end)
-      |> assign(:variant_class, variant(assigns))
+      |> assign(:variant_class, toggle_variant(assigns))
 
     ~H"""
     <button
@@ -79,5 +79,7 @@ defmodule RetroHexChatWeb.Components.UI.Toggle do
               }
             )
 
-  defp variant(props), do: Variants.classes(@variants, props)
+  @doc false
+  @spec toggle_variant(map()) :: String.t()
+  def toggle_variant(props), do: Variants.classes(@variants, props)
 end

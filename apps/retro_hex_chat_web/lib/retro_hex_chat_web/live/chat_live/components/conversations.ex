@@ -30,6 +30,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.Conversations do
   import RetroHexChatWeb.Components.UI.Conversations
 
   alias RetroHexChat.Chat.AutoJoinList
+  alias RetroHexChatWeb.ChatLive.Components.DialogIsland
   alias RetroHexChatWeb.ChatLive.Helpers.NickFlags
 
   @id "conversations"
@@ -109,14 +110,11 @@ defmodule RetroHexChatWeb.ChatLive.Components.Conversations do
       :nick_color_fn
     ]
 
-    merged =
-      Enum.reduce(keys, %{}, fn key, acc ->
-        Map.put(acc, key, Map.get(assigns, key, socket.assigns[key]))
-      end)
+    merged = DialogIsland.known(socket, assigns, keys)
 
     {:ok,
      socket
-     |> assign(Map.put(merged, :id, Map.get(assigns, :id, socket.assigns.id)))
+     |> assign(merged)
      |> put_pm_locales(merged.pm_conversations || [])}
   end
 

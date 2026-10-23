@@ -360,7 +360,7 @@ defmodule RetroHexChatWeb.Components.UI.TimersDialog do
   defp timer_lines([row | _rest]) do
     [
       %{
-        text: system_line(dgettext("dialogs", "timer %{name} fired", name: row.name)),
+        text: Diagrams.system_line(dgettext("dialogs", "timer %{name} fired", name: row.name)),
         tone: :system
       },
       %{text: row.command, tone: :muted}
@@ -370,6 +370,4 @@ defmodule RetroHexChatWeb.Components.UI.TimersDialog do
   # The chat's own marker for a line nobody typed. It is punctuation, not
   # prose: inside a msgid the engine reads it as list markup and mangles the
   # sentence after it, so it is prefixed here instead.
-  @spec system_line(String.t()) :: String.t()
-  defp system_line(text), do: "* " <> text
 end

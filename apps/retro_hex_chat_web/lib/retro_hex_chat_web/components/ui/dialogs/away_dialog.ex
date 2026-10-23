@@ -128,7 +128,7 @@ defmodule RetroHexChatWeb.Components.UI.AwayDialog do
   defp reply_lines(true, message) do
     [
       %{text: dgettext("dialogs", "hey, got a minute?")},
-      %{text: system_line(dgettext("dialogs", "is away")), tone: :system}
+      %{text: Diagrams.system_line(dgettext("dialogs", "is away")), tone: :system}
     ] ++ message_line(message)
   end
 
@@ -145,6 +145,4 @@ defmodule RetroHexChatWeb.Components.UI.AwayDialog do
   # The chat's own marker for a line nobody typed. It is punctuation, not
   # prose: inside a msgid the engine reads it as list markup and mangles the
   # sentence after it, so it is prefixed here instead.
-  @spec system_line(String.t()) :: String.t()
-  defp system_line(text), do: "* " <> text
 end

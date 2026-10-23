@@ -44,6 +44,17 @@ defmodule RetroHexChatWeb.ChatLive.Components.DialogIsland do
   @spec take(socket(), map(), [atom()]) :: socket()
   def take(socket, assigns, keys), do: assign(socket, Map.take(assigns, keys))
 
+  @doc """
+  `keys` and `:id` as the component should hold them after this update: what
+  the parent sent, else what the socket already had (nil before the first
+  time). Unlike `take/3`, every key is present afterwards, so a template can
+  read any of them from the first render.
+  """
+  @spec known(socket(), map(), [atom()]) :: map()
+  def known(socket, assigns, keys) do
+    Map.new([:id | keys], &{&1, Map.get(assigns, &1, socket.assigns[&1])})
+  end
+
   @typedoc """
   Where a dialog's words land in the chat around it: the status bar
   (`:system`, `:error`) or the conversation, as a line (`:system_event`,

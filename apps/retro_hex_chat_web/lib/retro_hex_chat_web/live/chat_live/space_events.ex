@@ -32,6 +32,7 @@ defmodule RetroHexChatWeb.ChatLive.SpaceEvents do
   alias RetroHexChatWeb.ChatLive.Helpers.Messages
   alias RetroHexChatWeb.ChatLive.SpaceReadModel
   alias RetroHexChatWeb.ShareLinkRef
+  alias RetroHexChatWeb.SpaceSessionAnnouncement
 
   @type event_result ::
           {:cont, Phoenix.LiveView.Socket.t()} | {:halt, Phoenix.LiveView.Socket.t()}
@@ -119,12 +120,8 @@ defmodule RetroHexChatWeb.ChatLive.SpaceEvents do
     )
   end
 
-  defp content(nickname, link) do
-    dgettext("chat", "%{nickname} opened the space — %{url}",
-      nickname: nickname,
-      url: ShareLinkRef.url(link.slug)
-    )
-  end
+  defp content(nickname, link),
+    do: SpaceSessionAnnouncement.line(nickname, ShareLinkRef.url(link.slug))
 
   defp reference(link), do: "/join/" <> link.slug
 

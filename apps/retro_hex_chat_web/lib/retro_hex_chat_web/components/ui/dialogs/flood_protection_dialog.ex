@@ -257,7 +257,7 @@ defmodule RetroHexChatWeb.Components.UI.FloodProtectionDialog do
       [
         %{
           text:
-            system_line(
+            Diagrams.system_line(
               dgettext("dialogs", "muted after %{count} lines in %{window} seconds",
                 count: threshold,
                 window: window
@@ -270,6 +270,4 @@ defmodule RetroHexChatWeb.Components.UI.FloodProtectionDialog do
 
   # The chat's marker for a line nobody typed. It is punctuation: inside a
   # msgid the engine reads it as list markup and mangles the sentence after.
-  @spec system_line(String.t()) :: String.t()
-  defp system_line(text), do: "* " <> text
 end

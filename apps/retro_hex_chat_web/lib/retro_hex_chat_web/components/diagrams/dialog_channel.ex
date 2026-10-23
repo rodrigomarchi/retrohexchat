@@ -12,6 +12,7 @@ defmodule RetroHexChatWeb.Components.Diagrams.DialogChannel do
   use Gettext, backend: RetroHexChatWeb.Gettext
 
   alias RetroHexChat.Text
+  alias RetroHexChatWeb.Components.Diagrams
 
   @chars_per_line 26
   @max_lines 4
@@ -81,7 +82,7 @@ defmodule RetroHexChatWeb.Components.Diagrams.DialogChannel do
       
     <!-- The join line the channel always writes -->
       <text x="8" y="43" fill="#008080" font-size="7" font-family="Tahoma,sans-serif">
-        {system_line(dgettext("diagrams", "someone joined"))}
+        {Diagrams.system_line(dgettext("diagrams", "someone joined"))}
       </text>
       
     <!-- The welcome message, as the joiner reads it -->
@@ -147,6 +148,4 @@ defmodule RetroHexChatWeb.Components.Diagrams.DialogChannel do
   # The chat's own marker for a line nobody typed. It is punctuation, not
   # prose: inside a msgid the engine reads it as list markup and mangles the
   # sentence after it, so it is prefixed here instead.
-  @spec system_line(String.t()) :: String.t()
-  defp system_line(text), do: "* " <> text
 end

@@ -2,7 +2,7 @@ defmodule RetroHexChatWeb.Components.UI.ToggleGroup do
   @moduledoc false
   use RetroHexChatWeb.Component
 
-  alias RetroHexChatWeb.Components.UI.Variants
+  alias RetroHexChatWeb.Components.UI.Toggle
 
   @doc """
   A set of two-state buttons that can be toggled on or off.
@@ -82,7 +82,7 @@ defmodule RetroHexChatWeb.Components.UI.ToggleGroup do
   def toggle_group_item(%{builder: %{multiple: true}} = assigns) do
     assigns =
       assigns
-      |> assign(:variant_class, variant(assigns.builder))
+      |> assign(:variant_class, Toggle.toggle_variant(assigns.builder))
       |> assign(:checked, assigns.value in assigns.builder.value)
 
     ~H"""
@@ -115,7 +115,7 @@ defmodule RetroHexChatWeb.Components.UI.ToggleGroup do
   def toggle_group_item(assigns) do
     assigns =
       assigns
-      |> assign(:variant_class, variant(assigns.builder))
+      |> assign(:variant_class, Toggle.toggle_variant(assigns.builder))
       |> assign(:checked, assigns.value == assigns.builder.value)
 
     ~H"""
@@ -143,19 +143,4 @@ defmodule RetroHexChatWeb.Components.UI.ToggleGroup do
     </button>
     """
   end
-
-  @variants Variants.new(
-              variant: %{
-                "default" => "bg-transparent",
-                "outline" =>
-                  "border border-input bg-transparent hover:bg-accent hover:text-accent-foreground"
-              },
-              size: %{
-                "default" => "h-10 px-3",
-                "sm" => "h-9 px-2.5",
-                "lg" => "h-11 px-5"
-              }
-            )
-
-  defp variant(props), do: Variants.classes(@variants, props)
 end

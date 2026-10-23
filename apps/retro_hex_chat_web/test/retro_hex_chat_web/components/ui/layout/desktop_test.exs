@@ -27,7 +27,7 @@ defmodule RetroHexChatWeb.Components.UI.DesktopTest do
     end
 
     test "a shortcut is a button" do
-      html = render_component(&desktop_shortcut/1, window: "chat", label: "Chat", icon: icon())
+      html = render_component(&desktop_icon/1, window: "chat", label: "Chat", icon: icon())
 
       assert html =~ ~s(<button)
       assert html =~ ~s(data-window-shortcut="chat")
@@ -36,7 +36,7 @@ defmodule RetroHexChatWeb.Components.UI.DesktopTest do
 
     test "a shortcut can carry a LiveView double-click action" do
       html =
-        render_component(&desktop_shortcut/1,
+        render_component(&desktop_icon/1,
           window: "arcade-games",
           action: "open_arcade",
           label: "Arcade",
@@ -80,7 +80,7 @@ defmodule RetroHexChatWeb.Components.UI.DesktopTest do
 
     test "a shortcut becomes a link" do
       html =
-        render_component(&desktop_shortcut/1,
+        render_component(&desktop_icon/1,
           window: "button",
           label: "Button",
           href: "/showcase/button",

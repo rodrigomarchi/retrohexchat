@@ -95,4 +95,8 @@ defmodule RetroHexChatWeb.Components.Diagrams do
 
   defdelegate diagram_dialog_preview(assigns),
     to: RetroHexChatWeb.Components.Diagrams.DialogPreview
+
+  @doc "A line as the chat shows a system event in a banner illustration: `* text`."
+  @spec system_line(String.t()) :: String.t()
+  def system_line(text), do: "* " <> text
 end

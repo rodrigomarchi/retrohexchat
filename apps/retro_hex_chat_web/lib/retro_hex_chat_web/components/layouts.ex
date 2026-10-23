@@ -10,6 +10,54 @@ defmodule RetroHexChatWeb.Layouts do
   embed_templates "layouts/*"
 
   @doc """
+  The metas every full page carries after its charset: viewport, CSRF token,
+  the analytics environment and the browser telemetry switches, and the
+  `traceparent` that joins the page-load trace to the server's.
+  """
+  @spec head_meta(map()) :: Phoenix.LiveView.Rendered.t()
+  def head_meta(assigns) do
+    ~H"""
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="csrf-token" content={get_csrf_token()} />
+    <meta
+      name="plausible-env"
+      content={Application.get_env(:retro_hex_chat_web, :plausible_env, "prod")}
+    />
+    <meta
+      name="faro-enabled"
+      content={to_string(Application.get_env(:retro_hex_chat_web, :faro_enabled, false))}
+    />
+    <meta
+      name="faro-collector-url"
+      content={Application.get_env(:retro_hex_chat_web, :faro_collector_url, "/faro/collect")}
+    />
+    <meta name="faro-app-version" content={RetroHexChatWeb.BuildInfo.version()} />
+    <%!-- Faro's tracing instrumentation adopts this as the parent of the
+          page-load trace, so the browser's spans and the server's land in one
+          trace instead of two that never reference each other. --%>
+    <%= if traceparent = RetroHexChatWeb.TraceContext.traceparent() do %>
+      <meta name="traceparent" content={traceparent} />
+    <% end %>
+    """
+  end
+
+  @doc """
+  What makes a page installable and recognisable in a tab: the manifest, the
+  theme colour the OS paints around an installed window (it has no chrome of
+  its own), and the icons.
+  """
+  @spec app_icons(map()) :: Phoenix.LiveView.Rendered.t()
+  def app_icons(assigns) do
+    ~H"""
+    <link rel="manifest" href={~p"/manifest.webmanifest"} />
+    <meta name="theme-color" content="#000080" />
+    <link rel="apple-touch-icon" href={~p"/images/app_icon_192.png"} />
+    <link rel="icon" type="image/svg+xml" href={~p"/images/favicon.svg"} />
+    <link rel="icon" type="image/x-icon" href={~p"/favicon.ico"} />
+    """
+  end
+
+  @doc """
   The `<head>` links every surface shares, in the order the browser should act on them.
 
   Three of these earn their place by what they *don't* do. The icon sprite is not

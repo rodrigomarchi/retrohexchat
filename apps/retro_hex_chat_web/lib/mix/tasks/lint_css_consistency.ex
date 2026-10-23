@@ -1060,37 +1060,8 @@ defmodule Mix.Tasks.Lint.CssConsistency do
     IO.puts("  Allowlisted (missing):    #{MapSet.size(missing_allow)}")
     IO.puts("")
 
-    if MapSet.size(unused) == 0 do
-      IO.puts("#{IO.ANSI.green()}✓ No unused CSS classes found.#{IO.ANSI.reset()}")
-    else
-      sources = defined_class_sources()
-      IO.puts("#{IO.ANSI.red()}Unused CSS classes (#{MapSet.size(unused)}):#{IO.ANSI.reset()}")
-
-      unused
-      |> Enum.sort()
-      |> Enum.each(fn class ->
-        file = sources |> Map.get(class, ["unknown"]) |> List.first()
-        IO.puts("  #{String.pad_trailing(file, 28)} .#{class}")
-      end)
-
-      IO.puts("")
-    end
-
-    if MapSet.size(missing) == 0 do
-      IO.puts("#{IO.ANSI.green()}✓ No missing CSS classes found.#{IO.ANSI.reset()}")
-    else
-      ref_sources = referenced_class_sources()
-      IO.puts("#{IO.ANSI.red()}Missing CSS classes (#{MapSet.size(missing)}):#{IO.ANSI.reset()}")
-
-      missing
-      |> Enum.sort()
-      |> Enum.each(fn class ->
-        file = ref_sources |> Map.get(class, ["unknown"]) |> List.first()
-        IO.puts("  #{String.pad_trailing(file, 28)} .#{class}")
-      end)
-
-      IO.puts("")
-    end
+    print_class_report(unused, "unused", "Unused", &defined_class_sources/0)
+    print_class_report(missing, "missing", "Missing", &referenced_class_sources/0)
 
     total = MapSet.size(unused) + MapSet.size(missing)
 
@@ -1129,5 +1100,26 @@ defmodule Mix.Tasks.Lint.CssConsistency do
   defp print_stale_entries(section, entries) do
     IO.puts("  [#{section}]")
     Enum.each(entries, &IO.puts("    #{&1}"))
+  end
+
+  # One block of the report: a check mark when `classes` is empty, otherwise
+  # each class beside the first file that defines or references it. `sources`
+  # is read only when there is something to list.
+  defp print_class_report(classes, word, title, sources) do
+    if MapSet.size(classes) == 0 do
+      IO.puts("#{IO.ANSI.green()}✓ No #{word} CSS classes found.#{IO.ANSI.reset()}")
+    else
+      by_class = sources.()
+      IO.puts("#{IO.ANSI.red()}#{title} CSS classes (#{MapSet.size(classes)}):#{IO.ANSI.reset()}")
+
+      classes
+      |> Enum.sort()
+      |> Enum.each(fn class ->
+        file = by_class |> Map.get(class, ["unknown"]) |> List.first()
+        IO.puts("  #{String.pad_trailing(file, 28)} .#{class}")
+      end)
+
+      IO.puts("")
+    end
   end
 end

@@ -25,6 +25,7 @@ defmodule RetroHexChatWeb.P2PLive.Components.P2PMediaIsland do
   require Logger
 
   alias RetroHexChat.Lobby
+  alias RetroHexChatWeb.ChatLive.Components.DialogIsland
   alias RetroHexChatWeb.Components.UI.MediaSession.CallQuality
   alias RetroHexChatWeb.Components.UI.P2P.CallPanel
 
@@ -173,20 +174,20 @@ defmodule RetroHexChatWeb.P2PLive.Components.P2PMediaIsland do
   end
 
   @spec assign_context(Phoenix.LiveView.Socket.t(), map()) :: Phoenix.LiveView.Socket.t()
+  # Only what the parent sent changes; the rest keeps its value from mount.
   defp assign_context(socket, assigns) do
-    assign(socket,
-      connected: Map.get(assigns, :connected, socket.assigns.connected),
-      nickname: Map.get(assigns, :nickname, socket.assigns.nickname),
-      peer_nick: Map.get(assigns, :peer_nick, socket.assigns.peer_nick),
-      peer_locale: Map.get(assigns, :peer_locale, socket.assigns.peer_locale),
-      token: Map.get(assigns, :token, socket.assigns.token),
-      user_id: Map.get(assigns, :user_id, socket.assigns.user_id),
-      self_view: Map.get(assigns, :self_view, socket.assigns.self_view),
-      mini: Map.get(assigns, :mini, socket.assigns.mini),
-      device_preferences:
-        Map.get(assigns, :device_preferences, socket.assigns.device_preferences),
-      media_mode: Map.get(assigns, :media_mode, socket.assigns.media_mode)
-    )
+    DialogIsland.take(socket, assigns, [
+      :connected,
+      :nickname,
+      :peer_nick,
+      :peer_locale,
+      :token,
+      :user_id,
+      :self_view,
+      :mini,
+      :device_preferences,
+      :media_mode
+    ])
   end
 
   # --- Media events (forwarded from the host; the hook pushes to the root LV) ---

@@ -173,26 +173,6 @@ defmodule RetroHexChatWeb.Components.UI.Desktop do
     """
   end
 
-  @doc """
-  Backward-compatible name for `desktop_icon/1`.
-  """
-  attr :window, :string, required: true, doc: "target window id to open on double-click"
-  attr :label, :string, required: true
-
-  attr :action, :string,
-    default: nil,
-    doc: "LiveView event to push on double-click instead of opening the window locally"
-
-  attr :href, :string, default: nil, doc: "render as a link to this URL instead of a button"
-  attr :navigate, :string, default: nil, doc: "same, via LiveView navigation"
-  attr :class, :any, default: nil
-  attr :rest, :global
-
-  slot :icon, required: true, doc: "32×32 icon"
-
-  @spec desktop_shortcut(map()) :: Phoenix.LiveView.Rendered.t()
-  def desktop_shortcut(assigns), do: desktop_icon(assigns)
-
   # Desktop chrome that can also be a link.
   #
   # The window manager reads the `data-window-*` attribute either way. What an

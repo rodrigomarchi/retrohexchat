@@ -56,6 +56,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.Composer do
   alias RetroHexChatWeb.ChatLive.Components.EmojiPickerDialog
   alias RetroHexChatWeb.ChatLive.Helpers.NickFlags
   alias RetroHexChatWeb.Components.UI.Format
+  alias RetroHexChatWeb.Components.UI.FormattingToolbar
   import RetroHexChatWeb.Components.UI.ToolButton
 
   alias RetroHexChatWeb.Icons
@@ -237,7 +238,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.Composer do
        edit_original_input: original_input,
        edit_original_content_format: original_format,
        input: content,
-       content_format: normalize_content_format(content_format),
+       content_format: FormattingToolbar.content_format(content_format),
        composer_view: :write
      )}
   end
@@ -332,7 +333,10 @@ defmodule RetroHexChatWeb.ChatLive.Components.Composer do
 
   def handle_event("set_content_format", %{"format" => format}, socket) do
     {:noreply,
-     assign(socket, content_format: normalize_content_format(format), composer_view: :write)}
+     assign(socket,
+       content_format: FormattingToolbar.content_format(format),
+       composer_view: :write
+     )}
   end
 
   def handle_event("set_composer_view", %{"view" => view}, socket) do
@@ -895,11 +899,8 @@ defmodule RetroHexChatWeb.ChatLive.Components.Composer do
   defp submitted_content_format(socket, params) do
     params
     |> Map.get("content_format", socket.assigns.content_format)
-    |> normalize_content_format()
+    |> FormattingToolbar.content_format()
   end
-
-  defp normalize_content_format(format) when format in ~w(irc markdown plain), do: format
-  defp normalize_content_format(_format), do: "irc"
 
   defp normalize_composer_view("preview"), do: :preview
   defp normalize_composer_view(_view), do: :write

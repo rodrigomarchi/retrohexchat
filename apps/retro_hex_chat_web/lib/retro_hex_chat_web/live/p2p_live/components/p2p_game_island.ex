@@ -23,6 +23,7 @@ defmodule RetroHexChatWeb.P2PLive.Components.P2PGameIsland do
   import RetroHexChatWeb.Components.UI.Lobby.GamePanel
 
   alias RetroHexChat.Games.Catalog
+  alias RetroHexChatWeb.ChatLive.Components.DialogIsland
 
   @id "lobby-game"
   @idle %{status: "idle", game_id: nil, is_host: false}
@@ -78,12 +79,9 @@ defmodule RetroHexChatWeb.P2PLive.Components.P2PGameIsland do
   end
 
   @spec assign_context(Phoenix.LiveView.Socket.t(), map()) :: Phoenix.LiveView.Socket.t()
+  # Only what the parent sent changes; the rest keeps its value from mount.
   defp assign_context(socket, assigns) do
-    assign(socket,
-      connected: Map.get(assigns, :connected, socket.assigns.connected),
-      peer_nick: Map.get(assigns, :peer_nick, socket.assigns.peer_nick),
-      peer_locale: Map.get(assigns, :peer_locale, socket.assigns.peer_locale)
-    )
+    DialogIsland.take(socket, assigns, [:connected, :peer_nick, :peer_locale])
   end
 
   @spec handle_action(Phoenix.LiveView.Socket.t(), term()) :: Phoenix.LiveView.Socket.t()

@@ -49,6 +49,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.MessageViewport do
   alias RetroHexChat.Scraper
   alias RetroHexChat.ShareLinks
   alias RetroHexChat.ShareLinks.Card
+  alias RetroHexChatWeb.ChatLive.Components.DialogIsland
   alias RetroHexChatWeb.ChatLive.Components.MessageRow
   alias RetroHexChatWeb.ChatLive.Helpers.Session, as: SessionHelpers
   alias RetroHexChatWeb.ChatLive.ReadMarkers
@@ -311,12 +312,9 @@ defmodule RetroHexChatWeb.ChatLive.Components.MessageViewport do
       :unread_boundary_id
     ]
 
-    merged =
-      Enum.reduce(keys, %{}, fn key, acc ->
-        Map.put(acc, key, Map.get(assigns, key, socket.assigns[key]))
-      end)
+    merged = DialogIsland.known(socket, assigns, keys)
 
-    {:ok, assign(socket, Map.put(merged, :id, Map.get(assigns, :id, socket.assigns.id)))}
+    {:ok, assign(socket, merged)}
   end
 
   @impl true

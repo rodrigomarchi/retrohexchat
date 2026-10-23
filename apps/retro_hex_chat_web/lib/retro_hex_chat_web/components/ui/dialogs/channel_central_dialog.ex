@@ -1603,19 +1603,19 @@ defmodule RetroHexChatWeb.Components.UI.ChannelCentralDialog do
     cond do
       Map.get(modes, :invite_only) ->
         [
-          %{text: system_line(dgettext("dialogs", "cannot join")), tone: :danger},
+          %{text: Diagrams.system_line(dgettext("dialogs", "cannot join")), tone: :danger},
           %{text: dgettext("dialogs", "invite only"), tone: :muted}
         ]
 
       Map.get(modes, :moderated) ->
         [
-          %{text: system_line(dgettext("dialogs", "joined")), tone: :system},
+          %{text: Diagrams.system_line(dgettext("dialogs", "joined")), tone: :system},
           %{text: dgettext("dialogs", "cannot speak"), tone: :danger}
         ]
 
       true ->
         [
-          %{text: system_line(dgettext("dialogs", "joined")), tone: :system},
+          %{text: Diagrams.system_line(dgettext("dialogs", "joined")), tone: :system},
           %{text: dgettext("dialogs", "hello everyone")}
         ]
     end
@@ -1643,6 +1643,4 @@ defmodule RetroHexChatWeb.Components.UI.ChannelCentralDialog do
   # The chat's own marker for a line nobody typed. It is punctuation, not
   # prose: inside a msgid the engine reads it as list markup and mangles the
   # sentence after it, so it is prefixed here instead.
-  @spec system_line(String.t()) :: String.t()
-  defp system_line(text), do: "* " <> text
 end

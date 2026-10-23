@@ -112,19 +112,23 @@ defmodule RetroHexChatWeb.SpaceSessionAnnouncement do
         :ok
 
       peer ->
-        ChatService.send_private_message(opening.nickname, peer, content(opening, url), "system")
+        ChatService.send_private_message(
+          opening.nickname,
+          peer,
+          line(opening.nickname, url),
+          "system"
+        )
     end
   end
 
   defp post(opening, url) do
-    ChatService.send_system_message(opening.space_id, content(opening, url))
+    ChatService.send_system_message(opening.space_id, line(opening.nickname, url))
   end
 
-  defp content(opening, url) do
-    dgettext("chat", "%{nickname} opened the space — %{url}",
-      nickname: opening.nickname,
-      url: url
-    )
+  @doc "The line said in the conversation when `nickname` opens a space at `url`."
+  @spec line(String.t(), String.t()) :: String.t()
+  def line(nickname, url) do
+    dgettext("chat", "%{nickname} opened the space — %{url}", nickname: nickname, url: url)
   end
 
   defp peer(%{nickname: nickname, participants: participants}) when is_list(participants) do

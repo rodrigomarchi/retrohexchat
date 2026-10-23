@@ -100,6 +100,23 @@ defmodule RetroHexChatWeb.ChatLive.WindowRegistry do
     for window <- windows(), window.opener, into: %{}, do: {window.opener, window.id}
   end
 
+  @doc """
+  The windows a menu lists under one heading, as `{opener, title, icon}`:
+  `:admin` is everything the admin role gates that is not filed under
+  System, `:system` the System family. Every menu that lists them reads
+  them here, so the Start menu and the desktop launchers cannot disagree.
+  """
+  @spec menu_entries(:admin | :system) :: [{String.t(), String.t(), atom()}]
+  def menu_entries(:admin), do: entries(&(&1.render_when == :admin and &1.family != :system))
+  def menu_entries(:system), do: entries(&(&1.family == :system))
+
+  defp entries(filter) do
+    for window <- windows(),
+        window.opener,
+        filter.(window),
+        do: {window.opener, window.title, window.icon}
+  end
+
   @doc "The ids an opener may only reach with the admin role."
   @spec admin_ids() :: [String.t()]
   def admin_ids do

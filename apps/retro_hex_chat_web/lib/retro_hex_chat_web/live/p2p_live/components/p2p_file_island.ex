@@ -21,6 +21,8 @@ defmodule RetroHexChatWeb.P2PLive.Components.P2PFileIsland do
   """
   use RetroHexChatWeb, :live_component
 
+  alias RetroHexChatWeb.ChatLive.Components.DialogIsland
+
   import RetroHexChatWeb.Components.UI.Lobby.FilePanel
 
   require Logger
@@ -77,14 +79,9 @@ defmodule RetroHexChatWeb.P2PLive.Components.P2PFileIsland do
   end
 
   @spec assign_context(Phoenix.LiveView.Socket.t(), map()) :: Phoenix.LiveView.Socket.t()
+  # Only what the parent sent changes; the rest keeps its value from mount.
   defp assign_context(socket, assigns) do
-    assign(socket,
-      connected: Map.get(assigns, :connected, socket.assigns.connected),
-      nickname: Map.get(assigns, :nickname, socket.assigns.nickname),
-      peer_nick: Map.get(assigns, :peer_nick, socket.assigns.peer_nick),
-      peer_locale: Map.get(assigns, :peer_locale, socket.assigns.peer_locale),
-      token: Map.get(assigns, :token, socket.assigns.token)
-    )
+    DialogIsland.take(socket, assigns, [:connected, :nickname, :peer_nick, :peer_locale, :token])
   end
 
   @spec handle_ft(Phoenix.LiveView.Socket.t(), String.t(), map()) ::

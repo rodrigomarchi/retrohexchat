@@ -76,6 +76,18 @@ defmodule RetroHexChatWeb.Components.UI.LanguageMenu do
   end
 
   @doc """
+  The language links a shell menu offers on `screen`. The app's screens
+  redirect through `/locale/:code` and come back where they started (the
+  chat to `/` when nothing else was asked); public screens rewrite the path
+  they are on.
+  """
+  @spec shell_locale_links(map()) :: [map()]
+  def shell_locale_links(%{screen: :chat} = assigns),
+    do: locale_links(:app, nil, Map.get(assigns, :language_return_to) || "/")
+
+  def shell_locale_links(assigns), do: locale_links(:public, Map.get(assigns, :current_path), nil)
+
+  @doc """
   The locale rows behind every language menu: code, label, `hreflang` and the
   URL that switches to it.
 

@@ -54,7 +54,6 @@ defmodule RetroHexChatWeb.Components.UI.StartMenuApp do
 
   # The screens that switch locale through the app's redirect endpoint rather
   # than through a localized public URL.
-  @app_screens [:chat]
 
   attr :id, :string, default: "start-menu"
 
@@ -95,7 +94,7 @@ defmodule RetroHexChatWeb.Components.UI.StartMenuApp do
       |> assign(:admin?, assigns.screen == :chat and assigns.is_admin)
       |> assign(:help?, assigns.help_open)
       |> assign(:nav_pages, nav_pages())
-      |> assign(:locales, locales(assigns))
+      |> assign(:locales, LanguageMenu.shell_locale_links(assigns))
 
     ~H"""
     <div class="relative">
@@ -464,7 +463,7 @@ defmodule RetroHexChatWeb.Components.UI.StartMenuApp do
           <:icon><Icons.icon_shield class="h-4 w-4" /></:icon>
           <%= if @full do %>
             <.app_item
-              :for={{action, label, icon_fn} <- admin_entries()}
+              :for={{action, label, icon_fn} <- WindowRegistry.menu_entries(:admin)}
               action={action}
               on_action={@on_action}
               label={label}
@@ -484,7 +483,7 @@ defmodule RetroHexChatWeb.Components.UI.StartMenuApp do
           <:icon><Icons.icon_server class="h-4 w-4" /></:icon>
           <%= if @full do %>
             <.app_item
-              :for={{action, label, icon_fn} <- system_entries()}
+              :for={{action, label, icon_fn} <- WindowRegistry.menu_entries(:system)}
               action={action}
               on_action={@on_action}
               label={label}
@@ -685,38 +684,6 @@ defmodule RetroHexChatWeb.Components.UI.StartMenuApp do
   end
 
   # ── Private helpers ─────────────────────────────────
-
-  # Public screens rewrite the path they are on; the app's two redirect through
-  # `/locale/:code` and come back where they started.
-  defp locales(%{screen: screen} = assigns) when screen in @app_screens do
-    LanguageMenu.locale_links(:app, nil, assigns.language_return_to || default_return_to(screen))
-  end
-
-  defp locales(assigns) do
-    LanguageMenu.locale_links(:public, assigns.current_path, nil)
-  end
-
-  defp default_return_to(:chat), do: "/"
-
-  # Both privileged groups are derived from `WindowRegistry`, so a window cannot
-  # be openable from a menu that does not know its title, nor carry a different
-  # icon here than it does on its own title bar.
-  # Everything the admin role gates that is not filed under System. Derived
-  # from the registry rather than listed here: a hand-kept list of ids is how a
-  # window comes to be in the menu bar and missing from the Start menu, which
-  # the superset test then reports as a defect in the menu rather than in the
-  # list nobody remembered to extend.
-  defp admin_entries,
-    do: menu_entries(&(&1.render_when == :admin and &1.family != :system))
-
-  defp system_entries, do: menu_entries(&(&1.family == :system))
-
-  defp menu_entries(filter) do
-    for window <- WindowRegistry.windows(),
-        window.opener,
-        filter.(window),
-        do: {window.opener, window.title, window.icon}
-  end
 
   # The public pages, from the one list every menu reads, linked in the
   # reader's language — the same entries on every screen, like the rest of
