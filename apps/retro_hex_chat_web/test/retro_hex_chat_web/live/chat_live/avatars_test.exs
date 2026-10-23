@@ -63,6 +63,9 @@ defmodule RetroHexChatWeb.ChatLive.AvatarsTest do
     {:ok, _state} = Server.join(ctx.channel, stranger)
     {:ok, _id} = Server.send_message(ctx.channel, stranger, "hello from nowhere")
 
+    # The broadcast is already in the view's mailbox; it turns it into a
+    # send_update to the viewport, which a render issued now could overtake.
+    _ = :sys.get_state(ctx.view.pid)
     html = render(ctx.view)
 
     assert html =~ "hello from nowhere"

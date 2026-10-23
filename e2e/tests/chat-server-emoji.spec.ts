@@ -105,10 +105,14 @@ test.describe("Server emoji", () => {
       await expect(pageAdmin.getByTestId("desktop-icon-system")).toBeVisible();
       await shot(pageAdmin, "desktop-admin-icons");
       await pageAdmin.getByTestId("desktop-icon-admin").dblclick();
-      const adminFolder = pageAdmin.getByTestId("desktop-launcher-window-admin");
+      const adminFolder = pageAdmin.getByTestId(
+        "desktop-launcher-window-admin",
+      );
       await expect(adminFolder).toBeVisible();
       await expect(
-        adminFolder.getByTestId("desktop-launcher-item-open_server_emoji_dialog"),
+        adminFolder.getByTestId(
+          "desktop-launcher-item-open_server_emoji_dialog",
+        ),
       ).toBeVisible();
       await shot(adminFolder, "desktop-admin-folder");
     } finally {
