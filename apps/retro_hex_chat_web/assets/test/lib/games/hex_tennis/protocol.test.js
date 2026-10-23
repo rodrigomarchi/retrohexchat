@@ -8,8 +8,6 @@ import {
   OUT_TYPE,
   encodeGameState,
   decodeGameState,
-  encodePlayerInput,
-  decodePlayerInput,
   encodeGameEnd,
   decodeGameEnd,
   encodeGameReady,
@@ -232,45 +230,6 @@ describe("tennis_protocol", () => {
     });
   });
 
-  describe("PLAYER_INPUT encode/decode", () => {
-    it("roundtrips each INPUT_KEY", () => {
-      for (const [, key] of Object.entries(INPUT_KEY)) {
-        const buf = encodePlayerInput(key, true);
-        const decoded = decodePlayerInput(buf);
-        expect(decoded.keyCode).toBe(key);
-        expect(decoded.pressed).toBe(true);
-      }
-    });
-
-    it("roundtrips pressed=true and pressed=false", () => {
-      const bufT = encodePlayerInput(INPUT_KEY.UP, true);
-      expect(decodePlayerInput(bufT).pressed).toBe(true);
-
-      const bufF = encodePlayerInput(INPUT_KEY.UP, false);
-      expect(decodePlayerInput(bufF).pressed).toBe(false);
-    });
-
-    it("produces exactly 3 bytes", () => {
-      const buf = encodePlayerInput(INPUT_KEY.SERVE, true);
-      expect(buf.byteLength).toBe(3);
-    });
-
-    it("sets type byte to PLAYER_INPUT (0x81)", () => {
-      const buf = encodePlayerInput(INPUT_KEY.UP, true);
-      expect(new DataView(buf).getUint8(0)).toBe(0x81);
-    });
-
-    it("returns null for buffer too small", () => {
-      expect(decodePlayerInput(new ArrayBuffer(2))).toBeNull();
-    });
-
-    it("returns null for wrong message type", () => {
-      const buf = new ArrayBuffer(3);
-      new DataView(buf).setUint8(0, 0x80);
-      expect(decodePlayerInput(buf)).toBeNull();
-    });
-  });
-
   describe("GAME_END encode/decode", () => {
     it("roundtrips P1 wins Classic 6-4", () => {
       const buf = encodeGameEnd(6, 4, 1, GAME_MODE.CLASSIC, false);
@@ -323,15 +282,6 @@ describe("tennis_protocol", () => {
   });
 
   describe("getMessageType", () => {
-    it("returns type byte from any buffer", () => {
-      expect(getMessageType(encodeGameReady())).toBe(MSG_TYPE.GAME_READY);
-      expect(getMessageType(encodePlayerInput(0, true))).toBe(MSG_TYPE.PLAYER_INPUT);
-      expect(getMessageType(encodeGameState(makeState()))).toBe(MSG_TYPE.GAME_STATE);
-      expect(getMessageType(encodeGameEnd(0, 0, 1, GAME_MODE.CLASSIC, false))).toBe(
-        MSG_TYPE.GAME_END,
-      );
-    });
-
     it("returns null for empty buffer", () => {
       expect(getMessageType(new ArrayBuffer(0))).toBeNull();
     });

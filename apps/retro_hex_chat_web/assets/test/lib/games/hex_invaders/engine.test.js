@@ -531,7 +531,7 @@ describe("HexInvadersEngine", () => {
         channel.send.mockClear(); // clear GAME_READY send
       });
 
-      it("sends encodePlayerInput for left key", () => {
+      it("sends its input for left key", () => {
         engine._onKeyDown({
           key: "ArrowLeft",
           preventDefault: vi.fn(),
@@ -543,7 +543,7 @@ describe("HexInvadersEngine", () => {
         expect(decodeInputState(buf).mask).toBe(inputMask(HexInvadersEngine, { left: true }));
       });
 
-      it("sends encodePlayerInput for fire key", () => {
+      it("sends its input for fire key", () => {
         engine._onKeyDown({ key: " ", preventDefault: vi.fn(), repeat: false, target: null });
         expect(channel.send).toHaveBeenCalledTimes(1);
         expect(decodeInputState(channel.send.mock.calls[0][0]).mask).toBe(
@@ -663,25 +663,25 @@ describe("HexInvadersEngine", () => {
         engine.start();
       });
 
-      it("PLAYER_INPUT sets remoteInputs.left", () => {
+      it("the input datagram sets remoteInputs.left", () => {
         const buf = inputDatagram(HexInvadersEngine, { left: true }, 1);
         engine._onChannelMessage({ data: buf });
         expect(engine.remoteInputs.left).toBe(true);
       });
 
-      it("PLAYER_INPUT sets remoteInputs.right", () => {
+      it("the input datagram sets remoteInputs.right", () => {
         const buf = inputDatagram(HexInvadersEngine, { right: true }, 2);
         engine._onChannelMessage({ data: buf });
         expect(engine.remoteInputs.right).toBe(true);
       });
 
-      it("PLAYER_INPUT sets remoteInputs.fire", () => {
+      it("the input datagram sets remoteInputs.fire", () => {
         const buf = inputDatagram(HexInvadersEngine, { fire: true }, 3);
         engine._onChannelMessage({ data: buf });
         expect(engine.remoteInputs.fire).toBe(true);
       });
 
-      it("PLAYER_INPUT release clears remoteInputs", () => {
+      it("the input datagram release clears remoteInputs", () => {
         engine.remoteInputs.left = true;
         const buf = inputDatagram(HexInvadersEngine, { left: false }, 4);
         engine._onChannelMessage({ data: buf });
@@ -803,7 +803,7 @@ describe("HexInvadersEngine", () => {
         expect(badCb).toHaveBeenCalled();
       });
 
-      it("peer ignores PLAYER_INPUT messages", () => {
+      it("peer ignores the input datagram messages", () => {
         const buf = inputDatagram(HexInvadersEngine, { left: true }, 5);
         engine._onChannelMessage({ data: buf });
         expect(engine.remoteInputs.left).toBe(false);

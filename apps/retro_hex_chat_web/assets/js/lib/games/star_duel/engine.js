@@ -242,32 +242,6 @@ export class StarDuelEngine extends GameEngine {
     }
   }
 
-  /**
-   * Apply a remote player input message to remoteInputs (host only).
-   * Fire and warp are edge-triggered: peer sends pressed=true once on keydown,
-   * and pressed=false on keyup. The host detects false->true transitions.
-   * @param {{keyCode: number, pressed: boolean}} input
-   */
-  _applyRemoteInput(input) {
-    switch (input.keyCode) {
-      case INPUT_KEY.ROTATE_LEFT:
-        this.remoteInputs.rotateLeft = input.pressed;
-        break;
-      case INPUT_KEY.ROTATE_RIGHT:
-        this.remoteInputs.rotateRight = input.pressed;
-        break;
-      case INPUT_KEY.THRUST:
-        this.remoteInputs.thrust = input.pressed;
-        break;
-      case INPUT_KEY.FIRE:
-        this.remoteInputs.fire = input.pressed;
-        break;
-      case INPUT_KEY.WARP:
-        this.remoteInputs.warp = input.pressed;
-        break;
-    }
-  }
-
   _handleKeyDown(e) {
     const keyCode = this._mapKey(e.key);
     if (keyCode === null) return;

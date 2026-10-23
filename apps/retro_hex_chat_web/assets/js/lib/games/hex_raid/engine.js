@@ -247,16 +247,6 @@ export class HexRaidEngine extends GameEngine {
     }
   }
 
-  _applyRemoteInput(input) {
-    const keyCode = input.key ?? input.keyCode;
-    if (keyCode === INPUT_KEY.LEFT) this.remoteInputs.left = input.pressed;
-    else if (keyCode === INPUT_KEY.RIGHT) this.remoteInputs.right = input.pressed;
-    else if (keyCode === INPUT_KEY.ACCEL) this.remoteInputs.accel = input.pressed;
-    else if (keyCode === INPUT_KEY.DECEL) this.remoteInputs.decel = input.pressed;
-    else if (keyCode === INPUT_KEY.FIRE) this.remoteInputs.fire = input.pressed;
-    else if (keyCode === INPUT_KEY.MINE) this.remoteInputs.mine = input.pressed;
-  }
-
   _onRemoteInputChange(previous, current) {
     if (current.fire && !previous.fire) this._remoteFirePressed = false;
     if (current.mine && !previous.mine) this._remoteMinePressed = false;

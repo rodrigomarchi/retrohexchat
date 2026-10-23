@@ -130,3 +130,27 @@ export function unpackInputs(mask, bits, target) {
   }
   return target;
 }
+
+// Every game announces it is ready with the same one-byte message, the top of
+// its own 0x80–0x84 range.
+const GAME_READY = 0x84;
+
+/**
+ * The one-byte message a game sends when it is ready to play.
+ * @returns {ArrayBuffer}
+ */
+export function encodeGameReady() {
+  const buf = new ArrayBuffer(1);
+  new DataView(buf).setUint8(0, GAME_READY);
+  return buf;
+}
+
+/**
+ * A message's type: its first byte, or null for an empty or missing buffer.
+ * @param {ArrayBuffer|null|undefined} buf
+ * @returns {number|null}
+ */
+export function getMessageType(buf) {
+  if (!buf || buf.byteLength < 1) return null;
+  return new DataView(buf).getUint8(0);
+}

@@ -506,7 +506,7 @@ describe("BoxingEngine", () => {
       expect(engine.audio.playCountdown).not.toHaveBeenCalled();
     });
 
-    it("PLAYER_INPUT applies remote input", () => {
+    it("the input datagram applies remote input", () => {
       engine._onChannelMessage({
         data: inputDatagram(BoxingEngine, { up: true }, 1),
       });
@@ -613,7 +613,7 @@ describe("BoxingEngine", () => {
       expect(engine.audio.playWin).not.toHaveBeenCalled();
     });
 
-    it("ignores PLAYER_INPUT on peer", () => {
+    it("ignores the input datagram on peer", () => {
       engine._onChannelMessage({
         data: inputDatagram(BoxingEngine, { up: true }, 3),
       });
@@ -625,49 +625,6 @@ describe("BoxingEngine", () => {
       engine._onChannelMessage({ data: encodeGameReady() });
       // Peer should not start countdown
       expect(engine.gameState.phase).toBe(PHASE.WAITING);
-    });
-  });
-
-  // ── _applyRemoteInput ──
-
-  describe("_applyRemoteInput", () => {
-    beforeEach(() => {
-      engine = new BoxingEngine(canvas, channel, "hex_boxing", true, null);
-    });
-
-    it("sets all 5 remote input keys", () => {
-      engine._applyRemoteInput({ keyCode: INPUT_KEY.UP, pressed: true });
-      expect(engine.remoteInputs.up).toBe(true);
-
-      engine._applyRemoteInput({ keyCode: INPUT_KEY.DOWN, pressed: true });
-      expect(engine.remoteInputs.down).toBe(true);
-
-      engine._applyRemoteInput({ keyCode: INPUT_KEY.LEFT, pressed: true });
-      expect(engine.remoteInputs.left).toBe(true);
-
-      engine._applyRemoteInput({ keyCode: INPUT_KEY.RIGHT, pressed: true });
-      expect(engine.remoteInputs.right).toBe(true);
-
-      engine._applyRemoteInput({ keyCode: INPUT_KEY.PUNCH, pressed: true });
-      expect(engine.remoteInputs.punch).toBe(true);
-    });
-
-    it("release clears the input", () => {
-      engine._applyRemoteInput({ keyCode: INPUT_KEY.UP, pressed: true });
-      expect(engine.remoteInputs.up).toBe(true);
-      engine._applyRemoteInput({ keyCode: INPUT_KEY.UP, pressed: false });
-      expect(engine.remoteInputs.up).toBe(false);
-    });
-
-    it("ignores unknown keyCode gracefully", () => {
-      engine._applyRemoteInput({ keyCode: 99, pressed: true });
-      expect(engine.remoteInputs).toEqual({
-        up: false,
-        down: false,
-        left: false,
-        right: false,
-        punch: false,
-      });
     });
   });
 

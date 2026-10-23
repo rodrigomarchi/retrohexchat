@@ -215,17 +215,6 @@ export class HexHockeyEngine extends GameEngine {
     }
   }
 
-  _applyRemoteInput(input) {
-    if (input.key === INPUT_KEY.LEFT) this.remoteInputs.left = input.pressed;
-    else if (input.key === INPUT_KEY.RIGHT) this.remoteInputs.right = input.pressed;
-    else if (input.key === INPUT_KEY.UP) this.remoteInputs.up = input.pressed;
-    else if (input.key === INPUT_KEY.DOWN) this.remoteInputs.down = input.pressed;
-    else if (input.key === INPUT_KEY.ACTION) {
-      this.remoteInputs.action = input.pressed;
-      if (input.pressed) this.remoteActionHandled = false;
-    }
-  }
-
   _onRemoteInputChange(previous, current) {
     if (current.action && !previous.action) this.remoteActionHandled = false;
   }

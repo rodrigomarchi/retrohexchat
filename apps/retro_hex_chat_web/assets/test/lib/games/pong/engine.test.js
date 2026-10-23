@@ -3,7 +3,6 @@ import {
   PHASE,
   MSG_TYPE,
   encodeGameState,
-  encodePlayerInput,
   encodeGameEnd,
   encodeGameReady,
 } from "../../../../js/lib/games/pong/protocol.js";
@@ -444,17 +443,6 @@ describe("PongEngine", () => {
       expect(engine.gameState.score1).toBe(11);
       expect(engine.gameState.score2).toBe(7);
       expect(engine._keyboardCaptured).toBe(false);
-    });
-
-    it("ignores PLAYER_INPUT when peer", () => {
-      engine = new PongEngine(canvas, channel, "hex_pong", false, null);
-      engine.start();
-
-      const buf = encodePlayerInput(0, true);
-      engine._onChannelMessage({ data: buf });
-
-      // Peer should not process player input — only host does
-      expect(engine.remoteInputs.up).toBe(false);
     });
   });
 

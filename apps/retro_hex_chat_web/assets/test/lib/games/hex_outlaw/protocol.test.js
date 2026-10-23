@@ -2,12 +2,9 @@ import { describe, it, expect } from "vitest";
 import {
   MSG_TYPE,
   PHASE,
-  INPUT_KEY,
   GAME_MODE,
   encodeGameState,
   decodeGameState,
-  encodePlayerInput,
-  decodePlayerInput,
   encodeGameEnd,
   decodeGameEnd,
   encodeGameReady,
@@ -191,7 +188,7 @@ describe("Hex Outlaw Protocol", () => {
 
     it("returns null for wrong message type", () => {
       const buf = new ArrayBuffer(38);
-      new DataView(buf).setUint8(0, MSG_TYPE.PLAYER_INPUT);
+      new DataView(buf).setUint8(0, 0x81);
       expect(decodeGameState(buf, BULLET_SPEED_X)).toBeNull();
     });
 
@@ -201,36 +198,6 @@ describe("Hex Outlaw Protocol", () => {
       const decoded = decodeGameState(buf, BULLET_SPEED_X);
       expect(decoded.b1active).toBe(false);
       expect(decoded.b2active).toBe(false);
-    });
-  });
-
-  describe("player input encode/decode", () => {
-    it("roundtrips all input keys", () => {
-      for (const key of [
-        INPUT_KEY.UP,
-        INPUT_KEY.DOWN,
-        INPUT_KEY.LEFT,
-        INPUT_KEY.RIGHT,
-        INPUT_KEY.FIRE,
-      ]) {
-        for (const pressed of [true, false]) {
-          const buf = encodePlayerInput(key, pressed);
-          const decoded = decodePlayerInput(buf);
-          expect(decoded.keyCode).toBe(key);
-          expect(decoded.pressed).toBe(pressed);
-        }
-      }
-    });
-
-    it("returns null for too-small buffer", () => {
-      const buf = new ArrayBuffer(1);
-      expect(decodePlayerInput(buf)).toBeNull();
-    });
-
-    it("returns null for wrong message type", () => {
-      const buf = new ArrayBuffer(3);
-      new DataView(buf).setUint8(0, MSG_TYPE.GAME_STATE);
-      expect(decodePlayerInput(buf)).toBeNull();
     });
   });
 
@@ -285,11 +252,6 @@ describe("Hex Outlaw Protocol", () => {
     it("identifies game state", () => {
       const buf = encodeGameState(makeState(), BULLET_SPEED_X);
       expect(getMessageType(buf)).toBe(MSG_TYPE.GAME_STATE);
-    });
-
-    it("identifies player input", () => {
-      const buf = encodePlayerInput(INPUT_KEY.FIRE, true);
-      expect(getMessageType(buf)).toBe(MSG_TYPE.PLAYER_INPUT);
     });
   });
 });

@@ -302,7 +302,7 @@ describe("WarlordEngine", () => {
       expect(countdownCalls2).toBe(countdownCalls1);
     });
 
-    it("processes PLAYER_INPUT UP pressed", () => {
+    it("processes the input datagram UP pressed", () => {
       engine = new WarlordEngine(canvas, channel, "hex_warlords", true, null);
       engine.start();
 
@@ -312,7 +312,7 @@ describe("WarlordEngine", () => {
       expect(engine.remoteInputs.up).toBe(true);
     });
 
-    it("processes PLAYER_INPUT DOWN released", () => {
+    it("processes the input datagram DOWN released", () => {
       engine = new WarlordEngine(canvas, channel, "hex_warlords", true, null);
       engine.start();
       engine.remoteInputs.down = true;
@@ -323,7 +323,7 @@ describe("WarlordEngine", () => {
       expect(engine.remoteInputs.down).toBe(false);
     });
 
-    it("processes PLAYER_INPUT SPACE pressed", () => {
+    it("processes the input datagram SPACE pressed", () => {
       engine = new WarlordEngine(canvas, channel, "hex_warlords", true, null);
       engine.start();
 
@@ -419,7 +419,7 @@ describe("WarlordEngine", () => {
       expect(engine.gameState.p1KingAlive).toBe(false);
     });
 
-    it("ignores PLAYER_INPUT when peer", () => {
+    it("ignores the input datagram when peer", () => {
       engine = new WarlordEngine(canvas, channel, "hex_warlords", false, null);
       engine.start();
 

@@ -9,8 +9,6 @@ import {
   decodeBrickBitmap,
   encodeGameState,
   decodeGameState,
-  encodePlayerInput,
-  decodePlayerInput,
   encodeGameEnd,
   decodeGameEnd,
   encodeGameReady,
@@ -116,7 +114,7 @@ describe("Warlords Protocol", () => {
 
     it("returns null for wrong message type", () => {
       const buf = new ArrayBuffer(33);
-      new DataView(buf).setUint8(0, MSG_TYPE.PLAYER_INPUT);
+      new DataView(buf).setUint8(0, 0x81);
       expect(decodeGameState(buf)).toBeNull();
     });
 
@@ -141,40 +139,6 @@ describe("Warlords Protocol", () => {
       const buf = encodeGameState(state);
       const decoded = decodeGameState(buf);
       expect(decoded.caughtBy).toBe(1);
-    });
-  });
-
-  describe("player input encode/decode", () => {
-    it("roundtrips UP pressed", () => {
-      const buf = encodePlayerInput(INPUT_KEY.UP, true);
-      expect(buf.byteLength).toBe(3);
-      const decoded = decodePlayerInput(buf);
-      expect(decoded.keyCode).toBe(INPUT_KEY.UP);
-      expect(decoded.pressed).toBe(true);
-    });
-
-    it("roundtrips DOWN released", () => {
-      const buf = encodePlayerInput(INPUT_KEY.DOWN, false);
-      const decoded = decodePlayerInput(buf);
-      expect(decoded.keyCode).toBe(INPUT_KEY.DOWN);
-      expect(decoded.pressed).toBe(false);
-    });
-
-    it("roundtrips SPACE pressed", () => {
-      const buf = encodePlayerInput(INPUT_KEY.SPACE, true);
-      const decoded = decodePlayerInput(buf);
-      expect(decoded.keyCode).toBe(INPUT_KEY.SPACE);
-      expect(decoded.pressed).toBe(true);
-    });
-
-    it("returns null for too-small buffer", () => {
-      expect(decodePlayerInput(new ArrayBuffer(1))).toBeNull();
-    });
-
-    it("returns null for wrong message type", () => {
-      const buf = new ArrayBuffer(3);
-      new DataView(buf).setUint8(0, MSG_TYPE.GAME_STATE);
-      expect(decodePlayerInput(buf)).toBeNull();
     });
   });
 

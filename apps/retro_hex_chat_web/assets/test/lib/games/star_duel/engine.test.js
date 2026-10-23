@@ -414,7 +414,7 @@ describe("StarDuelEngine", () => {
       expect(countdownCalls2).toBe(countdownCalls1);
     });
 
-    it("processes PLAYER_INPUT ROTATE_LEFT", () => {
+    it("processes the input datagram ROTATE_LEFT", () => {
       engine = new StarDuelEngine(canvas, channel, "star_duel", true, null);
       engine.start();
 
@@ -423,7 +423,7 @@ describe("StarDuelEngine", () => {
       expect(engine.remoteInputs.rotateLeft).toBe(true);
     });
 
-    it("processes PLAYER_INPUT ROTATE_RIGHT", () => {
+    it("processes the input datagram ROTATE_RIGHT", () => {
       engine = new StarDuelEngine(canvas, channel, "star_duel", true, null);
       engine.start();
 
@@ -432,7 +432,7 @@ describe("StarDuelEngine", () => {
       expect(engine.remoteInputs.rotateRight).toBe(true);
     });
 
-    it("processes PLAYER_INPUT THRUST", () => {
+    it("processes the input datagram THRUST", () => {
       engine = new StarDuelEngine(canvas, channel, "star_duel", true, null);
       engine.start();
 
@@ -441,7 +441,7 @@ describe("StarDuelEngine", () => {
       expect(engine.remoteInputs.thrust).toBe(true);
     });
 
-    it("processes PLAYER_INPUT FIRE", () => {
+    it("processes the input datagram FIRE", () => {
       engine = new StarDuelEngine(canvas, channel, "star_duel", true, null);
       engine.start();
 
@@ -450,7 +450,7 @@ describe("StarDuelEngine", () => {
       expect(engine.remoteInputs.fire).toBe(true);
     });
 
-    it("processes PLAYER_INPUT WARP", () => {
+    it("processes the input datagram WARP", () => {
       engine = new StarDuelEngine(canvas, channel, "star_duel", true, null);
       engine.start();
 

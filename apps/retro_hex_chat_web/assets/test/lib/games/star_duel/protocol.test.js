@@ -8,8 +8,6 @@ import {
   decodeShipFlags,
   encodeGameState,
   decodeGameState,
-  encodePlayerInput,
-  decodePlayerInput,
   encodeGameEnd,
   decodeGameEnd,
   encodeGameReady,
@@ -450,72 +448,6 @@ describe("star_duel_protocol", () => {
     });
   });
 
-  describe("PLAYER_INPUT encode/decode", () => {
-    it("roundtrips all 5 input keys (pressed)", () => {
-      for (const [, value] of Object.entries(INPUT_KEY)) {
-        const buf = encodePlayerInput(value, true);
-        expect(buf.byteLength).toBe(3);
-        const decoded = decodePlayerInput(buf);
-        expect(decoded.keyCode).toBe(value);
-        expect(decoded.pressed).toBe(true);
-      }
-    });
-
-    it("roundtrips all 5 input keys (released)", () => {
-      for (const [, value] of Object.entries(INPUT_KEY)) {
-        const decoded = decodePlayerInput(encodePlayerInput(value, false));
-        expect(decoded.keyCode).toBe(value);
-        expect(decoded.pressed).toBe(false);
-      }
-    });
-
-    it("sets type byte to PLAYER_INPUT (0x81)", () => {
-      const buf = encodePlayerInput(INPUT_KEY.ROTATE_LEFT, true);
-      expect(new DataView(buf).getUint8(0)).toBe(0x81);
-    });
-
-    it("returns null for buffer too small", () => {
-      expect(decodePlayerInput(new ArrayBuffer(2))).toBeNull();
-      expect(decodePlayerInput(new ArrayBuffer(0))).toBeNull();
-    });
-
-    it("returns null for wrong message type", () => {
-      const buf = new ArrayBuffer(3);
-      new DataView(buf).setUint8(0, 0x80);
-      expect(decodePlayerInput(buf)).toBeNull();
-    });
-
-    it("decodePlayerInput with pressed byte value 2 treats as true", () => {
-      const buf = new ArrayBuffer(3);
-      const view = new DataView(buf);
-      view.setUint8(0, MSG_TYPE.PLAYER_INPUT);
-      view.setUint8(1, INPUT_KEY.FIRE);
-      view.setUint8(2, 2); // non-zero, non-1
-      const decoded = decodePlayerInput(buf);
-      expect(decoded.pressed).toBe(true);
-    });
-
-    it("decodePlayerInput with pressed byte value 255 treats as true", () => {
-      const buf = new ArrayBuffer(3);
-      const view = new DataView(buf);
-      view.setUint8(0, MSG_TYPE.PLAYER_INPUT);
-      view.setUint8(1, INPUT_KEY.THRUST);
-      view.setUint8(2, 255);
-      const decoded = decodePlayerInput(buf);
-      expect(decoded.pressed).toBe(true);
-    });
-
-    it("decodePlayerInput with pressed byte value 0 treats as false", () => {
-      const buf = new ArrayBuffer(3);
-      const view = new DataView(buf);
-      view.setUint8(0, MSG_TYPE.PLAYER_INPUT);
-      view.setUint8(1, INPUT_KEY.WARP);
-      view.setUint8(2, 0);
-      const decoded = decodePlayerInput(buf);
-      expect(decoded.pressed).toBe(false);
-    });
-  });
-
   describe("GAME_END encode/decode", () => {
     it("roundtrips player 1 win", () => {
       const buf = encodeGameEnd(5, 3, 1);
@@ -559,13 +491,6 @@ describe("star_duel_protocol", () => {
   });
 
   describe("getMessageType", () => {
-    it("returns correct type for all message types", () => {
-      expect(getMessageType(encodeGameReady())).toBe(MSG_TYPE.GAME_READY);
-      expect(getMessageType(encodePlayerInput(INPUT_KEY.FIRE, true))).toBe(MSG_TYPE.PLAYER_INPUT);
-      expect(getMessageType(encodeGameState(makeState()))).toBe(MSG_TYPE.GAME_STATE);
-      expect(getMessageType(encodeGameEnd(0, 0, 1))).toBe(MSG_TYPE.GAME_END);
-    });
-
     it("returns null for empty buffer", () => {
       expect(getMessageType(new ArrayBuffer(0))).toBeNull();
     });

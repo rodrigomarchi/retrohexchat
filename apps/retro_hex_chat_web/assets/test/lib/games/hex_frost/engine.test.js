@@ -520,7 +520,7 @@ describe("HexFrostEngine", () => {
         expect(engine.localInputs.down).toBe(true);
       });
 
-      it("host does NOT send encodePlayerInput", () => {
+      it("host does NOT send its input", () => {
         const { engine, channel } = createEngine("hex_frost", true);
         engine._onKeyDown({
           key: "ArrowLeft",
@@ -531,7 +531,7 @@ describe("HexFrostEngine", () => {
         expect(channel.send).not.toHaveBeenCalled();
       });
 
-      it("peer sets localInputs AND sends encodePlayerInput", () => {
+      it("peer sets localInputs AND sends its input", () => {
         const { engine, channel } = createEngine("hex_frost", false);
         engine._onKeyDown({
           key: "ArrowRight",
@@ -681,7 +681,7 @@ describe("HexFrostEngine", () => {
       engine.stop();
     });
 
-    it("host handles PLAYER_INPUT — sets remoteInputs for all directions", () => {
+    it("host handles the input datagram — sets remoteInputs for all directions", () => {
       const { engine } = createEngine("hex_frost", true);
 
       engine._onChannelMessage({ data: inputDatagram(HexFrostEngine, { left: true }, 1) });
@@ -705,7 +705,7 @@ describe("HexFrostEngine", () => {
       expect(engine.remoteInputs.left).toBe(false);
     });
 
-    it("peer ignores PLAYER_INPUT", () => {
+    it("peer ignores the input datagram", () => {
       const { engine } = createEngine("hex_frost", false);
       engine._onChannelMessage({ data: inputDatagram(HexFrostEngine, { left: true }, 6) });
       expect(engine.remoteInputs.left).toBe(false);

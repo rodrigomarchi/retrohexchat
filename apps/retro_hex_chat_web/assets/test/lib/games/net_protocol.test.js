@@ -4,7 +4,9 @@ import {
   decodeInputEdge,
   decodeInputState,
   encodeInputEdge,
+  encodeGameReady,
   encodeInputState,
+  getMessageType,
   isNewerSeq,
   packInputs,
   unpackInputs,
@@ -64,5 +66,27 @@ describe("net_protocol", () => {
       expect(isNewerSeq(2, 65534)).toBe(true);
       expect(isNewerSeq(65534, 2)).toBe(false);
     });
+  });
+});
+
+// Every game's protocol re-exports these two, so a game cannot drift from
+// the others in how it says it is ready or reads a message's type.
+describe("encodeGameReady / getMessageType", () => {
+  it("is the one-byte GAME_READY message every game sends", () => {
+    const buf = encodeGameReady();
+    expect(buf.byteLength).toBe(1);
+    expect(getMessageType(buf)).toBe(0x84);
+  });
+
+  it("reads null from an empty or missing buffer", () => {
+    expect(getMessageType(new ArrayBuffer(0))).toBeNull();
+    expect(getMessageType(null)).toBeNull();
+    expect(getMessageType(undefined)).toBeNull();
+  });
+
+  it("is what each game's protocol exports", async () => {
+    const pong = await import("../../../js/lib/games/pong/protocol.js");
+    expect(pong.encodeGameReady).toBe(encodeGameReady);
+    expect(pong.getMessageType).toBe(getMessageType);
   });
 });

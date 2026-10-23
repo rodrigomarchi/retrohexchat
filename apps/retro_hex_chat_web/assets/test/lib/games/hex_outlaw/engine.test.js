@@ -317,53 +317,6 @@ describe("OutlawEngine", () => {
     });
   });
 
-  describe("_applyRemoteInput", () => {
-    it("sets up input from remote", () => {
-      const engine = new OutlawEngine(canvas, channel, "hex_outlaw", true, null);
-      engine._applyRemoteInput({ keyCode: INPUT_KEY.UP, pressed: true });
-      expect(engine.remoteInputs.up).toBe(true);
-    });
-
-    it("sets down input from remote", () => {
-      const engine = new OutlawEngine(canvas, channel, "hex_outlaw", true, null);
-      engine._applyRemoteInput({ keyCode: INPUT_KEY.DOWN, pressed: true });
-      expect(engine.remoteInputs.down).toBe(true);
-    });
-
-    it("sets left input from remote", () => {
-      const engine = new OutlawEngine(canvas, channel, "hex_outlaw", true, null);
-      engine._applyRemoteInput({ keyCode: INPUT_KEY.LEFT, pressed: true });
-      expect(engine.remoteInputs.left).toBe(true);
-    });
-
-    it("sets right input from remote", () => {
-      const engine = new OutlawEngine(canvas, channel, "hex_outlaw", true, null);
-      engine._applyRemoteInput({ keyCode: INPUT_KEY.RIGHT, pressed: true });
-      expect(engine.remoteInputs.right).toBe(true);
-    });
-
-    it("sets fire input from remote", () => {
-      const engine = new OutlawEngine(canvas, channel, "hex_outlaw", true, null);
-      engine._applyRemoteInput({ keyCode: INPUT_KEY.FIRE, pressed: true });
-      expect(engine.remoteInputs.fire).toBe(true);
-    });
-
-    it("releases input from remote", () => {
-      const engine = new OutlawEngine(canvas, channel, "hex_outlaw", true, null);
-      engine.remoteInputs.fire = true;
-      engine._applyRemoteInput({ keyCode: INPUT_KEY.FIRE, pressed: false });
-      expect(engine.remoteInputs.fire).toBe(false);
-    });
-
-    it("ignores unknown keyCode", () => {
-      const engine = new OutlawEngine(canvas, channel, "hex_outlaw", true, null);
-      expect(() => engine._applyRemoteInput({ keyCode: 99, pressed: true })).not.toThrow();
-      // All inputs should remain false
-      expect(engine.remoteInputs.up).toBe(false);
-      expect(engine.remoteInputs.fire).toBe(false);
-    });
-  });
-
   describe("_handleMessage dispatch", () => {
     it("host ignores GAME_STATE messages", () => {
       const engine = new OutlawEngine(canvas, channel, "hex_outlaw", true, null);
@@ -396,14 +349,14 @@ describe("OutlawEngine", () => {
       expect(engine.gameState.phase).toBe(PHASE.PLAYING);
     });
 
-    it("host handles PLAYER_INPUT messages", () => {
+    it("host handles the input datagram messages", () => {
       const engine = new OutlawEngine(canvas, channel, "hex_outlaw", true, null);
       const buf = inputDatagram(OutlawEngine, { fire: true }, 1);
       engine._onChannelMessage({ data: buf });
       expect(engine.remoteInputs.fire).toBe(true);
     });
 
-    it("peer ignores PLAYER_INPUT messages", () => {
+    it("peer ignores the input datagram messages", () => {
       const engine = new OutlawEngine(canvas, channel, "hex_outlaw", false, null);
       const buf = inputDatagram(OutlawEngine, { fire: true }, 2);
       engine._onChannelMessage({ data: buf });

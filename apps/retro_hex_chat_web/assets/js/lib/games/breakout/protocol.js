@@ -7,11 +7,13 @@
 // Message types (shared with game_engine.js 0x80+ range)
 export const MSG_TYPE = {
   GAME_STATE: 0x80,
-  PLAYER_INPUT: 0x81,
   GAME_START: 0x82,
   GAME_END: 0x83,
   GAME_READY: 0x84,
 };
+
+// Shared by every game: the readiness ping and reading a message's type.
+export { encodeGameReady, getMessageType } from "../net_protocol.js";
 
 // Game phase enum
 export const PHASE = {
@@ -38,9 +40,7 @@ const BITMAP_BYTES = Math.ceil(TOTAL_BLOCKS / 8); // 7 bytes for 50 bits
 // --- Sizes ---
 // [type(1)][ballX(4)][ballY(4)][ballVX(4)][ballVY(4)][p1X(2)][p2X(2)][score(2)][lives(1)][phase(1)][countdown(1)][blocksRemaining(1)][bitmap(7)]
 const GAME_STATE_SIZE = 1 + 4 + 4 + 4 + 4 + 2 + 2 + 2 + 1 + 1 + 1 + 1 + BITMAP_BYTES; // 34
-const PLAYER_INPUT_SIZE = 3;
 const GAME_END_SIZE = 4;
-const GAME_READY_SIZE = 1;
 
 /**
  * Encode block alive states as a bitmap (7 bytes for 50 blocks).
@@ -174,37 +174,6 @@ export function decodeGameState(buf) {
 }
 
 /**
- * Encode player input for peer -> host transmission.
- * Layout: [type(1)][keyCode(1)][pressed(1)]
- * @param {number} keyCode - INPUT_KEY enum value
- * @param {boolean} pressed
- * @returns {ArrayBuffer}
- */
-export function encodePlayerInput(keyCode, pressed) {
-  const buf = new ArrayBuffer(PLAYER_INPUT_SIZE);
-  const view = new DataView(buf);
-  view.setUint8(0, MSG_TYPE.PLAYER_INPUT);
-  view.setUint8(1, keyCode);
-  view.setUint8(2, pressed ? 1 : 0);
-  return buf;
-}
-
-/**
- * Decode player input from binary buffer.
- * @param {ArrayBuffer} buf
- * @returns {object|null}
- */
-export function decodePlayerInput(buf) {
-  if (buf.byteLength < PLAYER_INPUT_SIZE) return null;
-  const view = new DataView(buf);
-  if (view.getUint8(0) !== MSG_TYPE.PLAYER_INPUT) return null;
-  return {
-    keyCode: view.getUint8(1),
-    pressed: view.getUint8(2) === 1,
-  };
-}
-
-/**
  * Encode game end for host -> peer transmission.
  * Layout: [type(1)][score_hi(1)][score_lo(1)][won(1)]
  * @param {number} score
@@ -233,26 +202,4 @@ export function decodeGameEnd(buf) {
     score: view.getUint16(1, true),
     won: view.getUint8(3) === 1,
   };
-}
-
-/**
- * Encode game ready signal (peer -> host).
- * Layout: [type(1)]
- * @returns {ArrayBuffer}
- */
-export function encodeGameReady() {
-  const buf = new ArrayBuffer(GAME_READY_SIZE);
-  const view = new DataView(buf);
-  view.setUint8(0, MSG_TYPE.GAME_READY);
-  return buf;
-}
-
-/**
- * Get message type from raw buffer.
- * @param {ArrayBuffer} buf
- * @returns {number|null}
- */
-export function getMessageType(buf) {
-  if (buf.byteLength < 1) return null;
-  return new DataView(buf).getUint8(0);
 }

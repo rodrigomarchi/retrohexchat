@@ -9,8 +9,6 @@ import {
   WINS_NEEDED,
   encodeGameState,
   decodeGameState,
-  encodePlayerInput,
-  decodePlayerInput,
   encodeGameEnd,
   decodeGameEnd,
   encodeGameReady,
@@ -67,7 +65,7 @@ describe("surround_protocol", () => {
     it("returns null for wrong message type", () => {
       const buf = new ArrayBuffer(12);
       const view = new DataView(buf);
-      view.setUint8(0, MSG_TYPE.PLAYER_INPUT);
+      view.setUint8(0, 0x81);
       expect(decodeGameState(buf)).toBeNull();
     });
 
@@ -124,53 +122,6 @@ describe("surround_protocol", () => {
     });
   });
 
-  describe("encodePlayerInput / decodePlayerInput", () => {
-    it("round-trips UP pressed", () => {
-      const buf = encodePlayerInput(INPUT_KEY.UP, true);
-      const decoded = decodePlayerInput(buf);
-      expect(decoded.keyCode).toBe(INPUT_KEY.UP);
-      expect(decoded.pressed).toBe(true);
-    });
-
-    it("round-trips DOWN released", () => {
-      const buf = encodePlayerInput(INPUT_KEY.DOWN, false);
-      const decoded = decodePlayerInput(buf);
-      expect(decoded.keyCode).toBe(INPUT_KEY.DOWN);
-      expect(decoded.pressed).toBe(false);
-    });
-
-    it("round-trips LEFT pressed", () => {
-      const buf = encodePlayerInput(INPUT_KEY.LEFT, true);
-      const decoded = decodePlayerInput(buf);
-      expect(decoded.keyCode).toBe(INPUT_KEY.LEFT);
-      expect(decoded.pressed).toBe(true);
-    });
-
-    it("round-trips RIGHT pressed", () => {
-      const buf = encodePlayerInput(INPUT_KEY.RIGHT, true);
-      const decoded = decodePlayerInput(buf);
-      expect(decoded.keyCode).toBe(INPUT_KEY.RIGHT);
-      expect(decoded.pressed).toBe(true);
-    });
-
-    it("has correct message type", () => {
-      const buf = encodePlayerInput(INPUT_KEY.UP, true);
-      expect(getMessageType(buf)).toBe(MSG_TYPE.PLAYER_INPUT);
-    });
-
-    it("returns null for buffer too small", () => {
-      const buf = new ArrayBuffer(1);
-      expect(decodePlayerInput(buf)).toBeNull();
-    });
-
-    it("returns null for wrong message type", () => {
-      const buf = new ArrayBuffer(3);
-      const view = new DataView(buf);
-      view.setUint8(0, MSG_TYPE.GAME_STATE);
-      expect(decodePlayerInput(buf)).toBeNull();
-    });
-  });
-
   describe("encodeGameEnd / decodeGameEnd", () => {
     it("round-trips P1 wins", () => {
       const buf = encodeGameEnd(3, 1, 1);
@@ -207,7 +158,7 @@ describe("surround_protocol", () => {
     it("returns null for wrong message type", () => {
       const buf = new ArrayBuffer(4);
       const view = new DataView(buf);
-      view.setUint8(0, MSG_TYPE.PLAYER_INPUT);
+      view.setUint8(0, 0x81);
       expect(decodeGameEnd(buf)).toBeNull();
     });
   });

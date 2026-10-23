@@ -2,13 +2,10 @@ import { describe, it, expect } from "vitest";
 import {
   MSG_TYPE,
   PHASE,
-  INPUT_KEY,
   GAME_MODE,
   EVENT,
   encodeGameState,
   decodeGameState,
-  encodePlayerInput,
-  decodePlayerInput,
   encodeGameEnd,
   decodeGameEnd,
   encodeGameReady,
@@ -204,32 +201,6 @@ describe("hex_hockey_protocol", () => {
 
     it("returns null for null buffer", () => {
       expect(decodeGameState(null)).toBeNull();
-    });
-  });
-
-  describe("PLAYER_INPUT encode/decode", () => {
-    it("roundtrips all input keys", () => {
-      for (const key of [
-        INPUT_KEY.LEFT,
-        INPUT_KEY.RIGHT,
-        INPUT_KEY.UP,
-        INPUT_KEY.DOWN,
-        INPUT_KEY.ACTION,
-      ]) {
-        for (const pressed of [true, false]) {
-          const buf = encodePlayerInput(key, pressed);
-          expect(buf.byteLength).toBe(3);
-          expect(getMessageType(buf)).toBe(MSG_TYPE.PLAYER_INPUT);
-          const decoded = decodePlayerInput(buf);
-          expect(decoded.key).toBe(key);
-          expect(decoded.pressed).toBe(pressed);
-        }
-      }
-    });
-
-    it("returns null for undersized buffer", () => {
-      expect(decodePlayerInput(new ArrayBuffer(1))).toBeNull();
-      expect(decodePlayerInput(null)).toBeNull();
     });
   });
 

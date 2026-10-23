@@ -4,12 +4,9 @@ import {
   PHASE,
   GAME_MODE,
   SKIER_STATE,
-  INPUT_KEY,
   getMessageType,
   encodeGameState,
   decodeGameState,
-  encodePlayerInput,
-  decodePlayerInput,
   encodeGameEnd,
   decodeGameEnd,
   encodeGameReady,
@@ -151,7 +148,7 @@ describe("Hex Skiing Protocol", () => {
 
     it("returns null for wrong message type", () => {
       const buf = new ArrayBuffer(100);
-      new DataView(buf).setUint8(0, MSG_TYPE.PLAYER_INPUT);
+      new DataView(buf).setUint8(0, 0x81);
       expect(decodeGameState(buf)).toBeNull();
     });
 
@@ -194,35 +191,6 @@ describe("Hex Skiing Protocol", () => {
       const buf = encodeGameState(original);
       const decoded = decodeGameState(buf);
       expect(decoded.events).toBe(0xff);
-    });
-  });
-
-  describe("PLAYER_INPUT encode/decode", () => {
-    it("roundtrips left key press", () => {
-      const buf = encodePlayerInput(INPUT_KEY.LEFT, true);
-      const decoded = decodePlayerInput(buf);
-
-      expect(decoded).not.toBeNull();
-      expect(decoded.keyCode).toBe(INPUT_KEY.LEFT);
-      expect(decoded.pressed).toBe(true);
-    });
-
-    it("roundtrips right key release", () => {
-      const buf = encodePlayerInput(INPUT_KEY.RIGHT, false);
-      const decoded = decodePlayerInput(buf);
-
-      expect(decoded.keyCode).toBe(INPUT_KEY.RIGHT);
-      expect(decoded.pressed).toBe(false);
-    });
-
-    it("returns null for too-small buffer", () => {
-      expect(decodePlayerInput(new ArrayBuffer(2))).toBeNull();
-    });
-
-    it("returns null for wrong message type", () => {
-      const buf = new ArrayBuffer(3);
-      new DataView(buf).setUint8(0, MSG_TYPE.GAME_STATE);
-      expect(decodePlayerInput(buf)).toBeNull();
     });
   });
 

@@ -2,12 +2,9 @@ import { describe, it, expect } from "vitest";
 import {
   MSG_TYPE,
   PHASE,
-  INPUT_KEY,
   PUNCH_STATE,
   encodeGameState,
   decodeGameState,
-  encodePlayerInput,
-  decodePlayerInput,
   encodeGameEnd,
   decodeGameEnd,
   encodeGameReady,
@@ -112,7 +109,7 @@ describe("Hex Boxing Protocol", () => {
     it("returns null for wrong message type", () => {
       const buf = new ArrayBuffer(26);
       const view = new DataView(buf);
-      view.setUint8(0, MSG_TYPE.PLAYER_INPUT);
+      view.setUint8(0, 0x81);
       expect(decodeGameState(buf)).toBeNull();
     });
 
@@ -195,38 +192,6 @@ describe("Hex Boxing Protocol", () => {
       // cooldownTimer is not in the decoded object — physics uses it internally
       expect(decoded.b1cooldownTimer).toBeUndefined();
       expect(decoded.b2cooldownTimer).toBeUndefined();
-    });
-  });
-
-  describe("player input encode/decode", () => {
-    it("roundtrips all key codes", () => {
-      for (const [, value] of Object.entries(INPUT_KEY)) {
-        for (const pressed of [true, false]) {
-          const buf = encodePlayerInput(value, pressed);
-          expect(buf.byteLength).toBe(3);
-          const decoded = decodePlayerInput(buf);
-          expect(decoded).not.toBeNull();
-          expect(decoded.keyCode).toBe(value);
-          expect(decoded.pressed).toBe(pressed);
-        }
-      }
-    });
-
-    it("encodes message type 0x81", () => {
-      const buf = encodePlayerInput(INPUT_KEY.PUNCH, true);
-      expect(getMessageType(buf)).toBe(MSG_TYPE.PLAYER_INPUT);
-    });
-
-    it("returns null for buffer too small", () => {
-      const buf = new ArrayBuffer(1);
-      expect(decodePlayerInput(buf)).toBeNull();
-    });
-
-    it("returns null for wrong message type", () => {
-      const buf = new ArrayBuffer(3);
-      const view = new DataView(buf);
-      view.setUint8(0, MSG_TYPE.GAME_STATE);
-      expect(decodePlayerInput(buf)).toBeNull();
     });
   });
 

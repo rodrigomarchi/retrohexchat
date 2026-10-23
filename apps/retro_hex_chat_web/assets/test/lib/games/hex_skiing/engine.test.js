@@ -471,7 +471,7 @@ describe("HexSkiingEngine", () => {
     });
 
     describe("_handleKeyDown (peer)", () => {
-      it("sends encodePlayerInput for left key", () => {
+      it("sends its input for left key", () => {
         const { engine: e, channel } = createEngine("hex_skiing", false);
         engine = e;
         channel.send.mockClear(); // clear GAME_READY send
@@ -564,7 +564,7 @@ describe("HexSkiingEngine", () => {
       expect(() => engine._onChannelMessage({ data: null })).not.toThrow();
     });
 
-    it("handles PLAYER_INPUT messages on host — left press", () => {
+    it("handles the input datagram messages on host — left press", () => {
       const canvas = createMockCanvas();
       const channel = createMockChannel();
       engine = new HexSkiingEngine(canvas, channel, "hex_skiing", true, null);
@@ -572,7 +572,7 @@ describe("HexSkiingEngine", () => {
       expect(engine.remoteInputs.left).toBe(true);
     });
 
-    it("handles PLAYER_INPUT messages on host — left release", () => {
+    it("handles the input datagram messages on host — left release", () => {
       const canvas = createMockCanvas();
       const channel = createMockChannel();
       engine = new HexSkiingEngine(canvas, channel, "hex_skiing", true, null);
@@ -581,7 +581,7 @@ describe("HexSkiingEngine", () => {
       expect(engine.remoteInputs.left).toBe(false);
     });
 
-    it("handles PLAYER_INPUT messages on host — right", () => {
+    it("handles the input datagram messages on host — right", () => {
       const canvas = createMockCanvas();
       const channel = createMockChannel();
       engine = new HexSkiingEngine(canvas, channel, "hex_skiing", true, null);

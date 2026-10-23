@@ -370,7 +370,7 @@ describe("TennisEngine", () => {
       e.stop();
     });
 
-    it("PLAYER_INPUT updates remoteInputs", () => {
+    it("the input datagram updates remoteInputs", () => {
       const e = new TennisEngine(
         createMockCanvas(),
         createMockChannel(),
@@ -385,7 +385,7 @@ describe("TennisEngine", () => {
       e.stop();
     });
 
-    it("PLAYER_INPUT maps all 5 keys", () => {
+    it("the input datagram maps all 5 keys", () => {
       const e = new TennisEngine(
         createMockCanvas(),
         createMockChannel(),
@@ -513,7 +513,7 @@ describe("TennisEngine", () => {
       e.stop();
     });
 
-    it("ignores PLAYER_INPUT on peer side", () => {
+    it("ignores the input datagram on peer side", () => {
       const e = new TennisEngine(
         createMockCanvas(),
         createMockChannel(),
@@ -599,7 +599,7 @@ describe("TennisEngine", () => {
       e.stop();
     });
 
-    it("peer sends PLAYER_INPUT on keydown/keyup", () => {
+    it("peer sends the input datagram on keydown/keyup", () => {
       const channel = createMockChannel();
       const e = new TennisEngine(createMockCanvas(), channel, "hex_tennis", false, vi.fn());
       e.start();

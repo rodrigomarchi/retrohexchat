@@ -8,10 +8,12 @@
 // ── Message types ──────────────────────────────────────────────
 export const MSG_TYPE = {
   GAME_STATE: 0x80,
-  PLAYER_INPUT: 0x81,
   GAME_END: 0x83,
   GAME_READY: 0x84,
 };
+
+// Shared by every game: the readiness ping and reading a message's type.
+export { encodeGameReady, getMessageType } from "../net_protocol.js";
 
 // ── Enums ──────────────────────────────────────────────────────
 export const PHASE = {
@@ -67,16 +69,6 @@ export const EVENT = {
 const STATE_SIZE = 39;
 
 // ── Helpers ────────────────────────────────────────────────────
-
-/**
- * Read the message type byte from an ArrayBuffer.
- * @param {ArrayBuffer} buf
- * @returns {number|null}
- */
-export function getMessageType(buf) {
-  if (!buf || buf.byteLength < 1) return null;
-  return new DataView(buf).getUint8(0);
-}
 
 // ── GAME_STATE ─────────────────────────────────────────────────
 
@@ -266,37 +258,6 @@ export function decodeGameState(buf) {
   };
 }
 
-// ── PLAYER_INPUT ───────────────────────────────────────────────
-
-/**
- * Encode a player input event (key press/release).
- * @param {number} key - INPUT_KEY enum
- * @param {boolean} pressed
- * @returns {ArrayBuffer}
- */
-export function encodePlayerInput(key, pressed) {
-  const buf = new ArrayBuffer(3);
-  const dv = new DataView(buf);
-  dv.setUint8(0, MSG_TYPE.PLAYER_INPUT);
-  dv.setUint8(1, key);
-  dv.setUint8(2, pressed ? 1 : 0);
-  return buf;
-}
-
-/**
- * Decode a player input message.
- * @param {ArrayBuffer} buf
- * @returns {{ key: number, pressed: boolean }}
- */
-export function decodePlayerInput(buf) {
-  if (!buf || buf.byteLength < 3) return null;
-  const dv = new DataView(buf);
-  return {
-    key: dv.getUint8(1),
-    pressed: dv.getUint8(2) === 1,
-  };
-}
-
 // ── GAME_END ───────────────────────────────────────────────────
 
 /**
@@ -330,16 +291,4 @@ export function decodeGameEnd(buf) {
     score_p1: dv.getUint8(2),
     score_p2: dv.getUint8(3),
   };
-}
-
-// ── GAME_READY ─────────────────────────────────────────────────
-
-/**
- * Encode game ready signal.
- * @returns {ArrayBuffer}
- */
-export function encodeGameReady() {
-  const buf = new ArrayBuffer(1);
-  new DataView(buf).setUint8(0, MSG_TYPE.GAME_READY);
-  return buf;
 }

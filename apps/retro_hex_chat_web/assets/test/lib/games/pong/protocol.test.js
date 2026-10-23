@@ -5,8 +5,6 @@ import {
   INPUT_KEY,
   encodeGameState,
   decodeGameState,
-  encodePlayerInput,
-  decodePlayerInput,
   encodeGameEnd,
   decodeGameEnd,
   encodeGameReady,
@@ -181,38 +179,6 @@ describe("pong_protocol", () => {
     });
   });
 
-  describe("PLAYER_INPUT encode/decode", () => {
-    it("roundtrips UP pressed", () => {
-      const buf = encodePlayerInput(INPUT_KEY.UP, true);
-      expect(buf.byteLength).toBe(3);
-      const decoded = decodePlayerInput(buf);
-      expect(decoded.keyCode).toBe(INPUT_KEY.UP);
-      expect(decoded.pressed).toBe(true);
-    });
-
-    it("roundtrips DOWN released", () => {
-      const buf = encodePlayerInput(INPUT_KEY.DOWN, false);
-      const decoded = decodePlayerInput(buf);
-      expect(decoded.keyCode).toBe(INPUT_KEY.DOWN);
-      expect(decoded.pressed).toBe(false);
-    });
-
-    it("sets type byte to PLAYER_INPUT (0x81)", () => {
-      const buf = encodePlayerInput(INPUT_KEY.UP, true);
-      expect(new DataView(buf).getUint8(0)).toBe(0x81);
-    });
-
-    it("returns null for buffer too small", () => {
-      expect(decodePlayerInput(new ArrayBuffer(2))).toBeNull();
-    });
-
-    it("returns null for wrong message type", () => {
-      const buf = new ArrayBuffer(3);
-      new DataView(buf).setUint8(0, 0x80);
-      expect(decodePlayerInput(buf)).toBeNull();
-    });
-  });
-
   describe("GAME_END encode/decode", () => {
     it("roundtrips a game end", () => {
       const buf = encodeGameEnd(11, 7, 1);
@@ -255,28 +221,6 @@ describe("pong_protocol", () => {
   });
 
   describe("getMessageType", () => {
-    it("returns type byte from any buffer", () => {
-      expect(getMessageType(encodeGameReady())).toBe(MSG_TYPE.GAME_READY);
-      expect(getMessageType(encodePlayerInput(0, true))).toBe(MSG_TYPE.PLAYER_INPUT);
-      expect(
-        getMessageType(
-          encodeGameState({
-            ballX: 0,
-            ballY: 0,
-            ballVX: 0,
-            ballVY: 0,
-            paddle1Y: 0,
-            paddle2Y: 0,
-            score1: 0,
-            score2: 0,
-            phase: 0,
-            countdown: 0,
-          }),
-        ),
-      ).toBe(MSG_TYPE.GAME_STATE);
-      expect(getMessageType(encodeGameEnd(0, 0, 1))).toBe(MSG_TYPE.GAME_END);
-    });
-
     it("returns null for empty buffer", () => {
       expect(getMessageType(new ArrayBuffer(0))).toBeNull();
     });

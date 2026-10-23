@@ -2,7 +2,6 @@ import { describe, it, expect } from "vitest";
 import {
   MSG_TYPE,
   PHASE,
-  INPUT_KEY,
   GAME_MODE,
   ENEMY_TYPE,
   MAX_ENEMIES,
@@ -10,8 +9,6 @@ import {
   MAX_MINES,
   encodeGameState,
   decodeGameState,
-  encodePlayerInput,
-  decodePlayerInput,
   encodeGameEnd,
   decodeGameEnd,
   encodeGameReady,
@@ -333,7 +330,7 @@ describe("Hex Raid Protocol", () => {
 
     it("returns null for wrong message type", () => {
       const buf = new ArrayBuffer(185);
-      new DataView(buf).setUint8(0, MSG_TYPE.PLAYER_INPUT);
+      new DataView(buf).setUint8(0, 0x81);
       expect(decodeGameState(buf)).toBeNull();
     });
 
@@ -388,41 +385,6 @@ describe("Hex Raid Protocol", () => {
     });
   });
 
-  describe("player input encode/decode", () => {
-    it("roundtrips all key codes", () => {
-      const keys = [
-        INPUT_KEY.LEFT,
-        INPUT_KEY.RIGHT,
-        INPUT_KEY.ACCEL,
-        INPUT_KEY.DECEL,
-        INPUT_KEY.FIRE,
-        INPUT_KEY.MINE,
-      ];
-
-      for (const key of keys) {
-        for (const pressed of [true, false]) {
-          const buf = encodePlayerInput(key, pressed);
-          expect(buf.byteLength).toBe(3);
-
-          const d = decodePlayerInput(buf);
-          expect(d).not.toBeNull();
-          expect(d.keyCode).toBe(key);
-          expect(d.pressed).toBe(pressed);
-        }
-      }
-    });
-
-    it("returns null for truncated buffer", () => {
-      expect(decodePlayerInput(new ArrayBuffer(1))).toBeNull();
-    });
-
-    it("returns null for wrong type", () => {
-      const buf = new ArrayBuffer(3);
-      new DataView(buf).setUint8(0, MSG_TYPE.GAME_STATE);
-      expect(decodePlayerInput(buf)).toBeNull();
-    });
-  });
-
   describe("game end encode/decode", () => {
     it("roundtrips a result", () => {
       const result = { score1: 2340, score2: 1890, winner: 1 };
@@ -464,14 +426,6 @@ describe("Hex Raid Protocol", () => {
   });
 
   describe("getMessageType", () => {
-    it("returns correct type for each message", () => {
-      expect(getMessageType(encodeGameReady())).toBe(MSG_TYPE.GAME_READY);
-      expect(getMessageType(encodePlayerInput(0, true))).toBe(MSG_TYPE.PLAYER_INPUT);
-      expect(getMessageType(encodeGameEnd({ score1: 0, score2: 0, winner: 0 }))).toBe(
-        MSG_TYPE.GAME_END,
-      );
-    });
-
     it("returns null for empty buffer", () => {
       expect(getMessageType(new ArrayBuffer(0))).toBeNull();
     });

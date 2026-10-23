@@ -2,12 +2,9 @@ import { describe, it, expect } from "vitest";
 import {
   MSG_TYPE,
   PHASE,
-  INPUT_KEY,
   GAME_MODE,
   encodeGameState,
   decodeGameState,
-  encodePlayerInput,
-  decodePlayerInput,
   encodeGameEnd,
   decodeGameEnd,
   encodeGameReady,
@@ -130,7 +127,7 @@ describe("Pixel Tanks Protocol", () => {
     it("returns null for wrong message type", () => {
       const buf = new ArrayBuffer(68);
       const view = new DataView(buf);
-      view.setUint8(0, MSG_TYPE.PLAYER_INPUT);
+      view.setUint8(0, 0x81);
       expect(decodeGameState(buf)).toBeNull();
     });
 
@@ -258,38 +255,6 @@ describe("Pixel Tanks Protocol", () => {
 
       const decoded = decodeGameState(encodeGameState(state));
       expect(decoded.roundTimer).toBe(7200);
-    });
-  });
-
-  describe("player input encode/decode", () => {
-    it("roundtrips all key codes", () => {
-      for (const [, value] of Object.entries(INPUT_KEY)) {
-        for (const pressed of [true, false]) {
-          const buf = encodePlayerInput(value, pressed);
-          expect(buf.byteLength).toBe(3);
-          const decoded = decodePlayerInput(buf);
-          expect(decoded).not.toBeNull();
-          expect(decoded.keyCode).toBe(value);
-          expect(decoded.pressed).toBe(pressed);
-        }
-      }
-    });
-
-    it("encodes message type 0x81", () => {
-      const buf = encodePlayerInput(INPUT_KEY.FIRE, true);
-      expect(getMessageType(buf)).toBe(MSG_TYPE.PLAYER_INPUT);
-    });
-
-    it("returns null for buffer too small", () => {
-      const buf = new ArrayBuffer(1);
-      expect(decodePlayerInput(buf)).toBeNull();
-    });
-
-    it("returns null for wrong message type", () => {
-      const buf = new ArrayBuffer(3);
-      const view = new DataView(buf);
-      view.setUint8(0, MSG_TYPE.GAME_STATE);
-      expect(decodePlayerInput(buf)).toBeNull();
     });
   });
 

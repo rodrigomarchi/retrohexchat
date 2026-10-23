@@ -361,19 +361,6 @@ describe("hex_hockey_engine", () => {
     engine.stop();
   });
 
-  it("remote action input resets remoteActionHandled", () => {
-    const { engine } = createEngine("hex_hockey", true);
-    engine.start();
-
-    engine._applyRemoteInput({ key: INPUT_KEY.ACTION, pressed: true });
-    expect(engine.remoteInputs.action).toBe(true);
-    expect(engine.remoteActionHandled).toBe(false);
-
-    engine._applyRemoteInput({ key: INPUT_KEY.ACTION, pressed: false });
-    expect(engine.remoteInputs.action).toBe(false);
-    engine.stop();
-  });
-
   it("remote action state transitions reset remoteActionHandled", () => {
     const { engine } = createEngine("hex_hockey", true);
     engine.start();

@@ -191,14 +191,6 @@ export class BoxingEngine extends GameEngine {
     }
   }
 
-  _applyRemoteInput(input) {
-    if (input.keyCode === INPUT_KEY.UP) this.remoteInputs.up = input.pressed;
-    else if (input.keyCode === INPUT_KEY.DOWN) this.remoteInputs.down = input.pressed;
-    else if (input.keyCode === INPUT_KEY.LEFT) this.remoteInputs.left = input.pressed;
-    else if (input.keyCode === INPUT_KEY.RIGHT) this.remoteInputs.right = input.pressed;
-    else if (input.keyCode === INPUT_KEY.PUNCH) this.remoteInputs.punch = input.pressed;
-  }
-
   _applyPeerState(decoded) {
     const prevPhase = this.gameState.phase;
 

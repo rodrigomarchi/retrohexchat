@@ -10,8 +10,6 @@ import {
   MAX_AI_CARS,
   encodeGameState,
   decodeGameState,
-  encodePlayerInput,
-  decodePlayerInput,
   encodeGameEnd,
   decodeGameEnd,
   encodeGameReady,
@@ -278,56 +276,6 @@ describe("Hex Enduro Protocol", () => {
     });
   });
 
-  describe("PLAYER_INPUT encode/decode", () => {
-    it("round-trips LEFT key press", () => {
-      const buf = encodePlayerInput(INPUT_KEY.LEFT, true);
-      const decoded = decodePlayerInput(buf);
-      expect(decoded.keyCode).toBe(INPUT_KEY.LEFT);
-      expect(decoded.pressed).toBe(true);
-    });
-
-    it("round-trips RIGHT key release", () => {
-      const buf = encodePlayerInput(INPUT_KEY.RIGHT, false);
-      const decoded = decodePlayerInput(buf);
-      expect(decoded.keyCode).toBe(INPUT_KEY.RIGHT);
-      expect(decoded.pressed).toBe(false);
-    });
-
-    it("round-trips ACCEL key press", () => {
-      const buf = encodePlayerInput(INPUT_KEY.ACCEL, true);
-      const decoded = decodePlayerInput(buf);
-      expect(decoded.keyCode).toBe(INPUT_KEY.ACCEL);
-      expect(decoded.pressed).toBe(true);
-    });
-
-    it("round-trips BRAKE key press", () => {
-      const buf = encodePlayerInput(INPUT_KEY.BRAKE, true);
-      const decoded = decodePlayerInput(buf);
-      expect(decoded.keyCode).toBe(INPUT_KEY.BRAKE);
-    });
-
-    it("round-trips TURBO key press", () => {
-      const buf = encodePlayerInput(INPUT_KEY.TURBO, true);
-      const decoded = decodePlayerInput(buf);
-      expect(decoded.keyCode).toBe(INPUT_KEY.TURBO);
-    });
-
-    it("has correct size (3 bytes)", () => {
-      const buf = encodePlayerInput(INPUT_KEY.LEFT, true);
-      expect(buf.byteLength).toBe(3);
-    });
-
-    it("returns null for too-small buffer", () => {
-      expect(decodePlayerInput(new ArrayBuffer(1))).toBeNull();
-    });
-
-    it("returns null for wrong message type", () => {
-      const buf = encodePlayerInput(INPUT_KEY.LEFT, true);
-      new DataView(buf).setUint8(0, 0x80);
-      expect(decodePlayerInput(buf)).toBeNull();
-    });
-  });
-
   describe("GAME_END encode/decode", () => {
     it("round-trips normal scores", () => {
       const buf = encodeGameEnd({ score1: 247, score2: 189, winner: 1 });
@@ -391,10 +339,6 @@ describe("Hex Enduro Protocol", () => {
   describe("getMessageType", () => {
     it("returns GAME_STATE type", () => {
       expect(getMessageType(encodeGameState(createTestState()))).toBe(MSG_TYPE.GAME_STATE);
-    });
-
-    it("returns PLAYER_INPUT type", () => {
-      expect(getMessageType(encodePlayerInput(INPUT_KEY.ACCEL, true))).toBe(MSG_TYPE.PLAYER_INPUT);
     });
 
     it("returns GAME_END type", () => {

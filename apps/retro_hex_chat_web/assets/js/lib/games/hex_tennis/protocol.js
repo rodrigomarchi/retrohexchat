@@ -7,11 +7,13 @@
 // Message types (shared with game_engine.js 0x80+ range)
 export const MSG_TYPE = {
   GAME_STATE: 0x80,
-  PLAYER_INPUT: 0x81,
   GAME_START: 0x82,
   GAME_END: 0x83,
   GAME_READY: 0x84,
 };
+
+// Shared by every game: the readiness ping and reading a message's type.
+export { encodeGameReady, getMessageType } from "../net_protocol.js";
 
 // Game phase enum
 export const PHASE = {
@@ -61,9 +63,7 @@ export const OUT_TYPE = {
 
 // --- Sizes ---
 const GAME_STATE_SIZE = 32;
-const PLAYER_INPUT_SIZE = 3;
 const GAME_END_SIZE = 6;
-const GAME_READY_SIZE = 1;
 
 /**
  * Encode full game state for host → peer transmission.
@@ -189,38 +189,6 @@ export function decodeGameState(buf) {
 }
 
 /**
- * Encode player input for peer → host transmission.
- * Layout: [type(1)][keyCode(1)][pressed(1)]
- * Total: 3 bytes
- * @param {number} keyCode - INPUT_KEY enum value
- * @param {boolean} pressed
- * @returns {ArrayBuffer}
- */
-export function encodePlayerInput(keyCode, pressed) {
-  const buf = new ArrayBuffer(PLAYER_INPUT_SIZE);
-  const view = new DataView(buf);
-  view.setUint8(0, MSG_TYPE.PLAYER_INPUT);
-  view.setUint8(1, keyCode);
-  view.setUint8(2, pressed ? 1 : 0);
-  return buf;
-}
-
-/**
- * Decode player input from binary buffer.
- * @param {ArrayBuffer} buf
- * @returns {object|null}
- */
-export function decodePlayerInput(buf) {
-  if (buf.byteLength < PLAYER_INPUT_SIZE) return null;
-  const view = new DataView(buf);
-  if (view.getUint8(0) !== MSG_TYPE.PLAYER_INPUT) return null;
-  return {
-    keyCode: view.getUint8(1),
-    pressed: view.getUint8(2) === 1,
-  };
-}
-
-/**
  * Encode game end for host → peer transmission.
  * Layout: [type(1)][p1Games(1)][p2Games(1)][winner(1)][gameMode(1)][flags(1)]
  * Total: 6 bytes
@@ -259,27 +227,4 @@ export function decodeGameEnd(buf) {
     gameMode: view.getUint8(4),
     wasTiebreak: view.getUint8(5) === 1,
   };
-}
-
-/**
- * Encode game ready signal (peer → host).
- * Layout: [type(1)]
- * Total: 1 byte
- * @returns {ArrayBuffer}
- */
-export function encodeGameReady() {
-  const buf = new ArrayBuffer(GAME_READY_SIZE);
-  const view = new DataView(buf);
-  view.setUint8(0, MSG_TYPE.GAME_READY);
-  return buf;
-}
-
-/**
- * Get message type from raw buffer.
- * @param {ArrayBuffer} buf
- * @returns {number|null}
- */
-export function getMessageType(buf) {
-  if (buf.byteLength < 1) return null;
-  return new DataView(buf).getUint8(0);
 }

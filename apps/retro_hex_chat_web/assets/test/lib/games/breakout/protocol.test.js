@@ -8,8 +8,6 @@ import {
   decodeBlockBitmap,
   encodeGameState,
   decodeGameState,
-  encodePlayerInput,
-  decodePlayerInput,
   encodeGameEnd,
   decodeGameEnd,
   encodeGameReady,
@@ -134,7 +132,7 @@ describe("breakout_protocol", () => {
     it("returns null for wrong message type", () => {
       const buf = new ArrayBuffer(34);
       const view = new DataView(buf);
-      view.setUint8(0, MSG_TYPE.PLAYER_INPUT);
+      view.setUint8(0, 0x81);
       expect(decodeGameState(buf)).toBeNull();
     });
 
@@ -160,39 +158,6 @@ describe("breakout_protocol", () => {
       expect(decoded.countdown).toBe(3);
       expect(decoded.blocksRemaining).toBe(TOTAL_BLOCKS);
       expect(decoded.blocksAlive.every((v) => v === true)).toBe(true);
-    });
-  });
-
-  describe("encodePlayerInput / decodePlayerInput", () => {
-    it("round-trips LEFT pressed", () => {
-      const buf = encodePlayerInput(INPUT_KEY.LEFT, true);
-      const decoded = decodePlayerInput(buf);
-      expect(decoded.keyCode).toBe(INPUT_KEY.LEFT);
-      expect(decoded.pressed).toBe(true);
-    });
-
-    it("round-trips RIGHT released", () => {
-      const buf = encodePlayerInput(INPUT_KEY.RIGHT, false);
-      const decoded = decodePlayerInput(buf);
-      expect(decoded.keyCode).toBe(INPUT_KEY.RIGHT);
-      expect(decoded.pressed).toBe(false);
-    });
-
-    it("has correct message type", () => {
-      const buf = encodePlayerInput(INPUT_KEY.LEFT, true);
-      expect(getMessageType(buf)).toBe(MSG_TYPE.PLAYER_INPUT);
-    });
-
-    it("returns null for buffer too small", () => {
-      const buf = new ArrayBuffer(1);
-      expect(decodePlayerInput(buf)).toBeNull();
-    });
-
-    it("returns null for wrong message type", () => {
-      const buf = new ArrayBuffer(3);
-      const view = new DataView(buf);
-      view.setUint8(0, MSG_TYPE.GAME_STATE);
-      expect(decodePlayerInput(buf)).toBeNull();
     });
   });
 
@@ -224,7 +189,7 @@ describe("breakout_protocol", () => {
     it("returns null for wrong message type", () => {
       const buf = new ArrayBuffer(4);
       const view = new DataView(buf);
-      view.setUint8(0, MSG_TYPE.PLAYER_INPUT);
+      view.setUint8(0, 0x81);
       expect(decodeGameEnd(buf)).toBeNull();
     });
   });

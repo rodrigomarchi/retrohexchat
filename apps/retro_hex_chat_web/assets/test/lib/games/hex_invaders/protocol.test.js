@@ -2,13 +2,10 @@ import { describe, it, expect } from "vitest";
 import {
   MSG_TYPE,
   PHASE,
-  INPUT_KEY,
   GAME_MODE,
   ALIEN_TYPE,
   encodeGameState,
   decodeGameState,
-  encodePlayerInput,
-  decodePlayerInput,
   encodeGameEnd,
   decodeGameEnd,
   encodeGameReady,
@@ -267,46 +264,6 @@ describe("Hex Invaders Protocol", () => {
     });
   });
 
-  describe("PLAYER_INPUT encode/decode", () => {
-    it("round-trips LEFT key press", () => {
-      const buf = encodePlayerInput(INPUT_KEY.LEFT, true);
-      const decoded = decodePlayerInput(buf);
-      expect(decoded.keyCode).toBe(INPUT_KEY.LEFT);
-      expect(decoded.pressed).toBe(true);
-    });
-
-    it("round-trips RIGHT key release", () => {
-      const buf = encodePlayerInput(INPUT_KEY.RIGHT, false);
-      const decoded = decodePlayerInput(buf);
-      expect(decoded.keyCode).toBe(INPUT_KEY.RIGHT);
-      expect(decoded.pressed).toBe(false);
-    });
-
-    it("round-trips FIRE key press", () => {
-      const buf = encodePlayerInput(INPUT_KEY.FIRE, true);
-      const decoded = decodePlayerInput(buf);
-      expect(decoded.keyCode).toBe(INPUT_KEY.FIRE);
-      expect(decoded.pressed).toBe(true);
-    });
-
-    it("has correct size (3 bytes)", () => {
-      const buf = encodePlayerInput(INPUT_KEY.LEFT, true);
-      expect(buf.byteLength).toBe(3);
-    });
-
-    it("returns null for too-small buffer", () => {
-      const buf = new ArrayBuffer(1);
-      expect(decodePlayerInput(buf)).toBeNull();
-    });
-
-    it("returns null for wrong message type", () => {
-      const buf = encodePlayerInput(INPUT_KEY.LEFT, true);
-      const view = new DataView(buf);
-      view.setUint8(0, 0x80); // wrong type
-      expect(decodePlayerInput(buf)).toBeNull();
-    });
-  });
-
   describe("GAME_END encode/decode", () => {
     it("round-trips normal scores", () => {
       const buf = encodeGameEnd({ score1: 1240, score2: 980, winner: 1 });
@@ -359,11 +316,6 @@ describe("Hex Invaders Protocol", () => {
     it("returns GAME_STATE type", () => {
       const buf = encodeGameState(createTestState());
       expect(getMessageType(buf)).toBe(MSG_TYPE.GAME_STATE);
-    });
-
-    it("returns PLAYER_INPUT type", () => {
-      const buf = encodePlayerInput(INPUT_KEY.FIRE, true);
-      expect(getMessageType(buf)).toBe(MSG_TYPE.PLAYER_INPUT);
     });
 
     it("returns GAME_END type", () => {

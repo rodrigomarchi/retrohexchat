@@ -199,18 +199,6 @@ export class PixelTanksEngine extends GameEngine {
     }
   }
 
-  _applyRemoteInput(input) {
-    if (input.keyCode === INPUT_KEY.ROTATE_LEFT) {
-      this.remoteInputs.rotateLeft = input.pressed;
-    } else if (input.keyCode === INPUT_KEY.ROTATE_RIGHT) {
-      this.remoteInputs.rotateRight = input.pressed;
-    } else if (input.keyCode === INPUT_KEY.FORWARD) {
-      this.remoteInputs.forward = input.pressed;
-    } else if (input.keyCode === INPUT_KEY.FIRE) {
-      this.remoteInputs.fire = input.pressed;
-    }
-  }
-
   _applyPeerState(decoded) {
     // Update maze if needed (first state received tells peer the maze)
     if (decoded.mazeIndex !== this.mazeIndex) {
