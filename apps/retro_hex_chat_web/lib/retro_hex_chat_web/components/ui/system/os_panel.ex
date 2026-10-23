@@ -16,6 +16,7 @@ defmodule RetroHexChatWeb.Components.UI.System.OsPanel do
   """
   use RetroHexChatWeb.Component
 
+  import RetroHexChatWeb.Components.UI.Inset
   import RetroHexChatWeb.Components.UI.MediaSession.SummaryCard
   import RetroHexChatWeb.Components.UI.Progress
 
@@ -148,8 +149,8 @@ defmodule RetroHexChatWeb.Components.UI.System.OsPanel do
 
   defp host_gauge(assigns) do
     ~H"""
-    <div
-      class="min-w-0 shrink-0 border border-border bg-surface p-2 shadow-retro-sunken"
+    <.inset bevel="sunken" tone="surface"
+      class="min-w-0 shrink-0 border border-border p-2"
       data-testid={@testid}
     >
       <div class="mb-1 flex min-w-0 items-center gap-1">
@@ -163,7 +164,7 @@ defmodule RetroHexChatWeb.Components.UI.System.OsPanel do
       <p :if={@detail} class="mt-1 truncate text-[10px] leading-3 text-muted-foreground">
         {@detail}
       </p>
-    </div>
+    </.inset>
     """
   end
 

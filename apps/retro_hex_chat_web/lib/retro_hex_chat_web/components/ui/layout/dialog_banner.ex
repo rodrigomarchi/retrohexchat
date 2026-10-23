@@ -11,6 +11,8 @@ defmodule RetroHexChatWeb.Components.UI.DialogBanner do
   """
   use RetroHexChatWeb.Component
 
+  import RetroHexChatWeb.Components.UI.Inset
+
   @doc """
   Renders the banner: illustration, heading, prose.
 
@@ -34,9 +36,9 @@ defmodule RetroHexChatWeb.Components.UI.DialogBanner do
       data-dialog-banner
       {@rest}
     >
-      <div :if={@art != []} class="dlg-banner__art shadow-retro-sunken">
+      <.inset bevel="sunken" tone="none" :if={@art != []} class="dlg-banner__art">
         {render_slot(@art)}
-      </div>
+      </.inset>
 
       <div :if={@glyph != []} class="dlg-banner__glyph">
         {render_slot(@glyph)}

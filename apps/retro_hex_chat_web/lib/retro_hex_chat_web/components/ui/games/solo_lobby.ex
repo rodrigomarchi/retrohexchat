@@ -155,9 +155,9 @@ defmodule RetroHexChatWeb.Components.UI.SoloLobby do
 
   defp lobby_preview(assigns) do
     ~H"""
-    <div
+    <.inset bevel="sunken" tone="surface"
       data-testid="arcade-game-preview"
-      class="min-h-0 flex-1 overflow-auto bg-surface p-retro-10 shadow-retro-sunken"
+      class="min-h-0 flex-1 overflow-auto p-retro-10"
     >
       <GameSheet.game_sheet game={@previewed_game}>
         <:actions>
@@ -205,7 +205,7 @@ defmodule RetroHexChatWeb.Components.UI.SoloLobby do
           </.button>
         </:actions>
       </GameSheet.game_sheet>
-    </div>
+    </.inset>
     """
   end
 

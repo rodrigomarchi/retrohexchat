@@ -7,6 +7,7 @@ defmodule RetroHexChatWeb.Components.UI.AdminMotdDialog do
   """
   use RetroHexChatWeb.Component
 
+  import RetroHexChatWeb.Components.UI.Inset
   import RetroHexChatWeb.Components.UI.AdminShared
   import RetroHexChatWeb.Components.UI.DialogBanner
   import RetroHexChatWeb.Components.UI.Button
@@ -79,9 +80,9 @@ defmodule RetroHexChatWeb.Components.UI.AdminMotdDialog do
         <div class="space-y-retro-8">
           <div>
             <div class="text-xs font-bold mb-retro-4">{dgettext("dialogs", "Current MOTD")}</div>
-            <div
+            <.inset bevel="sunken" tone="paper"
               id="admin-motd-current"
-              class="shadow-retro-sunken bg-white min-h-[82px] max-h-[120px] overflow-y-auto p-retro-8 text-sm whitespace-pre-wrap"
+              class="min-h-[82px] max-h-[120px] overflow-y-auto p-retro-8 text-sm whitespace-pre-wrap"
             >
               <%= if present?(@content) do %>
                 {@content}
@@ -90,7 +91,7 @@ defmodule RetroHexChatWeb.Components.UI.AdminMotdDialog do
                   {dgettext("dialogs", "No MOTD has been set.")}
                 </span>
               <% end %>
-            </div>
+            </.inset>
           </div>
 
           <form

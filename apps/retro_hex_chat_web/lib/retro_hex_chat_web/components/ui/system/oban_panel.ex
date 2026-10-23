@@ -5,6 +5,7 @@ defmodule RetroHexChatWeb.Components.UI.System.ObanPanel do
 
   use RetroHexChatWeb.Component
 
+  import RetroHexChatWeb.Components.UI.Inset
   import RetroHexChatWeb.Components.UI.RetroTable
   import RetroHexChatWeb.Components.UI.MediaSession.SummaryCard
   import RetroHexChatWeb.Components.UI.LoadingSpinner
@@ -201,7 +202,7 @@ defmodule RetroHexChatWeb.Components.UI.System.ObanPanel do
             role="tabpanel"
             data-testid={"#{@testid}-tabpanel-overview"}
           >
-            <div class="grid gap-retro-4 border border-border bg-surface p-2 text-[11px] shadow-retro-sunken sm:grid-cols-2">
+            <.inset bevel="sunken" tone="surface" class="grid gap-retro-4 border border-border p-2 text-[11px] sm:grid-cols-2">
               <.config_item label={dgettext("dialogs", "Supervisor")} value={@snapshot.config.name} />
               <.config_item label={dgettext("dialogs", "Node")} value={@snapshot.config.node} />
               <.config_item label={dgettext("dialogs", "Engine")} value={@snapshot.config.engine} />
@@ -211,7 +212,7 @@ defmodule RetroHexChatWeb.Components.UI.System.ObanPanel do
                 value={queue_config(@snapshot.config)}
               />
               <.config_item label={dgettext("dialogs", "Plugins")} value={plugins(@snapshot.config)} />
-            </div>
+            </.inset>
 
             <section :if={@snapshot.status_reasons != []}>
               <ul class="space-y-retro-2 bg-black p-retro-6 font-mono text-xs shadow-retro-sunken">
@@ -492,9 +493,9 @@ defmodule RetroHexChatWeb.Components.UI.System.ObanPanel do
           </.system_section_heading>
         </section>
 
-        <div class="flex min-h-[260px] flex-1 items-center justify-center bg-white shadow-retro-sunken">
+        <.inset bevel="sunken" tone="paper" class="flex min-h-[260px] flex-1 items-center justify-center">
           <.loading_spinner text={dgettext("dialogs", "Loading Oban health...")} />
-        </div>
+        </.inset>
       <% end %>
     </div>
     """
@@ -530,9 +531,9 @@ defmodule RetroHexChatWeb.Components.UI.System.ObanPanel do
 
   defp table_shell(assigns) do
     ~H"""
-    <div class="max-h-[260px] overflow-auto bg-white shadow-retro-sunken">
+    <.inset bevel="sunken" tone="paper" class="max-h-[260px] overflow-auto">
       {render_slot(@inner_block)}
-    </div>
+    </.inset>
     """
   end
 

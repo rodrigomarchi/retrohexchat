@@ -14,6 +14,8 @@ defmodule RetroHexChatWeb.Components.UI.System.MemoryBar do
   """
   use RetroHexChatWeb.Component
 
+  import RetroHexChatWeb.Components.UI.Inset
+
   alias RetroHexChat.SystemInfo.Memory
   alias RetroHexChatWeb.Components.UI.Format
   alias RetroHexChatWeb.Icons
@@ -45,7 +47,7 @@ defmodule RetroHexChatWeb.Components.UI.System.MemoryBar do
         <span class="truncate">{dgettext("dialogs", "Memory")}</span>
       </div>
 
-      <div class="flex h-4 w-full overflow-hidden shadow-retro-sunken" role="img">
+      <.inset bevel="sunken" tone="none" class="flex h-4 w-full overflow-hidden" role="img">
         <div
           :for={segment <- @segments}
           class={["memory-bar__segment", segment.tone]}
@@ -53,7 +55,7 @@ defmodule RetroHexChatWeb.Components.UI.System.MemoryBar do
           title={"#{segment.label}: #{Format.bytes(segment.bytes)}"}
         >
         </div>
-      </div>
+      </.inset>
 
       <dl class="mt-2 grid grid-cols-2 gap-x-3 gap-y-1">
         <div :for={segment <- @segments} class="flex min-w-0 items-center gap-1">

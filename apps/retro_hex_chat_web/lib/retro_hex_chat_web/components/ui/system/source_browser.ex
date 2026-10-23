@@ -15,6 +15,7 @@ defmodule RetroHexChatWeb.Components.UI.System.SourceBrowser do
   """
   use RetroHexChatWeb.Component
 
+  import RetroHexChatWeb.Components.UI.Inset
   import RetroHexChatWeb.Components.UI.RetroTable
   import RetroHexChatWeb.Components.UI.Button
   import RetroHexChatWeb.Components.UI.Input, only: [updown: 1]
@@ -107,7 +108,7 @@ defmodule RetroHexChatWeb.Components.UI.System.SourceBrowser do
         </.button>
       </form>
 
-      <div class="min-h-0 flex-1 overflow-auto bg-white shadow-retro-sunken">
+      <.inset bevel="sunken" tone="paper" class="min-h-0 flex-1 overflow-auto">
         <.retro_table
           id={"#{@testid}-table"}
           table={@table}
@@ -119,7 +120,7 @@ defmodule RetroHexChatWeb.Components.UI.System.SourceBrowser do
           truncate
           empty_title={@empty_title}
         />
-      </div>
+      </.inset>
     </div>
     """
   end

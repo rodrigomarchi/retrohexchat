@@ -12,6 +12,7 @@ defmodule RetroHexChatWeb.Components.UI.AdminChannelsDialog do
   """
   use RetroHexChatWeb.Component
 
+  import RetroHexChatWeb.Components.UI.Inset
   import RetroHexChatWeb.Components.UI.AdminShared
   import RetroHexChatWeb.Components.UI.DialogBanner
   import RetroHexChatWeb.Components.UI.RetroTable
@@ -150,9 +151,9 @@ defmodule RetroHexChatWeb.Components.UI.AdminChannelsDialog do
             </div>
           </form>
 
-          <div
+          <.inset bevel="sunken" tone="paper"
             id="admin-channels-output"
-            class="shadow-retro-sunken bg-white min-h-[120px] max-h-[190px] overflow-y-auto"
+            class="min-h-[120px] max-h-[190px] overflow-y-auto"
           >
             <.retro_table
               id="admin-channels-table"
@@ -161,7 +162,7 @@ defmodule RetroHexChatWeb.Components.UI.AdminChannelsDialog do
               testid="admin-channels-table"
               empty_title={dgettext("dialogs", "No active channels")}
             />
-          </div>
+          </.inset>
 
           <div class="grid gap-retro-8 md:grid-cols-2">
             <form id="admin-channels-info-form" phx-submit={@on_info} phx-target={@target}>

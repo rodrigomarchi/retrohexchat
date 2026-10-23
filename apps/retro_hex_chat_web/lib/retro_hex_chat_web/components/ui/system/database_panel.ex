@@ -14,6 +14,7 @@ defmodule RetroHexChatWeb.Components.UI.System.DatabasePanel do
   """
   use RetroHexChatWeb.Component
 
+  import RetroHexChatWeb.Components.UI.Inset
   import RetroHexChatWeb.Components.UI.RetroTable
 
   alias RetroHexChatWeb.Icons
@@ -79,7 +80,7 @@ defmodule RetroHexChatWeb.Components.UI.System.DatabasePanel do
         {@error}
       </p>
 
-      <div class="min-h-0 flex-1 overflow-auto bg-white shadow-retro-sunken">
+      <.inset bevel="sunken" tone="paper" class="min-h-0 flex-1 overflow-auto">
         <.retro_table
           id={"#{@testid}-table"}
           table={@table}
@@ -92,7 +93,7 @@ defmodule RetroHexChatWeb.Components.UI.System.DatabasePanel do
             )
           }
         />
-      </div>
+      </.inset>
     </div>
     """
   end

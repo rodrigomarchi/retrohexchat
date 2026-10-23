@@ -12,6 +12,7 @@ defmodule RetroHexChatWeb.Components.UI.AdminConsoleDialog do
   """
   use RetroHexChatWeb.Component
 
+  import RetroHexChatWeb.Components.UI.Inset
   import RetroHexChatWeb.Components.UI.Button
   import RetroHexChatWeb.Components.UI.Dialog
   import RetroHexChatWeb.Components.UI.DialogBanner
@@ -78,8 +79,8 @@ defmodule RetroHexChatWeb.Components.UI.AdminConsoleDialog do
 
       <div class="adm-scroll min-h-0 flex-1 overflow-y-auto">
         <div class="space-y-retro-8">
-          <div
-            class="shadow-retro-sunken bg-black text-green-400 font-mono text-xs p-retro-8 h-[240px] overflow-y-auto"
+          <.inset bevel="sunken" tone="screen"
+            class="text-green-400 font-mono text-xs p-retro-8 h-[240px] overflow-y-auto"
             id="admin-console-output"
             data-testid="admin-console-output"
           >
@@ -107,7 +108,7 @@ defmodule RetroHexChatWeb.Components.UI.AdminConsoleDialog do
                 "Every command starts with a slash. Type /admin with no arguments to list the privileged subcommands."
               )}
             </div>
-          </div>
+          </.inset>
 
           <form
             id="admin-console-form"

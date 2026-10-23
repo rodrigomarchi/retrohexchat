@@ -8,6 +8,7 @@ defmodule RetroHexChatWeb.Components.UI.AdminAuditLogDialog do
   """
   use RetroHexChatWeb.Component
 
+  import RetroHexChatWeb.Components.UI.Inset
   import RetroHexChatWeb.Components.UI.AdminShared
   import RetroHexChatWeb.Components.UI.DialogBanner
   import RetroHexChatWeb.Components.UI.RetroTable
@@ -124,9 +125,9 @@ defmodule RetroHexChatWeb.Components.UI.AdminAuditLogDialog do
             </div>
           </form>
 
-          <div
+          <.inset bevel="sunken" tone="paper"
             id="admin-audit-log-output"
-            class="shadow-retro-sunken bg-white min-h-[190px] max-h-[260px] overflow-y-auto"
+            class="min-h-[190px] max-h-[260px] overflow-y-auto"
           >
             <.retro_table
               id="admin-audit-log-table"
@@ -137,7 +138,7 @@ defmodule RetroHexChatWeb.Components.UI.AdminAuditLogDialog do
               on_load_more={@on_load_more}
               empty_title={dgettext("dialogs", "No audit log entries found")}
             />
-          </div>
+          </.inset>
 
           <.inline_result result={@result} />
         </div>

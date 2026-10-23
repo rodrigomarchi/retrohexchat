@@ -15,6 +15,7 @@ defmodule RetroHexChatWeb.Components.UI.GroupCall.PreJoin do
   """
   use RetroHexChatWeb.Component
 
+  import RetroHexChatWeb.Components.UI.Inset
   import RetroHexChatWeb.Components.UI.Button
   import RetroHexChatWeb.Components.UI.IconWell
 
@@ -73,7 +74,7 @@ defmodule RetroHexChatWeb.Components.UI.GroupCall.PreJoin do
             </div>
 
             <section class="grid min-w-0 content-start gap-2 text-xs">
-              <div class="grid min-w-0 gap-2 border border-border p-2 shadow-retro-sunken">
+              <.inset bevel="sunken" tone="none" class="grid min-w-0 gap-2 border border-border p-2">
                 <div class="flex items-start gap-2">
                   <.icon_well size="sm">
                     <Icons.icon_protocol_conference_compact class="h-4 w-4" />
@@ -90,9 +91,9 @@ defmodule RetroHexChatWeb.Components.UI.GroupCall.PreJoin do
                     </p>
                   </div>
                 </div>
-              </div>
+              </.inset>
 
-              <div class="min-w-0 border border-border p-2 shadow-retro-sunken">
+              <.inset bevel="sunken" tone="none" class="min-w-0 border border-border p-2">
                 <div class="mb-2 flex items-center gap-1 font-bold">
                   <Icons.icon_devices class="h-3.5 w-3.5" />
                   {dgettext("group_call", "Media defaults")}
@@ -114,10 +115,10 @@ defmodule RetroHexChatWeb.Components.UI.GroupCall.PreJoin do
                     testid="group-call-prejoin-video-toggle"
                   />
                 </div>
-              </div>
+              </.inset>
 
-              <div
-                class="grid min-w-0 gap-2 border border-border p-2 shadow-retro-sunken"
+              <.inset bevel="sunken" tone="none"
+                class="grid min-w-0 gap-2 border border-border p-2"
                 data-testid="group-call-prejoin-devices"
               >
                 <DeviceSelect.device_select
@@ -147,7 +148,7 @@ defmodule RetroHexChatWeb.Components.UI.GroupCall.PreJoin do
                   label={dgettext("group_call", "Speaker")}
                   testid="group-call-prejoin-audio-output"
                 />
-              </div>
+              </.inset>
 
               <details
                 class="grid min-w-0 gap-2 border border-border p-2 shadow-retro-sunken"
@@ -164,7 +165,7 @@ defmodule RetroHexChatWeb.Components.UI.GroupCall.PreJoin do
                 </summary>
 
                 <div class="mt-2 grid min-w-0 gap-2">
-                  <div class="min-w-0 border border-border bg-surface p-2 shadow-retro-sunken">
+                  <.inset bevel="sunken" tone="surface" class="min-w-0 border border-border p-2">
                     <div class="mb-2 flex items-center gap-1 font-bold">
                       <Icons.icon_layout_maximize class="h-3.5 w-3.5" />
                       {dgettext("group_call", "Layout defaults")}
@@ -199,9 +200,9 @@ defmodule RetroHexChatWeb.Components.UI.GroupCall.PreJoin do
                         />
                       </div>
                     </div>
-                  </div>
+                  </.inset>
 
-                  <div class="flex min-w-0 items-start gap-2 border border-border bg-surface p-2 shadow-retro-sunken">
+                  <.inset bevel="sunken" tone="surface" class="flex min-w-0 items-start gap-2 border border-border p-2">
                     <.icon_well size="sm">
                       <Icons.icon_protocol_conference class="h-5 w-5" />
                     </.icon_well>
@@ -214,7 +215,7 @@ defmodule RetroHexChatWeb.Components.UI.GroupCall.PreJoin do
                         )}
                       </p>
                     </div>
-                  </div>
+                  </.inset>
                 </div>
               </details>
             </section>
@@ -249,8 +250,8 @@ defmodule RetroHexChatWeb.Components.UI.GroupCall.PreJoin do
   # empty room says so in words: a blank list reads as "still loading".
   defp inside_now(assigns) do
     ~H"""
-    <div
-      class="grid min-w-0 gap-1 border border-border p-2 text-xs shadow-retro-sunken"
+    <.inset bevel="sunken" tone="none"
+      class="grid min-w-0 gap-1 border border-border p-2 text-xs"
       data-testid="group-call-prejoin-roster"
     >
       <div class="flex items-center gap-1 font-bold">
@@ -272,7 +273,7 @@ defmodule RetroHexChatWeb.Components.UI.GroupCall.PreJoin do
           <span class="truncate">{participant}</span>
         </li>
       </ul>
-    </div>
+    </.inset>
     """
   end
 

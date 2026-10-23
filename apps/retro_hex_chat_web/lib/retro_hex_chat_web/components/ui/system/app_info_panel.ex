@@ -12,6 +12,7 @@ defmodule RetroHexChatWeb.Components.UI.System.AppInfoPanel do
   """
   use RetroHexChatWeb.Component
 
+  import RetroHexChatWeb.Components.UI.Inset
   import RetroHexChatWeb.Components.UI.RetroTable
   import RetroHexChatWeb.Components.UI.MediaSession.SummaryCard
 
@@ -94,7 +95,7 @@ defmodule RetroHexChatWeb.Components.UI.System.AppInfoPanel do
         <span class="truncate">{dgettext("dialogs", "Occupancy by channel")}</span>
       </h4>
 
-      <div class="min-h-0 flex-1 overflow-auto bg-white shadow-retro-sunken">
+      <.inset bevel="sunken" tone="paper" class="min-h-0 flex-1 overflow-auto">
         <.retro_table
           id={"#{@testid}-table"}
           table={@table}
@@ -102,7 +103,7 @@ defmodule RetroHexChatWeb.Components.UI.System.AppInfoPanel do
           truncate
           empty_title={dgettext("dialogs", "No channels are live right now")}
         />
-      </div>
+      </.inset>
     </div>
     """
   end

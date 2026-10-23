@@ -31,6 +31,7 @@ defmodule RetroHexChatWeb.Components.UI.P2P.StartingRoom do
   """
   use RetroHexChatWeb.Component
 
+  import RetroHexChatWeb.Components.UI.Inset
   import RetroHexChatWeb.Components.UI.Button
   import RetroHexChatWeb.Components.UI.IconWell
   import RetroHexChatWeb.Components.UI.NickFlag
@@ -108,9 +109,9 @@ defmodule RetroHexChatWeb.Components.UI.P2P.StartingRoom do
           <section class="grid min-w-0 content-start gap-2">
             <.roster occupants={@occupants} room={@room} />
 
-            <section
+            <.inset bevel="sunken" tone="none" as="section"
               :if={!@game}
-              class="grid min-w-0 gap-2 border border-border p-2 shadow-retro-sunken"
+              class="grid min-w-0 gap-2 border border-border p-2"
             >
               <div class="flex items-center gap-1 font-bold">
                 <Icons.icon_devices class="h-3.5 w-3.5" />
@@ -140,11 +141,11 @@ defmodule RetroHexChatWeb.Components.UI.P2P.StartingRoom do
                   "Turn both off to join receive-only and start media later."
                 )}
               </div>
-            </section>
+            </.inset>
 
-            <section
+            <.inset bevel="sunken" tone="none" as="section"
               :if={!@game}
-              class="grid min-w-0 gap-2 border border-border p-2 shadow-retro-sunken"
+              class="grid min-w-0 gap-2 border border-border p-2"
             >
               <DeviceSelect.device_select
                 name="p2p_setup[audio_input_id]"
@@ -173,7 +174,7 @@ defmodule RetroHexChatWeb.Components.UI.P2P.StartingRoom do
                 label={dgettext("p2p", "Speaker")}
                 testid="p2p-setup-audio-output"
               />
-            </section>
+            </.inset>
 
             <details
               :if={!@game}
@@ -279,8 +280,8 @@ defmodule RetroHexChatWeb.Components.UI.P2P.StartingRoom do
 
   defp roster(assigns) do
     ~H"""
-    <section
-      class="grid min-w-0 gap-1 border border-border p-2 shadow-retro-sunken"
+    <.inset bevel="sunken" tone="none" as="section"
+      class="grid min-w-0 gap-1 border border-border p-2"
       data-testid="p2p-room-roster"
     >
       <div class="flex items-center gap-1 font-bold">
@@ -305,7 +306,7 @@ defmodule RetroHexChatWeb.Components.UI.P2P.StartingRoom do
         </li>
       </ul>
       <p class="text-muted-foreground" data-testid="p2p-room-waiting">{waiting(@room)}</p>
-    </section>
+    </.inset>
     """
   end
 
@@ -318,8 +319,8 @@ defmodule RetroHexChatWeb.Components.UI.P2P.StartingRoom do
   # offering another one would be the room contradicting the way in.
   defp match_subject(assigns) do
     ~H"""
-    <section
-      class="grid min-w-0 content-start gap-2 self-start border border-border p-2 shadow-retro-sunken"
+    <.inset bevel="sunken" tone="none" as="section"
+      class="grid min-w-0 content-start gap-2 self-start border border-border p-2"
       data-testid="p2p-room-game"
     >
       <div class="flex min-w-0 items-center gap-2">
@@ -339,7 +340,7 @@ defmodule RetroHexChatWeb.Components.UI.P2P.StartingRoom do
         <Icons.icon_btn_keyboard class="mt-[1px] h-3.5 w-3.5 shrink-0" />
         <span class="min-w-0">{@game.controls}</span>
       </p>
-    </section>
+    </.inset>
     """
   end
 
@@ -349,7 +350,7 @@ defmodule RetroHexChatWeb.Components.UI.P2P.StartingRoom do
 
   defp room_preview(assigns) do
     ~H"""
-    <section
+    <.inset bevel="sunken" tone="none" as="section"
       id="p2p-setup-preview"
       phx-hook="P2PSetupHook"
       data-prejoin-prefix="p2p-setup"
@@ -361,7 +362,7 @@ defmodule RetroHexChatWeb.Components.UI.P2P.StartingRoom do
       data-audio-input-id={device_preference(@device_preferences, :audio_input_id)}
       data-video-input-id={device_preference(@device_preferences, :video_input_id)}
       data-audio-output-id={device_preference(@device_preferences, :audio_output_id)}
-      class="flex max-h-[240px] min-h-[170px] flex-col self-start border border-border p-1 shadow-retro-sunken"
+      class="flex max-h-[240px] min-h-[170px] flex-col self-start border border-border p-1"
       data-testid="p2p-setup-preview"
     >
       <div class="mb-1 flex items-center justify-between gap-2 text-xs">
@@ -409,7 +410,7 @@ defmodule RetroHexChatWeb.Components.UI.P2P.StartingRoom do
         retry_testid="p2p-setup-retry"
         retry_label={dgettext("p2p", "Retry")}
       />
-    </section>
+    </.inset>
     """
   end
 

@@ -12,6 +12,7 @@ defmodule RetroHexChatWeb.Components.UI.System.LogPanel do
   """
   use RetroHexChatWeb.Component
 
+  import RetroHexChatWeb.Components.UI.Inset
   import RetroHexChatWeb.Components.UI.Button
 
   alias RetroHexChatWeb.Icons
@@ -117,9 +118,9 @@ defmodule RetroHexChatWeb.Components.UI.System.LogPanel do
         )}
       </p>
 
-      <div
+      <.inset bevel="sunken" tone="screen"
         id={"#{@id}-stream"}
-        class="min-h-0 flex-1 overflow-auto bg-black p-retro-6 font-mono text-xs shadow-retro-sunken"
+        class="min-h-0 flex-1 overflow-auto p-retro-6 font-mono text-xs"
         data-testid="system-log-stream"
       >
         <p :if={@entries == []} class="text-gray-400">
@@ -141,7 +142,7 @@ defmodule RetroHexChatWeb.Components.UI.System.LogPanel do
           <span class={level_class(entry.level)}>[{entry.level}]</span>
           <span class="text-gray-100">{entry.message}</span>
         </p>
-      </div>
+      </.inset>
     </div>
     """
   end

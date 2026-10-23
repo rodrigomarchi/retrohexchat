@@ -7,6 +7,7 @@ defmodule RetroHexChatWeb.Components.UI.GroupCall.Panel do
   """
   use RetroHexChatWeb.Component
 
+  import RetroHexChatWeb.Components.UI.Inset
   import RetroHexChatWeb.Components.UI.IconWell
   import RetroHexChatWeb.Components.UI.MediaSession.ActionButton
   import RetroHexChatWeb.Components.UI.DropdownMenu
@@ -528,7 +529,7 @@ defmodule RetroHexChatWeb.Components.UI.GroupCall.Panel do
       </:meta>
 
       <div class="grid gap-2">
-        <section class="grid gap-2 border border-border p-2 shadow-retro-sunken">
+        <.inset bevel="sunken" tone="none" as="section" class="grid gap-2 border border-border p-2">
           <div class="flex min-w-0 items-center justify-between gap-2">
             <span class="inline-flex min-w-0 items-center gap-1 font-bold">
               <Icons.icon_layout_maximize class="h-4 w-4 shrink-0" />
@@ -546,7 +547,7 @@ defmodule RetroHexChatWeb.Components.UI.GroupCall.Panel do
             on_cycle_self_view={@on_cycle_self_view}
             on_clear_focus={@on_clear_focus}
           />
-        </section>
+        </.inset>
 
         <div class="grid gap-1">
           <.summary_card
@@ -579,11 +580,11 @@ defmodule RetroHexChatWeb.Components.UI.GroupCall.Panel do
 
   defp conference_stats_panel(assigns) do
     ~H"""
-    <section
+    <.inset bevel="sunken" tone="none" as="section"
       id="group-call-inline-stats-scroll"
       phx-hook="PreserveScrollHook"
       data-preserve-scroll-target="self"
-      class="min-h-0 overflow-auto border border-border p-2 shadow-retro-sunken"
+      class="min-h-0 overflow-auto border border-border p-2"
       aria-label={dgettext("group_call", "Conference statistics")}
       data-testid="group-call-inline-stats"
     >
@@ -592,7 +593,7 @@ defmodule RetroHexChatWeb.Components.UI.GroupCall.Panel do
         call={@call}
         stats={@call.stats}
       />
-    </section>
+    </.inset>
     """
   end
 

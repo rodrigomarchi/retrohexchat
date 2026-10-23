@@ -8,6 +8,7 @@ defmodule RetroHexChatWeb.Components.UI.AdminDangerZoneDialog do
   """
   use RetroHexChatWeb.Component
 
+  import RetroHexChatWeb.Components.UI.Inset
   import RetroHexChatWeb.Components.UI.AdminShared
   import RetroHexChatWeb.Components.UI.DialogBanner
   import RetroHexChatWeb.Components.UI.Button
@@ -88,7 +89,7 @@ defmodule RetroHexChatWeb.Components.UI.AdminDangerZoneDialog do
 
       <div class="adm-scroll min-h-0 flex-1 overflow-y-auto">
         <div class="space-y-retro-8">
-          <div class="shadow-retro-sunken bg-white p-retro-8 text-sm">
+          <.inset bevel="sunken" tone="paper" class="p-retro-8 text-sm">
             <div class="font-bold text-destructive">
               {dgettext("dialogs", "This cannot be undone.")}
             </div>
@@ -98,7 +99,7 @@ defmodule RetroHexChatWeb.Components.UI.AdminDangerZoneDialog do
                 "Preserved: admin_roles, audit_logs, server_bans, server_settings"
               )}
             </div>
-          </div>
+          </.inset>
 
           <pre
             id="admin-danger-zone-preview"

@@ -7,6 +7,7 @@ defmodule RetroHexChatWeb.Components.UI.P2P.CallPanel do
   """
   use RetroHexChatWeb.Component
 
+  import RetroHexChatWeb.Components.UI.Inset
   import RetroHexChatWeb.Components.UI.MediaSession.CommandBar
   import RetroHexChatWeb.Components.UI.MediaSession.Dock
   import RetroHexChatWeb.Components.UI.MediaSession.ReactionPicker
@@ -68,9 +69,9 @@ defmodule RetroHexChatWeb.Components.UI.P2P.CallPanel do
       data-testid="p2p-call-panel"
       data-call-mini={to_string(@mini)}
     >
-      <div
+      <.inset bevel="sunken" tone="surface"
         :if={!@connected}
-        class="flex h-full min-h-[136px] flex-col items-center justify-center gap-2 border border-border bg-surface p-3 text-center shadow-retro-sunken"
+        class="flex h-full min-h-[136px] flex-col items-center justify-center gap-2 border border-border p-3 text-center"
         data-testid="p2p-call-disconnected"
       >
         <span class="flex h-20 w-20 items-center justify-center">
@@ -83,7 +84,7 @@ defmodule RetroHexChatWeb.Components.UI.P2P.CallPanel do
             "Call controls become available after the peer joins the P2P session."
           )}
         </p>
-      </div>
+      </.inset>
 
       <section
         :if={@connected}
@@ -165,10 +166,10 @@ defmodule RetroHexChatWeb.Components.UI.P2P.CallPanel do
                 >
                 </video>
 
-                <div
+                <.inset bevel="sunken" tone="surface"
                   :if={@peer_left}
                   data-testid="p2p-call-peer-left"
-                  class="absolute inset-0 flex flex-col items-center justify-center gap-2 bg-surface p-4 text-center shadow-retro-sunken"
+                  class="absolute inset-0 flex flex-col items-center justify-center gap-2 p-4 text-center"
                 >
                   <CallControls.icon_call_phone_end class="h-16 w-16" />
                   <div class="font-bold">
@@ -180,12 +181,12 @@ defmodule RetroHexChatWeb.Components.UI.P2P.CallPanel do
                       "You are still in it. They can join again, or you can leave too."
                     )}
                   </p>
-                </div>
+                </.inset>
 
-                <div
+                <.inset bevel="sunken" tone="surface"
                   :if={@peer_camera_off and not @peer_left}
                   data-testid="lobby-peer-camera-off"
-                  class="absolute inset-0 flex flex-col items-center justify-center gap-2 bg-surface p-4 text-center shadow-retro-sunken"
+                  class="absolute inset-0 flex flex-col items-center justify-center gap-2 p-4 text-center"
                 >
                   <CallControls.icon_call_camera_off class="h-16 w-16" />
                   <div class="font-bold">
@@ -194,7 +195,7 @@ defmodule RetroHexChatWeb.Components.UI.P2P.CallPanel do
                   <p class="text-muted-foreground">
                     {dgettext("p2p", "Audio and data channels can keep running.")}
                   </p>
-                </div>
+                </.inset>
 
                 <div class="icon-on-dark absolute left-2 top-2 z-10 flex max-w-[60%] items-center gap-1 border border-white/25 bg-black/60 px-1.5 py-0.5 font-bold text-white">
                   <CallControls.icon_call_screen_share
@@ -267,14 +268,14 @@ defmodule RetroHexChatWeb.Components.UI.P2P.CallPanel do
             </div>
           </div>
 
-          <div
+          <.inset bevel="sunken" tone="surface"
             :if={@peer_muted}
             data-testid="lobby-peer-muted"
-            class="flex items-center gap-1 border border-border bg-surface px-2 py-1 font-bold shadow-retro-sunken"
+            class="flex items-center gap-1 border border-border px-2 py-1 font-bold"
           >
             <CallControls.icon_call_mute class="h-4 w-4" />
             {dgettext("lobby", "%{peer} is muted", peer: peer_label(@peer_nick))}
-          </div>
+          </.inset>
         </div>
 
         <.idle_call_state
@@ -363,8 +364,8 @@ defmodule RetroHexChatWeb.Components.UI.P2P.CallPanel do
 
   defp idle_call_state(assigns) do
     ~H"""
-    <div
-      class="flex min-h-0 flex-1 flex-col justify-between gap-2 border border-border bg-surface p-2 shadow-retro-sunken"
+    <.inset bevel="sunken" tone="surface"
+      class="flex min-h-0 flex-1 flex-col justify-between gap-2 border border-border p-2"
       data-testid="p2p-call-idle"
     >
       <div class="flex min-h-[120px] flex-1 flex-col items-center justify-center gap-2 text-center">
@@ -414,7 +415,7 @@ defmodule RetroHexChatWeb.Components.UI.P2P.CallPanel do
           {peer_label(@peer_nick)}
         </span>
       </.media_session_command_bar>
-    </div>
+    </.inset>
     """
   end
 

@@ -3,6 +3,7 @@ defmodule RetroHexChatWeb.ShowcaseHelpers do
   use Phoenix.Component
   use Gettext, backend: RetroHexChatWeb.Gettext
 
+  import RetroHexChatWeb.Components.UI.Inset
   import RetroHexChatWeb.Components.UI.TreeView
   import RetroHexChatWeb.Components.UI.Desktop
   import RetroHexChatWeb.Components.UI.DesktopLaunchers
@@ -211,9 +212,9 @@ defmodule RetroHexChatWeb.ShowcaseHelpers do
       </div>
       <div class="p-2">
         <p class="text-xs text-muted-foreground mb-2">{@description}</p>
-        <div class="shadow-retro-sunken bg-white p-3">
+        <.inset bevel="sunken" tone="paper" class="p-3">
           {render_slot(@inner_block)}
-        </div>
+        </.inset>
       </div>
     </div>
     """

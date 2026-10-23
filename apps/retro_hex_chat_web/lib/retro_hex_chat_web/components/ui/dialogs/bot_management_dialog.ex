@@ -14,6 +14,7 @@ defmodule RetroHexChatWeb.Components.UI.BotManagementDialog do
   """
   use RetroHexChatWeb.Component
 
+  import RetroHexChatWeb.Components.UI.Inset
   import RetroHexChatWeb.Components.UI.ListStates
 
   import RetroHexChatWeb.Components.UI.Dialog
@@ -817,9 +818,9 @@ defmodule RetroHexChatWeb.Components.UI.BotManagementDialog do
   defp events_tab(assigns) do
     ~H"""
     <div class="bm-pane">
-      <div
+      <.inset bevel="sunken" tone="paper"
         id="bm-events-list"
-        class="bm-events-list shadow-retro-sunken bg-white overflow-y-auto p-retro-2"
+        class="bm-events-list overflow-y-auto p-retro-2"
         phx-hook="InfiniteScrollHook"
         phx-update="stream"
         data-edge="bottom"
@@ -833,7 +834,7 @@ defmodule RetroHexChatWeb.Components.UI.BotManagementDialog do
           <span class="bm-event-message">{event_description(event)}</span>
           <span :if={event_channel(event)} class="bm-event-channel">{event_channel(event)}</span>
         </div>
-      </div>
+      </.inset>
       <.list_load_more_button
         :if={State.more?(@events_state)}
         target={@island_target}

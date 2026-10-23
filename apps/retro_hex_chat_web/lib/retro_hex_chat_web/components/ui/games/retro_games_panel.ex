@@ -206,8 +206,8 @@ defmodule RetroHexChatWeb.Components.UI.RetroGamesPanel do
             </dl>
           </section>
 
-          <section
-            class="order-2 grid gap-retro-6 bg-surface p-retro-8 shadow-retro-sunken"
+          <.inset bevel="sunken" tone="surface" as="section"
+            class="order-2 grid gap-retro-6 p-retro-8"
             data-testid="retro-game-difficulty-panel"
           >
             <div class="flex items-center justify-between gap-retro-6">
@@ -241,7 +241,7 @@ defmodule RetroHexChatWeb.Components.UI.RetroGamesPanel do
                 <span class="min-w-0 truncate">{difficulty_label(difficulty)}</span>
               </.tool_button>
             </div>
-          </section>
+          </.inset>
 
           <section
             class="order-4 hidden gap-retro-6 bg-white p-retro-8 shadow-retro-field md:grid lg:order-3"
@@ -263,8 +263,8 @@ defmodule RetroHexChatWeb.Components.UI.RetroGamesPanel do
             <p class="text-[11px] leading-relaxed text-muted-foreground">{@game.controls}</p>
           </section>
 
-          <section
-            class="order-3 grid grid-cols-[minmax(0,1fr)_112px] gap-retro-4 bg-surface p-retro-6 shadow-retro-sunken lg:order-4 lg:mt-auto lg:grid-cols-1 lg:gap-retro-6 lg:p-retro-8"
+          <.inset bevel="sunken" tone="surface" as="section"
+            class="order-3 grid grid-cols-[minmax(0,1fr)_112px] gap-retro-4 p-retro-6 lg:order-4 lg:mt-auto lg:grid-cols-1 lg:gap-retro-6 lg:p-retro-8"
             data-testid="retro-game-actions"
           >
             <.button
@@ -308,7 +308,7 @@ defmodule RetroHexChatWeb.Components.UI.RetroGamesPanel do
               <:icon><Icons.icon_retry class="h-4 w-4" /></:icon>
               {dgettext("games", "Again")}
             </.button>
-          </section>
+          </.inset>
         </aside>
       </div>
     </div>

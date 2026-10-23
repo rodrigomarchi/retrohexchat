@@ -17,6 +17,7 @@ defmodule RetroHexChatWeb.Components.UI.Lobby.LobbyNetworkPanel do
   """
   use RetroHexChatWeb.Component
 
+  import RetroHexChatWeb.Components.UI.Inset
   import RetroHexChatWeb.Components.UI.Badge
   import RetroHexChatWeb.Components.UI.IconWell
   import RetroHexChatWeb.Components.UI.Toolbar
@@ -431,8 +432,8 @@ defmodule RetroHexChatWeb.Components.UI.Lobby.LobbyNetworkPanel do
 
   defp session_header(assigns) do
     ~H"""
-    <div
-      class="grid gap-1 bg-surface p-2 shadow-retro-sunken"
+    <.inset bevel="sunken" tone="surface"
+      class="grid gap-1 p-2"
       data-testid="p2p-stats-session-header"
     >
       <.media_session_status_header
@@ -520,7 +521,7 @@ defmodule RetroHexChatWeb.Components.UI.Lobby.LobbyNetworkPanel do
           testid="p2p-stats-summary-data"
         />
       </div>
-    </div>
+    </.inset>
     """
   end
 

@@ -9,6 +9,7 @@ defmodule RetroHexChatWeb.Components.UI.Lobby.GamePanel do
   """
   use RetroHexChatWeb.Component
 
+  import RetroHexChatWeb.Components.UI.Inset
   import RetroHexChatWeb.Components.UI.Badge
   import RetroHexChatWeb.Components.UI.Button
   import RetroHexChatWeb.Components.UI.IconWell
@@ -154,7 +155,7 @@ defmodule RetroHexChatWeb.Components.UI.Lobby.GamePanel do
           <.badge variant="default">{outcome_label(@game)}</.badge>
         </div>
         <:detail>
-          <div class="mt-3 flex items-center justify-center gap-4 border border-border px-2 py-2 text-sm shadow-retro-sunken">
+          <.inset bevel="sunken" tone="none" class="mt-3 flex items-center justify-center gap-4 border border-border px-2 py-2 text-sm">
             <span class={["font-bold", score_class(@game, :p1)]}>
               {dgettext("lobby", "P1 %{score}", score: score_of(@game, :p1))}
             </span>
@@ -162,7 +163,7 @@ defmodule RetroHexChatWeb.Components.UI.Lobby.GamePanel do
             <span class={["font-bold", score_class(@game, :p2)]}>
               {dgettext("lobby", "%{score} P2", score: score_of(@game, :p2))}
             </span>
-          </div>
+          </.inset>
         </:detail>
         <:actions>
           <%!-- The same game again asks the other side the same question a

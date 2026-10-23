@@ -13,6 +13,7 @@ defmodule RetroHexChatWeb.Components.UI.AdminUsersDialog do
   """
   use RetroHexChatWeb.Component
 
+  import RetroHexChatWeb.Components.UI.Inset
   import RetroHexChatWeb.Components.UI.AdminShared
   import RetroHexChatWeb.Components.UI.DialogBanner
   import RetroHexChatWeb.Components.UI.RetroTable
@@ -157,9 +158,9 @@ defmodule RetroHexChatWeb.Components.UI.AdminUsersDialog do
             </div>
           </form>
 
-          <div
+          <.inset bevel="sunken" tone="paper"
             id="admin-users-output"
-            class="shadow-retro-sunken bg-white min-h-[140px] max-h-[210px] overflow-y-auto"
+            class="min-h-[140px] max-h-[210px] overflow-y-auto"
           >
             <.retro_table
               id="admin-users-table"
@@ -170,7 +171,7 @@ defmodule RetroHexChatWeb.Components.UI.AdminUsersDialog do
               on_load_more={@on_load_more}
               empty_title={dgettext("dialogs", "No users found")}
             />
-          </div>
+          </.inset>
 
           <form id="admin-users-info-form" phx-submit={@on_info} phx-target={@target}>
             <div class="flex flex-wrap items-end gap-retro-6">
@@ -359,9 +360,9 @@ defmodule RetroHexChatWeb.Components.UI.AdminUsersDialog do
 
           <div>
             <div class="text-xs font-bold mb-retro-4">{dgettext("dialogs", "Ban list")}</div>
-            <div
+            <.inset bevel="sunken" tone="paper"
               id="admin-users-banlist"
-              class="shadow-retro-sunken bg-white min-h-[84px] max-h-[150px] overflow-y-auto"
+              class="min-h-[84px] max-h-[150px] overflow-y-auto"
             >
               <.retro_table
                 id="admin-users-banlist-table"
@@ -370,7 +371,7 @@ defmodule RetroHexChatWeb.Components.UI.AdminUsersDialog do
                 testid="admin-users-banlist-table"
                 empty_title={dgettext("dialogs", "No active server bans")}
               />
-            </div>
+            </.inset>
           </div>
 
           <.inline_result result={@result} />

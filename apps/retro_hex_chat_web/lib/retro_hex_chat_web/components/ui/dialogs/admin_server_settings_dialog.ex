@@ -11,6 +11,7 @@ defmodule RetroHexChatWeb.Components.UI.AdminServerSettingsDialog do
   """
   use RetroHexChatWeb.Component
 
+  import RetroHexChatWeb.Components.UI.Inset
   import RetroHexChatWeb.Components.UI.AdminShared
   import RetroHexChatWeb.Components.UI.DialogBanner
   import RetroHexChatWeb.Components.UI.RetroTable
@@ -194,9 +195,9 @@ defmodule RetroHexChatWeb.Components.UI.AdminServerSettingsDialog do
             </div>
             <div>
               <div class="text-xs font-bold mb-retro-4">{dgettext("dialogs", "Settings")}</div>
-              <div
+              <.inset bevel="sunken" tone="paper"
                 id="admin-server-settings-output"
-                class="shadow-retro-sunken bg-white min-h-[120px] max-h-[180px] overflow-y-auto"
+                class="min-h-[120px] max-h-[180px] overflow-y-auto"
               >
                 <.retro_table
                   id="admin-server-settings-table"
@@ -205,7 +206,7 @@ defmodule RetroHexChatWeb.Components.UI.AdminServerSettingsDialog do
                   testid="admin-server-settings-table"
                   empty_title={dgettext("dialogs", "No server settings configured")}
                 />
-              </div>
+              </.inset>
             </div>
           </div>
 

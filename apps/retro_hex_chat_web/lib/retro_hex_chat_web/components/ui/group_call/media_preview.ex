@@ -9,6 +9,8 @@ defmodule RetroHexChatWeb.Components.UI.GroupCall.MediaPreview do
   """
   use RetroHexChatWeb.Component
 
+  import RetroHexChatWeb.Components.UI.Inset
+
   alias RetroHexChatWeb.Components.UI.GroupCall.MediaState
   alias RetroHexChatWeb.Components.UI.MediaSession.PermissionNotice
   alias RetroHexChatWeb.Icons
@@ -33,7 +35,7 @@ defmodule RetroHexChatWeb.Components.UI.GroupCall.MediaPreview do
   @spec media_preview(map()) :: Phoenix.LiveView.Rendered.t()
   def media_preview(assigns) do
     ~H"""
-    <section
+    <.inset bevel="sunken" tone="none" as="section"
       id="group-call-prejoin-preview"
       phx-hook="GroupCallPreJoinHook"
       data-audio={to_string(MediaState.enabled?(@media, :audio))}
@@ -43,7 +45,7 @@ defmodule RetroHexChatWeb.Components.UI.GroupCall.MediaPreview do
       data-audio-output-id={device_preference(@device_preferences, :audio_output_id)}
       data-prejoin-scope={@scope}
       data-prejoin-remembered={to_string(@remembered)}
-      class="flex min-h-[170px] flex-col border border-border p-1 shadow-retro-sunken"
+      class="flex min-h-[170px] flex-col border border-border p-1"
       data-testid="group-call-prejoin-preview"
     >
       <div class="mb-1 flex items-center justify-between gap-2 text-xs">
@@ -89,7 +91,7 @@ defmodule RetroHexChatWeb.Components.UI.GroupCall.MediaPreview do
       </div>
 
       <PermissionNotice.permission_notice />
-    </section>
+    </.inset>
     """
   end
 
