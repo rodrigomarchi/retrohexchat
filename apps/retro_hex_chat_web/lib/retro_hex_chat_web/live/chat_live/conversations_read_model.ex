@@ -105,7 +105,7 @@ defmodule RetroHexChatWeb.ChatLive.ConversationsReadModel do
     joined = socket.assigns.session.channels
 
     joined
-    |> Autocomplete.list_visible_channels()
+    |> Autocomplete.list_visible_channels(pinned: lead_rooms())
     |> suggestions(joined, socket.assigns[:locale])
     |> then(&assign(socket, &1))
   end
@@ -184,6 +184,8 @@ defmodule RetroHexChatWeb.ChatLive.ConversationsReadModel do
   # The room a subject's section opens with, whoever is in it.
   defp lead("games"), do: GameCatalog.feed_channel()
   defp lead(_category), do: nil
+
+  defp lead_rooms, do: @featured_categories |> Enum.map(&lead/1) |> Enum.reject(&is_nil/1)
 
   defp featured_rank(channel, spec, locale) do
     {

@@ -121,8 +121,10 @@ defmodule RetroHexChat.Channels.Directory do
   two hides where there are people. Cold rows follow by how recently anything
   happened in them.
 
-  Options: `:search` (name or topic, applied to both halves) and `:limit` for
-  the cold half.
+  Options: `:search` (name or topic, applied to both halves), `:limit` for
+  the cold half, and `:pinned`: rooms that are listed whenever they exist,
+  however far past the limit their last activity puts them — a section that
+  always leads with one room cannot lose it to a busy table.
   """
   @spec catalog(keyword()) :: [entry()]
   def catalog(opts \\ []) do
@@ -155,9 +157,21 @@ defmodule RetroHexChat.Channels.Directory do
       |> Enum.sort_by(&{-&1.member_count, &1.name})
       |> Enum.map(&live_entry(&1, by_name))
 
+    cold = cold ++ pinned_rows(Keyword.get(opts, :pinned, []), live_names, cold)
     cold_entries = Enum.map(cold, &cold_entry/1)
 
     live_entries ++ cold_entries
+  end
+
+  defp pinned_rows([], _live_names, _cold), do: []
+
+  defp pinned_rows(pinned, live_names, cold) do
+    listed = live_names ++ Enum.map(cold, & &1.name)
+
+    case pinned -- listed do
+      [] -> []
+      missing -> ServiceQueries.list_registered_channels(only: missing)
+    end
   end
 
   # A running channel keeps its membership and modes in memory but not the day

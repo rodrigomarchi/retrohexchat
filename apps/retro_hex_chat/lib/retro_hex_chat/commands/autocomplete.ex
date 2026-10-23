@@ -388,14 +388,15 @@ defmodule RetroHexChat.Commands.Autocomplete do
   no process at all. A room everybody left is still a place, and leaving it out
   meant the catalogue only ever showed what happened to be busy at that second.
 
-  Pass `search:` to filter by name or topic before visibility is applied, and
+  Pass `search:` to filter by name or topic before visibility is applied,
+  `pinned:` for rooms listed whenever they exist (`Directory.catalog/1`), and
   `category:` to keep only the rooms about one subject
   (`RetroHexChat.Channels.Categories`); nil or `""` keeps every subject.
   """
   @spec list_visible_channels([String.t()], keyword()) :: [map()]
   def list_visible_channels(user_channels, opts \\ []) do
     opts
-    |> Keyword.take([:search, :limit])
+    |> Keyword.take([:search, :limit, :pinned])
     |> Directory.catalog()
     |> Enum.flat_map(&visible_channel(&1, &1.name in user_channels))
     |> of_category(Keyword.get(opts, :category))

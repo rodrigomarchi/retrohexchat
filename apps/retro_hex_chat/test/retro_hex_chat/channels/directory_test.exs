@@ -272,6 +272,21 @@ defmodule RetroHexChat.Channels.DirectoryTest do
       assert length(names) == 2
     end
 
+    # The games section always opens with the feed room. It is a cold room most
+    # of the time, and the cold half is capped by last activity, so a table with
+    # more recently used rooms than the cap pushed it out of the sidebar.
+    test "a pinned room is listed even when the cap would leave it out" do
+      old = unique("pinnedold")
+      register_channel(old)
+      for n <- 1..3, do: register_channel(unique("pinnednew#{n}"))
+
+      unpinned = [limit: 1] |> Directory.catalog() |> Enum.map(& &1.name)
+      pinned = [limit: 1, pinned: [old]] |> Directory.catalog() |> Enum.map(& &1.name)
+
+      refute old in unpinned
+      assert Enum.count(pinned, &(&1 == old)) == 1
+    end
+
     test "live channels sort ahead of cold ones" do
       cold = unique("sortcold")
       live = unique("sortlive")

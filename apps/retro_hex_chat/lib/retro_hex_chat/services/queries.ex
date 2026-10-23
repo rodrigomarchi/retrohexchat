@@ -256,6 +256,7 @@ defmodule RetroHexChat.Services.Queries do
   def list_registered_channels(opts \\ []) do
     RegisteredChannel
     |> match_search(Keyword.get(opts, :search))
+    |> only_names(Keyword.get(opts, :only))
     |> exclude_names(Keyword.get(opts, :exclude))
     |> order_by([c], desc: c.last_activity_at, asc: c.name)
     |> limit(^Keyword.get(opts, :limit, 500))
@@ -302,6 +303,11 @@ defmodule RetroHexChat.Services.Queries do
     )
     |> Repo.all()
   end
+
+  defp only_names(queryable, nil), do: queryable
+
+  defp only_names(queryable, names) when is_list(names),
+    do: where(queryable, [c], c.name in ^names)
 
   defp exclude_names(queryable, nil), do: queryable
   defp exclude_names(queryable, []), do: queryable
