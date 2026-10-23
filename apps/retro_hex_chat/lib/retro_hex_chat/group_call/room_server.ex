@@ -248,9 +248,24 @@ defmodule RetroHexChat.GroupCall.RoomServer do
   @spec summary(String.t()) :: {:ok, map()} | {:error, :not_found}
   def summary(room_token) do
     case GroupRegistry.lookup_room({:room, room_token}) do
-      {:ok, pid} -> GenServer.call(pid, :summary)
+      {:ok, pid} -> ask_summary(pid)
       {:error, :not_found} -> {:error, :not_found}
     end
+  end
+
+  # A room can stop between being found and being asked — the conference was
+  # closed a moment ago. That is the room not being there, the answer the
+  # registry would have given a moment later, and every chat in the channel
+  # asks; crashing them all for it would be the bug. A timeout is not this and
+  # still exits.
+  defp ask_summary(pid) do
+    GenServer.call(pid, :summary)
+  catch
+    :exit, {reason, {GenServer, :call, _}} when reason in [:noproc, :normal, :shutdown] ->
+      {:error, :not_found}
+
+    :exit, {{:shutdown, _}, {GenServer, :call, _}} ->
+      {:error, :not_found}
   end
 
   @impl true
