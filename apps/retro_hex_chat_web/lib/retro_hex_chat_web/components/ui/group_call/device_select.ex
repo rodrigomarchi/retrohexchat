@@ -4,6 +4,7 @@ defmodule RetroHexChatWeb.Components.UI.GroupCall.DeviceSelect do
   """
   use RetroHexChatWeb.Component
 
+  alias RetroHexChat.Text
   alias RetroHexChatWeb.Icons
 
   attr :name, :string, required: true
@@ -28,7 +29,9 @@ defmodule RetroHexChatWeb.Components.UI.GroupCall.DeviceSelect do
         data-group-call-prejoin-device-select={@kind}
         data-testid={@testid}
       >
-        <option value="" selected={blank?(@value)}>{dgettext("group_call", "System default")}</option>
+        <option value="" selected={Text.blank?(@value)}>
+          {dgettext("group_call", "System default")}
+        </option>
         <option
           :for={device <- @devices}
           value={device["id"]}
@@ -40,8 +43,4 @@ defmodule RetroHexChatWeb.Components.UI.GroupCall.DeviceSelect do
     </label>
     """
   end
-
-  defp blank?(nil), do: true
-  defp blank?(""), do: true
-  defp blank?(_value), do: false
 end

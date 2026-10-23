@@ -13,6 +13,7 @@ defmodule RetroHexChat.Scraper.ImageCache do
   alias RetroHexChat.Jobs.ScrapedImageWorker
   alias RetroHexChat.Net.HTTPRetry
   alias RetroHexChat.Scraper.{Cache, HTTPImageFetcher, ScrapedPage, Store, VixImageThumbnailer}
+  alias RetroHexChat.Text
 
   require Logger
 
@@ -34,10 +35,10 @@ defmodule RetroHexChat.Scraper.ImageCache do
   @spec ready?(ScrapedPage.t()) :: boolean()
   def ready?(%ScrapedPage{} = page) do
     page.image_thumbnail_status == "ready" and
-      present?(page.image_url) and
+      Text.present?(page.image_url) and
       page.image_thumbnail_source_url == page.image_url and
-      present?(page.image_thumbnail_storage_bucket) and
-      present?(page.image_thumbnail_storage_key)
+      Text.present?(page.image_thumbnail_storage_bucket) and
+      Text.present?(page.image_thumbnail_storage_key)
   end
 
   @doc "Stable absolute URL for the local thumbnail or its placeholder."
@@ -72,7 +73,7 @@ defmodule RetroHexChat.Scraper.ImageCache do
       ready?(page) ->
         {:ok, page}
 
-      not present?(page.image_url) ->
+      not Text.present?(page.image_url) ->
         {:ok, page}
 
       true ->
@@ -87,7 +88,7 @@ defmodule RetroHexChat.Scraper.ImageCache do
       ready?(page) ->
         :ok
 
-      not present?(page.image_url) ->
+      not Text.present?(page.image_url) ->
         :ok
 
       page.image_thumbnail_status == "failed" and
@@ -103,7 +104,7 @@ defmodule RetroHexChat.Scraper.ImageCache do
   defp routable?(%ScrapedPage{} = page) do
     page.image_thumbnail_status in ["ready", "pending", "failed"] and
       page.image_thumbnail_source_url == page.image_url and
-      present?(page.image_url)
+      Text.present?(page.image_url)
   end
 
   @spec placeholder_status(ScrapedPage.t()) :: String.t()
@@ -366,8 +367,4 @@ defmodule RetroHexChat.Scraper.ImageCache do
     |> Application.get_env(:chat_uploads, [])
     |> Keyword.merge(Application.get_env(:retro_hex_chat, :scraped_image_cache, []))
   end
-
-  @spec present?(String.t() | nil) :: boolean()
-  defp present?(value) when is_binary(value), do: String.trim(value) != ""
-  defp present?(_value), do: false
 end

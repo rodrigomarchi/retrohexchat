@@ -52,4 +52,13 @@ defmodule RetroHexChat.Text do
   @spec word_count(String.t() | nil) :: non_neg_integer() | nil
   def word_count(text) when is_binary(text) and text != "", do: text |> String.split() |> length()
   def word_count(_text), do: nil
+
+  @doc "A string with something in it besides whitespace."
+  @spec present?(term()) :: boolean()
+  def present?(value) when is_binary(value), do: String.trim(value) != ""
+  def present?(_value), do: false
+
+  @doc "`nil`, or a string that is empty or only whitespace: the opposite of `present?/1`."
+  @spec blank?(term()) :: boolean()
+  def blank?(value), do: not present?(value)
 end

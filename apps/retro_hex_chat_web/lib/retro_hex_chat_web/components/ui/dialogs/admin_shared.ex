@@ -51,5 +51,5 @@ defmodule RetroHexChatWeb.Components.UI.AdminShared do
 
   @doc "Whether a value is a string with something other than whitespace in it."
   @spec present?(term()) :: boolean()
-  def present?(value), do: is_binary(value) and String.trim(value) != ""
+  defdelegate present?(value), to: RetroHexChat.Text
 end

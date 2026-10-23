@@ -25,6 +25,7 @@ defmodule RetroHexChat.Notifications.Service do
   alias RetroHexChat.Notifications.Queries
   alias RetroHexChat.Notifications.Schema.PushSubscription
   alias RetroHexChat.Observability
+  alias RetroHexChat.Text
 
   require Logger
 
@@ -38,7 +39,7 @@ defmodule RetroHexChat.Notifications.Service do
     vapid = Application.get_env(:web_push_ex, :vapid, [])
 
     Enum.all?([:public_key, :private_key, :subject], fn key ->
-      present?(Keyword.get(vapid, key))
+      Text.present?(Keyword.get(vapid, key))
     end)
   end
 
@@ -144,8 +145,4 @@ defmodule RetroHexChat.Notifications.Service do
   defp request_overrides do
     Application.get_env(:retro_hex_chat, :push_req_options, [])
   end
-
-  @spec present?(term()) :: boolean()
-  defp present?(value) when is_binary(value), do: String.trim(value) != ""
-  defp present?(_value), do: false
 end

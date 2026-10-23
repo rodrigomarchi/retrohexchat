@@ -62,4 +62,14 @@ defmodule RetroHexChat.TextTest do
       assert Text.word_count("") == nil
     end
   end
+
+  test "present?/1 and blank?/1 agree that whitespace is nothing" do
+    assert Text.present?(" a ")
+    refute Text.present?("  ")
+    refute Text.present?(nil)
+    refute Text.present?(:atom)
+    assert Text.blank?("")
+    assert Text.blank?(nil)
+    refute Text.blank?("x")
+  end
 end

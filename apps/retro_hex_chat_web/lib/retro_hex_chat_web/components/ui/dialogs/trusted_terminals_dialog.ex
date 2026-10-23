@@ -17,6 +17,7 @@ defmodule RetroHexChatWeb.Components.UI.TrustedTerminalsDialog do
   import RetroHexChatWeb.Components.UI.TrustedDevices.TrustedTerminalCard
   import RetroHexChatWeb.Components.UI.DialogBanner
 
+  alias RetroHexChat.Text
   alias RetroHexChatWeb.Components.Diagrams
   alias RetroHexChatWeb.Icons
   alias RetroHexChatWeb.PaginatedList.State
@@ -562,7 +563,7 @@ defmodule RetroHexChatWeb.Components.UI.TrustedTerminalsDialog do
 
   defp event_details(details) when is_map(details) do
     details
-    |> Enum.reject(fn {_key, value} -> blank?(value) end)
+    |> Enum.reject(fn {_key, value} -> Text.blank?(value) end)
     |> Enum.sort_by(fn {key, _value} -> to_string(key) end)
     |> Enum.map(fn {key, value} -> {event_detail_key(key), event_detail_value(value)} end)
   end
@@ -596,7 +597,7 @@ defmodule RetroHexChatWeb.Components.UI.TrustedTerminalsDialog do
         value: format_dt(session.last_seen_at, timezone)
       }
     ]
-    |> Enum.reject(&blank?(&1.value))
+    |> Enum.reject(&Text.blank?(&1.value))
   end
 
   # What an event records: when, who did it, to which terminal, and the
@@ -624,7 +625,7 @@ defmodule RetroHexChatWeb.Components.UI.TrustedTerminalsDialog do
        %{icon: :terminal, label: dgettext("dialogs", "Terminal"), value: event.device_label},
        %{icon: :tag, label: dgettext("dialogs", "Action"), value: event.action}
      ] ++ details)
-    |> Enum.reject(&blank?(&1.value))
+    |> Enum.reject(&Text.blank?(&1.value))
   end
 
   @spec terminal_id(integer() | nil, String.t() | nil) :: String.t() | nil
@@ -652,10 +653,6 @@ defmodule RetroHexChatWeb.Components.UI.TrustedTerminalsDialog do
   defp event_detail_value(true), do: dgettext("dialogs", "yes")
   defp event_detail_value(false), do: dgettext("dialogs", "no")
   defp event_detail_value(value), do: inspect(value)
-
-  defp blank?(nil), do: true
-  defp blank?(""), do: true
-  defp blank?(_value), do: false
 
   defp event_label("device.created"), do: dgettext("dialogs", "Terminal created")
   defp event_label("device.nick.granted"), do: dgettext("dialogs", "Nick remembered")

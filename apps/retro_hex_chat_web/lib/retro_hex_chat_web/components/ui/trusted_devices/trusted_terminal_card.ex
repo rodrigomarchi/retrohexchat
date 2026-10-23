@@ -17,6 +17,7 @@ defmodule RetroHexChatWeb.Components.UI.TrustedDevices.TrustedTerminalCard do
   import RetroHexChatWeb.Components.UI.Label
   import RetroHexChatWeb.Components.UI.Switch
 
+  alias RetroHexChat.Text
   alias RetroHexChatWeb.App.ChatHelpers
   alias RetroHexChatWeb.Icons
 
@@ -286,7 +287,7 @@ defmodule RetroHexChatWeb.Components.UI.TrustedDevices.TrustedTerminalCard do
       %{icon: :cores, value: cores_label(entry_field(entry, :cores))},
       %{icon: :touch, value: touch_label(entry_field(entry, :touch))}
     ]
-    |> Enum.reject(&(blank?(&1.value) or &1.value == "unknown"))
+    |> Enum.reject(&(Text.blank?(&1.value) or &1.value == "unknown"))
   end
 
   defp trust_specs(entry, timezone) do
@@ -342,7 +343,7 @@ defmodule RetroHexChatWeb.Components.UI.TrustedDevices.TrustedTerminalCard do
         value: short_fingerprint(entry_field(entry, :last_ip_hash))
       }
     ]
-    |> Enum.reject(&blank?(&1.value))
+    |> Enum.reject(&Text.blank?(&1.value))
   end
 
   defp terminal_label(entry) do
@@ -411,10 +412,6 @@ defmodule RetroHexChatWeb.Components.UI.TrustedDevices.TrustedTerminalCard do
       auto_login: entry_field(assigns.entry, :auto_login) == true
     }
   end
-
-  defp blank?(nil), do: true
-  defp blank?(""), do: true
-  defp blank?(_value), do: false
 
   defp device_type_label("desktop"), do: dgettext("ui", "Desktop")
   defp device_type_label("touch"), do: dgettext("ui", "Touch")

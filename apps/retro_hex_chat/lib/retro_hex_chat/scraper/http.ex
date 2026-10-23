@@ -262,7 +262,7 @@ defmodule RetroHexChat.Scraper.HTTP do
     hint_words = Text.word_count(hint_text) || 0
     page_words = content.word_count || 0
 
-    if present?(hint_text) and hint_words > page_words do
+    if Text.present?(hint_text) and hint_words > page_words do
       %{
         text: hint_text,
         strategy: "feed_item",
@@ -1696,7 +1696,7 @@ defmodule RetroHexChat.Scraper.HTTP do
   @spec first_labelled([{String.t(), String.t() | nil}]) :: {String.t() | nil, String.t() | nil}
   defp first_labelled(candidates) do
     Enum.find_value(candidates, {nil, nil}, fn {source, value} ->
-      if present?(value), do: {value, source}
+      if Text.present?(value), do: {value, source}
     end)
   end
 
@@ -1707,7 +1707,7 @@ defmodule RetroHexChat.Scraper.HTTP do
           keyword()
         ) :: {String.t() | nil, String.t() | nil}
   defp labelled_fallback({value, source}, fallback, fallback_source, opts) do
-    if present?(value) do
+    if Text.present?(value) do
       {value, source}
     else
       case clean_text(fallback, opts) do
@@ -2248,7 +2248,7 @@ defmodule RetroHexChat.Scraper.HTTP do
 
   @spec ensure_useful_metadata(metadata()) :: {:ok, metadata()} | {:error, :no_metadata}
   defp ensure_useful_metadata(metadata) do
-    if Enum.any?([metadata[:title], metadata[:description], metadata[:image]], &present?/1) do
+    if Enum.any?([metadata[:title], metadata[:description], metadata[:image]], &Text.present?/1) do
       {:ok, metadata}
     else
       {:error, :no_metadata}
@@ -2257,12 +2257,13 @@ defmodule RetroHexChat.Scraper.HTTP do
 
   @spec useful_scrape?(metadata(), String.t() | nil) :: boolean()
   defp useful_scrape?(metadata, excerpt) do
-    match?({:ok, _metadata}, ensure_useful_metadata(metadata)) or present?(excerpt)
+    match?({:ok, _metadata}, ensure_useful_metadata(metadata)) or Text.present?(excerpt)
   end
 
   @spec complete_enough?(metadata()) :: boolean()
   defp complete_enough?(metadata) do
-    present?(metadata[:title]) and present?(metadata[:description]) and present?(metadata[:image])
+    Text.present?(metadata[:title]) and Text.present?(metadata[:description]) and
+      Text.present?(metadata[:image])
   end
 
   @spec put_clean(map(), atom(), term()) :: map()
@@ -2381,9 +2382,6 @@ defmodule RetroHexChat.Scraper.HTTP do
       end
     end)
   end
-
-  @spec present?(term()) :: boolean()
-  defp present?(value), do: is_binary(value) and String.trim(value) != ""
 
   @spec normalize_key(term()) :: String.t()
   defp normalize_key(value), do: value |> to_string() |> String.downcase() |> String.trim()

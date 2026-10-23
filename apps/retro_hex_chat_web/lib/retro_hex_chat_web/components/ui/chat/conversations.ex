@@ -54,6 +54,7 @@ defmodule RetroHexChatWeb.Components.UI.Conversations do
   import RetroHexChatWeb.Components.UI.LiveMatch, only: [live_match_link: 1]
 
   alias RetroHexChat.Channels.Categories
+  alias RetroHexChat.Text
   alias RetroHexChatWeb.Icons
 
   @doc """
@@ -1051,7 +1052,7 @@ defmodule RetroHexChatWeb.Components.UI.Conversations do
           name: channel,
           joined: true,
           pinned: not is_nil(entry),
-          has_key: present?(value(entry, :channel_key))
+          has_key: Text.present?(value(entry, :channel_key))
         }
       end)
 
@@ -1065,7 +1066,7 @@ defmodule RetroHexChatWeb.Components.UI.Conversations do
           name: entry_channel_name(entry),
           joined: false,
           pinned: true,
-          has_key: present?(value(entry, :channel_key))
+          has_key: Text.present?(value(entry, :channel_key))
         }
       end)
 
@@ -1094,7 +1095,7 @@ defmodule RetroHexChatWeb.Components.UI.Conversations do
   defp has_conversations_content?(assigns) do
     assigns.channels != [] or assigns.pm_conversations != [] or assigns.autojoin_entries != [] or
       assigns.popular_channels != [] or featured_rooms?(assigns.featured_channels) or
-      present?(assigns.on_browse_channels)
+      Text.present?(assigns.on_browse_channels)
   end
 
   defp featured_rooms?(featured), do: Enum.any?(featured, &(&1.channels != []))
@@ -1120,7 +1121,7 @@ defmodule RetroHexChatWeb.Components.UI.Conversations do
   end
 
   defp popular_section_visible?(assigns) do
-    assigns.popular_channels != [] or present?(assigns.on_browse_channels)
+    assigns.popular_channels != [] or Text.present?(assigns.on_browse_channels)
   end
 
   defp popular_section_count([]), do: nil
@@ -1183,9 +1184,6 @@ defmodule RetroHexChatWeb.Components.UI.Conversations do
   end
 
   defp entry_channel_name(entry), do: value(entry, :channel_name)
-
-  defp present?(value) when is_binary(value), do: String.trim(value) != ""
-  defp present?(_value), do: false
 
   defp p2p_session_for_pm(%{p2p_pm_sessions: sessions}, nick)
        when is_map(sessions) and is_binary(nick),
