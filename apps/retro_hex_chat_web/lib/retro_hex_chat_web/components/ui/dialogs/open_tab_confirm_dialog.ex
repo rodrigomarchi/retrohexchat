@@ -34,11 +34,7 @@ defmodule RetroHexChatWeb.Components.UI.OpenTabConfirmDialog do
   """
   use RetroHexChatWeb.Component
 
-  import RetroHexChatWeb.Components.UI.Dialog
-  import RetroHexChatWeb.Components.UI.DialogMessage
-  import RetroHexChatWeb.Components.UI.Button
-
-  alias RetroHexChatWeb.Icons
+  import RetroHexChatWeb.Components.UI.ConfirmDialog
 
   @doc "Renders the open-in-a-new-tab confirmation dialog."
   attr :id, :string, required: true
@@ -54,83 +50,47 @@ defmodule RetroHexChatWeb.Components.UI.OpenTabConfirmDialog do
   @spec open_tab_confirm_dialog(map()) :: Phoenix.LiveView.Rendered.t()
   def open_tab_confirm_dialog(assigns) do
     ~H"""
-    <span data-testid="open-tab-confirm-dialog">
-      <.dialog id={@id} show={@show} on_cancel={@on_cancel} class="cd-dialog-wrap">
-        <.dialog_header id={@id} title={title(@target)} on_close={@on_cancel}>
-          <:icon><Icons.icon_btn_open class="w-4 h-4" /></:icon>
-        </.dialog_header>
+    <%!-- The confirm button is the door: its `href` carries the reader out, and
+          `phx-click` only puts the dialog away. See the moduledoc. --%>
+    <.confirm_dialog
+      id={@id}
+      show={@show}
+      testid="open-tab-confirm-dialog"
+      confirm_testid="open-tab-confirm-open"
+      cancel_testid="open-tab-confirm-cancel"
+      title={title(@target)}
+      message={message(@target)}
+      message_testid="open-tab-confirm-message"
+      icon={:icon_btn_open}
+      glyph={kind_icon(kind(@target))}
+      confirm_label={dgettext("dialogs", "Open")}
+      confirm_icon={:icon_btn_open}
+      confirm_href={url(@target)}
+      on_confirm={@on_open}
+      on_cancel={@on_cancel}
+    >
+      <:note>
+        <%!-- The address, and only when a host was actually resolved. It
+              wraps rather than truncates: the half of a URL that a truncation
+              eats is the path, which is exactly where a link pretending to be
+              somewhere else does its pretending.
 
-        <.dialog_body class="cd-dialog-body">
-          <.dialog_message>
-            <:glyph><.kind_icon kind={kind(@target)} /></:glyph>
-            <span data-testid="open-tab-confirm-message">{message(@target)}</span>
-            <:note>
-              <%!-- The address, and only when a host was actually resolved. It
-                    wraps rather than truncates: the half of a URL that a
-                    truncation eats is the path, which is exactly where a link
-                    pretending to be somewhere else does its pretending.
-
-                    A door of ours that declared itself external — the arcade,
-                    whose own path redirects to the static host — has no host to
-                    show, so it gets the sentence and no address. Printing a path
-                    of ours under "you are leaving" would name the wrong place. --%>
-              <p :if={show_url?(@target)} class="otc-url" data-testid="open-tab-confirm-url">
-                {url(@target)}
-              </p>
-              {dgettext("dialogs", "It opens in a new browser tab. This one stays where it is.")}
-            </:note>
-          </.dialog_message>
-        </.dialog_body>
-
-        <.dialog_footer class="cd-dialog-footer">
-          <%!-- The anchor is the door. See the moduledoc: `href` carries the
-                reader out, `phx-click` only puts the dialog away. --%>
-          <.button
-            variant="default"
-            href={url(@target)}
-            target="_blank"
-            rel="noopener"
-            phx-click={@on_open}
-            data-testid="open-tab-confirm-open"
-            class="cd-dialog-action"
-          >
-            <:icon><Icons.icon_btn_open class="w-4 h-4" /></:icon>
-            {dgettext("dialogs", "Open")}
-          </.button>
-          <.button
-            variant="outline"
-            phx-click={@on_cancel || hide_modal(@id)}
-            data-testid="open-tab-confirm-cancel"
-            class="cd-dialog-action"
-          >
-            <:icon><Icons.icon_close class="w-4 h-4" /></:icon>
-            {dgettext("dialogs", "Cancel")}
-          </.button>
-        </.dialog_footer>
-      </.dialog>
-    </span>
+              A door of ours that declared itself external — the arcade, whose
+              own path redirects to the static host — has no host to show, so
+              it gets the sentence and no address. Printing a path of ours
+              under "you are leaving" would name the wrong place. --%>
+        <p :if={show_url?(@target)} class="otc-url" data-testid="open-tab-confirm-url">
+          {url(@target)}
+        </p>
+        {dgettext("dialogs", "It opens in a new browser tab. This one stays where it is.")}
+      </:note>
+    </.confirm_dialog>
     """
   end
 
-  attr :kind, :atom, required: true
-
-  defp kind_icon(%{kind: :external} = assigns) do
-    ~H"""
-    <Icons.icon_globe class="w-5 h-5" />
-    """
-  end
-
-  defp kind_icon(%{kind: :attachment} = assigns) do
-    ~H"""
-    <Icons.icon_file_send class="w-5 h-5" />
-    """
-  end
-
-  defp kind_icon(assigns) do
-    ~H"""
-    <Icons.icon_link class="w-5 h-5" />
-    """
-  end
+  defp kind_icon(:external), do: :icon_globe
+  defp kind_icon(:attachment), do: :icon_file_send
+  defp kind_icon(_surface), do: :icon_link
 
   # A closed dialog still renders its markup, so every reader here answers for
   # `nil` as well as for a target. `:surface` is the fallback because it is the

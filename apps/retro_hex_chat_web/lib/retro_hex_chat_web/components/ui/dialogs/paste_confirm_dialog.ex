@@ -19,9 +19,7 @@ defmodule RetroHexChatWeb.Components.UI.PasteConfirmDialog do
   """
   use RetroHexChatWeb.Component
 
-  import RetroHexChatWeb.Components.UI.Dialog
-  import RetroHexChatWeb.Components.UI.DialogMessage
-  import RetroHexChatWeb.Components.UI.Button
+  import RetroHexChatWeb.Components.UI.ConfirmDialog
 
   alias RetroHexChatWeb.Icons
 
@@ -37,71 +35,43 @@ defmodule RetroHexChatWeb.Components.UI.PasteConfirmDialog do
   @spec paste_confirm_dialog(map()) :: Phoenix.LiveView.Rendered.t()
   def paste_confirm_dialog(assigns) do
     ~H"""
-    <span data-testid="paste-confirm-dialog">
-      <.dialog id={@id} show={@show} on_cancel={@on_cancel} class="cd-dialog-wrap">
-        <.dialog_header
-          id={@id}
-          title={dgettext("dialogs", "Paste Confirmation")}
-          on_close={@on_cancel}
-        >
-          <:icon><Icons.icon_dialog_paste class="w-4 h-4" /></:icon>
-        </.dialog_header>
+    <.confirm_dialog
+      id={@id}
+      show={@show}
+      testid="paste-confirm-dialog"
+      confirm_testid="paste-confirm-send"
+      cancel_testid="paste-confirm-cancel"
+      title={dgettext("dialogs", "Paste Confirmation")}
+      message={
+        dgettext("dialogs", "You are about to send %{count} of text.",
+          count: dngettext("dialogs", "%{count} line", "%{count} lines", @line_count)
+        )
+      }
+      icon={:icon_dialog_paste}
+      confirm_label={dgettext("dialogs", "Send All")}
+      confirm_icon={:icon_dialog_paste}
+      confirm_disabled={@send_disabled}
+      on_confirm={@on_send}
+      on_cancel={@on_cancel}
+    >
+      <:note>{dgettext("dialogs", "Send them as a paced batch to the active conversation.")}</:note>
 
-        <.dialog_body class="cd-dialog-body">
-          <div class="cd-paste-stack">
-            <.dialog_message>
-              <:glyph><Icons.icon_dialog_paste class="w-5 h-5" /></:glyph>
-              {dgettext("dialogs", "You are about to send %{count} of text.",
-                count: dngettext("dialogs", "%{count} line", "%{count} lines", @line_count)
-              )}
-              <:note>
-                {dgettext("dialogs", "Send them as a paced batch to the active conversation.")}
-              </:note>
-            </.dialog_message>
+      <div class="cd-paste-stack">
+        <div :if={@flood_warning} class="cd-callout" data-testid="paste-flood-warning">
+          <Icons.icon_warning class="w-4 h-4 shrink-0" />
+          <p>
+            {dgettext(
+              "dialogs",
+              "Warning: This exceeds the flood protection limit. Messages may be throttled."
+            )}
+          </p>
+        </div>
 
-            <div
-              :if={@flood_warning}
-              class="cd-callout"
-              data-testid="paste-flood-warning"
-            >
-              <Icons.icon_warning class="w-4 h-4 shrink-0" />
-              <p>
-                {dgettext(
-                  "dialogs",
-                  "Warning: This exceeds the flood protection limit. Messages may be throttled."
-                )}
-              </p>
-            </div>
-
-            <p class="cd-message-question">
-              {dgettext("dialogs", "Are you sure you want to send all lines at once?")}
-            </p>
-          </div>
-        </.dialog_body>
-
-        <.dialog_footer class="cd-dialog-footer">
-          <.button
-            variant="default"
-            phx-click={@on_send}
-            disabled={@send_disabled}
-            data-testid="paste-confirm-send"
-            class="cd-dialog-action"
-          >
-            <:icon><Icons.icon_dialog_paste class="w-4 h-4" /></:icon>
-            {dgettext("dialogs", "Send All")}
-          </.button>
-          <.button
-            variant="outline"
-            phx-click={@on_cancel || hide_modal(@id)}
-            data-testid="paste-confirm-cancel"
-            class="cd-dialog-action"
-          >
-            <:icon><Icons.icon_close class="w-4 h-4" /></:icon>
-            {dgettext("dialogs", "Cancel")}
-          </.button>
-        </.dialog_footer>
-      </.dialog>
-    </span>
+        <p class="cd-message-question">
+          {dgettext("dialogs", "Are you sure you want to send all lines at once?")}
+        </p>
+      </div>
+    </.confirm_dialog>
     """
   end
 end

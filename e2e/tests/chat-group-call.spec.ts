@@ -1608,6 +1608,8 @@ test.describe("Channel group calls", () => {
       await expect(
         aliceCall.getByTestId("group-call-confirm-dialog"),
       ).toContainText("Mute all lower-ranked participants");
+      await expect(groupCallConfirmLeave(aliceCall)).toBeVisible();
+      await shot(aliceCall, "mute-all-confirmation");
       await groupCallConfirmLeave(aliceCall).click();
 
       await expect

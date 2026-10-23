@@ -488,6 +488,10 @@ test.describe("In-chat P2P session", () => {
       await expect(
         aliceSession.getByTestId("p2p-confirm-dialog"),
       ).toContainText("Any call, game or file transfer in progress will stop");
+      await expect(
+        aliceSession.getByTestId("p2p-confirm-dialog-confirm"),
+      ).toBeVisible();
+      await shot(aliceSession, "end-session-confirmation");
       await aliceSession.getByTestId("p2p-confirm-dialog-confirm").click();
 
       // The session is over, so both conversations stop advertising it.

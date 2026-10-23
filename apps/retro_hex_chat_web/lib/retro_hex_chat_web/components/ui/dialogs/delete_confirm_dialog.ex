@@ -16,11 +16,7 @@ defmodule RetroHexChatWeb.Components.UI.DeleteConfirmDialog do
   """
   use RetroHexChatWeb.Component
 
-  import RetroHexChatWeb.Components.UI.Dialog
-  import RetroHexChatWeb.Components.UI.DialogMessage
-  import RetroHexChatWeb.Components.UI.Button
-
-  alias RetroHexChatWeb.Icons
+  import RetroHexChatWeb.Components.UI.ConfirmDialog
 
   @doc "Renders a delete message confirmation dialog."
   attr :id, :string, required: true
@@ -35,46 +31,21 @@ defmodule RetroHexChatWeb.Components.UI.DeleteConfirmDialog do
   @spec delete_confirm_dialog(map()) :: Phoenix.LiveView.Rendered.t()
   def delete_confirm_dialog(assigns) do
     ~H"""
-    <span data-testid="delete-confirm-dialog">
-      <.dialog id={@id} show={@show} on_cancel={@on_cancel} class="cd-dialog-wrap">
-        <.dialog_header
-          id={@id}
-          title={dgettext("dialogs", "Delete Message")}
-          on_close={@on_cancel}
-        >
-          <:icon><Icons.icon_dialog_delete class="w-[16px] h-[16px]" /></:icon>
-        </.dialog_header>
-
-        <.dialog_body class="cd-dialog-body">
-          <.dialog_message>
-            <:glyph><Icons.icon_dialog_delete class="w-5 h-5" /></:glyph>
-            {dgettext("dialogs", "Are you sure you want to delete this message?")}
-            <:note>{dgettext("dialogs", "This action cannot be undone.")}</:note>
-          </.dialog_message>
-        </.dialog_body>
-
-        <.dialog_footer class="cd-dialog-footer">
-          <.button
-            variant="destructive"
-            phx-click={@on_confirm}
-            data-testid="delete-confirm-dialog-confirm"
-            class="cd-dialog-action"
-          >
-            <:icon><Icons.icon_dialog_delete class="w-4 h-4" /></:icon>
-            {dgettext("dialogs", "Delete")}
-          </.button>
-          <.button
-            variant="outline"
-            phx-click={@on_cancel || hide_modal(@id)}
-            data-testid="delete-confirm-dialog-cancel"
-            class="cd-dialog-action"
-          >
-            <:icon><Icons.icon_close class="w-4 h-4" /></:icon>
-            {dgettext("dialogs", "Cancel")}
-          </.button>
-        </.dialog_footer>
-      </.dialog>
-    </span>
+    <.confirm_dialog
+      id={@id}
+      show={@show}
+      testid="delete-confirm-dialog"
+      title={dgettext("dialogs", "Delete Message")}
+      message={dgettext("dialogs", "Are you sure you want to delete this message?")}
+      icon={:icon_dialog_delete}
+      variant="destructive"
+      confirm_label={dgettext("dialogs", "Delete")}
+      confirm_icon={:icon_dialog_delete}
+      on_confirm={@on_confirm}
+      on_cancel={@on_cancel}
+    >
+      <:note>{dgettext("dialogs", "This action cannot be undone.")}</:note>
+    </.confirm_dialog>
     """
   end
 end

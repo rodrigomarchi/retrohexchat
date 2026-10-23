@@ -24,11 +24,7 @@ defmodule RetroHexChatWeb.Components.UI.P2PConfirmDialog do
   """
   use RetroHexChatWeb.Component
 
-  import RetroHexChatWeb.Components.UI.Dialog
-  import RetroHexChatWeb.Components.UI.DialogMessage
-  import RetroHexChatWeb.Components.UI.Button
-
-  alias RetroHexChatWeb.Icons
+  import RetroHexChatWeb.Components.UI.ConfirmDialog
 
   @doc "Renders the P2P end confirmation dialog."
   attr :id, :string, required: true
@@ -46,46 +42,21 @@ defmodule RetroHexChatWeb.Components.UI.P2PConfirmDialog do
   @spec p2p_confirm_dialog(map()) :: Phoenix.LiveView.Rendered.t()
   def p2p_confirm_dialog(assigns) do
     ~H"""
-    <span data-testid={@id}>
-      <.dialog id={@id} show={@show} scope={@scope}>
-        <.dialog_header id={@id} title={title(@mode)}>
-          <:icon><.inline_icon name={mode_icon(@mode)} class="h-[16px] w-[16px]" /></:icon>
-        </.dialog_header>
-
-        <.dialog_body>
-          <.dialog_message tone={mode_tone(@mode)}>
-            <:glyph><.inline_icon name={mode_icon(@mode)} class="h-5 w-5" /></:glyph>
-            {body(@mode, @peer)}
-            <:note>
-              <div class="grid gap-1">
-                <div
-                  :for={impact <- impact_items(@mode)}
-                  class="flex min-w-0 items-center gap-1"
-                >
-                  <.inline_icon name={impact.icon} class="h-3.5 w-3.5 shrink-0" />
-                  <span class="truncate">{impact.label}</span>
-                </div>
-              </div>
-            </:note>
-          </.dialog_message>
-        </.dialog_body>
-
-        <.dialog_footer>
-          <.button
-            variant="destructive"
-            phx-click={@on_confirm}
-            data-testid={"#{@id}-confirm"}
-          >
-            <:icon><.inline_icon name={confirm_icon(@mode)} class="h-4 w-4" /></:icon>
-            {confirm_label(@mode)}
-          </.button>
-          <.button variant="outline" phx-click={@on_cancel} data-testid={"#{@id}-cancel"}>
-            <:icon><Icons.icon_close class="w-4 h-4" /></:icon>
-            {dgettext("dialogs", "Cancel")}
-          </.button>
-        </.dialog_footer>
-      </.dialog>
-    </span>
+    <.confirm_dialog
+      id={@id}
+      show={@show}
+      scope={@scope}
+      title={title(@mode)}
+      message={body(@mode, @peer)}
+      icon={mode_icon(@mode)}
+      tone={mode_tone(@mode)}
+      impacts={impact_items(@mode)}
+      variant="destructive"
+      confirm_label={confirm_label(@mode)}
+      confirm_icon={confirm_icon(@mode)}
+      on_confirm={@on_confirm}
+      on_cancel={@on_cancel}
+    />
     """
   end
 
@@ -100,15 +71,6 @@ defmodule RetroHexChatWeb.Components.UI.P2PConfirmDialog do
   end
 
   defp confirm_label(:end), do: dgettext("dialogs", "End session")
-
-  attr :name, :atom, required: true
-  attr :class, :string, default: nil
-
-  defp inline_icon(assigns) do
-    ~H"""
-    {apply(Icons, @name, [%{class: @class}])}
-    """
-  end
 
   defp mode_icon(:end), do: :icon_phone_end
   defp confirm_icon(_mode), do: :icon_btn_disconnect
