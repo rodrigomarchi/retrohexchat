@@ -1,6 +1,7 @@
 /**
  * @section U - Dialog CRUD And Settings Depth
  * @flow U19 [done] An administrator adds a server emoji from its window, and everybody writing :name: sees the picture while an unknown name stays text (features P2)
+ * @flow U20 [done] An administrator's desktop has the Admin and System folders, and the Admin folder lists the same windows as the Start menu's Admin group, Server Emoji included
  *
  * These @flow lines are the source of truth for e2e/TEST_CATALOG.md.
  * Edit them here, then run `make e2e.catalog` to regenerate the index.
@@ -97,6 +98,19 @@ test.describe("Server emoji", () => {
       await expect(drawn).toHaveCount(1);
 
       await shot(pageAdmin, "server-emoji-in-conversation");
+
+      // The desktop's Admin folder and the Start menu's Admin group read one
+      // list, so the window reached from one is reachable from the other.
+      // An administrator's desktop carries the Admin and System folders.
+      await expect(pageAdmin.getByTestId("desktop-icon-system")).toBeVisible();
+      await shot(pageAdmin, "desktop-admin-icons");
+      await pageAdmin.getByTestId("desktop-icon-admin").dblclick();
+      const adminFolder = pageAdmin.getByTestId("desktop-launcher-window-admin");
+      await expect(adminFolder).toBeVisible();
+      await expect(
+        adminFolder.getByTestId("desktop-launcher-item-open_server_emoji_dialog"),
+      ).toBeVisible();
+      await shot(adminFolder, "desktop-admin-folder");
     } finally {
       await ctxAdmin.close();
       await ctxReader.close();

@@ -136,7 +136,7 @@ make e2e.catalog.check    # verify it is current (also runs in make ci)
 
 - **260 spec files** under `e2e/tests/`.
 - **657 Playwright `test()` cases**.
-- **599 documented flows**, 598 done, 1 not done.
+- **600 documented flows**, 599 done, 1 not done.
 - **Every spec documents its own flows.**
 
 ## Flow index
@@ -653,6 +653,7 @@ Grouped by section. Every row comes from an `@flow` line in the spec itself.
 | U17 | The Sounds window carries a Notify box per event and says what the browser answered about permission | `tests/chat-sound-settings.spec.ts` | done |
 | U18 | The Sounds window offers one switch for notifications with the chat closed, and remembers it per browser | `tests/chat-sound-settings.spec.ts` | done |
 | U19 | An administrator adds a server emoji from its window, and everybody writing :name: sees the picture while an unknown name stays text (features P2) | `tests/chat-server-emoji.spec.ts` | done |
+| U20 | An administrator's desktop has the Admin and System folders, and the Admin folder lists the same windows as the Start menu's Admin group, Server Emoji included | `tests/chat-server-emoji.spec.ts` | done |
 
 ### V - Conversations, Tabs, Unread, Mute, And No-Focus-Steal Depth
 
