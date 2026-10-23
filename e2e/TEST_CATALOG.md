@@ -135,8 +135,8 @@ make e2e.catalog.check    # verify it is current (also runs in make ci)
 ## Coverage
 
 - **259 spec files** under `e2e/tests/`.
-- **650 Playwright `test()` cases**.
-- **593 documented flows**, 592 done, 1 not done.
+- **651 Playwright `test()` cases**.
+- **595 documented flows**, 594 done, 1 not done.
 - **Every spec documents its own flows.**
 
 ## Flow index
@@ -864,6 +864,8 @@ Grouped by section. Every row comes from an `@flow` line in the spec itself.
 | # | Flow | Spec file | Status |
 | --- | --- | --- | --- |
 | DG1 | Every reworked dialog body opens and is photographed into e2e/screenshots/dialog-gallery for visual audit | `tests/dialog-gallery.spec.ts` | done |
+| DG2 | Every list dialog is photographed empty, on a desktop and on a phone, so its empty state is judged by eye | `tests/dialog-gallery.spec.ts` | done |
+| DG3 | The confirmations are photographed on a phone as well as on a desktop | `tests/dialog-gallery.spec.ts` | done |
 
 ### P - Performance Budgets
 

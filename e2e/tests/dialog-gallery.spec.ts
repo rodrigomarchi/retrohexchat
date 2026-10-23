@@ -1,6 +1,8 @@
 /**
  * @section Dialog Gallery
  * @flow DG1 [done] Every reworked dialog body opens and is photographed into e2e/screenshots/dialog-gallery for visual audit
+ * @flow DG2 [done] Every list dialog is photographed empty, on a desktop and on a phone, so its empty state is judged by eye
+ * @flow DG3 [done] The confirmations are photographed on a phone as well as on a desktop
  *
  * These @flow lines are the source of truth for e2e/TEST_CATALOG.md.
  * Edit them here, then run `make e2e.catalog` to regenerate the index.
@@ -860,3 +862,47 @@ test.describe("dialog gallery, confirmations", () => {
     await other.page.keyboard.press("Escape");
   });
 });
+
+// The list dialogs as somebody meets them first: with nothing in them. Each
+// empty state is its own drawing, and the only place it is ever seen is a
+// fresh account, so the gallery opens them with one, on a desktop and on a
+// phone.
+const EMPTY_LISTS: [string, string, (chat: ChatPage) => Locator][] = [
+  ["alias", "/alias", (c) => c.aliasDialog],
+  ["autojoin", "/autojoin", (c) => c.autojoinDialog],
+  ["perform", "/perform", (c) => c.performDialog],
+  ["auto-respond", "/autorespond", (c) => c.autorespondDialog],
+  ["timers", "/timer", (c) => c.timersDialog],
+  ["custom-menus", "/popups", (c) => c.customMenusDialog],
+  ["notify-list", "/notify", (c) => c.notifyListDialog],
+];
+
+for (const [device, size] of [
+  ["desktop", { width: 1280, height: 720 }],
+  ["phone", { width: 390, height: 844 }],
+] as const) {
+  test.describe(`dialog gallery, empty lists on a ${device}`, () => {
+    test.describe.configure({ mode: "serial" });
+
+    let user: TestUser;
+
+    test.beforeAll(async ({ browser }) => {
+      user = await newSignedInUser(browser, "emp", "pass12345");
+      await user.page.setViewportSize(size);
+    });
+
+    test.afterAll(async () => {
+      await user?.ctx.close();
+    });
+
+    // Opened by command: a phone has no menu bar, and the command opens the
+    // same window on both.
+    for (const [name, command, dialog] of EMPTY_LISTS) {
+      test(`${name}, empty`, async () => {
+        await user.chat.sendMessage(command);
+        await shoot(user.page, dialog(user.chat), `empty-${device}-${name}`);
+        await user.page.keyboard.press("Escape");
+      });
+    }
+  });
+}
