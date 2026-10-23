@@ -937,12 +937,7 @@ defmodule RetroHexChatWeb.Components.UI.P2P.CallPanel do
   defp quality_level(call), do: CallQuality.level(map_value(call, :quality_level, nil))
 
   @spec quality_label(map() | nil) :: String.t() | nil
-  defp quality_label(call) do
-    case quality_level(call) do
-      :unknown -> map_value(call, :quality_label, nil)
-      level -> CallQuality.label(level)
-    end
-  end
+  defp quality_label(call), do: map_value(call, :quality_label, nil)
 
   @spec quality_class(CallQuality.level()) :: String.t()
   defp quality_class(level) when level in [:excellent, :good], do: "text-success"

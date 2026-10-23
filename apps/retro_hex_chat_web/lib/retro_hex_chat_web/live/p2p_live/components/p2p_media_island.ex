@@ -26,6 +26,7 @@ defmodule RetroHexChatWeb.P2PLive.Components.P2PMediaIsland do
 
   alias RetroHexChat.Lobby
   alias RetroHexChat.Topics
+  alias RetroHexChatWeb.Components.UI.MediaSession.CallQuality
   alias RetroHexChatWeb.Components.UI.P2P.CallPanel
 
   @pubsub RetroHexChat.PubSub
@@ -302,7 +303,13 @@ defmodule RetroHexChatWeb.P2PLive.Components.P2PMediaIsland do
     |> summarize()
   end
 
+  # The grade's name is the server's, so the panel, the taskbar badge and the
+  # diagram read the same word; the browser's label stands in only for a
+  # grade the server does not know.
   defp media_event(socket, "lobby_media_quality_update", %{"label" => label} = p) do
+    level = CallQuality.level(p["level"])
+    label = if level == :unknown, do: label, else: CallQuality.label(level)
+
     call =
       Map.merge(socket.assigns.call || %{}, %{quality_level: p["level"], quality_label: label})
 

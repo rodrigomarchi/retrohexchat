@@ -255,6 +255,22 @@ describe("WindowManager", () => {
     expect(document.activeElement.id).toBe("composer");
   });
 
+  // On a phone the composer taking focus raises the on-screen keyboard over
+  // the chat, so closing a window there hands nothing over.
+  it("hands nothing over in the stacked (phone) layout", async () => {
+    hook.stacked = true;
+    win("chat").querySelector("[data-window-content]").innerHTML =
+      '<input id="composer" autofocus />';
+    command({ action: "open", id: "call" });
+    const closeBtn = win("call").querySelector('[data-window-control="close"]');
+    closeBtn.focus();
+
+    hook.closeWindow("call");
+    await new Promise((resolve) => requestAnimationFrame(resolve));
+
+    expect(document.activeElement.id).not.toBe("composer");
+  });
+
   it("leaves the keyboard alone when a window closes that did not hold it", async () => {
     hook.stacked = false;
     win("chat").querySelector("[data-window-content]").innerHTML =

@@ -58,4 +58,29 @@ defmodule RetroHexChatWeb.P2PLive.Components.P2PMediaIslandTest do
     assert html =~
              ~r/aria-pressed="true"[^>]*data-testid="p2p-call-screen-share"|data-testid="p2p-call-screen-share"[^>]*aria-pressed="true"/
   end
+
+  # The panel, the taskbar badge and the diagram all read the grade's name
+  # from the call, so it is the server's word for a grade it knows.
+  test "a quality update names the grade in the server's words" do
+    render_component(P2PMediaIsland,
+      id: P2PMediaIsland.id(),
+      connected: true,
+      action:
+        {:media_event, "lobby_media_quality_update", %{"level" => "fair", "label" => "browser"}}
+    )
+
+    assert_received {:feature_summary, :call, %{quality_label: "Fair"}}
+  end
+
+  test "a grade the server does not know keeps the browser's word" do
+    render_component(P2PMediaIsland,
+      id: P2PMediaIsland.id(),
+      connected: true,
+      action:
+        {:media_event, "lobby_media_quality_update",
+         %{"level" => "measuring", "label" => "Measuring"}}
+    )
+
+    assert_received {:feature_summary, :call, %{quality_label: "Measuring"}}
+  end
 end

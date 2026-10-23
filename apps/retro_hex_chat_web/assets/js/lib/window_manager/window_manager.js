@@ -1252,7 +1252,8 @@ const WindowManagerCore = {
     this.applyAll();
     this.persist();
     this.reportDocumentClosed(id);
-    if (heldKeyboard) this.handKeyboardTo(this.focusedId);
+    // Not on a phone: focusing the composer there raises the on-screen keyboard.
+    if (heldKeyboard && !this.stacked) this.handKeyboardTo(this.focusedId);
   },
 
   // The keyboard a closed window held goes to the one in front: to what it
