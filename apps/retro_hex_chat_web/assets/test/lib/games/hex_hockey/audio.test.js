@@ -67,10 +67,20 @@ describe("HexHockeyAudio", () => {
     }
   });
 
-  it("creates with audio context", () => {
+  it("opens its context on the first sound, not when built", () => {
     const audio = new HexHockeyAudio();
+    expect(audio.ctx).toBeNull();
+    audio.playShot();
     expect(audio.ctx).not.toBeNull();
-    expect(audio.master).not.toBeNull();
+    expect(audio.ctx.createGain).toHaveBeenCalled();
+  });
+
+  it("resumes a context the browser left suspended", () => {
+    const audio = new HexHockeyAudio();
+    audio.playShot();
+    audio.ctx.state = "suspended";
+    audio.playGo();
+    expect(audio.ctx.resume).toHaveBeenCalled();
   });
 
   it("handles missing AudioContext gracefully", () => {
@@ -228,11 +238,13 @@ describe("HexHockeyAudio", () => {
     audio.playSuddenDeath();
     audio.playGoal(); // creates timer
     vi.advanceTimersByTime(0); // flush
+    const ctx = audio.ctx;
 
     audio.dispose();
     expect(audio._droneOsc).toBeNull();
     expect(audio._timers).toEqual([]);
-    expect(audio.ctx.close).toHaveBeenCalled();
+    expect(ctx.close).toHaveBeenCalled();
+    expect(audio.ctx).toBeNull();
   });
 
   it("destroy handles already-stopped drone", () => {

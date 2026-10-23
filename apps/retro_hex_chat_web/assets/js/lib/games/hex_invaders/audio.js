@@ -4,41 +4,9 @@
  * @module games/hex_invaders_audio
  */
 
-export class HexInvadersAudio {
-  constructor() {
-    this._ctx = null;
-  }
+import { GameSynth } from "../synth.js";
 
-  _ensureContext() {
-    if (this._ctx) {
-      if (this._ctx.state === "suspended") this._ctx.resume();
-      return this._ctx;
-    }
-    if (typeof AudioContext === "undefined") return null;
-    try {
-      this._ctx = new AudioContext();
-      if (this._ctx.state === "suspended") this._ctx.resume();
-      return this._ctx;
-    } catch {
-      return null;
-    }
-  }
-
-  _playTone(freq, duration, type, volume) {
-    const ctx = this._ensureContext();
-    if (!ctx) return;
-    const osc = ctx.createOscillator();
-    const gain = ctx.createGain();
-    osc.type = type;
-    osc.frequency.setValueAtTime(freq, ctx.currentTime);
-    gain.gain.setValueAtTime(volume, ctx.currentTime);
-    gain.gain.linearRampToValueAtTime(0, ctx.currentTime + duration);
-    osc.connect(gain);
-    gain.connect(ctx.destination);
-    osc.start(ctx.currentTime);
-    osc.stop(ctx.currentTime + duration);
-  }
-
+export class HexInvadersAudio extends GameSynth {
   /** Classic Space Invaders march: 4 descending square notes */
   playMarch() {
     const ctx = this._ensureContext();
@@ -304,17 +272,5 @@ export class HexInvadersAudio {
   /** Countdown tick */
   playCountdown() {
     this._playTone(600, 0.08, "square", 0.12);
-  }
-
-  /**
-   * Release the AudioContext. Each one holds a real-time audio thread for as
-   * long as it lives, and browsers cap how many a page may open.
-   * @returns {void}
-   */
-  dispose() {
-    if (this._ctx) {
-      this._ctx.close().catch(() => {});
-      this._ctx = null;
-    }
   }
 }

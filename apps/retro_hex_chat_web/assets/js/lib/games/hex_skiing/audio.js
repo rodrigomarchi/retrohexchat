@@ -5,9 +5,11 @@
  * Graceful fallback to no-op when AudioContext is unavailable.
  */
 
-export class HexSkiingAudio {
+import { GameSynth } from "../synth.js";
+
+export class HexSkiingAudio extends GameSynth {
   constructor() {
-    this._ctx = null;
+    super();
     this._droneOsc = null;
     this._droneGain = null;
     this._timers = [];
@@ -15,36 +17,7 @@ export class HexSkiingAudio {
 
   // ── Context management ─────────────────────────────────────
 
-  _ensureContext() {
-    if (this._ctx) {
-      if (this._ctx.state === "suspended") {
-        this._ctx.resume().catch(() => {});
-      }
-      return this._ctx;
-    }
-    try {
-      this._ctx = new (window.AudioContext || window.webkitAudioContext)();
-      return this._ctx;
-    } catch {
-      return null;
-    }
-  }
-
   // ── One-shot helpers ───────────────────────────────────────
-
-  _playTone(freq, duration, type, volume) {
-    const ctx = this._ensureContext();
-    if (!ctx) return;
-    const osc = ctx.createOscillator();
-    const gain = ctx.createGain();
-    osc.type = type;
-    osc.frequency.value = freq;
-    gain.gain.value = volume;
-    gain.gain.linearRampToValueAtTime(0, ctx.currentTime + duration);
-    osc.connect(gain).connect(ctx.destination);
-    osc.start();
-    osc.stop(ctx.currentTime + duration);
-  }
 
   _playSweep(startFreq, endFreq, duration, type, volume) {
     const ctx = this._ensureContext();
@@ -215,9 +188,6 @@ export class HexSkiingAudio {
     }
     this._timers = [];
     this.stopSkiDrone();
-    if (this._ctx) {
-      this._ctx.close().catch(() => {});
-      this._ctx = null;
-    }
+    super.dispose();
   }
 }

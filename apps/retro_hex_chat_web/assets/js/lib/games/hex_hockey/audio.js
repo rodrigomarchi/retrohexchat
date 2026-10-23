@@ -5,17 +5,11 @@
  * Cyberpunk arena aesthetic: sharp slaps, deep horns, metallic impacts.
  */
 
-export class HexHockeyAudio {
+import { GameSynth } from "../synth.js";
+
+export class HexHockeyAudio extends GameSynth {
   constructor() {
-    try {
-      this.ctx = new (window.AudioContext || window.webkitAudioContext)();
-      this.master = this.ctx.createGain();
-      this.master.gain.value = 0.3;
-      this.master.connect(this.ctx.destination);
-    } catch {
-      this.ctx = null;
-      this.master = null;
-    }
+    super({ masterVolume: 0.3 });
     this._droneOsc = null;
     this._droneGain = null;
     this._timers = [];
@@ -24,53 +18,53 @@ export class HexHockeyAudio {
   // ── Helpers ──────────────────────────────────────────────────
 
   _playTone(freq, duration, type = "square", volume = 0.3) {
-    if (!this.ctx) return;
-    const osc = this.ctx.createOscillator();
-    const gain = this.ctx.createGain();
+    const ctx = this._ensureContext();
+    if (!ctx) return;
+    const osc = ctx.createOscillator();
+    const gain = ctx.createGain();
     osc.type = type;
     osc.frequency.value = freq;
-    gain.gain.setValueAtTime(volume, this.ctx.currentTime);
-    gain.gain.exponentialRampToValueAtTime(0.001, this.ctx.currentTime + duration);
+    gain.gain.setValueAtTime(volume, ctx.currentTime);
+    gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + duration);
     osc.connect(gain);
-    gain.connect(this.master);
-    osc.start(this.ctx.currentTime);
-    osc.stop(this.ctx.currentTime + duration);
+    gain.connect(this._output);
+    osc.start(ctx.currentTime);
+    osc.stop(ctx.currentTime + duration);
   }
 
   _playSweep(startFreq, endFreq, duration, type = "square", volume = 0.3) {
-    if (!this.ctx) return;
-    const osc = this.ctx.createOscillator();
-    const gain = this.ctx.createGain();
+    const ctx = this._ensureContext();
+    if (!ctx) return;
+    const osc = ctx.createOscillator();
+    const gain = ctx.createGain();
     osc.type = type;
-    osc.frequency.setValueAtTime(startFreq, this.ctx.currentTime);
-    osc.frequency.exponentialRampToValueAtTime(
-      Math.max(endFreq, 20),
-      this.ctx.currentTime + duration,
-    );
-    gain.gain.setValueAtTime(volume, this.ctx.currentTime);
-    gain.gain.exponentialRampToValueAtTime(0.001, this.ctx.currentTime + duration);
+    osc.frequency.setValueAtTime(startFreq, ctx.currentTime);
+    osc.frequency.exponentialRampToValueAtTime(Math.max(endFreq, 20), ctx.currentTime + duration);
+    gain.gain.setValueAtTime(volume, ctx.currentTime);
+    gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + duration);
     osc.connect(gain);
-    gain.connect(this.master);
-    osc.start(this.ctx.currentTime);
-    osc.stop(this.ctx.currentTime + duration);
+    gain.connect(this._output);
+    osc.start(ctx.currentTime);
+    osc.stop(ctx.currentTime + duration);
   }
 
   _playNoise(duration, volume = 0.15) {
-    if (!this.ctx) return;
-    const bufferSize = Math.round(this.ctx.sampleRate * duration);
-    const buffer = this.ctx.createBuffer(1, bufferSize, this.ctx.sampleRate);
+    const ctx = this._ensureContext();
+    if (!ctx) return;
+    const bufferSize = Math.round(ctx.sampleRate * duration);
+    const buffer = ctx.createBuffer(1, bufferSize, ctx.sampleRate);
     const data = buffer.getChannelData(0);
     for (let i = 0; i < bufferSize; i++) {
       data[i] = (Math.random() * 2 - 1) * volume;
     }
-    const src = this.ctx.createBufferSource();
+    const src = ctx.createBufferSource();
     src.buffer = buffer;
-    const gain = this.ctx.createGain();
-    gain.gain.setValueAtTime(volume, this.ctx.currentTime);
-    gain.gain.exponentialRampToValueAtTime(0.001, this.ctx.currentTime + duration);
+    const gain = ctx.createGain();
+    gain.gain.setValueAtTime(volume, ctx.currentTime);
+    gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + duration);
     src.connect(gain);
-    gain.connect(this.master);
-    src.start(this.ctx.currentTime);
+    gain.connect(this._output);
+    src.start(ctx.currentTime);
   }
 
   // ── Game sounds ──────────────────────────────────────────────
@@ -95,13 +89,14 @@ export class HexHockeyAudio {
 
   /** Hockey horn/siren — GOAL! */
   playGoal() {
-    if (!this.ctx) return;
+    const ctx = this._ensureContext();
+    if (!ctx) return;
 
     // Horn blast (ascending)
-    const t = this.ctx.currentTime;
-    const osc1 = this.ctx.createOscillator();
-    const osc2 = this.ctx.createOscillator();
-    const gain = this.ctx.createGain();
+    const t = ctx.currentTime;
+    const osc1 = ctx.createOscillator();
+    const osc2 = ctx.createOscillator();
+    const gain = ctx.createGain();
 
     osc1.type = "sawtooth";
     osc1.frequency.setValueAtTime(200, t);
@@ -121,7 +116,7 @@ export class HexHockeyAudio {
 
     osc1.connect(gain);
     osc2.connect(gain);
-    gain.connect(this.master);
+    gain.connect(this._output);
     osc1.start(t);
     osc2.start(t);
     osc1.stop(t + 0.8);
@@ -156,31 +151,33 @@ export class HexHockeyAudio {
 
   /** Long buzzer — period end */
   playPeriodBuzzer() {
-    if (!this.ctx) return;
-    const t = this.ctx.currentTime;
-    const osc = this.ctx.createOscillator();
-    const gain = this.ctx.createGain();
+    const ctx = this._ensureContext();
+    if (!ctx) return;
+    const t = ctx.currentTime;
+    const osc = ctx.createOscillator();
+    const gain = ctx.createGain();
     osc.type = "sawtooth";
     osc.frequency.value = 180;
     gain.gain.setValueAtTime(0.3, t);
     gain.gain.setValueAtTime(0.3, t + 0.6);
     gain.gain.exponentialRampToValueAtTime(0.001, t + 1.0);
     osc.connect(gain);
-    gain.connect(this.master);
+    gain.connect(this._output);
     osc.start(t);
     osc.stop(t + 1.0);
   }
 
   /** Tension drone — sudden death */
   playSuddenDeath() {
-    if (!this.ctx || this._droneOsc) return;
-    const osc = this.ctx.createOscillator();
-    const gain = this.ctx.createGain();
+    const ctx = this._ensureContext();
+    if (!ctx || this._droneOsc) return;
+    const osc = ctx.createOscillator();
+    const gain = ctx.createGain();
     osc.type = "sine";
     osc.frequency.value = 55;
     gain.gain.value = 0.08;
     osc.connect(gain);
-    gain.connect(this.master);
+    gain.connect(this._output);
     osc.start();
     this._droneOsc = osc;
     this._droneGain = gain;
@@ -202,18 +199,19 @@ export class HexHockeyAudio {
   /** Victory fanfare */
   playVictory() {
     this.stopSuddenDeath();
-    if (!this.ctx) return;
-    const t = this.ctx.currentTime;
+    const ctx = this._ensureContext();
+    if (!ctx) return;
+    const t = ctx.currentTime;
     const notes = [523, 659, 784, 1047]; // C5, E5, G5, C6
     notes.forEach((freq, i) => {
-      const osc = this.ctx.createOscillator();
-      const gain = this.ctx.createGain();
+      const osc = ctx.createOscillator();
+      const gain = ctx.createGain();
       osc.type = "square";
       osc.frequency.value = freq;
       gain.gain.setValueAtTime(0.2, t + i * 0.15);
       gain.gain.exponentialRampToValueAtTime(0.001, t + i * 0.15 + 0.3);
       osc.connect(gain);
-      gain.connect(this.master);
+      gain.connect(this._output);
       osc.start(t + i * 0.15);
       osc.stop(t + i * 0.15 + 0.3);
     });
@@ -239,12 +237,6 @@ export class HexHockeyAudio {
     this.stopSuddenDeath();
     for (const id of this._timers) clearTimeout(id);
     this._timers = [];
-    if (this.ctx && this.ctx.state !== "closed") {
-      try {
-        this.ctx.close();
-      } catch {
-        /* ignore */
-      }
-    }
+    super.dispose();
   }
 }

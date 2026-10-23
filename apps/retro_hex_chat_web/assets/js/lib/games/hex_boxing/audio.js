@@ -4,46 +4,9 @@
  * @module games/hex_boxing_audio
  */
 
-export class BoxingAudio {
-  constructor() {
-    /** @type {AudioContext|null} */
-    this._ctx = null;
-  }
+import { GameSynth } from "../synth.js";
 
-  /**
-   * Lazily create or resume AudioContext (browser autoplay policy).
-   * @returns {AudioContext}
-   */
-  _ensureContext() {
-    if (!this._ctx) {
-      this._ctx = new (window.AudioContext || window.webkitAudioContext)();
-    }
-    if (this._ctx.state === "suspended") {
-      this._ctx.resume().catch(() => {});
-    }
-    return this._ctx;
-  }
-
-  /**
-   * Play a simple tone.
-   * @param {number} freq
-   * @param {number} duration - seconds
-   * @param {OscillatorType} type
-   * @param {number} volume
-   */
-  _playTone(freq, duration, type, volume) {
-    const ctx = this._ensureContext();
-    const osc = ctx.createOscillator();
-    const gain = ctx.createGain();
-    osc.type = type;
-    osc.frequency.setValueAtTime(freq, ctx.currentTime);
-    gain.gain.setValueAtTime(volume, ctx.currentTime);
-    gain.gain.linearRampToValueAtTime(0, ctx.currentTime + duration);
-    osc.connect(gain).connect(ctx.destination);
-    osc.start(ctx.currentTime);
-    osc.stop(ctx.currentTime + duration);
-  }
-
+export class BoxingAudio extends GameSynth {
   /**
    * Punch miss — quick swoosh.
    */
@@ -210,17 +173,5 @@ export class BoxingAudio {
     osc.connect(gain).connect(ctx.destination);
     osc.start(ctx.currentTime);
     osc.stop(ctx.currentTime + 0.7);
-  }
-
-  /**
-   * Release the AudioContext. Each one holds a real-time audio thread for as
-   * long as it lives, and browsers cap how many a page may open.
-   * @returns {void}
-   */
-  dispose() {
-    if (this._ctx) {
-      this._ctx.close().catch(() => {});
-      this._ctx = null;
-    }
   }
 }

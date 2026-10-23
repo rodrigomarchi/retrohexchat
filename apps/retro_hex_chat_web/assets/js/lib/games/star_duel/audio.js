@@ -4,28 +4,15 @@
  * @module games/star_duel_audio
  */
 
-export class StarDuelAudio {
+import { GameSynth } from "../synth.js";
+
+export class StarDuelAudio extends GameSynth {
   constructor() {
-    this._ctx = null;
+    super();
     this._thrustOsc = null;
     this._thrustGain = null;
     this._proximityOsc = null;
     this._proximityGain = null;
-  }
-
-  /** Lazy-init AudioContext on first sound (browser requires user gesture). */
-  _ensureContext() {
-    if (!this._ctx) {
-      try {
-        this._ctx = new (window.AudioContext || window.webkitAudioContext)();
-      } catch {
-        return null;
-      }
-    }
-    if (this._ctx.state === "suspended") {
-      this._ctx.resume().catch(() => {});
-    }
-    return this._ctx;
   }
 
   /** Thrust engine — looping low 50Hz sawtooth buzz. */
@@ -198,27 +185,6 @@ export class StarDuelAudio {
   }
 
   /**
-   * Generic single-tone helper.
-   * @param {number} freq
-   * @param {number} duration - seconds
-   * @param {string} type - oscillator type
-   * @param {number} volume - gain (0-1)
-   */
-  _playTone(freq, duration, type, volume) {
-    const ctx = this._ensureContext();
-    if (!ctx) return;
-    const osc = ctx.createOscillator();
-    const gain = ctx.createGain();
-    osc.type = type;
-    osc.frequency.value = freq;
-    gain.gain.setValueAtTime(volume, ctx.currentTime);
-    gain.gain.linearRampToValueAtTime(0, ctx.currentTime + duration);
-    osc.connect(gain).connect(ctx.destination);
-    osc.start(ctx.currentTime);
-    osc.stop(ctx.currentTime + duration);
-  }
-
-  /**
    * Release the AudioContext. Each one holds a real-time audio thread for as
    * long as it lives, and browsers cap how many a page may open.
    * @returns {void}
@@ -226,9 +192,6 @@ export class StarDuelAudio {
   dispose() {
     this.stopThrust();
     this.stopStarProximity();
-    if (this._ctx) {
-      this._ctx.close().catch(() => {});
-      this._ctx = null;
-    }
+    super.dispose();
   }
 }

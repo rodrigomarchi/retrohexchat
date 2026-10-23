@@ -5,41 +5,13 @@
  * @module games/hex_enduro_audio
  */
 
-export class HexEnduroAudio {
+import { GameSynth } from "../synth.js";
+
+export class HexEnduroAudio extends GameSynth {
   constructor() {
-    this._ctx = null;
+    super();
     this._droneOsc = null;
     this._droneGain = null;
-  }
-
-  _ensureContext() {
-    if (this._ctx) {
-      if (this._ctx.state === "suspended") this._ctx.resume();
-      return this._ctx;
-    }
-    if (typeof AudioContext === "undefined") return null;
-    try {
-      this._ctx = new AudioContext();
-      if (this._ctx.state === "suspended") this._ctx.resume();
-      return this._ctx;
-    } catch {
-      return null;
-    }
-  }
-
-  _playTone(freq, duration, type, volume) {
-    const ctx = this._ensureContext();
-    if (!ctx) return;
-    const osc = ctx.createOscillator();
-    const gain = ctx.createGain();
-    osc.type = type;
-    osc.frequency.setValueAtTime(freq, ctx.currentTime);
-    gain.gain.setValueAtTime(volume, ctx.currentTime);
-    gain.gain.linearRampToValueAtTime(0, ctx.currentTime + duration);
-    osc.connect(gain);
-    gain.connect(ctx.destination);
-    osc.start(ctx.currentTime);
-    osc.stop(ctx.currentTime + duration);
   }
 
   _playSweep(startFreq, endFreq, duration, type, volume) {
@@ -209,13 +181,6 @@ export class HexEnduroAudio {
   /** Clean up all audio resources. */
   dispose() {
     this.stopEngineDrone();
-    if (this._ctx) {
-      try {
-        this._ctx.close();
-      } catch {
-        /* already closed */
-      }
-      this._ctx = null;
-    }
+    super.dispose();
   }
 }

@@ -6,6 +6,7 @@ class MockOscillator {
     this.type = "";
     this.frequency = {
       value: 0,
+      setValueAtTime: vi.fn(),
       setTargetAtTime: vi.fn(),
       linearRampToValueAtTime: vi.fn(),
     };
@@ -21,6 +22,7 @@ class MockGainNode {
   constructor() {
     this.gain = {
       value: 0,
+      setValueAtTime: vi.fn(),
       setTargetAtTime: vi.fn(),
       linearRampToValueAtTime: vi.fn(),
     };

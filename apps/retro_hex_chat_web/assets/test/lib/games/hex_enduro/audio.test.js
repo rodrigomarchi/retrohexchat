@@ -18,8 +18,8 @@ globalThis.AudioContext = function () {
   this.state = "running";
   this.currentTime = 0;
   this.destination = {};
-  this.resume = vi.fn();
-  this.close = vi.fn();
+  this.resume = vi.fn(() => Promise.resolve());
+  this.close = vi.fn(() => Promise.resolve());
   this.createOscillator = vi.fn(() => ({ ...mockOscillator }));
   this.createGain = vi.fn(() => ({
     gain: {

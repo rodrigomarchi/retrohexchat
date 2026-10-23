@@ -4,26 +4,9 @@
  * @module games/pixel_tanks_audio
  */
 
-export class PixelTanksAudio {
-  constructor() {
-    this._ctx = null;
-  }
+import { GameSynth } from "../synth.js";
 
-  /** Lazy-init AudioContext on first sound (browser requires user gesture). */
-  _ensureContext() {
-    if (!this._ctx) {
-      try {
-        this._ctx = new (window.AudioContext || window.webkitAudioContext)();
-      } catch {
-        return null;
-      }
-    }
-    if (this._ctx.state === "suspended") {
-      this._ctx.resume().catch(() => {});
-    }
-    return this._ctx;
-  }
-
+export class PixelTanksAudio extends GameSynth {
   /** Cannon fire — descending 400->100Hz sawtooth, 150ms heavy blast. */
   playFire() {
     const ctx = this._ensureContext();
@@ -141,38 +124,5 @@ export class PixelTanksAudio {
     osc.connect(gain).connect(ctx.destination);
     osc.start(ctx.currentTime);
     osc.stop(ctx.currentTime + 0.7);
-  }
-
-  /**
-   * Generic single-tone helper.
-   * @param {number} freq - frequency in Hz
-   * @param {number} duration - seconds
-   * @param {string} type - oscillator type
-   * @param {number} volume - gain (0-1)
-   */
-  _playTone(freq, duration, type, volume) {
-    const ctx = this._ensureContext();
-    if (!ctx) return;
-    const osc = ctx.createOscillator();
-    const gain = ctx.createGain();
-    osc.type = type;
-    osc.frequency.value = freq;
-    gain.gain.setValueAtTime(volume, ctx.currentTime);
-    gain.gain.linearRampToValueAtTime(0, ctx.currentTime + duration);
-    osc.connect(gain).connect(ctx.destination);
-    osc.start(ctx.currentTime);
-    osc.stop(ctx.currentTime + duration);
-  }
-
-  /**
-   * Release the AudioContext. Each one holds a real-time audio thread for as
-   * long as it lives, and browsers cap how many a page may open.
-   * @returns {void}
-   */
-  dispose() {
-    if (this._ctx) {
-      this._ctx.close().catch(() => {});
-      this._ctx = null;
-    }
   }
 }

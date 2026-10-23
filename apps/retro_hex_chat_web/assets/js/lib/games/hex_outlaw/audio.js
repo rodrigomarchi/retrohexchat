@@ -5,36 +5,9 @@
  * @module games/hex_outlaw_audio
  */
 
-export class OutlawAudio {
-  constructor() {
-    /** @type {AudioContext|null} */
-    this._ctx = null;
-  }
+import { GameSynth } from "../synth.js";
 
-  /**
-   * Close the AudioContext and release resources.
-   */
-  dispose() {
-    if (this._ctx) {
-      this._ctx.close().catch(() => {});
-      this._ctx = null;
-    }
-  }
-
-  /**
-   * Lazily create or resume AudioContext (browser autoplay policy).
-   * @returns {AudioContext}
-   */
-  _ensureContext() {
-    if (!this._ctx) {
-      this._ctx = new (window.AudioContext || window.webkitAudioContext)();
-    }
-    if (this._ctx.state === "suspended") {
-      this._ctx.resume().catch(() => {});
-    }
-    return this._ctx;
-  }
-
+export class OutlawAudio extends GameSynth {
   /**
    * Gunshot — short explosive bang with low thud.
    */

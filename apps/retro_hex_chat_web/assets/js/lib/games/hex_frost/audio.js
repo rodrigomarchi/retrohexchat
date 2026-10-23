@@ -5,17 +5,11 @@
  * Arctic cyberpunk aesthetic: crystalline plings, icy rumbles, howling wind.
  */
 
-export class HexFrostAudio {
+import { GameSynth } from "../synth.js";
+
+export class HexFrostAudio extends GameSynth {
   constructor() {
-    try {
-      this.ctx = new (window.AudioContext || window.webkitAudioContext)();
-      this.master = this.ctx.createGain();
-      this.master.gain.value = 0.3;
-      this.master.connect(this.ctx.destination);
-    } catch {
-      this.ctx = null;
-      this.master = null;
-    }
+    super({ masterVolume: 0.3 });
     this._windOsc = null;
     this._windGain = null;
     this._timers = [];
@@ -24,53 +18,53 @@ export class HexFrostAudio {
   // ── Helpers ──────────────────────────────────────────────────
 
   _playTone(freq, duration, type = "square", volume = 0.3) {
-    if (!this.ctx) return;
-    const osc = this.ctx.createOscillator();
-    const gain = this.ctx.createGain();
+    const ctx = this._ensureContext();
+    if (!ctx) return;
+    const osc = ctx.createOscillator();
+    const gain = ctx.createGain();
     osc.type = type;
     osc.frequency.value = freq;
-    gain.gain.setValueAtTime(volume, this.ctx.currentTime);
-    gain.gain.exponentialRampToValueAtTime(0.001, this.ctx.currentTime + duration);
+    gain.gain.setValueAtTime(volume, ctx.currentTime);
+    gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + duration);
     osc.connect(gain);
-    gain.connect(this.master);
-    osc.start(this.ctx.currentTime);
-    osc.stop(this.ctx.currentTime + duration);
+    gain.connect(this._output);
+    osc.start(ctx.currentTime);
+    osc.stop(ctx.currentTime + duration);
   }
 
   _playSweep(startFreq, endFreq, duration, type = "square", volume = 0.3) {
-    if (!this.ctx) return;
-    const osc = this.ctx.createOscillator();
-    const gain = this.ctx.createGain();
+    const ctx = this._ensureContext();
+    if (!ctx) return;
+    const osc = ctx.createOscillator();
+    const gain = ctx.createGain();
     osc.type = type;
-    osc.frequency.setValueAtTime(startFreq, this.ctx.currentTime);
-    osc.frequency.exponentialRampToValueAtTime(
-      Math.max(endFreq, 20),
-      this.ctx.currentTime + duration,
-    );
-    gain.gain.setValueAtTime(volume, this.ctx.currentTime);
-    gain.gain.exponentialRampToValueAtTime(0.001, this.ctx.currentTime + duration);
+    osc.frequency.setValueAtTime(startFreq, ctx.currentTime);
+    osc.frequency.exponentialRampToValueAtTime(Math.max(endFreq, 20), ctx.currentTime + duration);
+    gain.gain.setValueAtTime(volume, ctx.currentTime);
+    gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + duration);
     osc.connect(gain);
-    gain.connect(this.master);
-    osc.start(this.ctx.currentTime);
-    osc.stop(this.ctx.currentTime + duration);
+    gain.connect(this._output);
+    osc.start(ctx.currentTime);
+    osc.stop(ctx.currentTime + duration);
   }
 
   _playNoise(duration, volume = 0.15) {
-    if (!this.ctx) return;
-    const bufferSize = this.ctx.sampleRate * duration;
-    const buffer = this.ctx.createBuffer(1, bufferSize, this.ctx.sampleRate);
+    const ctx = this._ensureContext();
+    if (!ctx) return;
+    const bufferSize = ctx.sampleRate * duration;
+    const buffer = ctx.createBuffer(1, bufferSize, ctx.sampleRate);
     const data = buffer.getChannelData(0);
     for (let i = 0; i < bufferSize; i++) {
       data[i] = Math.random() * 2 - 1;
     }
-    const source = this.ctx.createBufferSource();
+    const source = ctx.createBufferSource();
     source.buffer = buffer;
-    const gain = this.ctx.createGain();
-    gain.gain.setValueAtTime(volume, this.ctx.currentTime);
-    gain.gain.exponentialRampToValueAtTime(0.001, this.ctx.currentTime + duration);
+    const gain = ctx.createGain();
+    gain.gain.setValueAtTime(volume, ctx.currentTime);
+    gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + duration);
     source.connect(gain);
-    gain.connect(this.master);
-    source.start(this.ctx.currentTime);
+    gain.connect(this._output);
+    source.start(ctx.currentTime);
   }
 
   // ── Game sounds ──────────────────────────────────────────────
@@ -155,17 +149,18 @@ export class HexFrostAudio {
 
   playBearNear() {
     // Low growl rumble
-    if (!this.ctx) return;
-    const osc = this.ctx.createOscillator();
-    const gain = this.ctx.createGain();
+    const ctx = this._ensureContext();
+    if (!ctx) return;
+    const osc = ctx.createOscillator();
+    const gain = ctx.createGain();
     osc.type = "sawtooth";
     osc.frequency.value = 40;
-    gain.gain.setValueAtTime(0.08, this.ctx.currentTime);
-    gain.gain.exponentialRampToValueAtTime(0.001, this.ctx.currentTime + 0.3);
+    gain.gain.setValueAtTime(0.08, ctx.currentTime);
+    gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.3);
     osc.connect(gain);
-    gain.connect(this.master);
-    osc.start(this.ctx.currentTime);
-    osc.stop(this.ctx.currentTime + 0.3);
+    gain.connect(this._output);
+    osc.start(ctx.currentTime);
+    osc.stop(ctx.currentTime + 0.3);
   }
 
   playClamSnap() {
@@ -176,26 +171,27 @@ export class HexFrostAudio {
 
   playTempLow() {
     // Wind howl — filtered noise
-    if (!this.ctx) return;
-    const bufferSize = this.ctx.sampleRate * 0.5;
-    const buffer = this.ctx.createBuffer(1, bufferSize, this.ctx.sampleRate);
+    const ctx = this._ensureContext();
+    if (!ctx) return;
+    const bufferSize = ctx.sampleRate * 0.5;
+    const buffer = ctx.createBuffer(1, bufferSize, ctx.sampleRate);
     const data = buffer.getChannelData(0);
     for (let i = 0; i < bufferSize; i++) {
       data[i] = Math.random() * 2 - 1;
     }
-    const source = this.ctx.createBufferSource();
+    const source = ctx.createBufferSource();
     source.buffer = buffer;
-    const filter = this.ctx.createBiquadFilter();
+    const filter = ctx.createBiquadFilter();
     filter.type = "bandpass";
     filter.frequency.value = 600;
     filter.Q.value = 2;
-    const gain = this.ctx.createGain();
-    gain.gain.setValueAtTime(0.15, this.ctx.currentTime);
-    gain.gain.exponentialRampToValueAtTime(0.001, this.ctx.currentTime + 0.5);
+    const gain = ctx.createGain();
+    gain.gain.setValueAtTime(0.15, ctx.currentTime);
+    gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.5);
     source.connect(filter);
     filter.connect(gain);
-    gain.connect(this.master);
-    source.start(this.ctx.currentTime);
+    gain.connect(this._output);
+    source.start(ctx.currentTime);
   }
 
   playTempZero() {
@@ -234,14 +230,15 @@ export class HexFrostAudio {
   // ── Ambient wind drone ───────────────────────────────────────
 
   startAmbientWind() {
-    if (!this.ctx || this._windOsc) return;
-    this._windOsc = this.ctx.createOscillator();
-    this._windGain = this.ctx.createGain();
+    const ctx = this._ensureContext();
+    if (!ctx || this._windOsc) return;
+    this._windOsc = ctx.createOscillator();
+    this._windGain = ctx.createGain();
     this._windOsc.type = "sine";
     this._windOsc.frequency.value = 80;
     this._windGain.gain.value = 0.03;
     this._windOsc.connect(this._windGain);
-    this._windGain.connect(this.master);
+    this._windGain.connect(this._output);
     this._windOsc.start();
   }
 
@@ -263,12 +260,6 @@ export class HexFrostAudio {
     this.stopAmbientWind();
     this._timers.forEach(clearTimeout);
     this._timers = [];
-    if (this.ctx && this.ctx.state !== "closed") {
-      try {
-        this.ctx.close();
-      } catch {
-        /* ignore */
-      }
-    }
+    super.dispose();
   }
 }
