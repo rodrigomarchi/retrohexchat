@@ -34,10 +34,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.HighlightDialog do
   alias RetroHexChat.Chat.HighlightWords
   alias RetroHexChatWeb.ChatLive.Components.DialogIsland
 
-  @id "highlight-dialog"
-
-  @spec id() :: String.t()
-  def id, do: @id
+  use RetroHexChatWeb.ChatLive.Components.DialogIsland, id: "highlight-dialog"
 
   @spec mount(Phoenix.LiveView.Socket.t()) :: {:ok, Phoenix.LiveView.Socket.t()}
   def mount(socket) do

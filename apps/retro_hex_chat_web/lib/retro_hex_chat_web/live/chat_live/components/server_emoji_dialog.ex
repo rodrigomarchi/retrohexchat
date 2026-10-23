@@ -25,15 +25,11 @@ defmodule RetroHexChatWeb.ChatLive.Components.ServerEmojiDialog do
   alias RetroHexChat.Chat.CustomEmojis
   alias RetroHexChatWeb.Params
 
-  @id "server-emoji-dialog"
+  use RetroHexChatWeb.ChatLive.Components.DialogIsland, id: "server-emoji-dialog"
 
   # A joke-sized picture. The attachment ceiling is for files somebody sends on
   # purpose; an emoji is drawn on every line it appears in.
   @max_bytes 512 * 1024
-
-  @doc "Stable DOM/component id used by the parent for `send_update/2`."
-  @spec id() :: String.t()
-  def id, do: @id
 
   @impl true
   @spec mount(Phoenix.LiveView.Socket.t()) :: {:ok, Phoenix.LiveView.Socket.t()}

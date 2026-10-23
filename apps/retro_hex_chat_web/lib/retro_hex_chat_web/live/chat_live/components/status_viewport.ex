@@ -21,12 +21,8 @@ defmodule RetroHexChatWeb.ChatLive.Components.StatusViewport do
   alias RetroHexChatWeb.App.ChatHelpers
   alias RetroHexChatWeb.ChatLive.Components.DialogIsland
 
-  @id "status-viewport"
+  use RetroHexChatWeb.ChatLive.Components.DialogIsland, id: "status-viewport"
   @status_limit 500
-
-  @doc "Stable component id used by the parent for `send_update/2`."
-  @spec id() :: String.t()
-  def id, do: @id
 
   @doc "Appends a single status line. Returns the socket."
   @spec insert(Phoenix.LiveView.Socket.t(), map()) :: Phoenix.LiveView.Socket.t()

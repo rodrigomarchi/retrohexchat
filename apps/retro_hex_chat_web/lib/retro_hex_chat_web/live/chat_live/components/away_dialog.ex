@@ -12,11 +12,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.AwayDialog do
 
   import RetroHexChatWeb.Components.UI.AwayDialog
 
-  @id "away-dialog"
-
-  @doc "Stable component id."
-  @spec id() :: String.t()
-  def id, do: @id
+  use RetroHexChatWeb.ChatLive.Components.DialogIsland, id: "away-dialog"
 
   @impl true
   @spec mount(Phoenix.LiveView.Socket.t()) :: {:ok, Phoenix.LiveView.Socket.t()}

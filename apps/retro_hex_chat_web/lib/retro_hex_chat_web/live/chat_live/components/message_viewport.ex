@@ -56,7 +56,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.MessageViewport do
   alias RetroHexChatWeb.ChatLive.StreamItem
   alias RetroHexChatWeb.ShareLinkRef
 
-  @id "message-viewport"
+  use RetroHexChatWeb.ChatLive.Components.DialogIsland, id: "message-viewport"
 
   # The live tail is capped: a session that sits in a busy channel for a day
   # cannot grow the document without bound.
@@ -74,10 +74,6 @@ defmodule RetroHexChatWeb.ChatLive.Components.MessageViewport do
   # the stream and the flag together.
   @page_size 50
   @dom_limit @page_size * 3
-
-  @doc "Stable component id used by the parent for `send_update/2`."
-  @spec id() :: String.t()
-  def id, do: @id
 
   @doc "Appends or updates a single message row. Returns the socket."
   @spec insert(Phoenix.LiveView.Socket.t(), map()) :: Phoenix.LiveView.Socket.t()

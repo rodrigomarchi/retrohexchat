@@ -23,22 +23,16 @@ defmodule RetroHexChatWeb.ChatLive.Components.NickColorsDialog do
   alias RetroHexChatWeb.ChatLive.Components.DialogIsland
   alias RetroHexChatWeb.ChatLive.Helpers.NickFlags
 
-  @id "nick-colors-dialog"
-
-  @spec id() :: String.t()
-  def id, do: @id
-
-  @initial %{
-    selected: nil,
-    palette_editing_index: nil,
-    show_add_dialog: false,
-    show_edit_dialog: false,
-    entry_locales: %{},
-    entry_locales_cache: nil
-  }
-
-  @spec mount(Phoenix.LiveView.Socket.t()) :: {:ok, Phoenix.LiveView.Socket.t()}
-  def mount(socket), do: DialogIsland.mount(socket, @id, @initial)
+  use RetroHexChatWeb.ChatLive.Components.DialogIsland,
+    id: "nick-colors-dialog",
+    initial: %{
+      selected: nil,
+      palette_editing_index: nil,
+      show_add_dialog: false,
+      show_edit_dialog: false,
+      entry_locales: %{},
+      entry_locales_cache: nil
+    }
 
   @spec update(map(), Phoenix.LiveView.Socket.t()) :: {:ok, Phoenix.LiveView.Socket.t()}
   def update(assigns, socket) do

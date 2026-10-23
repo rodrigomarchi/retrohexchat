@@ -16,13 +16,10 @@ defmodule RetroHexChatWeb.ChatLive.Components.SystemObanDialog do
   alias RetroHexChat.Jobs.ObanHealth
   alias RetroHexChatWeb.ChatLive.AdminOps
 
-  @id "system-oban-dialog"
+  use RetroHexChatWeb.ChatLive.Components.DialogIsland, id: "system-oban-dialog"
   @default_tab "overview"
   @default_filter "active"
   @tabs ~w(overview queues bots maintenance previews persistence)
-
-  @spec id() :: String.t()
-  def id, do: @id
 
   @impl true
   @spec mount(Phoenix.LiveView.Socket.t()) :: {:ok, Phoenix.LiveView.Socket.t()}

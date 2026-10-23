@@ -13,7 +13,7 @@ defmodule RetroHexChatWeb.Live.GroupCallConfirmDialog do
 
   import RetroHexChatWeb.Components.UI.GroupCallConfirmDialog
 
-  @id "group-call-confirm-dialog"
+  use RetroHexChatWeb.ChatLive.Components.DialogIsland, id: "group-call-confirm-dialog"
 
   @open_modes %{
     open_leave: :leave,
@@ -28,9 +28,6 @@ defmodule RetroHexChatWeb.Live.GroupCallConfirmDialog do
   Anything rendering a second copy in the same document passes an id of its
   own: two elements with the same id is undefined behaviour.
   """
-  @spec id() :: String.t()
-  def id, do: @id
-
   @impl true
   @spec mount(Phoenix.LiveView.Socket.t()) :: {:ok, Phoenix.LiveView.Socket.t()}
   def mount(socket) do

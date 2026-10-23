@@ -23,11 +23,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.SoundSettingsDialog do
 
   alias RetroHexChat.Chat.SoundSettings
 
-  @id "sound-settings-dialog"
-
-  @doc "Stable DOM/component id used by the parent for `send_update/2`."
-  @spec id() :: String.t()
-  def id, do: @id
+  use RetroHexChatWeb.ChatLive.Components.DialogIsland, id: "sound-settings-dialog"
 
   @impl true
   @spec mount(Phoenix.LiveView.Socket.t()) :: {:ok, Phoenix.LiveView.Socket.t()}

@@ -21,12 +21,8 @@ defmodule RetroHexChatWeb.ChatLive.Components.EmojiPickerDialog do
   alias RetroHexChat.Chat.CustomEmojis
   alias RetroHexChat.Chat.EmojiData
 
-  @id "emoji-picker"
+  use RetroHexChatWeb.ChatLive.Components.DialogIsland, id: "emoji-picker"
   @default_category "Smileys & Emotion"
-
-  @doc "Stable DOM/component id."
-  @spec id() :: String.t()
-  def id, do: @id
 
   @impl true
   @spec mount(Phoenix.LiveView.Socket.t()) :: {:ok, Phoenix.LiveView.Socket.t()}

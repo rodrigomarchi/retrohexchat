@@ -803,7 +803,6 @@ defmodule Mix.Tasks.Lint.CssConsistency do
                              "hljs*",
                              "irc-bg-*",
                              "irc-fg-*",
-                             "p2p-diagram-strip--*",
                              "p2p-diagram__badge--*",
                              "p2p-diagram__browser-svg--*",
                              "p2p-diagram__link--*"

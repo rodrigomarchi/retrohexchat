@@ -15,10 +15,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.SystemOsDialog do
   alias RetroHexChat.SystemInfo
   alias RetroHexChatWeb.ChatLive.AdminOps
 
-  @id "system-os-dialog"
-
-  @spec id() :: String.t()
-  def id, do: @id
+  use RetroHexChatWeb.ChatLive.Components.DialogIsland, id: "system-os-dialog"
 
   @spec mount(Phoenix.LiveView.Socket.t()) :: {:ok, Phoenix.LiveView.Socket.t()}
   def mount(socket) do

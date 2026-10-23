@@ -21,12 +21,9 @@ defmodule RetroHexChatWeb.ChatLive.Components.SystemLogDialog do
   alias RetroHexChatWeb.ChatLive.AdminOps
   alias RetroHexChatWeb.SystemLog.Handler
 
-  @id "system-log-dialog"
+  use RetroHexChatWeb.ChatLive.Components.DialogIsland, id: "system-log-dialog"
   @buffer 200
   @levels [:debug, :info, :warning, :error]
-
-  @spec id() :: String.t()
-  def id, do: @id
 
   @spec levels() :: [atom()]
   def levels, do: @levels

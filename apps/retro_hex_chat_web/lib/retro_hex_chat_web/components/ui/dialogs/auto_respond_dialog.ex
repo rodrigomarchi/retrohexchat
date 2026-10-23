@@ -18,6 +18,8 @@ defmodule RetroHexChatWeb.Components.UI.AutoRespondDialog do
   """
   use RetroHexChatWeb.Component
 
+  import RetroHexChatWeb.Components.UI.EditorAttrs
+
   import RetroHexChatWeb.Components.UI.Dialog
   import RetroHexChatWeb.Components.UI.ActionList
   import RetroHexChatWeb.Components.UI.DialogBanner
@@ -47,16 +49,9 @@ defmodule RetroHexChatWeb.Components.UI.AutoRespondDialog do
   attr :draft_command, :any, default: nil
   attr :error_message, :any, default: nil
   attr :on_toggle, :any, default: nil
-  attr :on_add, :any, default: nil
-  attr :on_edit, :any, default: nil
-  attr :on_delete, :any, default: nil
-  attr :on_save, :any, default: nil
-  attr :on_cancel_edit, :any, default: nil
+  editor_event_attrs()
 
-  attr :sub_scope, :atom,
-    default: :window,
-    values: [:viewport, :window],
-    doc: "where the add/edit form opens: over this window, or over the screen"
+  sub_scope_attr()
 
   @spec auto_respond_panel(map()) :: Phoenix.LiveView.Rendered.t()
   def auto_respond_panel(assigns) do

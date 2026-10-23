@@ -26,7 +26,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.AdminConsoleDialog do
   alias RetroHexChat.Commands.{Dispatcher, Parser}
   alias RetroHexChatWeb.ChatLive.AdminOps
 
-  @id "admin-console-dialog"
+  use RetroHexChatWeb.ChatLive.Components.DialogIsland, id: "admin-console-dialog"
 
   # The console transcript is an ephemeral session buffer, not a database list:
   # there is nothing older to page back to, so it takes a cap rather than
@@ -37,9 +37,6 @@ defmodule RetroHexChatWeb.ChatLive.Components.AdminConsoleDialog do
   # lines, so the one question worth asking — did all of it work? — could not be
   # answered from the thing that ran it.
   @max_results 2_000
-
-  @spec id() :: String.t()
-  def id, do: @id
 
   @spec mount(Phoenix.LiveView.Socket.t()) :: {:ok, Phoenix.LiveView.Socket.t()}
   def mount(socket) do

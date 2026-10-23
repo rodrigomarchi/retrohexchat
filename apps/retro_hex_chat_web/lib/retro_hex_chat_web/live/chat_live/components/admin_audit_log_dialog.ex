@@ -18,25 +18,20 @@ defmodule RetroHexChatWeb.ChatLive.Components.AdminAuditLogDialog do
 
   alias RetroHexChatWeb.ChatLive.Components.DialogIsland
 
-  import RetroHexChatWeb.ChatLive.AdminOps, only: [trim: 1]
-
-  @id "admin-audit-log-dialog"
   @default_last "20"
 
-  @spec id() :: String.t()
-  def id, do: @id
+  use RetroHexChatWeb.ChatLive.Components.DialogIsland,
+    id: "admin-audit-log-dialog",
+    initial: %{
+      text: nil,
+      table: nil,
+      result: nil,
+      last: @default_last,
+      user: "",
+      loaded?: false
+    }
 
-  @initial %{
-    text: nil,
-    table: nil,
-    result: nil,
-    last: @default_last,
-    user: "",
-    loaded?: false
-  }
-
-  @spec mount(Phoenix.LiveView.Socket.t()) :: {:ok, Phoenix.LiveView.Socket.t()}
-  def mount(socket), do: DialogIsland.mount(socket, @id, @initial)
+  import RetroHexChatWeb.ChatLive.AdminOps, only: [trim: 1]
 
   @spec update(map(), Phoenix.LiveView.Socket.t()) :: {:ok, Phoenix.LiveView.Socket.t()}
   def update(assigns, socket),

@@ -34,10 +34,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.UserContextMenus do
   alias RetroHexChat.Chat.{CustomMenus, IgnoreList, KeyBindings}
   alias RetroHexChat.Games.Activity
 
-  @id "user-context-menus"
-
-  @spec id() :: String.t()
-  def id, do: @id
+  use RetroHexChatWeb.ChatLive.Components.DialogIsland, id: "user-context-menus"
 
   @chat_closed %{
     visible: false,

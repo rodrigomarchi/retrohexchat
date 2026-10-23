@@ -23,12 +23,8 @@ defmodule RetroHexChatWeb.ChatLive.Components.AutoRespondDialog do
   alias RetroHexChat.Chat.AutoRespondRules
   alias RetroHexChatWeb.ChatLive.Components.DialogIsland
 
-  @id "autorespond-dialog"
+  use RetroHexChatWeb.ChatLive.Components.DialogIsland, id: "autorespond-dialog"
   @default_trigger "on_join"
-
-  @doc "Stable DOM/component id used by the parent for `send_update/2`."
-  @spec id() :: String.t()
-  def id, do: @id
 
   @impl true
   @spec mount(Phoenix.LiveView.Socket.t()) :: {:ok, Phoenix.LiveView.Socket.t()}

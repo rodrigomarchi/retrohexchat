@@ -18,6 +18,8 @@ defmodule RetroHexChatWeb.Components.UI.HighlightDialog do
   """
   use RetroHexChatWeb.Component
 
+  import RetroHexChatWeb.Components.UI.EditorAttrs
+
   import RetroHexChatWeb.Components.UI.Dialog
   import RetroHexChatWeb.Components.UI.ColorPicker
   import RetroHexChatWeb.Components.UI.ActionList
@@ -101,7 +103,7 @@ defmodule RetroHexChatWeb.Components.UI.HighlightDialog do
   attr :show_highlight_add_dialog, :boolean, default: false
   attr :show_highlight_edit_dialog, :boolean, default: false
   attr :on_color_select, :any, default: nil
-  attr :sub_scope, :atom, default: :window, values: [:viewport, :window]
+  sub_scope_attr()
 
   @spec highlight_panel(map()) :: Phoenix.LiveView.Rendered.t()
   def highlight_panel(assigns) do

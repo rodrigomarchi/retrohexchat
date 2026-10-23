@@ -23,28 +23,22 @@ defmodule RetroHexChatWeb.ChatLive.Components.AdminChannelsDialog do
 
   alias RetroHexChatWeb.ChatLive.Components.DialogIsland
 
+  use RetroHexChatWeb.ChatLive.Components.DialogIsland,
+    id: "admin-channels-dialog",
+    initial: %{
+      channels_text: nil,
+      channels_table: nil,
+      channels_banlist_text: nil,
+      channels_result: nil,
+      channels_search: "",
+      channels_info_channel: "",
+      channels_create_name: "",
+      channels_action_channel: "",
+      loaded?: false
+    }
+
   import RetroHexChatWeb.ChatLive.AdminOps,
     only: [param: 2, trim: 1, error_result: 1, flag_args: 3]
-
-  @id "admin-channels-dialog"
-
-  @spec id() :: String.t()
-  def id, do: @id
-
-  @initial %{
-    channels_text: nil,
-    channels_table: nil,
-    channels_banlist_text: nil,
-    channels_result: nil,
-    channels_search: "",
-    channels_info_channel: "",
-    channels_create_name: "",
-    channels_action_channel: "",
-    loaded?: false
-  }
-
-  @spec mount(Phoenix.LiveView.Socket.t()) :: {:ok, Phoenix.LiveView.Socket.t()}
-  def mount(socket), do: DialogIsland.mount(socket, @id, @initial)
 
   @spec update(map(), Phoenix.LiveView.Socket.t()) :: {:ok, Phoenix.LiveView.Socket.t()}
   def update(assigns, socket),

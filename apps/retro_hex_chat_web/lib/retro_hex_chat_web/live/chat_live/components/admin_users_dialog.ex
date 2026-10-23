@@ -26,28 +26,22 @@ defmodule RetroHexChatWeb.ChatLive.Components.AdminUsersDialog do
 
   alias RetroHexChatWeb.ChatLive.Components.DialogIsland
 
+  use RetroHexChatWeb.ChatLive.Components.DialogIsland,
+    id: "admin-users-dialog",
+    initial: %{
+      users_text: nil,
+      users_table: nil,
+      users_banlist_table: nil,
+      users_banlist_text: nil,
+      users_result: nil,
+      users_search: "",
+      users_online_only: false,
+      users_info_nick: "",
+      loaded?: false
+    }
+
   import RetroHexChatWeb.ChatLive.AdminOps,
     only: [param: 2, trim: 1, error_result: 1, flag_args: 3]
-
-  @id "admin-users-dialog"
-
-  @spec id() :: String.t()
-  def id, do: @id
-
-  @initial %{
-    users_text: nil,
-    users_table: nil,
-    users_banlist_table: nil,
-    users_banlist_text: nil,
-    users_result: nil,
-    users_search: "",
-    users_online_only: false,
-    users_info_nick: "",
-    loaded?: false
-  }
-
-  @spec mount(Phoenix.LiveView.Socket.t()) :: {:ok, Phoenix.LiveView.Socket.t()}
-  def mount(socket), do: DialogIsland.mount(socket, @id, @initial)
 
   @spec update(map(), Phoenix.LiveView.Socket.t()) :: {:ok, Phoenix.LiveView.Socket.t()}
   def update(assigns, socket),

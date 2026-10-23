@@ -20,10 +20,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.SystemDatabaseDialog do
   alias RetroHexChat.{Repo, SystemInfo}
   alias RetroHexChatWeb.ChatLive.AdminOps
 
-  @id "system-database-dialog"
-
-  @spec id() :: String.t()
-  def id, do: @id
+  use RetroHexChatWeb.ChatLive.Components.DialogIsland, id: "system-database-dialog"
 
   @spec mount(Phoenix.LiveView.Socket.t()) :: {:ok, Phoenix.LiveView.Socket.t()}
   def mount(socket) do

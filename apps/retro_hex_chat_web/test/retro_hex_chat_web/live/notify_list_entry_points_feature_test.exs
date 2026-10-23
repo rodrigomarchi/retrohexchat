@@ -49,13 +49,13 @@ defmodule RetroHexChatWeb.NotifyListEntryPointsFeatureTest do
 
     test "status bar component hides zero count and shows positive buddy count badge" do
       zero_html =
-        render_component(&StatusBarApp.status_bar_app/1,
+        render_component(&StatusBarApp.status_bar_zones/1,
           online_buddy_count: 0,
           on_notify_toggle: "toggle_notify_list"
         )
 
       buddy_html =
-        render_component(&StatusBarApp.status_bar_app/1,
+        render_component(&StatusBarApp.status_bar_zones/1,
           online_buddy_count: 2,
           on_notify_toggle: "toggle_notify_list"
         )

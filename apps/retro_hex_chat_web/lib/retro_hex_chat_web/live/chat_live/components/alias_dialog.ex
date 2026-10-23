@@ -24,11 +24,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.AliasDialog do
   alias RetroHexChat.Chat.AliasList
   alias RetroHexChatWeb.ChatLive.Components.DialogIsland
 
-  @id "alias-dialog"
-
-  @doc "Stable DOM/component id used by the parent for `send_update/2`."
-  @spec id() :: String.t()
-  def id, do: @id
+  use RetroHexChatWeb.ChatLive.Components.DialogIsland, id: "alias-dialog"
 
   @impl true
   @spec mount(Phoenix.LiveView.Socket.t()) :: {:ok, Phoenix.LiveView.Socket.t()}

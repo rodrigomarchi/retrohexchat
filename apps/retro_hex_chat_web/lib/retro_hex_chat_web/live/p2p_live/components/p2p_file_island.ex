@@ -27,12 +27,9 @@ defmodule RetroHexChatWeb.P2PLive.Components.P2PFileIsland do
 
   require Logger
 
-  @id "lobby-file"
-  @default_blocked_extensions ~w(.exe .bat .cmd .com .msi .scr .pif .vbs .vbe .js .jse .wsf .wsh .ps1 .reg)
+  use RetroHexChatWeb.ChatLive.Components.DialogIsland, id: "lobby-file"
 
-  @doc "Stable DOM/component id used by the host for `send_update/2`."
-  @spec id() :: String.t()
-  def id, do: @id
+  @default_blocked_extensions ~w(.exe .bat .cmd .com .msi .scr .pif .vbs .vbe .js .jse .wsf .wsh .ps1 .reg)
 
   @impl true
   @spec mount(Phoenix.LiveView.Socket.t()) :: {:ok, Phoenix.LiveView.Socket.t()}

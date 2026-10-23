@@ -25,12 +25,8 @@ defmodule RetroHexChatWeb.P2PLive.Components.P2PGameIsland do
   alias RetroHexChat.Games.Catalog
   alias RetroHexChatWeb.ChatLive.Components.DialogIsland
 
-  @id "lobby-game"
+  use RetroHexChatWeb.ChatLive.Components.DialogIsland, id: "lobby-game"
   @idle %{status: "idle", game_id: nil, is_host: false}
-
-  @doc "Stable DOM/component id used by the host for `send_update/2`."
-  @spec id() :: String.t()
-  def id, do: @id
 
   @impl true
   @spec mount(Phoenix.LiveView.Socket.t()) :: {:ok, Phoenix.LiveView.Socket.t()}

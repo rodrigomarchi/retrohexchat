@@ -107,6 +107,8 @@ defmodule RetroHexChatWeb.ChatLive.HoverEvents do
   defp build_hover_card(session, nick, x, y) do
     target_meta = Tracker.find_user(nick, session.channels)
 
+    contact = ContactList.get_entry(session.contacts, nick)
+
     data =
       %{
         nickname: nick,
@@ -118,8 +120,8 @@ defmodule RetroHexChatWeb.ChatLive.HoverEvents do
         registered: NickServ.registered?(nick),
         idle: format_idle_time(target_meta),
         role: get_role_in_active_channel(nick, session.active_channel),
-        is_contact: contact?(nick, session.contacts),
-        contact_note: contact_note(nick, session.contacts),
+        is_contact: contact != nil,
+        contact_note: contact && contact.note,
         is_ignored: IgnoreList.get_entry(session.ignore_list, nick) != nil,
         avatar: Avatars.for_nick(nick),
         locale: NickLocales.for_nick(nick)
@@ -214,18 +216,4 @@ defmodule RetroHexChatWeb.ChatLive.HoverEvents do
 
   defp hover_role(role) when role in [:owner, :operator, :half_operator, :voiced, :bot], do: role
   defp hover_role(_role), do: nil
-
-  @spec contact?(String.t(), map()) :: boolean()
-  defp contact?(nick, contacts) do
-    find_contact(nick, contacts) != nil
-  end
-
-  defp contact_note(nick, contacts) do
-    case find_contact(nick, contacts) do
-      nil -> nil
-      entry -> entry.note
-    end
-  end
-
-  defp find_contact(nick, contacts), do: ContactList.get_entry(contacts, nick)
 end

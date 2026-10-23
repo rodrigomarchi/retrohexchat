@@ -22,6 +22,8 @@ defmodule RetroHexChatWeb.Components.UI.AliasDialog do
   """
   use RetroHexChatWeb.Component
 
+  import RetroHexChatWeb.Components.UI.EditorAttrs
+
   import RetroHexChatWeb.Components.UI.Dialog
   import RetroHexChatWeb.Components.UI.ActionList
   import RetroHexChatWeb.Components.UI.DialogBanner
@@ -45,16 +47,9 @@ defmodule RetroHexChatWeb.Components.UI.AliasDialog do
   attr :draft_expansion, :string, default: ""
   attr :warning_message, :string, default: nil
   attr :error_message, :string, default: nil
-  attr :on_add, :any, default: nil
-  attr :on_edit, :any, default: nil
-  attr :on_delete, :any, default: nil
-  attr :on_save, :any, default: nil
-  attr :on_cancel_edit, :any, default: nil
+  editor_event_attrs()
 
-  attr :sub_scope, :atom,
-    default: :window,
-    values: [:viewport, :window],
-    doc: "where the add/edit form opens: over this window, or over the screen"
+  sub_scope_attr()
 
   @spec alias_panel(map()) :: Phoenix.LiveView.Rendered.t()
   def alias_panel(assigns) do

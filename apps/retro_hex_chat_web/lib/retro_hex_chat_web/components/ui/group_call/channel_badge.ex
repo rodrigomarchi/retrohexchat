@@ -267,7 +267,7 @@ defmodule RetroHexChatWeb.Components.UI.GroupCall.ChannelBadge do
     status = Params.value(summary, :status) || Params.value(summary.room, :status)
 
     cond do
-      locked?(summary) -> :locked
+      Policy.locked?(summary.room) -> :locked
       status in [:error, "error", :failed, "failed"] -> :degraded
       status in [:reconnecting, "reconnecting", :disconnected, "disconnected"] -> :degraded
       status in [:closing, "closing"] -> :ending
@@ -322,8 +322,6 @@ defmodule RetroHexChatWeb.Components.UI.GroupCall.ChannelBadge do
       participant -> participant.nickname
     end
   end
-
-  defp locked?(summary), do: Policy.locked?(summary.room)
 
   defp media_enabled?(%{media_state: media}, key) when is_map(media) do
     case Params.value(media, key) do

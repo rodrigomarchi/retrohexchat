@@ -21,12 +21,8 @@ defmodule RetroHexChatWeb.ChatLive.Components.SavedDialog do
   alias RetroHexChatWeb.PaginatedList
   alias RetroHexChatWeb.Params
 
-  @id "saved-dialog"
+  use RetroHexChatWeb.ChatLive.Components.DialogIsland, id: "saved-dialog"
   @page_size 25
-
-  @doc "Stable DOM/component id used by the parent for `send_update/2`."
-  @spec id() :: String.t()
-  def id, do: @id
 
   @impl true
   @spec mount(Phoenix.LiveView.Socket.t()) :: {:ok, Phoenix.LiveView.Socket.t()}

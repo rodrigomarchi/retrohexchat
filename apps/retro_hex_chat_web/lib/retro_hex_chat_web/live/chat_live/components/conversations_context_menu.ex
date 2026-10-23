@@ -23,10 +23,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.ConversationsContextMenu do
   alias RetroHexChat.Accounts.Session
   alias RetroHexChat.Chat.{AutoJoinList, CustomMenus, UnreadTracker}
 
-  @id "conversations-context-menu"
-
-  @spec id() :: String.t()
-  def id, do: @id
+  use RetroHexChatWeb.ChatLive.Components.DialogIsland, id: "conversations-context-menu"
 
   @closed %{visible: false, x: 0, y: 0, type: :channel, channel: nil, nick: nil}
 

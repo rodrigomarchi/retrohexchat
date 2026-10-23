@@ -35,7 +35,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.Nicklist do
 
   alias RetroHexChatWeb.Components.UI.Chat.Role
 
-  @id "nicklist"
+  use RetroHexChatWeb.ChatLive.Components.DialogIsland, id: "nicklist"
 
   # A busy channel can hold more members than anyone scrolls through, and every
   # one of them would be a DOM row. Rendering is bounded and the total is shown,
@@ -50,10 +50,6 @@ defmodule RetroHexChatWeb.ChatLive.Components.Nicklist do
     %{key: :regular, stream: :regulars},
     %{key: :bot, stream: :bots}
   ]
-
-  @doc "Stable component id used by the parent for `send_update/2`."
-  @spec id() :: String.t()
-  def id, do: @id
 
   @doc "Stable DOM id for a user's stream row, keyed by the normalized nick."
   @spec dom_id(String.t()) :: String.t()

@@ -33,7 +33,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.ChannelCentralDialog do
   alias RetroHexChatWeb.ChatLive.Components.DialogIsland
   alias RetroHexChatWeb.ChatLive.Helpers.NickFlags
 
-  @id "channel-central-dialog"
+  use RetroHexChatWeb.ChatLive.Components.DialogIsland, id: "channel-central-dialog"
 
   # How many ban/exception rows the window will draw.
   #
@@ -46,9 +46,6 @@ defmodule RetroHexChatWeb.ChatLive.Components.ChannelCentralDialog do
   # Set far above any real moderation list; it exists so a pathological channel
   # cannot draw tens of thousands of rows into the DOM.
   @max_listed_entries 200
-
-  @spec id() :: String.t()
-  def id, do: @id
 
   @closed %{
     show_channel_central: false,

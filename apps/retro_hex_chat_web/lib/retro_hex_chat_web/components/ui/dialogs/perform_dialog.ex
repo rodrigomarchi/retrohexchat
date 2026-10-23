@@ -7,6 +7,8 @@ defmodule RetroHexChatWeb.Components.UI.PerformDialog do
   """
   use RetroHexChatWeb.Component
 
+  import RetroHexChatWeb.Components.UI.EditorAttrs
+
   import RetroHexChatWeb.Components.UI.Dialog
   import RetroHexChatWeb.Components.UI.ActionList
   import RetroHexChatWeb.Components.UI.DialogBanner
@@ -99,7 +101,7 @@ defmodule RetroHexChatWeb.Components.UI.PerformDialog do
   attr :on_move_up, :any, default: nil
   attr :on_move_down, :any, default: nil
   attr :on_toggle_enabled, :any, default: nil
-  attr :sub_scope, :atom, default: :window, values: [:viewport, :window]
+  sub_scope_attr()
 
   @spec perform_panel(map()) :: Phoenix.LiveView.Rendered.t()
   def perform_panel(assigns) do

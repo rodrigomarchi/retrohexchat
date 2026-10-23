@@ -29,12 +29,8 @@ defmodule RetroHexChatWeb.ChatLive.Components.ThreadDialog do
   alias RetroHexChatWeb.ChatLive.StreamItem
   alias RetroHexChatWeb.PaginatedList
 
-  @id "thread-dialog"
+  use RetroHexChatWeb.ChatLive.Components.DialogIsland, id: "thread-dialog"
   @page_size 25
-
-  @doc "Stable DOM/component id used by the parent for `send_update/2`."
-  @spec id() :: String.t()
-  def id, do: @id
 
   @impl true
   @spec mount(Phoenix.LiveView.Socket.t()) :: {:ok, Phoenix.LiveView.Socket.t()}

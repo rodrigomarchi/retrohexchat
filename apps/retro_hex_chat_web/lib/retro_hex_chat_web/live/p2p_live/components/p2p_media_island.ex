@@ -32,11 +32,7 @@ defmodule RetroHexChatWeb.P2PLive.Components.P2PMediaIsland do
   @reaction_ttl_ms 2400
   @valid_reactions ~w(heart thumbs_up clap laugh sparkle)
   # Distinct from the media panel's own `id="lobby-media"` hook element inside it.
-  @id "lobby-media-island"
-
-  @doc "Stable DOM/component id used by the host for `send_update/2`."
-  @spec id() :: String.t()
-  def id, do: @id
+  use RetroHexChatWeb.ChatLive.Components.DialogIsland, id: "lobby-media-island"
 
   @impl true
   @spec mount(Phoenix.LiveView.Socket.t()) :: {:ok, Phoenix.LiveView.Socket.t()}

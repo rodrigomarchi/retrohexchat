@@ -49,13 +49,13 @@ msgstr ""
 msgid "Connection error"
 msgstr ""
 
-#: lib/retro_hex_chat_web/live/call_live/events.ex:1524
+#: lib/retro_hex_chat_web/live/call_live/events.ex:1521
 #, elixir-autogen, elixir-format
 msgid "Could not end group call."
 msgstr ""
 
-#: lib/retro_hex_chat_web/live/call_live/events.ex:1466
-#: lib/retro_hex_chat_web/live/call_live/events.ex:1490
+#: lib/retro_hex_chat_web/live/call_live/events.ex:1463
+#: lib/retro_hex_chat_web/live/call_live/events.ex:1487
 #, elixir-autogen, elixir-format
 msgid "Could not remove participant."
 msgstr ""
@@ -91,8 +91,8 @@ msgid "End the group call in %{channel} for everyone? All participants will be d
 msgstr ""
 
 #: lib/retro_hex_chat_web/components/ui/chat/visitor_greeting_card.ex:109
-#: lib/retro_hex_chat_web/components/ui/group_call/channel_badge.ex:342
-#: lib/retro_hex_chat_web/components/ui/group_call/channel_badge.ex:371
+#: lib/retro_hex_chat_web/components/ui/group_call/channel_badge.ex:340
+#: lib/retro_hex_chat_web/components/ui/group_call/channel_badge.ex:369
 #: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:1040
 #: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:1041
 #: lib/retro_hex_chat_web/live/app/call_live.ex:62
@@ -112,7 +112,7 @@ msgid "Group call connection failed."
 msgstr ""
 
 #: lib/retro_hex_chat_web/live/call_live/events.ex:953
-#: lib/retro_hex_chat_web/live/call_live/events.ex:1747
+#: lib/retro_hex_chat_web/live/call_live/events.ex:1744
 #, elixir-autogen, elixir-format
 msgid "Group call media connection interrupted. Trying to recover."
 msgstr ""
@@ -127,7 +127,7 @@ msgstr ""
 msgid "Group calls are available in channels only."
 msgstr ""
 
-#: lib/retro_hex_chat_web/components/ui/group_call/channel_badge.ex:343
+#: lib/retro_hex_chat_web/components/ui/group_call/channel_badge.ex:341
 #, elixir-autogen, elixir-format
 msgid "Identify with NickServ to use group calls"
 msgstr ""
@@ -205,7 +205,7 @@ msgstr ""
 msgid "Open a channel before starting a group call."
 msgstr ""
 
-#: lib/retro_hex_chat_web/live/call_live/events.ex:1554
+#: lib/retro_hex_chat_web/live/call_live/events.ex:1551
 #, elixir-autogen, elixir-format
 msgid "Participant is no longer in the group call."
 msgstr ""
@@ -241,7 +241,7 @@ msgstr ""
 msgid "You must be identified with NickServ to use group calls."
 msgstr ""
 
-#: lib/retro_hex_chat_web/live/call_live/events.ex:1582
+#: lib/retro_hex_chat_web/live/call_live/events.ex:1579
 #, elixir-autogen, elixir-format
 msgid "You must be registered to moderate group calls."
 msgstr ""
@@ -436,7 +436,7 @@ msgstr ""
 msgid "%{sent} up / %{received} down"
 msgstr ""
 
-#: lib/retro_hex_chat_web/components/ui/group_call/channel_badge.ex:346
+#: lib/retro_hex_chat_web/components/ui/group_call/channel_badge.ex:344
 #, elixir-autogen, elixir-format
 msgid "%{state} conference in %{channel}: %{count}/%{max} participants, %{duration}"
 msgstr ""
@@ -461,7 +461,7 @@ msgstr ""
 msgid "%{target} stopped sharing a screen."
 msgstr ""
 
-#: lib/retro_hex_chat_web/live/call_live/events.ex:1478
+#: lib/retro_hex_chat_web/live/call_live/events.ex:1475
 #, elixir-autogen, elixir-format
 msgid "%{target} was removed from the conference and banned from %{channel}."
 msgstr ""
@@ -734,7 +734,7 @@ msgstr ""
 msgid "Default device"
 msgstr ""
 
-#: lib/retro_hex_chat_web/components/ui/group_call/channel_badge.ex:360
+#: lib/retro_hex_chat_web/components/ui/group_call/channel_badge.ex:358
 #, elixir-autogen, elixir-format
 msgid "Degraded"
 msgstr ""
@@ -745,7 +745,7 @@ msgstr ""
 msgid "Download"
 msgstr ""
 
-#: lib/retro_hex_chat_web/components/ui/group_call/channel_badge.ex:361
+#: lib/retro_hex_chat_web/components/ui/group_call/channel_badge.ex:359
 #, elixir-autogen, elixir-format
 msgid "Ending"
 msgstr ""
@@ -805,7 +805,7 @@ msgstr ""
 msgid "Freezes"
 msgstr ""
 
-#: lib/retro_hex_chat_web/components/ui/group_call/channel_badge.ex:358
+#: lib/retro_hex_chat_web/components/ui/group_call/channel_badge.ex:356
 #, elixir-autogen, elixir-format
 msgid "Full"
 msgstr ""
@@ -833,7 +833,7 @@ msgstr ""
 msgid "Group call media connection failed. Retry the media connection."
 msgstr ""
 
-#: lib/retro_hex_chat_web/live/call_live/events.ex:1744
+#: lib/retro_hex_chat_web/live/call_live/events.ex:1741
 #, elixir-autogen, elixir-format
 msgid "Group call media is connecting."
 msgstr ""
@@ -942,7 +942,7 @@ msgstr ""
 msgid "Lock conference"
 msgstr ""
 
-#: lib/retro_hex_chat_web/components/ui/group_call/channel_badge.ex:359
+#: lib/retro_hex_chat_web/components/ui/group_call/channel_badge.ex:357
 #, elixir-autogen, elixir-format
 msgid "Locked"
 msgstr ""
@@ -958,7 +958,7 @@ msgstr ""
 msgid "MOS %{score}"
 msgstr ""
 
-#: lib/retro_hex_chat_web/live/call_live/events.ex:1756
+#: lib/retro_hex_chat_web/live/call_live/events.ex:1753
 #, elixir-autogen, elixir-format
 msgid "Media recovery failed. Retry the media connection."
 msgstr ""
@@ -1209,14 +1209,14 @@ msgstr ""
 msgid "Remove from conference and ban from channel"
 msgstr ""
 
-#: lib/retro_hex_chat_web/live/call_live/events.ex:1495
+#: lib/retro_hex_chat_web/live/call_live/events.ex:1492
 #, elixir-autogen, elixir-format
 msgid "Removed from channel conference"
 msgstr ""
 
 #: lib/retro_hex_chat_web/live/call_live/events.ex:150
 #: lib/retro_hex_chat_web/live/call_live/events.ex:158
-#: lib/retro_hex_chat_web/live/call_live/events.ex:1753
+#: lib/retro_hex_chat_web/live/call_live/events.ex:1750
 #, elixir-autogen, elixir-format
 msgid "Requesting a fresh media offer."
 msgstr ""
@@ -1733,7 +1733,7 @@ msgstr ""
 msgid "Rejoining"
 msgstr ""
 
-#: lib/retro_hex_chat_web/live/call_live/events.ex:1750
+#: lib/retro_hex_chat_web/live/call_live/events.ex:1747
 #, elixir-autogen, elixir-format
 msgid "Rejoining the media session."
 msgstr ""
@@ -1814,12 +1814,12 @@ msgstr ""
 msgid "Moderation"
 msgstr ""
 
-#: lib/retro_hex_chat_web/components/ui/group_call/channel_badge.ex:374
+#: lib/retro_hex_chat_web/components/ui/group_call/channel_badge.ex:372
 #, elixir-autogen, elixir-format
 msgid "Group Call · %{state}"
 msgstr ""
 
-#: lib/retro_hex_chat_web/components/ui/group_call/channel_badge.ex:357
+#: lib/retro_hex_chat_web/components/ui/group_call/channel_badge.ex:355
 #, elixir-autogen, elixir-format
 msgid "In progress"
 msgstr ""

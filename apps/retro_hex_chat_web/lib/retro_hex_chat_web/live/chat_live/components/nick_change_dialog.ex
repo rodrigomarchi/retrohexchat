@@ -22,11 +22,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.NickChangeDialog do
 
   import RetroHexChatWeb.Components.UI.NickChangeDialog
 
-  @id "nick-change-dialog"
-
-  @doc "Stable DOM/component id used by the parent for `send_update/2`."
-  @spec id() :: String.t()
-  def id, do: @id
+  use RetroHexChatWeb.ChatLive.Components.DialogIsland, id: "nick-change-dialog"
 
   @impl true
   @spec mount(Phoenix.LiveView.Socket.t()) :: {:ok, Phoenix.LiveView.Socket.t()}

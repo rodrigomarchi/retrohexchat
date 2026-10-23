@@ -25,11 +25,8 @@ defmodule RetroHexChatWeb.ChatLive.Components.SystemMetricsDialog do
   alias RetroHexChatWeb.SystemMetrics.Collector
   alias RetroHexChatWeb.Telemetry
 
-  @id "system-metrics-dialog"
+  use RetroHexChatWeb.ChatLive.Components.DialogIsland, id: "system-metrics-dialog"
   @refresh_ms 1_000
-
-  @spec id() :: String.t()
-  def id, do: @id
 
   @spec mount(Phoenix.LiveView.Socket.t()) :: {:ok, Phoenix.LiveView.Socket.t()}
   def mount(socket) do

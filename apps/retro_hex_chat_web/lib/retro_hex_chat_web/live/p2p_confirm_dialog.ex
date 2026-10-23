@@ -15,11 +15,7 @@ defmodule RetroHexChatWeb.Live.P2PConfirmDialog do
 
   import RetroHexChatWeb.Components.UI.P2PConfirmDialog
 
-  @id "p2p-confirm-dialog"
-
-  @doc "The id the session's page renders it under, and `send_update/2` addresses."
-  @spec id() :: String.t()
-  def id, do: @id
+  use RetroHexChatWeb.ChatLive.Components.DialogIsland, id: "p2p-confirm-dialog"
 
   @impl true
   @spec mount(Phoenix.LiveView.Socket.t()) :: {:ok, Phoenix.LiveView.Socket.t()}

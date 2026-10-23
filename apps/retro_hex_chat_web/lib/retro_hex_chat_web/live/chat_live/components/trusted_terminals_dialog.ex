@@ -19,13 +19,10 @@ defmodule RetroHexChatWeb.ChatLive.Components.TrustedTerminalsDialog do
   alias RetroHexChatWeb.PaginatedList
   alias RetroHexChatWeb.Params
 
-  @id "trusted-terminals-dialog"
+  use RetroHexChatWeb.ChatLive.Components.DialogIsland, id: "trusted-terminals-dialog"
 
   @sessions_page_size 25
   @events_page_size 20
-
-  @spec id() :: String.t()
-  def id, do: @id
 
   # The inputs a snapshot is taken from. A refresh is only free-standing while
   # the lists are plain lists; with streams, refreshing on every parent render

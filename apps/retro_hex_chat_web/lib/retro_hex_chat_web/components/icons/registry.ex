@@ -36,7 +36,6 @@ defmodule RetroHexChatWeb.Icons.Registry do
 
     # Communication
     {:icon_p2p, RetroHexChatWeb.Icons.Communication},
-    {:icon_p2p_route, RetroHexChatWeb.Icons.Communication},
     {:icon_protocol_p2p, RetroHexChatWeb.Icons.Communication},
     {:icon_protocol_conference, RetroHexChatWeb.Icons.Communication},
     {:icon_protocol_p2p_compact, RetroHexChatWeb.Icons.Communication},

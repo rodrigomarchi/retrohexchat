@@ -61,7 +61,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.Composer do
 
   alias RetroHexChatWeb.Icons
 
-  @id "composer"
+  use RetroHexChatWeb.ChatLive.Components.DialogIsland, id: "composer"
 
   # Recordings that may be uploading at once; an announcement past this many is
   # refused, so the announcements a client can make are bounded too.
@@ -69,9 +69,6 @@ defmodule RetroHexChatWeb.ChatLive.Components.Composer do
 
   # The only names a recording made here can carry (see `voice_recorder.js`).
   @voice_filename ~r/\Avoice-\d{8}-\d{6}\.(weba|ogg|m4a|mp3|wav)\z/
-
-  @spec id() :: String.t()
-  def id, do: @id
 
   @default_capabilities %{
     nick_autocomplete: false,

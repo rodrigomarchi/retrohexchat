@@ -19,15 +19,9 @@ defmodule RetroHexChatWeb.ChatLive.Components.AdminMotdDialog do
 
   alias RetroHexChatWeb.ChatLive.Components.DialogIsland
 
-  @id "admin-motd-dialog"
-
-  @spec id() :: String.t()
-  def id, do: @id
-
-  @initial %{content: nil, result: nil, loaded?: false}
-
-  @spec mount(Phoenix.LiveView.Socket.t()) :: {:ok, Phoenix.LiveView.Socket.t()}
-  def mount(socket), do: DialogIsland.mount(socket, @id, @initial)
+  use RetroHexChatWeb.ChatLive.Components.DialogIsland,
+    id: "admin-motd-dialog",
+    initial: %{content: nil, result: nil, loaded?: false}
 
   @spec update(map(), Phoenix.LiveView.Socket.t()) :: {:ok, Phoenix.LiveView.Socket.t()}
   def update(assigns, socket),

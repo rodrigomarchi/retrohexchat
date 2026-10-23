@@ -8,6 +8,8 @@ defmodule RetroHexChatWeb.Components.UI.AutojoinDialog do
   """
   use RetroHexChatWeb.Component
 
+  import RetroHexChatWeb.Components.UI.EditorAttrs
+
   import RetroHexChatWeb.Components.UI.Dialog
   import RetroHexChatWeb.Components.UI.ActionList
   import RetroHexChatWeb.Components.UI.DialogBanner
@@ -86,7 +88,7 @@ defmodule RetroHexChatWeb.Components.UI.AutojoinDialog do
   attr :on_add, :any, default: nil
   attr :on_edit, :any, default: nil
   attr :on_remove, :any, default: nil
-  attr :sub_scope, :atom, default: :window, values: [:viewport, :window]
+  sub_scope_attr()
 
   @spec autojoin_panel(map()) :: Phoenix.LiveView.Rendered.t()
   def autojoin_panel(assigns) do

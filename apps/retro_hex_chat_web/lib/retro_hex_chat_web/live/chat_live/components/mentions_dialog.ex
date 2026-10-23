@@ -24,12 +24,8 @@ defmodule RetroHexChatWeb.ChatLive.Components.MentionsDialog do
   alias RetroHexChatWeb.ChatLive.Helpers.NickFlags
   alias RetroHexChatWeb.PaginatedList
 
-  @id "mentions-dialog"
+  use RetroHexChatWeb.ChatLive.Components.DialogIsland, id: "mentions-dialog"
   @page_size 30
-
-  @doc "Stable DOM/component id used by the parent for `send_update/2`."
-  @spec id() :: String.t()
-  def id, do: @id
 
   @impl true
   @spec mount(Phoenix.LiveView.Socket.t()) :: {:ok, Phoenix.LiveView.Socket.t()}

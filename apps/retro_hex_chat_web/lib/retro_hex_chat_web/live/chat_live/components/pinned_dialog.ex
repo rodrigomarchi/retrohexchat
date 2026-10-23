@@ -21,12 +21,8 @@ defmodule RetroHexChatWeb.ChatLive.Components.PinnedDialog do
   alias RetroHexChatWeb.ChatLive.Helpers.NickFlags
   alias RetroHexChatWeb.PaginatedList
 
-  @id "pinned-dialog"
+  use RetroHexChatWeb.ChatLive.Components.DialogIsland, id: "pinned-dialog"
   @page_size 25
-
-  @doc "Stable DOM/component id used by the parent for `send_update/2`."
-  @spec id() :: String.t()
-  def id, do: @id
 
   @impl true
   @spec mount(Phoenix.LiveView.Socket.t()) :: {:ok, Phoenix.LiveView.Socket.t()}

@@ -21,22 +21,17 @@ defmodule RetroHexChatWeb.ChatLive.Components.AdminDangerZoneDialog do
 
   alias RetroHexChatWeb.ChatLive.Components.DialogIsland
 
-  @id "admin-danger-zone-dialog"
   @fallback_server_name "RetroHexChat"
 
-  @spec id() :: String.t()
-  def id, do: @id
-
-  @initial %{
-    preview: nil,
-    result: nil,
-    confirm: "",
-    server_name: @fallback_server_name,
-    loaded?: false
-  }
-
-  @spec mount(Phoenix.LiveView.Socket.t()) :: {:ok, Phoenix.LiveView.Socket.t()}
-  def mount(socket), do: DialogIsland.mount(socket, @id, @initial)
+  use RetroHexChatWeb.ChatLive.Components.DialogIsland,
+    id: "admin-danger-zone-dialog",
+    initial: %{
+      preview: nil,
+      result: nil,
+      confirm: "",
+      server_name: @fallback_server_name,
+      loaded?: false
+    }
 
   @spec update(map(), Phoenix.LiveView.Socket.t()) :: {:ok, Phoenix.LiveView.Socket.t()}
   def update(assigns, socket),

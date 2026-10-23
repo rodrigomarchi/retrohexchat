@@ -14,12 +14,14 @@ defmodule RetroHexChatWeb.Components.UI.StatusBarApp do
 
   ## Usage
 
-      <.status_bar_app
-        lag_ms={120}
-        lag_status={:normal}
-        online_buddy_count={2}
-        on_notify_toggle="toggle_notify_list"
-      />
+      <.window_status_bar>
+        <.status_bar_zones
+          lag_ms={120}
+          lag_status={:normal}
+          online_buddy_count={2}
+          on_notify_toggle="toggle_notify_list"
+        />
+      </.window_status_bar>
   """
   use RetroHexChatWeb.Component
 
@@ -27,69 +29,6 @@ defmodule RetroHexChatWeb.Components.UI.StatusBarApp do
   import RetroHexChatWeb.Components.UI.Window
 
   alias RetroHexChatWeb.Icons
-
-  @doc "Renders the application status bar."
-  attr :lag_ms, :any, default: nil, doc: "Lag in milliseconds, or nil when unknown/timed out"
-  attr :lag_status, :atom, default: :normal, values: [:normal, :warning, :critical, :timeout]
-  attr :online_buddy_count, :integer, default: 0
-  attr :on_notify_toggle, :any, default: nil
-  attr :muted, :boolean, default: false
-  attr :timezone, :string, default: "Etc/UTC"
-
-  attr :group_call, :map,
-    default: nil,
-    doc: """
-    A live conference this reader is in, as `%{label, title, path}`. A call is
-    never on the screen showing this bar, so the zone is a link to the tab
-    holding it and carries no Leave — leaving is done from the screen in it.
-    """
-
-  attr :p2p, :map,
-    default: nil,
-    doc: """
-    A live P2P session this reader is in, as `%{label, title, path}`. A session
-    is never on the screen showing this bar, so the zone is a link to the tab
-    holding it and carries no End — ending is done from the screen in it. The
-    zone stays visible on mobile.
-    """
-
-  attr :show_clock, :boolean,
-    default: true,
-    doc: "hide the clock zone when the surrounding chrome already shows one (e.g. a desktop tray)"
-
-  attr :show_lag, :boolean,
-    default: true,
-    doc: "same, for the lag readout"
-
-  attr :show_mute, :boolean,
-    default: true,
-    doc: "same, for the mute toggle"
-
-  attr :on_mute_toggle, :any, default: nil
-  attr :class, :string, default: nil
-  attr :rest, :global
-
-  @spec status_bar_app(map()) :: Phoenix.LiveView.Rendered.t()
-  def status_bar_app(assigns) do
-    ~H"""
-    <.window_status_bar class={@class} data-testid="status-bar-app" {@rest}>
-      <.status_bar_zones
-        lag_ms={@lag_ms}
-        lag_status={@lag_status}
-        online_buddy_count={@online_buddy_count}
-        on_notify_toggle={@on_notify_toggle}
-        muted={@muted}
-        timezone={@timezone}
-        group_call={@group_call}
-        p2p={@p2p}
-        show_clock={@show_clock}
-        show_lag={@show_lag}
-        show_mute={@show_mute}
-        on_mute_toggle={@on_mute_toggle}
-      />
-    </.window_status_bar>
-    """
-  end
 
   @doc """
   The status zones on their own, without a bar around them.

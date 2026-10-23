@@ -27,11 +27,8 @@ defmodule RetroHexChatWeb.ChatLive.Components.BotManagementDialog do
   alias RetroHexChat.Bots.{Queries, Registry}
   alias RetroHexChatWeb.PaginatedList
 
-  @id "bot-management-dialog"
+  use RetroHexChatWeb.ChatLive.Components.DialogIsland, id: "bot-management-dialog"
   @events_page_size 50
-
-  @spec id() :: String.t()
-  def id, do: @id
 
   @owned_defaults %{
     show_bot: false,

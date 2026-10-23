@@ -10,7 +10,7 @@ defmodule RetroHexChatWeb.Components.UI.AppHeader do
       <.app_header logo_window="site-about">
         <:panels>
           <.menu_bar_app connected={true} on_action="toolbar_action" />
-          <.status_bar_app class="ml-auto" ... />
+          <.status_bar_zones ... />
         </:panels>
       </.app_header>
   """

@@ -60,68 +60,8 @@ defmodule RetroHexChatWeb.ShowcaseLive.P2P.P2PConnectionDiagramPage do
       </h2>
 
       <.showcase_card
-        title={dgettext("showcase", "Compact — Waiting")}
-        description="Default compact diagram used by all P2P session states."
-      >
-        <.p2p_connection_strip
-          nickname="you"
-          peer_nick="alice"
-          peer_online={false}
-          session_status="pending"
-          local_info={@local_info}
-          peer_info={%{}}
-        />
-      </.showcase_card>
-
-      <.showcase_card
-        title={dgettext("showcase", "Compact — Ready")}
-        description="Both peers are present and ready to choose an action."
-      >
-        <.p2p_connection_strip
-          nickname="you"
-          peer_nick="bob"
-          peer_online={true}
-          session_status="lobby"
-          local_info={@local_info}
-          peer_info={@peer_info}
-        />
-      </.showcase_card>
-
-      <.showcase_card
-        title={dgettext("showcase", "Compact — Video Call")}
-        description="Compact state while a call is active."
-      >
-        <.p2p_connection_strip
-          nickname="you"
-          peer_nick="carol"
-          peer_online={true}
-          session_status="active"
-          webrtc_state="Connected"
-          call={%{type: "video", duration: "05:12"}}
-          local_info={@local_info}
-          peer_info={@peer_info}
-        />
-      </.showcase_card>
-
-      <.showcase_card
-        title={dgettext("showcase", "Compact — File Transfer")}
-        description="Compact state while transfer progress is active."
-      >
-        <.p2p_connection_strip
-          nickname="you"
-          peer_nick="dave"
-          peer_online={true}
-          session_status="active"
-          webrtc_state="Connected"
-          file_transfer={%{status: "transferring", percent: 42}}
-          local_info={@local_info}
-          peer_info={@peer_info}
-        />
-      </.showcase_card>
-
-      <.showcase_card
         title={dgettext("showcase", "Expanded — Ready")}
-        description="Full diagram shown after expanding from compact mode."
+        description="The Network tab of a P2P session: both browsers, their whois and the live link between them."
       >
         <.p2p_connection_diagram
           nickname="you"

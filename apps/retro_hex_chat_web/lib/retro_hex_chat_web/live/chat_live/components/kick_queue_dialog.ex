@@ -13,11 +13,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.KickQueueDialog do
 
   import RetroHexChatWeb.Components.UI.KickDialog
 
-  @id "kick-dialog"
-
-  @doc "Stable DOM/component id used by the parent for `send_update/2`."
-  @spec id() :: String.t()
-  def id, do: @id
+  use RetroHexChatWeb.ChatLive.Components.DialogIsland, id: "kick-dialog"
 
   @impl true
   @spec mount(Phoenix.LiveView.Socket.t()) :: {:ok, Phoenix.LiveView.Socket.t()}

@@ -18,7 +18,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.SystemHomeDialog do
   alias RetroHexChat.SystemInfo
   alias RetroHexChatWeb.ChatLive.AdminOps
 
-  @id "system-home-dialog"
+  use RetroHexChatWeb.ChatLive.Components.DialogIsland, id: "system-home-dialog"
 
   # The stack a reader is placing the node in: language, framework, product.
   # Each carries how it should be named and drawn, because `:phoenix_live_view`
@@ -30,9 +30,6 @@ defmodule RetroHexChatWeb.ChatLive.Components.SystemHomeDialog do
     %{app: :phoenix_live_view, label: "LiveView", icon: :icon_websocket},
     %{app: :retro_hex_chat, label: "RetroHexChat", icon: :icon_hex_stone}
   ]
-
-  @spec id() :: String.t()
-  def id, do: @id
 
   @spec mount(Phoenix.LiveView.Socket.t()) :: {:ok, Phoenix.LiveView.Socket.t()}
   def mount(socket) do

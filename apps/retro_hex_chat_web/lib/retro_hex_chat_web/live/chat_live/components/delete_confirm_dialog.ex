@@ -12,11 +12,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.DeleteConfirmDialog do
 
   import RetroHexChatWeb.Components.UI.DeleteConfirmDialog
 
-  @id "delete-confirm-dialog"
-
-  @doc "Stable DOM/component id used by the parent for `send_update/2`."
-  @spec id() :: String.t()
-  def id, do: @id
+  use RetroHexChatWeb.ChatLive.Components.DialogIsland, id: "delete-confirm-dialog"
 
   @impl true
   @spec mount(Phoenix.LiveView.Socket.t()) :: {:ok, Phoenix.LiveView.Socket.t()}

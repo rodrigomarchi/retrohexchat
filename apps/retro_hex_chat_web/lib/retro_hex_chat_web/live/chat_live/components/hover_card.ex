@@ -23,13 +23,9 @@ defmodule RetroHexChatWeb.ChatLive.Components.HoverCard do
 
   import RetroHexChatWeb.Components.UI.HoverCard
 
-  @id "hover-card"
+  use RetroHexChatWeb.ChatLive.Components.DialogIsland, id: "hover-card"
 
   @default %{visible: false, nick: nil, x: 0, y: 0, loading: false, data: nil}
-
-  @doc "Stable component id used by the parent for `send_update/2`."
-  @spec id() :: String.t()
-  def id, do: @id
 
   @doc "The empty hover-card map (hidden, no nick)."
   @spec default() :: map()

@@ -26,11 +26,7 @@ defmodule RetroHexChatWeb.ConnectForm do
   alias RetroHexChat.Services.NickServ
   alias RetroHexChatWeb.Params
 
-  @id "connect-form"
-
-  @doc "Stable DOM/component id used by the host for send_update/2."
-  @spec id() :: String.t()
-  def id, do: @id
+  use RetroHexChatWeb.ChatLive.Components.DialogIsland, id: "connect-form"
 
   @impl true
   @spec mount(Phoenix.LiveView.Socket.t()) :: {:ok, Phoenix.LiveView.Socket.t()}

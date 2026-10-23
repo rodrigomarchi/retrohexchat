@@ -15,11 +15,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.MuteDurationDialog do
 
   import RetroHexChatWeb.Components.UI.MuteDurationDialog
 
-  @id "mute-duration-dialog"
-
-  @doc "Stable DOM/component id used by the parent for `send_update/2`."
-  @spec id() :: String.t()
-  def id, do: @id
+  use RetroHexChatWeb.ChatLive.Components.DialogIsland, id: "mute-duration-dialog"
 
   @impl true
   @spec mount(Phoenix.LiveView.Socket.t()) :: {:ok, Phoenix.LiveView.Socket.t()}

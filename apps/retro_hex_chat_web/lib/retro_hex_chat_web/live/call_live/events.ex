@@ -1429,15 +1429,12 @@ defmodule RetroHexChatWeb.CallLive.Events do
   end
 
   defp apply_lock_action(call, actor) do
-    if locked?(call) do
+    if Policy.locked?(call[:room]) do
       GroupCall.unlock_call(call.token, actor)
     else
       GroupCall.lock_call(call.token, actor)
     end
   end
-
-  defp locked?(%{room: room}), do: Policy.locked?(room)
-  defp locked?(_call), do: false
 
   defp open_kick_confirm(socket, participant_id) do
     with participant_id when is_integer(participant_id) <- Params.integer(participant_id),

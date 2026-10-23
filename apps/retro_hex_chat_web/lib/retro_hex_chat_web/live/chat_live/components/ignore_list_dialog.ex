@@ -25,15 +25,9 @@ defmodule RetroHexChatWeb.ChatLive.Components.IgnoreListDialog do
   alias RetroHexChatWeb.ChatLive.Components.DialogIsland
   alias RetroHexChatWeb.ChatLive.Helpers.NickFlags
 
-  @id "ignore-list-dialog"
-
-  @spec id() :: String.t()
-  def id, do: @id
-
-  @initial %{show_add_dialog: false, entry_locales: %{}, entry_locales_cache: nil}
-
-  @spec mount(Phoenix.LiveView.Socket.t()) :: {:ok, Phoenix.LiveView.Socket.t()}
-  def mount(socket), do: DialogIsland.mount(socket, @id, @initial)
+  use RetroHexChatWeb.ChatLive.Components.DialogIsland,
+    id: "ignore-list-dialog",
+    initial: %{show_add_dialog: false, entry_locales: %{}, entry_locales_cache: nil}
 
   @spec update(map(), Phoenix.LiveView.Socket.t()) :: {:ok, Phoenix.LiveView.Socket.t()}
   def update(assigns, socket) do

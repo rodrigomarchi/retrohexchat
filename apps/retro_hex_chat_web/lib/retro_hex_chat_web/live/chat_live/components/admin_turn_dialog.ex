@@ -16,15 +16,9 @@ defmodule RetroHexChatWeb.ChatLive.Components.AdminTurnDialog do
 
   alias RetroHexChatWeb.ChatLive.Components.DialogIsland
 
-  @id "admin-turn-dialog"
-
-  @spec id() :: String.t()
-  def id, do: @id
-
-  @initial %{stats: nil, allocations: nil, result: nil, loaded?: false}
-
-  @spec mount(Phoenix.LiveView.Socket.t()) :: {:ok, Phoenix.LiveView.Socket.t()}
-  def mount(socket), do: DialogIsland.mount(socket, @id, @initial)
+  use RetroHexChatWeb.ChatLive.Components.DialogIsland,
+    id: "admin-turn-dialog",
+    initial: %{stats: nil, allocations: nil, result: nil, loaded?: false}
 
   @spec update(map(), Phoenix.LiveView.Socket.t()) :: {:ok, Phoenix.LiveView.Socket.t()}
   def update(assigns, socket), do: DialogIsland.load_once(socket, assigns, &assign_snapshot(&1))

@@ -26,10 +26,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.AddressBookDialog do
   alias RetroHexChat.Accounts.{ContactList, Session}
   alias RetroHexChatWeb.ChatLive.Helpers.NickFlags
 
-  @id "address-book-dialog"
-
-  @spec id() :: String.t()
-  def id, do: @id
+  use RetroHexChatWeb.ChatLive.Components.DialogIsland, id: "address-book-dialog"
 
   @initial %{
     selected: nil,

@@ -29,20 +29,13 @@ defmodule RetroHexChatWeb.ChatLive.Components.AutojoinDialog do
   alias RetroHexChat.Text
   alias RetroHexChatWeb.ChatLive.Components.DialogIsland
 
-  @id "autojoin-dialog"
-
-  # ex_dna:disable-for-lines:12 island skeleton; the behaviour is DialogIsland's
-  @spec id() :: String.t()
-  def id, do: @id
-
-  @initial %{
-    selected: nil,
-    show_add_dialog: false,
-    show_edit_dialog: false
-  }
-
-  @spec mount(Phoenix.LiveView.Socket.t()) :: {:ok, Phoenix.LiveView.Socket.t()}
-  def mount(socket), do: DialogIsland.mount(socket, @id, @initial)
+  use RetroHexChatWeb.ChatLive.Components.DialogIsland,
+    id: "autojoin-dialog",
+    initial: %{
+      selected: nil,
+      show_add_dialog: false,
+      show_edit_dialog: false
+    }
 
   # Opening is pure window mount — closing unmounts the island, so there is no
   # open directive to reset state that the next mount rebuilds anyway.

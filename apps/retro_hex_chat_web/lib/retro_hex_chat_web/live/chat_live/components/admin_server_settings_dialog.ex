@@ -20,22 +20,16 @@ defmodule RetroHexChatWeb.ChatLive.Components.AdminServerSettingsDialog do
 
   alias RetroHexChatWeb.ChatLive.Components.DialogIsland
 
-  @id "admin-server-settings-dialog"
-
-  @spec id() :: String.t()
-  def id, do: @id
-
-  @initial %{
-    info: nil,
-    settings_text: nil,
-    settings_table: nil,
-    values: %{},
-    result: nil,
-    loaded?: false
-  }
-
-  @spec mount(Phoenix.LiveView.Socket.t()) :: {:ok, Phoenix.LiveView.Socket.t()}
-  def mount(socket), do: DialogIsland.mount(socket, @id, @initial)
+  use RetroHexChatWeb.ChatLive.Components.DialogIsland,
+    id: "admin-server-settings-dialog",
+    initial: %{
+      info: nil,
+      settings_text: nil,
+      settings_table: nil,
+      values: %{},
+      result: nil,
+      loaded?: false
+    }
 
   @spec update(map(), Phoenix.LiveView.Socket.t()) :: {:ok, Phoenix.LiveView.Socket.t()}
   def update(assigns, socket),

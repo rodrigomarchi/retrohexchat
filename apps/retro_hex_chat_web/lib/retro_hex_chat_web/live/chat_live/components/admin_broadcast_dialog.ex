@@ -16,10 +16,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.AdminBroadcastDialog do
 
   alias RetroHexChatWeb.ChatLive.{AdminOps, ChatContext}
 
-  @id "admin-broadcast-dialog"
-
-  @spec id() :: String.t()
-  def id, do: @id
+  use RetroHexChatWeb.ChatLive.Components.DialogIsland, id: "admin-broadcast-dialog"
 
   @spec mount(Phoenix.LiveView.Socket.t()) :: {:ok, Phoenix.LiveView.Socket.t()}
   def mount(socket) do

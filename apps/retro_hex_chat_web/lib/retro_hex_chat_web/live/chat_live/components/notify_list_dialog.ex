@@ -31,10 +31,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.NotifyListDialog do
   alias RetroHexChatWeb.ChatLive.Helpers.NickFlags
   alias RetroHexChatWeb.ChatLive.NotifyOps
 
-  @id "notify-list-dialog"
-
-  @spec id() :: String.t()
-  def id, do: @id
+  use RetroHexChatWeb.ChatLive.Components.DialogIsland, id: "notify-list-dialog"
 
   @initial %{
     notify_selected: nil,
