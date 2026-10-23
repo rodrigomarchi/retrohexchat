@@ -803,6 +803,11 @@ canonical module instead of copying it.
 | Starting or stopping a bot | `RetroHexChat.Bots.Lifecycle` |
 | A bot capability's subcommand parsing | `RetroHexChat.Bots.Capability.subcommand/4` |
 | A maintenance Oban worker's options | `use RetroHexChat.Jobs.MaintenanceWorker` |
+| Enqueuing a job after a delay | `RetroHexChat.Jobs.schedule_in/5` |
+| A bounded cleanup pass that counts what it did | `RetroHexChat.Sweep` |
+| A DynamicSupervisor with one process per channel, room or session | `use RetroHexChat.ProcessSupervisor` |
+| Finding a process by its name | `use RetroHexChat.ProcessRegistry` |
+| A protocol value (reason, trigger, id) shown in a panel | `RetroHexChatWeb.Components.UI.Format` |
 | Arcade game controls | `RetroHexChat.Arcade.Content.Controls` |
 | Editable-target checks in JS | `js/lib/ui/dom.js` |
 | Game networking, audio, HUD, lifecycle | `js/lib/games/net_protocol.js`, `synth.js`, `hud.js`, `js/lib/game_engine.js` |
