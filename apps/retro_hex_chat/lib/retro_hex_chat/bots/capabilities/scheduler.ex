@@ -17,6 +17,7 @@ defmodule RetroHexChat.Bots.Capabilities.Scheduler do
   @behaviour RetroHexChat.Bots.Capability
 
   alias RetroHexChat.Bots.Capabilities.Scheduler.Durable
+  alias RetroHexChat.Bots.Capability
   alias RetroHexChat.Bots.Policy
   alias RetroHexChat.Channels.Name
   alias RetroHexChat.Text
@@ -86,7 +87,8 @@ defmodule RetroHexChat.Bots.Capabilities.Scheduler do
       {:schedule, "remove " <> id} ->
         if_admin(ctx, fn -> handle_remove(String.trim(id), state) end)
 
-      :ignore ->
+      # A subcommand this capability does not have, or none at all.
+      _other ->
         :ignore
     end
   end
@@ -139,18 +141,9 @@ defmodule RetroHexChat.Bots.Capabilities.Scheduler do
 
   @spec parse_command(String.t(), String.t(), String.t()) :: {:schedule, String.t()} | :ignore
   defp parse_command(content, prefix, bot_name) do
-    lower = String.downcase(content)
-    cmd_prefix = String.downcase(prefix) <> String.downcase(bot_name)
-
-    if String.starts_with?(lower, cmd_prefix <> " schedule ") do
-      sub =
-        content
-        |> String.slice(String.length(cmd_prefix <> " schedule ")..-1//1)
-        |> String.trim()
-
-      {:schedule, String.downcase(sub)}
-    else
-      :ignore
+    case Capability.subcommand(content, prefix, bot_name, "schedule") do
+      {:ok, sub} -> {:schedule, String.downcase(sub)}
+      :error -> :ignore
     end
   end
 

@@ -15,6 +15,7 @@ defmodule RetroHexChat.Bots.Capabilities.RSS do
   alias RetroHexChat.Bots.Capabilities.RSS.FeedParser
   alias RetroHexChat.Bots.Capabilities.RSS.Fetcher
   alias RetroHexChat.Bots.Capabilities.RSS.Scheduler
+  alias RetroHexChat.Bots.Capability
   alias RetroHexChat.Bots.Feeds
   alias RetroHexChat.Bots.Policy
   alias RetroHexChat.Scraper
@@ -143,7 +144,8 @@ defmodule RetroHexChat.Bots.Capabilities.RSS do
       {:rss, "check " <> id} ->
         if_admin(ctx, fn -> handle_check(String.trim(id), state, config, ctx.channel) end)
 
-      :ignore ->
+      # A subcommand this capability does not have, or none at all.
+      _other ->
         :ignore
     end
   end
@@ -212,18 +214,9 @@ defmodule RetroHexChat.Bots.Capabilities.RSS do
 
   @spec parse_command(String.t(), String.t(), String.t()) :: {:rss, String.t()} | :ignore
   defp parse_command(content, prefix, bot_name) do
-    lower = String.downcase(content)
-    cmd_prefix = String.downcase(prefix) <> String.downcase(bot_name)
-
-    if String.starts_with?(lower, cmd_prefix <> " rss ") do
-      sub =
-        content
-        |> String.slice(String.length(cmd_prefix <> " rss ")..-1//1)
-        |> String.trim()
-
-      {:rss, String.downcase(sub)}
-    else
-      :ignore
+    case Capability.subcommand(content, prefix, bot_name, "rss") do
+      {:ok, sub} -> {:rss, String.downcase(sub)}
+      :error -> :ignore
     end
   end
 

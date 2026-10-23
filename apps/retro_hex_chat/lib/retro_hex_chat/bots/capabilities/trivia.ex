@@ -13,6 +13,7 @@ defmodule RetroHexChat.Bots.Capabilities.Trivia do
   @behaviour RetroHexChat.Bots.Capability
 
   alias RetroHexChat.Bots.Capabilities.Trivia.QuestionBank
+  alias RetroHexChat.Bots.Capability
 
   @impl true
   @spec name() :: atom()
@@ -147,27 +148,15 @@ defmodule RetroHexChat.Bots.Capabilities.Trivia do
   @spec parse_command(String.t(), String.t(), String.t()) ::
           {:trivia, String.t()} | {:answer, String.t()} | :ignore
   defp parse_command(content, prefix, bot_name) do
-    lower = String.downcase(content)
-    cmd_prefix = String.downcase(prefix) <> String.downcase(bot_name)
-
-    cond do
-      String.starts_with?(lower, cmd_prefix <> " trivia ") ->
-        sub =
-          content |> String.slice(String.length(cmd_prefix <> " trivia ")..-1//1) |> String.trim()
-
+    case Capability.subcommand(content, prefix, bot_name, "trivia") do
+      {:ok, sub} ->
         {:trivia, String.downcase(sub)}
 
-      String.starts_with?(lower, cmd_prefix <> " trivia") ->
-        {:trivia, ""}
-
-      String.starts_with?(lower, cmd_prefix <> " answer ") ->
-        text =
-          content |> String.slice(String.length(cmd_prefix <> " answer ")..-1//1) |> String.trim()
-
-        {:answer, text}
-
-      true ->
-        :ignore
+      :error ->
+        case Capability.subcommand(content, prefix, bot_name, "answer") do
+          {:ok, text} when text != "" -> {:answer, text}
+          _bare_or_other -> :ignore
+        end
     end
   end
 

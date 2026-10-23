@@ -35,6 +35,13 @@ defmodule RetroHexChat.Bots.Capabilities.RSSTest do
     end
   end
 
+  # A subcommand the feed list does not have used to match no clause and
+  # crash the bot's message handling.
+  test "an unknown or missing subcommand is ignored, not a crash" do
+    assert RSS.handle_message("!FeedBot rss help", "admin", @ctx) == :ignore
+    assert RSS.handle_message("!FeedBot rss", "admin", @ctx) == :ignore
+  end
+
   describe "rss add" do
     test "adds a feed" do
       result =

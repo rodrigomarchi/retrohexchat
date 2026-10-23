@@ -132,4 +132,32 @@ defmodule RetroHexChat.Bots.Capability do
     reschedule_delay: 2,
     durable_keys: 0
   ]
+
+  @doc """
+  What follows `<prefix><bot> <word>` in a message, case-insensitively and
+  trimmed: `{:ok, ""}` for the bare command, `:error` when the message is not
+  that command. `word` may be a list of aliases (`["roll", "dice"]`). The word
+  must end where the command ends — `!bot triviaplease` is not `trivia`.
+  """
+  @spec subcommand(String.t(), String.t(), String.t(), String.t() | [String.t()]) ::
+          {:ok, String.t()} | :error
+  def subcommand(content, prefix, bot_name, words) do
+    lower = String.downcase(content)
+    head = String.downcase(prefix <> bot_name)
+
+    Enum.find_value(List.wrap(words), :error, fn word ->
+      command = head <> " " <> String.downcase(word)
+
+      cond do
+        lower == command ->
+          {:ok, ""}
+
+        String.starts_with?(lower, command <> " ") ->
+          {:ok, content |> String.slice(String.length(command <> " ")..-1//1) |> String.trim()}
+
+        true ->
+          nil
+      end
+    end)
+  end
 end

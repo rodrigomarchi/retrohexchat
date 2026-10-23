@@ -13,6 +13,8 @@ defmodule RetroHexChat.Bots.Capabilities.Dice do
 
   @behaviour RetroHexChat.Bots.Capability
 
+  alias RetroHexChat.Bots.Capability
+
   @max_dice_default 100
   @max_sides_default 1000
 
@@ -87,31 +89,9 @@ defmodule RetroHexChat.Bots.Capabilities.Dice do
 
   @spec parse_command(String.t(), String.t(), String.t()) :: {:roll, String.t()} | :ignore
   defp parse_command(content, prefix, bot_name) do
-    lower = String.downcase(content)
-    bot_lower = String.downcase(bot_name)
-    cmd_prefix = String.downcase(prefix) <> bot_lower
-
-    cond do
-      String.starts_with?(lower, cmd_prefix <> " roll ") ->
-        notation =
-          content |> String.slice(String.length(cmd_prefix <> " roll ")..-1//1) |> String.trim()
-
-        {:roll, notation}
-
-      String.starts_with?(lower, cmd_prefix <> " dice ") ->
-        notation =
-          content |> String.slice(String.length(cmd_prefix <> " dice ")..-1//1) |> String.trim()
-
-        {:roll, notation}
-
-      String.starts_with?(lower, cmd_prefix <> " roll") ->
-        {:roll, ""}
-
-      String.starts_with?(lower, cmd_prefix <> " dice") ->
-        {:roll, ""}
-
-      true ->
-        :ignore
+    case Capability.subcommand(content, prefix, bot_name, ["roll", "dice"]) do
+      {:ok, notation} -> {:roll, notation}
+      :error -> :ignore
     end
   end
 
