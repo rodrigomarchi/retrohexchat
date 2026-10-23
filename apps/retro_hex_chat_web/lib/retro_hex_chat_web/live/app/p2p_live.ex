@@ -28,7 +28,7 @@ defmodule RetroHexChatWeb.App.P2PLive do
   import RetroHexChatWeb.Components.UI.ActivityIndicator
   import RetroHexChatWeb.Components.UI.Button
   import RetroHexChatWeb.Components.UI.Desktop
-  import RetroHexChatWeb.Components.UI.IconWell
+  import RetroHexChatWeb.Components.UI.SessionNotice
   import RetroHexChatWeb.Components.UI.P2P.StartingRoom
   import RetroHexChatWeb.Components.UI.SurfaceTabLink
   import RetroHexChatWeb.Components.UI.Window
@@ -241,15 +241,9 @@ defmodule RetroHexChatWeb.App.P2PLive do
   # one thing the reader can act on the one thing the screen withholds.
   defp p2p_denied(assigns) do
     ~H"""
-    <div
-      class="m-auto flex h-fit w-full max-w-[520px] items-start gap-2 border border-border p-2 text-xs shadow-retro-sunken"
-      data-testid="p2p-denied"
-    >
-      <.icon_well size="sm">
-        <Icons.icon_protocol_p2p_compact class="h-4 w-4" />
-      </.icon_well>
-      <p class="min-w-0">{@message}</p>
-    </div>
+    <.session_notice icon={:icon_protocol_p2p_compact} testid="p2p-denied">
+      {@message}
+    </.session_notice>
     """
   end
 
@@ -258,15 +252,9 @@ defmodule RetroHexChatWeb.App.P2PLive do
   # the one that knows how to reach a chat tab that is already open.
   defp p2p_left(assigns) do
     ~H"""
-    <div
-      class="m-auto flex h-fit w-full max-w-[520px] items-start gap-2 border border-border p-2 text-xs shadow-retro-sunken"
-      data-testid="p2p-left"
-    >
-      <.icon_well size="sm">
-        <Icons.icon_protocol_p2p_compact class="h-4 w-4" />
-      </.icon_well>
-      <p class="min-w-0">{dgettext("chat", "Session ended.")}</p>
-    </div>
+    <.session_notice icon={:icon_protocol_p2p_compact} testid="p2p-left">
+      {dgettext("chat", "Session ended.")}
+    </.session_notice>
     """
   end
 
@@ -286,27 +274,21 @@ defmodule RetroHexChatWeb.App.P2PLive do
   # get it back is on the screen that lost it.
   defp p2p_displaced(assigns) do
     ~H"""
-    <div
-      class="m-auto flex h-fit w-full max-w-[520px] items-start gap-2 border border-border p-2 text-xs shadow-retro-sunken"
-      data-testid="p2p-displaced"
-    >
-      <.icon_well size="sm">
-        <Icons.icon_protocol_p2p_compact class="h-4 w-4" />
-      </.icon_well>
-      <div class="min-w-0">
-        <p>{dgettext("p2p", "This session is open in another window of yours.")}</p>
+    <.session_notice icon={:icon_protocol_p2p_compact} testid="p2p-displaced">
+      {dgettext("p2p", "This session is open in another window of yours.")}
+      <:note>
         <.button
           type="button"
           size="sm"
-          class="mt-2"
+          class="justify-self-start"
           phx-click="p2p_room_reclaim"
           data-testid="p2p-reclaim"
         >
           <:icon><Icons.icon_btn_join class="h-4 w-4" /></:icon>
           {dgettext("p2p", "Bring it back here")}
         </.button>
-      </div>
-    </div>
+      </:note>
+    </.session_notice>
     """
   end
 

@@ -187,6 +187,7 @@ test.describe("P2P session at its own address", () => {
       await expect(aliceSession.getByTestId("p2p-displaced")).toBeVisible({
         timeout: 20_000,
       });
+      await shot(aliceSession, "p2p-displaced");
       await expect(aliceSession.getByTestId("p2p-webrtc")).toHaveCount(0);
       await expect(tab.getByTestId("p2p-webrtc")).toHaveCount(1, {
         timeout: 20_000,

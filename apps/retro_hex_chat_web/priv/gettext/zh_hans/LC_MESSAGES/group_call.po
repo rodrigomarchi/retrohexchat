@@ -235,7 +235,7 @@ msgstr "开关麦克风"
 msgid "Unmute participant"
 msgstr "无意参与者"
 
-#: lib/retro_hex_chat_web/live/app/call_live.ex:508
+#: lib/retro_hex_chat_web/live/app/call_live.ex:497
 #: lib/retro_hex_chat_web/live/chat_live/group_call_events.ex:163
 #, elixir-autogen, elixir-format
 msgid "You must be identified with NickServ to use group calls."
@@ -246,8 +246,8 @@ msgstr "您必须和 NickServe 确定身份才能使用分组电话 。"
 msgid "You must be registered to moderate group calls."
 msgstr "您必须注册到温和组电话。"
 
-#: lib/retro_hex_chat_web/live/app/call_live.ex:522
-#: lib/retro_hex_chat_web/live/app/call_live.ex:528
+#: lib/retro_hex_chat_web/live/app/call_live.ex:511
+#: lib/retro_hex_chat_web/live/app/call_live.ex:517
 #: lib/retro_hex_chat_web/live/chat_live/group_call_events.ex:82
 #, elixir-autogen, elixir-format
 msgid "You must be registered with NickServ to use group calls."
@@ -1754,12 +1754,12 @@ msgstr "已在房间内"
 msgid "Nobody yet — you would be the first."
 msgstr "还没有人——你会是第一个。"
 
-#: lib/retro_hex_chat_web/live/app/call_live.ex:501
+#: lib/retro_hex_chat_web/live/app/call_live.ex:490
 #, elixir-autogen, elixir-format
 msgid "This conference has ended."
 msgstr "此会议已结束。"
 
-#: lib/retro_hex_chat_web/live/app/call_live.ex:495
+#: lib/retro_hex_chat_web/live/app/call_live.ex:484
 #, elixir-autogen, elixir-format
 msgid "This conference is no longer available."
 msgstr "此会议已不可用。"
@@ -1781,17 +1781,17 @@ msgid "The conference opened, but its link could not be created."
 msgstr ""
 "会议已开启，但未能创建它的链接。"
 
-#: lib/retro_hex_chat_web/live/app/call_live.ex:302
+#: lib/retro_hex_chat_web/live/app/call_live.ex:297
 #, elixir-autogen, elixir-format
 msgid "This tab is finished. The room is still at this address."
 msgstr "这个标签页已经结束。房间仍在这个地址。"
 
-#: lib/retro_hex_chat_web/live/app/call_live.ex:292
+#: lib/retro_hex_chat_web/live/app/call_live.ex:287
 #, elixir-autogen, elixir-format
 msgid "You left the conference in %{channel}."
 msgstr "你已离开 %{channel} 的会议。"
 
-#: lib/retro_hex_chat_web/live/app/call_live.ex:295
+#: lib/retro_hex_chat_web/live/app/call_live.ex:290
 #, elixir-autogen, elixir-format
 msgid "You left the conference."
 msgstr "你已离开会议。"
@@ -1822,27 +1822,27 @@ msgstr "群组通话 · %{state}"
 msgid "In progress"
 msgstr "进行中"
 
-#: lib/retro_hex_chat_web/live/app/call_live.ex:275
+#: lib/retro_hex_chat_web/live/app/call_live.ex:270
 #, elixir-autogen, elixir-format
 msgid "A moderator removed you from the conference in %{channel}."
 msgstr "一位主持人已将你移出 %{channel} 的会议。"
 
-#: lib/retro_hex_chat_web/live/app/call_live.ex:289
+#: lib/retro_hex_chat_web/live/app/call_live.ex:284
 #, elixir-autogen, elixir-format
 msgid "A moderator removed you from the conference."
 msgstr "一位主持人已将你移出会议。"
 
-#: lib/retro_hex_chat_web/live/app/call_live.ex:299
+#: lib/retro_hex_chat_web/live/app/call_live.ex:294
 #, elixir-autogen, elixir-format
 msgid "This tab is finished."
 msgstr "这个标签页已经结束。"
 
-#: lib/retro_hex_chat_web/live/app/call_live.ex:263
+#: lib/retro_hex_chat_web/live/app/call_live.ex:258
 #, elixir-autogen, elixir-format
 msgid "You were banned from %{channel}, and that ended your call."
 msgstr "你已被 %{channel} 封禁，通话因此结束。"
 
-#: lib/retro_hex_chat_web/live/app/call_live.ex:269
+#: lib/retro_hex_chat_web/live/app/call_live.ex:264
 #, elixir-autogen, elixir-format
 msgid "You were kicked from %{channel}, and that ended your call."
 msgstr "你已被踢出 %{channel}，通话因此结束。"
@@ -1852,27 +1852,27 @@ msgstr "你已被踢出 %{channel}，通话因此结束。"
 msgid "Reconnecting to the server…"
 msgstr "正在重新连接服务器…"
 
-#: lib/retro_hex_chat_web/live/app/call_live.ex:250
+#: lib/retro_hex_chat_web/live/app/call_live.ex:245
 #, elixir-autogen, elixir-format
 msgid "%{nickname} ended the conference in %{channel} for everyone."
 msgstr "%{nickname} 已为所有人结束了 %{channel} 的会议。"
 
-#: lib/retro_hex_chat_web/live/app/call_live.ex:259
+#: lib/retro_hex_chat_web/live/app/call_live.ex:254
 #, elixir-autogen, elixir-format
 msgid "The conference has ended."
 msgstr "会议已结束。"
 
-#: lib/retro_hex_chat_web/live/app/call_live.ex:256
+#: lib/retro_hex_chat_web/live/app/call_live.ex:251
 #, elixir-autogen, elixir-format
 msgid "The conference in %{channel} has ended."
 msgstr "%{channel} 的会议已结束。"
 
-#: lib/retro_hex_chat_web/live/app/call_live.ex:286
+#: lib/retro_hex_chat_web/live/app/call_live.ex:281
 #, elixir-autogen, elixir-format
 msgid "You ended the conference for everyone."
 msgstr "你已为所有人结束了会议。"
 
-#: lib/retro_hex_chat_web/live/app/call_live.ex:281
+#: lib/retro_hex_chat_web/live/app/call_live.ex:276
 #, elixir-autogen, elixir-format
 msgid "You ended the conference in %{channel} for everyone."
 msgstr "你已为所有人结束了 %{channel} 的会议。"

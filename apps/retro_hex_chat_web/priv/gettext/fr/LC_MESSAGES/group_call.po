@@ -239,7 +239,7 @@ msgstr "Activer/désactiver le micro"
 msgid "Unmute participant"
 msgstr "Participant unique"
 
-#: lib/retro_hex_chat_web/live/app/call_live.ex:508
+#: lib/retro_hex_chat_web/live/app/call_live.ex:497
 #: lib/retro_hex_chat_web/live/chat_live/group_call_events.ex:163
 #, elixir-autogen, elixir-format
 msgid "You must be identified with NickServ to use group calls."
@@ -251,8 +251,8 @@ msgstr ""
 msgid "You must be registered to moderate group calls."
 msgstr "Vous devez être inscrit aux appels de groupe modérés."
 
-#: lib/retro_hex_chat_web/live/app/call_live.ex:522
-#: lib/retro_hex_chat_web/live/app/call_live.ex:528
+#: lib/retro_hex_chat_web/live/app/call_live.ex:511
+#: lib/retro_hex_chat_web/live/app/call_live.ex:517
 #: lib/retro_hex_chat_web/live/chat_live/group_call_events.ex:82
 #, elixir-autogen, elixir-format
 msgid "You must be registered with NickServ to use group calls."
@@ -1788,12 +1788,12 @@ msgstr "Déjà dans la salle"
 msgid "Nobody yet — you would be the first."
 msgstr "Personne pour l'instant — vous seriez le premier."
 
-#: lib/retro_hex_chat_web/live/app/call_live.ex:501
+#: lib/retro_hex_chat_web/live/app/call_live.ex:490
 #, elixir-autogen, elixir-format
 msgid "This conference has ended."
 msgstr "Cette conférence est terminée."
 
-#: lib/retro_hex_chat_web/live/app/call_live.ex:495
+#: lib/retro_hex_chat_web/live/app/call_live.ex:484
 #, elixir-autogen, elixir-format
 msgid "This conference is no longer available."
 msgstr "Cette conférence n'est plus disponible."
@@ -1813,17 +1813,17 @@ msgstr "%{nickname} a ouvert une conférence — %{url}"
 msgid "The conference opened, but its link could not be created."
 msgstr "La conférence est ouverte, mais son lien n'a pas pu être créé."
 
-#: lib/retro_hex_chat_web/live/app/call_live.ex:302
+#: lib/retro_hex_chat_web/live/app/call_live.ex:297
 #, elixir-autogen, elixir-format
 msgid "This tab is finished. The room is still at this address."
 msgstr "Cet onglet est terminé. La salle est toujours à cette adresse."
 
-#: lib/retro_hex_chat_web/live/app/call_live.ex:292
+#: lib/retro_hex_chat_web/live/app/call_live.ex:287
 #, elixir-autogen, elixir-format
 msgid "You left the conference in %{channel}."
 msgstr "Vous avez quitté la conférence dans %{channel}."
 
-#: lib/retro_hex_chat_web/live/app/call_live.ex:295
+#: lib/retro_hex_chat_web/live/app/call_live.ex:290
 #, elixir-autogen, elixir-format
 msgid "You left the conference."
 msgstr "Vous avez quitté la conférence."
@@ -1854,27 +1854,27 @@ msgstr "Appel de groupe · %{state}"
 msgid "In progress"
 msgstr "En cours"
 
-#: lib/retro_hex_chat_web/live/app/call_live.ex:275
+#: lib/retro_hex_chat_web/live/app/call_live.ex:270
 #, elixir-autogen, elixir-format
 msgid "A moderator removed you from the conference in %{channel}."
 msgstr "Un modérateur vous a retiré de la conférence de %{channel}."
 
-#: lib/retro_hex_chat_web/live/app/call_live.ex:289
+#: lib/retro_hex_chat_web/live/app/call_live.ex:284
 #, elixir-autogen, elixir-format
 msgid "A moderator removed you from the conference."
 msgstr "Un modérateur vous a retiré de la conférence."
 
-#: lib/retro_hex_chat_web/live/app/call_live.ex:299
+#: lib/retro_hex_chat_web/live/app/call_live.ex:294
 #, elixir-autogen, elixir-format
 msgid "This tab is finished."
 msgstr "Cet onglet est terminé."
 
-#: lib/retro_hex_chat_web/live/app/call_live.ex:263
+#: lib/retro_hex_chat_web/live/app/call_live.ex:258
 #, elixir-autogen, elixir-format
 msgid "You were banned from %{channel}, and that ended your call."
 msgstr "Vous avez été banni de %{channel}, ce qui a mis fin à votre appel."
 
-#: lib/retro_hex_chat_web/live/app/call_live.ex:269
+#: lib/retro_hex_chat_web/live/app/call_live.ex:264
 #, elixir-autogen, elixir-format
 msgid "You were kicked from %{channel}, and that ended your call."
 msgstr "Vous avez été expulsé de %{channel}, ce qui a mis fin à votre appel."
@@ -1884,27 +1884,27 @@ msgstr "Vous avez été expulsé de %{channel}, ce qui a mis fin à votre appel.
 msgid "Reconnecting to the server…"
 msgstr "Reconnexion au serveur…"
 
-#: lib/retro_hex_chat_web/live/app/call_live.ex:250
+#: lib/retro_hex_chat_web/live/app/call_live.ex:245
 #, elixir-autogen, elixir-format
 msgid "%{nickname} ended the conference in %{channel} for everyone."
 msgstr "%{nickname} a mis fin à la conférence de %{channel} pour tout le monde."
 
-#: lib/retro_hex_chat_web/live/app/call_live.ex:259
+#: lib/retro_hex_chat_web/live/app/call_live.ex:254
 #, elixir-autogen, elixir-format
 msgid "The conference has ended."
 msgstr "La conférence est terminée."
 
-#: lib/retro_hex_chat_web/live/app/call_live.ex:256
+#: lib/retro_hex_chat_web/live/app/call_live.ex:251
 #, elixir-autogen, elixir-format
 msgid "The conference in %{channel} has ended."
 msgstr "La conférence de %{channel} est terminée."
 
-#: lib/retro_hex_chat_web/live/app/call_live.ex:286
+#: lib/retro_hex_chat_web/live/app/call_live.ex:281
 #, elixir-autogen, elixir-format
 msgid "You ended the conference for everyone."
 msgstr "Vous avez mis fin à la conférence pour tout le monde."
 
-#: lib/retro_hex_chat_web/live/app/call_live.ex:281
+#: lib/retro_hex_chat_web/live/app/call_live.ex:276
 #, elixir-autogen, elixir-format
 msgid "You ended the conference in %{channel} for everyone."
 msgstr "Vous avez mis fin à la conférence de %{channel} pour tout le monde."

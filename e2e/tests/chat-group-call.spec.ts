@@ -1267,6 +1267,7 @@ test.describe("Channel group calls", () => {
       await expect(aliceCall.getByTestId("call-left")).toBeVisible({
         timeout: 15_000,
       });
+      await shot(aliceCall, "call-left");
       await expect(groupCallStatusBar(alice.page)).toBeHidden({
         timeout: 15_000,
       });
@@ -1416,6 +1417,7 @@ test.describe("Channel group calls", () => {
       await expect(cancelled.getByTestId("call-left")).toBeVisible({
         timeout: 15_000,
       });
+      await shot(cancelled, "call-left-from-the-antechamber");
 
       // The choice is remembered, and this is the only assertion that says so
       // that is true of where it is remembered. It used to poll localStorage for
@@ -1776,10 +1778,13 @@ test.describe("Channel group calls", () => {
       await expect(bobCall.getByTestId("call-denied")).toContainText("locked", {
         timeout: 15_000,
       });
+      await shot(bobCall, "call-denied-locked");
       await expect(bobCall.getByTestId("group-call-prejoin")).toHaveCount(0);
       await expect(
         aliceCall.getByTestId("group-call-participants"),
       ).not.toContainText(bob.nick);
+      await bobCall.setViewportSize({ width: 390, height: 844 });
+      await shot(bobCall, "call-denied-locked-phone");
     } finally {
       await closeGroupCallUsers([alice, bob]);
     }

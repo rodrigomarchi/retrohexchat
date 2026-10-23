@@ -23,7 +23,7 @@ defmodule RetroHexChatWeb.App.CallLive do
   import RetroHexChatWeb.Components.UI.Desktop
   import RetroHexChatWeb.Components.UI.GroupCall.Panel
   import RetroHexChatWeb.Components.UI.GroupCall.PreJoin
-  import RetroHexChatWeb.Components.UI.IconWell
+  import RetroHexChatWeb.Components.UI.SessionNotice
   import RetroHexChatWeb.Components.UI.SurfaceTabLink
   import RetroHexChatWeb.Components.UI.Window
 
@@ -226,22 +226,17 @@ defmodule RetroHexChatWeb.App.CallLive do
 
   defp call_left(assigns) do
     ~H"""
-    <div
-      class="m-2 flex items-start gap-2 border border-border p-2 text-xs shadow-retro-sunken"
-      data-testid="call-left"
+    <.session_notice
+      icon={:icon_protocol_conference_compact}
+      testid="call-left"
       data-left-reason={@reason}
     >
-      <.icon_well size="sm">
-        <Icons.icon_protocol_conference_compact class="h-4 w-4" />
-      </.icon_well>
-      <div class="min-w-0 space-y-1">
-        <p>{left_headline(@reason, @channel, @by)}</p>
-        <%!-- No second way back: `← Chat` is already along the bottom of this
-              window, in both states, and it is the one that knows how to reach
-              a chat tab that is already open instead of opening another. --%>
-        <p class="text-muted-foreground">{left_detail(@reason)}</p>
-      </div>
-    </div>
+      {left_headline(@reason, @channel, @by)}
+      <%!-- No second way back: `← Chat` is already along the bottom of this
+            window, in both states, and it is the one that knows how to reach
+            a chat tab that is already open instead of opening another. --%>
+      <:note>{left_detail(@reason)}</:note>
+    </.session_notice>
     """
   end
 
@@ -307,15 +302,9 @@ defmodule RetroHexChatWeb.App.CallLive do
   # one thing the reader can act on the one thing the screen withholds.
   defp call_denied(assigns) do
     ~H"""
-    <div
-      class="m-2 flex items-start gap-2 border border-border p-2 text-xs shadow-retro-sunken"
-      data-testid="call-denied"
-    >
-      <.icon_well size="sm">
-        <Icons.icon_protocol_conference_compact class="h-4 w-4" />
-      </.icon_well>
-      <p class="min-w-0">{@message}</p>
-    </div>
+    <.session_notice icon={:icon_protocol_conference_compact} testid="call-denied">
+      {@message}
+    </.session_notice>
     """
   end
 
