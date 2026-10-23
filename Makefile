@@ -6,7 +6,7 @@
        test.js test.js.changed test.js.related test.js.watch \
        ci ci.full ci.quick ci.changed ci.serial ci.quick.serial ci.partition-profile ci.partition-profile.plan \
        umbrella.boundary-audit \
-       i18n.audit i18n.audit.check i18n.status i18n.catalog.check i18n.catalog.size.check i18n.placeholder.check i18n.source-fallback.check i18n.quality.check i18n.glossary i18n.repair i18n.venv i18n.translate i18n.repair.plurals games.shots spaces.shots dup.report dup.test seo.snapshot seo.snapshot.all seo.compare seo.console seo.indexnow seo.sitemap.submit seo.test i18n.tooling.test i18n.locales.add i18n.wave1.add i18n.gettext.extract i18n.gettext.merge i18n.gettext.rebuild i18n.gettext.check \
+       i18n.audit i18n.audit.check i18n.status i18n.catalog.check i18n.catalog.size.check i18n.placeholder.check i18n.source-fallback.check i18n.quality.check i18n.glossary i18n.repair i18n.venv i18n.translate i18n.repair.plurals games.shots spaces.shots dup.report dup.test seo.snapshot seo.snapshot.all seo.compare seo.console seo.indexnow seo.sitemap.submit seo.test i18n.tooling.test i18n.js.translate i18n.locales.add i18n.wave1.add i18n.gettext.extract i18n.gettext.merge i18n.gettext.rebuild i18n.gettext.check \
        lint format format.check credo dialyzer lint.js lint.js.changed lint.js.fix lint.css lint.bundle space.ui space.ui.check space.creator space.creator.check precommit compile \
        assets.setup assets.build assets.deploy \
        clean clean.deps clean.build clean.all \
@@ -546,6 +546,7 @@ i18n.catalog.check: ## Fail while required catalogs have missing/empty/fuzzy ent
 	mix run --no-start scripts/i18n_placeholder_check.exs --fail-on-findings
 	python3 scripts/i18n_source_fallback_check.py --locales $(I18N_REQUIRED_LOCALES) --fail-on-findings
 	python3 scripts/i18n_quality_check.py --locales $(I18N_REQUIRED_LOCALES) --fail-on-findings
+	python3 scripts/i18n_js_catalog_check.py
 
 i18n.catalog.size.check: ## Fail when any Gettext catalog exceeds the readable size limit
 	elixir scripts/i18n_catalog_size_check.exs --fail-on-exceed --max-lines 12000
@@ -578,6 +579,9 @@ i18n.translate: ## Fill new/fuzzy entries of DOMAINS (APP=web|domain) in every l
 	test -n "$(I18N_TRANSLATE_PATHS)" || (echo "no catalog matches DOMAINS=$(DOMAINS) APP=$(APP)" && exit 2)
 	$(I18N_PYTHON) scripts/i18n_machine_translate_po.py --locales en,$(I18N_REQUIRED_LOCALES) $(I18N_TRANSLATE_PATHS)
 	$(MAKE) i18n.glossary
+
+i18n.js.translate: ## Translate the browser messages its catalogs lack (needs the translation venv)
+	$(I18N_PYTHON) scripts/i18n_js_translate.py --locales $(I18N_REQUIRED_LOCALES) $(if $(RETRY),--retry-english)
 
 i18n.tooling.test: ## Run the i18n Python tooling test suite
 	python3 -m unittest discover -s scripts -t scripts -p 'test_*.py'

@@ -495,6 +495,26 @@ _FOREIGN_FORMS: dict[str, tuple[str, ...]] = {
         # European word for a desk, which in Brazil is a secretary.
         "secretária",
         "secretárias",
+        # Measured on the browser's call and Space strings: Portugal's camera
+        # and file, the pre-1990 "reacção", "antevisão" for a preview, the
+        # European progressive ("A ligar ao espaço", "A tentar recuperar",
+        # "A juntar-se") and the "tu" preterite of joining.
+        "câmara",
+        "câmaras",
+        "ficheiro",
+        "ficheiros",
+        "reacção",
+        "reacções",
+        "antevisão",
+        "a ligar",
+        "a tentar",
+        "a juntar",
+        "entraste",
+        # "À espera da oferta dos media", "Falha na ligação de sinalização":
+        # waiting, the media and a connection as Portugal writes them.
+        "à espera",
+        "dos media",
+        "ligação",
     ),
 }
 
@@ -521,3 +541,67 @@ def italian_accents(translated: str) -> str:
     """`translated` with "e'" (and "E'") written as "è" (and "È")."""
     return _ITALIAN_IS.sub(lambda m: "è" if m.group(1) == "e" else "È", translated)
 
+
+
+# The one Portuguese model writes Portugal's Portuguese, and `foreign_forms`
+# rightly refuses it for the Brazilian catalog. What has one Brazilian
+# equivalent is rewritten on the way out of the engine instead, so the
+# translation ships rather than staying English: the words, the "tu"
+# possessive, and the progressive ("A carregar...", "está a ser"), which Brazil
+# says with a gerund. "começou a falar" is Brazilian too, so only a sentence's
+# opening "A <infinitive>" and "estar a <infinitive>" are touched. A word whose
+# gender differs (Portugal's "o ecrã", Brazil's "a tela") is left to the
+# variant check: swapping it would break the agreement of the words around it.
+_BRAZILIAN_WORDS = {
+    "câmara": "câmera",
+    "câmaras": "câmeras",
+    "ficheiro": "arquivo",
+    "ficheiros": "arquivos",
+    "reacção": "reação",
+    "reacções": "reações",
+    "antevisão": "pré-visualização",
+    "seleccionado": "selecionado",
+    "seleccionada": "selecionada",
+    "desactivado": "desativado",
+    "desactivada": "desativada",
+    "activado": "ativado",
+    "activada": "ativada",
+    "à espera da": "aguardando a",
+    "à espera do": "aguardando o",
+    "à espera de": "aguardando",
+    "os media": "a mídia",
+    "dos media": "da mídia",
+    "a tua": "a sua",
+    "as tuas": "as suas",
+    "o teu": "o seu",
+    "os teus": "os seus",
+}
+_BRAZILIAN_WORD_RE = re.compile(
+    r"\b(" + "|".join(map(re.escape, sorted(_BRAZILIAN_WORDS, key=len, reverse=True))) + r")\b",
+    re.IGNORECASE,
+)
+_OPENING_PROGRESSIVE = re.compile(r"(^|[.!?…]\s+)A (\w+?)(ar|er|ir)\b(-se)?")
+_ESTAR_PROGRESSIVE = re.compile(
+    r"\b(est(?:á|ão|ou|amos|ava|avam))\s+a\s+(\w+?)(ar|er|ir)\b", re.IGNORECASE
+)
+_GERUND = {"ar": "ando", "er": "endo", "ir": "indo"}
+
+
+def _keep_case(original: str, replacement: str) -> str:
+    return replacement[0].upper() + replacement[1:] if original[0].isupper() else replacement
+
+
+def brazilian_forms(translated: str) -> str:
+    """`translated` with Portugal's words and progressive written as Brazil's."""
+    text = _BRAZILIAN_WORD_RE.sub(
+        lambda m: _keep_case(m.group(1), _BRAZILIAN_WORDS[m.group(1).lower()]), translated
+    )
+    text = _OPENING_PROGRESSIVE.sub(
+        lambda m: m.group(1)
+        + (m.group(2) + _GERUND[m.group(3)]).capitalize()
+        + (m.group(4) or ""),
+        text,
+    )
+    return _ESTAR_PROGRESSIVE.sub(
+        lambda m: f"{m.group(1)} {m.group(2)}{_GERUND[m.group(3)]}", text
+    )

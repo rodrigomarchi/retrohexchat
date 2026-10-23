@@ -753,6 +753,27 @@ _ROWS = {
     "Log in":           ("Entrar", "Entrar", "Entrar", "Se connecter", "Anmelden", "Accedi", "Inloggen", "Zaloguj", "Войти", "Masuk", "ログイン", "登录", "登入"),
     "How to register":  ("Como se registrar", "Como se registar", "Cómo registrarse", "Comment s'inscrire", "So registrieren Sie sich", "Come registrarsi", "Zo registreer je", "Jak się zarejestrować", "Как зарегистрироваться", "Cara mendaftar", "登録方法", "如何注册", "如何註冊"),
     "Match over":     ("Partida encerrada", "Partida terminada", "Partida terminada", "Partie terminée", "Spiel vorbei", "Partita finita", "Wedstrijd voorbij", "Mecz zakończony", "Матч окончен", "Pertandingan selesai", "試合終了", "比赛结束", "比賽結束"),
+    # ── A toast's title ───────────────────────────────────────
+    # The small window that says "Copied!" or offers a tip is titled with one
+    # word, and the engine has no sentence to read it in.
+    "Tip":     ("Dica", "Dica", "Consejo", "Astuce", "Tipp", "Suggerimento", "Tip", "Wskazówka", "Совет", "Tips", "ヒント", "提示", "提示"),
+    "Info":    ("Informação", "Informação", "Información", "Information", "Info", "Informazioni", "Info", "Informacja", "Информация", "Info", "情報", "信息", "資訊"),
+    # ── A call's devices and who is talking ──────────────────
+    # Tile names, device menus and the speaking badge's title: one or two
+    # words the engine has nothing around to read. "Remote" names a
+    # participant whose nickname has not arrived; "Speaker" is the sound
+    # output, never a person speaking.
+    "Camera":         ("Câmera", "Câmara", "Cámara", "Caméra", "Kamera", "Fotocamera", "Camera", "Kamera", "Камера", "Kamera", "カメラ", "摄像头", "攝影機"),
+    "Microphone":     ("Microfone", "Microfone", "Micrófono", "Microphone", "Mikrofon", "Microfono", "Microfoon", "Mikrofon", "Микрофон", "Mikrofon", "マイク", "麦克风", "麥克風"),
+    "Camera off":     ("Câmera desligada", "Câmara desligada", "Cámara apagada", "Caméra coupée", "Kamera aus", "Fotocamera spenta", "Camera uit", "Kamera wyłączona", "Камера выключена", "Kamera mati", "カメラオフ", "摄像头已关闭", "攝影機已關閉"),
+    "Speaking":       ("Falando", "A falar", "Hablando", "Parle", "Spricht", "Sta parlando", "Spreekt", "Mówi", "Говорит", "Berbicara", "発言中", "正在说话", "正在說話"),
+    "Not speaking":   ("Não está falando", "Não está a falar", "No está hablando", "Ne parle pas", "Spricht nicht", "Non sta parlando", "Spreekt niet", "Nie mówi", "Не говорит", "Tidak berbicara", "発言していません", "未在说话", "未在說話"),
+    "Receive-only":   ("Só recebendo", "Só a receber", "Solo recepción", "Réception seule", "Nur Empfang", "Solo ricezione", "Alleen ontvangen", "Tylko odbiór", "Только приём", "Hanya menerima", "受信のみ", "仅接收", "僅接收"),
+    "Remote":         ("Participante remoto", "Participante remoto", "Participante remoto", "Participant distant", "Entfernter Teilnehmer", "Partecipante remoto", "Deelnemer op afstand", "Uczestnik zdalny", "Удалённый участник", "Peserta jarak jauh", "リモート参加者", "远程参与者", "遠端參與者"),
+    "Speaker":        ("Alto-falante", "Altifalante", "Altavoz", "Haut-parleur", "Lautsprecher", "Altoparlante", "Luidspreker", "Głośnik", "Динамик", "Speaker", "スピーカー", "扬声器", "揚聲器"),
+    "Sharing screen": ("Compartilhando a tela", "A partilhar o ecrã", "Compartiendo pantalla", "Partage d'écran", "Bildschirm wird geteilt", "Condivisione schermo", "Scherm wordt gedeeld", "Udostępnianie ekranu", "Демонстрация экрана", "Berbagi layar", "画面共有中", "正在共享屏幕", "正在分享螢幕"),
+    "Your screen":    ("Sua tela", "O seu ecrã", "Tu pantalla", "Votre écran", "Ihr Bildschirm", "Il tuo schermo", "Je scherm", "Twój ekran", "Ваш экран", "Layar Anda", "あなたの画面", "你的屏幕", "你的螢幕"),
+    "Unknown":        ("Desconhecido", "Desconhecido", "Desconocido", "Inconnu", "Unbekannt", "Sconosciuto", "Onbekend", "Nieznany", "Неизвестно", "Tidak diketahui", "不明", "未知", "未知"),
     # ── Words ja doubled ──────────────────────────────────────
     # With no space to split on, the Japanese engine looped on a lone word:
     # "ルールルール", "データデータ", "アートアート", "ビーチビーチ". "art" and

@@ -148,9 +148,14 @@ To add specific locales:
 make i18n.locales.add LOCALES=es,fr,de
 ```
 
-For JavaScript catalogs, run `scripts/i18n_machine_translate_js.py` only
-when the change actually touches the browser catalogs in
-`apps/retro_hex_chat_web/assets/js/lib/i18n_catalogs`.
+The browser's messages are read from the JS that asks for them: every
+`t("...")` and `` jt`...` `` under `assets/js` (`scripts/i18n/js_messages.py`).
+`make i18n.catalog.check` fails while a locale's browser catalog lacks one
+(`scripts/i18n_js_catalog_check.py`), and `make i18n.js.translate` fills only
+the missing ones through the same pipeline and glossary as the server catalogs
+(`RETRY=1` also resends what a catalog holds in English, after a source
+rewrite). `scripts/i18n_machine_translate_js.py` retranslates every message of
+a locale and is not the tool for new strings.
 
 `scripts/i18n_machine_translate_js.py`, `scripts/i18n_apply_translation_overrides.py`,
 `scripts/i18n_repair_js_catalog_placeholders.py` and

@@ -4,7 +4,7 @@ from __future__ import annotations
 
 import unittest
 
-from i18n.terms import foreign_forms, italian_accents, missing_terms
+from i18n.terms import brazilian_forms, foreign_forms, italian_accents, missing_terms
 
 MODES = "+m lets only voiced users speak, +i lets in only who is invited."
 
@@ -286,6 +286,17 @@ class ForeignFormsTest(unittest.TestCase):
             foreign_forms("Escolhe uma alcunha e entras.", "pt_BR"), ["alcunha", "entras"]
         )
 
+    def test_the_browsers_call_strings_european_forms_are_foreign_to_pt_br(self):
+        # What the model gave the browser catalog's P2P and Space messages.
+        self.assertEqual(
+            foreign_forms("Autorização da câmara negada.", "pt_BR"), ["câmara"]
+        )
+        self.assertEqual(foreign_forms("Erro ao ler o ficheiro.", "pt_BR"), ["ficheiro"])
+        self.assertEqual(foreign_forms("A ligar ao espaço...", "pt_BR"), ["A ligar"])
+        self.assertEqual(
+            foreign_forms("À espera da oferta dos media.", "pt_BR"), ["À espera", "dos media"]
+        )
+
     def test_the_construct_helps_european_forms_are_foreign_to_pt_br(self):
         self.assertEqual(
             foreign_forms("As peças movem-se quando as arrastas, e todos vêem.", "pt_BR"),
@@ -358,6 +369,54 @@ class ForeignFormsTest(unittest.TestCase):
 
     def test_a_form_inside_a_longer_word_is_not_matched(self):
         self.assertEqual(foreign_forms("Estude a rua com atenção.", "pt_BR"), [])
+
+
+class BrazilianFormsTest(unittest.TestCase):
+    # The one Portuguese model writes Portugal's Portuguese. What has a single
+    # Brazilian equivalent is rewritten on the way out, so the translation
+    # ships instead of being refused by foreign_forms and kept in English.
+    def test_rewrites_portugals_words(self):
+        self.assertEqual(
+            brazilian_forms("O microfone e a câmara estão desligados."),
+            "O microfone e a câmera estão desligados.",
+        )
+        self.assertEqual(brazilian_forms("Erro ao ler o ficheiro."), "Erro ao ler o arquivo.")
+        self.assertEqual(brazilian_forms("A reacção da conferência"), "A reação da conferência")
+        self.assertEqual(brazilian_forms("A tua câmara"), "A sua câmera")
+
+    def test_rewrites_spellings_and_phrases_of_the_same_gender(self):
+        self.assertEqual(
+            brazilian_forms("À espera da oferta dos media."), "Aguardando a oferta da mídia."
+        )
+        self.assertEqual(
+            brazilian_forms("O dispositivo seleccionado não está disponível."),
+            "O dispositivo selecionado não está disponível.",
+        )
+
+    def test_leaves_a_noun_of_another_gender_to_the_variant_check(self):
+        # "A partilha de ecrã foi desactivada" would become "O compartilhamento
+        # de tela foi desativada": the agreement breaks, so it is refused instead.
+        out = brazilian_forms("A partilha de ecrã foi desactivada.")
+        self.assertEqual(foreign_forms(out, "pt_BR"), ["partilha", "ecrã"])
+
+    def test_turns_the_european_progressive_into_the_gerund(self):
+        self.assertEqual(brazilian_forms("A carregar o Espaço..."), "Carregando o Espaço...")
+        self.assertEqual(brazilian_forms("A desenhar o Espaço..."), "Desenhando o Espaço...")
+        self.assertEqual(
+            brazilian_forms("A câmera não está a ser enviada."), "A câmera não está sendo enviada."
+        )
+        self.assertEqual(brazilian_forms("A tentar recuperar."), "Tentando recuperar.")
+
+    def test_leaves_brazilian_infinitives_alone(self):
+        # "começou a falar" is Brazilian too; only the sentence-opening and
+        # "estar a" progressives are Portugal's.
+        self.assertEqual(brazilian_forms("Ele começou a falar."), "Ele começou a falar.")
+        self.assertEqual(brazilian_forms("A câmera está ligada."), "A câmera está ligada.")
+
+    def test_rewritten_output_passes_the_variant_check(self):
+        out = brazilian_forms("A tua câmara não está a ser enviada.")
+        self.assertEqual(foreign_forms(out, "pt_BR"), [])
+
 
 
 if __name__ == "__main__":

@@ -20,7 +20,7 @@ sys.path.insert(0, str(Path(__file__).parent))
 from i18n import catalogs, glossary, locales, numerals  # noqa: E402
 from i18n.pipeline import DEFAULT_BATCH_CHARS, DEFAULT_BATCH_SIZE, Pipeline  # noqa: E402
 from i18n.protection import has_sentinel_residue  # noqa: E402
-from i18n.terms import italian_accents  # noqa: E402
+from i18n.terms import brazilian_forms, italian_accents  # noqa: E402
 from i18n.translator import TraditionalChinesePostprocessor, build, build_back  # noqa: E402
 
 DEFAULT_CACHE = "/tmp/retro_hex_chat_i18n_translation_cache.json"
@@ -121,6 +121,8 @@ def build_pipeline(code: str, args: argparse.Namespace) -> Pipeline:
         postprocess = TraditionalChinesePostprocessor(translator).convert
     elif code == "it":
         postprocess = italian_accents
+    elif code == "pt_BR":
+        postprocess = brazilian_forms
 
     answers = {word: glossary.for_locale(code)[word] for word in ("Yes", "No")} if code != "en" else {}
 

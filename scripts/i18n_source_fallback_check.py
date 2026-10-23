@@ -16,6 +16,7 @@ from i18n_js_catalogs import (
     locale_catalog_path,
     read_catalogs,
 )
+from i18n import glossary
 from i18n.locales import codes as enabled_locale_codes
 
 DEFAULT_LOCALES = enabled_locale_codes()
@@ -216,6 +217,27 @@ TECHNICAL_SOURCE_ALLOWLIST = [
 
 ALLOWLIST = [re.compile(pattern) for pattern in TECHNICAL_SOURCE_ALLOWLIST]
 
+# Browser messages whose every engine output the pipeline refuses for one
+# locale (a Portuguese "ecrã" Brazil does not say, a read-back that lost the
+# meaning), so they ship in English there. Listed here rather than passed over
+# in silence: the gate still fails on any other, and rewriting the English
+# source until `make i18n.js.translate RETRY=1` lets one through is how an
+# entry leaves this list.
+REFUSED_JS = frozenset({
+    ('es', 'Microphone is not available for push-to-talk.'),
+    ('id', 'Device is already in use. Close the other app or retry.'),
+    ('ja', 'Drawing the Space...'),
+    ('ja', 'The group call refused to let you in'),
+    ('nl', 'Your reaction did not reach the call in time.'),
+    ('pl', 'Could not publish the shared screen.'),
+    ('pl', 'The call lost its link to the server'),
+    ('pt_BR', 'Could not access your microphone or camera. You can still watch and listen.'),
+    ('pt_BR', 'Screen sharing was disabled by a moderator.'),
+    ('pt_BR', 'Your screen is replacing the camera feed.'),
+    ('zh_hans', 'The other side sent data that could not be read.'),
+    ('zh_hant', 'The other side sent data that could not be read.'),
+})
+
 
 @dataclass(frozen=True)
 class Finding:
@@ -384,7 +406,17 @@ def js_findings(locales: tuple[str, ...]) -> list[Finding]:
         path = locale_catalog_path(locale, CATALOG_DIR)
         path_label = str(path if path.exists() else CATALOG_BARREL)
 
+        curated = glossary.for_locale(locale)
+
         for source, translated in catalogs[export_name].items():
+            # The glossary's word is a decision, even where it is the English
+            # one: Dutch says "Camera", Indonesian says "Info".
+            if curated.get(source) == translated:
+                continue
+
+            if (locale, source) in REFUSED_JS:
+                continue
+
             if js_source_fallback(source, translated):
                 findings.append(Finding("js", path_label, locale, source))
 
