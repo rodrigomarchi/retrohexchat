@@ -465,6 +465,8 @@ _ROWS = {
     "Magenta":      ("Magenta", "Magenta", "Magenta", "Magenta", "Magenta", "Magenta", "Magenta", "Magenta", "Пурпурный", "Magenta", "マゼンタ", "洋红", "洋紅"),
     "Teal":         ("Verde-azulado", "Verde-azulado", "Verde azulado", "Sarcelle", "Blaugrün", "Verde acqua", "Blauwgroen", "Morski", "Бирюзовый", "Biru kehijauan", "青緑", "蓝绿", "藍綠"),
     "Orange":       ("Laranja", "Laranja", "Naranja", "Orange", "Orange", "Arancione", "Oranje", "Pomarańczowy", "Оранжевый", "Oranye", "オレンジ", "橙色", "橙色"),
+    # ja had "グリーングリーン", the word twice.
+    "Green":        ("Verde", "Verde", "Verde", "Vert", "Grün", "Verde", "Groen", "Zielony", "Зелёный", "Hijau", "緑", "绿色", "綠色"),
     "Maroon":       ("Bordô", "Bordô", "Granate", "Bordeaux", "Kastanienbraun", "Bordeaux", "Kastanjebruin", "Bordowy", "Бордовый", "Merah marun", "栗色", "栗色", "栗色"),
 
     # ── The chat's own furniture ──────────────────────────────
@@ -751,6 +753,30 @@ _ROWS = {
     "Log in":           ("Entrar", "Entrar", "Entrar", "Se connecter", "Anmelden", "Accedi", "Inloggen", "Zaloguj", "Войти", "Masuk", "ログイン", "登录", "登入"),
     "How to register":  ("Como se registrar", "Como se registar", "Cómo registrarse", "Comment s'inscrire", "So registrieren Sie sich", "Come registrarsi", "Zo registreer je", "Jak się zarejestrować", "Как зарегистрироваться", "Cara mendaftar", "登録方法", "如何注册", "如何註冊"),
     "Match over":     ("Partida encerrada", "Partida terminada", "Partida terminada", "Partie terminée", "Spiel vorbei", "Partita finita", "Wedstrijd voorbij", "Mecz zakończony", "Матч окончен", "Pertandingan selesai", "試合終了", "比赛结束", "比賽結束"),
+    # ── Words ja doubled ──────────────────────────────────────
+    # With no space to split on, the Japanese engine looped on a lone word:
+    # "ルールルール", "データデータ", "アートアート", "ビーチビーチ". "art" and
+    # "beach" are emoji search words.
+    "Rules":   ("Regras", "Regras", "Reglas", "Règles", "Regeln", "Regole", "Regels", "Zasady", "Правила", "Aturan", "ルール", "规则", "規則"),
+    "Data":    ("Dados", "Dados", "Datos", "Données", "Daten", "Dati", "Gegevens", "Dane", "Данные", "Data", "データ", "数据", "資料"),
+    "art":     ("arte", "arte", "arte", "art", "Kunst", "arte", "kunst", "sztuka", "искусство", "seni", "アート", "艺术", "藝術"),
+    "beach":   ("praia", "praia", "playa", "plage", "Strand", "spiaggia", "strand", "plaża", "пляж", "pantai", "ビーチ", "海滩", "海灘"),
+    # ── A trusted terminal's facts ─────────────────────────────
+    # A terminal, a session and a security event share these labels. Bare, the
+    # engine read "Last" as "Letzter Beitrag" (last post), "Remembered" as
+    # "採用情報" (job openings), "Expires on" as "Abzüge" (deductions) and
+    # "Time" as "タイムタイム".
+    "Last activity":     ("Última atividade", "Última atividade", "Última actividad", "Dernière activité", "Letzte Aktivität", "Ultima attività", "Laatste activiteit", "Ostatnia aktywność", "Последняя активность", "Aktivitas terakhir", "最終アクティビティ", "最近活动", "最近活動"),
+    "First visit":       ("Primeira visita", "Primeira visita", "Primera visita", "Première visite", "Erster Besuch", "Prima visita", "Eerste bezoek", "Pierwsza wizyta", "Первый визит", "Kunjungan pertama", "初回アクセス", "首次访问", "首次造訪"),
+    "Last login":        ("Último login", "Último início de sessão", "Último inicio de sesión", "Dernière connexion", "Letzte Anmeldung", "Ultimo accesso", "Laatste aanmelding", "Ostatnie logowanie", "Последний вход", "Login terakhir", "最終ログイン", "上次登录", "上次登入"),
+    "Trusted since":     ("Confiável desde", "Confiável desde", "De confianza desde", "De confiance depuis", "Vertrauenswürdig seit", "Attendibile dal", "Vertrouwd sinds", "Zaufany od", "Доверенный с", "Tepercaya sejak", "信頼開始", "信任起始", "信任起始"),
+    "Trust expires":     ("Confiança expira", "Confiança expira", "La confianza vence", "Fin de la confiance", "Vertrauen läuft ab", "Scadenza attendibilità", "Vertrouwen verloopt", "Zaufanie wygasa", "Доверие истекает", "Kepercayaan berakhir", "信頼の期限", "信任到期", "信任到期"),
+    "Active sessions":   ("Sessões ativas", "Sessões ativas", "Sesiones activas", "Sessions actives", "Aktive Sitzungen", "Sessioni attive", "Actieve sessies", "Aktywne sesje", "Активные сеансы", "Sesi aktif", "アクティブなセッション", "活动会话", "作用中的工作階段"),
+    "Session started":   ("Sessão iniciada", "Sessão iniciada", "Sesión iniciada", "Session ouverte", "Sitzung gestartet", "Sessione avviata", "Sessie gestart", "Sesja rozpoczęta", "Сеанс начат", "Sesi dimulai", "セッション開始", "会话开始", "工作階段開始"),
+    "Date of the event": ("Data do evento", "Data do evento", "Fecha del evento", "Date de l'événement", "Datum des Ereignisses", "Data dell'evento", "Datum van de gebeurtenis", "Data zdarzenia", "Дата события", "Tanggal peristiwa", "発生日時", "事件日期", "事件日期"),
+    "Session ID":        ("ID da sessão", "ID da sessão", "ID de sesión", "ID de session", "Sitzungs-ID", "ID sessione", "Sessie-ID", "ID sesji", "ID сеанса", "ID sesi", "セッションID", "会话 ID", "工作階段 ID"),
+    "Event ID":          ("ID do evento", "ID do evento", "ID de evento", "ID de l'événement", "Ereignis-ID", "ID evento", "Gebeurtenis-ID", "ID zdarzenia", "ID события", "ID peristiwa", "イベントID", "事件 ID", "事件 ID"),
+    "Terminal ID":       ("ID do terminal", "ID do terminal", "ID del terminal", "ID du terminal", "Terminal-ID", "ID terminale", "Terminal-ID", "ID terminala", "ID терминала", "ID terminal", "端末ID", "终端 ID", "終端 ID"),
 }
 
 # A menu path, or a status with its mark, is built from the labels it names —

@@ -75,6 +75,22 @@ class DegenerateTest(unittest.TestCase):
     def test_ignores_short_repetition(self):
         self.assertFalse(is_degenerate("muito muito bom"))
 
+    def test_detects_a_label_doubled_without_spaces(self):
+        # ja: "Time" -> "タイムタイム". Japanese has no spaces, so the token
+        # count never saw the loop.
+        self.assertTrue(is_degenerate("タイムタイム"))
+        self.assertTrue(is_degenerate("セッションセッション"))
+
+    def test_keeps_a_reduplicated_word(self):
+        # いろいろ (various), どんどん (steadily): a two-character unit doubled
+        # is a word, not a loop.
+        self.assertFalse(is_degenerate("いろいろ"))
+        self.assertFalse(is_degenerate("どんどん進む"))
+
+    def test_keeps_a_word_that_happens_to_repeat_a_syllable(self):
+        # it: "reload" -> "ricarica" is right, though it reads as "rica" twice.
+        self.assertFalse(is_degenerate("ricarica"))
+
     def test_accepts_normal_prose(self):
         self.assertFalse(is_degenerate("Registre e proteja seu apelido com uma senha"))
 

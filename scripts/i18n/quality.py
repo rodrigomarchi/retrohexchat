@@ -18,6 +18,13 @@ from .protection import SENTINEL_RE, has_sentinel_residue, protect
 DEGENERATE_RUN = 4
 # A long run of one character, e.g. a backslash explosion.
 DEGENERATE_CHAR_RUN = re.compile(r"(\S)\1{7,}")
+# A whole unspaced output that is one unit repeated, e.g. ja "Time" ->
+# "タイムタイム". Writing without spaces gives the token count nothing to see.
+# The unit is at least three characters: a two-character one doubled is
+# usually a word (いろいろ, どんどん). Only text with no Latin letters is
+# read this way: an alphabet has spaces, and "ricarica" is Italian.
+DEGENERATE_UNSPACED = re.compile(r"(\S{3,}?)\1+")
+LATIN_LETTER = re.compile(r"[A-Za-z\u00c0-\u024f]")
 # One translation serving at least this many distinct sources means the model
 # collapsed unrelated strings onto a single output.
 COLLAPSE_THRESHOLD = 5
@@ -36,6 +43,9 @@ def is_degenerate(text: str) -> bool:
                 return True
         else:
             run = 1
+
+    if not LATIN_LETTER.search(text) and DEGENERATE_UNSPACED.fullmatch(text.strip()):
+        return True
 
     return bool(DEGENERATE_CHAR_RUN.search(text))
 
