@@ -7,7 +7,6 @@
  * Host is authoritative: runs physics at 60fps, broadcasts state ~30Hz.
  * Peer sends input only and renders received state.
  */
-import { log } from "../../logger.js";
 
 import { GameEngine } from "../../game_engine.js";
 import { normalizeFrostAIDifficulty } from "./difficulty.js";
@@ -78,6 +77,8 @@ function resolveMode(gameId) {
 }
 
 export class HexFrostEngine extends GameEngine {
+  static FINAL_PHASE = PHASE.FINISHED;
+
   static INPUT_BITS = { left: 0, right: 1, up: 2, down: 3 };
 
   /**
@@ -106,15 +107,11 @@ export class HexFrostEngine extends GameEngine {
     this.snowParticles = null;
     this.difficulty = normalizeFrostAIDifficulty(options.difficulty);
     this.opponentController = options.opponentController || null;
-    this._boundBlur = this._handleBlur.bind(this);
-    this._boundChannelClose = this._handleChannelClose.bind(this);
   }
 
   start() {
     if (this.running) return;
     super.start();
-    window.addEventListener("blur", this._boundBlur);
-    this.channel.addEventListener("close", this._boundChannelClose);
 
     this.colors = readColors(this.canvas);
     this.snowParticles = generateSnowParticles(35);
@@ -135,8 +132,6 @@ export class HexFrostEngine extends GameEngine {
   }
 
   stop() {
-    window.removeEventListener("blur", this._boundBlur);
-    this.channel.removeEventListener("close", this._boundChannelClose);
     this.localInputs = { left: false, right: false, up: false, down: false };
     this.remoteInputs = { left: false, right: false, up: false, down: false };
     this.peerReady = false;
@@ -462,30 +457,12 @@ export class HexFrostEngine extends GameEngine {
 
   // ── Connection Resilience ──
 
-  _handleBlur() {
-    this.localInputs = { left: false, right: false, up: false, down: false };
-    this._sendInputState();
-  }
-
-  _handleChannelClose() {
-    this._stopSteps();
-    this.setKeyboardCaptured(false);
-    if (!this.gameState || this.gameState.phase === PHASE.FINISHED) return;
-    this.gameState.phase = PHASE.FINISHED;
-    this._invalidate();
-    if (this.onGameEnd) {
-      try {
-        this.onGameEnd({
-          winner: "draw",
-          score_p1: this.gameState.p1?.roundWins ?? this.gameState.p1RoundWins ?? 0,
-          score_p2: this.gameState.p2?.roundWins ?? this.gameState.p2RoundWins ?? 0,
-          disconnected: true,
-        });
-      } catch (error) {
-        // The disconnect result callback (pushEvent) threw — do not lose it.
-        log.debug("[GameEngine] game-end callback failed", error);
-      }
-    }
+  _disconnectResult() {
+    return {
+      winner: "draw",
+      score_p1: this.gameState.p1?.roundWins ?? this.gameState.p1RoundWins ?? 0,
+      score_p2: this.gameState.p2?.roundWins ?? this.gameState.p2RoundWins ?? 0,
+    };
   }
 
   // ── Render / broadcast helpers ───────────────────────────────

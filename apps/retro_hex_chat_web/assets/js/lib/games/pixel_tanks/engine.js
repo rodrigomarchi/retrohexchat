@@ -3,7 +3,6 @@
  * Host-authoritative: creator runs physics, peer receives state snapshots.
  * @module games/pixel_tanks_engine
  */
-import { log } from "../../logger.js";
 
 import { GameEngine } from "../../game_engine.js";
 import {
@@ -66,6 +65,8 @@ const PIXEL_TANKS_PREVENT_DEFAULT_KEYS = new Set([
 ]);
 
 export class PixelTanksEngine extends GameEngine {
+  static FINAL_PHASE = PHASE.MATCH_OVER;
+
   static INPUT_BITS = { rotateLeft: 0, rotateRight: 1, forward: 2, fire: 3 };
 
   static INTERPOLATION = {
@@ -109,8 +110,6 @@ export class PixelTanksEngine extends GameEngine {
     this.opponentController =
       options.opponentController ||
       (this.mode === "solo" ? createPixelTanksAI({ difficulty: this.difficulty }) : null);
-    this._boundBlur = this._handleBlur.bind(this);
-    this._boundChannelClose = this._handleChannelClose.bind(this);
 
     // Edge-trigger fire (only fire on press, not hold)
     this._localFirePressed = false;
@@ -127,8 +126,6 @@ export class PixelTanksEngine extends GameEngine {
       fire: false,
     };
     this.colors = getColors(this.canvas);
-    window.addEventListener("blur", this._boundBlur);
-    this.channel.addEventListener("close", this._boundChannelClose);
 
     if (this.mode === "solo") {
       this.peerReady = true;
@@ -142,12 +139,6 @@ export class PixelTanksEngine extends GameEngine {
   }
 
   stop() {
-    window.removeEventListener("blur", this._boundBlur);
-    this.channel.removeEventListener("close", this._boundChannelClose);
-    if (this.phaseTimer) {
-      clearTimeout(this.phaseTimer);
-      this.phaseTimer = null;
-    }
     this._localFirePressed = false;
     this._remoteFirePressed = false;
     super.stop();
@@ -276,16 +267,6 @@ export class PixelTanksEngine extends GameEngine {
     if (key === "ArrowUp" || key === "w" || key === "W") return INPUT_KEY.FORWARD;
     if (key === " " || key === "Shift") return INPUT_KEY.FIRE;
     return null;
-  }
-
-  _handleBlur() {
-    this.localInputs = {
-      rotateLeft: false,
-      rotateRight: false,
-      forward: false,
-      fire: false,
-    };
-    this._sendInputState();
   }
 
   // --- Phase management (host only) ---
@@ -536,27 +517,14 @@ export class PixelTanksEngine extends GameEngine {
 
   // ── Connection Resilience ──
 
-  _handleChannelClose() {
-    this.setKeyboardCaptured(false);
-    this._stopSteps();
-    if (!this.gameState || this.gameState.phase === PHASE.MATCH_OVER) return;
-    this.gameState.phase = PHASE.MATCH_OVER;
-    this._invalidate();
-    if (this.onGameEnd) {
-      try {
-        this.onGameEnd({
-          score: {
-            p1: this.gameState.roundWins1,
-            p2: this.gameState.roundWins2,
-          },
-          winner: 0,
-          disconnected: true,
-        });
-      } catch (error) {
-        // The disconnect result callback (pushEvent) threw — do not lose it.
-        log.debug("[GameEngine] game-end callback failed", error);
-      }
-    }
+  _disconnectResult() {
+    return {
+      score: {
+        p1: this.gameState.roundWins1,
+        p2: this.gameState.roundWins2,
+      },
+      winner: 0,
+    };
   }
 
   _broadcastState() {

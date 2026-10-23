@@ -3,7 +3,6 @@
  * Host-authoritative: creator runs physics, peer receives state snapshots.
  * @module games/warlords_engine
  */
-import { log } from "../../logger.js";
 
 import { GameEngine } from "../../game_engine.js";
 import { createWarlordAI, normalizeWarlordAIDifficulty } from "./ai.js";
@@ -62,6 +61,8 @@ const WARLORD_PREVENT_DEFAULT_KEYS = new Set([
 ]);
 
 export class WarlordEngine extends GameEngine {
+  static FINAL_PHASE = PHASE.FINISHED;
+
   static INPUT_BITS = { up: 0, down: 1, space: 2 };
 
   static INTERPOLATION = {
@@ -94,8 +95,6 @@ export class WarlordEngine extends GameEngine {
     this.audio = new WarlordAudio();
     this.colors = null;
     this.peerReady = false;
-    this._boundBlur = this._handleBlur.bind(this);
-    this._boundChannelClose = this._handleChannelClose.bind(this);
   }
 
   start() {
@@ -103,8 +102,6 @@ export class WarlordEngine extends GameEngine {
     super.start();
     this.localInputs = { up: false, down: false, space: false };
     this.colors = getColors(this.canvas);
-    window.addEventListener("blur", this._boundBlur);
-    this.channel.addEventListener("close", this._boundChannelClose);
 
     if (this.mode === "solo") {
       this.peerReady = true;
@@ -118,12 +115,6 @@ export class WarlordEngine extends GameEngine {
   }
 
   stop() {
-    window.removeEventListener("blur", this._boundBlur);
-    this.channel.removeEventListener("close", this._boundChannelClose);
-    if (this.phaseTimer) {
-      clearTimeout(this.phaseTimer);
-      this.phaseTimer = null;
-    }
     this.localInputs = { up: false, down: false, space: false };
     this.remoteInputs = { up: false, down: false, space: false };
     this.peerReady = false;
@@ -294,8 +285,6 @@ export class WarlordEngine extends GameEngine {
 
   /** Clear all inputs on window blur. */
   _handleBlur() {
-    this.localInputs = { up: false, down: false, space: false };
-
     // Host: release caught fireball on blur (otherwise it stays stuck)
     if (this.isHost && this.gameState.caughtBy === 1) {
       this.gameState = releaseBall(this.gameState, 1);
@@ -304,7 +293,7 @@ export class WarlordEngine extends GameEngine {
         this.gameState.released = false;
       }
     }
-    this._sendInputState();
+    super._handleBlur();
   }
 
   beginMatch(options = {}) {
@@ -525,24 +514,11 @@ export class WarlordEngine extends GameEngine {
 
   // ── Connection Resilience ──
 
-  _handleChannelClose() {
-    this._stopSteps();
-    this.setKeyboardCaptured(false);
-    if (!this.gameState || this.gameState.phase === PHASE.FINISHED) return;
-    this.gameState.phase = PHASE.FINISHED;
-    this._invalidate();
-    if (this.onGameEnd) {
-      try {
-        this.onGameEnd({
-          score: { p1: this.gameState.p1Lives, p2: this.gameState.p2Lives },
-          winner: 0,
-          disconnected: true,
-        });
-      } catch (error) {
-        // The disconnect result callback (pushEvent) threw — do not lose it.
-        log.debug("[GameEngine] game-end callback failed", error);
-      }
-    }
+  _disconnectResult() {
+    return {
+      score: { p1: this.gameState.p1Lives, p2: this.gameState.p2Lives },
+      winner: 0,
+    };
   }
 
   /** Send game state over DataChannel. */

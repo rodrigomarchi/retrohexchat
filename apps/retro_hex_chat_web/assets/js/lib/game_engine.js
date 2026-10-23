@@ -68,6 +68,12 @@ const KEYBOARD_CAPTURE_OPTIONS = true;
  * - `_renderState()` draws. Never call it directly; call `_invalidate()`.
  * - `_ingestSnapshot(decoded)` applies an authoritative snapshot on the guest.
  * - `_sendState(data)` for snapshots, `_sendCommand(data)` for one-shots.
+ * - `static FINAL_PHASE` is the phase a match ends in. When the channel closes
+ *   mid-match the base moves `gameState.phase` there, asks
+ *   `_disconnectResult()` for the result to report and calls
+ *   `_onMatchAbandoned()` for anything the game must silence.
+ * - `phaseTimer` holds the one pending phase change (a countdown, a pause
+ *   between rounds); the base clears it on stop and on disconnect.
  */
 export class GameEngine {
   /** @type {Record<string, number>} held-input name to bit position */
@@ -75,6 +81,9 @@ export class GameEngine {
 
   /** @type {{keys: string[], snapDistance?: number}} guest-side smoothing */
   static INTERPOLATION = { keys: [] };
+
+  /** The phase a match ends in, from the game's own phase enum. */
+  static FINAL_PHASE = null;
 
   /**
    * @param {HTMLCanvasElement} canvas
@@ -125,12 +134,15 @@ export class GameEngine {
     this._commandTimers = new Set();
     this._readyTimer = null;
     this._readyEncoder = null;
+    this.phaseTimer = null;
     this._keyboardCaptured = options.captureKeyboard === true;
 
     this._boundOnMessage = this._onChannelMessage.bind(this);
     this._boundOnKeyDown = this._onKeyDown.bind(this);
     this._boundOnKeyUp = this._onKeyUp.bind(this);
     this._boundPump = this._pump.bind(this);
+    this._boundBlur = this._handleBlur.bind(this);
+    this._boundChannelClose = this._handleChannelClose.bind(this);
   }
 
   /** @returns {void} */
@@ -139,6 +151,8 @@ export class GameEngine {
     this.running = true;
 
     this.channel.addEventListener("message", this._boundOnMessage);
+    this.channel.addEventListener("close", this._boundChannelClose);
+    window.addEventListener("blur", this._boundBlur);
     // Somebody watching has no paddle: their keys stay the page's.
     if (this.mode !== "spectator") {
       window.addEventListener("keydown", this._boundOnKeyDown, KEYBOARD_CAPTURE_OPTIONS);
@@ -163,11 +177,14 @@ export class GameEngine {
     }
 
     this._clearReadyHandshake();
+    this._clearPhaseTimer();
 
     for (const timer of this._commandTimers) clearTimeout(timer);
     this._commandTimers.clear();
 
     this.channel.removeEventListener("message", this._boundOnMessage);
+    this.channel.removeEventListener("close", this._boundChannelClose);
+    window.removeEventListener("blur", this._boundBlur);
     window.removeEventListener("keydown", this._boundOnKeyDown, KEYBOARD_CAPTURE_OPTIONS);
     window.removeEventListener("keyup", this._boundOnKeyUp, KEYBOARD_CAPTURE_OPTIONS);
 
@@ -178,6 +195,74 @@ export class GameEngine {
     // the call's own audio and eventually hit the browser's per-page ceiling.
     if (this.audio && typeof this.audio.dispose === "function") {
       this.audio.dispose();
+    }
+  }
+
+  // ── Match lifecycle ──
+
+  /** @returns {void} */
+  _clearPhaseTimer() {
+    if (this.phaseTimer) {
+      clearTimeout(this.phaseTimer);
+      this.phaseTimer = null;
+    }
+  }
+
+  /**
+   * The window lost focus: its keyup never arrives, so every held input is
+   * released and the release restated to the host.
+   * @returns {void}
+   */
+  _handleBlur() {
+    const keys = Object.keys(this._inputBits);
+    if (!keys.length) return;
+    this.localInputs = Object.fromEntries(keys.map((key) => [key, false]));
+    this._sendInputState();
+  }
+
+  /**
+   * The other side is gone. A match still in play ends where it stands and
+   * is reported as disconnected; a pending countdown never fires.
+   * @returns {void}
+   */
+  _handleChannelClose() {
+    this._stopSteps();
+    this.setKeyboardCaptured(false);
+    this._clearPhaseTimer();
+    const final = this.constructor.FINAL_PHASE;
+    if (!this.gameState || final === null || this.gameState.phase === final) return;
+    this.gameState.phase = final;
+    this._onMatchAbandoned();
+    this._invalidate();
+    this._reportDisconnect(this._disconnectResult());
+  }
+
+  /**
+   * Silence whatever a match left running (a drone, a thrust loop).
+   * @returns {void}
+   */
+  _onMatchAbandoned() {}
+
+  /**
+   * The result reported when the match ends by disconnect, in the shape this
+   * game's `onGameEnd` expects.
+   * @returns {object}
+   */
+  _disconnectResult() {
+    return {};
+  }
+
+  /**
+   * @param {object} result
+   * @returns {void}
+   */
+  _reportDisconnect(result) {
+    if (!this.onGameEnd) return;
+    try {
+      this.onGameEnd({ ...result, disconnected: true });
+    } catch (error) {
+      // The result callback (pushEvent) threw — do not lose it.
+      log.debug("[GameEngine] game-end callback failed", error);
     }
   }
 

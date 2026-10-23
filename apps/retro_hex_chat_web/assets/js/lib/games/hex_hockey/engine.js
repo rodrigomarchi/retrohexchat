@@ -82,6 +82,8 @@ function resolveMode(gameId) {
 }
 
 export class HexHockeyEngine extends GameEngine {
+  static FINAL_PHASE = PHASE.FINISHED;
+
   static INPUT_BITS = { left: 0, right: 1, up: 2, down: 3, action: 4 };
 
   /**
@@ -123,8 +125,6 @@ export class HexHockeyEngine extends GameEngine {
     this.goalFlash = 0;
 
     // Connection resilience
-    this._boundBlur = this._handleBlur.bind(this);
-    this._boundChannelClose = this._handleChannelClose.bind(this);
   }
 
   start() {
@@ -133,9 +133,6 @@ export class HexHockeyEngine extends GameEngine {
 
     this.colors = readColors(this.canvas);
     this.iceParticles = generateIceParticles(40);
-
-    window.addEventListener("blur", this._boundBlur);
-    this.channel.addEventListener("close", this._boundChannelClose);
 
     if (this.mode === "solo") {
       this.peerReady = true;
@@ -152,8 +149,6 @@ export class HexHockeyEngine extends GameEngine {
 
   stop() {
     super.stop();
-    window.removeEventListener("blur", this._boundBlur);
-    this.channel.removeEventListener("close", this._boundChannelClose);
     this.localInputs = { left: false, right: false, up: false, down: false, action: false };
     this.remoteInputs = { left: false, right: false, up: false, down: false, action: false };
     this.peerReady = false;
@@ -605,39 +600,18 @@ export class HexHockeyEngine extends GameEngine {
 
   // ── Connection resilience ───────────────────────────────────
 
-  _handleBlur() {
-    this.localInputs = {
-      left: false,
-      right: false,
-      up: false,
-      down: false,
-      action: false,
-    };
-    this._sendInputState();
+  _onMatchAbandoned() {
+    this.audio.stopSuddenDeath();
   }
 
-  _handleChannelClose() {
-    this._stopSteps();
-    this.setKeyboardCaptured(false);
-    if (!this.gameState || this.gameState.phase === PHASE.FINISHED) return;
-    this.gameState.phase = PHASE.FINISHED;
-    this.audio.stopSuddenDeath();
-    this._invalidate();
-    if (this.onGameEnd) {
-      try {
-        this.onGameEnd({
-          winner: "draw",
-          score_p1: this.gameState.scoreP1,
-          score_p2: this.gameState.scoreP2,
-          periods: this.gameState.period,
-          mode: this.gameState.mode,
-          disconnected: true,
-        });
-      } catch (error) {
-        // The disconnect result callback (pushEvent) threw — do not lose it.
-        log.debug("[GameEngine] game-end callback failed", error);
-      }
-    }
+  _disconnectResult() {
+    return {
+      winner: "draw",
+      score_p1: this.gameState.scoreP1,
+      score_p2: this.gameState.scoreP2,
+      periods: this.gameState.period,
+      mode: this.gameState.mode,
+    };
   }
 
   // ── Render / broadcast helpers ───────────────────────────────

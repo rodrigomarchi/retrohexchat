@@ -3,7 +3,6 @@
  * Host-authoritative: creator runs physics, peer receives state snapshots.
  * @module games/breakout_engine
  */
-import { log } from "../../logger.js";
 
 import { GameEngine } from "../../game_engine.js";
 import { createBreakoutAI, normalizeBreakoutAIDifficulty } from "./ai.js";
@@ -52,6 +51,8 @@ const BREAKOUT_PREVENT_DEFAULT_KEYS = new Set([
 ]);
 
 export class BreakoutEngine extends GameEngine {
+  static FINAL_PHASE = PHASE.FINISHED;
+
   static INPUT_BITS = { left: 0, right: 1 };
 
   static INTERPOLATION = {
@@ -85,16 +86,12 @@ export class BreakoutEngine extends GameEngine {
     this.audio = new BreakoutAudio();
     this.colors = null;
     this.peerReady = false;
-    this._boundBlur = this._handleBlur.bind(this);
-    this._boundChannelClose = this._handleChannelClose.bind(this);
   }
 
   start() {
     if (this.running) return;
     super.start();
     this.colors = getColors(this.canvas);
-    window.addEventListener("blur", this._boundBlur);
-    this.channel.addEventListener("close", this._boundChannelClose);
 
     if (this.mode === "solo") {
       this.peerReady = true;
@@ -110,12 +107,6 @@ export class BreakoutEngine extends GameEngine {
   }
 
   stop() {
-    window.removeEventListener("blur", this._boundBlur);
-    this.channel.removeEventListener("close", this._boundChannelClose);
-    if (this.phaseTimer) {
-      clearTimeout(this.phaseTimer);
-      this.phaseTimer = null;
-    }
     this.localInputs = { left: false, right: false };
     this.remoteInputs = { left: false, right: false };
     this.peerReady = false;
@@ -217,12 +208,6 @@ export class BreakoutEngine extends GameEngine {
     if (key === "ArrowLeft" || key === "a" || key === "A") return INPUT_KEY.LEFT;
     if (key === "ArrowRight" || key === "d" || key === "D") return INPUT_KEY.RIGHT;
     return null;
-  }
-
-  /** Clear all inputs on window blur (prevents stuck keys). */
-  _handleBlur() {
-    this.localInputs = { left: false, right: false };
-    this._sendInputState();
   }
 
   beginMatch(options = {}) {
@@ -413,24 +398,11 @@ export class BreakoutEngine extends GameEngine {
 
   // ── Connection Resilience ──
 
-  _handleChannelClose() {
-    this._stopSteps();
-    this.setKeyboardCaptured(false);
-    if (!this.gameState || this.gameState.phase === PHASE.FINISHED) return;
-    this.gameState.phase = PHASE.FINISHED;
-    this._invalidate();
-    if (this.onGameEnd) {
-      try {
-        this.onGameEnd({
-          score: { p1: this.gameState.score, p2: this.gameState.score },
-          winner: -1,
-          disconnected: true,
-        });
-      } catch (error) {
-        // The disconnect result callback (pushEvent) threw — do not lose it.
-        log.debug("[GameEngine] game-end callback failed", error);
-      }
-    }
+  _disconnectResult() {
+    return {
+      score: { p1: this.gameState.score, p2: this.gameState.score },
+      winner: -1,
+    };
   }
 
   /** Send game state over DataChannel. */

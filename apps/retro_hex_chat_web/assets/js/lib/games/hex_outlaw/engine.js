@@ -3,7 +3,6 @@
  * Host-authoritative: creator runs physics, peer receives state snapshots.
  * @module games/hex_outlaw_engine
  */
-import { log } from "../../logger.js";
 
 import { GameEngine } from "../../game_engine.js";
 import { createOutlawAI, normalizeOutlawAIDifficulty } from "./ai.js";
@@ -81,6 +80,8 @@ function gameModeFromId(gameId) {
 }
 
 export class OutlawEngine extends GameEngine {
+  static FINAL_PHASE = PHASE.MATCH_OVER;
+
   static INPUT_BITS = { up: 0, down: 1, left: 2, right: 3, fire: 4 };
 
   static INTERPOLATION = {
@@ -129,8 +130,6 @@ export class OutlawEngine extends GameEngine {
     this.opponentController =
       options.opponentController ||
       (this.mode === "solo" ? createOutlawAI({ difficulty: this.difficulty }) : null);
-    this._boundBlur = this._handleBlur.bind(this);
-    this._boundChannelClose = this._handleChannelClose.bind(this);
 
     // Edge-trigger fire (only fire on press, not hold)
     this._localFirePressed = false;
@@ -145,8 +144,6 @@ export class OutlawEngine extends GameEngine {
     if (this.running) return;
     super.start();
     this.colors = getColors(this.canvas);
-    window.addEventListener("blur", this._boundBlur);
-    this.channel.addEventListener("close", this._boundChannelClose);
 
     if (this.mode === "solo") {
       this.peerReady = true;
@@ -160,12 +157,6 @@ export class OutlawEngine extends GameEngine {
   }
 
   stop() {
-    window.removeEventListener("blur", this._boundBlur);
-    this.channel.removeEventListener("close", this._boundChannelClose);
-    if (this.phaseTimer) {
-      clearTimeout(this.phaseTimer);
-      this.phaseTimer = null;
-    }
     this._localFirePressed = false;
     this._remoteFirePressed = false;
     super.stop();
@@ -311,16 +302,9 @@ export class OutlawEngine extends GameEngine {
   }
 
   _handleBlur() {
-    this.localInputs = {
-      up: false,
-      down: false,
-      left: false,
-      right: false,
-      fire: false,
-    };
     this._localFirePressed = false;
     this._remoteFirePressed = false;
-    this._sendInputState();
+    super._handleBlur();
   }
 
   // --- Phase management (host only) ---
@@ -570,27 +554,14 @@ export class OutlawEngine extends GameEngine {
 
   // ── Connection Resilience ──
 
-  _handleChannelClose() {
-    this._stopSteps();
-    this.setKeyboardCaptured(false);
-    if (!this.gameState || this.gameState.phase === PHASE.MATCH_OVER) return;
-    this.gameState.phase = PHASE.MATCH_OVER;
-    this._invalidate();
-    if (this.onGameEnd) {
-      try {
-        this.onGameEnd({
-          score: {
-            p1: this.gameState.roundWins1,
-            p2: this.gameState.roundWins2,
-          },
-          winner: 0,
-          disconnected: true,
-        });
-      } catch (error) {
-        // The disconnect result callback (pushEvent) threw — do not lose it.
-        log.debug("[GameEngine] game-end callback failed", error);
-      }
-    }
+  _disconnectResult() {
+    return {
+      score: {
+        p1: this.gameState.roundWins1,
+        p2: this.gameState.roundWins2,
+      },
+      winner: 0,
+    };
   }
 
   _broadcastState() {

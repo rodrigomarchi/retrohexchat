@@ -86,6 +86,8 @@ const RAID_PREVENT_DEFAULT_KEYS = new Set([
 ]);
 
 export class HexRaidEngine extends GameEngine {
+  static FINAL_PHASE = PHASE.FINISHED;
+
   static INPUT_BITS = { left: 0, right: 1, accel: 2, decel: 3, fire: 4, mine: 5 };
 
   /**
@@ -132,8 +134,6 @@ export class HexRaidEngine extends GameEngine {
     this.peerReady = false;
     this.difficulty = normalizeRaidAIDifficulty(options.difficulty);
     this.opponentController = options.opponentController || null;
-    this._boundBlur = this._handleBlur.bind(this);
-    this._boundChannelClose = this._handleChannelClose.bind(this);
 
     // Edge-trigger fire and mine (only on press, not hold)
     this._localFirePressed = false;
@@ -146,8 +146,6 @@ export class HexRaidEngine extends GameEngine {
     if (this.running) return;
     super.start();
     this.colors = getColors(this.canvas);
-    window.addEventListener("blur", this._boundBlur);
-    this.channel.addEventListener("close", this._boundChannelClose);
 
     if (this.mode === "solo") {
       this.peerReady = true;
@@ -163,12 +161,6 @@ export class HexRaidEngine extends GameEngine {
   }
 
   stop() {
-    window.removeEventListener("blur", this._boundBlur);
-    this.channel.removeEventListener("close", this._boundChannelClose);
-    if (this.phaseTimer) {
-      clearTimeout(this.phaseTimer);
-      this.phaseTimer = null;
-    }
     this._localFirePressed = false;
     this._remoteFirePressed = false;
     this._localMinePressed = false;
@@ -346,18 +338,6 @@ export class HexRaidEngine extends GameEngine {
     if (key === " ") return INPUT_KEY.FIRE;
     if (key === "Shift" || key === "q" || key === "Q") return INPUT_KEY.MINE;
     return null;
-  }
-
-  _handleBlur() {
-    this.localInputs = {
-      left: false,
-      right: false,
-      accel: false,
-      decel: false,
-      fire: false,
-      mine: false,
-    };
-    this._sendInputState();
   }
 
   // --- Phase management (host only) ---
@@ -623,24 +603,11 @@ export class HexRaidEngine extends GameEngine {
 
   // ── Connection Resilience ──
 
-  _handleChannelClose() {
-    this._stopSteps();
-    this.setKeyboardCaptured(false);
-    if (!this.gameState || this.gameState.phase === PHASE.FINISHED) return;
-    this.gameState.phase = PHASE.FINISHED;
-    this._invalidate();
-    if (this.onGameEnd) {
-      try {
-        this.onGameEnd({
-          score: { p1: this.gameState.score1, p2: this.gameState.score2 },
-          winner: 0,
-          disconnected: true,
-        });
-      } catch (error) {
-        // The disconnect result callback (pushEvent) threw — do not lose it.
-        log.debug("[GameEngine] game-end callback failed", error);
-      }
-    }
+  _disconnectResult() {
+    return {
+      score: { p1: this.gameState.score1, p2: this.gameState.score2 },
+      winner: 0,
+    };
   }
 
   _broadcastState() {

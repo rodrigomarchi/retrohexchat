@@ -3,7 +3,6 @@
  * Host-authoritative: creator runs physics, peer receives state snapshots.
  * @module games/hex_boxing_engine
  */
-import { log } from "../../logger.js";
 
 import { GameEngine } from "../../game_engine.js";
 import { createBoxingAI, normalizeBoxingAIDifficulty } from "./ai.js";
@@ -60,6 +59,8 @@ const BOXING_PREVENT_DEFAULT_KEYS = new Set([
 ]);
 
 export class BoxingEngine extends GameEngine {
+  static FINAL_PHASE = PHASE.MATCH_OVER;
+
   static INPUT_BITS = { up: 0, down: 1, left: 2, right: 3, punch: 4 };
 
   static INTERPOLATION = {
@@ -107,8 +108,6 @@ export class BoxingEngine extends GameEngine {
     this.opponentController =
       options.opponentController ||
       (this.mode === "solo" ? createBoxingAI({ difficulty: this.difficulty }) : null);
-    this._boundBlur = this._handleBlur.bind(this);
-    this._boundChannelClose = this._handleChannelClose.bind(this);
 
     // Edge-trigger punch (only punch on press, not hold)
     this._localPunchPressed = false;
@@ -119,8 +118,6 @@ export class BoxingEngine extends GameEngine {
     if (this.running) return;
     super.start();
     this.colors = getColors(this.canvas);
-    window.addEventListener("blur", this._boundBlur);
-    this.channel.addEventListener("close", this._boundChannelClose);
 
     if (this.mode === "solo") {
       this.peerReady = true;
@@ -134,12 +131,6 @@ export class BoxingEngine extends GameEngine {
   }
 
   stop() {
-    window.removeEventListener("blur", this._boundBlur);
-    this.channel.removeEventListener("close", this._boundChannelClose);
-    if (this.phaseTimer) {
-      clearTimeout(this.phaseTimer);
-      this.phaseTimer = null;
-    }
     this._localPunchPressed = false;
     this._remotePunchPressed = false;
     super.stop();
@@ -266,11 +257,6 @@ export class BoxingEngine extends GameEngine {
     if (key === "ArrowRight" || key === "d" || key === "D") return INPUT_KEY.RIGHT;
     if (key === " " || key === "Shift") return INPUT_KEY.PUNCH;
     return null;
-  }
-
-  _handleBlur() {
-    this.localInputs = { up: false, down: false, left: false, right: false, punch: false };
-    this._sendInputState();
   }
 
   // --- Direction from input state ---
@@ -532,27 +518,14 @@ export class BoxingEngine extends GameEngine {
 
   // ── Connection Resilience ──
 
-  _handleChannelClose() {
-    this._stopSteps();
-    this.setKeyboardCaptured(false);
-    if (!this.gameState || this.gameState.phase === PHASE.MATCH_OVER) return;
-    this.gameState.phase = PHASE.MATCH_OVER;
-    this._invalidate();
-    if (this.onGameEnd) {
-      try {
-        this.onGameEnd({
-          score: {
-            p1: this.gameState.roundWins1,
-            p2: this.gameState.roundWins2,
-          },
-          winner: 0,
-          disconnected: true,
-        });
-      } catch (error) {
-        // The disconnect result callback (pushEvent) threw — do not lose it.
-        log.debug("[GameEngine] game-end callback failed", error);
-      }
-    }
+  _disconnectResult() {
+    return {
+      score: {
+        p1: this.gameState.roundWins1,
+        p2: this.gameState.roundWins2,
+      },
+      winner: 0,
+    };
   }
 
   _broadcastState() {

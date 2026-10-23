@@ -4,7 +4,6 @@
  * Two-loop design: 10Hz physics ticks + 60fps rendering.
  * @module games/surround_engine
  */
-import { log } from "../../logger.js";
 
 import { GameEngine } from "../../game_engine.js";
 import { createSurroundAI, normalizeSurroundAIDifficulty } from "./ai.js";
@@ -51,6 +50,8 @@ const SURROUND_PREVENT_DEFAULT_KEYS = new Set([
 ]);
 
 export class SurroundEngine extends GameEngine {
+  static FINAL_PHASE = PHASE.MATCH_OVER;
+
   /**
    * @param {HTMLCanvasElement} canvas
    * @param {RTCDataChannel} channel
@@ -78,16 +79,12 @@ export class SurroundEngine extends GameEngine {
       options.opponentController ||
       (this.mode === "solo" ? createSurroundAI({ difficulty: this.difficulty }) : null);
     this._savedScores = { score1: 0, score2: 0 };
-    this._boundBlur = this._handleBlur.bind(this);
-    this._boundChannelClose = this._handleChannelClose.bind(this);
   }
 
   start() {
     if (this.running) return;
     super.start();
     this.colors = getColors(this.canvas);
-    window.addEventListener("blur", this._boundBlur);
-    this.channel.addEventListener("close", this._boundChannelClose);
 
     this._invalidate();
 
@@ -99,13 +96,7 @@ export class SurroundEngine extends GameEngine {
   }
 
   stop() {
-    window.removeEventListener("blur", this._boundBlur);
-    this.channel.removeEventListener("close", this._boundChannelClose);
     this._stopTickLoop();
-    if (this.phaseTimer) {
-      clearTimeout(this.phaseTimer);
-      this.phaseTimer = null;
-    }
     super.stop();
   }
 
@@ -270,18 +261,10 @@ export class SurroundEngine extends GameEngine {
     return null;
   }
 
-  /** Window blur — no-op for surround (directions are sticky). */
-  _handleBlur() {
-    // Intentionally empty: direction persists, no stuck-key issue
-  }
-
   /** Host: start countdown for a round. */
   _startCountdown(round) {
     this._stopTickLoop();
-    if (this.phaseTimer) {
-      clearTimeout(this.phaseTimer);
-      this.phaseTimer = null;
-    }
+    this._clearPhaseTimer();
 
     // Create fresh grid for the new round
     const fresh = createInitialState(round);
@@ -466,23 +449,11 @@ export class SurroundEngine extends GameEngine {
 
   // ── Connection Resilience ──
 
-  _handleChannelClose() {
-    this._stopSteps();
-    this.setKeyboardCaptured(false);
-    if (!this.gameState || this.gameState.phase === PHASE.MATCH_OVER) return;
-    this.gameState.phase = PHASE.MATCH_OVER;
-    if (this.onGameEnd) {
-      try {
-        this.onGameEnd({
-          score: { p1: this.gameState.score1, p2: this.gameState.score2 },
-          winner: 0,
-          disconnected: true,
-        });
-      } catch (error) {
-        // The disconnect result callback (pushEvent) threw — do not lose it.
-        log.debug("[GameEngine] game-end callback failed", error);
-      }
-    }
+  _disconnectResult() {
+    return {
+      score: { p1: this.gameState.score1, p2: this.gameState.score2 },
+      winner: 0,
+    };
   }
 
   /** Send game state over DataChannel. */

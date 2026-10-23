@@ -4,7 +4,6 @@
  * Supports 3 game modes: Open Space, Gravity Well, Debris Field.
  * @module games/star_duel_engine
  */
-import { log } from "../../logger.js";
 
 import { GameEngine } from "../../game_engine.js";
 import { createStarDuelAI, normalizeStarDuelAIDifficulty } from "./ai.js";
@@ -86,6 +85,8 @@ function gameModeFromId(gameId) {
 }
 
 export class StarDuelEngine extends GameEngine {
+  static FINAL_PHASE = PHASE.FINISHED;
+
   static INPUT_BITS = { rotateLeft: 0, rotateRight: 1, thrust: 2, fire: 3, warp: 4 };
 
   /**
@@ -138,17 +139,12 @@ export class StarDuelEngine extends GameEngine {
     // Thrust audio state tracking
     this._thrustAudioPlaying = false;
     this._peerThrustAudioPlaying = false;
-
-    this._boundBlur = this._handleBlur.bind(this);
-    this._boundChannelClose = this._handleChannelClose.bind(this);
   }
 
   start() {
     if (this.running) return;
     super.start();
     this.colors = getColors(this.canvas);
-    window.addEventListener("blur", this._boundBlur);
-    this.channel.addEventListener("close", this._boundChannelClose);
 
     if (this.mode === "solo") {
       this.peerReady = true;
@@ -164,12 +160,6 @@ export class StarDuelEngine extends GameEngine {
   }
 
   stop() {
-    window.removeEventListener("blur", this._boundBlur);
-    this.channel.removeEventListener("close", this._boundChannelClose);
-    if (this.phaseTimer) {
-      clearTimeout(this.phaseTimer);
-      this.phaseTimer = null;
-    }
     this.audio.stopThrust();
     this.audio.stopStarProximity();
     super.stop();
@@ -277,14 +267,7 @@ export class StarDuelEngine extends GameEngine {
 
   /** Clear all inputs on window blur (prevents stuck keys). */
   _handleBlur() {
-    this.localInputs = {
-      rotateLeft: false,
-      rotateRight: false,
-      thrust: false,
-      fire: false,
-      warp: false,
-    };
-    this._sendInputState();
+    super._handleBlur();
     this.audio.stopThrust();
     this._thrustAudioPlaying = false;
   }
@@ -645,26 +628,16 @@ export class StarDuelEngine extends GameEngine {
 
   // ── Connection Resilience ──
 
-  _handleChannelClose() {
-    this._stopSteps();
-    this.setKeyboardCaptured(false);
-    if (!this.gameState || this.gameState.phase === PHASE.FINISHED) return;
-    this.gameState.phase = PHASE.FINISHED;
+  _onMatchAbandoned() {
     this.audio.stopThrust();
     this.audio.stopStarProximity();
-    this._invalidate();
-    if (this.onGameEnd) {
-      try {
-        this.onGameEnd({
-          score: { p1: this.gameState.score1, p2: this.gameState.score2 },
-          winner: 0,
-          disconnected: true,
-        });
-      } catch (error) {
-        // The disconnect result callback (pushEvent) threw — do not lose it.
-        log.debug("[GameEngine] game-end callback failed", error);
-      }
-    }
+  }
+
+  _disconnectResult() {
+    return {
+      score: { p1: this.gameState.score1, p2: this.gameState.score2 },
+      winner: 0,
+    };
   }
 
   /** Send game state over DataChannel with encoded ship flags. */

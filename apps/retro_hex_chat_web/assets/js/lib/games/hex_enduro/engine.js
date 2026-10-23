@@ -73,6 +73,8 @@ const ENDURO_PREVENT_DEFAULT_KEYS = new Set([
 ]);
 
 export class HexEnduroEngine extends GameEngine {
+  static FINAL_PHASE = PHASE.FINISHED;
+
   static INPUT_BITS = { left: 0, right: 1, accel: 2, brake: 3, turbo: 4 };
 
   constructor(canvas, channel, gameId, isHost, onGameEnd, options = {}) {
@@ -95,16 +97,12 @@ export class HexEnduroEngine extends GameEngine {
     this.peerReady = false;
     this.difficulty = normalizeEnduroAIDifficulty(options.difficulty);
     this.opponentController = options.opponentController || null;
-    this._boundBlur = this._handleBlur.bind(this);
-    this._boundChannelClose = this._handleChannelClose.bind(this);
   }
 
   start() {
     if (this.running) return;
     super.start();
     this.colors = getColors(this.canvas);
-    window.addEventListener("blur", this._boundBlur);
-    this.channel.addEventListener("close", this._boundChannelClose);
 
     if (this.mode === "solo") {
       this.peerReady = true;
@@ -120,12 +118,6 @@ export class HexEnduroEngine extends GameEngine {
   }
 
   stop() {
-    window.removeEventListener("blur", this._boundBlur);
-    this.channel.removeEventListener("close", this._boundChannelClose);
-    if (this.phaseTimer) {
-      clearTimeout(this.phaseTimer);
-      this.phaseTimer = null;
-    }
     this.localInputs = { left: false, right: false, accel: false, brake: false, turbo: false };
     this.remoteInputs = { left: false, right: false, accel: false, brake: false, turbo: false };
     this._prevTurboLocal = false;
@@ -198,11 +190,6 @@ export class HexEnduroEngine extends GameEngine {
         inputs.turbo = pressed;
         break;
     }
-  }
-
-  _handleBlur() {
-    this.localInputs = { left: false, right: false, accel: false, brake: false, turbo: false };
-    this._sendInputState();
   }
 
   // ── Network Messages ──
@@ -505,36 +492,16 @@ export class HexEnduroEngine extends GameEngine {
     }
   }
 
-  _handleChannelClose() {
-    this._stopSteps();
-    this.setKeyboardCaptured(false);
-    if (this.running && this.gameState.phase !== PHASE.FINISHED) {
-      this.gameState.phase = PHASE.FINISHED;
+  _onMatchAbandoned() {
+    this.audio.stopEngineDrone();
+    this.audio.playGameOver();
+  }
 
-      // Clear countdown timer
-      if (this.phaseTimer) {
-        clearTimeout(this.phaseTimer);
-        this.phaseTimer = null;
-      }
-
-      this._invalidate();
-      this.audio.stopEngineDrone();
-      this.audio.playGameOver();
-
-      // Notify LiveView of disconnect
-      if (this.onGameEnd) {
-        try {
-          this.onGameEnd({
-            score: { p1: this.gameState.p1.score, p2: this.gameState.p2.score },
-            winner: 0, // draw on disconnect
-            disconnected: true,
-          });
-        } catch (error) {
-          // The result callback (pushEvent) threw — do not lose it.
-          log.debug("[GameEngine] game-end callback failed", error);
-        }
-      }
-    }
+  _disconnectResult() {
+    return {
+      score: { p1: this.gameState.p1.score, p2: this.gameState.p2.score },
+      winner: 0, // draw on disconnect
+    };
   }
 
   _updateOpponentInputs(state) {
