@@ -45,6 +45,36 @@ describe("NicklistHook", () => {
     });
   });
 
+  // The nicklist goes away (a channel closed, the window shut) with the
+  // pointer still resting on a nick: the hover card it was about to ask for
+  // belongs to a view that no longer exists.
+  it("asks for no hover card once it is gone", () => {
+    vi.useFakeTimers();
+    const nick = hook.el.querySelector("[data-nick='Alice']");
+    nick.dispatchEvent(new MouseEvent("mouseenter", { bubbles: false }));
+
+    hook.destroyed();
+    vi.advanceTimersByTime(1000);
+
+    expect(hook.pushEvent).not.toHaveBeenCalledWith("nick_hover", expect.anything());
+  });
+
+  // Every listener it put on the list comes off with it.
+  it("takes every listener off when it goes", () => {
+    hook.destroyed();
+    const added = vi.spyOn(hook.el, "addEventListener");
+    const removed = vi.spyOn(hook.el, "removeEventListener");
+    hook.mounted();
+    hook.destroyed();
+
+    expect(added.mock.calls.length).toBeGreaterThan(0);
+    for (const [type, fn, capture] of added.mock.calls) {
+      expect(removed.mock.calls).toContainEqual([type, fn, capture]);
+    }
+    // Mounted again by afterEach's destroy, so leave it mounted.
+    hook.mounted();
+  });
+
   it("opens the nick context menu from a touch long press", () => {
     vi.useFakeTimers();
     const nick = hook.el.querySelector("[data-nick='Bob']");
