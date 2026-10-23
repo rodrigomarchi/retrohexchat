@@ -332,8 +332,8 @@ defmodule RetroHexChatWeb.Components.UI.BotManagementDialog do
         default="general"
         class="bm-tabs flex min-h-0 flex-1 flex-col"
       >
-        <div class="bm-tabs-shell">
-          <.tabs_list class="bm-main-tabs gap-0">
+        <div class="dlg-tabs-shell">
+          <.tabs_list class="dlg-tabs-strip gap-0">
             <.tabs_trigger builder={%{id: "bot-tabs", default: "general"}} value="general">
               <:icon><Icons.icon_tab_general class="w-[16px] h-[16px]" /></:icon>
               {dgettext("dialogs", "General")}

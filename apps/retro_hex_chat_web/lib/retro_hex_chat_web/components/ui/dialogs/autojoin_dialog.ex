@@ -120,7 +120,7 @@ defmodule RetroHexChatWeb.Components.UI.AutojoinDialog do
             )}
           </.dialog_banner>
 
-          <div class="aj-entry-list min-h-0 flex-1 overflow-y-auto">
+          <div class="dlg-entry-list aj-entry-list min-h-0 flex-1 overflow-y-auto">
             <.list_empty_state
               :if={@entries == []}
               title={dgettext("dialogs", "No auto-join channels. Click Add to create one.")}

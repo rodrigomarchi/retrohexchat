@@ -19,15 +19,8 @@
 }
 
 .al-entry-list {
-  display: grid;
-  align-content: start;
-  gap: 6px;
-  min-height: 134px;
+  --dlg-entry-list-min-height: 134px;
   flex: 1 1 auto;
-  overscroll-behavior: contain;
-  padding: 6px;
-  background: #ffffff;
-  @apply shadow-retro-field;
 }
 
 .al-form-label,

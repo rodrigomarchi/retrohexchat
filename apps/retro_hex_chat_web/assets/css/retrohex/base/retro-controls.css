@@ -81,31 +81,30 @@
 .formatting-toolbar__actions::-webkit-scrollbar,
 .media-session-section-nav::-webkit-scrollbar,
 .desktop--stacked .desktop-start-menu::-webkit-scrollbar,
-.desktop--stacked :is(.bm-main-tabs, .cm-main-tabs, .cc-main-tabs)::-webkit-scrollbar {
+.desktop--stacked .dlg-tabs-strip::-webkit-scrollbar {
   width: 6px;
   height: 6px;
 }
+/* No arrows on these thin strips: a 6px bar has no room for them. */
 .desktop--stacked [role="tablist"]::-webkit-scrollbar-button,
 .formatting-toolbar__actions::-webkit-scrollbar-button,
 .media-session-section-nav::-webkit-scrollbar-button,
 .desktop--stacked .desktop-start-menu::-webkit-scrollbar-button,
-.desktop--stacked :is(.bm-main-tabs, .cm-main-tabs, .cc-main-tabs)/* One arrow at each end, as Windows draws it — never the doubled pair some
-   platforms put at both ends. */
-::-webkit-scrollbar-button {
+.desktop--stacked .dlg-tabs-strip::-webkit-scrollbar-button {
   display: none;
 }
 .desktop--stacked [role="tablist"]::-webkit-scrollbar-track,
 .formatting-toolbar__actions::-webkit-scrollbar-track,
 .media-session-section-nav::-webkit-scrollbar-track,
 .desktop--stacked .desktop-start-menu::-webkit-scrollbar-track,
-.desktop--stacked :is(.bm-main-tabs, .cm-main-tabs, .cc-main-tabs)::-webkit-scrollbar-track {
+.desktop--stacked .dlg-tabs-strip::-webkit-scrollbar-track {
   background: #dfdfdf;
 }
 .desktop--stacked [role="tablist"]::-webkit-scrollbar-thumb,
 .formatting-toolbar__actions::-webkit-scrollbar-thumb,
 .media-session-section-nav::-webkit-scrollbar-thumb,
 .desktop--stacked .desktop-start-menu::-webkit-scrollbar-thumb,
-.desktop--stacked :is(.bm-main-tabs, .cm-main-tabs, .cc-main-tabs)::-webkit-scrollbar-thumb {
+.desktop--stacked .dlg-tabs-strip::-webkit-scrollbar-thumb {
   background: #808080;
   box-shadow: none;
 }

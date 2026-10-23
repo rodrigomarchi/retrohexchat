@@ -6,14 +6,7 @@
 }
 
 .aj-entry-list {
-  display: grid;
-  align-content: start;
-  gap: 6px;
-  min-height: 132px;
-  overscroll-behavior: contain;
-  padding: 6px;
-  background: #ffffff;
-  @apply shadow-retro-field;
+  --dlg-entry-list-min-height: 132px;
 }
 
 .aj-sub-form {

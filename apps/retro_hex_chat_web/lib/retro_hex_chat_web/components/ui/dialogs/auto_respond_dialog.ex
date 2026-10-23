@@ -150,7 +150,7 @@ defmodule RetroHexChatWeb.Components.UI.AutoRespondDialog do
             ])
           }>
             <div class="ar-list-pane min-h-0">
-              <div class="ar-rule-list overflow-y-auto">
+              <div class="dlg-entry-list ar-rule-list overflow-y-auto">
                 <.list_empty_state
                   :if={@rules == []}
                   title={

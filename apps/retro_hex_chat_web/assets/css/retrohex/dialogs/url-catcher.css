@@ -53,21 +53,13 @@
 }
 
 .uc-entry-list {
-  display: grid;
-  align-content: start;
-  gap: 6px;
-  min-height: 160px;
-  overscroll-behavior: contain;
-  padding: 6px;
-  background: #ffffff;
-  @apply shadow-retro-field;
+  --dlg-entry-list-min-height: 160px;
 }
 
 .uc-entry,
 .uc-entry-url,
 .uc-preview-title,
-.uc-entry-meta,
-.uc-empty-state {
+.uc-entry-meta {
   min-width: 0;
   overflow-wrap: anywhere;
 }
@@ -111,15 +103,6 @@
   font-weight: 700;
 }
 
-.uc-empty-state {
-  display: grid;
-  min-height: 112px;
-  place-items: center;
-  padding: 12px;
-  border: 1px dashed #808080;
-  background: #dfdfdf;
-  font-size: 12px;
-}
 
 .uc-action-button {
   white-space: nowrap;

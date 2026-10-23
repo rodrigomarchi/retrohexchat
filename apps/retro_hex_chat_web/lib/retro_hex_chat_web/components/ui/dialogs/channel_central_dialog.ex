@@ -136,8 +136,8 @@ defmodule RetroHexChatWeb.Components.UI.ChannelCentralDialog do
       class="cc-dialog flex h-full min-h-0 flex-col overflow-y-auto"
     >
       <.tabs :let={builder} id={"#{@id}-tabs"} default={@active_tab}>
-        <div class="cc-main-tabs-shell">
-          <.tabs_list class="cc-main-tabs flex flex-wrap">
+        <div class="dlg-tabs-shell">
+          <.tabs_list class="dlg-tabs-strip flex flex-wrap">
             <.tabs_trigger
               builder={builder}
               value="general"

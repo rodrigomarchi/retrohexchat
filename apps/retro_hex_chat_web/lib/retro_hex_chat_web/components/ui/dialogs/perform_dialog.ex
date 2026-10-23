@@ -139,7 +139,7 @@ defmodule RetroHexChatWeb.Components.UI.PerformDialog do
             )}
           </.dialog_banner>
 
-          <div class="pf-entry-list min-h-0 flex-1 overflow-y-auto">
+          <div class="dlg-entry-list pf-entry-list min-h-0 flex-1 overflow-y-auto">
             <.list_empty_state
               :if={@entries == []}
               title={dgettext("dialogs", "No commands configured. Click Add to create one.")}

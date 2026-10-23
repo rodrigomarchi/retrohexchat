@@ -6,10 +6,6 @@
   outline: none;
 }
 
-.cm-tabs-shell {
-  position: relative;
-}
-
 .cm-dialog .tabs-content {
   min-height: 0;
 }
@@ -24,13 +20,7 @@
 }
 
 .cm-entry-list {
-  display: grid;
-  gap: 6px;
-  min-height: 126px;
-  overscroll-behavior: contain;
-  padding: 6px;
-  background: #ffffff;
-  @apply shadow-retro-field;
+  --dlg-entry-list-min-height: 126px;
 }
 
 .cm-form-label,
@@ -72,68 +62,6 @@
 
 .desktop--stacked .cm-tabs {
   min-width: 0;
-}
-
-.desktop--stacked .cm-main-tabs {
-  flex-wrap: nowrap !important;
-  align-items: end;
-  gap: 0;
-  overflow-x: auto;
-  overflow-y: hidden;
-  padding: 6px 6px 0;
-  scroll-padding-inline: 36px;
-  -webkit-overflow-scrolling: touch;
-}
-
-.desktop--stacked .cm-tabs-shell::before,
-.desktop--stacked .cm-tabs-shell::after {
-  position: absolute;
-  top: 6px;
-  bottom: 1px;
-  z-index: 20;
-  display: flex;
-  width: 34px;
-  align-items: center;
-  color: #000080;
-  font-weight: 700;
-  opacity: 0;
-  pointer-events: none;
-  text-shadow: 1px 1px #ffffff;
-}
-
-.desktop--stacked .cm-tabs-shell::before {
-  content: "<";
-  left: 0;
-  justify-content: flex-start;
-  padding-left: 4px;
-  border-left: 1px solid #808080;
-  background: linear-gradient(270deg, rgb(192 192 192 / 0), #c0c0c0 58%);
-}
-
-.desktop--stacked .cm-tabs-shell::after {
-  content: ">";
-  right: 0;
-  justify-content: flex-end;
-  padding-right: 4px;
-  border-right: 1px solid #808080;
-  background: linear-gradient(90deg, rgb(192 192 192 / 0), #c0c0c0 58%);
-}
-
-.desktop--stacked .cm-tabs-shell:has(.tabs-trigger[data-state="active"][data-target="channel"])::before,
-.desktop--stacked .cm-tabs-shell:has(.tabs-trigger[data-state="active"][data-target="chat"])::before,
-.desktop--stacked .cm-tabs-shell:has(.tabs-trigger[data-state="active"][data-target="nicklist"])::after,
-.desktop--stacked .cm-tabs-shell:has(.tabs-trigger[data-state="active"][data-target="channel"])::after {
-  opacity: 1;
-}
-
-.desktop--stacked .cm-main-tabs .tabs-trigger {
-  flex: 0 0 auto;
-  min-height: 40px;
-  padding: 7px 12px 5px;
-}
-
-.desktop--stacked .cm-main-tabs .tabs-trigger[data-state="active"] {
-  padding-top: 9px;
 }
 
 .desktop--stacked .cm-tab-content {

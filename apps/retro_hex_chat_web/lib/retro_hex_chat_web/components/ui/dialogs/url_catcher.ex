@@ -234,10 +234,9 @@ defmodule RetroHexChatWeb.Components.UI.UrlCatcher do
           </div>
 
           <%!-- URL list --%>
-          <div class={classes(["uc-entry-list flex-1 overflow-y-auto", @table_class])}>
+          <div class={classes(["dlg-entry-list uc-entry-list flex-1 overflow-y-auto", @table_class])}>
             <.list_empty_state
               :if={@entries == []}
-              class="uc-empty-state"
               title={dgettext("dialogs", "No URLs captured yet.")}
               text={dgettext("dialogs", "Shared links will appear here.")}
             />

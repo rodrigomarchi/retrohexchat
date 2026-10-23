@@ -191,3 +191,100 @@
 .dlg-section__hint-label {
   font-style: italic;
 }
+
+/* ── A dialog's tab strip ─────────────────────────────────────────────────
+   Channel Central, Bot Management and Custom Menus put their sections in
+   tabs (`.dlg-tabs-shell` around the `.dlg-tabs-strip` tabs list). On a phone
+   the strip scrolls sideways and snaps to a tab; a gutter at each edge holds
+   the arrow that says more tabs lie that way, so it never covers a label. The
+   left arrow shows unless the first tab is the open one, the right arrow
+   unless the last is. */
+
+.dlg-tabs-shell {
+  position: relative;
+}
+
+.desktop--stacked .dlg-tabs-shell {
+  overflow: hidden;
+  padding-inline: 24px;
+}
+
+.desktop--stacked .dlg-tabs-strip {
+  flex-wrap: nowrap !important;
+  align-items: end;
+  gap: 0;
+  overflow-x: auto;
+  overflow-y: hidden;
+  padding: 6px 112px 0 0;
+  scroll-padding-inline: 28px;
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
+}
+
+.desktop--stacked .dlg-tabs-strip .tabs-trigger {
+  flex: 0 0 auto;
+  min-height: 40px;
+  padding: 7px 12px 5px;
+  scroll-margin-inline: 28px;
+  scroll-snap-align: start;
+  scroll-snap-stop: always;
+}
+
+.desktop--stacked .dlg-tabs-strip .tabs-trigger[data-state="active"] {
+  padding-top: 9px;
+}
+
+.desktop--stacked .dlg-tabs-shell::before,
+.desktop--stacked .dlg-tabs-shell::after {
+  position: absolute;
+  top: 6px;
+  bottom: 1px;
+  z-index: 20;
+  display: flex;
+  width: 24px;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  color: #000080;
+  font-weight: 700;
+  opacity: 0;
+  pointer-events: none;
+  background: #c0c0c0;
+  text-shadow: 1px 1px #ffffff;
+}
+
+.desktop--stacked .dlg-tabs-shell::before {
+  content: "<";
+  left: 0;
+  border-left: 1px solid #808080;
+  box-shadow: inset -1px 0 #ffffff;
+}
+
+.desktop--stacked .dlg-tabs-shell::after {
+  content: ">";
+  right: 0;
+  border-right: 1px solid #808080;
+  box-shadow: inset 1px 0 #ffffff;
+}
+
+.desktop--stacked .dlg-tabs-shell:has(.tabs-trigger[data-state="active"]:not(:first-child))::before,
+.desktop--stacked .dlg-tabs-shell:has(.tabs-trigger[data-state="active"]:not(:last-child))::after {
+  opacity: 1;
+}
+
+/* ── A dialog's list of entries ───────────────────────────────────────────
+   Aliases, autojoin, perform, timers, auto-respond rules, highlight words,
+   the notify list, custom menu items and caught URLs all keep their rows in
+   the same white field. Each dialog says only how tall it is at least
+   (`--dlg-entry-list-min-height`) and whether it takes the room left. */
+
+.dlg-entry-list {
+  display: grid;
+  align-content: start;
+  gap: 6px;
+  min-height: var(--dlg-entry-list-min-height, 132px);
+  overscroll-behavior: contain;
+  padding: 6px;
+  background: #ffffff;
+  @apply shadow-retro-field;
+}

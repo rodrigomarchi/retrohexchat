@@ -153,8 +153,8 @@ defmodule RetroHexChatWeb.Components.UI.CustomMenusDialog do
           </.dialog_banner>
 
           <.tabs :let={builder} id={"#{@id}-tabs"} default={@active_tab_str} class="cm-tabs min-h-0">
-            <div class="cm-tabs-shell">
-              <.tabs_list class="cm-main-tabs">
+            <div class="dlg-tabs-shell">
+              <.tabs_list class="dlg-tabs-strip">
                 <.tabs_trigger
                   builder={builder}
                   value="nicklist"
@@ -328,7 +328,7 @@ defmodule RetroHexChatWeb.Components.UI.CustomMenusDialog do
       <%!-- Entries list --%>
       <div class="cm-list-pane flex-1 space-y-retro-4">
         <div
-          class="cm-entry-list max-h-[220px] overflow-y-auto"
+          class="dlg-entry-list cm-entry-list max-h-[220px] overflow-y-auto"
           aria-label={dgettext("dialogs", "Custom menu entries")}
         >
           <.list_empty_state

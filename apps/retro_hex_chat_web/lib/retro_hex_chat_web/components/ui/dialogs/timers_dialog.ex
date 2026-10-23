@@ -90,7 +90,7 @@ defmodule RetroHexChatWeb.Components.UI.TimersDialog do
             ])
           }>
             <div class="tm-list-pane min-h-0">
-              <div class="tm-timer-list overflow-y-auto">
+              <div class="dlg-entry-list tm-timer-list overflow-y-auto">
                 <.list_empty_state
                   :if={@rows == []}
                   title={dgettext("dialogs", "No active timers. Click Add to schedule one.")}

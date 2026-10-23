@@ -6,10 +6,6 @@
   min-height: 0;
 }
 
-.cc-main-tabs-shell {
-  position: relative;
-}
-
 .cc-dialog-title,
 .cc-status-value,
 .cc-mobile-list-primary,
@@ -59,46 +55,6 @@
 .desktop--stacked .cc-dialog {
   padding-bottom: 8px;
   -webkit-overflow-scrolling: touch;
-}
-
-.desktop--stacked .cc-main-tabs {
-  flex-wrap: nowrap !important;
-  align-items: end;
-  gap: 0;
-  overflow-x: auto;
-  overflow-y: hidden;
-  padding: 6px 6px 0;
-  -webkit-overflow-scrolling: touch;
-}
-
-.desktop--stacked .cc-main-tabs-shell::after {
-  content: ">";
-  position: absolute;
-  top: 6px;
-  right: 0;
-  bottom: 1px;
-  z-index: 2;
-  display: flex;
-  width: 34px;
-  align-items: center;
-  justify-content: flex-end;
-  padding-right: 4px;
-  border-right: 1px solid #808080;
-  color: #000080;
-  font-weight: 700;
-  pointer-events: none;
-  background: linear-gradient(90deg, rgb(192 192 192 / 0), #c0c0c0 58%);
-  text-shadow: 1px 1px #ffffff;
-}
-
-.desktop--stacked .cc-main-tabs .tabs-trigger {
-  flex: 0 0 auto;
-  min-height: 40px;
-  padding: 7px 12px 5px;
-}
-
-.desktop--stacked .cc-main-tabs .tabs-trigger[data-state="active"] {
-  padding-top: 9px;
 }
 
 .desktop--stacked .cc-dialog .tabs-content {
