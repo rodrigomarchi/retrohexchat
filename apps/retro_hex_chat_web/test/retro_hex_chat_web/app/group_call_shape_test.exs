@@ -119,4 +119,16 @@ defmodule RetroHexChatWeb.App.GroupCallShapeTest do
       assert Shape.normalize_pinned_participant_ids("1") == []
     end
   end
+
+  test "layout_mode/1 is the call's known mode or :auto" do
+    assert Shape.layout_mode(%{layout: %{mode: :grid}}) == :grid
+    assert Shape.layout_mode(%{layout: %{mode: :weird}}) == :auto
+    assert Shape.layout_mode(nil) == :auto
+  end
+
+  test "participant_nickname/1 reads an atom or a string key" do
+    assert Shape.participant_nickname(%{nickname: "Ana"}) == "Ana"
+    assert Shape.participant_nickname(%{"nickname" => "Bea"}) == "Bea"
+    assert Shape.participant_nickname(%{}) == nil
+  end
 end

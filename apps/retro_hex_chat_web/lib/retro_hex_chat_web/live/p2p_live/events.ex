@@ -172,7 +172,7 @@ defmodule RetroHexChatWeb.P2PLive.Events do
 
   def handle_event("p2p_retry_connection", _params, %{assigns: %{p2p_session: %{}}} = socket) do
     p2p = socket.assigns.p2p_session
-    broadcast(p2p.token, "lobby_manual_retry", %{from: p2p.user_id})
+    Lobby.broadcast(p2p.token, "lobby_manual_retry", %{from: p2p.user_id})
 
     {:halt,
      socket
@@ -184,7 +184,7 @@ defmodule RetroHexChatWeb.P2PLive.Events do
     p2p = socket.assigns.p2p_session
     reason = params["reason"] || params[:reason] || "media_restart"
 
-    broadcast(p2p.token, "lobby_media_restart", %{from: p2p.user_id, reason: reason})
+    Lobby.broadcast(p2p.token, "lobby_media_restart", %{from: p2p.user_id, reason: reason})
 
     {:halt,
      socket
@@ -398,7 +398,7 @@ defmodule RetroHexChatWeb.P2PLive.Events do
         %{assigns: %{p2p_session: %{role: :creator} = p2p}} = socket
       ) do
     if room_can_start?(p2p) do
-      broadcast(p2p.token, "lobby_session_start", %{})
+      Lobby.broadcast(p2p.token, "lobby_session_start", %{})
 
       {:halt,
        socket
@@ -684,7 +684,7 @@ defmodule RetroHexChatWeb.P2PLive.Events do
         # A side that rejoined mid-call re-arms the gate; the host says again
         # that the session is running, so the returning room does not sit there
         # waiting for a `[Start]` that was already pressed.
-        if p2p.role == :creator, do: broadcast(p2p.token, "lobby_session_start", %{})
+        if p2p.role == :creator, do: Lobby.broadcast(p2p.token, "lobby_session_start", %{})
         {:halt, start_webrtc(socket, p2p)}
 
       # The answerer builds its peer connection now and waits — it is still in
@@ -1025,7 +1025,7 @@ defmodule RetroHexChatWeb.P2PLive.Events do
   # and would otherwise sit in the starting room waiting for a `[Start]` that
   # was pressed minutes ago.
   defp peer_rejoined(socket, p2p) do
-    if p2p.session_started, do: broadcast(p2p.token, "lobby_session_start", %{})
+    if p2p.session_started, do: Lobby.broadcast(p2p.token, "lobby_session_start", %{})
 
     socket =
       socket
@@ -1177,7 +1177,7 @@ defmodule RetroHexChatWeb.P2PLive.Events do
   defp started_section(_p2p), do: "call"
 
   defp share_client_info(socket, p2p) do
-    broadcast(p2p.token, "lobby_client_info", %{
+    Lobby.broadcast(p2p.token, "lobby_client_info", %{
       from: p2p.user_id,
       info: socket.assigns[:client_info] || %{}
     })
@@ -1829,12 +1829,4 @@ defmodule RetroHexChatWeb.P2PLive.Events do
   end
 
   defp persist_p2p_system(_socket, _peer_nick, _text), do: :ok
-
-  defp broadcast(token, event, payload) do
-    Phoenix.PubSub.broadcast(@pubsub, Topics.lobby(token), %{
-      event: event,
-      payload: payload,
-      token: token
-    })
-  end
 end

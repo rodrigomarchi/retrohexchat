@@ -28,6 +28,7 @@ defmodule RetroHexChat.Lobby.SessionServer do
 
   alias RetroHexChat.Games.Result
   alias RetroHexChat.Games.Results
+  alias RetroHexChat.Lobby
   alias RetroHexChat.Lobby.{Queries, Registry}
   alias RetroHexChat.Lobby.Schema.Session
   alias RetroHexChat.NamedTimers
@@ -241,7 +242,7 @@ defmodule RetroHexChat.Lobby.SessionServer do
             )
 
             state = set_joined(state, role, true)
-            broadcast(state.token, "lobby_peer_joined", %{user_id: user_id})
+            Lobby.broadcast(state.token, "lobby_peer_joined", %{user_id: user_id})
             {:reply, :ok, maybe_transition_to_lobby(state)}
 
           {:error, :already_joined} ->
@@ -306,7 +307,7 @@ defmodule RetroHexChat.Lobby.SessionServer do
       role ->
         media = Map.put(state.media, role, %{audio: audio?, video: video?})
 
-        broadcast(state.token, "lobby_media_changed", %{
+        Lobby.broadcast(state.token, "lobby_media_changed", %{
           user_id: user_id,
           role: role,
           audio: audio?,
@@ -424,7 +425,7 @@ defmodule RetroHexChat.Lobby.SessionServer do
 
   def handle_info({:timeout, :lobby_warning}, state) do
     if state.session.status == "lobby" do
-      broadcast(state.token, "lobby_inactivity_warning", %{expires_in_seconds: 300})
+      Lobby.broadcast(state.token, "lobby_inactivity_warning", %{expires_in_seconds: 300})
     end
 
     {:noreply, state}
@@ -450,7 +451,7 @@ defmodule RetroHexChat.Lobby.SessionServer do
   def handle_info({:timeout, :game_request_expiry}, state) do
     if state.game_request do
       state = NamedTimers.cancel(state, :game_request_expiry)
-      broadcast(state.token, "lobby_game_response", %{accepted: false, reason: "expired"})
+      Lobby.broadcast(state.token, "lobby_game_response", %{accepted: false, reason: "expired"})
       {:noreply, %{state | game_request: nil}}
     else
       {:noreply, state}
@@ -517,7 +518,7 @@ defmodule RetroHexChat.Lobby.SessionServer do
   defp maybe_start_signaling(state) do
     if not state.signaling_started and state.session.status in ~w(lobby connected) and
          state.webrtc_ready.creator and state.webrtc_ready.peer do
-      broadcast(state.token, "lobby_start_signaling", start_signaling_payload(state))
+      Lobby.broadcast(state.token, "lobby_start_signaling", start_signaling_payload(state))
       %{state | signaling_started: true, signaling_ran: true}
     else
       state
@@ -593,7 +594,7 @@ defmodule RetroHexChat.Lobby.SessionServer do
           |> Map.put(:signaling_started, false)
           |> reset_signaling_replay()
 
-        broadcast(state.token, "lobby_peer_disconnected", %{user_id: user_id, role: role})
+        Lobby.broadcast(state.token, "lobby_peer_disconnected", %{user_id: user_id, role: role})
         NamedTimers.schedule(state, {:rejoin_grace, role}, rejoin_grace_timeout())
     end
   end
@@ -788,7 +789,7 @@ defmodule RetroHexChat.Lobby.SessionServer do
     state = NamedTimers.schedule(state, :lobby_expiry, lobby_expiry_timeout())
     state = NamedTimers.schedule(state, :connecting_timeout, connecting_timeout())
 
-    broadcast(state.token, "lobby_status_changed", %{status: "lobby", reason: nil})
+    Lobby.broadcast(state.token, "lobby_status_changed", %{status: "lobby", reason: nil})
     notify_chat_progress(state)
     maybe_start_signaling(state)
   end
@@ -806,7 +807,7 @@ defmodule RetroHexChat.Lobby.SessionServer do
       Queries.update_status(state.session, "connected", %{connected_at: DateTime.utc_now()})
 
     state = %{state | session: session}
-    broadcast(state.token, "lobby_status_changed", %{status: "connected", reason: nil})
+    Lobby.broadcast(state.token, "lobby_status_changed", %{status: "connected", reason: nil})
     notify_chat_progress(state)
     state
   end
@@ -823,7 +824,7 @@ defmodule RetroHexChat.Lobby.SessionServer do
         duration_seconds: compute_duration(state.session.connected_at, now)
       })
 
-    broadcast(state.token, "lobby_session_closed", %{reason: reason, closed_by: closed_by})
+    Lobby.broadcast(state.token, "lobby_session_closed", %{reason: reason, closed_by: closed_by})
     notify_watchers(state.token, %{status: "closed"})
     notify_chat_participants(state.nicks, session, reason)
     %{state | session: session}
@@ -841,7 +842,7 @@ defmodule RetroHexChat.Lobby.SessionServer do
         duration_seconds: compute_duration(state.session.connected_at, now)
       })
 
-    broadcast(state.token, "lobby_status_changed", %{status: "expired", reason: reason})
+    Lobby.broadcast(state.token, "lobby_status_changed", %{status: "expired", reason: reason})
     notify_chat_participants(state.nicks, session, reason)
     %{state | session: session}
   end
@@ -858,7 +859,7 @@ defmodule RetroHexChat.Lobby.SessionServer do
         duration_seconds: compute_duration(state.session.connected_at, now)
       })
 
-    broadcast(state.token, "lobby_status_changed", %{status: "failed", reason: reason})
+    Lobby.broadcast(state.token, "lobby_status_changed", %{status: "failed", reason: reason})
     notify_chat_participants(state.nicks, session, reason)
     %{state | session: session}
   end
@@ -877,7 +878,7 @@ defmodule RetroHexChat.Lobby.SessionServer do
 
     state = %{state | game_request: request}
     state = NamedTimers.schedule(state, :game_request_expiry, game_request_timeout())
-    broadcast(state.token, "lobby_game_request", request)
+    Lobby.broadcast(state.token, "lobby_game_request", request)
     state
   end
 
@@ -892,14 +893,14 @@ defmodule RetroHexChat.Lobby.SessionServer do
       started_at: DateTime.utc_now()
     }
 
-    broadcast(state.token, "lobby_game_response", %{
+    Lobby.broadcast(state.token, "lobby_game_response", %{
       accepted: true,
       responder_id: responder_id,
       responder_nick: responder_nick,
       game_id: request.game_id
     })
 
-    broadcast(state.token, "lobby_game_status_changed", %{
+    Lobby.broadcast(state.token, "lobby_game_status_changed", %{
       status: "playing",
       game_id: request.game_id,
       host_id: request.proposer_id
@@ -916,7 +917,7 @@ defmodule RetroHexChat.Lobby.SessionServer do
     request = state.game_request
     state = NamedTimers.cancel(state, :game_request_expiry)
 
-    broadcast(state.token, "lobby_game_response", %{
+    Lobby.broadcast(state.token, "lobby_game_response", %{
       accepted: false,
       responder_id: responder_id,
       responder_nick: responder_nick,
@@ -928,7 +929,7 @@ defmodule RetroHexChat.Lobby.SessionServer do
 
   defp handle_end_game(state) do
     game = %{status: "idle", game_id: nil, host_id: nil}
-    broadcast(state.token, "lobby_game_status_changed", %{status: "idle", game_id: nil})
+    Lobby.broadcast(state.token, "lobby_game_status_changed", %{status: "idle", game_id: nil})
     notify_watchers(state.token, %{status: "idle", game_id: nil})
     state = %{state | game: game, game_request: nil}
     notify_chat_progress(state)
@@ -957,7 +958,7 @@ defmodule RetroHexChat.Lobby.SessionServer do
       result: result
     }
 
-    broadcast(state.token, "lobby_game_status_changed", %{
+    Lobby.broadcast(state.token, "lobby_game_status_changed", %{
       status: "finished",
       game_id: state.game.game_id,
       result: result
@@ -1100,13 +1101,6 @@ defmodule RetroHexChat.Lobby.SessionServer do
   # The envelope carries the token so a subscriber holding session state can
   # drop stale events from a previous session (extra keys don't break the
   # existing %{event:, payload:} matches).
-  defp broadcast(token, event, payload) do
-    Phoenix.PubSub.broadcast(@pubsub, Topics.lobby(token), %{
-      event: event,
-      payload: payload,
-      token: token
-    })
-  end
 
   @valid_transitions %{
     # An open lobby has no process — it is a row and a deadline until somebody

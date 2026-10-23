@@ -15,6 +15,13 @@ defmodule RetroHexChatWeb.Live.GroupCallConfirmDialog do
 
   @id "group-call-confirm-dialog"
 
+  @open_modes %{
+    open_leave: :leave,
+    open_end_call: :end_call,
+    open_mute_all: :mute_all,
+    open_camera_off_all: :camera_off_all
+  }
+
   @doc """
   The id the call surface renders it under, and addresses `send_update/2` to.
 
@@ -39,57 +46,16 @@ defmodule RetroHexChatWeb.Live.GroupCallConfirmDialog do
 
   @impl true
   @spec update(map(), Phoenix.LiveView.Socket.t()) :: {:ok, Phoenix.LiveView.Socket.t()}
-  def update(%{action: {:open_leave, channel}}, socket) do
-    {:ok,
-     assign(socket,
-       show: true,
-       mode: :leave,
-       channel: channel,
-       target_nickname: nil
-     )}
-  end
-
-  def update(%{action: {:open_end_call, channel}}, socket) do
-    {:ok,
-     assign(socket,
-       show: true,
-       mode: :end_call,
-       channel: channel,
-       target_nickname: nil
-     )}
+  def update(%{action: {action, channel}}, socket)
+      when action in [:open_leave, :open_end_call, :open_mute_all, :open_camera_off_all] do
+    {:ok, open(socket, @open_modes[action], channel)}
   end
 
   def update(
         %{action: {:open_kick_participant, channel, _participant_id, target_nickname}},
         socket
       ) do
-    {:ok,
-     assign(socket,
-       show: true,
-       mode: :kick_participant,
-       channel: channel,
-       target_nickname: target_nickname
-     )}
-  end
-
-  def update(%{action: {:open_mute_all, channel}}, socket) do
-    {:ok,
-     assign(socket,
-       show: true,
-       mode: :mute_all,
-       channel: channel,
-       target_nickname: nil
-     )}
-  end
-
-  def update(%{action: {:open_camera_off_all, channel}}, socket) do
-    {:ok,
-     assign(socket,
-       show: true,
-       mode: :camera_off_all,
-       channel: channel,
-       target_nickname: nil
-     )}
+    {:ok, open(socket, :kick_participant, channel, target_nickname)}
   end
 
   def update(%{action: :close}, socket), do: {:ok, assign(socket, show: false)}
@@ -102,6 +68,10 @@ defmodule RetroHexChatWeb.Live.GroupCallConfirmDialog do
   end
 
   def update(_assigns, socket), do: {:ok, socket}
+
+  defp open(socket, mode, channel, target_nickname \\ nil) do
+    assign(socket, show: true, mode: mode, channel: channel, target_nickname: target_nickname)
+  end
 
   @impl true
   @spec render(map()) :: Phoenix.LiveView.Rendered.t()

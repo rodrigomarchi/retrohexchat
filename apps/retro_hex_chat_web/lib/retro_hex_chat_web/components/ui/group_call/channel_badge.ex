@@ -13,6 +13,7 @@ defmodule RetroHexChatWeb.Components.UI.GroupCall.ChannelBadge do
   import RetroHexChatWeb.Components.UI.Popover
   import RetroHexChatWeb.Components.UI.ToolButton
 
+  alias RetroHexChat.GroupCall.Policy
   alias RetroHexChatWeb.Components.UI.EntryPopover
   alias RetroHexChatWeb.Icons
   alias RetroHexChatWeb.Params
@@ -322,10 +323,7 @@ defmodule RetroHexChatWeb.Components.UI.GroupCall.ChannelBadge do
     end
   end
 
-  defp locked?(summary) do
-    metadata = Params.value(summary.room, :metadata) || %{}
-    Params.value(metadata, :locked) == true or Params.value(metadata, :admission_locked) == true
-  end
+  defp locked?(summary), do: Policy.locked?(summary.room)
 
   defp media_enabled?(%{media_state: media}, key) when is_map(media) do
     case Params.value(media, key) do

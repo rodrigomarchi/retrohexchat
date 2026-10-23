@@ -14,6 +14,7 @@ defmodule RetroHexChatWeb.Components.UI.GroupCall.MediaPreview do
   alias RetroHexChatWeb.Components.UI.GroupCall.MediaState
   alias RetroHexChatWeb.Components.UI.MediaSession.PermissionNotice
   alias RetroHexChatWeb.Icons
+  alias RetroHexChatWeb.MediaDevices
 
   attr :media, :map, required: true
   attr :prejoin, :map, default: nil
@@ -43,9 +44,9 @@ defmodule RetroHexChatWeb.Components.UI.GroupCall.MediaPreview do
       phx-hook="GroupCallPreJoinHook"
       data-audio={to_string(MediaState.enabled?(@media, :audio))}
       data-video={to_string(MediaState.enabled?(@media, :video))}
-      data-audio-input-id={device_preference(@device_preferences, :audio_input_id)}
-      data-video-input-id={device_preference(@device_preferences, :video_input_id)}
-      data-audio-output-id={device_preference(@device_preferences, :audio_output_id)}
+      data-audio-input-id={MediaDevices.preference(@device_preferences, :audio_input_id)}
+      data-video-input-id={MediaDevices.preference(@device_preferences, :video_input_id)}
+      data-audio-output-id={MediaDevices.preference(@device_preferences, :audio_output_id)}
       data-prejoin-scope={@scope}
       data-prejoin-remembered={to_string(@remembered)}
       class="flex min-h-[170px] flex-col border border-border p-1"
@@ -97,6 +98,4 @@ defmodule RetroHexChatWeb.Components.UI.GroupCall.MediaPreview do
     </.inset>
     """
   end
-
-  defp device_preference(preferences, key), do: Map.get(preferences, key) || ""
 end

@@ -33,6 +33,7 @@ defmodule RetroHexChatWeb.CallLive.Events do
   alias RetroHexChat.Channels.Server
   alias RetroHexChat.GroupCall
   alias RetroHexChat.GroupCall.JoinToken
+  alias RetroHexChat.GroupCall.Policy
   alias RetroHexChatWeb.App.GroupCallShape
   alias RetroHexChatWeb.App.GroupCallStats
   alias RetroHexChatWeb.App.GroupCallSummary
@@ -1435,11 +1436,7 @@ defmodule RetroHexChatWeb.CallLive.Events do
     end
   end
 
-  defp locked?(%{room: %{metadata: metadata}}) when is_map(metadata) do
-    GroupCallShape.value(metadata, :locked) == true or
-      GroupCallShape.value(metadata, :admission_locked) == true
-  end
-
+  defp locked?(%{room: room}), do: Policy.locked?(room)
   defp locked?(_call), do: false
 
   defp open_kick_confirm(socket, participant_id) do

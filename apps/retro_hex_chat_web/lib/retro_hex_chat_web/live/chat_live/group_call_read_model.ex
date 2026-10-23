@@ -19,6 +19,7 @@ defmodule RetroHexChatWeb.ChatLive.GroupCallReadModel do
   import Phoenix.Component, only: [assign: 2]
 
   alias Phoenix.LiveView.Socket
+  alias RetroHexChatWeb.App.GroupCallShape
   alias RetroHexChatWeb.App.GroupCallSummary
   alias RetroHexChatWeb.App.Paths
 
@@ -124,17 +125,13 @@ defmodule RetroHexChatWeb.ChatLive.GroupCallReadModel do
     case summary(socket, channel_name) do
       %{participants: participants} when is_list(participants) ->
         participants
-        |> Enum.map(&participant_nick/1)
+        |> Enum.map(&GroupCallShape.participant_nickname/1)
         |> Enum.filter(&is_binary/1)
 
       _none ->
         []
     end
   end
-
-  defp participant_nick(%{nickname: nickname}), do: nickname
-  defp participant_nick(%{"nickname" => nickname}), do: nickname
-  defp participant_nick(_participant), do: nil
 
   @doc """
   The call this person is watching from somewhere else, if there is one.

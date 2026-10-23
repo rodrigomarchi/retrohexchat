@@ -83,6 +83,10 @@ defmodule RetroHexChatWeb.MediaDevices do
 
   def preferences(_source), do: no_preference()
 
+  @doc "One chosen device id from `source` (see `preferences/1`), or `\"\"` for none."
+  @spec preference(term(), atom()) :: String.t()
+  def preference(source, key), do: Map.get(preferences(source), key) || ""
+
   @doc "A device id, or nothing — an empty one is nothing rather than a choice."
   @spec device_id(term()) :: String.t() | nil
   def device_id(nil), do: nil

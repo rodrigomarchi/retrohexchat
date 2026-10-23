@@ -352,4 +352,18 @@ defmodule RetroHexChat.Lobby do
 
   @spec finish_game(String.t(), integer(), map()) :: :ok | {:error, atom()}
   defdelegate finish_game(token, user_id, result), to: SessionServer
+
+  @doc """
+  Tells everyone on a session's topic that `event` happened. The envelope —
+  `%{event:, payload:, token:}` — is what every subscriber of
+  `Topics.lobby/1` matches on.
+  """
+  @spec broadcast(String.t(), String.t() | atom(), term()) :: :ok | {:error, term()}
+  def broadcast(token, event, payload) do
+    Phoenix.PubSub.broadcast(RetroHexChat.PubSub, RetroHexChat.Topics.lobby(token), %{
+      event: event,
+      payload: payload,
+      token: token
+    })
+  end
 end

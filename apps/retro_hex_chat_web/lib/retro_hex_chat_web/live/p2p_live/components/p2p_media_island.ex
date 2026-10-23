@@ -25,11 +25,9 @@ defmodule RetroHexChatWeb.P2PLive.Components.P2PMediaIsland do
   require Logger
 
   alias RetroHexChat.Lobby
-  alias RetroHexChat.Topics
   alias RetroHexChatWeb.Components.UI.MediaSession.CallQuality
   alias RetroHexChatWeb.Components.UI.P2P.CallPanel
 
-  @pubsub RetroHexChat.PubSub
   @reaction_ttl_ms 2400
   @valid_reactions ~w(heart thumbs_up clap laugh sparkle)
   # Distinct from the media panel's own `id="lobby-media"` hook element inside it.
@@ -424,13 +422,9 @@ defmodule RetroHexChatWeb.P2PLive.Components.P2PMediaIsland do
   # point: interpolating a nil token produced a topic nobody subscribes to, so
   # the event went nowhere and nothing anywhere said it had.
   @spec broadcast(Phoenix.LiveView.Socket.t(), String.t(), map()) :: :ok
-  defp broadcast(%{assigns: %{token: token}} = socket, event, payload)
+  defp broadcast(%{assigns: %{token: token}}, event, payload)
        when is_binary(token) and token != "" do
-    Phoenix.PubSub.broadcast(@pubsub, Topics.lobby(token), %{
-      event: event,
-      payload: payload,
-      token: socket.assigns.token
-    })
+    Lobby.broadcast(token, event, payload)
   end
 
   defp broadcast(_socket, event, _payload) do

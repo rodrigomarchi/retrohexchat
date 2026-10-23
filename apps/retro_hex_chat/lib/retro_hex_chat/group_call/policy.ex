@@ -131,12 +131,19 @@ defmodule RetroHexChat.GroupCall.Policy do
     end
   end
 
-  defp locked?(%{metadata: metadata}) when is_map(metadata) do
+  @doc """
+  Whether the room's admission is locked, read from its metadata under an
+  atom or a string key (a room fresh from the server or one that went through
+  JSON).
+  """
+  @spec locked?(map() | nil) :: boolean()
+  def locked?(%{metadata: metadata}) when is_map(metadata) do
     Map.get(metadata, "locked", Map.get(metadata, :locked)) == true or
       Map.get(metadata, "admission_locked", Map.get(metadata, :admission_locked)) == true
   end
 
-  defp locked?(_room), do: false
+  def locked?(%{"metadata" => metadata}) when is_map(metadata), do: locked?(%{metadata: metadata})
+  def locked?(_room), do: false
 
   defp check_moderator(membership, nickname) do
     case Membership.role(membership, nickname) do

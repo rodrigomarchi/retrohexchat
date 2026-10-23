@@ -10,6 +10,7 @@ defmodule RetroHexChatWeb.Components.UI.GroupCall.LayoutControls do
   import RetroHexChatWeb.Components.UI.MediaSession.CommandBar
   import RetroHexChatWeb.Components.UI.ToolButton
 
+  alias RetroHexChatWeb.App.GroupCallShape
   alias RetroHexChatWeb.Icons.CallControls
 
   attr :call, :map, default: nil
@@ -31,7 +32,7 @@ defmodule RetroHexChatWeb.Components.UI.GroupCall.LayoutControls do
     >
       <.layout_button
         mode={:auto}
-        current={layout_mode(@call)}
+        current={GroupCallShape.layout_mode(@call)}
         event={@on_layout_mode}
         variant={@variant}
         label={dgettext("group_call", "Auto layout")}
@@ -42,7 +43,7 @@ defmodule RetroHexChatWeb.Components.UI.GroupCall.LayoutControls do
 
       <.layout_button
         mode={:grid}
-        current={layout_mode(@call)}
+        current={GroupCallShape.layout_mode(@call)}
         event={@on_layout_mode}
         variant={@variant}
         label={dgettext("group_call", "Grid layout")}
@@ -53,7 +54,7 @@ defmodule RetroHexChatWeb.Components.UI.GroupCall.LayoutControls do
 
       <.layout_button
         mode={:focus}
-        current={layout_mode(@call)}
+        current={GroupCallShape.layout_mode(@call)}
         event={@on_layout_mode}
         variant={@variant}
         label={dgettext("group_call", "Focus layout")}
@@ -64,7 +65,7 @@ defmodule RetroHexChatWeb.Components.UI.GroupCall.LayoutControls do
 
       <.layout_button
         mode={:speaker}
-        current={layout_mode(@call)}
+        current={GroupCallShape.layout_mode(@call)}
         event={@on_layout_mode}
         variant={@variant}
         label={dgettext("group_call", "Speaker layout")}
@@ -138,12 +139,6 @@ defmodule RetroHexChatWeb.Components.UI.GroupCall.LayoutControls do
       extra
     ])
   end
-
-  defp layout_mode(%{layout: %{mode: mode}})
-       when mode in [:auto, :grid, :focus, :speaker],
-       do: mode
-
-  defp layout_mode(_call), do: :auto
 
   defp self_view(%{layout: %{self_view: mode}}) when mode in [:tile, :pip, :hidden], do: mode
   defp self_view(_call), do: :tile

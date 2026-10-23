@@ -319,7 +319,15 @@ defmodule RetroHexChatWeb.App.GroupCallShape do
 
   @spec participant_nickname(map() | nil) :: String.t() | nil
   def participant_nickname(%{nickname: nickname}), do: nickname
+  def participant_nickname(%{"nickname" => nickname}), do: nickname
   def participant_nickname(_participant), do: nil
+  @doc "The call's layout mode, `:auto` when it has none or an unknown one."
+  @spec layout_mode(map() | nil) :: :auto | :grid | :focus | :speaker
+  def layout_mode(%{layout: %{mode: mode}}) when mode in [:auto, :grid, :focus, :speaker],
+    do: mode
+
+  def layout_mode(_call), do: :auto
+
   @spec maybe_put_media_extra(map(), map() | nil, atom()) :: map()
   def maybe_put_media_extra(target, source, key) do
     string_key = Atom.to_string(key)

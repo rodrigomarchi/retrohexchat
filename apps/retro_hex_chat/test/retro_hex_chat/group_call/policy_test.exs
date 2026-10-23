@@ -232,4 +232,12 @@ defmodule RetroHexChat.GroupCall.PolicyTest do
       assert {:error, _message} = Policy.can_moderate_media?(membership, "Guest", "Target")
     end
   end
+
+  test "locked?/1 reads the lock under an atom or a string key, metadata either way" do
+    assert Policy.locked?(%{metadata: %{locked: true}})
+    assert Policy.locked?(%{metadata: %{"admission_locked" => true}})
+    assert Policy.locked?(%{"metadata" => %{"locked" => true}})
+    refute Policy.locked?(%{metadata: %{locked: false}})
+    refute Policy.locked?(nil)
+  end
 end

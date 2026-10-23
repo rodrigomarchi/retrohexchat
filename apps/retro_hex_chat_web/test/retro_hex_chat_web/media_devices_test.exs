@@ -142,4 +142,17 @@ defmodule RetroHexChatWeb.MediaDevicesTest do
       assert MediaDevices.device_id(7) == "7"
     end
   end
+
+  test "preference/2 reads one device from the top level or a nested map, \"\" for none" do
+    assert MediaDevices.preference(%{audio_input_id: "mic"}, :audio_input_id) == "mic"
+
+    assert MediaDevices.preference(
+             %{device_preferences: %{video_input_id: "cam"}},
+             :video_input_id
+           ) ==
+             "cam"
+
+    assert MediaDevices.preference(%{audio_output_id: ""}, :audio_output_id) == ""
+    assert MediaDevices.preference(nil, :audio_input_id) == ""
+  end
 end

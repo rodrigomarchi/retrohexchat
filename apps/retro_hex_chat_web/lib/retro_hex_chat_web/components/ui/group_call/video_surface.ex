@@ -11,9 +11,11 @@ defmodule RetroHexChatWeb.Components.UI.GroupCall.VideoSurface do
   import RetroHexChatWeb.Components.UI.MediaSession.ReactionPicker, only: [reaction_icon: 1]
   import RetroHexChatWeb.Components.UI.NickFlag
 
+  alias RetroHexChatWeb.App.GroupCallShape
   alias RetroHexChatWeb.Components.UI.GroupCall.MediaState
   alias RetroHexChatWeb.Icons
   alias RetroHexChatWeb.Icons.CallControls
+  alias RetroHexChatWeb.MediaDevices
 
   attr :call, :map, default: nil
 
@@ -30,10 +32,10 @@ defmodule RetroHexChatWeb.Components.UI.GroupCall.VideoSurface do
       data-participant-id={@call.participant_id}
       data-audio={to_string(MediaState.enabled?(@call, :audio))}
       data-video={to_string(MediaState.enabled?(@call, :video))}
-      data-audio-input-id={device_preference(@call, :audio_input_id)}
-      data-video-input-id={device_preference(@call, :video_input_id)}
-      data-audio-output-id={device_preference(@call, :audio_output_id)}
-      data-layout-mode={layout_mode(@call)}
+      data-audio-input-id={MediaDevices.preference(@call, :audio_input_id)}
+      data-video-input-id={MediaDevices.preference(@call, :video_input_id)}
+      data-audio-output-id={MediaDevices.preference(@call, :audio_output_id)}
+      data-layout-mode={GroupCallShape.layout_mode(@call)}
       data-focused-participant-id={focused_participant_id(@call)}
       data-pinned-participant-ids={pinned_participant_ids(@call)}
       data-self-view={self_view(@call)}
@@ -228,12 +230,6 @@ defmodule RetroHexChatWeb.Components.UI.GroupCall.VideoSurface do
     """
   end
 
-  defp layout_mode(%{layout: %{mode: mode}})
-       when mode in [:auto, :grid, :focus, :speaker],
-       do: mode
-
-  defp layout_mode(_call), do: :auto
-
   defp focused_participant_id(%{layout: %{focused_participant_id: id}}), do: id
   defp focused_participant_id(_call), do: nil
 
@@ -277,10 +273,4 @@ defmodule RetroHexChatWeb.Components.UI.GroupCall.VideoSurface do
         dgettext("group_call", "Your local preview appears here when the camera is ready.")
     end
   end
-
-  defp device_preference(%{device_preferences: preferences}, key) when is_map(preferences) do
-    Map.get(preferences, key) || ""
-  end
-
-  defp device_preference(_call, _key), do: ""
 end

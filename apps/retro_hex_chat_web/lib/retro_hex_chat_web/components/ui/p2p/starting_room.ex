@@ -374,9 +374,9 @@ defmodule RetroHexChatWeb.Components.UI.P2P.StartingRoom do
       data-preferences-event="p2p_setup_preferences_loaded"
       data-audio={to_string(@media.audio)}
       data-video={to_string(@media.video)}
-      data-audio-input-id={device_preference(@device_preferences, :audio_input_id)}
-      data-video-input-id={device_preference(@device_preferences, :video_input_id)}
-      data-audio-output-id={device_preference(@device_preferences, :audio_output_id)}
+      data-audio-input-id={MediaDevices.preference(@device_preferences, :audio_input_id)}
+      data-video-input-id={MediaDevices.preference(@device_preferences, :video_input_id)}
+      data-audio-output-id={MediaDevices.preference(@device_preferences, :audio_output_id)}
       class="flex max-h-[240px] min-h-[170px] flex-col self-start border border-border p-1"
       data-testid="p2p-setup-preview"
     >
@@ -562,9 +562,6 @@ defmodule RetroHexChatWeb.Components.UI.P2P.StartingRoom do
   @spec turn_configured?(map() | nil) :: boolean()
   defp turn_configured?(%{turn_configured: true}), do: true
   defp turn_configured?(_setup), do: false
-
-  @spec device_preference(map(), atom()) :: String.t()
-  defp device_preference(preferences, key), do: Map.get(preferences, key) || ""
 
   @spec privacy_copy(boolean()) :: String.t()
   defp privacy_copy(true) do

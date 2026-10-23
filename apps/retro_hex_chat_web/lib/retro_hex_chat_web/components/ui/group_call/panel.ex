@@ -22,6 +22,8 @@ defmodule RetroHexChatWeb.Components.UI.GroupCall.Panel do
   import RetroHexChatWeb.Components.UI.MediaSession.SummaryCard
   import RetroHexChatWeb.Components.UI.NickFlag
 
+  alias RetroHexChat.GroupCall.Policy
+
   alias RetroHexChatWeb.Components.UI.GroupCall.{
     ActiveSpeakerRing,
     LayoutControls,
@@ -1192,12 +1194,7 @@ defmodule RetroHexChatWeb.Components.UI.GroupCall.Panel do
   defp track_count(%{tracks: tracks}) when is_list(tracks), do: length(tracks)
   defp track_count(_call), do: 0
 
-  defp locked?(%{room: %{metadata: metadata}}) when is_map(metadata) do
-    Map.get(metadata, :locked) == true or Map.get(metadata, "locked") == true or
-      Map.get(metadata, :admission_locked) == true or
-      Map.get(metadata, "admission_locked") == true
-  end
-
+  defp locked?(%{room: room}), do: Policy.locked?(room)
   defp locked?(_call), do: false
 
   defp hand_raised?(call) do

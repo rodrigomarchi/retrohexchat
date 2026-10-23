@@ -107,14 +107,10 @@ defmodule RetroHexChatWeb.App.GroupCallSummary do
   defp roster_nicks(holder) do
     participants = List.wrap(Map.get(holder, :participants))
 
-    [Map.get(holder, :nickname) | Enum.map(participants, &participant_nick/1)]
+    [Map.get(holder, :nickname) | Enum.map(participants, &GroupCallShape.participant_nickname/1)]
     |> Enum.filter(&is_binary/1)
     |> Enum.uniq()
   end
-
-  defp participant_nick(%{nickname: nickname}), do: nickname
-  defp participant_nick(%{"nickname" => nickname}), do: nickname
-  defp participant_nick(_participant), do: nil
 
   defp summary_for(room) do
     case GroupCall.get_summary(room.token) do
