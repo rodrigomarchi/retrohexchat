@@ -30,12 +30,13 @@ defmodule RetroHexChat.Commands.Handlers.Devoice do
 
   @impl true
   @spec execute([String.t()], Handler.context()) :: Handler.result()
-  def execute([], _context), do: {:error, dgettext("commands", "Usage: /devoice <nickname>")}
-
-  def execute([nick | _], context) do
-    with {:ok, channel} <- require_channel(context),
-         :ok <- require_half_op_or_above(context, channel) do
-      {:ok, :ui_action, :set_mode, %{channel: channel, mode_string: "-v", params: [nick]}}
-    end
+  def execute(args, context) do
+    on_channel_target(
+      args,
+      context,
+      dgettext("commands", "Usage: /devoice <nickname>"),
+      &require_half_op_or_above/2,
+      &{:ok, :ui_action, :set_mode, %{channel: &1, mode_string: "-v", params: [&2]}}
+    )
   end
 end

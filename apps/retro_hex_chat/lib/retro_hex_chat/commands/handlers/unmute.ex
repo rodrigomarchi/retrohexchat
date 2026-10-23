@@ -30,12 +30,13 @@ defmodule RetroHexChat.Commands.Handlers.Unmute do
 
   @impl true
   @spec execute([String.t()], Handler.context()) :: Handler.result()
-  def execute([], _context), do: {:error, dgettext("commands", "Usage: /unmute <nickname>")}
-
-  def execute([nick | _], context) do
-    with {:ok, channel} <- require_channel(context),
-         :ok <- require_operator(context, channel) do
-      {:ok, :ui_action, :channel_unmute_user, %{channel: channel, target: nick}}
-    end
+  def execute(args, context) do
+    on_channel_target(
+      args,
+      context,
+      dgettext("commands", "Usage: /unmute <nickname>"),
+      &require_operator/2,
+      &{:ok, :ui_action, :channel_unmute_user, %{channel: &1, target: &2}}
+    )
   end
 end

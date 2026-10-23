@@ -30,12 +30,13 @@ defmodule RetroHexChat.Commands.Handlers.Deop do
 
   @impl true
   @spec execute([String.t()], Handler.context()) :: Handler.result()
-  def execute([], _context), do: {:error, dgettext("commands", "Usage: /deop <nickname>")}
-
-  def execute([nick | _], context) do
-    with {:ok, channel} <- require_channel(context),
-         :ok <- require_operator(context, channel) do
-      {:ok, :ui_action, :set_mode, %{channel: channel, mode_string: "-o", params: [nick]}}
-    end
+  def execute(args, context) do
+    on_channel_target(
+      args,
+      context,
+      dgettext("commands", "Usage: /deop <nickname>"),
+      &require_operator/2,
+      &{:ok, :ui_action, :set_mode, %{channel: &1, mode_string: "-o", params: [&2]}}
+    )
   end
 end

@@ -126,4 +126,30 @@ defmodule RetroHexChat.Commands.Handler.Guards do
        )}
     end
   end
+
+  @doc """
+  The shape of a command aimed at one person in the active channel: no
+  nickname answers `usage`; otherwise the active channel must exist and
+  `check` (one of the `require_*` guards) must pass before `run` gets the
+  channel and the nickname.
+
+      def execute(args, context),
+        do: on_channel_target(args, context, dgettext("commands", "Usage: /op <nickname>"),
+              &require_operator/2, &{:ok, :ui_action, :set_mode, %{channel: &1, mode_string: "+o", params: [&2]}})
+  """
+  @spec on_channel_target(
+          [String.t()],
+          Handler.context(),
+          String.t(),
+          (Handler.context(), String.t() -> :ok | {:error, String.t()}),
+          (String.t(), String.t() -> Handler.result())
+        ) :: Handler.result()
+  def on_channel_target([], _context, usage, _check, _run), do: {:error, usage}
+
+  def on_channel_target([nick | _], context, _usage, check, run) do
+    with {:ok, channel} <- require_channel(context),
+         :ok <- check.(context, channel) do
+      run.(channel, nick)
+    end
+  end
 end

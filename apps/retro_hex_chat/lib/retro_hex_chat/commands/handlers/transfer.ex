@@ -30,12 +30,13 @@ defmodule RetroHexChat.Commands.Handlers.Transfer do
 
   @impl true
   @spec execute([String.t()], Handler.context()) :: Handler.result()
-  def execute([], _context), do: {:error, dgettext("commands", "Usage: /transfer <nickname>")}
-
-  def execute([nick | _], context) do
-    with {:ok, channel} <- require_channel(context),
-         :ok <- require_owner(context, channel) do
-      {:ok, :ui_action, :transfer_ownership, %{channel: channel, target: nick}}
-    end
+  def execute(args, context) do
+    on_channel_target(
+      args,
+      context,
+      dgettext("commands", "Usage: /transfer <nickname>"),
+      &require_owner/2,
+      &{:ok, :ui_action, :transfer_ownership, %{channel: &1, target: &2}}
+    )
   end
 end
