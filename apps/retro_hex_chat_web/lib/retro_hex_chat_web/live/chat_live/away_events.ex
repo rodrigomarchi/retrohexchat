@@ -15,6 +15,7 @@ defmodule RetroHexChatWeb.ChatLive.AwayEvents do
 
   alias RetroHexChatWeb.ChatLive.CommandDispatch
   alias RetroHexChatWeb.ChatLive.Windows
+  alias RetroHexChatWeb.Params
 
   @spec handle_event(String.t(), map(), Phoenix.LiveView.Socket.t()) ::
           {:halt, Phoenix.LiveView.Socket.t()} | {:cont, Phoenix.LiveView.Socket.t()}
@@ -33,7 +34,7 @@ defmodule RetroHexChatWeb.ChatLive.AwayEvents do
         value -> value
       end
 
-    if truthy?(Map.get(params, "away", "true")) do
+    if Params.truthy?(Map.get(params, "away", "true")) do
       {:halt,
        socket
        |> dispatch("away", [message])
@@ -72,8 +73,4 @@ defmodule RetroHexChatWeb.ChatLive.AwayEvents do
   defp dispatch(socket, name, args) do
     CommandDispatch.dispatch_command(socket, socket.assigns.session, name, args)
   end
-
-  defp truthy?(true), do: true
-  defp truthy?("true"), do: true
-  defp truthy?(_value), do: false
 end

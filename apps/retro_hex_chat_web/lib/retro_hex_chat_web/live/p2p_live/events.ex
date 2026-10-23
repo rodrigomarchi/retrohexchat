@@ -673,12 +673,12 @@ defmodule RetroHexChatWeb.P2PLive.Events do
       # an offer whose answer belongs to a connection that no longer exists.
       # A page that has not started yet is not that page: it still needs the
       # start the branch below gives it.
-      truthy?(value(payload, :restart)) and p2p.webrtc_started and
+      Params.truthy?(Params.value(payload, :restart)) and p2p.webrtc_started and
           p2p.webrtc_connection_reset ->
         {:halt, socket}
 
-      truthy?(value(payload, :restart)) ->
-        {:halt, restart_webrtc_from_signaling(socket, p2p, value(payload, :reason))}
+      Params.truthy?(Params.value(payload, :restart)) ->
+        {:halt, restart_webrtc_from_signaling(socket, p2p, Params.value(payload, :reason))}
 
       p2p.session_started ->
         # A side that rejoined mid-call re-arms the gate; the host says again
@@ -1217,7 +1217,7 @@ defmodule RetroHexChatWeb.P2PLive.Events do
     media_mode =
       normalize_media_mode(params["media_mode"] || media_mode_from_preferences(preferences))
 
-    turn_only = turn_configured? and truthy?(params["turn_only"])
+    turn_only = turn_configured? and Params.truthy?(params["turn_only"])
 
     setup_opts = %{
       media_mode: media_mode,
@@ -1690,18 +1690,24 @@ defmodule RetroHexChatWeb.P2PLive.Events do
 
   defp normalize_p2p_setup_preferences(preferences) when is_map(preferences) do
     defaults = default_p2p_setup_preferences()
-    media = value(preferences, :media)
+    media = Params.value(preferences, :media)
 
     audio =
-      boolean_preference(preference_value(value(preferences, :audio), value(media, :audio)), true)
+      Params.boolean(
+        preference_value(Params.value(preferences, :audio), Params.value(media, :audio)),
+        true
+      )
 
     video =
-      boolean_preference(preference_value(value(preferences, :video), value(media, :video)), true)
+      Params.boolean(
+        preference_value(Params.value(preferences, :video), Params.value(media, :video)),
+        true
+      )
 
     %{
       media: %{audio: audio, video: video},
       device_preferences: MediaDevices.preferences(preferences),
-      turn_only: boolean_preference(value(preferences, :turn_only), defaults.turn_only)
+      turn_only: Params.boolean(Params.value(preferences, :turn_only), defaults.turn_only)
     }
   end
 
@@ -1791,33 +1797,14 @@ defmodule RetroHexChatWeb.P2PLive.Events do
   defp preference_value(nil, fallback), do: fallback
   defp preference_value(value, _fallback), do: value
 
-  defp boolean_preference(value, _default) when value in [true, "true", "on", "1", 1], do: true
-
-  defp boolean_preference(value, _default) when value in [false, "false", "off", "0", 0],
-    do: false
-
-  defp boolean_preference(_value, default), do: default
-
-  defp value(map, key) when is_map(map) do
-    cond do
-      Map.has_key?(map, key) -> Map.get(map, key)
-      Map.has_key?(map, to_string(key)) -> Map.get(map, to_string(key))
-      true -> nil
-    end
-  end
-
-  defp value(_map, _key), do: nil
-
   defp short_string_param(map, key, max_bytes) do
-    case value(map, key) do
+    case Params.value(map, key) do
       value when is_binary(value) -> String.slice(value, 0, max_bytes)
       _ -> nil
     end
   end
 
-  defp integer_param(map, key), do: Params.integer(value(map, key))
-
-  defp truthy?(value), do: value in [true, "true", "1", 1, "on"]
+  defp integer_param(map, key), do: Params.integer(Params.value(map, key))
 
   defp close_dialog do
     Phoenix.LiveView.send_update(P2PConfirmDialog,

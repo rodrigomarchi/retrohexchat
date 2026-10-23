@@ -29,7 +29,7 @@ defmodule RetroHexChatWeb.ChatLive.TimerEvents do
   end
 
   def handle_event("timers_dialog_save", params, socket) do
-    draft = draft_from_params(params, params["selected"])
+    draft = TimersDialog.draft_from_params(params, params["selected"])
     type = if draft.repeat?, do: :repeat, else: :once
 
     with {:ok, seconds} <- parse_seconds(draft.seconds),
@@ -72,16 +72,6 @@ defmodule RetroHexChatWeb.ChatLive.TimerEvents do
     {:halt, socket}
   end
 
-  @spec draft_from_params(map(), String.t() | nil) :: map()
-  defp draft_from_params(params, selected) do
-    %{
-      name: selected || String.trim(Map.get(params, "name", "")),
-      repeat?: truthy?(Map.get(params, "repeat", false)),
-      seconds: String.trim(Map.get(params, "seconds", "")),
-      command: String.trim(Map.get(params, "command", ""))
-    }
-  end
-
   @spec parse_seconds(String.t()) :: {:ok, integer()} | {:error, String.t()}
   defp parse_seconds(seconds) do
     case Integer.parse(seconds) do
@@ -93,17 +83,11 @@ defmodule RetroHexChatWeb.ChatLive.TimerEvents do
   @spec validate_repeat_interval(:repeat | :once, integer()) :: :ok | {:error, String.t()}
   defp validate_repeat_interval(:repeat, seconds) do
     if seconds < TimerManager.min_repeat_interval() do
-      {:error, dgettext("chat", "min 10s for repeating timers")}
+      {:error, TimersDialog.repeat_min_message()}
     else
       :ok
     end
   end
 
   defp validate_repeat_interval(_type, _seconds), do: :ok
-
-  @spec truthy?(term()) :: boolean()
-  defp truthy?(true), do: true
-  defp truthy?("true"), do: true
-  defp truthy?("on"), do: true
-  defp truthy?(_), do: false
 end

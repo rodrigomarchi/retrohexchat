@@ -24,6 +24,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.TimersDialog do
   import RetroHexChatWeb.Components.UI.TimersDialog
 
   alias RetroHexChat.Chat.TimerManager
+  alias RetroHexChatWeb.Params
 
   @id "timers-dialog"
 
@@ -135,11 +136,12 @@ defmodule RetroHexChatWeb.ChatLive.Components.TimersDialog do
     [draft_name: "", draft_repeat: false, draft_seconds: "", draft_command: ""]
   end
 
+  @doc false
   @spec draft_from_params(map(), String.t() | nil) :: map()
-  defp draft_from_params(params, selected) do
+  def draft_from_params(params, selected) do
     %{
       name: selected || String.trim(Map.get(params, "name", "")),
-      repeat?: truthy?(Map.get(params, "repeat", false)),
+      repeat?: Params.truthy?(Map.get(params, "repeat", false)),
       seconds: String.trim(Map.get(params, "seconds", "")),
       command: String.trim(Map.get(params, "command", ""))
     }
@@ -158,12 +160,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.TimersDialog do
 
   defp repeat_interval_error(_repeat?, _seconds), do: nil
 
+  @doc false
   @spec repeat_min_message() :: String.t()
-  defp repeat_min_message, do: dgettext("chat", "min 10s for repeating timers")
-
-  @spec truthy?(term()) :: boolean()
-  defp truthy?(true), do: true
-  defp truthy?("true"), do: true
-  defp truthy?("on"), do: true
-  defp truthy?(_), do: false
+  def repeat_min_message, do: dgettext("chat", "min 10s for repeating timers")
 end

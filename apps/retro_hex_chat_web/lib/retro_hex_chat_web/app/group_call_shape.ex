@@ -313,18 +313,9 @@ defmodule RetroHexChatWeb.App.GroupCallShape do
 
   def float_value(_value), do: 0
   @spec truthy?(term()) :: boolean()
-  def truthy?(value) when value in [true, "true", "on", "1", 1], do: true
-  def truthy?(_value), do: false
-  @spec value(map() | nil, atom()) :: term()
-  def value(nil, _key), do: nil
-
-  def value(map, key) when is_map(map) and is_atom(key) do
-    cond do
-      Map.has_key?(map, key) -> Map.get(map, key)
-      Map.has_key?(map, Atom.to_string(key)) -> Map.get(map, Atom.to_string(key))
-      true -> nil
-    end
-  end
+  defdelegate truthy?(value), to: RetroHexChatWeb.Params
+  @spec value(term(), atom()) :: term()
+  defdelegate value(map, key), to: RetroHexChatWeb.Params
 
   @spec participant_nickname(map() | nil) :: String.t() | nil
   def participant_nickname(%{nickname: nickname}), do: nickname

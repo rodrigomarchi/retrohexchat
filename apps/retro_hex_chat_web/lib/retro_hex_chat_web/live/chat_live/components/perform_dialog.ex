@@ -27,6 +27,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.PerformDialog do
   alias RetroHexChat.Accounts.Session
   alias RetroHexChat.Chat.PerformList
   alias RetroHexChatWeb.ChatLive.Components.DialogIsland
+  alias RetroHexChatWeb.Params
 
   @id "perform-dialog"
 
@@ -63,7 +64,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.PerformDialog do
 
   # The row press names the command and opens it.
   def handle_event("perform_edit", %{"position" => pos}, socket) do
-    {:noreply, assign(socket, selected: position(pos), show_edit_dialog: true)}
+    {:noreply, assign(socket, selected: Params.integer(pos), show_edit_dialog: true)}
   end
 
   def handle_event("close_perform_edit", _params, socket) do
@@ -111,7 +112,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.PerformDialog do
   end
 
   def handle_event("perform_remove", %{"position" => pos}, socket) do
-    position = position(pos)
+    position = Params.integer(pos)
     session = socket.assigns.session
 
     with true <- position != nil,
@@ -126,11 +127,11 @@ defmodule RetroHexChatWeb.ChatLive.Components.PerformDialog do
   end
 
   def handle_event("perform_move_up", %{"position" => pos}, socket) do
-    {:noreply, move(socket, position(pos), -1)}
+    {:noreply, move(socket, Params.integer(pos), -1)}
   end
 
   def handle_event("perform_move_down", %{"position" => pos}, socket) do
-    {:noreply, move(socket, position(pos), +1)}
+    {:noreply, move(socket, Params.integer(pos), +1)}
   end
 
   def handle_event("perform_toggle_enabled", _params, socket) do
@@ -205,15 +206,4 @@ defmodule RetroHexChatWeb.ChatLive.Components.PerformDialog do
 
   # A row sends its position as a `phx-value-*` string; the list keys on the
   # integer.
-  @spec position(term()) :: integer() | nil
-  defp position(value) when is_integer(value), do: value
-
-  defp position(value) when is_binary(value) do
-    case Integer.parse(value) do
-      {position, _rest} -> position
-      :error -> nil
-    end
-  end
-
-  defp position(_other), do: nil
 end

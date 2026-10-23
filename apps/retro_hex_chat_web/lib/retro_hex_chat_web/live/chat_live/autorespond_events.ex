@@ -19,6 +19,7 @@ defmodule RetroHexChatWeb.ChatLive.AutorespondEvents do
   alias RetroHexChat.Chat.AutoRespondRules
   alias RetroHexChatWeb.ChatLive.Components.AutoRespondDialog
   alias RetroHexChatWeb.ChatLive.Windows
+  alias RetroHexChatWeb.Params
 
   def handle_event("open_autorespond_dialog", _params, socket) do
     {:halt, Windows.open(socket, "auto-respond")}
@@ -82,7 +83,7 @@ defmodule RetroHexChatWeb.ChatLive.AutorespondEvents do
   end
 
   def handle_event("autorespond_dialog_delete", params, socket) do
-    selected = position(params["position"] || params["selected"])
+    selected = Params.integer(params["position"] || params["selected"])
     session = socket.assigns.session
 
     case AutoRespondRules.remove_entry(session.autorespond_rules, selected) do
@@ -124,15 +125,4 @@ defmodule RetroHexChatWeb.ChatLive.AutorespondEvents do
   # A row sends its position as a `phx-value-*` string; the rule list keys on the
   # integer, and `remove_entry/2` compares with `==` — a string silently matches
   # nothing.
-  @spec position(term()) :: integer() | nil
-  defp position(value) when is_integer(value), do: value
-
-  defp position(value) when is_binary(value) do
-    case Integer.parse(value) do
-      {position, _rest} -> position
-      :error -> nil
-    end
-  end
-
-  defp position(_other), do: nil
 end

@@ -7,6 +7,7 @@ defmodule RetroHexChatWeb.ChatLive.UserModesEvents do
 
   alias RetroHexChatWeb.ChatLive.CommandDispatch
   alias RetroHexChatWeb.ChatLive.Windows
+  alias RetroHexChatWeb.Params
 
   @spec handle_event(String.t(), map(), Phoenix.LiveView.Socket.t()) ::
           {:halt, Phoenix.LiveView.Socket.t()} | {:cont, Phoenix.LiveView.Socket.t()}
@@ -16,7 +17,7 @@ defmodule RetroHexChatWeb.ChatLive.UserModesEvents do
   end
 
   def handle_event("user_modes_submit", params, socket) do
-    mode_string = if truthy?(params["wallops"]), do: "+w", else: "-w"
+    mode_string = if Params.truthy?(params["wallops"]), do: "+w", else: "-w"
 
     {:halt,
      CommandDispatch.dispatch_command(socket, socket.assigns.session, "umode", [mode_string])}
@@ -27,8 +28,4 @@ defmodule RetroHexChatWeb.ChatLive.UserModesEvents do
   @doc "Opens/focuses the User Modes window."
   @spec open(Phoenix.LiveView.Socket.t()) :: Phoenix.LiveView.Socket.t()
   def open(socket), do: Windows.open(socket, "user-modes")
-
-  defp truthy?(true), do: true
-  defp truthy?("true"), do: true
-  defp truthy?(_value), do: false
 end

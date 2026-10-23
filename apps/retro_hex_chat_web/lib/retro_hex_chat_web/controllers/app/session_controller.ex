@@ -12,6 +12,7 @@ defmodule RetroHexChatWeb.App.SessionController do
   alias RetroHexChatWeb.App.SessionHelpers
   alias RetroHexChatWeb.App.SessionSignIn
   alias RetroHexChatWeb.App.TrustedDeviceCookie
+  alias RetroHexChatWeb.Params
 
   @spec create(Plug.Conn.t(), map()) :: Plug.Conn.t()
   def create(conn, %{"nickname" => nickname} = params) do
@@ -85,7 +86,7 @@ defmodule RetroHexChatWeb.App.SessionController do
   end
 
   defp verify_identity_proof(conn, params, nickname) do
-    if truthy?(params["trusted_device_login"]) do
+    if Params.truthy?(params["trusted_device_login"]) do
       case TrustedDeviceCookie.fetch(conn) |> TrustedDevices.authorize_cookie(nickname) do
         {:ok, %{device: device}} ->
           {:ok,
@@ -105,7 +106,7 @@ defmodule RetroHexChatWeb.App.SessionController do
 
   defp maybe_remember_device(conn, params, nickname, %{source: :short_token})
        when is_map(params) do
-    if truthy?(params["remember_device"]) do
+    if Params.truthy?(params["remember_device"]) do
       opts = [
         client_info: SessionHelpers.parse_client_info(params),
         label: params["device_label"],
@@ -161,14 +162,12 @@ defmodule RetroHexChatWeb.App.SessionController do
   defp maybe_restore_locale(conn, _locale), do: conn
 
   defp maybe_delete_trusted_cookie(conn, params) do
-    if truthy?(params["forget_device"]) do
+    if Params.truthy?(params["forget_device"]) do
       TrustedDeviceCookie.delete(conn)
     else
       conn
     end
   end
-
-  defp truthy?(value), do: value in [true, "true", "on", "1", 1]
 
   defp remote_ip(%{remote_ip: remote_ip}) when is_tuple(remote_ip) do
     remote_ip

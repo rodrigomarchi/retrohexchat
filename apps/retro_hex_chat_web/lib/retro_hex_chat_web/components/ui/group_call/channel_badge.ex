@@ -15,6 +15,7 @@ defmodule RetroHexChatWeb.Components.UI.GroupCall.ChannelBadge do
 
   alias RetroHexChatWeb.Components.UI.EntryPopover
   alias RetroHexChatWeb.Icons
+  alias RetroHexChatWeb.Params
 
   attr :channel, :string, required: true
   attr :active, :boolean, default: false
@@ -185,7 +186,7 @@ defmodule RetroHexChatWeb.Components.UI.GroupCall.ChannelBadge do
     speaker_name = speaker_name(summary)
 
     assigns
-    |> assign(:room_token, value(summary.room, :token))
+    |> assign(:room_token, Params.value(summary.room, :token))
     |> assign(:participants, participants)
     |> assign(:nick_locales, summary.nick_locales)
     |> assign(:participant_count, participant_count)
@@ -213,16 +214,16 @@ defmodule RetroHexChatWeb.Components.UI.GroupCall.ChannelBadge do
   end
 
   defp normalize_summary(summary, channel) when is_map(summary) do
-    room = value(summary, :room) || %{}
+    room = Params.value(summary, :room) || %{}
 
     %{
-      status: value(summary, :status),
-      room: Map.put(room, :channel_name, value(room, :channel_name) || channel),
-      participants: normalize_participants(value(summary, :participants)),
-      pending_participants: normalize_participants(value(summary, :pending_participants)),
-      server_stats: value(summary, :server_stats) || %{},
-      participant_quality: value(summary, :participant_quality) || %{},
-      nick_locales: value(summary, :nick_locales) || %{}
+      status: Params.value(summary, :status),
+      room: Map.put(room, :channel_name, Params.value(room, :channel_name) || channel),
+      participants: normalize_participants(Params.value(summary, :participants)),
+      pending_participants: normalize_participants(Params.value(summary, :pending_participants)),
+      server_stats: Params.value(summary, :server_stats) || %{},
+      participant_quality: Params.value(summary, :participant_quality) || %{},
+      nick_locales: Params.value(summary, :nick_locales) || %{}
     }
   end
 
@@ -232,21 +233,21 @@ defmodule RetroHexChatWeb.Components.UI.GroupCall.ChannelBadge do
     participants
     |> Enum.map(fn participant ->
       %{
-        id: value(participant, :id),
-        nickname: value(participant, :nickname) || "?",
-        status: value(participant, :status),
-        media_state: value(participant, :media_state) || %{}
+        id: Params.value(participant, :id),
+        nickname: Params.value(participant, :nickname) || "?",
+        status: Params.value(participant, :status),
+        media_state: Params.value(participant, :media_state) || %{}
       }
     end)
     |> Enum.reject(&is_nil(&1.id))
   end
 
   defp participant_count(summary) do
-    room_stats = value(summary.server_stats, :room) || %{}
+    room_stats = Params.value(summary.server_stats, :room) || %{}
 
     cond do
-      is_integer(value(room_stats, :participant_count)) ->
-        value(room_stats, :participant_count)
+      is_integer(Params.value(room_stats, :participant_count)) ->
+        Params.value(room_stats, :participant_count)
 
       summary.participants != [] ->
         length(summary.participants)
@@ -257,12 +258,12 @@ defmodule RetroHexChatWeb.Components.UI.GroupCall.ChannelBadge do
   end
 
   defp max_participants(summary) do
-    room_stats = value(summary.server_stats, :room) || %{}
-    value(summary.room, :max_participants) || value(room_stats, :max_participants)
+    room_stats = Params.value(summary.server_stats, :room) || %{}
+    Params.value(summary.room, :max_participants) || Params.value(room_stats, :max_participants)
   end
 
   defp state(summary, participant_count, max_participants) do
-    status = value(summary, :status) || value(summary.room, :status)
+    status = Params.value(summary, :status) || Params.value(summary.room, :status)
 
     cond do
       locked?(summary) -> :locked
@@ -275,9 +276,9 @@ defmodule RetroHexChatWeb.Components.UI.GroupCall.ChannelBadge do
   end
 
   defp started_at(summary) do
-    value(summary.room, :activated_at) ||
-      value(summary.room, :opened_at) ||
-      value(summary.room, :inserted_at)
+    Params.value(summary.room, :activated_at) ||
+      Params.value(summary.room, :opened_at) ||
+      Params.value(summary.room, :inserted_at)
   end
 
   defp started_at_value(nil), do: nil
@@ -313,7 +314,7 @@ defmodule RetroHexChatWeb.Components.UI.GroupCall.ChannelBadge do
 
   defp speaker_name(summary) do
     quality = summary.participant_quality || %{}
-    speaker_id = value(quality, :active_speaker_participant_id)
+    speaker_id = Params.value(quality, :active_speaker_participant_id)
 
     case Enum.find(summary.participants, &(to_string(&1.id) == to_string(speaker_id))) do
       nil -> nil
@@ -322,12 +323,12 @@ defmodule RetroHexChatWeb.Components.UI.GroupCall.ChannelBadge do
   end
 
   defp locked?(summary) do
-    metadata = value(summary.room, :metadata) || %{}
-    value(metadata, :locked) == true or value(metadata, :admission_locked) == true
+    metadata = Params.value(summary.room, :metadata) || %{}
+    Params.value(metadata, :locked) == true or Params.value(metadata, :admission_locked) == true
   end
 
   defp media_enabled?(%{media_state: media}, key) when is_map(media) do
-    case value(media, key) do
+    case Params.value(media, key) do
       nil -> false
       value -> value == true
     end
@@ -336,7 +337,7 @@ defmodule RetroHexChatWeb.Components.UI.GroupCall.ChannelBadge do
   defp media_enabled?(_participant, _key), do: false
 
   defp hand_raised?(%{media_state: media}) when is_map(media),
-    do: value(media, :hand_raised) == true
+    do: Params.value(media, :hand_raised) == true
 
   defp hand_raised?(_participant), do: false
 
@@ -391,14 +392,4 @@ defmodule RetroHexChatWeb.Components.UI.GroupCall.ChannelBadge do
   defp state_dot_class(:locked), do: "bg-warning"
   defp state_dot_class(:degraded), do: "bg-destructive"
   defp state_dot_class(:ending), do: "bg-muted-foreground"
-
-  defp value(nil, _key), do: nil
-
-  defp value(map, key) when is_map(map) and is_atom(key) do
-    cond do
-      Map.has_key?(map, key) -> Map.get(map, key)
-      Map.has_key?(map, Atom.to_string(key)) -> Map.get(map, Atom.to_string(key))
-      true -> nil
-    end
-  end
 end

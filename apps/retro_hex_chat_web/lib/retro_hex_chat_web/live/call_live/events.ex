@@ -1881,7 +1881,7 @@ defmodule RetroHexChatWeb.CallLive.Events do
 
     %{
       audio:
-        boolean_preference(
+        Params.boolean(
           preference_value(
             GroupCallShape.value(preferences, :audio),
             GroupCallShape.value(media, :audio)
@@ -1889,7 +1889,7 @@ defmodule RetroHexChatWeb.CallLive.Events do
           true
         ),
       video:
-        boolean_preference(
+        Params.boolean(
           preference_value(
             GroupCallShape.value(preferences, :video),
             GroupCallShape.value(media, :video)
@@ -1998,13 +1998,6 @@ defmodule RetroHexChatWeb.CallLive.Events do
   end
 
   defp default_devices, do: MediaDevices.none()
-
-  defp boolean_preference(value, _default) when value in [true, "true", "on", "1", 1], do: true
-
-  defp boolean_preference(value, _default) when value in [false, "false", "off", "0", 0],
-    do: false
-
-  defp boolean_preference(_value, default), do: default
 
   defp layout_mode(mode) when mode in [:auto, :grid, :focus, :speaker], do: mode
 

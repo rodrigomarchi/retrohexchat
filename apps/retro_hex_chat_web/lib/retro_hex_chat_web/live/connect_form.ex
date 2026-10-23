@@ -24,6 +24,7 @@ defmodule RetroHexChatWeb.ConnectForm do
   alias RetroHexChat.Accounts.NicknameValidator
   alias RetroHexChat.Accounts.TrustedDevices
   alias RetroHexChat.Services.NickServ
+  alias RetroHexChatWeb.Params
 
   @id "connect-form"
 
@@ -104,7 +105,7 @@ defmodule RetroHexChatWeb.ConnectForm do
     case TrustedDevices.set_auto_login(
            socket.assigns.trusted_device_id,
            nickname,
-           truthy?(enabled),
+           Params.truthy?(enabled),
            nickname
          ) do
       :ok ->
@@ -293,7 +294,7 @@ defmodule RetroHexChatWeb.ConnectForm do
     assign(socket,
       auth_token: token,
       trusted_device_login: false,
-      remember_device: truthy?(params["remember_device"]),
+      remember_device: Params.truthy?(params["remember_device"]),
       device_label: params["device_label"] || "",
       submit_connect: true
     )
@@ -301,12 +302,10 @@ defmodule RetroHexChatWeb.ConnectForm do
 
   defp assign_remember_device_fields(socket, params) do
     assign(socket,
-      remember_device: truthy?(params["remember_device"]),
+      remember_device: Params.truthy?(params["remember_device"]),
       device_label: params["device_label"] || ""
     )
   end
-
-  defp truthy?(value), do: value in [true, "true", "on", "1", 1]
 
   @impl true
   def render(assigns) do

@@ -160,7 +160,7 @@ defmodule RetroHexChatWeb.GroupCallChannel do
   end
 
   def handle_in("group_call_screen_share_state", payload, socket) when is_map(payload) do
-    active? = truthy?(Map.get(payload, "active", Map.get(payload, :active, false)))
+    active? = Params.truthy?(Map.get(payload, "active", Map.get(payload, :active, false)))
 
     screen_info = %{
       "track_id" => Map.get(payload, "track_id", Map.get(payload, :track_id)),
@@ -258,9 +258,6 @@ defmodule RetroHexChatWeb.GroupCallChannel do
   defp check_signal_rate(socket) do
     RateLimiter.check_signal_rate(socket.assigns.room_token, socket.assigns.user_id)
   end
-
-  defp truthy?(value) when value in [true, "true", "on", "1", 1], do: true
-  defp truthy?(_value), do: false
 
   defp room_payload(room) do
     %{

@@ -710,7 +710,7 @@ msgstr ""
 #: lib/retro_hex_chat_web/components/ui/chat/nicklist.ex:125
 #: lib/retro_hex_chat_web/components/ui/chat/nicklist.ex:318
 #: lib/retro_hex_chat_web/components/ui/chat/nicklist.ex:576
-#: lib/retro_hex_chat_web/live/chat_live/away_events.ex:32
+#: lib/retro_hex_chat_web/live/chat_live/away_events.ex:33
 #: lib/retro_hex_chat_web/live/chat_live/components/hover_card.ex:121
 #: lib/retro_hex_chat_web/live/chat_live/helpers/whois.ex:160
 #: lib/retro_hex_chat_web/live/chat_live/hover_events.ex:136
@@ -873,7 +873,7 @@ msgstr ""
 msgid "Channel Settings"
 msgstr ""
 
-#: lib/retro_hex_chat_web/live/chat_live/autorespond_events.ex:113
+#: lib/retro_hex_chat_web/live/chat_live/autorespond_events.ex:114
 #: lib/retro_hex_chat_web/live/chat_live/ui_actions/scripting.ex:226
 #, elixir-autogen, elixir-format
 msgid "Channel filter must start with #"
@@ -927,7 +927,7 @@ msgstr ""
 msgid "Command '%{trigger}' already exists."
 msgstr ""
 
-#: lib/retro_hex_chat_web/live/chat_live/autorespond_events.ex:115
+#: lib/retro_hex_chat_web/live/chat_live/autorespond_events.ex:116
 #: lib/retro_hex_chat_web/live/chat_live/custom_menus_events.ex:147
 #: lib/retro_hex_chat_web/live/chat_live/ui_actions/scripting.ex:228
 #, elixir-autogen, elixir-format
@@ -939,13 +939,13 @@ msgstr ""
 msgid "Command must not contain chaining"
 msgstr ""
 
-#: lib/retro_hex_chat_web/live/chat_live/autorespond_events.ex:121
+#: lib/retro_hex_chat_web/live/chat_live/autorespond_events.ex:122
 #: lib/retro_hex_chat_web/live/chat_live/ui_actions/scripting.ex:234
 #, elixir-autogen, elixir-format
 msgid "Command must not contain chaining (|, &&, ;)"
 msgstr ""
 
-#: lib/retro_hex_chat_web/live/chat_live/autorespond_events.ex:118
+#: lib/retro_hex_chat_web/live/chat_live/autorespond_events.ex:119
 #: lib/retro_hex_chat_web/live/chat_live/custom_menus_events.ex:150
 #: lib/retro_hex_chat_web/live/chat_live/ui_actions/perform.ex:59
 #: lib/retro_hex_chat_web/live/chat_live/ui_actions/scripting.ex:231
@@ -1127,7 +1127,7 @@ msgstr ""
 msgid "Failed to add ignore: %{reason}"
 msgstr ""
 
-#: lib/retro_hex_chat_web/live/chat_live/components/perform_dialog.ex:91
+#: lib/retro_hex_chat_web/live/chat_live/components/perform_dialog.ex:92
 #, elixir-autogen, elixir-format
 msgid "Failed to add perform command: %{reason}"
 msgstr ""
@@ -1303,7 +1303,7 @@ msgstr ""
 msgid "Invalid regex"
 msgstr ""
 
-#: lib/retro_hex_chat_web/live/chat_live/autorespond_events.ex:110
+#: lib/retro_hex_chat_web/live/chat_live/autorespond_events.ex:111
 #: lib/retro_hex_chat_web/live/chat_live/ui_actions/scripting.ex:223
 #, elixir-autogen, elixir-format
 msgid "Invalid trigger event"
@@ -1403,7 +1403,7 @@ msgstr ""
 msgid "Mark as Read"
 msgstr ""
 
-#: lib/retro_hex_chat_web/live/chat_live/autorespond_events.ex:109
+#: lib/retro_hex_chat_web/live/chat_live/autorespond_events.ex:110
 #: lib/retro_hex_chat_web/live/chat_live/ui_actions/scripting.ex:222
 #, elixir-autogen, elixir-format
 msgid "Maximum 10 auto-respond rules"
@@ -1741,7 +1741,7 @@ msgstr ""
 msgid "Reverse (Ctrl+Shift+V)"
 msgstr ""
 
-#: lib/retro_hex_chat_web/live/chat_live/autorespond_events.ex:123
+#: lib/retro_hex_chat_web/live/chat_live/autorespond_events.ex:124
 #, elixir-autogen, elixir-format
 msgid "Rule not found"
 msgstr ""
@@ -2730,7 +2730,7 @@ msgstr ""
 msgid "Searching history"
 msgstr ""
 
-#: lib/retro_hex_chat_web/live/chat_live/timer_events.ex:89
+#: lib/retro_hex_chat_web/live/chat_live/timer_events.ex:79
 #, elixir-autogen, elixir-format
 msgid "Seconds must be a number."
 msgstr ""
@@ -2762,7 +2762,7 @@ msgstr ""
 msgid "Throttle error: %{message}"
 msgstr ""
 
-#: lib/retro_hex_chat_web/live/chat_live/components/timers_dialog.ex:69
+#: lib/retro_hex_chat_web/live/chat_live/components/timers_dialog.ex:70
 #, elixir-autogen, elixir-format
 msgid "Timer not found"
 msgstr ""
@@ -2862,8 +2862,7 @@ msgstr ""
 msgid "You must be identified with NickServ to use ChanServ."
 msgstr ""
 
-#: lib/retro_hex_chat_web/live/chat_live/components/timers_dialog.ex:162
-#: lib/retro_hex_chat_web/live/chat_live/timer_events.ex:96
+#: lib/retro_hex_chat_web/live/chat_live/components/timers_dialog.ex:165
 #, elixir-autogen, elixir-format
 msgid "min 10s for repeating timers"
 msgstr ""
@@ -2938,7 +2937,7 @@ msgstr ""
 msgid "Cycle P2P Self View"
 msgstr ""
 
-#: lib/retro_hex_chat_web/live/p2p_live/events.ex:1759
+#: lib/retro_hex_chat_web/live/p2p_live/events.ex:1765
 #, elixir-autogen, elixir-format
 msgid "Default device"
 msgstr ""
