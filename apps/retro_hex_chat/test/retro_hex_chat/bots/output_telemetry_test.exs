@@ -94,8 +94,11 @@ defmodule RetroHexChat.Bots.OutputTelemetryTest do
     assert metadata.channel == channel
     assert first.delay_ms <= interval and first.delay_ms > div(interval, 2)
 
+    # How much of the second wait is left depends on how late the caller woke
+    # from the first; a loaded machine oversleeps, so only "held back, and no
+    # longer than one interval" is a property of the pacer.
     assert_receive {:telemetry, :throttled, second, _metadata}, 5_000
-    assert second.delay_ms <= interval and second.delay_ms > div(interval, 2)
+    assert second.delay_ms <= interval and second.delay_ms > 0
 
     # send_many returns only after its last send, and telemetry handlers run in
     # the caller, so every event it will ever emit is already in the mailbox.
