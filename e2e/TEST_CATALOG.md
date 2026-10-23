@@ -135,8 +135,8 @@ make e2e.catalog.check    # verify it is current (also runs in make ci)
 ## Coverage
 
 - **260 spec files** under `e2e/tests/`.
-- **655 Playwright `test()` cases**.
-- **598 documented flows**, 597 done, 1 not done.
+- **657 Playwright `test()` cases**.
+- **599 documented flows**, 598 done, 1 not done.
 - **Every spec documents its own flows.**
 
 ## Flow index
@@ -357,6 +357,7 @@ Grouped by section. Every row comes from an `@flow` line in the spec itself.
 | L16 | `/timer stop` cancels; missing timer errors (features P1) | `tests/chat-timer.spec.ts` | done |
 | L17 | Repeating timer clamp notice appears and can be stopped (features P2) | `tests/chat-timer.spec.ts` | done |
 | L18 | `/popups` custom menu dialog and custom menu execution (features P2) | `tests/chat-custom-menus.spec.ts` | done |
+| L18b | A tabbed window opened after the page loaded marks its first tab active and shows only that tab's panel | `tests/chat-custom-menus.spec.ts` | done |
 
 ### M - Admin, Server Operations, Bots
 

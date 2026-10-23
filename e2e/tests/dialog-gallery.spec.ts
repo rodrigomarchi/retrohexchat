@@ -30,6 +30,7 @@ import {
   type Locator,
   type Page,
 } from "@playwright/test";
+import { pressCtrlShift } from "../helpers/keyboard";
 import { ChatPage } from "../pages/ChatPage";
 import { ConnectPage } from "../pages/ConnectPage";
 import {
@@ -937,5 +938,16 @@ for (const [device, size] of [
         await user.page.keyboard.press("Escape");
       });
     }
+
+    // The URL catcher has no command; its shortcut opens it on both.
+    test("url-catcher, empty", async () => {
+      await pressCtrlShift(user.page, "S");
+      await shoot(
+        user.page,
+        user.chat.urlCatcherDialog,
+        `empty-${device}-url-catcher`,
+      );
+      await user.page.keyboard.press("Escape");
+    });
   });
 }
