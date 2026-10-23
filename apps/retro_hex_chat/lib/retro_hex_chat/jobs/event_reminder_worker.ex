@@ -19,20 +19,8 @@ defmodule RetroHexChat.Jobs.EventReminderWorker do
   worker here makes.
   """
 
-  use Oban.Worker,
-    queue: :maintenance,
-    max_attempts: 3,
-    tags: ["maintenance", "events"],
-    unique: [
-      fields: [:worker, :queue],
-      states: :incomplete,
-      period: 60
-    ]
-
-  use RetroHexChat.Jobs.Retry,
-    timeout: :timer.minutes(1),
-    cap_seconds: 15 * 60,
-    step_seconds: 60
+  use RetroHexChat.Jobs.MaintenanceWorker,
+    tags: ["events"]
 
   alias RetroHexChat.Channels.ScheduledEvents
   alias RetroHexChat.Jobs.ResultMetadata

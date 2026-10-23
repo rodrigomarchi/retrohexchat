@@ -3,20 +3,8 @@ defmodule RetroHexChat.Jobs.IgnoreExpiredCleanupWorker do
   Removes expired durable ignore-list entries.
   """
 
-  use Oban.Worker,
-    queue: :maintenance,
-    max_attempts: 3,
-    tags: ["maintenance", "ignore_list"],
-    unique: [
-      fields: [:worker, :queue],
-      states: :incomplete,
-      period: 60
-    ]
-
-  use RetroHexChat.Jobs.Retry,
-    timeout: :timer.minutes(1),
-    cap_seconds: 15 * 60,
-    step_seconds: 60
+  use RetroHexChat.Jobs.MaintenanceWorker,
+    tags: ["ignore_list"]
 
   alias RetroHexChat.Chat.IgnoreList
   alias RetroHexChat.Jobs.ResultMetadata

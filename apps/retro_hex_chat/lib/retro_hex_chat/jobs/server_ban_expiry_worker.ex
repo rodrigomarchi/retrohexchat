@@ -3,19 +3,9 @@ defmodule RetroHexChat.Jobs.ServerBanExpiryWorker do
   Durable maintenance worker for expiring time-limited server bans.
   """
 
-  use Oban.Worker,
-    queue: :maintenance,
-    max_attempts: 3,
-    tags: ["maintenance", "server_bans"],
-    unique: [
-      fields: [:worker, :queue],
-      states: :incomplete,
-      period: :infinity
-    ]
-
-  use RetroHexChat.Jobs.Retry,
-    timeout: :timer.minutes(1),
-    cap_seconds: 15 * 60,
+  use RetroHexChat.Jobs.MaintenanceWorker,
+    tags: ["server_bans"],
+    period: :infinity,
     step_seconds: 30
 
   alias RetroHexChat.Admin.ServerBans

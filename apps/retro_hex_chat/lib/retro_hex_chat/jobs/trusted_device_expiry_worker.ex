@@ -3,20 +3,8 @@ defmodule RetroHexChat.Jobs.TrustedDeviceExpiryWorker do
   Materializes expired trusted devices as revoked by the system.
   """
 
-  use Oban.Worker,
-    queue: :maintenance,
-    max_attempts: 3,
-    tags: ["maintenance", "trusted_devices"],
-    unique: [
-      fields: [:worker, :queue],
-      states: :incomplete,
-      period: 60
-    ]
-
-  use RetroHexChat.Jobs.Retry,
-    timeout: :timer.minutes(1),
-    cap_seconds: 15 * 60,
-    step_seconds: 60
+  use RetroHexChat.Jobs.MaintenanceWorker,
+    tags: ["trusted_devices"]
 
   alias RetroHexChat.Accounts.TrustedDevices
   alias RetroHexChat.Jobs.ResultMetadata

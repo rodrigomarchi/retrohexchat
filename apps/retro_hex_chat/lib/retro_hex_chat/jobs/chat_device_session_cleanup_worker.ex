@@ -3,20 +3,8 @@ defmodule RetroHexChat.Jobs.ChatDeviceSessionCleanupWorker do
   Closes chat device session audit rows that stopped receiving heartbeats.
   """
 
-  use Oban.Worker,
-    queue: :maintenance,
-    max_attempts: 3,
-    tags: ["maintenance", "trusted_devices", "sessions"],
-    unique: [
-      fields: [:worker, :queue],
-      states: :incomplete,
-      period: 60
-    ]
-
-  use RetroHexChat.Jobs.Retry,
-    timeout: :timer.minutes(1),
-    cap_seconds: 15 * 60,
-    step_seconds: 60
+  use RetroHexChat.Jobs.MaintenanceWorker,
+    tags: ["trusted_devices", "sessions"]
 
   alias RetroHexChat.Accounts.TrustedDevices
   alias RetroHexChat.Jobs.ResultMetadata

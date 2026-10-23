@@ -12,20 +12,8 @@ defmodule RetroHexChat.Jobs.BotGreetingPruneWorker do
   a season is somebody the room may as well greet again.
   """
 
-  use Oban.Worker,
-    queue: :maintenance,
-    max_attempts: 3,
-    tags: ["maintenance", "bots"],
-    unique: [
-      fields: [:worker, :queue],
-      states: :incomplete,
-      period: 60
-    ]
-
-  use RetroHexChat.Jobs.Retry,
-    timeout: :timer.minutes(1),
-    cap_seconds: 15 * 60,
-    step_seconds: 60
+  use RetroHexChat.Jobs.MaintenanceWorker,
+    tags: ["bots"]
 
   alias RetroHexChat.Bots.Queries
   alias RetroHexChat.Jobs.ResultMetadata

@@ -3,19 +3,10 @@ defmodule RetroHexChat.Jobs.RegisteredNickExpiryWorker do
   Durable maintenance worker for purging inactive registered nicknames.
   """
 
-  use Oban.Worker,
-    queue: :maintenance,
-    max_attempts: 3,
-    tags: ["maintenance", "nicks"],
-    unique: [
-      fields: [:worker, :queue],
-      states: :incomplete,
-      period: :infinity
-    ]
-
-  use RetroHexChat.Jobs.Retry,
+  use RetroHexChat.Jobs.MaintenanceWorker,
+    tags: ["nicks"],
+    period: :infinity,
     timeout: :timer.minutes(2),
-    cap_seconds: 15 * 60,
     step_seconds: 30
 
   alias RetroHexChat.Observability

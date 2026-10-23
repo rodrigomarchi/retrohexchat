@@ -112,7 +112,6 @@ defmodule RetroHexChat.Jobs.BotScheduledMessageWorker do
       end
     else
       {:cancel, reason} -> {:cancel, reason}
-      {:error, reason} -> {:error, reason}
     end
   end
 

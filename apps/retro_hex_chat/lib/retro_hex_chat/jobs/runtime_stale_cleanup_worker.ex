@@ -3,20 +3,9 @@ defmodule RetroHexChat.Jobs.RuntimeStaleCleanupWorker do
   Reconciles abandoned runtime lifecycle records through Oban.
   """
 
-  use Oban.Worker,
-    queue: :maintenance,
-    max_attempts: 3,
-    tags: ["maintenance", "runtime_stale"],
-    unique: [
-      fields: [:worker, :queue],
-      states: :incomplete,
-      period: 60
-    ]
-
-  use RetroHexChat.Jobs.Retry,
-    timeout: :timer.minutes(2),
-    cap_seconds: 15 * 60,
-    step_seconds: 60
+  use RetroHexChat.Jobs.MaintenanceWorker,
+    tags: ["runtime_stale"],
+    timeout: :timer.minutes(2)
 
   alias RetroHexChat.Jobs.ResultMetadata
   alias RetroHexChat.Jobs.WorkerArgs

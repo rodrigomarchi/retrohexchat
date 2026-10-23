@@ -3,20 +3,12 @@ defmodule RetroHexChat.Jobs.GlobalMuteExpiryWorker do
   Expires temporary server-wide mutes.
   """
 
-  use Oban.Worker,
-    queue: :maintenance,
-    max_attempts: 3,
-    tags: ["maintenance", "global_mutes"],
-    unique: [
-      fields: [:worker, :queue, :args],
-      keys: [:mute_id],
-      states: :incomplete,
-      period: :infinity
-    ]
-
-  use RetroHexChat.Jobs.Retry,
+  use RetroHexChat.Jobs.MaintenanceWorker,
+    tags: ["global_mutes"],
+    unique_fields: [:worker, :queue, :args],
+    unique_keys: [:mute_id],
+    period: :infinity,
     timeout: :timer.seconds(30),
-    cap_seconds: 15 * 60,
     step_seconds: 30
 
   alias RetroHexChat.Admin.GlobalMutes

@@ -14,17 +14,8 @@ defmodule RetroHexChat.Jobs.OpenLobbyExpiryWorker do
   left alone.
   """
 
-  use Oban.Worker,
-    queue: :maintenance,
-    max_attempts: 3,
-    tags: ["maintenance", "open_lobby"],
-    unique: [
-      fields: [:worker, :queue],
-      states: :incomplete,
-      period: 60
-    ]
-
-  use RetroHexChat.Jobs.Retry,
+  use RetroHexChat.Jobs.MaintenanceWorker,
+    tags: ["open_lobby"],
     timeout: :timer.minutes(2),
     cap_seconds: 5 * 60,
     step_seconds: 30

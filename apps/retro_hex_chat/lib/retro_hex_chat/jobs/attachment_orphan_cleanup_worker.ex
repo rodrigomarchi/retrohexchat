@@ -3,20 +3,9 @@ defmodule RetroHexChat.Jobs.AttachmentOrphanCleanupWorker do
   Cleans reserved/uploaded attachment objects that never became chat attachments.
   """
 
-  use Oban.Worker,
-    queue: :maintenance,
-    max_attempts: 3,
-    tags: ["maintenance", "attachments"],
-    unique: [
-      fields: [:worker, :queue],
-      states: :incomplete,
-      period: 60
-    ]
-
-  use RetroHexChat.Jobs.Retry,
-    timeout: :timer.minutes(2),
-    cap_seconds: 15 * 60,
-    step_seconds: 60
+  use RetroHexChat.Jobs.MaintenanceWorker,
+    tags: ["attachments"],
+    timeout: :timer.minutes(2)
 
   alias RetroHexChat.Chat.Attachments
   alias RetroHexChat.Jobs.ResultMetadata

@@ -11,20 +11,9 @@ defmodule RetroHexChat.Jobs.ScrapedPagePruneWorker do
   would throw away the `etag` that makes that free and force a full download.
   """
 
-  use Oban.Worker,
-    queue: :maintenance,
-    max_attempts: 3,
-    tags: ["maintenance", "scraper"],
-    unique: [
-      fields: [:worker, :queue],
-      states: :incomplete,
-      period: 60
-    ]
-
-  use RetroHexChat.Jobs.Retry,
-    timeout: :timer.minutes(3),
-    cap_seconds: 15 * 60,
-    step_seconds: 60
+  use RetroHexChat.Jobs.MaintenanceWorker,
+    tags: ["scraper"],
+    timeout: :timer.minutes(3)
 
   alias RetroHexChat.Jobs.WorkerArgs
   alias RetroHexChat.Observability
