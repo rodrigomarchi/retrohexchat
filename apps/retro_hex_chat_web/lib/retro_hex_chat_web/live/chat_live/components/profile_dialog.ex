@@ -14,20 +14,9 @@ defmodule RetroHexChatWeb.ChatLive.Components.ProfileDialog do
 
   import RetroHexChatWeb.Components.UI.ProfileDialog
 
-  use RetroHexChatWeb.ChatLive.Components.DialogIsland, id: "profile-dialog"
-
-  @impl true
-  @spec mount(Phoenix.LiveView.Socket.t()) :: {:ok, Phoenix.LiveView.Socket.t()}
-  def mount(socket) do
-    {:ok,
-     assign(socket,
-       id: @id,
-       nickname: "",
-       bio_draft: "",
-       bio_warning: nil,
-       nick_error: nil
-     )}
-  end
+  use RetroHexChatWeb.ChatLive.Components.DialogIsland,
+    id: "profile-dialog",
+    initial: %{nickname: "", bio_draft: "", bio_warning: nil, nick_error: nil}
 
   @impl true
   @spec update(map(), Phoenix.LiveView.Socket.t()) :: {:ok, Phoenix.LiveView.Socket.t()}

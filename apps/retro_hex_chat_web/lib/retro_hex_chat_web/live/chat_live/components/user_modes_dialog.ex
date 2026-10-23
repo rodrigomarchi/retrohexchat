@@ -10,13 +10,9 @@ defmodule RetroHexChatWeb.ChatLive.Components.UserModesDialog do
 
   import RetroHexChatWeb.Components.UI.UserModesDialog
 
-  use RetroHexChatWeb.ChatLive.Components.DialogIsland, id: "user-modes-dialog"
-
-  @impl true
-  @spec mount(Phoenix.LiveView.Socket.t()) :: {:ok, Phoenix.LiveView.Socket.t()}
-  def mount(socket) do
-    {:ok, assign(socket, id: @id, wallops_enabled: false)}
-  end
+  use RetroHexChatWeb.ChatLive.Components.DialogIsland,
+    id: "user-modes-dialog",
+    initial: %{wallops_enabled: false}
 
   @impl true
   @spec update(map(), Phoenix.LiveView.Socket.t()) :: {:ok, Phoenix.LiveView.Socket.t()}

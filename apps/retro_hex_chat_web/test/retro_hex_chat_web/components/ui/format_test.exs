@@ -54,4 +54,16 @@ defmodule RetroHexChatWeb.Components.UI.FormatTest do
       assert Format.clock_ms(-1) == "—"
     end
   end
+
+  describe "technical/2" do
+    test "shows a protocol value as it is and a missing one as none" do
+      assert Format.technical("ice_failed", "None") == "ice_failed"
+      assert Format.technical(:network_change, "None") == "network_change"
+      assert Format.technical(42, "None") == "42"
+
+      for missing <- [nil, "", 1.5, %{}] do
+        assert Format.technical(missing, "None") == "None"
+      end
+    end
+  end
 end

@@ -15,15 +15,9 @@ defmodule RetroHexChatWeb.ChatLive.Components.MuteDurationDialog do
 
   import RetroHexChatWeb.Components.UI.MuteDurationDialog
 
-  use RetroHexChatWeb.ChatLive.Components.DialogIsland, id: "mute-duration-dialog"
-
-  @impl true
-  @spec mount(Phoenix.LiveView.Socket.t()) :: {:ok, Phoenix.LiveView.Socket.t()}
-  def mount(socket) do
-    # `id` is constant for this singleton dialog; assign it here so action-only
-    # `send_update`s (which match the first update clause) never drop it.
-    {:ok, assign(socket, id: @id, show: false, target_nick: nil)}
-  end
+  use RetroHexChatWeb.ChatLive.Components.DialogIsland,
+    id: "mute-duration-dialog",
+    initial: %{show: false, target_nick: nil}
 
   @impl true
   @spec update(map(), Phoenix.LiveView.Socket.t()) :: {:ok, Phoenix.LiveView.Socket.t()}

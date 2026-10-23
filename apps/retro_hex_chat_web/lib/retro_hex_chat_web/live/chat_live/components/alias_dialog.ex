@@ -24,23 +24,17 @@ defmodule RetroHexChatWeb.ChatLive.Components.AliasDialog do
   alias RetroHexChat.Chat.AliasList
   alias RetroHexChatWeb.ChatLive.Components.DialogIsland
 
-  use RetroHexChatWeb.ChatLive.Components.DialogIsland, id: "alias-dialog"
-
-  @impl true
-  @spec mount(Phoenix.LiveView.Socket.t()) :: {:ok, Phoenix.LiveView.Socket.t()}
-  def mount(socket) do
-    {:ok,
-     assign(socket,
-       id: @id,
-       aliases: nil,
-       selected: nil,
-       editing: false,
-       draft_name: "",
-       draft_expansion: "",
-       warning: nil,
-       error: nil
-     )}
-  end
+  use RetroHexChatWeb.ChatLive.Components.DialogIsland,
+    id: "alias-dialog",
+    initial: %{
+      aliases: nil,
+      selected: nil,
+      editing: false,
+      draft_name: "",
+      draft_expansion: "",
+      warning: nil,
+      error: nil
+    }
 
   @impl true
   @spec update(map(), Phoenix.LiveView.Socket.t()) :: {:ok, Phoenix.LiveView.Socket.t()}

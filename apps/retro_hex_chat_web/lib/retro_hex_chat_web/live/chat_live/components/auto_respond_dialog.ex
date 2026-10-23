@@ -23,24 +23,19 @@ defmodule RetroHexChatWeb.ChatLive.Components.AutoRespondDialog do
   alias RetroHexChat.Chat.AutoRespondRules
   alias RetroHexChatWeb.ChatLive.Components.DialogIsland
 
-  use RetroHexChatWeb.ChatLive.Components.DialogIsland, id: "autorespond-dialog"
   @default_trigger "on_join"
 
-  @impl true
-  @spec mount(Phoenix.LiveView.Socket.t()) :: {:ok, Phoenix.LiveView.Socket.t()}
-  def mount(socket) do
-    {:ok,
-     assign(socket,
-       id: @id,
-       rules: nil,
-       selected: nil,
-       editing: false,
-       draft_trigger: @default_trigger,
-       draft_channel: "",
-       draft_command: "",
-       error: nil
-     )}
-  end
+  use RetroHexChatWeb.ChatLive.Components.DialogIsland,
+    id: "autorespond-dialog",
+    initial: %{
+      rules: nil,
+      selected: nil,
+      editing: false,
+      draft_trigger: @default_trigger,
+      draft_channel: "",
+      draft_command: "",
+      error: nil
+    }
 
   @impl true
   @spec update(map(), Phoenix.LiveView.Socket.t()) :: {:ok, Phoenix.LiveView.Socket.t()}

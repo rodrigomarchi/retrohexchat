@@ -23,20 +23,14 @@ defmodule RetroHexChatWeb.ChatLive.Components.SoundSettingsDialog do
 
   alias RetroHexChat.Chat.SoundSettings
 
-  use RetroHexChatWeb.ChatLive.Components.DialogIsland, id: "sound-settings-dialog"
-
-  @impl true
-  @spec mount(Phoenix.LiveView.Socket.t()) :: {:ok, Phoenix.LiveView.Socket.t()}
-  def mount(socket) do
-    {:ok,
-     assign(socket,
-       id: @id,
-       draft: nil,
-       notify_permission: "unknown",
-       push_available: false,
-       push_subscribed: false
-     )}
-  end
+  use RetroHexChatWeb.ChatLive.Components.DialogIsland,
+    id: "sound-settings-dialog",
+    initial: %{
+      draft: nil,
+      notify_permission: "unknown",
+      push_available: false,
+      push_subscribed: false
+    }
 
   @impl true
   @spec update(map(), Phoenix.LiveView.Socket.t()) :: {:ok, Phoenix.LiveView.Socket.t()}

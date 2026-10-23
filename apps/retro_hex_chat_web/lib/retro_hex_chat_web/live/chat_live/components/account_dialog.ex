@@ -16,27 +16,21 @@ defmodule RetroHexChatWeb.ChatLive.Components.AccountDialog do
 
   import RetroHexChatWeb.Components.UI.AccountDialog
 
-  use RetroHexChatWeb.ChatLive.Components.DialogIsland, id: "account-dialog"
-
-  @impl true
-  @spec mount(Phoenix.LiveView.Socket.t()) :: {:ok, Phoenix.LiveView.Socket.t()}
-  def mount(socket) do
-    {:ok,
-     assign(socket,
-       id: @id,
-       # passthrough context (session-derived)
-       nickname: "",
-       account_state: :guest,
-       registered: false,
-       identified: false,
-       # owned UI state
-       auth_valid: false,
-       auth_password: "",
-       auth_confirm: "",
-       error: nil,
-       ghost_error: nil
-     )}
-  end
+  use RetroHexChatWeb.ChatLive.Components.DialogIsland,
+    id: "account-dialog",
+    initial: %{
+      # passthrough context (session-derived)
+      nickname: "",
+      account_state: :guest,
+      registered: false,
+      identified: false,
+      # owned UI state
+      auth_valid: false,
+      auth_password: "",
+      auth_confirm: "",
+      error: nil,
+      ghost_error: nil
+    }
 
   @impl true
   @spec update(map(), Phoenix.LiveView.Socket.t()) :: {:ok, Phoenix.LiveView.Socket.t()}

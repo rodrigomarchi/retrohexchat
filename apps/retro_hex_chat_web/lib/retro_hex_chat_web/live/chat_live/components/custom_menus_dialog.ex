@@ -22,23 +22,17 @@ defmodule RetroHexChatWeb.ChatLive.Components.CustomMenusDialog do
   alias RetroHexChat.Chat.CustomMenus
   alias RetroHexChatWeb.ChatLive.Components.DialogIsland
 
-  use RetroHexChatWeb.ChatLive.Components.DialogIsland, id: "custom-menus-dialog"
-
-  @impl true
-  @spec mount(Phoenix.LiveView.Socket.t()) :: {:ok, Phoenix.LiveView.Socket.t()}
-  def mount(socket) do
-    {:ok,
-     assign(socket,
-       id: @id,
-       custom_menus: nil,
-       tab: :nicklist,
-       selected: nil,
-       editing: false,
-       draft_label: "",
-       draft_command: "",
-       error: nil
-     )}
-  end
+  use RetroHexChatWeb.ChatLive.Components.DialogIsland,
+    id: "custom-menus-dialog",
+    initial: %{
+      custom_menus: nil,
+      tab: :nicklist,
+      selected: nil,
+      editing: false,
+      draft_label: "",
+      draft_command: "",
+      error: nil
+    }
 
   @impl true
   @spec update(map(), Phoenix.LiveView.Socket.t()) :: {:ok, Phoenix.LiveView.Socket.t()}

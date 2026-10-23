@@ -21,19 +21,9 @@ defmodule RetroHexChatWeb.ChatLive.Components.UserLookupDialog do
   # Must differ from the desktop window's DOM id ("user-lookup") — a
   # LiveComponent whose logical id collides with another element's DOM id
   # breaks component patching (updates land in the virtual tree, never the DOM).
-  use RetroHexChatWeb.ChatLive.Components.DialogIsland, id: "user-lookup-dialog"
-
-  @impl true
-  @spec mount(Phoenix.LiveView.Socket.t()) :: {:ok, Phoenix.LiveView.Socket.t()}
-  def mount(socket) do
-    {:ok,
-     assign(socket,
-       id: @id,
-       result: nil,
-       nick: "",
-       error: nil
-     )}
-  end
+  use RetroHexChatWeb.ChatLive.Components.DialogIsland,
+    id: "user-lookup-dialog",
+    initial: %{result: nil, nick: "", error: nil}
 
   @impl true
   @spec update(map(), Phoenix.LiveView.Socket.t()) :: {:ok, Phoenix.LiveView.Socket.t()}

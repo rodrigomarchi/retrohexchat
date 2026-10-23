@@ -589,10 +589,7 @@ defmodule RetroHexChatWeb.Components.UI.GroupCall.StatsPanel do
 
   defp recovery_field(_call, _key), do: nil
 
-  defp technical_label(value) when is_binary(value) and value != "", do: value
-  defp technical_label(value) when is_atom(value) and not is_nil(value), do: Atom.to_string(value)
-  defp technical_label(value) when is_integer(value), do: Integer.to_string(value)
-  defp technical_label(_value), do: dgettext("group_call", "None")
+  defp technical_label(value), do: Format.technical(value, dgettext("group_call", "None"))
 
   defp participant_count(_call, %{summary: %{participant_count: count}}) when count > 0,
     do: count

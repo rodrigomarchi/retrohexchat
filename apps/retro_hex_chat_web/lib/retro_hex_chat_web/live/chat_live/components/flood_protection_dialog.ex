@@ -14,13 +14,9 @@ defmodule RetroHexChatWeb.ChatLive.Components.FloodProtectionDialog do
 
   import RetroHexChatWeb.Components.UI.FloodProtectionDialog
 
-  use RetroHexChatWeb.ChatLive.Components.DialogIsland, id: "flood-protection-dialog"
-
-  @impl true
-  @spec mount(Phoenix.LiveView.Socket.t()) :: {:ok, Phoenix.LiveView.Socket.t()}
-  def mount(socket) do
-    {:ok, assign(socket, id: @id, settings: %{})}
-  end
+  use RetroHexChatWeb.ChatLive.Components.DialogIsland,
+    id: "flood-protection-dialog",
+    initial: %{settings: %{}}
 
   @impl true
   @spec update(map(), Phoenix.LiveView.Socket.t()) :: {:ok, Phoenix.LiveView.Socket.t()}

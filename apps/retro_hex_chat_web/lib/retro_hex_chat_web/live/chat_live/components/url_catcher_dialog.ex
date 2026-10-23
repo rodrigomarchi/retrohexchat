@@ -16,24 +16,18 @@ defmodule RetroHexChatWeb.ChatLive.Components.UrlCatcherDialog do
   alias RetroHexChat.Chat.CapturedURL
   alias RetroHexChatWeb.ChatLive.Helpers.NickFlags
 
-  use RetroHexChatWeb.ChatLive.Components.DialogIsland, id: "url-catcher-dialog"
-
-  @impl true
-  @spec mount(Phoenix.LiveView.Socket.t()) :: {:ok, Phoenix.LiveView.Socket.t()}
-  def mount(socket) do
-    {:ok,
-     assign(socket,
-       id: @id,
-       entries: [],
-       timezone: nil,
-       filter_channel: nil,
-       search_query: "",
-       sort_column: :timestamp,
-       sort_direction: :desc,
-       poster_locales: %{},
-       poster_locales_cache: nil
-     )}
-  end
+  use RetroHexChatWeb.ChatLive.Components.DialogIsland,
+    id: "url-catcher-dialog",
+    initial: %{
+      entries: [],
+      timezone: nil,
+      filter_channel: nil,
+      search_query: "",
+      sort_column: :timestamp,
+      sort_direction: :desc,
+      poster_locales: %{},
+      poster_locales_cache: nil
+    }
 
   @impl true
   @spec update(map(), Phoenix.LiveView.Socket.t()) :: {:ok, Phoenix.LiveView.Socket.t()}

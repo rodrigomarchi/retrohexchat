@@ -29,6 +29,7 @@ defmodule RetroHexChatWeb.Components.UI.Lobby.LobbyNetworkPanel do
   import RetroHexChatWeb.Components.UI.Tabs
   import RetroHexChatWeb.Components.UI.P2PConnectionDiagram
 
+  alias RetroHexChatWeb.Components.UI.Format
   alias RetroHexChatWeb.Icons
 
   attr :stats, :map, required: true
@@ -718,10 +719,7 @@ defmodule RetroHexChatWeb.Components.UI.Lobby.LobbyNetworkPanel do
 
   defp p2p_signaling_label(_stats), do: dgettext("p2p", "Not started")
 
-  defp technical_label(value) when is_binary(value) and value != "", do: value
-  defp technical_label(value) when is_atom(value) and not is_nil(value), do: Atom.to_string(value)
-  defp technical_label(value) when is_integer(value), do: Integer.to_string(value)
-  defp technical_label(_value), do: dgettext("p2p", "None")
+  defp technical_label(value), do: Format.technical(value, dgettext("p2p", "None"))
 
   defp p2p_audio_summary(audio) do
     dgettext("p2p", "%{state} / %{down} down / %{up} up",

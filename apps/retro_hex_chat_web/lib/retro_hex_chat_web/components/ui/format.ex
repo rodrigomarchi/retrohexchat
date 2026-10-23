@@ -116,6 +116,16 @@ defmodule RetroHexChatWeb.Components.UI.Format do
   def percent(_value), do: "—"
 
   @doc """
+  A protocol value — a reason, a trigger, an id — shown as it is, with `none`
+  in place of a missing one.
+  """
+  @spec technical(term(), String.t()) :: String.t()
+  def technical(value, _none) when is_binary(value) and value != "", do: value
+  def technical(value, _none) when is_atom(value) and not is_nil(value), do: Atom.to_string(value)
+  def technical(value, _none) when is_integer(value), do: Integer.to_string(value)
+  def technical(_value, none), do: none
+
+  @doc """
   Formats a table cell according to the format its column declares.
 
   The column knows what its figures mean; the cell is just an integer. Routing

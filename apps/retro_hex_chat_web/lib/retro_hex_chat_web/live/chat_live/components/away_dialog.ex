@@ -12,13 +12,9 @@ defmodule RetroHexChatWeb.ChatLive.Components.AwayDialog do
 
   import RetroHexChatWeb.Components.UI.AwayDialog
 
-  use RetroHexChatWeb.ChatLive.Components.DialogIsland, id: "away-dialog"
-
-  @impl true
-  @spec mount(Phoenix.LiveView.Socket.t()) :: {:ok, Phoenix.LiveView.Socket.t()}
-  def mount(socket) do
-    {:ok, assign(socket, id: @id, nickname: "", away: false, away_message: "")}
-  end
+  use RetroHexChatWeb.ChatLive.Components.DialogIsland,
+    id: "away-dialog",
+    initial: %{nickname: "", away: false, away_message: ""}
 
   @impl true
   @spec update(map(), Phoenix.LiveView.Socket.t()) :: {:ok, Phoenix.LiveView.Socket.t()}

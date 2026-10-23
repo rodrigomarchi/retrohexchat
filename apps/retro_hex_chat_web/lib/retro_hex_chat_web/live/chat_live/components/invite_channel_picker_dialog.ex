@@ -20,21 +20,9 @@ defmodule RetroHexChatWeb.ChatLive.Components.InviteChannelPickerDialog do
 
   import RetroHexChatWeb.Components.UI.InviteChannelPickerDialog
 
-  use RetroHexChatWeb.ChatLive.Components.DialogIsland, id: "invite-channel-picker-dialog"
-
-  @impl true
-  @spec mount(Phoenix.LiveView.Socket.t()) :: {:ok, Phoenix.LiveView.Socket.t()}
-  def mount(socket) do
-    {:ok,
-     assign(socket,
-       id: @id,
-       visible: false,
-       channels: [],
-       target_nick: nil,
-       selected_channel: nil,
-       error: nil
-     )}
-  end
+  use RetroHexChatWeb.ChatLive.Components.DialogIsland,
+    id: "invite-channel-picker-dialog",
+    initial: %{visible: false, channels: [], target_nick: nil, selected_channel: nil, error: nil}
 
   @impl true
   @spec update(map(), Phoenix.LiveView.Socket.t()) :: {:ok, Phoenix.LiveView.Socket.t()}

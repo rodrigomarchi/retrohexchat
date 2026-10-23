@@ -22,21 +22,9 @@ defmodule RetroHexChatWeb.ChatLive.Components.NickChangeDialog do
 
   import RetroHexChatWeb.Components.UI.NickChangeDialog
 
-  use RetroHexChatWeb.ChatLive.Components.DialogIsland, id: "nick-change-dialog"
-
-  @impl true
-  @spec mount(Phoenix.LiveView.Socket.t()) :: {:ok, Phoenix.LiveView.Socket.t()}
-  def mount(socket) do
-    {:ok,
-     assign(socket,
-       id: @id,
-       show: false,
-       target_nick: "",
-       registered: false,
-       password: "",
-       password_error: nil
-     )}
-  end
+  use RetroHexChatWeb.ChatLive.Components.DialogIsland,
+    id: "nick-change-dialog",
+    initial: %{show: false, target_nick: "", registered: false, password: "", password_error: nil}
 
   @impl true
   @spec update(map(), Phoenix.LiveView.Socket.t()) :: {:ok, Phoenix.LiveView.Socket.t()}

@@ -34,20 +34,15 @@ defmodule RetroHexChatWeb.ChatLive.Components.HighlightDialog do
   alias RetroHexChat.Chat.HighlightWords
   alias RetroHexChatWeb.ChatLive.Components.DialogIsland
 
-  use RetroHexChatWeb.ChatLive.Components.DialogIsland, id: "highlight-dialog"
-
-  @spec mount(Phoenix.LiveView.Socket.t()) :: {:ok, Phoenix.LiveView.Socket.t()}
-  def mount(socket) do
-    {:ok,
-     assign(socket,
-       id: @id,
-       highlight_selected: nil,
-       highlight_selected_color: nil,
-       show_highlight_add_dialog: false,
-       show_highlight_edit_dialog: false,
-       session: nil
-     )}
-  end
+  use RetroHexChatWeb.ChatLive.Components.DialogIsland,
+    id: "highlight-dialog",
+    initial: %{
+      highlight_selected: nil,
+      highlight_selected_color: nil,
+      show_highlight_add_dialog: false,
+      show_highlight_edit_dialog: false,
+      session: nil
+    }
 
   # passthrough context (session)
   @spec update(map(), Phoenix.LiveView.Socket.t()) :: {:ok, Phoenix.LiveView.Socket.t()}

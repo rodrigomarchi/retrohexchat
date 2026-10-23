@@ -17,20 +17,9 @@ defmodule RetroHexChatWeb.ChatLive.Components.ChannelListDialog do
 
   import RetroHexChatWeb.Components.UI.ChannelList
 
-  use RetroHexChatWeb.ChatLive.Components.DialogIsland, id: "channel-list-dialog"
-
-  @impl true
-  @spec mount(Phoenix.LiveView.Socket.t()) :: {:ok, Phoenix.LiveView.Socket.t()}
-  def mount(socket) do
-    {:ok,
-     assign(socket,
-       id: @id,
-       channels: [],
-       loading: false,
-       search: "",
-       category: nil
-     )}
-  end
+  use RetroHexChatWeb.ChatLive.Components.DialogIsland,
+    id: "channel-list-dialog",
+    initial: %{channels: [], loading: false, search: "", category: nil}
 
   @impl true
   @spec update(map(), Phoenix.LiveView.Socket.t()) :: {:ok, Phoenix.LiveView.Socket.t()}

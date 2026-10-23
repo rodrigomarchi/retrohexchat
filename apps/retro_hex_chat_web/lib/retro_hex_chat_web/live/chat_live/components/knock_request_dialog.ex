@@ -18,13 +18,9 @@ defmodule RetroHexChatWeb.ChatLive.Components.KnockRequestDialog do
 
   import RetroHexChatWeb.Components.UI.KnockRequestDialog
 
-  use RetroHexChatWeb.ChatLive.Components.DialogIsland, id: "knock-request-dialog"
-
-  @impl true
-  @spec mount(Phoenix.LiveView.Socket.t()) :: {:ok, Phoenix.LiveView.Socket.t()}
-  def mount(socket) do
-    {:ok, assign(socket, id: @id, visible: false, channel: nil, message: "", error: nil)}
-  end
+  use RetroHexChatWeb.ChatLive.Components.DialogIsland,
+    id: "knock-request-dialog",
+    initial: %{visible: false, channel: nil, message: "", error: nil}
 
   @impl true
   @spec update(map(), Phoenix.LiveView.Socket.t()) :: {:ok, Phoenix.LiveView.Socket.t()}

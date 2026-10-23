@@ -15,13 +15,9 @@ defmodule RetroHexChatWeb.ChatLive.Components.PasteConfirmDialog do
 
   import RetroHexChatWeb.Components.UI.PasteConfirmDialog
 
-  use RetroHexChatWeb.ChatLive.Components.DialogIsland, id: "paste-confirm-dialog"
-
-  @impl true
-  @spec mount(Phoenix.LiveView.Socket.t()) :: {:ok, Phoenix.LiveView.Socket.t()}
-  def mount(socket) do
-    {:ok, assign(socket, id: @id, lines: nil, flood_warning: false, send_disabled: false)}
-  end
+  use RetroHexChatWeb.ChatLive.Components.DialogIsland,
+    id: "paste-confirm-dialog",
+    initial: %{lines: nil, flood_warning: false, send_disabled: false}
 
   @impl true
   @spec update(map(), Phoenix.LiveView.Socket.t()) :: {:ok, Phoenix.LiveView.Socket.t()}
