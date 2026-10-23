@@ -1,3 +1,4 @@
+import { cssEscape } from "../ui/dom.js";
 /**
  * Pure logic for message interactions (reply, edit, delete).
  * Constitution IV: hook = wiring, lib = logic.
@@ -38,10 +39,6 @@ export function shouldTriggerEditMode(inputValue) {
   return inputValue === "";
 }
 
-function escapeAttr(value) {
-  return String(value).replace(/\\/g, "\\\\").replace(/"/g, '\\"');
-}
-
 /**
  * Find a message element by the ids used across chat message renderers.
  * @param {number|string} messageId
@@ -59,9 +56,9 @@ export function findMessageElement(messageId) {
     document.getElementById(id) ||
     document.getElementById(`msg-${id}`) ||
     document.getElementById(streamId) ||
-    document.querySelector(`[data-real-id="${escapeAttr(id)}"]`) ||
-    document.querySelector(`[data-message-id="${escapeAttr(streamId)}"]`) ||
-    document.querySelector(`[data-message-id="${escapeAttr(id)}"]`)
+    document.querySelector(`[data-real-id="${cssEscape(id)}"]`) ||
+    document.querySelector(`[data-message-id="${cssEscape(streamId)}"]`) ||
+    document.querySelector(`[data-message-id="${cssEscape(id)}"]`)
   );
 }
 

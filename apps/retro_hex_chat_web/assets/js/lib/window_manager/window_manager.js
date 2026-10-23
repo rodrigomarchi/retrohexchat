@@ -71,6 +71,8 @@
  * it client-side pushes `"window_closed"`, so the host can mount/unmount its
  * island. Hosts with managed windows must handle both events.
  */
+import { cssEscape } from "../ui/dom.js";
+import { repositionWithinViewport } from "../ui/floating_box.js";
 import { handleCopySelectionClick, refreshCopySelectionItems } from "../ui/copy_selection";
 import { groupsToLayOut, lastOpenOfSlot, opensAtStart, planOpenGroup } from "./window_groups";
 
@@ -712,8 +714,13 @@ const WindowManagerCore = {
     if (kind === "window") this.syncWindowMenu(menu, id);
     menu.classList.remove("u-hidden");
     // Anchor at the cursor, opening upward — the taskbar sits at the bottom.
-    const x = clamp(e.clientX, 0, Math.max(0, window.innerWidth - menu.offsetWidth));
-    const y = Math.max(0, e.clientY - menu.offsetHeight);
+    const { x, y } = repositionWithinViewport(
+      e.clientX,
+      e.clientY - menu.offsetHeight,
+      menu.offsetWidth,
+      menu.offsetHeight,
+      0,
+    );
     menu.style.left = `${x}px`;
     menu.style.top = `${y}px`;
   },
@@ -1876,8 +1883,13 @@ const WindowManagerCore = {
     // The strip is an overflow scroller, so the panel is `fixed` and anchored
     // here: left-aligned with its trigger, opening upward off the taskbar.
     const rect = trigger.getBoundingClientRect();
-    const x = clamp(rect.left, 0, Math.max(0, window.innerWidth - panel.offsetWidth));
-    const y = Math.max(0, rect.top - panel.offsetHeight - 2);
+    const { x, y } = repositionWithinViewport(
+      rect.left,
+      rect.top - panel.offsetHeight - 2,
+      panel.offsetWidth,
+      panel.offsetHeight,
+      0,
+    );
     panel.style.left = `${x}px`;
     panel.style.top = `${y}px`;
   },
@@ -2106,11 +2118,6 @@ function fitToWorkspace(preferred, available, ratio) {
 
 function clamp(value, min, max) {
   return Math.min(Math.max(value, min), max);
-}
-
-function cssEscape(value) {
-  if (window.CSS && typeof window.CSS.escape === "function") return window.CSS.escape(value);
-  return String(value).replace(/["\\]/g, "\\$&");
 }
 
 /**

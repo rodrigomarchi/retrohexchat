@@ -1,3 +1,4 @@
+import { repositionWithinViewport } from "../ui/floating_box.js";
 import { t, jt } from "../i18n.js";
 /**
  * Interactive chat element utilities.
@@ -98,39 +99,6 @@ export function isContextMenuOpen() {
 }
 
 /**
- * Reposition coordinates so that a box of the given size stays within the viewport.
- *
- * @param {number} x - Desired left position
- * @param {number} y - Desired top position
- * @param {number} width - Box width
- * @param {number} height - Box height
- * @param {number} [margin=4] - Minimum distance from viewport edges
- * @returns {{ x: number, y: number }}
- */
-export function repositionWithinViewport(x, y, width, height, margin = 4) {
-  const vw = window.innerWidth;
-  const vh = window.innerHeight;
-
-  let finalX = x;
-  let finalY = y;
-
-  if (finalX + width + margin > vw) {
-    finalX = vw - width - margin;
-  }
-  if (finalX < margin) {
-    finalX = margin;
-  }
-  if (finalY + height + margin > vh) {
-    finalY = vh - height - margin;
-  }
-  if (finalY < margin) {
-    finalY = margin;
-  }
-
-  return { x: finalX, y: finalY };
-}
-
-/**
  * Format a channel tooltip text string.
  *
  * @param {string} channel - Channel name (e.g., "#dev")
@@ -197,3 +165,5 @@ export function cancelNickHoverTimer() {
 export function getNickHoverTarget() {
   return nickHoverTarget;
 }
+
+export { repositionWithinViewport };

@@ -77,3 +77,18 @@ export function copyText(text, { fallback } = {}) {
     fallback();
   });
 }
+
+/**
+ * `value` escaped for a CSS selector, inside an attribute's quotes or as an
+ * identifier: `CSS.escape` where the browser has it, the quote and the
+ * backslash otherwise.
+ *
+ * @param {unknown} value
+ * @returns {string}
+ */
+export function cssEscape(value) {
+  if (typeof CSS !== "undefined" && typeof CSS.escape === "function") {
+    return CSS.escape(String(value));
+  }
+  return String(value).replace(/["\\]/g, "\\$&");
+}
