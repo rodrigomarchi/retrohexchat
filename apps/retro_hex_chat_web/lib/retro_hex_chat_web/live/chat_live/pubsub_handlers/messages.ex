@@ -604,7 +604,7 @@ defmodule RetroHexChatWeb.ChatLive.PubsubHandlers.Messages do
       "chat.channel" => Map.get(payload, :channel),
       "chat.message.id" => Map.get(payload, :id),
       conversation_type: "channel",
-      message_type: normalize_message_type(Map.get(payload, :type)),
+      message_type: Observability.message_type(Map.get(payload, :type)),
       message_size_bytes: payload_size(payload),
       active_context: Map.get(payload, :channel) == session.active_channel
     }
@@ -614,7 +614,7 @@ defmodule RetroHexChatWeb.ChatLive.PubsubHandlers.Messages do
     %{
       "chat.message.id" => Map.get(payload, :id),
       conversation_type: "private",
-      message_type: normalize_message_type(Map.get(payload, :type)),
+      message_type: Observability.message_type(Map.get(payload, :type)),
       message_size_bytes: payload_size(payload),
       active_context: socket.assigns.session.active_pm == Map.get(payload, :peer)
     }
@@ -622,8 +622,4 @@ defmodule RetroHexChatWeb.ChatLive.PubsubHandlers.Messages do
 
   defp payload_size(%{content: content}) when is_binary(content), do: byte_size(content)
   defp payload_size(_payload), do: 0
-
-  defp normalize_message_type(type) when is_atom(type), do: Atom.to_string(type)
-  defp normalize_message_type(type) when is_binary(type), do: type
-  defp normalize_message_type(_type), do: "unknown"
 end

@@ -150,18 +150,16 @@ defmodule RetroHexChat.Lobby.Queries do
 
   @spec active_session_exists?(integer(), integer()) :: boolean()
   def active_session_exists?(user_a_id, user_b_id) do
-    Session
-    |> where(
-      [s],
-      (s.creator_id == ^user_a_id and s.peer_id == ^user_b_id) or
-        (s.creator_id == ^user_b_id and s.peer_id == ^user_a_id)
-    )
-    |> where([s], s.status not in ^@terminal_statuses)
-    |> Repo.exists?()
+    user_a_id |> active_between(user_b_id) |> Repo.exists?()
   end
 
   @spec active_sessions_between(integer(), integer()) :: [Session.t()]
   def active_sessions_between(user_a_id, user_b_id) do
+    user_a_id |> active_between(user_b_id) |> Repo.all()
+  end
+
+  # Live sessions between two people, whichever of them created it.
+  defp active_between(user_a_id, user_b_id) do
     Session
     |> where(
       [s],
@@ -169,7 +167,6 @@ defmodule RetroHexChat.Lobby.Queries do
         (s.creator_id == ^user_b_id and s.peer_id == ^user_a_id)
     )
     |> where([s], s.status not in ^@terminal_statuses)
-    |> Repo.all()
   end
 
   @doc """

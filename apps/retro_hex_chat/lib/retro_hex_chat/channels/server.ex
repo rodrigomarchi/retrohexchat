@@ -1729,7 +1729,7 @@ defmodule RetroHexChat.Channels.Server do
     Map.merge(
       %{
         conversation_type: "channel",
-        message_type: normalize_message_type(type),
+        message_type: Observability.message_type(type),
         message_size_bytes: byte_size(content),
         content_format: SendOptions.content_format(opts),
         has_reply: Keyword.has_key?(opts, :reply_to_id)
@@ -1747,7 +1747,7 @@ defmodule RetroHexChat.Channels.Server do
        "chat.channel" => channel_name,
        "chat.message.id" => id,
        conversation_type: "channel",
-       message_type: normalize_message_type(type),
+       message_type: Observability.message_type(type),
        event: Map.get(message, :event, "new_message")
      }}
   end
@@ -1770,10 +1770,6 @@ defmodule RetroHexChat.Channels.Server do
   end
 
   defp normalize_send_type(type), do: type
-
-  defp normalize_message_type(type) when is_atom(type), do: Atom.to_string(type)
-  defp normalize_message_type(type) when is_binary(type), do: type
-  defp normalize_message_type(_type), do: "unknown"
 
   defp state_to_map(state) do
     %{

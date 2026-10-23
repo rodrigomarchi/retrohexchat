@@ -45,4 +45,45 @@ defmodule RetroHexChat.VirtualSpace.Map do
       {tile_x, tile_y}
     end
   end
+
+  # ── Decoding the authored JSON ──
+  #
+  # Every map is authored as JSON and decoded into the same shapes; these are
+  # the pieces whose shape does not depend on the map.
+
+  @doc "Where people appear: `%{x, y, dir}` per spawn point."
+  @spec decode_spawn([map()]) :: [map()]
+  def decode_spawn(points), do: Enum.map(points, &%{x: &1["x"], y: &1["y"], dir: &1["dir"]})
+
+  @doc "Blocked rectangles: `%{x, y, w, h, kind}`."
+  @spec decode_collision([map()]) :: [map()]
+  def decode_collision(rects),
+    do: Enum.map(rects, &%{x: &1["x"], y: &1["y"], w: &1["w"], h: &1["h"], kind: &1["kind"]})
+
+  @doc "Named areas: `%{id, kind, x, y, w, h}`."
+  @spec decode_zones([map()]) :: [map()]
+  def decode_zones(zones) do
+    Enum.map(
+      zones,
+      &%{id: &1["id"], kind: &1["kind"], x: &1["x"], y: &1["y"], w: &1["w"], h: &1["h"]}
+    )
+  end
+
+  @doc """
+  Things a participant can use (E). A `confirm` modal asks before acting, and
+  its `action` names what Yes does.
+  """
+  @spec decode_interactables([map()] | nil) :: [map()]
+  def decode_interactables(items) do
+    Enum.map(items || [], fn i ->
+      %{
+        id: i["id"],
+        kind: i["kind"],
+        x: i["x"],
+        y: i["y"],
+        title: i["title"],
+        modal: %{kind: i["modal"]["kind"], action: i["modal"]["action"]}
+      }
+    end)
+  end
 end

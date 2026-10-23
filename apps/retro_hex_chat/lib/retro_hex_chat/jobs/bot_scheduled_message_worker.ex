@@ -23,8 +23,6 @@ defmodule RetroHexChat.Jobs.BotScheduledMessageWorker do
     cap_seconds: 30 * 60,
     step_seconds: 60
 
-  import Ecto.Query
-
   alias RetroHexChat.Bots.Bot
   alias RetroHexChat.Bots.Capabilities.Scheduler
   alias RetroHexChat.Bots.Capabilities.Scheduler.Durable
@@ -32,7 +30,6 @@ defmodule RetroHexChat.Jobs.BotScheduledMessageWorker do
   alias RetroHexChat.Bots.Queries
   alias RetroHexChat.Bots.Server
   alias RetroHexChat.Observability
-  alias RetroHexChat.Repo
 
   require Logger
 
@@ -82,20 +79,13 @@ defmodule RetroHexChat.Jobs.BotScheduledMessageWorker do
   defp persist_fire(bot_id, schedule_id) do
     now = DateTime.utc_now()
 
-    case Repo.transaction(fn -> apply_under_lock(bot_id, schedule_id, now) end) do
-      {:ok, {:ok, fire}} -> {:ok, fire}
-      {:ok, {:cancel, reason}} -> {:cancel, reason}
-      {:ok, {:error, reason}} -> {:error, reason}
-      {:error, reason} -> {:error, reason}
-    end
+    Queries.transact_locked(bot_id, &apply_under_lock(&1, schedule_id, now))
   end
 
-  @spec apply_under_lock(integer(), String.t(), DateTime.t()) ::
+  @spec apply_under_lock(Bot.t(), String.t(), DateTime.t()) ::
           {:ok, map()} | {:cancel, String.t()} | {:error, term()}
-  defp apply_under_lock(bot_id, schedule_id, now) do
-    with %Bot{} = bot <- lock_bot(bot_id),
-         true <- bot.enabled,
-         {:ok, scheduler_config} <- enabled_scheduler_config(bot),
+  defp apply_under_lock(bot, schedule_id, now) do
+    with {:ok, scheduler_config} <- enabled_scheduler_config(bot),
          {:ok, schedule} <- find_schedule(scheduler_config, schedule_id),
          {:ok, channel} <- schedule_channel(schedule),
          {:ok, message} <- schedule_message(schedule) do
@@ -121,19 +111,9 @@ defmodule RetroHexChat.Jobs.BotScheduledMessageWorker do
           {:error, changeset}
       end
     else
-      nil -> {:cancel, "bot not found"}
-      false -> {:cancel, "bot disabled"}
       {:cancel, reason} -> {:cancel, reason}
       {:error, reason} -> {:error, reason}
     end
-  end
-
-  @spec lock_bot(integer()) :: Bot.t() | nil
-  defp lock_bot(bot_id) do
-    Bot
-    |> where([bot], bot.id == ^bot_id)
-    |> lock("FOR UPDATE")
-    |> Repo.one()
   end
 
   @spec enabled_scheduler_config(Bot.t()) :: {:ok, map()} | {:cancel, String.t()}

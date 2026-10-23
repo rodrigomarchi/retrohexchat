@@ -323,4 +323,10 @@ defmodule RetroHexChat.Observability do
   defp normalize_reason(_reason), do: "unknown"
 
   defp exception_type(%module{}), do: module |> Module.split() |> Enum.join(".")
+
+  @doc "A message type as a telemetry label: its name, or `\"unknown\"`."
+  @spec message_type(term()) :: String.t()
+  def message_type(type) when is_atom(type), do: Atom.to_string(type)
+  def message_type(type) when is_binary(type), do: type
+  def message_type(_type), do: "unknown"
 end

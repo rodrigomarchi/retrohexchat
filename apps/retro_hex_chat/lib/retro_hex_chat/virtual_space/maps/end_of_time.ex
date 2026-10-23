@@ -20,6 +20,8 @@ defmodule RetroHexChat.VirtualSpace.Maps.EndOfTime do
   slices the sheet at runtime.
   """
 
+  alias RetroHexChat.VirtualSpace.Map, as: SpaceMap
+
   @sheet "endoftime"
 
   @spec definition() :: map()
@@ -49,7 +51,7 @@ defmodule RetroHexChat.VirtualSpace.Maps.EndOfTime do
       ],
       tiles: tiles(data),
       ground: data["ground"],
-      spawn: Enum.map(data["spawn"], &%{x: &1["x"], y: &1["y"], dir: &1["dir"]}),
+      spawn: SpaceMap.decode_spawn(data["spawn"]),
       layers: %{floor: data["floor"], decor: decor(data), above: []},
       lights: lights(data),
       ambient: ambient(data),
@@ -66,34 +68,11 @@ defmodule RetroHexChat.VirtualSpace.Maps.EndOfTime do
             text: l["text"]
           }
         end),
-      collision:
-        Enum.map(
-          data["collision"],
-          &%{x: &1["x"], y: &1["y"], w: &1["w"], h: &1["h"], kind: &1["kind"]}
-        ),
-      zones:
-        Enum.map(
-          data["zones"],
-          &%{id: &1["id"], kind: &1["kind"], x: &1["x"], y: &1["y"], w: &1["w"], h: &1["h"]}
-        ),
-      interactables: interactables(data),
+      collision: SpaceMap.decode_collision(data["collision"]),
+      zones: SpaceMap.decode_zones(data["zones"]),
+      interactables: SpaceMap.decode_interactables(data["interactables"]),
       seats: []
     }
-  end
-
-  # Things a participant can use (E): the gate to the space's Construct. A
-  # `confirm` modal asks before acting, and its `action` names what Yes does.
-  defp interactables(data) do
-    Enum.map(data["interactables"] || [], fn i ->
-      %{
-        id: i["id"],
-        kind: i["kind"],
-        x: i["x"],
-        y: i["y"],
-        title: i["title"],
-        modal: %{kind: i["modal"]["kind"], action: i["modal"]["action"]}
-      }
-    end)
   end
 
   # Optional per-tile keys the client atlas understands: `flip_x` (mirror) and

@@ -552,7 +552,7 @@ defmodule RetroHexChat.Chat.Service do
     Map.merge(
       %{
         conversation_type: Atom.to_string(conversation_type),
-        message_type: normalize_message_type(type),
+        message_type: Observability.message_type(type),
         message_size_bytes: byte_size(content),
         content_format: SendOptions.content_format(opts),
         has_reply: Keyword.has_key?(opts, :reply_to_id),
@@ -567,14 +567,10 @@ defmodule RetroHexChat.Chat.Service do
       %{
         "chat.message.id" => message_id,
         conversation_type: Atom.to_string(conversation_type),
-        message_type: normalize_message_type(type),
+        message_type: Observability.message_type(type),
         event: event
       },
       extra
     )
   end
-
-  defp normalize_message_type(type) when is_atom(type), do: Atom.to_string(type)
-  defp normalize_message_type(type) when is_binary(type), do: type
-  defp normalize_message_type(_type), do: "unknown"
 end

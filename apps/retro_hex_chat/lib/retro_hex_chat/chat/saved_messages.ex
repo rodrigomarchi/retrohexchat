@@ -28,6 +28,7 @@ defmodule RetroHexChat.Chat.SavedMessages do
   use Gettext, backend: RetroHexChat.Gettext
 
   alias RetroHexChat.Chat.Message
+  alias RetroHexChat.Chat.MessageParent
   alias RetroHexChat.Chat.PrivateMessage
   alias RetroHexChat.Chat.Schemas.SavedMessage
   alias RetroHexChat.Page
@@ -40,7 +41,7 @@ defmodule RetroHexChat.Chat.SavedMessages do
   @default_limit 25
 
   @typedoc "Which of the two message tables a saved row hangs off."
-  @type kind :: :message | :private_message
+  @type kind :: MessageParent.kind()
 
   @typedoc "One row as the window reads it."
   @type entry :: %{
@@ -84,8 +85,8 @@ defmodule RetroHexChat.Chat.SavedMessages do
   @doc "Stops keeping it, and says nothing about one that was never kept."
   @spec unsave(String.t(), Message.t() | PrivateMessage.t()) :: :ok
   def unsave(owner_nickname, message) do
-    {kind, id} = parent(message)
-    field = parent_field(kind)
+    {kind, id} = MessageParent.of(message)
+    field = MessageParent.field(kind)
 
     SavedMessage
     |> where([s], s.owner_nickname == ^owner_nickname and field(s, ^field) == ^id)
@@ -191,7 +192,7 @@ defmodule RetroHexChat.Chat.SavedMessages do
   def saved_ids(_owner_nickname, _kind, []), do: MapSet.new()
 
   def saved_ids(owner_nickname, kind, ids) do
-    field = parent_field(kind)
+    field = MessageParent.field(kind)
 
     SavedMessage
     |> where([s], s.owner_nickname == ^owner_nickname and field(s, ^field) in ^ids)
@@ -226,13 +227,13 @@ defmodule RetroHexChat.Chat.SavedMessages do
   @spec insert(String.t(), Message.t() | PrivateMessage.t(), String.t() | nil) ::
           {:ok, SavedMessage.t()} | {:error, String.t()}
   defp insert(owner_nickname, message, note) do
-    {kind, id} = parent(message)
+    {kind, id} = MessageParent.of(message)
 
     with :ok <- check_alive(message),
          :ok <- check_room(owner_nickname) do
       %SavedMessage{}
       |> SavedMessage.changeset(%{
-        parent_field(kind) => id,
+        MessageParent.field(kind) => id,
         :owner_nickname => owner_nickname,
         :note => normalize_note(note)
       })
@@ -269,9 +270,9 @@ defmodule RetroHexChat.Chat.SavedMessages do
 
   @spec existing(String.t(), Message.t() | PrivateMessage.t()) :: SavedMessage.t() | nil
   defp existing(owner_nickname, message) do
-    {kind, id} = parent(message)
+    {kind, id} = MessageParent.of(message)
 
-    Repo.get_by(SavedMessage, [{parent_field(kind), id}, {:owner_nickname, owner_nickname}])
+    Repo.get_by(SavedMessage, [{MessageParent.field(kind), id}, {:owner_nickname, owner_nickname}])
   end
 
   # A deleted line keeps its row and loses its text. Both halves matter: the
@@ -297,12 +298,4 @@ defmodule RetroHexChat.Chat.SavedMessages do
       trimmed -> trimmed
     end
   end
-
-  @spec parent(Message.t() | PrivateMessage.t()) :: {kind(), integer()}
-  defp parent(%Message{id: id}), do: {:message, id}
-  defp parent(%PrivateMessage{id: id}), do: {:private_message, id}
-
-  @spec parent_field(kind()) :: atom()
-  defp parent_field(:message), do: :message_id
-  defp parent_field(:private_message), do: :private_message_id
 end

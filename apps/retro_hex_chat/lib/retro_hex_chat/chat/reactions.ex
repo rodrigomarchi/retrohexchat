@@ -25,6 +25,7 @@ defmodule RetroHexChat.Chat.Reactions do
 
   alias RetroHexChat.Chat.EmojiData
   alias RetroHexChat.Chat.Message
+  alias RetroHexChat.Chat.MessageParent
   alias RetroHexChat.Chat.PrivateMessage
   alias RetroHexChat.Chat.Schemas.MessageReaction
   alias RetroHexChat.Repo
@@ -45,7 +46,7 @@ defmodule RetroHexChat.Chat.Reactions do
         }
 
   @typedoc "Which of the two message tables a reaction hangs off."
-  @type kind :: :message | :private_message
+  @type kind :: MessageParent.kind()
 
   @doc "How many distinct emoji one message can carry."
   @spec max_distinct() :: pos_integer()
@@ -89,7 +90,7 @@ defmodule RetroHexChat.Chat.Reactions do
   @doc "Every emoji on one message, with who put it there."
   @spec summary_for(Message.t() | PrivateMessage.t()) :: summary()
   def summary_for(message) do
-    {kind, id} = parent(message)
+    {kind, id} = MessageParent.of(message)
 
     kind
     |> summary_for_many([id])
@@ -107,7 +108,7 @@ defmodule RetroHexChat.Chat.Reactions do
   def summary_for_many(_kind, []), do: %{}
 
   def summary_for_many(kind, ids) do
-    field = parent_field(kind)
+    field = MessageParent.field(kind)
 
     MessageReaction
     |> where([r], field(r, ^field) in ^ids)
@@ -153,8 +154,8 @@ defmodule RetroHexChat.Chat.Reactions do
   @spec existing(Message.t() | PrivateMessage.t(), String.t(), String.t()) ::
           MessageReaction.t() | nil
   defp existing(message, nickname, emoji) do
-    {kind, id} = parent(message)
-    field = parent_field(kind)
+    {kind, id} = MessageParent.of(message)
+    field = MessageParent.field(kind)
 
     MessageReaction
     |> where([r], field(r, ^field) == ^id and r.owner_nickname == ^nickname and r.emoji == ^emoji)
@@ -164,11 +165,11 @@ defmodule RetroHexChat.Chat.Reactions do
   @spec add(Message.t() | PrivateMessage.t(), String.t(), String.t()) ::
           {:ok, MessageReaction.t()} | {:error, Ecto.Changeset.t()}
   defp add(message, nickname, emoji) do
-    {kind, id} = parent(message)
+    {kind, id} = MessageParent.of(message)
 
     %MessageReaction{}
     |> MessageReaction.changeset(%{
-      parent_field(kind) => id,
+      MessageParent.field(kind) => id,
       :owner_nickname => nickname,
       :emoji => emoji
     })
@@ -201,12 +202,4 @@ defmodule RetroHexChat.Chat.Reactions do
       {emoji, %{count: length(actors), actors: actors, position: Map.fetch!(positions, emoji)}}
     end)
   end
-
-  @spec parent(Message.t() | PrivateMessage.t()) :: {kind(), integer()}
-  defp parent(%Message{id: id}), do: {:message, id}
-  defp parent(%PrivateMessage{id: id}), do: {:private_message, id}
-
-  @spec parent_field(kind()) :: atom()
-  defp parent_field(:message), do: :message_id
-  defp parent_field(:private_message), do: :private_message_id
 end

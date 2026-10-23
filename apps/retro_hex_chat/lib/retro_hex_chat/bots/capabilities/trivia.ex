@@ -341,19 +341,10 @@ defmodule RetroHexChat.Bots.Capabilities.Trivia do
   end
 
   defp format_scores(scores, q_num, total) do
-    ranked =
-      scores
-      |> Enum.sort_by(fn {_name, pts} -> pts end, :desc)
-      |> Enum.with_index(1)
-      |> Enum.map(fn {{name, pts}, rank} ->
-        dgettext("bots", "%{rank}. %{name}: %{points}pts", rank: rank, name: name, points: pts)
-      end)
-      |> Enum.join(", ")
-
     dgettext("bots", "Scores (Q%{number}/%{total}): %{ranked}",
       number: q_num,
       total: total,
-      ranked: ranked
+      ranked: ranked(scores)
     )
   end
 
@@ -363,16 +354,18 @@ defmodule RetroHexChat.Bots.Capabilities.Trivia do
   end
 
   defp format_final_scores(scores) do
-    ranked =
-      scores
-      |> Enum.sort_by(fn {_name, pts} -> pts end, :desc)
-      |> Enum.with_index(1)
-      |> Enum.map(fn {{name, pts}, rank} ->
-        dgettext("bots", "%{rank}. %{name}: %{points}pts", rank: rank, name: name, points: pts)
-      end)
-      |> Enum.join(", ")
+    dgettext("bots", "Final scores: %{ranked}", ranked: ranked(scores))
+  end
 
-    dgettext("bots", "Final scores: %{ranked}", ranked: ranked)
+  # "1. Ana: 3pts, 2. Bea: 1pts" — highest first.
+  @spec ranked(map()) :: String.t()
+  defp ranked(scores) do
+    scores
+    |> Enum.sort_by(fn {_name, pts} -> pts end, :desc)
+    |> Enum.with_index(1)
+    |> Enum.map_join(", ", fn {{name, pts}, rank} ->
+      dgettext("bots", "%{rank}. %{name}: %{points}pts", rank: rank, name: name, points: pts)
+    end)
   end
 
   @spec get_hint(map()) :: String.t() | nil

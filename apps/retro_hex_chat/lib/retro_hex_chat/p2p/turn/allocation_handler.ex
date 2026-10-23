@@ -242,19 +242,7 @@ defmodule RetroHexChat.P2P.Turn.AllocationHandler do
       end
     else
       {:error, reason} ->
-        {response, log_msg} =
-          Utils.build_error(reason, msg.transaction_id, msg.type.method, state.config)
-
-        log_turn_rejection(reason, log_msg)
-
-        :ok =
-          :socket.sendto(state.turn_socket, response, %{
-            family: :inet,
-            addr: c_ip,
-            port: c_port
-          })
-
-        {:ok, state}
+        reject(reason, msg, state)
     end
   end
 
@@ -281,19 +269,7 @@ defmodule RetroHexChat.P2P.Turn.AllocationHandler do
       {:ok, state}
     else
       {:error, reason} ->
-        {response, log_msg} =
-          Utils.build_error(reason, msg.transaction_id, msg.type.method, state.config)
-
-        log_turn_rejection(reason, log_msg)
-
-        :ok =
-          :socket.sendto(state.turn_socket, response, %{
-            family: :inet,
-            addr: c_ip,
-            port: c_port
-          })
-
-        {:ok, state}
+        reject(reason, msg, state)
     end
   end
 
@@ -350,24 +326,27 @@ defmodule RetroHexChat.P2P.Turn.AllocationHandler do
       {:ok, state}
     else
       {:error, reason} ->
-        {response, log_msg} =
-          Utils.build_error(reason, msg.transaction_id, msg.type.method, state.config)
-
-        log_turn_rejection(reason, log_msg)
-
-        :ok =
-          :socket.sendto(state.turn_socket, response, %{
-            family: :inet,
-            addr: c_ip,
-            port: c_port
-          })
-
-        {:ok, state}
+        reject(reason, msg, state)
     end
   end
 
   defp handle_message(_msg, state) do
     Logger.debug("Got unexpected TURN message")
+    {:ok, state}
+  end
+
+  # A request refused: the error response goes back to the client the
+  # allocation belongs to, and the allocation carries on unchanged.
+  defp reject(reason, msg, state) do
+    {c_ip, c_port, _, _, _} = state.five_tuple
+
+    {response, log_msg} =
+      Utils.build_error(reason, msg.transaction_id, msg.type.method, state.config)
+
+    log_turn_rejection(reason, log_msg)
+
+    :ok = :socket.sendto(state.turn_socket, response, %{family: :inet, addr: c_ip, port: c_port})
+
     {:ok, state}
   end
 

@@ -30,6 +30,7 @@ defmodule RetroHexChat.VirtualSpace.Maps.Construct do
   """
 
   alias RetroHexChat.Games.Catalog, as: Games
+  alias RetroHexChat.VirtualSpace.Map, as: SpaceMap
 
   @sheet "construct"
   @optional_tile_keys [:flip_x, :frames, :period_ms, :wpx, :hpx]
@@ -63,22 +64,14 @@ defmodule RetroHexChat.VirtualSpace.Maps.Construct do
       tilesets: tilesets(data),
       tiles: tiles(data["vocab"]),
       ground: data["ground"],
-      spawn: Enum.map(data["spawn"], &%{x: &1["x"], y: &1["y"], dir: &1["dir"]}),
+      spawn: SpaceMap.decode_spawn(data["spawn"]),
       layers: %{floor: data["floor"], decor: decor(data["decor"]), above: []},
       lights: Enum.map(data["lights"] || [], &light/1),
       ambient: nil,
       labels: [],
-      collision:
-        Enum.map(
-          data["collision"],
-          &%{x: &1["x"], y: &1["y"], w: &1["w"], h: &1["h"], kind: &1["kind"]}
-        ),
-      zones:
-        Enum.map(
-          data["zones"],
-          &%{id: &1["id"], kind: &1["kind"], x: &1["x"], y: &1["y"], w: &1["w"], h: &1["h"]}
-        ),
-      interactables: Enum.map(data["interactables"] || [], &interactable/1),
+      collision: SpaceMap.decode_collision(data["collision"]),
+      zones: SpaceMap.decode_zones(data["zones"]),
+      interactables: SpaceMap.decode_interactables(data["interactables"]),
       seats: [],
       fixed_items: Enum.map(data["fixed_items"] || [], &fixed_item/1),
       reserved: Enum.map(data["reserved"], fn [x, y] -> %{x: x, y: y} end),
@@ -166,17 +159,6 @@ defmodule RetroHexChat.VirtualSpace.Maps.Construct do
 
   defp label(%{} = l), do: %{w: l["w"], lift: l["lift"], color: l["color"], glow: l["glow"]}
   defp label(_none), do: nil
-
-  defp interactable(i) do
-    %{
-      id: i["id"],
-      kind: i["kind"],
-      x: i["x"],
-      y: i["y"],
-      title: i["title"],
-      modal: %{kind: i["modal"]["kind"], action: i["modal"]["action"]}
-    }
-  end
 
   defp fixed_item(i) do
     %{id: i["id"], kind: i["kind"], x: i["x"], y: i["y"], dir: i["dir"] || "down"}

@@ -286,29 +286,22 @@ defmodule RetroHexChat.Jobs.ObanHealth do
     config = safe_config(name)
     running? = oban_running?(name)
     config_summary = summarize_config(config, repo, name)
-    queue_stats = queue_stats(repo)
-    global_stats = global_stats(repo)
-    rss_rows = rss_rows(repo, now)
-    bot_schedule_rows = bot_schedule_rows(repo, now)
-    bot_event_log_rows = bot_event_log_rows(repo, now)
-    maintenance_rows = maintenance_rows(repo, now)
-    scraped_page_rows = scraped_page_rows(repo, now)
-    persistence_rows = persistence_rows(repo)
 
-    summary =
-      summary(%{
-        config: config_summary,
-        queue_stats: queue_stats,
-        global_stats: global_stats,
-        rss_rows: rss_rows,
-        bot_schedule_rows: bot_schedule_rows,
-        bot_event_log_rows: bot_event_log_rows,
-        maintenance_rows: maintenance_rows,
-        scraped_page_rows: scraped_page_rows,
-        persistence_rows: persistence_rows,
-        running?: running?,
-        now: now
-      })
+    inputs = %{
+      config: config_summary,
+      queue_stats: queue_stats(repo),
+      global_stats: global_stats(repo),
+      rss_rows: rss_rows(repo, now),
+      bot_schedule_rows: bot_schedule_rows(repo, now),
+      bot_event_log_rows: bot_event_log_rows(repo, now),
+      maintenance_rows: maintenance_rows(repo, now),
+      scraped_page_rows: scraped_page_rows(repo, now),
+      persistence_rows: persistence_rows(repo),
+      running?: running?,
+      now: now
+    }
+
+    summary = summary(inputs)
 
     {status, reasons} = health_status(summary, running?)
 
@@ -321,16 +314,16 @@ defmodule RetroHexChat.Jobs.ObanHealth do
       job_worker_filter: worker_filter,
       config: config_summary,
       summary: summary,
-      queue_table: queue_table(config_summary, queue_stats, now),
+      queue_table: queue_table(config_summary, inputs.queue_stats, now),
       jobs_table: jobs_table(repo, filter, limit, now, queue_filter, worker_filter),
-      rss_table: rss_table(rss_rows),
-      bot_schedule_table: bot_schedule_table(bot_schedule_rows),
-      bot_event_log_table: bot_event_log_table(bot_event_log_rows),
-      maintenance_table: maintenance_table(maintenance_rows),
-      scraped_page_table: scraped_page_table(scraped_page_rows),
+      rss_table: rss_table(inputs.rss_rows),
+      bot_schedule_table: bot_schedule_table(inputs.bot_schedule_rows),
+      bot_event_log_table: bot_event_log_table(inputs.bot_event_log_rows),
+      maintenance_table: maintenance_table(inputs.maintenance_rows),
+      scraped_page_table: scraped_page_table(inputs.scraped_page_rows),
       scraper_provenance_table: scraper_provenance_table(repo),
       scraper_failure_table: scraper_failure_table(repo),
-      persistence_table: persistence_table(persistence_rows)
+      persistence_table: persistence_table(inputs.persistence_rows)
     }
   end
 
@@ -386,46 +379,36 @@ defmodule RetroHexChat.Jobs.ObanHealth do
     )
   end
 
-  defp summary(%{
-         config: config,
-         queue_stats: queue_stats,
-         global_stats: global_stats,
-         rss_rows: rss_rows,
-         bot_schedule_rows: bot_schedule_rows,
-         bot_event_log_rows: bot_event_log_rows,
-         maintenance_rows: maintenance_rows,
-         scraped_page_rows: scraped_page_rows,
-         persistence_rows: persistence_rows,
-         running?: running?,
-         now: now
-       }) do
-    state_counts = state_counts(queue_stats)
-    scraped_page_summary = scraped_page_summary(scraped_page_rows)
-    persistence_summary = persistence_summary(persistence_rows)
-    bot_event_log_summary = bot_event_log_summary(bot_event_log_rows)
+  defp summary(inputs) do
+    state_counts = state_counts(inputs.queue_stats)
+    scraped_page_summary = scraped_page_summary(inputs.scraped_page_rows)
+    persistence_summary = persistence_summary(inputs.persistence_rows)
+    bot_event_log_summary = bot_event_log_summary(inputs.bot_event_log_rows)
 
     %{
-      running?: running?,
-      configured_queues: length(config.queues),
-      queue_concurrency: config.queues |> Enum.map(&(&1.limit || 0)) |> Enum.sum(),
-      total_jobs: Map.get(global_stats || %{}, :total_jobs, 0),
+      running?: inputs.running?,
+      configured_queues: length(inputs.config.queues),
+      queue_concurrency: inputs.config.queues |> Enum.map(&(&1.limit || 0)) |> Enum.sum(),
+      total_jobs: Map.get(inputs.global_stats || %{}, :total_jobs, 0),
       active_jobs: sum_states(state_counts, @active_states),
       executing_jobs: Map.get(state_counts, "executing", 0),
       retryable_jobs: Map.get(state_counts, "retryable", 0),
       discarded_jobs: Map.get(state_counts, "discarded", 0),
       cancelled_jobs: Map.get(state_counts, "cancelled", 0),
-      rss_feeds: length(rss_rows),
-      rss_missing_jobs: Enum.count(rss_rows, &(&1.status == "missing job")),
-      rss_feed_errors: Enum.count(rss_rows, &(&1.status == "feed error")),
-      bot_schedules: length(bot_schedule_rows),
-      bot_schedule_missing_jobs: Enum.count(bot_schedule_rows, &(&1.status == "missing job")),
-      bot_schedule_failures: Enum.count(bot_schedule_rows, &(&1.status == "failed job")),
+      rss_feeds: length(inputs.rss_rows),
+      rss_missing_jobs: Enum.count(inputs.rss_rows, &(&1.status == "missing job")),
+      rss_feed_errors: Enum.count(inputs.rss_rows, &(&1.status == "feed error")),
+      bot_schedules: length(inputs.bot_schedule_rows),
+      bot_schedule_missing_jobs:
+        Enum.count(inputs.bot_schedule_rows, &(&1.status == "missing job")),
+      bot_schedule_failures: Enum.count(inputs.bot_schedule_rows, &(&1.status == "failed job")),
       bot_event_log_jobs: bot_event_log_summary.total,
       bot_event_log_active: bot_event_log_summary.active,
       bot_event_log_failures: bot_event_log_summary.failures,
-      maintenance_sweeps: length(maintenance_rows),
-      maintenance_failures: Enum.count(maintenance_rows, &(&1.failure_jobs > 0)),
-      maintenance_pending_work: maintenance_rows |> Enum.map(& &1.pending_work) |> Enum.sum(),
+      maintenance_sweeps: length(inputs.maintenance_rows),
+      maintenance_failures: Enum.count(inputs.maintenance_rows, &(&1.failure_jobs > 0)),
+      maintenance_pending_work:
+        inputs.maintenance_rows |> Enum.map(& &1.pending_work) |> Enum.sum(),
       scraped_pages: scraped_page_summary.total,
       scraped_page_pending: scraped_page_summary.pending,
       scraped_page_retrying: scraped_page_summary.retrying,
@@ -436,10 +419,10 @@ defmodule RetroHexChat.Jobs.ObanHealth do
       persistence_pending: persistence_summary.pending,
       persistence_failed: persistence_summary.failed,
       persistence_payload_bytes: persistence_summary.payload_size_bytes,
-      max_available_lag_ms: max_age(queue_stats, "available", now),
-      max_executing_age_ms: max_age(queue_stats, "executing", now),
-      last_completed_at: Map.get(global_stats || %{}, :last_completed_at),
-      last_discarded_at: Map.get(global_stats || %{}, :last_discarded_at)
+      max_available_lag_ms: max_age(inputs.queue_stats, "available", inputs.now),
+      max_executing_age_ms: max_age(inputs.queue_stats, "executing", inputs.now),
+      last_completed_at: Map.get(inputs.global_stats || %{}, :last_completed_at),
+      last_discarded_at: Map.get(inputs.global_stats || %{}, :last_discarded_at)
     }
   end
 

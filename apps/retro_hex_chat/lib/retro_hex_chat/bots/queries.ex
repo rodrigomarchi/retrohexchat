@@ -102,6 +102,28 @@ defmodule RetroHexChat.Bots.Queries do
     Repo.preload(bot, [:channel_configs, :custom_commands])
   end
 
+  @doc """
+  Runs `fun` with the bot row locked (`FOR UPDATE`) inside one transaction,
+  so two jobs changing the same bot's capabilities cannot overwrite each
+  other. A missing or disabled bot cancels without calling `fun`; `fun`
+  returns `{:ok, value}`, `{:cancel, reason}` or `{:error, reason}`.
+  """
+  @spec transact_locked(integer(), (Bot.t() -> result)) :: result | {:error, term()}
+        when result: {:ok, term()} | {:cancel, String.t()} | {:error, term()}
+  def transact_locked(bot_id, fun) do
+    Repo.transaction(fn ->
+      case Bot |> where([bot], bot.id == ^bot_id) |> lock("FOR UPDATE") |> Repo.one() do
+        nil -> {:cancel, "bot not found"}
+        %Bot{enabled: false} -> {:cancel, "bot disabled"}
+        bot -> fun.(bot)
+      end
+    end)
+    |> case do
+      {:ok, result} -> result
+      {:error, reason} -> {:error, reason}
+    end
+  end
+
   @spec update_bot(Bot.t(), map()) :: {:ok, Bot.t()} | {:error, Ecto.Changeset.t()}
   def update_bot(%Bot{} = bot, attrs) do
     bot

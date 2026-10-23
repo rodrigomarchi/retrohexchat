@@ -76,20 +76,15 @@ defmodule RetroHexChat.VirtualSpace.CharacterRecipe do
          {:ok, {hair, hair_colour}} <- hair(h),
          {:ok, {hat, hat_primary, hat_secondary}} <- hat(w),
          {:ok, {face, face_colour}} <- face(f) do
-      recipe = %__MODULE__{
-        body: body,
-        skin: skin,
-        outfit: outfit,
-        primary: primary,
-        secondary: secondary,
-        hair: hair,
-        hair_colour: hair_colour,
-        hat: hat,
-        hat_primary: hat_primary,
-        hat_secondary: hat_secondary,
-        face: face,
-        face_colour: face_colour
-      }
+      recipe =
+        new(
+          body,
+          skin,
+          {outfit, primary, secondary},
+          {hair, hair_colour},
+          {hat, hat_primary, hat_secondary},
+          {face, face_colour}
+        )
 
       # One character, one spelling: "o-bas-3-0" for an outfit with no dye is
       # refused rather than kept as a second name for "o-bas-0-0".
@@ -229,20 +224,16 @@ defmodule RetroHexChat.VirtualSpace.CharacterRecipe do
     {face_colour, _state} =
       if face, do: index(Catalog.face_palette(face), state), else: {0, state}
 
-    Kernel.to_string(%__MODULE__{
-      body: body,
-      skin: skin,
-      outfit: outfit,
-      primary: primary,
-      secondary: secondary,
-      hair: hair,
-      hair_colour: hair_colour,
-      hat: hat,
-      hat_primary: hat_primary,
-      hat_secondary: hat_secondary,
-      face: face,
-      face_colour: face_colour
-    })
+    Kernel.to_string(
+      new(
+        body,
+        skin,
+        {outfit, primary, secondary},
+        {hair, hair_colour},
+        {hat, hat_primary, hat_secondary},
+        {face, face_colour}
+      )
+    )
   end
 
   @doc """
@@ -358,20 +349,14 @@ defmodule RetroHexChat.VirtualSpace.CharacterRecipe do
 
         {face, face_colour} = ok_or(face(f), {base.face, base.face_colour})
 
-        %__MODULE__{
-          body: body,
-          skin: skin,
-          outfit: outfit,
-          primary: primary,
-          secondary: secondary,
-          hair: hair,
-          hair_colour: hair_colour,
-          hat: hat,
-          hat_primary: hat_primary,
-          hat_secondary: hat_secondary,
-          face: face,
-          face_colour: face_colour
-        }
+        new(
+          body,
+          skin,
+          {outfit, primary, secondary},
+          {hair, hair_colour},
+          {hat, hat_primary, hat_secondary},
+          {face, face_colour}
+        )
 
       _ ->
         base
@@ -401,5 +386,33 @@ defmodule RetroHexChat.VirtualSpace.CharacterRecipe do
     alias RetroHexChat.VirtualSpace.CharacterRecipe
 
     def to_string(recipe), do: CharacterRecipe.to_string(recipe)
+  end
+
+  # Every way of arriving at a character — parsed, drawn at random, or a
+  # recipe mended against a fallback — ends in the same struct.
+  defp new(
+         body,
+         skin,
+         {outfit, primary, secondary},
+         {hair, hair_colour},
+         hat,
+         {face, face_colour}
+       ) do
+    {hat, hat_primary, hat_secondary} = hat
+
+    %__MODULE__{
+      body: body,
+      skin: skin,
+      outfit: outfit,
+      primary: primary,
+      secondary: secondary,
+      hair: hair,
+      hair_colour: hair_colour,
+      hat: hat,
+      hat_primary: hat_primary,
+      hat_secondary: hat_secondary,
+      face: face,
+      face_colour: face_colour
+    }
   end
 end
