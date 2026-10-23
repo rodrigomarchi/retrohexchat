@@ -1,23 +1,87 @@
 defmodule RetroHexChat.Commands.Handlers.Cs do
   @moduledoc "Handler for /cs (ChanServ commands)"
   use Gettext, backend: RetroHexChat.Gettext
-  @behaviour RetroHexChat.Commands.Handler
 
   import RetroHexChat.Commands.Handler.Guards, only: [require_channel: 1, require_operator: 3]
 
   alias RetroHexChat.Channels.Categories
   alias RetroHexChat.Channels.Server
   alias RetroHexChat.Chat.Archive
+  alias RetroHexChat.Commands.CommandSyntax.Parameter
   alias RetroHexChat.Commands.Handler
   alias RetroHexChat.Commands.Timestamp
   alias RetroHexChat.Locales
   alias RetroHexChat.Services.{ChanServ, Queries}
 
-  @access_levels ~w(sop aop vop)
+  use RetroHexChat.Commands.Handler,
+    name: "cs",
+    category: :advanced,
+    syntax: dgettext("commands", "/cs <subcommand> [args]"),
+    summary:
+      dgettext("commands", "Manage channel registration and access lists through ChanServ."),
+    description:
+      dgettext(
+        "commands",
+        "Manage channel registration and access lists through ChanServ.\nSubcommands: register, drop, info, archive on|off, language <code|none>, category <name|none>, sop/aop/vop add|del|list, help. Must be in a channel.\nAccess hierarchy: SOP (super-operator) > AOP (auto-operator) > VOP (auto-voice).\nRegister requires channel operator. Drop, archive, language and category require being the channel founder."
+      ),
+    examples: [
+      dgettext("commands", "/cs register"),
+      dgettext("commands", "/cs drop"),
+      dgettext("commands", "/cs info"),
+      dgettext("commands", "/cs archive on"),
+      dgettext("commands", "/cs language pt_BR"),
+      dgettext("commands", "/cs category news"),
+      dgettext("commands", "/cs sop add nick"),
+      dgettext("commands", "/cs aop del nick"),
+      dgettext("commands", "/cs vop list")
+    ],
+    parameters: [
+      %Parameter{
+        name: "subcommand",
+        required: true,
+        type: :text,
+        position: 0,
+        description:
+          dgettext(
+            "commands",
+            "Subcommand: register, drop, info, archive, language, category, sop, aop, vop"
+          )
+      },
+      %Parameter{
+        name: "args",
+        required: false,
+        type: :text,
+        position: 1,
+        description: dgettext("commands", "Subcommand arguments")
+      }
+    ],
+    subcommands: [
+      %{name: "register", description: dgettext("commands", "Register the current channel")},
+      %{name: "drop", description: dgettext("commands", "Drop channel registration")},
+      %{name: "info", description: dgettext("commands", "View channel registration info")},
+      %{
+        name: "archive",
+        description: dgettext("commands", "Publish the channel's public archive (on|off)")
+      },
+      %{
+        name: "language",
+        description: dgettext("commands", "Set the language the channel is spoken in (code|none)")
+      },
+      %{
+        name: "category",
+        description:
+          dgettext(
+            "commands",
+            "Set what the channel is about, such as news or games (name|none)"
+          )
+      },
+      %{name: "sop", description: dgettext("commands", "Manage super-operator access list")},
+      %{name: "aop", description: dgettext("commands", "Manage auto-operator access list")},
+      %{name: "vop", description: dgettext("commands", "Manage auto-voice access list")},
+      %{name: "help", description: dgettext("commands", "Show ChanServ help")}
+    ]
 
-  @impl true
-  @spec validate(String.t()) :: :ok | {:error, String.t()}
-  def validate(_), do: :ok
+  @access_levels ~w(sop aop vop)
 
   @impl true
   @spec execute([String.t()], Handler.context()) :: Handler.result()
@@ -122,36 +186,6 @@ defmodule RetroHexChat.Commands.Handlers.Cs do
 
   def execute([subcmd | _], _context) do
     {:error, "Unknown ChanServ command: #{subcmd}. Try /cs help"}
-  end
-
-  @impl true
-  @spec help() :: %{
-          name: String.t(),
-          syntax: String.t(),
-          description: String.t(),
-          examples: [String.t()]
-        }
-  def help do
-    %{
-      name: "cs",
-      syntax: dgettext("commands", "/cs <subcommand> [args]"),
-      description:
-        dgettext(
-          "commands",
-          "Manage channel registration and access lists through ChanServ.\nSubcommands: register, drop, info, archive on|off, language <code|none>, category <name|none>, sop/aop/vop add|del|list, help. Must be in a channel.\nAccess hierarchy: SOP (super-operator) > AOP (auto-operator) > VOP (auto-voice).\nRegister requires channel operator. Drop, archive, language and category require being the channel founder."
-        ),
-      examples: [
-        dgettext("commands", "/cs register"),
-        dgettext("commands", "/cs drop"),
-        dgettext("commands", "/cs info"),
-        dgettext("commands", "/cs archive on"),
-        dgettext("commands", "/cs language pt_BR"),
-        dgettext("commands", "/cs category news"),
-        dgettext("commands", "/cs sop add nick"),
-        dgettext("commands", "/cs aop del nick"),
-        dgettext("commands", "/cs vop list")
-      ]
-    }
   end
 
   # ── Private helpers ─────────────────────────────────────────
@@ -426,80 +460,5 @@ defmodule RetroHexChat.Commands.Handlers.Cs do
         added_by: entry.added_by
       )
     end)
-  end
-
-  @impl true
-  def category, do: :advanced
-
-  @impl true
-  @spec syntax_definition() :: RetroHexChat.Commands.CommandSyntax.t()
-  def syntax_definition do
-    alias RetroHexChat.Commands.CommandSyntax
-    alias RetroHexChat.Commands.CommandSyntax.Parameter
-
-    %CommandSyntax{
-      command: "cs",
-      syntax: dgettext("commands", "/cs <subcommand> [args]"),
-      description:
-        dgettext("commands", "Manage channel registration and access lists through ChanServ."),
-      category: :advanced,
-      parameters: [
-        %Parameter{
-          name: "subcommand",
-          required: true,
-          type: :text,
-          position: 0,
-          description:
-            dgettext(
-              "commands",
-              "Subcommand: register, drop, info, archive, language, category, sop, aop, vop"
-            )
-        },
-        %Parameter{
-          name: "args",
-          required: false,
-          type: :text,
-          position: 1,
-          description: dgettext("commands", "Subcommand arguments")
-        }
-      ],
-      examples: [
-        dgettext("commands", "/cs register"),
-        dgettext("commands", "/cs drop"),
-        dgettext("commands", "/cs info"),
-        dgettext("commands", "/cs archive on"),
-        dgettext("commands", "/cs language pt_BR"),
-        dgettext("commands", "/cs category news"),
-        dgettext("commands", "/cs sop add nick"),
-        dgettext("commands", "/cs aop del nick"),
-        dgettext("commands", "/cs vop list")
-      ],
-      subcommands: [
-        %{name: "register", description: dgettext("commands", "Register the current channel")},
-        %{name: "drop", description: dgettext("commands", "Drop channel registration")},
-        %{name: "info", description: dgettext("commands", "View channel registration info")},
-        %{
-          name: "archive",
-          description: dgettext("commands", "Publish the channel's public archive (on|off)")
-        },
-        %{
-          name: "language",
-          description:
-            dgettext("commands", "Set the language the channel is spoken in (code|none)")
-        },
-        %{
-          name: "category",
-          description:
-            dgettext(
-              "commands",
-              "Set what the channel is about, such as news or games (name|none)"
-            )
-        },
-        %{name: "sop", description: dgettext("commands", "Manage super-operator access list")},
-        %{name: "aop", description: dgettext("commands", "Manage auto-operator access list")},
-        %{name: "vop", description: dgettext("commands", "Manage auto-voice access list")},
-        %{name: "help", description: dgettext("commands", "Show ChanServ help")}
-      ]
-    }
   end
 end

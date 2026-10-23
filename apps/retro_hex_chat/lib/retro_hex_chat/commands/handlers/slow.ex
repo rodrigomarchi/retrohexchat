@@ -1,15 +1,32 @@
 defmodule RetroHexChat.Commands.Handlers.Slow do
   @moduledoc "Handler for /slow [seconds] — set join throttle on the channel. 0 to disable."
   use Gettext, backend: RetroHexChat.Gettext
-  @behaviour RetroHexChat.Commands.Handler
 
   import RetroHexChat.Commands.Handler.Guards
 
+  alias RetroHexChat.Commands.CommandSyntax.Parameter
   alias RetroHexChat.Commands.Handler
 
-  @impl true
-  @spec validate(String.t()) :: :ok | {:error, String.t()}
-  def validate(_), do: :ok
+  use RetroHexChat.Commands.Handler,
+    name: "slow",
+    category: :channel,
+    syntax: dgettext("commands", "/slow <seconds>"),
+    summary: dgettext("commands", "Set join throttle. 0 to disable."),
+    description:
+      dgettext(
+        "commands",
+        "Set join throttle on the channel (5 joins per N seconds). Use /slow 0 to disable.\nRequires: channel operator or owner."
+      ),
+    examples: [dgettext("commands", "/slow 30"), dgettext("commands", "/slow 0")],
+    parameters: [
+      %Parameter{
+        name: "seconds",
+        required: true,
+        type: :text,
+        position: 0,
+        description: dgettext("commands", "Throttle interval in seconds (0 to disable)")
+      }
+    ]
 
   @impl true
   @spec execute([String.t()], Handler.context()) :: Handler.result()
@@ -38,46 +55,5 @@ defmodule RetroHexChat.Commands.Handlers.Slow do
         {:error,
          dgettext("commands", "Usage: /slow <seconds> — must be a positive number (0 to disable)")}
     end
-  end
-
-  @impl true
-  def help do
-    %{
-      name: "slow",
-      syntax: dgettext("commands", "/slow <seconds>"),
-      description:
-        dgettext(
-          "commands",
-          "Set join throttle on the channel (5 joins per N seconds). Use /slow 0 to disable.\nRequires: channel operator or owner."
-        ),
-      examples: [dgettext("commands", "/slow 30"), dgettext("commands", "/slow 0")]
-    }
-  end
-
-  @impl true
-  def category, do: :channel
-
-  @impl true
-  @spec syntax_definition() :: RetroHexChat.Commands.CommandSyntax.t()
-  def syntax_definition do
-    alias RetroHexChat.Commands.CommandSyntax
-    alias RetroHexChat.Commands.CommandSyntax.Parameter
-
-    %CommandSyntax{
-      command: "slow",
-      syntax: dgettext("commands", "/slow <seconds>"),
-      description: dgettext("commands", "Set join throttle. 0 to disable."),
-      category: :channel,
-      parameters: [
-        %Parameter{
-          name: "seconds",
-          required: true,
-          type: :text,
-          position: 0,
-          description: dgettext("commands", "Throttle interval in seconds (0 to disable)")
-        }
-      ],
-      examples: [dgettext("commands", "/slow 30"), dgettext("commands", "/slow 0")]
-    }
   end
 end

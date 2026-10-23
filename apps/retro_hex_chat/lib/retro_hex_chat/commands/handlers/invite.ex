@@ -1,15 +1,47 @@
 defmodule RetroHexChat.Commands.Handlers.Invite do
   @moduledoc "Handler for /invite <nickname> [#channel]"
   use Gettext, backend: RetroHexChat.Gettext
-  @behaviour RetroHexChat.Commands.Handler
 
   import RetroHexChat.Commands.Handler.Guards
 
+  alias RetroHexChat.Commands.CommandSyntax.Parameter
   alias RetroHexChat.Commands.Handler
 
-  @impl true
-  @spec validate(String.t()) :: :ok | {:error, String.t()}
-  def validate(_), do: :ok
+  use RetroHexChat.Commands.Handler,
+    name: "invite",
+    category: :channel,
+    syntax: dgettext("commands", "/invite <nickname> [#channel]"),
+    summary:
+      dgettext(
+        "commands",
+        "Send a channel invitation to another user. Required for invite-only (+i) channels.\nDefaults to current channel if no #channel specified. Must be in a channel when no channel arg given.\n/invite auto — toggles whether you automatically join channels when invited."
+      ),
+    description:
+      dgettext(
+        "commands",
+        "Send a channel invitation to another user. Required for invite-only (+i) channels.\nDefaults to current channel if no #channel specified. Must be in a channel when no channel arg given.\n/invite auto — toggles whether you automatically join channels when invited."
+      ),
+    examples: [
+      dgettext("commands", "/invite Alice"),
+      dgettext("commands", "/invite Alice #private"),
+      dgettext("commands", "/invite auto")
+    ],
+    parameters: [
+      %Parameter{
+        name: "nickname",
+        required: true,
+        type: :nick,
+        position: 0,
+        description: dgettext("commands", "User to invite")
+      },
+      %Parameter{
+        name: "#channel",
+        required: false,
+        type: :channel,
+        position: 1,
+        description: dgettext("commands", "Target channel (defaults to current channel)")
+      }
+    ]
 
   @impl true
   @spec execute([String.t()], Handler.context()) :: Handler.result()
@@ -29,71 +61,5 @@ defmodule RetroHexChat.Commands.Handlers.Invite do
 
   def execute([nickname, channel], _context) do
     {:ok, :ui_action, :send_invite, %{target: nickname, channel: channel}}
-  end
-
-  @impl true
-  @spec help() :: %{
-          name: String.t(),
-          syntax: String.t(),
-          description: String.t(),
-          examples: [String.t()]
-        }
-  def help do
-    %{
-      name: "invite",
-      syntax: dgettext("commands", "/invite <nickname> [#channel]"),
-      description:
-        dgettext(
-          "commands",
-          "Send a channel invitation to another user. Required for invite-only (+i) channels.\nDefaults to current channel if no #channel specified. Must be in a channel when no channel arg given.\n/invite auto — toggles whether you automatically join channels when invited."
-        ),
-      examples: [
-        dgettext("commands", "/invite Alice"),
-        dgettext("commands", "/invite Alice #private"),
-        dgettext("commands", "/invite auto")
-      ]
-    }
-  end
-
-  @impl true
-  def category, do: :channel
-
-  @impl true
-  @spec syntax_definition() :: RetroHexChat.Commands.CommandSyntax.t()
-  def syntax_definition do
-    alias RetroHexChat.Commands.CommandSyntax
-    alias RetroHexChat.Commands.CommandSyntax.Parameter
-
-    %CommandSyntax{
-      command: "invite",
-      syntax: dgettext("commands", "/invite <nickname> [#channel]"),
-      description:
-        dgettext(
-          "commands",
-          "Send a channel invitation to another user. Required for invite-only (+i) channels.\nDefaults to current channel if no #channel specified. Must be in a channel when no channel arg given.\n/invite auto — toggles whether you automatically join channels when invited."
-        ),
-      category: :channel,
-      parameters: [
-        %Parameter{
-          name: "nickname",
-          required: true,
-          type: :nick,
-          position: 0,
-          description: dgettext("commands", "User to invite")
-        },
-        %Parameter{
-          name: "#channel",
-          required: false,
-          type: :channel,
-          position: 1,
-          description: dgettext("commands", "Target channel (defaults to current channel)")
-        }
-      ],
-      examples: [
-        dgettext("commands", "/invite Alice"),
-        dgettext("commands", "/invite Alice #private"),
-        dgettext("commands", "/invite auto")
-      ]
-    }
   end
 end

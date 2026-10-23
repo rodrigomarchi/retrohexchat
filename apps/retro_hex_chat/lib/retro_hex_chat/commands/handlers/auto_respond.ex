@@ -1,9 +1,52 @@
 defmodule RetroHexChat.Commands.Handlers.AutoRespond do
   @moduledoc "Handler for /autorespond [subcommand] [args]"
   use Gettext, backend: RetroHexChat.Gettext
-  @behaviour RetroHexChat.Commands.Handler
 
+  alias RetroHexChat.Commands.CommandSyntax.Parameter
   alias RetroHexChat.Commands.Handler
+
+  use RetroHexChat.Commands.Handler,
+    name: "autorespond",
+    category: :config,
+    syntax: dgettext("commands", "/autorespond [list|add|remove]"),
+    summary:
+      dgettext(
+        "commands",
+        "Automatically run a command when someone joins, leaves, or changes their nickname."
+      ),
+    description:
+      dgettext(
+        "commands",
+        "Automatically run a command when someone joins, leaves, or changes their nickname.\nSubcommands: list, add <trigger> [#channel] <command>, remove <position>. No args opens the dialog.\nValid triggers: on_join, on_part, on_nick_change.\nUse $nick in your command to reference the triggering user. The remove subcommand takes a 0-based index number."
+      ),
+    examples: [
+      "/autorespond",
+      dgettext("commands", "/autorespond list"),
+      dgettext("commands", "/autorespond add on_join #welcome /notice $nick Welcome!"),
+      dgettext("commands", "/autorespond add on_part /me waves goodbye to $nick"),
+      dgettext("commands", "/autorespond remove 0")
+    ],
+    parameters: [
+      %Parameter{
+        name: "subcommand",
+        required: false,
+        type: :text,
+        position: 0,
+        description: dgettext("commands", "Subcommand: list, add, remove")
+      },
+      %Parameter{
+        name: "args",
+        required: false,
+        type: :text,
+        position: 1,
+        description: dgettext("commands", "Subcommand arguments")
+      }
+    ],
+    subcommands: [
+      %{name: "list", description: dgettext("commands", "Show auto-respond rules")},
+      %{name: "add", description: dgettext("commands", "Add an auto-respond rule")},
+      %{name: "remove", description: dgettext("commands", "Remove an auto-respond rule")}
+    ]
 
   @valid_triggers ~w(on_join on_part on_nick_change)
 
@@ -90,32 +133,6 @@ defmodule RetroHexChat.Commands.Handlers.AutoRespond do
     {:ok, :system, %{content: help_text()}}
   end
 
-  @impl true
-  @spec help() :: %{
-          name: String.t(),
-          syntax: String.t(),
-          description: String.t(),
-          examples: [String.t()]
-        }
-  def help do
-    %{
-      name: "autorespond",
-      syntax: dgettext("commands", "/autorespond [list|add|remove]"),
-      description:
-        dgettext(
-          "commands",
-          "Automatically run a command when someone joins, leaves, or changes their nickname.\nSubcommands: list, add <trigger> [#channel] <command>, remove <position>. No args opens the dialog.\nValid triggers: on_join, on_part, on_nick_change.\nUse $nick in your command to reference the triggering user. The remove subcommand takes a 0-based index number."
-        ),
-      examples: [
-        "/autorespond",
-        dgettext("commands", "/autorespond list"),
-        dgettext("commands", "/autorespond add on_join #welcome /notice $nick Welcome!"),
-        dgettext("commands", "/autorespond add on_part /me waves goodbye to $nick"),
-        dgettext("commands", "/autorespond remove 0")
-      ]
-    }
-  end
-
   # ---------------------------------------------------------------------------
   # Private
   # ---------------------------------------------------------------------------
@@ -143,54 +160,5 @@ defmodule RetroHexChat.Commands.Handlers.AutoRespond do
     /autorespond list
     """
     |> String.trim()
-  end
-
-  @impl true
-  def category, do: :config
-
-  @impl true
-  @spec syntax_definition() :: RetroHexChat.Commands.CommandSyntax.t()
-  def syntax_definition do
-    alias RetroHexChat.Commands.CommandSyntax
-    alias RetroHexChat.Commands.CommandSyntax.Parameter
-
-    %CommandSyntax{
-      command: "autorespond",
-      syntax: dgettext("commands", "/autorespond [list|add|remove]"),
-      description:
-        dgettext(
-          "commands",
-          "Automatically run a command when someone joins, leaves, or changes their nickname."
-        ),
-      category: :config,
-      parameters: [
-        %Parameter{
-          name: "subcommand",
-          required: false,
-          type: :text,
-          position: 0,
-          description: dgettext("commands", "Subcommand: list, add, remove")
-        },
-        %Parameter{
-          name: "args",
-          required: false,
-          type: :text,
-          position: 1,
-          description: dgettext("commands", "Subcommand arguments")
-        }
-      ],
-      examples: [
-        "/autorespond",
-        dgettext("commands", "/autorespond list"),
-        dgettext("commands", "/autorespond add on_join #welcome /notice $nick Welcome!"),
-        dgettext("commands", "/autorespond add on_part /me waves goodbye to $nick"),
-        dgettext("commands", "/autorespond remove 0")
-      ],
-      subcommands: [
-        %{name: "list", description: dgettext("commands", "Show auto-respond rules")},
-        %{name: "add", description: dgettext("commands", "Add an auto-respond rule")},
-        %{name: "remove", description: dgettext("commands", "Remove an auto-respond rule")}
-      ]
-    }
   end
 end

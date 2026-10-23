@@ -1,11 +1,46 @@
 defmodule RetroHexChat.Commands.Handlers.Join do
   @moduledoc "Handler for /join #channel [password]"
   use Gettext, backend: RetroHexChat.Gettext
-  @behaviour RetroHexChat.Commands.Handler
 
   alias RetroHexChat.Admin
   alias RetroHexChat.Channels.Name
+  alias RetroHexChat.Commands.CommandSyntax.Parameter
   alias RetroHexChat.Commands.Handler
+
+  use RetroHexChat.Commands.Handler,
+    name: "join",
+    category: :channel,
+    syntax: dgettext("commands", "/join #channel [password]"),
+    summary:
+      dgettext(
+        "commands",
+        "Enter a chat channel to read and send messages. Creates the channel if it doesn't exist yet.\nChannel name must start with #, max 50 characters, no spaces.\nMax 10 channels at once. Password required if channel has +k mode set."
+      ),
+    description:
+      dgettext(
+        "commands",
+        "Enter a chat channel to read and send messages. Creates the channel if it doesn't exist yet.\nChannel name must start with #, max 50 characters, no spaces.\nMax 10 channels at once. Password required if channel has +k mode set."
+      ),
+    examples: [
+      dgettext("commands", "/join #elixir"),
+      dgettext("commands", "/join #secret mypassword")
+    ],
+    parameters: [
+      %Parameter{
+        name: "#channel",
+        required: true,
+        type: :channel,
+        position: 0,
+        description: dgettext("commands", "Channel name")
+      },
+      %Parameter{
+        name: "password",
+        required: false,
+        type: :text,
+        position: 1,
+        description: dgettext("commands", "Channel password (if key-protected)")
+      }
+    ]
 
   @default_max_channels 10
 
@@ -35,70 +70,6 @@ defmodule RetroHexChat.Commands.Handlers.Join do
       true ->
         {:ok, :join, channel_name, password}
     end
-  end
-
-  @impl true
-  @spec help() :: %{
-          name: String.t(),
-          syntax: String.t(),
-          description: String.t(),
-          examples: [String.t()]
-        }
-  def help do
-    %{
-      name: "join",
-      syntax: dgettext("commands", "/join #channel [password]"),
-      description:
-        dgettext(
-          "commands",
-          "Enter a chat channel to read and send messages. Creates the channel if it doesn't exist yet.\nChannel name must start with #, max 50 characters, no spaces.\nMax 10 channels at once. Password required if channel has +k mode set."
-        ),
-      examples: [
-        dgettext("commands", "/join #elixir"),
-        dgettext("commands", "/join #secret mypassword")
-      ]
-    }
-  end
-
-  @impl true
-  def category, do: :channel
-
-  @impl true
-  @spec syntax_definition() :: RetroHexChat.Commands.CommandSyntax.t()
-  def syntax_definition do
-    alias RetroHexChat.Commands.CommandSyntax
-    alias RetroHexChat.Commands.CommandSyntax.Parameter
-
-    %CommandSyntax{
-      command: "join",
-      syntax: dgettext("commands", "/join #channel [password]"),
-      description:
-        dgettext(
-          "commands",
-          "Enter a chat channel to read and send messages. Creates the channel if it doesn't exist yet.\nChannel name must start with #, max 50 characters, no spaces.\nMax 10 channels at once. Password required if channel has +k mode set."
-        ),
-      category: :channel,
-      parameters: [
-        %Parameter{
-          name: "#channel",
-          required: true,
-          type: :channel,
-          position: 0,
-          description: dgettext("commands", "Channel name")
-        },
-        %Parameter{
-          name: "password",
-          required: false,
-          type: :text,
-          position: 1,
-          description: dgettext("commands", "Channel password (if key-protected)")
-        }
-      ],
-      examples: [
-        dgettext("commands", "/join #elixir"),
-        dgettext("commands", "/join #secret mypassword")
-      ]
-    }
   end
 
   # A value an admin saved that is not a number falls back to the default.

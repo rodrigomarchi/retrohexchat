@@ -1,15 +1,32 @@
 defmodule RetroHexChat.Commands.Handlers.Transfer do
   @moduledoc "Handler for /transfer <nickname> — transfer channel ownership."
   use Gettext, backend: RetroHexChat.Gettext
-  @behaviour RetroHexChat.Commands.Handler
 
   import RetroHexChat.Commands.Handler.Guards
 
+  alias RetroHexChat.Commands.CommandSyntax.Parameter
   alias RetroHexChat.Commands.Handler
 
-  @impl true
-  @spec validate(String.t()) :: :ok | {:error, String.t()}
-  def validate(_), do: :ok
+  use RetroHexChat.Commands.Handler,
+    name: "transfer",
+    category: :channel,
+    syntax: dgettext("commands", "/transfer <nickname>"),
+    summary: dgettext("commands", "Transfer channel ownership to another user."),
+    description:
+      dgettext(
+        "commands",
+        "Transfer channel ownership to another user.\nThe new owner gets +q (owner) and you are demoted to operator.\nRequires: channel owner."
+      ),
+    examples: [dgettext("commands", "/transfer alice")],
+    parameters: [
+      %Parameter{
+        name: "nickname",
+        required: true,
+        type: :nick,
+        position: 0,
+        description: dgettext("commands", "New owner")
+      }
+    ]
 
   @impl true
   @spec execute([String.t()], Handler.context()) :: Handler.result()
@@ -20,46 +37,5 @@ defmodule RetroHexChat.Commands.Handlers.Transfer do
          :ok <- require_owner(context, channel) do
       {:ok, :ui_action, :transfer_ownership, %{channel: channel, target: nick}}
     end
-  end
-
-  @impl true
-  def help do
-    %{
-      name: "transfer",
-      syntax: dgettext("commands", "/transfer <nickname>"),
-      description:
-        dgettext(
-          "commands",
-          "Transfer channel ownership to another user.\nThe new owner gets +q (owner) and you are demoted to operator.\nRequires: channel owner."
-        ),
-      examples: [dgettext("commands", "/transfer alice")]
-    }
-  end
-
-  @impl true
-  def category, do: :channel
-
-  @impl true
-  @spec syntax_definition() :: RetroHexChat.Commands.CommandSyntax.t()
-  def syntax_definition do
-    alias RetroHexChat.Commands.CommandSyntax
-    alias RetroHexChat.Commands.CommandSyntax.Parameter
-
-    %CommandSyntax{
-      command: "transfer",
-      syntax: dgettext("commands", "/transfer <nickname>"),
-      description: dgettext("commands", "Transfer channel ownership to another user."),
-      category: :channel,
-      parameters: [
-        %Parameter{
-          name: "nickname",
-          required: true,
-          type: :nick,
-          position: 0,
-          description: dgettext("commands", "New owner")
-        }
-      ],
-      examples: [dgettext("commands", "/transfer alice")]
-    }
   end
 end

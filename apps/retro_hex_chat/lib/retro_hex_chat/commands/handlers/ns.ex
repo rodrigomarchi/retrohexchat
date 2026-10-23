@@ -1,18 +1,84 @@
 defmodule RetroHexChat.Commands.Handlers.Ns do
   @moduledoc "Handler for /ns (NickServ commands)"
   use Gettext, backend: RetroHexChat.Gettext
-  @behaviour RetroHexChat.Commands.Handler
 
   alias RetroHexChat.Accounts.TrustedDevices
+  alias RetroHexChat.Commands.CommandSyntax.Parameter
   alias RetroHexChat.Commands.Handler
   alias RetroHexChat.Commands.Handler.Args
   alias RetroHexChat.Commands.Handler.Guards
   alias RetroHexChat.Commands.Timestamp
   alias RetroHexChat.Services.NickServ
 
-  @impl true
-  @spec validate(String.t()) :: :ok | {:error, String.t()}
-  def validate(_), do: :ok
+  use RetroHexChat.Commands.Handler,
+    name: "ns",
+    category: :advanced,
+    syntax: dgettext("commands", "/ns <subcommand> [args]"),
+    summary:
+      dgettext(
+        "commands",
+        "Register and protect your nickname with a password through NickServ, the nickname services bot."
+      ),
+    description:
+      dgettext(
+        "commands",
+        "Register and protect your nickname with a password through NickServ.\nSubcommands: register <password>, identify <password>, ghost <nick> <password>, info [nick], drop <password>, devices, sessions, revoke-device <id|all>, kill-session <id|all>, help.\nRegister: claims current nickname. Identify: authenticates each session.\nGhost: disconnects a stale session using the registered nickname's password."
+      ),
+    examples: [
+      dgettext("commands", "/ns register mypassword"),
+      dgettext("commands", "/ns identify mypassword"),
+      dgettext("commands", "/ns ghost othernick mypassword"),
+      dgettext("commands", "/ns info"),
+      dgettext("commands", "/ns drop mypassword"),
+      dgettext("commands", "/ns devices"),
+      dgettext("commands", "/ns sessions"),
+      dgettext("commands", "/ns revoke-device 12"),
+      dgettext("commands", "/ns kill-session 44")
+    ],
+    parameters: [
+      %Parameter{
+        name: "subcommand",
+        required: true,
+        type: :text,
+        position: 0,
+        description:
+          dgettext(
+            "commands",
+            "Subcommand: register, identify, ghost, info, drop, devices, sessions, revoke-device, kill-session"
+          )
+      },
+      %Parameter{
+        name: "args",
+        required: false,
+        type: :text,
+        position: 1,
+        description: dgettext("commands", "Subcommand arguments")
+      }
+    ],
+    subcommands: [
+      %{
+        name: "register",
+        description: dgettext("commands", "Register your nickname with a password")
+      },
+      %{
+        name: "identify",
+        description: dgettext("commands", "Authenticate with your registered password")
+      },
+      %{
+        name: "ghost",
+        description: dgettext("commands", "Disconnect a stale session using its password")
+      },
+      %{
+        name: "info",
+        description: dgettext("commands", "View registration info for a nickname")
+      },
+      %{name: "drop", description: dgettext("commands", "Delete your nickname registration")},
+      %{name: "devices", description: dgettext("commands", "List trusted terminals")},
+      %{name: "sessions", description: dgettext("commands", "List active sessions")},
+      %{name: "revoke-device", description: dgettext("commands", "Revoke a trusted terminal")},
+      %{name: "kill-session", description: dgettext("commands", "End an active session")},
+      %{name: "help", description: dgettext("commands", "Show NickServ help")}
+    ]
 
   @impl true
   @spec execute([String.t()], Handler.context()) :: Handler.result()
@@ -92,36 +158,6 @@ defmodule RetroHexChat.Commands.Handlers.Ns do
 
   def execute([subcmd | _], _context) do
     {:error, "Unknown NickServ command: #{subcmd}. Try /ns help"}
-  end
-
-  @impl true
-  @spec help() :: %{
-          name: String.t(),
-          syntax: String.t(),
-          description: String.t(),
-          examples: [String.t()]
-        }
-  def help do
-    %{
-      name: "ns",
-      syntax: dgettext("commands", "/ns <subcommand> [args]"),
-      description:
-        dgettext(
-          "commands",
-          "Register and protect your nickname with a password through NickServ.\nSubcommands: register <password>, identify <password>, ghost <nick> <password>, info [nick], drop <password>, devices, sessions, revoke-device <id|all>, kill-session <id|all>, help.\nRegister: claims current nickname. Identify: authenticates each session.\nGhost: disconnects a stale session using the registered nickname's password."
-        ),
-      examples: [
-        dgettext("commands", "/ns register mypassword"),
-        dgettext("commands", "/ns identify mypassword"),
-        dgettext("commands", "/ns ghost othernick mypassword"),
-        dgettext("commands", "/ns info"),
-        dgettext("commands", "/ns drop mypassword"),
-        dgettext("commands", "/ns devices"),
-        dgettext("commands", "/ns sessions"),
-        dgettext("commands", "/ns revoke-device 12"),
-        dgettext("commands", "/ns kill-session 44")
-      ]
-    }
   end
 
   # -- Private helpers --
@@ -315,80 +351,4 @@ defmodule RetroHexChat.Commands.Handlers.Ns do
   defp format_datetime(nil), do: dgettext("commands", "never")
 
   defp format_datetime(datetime), do: Timestamp.format(datetime)
-
-  @impl true
-  def category, do: :advanced
-
-  @impl true
-  @spec syntax_definition() :: RetroHexChat.Commands.CommandSyntax.t()
-  def syntax_definition do
-    alias RetroHexChat.Commands.CommandSyntax
-    alias RetroHexChat.Commands.CommandSyntax.Parameter
-
-    %CommandSyntax{
-      command: "ns",
-      syntax: dgettext("commands", "/ns <subcommand> [args]"),
-      description:
-        dgettext(
-          "commands",
-          "Register and protect your nickname with a password through NickServ, the nickname services bot."
-        ),
-      category: :advanced,
-      parameters: [
-        %Parameter{
-          name: "subcommand",
-          required: true,
-          type: :text,
-          position: 0,
-          description:
-            dgettext(
-              "commands",
-              "Subcommand: register, identify, ghost, info, drop, devices, sessions, revoke-device, kill-session"
-            )
-        },
-        %Parameter{
-          name: "args",
-          required: false,
-          type: :text,
-          position: 1,
-          description: dgettext("commands", "Subcommand arguments")
-        }
-      ],
-      examples: [
-        dgettext("commands", "/ns register mypassword"),
-        dgettext("commands", "/ns identify mypassword"),
-        dgettext("commands", "/ns ghost othernick mypassword"),
-        dgettext("commands", "/ns info"),
-        dgettext("commands", "/ns drop mypassword"),
-        dgettext("commands", "/ns devices"),
-        dgettext("commands", "/ns sessions"),
-        dgettext("commands", "/ns revoke-device 12"),
-        dgettext("commands", "/ns kill-session 44")
-      ],
-      subcommands: [
-        %{
-          name: "register",
-          description: dgettext("commands", "Register your nickname with a password")
-        },
-        %{
-          name: "identify",
-          description: dgettext("commands", "Authenticate with your registered password")
-        },
-        %{
-          name: "ghost",
-          description: dgettext("commands", "Disconnect a stale session using its password")
-        },
-        %{
-          name: "info",
-          description: dgettext("commands", "View registration info for a nickname")
-        },
-        %{name: "drop", description: dgettext("commands", "Delete your nickname registration")},
-        %{name: "devices", description: dgettext("commands", "List trusted terminals")},
-        %{name: "sessions", description: dgettext("commands", "List active sessions")},
-        %{name: "revoke-device", description: dgettext("commands", "Revoke a trusted terminal")},
-        %{name: "kill-session", description: dgettext("commands", "End an active session")},
-        %{name: "help", description: dgettext("commands", "Show NickServ help")}
-      ]
-    }
-  end
 end

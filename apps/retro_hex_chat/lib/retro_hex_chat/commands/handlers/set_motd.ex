@@ -1,14 +1,35 @@
 defmodule RetroHexChat.Commands.Handlers.SetMotd do
   @moduledoc "Handler for /setmotd <text> — admin sets the MOTD."
   use Gettext, backend: RetroHexChat.Gettext
-  @behaviour RetroHexChat.Commands.Handler
 
+  alias RetroHexChat.Commands.CommandSyntax.Parameter
   alias RetroHexChat.Commands.Handler
   alias RetroHexChat.Services.Motd
 
-  @impl true
-  @spec validate(String.t()) :: :ok | {:error, String.t()}
-  def validate(_), do: :ok
+  use RetroHexChat.Commands.Handler,
+    name: "setmotd",
+    category: :advanced,
+    syntax: dgettext("commands", "/setmotd <text>"),
+    summary:
+      dgettext(
+        "commands",
+        "Set the server's Message of the Day shown to all users when they connect."
+      ),
+    description:
+      dgettext(
+        "commands",
+        "Set the server's Message of the Day shown to all users when they connect.\nRequires: server administrator. Message text is required."
+      ),
+    examples: [dgettext("commands", "/setmotd Welcome to RetroHexChat!")],
+    parameters: [
+      %Parameter{
+        name: "text",
+        required: true,
+        type: :text,
+        position: 0,
+        description: dgettext("commands", "Message of the Day text")
+      }
+    ]
 
   @impl true
   @spec execute([String.t()], Handler.context()) :: Handler.result()
@@ -27,56 +48,5 @@ defmodule RetroHexChat.Commands.Handlers.SetMotd do
       :ok -> {:ok, :system, %{content: dgettext("commands", "MOTD has been updated.")}}
       {:error, msg} -> {:error, msg}
     end
-  end
-
-  @impl true
-  @spec help() :: %{
-          name: String.t(),
-          syntax: String.t(),
-          description: String.t(),
-          examples: [String.t()]
-        }
-  def help do
-    %{
-      name: "setmotd",
-      syntax: dgettext("commands", "/setmotd <text>"),
-      description:
-        dgettext(
-          "commands",
-          "Set the server's Message of the Day shown to all users when they connect.\nRequires: server administrator. Message text is required."
-        ),
-      examples: [dgettext("commands", "/setmotd Welcome to RetroHexChat!")]
-    }
-  end
-
-  @impl true
-  def category, do: :advanced
-
-  @impl true
-  @spec syntax_definition() :: RetroHexChat.Commands.CommandSyntax.t()
-  def syntax_definition do
-    alias RetroHexChat.Commands.CommandSyntax
-    alias RetroHexChat.Commands.CommandSyntax.Parameter
-
-    %CommandSyntax{
-      command: "setmotd",
-      syntax: dgettext("commands", "/setmotd <text>"),
-      description:
-        dgettext(
-          "commands",
-          "Set the server's Message of the Day shown to all users when they connect."
-        ),
-      category: :advanced,
-      parameters: [
-        %Parameter{
-          name: "text",
-          required: true,
-          type: :text,
-          position: 0,
-          description: dgettext("commands", "Message of the Day text")
-        }
-      ],
-      examples: [dgettext("commands", "/setmotd Welcome to RetroHexChat!")]
-    }
   end
 end

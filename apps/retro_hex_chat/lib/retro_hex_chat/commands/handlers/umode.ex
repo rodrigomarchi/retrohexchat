@@ -1,15 +1,33 @@
 defmodule RetroHexChat.Commands.Handlers.Umode do
   @moduledoc "Handler for /umode <+/-mode> — manage user modes."
   use Gettext, backend: RetroHexChat.Gettext
-  @behaviour RetroHexChat.Commands.Handler
 
+  alias RetroHexChat.Commands.CommandSyntax.Parameter
   alias RetroHexChat.Commands.Handler
 
-  @known_modes %{"w" => :wallops}
+  use RetroHexChat.Commands.Handler,
+    name: "umode",
+    category: :config,
+    syntax: dgettext("commands", "/umode <+/-mode>"),
+    summary:
+      dgettext("commands", "Toggle personal user modes that affect what messages you receive."),
+    description:
+      dgettext(
+        "commands",
+        "Toggle personal user modes that affect what messages you receive.\nAvailable modes: +w (wallops — receive operator broadcast messages), -w (stop receiving).\nMust start with + or -. Currently only the w (wallops) mode is supported."
+      ),
+    examples: [dgettext("commands", "/umode +w"), dgettext("commands", "/umode -w")],
+    parameters: [
+      %Parameter{
+        name: "mode",
+        required: true,
+        type: :text,
+        position: 0,
+        description: dgettext("commands", "User mode: +w (wallops), -w")
+      }
+    ]
 
-  @impl true
-  @spec validate(String.t()) :: :ok | {:error, String.t()}
-  def validate(_), do: :ok
+  @known_modes %{"w" => :wallops}
 
   @impl true
   @spec execute([String.t()], Handler.context()) :: Handler.result()
@@ -27,26 +45,6 @@ defmodule RetroHexChat.Commands.Handlers.Umode do
     end
   end
 
-  @impl true
-  @spec help() :: %{
-          name: String.t(),
-          syntax: String.t(),
-          description: String.t(),
-          examples: [String.t()]
-        }
-  def help do
-    %{
-      name: "umode",
-      syntax: dgettext("commands", "/umode <+/-mode>"),
-      description:
-        dgettext(
-          "commands",
-          "Toggle personal user modes that affect what messages you receive.\nAvailable modes: +w (wallops — receive operator broadcast messages), -w (stop receiving).\nMust start with + or -. Currently only the w (wallops) mode is supported."
-        ),
-      examples: [dgettext("commands", "/umode +w"), dgettext("commands", "/umode -w")]
-    }
-  end
-
   defp parse_mode("+" <> flag), do: resolve_flag(:add, flag)
   defp parse_mode("-" <> flag), do: resolve_flag(:remove, flag)
   defp parse_mode(_), do: {:error, dgettext("commands", "Usage: /umode <+/-mode>")}
@@ -58,33 +56,5 @@ defmodule RetroHexChat.Commands.Handlers.Umode do
       {:ok, mode} -> {:ok, action, mode}
       :error -> {:error, dgettext("commands", "Unknown user mode: %{flag}", flag: flag)}
     end
-  end
-
-  @impl true
-  def category, do: :config
-
-  @impl true
-  @spec syntax_definition() :: RetroHexChat.Commands.CommandSyntax.t()
-  def syntax_definition do
-    alias RetroHexChat.Commands.CommandSyntax
-    alias RetroHexChat.Commands.CommandSyntax.Parameter
-
-    %CommandSyntax{
-      command: "umode",
-      syntax: dgettext("commands", "/umode <+/-mode>"),
-      description:
-        dgettext("commands", "Toggle personal user modes that affect what messages you receive."),
-      category: :config,
-      parameters: [
-        %Parameter{
-          name: "mode",
-          required: true,
-          type: :text,
-          position: 0,
-          description: dgettext("commands", "User mode: +w (wallops), -w")
-        }
-      ],
-      examples: [dgettext("commands", "/umode +w"), dgettext("commands", "/umode -w")]
-    }
   end
 end

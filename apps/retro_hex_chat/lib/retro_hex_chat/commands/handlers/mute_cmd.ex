@@ -1,15 +1,39 @@
 defmodule RetroHexChat.Commands.Handlers.MuteCmd do
   @moduledoc "Handler for /mute <nickname> [duration] — channel-level mute."
   use Gettext, backend: RetroHexChat.Gettext
-  @behaviour RetroHexChat.Commands.Handler
 
   import RetroHexChat.Commands.Handler.Guards
 
+  alias RetroHexChat.Commands.CommandSyntax.Parameter
   alias RetroHexChat.Commands.{Duration, Handler}
 
-  @impl true
-  @spec validate(String.t()) :: :ok | {:error, String.t()}
-  def validate(_), do: :ok
+  use RetroHexChat.Commands.Handler,
+    name: "mute",
+    category: :channel,
+    syntax: dgettext("commands", "/mute <nickname> [duration]"),
+    summary: dgettext("commands", "Mute a user in the current channel."),
+    description:
+      dgettext(
+        "commands",
+        "Mute a user in the current channel. They cannot send messages.\nDuration: 30s, 5m, 1h, 1d. Omit for permanent.\nRequires: channel operator or owner."
+      ),
+    examples: [dgettext("commands", "/mute troll"), dgettext("commands", "/mute troll 30m")],
+    parameters: [
+      %Parameter{
+        name: "nickname",
+        required: true,
+        type: :nick,
+        position: 0,
+        description: dgettext("commands", "User to mute")
+      },
+      %Parameter{
+        name: "duration",
+        required: false,
+        type: :text,
+        position: 1,
+        description: dgettext("commands", "Duration (e.g. 30s, 5m, 1h)")
+      }
+    ]
 
   @impl true
   @spec execute([String.t()], Handler.context()) :: Handler.result()
@@ -23,53 +47,5 @@ defmodule RetroHexChat.Commands.Handlers.MuteCmd do
 
       {:ok, :ui_action, :channel_mute_user, %{channel: channel, target: nick, duration: duration}}
     end
-  end
-
-  @impl true
-  def help do
-    %{
-      name: "mute",
-      syntax: dgettext("commands", "/mute <nickname> [duration]"),
-      description:
-        dgettext(
-          "commands",
-          "Mute a user in the current channel. They cannot send messages.\nDuration: 30s, 5m, 1h, 1d. Omit for permanent.\nRequires: channel operator or owner."
-        ),
-      examples: [dgettext("commands", "/mute troll"), dgettext("commands", "/mute troll 30m")]
-    }
-  end
-
-  @impl true
-  def category, do: :channel
-
-  @impl true
-  @spec syntax_definition() :: RetroHexChat.Commands.CommandSyntax.t()
-  def syntax_definition do
-    alias RetroHexChat.Commands.CommandSyntax
-    alias RetroHexChat.Commands.CommandSyntax.Parameter
-
-    %CommandSyntax{
-      command: "mute",
-      syntax: dgettext("commands", "/mute <nickname> [duration]"),
-      description: dgettext("commands", "Mute a user in the current channel."),
-      category: :channel,
-      parameters: [
-        %Parameter{
-          name: "nickname",
-          required: true,
-          type: :nick,
-          position: 0,
-          description: dgettext("commands", "User to mute")
-        },
-        %Parameter{
-          name: "duration",
-          required: false,
-          type: :text,
-          position: 1,
-          description: dgettext("commands", "Duration (e.g. 30s, 5m, 1h)")
-        }
-      ],
-      examples: [dgettext("commands", "/mute troll"), dgettext("commands", "/mute troll 30m")]
-    }
   end
 end

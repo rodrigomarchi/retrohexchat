@@ -1,14 +1,25 @@
 defmodule RetroHexChat.Commands.Handlers.ClearMotd do
   @moduledoc "Handler for /clearmotd — admin clears the MOTD."
   use Gettext, backend: RetroHexChat.Gettext
-  @behaviour RetroHexChat.Commands.Handler
 
   alias RetroHexChat.Commands.Handler
   alias RetroHexChat.Services.Motd
 
-  @impl true
-  @spec validate(String.t()) :: :ok | {:error, String.t()}
-  def validate(_), do: :ok
+  use RetroHexChat.Commands.Handler,
+    name: "clearmotd",
+    category: :advanced,
+    syntax: "/clearmotd",
+    summary:
+      dgettext(
+        "commands",
+        "Remove the server's Message of the Day so new users won't see any MOTD. Admin only."
+      ),
+    description:
+      dgettext(
+        "commands",
+        "Remove the server's Message of the Day so new users won't see any MOTD. Admin only."
+      ),
+    examples: ["/clearmotd"]
 
   @impl true
   @spec execute([String.t()], Handler.context()) :: Handler.result()
@@ -19,47 +30,5 @@ defmodule RetroHexChat.Commands.Handlers.ClearMotd do
   def execute(_args, %{is_admin: true, nickname: nickname}) do
     Motd.clear(nickname)
     {:ok, :system, %{content: dgettext("commands", "MOTD has been cleared.")}}
-  end
-
-  @impl true
-  @spec help() :: %{
-          name: String.t(),
-          syntax: String.t(),
-          description: String.t(),
-          examples: [String.t()]
-        }
-  def help do
-    %{
-      name: "clearmotd",
-      syntax: "/clearmotd",
-      description:
-        dgettext(
-          "commands",
-          "Remove the server's Message of the Day so new users won't see any MOTD. Admin only."
-        ),
-      examples: ["/clearmotd"]
-    }
-  end
-
-  @impl true
-  def category, do: :advanced
-
-  @impl true
-  @spec syntax_definition() :: RetroHexChat.Commands.CommandSyntax.t()
-  def syntax_definition do
-    alias RetroHexChat.Commands.CommandSyntax
-
-    %CommandSyntax{
-      command: "clearmotd",
-      syntax: "/clearmotd",
-      description:
-        dgettext(
-          "commands",
-          "Remove the server's Message of the Day so new users won't see any MOTD. Admin only."
-        ),
-      category: :advanced,
-      parameters: [],
-      examples: ["/clearmotd"]
-    }
   end
 end

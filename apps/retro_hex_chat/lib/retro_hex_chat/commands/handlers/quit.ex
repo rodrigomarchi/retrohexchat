@@ -1,13 +1,34 @@
 defmodule RetroHexChat.Commands.Handlers.Quit do
   @moduledoc "Handler for /quit [message]"
   use Gettext, backend: RetroHexChat.Gettext
-  @behaviour RetroHexChat.Commands.Handler
 
+  alias RetroHexChat.Commands.CommandSyntax.Parameter
   alias RetroHexChat.Commands.Handler
 
-  @impl true
-  @spec validate(String.t()) :: :ok | {:error, String.t()}
-  def validate(_), do: :ok
+  use RetroHexChat.Commands.Handler,
+    name: "quit",
+    category: :basics,
+    syntax: dgettext("commands", "/quit [message]"),
+    summary:
+      dgettext(
+        "commands",
+        "Disconnect from the server and return to the connect screen. Other users see your optional quit message."
+      ),
+    description:
+      dgettext(
+        "commands",
+        "Disconnect from the server and return to the connect screen.\nOther users see your optional quit message. All channels are left and your session ends."
+      ),
+    examples: ["/quit", dgettext("commands", "/quit Goodbye!")],
+    parameters: [
+      %Parameter{
+        name: "message",
+        required: false,
+        type: :text,
+        position: 0,
+        description: dgettext("commands", "Quit message")
+      }
+    ]
 
   @impl true
   @spec execute([String.t()], Handler.context()) :: Handler.result()
@@ -18,56 +39,5 @@ defmodule RetroHexChat.Commands.Handlers.Quit do
   def execute(args, _context) do
     reason = Enum.join(args, " ")
     {:ok, :quit, reason}
-  end
-
-  @impl true
-  @spec help() :: %{
-          name: String.t(),
-          syntax: String.t(),
-          description: String.t(),
-          examples: [String.t()]
-        }
-  def help do
-    %{
-      name: "quit",
-      syntax: dgettext("commands", "/quit [message]"),
-      description:
-        dgettext(
-          "commands",
-          "Disconnect from the server and return to the connect screen.\nOther users see your optional quit message. All channels are left and your session ends."
-        ),
-      examples: ["/quit", dgettext("commands", "/quit Goodbye!")]
-    }
-  end
-
-  @impl true
-  def category, do: :basics
-
-  @impl true
-  @spec syntax_definition() :: RetroHexChat.Commands.CommandSyntax.t()
-  def syntax_definition do
-    alias RetroHexChat.Commands.CommandSyntax
-    alias RetroHexChat.Commands.CommandSyntax.Parameter
-
-    %CommandSyntax{
-      command: "quit",
-      syntax: dgettext("commands", "/quit [message]"),
-      description:
-        dgettext(
-          "commands",
-          "Disconnect from the server and return to the connect screen. Other users see your optional quit message."
-        ),
-      category: :basics,
-      parameters: [
-        %Parameter{
-          name: "message",
-          required: false,
-          type: :text,
-          position: 0,
-          description: dgettext("commands", "Quit message")
-        }
-      ],
-      examples: ["/quit", dgettext("commands", "/quit Goodbye!")]
-    }
   end
 end

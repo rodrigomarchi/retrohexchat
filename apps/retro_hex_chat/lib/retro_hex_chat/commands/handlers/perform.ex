@@ -1,9 +1,56 @@
 defmodule RetroHexChat.Commands.Handlers.Perform do
   @moduledoc "Handler for /perform [subcommand] [args]"
   use Gettext, backend: RetroHexChat.Gettext
-  @behaviour RetroHexChat.Commands.Handler
 
+  alias RetroHexChat.Commands.CommandSyntax.Parameter
   alias RetroHexChat.Commands.Handler
+
+  use RetroHexChat.Commands.Handler,
+    name: "perform",
+    category: :config,
+    syntax: dgettext("commands", "/perform [list|add|remove|move|clear]"),
+    summary:
+      dgettext(
+        "commands",
+        "Set up commands that automatically run every time you connect, like identifying with NickServ."
+      ),
+    description:
+      dgettext(
+        "commands",
+        "Set up commands that automatically run every time you connect.\nSubcommands: list, add <command>, remove <index>, move <from> <to>, clear. No args opens the dialog.\nCommon use: /perform add /ns identify mypassword\nPositions are 0-based index numbers. Passwords are masked in the list display."
+      ),
+    examples: [
+      "/perform",
+      dgettext("commands", "/perform list"),
+      dgettext("commands", "/perform add /join #elixir"),
+      dgettext("commands", "/perform add /ns identify mypassword"),
+      dgettext("commands", "/perform remove 0"),
+      dgettext("commands", "/perform move 0 2"),
+      dgettext("commands", "/perform clear")
+    ],
+    parameters: [
+      %Parameter{
+        name: "subcommand",
+        required: false,
+        type: :text,
+        position: 0,
+        description: dgettext("commands", "Subcommand: list, add, remove, move, clear")
+      },
+      %Parameter{
+        name: "args",
+        required: false,
+        type: :text,
+        position: 1,
+        description: dgettext("commands", "Subcommand arguments")
+      }
+    ],
+    subcommands: [
+      %{name: "list", description: dgettext("commands", "Show perform commands")},
+      %{name: "add", description: dgettext("commands", "Add a command to perform on connect")},
+      %{name: "remove", description: dgettext("commands", "Remove a perform command")},
+      %{name: "move", description: dgettext("commands", "Reorder a perform command")},
+      %{name: "clear", description: dgettext("commands", "Clear all perform commands")}
+    ]
 
   @impl true
   @spec validate(String.t()) :: :ok | {:error, String.t()}
@@ -77,34 +124,6 @@ defmodule RetroHexChat.Commands.Handlers.Perform do
     {:ok, :ui_action, :perform_clear, %{}}
   end
 
-  @impl true
-  @spec help() :: %{
-          name: String.t(),
-          syntax: String.t(),
-          description: String.t(),
-          examples: [String.t()]
-        }
-  def help do
-    %{
-      name: "perform",
-      syntax: dgettext("commands", "/perform [list|add|remove|move|clear]"),
-      description:
-        dgettext(
-          "commands",
-          "Set up commands that automatically run every time you connect.\nSubcommands: list, add <command>, remove <index>, move <from> <to>, clear. No args opens the dialog.\nCommon use: /perform add /ns identify mypassword\nPositions are 0-based index numbers. Passwords are masked in the list display."
-        ),
-      examples: [
-        "/perform",
-        dgettext("commands", "/perform list"),
-        dgettext("commands", "/perform add /join #elixir"),
-        dgettext("commands", "/perform add /ns identify mypassword"),
-        dgettext("commands", "/perform remove 0"),
-        dgettext("commands", "/perform move 0 2"),
-        dgettext("commands", "/perform clear")
-      ]
-    }
-  end
-
   @spec validate_move_args(String.t()) :: :ok | {:error, String.t()}
   defp validate_move_args(args) do
     case String.split(args, " ", trim: true) do
@@ -119,58 +138,5 @@ defmodule RetroHexChat.Commands.Handlers.Perform do
       _ ->
         {:error, dgettext("commands", "Usage: /perform move <from> <to>")}
     end
-  end
-
-  @impl true
-  def category, do: :config
-
-  @impl true
-  @spec syntax_definition() :: RetroHexChat.Commands.CommandSyntax.t()
-  def syntax_definition do
-    alias RetroHexChat.Commands.CommandSyntax
-    alias RetroHexChat.Commands.CommandSyntax.Parameter
-
-    %CommandSyntax{
-      command: "perform",
-      syntax: dgettext("commands", "/perform [list|add|remove|move|clear]"),
-      description:
-        dgettext(
-          "commands",
-          "Set up commands that automatically run every time you connect, like identifying with NickServ."
-        ),
-      category: :config,
-      parameters: [
-        %Parameter{
-          name: "subcommand",
-          required: false,
-          type: :text,
-          position: 0,
-          description: dgettext("commands", "Subcommand: list, add, remove, move, clear")
-        },
-        %Parameter{
-          name: "args",
-          required: false,
-          type: :text,
-          position: 1,
-          description: dgettext("commands", "Subcommand arguments")
-        }
-      ],
-      examples: [
-        "/perform",
-        dgettext("commands", "/perform list"),
-        dgettext("commands", "/perform add /join #elixir"),
-        dgettext("commands", "/perform add /ns identify mypassword"),
-        dgettext("commands", "/perform remove 0"),
-        dgettext("commands", "/perform move 0 2"),
-        dgettext("commands", "/perform clear")
-      ],
-      subcommands: [
-        %{name: "list", description: dgettext("commands", "Show perform commands")},
-        %{name: "add", description: dgettext("commands", "Add a command to perform on connect")},
-        %{name: "remove", description: dgettext("commands", "Remove a perform command")},
-        %{name: "move", description: dgettext("commands", "Reorder a perform command")},
-        %{name: "clear", description: dgettext("commands", "Clear all perform commands")}
-      ]
-    }
   end
 end

@@ -1,7 +1,79 @@
 defmodule RetroHexChat.Commands.Handler do
   @moduledoc """
   Behaviour that all "/" command handlers must implement.
+
+  A handler declares its command once and writes only `execute/2` (and
+  `validate/1` when it checks raw arguments):
+
+      use RetroHexChat.Commands.Handler,
+        name: "op",
+        category: :channel,
+        syntax: dgettext("commands", "/op <nickname>"),
+        summary: dgettext("commands", "Give channel operator status to a user."),
+        description: dgettext("commands", "Give channel operator status ..."),
+        examples: [dgettext("commands", "/op alice")],
+        parameters: [%Parameter{name: "nickname", required: true, type: :nick, position: 0,
+                                description: dgettext("commands", "User to give operator status")}]
+
+  From that it answers `help/0` (the `/help` page: `description` is the long
+  text), `category/0` and `syntax_definition/0` (the tooltip: `summary` is the
+  short text), and `validate/1` accepts anything unless the handler defines
+  its own. Every text is an expression evaluated when asked for, so it is
+  translated into the reader's language at that moment. Optional:
+  `parameters` (default `[]`), `sub_options`, `subcommands`, and
+  `tooltip_examples` when the tooltip shows fewer examples than `/help`.
   """
+
+  @doc false
+  defmacro __using__(opts) do
+    name = Keyword.fetch!(opts, :name)
+    category = Keyword.fetch!(opts, :category)
+    syntax = Keyword.fetch!(opts, :syntax)
+    summary = Keyword.fetch!(opts, :summary)
+    description = Keyword.fetch!(opts, :description)
+    examples = Keyword.fetch!(opts, :examples)
+    parameters = Keyword.get(opts, :parameters, [])
+    sub_options = Keyword.get(opts, :sub_options)
+    subcommands = Keyword.get(opts, :subcommands)
+    tooltip_examples = Keyword.get(opts, :tooltip_examples, examples)
+
+    quote do
+      @behaviour RetroHexChat.Commands.Handler
+
+      @impl true
+      @spec validate(String.t()) :: :ok | {:error, String.t()}
+      def validate(_raw_args), do: :ok
+      defoverridable validate: 1
+
+      @impl true
+      def help do
+        %{
+          name: unquote(name),
+          syntax: unquote(syntax),
+          description: unquote(description),
+          examples: unquote(examples)
+        }
+      end
+
+      @impl true
+      def category, do: unquote(category)
+
+      @impl true
+      @spec syntax_definition() :: RetroHexChat.Commands.CommandSyntax.t()
+      def syntax_definition do
+        %RetroHexChat.Commands.CommandSyntax{
+          command: unquote(name),
+          syntax: unquote(syntax),
+          description: unquote(summary),
+          category: unquote(category),
+          parameters: unquote(parameters),
+          examples: unquote(tooltip_examples),
+          sub_options: unquote(sub_options),
+          subcommands: unquote(subcommands)
+        }
+      end
+    end
+  end
 
   @type context :: %{
           required(:nickname) => String.t(),

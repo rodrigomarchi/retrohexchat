@@ -1,9 +1,44 @@
 defmodule RetroHexChat.Commands.Handlers.Msg do
   @moduledoc "Handler for /msg <nickname> <message>"
   use Gettext, backend: RetroHexChat.Gettext
-  @behaviour RetroHexChat.Commands.Handler
 
+  alias RetroHexChat.Commands.CommandSyntax.Parameter
   alias RetroHexChat.Commands.Handler
+
+  use RetroHexChat.Commands.Handler,
+    name: "msg",
+    category: :user,
+    syntax: dgettext("commands", "/msg <nickname> <message>"),
+    summary:
+      dgettext(
+        "commands",
+        "Send a private message to another user, opening a PM conversation tab.\nBoth nickname and message text are required."
+      ),
+    description:
+      dgettext(
+        "commands",
+        "Send a private message to another user, opening a PM conversation tab.\nBoth nickname and message text are required."
+      ),
+    examples: [
+      dgettext("commands", "/msg Nick Hello there!"),
+      dgettext("commands", "/msg Nick How are you?")
+    ],
+    parameters: [
+      %Parameter{
+        name: "nickname",
+        required: true,
+        type: :nick,
+        position: 0,
+        description: dgettext("commands", "Message recipient")
+      },
+      %Parameter{
+        name: "message",
+        required: true,
+        type: :text,
+        position: 1,
+        description: dgettext("commands", "Message content")
+      }
+    ]
 
   @impl true
   @spec validate(String.t()) :: :ok | {:error, String.t()}
@@ -21,69 +56,5 @@ defmodule RetroHexChat.Commands.Handlers.Msg do
   def execute([target | rest], _context) do
     content = Enum.join(rest, " ")
     {:ok, :message, %{target: target, content: content}}
-  end
-
-  @impl true
-  @spec help() :: %{
-          name: String.t(),
-          syntax: String.t(),
-          description: String.t(),
-          examples: [String.t()]
-        }
-  def help do
-    %{
-      name: "msg",
-      syntax: dgettext("commands", "/msg <nickname> <message>"),
-      description:
-        dgettext(
-          "commands",
-          "Send a private message to another user, opening a PM conversation tab.\nBoth nickname and message text are required."
-        ),
-      examples: [
-        dgettext("commands", "/msg Nick Hello there!"),
-        dgettext("commands", "/msg Nick How are you?")
-      ]
-    }
-  end
-
-  @impl true
-  def category, do: :user
-
-  @impl true
-  @spec syntax_definition() :: RetroHexChat.Commands.CommandSyntax.t()
-  def syntax_definition do
-    alias RetroHexChat.Commands.CommandSyntax
-    alias RetroHexChat.Commands.CommandSyntax.Parameter
-
-    %CommandSyntax{
-      command: "msg",
-      syntax: dgettext("commands", "/msg <nickname> <message>"),
-      description:
-        dgettext(
-          "commands",
-          "Send a private message to another user, opening a PM conversation tab.\nBoth nickname and message text are required."
-        ),
-      category: :user,
-      parameters: [
-        %Parameter{
-          name: "nickname",
-          required: true,
-          type: :nick,
-          position: 0,
-          description: dgettext("commands", "Message recipient")
-        },
-        %Parameter{
-          name: "message",
-          required: true,
-          type: :text,
-          position: 1,
-          description: dgettext("commands", "Message content")
-        }
-      ],
-      examples: [
-        dgettext("commands", "/msg Nick Hello there!"),
-        dgettext("commands", "/msg Nick How are you?")
-      ]
-    }
   end
 end

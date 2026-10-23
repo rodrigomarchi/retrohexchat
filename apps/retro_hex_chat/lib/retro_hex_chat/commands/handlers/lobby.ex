@@ -2,14 +2,39 @@ defmodule RetroHexChat.Commands.Handlers.Lobby do
   @moduledoc "Handler for /p2p <nickname> — open a P2P session (all features at once)."
 
   use Gettext, backend: RetroHexChat.Gettext
-  @behaviour RetroHexChat.Commands.Handler
 
+  alias RetroHexChat.Commands.CommandSyntax.Parameter
   alias RetroHexChat.Commands.Handler
   alias RetroHexChat.Commands.Handler.Guards
   alias RetroHexChat.Nickname
   alias RetroHexChat.Presence.Tracker
   alias RetroHexChat.Services.Queries
   alias RetroHexChat.Topics
+
+  use RetroHexChat.Commands.Handler,
+    name: "p2p",
+    category: :user,
+    syntax: dgettext("commands", "/p2p <nickname>"),
+    summary:
+      dgettext(
+        "commands",
+        "Open a P2P session that hosts calls, file transfers, and games together over one connection.\nRequires: both users must be registered and identified (/ns identify)."
+      ),
+    description:
+      dgettext(
+        "commands",
+        "Open a P2P session with another user: one persistent connection that runs an audio/video call, file transfers, and games all at the same time.\nRequires: both users must be registered and identified (/ns identify)."
+      ),
+    examples: [dgettext("commands", "/p2p mario")],
+    parameters: [
+      %Parameter{
+        name: "nickname",
+        required: true,
+        type: :nick,
+        position: 0,
+        description: dgettext("commands", "Target user")
+      }
+    ]
 
   @impl true
   @spec validate(String.t()) :: :ok | {:error, String.t()}
@@ -34,57 +59,6 @@ defmodule RetroHexChat.Commands.Handlers.Lobby do
       {:ok, :ui_action, :lobby_invite,
        %{target: target, target_id: target_id, creator_id: creator_id}}
     end
-  end
-
-  @impl true
-  @spec help() :: %{
-          name: String.t(),
-          syntax: String.t(),
-          description: String.t(),
-          examples: [String.t()]
-        }
-  def help do
-    %{
-      name: "p2p",
-      syntax: dgettext("commands", "/p2p <nickname>"),
-      description:
-        dgettext(
-          "commands",
-          "Open a P2P session with another user: one persistent connection that runs an audio/video call, file transfers, and games all at the same time.\nRequires: both users must be registered and identified (/ns identify)."
-        ),
-      examples: [dgettext("commands", "/p2p mario")]
-    }
-  end
-
-  @impl true
-  def category, do: :user
-
-  @impl true
-  @spec syntax_definition() :: RetroHexChat.Commands.CommandSyntax.t()
-  def syntax_definition do
-    alias RetroHexChat.Commands.CommandSyntax
-    alias RetroHexChat.Commands.CommandSyntax.Parameter
-
-    %CommandSyntax{
-      command: "p2p",
-      syntax: dgettext("commands", "/p2p <nickname>"),
-      description:
-        dgettext(
-          "commands",
-          "Open a P2P session that hosts calls, file transfers, and games together over one connection.\nRequires: both users must be registered and identified (/ns identify)."
-        ),
-      category: :user,
-      parameters: [
-        %Parameter{
-          name: "nickname",
-          required: true,
-          type: :nick,
-          position: 0,
-          description: dgettext("commands", "Target user")
-        }
-      ],
-      examples: [dgettext("commands", "/p2p mario")]
-    }
   end
 
   defp validate_not_self(target, %{nickname: nick}) do

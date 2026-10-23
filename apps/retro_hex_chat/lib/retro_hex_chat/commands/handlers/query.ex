@@ -1,9 +1,34 @@
 defmodule RetroHexChat.Commands.Handlers.Query do
   @moduledoc "Handler for /query <nickname>"
   use Gettext, backend: RetroHexChat.Gettext
-  @behaviour RetroHexChat.Commands.Handler
 
+  alias RetroHexChat.Commands.CommandSyntax.Parameter
   alias RetroHexChat.Commands.Handler
+
+  use RetroHexChat.Commands.Handler,
+    name: "query",
+    category: :user,
+    syntax: dgettext("commands", "/query <nickname>"),
+    summary:
+      dgettext(
+        "commands",
+        "Open a private message tab with a user without sending any message, unlike /msg."
+      ),
+    description:
+      dgettext(
+        "commands",
+        "Open a private message tab with a user without sending any message, unlike /msg.\nNickname is required. If the PM tab already exists, switches to it."
+      ),
+    examples: [dgettext("commands", "/query Nick")],
+    parameters: [
+      %Parameter{
+        name: "nickname",
+        required: true,
+        type: :nick,
+        position: 0,
+        description: dgettext("commands", "Open a PM tab with this user")
+      }
+    ]
 
   @impl true
   @spec validate(String.t()) :: :ok | {:error, String.t()}
@@ -16,56 +41,5 @@ defmodule RetroHexChat.Commands.Handlers.Query do
 
   def execute([target | _rest], _context) do
     {:ok, :ui_action, :open_query, %{nickname: target}}
-  end
-
-  @impl true
-  @spec help() :: %{
-          name: String.t(),
-          syntax: String.t(),
-          description: String.t(),
-          examples: [String.t()]
-        }
-  def help do
-    %{
-      name: "query",
-      syntax: dgettext("commands", "/query <nickname>"),
-      description:
-        dgettext(
-          "commands",
-          "Open a private message tab with a user without sending any message, unlike /msg.\nNickname is required. If the PM tab already exists, switches to it."
-        ),
-      examples: [dgettext("commands", "/query Nick")]
-    }
-  end
-
-  @impl true
-  def category, do: :user
-
-  @impl true
-  @spec syntax_definition() :: RetroHexChat.Commands.CommandSyntax.t()
-  def syntax_definition do
-    alias RetroHexChat.Commands.CommandSyntax
-    alias RetroHexChat.Commands.CommandSyntax.Parameter
-
-    %CommandSyntax{
-      command: "query",
-      syntax: dgettext("commands", "/query <nickname>"),
-      description:
-        dgettext(
-          "commands",
-          "Open a private message tab with a user without sending any message, unlike /msg."
-        ),
-      category: :user,
-      parameters: [
-        %Parameter{
-          name: "nickname",
-          required: true,
-          type: :nick,
-          position: 0,
-          description: dgettext("commands", "Open a PM tab with this user")
-        }
-      ],
-      examples: [dgettext("commands", "/query Nick")]
-    }
   end
 end

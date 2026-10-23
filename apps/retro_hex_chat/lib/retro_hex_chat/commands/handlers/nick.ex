@@ -1,10 +1,35 @@
 defmodule RetroHexChat.Commands.Handlers.Nick do
   @moduledoc "Handler for /nick <newnick>"
   use Gettext, backend: RetroHexChat.Gettext
-  @behaviour RetroHexChat.Commands.Handler
 
   alias RetroHexChat.Accounts.NicknameValidator
+  alias RetroHexChat.Commands.CommandSyntax.Parameter
   alias RetroHexChat.Commands.Handler
+
+  use RetroHexChat.Commands.Handler,
+    name: "nick",
+    category: :basics,
+    syntax: dgettext("commands", "/nick <newnick>"),
+    summary:
+      dgettext(
+        "commands",
+        "Change your display name in the chat. A confirmation dialog appears before the change takes effect."
+      ),
+    description:
+      dgettext(
+        "commands",
+        "Change your display name. A confirmation dialog appears before the change takes effect.\nRules: 1-16 characters, no spaces. Must start with a letter or [ ] \\ ^ _ { | }.\nAllowed characters: letters, numbers, [ ] \\ ^ _ ` { | } and hyphens.\nCannot change to your current nickname or one already in use."
+      ),
+    examples: [dgettext("commands", "/nick NewNick"), dgettext("commands", "/nick [Bot]")],
+    parameters: [
+      %Parameter{
+        name: "newnick",
+        required: true,
+        type: :nick,
+        position: 0,
+        description: dgettext("commands", "New nickname (max 16 characters)")
+      }
+    ]
 
   # IRC-style allowed first characters: letters + [\]^_{|}
   @first_char_pattern ~r/^[a-zA-Z\[\]\\^_\{|\}]/
@@ -48,56 +73,5 @@ defmodule RetroHexChat.Commands.Handlers.Nick do
       true ->
         {:ok, :nick_change, new_nick}
     end
-  end
-
-  @impl true
-  @spec help() :: %{
-          name: String.t(),
-          syntax: String.t(),
-          description: String.t(),
-          examples: [String.t()]
-        }
-  def help do
-    %{
-      name: "nick",
-      syntax: dgettext("commands", "/nick <newnick>"),
-      description:
-        dgettext(
-          "commands",
-          "Change your display name. A confirmation dialog appears before the change takes effect.\nRules: 1-16 characters, no spaces. Must start with a letter or [ ] \\ ^ _ { | }.\nAllowed characters: letters, numbers, [ ] \\ ^ _ ` { | } and hyphens.\nCannot change to your current nickname or one already in use."
-        ),
-      examples: [dgettext("commands", "/nick NewNick"), dgettext("commands", "/nick [Bot]")]
-    }
-  end
-
-  @impl true
-  def category, do: :basics
-
-  @impl true
-  @spec syntax_definition() :: RetroHexChat.Commands.CommandSyntax.t()
-  def syntax_definition do
-    alias RetroHexChat.Commands.CommandSyntax
-    alias RetroHexChat.Commands.CommandSyntax.Parameter
-
-    %CommandSyntax{
-      command: "nick",
-      syntax: dgettext("commands", "/nick <newnick>"),
-      description:
-        dgettext(
-          "commands",
-          "Change your display name in the chat. A confirmation dialog appears before the change takes effect."
-        ),
-      category: :basics,
-      parameters: [
-        %Parameter{
-          name: "newnick",
-          required: true,
-          type: :nick,
-          position: 0,
-          description: dgettext("commands", "New nickname (max 16 characters)")
-        }
-      ],
-      examples: [dgettext("commands", "/nick NewNick"), dgettext("commands", "/nick [Bot]")]
-    }
   end
 end

@@ -1,9 +1,34 @@
 defmodule RetroHexChat.Commands.Handlers.Me do
   @moduledoc "Handler for /me <action>"
   use Gettext, backend: RetroHexChat.Gettext
-  @behaviour RetroHexChat.Commands.Handler
 
+  alias RetroHexChat.Commands.CommandSyntax.Parameter
   alias RetroHexChat.Commands.Handler
+
+  use RetroHexChat.Commands.Handler,
+    name: "me",
+    category: :basics,
+    syntax: dgettext("commands", "/me <action>"),
+    summary:
+      dgettext(
+        "commands",
+        "Describe what you are doing, shown as '* YourNick does something'. It works in channels and in private chats.\nAction text is required."
+      ),
+    description:
+      dgettext(
+        "commands",
+        "Describe what you are doing, shown as '* YourNick does something'. It works in channels and in private chats.\nAction text is required."
+      ),
+    examples: [dgettext("commands", "/me waves hello"), dgettext("commands", "/me is away")],
+    parameters: [
+      %Parameter{
+        name: "action",
+        required: true,
+        type: :text,
+        position: 0,
+        description: dgettext("commands", "Action text")
+      }
+    ]
 
   @impl true
   @spec validate(String.t()) :: :ok | {:error, String.t()}
@@ -22,56 +47,5 @@ defmodule RetroHexChat.Commands.Handlers.Me do
       content = Enum.join(args, " ")
       {:ok, :action, %{content: content}}
     end
-  end
-
-  @impl true
-  @spec help() :: %{
-          name: String.t(),
-          syntax: String.t(),
-          description: String.t(),
-          examples: [String.t()]
-        }
-  def help do
-    %{
-      name: "me",
-      syntax: dgettext("commands", "/me <action>"),
-      description:
-        dgettext(
-          "commands",
-          "Describe what you are doing, shown as '* YourNick does something'. It works in channels and in private chats.\nAction text is required."
-        ),
-      examples: [dgettext("commands", "/me waves hello"), dgettext("commands", "/me is away")]
-    }
-  end
-
-  @impl true
-  def category, do: :basics
-
-  @impl true
-  @spec syntax_definition() :: RetroHexChat.Commands.CommandSyntax.t()
-  def syntax_definition do
-    alias RetroHexChat.Commands.CommandSyntax
-    alias RetroHexChat.Commands.CommandSyntax.Parameter
-
-    %CommandSyntax{
-      command: "me",
-      syntax: dgettext("commands", "/me <action>"),
-      description:
-        dgettext(
-          "commands",
-          "Describe what you are doing, shown as '* YourNick does something'. It works in channels and in private chats.\nAction text is required."
-        ),
-      category: :basics,
-      parameters: [
-        %Parameter{
-          name: "action",
-          required: true,
-          type: :text,
-          position: 0,
-          description: dgettext("commands", "Action text")
-        }
-      ],
-      examples: [dgettext("commands", "/me waves hello"), dgettext("commands", "/me is away")]
-    }
   end
 end

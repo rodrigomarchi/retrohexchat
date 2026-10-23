@@ -1,15 +1,45 @@
 defmodule RetroHexChat.Commands.Handlers.Event do
   @moduledoc "Handler for /event — scheduling something the channel will do together"
   use Gettext, backend: RetroHexChat.Gettext
-  @behaviour RetroHexChat.Commands.Handler
 
+  alias RetroHexChat.Commands.CommandSyntax.Parameter
   alias RetroHexChat.Commands.Duration
   alias RetroHexChat.Commands.Handler
   alias RetroHexChat.Commands.Handler.Args
 
-  @impl true
-  @spec validate(String.t()) :: :ok | {:error, String.t()}
-  def validate(_args), do: :ok
+  use RetroHexChat.Commands.Handler,
+    name: "event",
+    category: :channel,
+    syntax: dgettext("commands", "/event [<when> <title> | cancel <id>]"),
+    summary: dgettext("commands", "Schedule something the channel will do together."),
+    description:
+      dgettext(
+        "commands",
+        "Schedule something the channel will do together, and announce it in the room.\nThe time is a delay from now — 2h, 30m, 3d — so it means the same instant for everybody reading it.\nEveryone sees the card and can say they are going; whoever said so is reminded shortly before it starts.\nOperators only. With no arguments it opens the Events window."
+      ),
+    examples: [
+      "/event",
+      "/event 2h Tuesday tournament",
+      "/event 3d Film night in the space",
+      "/event cancel 12"
+    ],
+    tooltip_examples: ["/event", "/event 2h Tuesday tournament", "/event cancel 12"],
+    parameters: [
+      %Parameter{
+        name: "when",
+        required: false,
+        type: :text,
+        position: 0,
+        description: dgettext("commands", "How long from now it starts: 2h, 30m, 3d")
+      },
+      %Parameter{
+        name: "title",
+        required: false,
+        type: :text,
+        position: 1,
+        description: dgettext("commands", "What the channel is going to do")
+      }
+    ]
 
   @impl true
   @spec execute([String.t()], Handler.context()) :: Handler.result()
@@ -67,64 +97,5 @@ defmodule RetroHexChat.Commands.Handlers.Event do
       "" -> {:error, dgettext("commands", "What is it called? Use /event <when> <title>.")}
       title -> {:ok, title}
     end
-  end
-
-  @impl true
-  @spec help() :: %{
-          name: String.t(),
-          syntax: String.t(),
-          description: String.t(),
-          examples: [String.t()]
-        }
-  def help do
-    %{
-      name: "event",
-      syntax: dgettext("commands", "/event [<when> <title> | cancel <id>]"),
-      description:
-        dgettext(
-          "commands",
-          "Schedule something the channel will do together, and announce it in the room.\nThe time is a delay from now — 2h, 30m, 3d — so it means the same instant for everybody reading it.\nEveryone sees the card and can say they are going; whoever said so is reminded shortly before it starts.\nOperators only. With no arguments it opens the Events window."
-        ),
-      examples: [
-        "/event",
-        "/event 2h Tuesday tournament",
-        "/event 3d Film night in the space",
-        "/event cancel 12"
-      ]
-    }
-  end
-
-  @impl true
-  def category, do: :channel
-
-  @impl true
-  @spec syntax_definition() :: RetroHexChat.Commands.CommandSyntax.t()
-  def syntax_definition do
-    alias RetroHexChat.Commands.CommandSyntax
-    alias RetroHexChat.Commands.CommandSyntax.Parameter
-
-    %CommandSyntax{
-      command: "event",
-      syntax: dgettext("commands", "/event [<when> <title> | cancel <id>]"),
-      description: dgettext("commands", "Schedule something the channel will do together."),
-      category: :channel,
-      parameters: [
-        %Parameter{
-          name: "when",
-          required: false,
-          type: :text,
-          position: 0,
-          description: dgettext("commands", "How long from now it starts: 2h, 30m, 3d")
-        },
-        %Parameter{
-          name: "title",
-          required: false,
-          type: :text,
-          position: 1,
-          description: dgettext("commands", "What the channel is going to do")
-        }
-      ],
-      examples: ["/event", "/event 2h Tuesday tournament", "/event cancel 12"]
-    }
   end
 end

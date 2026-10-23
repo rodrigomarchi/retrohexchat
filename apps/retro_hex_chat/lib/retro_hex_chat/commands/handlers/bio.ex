@@ -1,15 +1,40 @@
 defmodule RetroHexChat.Commands.Handlers.Bio do
   @moduledoc "Handler for /bio [text|clear]"
   use Gettext, backend: RetroHexChat.Gettext
-  @behaviour RetroHexChat.Commands.Handler
 
+  alias RetroHexChat.Commands.CommandSyntax.Parameter
   alias RetroHexChat.Commands.Handler
 
-  @max_bio_graphemes 200
+  use RetroHexChat.Commands.Handler,
+    name: "bio",
+    category: :basics,
+    syntax: dgettext("commands", "/bio [<text>|clear]"),
+    summary:
+      dgettext(
+        "commands",
+        "Set a short 'about me' text visible when others look you up with /whois."
+      ),
+    description:
+      dgettext(
+        "commands",
+        "Set a short 'about me' text visible when others look you up with /whois.\nMax 200 characters (text beyond this limit is silently truncated). Use /bio to view, /bio clear to remove."
+      ),
+    examples: [
+      dgettext("commands", "/bio Elixir enthusiast from Brazil"),
+      "/bio",
+      dgettext("commands", "/bio clear")
+    ],
+    parameters: [
+      %Parameter{
+        name: "text",
+        required: false,
+        type: :text,
+        position: 0,
+        description: dgettext("commands", "Bio text (or 'clear' to remove)")
+      }
+    ]
 
-  @impl true
-  @spec validate(String.t()) :: :ok | {:error, String.t()}
-  def validate(_), do: :ok
+  @max_bio_graphemes 200
 
   @impl true
   @spec execute([String.t()], Handler.context()) :: Handler.result()
@@ -31,64 +56,5 @@ defmodule RetroHexChat.Commands.Handlers.Bio do
     else
       {:ok, :ui_action, :set_bio, %{text: text, truncated: false}}
     end
-  end
-
-  @impl true
-  @spec help() :: %{
-          name: String.t(),
-          syntax: String.t(),
-          description: String.t(),
-          examples: [String.t()]
-        }
-  def help do
-    %{
-      name: "bio",
-      syntax: dgettext("commands", "/bio [<text>|clear]"),
-      description:
-        dgettext(
-          "commands",
-          "Set a short 'about me' text visible when others look you up with /whois.\nMax 200 characters (text beyond this limit is silently truncated). Use /bio to view, /bio clear to remove."
-        ),
-      examples: [
-        dgettext("commands", "/bio Elixir enthusiast from Brazil"),
-        "/bio",
-        dgettext("commands", "/bio clear")
-      ]
-    }
-  end
-
-  @impl true
-  def category, do: :basics
-
-  @impl true
-  @spec syntax_definition() :: RetroHexChat.Commands.CommandSyntax.t()
-  def syntax_definition do
-    alias RetroHexChat.Commands.CommandSyntax
-    alias RetroHexChat.Commands.CommandSyntax.Parameter
-
-    %CommandSyntax{
-      command: "bio",
-      syntax: dgettext("commands", "/bio [<text>|clear]"),
-      description:
-        dgettext(
-          "commands",
-          "Set a short 'about me' text visible when others look you up with /whois."
-        ),
-      category: :basics,
-      parameters: [
-        %Parameter{
-          name: "text",
-          required: false,
-          type: :text,
-          position: 0,
-          description: dgettext("commands", "Bio text (or 'clear' to remove)")
-        }
-      ],
-      examples: [
-        dgettext("commands", "/bio Elixir enthusiast from Brazil"),
-        "/bio",
-        dgettext("commands", "/bio clear")
-      ]
-    }
   end
 end

@@ -1,16 +1,37 @@
 defmodule RetroHexChat.Commands.Handlers.Wallops do
   @moduledoc "Handler for /wallops <message> — broadcast to +w users."
   use Gettext, backend: RetroHexChat.Gettext
-  @behaviour RetroHexChat.Commands.Handler
 
+  alias RetroHexChat.Commands.CommandSyntax.Parameter
   alias RetroHexChat.Commands.Handler
   alias RetroHexChat.Topics
 
-  @pubsub RetroHexChat.PubSub
+  use RetroHexChat.Commands.Handler,
+    name: "wallops",
+    category: :user,
+    syntax: dgettext("commands", "/wallops <message>"),
+    summary:
+      dgettext(
+        "commands",
+        "Send a message to all users who opted in to operator announcements via /umode +w."
+      ),
+    description:
+      dgettext(
+        "commands",
+        "Send a message to all users who opted in to operator announcements via /umode +w.\nRequires: server operator or server administrator. Message text is required."
+      ),
+    examples: [dgettext("commands", "/wallops Server maintenance in 10 minutes")],
+    parameters: [
+      %Parameter{
+        name: "message",
+        required: true,
+        type: :text,
+        position: 0,
+        description: dgettext("commands", "Message for all users with +w mode")
+      }
+    ]
 
-  @impl true
-  @spec validate(String.t()) :: :ok | {:error, String.t()}
-  def validate(_), do: :ok
+  @pubsub RetroHexChat.PubSub
 
   @impl true
   @spec execute([String.t()], Handler.context()) :: Handler.result()
@@ -37,56 +58,5 @@ defmodule RetroHexChat.Commands.Handlers.Wallops do
     )
 
     {:ok, :system, %{content: dgettext("commands", "Wallops sent.")}}
-  end
-
-  @impl true
-  @spec help() :: %{
-          name: String.t(),
-          syntax: String.t(),
-          description: String.t(),
-          examples: [String.t()]
-        }
-  def help do
-    %{
-      name: "wallops",
-      syntax: dgettext("commands", "/wallops <message>"),
-      description:
-        dgettext(
-          "commands",
-          "Send a message to all users who opted in to operator announcements via /umode +w.\nRequires: server operator or server administrator. Message text is required."
-        ),
-      examples: [dgettext("commands", "/wallops Server maintenance in 10 minutes")]
-    }
-  end
-
-  @impl true
-  def category, do: :user
-
-  @impl true
-  @spec syntax_definition() :: RetroHexChat.Commands.CommandSyntax.t()
-  def syntax_definition do
-    alias RetroHexChat.Commands.CommandSyntax
-    alias RetroHexChat.Commands.CommandSyntax.Parameter
-
-    %CommandSyntax{
-      command: "wallops",
-      syntax: dgettext("commands", "/wallops <message>"),
-      description:
-        dgettext(
-          "commands",
-          "Send a message to all users who opted in to operator announcements via /umode +w."
-        ),
-      category: :user,
-      parameters: [
-        %Parameter{
-          name: "message",
-          required: true,
-          type: :text,
-          position: 0,
-          description: dgettext("commands", "Message for all users with +w mode")
-        }
-      ],
-      examples: [dgettext("commands", "/wallops Server maintenance in 10 minutes")]
-    }
   end
 end

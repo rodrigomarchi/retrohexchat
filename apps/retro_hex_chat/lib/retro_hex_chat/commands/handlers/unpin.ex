@@ -1,14 +1,31 @@
 defmodule RetroHexChat.Commands.Handlers.Unpin do
   @moduledoc "Handler for /unpin <message id>"
   use Gettext, backend: RetroHexChat.Gettext
-  @behaviour RetroHexChat.Commands.Handler
 
+  alias RetroHexChat.Commands.CommandSyntax.Parameter
   alias RetroHexChat.Commands.Handler
   alias RetroHexChat.Commands.Handler.Args
 
-  @impl true
-  @spec validate(String.t()) :: :ok | {:error, String.t()}
-  def validate(_args), do: :ok
+  use RetroHexChat.Commands.Handler,
+    name: "unpin",
+    category: :channel,
+    syntax: dgettext("commands", "/unpin <message id>"),
+    summary: dgettext("commands", "Stop keeping a message in view."),
+    description:
+      dgettext(
+        "commands",
+        "Stop keeping a message in view. The message itself stays where it is — only the pin goes.\nOperators only."
+      ),
+    examples: ["/unpin 1284"],
+    parameters: [
+      %Parameter{
+        name: "message id",
+        required: true,
+        type: :text,
+        position: 0,
+        description: dgettext("commands", "Id of the message to stop keeping")
+      }
+    ]
 
   @impl true
   @spec execute([String.t()], Handler.context()) :: Handler.result()
@@ -31,52 +48,5 @@ defmodule RetroHexChat.Commands.Handlers.Unpin do
           {:ok, :ui_action, :unpin_message, %{channel: channel, message_id: id}}
         end
     end
-  end
-
-  @impl true
-  @spec help() :: %{
-          name: String.t(),
-          syntax: String.t(),
-          description: String.t(),
-          examples: [String.t()]
-        }
-  def help do
-    %{
-      name: "unpin",
-      syntax: dgettext("commands", "/unpin <message id>"),
-      description:
-        dgettext(
-          "commands",
-          "Stop keeping a message in view. The message itself stays where it is — only the pin goes.\nOperators only."
-        ),
-      examples: ["/unpin 1284"]
-    }
-  end
-
-  @impl true
-  def category, do: :channel
-
-  @impl true
-  @spec syntax_definition() :: RetroHexChat.Commands.CommandSyntax.t()
-  def syntax_definition do
-    alias RetroHexChat.Commands.CommandSyntax
-    alias RetroHexChat.Commands.CommandSyntax.Parameter
-
-    %CommandSyntax{
-      command: "unpin",
-      syntax: dgettext("commands", "/unpin <message id>"),
-      description: dgettext("commands", "Stop keeping a message in view."),
-      category: :channel,
-      parameters: [
-        %Parameter{
-          name: "message id",
-          required: true,
-          type: :text,
-          position: 0,
-          description: dgettext("commands", "Id of the message to stop keeping")
-        }
-      ],
-      examples: ["/unpin 1284"]
-    }
   end
 end
