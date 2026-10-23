@@ -225,7 +225,7 @@ batch, not in one run:
 make e2e.prepare                  # wipe retro_hex_chat_e2e, rebuild assets — once
 make e2e.batches                  # the twelve feature batches and their sections
 make e2e.batch BATCH=channels     # one batch
-make e2e.sweep                    # all twelve in order, e2e/.sweep/<batch>.log each
+make e2e.sweep                    # all twelve in order, each on a fresh database, e2e/.sweep/<batch>.log each
 ```
 
 The batches are derived from the `@section` headers by `e2e/scripts/batches.mjs`

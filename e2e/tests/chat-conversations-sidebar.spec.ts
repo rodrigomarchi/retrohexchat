@@ -75,6 +75,38 @@ async function openNewsRoom(browser: Browser, locale: string, prefix: string) {
   return { founder: { chat, ctx, nick } as TestUser, channel };
 }
 
+// The Games section opens with #retro-games and offers the game rooms,
+// empty ones included. A fresh e2e database has none — production gets
+// them from the provisioning script — so the test registers the feed and
+// five rooms about games itself. The feed may already be registered (the
+// provisioning spec registers it, with the games category) and is then left
+// as it is.
+async function openGameRooms(browser: Browser) {
+  const ctx = await browser.newContext();
+  const page = await ctx.newPage();
+  const { chat, nick } = await signedInUser(page, "cng");
+  const rooms = [
+    "#retro-games",
+    ...[1, 2, 3, 4, 5].map(() => uniqueChannel("gameroom")),
+  ];
+
+  for (const channel of rooms) {
+    await chat.sendMessage(`/join ${channel}`);
+    await chat.expectTabVisible(channel);
+    await chat.sendMessage("/cs register");
+    await chat.sendMessage("/cs category games");
+    if (channel !== "#retro-games") {
+      await expect(
+        chat
+          .channelConversationItem(channel)
+          .locator('[data-category="games"]'),
+      ).toBeVisible();
+    }
+  }
+
+  return { founder: { chat, ctx, nick } as TestUser, rooms };
+}
+
 async function openAsVisitor(page: Page, path: string) {
   await page.addInitScript(() => {
     try {
@@ -225,6 +257,7 @@ test.describe("Conversations sidebar", () => {
   test("a visitor's sidebar suggests games, then news in their language, then the rest (V13)", async ({
     browser,
   }) => {
+    const gameRooms = await openGameRooms(browser);
     const ours = await openNewsRoom(browser, "pt_BR", "jornal");
     const theirs = await openNewsRoom(browser, "ja", "shimbun");
     const visitorCtx = await browser.newContext();
@@ -302,13 +335,14 @@ test.describe("Conversations sidebar", () => {
     } finally {
       await visitorCtx.close();
       await phoneCtx.close();
-      await closeUsers([ours.founder, theirs.founder]);
+      await closeUsers([ours.founder, theirs.founder, gameRooms.founder]);
     }
   });
 
   test("see more opens the Channel List on the section's subject (V14)", async ({
     browser,
   }) => {
+    const gameRooms = await openGameRooms(browser);
     const room = await openNewsRoom(browser, "en", "headlines");
     const alice = await newSignedInUser(browser, "csm");
     const visitorCtx = await browser.newContext(PHONE);
@@ -376,7 +410,7 @@ test.describe("Conversations sidebar", () => {
       await shot(visitor, "channel-list-games-phone");
     } finally {
       await visitorCtx.close();
-      await closeUsers([alice, room.founder]);
+      await closeUsers([alice, room.founder, gameRooms.founder]);
     }
   });
 });

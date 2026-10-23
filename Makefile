@@ -269,13 +269,18 @@ e2e.batch: ## Run one feature batch (usage: make e2e.batch BATCH=channels)
 	@cd e2e && test -z "$$(node scripts/batches.mjs $(BATCH) --mobile)" || \
 	  $(E2E_ENV) npx playwright test --project=mobile-chrome $$(node scripts/batches.mjs $(BATCH) --mobile)
 
-e2e.sweep: ## Run every batch in order, one log each, a verdict per batch
+# Each batch starts on a fresh database: specs register channels for good
+# (the game rooms, a category), and a batch that inherited another's would
+# fail on data it never made — the provisioning script on an "already
+# taken" channel — and pass on its own.
+e2e.sweep: ## Run every batch in order on a fresh database each, one log each, a verdict per batch
 	@test -d e2e/.sweep || mkdir -p e2e/.sweep
 	cd e2e && node scripts/batches.mjs --check
 	@fails=""; \
 	for batch in $$(cd e2e && node scripts/batches.mjs --names); do \
 	  printf '\n=== %s ===\n' "$$batch"; \
-	  if $(MAKE) --no-print-directory e2e.batch BATCH=$$batch > e2e/.sweep/$$batch.log 2>&1; then \
+	  $(MAKE) --no-print-directory e2e.db.reset > e2e/.sweep/$$batch.log 2>&1; \
+	  if $(MAKE) --no-print-directory e2e.batch BATCH=$$batch >> e2e/.sweep/$$batch.log 2>&1; then \
 	    echo "PASS  $$batch  (e2e/.sweep/$$batch.log)"; \
 	  else \
 	    echo "FAIL  $$batch  (e2e/.sweep/$$batch.log)"; \

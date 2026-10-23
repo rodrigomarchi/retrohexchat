@@ -67,7 +67,7 @@ can be acted on:
 make e2e.prepare                  # fresh e2e database + assets, once
 make e2e.batches                  # the twelve feature batches
 make e2e.batch BATCH=channels     # one batch, minutes, names a feature when it fails
-make e2e.sweep                    # all twelve in order, a verdict and a log each
+make e2e.sweep                    # all twelve in order, each on a fresh database, a verdict and a log each
 ```
 
 A batch is re-runnable while the cause is still in your head; the whole suite in
