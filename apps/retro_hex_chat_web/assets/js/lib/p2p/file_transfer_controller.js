@@ -253,7 +253,7 @@ export function createFileTransferController(el, ports) {
       try {
         msg = decodeMessage(data);
       } catch (error) {
-        this._failTransfer(t("Received malformed data from the peer."), error);
+        this._failTransfer(t("The other side sent data that could not be read."), error);
         return;
       }
 
@@ -346,7 +346,7 @@ export function createFileTransferController(el, ports) {
         }
       } catch (error) {
         this._sending = false;
-        this._failTransfer(t("Error reading the file while sending."), error);
+        this._failTransfer(t("The file could not be read while it was being sent."), error);
         return;
       }
 
@@ -382,7 +382,7 @@ export function createFileTransferController(el, ports) {
         const buffer = await blob.arrayBuffer();
         hash = await computeHash(buffer);
       } catch (error) {
-        this._failTransfer(t("Could not verify the received file."), error);
+        this._failTransfer(t("The received file could not be checked."), error);
         return;
       }
       const match = hashMatches(hash, this._session.expectedHash);

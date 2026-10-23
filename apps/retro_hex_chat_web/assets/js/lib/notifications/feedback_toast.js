@@ -4,52 +4,21 @@
  * Simpler variant of the Z2 toast — no checkbox, no suppress logic.
  * Used for copy confirmation ("Copied!") and settings saved toasts.
  */
-import { animateIn, animateOut } from "./toast.js";
+import { t } from "../i18n.js";
+import { animateIn, animateOut, createToastElement } from "./toast.js";
 
 /**
- * Create a retro-styled feedback toast element (Info window, no checkbox).
+ * Create a retro-styled feedback toast element: the toast window titled
+ * "Info", with OK and no "Don't show tips again".
  *
  * @param {string} message - Toast text to display
  * @returns {HTMLElement}
  */
 export function createFeedbackToastElement(message) {
-  const wrapper = document.createElement("div");
-  wrapper.className = "toast-notification";
-  wrapper.setAttribute("role", "status");
-  wrapper.setAttribute("aria-live", "polite");
-
-  const win = document.createElement("div");
-  win.className = "window";
-
-  const titleBar = document.createElement("div");
-  titleBar.className = "title-bar";
-  const titleText = document.createElement("div");
-  titleText.className = "title-bar-text";
-  titleText.textContent = "Info";
-  titleBar.appendChild(titleText);
-  win.appendChild(titleBar);
-
-  const body = document.createElement("div");
-  body.className = "window-body";
-
-  const text = document.createElement("div");
-  text.className = "toast-text";
-  text.textContent = message;
-  body.appendChild(text);
-
-  const actions = document.createElement("div");
-  actions.className = "toast-actions";
-
-  const button = document.createElement("button");
-  button.textContent = "OK";
-  button.addEventListener("mousedown", (e) => e.preventDefault());
-  actions.appendChild(button);
-
-  body.appendChild(actions);
-  win.appendChild(body);
-  wrapper.appendChild(win);
-
-  return wrapper;
+  return createToastElement(
+    { text: message },
+    { title: t("Info"), buttonLabel: t("OK"), showCheckbox: false },
+  );
 }
 
 /**

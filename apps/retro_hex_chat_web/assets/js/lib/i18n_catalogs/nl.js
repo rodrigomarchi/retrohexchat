@@ -8,6 +8,7 @@ export const NL = {
   "%{0}: %{1}pts": "%{0}: %{1}pts",
   "%{0}h %{1}m %{2}s": "%{0}h %{1}m %{2}s",
   "%{0}m %{1}s": "%{0}m %{1}s",
+  "%{nickname}'s screen": "%{nickname}-scherm",
   "* New activity": "* Nieuwe activiteit",
   "0 B": "0 B",
   "0 B/s": "0 B/s",
@@ -22,21 +23,53 @@ export const NL = {
   "BUILD!": "BOUWEN!",
   "Blocked file type: %{0}": "Geblokkeerd bestandstype: %{0}",
   "CLEAN RUN": "FOUTLOZE RIT",
+  Camera: "Camera",
   "Camera in use by another application. Try closing other programs using the camera.":
     "Camera in gebruik door een andere toepassing. Probeer andere programma's te sluiten met behulp van de camera.",
+  "Camera off": "Camera uit",
+  "Camera permission denied. Enable camera permission in your browser and try again.":
+    "Camera toestemming geweigerd. Activeer camera toestemming in uw browser en probeer het opnieuw.",
+  "Camera preview is blocked by the browser. Retry the preview.":
+    "Cameravoorbeeld wordt geblokkeerd door de browser. Probeer het voorbeeld nog eens.",
+  "Camera preview is off": "Cameravoorbeeld is uitgeschakeld",
+  "Camera preview starting": "Cameravoorbeeld starten",
+  "Camera preview unavailable": "Cameravoorbeeld niet beschikbaar",
   Cancel: "Annuleren",
   "Channels you join appear in the left panel":
     "Kanalen die u samenvoegt verschijnen in het linkerpaneel",
   "Click to join": "Klik om mee te doen",
   "Click to switch": "Klik om te wisselen",
+  "Connecting to space...": "Verbinden met de ruimte...",
   "Copied!": "Gekopieerd!",
+  "Could not access your microphone or camera.":
+    "Kon geen toegang krijgen tot uw microfoon of camera.",
+  "Could not access your microphone or camera. You can still watch and listen.":
+    "Kon geen toegang krijgen tot uw microfoon of camera. Je kunt nog steeds kijken en luisteren.",
+  "Could not access your microphone or camera. You joined without sending sound or video.":
+    "Kon geen toegang krijgen tot uw microfoon of camera. Je hebt je aangesloten zonder geluid of video te sturen.",
+  "Could not join the group call": "Kon niet deelnemen aan groepsoproep",
+  "Could not list media devices. Check your browser permissions.":
+    "Kon media-apparaten niet tonen. Controleer uw browserrechten.",
+  "Could not open space.": "Kon de ruimte niet openen.",
+  "Could not publish the shared screen.": "Kon het gedeelde scherm niet publiceren.",
+  "Could not read the selected file. Please try another file.":
+    "Kon het geselecteerde bestand niet lezen. Probeer een ander bestand.",
+  "Could not restore your microphone or camera after reconnecting.":
+    "Kon uw microfoon of camera niet herstellen na het opnieuw aansluiten.",
+  "Could not send your reaction.": "Kon je reactie niet versturen.",
   "DEAD BALL": "DODE BAL",
   "DEBRIS FIELD": "PUINVELD",
   "DRAW!": "GELIJKSPEL!",
   "Day %{0} Complete": "Dag %{0} Voltooid",
   "Day %{0}/%{1}": "Dag %{0}/%{1}",
   "Device disconnected, using default device": "Apparaat losgekoppeld, met standaard apparaat",
+  "Device is already in use. Close the other app or retry.":
+    "Apparaat is al in gebruik. Sluit de andere app of probeer het opnieuw.",
+  "Device list failed": "Apparaatlijst mislukt",
+  "Device selection unavailable": "Apparaatselectie is niet beschikbaar",
+  "Devices ready": "Apparaten gereed",
   "Don't show tips again": "Toon geen tips meer",
+  "Drawing the Space...": "De ruimte tekenen...",
   "EARTH INVADED": "AARDE OVERLOPEN",
   "END OF PERIOD %{0}": "Einde periode %{0}",
   "ENGAGE!": "AANVALLEN!",
@@ -48,6 +81,8 @@ export const NL = {
   Fair: "Redelijk",
   "File exceeds the %{0} MB limit (%{1})": "Bestand overschrijdt de %{0} MB limiet (%{1})",
   "First to %{0}": "Eerste naar %{0}",
+  "Focus your shared screen": "Focus uw gedeelde scherm",
+  "Focus your video": "Focus uw video",
   "GAME OVER": "SPEL VOORBIJ",
   "GAME!": "GAME!",
   "GET READY": "MAAK JE KLAAR",
@@ -58,15 +93,31 @@ export const NL = {
   "Game implementation coming soon!": "Game implementatie binnenkort!",
   Good: "Goed",
   "Got it!": "Hebbes.",
+  "Group call media is connecting.": "Groepsgespreksmedia verbinden zich.",
   "HEX HOCKEY": "HEX HOCKEY",
   "HEX SKIING": "HEX SKIING",
   "HEX WARLORDS": "HEX WARL VERMELDINGEN",
+  Info: "Info",
   "Integrity check failed": "Integriteitscontrole mislukt",
   "Invalid regex": "Ongeldige regex",
+  "Join the conference before sending reactions.":
+    "Sluit je aan bij de conferentie voordat je reacties stuurt.",
+  "Joining receive-only": "Alleen ontvangen",
+  "Joining receive-only.": "Alleen ontvangen.",
   "KO!": "K.O.!",
   "LONG!": "TE LANG!",
+  "Loading the Space...": "De ruimte laden...",
   "MATCH OVER": "WEDSTRIJD VOORBIJ",
   "MISSION COMPLETE": "MISSIE VOLTOOID",
+  "Media offer was not received. Retry the media connection.":
+    "Mediaaanbod werd niet ontvangen. Probeer de mediaverbinding opnieuw.",
+  "Media recovery failed. Retry the media connection.":
+    "Media herstel mislukt. Probeer de mediaverbinding opnieuw.",
+  Microphone: "Microfoon",
+  "Microphone in use by another application. Try closing other programs using the microphone.":
+    "Microfoon in gebruik door een andere toepassing. Probeer het sluiten van andere programma's met behulp van de microfoon.",
+  "Microphone is not available for push-to-talk.":
+    "Microfoon is niet beschikbaar voor push-to-talk.",
   "Microphone permission denied. Enable microphone permission in your browser and try again.":
     "Microfoon toestemming geweigerd. Activeer microfoon toestemming in uw browser en probeer het opnieuw.",
   "NET!": "NET!",
@@ -75,6 +126,19 @@ export const NL = {
   "Next round starting...": "Volgende ronde begint...",
   "No Man's Land": "Niemandsland",
   "No camera found.": "Geen camera gevonden.",
+  "No camera found. Turn camera off or retry.":
+    "Geen camera gevonden. Zet de camera uit of probeer het opnieuw.",
+  "No matching microphone or camera was found. Check devices or join receive-only.":
+    "Er is geen passende microfoon of camera gevonden. Controleer apparaten of voeg alleen ontvangen.",
+  "No microphone found.": "Geen microfoon gevonden.",
+  "No microphone found. Turn microphone off or retry.":
+    "Geen microfoon gevonden. Zet de microfoon uit of probeer het opnieuw.",
+  "No microphone or camera found. You can join without sending sound or video.":
+    "Geen microfoon of camera gevonden. U kunt deelnemen zonder het verzenden van geluid of video.",
+  "No screen video track was provided by the browser.":
+    "De browser heeft geen schermvideotrack verstrekt.",
+  "Not speaking": "Spreekt niet",
+  OK: "OK",
   "OPEN SPACE": "OPEN RUIMTE",
   "OUT!": "UIT!",
   "OVT: %{0}": "OVT: %{0}",
@@ -109,6 +173,8 @@ export const NL = {
   "PMs appear as separate conversations in the sidebar":
     "PM's verschijnen als aparte gesprekken in de zijbalk",
   "Peer disconnected": "Peer verbroken",
+  "Permission denied. Retry after allowing access or join receive-only.":
+    "Toestemming geweigerd. Probeer het na het toestaan van toegang of lid worden van alleen ontvangen.",
   Poor: "Slecht",
   "Quick Draw": "Snelle trekker",
   "R%{0}  %{1}": "R%{0}  %{1}",
@@ -119,22 +185,62 @@ export const NL = {
   "ROUND DRAW!": "RONDE GELIJK!",
   "ROUND OVER": "RONDE VOORBIJ",
   "ROUNDS: %{0} - %{1}": "RONDEN: %{0} - %{1}",
+  "Receive-only": "Alleen ontvangen",
+  "Receive-only mode": "Alleen-ontvangmodus",
+  Reconnecting: "Opnieuw verbinden",
   "Reconnecting in %{0}s...": "Herkoppelen in %{0}s...",
   "Reconnection attempt %{0} of %{1}": "Verbindingspoging %{0} van %{1}",
   "Reconnection cancelled. Refresh to try again.":
     "Herverbinding geannuleerd. Vernieuwen om het opnieuw te proberen.",
   Refresh: "Vernieuwen",
+  "Rejoining the media session.": "De mediasessie hervatten.",
+  Remote: "Deelnemer op afstand",
+  "Remote video stopped rendering. Trying to recover the media path.":
+    "Video op afstand stopte met renderen. Ik probeer het mediapad terug te krijgen.",
+  "Requesting a fresh media offer.": "Verzoek om een nieuw mediaaanbod.",
   "Role: %{0}": "Rol: %{0}",
   "Round %{0}": "Rond %{0}",
   "Rounds: %{0} - %{1}  |  Score: %{2} - %{3}": "Rondes: %{0} - %{1}  |  Score: %{2} - %{3}",
   "SECOND SERVE": "TWEEDE SERVICE",
   "SUDDEN DEATH": "SUDDEN DEATH",
   "Score: %{0} - %{1}": "Stand: %{0} - %{1}",
+  "Screen sharing did not provide a video track.": "Screen sharing gaf geen videotrack.",
+  "Screen sharing is not supported by this browser.":
+    "Screen sharing wordt niet ondersteund door deze browser.",
+  "Screen sharing was cancelled or denied.": "Schermdeling werd geannuleerd of geweigerd.",
+  "Screen sharing was disabled by a moderator.":
+    "Schermdeling is uitgeschakeld door een moderator.",
+  "Screen sharing was stopped by a moderator.": "Schermdeling werd gestopt door een moderator.",
+  "Screen sharing will be available after media connects.":
+    "Screen sharing zal beschikbaar zijn na media connects.",
+  "Selected device is unavailable. Choose another device or retry.":
+    "Geselecteerd apparaat is niet beschikbaar. Kies een ander apparaat of probeer het opnieuw.",
+  "Sharing screen": "Scherm wordt gedeeld",
+  "Sound and video did not come back in time. Try to connect them again.":
+    "Geluid en video kwamen niet op tijd terug. Probeer ze weer te verbinden.",
+  Speaker: "Luidspreker",
+  Speaking: "Spreekt",
   "Switching sides...": "Van zijde wisselen...",
   "TIEBREAK!": "TIEBREAK!",
   "TOXIC DESCENT": "GIFTIGE AFDALING",
   "TURBO!": "TURBO!",
+  "The Space took too long to connect.": "De ruimte duurde te lang om verbinding te maken.",
+  "The call could not reach the server": "De oproep kon de server niet bereiken",
+  "The call could not set up sound and video": "De oproep kon geluid en video niet instellen",
+  "The call did not answer in time": "De oproep beantwoordde niet op tijd",
+  "The call lost its link to the server": "De oproep verloor zijn link naar de server",
+  "The call took too long to let you in": "Het telefoontje duurde te lang om je binnen te laten.",
+  "The call's sound and video were cut off. Trying to recover.":
+    "Het geluid en de video zijn afgesloten. Ik probeer te herstellen.",
+  "The file could not be read while it was being sent.":
+    "Het bestand kon niet worden gelezen tijdens het verzenden.",
+  "The group call refused to let you in": "De groepsoproep weigerde je binnen te laten.",
+  "The other side sent data that could not be read.":
+    "De andere kant verzonden gegevens die niet konden worden gelezen.",
+  "The received file could not be checked.": "Het ontvangen bestand kon niet worden gecontroleerd.",
+  Tip: "Tip",
   "Type /help to see all commands": "Type /help om alle commando's te zien",
+  Unknown: "Onbekend",
   "Use ↑ to edit your last message": "Gebruik ↑ om uw laatste bericht te bewerken",
   "VICTORY!": "OVERWINNING!",
   "WAITING FOR OPPONENT": "WACHTEN OP TEGENSTANDER",
@@ -145,10 +251,24 @@ export const NL = {
   "WAVE %{0} CLEARED": "GOLF %{0} GERUIMD",
   "Wait for configuration to load and try again.":
     "Wacht tot de configuratie geladen is en probeer het opnieuw.",
+  "Waiting for media offer. Requesting a fresh offer.":
+    "Wachten op mediaaanbod. Verzoek om een nieuw aanbod.",
   "Waiting for opponent%{0}": "Wachten op tegenstander%{0}",
   "Waiting for opponent...": "Wachten op tegenstander...",
+  You: "Jij",
+  "Your camera is not being sent.": "Je camera wordt niet verstuurd.",
+  "Your camera is unavailable. Check your video devices.":
+    "Uw camera is niet beschikbaar. Controleer je videoapparaten.",
+  "Your local preview appears here when the camera is ready.":
+    "Uw lokale voorbeeld verschijnt hier als de camera klaar is.",
+  "Your microphone and camera are off.": "Je microfoon en camera staan uit.",
+  "Your microphone is unavailable. Check your audio devices.":
+    "Je microfoon is niet beschikbaar. Controleer je audioapparaten.",
   "Your nick was mentioned! Configure alerts in Settings":
     "Je nick werd genoemd! Alerts instellen in instellingen",
+  "Your reaction did not reach the call in time.": "Your reaction did not reach the call in time.",
+  "Your screen": "Je scherm",
+  "Your screen is replacing the camera feed.": "Je scherm vervangt de camerabeelden.",
   "⚠️ Disconnected — Reconnecting...": "Verbinding verbroken...",
   "✓ Reconnected!": "✓ Opnieuw verbonden!",
 };

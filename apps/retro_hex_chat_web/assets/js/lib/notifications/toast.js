@@ -7,22 +7,26 @@ import { t } from "../i18n.js";
  */
 
 /**
- * Create a retro-styled toast notification element.
+ * Create a retro-styled toast notification element: a small window with a
+ * title, the text and one button. A contextual tip and a feedback toast
+ * ("Copied!") are both this window with their own words.
  *
- * @param {Object} tip - Tip definition with id and text
+ * @param {Object} tip - What the toast says: `text`, and `id` for a tip
  * @param {Object} options
+ * @param {string} [options.title] - The title bar's word ("Tip" by default)
+ * @param {string} [options.buttonLabel] - The button's word ("Got it!" by default)
  * @param {boolean} [options.showCheckbox=true] - Show "Don't show tips again" checkbox
  * @param {function} options.onDismiss - Called with (checkboxChecked) when dismissed
  * @returns {HTMLElement}
  */
 export function createToastElement(tip, options = {}) {
-  const { showCheckbox = true, onDismiss } = options;
+  const { showCheckbox = true, onDismiss, title = t("Tip"), buttonLabel = t("Got it!") } = options;
 
   const wrapper = document.createElement("div");
   wrapper.className = "toast-notification";
   wrapper.setAttribute("role", "status");
   wrapper.setAttribute("aria-live", "polite");
-  wrapper.dataset.tipId = tip.id;
+  if (tip.id) wrapper.dataset.tipId = tip.id;
 
   const win = document.createElement("div");
   win.className = "window";
@@ -31,7 +35,7 @@ export function createToastElement(tip, options = {}) {
   titleBar.className = "title-bar";
   const titleText = document.createElement("div");
   titleText.className = "title-bar-text";
-  titleText.textContent = "Tip";
+  titleText.textContent = title;
   titleBar.appendChild(titleText);
   win.appendChild(titleBar);
 
@@ -81,7 +85,7 @@ export function createToastElement(tip, options = {}) {
   }
 
   const button = document.createElement("button");
-  button.textContent = t("Got it!");
+  button.textContent = buttonLabel;
   // Prevent button from stealing focus from chat input
   button.addEventListener("mousedown", (e) => e.preventDefault());
   button.addEventListener("click", () => {

@@ -248,7 +248,7 @@ export function createConferenceConnection(el, ports) {
       });
       this.channel.on("group_call_reaction_error", (payload) => {
         this._notifyWarning(
-          payload?.message || t("Could not send conference reaction."),
+          payload?.message || t("Could not send your reaction."),
           "reaction_failed",
         );
       });
@@ -277,12 +277,12 @@ export function createConferenceConnection(el, ports) {
       });
       this.channel.onError(() => {
         if (!this.closing) {
-          this._notifyError(t("Group call signaling connection failed"), "signaling_failed");
+          this._notifyError(t("The call could not reach the server"), "signaling_failed");
         }
       });
       this.channel.onClose(() => {
         if (!this.closing && this.participantId) {
-          this._notifyWarning(t("Group call signaling channel closed"), "signaling_closed");
+          this._notifyWarning(t("The call lost its link to the server"), "signaling_closed");
         }
       });
 
@@ -294,13 +294,13 @@ export function createConferenceConnection(el, ports) {
         .receive("error", (reply) => {
           log.warn("[group-call] channel join rejected", reply);
           this._notifyError(
-            reply?.reason || t("Group call channel rejected the join"),
+            reply?.reason || t("The group call refused to let you in"),
             "channel_join_rejected",
           );
         })
         .receive("timeout", () => {
           log.warn("[group-call] channel join timed out");
-          this._notifyError(t("Group call channel join timed out"), "channel_join_timeout");
+          this._notifyError(t("The call did not answer in time"), "channel_join_timeout");
         });
     },
 
@@ -314,7 +314,7 @@ export function createConferenceConnection(el, ports) {
       });
 
       if (!push?.receive) {
-        this._notifyError(t("Unable to join group call"), "join_failed");
+        this._notifyError(t("Could not join the group call"), "join_failed");
         return null;
       }
 
@@ -328,10 +328,10 @@ export function createConferenceConnection(el, ports) {
               attempt: this.recoveryAttempts,
               max_attempts: this.maxRecoveryAttempts,
               manual_retry: true,
-              message: reply?.message || t("Unable to join group call"),
+              message: reply?.message || t("Could not join the group call"),
             });
           }
-          this._notifyError(reply?.message || t("Unable to join group call"), "join_failed");
+          this._notifyError(reply?.message || t("Could not join the group call"), "join_failed");
         })
         .receive("timeout", () => {
           this.rejoining = false;
@@ -342,10 +342,10 @@ export function createConferenceConnection(el, ports) {
               attempt: this.recoveryAttempts,
               max_attempts: this.maxRecoveryAttempts,
               manual_retry: true,
-              message: t("Group call join timed out"),
+              message: t("The call took too long to let you in"),
             });
           }
-          this._notifyError(t("Group call join timed out"), "join_timeout");
+          this._notifyError(t("The call took too long to let you in"), "join_timeout");
         });
 
       return push;
@@ -374,7 +374,10 @@ export function createConferenceConnection(el, ports) {
 
     async _processOffer({ sdp, ice_servers, offer_id }) {
       if (!sdp) {
-        this._notifyError(t("Group call media negotiation failed"), "media_negotiation_failed");
+        this._notifyError(
+          t("The call could not set up sound and video"),
+          "media_negotiation_failed",
+        );
         return;
       }
 
@@ -415,7 +418,10 @@ export function createConferenceConnection(el, ports) {
           return;
         }
 
-        this._notifyError(t("Group call media negotiation failed"), "media_negotiation_failed");
+        this._notifyError(
+          t("The call could not set up sound and video"),
+          "media_negotiation_failed",
+        );
       }
     },
 
@@ -469,7 +475,9 @@ export function createConferenceConnection(el, ports) {
       } catch (error) {
         log.warn("[group-call] media capture failed, answering recvonly", error);
         this._notifyWarning(
-          t("Could not access your microphone or camera. You joined receive-only."),
+          t(
+            "Could not access your microphone or camera. You joined without sending sound or video.",
+          ),
           "media_capture_failed",
         );
         this.localStream = emptyMediaStream();
@@ -967,12 +975,15 @@ export function createConferenceConnection(el, ports) {
         .push("group_call_reaction", { reaction })
         ?.receive?.("error", (reply) => {
           this._notifyWarning(
-            reply?.message || t("Could not send conference reaction."),
+            reply?.message || t("Could not send your reaction."),
             "reaction_failed",
           );
         })
         ?.receive?.("timeout", () => {
-          this._notifyWarning(t("Conference reaction timed out."), "reaction_timeout");
+          this._notifyWarning(
+            t("Your reaction did not reach the call in time."),
+            "reaction_timeout",
+          );
         });
     },
 
@@ -1457,7 +1468,7 @@ export function createConferenceConnection(el, ports) {
         attempt,
         max_attempts: this.maxRecoveryAttempts,
         next_retry_ms: delay,
-        message: t("Group call media connection interrupted. Trying to recover."),
+        message: t("The call's sound and video were cut off. Trying to recover."),
       });
 
       this.recoveryTimer = setTimeout(async () => {
@@ -1599,7 +1610,7 @@ export function createConferenceConnection(el, ports) {
             attempt,
             max_attempts: OFFER_WATCHDOG_MAX_ATTEMPTS,
             manual_retry: true,
-            message: t("Media recovery timed out. Retry the media connection."),
+            message: t("Sound and video did not come back in time. Try to connect them again."),
           });
         });
     },
@@ -1662,7 +1673,7 @@ export function createConferenceConnection(el, ports) {
             attempt,
             max_attempts: this.maxRecoveryAttempts,
             manual_retry: true,
-            message: t("Media recovery timed out. Retry the media connection."),
+            message: t("Sound and video did not come back in time. Try to connect them again."),
           });
         });
     },

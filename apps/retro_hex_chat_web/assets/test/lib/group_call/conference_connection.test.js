@@ -265,7 +265,8 @@ describe("GroupCallWebRTCHook media fallback", () => {
     expect(hook.pc.addTrack).not.toHaveBeenCalled();
     expect(hook.pushEvent).toHaveBeenCalledWith("group_call_client_warning", {
       code: "media_capture_failed",
-      message: "Could not access your microphone or camera. You joined receive-only.",
+      message:
+        "Could not access your microphone or camera. You joined without sending sound or video.",
     });
     expect(hook.pushEvent).not.toHaveBeenCalledWith("group_call_client_error", expect.anything());
   });

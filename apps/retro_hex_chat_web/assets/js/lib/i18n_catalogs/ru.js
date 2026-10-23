@@ -8,6 +8,7 @@ export const RU = {
   "%{0}: %{1}pts": "%{0}: %{1}pts",
   "%{0}h %{1}m %{2}s": "%{0}h %{1}m %{2}s",
   "%{0}m %{1}s": "%{0}m %{1}s",
+  "%{nickname}'s screen": "Экран %{nickname}",
   "* New activity": "* Новая деятельность",
   "0 B": "0 B",
   "0 B/s": "0 B/s",
@@ -22,14 +23,40 @@ export const RU = {
   "BUILD!": "Стройте!",
   "Blocked file type: %{0}": "Заблокированный тип файла: %{0}",
   "CLEAN RUN": "Чистый заезд",
+  Camera: "Камера",
   "Camera in use by another application. Try closing other programs using the camera.":
     "Камера, используемая другим приложением. Попробуйте закрыть другие программы с помощью камеры.",
+  "Camera off": "Камера выключена",
+  "Camera permission denied. Enable camera permission in your browser and try again.":
+    "Разрешение камеры отказано. Включите разрешение камеры в вашем браузере и попробуйте снова.",
+  "Camera preview is blocked by the browser. Retry the preview.":
+    "Предварительный просмотр камеры блокируется браузером. Повторите предварительный просмотр.",
+  "Camera preview is off": "Превью камеры отключено",
+  "Camera preview starting": "Предварительный просмотр камеры начинается",
+  "Camera preview unavailable": "Предварительный просмотр камеры недоступен",
   Cancel: "отменить",
   "Channels you join appear in the left panel":
     "Каналы, к которым вы присоединяетесь, появляются в левой панели",
   "Click to join": "Кликните, чтобы присоединиться",
   "Click to switch": "Нажмите, чтобы переключиться",
+  "Connecting to space...": "Подключение к космосу...",
   "Copied!": "Скопировано!",
+  "Could not access your microphone or camera.":
+    "Вы не можете получить доступ к микрофону или камере.",
+  "Could not access your microphone or camera. You can still watch and listen.":
+    "Вы не можете получить доступ к микрофону или камере. Вы можете смотреть и слушать.",
+  "Could not access your microphone or camera. You joined without sending sound or video.":
+    "Вы не можете получить доступ к микрофону или камере. Вы присоединяетесь без передачи звука или видео.",
+  "Could not join the group call": "Не смог присоединиться к групповому вызову",
+  "Could not list media devices. Check your browser permissions.":
+    "Не удалось перечислить медиа-устройства. Проверьте разрешения вашего браузера.",
+  "Could not open space.": "Не удалось открыть пространство.",
+  "Could not publish the shared screen.": "Не удалось опубликовать общий экран.",
+  "Could not read the selected file. Please try another file.":
+    "Не удалось прочитать выбранный файл. Попробуйте другой файл.",
+  "Could not restore your microphone or camera after reconnecting.":
+    "Не удалось восстановить микрофон или камеру после переподключения.",
+  "Could not send your reaction.": "Я не мог передать вашу реакцию.",
   "DEAD BALL": "Мёртвый мяч",
   "DEBRIS FIELD": "Поле обломков",
   "DRAW!": "Ничья!",
@@ -37,7 +64,13 @@ export const RU = {
   "Day %{0}/%{1}": "День %{0}/%{1}",
   "Device disconnected, using default device":
     "Устройство отключено, используя дефолтное устройство",
+  "Device is already in use. Close the other app or retry.":
+    "Устройство уже используется. Закройте другое приложение или повторите.",
+  "Device list failed": "Список устройств провалился",
+  "Device selection unavailable": "Выбор устройства недоступен",
+  "Devices ready": "Устройства готовы",
   "Don't show tips again": "Не показывай чаевые снова",
+  "Drawing the Space...": "Нарисовать пространство...",
   "EARTH INVADED": "Земля захвачена",
   "END OF PERIOD %{0}": "КОНЕЦ ПЕРИОДА %{0}",
   "ENGAGE!": "В бой!",
@@ -49,6 +82,8 @@ export const RU = {
   Fair: "Среднее",
   "File exceeds the %{0} MB limit (%{1})": "Файл превышает лимит %{0} МБ (%{1})",
   "First to %{0}": "Первый до %{0}",
+  "Focus your shared screen": "Сосредоточьте общий экран",
+  "Focus your video": "Сосредоточьте свое видео",
   "GAME OVER": "Игра окончена",
   "GAME!": "Гейм!",
   "GET READY": "Приготовьтесь",
@@ -59,15 +94,30 @@ export const RU = {
   "Game implementation coming soon!": "Реализация игры скоро!",
   Good: "Хорошо.",
   "Got it!": "Понял!",
+  "Group call media is connecting.": "Связь между медиа групповыми вызовами.",
   "HEX HOCKEY": "Хекс Хокки",
   "HEX SKIING": "Секс-кинг",
   "HEX WARLORDS": "Экс-воины",
+  Info: "Информация",
   "Integrity check failed": "Проверка целостности провалилась",
   "Invalid regex": "Неверное регулярное выражение",
+  "Join the conference before sending reactions.":
+    "Присоединяйтесь к конференции, прежде чем отправлять отзывы.",
+  "Joining receive-only": "Присоединяйтесь только для получения",
+  "Joining receive-only.": "Присоединяйтесь только для получения.",
   "KO!": "Нокаут!",
   "LONG!": "Аут!",
+  "Loading the Space...": "Загрузить пространство...",
   "MATCH OVER": "Матч окончен",
   "MISSION COMPLETE": "Задание выполнено",
+  "Media offer was not received. Retry the media connection.":
+    "Предложение СМИ не было получено. Повторите связь со СМИ.",
+  "Media recovery failed. Retry the media connection.":
+    "Восстановление СМИ провалилось. Повторите связь со СМИ.",
+  Microphone: "Микрофон",
+  "Microphone in use by another application. Try closing other programs using the microphone.":
+    "Микрофон, используемый другим приложением. Попробуйте закрыть другие программы с помощью микрофона.",
+  "Microphone is not available for push-to-talk.": "Микрофон не доступен для общения.",
   "Microphone permission denied. Enable microphone permission in your browser and try again.":
     "Разрешение микрофона отказано. Включите разрешение микрофона в браузере и попробуйте снова.",
   "NET!": "Сетка!",
@@ -76,6 +126,19 @@ export const RU = {
   "Next round starting...": "Следующий раунд начинается...",
   "No Man's Land": "Ничейная земля",
   "No camera found.": "Камеры не нашли.",
+  "No camera found. Turn camera off or retry.":
+    "Камеры не нашли. Выключите камеру или повторите попытку.",
+  "No matching microphone or camera was found. Check devices or join receive-only.":
+    "Ни одного соответствующего микрофона или камеры обнаружено не было. Проверьте устройства или присоединяйтесь только к приему.",
+  "No microphone found.": "Микрофон не найден.",
+  "No microphone found. Turn microphone off or retry.":
+    "Микрофон не найден. Выключите микрофон или повторите попытку.",
+  "No microphone or camera found. You can join without sending sound or video.":
+    "Ни микрофона, ни камеры не найдено. Вы можете присоединиться без отправки звука или видео.",
+  "No screen video track was provided by the browser.":
+    "Никаких экранных видеотреков браузером предоставлено не было.",
+  "Not speaking": "Не говорит",
+  OK: "OK",
   "OPEN SPACE": "Открытый космос",
   "OUT!": "Аут!",
   "OVT: %{0}": "Исполнитель: %{0}",
@@ -110,6 +173,8 @@ export const RU = {
   "PMs appear as separate conversations in the sidebar":
     "ПМ появляются как отдельные разговоры на боковой панели",
   "Peer disconnected": "Пэр отключился",
+  "Permission denied. Retry after allowing access or join receive-only.":
+    "Разрешение отказано. Повторяйте после предоставления доступа или присоединяйтесь только к приему.",
   Poor: "бедный",
   "Quick Draw": "Быстрый выстрел",
   "R%{0}  %{1}": "R%{0}  %{1}",
@@ -120,21 +185,61 @@ export const RU = {
   "ROUND DRAW!": "Ничья в раунде!",
   "ROUND OVER": "Раунд окончен",
   "ROUNDS: %{0} - %{1}": "РАУНДЫ: %{0} - %{1}",
+  "Receive-only": "Только приём",
+  "Receive-only mode": "Режим только для приема",
+  Reconnecting: "Переподключение",
   "Reconnecting in %{0}s...": "Воссоединение в %{0}...",
   "Reconnection attempt %{0} of %{1}": "Попытка переподключения %{0} из %{1}",
   "Reconnection cancelled. Refresh to try again.": "Воссоединение отменено. Попробуй еще раз.",
   Refresh: "Обновить",
+  "Rejoining the media session.": "Возвращение на медиасессию.",
+  Remote: "Удалённый участник",
+  "Remote video stopped rendering. Trying to recover the media path.":
+    "Удаленное видео прекратило рендеринг. Пытаюсь восстановить медийный путь.",
+  "Requesting a fresh media offer.": "Запросить новое медиа-предложение.",
   "Role: %{0}": "Роль: %{0}",
   "Round %{0}": "Раунд %{0}",
   "Rounds: %{0} - %{1}  |  Score: %{2} - %{3}": "Раунды: %{0} - %{1}  |  Счёт: %{2} - %{3}",
   "SECOND SERVE": "Вторая подача",
   "SUDDEN DEATH": "Внезапная смерть",
   "Score: %{0} - %{1}": "Оценка: %{0} - %{1}",
+  "Screen sharing did not provide a video track.": "Обмен экранами не обеспечивал видеодорожки.",
+  "Screen sharing is not supported by this browser.":
+    "Совместное использование экрана не поддерживается этим браузером.",
+  "Screen sharing was cancelled or denied.": "Разделение экрана было отменено или отклонено.",
+  "Screen sharing was disabled by a moderator.": "Разделение экрана было отключено модератором.",
+  "Screen sharing was stopped by a moderator.": "Разделение экрана было остановлено модератором.",
+  "Screen sharing will be available after media connects.":
+    "Совместное использование экрана будет доступно после подключения средств массовой информации.",
+  "Selected device is unavailable. Choose another device or retry.":
+    "Выбранное устройство недоступно. Выберите другое устройство или повторите.",
+  "Sharing screen": "Демонстрация экрана",
+  "Sound and video did not come back in time. Try to connect them again.":
+    "Звук и видео не вернулись в прошлое. Попробуйте соединить их снова.",
+  Speaker: "Динамик",
+  Speaking: "Говорит",
   "Switching sides...": "Переключение сторон...",
   "TIEBREAK!": "Тай-брейк!",
   "TOXIC DESCENT": "Ядовитый спуск",
   "TURBO!": "Турбо!",
+  "The Space took too long to connect.": "Пространство слишком долго соединялось.",
+  "The call could not reach the server": "Звонок не мог попасть на сервер",
+  "The call could not set up sound and video": "Звонок не мог настроить звук и видео",
+  "The call did not answer in time": "Звонок вовремя не ответил",
+  "The call lost its link to the server": "Звонок потерял связь с сервером",
+  "The call took too long to let you in":
+    "Звонок занял слишком много времени, чтобы впустить тебя.",
+  "The call's sound and video were cut off. Trying to recover.":
+    "Звук и видео были отключены. Пытаюсь восстановиться.",
+  "The file could not be read while it was being sent.":
+    "Файл не мог быть прочитан во время его отправки.",
+  "The group call refused to let you in": "Групповой звонок отказался впустить вас",
+  "The other side sent data that could not be read.":
+    "Другая сторона отправляла данные, которые не могли быть прочитаны.",
+  "The received file could not be checked.": "Полученный файл проверить не удалось.",
+  Tip: "Совет",
   "Type /help to see all commands": "Тип /help для просмотра всех команд",
+  Unknown: "Неизвестно",
   "Use ↑ to edit your last message": "Используйте ↑ для редактирования последнего сообщения",
   "VICTORY!": "Победа!",
   "WAITING FOR OPPONENT": "Ожидание соперника",
@@ -145,10 +250,24 @@ export const RU = {
   "WAVE %{0} CLEARED": "Волна %{0} зачищена",
   "Wait for configuration to load and try again.":
     "Дождитесь загрузки конфигурации и попробуйте снова.",
+  "Waiting for media offer. Requesting a fresh offer.":
+    "Ждем предложения от СМИ. Запросить свежее предложение.",
   "Waiting for opponent%{0}": "Ожидание соперника%{0}",
   "Waiting for opponent...": "В ожидании соперника...",
+  You: "Вы",
+  "Your camera is not being sent.": "Ваша камера не отправляется.",
+  "Your camera is unavailable. Check your video devices.":
+    "Ваша камера недоступна. Проверьте свои видео устройства.",
+  "Your local preview appears here when the camera is ready.":
+    "Ваш локальный предварительный просмотр появляется здесь, когда камера готова.",
+  "Your microphone and camera are off.": "Ваш микрофон и камера выключены.",
+  "Your microphone is unavailable. Check your audio devices.":
+    "Ваш микрофон недоступен. Проверьте свои аудиоустройства.",
   "Your nick was mentioned! Configure alerts in Settings":
     "Твой ник был упомянут! Настройка оповещений в настройках",
+  "Your reaction did not reach the call in time.": "Ваша реакция не достигла звонка вовремя.",
+  "Your screen": "Ваш экран",
+  "Your screen is replacing the camera feed.": "Ваш экран заменяет камеру.",
   "⚠️ Disconnected — Reconnecting...": "️ Разъединенный — Воссоединение",
   "✓ Reconnected!": "✓ Соединение восстановлено!",
 };

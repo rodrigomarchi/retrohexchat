@@ -41,7 +41,12 @@ const BUDGETS = {
   // before anything else runs, so none of it can be lazy.
   entry: 490 * KIB,
   entryGzip: 130 * KIB,
-  localeChunk: 20 * KIB,
+  // A browser catalog holds every message the JS asks to translate
+  // (scripts/i18n_js_catalog_check.py), which is twice what it held when this
+  // was 20 KiB: half the messages had never reached it. esbuild writes each
+  // non-ASCII character as \uXXXX, so Cyrillic and CJK weigh about twice their
+  // file; Russian is the largest.
+  localeChunk: 44 * KIB,
   featureChunk: 50 * KIB,
   asyncChunk: 85 * KIB,
   // The desktop's critical path. This is the number that matters most on this

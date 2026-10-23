@@ -8,6 +8,7 @@ export const ID = {
   "%{0}: %{1}pts": "%{0}: %{1}quotes",
   "%{0}h %{1}m %{2}s": "%{0}h %{1}m %{2}s",
   "%{0}m %{1}s": "%{0}m %{1}s",
+  "%{nickname}'s screen": "Layar %{nickname}",
   "* New activity": "* Aktivitas baru",
   "0 B": "0 B",
   "0 B/s": "0 B/s",
@@ -22,20 +23,51 @@ export const ID = {
   "BUILD!": "BANGUN!",
   "Blocked file type: %{0}": "Tipe berkas diblokir: %{0}",
   "CLEAN RUN": "LARI BERSIH",
+  Camera: "Kamera",
   "Camera in use by another application. Try closing other programs using the camera.":
     "Kamera digunakan oleh aplikasi lain. Coba tutup program lain menggunakan kamera.",
+  "Camera off": "Kamera mati",
+  "Camera permission denied. Enable camera permission in your browser and try again.":
+    "Izin kamera ditolak. Aktifkan ijin kamera pada peramban Anda dan coba lagi.",
+  "Camera preview is blocked by the browser. Retry the preview.":
+    "Pratinjau kamera diblokir oleh peramban. Coba ulang preview.",
+  "Camera preview is off": "Pratilik kamera mati",
+  "Camera preview starting": "Pratilik kamera dimulai",
+  "Camera preview unavailable": "Pratinjau kamera tidak tersedia",
   Cancel: "Batal",
   "Channels you join appear in the left panel": "Kanal yang Anda gabung muncul di panel kiri",
   "Click to join": "Klik untuk bergabung",
   "Click to switch": "Klik untuk menukar",
+  "Connecting to space...": "Menyambung ke ruang...",
   "Copied!": "Disalin!",
+  "Could not access your microphone or camera.": "Tak bisa mengakses mikrofon atau kameramu.",
+  "Could not access your microphone or camera. You can still watch and listen.":
+    "Tak bisa mengakses mikrofon atau kameramu. Anda masih dapat menonton dan mendengarkan.",
+  "Could not access your microphone or camera. You joined without sending sound or video.":
+    "Tak bisa mengakses mikrofon atau kameramu. Kau bergabung tanpa mengirim suara atau video.",
+  "Could not join the group call": "Tidak dapat bergabung dengan grup panggilan",
+  "Could not list media devices. Check your browser permissions.":
+    "Tak dapat mendaftar perangkat media. Periksa izin peramban Anda.",
+  "Could not open space.": "Tidak dapat membuka ruang.",
+  "Could not publish the shared screen.": "Tidak dapat mempublikasikan layar bersama.",
+  "Could not read the selected file. Please try another file.":
+    "Tak bisa membaca berkas yang dipilih. Silakan coba berkas lain.",
+  "Could not restore your microphone or camera after reconnecting.":
+    "Tidak dapat mengembalikan mikrofon atau kamera Anda setelah menyambung kembali.",
+  "Could not send your reaction.": "Tidak bisa mengirimkan reaksi Anda.",
   "DEAD BALL": "BOLA MATI",
   "DEBRIS FIELD": "MEDAN PUING",
   "DRAW!": "SERI!",
   "Day %{0} Complete": "Hari %{0} selesai",
   "Day %{0}/%{1}": "Hari %{0}/%{1}",
   "Device disconnected, using default device": "Perangkat terputus, menggunakan perangkat baku",
+  "Device is already in use. Close the other app or retry.":
+    "Device is already in use. Close the other app or retry.",
+  "Device list failed": "Daftar perangkat gagal",
+  "Device selection unavailable": "Pilihan perangkat tidak tersedia",
+  "Devices ready": "Perangkat siap",
   "Don't show tips again": "Jangan tampilkan tips lagi",
+  "Drawing the Space...": "Menggambar Ruang...",
   "EARTH INVADED": "BUMI DISERBU",
   "END OF PERIOD %{0}": "AKHIR PERIODE %{0}",
   "ENGAGE!": "SERANG!",
@@ -47,6 +79,8 @@ export const ID = {
   Fair: "Cukup",
   "File exceeds the %{0} MB limit (%{1})": "Berkas melebihi batas %{0} MB (%{1})",
   "First to %{0}": "Pertama ke %{0}",
+  "Focus your shared screen": "Fokuskan layar bersama Anda",
+  "Focus your video": "Fokus video Anda",
   "GAME OVER": "PERMAINAN BERAKHIR",
   "GAME!": "GIM!",
   "GET READY": "BERSIAP",
@@ -57,15 +91,30 @@ export const ID = {
   "Game implementation coming soon!": "Permainan segera dimulai!",
   Good: "Baik",
   "Got it!": "Dapat!",
+  "Group call media is connecting.": "Media panggilan grup sedang menyambung.",
   "HEX HOCKEY": "HEX HOCKEY",
   "HEX SKIING": "HEX SKIING",
   "HEX WARLORDS": "HEX WARLORDS",
+  Info: "Info",
   "Integrity check failed": "Pemeriksaan integritas gagal",
   "Invalid regex": "Regex tidak valid",
+  "Join the conference before sending reactions.":
+    "Bergabung dengan konferensi sebelum mengirimkan reaksi.",
+  "Joining receive-only": "Bergabung menerima -hanya",
+  "Joining receive-only.": "Bergabung menerima saja.",
   "KO!": "KO!",
   "LONG!": "TERLALU JAUH!",
+  "Loading the Space...": "Memuat Ruang...",
   "MATCH OVER": "PERTANDINGAN SELESAI",
   "MISSION COMPLETE": "MISI SELESAI",
+  "Media offer was not received. Retry the media connection.":
+    "Tawaran media tidak diterima. Coba kembali koneksi media.",
+  "Media recovery failed. Retry the media connection.":
+    "Pemulihan media gagal. Coba kembali koneksi media.",
+  Microphone: "Mikrofon",
+  "Microphone in use by another application. Try closing other programs using the microphone.":
+    "Mikrofon digunakan oleh aplikasi lain. Coba tutup program lain menggunakan mikrofon.",
+  "Microphone is not available for push-to-talk.": "Mikrofon tidak tersedia untuk push-to-talk.",
   "Microphone permission denied. Enable microphone permission in your browser and try again.":
     "Izin Mikrofon ditolak. Aktifkan ijin mikrofon dalam peramban Anda dan coba lagi.",
   "NET!": "NET!",
@@ -74,6 +123,19 @@ export const ID = {
   "Next round starting...": "Ronde berikutnya dimulai...",
   "No Man's Land": "Tanah tak bertuan",
   "No camera found.": "Tidak ada kamera ditemukan.",
+  "No camera found. Turn camera off or retry.":
+    "Tidak ada kamera ditemukan. Matikan kamera atau coba lagi.",
+  "No matching microphone or camera was found. Check devices or join receive-only.":
+    "Tidak ada mikrofon cocok atau kamera ditemukan. Periksa perangkat atau bergabung menerima -saja.",
+  "No microphone found.": "Tidak ada mikrofon ditemukan.",
+  "No microphone found. Turn microphone off or retry.":
+    "Tidak ada mikrofon ditemukan. Matikan mikrofonnya atau coba lagi.",
+  "No microphone or camera found. You can join without sending sound or video.":
+    "Tidak ada mikrofon atau kamera ditemukan. Anda dapat bergabung tanpa mengirim suara atau video.",
+  "No screen video track was provided by the browser.":
+    "Tak ada trek video layar yang disediakan oleh peramban.",
+  "Not speaking": "Tidak berbicara",
+  OK: "OK",
   "OPEN SPACE": "RUANG TERBUKA",
   "OUT!": "KELUAR!",
   "OVT: %{0}": "OVT: %{0}",
@@ -108,6 +170,8 @@ export const ID = {
   "PMs appear as separate conversations in the sidebar":
     "PM muncul sebagai percakapan terpisah di batang sisi",
   "Peer disconnected": "Peer terputus",
+  "Permission denied. Retry after allowing access or join receive-only.":
+    "Izin ditolak. Coba lagi setelah mengijinkan akses atau bergabung hanya menerima.",
   Poor: "Buruk",
   "Quick Draw": "Tembak cepat",
   "R%{0}  %{1}": "R%{0}  %{1}",
@@ -118,22 +182,62 @@ export const ID = {
   "ROUND DRAW!": "RONDE SERI!",
   "ROUND OVER": "RONDE SELESAI",
   "ROUNDS: %{0} - %{1}": "RONDE: %{0} - %{1}",
+  "Receive-only": "Hanya menerima",
+  "Receive-only mode": "Modus penerimaan -saja",
+  Reconnecting: "Menghubungkan ulang",
   "Reconnecting in %{0}s...": "Menyambung kembali dalam %{0}s...",
   "Reconnection attempt %{0} of %{1}": "Upaya menyambung ulang %{0} dari %{1}",
   "Reconnection cancelled. Refresh to try again.":
     "Rekonstruksi dibatalkan. Refresh untuk mencoba lagi.",
   Refresh: "Muat ulang",
+  "Rejoining the media session.": "Bergabung kembali dengan sesi media.",
+  Remote: "Peserta jarak jauh",
+  "Remote video stopped rendering. Trying to recover the media path.":
+    "Video jarak jauh berhenti merekam. Mencoba untuk memulihkan jalur media.",
+  "Requesting a fresh media offer.": "Meminta tawaran media baru.",
   "Role: %{0}": "Peran: %{0}",
   "Round %{0}": "Ronde %{0}",
   "Rounds: %{0} - %{1}  |  Score: %{2} - %{3}": "Ronde: %{0} - %{1}  |  Skor: %{2} - %{3}",
   "SECOND SERVE": "SERVIS KEDUA",
   "SUDDEN DEATH": "KEMATIAN MENDADAK",
   "Score: %{0} - %{1}": "Nilai: %{0} - %{1}",
+  "Screen sharing did not provide a video track.": "Berbagi layar tak menyediakan trek video.",
+  "Screen sharing is not supported by this browser.":
+    "Berbagi layar tidak didukung oleh peramban ini.",
+  "Screen sharing was cancelled or denied.": "Berbagi layar dibatalkan atau ditolak.",
+  "Screen sharing was disabled by a moderator.":
+    "Berbagi layar dinonaktifkan oleh seorang moderator.",
+  "Screen sharing was stopped by a moderator.": "Berbagi layar dihentikan oleh seorang moderator.",
+  "Screen sharing will be available after media connects.":
+    "Berbagi layar akan tersedia setelah media terhubung.",
+  "Selected device is unavailable. Choose another device or retry.":
+    "Perangkat yang dipilih tidak tersedia. Pilih perangkat lain atau coba lagi.",
+  "Sharing screen": "Berbagi layar",
+  "Sound and video did not come back in time. Try to connect them again.":
+    "Suara dan video tidak kembali dalam waktu. Coba hubungkan lagi.",
+  Speaker: "Speaker",
+  Speaking: "Berbicara",
   "Switching sides...": "Beralih sisi...",
   "TIEBREAK!": "TIEBREAK!",
   "TOXIC DESCENT": "TURUNAN BERACUN",
   "TURBO!": "TURBO!",
+  "The Space took too long to connect.": "Ruang terlalu lama untuk terhubung.",
+  "The call could not reach the server": "Panggilan tidak dapat mencapai server",
+  "The call could not set up sound and video": "Panggilan tidak dapat mengatur suara dan video",
+  "The call did not answer in time": "Panggilan tidak menjawab dalam waktu",
+  "The call lost its link to the server": "Panggilan kehilangan link ke server",
+  "The call took too long to let you in": "Panggilan terlalu lama untuk membiarkan Anda masuk",
+  "The call's sound and video were cut off. Trying to recover.":
+    "Panggilan dan video terputus. Mencoba untuk pulih.",
+  "The file could not be read while it was being sent.":
+    "Berkas ini tidak dapat dibaca saat sedang dikirim.",
+  "The group call refused to let you in": "Kelompok panggilan menolak untuk membiarkan Anda masuk",
+  "The other side sent data that could not be read.":
+    "Sisi lain mengirim data yang tidak dapat dibaca.",
+  "The received file could not be checked.": "Berkas yang diterima tidak dapat diperiksa.",
+  Tip: "Tips",
   "Type /help to see all commands": "Tipe /help untuk melihat semua perintah",
+  Unknown: "Tidak diketahui",
   "Use ↑ to edit your last message": "Gunakan Singapura untuk menyunting pesan terakhir Anda",
   "VICTORY!": "MENANG!",
   "WAITING FOR OPPONENT": "MENUNGGU LAWAN",
@@ -143,10 +247,24 @@ export const ID = {
   "WAVE %{0}": "GELOMBANG %{0}",
   "WAVE %{0} CLEARED": "GELOMBANG %{0} SELESAI",
   "Wait for configuration to load and try again.": "Tunggu konfigurasi untuk dimuat dan coba lagi.",
+  "Waiting for media offer. Requesting a fresh offer.":
+    "Menunggu tawaran media. Meminta tawaran baru.",
   "Waiting for opponent%{0}": "Menunggu lawan%{0}",
   "Waiting for opponent...": "Menunggu lawan...",
+  You: "Anda",
+  "Your camera is not being sent.": "Kamera Anda tidak sedang dikirim.",
+  "Your camera is unavailable. Check your video devices.":
+    "Kameramu tidak tersedia. Periksa perangkat video Anda.",
+  "Your local preview appears here when the camera is ready.":
+    "Pratilik lokal Anda muncul di sini ketika kamera siap.",
+  "Your microphone and camera are off.": "Mikrofon dan kameramu mati.",
+  "Your microphone is unavailable. Check your audio devices.":
+    "Mikrofon Anda tidak tersedia. Periksa perangkat audio Anda.",
   "Your nick was mentioned! Configure alerts in Settings":
     "Anda nick disebutkan! Atur peringatan di Pengaturan",
+  "Your reaction did not reach the call in time.": "Reaksimu tidak mencapai panggilan tepat waktu.",
+  "Your screen": "Layar Anda",
+  "Your screen is replacing the camera feed.": "Layar Anda mengganti feed kamera.",
   "⚠️ Disconnected — Reconnecting...": "Diputus.",
   "✓ Reconnected!": "✓ Tersambung kembali!",
 };

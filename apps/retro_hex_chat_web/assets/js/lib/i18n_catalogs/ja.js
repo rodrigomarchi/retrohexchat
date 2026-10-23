@@ -8,6 +8,7 @@ export const JA = {
   "%{0}: %{1}pts": "%{0}: %{1}pts",
   "%{0}h %{1}m %{2}s": "%{0}h %{1}m %{2}s",
   "%{0}m %{1}s": "%{0}m %{1}s",
+  "%{nickname}'s screen": "%{nickname}の画面",
   "* New activity": "の特長\n* 新しい活動",
   "0 B": "0 B",
   "0 B/s": "0 B/s",
@@ -22,20 +23,51 @@ export const JA = {
   "BUILD!": "ビルド！",
   "Blocked file type: %{0}": "ブロックされたファイルタイプ: %{0}",
   "CLEAN RUN": "ノーミス走行",
+  Camera: "カメラ",
   "Camera in use by another application. Try closing other programs using the camera.":
     "別の適用によって使用中のカメラ。 カメラを使って他のプログラムを閉じる",
+  "Camera off": "カメラオフ",
+  "Camera permission denied. Enable camera permission in your browser and try again.":
+    "カメラの許可が拒否されました。 お使いのブラウザでカメラ権限を有効にし、再度お試しください。",
+  "Camera preview is blocked by the browser. Retry the preview.":
+    "カメラプレビューはブラウザでブロックされます。 プレビューを再試行します。",
+  "Camera preview is off": "カメラプレビューがオフ",
+  "Camera preview starting": "カメラプレビュー開始",
+  "Camera preview unavailable": "カメラプレビューは使用できません",
   Cancel: "の特長\nキャンセル",
   "Channels you join appear in the left panel": "参加するチャンネルは左パネルに表示されます。",
   "Click to join": "参加する",
   "Click to switch": "クリックしてスイッチ",
+  "Connecting to space...": "空間への接続...",
   "Copied!": "コピーしました！",
+  "Could not access your microphone or camera.": "マイクやカメラにアクセスできません。",
+  "Could not access your microphone or camera. You can still watch and listen.":
+    "マイクやカメラにアクセスできません。 視聴して聴くこともできます。",
+  "Could not access your microphone or camera. You joined without sending sound or video.":
+    "マイクやカメラにアクセスできません。 音声や動画を送らずに参加しました。",
+  "Could not join the group call": "グループコールに参加できません",
+  "Could not list media devices. Check your browser permissions.":
+    "メディアデバイスをリストできません。 ブラウザの許可を確認してください。",
+  "Could not open space.": "スペースを開けない。",
+  "Could not publish the shared screen.": "共有画面を公開できません。",
+  "Could not read the selected file. Please try another file.":
+    "選択したファイルを読み込むことができません。 別のファイルをお試しください。",
+  "Could not restore your microphone or camera after reconnecting.":
+    "再接続後にマイクやカメラを復元できません。",
+  "Could not send your reaction.": "反応を送信できません。",
   "DEAD BALL": "デッドボール",
   "DEBRIS FIELD": "デブリ帯",
   "DRAW!": "引き分け！",
   "Day %{0} Complete": "%{0}日目完了",
   "Day %{0}/%{1}": "%{0}/%{1}日目",
   "Device disconnected, using default device": "デバイスの切断、デフォルトデバイスを使用して",
+  "Device is already in use. Close the other app or retry.":
+    "デバイスは既に使用中です。 他のアプリやリトライを閉じます。",
+  "Device list failed": "デバイスリストが失敗しました",
+  "Device selection unavailable": "装置選択は利用できません",
+  "Devices ready": "デバイスの準備",
   "Don't show tips again": "もう一度ヒントを表示しないでください",
+  "Drawing the Space...": "Drawing the Space...",
   "EARTH INVADED": "地球侵略",
   "END OF PERIOD %{0}": "ピリオド %{0} 終了",
   "ENGAGE!": "交戦！",
@@ -47,6 +79,8 @@ export const JA = {
   Fair: "普通",
   "File exceeds the %{0} MB limit (%{1})": "ファイルは%{0} MBの限界を超過します(%{1})",
   "First to %{0}": "まず%{0}",
+  "Focus your shared screen": "共有画面を集中",
+  "Focus your video": "ビデオを集中",
   "GAME OVER": "ゲームオーバー",
   "GAME!": "ゲーム！",
   "GET READY": "準備して",
@@ -57,15 +91,30 @@ export const JA = {
   "Game implementation coming soon!": "近日公開予定!",
   Good: "お問い合わせ",
   "Got it!": "お問い合わせ",
+  "Group call media is connecting.": "グループコールメディアを接続しています。",
   "HEX HOCKEY": "HEXホッケー",
   "HEX SKIING": "HEXスキー",
   "HEX WARLORDS": "ヘクスワーラーズ",
+  Info: "情報",
   "Integrity check failed": "整合性チェック失敗",
   "Invalid regex": "正規表現が無効です",
+  "Join the conference before sending reactions.": "反応を送信する前に会議に参加してください。",
+  "Joining receive-only": "受取人への参加",
+  "Joining receive-only.": "受取人への参加",
   "KO!": "KO！",
   "LONG!": "アウト（ロング）！",
+  "Loading the Space...": "スペースをロードする...",
   "MATCH OVER": "試合終了",
   "MISSION COMPLETE": "ミッション完了",
+  "Media offer was not received. Retry the media connection.":
+    "媒体の提供は受け取りませんでした。 メディア接続を再試行します。",
+  "Media recovery failed. Retry the media connection.":
+    "媒体の回復は失敗しました。 メディア接続を再試行します。",
+  Microphone: "マイク",
+  "Microphone in use by another application. Try closing other programs using the microphone.":
+    "別のアプリケーションで使用するマイク。 マイクを使って他のプログラムを閉じよう。",
+  "Microphone is not available for push-to-talk.":
+    "プッシュ・トゥ・トークではマイクロホンは使用できません。",
   "Microphone permission denied. Enable microphone permission in your browser and try again.":
     "マイクロホンの許可は拒否されました。 お使いのブラウザでマイクの許可を有効にし、再度お試しください。",
   "NET!": "ネット！",
@@ -74,6 +123,19 @@ export const JA = {
   "Next round starting...": "次のラウンドスタート...",
   "No Man's Land": "無人地帯",
   "No camera found.": "カメラが見つかりません。",
+  "No camera found. Turn camera off or retry.":
+    "カメラが見つかりません。 カメラをオフまたはリトライする。",
+  "No matching microphone or camera was found. Check devices or join receive-only.":
+    "マッチングマイクやカメラが見つかりませんでした。 デバイスをチェックするか、受信専用に参加してください。",
+  "No microphone found.": "マイクが見つかりません。",
+  "No microphone found. Turn microphone off or retry.":
+    "マイクが見つかりません。 マイクをオフまたはリトライします。",
+  "No microphone or camera found. You can join without sending sound or video.":
+    "マイクやカメラが見つかりません。 音声や動画を送らずに参加できます。",
+  "No screen video track was provided by the browser.":
+    "ブラウザでは画面の動画を配信していません。",
+  "Not speaking": "発言していません",
+  OK: "OK",
   "OPEN SPACE": "オープンスペース",
   "OUT!": "アウト！",
   "OVT: %{0}": "OVT: %{0}",
@@ -108,6 +170,8 @@ export const JA = {
   "PMs appear as separate conversations in the sidebar":
     "PMはサイドバーの別の会話として表示されます",
   "Peer disconnected": "ピア切断",
+  "Permission denied. Retry after allowing access or join receive-only.":
+    "許可が拒否されました。 アクセスを許可するか、または受信専用の参加を許可した後に再試行してください。",
   Poor: "ポアー",
   "Quick Draw": "早撃ち",
   "R%{0}  %{1}": "R%{0}  %{1}",
@@ -118,21 +182,61 @@ export const JA = {
   "ROUND DRAW!": "ラウンド引き分け！",
   "ROUND OVER": "ラウンド終了",
   "ROUNDS: %{0} - %{1}": "ラウンド: %{0} - %{1}",
+  "Receive-only": "受信のみ",
+  "Receive-only mode": "受信モード",
+  Reconnecting: "再接続中",
   "Reconnecting in %{0}s...": "%{0}で再接続...",
   "Reconnection attempt %{0} of %{1}": "再接続 %{0}/%{1} 回目",
   "Reconnection cancelled. Refresh to try again.": "再接続解除。 もう一度お試しください。",
   Refresh: "更新",
+  "Rejoining the media session.": "メディアセッションのリジョイント",
+  Remote: "リモート参加者",
+  "Remote video stopped rendering. Trying to recover the media path.":
+    "遠隔ビデオはレンダリングを停止しました。 メディアパスを回復しようとする。",
+  "Requesting a fresh media offer.": "新鮮な媒体の提供を要求して下さい。",
   "Role: %{0}": "役割: %{0}",
   "Round %{0}": "ラウンド %{0}",
   "Rounds: %{0} - %{1}  |  Score: %{2} - %{3}": "ラウンド: %{0} - %{1}  |  スコア: %{2} - %{3}",
   "SECOND SERVE": "セカンドサーブ",
   "SUDDEN DEATH": "サドンデス",
   "Score: %{0} - %{1}": "スコア: %{0} - %{1}",
+  "Screen sharing did not provide a video track.":
+    "画面共有はビデオトラックを提供していませんでした。",
+  "Screen sharing is not supported by this browser.":
+    "画面共有は、このブラウザではサポートされていません。",
+  "Screen sharing was cancelled or denied.": "画面共有はキャンセルまたは拒否されました。",
+  "Screen sharing was disabled by a moderator.":
+    "スクリーン共有はモデレーターによって無効になっています。",
+  "Screen sharing was stopped by a moderator.": "モデレーターが画面共有を停止しました。",
+  "Screen sharing will be available after media connects.": "メディア接続後、画面共有が可能です。",
+  "Selected device is unavailable. Choose another device or retry.":
+    "選択された装置は利用できません。 別のデバイスまたは再試行を選択します。",
+  "Sharing screen": "画面共有中",
+  "Sound and video did not come back in time. Try to connect them again.":
+    "音とビデオは時間内に戻ってきませんでした。 もう一度接続してください。",
+  Speaker: "スピーカー",
+  Speaking: "発言中",
   "Switching sides...": "スイッチの側面...",
   "TIEBREAK!": "タイブレーク！",
   "TOXIC DESCENT": "毒の降下",
   "TURBO!": "ターボ！",
+  "The Space took too long to connect.": "スペースは接続に時間がかかりすぎました。",
+  "The call could not reach the server": "呼び出しはサーバーに到達できませんでした",
+  "The call could not set up sound and video": "音声とビデオを設定できません。",
+  "The call did not answer in time": "コールは時間内に応答しなかった",
+  "The call lost its link to the server": "呼び出しはサーバーへのリンクを失いました",
+  "The call took too long to let you in":
+    "コールは、あなたに聞かせて、あまりにも時間がかかりました",
+  "The call's sound and video were cut off. Trying to recover.":
+    "コールの音とビデオが切り離されました。 回復しようとする。",
+  "The file could not be read while it was being sent.": "ファイルが送信される間に読み取れない。",
+  "The group call refused to let you in": "The group call refused to let you in",
+  "The other side sent data that could not be read.":
+    "別の側面は、読み取れないデータを送信しました。",
+  "The received file could not be checked.": "受信したファイルはチェックできません。",
+  Tip: "ヒント",
   "Type /help to see all commands": "すべてのコマンドを見るために/helpを入力します",
+  Unknown: "不明",
   "Use ↑ to edit your last message": "↑ を使用して最後のメッセージを編集します",
   "VICTORY!": "勝利！",
   "WAITING FOR OPPONENT": "対戦相手を待っています",
@@ -143,9 +247,24 @@ export const JA = {
   "WAVE %{0} CLEARED": "ウェーブ %{0} クリア",
   "Wait for configuration to load and try again.":
     "設定を待ってから、再びロードして試してみてください。",
+  "Waiting for media offer. Requesting a fresh offer.":
+    "メディア提供の待ち合わせ 新鮮なオファーをリクエストする。",
   "Waiting for opponent%{0}": "対戦相手を待っています%{0}",
   "Waiting for opponent...": "相手の待ち合わせ",
+  You: "あなた",
+  "Your camera is not being sent.": "カメラが送信されていない",
+  "Your camera is unavailable. Check your video devices.":
+    "カメラは使用できません。 ビデオデバイスを確認します。",
+  "Your local preview appears here when the camera is ready.":
+    "カメラの準備ができたら、ローカルプレビューが表示されます。",
+  "Your microphone and camera are off.": "マイクとカメラがオフです。",
+  "Your microphone is unavailable. Check your audio devices.":
+    "マイクは使用できません。 オーディオデバイスを確認してください。",
   "Your nick was mentioned! Configure alerts in Settings": "お問い合わせ 設定でアラートを設定する",
+  "Your reaction did not reach the call in time.":
+    "あなたの反応は時間内にコールに達しませんでした。",
+  "Your screen": "あなたの画面",
+  "Your screen is replacing the camera feed.": "画面はカメラのフィードを交換します。",
   "⚠️ Disconnected — Reconnecting...": "⚠️ 切断 — 再接続...",
   "✓ Reconnected!": "✓ 再接続しました！",
 };

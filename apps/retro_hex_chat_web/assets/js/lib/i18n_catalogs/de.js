@@ -8,6 +8,7 @@ export const DE = {
   "%{0}: %{1}pts": "%{0}: %{1}pts",
   "%{0}h %{1}m %{2}s": "%{0}h %{1}m %{2}s",
   "%{0}m %{1}s": "%{0}m %{1}s",
+  "%{nickname}'s screen": "%{nickname} Bildschirm",
   "* New activity": "* Neue Aktivität",
   "0 B": "0 B",
   "0 B/s": "0 B/s",
@@ -22,20 +23,53 @@ export const DE = {
   "BUILD!": "BAUEN!",
   "Blocked file type: %{0}": "Dateityp blockiert: %{0}",
   "CLEAN RUN": "FEHLERFREIE FAHRT",
+  Camera: "Kamera",
   "Camera in use by another application. Try closing other programs using the camera.":
     "Kamera in Verwendung durch eine andere Anwendung. Versuchen Sie, andere Programme mit der Kamera zu schließen.",
+  "Camera off": "Kamera aus",
+  "Camera permission denied. Enable camera permission in your browser and try again.":
+    "Kameraberechtigung verweigert. Aktivieren Sie die Kameraberechtigung in Ihrem Browser und versuchen Sie es erneut.",
+  "Camera preview is blocked by the browser. Retry the preview.":
+    "Kameravorschau wird vom Browser blockiert. Retry die Vorschau.",
+  "Camera preview is off": "Kamera-Vorschau ist aus",
+  "Camera preview starting": "Kamera Vorschau beginnen",
+  "Camera preview unavailable": "Kameravorschau nicht verfügbar",
   Cancel: "Abbrechen",
   "Channels you join appear in the left panel": "Kanäle erscheinen im linken Panel",
   "Click to join": "Klicken Sie auf um mitzumachen",
   "Click to switch": "Klick zum Schalter",
+  "Connecting to space...": "Verbindung zum Raum...",
   "Copied!": "Kopiert!",
+  "Could not access your microphone or camera.":
+    "Kann nicht auf Ihr Mikrofon oder Kamera zugreifen.",
+  "Could not access your microphone or camera. You can still watch and listen.":
+    "Kann nicht auf Ihr Mikrofon oder Kamera zugreifen. Du kannst immer noch zusehen und zuhören.",
+  "Could not access your microphone or camera. You joined without sending sound or video.":
+    "Kann nicht auf Ihr Mikrofon oder Kamera zugreifen. Sie haben sich ohne Ton oder Video angeschlossen.",
+  "Could not join the group call": "Konnte sich nicht an den Gruppengesprächen beteiligen",
+  "Could not list media devices. Check your browser permissions.":
+    "Konnte keine Mediengeräte auflisten. Überprüfen Sie Ihre Browser-Berechtigungen.",
+  "Could not open space.": "Könnte nicht den Raum öffnen.",
+  "Could not publish the shared screen.":
+    "Könnte den gemeinsamen Bildschirm nicht veröffentlichen.",
+  "Could not read the selected file. Please try another file.":
+    "Die ausgewählte Datei konnte nicht gelesen werden. Bitte versuchen Sie eine andere Datei.",
+  "Could not restore your microphone or camera after reconnecting.":
+    "Könnten Sie Ihr Mikrofon oder die Kamera nach dem Wiederanschließen nicht wiederherstellen.",
+  "Could not send your reaction.": "Könnten Sie Ihre Reaktion nicht senden.",
   "DEAD BALL": "TOTER BALL",
   "DEBRIS FIELD": "TRÜMMERFELD",
   "DRAW!": "UNENTSCHIEDEN!",
   "Day %{0} Complete": "Tag %{0} abgeschlossen",
   "Day %{0}/%{1}": "Tag %{0}/%{1}",
   "Device disconnected, using default device": "Geräte getrennt, mit Standardgerät",
+  "Device is already in use. Close the other app or retry.":
+    "Gerät ist bereits im Einsatz. Schließen Sie die andere App oder Retry.",
+  "Device list failed": "Geräteliste fehlgeschlagen",
+  "Device selection unavailable": "Geräteauswahl nicht verfügbar",
+  "Devices ready": "Geräte bereit",
   "Don't show tips again": "Keine Tipps mehr anzeigen",
+  "Drawing the Space...": "Den Raum zeichnen...",
   "EARTH INVADED": "ERDE ÜBERRANNT",
   "END OF PERIOD %{0}": "ENDE VON PERIODE %{0}",
   "ENGAGE!": "ANGRIFF!",
@@ -47,6 +81,8 @@ export const DE = {
   Fair: "Mäßig",
   "File exceeds the %{0} MB limit (%{1})": "Datei überschreitet die %{0} MB Grenze (%{1})",
   "First to %{0}": "zuerst auf %{0}",
+  "Focus your shared screen": "Fokussiere deinen gemeinsamen Bildschirm",
+  "Focus your video": "Fokussiere dein Video",
   "GAME OVER": "SPIEL VORBEI",
   "GAME!": "SPIEL!",
   "GET READY": "MACH DICH BEREIT",
@@ -57,15 +93,30 @@ export const DE = {
   "Game implementation coming soon!": "Spiel Umsetzung kommt bald!",
   Good: "Gut.",
   "Got it!": "Verstanden!",
+  "Group call media is connecting.": "Gruppenrufmedien verbinden sich.",
   "HEX HOCKEY": "HEX HOCKEY",
   "HEX SKIING": "HEX SKI",
   "HEX WARLORDS": "HEX WARLORDS",
+  Info: "Info",
   "Integrity check failed": "Integritätsprüfung gescheitert",
   "Invalid regex": "Ungültiger regulärer Ausdruck",
+  "Join the conference before sending reactions.":
+    "Begleiten Sie die Konferenz, bevor Sie Reaktionen senden.",
+  "Joining receive-only": "Zutritt nur empfangen",
+  "Joining receive-only.": "Empfangen.",
   "KO!": "K.O.!",
   "LONG!": "ZU LANG!",
+  "Loading the Space...": "Den Raum laden...",
   "MATCH OVER": "MATCH BEENDET",
   "MISSION COMPLETE": "MISSION ERFÜLLT",
+  "Media offer was not received. Retry the media connection.":
+    "Medienangebot wurde nicht empfangen. Wiederholen Sie die Medienverbindung.",
+  "Media recovery failed. Retry the media connection.":
+    "Medienwiederherstellung versagt. Wiederholen Sie die Medienverbindung.",
+  Microphone: "Mikrofon",
+  "Microphone in use by another application. Try closing other programs using the microphone.":
+    "Mikrofon im Einsatz durch eine andere Anwendung. Versuchen Sie, andere Programme mit dem Mikrofon zu schließen.",
+  "Microphone is not available for push-to-talk.": "Mikrofon ist nicht für Push-to-talk verfügbar.",
   "Microphone permission denied. Enable microphone permission in your browser and try again.":
     "Mikrofonberechtigung verweigert. Aktivieren Sie die Mikrofonberechtigung in Ihrem Browser und versuchen Sie es erneut.",
   "NET!": "NETZ!",
@@ -74,6 +125,19 @@ export const DE = {
   "Next round starting...": "Nächste Runde beginnen...",
   "No Man's Land": "Niemandsland",
   "No camera found.": "Keine Kamera gefunden.",
+  "No camera found. Turn camera off or retry.":
+    "Keine Kamera gefunden. Schalten Sie die Kamera aus oder retry.",
+  "No matching microphone or camera was found. Check devices or join receive-only.":
+    "Es wurde kein passendes Mikrofon oder Kamera gefunden. Prüfen Sie Geräte oder schließen Sie sich nur an.",
+  "No microphone found.": "Kein Mikrofon gefunden.",
+  "No microphone found. Turn microphone off or retry.":
+    "Kein Mikrofon gefunden. Schalten Sie das Mikrofon aus oder retry.",
+  "No microphone or camera found. You can join without sending sound or video.":
+    "Kein Mikrofon oder Kamera gefunden. Sie können ohne Senden von Ton oder Video beitreten.",
+  "No screen video track was provided by the browser.":
+    "Kein Bildschirmvideotrack wurde vom Browser bereitgestellt.",
+  "Not speaking": "Spricht nicht",
+  OK: "OK",
   "OPEN SPACE": "FREIER RAUM",
   "OUT!": "AUS!",
   "OVT: %{0}": "OVT: %{0}",
@@ -108,6 +172,8 @@ export const DE = {
   "PMs appear as separate conversations in the sidebar":
     "PMs erscheinen als separate Gespräche in der Sidebar",
   "Peer disconnected": "Peer getrennt",
+  "Permission denied. Retry after allowing access or join receive-only.":
+    "Erlaubnis verweigert. Wiederholen Sie sich, nachdem Sie Zugriff haben oder sich nur mit dem Empfang verbinden.",
   Poor: "Arm",
   "Quick Draw": "Schnellschuss",
   "R%{0}  %{1}": "R%{0}  %{1}",
@@ -118,21 +184,62 @@ export const DE = {
   "ROUND DRAW!": "RUNDE UNENTSCHIEDEN!",
   "ROUND OVER": "RUNDE BEENDET",
   "ROUNDS: %{0} - %{1}": "RUNDEN: %{0} - %{1}",
+  "Receive-only": "Nur Empfang",
+  "Receive-only mode": "Empfangsmodus",
+  Reconnecting: "Erneut verbinden",
   "Reconnecting in %{0}s...": "Wiederanschließen in %{0}s...",
   "Reconnection attempt %{0} of %{1}": "Verbindungsversuch %{0} von %{1}",
   "Reconnection cancelled. Refresh to try again.": "Wiederaufschaltung abgesagt. Wieder versuchen.",
   Refresh: "Aktualisieren",
+  "Rejoining the media session.": "Zusammen mit der Mediensitzung.",
+  Remote: "Entfernter Teilnehmer",
+  "Remote video stopped rendering. Trying to recover the media path.":
+    "Remote-Video beendete das Rendern. Versuchen, den Medienpfad wiederherzustellen.",
+  "Requesting a fresh media offer.": "Ein frisches Medienangebot anfordern.",
   "Role: %{0}": "Rolle: %{0}",
   "Round %{0}": "Runde %{0}",
   "Rounds: %{0} - %{1}  |  Score: %{2} - %{3}": "Runden: %{0} - %{1}  |  Punkte: %{2} - %{3}",
   "SECOND SERVE": "ZWEITER AUFSCHLAG",
   "SUDDEN DEATH": "SUDDEN DEATH",
   "Score: %{0} - %{1}": "Ergebnis: %{0} - %{1}",
+  "Screen sharing did not provide a video track.": "Screen Sharing lieferte keinen Video-Track.",
+  "Screen sharing is not supported by this browser.":
+    "Screen Sharing wird von diesem Browser nicht unterstützt.",
+  "Screen sharing was cancelled or denied.": "Screen Sharing wurde abgesagt oder verweigert.",
+  "Screen sharing was disabled by a moderator.":
+    "Screen Sharing wurde von einem Moderator deaktiviert.",
+  "Screen sharing was stopped by a moderator.":
+    "Screen Sharing wurde von einem Moderator gestoppt.",
+  "Screen sharing will be available after media connects.":
+    "Screen Sharing wird verfügbar sein, nachdem Medien angeschlossen sind.",
+  "Selected device is unavailable. Choose another device or retry.":
+    "Ausgewähltes Gerät ist nicht verfügbar. Wählen Sie ein anderes Gerät oder Retry.",
+  "Sharing screen": "Bildschirm wird geteilt",
+  "Sound and video did not come back in time. Try to connect them again.":
+    "Ton und Video kamen nicht rechtzeitig zurück. Versuchen Sie, sie wieder zu verbinden.",
+  Speaker: "Lautsprecher",
+  Speaking: "Spricht",
   "Switching sides...": "Schaltseiten...",
   "TIEBREAK!": "TIEBREAK!",
   "TOXIC DESCENT": "GIFTIGER ABSTIEG",
   "TURBO!": "TURBO!",
+  "The Space took too long to connect.": "Der Raum dauerte zu lange, um zu verbinden.",
+  "The call could not reach the server": "Der Anruf konnte den Server nicht erreichen",
+  "The call could not set up sound and video": "Der Anruf konnte keinen Ton und Video einrichten",
+  "The call did not answer in time": "Der Anruf antwortete nicht rechtzeitig",
+  "The call lost its link to the server": "Der Anruf hat seinen Link zum Server verloren",
+  "The call took too long to let you in": "Der Anruf dauerte zu lange, um dich reinzulassen",
+  "The call's sound and video were cut off. Trying to recover.":
+    "Ton und Video wurden abgeschnitten. Versuchen, sich zu erholen.",
+  "The file could not be read while it was being sent.":
+    "Die Datei konnte nicht gelesen werden, während sie gesendet wurde.",
+  "The group call refused to let you in": "Der Gruppenruf weigerte sich, Sie einzuschalten",
+  "The other side sent data that could not be read.":
+    "Die andere Seite schickte Daten, die nicht gelesen werden konnten.",
+  "The received file could not be checked.": "Die empfangene Datei konnte nicht überprüft werden.",
+  Tip: "Tipp",
   "Type /help to see all commands": "Geben Sie /help ein, um alle Befehle zu sehen",
+  Unknown: "Unbekannt",
   "Use ↑ to edit your last message": "Verwenden Sie ↑, um Ihre letzte Nachricht zu bearbeiten",
   "VICTORY!": "SIEG!",
   "WAITING FOR OPPONENT": "WARTE AUF GEGNER",
@@ -143,10 +250,25 @@ export const DE = {
   "WAVE %{0} CLEARED": "WELLE %{0} GERÄUMT",
   "Wait for configuration to load and try again.":
     "Warten Sie auf Konfiguration laden und versuchen Sie es erneut.",
+  "Waiting for media offer. Requesting a fresh offer.":
+    "Warten auf Medienangebot. Bitte um ein frisches Angebot.",
   "Waiting for opponent%{0}": "Warte auf Gegner%{0}",
   "Waiting for opponent...": "Warten auf Gegner...",
+  You: "Du",
+  "Your camera is not being sent.": "Ihre Kamera wird nicht gesendet.",
+  "Your camera is unavailable. Check your video devices.":
+    "Ihre Kamera ist nicht verfügbar. Überprüfen Sie Ihre Videogeräte.",
+  "Your local preview appears here when the camera is ready.":
+    "Ihre lokale Vorschau erscheint hier, wenn die Kamera bereit ist.",
+  "Your microphone and camera are off.": "Ihr Mikrofon und Ihre Kamera sind aus.",
+  "Your microphone is unavailable. Check your audio devices.":
+    "Ihr Mikrofon ist nicht verfügbar. Überprüfen Sie Ihre Audio-Geräte.",
   "Your nick was mentioned! Configure alerts in Settings":
     "Dein Spitz wurde erwähnt! Alarme in Einstellungen konfigurieren",
+  "Your reaction did not reach the call in time.":
+    "Ihre Reaktion erreichte den Anruf nicht rechtzeitig.",
+  "Your screen": "Ihr Bildschirm",
+  "Your screen is replacing the camera feed.": "Ihr Bildschirm ersetzt den Kamera-Feed.",
   "⚠️ Disconnected — Reconnecting...": "ZEITSCHRIFTEN — Reconnecting...",
   "✓ Reconnected!": "✓ Wieder verbunden!",
 };

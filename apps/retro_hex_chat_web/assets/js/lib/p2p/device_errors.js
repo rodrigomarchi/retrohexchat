@@ -54,7 +54,7 @@ export function missingDeviceWarning(preferences, devices) {
   const missingVideo = preferences.video && (devices.videoinput || []).length === 0;
 
   if (missingAudio && missingVideo) {
-    return t("No microphone or camera found. You can join receive-only.");
+    return t("No microphone or camera found. You can join without sending sound or video.");
   }
   if (missingAudio) {
     return t("No microphone found. Turn microphone off or retry.");

@@ -99,7 +99,7 @@ export function createSpaceCanvasHook(deps = {}) {
         characterCatalog: this.el.dataset.characterCatalog,
         onReady: () => {
           this._assetsReady = true;
-          this._overlays?.setLoadingText(t("Drawing room..."));
+          this._overlays?.setLoadingText(t("Drawing the Space..."));
           this._construct?.ready();
         },
       });
@@ -221,7 +221,7 @@ export function createSpaceCanvasHook(deps = {}) {
           // A join reply can land after destroyed(), which drops every one of
           // these references: leaving the space before the server answers is an
           // ordinary thing for a user to do, not an edge case.
-          this._overlays?.setLoadingText(t("Loading room..."));
+          this._overlays?.setLoadingText(t("Loading the Space..."));
           this._engine?.start(normalizeSpaceInit(reply));
         })
         .receive("error", (reply) => {
@@ -230,7 +230,7 @@ export function createSpaceCanvasHook(deps = {}) {
         })
         .receive("timeout", () => {
           log.error("[space] channel join timed out");
-          this._overlays?.setLoadingText(t("Space connection timed out."));
+          this._overlays?.setLoadingText(t("The Space took too long to connect."));
         });
     },
 
