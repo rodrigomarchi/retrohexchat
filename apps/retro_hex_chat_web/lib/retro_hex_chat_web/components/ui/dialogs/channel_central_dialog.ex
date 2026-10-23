@@ -20,6 +20,7 @@ defmodule RetroHexChatWeb.Components.UI.ChannelCentralDialog do
   import RetroHexChatWeb.Components.UI.DialogBanner
   import RetroHexChatWeb.Components.UI.Fieldset
   import RetroHexChatWeb.Components.UI.ListStates
+  import RetroHexChatWeb.Components.UI.LanguageSelect, only: [language_select: 1]
   import RetroHexChatWeb.Components.UI.NickFlag
   import RetroHexChatWeb.Components.UI.Select
   import RetroHexChatWeb.Components.UI.Tabs
@@ -29,8 +30,8 @@ defmodule RetroHexChatWeb.Components.UI.ChannelCentralDialog do
   import RetroHexChatWeb.Components.UI.Textarea
 
   alias RetroHexChat.Channels.Categories
-  alias RetroHexChat.Locales
   alias RetroHexChatWeb.Components.Diagrams
+  alias RetroHexChatWeb.Components.UI.LanguageSelect
   alias RetroHexChatWeb.Icons
 
   @doc """
@@ -329,7 +330,6 @@ defmodule RetroHexChatWeb.Components.UI.ChannelCentralDialog do
       |> assign(:can_manage_active?, can_manage_access?(role, active_level, assigns.identified))
       |> assign(:public_archive?, Map.get(registration, :public_archive?, false))
       |> assign(:founder?, role == "founder")
-      |> assign(:language_options, Locales.enabled())
       |> assign(:category_options, Categories.codes())
 
     ~H"""
@@ -434,44 +434,14 @@ defmodule RetroHexChatWeb.Components.UI.ChannelCentralDialog do
           <form
             phx-change={@on_language}
             phx-target={@target}
-            class="flex items-center gap-2"
             data-testid="cc-language-form"
           >
-            <.channel_flag locale={@channel_locale} />
-            <.select
-              :let={builder}
+            <.language_select
               id="cc-language-select"
-              name="locale"
-              value={@channel_locale || ""}
-              default-value=""
-              label={language_label(@channel_locale)}
-              placeholder={dgettext("dialogs", "No language")}
-              class="w-56"
-              data-testid="cc-language-select"
-            >
-              <.select_trigger builder={builder} class="h-7 text-xs" />
-              <.select_content builder={builder}>
-                <.select_group>
-                  <.select_item
-                    builder={builder}
-                    value=""
-                    label={dgettext("dialogs", "No language")}
-                    data-testid="cc-language-option"
-                  >
-                    {dgettext("dialogs", "No language")}
-                  </.select_item>
-                  <.select_item
-                    :for={locale <- @language_options}
-                    builder={builder}
-                    value={locale.code}
-                    label={locale.label}
-                    data-testid="cc-language-option"
-                  >
-                    {locale.label}
-                  </.select_item>
-                </.select_group>
-              </.select_content>
-            </.select>
+              locale={@channel_locale}
+              flag={:channel}
+              option_testid="cc-language-option"
+            />
           </form>
         </div>
 
@@ -482,7 +452,9 @@ defmodule RetroHexChatWeb.Components.UI.ChannelCentralDialog do
         >
           <span class="text-muted-foreground">{dgettext("dialogs", "Language")}:</span>
           <span class="cc-status-value">
-            <.channel_flag locale={@channel_locale} class="mr-1" />{language_label(@channel_locale)}
+            <.channel_flag locale={@channel_locale} class="mr-1" />{LanguageSelect.label(
+              @channel_locale
+            )}
           </span>
         </div>
 
@@ -1619,9 +1591,6 @@ defmodule RetroHexChatWeb.Components.UI.ChannelCentralDialog do
   @spec display_channel(String.t() | nil) :: String.t()
   defp display_channel(nil), do: "#unknown"
   defp display_channel(name), do: name
-
-  @spec language_label(String.t() | nil) :: String.t()
-  defp language_label(locale), do: language(locale) || dgettext("dialogs", "No language")
 
   @spec category_label(String.t() | nil) :: String.t()
   defp category_label(category),

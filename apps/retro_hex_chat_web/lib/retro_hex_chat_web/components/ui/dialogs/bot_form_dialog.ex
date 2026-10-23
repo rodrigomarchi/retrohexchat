@@ -22,10 +22,8 @@ defmodule RetroHexChatWeb.Components.UI.BotFormDialog do
   import RetroHexChatWeb.Components.UI.Label
   import RetroHexChatWeb.Components.UI.Checkbox
   import RetroHexChatWeb.Components.UI.DialogBanner
-  import RetroHexChatWeb.Components.UI.NickFlag
-  import RetroHexChatWeb.Components.UI.Select
+  import RetroHexChatWeb.Components.UI.LanguageSelect, only: [language_select: 1]
 
-  alias RetroHexChat.Locales
   alias RetroHexChatWeb.Components.Diagrams
   alias RetroHexChatWeb.Icons
 
@@ -41,8 +39,6 @@ defmodule RetroHexChatWeb.Components.UI.BotFormDialog do
 
   @spec new_bot_dialog(map()) :: Phoenix.LiveView.Rendered.t()
   def new_bot_dialog(assigns) do
-    assigns = assign(assigns, :language_options, Locales.enabled())
-
     ~H"""
     <.dialog id={@id} show={@show} scope={:window} class="bm-form-dialog max-w-md">
       <.dialog_header id={@id} title={dgettext("dialogs", "Create New Bot")}>
@@ -102,47 +98,12 @@ defmodule RetroHexChatWeb.Components.UI.BotFormDialog do
             </div>
             <div>
               <.label for="bot-create-language">{dgettext("dialogs", "Language")}</.label>
-              <div class="flex items-center gap-retro-4">
-                <.nick_flag locale={@locale} />
-                <.select
-                  :let={builder}
-                  id="bot-create-language"
-                  name="locale"
-                  value={@locale || ""}
-                  default-value=""
-                  label={language_label(@locale)}
-                  placeholder={dgettext("dialogs", "No language")}
-                  class="w-56"
-                  data-testid="bot-create-language"
-                >
-                  <.select_trigger builder={builder} class="h-7 text-xs" />
-                  <.select_content builder={builder}>
-                    <.select_group>
-                      <.select_item
-                        builder={builder}
-                        value=""
-                        label={dgettext("dialogs", "No language")}
-                        on_select="bot_new_language"
-                        on_select_value={%{locale: ""}}
-                        data-testid="bot-create-language-option"
-                      >
-                        {dgettext("dialogs", "No language")}
-                      </.select_item>
-                      <.select_item
-                        :for={locale <- @language_options}
-                        builder={builder}
-                        value={locale.code}
-                        label={locale.label}
-                        on_select="bot_new_language"
-                        on_select_value={%{locale: locale.code}}
-                        data-testid="bot-create-language-option"
-                      >
-                        {locale.label}
-                      </.select_item>
-                    </.select_group>
-                  </.select_content>
-                </.select>
-              </div>
+              <.language_select
+                id="bot-create-language"
+                locale={@locale}
+                option_testid="bot-create-language-option"
+                on_select="bot_new_language"
+              />
               <p class="text-xs text-muted-foreground mt-retro-2">
                 {dgettext("dialogs", "Its flag is shown beside the bot's nickname.")}
               </p>
@@ -409,9 +370,6 @@ defmodule RetroHexChatWeb.Components.UI.BotFormDialog do
     </.dialog>
     """
   end
-
-  @spec language_label(String.t() | nil) :: String.t()
-  defp language_label(locale), do: language(locale) || dgettext("dialogs", "No language")
 
   # ── Private: the capability list ────────────────────────────
 

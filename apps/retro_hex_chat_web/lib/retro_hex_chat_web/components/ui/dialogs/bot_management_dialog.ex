@@ -21,15 +21,15 @@ defmodule RetroHexChatWeb.Components.UI.BotManagementDialog do
   import RetroHexChatWeb.Components.UI.Button
   import RetroHexChatWeb.Components.UI.Separator
   import RetroHexChatWeb.Components.UI.DialogBanner
+  import RetroHexChatWeb.Components.UI.LanguageSelect, only: [language_select: 1]
   import RetroHexChatWeb.Components.UI.NickFlag
-  import RetroHexChatWeb.Components.UI.Select
 
   alias RetroHexChat.Bots.Capabilities
   alias RetroHexChat.Chat.Content
   alias RetroHexChat.Chat.TimeFormatter
-  alias RetroHexChat.Locales
   alias RetroHexChat.Text
   alias RetroHexChatWeb.Components.Diagrams
+  alias RetroHexChatWeb.Components.UI.LanguageSelect
   alias RetroHexChatWeb.Icons
   alias RetroHexChatWeb.PaginatedList.State
 
@@ -457,7 +457,7 @@ defmodule RetroHexChatWeb.Components.UI.BotManagementDialog do
           <div class="bm-fact">
             <dt>{dgettext("dialogs", "Language")}</dt>
             <dd :if={not @is_admin} data-testid="bot-language-value">
-              <.nick_flag locale={bot_locale(@selected)} class="mr-1" />{language_label(
+              <.nick_flag locale={bot_locale(@selected)} class="mr-1" />{LanguageSelect.label(
                 bot_locale(@selected)
               )}
             </dd>
@@ -516,10 +516,7 @@ defmodule RetroHexChatWeb.Components.UI.BotManagementDialog do
 
   @spec bot_language_form(map()) :: Phoenix.LiveView.Rendered.t()
   defp bot_language_form(assigns) do
-    assigns =
-      assigns
-      |> assign(:locale, bot_locale(assigns.selected))
-      |> assign(:language_options, Locales.enabled())
+    assigns = assign(assigns, :locale, bot_locale(assigns.selected))
 
     ~H"""
     <form
@@ -529,41 +526,11 @@ defmodule RetroHexChatWeb.Components.UI.BotManagementDialog do
       data-testid="bot-language-form"
     >
       <input type="hidden" name="bot_name" value={bot_name(@selected)} />
-      <.nick_flag locale={@locale} />
-      <.select
-        :let={builder}
+      <.language_select
         id="bot-language-select"
-        name="locale"
-        value={@locale || ""}
-        default-value=""
-        label={language_label(@locale)}
-        placeholder={dgettext("dialogs", "No language")}
-        class="w-56"
-        data-testid="bot-language-select"
-      >
-        <.select_trigger builder={builder} class="h-7 text-xs" />
-        <.select_content builder={builder}>
-          <.select_group>
-            <.select_item
-              builder={builder}
-              value=""
-              label={dgettext("dialogs", "No language")}
-              data-testid="bot-language-option"
-            >
-              {dgettext("dialogs", "No language")}
-            </.select_item>
-            <.select_item
-              :for={locale <- @language_options}
-              builder={builder}
-              value={locale.code}
-              label={locale.label}
-              data-testid="bot-language-option"
-            >
-              {locale.label}
-            </.select_item>
-          </.select_group>
-        </.select_content>
-      </.select>
+        locale={@locale}
+        option_testid="bot-language-option"
+      />
     </form>
     """
   end
@@ -899,9 +866,6 @@ defmodule RetroHexChatWeb.Components.UI.BotManagementDialog do
 
   @spec bot_locale(map()) :: String.t() | nil
   defp bot_locale(bot), do: Map.get(bot, :locale)
-
-  @spec language_label(String.t() | nil) :: String.t()
-  defp language_label(locale), do: language(locale) || dgettext("dialogs", "No language")
 
   @spec bot_prefix(map()) :: String.t()
   defp bot_prefix(bot), do: Map.get(bot, :command_prefix) || "!"
