@@ -36,6 +36,7 @@ import re
 import subprocess
 import sys
 import tempfile
+from concurrent.futures import ThreadPoolExecutor
 from datetime import datetime, timezone
 from pathlib import Path
 
@@ -320,27 +321,38 @@ def main(argv: list[str] | None = None) -> int:
         "revision": run(["git", "rev-parse", "--short", "HEAD"]).stdout.strip(),
     }
 
-    print("ExDNA: exact and renamed clones...", file=sys.stderr)
-    report["exdna_exact"] = exdna_summary(exdna([]), args.top)
-    print("ExDNA: near-miss clones...", file=sys.stderr)
+    # Every instrument is its own process reading the same tree, so they run
+    # side by side: the report takes as long as its slowest instrument (the
+    # near-miss ExDNA pass) rather than the sum of all of them.
     near = ["--literal-mode", "abstract", "--min-similarity", "0.85", "--normalize-pipes"]
-    report["exdna_near"] = exdna_summary(exdna(near), args.top)
-
+    jobs = {
+        "exdna_exact": lambda: exdna_summary(exdna([]), args.top),
+        "exdna_near": lambda: exdna_summary(exdna(near), args.top),
+        "census": lambda: census(
+            [(rel(p), p.read_text(errors="ignore")) for p in source_files([DOMAIN_LIB, WEB_LIB], (".ex",), [])]
+        ),
+        "markers": markers,
+    }
     if not args.skip_jscpd:
-        print("jscpd: JS, CSS, Elixir/HEEx...", file=sys.stderr)
-        js = jscpd([f"{ASSETS}/js"], ["--format", "javascript", "--min-tokens", "50"])
-        report["jscpd_js"] = jscpd_summary(js, args.top, games_split)
-        css = jscpd([f"{ASSETS}/css"], ["--format", "css", "--min-tokens", "50"])
-        report["jscpd_css"] = jscpd_summary(css, args.top)
-        heex = jscpd(
-            [DOMAIN_LIB, WEB_LIB],
-            ["--formats-exts", "elixir:ex,heex", "--min-tokens", "80", "--ignore", HEEX_IGNORE],
+        jobs["jscpd_js"] = lambda: jscpd_summary(
+            jscpd([f"{ASSETS}/js"], ["--format", "javascript", "--min-tokens", "50"]), args.top, games_split
         )
-        report["jscpd_heex"] = jscpd_summary(heex, args.top)
+        jobs["jscpd_css"] = lambda: jscpd_summary(
+            jscpd([f"{ASSETS}/css"], ["--format", "css", "--min-tokens", "50"]), args.top
+        )
+        jobs["jscpd_heex"] = lambda: jscpd_summary(
+            jscpd(
+                [DOMAIN_LIB, WEB_LIB],
+                ["--formats-exts", "elixir:ex,heex", "--min-tokens", "80", "--ignore", HEEX_IGNORE],
+            ),
+            args.top,
+        )
 
-    sources = [(rel(p), p.read_text(errors="ignore")) for p in source_files([DOMAIN_LIB, WEB_LIB], (".ex",), [])]
-    report["census"] = census(sources)
-    report["markers"] = markers()
+    print(f"Running {', '.join(jobs)} in parallel...", file=sys.stderr)
+    with ThreadPoolExecutor(max_workers=len(jobs)) as pool:
+        futures = {name: pool.submit(job) for name, job in jobs.items()}
+        for name, future in futures.items():
+            report[name] = future.result()
 
     json_path = out / f"{stamp}.json"
     against, before = previous_report(out, args.baseline, json_path)
