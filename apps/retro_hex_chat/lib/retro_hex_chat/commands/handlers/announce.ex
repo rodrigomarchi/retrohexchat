@@ -4,6 +4,7 @@ defmodule RetroHexChat.Commands.Handlers.Announce do
 
   alias RetroHexChat.Commands.CommandSyntax.Parameter
   alias RetroHexChat.Commands.Handler
+  alias RetroHexChat.Commands.Handler.ServerWide
   alias RetroHexChat.Topics
 
   use RetroHexChat.Commands.Handler,
@@ -31,8 +32,6 @@ defmodule RetroHexChat.Commands.Handlers.Announce do
       }
     ]
 
-  @pubsub RetroHexChat.PubSub
-
   @impl true
   @spec execute([String.t()], Handler.context()) :: Handler.result()
   def execute(_args, %{is_admin: false}) do
@@ -44,18 +43,7 @@ defmodule RetroHexChat.Commands.Handlers.Announce do
   end
 
   def execute(args, %{is_admin: true, nickname: sender}) do
-    content = Enum.join(args, " ")
-
-    Phoenix.PubSub.broadcast(
-      @pubsub,
-      Topics.announcements(),
-      {:announcement,
-       %{
-         sender: sender,
-         content: content,
-         timestamp: DateTime.utc_now()
-       }}
-    )
+    ServerWide.broadcast(Topics.announcements(), :announcement, sender, args)
 
     {:ok, :system, %{content: dgettext("commands", "Announcement sent to all users.")}}
   end

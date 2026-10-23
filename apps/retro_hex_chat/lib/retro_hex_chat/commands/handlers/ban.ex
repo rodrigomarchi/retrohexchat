@@ -44,18 +44,17 @@ defmodule RetroHexChat.Commands.Handlers.Ban do
 
   @impl true
   @spec execute([String.t()], Handler.context()) :: Handler.result()
-  def execute([], _context) do
-    {:error, dgettext("commands", "Usage: /ban <nickname> [reason]")}
-  end
-
-  def execute([target | rest], context) do
-    denied = dgettext("commands", "You must be a channel operator to ban users")
-
-    with {:ok, channel} <- require_channel(context),
-         :ok <- require_operator(context, channel, denied) do
-      reason = if rest == [], do: nil, else: Enum.join(rest, " ")
-
-      {:ok, :ui_action, :ban_user, %{channel: channel, target: target, reason: reason}}
-    end
+  def execute(args, context) do
+    on_channel_target(
+      args,
+      context,
+      dgettext("commands", "Usage: /ban <nickname> [reason]"),
+      &require_operator(
+        &1,
+        &2,
+        dgettext("commands", "You must be a channel operator to ban users")
+      ),
+      &{:ok, :ui_action, :ban_user, %{channel: &1, target: &2, reason: &3}}
+    )
   end
 end

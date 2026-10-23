@@ -51,43 +51,23 @@ defmodule RetroHexChat.Chat.FloodProtection do
   # Setters
 
   @spec set_flood_threshold(map(), integer()) :: map() | {:error, :invalid_value}
-  def set_flood_threshold(settings, value)
-      when is_integer(value) and value > 0 and value <= 100 do
-    %{settings | flood_threshold: value}
-  end
-
-  def set_flood_threshold(_settings, _value), do: {:error, :invalid_value}
+  def set_flood_threshold(settings, value),
+    do: put_bounded(settings, :flood_threshold, value, 100)
 
   @spec set_flood_window_seconds(map(), integer()) :: map() | {:error, :invalid_value}
-  def set_flood_window_seconds(settings, value)
-      when is_integer(value) and value > 0 and value <= 300 do
-    %{settings | flood_window_seconds: value}
-  end
-
-  def set_flood_window_seconds(_settings, _value), do: {:error, :invalid_value}
+  def set_flood_window_seconds(settings, value),
+    do: put_bounded(settings, :flood_window_seconds, value, 300)
 
   @spec set_auto_ignore_duration_seconds(map(), integer()) :: map() | {:error, :invalid_value}
-  def set_auto_ignore_duration_seconds(settings, value)
-      when is_integer(value) and value > 0 and value <= 86_400 do
-    %{settings | auto_ignore_duration_seconds: value}
-  end
-
-  def set_auto_ignore_duration_seconds(_settings, _value), do: {:error, :invalid_value}
+  def set_auto_ignore_duration_seconds(settings, value),
+    do: put_bounded(settings, :auto_ignore_duration_seconds, value, 86_400)
 
   @spec set_spam_threshold(map(), integer()) :: map() | {:error, :invalid_value}
-  def set_spam_threshold(settings, value) when is_integer(value) and value > 0 and value <= 50 do
-    %{settings | spam_threshold: value}
-  end
-
-  def set_spam_threshold(_settings, _value), do: {:error, :invalid_value}
+  def set_spam_threshold(settings, value), do: put_bounded(settings, :spam_threshold, value, 50)
 
   @spec set_spam_window_seconds(map(), integer()) :: map() | {:error, :invalid_value}
-  def set_spam_window_seconds(settings, value)
-      when is_integer(value) and value > 0 and value <= 120 do
-    %{settings | spam_window_seconds: value}
-  end
-
-  def set_spam_window_seconds(_settings, _value), do: {:error, :invalid_value}
+  def set_spam_window_seconds(settings, value),
+    do: put_bounded(settings, :spam_window_seconds, value, 120)
 
   # ---------------------------------------------------------------------------
   # Persistence
@@ -138,4 +118,11 @@ defmodule RetroHexChat.Chat.FloodProtection do
          }}
     end
   end
+
+  # Every setting is a whole number from 1 to its own ceiling.
+  defp put_bounded(settings, key, value, max)
+       when is_integer(value) and value > 0 and value <= max,
+       do: Map.put(settings, key, value)
+
+  defp put_bounded(_settings, _key, _value, _max), do: {:error, :invalid_value}
 end

@@ -4,6 +4,7 @@ defmodule RetroHexChat.Commands.Handlers.Wallops do
 
   alias RetroHexChat.Commands.CommandSyntax.Parameter
   alias RetroHexChat.Commands.Handler
+  alias RetroHexChat.Commands.Handler.ServerWide
   alias RetroHexChat.Topics
 
   use RetroHexChat.Commands.Handler,
@@ -31,8 +32,6 @@ defmodule RetroHexChat.Commands.Handlers.Wallops do
       }
     ]
 
-  @pubsub RetroHexChat.PubSub
-
   @impl true
   @spec execute([String.t()], Handler.context()) :: Handler.result()
   def execute(_args, %{is_admin: false, is_server_operator: false}) do
@@ -44,18 +43,7 @@ defmodule RetroHexChat.Commands.Handlers.Wallops do
   end
 
   def execute(args, context) do
-    content = Enum.join(args, " ")
-
-    Phoenix.PubSub.broadcast(
-      @pubsub,
-      Topics.wallops(),
-      {:wallops,
-       %{
-         sender: context.nickname,
-         content: content,
-         timestamp: DateTime.utc_now()
-       }}
-    )
+    ServerWide.broadcast(Topics.wallops(), :wallops, context.nickname, args)
 
     {:ok, :system, %{content: dgettext("commands", "Wallops sent.")}}
   end

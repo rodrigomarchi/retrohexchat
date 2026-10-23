@@ -2,9 +2,10 @@ defmodule RetroHexChat.Commands.Handlers.Unpin do
   @moduledoc "Handler for /unpin <message id>"
   use Gettext, backend: RetroHexChat.Gettext
 
+  import RetroHexChat.Commands.Handler.Guards, only: [on_channel_message: 4]
+
   alias RetroHexChat.Commands.CommandSyntax.Parameter
   alias RetroHexChat.Commands.Handler
-  alias RetroHexChat.Commands.Handler.Args
 
   use RetroHexChat.Commands.Handler,
     name: "unpin",
@@ -29,24 +30,15 @@ defmodule RetroHexChat.Commands.Handlers.Unpin do
 
   @impl true
   @spec execute([String.t()], Handler.context()) :: Handler.result()
-  def execute([], _context) do
-    {:error,
-     dgettext(
-       "commands",
-       "Which message? Use /unpin <id>, or unpin it from the Pinned window."
-     )}
-  end
-
-  def execute([raw_id | _rest], context) do
-    case context.active_channel do
-      nil ->
-        {:error, dgettext("commands", "You are not in any channel")}
-
-      channel ->
-        with {:ok, id} <-
-               Args.positive_id(raw_id, dgettext("commands", "That is not a message id")) do
-          {:ok, :ui_action, :unpin_message, %{channel: channel, message_id: id}}
-        end
-    end
+  def execute(args, context) do
+    on_channel_message(
+      args,
+      context,
+      dgettext(
+        "commands",
+        "Which message? Use /unpin <id>, or unpin it from the Pinned window."
+      ),
+      &{:ok, :ui_action, :unpin_message, %{channel: &1, message_id: &2}}
+    )
   end
 end

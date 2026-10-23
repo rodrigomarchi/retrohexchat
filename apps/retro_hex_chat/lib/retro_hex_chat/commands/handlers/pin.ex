@@ -2,9 +2,10 @@ defmodule RetroHexChat.Commands.Handlers.Pin do
   @moduledoc "Handler for /pin <message id>"
   use Gettext, backend: RetroHexChat.Gettext
 
+  import RetroHexChat.Commands.Handler.Guards, only: [on_channel_message: 4]
+
   alias RetroHexChat.Commands.CommandSyntax.Parameter
   alias RetroHexChat.Commands.Handler
-  alias RetroHexChat.Commands.Handler.Args
 
   use RetroHexChat.Commands.Handler,
     name: "pin",
@@ -31,21 +32,12 @@ defmodule RetroHexChat.Commands.Handlers.Pin do
   @spec execute([String.t()], Handler.context()) :: Handler.result()
   # The id rather than "the last message": the command is for keeping a line
   # somebody has scrolled back to find, and that line is rarely the newest one.
-  def execute([], _context) do
-    {:error,
-     dgettext("commands", "Which message? Use /pin <id>, or pin it from its right-click menu.")}
-  end
-
-  def execute([raw_id | _rest], context) do
-    case context.active_channel do
-      nil ->
-        {:error, dgettext("commands", "You are not in any channel")}
-
-      channel ->
-        with {:ok, id} <-
-               Args.positive_id(raw_id, dgettext("commands", "That is not a message id")) do
-          {:ok, :ui_action, :pin_message, %{channel: channel, message_id: id}}
-        end
-    end
+  def execute(args, context) do
+    on_channel_message(
+      args,
+      context,
+      dgettext("commands", "Which message? Use /pin <id>, or pin it from its right-click menu."),
+      &{:ok, :ui_action, :pin_message, %{channel: &1, message_id: &2}}
+    )
   end
 end

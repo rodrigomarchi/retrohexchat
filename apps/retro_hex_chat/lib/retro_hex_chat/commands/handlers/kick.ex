@@ -44,18 +44,17 @@ defmodule RetroHexChat.Commands.Handlers.Kick do
 
   @impl true
   @spec execute([String.t()], Handler.context()) :: Handler.result()
-  def execute([], _context) do
-    {:error, dgettext("commands", "Usage: /kick <nickname> [reason]")}
-  end
-
-  def execute([target | rest], context) do
-    denied = dgettext("commands", "You must be a channel operator to kick users")
-
-    with {:ok, channel} <- require_channel(context),
-         :ok <- require_half_op_or_above(context, channel, denied) do
-      reason = if rest == [], do: nil, else: Enum.join(rest, " ")
-
-      {:ok, :ui_action, :kick_user, %{channel: channel, target: target, reason: reason}}
-    end
+  def execute(args, context) do
+    on_channel_target(
+      args,
+      context,
+      dgettext("commands", "Usage: /kick <nickname> [reason]"),
+      &require_half_op_or_above(
+        &1,
+        &2,
+        dgettext("commands", "You must be a channel operator to kick users")
+      ),
+      &{:ok, :ui_action, :kick_user, %{channel: &1, target: &2, reason: &3}}
+    )
   end
 end

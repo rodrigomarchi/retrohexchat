@@ -186,14 +186,14 @@ msgstr ""
 msgid "/alias remove hi"
 msgstr ""
 
-#: lib/retro_hex_chat/commands/handlers/announce.ex:12
-#: lib/retro_hex_chat/commands/handlers/announce.ex:12
+#: lib/retro_hex_chat/commands/handlers/announce.ex:13
+#: lib/retro_hex_chat/commands/handlers/announce.ex:13
 #, elixir-autogen, elixir-format
 msgid "/announce <message>"
 msgstr ""
 
-#: lib/retro_hex_chat/commands/handlers/announce.ex:23
-#: lib/retro_hex_chat/commands/handlers/announce.ex:23
+#: lib/retro_hex_chat/commands/handlers/announce.ex:24
+#: lib/retro_hex_chat/commands/handlers/announce.ex:24
 #, elixir-autogen, elixir-format
 msgid "/announce Server will restart at midnight"
 msgstr ""
@@ -982,14 +982,14 @@ msgstr ""
 msgid "/voice alice"
 msgstr ""
 
-#: lib/retro_hex_chat/commands/handlers/wallops.ex:12
-#: lib/retro_hex_chat/commands/handlers/wallops.ex:12
+#: lib/retro_hex_chat/commands/handlers/wallops.ex:13
+#: lib/retro_hex_chat/commands/handlers/wallops.ex:13
 #, elixir-autogen, elixir-format
 msgid "/wallops <message>"
 msgstr ""
 
-#: lib/retro_hex_chat/commands/handlers/wallops.ex:23
-#: lib/retro_hex_chat/commands/handlers/wallops.ex:23
+#: lib/retro_hex_chat/commands/handlers/wallops.ex:24
+#: lib/retro_hex_chat/commands/handlers/wallops.ex:24
 #, elixir-autogen, elixir-format
 msgid "/wallops Server maintenance in 10 minutes"
 msgstr ""
@@ -1058,7 +1058,7 @@ msgstr ""
 msgid "Advanced"
 msgstr ""
 
-#: lib/retro_hex_chat/commands/handlers/announce.ex:60
+#: lib/retro_hex_chat/commands/handlers/announce.ex:48
 #, elixir-autogen, elixir-format
 msgid "Announcement sent to all users."
 msgstr ""
@@ -1352,7 +1352,7 @@ msgstr ""
 msgid "Give voice status to a user. Shortcut for /mode +v <nickname>.\nRequires: half-operator, operator, or owner."
 msgstr ""
 
-#: lib/retro_hex_chat/commands/handlers/announce.ex:30
+#: lib/retro_hex_chat/commands/handlers/announce.ex:31
 #, elixir-autogen, elixir-format
 msgid "Global announcement message"
 msgstr ""
@@ -1508,7 +1508,7 @@ msgstr ""
 msgid "Message content"
 msgstr ""
 
-#: lib/retro_hex_chat/commands/handlers/wallops.ex:30
+#: lib/retro_hex_chat/commands/handlers/wallops.ex:31
 #, elixir-autogen, elixir-format
 msgid "Message for all users with +w mode"
 msgstr ""
@@ -1680,14 +1680,14 @@ msgstr ""
 msgid "Permanently block a user from the channel. The ban persists until removed with /mode -b.\nRequires: channel operator. Must be in a channel."
 msgstr ""
 
-#: lib/retro_hex_chat/commands/handlers/announce.ex:39
+#: lib/retro_hex_chat/commands/handlers/announce.ex:38
 #: lib/retro_hex_chat/commands/handlers/clear_motd.ex:27
 #: lib/retro_hex_chat/commands/handlers/set_motd.ex:37
 #, elixir-autogen, elixir-format
 msgid "Permission denied: you must be a server administrator."
 msgstr ""
 
-#: lib/retro_hex_chat/commands/handlers/wallops.ex:39
+#: lib/retro_hex_chat/commands/handlers/wallops.ex:38
 #, elixir-autogen, elixir-format
 msgid "Permission denied: you must be a server operator."
 msgstr ""
@@ -1871,12 +1871,12 @@ msgstr ""
 msgid "Send a lightweight notice to a user or channel that doesn't open a PM window on their side."
 msgstr ""
 
-#: lib/retro_hex_chat/commands/handlers/wallops.ex:14
+#: lib/retro_hex_chat/commands/handlers/wallops.ex:15
 #, elixir-autogen, elixir-format
 msgid "Send a message to all users who opted in to operator announcements via /umode +w."
 msgstr ""
 
-#: lib/retro_hex_chat/commands/handlers/wallops.ex:19
+#: lib/retro_hex_chat/commands/handlers/wallops.ex:20
 #, elixir-autogen, elixir-format
 msgid "Send a message to all users who opted in to operator announcements via /umode +w.\nRequires: server operator or server administrator. Message text is required."
 msgstr ""
@@ -1892,12 +1892,12 @@ msgstr ""
 msgid "Send a private message to another user, opening a PM conversation tab.\nBoth nickname and message text are required."
 msgstr ""
 
-#: lib/retro_hex_chat/commands/handlers/announce.ex:14
+#: lib/retro_hex_chat/commands/handlers/announce.ex:15
 #, elixir-autogen, elixir-format
 msgid "Send an urgent broadcast message to every connected user. Bypasses all ignore filters."
 msgstr ""
 
-#: lib/retro_hex_chat/commands/handlers/announce.ex:19
+#: lib/retro_hex_chat/commands/handlers/announce.ex:20
 #, elixir-autogen, elixir-format
 msgid "Send an urgent broadcast message to every connected user. Bypasses all ignore filters.\nRequires: server administrator."
 msgstr ""
@@ -2198,7 +2198,7 @@ msgstr ""
 msgid "Usage: /alias remove <name>"
 msgstr ""
 
-#: lib/retro_hex_chat/commands/handlers/announce.ex:43
+#: lib/retro_hex_chat/commands/handlers/announce.ex:42
 #, elixir-autogen, elixir-format
 msgid "Usage: /announce <message>"
 msgstr ""
@@ -2232,7 +2232,7 @@ msgstr ""
 msgid "Usage: /autorespond remove <position>"
 msgstr ""
 
-#: lib/retro_hex_chat/commands/handlers/ban.ex:48
+#: lib/retro_hex_chat/commands/handlers/ban.ex:51
 #, elixir-autogen, elixir-format
 msgid "Usage: /ban <nickname> [reason]"
 msgstr ""
@@ -2263,7 +2263,7 @@ msgstr ""
 msgid "Usage: /join #channel [password]"
 msgstr ""
 
-#: lib/retro_hex_chat/commands/handlers/kick.ex:48
+#: lib/retro_hex_chat/commands/handlers/kick.ex:51
 #, elixir-autogen, elixir-format
 msgid "Usage: /kick <nickname> [reason]"
 msgstr ""
@@ -2425,7 +2425,7 @@ msgstr ""
 msgid "Usage: /voice <nickname>"
 msgstr ""
 
-#: lib/retro_hex_chat/commands/handlers/wallops.ex:43
+#: lib/retro_hex_chat/commands/handlers/wallops.ex:42
 #, elixir-autogen, elixir-format
 msgid "Usage: /wallops <message>"
 msgstr ""
@@ -2564,7 +2564,7 @@ msgstr ""
 msgid "Voice"
 msgstr ""
 
-#: lib/retro_hex_chat/commands/handlers/wallops.ex:60
+#: lib/retro_hex_chat/commands/handlers/wallops.ex:48
 #, elixir-autogen, elixir-format
 msgid "Wallops sent."
 msgstr ""
@@ -2579,15 +2579,13 @@ msgstr ""
 msgid "You are already using that nickname"
 msgstr ""
 
-#: lib/retro_hex_chat/commands/handler/guards.ex:23
+#: lib/retro_hex_chat/commands/handler/guards.ex:24
 #: lib/retro_hex_chat/commands/handlers/event.ex:80
 #: lib/retro_hex_chat/commands/handlers/me.ex:45
 #: lib/retro_hex_chat/commands/handlers/part.ex:48
 #: lib/retro_hex_chat/commands/handlers/part.ex:65
-#: lib/retro_hex_chat/commands/handlers/pin.ex:42
 #: lib/retro_hex_chat/commands/handlers/topic.ex:37
 #: lib/retro_hex_chat/commands/handlers/topic.ex:45
-#: lib/retro_hex_chat/commands/handlers/unpin.ex:43
 #, elixir-autogen, elixir-format
 msgid "You are not in any channel"
 msgstr ""
@@ -2597,7 +2595,7 @@ msgstr ""
 msgid "You cannot ignore yourself"
 msgstr ""
 
-#: lib/retro_hex_chat/commands/handlers/ban.ex:52
+#: lib/retro_hex_chat/commands/handlers/ban.ex:55
 #, elixir-autogen, elixir-format
 msgid "You must be a channel operator to ban users"
 msgstr ""
@@ -2607,7 +2605,7 @@ msgstr ""
 msgid "You must be a channel operator to change modes"
 msgstr ""
 
-#: lib/retro_hex_chat/commands/handlers/kick.ex:52
+#: lib/retro_hex_chat/commands/handlers/kick.ex:55
 #, elixir-autogen, elixir-format
 msgid "You must be a channel operator to kick users"
 msgstr ""
@@ -2617,7 +2615,7 @@ msgstr ""
 msgid "You must be a channel operator to unban users"
 msgstr ""
 
-#: lib/retro_hex_chat/commands/handler/guards.ex:37
+#: lib/retro_hex_chat/commands/handler/guards.ex:38
 #, elixir-autogen, elixir-format
 msgid "You must be a channel operator to use this command"
 msgstr ""
@@ -2627,7 +2625,7 @@ msgstr ""
 msgid "You must be a server administrator to use this command"
 msgstr ""
 
-#: lib/retro_hex_chat/commands/handler/guards.ex:82
+#: lib/retro_hex_chat/commands/handler/guards.ex:83
 #, elixir-autogen, elixir-format
 msgid "You must be at least a half-operator to use this command"
 msgstr ""
@@ -2637,12 +2635,12 @@ msgstr ""
 msgid "You must be identified to use /p2p."
 msgstr ""
 
-#: lib/retro_hex_chat/commands/handler/guards.ex:65
+#: lib/retro_hex_chat/commands/handler/guards.ex:66
 #, elixir-autogen, elixir-format
 msgid "You must be identified with NickServ to use this command"
 msgstr ""
 
-#: lib/retro_hex_chat/commands/handler/guards.ex:51
+#: lib/retro_hex_chat/commands/handler/guards.ex:52
 #, elixir-autogen, elixir-format
 msgid "You must be the channel owner to use this command"
 msgstr ""
@@ -3017,60 +3015,59 @@ msgstr ""
 msgid "Public greeting set to '%{greeting}'."
 msgstr ""
 
-#: lib/retro_hex_chat/commands/handlers/pin.ex:12
-#: lib/retro_hex_chat/commands/handlers/pin.ex:12
+#: lib/retro_hex_chat/commands/handlers/pin.ex:13
+#: lib/retro_hex_chat/commands/handlers/pin.ex:13
 #, elixir-autogen, elixir-format
 msgid "/pin <message id>"
 msgstr ""
 
-#: lib/retro_hex_chat/commands/handlers/unpin.ex:12
-#: lib/retro_hex_chat/commands/handlers/unpin.ex:12
+#: lib/retro_hex_chat/commands/handlers/unpin.ex:13
+#: lib/retro_hex_chat/commands/handlers/unpin.ex:13
 #, elixir-autogen, elixir-format
 msgid "/unpin <message id>"
 msgstr ""
 
-#: lib/retro_hex_chat/commands/handlers/pin.ex:26
+#: lib/retro_hex_chat/commands/handlers/pin.ex:27
 #, elixir-autogen, elixir-format
 msgid "Id of the message to keep"
 msgstr ""
 
-#: lib/retro_hex_chat/commands/handlers/unpin.ex:26
+#: lib/retro_hex_chat/commands/handlers/unpin.ex:27
 #, elixir-autogen, elixir-format
 msgid "Id of the message to stop keeping"
 msgstr ""
 
-#: lib/retro_hex_chat/commands/handlers/pin.ex:15
+#: lib/retro_hex_chat/commands/handlers/pin.ex:16
 #, elixir-autogen, elixir-format
 msgid "Keep a message in view for the whole channel — the rules, a link, what was agreed.\nPinned messages are listed in the Pinned window and stay findable after they scroll away.\nOperators only. A channel keeps up to 50."
 msgstr ""
 
-#: lib/retro_hex_chat/commands/handlers/pin.ex:13
+#: lib/retro_hex_chat/commands/handlers/pin.ex:14
 #, elixir-autogen, elixir-format
 msgid "Keep a message in view for the whole channel."
 msgstr ""
 
-#: lib/retro_hex_chat/commands/handlers/unpin.ex:13
+#: lib/retro_hex_chat/commands/handlers/unpin.ex:14
 #, elixir-autogen, elixir-format
 msgid "Stop keeping a message in view."
 msgstr ""
 
-#: lib/retro_hex_chat/commands/handlers/unpin.ex:15
+#: lib/retro_hex_chat/commands/handlers/unpin.ex:16
 #, elixir-autogen, elixir-format
 msgid "Stop keeping a message in view. The message itself stays where it is — only the pin goes.\nOperators only."
 msgstr ""
 
-#: lib/retro_hex_chat/commands/handlers/pin.ex:46
-#: lib/retro_hex_chat/commands/handlers/unpin.ex:47
+#: lib/retro_hex_chat/commands/handler/guards.ex:181
 #, elixir-autogen, elixir-format
 msgid "That is not a message id"
 msgstr ""
 
-#: lib/retro_hex_chat/commands/handlers/pin.ex:36
+#: lib/retro_hex_chat/commands/handlers/pin.ex:39
 #, elixir-autogen, elixir-format
 msgid "Which message? Use /pin <id>, or pin it from its right-click menu."
 msgstr ""
 
-#: lib/retro_hex_chat/commands/handlers/unpin.ex:34
+#: lib/retro_hex_chat/commands/handlers/unpin.ex:37
 #, elixir-autogen, elixir-format
 msgid "Which message? Use /unpin <id>, or unpin it from the Pinned window."
 msgstr ""
@@ -3311,7 +3308,7 @@ msgstr ""
 msgid "You must be a channel operator to register the channel"
 msgstr ""
 
-#: lib/retro_hex_chat/commands/handler/guards.ex:123
+#: lib/retro_hex_chat/commands/handler/guards.ex:124
 #, elixir-autogen, elixir-format
 msgid "%{game} has no mode called %{mode}."
 msgstr ""
@@ -3378,7 +3375,7 @@ msgstr ""
 msgid "Usage: /challenge <nickname> [mode]"
 msgstr ""
 
-#: lib/retro_hex_chat/commands/handler/guards.ex:108
+#: lib/retro_hex_chat/commands/handler/guards.ex:109
 #, elixir-autogen, elixir-format
 msgid "Use this in a game's own channel, like %{channel}."
 msgstr ""

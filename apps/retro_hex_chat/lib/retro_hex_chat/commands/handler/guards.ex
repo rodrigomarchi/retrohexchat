@@ -13,6 +13,7 @@ defmodule RetroHexChat.Commands.Handler.Guards do
   use Gettext, backend: RetroHexChat.Gettext
 
   alias RetroHexChat.Commands.Handler
+  alias RetroHexChat.Commands.Handler.Args
   alias RetroHexChat.Games.Catalog
 
   @doc """
@@ -131,7 +132,8 @@ defmodule RetroHexChat.Commands.Handler.Guards do
   The shape of a command aimed at one person in the active channel: no
   nickname answers `usage`; otherwise the active channel must exist and
   `check` (one of the `require_*` guards) must pass before `run` gets the
-  channel and the nickname.
+  channel and the nickname — and, when it takes three arguments, the rest of
+  the line as a reason (`nil` when there is none).
 
       def execute(args, context),
         do: on_channel_target(args, context, dgettext("commands", "Usage: /op <nickname>"),
@@ -143,13 +145,42 @@ defmodule RetroHexChat.Commands.Handler.Guards do
           String.t(),
           (Handler.context(), String.t() -> :ok | {:error, String.t()}),
           (String.t(), String.t() -> Handler.result())
+          | (String.t(), String.t(), String.t() | nil -> Handler.result())
         ) :: Handler.result()
   def on_channel_target([], _context, usage, _check, _run), do: {:error, usage}
 
-  def on_channel_target([nick | _], context, _usage, check, run) do
+  def on_channel_target([nick | rest], context, _usage, check, run) do
     with {:ok, channel} <- require_channel(context),
          :ok <- check.(context, channel) do
-      run.(channel, nick)
+      if is_function(run, 3), do: run.(channel, nick, reason(rest)), else: run.(channel, nick)
+    end
+  end
+
+  # What follows the nickname, as one reason; none when nothing does.
+  defp reason([]), do: nil
+  defp reason(words), do: Enum.join(words, " ")
+
+  @doc """
+  The shape of a command aimed at one message of the active channel by its
+  id: no id answers `usage`; otherwise the active channel must exist and the
+  id must be a positive integer before `run` gets the channel and the id.
+  """
+  @spec on_channel_message(
+          [String.t()],
+          Handler.context(),
+          String.t(),
+          (String.t(), pos_integer() -> Handler.result())
+        ) :: Handler.result()
+  def on_channel_message([], _context, usage, _run), do: {:error, usage}
+
+  def on_channel_message([raw_id | _], context, _usage, run) do
+    with {:ok, channel} <- require_channel(context),
+         {:ok, id} <-
+           Args.positive_id(
+             raw_id,
+             dgettext("commands", "That is not a message id")
+           ) do
+      run.(channel, id)
     end
   end
 end
