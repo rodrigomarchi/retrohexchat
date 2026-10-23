@@ -31,6 +31,7 @@ defmodule RetroHexChatWeb.Components.UI.GroupCall.Panel do
     VideoSurface
   }
 
+  alias RetroHexChatWeb.Components.UI.MediaSession.CallQuality
   alias RetroHexChatWeb.Icons
   alias RetroHexChatWeb.Icons.CallControls
 
@@ -1173,9 +1174,7 @@ defmodule RetroHexChatWeb.Components.UI.GroupCall.Panel do
 
   defp latest_participant_reaction(_call, _participant), do: nil
 
-  defp quality_level(%{level: level}) when is_atom(level), do: Atom.to_string(level)
-  defp quality_level(%{level: level}) when is_binary(level), do: level
-  defp quality_level(_quality), do: "unknown"
+  defp quality_level(quality), do: quality |> CallQuality.level() |> Atom.to_string()
 
   defp pinned_participant?(%{layout: %{pinned_participant_ids: ids}}, %{id: participant_id})
        when is_list(ids),

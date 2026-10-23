@@ -4,7 +4,7 @@ defmodule RetroHexChatWeb.Components.UI.GroupCall.ParticipantQualityBadge do
   """
   use RetroHexChatWeb.Component
 
-  alias RetroHexChatWeb.Icons
+  alias RetroHexChatWeb.Components.UI.MediaSession.CallQuality
 
   attr :participant_id, :any, required: true
   attr :quality, :map, default: nil
@@ -13,7 +13,7 @@ defmodule RetroHexChatWeb.Components.UI.GroupCall.ParticipantQualityBadge do
   def participant_quality_badge(assigns) do
     assigns =
       assigns
-      |> assign(:level, quality_level(assigns.quality))
+      |> assign(:level, CallQuality.level(assigns.quality))
       |> assign(:title, quality_title(assigns.quality))
 
     ~H"""
@@ -29,30 +29,10 @@ defmodule RetroHexChatWeb.Components.UI.GroupCall.ParticipantQualityBadge do
       data-group-call-participant-quality
       data-quality-level={Atom.to_string(@level)}
     >
-      <Icons.icon_quality_high :if={@level in [:excellent, :good]} class="h-4 w-4" />
-      <Icons.icon_quality_medium :if={@level == :fair} class="h-4 w-4" />
-      <Icons.icon_quality_low :if={@level == :poor} class="h-4 w-4" />
-      <Icons.icon_btn_timers :if={@level == :reconnecting} class="h-4 w-4" />
+      <CallQuality.quality_icon level={@level} />
     </span>
     """
   end
-
-  defp quality_level(%{level: level})
-       when level in [:excellent, :good, :fair, :poor, :reconnecting],
-       do: level
-
-  defp quality_level(%{level: level}) when is_binary(level) do
-    case level do
-      "excellent" -> :excellent
-      "good" -> :good
-      "fair" -> :fair
-      "poor" -> :poor
-      "reconnecting" -> :reconnecting
-      _other -> :unknown
-    end
-  end
-
-  defp quality_level(_quality), do: :unknown
 
   defp quality_class(:excellent), do: "bg-surface text-primary"
   defp quality_class(:good), do: "bg-surface text-primary"
@@ -67,7 +47,7 @@ defmodule RetroHexChatWeb.Components.UI.GroupCall.ParticipantQualityBadge do
     dgettext(
       "group_call",
       "%{level} quality: RTT %{rtt} ms, loss %{loss}%, %{bitrate} kbps, %{fps} fps, freezes %{freezes}",
-      level: quality_label(quality_level(quality)),
+      level: CallQuality.label(CallQuality.level(quality)),
       rtt: Map.get(quality, :rtt_ms, 0),
       loss: Map.get(quality, :loss_pct, 0),
       bitrate: Map.get(quality, :bitrate_kbps, 0),
@@ -75,11 +55,4 @@ defmodule RetroHexChatWeb.Components.UI.GroupCall.ParticipantQualityBadge do
       freezes: Map.get(quality, :freeze_count, 0)
     )
   end
-
-  defp quality_label(:excellent), do: dgettext("group_call", "Excellent")
-  defp quality_label(:good), do: dgettext("group_call", "Good")
-  defp quality_label(:fair), do: dgettext("group_call", "Fair")
-  defp quality_label(:poor), do: dgettext("group_call", "Poor")
-  defp quality_label(:reconnecting), do: dgettext("group_call", "Reconnecting")
-  defp quality_label(:unknown), do: dgettext("group_call", "Unknown")
 end

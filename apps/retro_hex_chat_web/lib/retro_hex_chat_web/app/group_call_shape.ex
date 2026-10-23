@@ -21,6 +21,7 @@ defmodule RetroHexChatWeb.App.GroupCallShape do
   use Gettext, backend: RetroHexChatWeb.Gettext
 
   alias RetroHexChatWeb.App.GroupCallStats
+  alias RetroHexChatWeb.Components.UI.MediaSession.CallQuality
   alias RetroHexChatWeb.MediaDevices
   alias RetroHexChatWeb.Params
 
@@ -195,17 +196,8 @@ defmodule RetroHexChatWeb.App.GroupCallShape do
   end
 
   def normalize_participant_quality(_quality), do: normalize_participant_quality(nil)
-  @spec normalize_quality_level(term()) :: atom() | nil
-  def normalize_quality_level(value) do
-    case to_string(value) do
-      "excellent" -> :excellent
-      "good" -> :good
-      "fair" -> :fair
-      "poor" -> :poor
-      "reconnecting" -> :reconnecting
-      _other -> :unknown
-    end
-  end
+  @spec normalize_quality_level(term()) :: CallQuality.level()
+  def normalize_quality_level(value), do: CallQuality.level(value)
 
   @spec normalize_media(map() | nil) :: map()
   def normalize_media(nil), do: %{}

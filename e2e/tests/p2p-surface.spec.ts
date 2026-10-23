@@ -110,6 +110,15 @@ test.describe("P2P session at its own address", () => {
           .toBe(true);
       }
 
+      // How the connection is doing, over the picture it is about.
+      await expect(aliceSession.getByTestId("lobby-call-quality")).toBeVisible({
+        timeout: 20_000,
+      });
+      await shot(
+        aliceSession.getByTestId("p2p-call-remote-tile"),
+        "call-quality",
+      );
+
       // A file over the SAME connection, mid-call.
       await openP2PConsoleSection(aliceSession, "files");
       await expect(aliceSession.getByTestId("lobby-file-panel")).toBeVisible();

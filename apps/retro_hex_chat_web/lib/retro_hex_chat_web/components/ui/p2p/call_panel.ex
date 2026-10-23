@@ -15,6 +15,7 @@ defmodule RetroHexChatWeb.Components.UI.P2P.CallPanel do
   import RetroHexChatWeb.Components.UI.NickFlag
   import RetroHexChatWeb.Components.UI.ToolButton
 
+  alias RetroHexChatWeb.Components.UI.MediaSession.CallQuality
   alias RetroHexChatWeb.Icons
   alias RetroHexChatWeb.Icons.CallControls
 
@@ -144,7 +145,7 @@ defmodule RetroHexChatWeb.Components.UI.P2P.CallPanel do
                   ]}
                   data-testid="lobby-call-quality"
                 >
-                  <Icons.icon_status_signal class="h-4 w-4" />
+                  <CallQuality.quality_icon level={quality_level(@call)} />
                   <span>{quality_label(@call)}</span>
                 </div>
 
@@ -932,17 +933,21 @@ defmodule RetroHexChatWeb.Components.UI.P2P.CallPanel do
   @spec duration_label(map() | nil) :: String.t() | nil
   defp duration_label(call), do: map_value(call, :duration, nil)
 
-  @spec quality_level(map() | nil) :: String.t() | nil
-  defp quality_level(call), do: map_value(call, :quality_level, nil)
+  @spec quality_level(map() | nil) :: CallQuality.level()
+  defp quality_level(call), do: CallQuality.level(map_value(call, :quality_level, nil))
 
   @spec quality_label(map() | nil) :: String.t() | nil
-  defp quality_label(call), do: map_value(call, :quality_label, nil)
+  defp quality_label(call) do
+    case quality_level(call) do
+      :unknown -> map_value(call, :quality_label, nil)
+      level -> CallQuality.label(level)
+    end
+  end
 
-  @spec quality_class(String.t() | nil) :: String.t()
-  defp quality_class("excellent"), do: "text-success"
-  defp quality_class("good"), do: "text-success"
-  defp quality_class("fair"), do: "text-warning"
-  defp quality_class("poor"), do: "text-error"
+  @spec quality_class(CallQuality.level()) :: String.t()
+  defp quality_class(level) when level in [:excellent, :good], do: "text-success"
+  defp quality_class(:fair), do: "text-warning"
+  defp quality_class(:poor), do: "text-error"
   defp quality_class(_level), do: "text-white"
 
   @spec device_label(String.t()) :: String.t()
