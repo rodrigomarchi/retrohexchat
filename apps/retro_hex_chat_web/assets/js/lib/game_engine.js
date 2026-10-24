@@ -113,6 +113,8 @@ export class GameEngine {
    * @param {"p2p_host"|"p2p_guest"|"solo"|"spectator"} [options.mode] — a spectator
    *   is a guest that only watches: it draws the host's snapshots and never
    *   takes the keyboard.
+   * @param {EventTarget} [options.keyboardTarget] - where key presses are read
+   *   from; the window unless a test puts two players side by side.
    */
   constructor(canvas, channel, gameId, isHost, options = {}) {
     this.canvas = canvas;
@@ -155,6 +157,7 @@ export class GameEngine {
     this._readyEncoder = null;
     this.phaseTimer = null;
     this._keyboardCaptured = options.captureKeyboard === true;
+    this._keyboardTarget = options.keyboardTarget ?? window;
 
     this._boundOnMessage = this._onChannelMessage.bind(this);
     this._boundOnKeyDown = this._onKeyDown.bind(this);
@@ -174,8 +177,12 @@ export class GameEngine {
     window.addEventListener("blur", this._boundBlur);
     // Somebody watching has no paddle: their keys stay the page's.
     if (this.mode !== "spectator") {
-      window.addEventListener("keydown", this._boundOnKeyDown, KEYBOARD_CAPTURE_OPTIONS);
-      window.addEventListener("keyup", this._boundOnKeyUp, KEYBOARD_CAPTURE_OPTIONS);
+      this._keyboardTarget.addEventListener(
+        "keydown",
+        this._boundOnKeyDown,
+        KEYBOARD_CAPTURE_OPTIONS,
+      );
+      this._keyboardTarget.addEventListener("keyup", this._boundOnKeyUp, KEYBOARD_CAPTURE_OPTIONS);
     }
 
     const now = this._now();
@@ -204,8 +211,12 @@ export class GameEngine {
     this.channel.removeEventListener("message", this._boundOnMessage);
     this.channel.removeEventListener("close", this._boundChannelClose);
     window.removeEventListener("blur", this._boundBlur);
-    window.removeEventListener("keydown", this._boundOnKeyDown, KEYBOARD_CAPTURE_OPTIONS);
-    window.removeEventListener("keyup", this._boundOnKeyUp, KEYBOARD_CAPTURE_OPTIONS);
+    this._keyboardTarget.removeEventListener(
+      "keydown",
+      this._boundOnKeyDown,
+      KEYBOARD_CAPTURE_OPTIONS,
+    );
+    this._keyboardTarget.removeEventListener("keyup", this._boundOnKeyUp, KEYBOARD_CAPTURE_OPTIONS);
 
     this._telemetry.stop();
 

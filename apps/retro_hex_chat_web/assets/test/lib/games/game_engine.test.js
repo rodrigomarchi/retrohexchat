@@ -1,5 +1,5 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
-import { GameEngine } from "../../../js/lib/game_engine.js";
+import { GameEngine, keymap } from "../../../js/lib/game_engine.js";
 
 describe("game_engine", () => {
   describe("GameEngine", () => {
@@ -154,6 +154,50 @@ describe("game_engine", () => {
       expect(typeof engine._boundOnMessage).toBe("function");
       expect(typeof engine._boundOnKeyDown).toBe("function");
       expect(typeof engine._boundOnKeyUp).toBe("function");
+    });
+
+    describe("keyboard target", () => {
+      class Paddle extends GameEngine {
+        static INPUT_BITS = { up: 0 };
+        static KEYMAP = keymap({ up: ["ArrowUp"] });
+      }
+
+      const press = (target, type) =>
+        target.dispatchEvent(new KeyboardEvent(type, { key: "ArrowUp", cancelable: true }));
+
+      it("reads the keyboard from the target it is given, not the window", () => {
+        const keyboardTarget = new EventTarget();
+        engine = new Paddle(canvas, channel, "hex_pong", true, { keyboardTarget });
+        engine.start();
+
+        press(window, "keydown");
+        expect(engine.localInputs.up).toBeUndefined();
+
+        press(keyboardTarget, "keydown");
+        expect(engine.localInputs.up).toBe(true);
+
+        press(keyboardTarget, "keyup");
+        expect(engine.localInputs.up).toBe(false);
+      });
+
+      it("stops reading the target once stopped", () => {
+        const keyboardTarget = new EventTarget();
+        engine = new Paddle(canvas, channel, "hex_pong", true, { keyboardTarget });
+        engine.start();
+        engine.stop();
+
+        press(keyboardTarget, "keydown");
+        expect(engine.localInputs.up).toBeUndefined();
+      });
+
+      it("reads the window when no target is given", () => {
+        engine = new Paddle(canvas, channel, "hex_pong", true);
+        engine.start();
+
+        press(window, "keydown");
+        expect(engine.localInputs.up).toBe(true);
+        press(window, "keyup");
+      });
     });
   });
 });
