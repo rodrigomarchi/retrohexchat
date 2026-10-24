@@ -27,7 +27,7 @@ export default [
     },
   },
   {
-    files: ["test/**/*.test.js", "test/helpers/**/*.js"],
+    files: ["test/**/*.test.js", "test/helpers/**/*.js", "test/support/**/*.js"],
     languageOptions: {
       globals: {
         ...globals.browser,
