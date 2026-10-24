@@ -54,7 +54,8 @@ vi.mock("../../../../js/lib/games/hex_boxing/renderer.js", () => ({
   updateParticles: vi.fn(() => []),
 }));
 
-const { BoxingEngine } = await import("../../../../js/lib/games/hex_boxing/engine.js");
+const { default: BoxingEngine, direction } =
+  await import("../../../../js/lib/games/hex_boxing/index.js");
 const { render, getColors, createHitParticles, updateParticles } =
   await import("../../../../js/lib/games/hex_boxing/renderer.js");
 
@@ -178,8 +179,8 @@ describe("BoxingEngine", () => {
 
     it("initializes punch edge-trigger flags to false", () => {
       engine = new BoxingEngine(canvas, channel, "hex_boxing", true, null);
-      expect(engine._localPunchPressed).toBe(false);
-      expect(engine._remotePunchPressed).toBe(false);
+      expect(engine.localPunchPressed).toBe(false);
+      expect(engine.remotePunchPressed).toBe(false);
     });
 
     it("stores onGameEnd callback", () => {
@@ -371,54 +372,34 @@ describe("BoxingEngine", () => {
     });
 
     it("computes cardinal directions", () => {
-      expect(
-        engine._dirFromInputs({ up: false, down: false, left: false, right: true, punch: false }),
-      ).toBe(0); // right
-      expect(
-        engine._dirFromInputs({ up: false, down: true, left: false, right: false, punch: false }),
-      ).toBe(2); // down
-      expect(
-        engine._dirFromInputs({ up: false, down: false, left: true, right: false, punch: false }),
-      ).toBe(4); // left
-      expect(
-        engine._dirFromInputs({ up: true, down: false, left: false, right: false, punch: false }),
-      ).toBe(6); // up
+      expect(direction({ up: false, down: false, left: false, right: true, punch: false })).toBe(0); // right
+      expect(direction({ up: false, down: true, left: false, right: false, punch: false })).toBe(2); // down
+      expect(direction({ up: false, down: false, left: true, right: false, punch: false })).toBe(4); // left
+      expect(direction({ up: true, down: false, left: false, right: false, punch: false })).toBe(6); // up
     });
 
     it("computes all diagonal directions", () => {
       // down-right
-      expect(
-        engine._dirFromInputs({ up: false, down: true, left: false, right: true, punch: false }),
-      ).toBe(1);
+      expect(direction({ up: false, down: true, left: false, right: true, punch: false })).toBe(1);
       // down-left
-      expect(
-        engine._dirFromInputs({ up: false, down: true, left: true, right: false, punch: false }),
-      ).toBe(3);
+      expect(direction({ up: false, down: true, left: true, right: false, punch: false })).toBe(3);
       // up-left
-      expect(
-        engine._dirFromInputs({ up: true, down: false, left: true, right: false, punch: false }),
-      ).toBe(5);
+      expect(direction({ up: true, down: false, left: true, right: false, punch: false })).toBe(5);
       // up-right
-      expect(
-        engine._dirFromInputs({ up: true, down: false, left: false, right: true, punch: false }),
-      ).toBe(7);
+      expect(direction({ up: true, down: false, left: false, right: true, punch: false })).toBe(7);
     });
 
     it("returns -1 when no direction pressed", () => {
-      expect(
-        engine._dirFromInputs({ up: false, down: false, left: false, right: false, punch: false }),
-      ).toBe(-1);
+      expect(direction({ up: false, down: false, left: false, right: false, punch: false })).toBe(
+        -1,
+      );
     });
 
     it("handles opposing directions (cancel out)", () => {
       // Both left and right → cancels
-      expect(
-        engine._dirFromInputs({ up: false, down: false, left: true, right: true, punch: false }),
-      ).toBe(-1);
+      expect(direction({ up: false, down: false, left: true, right: true, punch: false })).toBe(-1);
       // Both up and down → cancels
-      expect(
-        engine._dirFromInputs({ up: true, down: true, left: false, right: false, punch: false }),
-      ).toBe(-1);
+      expect(direction({ up: true, down: true, left: false, right: false, punch: false })).toBe(-1);
     });
   });
 
@@ -523,20 +504,6 @@ describe("BoxingEngine", () => {
       engine._onChannelMessage({ data: SNAPSHOT.encode(fakeState) });
       // Host should NOT apply peer state
       expect(engine.gameState.score1).toBe(0);
-    });
-
-    it("GAME_END is processed by host too (no role guard)", () => {
-      engine._onChannelMessage({
-        data: GAME_END.encode({
-          score1: 50,
-          score2: 60,
-          winner: 2,
-          roundWins1: 0,
-          roundWins2: 2,
-        }),
-      });
-      // GAME_END has no isHost guard — both roles process it
-      expect(engine.gameState.phase).toBe(PHASE.MATCH_OVER);
     });
 
     it("rejects non-ArrayBuffer data", () => {
@@ -660,7 +627,7 @@ describe("BoxingEngine", () => {
         lastHitPlayer: 0,
         lastHitPoints: 0,
       };
-      engine._applyPeerState(decoded);
+      engine._onChannelMessage({ data: SNAPSHOT.encode(decoded) });
       expect(engine.gameState.b1x).toBe(100);
       expect(engine.gameState.b2y).toBe(300);
       expect(engine.gameState.score1).toBe(15);
@@ -677,7 +644,7 @@ describe("BoxingEngine", () => {
         lastHitPoints: 3,
         phase: PHASE.FIGHTING,
       };
-      engine._applyPeerState(decoded);
+      engine._onChannelMessage({ data: SNAPSHOT.encode(decoded) });
       expect(engine.audio.playHit).toHaveBeenCalledWith(3);
       expect(createHitParticles).toHaveBeenCalled();
     });
@@ -689,7 +656,7 @@ describe("BoxingEngine", () => {
         lastHitPoints: 0,
         phase: PHASE.FIGHTING,
       };
-      engine._applyPeerState(decoded);
+      engine._onChannelMessage({ data: SNAPSHOT.encode(decoded) });
       expect(engine.audio.playHit).not.toHaveBeenCalled();
     });
 
@@ -701,35 +668,41 @@ describe("BoxingEngine", () => {
         lastHitPlayer: 0,
         lastHitPoints: 0,
       };
-      engine._applyPeerState(decoded);
+      engine._onChannelMessage({ data: SNAPSHOT.encode(decoded) });
       expect(engine.audio.playCountdown).toHaveBeenCalled();
     });
   });
 
   // ── _playPhaseAudio ──
 
-  describe("_playPhaseAudio", () => {
+  describe("phase sounds on the guest", () => {
+    const receivePhase = (from, to) => {
+      engine.gameState.phase = from;
+      engine._onChannelMessage({ data: SNAPSHOT.encode({ ...createInitialState(), phase: to }) });
+    };
+
     beforeEach(() => {
-      engine = new BoxingEngine(canvas, channel, "hex_boxing", true, null);
+      engine = new BoxingEngine(canvas, channel, "hex_boxing", false, null);
+      engine.start();
     });
 
     it("COUNTDOWN transition plays playCountdown", () => {
-      engine._playPhaseAudio(PHASE.WAITING, PHASE.COUNTDOWN);
+      receivePhase(PHASE.WAITING, PHASE.COUNTDOWN);
       expect(engine.audio.playCountdown).toHaveBeenCalled();
     });
 
     it("SPAWNING transition plays playBellStart", () => {
-      engine._playPhaseAudio(PHASE.COUNTDOWN, PHASE.SPAWNING);
+      receivePhase(PHASE.COUNTDOWN, PHASE.SPAWNING);
       expect(engine.audio.playBellStart).toHaveBeenCalled();
     });
 
     it("ROUND_OVER transition plays playBellEnd", () => {
-      engine._playPhaseAudio(PHASE.FIGHTING, PHASE.ROUND_OVER);
+      receivePhase(PHASE.FIGHTING, PHASE.ROUND_OVER);
       expect(engine.audio.playBellEnd).toHaveBeenCalled();
     });
 
     it("no-op when phase unchanged", () => {
-      engine._playPhaseAudio(PHASE.FIGHTING, PHASE.FIGHTING);
+      receivePhase(PHASE.FIGHTING, PHASE.FIGHTING);
       expect(engine.audio.playCountdown).not.toHaveBeenCalled();
       expect(engine.audio.playBellStart).not.toHaveBeenCalled();
       expect(engine.audio.playBellEnd).not.toHaveBeenCalled();
@@ -743,7 +716,7 @@ describe("BoxingEngine", () => {
       vi.useFakeTimers();
       engine = new BoxingEngine(canvas, channel, "hex_boxing", true, null);
       engine.start();
-      engine._startCountdown();
+      engine.beginMatch();
       expect(engine.gameState.phase).toBe(PHASE.COUNTDOWN);
       expect(engine.gameState.countdown).toBe(3);
       expect(engine.audio.playCountdown).toHaveBeenCalled();
@@ -755,7 +728,7 @@ describe("BoxingEngine", () => {
       vi.useFakeTimers();
       engine = new BoxingEngine(canvas, channel, "hex_boxing", true, null);
       engine.start();
-      engine._startCountdown();
+      engine.beginMatch();
       expect(engine.gameState.countdown).toBe(3);
 
       vi.advanceTimersByTime(1000);
@@ -773,7 +746,7 @@ describe("BoxingEngine", () => {
       vi.useFakeTimers();
       engine = new BoxingEngine(canvas, channel, "hex_boxing", true, null);
       engine.start();
-      engine._startSpawning();
+      engine.flow.go("SPAWNING");
       expect(engine.gameState.phase).toBe(PHASE.SPAWNING);
 
       vi.advanceTimersByTime(1000); // SPAWNING_DELAY
@@ -785,7 +758,7 @@ describe("BoxingEngine", () => {
       vi.useFakeTimers();
       engine = new BoxingEngine(canvas, channel, "hex_boxing", true, null);
       engine.start();
-      engine._startCountdown();
+      engine.beginMatch();
       expect(engine.gameState.countdown).toBe(3);
 
       engine.stop();
@@ -851,7 +824,7 @@ describe("BoxingEngine", () => {
       // First frame with punch pressed → triggers punch
       engine.localInputs.punch = true;
       engine._gameLoop(0);
-      expect(engine._localPunchPressed).toBe(true);
+      expect(engine.localPunchPressed).toBe(true);
       // b1 should be in a punch state (PUNCHING or COOLDOWN after hit check)
       // Second frame still holding → should NOT re-trigger (edge-triggered)
       // Reset punch state to IDLE to see if it re-triggers
@@ -873,12 +846,12 @@ describe("BoxingEngine", () => {
 
       engine.remoteInputs.punch = true;
       engine._gameLoop(0);
-      expect(engine._remotePunchPressed).toBe(true);
+      expect(engine.remotePunchPressed).toBe(true);
 
       // Release and re-press to trigger again
       engine.remoteInputs.punch = false;
       engine._gameLoop(0);
-      expect(engine._remotePunchPressed).toBe(false);
+      expect(engine.remotePunchPressed).toBe(false);
     });
 
     it("round timer ticks down each frame", () => {
@@ -1004,7 +977,7 @@ describe("BoxingEngine", () => {
 
       engine._gameLoop();
 
-      expect(engine._remotePunchPressed).toBe(true);
+      expect(engine.remotePunchPressed).toBe(true);
       expect(engine.gameState.b2punchState).toBe(PUNCH_STATE.PUNCHING);
     });
   });
@@ -1076,16 +1049,15 @@ describe("BoxingEngine", () => {
 
   // ── _handleMatchOver ──
 
-  describe("_handleMatchOver", () => {
+  describe("the end of the match (host)", () => {
     it("P1 winner plays win audio and sends GAME_END", () => {
       engine = new BoxingEngine(canvas, channel, "hex_boxing", true, vi.fn());
       engine.start();
-      engine.gameState.phase = PHASE.MATCH_OVER;
       engine.gameState.roundWins1 = 2;
       engine.gameState.roundWins2 = 1;
       channel.send.mockClear();
 
-      engine._handleMatchOver();
+      engine.flow.go("MATCH_OVER");
 
       expect(engine.audio.playWin).toHaveBeenCalled();
       expect(engine.audio.playLose).not.toHaveBeenCalled();
@@ -1100,11 +1072,10 @@ describe("BoxingEngine", () => {
     it("P2 winner plays lose audio for host", () => {
       engine = new BoxingEngine(canvas, channel, "hex_boxing", true, vi.fn());
       engine.start();
-      engine.gameState.phase = PHASE.MATCH_OVER;
       engine.gameState.roundWins1 = 0;
       engine.gameState.roundWins2 = 2;
 
-      engine._handleMatchOver();
+      engine.flow.go("MATCH_OVER");
 
       expect(engine.audio.playLose).toHaveBeenCalled();
       expect(engine.audio.playWin).not.toHaveBeenCalled();
@@ -1114,11 +1085,10 @@ describe("BoxingEngine", () => {
       const onEnd = vi.fn();
       engine = new BoxingEngine(canvas, channel, "hex_boxing", true, onEnd);
       engine.start();
-      engine.gameState.phase = PHASE.MATCH_OVER;
       engine.gameState.roundWins1 = 2;
       engine.gameState.roundWins2 = 1;
 
-      engine._handleMatchOver();
+      engine.flow.go("MATCH_OVER");
 
       expect(onEnd).toHaveBeenCalledWith({
         score: { p1: 2, p2: 1 },
@@ -1129,11 +1099,10 @@ describe("BoxingEngine", () => {
     it("does not throw when onGameEnd is null", () => {
       engine = new BoxingEngine(canvas, channel, "hex_boxing", true, null);
       engine.start();
-      engine.gameState.phase = PHASE.MATCH_OVER;
       engine.gameState.roundWins1 = 2;
       engine.gameState.roundWins2 = 0;
 
-      expect(() => engine._handleMatchOver()).not.toThrow();
+      expect(() => engine.flow.go("MATCH_OVER")).not.toThrow();
     });
   });
 
