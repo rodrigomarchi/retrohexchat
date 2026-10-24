@@ -16,7 +16,7 @@ msgstr ""
 msgid "+s and +p are mutually exclusive"
 msgstr "+s 和 +p 相互排斥"
 
-#: lib/retro_hex_chat/channels/server.ex:1830
+#: lib/retro_hex_chat/channels/server.ex:1826
 #, elixir-autogen, elixir-format
 msgid "Already in channel"
 msgstr "已經在頻道中"
@@ -67,7 +67,7 @@ msgstr "頻道由主持人主持(+m). 您需要語音( +v) 才能發言 。"
 msgid "Channel is not invite-only"
 msgstr "頻道不只邀請"
 
-#: lib/retro_hex_chat/channels/server.ex:1853
+#: lib/retro_hex_chat/channels/server.ex:1849
 #, elixir-autogen, elixir-format
 msgid "Channel join throttle active, please try again shortly"
 msgstr "頻道加入節流閥活動, 請再試一次"
@@ -218,24 +218,24 @@ msgstr "這個頻道已經保留了 %{count} 則訊息。請先取消一則。"
 msgid "You must be a channel operator to pin messages"
 msgstr "只有頻道管理員可以置頂訊息"
 
-#: lib/retro_hex_chat/channels/server.ex:2076
+#: lib/retro_hex_chat/channels/server.ex:2072
 #, elixir-autogen, elixir-format
 msgid "Only the channel founder can change the public archive"
 msgstr "只有頻道創建者才能更改公開封存"
 
-#: lib/retro_hex_chat/channels/server.ex:1994
+#: lib/retro_hex_chat/channels/server.ex:1990
 #, elixir-autogen, elixir-format
 msgid "%{nickname} scheduled: %{title}"
 msgstr "%{nickname} 安排了：%{title}"
 
-#: lib/retro_hex_chat/channels/server.ex:2026
+#: lib/retro_hex_chat/channels/server.ex:2022
 #, elixir-autogen, elixir-format
 msgid "That event belongs to another channel."
 msgstr "該活動屬於另一個頻道。"
 
 #: lib/retro_hex_chat/channels/scheduled_events.ex:120
 #: lib/retro_hex_chat/channels/scheduled_events.ex:146
-#: lib/retro_hex_chat/channels/server.ex:2023
+#: lib/retro_hex_chat/channels/server.ex:2019
 #, elixir-autogen, elixir-format
 msgid "That event could not be found."
 msgstr "找不到該活動。"
@@ -275,7 +275,7 @@ msgstr "該頻道已經有 %{count} 個即將到來的活動。"
 msgid "When does it start?"
 msgstr "什麼時候開始？"
 
-#: lib/retro_hex_chat/channels/server.ex:2067
+#: lib/retro_hex_chat/channels/server.ex:2063
 #, elixir-autogen, elixir-format
 msgid "Identify with NickServ before changing the public archive"
 msgstr "變更公開存檔前請先向 NickServ 驗證身分"
@@ -295,12 +295,12 @@ msgstr "無法更改相同或更高級別用戶的角色"
 msgid "You must identify with NickServ to join this channel"
 msgstr "您必須識別 NickServ 才能加入此頻道"
 
-#: lib/retro_hex_chat/channels/server.ex:2070
+#: lib/retro_hex_chat/channels/server.ex:2066
 #, elixir-autogen, elixir-format
 msgid "Identify with NickServ before changing the channel's language"
 msgstr "變更頻道語言前請先向 NickServ 驗證身分"
 
-#: lib/retro_hex_chat/channels/server.ex:2079
+#: lib/retro_hex_chat/channels/server.ex:2075
 #, elixir-autogen, elixir-format
 msgid "Only the founder of a registered channel can set its language"
 msgstr "只有已註冊頻道的創建者才能設定其語言"
@@ -341,7 +341,7 @@ msgstr "遊戲"
 msgid "Help"
 msgstr "說明"
 
-#: lib/retro_hex_chat/channels/server.ex:2073
+#: lib/retro_hex_chat/channels/server.ex:2069
 #, elixir-autogen, elixir-format
 msgid "Identify with NickServ before changing the channel's category"
 msgstr "變更頻道分類前請先向 NickServ 驗證身分"
@@ -356,7 +356,7 @@ msgstr "生活風格"
 msgid "News"
 msgstr "新聞"
 
-#: lib/retro_hex_chat/channels/server.ex:2082
+#: lib/retro_hex_chat/channels/server.ex:2078
 #, elixir-autogen, elixir-format
 msgid "Only the founder of a registered channel can set its category"
 msgstr "只有已註冊頻道的創建者才能設定其分類"

@@ -72,7 +72,7 @@ msgstr "+nt"
 msgid "+s"
 msgstr "+s"
 
-#: lib/retro_hex_chat_web/live/showcase_live/dialogs/alias_dialog_page.ex:21
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/alias_dialog_page.ex:17
 #, elixir-autogen, elixir-format
 msgid "/away $1-"
 msgstr "/away $1-"
@@ -97,7 +97,7 @@ msgstr "/kick #lobby spammer"
 msgid "/kick #lobby troll Violating rules"
 msgstr "/kick #lobby troll Violating rules"
 
-#: lib/retro_hex_chat_web/live/showcase_live/dialogs/alias_dialog_page.ex:22
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/alias_dialog_page.ex:18
 #, elixir-autogen, elixir-format
 msgid "/mode $chan +o $1"
 msgstr "/mode $chan +o $1"
@@ -107,12 +107,12 @@ msgstr "/mode $chan +o $1"
 msgid "/msg #lobby Anyone around?"
 msgstr "/msg #lobby Anyone around?"
 
-#: lib/retro_hex_chat_web/live/showcase_live/dialogs/alias_dialog_page.ex:20
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/alias_dialog_page.ex:16
 #, elixir-autogen, elixir-format
 msgid "/msg $1 goodbye!"
 msgstr "/msg $1 goodbye!"
 
-#: lib/retro_hex_chat_web/live/showcase_live/dialogs/alias_dialog_page.ex:19
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/alias_dialog_page.ex:15
 #, elixir-autogen, elixir-format
 msgid "/msg $1 hello!"
 msgstr "/msg $1 hello!"
@@ -262,7 +262,7 @@ msgstr "アドレス帳にユーザーを追加します。"
 msgid "Add/Remove buttons"
 msgstr "Add/Removeボタン"
 
-#: lib/retro_hex_chat_web/live/showcase_live/dialogs/alias_dialog_page.ex:102
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/alias_dialog_page.ex:89
 #, elixir-autogen, elixir-format
 msgid "Adding New Alias"
 msgstr "新しいエイリアスを追加する"
@@ -320,8 +320,8 @@ msgstr "アラートダイアログ"
 msgid "Alerts"
 msgstr "アラート"
 
-#: lib/retro_hex_chat_web/live/showcase_live/dialogs/alias_dialog_page.ex:29
-#: lib/retro_hex_chat_web/live/showcase_live/dialogs/alias_dialog_page.ex:45
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/alias_dialog_page.ex:25
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/alias_dialog_page.ex:41
 #: lib/retro_hex_chat_web/showcase_catalog.ex:671
 #, elixir-autogen, elixir-format
 msgid "Alias Dialog"
@@ -473,8 +473,8 @@ msgstr "オーディオ、ビデオ、デバイス"
 msgid "Auto Respond"
 msgstr "自動応答"
 
-#: lib/retro_hex_chat_web/live/showcase_live/dialogs/auto_respond_dialog_page.ex:21
-#: lib/retro_hex_chat_web/live/showcase_live/dialogs/auto_respond_dialog_page.ex:59
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/auto_respond_dialog_page.ex:18
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/auto_respond_dialog_page.ex:56
 #, elixir-autogen, elixir-format
 msgid "Auto Respond Dialog"
 msgstr "自動応答ダイアログ"
@@ -829,7 +829,7 @@ msgstr "チャネルモード"
 msgid "Channel States"
 msgstr "チャンネル アメリカ"
 
-#: lib/retro_hex_chat_web/live/showcase_live/dialogs/custom_menus_dialog_page.ex:100
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/custom_menus_dialog_page.ex:94
 #, elixir-autogen, elixir-format
 msgid "Channel Tab"
 msgstr "チャネルタブ"
@@ -1203,7 +1203,7 @@ msgstr "会話Ctxメニュー"
 msgid "Copy"
 msgstr "コピー"
 
-#: lib/retro_hex_chat_web/live/showcase_live/shell/status_bar_app_page.ex:65
+#: lib/retro_hex_chat_web/live/showcase_live/shell/status_bar_app_page.ex:72
 #, elixir-autogen, elixir-format
 msgid "Critical Lag"
 msgstr "クリティカルラグ"
@@ -1277,8 +1277,8 @@ msgstr "習慣の最大長さ"
 msgid "Custom Menus"
 msgstr "カスタムメニュー"
 
-#: lib/retro_hex_chat_web/live/showcase_live/dialogs/custom_menus_dialog_page.ex:21
-#: lib/retro_hex_chat_web/live/showcase_live/dialogs/custom_menus_dialog_page.ex:68
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/custom_menus_dialog_page.ex:18
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/custom_menus_dialog_page.ex:65
 #, elixir-autogen, elixir-format
 msgid "Custom Menus Dialog"
 msgstr "カスタムメニューダイアログ"
@@ -1352,8 +1352,8 @@ msgstr "デフォルト確認"
 msgid "Default Settings"
 msgstr "デフォルト設定"
 
-#: lib/retro_hex_chat_web/live/showcase_live/dialogs/alias_dialog_page.ex:48
-#: lib/retro_hex_chat_web/live/showcase_live/dialogs/auto_respond_dialog_page.ex:62
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/alias_dialog_page.ex:44
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/auto_respond_dialog_page.ex:59
 #, elixir-autogen, elixir-format
 msgid "Default State"
 msgstr "デフォルトの状態"
@@ -1406,7 +1406,7 @@ msgid "Description"
 msgstr "説明"
 
 #: lib/retro_hex_chat_web/components/showcase_helpers.ex:164
-#: lib/retro_hex_chat_web/components/ui/shell/start_menu_app.ex:570
+#: lib/retro_hex_chat_web/components/ui/shell/start_menu_app.ex:569
 #, elixir-autogen, elixir-format
 msgid "Design System"
 msgstr "デザインシステム"
@@ -1574,9 +1574,9 @@ msgstr "編集"
 msgid "Edit Profile"
 msgstr "編集プロファイル"
 
-#: lib/retro_hex_chat_web/live/showcase_live/dialogs/alias_dialog_page.ex:85
-#: lib/retro_hex_chat_web/live/showcase_live/dialogs/auto_respond_dialog_page.ex:86
-#: lib/retro_hex_chat_web/live/showcase_live/dialogs/custom_menus_dialog_page.ex:115
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/alias_dialog_page.ex:73
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/auto_respond_dialog_page.ex:80
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/custom_menus_dialog_page.ex:107
 #, elixir-autogen, elixir-format
 msgid "Editing State"
 msgstr "状態の編集"
@@ -1603,7 +1603,7 @@ msgstr "メール:"
 msgid "Emoji Picker"
 msgstr "絵文字ピッカー"
 
-#: lib/retro_hex_chat_web/live/showcase_live/dialogs/alias_dialog_page.ex:119
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/alias_dialog_page.ex:104
 #, elixir-autogen, elixir-format
 msgid "Empty List"
 msgstr "空室一覧"
@@ -1620,7 +1620,7 @@ msgstr "空の設定"
 
 #: lib/retro_hex_chat_web/live/showcase_live/chat/autocomplete_page.html.heex:103
 #: lib/retro_hex_chat_web/live/showcase_live/chat/conversations_page.html.heex:54
-#: lib/retro_hex_chat_web/live/showcase_live/dialogs/auto_respond_dialog_page.ex:104
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/auto_respond_dialog_page.ex:96
 #: lib/retro_hex_chat_web/live/showcase_live/dialogs/cheatsheet_dialog_page.ex:118
 #: lib/retro_hex_chat_web/live/showcase_live/dialogs/notify_list_page.ex:81
 #: lib/retro_hex_chat_web/live/showcase_live/dialogs/url_catcher_page.ex:138
@@ -1900,7 +1900,7 @@ msgstr "ゲーム"
 msgid "General"
 msgstr "General"
 
-#: lib/retro_hex_chat_web/live/showcase_live/dialogs/custom_menus_dialog_page.ex:43
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/custom_menus_dialog_page.ex:40
 #, elixir-autogen, elixir-format
 msgid "Get Topic"
 msgstr "トピックを取得"
@@ -2284,7 +2284,7 @@ msgstr "レイアウト"
 msgid "Leave"
 msgstr "退出"
 
-#: lib/retro_hex_chat_web/live/showcase_live/dialogs/custom_menus_dialog_page.ex:49
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/custom_menus_dialog_page.ex:46
 #, elixir-autogen, elixir-format
 msgid "Leave Channel"
 msgstr "チャネルを残す"
@@ -2490,7 +2490,7 @@ msgstr "複数の"
 msgid "Multiple Invites (Stacked)"
 msgstr "複数の招待状(スタック)"
 
-#: lib/retro_hex_chat_web/live/showcase_live/shell/status_bar_app_page.ex:79
+#: lib/retro_hex_chat_web/live/showcase_live/shell/status_bar_app_page.ex:90
 #, elixir-autogen, elixir-format
 msgid "Muted"
 msgstr "Muted"
@@ -2578,7 +2578,7 @@ msgstr "ニックモード"
 msgid "Nicklist"
 msgstr "ニックリスト"
 
-#: lib/retro_hex_chat_web/live/showcase_live/dialogs/custom_menus_dialog_page.ex:71
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/custom_menus_dialog_page.ex:68
 #, elixir-autogen, elixir-format
 msgid "Nicklist Tab"
 msgstr "Nicklistタブ"
@@ -2728,65 +2728,10 @@ msgstr "Opビューア(フルメニュー)"
 msgid "Open"
 msgstr "開く"
 
-#: lib/retro_hex_chat_web/live/showcase_live/dialogs/alias_dialog_page.ex:107
-#, elixir-autogen, elixir-format
-msgid "Open (Adding)"
-msgstr "オープン(追加)"
-
-#: lib/retro_hex_chat_web/live/showcase_live/dialogs/alias_dialog_page.ex:90
-#, elixir-autogen, elixir-format
-msgid "Open (Editing)"
-msgstr "オープン(編集)"
-
-#: lib/retro_hex_chat_web/live/showcase_live/dialogs/alias_dialog_page.ex:124
-#, elixir-autogen, elixir-format
-msgid "Open (Empty)"
-msgstr "オープン(空)"
-
-#: lib/retro_hex_chat_web/live/showcase_live/dialogs/alias_dialog_page.ex:76
-#, elixir-autogen, elixir-format
-msgid "Open (Row Selected)"
-msgstr "オープン(ロー選択)"
-
 #: lib/retro_hex_chat_web/live/showcase_live/dialogs/admin_console_dialog_page.ex:66
 #, elixir-autogen, elixir-format
 msgid "Open Admin Console"
 msgstr "管理者コンソールを開く"
-
-#: lib/retro_hex_chat_web/live/showcase_live/dialogs/alias_dialog_page.ex:53
-#, elixir-autogen, elixir-format
-msgid "Open Alias Editor"
-msgstr "Aliasエディタを開く"
-
-#: lib/retro_hex_chat_web/live/showcase_live/dialogs/auto_respond_dialog_page.ex:67
-#, elixir-autogen, elixir-format
-msgid "Open Auto Respond"
-msgstr "自動応答を開く"
-
-#: lib/retro_hex_chat_web/live/showcase_live/dialogs/auto_respond_dialog_page.ex:91
-#, elixir-autogen, elixir-format
-msgid "Open Auto Respond (Editing)"
-msgstr "自動応答を開く(編集)"
-
-#: lib/retro_hex_chat_web/live/showcase_live/dialogs/auto_respond_dialog_page.ex:109
-#, elixir-autogen, elixir-format
-msgid "Open Auto Respond (Empty)"
-msgstr "自動応答を開く(空)"
-
-#: lib/retro_hex_chat_web/live/showcase_live/dialogs/custom_menus_dialog_page.ex:105
-#, elixir-autogen, elixir-format
-msgid "Open Custom Menus (Channel)"
-msgstr "カスタムメニューを開く(チャンネル)"
-
-#: lib/retro_hex_chat_web/live/showcase_live/dialogs/custom_menus_dialog_page.ex:120
-#, elixir-autogen, elixir-format
-msgid "Open Custom Menus (Editing)"
-msgstr "カスタムメニューを開く(編集)"
-
-#: lib/retro_hex_chat_web/live/showcase_live/dialogs/custom_menus_dialog_page.ex:76
-#, elixir-autogen, elixir-format
-msgid "Open Custom Menus (Nicklist)"
-msgstr "カスタムメニュー(Nicklist)を開く"
 
 #: lib/retro_hex_chat_web/live/showcase_live/layout/dialog_page.ex:35
 #, elixir-autogen, elixir-format
@@ -3082,7 +3027,7 @@ msgstr "プリミティブ"
 msgid "Print"
 msgstr "プリント"
 
-#: lib/retro_hex_chat_web/live/showcase_live/dialogs/custom_menus_dialog_page.ex:37
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/custom_menus_dialog_page.ex:34
 #, elixir-autogen, elixir-format
 msgid "Private Message"
 msgstr "プライベートメッセージ"
@@ -3244,7 +3189,7 @@ msgstr "ロール"
 msgid "Rolls a dice (1-20)"
 msgstr "ダイスをロールスロイス (1-20)"
 
-#: lib/retro_hex_chat_web/live/showcase_live/dialogs/alias_dialog_page.ex:71
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/alias_dialog_page.ex:64
 #, elixir-autogen, elixir-format
 msgid "Row Selected"
 msgstr "列選択"
@@ -3571,7 +3516,7 @@ msgstr "サイズ"
 msgid "Skeleton"
 msgstr "スケルトン"
 
-#: lib/retro_hex_chat_web/live/showcase_live/dialogs/custom_menus_dialog_page.ex:31
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/custom_menus_dialog_page.ex:28
 #, elixir-autogen, elixir-format
 msgid "Slap"
 msgstr "スラップ"
@@ -3681,8 +3626,8 @@ msgstr "ステータス&セマンティックカラー"
 msgid "Status Bar"
 msgstr "ステータスバー"
 
-#: lib/retro_hex_chat_web/live/showcase_live/shell/status_bar_app_page.ex:18
-#: lib/retro_hex_chat_web/live/showcase_live/shell/status_bar_app_page.ex:33
+#: lib/retro_hex_chat_web/live/showcase_live/shell/status_bar_app_page.ex:19
+#: lib/retro_hex_chat_web/live/showcase_live/shell/status_bar_app_page.ex:34
 #: lib/retro_hex_chat_web/showcase_catalog.ex:566
 #, elixir-autogen, elixir-format
 msgid "Status Bar App"
@@ -3930,7 +3875,7 @@ msgstr "このウィンドウが集中しています。"
 msgid "This window is not focused."
 msgstr "このウィンドウは集中していません。"
 
-#: lib/retro_hex_chat_web/live/showcase_live/shell/status_bar_app_page.ex:72
+#: lib/retro_hex_chat_web/live/showcase_live/shell/status_bar_app_page.ex:81
 #, elixir-autogen, elixir-format
 msgid "Timeout"
 msgstr "タイムアウト"
@@ -4275,7 +4220,7 @@ msgstr "待ち合わせ"
 msgid "Warning"
 msgstr "警告"
 
-#: lib/retro_hex_chat_web/live/showcase_live/shell/status_bar_app_page.ex:58
+#: lib/retro_hex_chat_web/live/showcase_live/shell/status_bar_app_page.ex:63
 #, elixir-autogen, elixir-format
 msgid "Warning Lag"
 msgstr "警告ラグ"
@@ -4305,7 +4250,7 @@ msgstr "RetroHexChatとは?"
 msgid "What's up?"
 msgstr "What's up?"
 
-#: lib/retro_hex_chat_web/live/showcase_live/dialogs/custom_menus_dialog_page.ex:25
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/custom_menus_dialog_page.ex:22
 #: lib/retro_hex_chat_web/live/showcase_live/layout/context_menu_page.html.heex:16
 #: lib/retro_hex_chat_web/live/showcase_live/layout/context_menu_page.html.heex:91
 #: lib/retro_hex_chat_web/live/showcase_live/layout/context_menu_page.html.heex:123
@@ -4644,26 +4589,6 @@ msgstr "— 左上隅"
 msgid "— Top right corner"
 msgstr "— 右上隅"
 
-#: lib/retro_hex_chat_web/live/showcase_live/p2p/p2p_connection_diagram_page.ex:107
-#, elixir-autogen, elixir-format
-msgid "Compact — File Transfer"
-msgstr "コンパクト — ファイル転送"
-
-#: lib/retro_hex_chat_web/live/showcase_live/p2p/p2p_connection_diagram_page.ex:77
-#, elixir-autogen, elixir-format
-msgid "Compact — Ready"
-msgstr "コンパクト — レディ"
-
-#: lib/retro_hex_chat_web/live/showcase_live/p2p/p2p_connection_diagram_page.ex:91
-#, elixir-autogen, elixir-format
-msgid "Compact — Video Call"
-msgstr "コンパクト — ビデオコール"
-
-#: lib/retro_hex_chat_web/live/showcase_live/p2p/p2p_connection_diagram_page.ex:63
-#, elixir-autogen, elixir-format
-msgid "Compact — Waiting"
-msgstr "コンパクト — 待ち合わせ"
-
 #: lib/retro_hex_chat_web/showcase_catalog.ex:846
 #, elixir-autogen, elixir-format
 msgid "Connection Diagram"
@@ -4681,12 +4606,12 @@ msgstr "デスクトップ"
 msgid "Drag my title bar. Resize me from the bottom-right grip."
 msgstr "タイトルバーをドラッグします。 右下のグリップからサイズ変更。"
 
-#: lib/retro_hex_chat_web/live/showcase_live/p2p/p2p_connection_diagram_page.ex:123
+#: lib/retro_hex_chat_web/live/showcase_live/p2p/p2p_connection_diagram_page.ex:63
 #, elixir-autogen, elixir-format
 msgid "Expanded — Ready"
 msgstr "拡張 — 準備"
 
-#: lib/retro_hex_chat_web/live/showcase_live/p2p/p2p_connection_diagram_page.ex:137
+#: lib/retro_hex_chat_web/live/showcase_live/p2p/p2p_connection_diagram_page.ex:77
 #, elixir-autogen, elixir-format
 msgid "Expanded — Video Call"
 msgstr "拡大 — ビデオコール"
@@ -4746,7 +4671,7 @@ msgstr "国旗"
 msgid "Language flags (14x14)"
 msgstr "言語の国旗 (14x14)"
 
-#: lib/retro_hex_chat_web/live/showcase_live/dialogs/admin_channels_dialog_page.ex:54
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/admin_channels_dialog_page.ex:42
 #, elixir-autogen, elixir-format
 msgid "*** Channel List (2 results) ***\n  #lobby\n  #dev"
 msgstr ""
@@ -4754,17 +4679,17 @@ msgstr ""
 "#lobby\n"
 "#dev"
 
-#: lib/retro_hex_chat_web/live/showcase_live/dialogs/admin_users_dialog_page.ex:55
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/admin_users_dialog_page.ex:43
 #, elixir-autogen, elixir-format
 msgid "*** No active server bans."
 msgstr "*** アクティブサーバー禁止."
 
-#: lib/retro_hex_chat_web/live/showcase_live/dialogs/admin_channels_dialog_page.ex:55
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/admin_channels_dialog_page.ex:43
 #, elixir-autogen, elixir-format
 msgid "*** No bans in #lobby"
 msgstr "** #lobbyの禁止無し"
 
-#: lib/retro_hex_chat_web/live/showcase_live/dialogs/admin_users_dialog_page.ex:54
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/admin_users_dialog_page.ex:42
 #, elixir-autogen, elixir-format
 msgid "*** User List (2 results) ***\n  Ada [registered]\n  Grace"
 msgstr ""
@@ -4772,26 +4697,26 @@ msgstr ""
 "Ada [登録済み]\n"
 "グレイス"
 
-#: lib/retro_hex_chat_web/live/showcase_live/dialogs/admin_channels_dialog_page.ex:44
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/admin_channels_dialog_page.ex:36
 #: lib/retro_hex_chat_web/showcase_catalog.ex:790
 #, elixir-autogen, elixir-format
 msgid "Admin Channels"
 msgstr "管理者チャネル"
 
-#: lib/retro_hex_chat_web/live/showcase_live/dialogs/admin_channels_dialog_page.ex:20
-#: lib/retro_hex_chat_web/live/showcase_live/dialogs/admin_channels_dialog_page.ex:41
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/admin_channels_dialog_page.ex:18
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/admin_channels_dialog_page.ex:33
 #, elixir-autogen, elixir-format
 msgid "Admin Channels Dialog"
 msgstr "管理者チャネルダイアログ"
 
-#: lib/retro_hex_chat_web/live/showcase_live/dialogs/admin_users_dialog_page.ex:44
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/admin_users_dialog_page.ex:36
 #: lib/retro_hex_chat_web/showcase_catalog.ex:783
 #, elixir-autogen, elixir-format
 msgid "Admin Users"
 msgstr "管理者ユーザー"
 
-#: lib/retro_hex_chat_web/live/showcase_live/dialogs/admin_users_dialog_page.ex:20
-#: lib/retro_hex_chat_web/live/showcase_live/dialogs/admin_users_dialog_page.ex:41
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/admin_users_dialog_page.ex:18
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/admin_users_dialog_page.ex:33
 #, elixir-autogen, elixir-format
 msgid "Admin Users Dialog"
 msgstr "管理者ユーザーダイアログ"
@@ -4843,16 +4768,6 @@ msgstr "モットD"
 #, elixir-autogen, elixir-format
 msgid "MOTD Dialog"
 msgstr "MOTDダイアログ"
-
-#: lib/retro_hex_chat_web/live/showcase_live/dialogs/admin_channels_dialog_page.ex:49
-#, elixir-autogen, elixir-format
-msgid "Open Admin Channels"
-msgstr "管理者チャネルを開く"
-
-#: lib/retro_hex_chat_web/live/showcase_live/dialogs/admin_users_dialog_page.ex:49
-#, elixir-autogen, elixir-format
-msgid "Open Admin Users"
-msgstr "管理者ユーザーを開く"
 
 #: lib/retro_hex_chat_web/live/showcase_live/dialogs/admin_audit_log_dialog_page.ex:47
 #, elixir-autogen, elixir-format
@@ -5084,12 +4999,12 @@ msgstr "選択可能な装置"
 msgid "Trusted"
 msgstr "信頼できる"
 
-#: lib/retro_hex_chat_web/live/showcase_live/shell/status_bar_app_page.ex:36
+#: lib/retro_hex_chat_web/live/showcase_live/shell/status_bar_app_page.ex:37
 #, elixir-autogen, elixir-format
 msgid "Normal Lag"
 msgstr "通常のラグ"
 
-#: lib/retro_hex_chat_web/live/showcase_live/shell/status_bar_app_page.ex:46
+#: lib/retro_hex_chat_web/live/showcase_live/shell/status_bar_app_page.ex:49
 #, elixir-autogen, elixir-format
 msgid "Online Buddies"
 msgstr "オンラインの連絡先"

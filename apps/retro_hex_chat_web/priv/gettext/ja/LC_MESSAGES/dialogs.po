@@ -29,17 +29,17 @@ msgid "%{count} line"
 msgid_plural "%{count} lines"
 msgstr[0] "%{count} ライン"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/highlight_dialog.ex:149
+#: lib/retro_hex_chat_web/components/ui/dialogs/highlight_dialog.ex:151
 #, elixir-autogen, elixir-format
 msgid "(you)"
 msgstr "(あなたの)"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/custom_menus_dialog.ex:275
+#: lib/retro_hex_chat_web/components/ui/dialogs/custom_menus_dialog.ex:209
 #, elixir-autogen, elixir-format
 msgid "/command $1"
 msgstr "/command $1"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/perform_dialog.ex:269
+#: lib/retro_hex_chat_web/components/ui/dialogs/perform_dialog.ex:271
 #, elixir-autogen, elixir-format
 msgid "/join #channel"
 msgstr "/join #channel"
@@ -65,9 +65,9 @@ msgid "Actions"
 msgstr "アクション"
 
 #: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:343
-#: lib/retro_hex_chat_web/components/ui/dialogs/alias_dialog.ex:207
-#: lib/retro_hex_chat_web/components/ui/dialogs/auto_respond_dialog.ex:222
-#: lib/retro_hex_chat_web/components/ui/dialogs/autojoin_dialog.ex:165
+#: lib/retro_hex_chat_web/components/ui/dialogs/alias_dialog.ex:147
+#: lib/retro_hex_chat_web/components/ui/dialogs/auto_respond_dialog.ex:163
+#: lib/retro_hex_chat_web/components/ui/dialogs/autojoin_dialog.ex:167
 #: lib/retro_hex_chat_web/components/ui/dialogs/bot_form_dialog.ex:236
 #: lib/retro_hex_chat_web/components/ui/dialogs/bot_form_dialog.ex:289
 #: lib/retro_hex_chat_web/components/ui/dialogs/bot_form_dialog.ex:362
@@ -77,25 +77,25 @@ msgstr "アクション"
 #: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:709
 #: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:791
 #: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:1513
-#: lib/retro_hex_chat_web/components/ui/dialogs/custom_menus_dialog.ex:374
-#: lib/retro_hex_chat_web/components/ui/dialogs/highlight_dialog.ex:209
-#: lib/retro_hex_chat_web/components/ui/dialogs/highlight_dialog.ex:314
+#: lib/retro_hex_chat_web/components/ui/dialogs/custom_menus_dialog.ex:308
+#: lib/retro_hex_chat_web/components/ui/dialogs/highlight_dialog.ex:211
+#: lib/retro_hex_chat_web/components/ui/dialogs/highlight_dialog.ex:316
 #: lib/retro_hex_chat_web/components/ui/dialogs/ignore_list_dialog.ex:93
 #: lib/retro_hex_chat_web/components/ui/dialogs/nick_colors_dialog.ex:327
 #: lib/retro_hex_chat_web/components/ui/dialogs/notify_list.ex:230
-#: lib/retro_hex_chat_web/components/ui/dialogs/perform_dialog.ex:201
+#: lib/retro_hex_chat_web/components/ui/dialogs/perform_dialog.ex:203
 #: lib/retro_hex_chat_web/components/ui/dialogs/server_emoji_dialog.ex:93
-#: lib/retro_hex_chat_web/components/ui/dialogs/timers_dialog.ex:160
+#: lib/retro_hex_chat_web/components/ui/dialogs/timers_dialog.ex:159
 #, elixir-autogen, elixir-format
 msgid "Add"
 msgstr "追加"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/alias_dialog.ex:227
+#: lib/retro_hex_chat_web/components/ui/dialogs/alias_dialog.ex:167
 #, elixir-autogen, elixir-format
 msgid "Add Alias"
 msgstr "エイリアスを追加"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/autojoin_dialog.ex:202
+#: lib/retro_hex_chat_web/components/ui/dialogs/autojoin_dialog.ex:204
 #, elixir-autogen, elixir-format
 msgid "Add Auto-Join Channel"
 msgstr "自動ジョイントチャネルを追加"
@@ -120,12 +120,12 @@ msgstr "コマンドを追加 — %{bot}"
 msgid "Add Contact"
 msgstr "コンタクト"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/custom_menus_dialog.ex:238
+#: lib/retro_hex_chat_web/components/ui/dialogs/custom_menus_dialog.ex:172
 #, elixir-autogen, elixir-format
 msgid "Add Entry"
 msgstr "エントリーを追加"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/highlight_dialog.ex:266
+#: lib/retro_hex_chat_web/components/ui/dialogs/highlight_dialog.ex:268
 #, elixir-autogen, elixir-format
 msgid "Add Highlight Word"
 msgstr "Add ハイライトワード"
@@ -150,12 +150,12 @@ msgstr "ニックカラーの追加"
 msgid "Add Notify Entry"
 msgstr "エントリーを通知する"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/perform_dialog.ex:249
+#: lib/retro_hex_chat_web/components/ui/dialogs/perform_dialog.ex:251
 #, elixir-autogen, elixir-format
 msgid "Add Perform Command"
 msgstr "Add コマンドを実行する"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/auto_respond_dialog.ex:241
+#: lib/retro_hex_chat_web/components/ui/dialogs/auto_respond_dialog.ex:182
 #, elixir-autogen, elixir-format
 msgid "Add Rule"
 msgstr "ルールを追加"
@@ -165,8 +165,7 @@ msgstr "ルールを追加"
 msgid "Admin Console"
 msgstr "管理者コンソール"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/alias_dialog.ex:65
-#: lib/retro_hex_chat_web/components/ui/dialogs/alias_dialog.ex:161
+#: lib/retro_hex_chat_web/components/ui/dialogs/alias_dialog.ex:101
 #, elixir-autogen, elixir-format
 msgid "Alias Editor"
 msgstr "エイリアスエディタ"
@@ -211,8 +210,7 @@ msgstr "サーバーから接続解除したいですか?"
 msgid "Are you sure you want to send all lines at once?"
 msgstr "すべての行を一度に送信したいですか?"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/auto_respond_dialog.ex:64
-#: lib/retro_hex_chat_web/components/ui/dialogs/auto_respond_dialog.ex:164
+#: lib/retro_hex_chat_web/components/ui/dialogs/auto_respond_dialog.ex:105
 #, elixir-autogen, elixir-format
 msgid "Auto Respond"
 msgstr "自動応答"
@@ -222,8 +220,8 @@ msgstr "自動応答"
 msgid "Auto-Ignore"
 msgstr "自動無視"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/autojoin_dialog.ex:54
-#: lib/retro_hex_chat_web/components/ui/dialogs/autojoin_dialog.ex:132
+#: lib/retro_hex_chat_web/components/ui/dialogs/autojoin_dialog.ex:56
+#: lib/retro_hex_chat_web/components/ui/dialogs/autojoin_dialog.ex:134
 #, elixir-autogen, elixir-format
 msgid "Auto-Join"
 msgstr "自動ジョイント"
@@ -233,12 +231,12 @@ msgstr "自動ジョイント"
 msgid "Auto-add PM contacts to notify list"
 msgstr "リストを通知するために自動追加PMの連絡先"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/highlight_dialog.ex:302
+#: lib/retro_hex_chat_web/components/ui/dialogs/highlight_dialog.ex:304
 #, elixir-autogen, elixir-format
 msgid "Background Color (optional):"
 msgstr "背景色(任意):"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/highlight_dialog.ex:364
+#: lib/retro_hex_chat_web/components/ui/dialogs/highlight_dialog.ex:366
 #, elixir-autogen, elixir-format
 msgid "Background Color:"
 msgstr "背景色:"
@@ -278,10 +276,10 @@ msgstr "バディオンライン"
 
 #: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:167
 #: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:237
-#: lib/retro_hex_chat_web/components/ui/dialogs/alias_dialog.ex:300
-#: lib/retro_hex_chat_web/components/ui/dialogs/auto_respond_dialog.ex:329
-#: lib/retro_hex_chat_web/components/ui/dialogs/autojoin_dialog.ex:256
-#: lib/retro_hex_chat_web/components/ui/dialogs/autojoin_dialog.ex:344
+#: lib/retro_hex_chat_web/components/ui/dialogs/alias_dialog.ex:240
+#: lib/retro_hex_chat_web/components/ui/dialogs/auto_respond_dialog.ex:270
+#: lib/retro_hex_chat_web/components/ui/dialogs/autojoin_dialog.ex:258
+#: lib/retro_hex_chat_web/components/ui/dialogs/autojoin_dialog.ex:346
 #: lib/retro_hex_chat_web/components/ui/dialogs/bot_form_dialog.ex:143
 #: lib/retro_hex_chat_web/components/ui/dialogs/bot_form_dialog.ex:240
 #: lib/retro_hex_chat_web/components/ui/dialogs/bot_form_dialog.ex:293
@@ -291,10 +289,10 @@ msgstr "バディオンライン"
 #: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:864
 #: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:935
 #: lib/retro_hex_chat_web/components/ui/dialogs/confirm_dialog.ex:92
-#: lib/retro_hex_chat_web/components/ui/dialogs/custom_menus_dialog.ex:303
+#: lib/retro_hex_chat_web/components/ui/dialogs/custom_menus_dialog.ex:237
 #: lib/retro_hex_chat_web/components/ui/dialogs/flood_protection_dialog.ex:237
-#: lib/retro_hex_chat_web/components/ui/dialogs/highlight_dialog.ex:325
-#: lib/retro_hex_chat_web/components/ui/dialogs/highlight_dialog.ex:386
+#: lib/retro_hex_chat_web/components/ui/dialogs/highlight_dialog.ex:327
+#: lib/retro_hex_chat_web/components/ui/dialogs/highlight_dialog.ex:388
 #: lib/retro_hex_chat_web/components/ui/dialogs/ignore_list_dialog.ex:250
 #: lib/retro_hex_chat_web/components/ui/dialogs/invite_channel_picker_dialog.ex:101
 #: lib/retro_hex_chat_web/components/ui/dialogs/knock_request_dialog.ex:117
@@ -304,10 +302,10 @@ msgstr "バディオンライン"
 #: lib/retro_hex_chat_web/components/ui/dialogs/nick_colors_dialog.ex:229
 #: lib/retro_hex_chat_web/components/ui/dialogs/notify_list.ex:332
 #: lib/retro_hex_chat_web/components/ui/dialogs/notify_list.ex:409
-#: lib/retro_hex_chat_web/components/ui/dialogs/perform_dialog.ex:290
-#: lib/retro_hex_chat_web/components/ui/dialogs/perform_dialog.ex:360
+#: lib/retro_hex_chat_web/components/ui/dialogs/perform_dialog.ex:292
+#: lib/retro_hex_chat_web/components/ui/dialogs/perform_dialog.ex:362
 #: lib/retro_hex_chat_web/components/ui/dialogs/sound_settings_dialog.ex:294
-#: lib/retro_hex_chat_web/components/ui/dialogs/timers_dialog.ex:277
+#: lib/retro_hex_chat_web/components/ui/dialogs/timers_dialog.ex:276
 #, elixir-autogen, elixir-format
 msgid "Cancel"
 msgstr "キャンセル"
@@ -325,19 +323,19 @@ msgstr "機能"
 msgid "Change Nickname"
 msgstr "ニックネームの変更"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/admin_channels_dialog.ex:174
-#: lib/retro_hex_chat_web/components/ui/dialogs/admin_channels_dialog.ex:374
-#: lib/retro_hex_chat_web/components/ui/dialogs/auto_respond_dialog.ex:134
-#: lib/retro_hex_chat_web/components/ui/dialogs/auto_respond_dialog.ex:180
-#: lib/retro_hex_chat_web/components/ui/dialogs/autojoin_dialog.ex:216
-#: lib/retro_hex_chat_web/components/ui/dialogs/autojoin_dialog.ex:305
+#: lib/retro_hex_chat_web/components/ui/dialogs/admin_channels_dialog.ex:125
+#: lib/retro_hex_chat_web/components/ui/dialogs/admin_channels_dialog.ex:325
+#: lib/retro_hex_chat_web/components/ui/dialogs/auto_respond_dialog.ex:75
+#: lib/retro_hex_chat_web/components/ui/dialogs/auto_respond_dialog.ex:121
+#: lib/retro_hex_chat_web/components/ui/dialogs/autojoin_dialog.ex:218
+#: lib/retro_hex_chat_web/components/ui/dialogs/autojoin_dialog.ex:307
 #: lib/retro_hex_chat_web/components/ui/dialogs/bot_form_dialog.ex:275
 #: lib/retro_hex_chat_web/components/ui/dialogs/bot_form_dialog.ex:346
 #: lib/retro_hex_chat_web/components/ui/dialogs/bot_management_dialog.ex:721
-#: lib/retro_hex_chat_web/components/ui/dialogs/custom_menus_dialog.ex:174
+#: lib/retro_hex_chat_web/components/ui/dialogs/custom_menus_dialog.ex:108
 #: lib/retro_hex_chat_web/components/ui/dialogs/events_dialog.ex:40
 #: lib/retro_hex_chat_web/components/ui/dialogs/flood_protection_dialog.ex:104
-#: lib/retro_hex_chat_web/components/ui/dialogs/highlight_dialog.ex:126
+#: lib/retro_hex_chat_web/components/ui/dialogs/highlight_dialog.ex:128
 #: lib/retro_hex_chat_web/components/ui/dialogs/ignore_list_dialog.ex:60
 #: lib/retro_hex_chat_web/components/ui/dialogs/invite_channel_picker_dialog.ex:57
 #: lib/retro_hex_chat_web/components/ui/dialogs/knock_request_dialog.ex:58
@@ -352,7 +350,7 @@ msgstr "ニックネームの変更"
 msgid "Channel"
 msgstr "チャンネル"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/auto_respond_dialog.ex:285
+#: lib/retro_hex_chat_web/components/ui/dialogs/auto_respond_dialog.ex:226
 #, elixir-autogen, elixir-format
 msgid "Channel (optional)"
 msgstr "チャネル(任意)"
@@ -374,7 +372,6 @@ msgid "Channel Modes"
 msgstr "チャネルモード"
 
 #: lib/retro_hex_chat_web/components/ui/dialogs/admin_channels_dialog.ex:63
-#: lib/retro_hex_chat_web/components/ui/dialogs/admin_channels_dialog.ex:112
 #: lib/retro_hex_chat_web/components/ui/dialogs/admin_server_settings_dialog.ex:276
 #: lib/retro_hex_chat_web/components/ui/dialogs/bot_management_dialog.ex:348
 #: lib/retro_hex_chat_web/components/ui/dialogs/bot_management_dialog.ex:501
@@ -385,7 +382,7 @@ msgid "Channels"
 msgstr "チャンネル"
 
 #: lib/retro_hex_chat_web/components/ui/dialogs/channel_list.ex:54
-#: lib/retro_hex_chat_web/components/ui/dialogs/custom_menus_dialog.ex:183
+#: lib/retro_hex_chat_web/components/ui/dialogs/custom_menus_dialog.ex:117
 #: lib/retro_hex_chat_web/site/about.html.heex:11
 #, elixir-autogen, elixir-format
 msgid "Chat"
@@ -401,7 +398,7 @@ msgstr "クリア"
 #: lib/retro_hex_chat_web/components/ui/dialogs/bot_management_dialog.ex:86
 #: lib/retro_hex_chat_web/components/ui/dialogs/notify_list.ex:82
 #: lib/retro_hex_chat_web/components/ui/dialogs/notify_list.ex:245
-#: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:441
+#: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:442
 #: lib/retro_hex_chat_web/components/ui/dialogs/url_catcher.ex:85
 #, elixir-autogen, elixir-format
 msgid "Close"
@@ -415,12 +412,12 @@ msgstr "閉じる"
 msgid "Color"
 msgstr "カラー"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/auto_respond_dialog.ex:299
-#: lib/retro_hex_chat_web/components/ui/dialogs/custom_menus_dialog.ex:269
-#: lib/retro_hex_chat_web/components/ui/dialogs/custom_menus_dialog.ex:355
-#: lib/retro_hex_chat_web/components/ui/dialogs/perform_dialog.ex:263
-#: lib/retro_hex_chat_web/components/ui/dialogs/perform_dialog.ex:333
-#: lib/retro_hex_chat_web/components/ui/dialogs/timers_dialog.ex:233
+#: lib/retro_hex_chat_web/components/ui/dialogs/auto_respond_dialog.ex:240
+#: lib/retro_hex_chat_web/components/ui/dialogs/custom_menus_dialog.ex:203
+#: lib/retro_hex_chat_web/components/ui/dialogs/custom_menus_dialog.ex:289
+#: lib/retro_hex_chat_web/components/ui/dialogs/perform_dialog.ex:265
+#: lib/retro_hex_chat_web/components/ui/dialogs/perform_dialog.ex:335
+#: lib/retro_hex_chat_web/components/ui/dialogs/timers_dialog.ex:232
 #, elixir-autogen, elixir-format
 msgid "Command"
 msgstr "コマンド"
@@ -450,7 +447,7 @@ msgstr "接続済み"
 msgid "Cooldown (s)"
 msgstr "クールダウン (s)"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/admin_channels_dialog.ex:211
+#: lib/retro_hex_chat_web/components/ui/dialogs/admin_channels_dialog.ex:162
 #: lib/retro_hex_chat_web/components/ui/dialogs/bot_form_dialog.ex:139
 #, elixir-autogen, elixir-format
 msgid "Create"
@@ -472,8 +469,7 @@ msgstr "コンテンツ"
 msgid "Custom Commands"
 msgstr "カスタムコマンド"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/custom_menus_dialog.ex:68
-#: lib/retro_hex_chat_web/components/ui/dialogs/custom_menus_dialog.ex:342
+#: lib/retro_hex_chat_web/components/ui/dialogs/custom_menus_dialog.ex:276
 #, elixir-autogen, elixir-format
 msgid "Custom Menus"
 msgstr "カスタムメニュー"
@@ -534,12 +530,12 @@ msgstr "切断済み"
 msgid "Duration (leave empty for permanent)"
 msgstr "期間(永久に空の保存)"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/alias_dialog.ex:226
+#: lib/retro_hex_chat_web/components/ui/dialogs/alias_dialog.ex:166
 #, elixir-autogen, elixir-format
 msgid "Edit Alias"
 msgstr "エイリアスを編集"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/autojoin_dialog.ex:290
+#: lib/retro_hex_chat_web/components/ui/dialogs/autojoin_dialog.ex:292
 #, elixir-autogen, elixir-format
 msgid "Edit Auto-Join Channel"
 msgstr "自動ジョイントチャネルの編集"
@@ -549,12 +545,12 @@ msgstr "自動ジョイントチャネルの編集"
 msgid "Edit Contact"
 msgstr "編集 連絡先"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/custom_menus_dialog.ex:239
+#: lib/retro_hex_chat_web/components/ui/dialogs/custom_menus_dialog.ex:173
 #, elixir-autogen, elixir-format
 msgid "Edit Entry"
 msgstr "エントリーの編集"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/highlight_dialog.ex:350
+#: lib/retro_hex_chat_web/components/ui/dialogs/highlight_dialog.ex:352
 #, elixir-autogen, elixir-format
 msgid "Edit Highlight Color"
 msgstr "編集ハイライト色"
@@ -569,12 +565,12 @@ msgstr "Nick 色を編集する"
 msgid "Edit Notify Entry"
 msgstr "エントリーを編集する"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/perform_dialog.ex:319
+#: lib/retro_hex_chat_web/components/ui/dialogs/perform_dialog.ex:321
 #, elixir-autogen, elixir-format
 msgid "Edit Perform Command"
 msgstr "コマンドを編集する"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/auto_respond_dialog.ex:242
+#: lib/retro_hex_chat_web/components/ui/dialogs/auto_respond_dialog.ex:183
 #, elixir-autogen, elixir-format
 msgid "Edit Rule"
 msgstr "ルールの編集"
@@ -585,7 +581,7 @@ msgstr "ルールの編集"
 msgid "Enable"
 msgstr "アクセス"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/perform_dialog.ex:213
+#: lib/retro_hex_chat_web/components/ui/dialogs/perform_dialog.ex:215
 #, elixir-autogen, elixir-format
 msgid "Enable perform on connect"
 msgstr "接続時に実行可能"
@@ -610,8 +606,8 @@ msgstr "パスワードを入力してください"
 msgid "Events"
 msgstr "イベント"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/alias_dialog.ex:174
-#: lib/retro_hex_chat_web/components/ui/dialogs/alias_dialog.ex:258
+#: lib/retro_hex_chat_web/components/ui/dialogs/alias_dialog.ex:114
+#: lib/retro_hex_chat_web/components/ui/dialogs/alias_dialog.ex:198
 #, elixir-autogen, elixir-format
 msgid "Expansion"
 msgstr "導入事例"
@@ -675,8 +671,8 @@ msgstr "ヘルプ"
 msgid "Hex"
 msgstr "Hex"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/highlight_dialog.ex:61
-#: lib/retro_hex_chat_web/components/ui/dialogs/highlight_dialog.ex:167
+#: lib/retro_hex_chat_web/components/ui/dialogs/highlight_dialog.ex:63
+#: lib/retro_hex_chat_web/components/ui/dialogs/highlight_dialog.ex:169
 #, elixir-autogen, elixir-format
 msgid "Highlight Words"
 msgstr "高い単語"
@@ -713,9 +709,9 @@ msgstr "招待状"
 msgid "Join"
 msgstr "参加"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/autojoin_dialog.ex:145
-#: lib/retro_hex_chat_web/components/ui/dialogs/autojoin_dialog.ex:231
-#: lib/retro_hex_chat_web/components/ui/dialogs/autojoin_dialog.ex:318
+#: lib/retro_hex_chat_web/components/ui/dialogs/autojoin_dialog.ex:147
+#: lib/retro_hex_chat_web/components/ui/dialogs/autojoin_dialog.ex:233
+#: lib/retro_hex_chat_web/components/ui/dialogs/autojoin_dialog.ex:320
 #, elixir-autogen, elixir-format
 msgid "Key"
 msgstr "キー"
@@ -731,9 +727,9 @@ msgstr "キー(+k)"
 msgid "Kicked from Channel"
 msgstr "チャンネルからキック"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/custom_menus_dialog.ex:254
-#: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:638
+#: lib/retro_hex_chat_web/components/ui/dialogs/custom_menus_dialog.ex:188
 #: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:639
+#: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:640
 #, elixir-autogen, elixir-format
 msgid "Label"
 msgstr "ラベル"
@@ -744,7 +740,7 @@ msgstr "ラベル"
 msgid "Last Seen"
 msgstr "最終参照"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/autojoin_dialog.ex:238
+#: lib/retro_hex_chat_web/components/ui/dialogs/autojoin_dialog.ex:240
 #, elixir-autogen, elixir-format
 msgid "Leave empty if no key"
 msgstr "キーがない場合、空のまま"
@@ -776,7 +772,7 @@ msgstr "メンション"
 msgid "Mention Response"
 msgstr "メンションレスポンス"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/custom_menus_dialog.ex:260
+#: lib/retro_hex_chat_web/components/ui/dialogs/custom_menus_dialog.ex:194
 #, elixir-autogen, elixir-format
 msgid "Menu item text"
 msgstr "メニュー項目テキスト"
@@ -797,7 +793,7 @@ msgstr "メッセージ"
 msgid "Moderated (+m)"
 msgstr "モデレート(+m)"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/admin_users_dialog.ex:202
+#: lib/retro_hex_chat_web/components/ui/dialogs/admin_users_dialog.ex:153
 #: lib/retro_hex_chat_web/components/ui/dialogs/bot_form_dialog.ex:390
 #: lib/retro_hex_chat_web/components/ui/dialogs/bot_management_dialog.ex:1018
 #, elixir-autogen, elixir-format
@@ -817,11 +813,11 @@ msgid "MyBot"
 msgstr "マイボット"
 
 #: lib/retro_hex_chat_web/components/ui/dialogs/admin_server_settings_dialog.ex:275
-#: lib/retro_hex_chat_web/components/ui/dialogs/alias_dialog.ex:242
+#: lib/retro_hex_chat_web/components/ui/dialogs/alias_dialog.ex:182
 #: lib/retro_hex_chat_web/components/ui/dialogs/bot_form_dialog.ex:72
 #: lib/retro_hex_chat_web/components/ui/dialogs/bot_management_dialog.ex:443
 #: lib/retro_hex_chat_web/components/ui/dialogs/server_emoji_dialog.ex:75
-#: lib/retro_hex_chat_web/components/ui/dialogs/timers_dialog.ex:198
+#: lib/retro_hex_chat_web/components/ui/dialogs/timers_dialog.ex:197
 #, elixir-autogen, elixir-format
 msgid "Name"
 msgstr "名前"
@@ -839,10 +835,10 @@ msgstr "新規"
 
 #: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:260
 #: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:281
-#: lib/retro_hex_chat_web/components/ui/dialogs/admin_channels_dialog.ex:384
-#: lib/retro_hex_chat_web/components/ui/dialogs/admin_users_dialog.ex:182
-#: lib/retro_hex_chat_web/components/ui/dialogs/admin_users_dialog.ex:304
-#: lib/retro_hex_chat_web/components/ui/dialogs/admin_users_dialog.ex:416
+#: lib/retro_hex_chat_web/components/ui/dialogs/admin_channels_dialog.ex:335
+#: lib/retro_hex_chat_web/components/ui/dialogs/admin_users_dialog.ex:133
+#: lib/retro_hex_chat_web/components/ui/dialogs/admin_users_dialog.ex:255
+#: lib/retro_hex_chat_web/components/ui/dialogs/admin_users_dialog.ex:367
 #: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:762
 #: lib/retro_hex_chat_web/components/ui/dialogs/ignore_list_dialog.ex:118
 #: lib/retro_hex_chat_web/components/ui/dialogs/ignore_list_dialog.ex:139
@@ -854,7 +850,7 @@ msgstr "新規"
 msgid "Nick"
 msgstr "ニック"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/custom_menus_dialog.ex:165
+#: lib/retro_hex_chat_web/components/ui/dialogs/custom_menus_dialog.ex:99
 #, elixir-autogen, elixir-format
 msgid "Nicklist"
 msgstr "ニックリスト"
@@ -878,7 +874,7 @@ msgstr "ニックネーム"
 #: lib/retro_hex_chat_web/components/ui/dialogs/account_dialog.ex:223
 #: lib/retro_hex_chat_web/components/ui/dialogs/notify_list.ex:293
 #: lib/retro_hex_chat_web/components/ui/dialogs/notify_list.ex:370
-#: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:94
+#: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:95
 #, elixir-autogen, elixir-format
 msgid "Nickname:"
 msgstr "ニックネーム:"
@@ -888,12 +884,12 @@ msgstr "ニックネーム:"
 msgid "No URLs captured"
 msgstr "URL がキャプチャされていない"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/alias_dialog.ex:155
+#: lib/retro_hex_chat_web/components/ui/dialogs/alias_dialog.ex:95
 #, elixir-autogen, elixir-format
 msgid "No aliases configured. Click \"Add\" to create one."
 msgstr "エイリアスの設定はありません。 「追加」をクリックして作成します。"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/autojoin_dialog.ex:126
+#: lib/retro_hex_chat_web/components/ui/dialogs/autojoin_dialog.ex:128
 #, elixir-autogen, elixir-format
 msgid "No auto-join channels. Click Add to create one."
 msgstr "オートジョイントチャンネルはありません。 Addをクリックして作成します。"
@@ -924,7 +920,7 @@ msgstr "割り当てられたチャネル無し"
 msgid "No channels found"
 msgstr "チャンネルが見つかりません"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/perform_dialog.ex:145
+#: lib/retro_hex_chat_web/components/ui/dialogs/perform_dialog.ex:147
 #, elixir-autogen, elixir-format
 msgid "No commands configured. Click Add to create one."
 msgstr "設定されていないコマンド Addをクリックして作成します。"
@@ -1010,11 +1006,11 @@ msgstr "リストを通知する"
 
 #: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:157
 #: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:227
-#: lib/retro_hex_chat_web/components/ui/dialogs/autojoin_dialog.ex:245
-#: lib/retro_hex_chat_web/components/ui/dialogs/autojoin_dialog.ex:333
+#: lib/retro_hex_chat_web/components/ui/dialogs/autojoin_dialog.ex:247
+#: lib/retro_hex_chat_web/components/ui/dialogs/autojoin_dialog.ex:335
 #: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:853
 #: lib/retro_hex_chat_web/components/ui/dialogs/confirm_dialog.ex:91
-#: lib/retro_hex_chat_web/components/ui/dialogs/highlight_dialog.ex:375
+#: lib/retro_hex_chat_web/components/ui/dialogs/highlight_dialog.ex:377
 #: lib/retro_hex_chat_web/components/ui/dialogs/ignore_list_dialog.ex:240
 #: lib/retro_hex_chat_web/components/ui/dialogs/kick_dialog.ex:87
 #: lib/retro_hex_chat_web/components/ui/dialogs/mute_duration_dialog.ex:68
@@ -1022,10 +1018,10 @@ msgstr "リストを通知する"
 #: lib/retro_hex_chat_web/components/ui/dialogs/nick_colors_dialog.ex:219
 #: lib/retro_hex_chat_web/components/ui/dialogs/notify_list.ex:321
 #: lib/retro_hex_chat_web/components/ui/dialogs/notify_list.ex:398
-#: lib/retro_hex_chat_web/components/ui/dialogs/perform_dialog.ex:279
-#: lib/retro_hex_chat_web/components/ui/dialogs/perform_dialog.ex:349
+#: lib/retro_hex_chat_web/components/ui/dialogs/perform_dialog.ex:281
+#: lib/retro_hex_chat_web/components/ui/dialogs/perform_dialog.ex:351
 #: lib/retro_hex_chat_web/components/ui/dialogs/sound_settings_dialog.ex:285
-#: lib/retro_hex_chat_web/components/ui/shell/desktop_launchers.ex:373
+#: lib/retro_hex_chat_web/components/ui/shell/desktop_launchers.ex:372
 #, elixir-autogen, elixir-format
 msgid "OK"
 msgstr "OK"
@@ -1035,17 +1031,17 @@ msgstr "OK"
 msgid "Offline"
 msgstr "オフライン"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/auto_respond_dialog.ex:342
+#: lib/retro_hex_chat_web/components/ui/dialogs/auto_respond_dialog.ex:283
 #, elixir-autogen, elixir-format
 msgid "On Join"
 msgstr "参加する"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/auto_respond_dialog.ex:344
+#: lib/retro_hex_chat_web/components/ui/dialogs/auto_respond_dialog.ex:285
 #, elixir-autogen, elixir-format
 msgid "On Nick Change"
 msgstr "ニック変更"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/auto_respond_dialog.ex:343
+#: lib/retro_hex_chat_web/components/ui/dialogs/auto_respond_dialog.ex:284
 #, elixir-autogen, elixir-format
 msgid "On Part"
 msgstr "パート"
@@ -1065,8 +1061,8 @@ msgstr "PM"
 msgid "Paste Confirmation"
 msgstr "ペースト確認"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/perform_dialog.ex:59
-#: lib/retro_hex_chat_web/components/ui/dialogs/perform_dialog.ex:151
+#: lib/retro_hex_chat_web/components/ui/dialogs/perform_dialog.ex:61
+#: lib/retro_hex_chat_web/components/ui/dialogs/perform_dialog.ex:153
 #, elixir-autogen, elixir-format
 msgid "Perform"
 msgstr "パフォーマンス"
@@ -1138,12 +1134,12 @@ msgstr "レトロヘックスチャット"
 msgid "Run"
 msgstr "Run"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/alias_dialog.ex:290
-#: lib/retro_hex_chat_web/components/ui/dialogs/auto_respond_dialog.ex:319
-#: lib/retro_hex_chat_web/components/ui/dialogs/custom_menus_dialog.ex:293
+#: lib/retro_hex_chat_web/components/ui/dialogs/alias_dialog.ex:230
+#: lib/retro_hex_chat_web/components/ui/dialogs/auto_respond_dialog.ex:260
+#: lib/retro_hex_chat_web/components/ui/dialogs/custom_menus_dialog.ex:227
 #: lib/retro_hex_chat_web/components/ui/dialogs/flood_protection_dialog.ex:229
-#: lib/retro_hex_chat_web/components/ui/dialogs/timers_dialog.ex:267
-#: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:281
+#: lib/retro_hex_chat_web/components/ui/dialogs/timers_dialog.ex:266
+#: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:282
 #, elixir-autogen, elixir-format
 msgid "Save"
 msgstr "保存"
@@ -1159,8 +1155,8 @@ msgstr "トピックを保存する"
 msgid "Scheduler"
 msgstr "スケジュール"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/admin_channels_dialog.ex:135
-#: lib/retro_hex_chat_web/components/ui/dialogs/admin_users_dialog.ex:132
+#: lib/retro_hex_chat_web/components/ui/dialogs/admin_channels_dialog.ex:86
+#: lib/retro_hex_chat_web/components/ui/dialogs/admin_users_dialog.ex:83
 #: lib/retro_hex_chat_web/components/ui/dialogs/channel_list.ex:118
 #: lib/retro_hex_chat_web/components/ui/dialogs/url_catcher.ex:200
 #, elixir-autogen, elixir-format
@@ -1223,12 +1219,12 @@ msgid "Sound Settings"
 msgstr "サウンド設定"
 
 #: lib/retro_hex_chat_web/components/ui/dialogs/admin_motd_dialog.ex:67
-#: lib/retro_hex_chat_web/components/ui/dialogs/autojoin_dialog.ex:110
+#: lib/retro_hex_chat_web/components/ui/dialogs/autojoin_dialog.ex:112
 #: lib/retro_hex_chat_web/components/ui/dialogs/bot_management_dialog.ex:725
 #: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:368
 #: lib/retro_hex_chat_web/components/ui/dialogs/notify_list.ex:132
-#: lib/retro_hex_chat_web/components/ui/dialogs/perform_dialog.ex:129
-#: lib/retro_hex_chat_web/components/ui/dialogs/timers_dialog.ex:74
+#: lib/retro_hex_chat_web/components/ui/dialogs/perform_dialog.ex:131
+#: lib/retro_hex_chat_web/components/ui/dialogs/timers_dialog.ex:73
 #: lib/retro_hex_chat_web/components/ui/dialogs/user_modes_dialog.ex:45
 #: lib/retro_hex_chat_web/components/ui/system/oban_panel.ex:60
 #, elixir-autogen, elixir-format
@@ -1262,7 +1258,7 @@ msgstr "トピック"
 msgid "Topic Lock (+t)"
 msgstr "トピックロック(+t)"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/auto_respond_dialog.ex:257
+#: lib/retro_hex_chat_web/components/ui/dialogs/auto_respond_dialog.ex:198
 #: lib/retro_hex_chat_web/components/ui/dialogs/bot_form_dialog.ex:197
 #, elixir-autogen, elixir-format
 msgid "Trigger"
@@ -1323,14 +1319,13 @@ msgstr "ユーザーキック"
 msgid "User Left"
 msgstr "ユーザーの左"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/admin_users_dialog.ex:64
-#: lib/retro_hex_chat_web/components/ui/dialogs/admin_users_dialog.ex:112
+#: lib/retro_hex_chat_web/components/ui/dialogs/admin_users_dialog.ex:63
 #: lib/retro_hex_chat_web/components/ui/dialogs/channel_list.ex:189
 #, elixir-autogen, elixir-format
 msgid "Users"
 msgstr "ユーザ名"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/alias_dialog.ex:272
+#: lib/retro_hex_chat_web/components/ui/dialogs/alias_dialog.ex:212
 #, elixir-autogen, elixir-format
 msgid "Variables: $1–$9 (args), $nick (your nick), $chan (channel)"
 msgstr "変数: $1–$9 (args), $nick (your nick), $chan (channel)"
@@ -1345,7 +1340,7 @@ msgstr "バージョン %{version}"
 msgid "Warning: This exceeds the flood protection limit. Messages may be throttled."
 msgstr "警告: これは、洪水保護限界を超える。 メッセージが盗まれている可能性があります。"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/highlight_dialog.ex:280
+#: lib/retro_hex_chat_web/components/ui/dialogs/highlight_dialog.ex:282
 #, elixir-autogen, elixir-format
 msgid "Word:"
 msgstr "ワード:"
@@ -1380,7 +1375,7 @@ msgstr "このリストを管理するためのチャネル演算子でなけれ
 msgid "You were kicked from the channel."
 msgstr "チャンネルから蹴っていました。"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/alias_dialog.ex:264
+#: lib/retro_hex_chat_web/components/ui/dialogs/alias_dialog.ex:204
 #, elixir-autogen, elixir-format
 msgid "e.g. /msg $1 hello!"
 msgstr "例:/msg $1 こんにちは!"
@@ -1390,7 +1385,7 @@ msgstr "例:/msg $1 こんにちは!"
 msgid "e.g. 5m, 1h, 2d"
 msgstr "e.g. 5m, 1h, 2d"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/alias_dialog.ex:249
+#: lib/retro_hex_chat_web/components/ui/dialogs/alias_dialog.ex:189
 #, elixir-autogen, elixir-format
 msgid "e.g. hi"
 msgstr "例)"
@@ -1440,7 +1435,7 @@ msgstr "セット"
 msgid "© 2024–2026 RetroHexChat Contributors"
 msgstr "© 2024–2026 RetroHexChat 貢献者"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/timers_dialog.ex:238
+#: lib/retro_hex_chat_web/components/ui/dialogs/timers_dialog.ex:237
 #, elixir-autogen, elixir-format
 msgid "/me standup in 30 minutes"
 msgstr "/me standup in 30 minutes"
@@ -1450,24 +1445,24 @@ msgstr "/me standup in 30 minutes"
 msgid "30m"
 msgstr "30m"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/admin_channels_dialog.ex:266
-#: lib/retro_hex_chat_web/components/ui/dialogs/admin_channels_dialog.ex:267
+#: lib/retro_hex_chat_web/components/ui/dialogs/admin_channels_dialog.ex:217
+#: lib/retro_hex_chat_web/components/ui/dialogs/admin_channels_dialog.ex:218
 #, elixir-autogen, elixir-format
 msgid "Access list"
 msgstr "アクセス一覧"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/admin_users_dialog.ex:260
+#: lib/retro_hex_chat_web/components/ui/dialogs/admin_users_dialog.ex:211
 #, elixir-autogen, elixir-format
 msgid "Account & Roles"
 msgstr "アカウントとロール"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/timers_dialog.ex:180
+#: lib/retro_hex_chat_web/components/ui/dialogs/timers_dialog.ex:179
 #, elixir-autogen, elixir-format
 msgid "Add Timer"
 msgstr "タイマーを追加"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/admin_channels_dialog.ex:285
-#: lib/retro_hex_chat_web/components/ui/dialogs/admin_channels_dialog.ex:286
+#: lib/retro_hex_chat_web/components/ui/dialogs/admin_channels_dialog.ex:236
+#: lib/retro_hex_chat_web/components/ui/dialogs/admin_channels_dialog.ex:237
 #, elixir-autogen, elixir-format
 msgid "Add access"
 msgstr "アクセスを追加"
@@ -1526,13 +1521,13 @@ msgstr "離席中"
 msgid "Away message:"
 msgstr "Away メッセージ:"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/admin_channels_dialog.ex:318
-#: lib/retro_hex_chat_web/components/ui/dialogs/admin_users_dialog.ex:364
+#: lib/retro_hex_chat_web/components/ui/dialogs/admin_channels_dialog.ex:269
+#: lib/retro_hex_chat_web/components/ui/dialogs/admin_users_dialog.ex:315
 #, elixir-autogen, elixir-format
 msgid "Ban list"
 msgstr "バンリスト"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/admin_users_dialog.ex:209
+#: lib/retro_hex_chat_web/components/ui/dialogs/admin_users_dialog.ex:160
 #, elixir-autogen, elixir-format
 msgid "Ban user"
 msgstr "禁止ユーザー"
@@ -1543,13 +1538,13 @@ msgstr "禁止ユーザー"
 msgid "Broadcast"
 msgstr "ブロードキャスト"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/admin_channels_dialog.ex:251
+#: lib/retro_hex_chat_web/components/ui/dialogs/admin_channels_dialog.ex:202
 #, elixir-autogen, elixir-format
 msgid "ChanServ admin"
 msgstr "チャンサーブ管理者"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/admin_channels_dialog.ex:257
-#: lib/retro_hex_chat_web/components/ui/dialogs/admin_channels_dialog.ex:258
+#: lib/retro_hex_chat_web/components/ui/dialogs/admin_channels_dialog.ex:208
+#: lib/retro_hex_chat_web/components/ui/dialogs/admin_channels_dialog.ex:209
 #, elixir-autogen, elixir-format
 msgid "ChanServ info"
 msgstr "チャンサーブ情報"
@@ -1584,37 +1579,37 @@ msgstr "明確な歓迎"
 msgid "Confirm Drop"
 msgstr "ドロップを確認する"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/admin_users_dialog.ex:210
+#: lib/retro_hex_chat_web/components/ui/dialogs/admin_users_dialog.ex:161
 #, elixir-autogen, elixir-format
 msgid "Confirm ban"
 msgstr "禁止事項の確認"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/admin_channels_dialog.ex:228
+#: lib/retro_hex_chat_web/components/ui/dialogs/admin_channels_dialog.ex:179
 #, elixir-autogen, elixir-format
 msgid "Confirm delete"
 msgstr "削除を確認する"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/admin_users_dialog.ex:231
+#: lib/retro_hex_chat_web/components/ui/dialogs/admin_users_dialog.ex:182
 #, elixir-autogen, elixir-format
 msgid "Confirm kick"
 msgstr "キックの確認"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/admin_users_dialog.ex:242
+#: lib/retro_hex_chat_web/components/ui/dialogs/admin_users_dialog.ex:193
 #, elixir-autogen, elixir-format
 msgid "Confirm mute"
 msgstr "ミュートの確認"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/admin_channels_dialog.ex:240
+#: lib/retro_hex_chat_web/components/ui/dialogs/admin_channels_dialog.ex:191
 #, elixir-autogen, elixir-format
 msgid "Confirm purge"
 msgstr "パージの確認"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/admin_users_dialog.ex:221
+#: lib/retro_hex_chat_web/components/ui/dialogs/admin_users_dialog.ex:172
 #, elixir-autogen, elixir-format
 msgid "Confirm unban"
 msgstr "禁止事項の確認"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/admin_users_dialog.ex:252
+#: lib/retro_hex_chat_web/components/ui/dialogs/admin_users_dialog.ex:203
 #, elixir-autogen, elixir-format
 msgid "Confirm unmute"
 msgstr "unmute の確認"
@@ -1629,7 +1624,7 @@ msgstr "確認:"
 msgid "Current MOTD"
 msgstr "現在のMOTD"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/admin_users_dialog.ex:273
+#: lib/retro_hex_chat_web/components/ui/dialogs/admin_users_dialog.ex:224
 #, elixir-autogen, elixir-format
 msgid "Current nick"
 msgstr "現在のニックネーム"
@@ -1639,12 +1634,12 @@ msgstr "現在のニックネーム"
 msgid "Danger Zone"
 msgstr "危険ゾーン"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/admin_channels_dialog.ex:227
+#: lib/retro_hex_chat_web/components/ui/dialogs/admin_channels_dialog.ex:178
 #, elixir-autogen, elixir-format
 msgid "Delete channel"
 msgstr "チャネルの削除"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/admin_channels_dialog.ex:219
+#: lib/retro_hex_chat_web/components/ui/dialogs/admin_channels_dialog.ex:170
 #, elixir-autogen, elixir-format
 msgid "Destructive actions"
 msgstr "破壊的な行動"
@@ -1656,10 +1651,10 @@ msgid "Drop Registration"
 msgstr "ドロップ登録"
 
 #: lib/retro_hex_chat_web/components/ui/dialogs/account_dialog.ex:172
-#: lib/retro_hex_chat_web/components/ui/dialogs/admin_channels_dialog.ex:307
-#: lib/retro_hex_chat_web/components/ui/dialogs/admin_channels_dialog.ex:308
-#: lib/retro_hex_chat_web/components/ui/dialogs/admin_users_dialog.ex:355
-#: lib/retro_hex_chat_web/components/ui/dialogs/admin_users_dialog.ex:356
+#: lib/retro_hex_chat_web/components/ui/dialogs/admin_channels_dialog.ex:258
+#: lib/retro_hex_chat_web/components/ui/dialogs/admin_channels_dialog.ex:259
+#: lib/retro_hex_chat_web/components/ui/dialogs/admin_users_dialog.ex:306
+#: lib/retro_hex_chat_web/components/ui/dialogs/admin_users_dialog.ex:307
 #, elixir-autogen, elixir-format
 msgid "Drop registration"
 msgstr "ドロップ登録"
@@ -1669,14 +1664,14 @@ msgstr "ドロップ登録"
 msgid "Dropping..."
 msgstr "ドロップ..."
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/admin_users_dialog.ex:434
+#: lib/retro_hex_chat_web/components/ui/dialogs/admin_users_dialog.ex:385
 #: lib/retro_hex_chat_web/components/ui/dialogs/flood_protection_dialog.ex:207
 #: lib/retro_hex_chat_web/components/ui/dialogs/mute_duration_dialog.ex:49
 #, elixir-autogen, elixir-format
 msgid "Duration"
 msgstr "期間"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/timers_dialog.ex:179
+#: lib/retro_hex_chat_web/components/ui/dialogs/timers_dialog.ex:178
 #, elixir-autogen, elixir-format
 msgid "Edit Timer"
 msgstr "編集タイマー"
@@ -1701,7 +1696,7 @@ msgstr "%{peer} で P2P セッションを終了しますか? 進行中の呼び
 msgid "Enter nickname..."
 msgstr "ニックネームを入力してください。"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/timers_dialog.ex:117
+#: lib/retro_hex_chat_web/components/ui/dialogs/timers_dialog.ex:116
 #, elixir-autogen, elixir-format
 msgid "Every"
 msgstr "毎"
@@ -1716,7 +1711,7 @@ msgstr "ファイル転送停止"
 msgid "Founder"
 msgstr "創設者"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/admin_channels_dialog.ex:393
+#: lib/retro_hex_chat_web/components/ui/dialogs/admin_channels_dialog.ex:344
 #, elixir-autogen, elixir-format
 msgid "From nick"
 msgstr "ニックネームから"
@@ -1742,7 +1737,7 @@ msgid "I'm away"
 msgstr "I'm away"
 
 #: lib/retro_hex_chat_web/components/ui/dialogs/account_dialog.ex:310
-#: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:106
+#: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:107
 #, elixir-autogen, elixir-format
 msgid "Identified"
 msgstr "識別される"
@@ -1757,9 +1752,9 @@ msgstr "Identify"
 msgid "Identify (log in)"
 msgstr "識別する(ログイン)"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/admin_channels_dialog.ex:188
+#: lib/retro_hex_chat_web/components/ui/dialogs/admin_channels_dialog.ex:139
 #: lib/retro_hex_chat_web/components/ui/dialogs/admin_server_settings_dialog.ex:190
-#: lib/retro_hex_chat_web/components/ui/dialogs/admin_users_dialog.ex:196
+#: lib/retro_hex_chat_web/components/ui/dialogs/admin_users_dialog.ex:147
 #, elixir-autogen, elixir-format
 msgid "Info"
 msgstr "情報"
@@ -1774,7 +1769,7 @@ msgstr "チャネルへの招待"
 msgid "Inviting"
 msgstr "招待状"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/admin_users_dialog.ex:230
+#: lib/retro_hex_chat_web/components/ui/dialogs/admin_users_dialog.ex:181
 #, elixir-autogen, elixir-format
 msgid "Kick user"
 msgstr "キックユーザー"
@@ -1799,7 +1794,7 @@ msgstr "モットD"
 msgid "Max channels"
 msgstr "最高のチャネル"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/timers_dialog.ex:143
+#: lib/retro_hex_chat_web/components/ui/dialogs/timers_dialog.ex:142
 #, elixir-autogen, elixir-format
 msgid "Maximum 5 timers active. Stop one to add another."
 msgstr "最大5人のタイマーが有効です。 別の追加に1つ停止します。"
@@ -1814,7 +1809,7 @@ msgstr "メッセージ"
 msgid "Message (optional)"
 msgstr "メッセージ(任意)"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/admin_users_dialog.ex:241
+#: lib/retro_hex_chat_web/components/ui/dialogs/admin_users_dialog.ex:192
 #, elixir-autogen, elixir-format
 msgid "Mute user"
 msgstr "ミュートユーザ"
@@ -1834,28 +1829,28 @@ msgstr "ヌークエバーチング"
 msgid "New MOTD"
 msgstr "新しいMOTD"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/admin_channels_dialog.ex:197
+#: lib/retro_hex_chat_web/components/ui/dialogs/admin_channels_dialog.ex:148
 #, elixir-autogen, elixir-format
 msgid "New channel"
 msgstr "新しいチャネル"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/admin_users_dialog.ex:281
+#: lib/retro_hex_chat_web/components/ui/dialogs/admin_users_dialog.ex:232
 #, elixir-autogen, elixir-format
 msgid "New nick"
 msgstr "新しいニックネーム"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/admin_users_dialog.ex:443
+#: lib/retro_hex_chat_web/components/ui/dialogs/admin_users_dialog.ex:394
 #, elixir-autogen, elixir-format
 msgid "New password"
 msgstr "新しいパスワード"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/admin_users_dialog.ex:330
+#: lib/retro_hex_chat_web/components/ui/dialogs/admin_users_dialog.ex:281
 #, elixir-autogen, elixir-format
 msgid "NickServ admin"
 msgstr "NickServ管理者"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/admin_users_dialog.ex:336
-#: lib/retro_hex_chat_web/components/ui/dialogs/admin_users_dialog.ex:337
+#: lib/retro_hex_chat_web/components/ui/dialogs/admin_users_dialog.ex:287
+#: lib/retro_hex_chat_web/components/ui/dialogs/admin_users_dialog.ex:288
 #, elixir-autogen, elixir-format
 msgid "NickServ info"
 msgstr "NickServ情報"
@@ -1870,7 +1865,7 @@ msgstr "いいえ %{level} エントリ"
 msgid "No MOTD has been set."
 msgstr "MOTD の設定はありません。"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/timers_dialog.ex:96
+#: lib/retro_hex_chat_web/components/ui/dialogs/timers_dialog.ex:95
 #, elixir-autogen, elixir-format
 msgid "No active timers. Click Add to schedule one."
 msgstr "アクティブタイマーはありません。 [追加] をクリックしてスケジュールをスケジュールします。"
@@ -1886,7 +1881,7 @@ msgstr "歓迎メッセージセットはありません。"
 msgid "Not registered"
 msgstr "登録しない"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/admin_users_dialog.ex:152
+#: lib/retro_hex_chat_web/components/ui/dialogs/admin_users_dialog.ex:103
 #, elixir-autogen, elixir-format
 msgid "Online only"
 msgstr "オンラインのみ"
@@ -1918,7 +1913,7 @@ msgstr "パスワード:"
 msgid "Preserved: admin_roles, audit_logs, server_bans, server_settings"
 msgstr "保存: admin roles, 監査 logs, server bans, server settings"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/admin_channels_dialog.ex:239
+#: lib/retro_hex_chat_web/components/ui/dialogs/admin_channels_dialog.ex:190
 #, elixir-autogen, elixir-format
 msgid "Purge messages"
 msgstr "パージメッセージ"
@@ -1928,7 +1923,7 @@ msgstr "パージメッセージ"
 msgid "Query (PM)"
 msgstr "クエリ(PM)"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/admin_users_dialog.ex:425
+#: lib/retro_hex_chat_web/components/ui/dialogs/admin_users_dialog.ex:376
 #: lib/retro_hex_chat_web/components/ui/dialogs/kick_dialog.ex:69
 #, elixir-autogen, elixir-format
 msgid "Reason"
@@ -1940,12 +1935,12 @@ msgid "Receive wallops (+w)"
 msgstr "受精のwallops (+w)"
 
 #: lib/retro_hex_chat_web/components/ui/dialogs/admin_audit_log_dialog.ex:123
-#: lib/retro_hex_chat_web/components/ui/dialogs/admin_channels_dialog.ex:149
+#: lib/retro_hex_chat_web/components/ui/dialogs/admin_channels_dialog.ex:100
 #: lib/retro_hex_chat_web/components/ui/dialogs/admin_motd_dialog.ex:125
 #: lib/retro_hex_chat_web/components/ui/dialogs/admin_server_settings_dialog.ex:179
 #: lib/retro_hex_chat_web/components/ui/dialogs/admin_turn_dialog.ex:92
-#: lib/retro_hex_chat_web/components/ui/dialogs/admin_users_dialog.ex:156
-#: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:133
+#: lib/retro_hex_chat_web/components/ui/dialogs/admin_users_dialog.ex:107
+#: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:134
 #: lib/retro_hex_chat_web/components/ui/system/app_info_panel.ex:45
 #: lib/retro_hex_chat_web/components/ui/system/os_panel.ex:49
 #: lib/retro_hex_chat_web/components/ui/system/section_heading.ex:36
@@ -1991,28 +1986,28 @@ msgstr "登録..."
 msgid "Registration"
 msgstr "登録"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/admin_channels_dialog.ex:296
-#: lib/retro_hex_chat_web/components/ui/dialogs/admin_channels_dialog.ex:297
+#: lib/retro_hex_chat_web/components/ui/dialogs/admin_channels_dialog.ex:247
+#: lib/retro_hex_chat_web/components/ui/dialogs/admin_channels_dialog.ex:248
 #, elixir-autogen, elixir-format
 msgid "Remove access"
 msgstr "アクセスを削除"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/admin_users_dialog.ex:288
+#: lib/retro_hex_chat_web/components/ui/dialogs/admin_users_dialog.ex:239
 #, elixir-autogen, elixir-format
 msgid "Rename"
 msgstr "名前を変更"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/admin_users_dialog.ex:268
+#: lib/retro_hex_chat_web/components/ui/dialogs/admin_users_dialog.ex:219
 #, elixir-autogen, elixir-format
 msgid "Rename user"
 msgstr "ユーザー名"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/timers_dialog.ex:121
+#: lib/retro_hex_chat_web/components/ui/dialogs/timers_dialog.ex:120
 #, elixir-autogen, elixir-format
 msgid "Repeat"
 msgstr "リピート"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/timers_dialog.ex:249
+#: lib/retro_hex_chat_web/components/ui/dialogs/timers_dialog.ex:248
 #, elixir-autogen, elixir-format
 msgid "Repeating timer"
 msgstr "タイマーを繰り返す"
@@ -2027,8 +2022,8 @@ msgstr "リクエストアクセス..."
 msgid "Request Channel Access"
 msgstr "リクエストチャネルアクセス"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/admin_users_dialog.ex:345
-#: lib/retro_hex_chat_web/components/ui/dialogs/admin_users_dialog.ex:346
+#: lib/retro_hex_chat_web/components/ui/dialogs/admin_users_dialog.ex:296
+#: lib/retro_hex_chat_web/components/ui/dialogs/admin_users_dialog.ex:297
 #, elixir-autogen, elixir-format
 msgid "Reset password"
 msgstr "パスワードの再設定"
@@ -2050,12 +2045,12 @@ msgstr "設定を保存"
 
 #: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:1149
 #: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:1170
-#: lib/retro_hex_chat_web/components/ui/dialogs/timers_dialog.ex:342
+#: lib/retro_hex_chat_web/components/ui/dialogs/timers_dialog.ex:341
 #, elixir-autogen, elixir-format
 msgid "Seconds"
 msgstr "セカンド"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/timers_dialog.ex:341
+#: lib/retro_hex_chat_web/components/ui/dialogs/timers_dialog.ex:340
 #, elixir-autogen, elixir-format
 msgid "Seconds (min 10)"
 msgstr "秒 (分 10)"
@@ -2095,8 +2090,8 @@ msgstr "Awayの設定"
 msgid "Set MOTD"
 msgstr "MOTDの設定"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/admin_users_dialog.ex:299
-#: lib/retro_hex_chat_web/components/ui/dialogs/admin_users_dialog.ex:322
+#: lib/retro_hex_chat_web/components/ui/dialogs/admin_users_dialog.ex:250
+#: lib/retro_hex_chat_web/components/ui/dialogs/admin_users_dialog.ex:273
 #, elixir-autogen, elixir-format
 msgid "Set role"
 msgstr "ロールセット"
@@ -2132,7 +2127,7 @@ msgstr "ターンン"
 msgid "This cannot be undone without the new owner's cooperation."
 msgstr "新規のオーナーのご協力なく、元に戻すことはできません。"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/timers_dialog.ex:147
+#: lib/retro_hex_chat_web/components/ui/dialogs/timers_dialog.ex:146
 #, elixir-autogen, elixir-format
 msgid "Timers are session-only and will be lost on disconnect."
 msgstr "タイマーはセッションのみで、切断時に失われます。"
@@ -2148,8 +2143,8 @@ msgstr "トランスファー"
 msgid "Transfer Ownership"
 msgstr "譲渡所有権"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/admin_channels_dialog.ex:275
-#: lib/retro_hex_chat_web/components/ui/dialogs/admin_channels_dialog.ex:276
+#: lib/retro_hex_chat_web/components/ui/dialogs/admin_channels_dialog.ex:226
+#: lib/retro_hex_chat_web/components/ui/dialogs/admin_channels_dialog.ex:227
 #, elixir-autogen, elixir-format
 msgid "Transfer founder"
 msgstr "移転ファウンター"
@@ -2159,7 +2154,7 @@ msgstr "移転ファウンター"
 msgid "Transfer ownership of %{channel} to:"
 msgstr "%{channel} の所有権を転送する:"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/admin_channels_dialog.ex:412
+#: lib/retro_hex_chat_web/components/ui/dialogs/admin_channels_dialog.ex:363
 #, elixir-autogen, elixir-format
 msgid "Type channel name to confirm"
 msgstr "確認するチャンネル名を入力します。"
@@ -2169,12 +2164,12 @@ msgstr "確認するチャンネル名を入力します。"
 msgid "Type the server name to confirm: %{server_name}"
 msgstr "サーバ名を入力して確認:%{server_name}"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/admin_users_dialog.ex:220
+#: lib/retro_hex_chat_web/components/ui/dialogs/admin_users_dialog.ex:171
 #, elixir-autogen, elixir-format
 msgid "Unban user"
 msgstr "禁止ユーザー"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/admin_users_dialog.ex:251
+#: lib/retro_hex_chat_web/components/ui/dialogs/admin_users_dialog.ex:202
 #, elixir-autogen, elixir-format
 msgid "Unmute user"
 msgstr "不正なユーザ"
@@ -2206,7 +2201,7 @@ msgid "Welcome message"
 msgstr "歓迎メッセージ"
 
 #: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:70
-#: lib/retro_hex_chat_web/components/ui/dialogs/custom_menus_dialog.ex:395
+#: lib/retro_hex_chat_web/components/ui/dialogs/custom_menus_dialog.ex:329
 #: lib/retro_hex_chat_web/components/ui/dialogs/profile_dialog.ex:53
 #: lib/retro_hex_chat_web/components/ui/dialogs/user_lookup_dialog.ex:51
 #: lib/retro_hex_chat_web/components/ui/dialogs/user_lookup_dialog.ex:102
@@ -2256,12 +2251,12 @@ msgstr "あなたはChanServを使用するためにNickServで識別する必�
 msgid "You must be in a channel to invite someone"
 msgstr "誰かを招待するチャネルにいる必要があります"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/admin_users_dialog.ex:316
+#: lib/retro_hex_chat_web/components/ui/dialogs/admin_users_dialog.ex:267
 #, elixir-autogen, elixir-format
 msgid "admin"
 msgstr "admin"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/admin_channels_dialog.ex:404
+#: lib/retro_hex_chat_web/components/ui/dialogs/admin_channels_dialog.ex:355
 #, elixir-autogen, elixir-format
 msgid "aop"
 msgstr "アロップ"
@@ -2276,18 +2271,18 @@ msgstr "blank = 恒久的; 30s/5m/1h/1d"
 msgid "closed"
 msgstr "終了"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/timers_dialog.ex:204
+#: lib/retro_hex_chat_web/components/ui/dialogs/timers_dialog.ex:203
 #, elixir-autogen, elixir-format
 msgid "e.g. remind"
 msgstr "例)"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/timers_dialog.ex:353
+#: lib/retro_hex_chat_web/components/ui/dialogs/timers_dialog.ex:352
 #, elixir-autogen, elixir-format
 msgid "min 10s for repeating timers"
 msgstr "繰り返すタイマーのための最低10s"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/timers_dialog.ex:339
-#: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:653
+#: lib/retro_hex_chat_web/components/ui/dialogs/timers_dialog.ex:338
+#: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:654
 #, elixir-autogen, elixir-format
 msgid "no"
 msgstr "なし"
@@ -2302,12 +2297,12 @@ msgstr "オープン"
 msgid "registered"
 msgstr "会員登録"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/admin_users_dialog.ex:313
+#: lib/retro_hex_chat_web/components/ui/dialogs/admin_users_dialog.ex:264
 #, elixir-autogen, elixir-format
 msgid "server_operator"
 msgstr "server operator サーバー"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/admin_channels_dialog.ex:403
+#: lib/retro_hex_chat_web/components/ui/dialogs/admin_channels_dialog.ex:354
 #, elixir-autogen, elixir-format
 msgid "sop"
 msgstr "ソップ"
@@ -2325,24 +2320,24 @@ msgstr "インフォメーション"
 msgid "unregistered"
 msgstr "未登録"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/admin_users_dialog.ex:314
+#: lib/retro_hex_chat_web/components/ui/dialogs/admin_users_dialog.ex:265
 #, elixir-autogen, elixir-format
 msgid "user"
 msgstr "ユーザー"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/admin_channels_dialog.ex:405
+#: lib/retro_hex_chat_web/components/ui/dialogs/admin_channels_dialog.ex:356
 #, elixir-autogen, elixir-format
 msgid "vop"
 msgstr "vop"
 
+#: lib/retro_hex_chat_web/components/ui/dialogs/timers_dialog.ex:336
 #: lib/retro_hex_chat_web/components/ui/dialogs/timers_dialog.ex:337
-#: lib/retro_hex_chat_web/components/ui/dialogs/timers_dialog.ex:338
-#: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:652
+#: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:653
 #, elixir-autogen, elixir-format
 msgid "yes"
 msgstr "yes"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/auto_respond_dialog.ex:364
+#: lib/retro_hex_chat_web/components/ui/dialogs/auto_respond_dialog.ex:305
 #, elixir-autogen, elixir-format
 msgid "Any"
 msgstr "その他"
@@ -2362,17 +2357,17 @@ msgstr "によって"
 msgid "Changing nickname to"
 msgstr "ニックネームの変更:"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/highlight_dialog.ex:400
+#: lib/retro_hex_chat_web/components/ui/dialogs/highlight_dialog.ex:402
 #, elixir-autogen, elixir-format
 msgid "Color %{index}"
 msgstr "色 %{index}"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/custom_menus_dialog.ex:332
+#: lib/retro_hex_chat_web/components/ui/dialogs/custom_menus_dialog.ex:266
 #, elixir-autogen, elixir-format
 msgid "Custom menu entries"
 msgstr "カスタムメニュー"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/highlight_dialog.ex:402
+#: lib/retro_hex_chat_web/components/ui/dialogs/highlight_dialog.ex:404
 #, elixir-autogen, elixir-format
 msgid "Default"
 msgstr "デフォルト"
@@ -2402,7 +2397,7 @@ msgstr "モード"
 msgid "Mute User"
 msgstr "ミュートユーザ"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/timers_dialog.ex:125
+#: lib/retro_hex_chat_web/components/ui/dialogs/timers_dialog.ex:124
 #, elixir-autogen, elixir-format
 msgid "Next"
 msgstr "次へ"
@@ -2412,17 +2407,17 @@ msgstr "次へ"
 msgid "NickServ password"
 msgstr "NickServ パスワード:"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/auto_respond_dialog.ex:157
+#: lib/retro_hex_chat_web/components/ui/dialogs/auto_respond_dialog.ex:98
 #, elixir-autogen, elixir-format
 msgid "No auto-respond rules configured. Click Add to create one."
 msgstr "自動応答ルールの設定はありません。 Addをクリックして作成します。"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/custom_menus_dialog.ex:336
+#: lib/retro_hex_chat_web/components/ui/dialogs/custom_menus_dialog.ex:270
 #, elixir-autogen, elixir-format
 msgid "No custom menu entries yet."
 msgstr "カスタムメニューエントリはまだありません。"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/highlight_dialog.ex:160
+#: lib/retro_hex_chat_web/components/ui/dialogs/highlight_dialog.ex:162
 #, elixir-autogen, elixir-format
 msgid "No highlight words configured. Click Add to create one."
 msgstr "設定されたハイライト単語はありません。 Addをクリックして作成します。"
@@ -2448,22 +2443,22 @@ msgstr "まだNICKに通知しません。 オンラインステータスを追�
 msgid "Now"
 msgstr "詳しくはこちら"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/auto_respond_dialog.ex:198
+#: lib/retro_hex_chat_web/components/ui/dialogs/auto_respond_dialog.ex:139
 #, elixir-autogen, elixir-format
 msgid "Off"
 msgstr "オフライン"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/auto_respond_dialog.ex:197
+#: lib/retro_hex_chat_web/components/ui/dialogs/auto_respond_dialog.ex:138
 #, elixir-autogen, elixir-format
 msgid "On"
 msgstr "On"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/highlight_dialog.ex:153
+#: lib/retro_hex_chat_web/components/ui/dialogs/highlight_dialog.ex:155
 #, elixir-autogen, elixir-format
 msgid "Own nick"
 msgstr "自分のニックネーム"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/auto_respond_dialog.ex:184
+#: lib/retro_hex_chat_web/components/ui/dialogs/auto_respond_dialog.ex:125
 #, elixir-autogen, elixir-format
 msgid "Position"
 msgstr "ポジション"
@@ -2509,7 +2504,7 @@ msgstr "キックした %{channel}."
 msgid "Your current chat session will end."
 msgstr "現在のチャットセッションを終了します。"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/autojoin_dialog.ex:147
+#: lib/retro_hex_chat_web/components/ui/dialogs/autojoin_dialog.ex:149
 #: lib/retro_hex_chat_web/components/ui/dialogs/bot_management_dialog.ex:1046
 #, elixir-autogen, elixir-format
 msgid "none"
@@ -2530,17 +2525,17 @@ msgstr "アクセス一覧"
 msgid "%{count} earlier lines were dropped"
 msgstr "以前の %{count} 行は破棄されました"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:208
+#: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:209
 #, elixir-autogen, elixir-format
 msgid "Active Sessions"
 msgstr "アクティブなセッション"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:673
+#: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:670
 #, elixir-autogen, elixir-format
 msgid "All terminals revoked"
 msgstr "すべての端末を失効しました"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:421
+#: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:422
 #, elixir-autogen, elixir-format
 msgid "Could not load more activity."
 msgstr "これ以上のアクティビティを読み込めませんでした。"
@@ -2551,42 +2546,42 @@ msgstr "これ以上のアクティビティを読み込めませんでした。
 msgid "Could not load more events."
 msgstr "これ以上のイベントを読み込めませんでした。"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:365
+#: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:366
 #, elixir-autogen, elixir-format
 msgid "Could not load more sessions."
 msgstr "これ以上のセッションを読み込めませんでした。"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:324
+#: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:325
 #, elixir-autogen, elixir-format
 msgid "Current"
 msgstr "現在"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:348
+#: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:349
 #, elixir-autogen, elixir-format
 msgid "End"
 msgstr "終了"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:145
+#: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:146
 #, elixir-autogen, elixir-format
 msgid "End Others"
 msgstr "他を終了"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:259
+#: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:260
 #, elixir-autogen, elixir-format
 msgid "Forget"
 msgstr "削除"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:174
+#: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:175
 #, elixir-autogen, elixir-format
 msgid "Identify with NickServ to manage trusted terminals."
 msgstr "信頼済み端末を管理するには NickServ で認証してください。"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:661
+#: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:658
 #, elixir-autogen, elixir-format
 msgid "Nick remembered"
 msgstr "ニックを記憶しました"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:103
+#: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:104
 #, elixir-autogen, elixir-format
 msgid "NickServ:"
 msgstr "NickServ:"
@@ -2596,17 +2591,17 @@ msgstr "NickServ:"
 msgid "No URLs captured yet."
 msgstr "まだ URL は取得されていません。"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/admin_channels_dialog.ex:165
+#: lib/retro_hex_chat_web/components/ui/dialogs/admin_channels_dialog.ex:116
 #, elixir-autogen, elixir-format
 msgid "No active channels"
 msgstr "アクティブなチャンネルはありません"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/admin_users_dialog.ex:376
+#: lib/retro_hex_chat_web/components/ui/dialogs/admin_users_dialog.ex:327
 #, elixir-autogen, elixir-format
 msgid "No active server bans"
 msgstr "有効なサーバー BAN はありません"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:297
+#: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:298
 #, elixir-autogen, elixir-format
 msgid "No active sessions."
 msgstr "アクティブなセッションはありません。"
@@ -2621,63 +2616,63 @@ msgstr "監査ログのエントリはありません"
 msgid "No server settings configured"
 msgstr "サーバー設定はありません"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:380
+#: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:381
 #, elixir-autogen, elixir-format
 msgid "No terminal activity yet."
 msgstr "端末のアクティビティはまだありません。"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:227
+#: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:228
 #, elixir-autogen, elixir-format
 msgid "No trusted terminals for this nickname."
 msgstr "このニックには信頼済み端末がありません。"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/admin_users_dialog.ex:174
+#: lib/retro_hex_chat_web/components/ui/dialogs/admin_users_dialog.ex:125
 #, elixir-autogen, elixir-format
 msgid "No users found"
 msgstr "ユーザーが見つかりません"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:107
+#: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:108
 #, elixir-autogen, elixir-format
 msgid "Not identified"
 msgstr "未認証"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:556
+#: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:557
 #, elixir-autogen, elixir-format
 msgid "Not remembered"
 msgstr "未記憶"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:219
+#: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:220
 #, elixir-autogen, elixir-format
 msgid "Recent Activity"
 msgstr "最近のアクティビティ"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:557
+#: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:558
 #, elixir-autogen, elixir-format
 msgid "Remembered"
 msgstr "記憶済み"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:260
+#: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:261
 #, elixir-autogen, elixir-format
 msgid "Revoke"
 msgstr "失効"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:157
+#: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:158
 #, elixir-autogen, elixir-format
 msgid "Revoke All"
 msgstr "すべて失効"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:675
+#: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:672
 #, elixir-autogen, elixir-format
 msgid "Session ended"
 msgstr "セッションを終了しました"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:590
-#: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:674
+#: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:591
+#: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:671
 #, elixir-autogen, elixir-format
 msgid "Session started"
 msgstr "セッション開始"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:676
+#: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:673
 #, elixir-autogen, elixir-format
 msgid "Sessions ended"
 msgstr "セッションを終了しました"
@@ -2687,67 +2682,67 @@ msgstr "セッションを終了しました"
 msgid "Shared links will appear here."
 msgstr "共有されたリンクがここに表示されます。"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:677
+#: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:674
 #, elixir-autogen, elixir-format
 msgid "Terminal activity"
 msgstr "端末のアクティビティ"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:660
+#: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:657
 #, elixir-autogen, elixir-format
 msgid "Terminal created"
 msgstr "端末を作成しました"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:277
+#: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:278
 #, elixir-autogen, elixir-format
 msgid "Terminal label"
 msgstr "端末のラベル"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:670
+#: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:667
 #, elixir-autogen, elixir-format
 msgid "Terminal renamed"
 msgstr "端末の名前を変更しました"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:671
+#: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:668
 #, elixir-autogen, elixir-format
 msgid "Terminal revoked"
 msgstr "端末を失効しました"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:672
+#: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:669
 #, elixir-autogen, elixir-format
 msgid "Terminal signed out"
 msgstr "端末がログアウトしました"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:116
+#: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:117
 #, elixir-autogen, elixir-format
 msgid "This terminal:"
 msgstr "この端末:"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:197
+#: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:198
 #, elixir-autogen, elixir-format
 msgid "Trusted Terminals"
 msgstr "信頼済み端末"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:662
+#: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:659
 #, elixir-autogen, elixir-format
 msgid "Trusted login"
 msgstr "信頼済みログイン"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:625
+#: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:626
 #, elixir-autogen, elixir-format
 msgid "Action"
 msgstr "操作"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:618
+#: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:619
 #, elixir-autogen, elixir-format
 msgid "Actor"
 msgstr "アクター"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:668
+#: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:665
 #, elixir-autogen, elixir-format
 msgid "Auto-login disabled"
 msgstr "自動ログイン 無効"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:665
+#: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:662
 #, elixir-autogen, elixir-format
 msgid "Auto-login enabled"
 msgstr "自動ログインを有効に"
@@ -2757,14 +2752,14 @@ msgstr "自動ログインを有効に"
 msgid "CPU"
 msgstr "CPU"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:634
 #: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:635
+#: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:636
 #, elixir-autogen, elixir-format
 msgid "Count"
 msgstr "カウント"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:636
 #: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:637
+#: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:638
 #, elixir-autogen, elixir-format
 msgid "Grant ID"
 msgstr "助成金ID"
@@ -2777,19 +2772,19 @@ msgstr "助成金ID"
 msgid "Language"
 msgstr "言語"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:580
+#: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:581
 #, elixir-autogen, elixir-format
 msgid "Ref"
 msgstr "参考文献"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:577
-#: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:640
+#: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:578
 #: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:641
+#: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:642
 #, elixir-autogen, elixir-format
 msgid "Session ID"
 msgstr "セッションID"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:624
+#: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:625
 #, elixir-autogen, elixir-format
 msgid "Terminal"
 msgstr "ターミナル"
@@ -3113,7 +3108,7 @@ msgstr "ペースト確認"
 msgid "System limits"
 msgstr "システム制限"
 
-#: lib/retro_hex_chat_web/live/chat_live/components/system_database_dialog.ex:85
+#: lib/retro_hex_chat_web/live/chat_live/components/system_database_dialog.ex:66
 #, elixir-autogen, elixir-format
 msgid "That report is not available on this server."
 msgstr "このサーバではレポートは利用できません。"
@@ -3123,7 +3118,7 @@ msgstr "このサーバではレポートは利用できません。"
 msgid "The :os_mon application is not running on this node, so the host cannot be read."
 msgstr ":os mon アプリケーションがこのノードで実行されていないため、ホストは読みません。"
 
-#: lib/retro_hex_chat_web/live/chat_live/components/system_database_dialog.ex:93
+#: lib/retro_hex_chat_web/live/chat_live/components/system_database_dialog.ex:74
 #, elixir-autogen, elixir-format
 msgid "The report could not be run — the database refused the query or an extension it needs is missing."
 msgstr "レポートは実行できませんでした。データベースはクエリやニーズの拡張を拒否しました。"
@@ -3613,17 +3608,17 @@ msgstr "各フィールドの取得元"
 msgid "Why pages failed"
 msgstr "ページが失敗した理由"
 
-#: lib/retro_hex_chat_web/components/ui/shell/desktop_launchers.ex:341
+#: lib/retro_hex_chat_web/components/ui/shell/desktop_launchers.ex:340
 #, elixir-autogen, elixir-format
 msgid "Connect required"
 msgstr "接続が必要です"
 
-#: lib/retro_hex_chat_web/components/ui/shell/desktop_launchers.ex:358
+#: lib/retro_hex_chat_web/components/ui/shell/desktop_launchers.ex:357
 #, elixir-autogen, elixir-format
 msgid "This app group needs a chat session."
 msgstr "このアプリグループにはチャットのセッションが必要です。"
 
-#: lib/retro_hex_chat_web/components/ui/shell/desktop_launchers.ex:361
+#: lib/retro_hex_chat_web/components/ui/shell/desktop_launchers.ex:360
 #, elixir-autogen, elixir-format
 msgid "Connect first to use this desktop app folder. Help and Language remain available without a chat session."
 msgstr "このアプリフォルダーを使うにはまず接続してください。ヘルプと言語はチャットのセッションがなくても使えます。"
@@ -3813,7 +3808,7 @@ msgstr[0] "%{max} 中 %{count} 使用中"
 msgid "Add one and everybody here can write it between two colons, like :shrug:."
 msgstr "1 つ追加すると、ここにいる全員がコロン 2 つの間に :shrug: のように書けます。"
 
-#: lib/retro_hex_chat_web/live/chat_live/components/server_emoji_dialog.ex:118
+#: lib/retro_hex_chat_web/live/chat_live/components/server_emoji_dialog.ex:114
 #, elixir-autogen, elixir-format
 msgid "Choose a picture first."
 msgstr "先に画像を選んでください。"
@@ -3823,8 +3818,8 @@ msgstr "先に画像を選んでください。"
 msgid "Picture"
 msgstr "画像"
 
-#: lib/retro_hex_chat_web/live/chat_live/components/server_emoji_dialog.ex:79
-#: lib/retro_hex_chat_web/live/chat_live/components/server_emoji_dialog.ex:88
+#: lib/retro_hex_chat_web/live/chat_live/components/server_emoji_dialog.ex:75
+#: lib/retro_hex_chat_web/live/chat_live/components/server_emoji_dialog.ex:84
 #, elixir-autogen, elixir-format
 msgid "Server administrators only."
 msgstr "サーバー管理者のみ。"
@@ -3913,24 +3908,24 @@ msgstr "%{mask} を削除"
 msgid "Remove %{nickname}"
 msgstr "%{nickname} を削除"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/autojoin_dialog.ex:152
+#: lib/retro_hex_chat_web/components/ui/dialogs/autojoin_dialog.ex:154
 #, elixir-autogen, elixir-format
 msgid "Remove %{channel}"
 msgstr "%{channel} を削除"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/alias_dialog.ex:181
-#: lib/retro_hex_chat_web/components/ui/dialogs/custom_menus_dialog.ex:361
-#: lib/retro_hex_chat_web/components/ui/dialogs/perform_dialog.ex:187
+#: lib/retro_hex_chat_web/components/ui/dialogs/alias_dialog.ex:121
+#: lib/retro_hex_chat_web/components/ui/dialogs/custom_menus_dialog.ex:295
+#: lib/retro_hex_chat_web/components/ui/dialogs/perform_dialog.ex:189
 #, elixir-autogen, elixir-format
 msgid "Remove %{name}"
 msgstr "%{name} を削除"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/highlight_dialog.ex:190
+#: lib/retro_hex_chat_web/components/ui/dialogs/highlight_dialog.ex:192
 #, elixir-autogen, elixir-format
 msgid "Remove %{word}"
 msgstr "%{word} を削除"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/auto_respond_dialog.ex:204
+#: lib/retro_hex_chat_web/components/ui/dialogs/auto_respond_dialog.ex:145
 #, elixir-autogen, elixir-format
 msgid "Remove rule %{position}"
 msgstr "ルール %{position} を削除"
@@ -3941,22 +3936,22 @@ msgstr "ルール %{position} を削除"
 msgid "Edit %{nickname}"
 msgstr "%{nickname} を編集"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/timers_dialog.ex:132
+#: lib/retro_hex_chat_web/components/ui/dialogs/timers_dialog.ex:131
 #, elixir-autogen, elixir-format
 msgid "Stop %{timer}"
 msgstr "%{timer} を停止"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/timers_dialog.ex:102
+#: lib/retro_hex_chat_web/components/ui/dialogs/timers_dialog.ex:101
 #, elixir-autogen, elixir-format
 msgid "Timers"
 msgstr "タイマー"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/perform_dialog.ex:177
+#: lib/retro_hex_chat_web/components/ui/dialogs/perform_dialog.ex:179
 #, elixir-autogen, elixir-format
 msgid "Move %{name} down"
 msgstr "%{name} を下に移動"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/perform_dialog.ex:167
+#: lib/retro_hex_chat_web/components/ui/dialogs/perform_dialog.ex:169
 #, elixir-autogen, elixir-format
 msgid "Move %{name} up"
 msgstr "%{name} を上に移動"
@@ -4070,12 +4065,12 @@ msgstr "このニックネームはあなたのものです"
 msgid "A couple of lines about you, up to 200 characters. Everyone can read it; nobody is shown it unless they ask."
 msgstr "約200文字までのライン数 誰もが読んでもらえる。誰が尋ねても、誰もそれを示さない。"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/auto_respond_dialog.ex:137
+#: lib/retro_hex_chat_web/components/ui/dialogs/auto_respond_dialog.ex:78
 #, elixir-autogen, elixir-format
 msgid "A miniature of a rule firing in a channel"
 msgstr "チャンネルでのルールのミニチュア"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/timers_dialog.ex:77
+#: lib/retro_hex_chat_web/components/ui/dialogs/timers_dialog.ex:76
 #, elixir-autogen, elixir-format
 msgid "A miniature of a timer firing its command"
 msgstr "タイマーのミニチュアは、そのコマンドを実行する"
@@ -4085,7 +4080,7 @@ msgstr "タイマーのミニチュアは、そのコマンドを実行する"
 msgid "A miniature of the ChanServ record for this channel"
 msgstr "このチャンネルのChanServレコードのミニチュア"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:76
+#: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:77
 #, elixir-autogen, elixir-format
 msgid "A miniature of the Connect screen listing the machines that log in without a password"
 msgstr "パスワードなしでログインするマシンをリストするコネクト画面のミニチュア"
@@ -4100,12 +4095,12 @@ msgstr "ステータスウィンドウのミニチュア これらのモード�
 msgid "A miniature of the Whois card other people see"
 msgstr "Whoisカードのミニチュア 他の人が見る"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/perform_dialog.ex:132
+#: lib/retro_hex_chat_web/components/ui/dialogs/perform_dialog.ex:134
 #, elixir-autogen, elixir-format
 msgid "A miniature of the commands that run on connect"
 msgstr "接続上で実行するコマンドのミニチュア"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/autojoin_dialog.ex:113
+#: lib/retro_hex_chat_web/components/ui/dialogs/autojoin_dialog.ex:115
 #, elixir-autogen, elixir-format
 msgid "A miniature of the joins that run on connect"
 msgstr "接続上で実行する結合のミニチュア"
@@ -4125,7 +4120,7 @@ msgstr "あなたが受け取る誰かのメッセージのミニチュア"
 msgid "A miniature of what a newcomer meets at the door"
 msgstr "ドアに新しい仲間が会うもののミニチュア"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/alias_dialog.ex:136
+#: lib/retro_hex_chat_web/components/ui/dialogs/alias_dialog.ex:76
 #, elixir-autogen, elixir-format
 msgid "A miniature showing an alias expanding as it is sent"
 msgstr "送信されると、エイリアスの拡大を示すミニチュア"
@@ -4135,17 +4130,17 @@ msgstr "送信されると、エイリアスの拡大を示すミニチュア"
 msgid "A mode changes the channel for everybody at once and takes effect the moment you apply it — people already inside are affected too, not just the next person through the door."
 msgstr "モードは、すべての人が一度にチャンネルを変更し、それを適用する瞬間に影響します。 すでに内部の人が影響を受けています。"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/auto_respond_dialog.ex:141
+#: lib/retro_hex_chat_web/components/ui/dialogs/auto_respond_dialog.ex:82
 #, elixir-autogen, elixir-format
 msgid "A rule watches for something happening in a channel and answers with a command. Everyone present sees the answer — it is you talking, not a note to yourself."
 msgstr "チャンネルで起きている何かを監視し、コマンドで答えます。 誰もが答えを見ている — あなた自身に注意ではなく、話しています。"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/timers_dialog.ex:81
+#: lib/retro_hex_chat_web/components/ui/dialogs/timers_dialog.ex:80
 #, elixir-autogen, elixir-format
 msgid "A timer sends its command on its own schedule, as if you had typed it. Timers last as long as this session does and are gone when you disconnect."
 msgstr "タイマーは、そのコマンドを独自のスケジュールで送信します。 タイマーは、このセッションが切断したときに終了します。"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:84
+#: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:85
 #, elixir-autogen, elixir-format
 msgid "A trusted terminal is a browser that may take this nickname back without typing the NickServ password. Revoking one makes that browser ask again; ending a session disconnects it now."
 msgstr ""
@@ -4157,7 +4152,7 @@ msgstr ""
 msgid "A user mode applies to your whole connection rather than to one channel, and what it lets through arrives in Status."
 msgstr "ユーザモードは1つのチャネルではなく、接続全体に適用され、ステータスが到達できるもの。"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/alias_dialog.ex:140
+#: lib/retro_hex_chat_web/components/ui/dialogs/alias_dialog.ex:80
 #, elixir-autogen, elixir-format
 msgid "An alias is a command of your own: type its name and the expansion is what actually runs. Aliases live in this browser and follow no one else."
 msgstr ""
@@ -4185,17 +4180,17 @@ msgstr "ChanServ"
 msgid "ChanServ is holding this channel"
 msgstr "ChanServはこのチャネルを保持しています"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/timers_dialog.ex:71
+#: lib/retro_hex_chat_web/components/ui/dialogs/timers_dialog.ex:70
 #, elixir-autogen, elixir-format
 msgid "Commands that run without you"
 msgstr "あなたなしで実行するコマンド"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/alias_dialog.ex:134
+#: lib/retro_hex_chat_web/components/ui/dialogs/alias_dialog.ex:74
 #, elixir-autogen, elixir-format
 msgid "Composer"
 msgstr "コンポーザー"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:73
+#: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:74
 #, elixir-autogen, elixir-format
 msgid "Connect"
 msgstr "接続"
@@ -4207,7 +4202,7 @@ msgstr ""
 "各エントリは、ニックネームではなくマスクなので、誰かの名前の名前を変更した後にマッチします。 "
 "例外は、あなたが範囲をバーし、まだ1人の人を貫く方法である禁止を上回ります。"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/perform_dialog.ex:136
+#: lib/retro_hex_chat_web/components/ui/dialogs/perform_dialog.ex:138
 #, elixir-autogen, elixir-format
 msgid "Every line here is sent as if you had typed it, top to bottom, once the connection is up. Turning the list off keeps the lines and runs none of them."
 msgstr "接続が終わったら、ここにすべての行が送られます。 リストをオフにすると、行を保持し、それらのどれもを実行します。"
@@ -4223,7 +4218,7 @@ msgid "Leaving the message empty still marks you away — the reply just says so
 msgstr "メッセージを空のままに残すと、返信は理由なくそう言っています。"
 
 #: lib/retro_hex_chat_web/components/ui/dialogs/away_dialog.ex:48
-#: lib/retro_hex_chat_web/components/ui/dialogs/custom_menus_dialog.ex:394
+#: lib/retro_hex_chat_web/components/ui/dialogs/custom_menus_dialog.ex:328
 #, elixir-autogen, elixir-format
 msgid "Query"
 msgstr "クエリ"
@@ -4240,7 +4235,7 @@ msgstr ""
 msgid "Restarting in 5 minutes"
 msgstr "5分でスタート"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/alias_dialog.ex:130
+#: lib/retro_hex_chat_web/components/ui/dialogs/alias_dialog.ex:70
 #, elixir-autogen, elixir-format
 msgid "Shorthand you type in the composer"
 msgstr "作曲家に入力するショートカット"
@@ -4250,7 +4245,7 @@ msgstr "作曲家に入力するショートカット"
 msgid "The names the door checks"
 msgstr "ドアチェックの名前"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/autojoin_dialog.ex:117
+#: lib/retro_hex_chat_web/components/ui/dialogs/autojoin_dialog.ex:119
 #, elixir-autogen, elixir-format
 msgid "These channels are joined for you as soon as the connection is up, in this order, before you type anything."
 msgstr "これらのチャネルは、接続が上がるとすぐにあなたのために結合されます。この注文では、何かを入力する前に。"
@@ -4260,7 +4255,7 @@ msgstr "これらのチャネルは、接続が上がるとすぐにあなたの
 msgid "This channel is not registered"
 msgstr "このチャンネルは登録されていません"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:684
+#: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:681
 #, elixir-autogen, elixir-format
 msgid "Unnamed terminal"
 msgstr "未名称ターミナル"
@@ -4275,7 +4270,7 @@ msgstr "最大16文字。 登録したニックネームをつけて、識別で
 msgid "Wallops are the announcements operators send to the whole server — restarts, downtime, anything everybody needs at once."
 msgstr "Wallopsは、サーバー全体に送信するアナウンス演算子です。再起動、ダウンタイム、すべての人が一度に必要とするものです。"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/autojoin_dialog.ex:107
+#: lib/retro_hex_chat_web/components/ui/dialogs/autojoin_dialog.ex:109
 #, elixir-autogen, elixir-format
 msgid "What happens the moment you connect"
 msgstr "あなたが接続する瞬間はどうなりますか"
@@ -4285,17 +4280,17 @@ msgstr "あなたが接続する瞬間はどうなりますか"
 msgid "What reaches your Status window"
 msgstr "ステータスウィンドウに到達する"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/perform_dialog.ex:126
+#: lib/retro_hex_chat_web/components/ui/dialogs/perform_dialog.ex:128
 #, elixir-autogen, elixir-format
 msgid "What runs the moment you connect"
 msgstr "あなたが接続する瞬間を実行するもの"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/auto_respond_dialog.ex:131
+#: lib/retro_hex_chat_web/components/ui/dialogs/auto_respond_dialog.ex:72
 #, elixir-autogen, elixir-format
 msgid "What the room sees you do"
 msgstr "お部屋が何を見えるか"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:69
+#: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:70
 #, elixir-autogen, elixir-format
 msgid "Which machines can skip the password"
 msgstr "パスワードをスキップできるマシン"
@@ -4357,27 +4352,27 @@ msgstr "参加できません"
 msgid "is away"
 msgstr "遠くへ"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/auto_respond_dialog.ex:394
+#: lib/retro_hex_chat_web/components/ui/dialogs/auto_respond_dialog.ex:336
 #, elixir-autogen, elixir-format
 msgid "somebody joined"
 msgstr "参加した人"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/auto_respond_dialog.ex:395
+#: lib/retro_hex_chat_web/components/ui/dialogs/auto_respond_dialog.ex:338
 #, elixir-autogen, elixir-format
 msgid "somebody left"
 msgstr "誰かが残っている"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/auto_respond_dialog.ex:396
+#: lib/retro_hex_chat_web/components/ui/dialogs/auto_respond_dialog.ex:341
 #, elixir-autogen, elixir-format
 msgid "something happened"
 msgstr "何が起こったのか"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/timers_dialog.ex:363
+#: lib/retro_hex_chat_web/components/ui/dialogs/timers_dialog.ex:362
 #, elixir-autogen, elixir-format
 msgid "timer %{name} fired"
 msgstr "タイマー %{name} は始動しました"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/highlight_dialog.ex:425
+#: lib/retro_hex_chat_web/components/ui/dialogs/highlight_dialog.ex:427
 #, elixir-autogen, elixir-format
 msgid "%{nick}, got a second?"
 msgstr "%{nick} は 2 番目ですか?"
@@ -4389,7 +4384,7 @@ msgstr ""
 "ここで設定した色は、どこにでもニックネームが現れます。つまり、部屋の横にあるリストと、書き込まれたすべての行が続きます。 "
 "あなただけのもの。他の人が選んだ色を見ない。"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/highlight_dialog.ex:137
+#: lib/retro_hex_chat_web/components/ui/dialogs/highlight_dialog.ex:139
 #, elixir-autogen, elixir-format
 msgid "A highlight paints the whole line and can sound the highlight alert, so the message finds you in a channel you are not reading. Your own nickname counts without being on the list."
 msgstr ""
@@ -4406,7 +4401,7 @@ msgstr "現在、サウンドを再生するイベントのミニチュアリス
 msgid "A miniature of a flood being cut off at the threshold"
 msgstr "閾値で切り落した洪水のミニチュア"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/custom_menus_dialog.ex:144
+#: lib/retro_hex_chat_web/components/ui/dialogs/custom_menus_dialog.ex:78
 #, elixir-autogen, elixir-format
 msgid "A miniature of the context menu these entries are added to"
 msgstr "これらのエントリのコンテキストメニューのミニチュアは、"
@@ -4423,7 +4418,7 @@ msgstr ""
 "各イベントは、サウンドを再生したり、タスクバーをフラッシュしたり、デスクトップ通知を上げることができます。 "
 "ブラウザごとにあります。別のマシンの同じニックネームもサイレントです。"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/custom_menus_dialog.ex:149
+#: lib/retro_hex_chat_web/components/ui/dialogs/custom_menus_dialog.ex:83
 #, elixir-autogen, elixir-format
 msgid "Entries are appended below what the menu already offers — they never replace a built-in. Each one runs its command against whatever you right-clicked."
 msgstr ""
@@ -4435,7 +4430,7 @@ msgstr ""
 msgid "How names read in the list and the log"
 msgstr "リストとログに読み込む名前"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/highlight_dialog.ex:122
+#: lib/retro_hex_chat_web/components/ui/dialogs/highlight_dialog.ex:124
 #, elixir-autogen, elixir-format
 msgid "Lines that will come looking for you"
 msgstr "皆様のお越しをお待ちしております。"
@@ -4450,7 +4445,7 @@ msgstr "音を作る"
 msgid "Nicknames"
 msgstr "ニックネーム"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/custom_menus_dialog.ex:141
+#: lib/retro_hex_chat_web/components/ui/dialogs/custom_menus_dialog.ex:75
 #, elixir-autogen, elixir-format
 msgid "Right-click"
 msgstr "右クリック"
@@ -4472,7 +4467,7 @@ msgstr "誰かが洪水したときに何が起こるか"
 msgid "What this browser will make a noise about"
 msgstr "このブラウザがノイズを発生させるもの"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/custom_menus_dialog.ex:137
+#: lib/retro_hex_chat_web/components/ui/dialogs/custom_menus_dialog.ex:71
 #, elixir-autogen, elixir-format
 msgid "What your right-click menu will hold"
 msgstr "右クリックメニューが保持されるもの"
@@ -4482,12 +4477,12 @@ msgstr "右クリックメニューが保持されるもの"
 msgid "line %{index}"
 msgstr "ライン %{index}"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/highlight_dialog.ex:427
+#: lib/retro_hex_chat_web/components/ui/dialogs/highlight_dialog.ex:429
 #, elixir-autogen, elixir-format
 msgid "your nickname, got a second?"
 msgstr "あなたのニックネームは、秒を獲得しましたか?"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/highlight_dialog.ex:418
+#: lib/retro_hex_chat_web/components/ui/dialogs/highlight_dialog.ex:420
 #, elixir-autogen, elixir-format
 msgid "…about %{word} again"
 msgstr "%{word}について"
@@ -4815,7 +4810,7 @@ msgstr "4つのリストのミニチュアは、拭き続ける"
 msgid "A miniature of the log these actions are written to, newest first"
 msgstr "これらのアクションのログのミニチュアは、最初に書かれています。"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/admin_users_dialog.ex:115
+#: lib/retro_hex_chat_web/components/ui/dialogs/admin_users_dialog.ex:66
 #, elixir-autogen, elixir-format
 msgid "A miniature of the server's nicknames, each with its online lamp"
 msgstr "サーバのニックネームのミニチュア、それぞれがオンラインランプ"
@@ -4835,12 +4830,12 @@ msgstr "それら間の呼び出しを運ぶ2人の人およびリレーのミ�
 msgid "Console"
 msgstr "コンソール"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/admin_channels_dialog.ex:108
+#: lib/retro_hex_chat_web/components/ui/dialogs/admin_channels_dialog.ex:59
 #, elixir-autogen, elixir-format
 msgid "Every room on the server"
 msgstr "サーバーの各部屋"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/admin_users_dialog.ex:108
+#: lib/retro_hex_chat_web/components/ui/dialogs/admin_users_dialog.ex:59
 #, elixir-autogen, elixir-format
 msgid "Everybody who has a nickname here"
 msgstr "ここのニックネームを持つ人"
@@ -4919,7 +4914,7 @@ msgstr ""
 "ネットワークが許可されるたびに、電話が互いに直接達します。 ネットワークが拒否されると、コールは代わりにこのリレーを通過します。 "
 "各リレーコールは、このサーバーの帯域幅を削減します。 このウィンドウは数値のみを表示し、変更する設定はありません。"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/admin_channels_dialog.ex:123
+#: lib/retro_hex_chat_web/components/ui/dialogs/admin_channels_dialog.ex:74
 #, elixir-autogen, elixir-format
 msgid "A channel exists only while somebody is in it, unless it is registered. Registration gives it an owner and keeps its settings after the last person has gone. If you delete a channel here, the people inside it lose the room."
 msgstr ""
@@ -4953,14 +4948,14 @@ msgstr ""
 "このアクションは、会話、チャンネル、ニックネームを削除します。 4つのリストが保存されます:管理者、禁止、設定、監査ログ。 "
 "他のすべてが永久に削除されます。"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/admin_users_dialog.ex:120
+#: lib/retro_hex_chat_web/components/ui/dialogs/admin_users_dialog.ex:71
 #, elixir-autogen, elixir-format
 msgid "This is every account on the server, not the people in one channel. A green lamp means that person is connected right now. Anything you do here reaches the whole server. A ban blocks the nickname on the whole server. If you remove a registration, the name becomes free for somebody else."
 msgstr ""
 "これは、サーバー上のすべてのアカウントです, 1つのチャネルの人々ではありません. 緑色のランプは、現在人が接続していることを意味します。 "
 "サーバ全体にアクセスする サーバー全体でニックネームをブロックする禁止 登録を解除すると、他の誰かに名前が無料になります。"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/highlight_dialog.ex:129
+#: lib/retro_hex_chat_web/components/ui/dialogs/highlight_dialog.ex:131
 #, elixir-autogen, elixir-format
 msgid "A miniature of a channel where the matching line wears its highlight"
 msgstr "マッチングラインがハイライトを着用するチャネルのミニチュア"
@@ -4970,14 +4965,14 @@ msgstr "マッチングラインがハイライトを着用するチャネルの
 msgid "Anyway, where were we?"
 msgstr "とにかく、どこにいたんですか?"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/highlight_dialog.ex:411
-#: lib/retro_hex_chat_web/components/ui/dialogs/highlight_dialog.ex:419
+#: lib/retro_hex_chat_web/components/ui/dialogs/highlight_dialog.ex:413
+#: lib/retro_hex_chat_web/components/ui/dialogs/highlight_dialog.ex:421
 #, elixir-autogen, elixir-format
 msgid "I will be there."
 msgstr "行きます。"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/highlight_dialog.ex:409
-#: lib/retro_hex_chat_web/components/ui/dialogs/highlight_dialog.ex:417
+#: lib/retro_hex_chat_web/components/ui/dialogs/highlight_dialog.ex:411
+#: lib/retro_hex_chat_web/components/ui/dialogs/highlight_dialog.ex:419
 #, elixir-autogen, elixir-format
 msgid "So are we still on for tonight?"
 msgstr "それでは今夜は今もそうですか?"
@@ -4992,7 +4987,7 @@ msgstr "今日は3回目です。"
 msgid "A miniature of a channel with a grey bar where the ignored line was"
 msgstr "無視されたラインがあった灰色棒が付いているチャネルのミニチュア"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/admin_channels_dialog.ex:115
+#: lib/retro_hex_chat_web/components/ui/dialogs/admin_channels_dialog.ex:66
 #, elixir-autogen, elixir-format
 msgid "A miniature of the channel list, each name beside the number of people in it"
 msgstr "チャンネルリストのミニチュア、その中の人数の横にある各名前"
@@ -5047,7 +5042,7 @@ msgstr "%{level} に追加"
 msgid "Feed URL"
 msgstr "フィードのURL"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/auto_respond_dialog.ex:304
+#: lib/retro_hex_chat_web/components/ui/dialogs/auto_respond_dialog.ex:245
 #, elixir-autogen, elixir-format
 msgid "/notice $nick Welcome!"
 msgstr "/notice $nick Welcome!"
@@ -5114,28 +5109,28 @@ msgstr "カテゴリー：%{category}"
 msgid "Show every category"
 msgstr "すべてのカテゴリーを表示"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:612
+#: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:613
 #, elixir-autogen, elixir-format
 msgid "Event ID"
 msgstr "イベントID"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:585
-#: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:621
+#: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:586
+#: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:622
 #, elixir-autogen, elixir-format
 msgid "Terminal ID"
 msgstr "端末ID"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:586
+#: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:587
 #, elixir-autogen, elixir-format
 msgid "guest"
 msgstr "ゲスト"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:615
+#: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:616
 #, elixir-autogen, elixir-format
 msgid "Date of the event"
 msgstr "発生日時"
 
-#: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:595
+#: lib/retro_hex_chat_web/components/ui/dialogs/trusted_terminals_dialog.ex:596
 #, elixir-autogen, elixir-format
 msgid "Last activity"
 msgstr "最終アクティビティ"

@@ -122,7 +122,7 @@ msgstr "フォーマット"
 msgid "Invalid timer name. Use only letters, numbers, hyphens, underscores (max %{max_name_length} chars)."
 msgstr "無効なタイマー名。 文字、数字、ハイフン、アンダースコア(最大%{max_name_length}文字)のみを使用してください。"
 
-#: lib/retro_hex_chat/chat/content.ex:135
+#: lib/retro_hex_chat/chat/content.ex:136
 #: lib/retro_hex_chat/chat/policy.ex:19
 #: lib/retro_hex_chat/chat/policy.ex:25
 #, elixir-autogen, elixir-format
@@ -495,35 +495,35 @@ msgstr "トグル会議カメラ"
 msgid "Toggle Conference Microphone"
 msgstr "トグル会議マイク"
 
-#: lib/retro_hex_chat/channels/server.ex:1885
+#: lib/retro_hex_chat/channels/server.ex:1881
 #: lib/retro_hex_chat/chat/service.ex:394
 #, elixir-autogen, elixir-format
 msgid "Attachment could not be attached to the message"
 msgstr "添付ファイルがメッセージに添付できません"
 
-#: lib/retro_hex_chat/chat/attachments.ex:292
+#: lib/retro_hex_chat/chat/attachments.ex:276
 #, elixir-autogen, elixir-format
 msgid "Attachment exceeds the %{mb} MB limit"
 msgstr "付属品は%{mb} MBの限界を超過します"
 
-#: lib/retro_hex_chat/chat/attachments.ex:287
+#: lib/retro_hex_chat/chat/attachments.ex:271
 #, elixir-autogen, elixir-format
 msgid "Attachment is empty"
 msgstr "付属品は空です"
 
-#: lib/retro_hex_chat/chat/content.ex:144
+#: lib/retro_hex_chat/chat/content.ex:145
 #, elixir-autogen, elixir-format
 msgid "Unsupported message format"
 msgstr "サポートされていないメッセージ形式"
 
-#: lib/retro_hex_chat/chat/attachments.ex:332
-#: lib/retro_hex_chat/chat/attachments.ex:414
-#: lib/retro_hex_chat/chat/attachments.ex:419
+#: lib/retro_hex_chat/chat/attachments.ex:316
+#: lib/retro_hex_chat/chat/attachments.ex:398
+#: lib/retro_hex_chat/chat/attachments.ex:403
 #, elixir-autogen, elixir-format
 msgid "file"
 msgstr "ファイル"
 
-#: lib/retro_hex_chat/chat/content.ex:139
+#: lib/retro_hex_chat/chat/content.ex:140
 #, elixir-autogen, elixir-format
 msgid "Message exceeds maximum length of %{count} characters"
 msgstr "メッセージが最大文字数 %{count} 文字を超えています"
@@ -551,44 +551,44 @@ msgid "%{count} minute"
 msgid_plural "%{count} minutes"
 msgstr[0] "%{count}分"
 
-#: lib/retro_hex_chat/chat/reactions.ex:65
+#: lib/retro_hex_chat/chat/reactions.ex:76
 #, elixir-autogen, elixir-format
 msgid "Reaction could not be saved."
 msgstr "リアクションを保存できませんでした。"
 
-#: lib/retro_hex_chat/chat/reactions.ex:116
+#: lib/retro_hex_chat/chat/reactions.ex:127
 #, elixir-autogen, elixir-format
 msgid "That is not an emoji you can react with."
 msgstr "それはリアクションに使えない絵文字です。"
 
-#: lib/retro_hex_chat/chat/reactions.ex:119
-#: lib/retro_hex_chat/chat/saved_messages.ex:252
+#: lib/retro_hex_chat/chat/reactions.ex:130
+#: lib/retro_hex_chat/chat/saved_messages.ex:253
 #, elixir-autogen, elixir-format
 msgid "That message was deleted."
 msgstr "そのメッセージは削除されました。"
 
-#: lib/retro_hex_chat/chat/reactions.ex:123
+#: lib/retro_hex_chat/chat/reactions.ex:134
 #, elixir-autogen, elixir-format
 msgid "This message already has %{count} different reactions."
 msgstr "このメッセージにはすでに %{count} 種類のリアクションがあります。"
 
-#: lib/retro_hex_chat/chat/saved_messages.ex:242
+#: lib/retro_hex_chat/chat/saved_messages.ex:243
 #, elixir-autogen, elixir-format
 msgid "That message could not be saved."
 msgstr "そのメッセージは保存できませんでした。"
 
-#: lib/retro_hex_chat/chat/saved_messages.ex:221
+#: lib/retro_hex_chat/chat/saved_messages.ex:222
 #, elixir-autogen, elixir-format
 msgid "That note could not be saved."
 msgstr "そのメモは保存できませんでした。"
 
-#: lib/retro_hex_chat/chat/saved_messages.ex:108
-#: lib/retro_hex_chat/chat/saved_messages.ex:213
+#: lib/retro_hex_chat/chat/saved_messages.ex:109
+#: lib/retro_hex_chat/chat/saved_messages.ex:214
 #, elixir-autogen, elixir-format
 msgid "That saved message is not yours."
 msgstr "その保存済みメッセージはあなたのものではありません。"
 
-#: lib/retro_hex_chat/chat/saved_messages.ex:262
+#: lib/retro_hex_chat/chat/saved_messages.ex:263
 #, elixir-autogen, elixir-format
 msgid "You have already saved %{count} messages. Remove one first."
 msgstr "すでに %{count} 件のメッセージを保存しています。まず 1 件削除してください。"
@@ -609,7 +609,7 @@ msgstr "その変更は保存できませんでした。"
 msgid "That channel is not registered."
 msgstr "そのチャンネルは登録されていません。"
 
-#: lib/retro_hex_chat/jobs/event_reminder_worker.ex:102
+#: lib/retro_hex_chat/jobs/event_reminder_worker.ex:90
 #, elixir-autogen, elixir-format
 msgid "%{title} is about to start."
 msgstr "%{title} がまもなく始まります。"
@@ -644,7 +644,7 @@ msgstr "このサーバーはすでにその名前に応えています。"
 msgid "This server already has %{count} emoji."
 msgstr "このサーバーにはすでに %{count} 個の絵文字があります。"
 
-#: lib/retro_hex_chat/chat/attachments.ex:326
+#: lib/retro_hex_chat/chat/attachments.ex:310
 #, elixir-autogen, elixir-format
 msgid "A recording cannot be sent as %{type}"
 msgstr "録音を %{type} として送ることはできません"
@@ -671,17 +671,17 @@ msgstr "最初に言うべき何かをタイプして下さい。"
 msgid "You are muted by an administrator"
 msgstr "あなたは管理者によってミュートされます"
 
-#: lib/retro_hex_chat/virtual_space.ex:337
+#: lib/retro_hex_chat/virtual_space.ex:341
 #, elixir-autogen, elixir-format
 msgid "threw the coin, and it landed gold side up"
 msgstr "コインを投げ、金面を上げて"
 
-#: lib/retro_hex_chat/virtual_space.ex:340
+#: lib/retro_hex_chat/virtual_space.ex:344
 #, elixir-autogen, elixir-format
 msgid "threw the coin, and it landed silver side up"
 msgstr "threw the coin, and it landed silver side up"
 
-#: lib/retro_hex_chat/virtual_space.ex:333
+#: lib/retro_hex_chat/virtual_space.ex:337
 #, elixir-autogen, elixir-format
 msgid "threw the dice and got %{face}"
 msgstr "ダイスを投げ、%{face}を得ました"

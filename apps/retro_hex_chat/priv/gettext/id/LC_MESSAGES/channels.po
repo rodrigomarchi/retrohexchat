@@ -16,7 +16,7 @@ msgstr ""
 msgid "+s and +p are mutually exclusive"
 msgstr "+ s dan + p adalah mutually exclusive"
 
-#: lib/retro_hex_chat/channels/server.ex:1830
+#: lib/retro_hex_chat/channels/server.ex:1826
 #, elixir-autogen, elixir-format
 msgid "Already in channel"
 msgstr "Sudah dalam saluran"
@@ -68,7 +68,7 @@ msgstr "Saluran dimoderasi (+ m). Anda perlu suara (+ v) untuk berbicara."
 msgid "Channel is not invite-only"
 msgstr "Kanal tidak hanya invite-"
 
-#: lib/retro_hex_chat/channels/server.ex:1853
+#: lib/retro_hex_chat/channels/server.ex:1849
 #, elixir-autogen, elixir-format
 msgid "Channel join throttle active, please try again shortly"
 msgstr "Kanal bergabung throttle aktif, silakan coba lagi segera"
@@ -219,24 +219,24 @@ msgstr "Kanal ini sudah menyimpan %{count} pesan. Lepas satu dulu."
 msgid "You must be a channel operator to pin messages"
 msgstr "Harus jadi operator kanal untuk menyematkan pesan"
 
-#: lib/retro_hex_chat/channels/server.ex:2076
+#: lib/retro_hex_chat/channels/server.ex:2072
 #, elixir-autogen, elixir-format
 msgid "Only the channel founder can change the public archive"
 msgstr "Hanya pendiri kanal yang dapat mengubah arsip publik"
 
-#: lib/retro_hex_chat/channels/server.ex:1994
+#: lib/retro_hex_chat/channels/server.ex:1990
 #, elixir-autogen, elixir-format
 msgid "%{nickname} scheduled: %{title}"
 msgstr "%{nickname} menjadwalkan: %{title}"
 
-#: lib/retro_hex_chat/channels/server.ex:2026
+#: lib/retro_hex_chat/channels/server.ex:2022
 #, elixir-autogen, elixir-format
 msgid "That event belongs to another channel."
 msgstr "Acara itu milik kanal lain."
 
 #: lib/retro_hex_chat/channels/scheduled_events.ex:120
 #: lib/retro_hex_chat/channels/scheduled_events.ex:146
-#: lib/retro_hex_chat/channels/server.ex:2023
+#: lib/retro_hex_chat/channels/server.ex:2019
 #, elixir-autogen, elixir-format
 msgid "That event could not be found."
 msgstr "Acara itu tidak ditemukan."
@@ -276,7 +276,7 @@ msgstr "Kanal ini sudah punya %{count} acara mendatang."
 msgid "When does it start?"
 msgstr "Kapan mulainya?"
 
-#: lib/retro_hex_chat/channels/server.ex:2067
+#: lib/retro_hex_chat/channels/server.ex:2063
 #, elixir-autogen, elixir-format
 msgid "Identify with NickServ before changing the public archive"
 msgstr "Identifikasi diri dengan NickServ sebelum mengubah arsip publik"
@@ -296,12 +296,12 @@ msgstr "Tidak dapat mengubah peran dari pengguna dengan peringkat yang sama atau
 msgid "You must identify with NickServ to join this channel"
 msgstr "Anda harus mengidentifikasi dengan NickServ untuk bergabung saluran ini"
 
-#: lib/retro_hex_chat/channels/server.ex:2070
+#: lib/retro_hex_chat/channels/server.ex:2066
 #, elixir-autogen, elixir-format
 msgid "Identify with NickServ before changing the channel's language"
 msgstr "Identifikasi diri dengan NickServ sebelum mengubah bahasa saluran"
 
-#: lib/retro_hex_chat/channels/server.ex:2079
+#: lib/retro_hex_chat/channels/server.ex:2075
 #, elixir-autogen, elixir-format
 msgid "Only the founder of a registered channel can set its language"
 msgstr "Hanya pendiri saluran terdaftar yang dapat mengatur bahasanya"
@@ -342,7 +342,7 @@ msgstr "Permainan"
 msgid "Help"
 msgstr "Bantuan"
 
-#: lib/retro_hex_chat/channels/server.ex:2073
+#: lib/retro_hex_chat/channels/server.ex:2069
 #, elixir-autogen, elixir-format
 msgid "Identify with NickServ before changing the channel's category"
 msgstr "Identifikasi diri dengan NickServ sebelum mengubah kategori saluran"
@@ -357,7 +357,7 @@ msgstr "Gaya hidup"
 msgid "News"
 msgstr "Berita"
 
-#: lib/retro_hex_chat/channels/server.ex:2082
+#: lib/retro_hex_chat/channels/server.ex:2078
 #, elixir-autogen, elixir-format
 msgid "Only the founder of a registered channel can set its category"
 msgstr "Hanya pendiri saluran terdaftar yang dapat mengatur kategorinya"

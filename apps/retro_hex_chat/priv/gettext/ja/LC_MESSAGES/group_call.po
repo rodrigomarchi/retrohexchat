@@ -11,8 +11,8 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 
-#: lib/retro_hex_chat/group_call/policy.ex:63
-#: lib/retro_hex_chat/group_call/policy.ex:69
+#: lib/retro_hex_chat/group_call/policy.ex:75
+#: lib/retro_hex_chat/group_call/policy.ex:81
 #, elixir-autogen, elixir-format
 msgid "Channel is required"
 msgstr "チャンネル必須"
@@ -33,7 +33,7 @@ msgstr "グループコールを作成できません"
 msgid "Could not start group call"
 msgstr "グループコールを開始できません"
 
-#: lib/retro_hex_chat/group_call/policy.ex:104
+#: lib/retro_hex_chat/group_call/policy.ex:116
 #, elixir-autogen, elixir-format
 msgid "Group call is no longer active"
 msgstr "グループコールが有効でない"
@@ -44,34 +44,34 @@ msgid "Group call rate limit reached. Try again in %{count} second."
 msgid_plural "Group call rate limit reached. Try again in %{count} seconds."
 msgstr[0] "グループコール率の上限に達しました。 %{count} 秒でもう一度お試しください。"
 
-#: lib/retro_hex_chat/group_call.ex:630
+#: lib/retro_hex_chat/group_call.ex:639
 #, elixir-autogen, elixir-format
 msgid "Group calls are disabled"
 msgstr "グループ通話は無効です"
 
-#: lib/retro_hex_chat/group_call/policy.ex:135
-#: lib/retro_hex_chat/group_call/policy.ex:138
+#: lib/retro_hex_chat/group_call/policy.ex:154
+#: lib/retro_hex_chat/group_call/policy.ex:157
 #, elixir-autogen, elixir-format
 msgid "Insufficient privileges"
 msgstr "十分な権限"
 
-#: lib/retro_hex_chat/group_call/policy.ex:96
+#: lib/retro_hex_chat/group_call/policy.ex:108
 #, elixir-autogen, elixir-format
 msgid "This channel already has an active group call"
 msgstr "このチャネルは既にアクティブなグループコールを持っています"
 
-#: lib/retro_hex_chat/group_call/policy.ex:90
+#: lib/retro_hex_chat/group_call/policy.ex:102
 #, elixir-autogen, elixir-format
 msgid "You are not in this channel"
 msgstr "このチャンネルではない場合"
 
-#: lib/retro_hex_chat/group_call/policy.ex:72
-#: lib/retro_hex_chat/group_call/policy.ex:82
+#: lib/retro_hex_chat/group_call/policy.ex:84
+#: lib/retro_hex_chat/group_call/policy.ex:94
 #, elixir-autogen, elixir-format
 msgid "You must be registered to use group calls"
 msgstr "グループコールを使用するために登録する必要があります"
 
-#: lib/retro_hex_chat/group_call/policy.ex:115
+#: lib/retro_hex_chat/group_call/policy.ex:127
 #, elixir-autogen, elixir-format
 msgid "Group call is locked"
 msgstr "グループコールをロック"

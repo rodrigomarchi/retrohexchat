@@ -126,7 +126,7 @@ msgstr ""
 "Nome do cronômetro inválido. Use apenas letras, números, hífens, sublinha "
 "(máx. %{max_name_length} chars)."
 
-#: lib/retro_hex_chat/chat/content.ex:135
+#: lib/retro_hex_chat/chat/content.ex:136
 #: lib/retro_hex_chat/chat/policy.ex:19
 #: lib/retro_hex_chat/chat/policy.ex:25
 #, elixir-autogen, elixir-format
@@ -501,35 +501,35 @@ msgstr "Alternar câmera de conferência"
 msgid "Toggle Conference Microphone"
 msgstr "Alternar o Microfone da Conferência"
 
-#: lib/retro_hex_chat/channels/server.ex:1885
+#: lib/retro_hex_chat/channels/server.ex:1881
 #: lib/retro_hex_chat/chat/service.ex:394
 #, elixir-autogen, elixir-format
 msgid "Attachment could not be attached to the message"
 msgstr "Não foi possível anexar o anexo à mensagem"
 
-#: lib/retro_hex_chat/chat/attachments.ex:292
+#: lib/retro_hex_chat/chat/attachments.ex:276
 #, elixir-autogen, elixir-format
 msgid "Attachment exceeds the %{mb} MB limit"
 msgstr "O anexo excede o limite de MB %{mb}"
 
-#: lib/retro_hex_chat/chat/attachments.ex:287
+#: lib/retro_hex_chat/chat/attachments.ex:271
 #, elixir-autogen, elixir-format
 msgid "Attachment is empty"
 msgstr "O anexo está em branco"
 
-#: lib/retro_hex_chat/chat/content.ex:144
+#: lib/retro_hex_chat/chat/content.ex:145
 #, elixir-autogen, elixir-format
 msgid "Unsupported message format"
 msgstr "Formato de mensagem não suportado"
 
-#: lib/retro_hex_chat/chat/attachments.ex:332
-#: lib/retro_hex_chat/chat/attachments.ex:414
-#: lib/retro_hex_chat/chat/attachments.ex:419
+#: lib/retro_hex_chat/chat/attachments.ex:316
+#: lib/retro_hex_chat/chat/attachments.ex:398
+#: lib/retro_hex_chat/chat/attachments.ex:403
 #, elixir-autogen, elixir-format
 msgid "file"
 msgstr "arquivo"
 
-#: lib/retro_hex_chat/chat/content.ex:139
+#: lib/retro_hex_chat/chat/content.ex:140
 #, elixir-autogen, elixir-format
 msgid "Message exceeds maximum length of %{count} characters"
 msgstr "A mensagem excede o tamanho máximo de %{count} caracteres"
@@ -560,44 +560,44 @@ msgid_plural "%{count} minutes"
 msgstr[0] "%{count} minuto"
 msgstr[1] "%{count} minutos"
 
-#: lib/retro_hex_chat/chat/reactions.ex:65
+#: lib/retro_hex_chat/chat/reactions.ex:76
 #, elixir-autogen, elixir-format
 msgid "Reaction could not be saved."
 msgstr "Não foi possível guardar a reação."
 
-#: lib/retro_hex_chat/chat/reactions.ex:116
+#: lib/retro_hex_chat/chat/reactions.ex:127
 #, elixir-autogen, elixir-format
 msgid "That is not an emoji you can react with."
 msgstr "Esse não é um emoji com que pode reagir."
 
-#: lib/retro_hex_chat/chat/reactions.ex:119
-#: lib/retro_hex_chat/chat/saved_messages.ex:252
+#: lib/retro_hex_chat/chat/reactions.ex:130
+#: lib/retro_hex_chat/chat/saved_messages.ex:253
 #, elixir-autogen, elixir-format
 msgid "That message was deleted."
 msgstr "Essa mensagem foi apagada."
 
-#: lib/retro_hex_chat/chat/reactions.ex:123
+#: lib/retro_hex_chat/chat/reactions.ex:134
 #, elixir-autogen, elixir-format
 msgid "This message already has %{count} different reactions."
 msgstr "Esta mensagem já tem %{count} reações diferentes."
 
-#: lib/retro_hex_chat/chat/saved_messages.ex:242
+#: lib/retro_hex_chat/chat/saved_messages.ex:243
 #, elixir-autogen, elixir-format
 msgid "That message could not be saved."
 msgstr "Não foi possível guardar essa mensagem."
 
-#: lib/retro_hex_chat/chat/saved_messages.ex:221
+#: lib/retro_hex_chat/chat/saved_messages.ex:222
 #, elixir-autogen, elixir-format
 msgid "That note could not be saved."
 msgstr "Não foi possível guardar essa nota."
 
-#: lib/retro_hex_chat/chat/saved_messages.ex:108
-#: lib/retro_hex_chat/chat/saved_messages.ex:213
+#: lib/retro_hex_chat/chat/saved_messages.ex:109
+#: lib/retro_hex_chat/chat/saved_messages.ex:214
 #, elixir-autogen, elixir-format
 msgid "That saved message is not yours."
 msgstr "Essa mensagem guardada não é sua."
 
-#: lib/retro_hex_chat/chat/saved_messages.ex:262
+#: lib/retro_hex_chat/chat/saved_messages.ex:263
 #, elixir-autogen, elixir-format
 msgid "You have already saved %{count} messages. Remove one first."
 msgstr "Já guardou %{count} mensagens. Remova uma primeiro."
@@ -618,7 +618,7 @@ msgstr "Não foi possível guardar essa alteração."
 msgid "That channel is not registered."
 msgstr "Esse canal não está registado."
 
-#: lib/retro_hex_chat/jobs/event_reminder_worker.ex:102
+#: lib/retro_hex_chat/jobs/event_reminder_worker.ex:90
 #, elixir-autogen, elixir-format
 msgid "%{title} is about to start."
 msgstr "%{title} está prestes a começar."
@@ -653,7 +653,7 @@ msgstr "Este servidor já responde a esse nome."
 msgid "This server already has %{count} emoji."
 msgstr "Este servidor já tem %{count} emoji."
 
-#: lib/retro_hex_chat/chat/attachments.ex:326
+#: lib/retro_hex_chat/chat/attachments.ex:310
 #, elixir-autogen, elixir-format
 msgid "A recording cannot be sent as %{type}"
 msgstr "Uma gravação não pode ser enviada como %{type}"
@@ -680,17 +680,17 @@ msgstr "Digite algo para dizer primeiro."
 msgid "You are muted by an administrator"
 msgstr "Você é silenciado por um administrador"
 
-#: lib/retro_hex_chat/virtual_space.ex:337
+#: lib/retro_hex_chat/virtual_space.ex:341
 #, elixir-autogen, elixir-format
 msgid "threw the coin, and it landed gold side up"
 msgstr "jogou a moeda, e caiu lado ouro para cima"
 
-#: lib/retro_hex_chat/virtual_space.ex:340
+#: lib/retro_hex_chat/virtual_space.ex:344
 #, elixir-autogen, elixir-format
 msgid "threw the coin, and it landed silver side up"
 msgstr "jogou a moeda, e caiu lado prateado"
 
-#: lib/retro_hex_chat/virtual_space.ex:333
+#: lib/retro_hex_chat/virtual_space.ex:337
 #, elixir-autogen, elixir-format
 msgid "threw the dice and got %{face}"
 msgstr "lançou os dados e tem %{face}"

@@ -3,7 +3,7 @@
 msgid "+s and +p are mutually exclusive"
 msgstr "+s and +p are mutually exclusive"
 
-#: lib/retro_hex_chat/channels/server.ex:1830
+#: lib/retro_hex_chat/channels/server.ex:1826
 #, elixir-autogen, elixir-format
 msgid "Already in channel"
 msgstr "Already in channel"
@@ -54,7 +54,7 @@ msgstr "Channel is moderated (+m). You need voice (+v) to speak."
 msgid "Channel is not invite-only"
 msgstr "Channel is not invite-only"
 
-#: lib/retro_hex_chat/channels/server.ex:1853
+#: lib/retro_hex_chat/channels/server.ex:1849
 #, elixir-autogen, elixir-format
 msgid "Channel join throttle active, please try again shortly"
 msgstr "Channel join throttle active, please try again shortly"
@@ -205,24 +205,24 @@ msgstr "This channel already keeps %{count} messages. Unpin one first."
 msgid "You must be a channel operator to pin messages"
 msgstr "You must be a channel operator to pin messages"
 
-#: lib/retro_hex_chat/channels/server.ex:2076
+#: lib/retro_hex_chat/channels/server.ex:2072
 #, elixir-autogen, elixir-format
 msgid "Only the channel founder can change the public archive"
 msgstr "Only the channel founder can change the public archive"
 
-#: lib/retro_hex_chat/channels/server.ex:1994
+#: lib/retro_hex_chat/channels/server.ex:1990
 #, elixir-autogen, elixir-format
 msgid "%{nickname} scheduled: %{title}"
 msgstr "%{nickname} scheduled: %{title}"
 
-#: lib/retro_hex_chat/channels/server.ex:2026
+#: lib/retro_hex_chat/channels/server.ex:2022
 #, elixir-autogen, elixir-format
 msgid "That event belongs to another channel."
 msgstr "That event belongs to another channel."
 
 #: lib/retro_hex_chat/channels/scheduled_events.ex:120
 #: lib/retro_hex_chat/channels/scheduled_events.ex:146
-#: lib/retro_hex_chat/channels/server.ex:2023
+#: lib/retro_hex_chat/channels/server.ex:2019
 #, elixir-autogen, elixir-format
 msgid "That event could not be found."
 msgstr "That event could not be found."
@@ -262,7 +262,7 @@ msgstr "This channel already has %{count} events coming up."
 msgid "When does it start?"
 msgstr "When does it start?"
 
-#: lib/retro_hex_chat/channels/server.ex:2067
+#: lib/retro_hex_chat/channels/server.ex:2063
 #, elixir-autogen, elixir-format
 msgid "Identify with NickServ before changing the public archive"
 msgstr "Identify with NickServ before changing the public archive"
@@ -282,12 +282,12 @@ msgstr "Cannot change the role of a user with equal or higher rank"
 msgid "You must identify with NickServ to join this channel"
 msgstr "You must identify with NickServ to join this channel"
 
-#: lib/retro_hex_chat/channels/server.ex:2070
+#: lib/retro_hex_chat/channels/server.ex:2066
 #, elixir-autogen, elixir-format
 msgid "Identify with NickServ before changing the channel's language"
 msgstr "Identify with NickServ before changing the channel's language"
 
-#: lib/retro_hex_chat/channels/server.ex:2079
+#: lib/retro_hex_chat/channels/server.ex:2075
 #, elixir-autogen, elixir-format
 msgid "Only the founder of a registered channel can set its language"
 msgstr "Only the founder of a registered channel can set its language"
@@ -328,7 +328,7 @@ msgstr "Games"
 msgid "Help"
 msgstr "Help"
 
-#: lib/retro_hex_chat/channels/server.ex:2073
+#: lib/retro_hex_chat/channels/server.ex:2069
 #, elixir-autogen, elixir-format
 msgid "Identify with NickServ before changing the channel's category"
 msgstr "Identify with NickServ before changing the channel's category"
@@ -343,7 +343,7 @@ msgstr "Lifestyle"
 msgid "News"
 msgstr "News"
 
-#: lib/retro_hex_chat/channels/server.ex:2082
+#: lib/retro_hex_chat/channels/server.ex:2078
 #, elixir-autogen, elixir-format
 msgid "Only the founder of a registered channel can set its category"
 msgstr "Only the founder of a registered channel can set its category"

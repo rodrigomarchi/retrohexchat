@@ -122,7 +122,7 @@ msgstr "格式化"
 msgid "Invalid timer name. Use only letters, numbers, hyphens, underscores (max %{max_name_length} chars)."
 msgstr "无效的计时器名称 。 只使用字母,数字,连字符,下划线(最大%{max_name_length}字符)."
 
-#: lib/retro_hex_chat/chat/content.ex:135
+#: lib/retro_hex_chat/chat/content.ex:136
 #: lib/retro_hex_chat/chat/policy.ex:19
 #: lib/retro_hex_chat/chat/policy.ex:25
 #, elixir-autogen, elixir-format
@@ -495,35 +495,35 @@ msgstr "切换会议相机"
 msgid "Toggle Conference Microphone"
 msgstr "切换会议麦克风"
 
-#: lib/retro_hex_chat/channels/server.ex:1885
+#: lib/retro_hex_chat/channels/server.ex:1881
 #: lib/retro_hex_chat/chat/service.ex:394
 #, elixir-autogen, elixir-format
 msgid "Attachment could not be attached to the message"
 msgstr "信件中无法附加附件"
 
-#: lib/retro_hex_chat/chat/attachments.ex:292
+#: lib/retro_hex_chat/chat/attachments.ex:276
 #, elixir-autogen, elixir-format
 msgid "Attachment exceeds the %{mb} MB limit"
 msgstr "附件超过 %{mb} MB 限制"
 
-#: lib/retro_hex_chat/chat/attachments.ex:287
+#: lib/retro_hex_chat/chat/attachments.ex:271
 #, elixir-autogen, elixir-format
 msgid "Attachment is empty"
 msgstr "附件为空"
 
-#: lib/retro_hex_chat/chat/content.ex:144
+#: lib/retro_hex_chat/chat/content.ex:145
 #, elixir-autogen, elixir-format
 msgid "Unsupported message format"
 msgstr "不支持的消息格式"
 
-#: lib/retro_hex_chat/chat/attachments.ex:332
-#: lib/retro_hex_chat/chat/attachments.ex:414
-#: lib/retro_hex_chat/chat/attachments.ex:419
+#: lib/retro_hex_chat/chat/attachments.ex:316
+#: lib/retro_hex_chat/chat/attachments.ex:398
+#: lib/retro_hex_chat/chat/attachments.ex:403
 #, elixir-autogen, elixir-format
 msgid "file"
 msgstr "文件"
 
-#: lib/retro_hex_chat/chat/content.ex:139
+#: lib/retro_hex_chat/chat/content.ex:140
 #, elixir-autogen, elixir-format
 msgid "Message exceeds maximum length of %{count} characters"
 msgstr "信件超过最大长度 %{count} 个字符"
@@ -551,44 +551,44 @@ msgid "%{count} minute"
 msgid_plural "%{count} minutes"
 msgstr[0] "%{count}分钟"
 
-#: lib/retro_hex_chat/chat/reactions.ex:65
+#: lib/retro_hex_chat/chat/reactions.ex:76
 #, elixir-autogen, elixir-format
 msgid "Reaction could not be saved."
 msgstr "无法保存该回应。"
 
-#: lib/retro_hex_chat/chat/reactions.ex:116
+#: lib/retro_hex_chat/chat/reactions.ex:127
 #, elixir-autogen, elixir-format
 msgid "That is not an emoji you can react with."
 msgstr "那不是可以用来回应的表情。"
 
-#: lib/retro_hex_chat/chat/reactions.ex:119
-#: lib/retro_hex_chat/chat/saved_messages.ex:252
+#: lib/retro_hex_chat/chat/reactions.ex:130
+#: lib/retro_hex_chat/chat/saved_messages.ex:253
 #, elixir-autogen, elixir-format
 msgid "That message was deleted."
 msgstr "那条消息已被删除。"
 
-#: lib/retro_hex_chat/chat/reactions.ex:123
+#: lib/retro_hex_chat/chat/reactions.ex:134
 #, elixir-autogen, elixir-format
 msgid "This message already has %{count} different reactions."
 msgstr "这条消息已经有 %{count} 种不同的回应。"
 
-#: lib/retro_hex_chat/chat/saved_messages.ex:242
+#: lib/retro_hex_chat/chat/saved_messages.ex:243
 #, elixir-autogen, elixir-format
 msgid "That message could not be saved."
 msgstr "无法保存该消息。"
 
-#: lib/retro_hex_chat/chat/saved_messages.ex:221
+#: lib/retro_hex_chat/chat/saved_messages.ex:222
 #, elixir-autogen, elixir-format
 msgid "That note could not be saved."
 msgstr "无法保存该备注。"
 
-#: lib/retro_hex_chat/chat/saved_messages.ex:108
-#: lib/retro_hex_chat/chat/saved_messages.ex:213
+#: lib/retro_hex_chat/chat/saved_messages.ex:109
+#: lib/retro_hex_chat/chat/saved_messages.ex:214
 #, elixir-autogen, elixir-format
 msgid "That saved message is not yours."
 msgstr "那条已保存的消息不属于你。"
 
-#: lib/retro_hex_chat/chat/saved_messages.ex:262
+#: lib/retro_hex_chat/chat/saved_messages.ex:263
 #, elixir-autogen, elixir-format
 msgid "You have already saved %{count} messages. Remove one first."
 msgstr "你已经保存了 %{count} 条消息。请先移除一条。"
@@ -609,7 +609,7 @@ msgstr "无法保存该更改。"
 msgid "That channel is not registered."
 msgstr "该频道未注册。"
 
-#: lib/retro_hex_chat/jobs/event_reminder_worker.ex:102
+#: lib/retro_hex_chat/jobs/event_reminder_worker.ex:90
 #, elixir-autogen, elixir-format
 msgid "%{title} is about to start."
 msgstr "%{title} 即将开始。"
@@ -644,7 +644,7 @@ msgstr "这台服务器已经响应这个名称了。"
 msgid "This server already has %{count} emoji."
 msgstr "这台服务器已经有 %{count} 个表情了。"
 
-#: lib/retro_hex_chat/chat/attachments.ex:326
+#: lib/retro_hex_chat/chat/attachments.ex:310
 #, elixir-autogen, elixir-format
 msgid "A recording cannot be sent as %{type}"
 msgstr "录音无法以 %{type} 发送"
@@ -671,17 +671,17 @@ msgstr "先打个字"
 msgid "You are muted by an administrator"
 msgstr "你被管理员哑了"
 
-#: lib/retro_hex_chat/virtual_space.ex:337
+#: lib/retro_hex_chat/virtual_space.ex:341
 #, elixir-autogen, elixir-format
 msgid "threw the coin, and it landed gold side up"
 msgstr "扔了硬币,就把金色的一面"
 
-#: lib/retro_hex_chat/virtual_space.ex:340
+#: lib/retro_hex_chat/virtual_space.ex:344
 #, elixir-autogen, elixir-format
 msgid "threw the coin, and it landed silver side up"
 msgstr "把硬币扔了,它把银色的一面扔了"
 
-#: lib/retro_hex_chat/virtual_space.ex:333
+#: lib/retro_hex_chat/virtual_space.ex:337
 #, elixir-autogen, elixir-format
 msgid "threw the dice and got %{face}"
 msgstr "掷骰子,得到%{face}"

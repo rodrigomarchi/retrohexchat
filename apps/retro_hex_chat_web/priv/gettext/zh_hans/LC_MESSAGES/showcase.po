@@ -72,7 +72,7 @@ msgstr "+n 键"
 msgid "+s"
 msgstr "+s"
 
-#: lib/retro_hex_chat_web/live/showcase_live/dialogs/alias_dialog_page.ex:21
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/alias_dialog_page.ex:17
 #, elixir-autogen, elixir-format
 msgid "/away $1-"
 msgstr "/away $1-"
@@ -97,7 +97,7 @@ msgstr "/kick #lobby spammer"
 msgid "/kick #lobby troll Violating rules"
 msgstr "/kick #lobby troll Violating rules"
 
-#: lib/retro_hex_chat_web/live/showcase_live/dialogs/alias_dialog_page.ex:22
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/alias_dialog_page.ex:18
 #, elixir-autogen, elixir-format
 msgid "/mode $chan +o $1"
 msgstr "/mode $chan +o $1"
@@ -107,12 +107,12 @@ msgstr "/mode $chan +o $1"
 msgid "/msg #lobby Anyone around?"
 msgstr "/msg #lobby Anyone around?"
 
-#: lib/retro_hex_chat_web/live/showcase_live/dialogs/alias_dialog_page.ex:20
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/alias_dialog_page.ex:16
 #, elixir-autogen, elixir-format
 msgid "/msg $1 goodbye!"
 msgstr "/msg $1 goodbye!"
 
-#: lib/retro_hex_chat_web/live/showcase_live/dialogs/alias_dialog_page.ex:19
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/alias_dialog_page.ex:15
 #, elixir-autogen, elixir-format
 msgid "/msg $1 hello!"
 msgstr "/msg $1 hello!"
@@ -262,7 +262,7 @@ msgstr "添加用户到您的地址簿中 。"
 msgid "Add/Remove buttons"
 msgstr "添加 /Remove 按钮"
 
-#: lib/retro_hex_chat_web/live/showcase_live/dialogs/alias_dialog_page.ex:102
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/alias_dialog_page.ex:89
 #, elixir-autogen, elixir-format
 msgid "Adding New Alias"
 msgstr "添加新别名"
@@ -320,8 +320,8 @@ msgstr "提醒对话框"
 msgid "Alerts"
 msgstr "警报"
 
-#: lib/retro_hex_chat_web/live/showcase_live/dialogs/alias_dialog_page.ex:29
-#: lib/retro_hex_chat_web/live/showcase_live/dialogs/alias_dialog_page.ex:45
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/alias_dialog_page.ex:25
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/alias_dialog_page.ex:41
 #: lib/retro_hex_chat_web/showcase_catalog.ex:671
 #, elixir-autogen, elixir-format
 msgid "Alias Dialog"
@@ -472,8 +472,8 @@ msgstr "音频、视频、设备"
 msgid "Auto Respond"
 msgstr "自动响应"
 
-#: lib/retro_hex_chat_web/live/showcase_live/dialogs/auto_respond_dialog_page.ex:21
-#: lib/retro_hex_chat_web/live/showcase_live/dialogs/auto_respond_dialog_page.ex:59
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/auto_respond_dialog_page.ex:18
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/auto_respond_dialog_page.ex:56
 #, elixir-autogen, elixir-format
 msgid "Auto Respond Dialog"
 msgstr "自动响应对话框"
@@ -828,7 +828,7 @@ msgstr "频道模式"
 msgid "Channel States"
 msgstr "海峡州"
 
-#: lib/retro_hex_chat_web/live/showcase_live/dialogs/custom_menus_dialog_page.ex:100
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/custom_menus_dialog_page.ex:94
 #, elixir-autogen, elixir-format
 msgid "Channel Tab"
 msgstr "频道标签"
@@ -1202,7 +1202,7 @@ msgstr "Ctx 菜单"
 msgid "Copy"
 msgstr "复制"
 
-#: lib/retro_hex_chat_web/live/showcase_live/shell/status_bar_app_page.ex:65
+#: lib/retro_hex_chat_web/live/showcase_live/shell/status_bar_app_page.ex:72
 #, elixir-autogen, elixir-format
 msgid "Critical Lag"
 msgstr "关键标签"
@@ -1276,8 +1276,8 @@ msgstr "自定义最大长度"
 msgid "Custom Menus"
 msgstr "自定义菜单"
 
-#: lib/retro_hex_chat_web/live/showcase_live/dialogs/custom_menus_dialog_page.ex:21
-#: lib/retro_hex_chat_web/live/showcase_live/dialogs/custom_menus_dialog_page.ex:68
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/custom_menus_dialog_page.ex:18
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/custom_menus_dialog_page.ex:65
 #, elixir-autogen, elixir-format
 msgid "Custom Menus Dialog"
 msgstr "自定义菜单对话框"
@@ -1351,8 +1351,8 @@ msgstr "默认确认"
 msgid "Default Settings"
 msgstr "默认设置"
 
-#: lib/retro_hex_chat_web/live/showcase_live/dialogs/alias_dialog_page.ex:48
-#: lib/retro_hex_chat_web/live/showcase_live/dialogs/auto_respond_dialog_page.ex:62
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/alias_dialog_page.ex:44
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/auto_respond_dialog_page.ex:59
 #, elixir-autogen, elixir-format
 msgid "Default State"
 msgstr "默认状态"
@@ -1405,7 +1405,7 @@ msgid "Description"
 msgstr "描述"
 
 #: lib/retro_hex_chat_web/components/showcase_helpers.ex:164
-#: lib/retro_hex_chat_web/components/ui/shell/start_menu_app.ex:570
+#: lib/retro_hex_chat_web/components/ui/shell/start_menu_app.ex:569
 #, elixir-autogen, elixir-format
 msgid "Design System"
 msgstr "设计系统"
@@ -1573,9 +1573,9 @@ msgstr "编辑"
 msgid "Edit Profile"
 msgstr "编辑配置文件"
 
-#: lib/retro_hex_chat_web/live/showcase_live/dialogs/alias_dialog_page.ex:85
-#: lib/retro_hex_chat_web/live/showcase_live/dialogs/auto_respond_dialog_page.ex:86
-#: lib/retro_hex_chat_web/live/showcase_live/dialogs/custom_menus_dialog_page.ex:115
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/alias_dialog_page.ex:73
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/auto_respond_dialog_page.ex:80
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/custom_menus_dialog_page.ex:107
 #, elixir-autogen, elixir-format
 msgid "Editing State"
 msgstr "编辑状态"
@@ -1602,7 +1602,7 @@ msgstr "电子邮件 :"
 msgid "Emoji Picker"
 msgstr "爱莫吉·皮克"
 
-#: lib/retro_hex_chat_web/live/showcase_live/dialogs/alias_dialog_page.ex:119
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/alias_dialog_page.ex:104
 #, elixir-autogen, elixir-format
 msgid "Empty List"
 msgstr "空列表"
@@ -1619,7 +1619,7 @@ msgstr "空设置"
 
 #: lib/retro_hex_chat_web/live/showcase_live/chat/autocomplete_page.html.heex:103
 #: lib/retro_hex_chat_web/live/showcase_live/chat/conversations_page.html.heex:54
-#: lib/retro_hex_chat_web/live/showcase_live/dialogs/auto_respond_dialog_page.ex:104
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/auto_respond_dialog_page.ex:96
 #: lib/retro_hex_chat_web/live/showcase_live/dialogs/cheatsheet_dialog_page.ex:118
 #: lib/retro_hex_chat_web/live/showcase_live/dialogs/notify_list_page.ex:81
 #: lib/retro_hex_chat_web/live/showcase_live/dialogs/url_catcher_page.ex:138
@@ -1899,7 +1899,7 @@ msgstr "游戏"
 msgid "General"
 msgstr "常规"
 
-#: lib/retro_hex_chat_web/live/showcase_live/dialogs/custom_menus_dialog_page.ex:43
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/custom_menus_dialog_page.ex:40
 #, elixir-autogen, elixir-format
 msgid "Get Topic"
 msgstr "获取主题"
@@ -2282,7 +2282,7 @@ msgstr "版式"
 msgid "Leave"
 msgstr "离开"
 
-#: lib/retro_hex_chat_web/live/showcase_live/dialogs/custom_menus_dialog_page.ex:49
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/custom_menus_dialog_page.ex:46
 #, elixir-autogen, elixir-format
 msgid "Leave Channel"
 msgstr "离开频道"
@@ -2488,7 +2488,7 @@ msgstr "多个"
 msgid "Multiple Invites (Stacked)"
 msgstr "多个邀请( 已保存)"
 
-#: lib/retro_hex_chat_web/live/showcase_live/shell/status_bar_app_page.ex:79
+#: lib/retro_hex_chat_web/live/showcase_live/shell/status_bar_app_page.ex:90
 #, elixir-autogen, elixir-format
 msgid "Muted"
 msgstr "静音"
@@ -2576,7 +2576,7 @@ msgstr "昵称模式"
 msgid "Nicklist"
 msgstr "昵称列表"
 
-#: lib/retro_hex_chat_web/live/showcase_live/dialogs/custom_menus_dialog_page.ex:71
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/custom_menus_dialog_page.ex:68
 #, elixir-autogen, elixir-format
 msgid "Nicklist Tab"
 msgstr "昵称列表标签"
@@ -2726,65 +2726,10 @@ msgstr "Op 查看器( 完整菜单)"
 msgid "Open"
 msgstr "打开"
 
-#: lib/retro_hex_chat_web/live/showcase_live/dialogs/alias_dialog_page.ex:107
-#, elixir-autogen, elixir-format
-msgid "Open (Adding)"
-msgstr "打开( 添加)"
-
-#: lib/retro_hex_chat_web/live/showcase_live/dialogs/alias_dialog_page.ex:90
-#, elixir-autogen, elixir-format
-msgid "Open (Editing)"
-msgstr "打开( 编辑)"
-
-#: lib/retro_hex_chat_web/live/showcase_live/dialogs/alias_dialog_page.ex:124
-#, elixir-autogen, elixir-format
-msgid "Open (Empty)"
-msgstr "打开 (Empty)"
-
-#: lib/retro_hex_chat_web/live/showcase_live/dialogs/alias_dialog_page.ex:76
-#, elixir-autogen, elixir-format
-msgid "Open (Row Selected)"
-msgstr "打开( 所选颜色)"
-
 #: lib/retro_hex_chat_web/live/showcase_live/dialogs/admin_console_dialog_page.ex:66
 #, elixir-autogen, elixir-format
 msgid "Open Admin Console"
 msgstr "打开管理控制台"
-
-#: lib/retro_hex_chat_web/live/showcase_live/dialogs/alias_dialog_page.ex:53
-#, elixir-autogen, elixir-format
-msgid "Open Alias Editor"
-msgstr "打开别名编辑器"
-
-#: lib/retro_hex_chat_web/live/showcase_live/dialogs/auto_respond_dialog_page.ex:67
-#, elixir-autogen, elixir-format
-msgid "Open Auto Respond"
-msgstr "打开自动响应"
-
-#: lib/retro_hex_chat_web/live/showcase_live/dialogs/auto_respond_dialog_page.ex:91
-#, elixir-autogen, elixir-format
-msgid "Open Auto Respond (Editing)"
-msgstr "打开自动响应( 编辑)"
-
-#: lib/retro_hex_chat_web/live/showcase_live/dialogs/auto_respond_dialog_page.ex:109
-#, elixir-autogen, elixir-format
-msgid "Open Auto Respond (Empty)"
-msgstr "打开自动响应( Empty)"
-
-#: lib/retro_hex_chat_web/live/showcase_live/dialogs/custom_menus_dialog_page.ex:105
-#, elixir-autogen, elixir-format
-msgid "Open Custom Menus (Channel)"
-msgstr "打开自定义菜单( 频道)"
-
-#: lib/retro_hex_chat_web/live/showcase_live/dialogs/custom_menus_dialog_page.ex:120
-#, elixir-autogen, elixir-format
-msgid "Open Custom Menus (Editing)"
-msgstr "打开自定义菜单( 编辑)"
-
-#: lib/retro_hex_chat_web/live/showcase_live/dialogs/custom_menus_dialog_page.ex:76
-#, elixir-autogen, elixir-format
-msgid "Open Custom Menus (Nicklist)"
-msgstr "打开自定义菜单( 昵称列表)"
 
 #: lib/retro_hex_chat_web/live/showcase_live/layout/dialog_page.ex:35
 #, elixir-autogen, elixir-format
@@ -3080,7 +3025,7 @@ msgstr "初级"
 msgid "Print"
 msgstr "打印"
 
-#: lib/retro_hex_chat_web/live/showcase_live/dialogs/custom_menus_dialog_page.ex:37
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/custom_menus_dialog_page.ex:34
 #, elixir-autogen, elixir-format
 msgid "Private Message"
 msgstr "私人信件"
@@ -3242,7 +3187,7 @@ msgstr "角色"
 msgid "Rolls a dice (1-20)"
 msgstr "掷骰子(1-20)"
 
-#: lib/retro_hex_chat_web/live/showcase_live/dialogs/alias_dialog_page.ex:71
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/alias_dialog_page.ex:64
 #, elixir-autogen, elixir-format
 msgid "Row Selected"
 msgstr "选中行"
@@ -3569,7 +3514,7 @@ msgstr "大小"
 msgid "Skeleton"
 msgstr "斯凯勒顿"
 
-#: lib/retro_hex_chat_web/live/showcase_live/dialogs/custom_menus_dialog_page.ex:31
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/custom_menus_dialog_page.ex:28
 #, elixir-autogen, elixir-format
 msgid "Slap"
 msgstr "击打"
@@ -3679,8 +3624,8 @@ msgstr "状态和语义颜色"
 msgid "Status Bar"
 msgstr "状态栏"
 
-#: lib/retro_hex_chat_web/live/showcase_live/shell/status_bar_app_page.ex:18
-#: lib/retro_hex_chat_web/live/showcase_live/shell/status_bar_app_page.ex:33
+#: lib/retro_hex_chat_web/live/showcase_live/shell/status_bar_app_page.ex:19
+#: lib/retro_hex_chat_web/live/showcase_live/shell/status_bar_app_page.ex:34
 #: lib/retro_hex_chat_web/showcase_catalog.ex:566
 #, elixir-autogen, elixir-format
 msgid "Status Bar App"
@@ -3926,7 +3871,7 @@ msgstr "这个窗口是集中的。"
 msgid "This window is not focused."
 msgstr "此窗口没有焦点 。"
 
-#: lib/retro_hex_chat_web/live/showcase_live/shell/status_bar_app_page.ex:72
+#: lib/retro_hex_chat_web/live/showcase_live/shell/status_bar_app_page.ex:81
 #, elixir-autogen, elixir-format
 msgid "Timeout"
 msgstr "超时"
@@ -4270,7 +4215,7 @@ msgstr "等待时"
 msgid "Warning"
 msgstr "警告"
 
-#: lib/retro_hex_chat_web/live/showcase_live/shell/status_bar_app_page.ex:58
+#: lib/retro_hex_chat_web/live/showcase_live/shell/status_bar_app_page.ex:63
 #, elixir-autogen, elixir-format
 msgid "Warning Lag"
 msgstr "警告标签"
@@ -4300,7 +4245,7 @@ msgstr "复古HexChat是什么来着?"
 msgid "What's up?"
 msgstr "这是怎么回事?"
 
-#: lib/retro_hex_chat_web/live/showcase_live/dialogs/custom_menus_dialog_page.ex:25
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/custom_menus_dialog_page.ex:22
 #: lib/retro_hex_chat_web/live/showcase_live/layout/context_menu_page.html.heex:16
 #: lib/retro_hex_chat_web/live/showcase_live/layout/context_menu_page.html.heex:91
 #: lib/retro_hex_chat_web/live/showcase_live/layout/context_menu_page.html.heex:123
@@ -4639,26 +4584,6 @@ msgstr "-左上角 - 左上角"
 msgid "— Top right corner"
 msgstr "- 右上角 - 右上角"
 
-#: lib/retro_hex_chat_web/live/showcase_live/p2p/p2p_connection_diagram_page.ex:107
-#, elixir-autogen, elixir-format
-msgid "Compact — File Transfer"
-msgstr "压缩 — 文件传输"
-
-#: lib/retro_hex_chat_web/live/showcase_live/p2p/p2p_connection_diagram_page.ex:77
-#, elixir-autogen, elixir-format
-msgid "Compact — Ready"
-msgstr "压缩-准备"
-
-#: lib/retro_hex_chat_web/live/showcase_live/p2p/p2p_connection_diagram_page.ex:91
-#, elixir-autogen, elixir-format
-msgid "Compact — Video Call"
-msgstr "紧凑——视频呼叫"
-
-#: lib/retro_hex_chat_web/live/showcase_live/p2p/p2p_connection_diagram_page.ex:63
-#, elixir-autogen, elixir-format
-msgid "Compact — Waiting"
-msgstr "压缩——等待"
-
 #: lib/retro_hex_chat_web/showcase_catalog.ex:846
 #, elixir-autogen, elixir-format
 msgid "Connection Diagram"
@@ -4676,12 +4601,12 @@ msgstr "桌面"
 msgid "Drag my title bar. Resize me from the bottom-right grip."
 msgstr "拖动我的标题栏。 从右下角抓住我"
 
-#: lib/retro_hex_chat_web/live/showcase_live/p2p/p2p_connection_diagram_page.ex:123
+#: lib/retro_hex_chat_web/live/showcase_live/p2p/p2p_connection_diagram_page.ex:63
 #, elixir-autogen, elixir-format
 msgid "Expanded — Ready"
 msgstr "扩大——准备"
 
-#: lib/retro_hex_chat_web/live/showcase_live/p2p/p2p_connection_diagram_page.ex:137
+#: lib/retro_hex_chat_web/live/showcase_live/p2p/p2p_connection_diagram_page.ex:77
 #, elixir-autogen, elixir-format
 msgid "Expanded — Video Call"
 msgstr "已扩展——视频呼叫"
@@ -4741,7 +4666,7 @@ msgstr "旗帜"
 msgid "Language flags (14x14)"
 msgstr "语言旗帜 (14x14)"
 
-#: lib/retro_hex_chat_web/live/showcase_live/dialogs/admin_channels_dialog_page.ex:54
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/admin_channels_dialog_page.ex:42
 #, elixir-autogen, elixir-format
 msgid "*** Channel List (2 results) ***\n  #lobby\n  #dev"
 msgstr ""
@@ -4749,17 +4674,17 @@ msgstr ""
 "#lobby (英语).\n"
 "#dev"
 
-#: lib/retro_hex_chat_web/live/showcase_live/dialogs/admin_users_dialog_page.ex:55
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/admin_users_dialog_page.ex:43
 #, elixir-autogen, elixir-format
 msgid "*** No active server bans."
 msgstr "*** 没有活动服务器禁令。"
 
-#: lib/retro_hex_chat_web/live/showcase_live/dialogs/admin_channels_dialog_page.ex:55
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/admin_channels_dialog_page.ex:43
 #, elixir-autogen, elixir-format
 msgid "*** No bans in #lobby"
 msgstr "*** 在#lobby中没有禁令。"
 
-#: lib/retro_hex_chat_web/live/showcase_live/dialogs/admin_users_dialog_page.ex:54
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/admin_users_dialog_page.ex:42
 #, elixir-autogen, elixir-format
 msgid "*** User List (2 results) ***\n  Ada [registered]\n  Grace"
 msgstr ""
@@ -4767,26 +4692,26 @@ msgstr ""
 "Ada [登记]\n"
 "格蕾丝"
 
-#: lib/retro_hex_chat_web/live/showcase_live/dialogs/admin_channels_dialog_page.ex:44
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/admin_channels_dialog_page.ex:36
 #: lib/retro_hex_chat_web/showcase_catalog.ex:790
 #, elixir-autogen, elixir-format
 msgid "Admin Channels"
 msgstr "管理频道"
 
-#: lib/retro_hex_chat_web/live/showcase_live/dialogs/admin_channels_dialog_page.ex:20
-#: lib/retro_hex_chat_web/live/showcase_live/dialogs/admin_channels_dialog_page.ex:41
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/admin_channels_dialog_page.ex:18
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/admin_channels_dialog_page.ex:33
 #, elixir-autogen, elixir-format
 msgid "Admin Channels Dialog"
 msgstr "管理频道对话框"
 
-#: lib/retro_hex_chat_web/live/showcase_live/dialogs/admin_users_dialog_page.ex:44
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/admin_users_dialog_page.ex:36
 #: lib/retro_hex_chat_web/showcase_catalog.ex:783
 #, elixir-autogen, elixir-format
 msgid "Admin Users"
 msgstr "管理员用户"
 
-#: lib/retro_hex_chat_web/live/showcase_live/dialogs/admin_users_dialog_page.ex:20
-#: lib/retro_hex_chat_web/live/showcase_live/dialogs/admin_users_dialog_page.ex:41
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/admin_users_dialog_page.ex:18
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/admin_users_dialog_page.ex:33
 #, elixir-autogen, elixir-format
 msgid "Admin Users Dialog"
 msgstr "管理员用户对话框"
@@ -4838,16 +4763,6 @@ msgstr "移动"
 #, elixir-autogen, elixir-format
 msgid "MOTD Dialog"
 msgstr "MOTD 对话框"
-
-#: lib/retro_hex_chat_web/live/showcase_live/dialogs/admin_channels_dialog_page.ex:49
-#, elixir-autogen, elixir-format
-msgid "Open Admin Channels"
-msgstr "打开管理频道"
-
-#: lib/retro_hex_chat_web/live/showcase_live/dialogs/admin_users_dialog_page.ex:49
-#, elixir-autogen, elixir-format
-msgid "Open Admin Users"
-msgstr "打开管理员用户"
 
 #: lib/retro_hex_chat_web/live/showcase_live/dialogs/admin_audit_log_dialog_page.ex:47
 #, elixir-autogen, elixir-format
@@ -5078,12 +4993,12 @@ msgstr "可选择的设备"
 msgid "Trusted"
 msgstr "受托"
 
-#: lib/retro_hex_chat_web/live/showcase_live/shell/status_bar_app_page.ex:36
+#: lib/retro_hex_chat_web/live/showcase_live/shell/status_bar_app_page.ex:37
 #, elixir-autogen, elixir-format
 msgid "Normal Lag"
 msgstr "正常延迟"
 
-#: lib/retro_hex_chat_web/live/showcase_live/shell/status_bar_app_page.ex:46
+#: lib/retro_hex_chat_web/live/showcase_live/shell/status_bar_app_page.ex:49
 #, elixir-autogen, elixir-format
 msgid "Online Buddies"
 msgstr "在线好友"
