@@ -183,7 +183,8 @@ export function defineGame(def) {
 
     /**
      * End the match on the host: stop, tell the guest (repeated, since the
-     * channel is unreliable), send a last snapshot and report the result.
+     * channel is unreliable), send a last snapshot and report the result
+     * (a callback that throws is logged, not let out).
      * @param {{ end: object, result: object, broadcast?: boolean }} outcome -
      *   `end` is what goes on the wire, `result` what the page is told;
      *   `broadcast: false` leaves out the last snapshot, for a game that sent
@@ -194,7 +195,7 @@ export function defineGame(def) {
       this.setKeyboardCaptured(false);
       this._sendCommand(def.schema.end.encode(end));
       if (broadcast) this._broadcastState();
-      this.onGameEnd?.(result);
+      this._reportResult(result);
     }
 
     // ── GameEngine hooks ──

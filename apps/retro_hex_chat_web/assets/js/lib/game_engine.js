@@ -283,17 +283,26 @@ export class GameEngine {
   }
 
   /**
+   * Tell the page how the match ended. A callback that throws (pushEvent on a
+   * torn-down view) is logged, never let out into the step that ended it.
+   * @param {object} result
+   * @returns {void}
+   */
+  _reportResult(result) {
+    if (!this.onGameEnd) return;
+    try {
+      this.onGameEnd(result);
+    } catch (error) {
+      log.debug("[GameEngine] game-end callback failed", error);
+    }
+  }
+
+  /**
    * @param {object} result
    * @returns {void}
    */
   _reportDisconnect(result) {
-    if (!this.onGameEnd) return;
-    try {
-      this.onGameEnd({ ...result, disconnected: true });
-    } catch (error) {
-      // The result callback (pushEvent) threw — do not lose it.
-      log.debug("[GameEngine] game-end callback failed", error);
-    }
+    this._reportResult({ ...result, disconnected: true });
   }
 
   // ── Simulation loop ──

@@ -1,4 +1,5 @@
-import { describe, it, expect, afterEach } from "vitest";
+import { describe, it, expect, afterEach, vi } from "vitest";
+import { createLocalTransport } from "../../../../js/lib/games/transport.js";
 import { defineGame } from "../../../../js/lib/games/core/define_game.js";
 import { FakeGame, PHASE, definition } from "../../../support/games/fake_game.js";
 import { playMatch } from "../../../support/games/harness.js";
@@ -215,6 +216,26 @@ describe("defineGame", () => {
   });
 
   describe("finish", () => {
+    it("keeps a result callback that throws from escaping the step", () => {
+      const onGameEnd = vi.fn(() => {
+        throw new Error("pushEvent failed");
+      });
+      const Game = defineGame(definition);
+      const game = new Game(
+        document.createElement("canvas"),
+        createLocalTransport(),
+        "fake",
+        true,
+        onGameEnd,
+      );
+      game.start();
+      game.beginMatch();
+
+      expect(() => game.flow.go("FINISHED")).not.toThrow();
+      expect(onGameEnd).toHaveBeenCalledOnce();
+      game.stop();
+    });
+
     it("can leave out the last snapshot, for a game that sent it before the end", async () => {
       const Game = defineGame({
         ...definition,
