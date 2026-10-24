@@ -1200,6 +1200,32 @@ describe("HexFrostEngine", () => {
       engine.stop();
     });
 
+    it("reports the result when the round that decides the match ends", () => {
+      const onGameEnd = vi.fn();
+      const { engine, channel } = createEngine("hex_frost", true, onGameEnd);
+      engine.start();
+      engine._onChannelMessage({ data: encodeGameReady() });
+      for (let i = 0; i < 180; i++) engine._gameLoop();
+      expect(engine.gameState.phase).toBe(PHASE.BUILDING);
+
+      // Player one wins the round that gives them the match.
+      engine.gameState.p1 = { ...engine.gameState.p1, roundWins: 2 };
+      engine.gameState.roundWinner = 1;
+      engine._gameLoop();
+      expect(engine.gameState.phase).toBe(PHASE.ROUND_END);
+      expect(engine.gameState.p1.roundWins).toBe(3);
+
+      channel.send.mockClear();
+      engine.roundEndTimer = 1;
+      engine._gameLoop();
+
+      expect(engine.gameState.phase).toBe(PHASE.FINISHED);
+      expect(onGameEnd).toHaveBeenCalledWith({ score1: 3, score2: 0, winner: 1 });
+      const sent = channel.send.mock.calls.map((call) => new Uint8Array(call[0])[0]);
+      expect(sent).toContain(MSG_TYPE.GAME_END);
+      engine.stop();
+    });
+
     it("_broadcastState is a no-op when gameState is null", () => {
       const { engine, channel } = createEngine("hex_frost", true);
       engine.gameState = null;

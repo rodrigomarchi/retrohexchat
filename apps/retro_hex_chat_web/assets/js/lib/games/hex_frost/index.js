@@ -148,26 +148,27 @@ function buildingTick(game) {
     game.roundEndTimer = ROUND_END_DELAY;
     game.audio.playRoundEnd();
   }
-  if (state.phase === PHASE.FINISHED && prevPhase !== PHASE.FINISHED) {
-    finishMatch(game, state);
-  }
+  if (state.phase === PHASE.FINISHED && prevPhase !== PHASE.FINISHED) finishMatch(game, state);
 
   state = updateFlashTimers(state);
   playEvents(game, state.events);
   publish(game, state);
 }
 
+/**
+ * End the match once, whichever way it got there: inside the step that
+ * reaches it, or on entering FINISHED from the round that decided it.
+ */
 function finishMatch(game, state) {
+  if (game.matchFinished) return;
+  game.matchFinished = true;
   const winner = determineWinner(state);
-  game._stopSteps();
-  game.setKeyboardCaptured(false);
   game.audio.stopAmbientWind();
   if (winner > 0) game.audio.playVictory();
   else game.audio.playGameOver();
 
   const result = { score1: state.p1.roundWins, score2: state.p2.roundWins, winner };
-  game._sendCommand(GAME_END.encode(result));
-  game.onGameEnd?.(result);
+  game.finish({ end: result, result, broadcast: false });
 }
 
 export default defineGame({
@@ -205,6 +206,7 @@ export default defineGame({
     game.countdownTimer = 0;
     game.roundEndTimer = 0;
     game.snowParticles = null;
+    game.matchFinished = false;
   },
   onStart: (game) => {
     game.snowParticles = generateSnowParticles(35);
@@ -244,7 +246,12 @@ export default defineGame({
       },
       BUILDING: { steps: true, tick: buildingTick },
       ROUND_END: { steps: true, tick: roundEndTick },
-      FINISHED: { final: true, steps: true, tick: finishedTick },
+      FINISHED: {
+        final: true,
+        steps: true,
+        enter: (game) => finishMatch(game, game.gameState),
+        tick: finishedTick,
+      },
     },
   },
 
