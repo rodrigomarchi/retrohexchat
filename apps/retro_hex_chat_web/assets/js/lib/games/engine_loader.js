@@ -18,11 +18,9 @@ const P2P_ENGINE_LOADERS = {
   hex_outlaw_ricochet: () => import("./hex_outlaw/index.js").then((module) => module.default),
   hex_outlaw_stagecoach: () => import("./hex_outlaw/index.js").then((module) => module.default),
   hex_outlaw_nml: () => import("./hex_outlaw/index.js").then((module) => module.default),
-  hex_invaders: () => import("./hex_invaders/engine.js").then((module) => module.HexInvadersEngine),
-  hex_invaders_coop: () =>
-    import("./hex_invaders/engine.js").then((module) => module.HexInvadersEngine),
-  hex_invaders_blitz: () =>
-    import("./hex_invaders/engine.js").then((module) => module.HexInvadersEngine),
+  hex_invaders: () => import("./hex_invaders/index.js").then((module) => module.default),
+  hex_invaders_coop: () => import("./hex_invaders/index.js").then((module) => module.default),
+  hex_invaders_blitz: () => import("./hex_invaders/index.js").then((module) => module.default),
   hex_enduro: () => import("./hex_enduro/engine.js").then((module) => module.HexEnduroEngine),
   hex_enduro_night: () => import("./hex_enduro/engine.js").then((module) => module.HexEnduroEngine),
   hex_enduro_sprint: () =>

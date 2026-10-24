@@ -53,7 +53,20 @@ vi.mock("../../../../js/lib/games/hex_invaders/renderer.js", () => ({
   render: vi.fn(),
 }));
 
-const { HexInvadersEngine } = await import("../../../../js/lib/games/hex_invaders/engine.js");
+const {
+  default: HexInvadersEngine,
+  applySnapshot,
+  playEvents,
+} = await import("../../../../js/lib/games/hex_invaders/index.js");
+
+/** The sounds a step with these events makes. */
+const playEventSounds = (engine, state) => playEvents(engine.audio, state.events);
+
+/** End the match on the host with this outcome, as the simulation would. */
+function finishWith(engine, result) {
+  engine.endResult = result;
+  engine.flow.go("FINISHED");
+}
 const { render, getColors } = await import("../../../../js/lib/games/hex_invaders/renderer.js");
 
 function createMockChannel() {
@@ -196,8 +209,8 @@ describe("HexInvadersEngine", () => {
 
     it("initializes fire edge-trigger flags to false", () => {
       engine = new HexInvadersEngine(canvas, channel, "hex_invaders", true, null);
-      expect(engine._localFirePressed).toBe(false);
-      expect(engine._remoteFirePressed).toBe(false);
+      expect(engine.localFirePressed).toBe(false);
+      expect(engine.remoteFirePressed).toBe(false);
     });
 
     it("stores onGameEnd callback", () => {
@@ -392,11 +405,11 @@ describe("HexInvadersEngine", () => {
     it("resets fire edge-trigger flags", () => {
       engine = new HexInvadersEngine(canvas, channel, "hex_invaders", true, null);
       engine.start();
-      engine._localFirePressed = true;
-      engine._remoteFirePressed = true;
+      engine.localFirePressed = true;
+      engine.remoteFirePressed = true;
       engine.stop();
-      expect(engine._localFirePressed).toBe(false);
-      expect(engine._remoteFirePressed).toBe(false);
+      expect(engine.localFirePressed).toBe(false);
+      expect(engine.remoteFirePressed).toBe(false);
     });
 
     it("removes event listeners", () => {
@@ -818,17 +831,17 @@ describe("HexInvadersEngine", () => {
 
   // ── _applyPeerState ──
 
-  describe("_applyPeerState", () => {
+  describe("applySnapshot (guest)", () => {
     beforeEach(() => {
       engine = new HexInvadersEngine(canvas, channel, "hex_invaders", false, null);
       engine.start();
       render.mockClear();
     });
 
-    it("ignores null decoded state", () => {
+    it("ignores a snapshot that does not decode", () => {
       engine._pump(0);
       render.mockClear();
-      engine._applyPeerState(null);
+      engine._onChannelMessage({ data: new Uint8Array([MSG_TYPE.GAME_STATE]).buffer });
       engine._pump(0);
       expect(render).not.toHaveBeenCalled();
     });
@@ -869,7 +882,7 @@ describe("HexInvadersEngine", () => {
         drops: [],
         dropCount: 0,
       };
-      engine._applyPeerState(decoded);
+      applySnapshot(engine, decoded);
       expect(engine.gameState.score1).toBe(150);
       expect(engine.gameState.score2).toBe(80);
       expect(engine.gameState.phase).toBe(PHASE.PLAYING);
@@ -883,21 +896,21 @@ describe("HexInvadersEngine", () => {
         seed: 12345,
         _shieldPositions: [{ x: 0, y: 0 }], // try to overwrite
       };
-      engine._applyPeerState(decoded);
+      applySnapshot(engine, decoded);
       expect(engine.gameState._shieldPositions).toStrictEqual(originalPositions);
     });
 
     it("bootstraps seed and re-creates state on first non-zero seed", () => {
       expect(engine.seed).toBe(0);
       const decoded = { seed: 77777, phase: PHASE.COUNTDOWN };
-      engine._applyPeerState(decoded);
+      applySnapshot(engine, decoded);
       expect(engine.seed).toBe(77777);
     });
 
     it("does not re-bootstrap seed on subsequent states", () => {
       engine.seed = 11111;
       const decoded = { seed: 22222, phase: PHASE.PLAYING, score1: 50 };
-      engine._applyPeerState(decoded);
+      applySnapshot(engine, decoded);
       // seed stays, but the decoded fields (including seed) overwrite via Object.assign
       expect(engine.seed).toBe(11111); // engine.seed not changed
       expect(engine.gameState.score1).toBe(50);
@@ -905,7 +918,7 @@ describe("HexInvadersEngine", () => {
 
     it("renders after applying state", () => {
       const decoded = { seed: 12345, phase: PHASE.PLAYING };
-      engine._applyPeerState(decoded);
+      applySnapshot(engine, decoded);
       engine._pump(0);
       expect(render).toHaveBeenCalled();
     });
@@ -913,7 +926,7 @@ describe("HexInvadersEngine", () => {
 
   // ── Countdown ──
 
-  describe("countdown (_startCountdown)", () => {
+  describe("countdown", () => {
     beforeEach(() => {
       vi.useFakeTimers();
       engine = new HexInvadersEngine(canvas, channel, "hex_invaders", true, null);
@@ -923,20 +936,20 @@ describe("HexInvadersEngine", () => {
     });
 
     it("sets phase to COUNTDOWN with count 3", () => {
-      engine._startCountdown();
+      engine.flow.go("COUNTDOWN");
       expect(engine.gameState.phase).toBe(PHASE.COUNTDOWN);
       expect(engine.gameState.countdown).toBe(3);
     });
 
     it("broadcasts and renders immediately", () => {
-      engine._startCountdown();
+      engine.flow.go("COUNTDOWN");
       expect(channel.send).toHaveBeenCalled();
       engine._pump(0);
       expect(render).toHaveBeenCalled();
     });
 
     it("decrements countdown on each tick", () => {
-      engine._startCountdown();
+      engine.flow.go("COUNTDOWN");
       vi.advanceTimersByTime(1000);
       expect(engine.gameState.countdown).toBe(2);
       expect(engine.audio.playCountdown).toHaveBeenCalledTimes(1);
@@ -947,7 +960,7 @@ describe("HexInvadersEngine", () => {
     });
 
     it("transitions to PLAYING after full countdown", () => {
-      engine._startCountdown();
+      engine.flow.go("COUNTDOWN");
       // Tick 1: count 3→2
       vi.advanceTimersByTime(1000);
       // Tick 2: count 2→1
@@ -959,24 +972,23 @@ describe("HexInvadersEngine", () => {
     });
 
     it("creates wave 1 when countdown finishes", () => {
-      engine._startCountdown();
+      engine.flow.go("COUNTDOWN");
       vi.advanceTimersByTime(3000);
       expect(engine.gameState.wave).toBe(1);
       expect(engine.gameState.aliens1.length).toBeGreaterThan(0);
     });
 
     it("starts game loop after countdown finishes", () => {
-      engine._startCountdown();
+      engine.flow.go("COUNTDOWN");
       vi.advanceTimersByTime(3000);
       // After countdown finishes, _startGameLoop sets animFrame
       expect(engine.animFrame).not.toBeNull();
     });
 
-    it("guards against !this.running in tick", () => {
-      engine._startCountdown();
-      engine.running = false;
+    it("a stopped engine's countdown never ticks", () => {
+      engine.flow.go("COUNTDOWN");
+      engine.stop();
       vi.advanceTimersByTime(1000);
-      // countdown should NOT have changed since running is false
       expect(engine.gameState.countdown).toBe(3);
     });
   });
@@ -1049,11 +1061,11 @@ describe("HexInvadersEngine", () => {
     });
 
     it("edge-triggers fire: only fires on false→true transition", () => {
-      engine._localFirePressed = false;
+      engine.localFirePressed = false;
       engine.localInputs.fire = true;
       engine._gameLoop();
       expect(engine.audio.playFire).toHaveBeenCalledTimes(1);
-      expect(engine._localFirePressed).toBe(true);
+      expect(engine.localFirePressed).toBe(true);
 
       // Second frame with fire still held: should NOT fire again
       engine.audio.playFire.mockClear();
@@ -1062,11 +1074,11 @@ describe("HexInvadersEngine", () => {
     });
 
     it("edge-triggers remote fire for player 2", () => {
-      engine._remoteFirePressed = false;
+      engine.remoteFirePressed = false;
       engine.remoteInputs.fire = true;
       engine._gameLoop();
       expect(engine.audio.playFire).toHaveBeenCalled();
-      expect(engine._remoteFirePressed).toBe(true);
+      expect(engine.remoteFirePressed).toBe(true);
     });
 
     it("lets the solo opponent controller fire player 2 missiles", () => {
@@ -1086,15 +1098,15 @@ describe("HexInvadersEngine", () => {
 
       expect(engine.gameState.m2Active).toBe(true);
       expect(engine.audio.playFire).toHaveBeenCalled();
-      expect(engine._remoteFirePressed).toBe(true);
+      expect(engine.remoteFirePressed).toBe(true);
     });
 
     it("does not fire when fire input is false", () => {
       engine.localInputs.fire = false;
-      engine._localFirePressed = false;
+      engine.localFirePressed = false;
       engine._gameLoop();
       expect(engine.audio.playFire).not.toHaveBeenCalled();
-      expect(engine._localFirePressed).toBe(false);
+      expect(engine.localFirePressed).toBe(false);
     });
 
     it("renders every frame", () => {
@@ -1168,7 +1180,7 @@ describe("HexInvadersEngine", () => {
 
   // ── Wave Transitions ──
 
-  describe("wave transitions (_handleWaveClear)", () => {
+  describe("wave transitions", () => {
     beforeEach(() => {
       vi.useFakeTimers();
       engine = new HexInvadersEngine(canvas, channel, "hex_invaders", true, null);
@@ -1181,7 +1193,7 @@ describe("HexInvadersEngine", () => {
     });
 
     it("transitions to WAVE_START after WAVE_CLEAR_FRAMES delay", () => {
-      engine._handleWaveClear();
+      engine.flow.go("WAVE_CLEAR");
       // WAVE_CLEAR_FRAMES = 120 → 120/60 * 1000 = 2000ms
       vi.advanceTimersByTime(2000);
       expect(engine.gameState.phase).toBe(PHASE.WAVE_START);
@@ -1189,7 +1201,7 @@ describe("HexInvadersEngine", () => {
     });
 
     it("transitions to PLAYING after WAVE_START_FRAMES delay", () => {
-      engine._handleWaveClear();
+      engine.flow.go("WAVE_CLEAR");
       // 2000ms for WAVE_CLEAR, then 1000ms for WAVE_START (60/60 * 1000)
       vi.advanceTimersByTime(2000);
       expect(engine.gameState.phase).toBe(PHASE.WAVE_START);
@@ -1198,7 +1210,7 @@ describe("HexInvadersEngine", () => {
     });
 
     it("starts game loop after WAVE_START phase", () => {
-      engine._handleWaveClear();
+      engine.flow.go("WAVE_CLEAR");
       vi.advanceTimersByTime(3000); // 2000 + 1000
       // After WAVE_START delay, animFrame should be set
       expect(engine.animFrame).not.toBeNull();
@@ -1208,7 +1220,7 @@ describe("HexInvadersEngine", () => {
       const onGameEnd = vi.fn();
       engine.onGameEnd = onGameEnd;
       engine.gameState.wave = 10; // current wave is 10, next would be 11
-      engine._handleWaveClear();
+      engine.flow.go("WAVE_CLEAR");
       vi.advanceTimersByTime(2000);
       expect(engine.gameState.phase).toBe(PHASE.FINISHED);
       expect(onGameEnd).toHaveBeenCalled();
@@ -1219,32 +1231,30 @@ describe("HexInvadersEngine", () => {
       engine.onGameEnd = onGameEnd;
       engine.gameState.mode = GAME_MODE.BLITZ;
       engine.gameState.wave = 5;
-      engine._handleWaveClear();
+      engine.flow.go("WAVE_CLEAR");
       vi.advanceTimersByTime(2000);
       expect(engine.gameState.phase).toBe(PHASE.FINISHED);
     });
 
-    it("guards against !this.running in wave clear timeout", () => {
-      engine._handleWaveClear();
-      engine.running = false;
+    it("a stopped engine never leaves the wave clear", () => {
+      engine.flow.go("WAVE_CLEAR");
+      engine.stop();
       vi.advanceTimersByTime(2000);
-      // Should not transition since running is false
       expect(engine.gameState.phase).toBe(PHASE.WAVE_CLEAR);
     });
 
-    it("guards against !this.running in wave start timeout", () => {
-      engine._handleWaveClear();
+    it("a stopped engine never leaves the wave start", () => {
+      engine.flow.go("WAVE_CLEAR");
       vi.advanceTimersByTime(2000); // enter WAVE_START
-      engine.running = false;
+      engine.stop();
       vi.advanceTimersByTime(1000);
-      // Should stay in WAVE_START since running was set to false
       expect(engine.gameState.phase).toBe(PHASE.WAVE_START);
     });
   });
 
   // ── Game End ──
 
-  describe("game end (_handleGameFinished)", () => {
+  describe("game end", () => {
     let onGameEnd;
 
     beforeEach(() => {
@@ -1260,12 +1270,12 @@ describe("HexInvadersEngine", () => {
     });
 
     it("broadcasts final state", () => {
-      engine._handleGameFinished({ ended: true, winner: 1 });
+      finishWith(engine, { ended: true, winner: 1 });
       expect(channel.send).toHaveBeenCalled();
     });
 
     it("sends GAME_END to peer", () => {
-      engine._handleGameFinished({ ended: true, winner: 1 });
+      finishWith(engine, { ended: true, winner: 1 });
       // First call is broadcast, second is GAME_END
       const calls = channel.send.mock.calls;
       const lastBuf = calls[calls.length - 1][0];
@@ -1277,26 +1287,26 @@ describe("HexInvadersEngine", () => {
       engine._startSteps();
       engine.setKeyboardCaptured(true);
 
-      engine._handleGameFinished({ ended: true, winner: 1 });
+      finishWith(engine, { ended: true, winner: 1 });
 
       expect(engine.stepping).toBe(false);
       expect(engine._keyboardCaptured).toBe(false);
     });
 
     it("plays victory audio when winner > 0", () => {
-      engine._handleGameFinished({ ended: true, winner: 1 });
+      finishWith(engine, { ended: true, winner: 1 });
       expect(engine.audio.playVictory).toHaveBeenCalled();
       expect(engine.audio.playInvaded).not.toHaveBeenCalled();
     });
 
     it("plays invaded audio when winner is 0", () => {
-      engine._handleGameFinished({ ended: true, winner: 0 });
+      finishWith(engine, { ended: true, winner: 0 });
       expect(engine.audio.playInvaded).toHaveBeenCalled();
       expect(engine.audio.playVictory).not.toHaveBeenCalled();
     });
 
     it("calls onGameEnd with score and winner", () => {
-      engine._handleGameFinished({ ended: true, winner: 2 });
+      finishWith(engine, { ended: true, winner: 2 });
       expect(onGameEnd).toHaveBeenCalledWith({
         score: { p1: 100, p2: 50 },
         winner: 2,
@@ -1304,7 +1314,7 @@ describe("HexInvadersEngine", () => {
     });
 
     it("renders the final state", () => {
-      engine._handleGameFinished({ ended: true, winner: 1 });
+      finishWith(engine, { ended: true, winner: 1 });
       engine._pump(0);
       expect(render).toHaveBeenCalled();
     });
@@ -1314,14 +1324,14 @@ describe("HexInvadersEngine", () => {
         throw new Error("boom");
       });
       // Should not throw
-      engine._handleGameFinished({ ended: true, winner: 1 });
+      finishWith(engine, { ended: true, winner: 1 });
       expect(engine.onGameEnd).toHaveBeenCalled();
     });
 
     it("handles null onGameEnd gracefully", () => {
       engine.onGameEnd = null;
       // Should not throw
-      engine._handleGameFinished({ ended: true, winner: 1 });
+      finishWith(engine, { ended: true, winner: 1 });
       expect(channel.send).toHaveBeenCalled();
     });
   });
@@ -1449,59 +1459,59 @@ describe("HexInvadersEngine", () => {
 
   // ── Event Sounds ──
 
-  describe("_playEventSounds", () => {
+  describe("event sounds", () => {
     beforeEach(() => {
       engine = new HexInvadersEngine(canvas, channel, "hex_invaders", true, null);
       engine.start();
     });
 
     it("plays alienDestroyed on alienKill event", () => {
-      engine._playEventSounds({ events: { alienKill: 1 } });
+      playEventSounds(engine, { events: { alienKill: 1 } });
       expect(engine.audio.playAlienDestroyed).toHaveBeenCalled();
     });
 
     it("plays armoredClang on armoredHit event", () => {
-      engine._playEventSounds({ events: { armoredHit: 1 } });
+      playEventSounds(engine, { events: { armoredHit: 1 } });
       expect(engine.audio.playArmoredClang).toHaveBeenCalled();
     });
 
     it("plays cannonHit on cannonHit event", () => {
-      engine._playEventSounds({ events: { cannonHit: 1 } });
+      playEventSounds(engine, { events: { cannonHit: 1 } });
       expect(engine.audio.playCannonHit).toHaveBeenCalled();
     });
 
     it("plays shieldHit on shieldHit event", () => {
-      engine._playEventSounds({ events: { shieldHit: true } });
+      playEventSounds(engine, { events: { shieldHit: true } });
       expect(engine.audio.playShieldHit).toHaveBeenCalled();
     });
 
     it("plays ufoDestroyed on ufoKill event", () => {
-      engine._playEventSounds({ events: { ufoKill: 1 } });
+      playEventSounds(engine, { events: { ufoKill: 1 } });
       expect(engine.audio.playUFODestroyed).toHaveBeenCalled();
     });
 
     it("plays ufoAppear on ufoAppear event", () => {
-      engine._playEventSounds({ events: { ufoAppear: true } });
+      playEventSounds(engine, { events: { ufoAppear: true } });
       expect(engine.audio.playUFOAppear).toHaveBeenCalled();
     });
 
     it("plays combo on combo event", () => {
-      engine._playEventSounds({ events: { combo: 2 } });
+      playEventSounds(engine, { events: { combo: 2 } });
       expect(engine.audio.playCombo).toHaveBeenCalledWith(2);
     });
 
     it("plays dropLand on dropLand event", () => {
-      engine._playEventSounds({ events: { dropLand: true } });
+      playEventSounds(engine, { events: { dropLand: true } });
       expect(engine.audio.playDropLand).toHaveBeenCalled();
     });
 
     it("plays invaded on invaded event", () => {
-      engine._playEventSounds({ events: { invaded: 1 } });
+      playEventSounds(engine, { events: { invaded: 1 } });
       expect(engine.audio.playInvaded).toHaveBeenCalled();
     });
 
     it("does not play sounds for zero/false events", () => {
-      engine._playEventSounds({
+      playEventSounds(engine, {
         events: {
           alienKill: 0,
           armoredHit: 0,
@@ -1591,16 +1601,16 @@ describe("HexInvadersEngine", () => {
       expect(aliens2After.length).toBe(aliens2Before.length);
     });
 
-    it("_startGameLoop is idempotent", () => {
+    it("entering play twice keeps one loop", () => {
       engine = new HexInvadersEngine(canvas, channel, "hex_invaders", true, null);
       engine.start();
       engine.gameState.phase = PHASE.PLAYING;
 
-      engine._startGameLoop();
+      engine.flow.go("PLAYING");
       expect(engine.stepping).toBe(true);
 
       // Starting twice is a no-op rather than a second loop racing the first.
-      engine._startGameLoop();
+      engine.flow.go("PLAYING");
       expect(engine.stepping).toBe(true);
     });
 
