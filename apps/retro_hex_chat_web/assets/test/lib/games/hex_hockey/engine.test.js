@@ -53,7 +53,13 @@ vi.mock("../../../../js/lib/games/hex_hockey/renderer.js", () => ({
   generateIceParticles: vi.fn(() => []),
 }));
 
-const { HexHockeyEngine } = await import("../../../../js/lib/games/hex_hockey/engine.js");
+const {
+  default: HexHockeyEngine,
+  finishMatch,
+  playHostEvents,
+  playPeerEvents,
+  updatePuckTrail,
+} = await import("../../../../js/lib/games/hex_hockey/index.js");
 
 function createMockCanvas() {
   const ctx = {
@@ -391,7 +397,7 @@ describe("hex_hockey_engine", () => {
     ];
 
     engine.gameState.puck.possessedBy = 1;
-    engine._updatePuckTrail();
+    updatePuckTrail(engine);
     expect(engine.puckTrail).toEqual([]);
     engine.stop();
   });
@@ -403,10 +409,10 @@ describe("hex_hockey_engine", () => {
     engine.puckTrail = [];
 
     engine.gameState.puck.possessedBy = 0;
-    engine._updatePuckTrail();
+    updatePuckTrail(engine);
     expect(engine.puckTrail.length).toBe(1);
 
-    engine._updatePuckTrail();
+    updatePuckTrail(engine);
     expect(engine.puckTrail.length).toBe(2);
     engine.stop();
   });
@@ -419,7 +425,7 @@ describe("hex_hockey_engine", () => {
     engine.gameState.puck.possessedBy = 0;
 
     for (let i = 0; i < 12; i++) {
-      engine._updatePuckTrail();
+      updatePuckTrail(engine);
     }
     expect(engine.puckTrail.length).toBe(8);
     engine.stop();
@@ -482,28 +488,28 @@ describe("hex_hockey_engine", () => {
   // ── Game loop — COUNTDOWN phase ─────────────────────────────
 
   describe("game loop — COUNTDOWN", () => {
-    it("decrements phaseTimer each frame", () => {
+    it("counts down the beat's steps each frame", () => {
       const { engine } = setupPlayingEngine();
       engine.gameState.phase = PHASE.COUNTDOWN;
       engine.gameState.countdownValue = 3;
-      engine.phaseTimer = COUNTDOWN_FRAME_INTERVAL;
+      engine.countdownFrames = COUNTDOWN_FRAME_INTERVAL;
 
       engine._gameLoop();
 
-      expect(engine.phaseTimer).toBe(COUNTDOWN_FRAME_INTERVAL - 1);
+      expect(engine.countdownFrames).toBe(COUNTDOWN_FRAME_INTERVAL - 1);
       engine.stop();
     });
 
-    it("decrements countdownValue when phaseTimer reaches 0", () => {
+    it("decrements countdownValue when the beat's steps run out", () => {
       const { engine } = setupPlayingEngine();
       engine.gameState.phase = PHASE.COUNTDOWN;
       engine.gameState.countdownValue = 3;
-      engine.phaseTimer = 1; // will hit 0 this frame
+      engine.countdownFrames = 1; // will hit 0 this frame
 
       engine._gameLoop();
 
       expect(engine.gameState.countdownValue).toBe(2);
-      expect(engine.phaseTimer).toBe(COUNTDOWN_FRAME_INTERVAL);
+      expect(engine.countdownFrames).toBe(COUNTDOWN_FRAME_INTERVAL);
       engine.stop();
     });
 
@@ -511,7 +517,7 @@ describe("hex_hockey_engine", () => {
       const { engine } = setupPlayingEngine();
       engine.gameState.phase = PHASE.COUNTDOWN;
       engine.gameState.countdownValue = 2;
-      engine.phaseTimer = 1;
+      engine.countdownFrames = 1;
 
       engine._gameLoop();
 
@@ -523,7 +529,7 @@ describe("hex_hockey_engine", () => {
       const { engine } = setupPlayingEngine();
       engine.gameState.phase = PHASE.COUNTDOWN;
       engine.gameState.countdownValue = 1;
-      engine.phaseTimer = 1;
+      engine.countdownFrames = 1;
 
       engine._gameLoop();
 
@@ -860,7 +866,7 @@ describe("hex_hockey_engine", () => {
 
       expect(engine.gameState.phase).toBe(PHASE.COUNTDOWN);
       expect(engine.gameState.countdownValue).toBe(3);
-      expect(engine.phaseTimer).toBe(COUNTDOWN_FRAME_INTERVAL);
+      expect(engine.countdownFrames).toBe(COUNTDOWN_FRAME_INTERVAL);
       expect(engine.audio.playCountdownTick).toHaveBeenCalled();
       engine.stop();
     });
@@ -869,47 +875,43 @@ describe("hex_hockey_engine", () => {
   // ── Game loop — FINISHED phase ──────────────────────────────
 
   describe("game loop — FINISHED", () => {
-    it("broadcasts final state and stops running", () => {
+    // The step that reaches FINISHED sends the final state and ends the match
+    // (see "the end of the match"); a step found in FINISHED only stops.
+    it("stops stepping and sends nothing more from a step found in FINISHED", () => {
       const { engine, channel } = setupPlayingEngine();
       engine.gameState.phase = PHASE.FINISHED;
       channel.send.mockClear();
 
       engine._gameLoop();
 
-      expect(engine.running).toBe(false);
       expect(engine.stepping).toBe(false);
-      expect(engine._keyboardCaptured).toBe(false);
-      // Should have broadcast at least once
-      expect(channel.send).toHaveBeenCalled();
+      expect(channel.send).not.toHaveBeenCalled();
       engine.stop();
     });
 
     it("does not continue looping after FINISHED", () => {
       const { engine } = setupPlayingEngine();
       engine.gameState.phase = PHASE.FINISHED;
+      const frames = engine.frameCount;
 
       engine._gameLoop();
-      // Running is false, so next _gameLoop should be a no-op
       engine._gameLoop();
-      // frameCount should not increment because running=false means isHost still true
-      // but the FINISHED branch sets running=false, and _gameLoop guard checks isHost not running
-      // Actually _gameLoop only checks isHost and gameState, not running
-      // So the FINISHED branch runs again — but that's fine, it just re-broadcasts
-      expect(engine.running).toBe(false);
+
+      expect(engine.frameCount).toBe(frames);
       engine.stop();
     });
   });
 
-  // ── _handleGameFinished ─────────────────────────────────────
+  // ── The end of the match ─────────────────────────────────────
 
-  describe("_handleGameFinished", () => {
+  describe("the end of the match", () => {
     it("calls determineWinner and sends GAME_END", () => {
       const { engine, channel } = setupPlayingEngine();
       engine.gameState.scoreP1 = 3;
       engine.gameState.scoreP2 = 1;
       channel.send.mockClear();
 
-      engine._handleGameFinished(engine.gameState);
+      finishMatch(engine, engine.gameState);
 
       expect(engine.audio.stopSuddenDeath).toHaveBeenCalled();
       expect(engine.audio.playVictory).toHaveBeenCalled();
@@ -927,7 +929,7 @@ describe("hex_hockey_engine", () => {
       engine.gameState.scoreP1 = 2;
       engine.gameState.scoreP2 = 4;
 
-      engine._handleGameFinished(engine.gameState);
+      finishMatch(engine, engine.gameState);
 
       expect(onGameEnd).toHaveBeenCalledWith(
         expect.objectContaining({
@@ -944,7 +946,7 @@ describe("hex_hockey_engine", () => {
       engine.gameState.scoreP1 = 2;
       engine.gameState.scoreP2 = 2;
 
-      engine._handleGameFinished(engine.gameState);
+      finishMatch(engine, engine.gameState);
 
       expect(onGameEnd).toHaveBeenCalledWith(expect.objectContaining({ winner: "draw" }));
       engine.stop();
@@ -957,7 +959,7 @@ describe("hex_hockey_engine", () => {
       engine.onGameEnd = null;
 
       // Should not throw even without callback
-      expect(() => engine._handleGameFinished(engine.gameState)).not.toThrow();
+      expect(() => finishMatch(engine, engine.gameState)).not.toThrow();
       engine.stop();
     });
   });
@@ -967,21 +969,21 @@ describe("hex_hockey_engine", () => {
   describe("_handleAudioEvents", () => {
     it("plays shot audio on SHOT event", () => {
       const { engine } = setupPlayingEngine();
-      engine._handleAudioEvents(EVENT.SHOT);
+      playHostEvents(engine.audio, EVENT.SHOT);
       expect(engine.audio.playShot).toHaveBeenCalled();
       engine.stop();
     });
 
     it("plays wall bounce audio on WALL_BOUNCE event", () => {
       const { engine } = setupPlayingEngine();
-      engine._handleAudioEvents(EVENT.WALL_BOUNCE);
+      playHostEvents(engine.audio, EVENT.WALL_BOUNCE);
       expect(engine.audio.playWallBounce).toHaveBeenCalled();
       engine.stop();
     });
 
     it("skips individual sounds when GOAL event is present (early return)", () => {
       const { engine } = setupPlayingEngine();
-      engine._handleAudioEvents(EVENT.GOAL_P1 | EVENT.SHOT);
+      playHostEvents(engine.audio, EVENT.GOAL_P1 | EVENT.SHOT);
       // GOAL causes early return — SHOT should NOT play
       expect(engine.audio.playShot).not.toHaveBeenCalled();
       engine.stop();
@@ -989,7 +991,7 @@ describe("hex_hockey_engine", () => {
 
     it("plays multiple audio events in same frame", () => {
       const { engine } = setupPlayingEngine();
-      engine._handleAudioEvents(EVENT.TACKLE_SUCCESS | EVENT.CAPTURE);
+      playHostEvents(engine.audio, EVENT.TACKLE_SUCCESS | EVENT.CAPTURE);
       expect(engine.audio.playTackleSuccess).toHaveBeenCalled();
       expect(engine.audio.playCapture).toHaveBeenCalled();
       engine.stop();
@@ -997,21 +999,21 @@ describe("hex_hockey_engine", () => {
 
     it("plays goalie block audio", () => {
       const { engine } = setupPlayingEngine();
-      engine._handleAudioEvents(EVENT.GOALIE_BLOCK);
+      playHostEvents(engine.audio, EVENT.GOALIE_BLOCK);
       expect(engine.audio.playGoalieBlock).toHaveBeenCalled();
       engine.stop();
     });
 
     it("plays tackle fail audio", () => {
       const { engine } = setupPlayingEngine();
-      engine._handleAudioEvents(EVENT.TACKLE_FAIL);
+      playHostEvents(engine.audio, EVENT.TACKLE_FAIL);
       expect(engine.audio.playTackleFail).toHaveBeenCalled();
       engine.stop();
     });
 
     it("plays whistle audio on WHISTLE event", () => {
       const { engine } = setupPlayingEngine();
-      engine._handleAudioEvents(EVENT.WHISTLE);
+      playHostEvents(engine.audio, EVENT.WHISTLE);
       expect(engine.audio.playFaceoffWhistle).toHaveBeenCalled();
       engine.stop();
     });
@@ -1025,7 +1027,7 @@ describe("hex_hockey_engine", () => {
       engine.start();
       engine.gameState = createInitialState(GAME_MODE.CLASSIC);
 
-      engine._handlePeerEvents(EVENT.GOAL_P1);
+      playPeerEvents(engine, EVENT.GOAL_P1);
 
       expect(engine.audio.playGoal).toHaveBeenCalled();
       expect(engine.goalFlash).toBe(GOAL_CELEBRATION_FRAMES);
@@ -1037,7 +1039,7 @@ describe("hex_hockey_engine", () => {
       engine.start();
       engine.gameState = createInitialState(GAME_MODE.CLASSIC);
 
-      engine._handlePeerEvents(EVENT.GOAL_P2);
+      playPeerEvents(engine, EVENT.GOAL_P2);
 
       expect(engine.audio.playGoal).toHaveBeenCalled();
       engine.stop();
@@ -1048,7 +1050,7 @@ describe("hex_hockey_engine", () => {
       engine.start();
       engine.gameState = createInitialState(GAME_MODE.CLASSIC);
 
-      engine._handlePeerEvents(EVENT.PERIOD_END);
+      playPeerEvents(engine, EVENT.PERIOD_END);
 
       expect(engine.audio.playPeriodBuzzer).toHaveBeenCalled();
       engine.stop();
@@ -1059,7 +1061,7 @@ describe("hex_hockey_engine", () => {
       engine.start();
       engine.gameState = createInitialState(GAME_MODE.CLASSIC);
 
-      engine._handlePeerEvents(EVENT.SUDDEN_DEATH);
+      playPeerEvents(engine, EVENT.SUDDEN_DEATH);
 
       expect(engine.audio.playSuddenDeath).toHaveBeenCalled();
       engine.stop();
@@ -1070,7 +1072,7 @@ describe("hex_hockey_engine", () => {
       engine.start();
       engine.gameState = createInitialState(GAME_MODE.CLASSIC);
 
-      engine._handlePeerEvents(EVENT.SHOT | EVENT.WALL_BOUNCE | EVENT.WHISTLE);
+      playPeerEvents(engine, EVENT.SHOT | EVENT.WALL_BOUNCE | EVENT.WHISTLE);
 
       expect(engine.audio.playShot).toHaveBeenCalled();
       expect(engine.audio.playWallBounce).toHaveBeenCalled();
@@ -1181,15 +1183,15 @@ describe("hex_hockey_engine", () => {
       engine.stop();
     });
 
-    it("_startCountdown sets up countdown state correctly", () => {
+    it("the first countdown sets up its state", () => {
       const { engine } = createEngine("hex_hockey", true);
       engine.start();
 
-      engine._startCountdown();
+      engine.flow.go("STARTING");
 
       expect(engine.gameState.phase).toBe(PHASE.COUNTDOWN);
       expect(engine.gameState.countdownValue).toBe(3);
-      expect(engine.phaseTimer).toBe(COUNTDOWN_FRAME_INTERVAL);
+      expect(engine.countdownFrames).toBe(COUNTDOWN_FRAME_INTERVAL);
       expect(engine.audio.playCountdownTick).toHaveBeenCalled();
       engine.stop();
     });
@@ -1198,7 +1200,7 @@ describe("hex_hockey_engine", () => {
       const { engine } = setupPlayingEngine();
       engine.gameState.phase = PHASE.COUNTDOWN;
       engine.gameState.countdownValue = 1;
-      engine.phaseTimer = 1;
+      engine.countdownFrames = 1;
 
       engine._gameLoop();
 

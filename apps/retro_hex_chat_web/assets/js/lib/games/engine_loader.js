@@ -33,10 +33,9 @@ const P2P_ENGINE_LOADERS = {
   hex_frost: () => import("./hex_frost/index.js").then((module) => module.default),
   hex_frost_blizzard: () => import("./hex_frost/index.js").then((module) => module.default),
   hex_frost_peaceful: () => import("./hex_frost/index.js").then((module) => module.default),
-  hex_hockey: () => import("./hex_hockey/engine.js").then((module) => module.HexHockeyEngine),
-  hex_hockey_blitz: () => import("./hex_hockey/engine.js").then((module) => module.HexHockeyEngine),
-  hex_hockey_showdown: () =>
-    import("./hex_hockey/engine.js").then((module) => module.HexHockeyEngine),
+  hex_hockey: () => import("./hex_hockey/index.js").then((module) => module.default),
+  hex_hockey_blitz: () => import("./hex_hockey/index.js").then((module) => module.default),
+  hex_hockey_showdown: () => import("./hex_hockey/index.js").then((module) => module.default),
 };
 
 const SOLO_GAME_IDS = new Set([

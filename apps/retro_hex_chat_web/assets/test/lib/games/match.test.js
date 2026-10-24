@@ -4,7 +4,7 @@ import { BASE_MSG } from "../../../js/lib/games/net_protocol.js";
 import SurroundEngine from "../../../js/lib/games/surround/index.js";
 import WarlordEngine from "../../../js/lib/games/warlords/index.js";
 import PixelTanksEngine from "../../../js/lib/games/pixel_tanks/index.js";
-import { HexHockeyEngine } from "../../../js/lib/games/hex_hockey/engine.js";
+import HexHockeyEngine from "../../../js/lib/games/hex_hockey/index.js";
 import PongEngine from "../../../js/lib/games/pong/index.js";
 
 /** Press a key on an engine the way the document listener would. */
