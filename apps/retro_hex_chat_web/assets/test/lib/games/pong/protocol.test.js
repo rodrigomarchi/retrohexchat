@@ -2,10 +2,8 @@ import { describe, it, expect } from "vitest";
 import {
   MSG_TYPE,
   PHASE,
-  encodeGameState,
-  decodeGameState,
-  encodeGameEnd,
-  decodeGameEnd,
+  SNAPSHOT,
+  GAME_END,
   encodeGameReady,
   getMessageType,
 } from "../../../../js/lib/games/pong/protocol.js";
@@ -26,10 +24,10 @@ describe("pong_protocol", () => {
         countdown: 0,
       };
 
-      const buf = encodeGameState(state);
+      const buf = SNAPSHOT.encode(state);
       expect(buf.byteLength).toBe(25);
 
-      const decoded = decodeGameState(buf);
+      const decoded = SNAPSHOT.decode(buf);
       expect(decoded.ballX).toBeCloseTo(320.5, 1);
       expect(decoded.ballY).toBeCloseTo(240.25, 1);
       expect(decoded.ballVX).toBeCloseTo(4.5, 1);
@@ -55,7 +53,7 @@ describe("pong_protocol", () => {
         phase: PHASE.WAITING,
         countdown: 0,
       };
-      expect(encodeGameState(state).byteLength).toBe(25);
+      expect(SNAPSHOT.encode(state).byteLength).toBe(25);
     });
 
     it("sets type byte to GAME_STATE (0x80)", () => {
@@ -71,7 +69,7 @@ describe("pong_protocol", () => {
         phase: 0,
         countdown: 0,
       };
-      const buf = encodeGameState(state);
+      const buf = SNAPSHOT.encode(state);
       expect(new DataView(buf).getUint8(0)).toBe(0x80);
     });
 
@@ -88,7 +86,7 @@ describe("pong_protocol", () => {
         phase: 0,
         countdown: 0,
       };
-      const decoded = decodeGameState(encodeGameState(state));
+      const decoded = SNAPSHOT.decode(SNAPSHOT.encode(state));
       expect(decoded.paddle1Y).toBe(200);
       expect(decoded.paddle2Y).toBe(300);
     });
@@ -106,7 +104,7 @@ describe("pong_protocol", () => {
         phase: 0,
         countdown: 0,
       };
-      const decoded = decodeGameState(encodeGameState(state));
+      const decoded = SNAPSHOT.decode(SNAPSHOT.encode(state));
       expect(decoded.paddle1Y).toBe(480);
     });
 
@@ -124,7 +122,7 @@ describe("pong_protocol", () => {
           phase: value,
           countdown: 0,
         };
-        const decoded = decodeGameState(encodeGameState(state));
+        const decoded = SNAPSHOT.decode(SNAPSHOT.encode(state));
         expect(decoded.phase).toBe(value);
       }
     });
@@ -143,7 +141,7 @@ describe("pong_protocol", () => {
           phase: PHASE.COUNTDOWN,
           countdown: cd,
         };
-        const decoded = decodeGameState(encodeGameState(state));
+        const decoded = SNAPSHOT.decode(SNAPSHOT.encode(state));
         expect(decoded.countdown).toBe(cd);
       }
     });
@@ -161,53 +159,53 @@ describe("pong_protocol", () => {
         phase: 0,
         countdown: 0,
       };
-      const decoded = decodeGameState(encodeGameState(state));
+      const decoded = SNAPSHOT.decode(SNAPSHOT.encode(state));
       expect(decoded.ballVX).toBeCloseTo(-5.5, 1);
       expect(decoded.ballVY).toBeCloseTo(-3.25, 1);
     });
 
     it("returns null for buffer too small", () => {
-      expect(decodeGameState(new ArrayBuffer(24))).toBeNull();
-      expect(decodeGameState(new ArrayBuffer(0))).toBeNull();
+      expect(SNAPSHOT.decode(new ArrayBuffer(24))).toBeNull();
+      expect(SNAPSHOT.decode(new ArrayBuffer(0))).toBeNull();
     });
 
     it("returns null for wrong message type", () => {
       const buf = new ArrayBuffer(25);
       new DataView(buf).setUint8(0, 0x81);
-      expect(decodeGameState(buf)).toBeNull();
+      expect(SNAPSHOT.decode(buf)).toBeNull();
     });
   });
 
   describe("GAME_END encode/decode", () => {
     it("roundtrips a game end", () => {
-      const buf = encodeGameEnd(11, 7, 1);
+      const buf = GAME_END.encode({ score1: 11, score2: 7, winner: 1 });
       expect(buf.byteLength).toBe(4);
-      const decoded = decodeGameEnd(buf);
+      const decoded = GAME_END.decode(buf);
       expect(decoded.score1).toBe(11);
       expect(decoded.score2).toBe(7);
       expect(decoded.winner).toBe(1);
     });
 
     it("roundtrips player 2 win", () => {
-      const decoded = decodeGameEnd(encodeGameEnd(9, 11, 2));
+      const decoded = GAME_END.decode(GAME_END.encode({ score1: 9, score2: 11, winner: 2 }));
       expect(decoded.score1).toBe(9);
       expect(decoded.score2).toBe(11);
       expect(decoded.winner).toBe(2);
     });
 
     it("sets type byte to GAME_END (0x83)", () => {
-      const buf = encodeGameEnd(0, 0, 1);
+      const buf = GAME_END.encode({ score1: 0, score2: 0, winner: 1 });
       expect(new DataView(buf).getUint8(0)).toBe(0x83);
     });
 
     it("returns null for buffer too small", () => {
-      expect(decodeGameEnd(new ArrayBuffer(3))).toBeNull();
+      expect(GAME_END.decode(new ArrayBuffer(3))).toBeNull();
     });
 
     it("returns null for wrong message type", () => {
       const buf = new ArrayBuffer(4);
       new DataView(buf).setUint8(0, 0x80);
-      expect(decodeGameEnd(buf)).toBeNull();
+      expect(GAME_END.decode(buf)).toBeNull();
     });
   });
 

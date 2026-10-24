@@ -23,6 +23,8 @@
 
 /**
  * @typedef {object} Field
+ * @property {object} [spec] - what the field is (kind, name, options), for
+ *   tools that generate or inspect messages
  * @property {(obj: object) => number} size - bytes this field takes for `obj`
  * @property {(view: DataView, offset: number, obj: object) => number} write -
  *   returns the offset after the field
@@ -52,6 +54,7 @@ export function schema(type, fields) {
 
   return {
     type,
+    fields,
     byteLength,
 
     /** @returns {ArrayBuffer} */
@@ -130,6 +133,7 @@ function scalar(kind, name, { round = false, scale = null, clamp = null } = {}) 
   };
 
   return {
+    spec: { kind, name, round, scale, clamp },
     size: () => size,
     write(view, offset, obj) {
       view[set](offset, prepare(obj[name]), true);
@@ -166,6 +170,7 @@ export const f32 = (name, options) => scalar("f32", name, options);
  */
 export function bool(name) {
   return {
+    spec: { kind: "bool", name },
     size: () => 1,
     write(view, offset, obj) {
       view.setUint8(offset, obj[name] ? 1 : 0);
@@ -186,6 +191,7 @@ export function bool(name) {
  */
 export function flags(names) {
   return {
+    spec: { kind: "flags", names },
     size: () => 1,
     write(view, offset, obj) {
       let byte = 0;
@@ -216,6 +222,7 @@ export function flags(names) {
 export function bitmap(name, count) {
   const size = Math.ceil(count / 8);
   return {
+    spec: { kind: "bitmap", name, count },
     size: () => size,
     write(view, offset, obj) {
       const values = obj[name] || [];
@@ -249,6 +256,7 @@ export function bitmap(name, count) {
 export function struct(name, fields) {
   const body = sequence(fields);
   return {
+    spec: { kind: "struct", name, fields: fields.map((field) => field.spec) },
     size: (obj) => body.size(obj[name] || {}),
     write: (view, offset, obj) => body.write(view, offset, obj[name] || {}),
     read(view, offset, out) {
@@ -287,6 +295,7 @@ export function list(name, { capacity, fixed = false, count = null }, fields) {
   };
 
   return {
+    spec: { kind: "list", name, capacity, fixed, count, fields: fields.map((field) => field.spec) },
     size(obj) {
       const items = obj[name] || [];
       const n = fixed ? capacity : length(obj);
@@ -338,6 +347,6 @@ export function list(name, { capacity, fixed = false, count = null }, fields) {
  * @param {Field} field
  * @returns {Field}
  */
-export function custom({ size, write, read }) {
-  return { size, write, read };
+export function custom({ size, write, read, spec = { kind: "custom" } }) {
+  return { spec, size, write, read };
 }

@@ -197,6 +197,41 @@ describe("codec", () => {
     });
   });
 
+  describe("introspection", () => {
+    it("says what each field is, so tests can generate values for it", () => {
+      const msg = schema(1, [
+        u16("y", { round: true }),
+        i16("x", { scale: 10 }),
+        bool("on"),
+        flags(["a", "b"]),
+        bitmap("blocks", 4),
+        struct("p1", [u8("lives")]),
+        list("xs", { capacity: 2, fixed: true, count: "n" }, [f32("v")]),
+      ]);
+
+      expect(msg.fields.map((field) => field.spec)).toEqual([
+        { kind: "u16", name: "y", round: true, scale: null, clamp: null },
+        { kind: "i16", name: "x", round: false, scale: 10, clamp: null },
+        { kind: "bool", name: "on" },
+        { kind: "flags", names: ["a", "b"] },
+        { kind: "bitmap", name: "blocks", count: 4 },
+        {
+          kind: "struct",
+          name: "p1",
+          fields: [{ kind: "u8", name: "lives", round: false, scale: null, clamp: null }],
+        },
+        {
+          kind: "list",
+          name: "xs",
+          capacity: 2,
+          fixed: true,
+          count: "n",
+          fields: [{ kind: "f32", name: "v", round: false, scale: null, clamp: null }],
+        },
+      ]);
+    });
+  });
+
   describe("properties", () => {
     const shape = schema(0x80, [
       u8("phase"),

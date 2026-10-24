@@ -2,8 +2,8 @@ import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
 import {
   PHASE,
   MSG_TYPE,
-  encodeGameState,
-  encodeGameEnd,
+  SNAPSHOT,
+  GAME_END,
   encodeGameReady,
 } from "../../../../js/lib/games/pong/protocol.js";
 import { createInitialState, CANVAS_W, CANVAS_H } from "../../../../js/lib/games/pong/physics.js";
@@ -337,7 +337,7 @@ describe("PongEngine", () => {
       const originalState = { ...engine.gameState };
 
       const fakeState = { ...createInitialState(), score1: 99 };
-      const buf = encodeGameState(fakeState);
+      const buf = SNAPSHOT.encode(fakeState);
       engine._onChannelMessage({ data: buf });
 
       expect(engine.gameState.score1).toBe(originalState.score1);
@@ -399,7 +399,7 @@ describe("PongEngine", () => {
         ballX: 100,
         ballY: 200,
       };
-      const buf = encodeGameState(state);
+      const buf = SNAPSHOT.encode(state);
       engine._onChannelMessage({ data: buf });
 
       expect(engine.gameState.score1).toBe(5);
@@ -413,7 +413,7 @@ describe("PongEngine", () => {
       engine.start();
 
       const state = { ...createInitialState(), phase: PHASE.COUNTDOWN };
-      const buf = encodeGameState(state);
+      const buf = SNAPSHOT.encode(state);
       engine._onChannelMessage({ data: buf });
 
       expect(engine.audio.playCountdown).toHaveBeenCalled();
@@ -424,7 +424,7 @@ describe("PongEngine", () => {
       engine.start();
 
       const state = { ...createInitialState(), score1: 1, phase: PHASE.SCORED };
-      const buf = encodeGameState(state);
+      const buf = SNAPSHOT.encode(state);
       engine._onChannelMessage({ data: buf });
 
       expect(engine.audio.playScore).toHaveBeenCalled();
@@ -435,7 +435,7 @@ describe("PongEngine", () => {
       engine.start();
       engine.setKeyboardCaptured(true);
 
-      const buf = encodeGameEnd(11, 7, 1);
+      const buf = GAME_END.encode({ score1: 11, score2: 7, winner: 1 });
       engine._onChannelMessage({ data: buf });
 
       expect(engine.gameState.phase).toBe(PHASE.FINISHED);

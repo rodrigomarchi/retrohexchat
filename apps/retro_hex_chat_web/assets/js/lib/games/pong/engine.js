@@ -9,10 +9,8 @@ import { createPongAI, normalizePongAIDifficulty } from "./ai.js";
 import {
   MSG_TYPE,
   PHASE,
-  encodeGameState,
-  decodeGameState,
-  encodeGameEnd,
-  decodeGameEnd,
+  SNAPSHOT,
+  GAME_END,
   encodeGameReady,
   getMessageType,
 } from "./protocol.js";
@@ -143,7 +141,7 @@ export class PongEngine extends GameEngine {
     switch (type) {
       case MSG_TYPE.GAME_STATE:
         if (!this.isHost) {
-          const decoded = decodeGameState(buf);
+          const decoded = SNAPSHOT.decode(buf);
           if (decoded) {
             const prevPhase = this.gameState.phase;
             const prevScore1 = this.gameState.score1;
@@ -165,7 +163,7 @@ export class PongEngine extends GameEngine {
         break;
 
       case MSG_TYPE.GAME_END: {
-        const result = decodeGameEnd(buf);
+        const result = GAME_END.decode(buf);
         if (result) {
           this.setKeyboardCaptured(false);
           this.gameState.phase = PHASE.FINISHED;
@@ -316,7 +314,7 @@ export class PongEngine extends GameEngine {
     this.audio.playWin();
 
     // The channel is unreliable, and no later message restates the result.
-    this._sendCommand(encodeGameEnd(score1, score2, winner));
+    this._sendCommand(GAME_END.encode({ score1, score2, winner }));
     this._broadcastState();
 
     // Notify LiveView
@@ -339,7 +337,7 @@ export class PongEngine extends GameEngine {
 
   /** Send game state over DataChannel. */
   _broadcastState() {
-    this._sendState(encodeGameState(this.gameState));
+    this._sendState(SNAPSHOT.encode(this.gameState));
   }
 
   /** Render current state to canvas. */
