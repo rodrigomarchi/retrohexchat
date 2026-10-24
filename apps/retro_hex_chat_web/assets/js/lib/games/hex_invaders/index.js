@@ -153,6 +153,16 @@ function nextWave(game) {
   game.invalidate();
 }
 
+/**
+ * The fanfare for whoever won at this screen, the invasion sting otherwise.
+ * Co-op is won or lost together, and its result names no winner.
+ */
+function playEnd(game, winner) {
+  const won = game.gameState.mode === GAME_MODE.COOP ? winner > 0 : game.outcome(winner) === "win";
+  if (won) game.audio.playVictory();
+  else game.audio.playInvaded();
+}
+
 /** The guest builds the host's waves from the seed, keeping its own shield layout. */
 export function applySnapshot(game, decoded) {
   if (game.seed === 0 && decoded.seed !== 0) {
@@ -241,8 +251,7 @@ export default defineGame({
           const { winner } = game.endResult;
           game.broadcast();
           game.invalidate();
-          if (winner > 0) game.audio.playVictory();
-          else game.audio.playInvaded();
+          playEnd(game, winner);
           game.finish({
             end: { score1, score2, winner },
             result: { score: { p1: score1, p2: score2 }, winner },
@@ -257,6 +266,7 @@ export default defineGame({
   onEnd: (game, result) => {
     game.setKeyboardCaptured(false);
     game.gameState = { ...game.gameState, phase: PHASE.FINISHED };
+    playEnd(game, result.winner);
     game.invalidate();
     game._reportResult({ score: { p1: result.score1, p2: result.score2 }, winner: result.winner });
   },

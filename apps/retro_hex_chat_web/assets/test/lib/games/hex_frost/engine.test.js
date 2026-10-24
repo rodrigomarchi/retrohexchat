@@ -750,9 +750,9 @@ describe("HexFrostEngine", () => {
       });
     });
 
-    it("peer plays victory audio when winner > 0", () => {
+    it("peer plays victory audio when it won (winner 2)", () => {
       const { engine } = createEngine("hex_frost", false, vi.fn());
-      const buf = GAME_END.encode({ score1: 2, score2: 1, winner: 1 });
+      const buf = GAME_END.encode({ score1: 1, score2: 2, winner: 2 });
       engine._onChannelMessage({ data: buf });
       expect(engine.audio.stopAmbientWind).toHaveBeenCalled();
       expect(engine.audio.playVictory).toHaveBeenCalled();
@@ -1251,9 +1251,9 @@ describe("HexFrostEngine", () => {
       engine.stop();
     });
 
-    it("GAME_END peer does NOT call playGameOver when winner > 0 (inverse assertion)", () => {
+    it("GAME_END peer does NOT call playGameOver when it won (inverse assertion)", () => {
       const { engine } = createEngine("hex_frost", false, vi.fn());
-      const buf = GAME_END.encode({ score1: 5, score2: 2, winner: 1 });
+      const buf = GAME_END.encode({ score1: 2, score2: 5, winner: 2 });
       engine._onChannelMessage({ data: buf });
       expect(engine.audio.playVictory).toHaveBeenCalled();
       expect(engine.audio.playGameOver).not.toHaveBeenCalled();

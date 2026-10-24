@@ -34,6 +34,7 @@ vi.mock("../../../../js/lib/games/star_duel/audio.js", () => ({
       stopStarProximity: vi.fn(),
       playCountdown: vi.fn(),
       playWin: vi.fn(),
+      playLose: vi.fn(),
       playSpawn: vi.fn(),
     };
   },
@@ -534,7 +535,7 @@ describe("StarDuelEngine", () => {
       engine = new StarDuelEngine(canvas, channel, "star_duel", false, null);
       engine.start();
 
-      const buf = GAME_END.encode({ score1: 7, score2: 3, winner: 1 });
+      const buf = GAME_END.encode({ score1: 3, score2: 7, winner: 2 });
       engine._onChannelMessage({ data: buf });
 
       expect(engine.audio.playWin).toHaveBeenCalled();
@@ -1213,7 +1214,7 @@ describe("StarDuelEngine", () => {
       expect(engine.audio.playSpawn).toHaveBeenCalled();
     });
 
-    it("plays win audio on FINISHED transition", () => {
+    it("leaves the end fanfare to GAME_END on the FINISHED transition", () => {
       engine = new StarDuelEngine(canvas, channel, "star_duel", false, null);
       engine.start();
       engine.gameState.phase = PHASE.PLAYING;
@@ -1221,7 +1222,8 @@ describe("StarDuelEngine", () => {
       const buf = buildEncodedState({ phase: PHASE.FINISHED });
       engine._onChannelMessage({ data: buf });
 
-      expect(engine.audio.playWin).toHaveBeenCalled();
+      expect(engine.audio.playWin).not.toHaveBeenCalled();
+      expect(engine.audio.playLose).not.toHaveBeenCalled();
     });
 
     it("stops thrust on ROUND_OVER transition and clears peer flag", () => {

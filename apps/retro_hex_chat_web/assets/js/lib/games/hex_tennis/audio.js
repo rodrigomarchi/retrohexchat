@@ -120,6 +120,26 @@ export class TennisAudio extends GameSynth {
     });
   }
 
+  /** Match lost — the match fanfare falling: 600→200Hz square notes, 120ms each. */
+  playMatchLost() {
+    const ctx = this._ensureContext();
+    if (!ctx) return;
+    const notes = [600, 450, 300, 200];
+    const noteLen = 0.12;
+    notes.forEach((freq, i) => {
+      const osc = ctx.createOscillator();
+      const gain = ctx.createGain();
+      osc.type = "square";
+      osc.frequency.value = freq;
+      const start = ctx.currentTime + i * noteLen;
+      gain.gain.setValueAtTime(0.14, start);
+      gain.gain.linearRampToValueAtTime(0, start + noteLen);
+      osc.connect(gain).connect(ctx.destination);
+      osc.start(start);
+      osc.stop(start + noteLen);
+    });
+  }
+
   /** Fault — short buzz: 300Hz square, 60ms. */
   playFault() {
     this._playTone(300, 0.06, "square", 0.1);

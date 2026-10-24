@@ -217,6 +217,27 @@ export class HexHockeyAudio extends GameSynth {
     });
   }
 
+  /** Defeat — the victory arpeggio falling, in minor: C5, A♭4, E4, C4. */
+  playLose() {
+    this.stopSuddenDeath();
+    const ctx = this._ensureContext();
+    if (!ctx) return;
+    const t = ctx.currentTime;
+    const notes = [523, 415, 330, 262];
+    notes.forEach((freq, i) => {
+      const osc = ctx.createOscillator();
+      const gain = ctx.createGain();
+      osc.type = "square";
+      osc.frequency.value = freq;
+      gain.gain.setValueAtTime(0.2, t + i * 0.15);
+      gain.gain.exponentialRampToValueAtTime(0.001, t + i * 0.15 + 0.3);
+      osc.connect(gain);
+      gain.connect(this._output);
+      osc.start(t + i * 0.15);
+      osc.stop(t + i * 0.15 + 0.3);
+    });
+  }
+
   /** Click — puck capture */
   playCapture() {
     this._playTone(600, 0.03, "square", 0.15);

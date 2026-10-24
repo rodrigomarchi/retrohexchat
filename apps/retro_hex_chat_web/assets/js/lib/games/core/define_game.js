@@ -181,6 +181,17 @@ export function defineGame(def) {
       this._invalidate();
     }
 
+    /**
+     * How the match ended for the player at this screen: the host (and the
+     * human in solo play) is player one, the guest player two.
+     * @param {number} winner - 1, 2, or anything else for no winner
+     * @returns {"win" | "lose" | "draw"}
+     */
+    outcome(winner) {
+      if (winner !== 1 && winner !== 2) return "draw";
+      return winner === (this.isHost ? 1 : 2) ? "win" : "lose";
+    }
+
     /** In solo play, let the AI decide the guest's inputs for this step. */
     updateOpponent() {
       this._updateOpponentInputs();

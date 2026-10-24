@@ -77,6 +77,15 @@ export function playPeerEvents(game, events) {
   if (events & EVENT.WHISTLE) audio.playFaceoffWhistle();
 }
 
+const PLAYER_OF = { p1: 1, p2: 2 };
+
+/** The fanfare for whoever won at this screen, the falling one otherwise; either ends the drone. */
+function playEnd(game, winner) {
+  game.audio.stopSuddenDeath();
+  if (game.outcome(PLAYER_OF[winner]) === "win") game.audio.playVictory();
+  else game.audio.playLose();
+}
+
 /** A loose puck leaves a short trail; a carried one leaves none. */
 export function updatePuckTrail(game) {
   if (!game.gameState) return;
@@ -99,8 +108,7 @@ function toCountdown(game, state) {
 /** The match ends inside the step that reaches it, before the step's snapshot. */
 export function finishMatch(game, state) {
   const result = determineWinner(state);
-  game.audio.stopSuddenDeath();
-  game.audio.playVictory();
+  playEnd(game, result.winner);
   game.finish({ end: result, result, broadcast: false });
 }
 
@@ -354,8 +362,7 @@ export default defineGame({
   },
   onEnd: (game, result) => {
     game.setKeyboardCaptured(false);
-    game.audio.stopSuddenDeath();
-    game.audio.playVictory();
+    playEnd(game, result.winner);
     game._reportResult(result);
   },
   render: (game) => {

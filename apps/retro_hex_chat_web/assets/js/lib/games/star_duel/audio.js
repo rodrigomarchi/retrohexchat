@@ -168,6 +168,26 @@ export class StarDuelAudio extends GameSynth {
     });
   }
 
+  /** Lose — the win fanfare falling: 600→200Hz square notes, 120ms each. */
+  playLose() {
+    const ctx = this._ensureContext();
+    if (!ctx) return;
+    const notes = [600, 450, 300, 200];
+    const noteLen = 0.12;
+    notes.forEach((freq, i) => {
+      const osc = ctx.createOscillator();
+      const gain = ctx.createGain();
+      osc.type = "square";
+      osc.frequency.value = freq;
+      const start = ctx.currentTime + i * noteLen;
+      gain.gain.setValueAtTime(0.12, start);
+      gain.gain.linearRampToValueAtTime(0, start + noteLen);
+      osc.connect(gain).connect(ctx.destination);
+      osc.start(start);
+      osc.stop(start + noteLen);
+    });
+  }
+
   /** Spawn — rising blip: 200→800Hz sine, 150ms. */
   playSpawn() {
     const ctx = this._ensureContext();

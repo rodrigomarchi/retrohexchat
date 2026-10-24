@@ -695,10 +695,10 @@ describe("HexSkiingEngine", () => {
         expect(engine.audio.stopSkiDrone).toHaveBeenCalled();
       });
 
-      it("plays victory when winner > 0", () => {
+      it("plays victory when it won (winner 2)", () => {
         const { engine: e } = createEngine("hex_skiing", false);
         engine = e;
-        engine._onChannelMessage({ data: GAME_END.encode({ score1: 2, score2: 1, winner: 1 }) });
+        engine._onChannelMessage({ data: GAME_END.encode({ score1: 1, score2: 2, winner: 2 }) });
         expect(engine.audio.playVictory).toHaveBeenCalled();
         expect(engine.audio.playGameOver).not.toHaveBeenCalled();
       });

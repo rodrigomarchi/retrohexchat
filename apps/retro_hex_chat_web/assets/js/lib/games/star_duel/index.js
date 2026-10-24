@@ -76,6 +76,12 @@ function pressed(game, key, now) {
   return fresh;
 }
 
+/** The fanfare for whoever won at this screen, the falling one otherwise. */
+function playEnd(game, winner) {
+  if (game.outcome(winner) === "win") game.audio.playWin();
+  else game.audio.playLose();
+}
+
 function silenceThrust(game) {
   game.audio.stopThrust();
   game.thrustAudioPlaying = false;
@@ -258,7 +264,7 @@ function unpackShip(decoded, invulnTimer, warpCooldown) {
   };
 }
 
-/** The guest rebuilds the ships, blows up the ones that just died, and hears the round. */
+/** The guest rebuilds the ships, blows up the ones that just died, and hears the round (the end comes with GAME_END). */
 function applySnapshot(game, decoded) {
   const prev = game.gameState;
   const ship1 = unpackShip(decoded.ship1, decoded.invuln1, decoded.warpCooldown1);
@@ -310,7 +316,6 @@ function applySnapshot(game, decoded) {
   if (prev.phase !== decoded.phase) {
     if (decoded.phase === PHASE.COUNTDOWN) game.audio.playCountdown();
     if (decoded.phase === PHASE.SPAWNING) game.audio.playSpawn();
-    if (decoded.phase === PHASE.FINISHED) game.audio.playWin();
     if (decoded.phase === PHASE.ROUND_OVER || decoded.phase === PHASE.FINISHED) {
       game.audio.stopThrust();
       game.peerThrustAudioPlaying = false;
@@ -429,7 +434,7 @@ export default defineGame({
           const s = game.gameState;
           const winner = s.score1 >= WIN_SCORE ? 1 : 2;
           s.winner = winner;
-          game.audio.playWin();
+          playEnd(game, winner);
           silenceThrust(game);
           if (s.mode === GAME_MODE.GRAVITY_WELL) game.audio.stopStarProximity();
           game.finish({
@@ -451,7 +456,7 @@ export default defineGame({
       score1: result.score1,
       score2: result.score2,
     });
-    game.audio.playWin();
+    playEnd(game, result.winner);
     game.audio.stopThrust();
     game.audio.stopStarProximity();
     game.peerThrustAudioPlaying = false;

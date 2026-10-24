@@ -164,7 +164,7 @@ function finishMatch(game, state) {
   game.matchFinished = true;
   const winner = determineWinner(state);
   game.audio.stopAmbientWind();
-  if (winner > 0) game.audio.playVictory();
+  if (game.outcome(winner) === "win") game.audio.playVictory();
   else game.audio.playGameOver();
 
   const result = { score1: state.p1.roundWins, score2: state.p2.roundWins, winner };
@@ -266,7 +266,7 @@ export default defineGame({
     game.invalidate();
     game.setKeyboardCaptured(false);
     game.audio.stopAmbientWind();
-    if (result.winner > 0) game.audio.playVictory();
+    if (game.outcome(result.winner) === "win") game.audio.playVictory();
     else game.audio.playGameOver();
     game.onGameEnd?.(result);
   },

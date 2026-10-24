@@ -21,6 +21,7 @@ vi.mock("../../../../js/lib/games/pong/audio.js", () => ({
       playWallBounce: vi.fn(),
       playScore: vi.fn(),
       playWin: vi.fn(),
+      playLose: vi.fn(),
       playCountdown: vi.fn(),
     };
   },

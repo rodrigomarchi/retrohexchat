@@ -150,6 +150,12 @@ function play(game) {
   game.broadcast();
 }
 
+/** The fanfare for whoever won at this screen, the falling one otherwise. */
+function playEnd(game, winner) {
+  if (game.outcome(winner) === "win") game.audio.playMatchWon();
+  else game.audio.playMatchLost();
+}
+
 /** The ball travels flattened beside the rest of the state. */
 function toWire(game) {
   const s = game.gameState;
@@ -182,7 +188,6 @@ function applySnapshot(game, decoded) {
 
   if (prev.phase !== decoded.phase) {
     if (decoded.phase === PHASE.COUNTDOWN) game.audio.playCountdown();
-    if (decoded.phase === PHASE.GAME_OVER) game.audio.playMatchWon();
     if (decoded.phase === PHASE.POINT) game.audio.playPoint();
   }
   const s = game.gameState;
@@ -284,7 +289,7 @@ export default defineGame({
           const { p1Games, p2Games, winner, gameMode, isTiebreak } = game.gameState;
           game.broadcast();
           game.invalidate();
-          if (winner > 0) game.audio.playMatchWon();
+          if (winner > 0) playEnd(game, winner);
           game.finish({
             end: { p1Games, p2Games, winner, gameMode, wasTiebreak: isTiebreak },
             result: { score: { p1: p1Games, p2: p2Games }, winner },
@@ -305,7 +310,7 @@ export default defineGame({
       p1Games: result.p1Games,
       p2Games: result.p2Games,
     });
-    game.audio.playMatchWon();
+    playEnd(game, result.winner);
     game.invalidate();
     game._reportResult({
       score: { p1: result.p1Games, p2: result.p2Games },

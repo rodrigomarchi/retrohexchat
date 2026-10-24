@@ -68,6 +68,12 @@ function step(game) {
   game.broadcast();
 }
 
+/** The fanfare for whoever won at this screen, the falling one otherwise. */
+function playEnd(game, winner) {
+  if (game.outcome(winner) === "win") game.audio.playWin();
+  else game.audio.playLose();
+}
+
 function countdown(game, remaining) {
   game.gameState.countdown = remaining;
   game.broadcast();
@@ -75,11 +81,10 @@ function countdown(game, remaining) {
   game.audio.playCountdown();
 }
 
-/** The guest hears the countdown, the end and every point, from the snapshots. */
+/** The guest hears the countdown and every point from the snapshots; the end from GAME_END. */
 function onSnapshot(game, decoded, previous) {
-  if (previous.phase !== decoded.phase) {
-    if (decoded.phase === PHASE.COUNTDOWN) game.audio.playCountdown();
-    if (decoded.phase === PHASE.FINISHED) game.audio.playWin();
+  if (previous.phase !== decoded.phase && decoded.phase === PHASE.COUNTDOWN) {
+    game.audio.playCountdown();
   }
   if (game.gameState.score1 !== previous.score1 || game.gameState.score2 !== previous.score2) {
     game.audio.playScore();
@@ -152,7 +157,7 @@ export default defineGame({
         final: true,
         enter: (game) => {
           const { score1, score2, winner } = game.gameState;
-          game.audio.playWin();
+          playEnd(game, winner);
           game.finish({
             end: { score1, score2, winner },
             result: { score: { p1: score1, p2: score2 }, winner },
@@ -169,7 +174,7 @@ export default defineGame({
     game.gameState.winner = result.winner;
     game.gameState.score1 = result.score1;
     game.gameState.score2 = result.score2;
-    game.audio.playWin();
+    playEnd(game, result.winner);
     game.invalidate();
   },
   render: (game) => {

@@ -35,6 +35,7 @@ vi.mock("../../../../js/lib/games/hex_hockey/audio.js", () => ({
       playSuddenDeath: vi.fn(),
       stopSuddenDeath: vi.fn(),
       playVictory: vi.fn(),
+      playLose: vi.fn(),
       destroy: vi.fn(),
     };
   },
@@ -1084,11 +1085,11 @@ describe("hex_hockey_engine", () => {
   // ── Peer GAME_END handling ──────────────────────────────────
 
   describe("peer GAME_END handling", () => {
-    it("stops sudden death audio and plays victory on GAME_END", () => {
+    it("stops sudden death audio and plays victory on a GAME_END it won", () => {
       const { engine } = createEngine("hex_hockey", false);
       engine.start();
 
-      const buf = GAME_END.encode({ winner: "p1", score_p1: 3, score_p2: 2 });
+      const buf = GAME_END.encode({ winner: "p2", score_p1: 2, score_p2: 3 });
       engine._onChannelMessage({ data: buf });
 
       expect(engine.audio.stopSuddenDeath).toHaveBeenCalled();

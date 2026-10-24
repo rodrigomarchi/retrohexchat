@@ -1670,7 +1670,7 @@ describe("TennisEngine", () => {
   // ── Peer phase audio ──
 
   describe("_playPeerAudio additional", () => {
-    it("plays playMatchWon on GAME_OVER transition", () => {
+    it("leaves the match fanfare to GAME_END on the GAME_OVER transition", () => {
       const e = new TennisEngine(
         createMockCanvas(),
         createMockChannel(),
@@ -1692,7 +1692,7 @@ describe("TennisEngine", () => {
       };
       const matchSpy = vi.spyOn(e.audio, "playMatchWon");
       e._onChannelMessage({ data: SNAPSHOT.encode(flat) });
-      expect(matchSpy).toHaveBeenCalled();
+      expect(matchSpy).not.toHaveBeenCalled();
       e.stop();
     });
 

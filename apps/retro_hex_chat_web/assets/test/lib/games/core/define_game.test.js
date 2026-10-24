@@ -215,6 +215,40 @@ describe("defineGame", () => {
     });
   });
 
+  describe("outcome", () => {
+    const engineFor = (isHost, options = {}) => {
+      const Game = defineGame(definition);
+      return new Game(
+        document.createElement("canvas"),
+        createLocalTransport(),
+        "fake",
+        isHost,
+        null,
+        options,
+      );
+    };
+
+    it("tells the host, player one, how the match ended for them", () => {
+      const host = engineFor(true);
+      expect(host.outcome(1)).toBe("win");
+      expect(host.outcome(2)).toBe("lose");
+      expect(host.outcome(0)).toBe("draw");
+    });
+
+    it("tells the guest, player two, the other way round", () => {
+      const guest = engineFor(false);
+      expect(guest.outcome(1)).toBe("lose");
+      expect(guest.outcome(2)).toBe("win");
+      expect(guest.outcome(0)).toBe("draw");
+    });
+
+    it("counts the human as player one in solo play", () => {
+      const solo = engineFor(true, { mode: "solo" });
+      expect(solo.outcome(1)).toBe("win");
+      expect(solo.outcome(2)).toBe("lose");
+    });
+  });
+
   describe("a game with no state yet", () => {
     it("steps without throwing until its state is built", () => {
       const ticks = [];

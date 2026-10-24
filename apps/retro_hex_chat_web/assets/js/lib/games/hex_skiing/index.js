@@ -86,7 +86,7 @@ function roundEnd(game, state) {
 export function finishMatch(game, state) {
   const winner = determineWinner(state);
   game.audio.stopSkiDrone();
-  if (winner > 0) game.audio.playVictory();
+  if (game.outcome(winner) === "win") game.audio.playVictory();
   else game.audio.playGameOver();
   const end = { score1: state.p1RoundWins, score2: state.p2RoundWins, winner };
   game.finish({ end, result: end, broadcast: false });
@@ -223,7 +223,7 @@ export default defineGame({
     game.invalidate();
     game.setKeyboardCaptured(false);
     game.audio.stopSkiDrone();
-    if (result.winner > 0) game.audio.playVictory();
+    if (game.outcome(result.winner) === "win") game.audio.playVictory();
     else game.audio.playGameOver();
     game._reportResult(result);
   },
