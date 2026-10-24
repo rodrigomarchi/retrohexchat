@@ -186,6 +186,57 @@ describe("defineGame", () => {
     });
   });
 
+  describe("discrete commands", () => {
+    it("runs onKeyDown after the engine's key handling, and hands the guest's commands to onRemoteEdge", async () => {
+      const seen = [];
+      const Game = defineGame({
+        ...definition,
+        onKeyDown: (game, event) => {
+          if (!game.isHost && event.key === "x") game._sendInputEdge(7);
+        },
+        onRemoteEdge: (_game, code) => seen.push(code),
+      });
+      match = await playMatch({ EngineClass: Game, gameId: "fake" });
+      match.advance(100);
+      match.key("guest", "x");
+      match.advance(100);
+      expect(seen).toEqual([7]);
+    });
+  });
+
+  describe("finish", () => {
+    it("can leave out the last snapshot, for a game that sent it before the end", async () => {
+      const Game = defineGame({
+        ...definition,
+        flow: {
+          ...definition.flow,
+          states: {
+            ...definition.flow.states,
+            FINISHED: {
+              final: true,
+              enter: (game) =>
+                game.finish({
+                  end: { score1: 2, score2: 0, winner: 1 },
+                  result: {},
+                  broadcast: false,
+                }),
+            },
+          },
+        },
+      });
+      match = await playMatch({
+        EngineClass: Game,
+        gameId: "fake",
+        script: hold("host", "ArrowRight", 300),
+      });
+      match.advance(3000);
+      const host = types(match.record().wire, "host>guest");
+      const end = host.indexOf("83");
+      expect(end).toBeGreaterThan(0);
+      expect(host.slice(end).filter((t) => t === "80")).toEqual([]);
+    });
+  });
+
   describe("a solo match", () => {
     it("creates the AI with the difficulty asked for, and keeps only the inputs the game declares", async () => {
       match = await play({ mode: "solo", difficulty: "hard" });

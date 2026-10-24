@@ -1,7 +1,7 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
 import { startMatch, dropFirst, messageType } from "../../helpers/game_match.js";
 import { BASE_MSG } from "../../../js/lib/games/net_protocol.js";
-import { SurroundEngine } from "../../../js/lib/games/surround/engine.js";
+import SurroundEngine from "../../../js/lib/games/surround/index.js";
 import WarlordEngine from "../../../js/lib/games/warlords/index.js";
 import { PixelTanksEngine } from "../../../js/lib/games/pixel_tanks/engine.js";
 import { HexHockeyEngine } from "../../../js/lib/games/hex_hockey/engine.js";
@@ -125,14 +125,15 @@ describe("P2P match", () => {
       match = startMatch(SurroundEngine, "light_trails");
       match.advance(200);
 
-      const ticks = [];
-      match.host._tickLoop = () => ticks.push(1);
-      match.host._startTickLoop();
+      match.host.flow.go("PLAYING");
+      const before = match.hostChannel.sent.length;
       match.advance(1000);
+      // Every grid move sends one snapshot.
+      const moves = match.hostChannel.sent.length - before;
 
       // Six fixed steps per grid move: ten moves a second, whatever the display.
-      expect(ticks.length).toBeGreaterThanOrEqual(8);
-      expect(ticks.length).toBeLessThanOrEqual(12);
+      expect(moves).toBeGreaterThanOrEqual(8);
+      expect(moves).toBeLessThanOrEqual(12);
     });
   });
 

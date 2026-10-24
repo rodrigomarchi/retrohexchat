@@ -4,7 +4,7 @@ import { createLocalTransport, normalizeGameTransport } from "./transport.js";
 const P2P_ENGINE_LOADERS = {
   hex_pong: () => import("./pong/index.js").then((module) => module.default),
   block_breakers: () => import("./breakout/index.js").then((module) => module.default),
-  light_trails: () => import("./surround/engine.js").then((module) => module.SurroundEngine),
+  light_trails: () => import("./surround/index.js").then((module) => module.default),
   star_duel: () => import("./star_duel/engine.js").then((module) => module.StarDuelEngine),
   gravity_well: () => import("./star_duel/engine.js").then((module) => module.StarDuelEngine),
   debris_field: () => import("./star_duel/engine.js").then((module) => module.StarDuelEngine),

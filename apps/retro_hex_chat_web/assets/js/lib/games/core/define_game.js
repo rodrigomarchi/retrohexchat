@@ -21,7 +21,9 @@
  *   onEnd: (game, result) => …,                    // guest, when the host ends the match
  *   onStart, onStop: (game) => …,                  // around the engine's own start and stop
  *   onRemoteInputChange: (game, previous, current) => …,  // the guest's or AI's held inputs changed
- *   onKeyUp: (game, event) => …, onBlur: (game) => …,     // after a key is released; on losing focus
+ *   onKeyDown, onKeyUp: (game, event) => …,        // after the engine's own key handling
+ *   onBlur: (game) => …,                            // on losing focus, before inputs are released
+ *   onRemoteEdge: (game, code) => …,                // a discrete command from the guest
  *   render: (game) => …,
  *   disconnectResult: (game) => ({ … }),
  * });
@@ -181,14 +183,16 @@ export function defineGame(def) {
     /**
      * End the match on the host: stop, tell the guest (repeated, since the
      * channel is unreliable), send a last snapshot and report the result.
-     * @param {{ end: object, result: object }} outcome - `end` is what goes on
-     *   the wire, `result` what the page is told
+     * @param {{ end: object, result: object, broadcast?: boolean }} outcome -
+     *   `end` is what goes on the wire, `result` what the page is told;
+     *   `broadcast: false` leaves out the last snapshot, for a game that sent
+     *   it before the end
      */
-    finish({ end, result }) {
+    finish({ end, result, broadcast = true }) {
       this._stopSteps();
       this.setKeyboardCaptured(false);
       this._sendCommand(def.schema.end.encode(end));
-      this._broadcastState();
+      if (broadcast) this._broadcastState();
       this.onGameEnd?.(result);
     }
 
@@ -250,9 +254,18 @@ export function defineGame(def) {
       super._handleBlur();
     }
 
+    _handleKeyDown(event) {
+      super._handleKeyDown(event);
+      def.onKeyDown?.(this, event);
+    }
+
     _handleKeyUp(event) {
       super._handleKeyUp(event);
       def.onKeyUp?.(this, event);
+    }
+
+    _handleRemoteEdge(code) {
+      def.onRemoteEdge?.(this, code);
     }
 
     _broadcastState() {

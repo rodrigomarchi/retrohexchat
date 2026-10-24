@@ -44,7 +44,7 @@ vi.mock("../../../../js/lib/games/surround/renderer.js", () => ({
   render: vi.fn(),
 }));
 
-const { SurroundEngine } = await import("../../../../js/lib/games/surround/engine.js");
+const { default: SurroundEngine } = await import("../../../../js/lib/games/surround/index.js");
 const { getColors } = await import("../../../../js/lib/games/surround/renderer.js");
 
 function createMockChannel() {
@@ -89,6 +89,11 @@ function createMockCanvas() {
   canvas.getContext = vi.fn(() => mockCtx);
 
   return canvas;
+}
+
+/** One grid move: the cycles move once every six fixed steps. */
+function gridMove(engine) {
+  for (let i = 0; i < 6; i++) engine._gameLoop();
 }
 
 describe("SurroundEngine", () => {
@@ -149,7 +154,6 @@ describe("SurroundEngine", () => {
 
     it("initializes tick and phase timers as null", () => {
       engine = new SurroundEngine(canvas, channel, "light_trails", true, null);
-      expect(engine.tickInterval).toBeNull();
       expect(engine.phaseTimer).toBeNull();
     });
 
@@ -288,7 +292,7 @@ describe("SurroundEngine", () => {
     it("stops the grid tick", () => {
       engine = new SurroundEngine(canvas, channel, "light_trails", true, null);
       engine.start();
-      engine._startTickLoop();
+      engine.flow.go("PLAYING");
       engine.stop();
       expect(engine.stepping).toBe(false);
     });
@@ -527,24 +531,26 @@ describe("SurroundEngine", () => {
       engine.start();
       engine.gameState.phase = PHASE.PLAYING;
 
-      engine._startTickLoop();
+      engine.flow.go("PLAYING");
       expect(engine.stepping).toBe(true);
 
       // Starting twice is a no-op rather than a second loop.
-      engine._startTickLoop();
+      engine.flow.go("PLAYING");
       expect(engine.stepping).toBe(true);
     });
 
     it("_startCountdown clears existing phaseTimer", () => {
       engine = new SurroundEngine(canvas, channel, "light_trails", true, null);
       engine.start();
-      engine._savedScores = { score1: 0, score2: 0 };
+      engine.savedScores = { score1: 0, score2: 0 };
 
-      engine._startCountdown(0);
-      expect(engine.phaseTimer).not.toBeNull();
+      engine.nextRound = 0;
+      engine.flow.go("COUNTDOWN");
+      expect(engine.gameState.phase).toBe(PHASE.COUNTDOWN);
 
       // Calling again should not orphan the timer
-      engine._startCountdown(1);
+      engine.nextRound = 1;
+      engine.flow.go("COUNTDOWN");
       expect(engine.gameState.round).toBe(1);
       expect(engine.gameState.phase).toBe(PHASE.COUNTDOWN);
     });
@@ -585,7 +591,7 @@ describe("SurroundEngine", () => {
       engine.gameState.score2 = 1;
       channel.send.mockClear();
 
-      engine._handleMatchOver();
+      engine.flow.go("MATCH_OVER");
 
       const gameEndCall = channel.send.mock.calls.find((call) => {
         const view = new Uint8Array(call[0]);
@@ -601,7 +607,7 @@ describe("SurroundEngine", () => {
       engine.gameState.score1 = WINS_NEEDED;
       engine.gameState.score2 = 1;
 
-      engine._handleMatchOver();
+      engine.flow.go("MATCH_OVER");
 
       expect(onEnd).toHaveBeenCalledWith({
         score: { p1: WINS_NEEDED, p2: 1 },
@@ -615,7 +621,7 @@ describe("SurroundEngine", () => {
       engine.gameState.score1 = WINS_NEEDED;
       engine.gameState.score2 = 1;
 
-      engine._handleMatchOver();
+      engine.flow.go("MATCH_OVER");
 
       expect(engine.audio.playMatchWin).toHaveBeenCalled();
     });
@@ -626,7 +632,7 @@ describe("SurroundEngine", () => {
       engine.gameState.score1 = 1;
       engine.gameState.score2 = WINS_NEEDED;
 
-      engine._handleMatchOver();
+      engine.flow.go("MATCH_OVER");
 
       expect(engine.audio.playMatchLose).toHaveBeenCalled();
     });
@@ -692,7 +698,7 @@ describe("SurroundEngine", () => {
       engine.gameState.phase = PHASE.PLAYING;
 
       const origP1X = engine.gameState.p1.x;
-      engine._tickLoop();
+      gridMove(engine);
 
       expect(engine.gameState.p1.x).toBe(origP1X + 1);
     });
@@ -703,7 +709,7 @@ describe("SurroundEngine", () => {
       engine.gameState.phase = PHASE.PLAYING;
       channel.send.mockClear();
 
-      engine._tickLoop();
+      gridMove(engine);
 
       expect(channel.send).toHaveBeenCalled();
     });
@@ -717,7 +723,7 @@ describe("SurroundEngine", () => {
       engine.gameState.p1.dir = DIR.LEFT;
       engine.p1PendingDir = DIR.LEFT;
 
-      engine._tickLoop();
+      gridMove(engine);
 
       expect(engine.gameState.phase).toBe(PHASE.ROUND_OVER);
     });
@@ -731,7 +737,7 @@ describe("SurroundEngine", () => {
       engine.gameState.p1.dir = DIR.LEFT;
       engine.p1PendingDir = DIR.LEFT;
 
-      engine._tickLoop();
+      gridMove(engine);
 
       expect(engine.gameState.score2).toBe(1);
     });
@@ -749,7 +755,7 @@ describe("SurroundEngine", () => {
       engine.gameState.p2.dir = DIR.RIGHT;
       engine.p2PendingDir = DIR.RIGHT;
 
-      engine._tickLoop();
+      gridMove(engine);
 
       expect(engine.gameState.score1).toBe(1);
     });
@@ -768,7 +774,7 @@ describe("SurroundEngine", () => {
       engine.gameState.p2.dir = DIR.RIGHT;
       engine.p2PendingDir = DIR.RIGHT;
 
-      engine._tickLoop();
+      gridMove(engine);
 
       expect(engine.gameState.score1).toBe(0);
       expect(engine.gameState.score2).toBe(0);
@@ -780,7 +786,7 @@ describe("SurroundEngine", () => {
       engine.gameState.phase = PHASE.WAITING;
       channel.send.mockClear();
 
-      engine._tickLoop();
+      gridMove(engine);
 
       expect(channel.send).not.toHaveBeenCalled();
     });
@@ -795,7 +801,7 @@ describe("SurroundEngine", () => {
       engine.start();
       engine.gameState.phase = PHASE.PLAYING;
 
-      engine._tickLoop();
+      gridMove(engine);
 
       expect(opponentController.nextDirection).toHaveBeenCalledWith({
         state: expect.objectContaining({ phase: PHASE.PLAYING }),
@@ -811,14 +817,14 @@ describe("SurroundEngine", () => {
       engine = new SurroundEngine(canvas, channel, "light_trails", true, null);
       engine.start();
       engine.gameState.phase = PHASE.PLAYING;
-      engine._savedScores = { score1: 0, score2: 0 };
+      engine.savedScores = { score1: 0, score2: 0 };
 
       // P1 at left edge heading left => dies
       engine.gameState.p1.x = 0;
       engine.gameState.p1.dir = DIR.LEFT;
       engine.p1PendingDir = DIR.LEFT;
 
-      engine._tickLoop();
+      gridMove(engine);
 
       expect(engine.gameState.phase).toBe(PHASE.ROUND_OVER);
       expect(engine.gameState.score2).toBe(1);
@@ -829,13 +835,13 @@ describe("SurroundEngine", () => {
       engine = new SurroundEngine(canvas, channel, "light_trails", true, null);
       engine.start();
       engine.gameState.phase = PHASE.PLAYING;
-      engine._savedScores = { score1: 0, score2: 0 };
+      engine.savedScores = { score1: 0, score2: 0 };
 
       engine.gameState.p1.x = 0;
       engine.gameState.p1.dir = DIR.LEFT;
       engine.p1PendingDir = DIR.LEFT;
 
-      engine._tickLoop();
+      gridMove(engine);
 
       // Particles should have been created
       expect(engine.gameState.particles.length).toBeGreaterThan(0);
@@ -845,13 +851,13 @@ describe("SurroundEngine", () => {
       engine = new SurroundEngine(canvas, channel, "light_trails", true, null);
       engine.start();
       engine.gameState.phase = PHASE.PLAYING;
-      engine._savedScores = { score1: 0, score2: 0 };
+      engine.savedScores = { score1: 0, score2: 0 };
 
       engine.gameState.p2.x = 59; // GRID_W - 1
       engine.gameState.p2.dir = DIR.RIGHT;
       engine.p2PendingDir = DIR.RIGHT;
 
-      engine._tickLoop();
+      gridMove(engine);
 
       expect(engine.gameState.particles.length).toBeGreaterThan(0);
       expect(engine.gameState.score1).toBe(1);
@@ -862,16 +868,16 @@ describe("SurroundEngine", () => {
       engine = new SurroundEngine(canvas, channel, "light_trails", true, null);
       engine.start();
       engine.gameState.phase = PHASE.PLAYING;
-      engine._savedScores = { score1: 0, score2: 0 };
+      engine.savedScores = { score1: 0, score2: 0 };
 
       engine.gameState.p1.x = 0;
       engine.gameState.p1.dir = DIR.LEFT;
       engine.p1PendingDir = DIR.LEFT;
 
-      engine._tickLoop();
+      gridMove(engine);
 
       expect(engine.gameState.phase).toBe(PHASE.ROUND_OVER);
-      expect(engine.phaseTimer).not.toBeNull();
+      expect(vi.getTimerCount()).toBeGreaterThan(0);
 
       // After ROUND_OVER_DELAY (3000ms), next countdown starts
       vi.advanceTimersByTime(3000);
@@ -883,7 +889,7 @@ describe("SurroundEngine", () => {
       engine = new SurroundEngine(canvas, channel, "light_trails", true, null);
       engine.start();
       engine.gameState.phase = PHASE.PLAYING;
-      engine._savedScores = { score1: 0, score2: 0 };
+      engine.savedScores = { score1: 0, score2: 0 };
 
       // P2 dies (heading right at right edge)
       engine.gameState.p2.x = 59;
@@ -891,7 +897,7 @@ describe("SurroundEngine", () => {
       engine.p2PendingDir = DIR.RIGHT;
 
       engine.audio.playRoundWin.mockClear();
-      engine._tickLoop();
+      gridMove(engine);
 
       expect(engine.audio.playRoundWin).toHaveBeenCalled();
     });
