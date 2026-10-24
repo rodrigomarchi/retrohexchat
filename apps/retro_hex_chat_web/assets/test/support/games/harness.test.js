@@ -97,6 +97,18 @@ describe("playMatch", () => {
     expect(match.pendingTimers()).toBe(0);
   });
 
+  it("counts only the engines' timers as left behind, not the script's", async () => {
+    match = await playMatch({
+      gameId: "hex_pong",
+      mode: "p2p",
+      script: [{ at: 60_000, side: "host", key: "ArrowUp", down: true }],
+    });
+    match.advance(6000);
+    match.stop();
+
+    expect(match.pendingTimers()).toBe(0);
+  });
+
   it("closing the channel ends a P2P match as disconnected", async () => {
     match = await playMatch({ gameId: "hex_pong", mode: "p2p" });
     match.advance(8000);

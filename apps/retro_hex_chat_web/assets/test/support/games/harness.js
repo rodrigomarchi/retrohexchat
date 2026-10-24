@@ -120,13 +120,13 @@ export async function playMatch({
   if (mode === "solo") engines.host.beginMatch({ difficulty });
   observerFrame = requestAnimationFrame(observeFrame);
 
-  for (const { at, side, key, down } of script) {
+  const scriptTimers = script.map(({ at, side, key, down }) =>
     setTimeout(() => {
       keyboards[side].dispatchEvent(
         new KeyboardEvent(down ? "keydown" : "keyup", { key, cancelable: true }),
       );
-    }, at);
-  }
+    }, at),
+  );
 
   let stopped = false;
 
@@ -176,6 +176,7 @@ export async function playMatch({
       if (stopped) return;
       stopped = true;
       cancelAnimationFrame(observerFrame);
+      for (const timer of scriptTimers) clearTimeout(timer);
       for (const side of sides) engines[side].stop();
       this.leaked = vi.getTimerCount();
     },
