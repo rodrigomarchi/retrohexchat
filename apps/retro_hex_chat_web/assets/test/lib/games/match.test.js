@@ -3,7 +3,7 @@ import { startMatch, dropFirst, messageType } from "../../helpers/game_match.js"
 import { BASE_MSG } from "../../../js/lib/games/net_protocol.js";
 import SurroundEngine from "../../../js/lib/games/surround/index.js";
 import WarlordEngine from "../../../js/lib/games/warlords/index.js";
-import { PixelTanksEngine } from "../../../js/lib/games/pixel_tanks/engine.js";
+import PixelTanksEngine from "../../../js/lib/games/pixel_tanks/index.js";
 import { HexHockeyEngine } from "../../../js/lib/games/hex_hockey/engine.js";
 import PongEngine from "../../../js/lib/games/pong/index.js";
 
@@ -177,7 +177,7 @@ describe("P2P match", () => {
       match.advance(200);
 
       const before = match.host._telemetry._frames;
-      match.host._startGameLoop();
+      match.host.flow.go("PLAYING");
       match.advance(500);
 
       expect(match.host._telemetry._frames).toBeGreaterThan(before + 10);

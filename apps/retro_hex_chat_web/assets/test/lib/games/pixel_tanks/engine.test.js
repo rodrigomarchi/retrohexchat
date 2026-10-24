@@ -44,7 +44,7 @@ vi.mock("../../../../js/lib/games/pixel_tanks/renderer.js", () => ({
   render: vi.fn(),
 }));
 
-const { PixelTanksEngine } = await import("../../../../js/lib/games/pixel_tanks/engine.js");
+const { default: PixelTanksEngine } = await import("../../../../js/lib/games/pixel_tanks/index.js");
 const { render, getColors } = await import("../../../../js/lib/games/pixel_tanks/renderer.js");
 
 function createMockChannel() {
@@ -93,6 +93,12 @@ function createMockCanvas() {
   canvas.getContext = vi.fn(() => mockCtx);
 
   return canvas;
+}
+
+/** The guest in phase `from`, receiving a snapshot in phase `to`. */
+function receivePhase(engine, from, to) {
+  engine.gameState.phase = from;
+  engine._onChannelMessage({ data: SNAPSHOT.encode({ ...engine.gameState, phase: to }) });
 }
 
 describe("PixelTanksEngine", () => {
@@ -481,7 +487,7 @@ describe("PixelTanksEngine", () => {
       engine.gameState.roundWins2 = 0;
       engine.gameState.phase = PHASE.MATCH_OVER;
 
-      engine._handleMatchOver();
+      engine.flow.go("MATCH_OVER");
 
       expect(onGameEnd).toHaveBeenCalledWith({
         score: { p1: 2, p2: 0 },
@@ -803,13 +809,13 @@ describe("PixelTanksEngine", () => {
     it("resets fire pressed state on stop", () => {
       engine = new PixelTanksEngine(canvas, channel, "pixel_tanks", true, null);
       engine.start();
-      engine._localFirePressed = true;
-      engine._remoteFirePressed = true;
+      engine.localFirePressed = true;
+      engine.remoteFirePressed = true;
 
       engine.stop();
 
-      expect(engine._localFirePressed).toBe(false);
-      expect(engine._remoteFirePressed).toBe(false);
+      expect(engine.localFirePressed).toBe(false);
+      expect(engine.remoteFirePressed).toBe(false);
     });
 
     it("guards phase callbacks after stop", () => {
@@ -1042,7 +1048,7 @@ describe("PixelTanksEngine", () => {
       engine.audio.playWin.mockClear();
       engine.audio.playLose.mockClear();
 
-      engine._handleMatchOver();
+      engine.flow.go("MATCH_OVER");
 
       expect(engine.audio.playWin).toHaveBeenCalled();
       expect(engine.audio.playLose).not.toHaveBeenCalled();
@@ -1059,7 +1065,7 @@ describe("PixelTanksEngine", () => {
       engine.audio.playWin.mockClear();
       engine.audio.playLose.mockClear();
 
-      engine._handleMatchOver();
+      engine.flow.go("MATCH_OVER");
 
       expect(engine.audio.playLose).toHaveBeenCalled();
       expect(engine.audio.playWin).not.toHaveBeenCalled();
@@ -1074,7 +1080,7 @@ describe("PixelTanksEngine", () => {
       engine.audio.playRoundEnd.mockClear();
 
       // Simulate phase transition to ROUND_OVER
-      engine._playPhaseAudio(PHASE.PLAYING, PHASE.ROUND_OVER);
+      receivePhase(engine, PHASE.PLAYING, PHASE.ROUND_OVER);
 
       expect(engine.audio.playRoundEnd).toHaveBeenCalled();
     });
@@ -1156,7 +1162,7 @@ describe("PixelTanksEngine", () => {
       engine.audio.playSpawn.mockClear();
       engine.audio.playRoundEnd.mockClear();
 
-      engine._playPhaseAudio(PHASE.PLAYING, PHASE.PLAYING);
+      receivePhase(engine, PHASE.PLAYING, PHASE.PLAYING);
       expect(engine.audio.playCountdown).not.toHaveBeenCalled();
       expect(engine.audio.playSpawn).not.toHaveBeenCalled();
       expect(engine.audio.playRoundEnd).not.toHaveBeenCalled();
@@ -1167,7 +1173,7 @@ describe("PixelTanksEngine", () => {
       engine.start();
       engine.audio.playCountdown.mockClear();
 
-      engine._playPhaseAudio(PHASE.WAITING, PHASE.COUNTDOWN);
+      receivePhase(engine, PHASE.WAITING, PHASE.COUNTDOWN);
       expect(engine.audio.playCountdown).toHaveBeenCalled();
     });
   });

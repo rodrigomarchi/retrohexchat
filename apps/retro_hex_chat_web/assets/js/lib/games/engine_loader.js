@@ -9,7 +9,7 @@ const P2P_ENGINE_LOADERS = {
   gravity_well: () => import("./star_duel/engine.js").then((module) => module.StarDuelEngine),
   debris_field: () => import("./star_duel/engine.js").then((module) => module.StarDuelEngine),
   hex_warlords: () => import("./warlords/index.js").then((module) => module.default),
-  pixel_tanks: () => import("./pixel_tanks/engine.js").then((module) => module.PixelTanksEngine),
+  pixel_tanks: () => import("./pixel_tanks/index.js").then((module) => module.default),
   hex_raid: () => import("./hex_raid/engine.js").then((module) => module.HexRaidEngine),
   hex_raid_pacifist: () => import("./hex_raid/engine.js").then((module) => module.HexRaidEngine),
   hex_raid_blitz: () => import("./hex_raid/engine.js").then((module) => module.HexRaidEngine),
