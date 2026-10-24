@@ -250,21 +250,29 @@ export function bits(parts) {
 /**
  * An array of `count` booleans, packed eight to a byte, most significant bit
  * first.
+ *
+ * With `key`, the array holds objects and each one's `key` decides its bit (a
+ * missing item is false); with `as`, the booleans read back go under that name
+ * instead of `name` — a list of blocks goes out, a list of which are alive
+ * comes back.
+ *
  * @param {string} name
  * @param {number} count
+ * @param {{ key?: string, as?: string }} [options]
  * @returns {Field}
  */
-export function bitmap(name, count) {
+export function bitmap(name, count, { key = null, as = null } = {}) {
   const size = Math.ceil(count / 8);
+  const isSet = key === null ? (item) => item : (item) => item && item[key];
   return {
-    spec: { kind: "bitmap", name, count },
+    spec: { kind: "bitmap", name, count, key, as },
     size: () => size,
     write(view, offset, obj) {
       const values = obj[name] || [];
       for (let byte = 0; byte < size; byte++) {
         let packed = 0;
         for (let bit = 0; bit < 8; bit++) {
-          if (values[byte * 8 + bit]) packed |= 1 << (7 - bit);
+          if (isSet(values[byte * 8 + bit])) packed |= 1 << (7 - bit);
         }
         view.setUint8(offset + byte, packed);
       }
@@ -276,28 +284,36 @@ export function bitmap(name, count) {
       for (let i = 0; i < count; i++) {
         values.push((view.getUint8(offset + (i >> 3)) & (1 << (7 - (i & 7)))) !== 0);
       }
-      out[name] = values;
+      out[as ?? name] = values;
       return offset + size;
     },
   };
 }
 
 /**
- * The fields of a nested object, written in place.
+ * The fields of a nested object, written in place. With `flat`, they are
+ * read back onto the outer object as `name + field` (`p1.x` goes out, `p1x`
+ * comes back).
  * @param {string} name
  * @param {Field[]} fields
+ * @param {{ flat?: boolean }} [options]
  * @returns {Field}
  */
-export function struct(name, fields) {
+export function struct(name, fields, { flat = false } = {}) {
   const body = sequence(fields);
   return {
-    spec: { kind: "struct", name, fields: fields.map((field) => field.spec) },
+    spec: { kind: "struct", name, flat, fields: fields.map((field) => field.spec) },
     size: (obj) => body.size(obj[name] || {}),
     write: (view, offset, obj) => body.write(view, offset, obj[name] || {}),
     read(view, offset, out) {
       const nested = {};
       const at = body.read(view, offset, nested);
-      if (at >= 0) out[name] = nested;
+      if (at < 0) return at;
+      if (flat) {
+        for (const [key, value] of Object.entries(nested)) out[name + key] = value;
+      } else {
+        out[name] = nested;
+      }
       return at;
     },
   };

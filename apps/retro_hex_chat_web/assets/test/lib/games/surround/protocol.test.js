@@ -7,12 +7,10 @@ import {
   GRID_W,
   GRID_H,
   WINS_NEEDED,
-  encodeGameState,
-  decodeGameState,
-  encodeGameEnd,
-  decodeGameEnd,
   encodeGameReady,
   getMessageType,
+  SNAPSHOT,
+  GAME_END,
 } from "../../../../js/lib/games/surround/protocol.js";
 
 describe("surround_protocol", () => {
@@ -31,8 +29,8 @@ describe("surround_protocol", () => {
 
     it("round-trips game state correctly", () => {
       const state = makeState();
-      const buf = encodeGameState(state);
-      const decoded = decodeGameState(buf);
+      const buf = SNAPSHOT.encode(state);
+      const decoded = SNAPSHOT.decode(buf);
 
       expect(decoded.p1x).toBe(state.p1.x);
       expect(decoded.p1y).toBe(state.p1.y);
@@ -48,25 +46,25 @@ describe("surround_protocol", () => {
     });
 
     it("has correct message type byte", () => {
-      const buf = encodeGameState(makeState());
+      const buf = SNAPSHOT.encode(makeState());
       expect(getMessageType(buf)).toBe(MSG_TYPE.GAME_STATE);
     });
 
     it("produces exactly 12 bytes", () => {
-      const buf = encodeGameState(makeState());
+      const buf = SNAPSHOT.encode(makeState());
       expect(buf.byteLength).toBe(12);
     });
 
     it("returns null for buffer too small", () => {
       const buf = new ArrayBuffer(5);
-      expect(decodeGameState(buf)).toBeNull();
+      expect(SNAPSHOT.decode(buf)).toBeNull();
     });
 
     it("returns null for wrong message type", () => {
       const buf = new ArrayBuffer(12);
       const view = new DataView(buf);
       view.setUint8(0, 0x81);
-      expect(decodeGameState(buf)).toBeNull();
+      expect(SNAPSHOT.decode(buf)).toBeNull();
     });
 
     it("round-trips zero values and max positions", () => {
@@ -79,8 +77,8 @@ describe("surround_protocol", () => {
         countdown: 3,
         round: 0,
       };
-      const buf = encodeGameState(state);
-      const decoded = decodeGameState(buf);
+      const buf = SNAPSHOT.encode(state);
+      const decoded = SNAPSHOT.decode(buf);
       expect(decoded.p1x).toBe(0);
       expect(decoded.p1y).toBe(0);
       expect(decoded.p2x).toBe(GRID_W - 1);
@@ -99,7 +97,7 @@ describe("surround_protocol", () => {
           countdown: 0,
           round: 0,
         };
-        const decoded = decodeGameState(encodeGameState(state));
+        const decoded = SNAPSHOT.decode(SNAPSHOT.encode(state));
         expect(decoded.p1dir).toBe(dir);
         expect(decoded.p2dir).toBe(dir);
       }
@@ -116,7 +114,7 @@ describe("surround_protocol", () => {
           countdown: 0,
           round: 3,
         };
-        const decoded = decodeGameState(encodeGameState(state));
+        const decoded = SNAPSHOT.decode(SNAPSHOT.encode(state));
         expect(decoded.phase).toBe(phase);
       }
     });
@@ -124,42 +122,42 @@ describe("surround_protocol", () => {
 
   describe("encodeGameEnd / decodeGameEnd", () => {
     it("round-trips P1 wins", () => {
-      const buf = encodeGameEnd(3, 1, 1);
-      const decoded = decodeGameEnd(buf);
+      const buf = GAME_END.encode({ score1: 3, score2: 1, winner: 1 });
+      const decoded = GAME_END.decode(buf);
       expect(decoded.score1).toBe(3);
       expect(decoded.score2).toBe(1);
       expect(decoded.winner).toBe(1);
     });
 
     it("round-trips P2 wins", () => {
-      const buf = encodeGameEnd(2, 3, 2);
-      const decoded = decodeGameEnd(buf);
+      const buf = GAME_END.encode({ score1: 2, score2: 3, winner: 2 });
+      const decoded = GAME_END.decode(buf);
       expect(decoded.score1).toBe(2);
       expect(decoded.score2).toBe(3);
       expect(decoded.winner).toBe(2);
     });
 
     it("round-trips draw", () => {
-      const buf = encodeGameEnd(0, 0, 0);
-      const decoded = decodeGameEnd(buf);
+      const buf = GAME_END.encode({ score1: 0, score2: 0, winner: 0 });
+      const decoded = GAME_END.decode(buf);
       expect(decoded.winner).toBe(0);
     });
 
     it("has correct message type", () => {
-      const buf = encodeGameEnd(3, 2, 1);
+      const buf = GAME_END.encode({ score1: 3, score2: 2, winner: 1 });
       expect(getMessageType(buf)).toBe(MSG_TYPE.GAME_END);
     });
 
     it("returns null for buffer too small", () => {
       const buf = new ArrayBuffer(2);
-      expect(decodeGameEnd(buf)).toBeNull();
+      expect(GAME_END.decode(buf)).toBeNull();
     });
 
     it("returns null for wrong message type", () => {
       const buf = new ArrayBuffer(4);
       const view = new DataView(buf);
       view.setUint8(0, 0x81);
-      expect(decodeGameEnd(buf)).toBeNull();
+      expect(GAME_END.decode(buf)).toBeNull();
     });
   });
 
@@ -174,8 +172,8 @@ describe("surround_protocol", () => {
         countdown: 0,
         round: 256,
       };
-      const buf = encodeGameState(state);
-      const decoded = decodeGameState(buf);
+      const buf = SNAPSHOT.encode(state);
+      const decoded = SNAPSHOT.decode(buf);
       expect(decoded.round).toBe(0);
     });
 
@@ -189,8 +187,8 @@ describe("surround_protocol", () => {
         countdown: 0,
         round: 257,
       };
-      const buf = encodeGameState(state);
-      const decoded = decodeGameState(buf);
+      const buf = SNAPSHOT.encode(state);
+      const decoded = SNAPSHOT.decode(buf);
       expect(decoded.round).toBe(1);
     });
   });

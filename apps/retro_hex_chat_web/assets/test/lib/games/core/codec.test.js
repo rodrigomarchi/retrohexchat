@@ -127,12 +127,30 @@ describe("codec", () => {
     });
   });
 
+  describe("bitmap of objects", () => {
+    it("reads one key of each item when writing, and names the booleans read back", () => {
+      const msg = schema(1, [bitmap("blocks", 3, { key: "alive", as: "blocksAlive" })]);
+      const wire = msg.encode({ blocks: [{ alive: true }, undefined, { alive: true }] });
+      expect(bytes(wire)).toEqual([1, 0b10100000]);
+      expect(msg.decode(wire)).toEqual({ blocksAlive: [true, false, true] });
+    });
+  });
+
   describe("struct", () => {
     it("writes the fields of a nested object in order", () => {
       const msg = schema(1, [struct("p1", [u8("lives"), u16("score")]), u8("round")]);
       const state = { p1: { lives: 3, score: 500 }, round: 2 };
       expect(bytes(msg.encode(state))).toEqual([1, 3, 0xf4, 0x01, 2]);
       expect(msg.decode(msg.encode(state))).toEqual(state);
+    });
+  });
+
+  describe("struct read back flat", () => {
+    it("writes from the nested object and reads back as name + field", () => {
+      const msg = schema(1, [struct("p1", [u8("x"), u8("dir")], { flat: true })]);
+      const wire = msg.encode({ p1: { x: 4, dir: 2 } });
+      expect(bytes(wire)).toEqual([1, 4, 2]);
+      expect(msg.decode(wire)).toEqual({ p1x: 4, p1dir: 2 });
     });
   });
 
@@ -240,10 +258,11 @@ describe("codec", () => {
         { kind: "i16", name: "x", round: false, scale: 10, clamp: null, or: null },
         { kind: "bool", name: "on" },
         { kind: "flags", names: ["a", "b"] },
-        { kind: "bitmap", name: "blocks", count: 4 },
+        { kind: "bitmap", name: "blocks", count: 4, key: null, as: null },
         {
           kind: "struct",
           name: "p1",
+          flat: false,
           fields: [{ kind: "u8", name: "lives", round: false, scale: null, clamp: null, or: null }],
         },
         {

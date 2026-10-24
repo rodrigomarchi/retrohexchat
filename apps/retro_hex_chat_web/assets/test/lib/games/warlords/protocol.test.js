@@ -4,61 +4,13 @@ import {
   MSG_TYPE,
   BRICKS_PER_CASTLE,
   INITIAL_LIVES,
-  encodeBrickBitmap,
-  decodeBrickBitmap,
-  encodeGameState,
-  decodeGameState,
-  encodeGameEnd,
-  decodeGameEnd,
   encodeGameReady,
   getMessageType,
+  SNAPSHOT,
+  GAME_END,
 } from "../../../../js/lib/games/warlords/protocol.js";
 
 describe("Warlords Protocol", () => {
-  describe("brick bitmap", () => {
-    it("encodes all alive bricks", () => {
-      const bricks = Array.from({ length: BRICKS_PER_CASTLE }, () => ({ alive: true }));
-      const bytes = encodeBrickBitmap(bricks);
-      expect(bytes.length).toBe(3);
-      // 24 bits all set: 0xFF, 0xFF, 0xFF
-      expect(bytes[0]).toBe(0xff);
-      expect(bytes[1]).toBe(0xff);
-      expect(bytes[2]).toBe(0xff);
-    });
-
-    it("encodes all dead bricks", () => {
-      const bricks = Array.from({ length: BRICKS_PER_CASTLE }, () => ({ alive: false }));
-      const bytes = encodeBrickBitmap(bricks);
-      expect(bytes[0]).toBe(0);
-      expect(bytes[1]).toBe(0);
-      expect(bytes[2]).toBe(0);
-    });
-
-    it("roundtrips mixed alive/dead", () => {
-      const bricks = Array.from({ length: BRICKS_PER_CASTLE }, (_, i) => ({
-        alive: i % 3 === 0,
-      }));
-      const bytes = encodeBrickBitmap(bricks);
-      const decoded = decodeBrickBitmap(bytes);
-      for (let i = 0; i < BRICKS_PER_CASTLE; i++) {
-        expect(decoded[i]).toBe(bricks[i].alive);
-      }
-    });
-
-    it("roundtrips single brick alive", () => {
-      for (let target = 0; target < BRICKS_PER_CASTLE; target++) {
-        const bricks = Array.from({ length: BRICKS_PER_CASTLE }, (_, i) => ({
-          alive: i === target,
-        }));
-        const bytes = encodeBrickBitmap(bricks);
-        const decoded = decodeBrickBitmap(bytes);
-        for (let i = 0; i < BRICKS_PER_CASTLE; i++) {
-          expect(decoded[i]).toBe(i === target);
-        }
-      }
-    });
-  });
-
   describe("game state encode/decode", () => {
     it("roundtrips a full state", () => {
       const state = {
@@ -80,10 +32,10 @@ describe("Warlords Protocol", () => {
         caughtBy: 0,
       };
 
-      const buf = encodeGameState(state);
+      const buf = SNAPSHOT.encode(state);
       expect(buf.byteLength).toBe(33);
 
-      const decoded = decodeGameState(buf);
+      const decoded = SNAPSHOT.decode(buf);
       expect(decoded).not.toBeNull();
       expect(decoded.fireballX).toBeCloseTo(320.5, 1);
       expect(decoded.fireballY).toBeCloseTo(240.25, 1);
@@ -108,13 +60,13 @@ describe("Warlords Protocol", () => {
 
     it("returns null for too-small buffer", () => {
       const buf = new ArrayBuffer(10);
-      expect(decodeGameState(buf)).toBeNull();
+      expect(SNAPSHOT.decode(buf)).toBeNull();
     });
 
     it("returns null for wrong message type", () => {
       const buf = new ArrayBuffer(33);
       new DataView(buf).setUint8(0, 0x81);
-      expect(decodeGameState(buf)).toBeNull();
+      expect(SNAPSHOT.decode(buf)).toBeNull();
     });
 
     it("encodes caught state", () => {
@@ -135,38 +87,38 @@ describe("Warlords Protocol", () => {
         caughtBy: 1,
       };
 
-      const buf = encodeGameState(state);
-      const decoded = decodeGameState(buf);
+      const buf = SNAPSHOT.encode(state);
+      const decoded = SNAPSHOT.decode(buf);
       expect(decoded.caughtBy).toBe(1);
     });
   });
 
   describe("game end encode/decode", () => {
     it("roundtrips P1 wins", () => {
-      const buf = encodeGameEnd(2, 0, 1);
+      const buf = GAME_END.encode({ p1Lives: 2, p2Lives: 0, winner: 1 });
       expect(buf.byteLength).toBe(4);
-      const decoded = decodeGameEnd(buf);
+      const decoded = GAME_END.decode(buf);
       expect(decoded.p1Lives).toBe(2);
       expect(decoded.p2Lives).toBe(0);
       expect(decoded.winner).toBe(1);
     });
 
     it("roundtrips P2 wins", () => {
-      const buf = encodeGameEnd(0, 1, 2);
-      const decoded = decodeGameEnd(buf);
+      const buf = GAME_END.encode({ p1Lives: 0, p2Lives: 1, winner: 2 });
+      const decoded = GAME_END.decode(buf);
       expect(decoded.p1Lives).toBe(0);
       expect(decoded.p2Lives).toBe(1);
       expect(decoded.winner).toBe(2);
     });
 
     it("returns null for too-small buffer", () => {
-      expect(decodeGameEnd(new ArrayBuffer(2))).toBeNull();
+      expect(GAME_END.decode(new ArrayBuffer(2))).toBeNull();
     });
 
     it("returns null for wrong message type", () => {
       const buf = new ArrayBuffer(4);
       new DataView(buf).setUint8(0, MSG_TYPE.GAME_STATE);
-      expect(decodeGameEnd(buf)).toBeNull();
+      expect(GAME_END.decode(buf)).toBeNull();
     });
   });
 

@@ -3,72 +3,13 @@ import {
   MSG_TYPE,
   PHASE,
   TOTAL_BLOCKS,
-  encodeBlockBitmap,
-  decodeBlockBitmap,
-  encodeGameState,
-  decodeGameState,
-  encodeGameEnd,
-  decodeGameEnd,
   encodeGameReady,
   getMessageType,
+  SNAPSHOT,
+  GAME_END,
 } from "../../../../js/lib/games/breakout/protocol.js";
 
 describe("breakout_protocol", () => {
-  describe("block bitmap", () => {
-    it("encodes all blocks alive", () => {
-      const blocks = Array.from({ length: TOTAL_BLOCKS }, () => ({ alive: true }));
-      const bitmap = encodeBlockBitmap(blocks);
-      const decoded = decodeBlockBitmap(bitmap);
-      expect(decoded.every((v) => v === true)).toBe(true);
-    });
-
-    it("encodes all blocks dead", () => {
-      const blocks = Array.from({ length: TOTAL_BLOCKS }, () => ({ alive: false }));
-      const bitmap = encodeBlockBitmap(blocks);
-      const decoded = decodeBlockBitmap(bitmap);
-      expect(decoded.every((v) => v === false)).toBe(true);
-    });
-
-    it("encodes specific pattern correctly", () => {
-      const blocks = Array.from({ length: TOTAL_BLOCKS }, (_, i) => ({
-        alive: i % 3 === 0,
-      }));
-      const bitmap = encodeBlockBitmap(blocks);
-      const decoded = decodeBlockBitmap(bitmap);
-      for (let i = 0; i < TOTAL_BLOCKS; i++) {
-        expect(decoded[i]).toBe(i % 3 === 0);
-      }
-    });
-
-    it("returns exactly 50 entries", () => {
-      const blocks = Array.from({ length: TOTAL_BLOCKS }, () => ({ alive: true }));
-      const bitmap = encodeBlockBitmap(blocks);
-      const decoded = decodeBlockBitmap(bitmap);
-      expect(decoded).toHaveLength(TOTAL_BLOCKS);
-    });
-
-    it("encodes alternating alive/dead pattern", () => {
-      const blocks = Array.from({ length: TOTAL_BLOCKS }, (_, i) => ({
-        alive: i % 2 === 0,
-      }));
-      const bitmap = encodeBlockBitmap(blocks);
-      const decoded = decodeBlockBitmap(bitmap);
-      for (let i = 0; i < TOTAL_BLOCKS; i++) {
-        expect(decoded[i]).toBe(i % 2 === 0);
-      }
-    });
-
-    it("handles single block alive at last position", () => {
-      const blocks = Array.from({ length: TOTAL_BLOCKS }, (_, i) => ({
-        alive: i === TOTAL_BLOCKS - 1,
-      }));
-      const bitmap = encodeBlockBitmap(blocks);
-      const decoded = decodeBlockBitmap(bitmap);
-      expect(decoded[TOTAL_BLOCKS - 1]).toBe(true);
-      expect(decoded[0]).toBe(false);
-    });
-  });
-
   describe("encodeGameState / decodeGameState", () => {
     function makeState() {
       return {
@@ -91,8 +32,8 @@ describe("breakout_protocol", () => {
 
     it("round-trips game state correctly", () => {
       const state = makeState();
-      const buf = encodeGameState(state);
-      const decoded = decodeGameState(buf);
+      const buf = SNAPSHOT.encode(state);
+      const decoded = SNAPSHOT.decode(buf);
 
       expect(decoded.ballX).toBeCloseTo(state.ballX, 1);
       expect(decoded.ballY).toBeCloseTo(state.ballY, 1);
@@ -109,8 +50,8 @@ describe("breakout_protocol", () => {
 
     it("round-trips block bitmap", () => {
       const state = makeState();
-      const buf = encodeGameState(state);
-      const decoded = decodeGameState(buf);
+      const buf = SNAPSHOT.encode(state);
+      const decoded = SNAPSHOT.decode(buf);
 
       for (let i = 0; i < TOTAL_BLOCKS; i++) {
         expect(decoded.blocksAlive[i]).toBe(state.blocks[i].alive);
@@ -119,20 +60,20 @@ describe("breakout_protocol", () => {
 
     it("has correct message type byte", () => {
       const state = makeState();
-      const buf = encodeGameState(state);
+      const buf = SNAPSHOT.encode(state);
       expect(getMessageType(buf)).toBe(MSG_TYPE.GAME_STATE);
     });
 
     it("returns null for buffer too small", () => {
       const buf = new ArrayBuffer(5);
-      expect(decodeGameState(buf)).toBeNull();
+      expect(SNAPSHOT.decode(buf)).toBeNull();
     });
 
     it("returns null for wrong message type", () => {
       const buf = new ArrayBuffer(34);
       const view = new DataView(buf);
       view.setUint8(0, 0x81);
-      expect(decodeGameState(buf)).toBeNull();
+      expect(SNAPSHOT.decode(buf)).toBeNull();
     });
 
     it("round-trips zero score and max lives accurately", () => {
@@ -150,8 +91,8 @@ describe("breakout_protocol", () => {
         blocksRemaining: TOTAL_BLOCKS,
         blocks: Array.from({ length: TOTAL_BLOCKS }, () => ({ alive: true })),
       };
-      const buf = encodeGameState(state);
-      const decoded = decodeGameState(buf);
+      const buf = SNAPSHOT.encode(state);
+      const decoded = SNAPSHOT.decode(buf);
       expect(decoded.score).toBe(0);
       expect(decoded.lives).toBe(3);
       expect(decoded.countdown).toBe(3);
@@ -162,34 +103,34 @@ describe("breakout_protocol", () => {
 
   describe("encodeGameEnd / decodeGameEnd", () => {
     it("round-trips win", () => {
-      const buf = encodeGameEnd(2500, true);
-      const decoded = decodeGameEnd(buf);
+      const buf = GAME_END.encode({ score: 2500, won: true });
+      const decoded = GAME_END.decode(buf);
       expect(decoded.score).toBe(2500);
       expect(decoded.won).toBe(true);
     });
 
     it("round-trips loss", () => {
-      const buf = encodeGameEnd(800, false);
-      const decoded = decodeGameEnd(buf);
+      const buf = GAME_END.encode({ score: 800, won: false });
+      const decoded = GAME_END.decode(buf);
       expect(decoded.score).toBe(800);
       expect(decoded.won).toBe(false);
     });
 
     it("has correct message type", () => {
-      const buf = encodeGameEnd(100, true);
+      const buf = GAME_END.encode({ score: 100, won: true });
       expect(getMessageType(buf)).toBe(MSG_TYPE.GAME_END);
     });
 
     it("returns null for buffer too small", () => {
       const buf = new ArrayBuffer(2);
-      expect(decodeGameEnd(buf)).toBeNull();
+      expect(GAME_END.decode(buf)).toBeNull();
     });
 
     it("returns null for wrong message type", () => {
       const buf = new ArrayBuffer(4);
       const view = new DataView(buf);
       view.setUint8(0, 0x81);
-      expect(decodeGameEnd(buf)).toBeNull();
+      expect(GAME_END.decode(buf)).toBeNull();
     });
   });
 

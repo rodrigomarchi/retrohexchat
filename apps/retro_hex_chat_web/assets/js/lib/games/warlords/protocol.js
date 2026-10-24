@@ -1,10 +1,13 @@
 /**
  * Binary protocol for Hex Warlords game state over WebRTC DataChannel.
- * All messages use DataView for zero-JSON binary encoding.
+ * Each message is declared once as a schema on the core codec, which writes
+ * and reads it from that one field list.
  * @module games/warlords_protocol
  */
 
 // Message types (shared with game_engine.js 0x80+ range)
+import { schema, bitmap, f32, u8, u16 } from "../core/codec.js";
+
 export const MSG_TYPE = {
   GAME_STATE: 0x80,
   GAME_START: 0x82,
@@ -28,195 +31,25 @@ export const PHASE = {
 export const BRICKS_ROWS = 6;
 export const BRICKS_COLS = 4;
 export const BRICKS_PER_CASTLE = BRICKS_ROWS * BRICKS_COLS; // 24
-const BITMAP_BYTES_PER_CASTLE = Math.ceil(BRICKS_PER_CASTLE / 8); // 3 bytes for 24 bits
 export const INITIAL_LIVES = 3;
 
-// --- Sizes ---
-// [type(1)][fbX(4)][fbY(4)][fbVX(4)][fbVY(4)][s1Y(2)][s2Y(2)][p1Bricks(3)][p2Bricks(3)]
-// [p1Lives(1)][p2Lives(1)][phase(1)][countdown(1)][round(1)][caughtBy(1)]
-const GAME_STATE_SIZE =
-  1 + 4 + 4 + 4 + 4 + 2 + 2 + BITMAP_BYTES_PER_CASTLE * 2 + 1 + 1 + 1 + 1 + 1 + 1; // 33
-const GAME_END_SIZE = 4;
+/** The host's snapshot of the battle, sent every step. */
+export const SNAPSHOT = schema(MSG_TYPE.GAME_STATE, [
+  f32("fireballX"),
+  f32("fireballY"),
+  f32("fireballVX"),
+  f32("fireballVY"),
+  u16("shield1Y", { round: true }),
+  u16("shield2Y", { round: true }),
+  bitmap("p1Bricks", BRICKS_PER_CASTLE, { key: "alive", as: "p1BricksAlive" }),
+  bitmap("p2Bricks", BRICKS_PER_CASTLE, { key: "alive", as: "p2BricksAlive" }),
+  u8("p1Lives"),
+  u8("p2Lives"),
+  u8("phase"),
+  u8("countdown"),
+  u8("round"),
+  u8("caughtBy"),
+]);
 
-/**
- * Encode brick alive states as a bitmap (3 bytes for 24 bricks).
- * Bit=1 means brick is alive.
- * @param {Array<{alive: boolean}>} bricks
- * @returns {Uint8Array}
- */
-export function encodeBrickBitmap(bricks) {
-  const bytes = new Uint8Array(BITMAP_BYTES_PER_CASTLE);
-  for (let i = 0; i < BRICKS_PER_CASTLE; i++) {
-    if (bricks[i] && bricks[i].alive) {
-      const byteIndex = Math.floor(i / 8);
-      const bitIndex = 7 - (i % 8);
-      bytes[byteIndex] |= 1 << bitIndex;
-    }
-  }
-  return bytes;
-}
-
-/**
- * Decode brick bitmap back to alive array.
- * @param {Uint8Array} bytes
- * @returns {boolean[]}
- */
-export function decodeBrickBitmap(bytes) {
-  const alive = [];
-  for (let i = 0; i < BRICKS_PER_CASTLE; i++) {
-    const byteIndex = Math.floor(i / 8);
-    const bitIndex = 7 - (i % 8);
-    alive.push((bytes[byteIndex] & (1 << bitIndex)) !== 0);
-  }
-  return alive;
-}
-
-/**
- * Encode full game state for host -> peer transmission.
- * Total: 33 bytes
- * @param {object} state
- * @returns {ArrayBuffer}
- */
-export function encodeGameState(state) {
-  const buf = new ArrayBuffer(GAME_STATE_SIZE);
-  const view = new DataView(buf);
-  let offset = 0;
-
-  view.setUint8(offset, MSG_TYPE.GAME_STATE);
-  offset += 1;
-  view.setFloat32(offset, state.fireballX, true);
-  offset += 4;
-  view.setFloat32(offset, state.fireballY, true);
-  offset += 4;
-  view.setFloat32(offset, state.fireballVX, true);
-  offset += 4;
-  view.setFloat32(offset, state.fireballVY, true);
-  offset += 4;
-  view.setUint16(offset, Math.round(state.shield1Y), true);
-  offset += 2;
-  view.setUint16(offset, Math.round(state.shield2Y), true);
-  offset += 2;
-
-  // P1 brick bitmap
-  const p1Bitmap = encodeBrickBitmap(state.p1Bricks);
-  const uint8 = new Uint8Array(buf);
-  uint8.set(p1Bitmap, offset);
-  offset += BITMAP_BYTES_PER_CASTLE;
-
-  // P2 brick bitmap
-  const p2Bitmap = encodeBrickBitmap(state.p2Bricks);
-  uint8.set(p2Bitmap, offset);
-  offset += BITMAP_BYTES_PER_CASTLE;
-
-  view.setUint8(offset, state.p1Lives);
-  offset += 1;
-  view.setUint8(offset, state.p2Lives);
-  offset += 1;
-  view.setUint8(offset, state.phase);
-  offset += 1;
-  view.setUint8(offset, state.countdown);
-  offset += 1;
-  view.setUint8(offset, state.round);
-  offset += 1;
-  view.setUint8(offset, state.caughtBy);
-
-  return buf;
-}
-
-/**
- * Decode game state from binary buffer.
- * @param {ArrayBuffer} buf
- * @returns {object|null}
- */
-export function decodeGameState(buf) {
-  if (buf.byteLength < GAME_STATE_SIZE) return null;
-  const view = new DataView(buf);
-  if (view.getUint8(0) !== MSG_TYPE.GAME_STATE) return null;
-
-  let offset = 1;
-  const fireballX = view.getFloat32(offset, true);
-  offset += 4;
-  const fireballY = view.getFloat32(offset, true);
-  offset += 4;
-  const fireballVX = view.getFloat32(offset, true);
-  offset += 4;
-  const fireballVY = view.getFloat32(offset, true);
-  offset += 4;
-  const shield1Y = view.getUint16(offset, true);
-  offset += 2;
-  const shield2Y = view.getUint16(offset, true);
-  offset += 2;
-
-  // P1 brick bitmap
-  const p1BitmapBytes = new Uint8Array(buf, offset, BITMAP_BYTES_PER_CASTLE);
-  const p1BricksAlive = decodeBrickBitmap(p1BitmapBytes);
-  offset += BITMAP_BYTES_PER_CASTLE;
-
-  // P2 brick bitmap
-  const p2BitmapBytes = new Uint8Array(buf, offset, BITMAP_BYTES_PER_CASTLE);
-  const p2BricksAlive = decodeBrickBitmap(p2BitmapBytes);
-  offset += BITMAP_BYTES_PER_CASTLE;
-
-  const p1Lives = view.getUint8(offset);
-  offset += 1;
-  const p2Lives = view.getUint8(offset);
-  offset += 1;
-  const phase = view.getUint8(offset);
-  offset += 1;
-  const countdown = view.getUint8(offset);
-  offset += 1;
-  const round = view.getUint8(offset);
-  offset += 1;
-  const caughtBy = view.getUint8(offset);
-
-  return {
-    fireballX,
-    fireballY,
-    fireballVX,
-    fireballVY,
-    shield1Y,
-    shield2Y,
-    p1BricksAlive,
-    p2BricksAlive,
-    p1Lives,
-    p2Lives,
-    phase,
-    countdown,
-    round,
-    caughtBy,
-  };
-}
-
-/**
- * Encode game end for host -> peer transmission.
- * Layout: [type(1)][p1Lives(1)][p2Lives(1)][winner(1)]
- * @param {number} p1Lives
- * @param {number} p2Lives
- * @param {number} winner - 1 or 2
- * @returns {ArrayBuffer}
- */
-export function encodeGameEnd(p1Lives, p2Lives, winner) {
-  const buf = new ArrayBuffer(GAME_END_SIZE);
-  const view = new DataView(buf);
-  view.setUint8(0, MSG_TYPE.GAME_END);
-  view.setUint8(1, p1Lives);
-  view.setUint8(2, p2Lives);
-  view.setUint8(3, winner);
-  return buf;
-}
-
-/**
- * Decode game end from binary buffer.
- * @param {ArrayBuffer} buf
- * @returns {object|null}
- */
-export function decodeGameEnd(buf) {
-  if (buf.byteLength < GAME_END_SIZE) return null;
-  const view = new DataView(buf);
-  if (view.getUint8(0) !== MSG_TYPE.GAME_END) return null;
-  return {
-    p1Lives: view.getUint8(1),
-    p2Lives: view.getUint8(2),
-    winner: view.getUint8(3),
-  };
-}
+/** How the match ended. */
+export const GAME_END = schema(MSG_TYPE.GAME_END, [u8("p1Lives"), u8("p2Lives"), u8("winner")]);

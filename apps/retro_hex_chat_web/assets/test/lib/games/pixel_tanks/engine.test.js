@@ -4,9 +4,9 @@ import {
   PHASE,
   MSG_TYPE,
   GAME_MODE,
-  encodeGameState,
-  encodeGameEnd,
   encodeGameReady,
+  SNAPSHOT,
+  GAME_END,
 } from "../../../../js/lib/games/pixel_tanks/protocol.js";
 import { CANVAS_W, CANVAS_H } from "../../../../js/lib/games/pixel_tanks/physics.js";
 
@@ -392,7 +392,7 @@ describe("PixelTanksEngine", () => {
         roundTimer: 5000,
       };
 
-      const buf = encodeGameState(state);
+      const buf = SNAPSHOT.encode(state);
       const handler = channel.addEventListener.mock.calls.find((c) => c[0] === "message")[1];
       handler({ data: buf });
 
@@ -442,10 +442,10 @@ describe("PixelTanksEngine", () => {
         roundTimer: 5000,
       };
 
-      handler({ data: encodeGameState(activeState) });
+      handler({ data: SNAPSHOT.encode(activeState) });
       expect(engine._keyboardCaptured).toBe(true);
 
-      handler({ data: encodeGameState({ ...activeState, phase: PHASE.WAITING }) });
+      handler({ data: SNAPSHOT.encode({ ...activeState, phase: PHASE.WAITING }) });
       expect(engine._keyboardCaptured).toBe(false);
     });
   });
@@ -463,7 +463,7 @@ describe("PixelTanksEngine", () => {
         roundWins1: 2,
         roundWins2: 1,
       };
-      const buf = encodeGameEnd(result);
+      const buf = GAME_END.encode(result);
       const handler = channel.addEventListener.mock.calls.find((c) => c[0] === "message")[1];
       handler({ data: buf });
 
@@ -1122,7 +1122,7 @@ describe("PixelTanksEngine", () => {
       engine.audio.playLose.mockClear();
 
       const result = { score1: 2, score2: 5, winner: 2, roundWins1: 0, roundWins2: 2 };
-      const buf = encodeGameEnd(result);
+      const buf = GAME_END.encode(result);
       const handler = channel.addEventListener.mock.calls.find((c) => c[0] === "message")[1];
       handler({ data: buf });
 
@@ -1139,7 +1139,7 @@ describe("PixelTanksEngine", () => {
       engine.audio.playLose.mockClear();
 
       const result = { score1: 5, score2: 2, winner: 1, roundWins1: 2, roundWins2: 0 };
-      const buf = encodeGameEnd(result);
+      const buf = GAME_END.encode(result);
       const handler = channel.addEventListener.mock.calls.find((c) => c[0] === "message")[1];
       handler({ data: buf });
 
@@ -1240,7 +1240,7 @@ describe("PixelTanksEngine", () => {
         roundTimer: 7200,
       };
 
-      const buf = encodeGameState(state);
+      const buf = SNAPSHOT.encode(state);
       const handler = channel.addEventListener.mock.calls.find((c) => c[0] === "message")[1];
       handler({ data: buf });
 

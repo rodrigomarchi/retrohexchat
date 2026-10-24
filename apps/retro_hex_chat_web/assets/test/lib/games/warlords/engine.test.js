@@ -5,9 +5,9 @@ import {
   PHASE,
   MSG_TYPE,
   BRICKS_PER_CASTLE,
-  encodeGameState,
-  encodeGameEnd,
   encodeGameReady,
+  SNAPSHOT,
+  GAME_END,
 } from "../../../../js/lib/games/warlords/protocol.js";
 import {
   createInitialState,
@@ -354,7 +354,7 @@ describe("WarlordEngine", () => {
         round: 2,
         caughtBy: 0,
       };
-      const buf = encodeGameState(state);
+      const buf = SNAPSHOT.encode(state);
       engine._onChannelMessage({ data: buf });
 
       expect(engine.gameState.p1Lives).toBe(2);
@@ -366,7 +366,7 @@ describe("WarlordEngine", () => {
       engine = new WarlordEngine(canvas, channel, "hex_warlords", false, null);
       engine.start();
 
-      const buf = encodeGameEnd(0, 2, 2);
+      const buf = GAME_END.encode({ p1Lives: 0, p2Lives: 2, winner: 2 });
       engine._onChannelMessage({ data: buf });
 
       expect(engine.gameState.phase).toBe(PHASE.FINISHED);
@@ -379,7 +379,7 @@ describe("WarlordEngine", () => {
       engine = new WarlordEngine(canvas, channel, "hex_warlords", false, null);
       engine.start();
 
-      const buf = encodeGameEnd(0, 2, 2);
+      const buf = GAME_END.encode({ p1Lives: 0, p2Lives: 2, winner: 2 });
       engine._onChannelMessage({ data: buf });
 
       expect(engine.audio.playWin).toHaveBeenCalled();
@@ -389,7 +389,7 @@ describe("WarlordEngine", () => {
       engine = new WarlordEngine(canvas, channel, "hex_warlords", false, null);
       engine.start();
 
-      const buf = encodeGameEnd(2, 0, 1);
+      const buf = GAME_END.encode({ p1Lives: 2, p2Lives: 0, winner: 1 });
       engine._onChannelMessage({ data: buf });
 
       expect(engine.audio.playLose).toHaveBeenCalled();
@@ -404,7 +404,7 @@ describe("WarlordEngine", () => {
         ...createInitialState(),
         phase: PHASE.PLAYING,
       };
-      engine._onChannelMessage({ data: encodeGameState(state1) });
+      engine._onChannelMessage({ data: SNAPSHOT.encode(state1) });
 
       // Second state: KING_HIT, P1 lost a life
       const state2 = {
@@ -413,7 +413,7 @@ describe("WarlordEngine", () => {
         p2Lives: 3,
         phase: PHASE.KING_HIT,
       };
-      engine._onChannelMessage({ data: encodeGameState(state2) });
+      engine._onChannelMessage({ data: SNAPSHOT.encode(state2) });
 
       expect(engine.gameState.kingHitPlayer).toBe(1);
       expect(engine.gameState.p1KingAlive).toBe(false);
@@ -1120,7 +1120,7 @@ describe("WarlordEngine", () => {
       };
       // First set a WAITING state so prevPhase differs
       engine.gameState.phase = PHASE.WAITING;
-      engine._onChannelMessage({ data: encodeGameState(state) });
+      engine._onChannelMessage({ data: SNAPSHOT.encode(state) });
 
       expect(engine.audio.playCountdown).toHaveBeenCalled();
     });
@@ -1134,7 +1134,7 @@ describe("WarlordEngine", () => {
         ...createInitialState(),
         phase: PHASE.PLAYING,
       };
-      engine._onChannelMessage({ data: encodeGameState(playingState) });
+      engine._onChannelMessage({ data: SNAPSHOT.encode(playingState) });
       engine.audio.playKingHit.mockClear();
 
       // Now transition to KING_HIT
@@ -1144,7 +1144,7 @@ describe("WarlordEngine", () => {
         p1Lives: 2,
         p2Lives: 3,
       };
-      engine._onChannelMessage({ data: encodeGameState(kingHitState) });
+      engine._onChannelMessage({ data: SNAPSHOT.encode(kingHitState) });
 
       expect(engine.audio.playKingHit).toHaveBeenCalled();
     });

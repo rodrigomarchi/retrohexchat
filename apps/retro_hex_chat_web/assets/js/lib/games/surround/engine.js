@@ -12,12 +12,10 @@ import {
   PHASE,
   INPUT_KEY,
   WINS_NEEDED,
-  encodeGameState,
-  decodeGameState,
-  encodeGameEnd,
-  decodeGameEnd,
   encodeGameReady,
   getMessageType,
+  SNAPSHOT,
+  GAME_END,
 } from "./protocol.js";
 import {
   createInitialState,
@@ -132,7 +130,7 @@ export class SurroundEngine extends GameEngine {
     switch (type) {
       case MSG_TYPE.GAME_STATE:
         if (!this.isHost) {
-          const decoded = decodeGameState(buf);
+          const decoded = SNAPSHOT.decode(buf);
           if (decoded) {
             this._ingestSnapshot(decoded, () => this._applyPeerState(decoded));
             this.setKeyboardCaptured(
@@ -149,7 +147,7 @@ export class SurroundEngine extends GameEngine {
         break;
 
       case MSG_TYPE.GAME_END: {
-        const result = decodeGameEnd(buf);
+        const result = GAME_END.decode(buf);
         if (result) {
           this.setKeyboardCaptured(false);
           this.gameState.phase = PHASE.MATCH_OVER;
@@ -436,7 +434,7 @@ export class SurroundEngine extends GameEngine {
     }
 
     // Send game end to peer
-    this._sendCommand(encodeGameEnd(score1, score2, winner));
+    this._sendCommand(GAME_END.encode({ score1: score1, score2: score2, winner: winner }));
 
     // Notify LiveView
     if (this.onGameEnd) {
@@ -458,7 +456,7 @@ export class SurroundEngine extends GameEngine {
 
   /** Send game state over DataChannel. */
   _broadcastState() {
-    this._sendState(encodeGameState(this.gameState));
+    this._sendState(SNAPSHOT.encode(this.gameState));
   }
 
   /** Draw the current grid. Driven by the base presentation loop. */

@@ -1,10 +1,13 @@
 /**
  * Binary protocol for Light Trails game state over WebRTC DataChannel.
- * All messages use DataView for zero-JSON binary encoding.
+ * Each message is declared once as a schema on the core codec, which writes
+ * and reads it from that one field list.
  * @module games/surround_protocol
  */
 
 // Message types (shared with game_engine.js 0x80+ range)
+import { schema, struct, u8 } from "../core/codec.js";
+
 export const MSG_TYPE = {
   GAME_STATE: 0x80,
   GAME_START: 0x82,
@@ -45,91 +48,19 @@ export const GRID_W = 60;
 export const GRID_H = 40;
 export const WINS_NEEDED = 3;
 
-// --- Sizes ---
-// [type(1)][p1x(1)][p1y(1)][p1dir(1)][p2x(1)][p2y(1)][p2dir(1)][s1(1)][s2(1)][phase(1)][countdown(1)][round(1)]
-const GAME_STATE_SIZE = 12;
-const GAME_END_SIZE = 4;
+/** A light cycle: its head and the way it is heading. */
+const cycle = (p) => struct(p, [u8("x"), u8("y"), u8("dir")], { flat: true });
 
-/**
- * Encode full game state for host -> peer transmission.
- * Total: 12 bytes (heads-only — peer reconstructs grid locally).
- * @param {object} state
- * @returns {ArrayBuffer}
- */
-export function encodeGameState(state) {
-  const buf = new ArrayBuffer(GAME_STATE_SIZE);
-  const view = new DataView(buf);
-  view.setUint8(0, MSG_TYPE.GAME_STATE);
-  view.setUint8(1, state.p1.x);
-  view.setUint8(2, state.p1.y);
-  view.setUint8(3, state.p1.dir);
-  view.setUint8(4, state.p2.x);
-  view.setUint8(5, state.p2.y);
-  view.setUint8(6, state.p2.dir);
-  view.setUint8(7, state.score1);
-  view.setUint8(8, state.score2);
-  view.setUint8(9, state.phase);
-  view.setUint8(10, state.countdown);
-  view.setUint8(11, state.round & 0xff);
-  return buf;
-}
+/** The host's snapshot of the arena, sent every step. */
+export const SNAPSHOT = schema(MSG_TYPE.GAME_STATE, [
+  cycle("p1"),
+  cycle("p2"),
+  u8("score1"),
+  u8("score2"),
+  u8("phase"),
+  u8("countdown"),
+  u8("round"),
+]);
 
-/**
- * Decode game state from binary buffer.
- * @param {ArrayBuffer} buf
- * @returns {object|null}
- */
-export function decodeGameState(buf) {
-  if (buf.byteLength < GAME_STATE_SIZE) return null;
-  const view = new DataView(buf);
-  if (view.getUint8(0) !== MSG_TYPE.GAME_STATE) return null;
-
-  return {
-    p1x: view.getUint8(1),
-    p1y: view.getUint8(2),
-    p1dir: view.getUint8(3),
-    p2x: view.getUint8(4),
-    p2y: view.getUint8(5),
-    p2dir: view.getUint8(6),
-    score1: view.getUint8(7),
-    score2: view.getUint8(8),
-    phase: view.getUint8(9),
-    countdown: view.getUint8(10),
-    round: view.getUint8(11),
-  };
-}
-
-/**
- * Encode game end for host -> peer transmission.
- * Layout: [type(1)][score1(1)][score2(1)][winner(1)]
- * winner: 1=player1, 2=player2, 0=draw
- * @param {number} score1
- * @param {number} score2
- * @param {number} winner
- * @returns {ArrayBuffer}
- */
-export function encodeGameEnd(score1, score2, winner) {
-  const buf = new ArrayBuffer(GAME_END_SIZE);
-  const view = new DataView(buf);
-  view.setUint8(0, MSG_TYPE.GAME_END);
-  view.setUint8(1, score1);
-  view.setUint8(2, score2);
-  view.setUint8(3, winner);
-  return buf;
-}
-
-/**
- * Decode game end from binary buffer.
- * @param {ArrayBuffer} buf
- * @returns {object|null}
- */
-export function decodeGameEnd(buf) {
-  if (buf.byteLength < GAME_END_SIZE) return null;
-  const view = new DataView(buf);
-  if (view.getUint8(0) !== MSG_TYPE.GAME_END) return null;
-  return {
-    score1: view.getUint8(1),
-    score2: view.getUint8(2),
-    winner: view.getUint8(3),
-  };
-}
+/** How the match ended. */
+export const GAME_END = schema(MSG_TYPE.GAME_END, [u8("score1"), u8("score2"), u8("winner")]);

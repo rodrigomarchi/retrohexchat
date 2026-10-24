@@ -1,10 +1,13 @@
 /**
  * Binary protocol for Pixel Tanks game state over WebRTC DataChannel.
- * All messages use DataView for zero-JSON binary encoding.
+ * Each message is declared once as a schema on the core codec, which writes
+ * and reads it from that one field list.
  * @module games/pixel_tanks_protocol
  */
 
 // Message types (shared with game_engine.js 0x80+ range)
+import { schema, f32, flags, u8, u16 } from "../core/codec.js";
+
 export const MSG_TYPE = {
   GAME_STATE: 0x80,
   GAME_START: 0x82,
@@ -33,242 +36,46 @@ export const GAME_MODE = {
   GUIDED: 3,
 };
 
-// --- Sizes ---
-// Tank: [x(4)][y(4)][rotation(2)][flags(1)] = 11 bytes each, x2 = 22
-// Missile: [x(4)][y(4)][vx(4)][vy(4)][flags(1)] = 17 bytes each, x2 = 34
-// Meta: [score1(1)][score2(1)][phase(1)][countdown(1)][mode(1)][mazeIndex(1)]
-//       [round(1)][roundWins1(1)][roundWins2(1)][roundTimer(2)] = 11
-// Total: 1 (type) + 22 + 34 + 11 = 68
-const GAME_STATE_SIZE = 68;
-const GAME_END_SIZE = 6;
+/** A tank: position, heading (radians × 10000) and whether it is alive or shielded. */
+const tank = (t) => [
+  f32(`${t}X`),
+  f32(`${t}Y`),
+  u16(`${t}Rot`, { scale: 10000 }),
+  flags([`${t}Alive`, `${t}Invuln`]),
+];
 
-/**
- * Encode full game state for host -> peer transmission.
- * Total: 68 bytes
- * @param {object} state
- * @returns {ArrayBuffer}
- */
-export function encodeGameState(state) {
-  const buf = new ArrayBuffer(GAME_STATE_SIZE);
-  const view = new DataView(buf);
-  let offset = 0;
+/** A shell in flight. */
+const missile = (m) => [
+  f32(`${m}X`),
+  f32(`${m}Y`),
+  f32(`${m}VX`),
+  f32(`${m}VY`),
+  flags([`${m}Active`, `${m}Bounced`]),
+];
 
-  view.setUint8(offset, MSG_TYPE.GAME_STATE);
-  offset += 1;
+/** The host's snapshot of the battlefield, sent every step. */
+export const SNAPSHOT = schema(MSG_TYPE.GAME_STATE, [
+  ...tank("tank1"),
+  ...tank("tank2"),
+  ...missile("m1"),
+  ...missile("m2"),
+  u8("score1"),
+  u8("score2"),
+  u8("phase"),
+  u8("countdown"),
+  u8("mode"),
+  u8("mazeIndex"),
+  u8("round"),
+  u8("roundWins1"),
+  u8("roundWins2"),
+  u16("roundTimer"),
+]);
 
-  // Tank 1
-  view.setFloat32(offset, state.tank1X, true);
-  offset += 4;
-  view.setFloat32(offset, state.tank1Y, true);
-  offset += 4;
-  view.setUint16(offset, Math.round(state.tank1Rot * 10000) & 0xffff, true);
-  offset += 2;
-  view.setUint8(offset, (state.tank1Alive ? 1 : 0) | (state.tank1Invuln ? 2 : 0));
-  offset += 1;
-
-  // Tank 2
-  view.setFloat32(offset, state.tank2X, true);
-  offset += 4;
-  view.setFloat32(offset, state.tank2Y, true);
-  offset += 4;
-  view.setUint16(offset, Math.round(state.tank2Rot * 10000) & 0xffff, true);
-  offset += 2;
-  view.setUint8(offset, (state.tank2Alive ? 1 : 0) | (state.tank2Invuln ? 2 : 0));
-  offset += 1;
-
-  // Missile 1
-  view.setFloat32(offset, state.m1X, true);
-  offset += 4;
-  view.setFloat32(offset, state.m1Y, true);
-  offset += 4;
-  view.setFloat32(offset, state.m1VX, true);
-  offset += 4;
-  view.setFloat32(offset, state.m1VY, true);
-  offset += 4;
-  view.setUint8(offset, (state.m1Active ? 1 : 0) | (state.m1Bounced ? 2 : 0));
-  offset += 1;
-
-  // Missile 2
-  view.setFloat32(offset, state.m2X, true);
-  offset += 4;
-  view.setFloat32(offset, state.m2Y, true);
-  offset += 4;
-  view.setFloat32(offset, state.m2VX, true);
-  offset += 4;
-  view.setFloat32(offset, state.m2VY, true);
-  offset += 4;
-  view.setUint8(offset, (state.m2Active ? 1 : 0) | (state.m2Bounced ? 2 : 0));
-  offset += 1;
-
-  // Meta
-  view.setUint8(offset, state.score1);
-  offset += 1;
-  view.setUint8(offset, state.score2);
-  offset += 1;
-  view.setUint8(offset, state.phase);
-  offset += 1;
-  view.setUint8(offset, state.countdown);
-  offset += 1;
-  view.setUint8(offset, state.mode);
-  offset += 1;
-  view.setUint8(offset, state.mazeIndex);
-  offset += 1;
-  view.setUint8(offset, state.round);
-  offset += 1;
-  view.setUint8(offset, state.roundWins1);
-  offset += 1;
-  view.setUint8(offset, state.roundWins2);
-  offset += 1;
-  view.setUint16(offset, state.roundTimer, true);
-
-  return buf;
-}
-
-/**
- * Decode game state from binary buffer.
- * @param {ArrayBuffer} buf
- * @returns {object|null}
- */
-export function decodeGameState(buf) {
-  if (buf.byteLength < GAME_STATE_SIZE) return null;
-  const view = new DataView(buf);
-  if (view.getUint8(0) !== MSG_TYPE.GAME_STATE) return null;
-
-  let offset = 1;
-
-  // Tank 1
-  const tank1X = view.getFloat32(offset, true);
-  offset += 4;
-  const tank1Y = view.getFloat32(offset, true);
-  offset += 4;
-  const tank1Rot = view.getUint16(offset, true) / 10000;
-  offset += 2;
-  const t1Flags = view.getUint8(offset);
-  offset += 1;
-
-  // Tank 2
-  const tank2X = view.getFloat32(offset, true);
-  offset += 4;
-  const tank2Y = view.getFloat32(offset, true);
-  offset += 4;
-  const tank2Rot = view.getUint16(offset, true) / 10000;
-  offset += 2;
-  const t2Flags = view.getUint8(offset);
-  offset += 1;
-
-  // Missile 1
-  const m1X = view.getFloat32(offset, true);
-  offset += 4;
-  const m1Y = view.getFloat32(offset, true);
-  offset += 4;
-  const m1VX = view.getFloat32(offset, true);
-  offset += 4;
-  const m1VY = view.getFloat32(offset, true);
-  offset += 4;
-  const m1Flags = view.getUint8(offset);
-  offset += 1;
-
-  // Missile 2
-  const m2X = view.getFloat32(offset, true);
-  offset += 4;
-  const m2Y = view.getFloat32(offset, true);
-  offset += 4;
-  const m2VX = view.getFloat32(offset, true);
-  offset += 4;
-  const m2VY = view.getFloat32(offset, true);
-  offset += 4;
-  const m2Flags = view.getUint8(offset);
-  offset += 1;
-
-  // Meta
-  const score1 = view.getUint8(offset);
-  offset += 1;
-  const score2 = view.getUint8(offset);
-  offset += 1;
-  const phase = view.getUint8(offset);
-  offset += 1;
-  const countdown = view.getUint8(offset);
-  offset += 1;
-  const mode = view.getUint8(offset);
-  offset += 1;
-  const mazeIndex = view.getUint8(offset);
-  offset += 1;
-  const round = view.getUint8(offset);
-  offset += 1;
-  const roundWins1 = view.getUint8(offset);
-  offset += 1;
-  const roundWins2 = view.getUint8(offset);
-  offset += 1;
-  const roundTimer = view.getUint16(offset, true);
-
-  return {
-    tank1X,
-    tank1Y,
-    tank1Rot,
-    tank1Alive: (t1Flags & 1) !== 0,
-    tank1Invuln: (t1Flags & 2) !== 0,
-    tank2X,
-    tank2Y,
-    tank2Rot,
-    tank2Alive: (t2Flags & 1) !== 0,
-    tank2Invuln: (t2Flags & 2) !== 0,
-    m1X,
-    m1Y,
-    m1VX,
-    m1VY,
-    m1Active: (m1Flags & 1) !== 0,
-    m1Bounced: (m1Flags & 2) !== 0,
-    m2X,
-    m2Y,
-    m2VX,
-    m2VY,
-    m2Active: (m2Flags & 1) !== 0,
-    m2Bounced: (m2Flags & 2) !== 0,
-    score1,
-    score2,
-    phase,
-    countdown,
-    mode,
-    mazeIndex,
-    round,
-    roundWins1,
-    roundWins2,
-    roundTimer,
-  };
-}
-
-/**
- * Encode game end for host -> peer transmission.
- * Layout: [type(1)][score1(1)][score2(1)][winner(1)][roundWins1(1)][roundWins2(1)]
- * @param {object} result
- * @returns {ArrayBuffer}
- */
-export function encodeGameEnd(result) {
-  const buf = new ArrayBuffer(GAME_END_SIZE);
-  const view = new DataView(buf);
-  view.setUint8(0, MSG_TYPE.GAME_END);
-  view.setUint8(1, result.score1);
-  view.setUint8(2, result.score2);
-  view.setUint8(3, result.winner);
-  view.setUint8(4, result.roundWins1);
-  view.setUint8(5, result.roundWins2);
-  return buf;
-}
-
-/**
- * Decode game end from binary buffer.
- * @param {ArrayBuffer} buf
- * @returns {object|null}
- */
-export function decodeGameEnd(buf) {
-  if (buf.byteLength < GAME_END_SIZE) return null;
-  const view = new DataView(buf);
-  if (view.getUint8(0) !== MSG_TYPE.GAME_END) return null;
-  return {
-    score1: view.getUint8(1),
-    score2: view.getUint8(2),
-    winner: view.getUint8(3),
-    roundWins1: view.getUint8(4),
-    roundWins2: view.getUint8(5),
-  };
-}
+/** How the match ended. */
+export const GAME_END = schema(MSG_TYPE.GAME_END, [
+  u8("score1"),
+  u8("score2"),
+  u8("winner"),
+  u8("roundWins1"),
+  u8("roundWins2"),
+]);

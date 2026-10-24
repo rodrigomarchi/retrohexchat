@@ -3,12 +3,10 @@ import {
   MSG_TYPE,
   PHASE,
   GAME_MODE,
-  encodeGameState,
-  decodeGameState,
-  encodeGameEnd,
-  decodeGameEnd,
   encodeGameReady,
   getMessageType,
+  SNAPSHOT,
+  GAME_END,
 } from "../../../../js/lib/games/pixel_tanks/protocol.js";
 
 describe("Pixel Tanks Protocol", () => {
@@ -49,10 +47,10 @@ describe("Pixel Tanks Protocol", () => {
         roundTimer: 3600,
       };
 
-      const buf = encodeGameState(state);
+      const buf = SNAPSHOT.encode(state);
       expect(buf.byteLength).toBe(68);
 
-      const decoded = decodeGameState(buf);
+      const decoded = SNAPSHOT.decode(buf);
       expect(decoded).not.toBeNull();
       expect(decoded.tank1X).toBeCloseTo(48.5, 1);
       expect(decoded.tank1Y).toBeCloseTo(240.25, 1);
@@ -115,20 +113,20 @@ describe("Pixel Tanks Protocol", () => {
         roundTimer: 7200,
       };
 
-      const buf = encodeGameState(state);
+      const buf = SNAPSHOT.encode(state);
       expect(getMessageType(buf)).toBe(MSG_TYPE.GAME_STATE);
     });
 
     it("returns null for buffer too small", () => {
       const buf = new ArrayBuffer(10);
-      expect(decodeGameState(buf)).toBeNull();
+      expect(SNAPSHOT.decode(buf)).toBeNull();
     });
 
     it("returns null for wrong message type", () => {
       const buf = new ArrayBuffer(68);
       const view = new DataView(buf);
       view.setUint8(0, 0x81);
-      expect(decodeGameState(buf)).toBeNull();
+      expect(SNAPSHOT.decode(buf)).toBeNull();
     });
 
     it("encodes tank flags correctly", () => {
@@ -167,7 +165,7 @@ describe("Pixel Tanks Protocol", () => {
         roundTimer: 0,
       };
 
-      const decoded = decodeGameState(encodeGameState(state));
+      const decoded = SNAPSHOT.decode(SNAPSHOT.encode(state));
       expect(decoded.tank1Alive).toBe(true);
       expect(decoded.tank1Invuln).toBe(true);
       expect(decoded.tank2Alive).toBe(false);
@@ -210,7 +208,7 @@ describe("Pixel Tanks Protocol", () => {
         roundTimer: 0,
       };
 
-      const decoded = decodeGameState(encodeGameState(state));
+      const decoded = SNAPSHOT.decode(SNAPSHOT.encode(state));
       expect(decoded.m1Active).toBe(true);
       expect(decoded.m1Bounced).toBe(true);
       expect(decoded.m2Active).toBe(false);
@@ -253,7 +251,7 @@ describe("Pixel Tanks Protocol", () => {
         roundTimer: 7200,
       };
 
-      const decoded = decodeGameState(encodeGameState(state));
+      const decoded = SNAPSHOT.decode(SNAPSHOT.encode(state));
       expect(decoded.roundTimer).toBe(7200);
     });
   });
@@ -267,9 +265,9 @@ describe("Pixel Tanks Protocol", () => {
         roundWins1: 2,
         roundWins2: 1,
       };
-      const buf = encodeGameEnd(result);
+      const buf = GAME_END.encode(result);
       expect(buf.byteLength).toBe(6);
-      const decoded = decodeGameEnd(buf);
+      const decoded = GAME_END.decode(buf);
       expect(decoded).not.toBeNull();
       expect(decoded.score1).toBe(7);
       expect(decoded.score2).toBe(3);
@@ -279,20 +277,26 @@ describe("Pixel Tanks Protocol", () => {
     });
 
     it("encodes message type 0x83", () => {
-      const buf = encodeGameEnd({ score1: 0, score2: 0, winner: 1, roundWins1: 0, roundWins2: 0 });
+      const buf = GAME_END.encode({
+        score1: 0,
+        score2: 0,
+        winner: 1,
+        roundWins1: 0,
+        roundWins2: 0,
+      });
       expect(getMessageType(buf)).toBe(MSG_TYPE.GAME_END);
     });
 
     it("returns null for buffer too small", () => {
       const buf = new ArrayBuffer(2);
-      expect(decodeGameEnd(buf)).toBeNull();
+      expect(GAME_END.decode(buf)).toBeNull();
     });
 
     it("returns null for wrong message type", () => {
       const buf = new ArrayBuffer(6);
       const view = new DataView(buf);
       view.setUint8(0, MSG_TYPE.GAME_STATE);
-      expect(decodeGameEnd(buf)).toBeNull();
+      expect(GAME_END.decode(buf)).toBeNull();
     });
   });
 
@@ -356,29 +360,29 @@ describe("Pixel Tanks Protocol", () => {
     }
 
     it("handles rotation at 0", () => {
-      const decoded = decodeGameState(encodeGameState(makeState({ tank1Rot: 0 })));
+      const decoded = SNAPSHOT.decode(SNAPSHOT.encode(makeState({ tank1Rot: 0 })));
       expect(decoded.tank1Rot).toBeCloseTo(0, 2);
     });
 
     it("handles rotation near 2*PI", () => {
-      const decoded = decodeGameState(encodeGameState(makeState({ tank1Rot: 6.2831 })));
+      const decoded = SNAPSHOT.decode(SNAPSHOT.encode(makeState({ tank1Rot: 6.2831 })));
       expect(decoded.tank1Rot).toBeCloseTo(6.2831, 1);
     });
 
     it("handles max Uint8 scores", () => {
-      const decoded = decodeGameState(encodeGameState(makeState({ score1: 255, score2: 255 })));
+      const decoded = SNAPSHOT.decode(SNAPSHOT.encode(makeState({ score1: 255, score2: 255 })));
       expect(decoded.score1).toBe(255);
       expect(decoded.score2).toBe(255);
     });
 
     it("handles max Uint16 roundTimer", () => {
-      const decoded = decodeGameState(encodeGameState(makeState({ roundTimer: 65535 })));
+      const decoded = SNAPSHOT.decode(SNAPSHOT.encode(makeState({ roundTimer: 65535 })));
       expect(decoded.roundTimer).toBe(65535);
     });
 
     it("handles negative coordinates", () => {
-      const decoded = decodeGameState(
-        encodeGameState(makeState({ tank1X: -50.5, tank1Y: -100.25 })),
+      const decoded = SNAPSHOT.decode(
+        SNAPSHOT.encode(makeState({ tank1X: -50.5, tank1Y: -100.25 })),
       );
       expect(decoded.tank1X).toBeCloseTo(-50.5, 1);
       expect(decoded.tank1Y).toBeCloseTo(-100.25, 1);
@@ -387,8 +391,8 @@ describe("Pixel Tanks Protocol", () => {
     it("handles all flag combinations for tank1", () => {
       for (const alive of [true, false]) {
         for (const invuln of [true, false]) {
-          const decoded = decodeGameState(
-            encodeGameState(makeState({ tank1Alive: alive, tank1Invuln: invuln })),
+          const decoded = SNAPSHOT.decode(
+            SNAPSHOT.encode(makeState({ tank1Alive: alive, tank1Invuln: invuln })),
           );
           expect(decoded.tank1Alive).toBe(alive);
           expect(decoded.tank1Invuln).toBe(invuln);
@@ -399,8 +403,8 @@ describe("Pixel Tanks Protocol", () => {
     it("handles all flag combinations for missiles", () => {
       for (const active of [true, false]) {
         for (const bounced of [true, false]) {
-          const decoded = decodeGameState(
-            encodeGameState(makeState({ m1Active: active, m1Bounced: bounced })),
+          const decoded = SNAPSHOT.decode(
+            SNAPSHOT.encode(makeState({ m1Active: active, m1Bounced: bounced })),
           );
           expect(decoded.m1Active).toBe(active);
           expect(decoded.m1Bounced).toBe(bounced);
@@ -410,14 +414,14 @@ describe("Pixel Tanks Protocol", () => {
 
     it("handles all PHASE values", () => {
       for (const [, value] of Object.entries(PHASE)) {
-        const decoded = decodeGameState(encodeGameState(makeState({ phase: value })));
+        const decoded = SNAPSHOT.decode(SNAPSHOT.encode(makeState({ phase: value })));
         expect(decoded.phase).toBe(value);
       }
     });
 
     it("handles all GAME_MODE values", () => {
       for (const [, value] of Object.entries(GAME_MODE)) {
-        const decoded = decodeGameState(encodeGameState(makeState({ mode: value })));
+        const decoded = SNAPSHOT.decode(SNAPSHOT.encode(makeState({ mode: value })));
         expect(decoded.mode).toBe(value);
       }
     });

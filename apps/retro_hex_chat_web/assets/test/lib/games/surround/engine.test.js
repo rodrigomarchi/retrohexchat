@@ -6,9 +6,9 @@ import {
   MSG_TYPE,
   INPUT_KEY,
   WINS_NEEDED,
-  encodeGameState,
-  encodeGameEnd,
   encodeGameReady,
+  SNAPSHOT,
+  GAME_END,
 } from "../../../../js/lib/games/surround/protocol.js";
 import {
   createInitialState,
@@ -352,7 +352,7 @@ describe("SurroundEngine", () => {
         phase: PHASE.PLAYING,
       };
       state.p1 = { x: 15, y: 20, dir: DIR.RIGHT };
-      const buf = encodeGameState(state);
+      const buf = SNAPSHOT.encode(state);
       engine._onChannelMessage({ data: buf });
 
       expect(engine.gameState.score1).toBe(2);
@@ -366,7 +366,7 @@ describe("SurroundEngine", () => {
       engine.start();
       engine.setKeyboardCaptured(true);
 
-      const buf = encodeGameEnd(1, 3, 2);
+      const buf = GAME_END.encode({ score1: 1, score2: 3, winner: 2 });
       engine._onChannelMessage({ data: buf });
 
       expect(engine.gameState.phase).toBe(PHASE.MATCH_OVER);
@@ -380,7 +380,7 @@ describe("SurroundEngine", () => {
       engine = new SurroundEngine(canvas, channel, "light_trails", false, null);
       engine.start();
 
-      const buf = encodeGameEnd(3, 1, 1);
+      const buf = GAME_END.encode({ score1: 3, score2: 1, winner: 1 });
       engine._onChannelMessage({ data: buf });
 
       expect(engine.gameState.phase).toBe(PHASE.MATCH_OVER);
@@ -400,7 +400,7 @@ describe("SurroundEngine", () => {
         phase: PHASE.COUNTDOWN,
         countdown: 3,
       };
-      const buf = encodeGameState(state);
+      const buf = SNAPSHOT.encode(state);
       engine._onChannelMessage({ data: buf });
 
       expect(engine.gameState.phase).toBe(PHASE.COUNTDOWN);
@@ -915,7 +915,7 @@ describe("SurroundEngine", () => {
         score2: 1, // P2 won the round
         phase: PHASE.ROUND_OVER,
       };
-      const buf = encodeGameState(state);
+      const buf = SNAPSHOT.encode(state);
       engine._onChannelMessage({ data: buf });
 
       expect(engine.audio.playCrash).toHaveBeenCalled();

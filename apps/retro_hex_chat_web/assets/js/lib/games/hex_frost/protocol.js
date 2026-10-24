@@ -1,7 +1,8 @@
 /**
  * Hex Frost — Binary protocol for WebRTC DataChannel.
  *
- * All messages use DataView with little-endian byte order.
+ * Each message is declared once as a schema on the core codec, which writes
+ * and reads it from that one field list.
  * Message types share the 0x80+ range with the base GameEngine.
  */
 

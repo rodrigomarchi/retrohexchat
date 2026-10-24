@@ -5,9 +5,9 @@ import {
   PHASE,
   MSG_TYPE,
   TOTAL_BLOCKS,
-  encodeGameState,
-  encodeGameEnd,
   encodeGameReady,
+  SNAPSHOT,
+  GAME_END,
 } from "../../../../js/lib/games/breakout/protocol.js";
 import {
   createInitialState,
@@ -325,7 +325,7 @@ describe("BreakoutEngine", () => {
         ballX: 100,
         ballY: 200,
       };
-      const buf = encodeGameState(state);
+      const buf = SNAPSHOT.encode(state);
       engine._onChannelMessage({ data: buf });
 
       expect(engine.gameState.score).toBe(150);
@@ -337,7 +337,7 @@ describe("BreakoutEngine", () => {
       engine = new BreakoutEngine(canvas, channel, "block_breakers", false, null);
       engine.start();
 
-      const buf = encodeGameEnd(2500, true);
+      const buf = GAME_END.encode({ score: 2500, won: true });
       engine._onChannelMessage({ data: buf });
 
       expect(engine.gameState.phase).toBe(PHASE.FINISHED);
@@ -349,7 +349,7 @@ describe("BreakoutEngine", () => {
       engine = new BreakoutEngine(canvas, channel, "block_breakers", false, null);
       engine.start();
 
-      const buf = encodeGameEnd(800, false);
+      const buf = GAME_END.encode({ score: 800, won: false });
       engine._onChannelMessage({ data: buf });
 
       expect(engine.gameState.phase).toBe(PHASE.FINISHED);

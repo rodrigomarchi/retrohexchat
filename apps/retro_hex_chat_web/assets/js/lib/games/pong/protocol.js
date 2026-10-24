@@ -1,6 +1,7 @@
 /**
  * Binary protocol for Hex Pong game state over WebRTC DataChannel.
- * All messages use DataView for zero-JSON binary encoding.
+ * Each message is declared once as a schema on the core codec, which writes
+ * and reads it from that one field list.
  * @module games/pong_protocol
  */
 

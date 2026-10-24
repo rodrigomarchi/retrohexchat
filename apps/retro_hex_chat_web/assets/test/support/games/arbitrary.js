@@ -60,7 +60,11 @@ function value(spec, overrides) {
     case "bool":
       return fc.boolean();
     case "bitmap":
-      return fc.array(fc.boolean(), { minLength: spec.count, maxLength: spec.count });
+      return spec.key === null
+        ? fc.array(fc.boolean(), { minLength: spec.count, maxLength: spec.count })
+        : fc.array(fc.option(fc.record({ [spec.key]: fc.boolean() }), { nil: undefined }), {
+            maxLength: spec.count + 2,
+          });
     case "struct":
       return record(spec.fields, overrides);
     case "list":

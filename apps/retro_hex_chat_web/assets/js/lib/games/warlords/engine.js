@@ -9,12 +9,10 @@ import { createWarlordAI, normalizeWarlordAIDifficulty } from "./ai.js";
 import {
   MSG_TYPE,
   PHASE,
-  encodeGameState,
-  decodeGameState,
-  encodeGameEnd,
-  decodeGameEnd,
   encodeGameReady,
   getMessageType,
+  SNAPSHOT,
+  GAME_END,
 } from "./protocol.js";
 import {
   createInitialState,
@@ -136,7 +134,7 @@ export class WarlordEngine extends GameEngine {
     switch (type) {
       case MSG_TYPE.GAME_STATE:
         if (!this.isHost) {
-          const decoded = decodeGameState(buf);
+          const decoded = SNAPSHOT.decode(buf);
           if (decoded) {
             const prevPhase = this.gameState.phase;
             this._ingestSnapshot(decoded, () => this._applyPeerState(decoded));
@@ -156,7 +154,7 @@ export class WarlordEngine extends GameEngine {
         break;
 
       case MSG_TYPE.GAME_END: {
-        const result = decodeGameEnd(buf);
+        const result = GAME_END.decode(buf);
         if (result) {
           this.setKeyboardCaptured(false);
           this.gameState.phase = PHASE.FINISHED;
@@ -467,7 +465,7 @@ export class WarlordEngine extends GameEngine {
     }
 
     // Send game end to peer
-    this._sendCommand(encodeGameEnd(p1Lives, p2Lives, winner));
+    this._sendCommand(GAME_END.encode({ p1Lives: p1Lives, p2Lives: p2Lives, winner: winner }));
     this._broadcastState();
 
     // Notify LiveView
@@ -502,7 +500,7 @@ export class WarlordEngine extends GameEngine {
 
   /** Send game state over DataChannel. */
   _broadcastState() {
-    this._sendState(encodeGameState(this.gameState));
+    this._sendState(SNAPSHOT.encode(this.gameState));
   }
 
   /** Render current state to canvas. */
