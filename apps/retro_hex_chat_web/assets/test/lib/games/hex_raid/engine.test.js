@@ -52,7 +52,7 @@ vi.mock("../../../../js/lib/games/hex_raid/renderer.js", () => ({
   render: vi.fn(),
 }));
 
-const { HexRaidEngine } = await import("../../../../js/lib/games/hex_raid/engine.js");
+const { default: HexRaidEngine } = await import("../../../../js/lib/games/hex_raid/index.js");
 const { render, getColors } = await import("../../../../js/lib/games/hex_raid/renderer.js");
 
 function createMockChannel() {
@@ -116,6 +116,12 @@ function createOpponentController(inputs = {}) {
     })),
     setDifficulty: vi.fn(),
   };
+}
+
+/** The guest in phase `from`, receiving a snapshot in phase `to`. */
+function receivePhase(engine, from, to) {
+  engine.gameState.phase = from;
+  engine._onChannelMessage({ data: SNAPSHOT.encode({ ...engine.gameState, phase: to }) });
 }
 
 describe("HexRaidEngine", () => {
@@ -466,7 +472,7 @@ describe("HexRaidEngine", () => {
       engine.gameState.score2 = 3000;
       engine.gameState.phase = PHASE.FINISHED;
 
-      engine._handleGameOver();
+      engine.flow.go("FINISHED");
 
       expect(onGameEnd).toHaveBeenCalledWith({
         score: { p1: 5000, p2: 3000 },
@@ -492,17 +498,17 @@ describe("HexRaidEngine", () => {
     it("resets fire and mine pressed state on stop", () => {
       engine = new HexRaidEngine(canvas, channel, "hex_raid", true, null);
       engine.start();
-      engine._localFirePressed = true;
-      engine._remoteFirePressed = true;
-      engine._localMinePressed = true;
-      engine._remoteMinePressed = true;
+      engine.localFirePressed = true;
+      engine.remoteFirePressed = true;
+      engine.localMinePressed = true;
+      engine.remoteMinePressed = true;
 
       engine.stop();
 
-      expect(engine._localFirePressed).toBe(false);
-      expect(engine._remoteFirePressed).toBe(false);
-      expect(engine._localMinePressed).toBe(false);
-      expect(engine._remoteMinePressed).toBe(false);
+      expect(engine.localFirePressed).toBe(false);
+      expect(engine.remoteFirePressed).toBe(false);
+      expect(engine.localMinePressed).toBe(false);
+      expect(engine.remoteMinePressed).toBe(false);
     });
 
     it("guards phase callbacks after stop", () => {
@@ -965,7 +971,7 @@ describe("HexRaidEngine", () => {
       vi.useRealTimers();
     });
 
-    it("_handleGameOver plays playWin when host wins", () => {
+    it("the end of the match plays playWin when host wins", () => {
       engine = new HexRaidEngine(canvas, channel, "hex_raid", true, null);
       engine.start();
 
@@ -979,13 +985,13 @@ describe("HexRaidEngine", () => {
       engine.audio.playWin.mockClear();
       engine.audio.playLose.mockClear();
 
-      engine._handleGameOver();
+      engine.flow.go("FINISHED");
 
       expect(engine.audio.playWin).toHaveBeenCalled();
       expect(engine.audio.playLose).not.toHaveBeenCalled();
     });
 
-    it("_handleGameOver plays playLose when host loses", () => {
+    it("the end of the match plays playLose when host loses", () => {
       engine = new HexRaidEngine(canvas, channel, "hex_raid", true, null);
       engine.start();
 
@@ -999,7 +1005,7 @@ describe("HexRaidEngine", () => {
       engine.audio.playWin.mockClear();
       engine.audio.playLose.mockClear();
 
-      engine._handleGameOver();
+      engine.flow.go("FINISHED");
 
       expect(engine.audio.playLose).toHaveBeenCalled();
       expect(engine.audio.playWin).not.toHaveBeenCalled();
@@ -1114,7 +1120,7 @@ describe("HexRaidEngine", () => {
       engine.start();
       engine.audio.playCountdown.mockClear();
 
-      engine._playPhaseAudio(PHASE.FLYING, PHASE.FLYING);
+      receivePhase(engine, PHASE.FLYING, PHASE.FLYING);
       expect(engine.audio.playCountdown).not.toHaveBeenCalled();
     });
 
@@ -1123,7 +1129,7 @@ describe("HexRaidEngine", () => {
       engine.start();
       engine.audio.playCountdown.mockClear();
 
-      engine._playPhaseAudio(PHASE.COUNTDOWN, PHASE.FLYING);
+      receivePhase(engine, PHASE.COUNTDOWN, PHASE.FLYING);
       expect(engine.audio.playCountdown).not.toHaveBeenCalled();
     });
   });

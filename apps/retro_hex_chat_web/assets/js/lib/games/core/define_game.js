@@ -12,7 +12,7 @@
  *   captureKeys: ["ArrowUp", "ArrowDown", " "],
  *   interpolate: { keys: ["ballX", "ballY"] },
  *   schema: { snapshot: SNAPSHOT, end: GAME_END },
- *   ai: { create: createPongAI, difficulty: normalizePongAIDifficulty },
+ *   ai: { create: createPongAI, difficulty: normalizePongAIDifficulty }, // no create: the page hands it in
  *   audio: PongAudio,
  *   theme: getColors,
  *   init: (game, options) => createInitialState(),
@@ -79,7 +79,9 @@ export function defineGame(def) {
         this.difficulty = def.ai.difficulty(options.difficulty);
         this.opponentController =
           options.opponentController ||
-          (this.mode === "solo" ? def.ai.create({ difficulty: this.difficulty }) : null);
+          (this.mode === "solo" && def.ai.create
+            ? def.ai.create({ difficulty: this.difficulty })
+            : null);
       }
       this.frameCount = 0;
       this.audio = def.audio ? new def.audio() : null;
@@ -154,6 +156,8 @@ export function defineGame(def) {
         }
         if (options.opponentController) this.opponentController = options.opponentController;
         if (this.mode === "solo" && !this.opponentController) {
+          // A game that leaves creating its AI to the page cannot play solo without one.
+          if (!def.ai.create) return false;
           this.opponentController = def.ai.create({ difficulty: this.difficulty });
         }
       }

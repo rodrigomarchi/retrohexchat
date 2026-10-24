@@ -277,5 +277,25 @@ describe("defineGame", () => {
       expect(host.opponentController.difficulty).toBe("hard");
       expect(host.remoteInputs).toEqual({ right: true });
     });
+
+    it("refuses to begin without a controller when the game leaves creating its AI to the page", () => {
+      const Game = defineGame({ ...definition, ai: { difficulty: definition.ai.difficulty } });
+      const game = new Game(
+        document.createElement("canvas"),
+        createLocalTransport(),
+        "fake",
+        true,
+        null,
+        {
+          mode: "solo",
+        },
+      );
+      game.start();
+
+      expect(game.opponentController).toBeNull();
+      expect(game.beginMatch()).toBe(false);
+      expect(game.beginMatch({ opponentController: { nextInputs: () => ({}) } })).toBe(true);
+      game.stop();
+    });
   });
 });
