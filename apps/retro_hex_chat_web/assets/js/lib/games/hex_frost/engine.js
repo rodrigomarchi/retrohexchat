@@ -16,10 +16,8 @@ import {
   GAME_MODE,
   EVENT,
   getMessageType,
-  encodeGameState,
-  decodeGameState,
-  encodeGameEnd,
-  decodeGameEnd,
+  SNAPSHOT,
+  GAME_END,
   encodeGameReady,
 } from "./protocol.js";
 import {
@@ -160,7 +158,7 @@ export class HexFrostEngine extends GameEngine {
       this.peerReady = true;
       this._startCountdown();
     } else if (type === MSG_TYPE.GAME_STATE && !this.isHost) {
-      const decoded = decodeGameState(buf);
+      const decoded = SNAPSHOT.decode(buf);
       if (decoded) {
         this._ingestSnapshot(decoded, () => {
           this.gameMode = decoded.mode;
@@ -172,7 +170,7 @@ export class HexFrostEngine extends GameEngine {
         );
       }
     } else if (type === MSG_TYPE.GAME_END && !this.isHost) {
-      const result = decodeGameEnd(buf);
+      const result = GAME_END.decode(buf);
       if (result) {
         if (this.gameState) this.gameState = { ...this.gameState, phase: PHASE.FINISHED };
         this._invalidate();
@@ -409,7 +407,7 @@ export class HexFrostEngine extends GameEngine {
       score2: state.p2.roundWins,
       winner,
     };
-    this._sendCommand(encodeGameEnd(result));
+    this._sendCommand(GAME_END.encode(result));
 
     if (this.onGameEnd) {
       this.onGameEnd(result);
@@ -435,7 +433,7 @@ export class HexFrostEngine extends GameEngine {
   _broadcastState() {
     if (!this.gameState) return;
     const packed = packState(this.gameState);
-    this._sendState(encodeGameState(packed));
+    this._sendState(SNAPSHOT.encode(packed));
   }
 
   _updateOpponentInputs(state) {

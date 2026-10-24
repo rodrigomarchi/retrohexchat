@@ -64,6 +64,12 @@ describe("codec", () => {
       expect(msg.decode(wire)).toEqual({ x: -12.3, p: 128 / 255 });
     });
 
+    it("or: write the fallback in place of anything falsy, as `value || fallback`", () => {
+      const msg = schema(1, [i8("dir", { or: 1 }), i8("other", { or: 1 })]);
+      expect(msg.decode(msg.encode({ dir: 0, other: -1 }))).toEqual({ dir: 1, other: -1 });
+      expect(msg.decode(msg.encode({}))).toEqual({ dir: 1, other: 1 });
+    });
+
     it("clamp before writing, when asked", () => {
       const msg = schema(1, [u8("count", { clamp: [0, 36] })]);
       expect(msg.decode(msg.encode({ count: 50 }))).toEqual({ count: 36 });
@@ -147,6 +153,11 @@ describe("codec", () => {
       expect(msg.decode(wire)).toEqual({ fish: [{ x: 5 }, { x: 6 }] });
     });
 
+    it("variable: refuses a message whose count is beyond the capacity", () => {
+      const msg = schema(1, [list("fish", { capacity: 2 }, [u8("x")])]);
+      expect(msg.decode(new Uint8Array([1, 3, 5, 6, 7]).buffer)).toBeNull();
+    });
+
     it("variable with a named count: reads it from the object and writes it back", () => {
       const msg = schema(1, [list("fish", { capacity: 4, count: "fishCount" }, [u8("x")])]);
       const wire = msg.encode({ fishCount: 1, fish: [{ x: 5 }, { x: 6 }] });
@@ -210,15 +221,15 @@ describe("codec", () => {
       ]);
 
       expect(msg.fields.map((field) => field.spec)).toEqual([
-        { kind: "u16", name: "y", round: true, scale: null, clamp: null },
-        { kind: "i16", name: "x", round: false, scale: 10, clamp: null },
+        { kind: "u16", name: "y", round: true, scale: null, clamp: null, or: null },
+        { kind: "i16", name: "x", round: false, scale: 10, clamp: null, or: null },
         { kind: "bool", name: "on" },
         { kind: "flags", names: ["a", "b"] },
         { kind: "bitmap", name: "blocks", count: 4 },
         {
           kind: "struct",
           name: "p1",
-          fields: [{ kind: "u8", name: "lives", round: false, scale: null, clamp: null }],
+          fields: [{ kind: "u8", name: "lives", round: false, scale: null, clamp: null, or: null }],
         },
         {
           kind: "list",
@@ -226,7 +237,7 @@ describe("codec", () => {
           capacity: 2,
           fixed: true,
           count: "n",
-          fields: [{ kind: "f32", name: "v", round: false, scale: null, clamp: null }],
+          fields: [{ kind: "f32", name: "v", round: false, scale: null, clamp: null, or: null }],
         },
       ]);
     });

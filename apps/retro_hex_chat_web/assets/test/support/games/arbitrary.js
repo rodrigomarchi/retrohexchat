@@ -27,6 +27,7 @@ export function arbitraryFor(schema, overrides = {}) {
 
 function record(specs, overrides) {
   const shape = {};
+  const counted = [];
   for (const spec of specs) {
     if (spec.kind === "flags") {
       for (const name of spec.names) shape[name] = overrides[name] ?? fc.boolean();
@@ -36,10 +37,18 @@ function record(specs, overrides) {
       shape[spec.name] = overrides[spec.name] ?? value(spec, overrides);
       if (spec.kind === "list" && spec.count && !(spec.count in shape)) {
         shape[spec.count] = overrides[spec.count] ?? fc.integer({ min: 0, max: spec.capacity + 2 });
+        if (!spec.fixed) counted.push(spec);
       }
     }
   }
-  return fc.record(shape);
+  // A variable list's count never claims more items than the list holds: a
+  // game's state never does, and a hand-written encoder may read past the end.
+  return fc.record(shape).map((value) => {
+    for (const { name, count } of counted) {
+      value[count] = Math.min(value[count], value[name].length);
+    }
+    return value;
+  });
 }
 
 function value(spec, overrides) {

@@ -6,8 +6,8 @@ import {
   MSG_TYPE,
   GAME_MODE,
   EVENT,
-  encodeGameState,
-  encodeGameEnd,
+  SNAPSHOT,
+  GAME_END,
   encodeGameReady,
 } from "../../../../js/lib/games/hex_frost/protocol.js";
 import { createInitialState, packState } from "../../../../js/lib/games/hex_frost/physics.js";
@@ -719,7 +719,7 @@ describe("HexFrostEngine", () => {
       const state = createInitialState(GAME_MODE.ARCTIC_RACE, 12345);
       state.phase = PHASE.BUILDING;
       const packed = packState(state);
-      const buf = encodeGameState(packed);
+      const buf = SNAPSHOT.encode(packed);
 
       engine._onChannelMessage({ data: buf });
       expect(engine.gameState).not.toBeNull();
@@ -739,7 +739,7 @@ describe("HexFrostEngine", () => {
       const state = createInitialState(GAME_MODE.ARCTIC_RACE, 99999);
       state.phase = PHASE.BUILDING;
       const packed = packState(state);
-      const buf = encodeGameState(packed);
+      const buf = SNAPSHOT.encode(packed);
 
       engine._onChannelMessage({ data: buf });
       // Host should not overwrite its state from incoming GAME_STATE
@@ -751,7 +751,7 @@ describe("HexFrostEngine", () => {
       const onGameEnd = vi.fn();
       const { engine } = createEngine("hex_frost", false, onGameEnd);
 
-      const buf = encodeGameEnd({ score1: 3, score2: 1, winner: 1 });
+      const buf = GAME_END.encode({ score1: 3, score2: 1, winner: 1 });
       engine._onChannelMessage({ data: buf });
 
       expect(onGameEnd).toHaveBeenCalledWith({
@@ -763,7 +763,7 @@ describe("HexFrostEngine", () => {
 
     it("peer plays victory audio when winner > 0", () => {
       const { engine } = createEngine("hex_frost", false, vi.fn());
-      const buf = encodeGameEnd({ score1: 2, score2: 1, winner: 1 });
+      const buf = GAME_END.encode({ score1: 2, score2: 1, winner: 1 });
       engine._onChannelMessage({ data: buf });
       expect(engine.audio.stopAmbientWind).toHaveBeenCalled();
       expect(engine.audio.playVictory).toHaveBeenCalled();
@@ -772,7 +772,7 @@ describe("HexFrostEngine", () => {
 
     it("peer plays game over audio when winner = 0", () => {
       const { engine } = createEngine("hex_frost", false, vi.fn());
-      const buf = encodeGameEnd({ score1: 1, score2: 1, winner: 0 });
+      const buf = GAME_END.encode({ score1: 1, score2: 1, winner: 0 });
       engine._onChannelMessage({ data: buf });
       expect(engine.audio.stopAmbientWind).toHaveBeenCalled();
       expect(engine.audio.playGameOver).toHaveBeenCalled();
@@ -782,7 +782,7 @@ describe("HexFrostEngine", () => {
     it("host ignores GAME_END", () => {
       const onGameEnd = vi.fn();
       const { engine } = createEngine("hex_frost", true, onGameEnd);
-      const buf = encodeGameEnd({ score1: 2, score2: 0, winner: 1 });
+      const buf = GAME_END.encode({ score1: 2, score2: 0, winner: 1 });
       engine._onChannelMessage({ data: buf });
       expect(onGameEnd).not.toHaveBeenCalled();
     });
@@ -1356,7 +1356,7 @@ describe("HexFrostEngine", () => {
 
     it("GAME_END peer does NOT call playGameOver when winner > 0 (inverse assertion)", () => {
       const { engine } = createEngine("hex_frost", false, vi.fn());
-      const buf = encodeGameEnd({ score1: 5, score2: 2, winner: 1 });
+      const buf = GAME_END.encode({ score1: 5, score2: 2, winner: 1 });
       engine._onChannelMessage({ data: buf });
       expect(engine.audio.playVictory).toHaveBeenCalled();
       expect(engine.audio.playGameOver).not.toHaveBeenCalled();

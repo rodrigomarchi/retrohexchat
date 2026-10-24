@@ -114,6 +114,8 @@ const SCALARS = {
  * @property {boolean} [round] - `Math.round` the value before writing it
  * @property {number} [scale] - write `round(value * scale)`, read `value / scale`
  * @property {[number, number]} [clamp] - limit the value to `[min, max]` first
+ * @property {number} [or] - write this in place of a falsy value
+ *   (`value || or`)
  */
 
 /**
@@ -122,18 +124,18 @@ const SCALARS = {
  * @param {ScalarOptions} [options]
  * @returns {Field}
  */
-function scalar(kind, name, { round = false, scale = null, clamp = null } = {}) {
+function scalar(kind, name, { round = false, scale = null, clamp = null, or = null } = {}) {
   const { size, set, get } = SCALARS[kind];
 
   const prepare = (value) => {
-    let v = value;
+    let v = or !== null ? value || or : value;
     if (clamp) v = Math.min(Math.max(v, clamp[0]), clamp[1]);
     if (scale !== null) return Math.round(v * scale);
     return round ? Math.round(v) : v;
   };
 
   return {
-    spec: { kind, name, round, scale, clamp },
+    spec: { kind, name, round, scale, clamp, or },
     size: () => size,
     write(view, offset, obj) {
       view[set](offset, prepare(obj[name]), true);
@@ -276,8 +278,9 @@ export function struct(name, fields) {
  * - Otherwise a u8 count comes first, then that many entries.
  *
  * The count is `obj[count]` when `count` names a field, else the number of
- * items; either way it is capped at `capacity`. A variable list with a named
- * count also reads that count back into the object.
+ * items; either way it is capped at `capacity` when written. A variable list
+ * with a named count also reads that count back into the object, and a
+ * message claiming more than `capacity` entries is refused.
  *
  * @param {string} name
  * @param {{ capacity: number, fixed?: boolean, count?: string }} options
@@ -324,7 +327,8 @@ export function list(name, { capacity, fixed = false, count = null }, fields) {
       let n = capacity;
       if (!fixed) {
         if (at + 1 > view.byteLength) return -1;
-        n = Math.min(view.getUint8(at), capacity);
+        n = view.getUint8(at);
+        if (n > capacity) return -1;
         at += 1;
         if (count) out[count] = n;
       }
