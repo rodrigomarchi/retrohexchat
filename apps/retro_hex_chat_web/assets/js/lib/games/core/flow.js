@@ -44,7 +44,11 @@
  * @property {Timing} [every] - fire `count` times, then leave for `next`
  * @property {(target: unknown, remaining: number) => void} [onEvery] - each
  *   firing, with how many remain (0 on the last)
- * @property {string} [next]
+ * @property {string|((target: unknown) => string)} [next] - where to go when
+ *   the time is up, or a function that chooses it then
+ * @property {string} [as] - the phase this state shows on the wire, for a
+ *   stretch of the match that has no phase of its own (a serve that waits
+ *   while the countdown still shows)
  * @property {boolean} [final] - a match that reaches it never leaves it
  */
 
@@ -73,6 +77,7 @@ export function createFlow(table, ctx) {
   let remaining = 0;
 
   const spec = (name) => states[name] ?? {};
+  const valueOf = (name) => phases[spec(name).as ?? name];
 
   const cancel = () => {
     if (timer !== null) clearTimer(timer);
@@ -95,7 +100,9 @@ export function createFlow(table, ctx) {
     } else {
       s.then?.(ctx.target);
     }
-    if (s.next && spec(current) === s) go(s.next);
+    if (s.next && spec(current) === s) {
+      go(typeof s.next === "function" ? s.next(ctx.target) : s.next);
+    }
   };
 
   const arm = (s) => {
@@ -121,16 +128,17 @@ export function createFlow(table, ctx) {
   // Enter the phase the state is in, if something other than the flow moved
   // it there; returns whether it did.
   function follow() {
-    const moved = nameOf.get(ctx.readPhase());
-    if (moved === undefined || moved === current || spec(current).final) return false;
+    const value = ctx.readPhase();
+    const moved = nameOf.get(value);
+    if (moved === undefined || value === valueOf(current) || spec(current).final) return false;
     enter(moved);
     return true;
   }
 
   function go(name) {
-    if (!(name in phases)) throw new Error(`unknown phase ${name}`);
+    if (valueOf(name) === undefined) throw new Error(`unknown phase ${name}`);
     if (spec(current).final) return;
-    ctx.writePhase(phases[name]);
+    ctx.writePhase(valueOf(name));
     enter(name);
   }
 

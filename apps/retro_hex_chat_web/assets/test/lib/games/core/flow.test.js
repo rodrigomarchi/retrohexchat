@@ -164,6 +164,39 @@ describe("flow", () => {
     expect(seen).toEqual(["WAITING", "PLAYING"]);
   });
 
+  it("as: a state can show another phase on the wire, and the state is not rewritten", () => {
+    const writes = [];
+    const { flow, state } = match({
+      COUNTDOWN: { every: { ms: 100, count: 1 }, next: "SERVE" },
+      SERVE: { as: "COUNTDOWN", after: { ms: 50 }, next: "PLAYING" },
+      PLAYING: {},
+    });
+    flow.go("COUNTDOWN");
+    vi.advanceTimersByTime(100);
+    expect(flow.name).toBe("SERVE");
+    expect(state.phase).toBe(PHASE.COUNTDOWN);
+    vi.advanceTimersByTime(50);
+    expect(flow.name).toBe("PLAYING");
+    expect(writes).toEqual([]);
+  });
+
+  it("next may be chosen when the time is up", () => {
+    const { flow, state } = match({
+      SCORED: {
+        after: { ms: 10 },
+        then: () => {
+          state.over = true;
+        },
+        next: () => (state.over ? "FINISHED" : "SERVING"),
+      },
+      SERVING: {},
+      FINISHED: { final: true },
+    });
+    flow.go("SCORED");
+    vi.advanceTimersByTime(10);
+    expect(flow.name).toBe("FINISHED");
+  });
+
   it("a final phase is never left", () => {
     const { flow } = match({ FINISHED: { final: true }, SERVING: {} });
     flow.go("FINISHED");

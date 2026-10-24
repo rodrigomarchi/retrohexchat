@@ -143,6 +143,49 @@ describe("defineGame", () => {
     });
   });
 
+  describe("input hooks", () => {
+    const withHooks = (hooks) => defineGame({ ...definition, ...hooks });
+
+    it("tells the definition when the guest's held inputs change, and when the AI's do", async () => {
+      const seen = [];
+      const Game = withHooks({
+        onRemoteInputChange: (_g, previous, current) => seen.push([previous.right, current.right]),
+      });
+      match = await playMatch({
+        EngineClass: Game,
+        gameId: "fake",
+        script: hold("guest", "ArrowRight", 300),
+      });
+      match.advance(400);
+      expect(seen).toContainEqual([false, true]);
+      match.stop();
+      match.restore();
+
+      seen.length = 0;
+      match = await playMatch({ EngineClass: Game, gameId: "fake", mode: "solo" });
+      match.advance(400);
+      expect(seen).toContainEqual([false, true]);
+    });
+
+    it("runs onKeyUp after the engine's own key handling, and onBlur before releasing every input", async () => {
+      const seen = [];
+      const Game = withHooks({
+        onKeyUp: (game, event) => seen.push(["up", event.key, game.localInputs.right]),
+        // Both sides of the match listen to the same window.
+        onBlur: (game) => game.isHost && seen.push(["blur", game.localInputs.right]),
+      });
+      match = await playMatch({ EngineClass: Game, gameId: "fake" });
+      match.key("host", "ArrowRight");
+      match.key("host", "ArrowRight", "keyup");
+      match.key("host", "ArrowRight");
+      window.dispatchEvent(new Event("blur"));
+      expect(seen).toEqual([
+        ["up", "ArrowRight", false],
+        ["blur", true],
+      ]);
+    });
+  });
+
   describe("a solo match", () => {
     it("creates the AI with the difficulty asked for, and keeps only the inputs the game declares", async () => {
       match = await play({ mode: "solo", difficulty: "hard" });

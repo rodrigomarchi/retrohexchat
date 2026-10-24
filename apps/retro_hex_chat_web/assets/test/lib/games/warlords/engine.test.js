@@ -45,7 +45,7 @@ vi.mock("../../../../js/lib/games/warlords/renderer.js", () => ({
   render: vi.fn(),
 }));
 
-const { WarlordEngine } = await import("../../../../js/lib/games/warlords/engine.js");
+const { default: WarlordEngine } = await import("../../../../js/lib/games/warlords/index.js");
 const { render, getColors } = await import("../../../../js/lib/games/warlords/renderer.js");
 
 function createMockChannel() {
@@ -687,7 +687,7 @@ describe("WarlordEngine", () => {
       engine.gameState.winner = 1;
       channel.send.mockClear();
 
-      engine._handleGameFinished();
+      engine.flow.go("FINISHED");
 
       const gameEndCall = channel.send.mock.calls.find((call) => {
         const view = new Uint8Array(call[0]);
@@ -704,7 +704,7 @@ describe("WarlordEngine", () => {
       engine.gameState.p2Lives = 0;
       engine.gameState.winner = 1;
 
-      engine._handleGameFinished();
+      engine.flow.go("FINISHED");
 
       expect(onEnd).toHaveBeenCalledWith({
         score: { p1: 2, p2: 0 },
@@ -720,7 +720,7 @@ describe("WarlordEngine", () => {
       engine.gameState.p2Lives = 1;
       engine.gameState.winner = 2;
 
-      engine._handleGameFinished();
+      engine.flow.go("FINISHED");
 
       expect(onEnd).toHaveBeenCalledWith({
         score: { p1: 0, p2: 1 },
@@ -733,7 +733,7 @@ describe("WarlordEngine", () => {
       engine.start();
       engine.gameState.winner = 1;
 
-      engine._handleGameFinished();
+      engine.flow.go("FINISHED");
 
       expect(engine.audio.playWin).toHaveBeenCalled();
     });
@@ -743,7 +743,7 @@ describe("WarlordEngine", () => {
       engine.start();
       engine.gameState.winner = 2;
 
-      engine._handleGameFinished();
+      engine.flow.go("FINISHED");
 
       expect(engine.audio.playLose).toHaveBeenCalled();
     });
@@ -1013,7 +1013,7 @@ describe("WarlordEngine", () => {
       };
       channel.send.mockClear();
 
-      engine._handleKingHit();
+      engine.flow.go("KING_HIT");
 
       expect(engine.gameState.phase).toBe(PHASE.KING_HIT);
       expect(channel.send).toHaveBeenCalled();
@@ -1035,7 +1035,7 @@ describe("WarlordEngine", () => {
         warning: "#f00",
       };
 
-      engine._handleKingHit();
+      engine.flow.go("KING_HIT");
       // Advance past KING_HIT_PAUSE (2000ms)
       vi.advanceTimersByTime(2100);
 
@@ -1059,7 +1059,7 @@ describe("WarlordEngine", () => {
         warning: "#f00",
       };
 
-      engine._handleKingHit();
+      engine.flow.go("KING_HIT");
       vi.advanceTimersByTime(2100);
 
       expect(engine.gameState.phase).toBe(PHASE.COUNTDOWN);

@@ -20,6 +20,8 @@
  *   onSnapshot: (game, decoded, previous) => …,   // guest, after a snapshot lands
  *   onEnd: (game, result) => …,                    // guest, when the host ends the match
  *   onStart, onStop: (game) => …,                  // around the engine's own start and stop
+ *   onRemoteInputChange: (game, previous, current) => …,  // the guest's or AI's held inputs changed
+ *   onKeyUp: (game, event) => …, onBlur: (game) => …,     // after a key is released; on losing focus
  *   render: (game) => …,
  *   disconnectResult: (game) => ({ … }),
  * });
@@ -231,7 +233,26 @@ export function defineGame(def) {
         : { state: this.gameState, difficulty: this.difficulty, player: 2 };
       const next = this.opponentController.nextInputs(observed);
       if (!next) return;
+      const previous = this.remoteInputs;
       this.remoteInputs = Object.fromEntries(inputNames.map((name) => [name, next[name] === true]));
+      // The AI's presses and releases reach the game the way the guest's do.
+      if (inputNames.some((name) => previous[name] !== this.remoteInputs[name])) {
+        this._onRemoteInputChange(previous, this.remoteInputs);
+      }
+    }
+
+    _onRemoteInputChange(previous, current) {
+      def.onRemoteInputChange?.(this, previous, current);
+    }
+
+    _handleBlur() {
+      def.onBlur?.(this);
+      super._handleBlur();
+    }
+
+    _handleKeyUp(event) {
+      super._handleKeyUp(event);
+      def.onKeyUp?.(this, event);
     }
 
     _broadcastState() {
@@ -259,11 +280,12 @@ function validate(def) {
     if (def[field] === undefined) throw new Error(`defineGame: missing ${field}`);
   }
   const { phases, states, initial, begin } = def.flow;
+  const known = (name) => name in phases || states[name]?.as in phases;
   for (const name of [initial, begin, ...Object.keys(states)]) {
-    if (!(name in phases)) throw new Error(`defineGame: flow names ${name}, which is not a phase`);
+    if (!known(name)) throw new Error(`defineGame: flow names ${name}, which is not a phase`);
   }
   for (const [name, state] of Object.entries(states)) {
-    if (state.next && !(state.next in phases)) {
+    if (typeof state.next === "string" && !known(state.next)) {
       throw new Error(`defineGame: ${name} moves to ${state.next}, which is not a phase`);
     }
   }
