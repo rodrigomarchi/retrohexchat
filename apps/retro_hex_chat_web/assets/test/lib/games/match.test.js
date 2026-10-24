@@ -2,7 +2,7 @@ import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
 import { startMatch, dropFirst, messageType } from "../../helpers/game_match.js";
 import { BASE_MSG } from "../../../js/lib/games/net_protocol.js";
 import { SurroundEngine } from "../../../js/lib/games/surround/engine.js";
-import { WarlordEngine } from "../../../js/lib/games/warlords/engine.js";
+import WarlordEngine from "../../../js/lib/games/warlords/index.js";
 import { PixelTanksEngine } from "../../../js/lib/games/pixel_tanks/engine.js";
 import { HexHockeyEngine } from "../../../js/lib/games/hex_hockey/engine.js";
 import PongEngine from "../../../js/lib/games/pong/index.js";
