@@ -11,6 +11,7 @@
  */
 
 import { defineGame } from "../core/define_game.js";
+import { matchResult } from "../core/result.js";
 import { createHexFrostAI } from "./ai.js";
 import { HexFrostAudio } from "./audio.js";
 import { normalizeFrostAIDifficulty } from "./difficulty.js";
@@ -167,8 +168,8 @@ function finishMatch(game, state) {
   if (game.outcome(winner) === "win") game.audio.playVictory();
   else game.audio.playGameOver();
 
-  const result = { score1: state.p1.roundWins, score2: state.p2.roundWins, winner };
-  game.finish({ end: result, result, broadcast: false });
+  const end = { score1: state.p1.roundWins, score2: state.p2.roundWins, winner };
+  game.finish({ end, result: matchResult(end.score1, end.score2, winner), broadcast: false });
 }
 
 export default defineGame({
@@ -268,13 +269,14 @@ export default defineGame({
     game.audio.stopAmbientWind();
     if (game.outcome(result.winner) === "win") game.audio.playVictory();
     else game.audio.playGameOver();
-    game.onGameEnd?.(result);
+    game._reportResult(matchResult(result.score1, result.score2, result.winner));
   },
   render: (game) =>
     render(game.ctx, game.gameState, game.colors, game.frameCount, game.snowParticles),
-  disconnectResult: (game) => ({
-    winner: "draw",
-    score_p1: game.gameState.p1?.roundWins ?? game.gameState.p1RoundWins ?? 0,
-    score_p2: game.gameState.p2?.roundWins ?? game.gameState.p2RoundWins ?? 0,
-  }),
+  disconnectResult: (game) =>
+    matchResult(
+      game.gameState.p1?.roundWins ?? game.gameState.p1RoundWins ?? 0,
+      game.gameState.p2?.roundWins ?? game.gameState.p2RoundWins ?? 0,
+      0,
+    ),
 });

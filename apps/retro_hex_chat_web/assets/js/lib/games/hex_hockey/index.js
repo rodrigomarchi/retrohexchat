@@ -12,6 +12,7 @@
  */
 
 import { defineGame } from "../core/define_game.js";
+import { matchResult } from "../core/result.js";
 import { createHockeyAI, normalizeHockeyAIDifficulty } from "./ai.js";
 import { HexHockeyAudio } from "./audio.js";
 import {
@@ -79,6 +80,9 @@ export function playPeerEvents(game, events) {
 
 const PLAYER_OF = { p1: 1, p2: 2 };
 
+/** The end as the page is told it: GAME_END's `"p1"`/`"p2"`/`"draw"` as a numeric winner. */
+const reported = (end) => matchResult(end.score_p1, end.score_p2, PLAYER_OF[end.winner] ?? 0);
+
 /** The fanfare for whoever won at this screen, the falling one otherwise; either ends the drone. */
 function playEnd(game, winner) {
   game.audio.stopSuddenDeath();
@@ -107,9 +111,9 @@ function toCountdown(game, state) {
 
 /** The match ends inside the step that reaches it, before the step's snapshot. */
 export function finishMatch(game, state) {
-  const result = determineWinner(state);
-  playEnd(game, result.winner);
-  game.finish({ end: result, result, broadcast: false });
+  const end = determineWinner(state);
+  playEnd(game, end.winner);
+  game.finish({ end, result: reported(end), broadcast: false });
 }
 
 function countdown(game, state) {
@@ -363,7 +367,7 @@ export default defineGame({
   onEnd: (game, result) => {
     game.setKeyboardCaptured(false);
     playEnd(game, result.winner);
-    game._reportResult(result);
+    game._reportResult(reported(result));
   },
   render: (game) => {
     render(game.ctx, game.gameState, game.colors, game.frameCount, {
@@ -372,11 +376,5 @@ export default defineGame({
       goalFlash: game.goalFlash,
     });
   },
-  disconnectResult: (game) => ({
-    winner: "draw",
-    score_p1: game.gameState.scoreP1,
-    score_p2: game.gameState.scoreP2,
-    periods: game.gameState.period,
-    mode: game.gameState.mode,
-  }),
+  disconnectResult: (game) => matchResult(game.gameState.scoreP1, game.gameState.scoreP2, 0),
 });

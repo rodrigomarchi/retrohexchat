@@ -685,7 +685,7 @@ describe("HexSkiingEngine", () => {
         const { engine: e } = createEngine("hex_skiing", false, onGameEnd);
         engine = e;
         engine._onChannelMessage({ data: GAME_END.encode({ score1: 2, score2: 1, winner: 1 }) });
-        expect(onGameEnd).toHaveBeenCalledWith({ score1: 2, score2: 1, winner: 1 });
+        expect(onGameEnd).toHaveBeenCalledWith({ score: { p1: 2, p2: 1 }, winner: 1 });
       });
 
       it("stops ski drone audio", () => {
@@ -1096,17 +1096,13 @@ describe("HexSkiingEngine", () => {
       expect(view.getUint8(0)).toBe(MSG_TYPE.GAME_END);
     });
 
-    it("calls onGameEnd with {score1, score2, winner}", () => {
+    it("calls onGameEnd with { score: { p1, p2 }, winner }", () => {
       const onGameEnd = vi.fn();
       const { engine: e } = setupRacingEngine(onGameEnd);
       engine = e;
       const state = { ...engine.gameState, p1RoundWins: 2, p2RoundWins: 1 };
       finishMatch(engine, state);
-      expect(onGameEnd).toHaveBeenCalledWith({
-        score1: 2,
-        score2: 1,
-        winner: 1,
-      });
+      expect(onGameEnd).toHaveBeenCalledWith({ score: { p1: 2, p2: 1 }, winner: 1 });
     });
 
     it("does not throw when onGameEnd is null", () => {

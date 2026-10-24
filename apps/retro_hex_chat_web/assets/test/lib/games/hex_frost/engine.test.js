@@ -743,11 +743,7 @@ describe("HexFrostEngine", () => {
       const buf = GAME_END.encode({ score1: 3, score2: 1, winner: 1 });
       engine._onChannelMessage({ data: buf });
 
-      expect(onGameEnd).toHaveBeenCalledWith({
-        score1: 3,
-        score2: 1,
-        winner: 1,
-      });
+      expect(onGameEnd).toHaveBeenCalledWith({ score: { p1: 3, p2: 1 }, winner: 1 });
     });
 
     it("peer plays victory audio when it won (winner 2)", () => {
@@ -1115,12 +1111,7 @@ describe("HexFrostEngine", () => {
       engine._handleChannelClose();
 
       expect(onGameEnd).toHaveBeenCalledWith(
-        expect.objectContaining({
-          disconnected: true,
-          winner: "draw",
-          score_p1: 2,
-          score_p2: 1,
-        }),
+        expect.objectContaining({ disconnected: true, winner: 0, score: { p1: 2, p2: 1 } }),
       );
       engine.stop();
     });
@@ -1220,7 +1211,7 @@ describe("HexFrostEngine", () => {
       engine._gameLoop();
 
       expect(engine.gameState.phase).toBe(PHASE.FINISHED);
-      expect(onGameEnd).toHaveBeenCalledWith({ score1: 3, score2: 0, winner: 1 });
+      expect(onGameEnd).toHaveBeenCalledWith({ score: { p1: 3, p2: 0 }, winner: 1 });
       const sent = channel.send.mock.calls.map((call) => new Uint8Array(call[0])[0]);
       expect(sent).toContain(MSG_TYPE.GAME_END);
       engine.stop();

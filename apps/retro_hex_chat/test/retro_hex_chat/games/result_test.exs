@@ -1,12 +1,55 @@
 defmodule RetroHexChat.Games.ResultTest do
   use ExUnit.Case, async: true
 
+  alias RetroHexChat.Games.Catalog
   alias RetroHexChat.Games.Result
 
   @moduletag :unit
 
-  # One payload per spelling, copied from what the engines under
-  # `assets/js/lib/games/*/engine.js` hand to `onGameEnd`.
+  # Every game now sends the nested score with a numeric winner
+  # (`assets/js/lib/games/core/result.js`). The other spellings are what
+  # older chunks still cached in a browser send, and are still read.
+  describe "the one spelling every game sends" do
+    test "reads as the same result as each older spelling it replaced" do
+      for {game_id, older, one} <- [
+            # Hex Frost and Hex Skiing, and a Raid guest: flat score1/score2.
+            {"hex_frost", %{"score1" => 3, "score2" => 1, "winner" => 1},
+             %{"score" => %{"p1" => 3, "p2" => 1}, "winner" => 1}},
+            {"hex_skiing", %{"score1" => 0, "score2" => 2, "winner" => 2},
+             %{"score" => %{"p1" => 0, "p2" => 2}, "winner" => 2}},
+            {"hex_raid", %{"score1" => 120, "score2" => 80, "winner" => 1},
+             %{"score" => %{"p1" => 120, "p2" => 80}, "winner" => 1}},
+            # Hex Hockey: score_p1/score_p2 and a winner in words.
+            {"hex_hockey",
+             %{"winner" => "p2", "score_p1" => 1, "score_p2" => 3, "periods" => 3, "mode" => 0},
+             %{"score" => %{"p1" => 1, "p2" => 3}, "winner" => 2}},
+            {"hex_hockey_blitz", %{"winner" => "draw", "score_p1" => 2, "score_p2" => 2},
+             %{"score" => %{"p1" => 2, "p2" => 2}, "winner" => 0}},
+            # A dropped channel, which Skiing and Hockey called a draw in words.
+            {"hex_skiing_escape",
+             %{"winner" => "draw", "score_p1" => 1, "score_p2" => 0, "disconnected" => true},
+             %{"score" => %{"p1" => 1, "p2" => 0}, "winner" => 0, "disconnected" => true}},
+            {"hex_hockey",
+             %{"winner" => "draw", "score_p1" => 2, "score_p2" => 1, "disconnected" => true},
+             %{"score" => %{"p1" => 2, "p2" => 1}, "winner" => 0, "disconnected" => true}}
+          ] do
+        assert {:ok, _result} = read = Result.normalize(game_id, older)
+        assert Result.normalize(game_id, one) == read, "#{game_id}: #{inspect(one)}"
+      end
+    end
+
+    test "reads for every game in the catalogue" do
+      for game_id <- Catalog.game_ids() do
+        winner = if Catalog.ranking(game_id) == :coop, do: 0, else: 1
+        payload = %{"score" => %{"p1" => 2, "p2" => 1}, "winner" => winner}
+
+        assert {:ok, %Result{game_id: ^game_id, p1_score: 2, p2_score: 1}} =
+                 Result.normalize(game_id, payload)
+      end
+    end
+  end
+
+  # One payload per spelling a browser may send.
   describe "normalize/2 reads every engine's spelling" do
     test "nested score with a numeric winner (pong, tanks, tennis, invaders…)" do
       assert {:ok, %Result{p1_score: 11, p2_score: 7, outcome: :p1, disconnected?: false}} =

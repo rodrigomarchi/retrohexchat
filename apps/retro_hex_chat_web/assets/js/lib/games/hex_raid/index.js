@@ -11,6 +11,7 @@
  */
 
 import { defineGame } from "../core/define_game.js";
+import { matchResult } from "../core/result.js";
 import { HexRaidAudio } from "./audio.js";
 import { normalizeRaidAIDifficulty } from "./difficulty.js";
 import {
@@ -336,7 +337,7 @@ export default defineGame({
           game.invalidate();
           game.finish({
             end: { score1, score2, winner },
-            result: { score: { p1: score1, p2: score2 }, winner },
+            result: matchResult(score1, score2, winner),
           });
         },
       },
@@ -354,7 +355,7 @@ export default defineGame({
     if (result.winner === 2) game.audio.playWin();
     else game.audio.playLose();
     game.invalidate();
-    game._reportResult(result);
+    game._reportResult(matchResult(result.score1, result.score2, result.winner));
   },
   render: (game) => {
     if (game.colors) {

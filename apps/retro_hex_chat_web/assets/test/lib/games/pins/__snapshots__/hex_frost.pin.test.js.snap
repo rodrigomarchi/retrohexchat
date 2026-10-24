@@ -661,17 +661,21 @@ exports[`hex_frost pins > the channel drops mid-match 1`] = `
     "guest": [
       {
         "disconnected": true,
-        "score_p1": 0,
-        "score_p2": 0,
-        "winner": "draw",
+        "score": {
+          "p1": 0,
+          "p2": 0,
+        },
+        "winner": 0,
       },
     ],
     "host": [
       {
         "disconnected": true,
-        "score_p1": 0,
-        "score_p2": 0,
-        "winner": "draw",
+        "score": {
+          "p1": 0,
+          "p2": 0,
+        },
+        "winner": 0,
       },
     ],
   },

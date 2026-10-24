@@ -347,7 +347,7 @@ describe("hex_hockey_engine", () => {
     engine._onChannelMessage({ data: buf });
 
     expect(onGameEnd).toHaveBeenCalledWith(
-      expect.objectContaining({ winner: "p1", score_p1: 3, score_p2: 1 }),
+      expect.objectContaining({ winner: 1, score: { p1: 3, p2: 1 } }),
     );
     expect(engine._keyboardCaptured).toBe(false);
     engine.stop();
@@ -933,11 +933,7 @@ describe("hex_hockey_engine", () => {
       finishMatch(engine, engine.gameState);
 
       expect(onGameEnd).toHaveBeenCalledWith(
-        expect.objectContaining({
-          winner: "p2",
-          score_p1: 2,
-          score_p2: 4,
-        }),
+        expect.objectContaining({ winner: 2, score: { p1: 2, p2: 4 } }),
       );
       engine.stop();
     });
@@ -949,7 +945,7 @@ describe("hex_hockey_engine", () => {
 
       finishMatch(engine, engine.gameState);
 
-      expect(onGameEnd).toHaveBeenCalledWith(expect.objectContaining({ winner: "draw" }));
+      expect(onGameEnd).toHaveBeenCalledWith(expect.objectContaining({ winner: 0 }));
       engine.stop();
     });
 
@@ -1105,7 +1101,7 @@ describe("hex_hockey_engine", () => {
       engine._onChannelMessage({ data: buf });
 
       expect(onGameEnd).toHaveBeenCalledWith(
-        expect.objectContaining({ winner: "p2", score_p1: 1, score_p2: 5 }),
+        expect.objectContaining({ winner: 2, score: { p1: 1, p2: 5 } }),
       );
       engine.stop();
     });

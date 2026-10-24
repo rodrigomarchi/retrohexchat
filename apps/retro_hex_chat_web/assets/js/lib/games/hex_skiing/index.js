@@ -13,6 +13,7 @@
  */
 
 import { defineGame } from "../core/define_game.js";
+import { matchResult } from "../core/result.js";
 import { HexSkiingAudio } from "./audio.js";
 import { normalizeSkiingAIDifficulty } from "./difficulty.js";
 import {
@@ -89,7 +90,7 @@ export function finishMatch(game, state) {
   if (game.outcome(winner) === "win") game.audio.playVictory();
   else game.audio.playGameOver();
   const end = { score1: state.p1RoundWins, score2: state.p2RoundWins, winner };
-  game.finish({ end, result: end, broadcast: false });
+  game.finish({ end, result: matchResult(end.score1, end.score2, winner), broadcast: false });
 }
 
 function race(game, previous) {
@@ -225,14 +226,11 @@ export default defineGame({
     game.audio.stopSkiDrone();
     if (game.outcome(result.winner) === "win") game.audio.playVictory();
     else game.audio.playGameOver();
-    game._reportResult(result);
+    game._reportResult(matchResult(result.score1, result.score2, result.winner));
   },
   render: (game) => {
     render(game.ctx, game.gameState, game.colors, game.frameCount, game.snowParticles);
   },
-  disconnectResult: (game) => ({
-    winner: "draw",
-    score_p1: game.gameState.p1RoundWins || 0,
-    score_p2: game.gameState.p2RoundWins || 0,
-  }),
+  disconnectResult: (game) =>
+    matchResult(game.gameState.p1RoundWins || 0, game.gameState.p2RoundWins || 0, 0),
 });

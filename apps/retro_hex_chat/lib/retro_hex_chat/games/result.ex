@@ -2,13 +2,13 @@ defmodule RetroHexChat.Games.Result do
   @moduledoc """
   How a Retro Games match ended, read out of whatever its engine reported.
 
-  The engines grew one at a time and report the end of a match in four
-  spellings: a nested `score: %{p1, p2}` with a numeric `winner`, flat
-  `score1`/`score2`, hockey's `score_p1`/`score_p2` with `"p1"`/`"p2"`/`"draw"`,
-  and the co-op games' shared score where `winner: 0` means the pair won and
-  `-1` that it lost. This module is the one place that knows all four, so
-  every reader — the result panel, the ledger, a card in a channel — sees one
-  shape.
+  Every game reports the end of a match as a nested `score: %{p1, p2}` with a
+  numeric `winner` — in the co-op games a shared score where `winner: 0` means
+  the pair won and `-1` that it lost. Browsers holding an older chunk may
+  still send the spellings the games used before: flat `score1`/`score2`, and
+  hockey's `score_p1`/`score_p2` with `"p1"`/`"p2"`/`"draw"`. This module is
+  the one place that reads them all, so every reader — the result panel, the
+  ledger, a card in a channel — sees one shape.
 
   The payload comes from a browser and is never trusted: an unknown game, a
   missing or negative score, and a score past what the game can produce are
