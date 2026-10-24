@@ -7,12 +7,10 @@ import {
   CAR_TYPE,
   EVENT,
   MAX_AI_CARS,
-  encodeGameState,
-  decodeGameState,
-  encodeGameEnd,
-  decodeGameEnd,
   encodeGameReady,
   getMessageType,
+  SNAPSHOT,
+  GAME_END,
 } from "../../../../js/lib/games/hex_enduro/protocol.js";
 
 function createTestState() {
@@ -73,8 +71,8 @@ describe("Hex Enduro Protocol", () => {
   describe("GAME_STATE encode/decode round-trip", () => {
     it("preserves header fields", () => {
       const state = createTestState();
-      const buf = encodeGameState(state);
-      const decoded = decodeGameState(buf);
+      const buf = SNAPSHOT.encode(state);
+      const decoded = SNAPSHOT.decode(buf);
 
       expect(decoded.phase).toBe(PHASE.RACING);
       expect(decoded.mode).toBe(GAME_MODE.CLASSIC_DUEL);
@@ -88,7 +86,7 @@ describe("Hex Enduro Protocol", () => {
 
     it("preserves player 1 state", () => {
       const state = createTestState();
-      const decoded = decodeGameState(encodeGameState(state));
+      const decoded = SNAPSHOT.decode(SNAPSHOT.encode(state));
 
       expect(decoded.p1Lane).toBe(1);
       expect(decoded.p1Speed).toBe(500);
@@ -103,7 +101,7 @@ describe("Hex Enduro Protocol", () => {
 
     it("preserves player 2 state", () => {
       const state = createTestState();
-      const decoded = decodeGameState(encodeGameState(state));
+      const decoded = SNAPSHOT.decode(SNAPSHOT.encode(state));
 
       expect(decoded.p2Lane).toBe(2);
       expect(decoded.p2Speed).toBe(480);
@@ -118,7 +116,7 @@ describe("Hex Enduro Protocol", () => {
 
     it("preserves AI cars with packed lane+type", () => {
       const state = createTestState();
-      const decoded = decodeGameState(encodeGameState(state));
+      const decoded = SNAPSHOT.decode(SNAPSHOT.encode(state));
 
       expect(decoded.aiCarCount).toBe(8);
       expect(decoded.aiCars).toHaveLength(8);
@@ -133,7 +131,7 @@ describe("Hex Enduro Protocol", () => {
 
     it("preserves fuel stations", () => {
       const state = createTestState();
-      const decoded = decodeGameState(encodeGameState(state));
+      const decoded = SNAPSHOT.decode(SNAPSHOT.encode(state));
 
       expect(decoded.fuelStationCount).toBe(2);
       expect(decoded.fuelStations).toHaveLength(2);
@@ -145,7 +143,7 @@ describe("Hex Enduro Protocol", () => {
 
     it("preserves day progress and events", () => {
       const state = createTestState();
-      const decoded = decodeGameState(encodeGameState(state));
+      const decoded = SNAPSHOT.decode(SNAPSHOT.encode(state));
 
       expect(decoded.dayOvertakeTarget).toBe(200);
       expect(decoded.events).toBe(EVENT.OVERTAKE_AI | EVENT.SLIPSTREAM);
@@ -153,19 +151,19 @@ describe("Hex Enduro Protocol", () => {
 
     it("preserves slipstream state", () => {
       const state = createTestState();
-      const decoded = decodeGameState(encodeGameState(state));
+      const decoded = SNAPSHOT.decode(SNAPSHOT.encode(state));
 
       expect(decoded.p1Slipstream).toBe(60);
       expect(decoded.p2Slipstream).toBe(0);
     });
 
     it("has correct message type byte", () => {
-      const buf = encodeGameState(createTestState());
+      const buf = SNAPSHOT.encode(createTestState());
       expect(new DataView(buf).getUint8(0)).toBe(0x80);
     });
 
     it("produces correct buffer size (141 bytes)", () => {
-      const buf = encodeGameState(createTestState());
+      const buf = SNAPSHOT.encode(createTestState());
       expect(buf.byteLength).toBe(141);
     });
   });
@@ -175,7 +173,7 @@ describe("Hex Enduro Protocol", () => {
       const state = createTestState();
       state.aiCars = [];
       state.aiCarCount = 0;
-      const decoded = decodeGameState(encodeGameState(state));
+      const decoded = SNAPSHOT.decode(SNAPSHOT.encode(state));
       expect(decoded.aiCarCount).toBe(0);
       expect(decoded.aiCars).toHaveLength(0);
     });
@@ -187,7 +185,7 @@ describe("Hex Enduro Protocol", () => {
         state.aiCars.push({ lane: i % 3, type: i % 4, zPos: i * 100, speed: 50 });
       }
       state.aiCarCount = MAX_AI_CARS;
-      const decoded = decodeGameState(encodeGameState(state));
+      const decoded = SNAPSHOT.decode(SNAPSHOT.encode(state));
       expect(decoded.aiCarCount).toBe(20);
       expect(decoded.aiCars).toHaveLength(20);
     });
@@ -196,7 +194,7 @@ describe("Hex Enduro Protocol", () => {
       const state = createTestState();
       state.fuelStations = [];
       state.fuelStationCount = 0;
-      const decoded = decodeGameState(encodeGameState(state));
+      const decoded = SNAPSHOT.decode(SNAPSHOT.encode(state));
       expect(decoded.fuelStationCount).toBe(0);
       expect(decoded.fuelStations).toHaveLength(0);
     });
@@ -205,7 +203,7 @@ describe("Hex Enduro Protocol", () => {
       const state = createTestState();
       state.p1Score = 65535;
       state.p2Score = 65535;
-      const decoded = decodeGameState(encodeGameState(state));
+      const decoded = SNAPSHOT.decode(SNAPSHOT.encode(state));
       expect(decoded.p1Score).toBe(65535);
       expect(decoded.p2Score).toBe(65535);
     });
@@ -213,7 +211,7 @@ describe("Hex Enduro Protocol", () => {
     it("handles max fuel (65535)", () => {
       const state = createTestState();
       state.p1Fuel = 65535;
-      const decoded = decodeGameState(encodeGameState(state));
+      const decoded = SNAPSHOT.decode(SNAPSHOT.encode(state));
       expect(decoded.p1Fuel).toBe(65535);
     });
 
@@ -221,7 +219,7 @@ describe("Hex Enduro Protocol", () => {
       for (const [, val] of Object.entries(WEATHER)) {
         const state = createTestState();
         state.weather = val;
-        const decoded = decodeGameState(encodeGameState(state));
+        const decoded = SNAPSHOT.decode(SNAPSHOT.encode(state));
         expect(decoded.weather).toBe(val);
       }
     });
@@ -229,25 +227,25 @@ describe("Hex Enduro Protocol", () => {
     it("handles all event flags", () => {
       const state = createTestState();
       state.events = 0xff;
-      const decoded = decodeGameState(encodeGameState(state));
+      const decoded = SNAPSHOT.decode(SNAPSHOT.encode(state));
       expect(decoded.events).toBe(0xff);
     });
 
     it("handles zero events", () => {
       const state = createTestState();
       state.events = 0;
-      const decoded = decodeGameState(encodeGameState(state));
+      const decoded = SNAPSHOT.decode(SNAPSHOT.encode(state));
       expect(decoded.events).toBe(0);
     });
 
     it("returns null for too-small buffer", () => {
-      expect(decodeGameState(new ArrayBuffer(10))).toBeNull();
+      expect(SNAPSHOT.decode(new ArrayBuffer(10))).toBeNull();
     });
 
     it("returns null for wrong message type", () => {
-      const buf = encodeGameState(createTestState());
+      const buf = SNAPSHOT.encode(createTestState());
       new DataView(buf).setUint8(0, 0x81);
-      expect(decodeGameState(buf)).toBeNull();
+      expect(SNAPSHOT.decode(buf)).toBeNull();
     });
   });
 
@@ -263,7 +261,7 @@ describe("Hex Enduro Protocol", () => {
       }
       state.aiCarCount = 12;
 
-      const decoded = decodeGameState(encodeGameState(state));
+      const decoded = SNAPSHOT.decode(SNAPSHOT.encode(state));
       let idx = 0;
       for (let lane = 0; lane <= 2; lane++) {
         for (let type = 0; type <= 3; type++) {
@@ -277,53 +275,53 @@ describe("Hex Enduro Protocol", () => {
 
   describe("GAME_END encode/decode", () => {
     it("round-trips normal scores", () => {
-      const buf = encodeGameEnd({ score1: 247, score2: 189, winner: 1 });
-      const decoded = decodeGameEnd(buf);
+      const buf = GAME_END.encode({ score1: 247, score2: 189, winner: 1 });
+      const decoded = GAME_END.decode(buf);
       expect(decoded.score1).toBe(247);
       expect(decoded.score2).toBe(189);
       expect(decoded.winner).toBe(1);
     });
 
     it("round-trips max scores", () => {
-      const buf = encodeGameEnd({ score1: 65535, score2: 65535, winner: 2 });
-      const decoded = decodeGameEnd(buf);
+      const buf = GAME_END.encode({ score1: 65535, score2: 65535, winner: 2 });
+      const decoded = GAME_END.decode(buf);
       expect(decoded.score1).toBe(65535);
       expect(decoded.score2).toBe(65535);
     });
 
     it("round-trips zero scores", () => {
-      const buf = encodeGameEnd({ score1: 0, score2: 0, winner: 1 });
-      const decoded = decodeGameEnd(buf);
+      const buf = GAME_END.encode({ score1: 0, score2: 0, winner: 1 });
+      const decoded = GAME_END.decode(buf);
       expect(decoded.score1).toBe(0);
       expect(decoded.score2).toBe(0);
     });
 
     it("round-trips score 256 (byte boundary)", () => {
-      const buf = encodeGameEnd({ score1: 256, score2: 255, winner: 1 });
-      const decoded = decodeGameEnd(buf);
+      const buf = GAME_END.encode({ score1: 256, score2: 255, winner: 1 });
+      const decoded = GAME_END.decode(buf);
       expect(decoded.score1).toBe(256);
       expect(decoded.score2).toBe(255);
     });
 
     it("round-trips winner=0 (draw)", () => {
-      const buf = encodeGameEnd({ score1: 100, score2: 100, winner: 0 });
-      const decoded = decodeGameEnd(buf);
+      const buf = GAME_END.encode({ score1: 100, score2: 100, winner: 0 });
+      const decoded = GAME_END.decode(buf);
       expect(decoded.winner).toBe(0);
     });
 
     it("has correct size (6 bytes)", () => {
-      const buf = encodeGameEnd({ score1: 100, score2: 200, winner: 1 });
+      const buf = GAME_END.encode({ score1: 100, score2: 200, winner: 1 });
       expect(buf.byteLength).toBe(6);
     });
 
     it("returns null for too-small buffer", () => {
-      expect(decodeGameEnd(new ArrayBuffer(3))).toBeNull();
+      expect(GAME_END.decode(new ArrayBuffer(3))).toBeNull();
     });
 
     it("returns null for wrong message type", () => {
-      const buf = encodeGameEnd({ score1: 100, score2: 200, winner: 1 });
+      const buf = GAME_END.encode({ score1: 100, score2: 200, winner: 1 });
       new DataView(buf).setUint8(0, 0x80);
-      expect(decodeGameEnd(buf)).toBeNull();
+      expect(GAME_END.decode(buf)).toBeNull();
     });
   });
 
@@ -337,11 +335,11 @@ describe("Hex Enduro Protocol", () => {
 
   describe("getMessageType", () => {
     it("returns GAME_STATE type", () => {
-      expect(getMessageType(encodeGameState(createTestState()))).toBe(MSG_TYPE.GAME_STATE);
+      expect(getMessageType(SNAPSHOT.encode(createTestState()))).toBe(MSG_TYPE.GAME_STATE);
     });
 
     it("returns GAME_END type", () => {
-      expect(getMessageType(encodeGameEnd({ score1: 1, score2: 2, winner: 1 }))).toBe(
+      expect(getMessageType(GAME_END.encode({ score1: 1, score2: 2, winner: 1 }))).toBe(
         MSG_TYPE.GAME_END,
       );
     });
@@ -360,7 +358,7 @@ describe("Hex Enduro Protocol", () => {
       for (const [, val] of Object.entries(PHASE)) {
         const state = createTestState();
         state.phase = val;
-        const decoded = decodeGameState(encodeGameState(state));
+        const decoded = SNAPSHOT.decode(SNAPSHOT.encode(state));
         expect(decoded.phase).toBe(val);
       }
     });
@@ -369,7 +367,7 @@ describe("Hex Enduro Protocol", () => {
       for (const [, val] of Object.entries(GAME_MODE)) {
         const state = createTestState();
         state.mode = val;
-        const decoded = decodeGameState(encodeGameState(state));
+        const decoded = SNAPSHOT.decode(SNAPSHOT.encode(state));
         expect(decoded.mode).toBe(val);
       }
     });
@@ -420,7 +418,7 @@ describe("Hex Enduro Protocol", () => {
       const state = createTestState();
       state.aiCarCount = 3;
       state.aiCars = state.aiCars.slice(0, 3);
-      const decoded = decodeGameState(encodeGameState(state));
+      const decoded = SNAPSHOT.decode(SNAPSHOT.encode(state));
       expect(decoded.aiCars).toHaveLength(3);
     });
 
@@ -428,7 +426,7 @@ describe("Hex Enduro Protocol", () => {
       const state = createTestState();
       state.fuelStationCount = 1;
       state.fuelStations = state.fuelStations.slice(0, 1);
-      const decoded = decodeGameState(encodeGameState(state));
+      const decoded = SNAPSHOT.decode(SNAPSHOT.encode(state));
       expect(decoded.fuelStations).toHaveLength(1);
     });
 
@@ -438,7 +436,7 @@ describe("Hex Enduro Protocol", () => {
       state.aiCars = [];
       state.fuelStationCount = 0;
       state.fuelStations = [];
-      const decoded = decodeGameState(encodeGameState(state));
+      const decoded = SNAPSHOT.decode(SNAPSHOT.encode(state));
       expect(decoded.aiCars).toHaveLength(0);
       expect(decoded.fuelStations).toHaveLength(0);
     });
@@ -447,37 +445,37 @@ describe("Hex Enduro Protocol", () => {
   describe("GAME_STATE decode safety", () => {
     it("clamps aiCarCount to MAX_AI_CARS on decode", () => {
       const state = createTestState();
-      const buf = encodeGameState(state);
+      const buf = SNAPSHOT.encode(state);
       // Corrupt aiCarCount byte to be > MAX_AI_CARS
       const view = new DataView(buf);
       // aiCarCount is at offset: 1(type) + 13(header) + 14(p1) + 14(p2) = 42
       view.setUint8(42, 255);
-      const decoded = decodeGameState(buf);
+      const decoded = SNAPSHOT.decode(buf);
       expect(decoded.aiCarCount).toBeLessThanOrEqual(MAX_AI_CARS);
     });
 
     it("clamps fuelStationCount to MAX on decode", () => {
       const state = createTestState();
-      const buf = encodeGameState(state);
+      const buf = SNAPSHOT.encode(state);
       const view = new DataView(buf);
       // fuelStationCount is at offset: 42 + 1(count) + 20*4(cars) = 123
       view.setUint8(123, 255);
-      const decoded = decodeGameState(buf);
+      const decoded = SNAPSHOT.decode(buf);
       expect(decoded.fuelStationCount).toBeLessThanOrEqual(4);
     });
 
     it("clamps winner to 2 on decode", () => {
-      const buf = encodeGameEnd({ score1: 100, score2: 200, winner: 1 });
+      const buf = GAME_END.encode({ score1: 100, score2: 200, winner: 1 });
       const view = new DataView(buf);
       view.setUint8(5, 99); // corrupt winner byte
-      const decoded = decodeGameEnd(buf);
+      const decoded = GAME_END.decode(buf);
       expect(decoded.winner).toBeLessThanOrEqual(2);
     });
   });
 
   describe("GAME_END encode consistency", () => {
     it("uses little-endian Uint16 for scores", () => {
-      const buf = encodeGameEnd({ score1: 0x0102, score2: 0x0304, winner: 1 });
+      const buf = GAME_END.encode({ score1: 0x0102, score2: 0x0304, winner: 1 });
       const view = new DataView(buf);
       // Little-endian: low byte first
       expect(view.getUint16(1, true)).toBe(0x0102);
@@ -485,8 +483,8 @@ describe("Hex Enduro Protocol", () => {
     });
 
     it("handles undefined/null score gracefully", () => {
-      const buf = encodeGameEnd({ score1: undefined, score2: null, winner: 0 });
-      const decoded = decodeGameEnd(buf);
+      const buf = GAME_END.encode({ score1: undefined, score2: null, winner: 0 });
+      const decoded = GAME_END.decode(buf);
       expect(decoded.score1).toBe(0);
       expect(decoded.score2).toBe(0);
     });
@@ -497,7 +495,7 @@ describe("Hex Enduro Protocol", () => {
       const state = createTestState();
       state.mode = GAME_MODE.NIGHT_RACE;
       state.gameTimer = 10800; // 3 min at 60fps
-      const decoded = decodeGameState(encodeGameState(state));
+      const decoded = SNAPSHOT.decode(SNAPSHOT.encode(state));
       expect(decoded.gameTimer).toBe(10800);
     });
 
@@ -505,7 +503,7 @@ describe("Hex Enduro Protocol", () => {
       const state = createTestState();
       state.mode = GAME_MODE.SPRINT;
       state.gameTimer = 5400; // 90s at 60fps
-      const decoded = decodeGameState(encodeGameState(state));
+      const decoded = SNAPSHOT.decode(SNAPSHOT.encode(state));
       expect(decoded.gameTimer).toBe(5400);
     });
   });

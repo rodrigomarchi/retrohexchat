@@ -6,9 +6,9 @@ import {
   GAME_MODE,
   MSG_TYPE,
   EVENT,
-  encodeGameState,
   encodeGameReady,
-  encodeGameEnd,
+  SNAPSHOT,
+  GAME_END,
 } from "../../../../js/lib/games/hex_hockey/protocol.js";
 import {
   createInitialState,
@@ -269,7 +269,7 @@ describe("hex_hockey_engine", () => {
     state.phase = PHASE.PLAYING;
     state.scoreP1 = 2;
     const packed = packState(state);
-    const buf = encodeGameState(packed);
+    const buf = SNAPSHOT.encode(packed);
 
     engine._onChannelMessage({ data: buf });
     expect(engine.gameState.phase).toBe(PHASE.PLAYING);
@@ -336,7 +336,7 @@ describe("hex_hockey_engine", () => {
     engine.start();
 
     const result = { winner: "p1", score_p1: 3, score_p2: 1 };
-    const buf = encodeGameEnd(result);
+    const buf = GAME_END.encode(result);
     engine._onChannelMessage({ data: buf });
 
     expect(onGameEnd).toHaveBeenCalledWith(
@@ -1086,7 +1086,7 @@ describe("hex_hockey_engine", () => {
       const { engine } = createEngine("hex_hockey", false);
       engine.start();
 
-      const buf = encodeGameEnd({ winner: "p1", score_p1: 3, score_p2: 2 });
+      const buf = GAME_END.encode({ winner: "p1", score_p1: 3, score_p2: 2 });
       engine._onChannelMessage({ data: buf });
 
       expect(engine.audio.stopSuddenDeath).toHaveBeenCalled();
@@ -1098,7 +1098,7 @@ describe("hex_hockey_engine", () => {
       const { engine, onGameEnd } = createEngine("hex_hockey", false);
       engine.start();
 
-      const buf = encodeGameEnd({ winner: "p2", score_p1: 1, score_p2: 5 });
+      const buf = GAME_END.encode({ winner: "p2", score_p1: 1, score_p2: 5 });
       engine._onChannelMessage({ data: buf });
 
       expect(onGameEnd).toHaveBeenCalledWith(

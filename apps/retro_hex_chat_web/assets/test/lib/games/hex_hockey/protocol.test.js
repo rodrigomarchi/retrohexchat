@@ -4,12 +4,10 @@ import {
   PHASE,
   GAME_MODE,
   EVENT,
-  encodeGameState,
-  decodeGameState,
-  encodeGameEnd,
-  decodeGameEnd,
   encodeGameReady,
   getMessageType,
+  SNAPSHOT,
+  GAME_END,
 } from "../../../../js/lib/games/hex_hockey/protocol.js";
 
 function makeState(overrides = {}) {
@@ -94,11 +92,11 @@ describe("hex_hockey_protocol", () => {
         sidesSwapped: true,
       });
 
-      const buf = encodeGameState(state);
+      const buf = SNAPSHOT.encode(state);
       expect(buf.byteLength).toBe(39);
       expect(getMessageType(buf)).toBe(MSG_TYPE.GAME_STATE);
 
-      const decoded = decodeGameState(buf);
+      const decoded = SNAPSHOT.decode(buf);
       expect(decoded.phase).toBe(PHASE.PLAYING);
       expect(decoded.mode).toBe(GAME_MODE.CLASSIC);
       expect(decoded.p1x).toBe(100);
@@ -131,7 +129,7 @@ describe("hex_hockey_protocol", () => {
     it("roundtrips event flags bitmask", () => {
       const flags = EVENT.GOAL_P1 | EVENT.SHOT | EVENT.WALL_BOUNCE;
       const state = makeState({ eventFlags: flags });
-      const decoded = decodeGameState(encodeGameState(state));
+      const decoded = SNAPSHOT.decode(SNAPSHOT.encode(state));
       expect(decoded.eventFlags & EVENT.GOAL_P1).toBeTruthy();
       expect(decoded.eventFlags & EVENT.SHOT).toBeTruthy();
       expect(decoded.eventFlags & EVENT.WALL_BOUNCE).toBeTruthy();
@@ -153,14 +151,14 @@ describe("hex_hockey_protocol", () => {
         EVENT.CAPTURE |
         EVENT.WHISTLE;
       const state = makeState({ eventFlags: allEvents });
-      const decoded = decodeGameState(encodeGameState(state));
+      const decoded = SNAPSHOT.decode(SNAPSHOT.encode(state));
       expect(decoded.eventFlags).toBe(allEvents);
     });
 
     it("roundtrips all game modes", () => {
       for (const mode of [GAME_MODE.CLASSIC, GAME_MODE.BLITZ, GAME_MODE.SHOWDOWN]) {
         const state = makeState({ mode });
-        const decoded = decodeGameState(encodeGameState(state));
+        const decoded = SNAPSHOT.decode(SNAPSHOT.encode(state));
         expect(decoded.mode).toBe(mode);
       }
     });
@@ -168,49 +166,49 @@ describe("hex_hockey_protocol", () => {
     it("roundtrips all phases", () => {
       for (const phase of Object.values(PHASE)) {
         const state = makeState({ phase });
-        const decoded = decodeGameState(encodeGameState(state));
+        const decoded = SNAPSHOT.decode(SNAPSHOT.encode(state));
         expect(decoded.phase).toBe(phase);
       }
     });
 
     it("encodes puck velocity with 0.01 precision", () => {
       const state = makeState({ puckVx: 7.89, puckVy: -4.56 });
-      const decoded = decodeGameState(encodeGameState(state));
+      const decoded = SNAPSHOT.decode(SNAPSHOT.encode(state));
       expect(decoded.puckVx).toBeCloseTo(7.89, 1);
       expect(decoded.puckVy).toBeCloseTo(-4.56, 1);
     });
 
     it("handles zero velocity", () => {
       const state = makeState({ puckVx: 0, puckVy: 0 });
-      const decoded = decodeGameState(encodeGameState(state));
+      const decoded = SNAPSHOT.decode(SNAPSHOT.encode(state));
       expect(decoded.puckVx).toBe(0);
       expect(decoded.puckVy).toBe(0);
     });
 
     it("handles max score values (uint8)", () => {
       const state = makeState({ scoreP1: 255, scoreP2: 255 });
-      const decoded = decodeGameState(encodeGameState(state));
+      const decoded = SNAPSHOT.decode(SNAPSHOT.encode(state));
       expect(decoded.scoreP1).toBe(255);
       expect(decoded.scoreP2).toBe(255);
     });
 
     it("returns null for undersized buffer", () => {
-      expect(decodeGameState(new ArrayBuffer(10))).toBeNull();
-      expect(decodeGameState(new ArrayBuffer(0))).toBeNull();
+      expect(SNAPSHOT.decode(new ArrayBuffer(10))).toBeNull();
+      expect(SNAPSHOT.decode(new ArrayBuffer(0))).toBeNull();
     });
 
     it("returns null for null buffer", () => {
-      expect(decodeGameState(null)).toBeNull();
+      expect(SNAPSHOT.decode(null)).toBeNull();
     });
   });
 
   describe("GAME_END encode/decode", () => {
     it("roundtrips p1 win", () => {
       const result = { winner: "p1", score_p1: 5, score_p2: 3 };
-      const buf = encodeGameEnd(result);
+      const buf = GAME_END.encode(result);
       expect(buf.byteLength).toBe(4);
       expect(getMessageType(buf)).toBe(MSG_TYPE.GAME_END);
-      const decoded = decodeGameEnd(buf);
+      const decoded = GAME_END.decode(buf);
       expect(decoded.winner).toBe("p1");
       expect(decoded.score_p1).toBe(5);
       expect(decoded.score_p2).toBe(3);
@@ -218,19 +216,19 @@ describe("hex_hockey_protocol", () => {
 
     it("roundtrips p2 win", () => {
       const result = { winner: "p2", score_p1: 1, score_p2: 5 };
-      const decoded = decodeGameEnd(encodeGameEnd(result));
+      const decoded = GAME_END.decode(GAME_END.encode(result));
       expect(decoded.winner).toBe("p2");
     });
 
     it("roundtrips draw", () => {
       const result = { winner: "draw", score_p1: 2, score_p2: 2 };
-      const decoded = decodeGameEnd(encodeGameEnd(result));
+      const decoded = GAME_END.decode(GAME_END.encode(result));
       expect(decoded.winner).toBe("draw");
     });
 
     it("returns null for undersized buffer", () => {
-      expect(decodeGameEnd(new ArrayBuffer(2))).toBeNull();
-      expect(decodeGameEnd(null)).toBeNull();
+      expect(GAME_END.decode(new ArrayBuffer(2))).toBeNull();
+      expect(GAME_END.decode(null)).toBeNull();
     });
   });
 

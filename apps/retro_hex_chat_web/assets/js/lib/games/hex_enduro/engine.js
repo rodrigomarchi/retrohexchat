@@ -12,12 +12,10 @@ import {
   PHASE,
   GAME_MODE,
   EVENT,
-  encodeGameState,
-  decodeGameState,
-  encodeGameEnd,
-  decodeGameEnd,
   encodeGameReady,
   getMessageType,
+  SNAPSHOT,
+  GAME_END,
 } from "./protocol.js";
 import {
   createInitialState,
@@ -151,7 +149,7 @@ export class HexEnduroEngine extends GameEngine {
       }
     } else {
       if (type === MSG_TYPE.GAME_STATE) {
-        const decoded = decodeGameState(buf);
+        const decoded = SNAPSHOT.decode(buf);
         if (decoded) {
           this._ingestSnapshot(decoded, () => this._applyPeerState(decoded));
           this.setKeyboardCaptured(
@@ -159,7 +157,7 @@ export class HexEnduroEngine extends GameEngine {
           );
         }
       } else if (type === MSG_TYPE.GAME_END) {
-        const result = decodeGameEnd(buf);
+        const result = GAME_END.decode(buf);
         if (result) {
           this.gameState = { ...this.gameState, phase: PHASE.FINISHED };
           this._invalidate();
@@ -374,7 +372,7 @@ export class HexEnduroEngine extends GameEngine {
   _broadcastState() {
     try {
       const packed = packState(this.gameState);
-      this._sendState(encodeGameState(packed));
+      this._sendState(SNAPSHOT.encode(packed));
     } catch (error) {
       // Don't crash the game loop, but a broadcast failure desyncs the peer —
       // log it instead of hiding the desync.
@@ -421,7 +419,7 @@ export class HexEnduroEngine extends GameEngine {
     };
 
     // Send game end to peer
-    this._sendCommand(encodeGameEnd(result));
+    this._sendCommand(GAME_END.encode(result));
 
     // Notify LiveView
     if (this.onGameEnd) {

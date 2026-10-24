@@ -5,9 +5,9 @@ import {
   PHASE,
   MSG_TYPE,
   GAME_MODE,
-  encodeGameState,
-  encodeGameEnd,
   encodeGameReady,
+  SNAPSHOT,
+  GAME_END,
 } from "../../../../js/lib/games/hex_invaders/protocol.js";
 import {
   createInitialState,
@@ -709,14 +709,14 @@ describe("HexInvadersEngine", () => {
       it("host ignores GAME_STATE messages", () => {
         const state = createInitialState(GAME_MODE.INVASION_WAR, 12345);
         state.score1 = 999;
-        const buf = encodeGameState(state);
+        const buf = SNAPSHOT.encode(state);
         const prevScore = engine.gameState.score1;
         engine._onChannelMessage({ data: buf });
         expect(engine.gameState.score1).toBe(prevScore);
       });
 
       it("host ignores GAME_END messages", () => {
-        const buf = encodeGameEnd({ score1: 100, score2: 200, winner: 2 });
+        const buf = GAME_END.encode({ score1: 100, score2: 200, winner: 2 });
         engine._onChannelMessage({ data: buf });
         expect(engine.gameState.phase).toBe(PHASE.WAITING);
       });
@@ -737,7 +737,7 @@ describe("HexInvadersEngine", () => {
         const state = createInitialState(GAME_MODE.INVASION_WAR, 12345);
         state.phase = PHASE.PLAYING;
         state.score1 = 42;
-        const buf = encodeGameState(state);
+        const buf = SNAPSHOT.encode(state);
         engine._onChannelMessage({ data: buf });
         expect(engine.gameState.score1).toBe(42);
         expect(engine.gameState.phase).toBe(PHASE.PLAYING);
@@ -748,18 +748,18 @@ describe("HexInvadersEngine", () => {
       it("GAME_STATE captures keyboard only during active phases", () => {
         const playing = createInitialState(GAME_MODE.INVASION_WAR, 12345);
         playing.phase = PHASE.PLAYING;
-        engine._onChannelMessage({ data: encodeGameState(playing) });
+        engine._onChannelMessage({ data: SNAPSHOT.encode(playing) });
         expect(engine._keyboardCaptured).toBe(true);
 
         const finished = { ...playing, phase: PHASE.FINISHED };
-        engine._onChannelMessage({ data: encodeGameState(finished) });
+        engine._onChannelMessage({ data: SNAPSHOT.encode(finished) });
         expect(engine._keyboardCaptured).toBe(false);
       });
 
       it("GAME_STATE bootstraps seed from first state", () => {
         expect(engine.seed).toBe(0);
         const state = createInitialState(GAME_MODE.INVASION_WAR, 54321);
-        const buf = encodeGameState(state);
+        const buf = SNAPSHOT.encode(state);
         engine._onChannelMessage({ data: buf });
         expect(engine.seed).toBe(54321);
       });
@@ -767,14 +767,14 @@ describe("HexInvadersEngine", () => {
       it("GAME_STATE preserves _shieldPositions", () => {
         const originalPositions = engine.gameState._shieldPositions;
         const state = createInitialState(GAME_MODE.INVASION_WAR, 12345);
-        const buf = encodeGameState(state);
+        const buf = SNAPSHOT.encode(state);
         engine._onChannelMessage({ data: buf });
         expect(engine.gameState._shieldPositions).toStrictEqual(originalPositions);
       });
 
       it("GAME_END sets FINISHED phase and calls onGameEnd", () => {
         engine.setKeyboardCaptured(true);
-        const buf = encodeGameEnd({ score1: 100, score2: 50, winner: 1 });
+        const buf = GAME_END.encode({ score1: 100, score2: 50, winner: 1 });
         engine._onChannelMessage({ data: buf });
         expect(engine.gameState.phase).toBe(PHASE.FINISHED);
         expect(engine._keyboardCaptured).toBe(false);
@@ -785,7 +785,7 @@ describe("HexInvadersEngine", () => {
       });
 
       it("GAME_END renders after setting FINISHED", () => {
-        const buf = encodeGameEnd({ score1: 0, score2: 0, winner: 0 });
+        const buf = GAME_END.encode({ score1: 0, score2: 0, winner: 0 });
         engine._onChannelMessage({ data: buf });
         engine._pump(0);
         expect(render).toHaveBeenCalled();
@@ -796,7 +796,7 @@ describe("HexInvadersEngine", () => {
           throw new Error("callback exploded");
         });
         engine.onGameEnd = badCb;
-        const buf = encodeGameEnd({ score1: 0, score2: 0, winner: 1 });
+        const buf = GAME_END.encode({ score1: 0, score2: 0, winner: 1 });
         // Should not throw
         engine._onChannelMessage({ data: buf });
         expect(badCb).toHaveBeenCalled();

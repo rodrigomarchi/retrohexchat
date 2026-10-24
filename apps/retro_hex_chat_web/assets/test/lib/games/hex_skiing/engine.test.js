@@ -7,8 +7,8 @@ import {
   MSG_TYPE,
   EVENT,
   encodeGameReady,
-  encodeGameEnd,
-  encodeGameState,
+  SNAPSHOT,
+  GAME_END,
 } from "../../../../js/lib/games/hex_skiing/protocol.js";
 import {
   createInitialState,
@@ -640,7 +640,7 @@ describe("HexSkiingEngine", () => {
         state.phase = PHASE.RACING;
         state.p1RoundWins = 1;
         const packed = packState(state);
-        const buf = encodeGameState(packed);
+        const buf = SNAPSHOT.encode(packed);
 
         engine._onChannelMessage({ data: buf });
 
@@ -655,7 +655,7 @@ describe("HexSkiingEngine", () => {
         render.mockClear();
         const state = createInitialState(GAME_MODE.ALPINE_RACE, 42);
         const packed = packState(state);
-        const buf = encodeGameState(packed);
+        const buf = SNAPSHOT.encode(packed);
 
         engine._onChannelMessage({ data: buf });
         engine._pump(0);
@@ -669,7 +669,7 @@ describe("HexSkiingEngine", () => {
         const state = createInitialState(GAME_MODE.ALPINE_RACE, 42);
         state.events = EVENT.GATE_CLEARED | EVENT.SPEED_BOOST;
         const packed = packState(state);
-        const buf = encodeGameState(packed);
+        const buf = SNAPSHOT.encode(packed);
 
         engine._onChannelMessage({ data: buf });
         expect(spy).toHaveBeenCalled();
@@ -685,21 +685,21 @@ describe("HexSkiingEngine", () => {
         const onGameEnd = vi.fn();
         const { engine: e } = createEngine("hex_skiing", false, onGameEnd);
         engine = e;
-        engine._onChannelMessage({ data: encodeGameEnd({ score1: 2, score2: 1, winner: 1 }) });
+        engine._onChannelMessage({ data: GAME_END.encode({ score1: 2, score2: 1, winner: 1 }) });
         expect(onGameEnd).toHaveBeenCalledWith({ score1: 2, score2: 1, winner: 1 });
       });
 
       it("stops ski drone audio", () => {
         const { engine: e } = createEngine("hex_skiing", false);
         engine = e;
-        engine._onChannelMessage({ data: encodeGameEnd({ score1: 0, score2: 0, winner: 0 }) });
+        engine._onChannelMessage({ data: GAME_END.encode({ score1: 0, score2: 0, winner: 0 }) });
         expect(engine.audio.stopSkiDrone).toHaveBeenCalled();
       });
 
       it("plays victory when winner > 0", () => {
         const { engine: e } = createEngine("hex_skiing", false);
         engine = e;
-        engine._onChannelMessage({ data: encodeGameEnd({ score1: 2, score2: 1, winner: 1 }) });
+        engine._onChannelMessage({ data: GAME_END.encode({ score1: 2, score2: 1, winner: 1 }) });
         expect(engine.audio.playVictory).toHaveBeenCalled();
         expect(engine.audio.playGameOver).not.toHaveBeenCalled();
       });
@@ -707,7 +707,7 @@ describe("HexSkiingEngine", () => {
       it("plays gameOver when winner = 0 (draw)", () => {
         const { engine: e } = createEngine("hex_skiing", false);
         engine = e;
-        engine._onChannelMessage({ data: encodeGameEnd({ score1: 1, score2: 1, winner: 0 }) });
+        engine._onChannelMessage({ data: GAME_END.encode({ score1: 1, score2: 1, winner: 0 }) });
         expect(engine.audio.playGameOver).toHaveBeenCalled();
         expect(engine.audio.playVictory).not.toHaveBeenCalled();
       });

@@ -5,11 +5,9 @@ import {
   GAME_MODE,
   SKIER_STATE,
   getMessageType,
-  encodeGameState,
-  decodeGameState,
-  encodeGameEnd,
-  decodeGameEnd,
   encodeGameReady,
+  SNAPSHOT,
+  GAME_END,
 } from "../../../../js/lib/games/hex_skiing/protocol.js";
 
 describe("Hex Skiing Protocol", () => {
@@ -71,8 +69,8 @@ describe("Hex Skiing Protocol", () => {
 
     it("roundtrips game state", () => {
       const original = makeState();
-      const buf = encodeGameState(original);
-      const decoded = decodeGameState(buf);
+      const buf = SNAPSHOT.encode(original);
+      const decoded = SNAPSHOT.decode(buf);
 
       expect(decoded).not.toBeNull();
       expect(decoded.phase).toBe(original.phase);
@@ -97,8 +95,8 @@ describe("Hex Skiing Protocol", () => {
 
     it("roundtrips gates including y position", () => {
       const original = makeState();
-      const buf = encodeGameState(original);
-      const decoded = decodeGameState(buf);
+      const buf = SNAPSHOT.encode(original);
+      const decoded = SNAPSHOT.decode(buf);
 
       expect(decoded.gateCount).toBe(2);
       expect(decoded.gates[0].x).toBe(200);
@@ -112,8 +110,8 @@ describe("Hex Skiing Protocol", () => {
 
     it("roundtrips items", () => {
       const original = makeState();
-      const buf = encodeGameState(original);
-      const decoded = decodeGameState(buf);
+      const buf = SNAPSHOT.encode(original);
+      const decoded = SNAPSHOT.decode(buf);
 
       expect(decoded.itemCount).toBe(1);
       expect(decoded.items[0].type).toBe(0);
@@ -124,8 +122,8 @@ describe("Hex Skiing Protocol", () => {
 
     it("handles empty gates and items", () => {
       const original = makeState({ gateCount: 0, gates: [], itemCount: 0, items: [] });
-      const buf = encodeGameState(original);
-      const decoded = decodeGameState(buf);
+      const buf = SNAPSHOT.encode(original);
+      const decoded = SNAPSHOT.decode(buf);
 
       expect(decoded.gateCount).toBe(0);
       expect(decoded.gates).toEqual([]);
@@ -135,38 +133,38 @@ describe("Hex Skiing Protocol", () => {
 
     it("handles blizzard active state", () => {
       const original = makeState({ blizzardActive: true, blizzardTimer: 300 });
-      const buf = encodeGameState(original);
-      const decoded = decodeGameState(buf);
+      const buf = SNAPSHOT.encode(original);
+      const decoded = SNAPSHOT.decode(buf);
 
       expect(decoded.blizzardActive).toBe(true);
       expect(decoded.blizzardTimer).toBe(300);
     });
 
     it("returns null for invalid buffer", () => {
-      expect(decodeGameState(new ArrayBuffer(5))).toBeNull();
+      expect(SNAPSHOT.decode(new ArrayBuffer(5))).toBeNull();
     });
 
     it("returns null for wrong message type", () => {
       const buf = new ArrayBuffer(100);
       new DataView(buf).setUint8(0, 0x81);
-      expect(decodeGameState(buf)).toBeNull();
+      expect(SNAPSHOT.decode(buf)).toBeNull();
     });
 
     it("returns null when gateCount exceeds MAX_GATES", () => {
       const original = makeState({ gateCount: 0, gates: [], itemCount: 0, items: [] });
-      const buf = encodeGameState(original);
+      const buf = SNAPSHOT.encode(original);
       const v = new DataView(buf);
       // Tamper with gateCount byte (at HEADER_SIZE offset)
       v.setUint8(57, 255); // Set gateCount to 255
-      expect(decodeGameState(buf)).toBeNull();
+      expect(SNAPSHOT.decode(buf)).toBeNull();
     });
 
     it("returns null when buffer is truncated mid-gates", () => {
       const original = makeState();
-      const buf = encodeGameState(original);
+      const buf = SNAPSHOT.encode(original);
       // Truncate the buffer to cut off gate data
       const truncated = buf.slice(0, 60);
-      expect(decodeGameState(truncated)).toBeNull();
+      expect(SNAPSHOT.decode(truncated)).toBeNull();
     });
 
     it("clamps gate count to MAX_GATES on encode", () => {
@@ -180,16 +178,16 @@ describe("Hex Skiing Protocol", () => {
           clearedP2: false,
         })),
       });
-      const buf = encodeGameState(state);
-      const decoded = decodeGameState(buf);
+      const buf = SNAPSHOT.encode(state);
+      const decoded = SNAPSHOT.decode(buf);
       expect(decoded).not.toBeNull();
       expect(decoded.gateCount).toBeLessThanOrEqual(8);
     });
 
     it("roundtrips events bitmask", () => {
       const original = makeState({ events: 0xff });
-      const buf = encodeGameState(original);
-      const decoded = decodeGameState(buf);
+      const buf = SNAPSHOT.encode(original);
+      const decoded = SNAPSHOT.decode(buf);
       expect(decoded.events).toBe(0xff);
     });
   });
@@ -197,8 +195,8 @@ describe("Hex Skiing Protocol", () => {
   describe("GAME_END encode/decode", () => {
     it("roundtrips game result", () => {
       const result = { score1: 2, score2: 1, winner: 1 };
-      const buf = encodeGameEnd(result);
-      const decoded = decodeGameEnd(buf);
+      const buf = GAME_END.encode(result);
+      const decoded = GAME_END.decode(buf);
 
       expect(decoded).not.toBeNull();
       expect(decoded.score1).toBe(2);
@@ -208,14 +206,14 @@ describe("Hex Skiing Protocol", () => {
 
     it("handles draw", () => {
       const result = { score1: 1, score2: 1, winner: 0 };
-      const buf = encodeGameEnd(result);
-      const decoded = decodeGameEnd(buf);
+      const buf = GAME_END.encode(result);
+      const decoded = GAME_END.decode(buf);
 
       expect(decoded.winner).toBe(0);
     });
 
     it("returns null for too-small buffer", () => {
-      expect(decodeGameEnd(new ArrayBuffer(5))).toBeNull();
+      expect(GAME_END.decode(new ArrayBuffer(5))).toBeNull();
     });
   });
 

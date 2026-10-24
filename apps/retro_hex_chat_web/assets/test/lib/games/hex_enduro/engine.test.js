@@ -5,9 +5,9 @@ import {
   MSG_TYPE,
   GAME_MODE,
   EVENT,
-  encodeGameState,
-  encodeGameEnd,
   encodeGameReady,
+  SNAPSHOT,
+  GAME_END,
 } from "../../../../js/lib/games/hex_enduro/protocol.js";
 import { createInitialState, packState } from "../../../../js/lib/games/hex_enduro/physics.js";
 
@@ -460,7 +460,7 @@ describe("HexEnduroEngine", () => {
       state.p2Score = 10;
       state.seed = 42;
 
-      const buf = encodeGameState(state);
+      const buf = SNAPSHOT.encode(state);
       const handler = channel.addEventListener.mock.calls.find((c) => c[0] === "message")[1];
       handler({ data: buf });
 
@@ -479,7 +479,7 @@ describe("HexEnduroEngine", () => {
       state.seed = 99999;
 
       const handler = channel.addEventListener.mock.calls.find((c) => c[0] === "message")[1];
-      handler({ data: encodeGameState(state) });
+      handler({ data: SNAPSHOT.encode(state) });
 
       expect(engine.seed).toBe(99999);
     });
@@ -491,7 +491,7 @@ describe("HexEnduroEngine", () => {
       engine.start();
 
       const result = { score1: 100, score2: 80, winner: 1 };
-      const buf = encodeGameEnd(result);
+      const buf = GAME_END.encode(result);
       const handler = channel.addEventListener.mock.calls.find((c) => c[0] === "message")[1];
       handler({ data: buf });
 
@@ -504,7 +504,7 @@ describe("HexEnduroEngine", () => {
 
       // Peer is P2, so winner=2 means peer wins
       const result = { score1: 80, score2: 100, winner: 2 };
-      const buf = encodeGameEnd(result);
+      const buf = GAME_END.encode(result);
       const handler = channel.addEventListener.mock.calls.find((c) => c[0] === "message")[1];
       handler({ data: buf });
 
@@ -517,7 +517,7 @@ describe("HexEnduroEngine", () => {
 
       // Peer is P2, so winner=1 means peer loses
       const result = { score1: 100, score2: 80, winner: 1 };
-      const buf = encodeGameEnd(result);
+      const buf = GAME_END.encode(result);
       const handler = channel.addEventListener.mock.calls.find((c) => c[0] === "message")[1];
       handler({ data: buf });
 
@@ -547,7 +547,7 @@ describe("HexEnduroEngine", () => {
       engine.start();
 
       const result = { score1: 100, score2: 80, winner: 1 };
-      const buf = encodeGameEnd(result);
+      const buf = GAME_END.encode(result);
       const handler = channel.addEventListener.mock.calls.find((c) => c[0] === "message")[1];
       handler({ data: buf });
 

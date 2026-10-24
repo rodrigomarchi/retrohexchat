@@ -194,6 +194,26 @@ describe("codec", () => {
       ]);
     });
 
+    it("fixed with trim: decodes only `count` entries, even when the count comes later", () => {
+      const msg = schema(1, [
+        list("aliens", { capacity: 3, fixed: true, count: "n", trim: true }, [u8("type")]),
+        u8("n", { clamp: [-Infinity, 3] }),
+      ]);
+      const wire = msg.encode({ n: 2, aliens: [{ type: 7 }, { type: 8 }, { type: 9 }] });
+      expect(bytes(wire)).toEqual([1, 7, 8, 0, 2]);
+      expect(msg.decode(wire)).toEqual({ aliens: [{ type: 7 }, { type: 8 }], n: 2 });
+    });
+
+    it("fixed with trim naming a field: that field cuts the list on the way back only", () => {
+      const msg = schema(1, [
+        u8("shown", { from: (obj) => Math.min(obj.drops.length, 2) }),
+        list("drops", { capacity: 3, fixed: true, trim: "shown" }, [u8("t")]),
+      ]);
+      const wire = msg.encode({ drops: [{ t: 4 }, { t: 5 }, { t: 6 }] });
+      expect(bytes(wire)).toEqual([1, 2, 4, 5, 6]);
+      expect(msg.decode(wire)).toEqual({ shown: 2, drops: [{ t: 4 }, { t: 5 }] });
+    });
+
     it("fixed without a count: writes the items it has, then zeros", () => {
       const msg = schema(1, [list("aliens", { capacity: 2, fixed: true }, alien)]);
       expect(bytes(msg.encode({ aliens: [{ type: 1, x: 1 }] }))).toEqual([1, 1, 1, 0, 0, 0, 0]);
@@ -339,6 +359,7 @@ describe("codec", () => {
           fixed: true,
           count: "n",
           countFrom: null,
+          trim: false,
           fields: [
             {
               kind: "f32",

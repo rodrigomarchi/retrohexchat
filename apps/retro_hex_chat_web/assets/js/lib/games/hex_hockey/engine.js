@@ -17,11 +17,9 @@ import {
   GAME_MODE,
   EVENT,
   getMessageType,
-  encodeGameState,
-  decodeGameState,
-  encodeGameEnd,
-  decodeGameEnd,
   encodeGameReady,
+  SNAPSHOT,
+  GAME_END,
 } from "./protocol.js";
 import {
   createInitialState,
@@ -182,7 +180,7 @@ export class HexHockeyEngine extends GameEngine {
 
       case MSG_TYPE.GAME_STATE:
         if (!this.isHost) {
-          const decoded = decodeGameState(buf);
+          const decoded = SNAPSHOT.decode(buf);
           if (decoded) {
             this._ingestSnapshot(decoded, () => {
               this.gameState = unpackState(decoded);
@@ -198,7 +196,7 @@ export class HexHockeyEngine extends GameEngine {
 
       case MSG_TYPE.GAME_END: {
         if (this.isHost) break;
-        const result = decodeGameEnd(buf);
+        const result = GAME_END.decode(buf);
         if (result) {
           this.setKeyboardCaptured(false);
           this.audio.stopSuddenDeath();
@@ -539,7 +537,7 @@ export class HexHockeyEngine extends GameEngine {
     this.audio.stopSuddenDeath();
     this.audio.playVictory();
 
-    this._sendCommand(encodeGameEnd(result));
+    this._sendCommand(GAME_END.encode(result));
 
     if (this.onGameEnd) {
       try {
@@ -585,7 +583,7 @@ export class HexHockeyEngine extends GameEngine {
   _broadcastState() {
     if (!this.gameState) return;
     const packed = packState(this.gameState);
-    this._sendState(encodeGameState(packed));
+    this._sendState(SNAPSHOT.encode(packed));
   }
 
   _updateOpponentInputs() {

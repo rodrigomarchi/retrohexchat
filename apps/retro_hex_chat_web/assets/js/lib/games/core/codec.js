@@ -30,6 +30,8 @@
  *   returns the offset after the field
  * @property {(view: DataView, offset: number, out: object) => number} read -
  *   returns the offset after the field, or -1 when the buffer ends first
+ * @property {(out: object) => void} [finish] - runs once the whole message is
+ *   read, for a field that depends on one written after it
  */
 
 /**
@@ -48,6 +50,7 @@ export function schema(type, fields) {
     if (view.getUint8(0) !== type) return false;
     const out = {};
     if (body.read(view, 1, out) < 0) return false;
+    for (const field of fields) field.finish?.(out);
     Object.assign(target, out);
     return true;
   };
@@ -345,6 +348,9 @@ export function struct(name, fields, { flat = false } = {}) {
  *
  * - `fixed: true` always writes `capacity` entries; those past the count are
  *   written as zeros, and decoding returns all `capacity` of them.
+ *   With `trim`, decoding keeps only the first `obj[count]` of them — or
+ *   `obj[trim]` when `trim` names another field — once the whole message is
+ *   read (the count may be written after the list).
  * - `countFrom` names an earlier field that already carried the count: the
  *   entries follow with no prefix, and decoding reads that many.
  * - Otherwise a u8 count comes first, then that many entries.
@@ -359,7 +365,11 @@ export function struct(name, fields, { flat = false } = {}) {
  * @param {Field[]} fields
  * @returns {Field}
  */
-export function list(name, { capacity, fixed = false, count = null, countFrom = null }, fields) {
+export function list(
+  name,
+  { capacity, fixed = false, count = null, countFrom = null, trim = false },
+  fields,
+) {
   const entry = sequence(fields);
   const empty = {};
 
@@ -377,8 +387,15 @@ export function list(name, { capacity, fixed = false, count = null, countFrom = 
       fixed,
       count,
       countFrom,
+      trim,
       fields: fields.map((field) => field.spec),
     },
+
+    finish: trim
+      ? (out) => {
+          out[name] = out[name].slice(0, out[trim === true ? count : trim]);
+        }
+      : undefined,
     size(obj) {
       const items = obj[name] || [];
       const n = fixed ? capacity : length(obj);

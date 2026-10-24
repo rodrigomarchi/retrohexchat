@@ -4,12 +4,10 @@ import {
   PHASE,
   GAME_MODE,
   ALIEN_TYPE,
-  encodeGameState,
-  decodeGameState,
-  encodeGameEnd,
-  decodeGameEnd,
   encodeGameReady,
   getMessageType,
+  SNAPSHOT,
+  GAME_END,
 } from "../../../../js/lib/games/hex_invaders/protocol.js";
 
 function createTestState() {
@@ -76,8 +74,8 @@ describe("Hex Invaders Protocol", () => {
   describe("GAME_STATE encode/decode round-trip", () => {
     it("preserves all header fields", () => {
       const state = createTestState();
-      const buf = encodeGameState(state);
-      const decoded = decodeGameState(buf);
+      const buf = SNAPSHOT.encode(state);
+      const decoded = SNAPSHOT.decode(buf);
 
       expect(decoded.phase).toBe(PHASE.PLAYING);
       expect(decoded.wave).toBe(3);
@@ -88,8 +86,8 @@ describe("Hex Invaders Protocol", () => {
 
     it("preserves scores and player state", () => {
       const state = createTestState();
-      const buf = encodeGameState(state);
-      const decoded = decodeGameState(buf);
+      const buf = SNAPSHOT.encode(state);
+      const decoded = SNAPSHOT.decode(buf);
 
       expect(decoded.score1).toBe(1240);
       expect(decoded.score2).toBe(980);
@@ -101,8 +99,8 @@ describe("Hex Invaders Protocol", () => {
 
     it("preserves cannon positions", () => {
       const state = createTestState();
-      const buf = encodeGameState(state);
-      const decoded = decodeGameState(buf);
+      const buf = SNAPSHOT.encode(state);
+      const decoded = SNAPSHOT.decode(buf);
 
       expect(decoded.cannon1X).toBe(150);
       expect(decoded.cannon2X).toBe(470);
@@ -110,8 +108,8 @@ describe("Hex Invaders Protocol", () => {
 
     it("preserves missile state", () => {
       const state = createTestState();
-      const buf = encodeGameState(state);
-      const decoded = decodeGameState(buf);
+      const buf = SNAPSHOT.encode(state);
+      const decoded = SNAPSHOT.decode(buf);
 
       expect(decoded.m1X).toBe(150);
       expect(decoded.m1Y).toBe(200);
@@ -121,8 +119,8 @@ describe("Hex Invaders Protocol", () => {
 
     it("preserves alien grids with correct counts", () => {
       const state = createTestState();
-      const buf = encodeGameState(state);
-      const decoded = decodeGameState(buf);
+      const buf = SNAPSHOT.encode(state);
+      const decoded = SNAPSHOT.decode(buf);
 
       expect(decoded.alien1Count).toBe(30);
       expect(decoded.alien2Count).toBe(28);
@@ -135,8 +133,8 @@ describe("Hex Invaders Protocol", () => {
 
     it("preserves alien grid directions", () => {
       const state = createTestState();
-      const buf = encodeGameState(state);
-      const decoded = decodeGameState(buf);
+      const buf = SNAPSHOT.encode(state);
+      const decoded = SNAPSHOT.decode(buf);
 
       expect(decoded.alien1DirRight).toBe(true);
       expect(decoded.alien2DirRight).toBe(false);
@@ -144,8 +142,8 @@ describe("Hex Invaders Protocol", () => {
 
     it("preserves bombs with correct count", () => {
       const state = createTestState();
-      const buf = encodeGameState(state);
-      const decoded = decodeGameState(buf);
+      const buf = SNAPSHOT.encode(state);
+      const decoded = SNAPSHOT.decode(buf);
 
       expect(decoded.bombCount).toBe(2);
       expect(decoded.bombs[0].side).toBe(1);
@@ -156,16 +154,16 @@ describe("Hex Invaders Protocol", () => {
 
     it("preserves shield HP values", () => {
       const state = createTestState();
-      const buf = encodeGameState(state);
-      const decoded = decodeGameState(buf);
+      const buf = SNAPSHOT.encode(state);
+      const decoded = SNAPSHOT.decode(buf);
 
       expect(decoded.shields).toEqual([4, 3, 4, 2]);
     });
 
     it("preserves UFO state", () => {
       const state = createTestState();
-      const buf = encodeGameState(state);
-      const decoded = decodeGameState(buf);
+      const buf = SNAPSHOT.encode(state);
+      const decoded = SNAPSHOT.decode(buf);
 
       expect(decoded.ufoX).toBe(200);
       expect(decoded.ufoActive).toBe(true);
@@ -174,8 +172,8 @@ describe("Hex Invaders Protocol", () => {
 
     it("preserves drop queue", () => {
       const state = createTestState();
-      const buf = encodeGameState(state);
-      const decoded = decodeGameState(buf);
+      const buf = SNAPSHOT.encode(state);
+      const decoded = SNAPSHOT.decode(buf);
 
       expect(decoded.dropCount).toBe(2);
       expect(decoded.drops).toHaveLength(2);
@@ -189,14 +187,14 @@ describe("Hex Invaders Protocol", () => {
 
     it("has correct message type byte", () => {
       const state = createTestState();
-      const buf = encodeGameState(state);
+      const buf = SNAPSHOT.encode(state);
       const view = new DataView(buf);
       expect(view.getUint8(0)).toBe(0x80);
     });
 
     it("produces correct buffer size", () => {
       const state = createTestState();
-      const buf = encodeGameState(state);
+      const buf = SNAPSHOT.encode(state);
       expect(buf.byteLength).toBe(463);
     });
   });
@@ -209,7 +207,7 @@ describe("Hex Invaders Protocol", () => {
       state.aliens2 = [];
       state.alien2Count = 0;
 
-      const decoded = decodeGameState(encodeGameState(state));
+      const decoded = SNAPSHOT.decode(SNAPSHOT.encode(state));
       expect(decoded.alien1Count).toBe(0);
       expect(decoded.alien2Count).toBe(0);
     });
@@ -219,7 +217,7 @@ describe("Hex Invaders Protocol", () => {
       state.score1 = 65535;
       state.score2 = 65535;
 
-      const decoded = decodeGameState(encodeGameState(state));
+      const decoded = SNAPSHOT.decode(SNAPSHOT.encode(state));
       expect(decoded.score1).toBe(65535);
       expect(decoded.score2).toBe(65535);
     });
@@ -228,7 +226,7 @@ describe("Hex Invaders Protocol", () => {
       const state = createTestState();
       state.shields = [0, 0, 0, 0];
 
-      const decoded = decodeGameState(encodeGameState(state));
+      const decoded = SNAPSHOT.decode(SNAPSHOT.encode(state));
       expect(decoded.shields).toEqual([0, 0, 0, 0]);
     });
 
@@ -237,7 +235,7 @@ describe("Hex Invaders Protocol", () => {
       state.ufoActive = false;
       state.ufoX = 0;
 
-      const decoded = decodeGameState(encodeGameState(state));
+      const decoded = SNAPSHOT.decode(SNAPSHOT.encode(state));
       expect(decoded.ufoActive).toBe(false);
     });
 
@@ -245,62 +243,62 @@ describe("Hex Invaders Protocol", () => {
       const state = createTestState();
       state.drops = [];
 
-      const decoded = decodeGameState(encodeGameState(state));
+      const decoded = SNAPSHOT.decode(SNAPSHOT.encode(state));
       expect(decoded.dropCount).toBe(0);
       expect(decoded.drops).toHaveLength(0);
     });
 
     it("returns null for too-small buffer", () => {
       const buf = new ArrayBuffer(10);
-      expect(decodeGameState(buf)).toBeNull();
+      expect(SNAPSHOT.decode(buf)).toBeNull();
     });
 
     it("returns null for wrong message type", () => {
       const state = createTestState();
-      const buf = encodeGameState(state);
+      const buf = SNAPSHOT.encode(state);
       const view = new DataView(buf);
       view.setUint8(0, 0x81); // wrong type
-      expect(decodeGameState(buf)).toBeNull();
+      expect(SNAPSHOT.decode(buf)).toBeNull();
     });
   });
 
   describe("GAME_END encode/decode", () => {
     it("round-trips normal scores", () => {
-      const buf = encodeGameEnd({ score1: 1240, score2: 980, winner: 1 });
-      const decoded = decodeGameEnd(buf);
+      const buf = GAME_END.encode({ score1: 1240, score2: 980, winner: 1 });
+      const decoded = GAME_END.decode(buf);
       expect(decoded.score1).toBe(1240);
       expect(decoded.score2).toBe(980);
       expect(decoded.winner).toBe(1);
     });
 
     it("round-trips max scores", () => {
-      const buf = encodeGameEnd({ score1: 65535, score2: 65535, winner: 2 });
-      const decoded = decodeGameEnd(buf);
+      const buf = GAME_END.encode({ score1: 65535, score2: 65535, winner: 2 });
+      const decoded = GAME_END.decode(buf);
       expect(decoded.score1).toBe(65535);
       expect(decoded.score2).toBe(65535);
       expect(decoded.winner).toBe(2);
     });
 
     it("round-trips zero scores", () => {
-      const buf = encodeGameEnd({ score1: 0, score2: 0, winner: 1 });
-      const decoded = decodeGameEnd(buf);
+      const buf = GAME_END.encode({ score1: 0, score2: 0, winner: 1 });
+      const decoded = GAME_END.decode(buf);
       expect(decoded.score1).toBe(0);
       expect(decoded.score2).toBe(0);
     });
 
     it("has correct size (6 bytes)", () => {
-      const buf = encodeGameEnd({ score1: 100, score2: 200, winner: 1 });
+      const buf = GAME_END.encode({ score1: 100, score2: 200, winner: 1 });
       expect(buf.byteLength).toBe(6);
     });
 
     it("returns null for too-small buffer", () => {
-      expect(decodeGameEnd(new ArrayBuffer(3))).toBeNull();
+      expect(GAME_END.decode(new ArrayBuffer(3))).toBeNull();
     });
 
     it("returns null for wrong message type", () => {
-      const buf = encodeGameEnd({ score1: 100, score2: 200, winner: 1 });
+      const buf = GAME_END.encode({ score1: 100, score2: 200, winner: 1 });
       new DataView(buf).setUint8(0, 0x80);
-      expect(decodeGameEnd(buf)).toBeNull();
+      expect(GAME_END.decode(buf)).toBeNull();
     });
   });
 
@@ -314,12 +312,12 @@ describe("Hex Invaders Protocol", () => {
 
   describe("getMessageType", () => {
     it("returns GAME_STATE type", () => {
-      const buf = encodeGameState(createTestState());
+      const buf = SNAPSHOT.encode(createTestState());
       expect(getMessageType(buf)).toBe(MSG_TYPE.GAME_STATE);
     });
 
     it("returns GAME_END type", () => {
-      const buf = encodeGameEnd({ score1: 100, score2: 200, winner: 1 });
+      const buf = GAME_END.encode({ score1: 100, score2: 200, winner: 1 });
       expect(getMessageType(buf)).toBe(MSG_TYPE.GAME_END);
     });
 
@@ -338,7 +336,7 @@ describe("Hex Invaders Protocol", () => {
       const state = createTestState();
       state.alien1Count = 5;
       state.aliens1 = state.aliens1.slice(0, 5);
-      const decoded = decodeGameState(encodeGameState(state));
+      const decoded = SNAPSHOT.decode(SNAPSHOT.encode(state));
 
       expect(decoded.aliens1).toHaveLength(5);
       expect(decoded.aliens1.every((a) => a.type !== 0)).toBe(true);
@@ -348,14 +346,14 @@ describe("Hex Invaders Protocol", () => {
       const state = createTestState();
       state.alien2Count = 3;
       state.aliens2 = state.aliens2.slice(0, 3);
-      const decoded = decodeGameState(encodeGameState(state));
+      const decoded = SNAPSHOT.decode(SNAPSHOT.encode(state));
 
       expect(decoded.aliens2).toHaveLength(3);
     });
 
     it("slices bombs to bombCount", () => {
       const state = createTestState();
-      const decoded = decodeGameState(encodeGameState(state));
+      const decoded = SNAPSHOT.decode(SNAPSHOT.encode(state));
 
       // bombCount is 2, so bombs should have exactly 2 entries
       expect(decoded.bombs).toHaveLength(2);
@@ -373,7 +371,7 @@ describe("Hex Invaders Protocol", () => {
       state.bombs = [];
       state.drops = [];
 
-      const decoded = decodeGameState(encodeGameState(state));
+      const decoded = SNAPSHOT.decode(SNAPSHOT.encode(state));
       expect(decoded.aliens1).toHaveLength(0);
       expect(decoded.aliens2).toHaveLength(0);
       expect(decoded.bombs).toHaveLength(0);
@@ -386,7 +384,7 @@ describe("Hex Invaders Protocol", () => {
       for (const [, val] of Object.entries(PHASE)) {
         const state = createTestState();
         state.phase = val;
-        const decoded = decodeGameState(encodeGameState(state));
+        const decoded = SNAPSHOT.decode(SNAPSHOT.encode(state));
         expect(decoded.phase).toBe(val);
       }
     });
@@ -395,7 +393,7 @@ describe("Hex Invaders Protocol", () => {
       for (const [, val] of Object.entries(GAME_MODE)) {
         const state = createTestState();
         state.mode = val;
-        const decoded = decodeGameState(encodeGameState(state));
+        const decoded = SNAPSHOT.decode(SNAPSHOT.encode(state));
         expect(decoded.mode).toBe(val);
       }
     });
@@ -403,15 +401,15 @@ describe("Hex Invaders Protocol", () => {
 
   describe("GAME_END encoding consistency", () => {
     it("round-trips score 256 (boundary of high/low byte)", () => {
-      const buf = encodeGameEnd({ score1: 256, score2: 255, winner: 1 });
-      const decoded = decodeGameEnd(buf);
+      const buf = GAME_END.encode({ score1: 256, score2: 255, winner: 1 });
+      const decoded = GAME_END.decode(buf);
       expect(decoded.score1).toBe(256);
       expect(decoded.score2).toBe(255);
     });
 
     it("round-trips winner=0 (draw/no winner)", () => {
-      const buf = encodeGameEnd({ score1: 100, score2: 100, winner: 0 });
-      const decoded = decodeGameEnd(buf);
+      const buf = GAME_END.encode({ score1: 100, score2: 100, winner: 0 });
+      const decoded = GAME_END.decode(buf);
       expect(decoded.winner).toBe(0);
     });
   });
