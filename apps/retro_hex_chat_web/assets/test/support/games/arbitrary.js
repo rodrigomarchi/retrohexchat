@@ -31,6 +31,10 @@ function record(specs, overrides) {
   for (const spec of specs) {
     if (spec.kind === "flags") {
       for (const name of spec.names) shape[name] = overrides[name] ?? fc.boolean();
+    } else if (spec.kind === "bits") {
+      for (const [name, width] of spec.parts) {
+        shape[name] = overrides[name] ?? fc.integer({ min: 0, max: (1 << (width + 1)) - 1 });
+      }
     } else if (spec.kind === "custom") {
       throw new Error("custom fields need an override in arbitraryFor");
     } else {

@@ -9,6 +9,7 @@ import {
   u32,
   f32,
   bool,
+  bits,
   flags,
   bitmap,
   list,
@@ -100,6 +101,20 @@ describe("codec", () => {
         shield: true,
         dead: false,
       });
+    });
+  });
+
+  describe("bits", () => {
+    it("packs small integers into one byte, the first in the lowest bits, each masked to its width", () => {
+      const msg = schema(1, [
+        bits([
+          ["punch", 2],
+          ["arm", 1],
+        ]),
+      ]);
+      expect(bytes(msg.encode({ punch: 2, arm: 1 }))).toEqual([1, 0b110]);
+      expect(bytes(msg.encode({ punch: 7, arm: 2 }))).toEqual([1, 0b011]);
+      expect(msg.decode(msg.encode({ punch: 1, arm: 1 }))).toEqual({ punch: 1, arm: 1 });
     });
   });
 

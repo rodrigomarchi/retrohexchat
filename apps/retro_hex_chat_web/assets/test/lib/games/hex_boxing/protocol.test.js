@@ -3,12 +3,10 @@ import {
   MSG_TYPE,
   PHASE,
   PUNCH_STATE,
-  encodeGameState,
-  decodeGameState,
-  encodeGameEnd,
-  decodeGameEnd,
   encodeGameReady,
   getMessageType,
+  SNAPSHOT,
+  GAME_END,
 } from "../../../../js/lib/games/hex_boxing/protocol.js";
 
 describe("Hex Boxing Protocol", () => {
@@ -67,10 +65,10 @@ describe("Hex Boxing Protocol", () => {
         lastHitPoints: 3,
       });
 
-      const buf = encodeGameState(state);
+      const buf = SNAPSHOT.encode(state);
       expect(buf.byteLength).toBe(26);
 
-      const decoded = decodeGameState(buf);
+      const decoded = SNAPSHOT.decode(buf);
       expect(decoded).not.toBeNull();
       expect(decoded.b1x).toBe(200);
       expect(decoded.b1y).toBe(240);
@@ -97,27 +95,27 @@ describe("Hex Boxing Protocol", () => {
     });
 
     it("encodes message type 0x80", () => {
-      const buf = encodeGameState(makeState());
+      const buf = SNAPSHOT.encode(makeState());
       expect(getMessageType(buf)).toBe(MSG_TYPE.GAME_STATE);
     });
 
     it("returns null for buffer too small", () => {
       const buf = new ArrayBuffer(10);
-      expect(decodeGameState(buf)).toBeNull();
+      expect(SNAPSHOT.decode(buf)).toBeNull();
     });
 
     it("returns null for wrong message type", () => {
       const buf = new ArrayBuffer(26);
       const view = new DataView(buf);
       view.setUint8(0, 0x81);
-      expect(decodeGameState(buf)).toBeNull();
+      expect(SNAPSHOT.decode(buf)).toBeNull();
     });
 
     it("encodes all boxer flag combinations", () => {
       for (const ps of [PUNCH_STATE.IDLE, PUNCH_STATE.PUNCHING, PUNCH_STATE.COOLDOWN]) {
         for (const arm of [0, 1]) {
-          const decoded = decodeGameState(
-            encodeGameState(makeState({ b1punchState: ps, b1arm: arm })),
+          const decoded = SNAPSHOT.decode(
+            SNAPSHOT.encode(makeState({ b1punchState: ps, b1arm: arm })),
           );
           expect(decoded.b1punchState).toBe(ps);
           expect(decoded.b1arm).toBe(arm);
@@ -126,54 +124,54 @@ describe("Hex Boxing Protocol", () => {
     });
 
     it("handles max scores (100 = KO)", () => {
-      const decoded = decodeGameState(encodeGameState(makeState({ score1: 100, score2: 99 })));
+      const decoded = SNAPSHOT.decode(SNAPSHOT.encode(makeState({ score1: 100, score2: 99 })));
       expect(decoded.score1).toBe(100);
       expect(decoded.score2).toBe(99);
     });
 
     it("handles all 8 directions", () => {
       for (let dir = 0; dir < 8; dir++) {
-        const decoded = decodeGameState(encodeGameState(makeState({ b1dir: dir })));
+        const decoded = SNAPSHOT.decode(SNAPSHOT.encode(makeState({ b1dir: dir })));
         expect(decoded.b1dir).toBe(dir);
       }
     });
 
     it("handles all PHASE values", () => {
       for (const [, value] of Object.entries(PHASE)) {
-        const decoded = decodeGameState(encodeGameState(makeState({ phase: value })));
+        const decoded = SNAPSHOT.decode(SNAPSHOT.encode(makeState({ phase: value })));
         expect(decoded.phase).toBe(value);
       }
     });
 
     it("handles max roundTimer value", () => {
-      const decoded = decodeGameState(encodeGameState(makeState({ roundTimer: 65535 })));
+      const decoded = SNAPSHOT.decode(SNAPSHOT.encode(makeState({ roundTimer: 65535 })));
       expect(decoded.roundTimer).toBe(65535);
     });
 
     it("handles max Uint8 punchTimer", () => {
-      const decoded = decodeGameState(encodeGameState(makeState({ b1punchTimer: 255 })));
+      const decoded = SNAPSHOT.decode(SNAPSHOT.encode(makeState({ b1punchTimer: 255 })));
       expect(decoded.b1punchTimer).toBe(255);
     });
 
     it("handles event flags", () => {
-      const decoded = decodeGameState(
-        encodeGameState(makeState({ lastHitPlayer: 2, lastHitPoints: 3 })),
+      const decoded = SNAPSHOT.decode(
+        SNAPSHOT.encode(makeState({ lastHitPlayer: 2, lastHitPoints: 3 })),
       );
       expect(decoded.lastHitPlayer).toBe(2);
       expect(decoded.lastHitPoints).toBe(3);
     });
 
     it("handles zero event flags (no hit)", () => {
-      const decoded = decodeGameState(
-        encodeGameState(makeState({ lastHitPlayer: 0, lastHitPoints: 0 })),
+      const decoded = SNAPSHOT.decode(
+        SNAPSHOT.encode(makeState({ lastHitPlayer: 0, lastHitPoints: 0 })),
       );
       expect(decoded.lastHitPlayer).toBe(0);
       expect(decoded.lastHitPoints).toBe(0);
     });
 
     it("handles position at canvas boundaries", () => {
-      const decoded = decodeGameState(
-        encodeGameState(makeState({ b1x: 0, b1y: 0, b2x: 640, b2y: 480 })),
+      const decoded = SNAPSHOT.decode(
+        SNAPSHOT.encode(makeState({ b1x: 0, b1y: 0, b2x: 640, b2y: 480 })),
       );
       expect(decoded.b1x).toBe(0);
       expect(decoded.b1y).toBe(0);
@@ -182,13 +180,13 @@ describe("Hex Boxing Protocol", () => {
     });
 
     it("rounds float positions to nearest integer", () => {
-      const decoded = decodeGameState(encodeGameState(makeState({ b1x: 200.7, b1y: 240.3 })));
+      const decoded = SNAPSHOT.decode(SNAPSHOT.encode(makeState({ b1x: 200.7, b1y: 240.3 })));
       expect(decoded.b1x).toBe(201);
       expect(decoded.b1y).toBe(240);
     });
 
     it("does not transmit cooldownTimer (internal-only field)", () => {
-      const decoded = decodeGameState(encodeGameState(makeState()));
+      const decoded = SNAPSHOT.decode(SNAPSHOT.encode(makeState()));
       // cooldownTimer is not in the decoded object — physics uses it internally
       expect(decoded.b1cooldownTimer).toBeUndefined();
       expect(decoded.b2cooldownTimer).toBeUndefined();
@@ -204,9 +202,9 @@ describe("Hex Boxing Protocol", () => {
         roundWins1: 2,
         roundWins2: 1,
       };
-      const buf = encodeGameEnd(result);
+      const buf = GAME_END.encode(result);
       expect(buf.byteLength).toBe(6);
-      const decoded = decodeGameEnd(buf);
+      const decoded = GAME_END.decode(buf);
       expect(decoded).not.toBeNull();
       expect(decoded.score1).toBe(100);
       expect(decoded.score2).toBe(47);
@@ -216,7 +214,7 @@ describe("Hex Boxing Protocol", () => {
     });
 
     it("encodes message type 0x83", () => {
-      const buf = encodeGameEnd({
+      const buf = GAME_END.encode({
         score1: 0,
         score2: 0,
         winner: 1,
@@ -228,14 +226,14 @@ describe("Hex Boxing Protocol", () => {
 
     it("returns null for buffer too small", () => {
       const buf = new ArrayBuffer(2);
-      expect(decodeGameEnd(buf)).toBeNull();
+      expect(GAME_END.decode(buf)).toBeNull();
     });
 
     it("returns null for wrong message type", () => {
       const buf = new ArrayBuffer(6);
       const view = new DataView(buf);
       view.setUint8(0, MSG_TYPE.GAME_STATE);
-      expect(decodeGameEnd(buf)).toBeNull();
+      expect(GAME_END.decode(buf)).toBeNull();
     });
   });
 

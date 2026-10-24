@@ -215,6 +215,39 @@ export function flags(names) {
 }
 
 /**
+ * Small integers packed into one byte, the first in the lowest bits, each
+ * masked to its width.
+ * @param {Array<[string, number]>} parts - `[name, width in bits]`
+ * @returns {Field}
+ */
+export function bits(parts) {
+  return {
+    spec: { kind: "bits", parts },
+    size: () => 1,
+    write(view, offset, obj) {
+      let byte = 0;
+      let shift = 0;
+      for (const [name, width] of parts) {
+        byte |= (obj[name] & ((1 << width) - 1)) << shift;
+        shift += width;
+      }
+      view.setUint8(offset, byte);
+      return offset + 1;
+    },
+    read(view, offset, out) {
+      if (offset + 1 > view.byteLength) return -1;
+      const byte = view.getUint8(offset);
+      let shift = 0;
+      for (const [name, width] of parts) {
+        out[name] = (byte >> shift) & ((1 << width) - 1);
+        shift += width;
+      }
+      return offset + 1;
+    },
+  };
+}
+
+/**
  * An array of `count` booleans, packed eight to a byte, most significant bit
  * first.
  * @param {string} name

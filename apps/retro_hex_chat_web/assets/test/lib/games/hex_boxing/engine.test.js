@@ -5,9 +5,9 @@ import {
   PHASE,
   PUNCH_STATE,
   MSG_TYPE,
-  encodeGameState,
-  encodeGameEnd,
   encodeGameReady,
+  SNAPSHOT,
+  GAME_END,
 } from "../../../../js/lib/games/hex_boxing/protocol.js";
 import {
   createInitialState,
@@ -520,14 +520,14 @@ describe("BoxingEngine", () => {
     it("ignores GAME_STATE on host", () => {
       const fakeState = createInitialState();
       fakeState.score1 = 99;
-      engine._onChannelMessage({ data: encodeGameState(fakeState) });
+      engine._onChannelMessage({ data: SNAPSHOT.encode(fakeState) });
       // Host should NOT apply peer state
       expect(engine.gameState.score1).toBe(0);
     });
 
     it("GAME_END is processed by host too (no role guard)", () => {
       engine._onChannelMessage({
-        data: encodeGameEnd({
+        data: GAME_END.encode({
           score1: 50,
           score2: 60,
           winner: 2,
@@ -561,7 +561,7 @@ describe("BoxingEngine", () => {
       state.score1 = 42;
       state.phase = PHASE.FIGHTING;
       state.round = 2;
-      engine._onChannelMessage({ data: encodeGameState(state) });
+      engine._onChannelMessage({ data: SNAPSHOT.encode(state) });
       expect(engine.gameState.score1).toBe(42);
       expect(engine.gameState.phase).toBe(PHASE.FIGHTING);
       expect(engine.gameState.round).toBe(2);
@@ -572,18 +572,18 @@ describe("BoxingEngine", () => {
     it("captures keyboard while peer receives active match snapshots", () => {
       const active = createInitialState();
       active.phase = PHASE.FIGHTING;
-      engine._onChannelMessage({ data: encodeGameState(active) });
+      engine._onChannelMessage({ data: SNAPSHOT.encode(active) });
       expect(engine._keyboardCaptured).toBe(true);
 
       const waiting = createInitialState();
       waiting.phase = PHASE.WAITING;
-      engine._onChannelMessage({ data: encodeGameState(waiting) });
+      engine._onChannelMessage({ data: SNAPSHOT.encode(waiting) });
       expect(engine._keyboardCaptured).toBe(false);
     });
 
     it("GAME_END sets MATCH_OVER, plays win audio for P2 winner", () => {
       engine._onChannelMessage({
-        data: encodeGameEnd({
+        data: GAME_END.encode({
           score1: 30,
           score2: 50,
           winner: 2,
@@ -599,7 +599,7 @@ describe("BoxingEngine", () => {
 
     it("GAME_END plays lose audio for P1 winner (peer is P2)", () => {
       engine._onChannelMessage({
-        data: encodeGameEnd({
+        data: GAME_END.encode({
           score1: 50,
           score2: 30,
           winner: 1,
