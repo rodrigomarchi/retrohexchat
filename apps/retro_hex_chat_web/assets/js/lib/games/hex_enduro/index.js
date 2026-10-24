@@ -240,7 +240,6 @@ export default defineGame({
     game.audio.stopEngineDrone();
     if (result.winner === (game.isHost ? 1 : 2)) game.audio.playVictory();
     else game.audio.playGameOver();
-    game._reportResult({ score: { p1: result.score1, p2: result.score2 }, winner: result.winner });
   },
   render: (game) => {
     if (!game.ctx || !game.colors) return;

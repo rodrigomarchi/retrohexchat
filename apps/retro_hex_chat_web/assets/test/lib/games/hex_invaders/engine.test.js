@@ -785,16 +785,13 @@ describe("HexInvadersEngine", () => {
         expect(engine.gameState._shieldPositions).toStrictEqual(originalPositions);
       });
 
-      it("GAME_END sets FINISHED phase and calls onGameEnd", () => {
+      it("GAME_END sets FINISHED phase and leaves the result to the host", () => {
         engine.setKeyboardCaptured(true);
         const buf = GAME_END.encode({ score1: 100, score2: 50, winner: 1 });
         engine._onChannelMessage({ data: buf });
         expect(engine.gameState.phase).toBe(PHASE.FINISHED);
         expect(engine._keyboardCaptured).toBe(false);
-        expect(onGameEnd).toHaveBeenCalledWith({
-          score: { p1: 100, p2: 50 },
-          winner: 1,
-        });
+        expect(onGameEnd).not.toHaveBeenCalled();
       });
 
       it("GAME_END renders after setting FINISHED", () => {
@@ -804,15 +801,14 @@ describe("HexInvadersEngine", () => {
         expect(render).toHaveBeenCalled();
       });
 
-      it("GAME_END swallows callback errors", () => {
+      it("GAME_END never reaches a callback that throws", () => {
         const badCb = vi.fn(() => {
           throw new Error("callback exploded");
         });
         engine.onGameEnd = badCb;
         const buf = GAME_END.encode({ score1: 0, score2: 0, winner: 1 });
-        // Should not throw
-        engine._onChannelMessage({ data: buf });
-        expect(badCb).toHaveBeenCalled();
+        expect(() => engine._onChannelMessage({ data: buf })).not.toThrow();
+        expect(badCb).not.toHaveBeenCalled();
       });
 
       it("peer ignores the input datagram messages", () => {

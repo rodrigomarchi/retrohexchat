@@ -355,7 +355,6 @@ export default defineGame({
     if (result.winner === 2) game.audio.playWin();
     else game.audio.playLose();
     game.invalidate();
-    game._reportResult(matchResult(result.score1, result.score2, result.winner));
   },
   render: (game) => {
     if (game.colors) {

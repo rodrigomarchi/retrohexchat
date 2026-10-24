@@ -680,12 +680,12 @@ describe("HexSkiingEngine", () => {
     });
 
     describe("GAME_END (peer)", () => {
-      it("calls onGameEnd with result", () => {
+      it("leaves the result to the host", () => {
         const onGameEnd = vi.fn();
         const { engine: e } = createEngine("hex_skiing", false, onGameEnd);
         engine = e;
         engine._onChannelMessage({ data: GAME_END.encode({ score1: 2, score2: 1, winner: 1 }) });
-        expect(onGameEnd).toHaveBeenCalledWith({ score: { p1: 2, p2: 1 }, winner: 1 });
+        expect(onGameEnd).not.toHaveBeenCalled();
       });
 
       it("stops ski drone audio", () => {

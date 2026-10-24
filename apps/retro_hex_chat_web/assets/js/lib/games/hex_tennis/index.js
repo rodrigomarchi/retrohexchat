@@ -312,10 +312,6 @@ export default defineGame({
     });
     playEnd(game, result.winner);
     game.invalidate();
-    game._reportResult({
-      score: { p1: result.p1Games, p2: result.p2Games },
-      winner: result.winner,
-    });
   },
   render: (game) => {
     if (game.colors) render(game.ctx, game.gameState, game.colors, performance.now());

@@ -372,9 +372,9 @@ defmodule RetroHexChat.Lobby.SessionServer do
   end
 
   # Only the game host reports the authoritative result, so the server relays
-  # it to both peers. Several guest engines fire `onGameEnd` too — on the
-  # host's GAME_END message, or when the channel closes — and those reports are
-  # the ones refused here.
+  # it to both peers. A guest engine reports too when the channel closes, and
+  # a browser holding an older chunk may report the host's GAME_END; those
+  # reports are the ones refused here.
   def handle_call({:finish_game, user_id, result}, _from, %{game: %{status: "playing"}} = state) do
     if user_id == state.game.host_id do
       match = match_record(state, result)

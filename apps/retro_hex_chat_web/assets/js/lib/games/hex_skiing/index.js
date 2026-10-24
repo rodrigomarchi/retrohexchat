@@ -226,7 +226,6 @@ export default defineGame({
     game.audio.stopSkiDrone();
     if (game.outcome(result.winner) === "win") game.audio.playVictory();
     else game.audio.playGameOver();
-    game._reportResult(matchResult(result.score1, result.score2, result.winner));
   },
   render: (game) => {
     render(game.ctx, game.gameState, game.colors, game.frameCount, game.snowParticles);

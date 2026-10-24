@@ -268,7 +268,6 @@ export default defineGame({
     game.gameState = { ...game.gameState, phase: PHASE.FINISHED };
     playEnd(game, result.winner);
     game.invalidate();
-    game._reportResult({ score: { p1: result.score1, p2: result.score2 }, winner: result.winner });
   },
   render: (game) => {
     if (game.colors) render(game.ctx, game.gameState, game.colors, performance.now());

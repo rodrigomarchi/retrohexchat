@@ -736,14 +736,14 @@ describe("HexFrostEngine", () => {
       engine.stop();
     });
 
-    it("peer handles GAME_END — calls onGameEnd with result", () => {
+    it("the guest leaves the result to the host on GAME_END", () => {
       const onGameEnd = vi.fn();
       const { engine } = createEngine("hex_frost", false, onGameEnd);
 
       const buf = GAME_END.encode({ score1: 3, score2: 1, winner: 1 });
       engine._onChannelMessage({ data: buf });
 
-      expect(onGameEnd).toHaveBeenCalledWith({ score: { p1: 3, p2: 1 }, winner: 1 });
+      expect(onGameEnd).not.toHaveBeenCalled();
     });
 
     it("peer plays victory audio when it won (winner 2)", () => {

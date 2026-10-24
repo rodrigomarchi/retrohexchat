@@ -367,7 +367,6 @@ export default defineGame({
   onEnd: (game, result) => {
     game.setKeyboardCaptured(false);
     playEnd(game, result.winner);
-    game._reportResult(reported(result));
   },
   render: (game) => {
     render(game.ctx, game.gameState, game.colors, game.frameCount, {

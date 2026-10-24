@@ -542,7 +542,7 @@ describe("HexEnduroEngine", () => {
       });
     });
 
-    it("peer calls onGameEnd callback from GAME_END message", () => {
+    it("the guest leaves the result to the host on GAME_END", () => {
       const onGameEnd = vi.fn();
       engine = new HexEnduroEngine(canvas, channel, "hex_enduro", false, onGameEnd);
       engine.start();
@@ -552,10 +552,7 @@ describe("HexEnduroEngine", () => {
       const handler = channel.addEventListener.mock.calls.find((c) => c[0] === "message")[1];
       handler({ data: buf });
 
-      expect(onGameEnd).toHaveBeenCalledWith({
-        score: { p1: 100, p2: 80 },
-        winner: 1,
-      });
+      expect(onGameEnd).not.toHaveBeenCalled();
     });
   });
 

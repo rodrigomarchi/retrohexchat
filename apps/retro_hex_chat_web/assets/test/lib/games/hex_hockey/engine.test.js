@@ -338,7 +338,7 @@ describe("hex_hockey_engine", () => {
     expect(engine.goalFlash).toBe(0);
   });
 
-  it("peer receives GAME_END and calls onGameEnd", () => {
+  it("the guest receives GAME_END and leaves the result to the host", () => {
     const { engine, onGameEnd } = createEngine("hex_hockey", false);
     engine.start();
 
@@ -346,9 +346,7 @@ describe("hex_hockey_engine", () => {
     const buf = GAME_END.encode(result);
     engine._onChannelMessage({ data: buf });
 
-    expect(onGameEnd).toHaveBeenCalledWith(
-      expect.objectContaining({ winner: 1, score: { p1: 3, p2: 1 } }),
-    );
+    expect(onGameEnd).not.toHaveBeenCalled();
     expect(engine._keyboardCaptured).toBe(false);
     engine.stop();
   });
@@ -1093,16 +1091,14 @@ describe("hex_hockey_engine", () => {
       engine.stop();
     });
 
-    it("calls onGameEnd callback with decoded result", () => {
+    it("leaves the result to the host", () => {
       const { engine, onGameEnd } = createEngine("hex_hockey", false);
       engine.start();
 
       const buf = GAME_END.encode({ winner: "p2", score_p1: 1, score_p2: 5 });
       engine._onChannelMessage({ data: buf });
 
-      expect(onGameEnd).toHaveBeenCalledWith(
-        expect.objectContaining({ winner: 2, score: { p1: 1, p2: 5 } }),
-      );
+      expect(onGameEnd).not.toHaveBeenCalled();
       engine.stop();
     });
   });

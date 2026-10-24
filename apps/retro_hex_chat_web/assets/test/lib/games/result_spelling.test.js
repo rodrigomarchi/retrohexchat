@@ -1,6 +1,6 @@
 // Every game reports the end of a match in one spelling — a nested score and
-// a numeric winner — whether the match was played out, told to the guest, or
-// cut short by the channel. The server still reads the older spellings, for
+// a numeric winner — whether the match was played out or cut short by the
+// channel. The server still reads the older spellings, for
 // browsers holding an older chunk; nothing sends them any more.
 
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
@@ -90,9 +90,11 @@ describe("a match cut short by the channel", () => {
   }
 });
 
+// Only the host's result is the match's: the server refuses a guest's
+// (Lobby.SessionServer), so a guest told the match is over reports nothing.
 describe("a match told to the guest", () => {
   for (const gameId of Object.keys(GAMES)) {
-    it(`${gameId}: if the guest reports what it is told, it is in the one spelling`, async () => {
+    it(`${gameId}: the guest reports nothing`, async () => {
       const { Game, GAME_END } = await load(gameId);
       const results = [];
       engine = new Game(recordingCanvas(640, 480), channel(), gameId, false, (r) =>
@@ -112,7 +114,7 @@ describe("a match told to the guest", () => {
         }),
       });
 
-      for (const result of results) expectOneSpelling(result);
+      expect(results).toEqual([]);
     });
   }
 });

@@ -486,7 +486,7 @@ describe("TennisEngine", () => {
       e.stop();
     });
 
-    it("GAME_END calls onGameEnd", () => {
+    it("GAME_END leaves the result to the host", () => {
       const onEnd = vi.fn();
       const e = new TennisEngine(
         createMockCanvas(),
@@ -507,7 +507,7 @@ describe("TennisEngine", () => {
       e._onChannelMessage({ data: endBuf });
       expect(e.gameState.phase).toBe(PHASE.GAME_OVER);
       expect(e._shouldCaptureKeyboardEvent({ key: "ArrowUp" })).toBe(false);
-      expect(onEnd).toHaveBeenCalledWith(expect.objectContaining({ winner: 1 }));
+      expect(onEnd).not.toHaveBeenCalled();
       e.stop();
     });
 
