@@ -5,12 +5,10 @@ import {
   GAME_MODE,
   encodeShipFlags,
   decodeShipFlags,
-  encodeGameState,
-  decodeGameState,
-  encodeGameEnd,
-  decodeGameEnd,
   encodeGameReady,
   getMessageType,
+  SNAPSHOT,
+  GAME_END,
 } from "../../../../js/lib/games/star_duel/protocol.js";
 
 const MISSILE_SIZE = 18;
@@ -57,10 +55,10 @@ describe("star_duel_protocol", () => {
   describe("GAME_STATE encode/decode", () => {
     it("roundtrips with 0 missiles (51 bytes)", () => {
       const state = makeState();
-      const buf = encodeGameState(state);
+      const buf = SNAPSHOT.encode(state);
       expect(buf.byteLength).toBe(GAME_STATE_HEADER_SIZE);
 
-      const decoded = decodeGameState(buf);
+      const decoded = SNAPSHOT.decode(buf);
       expect(decoded.ship1.x).toBeCloseTo(100.5, 1);
       expect(decoded.ship1.y).toBeCloseTo(200.25, 1);
       expect(decoded.ship1.vx).toBeCloseTo(3.5, 1);
@@ -95,10 +93,10 @@ describe("star_duel_protocol", () => {
         });
       }
       const state = makeState({ missiles });
-      const buf = encodeGameState(state);
+      const buf = SNAPSHOT.encode(state);
       expect(buf.byteLength).toBe(GAME_STATE_HEADER_SIZE + 6 * MISSILE_SIZE);
 
-      const decoded = decodeGameState(buf);
+      const decoded = SNAPSHOT.decode(buf);
       expect(decoded.missiles).toHaveLength(6);
       for (let i = 0; i < 6; i++) {
         expect(decoded.missiles[i].x).toBeCloseTo(10.5 + i * 50, 1);
@@ -117,10 +115,10 @@ describe("star_duel_protocol", () => {
         { x: 50.25, y: 75.75, vx: 0, vy: 0, owner: 0, age: 3 },
       ];
       const state = makeState({ missiles });
-      const buf = encodeGameState(state);
+      const buf = SNAPSHOT.encode(state);
       expect(buf.byteLength).toBe(GAME_STATE_HEADER_SIZE + 3 * MISSILE_SIZE);
 
-      const decoded = decodeGameState(buf);
+      const decoded = SNAPSHOT.decode(buf);
       expect(decoded.missiles).toHaveLength(3);
       expect(decoded.missiles[0].x).toBeCloseTo(100.0, 1);
       expect(decoded.missiles[1].owner).toBe(1);
@@ -130,7 +128,7 @@ describe("star_duel_protocol", () => {
     it("preserves ship rotation precision (encode pi, decode close to pi)", () => {
       const ship = makeShip({ rotation: Math.PI });
       const state = makeState({ ship1: ship });
-      const decoded = decodeGameState(encodeGameState(state));
+      const decoded = SNAPSHOT.decode(SNAPSHOT.encode(state));
       // Uint16 scaled by 10000: precision ~0.0001 radians
       expect(decoded.ship1.rotation).toBeCloseTo(Math.PI, 3);
     });
@@ -138,7 +136,7 @@ describe("star_duel_protocol", () => {
     it("handles all phase values", () => {
       for (const [, value] of Object.entries(PHASE)) {
         const state = makeState({ phase: value });
-        const decoded = decodeGameState(encodeGameState(state));
+        const decoded = SNAPSHOT.decode(SNAPSHOT.encode(state));
         expect(decoded.phase).toBe(value);
       }
     });
@@ -146,7 +144,7 @@ describe("star_duel_protocol", () => {
     it("handles all mode values", () => {
       for (const [, value] of Object.entries(GAME_MODE)) {
         const state = makeState({ mode: value });
-        const decoded = decodeGameState(encodeGameState(state));
+        const decoded = SNAPSHOT.decode(SNAPSHOT.encode(state));
         expect(decoded.mode).toBe(value);
       }
     });
@@ -154,21 +152,21 @@ describe("star_duel_protocol", () => {
     it("handles negative velocities", () => {
       const ship = makeShip({ vx: -7.5, vy: -12.25 });
       const state = makeState({ ship1: ship });
-      const decoded = decodeGameState(encodeGameState(state));
+      const decoded = SNAPSHOT.decode(SNAPSHOT.encode(state));
       expect(decoded.ship1.vx).toBeCloseTo(-7.5, 1);
       expect(decoded.ship1.vy).toBeCloseTo(-12.25, 1);
     });
 
     it("returns null for buffer too small (< 51)", () => {
-      expect(decodeGameState(new ArrayBuffer(50))).toBeNull();
-      expect(decodeGameState(new ArrayBuffer(0))).toBeNull();
-      expect(decodeGameState(new ArrayBuffer(1))).toBeNull();
+      expect(SNAPSHOT.decode(new ArrayBuffer(50))).toBeNull();
+      expect(SNAPSHOT.decode(new ArrayBuffer(0))).toBeNull();
+      expect(SNAPSHOT.decode(new ArrayBuffer(1))).toBeNull();
     });
 
     it("returns null for wrong message type", () => {
       const buf = new ArrayBuffer(51);
       new DataView(buf).setUint8(0, 0x81);
-      expect(decodeGameState(buf)).toBeNull();
+      expect(SNAPSHOT.decode(buf)).toBeNull();
     });
 
     it("roundtrips invulnerability timers and warp cooldowns", () => {
@@ -178,7 +176,7 @@ describe("star_duel_protocol", () => {
         warpCooldown1: 200,
         warpCooldown2: 150,
       });
-      const decoded = decodeGameState(encodeGameState(state));
+      const decoded = SNAPSHOT.decode(SNAPSHOT.encode(state));
       expect(decoded.invuln1).toBe(120);
       expect(decoded.invuln2).toBe(60);
       expect(decoded.warpCooldown1).toBe(200);
@@ -187,12 +185,12 @@ describe("star_duel_protocol", () => {
 
     it("roundtrips asteroidSeed", () => {
       const state = makeState({ asteroidSeed: 65535 });
-      const decoded = decodeGameState(encodeGameState(state));
+      const decoded = SNAPSHOT.decode(SNAPSHOT.encode(state));
       expect(decoded.asteroidSeed).toBe(65535);
     });
 
     it("sets type byte to GAME_STATE (0x80)", () => {
-      const buf = encodeGameState(makeState());
+      const buf = SNAPSHOT.encode(makeState());
       expect(new DataView(buf).getUint8(0)).toBe(0x80);
     });
 
@@ -202,7 +200,7 @@ describe("star_duel_protocol", () => {
         { x: 200, y: 300, vx: -3.125, vy: 6.75, owner: 1, age: 12 },
       ];
       const state = makeState({ missiles });
-      const decoded = decodeGameState(encodeGameState(state));
+      const decoded = SNAPSHOT.decode(SNAPSHOT.encode(state));
       expect(decoded.missiles[0].vx).toBeCloseTo(7.25, 1);
       expect(decoded.missiles[0].vy).toBeCloseTo(-4.5, 1);
       expect(decoded.missiles[1].vx).toBeCloseTo(-3.125, 1);
@@ -215,75 +213,45 @@ describe("star_duel_protocol", () => {
         missiles.push({ x: i * 10, y: i * 10, vx: 0, vy: 0, owner: 0, age: 0 });
       }
       const state = makeState({ missiles });
-      const buf = encodeGameState(state);
+      const buf = SNAPSHOT.encode(state);
       // Should only encode 6 missiles
       expect(buf.byteLength).toBe(GAME_STATE_HEADER_SIZE + 6 * MISSILE_SIZE);
-      const decoded = decodeGameState(buf);
+      const decoded = SNAPSHOT.decode(buf);
       expect(decoded.missiles).toHaveLength(6);
     });
 
-    it("missile count vs buffer mismatch — truncated buffer stops reading", () => {
-      // Create a valid 2-missile buffer, then truncate it
+    it("refuses a snapshot whose missile list is cut short", () => {
+      // A DataChannel delivers whole messages, so a short one is corrupt: it is
+      // dropped rather than read as fewer missiles than its header claims.
       const missiles = [
         { x: 10, y: 20, vx: 1, vy: 2, owner: 0, age: 1 },
         { x: 30, y: 40, vx: 3, vy: 4, owner: 1, age: 2 },
       ];
-      const state = makeState({ missiles });
-      const fullBuf = encodeGameState(state);
-      const fullSize = fullBuf.byteLength;
+      const fullBuf = SNAPSHOT.encode(makeState({ missiles }));
 
-      // Truncate so only 1 missile fits: header + 1 missile but missileCount says 2
-      const truncatedSize = GAME_STATE_HEADER_SIZE + MISSILE_SIZE;
-      const truncated = fullBuf.slice(0, truncatedSize);
-      // Missile count in header still says 2, but only 1 missile fits
-      const decoded = decodeGameState(truncated);
-      expect(decoded).not.toBeNull();
-      // Should only have 1 missile since the second doesn't fit
-      expect(decoded.missiles.length).toBeLessThan(2);
-      expect(decoded.missileCount).toBe(decoded.missiles.length);
-
-      // Verify the full buffer decodes both
-      const fullDecoded = decodeGameState(fullBuf);
-      expect(fullDecoded.missiles).toHaveLength(2);
-      expect(fullSize).toBe(GAME_STATE_HEADER_SIZE + 2 * MISSILE_SIZE);
+      expect(SNAPSHOT.decode(fullBuf).missiles).toHaveLength(2);
+      expect(SNAPSHOT.decode(fullBuf.slice(0, fullBuf.byteLength - 1))).toBeNull();
     });
 
     it("phase value > max is clamped to FINISHED (5)", () => {
       const state = makeState({ phase: PHASE.PLAYING });
-      const buf = encodeGameState(state);
+      const buf = SNAPSHOT.encode(state);
       const view = new DataView(buf);
       // Manually write an out-of-range phase value (e.g. 10)
       const metaOffset = 39;
       view.setUint8(metaOffset + 2, 10);
-      const decoded = decodeGameState(buf);
+      const decoded = SNAPSHOT.decode(buf);
       expect(decoded.phase).toBe(5); // clamped to PHASE.FINISHED
     });
 
     it("mode value > max is clamped to DEBRIS_FIELD (2)", () => {
       const state = makeState({ mode: GAME_MODE.OPEN_SPACE });
-      const buf = encodeGameState(state);
+      const buf = SNAPSHOT.encode(state);
       const view = new DataView(buf);
       const metaOffset = 39;
       view.setUint8(metaOffset + 4, 255);
-      const decoded = decodeGameState(buf);
+      const decoded = SNAPSHOT.decode(buf);
       expect(decoded.mode).toBe(2); // clamped to GAME_MODE.DEBRIS_FIELD
-    });
-
-    it("decodeGameState missileCount uses missiles.length", () => {
-      // When buffer has missileCount=3 but only 2 missiles fit,
-      // decoded.missileCount should equal missiles.length (2), not the raw header value (3)
-      const missiles = [
-        { x: 10, y: 20, vx: 1, vy: 2, owner: 0, age: 1 },
-        { x: 30, y: 40, vx: 3, vy: 4, owner: 1, age: 2 },
-        { x: 50, y: 60, vx: 5, vy: 6, owner: 0, age: 3 },
-      ];
-      const state = makeState({ missiles });
-      const fullBuf = encodeGameState(state);
-      // Truncate to only fit 2 missiles (header says 3)
-      const truncated = fullBuf.slice(0, GAME_STATE_HEADER_SIZE + 2 * MISSILE_SIZE);
-      const decoded = decodeGameState(truncated);
-      expect(decoded.missileCount).toBe(2);
-      expect(decoded.missiles).toHaveLength(2);
     });
   });
 
@@ -298,7 +266,7 @@ describe("star_duel_protocol", () => {
       });
       const ship = makeShip({ flags: flagsNum });
       const state = makeState({ ship1: ship });
-      const decoded = decodeGameState(encodeGameState(state));
+      const decoded = SNAPSHOT.decode(SNAPSHOT.encode(state));
       expect(decoded.ship1.flags.alive).toBe(true);
       expect(decoded.ship1.flags.thrustActive).toBe(true);
       expect(decoded.ship1.flags.exploding).toBe(false);
@@ -315,7 +283,7 @@ describe("star_duel_protocol", () => {
         },
       });
       const state = makeState({ ship1: ship });
-      const decoded = decodeGameState(encodeGameState(state));
+      const decoded = SNAPSHOT.decode(SNAPSHOT.encode(state));
       expect(decoded.ship1.flags.alive).toBe(true);
       expect(decoded.ship1.flags.thrustActive).toBe(false);
       expect(decoded.ship1.flags.exploding).toBe(true);
@@ -336,8 +304,8 @@ describe("star_duel_protocol", () => {
       const shipWithObj = makeShip({ flags: flagsObj });
       const shipWithNum = makeShip({ flags: flagsNum });
 
-      const decodedObj = decodeGameState(encodeGameState(makeState({ ship1: shipWithObj })));
-      const decodedNum = decodeGameState(encodeGameState(makeState({ ship1: shipWithNum })));
+      const decodedObj = SNAPSHOT.decode(SNAPSHOT.encode(makeState({ ship1: shipWithObj })));
+      const decodedNum = SNAPSHOT.decode(SNAPSHOT.encode(makeState({ ship1: shipWithNum })));
 
       expect(decodedObj.ship1.flags).toEqual(decodedNum.ship1.flags);
     });
@@ -347,14 +315,14 @@ describe("star_duel_protocol", () => {
     it("normalizes rotation > 2*PI", () => {
       const ship = makeShip({ rotation: Math.PI * 2 + 1.0 });
       const state = makeState({ ship1: ship });
-      const decoded = decodeGameState(encodeGameState(state));
+      const decoded = SNAPSHOT.decode(SNAPSHOT.encode(state));
       expect(decoded.ship1.rotation).toBeCloseTo(1.0, 3);
     });
 
     it("normalizes negative rotation", () => {
       const ship = makeShip({ rotation: -1.0 });
       const state = makeState({ ship1: ship });
-      const decoded = decodeGameState(encodeGameState(state));
+      const decoded = SNAPSHOT.decode(SNAPSHOT.encode(state));
       // -1.0 normalized to 2*PI - 1.0
       expect(decoded.ship1.rotation).toBeCloseTo(Math.PI * 2 - 1.0, 3);
     });
@@ -362,21 +330,21 @@ describe("star_duel_protocol", () => {
     it("normalizes very large rotation (> 4*PI)", () => {
       const ship = makeShip({ rotation: Math.PI * 6 + 0.5 });
       const state = makeState({ ship1: ship });
-      const decoded = decodeGameState(encodeGameState(state));
+      const decoded = SNAPSHOT.decode(SNAPSHOT.encode(state));
       expect(decoded.ship1.rotation).toBeCloseTo(0.5, 3);
     });
 
     it("rotation of 0 stays 0", () => {
       const ship = makeShip({ rotation: 0 });
       const state = makeState({ ship1: ship });
-      const decoded = decodeGameState(encodeGameState(state));
+      const decoded = SNAPSHOT.decode(SNAPSHOT.encode(state));
       expect(decoded.ship1.rotation).toBeCloseTo(0, 3);
     });
 
     it("rotation of exactly 2*PI normalizes to 0", () => {
       const ship = makeShip({ rotation: Math.PI * 2 });
       const state = makeState({ ship1: ship });
-      const decoded = decodeGameState(encodeGameState(state));
+      const decoded = SNAPSHOT.decode(SNAPSHOT.encode(state));
       expect(decoded.ship1.rotation).toBeCloseTo(0, 3);
     });
   });
@@ -449,35 +417,35 @@ describe("star_duel_protocol", () => {
 
   describe("GAME_END encode/decode", () => {
     it("roundtrips player 1 win", () => {
-      const buf = encodeGameEnd(5, 3, 1);
+      const buf = GAME_END.encode({ score1: 5, score2: 3, winner: 1 });
       expect(buf.byteLength).toBe(4);
-      const decoded = decodeGameEnd(buf);
+      const decoded = GAME_END.decode(buf);
       expect(decoded.score1).toBe(5);
       expect(decoded.score2).toBe(3);
       expect(decoded.winner).toBe(1);
     });
 
     it("roundtrips player 2 win", () => {
-      const decoded = decodeGameEnd(encodeGameEnd(2, 5, 2));
+      const decoded = GAME_END.decode(GAME_END.encode({ score1: 2, score2: 5, winner: 2 }));
       expect(decoded.score1).toBe(2);
       expect(decoded.score2).toBe(5);
       expect(decoded.winner).toBe(2);
     });
 
     it("sets type byte to GAME_END (0x83)", () => {
-      const buf = encodeGameEnd(0, 0, 1);
+      const buf = GAME_END.encode({ score1: 0, score2: 0, winner: 1 });
       expect(new DataView(buf).getUint8(0)).toBe(0x83);
     });
 
     it("returns null for buffer too small", () => {
-      expect(decodeGameEnd(new ArrayBuffer(3))).toBeNull();
-      expect(decodeGameEnd(new ArrayBuffer(0))).toBeNull();
+      expect(GAME_END.decode(new ArrayBuffer(3))).toBeNull();
+      expect(GAME_END.decode(new ArrayBuffer(0))).toBeNull();
     });
 
     it("returns null for wrong message type", () => {
       const buf = new ArrayBuffer(4);
       new DataView(buf).setUint8(0, 0x80);
-      expect(decodeGameEnd(buf)).toBeNull();
+      expect(GAME_END.decode(buf)).toBeNull();
     });
   });
 

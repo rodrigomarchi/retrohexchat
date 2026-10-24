@@ -3,12 +3,10 @@ import {
   MSG_TYPE,
   PHASE,
   GAME_MODE,
-  encodeGameState,
-  decodeGameState,
-  encodeGameEnd,
-  decodeGameEnd,
   encodeGameReady,
   getMessageType,
+  SNAPSHOT,
+  GAME_END,
 } from "../../../../js/lib/games/hex_outlaw/protocol.js";
 
 const BULLET_SPEED_X = 8; // Must match physics.js
@@ -66,8 +64,8 @@ describe("Hex Outlaw Protocol", () => {
         roundWins1: 1,
         gameMode: GAME_MODE.QUICK_DRAW,
       });
-      const buf = encodeGameState(state, BULLET_SPEED_X);
-      const decoded = decodeGameState(buf, BULLET_SPEED_X);
+      const buf = SNAPSHOT.encode(state);
+      const decoded = SNAPSHOT.decode(buf);
       expect(decoded).not.toBeNull();
       expect(decoded.p1x).toBe(80);
       expect(decoded.p1y).toBe(150);
@@ -91,8 +89,8 @@ describe("Hex Outlaw Protocol", () => {
         b1active: true,
         b1bounced: false,
       });
-      const buf = encodeGameState(state, BULLET_SPEED_X);
-      const decoded = decodeGameState(buf, BULLET_SPEED_X);
+      const buf = SNAPSHOT.encode(state);
+      const decoded = SNAPSHOT.decode(buf);
       expect(decoded.b1active).toBe(true);
       expect(decoded.b1x).toBe(200);
       expect(decoded.b1y).toBe(150);
@@ -110,8 +108,8 @@ describe("Hex Outlaw Protocol", () => {
         b2active: true,
         b2bounced: false,
       });
-      const buf = encodeGameState(state, BULLET_SPEED_X);
-      const decoded = decodeGameState(buf, BULLET_SPEED_X);
+      const buf = SNAPSHOT.encode(state);
+      const decoded = SNAPSHOT.decode(buf);
       expect(decoded.b2vx).toBe(-BULLET_SPEED_X);
       expect(decoded.b2active).toBe(true);
     });
@@ -126,8 +124,8 @@ describe("Hex Outlaw Protocol", () => {
         b1active: true,
         b1bounced: false,
       });
-      const buf = encodeGameState(state, BULLET_SPEED_X);
-      const decoded = decodeGameState(buf, BULLET_SPEED_X);
+      const buf = SNAPSHOT.encode(state);
+      const decoded = SNAPSHOT.decode(buf);
       expect(decoded.b1vy).toBeCloseTo(vy, 1);
       expect(decoded.b1bounced).toBe(false);
     });
@@ -141,8 +139,8 @@ describe("Hex Outlaw Protocol", () => {
         b1active: true,
         b1bounced: true,
       });
-      const buf = encodeGameState(state, BULLET_SPEED_X);
-      const decoded = decodeGameState(buf, BULLET_SPEED_X);
+      const buf = SNAPSHOT.encode(state);
+      const decoded = SNAPSHOT.decode(buf);
       expect(decoded.b1bounced).toBe(true);
     });
 
@@ -154,16 +152,16 @@ describe("Hex Outlaw Protocol", () => {
         GAME_MODE.NO_MANS_LAND,
       ]) {
         const state = makeState({ gameMode: mode });
-        const buf = encodeGameState(state, BULLET_SPEED_X);
-        const decoded = decodeGameState(buf, BULLET_SPEED_X);
+        const buf = SNAPSHOT.encode(state);
+        const decoded = SNAPSHOT.decode(buf);
         expect(decoded.gameMode).toBe(mode);
       }
     });
 
     it("roundtrips obstacle position", () => {
       const state = makeState({ obsY: 300, obsDir: 255 });
-      const buf = encodeGameState(state, BULLET_SPEED_X);
-      const decoded = decodeGameState(buf, BULLET_SPEED_X);
+      const buf = SNAPSHOT.encode(state);
+      const decoded = SNAPSHOT.decode(buf);
       expect(decoded.obsY).toBe(300);
       expect(decoded.obsDir).toBe(255);
     });
@@ -174,8 +172,8 @@ describe("Hex Outlaw Protocol", () => {
         hitPauseTimer: 45,
         lastHitPlayer: 1,
       });
-      const buf = encodeGameState(state, BULLET_SPEED_X);
-      const decoded = decodeGameState(buf, BULLET_SPEED_X);
+      const buf = SNAPSHOT.encode(state);
+      const decoded = SNAPSHOT.decode(buf);
       expect(decoded.phase).toBe(PHASE.HIT_PAUSE);
       expect(decoded.hitPauseTimer).toBe(45);
       expect(decoded.lastHitPlayer).toBe(1);
@@ -183,19 +181,19 @@ describe("Hex Outlaw Protocol", () => {
 
     it("returns null for too-small buffer", () => {
       const buf = new ArrayBuffer(5);
-      expect(decodeGameState(buf, BULLET_SPEED_X)).toBeNull();
+      expect(SNAPSHOT.decode(buf)).toBeNull();
     });
 
     it("returns null for wrong message type", () => {
       const buf = new ArrayBuffer(38);
       new DataView(buf).setUint8(0, 0x81);
-      expect(decodeGameState(buf, BULLET_SPEED_X)).toBeNull();
+      expect(SNAPSHOT.decode(buf)).toBeNull();
     });
 
     it("inactive bullets decode correctly", () => {
       const state = makeState({ b1active: false, b2active: false });
-      const buf = encodeGameState(state, BULLET_SPEED_X);
-      const decoded = decodeGameState(buf, BULLET_SPEED_X);
+      const buf = SNAPSHOT.encode(state);
+      const decoded = SNAPSHOT.decode(buf);
       expect(decoded.b1active).toBe(false);
       expect(decoded.b2active).toBe(false);
     });
@@ -210,8 +208,8 @@ describe("Hex Outlaw Protocol", () => {
         roundWins1: 2,
         roundWins2: 1,
       };
-      const buf = encodeGameEnd(result);
-      const decoded = decodeGameEnd(buf);
+      const buf = GAME_END.encode(result);
+      const decoded = GAME_END.decode(buf);
       expect(decoded.score1).toBe(10);
       expect(decoded.score2).toBe(7);
       expect(decoded.winner).toBe(1);
@@ -221,13 +219,13 @@ describe("Hex Outlaw Protocol", () => {
 
     it("returns null for too-small buffer", () => {
       const buf = new ArrayBuffer(2);
-      expect(decodeGameEnd(buf)).toBeNull();
+      expect(GAME_END.decode(buf)).toBeNull();
     });
 
     it("returns null for wrong message type", () => {
       const buf = new ArrayBuffer(6);
       new DataView(buf).setUint8(0, MSG_TYPE.GAME_STATE);
-      expect(decodeGameEnd(buf)).toBeNull();
+      expect(GAME_END.decode(buf)).toBeNull();
     });
   });
 
@@ -250,7 +248,7 @@ describe("Hex Outlaw Protocol", () => {
     });
 
     it("identifies game state", () => {
-      const buf = encodeGameState(makeState(), BULLET_SPEED_X);
+      const buf = SNAPSHOT.encode(makeState());
       expect(getMessageType(buf)).toBe(MSG_TYPE.GAME_STATE);
     });
   });

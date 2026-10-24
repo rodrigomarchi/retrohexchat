@@ -116,6 +116,12 @@ const SCALARS = {
  * @property {[number, number]} [clamp] - limit the value to `[min, max]` first
  * @property {number} [or] - write this in place of a falsy value
  *   (`value || or`)
+ * @property {(obj: object) => unknown} [from] - compute the value from the
+ *   whole object instead of reading `obj[name]`
+ * @property {(value: unknown) => number} [encode] - transform the value just
+ *   before it is written (after `or` and `clamp`, instead of `scale`/`round`)
+ * @property {(raw: number) => unknown} [decode] - transform what is read
+ * @property {boolean} [bigEndian] - write and read most significant byte first
  */
 
 /**
@@ -124,27 +130,42 @@ const SCALARS = {
  * @param {ScalarOptions} [options]
  * @returns {Field}
  */
-function scalar(kind, name, { round = false, scale = null, clamp = null, or = null } = {}) {
+function scalar(
+  kind,
+  name,
+  {
+    round = false,
+    scale = null,
+    clamp = null,
+    or = null,
+    from = null,
+    encode = null,
+    decode = null,
+    bigEndian = false,
+  } = {},
+) {
   const { size, set, get } = SCALARS[kind];
 
   const prepare = (value) => {
     let v = or !== null ? value || or : value;
     if (clamp) v = Math.min(Math.max(v, clamp[0]), clamp[1]);
+    if (encode) return encode(v);
     if (scale !== null) return Math.round(v * scale);
     return round ? Math.round(v) : v;
   };
 
   return {
-    spec: { kind, name, round, scale, clamp, or },
+    spec: { kind, name, round, scale, clamp, or, from, encode, decode, bigEndian },
     size: () => size,
     write(view, offset, obj) {
-      view[set](offset, prepare(obj[name]), true);
+      view[set](offset, prepare(from ? from(obj) : obj[name]), !bigEndian);
       return offset + size;
     },
     read(view, offset, out) {
       if (offset + size > view.byteLength) return -1;
-      const raw = view[get](offset, true);
-      out[name] = scale !== null ? raw / scale : raw;
+      const raw = view[get](offset, !bigEndian);
+      if (decode) out[name] = decode(raw);
+      else out[name] = scale !== null ? raw / scale : raw;
       return offset + size;
     },
   };
@@ -324,6 +345,8 @@ export function struct(name, fields, { flat = false } = {}) {
  *
  * - `fixed: true` always writes `capacity` entries; those past the count are
  *   written as zeros, and decoding returns all `capacity` of them.
+ * - `countFrom` names an earlier field that already carried the count: the
+ *   entries follow with no prefix, and decoding reads that many.
  * - Otherwise a u8 count comes first, then that many entries.
  *
  * The count is `obj[count]` when `count` names a field, else the number of
@@ -336,7 +359,7 @@ export function struct(name, fields, { flat = false } = {}) {
  * @param {Field[]} fields
  * @returns {Field}
  */
-export function list(name, { capacity, fixed = false, count = null }, fields) {
+export function list(name, { capacity, fixed = false, count = null, countFrom = null }, fields) {
   const entry = sequence(fields);
   const empty = {};
 
@@ -347,11 +370,19 @@ export function list(name, { capacity, fixed = false, count = null }, fields) {
   };
 
   return {
-    spec: { kind: "list", name, capacity, fixed, count, fields: fields.map((field) => field.spec) },
+    spec: {
+      kind: "list",
+      name,
+      capacity,
+      fixed,
+      count,
+      countFrom,
+      fields: fields.map((field) => field.spec),
+    },
     size(obj) {
       const items = obj[name] || [];
       const n = fixed ? capacity : length(obj);
-      let total = fixed ? 0 : 1;
+      let total = fixed || countFrom ? 0 : 1;
       for (let i = 0; i < n; i++) total += entry.size(items[i] || empty);
       return total;
     },
@@ -360,7 +391,7 @@ export function list(name, { capacity, fixed = false, count = null }, fields) {
       const items = obj[name] || [];
       const n = length(obj);
       let at = offset;
-      if (!fixed) {
+      if (!fixed && !countFrom) {
         view.setUint8(at, n);
         at += 1;
       }
@@ -374,7 +405,10 @@ export function list(name, { capacity, fixed = false, count = null }, fields) {
     read(view, offset, out) {
       let at = offset;
       let n = capacity;
-      if (!fixed) {
+      if (countFrom) {
+        n = out[countFrom];
+        if (!(n >= 0) || n > capacity) return -1;
+      } else if (!fixed) {
         if (at + 1 > view.byteLength) return -1;
         n = view.getUint8(at);
         if (n > capacity) return -1;

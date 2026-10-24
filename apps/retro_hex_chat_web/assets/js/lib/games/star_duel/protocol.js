@@ -1,6 +1,7 @@
 /**
  * Binary protocol for Star Duel space combat game over WebRTC DataChannel.
- * All messages use DataView for zero-JSON binary encoding.
+ * Each message is declared once as a schema on the core codec, which writes
+ * and reads it from that one field list.
  *
  * GAME_STATE is variable-length: 51 bytes header + 18 bytes per missile (max 6).
  * Ship rotation is encoded as Uint16 = rotation * 10000 (0-62831 for 0-2pi).
@@ -10,6 +11,8 @@
  */
 
 // Message types (shared with game_engine.js 0x80+ range)
+import { schema, custom, f32, list, struct, u8, u16 } from "../core/codec.js";
+
 export const MSG_TYPE = {
   GAME_STATE: 0x80,
   GAME_START: 0x82,
@@ -37,18 +40,8 @@ export const GAME_MODE = {
   DEBRIS_FIELD: 2,
 };
 
-// --- Sizes ---
-const GAME_STATE_HEADER_SIZE = 51; // 51 bytes header + 18 bytes per missile
-const MISSILE_SIZE = 18;
+// --- Limits ---
 const MAX_MISSILES = 6;
-const GAME_END_SIZE = 4;
-
-// --- Ship offset helpers ---
-// Ship block: x(4) y(4) vx(4) vy(4) rot(2) flags(1) = 19 bytes
-const SHIP_BLOCK_SIZE = 19;
-const SHIP1_OFFSET = 1;
-const SHIP2_OFFSET = 1 + SHIP_BLOCK_SIZE; // 20
-
 // --- Rotation encoding ---
 const ROTATION_SCALE = 10000;
 
@@ -88,194 +81,62 @@ export function decodeShipFlags(byte) {
   };
 }
 
-/**
- * Write a ship block into a DataView at the given offset.
- * Layout: [x(4)][y(4)][vx(4)][vy(4)][rot(2)][flags(1)] = 19 bytes
- * @param {DataView} view
- * @param {number} offset
- * @param {object} ship
- */
-function writeShip(view, offset, ship) {
-  view.setFloat32(offset, ship.x, true);
-  view.setFloat32(offset + 4, ship.y, true);
-  view.setFloat32(offset + 8, ship.vx, true);
-  view.setFloat32(offset + 12, ship.vy, true);
-  const TWO_PI = Math.PI * 2;
-  const normalizedRot = ((ship.rotation % TWO_PI) + TWO_PI) % TWO_PI;
-  view.setUint16(offset + 16, Math.round(normalizedRot * ROTATION_SCALE), true);
-  const flags = typeof ship.flags === "number" ? ship.flags : encodeShipFlags(ship.flags);
-  view.setUint8(offset + 18, flags);
-}
+const TWO_PI = Math.PI * 2;
 
-/**
- * Read a ship block from a DataView at the given offset.
- * @param {DataView} view
- * @param {number} offset
- * @returns {object}
- */
-function readShip(view, offset) {
-  return {
-    x: view.getFloat32(offset, true),
-    y: view.getFloat32(offset + 4, true),
-    vx: view.getFloat32(offset + 8, true),
-    vy: view.getFloat32(offset + 12, true),
-    rotation: view.getUint16(offset + 16, true) / ROTATION_SCALE,
-    flags: decodeShipFlags(view.getUint8(offset + 18)),
-  };
-}
+/** A ship's five flags in one byte; the ship may carry them as that byte already. */
+const shipFlags = custom({
+  spec: { kind: "custom", names: ["flags"] },
+  size: () => 1,
+  write(view, offset, ship) {
+    const flags = ship.flags;
+    view.setUint8(offset, typeof flags === "number" ? flags : encodeShipFlags(flags));
+    return offset + 1;
+  },
+  read(view, offset, out) {
+    if (offset + 1 > view.byteLength) return -1;
+    out.flags = decodeShipFlags(view.getUint8(offset));
+    return offset + 1;
+  },
+});
 
-/**
- * Encode full game state for host -> peer transmission.
- * Layout (variable length, 51 + 18*N bytes):
- *   Header (51 bytes):
- *     [type(1)]
- *     [ship1: x(4) y(4) vx(4) vy(4) rot(2) flags(1)] = 19 bytes
- *     [ship2: x(4) y(4) vx(4) vy(4) rot(2) flags(1)] = 19 bytes
- *     [score1(1) score2(1) phase(1) countdown(1) mode(1) missileCount(1) asteroidSeed(2)] = 8 bytes
- *     [invuln1(1) invuln2(1)] = 2 bytes
- *     [warpCooldown1(1) warpCooldown2(1)] = 2 bytes
- *   Per missile (18 bytes each, max 6):
- *     [mx(4)][my(4)][mvx(4)][mvy(4)][owner(1)][age(1)]
- * @param {object} state
- * @returns {ArrayBuffer}
- */
-export function encodeGameState(state) {
-  const missiles = state.missiles || [];
-  const missileCount = Math.min(missiles.length, MAX_MISSILES);
-  const totalSize = GAME_STATE_HEADER_SIZE + missileCount * MISSILE_SIZE;
-  const buf = new ArrayBuffer(totalSize);
-  const view = new DataView(buf);
+/** A ship: position, velocity, heading (normalised to one turn) and flags. */
+const ship = (name) =>
+  struct(name, [
+    f32("x"),
+    f32("y"),
+    f32("vx"),
+    f32("vy"),
+    u16("rotation", {
+      encode: (r) => Math.round((((r % TWO_PI) + TWO_PI) % TWO_PI) * ROTATION_SCALE),
+      decode: (raw) => raw / ROTATION_SCALE,
+    }),
+    shipFlags,
+  ]);
 
-  // Type
-  view.setUint8(0, MSG_TYPE.GAME_STATE);
+/** The host's snapshot of the duel, sent every step. */
+export const SNAPSHOT = schema(MSG_TYPE.GAME_STATE, [
+  ship("ship1"),
+  ship("ship2"),
+  u8("score1"),
+  u8("score2"),
+  u8("phase", { decode: (raw) => Math.min(raw, 5) }),
+  u8("countdown"),
+  u8("mode", { decode: (raw) => Math.min(raw, 2) }),
+  u8("missileCount", { from: (s) => Math.min((s.missiles || []).length, MAX_MISSILES) }),
+  u16("asteroidSeed"),
+  u8("invuln1"),
+  u8("invuln2"),
+  u8("warpCooldown1"),
+  u8("warpCooldown2"),
+  list("missiles", { capacity: MAX_MISSILES, countFrom: "missileCount" }, [
+    f32("x"),
+    f32("y"),
+    f32("vx", { or: 0 }),
+    f32("vy", { or: 0 }),
+    u8("owner"),
+    u8("age"),
+  ]),
+]);
 
-  // Ships
-  writeShip(view, SHIP1_OFFSET, state.ship1);
-  writeShip(view, SHIP2_OFFSET, state.ship2);
-
-  // Scores, phase, countdown, mode, missileCount, asteroidSeed
-  const metaOffset = 1 + SHIP_BLOCK_SIZE * 2; // 39
-  view.setUint8(metaOffset, state.score1);
-  view.setUint8(metaOffset + 1, state.score2);
-  view.setUint8(metaOffset + 2, state.phase);
-  view.setUint8(metaOffset + 3, state.countdown);
-  view.setUint8(metaOffset + 4, state.mode);
-  view.setUint8(metaOffset + 5, missileCount);
-  view.setUint16(metaOffset + 6, state.asteroidSeed || 0, true);
-
-  // Invulnerability timers
-  view.setUint8(metaOffset + 8, state.invuln1 || 0);
-  view.setUint8(metaOffset + 9, state.invuln2 || 0);
-
-  // Warp cooldowns
-  view.setUint8(metaOffset + 10, state.warpCooldown1 || 0);
-  view.setUint8(metaOffset + 11, state.warpCooldown2 || 0);
-
-  // Missiles
-  for (let i = 0; i < missileCount; i++) {
-    const m = missiles[i];
-    const mOff = GAME_STATE_HEADER_SIZE + i * MISSILE_SIZE;
-    view.setFloat32(mOff, m.x, true);
-    view.setFloat32(mOff + 4, m.y, true);
-    view.setFloat32(mOff + 8, m.vx || 0, true);
-    view.setFloat32(mOff + 12, m.vy || 0, true);
-    view.setUint8(mOff + 16, m.owner);
-    view.setUint8(mOff + 17, m.age);
-  }
-
-  return buf;
-}
-
-/**
- * Decode game state from binary buffer.
- * @param {ArrayBuffer} buf
- * @returns {object|null}
- */
-export function decodeGameState(buf) {
-  if (buf.byteLength < GAME_STATE_HEADER_SIZE) return null;
-  const view = new DataView(buf);
-  if (view.getUint8(0) !== MSG_TYPE.GAME_STATE) return null;
-
-  const ship1 = readShip(view, SHIP1_OFFSET);
-  const ship2 = readShip(view, SHIP2_OFFSET);
-
-  const metaOffset = 1 + SHIP_BLOCK_SIZE * 2; // 39
-  const score1 = view.getUint8(metaOffset);
-  const score2 = view.getUint8(metaOffset + 1);
-  const phase = Math.min(view.getUint8(metaOffset + 2), 5); // max PHASE.FINISHED
-  const countdown = view.getUint8(metaOffset + 3);
-  const mode = Math.min(view.getUint8(metaOffset + 4), 2); // max GAME_MODE.DEBRIS_FIELD
-  const missileCount = view.getUint8(metaOffset + 5);
-  const asteroidSeed = view.getUint16(metaOffset + 6, true);
-  const invuln1 = view.getUint8(metaOffset + 8);
-  const invuln2 = view.getUint8(metaOffset + 9);
-  const warpCooldown1 = view.getUint8(metaOffset + 10);
-  const warpCooldown2 = view.getUint8(metaOffset + 11);
-
-  // Missiles
-  const missiles = [];
-  for (let i = 0; i < missileCount; i++) {
-    const mOff = GAME_STATE_HEADER_SIZE + i * MISSILE_SIZE;
-    if (mOff + MISSILE_SIZE > buf.byteLength) break;
-    missiles.push({
-      x: view.getFloat32(mOff, true),
-      y: view.getFloat32(mOff + 4, true),
-      vx: view.getFloat32(mOff + 8, true),
-      vy: view.getFloat32(mOff + 12, true),
-      owner: view.getUint8(mOff + 16),
-      age: view.getUint8(mOff + 17),
-    });
-  }
-
-  return {
-    ship1,
-    ship2,
-    score1,
-    score2,
-    phase,
-    countdown,
-    mode,
-    missileCount: missiles.length,
-    asteroidSeed,
-    invuln1,
-    invuln2,
-    warpCooldown1,
-    warpCooldown2,
-    missiles,
-  };
-}
-
-/**
- * Encode game end for host -> peer transmission.
- * Layout: [type(1)][score1(1)][score2(1)][winner(1)]
- * Total: 4 bytes
- * @param {number} score1
- * @param {number} score2
- * @param {number} winner - 1 or 2
- * @returns {ArrayBuffer}
- */
-export function encodeGameEnd(score1, score2, winner) {
-  const buf = new ArrayBuffer(GAME_END_SIZE);
-  const view = new DataView(buf);
-  view.setUint8(0, MSG_TYPE.GAME_END);
-  view.setUint8(1, score1);
-  view.setUint8(2, score2);
-  view.setUint8(3, winner);
-  return buf;
-}
-
-/**
- * Decode game end from binary buffer.
- * @param {ArrayBuffer} buf
- * @returns {object|null}
- */
-export function decodeGameEnd(buf) {
-  if (buf.byteLength < GAME_END_SIZE) return null;
-  const view = new DataView(buf);
-  if (view.getUint8(0) !== MSG_TYPE.GAME_END) return null;
-  return {
-    score1: view.getUint8(1),
-    score2: view.getUint8(2),
-    winner: view.getUint8(3),
-  };
-}
+/** How the match ended. */
+export const GAME_END = schema(MSG_TYPE.GAME_END, [u8("score1"), u8("score2"), u8("winner")]);

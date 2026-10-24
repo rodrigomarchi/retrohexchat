@@ -1,10 +1,14 @@
 /**
  * Binary protocol for Hex Outlaw game state over WebRTC DataChannel.
- * All messages use DataView for zero-JSON binary encoding.
+ * Each message is declared once as a schema on the core codec, which writes
+ * and reads it from that one field list.
  * @module games/hex_outlaw_protocol
  */
 
 // Message types (shared with game_engine.js 0x80+ range)
+import { schema, bool, custom, u8, u16 } from "../core/codec.js";
+import { BULLET_SPEED_X } from "./physics.js";
+
 export const MSG_TYPE = {
   GAME_STATE: 0x80,
   GAME_START: 0x82,
@@ -34,20 +38,71 @@ export const GAME_MODE = {
   NO_MANS_LAND: 3,
 };
 
-// --- Sizes ---
-// Layout:
-// [type:1]
-// P1: [x:2][y:2][flags:1] = 5
-// P2: [x:2][y:2][flags:1] = 5
-// Bullet1: [x:2][y:2][vx_sign_vy:2][active:1] = 7
-// Bullet2: [x:2][y:2][vx_sign_vy:2][active:1] = 7
-// Obstacle: [y:2][dir:1] = 3
-// Scores: [score1:1][score2:1] = 2
-// Meta: [phase:1][countdown:1][round:1][roundWins1:1][roundWins2:1][gameMode:1][hitPauseTimer:1] = 7
-// Events: [lastHitPlayer:1] = 1
-// Total: 1 + 5 + 5 + 7 + 7 + 3 + 2 + 7 + 1 = 38
-const GAME_STATE_SIZE = 38;
-const GAME_END_SIZE = 6;
+/**
+ * A bullet's velocity in two bytes: the horizontal sign, whether it bounced,
+ * and the vertical speed. Its horizontal speed is always BULLET_SPEED_X.
+ */
+const bulletVelocity = (b) =>
+  custom({
+    spec: { kind: "custom", names: [`${b}vx`, `${b}vy`, `${b}bounced`] },
+    size: () => 2,
+    write(view, offset, s) {
+      view.setUint16(offset, packBulletVel(s[`${b}vx`], s[`${b}vy`], s[`${b}bounced`]), true);
+      return offset + 2;
+    },
+    read(view, offset, out) {
+      if (offset + 2 > view.byteLength) return -1;
+      const { vx, vy, bounced } = unpackBulletVel(view.getUint16(offset, true), BULLET_SPEED_X);
+      out[`${b}vx`] = vx;
+      out[`${b}vy`] = vy;
+      out[`${b}bounced`] = bounced;
+      return offset + 2;
+    },
+  });
+
+/** A gunslinger: position and whether they are mid-shot. */
+const gunslinger = (p) => [
+  u16(`${p}x`, { round: true }),
+  u16(`${p}y`, { round: true }),
+  bool(`${p}shooting`),
+];
+
+/** A bullet: position (never negative), velocity and whether it is in flight. */
+const bullet = (b) => [
+  u16(`${b}x`, { clamp: [0, Infinity], round: true }),
+  u16(`${b}y`, { clamp: [0, Infinity], round: true }),
+  bulletVelocity(b),
+  bool(`${b}active`),
+];
+
+/** The host's snapshot of the standoff, sent every step. */
+export const SNAPSHOT = schema(MSG_TYPE.GAME_STATE, [
+  ...gunslinger("p1"),
+  ...gunslinger("p2"),
+  ...bullet("b1"),
+  ...bullet("b2"),
+  u16("obsY", { round: true }),
+  u8("obsDir"),
+  u8("score1"),
+  u8("score2"),
+  u8("phase"),
+  u8("countdown"),
+  u8("round"),
+  u8("roundWins1"),
+  u8("roundWins2"),
+  u8("gameMode"),
+  u8("hitPauseTimer"),
+  u8("lastHitPlayer"),
+]);
+
+/** How the match ended. */
+export const GAME_END = schema(MSG_TYPE.GAME_END, [
+  u8("score1"),
+  u8("score2"),
+  u8("winner"),
+  u8("roundWins1"),
+  u8("roundWins2"),
+]);
 
 /**
  * Encode bullet velocity components into 2 bytes.
@@ -83,238 +138,4 @@ function unpackBulletVel(packed, bulletSpeedX) {
   const vy = (vyRaw - 8192) / 100;
   const vx = vxSign === 1 ? -bulletSpeedX : bulletSpeedX;
   return { vx, vy, bounced };
-}
-
-/**
- * Encode full game state for host -> peer transmission.
- * @param {object} state
- * @param {number} bulletSpeedX - absolute bullet speed (for encoding reference)
- * @returns {ArrayBuffer}
- */
-export function encodeGameState(state, _bulletSpeedX) {
-  const buf = new ArrayBuffer(GAME_STATE_SIZE);
-  const view = new DataView(buf);
-  let offset = 0;
-
-  view.setUint8(offset, MSG_TYPE.GAME_STATE);
-  offset += 1;
-
-  // Player 1
-  view.setUint16(offset, Math.round(state.p1x) & 0xffff, true);
-  offset += 2;
-  view.setUint16(offset, Math.round(state.p1y) & 0xffff, true);
-  offset += 2;
-  view.setUint8(offset, state.p1shooting ? 1 : 0);
-  offset += 1;
-
-  // Player 2
-  view.setUint16(offset, Math.round(state.p2x) & 0xffff, true);
-  offset += 2;
-  view.setUint16(offset, Math.round(state.p2y) & 0xffff, true);
-  offset += 2;
-  view.setUint8(offset, state.p2shooting ? 1 : 0);
-  offset += 1;
-
-  // Bullet 1
-  view.setUint16(offset, Math.round(Math.max(0, state.b1x)) & 0xffff, true);
-  offset += 2;
-  view.setUint16(offset, Math.round(Math.max(0, state.b1y)) & 0xffff, true);
-  offset += 2;
-  view.setUint16(offset, packBulletVel(state.b1vx, state.b1vy, state.b1bounced), true);
-  offset += 2;
-  view.setUint8(offset, state.b1active ? 1 : 0);
-  offset += 1;
-
-  // Bullet 2
-  view.setUint16(offset, Math.round(Math.max(0, state.b2x)) & 0xffff, true);
-  offset += 2;
-  view.setUint16(offset, Math.round(Math.max(0, state.b2y)) & 0xffff, true);
-  offset += 2;
-  view.setUint16(offset, packBulletVel(state.b2vx, state.b2vy, state.b2bounced), true);
-  offset += 2;
-  view.setUint8(offset, state.b2active ? 1 : 0);
-  offset += 1;
-
-  // Obstacle
-  view.setUint16(offset, Math.round(state.obsY) & 0xffff, true);
-  offset += 2;
-  view.setUint8(offset, state.obsDir);
-  offset += 1;
-
-  // Scores
-  view.setUint8(offset, state.score1);
-  offset += 1;
-  view.setUint8(offset, state.score2);
-  offset += 1;
-
-  // Meta
-  view.setUint8(offset, state.phase);
-  offset += 1;
-  view.setUint8(offset, state.countdown);
-  offset += 1;
-  view.setUint8(offset, state.round);
-  offset += 1;
-  view.setUint8(offset, state.roundWins1);
-  offset += 1;
-  view.setUint8(offset, state.roundWins2);
-  offset += 1;
-  view.setUint8(offset, state.gameMode);
-  offset += 1;
-  view.setUint8(offset, state.hitPauseTimer);
-  offset += 1;
-
-  // Events
-  view.setUint8(offset, state.lastHitPlayer);
-
-  return buf;
-}
-
-/**
- * Decode game state from binary buffer.
- * @param {ArrayBuffer} buf
- * @param {number} bulletSpeedX - absolute bullet speed for velocity reconstruction
- * @returns {object|null}
- */
-export function decodeGameState(buf, bulletSpeedX) {
-  if (buf.byteLength < GAME_STATE_SIZE) return null;
-  const view = new DataView(buf);
-  if (view.getUint8(0) !== MSG_TYPE.GAME_STATE) return null;
-
-  let offset = 1;
-
-  // Player 1
-  const p1x = view.getUint16(offset, true);
-  offset += 2;
-  const p1y = view.getUint16(offset, true);
-  offset += 2;
-  const p1shooting = view.getUint8(offset) === 1;
-  offset += 1;
-
-  // Player 2
-  const p2x = view.getUint16(offset, true);
-  offset += 2;
-  const p2y = view.getUint16(offset, true);
-  offset += 2;
-  const p2shooting = view.getUint8(offset) === 1;
-  offset += 1;
-
-  // Bullet 1
-  const b1x = view.getUint16(offset, true);
-  offset += 2;
-  const b1y = view.getUint16(offset, true);
-  offset += 2;
-  const b1vel = unpackBulletVel(view.getUint16(offset, true), bulletSpeedX);
-  offset += 2;
-  const b1active = view.getUint8(offset) === 1;
-  offset += 1;
-
-  // Bullet 2
-  const b2x = view.getUint16(offset, true);
-  offset += 2;
-  const b2y = view.getUint16(offset, true);
-  offset += 2;
-  const b2vel = unpackBulletVel(view.getUint16(offset, true), bulletSpeedX);
-  offset += 2;
-  const b2active = view.getUint8(offset) === 1;
-  offset += 1;
-
-  // Obstacle
-  const obsY = view.getUint16(offset, true);
-  offset += 2;
-  const obsDir = view.getUint8(offset);
-  offset += 1;
-
-  // Scores
-  const score1 = view.getUint8(offset);
-  offset += 1;
-  const score2 = view.getUint8(offset);
-  offset += 1;
-
-  // Meta
-  const phase = view.getUint8(offset);
-  offset += 1;
-  const countdown = view.getUint8(offset);
-  offset += 1;
-  const round = view.getUint8(offset);
-  offset += 1;
-  const roundWins1 = view.getUint8(offset);
-  offset += 1;
-  const roundWins2 = view.getUint8(offset);
-  offset += 1;
-  const gameMode = view.getUint8(offset);
-  offset += 1;
-  const hitPauseTimer = view.getUint8(offset);
-  offset += 1;
-
-  // Events
-  const lastHitPlayer = view.getUint8(offset);
-
-  return {
-    p1x,
-    p1y,
-    p1shooting,
-    p2x,
-    p2y,
-    p2shooting,
-    b1x,
-    b1y,
-    b1vx: b1vel.vx,
-    b1vy: b1vel.vy,
-    b1bounced: b1vel.bounced,
-    b1active,
-    b2x,
-    b2y,
-    b2vx: b2vel.vx,
-    b2vy: b2vel.vy,
-    b2bounced: b2vel.bounced,
-    b2active,
-    obsY,
-    obsDir,
-    score1,
-    score2,
-    phase,
-    countdown,
-    round,
-    roundWins1,
-    roundWins2,
-    gameMode,
-    hitPauseTimer,
-    lastHitPlayer,
-  };
-}
-
-/**
- * Encode game end for host -> peer transmission.
- * Layout: [type(1)][score1(1)][score2(1)][winner(1)][roundWins1(1)][roundWins2(1)]
- * @param {object} result
- * @returns {ArrayBuffer}
- */
-export function encodeGameEnd(result) {
-  const buf = new ArrayBuffer(GAME_END_SIZE);
-  const view = new DataView(buf);
-  view.setUint8(0, MSG_TYPE.GAME_END);
-  view.setUint8(1, result.score1);
-  view.setUint8(2, result.score2);
-  view.setUint8(3, result.winner);
-  view.setUint8(4, result.roundWins1);
-  view.setUint8(5, result.roundWins2);
-  return buf;
-}
-
-/**
- * Decode game end from binary buffer.
- * @param {ArrayBuffer} buf
- * @returns {object|null}
- */
-export function decodeGameEnd(buf) {
-  if (buf.byteLength < GAME_END_SIZE) return null;
-  const view = new DataView(buf);
-  if (view.getUint8(0) !== MSG_TYPE.GAME_END) return null;
-  return {
-    score1: view.getUint8(1),
-    score2: view.getUint8(2),
-    winner: view.getUint8(3),
-    roundWins1: view.getUint8(4),
-    roundWins2: view.getUint8(5),
-  };
 }

@@ -37,6 +37,12 @@ describe("codec", () => {
       ]);
     });
 
+    it("write big-endian when asked", () => {
+      const msg = schema(1, [u16("score", { bigEndian: true })]);
+      expect(bytes(msg.encode({ score: 0x1234 }))).toEqual([1, 0x12, 0x34]);
+      expect(msg.decode(msg.encode({ score: 0x1234 }))).toEqual({ score: 0x1234 });
+    });
+
     it("wrap around on overflow, as DataView does", () => {
       const msg = schema(1, [u8("a"), u16("b"), i8("c")]);
       expect(bytes(msg.encode({ a: 256 + 5, b: -1, c: 200 }))).toEqual([1, 5, 0xff, 0xff, 200]);
@@ -69,6 +75,20 @@ describe("codec", () => {
       const msg = schema(1, [i8("dir", { or: 1 }), i8("other", { or: 1 })]);
       expect(msg.decode(msg.encode({ dir: 0, other: -1 }))).toEqual({ dir: 1, other: -1 });
       expect(msg.decode(msg.encode({}))).toEqual({ dir: 1, other: 1 });
+    });
+
+    it("from: compute the value from the whole object", () => {
+      const msg = schema(1, [u8("count", { from: (obj) => obj.items.length })]);
+      expect(bytes(msg.encode({ items: [1, 2, 3] }))).toEqual([1, 3]);
+    });
+
+    it("encode and decode: transform on the way out and back", () => {
+      const msg = schema(1, [
+        u8("timer", { encode: (v) => Math.min(255, v >> 2), decode: (raw) => raw << 2 }),
+        u8("phase", { decode: (raw) => Math.min(raw, 5) }),
+      ]);
+      expect(bytes(msg.encode({ timer: 40, phase: 9 }))).toEqual([1, 10, 9]);
+      expect(msg.decode(msg.encode({ timer: 40, phase: 9 }))).toEqual({ timer: 40, phase: 5 });
     });
 
     it("clamp before writing, when asked", () => {
@@ -191,6 +211,18 @@ describe("codec", () => {
       expect(msg.decode(new Uint8Array([1, 3, 5, 6, 7]).buffer)).toBeNull();
     });
 
+    it("countFrom: an earlier field carries the count, and the list has no prefix", () => {
+      const msg = schema(1, [
+        u8("n", { from: (obj) => Math.min(obj.xs.length, 2) }),
+        u8("other"),
+        list("xs", { capacity: 2, countFrom: "n" }, [u8("v")]),
+      ]);
+      const wire = msg.encode({ other: 9, xs: [{ v: 4 }, { v: 5 }, { v: 6 }] });
+      expect(bytes(wire)).toEqual([1, 2, 9, 4, 5]);
+      expect(msg.decode(wire)).toEqual({ n: 2, other: 9, xs: [{ v: 4 }, { v: 5 }] });
+      expect(msg.decode(new Uint8Array([1, 3, 9, 4, 5, 6]).buffer)).toBeNull();
+    });
+
     it("variable with a named count: reads it from the object and writes it back", () => {
       const msg = schema(1, [list("fish", { capacity: 4, count: "fishCount" }, [u8("x")])]);
       const wire = msg.encode({ fishCount: 1, fish: [{ x: 5 }, { x: 6 }] });
@@ -254,8 +286,30 @@ describe("codec", () => {
       ]);
 
       expect(msg.fields.map((field) => field.spec)).toEqual([
-        { kind: "u16", name: "y", round: true, scale: null, clamp: null, or: null },
-        { kind: "i16", name: "x", round: false, scale: 10, clamp: null, or: null },
+        {
+          kind: "u16",
+          name: "y",
+          round: true,
+          scale: null,
+          clamp: null,
+          or: null,
+          from: null,
+          encode: null,
+          decode: null,
+          bigEndian: false,
+        },
+        {
+          kind: "i16",
+          name: "x",
+          round: false,
+          scale: 10,
+          clamp: null,
+          or: null,
+          from: null,
+          encode: null,
+          decode: null,
+          bigEndian: false,
+        },
         { kind: "bool", name: "on" },
         { kind: "flags", names: ["a", "b"] },
         { kind: "bitmap", name: "blocks", count: 4, key: null, as: null },
@@ -263,7 +317,20 @@ describe("codec", () => {
           kind: "struct",
           name: "p1",
           flat: false,
-          fields: [{ kind: "u8", name: "lives", round: false, scale: null, clamp: null, or: null }],
+          fields: [
+            {
+              kind: "u8",
+              name: "lives",
+              round: false,
+              scale: null,
+              clamp: null,
+              or: null,
+              from: null,
+              encode: null,
+              decode: null,
+              bigEndian: false,
+            },
+          ],
         },
         {
           kind: "list",
@@ -271,7 +338,21 @@ describe("codec", () => {
           capacity: 2,
           fixed: true,
           count: "n",
-          fields: [{ kind: "f32", name: "v", round: false, scale: null, clamp: null, or: null }],
+          countFrom: null,
+          fields: [
+            {
+              kind: "f32",
+              name: "v",
+              round: false,
+              scale: null,
+              clamp: null,
+              or: null,
+              from: null,
+              encode: null,
+              decode: null,
+              bigEndian: false,
+            },
+          ],
         },
       ]);
     });

@@ -10,12 +10,10 @@ import {
   MSG_TYPE,
   PHASE,
   GAME_MODE,
-  encodeGameState,
-  decodeGameState,
-  encodeGameEnd,
-  decodeGameEnd,
   encodeGameReady,
   getMessageType,
+  SNAPSHOT,
+  GAME_END,
 } from "./protocol.js";
 import {
   createInitialState,
@@ -29,7 +27,6 @@ import {
   checkRoundEnd,
   advanceRound,
   resetForNewRound,
-  BULLET_SPEED_X,
 } from "./physics.js";
 import {
   render as renderFrame,
@@ -201,7 +198,7 @@ export class OutlawEngine extends GameEngine {
     switch (type) {
       case MSG_TYPE.GAME_STATE:
         if (!this.isHost) {
-          const decoded = decodeGameState(buf, BULLET_SPEED_X);
+          const decoded = SNAPSHOT.decode(buf);
           if (decoded) {
             this._ingestSnapshot(decoded, () => this._applyPeerState(decoded));
             this.setKeyboardCaptured(
@@ -219,7 +216,7 @@ export class OutlawEngine extends GameEngine {
         break;
 
       case MSG_TYPE.GAME_END: {
-        const result = decodeGameEnd(buf);
+        const result = GAME_END.decode(buf);
         if (result) {
           this.setKeyboardCaptured(false);
           this.gameState.phase = PHASE.MATCH_OVER;
@@ -491,7 +488,7 @@ export class OutlawEngine extends GameEngine {
     }
 
     this._sendCommand(
-      encodeGameEnd({
+      GAME_END.encode({
         score1: this.gameState.score1,
         score2: this.gameState.score2,
         winner,
@@ -534,7 +531,7 @@ export class OutlawEngine extends GameEngine {
   }
 
   _broadcastState() {
-    this._sendState(encodeGameState(this.gameState, BULLET_SPEED_X));
+    this._sendState(SNAPSHOT.encode(this.gameState));
   }
 
   _renderState() {

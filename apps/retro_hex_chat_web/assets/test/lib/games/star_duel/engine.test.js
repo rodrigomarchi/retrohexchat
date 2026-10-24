@@ -5,10 +5,10 @@ import {
   PHASE,
   MSG_TYPE,
   GAME_MODE,
-  encodeGameState,
-  encodeGameEnd,
   encodeGameReady,
   encodeShipFlags,
+  SNAPSHOT,
+  GAME_END,
 } from "../../../../js/lib/games/star_duel/protocol.js";
 import {
   createInitialState,
@@ -143,7 +143,7 @@ function buildEncodedState(overrides = {}) {
       flags: encodeShipFlags(overrides.ship2Flags || ship2Flags),
     },
   };
-  return encodeGameState(state);
+  return SNAPSHOT.encode(state);
 }
 
 describe("StarDuelEngine", () => {
@@ -488,7 +488,7 @@ describe("StarDuelEngine", () => {
           }),
         },
       };
-      const buf = encodeGameState(fakeState);
+      const buf = SNAPSHOT.encode(fakeState);
       engine._onChannelMessage({ data: buf });
 
       expect(engine.gameState.score1).toBe(originalScore);
@@ -520,7 +520,7 @@ describe("StarDuelEngine", () => {
       engine.start();
       engine.setKeyboardCaptured(true);
 
-      const buf = encodeGameEnd(7, 3, 1);
+      const buf = GAME_END.encode({ score1: 7, score2: 3, winner: 1 });
       engine._onChannelMessage({ data: buf });
 
       expect(engine.gameState.phase).toBe(PHASE.FINISHED);
@@ -534,7 +534,7 @@ describe("StarDuelEngine", () => {
       engine = new StarDuelEngine(canvas, channel, "star_duel", false, null);
       engine.start();
 
-      const buf = encodeGameEnd(7, 3, 1);
+      const buf = GAME_END.encode({ score1: 7, score2: 3, winner: 1 });
       engine._onChannelMessage({ data: buf });
 
       expect(engine.audio.playWin).toHaveBeenCalled();
@@ -547,7 +547,7 @@ describe("StarDuelEngine", () => {
       engine.start();
       engine._peerThrustAudioPlaying = true;
 
-      const buf = encodeGameEnd(7, 3, 1);
+      const buf = GAME_END.encode({ score1: 7, score2: 3, winner: 1 });
       engine._onChannelMessage({ data: buf });
 
       expect(engine._peerThrustAudioPlaying).toBe(false);

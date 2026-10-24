@@ -5,9 +5,9 @@ import {
   MSG_TYPE,
   GAME_MODE,
   ENEMY_TYPE,
-  encodeGameState,
-  encodeGameEnd,
   encodeGameReady,
+  SNAPSHOT,
+  GAME_END,
 } from "../../../../js/lib/games/hex_raid/protocol.js";
 import { CANVAS_W, CANVAS_H, INITIAL_LIVES } from "../../../../js/lib/games/hex_raid/physics.js";
 
@@ -430,7 +430,7 @@ describe("HexRaidEngine", () => {
         seed: 12345,
       };
 
-      const buf = encodeGameState(state);
+      const buf = SNAPSHOT.encode(state);
       const handler = channel.addEventListener.mock.calls.find((c) => c[0] === "message")[1];
       handler({ data: buf });
 
@@ -448,7 +448,7 @@ describe("HexRaidEngine", () => {
       engine.start();
 
       const result = { score1: 2340, score2: 1890, winner: 1 };
-      const buf = encodeGameEnd(result);
+      const buf = GAME_END.encode(result);
       const handler = channel.addEventListener.mock.calls.find((c) => c[0] === "message")[1];
       handler({ data: buf });
 
@@ -1015,7 +1015,7 @@ describe("HexRaidEngine", () => {
       engine.audio.playLose.mockClear();
 
       const result = { score1: 1000, score2: 2000, winner: 2 };
-      const buf = encodeGameEnd(result);
+      const buf = GAME_END.encode(result);
       const handler = channel.addEventListener.mock.calls.find((c) => c[0] === "message")[1];
       handler({ data: buf });
 
@@ -1203,7 +1203,7 @@ describe("HexRaidEngine", () => {
       engine.audio.playLose.mockClear();
 
       const result = { score1: 2000, score2: 1000, winner: 1 };
-      const buf = encodeGameEnd(result);
+      const buf = GAME_END.encode(result);
       const handler = channel.addEventListener.mock.calls.find((c) => c[0] === "message")[1];
       handler({ data: buf });
 
@@ -1262,11 +1262,11 @@ describe("HexRaidEngine", () => {
       };
 
       const handler = channel.addEventListener.mock.calls.find((c) => c[0] === "message")[1];
-      handler({ data: encodeGameState(waitingState) });
+      handler({ data: SNAPSHOT.encode(waitingState) });
 
       // Then send COUNTDOWN
       handler({
-        data: encodeGameState({ ...waitingState, phase: PHASE.COUNTDOWN }),
+        data: SNAPSHOT.encode({ ...waitingState, phase: PHASE.COUNTDOWN }),
       });
 
       expect(engine.audio.playCountdown).toHaveBeenCalled();

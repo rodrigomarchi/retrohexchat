@@ -16,12 +16,10 @@ import {
   MSG_TYPE,
   PHASE,
   GAME_MODE,
-  encodeGameState,
-  decodeGameState,
-  encodeGameEnd,
-  decodeGameEnd,
   encodeGameReady,
   getMessageType,
+  SNAPSHOT,
+  GAME_END,
 } from "./protocol.js";
 import {
   createInitialState,
@@ -203,7 +201,7 @@ export class HexRaidEngine extends GameEngine {
     switch (type) {
       case MSG_TYPE.GAME_STATE:
         if (!this.isHost) {
-          const decoded = decodeGameState(buf);
+          const decoded = SNAPSHOT.decode(buf);
           if (decoded) {
             this._ingestSnapshot(decoded, () => this._applyPeerState(decoded));
             this.setKeyboardCaptured(
@@ -221,7 +219,7 @@ export class HexRaidEngine extends GameEngine {
 
       case MSG_TYPE.GAME_END: {
         if (this.isHost) break;
-        const result = decodeGameEnd(buf);
+        const result = GAME_END.decode(buf);
         if (result) {
           this.setKeyboardCaptured(false);
           this.gameState.phase = PHASE.FINISHED;
@@ -549,7 +547,7 @@ export class HexRaidEngine extends GameEngine {
 
     // Send GAME_END to peer
     this._sendCommand(
-      encodeGameEnd({
+      GAME_END.encode({
         score1: this.gameState.score1,
         score2: this.gameState.score2,
         winner,
@@ -584,7 +582,7 @@ export class HexRaidEngine extends GameEngine {
   }
 
   _broadcastState() {
-    this._sendState(encodeGameState(this.gameState));
+    this._sendState(SNAPSHOT.encode(this.gameState));
   }
 
   _renderState() {

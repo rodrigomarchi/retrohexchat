@@ -7,12 +7,10 @@ import {
   MAX_ENEMIES,
   MAX_FUEL,
   MAX_MINES,
-  encodeGameState,
-  decodeGameState,
-  encodeGameEnd,
-  decodeGameEnd,
   encodeGameReady,
   getMessageType,
+  SNAPSHOT,
+  GAME_END,
 } from "../../../../js/lib/games/hex_raid/protocol.js";
 
 describe("Hex Raid Protocol", () => {
@@ -67,10 +65,10 @@ describe("Hex Raid Protocol", () => {
         seed: 0xdeadbeef,
       };
 
-      const buf = encodeGameState(state);
+      const buf = SNAPSHOT.encode(state);
       expect(buf.byteLength).toBe(185);
 
-      const d = decodeGameState(buf);
+      const d = SNAPSHOT.decode(buf);
       expect(d).not.toBeNull();
 
       // Jets
@@ -187,8 +185,8 @@ describe("Hex Raid Protocol", () => {
         seed: 0,
       };
 
-      const buf = encodeGameState(state);
-      const d = decodeGameState(buf);
+      const buf = SNAPSHOT.encode(state);
+      const d = SNAPSHOT.decode(buf);
       expect(d.enemyCount).toBe(0);
       expect(d.fuelCount).toBe(0);
       expect(d.mineCount).toBe(0);
@@ -261,8 +259,8 @@ describe("Hex Raid Protocol", () => {
         seed: 42,
       };
 
-      const buf = encodeGameState(state);
-      const d = decodeGameState(buf);
+      const buf = SNAPSHOT.encode(state);
+      const d = SNAPSHOT.decode(buf);
       expect(d.enemyCount).toBe(MAX_ENEMIES);
       expect(d.fuelCount).toBe(MAX_FUEL);
       expect(d.mineCount).toBe(MAX_MINES);
@@ -316,7 +314,7 @@ describe("Hex Raid Protocol", () => {
         seed: 1,
       };
 
-      const d = decodeGameState(encodeGameState(state));
+      const d = SNAPSHOT.decode(SNAPSHOT.encode(state));
       expect(d.jet1Alive).toBe(false);
       expect(d.jet1Respawning).toBe(true);
       expect(d.jet2Alive).toBe(true);
@@ -325,13 +323,13 @@ describe("Hex Raid Protocol", () => {
 
     it("returns null for truncated buffer", () => {
       const buf = new ArrayBuffer(10);
-      expect(decodeGameState(buf)).toBeNull();
+      expect(SNAPSHOT.decode(buf)).toBeNull();
     });
 
     it("returns null for wrong message type", () => {
       const buf = new ArrayBuffer(185);
       new DataView(buf).setUint8(0, 0x81);
-      expect(decodeGameState(buf)).toBeNull();
+      expect(SNAPSHOT.decode(buf)).toBeNull();
     });
 
     it("roundtrips high scores (Uint16)", () => {
@@ -377,7 +375,7 @@ describe("Hex Raid Protocol", () => {
         seed: 0xffffffff,
       };
 
-      const d = decodeGameState(encodeGameState(state));
+      const d = SNAPSHOT.decode(SNAPSHOT.encode(state));
       expect(d.score1).toBe(12340);
       expect(d.score2).toBe(65000);
       expect(d.section).toBe(10);
@@ -388,10 +386,10 @@ describe("Hex Raid Protocol", () => {
   describe("game end encode/decode", () => {
     it("roundtrips a result", () => {
       const result = { score1: 2340, score2: 1890, winner: 1 };
-      const buf = encodeGameEnd(result);
+      const buf = GAME_END.encode(result);
       expect(buf.byteLength).toBe(6);
 
-      const d = decodeGameEnd(buf);
+      const d = GAME_END.decode(buf);
       expect(d).not.toBeNull();
       expect(d.score1).toBe(2340);
       expect(d.score2).toBe(1890);
@@ -400,20 +398,20 @@ describe("Hex Raid Protocol", () => {
 
     it("handles high scores", () => {
       const result = { score1: 50000, score2: 32000, winner: 2 };
-      const d = decodeGameEnd(encodeGameEnd(result));
+      const d = GAME_END.decode(GAME_END.encode(result));
       expect(d.score1).toBe(50000);
       expect(d.score2).toBe(32000);
       expect(d.winner).toBe(2);
     });
 
     it("returns null for truncated buffer", () => {
-      expect(decodeGameEnd(new ArrayBuffer(2))).toBeNull();
+      expect(GAME_END.decode(new ArrayBuffer(2))).toBeNull();
     });
 
     it("returns null for wrong type", () => {
       const buf = new ArrayBuffer(6);
       new DataView(buf).setUint8(0, MSG_TYPE.GAME_STATE);
-      expect(decodeGameEnd(buf)).toBeNull();
+      expect(GAME_END.decode(buf)).toBeNull();
     });
   });
 
@@ -484,7 +482,7 @@ describe("Hex Raid Protocol", () => {
         score1: 65535,
         score2: 65535,
       });
-      const d = decodeGameState(encodeGameState(state));
+      const d = SNAPSHOT.decode(SNAPSHOT.encode(state));
       expect(d.jet1X).toBe(65535);
       expect(d.jet1Y).toBe(65535);
       expect(d.score1).toBe(65535);
@@ -499,7 +497,7 @@ describe("Hex Raid Protocol", () => {
         countdown: 255,
         section: 255,
       });
-      const d = decodeGameState(encodeGameState(state));
+      const d = SNAPSHOT.decode(SNAPSHOT.encode(state));
       expect(d.jet1Speed).toBe(255);
       expect(d.jet1Fuel).toBe(255);
       expect(d.jet1Lives).toBe(255);
@@ -511,7 +509,7 @@ describe("Hex Raid Protocol", () => {
       const phases = [PHASE.WAITING, PHASE.COUNTDOWN, PHASE.FLYING, PHASE.FINISHED];
       for (const phase of phases) {
         const state = makeMinimalState({ phase });
-        const d = decodeGameState(encodeGameState(state));
+        const d = SNAPSHOT.decode(SNAPSHOT.encode(state));
         expect(d.phase).toBe(phase);
       }
     });
@@ -520,26 +518,26 @@ describe("Hex Raid Protocol", () => {
       const modes = [GAME_MODE.RIVER_DUEL, GAME_MODE.PACIFIST, GAME_MODE.BLITZ];
       for (const mode of modes) {
         const state = makeMinimalState({ mode });
-        const d = decodeGameState(encodeGameState(state));
+        const d = SNAPSHOT.decode(SNAPSHOT.encode(state));
         expect(d.mode).toBe(mode);
       }
     });
 
     it("roundtrips negative scrollY", () => {
       const state = makeMinimalState({ scrollY: -100.5 });
-      const d = decodeGameState(encodeGameState(state));
+      const d = SNAPSHOT.decode(SNAPSHOT.encode(state));
       expect(d.scrollY).toBeCloseTo(-100.5, 1);
     });
 
     it("roundtrips very large scrollY", () => {
       const state = makeMinimalState({ scrollY: 100000.0 });
-      const d = decodeGameState(encodeGameState(state));
+      const d = SNAPSHOT.decode(SNAPSHOT.encode(state));
       expect(d.scrollY).toBeCloseTo(100000.0, 0);
     });
 
     it("roundtrips game end with max Uint16 scores", () => {
       const result = { score1: 65535, score2: 65535, winner: 2 };
-      const d = decodeGameEnd(encodeGameEnd(result));
+      const d = GAME_END.decode(GAME_END.encode(result));
       expect(d.score1).toBe(65535);
       expect(d.score2).toBe(65535);
       expect(d.winner).toBe(2);
@@ -547,7 +545,7 @@ describe("Hex Raid Protocol", () => {
 
     it("roundtrips game end with zero scores", () => {
       const result = { score1: 0, score2: 0, winner: 0 };
-      const d = decodeGameEnd(encodeGameEnd(result));
+      const d = GAME_END.decode(GAME_END.encode(result));
       expect(d.score1).toBe(0);
       expect(d.score2).toBe(0);
       expect(d.winner).toBe(0);

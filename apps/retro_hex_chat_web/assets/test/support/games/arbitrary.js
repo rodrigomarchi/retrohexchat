@@ -36,7 +36,12 @@ function record(specs, overrides) {
         shape[name] = overrides[name] ?? fc.integer({ min: 0, max: (1 << (width + 1)) - 1 });
       }
     } else if (spec.kind === "custom") {
-      throw new Error("custom fields need an override in arbitraryFor");
+      for (const name of spec.names ?? []) {
+        if (!overrides[name]) {
+          throw new Error(`custom field ${name} needs an override in arbitraryFor`);
+        }
+        shape[name] = overrides[name];
+      }
     } else {
       shape[spec.name] = overrides[spec.name] ?? value(spec, overrides);
       if (spec.kind === "list" && spec.count && !(spec.count in shape)) {
@@ -79,7 +84,12 @@ function value(spec, overrides) {
 function number({ kind, scale, round, clamp }) {
   const [min, max] = RANGES[kind];
   if (scale !== null) return fc.integer({ min, max }).map((raw) => raw / scale);
-  if (clamp) return fc.integer({ min: clamp[0] - 5, max: clamp[1] + 5 });
+  if (clamp) {
+    return fc.integer({
+      min: Number.isFinite(clamp[0]) ? clamp[0] - 5 : min,
+      max: Number.isFinite(clamp[1]) ? clamp[1] + 5 : max,
+    });
+  }
   if (round) return fc.integer({ min: min * 4, max: max * 4 }).map((n) => n / 4);
   return fc.integer({ min, max });
 }

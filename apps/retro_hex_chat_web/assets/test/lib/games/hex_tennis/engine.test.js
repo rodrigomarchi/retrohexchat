@@ -5,9 +5,9 @@ import {
   PHASE,
   GAME_MODE,
   MSG_TYPE,
-  encodeGameState,
   encodeGameReady,
-  encodeGameEnd,
+  SNAPSHOT,
+  GAME_END,
 } from "../../../../js/lib/games/hex_tennis/protocol.js";
 import {
   createInitialState,
@@ -415,7 +415,7 @@ describe("TennisEngine", () => {
       );
       e.start();
       const origPhase = e.gameState.phase;
-      const stateBuf = encodeGameState({
+      const stateBuf = SNAPSHOT.encode({
         ...createInitialState(0),
         phase: PHASE.RALLY,
         ball: { x: 320, y: 240, vx: 3, vy: -2, speed: 4, height: 0.3, heightVel: 0 },
@@ -478,7 +478,7 @@ describe("TennisEngine", () => {
         ballVY: state.ball.vy,
         ballHeight: state.ball.height,
       };
-      const stateBuf = encodeGameState(flat);
+      const stateBuf = SNAPSHOT.encode(flat);
       e._onChannelMessage({ data: stateBuf });
       e._pump(0);
       expect(e.gameState.phase).toBe(PHASE.RALLY);
@@ -496,7 +496,13 @@ describe("TennisEngine", () => {
         onEnd,
       );
       e.start();
-      const endBuf = encodeGameEnd(6, 4, 1, GAME_MODE.CLASSIC, false);
+      const endBuf = GAME_END.encode({
+        p1Games: 6,
+        p2Games: 4,
+        winner: 1,
+        gameMode: GAME_MODE.CLASSIC,
+        wasTiebreak: false,
+      });
       e.setKeyboardCaptured(true);
       e._onChannelMessage({ data: endBuf });
       expect(e.gameState.phase).toBe(PHASE.GAME_OVER);
@@ -941,7 +947,7 @@ describe("TennisEngine", () => {
         ballVY: -2,
         ballHeight: 0.3,
       };
-      const stateBuf = encodeGameState(flat);
+      const stateBuf = SNAPSHOT.encode(flat);
       // Spy on audio
       const hitSpy = vi.spyOn(e.audio, "playHit");
       e._onChannelMessage({ data: stateBuf });
@@ -970,7 +976,7 @@ describe("TennisEngine", () => {
         ballHeight: 0.3,
       };
       const serveSpy = vi.spyOn(e.audio, "playServe");
-      e._onChannelMessage({ data: encodeGameState(flat) });
+      e._onChannelMessage({ data: SNAPSHOT.encode(flat) });
       expect(serveSpy).toHaveBeenCalled();
       e.stop();
     });
@@ -996,7 +1002,7 @@ describe("TennisEngine", () => {
         ballHeight: 0,
       };
       const faultSpy = vi.spyOn(e.audio, "playFault");
-      e._onChannelMessage({ data: encodeGameState(flat) });
+      e._onChannelMessage({ data: SNAPSHOT.encode(flat) });
       expect(faultSpy).toHaveBeenCalled();
       e.stop();
     });
@@ -1022,7 +1028,7 @@ describe("TennisEngine", () => {
         ballHeight: 0,
       };
       const netSpy = vi.spyOn(e.audio, "playNetHit");
-      e._onChannelMessage({ data: encodeGameState(flat) });
+      e._onChannelMessage({ data: SNAPSHOT.encode(flat) });
       expect(netSpy).toHaveBeenCalled();
       e.stop();
     });
@@ -1049,7 +1055,7 @@ describe("TennisEngine", () => {
         ballHeight: 0,
       };
       const outSpy = vi.spyOn(e.audio, "playOut");
-      e._onChannelMessage({ data: encodeGameState(flat) });
+      e._onChannelMessage({ data: SNAPSHOT.encode(flat) });
       expect(outSpy).toHaveBeenCalled();
       e.stop();
     });
@@ -1076,7 +1082,7 @@ describe("TennisEngine", () => {
         ballHeight: 0,
       };
       const aceSpy = vi.spyOn(e.audio, "playAce");
-      e._onChannelMessage({ data: encodeGameState(flat) });
+      e._onChannelMessage({ data: SNAPSHOT.encode(flat) });
       expect(aceSpy).toHaveBeenCalled();
       e.stop();
     });
@@ -1102,7 +1108,7 @@ describe("TennisEngine", () => {
         ballHeight: 0,
       };
       const pointSpy = vi.spyOn(e.audio, "playPoint");
-      e._onChannelMessage({ data: encodeGameState(flat) });
+      e._onChannelMessage({ data: SNAPSHOT.encode(flat) });
       expect(pointSpy).toHaveBeenCalled();
       e.stop();
     });
@@ -1687,7 +1693,7 @@ describe("TennisEngine", () => {
         ballHeight: 0,
       };
       const matchSpy = vi.spyOn(e.audio, "playMatchWon");
-      e._onChannelMessage({ data: encodeGameState(flat) });
+      e._onChannelMessage({ data: SNAPSHOT.encode(flat) });
       expect(matchSpy).toHaveBeenCalled();
       e.stop();
     });
@@ -1713,7 +1719,7 @@ describe("TennisEngine", () => {
         ballHeight: 0,
       };
       const countSpy = vi.spyOn(e.audio, "playCountdown");
-      e._onChannelMessage({ data: encodeGameState(flat) });
+      e._onChannelMessage({ data: SNAPSHOT.encode(flat) });
       expect(countSpy).toHaveBeenCalled();
       e.stop();
     });

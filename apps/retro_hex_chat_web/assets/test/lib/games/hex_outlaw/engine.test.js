@@ -4,9 +4,9 @@ import { OutlawEngine } from "../../../../js/lib/games/hex_outlaw/engine.js";
 import {
   PHASE,
   GAME_MODE,
-  encodeGameState,
   encodeGameReady,
-  encodeGameEnd,
+  SNAPSHOT,
+  GAME_END,
 } from "../../../../js/lib/games/hex_outlaw/protocol.js";
 import { createInitialState, BULLET_SPEED_X } from "../../../../js/lib/games/hex_outlaw/physics.js";
 
@@ -321,7 +321,7 @@ describe("OutlawEngine", () => {
       const engine = new OutlawEngine(canvas, channel, "hex_outlaw", true, null);
       const state = createInitialState(GAME_MODE.QUICK_DRAW);
       state.score1 = 5;
-      const buf = encodeGameState(state, BULLET_SPEED_X);
+      const buf = SNAPSHOT.encode(state, BULLET_SPEED_X);
       engine._onChannelMessage({ data: buf });
       expect(engine.gameState.score1).toBe(0); // Not applied
     });
@@ -342,7 +342,7 @@ describe("OutlawEngine", () => {
       const state = createInitialState(GAME_MODE.QUICK_DRAW);
       state.score1 = 7;
       state.phase = PHASE.PLAYING;
-      const buf = encodeGameState(state, BULLET_SPEED_X);
+      const buf = SNAPSHOT.encode(state, BULLET_SPEED_X);
       engine._onChannelMessage({ data: buf });
       expect(engine.gameState.score1).toBe(7);
       expect(engine.gameState.phase).toBe(PHASE.PLAYING);
@@ -420,7 +420,7 @@ describe("OutlawEngine", () => {
         ring: "#110",
         hit: "#fff",
       };
-      const buf = encodeGameEnd({
+      const buf = GAME_END.encode({
         score1: 10,
         score2: 5,
         winner: 1,

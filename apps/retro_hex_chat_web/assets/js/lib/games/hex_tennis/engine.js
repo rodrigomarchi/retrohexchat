@@ -11,12 +11,10 @@ import {
   MSG_TYPE,
   PHASE,
   GAME_MODE,
-  encodeGameState,
-  decodeGameState,
-  encodeGameEnd,
-  decodeGameEnd,
   encodeGameReady,
   getMessageType,
+  SNAPSHOT,
+  GAME_END,
 } from "./protocol.js";
 import {
   createInitialState,
@@ -180,7 +178,7 @@ export class TennisEngine extends GameEngine {
     switch (type) {
       case MSG_TYPE.GAME_STATE:
         if (!this.isHost) {
-          const decoded = decodeGameState(buf);
+          const decoded = SNAPSHOT.decode(buf);
           if (decoded) {
             this._ingestSnapshot(decoded, () => this._applyPeerState(decoded));
             this.setKeyboardCaptured(
@@ -197,7 +195,7 @@ export class TennisEngine extends GameEngine {
         break;
 
       case MSG_TYPE.GAME_END: {
-        const result = decodeGameEnd(buf);
+        const result = GAME_END.decode(buf);
         if (result) {
           this.setKeyboardCaptured(false);
           this.gameState.phase = PHASE.GAME_OVER;
@@ -414,7 +412,15 @@ export class TennisEngine extends GameEngine {
     this._broadcastState();
     this._invalidate();
 
-    this._sendCommand(encodeGameEnd(p1Games, p2Games, winner, gameMode, isTiebreak));
+    this._sendCommand(
+      GAME_END.encode({
+        p1Games: p1Games,
+        p2Games: p2Games,
+        winner: winner,
+        gameMode: gameMode,
+        wasTiebreak: isTiebreak,
+      }),
+    );
 
     if (winner > 0) {
       this.audio.playMatchWon();
@@ -466,7 +472,7 @@ export class TennisEngine extends GameEngine {
   }
 
   _broadcastState() {
-    this._sendState(encodeGameState(this._flattenStateForEncode()));
+    this._sendState(SNAPSHOT.encode(this._flattenStateForEncode()));
   }
 
   _updateOpponentInputs() {

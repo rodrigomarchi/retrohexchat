@@ -11,13 +11,11 @@ import {
   MSG_TYPE,
   PHASE,
   GAME_MODE,
-  encodeGameState,
-  decodeGameState,
-  encodeGameEnd,
-  decodeGameEnd,
   encodeGameReady,
   encodeShipFlags,
   getMessageType,
+  SNAPSHOT,
+  GAME_END,
 } from "./protocol.js";
 import {
   createInitialState,
@@ -204,7 +202,7 @@ export class StarDuelEngine extends GameEngine {
     switch (type) {
       case MSG_TYPE.GAME_STATE:
         if (!this.isHost) {
-          const decoded = decodeGameState(buf);
+          const decoded = SNAPSHOT.decode(buf);
           if (decoded) {
             this._ingestSnapshot(decoded, () => this._applyPeerState(decoded));
             this.setKeyboardCaptured(
@@ -221,7 +219,7 @@ export class StarDuelEngine extends GameEngine {
         break;
 
       case MSG_TYPE.GAME_END: {
-        const result = decodeGameEnd(buf);
+        const result = GAME_END.decode(buf);
         if (result) {
           this.setKeyboardCaptured(false);
           this.gameState.phase = PHASE.FINISHED;
@@ -569,7 +567,7 @@ export class StarDuelEngine extends GameEngine {
     }
 
     // Send game end to peer
-    this._sendCommand(encodeGameEnd(score1, score2, winner));
+    this._sendCommand(GAME_END.encode({ score1: score1, score2: score2, winner: winner }));
     this._broadcastState();
 
     // Notify LiveView
@@ -625,7 +623,7 @@ export class StarDuelEngine extends GameEngine {
       warpCooldown1: this.gameState.ship1.warpCooldown || 0,
       warpCooldown2: this.gameState.ship2.warpCooldown || 0,
     };
-    this._sendState(encodeGameState(stateToSend));
+    this._sendState(SNAPSHOT.encode(stateToSend));
   }
 
   /** Render current state to canvas. */
@@ -731,7 +729,7 @@ export class StarDuelEngine extends GameEngine {
   /**
    * Reconstruct a full ship object from decoded protocol data.
    * The protocol decodes flags as an object {alive, thrustActive, exploding, warping, invulnerable}.
-   * @param {object} decodedShip - ship from decodeGameState (has flags object)
+   * @param {object} decodedShip - a ship decoded from a snapshot (flags as an object)
    * @param {number} invulnTimer
    * @param {number} warpCooldown
    * @returns {object} full ship object
