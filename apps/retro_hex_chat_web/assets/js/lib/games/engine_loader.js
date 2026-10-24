@@ -2,7 +2,7 @@ import { GameEngine } from "../game_engine.js";
 import { createLocalTransport, normalizeGameTransport } from "./transport.js";
 
 const P2P_ENGINE_LOADERS = {
-  hex_pong: () => import("./pong/engine.js").then((module) => module.PongEngine),
+  hex_pong: () => import("./pong/index.js").then((module) => module.default),
   block_breakers: () => import("./breakout/engine.js").then((module) => module.BreakoutEngine),
   light_trails: () => import("./surround/engine.js").then((module) => module.SurroundEngine),
   star_duel: () => import("./star_duel/engine.js").then((module) => module.StarDuelEngine),

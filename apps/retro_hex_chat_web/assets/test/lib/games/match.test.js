@@ -5,7 +5,7 @@ import { SurroundEngine } from "../../../js/lib/games/surround/engine.js";
 import { WarlordEngine } from "../../../js/lib/games/warlords/engine.js";
 import { PixelTanksEngine } from "../../../js/lib/games/pixel_tanks/engine.js";
 import { HexHockeyEngine } from "../../../js/lib/games/hex_hockey/engine.js";
-import { PongEngine } from "../../../js/lib/games/pong/engine.js";
+import PongEngine from "../../../js/lib/games/pong/index.js";
 
 /** Press a key on an engine the way the document listener would. */
 function press(engine, key) {
@@ -41,7 +41,7 @@ describe("P2P match", () => {
       // Drive straight into a rally: the phase machine's own pauses would make
       // "how many frames in a second" depend on when a point happened to land.
       match.host.gameState = { ...match.host.gameState, phase: 3, ballVX: 4, ballVY: 2 };
-      match.host._startGameLoop();
+      match.host.flow.go("PLAYING");
       match.advance(200);
       expect(match.host.stepping).toBe(true);
 

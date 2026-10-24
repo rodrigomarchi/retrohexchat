@@ -19,7 +19,7 @@ function createCanvas() {
 describe("engine loader", () => {
   it("loads the P2P Hex Pong engine by catalog id", async () => {
     const EngineClass = await loadP2PEngineClass("hex_pong");
-    expect(EngineClass.name).toBe("PongEngine");
+    expect(EngineClass).toBe((await import("../../../js/lib/games/pong/index.js")).default);
   });
 
   it("keeps the existing P2P stub fallback for unknown ids", async () => {

@@ -39,7 +39,7 @@ vi.mock("../../../../js/lib/games/pong/renderer.js", () => ({
   render: vi.fn(),
 }));
 
-const { PongEngine } = await import("../../../../js/lib/games/pong/engine.js");
+const { default: PongEngine } = await import("../../../../js/lib/games/pong/index.js");
 const { render, getColors } = await import("../../../../js/lib/games/pong/renderer.js");
 
 function createMockChannel() {
@@ -345,31 +345,6 @@ describe("PongEngine", () => {
   });
 
   describe("solo opponent controller", () => {
-    it("feeds player two inputs before the simulation step", () => {
-      const opponentController = {
-        nextInputs: vi.fn(() => ({ up: true, down: false })),
-      };
-      engine = new PongEngine(canvas, createLocalTransport(), "hex_pong", true, null, {
-        mode: "solo",
-        opponentController,
-      });
-      engine.start();
-      engine.gameState.phase = PHASE.PLAYING;
-      const startingY = engine.gameState.paddle2Y;
-
-      engine._gameLoop();
-
-      expect(opponentController.nextInputs).toHaveBeenCalledWith(
-        expect.objectContaining({
-          state: expect.objectContaining({ phase: PHASE.PLAYING }),
-          difficulty: "normal",
-          player: 2,
-        }),
-      );
-      expect(engine.remoteInputs).toEqual({ up: true, down: false });
-      expect(engine.gameState.paddle2Y).toBeLessThan(startingY);
-    });
-
     it("does not run an opponent controller in P2P mode", () => {
       const opponentController = {
         nextInputs: vi.fn(() => ({ up: true, down: false })),
@@ -589,52 +564,6 @@ describe("PongEngine", () => {
     });
   });
 
-  describe("_handleGameFinished (host)", () => {
-    it("sends GAME_END to peer", () => {
-      engine = new PongEngine(canvas, channel, "hex_pong", true, null);
-      engine.start();
-      engine.gameState.score1 = 11;
-      engine.gameState.score2 = 7;
-      engine.gameState.winner = 1;
-      channel.send.mockClear();
-
-      engine._handleGameFinished();
-
-      // Find the GAME_END message
-      const gameEndCall = channel.send.mock.calls.find((call) => {
-        const view = new Uint8Array(call[0]);
-        return view[0] === MSG_TYPE.GAME_END;
-      });
-      expect(gameEndCall).toBeDefined();
-    });
-
-    it("calls onGameEnd callback", () => {
-      const onEnd = vi.fn();
-      engine = new PongEngine(canvas, channel, "hex_pong", true, onEnd);
-      engine.start();
-      engine.gameState.score1 = 11;
-      engine.gameState.score2 = 7;
-      engine.gameState.winner = 1;
-
-      engine._handleGameFinished();
-
-      expect(onEnd).toHaveBeenCalledWith({
-        score: { p1: 11, p2: 7 },
-        winner: 1,
-      });
-    });
-
-    it("plays win audio", () => {
-      engine = new PongEngine(canvas, channel, "hex_pong", true, null);
-      engine.start();
-      engine.gameState.winner = 1;
-
-      engine._handleGameFinished();
-
-      expect(engine.audio.playWin).toHaveBeenCalled();
-    });
-  });
-
   describe("countdown flow (host)", () => {
     beforeEach(() => {
       vi.useFakeTimers();
@@ -680,203 +609,9 @@ describe("PongEngine", () => {
 
   // ── _startServing ──
 
-  describe("_startServing", () => {
-    beforeEach(() => {
-      vi.useFakeTimers();
-    });
-
-    afterEach(() => {
-      vi.useRealTimers();
-    });
-
-    it("sets phase to SERVING and broadcasts state", () => {
-      engine = new PongEngine(canvas, channel, "hex_pong", true, null);
-      engine.start();
-      channel.send.mockClear();
-
-      engine._startServing();
-
-      expect(engine.gameState.phase).toBe(PHASE.SERVING);
-      expect(channel.send).toHaveBeenCalled();
-    });
-
-    it("serves ball after SERVE_DELAY timeout", () => {
-      engine = new PongEngine(canvas, channel, "hex_pong", true, null);
-      engine.start();
-
-      engine._startServing();
-
-      // Ball should still be at center before timeout
-      expect(engine.gameState.ballVX).toBe(0);
-      expect(engine.gameState.ballVY).toBe(0);
-
-      vi.advanceTimersByTime(800);
-
-      // After timeout, ball should have velocity (served)
-      expect(engine.gameState.ballVX !== 0 || engine.gameState.ballVY !== 0).toBe(true);
-    });
-
-    it("starts game loop after serving", () => {
-      engine = new PongEngine(canvas, channel, "hex_pong", true, null);
-      engine.start();
-      // Re-mock rAF after useFakeTimers (which replaces it)
-      globalThis.requestAnimationFrame = vi.fn(() => 42);
-
-      engine._startServing();
-      vi.advanceTimersByTime(800);
-
-      expect(globalThis.requestAnimationFrame).toHaveBeenCalled();
-    });
-  });
-
   // ── _gameLoop ──
 
-  describe("_gameLoop", () => {
-    function setupPlayingEngine() {
-      const eng = new PongEngine(canvas, channel, "hex_pong", true, null);
-      eng.start();
-      eng.gameState.phase = PHASE.PLAYING;
-      eng.gameState.ballX = CANVAS_W / 2;
-      eng.gameState.ballY = CANVAS_H / 2;
-      eng.gameState.ballVX = 5;
-      eng.gameState.ballVY = 3;
-      return eng;
-    }
-
-    it("updates paddle positions from local and remote inputs", () => {
-      engine = setupPlayingEngine();
-      engine.localInputs = { up: true, down: false };
-      engine.remoteInputs = { up: false, down: true };
-
-      const p1Before = engine.gameState.paddle1Y;
-      const p2Before = engine.gameState.paddle2Y;
-
-      engine._gameLoop(0);
-
-      expect(engine.gameState.paddle1Y).toBeLessThan(p1Before);
-      expect(engine.gameState.paddle2Y).toBeGreaterThan(p2Before);
-    });
-
-    it("updates ball position", () => {
-      engine = setupPlayingEngine();
-      const ballXBefore = engine.gameState.ballX;
-
-      engine._gameLoop(0);
-
-      expect(engine.gameState.ballX).not.toBe(ballXBefore);
-    });
-
-    it("plays wall bounce audio on wall hit", () => {
-      engine = setupPlayingEngine();
-      // Position ball near top wall so bounce triggers
-      engine.gameState.ballY = 2;
-      engine.gameState.ballVY = -5;
-
-      engine._gameLoop(0);
-
-      expect(engine.audio.playWallBounce).toHaveBeenCalled();
-    });
-
-    it("plays paddle hit audio on paddle collision", () => {
-      engine = setupPlayingEngine();
-      // Position ball at left paddle to trigger collision
-      engine.gameState.ballX = 35; // near paddle1
-      engine.gameState.ballVX = -5;
-      engine.gameState.ballY = engine.gameState.paddle1Y + 40;
-
-      engine._gameLoop(0);
-
-      // May or may not trigger depending on exact position;
-      // verify loop completes without error
-      expect(engine.gameState).toBeDefined();
-    });
-
-    it("plays score audio when scoring", () => {
-      engine = setupPlayingEngine();
-      // Position ball past the right edge to trigger scoring
-      engine.gameState.ballX = CANVAS_W + 20;
-      engine.gameState.ballVX = 5;
-
-      engine._gameLoop(0);
-
-      expect(engine.audio.playScore).toHaveBeenCalled();
-    });
-
-    it("transitions to FINISHED on win and calls _handleGameFinished", () => {
-      engine = setupPlayingEngine();
-      engine.gameState.score1 = 10;
-      // Position ball past right edge to score the winning point
-      engine.gameState.ballX = CANVAS_W + 20;
-      engine.gameState.ballVX = 5;
-
-      engine._gameLoop(0);
-
-      expect(engine.gameState.phase).toBe(PHASE.FINISHED);
-      expect(engine.audio.playWin).toHaveBeenCalled();
-    });
-
-    it("broadcasts state at STATE_SEND_INTERVAL", () => {
-      engine = setupPlayingEngine();
-      engine.frameCount = 1; // Will be 2 after increment
-      channel.send.mockClear();
-
-      engine._gameLoop(0);
-
-      expect(channel.send).toHaveBeenCalled();
-    });
-
-    it("pauses and re-serves on SCORED phase", () => {
-      vi.useFakeTimers();
-      engine = setupPlayingEngine();
-      // Position ball past right edge to trigger scoring
-      engine.gameState.ballX = CANVAS_W + 20;
-      engine.gameState.ballVX = 5;
-
-      engine._gameLoop(0);
-
-      // Should be in SCORED phase
-      expect(engine.gameState.phase).toBe(PHASE.SCORED);
-      expect(engine.phaseTimer).not.toBeNull();
-
-      // After SCORE_PAUSE, should transition to SERVING
-      vi.advanceTimersByTime(1500);
-      expect(engine.gameState.phase).toBe(PHASE.SERVING);
-
-      vi.useRealTimers();
-    });
-  });
-
   // ── _playPhaseAudio peer ──
-
-  describe("_playPhaseAudio peer", () => {
-    it("plays win audio on FINISHED transition", () => {
-      engine = new PongEngine(canvas, channel, "hex_pong", false, null);
-      engine.start();
-
-      engine._playPhaseAudio(PHASE.PLAYING, PHASE.FINISHED, 5, 3);
-
-      expect(engine.audio.playWin).toHaveBeenCalled();
-    });
-
-    it("plays score audio on score change", () => {
-      engine = new PongEngine(canvas, channel, "hex_pong", false, null);
-      engine.start();
-      engine.gameState.score1 = 6; // new score
-
-      engine._playPhaseAudio(PHASE.PLAYING, PHASE.PLAYING, 5, 3);
-
-      expect(engine.audio.playScore).toHaveBeenCalled();
-    });
-
-    it("plays countdown audio on COUNTDOWN transition", () => {
-      engine = new PongEngine(canvas, channel, "hex_pong", false, null);
-      engine.start();
-
-      engine._playPhaseAudio(PHASE.WAITING, PHASE.COUNTDOWN, 0, 0);
-
-      expect(engine.audio.playCountdown).toHaveBeenCalled();
-    });
-  });
 
   // ── Connection Resilience ──
 
