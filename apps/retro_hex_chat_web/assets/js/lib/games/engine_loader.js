@@ -14,11 +14,10 @@ const P2P_ENGINE_LOADERS = {
   hex_raid_pacifist: () => import("./hex_raid/engine.js").then((module) => module.HexRaidEngine),
   hex_raid_blitz: () => import("./hex_raid/engine.js").then((module) => module.HexRaidEngine),
   hex_boxing: () => import("./hex_boxing/index.js").then((module) => module.default),
-  hex_outlaw: () => import("./hex_outlaw/engine.js").then((module) => module.OutlawEngine),
-  hex_outlaw_ricochet: () => import("./hex_outlaw/engine.js").then((module) => module.OutlawEngine),
-  hex_outlaw_stagecoach: () =>
-    import("./hex_outlaw/engine.js").then((module) => module.OutlawEngine),
-  hex_outlaw_nml: () => import("./hex_outlaw/engine.js").then((module) => module.OutlawEngine),
+  hex_outlaw: () => import("./hex_outlaw/index.js").then((module) => module.default),
+  hex_outlaw_ricochet: () => import("./hex_outlaw/index.js").then((module) => module.default),
+  hex_outlaw_stagecoach: () => import("./hex_outlaw/index.js").then((module) => module.default),
+  hex_outlaw_nml: () => import("./hex_outlaw/index.js").then((module) => module.default),
   hex_invaders: () => import("./hex_invaders/engine.js").then((module) => module.HexInvadersEngine),
   hex_invaders_coop: () =>
     import("./hex_invaders/engine.js").then((module) => module.HexInvadersEngine),

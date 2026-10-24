@@ -1,6 +1,6 @@
 import { inputDatagram } from "../../../helpers/game_input.js";
 import { describe, it, expect, vi, beforeEach } from "vitest";
-import { OutlawEngine } from "../../../../js/lib/games/hex_outlaw/engine.js";
+import OutlawEngine from "../../../../js/lib/games/hex_outlaw/index.js";
 import {
   PHASE,
   GAME_MODE,
@@ -66,6 +66,11 @@ function createMockChannel() {
     addEventListener: vi.fn(),
     removeEventListener: vi.fn(),
   };
+}
+
+/** Hand the guest a snapshot of `state`, as the host's would arrive. */
+function deliver(engine, state) {
+  engine._onChannelMessage({ data: SNAPSHOT.encode(state) });
 }
 
 describe("OutlawEngine", () => {
@@ -306,13 +311,13 @@ describe("OutlawEngine", () => {
   describe("_handleBlur edge cases", () => {
     it("resets fire edge trigger flags", () => {
       const engine = new OutlawEngine(canvas, channel, "hex_outlaw", true, null);
-      engine._localFirePressed = true;
-      engine._remoteFirePressed = true;
+      engine.localFirePressed = true;
+      engine.remoteFirePressed = true;
       engine._onKeyDown({ key: "ArrowUp", preventDefault: vi.fn(), repeat: false, target: null });
       channel.send.mockClear();
       engine._handleBlur();
-      expect(engine._localFirePressed).toBe(false);
-      expect(engine._remoteFirePressed).toBe(false);
+      expect(engine.localFirePressed).toBe(false);
+      expect(engine.remoteFirePressed).toBe(false);
     });
   });
 
@@ -511,22 +516,22 @@ describe("OutlawEngine", () => {
         hit: "#fff",
       };
       engine.gameState.phase = PHASE.PLAYING;
-      engine._localFirePressed = false;
-      engine._remoteFirePressed = false;
+      engine.localFirePressed = false;
+      engine.remoteFirePressed = false;
       return engine;
     }
 
     it("fires bullet on edge-triggered fire with aim angle", () => {
       const engine = setupPlayingEngine();
       engine.localInputs.fire = true;
-      engine._localFirePressed = false;
-      engine._localAimUp = true;
+      engine.localFirePressed = false;
+      engine.localAimUp = true;
       const spy = vi.spyOn(engine.audio, "playGunshot");
 
       engine._gameLoop(0);
 
       expect(spy).toHaveBeenCalled();
-      expect(engine._localFirePressed).toBe(true);
+      expect(engine.localFirePressed).toBe(true);
       engine.stop();
     });
 
@@ -609,7 +614,7 @@ describe("OutlawEngine", () => {
         hit: "#fff",
       };
       engine.gameState.phase = PHASE.PLAYING;
-      engine._remoteAimUp = false;
+      engine.remoteAimUp = false;
 
       engine._gameLoop(0);
 
@@ -622,7 +627,7 @@ describe("OutlawEngine", () => {
       );
       expect(engine.remoteInputs.up).toBe(true);
       expect(engine.remoteInputs.fire).toBe(true);
-      expect(engine._remoteAimUp).toBe(true);
+      expect(engine.remoteAimUp).toBe(true);
       engine.stop();
     });
   });
@@ -650,7 +655,7 @@ describe("OutlawEngine", () => {
         ring: "#110",
         hit: "#fff",
       };
-      engine._startCountdown();
+      engine.flow.go("COUNTDOWN");
       expect(engine.gameState.countdown).toBe(3);
 
       vi.advanceTimersByTime(1000);
@@ -676,7 +681,7 @@ describe("OutlawEngine", () => {
         ring: "#110",
         hit: "#fff",
       };
-      engine._startCountdown();
+      engine.flow.go("COUNTDOWN");
 
       // 3 seconds for countdown
       vi.advanceTimersByTime(3000);
@@ -705,7 +710,7 @@ describe("OutlawEngine", () => {
       };
       const spy = vi.spyOn(engine.audio, "playBell");
 
-      engine._startCountdown();
+      engine.flow.go("COUNTDOWN");
       // Fast-forward past countdown
       vi.advanceTimersByTime(3000);
 
@@ -733,7 +738,7 @@ describe("OutlawEngine", () => {
       engine.gameState.roundWins1 = 2;
       engine.gameState.roundWins2 = 1;
 
-      engine._handleMatchOver();
+      engine.flow.go("MATCH_OVER");
 
       // Winner is P1 (roundWins1 >= roundWins2)
       const endMsg = channel.send.mock.calls.find((c) => {
@@ -763,7 +768,7 @@ describe("OutlawEngine", () => {
       engine.gameState.roundWins1 = 2;
       engine.gameState.roundWins2 = 0;
 
-      engine._handleMatchOver();
+      engine.flow.go("MATCH_OVER");
 
       expect(onEnd).toHaveBeenCalledWith(
         expect.objectContaining({
@@ -794,21 +799,25 @@ describe("OutlawEngine", () => {
 
       engine.gameState.roundWins1 = 2;
       engine.gameState.roundWins2 = 1;
-      engine._handleMatchOver();
+      engine.flow.go("MATCH_OVER");
       expect(winSpy).toHaveBeenCalled();
 
-      winSpy.mockClear();
-      loseSpy.mockClear();
+      expect(loseSpy).not.toHaveBeenCalled();
 
-      engine.gameState.roundWins1 = 0;
-      engine.gameState.roundWins2 = 2;
-      engine._handleMatchOver();
-      expect(loseSpy).toHaveBeenCalled();
+      // A match ends once; the losing host is another match.
+      const loser = new OutlawEngine(canvas, channel, "hex_outlaw", true, null);
+      loser.start();
+      const loserLose = vi.spyOn(loser.audio, "playLose");
+      loser.gameState.roundWins1 = 0;
+      loser.gameState.roundWins2 = 2;
+      loser.flow.go("MATCH_OVER");
+      expect(loserLose).toHaveBeenCalled();
+      loser.stop();
       engine.stop();
     });
   });
 
-  describe("_applyPeerState audio", () => {
+  describe("guest snapshot audio", () => {
     it("plays gunshot when bullet becomes active", () => {
       const engine = new OutlawEngine(canvas, channel, "hex_outlaw", false, null);
       engine.colors = {
@@ -825,7 +834,7 @@ describe("OutlawEngine", () => {
       const spy = vi.spyOn(engine.audio, "playGunshot");
 
       engine.gameState.b1active = false;
-      engine._applyPeerState({
+      deliver(engine, {
         ...engine.gameState,
         b1active: true,
         b2active: false,
@@ -854,7 +863,7 @@ describe("OutlawEngine", () => {
       engine.gameState.b1active = false;
       engine.gameState.b2active = false;
 
-      engine._applyPeerState({
+      deliver(engine, {
         ...engine.gameState,
         b1active: false,
         b2active: false,
