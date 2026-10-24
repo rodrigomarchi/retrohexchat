@@ -27,9 +27,9 @@ const P2P_ENGINE_LOADERS = {
   hex_enduro_night: () => import("./hex_enduro/engine.js").then((module) => module.HexEnduroEngine),
   hex_enduro_sprint: () =>
     import("./hex_enduro/engine.js").then((module) => module.HexEnduroEngine),
-  hex_tennis: () => import("./hex_tennis/engine.js").then((module) => module.TennisEngine),
-  hex_tennis_quick: () => import("./hex_tennis/engine.js").then((module) => module.TennisEngine),
-  hex_tennis_sudden: () => import("./hex_tennis/engine.js").then((module) => module.TennisEngine),
+  hex_tennis: () => import("./hex_tennis/index.js").then((module) => module.default),
+  hex_tennis_quick: () => import("./hex_tennis/index.js").then((module) => module.default),
+  hex_tennis_sudden: () => import("./hex_tennis/index.js").then((module) => module.default),
   hex_skiing: () => import("./hex_skiing/engine.js").then((module) => module.HexSkiingEngine),
   hex_skiing_escape: () =>
     import("./hex_skiing/engine.js").then((module) => module.HexSkiingEngine),

@@ -110,8 +110,8 @@ beforeEach(async () => {
     getPropertyValue: vi.fn(() => ""),
   }));
 
-  const mod = await import("../../../../js/lib/games/hex_tennis/engine.js");
-  TennisEngine = mod.TennisEngine;
+  const mod = await import("../../../../js/lib/games/hex_tennis/index.js");
+  TennisEngine = mod.default;
 });
 
 afterEach(() => {
@@ -825,7 +825,7 @@ describe("TennisEngine", () => {
       e.gameState.phase = PHASE.GAME_OVER;
       channel.send.mockClear();
 
-      e._handleGameFinished();
+      e.flow.go("GAME_OVER");
 
       // Should send GAME_END
       const endBufs = channel.send.mock.calls.filter(
@@ -847,7 +847,7 @@ describe("TennisEngine", () => {
       e.start();
       e.gameState.phase = PHASE.GAME_OVER;
       e.gameState.winner = 1;
-      expect(() => e._handleGameFinished()).not.toThrow();
+      expect(() => e.flow.go("GAME_OVER")).not.toThrow();
       e.stop();
     });
   });
@@ -1116,13 +1116,8 @@ describe("TennisEngine", () => {
 
   describe("_flattenStateForEncode", () => {
     it("flattens ball object into top-level keys", () => {
-      const e = new TennisEngine(
-        createMockCanvas(),
-        createMockChannel(),
-        "hex_tennis",
-        true,
-        vi.fn(),
-      );
+      const channel = createMockChannel();
+      const e = new TennisEngine(createMockCanvas(), channel, "hex_tennis", true, vi.fn());
       e.start();
       e.gameState.ball = {
         x: 100,
@@ -1133,12 +1128,15 @@ describe("TennisEngine", () => {
         height: 0.4,
         heightVel: 0.06,
       };
-      const flat = e._flattenStateForEncode();
-      expect(flat.ballX).toBe(100);
-      expect(flat.ballY).toBe(200);
-      expect(flat.ballVX).toBe(3.5);
-      expect(flat.ballVY).toBe(-2.1);
-      expect(flat.ballHeight).toBe(0.4);
+      channel.send.mockClear();
+      e.broadcast();
+
+      const flat = SNAPSHOT.decode(channel.send.mock.calls.at(-1)[0]);
+      expect(flat.ballX).toBeCloseTo(100, 1);
+      expect(flat.ballY).toBeCloseTo(200, 1);
+      expect(flat.ballVX).toBeCloseTo(3.5, 1);
+      expect(flat.ballVY).toBeCloseTo(-2.1, 1);
+      expect(flat.ballHeight).toBeCloseTo(0.4, 1);
       e.stop();
     });
   });
@@ -1425,7 +1423,7 @@ describe("TennisEngine", () => {
       e.stop();
     });
 
-    it("_handleGameFinished sends encodeGameEnd with gameMode and isTiebreak", () => {
+    it("the end of the match sends GAME_END with gameMode and isTiebreak", () => {
       const channel = createMockChannel();
       const e = new TennisEngine(createMockCanvas(), channel, "hex_tennis", true, vi.fn());
       e.start();
@@ -1437,7 +1435,7 @@ describe("TennisEngine", () => {
       e.gameState.isTiebreak = false;
       channel.send.mockClear();
 
-      e._handleGameFinished();
+      e.flow.go("GAME_OVER");
 
       // Find the GAME_END message
       const endBuf = channel.send.mock.calls.find(
