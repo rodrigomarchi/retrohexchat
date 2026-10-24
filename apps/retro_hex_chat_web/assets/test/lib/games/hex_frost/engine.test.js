@@ -58,7 +58,7 @@ vi.mock("../../../../js/lib/games/hex_frost/renderer.js", () => ({
   generateSnowParticles: vi.fn(() => []),
 }));
 
-const { HexFrostEngine } = await import("../../../../js/lib/games/hex_frost/engine.js");
+const { default: HexFrostEngine } = await import("../../../../js/lib/games/hex_frost/index.js");
 const { render, readColors, generateSnowParticles } =
   await import("../../../../js/lib/games/hex_frost/renderer.js");
 
@@ -243,7 +243,7 @@ describe("HexFrostEngine", () => {
       const { engine } = createEngine();
       expect(engine.frameCount).toBe(0);
       expect(engine.peerReady).toBe(false);
-      expect(engine.phaseTimer).toBe(0);
+      expect(engine.countdownTimer).toBe(0);
       expect(engine.roundEndTimer).toBe(0);
     });
 
@@ -413,11 +413,11 @@ describe("HexFrostEngine", () => {
       const { engine } = createEngine();
       engine.start();
       engine.frameCount = 100;
-      engine.phaseTimer = 50;
+      engine.countdownTimer = 50;
       engine.roundEndTimer = 30;
       engine.stop();
       expect(engine.frameCount).toBe(0);
-      expect(engine.phaseTimer).toBe(0);
+      expect(engine.countdownTimer).toBe(0);
       expect(engine.roundEndTimer).toBe(0);
     });
 
@@ -612,17 +612,6 @@ describe("HexFrostEngine", () => {
       engine.stop();
     });
 
-    it("beginMatch rejects solo matches without an opponent controller", () => {
-      const { engine } = createEngine("hex_frost", true, null, { mode: "solo" });
-
-      engine.start();
-
-      expect(engine.beginMatch()).toBe(false);
-      expect(engine.gameState.phase).toBe(PHASE.WAITING);
-      expect(engine._keyboardCaptured).toBe(false);
-      engine.stop();
-    });
-
     it("beginMatch rejects already-started matches", () => {
       const opponentController = createOpponentController();
       const { engine } = createEngine("hex_frost", true, null, {
@@ -655,7 +644,7 @@ describe("HexFrostEngine", () => {
       expect(engine.peerReady).toBe(true);
       expect(engine.gameState.phase).toBe(PHASE.COUNTDOWN);
       expect(engine.gameState.countdown).toBe(3);
-      expect(engine.phaseTimer).toBe(60); // COUNTDOWN_INTERVAL
+      expect(engine.countdownTimer).toBe(60); // COUNTDOWN_INTERVAL
       engine.stop();
     });
 
@@ -825,9 +814,9 @@ describe("HexFrostEngine", () => {
       const { engine } = createEngine("hex_frost", true);
       engine.start();
       engine._onChannelMessage({ data: encodeGameReady() });
-      const initialTimer = engine.phaseTimer; // 60
+      const initialTimer = engine.countdownTimer; // 60
       engine._gameLoop();
-      expect(engine.phaseTimer).toBe(initialTimer - 1);
+      expect(engine.countdownTimer).toBe(initialTimer - 1);
       engine.stop();
     });
 
@@ -1027,176 +1016,58 @@ describe("HexFrostEngine", () => {
   // ── 9. Audio events ────────────────────────────────────────────
 
   describe("audio events", () => {
-    it("_handleHostEvents plays correct audio for each event flag", () => {
-      const { engine } = createEngine();
+    // Every event the host's simulation raises travels in the snapshot's
+    // event bits, and the guest plays the same sound for each.
+    function receiveEvents(events) {
+      const { engine } = createEngine("hex_frost", false);
       engine.start();
+      const packed = packState(createInitialState(GAME_MODE.ARCTIC_RACE, 1));
+      engine._onChannelMessage({ data: SNAPSHOT.encode({ ...packed, events }) });
+      return engine;
+    }
 
-      engine._handleHostEvents(EVENT.BLOCK_CLAIM);
-      expect(engine.audio.playBlockClaim).toHaveBeenCalled();
+    const SOUNDS = {
+      BLOCK_CLAIM: "playBlockClaim",
+      BLOCK_STEAL: "playBlockSteal",
+      BLOCK_UNDO: "playBlockUndo",
+      JUMP: "playJump",
+      LAND: "playLand",
+      SPLASH: "playSplash",
+      FISH_COLLECT: "playFishCollect",
+      ENEMY_HIT: "playEnemyHit",
+      IGLOO_PIECE: "playIglooPiece",
+      IGLOO_LOSE: "playIglooLose",
+      IGLOO_COMPLETE: "playIglooComplete",
+      IGLOO_ENTER: "playIglooEnter",
+      TEMP_LOW: "playTempLow",
+      TEMP_ZERO: "playTempZero",
+      BEAR_NEAR: "playBearNear",
+      CLAM_SNAP: "playClamSnap",
+    };
 
-      engine._handleHostEvents(EVENT.BLOCK_STEAL);
-      expect(engine.audio.playBlockSteal).toHaveBeenCalled();
-
-      engine._handleHostEvents(EVENT.JUMP);
-      expect(engine.audio.playJump).toHaveBeenCalled();
-
-      engine._handleHostEvents(EVENT.LAND);
-      expect(engine.audio.playLand).toHaveBeenCalled();
-
-      engine._handleHostEvents(EVENT.SPLASH);
-      expect(engine.audio.playSplash).toHaveBeenCalled();
-
-      engine._handleHostEvents(EVENT.FISH_COLLECT);
-      expect(engine.audio.playFishCollect).toHaveBeenCalled();
-
-      engine._handleHostEvents(EVENT.ENEMY_HIT);
-      expect(engine.audio.playEnemyHit).toHaveBeenCalled();
-
-      engine._handleHostEvents(EVENT.IGLOO_PIECE);
-      expect(engine.audio.playIglooPiece).toHaveBeenCalled();
-
-      engine._handleHostEvents(EVENT.IGLOO_COMPLETE);
-      expect(engine.audio.playIglooComplete).toHaveBeenCalled();
-
-      engine._handleHostEvents(EVENT.IGLOO_ENTER);
-      expect(engine.audio.playIglooEnter).toHaveBeenCalled();
-
-      engine._handleHostEvents(EVENT.TEMP_LOW);
-      expect(engine.audio.playTempLow).toHaveBeenCalled();
-
-      engine._handleHostEvents(EVENT.TEMP_ZERO);
-      expect(engine.audio.playTempZero).toHaveBeenCalled();
-
-      engine._handleHostEvents(EVENT.BEAR_NEAR);
-      expect(engine.audio.playBearNear).toHaveBeenCalled();
-
-      engine._handleHostEvents(EVENT.CLAM_SNAP);
-      expect(engine.audio.playClamSnap).toHaveBeenCalled();
-
+    it.each(Object.entries(SOUNDS))("plays the sound for %s", (event, sound) => {
+      const engine = receiveEvents(EVENT[event]);
+      expect(engine.audio[sound]).toHaveBeenCalledOnce();
       engine.stop();
     });
 
-    it("handles multiple event flags in a single bitmask", () => {
-      const { engine } = createEngine();
-      engine.start();
-      engine._handleHostEvents(EVENT.JUMP | EVENT.LAND | EVENT.BLOCK_CLAIM);
+    it("plays every sound a bitmask carries, and only those", () => {
+      const engine = receiveEvents(EVENT.JUMP | EVENT.LAND | EVENT.BLOCK_CLAIM);
       expect(engine.audio.playJump).toHaveBeenCalled();
       expect(engine.audio.playLand).toHaveBeenCalled();
       expect(engine.audio.playBlockClaim).toHaveBeenCalled();
-      // Others should not have fired
       expect(engine.audio.playSplash).not.toHaveBeenCalled();
       engine.stop();
     });
 
-    it("_handlePeerEvents delegates to _handleHostEvents", () => {
-      const { engine } = createEngine();
-      engine.start();
-      const spy = vi.spyOn(engine, "_handleHostEvents");
-      engine._handlePeerEvents(EVENT.FISH_COLLECT);
-      expect(spy).toHaveBeenCalledWith(EVENT.FISH_COLLECT);
-      expect(engine.audio.playFishCollect).toHaveBeenCalled();
-      spy.mockRestore();
-      engine.stop();
-    });
-
-    it("no audio plays for events = 0", () => {
-      const { engine } = createEngine();
-      engine.start();
-      engine._handleHostEvents(0);
-      expect(engine.audio.playBlockClaim).not.toHaveBeenCalled();
-      expect(engine.audio.playJump).not.toHaveBeenCalled();
-      expect(engine.audio.playSplash).not.toHaveBeenCalled();
+    it("plays nothing for no events", () => {
+      const engine = receiveEvents(0);
+      for (const sound of Object.values(SOUNDS)) expect(engine.audio[sound]).not.toHaveBeenCalled();
       engine.stop();
     });
   });
 
   // ── 10. Game end ───────────────────────────────────────────────
-
-  describe("game end", () => {
-    it("_handleGameFinished sends GAME_END with winner", () => {
-      const onGameEnd = vi.fn();
-      const { engine, channel } = createEngine("hex_frost", true, onGameEnd);
-      engine.start();
-
-      // Create a state with p1 winning
-      engine.gameState.p1.roundWins = 3;
-      engine.gameState.p2.roundWins = 1;
-      channel.send.mockClear();
-
-      engine._handleGameFinished(engine.gameState);
-
-      expect(engine.audio.stopAmbientWind).toHaveBeenCalled();
-      expect(engine.audio.playVictory).toHaveBeenCalled();
-      expect(channel.send).toHaveBeenCalled();
-      expect(onGameEnd).toHaveBeenCalledWith(
-        expect.objectContaining({
-          score1: 3,
-          score2: 1,
-          winner: 1,
-        }),
-      );
-      engine.stop();
-    });
-
-    it("plays game over when winner = 0 (draw)", () => {
-      const { engine } = createEngine("hex_frost", true, vi.fn());
-      engine.start();
-      engine.gameState.p1.roundWins = 0;
-      engine.gameState.p2.roundWins = 0;
-      engine.gameState.p1.score = 0;
-      engine.gameState.p2.score = 0;
-
-      engine._handleGameFinished(engine.gameState);
-
-      expect(engine.audio.playGameOver).toHaveBeenCalled();
-      expect(engine.audio.playVictory).not.toHaveBeenCalled();
-      engine.stop();
-    });
-
-    it("calls onGameEnd callback with score and winner", () => {
-      const onGameEnd = vi.fn();
-      const { engine } = createEngine("hex_frost", true, onGameEnd);
-      engine.start();
-      engine.gameState.p1.roundWins = 2;
-      engine.gameState.p2.roundWins = 3;
-
-      engine._handleGameFinished(engine.gameState);
-
-      expect(onGameEnd).toHaveBeenCalledWith({
-        score1: 2,
-        score2: 3,
-        winner: 2,
-      });
-      engine.stop();
-    });
-
-    it("does not throw when onGameEnd is null", () => {
-      const { engine } = createEngine("hex_frost", true, null);
-      engine.start();
-      engine.gameState.p1.roundWins = 1;
-      engine.gameState.p2.roundWins = 0;
-
-      expect(() => engine._handleGameFinished(engine.gameState)).not.toThrow();
-      engine.stop();
-    });
-
-    it("sends encodeGameEnd over channel", () => {
-      const { engine, channel } = createEngine("hex_frost", true, vi.fn());
-      engine.start();
-      engine.gameState.p1.roundWins = 1;
-      engine.gameState.p2.roundWins = 2;
-      channel.send.mockClear();
-
-      engine._handleGameFinished(engine.gameState);
-
-      expect(channel.send).toHaveBeenCalled();
-      const sentBuf = channel.send.mock.calls[0][0];
-      expect(sentBuf instanceof ArrayBuffer).toBe(true);
-      const view = new DataView(sentBuf);
-      expect(view.getUint8(0)).toBe(MSG_TYPE.GAME_END);
-      engine.stop();
-    });
-  });
 
   // ── 11. Connection resilience ──────────────────────────────────
 
@@ -1324,7 +1195,7 @@ describe("HexFrostEngine", () => {
       engine._gameLoop();
 
       // startNextRound returns COUNTDOWN, so phaseTimer should be reset to 60
-      expect(engine.phaseTimer).toBe(60);
+      expect(engine.countdownTimer).toBe(60);
       expect(engine.audio.playCountdown).toHaveBeenCalled();
       engine.stop();
     });

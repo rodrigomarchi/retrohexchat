@@ -76,6 +76,9 @@ export const definition = {
     game.gameState.phase = PHASE.FINISHED;
     game.ended = result;
   },
+  onStop: (game) => {
+    game.stoppedWhileRunning = game.running;
+  },
   render: (game) => {
     game.ctx.fillRect(game.gameState.x, 0, 1, 1);
   },

@@ -19,6 +19,7 @@
  *   flow: { phases: PHASE, initial: "WAITING", begin: "COUNTDOWN", states: { … } },
  *   onSnapshot: (game, decoded, previous) => …,   // guest, after a snapshot lands
  *   onEnd: (game, result) => …,                    // guest, when the host ends the match
+ *   onStart, onStop: (game) => …,                  // around the engine's own start and stop
  *   render: (game) => …,
  *   disconnectResult: (game) => ({ … }),
  * });
@@ -96,7 +97,9 @@ export function defineGame(def) {
         [MSG.GAME_READY]: () => {
           if (this.isHost && !this.peerReady) this.beginMatch();
         },
+        // Only the host ends a match; one sent to the host is ignored.
         [MSG.GAME_END]: (buf) => {
+          if (this.isHost) return;
           const result = def.schema.end.decode(buf);
           if (result) def.onEnd?.(this, result);
         },
@@ -117,6 +120,11 @@ export function defineGame(def) {
         this._advertiseReady(encodeGameReady);
       }
       this._invalidate();
+    }
+
+    stop() {
+      def.onStop?.(this);
+      super.stop();
     }
 
     /**
@@ -227,6 +235,7 @@ export function defineGame(def) {
     }
 
     _broadcastState() {
+      if (!this.gameState) return;
       const wire = def.toWire ? def.toWire(this) : this.gameState;
       this._sendState(def.schema.snapshot.encode(wire));
     }

@@ -67,6 +67,7 @@ export function createFlow(table, ctx) {
   const clearTimer = ctx.clearTimer ?? ((handle) => clearTimeout(handle));
 
   let current = table.initial;
+  let previous = null;
   let timer = null;
   let ticks = 0;
   let remaining = 0;
@@ -106,6 +107,7 @@ export function createFlow(table, ctx) {
 
   function enter(name) {
     cancel();
+    previous = current;
     current = name;
     const s = spec(name);
     s.enter?.(ctx.target);
@@ -114,6 +116,15 @@ export function createFlow(table, ctx) {
     else ctx.stopSteps();
     remaining = s.every?.count ?? 0;
     arm(s);
+  }
+
+  // Enter the phase the state is in, if something other than the flow moved
+  // it there; returns whether it did.
+  function follow() {
+    const moved = nameOf.get(ctx.readPhase());
+    if (moved === undefined || moved === current || spec(current).final) return false;
+    enter(moved);
+    return true;
   }
 
   function go(name) {
@@ -128,18 +139,22 @@ export function createFlow(table, ctx) {
       return current;
     },
 
+    /** The phase this one was entered from. */
+    get previous() {
+      return previous;
+    },
+
     go,
 
-    /** One simulation step: the phase's tick, its tick count, then whatever phase the state moved to. */
+    /**
+     * One simulation step: follow a phase the state was moved to from outside,
+     * run the phase's tick, follow a phase the tick moved to, else count it.
+     */
     step() {
+      follow();
       const s = spec(current);
       s.tick?.(ctx.target);
-
-      const moved = nameOf.get(ctx.readPhase());
-      if (moved !== undefined && moved !== current) {
-        if (!spec(current).final) enter(moved);
-        return;
-      }
+      if (follow()) return;
 
       const t = timing(s);
       if (t?.ticks !== undefined && spec(current) === s) {

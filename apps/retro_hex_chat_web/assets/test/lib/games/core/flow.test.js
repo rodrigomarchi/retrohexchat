@@ -111,6 +111,19 @@ describe("flow", () => {
     expect(flow.name).toBe("SERVING");
   });
 
+  it("step: follows a phase changed outside the flow before running any tick", () => {
+    const ticked = [];
+    const { flow, state } = match({
+      PLAYING: { steps: true, tick: () => ticked.push("PLAYING") },
+      SCORED: { steps: true, tick: () => ticked.push("SCORED") },
+    });
+    flow.go("PLAYING");
+    state.phase = PHASE.SCORED;
+    flow.step();
+    expect(flow.name).toBe("SCORED");
+    expect(ticked).toEqual(["SCORED"]);
+  });
+
   it("after and every count ticks when given ticks, only while stepping", () => {
     const fired = [];
     const { flow } = match({
@@ -132,6 +145,23 @@ describe("flow", () => {
     flow.step();
     expect(fired).toEqual([1, 0]);
     expect(flow.name).toBe("PLAYING");
+  });
+
+  it("previous: a phase knows which one it came from, by a move or by the simulation", () => {
+    const seen = [];
+    const { flow, state } = match({
+      COUNTDOWN: { steps: true, enter: () => seen.push(flow.previous) },
+      PLAYING: {
+        steps: true,
+        tick: () => {
+          state.phase = PHASE.COUNTDOWN;
+        },
+      },
+    });
+    flow.go("COUNTDOWN");
+    flow.go("PLAYING");
+    flow.step();
+    expect(seen).toEqual(["WAITING", "PLAYING"]);
   });
 
   it("a final phase is never left", () => {

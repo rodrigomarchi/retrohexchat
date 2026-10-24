@@ -77,6 +77,20 @@ describe("defineGame", () => {
       expect(match.engines.guest.ended).toEqual({ score1: 2, score2: 0, winner: 1 });
     });
 
+    it("the host ignores an end of match sent to it, and sends nothing without a state", async () => {
+      match = await play();
+      match.advance(400);
+      const { host } = match.engines;
+      host._onChannelMessage({ data: new Uint8Array([0x83, 9, 9, 2]).buffer });
+      expect(host.ended).toBeUndefined();
+
+      const sent = match.record().wire.length;
+      host.gameState = null;
+      host.broadcast();
+      expect(match.record().wire.length).toBe(sent);
+      host.gameState = { phase: PHASE.PLAYING, x: 0, score1: 0, score2: 0, countdown: 0 };
+    });
+
     it("the guest's held key reaches the host", async () => {
       match = await play({ script: hold("guest", "ArrowRight", 300) });
       match.advance(3000);
@@ -110,6 +124,14 @@ describe("defineGame", () => {
         winner: 0,
         disconnected: true,
       });
+    });
+
+    it("runs the definition's onStop before the engine stops", async () => {
+      match = await play();
+      match.advance(150);
+      match.stop();
+
+      expect(match.engines.host.stoppedWhileRunning).toBe(true);
     });
 
     it("leaves no timer behind once stopped, even mid-countdown", async () => {

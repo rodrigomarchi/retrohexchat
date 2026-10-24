@@ -35,9 +35,9 @@ const P2P_ENGINE_LOADERS = {
   hex_skiing_escape: () =>
     import("./hex_skiing/engine.js").then((module) => module.HexSkiingEngine),
   hex_skiing_clean: () => import("./hex_skiing/engine.js").then((module) => module.HexSkiingEngine),
-  hex_frost: () => import("./hex_frost/engine.js").then((module) => module.HexFrostEngine),
-  hex_frost_blizzard: () => import("./hex_frost/engine.js").then((module) => module.HexFrostEngine),
-  hex_frost_peaceful: () => import("./hex_frost/engine.js").then((module) => module.HexFrostEngine),
+  hex_frost: () => import("./hex_frost/index.js").then((module) => module.default),
+  hex_frost_blizzard: () => import("./hex_frost/index.js").then((module) => module.default),
+  hex_frost_peaceful: () => import("./hex_frost/index.js").then((module) => module.default),
   hex_hockey: () => import("./hex_hockey/engine.js").then((module) => module.HexHockeyEngine),
   hex_hockey_blitz: () => import("./hex_hockey/engine.js").then((module) => module.HexHockeyEngine),
   hex_hockey_showdown: () =>
