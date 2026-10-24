@@ -1,5 +1,6 @@
 import { vi } from "vitest";
 import { createGameEngine } from "../../../js/lib/games/engine_loader.js";
+import { createLocalTransport } from "../../../js/lib/games/transport.js";
 import { channelPair } from "./channel_pair.js";
 import { digest } from "./digest.js";
 import { recordingAudio } from "./recording_audio.js";
@@ -29,8 +30,11 @@ import { seedRandom } from "./seeded_random.js";
  * @param {Array<{at: number, side: "host"|"guest", key: string, down: boolean}>} [options.script]
  * @param {number} [options.width]
  * @param {number} [options.height]
+ * @param {Function} [options.EngineClass] - build engines from this class
+ *   instead of the loader (for the core's own tests, with a test game)
  */
 export async function playMatch({
+  EngineClass = null,
   gameId,
   mode = "p2p",
   seed = 1,
@@ -66,8 +70,21 @@ export async function playMatch({
   const engines = {};
   let pair = null;
 
+  const build = EngineClass
+    ? async ({ canvas, mode: runtimeMode, channel, isHost, onGameEnd, engineOptions }) => {
+        const solo = runtimeMode === "solo";
+        const transport = solo ? createLocalTransport() : channel;
+        const options = {
+          ...engineOptions,
+          mode: runtimeMode || (isHost ? "p2p_host" : "p2p_guest"),
+        };
+        if (solo) options.difficulty = difficulty;
+        return new EngineClass(canvas, transport, gameId, solo ? true : isHost, onGameEnd, options);
+      }
+    : createGameEngine;
+
   if (mode === "solo") {
-    engines.host = await createGameEngine({
+    engines.host = await build({
       canvas: canvases.host,
       gameId,
       mode: "solo",
@@ -80,7 +97,7 @@ export async function playMatch({
     pair = channelPair({ drop });
     canvases.guest = recordingCanvas(width, height);
     for (const side of ["host", "guest"]) {
-      engines[side] = await createGameEngine({
+      engines[side] = await build({
         canvas: canvases[side],
         gameId,
         channel: pair[side],
@@ -172,6 +189,13 @@ export async function playMatch({
      */
     over() {
       return results.host.length > 0 || observe.finished(engines.host);
+    },
+
+    /** Dispatch one key event on a side's keyboard and hand it back. */
+    key(side, key, type = "keydown") {
+      const event = new KeyboardEvent(type, { key, cancelable: true });
+      keyboards[side].dispatchEvent(event);
+      return event;
     },
 
     /** The channel drops, on both ends. */
