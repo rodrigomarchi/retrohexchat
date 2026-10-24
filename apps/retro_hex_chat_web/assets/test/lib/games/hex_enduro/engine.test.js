@@ -53,7 +53,8 @@ vi.mock("../../../../js/lib/games/hex_enduro/renderer.js", () => ({
   render: vi.fn(),
 }));
 
-const { HexEnduroEngine } = await import("../../../../js/lib/games/hex_enduro/engine.js");
+const { default: HexEnduroEngine, playEvents } =
+  await import("../../../../js/lib/games/hex_enduro/index.js");
 const { render, getColors } = await import("../../../../js/lib/games/hex_enduro/renderer.js");
 
 function createMockChannel() {
@@ -533,7 +534,7 @@ describe("HexEnduroEngine", () => {
       engine.gameState.p2.score = 30;
       engine.gameState.phase = PHASE.FINISHED;
 
-      engine._handleGameEnd();
+      engine.flow.go("FINISHED");
 
       expect(onGameEnd).toHaveBeenCalledWith({
         score: { p1: 50, p2: 30 },
@@ -748,7 +749,7 @@ describe("HexEnduroEngine", () => {
       engine = new HexEnduroEngine(canvas, channel, "hex_enduro", true, null);
       engine.start();
 
-      engine._playEventsAudio(EVENT.COLLISION);
+      playEvents(engine.audio, EVENT.COLLISION);
       expect(engine.audio.playCollision).toHaveBeenCalled();
     });
 
@@ -756,7 +757,7 @@ describe("HexEnduroEngine", () => {
       engine = new HexEnduroEngine(canvas, channel, "hex_enduro", true, null);
       engine.start();
 
-      engine._playEventsAudio(EVENT.OVERTAKE_AI);
+      playEvents(engine.audio, EVENT.OVERTAKE_AI);
       expect(engine.audio.playOvertakeAI).toHaveBeenCalled();
     });
 
@@ -764,7 +765,7 @@ describe("HexEnduroEngine", () => {
       engine = new HexEnduroEngine(canvas, channel, "hex_enduro", true, null);
       engine.start();
 
-      engine._playEventsAudio(EVENT.COLLISION | EVENT.FUEL_PICKUP);
+      playEvents(engine.audio, EVENT.COLLISION | EVENT.FUEL_PICKUP);
       expect(engine.audio.playCollision).toHaveBeenCalled();
       expect(engine.audio.playFuelPickup).toHaveBeenCalled();
     });
@@ -892,20 +893,20 @@ describe("HexEnduroEngine", () => {
       // Call _gameLoop directly
       engine._gameLoop();
 
-      // _handleGameEnd should have been called (FINISHED check at end of loop)
+      // The match ended once the step reached FINISHED.
       expect(onGameEnd).toHaveBeenCalled();
       // Should NOT request another animation frame
       expect(globalThis.requestAnimationFrame).not.toHaveBeenCalled();
     });
   });
 
-  describe("_playEventsAudio individual events", () => {
+  describe("event sounds, one by one", () => {
     it("plays playOvertakePlayer on OVERTAKE_PLAYER event", () => {
       engine = new HexEnduroEngine(canvas, channel, "hex_enduro", true, null);
       engine.start();
 
       engine.audio.playOvertakePlayer.mockClear();
-      engine._playEventsAudio(EVENT.OVERTAKE_PLAYER);
+      playEvents(engine.audio, EVENT.OVERTAKE_PLAYER);
       expect(engine.audio.playOvertakePlayer).toHaveBeenCalled();
     });
 
@@ -914,7 +915,7 @@ describe("HexEnduroEngine", () => {
       engine.start();
 
       engine.audio.playTurbo.mockClear();
-      engine._playEventsAudio(EVENT.TURBO_ACTIVATE);
+      playEvents(engine.audio, EVENT.TURBO_ACTIVATE);
       expect(engine.audio.playTurbo).toHaveBeenCalled();
     });
 
@@ -923,12 +924,12 @@ describe("HexEnduroEngine", () => {
       engine.start();
 
       engine.audio.playWeatherChange.mockClear();
-      engine._playEventsAudio(EVENT.WEATHER_CHANGE);
+      playEvents(engine.audio, EVENT.WEATHER_CHANGE);
       expect(engine.audio.playWeatherChange).toHaveBeenCalled();
     });
   });
 
-  describe("_handleGameEnd callback error swallowing", () => {
+  describe("a result callback that throws", () => {
     it("does not throw when onGameEnd callback throws", () => {
       const onGameEnd = vi.fn(() => {
         throw new Error("callback error");
@@ -940,7 +941,7 @@ describe("HexEnduroEngine", () => {
       engine.gameState.p1.score = 50;
       engine.gameState.p2.score = 30;
 
-      expect(() => engine._handleGameEnd()).not.toThrow();
+      expect(() => engine.flow.go("FINISHED")).not.toThrow();
       expect(onGameEnd).toHaveBeenCalled();
     });
   });
@@ -960,11 +961,11 @@ describe("HexEnduroEngine", () => {
   });
 
   describe("engine resilience", () => {
-    it("_startGameLoop guards against double-call", () => {
+    it("entering the race twice keeps one loop", () => {
       engine = new HexEnduroEngine(canvas, channel, "hex_enduro", true, null);
       engine.start();
       engine.animFrame = 123;
-      engine._startGameLoop();
+      engine.flow.go("RACING");
       // Should not have overwritten — guard returns early
       expect(engine.animFrame).toBe(123);
     });

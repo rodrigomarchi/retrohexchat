@@ -21,10 +21,9 @@ const P2P_ENGINE_LOADERS = {
   hex_invaders: () => import("./hex_invaders/index.js").then((module) => module.default),
   hex_invaders_coop: () => import("./hex_invaders/index.js").then((module) => module.default),
   hex_invaders_blitz: () => import("./hex_invaders/index.js").then((module) => module.default),
-  hex_enduro: () => import("./hex_enduro/engine.js").then((module) => module.HexEnduroEngine),
-  hex_enduro_night: () => import("./hex_enduro/engine.js").then((module) => module.HexEnduroEngine),
-  hex_enduro_sprint: () =>
-    import("./hex_enduro/engine.js").then((module) => module.HexEnduroEngine),
+  hex_enduro: () => import("./hex_enduro/index.js").then((module) => module.default),
+  hex_enduro_night: () => import("./hex_enduro/index.js").then((module) => module.default),
+  hex_enduro_sprint: () => import("./hex_enduro/index.js").then((module) => module.default),
   hex_tennis: () => import("./hex_tennis/index.js").then((module) => module.default),
   hex_tennis_quick: () => import("./hex_tennis/index.js").then((module) => module.default),
   hex_tennis_sudden: () => import("./hex_tennis/index.js").then((module) => module.default),
