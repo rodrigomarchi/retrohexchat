@@ -676,7 +676,8 @@ describe("BreakoutEngine", () => {
       expect(globalThis.requestAnimationFrame).toHaveBeenCalled();
     });
 
-    it("schedules serve timeout only once during LIFE_LOST", () => {
+    it("schedules the next serve only once during LIFE_LOST", () => {
+      vi.useFakeTimers();
       engine = new BreakoutEngine(canvas, channel, "block_breakers", true, null);
       engine.start();
       engine.running = true;
@@ -685,13 +686,42 @@ describe("BreakoutEngine", () => {
       engine.gameState.lives = 2;
 
       engine._gameLoop(0);
-      const timer1 = engine.phaseTimer;
+      const pending = vi.getTimerCount();
 
-      // Second call should not create a new timer
+      // A second step must not schedule another serve.
       engine._gameLoop(0);
-      const timer2 = engine.phaseTimer;
+      expect(vi.getTimerCount()).toBe(pending);
+      vi.useRealTimers();
+    });
 
-      expect(timer1).toBe(timer2);
+    it("serves again after a life is lost", () => {
+      vi.useFakeTimers();
+      engine = new BreakoutEngine(canvas, channel, "block_breakers", true, null);
+      engine.start();
+      engine.colors = getColors(canvas);
+      engine.flow.go("PLAYING");
+      // The ball is about to leave by the bottom.
+      Object.assign(engine.gameState, {
+        ballX: CANVAS_W / 2,
+        ballY: CANVAS_H - 2,
+        ballVX: 0,
+        ballVY: 4,
+      });
+      const lives = engine.gameState.lives;
+
+      engine._gameLoop(0);
+      expect(engine.gameState.phase).toBe(PHASE.LIFE_LOST);
+      expect(engine.gameState.lives).toBe(lives - 1);
+
+      // A pause, then the serve as at the start: the ball goes back up, toward P2.
+      vi.advanceTimersByTime(1500);
+      expect(engine.gameState.phase).toBe(PHASE.SERVING);
+      vi.advanceTimersByTime(800);
+      expect(engine.gameState.phase).toBe(PHASE.PLAYING);
+      expect(engine.gameState.ballY).toBe(CANVAS_H / 2);
+      expect(engine.gameState.ballVY).toBeLessThan(0);
+      expect(engine.stepping).toBe(true);
+      vi.useRealTimers();
     });
 
     it("does not schedule rAF when FINISHED", () => {

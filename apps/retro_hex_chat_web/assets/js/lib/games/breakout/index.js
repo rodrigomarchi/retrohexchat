@@ -29,10 +29,11 @@ import { GAME_END, PHASE, SNAPSHOT } from "./protocol.js";
 import { getColors, render } from "./renderer.js";
 
 const SERVE_DELAY_MS = 800;
+const LIFE_LOST_PAUSE_MS = 1500;
 const COUNTDOWN_FROM = 3;
 const COUNTDOWN_EVERY_MS = 1000;
 
-/** One simulation step on the host; it runs on through a life lost. */
+/** One simulation step on the host. */
 function step(game) {
   game.updateOpponent();
   let s = game.gameState;
@@ -200,9 +201,8 @@ export default defineGame({
         },
         tick: step,
       },
-      // A life lost never leads back to a serve: the engine guarded the pause
-      // with a timer handle that was never cleared. The fix comes on its own.
-      LIFE_LOST: { steps: true, tick: step },
+      // A lost life holds the board still a moment, then serves as at the start.
+      LIFE_LOST: { after: { ms: LIFE_LOST_PAUSE_MS }, next: "SERVING" },
       FINISHED: {
         final: true,
         enter: (game) => {
