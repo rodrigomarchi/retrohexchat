@@ -57,7 +57,11 @@ vi.mock("../../../../js/lib/games/hex_skiing/renderer.js", () => ({
   generateSnowParticles: vi.fn(() => []),
 }));
 
-const { HexSkiingEngine } = await import("../../../../js/lib/games/hex_skiing/engine.js");
+const {
+  default: HexSkiingEngine,
+  finishMatch,
+  playEvents,
+} = await import("../../../../js/lib/games/hex_skiing/index.js");
 const { render, readColors } = await import("../../../../js/lib/games/hex_skiing/renderer.js");
 
 function createMockChannel() {
@@ -194,7 +198,7 @@ describe("HexSkiingEngine", () => {
       expect(engine.remoteInputs).toEqual({ left: false, right: false });
       expect(engine.frameCount).toBe(0);
       expect(engine.peerReady).toBe(false);
-      expect(engine.phaseTimer).toBe(0);
+      expect(engine.countdownFrames).toBe(0);
       expect(engine.roundEndTimer).toBe(0);
       expect(engine.difficulty).toBe("normal");
       expect(engine.opponentController).toBeNull();
@@ -339,7 +343,7 @@ describe("HexSkiingEngine", () => {
       expect(engine.localInputs).toEqual({ left: false, right: false });
       expect(engine.remoteInputs).toEqual({ left: false, right: false });
       expect(engine.frameCount).toBe(0);
-      expect(engine.phaseTimer).toBe(0);
+      expect(engine.countdownFrames).toBe(0);
       expect(engine.roundEndTimer).toBe(0);
     });
 
@@ -662,21 +666,16 @@ describe("HexSkiingEngine", () => {
         expect(render).toHaveBeenCalled();
       });
 
-      it("calls _handlePeerEvents with decoded events", () => {
+      it("plays the events the snapshot carries", () => {
         const { engine: e } = createEngine("hex_skiing", false);
         engine = e;
-        const spy = vi.spyOn(engine, "_handlePeerEvents");
         const state = createInitialState(GAME_MODE.ALPINE_RACE, 42);
         state.events = EVENT.GATE_CLEARED | EVENT.SPEED_BOOST;
-        const packed = packState(state);
-        const buf = SNAPSHOT.encode(packed);
+        const buf = SNAPSHOT.encode(packState(state));
 
         engine._onChannelMessage({ data: buf });
-        expect(spy).toHaveBeenCalled();
-        // The events bitmask should have been passed
-        const calledEvents = spy.mock.calls[0][0];
-        expect(calledEvents & EVENT.GATE_CLEARED).toBeTruthy();
-        expect(calledEvents & EVENT.SPEED_BOOST).toBeTruthy();
+        expect(engine.audio.playGateCleared).toHaveBeenCalled();
+        expect(engine.audio.playSpeedBoost).toHaveBeenCalled();
       });
     });
 
@@ -759,15 +758,15 @@ describe("HexSkiingEngine", () => {
   // ── Game Loop — COUNTDOWN Phase ──
 
   describe("game loop — COUNTDOWN phase", () => {
-    it("decrements phaseTimer each loop call", () => {
+    it("counts down the beat's steps each loop call", () => {
       const { engine: e } = createEngine("hex_skiing", true);
       engine = e;
       engine.gameState.phase = PHASE.COUNTDOWN;
       engine.gameState.countdown = 3;
-      engine.phaseTimer = 60;
+      engine.countdownFrames = 60;
 
       engine._gameLoop();
-      expect(engine.phaseTimer).toBe(59);
+      expect(engine.countdownFrames).toBe(59);
     });
 
     it("decrements countdown when phaseTimer reaches 0", () => {
@@ -775,7 +774,7 @@ describe("HexSkiingEngine", () => {
       engine = e;
       engine.gameState.phase = PHASE.COUNTDOWN;
       engine.gameState.countdown = 3;
-      engine.phaseTimer = 1; // Will hit 0 on next loop
+      engine.countdownFrames = 1; // Will hit 0 on next loop
 
       engine._gameLoop();
       expect(engine.gameState.countdown).toBe(2);
@@ -786,7 +785,7 @@ describe("HexSkiingEngine", () => {
       engine = e;
       engine.gameState.phase = PHASE.COUNTDOWN;
       engine.gameState.countdown = 3;
-      engine.phaseTimer = 1;
+      engine.countdownFrames = 1;
       engine.audio.playCountdown.mockClear();
 
       engine._gameLoop();
@@ -799,7 +798,7 @@ describe("HexSkiingEngine", () => {
       engine = e;
       engine.gameState.phase = PHASE.COUNTDOWN;
       engine.gameState.countdown = 1;
-      engine.phaseTimer = 1;
+      engine.countdownFrames = 1;
 
       engine._gameLoop();
       expect(engine.gameState.phase).toBe(PHASE.RACING);
@@ -807,15 +806,15 @@ describe("HexSkiingEngine", () => {
       expect(engine.audio.playCountdownGo).toHaveBeenCalled();
     });
 
-    it("resets phaseTimer to COUNTDOWN_INTERVAL when countdown still > 0", () => {
+    it("starts the next beat's steps when the countdown is still > 0", () => {
       const { engine: e } = createEngine("hex_skiing", true);
       engine = e;
       engine.gameState.phase = PHASE.COUNTDOWN;
       engine.gameState.countdown = 3;
-      engine.phaseTimer = 1;
+      engine.countdownFrames = 1;
 
       engine._gameLoop();
-      expect(engine.phaseTimer).toBe(60); // COUNTDOWN_INTERVAL
+      expect(engine.countdownFrames).toBe(60); // COUNTDOWN_INTERVAL
     });
 
     it("broadcasts state during countdown at STATE_SEND_INTERVAL", () => {
@@ -823,7 +822,7 @@ describe("HexSkiingEngine", () => {
       engine = e;
       engine.gameState.phase = PHASE.COUNTDOWN;
       engine.gameState.countdown = 3;
-      engine.phaseTimer = 30;
+      engine.countdownFrames = 30;
       engine.frameCount = 1; // Next will be 2, which is 2 % 2 === 0
 
       engine._gameLoop();
@@ -835,7 +834,7 @@ describe("HexSkiingEngine", () => {
       engine = e;
       engine.gameState.phase = PHASE.COUNTDOWN;
       engine.gameState.countdown = 3;
-      engine.phaseTimer = 30;
+      engine.countdownFrames = 30;
       render.mockClear();
 
       engine._gameLoop();
@@ -960,7 +959,7 @@ describe("HexSkiingEngine", () => {
       expect(engine.gameState.round).toBe(1);
     });
 
-    it("resets phaseTimer and plays countdown after startNextRound", () => {
+    it("starts the beat's steps and plays countdown after startNextRound", () => {
       const { engine: e } = createEngine("hex_skiing", true);
       engine = e;
       engine.gameState.phase = PHASE.ROUND_END;
@@ -969,7 +968,7 @@ describe("HexSkiingEngine", () => {
       engine.audio.playCountdown.mockClear();
 
       engine._gameLoop();
-      expect(engine.phaseTimer).toBe(60); // COUNTDOWN_INTERVAL
+      expect(engine.countdownFrames).toBe(60); // COUNTDOWN_INTERVAL
       expect(engine.audio.playCountdown).toHaveBeenCalled();
     });
 
@@ -989,23 +988,26 @@ describe("HexSkiingEngine", () => {
   // ── Game Loop — FINISHED Phase ──
 
   describe("game loop — FINISHED phase", () => {
-    it("broadcasts final state", () => {
+    // The step that reaches FINISHED sends the final state and ends the match
+    // (see "the end of the match"); a step found in FINISHED only stops.
+    it("sends nothing more from a step found in FINISHED", () => {
       const { engine: e, channel } = createEngine("hex_skiing", true);
       engine = e;
       engine.gameState.phase = PHASE.FINISHED;
       channel.send.mockClear();
 
       engine._gameLoop();
-      expect(channel.send).toHaveBeenCalled();
+      expect(channel.send).not.toHaveBeenCalled();
     });
 
-    it("sets running=false", () => {
+    it("stops stepping once in FINISHED", () => {
       const { engine: e } = createEngine("hex_skiing", true);
       engine = e;
+      engine.flow.go("RACING");
       engine.gameState.phase = PHASE.FINISHED;
 
       engine._gameLoop();
-      expect(engine.running).toBe(false);
+      expect(engine.stepping).toBe(false);
     });
 
     it("renders on FINISHED frame", () => {
@@ -1054,13 +1056,13 @@ describe("HexSkiingEngine", () => {
 
   // ── _handleGameFinished ──
 
-  describe("_handleGameFinished", () => {
+  describe("the end of the match", () => {
     it("stops ski drone audio", () => {
       const { engine: e } = setupRacingEngine();
       engine = e;
       engine.audio.stopSkiDrone.mockClear();
       const state = { ...engine.gameState, p1RoundWins: 2, p2RoundWins: 1 };
-      engine._handleGameFinished(state);
+      finishMatch(engine, state);
       expect(engine.audio.stopSkiDrone).toHaveBeenCalled();
     });
 
@@ -1068,7 +1070,7 @@ describe("HexSkiingEngine", () => {
       const { engine: e } = setupRacingEngine();
       engine = e;
       const state = { ...engine.gameState, p1RoundWins: 2, p2RoundWins: 1 };
-      engine._handleGameFinished(state);
+      finishMatch(engine, state);
       expect(engine.audio.playVictory).toHaveBeenCalled();
       expect(engine.audio.playGameOver).not.toHaveBeenCalled();
     });
@@ -1077,7 +1079,7 @@ describe("HexSkiingEngine", () => {
       const { engine: e } = setupRacingEngine();
       engine = e;
       const state = { ...engine.gameState, p1RoundWins: 1, p2RoundWins: 1 };
-      engine._handleGameFinished(state);
+      finishMatch(engine, state);
       expect(engine.audio.playGameOver).toHaveBeenCalled();
       expect(engine.audio.playVictory).not.toHaveBeenCalled();
     });
@@ -1087,7 +1089,7 @@ describe("HexSkiingEngine", () => {
       engine = e;
       channel.send.mockClear();
       const state = { ...engine.gameState, p1RoundWins: 2, p2RoundWins: 0 };
-      engine._handleGameFinished(state);
+      finishMatch(engine, state);
       expect(channel.send).toHaveBeenCalled();
       const buf = channel.send.mock.calls[0][0];
       const view = new DataView(buf);
@@ -1099,7 +1101,7 @@ describe("HexSkiingEngine", () => {
       const { engine: e } = setupRacingEngine(onGameEnd);
       engine = e;
       const state = { ...engine.gameState, p1RoundWins: 2, p2RoundWins: 1 };
-      engine._handleGameFinished(state);
+      finishMatch(engine, state);
       expect(onGameEnd).toHaveBeenCalledWith({
         score1: 2,
         score2: 1,
@@ -1111,73 +1113,73 @@ describe("HexSkiingEngine", () => {
       const { engine: e } = setupRacingEngine(null);
       engine = e;
       const state = { ...engine.gameState, p1RoundWins: 0, p2RoundWins: 0 };
-      expect(() => engine._handleGameFinished(state)).not.toThrow();
+      expect(() => finishMatch(engine, state)).not.toThrow();
     });
   });
 
   // ── Audio Events — _handleHostEvents ──
 
-  describe("audio events — _handleHostEvents", () => {
+  describe("audio events on the host", () => {
     it("COLLISION_TREE triggers playCollisionTree", () => {
       const { engine: e } = setupRacingEngine();
       engine = e;
-      engine._handleHostEvents(EVENT.COLLISION_TREE);
+      playEvents(engine.audio, EVENT.COLLISION_TREE);
       expect(engine.audio.playCollisionTree).toHaveBeenCalled();
     });
 
     it("COLLISION_ROCK triggers playCollisionRock", () => {
       const { engine: e } = setupRacingEngine();
       engine = e;
-      engine._handleHostEvents(EVENT.COLLISION_ROCK);
+      playEvents(engine.audio, EVENT.COLLISION_ROCK);
       expect(engine.audio.playCollisionRock).toHaveBeenCalled();
     });
 
     it("GATE_CLEARED triggers playGateCleared", () => {
       const { engine: e } = setupRacingEngine();
       engine = e;
-      engine._handleHostEvents(EVENT.GATE_CLEARED);
+      playEvents(engine.audio, EVENT.GATE_CLEARED);
       expect(engine.audio.playGateCleared).toHaveBeenCalled();
     });
 
     it("SPEED_BOOST triggers playSpeedBoost", () => {
       const { engine: e } = setupRacingEngine();
       engine = e;
-      engine._handleHostEvents(EVENT.SPEED_BOOST);
+      playEvents(engine.audio, EVENT.SPEED_BOOST);
       expect(engine.audio.playSpeedBoost).toHaveBeenCalled();
     });
 
     it("ICE_PATCH triggers playIcePatch", () => {
       const { engine: e } = setupRacingEngine();
       engine = e;
-      engine._handleHostEvents(EVENT.ICE_PATCH);
+      playEvents(engine.audio, EVENT.ICE_PATCH);
       expect(engine.audio.playIcePatch).toHaveBeenCalled();
     });
 
     it("BLIZZARD_START triggers playBlizzardStart", () => {
       const { engine: e } = setupRacingEngine();
       engine = e;
-      engine._handleHostEvents(EVENT.BLIZZARD_START);
+      playEvents(engine.audio, EVENT.BLIZZARD_START);
       expect(engine.audio.playBlizzardStart).toHaveBeenCalled();
     });
 
     it("BLIZZARD_END triggers playBlizzardEnd", () => {
       const { engine: e } = setupRacingEngine();
       engine = e;
-      engine._handleHostEvents(EVENT.BLIZZARD_END);
+      playEvents(engine.audio, EVENT.BLIZZARD_END);
       expect(engine.audio.playBlizzardEnd).toHaveBeenCalled();
     });
 
     it("ENGULFED triggers playEngulfed", () => {
       const { engine: e } = setupRacingEngine();
       engine = e;
-      engine._handleHostEvents(EVENT.ENGULFED);
+      playEvents(engine.audio, EVENT.ENGULFED);
       expect(engine.audio.playEngulfed).toHaveBeenCalled();
     });
 
     it("multiple events in same frame (bitmask)", () => {
       const { engine: e } = setupRacingEngine();
       engine = e;
-      engine._handleHostEvents(EVENT.COLLISION_TREE | EVENT.GATE_CLEARED | EVENT.SPEED_BOOST);
+      playEvents(engine.audio, EVENT.COLLISION_TREE | EVENT.GATE_CLEARED | EVENT.SPEED_BOOST);
       expect(engine.audio.playCollisionTree).toHaveBeenCalled();
       expect(engine.audio.playGateCleared).toHaveBeenCalled();
       expect(engine.audio.playSpeedBoost).toHaveBeenCalled();
@@ -1189,7 +1191,7 @@ describe("HexSkiingEngine", () => {
     it("zero events triggers nothing", () => {
       const { engine: e } = setupRacingEngine();
       engine = e;
-      engine._handleHostEvents(0);
+      playEvents(engine.audio, 0);
       expect(engine.audio.playCollisionTree).not.toHaveBeenCalled();
       expect(engine.audio.playGateCleared).not.toHaveBeenCalled();
     });
@@ -1197,25 +1199,25 @@ describe("HexSkiingEngine", () => {
 
   // ── Audio Events — _handlePeerEvents ──
 
-  describe("audio events — _handlePeerEvents", () => {
+  describe("audio events on the guest", () => {
     it("COLLISION_TREE triggers playCollisionTree", () => {
       const { engine: e } = createEngine("hex_skiing", false);
       engine = e;
-      engine._handlePeerEvents(EVENT.COLLISION_TREE, null);
+      playEvents(engine.audio, EVENT.COLLISION_TREE);
       expect(engine.audio.playCollisionTree).toHaveBeenCalled();
     });
 
     it("ENGULFED triggers playEngulfed", () => {
       const { engine: e } = createEngine("hex_skiing", false);
       engine = e;
-      engine._handlePeerEvents(EVENT.ENGULFED, null);
+      playEvents(engine.audio, EVENT.ENGULFED);
       expect(engine.audio.playEngulfed).toHaveBeenCalled();
     });
 
     it("multiple events via bitmask", () => {
       const { engine: e } = createEngine("hex_skiing", false);
       engine = e;
-      engine._handlePeerEvents(EVENT.GATE_CLEARED | EVENT.ICE_PATCH, null);
+      playEvents(engine.audio, EVENT.GATE_CLEARED | EVENT.ICE_PATCH);
       expect(engine.audio.playGateCleared).toHaveBeenCalled();
       expect(engine.audio.playIcePatch).toHaveBeenCalled();
     });
@@ -1318,34 +1320,34 @@ describe("HexSkiingEngine", () => {
 
   // ── _startCountdown ──
 
-  describe("_startCountdown", () => {
+  describe("the first countdown", () => {
     it("sets phase to COUNTDOWN with countdown=3", () => {
       const { engine: e } = createEngine("hex_skiing", true);
       engine = e;
-      engine._startCountdown();
+      engine.flow.go("STARTING");
       expect(engine.gameState.phase).toBe(PHASE.COUNTDOWN);
       expect(engine.gameState.countdown).toBe(3);
     });
 
-    it("sets phaseTimer to COUNTDOWN_INTERVAL (60)", () => {
+    it("counts the first beat over 60 steps", () => {
       const { engine: e } = createEngine("hex_skiing", true);
       engine = e;
-      engine._startCountdown();
-      expect(engine.phaseTimer).toBe(60);
+      engine.flow.go("STARTING");
+      expect(engine.countdownFrames).toBe(60);
     });
 
     it("plays countdown audio", () => {
       const { engine: e } = createEngine("hex_skiing", true);
       engine = e;
       engine.audio.playCountdown.mockClear();
-      engine._startCountdown();
+      engine.flow.go("STARTING");
       expect(engine.audio.playCountdown).toHaveBeenCalled();
     });
 
     it("starts the game loop (requests animation frame)", () => {
       const { engine: e } = createEngine("hex_skiing", true);
       engine = e;
-      engine._startCountdown();
+      engine.flow.go("STARTING");
       expect(globalThis.requestAnimationFrame).toHaveBeenCalled();
     });
 
@@ -1353,20 +1355,20 @@ describe("HexSkiingEngine", () => {
       const { engine: e } = createEngine("hex_skiing", true);
       engine = e;
       engine.audio.startSkiDrone.mockClear();
-      engine._startCountdown();
+      engine.flow.go("STARTING");
       expect(engine.audio.startSkiDrone).toHaveBeenCalled();
     });
   });
 
   // ── _startGameLoop ──
 
-  describe("_startGameLoop", () => {
+  describe("entering the race", () => {
     it("guards against duplicate game loops", () => {
       const { engine: e } = createEngine("hex_skiing", true);
       engine = e;
       engine.animFrame = 99; // Already has a loop
       globalThis.requestAnimationFrame.mockClear();
-      engine._startGameLoop();
+      engine.flow.go("RACING");
       expect(globalThis.requestAnimationFrame).not.toHaveBeenCalled();
     });
   });

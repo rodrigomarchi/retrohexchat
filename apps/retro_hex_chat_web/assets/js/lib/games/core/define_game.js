@@ -90,7 +90,8 @@ export function defineGame(def) {
       def.setup?.(this, options);
 
       this.flow = createFlow(def.flow, {
-        readPhase: () => this.gameState.phase,
+        // A game may have no state yet (it is built on start).
+        readPhase: () => this.gameState?.phase,
         writePhase: (value) => {
           this.gameState.phase = value;
         },

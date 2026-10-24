@@ -27,10 +27,9 @@ const P2P_ENGINE_LOADERS = {
   hex_tennis: () => import("./hex_tennis/index.js").then((module) => module.default),
   hex_tennis_quick: () => import("./hex_tennis/index.js").then((module) => module.default),
   hex_tennis_sudden: () => import("./hex_tennis/index.js").then((module) => module.default),
-  hex_skiing: () => import("./hex_skiing/engine.js").then((module) => module.HexSkiingEngine),
-  hex_skiing_escape: () =>
-    import("./hex_skiing/engine.js").then((module) => module.HexSkiingEngine),
-  hex_skiing_clean: () => import("./hex_skiing/engine.js").then((module) => module.HexSkiingEngine),
+  hex_skiing: () => import("./hex_skiing/index.js").then((module) => module.default),
+  hex_skiing_escape: () => import("./hex_skiing/index.js").then((module) => module.default),
+  hex_skiing_clean: () => import("./hex_skiing/index.js").then((module) => module.default),
   hex_frost: () => import("./hex_frost/index.js").then((module) => module.default),
   hex_frost_blizzard: () => import("./hex_frost/index.js").then((module) => module.default),
   hex_frost_peaceful: () => import("./hex_frost/index.js").then((module) => module.default),

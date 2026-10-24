@@ -215,6 +215,34 @@ describe("defineGame", () => {
     });
   });
 
+  describe("a game with no state yet", () => {
+    it("steps without throwing until its state is built", () => {
+      const ticks = [];
+      const Game = defineGame({
+        ...definition,
+        init: () => null,
+        flow: {
+          ...definition.flow,
+          states: {
+            ...definition.flow.states,
+            WAITING: { tick: (game) => ticks.push(game.gameState) },
+          },
+        },
+      });
+      const game = new Game(
+        document.createElement("canvas"),
+        createLocalTransport(),
+        "fake",
+        true,
+        null,
+      );
+      game.running = true;
+
+      expect(() => game._gameLoop()).not.toThrow();
+      expect(ticks).toEqual([null]);
+    });
+  });
+
   describe("finish", () => {
     it("keeps a result callback that throws from escaping the step", () => {
       const onGameEnd = vi.fn(() => {
