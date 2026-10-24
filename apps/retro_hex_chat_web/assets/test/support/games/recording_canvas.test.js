@@ -58,4 +58,17 @@ describe("recording canvas", () => {
     expect(canvas.log).toEqual([["fillRect", 1, 2, 3, 4]]);
     expect(ctx.fillStyle).toBe("red");
   });
+
+  it("stops logging while switched off, keeping the context's state", () => {
+    const canvas = recordingCanvas(10, 10);
+    const ctx = canvas.getContext("2d");
+    canvas.recording = false;
+    ctx.fillStyle = "blue";
+    ctx.fillRect(0, 0, 1, 1);
+    canvas.recording = true;
+    ctx.fillRect(2, 2, 1, 1);
+
+    expect(canvas.log).toEqual([["fillRect", 2, 2, 1, 1]]);
+    expect(ctx.fillStyle).toBe("blue");
+  });
 });

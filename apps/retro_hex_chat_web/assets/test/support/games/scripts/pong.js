@@ -6,6 +6,6 @@ import { alternate } from "./keys.js";
  */
 export function pongScript(side) {
   return side === "host"
-    ? alternate(["ArrowUp", "ArrowDown"], { from: 4000, until: 88_000, each: 700, gap: 150 })
-    : alternate(["w", "s"], { from: 4300, until: 88_000, each: 450, gap: 300 });
+    ? alternate(["ArrowUp", "ArrowDown"], { from: 4000, until: 600_000, each: 700, gap: 150 })
+    : alternate(["w", "s"], { from: 4300, until: 600_000, each: 450, gap: 300 });
 }

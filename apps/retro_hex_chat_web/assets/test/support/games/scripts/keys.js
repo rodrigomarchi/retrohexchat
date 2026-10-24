@@ -32,3 +32,33 @@ export function tap(key, { from, until, every, length = 80 }) {
   }
   return presses;
 }
+
+/**
+ * A script most games share: sweep through the movement keys and tap the
+ * action keys, at a rhythm that differs per side so the two players diverge.
+ * The host plays on the arrows, the guest on the letters.
+ * @param {"host"|"guest"} side
+ * @param {{ host: string[], guest: string[] }} moves
+ * @param {string[]} [actions]
+ */
+export function sweep(side, moves, actions = []) {
+  const host = side === "host";
+  const offset = host ? 0 : 300;
+  return [
+    ...alternate(moves[side], {
+      from: 4000 + offset,
+      until: 600_000,
+      each: host ? 600 : 450,
+      gap: 150,
+    }),
+    ...actions.flatMap((key, i) =>
+      tap(key, { from: 4500 + offset + i * 200, until: 600_000, every: host ? 700 : 900 }),
+    ),
+  ];
+}
+
+export const ARROWS = {
+  vertical: { host: ["ArrowUp", "ArrowDown"], guest: ["w", "s"] },
+  horizontal: { host: ["ArrowLeft", "ArrowRight"], guest: ["a", "d"] },
+  all: { host: ["ArrowUp", "ArrowRight", "ArrowDown", "ArrowLeft"], guest: ["w", "d", "s", "a"] },
+};

@@ -6,6 +6,10 @@
  * fill used. `measureText` answers 8 pixels per character, which keeps layouts
  * that centre text on its width stable without a real font.
  *
+ * Recording costs a few microseconds a call and a game makes thousands of
+ * calls a frame, so it can be switched off (`canvas.recording = false`): the
+ * context keeps its state and answers the same, it just stops logging.
+ *
  * @param {number} width
  * @param {number} height
  */
@@ -16,14 +20,20 @@ export function recordingCanvas(width, height) {
 
   let log = [];
   let nextId = 1;
+  let recording = true;
   const state = {};
+  // One function per method name, made once: a game calls thousands a frame.
+  const calls = new Map();
+  const record = (entry) => {
+    if (recording) log.push(entry);
+  };
 
   const named = (prefix, op, args) => {
     const id = `${prefix}${nextId++}`;
-    log.push([op, ...args]);
+    record([op, ...args]);
     return {
       id,
-      addColorStop: (offset, color) => log.push([`${id}.addColorStop`, offset, color]),
+      addColorStop: (offset, color) => record([`${id}.addColorStop`, offset, color]),
       setTransform: () => {},
     };
   };
@@ -34,11 +44,11 @@ export function recordingCanvas(width, height) {
     createConicGradient: (...args) => named("g", "createConicGradient", args),
     createPattern: (...args) => named("p", "createPattern", args.slice(1)),
     measureText: (text) => {
-      log.push(["measureText", text]);
+      record(["measureText", text]);
       return { width: String(text).length * 8 };
     },
     getImageData: (x, y, w, h) => {
-      log.push(["getImageData", x, y, w, h]);
+      record(["getImageData", x, y, w, h]);
       return { width: w, height: h, data: new Uint8ClampedArray(Math.max(0, w * h * 4)) };
     },
     isPointInPath: () => false,
@@ -53,14 +63,19 @@ export function recordingCanvas(width, height) {
         if (prop === "canvas") return canvas;
         if (prop in methods) return methods[prop];
         if (prop in state) return state[prop];
-        return (...args) => {
-          if (prop === "setLineDash") state.lineDash = args[0];
-          log.push([prop, ...args.map((arg) => arg?.id ?? arg)]);
-        };
+        let call = calls.get(prop);
+        if (!call) {
+          call = (...args) => {
+            if (prop === "setLineDash") state.lineDash = args[0];
+            if (recording) record([prop, ...args.map((arg) => arg?.id ?? arg)]);
+          };
+          calls.set(prop, call);
+        }
+        return call;
       },
       set(_target, prop, value) {
         state[prop] = value;
-        log.push([prop, "=", value?.id ?? value]);
+        record([prop, "=", value?.id ?? value]);
         return true;
       },
     },
@@ -69,6 +84,12 @@ export function recordingCanvas(width, height) {
   canvas.getContext = () => ctx;
 
   Object.defineProperty(canvas, "log", { get: () => log });
+  Object.defineProperty(canvas, "recording", {
+    get: () => recording,
+    set: (value) => {
+      recording = value;
+    },
+  });
   canvas.clearLog = () => {
     log = [];
   };

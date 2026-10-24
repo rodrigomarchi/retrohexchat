@@ -1,0 +1,528 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`hex_warlords pins > P2P following the key script 1`] = `
+{
+  "draws": [
+    {
+      "digest": "f4247dd199ea17eb",
+      "ops": 1201,
+      "phase": 1,
+      "side": "guest",
+      "t": 32,
+    },
+    {
+      "digest": "9f24ed60a55f77bb",
+      "ops": 1201,
+      "phase": 1,
+      "side": "host",
+      "t": 1008,
+    },
+    {
+      "digest": "084737534ee8abc5",
+      "ops": 1213,
+      "phase": 2,
+      "side": "host",
+      "t": 3824,
+    },
+    {
+      "digest": "43b6aa3c5fab82cc",
+      "ops": 1213,
+      "phase": 2,
+      "side": "guest",
+      "t": 3824,
+    },
+  ],
+  "phases": [
+    {
+      "phase": 1,
+      "side": "host",
+      "t": 16,
+    },
+    {
+      "phase": 1,
+      "side": "guest",
+      "t": 16,
+    },
+    {
+      "phase": 2,
+      "side": "host",
+      "t": 3808,
+    },
+    {
+      "phase": 2,
+      "side": "guest",
+      "t": 3808,
+    },
+  ],
+  "results": {
+    "guest": [],
+    "host": [],
+  },
+  "sounds": {
+    "guest": {
+      "digest": "8a6750c084800dfa",
+      "entries": 11,
+      "voices": {
+        "createGain": 1,
+        "createOscillator": 1,
+      },
+    },
+    "host": {
+      "digest": "75a210eeb9c1ba57",
+      "entries": 171,
+      "voices": {
+        "createGain": 17,
+        "createOscillator": 17,
+      },
+    },
+  },
+  "state": {
+    "guest": {
+      "caughtBy": 0,
+      "countdown": 1,
+      "fireballSpeed": 3,
+      "fireballVX": -1.7135958671569824,
+      "fireballVY": -2.52311110496521,
+      "fireballX": 152.8824220604488,
+      "fireballY": 362.6314477724988,
+      "p1KingAlive": true,
+      "p1Lives": 3,
+      "p2KingAlive": true,
+      "p2Lives": 3,
+      "phase": 2,
+      "round": 1,
+      "shield1Y": 36.40772284782612,
+      "shield2Y": 48.000108357237345,
+    },
+    "host": {
+      "brickHit": false,
+      "caughtBy": 0,
+      "countdown": 1,
+      "fireballSpeed": 3.05,
+      "fireballVX": -1.7135958094755366,
+      "fireballVY": -2.5231110561661527,
+      "fireballX": 152.76598172789724,
+      "fireballY": 362.4600024725229,
+      "hitBrickColor": "#00ff66",
+      "hitBrickX": 580,
+      "hitBrickY": 195,
+      "hitCastle": "p2",
+      "p1KingAlive": true,
+      "p1Lives": 3,
+      "p2KingAlive": true,
+      "p2Lives": 3,
+      "phase": 2,
+      "round": 1,
+      "shield1Y": 36,
+      "shield2Y": 48,
+      "shieldHit": false,
+      "shieldHitPlayer": 0,
+      "wallBounced": false,
+    },
+  },
+  "wire": {
+    "byDir": {
+      "guest>host": {
+        "bytes": 8426,
+        "datagrams": 1686,
+        "dropped": 0,
+        "types": {
+          "84": 1,
+          "8e": 1685,
+        },
+      },
+      "host>guest": {
+        "bytes": 52008,
+        "datagrams": 1576,
+        "dropped": 0,
+        "types": {
+          "80": 1576,
+        },
+      },
+    },
+    "digest": "4831c0b8cc61abcd",
+    "first": [
+      {
+        "dir": "guest>host",
+        "hex": "84",
+        "t": 0,
+      },
+      {
+        "dir": "host>guest",
+        "hex": "800000a043000070430000000000000000d200d200ffffffffffff030301030100",
+        "t": 0,
+      },
+      {
+        "dir": "host>guest",
+        "hex": "800000a043000070430000000000000000d200d200ffffffffffff030301020100",
+        "t": 1000,
+      },
+      {
+        "dir": "host>guest",
+        "hex": "800000a043000070430000000000000000d200d200ffffffffffff030301010100",
+        "t": 2000,
+      },
+      {
+        "dir": "host>guest",
+        "hex": "800000a043000070430000000000000000d200d200ffffffffffff030301010100",
+        "t": 3000,
+      },
+      {
+        "dir": "host>guest",
+        "hex": "800000a0430000704387403a4012833a3fd200d200ffffffffffff030302010100",
+        "t": 3800,
+      },
+    ],
+  },
+}
+`;
+
+exports[`hex_warlords pins > P2P over a channel that loses datagrams 1`] = `
+{
+  "draws": [
+    {
+      "digest": "4ca707c56ac5ec06",
+      "ops": 1201,
+      "phase": 0,
+      "side": "guest",
+      "t": 768,
+    },
+    {
+      "digest": "087db0ccfc85d39d",
+      "ops": 1201,
+      "phase": 1,
+      "side": "guest",
+      "t": 784,
+    },
+    {
+      "digest": "f4ba246e36e0c78d",
+      "ops": 1201,
+      "phase": 1,
+      "side": "host",
+      "t": 1760,
+    },
+    {
+      "digest": "f4eac1cce58d35af",
+      "ops": 1213,
+      "phase": 2,
+      "side": "host",
+      "t": 4576,
+    },
+    {
+      "digest": "2973d75359170a08",
+      "ops": 1213,
+      "phase": 2,
+      "side": "guest",
+      "t": 4576,
+    },
+  ],
+  "phases": [
+    {
+      "phase": 0,
+      "side": "host",
+      "t": 16,
+    },
+    {
+      "phase": 0,
+      "side": "guest",
+      "t": 16,
+    },
+    {
+      "phase": 1,
+      "side": "host",
+      "t": 752,
+    },
+    {
+      "phase": 1,
+      "side": "guest",
+      "t": 768,
+    },
+    {
+      "phase": 2,
+      "side": "host",
+      "t": 4560,
+    },
+    {
+      "phase": 2,
+      "side": "guest",
+      "t": 4560,
+    },
+  ],
+  "results": {
+    "guest": [],
+    "host": [],
+  },
+  "sounds": {
+    "guest": {
+      "digest": "563c90bcf15aa175",
+      "entries": 11,
+      "voices": {
+        "createGain": 1,
+        "createOscillator": 1,
+      },
+    },
+    "host": {
+      "digest": "c8bf2900ee5a6980",
+      "entries": 171,
+      "voices": {
+        "createGain": 17,
+        "createOscillator": 17,
+      },
+    },
+  },
+  "state": {
+    "guest": {
+      "caughtBy": 0,
+      "countdown": 1,
+      "fireballSpeed": 3,
+      "fireballVX": -1.9490114450454712,
+      "fireballVY": -2.662959575653076,
+      "fireballX": 491.7767333984375,
+      "fireballY": 155.12237548828125,
+      "p1KingAlive": true,
+      "p1Lives": 3,
+      "p2KingAlive": true,
+      "p2Lives": 3,
+      "phase": 2,
+      "round": 1,
+      "shield1Y": 240,
+      "shield2Y": 144,
+    },
+    "host": {
+      "caughtBy": 0,
+      "countdown": 1,
+      "fireballSpeed": 3.299999999999999,
+      "fireballVX": -1.949011471845804,
+      "fireballVY": -2.662959684751807,
+      "fireballX": 489.82771215516857,
+      "fireballY": 152.45941957106615,
+      "p1KingAlive": true,
+      "p1Lives": 3,
+      "p2KingAlive": true,
+      "p2Lives": 3,
+      "phase": 2,
+      "round": 1,
+      "shield1Y": 234,
+      "shield2Y": 144,
+      "shieldHit": false,
+      "shieldHitPlayer": 0,
+      "wallBounced": false,
+    },
+  },
+  "wire": {
+    "byDir": {
+      "guest>host": {
+        "bytes": 8429,
+        "datagrams": 1689,
+        "dropped": 3,
+        "types": {
+          "84": 4,
+          "8e": 1685,
+        },
+      },
+      "host>guest": {
+        "bytes": 50523,
+        "datagrams": 1531,
+        "dropped": 218,
+        "types": {
+          "80": 1531,
+        },
+      },
+    },
+    "digest": "26f476a91c6d610e",
+    "first": [
+      {
+        "dir": "guest>host",
+        "dropped": true,
+        "hex": "84",
+        "t": 0,
+      },
+      {
+        "dir": "guest>host",
+        "dropped": true,
+        "hex": "84",
+        "t": 250,
+      },
+      {
+        "dir": "guest>host",
+        "dropped": true,
+        "hex": "84",
+        "t": 500,
+      },
+      {
+        "dir": "guest>host",
+        "hex": "84",
+        "t": 750,
+      },
+      {
+        "dir": "host>guest",
+        "hex": "800000a043000070430000000000000000d200d200ffffffffffff030301030100",
+        "t": 751,
+      },
+      {
+        "dir": "host>guest",
+        "hex": "800000a043000070430000000000000000d200d200ffffffffffff030301020100",
+        "t": 1751,
+      },
+    ],
+  },
+}
+`;
+
+exports[`hex_warlords pins > solo against the AI 1`] = `
+{
+  "draws": [
+    {
+      "digest": "9f24ed60a55f77bb",
+      "ops": 1201,
+      "phase": 1,
+      "side": "host",
+      "t": 1008,
+    },
+    {
+      "digest": "af2df0858b493bc6",
+      "ops": 1213,
+      "phase": 2,
+      "side": "host",
+      "t": 3824,
+    },
+  ],
+  "ended": false,
+  "phases": [
+    {
+      "phase": 1,
+      "side": "host",
+      "t": 16,
+    },
+    {
+      "phase": 2,
+      "side": "host",
+      "t": 3808,
+    },
+  ],
+  "results": {
+    "guest": [],
+    "host": [],
+  },
+  "sounds": {
+    "host": {
+      "digest": "d70a637ee22c00cc",
+      "entries": 515,
+      "voices": {
+        "createGain": 49,
+        "createOscillator": 49,
+      },
+    },
+  },
+  "state": {
+    "host": {
+      "brickHit": false,
+      "caught": false,
+      "caughtBy": 0,
+      "countdown": 1,
+      "fireballSpeed": 4.149999999999996,
+      "fireballVX": 3.429410122659332,
+      "fireballVY": 2.337016519111851,
+      "fireballX": 352.3896849974488,
+      "fireballY": 452.6298348088816,
+      "hitBrickColor": "#ffcc00",
+      "hitBrickX": 104,
+      "hitBrickY": 285,
+      "hitCastle": "p1",
+      "p1KingAlive": true,
+      "p1Lives": 3,
+      "p2KingAlive": true,
+      "p2Lives": 3,
+      "phase": 2,
+      "released": false,
+      "round": 1,
+      "shield1Y": 210,
+      "shield2Y": 384,
+      "shieldHit": false,
+      "shieldHitPlayer": 0,
+      "wallBounced": false,
+    },
+  },
+  "wire": {
+    "byDir": {},
+    "digest": "4f53cda18c2baa0c",
+    "first": [],
+  },
+}
+`;
+
+exports[`hex_warlords pins > the channel drops mid-match 1`] = `
+{
+  "lastPhases": {
+    "guest": 4,
+    "host": 4,
+  },
+  "leakedTimers": 0,
+  "results": {
+    "guest": [
+      {
+        "disconnected": true,
+        "score": {
+          "p1": 3,
+          "p2": 3,
+        },
+        "winner": 0,
+      },
+    ],
+    "host": [
+      {
+        "disconnected": true,
+        "score": {
+          "p1": 3,
+          "p2": 3,
+        },
+        "winner": 0,
+      },
+    ],
+  },
+  "state": {
+    "guest": {
+      "caughtBy": 0,
+      "countdown": 1,
+      "fireballSpeed": 3,
+      "fireballVX": 2.9101884365081787,
+      "fireballVY": -0.7285624742507935,
+      "fireballX": 280.9570007324219,
+      "fireballY": 223.18881225585938,
+      "p1KingAlive": true,
+      "p1Lives": 3,
+      "p2KingAlive": true,
+      "p2Lives": 3,
+      "phase": 4,
+      "round": 1,
+      "shield1Y": 36,
+      "shield2Y": 210,
+    },
+    "host": {
+      "brickHit": false,
+      "caughtBy": 0,
+      "countdown": 1,
+      "fireballSpeed": 3,
+      "fireballVX": 2.910188432262894,
+      "fireballVY": -0.7285624810016218,
+      "fireballX": 280.95701126392805,
+      "fireballY": 223.18881909243385,
+      "hitBrickColor": "#ff3366",
+      "hitBrickX": 126,
+      "hitBrickY": 249,
+      "hitCastle": "p1",
+      "p1KingAlive": true,
+      "p1Lives": 3,
+      "p2KingAlive": true,
+      "p2Lives": 3,
+      "phase": 4,
+      "round": 1,
+      "shield1Y": 36,
+      "shield2Y": 210,
+      "shieldHit": false,
+      "shieldHitPlayer": 0,
+      "wallBounced": false,
+    },
+  },
+}
+`;

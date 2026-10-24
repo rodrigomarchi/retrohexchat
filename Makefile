@@ -3,7 +3,7 @@
        test test.stale test.unit test.integration test.liveview test.feature test.all test.cover \
        e2e e2e.headless e2e.sweep e2e.batch e2e.director e2e.batches e2e.prepare e2e.db.reset e2e.changed e2e.shard e2e.smoke e2e.smoke.connect e2e.smoke.chat e2e.smoke.dialogs e2e.smoke.i18n e2e.smoke.calls e2e.smoke.mobile e2e.smoke.perf e2e.ui e2e.shots e2e.install e2e.db.setup load.test \
        test.cover.all test.domain test.domain.stale test.web test.web.stale test.failed test.seed test.file test.line \
-       test.js test.js.changed test.js.related test.js.watch \
+       test.js test.js.changed test.js.pins test.js.related test.js.watch \
        ci ci.full ci.quick ci.changed ci.serial ci.quick.serial ci.partition-profile ci.partition-profile.plan \
        umbrella.boundary-audit \
        i18n.audit i18n.audit.check i18n.status i18n.catalog.check i18n.catalog.size.check i18n.placeholder.check i18n.source-fallback.check i18n.quality.check i18n.glossary i18n.repair i18n.venv i18n.translate i18n.repair.plurals games.shots spaces.shots dup.report dup.test seo.snapshot seo.snapshot.all seo.compare seo.console seo.indexnow seo.sitemap.submit seo.test i18n.tooling.test i18n.js.translate i18n.locales.add i18n.wave1.add i18n.gettext.extract i18n.gettext.merge i18n.gettext.rebuild i18n.gettext.check \
@@ -220,6 +220,9 @@ test.line: ## Run a specific test by file:line (usage: make test.line TARGET=pat
 
 test.js: ## Run JavaScript tests (Vitest)
 	npm test --prefix $(WEB_APP)/assets
+
+test.js.pins: ## Run the games' characterization pins (minutes; by hand, before and after a games refactor step)
+	npm run test:pins --prefix $(WEB_APP)/assets
 
 test.js.changed: ## Run Vitest tests affected by changed JS files (usage: make test.js.changed SINCE=origin/main)
 	npm run test:changed --prefix $(WEB_APP)/assets -- $(SINCE)

@@ -1,0 +1,623 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`block_breakers pins > P2P following the key script 1`] = `
+{
+  "draws": [
+    {
+      "digest": "b56c5b8572fda9b0",
+      "ops": 1186,
+      "phase": 1,
+      "side": "guest",
+      "t": 32,
+    },
+    {
+      "digest": "33bf833bdf6f5867",
+      "ops": 1186,
+      "phase": 1,
+      "side": "host",
+      "t": 1008,
+    },
+    {
+      "digest": "960503ed4c166cf2",
+      "ops": 1187,
+      "phase": 2,
+      "side": "guest",
+      "t": 3024,
+    },
+    {
+      "digest": "fddd667323b4a5b9",
+      "ops": 1218,
+      "phase": 3,
+      "side": "host",
+      "t": 3824,
+    },
+    {
+      "digest": "eedbbb6ddafa7e1d",
+      "ops": 1198,
+      "phase": 3,
+      "side": "guest",
+      "t": 3824,
+    },
+    {
+      "digest": "79b2f2fe1d56061d",
+      "ops": 1156,
+      "phase": 4,
+      "side": "host",
+      "t": 10816,
+    },
+    {
+      "digest": "e05e0e26685442af",
+      "ops": 1156,
+      "phase": 4,
+      "side": "guest",
+      "t": 10832,
+    },
+  ],
+  "phases": [
+    {
+      "phase": 1,
+      "side": "host",
+      "t": 16,
+    },
+    {
+      "phase": 1,
+      "side": "guest",
+      "t": 16,
+    },
+    {
+      "phase": 2,
+      "side": "host",
+      "t": 3008,
+    },
+    {
+      "phase": 2,
+      "side": "guest",
+      "t": 3008,
+    },
+    {
+      "phase": 3,
+      "side": "host",
+      "t": 3808,
+    },
+    {
+      "phase": 3,
+      "side": "guest",
+      "t": 3808,
+    },
+    {
+      "phase": 4,
+      "side": "host",
+      "t": 10784,
+    },
+    {
+      "phase": 4,
+      "side": "guest",
+      "t": 10800,
+    },
+  ],
+  "results": {
+    "guest": [],
+    "host": [],
+  },
+  "sounds": {
+    "guest": {
+      "digest": "e8d102000ebd3b24",
+      "entries": 62,
+      "voices": {
+        "createGain": 6,
+        "createOscillator": 6,
+      },
+    },
+    "host": {
+      "digest": "42d5a4a143264f74",
+      "entries": 102,
+      "voices": {
+        "createGain": 10,
+        "createOscillator": 10,
+      },
+    },
+  },
+  "state": {
+    "guest": {
+      "ballSpeed": 2.5,
+      "ballVX": 2.2179741859436035,
+      "ballVY": 1.3946292400360107,
+      "ballX": 436.50494384765625,
+      "ballY": 476.07647705078125,
+      "blocksDestroyed": 0,
+      "blocksRemaining": 46,
+      "countdown": 0,
+      "lives": 2,
+      "paddle1X": 70.47567665579714,
+      "paddle2X": 91.0001264167769,
+      "phase": 4,
+      "score": 50,
+      "won": false,
+    },
+    "host": {
+      "ballSpeed": 2.62,
+      "ballVX": 2.2179741335487395,
+      "ballVY": 1.3946292492661692,
+      "ballX": 436.50495604200563,
+      "ballY": 476.07647273312233,
+      "blockHit": false,
+      "blocksDestroyed": 4,
+      "blocksRemaining": 46,
+      "countdown": 0,
+      "hitBlockColor": "#00ccff",
+      "hitBlockRow": 4,
+      "hitBlockX": 50,
+      "hitBlockY": 228,
+      "lifeLost": false,
+      "lives": 2,
+      "paddle1X": 70,
+      "paddle2X": 91,
+      "paddleHit": false,
+      "phase": 4,
+      "score": 50,
+      "wallBounced": false,
+      "won": false,
+    },
+  },
+  "wire": {
+    "byDir": {
+      "guest>host": {
+        "bytes": 8141,
+        "datagrams": 1629,
+        "dropped": 0,
+        "types": {
+          "84": 1,
+          "8e": 1628,
+        },
+      },
+      "host>guest": {
+        "bytes": 53584,
+        "datagrams": 1576,
+        "dropped": 0,
+        "types": {
+          "80": 1576,
+        },
+      },
+    },
+    "digest": "6c85d9e14b9be0ed",
+    "first": [
+      {
+        "dir": "guest>host",
+        "hex": "84",
+        "t": 0,
+      },
+      {
+        "dir": "host>guest",
+        "hex": "800000a04300007043000000000000000018011801000003010332ffffffffffffc0",
+        "t": 0,
+      },
+      {
+        "dir": "host>guest",
+        "hex": "800000a04300007043000000000000000018011801000003010232ffffffffffffc0",
+        "t": 1000,
+      },
+      {
+        "dir": "host>guest",
+        "hex": "800000a04300007043000000000000000018011801000003010132ffffffffffffc0",
+        "t": 2000,
+      },
+      {
+        "dir": "host>guest",
+        "hex": "800000a04300007043000000000000000018011801000003020032ffffffffffffc0",
+        "t": 3000,
+      },
+      {
+        "dir": "host>guest",
+        "hex": "800000a043000070437743e9be1c521dc018011801000003030032ffffffffffffc0",
+        "t": 3800,
+      },
+    ],
+  },
+}
+`;
+
+exports[`block_breakers pins > P2P over a channel that loses datagrams 1`] = `
+{
+  "draws": [
+    {
+      "digest": "e0e0d31f70d908a2",
+      "ops": 1186,
+      "phase": 0,
+      "side": "guest",
+      "t": 768,
+    },
+    {
+      "digest": "82947188d580f7c3",
+      "ops": 1186,
+      "phase": 1,
+      "side": "guest",
+      "t": 784,
+    },
+    {
+      "digest": "b3f15c64cad8b68f",
+      "ops": 1186,
+      "phase": 1,
+      "side": "host",
+      "t": 1760,
+    },
+    {
+      "digest": "71b71d94903ea519",
+      "ops": 1187,
+      "phase": 2,
+      "side": "guest",
+      "t": 3776,
+    },
+    {
+      "digest": "c9f577d14660080b",
+      "ops": 1218,
+      "phase": 3,
+      "side": "host",
+      "t": 4576,
+    },
+    {
+      "digest": "582ae15e4d689db8",
+      "ops": 1198,
+      "phase": 3,
+      "side": "guest",
+      "t": 4576,
+    },
+    {
+      "digest": "17873d7a02e4cdd9",
+      "ops": 1156,
+      "phase": 4,
+      "side": "host",
+      "t": 10352,
+    },
+    {
+      "digest": "d4f92bb11167822e",
+      "ops": 1156,
+      "phase": 4,
+      "side": "guest",
+      "t": 10368,
+    },
+  ],
+  "phases": [
+    {
+      "phase": 0,
+      "side": "host",
+      "t": 16,
+    },
+    {
+      "phase": 0,
+      "side": "guest",
+      "t": 16,
+    },
+    {
+      "phase": 1,
+      "side": "host",
+      "t": 752,
+    },
+    {
+      "phase": 1,
+      "side": "guest",
+      "t": 768,
+    },
+    {
+      "phase": 2,
+      "side": "host",
+      "t": 3760,
+    },
+    {
+      "phase": 2,
+      "side": "guest",
+      "t": 3760,
+    },
+    {
+      "phase": 3,
+      "side": "host",
+      "t": 4560,
+    },
+    {
+      "phase": 3,
+      "side": "guest",
+      "t": 4560,
+    },
+    {
+      "phase": 4,
+      "side": "host",
+      "t": 10336,
+    },
+    {
+      "phase": 4,
+      "side": "guest",
+      "t": 10352,
+    },
+  ],
+  "results": {
+    "guest": [],
+    "host": [],
+  },
+  "sounds": {
+    "guest": {
+      "digest": "66a8f8189fb8a7b8",
+      "entries": 62,
+      "voices": {
+        "createGain": 6,
+        "createOscillator": 6,
+      },
+    },
+    "host": {
+      "digest": "f2e1bc7c0b0b0055",
+      "entries": 102,
+      "voices": {
+        "createGain": 10,
+        "createOscillator": 10,
+      },
+    },
+  },
+  "state": {
+    "guest": {
+      "ballSpeed": 2.5,
+      "ballVX": 1.9053696393966675,
+      "ballVY": 1.798323154449463,
+      "ballX": 200.25308227539062,
+      "ballY": 476.36981201171875,
+      "blocksDestroyed": 0,
+      "blocksRemaining": 46,
+      "countdown": 0,
+      "lives": 2,
+      "paddle1X": 315,
+      "paddle2X": 203,
+      "phase": 4,
+      "score": 50,
+      "won": false,
+    },
+    "host": {
+      "ballSpeed": 2.62,
+      "ballVX": 1.9053696886072469,
+      "ballVY": 1.7983232050264835,
+      "ballX": 200.25307792654618,
+      "ballY": 476.36981769047634,
+      "blockHit": false,
+      "blocksDestroyed": 4,
+      "blocksRemaining": 46,
+      "countdown": 0,
+      "hitBlockColor": "#00ccff",
+      "hitBlockRow": 4,
+      "hitBlockX": 50,
+      "hitBlockY": 228,
+      "lifeLost": false,
+      "lives": 2,
+      "paddle1X": 308,
+      "paddle2X": 203,
+      "paddleHit": false,
+      "phase": 4,
+      "score": 50,
+      "wallBounced": false,
+      "won": false,
+    },
+  },
+  "wire": {
+    "byDir": {
+      "guest>host": {
+        "bytes": 8144,
+        "datagrams": 1632,
+        "dropped": 3,
+        "types": {
+          "84": 4,
+          "8e": 1628,
+        },
+      },
+      "host>guest": {
+        "bytes": 52054,
+        "datagrams": 1531,
+        "dropped": 218,
+        "types": {
+          "80": 1531,
+        },
+      },
+    },
+    "digest": "a4b62cd0ef664e34",
+    "first": [
+      {
+        "dir": "guest>host",
+        "dropped": true,
+        "hex": "84",
+        "t": 0,
+      },
+      {
+        "dir": "guest>host",
+        "dropped": true,
+        "hex": "84",
+        "t": 250,
+      },
+      {
+        "dir": "guest>host",
+        "dropped": true,
+        "hex": "84",
+        "t": 500,
+      },
+      {
+        "dir": "guest>host",
+        "hex": "84",
+        "t": 750,
+      },
+      {
+        "dir": "host>guest",
+        "hex": "800000a04300007043000000000000000018011801000003010332ffffffffffffc0",
+        "t": 751,
+      },
+      {
+        "dir": "host>guest",
+        "hex": "800000a04300007043000000000000000018011801000003010232ffffffffffffc0",
+        "t": 1751,
+      },
+    ],
+  },
+}
+`;
+
+exports[`block_breakers pins > solo against the AI 1`] = `
+{
+  "draws": [
+    {
+      "digest": "33bf833bdf6f5867",
+      "ops": 1186,
+      "phase": 1,
+      "side": "host",
+      "t": 1008,
+    },
+    {
+      "digest": "f65bc16a2a757199",
+      "ops": 1218,
+      "phase": 3,
+      "side": "host",
+      "t": 3824,
+    },
+    {
+      "digest": "7d1749be47382687",
+      "ops": 1192,
+      "phase": 4,
+      "side": "host",
+      "t": 5680,
+    },
+  ],
+  "ended": false,
+  "phases": [
+    {
+      "phase": 1,
+      "side": "host",
+      "t": 16,
+    },
+    {
+      "phase": 2,
+      "side": "host",
+      "t": 3008,
+    },
+    {
+      "phase": 3,
+      "side": "host",
+      "t": 3808,
+    },
+    {
+      "phase": 4,
+      "side": "host",
+      "t": 5664,
+    },
+  ],
+  "results": {
+    "guest": [],
+    "host": [],
+  },
+  "sounds": {
+    "host": {
+      "digest": "c7b0d94eafd92765",
+      "entries": 52,
+      "voices": {
+        "createGain": 5,
+        "createOscillator": 5,
+      },
+    },
+  },
+  "state": {
+    "host": {
+      "ballSpeed": 2.5,
+      "ballVX": -1.2437923172466454,
+      "ballVY": 2.1686356705445524,
+      "ballX": 181.93905278562238,
+      "ballY": 476.3812880893584,
+      "blockHit": false,
+      "blocksDestroyed": 1,
+      "blocksRemaining": 49,
+      "countdown": 0,
+      "hitBlockColor": "#00ccff",
+      "hitBlockRow": 4,
+      "hitBlockX": 290,
+      "hitBlockY": 228,
+      "lifeLost": false,
+      "lives": 2,
+      "paddle1X": 280,
+      "paddle2X": 224,
+      "paddleHit": false,
+      "phase": 4,
+      "score": 10,
+      "wallBounced": false,
+      "won": false,
+    },
+  },
+  "wire": {
+    "byDir": {},
+    "digest": "4f53cda18c2baa0c",
+    "first": [],
+  },
+}
+`;
+
+exports[`block_breakers pins > the channel drops mid-match 1`] = `
+{
+  "lastPhases": {
+    "guest": 5,
+    "host": 5,
+  },
+  "leakedTimers": 0,
+  "results": {
+    "guest": [
+      {
+        "disconnected": true,
+        "score": {
+          "p1": 50,
+          "p2": 50,
+        },
+        "winner": -1,
+      },
+    ],
+    "host": [
+      {
+        "disconnected": true,
+        "score": {
+          "p1": 50,
+          "p2": 50,
+        },
+        "winner": -1,
+      },
+    ],
+  },
+  "state": {
+    "guest": {
+      "ballSpeed": 2.5,
+      "ballVX": 2.2179741859436035,
+      "ballVY": 1.3946292400360107,
+      "ballX": 436.50494384765625,
+      "ballY": 476.07647705078125,
+      "blocksDestroyed": 0,
+      "blocksRemaining": 46,
+      "countdown": 0,
+      "lives": 2,
+      "paddle1X": 70,
+      "paddle2X": 280,
+      "phase": 5,
+      "score": 50,
+      "won": false,
+    },
+    "host": {
+      "ballSpeed": 2.62,
+      "ballVX": 2.2179741335487395,
+      "ballVY": 1.3946292492661692,
+      "ballX": 436.50495604200563,
+      "ballY": 476.07647273312233,
+      "blockHit": false,
+      "blocksDestroyed": 4,
+      "blocksRemaining": 46,
+      "countdown": 0,
+      "hitBlockColor": "#00ccff",
+      "hitBlockRow": 4,
+      "hitBlockX": 50,
+      "hitBlockY": 228,
+      "lifeLost": false,
+      "lives": 2,
+      "paddle1X": 70,
+      "paddle2X": 280,
+      "paddleHit": false,
+      "phase": 5,
+      "score": 50,
+      "wallBounced": false,
+      "won": false,
+    },
+  },
+}
+`;

@@ -1,0 +1,709 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`hex_frost pins > P2P following the key script 1`] = `
+{
+  "draws": [
+    {
+      "digest": "68fb70065ed28f7d",
+      "ops": 1962,
+      "phase": 1,
+      "side": "host",
+      "t": 32,
+    },
+    {
+      "digest": "ecee5f92ec3c4041",
+      "ops": 1962,
+      "phase": 1,
+      "side": "guest",
+      "t": 48,
+    },
+    {
+      "digest": "23095a31cc45c99b",
+      "ops": 1949,
+      "phase": 2,
+      "side": "host",
+      "t": 3024,
+    },
+    {
+      "digest": "16d780f4986c2d58",
+      "ops": 1949,
+      "phase": 2,
+      "side": "guest",
+      "t": 3040,
+    },
+  ],
+  "phases": [
+    {
+      "phase": 1,
+      "side": "host",
+      "t": 16,
+    },
+    {
+      "phase": 1,
+      "side": "guest",
+      "t": 16,
+    },
+    {
+      "phase": 2,
+      "side": "host",
+      "t": 3008,
+    },
+    {
+      "phase": 2,
+      "side": "guest",
+      "t": 3024,
+    },
+  ],
+  "results": {
+    "guest": [],
+    "host": [],
+  },
+  "sounds": {
+    "guest": {
+      "digest": "bb56bb8bb1a1e2ee",
+      "entries": 325,
+      "voices": {
+        "createBuffer": 3,
+        "createBufferSource": 3,
+        "createGain": 33,
+        "createOscillator": 29,
+      },
+    },
+    "host": {
+      "digest": "d2b36c4fa5d0a254",
+      "entries": 373,
+      "voices": {
+        "createBuffer": 3,
+        "createBufferSource": 3,
+        "createGain": 38,
+        "createOscillator": 34,
+      },
+    },
+  },
+  "state": {
+    "guest": {
+      "countdown": 0,
+      "events": 0,
+      "mode": 0,
+      "p1IglooFlash": 0,
+      "p2IglooFlash": 0,
+      "phase": 2,
+      "round": 1,
+      "seed": 3680900381,
+      "temperature": 18.02,
+    },
+    "host": {
+      "countdown": 0,
+      "events": 0,
+      "fishSpawnTimer": 119,
+      "frameCount": 1799,
+      "mode": 0,
+      "p1IglooFlash": 0,
+      "p1RespawnTimer": 0,
+      "p2IglooFlash": 0,
+      "p2RespawnTimer": 0,
+      "phase": 2,
+      "piecesNeeded": 15,
+      "round": 1,
+      "roundWinner": 0,
+      "seed": 3680900381,
+      "temperature": 18.0166666666682,
+    },
+  },
+  "wire": {
+    "byDir": {
+      "guest>host": {
+        "bytes": 5881,
+        "datagrams": 1177,
+        "dropped": 0,
+        "types": {
+          "84": 1,
+          "8e": 1176,
+        },
+      },
+      "host>guest": {
+        "bytes": 272240,
+        "datagrams": 1800,
+        "dropped": 0,
+        "types": {
+          "80": 1800,
+        },
+      },
+    },
+    "digest": "04c15de0476970ac",
+    "first": [
+      {
+        "dir": "guest>host",
+        "hex": "84",
+        "t": 0,
+      },
+      {
+        "dir": "host>guest",
+        "hex": "80010001031d1566db94114006000100000001030000000000c01200010000000103000000000000000100000785fe00790200df05005d0900100d009410005e1400ff000007ccfe00170200c005007909003a0d00c110000b140001000007d9fe00580200b60500420900240d00b21000601400ff00000799fe002c0200cc0500460900df0c00ce10007114000100cb0000010000",
+        "t": 0,
+      },
+      {
+        "dir": "host>guest",
+        "hex": "80010001031d1566db94114006000100000001030000000000c01200010000000103000000000000000100000785fe00790200df05005d0900100d009410005e1400ff000007ccfe00170200c005007909003a0d00c110000b140001000007d9fe00580200b60500420900240d00b21000601400ff00000799fe002c0200cc0500460900df0c00ce10007114000100cb0000010000",
+        "t": 32,
+      },
+      {
+        "dir": "host>guest",
+        "hex": "80010001031d1566db94114006000100000001030000000000c01200010000000103000000000000000100000785fe00790200df05005d0900100d009410005e1400ff000007ccfe00170200c005007909003a0d00c110000b140001000007d9fe00580200b60500420900240d00b21000601400ff00000799fe002c0200cc0500460900df0c00ce10007114000100cb0000010000",
+        "t": 48,
+      },
+      {
+        "dir": "host>guest",
+        "hex": "80010001031d1566db94114006000100000001030000000000c01200010000000103000000000000000100000785fe00790200df05005d0900100d009410005e1400ff000007ccfe00170200c005007909003a0d00c110000b140001000007d9fe00580200b60500420900240d00b21000601400ff00000799fe002c0200cc0500460900df0c00ce10007114000100cb0000010000",
+        "t": 64,
+      },
+      {
+        "dir": "host>guest",
+        "hex": "80010001031d1566db94114006000100000001030000000000c01200010000000103000000000000000100000785fe00790200df05005d0900100d009410005e1400ff000007ccfe00170200c005007909003a0d00c110000b140001000007d9fe00580200b60500420900240d00b21000601400ff00000799fe002c0200cc0500460900df0c00ce10007114000100cb0000010000",
+        "t": 80,
+      },
+    ],
+  },
+}
+`;
+
+exports[`hex_frost pins > P2P over a channel that loses datagrams 1`] = `
+{
+  "draws": [
+    {
+      "digest": "ad68feddbb36b3f9",
+      "ops": 1962,
+      "phase": 1,
+      "side": "host",
+      "t": 768,
+    },
+    {
+      "digest": "6997d1278b39506b",
+      "ops": 1962,
+      "phase": null,
+      "side": "guest",
+      "t": 768,
+    },
+    {
+      "digest": "ecee5f92ec3c4041",
+      "ops": 1962,
+      "phase": 1,
+      "side": "guest",
+      "t": 784,
+    },
+    {
+      "digest": "3c47e8cbd02d9346",
+      "ops": 1949,
+      "phase": 2,
+      "side": "host",
+      "t": 3776,
+    },
+    {
+      "digest": "2b8de278e0a474f5",
+      "ops": 1949,
+      "phase": 2,
+      "side": "guest",
+      "t": 3808,
+    },
+  ],
+  "phases": [
+    {
+      "phase": 0,
+      "side": "host",
+      "t": 16,
+    },
+    {
+      "phase": null,
+      "side": "guest",
+      "t": 16,
+    },
+    {
+      "phase": 1,
+      "side": "host",
+      "t": 752,
+    },
+    {
+      "phase": 1,
+      "side": "guest",
+      "t": 768,
+    },
+    {
+      "phase": 2,
+      "side": "host",
+      "t": 3760,
+    },
+    {
+      "phase": 2,
+      "side": "guest",
+      "t": 3776,
+    },
+  ],
+  "results": {
+    "guest": [],
+    "host": [],
+  },
+  "sounds": {
+    "guest": {
+      "digest": "79b796bef303714c",
+      "entries": 284,
+      "voices": {
+        "createBuffer": 3,
+        "createBufferSource": 3,
+        "createGain": 29,
+        "createOscillator": 25,
+      },
+    },
+    "host": {
+      "digest": "ac4075784e929405",
+      "entries": 373,
+      "voices": {
+        "createBuffer": 3,
+        "createBufferSource": 3,
+        "createGain": 38,
+        "createOscillator": 34,
+      },
+    },
+  },
+  "state": {
+    "guest": {
+      "countdown": 0,
+      "events": 0,
+      "mode": 0,
+      "p1IglooFlash": 0,
+      "p2IglooFlash": 0,
+      "phase": 2,
+      "round": 1,
+      "seed": 3680900381,
+      "temperature": 18.78,
+    },
+    "host": {
+      "countdown": 0,
+      "events": 0,
+      "fishSpawnTimer": 74,
+      "frameCount": 1754,
+      "mode": 0,
+      "p1IglooFlash": 0,
+      "p1RespawnTimer": 0,
+      "p2IglooFlash": 0,
+      "p2RespawnTimer": 0,
+      "phase": 2,
+      "piecesNeeded": 15,
+      "round": 1,
+      "roundWinner": 0,
+      "seed": 3680900381,
+      "temperature": 18.766666666668158,
+    },
+  },
+  "wire": {
+    "byDir": {
+      "guest>host": {
+        "bytes": 5884,
+        "datagrams": 1180,
+        "dropped": 3,
+        "types": {
+          "84": 4,
+          "8e": 1176,
+        },
+      },
+      "host>guest": {
+        "bytes": 265355,
+        "datagrams": 1755,
+        "dropped": 250,
+        "types": {
+          "80": 1755,
+        },
+      },
+    },
+    "digest": "a6bf5b19cb7bbadf",
+    "first": [
+      {
+        "dir": "guest>host",
+        "dropped": true,
+        "hex": "84",
+        "t": 0,
+      },
+      {
+        "dir": "guest>host",
+        "dropped": true,
+        "hex": "84",
+        "t": 250,
+      },
+      {
+        "dir": "guest>host",
+        "dropped": true,
+        "hex": "84",
+        "t": 500,
+      },
+      {
+        "dir": "guest>host",
+        "hex": "84",
+        "t": 750,
+      },
+      {
+        "dir": "host>guest",
+        "hex": "80010001031d1566db94114006000100000001030000000000c01200010000000103000000000000000100000785fe00790200df05005d0900100d009410005e1400ff000007ccfe00170200c005007909003a0d00c110000b140001000007d9fe00580200b60500420900240d00b21000601400ff00000799fe002c0200cc0500460900df0c00ce10007114000100cb0000010000",
+        "t": 751,
+      },
+      {
+        "dir": "host>guest",
+        "hex": "80010001031d1566db94114006000100000001030000000000c01200010000000103000000000000000100000785fe00790200df05005d0900100d009410005e1400ff000007ccfe00170200c005007909003a0d00c110000b140001000007d9fe00580200b60500420900240d00b21000601400ff00000799fe002c0200cc0500460900df0c00ce10007114000100cb0000010000",
+        "t": 768,
+      },
+    ],
+  },
+}
+`;
+
+exports[`hex_frost pins > solo against the AI 1`] = `
+{
+  "draws": [
+    {
+      "digest": "13abecd4af13ed63",
+      "ops": 1962,
+      "phase": 1,
+      "side": "host",
+      "t": 32,
+    },
+    {
+      "digest": "da7c62e488a7d98c",
+      "ops": 1949,
+      "phase": 2,
+      "side": "host",
+      "t": 3024,
+    },
+    {
+      "digest": "d4eaadee5a384111",
+      "ops": 1968,
+      "phase": 3,
+      "side": "host",
+      "t": 48048,
+    },
+    {
+      "digest": "bebc5ad86d2a4a61",
+      "ops": 1990,
+      "phase": 1,
+      "side": "host",
+      "t": 51040,
+    },
+    {
+      "digest": "93a0a06d46918872",
+      "ops": 1977,
+      "phase": 2,
+      "side": "host",
+      "t": 54048,
+    },
+  ],
+  "ended": false,
+  "phases": [
+    {
+      "phase": 1,
+      "side": "host",
+      "t": 16,
+    },
+    {
+      "phase": 2,
+      "side": "host",
+      "t": 3008,
+    },
+    {
+      "phase": 3,
+      "side": "host",
+      "t": 48032,
+    },
+    {
+      "phase": 1,
+      "side": "host",
+      "t": 51024,
+    },
+    {
+      "phase": 2,
+      "side": "host",
+      "t": 54032,
+    },
+  ],
+  "results": {
+    "guest": [],
+    "host": [],
+  },
+  "sounds": {
+    "host": {
+      "digest": "50285055240b0e96",
+      "entries": 2618,
+      "voices": {
+        "createBiquadFilter": 1,
+        "createBuffer": 9,
+        "createBufferSource": 9,
+        "createGain": 262,
+        "createOscillator": 252,
+      },
+    },
+  },
+  "state": {
+    "host": {
+      "countdown": 0,
+      "events": 0,
+      "fishSpawnTimer": 78,
+      "frameCount": 3599,
+      "mode": 0,
+      "p1IglooFlash": 0,
+      "p1RespawnTimer": 0,
+      "p2IglooFlash": 0,
+      "p2RespawnTimer": 0,
+      "phase": 2,
+      "piecesNeeded": 15,
+      "round": 2,
+      "roundWinner": 0,
+      "seed": 2439693905,
+      "temperature": 39.03333333333367,
+    },
+  },
+  "wire": {
+    "byDir": {},
+    "digest": "4f53cda18c2baa0c",
+    "first": [],
+  },
+}
+`;
+
+exports[`hex_frost pins > solo against the AI: hex_frost_blizzard 1`] = `
+{
+  "draws": [
+    {
+      "digest": "bba98bfcacd69d62",
+      "ops": 1989,
+      "phase": 1,
+      "side": "host",
+      "t": 32,
+    },
+    {
+      "digest": "26e221d3f9a45361",
+      "ops": 1976,
+      "phase": 2,
+      "side": "host",
+      "t": 3024,
+    },
+  ],
+  "ended": false,
+  "phases": [
+    {
+      "phase": 1,
+      "side": "host",
+      "t": 16,
+    },
+    {
+      "phase": 2,
+      "side": "host",
+      "t": 3008,
+    },
+  ],
+  "results": {
+    "guest": [],
+    "host": [],
+  },
+  "sounds": {
+    "host": {
+      "digest": "2a3e5d9cd67318aa",
+      "entries": 5303,
+      "voices": {
+        "createBuffer": 10,
+        "createBufferSource": 10,
+        "createGain": 531,
+        "createOscillator": 520,
+      },
+    },
+  },
+  "state": {
+    "host": {
+      "countdown": 0,
+      "events": 0,
+      "fishSpawnTimer": 119,
+      "frameCount": 3599,
+      "mode": 1,
+      "p1IglooFlash": 0,
+      "p1RespawnTimer": 0,
+      "p2IglooFlash": 0,
+      "p2RespawnTimer": 0,
+      "phase": 2,
+      "piecesNeeded": 20,
+      "round": 1,
+      "roundWinner": 0,
+      "seed": 2439693905,
+      "temperature": 31.508333333334953,
+    },
+  },
+  "wire": {
+    "byDir": {},
+    "digest": "4f53cda18c2baa0c",
+    "first": [],
+  },
+}
+`;
+
+exports[`hex_frost pins > solo against the AI: hex_frost_peaceful 1`] = `
+{
+  "draws": [
+    {
+      "digest": "edf09fc76e36033a",
+      "ops": 1962,
+      "phase": 1,
+      "side": "host",
+      "t": 32,
+    },
+    {
+      "digest": "4e25d6e78de4b266",
+      "ops": 1949,
+      "phase": 2,
+      "side": "host",
+      "t": 3024,
+    },
+    {
+      "digest": "71fadf4e3e571d35",
+      "ops": 1968,
+      "phase": 3,
+      "side": "host",
+      "t": 48048,
+    },
+    {
+      "digest": "853c3716f37ebe7d",
+      "ops": 1990,
+      "phase": 1,
+      "side": "host",
+      "t": 51040,
+    },
+    {
+      "digest": "8ca3c7071a55a959",
+      "ops": 1977,
+      "phase": 2,
+      "side": "host",
+      "t": 54048,
+    },
+  ],
+  "ended": false,
+  "phases": [
+    {
+      "phase": 1,
+      "side": "host",
+      "t": 16,
+    },
+    {
+      "phase": 2,
+      "side": "host",
+      "t": 3008,
+    },
+    {
+      "phase": 3,
+      "side": "host",
+      "t": 48032,
+    },
+    {
+      "phase": 1,
+      "side": "host",
+      "t": 51024,
+    },
+    {
+      "phase": 2,
+      "side": "host",
+      "t": 54032,
+    },
+  ],
+  "results": {
+    "guest": [],
+    "host": [],
+  },
+  "sounds": {
+    "host": {
+      "digest": "50285055240b0e96",
+      "entries": 2618,
+      "voices": {
+        "createBiquadFilter": 1,
+        "createBuffer": 9,
+        "createBufferSource": 9,
+        "createGain": 262,
+        "createOscillator": 252,
+      },
+    },
+  },
+  "state": {
+    "host": {
+      "countdown": 0,
+      "events": 0,
+      "fishSpawnTimer": 78,
+      "frameCount": 3599,
+      "mode": 2,
+      "p1IglooFlash": 0,
+      "p1RespawnTimer": 0,
+      "p2IglooFlash": 0,
+      "p2RespawnTimer": 0,
+      "phase": 2,
+      "piecesNeeded": 15,
+      "round": 2,
+      "roundWinner": 0,
+      "seed": 2439693905,
+      "temperature": 39.03333333333367,
+    },
+  },
+  "wire": {
+    "byDir": {},
+    "digest": "4f53cda18c2baa0c",
+    "first": [],
+  },
+}
+`;
+
+exports[`hex_frost pins > the channel drops mid-match 1`] = `
+{
+  "lastPhases": {
+    "guest": 4,
+    "host": 4,
+  },
+  "leakedTimers": 0,
+  "results": {
+    "guest": [
+      {
+        "disconnected": true,
+        "score_p1": 0,
+        "score_p2": 0,
+        "winner": "draw",
+      },
+    ],
+    "host": [
+      {
+        "disconnected": true,
+        "score_p1": 0,
+        "score_p2": 0,
+        "winner": "draw",
+      },
+    ],
+  },
+  "state": {
+    "guest": {
+      "countdown": 0,
+      "events": 0,
+      "mode": 0,
+      "p1IglooFlash": 0,
+      "p2IglooFlash": 0,
+      "phase": 4,
+      "round": 1,
+      "seed": 3680900381,
+      "temperature": 33.02,
+    },
+    "host": {
+      "countdown": 0,
+      "events": 0,
+      "fishSpawnTimer": 119,
+      "frameCount": 899,
+      "mode": 0,
+      "p1IglooFlash": 0,
+      "p1RespawnTimer": 0,
+      "p2IglooFlash": 0,
+      "p2RespawnTimer": 0,
+      "phase": 4,
+      "piecesNeeded": 15,
+      "round": 1,
+      "roundWinner": 0,
+      "seed": 3680900381,
+      "temperature": 33.01666666666735,
+    },
+  },
+}
+`;

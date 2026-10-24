@@ -6,6 +6,7 @@
   "scripts": {
     "test": "vitest run",
     "test:changed": "vitest run --changed",
+    "test:pins": "vitest run --config vitest.pins.config.js",
     "test:related": "vitest related",
     "test:watch": "vitest",
     "lint": "eslint --cache --cache-location node_modules/.cache/eslint js/ test/ scripts/",

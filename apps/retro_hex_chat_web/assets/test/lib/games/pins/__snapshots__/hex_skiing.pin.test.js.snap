@@ -1,0 +1,663 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`hex_skiing pins > P2P following the key script 1`] = `
+{
+  "draws": [
+    {
+      "digest": "2918f61447dea231",
+      "ops": 1077,
+      "phase": 1,
+      "side": "host",
+      "t": 32,
+    },
+    {
+      "digest": "effd6748deb671c7",
+      "ops": 1077,
+      "phase": 1,
+      "side": "guest",
+      "t": 48,
+    },
+    {
+      "digest": "e30b55adef043f5f",
+      "ops": 1093,
+      "phase": 2,
+      "side": "host",
+      "t": 3024,
+    },
+    {
+      "digest": "f257c0af64f1630e",
+      "ops": 1066,
+      "phase": 2,
+      "side": "guest",
+      "t": 3040,
+    },
+  ],
+  "phases": [
+    {
+      "phase": 1,
+      "side": "host",
+      "t": 16,
+    },
+    {
+      "phase": 1,
+      "side": "guest",
+      "t": 16,
+    },
+    {
+      "phase": 2,
+      "side": "host",
+      "t": 3008,
+    },
+    {
+      "phase": 2,
+      "side": "guest",
+      "t": 3024,
+    },
+  ],
+  "results": {
+    "guest": [],
+    "host": [],
+  },
+  "sounds": {
+    "guest": {
+      "digest": "a37a5cbeebe4ab5b",
+      "entries": 142,
+      "voices": {
+        "createGain": 14,
+        "createOscillator": 14,
+      },
+    },
+    "host": {
+      "digest": "8836008a08bea9ea",
+      "entries": 3428,
+      "voices": {
+        "createGain": 19,
+        "createOscillator": 19,
+      },
+    },
+  },
+  "state": {
+    "guest": {
+      "avalancheSpeed": 0.5,
+      "avalancheY": 709.5,
+      "blizzardActive": false,
+      "blizzardTimer": 0,
+      "countdown": 0,
+      "events": 0,
+      "mode": 0,
+      "p1RoundWins": 0,
+      "p2RoundWins": 0,
+      "phase": 2,
+      "round": 0,
+      "scrollY": 4608.89990234375,
+      "seed": 616786429,
+    },
+    "host": {
+      "avalancheAccelTimer": 1619,
+      "avalancheSpeed": 0.5,
+      "avalancheY": 709.5,
+      "blizzardActive": false,
+      "blizzardCooldown": 1081,
+      "blizzardTimer": 0,
+      "countdown": 0,
+      "events": 0,
+      "frameCount": 1799,
+      "gateWidth": 80,
+      "itemSpawnTimer": 181,
+      "mode": 0,
+      "nextChunkY": 6000,
+      "nextGateY": 5400,
+      "p1RoundWins": 0,
+      "p2RoundWins": 0,
+      "phase": 2,
+      "round": 0,
+      "scrollY": 4608.899999999923,
+      "seed": 616786429,
+    },
+  },
+  "wire": {
+    "byDir": {
+      "guest>host": {
+        "bytes": 8141,
+        "datagrams": 1629,
+        "dropped": 0,
+        "types": {
+          "84": 1,
+          "8e": 1628,
+        },
+      },
+      "host>guest": {
+        "bytes": 132750,
+        "datagrams": 1800,
+        "dropped": 0,
+        "types": {
+          "80": 1800,
+        },
+      },
+    },
+    "digest": "23714f5e3452049c",
+    "first": [
+      {
+        "dir": "guest>host",
+        "hex": "84",
+        "t": 0,
+      },
+      {
+        "dir": "host>guest",
+        "hex": "8001000003fd69c324000000000000c8c2320000000018010000000000000000000000000000680100000000000000000000000000000000000000",
+        "t": 0,
+      },
+      {
+        "dir": "host>guest",
+        "hex": "8001000003fd69c324000000000000c8c2320000000018010000000000000000000000000000680100000000000000000000000000000000000000",
+        "t": 32,
+      },
+      {
+        "dir": "host>guest",
+        "hex": "8001000003fd69c324000000000000c8c2320000000018010000000000000000000000000000680100000000000000000000000000000000000000",
+        "t": 48,
+      },
+      {
+        "dir": "host>guest",
+        "hex": "8001000003fd69c324000000000000c8c2320000000018010000000000000000000000000000680100000000000000000000000000000000000000",
+        "t": 64,
+      },
+      {
+        "dir": "host>guest",
+        "hex": "8001000003fd69c324000000000000c8c2320000000018010000000000000000000000000000680100000000000000000000000000000000000000",
+        "t": 80,
+      },
+    ],
+  },
+}
+`;
+
+exports[`hex_skiing pins > P2P over a channel that loses datagrams 1`] = `
+{
+  "draws": [
+    {
+      "digest": "2918f61447dea231",
+      "ops": 1077,
+      "phase": 1,
+      "side": "host",
+      "t": 768,
+    },
+    {
+      "digest": "31ed5cfc6d65db98",
+      "ops": 1077,
+      "phase": null,
+      "side": "guest",
+      "t": 768,
+    },
+    {
+      "digest": "effd6748deb671c7",
+      "ops": 1077,
+      "phase": 1,
+      "side": "guest",
+      "t": 784,
+    },
+    {
+      "digest": "e30b55adef043f5f",
+      "ops": 1093,
+      "phase": 2,
+      "side": "host",
+      "t": 3776,
+    },
+    {
+      "digest": "7411eff919be440a",
+      "ops": 1066,
+      "phase": 2,
+      "side": "guest",
+      "t": 3808,
+    },
+  ],
+  "phases": [
+    {
+      "phase": 0,
+      "side": "host",
+      "t": 16,
+    },
+    {
+      "phase": null,
+      "side": "guest",
+      "t": 16,
+    },
+    {
+      "phase": 1,
+      "side": "host",
+      "t": 752,
+    },
+    {
+      "phase": 1,
+      "side": "guest",
+      "t": 768,
+    },
+    {
+      "phase": 2,
+      "side": "host",
+      "t": 3760,
+    },
+    {
+      "phase": 2,
+      "side": "guest",
+      "t": 3776,
+    },
+  ],
+  "results": {
+    "guest": [],
+    "host": [],
+  },
+  "sounds": {
+    "guest": {
+      "digest": "47e0fb3d4a4fec5b",
+      "entries": 103,
+      "voices": {
+        "createGain": 10,
+        "createOscillator": 10,
+      },
+    },
+    "host": {
+      "digest": "ed002cd5a70a07a2",
+      "entries": 3329,
+      "voices": {
+        "createGain": 18,
+        "createOscillator": 18,
+      },
+    },
+  },
+  "state": {
+    "guest": {
+      "avalancheSpeed": 0.5,
+      "avalancheY": 686.5,
+      "blizzardActive": false,
+      "blizzardTimer": 0,
+      "countdown": 0,
+      "events": 0,
+      "mode": 0,
+      "p1RoundWins": 0,
+      "p2RoundWins": 0,
+      "phase": 2,
+      "round": 0,
+      "scrollY": 4437.2998046875,
+      "seed": 616786429,
+    },
+    "host": {
+      "avalancheAccelTimer": 1574,
+      "avalancheSpeed": 0.5,
+      "avalancheY": 687,
+      "blizzardActive": false,
+      "blizzardCooldown": 1126,
+      "blizzardTimer": 0,
+      "countdown": 0,
+      "events": 0,
+      "frameCount": 1754,
+      "gateWidth": 80,
+      "itemSpawnTimer": 226,
+      "mode": 0,
+      "nextChunkY": 6000,
+      "nextGateY": 5400,
+      "p1RoundWins": 0,
+      "p2RoundWins": 0,
+      "phase": 2,
+      "round": 0,
+      "scrollY": 4439.999999999927,
+      "seed": 616786429,
+    },
+  },
+  "wire": {
+    "byDir": {
+      "guest>host": {
+        "bytes": 8144,
+        "datagrams": 1632,
+        "dropped": 3,
+        "types": {
+          "84": 4,
+          "8e": 1628,
+        },
+      },
+      "host>guest": {
+        "bytes": 129267,
+        "datagrams": 1755,
+        "dropped": 250,
+        "types": {
+          "80": 1755,
+        },
+      },
+    },
+    "digest": "d010b507d9b167e9",
+    "first": [
+      {
+        "dir": "guest>host",
+        "dropped": true,
+        "hex": "84",
+        "t": 0,
+      },
+      {
+        "dir": "guest>host",
+        "dropped": true,
+        "hex": "84",
+        "t": 250,
+      },
+      {
+        "dir": "guest>host",
+        "dropped": true,
+        "hex": "84",
+        "t": 500,
+      },
+      {
+        "dir": "guest>host",
+        "hex": "84",
+        "t": 750,
+      },
+      {
+        "dir": "host>guest",
+        "hex": "8001000003fd69c324000000000000c8c2320000000018010000000000000000000000000000680100000000000000000000000000000000000000",
+        "t": 751,
+      },
+      {
+        "dir": "host>guest",
+        "hex": "8001000003fd69c324000000000000c8c2320000000018010000000000000000000000000000680100000000000000000000000000000000000000",
+        "t": 768,
+      },
+    ],
+  },
+}
+`;
+
+exports[`hex_skiing pins > solo against the AI 1`] = `
+{
+  "draws": [
+    {
+      "digest": "7f8f4b389aa52d39",
+      "ops": 1077,
+      "phase": 1,
+      "side": "host",
+      "t": 32,
+    },
+    {
+      "digest": "c303bba49a905280",
+      "ops": 1093,
+      "phase": 2,
+      "side": "host",
+      "t": 3024,
+    },
+  ],
+  "ended": false,
+  "phases": [
+    {
+      "phase": 1,
+      "side": "host",
+      "t": 16,
+    },
+    {
+      "phase": 2,
+      "side": "host",
+      "t": 3008,
+    },
+  ],
+  "results": {
+    "guest": [],
+    "host": [],
+  },
+  "sounds": {
+    "host": {
+      "digest": "0a463611eea5dae6",
+      "entries": 7200,
+      "voices": {
+        "createGain": 36,
+        "createOscillator": 36,
+      },
+    },
+  },
+  "state": {
+    "host": {
+      "avalancheAccelTimer": 1619,
+      "avalancheSpeed": 0.65,
+      "avalancheY": 1852.3500000001081,
+      "blizzardActive": false,
+      "blizzardCooldown": 2581,
+      "blizzardTimer": 0,
+      "countdown": 0,
+      "events": 0,
+      "frameCount": 3599,
+      "gateWidth": 80,
+      "itemSpawnTimer": 181,
+      "mode": 0,
+      "nextChunkY": 11400,
+      "nextGateY": 10800,
+      "p1RoundWins": 0,
+      "p2RoundWins": 0,
+      "phase": 2,
+      "round": 0,
+      "scrollY": 10246.799999999994,
+      "seed": 3697179450,
+    },
+  },
+  "wire": {
+    "byDir": {},
+    "digest": "4f53cda18c2baa0c",
+    "first": [],
+  },
+}
+`;
+
+exports[`hex_skiing pins > solo against the AI: hex_skiing_clean 1`] = `
+{
+  "draws": [
+    {
+      "digest": "61995e7a13c9b3a5",
+      "ops": 1065,
+      "phase": 1,
+      "side": "host",
+      "t": 32,
+    },
+    {
+      "digest": "da09c64e0efd6e5b",
+      "ops": 1081,
+      "phase": 2,
+      "side": "host",
+      "t": 3024,
+    },
+  ],
+  "ended": false,
+  "phases": [
+    {
+      "phase": 1,
+      "side": "host",
+      "t": 16,
+    },
+    {
+      "phase": 2,
+      "side": "host",
+      "t": 3008,
+    },
+  ],
+  "results": {
+    "guest": [],
+    "host": [],
+  },
+  "sounds": {
+    "host": {
+      "digest": "290faeee27c2a059",
+      "entries": 7148,
+      "voices": {
+        "createGain": 31,
+        "createOscillator": 31,
+      },
+    },
+  },
+  "state": {
+    "host": {
+      "avalancheAccelTimer": 0,
+      "avalancheSpeed": 0,
+      "avalancheY": -100,
+      "blizzardActive": false,
+      "blizzardCooldown": 2700,
+      "blizzardTimer": 0,
+      "countdown": 0,
+      "events": 0,
+      "frameCount": 3599,
+      "gateWidth": 80,
+      "itemSpawnTimer": 1800,
+      "mode": 2,
+      "nextChunkY": 11400,
+      "nextGateY": 10800,
+      "p1RoundWins": 0,
+      "p2RoundWins": 0,
+      "phase": 2,
+      "round": 0,
+      "scrollY": 10246.799999999994,
+      "seed": 3697179450,
+    },
+  },
+  "wire": {
+    "byDir": {},
+    "digest": "4f53cda18c2baa0c",
+    "first": [],
+  },
+}
+`;
+
+exports[`hex_skiing pins > solo against the AI: hex_skiing_escape 1`] = `
+{
+  "draws": [
+    {
+      "digest": "bbffdf9e8f8c9cc1",
+      "ops": 1067,
+      "phase": 1,
+      "side": "host",
+      "t": 32,
+    },
+    {
+      "digest": "4e7d9bb129f763cf",
+      "ops": 1083,
+      "phase": 2,
+      "side": "host",
+      "t": 3024,
+    },
+  ],
+  "ended": false,
+  "phases": [
+    {
+      "phase": 1,
+      "side": "host",
+      "t": 16,
+    },
+    {
+      "phase": 2,
+      "side": "host",
+      "t": 3008,
+    },
+  ],
+  "results": {
+    "guest": [],
+    "host": [],
+  },
+  "sounds": {
+    "host": {
+      "digest": "0a463611eea5dae6",
+      "entries": 7200,
+      "voices": {
+        "createGain": 36,
+        "createOscillator": 36,
+      },
+    },
+  },
+  "state": {
+    "host": {
+      "avalancheAccelTimer": 1619,
+      "avalancheSpeed": 0.65,
+      "avalancheY": 1852.3500000001081,
+      "blizzardActive": false,
+      "blizzardCooldown": 2581,
+      "blizzardTimer": 0,
+      "countdown": 0,
+      "events": 0,
+      "frameCount": 3599,
+      "gateWidth": 80,
+      "itemSpawnTimer": 181,
+      "mode": 1,
+      "nextChunkY": 11400,
+      "nextGateY": 10800,
+      "p1RoundWins": 0,
+      "p2RoundWins": 0,
+      "phase": 2,
+      "round": 0,
+      "scrollY": 10246.799999999994,
+      "seed": 3697179450,
+    },
+  },
+  "wire": {
+    "byDir": {},
+    "digest": "4f53cda18c2baa0c",
+    "first": [],
+  },
+}
+`;
+
+exports[`hex_skiing pins > the channel drops mid-match 1`] = `
+{
+  "lastPhases": {
+    "guest": 4,
+    "host": 4,
+  },
+  "leakedTimers": 0,
+  "results": {
+    "guest": [
+      {
+        "disconnected": true,
+        "score_p1": 0,
+        "score_p2": 0,
+        "winner": "draw",
+      },
+    ],
+    "host": [
+      {
+        "disconnected": true,
+        "score_p1": 0,
+        "score_p2": 0,
+        "winner": "draw",
+      },
+    ],
+  },
+  "state": {
+    "guest": {
+      "avalancheSpeed": 0.5,
+      "avalancheY": 259.5,
+      "blizzardActive": false,
+      "blizzardTimer": 0,
+      "countdown": 0,
+      "events": 0,
+      "mode": 0,
+      "p1RoundWins": 0,
+      "p2RoundWins": 0,
+      "phase": 4,
+      "round": 0,
+      "scrollY": 2054.699951171875,
+      "seed": 616786429,
+    },
+    "host": {
+      "avalancheAccelTimer": 719,
+      "avalancheSpeed": 0.5,
+      "avalancheY": 259.5,
+      "blizzardActive": false,
+      "blizzardCooldown": 1981,
+      "blizzardTimer": 0,
+      "countdown": 0,
+      "events": 0,
+      "frameCount": 899,
+      "gateWidth": 80,
+      "itemSpawnTimer": 1081,
+      "mode": 0,
+      "nextChunkY": 3600,
+      "nextGateY": 3000,
+      "p1RoundWins": 0,
+      "p2RoundWins": 0,
+      "phase": 4,
+      "round": 0,
+      "scrollY": 2054.700000000011,
+      "seed": 616786429,
+    },
+  },
+}
+`;

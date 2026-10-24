@@ -18,6 +18,9 @@ export default defineConfig({
   test: {
     environment: "jsdom",
     include: ["test/**/*.test.js"],
+    // The games' characterization pins play minutes of each game; they run on
+    // their own, by hand, with `make test.js.pins` (vitest.pins.config.js).
+    exclude: ["**/node_modules/**", "test/lib/games/pins/**"],
     globals: true,
     // `make ci` runs this alongside three Elixir test partitions, four feature
     // partitions and dialyzer. Left to its own devices vitest forks one worker

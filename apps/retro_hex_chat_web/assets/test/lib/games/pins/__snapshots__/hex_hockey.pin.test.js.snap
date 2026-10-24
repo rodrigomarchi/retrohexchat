@@ -1,0 +1,984 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`hex_hockey pins > P2P following the key script 1`] = `
+{
+  "draws": [
+    {
+      "digest": "4aed242f57be453c",
+      "ops": 504,
+      "phase": 1,
+      "side": "host",
+      "t": 32,
+    },
+    {
+      "digest": "1b483a27e697bbd0",
+      "ops": 504,
+      "phase": 1,
+      "side": "guest",
+      "t": 48,
+    },
+    {
+      "digest": "5ec84c5e991ffd93",
+      "ops": 504,
+      "phase": 2,
+      "side": "host",
+      "t": 3024,
+    },
+    {
+      "digest": "9ec62b053dfe0f61",
+      "ops": 504,
+      "phase": 2,
+      "side": "guest",
+      "t": 3040,
+    },
+    {
+      "digest": "a617f7dfecb18d00",
+      "ops": 489,
+      "phase": 3,
+      "side": "host",
+      "t": 3520,
+    },
+    {
+      "digest": "38c3480e3d0184a1",
+      "ops": 489,
+      "phase": 3,
+      "side": "guest",
+      "t": 3536,
+    },
+  ],
+  "phases": [
+    {
+      "phase": 1,
+      "side": "host",
+      "t": 16,
+    },
+    {
+      "phase": 1,
+      "side": "guest",
+      "t": 16,
+    },
+    {
+      "phase": 2,
+      "side": "host",
+      "t": 3008,
+    },
+    {
+      "phase": 2,
+      "side": "guest",
+      "t": 3024,
+    },
+    {
+      "phase": 3,
+      "side": "host",
+      "t": 3504,
+    },
+    {
+      "phase": 3,
+      "side": "guest",
+      "t": 3520,
+    },
+  ],
+  "results": {
+    "guest": [],
+    "host": [],
+  },
+  "sounds": {
+    "guest": {
+      "digest": "912317f34e3aa0b3",
+      "entries": 408,
+      "voices": {
+        "createBuffer": 16,
+        "createBufferSource": 16,
+        "createGain": 43,
+        "createOscillator": 26,
+      },
+    },
+    "host": {
+      "digest": "f9f2f18d99deb168",
+      "entries": 448,
+      "voices": {
+        "createBuffer": 16,
+        "createBufferSource": 16,
+        "createGain": 47,
+        "createOscillator": 30,
+      },
+    },
+  },
+  "state": {
+    "guest": {
+      "countdownValue": 0,
+      "eventFlags": 0,
+      "frameCount": 0,
+      "mode": 0,
+      "period": 1,
+      "phase": 3,
+      "scoreP1": 0,
+      "scoreP2": 0,
+      "sidesSwapped": false,
+      "timerFrames": 5611,
+    },
+    "host": {
+      "celebrationFrames": 0,
+      "countdownFrames": 0,
+      "countdownValue": 0,
+      "eventFlags": 0,
+      "frameCount": 1799,
+      "mode": 0,
+      "period": 1,
+      "periodBreakFrames": 0,
+      "phase": 3,
+      "puckStuckFrames": 0,
+      "scoreP1": 0,
+      "scoreP2": 0,
+      "sidesSwapped": false,
+      "timerFrames": 5611,
+    },
+  },
+  "wire": {
+    "byDir": {
+      "guest>host": {
+        "bytes": 8426,
+        "datagrams": 1686,
+        "dropped": 0,
+        "types": {
+          "84": 1,
+          "8e": 1685,
+        },
+      },
+      "host>guest": {
+        "bytes": 70200,
+        "datagrams": 1800,
+        "dropped": 0,
+        "types": {
+          "80": 1800,
+        },
+      },
+    },
+    "digest": "c4d26436413b2140",
+    "first": [
+      {
+        "dir": "guest>host",
+        "hex": "84",
+        "t": 0,
+      },
+      {
+        "dir": "host>guest",
+        "hex": "80010000000401ff000000007c01ff00040000ff00ff004001ff000000000000000001201c0300",
+        "t": 0,
+      },
+      {
+        "dir": "host>guest",
+        "hex": "80010000000401ff000000007c01ff00040000ff00ff004001ff000000000000000001201c0300",
+        "t": 32,
+      },
+      {
+        "dir": "host>guest",
+        "hex": "80010000000401ff000000007c01ff00040000ff00ff004001ff000000000000000001201c0300",
+        "t": 48,
+      },
+      {
+        "dir": "host>guest",
+        "hex": "80010000000401ff000000007c01ff00040000ff00ff004001ff000000000000000001201c0300",
+        "t": 64,
+      },
+      {
+        "dir": "host>guest",
+        "hex": "80010000000401ff000000007c01ff00040000ff00ff004001ff000000000000000001201c0300",
+        "t": 80,
+      },
+    ],
+  },
+}
+`;
+
+exports[`hex_hockey pins > P2P over a channel that loses datagrams 1`] = `
+{
+  "draws": [
+    {
+      "digest": "4aed242f57be453c",
+      "ops": 504,
+      "phase": 1,
+      "side": "host",
+      "t": 768,
+    },
+    {
+      "digest": "ba0edf8b30650d3d",
+      "ops": 504,
+      "phase": null,
+      "side": "guest",
+      "t": 768,
+    },
+    {
+      "digest": "1b483a27e697bbd0",
+      "ops": 504,
+      "phase": 1,
+      "side": "guest",
+      "t": 784,
+    },
+    {
+      "digest": "5ec84c5e991ffd93",
+      "ops": 504,
+      "phase": 2,
+      "side": "host",
+      "t": 3776,
+    },
+    {
+      "digest": "e91d826358c966a7",
+      "ops": 504,
+      "phase": 2,
+      "side": "guest",
+      "t": 3808,
+    },
+    {
+      "digest": "638f9afb348e8abf",
+      "ops": 489,
+      "phase": 3,
+      "side": "host",
+      "t": 4272,
+    },
+    {
+      "digest": "f9f46e7a7d49d422",
+      "ops": 489,
+      "phase": 3,
+      "side": "guest",
+      "t": 4288,
+    },
+    {
+      "digest": "068608a1e008cead",
+      "ops": 504,
+      "phase": 1,
+      "side": "host",
+      "t": 9280,
+    },
+    {
+      "digest": "5bfb74e2fb51e741",
+      "ops": 504,
+      "phase": 1,
+      "side": "guest",
+      "t": 9312,
+    },
+    {
+      "digest": "d003e65ca6f9f05d",
+      "ops": 504,
+      "phase": 2,
+      "side": "host",
+      "t": 12272,
+    },
+    {
+      "digest": "4758c9a714353ec7",
+      "ops": 504,
+      "phase": 2,
+      "side": "guest",
+      "t": 12288,
+    },
+    {
+      "digest": "de88c1b9daf31369",
+      "ops": 489,
+      "phase": 3,
+      "side": "host",
+      "t": 12768,
+    },
+    {
+      "digest": "8f1c4d93c696acc7",
+      "ops": 489,
+      "phase": 3,
+      "side": "guest",
+      "t": 12816,
+    },
+  ],
+  "phases": [
+    {
+      "phase": 0,
+      "side": "host",
+      "t": 16,
+    },
+    {
+      "phase": null,
+      "side": "guest",
+      "t": 16,
+    },
+    {
+      "phase": 1,
+      "side": "host",
+      "t": 752,
+    },
+    {
+      "phase": 1,
+      "side": "guest",
+      "t": 768,
+    },
+    {
+      "phase": 2,
+      "side": "host",
+      "t": 3760,
+    },
+    {
+      "phase": 2,
+      "side": "guest",
+      "t": 3776,
+    },
+    {
+      "phase": 3,
+      "side": "host",
+      "t": 4256,
+    },
+    {
+      "phase": 3,
+      "side": "guest",
+      "t": 4272,
+    },
+    {
+      "phase": 1,
+      "side": "host",
+      "t": 9264,
+    },
+    {
+      "phase": 1,
+      "side": "guest",
+      "t": 9296,
+    },
+    {
+      "phase": 2,
+      "side": "host",
+      "t": 12256,
+    },
+    {
+      "phase": 2,
+      "side": "guest",
+      "t": 12272,
+    },
+    {
+      "phase": 3,
+      "side": "host",
+      "t": 12752,
+    },
+    {
+      "phase": 3,
+      "side": "guest",
+      "t": 12784,
+    },
+  ],
+  "results": {
+    "guest": [],
+    "host": [],
+  },
+  "sounds": {
+    "guest": {
+      "digest": "8ee8a29c5b60b34a",
+      "entries": 255,
+      "voices": {
+        "createBuffer": 9,
+        "createBufferSource": 9,
+        "createGain": 27,
+        "createOscillator": 17,
+      },
+    },
+    "host": {
+      "digest": "61d7a2696c728db3",
+      "entries": 383,
+      "voices": {
+        "createBuffer": 11,
+        "createBufferSource": 11,
+        "createGain": 40,
+        "createOscillator": 28,
+      },
+    },
+  },
+  "state": {
+    "guest": {
+      "countdownValue": 0,
+      "eventFlags": 0,
+      "frameCount": 0,
+      "mode": 0,
+      "period": 1,
+      "phase": 3,
+      "scoreP1": 0,
+      "scoreP2": 0,
+      "sidesSwapped": false,
+      "timerFrames": 5868,
+    },
+    "host": {
+      "celebrationFrames": 0,
+      "countdownFrames": 0,
+      "countdownValue": 0,
+      "eventFlags": 0,
+      "frameCount": 1754,
+      "mode": 0,
+      "period": 1,
+      "periodBreakFrames": 0,
+      "phase": 3,
+      "puckStuckFrames": 0,
+      "scoreP1": 0,
+      "scoreP2": 0,
+      "sidesSwapped": false,
+      "timerFrames": 5867,
+    },
+  },
+  "wire": {
+    "byDir": {
+      "guest>host": {
+        "bytes": 8429,
+        "datagrams": 1689,
+        "dropped": 3,
+        "types": {
+          "84": 4,
+          "8e": 1685,
+        },
+      },
+      "host>guest": {
+        "bytes": 68445,
+        "datagrams": 1755,
+        "dropped": 250,
+        "types": {
+          "80": 1755,
+        },
+      },
+    },
+    "digest": "0ea4631f98d7bbf9",
+    "first": [
+      {
+        "dir": "guest>host",
+        "dropped": true,
+        "hex": "84",
+        "t": 0,
+      },
+      {
+        "dir": "guest>host",
+        "dropped": true,
+        "hex": "84",
+        "t": 250,
+      },
+      {
+        "dir": "guest>host",
+        "dropped": true,
+        "hex": "84",
+        "t": 500,
+      },
+      {
+        "dir": "guest>host",
+        "hex": "84",
+        "t": 750,
+      },
+      {
+        "dir": "host>guest",
+        "hex": "80010000000401ff000000007c01ff00040000ff00ff004001ff000000000000000001201c0300",
+        "t": 751,
+      },
+      {
+        "dir": "host>guest",
+        "hex": "80010000000401ff000000007c01ff00040000ff00ff004001ff000000000000000001201c0300",
+        "t": 768,
+      },
+    ],
+  },
+}
+`;
+
+exports[`hex_hockey pins > solo against the AI 1`] = `
+{
+  "draws": [
+    {
+      "digest": "eace9c3a05bbb45c",
+      "ops": 504,
+      "phase": 1,
+      "side": "host",
+      "t": 32,
+    },
+    {
+      "digest": "628f30ea46b2c4f9",
+      "ops": 504,
+      "phase": 2,
+      "side": "host",
+      "t": 3024,
+    },
+    {
+      "digest": "0fe663a8de849bf4",
+      "ops": 489,
+      "phase": 3,
+      "side": "host",
+      "t": 3520,
+    },
+    {
+      "digest": "7b8f4321142f2801",
+      "ops": 590,
+      "phase": 4,
+      "side": "host",
+      "t": 5856,
+    },
+    {
+      "digest": "4650f506a9a58cde",
+      "ops": 504,
+      "phase": 1,
+      "side": "host",
+      "t": 7856,
+    },
+    {
+      "digest": "8cf37bcf6de963a1",
+      "ops": 504,
+      "phase": 2,
+      "side": "host",
+      "t": 10864,
+    },
+    {
+      "digest": "82b72adb02310031",
+      "ops": 489,
+      "phase": 3,
+      "side": "host",
+      "t": 11360,
+    },
+  ],
+  "ended": false,
+  "phases": [
+    {
+      "phase": 1,
+      "side": "host",
+      "t": 16,
+    },
+    {
+      "phase": 2,
+      "side": "host",
+      "t": 3008,
+    },
+    {
+      "phase": 3,
+      "side": "host",
+      "t": 3504,
+    },
+    {
+      "phase": 4,
+      "side": "host",
+      "t": 5840,
+    },
+    {
+      "phase": 1,
+      "side": "host",
+      "t": 7840,
+    },
+    {
+      "phase": 2,
+      "side": "host",
+      "t": 10848,
+    },
+    {
+      "phase": 3,
+      "side": "host",
+      "t": 11344,
+    },
+  ],
+  "results": {
+    "guest": [],
+    "host": [],
+  },
+  "sounds": {
+    "host": {
+      "digest": "fc8a249080205f65",
+      "entries": 3643,
+      "voices": {
+        "createBuffer": 95,
+        "createBufferSource": 95,
+        "createGain": 366,
+        "createOscillator": 271,
+      },
+    },
+  },
+  "state": {
+    "host": {
+      "celebrationFrames": 0,
+      "countdownFrames": 0,
+      "countdownValue": 0,
+      "eventFlags": 0,
+      "frameCount": 3599,
+      "mode": 0,
+      "period": 1,
+      "periodBreakFrames": 0,
+      "phase": 3,
+      "puckStuckFrames": 0,
+      "scoreP1": 0,
+      "scoreP2": 1,
+      "sidesSwapped": false,
+      "timerFrames": 4142,
+    },
+  },
+  "wire": {
+    "byDir": {},
+    "digest": "4f53cda18c2baa0c",
+    "first": [],
+  },
+}
+`;
+
+exports[`hex_hockey pins > solo against the AI: hex_hockey_blitz 1`] = `
+{
+  "draws": [
+    {
+      "digest": "42de859fa33d2e8f",
+      "ops": 504,
+      "phase": 1,
+      "side": "host",
+      "t": 32,
+    },
+    {
+      "digest": "b7400794bd94d3e4",
+      "ops": 504,
+      "phase": 2,
+      "side": "host",
+      "t": 3024,
+    },
+    {
+      "digest": "41709bbb63bbe86a",
+      "ops": 489,
+      "phase": 3,
+      "side": "host",
+      "t": 3520,
+    },
+    {
+      "digest": "2a77c691f11ff1e5",
+      "ops": 590,
+      "phase": 4,
+      "side": "host",
+      "t": 5424,
+    },
+    {
+      "digest": "e2dadc6f8373c7ce",
+      "ops": 504,
+      "phase": 1,
+      "side": "host",
+      "t": 7424,
+    },
+    {
+      "digest": "7aa725c0ff55451d",
+      "ops": 504,
+      "phase": 2,
+      "side": "host",
+      "t": 10432,
+    },
+    {
+      "digest": "8899fb8b2dbedc7e",
+      "ops": 489,
+      "phase": 3,
+      "side": "host",
+      "t": 10928,
+    },
+    {
+      "digest": "9fb0c06e21aaa9f5",
+      "ops": 590,
+      "phase": 4,
+      "side": "host",
+      "t": 25088,
+    },
+    {
+      "digest": "cc2d4257ed6f041a",
+      "ops": 504,
+      "phase": 1,
+      "side": "host",
+      "t": 27088,
+    },
+    {
+      "digest": "84b0ec70ef61a6c4",
+      "ops": 504,
+      "phase": 2,
+      "side": "host",
+      "t": 30096,
+    },
+    {
+      "digest": "e9b8e872c57628eb",
+      "ops": 489,
+      "phase": 3,
+      "side": "host",
+      "t": 30592,
+    },
+  ],
+  "ended": false,
+  "phases": [
+    {
+      "phase": 1,
+      "side": "host",
+      "t": 16,
+    },
+    {
+      "phase": 2,
+      "side": "host",
+      "t": 3008,
+    },
+    {
+      "phase": 3,
+      "side": "host",
+      "t": 3504,
+    },
+    {
+      "phase": 4,
+      "side": "host",
+      "t": 5408,
+    },
+    {
+      "phase": 1,
+      "side": "host",
+      "t": 7408,
+    },
+    {
+      "phase": 2,
+      "side": "host",
+      "t": 10416,
+    },
+    {
+      "phase": 3,
+      "side": "host",
+      "t": 10912,
+    },
+    {
+      "phase": 4,
+      "side": "host",
+      "t": 25072,
+    },
+    {
+      "phase": 1,
+      "side": "host",
+      "t": 27072,
+    },
+    {
+      "phase": 2,
+      "side": "host",
+      "t": 30080,
+    },
+    {
+      "phase": 3,
+      "side": "host",
+      "t": 30576,
+    },
+  ],
+  "results": {
+    "guest": [],
+    "host": [],
+  },
+  "sounds": {
+    "host": {
+      "digest": "a92a2ec12d683872",
+      "entries": 3273,
+      "voices": {
+        "createBuffer": 104,
+        "createBufferSource": 104,
+        "createGain": 334,
+        "createOscillator": 231,
+      },
+    },
+  },
+  "state": {
+    "host": {
+      "celebrationFrames": 0,
+      "countdownFrames": 0,
+      "countdownValue": 0,
+      "eventFlags": 0,
+      "frameCount": 3599,
+      "mode": 1,
+      "period": 1,
+      "periodBreakFrames": 0,
+      "phase": 3,
+      "puckStuckFrames": 0,
+      "scoreP1": 0,
+      "scoreP2": 2,
+      "sidesSwapped": false,
+      "timerFrames": 8073,
+    },
+  },
+  "wire": {
+    "byDir": {},
+    "digest": "4f53cda18c2baa0c",
+    "first": [],
+  },
+}
+`;
+
+exports[`hex_hockey pins > solo against the AI: hex_hockey_showdown 1`] = `
+{
+  "draws": [
+    {
+      "digest": "4773247365ff8187",
+      "ops": 504,
+      "phase": 1,
+      "side": "host",
+      "t": 32,
+    },
+    {
+      "digest": "bf797cad183b98b0",
+      "ops": 504,
+      "phase": 2,
+      "side": "host",
+      "t": 3024,
+    },
+    {
+      "digest": "85920b4b0aae1d64",
+      "ops": 489,
+      "phase": 3,
+      "side": "host",
+      "t": 3520,
+    },
+    {
+      "digest": "b8f1dd41675205dd",
+      "ops": 590,
+      "phase": 4,
+      "side": "host",
+      "t": 5856,
+    },
+    {
+      "digest": "a1c369489c83be06",
+      "ops": 504,
+      "phase": 1,
+      "side": "host",
+      "t": 7856,
+    },
+    {
+      "digest": "c8a057c58ce26628",
+      "ops": 504,
+      "phase": 2,
+      "side": "host",
+      "t": 10864,
+    },
+    {
+      "digest": "6e46da2f0a7a5765",
+      "ops": 489,
+      "phase": 3,
+      "side": "host",
+      "t": 11360,
+    },
+  ],
+  "ended": false,
+  "phases": [
+    {
+      "phase": 1,
+      "side": "host",
+      "t": 16,
+    },
+    {
+      "phase": 2,
+      "side": "host",
+      "t": 3008,
+    },
+    {
+      "phase": 3,
+      "side": "host",
+      "t": 3504,
+    },
+    {
+      "phase": 4,
+      "side": "host",
+      "t": 5840,
+    },
+    {
+      "phase": 1,
+      "side": "host",
+      "t": 7840,
+    },
+    {
+      "phase": 2,
+      "side": "host",
+      "t": 10848,
+    },
+    {
+      "phase": 3,
+      "side": "host",
+      "t": 11344,
+    },
+  ],
+  "results": {
+    "guest": [],
+    "host": [],
+  },
+  "sounds": {
+    "host": {
+      "digest": "53756fad46a8d41c",
+      "entries": 3643,
+      "voices": {
+        "createBuffer": 95,
+        "createBufferSource": 95,
+        "createGain": 366,
+        "createOscillator": 271,
+      },
+    },
+  },
+  "state": {
+    "host": {
+      "celebrationFrames": 0,
+      "countdownFrames": 0,
+      "countdownValue": 0,
+      "eventFlags": 0,
+      "frameCount": 3599,
+      "mode": 2,
+      "period": 1,
+      "periodBreakFrames": 0,
+      "phase": 3,
+      "puckStuckFrames": 0,
+      "scoreP1": 0,
+      "scoreP2": 1,
+      "sidesSwapped": false,
+      "timerFrames": 0,
+    },
+  },
+  "wire": {
+    "byDir": {},
+    "digest": "4f53cda18c2baa0c",
+    "first": [],
+  },
+}
+`;
+
+exports[`hex_hockey pins > the channel drops mid-match 1`] = `
+{
+  "lastPhases": {
+    "guest": 7,
+    "host": 7,
+  },
+  "leakedTimers": 0,
+  "results": {
+    "guest": [
+      {
+        "disconnected": true,
+        "mode": 0,
+        "periods": 1,
+        "score_p1": 0,
+        "score_p2": 0,
+        "winner": "draw",
+      },
+    ],
+    "host": [
+      {
+        "disconnected": true,
+        "mode": 0,
+        "periods": 1,
+        "score_p1": 0,
+        "score_p2": 0,
+        "winner": "draw",
+      },
+    ],
+  },
+  "state": {
+    "guest": {
+      "countdownValue": 0,
+      "eventFlags": 0,
+      "frameCount": 0,
+      "mode": 0,
+      "period": 1,
+      "phase": 7,
+      "scoreP1": 0,
+      "scoreP2": 0,
+      "sidesSwapped": false,
+      "timerFrames": 6511,
+    },
+    "host": {
+      "celebrationFrames": 0,
+      "countdownFrames": 0,
+      "countdownValue": 0,
+      "eventFlags": 0,
+      "frameCount": 899,
+      "mode": 0,
+      "period": 1,
+      "periodBreakFrames": 0,
+      "phase": 7,
+      "puckStuckFrames": 0,
+      "scoreP1": 0,
+      "scoreP2": 0,
+      "sidesSwapped": false,
+      "timerFrames": 6511,
+    },
+  },
+}
+`;

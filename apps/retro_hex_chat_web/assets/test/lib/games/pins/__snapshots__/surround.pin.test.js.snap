@@ -1,0 +1,992 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`light_trails pins > P2P following the key script 1`] = `
+{
+  "draws": [
+    {
+      "digest": "a1d94cb0b7ac617d",
+      "ops": 762,
+      "phase": 1,
+      "side": "host",
+      "t": 32,
+    },
+    {
+      "digest": "a1d94cb0b7ac617d",
+      "ops": 762,
+      "phase": 1,
+      "side": "guest",
+      "t": 32,
+    },
+    {
+      "digest": "38ce363eb6b61ca5",
+      "ops": 753,
+      "phase": 2,
+      "side": "host",
+      "t": 3024,
+    },
+    {
+      "digest": "d6610808f42b71f1",
+      "ops": 753,
+      "phase": 2,
+      "side": "guest",
+      "t": 3024,
+    },
+    {
+      "digest": "5232b9fece2fbc6f",
+      "ops": 1090,
+      "phase": 3,
+      "side": "host",
+      "t": 6032,
+    },
+    {
+      "digest": "52b93ae3b5205485",
+      "ops": 1053,
+      "phase": 3,
+      "side": "guest",
+      "t": 6048,
+    },
+    {
+      "digest": "6e24bf33fe2a514a",
+      "ops": 752,
+      "phase": 1,
+      "side": "host",
+      "t": 9040,
+    },
+    {
+      "digest": "58172505f0ef6f1c",
+      "ops": 752,
+      "phase": 1,
+      "side": "guest",
+      "t": 9040,
+    },
+    {
+      "digest": "7774a723a83acb53",
+      "ops": 743,
+      "phase": 2,
+      "side": "host",
+      "t": 12048,
+    },
+    {
+      "digest": "678abbd18c64f1ce",
+      "ops": 743,
+      "phase": 2,
+      "side": "guest",
+      "t": 12048,
+    },
+    {
+      "digest": "8995ec4e6f804ebe",
+      "ops": 1039,
+      "phase": 3,
+      "side": "host",
+      "t": 14448,
+    },
+    {
+      "digest": "8e24100506827d92",
+      "ops": 1002,
+      "phase": 3,
+      "side": "guest",
+      "t": 14464,
+    },
+    {
+      "digest": "3cd3ec5af2b70f98",
+      "ops": 761,
+      "phase": 1,
+      "side": "host",
+      "t": 17456,
+    },
+    {
+      "digest": "89f0ce6f21f819e4",
+      "ops": 761,
+      "phase": 1,
+      "side": "guest",
+      "t": 17456,
+    },
+    {
+      "digest": "baebe318ea21f79b",
+      "ops": 752,
+      "phase": 2,
+      "side": "host",
+      "t": 20464,
+    },
+    {
+      "digest": "6535ef085392d715",
+      "ops": 752,
+      "phase": 2,
+      "side": "guest",
+      "t": 20464,
+    },
+    {
+      "digest": "f0f836a030d47e4b",
+      "ops": 929,
+      "phase": 3,
+      "side": "host",
+      "t": 21856,
+    },
+    {
+      "digest": "2dd3c2e626e15056",
+      "ops": 892,
+      "phase": 3,
+      "side": "guest",
+      "t": 21872,
+    },
+    {
+      "digest": "2f75bba08e55697d",
+      "ops": 751,
+      "phase": 1,
+      "side": "host",
+      "t": 24864,
+    },
+    {
+      "digest": "8682367ccd49b8f0",
+      "ops": 751,
+      "phase": 1,
+      "side": "guest",
+      "t": 24864,
+    },
+    {
+      "digest": "65d6447e9728424f",
+      "ops": 742,
+      "phase": 2,
+      "side": "host",
+      "t": 27872,
+    },
+    {
+      "digest": "e16ca297be55f12a",
+      "ops": 742,
+      "phase": 2,
+      "side": "guest",
+      "t": 27872,
+    },
+    {
+      "digest": "1d9961217da7cbf4",
+      "ops": 948,
+      "phase": 3,
+      "side": "host",
+      "t": 29360,
+    },
+    {
+      "digest": "5e175539901b05fe",
+      "ops": 911,
+      "phase": 3,
+      "side": "guest",
+      "t": 29376,
+    },
+  ],
+  "phases": [
+    {
+      "phase": 1,
+      "side": "host",
+      "t": 16,
+    },
+    {
+      "phase": 1,
+      "side": "guest",
+      "t": 16,
+    },
+    {
+      "phase": 2,
+      "side": "host",
+      "t": 3008,
+    },
+    {
+      "phase": 2,
+      "side": "guest",
+      "t": 3008,
+    },
+    {
+      "phase": 3,
+      "side": "host",
+      "t": 6016,
+    },
+    {
+      "phase": 3,
+      "side": "guest",
+      "t": 6032,
+    },
+    {
+      "phase": 1,
+      "side": "host",
+      "t": 9024,
+    },
+    {
+      "phase": 1,
+      "side": "guest",
+      "t": 9024,
+    },
+    {
+      "phase": 2,
+      "side": "host",
+      "t": 12016,
+    },
+    {
+      "phase": 2,
+      "side": "guest",
+      "t": 12032,
+    },
+    {
+      "phase": 3,
+      "side": "host",
+      "t": 14432,
+    },
+    {
+      "phase": 3,
+      "side": "guest",
+      "t": 14448,
+    },
+    {
+      "phase": 1,
+      "side": "host",
+      "t": 17440,
+    },
+    {
+      "phase": 1,
+      "side": "guest",
+      "t": 17440,
+    },
+    {
+      "phase": 2,
+      "side": "host",
+      "t": 20432,
+    },
+    {
+      "phase": 2,
+      "side": "guest",
+      "t": 20448,
+    },
+    {
+      "phase": 3,
+      "side": "host",
+      "t": 21840,
+    },
+    {
+      "phase": 3,
+      "side": "guest",
+      "t": 21856,
+    },
+    {
+      "phase": 1,
+      "side": "host",
+      "t": 24848,
+    },
+    {
+      "phase": 1,
+      "side": "guest",
+      "t": 24848,
+    },
+    {
+      "phase": 2,
+      "side": "host",
+      "t": 27840,
+    },
+    {
+      "phase": 2,
+      "side": "guest",
+      "t": 27856,
+    },
+    {
+      "phase": 3,
+      "side": "host",
+      "t": 29344,
+    },
+    {
+      "phase": 3,
+      "side": "guest",
+      "t": 29360,
+    },
+  ],
+  "results": {
+    "guest": [],
+    "host": [],
+  },
+  "sounds": {
+    "guest": {
+      "digest": "cf0275c6db92f840",
+      "entries": 635,
+      "voices": {
+        "createGain": 63,
+        "createOscillator": 63,
+      },
+    },
+    "host": {
+      "digest": "8530f7116929084b",
+      "entries": 555,
+      "voices": {
+        "createGain": 55,
+        "createOscillator": 55,
+      },
+    },
+  },
+  "state": {
+    "guest": {
+      "countdown": 0,
+      "phase": 3,
+      "round": 3,
+      "score1": 2,
+      "score2": 2,
+    },
+    "host": {
+      "countdown": 0,
+      "p1Dead": true,
+      "p2Dead": false,
+      "phase": 3,
+      "round": 3,
+      "score1": 2,
+      "score2": 2,
+    },
+  },
+  "wire": {
+    "byDir": {
+      "guest>host": {
+        "bytes": 517,
+        "datagrams": 130,
+        "dropped": 0,
+        "types": {
+          "84": 1,
+          "8f": 129,
+        },
+      },
+      "host>guest": {
+        "bytes": 1188,
+        "datagrams": 99,
+        "dropped": 0,
+        "types": {
+          "80": 99,
+        },
+      },
+    },
+    "digest": "24edf816cc5efcb2",
+    "first": [
+      {
+        "dir": "guest>host",
+        "hex": "84",
+        "t": 0,
+      },
+      {
+        "dir": "host>guest",
+        "hex": "800514033614020000010300",
+        "t": 0,
+      },
+      {
+        "dir": "host>guest",
+        "hex": "800514033614020000010200",
+        "t": 1000,
+      },
+      {
+        "dir": "host>guest",
+        "hex": "800514033614020000010100",
+        "t": 2000,
+      },
+      {
+        "dir": "host>guest",
+        "hex": "800514033614020000020000",
+        "t": 3000,
+      },
+      {
+        "dir": "host>guest",
+        "hex": "800614033514020000020000",
+        "t": 3104,
+      },
+    ],
+  },
+}
+`;
+
+exports[`light_trails pins > P2P over a channel that loses datagrams 1`] = `
+{
+  "draws": [
+    {
+      "digest": "5872aa39f6d727a0",
+      "ops": 762,
+      "phase": 0,
+      "side": "host",
+      "t": 32,
+    },
+    {
+      "digest": "5872aa39f6d727a0",
+      "ops": 762,
+      "phase": 0,
+      "side": "guest",
+      "t": 32,
+    },
+    {
+      "digest": "c627345ae8275787",
+      "ops": 762,
+      "phase": 1,
+      "side": "host",
+      "t": 768,
+    },
+    {
+      "digest": "7b498db3912a3071",
+      "ops": 762,
+      "phase": 1,
+      "side": "guest",
+      "t": 784,
+    },
+    {
+      "digest": "db8d2f110e7e412a",
+      "ops": 753,
+      "phase": 2,
+      "side": "host",
+      "t": 3776,
+    },
+    {
+      "digest": "a4a62591800816ec",
+      "ops": 753,
+      "phase": 2,
+      "side": "guest",
+      "t": 3776,
+    },
+    {
+      "digest": "c069683a7e3c68b1",
+      "ops": 1030,
+      "phase": 3,
+      "side": "host",
+      "t": 6176,
+    },
+    {
+      "digest": "312562bcdf761694",
+      "ops": 752,
+      "phase": 1,
+      "side": "guest",
+      "t": 9184,
+    },
+    {
+      "digest": "01b7e4c5644f74cb",
+      "ops": 752,
+      "phase": 1,
+      "side": "host",
+      "t": 9200,
+    },
+    {
+      "digest": "23a17dd62e4610a3",
+      "ops": 743,
+      "phase": 2,
+      "side": "host",
+      "t": 12192,
+    },
+    {
+      "digest": "64240ef9faff0ed6",
+      "ops": 743,
+      "phase": 2,
+      "side": "guest",
+      "t": 12192,
+    },
+    {
+      "digest": "b7cd38c1ea8ef644",
+      "ops": 1039,
+      "phase": 3,
+      "side": "host",
+      "t": 14592,
+    },
+    {
+      "digest": "81f36377d0a905c8",
+      "ops": 761,
+      "phase": 1,
+      "side": "host",
+      "t": 17600,
+    },
+    {
+      "digest": "25a72125b056219e",
+      "ops": 761,
+      "phase": 1,
+      "side": "guest",
+      "t": 17616,
+    },
+    {
+      "digest": "b5f84b3eefd6758e",
+      "ops": 752,
+      "phase": 2,
+      "side": "host",
+      "t": 20608,
+    },
+    {
+      "digest": "94e9479bedf9af69",
+      "ops": 752,
+      "phase": 2,
+      "side": "guest",
+      "t": 20608,
+    },
+    {
+      "digest": "450a5465a94a1b0b",
+      "ops": 909,
+      "phase": 3,
+      "side": "host",
+      "t": 21808,
+    },
+    {
+      "digest": "39b2ce1f523c9b8e",
+      "ops": 852,
+      "phase": 3,
+      "side": "guest",
+      "t": 21824,
+    },
+    {
+      "digest": "dbebdd91f2c4efb1",
+      "ops": 751,
+      "phase": 1,
+      "side": "host",
+      "t": 24816,
+    },
+    {
+      "digest": "3f63d57c871e60c4",
+      "ops": 751,
+      "phase": 1,
+      "side": "guest",
+      "t": 24816,
+    },
+    {
+      "digest": "b38a811e2e03145a",
+      "ops": 742,
+      "phase": 2,
+      "side": "host",
+      "t": 27824,
+    },
+    {
+      "digest": "2547d99784334a57",
+      "ops": 742,
+      "phase": 2,
+      "side": "guest",
+      "t": 27824,
+    },
+    {
+      "digest": "32d378686270cd72",
+      "ops": 958,
+      "phase": 3,
+      "side": "host",
+      "t": 29424,
+    },
+    {
+      "digest": "5e5d62e40af38600",
+      "ops": 896,
+      "phase": 3,
+      "side": "guest",
+      "t": 29440,
+    },
+  ],
+  "phases": [
+    {
+      "phase": 0,
+      "side": "host",
+      "t": 16,
+    },
+    {
+      "phase": 0,
+      "side": "guest",
+      "t": 16,
+    },
+    {
+      "phase": 1,
+      "side": "host",
+      "t": 752,
+    },
+    {
+      "phase": 1,
+      "side": "guest",
+      "t": 768,
+    },
+    {
+      "phase": 2,
+      "side": "host",
+      "t": 3760,
+    },
+    {
+      "phase": 2,
+      "side": "guest",
+      "t": 3760,
+    },
+    {
+      "phase": 3,
+      "side": "host",
+      "t": 6160,
+    },
+    {
+      "phase": 1,
+      "side": "host",
+      "t": 9168,
+    },
+    {
+      "phase": 1,
+      "side": "guest",
+      "t": 9168,
+    },
+    {
+      "phase": 2,
+      "side": "host",
+      "t": 12160,
+    },
+    {
+      "phase": 2,
+      "side": "guest",
+      "t": 12176,
+    },
+    {
+      "phase": 3,
+      "side": "host",
+      "t": 14576,
+    },
+    {
+      "phase": 1,
+      "side": "host",
+      "t": 17584,
+    },
+    {
+      "phase": 1,
+      "side": "guest",
+      "t": 17584,
+    },
+    {
+      "phase": 2,
+      "side": "host",
+      "t": 20576,
+    },
+    {
+      "phase": 2,
+      "side": "guest",
+      "t": 20592,
+    },
+    {
+      "phase": 3,
+      "side": "host",
+      "t": 21792,
+    },
+    {
+      "phase": 3,
+      "side": "guest",
+      "t": 21808,
+    },
+    {
+      "phase": 1,
+      "side": "host",
+      "t": 24800,
+    },
+    {
+      "phase": 1,
+      "side": "guest",
+      "t": 24800,
+    },
+    {
+      "phase": 2,
+      "side": "host",
+      "t": 27792,
+    },
+    {
+      "phase": 2,
+      "side": "guest",
+      "t": 27808,
+    },
+    {
+      "phase": 3,
+      "side": "host",
+      "t": 29408,
+    },
+    {
+      "phase": 3,
+      "side": "guest",
+      "t": 29424,
+    },
+  ],
+  "results": {
+    "guest": [],
+    "host": [],
+  },
+  "sounds": {
+    "guest": {
+      "digest": "73759b4ccc5eb7a9",
+      "entries": 613,
+      "voices": {
+        "createGain": 61,
+        "createOscillator": 61,
+      },
+    },
+    "host": {
+      "digest": "b0f1c6ae06b6a817",
+      "entries": 555,
+      "voices": {
+        "createGain": 55,
+        "createOscillator": 55,
+      },
+    },
+  },
+  "state": {
+    "guest": {
+      "countdown": 0,
+      "phase": 3,
+      "round": 3,
+      "score1": 2,
+      "score2": 2,
+    },
+    "host": {
+      "countdown": 0,
+      "p1Dead": true,
+      "p2Dead": false,
+      "phase": 3,
+      "round": 3,
+      "score1": 2,
+      "score2": 2,
+    },
+  },
+  "wire": {
+    "byDir": {
+      "guest>host": {
+        "bytes": 520,
+        "datagrams": 133,
+        "dropped": 3,
+        "types": {
+          "84": 4,
+          "8f": 129,
+        },
+      },
+      "host>guest": {
+        "bytes": 1104,
+        "datagrams": 92,
+        "dropped": 13,
+        "types": {
+          "80": 92,
+        },
+      },
+    },
+    "digest": "9d58038a230ae8a2",
+    "first": [
+      {
+        "dir": "guest>host",
+        "dropped": true,
+        "hex": "84",
+        "t": 0,
+      },
+      {
+        "dir": "guest>host",
+        "dropped": true,
+        "hex": "84",
+        "t": 250,
+      },
+      {
+        "dir": "guest>host",
+        "dropped": true,
+        "hex": "84",
+        "t": 500,
+      },
+      {
+        "dir": "guest>host",
+        "hex": "84",
+        "t": 750,
+      },
+      {
+        "dir": "host>guest",
+        "hex": "800514033614020000010300",
+        "t": 751,
+      },
+      {
+        "dir": "host>guest",
+        "hex": "800514033614020000010200",
+        "t": 1751,
+      },
+    ],
+  },
+}
+`;
+
+exports[`light_trails pins > solo against the AI 1`] = `
+{
+  "draws": [
+    {
+      "digest": "a1d94cb0b7ac617d",
+      "ops": 762,
+      "phase": 1,
+      "side": "host",
+      "t": 32,
+    },
+    {
+      "digest": "38ce363eb6b61ca5",
+      "ops": 753,
+      "phase": 2,
+      "side": "host",
+      "t": 3024,
+    },
+    {
+      "digest": "7456d2503a6a439c",
+      "ops": 1060,
+      "phase": 3,
+      "side": "host",
+      "t": 5728,
+    },
+    {
+      "digest": "54af095b65f8e39d",
+      "ops": 752,
+      "phase": 1,
+      "side": "host",
+      "t": 8736,
+    },
+    {
+      "digest": "64c1ced0ff4b29c8",
+      "ops": 743,
+      "phase": 2,
+      "side": "host",
+      "t": 11744,
+    },
+    {
+      "digest": "7061a44383ea7f43",
+      "ops": 1289,
+      "phase": 3,
+      "side": "host",
+      "t": 16640,
+    },
+    {
+      "digest": "2b5ed3c1d1a8c74e",
+      "ops": 761,
+      "phase": 1,
+      "side": "host",
+      "t": 19648,
+    },
+    {
+      "digest": "2b3e975579ebb2fb",
+      "ops": 752,
+      "phase": 2,
+      "side": "host",
+      "t": 22656,
+    },
+    {
+      "digest": "b2c06adb33d0a409",
+      "ops": 1094,
+      "phase": 4,
+      "side": "host",
+      "t": 25552,
+    },
+  ],
+  "ended": true,
+  "phases": [
+    {
+      "phase": 1,
+      "side": "host",
+      "t": 16,
+    },
+    {
+      "phase": 2,
+      "side": "host",
+      "t": 3008,
+    },
+    {
+      "phase": 3,
+      "side": "host",
+      "t": 5712,
+    },
+    {
+      "phase": 1,
+      "side": "host",
+      "t": 8720,
+    },
+    {
+      "phase": 2,
+      "side": "host",
+      "t": 11712,
+    },
+    {
+      "phase": 3,
+      "side": "host",
+      "t": 16624,
+    },
+    {
+      "phase": 1,
+      "side": "host",
+      "t": 19632,
+    },
+    {
+      "phase": 2,
+      "side": "host",
+      "t": 22624,
+    },
+    {
+      "phase": 4,
+      "side": "host",
+      "t": 25536,
+    },
+  ],
+  "results": {
+    "guest": [],
+    "host": [
+      {
+        "score": {
+          "p1": 0,
+          "p2": 3,
+        },
+        "winner": 2,
+      },
+    ],
+  },
+  "sounds": {
+    "host": {
+      "digest": "928d8e074210f7d5",
+      "entries": 135,
+      "voices": {
+        "createGain": 13,
+        "createOscillator": 13,
+      },
+    },
+  },
+  "state": {
+    "host": {
+      "countdown": 0,
+      "p1Dead": true,
+      "p2Dead": false,
+      "phase": 4,
+      "round": 2,
+      "score1": 0,
+      "score2": 3,
+    },
+  },
+  "wire": {
+    "byDir": {},
+    "digest": "4f53cda18c2baa0c",
+    "first": [],
+  },
+}
+`;
+
+exports[`light_trails pins > the channel drops mid-match 1`] = `
+{
+  "lastPhases": {
+    "guest": 4,
+    "host": 4,
+  },
+  "leakedTimers": 0,
+  "results": {
+    "guest": [
+      {
+        "disconnected": true,
+        "score": {
+          "p1": 2,
+          "p2": 0,
+        },
+        "winner": 0,
+      },
+    ],
+    "host": [
+      {
+        "disconnected": true,
+        "score": {
+          "p1": 2,
+          "p2": 0,
+        },
+        "winner": 0,
+      },
+    ],
+  },
+  "state": {
+    "guest": {
+      "countdown": 0,
+      "phase": 4,
+      "round": 1,
+      "score1": 2,
+      "score2": 0,
+    },
+    "host": {
+      "countdown": 0,
+      "p1Dead": false,
+      "p2Dead": true,
+      "phase": 4,
+      "round": 1,
+      "score1": 2,
+      "score2": 0,
+    },
+  },
+}
+`;

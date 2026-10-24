@@ -8,8 +8,8 @@ import { seedRandom } from "./seeded_random.js";
 
 /**
  * Plays a match the way the browser does, and records what can be seen of it
- * from outside: the bytes on the channel, the phases, the sounds, the frames
- * drawn and the result each side reports.
+ * from outside: the bytes on the channel, the phases, the sounds, a frame
+ * painted in each phase and the result each side reports.
  *
  * Engines are built by `createGameEngine`, the factory the hooks use, so a
  * recording survives any change behind it. The test clock drives everything —
@@ -55,6 +55,10 @@ export async function playMatch({
   });
   seedRandom(seed);
   const audio = recordingAudio();
+  // The page under test loads no stylesheet, so every custom property reads as
+  // empty and each game falls back to its built-in palette. jsdom computes that
+  // empty answer slowly, and some renderers ask dozens of times a frame.
+  vi.stubGlobal("getComputedStyle", () => ({ getPropertyValue: () => "" }));
 
   const results = { host: [], guest: [] };
   const keyboards = { host: new EventTarget(), guest: new EventTarget() };
@@ -93,26 +97,39 @@ export async function playMatch({
   const lastPhase = {};
   let observerFrame = null;
 
-  // Runs once per animation frame, after the engines have painted it.
+  const capturing = {};
+  for (const canvas of Object.values(canvases)) canvas.recording = false;
+
+  // Runs once per animation frame, after the engines have painted it. A phase
+  // change switches that side's canvas recording on until the next frame that
+  // is actually painted (an engine repaints only when something changed), and
+  // that frame is the one kept: recording every frame would cost more than the
+  // game itself.
   const observeFrame = () => {
     observerFrame = requestAnimationFrame(observeFrame);
     for (const side of sides) {
       const phase = observe.phase(engines[side]);
       const canvas = canvases[side];
+
+      if (capturing[side] !== undefined && canvas.log.length > 0) {
+        draws.push({
+          t: Date.now(),
+          side,
+          phase: capturing[side],
+          ops: canvas.log.length,
+          digest: digest(canvas.log),
+        });
+        capturing[side] = undefined;
+        canvas.recording = false;
+      }
+
       if (phase !== lastPhase[side]) {
         lastPhase[side] = phase;
         phases.push({ t: Date.now(), side, phase });
-        if (canvas.log.length > 0) {
-          draws.push({
-            t: Date.now(),
-            side,
-            phase,
-            ops: canvas.log.length,
-            digest: digest(canvas.log),
-          });
-        }
+        capturing[side] = phase;
+        canvas.clearLog();
+        canvas.recording = true;
       }
-      canvas.clearLog();
     }
   };
 
@@ -147,6 +164,14 @@ export async function playMatch({
       const deadline = Date.now() + limit;
       while (!done() && Date.now() < deadline) vi.advanceTimersByTime(1000);
       return done();
+    },
+
+    /**
+     * Whether the match is over: a result reported, or the host in the phase
+     * the match ends in (a game can reach it without reporting anything).
+     */
+    over() {
+      return results.host.length > 0 || observe.finished(engines.host);
     },
 
     /** The channel drops, on both ends. */
@@ -196,6 +221,11 @@ export async function playMatch({
  */
 export const observe = {
   phase: (engine) => engine.gameState?.phase ?? null,
+
+  /** Whether the match has reached the phase it ends in. */
+  finished: (engine) =>
+    engine.constructor.FINAL_PHASE !== null &&
+    engine.gameState?.phase === engine.constructor.FINAL_PHASE,
 
   /** The state's scalar fields — scores, phase, round, lives — sorted by name. */
   state(engine) {

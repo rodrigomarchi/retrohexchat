@@ -660,6 +660,7 @@ defmodule CIImpact do
       "apps/retro_hex_chat_web/assets/package-lock.json",
       "apps/retro_hex_chat_web/assets/eslint.config.mjs",
       "apps/retro_hex_chat_web/assets/vitest.config.js",
+      "apps/retro_hex_chat_web/assets/vitest.pins.config.js",
       "apps/retro_hex_chat_web/assets/tailwind.config.js",
       "apps/retro_hex_chat_web/assets/tsconfig.json"
     ]

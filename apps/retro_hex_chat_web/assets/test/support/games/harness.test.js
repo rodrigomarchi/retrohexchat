@@ -46,7 +46,7 @@ describe("playMatch", () => {
     expect(match.results.host[0]).toHaveProperty("winner");
   });
 
-  it("records the first frame drawn in each phase", async () => {
+  it("records a frame drawn in each phase", async () => {
     match = await playMatch({ gameId: "hex_pong", mode: "solo" });
     match.advance(5000);
     const draws = match.record().draws.filter((d) => d.side === "host");

@@ -8,8 +8,8 @@ import { playMatch } from "./harness.js";
  * Characterization pins for one game: what it does today, recorded from
  * outside in four matches, so a refactor can prove it changed nothing.
  *
- * 1. solo — against the AI until the match ends;
- * 2. p2p — both sides following the game's key script;
+ * 1. solo — against the AI, until the match ends or `soloMs` pass;
+ * 2. p2p — both sides following the game's key script for `p2pMs`;
  * 3. lossy — the same, losing the first ready announcements and one snapshot
  *    in seven;
  * 4. disconnect — the channel drops mid-match.
@@ -22,20 +22,22 @@ import { playMatch } from "./harness.js";
  * @param {object} options
  * @param {(side: "host"|"guest") => Array<object>} options.script - key presses
  *   for one side, `{ at, key, down }`
- * @param {number} [options.soloLimitMs] - give up on the solo match after this
+ * @param {number} [options.soloMs] - the longest a solo match runs
  * @param {number} [options.p2pMs] - how long the P2P matches run
  * @param {number} [options.disconnectAtMs]
+ * @param {string[]} [options.variants] - other ids this engine plays (a mode of
+ *   the same game); each gets its own solo match
  */
 export function pinGame(
   gameId,
-  { script, soloLimitMs = 600_000, p2pMs = 90_000, disconnectAtMs = 20_000 },
+  { script, soloMs = 60_000, p2pMs = 30_000, disconnectAtMs = 15_000, variants = [] },
 ) {
   const both = () => [
     ...script("host").map((press) => ({ ...press, side: "host" })),
     ...script("guest").map((press) => ({ ...press, side: "guest" })),
   ];
 
-  describe(`${gameId} pins`, () => {
+  describe(`${gameId} pins`, { timeout: PIN_TIMEOUT_MS }, () => {
     let match;
 
     afterEach(() => {
@@ -46,12 +48,23 @@ export function pinGame(
 
     it("solo against the AI", async () => {
       match = await playMatch({ gameId, mode: "solo", seed: 1 });
-      const ended = match.runUntil(() => match.results.host.length > 0, soloLimitMs);
+      const ended = match.runUntil(() => match.over(), soloMs);
       const record = match.record();
       dump(gameId, "solo", record);
 
       expect({ ended, ...summarize(record) }).toMatchSnapshot();
     });
+
+    for (const variant of variants) {
+      it(`solo against the AI: ${variant}`, async () => {
+        match = await playMatch({ gameId: variant, mode: "solo", seed: 1 });
+        const ended = match.runUntil(() => match.over(), soloMs);
+        const record = match.record();
+        dump(variant, "solo", record);
+
+        expect({ ended, ...summarize(record) }).toMatchSnapshot();
+      });
+    }
 
     it("P2P following the key script", async () => {
       match = await playMatch({ gameId, mode: "p2p", seed: 2, script: both() });
@@ -91,7 +104,7 @@ export function pinGame(
     it("records the same match the same way twice", async () => {
       const play = async () => {
         const run = await playMatch({ gameId, mode: "p2p", seed: 3, script: both() });
-        run.advance(30_000);
+        run.advance(10_000);
         const record = run.record();
         run.stop();
         run.restore();
@@ -102,6 +115,12 @@ export function pinGame(
     });
   });
 }
+
+/**
+ * A pin plays minutes of game in seconds, and `make ci` runs it beside other
+ * suites; the default five seconds is too tight for the longest matches.
+ */
+const PIN_TIMEOUT_MS = 120_000;
 
 /** Lose the first three ready announcements and every seventh snapshot. */
 function lossy() {
