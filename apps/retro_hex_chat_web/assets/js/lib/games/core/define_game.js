@@ -24,6 +24,7 @@
  *   onKeyDown, onKeyUp: (game, event) => …,        // after the engine's own key handling
  *   onBlur: (game) => …,                            // on losing focus, before inputs are released
  *   onRemoteEdge: (game, code) => …,                // a discrete command from the guest
+ *   onAbandon: (game) => …,                         // the channel dropped mid-match: silence what runs
  *   render: (game) => …,
  *   disconnectResult: (game) => ({ … }),
  * });
@@ -247,6 +248,10 @@ export function defineGame(def) {
 
     _onRemoteInputChange(previous, current) {
       def.onRemoteInputChange?.(this, previous, current);
+    }
+
+    _onMatchAbandoned() {
+      def.onAbandon?.(this);
     }
 
     _handleBlur() {

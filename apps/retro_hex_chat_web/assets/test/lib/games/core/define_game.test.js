@@ -126,6 +126,16 @@ describe("defineGame", () => {
       });
     });
 
+    it("runs the definition's onAbandon when the channel drops mid-match", async () => {
+      const abandoned = [];
+      const Game = defineGame({ ...definition, onAbandon: (game) => abandoned.push(game.isHost) });
+      match = await playMatch({ EngineClass: Game, gameId: "fake" });
+      match.advance(500);
+      match.close();
+      match.advance(100);
+      expect(abandoned).toContain(true);
+    });
+
     it("runs the definition's onStop before the engine stops", async () => {
       match = await play();
       match.advance(150);

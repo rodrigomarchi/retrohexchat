@@ -56,7 +56,7 @@ vi.mock("../../../../js/lib/games/star_duel/renderer.js", () => ({
   render: vi.fn(),
 }));
 
-const { StarDuelEngine } = await import("../../../../js/lib/games/star_duel/engine.js");
+const { default: StarDuelEngine } = await import("../../../../js/lib/games/star_duel/index.js");
 const { render, getColors } = await import("../../../../js/lib/games/star_duel/renderer.js");
 
 function createMockChannel() {
@@ -545,12 +545,12 @@ describe("StarDuelEngine", () => {
     it("GAME_END clears _peerThrustAudioPlaying flag", () => {
       engine = new StarDuelEngine(canvas, channel, "star_duel", false, null);
       engine.start();
-      engine._peerThrustAudioPlaying = true;
+      engine.peerThrustAudioPlaying = true;
 
       const buf = GAME_END.encode({ score1: 7, score2: 3, winner: 1 });
       engine._onChannelMessage({ data: buf });
 
-      expect(engine._peerThrustAudioPlaying).toBe(false);
+      expect(engine.peerThrustAudioPlaying).toBe(false);
     });
   });
 
@@ -808,25 +808,20 @@ describe("StarDuelEngine", () => {
       expect(engine.gameState.phase).toBe(PHASE.SPAWNING);
     });
 
-    it("phase timer is nulled after countdown completes", () => {
+    it("leaves no phase timer pending once the countdown and spawn are done", () => {
       engine = new StarDuelEngine(canvas, channel, "star_duel", true, null);
       engine.start();
       engine._onChannelMessage({ data: encodeGameReady() });
 
       // After all 3 ticks, the countdown is done and _startSpawning is called
-      vi.advanceTimersByTime(2000);
-      // count goes to 0, phaseTimer is set to null before calling _startSpawning
-      // But _startSpawning sets a new phaseTimer for SPAWN_DELAY
-      // At 2000ms: count=1 (tick 2), then at 3000ms: count=0, phaseTimer=null, then _startSpawning sets new phaseTimer
-      vi.advanceTimersByTime(1000);
+      vi.advanceTimersByTime(3000);
       expect(engine.gameState.phase).toBe(PHASE.SPAWNING);
-      // _startSpawning sets a new phaseTimer; after SPAWN_DELAY it's nulled
-      expect(engine.phaseTimer).not.toBeNull();
+      const pendingWhileSpawning = vi.getTimerCount();
 
-      // After SPAWN_DELAY (1500ms), phaseTimer is nulled and game starts
+      // After SPAWN_DELAY (1500ms) the game starts and the spawn pause is gone.
       vi.advanceTimersByTime(1500);
-      expect(engine.phaseTimer).toBeNull();
       expect(engine.gameState.phase).toBe(PHASE.PLAYING);
+      expect(vi.getTimerCount()).toBe(pendingWhileSpawning - 1);
     });
   });
 
@@ -950,10 +945,10 @@ describe("StarDuelEngine", () => {
       engine.start();
       engine.gameState.phase = PHASE.PLAYING;
 
-      engine._handleRoundOver();
+      engine.flow.go("ROUND_OVER");
 
       expect(engine.audio.stopThrust).toHaveBeenCalled();
-      expect(engine._thrustAudioPlaying).toBe(false);
+      expect(engine.thrustAudioPlaying).toBe(false);
     });
 
     it("stops star proximity on ROUND_OVER in gravity well mode", () => {
@@ -962,7 +957,7 @@ describe("StarDuelEngine", () => {
       engine.gameState.phase = PHASE.PLAYING;
       engine.gameState.mode = GAME_MODE.GRAVITY_WELL;
 
-      engine._handleRoundOver();
+      engine.flow.go("ROUND_OVER");
 
       expect(engine.audio.stopStarProximity).toHaveBeenCalled();
     });
@@ -972,7 +967,7 @@ describe("StarDuelEngine", () => {
       engine.start();
       engine.gameState.phase = PHASE.PLAYING;
 
-      engine._handleRoundOver();
+      engine.flow.go("ROUND_OVER");
 
       expect(engine.gameState.phase).toBe(PHASE.ROUND_OVER);
 
@@ -989,7 +984,7 @@ describe("StarDuelEngine", () => {
       engine.gameState.score2 = 3;
       channel.send.mockClear();
 
-      engine._handleGameFinished();
+      engine.flow.go("FINISHED");
 
       const gameEndCall = channel.send.mock.calls.find((call) => {
         const view = new Uint8Array(call[0]);
@@ -1005,7 +1000,7 @@ describe("StarDuelEngine", () => {
       engine.gameState.score1 = WIN_SCORE;
       engine.gameState.score2 = 3;
 
-      engine._handleGameFinished();
+      engine.flow.go("FINISHED");
 
       expect(onEnd).toHaveBeenCalledWith({
         score: { p1: WIN_SCORE, p2: 3 },
@@ -1019,7 +1014,7 @@ describe("StarDuelEngine", () => {
       engine.gameState.score1 = WIN_SCORE;
       engine.gameState.score2 = 3;
 
-      engine._handleGameFinished();
+      engine.flow.go("FINISHED");
 
       expect(engine.audio.playWin).toHaveBeenCalled();
       expect(engine.audio.stopThrust).toHaveBeenCalled();
@@ -1032,7 +1027,7 @@ describe("StarDuelEngine", () => {
       engine.gameState.score2 = 3;
       engine.gameState.mode = GAME_MODE.GRAVITY_WELL;
 
-      engine._handleGameFinished();
+      engine.flow.go("FINISHED");
 
       expect(engine.audio.stopStarProximity).toHaveBeenCalled();
     });
@@ -1044,7 +1039,7 @@ describe("StarDuelEngine", () => {
       engine.gameState.score1 = 3;
       engine.gameState.score2 = WIN_SCORE;
 
-      engine._handleGameFinished();
+      engine.flow.go("FINISHED");
 
       expect(engine.gameState.phase).toBe(PHASE.FINISHED);
       expect(engine.gameState.winner).toBe(2);
@@ -1157,7 +1152,7 @@ describe("StarDuelEngine", () => {
     it("toggles peer thrust audio when ship2 starts thrusting", () => {
       engine = new StarDuelEngine(canvas, channel, "star_duel", false, null);
       engine.start();
-      engine._peerThrustAudioPlaying = false;
+      engine.peerThrustAudioPlaying = false;
 
       const buf = buildEncodedState({
         ship2Flags: {
@@ -1171,13 +1166,13 @@ describe("StarDuelEngine", () => {
       engine._onChannelMessage({ data: buf });
 
       expect(engine.audio.playThrust).toHaveBeenCalled();
-      expect(engine._peerThrustAudioPlaying).toBe(true);
+      expect(engine.peerThrustAudioPlaying).toBe(true);
     });
 
     it("stops peer thrust audio when ship2 stops thrusting", () => {
       engine = new StarDuelEngine(canvas, channel, "star_duel", false, null);
       engine.start();
-      engine._peerThrustAudioPlaying = true;
+      engine.peerThrustAudioPlaying = true;
 
       const buf = buildEncodedState({
         ship2Flags: {
@@ -1191,7 +1186,7 @@ describe("StarDuelEngine", () => {
       engine._onChannelMessage({ data: buf });
 
       expect(engine.audio.stopThrust).toHaveBeenCalled();
-      expect(engine._peerThrustAudioPlaying).toBe(false);
+      expect(engine.peerThrustAudioPlaying).toBe(false);
     });
   });
 
@@ -1233,26 +1228,26 @@ describe("StarDuelEngine", () => {
       engine = new StarDuelEngine(canvas, channel, "star_duel", false, null);
       engine.start();
       engine.gameState.phase = PHASE.PLAYING;
-      engine._peerThrustAudioPlaying = true;
+      engine.peerThrustAudioPlaying = true;
 
       const buf = buildEncodedState({ phase: PHASE.ROUND_OVER });
       engine._onChannelMessage({ data: buf });
 
       expect(engine.audio.stopThrust).toHaveBeenCalled();
-      expect(engine._peerThrustAudioPlaying).toBe(false);
+      expect(engine.peerThrustAudioPlaying).toBe(false);
     });
 
     it("stops thrust on FINISHED transition", () => {
       engine = new StarDuelEngine(canvas, channel, "star_duel", false, null);
       engine.start();
       engine.gameState.phase = PHASE.PLAYING;
-      engine._peerThrustAudioPlaying = true;
+      engine.peerThrustAudioPlaying = true;
 
       const buf = buildEncodedState({ phase: PHASE.FINISHED });
       engine._onChannelMessage({ data: buf });
 
       expect(engine.audio.stopThrust).toHaveBeenCalled();
-      expect(engine._peerThrustAudioPlaying).toBe(false);
+      expect(engine.peerThrustAudioPlaying).toBe(false);
     });
 
     it("plays death audio on score change", () => {
@@ -1437,14 +1432,14 @@ describe("StarDuelEngine", () => {
       expect(engine.gameState.phase).toBe(PHASE.PLAYING);
 
       // Ensure P2 fire was off
-      engine._p2FirePrev = false;
+      engine.p2FirePrev = false;
       engine.remoteInputs.fire = true;
       engine.audio.playFire.mockClear();
 
       engine._gameLoop(performance.now());
 
       expect(engine.audio.playFire).toHaveBeenCalled();
-      expect(engine._p2FirePrev).toBe(true);
+      expect(engine.p2FirePrev).toBe(true);
     });
 
     it("P2 remote warp edge-trigger: false→true attempts warp", () => {
@@ -1461,7 +1456,7 @@ describe("StarDuelEngine", () => {
         invulnerable: false,
         invulnTimer: 0,
       };
-      engine._p2WarpPrev = false;
+      engine.p2WarpPrev = false;
       engine.remoteInputs.warp = true;
       engine.audio.playWarp.mockClear();
 
@@ -1471,7 +1466,7 @@ describe("StarDuelEngine", () => {
       engine._gameLoop(performance.now());
 
       expect(engine.audio.playWarp).toHaveBeenCalled();
-      expect(engine._p2WarpPrev).toBe(true);
+      expect(engine.p2WarpPrev).toBe(true);
 
       Math.random = originalRandom;
     });
@@ -1541,7 +1536,7 @@ describe("StarDuelEngine", () => {
       engine.gameState.score1 = WIN_SCORE;
       engine.onGameEnd = null;
 
-      expect(() => engine._handleGameFinished()).not.toThrow();
+      expect(() => engine.flow.go("FINISHED")).not.toThrow();
       expect(engine.gameState.phase).toBe(PHASE.FINISHED);
     });
   });
