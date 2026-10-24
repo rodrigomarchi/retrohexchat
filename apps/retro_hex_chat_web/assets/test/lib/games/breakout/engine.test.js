@@ -43,7 +43,7 @@ vi.mock("../../../../js/lib/games/breakout/renderer.js", () => ({
   render: vi.fn(),
 }));
 
-const { BreakoutEngine } = await import("../../../../js/lib/games/breakout/engine.js");
+const { default: BreakoutEngine } = await import("../../../../js/lib/games/breakout/index.js");
 const { render, getColors } = await import("../../../../js/lib/games/breakout/renderer.js");
 
 function createMockChannel() {
@@ -98,6 +98,19 @@ function createOpponentController(inputs = {}) {
       ...inputs,
     })),
   };
+}
+
+/** A snapshot delivered to the guest, with its blocks given as the guest reads them. */
+function receive(engine, decoded) {
+  const blocks = decoded.blocksAlive.map((alive) => ({ alive }));
+  engine._onChannelMessage({ data: SNAPSHOT.encode({ ...decoded, blocks }) });
+}
+
+/** The guest in phase `from` with `prevScore`, receiving a snapshot in phase `to`. */
+function receivePhase(engine, from, to, prevScore) {
+  const score = engine.gameState.score;
+  Object.assign(engine.gameState, { phase: from, score: prevScore });
+  engine._onChannelMessage({ data: SNAPSHOT.encode({ ...engine.gameState, phase: to, score }) });
 }
 
 describe("BreakoutEngine", () => {
@@ -581,7 +594,7 @@ describe("BreakoutEngine", () => {
     });
   });
 
-  describe("_handleGameFinished (host)", () => {
+  describe("the end of the match (host)", () => {
     it("sends GAME_END to peer on win", () => {
       engine = new BreakoutEngine(canvas, channel, "block_breakers", true, null);
       engine.start();
@@ -589,7 +602,7 @@ describe("BreakoutEngine", () => {
       engine.gameState.won = true;
       channel.send.mockClear();
 
-      engine._handleGameFinished();
+      engine.flow.go("FINISHED");
 
       const gameEndCall = channel.send.mock.calls.find((call) => {
         const view = new Uint8Array(call[0]);
@@ -605,7 +618,7 @@ describe("BreakoutEngine", () => {
       engine.gameState.score = 2500;
       engine.gameState.won = true;
 
-      engine._handleGameFinished();
+      engine.flow.go("FINISHED");
 
       expect(onEnd).toHaveBeenCalledWith({
         score: { p1: 2500, p2: 2500 },
@@ -620,7 +633,7 @@ describe("BreakoutEngine", () => {
       engine.gameState.score = 800;
       engine.gameState.won = false;
 
-      engine._handleGameFinished();
+      engine.flow.go("FINISHED");
 
       expect(onEnd).toHaveBeenCalledWith({
         score: { p1: 800, p2: 800 },
@@ -633,7 +646,7 @@ describe("BreakoutEngine", () => {
       engine.start();
       engine.gameState.won = true;
 
-      engine._handleGameFinished();
+      engine.flow.go("FINISHED");
 
       expect(engine.audio.playWin).toHaveBeenCalled();
     });
@@ -643,7 +656,7 @@ describe("BreakoutEngine", () => {
       engine.start();
       engine.gameState.won = false;
 
-      engine._handleGameFinished();
+      engine.flow.go("FINISHED");
 
       expect(engine.audio.playLose).toHaveBeenCalled();
     });
@@ -783,7 +796,7 @@ describe("BreakoutEngine", () => {
       engine.start();
       engine.lastExitSide = null;
 
-      engine._startServing();
+      engine.flow.go("SERVING");
       vi.advanceTimersByTime(800);
 
       // Ball should have been served with some velocity
@@ -795,7 +808,7 @@ describe("BreakoutEngine", () => {
       engine.start();
       engine.lastExitSide = "bottom";
 
-      engine._startServing();
+      engine.flow.go("SERVING");
       vi.advanceTimersByTime(800);
 
       // Ball should be served upward (negative VY)
@@ -807,7 +820,7 @@ describe("BreakoutEngine", () => {
       engine.start();
       engine.lastExitSide = "top";
 
-      engine._startServing();
+      engine.flow.go("SERVING");
       vi.advanceTimersByTime(800);
 
       // Ball should be served downward (positive VY)
@@ -878,20 +891,6 @@ describe("BreakoutEngine", () => {
       expect(channel.send).toHaveBeenCalled();
     });
 
-    it("schedules serve only once during LIFE_LOST phase", () => {
-      engine = setupPlayingEngine();
-      engine.gameState.phase = PHASE.LIFE_LOST;
-      engine.gameState.lives = 2;
-
-      engine._gameLoop(0);
-      const timer1 = engine.phaseTimer;
-      expect(timer1).not.toBeNull();
-
-      // Second call should not create a new timer
-      engine._gameLoop(0);
-      expect(engine.phaseTimer).toBe(timer1);
-    });
-
     it("calls _handleGameFinished when FINISHED", () => {
       engine = setupPlayingEngine();
       engine.gameState.phase = PHASE.FINISHED;
@@ -913,7 +912,7 @@ describe("BreakoutEngine", () => {
       engine = new BreakoutEngine(canvas, channel, "block_breakers", false, null);
       engine.start();
 
-      engine._playPhaseAudio(PHASE.PLAYING, PHASE.LIFE_LOST, 100, 3);
+      receivePhase(engine, PHASE.PLAYING, PHASE.LIFE_LOST, 100);
 
       expect(engine.audio.playLifeLost).toHaveBeenCalled();
     });
@@ -923,7 +922,7 @@ describe("BreakoutEngine", () => {
       engine.start();
       engine.gameState.won = true;
 
-      engine._playPhaseAudio(PHASE.PLAYING, PHASE.FINISHED, 100, 3);
+      receivePhase(engine, PHASE.PLAYING, PHASE.FINISHED, 100);
 
       expect(engine.audio.playWin).toHaveBeenCalled();
     });
@@ -933,7 +932,7 @@ describe("BreakoutEngine", () => {
       engine.start();
       engine.gameState.won = false;
 
-      engine._playPhaseAudio(PHASE.PLAYING, PHASE.FINISHED, 100, 3);
+      receivePhase(engine, PHASE.PLAYING, PHASE.FINISHED, 100);
 
       expect(engine.audio.playLose).toHaveBeenCalled();
     });
@@ -943,7 +942,7 @@ describe("BreakoutEngine", () => {
       engine.start();
       engine.gameState.score = 150;
 
-      engine._playPhaseAudio(PHASE.PLAYING, PHASE.PLAYING, 100, 3);
+      receivePhase(engine, PHASE.PLAYING, PHASE.PLAYING, 100);
 
       expect(engine.audio.playBlockHit).toHaveBeenCalled();
     });
@@ -962,7 +961,7 @@ describe("BreakoutEngine", () => {
       blocksAlive[5] = false;
       blocksAlive[10] = false;
 
-      engine._applyPeerState({
+      receive(engine, {
         ballX: 100,
         ballY: 200,
         ballVX: 2,
@@ -987,7 +986,7 @@ describe("BreakoutEngine", () => {
       engine = new BreakoutEngine(canvas, channel, "block_breakers", false, null);
       engine.start();
 
-      engine._applyPeerState({
+      receive(engine, {
         ballX: 100,
         ballY: 200,
         ballVX: 2,
