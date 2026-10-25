@@ -12,21 +12,11 @@ import {
 import { CANVAS_W, CANVAS_H } from "../../../../js/lib/games/pixel_tanks/physics.js";
 
 // Must mock audio before importing engine
-vi.mock("../../../../js/lib/games/pixel_tanks/audio.js", () => ({
-  PixelTanksAudio: function () {
-    return {
-      playFire: vi.fn(),
-      playHit: vi.fn(),
-      playRicochet: vi.fn(),
-      playCountdown: vi.fn(),
-      playSpawn: vi.fn(),
-      playTimerTick: vi.fn(),
-      playRoundEnd: vi.fn(),
-      playWin: vi.fn(),
-      playLose: vi.fn(),
-    };
-  },
-}));
+vi.mock("../../../../js/lib/games/core/synth.js", async (importOriginal) => {
+  const synth = await importOriginal();
+  const { spySounds } = await import("../../../helpers/spy_sounds.js");
+  return { ...synth, createGameAudio: (spec) => spySounds(synth.createGameAudio(spec)) };
+});
 
 // Must mock renderer
 vi.mock("../../../../js/lib/games/pixel_tanks/renderer.js", () => ({

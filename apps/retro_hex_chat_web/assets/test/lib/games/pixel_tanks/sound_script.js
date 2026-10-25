@@ -1,0 +1,20 @@
+/** Every Pixel Tanks sound, once. */
+export const SOUND_SCRIPT = [
+  ["playFire"],
+  { wait: 200 },
+  ["playHit"],
+  { wait: 400 },
+  ["playRicochet"],
+  { wait: 100 },
+  ["playCountdown"],
+  { wait: 200 },
+  ["playSpawn"],
+  { wait: 200 },
+  ["playTimerTick"],
+  { wait: 100 },
+  ["playRoundEnd"],
+  { wait: 600 },
+  ["playWin"],
+  { wait: 800 },
+  ["playLose"],
+];

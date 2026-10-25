@@ -10,7 +10,6 @@
 
 import { defineGame } from "../core/define_game.js";
 import { createPixelTanksAI, normalizePixelTanksAIDifficulty } from "./ai.js";
-import { PixelTanksAudio } from "./audio.js";
 import {
   ROUND_DURATION,
   advanceRound,
@@ -33,6 +32,7 @@ import {
 } from "./physics.js";
 import { GAME_END, GAME_MODE, PHASE, SNAPSHOT } from "./protocol.js";
 import { getColors, render } from "./renderer.js";
+import { SOUNDS } from "./sounds.js";
 
 const ROUND_OVER_DELAY_TICKS = 150; // 2.5 s
 const SPAWNING_DELAY_TICKS = 60; // 1 s
@@ -181,7 +181,7 @@ export default defineGame({
       player: 2,
     }),
   },
-  audio: PixelTanksAudio,
+  audio: { sounds: SOUNDS },
   theme: getColors,
   // The host chooses the maze; the guest learns it from the first snapshot.
   init: (game) => {
