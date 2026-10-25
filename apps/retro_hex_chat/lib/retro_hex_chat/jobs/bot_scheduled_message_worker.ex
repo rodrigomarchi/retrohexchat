@@ -116,11 +116,11 @@ defmodule RetroHexChat.Jobs.BotScheduledMessageWorker do
   end
 
   @spec enabled_scheduler_config(Bot.t()) :: {:ok, map()} | {:cancel, String.t()}
-  defp enabled_scheduler_config(%Bot{capabilities: capabilities}) do
-    case Map.get(capabilities || %{}, @scheduler_capability) do
-      %{"enabled" => false} -> {:cancel, "scheduler disabled"}
-      config when is_map(config) -> {:ok, config}
-      _other -> {:cancel, "scheduler not configured"}
+  defp enabled_scheduler_config(%Bot{} = bot) do
+    case Bot.capability_config(bot, @scheduler_capability) do
+      {:ok, config} -> {:ok, config}
+      {:error, :disabled} -> {:cancel, "scheduler disabled"}
+      {:error, :missing} -> {:cancel, "scheduler not configured"}
     end
   end
 

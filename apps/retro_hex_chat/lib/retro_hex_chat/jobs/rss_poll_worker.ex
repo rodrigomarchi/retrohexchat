@@ -149,11 +149,11 @@ defmodule RetroHexChat.Jobs.RSSPollWorker do
   end
 
   @spec enabled_rss_config(Bot.t()) :: {:ok, map()} | {:cancel, String.t()}
-  defp enabled_rss_config(%Bot{capabilities: capabilities}) do
-    case Map.get(capabilities || %{}, @rss_capability) do
-      %{"enabled" => false} -> {:cancel, "rss disabled"}
-      config when is_map(config) -> {:ok, config}
-      _other -> {:cancel, "rss not configured"}
+  defp enabled_rss_config(%Bot{} = bot) do
+    case Bot.capability_config(bot, @rss_capability) do
+      {:ok, config} -> {:ok, config}
+      {:error, :disabled} -> {:cancel, "rss disabled"}
+      {:error, :missing} -> {:cancel, "rss not configured"}
     end
   end
 

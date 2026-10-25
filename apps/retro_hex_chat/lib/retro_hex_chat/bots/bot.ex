@@ -71,4 +71,18 @@ defmodule RetroHexChat.Bots.Bot do
     |> validate_number(:cooldown_ms, greater_than_or_equal_to: 500)
     |> validate_inclusion(:locale, Locales.codes())
   end
+
+  @doc """
+  The configuration of one of the bot's capabilities (`"rss"`, `"scheduler"`)
+  when it is set up and switched on: `:disabled` when its owner switched it
+  off, `:missing` when it was never set up.
+  """
+  @spec capability_config(t(), String.t()) :: {:ok, map()} | {:error, :disabled | :missing}
+  def capability_config(%__MODULE__{capabilities: capabilities}, key) do
+    case Map.get(capabilities || %{}, key) do
+      %{"enabled" => false} -> {:error, :disabled}
+      config when is_map(config) -> {:ok, config}
+      _other -> {:error, :missing}
+    end
+  end
 end

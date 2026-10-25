@@ -312,14 +312,8 @@ defmodule RetroHexChat.GroupCall.RoomServer do
            ) do
       join_authorized_participant(state, actor, signal_pid, client_info, membership)
     else
-      {:error, reason} = error ->
-        Logger.debug("Group call join denied",
-          room_id: state.room.id,
-          reason: inspect(reason)
-        )
-
-        telemetry(:join, %{count: 1}, %{result: :denied, reason: inspect(reason)})
-        {:reply, error, state}
+      {:error, _reason} = error ->
+        deny_join(error, state, "join")
     end
   end
 
@@ -344,14 +338,8 @@ defmodule RetroHexChat.GroupCall.RoomServer do
         membership
       )
     else
-      {:error, reason} = error ->
-        Logger.debug("Group call rejoin denied",
-          room_id: state.room.id,
-          reason: inspect(reason)
-        )
-
-        telemetry(:join, %{count: 1}, %{result: :denied, reason: inspect(reason)})
-        {:reply, error, state}
+      {:error, _reason} = error ->
+        deny_join(error, state, "rejoin")
     end
   end
 
@@ -2501,6 +2489,13 @@ defmodule RetroHexChat.GroupCall.RoomServer do
     {"video", "server_video_blocked", "video_blocked_by", "video_blocked_at"},
     {"screen", "server_screen_blocked", "screen_blocked_by", "screen_blocked_at"}
   ]
+
+  # A join or rejoin refused: logged, counted, and the refusal handed back.
+  defp deny_join({:error, reason} = error, state, label) do
+    Logger.debug("Group call #{label} denied", room_id: state.room.id, reason: inspect(reason))
+    telemetry(:join, %{count: 1}, %{result: :denied, reason: inspect(reason)})
+    {:reply, error, state}
+  end
 
   defp enforce_server_media_policy(media_state, current_media_state) do
     Enum.reduce(@server_media_holds, media_state, fn {media, flag, by, at}, state ->

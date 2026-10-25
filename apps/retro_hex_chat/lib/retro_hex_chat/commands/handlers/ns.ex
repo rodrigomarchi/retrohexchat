@@ -261,16 +261,12 @@ defmodule RetroHexChat.Commands.Handlers.Ns do
   end
 
   defp call_revoke_device([id], nickname) do
-    with {:ok, device_id} <- Args.positive_id(id, :invalid_id),
-         :ok <- TrustedDevices.revoke_device_for_nick(nickname, device_id, nickname) do
-      service_message(dgettext("commands", "Trusted terminal %{id} revoked.", id: id))
-    else
-      {:error, message} when is_binary(message) ->
-        {:error, nickserv_message(message)}
-
-      {:error, _reason} ->
-        {:error, revoke_device_usage()}
-    end
+    by_id(
+      id,
+      &TrustedDevices.revoke_device_for_nick(nickname, &1, nickname),
+      dgettext("commands", "Trusted terminal %{id} revoked.", id: id),
+      revoke_device_usage()
+    )
   end
 
   defp call_revoke_device(_args, _nickname), do: {:error, revoke_device_usage()}
@@ -282,19 +278,27 @@ defmodule RetroHexChat.Commands.Handlers.Ns do
   end
 
   defp call_kill_session([id], nickname) do
-    with {:ok, session_id} <- Args.positive_id(id, :invalid_id),
-         :ok <- TrustedDevices.kill_session(nickname, session_id, nickname) do
-      service_message(dgettext("commands", "Session %{id} ended.", id: id))
-    else
-      {:error, message} when is_binary(message) ->
-        {:error, nickserv_message(message)}
-
-      {:error, _reason} ->
-        {:error, kill_session_usage()}
-    end
+    by_id(
+      id,
+      &TrustedDevices.kill_session(nickname, &1, nickname),
+      dgettext("commands", "Session %{id} ended.", id: id),
+      kill_session_usage()
+    )
   end
 
   defp call_kill_session(_args, _nickname), do: {:error, kill_session_usage()}
+
+  # One terminal or session, by its id: done, refused in NickServ's words, or
+  # the usage when the id does not parse.
+  defp by_id(id, act, done, usage) do
+    with {:ok, parsed} <- Args.positive_id(id, :invalid_id),
+         :ok <- act.(parsed) do
+      service_message(done)
+    else
+      {:error, message} when is_binary(message) -> {:error, nickserv_message(message)}
+      {:error, _reason} -> {:error, usage}
+    end
+  end
 
   defp revoke_device_usage, do: dgettext("commands", "Usage: /ns revoke-device <id|all>")
   defp kill_session_usage, do: dgettext("commands", "Usage: /ns kill-session <id|all>")

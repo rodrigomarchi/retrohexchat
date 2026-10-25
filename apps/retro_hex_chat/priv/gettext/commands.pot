@@ -2751,7 +2751,7 @@ msgstr ""
 msgid "[ChanServ] Access list for %{channel} (%{level})"
 msgstr ""
 
-#: lib/retro_hex_chat/commands/handlers/ns.ex:314
+#: lib/retro_hex_chat/commands/handlers/ns.ex:318
 #, elixir-autogen, elixir-format
 msgid "[NickServ] %{message}"
 msgstr ""
@@ -2791,17 +2791,17 @@ msgstr ""
 msgid "You cannot start a P2P session with yourself."
 msgstr ""
 
-#: lib/retro_hex_chat/commands/handlers/ns.ex:318
+#: lib/retro_hex_chat/commands/handlers/ns.ex:322
 #, elixir-autogen, elixir-format
 msgid "#%{id} %{label} | %{browser} / %{os} | active %{sessions} | last %{last_seen}"
 msgstr ""
 
-#: lib/retro_hex_chat/commands/handlers/ns.ex:331
+#: lib/retro_hex_chat/commands/handlers/ns.ex:335
 #, elixir-autogen, elixir-format
 msgid "#%{id} %{label} | %{browser} / %{os} | last %{last_seen}"
 msgstr ""
 
-#: lib/retro_hex_chat/commands/handlers/ns.ex:281
+#: lib/retro_hex_chat/commands/handlers/ns.ex:277
 #, elixir-autogen, elixir-format
 msgid "%{count} active sessions ended."
 msgstr ""
@@ -2875,7 +2875,7 @@ msgstr ""
 msgid "Revoke a trusted terminal"
 msgstr ""
 
-#: lib/retro_hex_chat/commands/handlers/ns.ex:287
+#: lib/retro_hex_chat/commands/handlers/ns.ex:284
 #, elixir-autogen, elixir-format
 msgid "Session %{id} ended."
 msgstr ""
@@ -2885,7 +2885,7 @@ msgstr ""
 msgid "Subcommand: register, identify, ghost, info, drop, devices, sessions, revoke-device, kill-session"
 msgstr ""
 
-#: lib/retro_hex_chat/commands/handlers/ns.ex:266
+#: lib/retro_hex_chat/commands/handlers/ns.ex:267
 #, elixir-autogen, elixir-format
 msgid "Trusted terminal %{id} revoked."
 msgstr ""
@@ -2895,14 +2895,14 @@ msgstr ""
 msgid "Trusted terminals:\n%{lines}"
 msgstr ""
 
-#: lib/retro_hex_chat/commands/handlers/ns.ex:324
-#: lib/retro_hex_chat/commands/handlers/ns.ex:337
+#: lib/retro_hex_chat/commands/handlers/ns.ex:328
+#: lib/retro_hex_chat/commands/handlers/ns.ex:341
 #, elixir-autogen, elixir-format
 msgid "Unknown OS"
 msgstr ""
 
-#: lib/retro_hex_chat/commands/handlers/ns.ex:323
-#: lib/retro_hex_chat/commands/handlers/ns.ex:336
+#: lib/retro_hex_chat/commands/handlers/ns.ex:327
+#: lib/retro_hex_chat/commands/handlers/ns.ex:340
 #, elixir-autogen, elixir-format
 msgid "Unknown browser"
 msgstr ""
@@ -2912,23 +2912,23 @@ msgstr ""
 msgid "Usage: /ns <register|identify|ghost|info|drop|devices|sessions|revoke-device|kill-session|help> [args]"
 msgstr ""
 
-#: lib/retro_hex_chat/commands/handlers/ns.ex:300
+#: lib/retro_hex_chat/commands/handlers/ns.ex:304
 #, elixir-autogen, elixir-format
 msgid "Usage: /ns kill-session <id|all>"
 msgstr ""
 
-#: lib/retro_hex_chat/commands/handlers/ns.ex:299
+#: lib/retro_hex_chat/commands/handlers/ns.ex:303
 #, elixir-autogen, elixir-format
 msgid "Usage: /ns revoke-device <id|all>"
 msgstr ""
 
-#: lib/retro_hex_chat/commands/handlers/ns.ex:305
+#: lib/retro_hex_chat/commands/handlers/ns.ex:309
 #, elixir-autogen, elixir-format
 msgid "You must be identified to manage trusted terminals."
 msgstr ""
 
 #: lib/retro_hex_chat/commands/handlers/bot.ex:260
-#: lib/retro_hex_chat/commands/handlers/ns.ex:342
+#: lib/retro_hex_chat/commands/handlers/ns.ex:346
 #, elixir-autogen, elixir-format
 msgid "never"
 msgstr ""

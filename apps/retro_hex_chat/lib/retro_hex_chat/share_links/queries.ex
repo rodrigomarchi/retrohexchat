@@ -35,13 +35,9 @@ defmodule RetroHexChat.ShareLinks.Queries do
   """
   @spec find_open(String.t(), map(), integer(), DateTime.t()) :: Link.t() | nil
   def find_open(kind, target, creator_id, now \\ DateTime.utc_now()) do
-    Link
-    |> where([l], l.kind == ^kind and l.creator_id == ^creator_id)
-    |> where([l], l.target == ^target)
-    |> where([l], is_nil(l.revoked_at))
-    |> where([l], is_nil(l.expires_at) or l.expires_at > ^now)
-    |> order_by([l], desc: l.inserted_at, desc: l.id)
-    |> limit(1)
+    kind
+    |> open_for(target, now)
+    |> where([l], l.creator_id == ^creator_id)
     |> Repo.one()
   end
 
@@ -70,13 +66,8 @@ defmodule RetroHexChat.ShareLinks.Queries do
   """
   @spec find_open_for_target(String.t(), map(), DateTime.t()) :: Link.t() | nil
   def find_open_for_target(kind, target, now \\ DateTime.utc_now()) do
-    Link
-    |> where([l], l.kind == ^kind)
-    |> where([l], l.target == ^target)
-    |> where([l], is_nil(l.revoked_at))
-    |> where([l], is_nil(l.expires_at) or l.expires_at > ^now)
-    |> order_by([l], desc: l.inserted_at, desc: l.id)
-    |> limit(1)
+    kind
+    |> open_for(target, now)
     |> Repo.one()
   end
 
@@ -118,5 +109,16 @@ defmodule RetroHexChat.ShareLinks.Queries do
     )
 
     :ok
+  end
+
+  # The newest link of `kind` to `target` still open at `now`.
+  defp open_for(kind, target, now) do
+    Link
+    |> where([l], l.kind == ^kind)
+    |> where([l], l.target == ^target)
+    |> where([l], is_nil(l.revoked_at))
+    |> where([l], is_nil(l.expires_at) or l.expires_at > ^now)
+    |> order_by([l], desc: l.inserted_at, desc: l.id)
+    |> limit(1)
   end
 end
