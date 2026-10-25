@@ -105,6 +105,14 @@ defmodule CIImpactTest do
     refute "e2e" in plan.checks
   end
 
+  test "any frontend JavaScript change runs the hooks contract, which reads every JS file" do
+    # The contract rejects a dynamic import outside its approved sites and
+    # mutable module scope in js/lib, not only rules about hooks.
+    plan = CIImpact.plan(["apps/retro_hex_chat_web/assets/js/lib/games/hex_raid/index.js"])
+
+    assert "lint_hooks" in plan.checks
+  end
+
   test "critical chat CSS changes run CSS, bundle, and chat smoke checks" do
     plan =
       CIImpact.plan([

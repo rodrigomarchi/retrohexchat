@@ -134,6 +134,7 @@ defmodule CIImpact do
         |> surface("assets_js", "#{file} changed frontend JavaScript")
         |> add("lint_js", "#{file} changed frontend JavaScript")
         |> add("js_tests", "#{file} changed frontend JavaScript")
+        |> add("lint_hooks", "#{file} is read by the hooks contract")
         |> maybe_i18n_asset(file)
         |> maybe_frontend_smokes(file)
 
