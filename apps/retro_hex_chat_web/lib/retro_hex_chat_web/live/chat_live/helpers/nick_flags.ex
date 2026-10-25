@@ -20,6 +20,17 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.NickFlags do
   alias RetroHexChat.Page
 
   @doc """
+  A page of `subject`'s authored rows (`list.(subject)`), each with its
+  author's language; an empty page when there is no subject — nobody signed
+  in, no channel open.
+  """
+  @spec authored_page(term(), (term() -> Page.t())) :: Page.t()
+  def authored_page(subject, list) do
+    page = if subject == nil, do: %Page{}, else: list.(subject)
+    put_author_locales(page, :author_nickname)
+  end
+
+  @doc """
   Gives every row of `page` the language of the nickname under `nick_key`,
   as `:author_locale` — nil when nobody knows it, which draws no flag.
   """

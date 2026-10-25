@@ -81,23 +81,14 @@ defmodule RetroHexChatWeb.ChatLive.Components.MentionsDialog do
   end
 
   @spec load_first_page(Phoenix.LiveView.Socket.t()) :: Phoenix.LiveView.Socket.t()
-  defp load_first_page(socket) do
-    page = fetch(socket, limit: @page_size)
-
-    socket
-    |> assign(:first_row, List.first(page.items))
-    |> PaginatedList.reset(:mentions, page)
-  end
+  defp load_first_page(socket),
+    do: PaginatedList.load_first(socket, :mentions, &fetch(socket, &1))
 
   @spec fetch(Phoenix.LiveView.Socket.t(), keyword()) :: RetroHexChat.Page.t()
   defp fetch(socket, opts) do
-    page =
-      case socket.assigns.session do
-        nil -> %RetroHexChat.Page{}
-        session -> Search.list_mentions(session.nickname, session.channels, opts)
-      end
-
-    # The flag beside each author, one lookup for the whole page.
-    NickFlags.put_author_locales(page, :author_nickname)
+    NickFlags.authored_page(
+      socket.assigns.session,
+      &Search.list_mentions(&1.nickname, &1.channels, opts)
+    )
   end
 end

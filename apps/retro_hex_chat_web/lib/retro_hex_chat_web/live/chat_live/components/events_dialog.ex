@@ -88,13 +88,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.EventsDialog do
   end
 
   @spec load_first_page(Phoenix.LiveView.Socket.t()) :: Phoenix.LiveView.Socket.t()
-  defp load_first_page(socket) do
-    page = fetch(socket, limit: @page_size)
-
-    socket
-    |> assign(:first_row, List.first(page.items))
-    |> PaginatedList.reset(:events, page)
-  end
+  defp load_first_page(socket), do: PaginatedList.load_first(socket, :events, &fetch(socket, &1))
 
   @spec fetch(Phoenix.LiveView.Socket.t(), keyword()) :: Page.t()
   defp fetch(socket, opts) do

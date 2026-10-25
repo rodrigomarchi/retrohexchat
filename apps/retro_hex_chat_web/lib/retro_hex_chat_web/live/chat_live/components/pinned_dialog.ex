@@ -98,23 +98,9 @@ defmodule RetroHexChatWeb.ChatLive.Components.PinnedDialog do
   end
 
   @spec load_first_page(Phoenix.LiveView.Socket.t()) :: Phoenix.LiveView.Socket.t()
-  defp load_first_page(socket) do
-    page = fetch(socket, limit: @page_size)
-
-    socket
-    |> assign(:first_row, List.first(page.items))
-    |> PaginatedList.reset(:pins, page)
-  end
+  defp load_first_page(socket), do: PaginatedList.load_first(socket, :pins, &fetch(socket, &1))
 
   @spec fetch(Phoenix.LiveView.Socket.t(), keyword()) :: RetroHexChat.Page.t()
-  defp fetch(socket, opts) do
-    page =
-      case socket.assigns.channel do
-        nil -> %RetroHexChat.Page{}
-        channel -> Pins.list(channel, opts)
-      end
-
-    # The flag beside each author, one lookup for the whole page.
-    NickFlags.put_author_locales(page, :author_nickname)
-  end
+  defp fetch(socket, opts),
+    do: NickFlags.authored_page(socket.assigns.channel, &Pins.list(&1, opts))
 end

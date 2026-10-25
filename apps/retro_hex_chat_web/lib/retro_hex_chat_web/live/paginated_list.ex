@@ -99,6 +99,20 @@ defmodule RetroHexChatWeb.PaginatedList do
     end
   end
 
+  @doc """
+  Fetches the first page at the list's page size and replaces the list with
+  it, keeping its first row as `:first_row` — the row a dialog starts on.
+  """
+  @spec load_first(Phoenix.LiveView.Socket.t(), atom(), (keyword() -> Page.t())) ::
+          Phoenix.LiveView.Socket.t()
+  def load_first(socket, name, fetch) when is_function(fetch, 1) do
+    page = fetch.(limit: state(socket, name).page_size)
+
+    socket
+    |> assign(:first_row, List.first(page.items))
+    |> reset(name, page)
+  end
+
   @doc "Replaces the whole list with a page — first load, or a context change."
   @spec reset(Phoenix.LiveView.Socket.t(), atom(), Page.t(), keyword()) ::
           Phoenix.LiveView.Socket.t()
