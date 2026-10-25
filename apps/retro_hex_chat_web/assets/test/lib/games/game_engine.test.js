@@ -55,105 +55,92 @@ describe("game_engine", () => {
       expect(engine.animFrame).toBeNull();
     });
 
-    it("start() wires event listeners and sets running", () => {
+    /** Run the engine's animation frames by hand, `ms` apart. */
+    function frames() {
+      const pending = [];
+      vi.spyOn(globalThis, "requestAnimationFrame").mockImplementation((callback) => {
+        pending.push(callback);
+        return pending.length;
+      });
+      const cancel = vi.spyOn(globalThis, "cancelAnimationFrame").mockImplementation(() => {});
+      let now = 0;
+      return {
+        cancel,
+        run(count, ms = 1000 / 60) {
+          for (let i = 0; i < count; i++) {
+            now += ms;
+            pending.shift()?.(now);
+          }
+        },
+      };
+    }
+
+    it("starts listening to its channel, and sends nothing of its own", () => {
       engine = new GameEngine(canvas, channel, "hex_pong", true);
       engine.start();
 
       expect(engine.running).toBe(true);
       expect(channel.addEventListener).toHaveBeenCalledWith("message", expect.any(Function));
-    });
-
-    it("start() does not send any messages (no protocol in base)", () => {
-      engine = new GameEngine(canvas, channel, "hex_pong", true);
-      engine.start();
       expect(channel.send).not.toHaveBeenCalled();
     });
 
-    it("start() does not send messages as peer either", () => {
-      engine = new GameEngine(canvas, channel, "hex_pong", false);
-      engine.start();
-      expect(channel.send).not.toHaveBeenCalled();
-    });
-
-    it("stop() cleans up listeners and sets running false", () => {
+    it("stops listening and cancels its animation frame when stopped", () => {
+      const clock = frames();
       engine = new GameEngine(canvas, channel, "hex_pong", true);
       engine.start();
+      const frame = engine.animFrame;
       engine.stop();
 
       expect(engine.running).toBe(false);
       expect(channel.removeEventListener).toHaveBeenCalledWith("message", expect.any(Function));
-    });
-
-    it("stop() cancels animation frame", () => {
-      engine = new GameEngine(canvas, channel, "hex_pong", true);
-      engine.start();
-      engine.animFrame = 42;
-      const cancelSpy = vi.spyOn(globalThis, "cancelAnimationFrame").mockImplementation(() => {});
-      engine.stop();
-
-      expect(cancelSpy).toHaveBeenCalledWith(42);
+      expect(clock.cancel).toHaveBeenCalledWith(frame);
       expect(engine.animFrame).toBeNull();
     });
 
-    it("_renderStub draws to canvas", () => {
-      engine = new GameEngine(canvas, channel, "hex_pong", true);
-      engine._renderStub();
+    describe("a guest's held keys", () => {
+      class Paddle extends GameEngine {
+        static INPUT_BITS = { up: 0 };
+        static KEYMAP = keymap({ up: ["ArrowUp"] });
+      }
 
-      expect(ctx.fillRect).toHaveBeenCalled();
-      expect(ctx.fillText).toHaveBeenCalled();
-    });
+      const hold = () =>
+        window.dispatchEvent(new KeyboardEvent("keydown", { key: "ArrowUp", cancelable: true }));
 
-    it("_render calls _renderStub by default", () => {
-      engine = new GameEngine(canvas, channel, "hex_pong", true);
-      const spy = vi.spyOn(engine, "_renderStub");
-      engine._render();
-      expect(spy).toHaveBeenCalled();
-    });
+      afterEach(() => {
+        window.dispatchEvent(new KeyboardEvent("keyup", { key: "ArrowUp", cancelable: true }));
+      });
 
-    it("_safeSend sends when channel is open", () => {
-      engine = new GameEngine(canvas, channel, "hex_pong", true);
-      const data = new ArrayBuffer(4);
-      engine._safeSend(data);
-      expect(channel.send).toHaveBeenCalledWith(data);
-    });
+      it("go to the host while the channel is open", () => {
+        const clock = frames();
+        engine = new Paddle(canvas, channel, "hex_pong", false);
+        engine.start();
+        hold();
+        clock.run(5);
+        expect(channel.send).toHaveBeenCalled();
+      });
 
-    it("_safeSend does not send when channel is closed", () => {
-      channel.readyState = "closed";
-      engine = new GameEngine(canvas, channel, "hex_pong", true);
-      engine._safeSend(new ArrayBuffer(1));
-      expect(channel.send).not.toHaveBeenCalled();
-    });
+      it("are not sent on a closed channel", () => {
+        const clock = frames();
+        channel.readyState = "closed";
+        engine = new Paddle(canvas, channel, "hex_pong", false);
+        engine.start();
+        hold();
+        clock.run(5);
+        expect(channel.send).not.toHaveBeenCalled();
+      });
 
-    it("_safeSend catches errors on send", () => {
-      channel.send = () => {
-        throw new Error("closed");
-      };
-      engine = new GameEngine(canvas, channel, "hex_pong", true);
-      expect(() => engine._safeSend(new ArrayBuffer(1))).not.toThrow();
-    });
-
-    it("_handleMessage is a no-op stub", () => {
-      engine = new GameEngine(canvas, channel, "hex_pong", true);
-      // Should not throw
-      expect(() => engine._handleMessage({ data: new ArrayBuffer(1) })).not.toThrow();
-    });
-
-    it("_handleKeyDown is a no-op stub", () => {
-      engine = new GameEngine(canvas, channel, "hex_pong", true);
-      expect(() => engine._handleKeyDown(new Event("keydown"))).not.toThrow();
-    });
-
-    it("_handleKeyUp is a no-op stub", () => {
-      engine = new GameEngine(canvas, channel, "hex_pong", true);
-      expect(() => engine._handleKeyUp(new Event("keyup"))).not.toThrow();
-    });
-
-    it("bound handlers reference instance methods", () => {
-      engine = new GameEngine(canvas, channel, "hex_pong", true);
-      // The bound functions should exist and be callable
-      expect(typeof engine._boundOnMessage).toBe("function");
-      expect(typeof engine._boundOnKeyDown).toBe("function");
-      expect(typeof engine._boundOnKeyUp).toBe("function");
+      it("survive a channel that throws on send", () => {
+        const clock = frames();
+        channel.send = vi.fn(() => {
+          throw new Error("closed");
+        });
+        vi.spyOn(console, "error").mockImplementation(() => {});
+        engine = new Paddle(canvas, channel, "hex_pong", false);
+        engine.start();
+        hold();
+        expect(() => clock.run(5)).not.toThrow();
+        expect(channel.send).toHaveBeenCalled();
+      });
     });
 
     describe("keyboard target", () => {

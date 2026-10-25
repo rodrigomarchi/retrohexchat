@@ -33,7 +33,9 @@
  *
  * The phase hooks in `flow.states` receive the game and use its public
  * surface: `gameState`, `localInputs`, `remoteInputs`, `audio`, `broadcast()`,
- * `invalidate()`, `updateOpponent()`, `finish()` and `flow.go()`.
+ * `invalidate()`, `updateOpponent()`, `finish()` and `flow.go()`; key hooks
+ * also `keyInput(event)` (the input a key drives) and, for a game whose input
+ * is a command, `sendInputEdge(code)`.
  *
  * The class is still a `GameEngine` underneath, with the constructor
  * `createGameEngine` calls, so the hooks and the loader do not change.

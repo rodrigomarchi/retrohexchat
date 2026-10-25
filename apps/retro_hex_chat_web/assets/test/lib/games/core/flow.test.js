@@ -140,6 +140,28 @@ describe("flow", () => {
     expect(ticked).toEqual(["SCORED"]);
   });
 
+  it("steps a game whose state is not built yet: no phase to read is no move to follow", () => {
+    const ticks = [];
+    const flow = createFlow(
+      {
+        phases: PHASE,
+        initial: "WAITING",
+        states: { WAITING: { tick: (game) => ticks.push(game) } },
+      },
+      {
+        readPhase: () => undefined,
+        writePhase: () => {},
+        startSteps: () => {},
+        stopSteps: () => {},
+        idle: () => {},
+        target: "the game",
+      },
+    );
+    expect(() => stepTimes(flow, 3)).not.toThrow();
+    expect(ticks).toEqual(["the game", "the game", "the game"]);
+    expect(flow.name).toBe("WAITING");
+  });
+
   it("counts time in steps only, never on the page's timers", () => {
     const fired = [];
     const { flow } = match({

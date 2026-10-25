@@ -232,7 +232,7 @@ describe("defineGame", () => {
       const Game = defineGame({
         ...definition,
         onKeyDown: (game, event) => {
-          if (!game.isHost && event.key === "x") game._sendInputEdge(7);
+          if (!game.isHost && event.key === "x") game.sendInputEdge(7);
         },
         onRemoteEdge: (_game, code) => seen.push(code),
       });
@@ -418,34 +418,6 @@ describe("defineGame", () => {
       const solo = engineFor(true, { mode: "solo" });
       expect(solo.outcome(1)).toBe("win");
       expect(solo.outcome(2)).toBe("lose");
-    });
-  });
-
-  describe("a game with no state yet", () => {
-    it("steps without throwing until its state is built", () => {
-      const ticks = [];
-      const Game = defineGame({
-        ...definition,
-        init: () => null,
-        flow: {
-          ...definition.flow,
-          states: {
-            ...definition.flow.states,
-            WAITING: { tick: (game) => ticks.push(game.gameState) },
-          },
-        },
-      });
-      const game = new Game(
-        document.createElement("canvas"),
-        createLocalTransport(),
-        "fake",
-        true,
-        null,
-      );
-      game.running = true;
-
-      expect(() => game._gameLoop()).not.toThrow();
-      expect(ticks).toEqual([null]);
     });
   });
 

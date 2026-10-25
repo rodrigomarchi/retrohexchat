@@ -4,17 +4,12 @@
 // both players and are not here.
 
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
+import { fakeChannel } from "../../support/games/fake_channel.js";
 import { createLocalTransport } from "../../../js/lib/games/transport.js";
 import { recordingAudio } from "../../support/games/recording_audio.js";
 import { recordingCanvas } from "../../support/games/recording_canvas.js";
 
 const createMockCanvas = () => recordingCanvas(640, 480);
-const createMockChannel = () => ({
-  readyState: "open",
-  send: vi.fn(),
-  addEventListener: vi.fn(),
-  removeEventListener: vi.fn(),
-});
 
 const games = {
   pong: { win: "playWin", lose: "playLose" },
@@ -65,12 +60,13 @@ describe("the guest's end-of-match sound", () => {
     ]) {
       it(`${gameId}: a guest told player ${winner} won hears the ${heard}`, async () => {
         const { Game, GAME_END } = await load(gameId);
-        engine = new Game(createMockCanvas(), createMockChannel(), gameId, false, null);
+        const channel = fakeChannel();
+        engine = new Game(createMockCanvas(), channel, gameId, false, null);
         engine.start();
         const sounds = spySounds(engine, gameId);
         const wire = games[gameId].wire?.[winner] ?? winner;
 
-        engine._onChannelMessage({ data: GAME_END.encode({ winner: wire, score1: 0, score2: 0 }) });
+        channel.emit("message", { data: GAME_END.encode({ winner: wire, score1: 0, score2: 0 }) });
 
         expect(sounds[heard]).toHaveBeenCalledTimes(1);
         expect(sounds[heard === "win" ? "lose" : "win"]).not.toHaveBeenCalled();

@@ -5,6 +5,7 @@
 
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { createLocalTransport } from "../../../js/lib/games/transport.js";
+import { fakeChannel } from "../../support/games/fake_channel.js";
 import { recordingAudio } from "../../support/games/recording_audio.js";
 import { recordingCanvas } from "../../support/games/recording_canvas.js";
 
@@ -25,13 +26,6 @@ const GAMES = {
   hex_enduro: "hex_enduro",
   block_breakers: "breakout",
 };
-
-const channel = () => ({
-  readyState: "open",
-  send: vi.fn(),
-  addEventListener: vi.fn(),
-  removeEventListener: vi.fn(),
-});
 
 async function load(gameId) {
   const dir = GAMES[gameId];
@@ -67,21 +61,15 @@ describe("a match cut short by the channel", () => {
     it(`${gameId}: reports the disconnect in the one spelling`, async () => {
       const { Game } = await load(gameId);
       const results = [];
-      engine = new Game(
-        recordingCanvas(640, 480),
-        createLocalTransport(),
-        gameId,
-        true,
-        (r) => results.push(r),
-        {
-          mode: "solo",
-          opponentController: { nextInputs: () => ({}), nextDirection: () => null },
-        },
-      );
+      const channel = fakeChannel();
+      engine = new Game(recordingCanvas(640, 480), channel, gameId, true, (r) => results.push(r), {
+        mode: "solo",
+        opponentController: { nextInputs: () => ({}), nextDirection: () => null },
+      });
       engine.start();
       expect(engine.beginMatch()).toBe(true);
 
-      engine._handleChannelClose();
+      channel.emit("close");
 
       expect(results).toHaveLength(1);
       expect(results[0].disconnected).toBe(true);
@@ -97,13 +85,12 @@ describe("a match told to the guest", () => {
     it(`${gameId}: the guest reports nothing`, async () => {
       const { Game, GAME_END } = await load(gameId);
       const results = [];
-      engine = new Game(recordingCanvas(640, 480), channel(), gameId, false, (r) =>
-        results.push(r),
-      );
+      const channel = fakeChannel();
+      engine = new Game(recordingCanvas(640, 480), channel, gameId, false, (r) => results.push(r));
       engine.start();
       const winner = gameId === "hex_hockey" ? "p2" : 2;
 
-      engine._onChannelMessage({
+      channel.emit("message", {
         data: GAME_END.encode({
           winner,
           score1: 1,

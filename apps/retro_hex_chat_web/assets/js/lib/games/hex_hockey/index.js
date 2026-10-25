@@ -327,7 +327,7 @@ export default defineGame({
   },
   onAbandon: (game) => game.audio.stopSuddenDeath(),
   onKeyDown: (game, event) => {
-    if (game._keyInput(event) === "action") game.actionHandled = false;
+    if (game.keyInput(event) === "action") game.actionHandled = false;
   },
   // A fresh press of the guest's (or the AI's) action always counts.
   onRemoteInputChange: (game, previous, current) => {

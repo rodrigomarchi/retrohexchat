@@ -189,7 +189,7 @@ export default defineGame({
   onStop: releaseTriggers,
   onBlur: releaseTriggers,
   onKeyDown: (game, event) => {
-    const input = game._keyInput(event);
+    const input = game.keyInput(event);
     if (input === "up") game.localAimUp = true;
     if (input === "down") game.localAimUp = false;
   },

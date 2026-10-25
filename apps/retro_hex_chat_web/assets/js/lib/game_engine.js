@@ -60,7 +60,7 @@ const KEYBOARD_CAPTURE_OPTIONS = true;
  * Subclass contract:
  * - `static INPUT_BITS` maps this game's held inputs to bit positions; the base
  *   then owns input transport entirely. Games whose input is a discrete command
- *   leave it empty and call `_sendInputEdge()`.
+ *   leave it empty and call `sendInputEdge()`.
  * - `static KEYMAP` maps keys to those inputs; the base holds and releases
  *   them. A game overrides `_handleKeyDown`/`_handleKeyUp` only for what a
  *   key does beyond holding its input.
@@ -576,7 +576,7 @@ export class GameEngine {
    * @param {number} code
    * @returns {void}
    */
-  _sendInputEdge(code) {
+  sendInputEdge(code) {
     if (this.isHost) return;
     this._inputSeq = (this._inputSeq + 1) & 0xffff;
     this._sendCommand(encodeInputEdge(this._inputSeq, code));
@@ -768,7 +768,7 @@ export class GameEngine {
    * @param {KeyboardEvent} event
    * @returns {string|null}
    */
-  _keyInput(event) {
+  keyInput(event) {
     return Object.hasOwn(this.constructor.KEYMAP, event.key)
       ? this.constructor.KEYMAP[event.key]
       : null;
@@ -780,7 +780,7 @@ export class GameEngine {
    * @returns {void}
    */
   _handleKeyDown(event) {
-    const input = this._keyInput(event);
+    const input = this.keyInput(event);
     if (input === null) return;
     event.preventDefault();
     this.localInputs[input] = true;
@@ -791,7 +791,7 @@ export class GameEngine {
    * @returns {void}
    */
   _handleKeyUp(event) {
-    const input = this._keyInput(event);
+    const input = this.keyInput(event);
     if (input === null) return;
     event.preventDefault();
     this.localInputs[input] = false;

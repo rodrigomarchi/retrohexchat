@@ -175,7 +175,7 @@ export default defineGame({
     if (turn === null) return;
     event.preventDefault();
     if (game.isHost) game.p1PendingDir = turn;
-    else game._sendInputEdge(turn);
+    else game.sendInputEdge(turn);
     game.audio.playMove();
   },
   onKeyUp: (_game, event) => {

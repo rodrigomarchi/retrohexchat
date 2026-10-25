@@ -197,7 +197,7 @@ export default defineGame({
   // A caught fireball goes when its shield's key is released (or the window
   // loses focus, since that release never arrives).
   onKeyUp: (game, event) => {
-    if (game._keyInput(event) === "space" && game.isHost && game.gameState.caughtBy === 1) {
+    if (game.keyInput(event) === "space" && game.isHost && game.gameState.caughtBy === 1) {
       release(game, 1);
     }
   },
