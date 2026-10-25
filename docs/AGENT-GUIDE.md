@@ -795,17 +795,19 @@ canonical module instead of copying it.
 | "Is there anything in this string", truncation, word count | `RetroHexChat.Text` |
 | HTML escaping of chat content | `RetroHexChat.Chat.Content.Html` |
 | Dates and times shown to a reader | `RetroHexChat.Chat.TimeFormatter`, `RetroHexChatWeb.App.ChatHelpers` |
-| Reading an event's params: integers, yes/no, atom-or-string keys | `RetroHexChatWeb.Params` |
+| Reading an event's params: integers, yes/no, atom-or-string keys | `RetroHexChatWeb.Params` (web), `RetroHexChat.MapKey.get/2` (domain) |
+| Running a `/` command from a menu item or a dialog | `RetroHexChatWeb.ChatLive.CommandDispatch.run/3` |
 | A dialog island's id, initial assigns, mount, load-once update | `use RetroHexChatWeb.ChatLive.Components.DialogIsland` |
 | Admin windows: form params, `/admin` dispatch, result strip | `RetroHexChatWeb.ChatLive.AdminOps` |
 | Empty and loading list states | `RetroHexChatWeb.Components.UI.ListStates` |
 | A confirmation | `RetroHexChatWeb.Components.UI.ConfirmDialog` |
 | A sunken frame | `RetroHexChatWeb.Components.UI.Inset` |
 | List-and-editor panel attributes | `RetroHexChatWeb.Components.UI.EditorAttrs` |
-| A `/` command's declaration (help, tooltip, category) | `use RetroHexChat.Commands.Handler` |
+| A `/` command's declaration (help, tooltip, category, `usage:` for a bare command) | `use RetroHexChat.Commands.Handler`, with `Parameter.required/3` and `Parameter.optional/3` |
 | A command aimed at a person or a message in the channel | `RetroHexChat.Commands.Handler.Guards` |
 | Starting or stopping a bot | `RetroHexChat.Bots.Lifecycle` |
-| A bot capability's subcommand parsing | `RetroHexChat.Bots.Capability.subcommand/4` |
+| A bot capability: its defaults, its subcommand parsing | `use RetroHexChat.Bots.Capability`, `RetroHexChat.Bots.Capability.subcommand/4` |
+| Whether a bot's capability is set up and switched on | `RetroHexChat.Bots.Bot.capability_config/2` |
 | A maintenance Oban worker's options | `use RetroHexChat.Jobs.MaintenanceWorker` |
 | Enqueuing a job after a delay | `RetroHexChat.Jobs.schedule_in/5` |
 | A bounded cleanup pass that counts what it did | `RetroHexChat.Sweep` |
