@@ -22,6 +22,7 @@ import { gameColor, readGameColors } from "../../game_colors.js";
 import {
   drawBackground,
   drawCountdown,
+  drawGlitchText,
   drawScanlines,
   drawVignette,
   drawWaiting,
@@ -554,21 +555,7 @@ export function drawWinner(ctx, state, colors, time) {
   const glitchX = glitchSeed > 0.9 ? (((time * 13.7) % 1) - 0.5) * 4 : 0;
   const glitchY = glitchSeed > 0.9 ? (((time * 17.1) % 1) - 0.5) * 2 : 0;
 
-  // Red channel offset
-  ctx.globalAlpha = 0.5;
-  ctx.fillStyle = gameColor("ff0000");
-  ctx.fillText(text, CANVAS_W / 2 + glitchX - 2, CANVAS_H / 2 + glitchY);
-
-  // Blue channel offset
-  ctx.fillStyle = gameColor("0000ff");
-  ctx.fillText(text, CANVAS_W / 2 + glitchX + 2, CANVAS_H / 2 + glitchY);
-
-  // Main text
-  ctx.globalAlpha = 1.0;
-  ctx.shadowColor = color;
-  ctx.shadowBlur = 20;
-  ctx.fillStyle = color;
-  ctx.fillText(text, CANVAS_W / 2, CANVAS_H / 2);
+  drawGlitchText(ctx, text, CANVAS_W / 2, CANVAS_H / 2, color, { offset: [glitchX, glitchY] });
 
   // Sub text: "FIRST TO 7"
   ctx.font = "16px monospace";

@@ -12,10 +12,12 @@ import {
   drawBackground,
   drawCountdown,
   drawDigit,
+  drawGlitchText,
   drawParticleDots,
   drawScanlines,
   drawVignette,
   drawWaiting,
+  glitchJitter,
 } from "../core/render.js";
 
 /**
@@ -264,29 +266,14 @@ export function drawRoundOver(ctx, state, colors, _time) {
   }
 
   // Glitch effect
-  const glitchX = Math.random() > 0.9 ? (Math.random() - 0.5) * 4 : 0;
-  const glitchY = Math.random() > 0.9 ? (Math.random() - 0.5) * 2 : 0;
+  const [glitchX, glitchY] = glitchJitter();
 
   ctx.save();
   ctx.font = "bold 32px monospace";
   ctx.textAlign = "center";
   ctx.textBaseline = "middle";
 
-  // Red channel offset
-  ctx.globalAlpha = 0.5;
-  ctx.fillStyle = gameColor("ff0000");
-  ctx.fillText(text, CANVAS_W / 2 + glitchX - 2, CANVAS_H / 2 + glitchY);
-
-  // Blue channel offset
-  ctx.fillStyle = gameColor("0000ff");
-  ctx.fillText(text, CANVAS_W / 2 + glitchX + 2, CANVAS_H / 2 + glitchY);
-
-  // Main text
-  ctx.globalAlpha = 1.0;
-  ctx.shadowColor = color;
-  ctx.shadowBlur = 20;
-  ctx.fillStyle = color;
-  ctx.fillText(text, CANVAS_W / 2, CANVAS_H / 2);
+  drawGlitchText(ctx, text, CANVAS_W / 2, CANVAS_H / 2, color, { offset: [glitchX, glitchY] });
 
   ctx.restore();
 }
@@ -305,24 +292,9 @@ export function drawMatchOver(ctx, state, colors, time) {
   ctx.textBaseline = "middle";
 
   // Glitch effect: offset RGB channels
-  const glitchX = Math.random() > 0.9 ? (Math.random() - 0.5) * 4 : 0;
-  const glitchY = Math.random() > 0.9 ? (Math.random() - 0.5) * 2 : 0;
+  const [glitchX, glitchY] = glitchJitter();
 
-  // Red channel offset
-  ctx.globalAlpha = 0.5;
-  ctx.fillStyle = gameColor("ff0000");
-  ctx.fillText(text, CANVAS_W / 2 + glitchX - 2, CANVAS_H / 2 + glitchY);
-
-  // Blue channel offset
-  ctx.fillStyle = gameColor("0000ff");
-  ctx.fillText(text, CANVAS_W / 2 + glitchX + 2, CANVAS_H / 2 + glitchY);
-
-  // Main text
-  ctx.globalAlpha = 1.0;
-  ctx.shadowColor = color;
-  ctx.shadowBlur = 20;
-  ctx.fillStyle = color;
-  ctx.fillText(text, CANVAS_W / 2, CANVAS_H / 2);
+  drawGlitchText(ctx, text, CANVAS_W / 2, CANVAS_H / 2, color, { offset: [glitchX, glitchY] });
 
   // Score sub text
   ctx.font = "18px monospace";

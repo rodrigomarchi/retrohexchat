@@ -10,6 +10,8 @@ import {
   drawCenterText,
   drawDigit,
   drawGetReady,
+  drawGlitchText,
+  glitchJitter,
   drawParticleDots,
   drawVignette,
   stepParticles,
@@ -161,5 +163,33 @@ describe("the frame pieces the games share", () => {
       { drag: 0.96, fade: 0.04 },
     );
     expect(next).toEqual([{ x: 10, y: -10, vx: 9.6, vy: -9.6, life: 0.96, tag: "a" }]);
+  });
+});
+
+describe("glitched text", () => {
+  it("glitchJitter shifts now and then: it draws for the y shift only when it has one", () => {
+    const draws = [0.95, 0.75, 0.5];
+    const random = () => draws.shift();
+    expect(glitchJitter(random)).toEqual([1, 0]);
+    expect(draws).toEqual([]);
+
+    const calm = [0.5, 0.5];
+    expect(glitchJitter(() => calm.shift())).toEqual([0, 0]);
+
+    const xOnly = [0.95, 0.75, 0.99];
+    expect(glitchJitter(() => xOnly.shift(), { over: 0.85, y: 0 })).toEqual([1, 0]);
+    expect(xOnly).toEqual([0.99]);
+  });
+
+  it("drawGlitchText draws red and blue copies apart, then the text in its colour", () => {
+    const c = recordingCanvas(640, 480);
+    drawGlitchText(c.getContext("2d"), "WIN", 320, 240, "cyan", { offset: [1, -1] });
+    expect(c.log.filter(([op]) => op === "fillText")).toEqual([
+      ["fillText", "WIN", 319, 239],
+      ["fillText", "WIN", 323, 239],
+      ["fillText", "WIN", 320, 240],
+    ]);
+    expect(c.log).toContainEqual(["globalAlpha", "=", 0.5]);
+    expect(c.log).toContainEqual(["shadowBlur", "=", 20]);
   });
 });

@@ -22,7 +22,13 @@ import {
 } from "./physics.js";
 import { t, jt } from "../../i18n.js";
 import { gameColor, readGameColors } from "../../game_colors.js";
-import { drawBackground, drawScanlines, drawVignette, waitingText } from "../core/render.js";
+import {
+  drawBackground,
+  drawGlitchText,
+  drawScanlines,
+  drawVignette,
+  waitingText,
+} from "../core/render.js";
 
 // Point display names
 const POINT_DISPLAY = ["LOVE", "15", "30", "40"];
@@ -356,19 +362,7 @@ function drawAnnouncement(ctx, text, color, time, yOffset) {
   ctx.textAlign = "center";
   ctx.textBaseline = "middle";
 
-  // RGB glitch offset
-  ctx.globalAlpha = 0.4;
-  ctx.fillStyle = gameColor("ff0000");
-  ctx.fillText(text, CANVAS_W / 2 - 1, y);
-  ctx.fillStyle = gameColor("0000ff");
-  ctx.fillText(text, CANVAS_W / 2 + 1, y);
-
-  // Main text
-  ctx.globalAlpha = 1.0;
-  ctx.shadowColor = color;
-  ctx.shadowBlur = 16;
-  ctx.fillStyle = color;
-  ctx.fillText(text, CANVAS_W / 2, y);
+  drawGlitchText(ctx, text, CANVAS_W / 2, y, color, { spread: 1, channelAlpha: 0.4, blur: 16 });
   ctx.restore();
 }
 
@@ -428,20 +422,19 @@ function drawWinner(ctx, state, colors, time) {
   ctx.textAlign = "center";
   ctx.textBaseline = "middle";
 
-  // RGB glitch
-  ctx.globalAlpha = 0.4;
   ctx.font = `bold ${size}px monospace`;
-  ctx.fillStyle = gameColor("ff0000");
-  ctx.fillText(jt`PLAYER ${state.winner} WINS!`, CANVAS_W / 2 - 1, CANVAS_H / 2 - 20);
-  ctx.fillStyle = gameColor("0000ff");
-  ctx.fillText(jt`PLAYER ${state.winner} WINS!`, CANVAS_W / 2 + 1, CANVAS_H / 2 - 20);
-
-  // Main text
-  ctx.globalAlpha = 1.0;
-  ctx.shadowColor = winnerColor;
-  ctx.shadowBlur = 16;
-  ctx.fillStyle = winnerColor;
-  ctx.fillText(jt`PLAYER ${state.winner} WINS!`, CANVAS_W / 2, CANVAS_H / 2 - 20);
+  drawGlitchText(
+    ctx,
+    jt`PLAYER ${state.winner} WINS!`,
+    CANVAS_W / 2,
+    CANVAS_H / 2 - 20,
+    winnerColor,
+    {
+      spread: 1,
+      channelAlpha: 0.4,
+      blur: 16,
+    },
+  );
 
   // Score
   ctx.font = "bold 18px monospace";

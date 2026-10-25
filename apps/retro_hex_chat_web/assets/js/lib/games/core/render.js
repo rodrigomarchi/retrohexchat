@@ -243,3 +243,49 @@ export function stepParticles(particles, { drag, fade }) {
     }))
     .filter((p) => p.life > 0);
 }
+
+/**
+ * The occasional shake of a glitching screen: now and then (a draw over
+ * `over`) a shift of up to half of `x` sideways, and of `y` up or down. The
+ * y shift is drawn only when the text can shake that way.
+ * @param {() => number} [random]
+ * @param {{ over?: number, x?: number, y?: number }} [options]
+ * @returns {[number, number]}
+ */
+export function glitchJitter(random = Math.random, { over = 0.9, x = 4, y = 2 } = {}) {
+  const dx = random() > over ? (random() - 0.5) * x : 0;
+  const dy = y && random() > over ? (random() - 0.5) * y : 0;
+  return [dx, dy];
+}
+
+/**
+ * Text with a glitch: a red copy and a blue copy split apart by `spread`
+ * and shifted by `offset`, then the text itself in its colour, glowing.
+ * Font and alignment are the caller's.
+ * @param {CanvasRenderingContext2D} ctx
+ * @param {string} text
+ * @param {number} x
+ * @param {number} y
+ * @param {string} color
+ * @param {{ offset?: [number, number], spread?: number, channelAlpha?: number, alpha?: number, blur?: number }} [options]
+ */
+export function drawGlitchText(
+  ctx,
+  text,
+  x,
+  y,
+  color,
+  { offset = [0, 0], spread = 2, channelAlpha = 0.5, alpha = 1.0, blur = 20 } = {},
+) {
+  const [dx, dy] = offset;
+  ctx.globalAlpha = channelAlpha;
+  ctx.fillStyle = gameColor("ff0000");
+  ctx.fillText(text, x + dx - spread, y + dy);
+  ctx.fillStyle = gameColor("0000ff");
+  ctx.fillText(text, x + dx + spread, y + dy);
+  ctx.globalAlpha = alpha;
+  ctx.shadowColor = color;
+  ctx.shadowBlur = blur;
+  ctx.fillStyle = color;
+  ctx.fillText(text, x, y);
+}
