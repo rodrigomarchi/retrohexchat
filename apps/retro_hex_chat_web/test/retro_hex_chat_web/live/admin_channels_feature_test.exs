@@ -11,7 +11,7 @@ defmodule RetroHexChatWeb.AdminChannelsFeatureTest do
   @moduletag :liveview_feature
 
   alias RetroHexChat.Channels.{Registry, Server, Supervisor}
-  alias RetroHexChat.Services.Queries
+  alias RetroHexChat.Services.{NickServ, Queries}
   alias RetroHexChatWeb.Components.UI.{AdminChannelsDialog, StartMenuApp}
 
   describe "Admin Channels panel" do
@@ -101,6 +101,10 @@ defmodule RetroHexChatWeb.AdminChannelsFeatureTest do
       assert html =~ "Members"
       assert html =~ "No bans in #{channel}"
 
+      # ChanServ registers a channel to a nickname NickServ knows: the admin's
+      # chat session being identified is not enough on its own.
+      _ = NickServ.register("TestAdmin", "password123")
+
       view
       |> form("#admin-channels-create-form", %{"channel" => new_channel})
       |> render_submit()
@@ -109,6 +113,7 @@ defmodule RetroHexChatWeb.AdminChannelsFeatureTest do
 
       assert html =~ "Channel #{new_channel} created and registered."
       assert html =~ new_channel
+      assert Queries.find_registered_channel(new_channel)
     end
 
     test "admin can purge and delete channels with typed confirmation", %{conn: conn} do
