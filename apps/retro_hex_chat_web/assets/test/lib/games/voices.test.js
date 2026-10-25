@@ -97,6 +97,26 @@ describe("voices", () => {
     expect(heard()).toEqual(timed);
   });
 
+  it("hears a value set before the voice starts as set at its start", () => {
+    const osc = ctx.createOscillator();
+    const gain = ctx.createGain();
+    osc.frequency.value = 500;
+    gain.gain.setValueAtTime(0.1, 0.2);
+    osc.connect(gain).connect(ctx.destination);
+    osc.start(0.2);
+    osc.stop(0.3);
+    const early = heard();
+    fresh();
+    const osc2 = ctx.createOscillator();
+    const gain2 = ctx.createGain();
+    osc2.frequency.setValueAtTime(500, 0.2);
+    gain2.gain.setValueAtTime(0.1, 0.2);
+    osc2.connect(gain2).connect(ctx.destination);
+    osc2.start(0.2);
+    osc2.stop(0.3);
+    expect(heard()).toEqual(early);
+  });
+
   it("tells apart notes that sound different", () => {
     note(440);
     const a = heard();

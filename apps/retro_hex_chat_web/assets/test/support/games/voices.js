@@ -4,8 +4,9 @@
  * curves, the nodes it passes through to the speakers, and when it starts and
  * stops. Two logs that build the same voices sound the same — setting
  * `frequency.value` and `setValueAtTime(f, now)` give one voice, and so do a
- * chained `connect` and two separate ones, or a note scheduled 40 ms ahead and
- * one started by a 40 ms timer.
+ * chained `connect` and two separate ones, a note scheduled 40 ms ahead and
+ * one started by a 40 ms timer, or a pitch set when the note is built and one
+ * set when it starts.
  *
  * Reads the time of each entry from `entry.t`, which `recordingAudio` stamps.
  *
@@ -62,9 +63,20 @@ export function voices(log) {
     else node.fields[op] = args[0];
   });
 
-  const describe = (node) => {
+  // A value set before the voice starts is what it starts with: it is heard
+  // at the start, whenever it was set.
+  const describe = (node, start) => {
     const params = Object.fromEntries(
-      Object.entries(node.params).filter(([, curve]) => curve.length > 0),
+      Object.entries(node.params)
+        .filter(([, curve]) => curve.length > 0)
+        .map(([name, curve]) => [
+          name,
+          curve.map(([op, value, at, ...rest]) =>
+            op === "set" && start !== null && at < start
+              ? [op, value, start, ...rest]
+              : [op, value, at, ...rest],
+          ),
+        ]),
     );
     return { kind: node.kind, ...node.fields, ...(Object.keys(params).length ? { params } : {}) };
   };
@@ -80,11 +92,11 @@ export function voices(log) {
       while (next && next !== "destination" && !seen.has(next) && nodes.has(next)) {
         seen.add(next);
         const node = nodes.get(next);
-        path.push(describe(node));
+        path.push(describe(node, source.start));
         next = node.to[0];
       }
       return {
-        source: describe(source),
+        source: describe(source, source.start),
         path,
         out: next === "destination" ? "speakers" : "nowhere",
         start: source.start,
