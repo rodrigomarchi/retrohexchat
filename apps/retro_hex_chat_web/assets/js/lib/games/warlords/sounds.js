@@ -3,15 +3,7 @@
  * @module games/warlords/sounds
  */
 
-import { fade, glide, notes } from "../core/synth.js";
-
-const blip = (wave, freq, dur, vol) => ({ wave, freq, vol: fade(vol, dur), dur });
-const sweep = (wave, from, to, dur, vol) => ({
-  wave,
-  freq: glide(from, to, dur),
-  vol: fade(vol, dur),
-  dur,
-});
+import { blip, notes, sweep } from "../core/synth.js";
 
 export const SOUNDS = {
   /** A crisp break: 800 Hz triangle, 40 ms. */

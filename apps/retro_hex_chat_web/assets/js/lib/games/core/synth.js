@@ -52,6 +52,29 @@ export function fade(vol, dur, kind = "linear", floor = 0.001) {
 }
 
 /**
+ * One steady note fading linearly to silence: the plainest game sound.
+ * @param {OscillatorType} wave
+ * @param {number} freq
+ * @param {number} dur
+ * @param {number} vol
+ */
+export function blip(wave, freq, dur, vol) {
+  return { wave, freq, vol: fade(vol, dur), dur };
+}
+
+/**
+ * One note gliding from one pitch to another while it fades linearly.
+ * @param {OscillatorType} wave
+ * @param {number} from
+ * @param {number} to
+ * @param {number} dur
+ * @param {number} vol
+ */
+export function sweep(wave, from, to, dur, vol) {
+  return { wave, freq: glide(from, to, dur), vol: fade(vol, dur), dur };
+}
+
+/**
  * Notes played one after another, each fading over its length.
  * @param {number[]} freqs
  * @param {{ wave: OscillatorType, note: number, vol: number, gap?: number, fadeKind?: "linear"|"exp" }} options

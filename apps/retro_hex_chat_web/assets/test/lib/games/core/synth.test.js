@@ -1,10 +1,12 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import {
+  blip,
   createGameAudio,
   createSynth,
   fade,
   glide,
   notes,
+  sweep,
 } from "../../../../js/lib/games/core/synth.js";
 import { recordingAudio } from "../../../support/games/recording_audio.js";
 import { voices } from "../../../support/games/voices.js";
@@ -187,6 +189,23 @@ describe("createSynth", () => {
     const synth = createSynth();
     expect(() => synth.play({ wave: "square", freq: 600, vol: 0.1, dur: 0.1 })).not.toThrow();
     expect(synth.tone({ wave: "sine", freq: 80, vol: 0.1 }).stop()).toBeUndefined();
+  });
+});
+
+describe("blip and sweep", () => {
+  it("are a steady note and a gliding one, each fading linearly over its length", () => {
+    expect(blip("square", 600, 0.08, 0.12)).toEqual({
+      wave: "square",
+      freq: 600,
+      vol: fade(0.12, 0.08),
+      dur: 0.08,
+    });
+    expect(sweep("sawtooth", 300, 100, 0.3, 0.15)).toEqual({
+      wave: "sawtooth",
+      freq: glide(300, 100, 0.3),
+      vol: fade(0.15, 0.3),
+      dur: 0.3,
+    });
   });
 });
 

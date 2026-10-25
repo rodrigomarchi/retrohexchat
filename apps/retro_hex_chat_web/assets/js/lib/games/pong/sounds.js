@@ -3,9 +3,7 @@
  * @module games/pong/sounds
  */
 
-import { fade, glide, notes } from "../core/synth.js";
-
-const blip = (wave, freq, dur, vol) => ({ wave, freq, vol: fade(vol, dur), dur });
+import { blip, notes, sweep } from "../core/synth.js";
 
 export const SOUNDS = {
   /** 800 Hz sawtooth, 60 ms. */
@@ -13,7 +11,7 @@ export const SOUNDS = {
   /** 400 Hz square, 40 ms. */
   wallBounce: blip("square", 400, 0.04, 0.1),
   /** Falling 300 → 100 Hz sawtooth, 300 ms. */
-  score: { wave: "sawtooth", freq: glide(300, 100, 0.3), vol: fade(0.15, 0.3), dur: 0.3 },
+  score: sweep("sawtooth", 300, 100, 0.3, 0.15),
   /** Rising arpeggio, 400 → 1000 Hz square. */
   win: notes([400, 600, 800, 1000], { wave: "square", note: 0.12, vol: 0.12 }),
   /** The win fanfare falling, 600 → 200 Hz. */
