@@ -12,7 +12,6 @@
 
 import { defineGame } from "../core/define_game.js";
 import { matchResult } from "../core/result.js";
-import { HexRaidAudio } from "./audio.js";
 import { normalizeRaidAIDifficulty } from "./difficulty.js";
 import {
   SCORE_FUEL_OUT,
@@ -45,6 +44,7 @@ import {
 } from "./physics.js";
 import { GAME_END, GAME_MODE, PHASE, SNAPSHOT } from "./protocol.js";
 import { getColors, render } from "./renderer.js";
+import { SOUNDS } from "./sounds.js";
 
 const COUNTDOWN_FROM = 3;
 const COUNTDOWN_EVERY_TICKS = 60; // 1 s
@@ -277,7 +277,7 @@ export default defineGame({
   ],
   schema: { snapshot: SNAPSHOT, end: GAME_END },
   ai: { difficulty: normalizeRaidAIDifficulty },
-  audio: HexRaidAudio,
+  audio: { sounds: SOUNDS },
   theme: getColors,
   // The game id picks the mode; only the host seeds the river.
   init: (game) => {

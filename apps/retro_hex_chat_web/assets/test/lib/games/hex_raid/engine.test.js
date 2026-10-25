@@ -13,28 +13,11 @@ import {
 import { CANVAS_W, CANVAS_H, INITIAL_LIVES } from "../../../../js/lib/games/hex_raid/physics.js";
 
 // Must mock audio before importing engine
-vi.mock("../../../../js/lib/games/hex_raid/audio.js", () => ({
-  HexRaidAudio: function () {
-    return {
-      playFire: vi.fn(),
-      playEnemyDestroyed: vi.fn(),
-      playBridgeHit: vi.fn(),
-      playBridgeDestroyed: vi.fn(),
-      playFuelCapture: vi.fn(),
-      playFuelDestroyed: vi.fn(),
-      playMineDeploy: vi.fn(),
-      playMineHit: vi.fn(),
-      playDeath: vi.fn(),
-      playRespawn: vi.fn(),
-      playSectionClear: vi.fn(),
-      playFuelLow: vi.fn(),
-      playKillSteal: vi.fn(),
-      playCountdown: vi.fn(),
-      playWin: vi.fn(),
-      playLose: vi.fn(),
-    };
-  },
-}));
+vi.mock("../../../../js/lib/games/core/synth.js", async (importOriginal) => {
+  const synth = await importOriginal();
+  const { spySounds } = await import("../../../helpers/spy_sounds.js");
+  return { ...synth, createGameAudio: (spec) => spySounds(synth.createGameAudio(spec)) };
+});
 
 // Must mock renderer
 vi.mock("../../../../js/lib/games/hex_raid/renderer.js", () => ({
