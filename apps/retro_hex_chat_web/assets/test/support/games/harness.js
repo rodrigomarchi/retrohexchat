@@ -171,6 +171,8 @@ export async function playMatch({
   return {
     engines,
     results,
+    /** Each side's recording canvas; a test may switch `recording` on to count paints. */
+    canvases,
 
     /** Move the test clock forward, running every frame and timer due. */
     advance(ms) {

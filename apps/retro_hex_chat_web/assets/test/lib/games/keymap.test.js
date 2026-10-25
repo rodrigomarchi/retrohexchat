@@ -1,7 +1,7 @@
-import { describe, it, expect, vi, afterEach } from "vitest";
-import { startMatch } from "../../helpers/game_match.js";
+import { describe, it, expect, afterEach } from "vitest";
 import { loadP2PEngineClass } from "../../../js/lib/games/engine_loader.js";
 import { keymap } from "../../../js/lib/game_engine.js";
+import { playMatch } from "../../support/games/harness.js";
 
 // Every engine whose keys hold an input (Light Trails steers by command).
 const GAMES = [
@@ -21,10 +21,6 @@ const GAMES = [
   "hex_hockey",
 ];
 
-function key(name) {
-  return { key: name, repeat: false, target: null, preventDefault: vi.fn() };
-}
-
 describe("keymap", () => {
   it("turns each input's keys into a frozen key-to-input table", () => {
     const map = keymap({ up: ["ArrowUp", "w"], fire: [" "] });
@@ -38,8 +34,8 @@ describe.each(GAMES)("%s keys", (gameId) => {
 
   afterEach(() => {
     match?.stop();
+    match?.restore();
     match = null;
-    vi.unstubAllGlobals();
   });
 
   it("drive exactly the inputs the game sends", async () => {
@@ -49,21 +45,17 @@ describe.each(GAMES)("%s keys", (gameId) => {
 
   it("hold their input while down and release it on up, keeping it from the page", async () => {
     const Engine = await loadP2PEngineClass(gameId);
-    match = startMatch(Engine, gameId);
-    const { guest } = match;
+    match = await playMatch({ gameId });
+    const { guest } = match.engines;
 
     for (const [name, input] of Object.entries(Engine.KEYMAP)) {
-      const down = key(name);
-      guest._onKeyDown(down);
+      expect(match.key("guest", name, "keydown").defaultPrevented).toBe(true);
       expect(guest.localInputs[input]).toBe(true);
-      expect(down.preventDefault).toHaveBeenCalled();
 
-      guest._onKeyUp(key(name));
+      match.key("guest", name, "keyup");
       expect(guest.localInputs[input]).toBe(false);
     }
 
-    const other = key("Enter");
-    guest._onKeyDown(other);
-    expect(other.preventDefault).not.toHaveBeenCalled();
+    expect(match.key("guest", "Enter", "keydown").defaultPrevented).toBe(false);
   });
 });

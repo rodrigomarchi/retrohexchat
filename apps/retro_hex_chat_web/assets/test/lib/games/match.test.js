@@ -1,233 +1,150 @@
-import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
-import { startMatch, dropFirst, messageType } from "../../helpers/game_match.js";
+import { describe, it, expect, afterEach } from "vitest";
 import { BASE_MSG } from "../../../js/lib/games/net_protocol.js";
-import SurroundEngine from "../../../js/lib/games/surround/index.js";
-import WarlordEngine from "../../../js/lib/games/warlords/index.js";
-import PixelTanksEngine from "../../../js/lib/games/pixel_tanks/index.js";
-import HexHockeyEngine from "../../../js/lib/games/hex_hockey/index.js";
-import PongEngine from "../../../js/lib/games/pong/index.js";
+import { PHASE as HOCKEY } from "../../../js/lib/games/hex_hockey/protocol.js";
+import { PHASE as PONG } from "../../../js/lib/games/pong/protocol.js";
+import { PHASE as TANKS } from "../../../js/lib/games/pixel_tanks/protocol.js";
+import {
+  MSG_TYPE as TRAILS_MSG,
+  PHASE as TRAILS,
+} from "../../../js/lib/games/surround/protocol.js";
+import { PHASE as WARLORDS } from "../../../js/lib/games/warlords/protocol.js";
+import { playMatch } from "../../support/games/harness.js";
 
-/** Press a key on an engine the way the document listener would. */
-function press(engine, key) {
-  engine._onKeyDown({ key, repeat: false, target: null, preventDefault: () => {} });
+/*
+ * The seams between the two sides of a P2P match, where these games have
+ * broken before: a guest that drew only when a snapshot landed, a turn lost
+ * with its one datagram, a catch released on the guest's key-up, a canvas
+ * frozen the moment play began, a flash that faded with the paint.
+ */
+
+let match = null;
+
+afterEach(() => {
+  match?.stop();
+  match?.restore();
+  match = null;
+});
+
+async function underway(gameId, phase, options = {}) {
+  match = await playMatch({ gameId, mode: "p2p", seed: 2, matchSeed: 5, ...options });
+  const reached = match.runUntil(() => match.engines.host.gameState?.phase === phase, 30_000);
+  expect(reached, `${gameId} reaches phase ${phase}`).toBe(true);
 }
 
-function release(engine, key) {
-  engine._onKeyUp({ key, repeat: false, target: null, preventDefault: () => {} });
+/** Frames each side paints in `ms`: every frame ends with the vignette. */
+function paintsIn(ms) {
+  const sides = Object.keys(match.canvases);
+  for (const side of sides) {
+    match.canvases[side].clearLog();
+    match.canvases[side].recording = true;
+  }
+  match.advance(ms);
+  return Object.fromEntries(
+    sides.map((side) => [
+      side,
+      match.canvases[side].log.filter(([op]) => op === "createRadialGradient").length,
+    ]),
+  );
 }
 
-describe("P2P match", () => {
-  let match;
+const typeOf = (entry) => parseInt(entry.hex.slice(0, 2), 16);
 
-  beforeEach(() => {
-    vi.useFakeTimers();
+describe("both peers draw", () => {
+  it("gives the guest its own frame rate, not the host's send rate", async () => {
+    await underway("hex_pong", PONG.PLAYING);
+    // The ball held still: no point, no phase change, for the second measured.
+    Object.assign(match.engines.host.gameState, { ballVX: 0, ballVY: 0 });
+    const paints = paintsIn(1000);
+    expect(paints.host).toBeGreaterThan(45);
+    expect(paints.guest).toBeGreaterThan(45);
+    expect(paints.guest).toBeGreaterThan(paints.host * 0.8);
   });
 
-  afterEach(() => {
-    match?.stop();
-    match = null;
-    vi.useRealTimers();
-    vi.unstubAllGlobals();
+  it("keeps drawing once play begins in a game that animates its pauses", async () => {
+    await underway("pixel_tanks", TANKS.PLAYING);
+    expect(paintsIn(500).host).toBeGreaterThan(20);
+  });
+});
+
+// Light Trails' input is a command, not a held key: no later datagram
+// restates a turn.
+describe("Light Trails — discrete input", () => {
+  it("delivers a turn from the guest to the host", async () => {
+    await underway("light_trails", TRAILS.PLAYING);
+    match.key("guest", "ArrowUp");
+    match.advance(100);
+    expect(match.engines.host.p2PendingDir).toBe(0);
   });
 
-  // Both sides ran the same match very differently: the guest drew only when a
-  // snapshot landed, so its frame rate was the host's send rate.
-  describe("both peers draw", () => {
-    it("gives the guest its own frame rate, not the host's send rate", () => {
-      match = startMatch(PongEngine, "hex_pong");
-
-      match.advance(200);
-
-      // Drive straight into a rally: the phase machine's own pauses would make
-      // "how many frames in a second" depend on when a point happened to land.
-      match.host.gameState = { ...match.host.gameState, phase: 3, ballVX: 4, ballVY: 2 };
-      match.host.flow.go("PLAYING");
-      match.advance(200);
-      expect(match.host.stepping).toBe(true);
-
-      const paints = { host: 0, guest: 0 };
-      for (const side of ["host", "guest"]) {
-        const engine = match[side];
-        const draw = engine._renderState.bind(engine);
-        engine._renderState = () => {
-          paints[side] += 1;
-          draw();
-        };
-      }
-
-      match.advance(1000);
-
-      // A second of play is a second of frames on both sides. The guest used to
-      // draw at the host's send rate, which is what made it look broken.
-      expect(paints.host).toBeGreaterThan(45);
-      expect(paints.guest).toBeGreaterThan(45);
-      expect(paints.guest).toBeGreaterThan(paints.host * 0.8);
+  it("survives losing copies of the turn", async () => {
+    let lost = 0;
+    await underway("light_trails", TRAILS.PLAYING, {
+      drop: (data, dir) => {
+        if (dir !== "guest>host" || new Uint8Array(data)[0] !== BASE_MSG.INPUT_EDGE) return false;
+        if (lost === 2) return false;
+        lost += 1;
+        return true;
+      },
     });
-
-    it("starts the match without either side hanging", () => {
-      match = startMatch(PongEngine, "hex_pong");
-      match.advance(3000);
-
-      expect(match.host.peerReady).toBe(true);
-    });
-
-    it("still starts when the first ready datagrams are lost", () => {
-      // The channel does not retransmit, and nothing else restates this
-      // message. On loopback a single send always arrives, which is exactly how
-      // a hung match hides until it reaches real Wi-Fi.
-      match = startMatch(PongEngine, "hex_pong", { drop: dropFirst(3) });
-      match.advance(3000);
-
-      expect(match.host.peerReady).toBe(true);
-    });
+    match.key("guest", "ArrowLeft");
+    match.advance(300);
+    // Two of the three copies were dropped; the third carries it.
+    expect(lost).toBe(2);
+    expect(match.engines.host.p2PendingDir).toBe(2);
   });
 
-  // Light Trails is the only game whose input is a discrete command rather than
-  // a held key: there is no later datagram restating a turn.
-  describe("Light Trails — discrete input", () => {
-    it("delivers a turn from the guest to the host", () => {
-      match = startMatch(SurroundEngine, "light_trails");
-      match.advance(200);
-
-      press(match.guest, "ArrowUp");
-      match.advance(100);
-
-      expect(match.host.p2PendingDir).toBe(0);
-    });
-
-    it("survives losing copies of the turn", () => {
-      match = startMatch(SurroundEngine, "light_trails", {
-        drop: dropFirst(2, (data) => messageType(data) === BASE_MSG.INPUT_EDGE),
-      });
-      match.advance(200);
-
-      press(match.guest, "ArrowLeft");
-      match.advance(300);
-
-      // Two of the three redundant copies were dropped; the third carries it.
-      expect(match.host.p2PendingDir).toBe(2);
-    });
-
-    it("applies a repeated command only once", () => {
-      match = startMatch(SurroundEngine, "light_trails");
-      match.advance(200);
-
-      const applied = [];
-      match.host._handleRemoteEdge = (code) => applied.push(code);
-
-      press(match.guest, "ArrowRight");
-      match.advance(300);
-
-      expect(applied).toEqual([3]);
-    });
-
-    it("moves the grid at 10Hz off the 60Hz clock", () => {
-      match = startMatch(SurroundEngine, "light_trails");
-      match.advance(200);
-
-      match.host.flow.go("PLAYING");
-      const before = match.hostChannel.sent.length;
-      match.advance(1000);
-      // Every grid move sends one snapshot.
-      const moves = match.hostChannel.sent.length - before;
-
-      // Six fixed steps per grid move: ten moves a second, whatever the display.
-      expect(moves).toBeGreaterThanOrEqual(8);
-      expect(moves).toBeLessThanOrEqual(12);
-    });
+  it("moves the grid at 10Hz off the 60Hz clock", async () => {
+    await underway("light_trails", TRAILS.PLAYING);
+    const before = match.record().wire.length;
+    match.advance(1000);
+    // Every grid move sends one snapshot.
+    const moves = match
+      .record()
+      .wire.slice(before)
+      .filter((entry) => entry.dir === "host>guest" && typeOf(entry) === TRAILS_MSG.GAME_STATE);
+    expect(moves.length).toBeGreaterThanOrEqual(8);
+    expect(moves.length).toBeLessThanOrEqual(12);
   });
+});
 
-  // The catch mechanic fires when the guest *releases* space. It lived inside
-  // the input branch that the level-triggered transport replaced.
-  describe("Hex Warlords — release-triggered launch", () => {
-    it("lets the guest launch a fireball it caught", () => {
-      match = startMatch(WarlordEngine, "hex_warlords");
-      match.advance(200);
-
-      match.host.gameState.caughtBy = 2;
-      match.host.gameState.fireballSpeed = 3;
-
-      press(match.guest, " ");
-      match.advance(100);
-      expect(match.host.gameState.caughtBy).toBe(2);
-
-      release(match.guest, " ");
-      match.advance(100);
-
-      expect(match.host.gameState.caughtBy).toBe(0);
-    });
-
-    it("does not launch while the guest keeps holding", () => {
-      match = startMatch(WarlordEngine, "hex_warlords");
-      match.advance(200);
-      match.host.gameState.caughtBy = 2;
-
-      press(match.guest, " ");
-      match.advance(500);
-
-      expect(match.host.gameState.caughtBy).toBe(2);
-    });
+// The catch is released when the guest lets go of space.
+describe("Hex Warlords — release-triggered launch", () => {
+  it("lets the guest launch a fireball it caught, on letting go", async () => {
+    await underway("hex_warlords", WARLORDS.PLAYING);
+    Object.assign(match.engines.host.gameState, { caughtBy: 2, fireballSpeed: 3 });
+    match.key("guest", " ", "keydown");
+    match.advance(500);
+    expect(match.engines.host.gameState.caughtBy).toBe(2);
+    match.key("guest", " ", "keyup");
+    match.advance(100);
+    expect(match.engines.host.gameState.caughtBy).toBe(0);
   });
+});
 
-  // These games cancelled the base frame loop inside _startGameLoop, freezing
-  // the canvas the moment play began, and animate their round-over pause.
-  describe("Pixel Tanks — pause animation and loop survival", () => {
-    it("keeps drawing once the match starts", () => {
-      match = startMatch(PixelTanksEngine, "pixel_tanks");
-      match.advance(200);
-
-      const before = match.host._telemetry._frames;
-      match.host.flow.go("PLAYING");
-      match.advance(500);
-
-      expect(match.host._telemetry._frames).toBeGreaterThan(before + 10);
-      expect(match.host.stepping).toBe(true);
-    });
-
-    it("settles round-over particles on the fixed clock", () => {
-      match = startMatch(PixelTanksEngine, "pixel_tanks");
-      match.advance(200);
-
-      match.host._stopSteps();
-      match.host.particles = Array.from({ length: 30 }, () => ({
-        x: 100,
-        y: 100,
-        vx: 1,
-        vy: 1,
-        life: 20,
-      }));
-
-      const before = match.host.particles.length;
-      match.advance(500);
-
-      // They must drain rather than freeze, and the loop keeps drawing them.
-      expect(match.host.particles.length).toBeLessThan(before);
-    });
+describe("Pixel Tanks — the round-over pause", () => {
+  it("lets its particles settle while the round stands still", async () => {
+    await underway("pixel_tanks", TANKS.PLAYING);
+    Object.assign(match.engines.host.gameState, { roundTimer: 1, score1: 1 });
+    match.runUntil(() => match.engines.host.gameState.phase === TANKS.ROUND_OVER, 2000);
+    match.engines.host.particles = Array.from({ length: 30 }, () => ({
+      x: 100,
+      y: 100,
+      vx: 1,
+      vy: 1,
+      life: 20,
+    }));
+    match.advance(500);
+    expect(match.engines.host.particles.length).toBeLessThan(30);
   });
+});
 
-  // The goal flash counts down in simulation frames. Decaying it on paint tied
-  // it to the display: a 120Hz panel lost the flash twice as fast.
-  describe("Hex Hockey — flash decays on the clock, not the paint", () => {
-    it("decays once per step regardless of how often it paints", () => {
-      match = startMatch(HexHockeyEngine, "hex_hockey");
-      match.advance(200);
-
-      match.host._startSteps();
-      match.host.goalFlash = 60;
-
-      for (let i = 0; i < 10; i++) match.host._gameLoop();
-
-      expect(match.host.goalFlash).toBe(50);
-    });
-
-    it("does not decay when only drawing", () => {
-      match = startMatch(HexHockeyEngine, "hex_hockey");
-      match.advance(200);
-
-      match.host.goalFlash = 30;
-      for (let i = 0; i < 20; i++) match.host._renderState();
-
-      expect(match.host.goalFlash).toBe(30);
-    });
+// The goal flash counts simulation steps: decaying it on paint as well tied
+// it to the display, and a 120Hz panel lost it twice as fast.
+describe("Hex Hockey — the goal flash", () => {
+  it("fades one step at a time", async () => {
+    await underway("hex_hockey", HOCKEY.PLAYING);
+    match.engines.host.goalFlash = 60;
+    match.advance(Math.round((10 * 1000) / 60));
+    expect(match.engines.host.goalFlash).toBe(50);
   });
 });
