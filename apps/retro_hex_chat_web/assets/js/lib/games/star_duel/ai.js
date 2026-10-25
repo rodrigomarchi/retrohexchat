@@ -16,7 +16,7 @@ import {
   STAR_X,
   STAR_Y,
 } from "./physics.js";
-import { clamp, normalizeDifficulty } from "../ai_common.js";
+import { clamp, normalizeDifficulty } from "../core/ai.js";
 
 const TWO_PI = Math.PI * 2;
 const NEUTRAL_INPUTS = Object.freeze({

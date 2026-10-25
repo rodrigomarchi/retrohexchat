@@ -14,7 +14,7 @@ import {
   RING_RIGHT,
   RING_TOP,
 } from "./physics.js";
-import { clamp, normalizeDifficulty } from "../ai_common.js";
+import { clamp, normalizeDifficulty } from "../core/ai.js";
 
 const PLAYER_HALF_SIZE = BOXER_BODY_RADIUS;
 const PLAYER_MIN_X = RING_LEFT + PLAYER_HALF_SIZE;

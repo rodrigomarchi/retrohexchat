@@ -20,7 +20,7 @@ import {
   RICOCHET_ANGLE,
   getObstacleRect,
 } from "./physics.js";
-import { clamp, normalizeDifficulty } from "../ai_common.js";
+import { clamp, normalizeDifficulty } from "../core/ai.js";
 
 const NEUTRAL_INPUTS = Object.freeze({
   up: false,

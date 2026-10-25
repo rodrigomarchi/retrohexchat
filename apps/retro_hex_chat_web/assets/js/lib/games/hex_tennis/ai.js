@@ -17,7 +17,7 @@ import {
   SERVICE_LINE_TOP,
   HIT_ZONE_H,
 } from "./physics.js";
-import { clamp, normalizeDifficulty } from "../ai_common.js";
+import { clamp, normalizeDifficulty } from "../core/ai.js";
 
 const PLAYER_HALF_SIZE = 12;
 const PLAYER_MIN_X = COURT_LEFT + PLAYER_HALF_SIZE;

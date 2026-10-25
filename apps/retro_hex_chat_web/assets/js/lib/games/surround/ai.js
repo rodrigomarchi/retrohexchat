@@ -7,7 +7,7 @@
 
 import { CELL } from "./physics.js";
 import { DIR, GRID_H, GRID_W, PHASE } from "./protocol.js";
-import { normalizeDifficulty } from "../ai_common.js";
+import { normalizeDifficulty } from "../core/ai.js";
 
 const GRID_AREA = GRID_W * GRID_H;
 const TABLE_CENTER = Object.freeze({

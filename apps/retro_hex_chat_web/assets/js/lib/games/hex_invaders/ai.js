@@ -15,7 +15,7 @@ import {
   DIVIDER_X,
   HALF_W,
 } from "./physics.js";
-import { clamp, normalizeDifficulty } from "../ai_common.js";
+import { clamp, normalizeDifficulty } from "../core/ai.js";
 
 const UFO_W = 24;
 const NEUTRAL_INPUTS = Object.freeze({

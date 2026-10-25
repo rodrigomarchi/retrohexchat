@@ -15,7 +15,7 @@ import {
   PADDLE_SPEED,
   PADDLE_W,
 } from "./physics.js";
-import { clamp, normalizeDifficulty } from "../ai_common.js";
+import { clamp, normalizeDifficulty } from "../core/ai.js";
 
 const BALL_MIN_X = BALL_SIZE / 2;
 const BALL_MAX_X = CANVAS_W - BALL_SIZE / 2;

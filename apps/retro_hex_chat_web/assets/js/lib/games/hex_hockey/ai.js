@@ -18,7 +18,7 @@ import {
   GOAL_LINE_LEFT,
   GOAL_LINE_RIGHT,
 } from "./physics.js";
-import { clamp, normalizeDifficulty } from "../ai_common.js";
+import { clamp, normalizeDifficulty } from "../core/ai.js";
 
 const PLAYER_HALF_SIZE = 4;
 const PLAYER_MIN_X = RINK_LEFT + PLAYER_HALF_SIZE;

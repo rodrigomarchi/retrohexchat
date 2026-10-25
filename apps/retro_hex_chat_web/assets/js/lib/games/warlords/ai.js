@@ -16,7 +16,7 @@ import {
   SHIELD_H,
   SHIELD_SPEED,
 } from "./physics.js";
-import { clamp, normalizeDifficulty } from "../ai_common.js";
+import { clamp, normalizeDifficulty } from "../core/ai.js";
 
 const FIREBALL_MIN_Y = FIREBALL_SIZE / 2;
 const FIREBALL_MAX_Y = CANVAS_H - FIREBALL_SIZE / 2;

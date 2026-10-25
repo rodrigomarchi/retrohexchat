@@ -14,7 +14,7 @@ import {
   TANK_RADIUS,
   WALL_SIZE,
 } from "./physics.js";
-import { clamp, normalizeDifficulty } from "../ai_common.js";
+import { clamp, normalizeDifficulty } from "../core/ai.js";
 
 const TWO_PI = Math.PI * 2;
 const PATH_LOOKAHEAD_CELLS = 3;

@@ -18,7 +18,7 @@ import {
   SPEED_MIN,
   getBankAtWorld,
 } from "./physics.js";
-import { clamp } from "../ai_common.js";
+import { clamp } from "../core/ai.js";
 
 const SAFE_MARGIN = JET_RADIUS + 18;
 const TARGET_LOOKAHEAD_Y = 120;

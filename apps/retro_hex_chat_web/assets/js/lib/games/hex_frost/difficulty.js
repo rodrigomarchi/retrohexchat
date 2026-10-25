@@ -1,1 +1,1 @@
-export { normalizeDifficulty as normalizeFrostAIDifficulty } from "../ai_common.js";
+export { normalizeDifficulty as normalizeFrostAIDifficulty } from "../core/ai.js";
