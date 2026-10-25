@@ -169,7 +169,8 @@ get fresh timers with the *remaining* duration.
 
 - **Topic conventions are load-bearing and fixed:** `"channel:#{name}"`,
   `"user:#{nickname key}"` (`Topics.inbox/1` folds case, so every spelling is one inbox), `"service:nickserv"`, `"service:chanserv"`,
-  `"p2p:#{token}"` (per-session, token-based), `"game:#{token}"`, plus server topics
+  `"lobby:#{token}"` (per-session, token-based, `Topics.lobby/1`; `p2p:` names only the
+  Phoenix channel the browser joins), `"game:#{token}"`, plus server topics
   `"server:announcements"`, `"server:wallops"`, `"server:settings"`. The two that name a
   conversation are built by `RetroHexChat.Topics`, never interpolated. State transitions and
   side effects are enforced server-side and announced via broadcast; observers react in
@@ -380,9 +381,9 @@ get fresh timers with the *remaining* duration.
   `handle_ui_action/3` is fine only for fire-and-forget typed commands. After a mutation,
   re-assign the updated struct / re-fetch the snapshot so status labels and buttons don't go
   stale.
-- New menu/toolbar actions must be added to BOTH hook lists: `attach_all_hooks/1` (client events)
-  and `@event_hook_fns` (internal `toolbar_action` dispatch through `dispatch_to_hooks/3`). Reuse
-  an existing v1 event name when a hook already handles it.
+- New menu/toolbar actions go in DesktopLive's one hook list, `event_hooks/0`: `attach_all_hooks/1`
+  attaches it for client events and `dispatch_to_hooks/3` walks it for the internal
+  `toolbar_action` dispatch. Reuse an existing event name when a hook already handles it.
 - Project a domain "snapshot" for read-heavy UI (founder + viewer role + grouped access lists
   together) so event handlers only refresh assigns. Make sure hot-state projections
   (`Server.get_state/1`) actually expose the fields the UI needs before building the affordance.

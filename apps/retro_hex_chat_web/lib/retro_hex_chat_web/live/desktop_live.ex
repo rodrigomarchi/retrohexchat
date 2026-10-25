@@ -678,12 +678,21 @@ defmodule RetroHexChatWeb.DesktopLive do
 
   # ── Catch-all handle_info ─────────────────────────────────────
 
-  def handle_info({_ref, _result}, socket), do: {:noreply, socket}
+  # Presence diffs arrive for every channel and the global topic this page
+  # subscribes to; one no attached hook claimed carries nothing this view reads.
+  def handle_info(%Phoenix.Socket.Broadcast{event: "presence_diff"}, socket),
+    do: {:noreply, socket}
+
+  def handle_info({ref, _task_result}, socket) when is_reference(ref), do: {:noreply, socket}
   def handle_info({:DOWN, _ref, :process, _pid, _reason}, socket), do: {:noreply, socket}
-  def handle_info(_, socket), do: {:noreply, socket}
+
+  def handle_info(message, socket) do
+    Logger.warning("DesktopLive: unhandled message #{inspect(message, limit: 5)}")
+    {:noreply, socket}
+  end
 
   # ── Render ────────────────────────────────────────────────────
-  # Template is in chat_live.html.heex (auto-detected by Phoenix)
+  # Template is in desktop_live.html.heex (auto-detected by Phoenix)
 
   # ── Private helpers ───────────────────────────────────────────
 

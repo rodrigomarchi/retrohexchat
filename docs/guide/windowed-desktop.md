@@ -128,7 +128,8 @@ confirmations/transient prompts stay modal `UI.Dialog`; persistence is ON (`pers
 unique per LiveView).
 
 - **Managed vs always-mounted — the decision.** `managed` = the host mounts/unmounts the island
-  (`ChatLive.Windows` `@managed` set + an `open_windows` MapSet assign; render the window
+  (`managed?: true` on its `WindowRegistry` entry, read through `WindowRegistry.managed_ids/0`, + an
+  `open_windows` MapSet assign; render the window
   `:if={"<id>" in @open_windows}` with the `managed` attr). Choose `managed` ONLY when the island
   holds no state that must survive a close AND receives no `send_update` while closed — closing is
   then a clean reset. Otherwise keep it **always-mounted** (`open={false}`, client owns

@@ -12,7 +12,7 @@ defmodule RetroHexChatWeb.ChatLive.WindowRegistry do
 
   This module is the single declaration. Everything else derives:
 
-    * `chat_live.html.heex` spreads `attrs/1` onto `desktop_window`
+    * `desktop_live.html.heex` spreads `attrs/1` onto `desktop_window`
     * `RetroHexChatWeb.ChatLive.Windows` takes `managed?/1` from here
     * `RetroHexChatWeb.ChatLive.AdminEvents` takes its opener map from here
     * `RetroHexChatWeb.Components.UI.ChatTaskbar` builds its strip from here

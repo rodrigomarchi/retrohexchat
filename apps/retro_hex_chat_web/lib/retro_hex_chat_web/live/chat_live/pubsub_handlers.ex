@@ -132,6 +132,10 @@ defmodule RetroHexChatWeb.ChatLive.PubsubHandlers do
   def handle_info({:group_call_ended, _} = msg, socket),
     do: ChannelState.handle_info(msg, socket)
 
+  # Said on a channel's call topic for the screen holding the call's seat; the
+  # chat has already given the membership up by the time it arrives.
+  def handle_info({:channel_membership_lost, _payload}, socket), do: {:halt, socket}
+
   def handle_info({:share_cards_changed, _} = msg, socket),
     do: ChannelState.handle_info(msg, socket)
 

@@ -5,6 +5,8 @@ defmodule RetroHexChatWeb.ChatDesktopShellTest do
   """
   use RetroHexChatWeb.LiveViewCase, async: false
 
+  import ExUnit.CaptureLog
+
   @moduletag :liveview
 
   describe "desktop shell" do
@@ -158,6 +160,24 @@ defmodule RetroHexChatWeb.ChatDesktopShellTest do
       render_hook(view, "window_closed", %{"id" => "not-a-window"})
 
       assert MapSet.size(:sys.get_state(view.pid).socket.assigns.open_windows) == 0
+    end
+  end
+
+  describe "messages nobody handles" do
+    test "are reported, not swallowed", %{conn: conn} do
+      previous = Logger.level()
+      Logger.configure(level: :warning)
+      on_exit(fn -> Logger.configure(level: previous) end)
+
+      {:ok, view, _html} = live(chat_conn(conn, "Desk#{uid()}"), "/")
+
+      log =
+        capture_log(fn ->
+          send(view.pid, {:no_such_message, :payload})
+          _ = :sys.get_state(view.pid)
+        end)
+
+      assert log =~ "DesktopLive: unhandled message {:no_such_message, :payload}"
     end
   end
 end

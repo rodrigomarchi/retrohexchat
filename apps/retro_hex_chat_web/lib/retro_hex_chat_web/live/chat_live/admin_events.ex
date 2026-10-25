@@ -5,7 +5,7 @@ defmodule RetroHexChatWeb.ChatLive.AdminEvents do
   Each window's state, events and privileged work live in its own island under
   `RetroHexChatWeb.ChatLive.Components`; this hook only decides whether the
   caller may open one. That gate is the server-side authorization against a
-  forged `window_open`, and the render guards in `chat_live.html.heex` are the
+  forged `window_open`, and the render guards in `desktop_live.html.heex` are the
   second line of defense.
 
   Which events it answers comes from `WindowRegistry` rather than a list kept
