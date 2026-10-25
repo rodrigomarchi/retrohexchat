@@ -64,7 +64,8 @@ CENSUS_SKIP = {
 }
 
 COMMENT_RE = re.compile(r"^\s*(?:#|//|\*|/\*)")
-DEF_RE = re.compile(r"^\s*(defp|def)\s+([a-z_][a-zA-Z0-9_?!]*)\s*\(([^)]*)", re.M)
+DEF_RE = re.compile(r"^\s*(defp|def)\s+([a-z_][a-zA-Z0-9_?!]*)\s*\(", re.M)
+DISABLE_RE = re.compile(r"#\s*ex_dna:disable-for-(?:lines:(\d+)|next-line)")
 
 # name -> (regex, roots, file suffixes, paths excluded)
 MARKERS = {
@@ -149,25 +150,43 @@ def jscpd(paths: list[str], args: list[str]) -> dict:
         return json.loads(report.read_text())
 
 
-def jscpd_summary(report: dict, top: int, split=None) -> dict:
+def jscpd_summary(report: dict, top: int, split=None, disabled=None) -> dict:
+    """`disabled` maps a file to the line ranges marked `ex_dna:disable`: a
+    clone with either side inside one was decided on purpose, so it is set
+    aside and counted apart (jscpd itself does not read those comments).
+    """
     total = report["statistics"]["total"]
     pairs: dict[tuple, list] = collections.defaultdict(lambda: [0, 0])
     split_lines = collections.Counter()
+    decided_clones = decided_lines = 0
     for dup in report["duplicates"]:
         a, b = rel(dup["firstFile"]["name"]), rel(dup["secondFile"]["name"])
+        if disabled and (
+            in_ranges(disabled.get(a, ()), dup["firstFile"])
+            or in_ranges(disabled.get(b, ()), dup["secondFile"])
+        ):
+            decided_clones += 1
+            # jscpd counts a clone's lines as end − start, one fewer than `lines`.
+            decided_lines += dup["lines"] - 1
+            continue
         key = tuple(sorted((a, b)))
         pairs[key][0] += dup["lines"]
         pairs[key][1] += 1
         if split:
             split_lines[split(a, b)] += dup["lines"]
     ranked = sorted(pairs.items(), key=lambda kv: -kv[1][0])
+    open_lines = total["duplicatedLines"] - decided_lines
     summary = {
         "lines": total["lines"],
-        "duplicated_lines": total["duplicatedLines"],
-        "percentage": round(total["percentage"], 2),
-        "clones": total["clones"],
+        "duplicated_lines": open_lines,
+        "percentage": round(100 * open_lines / total["lines"], 2) if total["lines"] else 0,
+        "clones": total["clones"] - decided_clones,
         "top": [{"lines": v[0], "clones": v[1], "files": list(k)} for k, v in ranked[:top]],
     }
+    if disabled is not None:
+        summary["duplicated_lines_raw"] = total["duplicatedLines"]
+        summary["decided_clones"] = decided_clones
+        summary["decided_lines"] = decided_lines
     for name, lines in split_lines.items():
         summary[f"duplicated_lines_{name}"] = lines
     return summary
@@ -187,6 +206,49 @@ def source_files(roots: list[str], suffixes: tuple, exclude: list[str]):
                 yield path
 
 
+def arity_at(text: str, start: int) -> int:
+    """The number of arguments of the head whose `(` ends just before `start`.
+
+    Only the commas between the head's own parentheses count — not those
+    inside a tuple, a map, a list or a call in a pattern or a default.
+    """
+    depth, commas, seen, i = 0, 0, False, start
+    while i < len(text):
+        c = text[i]
+        if c == '"':
+            end = text.find('"', i + 1)
+            while end > 0 and text[end - 1] == "\\":
+                end = text.find('"', end + 1)
+            i = end if end > 0 else len(text)
+            seen = True
+        elif c in "([{":
+            depth += 1
+            seen = True
+        elif c in ")]}":
+            if depth == 0:
+                return commas + 1 if seen else 0
+            depth -= 1
+        elif c == "," and depth == 0:
+            commas += 1
+        elif not c.isspace():
+            seen = True
+        i += 1
+    return commas + 1 if seen else 0
+
+
+def disabled_ranges(text: str) -> list[tuple[int, int]]:
+    """The 1-based line ranges an `ex_dna:disable-for-…` comment keeps out:
+    the N lines after `disable-for-lines:N`, the one after `disable-for-next-line`.
+    """
+    ranges = []
+    for number, line in enumerate(text.splitlines(), start=1):
+        match = DISABLE_RE.search(line)
+        if match:
+            count = int(match.group(1)) if match.group(1) else 1
+            ranges.append((number + 1, number + count))
+    return ranges
+
+
 def census(paths: list[tuple[str, str]], minimum: int = 3) -> list[dict]:
     """Private helpers (name/arity) defined in at least `minimum` modules.
 
@@ -196,10 +258,11 @@ def census(paths: list[tuple[str, str]], minimum: int = 3) -> list[dict]:
     private: dict[tuple, set] = collections.defaultdict(set)
     public: dict[tuple, set] = collections.defaultdict(set)
     for label, text in paths:
-        for kind, name, args in DEF_RE.findall(text):
+        for match in DEF_RE.finditer(text):
+            kind, name = match.group(1), match.group(2)
             if name in CENSUS_SKIP:
                 continue
-            arity = args.count(",") + 1 if args.strip() else 0
+            arity = arity_at(text, match.end())
             (private if kind == "defp" else public)[(name, arity)].add(label)
     rows = [
         {
@@ -225,6 +288,20 @@ def markers() -> dict:
                     sites.append(f"{rel(path)}:{number}")
         counts[name] = {"count": len(sites), "sites": sites}
     return counts
+
+
+def in_ranges(ranges, fragment: dict) -> bool:
+    return any(fragment["start"] <= end and fragment["end"] >= start for start, end in ranges)
+
+
+def disabled_in(roots: list[str]) -> dict:
+    """Every `ex_dna:disable` range under `roots`, by repository-relative path."""
+    found = {}
+    for path in source_files(roots, (".ex", ".heex"), []):
+        ranges = disabled_ranges(path.read_text(errors="replace"))
+        if ranges:
+            found[rel(path)] = ranges
+    return found
 
 
 def rel(path) -> str:
@@ -346,6 +423,7 @@ def main(argv: list[str] | None = None) -> int:
                 ["--formats-exts", "elixir:ex,heex", "--min-tokens", "80", "--ignore", HEEX_IGNORE],
             ),
             args.top,
+            disabled=disabled_in([DOMAIN_LIB, WEB_LIB]),
         )
 
     print(f"Running {', '.join(jobs)} in parallel...", file=sys.stderr)

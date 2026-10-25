@@ -25,6 +25,15 @@ class CensusTest(unittest.TestCase):
         rows = {r["helper"]: r["copies"] for r in dr.census(sources)}
         self.assertEqual(rows, {"fetch/1": 4, "fetch/2": 3})
 
+    def test_arity_counts_only_top_level_commas(self):
+        source = (
+            "defp dispatch({:ok, a, b}, %{c: d, e: f}, opts), do: a\n"
+            "defp dispatch(fun.(x, y), z), do: z\n"
+            "defp settle(state, [h | t] = list, key \\\\ {:a, :b}), do: state\n"
+        )
+        rows = {r["helper"] for r in dr.census([(f"{n}.ex", source) for n in "abc"])}
+        self.assertEqual(rows, {"dispatch/3", "dispatch/2", "settle/3"})
+
     def test_below_minimum_is_not_reported(self):
         sources = [("a.ex", "defp once(x), do: x"), ("b.ex", "defp once(x), do: x")]
         self.assertEqual(dr.census(sources), [])
@@ -64,3 +73,27 @@ class CompareTest(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class DecidedClonesTest(unittest.TestCase):
+    def test_disabled_ranges_read_both_markers(self):
+        text = "a\n  # ex_dna:disable-for-lines:3 kept on purpose\nb\nc\nd\ne\n# ex_dna:disable-for-next-line why\nf\n"
+        self.assertEqual(dr.disabled_ranges(text), [(3, 5), (8, 8)])
+
+    def test_a_clone_inside_a_decided_range_is_set_aside_and_counted(self):
+        report = {
+            "statistics": {"total": {"lines": 100, "duplicatedLines": 18, "percentage": 18.0, "clones": 2}},
+            "duplicates": [
+                {"lines": 11, "firstFile": {"name": "a.ex", "start": 10, "end": 20},
+                 "secondFile": {"name": "b.ex", "start": 1, "end": 11}},
+                {"lines": 9, "firstFile": {"name": "c.ex", "start": 1, "end": 9},
+                 "secondFile": {"name": "d.ex", "start": 1, "end": 9}},
+            ],
+        }
+        summary = dr.jscpd_summary(report, 10, disabled={"a.ex": [(12, 30)]})
+        self.assertEqual(summary["clones"], 1)
+        self.assertEqual(summary["duplicated_lines"], 8)
+        self.assertEqual(summary["decided_clones"], 1)
+        self.assertEqual(summary["decided_lines"], 10)
+        self.assertEqual(summary["duplicated_lines_raw"], 18)
+        self.assertEqual([p["files"] for p in summary["top"]], [["c.ex", "d.ex"]])
