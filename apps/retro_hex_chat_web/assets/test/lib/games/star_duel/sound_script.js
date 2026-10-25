@@ -1,0 +1,40 @@
+/**
+ * Every Star Duel sound, once; the thrust started twice (the second does
+ * nothing) and stopped; the star's drone near, then far, then gone; and both
+ * held sounds left playing for dispose to stop.
+ */
+export const SOUND_SCRIPT = [
+  ["playFire"],
+  { wait: 200 },
+  ["playHit"],
+  { wait: 100 },
+  ["playDeath"],
+  { wait: 500 },
+  ["playWarp"],
+  { wait: 400 },
+  ["playCountdown"],
+  { wait: 100 },
+  ["playWin"],
+  { wait: 600 },
+  ["playLose"],
+  { wait: 600 },
+  ["playSpawn"],
+  { wait: 200 },
+  ["playThrust"],
+  { wait: 100 },
+  ["playThrust"],
+  { wait: 100 },
+  ["stopThrust"],
+  { wait: 100 },
+  ["playStarProximity", 60],
+  { wait: 100 },
+  ["playStarProximity", 240],
+  { wait: 100 },
+  ["playStarProximity", 400],
+  { wait: 100 },
+  ["stopStarProximity"],
+  { wait: 100 },
+  ["playThrust"],
+  ["playStarProximity", 100],
+  { wait: 100 },
+];

@@ -240,7 +240,8 @@ export function createSynth({ masterVolume = null } = {}) {
  * `paddleHit` is `playPaddleHit()`. An entry may be a function of the
  * method's arguments that returns the sound (a hit that rises with its
  * points). `extend` adds the game's held sounds (a hum that follows the
- * engine's speed), built on the same synthesizer.
+ * engine's speed), built on the same synthesizer; a `dispose` among them
+ * runs before the context closes.
  *
  * @param {{
  *   sounds?: Record<string, object | ((...args: unknown[]) => object)>,
@@ -261,6 +262,16 @@ export function createGameAudio({ sounds = {}, masterVolume = null, extend } = {
     const method = `play${name[0].toUpperCase()}${name.slice(1)}`;
     audio[method] = (...args) => synth.play(typeof sound === "function" ? sound(...args) : sound);
   }
-  if (extend) Object.assign(audio, extend(synth));
+  if (extend) {
+    const { dispose: release, ...held } = extend(synth);
+    Object.assign(audio, held);
+    // The game's held sounds stop before the context closes under them.
+    if (release) {
+      audio.dispose = () => {
+        release();
+        synth.dispose();
+      };
+    }
+  }
   return audio;
 }

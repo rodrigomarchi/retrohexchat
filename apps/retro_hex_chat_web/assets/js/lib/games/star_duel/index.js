@@ -12,7 +12,6 @@
 
 import { defineGame } from "../core/define_game.js";
 import { createStarDuelAI, normalizeStarDuelAIDifficulty } from "./ai.js";
-import { StarDuelAudio } from "./audio.js";
 import {
   STAR_X,
   STAR_Y,
@@ -41,6 +40,7 @@ import {
 } from "./physics.js";
 import { GAME_END, GAME_MODE, PHASE, SNAPSHOT, encodeShipFlags } from "./protocol.js";
 import { getColors, render } from "./renderer.js";
+import { SOUNDS, extend } from "./sounds.js";
 
 const SPAWN_DELAY_TICKS = 90; // 1.5 s
 const ROUND_OVER_DELAY_TICKS = 120; // 2 s
@@ -354,7 +354,7 @@ export default defineGame({
   ],
   schema: { snapshot: SNAPSHOT, end: GAME_END },
   ai: { create: createStarDuelAI, difficulty: normalizeStarDuelAIDifficulty },
-  audio: StarDuelAudio,
+  audio: { sounds: SOUNDS, extend },
   theme: getColors,
   // The game id picks the arena: open space, a star's gravity well or a debris field.
   init: (game) => {

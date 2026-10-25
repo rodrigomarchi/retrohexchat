@@ -262,6 +262,21 @@ describe("createGameAudio", () => {
     expect(heard()).toHaveLength(2);
   });
 
+  it("stops the game's held sounds before closing the context", () => {
+    let hum = null;
+    const sounds = createGameAudio({
+      extend: (synth) => ({
+        startHum: () => (hum = synth.tone({ wave: "sine", freq: 80, vol: 0.05 })),
+        dispose: () => hum?.stop(),
+      }),
+    });
+    sounds.startHum();
+    sounds.dispose();
+    const ops = audio.log.map(([, op]) => op);
+    expect(ops.indexOf("stop")).toBeLessThan(ops.indexOf("close"));
+    expect(sounds.ctx).toBeNull();
+  });
+
   it("closes its context on dispose", () => {
     const sounds = createGameAudio({ sounds: SOUNDS });
     sounds.playPaddleHit();

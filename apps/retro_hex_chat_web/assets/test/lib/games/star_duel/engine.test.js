@@ -22,24 +22,11 @@ import {
 } from "../../../../js/lib/games/star_duel/physics.js";
 
 // Must mock audio before importing StarDuelEngine
-vi.mock("../../../../js/lib/games/star_duel/audio.js", () => ({
-  StarDuelAudio: function () {
-    return {
-      playThrust: vi.fn(),
-      stopThrust: vi.fn(),
-      playFire: vi.fn(),
-      playHit: vi.fn(),
-      playDeath: vi.fn(),
-      playWarp: vi.fn(),
-      playStarProximity: vi.fn(),
-      stopStarProximity: vi.fn(),
-      playCountdown: vi.fn(),
-      playWin: vi.fn(),
-      playLose: vi.fn(),
-      playSpawn: vi.fn(),
-    };
-  },
-}));
+vi.mock("../../../../js/lib/games/core/synth.js", async (importOriginal) => {
+  const synth = await importOriginal();
+  const { spySounds } = await import("../../../helpers/spy_sounds.js");
+  return { ...synth, createGameAudio: (spec) => spySounds(synth.createGameAudio(spec)) };
+});
 
 // Must mock renderer
 vi.mock("../../../../js/lib/games/star_duel/renderer.js", () => ({
