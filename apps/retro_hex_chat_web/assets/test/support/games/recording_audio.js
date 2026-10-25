@@ -19,7 +19,10 @@ export function recordingAudio() {
   const owners = [];
   let nextId = 1;
   let nextContext = 1;
+  // Each entry also carries the audio clock's time as `entry.t`, a hidden
+  // property: comparisons, digests and JSON of the log leave it out.
   const push = (entry, context) => {
+    Object.defineProperty(entry, "t", { value: performance.now() / 1000 });
     log.push(entry);
     owners.push(context);
   };

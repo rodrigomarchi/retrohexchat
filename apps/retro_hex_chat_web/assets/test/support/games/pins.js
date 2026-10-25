@@ -3,6 +3,7 @@ import path from "node:path";
 import { describe, it, expect, afterEach } from "vitest";
 import { digest } from "./digest.js";
 import { playMatch } from "./harness.js";
+import { voices } from "./voices.js";
 
 /**
  * Characterization pins for one game: what it does today, recorded from
@@ -150,7 +151,8 @@ export function summarize(record) {
     sounds: Object.fromEntries(
       Object.entries(record.sounds).map(([side, log]) => [
         side,
-        { entries: log.length, digest: digest(log), voices: countVoices(log) },
+        // What the sounds play, not the calls that built them (see voices.js).
+        { voices: countVoices(log), digest: digest(voices(log)) },
       ]),
     ),
     draws: record.draws,
