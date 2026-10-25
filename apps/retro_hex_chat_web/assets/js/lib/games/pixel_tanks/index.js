@@ -124,7 +124,7 @@ function applySnapshot(game, decoded) {
     game.mazeIndex = decoded.mazeIndex;
     game.walls = decodeMaze(decoded.mazeIndex);
   }
-  if (decoded.mode !== game.gameMode) game.gameMode = decoded.mode;
+  game.gameMode = decoded.mode;
 
   Object.assign(game.gameState, decoded);
 }

@@ -208,6 +208,11 @@ export async function playMatch({
       return event;
     },
 
+    /** One datagram from a side, as a broken or out-of-date peer might send it. */
+    send(from, data) {
+      pair[from].send(data);
+    },
+
     /** The channel drops, on both ends. */
     close() {
       pair?.close();

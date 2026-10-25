@@ -194,3 +194,57 @@ describe("Light Trails — a command out of range", () => {
     expect(match.engines.host.p2PendingDir).toBe(2);
   });
 });
+
+// Datagrams a well-behaved peer never sends, but a broken or out-of-date one
+// can: the host's own snapshot echoed back, a snapshot cut short.
+const ENGINES = [
+  "hex_pong",
+  "block_breakers",
+  "light_trails",
+  "star_duel",
+  "hex_warlords",
+  "pixel_tanks",
+  "hex_raid",
+  "hex_boxing",
+  "hex_outlaw",
+  "hex_invaders",
+  "hex_enduro",
+  "hex_tennis",
+  "hex_skiing",
+  "hex_frost",
+  "hex_hockey",
+];
+
+const bytesOf = (hex) => new Uint8Array(hex.match(/../g).map((b) => parseInt(b, 16))).buffer;
+
+describe.each(ENGINES)("%s — a peer's stray datagrams", (gameId) => {
+  it("the host ignores a snapshot sent to it", async () => {
+    match = await playMatch({ gameId, mode: "p2p", seed: 2, matchSeed: 5 });
+    match.advance(500);
+    const { host } = match.engines;
+    const early = host.gameState.phase;
+    const snapshot = match
+      .record()
+      .wire.filter((entry) => entry.dir === "host>guest" && typeOf(entry) === 0x80)
+      .at(-1);
+    expect(match.runUntil(() => host.gameState.phase !== early, 30_000)).toBe(true);
+    const now = host.gameState.phase;
+
+    match.send("guest", bytesOf(snapshot.hex));
+    match.advance(1);
+
+    expect(host.gameState.phase).toBe(now);
+  });
+
+  it("the guest ignores a snapshot cut short", async () => {
+    match = await playMatch({ gameId, mode: "p2p", seed: 2, matchSeed: 5 });
+    match.advance(500);
+    const { guest } = match.engines;
+    const before = guest.gameState.phase;
+
+    match.send("host", new Uint8Array([0x80]).buffer);
+
+    expect(() => match.advance(1)).not.toThrow();
+    expect(guest.gameState.phase).toBe(before);
+  });
+});

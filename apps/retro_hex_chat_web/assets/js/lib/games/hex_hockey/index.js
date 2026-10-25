@@ -250,7 +250,6 @@ const PHASE_STEP = {
 };
 
 function step(game) {
-  if (!game.isHost || !game.gameState) return;
   game.frameCount++;
   const state = game.gameState;
   state.eventFlags = 0;

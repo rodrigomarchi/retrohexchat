@@ -253,7 +253,6 @@ export function defineGame(def) {
     }
 
     _gameLoop() {
-      if (!this.running) return;
       this.flow.step();
     }
 
