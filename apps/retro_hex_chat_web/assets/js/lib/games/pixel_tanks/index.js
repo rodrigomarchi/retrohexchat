@@ -124,13 +124,6 @@ function countdown(game, remaining) {
   game.audio.playCountdown();
 }
 
-function playPhaseAudio(game, prevPhase, newPhase) {
-  if (prevPhase === newPhase) return;
-  if (newPhase === PHASE.COUNTDOWN) game.audio.playCountdown();
-  if (newPhase === PHASE.SPAWNING) game.audio.playSpawn();
-  if (newPhase === PHASE.ROUND_OVER) game.audio.playRoundEnd();
-}
-
 /** The guest follows the host's maze and mode, then takes the snapshot field by field. */
 function applySnapshot(game, decoded) {
   if (decoded.mazeIndex !== game.mazeIndex) {
@@ -139,9 +132,7 @@ function applySnapshot(game, decoded) {
   }
   if (decoded.mode !== game.gameMode) game.gameMode = decoded.mode;
 
-  const prevPhase = game.gameState.phase;
   Object.assign(game.gameState, decoded);
-  playPhaseAudio(game, prevPhase, decoded.phase);
 }
 
 export default defineGame({
@@ -279,6 +270,11 @@ export default defineGame({
   },
 
   applySnapshot,
+  cues: [
+    { phase: PHASE.COUNTDOWN, play: "countdown" },
+    { phase: PHASE.SPAWNING, play: "spawn" },
+    { phase: PHASE.ROUND_OVER, play: "roundEnd" },
+  ],
   onEnd: (game, result) => {
     game.setKeyboardCaptured(false);
     Object.assign(game.gameState, {

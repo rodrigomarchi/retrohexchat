@@ -85,16 +85,6 @@ function countdown(game, remaining) {
   game.audio.playCountdown();
 }
 
-/** The guest hears the countdown and every point from the snapshots; the end from GAME_END. */
-function onSnapshot(game, decoded, previous) {
-  if (previous.phase !== decoded.phase && decoded.phase === PHASE.COUNTDOWN) {
-    game.audio.playCountdown();
-  }
-  if (game.gameState.score1 !== previous.score1 || game.gameState.score2 !== previous.score2) {
-    game.audio.playScore();
-  }
-}
-
 export default defineGame({
   inputs: {
     up: ["ArrowUp", "w", "W"],
@@ -170,7 +160,11 @@ export default defineGame({
     },
   },
 
-  onSnapshot,
+  // The guest hears the countdown and every point; the end comes with GAME_END.
+  cues: [
+    { phase: PHASE.COUNTDOWN, play: "countdown" },
+    { change: (s) => `${s.score1}:${s.score2}`, play: "score" },
+  ],
   onEnd: (game, result) => {
     game.setKeyboardCaptured(false);
     game.gameState.phase = PHASE.FINISHED;

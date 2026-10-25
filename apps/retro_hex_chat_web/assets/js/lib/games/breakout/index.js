@@ -111,20 +111,6 @@ function applySnapshot(game, decoded) {
   }
 }
 
-/** The guest hears the countdown, the end, a life lost and every block hit. */
-function onSnapshot(game, decoded, previous) {
-  if (previous.phase !== decoded.phase) {
-    if (decoded.phase === PHASE.COUNTDOWN) game.audio.playCountdown();
-    if (decoded.phase === PHASE.FINISHED) {
-      if (game.gameState.won) game.audio.playWin();
-      else game.audio.playLose();
-    }
-    if (decoded.phase === PHASE.LIFE_LOST) game.audio.playLifeLost();
-  }
-  if (game.gameState.score !== previous.score) game.audio.playBlockHit(0);
-  game.invalidate();
-}
-
 export default defineGame({
   inputs: {
     left: ["ArrowLeft", "a", "A"],
@@ -219,7 +205,17 @@ export default defineGame({
   },
 
   applySnapshot,
-  onSnapshot,
+  // The guest hears the countdown, the end, a life lost and every block hit.
+  cues: [
+    { phase: PHASE.COUNTDOWN, play: "countdown" },
+    {
+      phase: PHASE.FINISHED,
+      play: (game, s) => (s.won ? game.audio.playWin() : game.audio.playLose()),
+    },
+    { phase: PHASE.LIFE_LOST, play: "lifeLost" },
+    { change: (s) => s.score, play: (game) => game.audio.playBlockHit(0) },
+  ],
+  onSnapshot: (game) => game.invalidate(),
   onEnd: (game, result) => {
     game.setKeyboardCaptured(false);
     game.gameState.phase = PHASE.FINISHED;

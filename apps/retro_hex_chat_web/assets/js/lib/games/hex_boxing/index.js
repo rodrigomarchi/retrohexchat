@@ -117,16 +117,8 @@ function countdown(game, remaining) {
   game.audio.playCountdown();
 }
 
-function playPhaseAudio(game, prevPhase, newPhase) {
-  if (prevPhase === newPhase) return;
-  if (newPhase === PHASE.COUNTDOWN) game.audio.playCountdown();
-  if (newPhase === PHASE.SPAWNING) game.audio.playBellStart();
-  if (newPhase === PHASE.ROUND_OVER) game.audio.playBellEnd();
-}
-
 /** The guest takes the snapshot field by field, and hears and sees every hit. */
 function applySnapshot(game, decoded) {
-  const prevPhase = game.gameState.phase;
   Object.assign(game.gameState, decoded);
 
   if (decoded.lastHitPlayer !== 0 && decoded.lastHitPoints > 0) {
@@ -134,7 +126,6 @@ function applySnapshot(game, decoded) {
     const defender = decoded.lastHitPlayer === 1 ? "b2" : "b1";
     addHitParticles(game, decoded[`${defender}x`], decoded[`${defender}y`], decoded.lastHitPoints);
   }
-  playPhaseAudio(game, prevPhase, decoded.phase);
 }
 
 export default defineGame({
@@ -254,6 +245,11 @@ export default defineGame({
   },
 
   applySnapshot,
+  cues: [
+    { phase: PHASE.COUNTDOWN, play: "countdown" },
+    { phase: PHASE.SPAWNING, play: "bellStart" },
+    { phase: PHASE.ROUND_OVER, play: "bellEnd" },
+  ],
   onEnd: (game, result) => {
     game.setKeyboardCaptured(false);
     game.gameState.phase = PHASE.MATCH_OVER;
