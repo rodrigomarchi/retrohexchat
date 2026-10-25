@@ -90,6 +90,7 @@ export const NL = {
   "GOAL!": "DOELPUNT!",
   "GRAVITY WELL": "ZWAARTEKRACHTPUT",
   "Game Over": "Spel voorbij",
+  "Game implementation coming soon!": "Game implementatie binnenkort!",
   Good: "Goed",
   "Got it!": "Hebbes.",
   "Group call media is connecting.": "Groepsgespreksmedia verbinden zich.",
@@ -197,6 +198,7 @@ export const NL = {
   "Remote video stopped rendering. Trying to recover the media path.":
     "Video op afstand stopte met renderen. Ik probeer het mediapad terug te krijgen.",
   "Requesting a fresh media offer.": "Verzoek om een nieuw mediaaanbod.",
+  "Role: %{0}": "Rol: %{0}",
   "Round %{0}": "Rond %{0}",
   "Rounds: %{0} - %{1}  |  Score: %{2} - %{3}": "Rondes: %{0} - %{1}  |  Score: %{2} - %{3}",
   "SECOND SERVE": "TWEEDE SERVICE",

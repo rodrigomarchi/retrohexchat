@@ -88,6 +88,7 @@ export const ZH_HANT = {
   "GOAL!": "進球！",
   "GRAVITY WELL": "重力井",
   "Game Over": "遊戲結束",
+  "Game implementation coming soon!": "遊戲即將實施!",
   Good: "不錯",
   "Got it!": "明白了嗎?",
   "Group call media is connecting.": "集團呼叫媒體正在連接.",
@@ -186,6 +187,7 @@ export const ZH_HANT = {
   "Remote video stopped rendering. Trying to recover the media path.":
     "遠程視頻停止渲染. 試圖恢復媒體路徑.",
   "Requesting a fresh media offer.": "請求提供新的媒體服務。",
+  "Role: %{0}": "角色: %{0}",
   "Round %{0}": "第 %{0} 回合",
   "Rounds: %{0} - %{1}  |  Score: %{2} - %{3}": "回合：%{0} - %{1}  |  比分：%{2} - %{3}",
   "SECOND SERVE": "第二發球",

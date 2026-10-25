@@ -88,6 +88,7 @@ export const JA = {
   "GOAL!": "ゴール！",
   "GRAVITY WELL": "重力井",
   "Game Over": "ゲームオーバー",
+  "Game implementation coming soon!": "近日公開予定!",
   Good: "お問い合わせ",
   "Got it!": "お問い合わせ",
   "Group call media is connecting.": "グループコールメディアを接続しています。",
@@ -193,6 +194,7 @@ export const JA = {
   "Remote video stopped rendering. Trying to recover the media path.":
     "遠隔ビデオはレンダリングを停止しました。 メディアパスを回復しようとする。",
   "Requesting a fresh media offer.": "新鮮な媒体の提供を要求して下さい。",
+  "Role: %{0}": "役割: %{0}",
   "Round %{0}": "ラウンド %{0}",
   "Rounds: %{0} - %{1}  |  Score: %{2} - %{3}": "ラウンド: %{0} - %{1}  |  スコア: %{2} - %{3}",
   "SECOND SERVE": "セカンドサーブ",

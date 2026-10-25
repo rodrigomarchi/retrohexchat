@@ -91,6 +91,7 @@ export const RU = {
   "GOAL!": "Гол!",
   "GRAVITY WELL": "Гравитационный колодец",
   "Game Over": "Игра окончена",
+  "Game implementation coming soon!": "Реализация игры скоро!",
   Good: "Хорошо.",
   "Got it!": "Понял!",
   "Group call media is connecting.": "Связь между медиа групповыми вызовами.",
@@ -196,6 +197,7 @@ export const RU = {
   "Remote video stopped rendering. Trying to recover the media path.":
     "Удаленное видео прекратило рендеринг. Пытаюсь восстановить медийный путь.",
   "Requesting a fresh media offer.": "Запросить новое медиа-предложение.",
+  "Role: %{0}": "Роль: %{0}",
   "Round %{0}": "Раунд %{0}",
   "Rounds: %{0} - %{1}  |  Score: %{2} - %{3}": "Раунды: %{0} - %{1}  |  Счёт: %{2} - %{3}",
   "SECOND SERVE": "Вторая подача",

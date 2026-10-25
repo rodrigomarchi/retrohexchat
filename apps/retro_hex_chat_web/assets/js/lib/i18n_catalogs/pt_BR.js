@@ -91,6 +91,7 @@ export const PT_BR = {
   "GOAL!": "GOL!",
   "GRAVITY WELL": "POÇO GRAVITACIONAL",
   "Game Over": "Fim de jogo",
+  "Game implementation coming soon!": "Implementação do jogo em breve!",
   Good: "Bom",
   "Got it!": "Entendi!",
   "Group call media is connecting.": "A mídia de chamada de grupo está se conectando.",
@@ -198,6 +199,7 @@ export const PT_BR = {
   "Remote video stopped rendering. Trying to recover the media path.":
     "O vídeo remoto parou de renderizar. Tentando recuperar o caminho da mídia.",
   "Requesting a fresh media offer.": "Solicitando uma nova oferta de mídia.",
+  "Role: %{0}": "Função: %{0}",
   "Round %{0}": "Rodada %{0}",
   "Rounds: %{0} - %{1}  |  Score: %{2} - %{3}": "Rounds: %{0} - %{1}  |  Placar: %{2} - %{3}",
   "SECOND SERVE": "SEGUNDO SAQUE",

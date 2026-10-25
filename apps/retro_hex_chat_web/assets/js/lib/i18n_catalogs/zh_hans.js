@@ -88,6 +88,7 @@ export const ZH_HANS = {
   "GOAL!": "进球！",
   "GRAVITY WELL": "重力井",
   "Game Over": "游戏结束",
+  "Game implementation coming soon!": "游戏即将实施!",
   Good: "不错",
   "Got it!": "明白了吗?",
   "Group call media is connecting.": "集团呼叫媒体正在连接.",
@@ -186,6 +187,7 @@ export const ZH_HANS = {
   "Remote video stopped rendering. Trying to recover the media path.":
     "远程视频停止渲染. 试图恢复媒体路径.",
   "Requesting a fresh media offer.": "请求提供新的媒体服务。",
+  "Role: %{0}": "角色:%{0}",
   "Round %{0}": "第 %{0} 回合",
   "Rounds: %{0} - %{1}  |  Score: %{2} - %{3}": "回合：%{0} - %{1}  |  比分：%{2} - %{3}",
   "SECOND SERVE": "第二发球",

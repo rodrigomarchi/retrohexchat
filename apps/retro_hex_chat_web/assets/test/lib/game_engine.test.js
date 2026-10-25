@@ -1,5 +1,5 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
-import { SEND_HIGH_WATER_BYTES } from "../../js/lib/game_engine.js";
+import { GameEngine, SEND_HIGH_WATER_BYTES } from "../../js/lib/game_engine.js";
 import { i16, schema, u8 } from "../../js/lib/games/core/codec.js";
 import { defineGame } from "../../js/lib/games/core/define_game.js";
 import { MSG } from "../../js/lib/games/core/messages.js";
@@ -142,8 +142,17 @@ describe("GameEngine", () => {
       channel.send = () => {
         throw new Error("closing");
       };
+      vi.spyOn(console, "debug").mockImplementation(() => {});
       const engine = build(probe().Game, { channel });
+      const samples = [];
+      engine.onTelemetry = (sample) => samples.push(sample);
+      engine.start();
+
       expect(() => engine.broadcast()).not.toThrow();
+
+      // A snapshot that never left is not counted as sent.
+      vi.advanceTimersByTime(5100);
+      expect(samples.at(-1).bytes_out).toBe(0);
     });
 
     it("drops a snapshot once the channel is backed up", () => {
@@ -176,6 +185,7 @@ describe("GameEngine", () => {
 
       guest.sendInputEdge(2);
       guest.stop();
+      expect(vi.getTimerCount()).toBe(0);
       vi.advanceTimersByTime(200);
 
       expect(sentOf(channel, MSG.INPUT_EDGE)).toHaveLength(1);
@@ -219,6 +229,7 @@ describe("GameEngine", () => {
       const guest = build(probe().Game, { channel, isHost: false });
       guest.start();
       guest.stop();
+      expect(vi.getTimerCount()).toBe(0);
 
       const afterStop = sentOf(channel, MSG.GAME_READY).length;
       vi.advanceTimersByTime(2000);
@@ -528,10 +539,32 @@ describe("GameEngine", () => {
       host.beginMatch();
       host.stop();
 
+      // No frame or timer is left to run.
+      expect(vi.getTimerCount()).toBe(0);
       vi.advanceTimersByTime(1000);
 
       expect(seen.ticks).toBe(0);
       expect(host.stepping).toBe(false);
+    });
+  });
+
+  // A game the server knows and this page's scripts do not (a page loaded
+  // before a release) gets the bare engine: it says so instead of a blank canvas.
+  describe("a game this page has no code for", () => {
+    it("says the game is not here yet", () => {
+      vi.stubGlobal("getComputedStyle", () => ({ getPropertyValue: () => "" }));
+      const ctx = { fillRect: vi.fn(), fillText: vi.fn(), strokeRect: vi.fn() };
+      const canvas = { width: 640, height: 480, getContext: () => ctx };
+      const engine = new GameEngine(canvas, fakeChannel(), "hex_new", false);
+      engines.push(engine);
+      engine.start();
+
+      vi.advanceTimersByTime(20);
+
+      const texts = ctx.fillText.mock.calls.map(([text]) => text);
+      expect(texts).toContain("HEX NEW");
+      expect(texts).toContain("Game implementation coming soon!");
+      vi.unstubAllGlobals();
     });
   });
 });

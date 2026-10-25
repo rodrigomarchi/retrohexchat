@@ -260,9 +260,9 @@ export function defineGame(def) {
       def.idle?.(this);
     }
 
-    _clearPhaseTimer() {
+    _cancelPendingPhase() {
       this.flow?.stop();
-      super._clearPhaseTimer();
+      super._cancelPendingPhase();
     }
 
     _updateOpponentInputs() {

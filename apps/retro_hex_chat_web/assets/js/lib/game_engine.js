@@ -1,4 +1,6 @@
 import { log } from "./logger.js";
+import { t, jt } from "./i18n.js";
+import { gameColor } from "./game_colors.js";
 import { FrameClock } from "./games/frame_clock.js";
 import { SnapshotInterpolator } from "./games/interpolator.js";
 import { GameTelemetry } from "./games/telemetry.js";
@@ -67,13 +69,14 @@ const KEYBOARD_CAPTURE_OPTIONS = true;
  * - `_gameLoop()` runs exactly one simulation step. Never schedule the next one
  *   — call `_startSteps()` / `_stopSteps()` to control the loop.
  * - `_renderState()` draws. Never call it directly; call `_invalidate()`.
- * - `_ingestSnapshot(decoded)` applies an authoritative snapshot on the guest.
+ * - `_ingestSnapshot(decoded, apply)` applies a decoded snapshot on the guest
+ *   (the caller refuses one that did not decode).
  * - `_sendState(data)` for snapshots, `_sendCommand(data)` for one-shots.
  * - `static FINAL_PHASE` is the phase a match ends in. When the channel closes
  *   mid-match the base moves `gameState.phase` there, asks
  *   `_disconnectResult()` for the result to report and calls
  *   `_onMatchAbandoned()` for anything the game must silence.
- * - `_clearPhaseTimer()` cancels the pending phase change; the base calls it
+ * - `_cancelPendingPhase()` cancels the pending phase change; the base calls it
  *   on stop and on disconnect.
  */
 /**
@@ -200,7 +203,7 @@ export class GameEngine {
     }
 
     this._clearReadyHandshake();
-    this._clearPhaseTimer();
+    this._cancelPendingPhase();
 
     for (const timer of this._commandTimers) clearTimeout(timer);
     this._commandTimers.clear();
@@ -231,7 +234,7 @@ export class GameEngine {
    * Cancel the pending phase change (a countdown, a pause between rounds).
    * @returns {void}
    */
-  _clearPhaseTimer() {}
+  _cancelPendingPhase() {}
 
   /**
    * The window lost focus: its keyup never arrives, so every held input is
@@ -253,7 +256,7 @@ export class GameEngine {
   _handleChannelClose() {
     this._stopSteps();
     this.setKeyboardCaptured(false);
-    this._clearPhaseTimer();
+    this._cancelPendingPhase();
     const final = this.constructor.FINAL_PHASE;
     if (!this.gameState || final === null || this.gameState.phase === final) return;
     this.gameState.phase = final;
@@ -541,8 +544,6 @@ export class GameEngine {
    * @returns {void}
    */
   _advertiseReady(encode) {
-    if (this.isHost) return;
-
     this._readyEncoder = encode;
     this._safeSend(encode());
 
@@ -812,7 +813,9 @@ export class GameEngine {
    * Draw the current state. Driven by the presentation loop.
    * @returns {void}
    */
-  _renderState() {}
+  _renderState() {
+    this._render();
+  }
 
   /**
    * @returns {number} monotonic milliseconds
@@ -826,5 +829,41 @@ export class GameEngine {
    */
   _transportTelemetryState() {
     return this.transport.telemetryState || this.transport.readyState || "unknown";
+  }
+
+  _renderStub() {
+    const ctx = this.ctx;
+    const w = this.canvas.width;
+    const h = this.canvas.height;
+
+    // Use CSS custom properties via getComputedStyle for colors
+    const styles = getComputedStyle(this.canvas);
+    const bgColor = styles.getPropertyValue("--game-bg-color").trim() || gameColor("000033");
+    const fgColor = styles.getPropertyValue("--game-fg-color").trim() || gameColor("00ff00");
+    const mutedColor = styles.getPropertyValue("--game-muted-color").trim() || gameColor("006600");
+
+    ctx.fillStyle = bgColor;
+    ctx.fillRect(0, 0, w, h);
+
+    ctx.fillStyle = fgColor;
+    ctx.font = "24px monospace";
+    ctx.textAlign = "center";
+    const title = this.gameId.replace(/_/g, " ").toUpperCase();
+    ctx.fillText(title, w / 2, h / 2 - 30);
+
+    ctx.font = "14px monospace";
+    ctx.fillStyle = mutedColor;
+    ctx.fillText(t("Game implementation coming soon!"), w / 2, h / 2 + 10);
+    ctx.fillText(jt`Role: ${this.isHost ? "HOST" : "PEER"}`, w / 2, h / 2 + 40);
+
+    // Draw decorative border
+    ctx.strokeStyle = fgColor;
+    ctx.lineWidth = 2;
+    ctx.strokeRect(4, 4, w - 8, h - 8);
+  }
+
+  _render() {
+    // Stub: will be overridden by specific game implementations
+    this._renderStub();
   }
 }
