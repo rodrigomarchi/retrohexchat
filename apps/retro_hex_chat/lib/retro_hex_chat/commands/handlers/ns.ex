@@ -166,10 +166,10 @@ defmodule RetroHexChat.Commands.Handlers.Ns do
     case NickServ.register(nickname, password) do
       {:ok, msg} ->
         bind_session(nickname, session_id)
-        {:ok, :system, %{content: dgettext("commands", "[NickServ] %{message}", message: msg)}}
+        service_message(msg)
 
       {:error, msg} ->
-        {:error, dgettext("commands", "[NickServ] %{message}", message: msg)}
+        {:error, nickserv_message(msg)}
     end
   end
 
@@ -177,10 +177,10 @@ defmodule RetroHexChat.Commands.Handlers.Ns do
     case NickServ.identify(nickname, password) do
       {:ok, msg} ->
         bind_session(nickname, session_id)
-        {:ok, :system, %{content: dgettext("commands", "[NickServ] %{message}", message: msg)}}
+        service_message(msg)
 
       {:error, msg} ->
-        {:error, dgettext("commands", "[NickServ] %{message}", message: msg)}
+        {:error, nickserv_message(msg)}
     end
   end
 
@@ -191,10 +191,10 @@ defmodule RetroHexChat.Commands.Handlers.Ns do
   defp call_ghost(target, password, requester) do
     case NickServ.ghost(target, password, requester) do
       {:ok, msg} ->
-        {:ok, :system, %{content: dgettext("commands", "[NickServ] %{message}", message: msg)}}
+        service_message(msg)
 
       {:error, msg} ->
-        {:error, dgettext("commands", "[NickServ] %{message}", message: msg)}
+        {:error, nickserv_message(msg)}
     end
   end
 
@@ -213,17 +213,17 @@ defmodule RetroHexChat.Commands.Handlers.Ns do
         {:ok, :system, %{content: text}}
 
       {:error, msg} ->
-        {:error, dgettext("commands", "[NickServ] %{message}", message: msg)}
+        {:error, nickserv_message(msg)}
     end
   end
 
   defp call_drop(nickname, password) do
     case NickServ.drop(nickname, password) do
       {:ok, msg} ->
-        {:ok, :system, %{content: dgettext("commands", "[NickServ] %{message}", message: msg)}}
+        service_message(msg)
 
       {:error, msg} ->
-        {:error, dgettext("commands", "[NickServ] %{message}", message: msg)}
+        {:error, nickserv_message(msg)}
     end
   end
 

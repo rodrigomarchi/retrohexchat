@@ -101,9 +101,8 @@ defmodule RetroHexChat.Commands.Handlers.Cs do
            require_operator(
              context,
              context.active_channel,
-             dgettext("commands", "[ChanServ] %{message}",
-               message:
-                 dgettext("commands", "You must be a channel operator to register the channel")
+             chanserv_message(
+               dgettext("commands", "You must be a channel operator to register the channel")
              )
            ) do
       call_register(context.active_channel, context.nickname, server(context))
@@ -190,25 +189,31 @@ defmodule RetroHexChat.Commands.Handlers.Cs do
 
   # ── Private helpers ─────────────────────────────────────────
 
+  defp service_message(message), do: {:ok, :system, %{content: chanserv_message(message)}}
+
+  defp chanserv_message(message) do
+    dgettext("commands", "[ChanServ] %{message}", message: message)
+  end
+
   defp server(context), do: Map.get(context, :chan_serv, ChanServ)
 
   defp call_register(channel, founder, server) do
     case ChanServ.register(channel, founder, server) do
       {:ok, msg} ->
-        {:ok, :system, %{content: dgettext("commands", "[ChanServ] %{message}", message: msg)}}
+        service_message(msg)
 
       {:error, msg} ->
-        {:error, dgettext("commands", "[ChanServ] %{message}", message: msg)}
+        {:error, chanserv_message(msg)}
     end
   end
 
   defp call_drop(channel, nickname, server) do
     case ChanServ.drop(channel, nickname, server) do
       {:ok, msg} ->
-        {:ok, :system, %{content: dgettext("commands", "[ChanServ] %{message}", message: msg)}}
+        service_message(msg)
 
       {:error, msg} ->
-        {:error, dgettext("commands", "[ChanServ] %{message}", message: msg)}
+        {:error, chanserv_message(msg)}
     end
   end
 
@@ -227,7 +232,7 @@ defmodule RetroHexChat.Commands.Handlers.Cs do
         {:ok, :system, %{content: text}}
 
       {:error, msg} ->
-        {:error, dgettext("commands", "[ChanServ] %{message}", message: msg)}
+        {:error, chanserv_message(msg)}
     end
   end
 
@@ -237,7 +242,7 @@ defmodule RetroHexChat.Commands.Handlers.Cs do
         {:ok, :system, %{content: archive_switched(channel, enabled?)}}
 
       {:error, msg} ->
-        {:error, dgettext("commands", "[ChanServ] %{message}", message: msg)}
+        {:error, chanserv_message(msg)}
     end
   end
 
@@ -288,7 +293,7 @@ defmodule RetroHexChat.Commands.Handlers.Cs do
          }}
 
       {:error, msg} ->
-        {:error, dgettext("commands", "[ChanServ] %{message}", message: msg)}
+        {:error, chanserv_message(msg)}
     end
   end
 
@@ -297,7 +302,7 @@ defmodule RetroHexChat.Commands.Handlers.Cs do
          :ok <- Server.set_locale(channel, nickname, locale) do
       {:ok, :system, %{content: language_state(channel, locale)}}
     else
-      {:error, msg} -> {:error, dgettext("commands", "[ChanServ] %{message}", message: msg)}
+      {:error, msg} -> {:error, chanserv_message(msg)}
     end
   end
 
@@ -359,7 +364,7 @@ defmodule RetroHexChat.Commands.Handlers.Cs do
          }}
 
       {:error, msg} ->
-        {:error, dgettext("commands", "[ChanServ] %{message}", message: msg)}
+        {:error, chanserv_message(msg)}
     end
   end
 
@@ -375,7 +380,7 @@ defmodule RetroHexChat.Commands.Handlers.Cs do
       category ->
         case Server.set_category(channel, nickname, category) do
           :ok -> {:ok, :system, %{content: category_state(channel, category)}}
-          {:error, msg} -> {:error, dgettext("commands", "[ChanServ] %{message}", message: msg)}
+          {:error, msg} -> {:error, chanserv_message(msg)}
         end
     end
   end
@@ -415,10 +420,10 @@ defmodule RetroHexChat.Commands.Handlers.Cs do
   defp call_manage_access(channel, action, level, target, requester, server) do
     case ChanServ.manage_access(channel, action, level, target, requester, server) do
       {:ok, msg} ->
-        {:ok, :system, %{content: dgettext("commands", "[ChanServ] %{message}", message: msg)}}
+        service_message(msg)
 
       {:error, msg} ->
-        {:error, dgettext("commands", "[ChanServ] %{message}", message: msg)}
+        {:error, chanserv_message(msg)}
     end
   end
 
@@ -428,7 +433,7 @@ defmodule RetroHexChat.Commands.Handlers.Cs do
         {:ok, :system, %{content: format_access_list(channel, level)}}
 
       {:error, msg} ->
-        {:error, dgettext("commands", "[ChanServ] %{message}", message: msg)}
+        {:error, chanserv_message(msg)}
     end
   end
 

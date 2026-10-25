@@ -21,12 +21,12 @@ msgstr ""
 msgid "  %{name} [%{status}] — %{description}"
 msgstr ""
 
-#: lib/retro_hex_chat/commands/handlers/cs.ex:455
+#: lib/retro_hex_chat/commands/handlers/cs.ex:460
 #, elixir-autogen, elixir-format
 msgid "  %{nickname} [%{level}] (added by %{added_by})"
 msgstr ""
 
-#: lib/retro_hex_chat/commands/handlers/cs.ex:451
+#: lib/retro_hex_chat/commands/handlers/cs.ex:456
 #, elixir-autogen, elixir-format
 msgid "  (empty)"
 msgstr ""
@@ -2736,43 +2736,21 @@ msgstr ""
 msgid "[BotService] No bots configured."
 msgstr ""
 
-#: lib/retro_hex_chat/commands/handlers/cs.ex:104
-#: lib/retro_hex_chat/commands/handlers/cs.ex:198
-#: lib/retro_hex_chat/commands/handlers/cs.ex:201
-#: lib/retro_hex_chat/commands/handlers/cs.ex:208
-#: lib/retro_hex_chat/commands/handlers/cs.ex:211
-#: lib/retro_hex_chat/commands/handlers/cs.ex:230
-#: lib/retro_hex_chat/commands/handlers/cs.ex:240
-#: lib/retro_hex_chat/commands/handlers/cs.ex:291
-#: lib/retro_hex_chat/commands/handlers/cs.ex:300
-#: lib/retro_hex_chat/commands/handlers/cs.ex:362
-#: lib/retro_hex_chat/commands/handlers/cs.ex:378
-#: lib/retro_hex_chat/commands/handlers/cs.ex:418
-#: lib/retro_hex_chat/commands/handlers/cs.ex:421
-#: lib/retro_hex_chat/commands/handlers/cs.ex:431
+#: lib/retro_hex_chat/commands/handlers/cs.ex:195
 #, elixir-autogen, elixir-format
 msgid "[ChanServ] %{message}"
 msgstr ""
 
-#: lib/retro_hex_chat/commands/handlers/cs.ex:219
+#: lib/retro_hex_chat/commands/handlers/cs.ex:224
 #, elixir-autogen, elixir-format
 msgid "[ChanServ] %{name}: founder=%{founder}, registered=%{registered_at}"
 msgstr ""
 
-#: lib/retro_hex_chat/commands/handlers/cs.ex:442
+#: lib/retro_hex_chat/commands/handlers/cs.ex:447
 #, elixir-autogen, elixir-format
 msgid "[ChanServ] Access list for %{channel} (%{level})"
 msgstr ""
 
-#: lib/retro_hex_chat/commands/handlers/ns.ex:169
-#: lib/retro_hex_chat/commands/handlers/ns.ex:172
-#: lib/retro_hex_chat/commands/handlers/ns.ex:180
-#: lib/retro_hex_chat/commands/handlers/ns.ex:183
-#: lib/retro_hex_chat/commands/handlers/ns.ex:194
-#: lib/retro_hex_chat/commands/handlers/ns.ex:197
-#: lib/retro_hex_chat/commands/handlers/ns.ex:216
-#: lib/retro_hex_chat/commands/handlers/ns.ex:223
-#: lib/retro_hex_chat/commands/handlers/ns.ex:226
 #: lib/retro_hex_chat/commands/handlers/ns.ex:323
 #, elixir-autogen, elixir-format
 msgid "[NickServ] %{message}"
@@ -3134,22 +3112,22 @@ msgstr ""
 msgid "Publish the channel's public archive (on|off)"
 msgstr ""
 
-#: lib/retro_hex_chat/commands/handlers/cs.ex:249
+#: lib/retro_hex_chat/commands/handlers/cs.ex:254
 #, elixir-autogen, elixir-format
 msgid "Usage: /cs archive <on|off>"
 msgstr ""
 
-#: lib/retro_hex_chat/commands/handlers/cs.ex:274
+#: lib/retro_hex_chat/commands/handlers/cs.ex:279
 #, elixir-autogen, elixir-format
 msgid "[ChanServ] The public archive of %{channel} is off."
 msgstr ""
 
-#: lib/retro_hex_chat/commands/handlers/cs.ex:260
+#: lib/retro_hex_chat/commands/handlers/cs.ex:265
 #, elixir-autogen, elixir-format
 msgid "[ChanServ] The public archive of %{channel} is on: what is said from now on is published."
 msgstr ""
 
-#: lib/retro_hex_chat/commands/handlers/cs.ex:270
+#: lib/retro_hex_chat/commands/handlers/cs.ex:275
 #, elixir-autogen, elixir-format
 msgid "[ChanServ] The public archive of %{channel} is on."
 msgstr ""
@@ -3303,7 +3281,7 @@ msgstr ""
 msgid "Describe what you are doing, shown as '* YourNick does something'. It works in channels and in private chats.\nAction text is required."
 msgstr ""
 
-#: lib/retro_hex_chat/commands/handlers/cs.ex:106
+#: lib/retro_hex_chat/commands/handlers/cs.ex:105
 #, elixir-autogen, elixir-format
 msgid "You must be a channel operator to register the channel"
 msgstr ""
@@ -3416,7 +3394,7 @@ msgstr ""
 msgid "/cs language pt_BR"
 msgstr ""
 
-#: lib/retro_hex_chat/commands/handlers/cs.ex:316
+#: lib/retro_hex_chat/commands/handlers/cs.ex:321
 #, elixir-autogen, elixir-format
 msgid "Languages: %{codes}"
 msgstr ""
@@ -3427,27 +3405,27 @@ msgid "Set the language the channel is spoken in (code|none)"
 msgstr ""
 
 #: lib/retro_hex_chat/commands/handlers/bot.ex:483
-#: lib/retro_hex_chat/commands/handlers/cs.ex:328
+#: lib/retro_hex_chat/commands/handlers/cs.ex:333
 #, elixir-autogen, elixir-format
 msgid "Unknown language: %{code}. Languages: %{codes}"
 msgstr ""
 
-#: lib/retro_hex_chat/commands/handlers/cs.ex:315
+#: lib/retro_hex_chat/commands/handlers/cs.ex:320
 #, elixir-autogen, elixir-format
 msgid "Usage: /cs language <code|none>"
 msgstr ""
 
-#: lib/retro_hex_chat/commands/handlers/cs.ex:339
+#: lib/retro_hex_chat/commands/handlers/cs.ex:344
 #, elixir-autogen, elixir-format
 msgid "[ChanServ] %{channel} has no language set."
 msgstr ""
 
-#: lib/retro_hex_chat/commands/handlers/cs.ex:343
+#: lib/retro_hex_chat/commands/handlers/cs.ex:348
 #, elixir-autogen, elixir-format
 msgid "[ChanServ] %{channel} is spoken in %{language} (%{code})."
 msgstr ""
 
-#: lib/retro_hex_chat/commands/handlers/cs.ex:285
+#: lib/retro_hex_chat/commands/handlers/cs.ex:290
 #, elixir-autogen, elixir-format
 msgid "[ChanServ] %{channel} no longer has a language."
 msgstr ""
@@ -3483,7 +3461,7 @@ msgstr ""
 msgid "/cs category news"
 msgstr ""
 
-#: lib/retro_hex_chat/commands/handlers/cs.ex:395
+#: lib/retro_hex_chat/commands/handlers/cs.ex:400
 #, elixir-autogen, elixir-format
 msgid "Categories: %{codes}"
 msgstr ""
@@ -3508,27 +3486,27 @@ msgstr ""
 msgid "Usage: /cs <register|drop|info|archive|language|category|sop|aop|vop|help> [args]"
 msgstr ""
 
-#: lib/retro_hex_chat/commands/handlers/cs.ex:394
+#: lib/retro_hex_chat/commands/handlers/cs.ex:399
 #, elixir-autogen, elixir-format
 msgid "Usage: /cs category <name|none>"
 msgstr ""
 
-#: lib/retro_hex_chat/commands/handlers/cs.ex:404
+#: lib/retro_hex_chat/commands/handlers/cs.ex:409
 #, elixir-autogen, elixir-format
 msgid "[ChanServ] %{channel} has no category set."
 msgstr ""
 
-#: lib/retro_hex_chat/commands/handlers/cs.ex:408
+#: lib/retro_hex_chat/commands/handlers/cs.ex:413
 #, elixir-autogen, elixir-format
 msgid "[ChanServ] %{channel} is about %{category} (%{code})."
 msgstr ""
 
-#: lib/retro_hex_chat/commands/handlers/cs.ex:356
+#: lib/retro_hex_chat/commands/handlers/cs.ex:361
 #, elixir-autogen, elixir-format
 msgid "[ChanServ] %{channel} no longer has a category."
 msgstr ""
 
-#: lib/retro_hex_chat/commands/handlers/cs.ex:370
+#: lib/retro_hex_chat/commands/handlers/cs.ex:375
 #, elixir-autogen, elixir-format
 msgid "[ChanServ] Unknown category: %{code}. Categories: %{codes}"
 msgstr ""
