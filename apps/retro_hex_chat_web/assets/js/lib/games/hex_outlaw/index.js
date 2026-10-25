@@ -135,21 +135,12 @@ function countdown(game, remaining) {
   game.audio.playCountdown();
 }
 
-/** The guest takes the snapshot field by field, and hears every shot and hit. */
+/** The guest takes the snapshot field by field, and sees every hit. */
 function applySnapshot(game, decoded) {
-  const prev = { ...game.gameState };
   Object.assign(game.gameState, decoded);
-
-  if (!prev.b1active && decoded.b1active) game.audio.playGunshot();
-  if (!prev.b2active && decoded.b2active) game.audio.playGunshot();
   if (decoded.lastHitPlayer !== 0) {
-    game.audio.playHit();
     const defender = decoded.lastHitPlayer === 1 ? "p2" : "p1";
     addHitParticles(game, decoded[`${defender}x`], decoded[`${defender}y`]);
-  }
-  if (prev.phase !== decoded.phase) {
-    if (decoded.phase === PHASE.COUNTDOWN) game.audio.playCountdown();
-    if (decoded.phase === PHASE.SPAWNING) game.audio.playBell();
   }
 }
 
@@ -271,6 +262,14 @@ export default defineGame({
   },
 
   applySnapshot,
+  // The guest hears every shot and hit, the countdown and the bell.
+  cues: [
+    { rise: (s) => s.b1active, play: "gunshot" },
+    { rise: (s) => s.b2active, play: "gunshot" },
+    { when: (s) => s.lastHitPlayer !== 0, play: "hit" },
+    { phase: PHASE.COUNTDOWN, play: "countdown" },
+    { phase: PHASE.SPAWNING, play: "bell" },
+  ],
   onSnapshot: (game) => game.invalidate(),
   onEnd: (game, result) => {
     game.setKeyboardCaptured(false);

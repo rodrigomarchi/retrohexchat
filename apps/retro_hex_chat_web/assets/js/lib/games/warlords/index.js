@@ -290,13 +290,11 @@ export default defineGame({
   },
 
   applySnapshot,
-  onSnapshot: (game, decoded, previous) => {
-    if (previous.phase !== decoded.phase) {
-      if (decoded.phase === PHASE.COUNTDOWN) game.audio.playCountdown();
-      if (decoded.phase === PHASE.KING_HIT) game.audio.playKingHit();
-    }
-    game.invalidate();
-  },
+  cues: [
+    { phase: PHASE.COUNTDOWN, play: "countdown" },
+    { phase: PHASE.KING_HIT, play: "kingHit" },
+  ],
+  onSnapshot: (game) => game.invalidate(),
   onEnd: (game, result) => {
     game.setKeyboardCaptured(false);
     Object.assign(game.gameState, {

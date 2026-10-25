@@ -41,14 +41,6 @@ const MODE_MAP = {
   hex_tennis_sudden: GAME_MODE.SUDDEN_DEATH,
 };
 
-const NO_EVENTS = {
-  hitEvent: false,
-  serveEvent: false,
-  faultEvent: false,
-  netFault: false,
-  outOfBounds: false,
-};
-
 /** The server moves and serves on the press; the serve clock serves for them when it runs out. */
 function serving(game, state) {
   let s = updatePlayer(state, 1, game.localInputs);
@@ -169,7 +161,7 @@ function toWire(game) {
   };
 }
 
-/** The guest rebuilds the ball and hears every event the snapshot newly carries. */
+/** The guest rebuilds the ball. */
 function applySnapshot(game, decoded) {
   const prev = game.gameState;
   game.gameState = {
@@ -184,28 +176,6 @@ function applySnapshot(game, decoded) {
       height: decoded.ballHeight,
       heightVel: prev.ball ? prev.ball.heightVel : 0,
     },
-  };
-
-  if (prev.phase !== decoded.phase) {
-    if (decoded.phase === PHASE.COUNTDOWN) game.audio.playCountdown();
-    if (decoded.phase === PHASE.POINT) game.audio.playPoint();
-  }
-  const s = game.gameState;
-  const heard = game.prevPeerFlags;
-  if (s.hitEvent && !heard.hitEvent) game.audio.playHit();
-  if (s.serveEvent && !heard.serveEvent) game.audio.playServe();
-  if (s.faultEvent && !heard.faultEvent) game.audio.playFault();
-  if (s.netFault && !heard.netFault) game.audio.playNetHit();
-  if (s.outOfBounds && !heard.outOfBounds) {
-    if (s.outType === 3) game.audio.playAce();
-    else game.audio.playOut();
-  }
-  game.prevPeerFlags = {
-    hitEvent: s.hitEvent,
-    serveEvent: s.serveEvent,
-    faultEvent: s.faultEvent,
-    netFault: s.netFault,
-    outOfBounds: s.outOfBounds,
   };
 }
 
@@ -247,7 +217,6 @@ export default defineGame({
     game.localServePressed = false;
     game.remoteServePressed = false;
     game.pointPauseCounter = 0;
-    game.prevPeerFlags = { ...NO_EVENTS };
   },
   onStop: (game) => {
     game.localServePressed = false;
@@ -302,6 +271,19 @@ export default defineGame({
 
   toWire,
   applySnapshot,
+  // The guest hears the countdown, each point, and every event a snapshot newly carries.
+  cues: [
+    { phase: PHASE.COUNTDOWN, play: "countdown" },
+    { phase: PHASE.POINT, play: "point" },
+    { rise: (s) => s.hitEvent, play: "hit" },
+    { rise: (s) => s.serveEvent, play: "serve" },
+    { rise: (s) => s.faultEvent, play: "fault" },
+    { rise: (s) => s.netFault, play: "netHit" },
+    {
+      rise: (s) => s.outOfBounds,
+      play: (game, s) => (s.outType === 3 ? game.audio.playAce() : game.audio.playOut()),
+    },
+  ],
   onEnd: (game, result) => {
     game.setKeyboardCaptured(false);
     Object.assign(game.gameState, {

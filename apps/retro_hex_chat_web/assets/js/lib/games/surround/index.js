@@ -119,18 +119,10 @@ function applySnapshot(game, decoded) {
       countdown: decoded.countdown,
     });
     game.gameState = fresh;
-    game.audio.playCountdown();
     return;
   }
 
   const s = game.gameState;
-  if (decoded.phase === PHASE.COUNTDOWN && decoded.countdown !== s.countdown) {
-    game.audio.playCountdown();
-  }
-  if (decoded.phase === PHASE.ROUND_OVER && prevPhase !== PHASE.ROUND_OVER) {
-    game.audio.playCrash();
-    if (decoded.score1 <= s.score1 && decoded.score2 > s.score2) game.audio.playRoundWin();
-  }
   if (decoded.phase === PHASE.PLAYING) {
     s.grid[decoded.p1y][decoded.p1x] = CELL.P1_TRAIL;
     s.grid[decoded.p2y][decoded.p2x] = CELL.P2_TRAIL;
@@ -255,6 +247,26 @@ export default defineGame({
   },
 
   applySnapshot,
+  // The guest hears each beat of the countdown, a crash, and a round it won.
+  cues: [
+    { phase: PHASE.COUNTDOWN, play: "countdown" },
+    {
+      when: (s, prev) =>
+        s.phase === PHASE.COUNTDOWN &&
+        prev.phase === PHASE.COUNTDOWN &&
+        s.countdown !== prev.countdown,
+      play: "countdown",
+    },
+    { phase: PHASE.ROUND_OVER, play: "crash" },
+    {
+      when: (s, prev) =>
+        s.phase === PHASE.ROUND_OVER &&
+        prev.phase !== PHASE.ROUND_OVER &&
+        s.score1 <= prev.score1 &&
+        s.score2 > prev.score2,
+      play: "roundWin",
+    },
+  ],
   onEnd: (game, result) => {
     game.setKeyboardCaptured(false);
     Object.assign(game.gameState, {
