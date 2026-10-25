@@ -17,6 +17,7 @@
  *   theme: getColors,
  *   init: (game, options) => createInitialState(),
  *   flow: { phases: PHASE, initial: "WAITING", begin: "COUNTDOWN", states: { … } },
+ *   cues: [{ phase: PHASE.COUNTDOWN, play: "countdown" }, …], // what the guest hears (core/events.js)
  *   onSnapshot: (game, decoded, previous) => …,   // guest, after a snapshot lands
  *   onEnd: (game, result) => …,                    // guest, when the host ends the match
  *   onStart, onStop: (game) => …,                  // around the engine's own start and stop
@@ -42,6 +43,7 @@
 
 import { GameEngine, keymap } from "../../game_engine.js";
 import { encodeGameReady } from "../net_protocol.js";
+import { cueSounds } from "./events.js";
 import { createFlow } from "./flow.js";
 import { aiRandom, createRng, freshSeed } from "./rng.js";
 import { createGameAudio } from "./synth.js";
@@ -243,6 +245,7 @@ export function defineGame(def) {
         decoded,
         def.applySnapshot ? () => def.applySnapshot(this, decoded) : undefined,
       );
+      if (def.cues) cueSounds(def.cues, previous, this.gameState, this);
       this.setKeyboardCaptured(decoded.phase !== waiting && decoded.phase !== final);
       def.onSnapshot?.(this, decoded, previous);
     }

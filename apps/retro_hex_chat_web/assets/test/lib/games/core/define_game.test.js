@@ -342,6 +342,24 @@ describe("defineGame", () => {
     });
   });
 
+  describe("cues", () => {
+    it("the guest plays what each snapshot cues against the one before, before onSnapshot", async () => {
+      const order = [];
+      const Game = defineGame({
+        ...definition,
+        audio: { sounds: { beep: { wave: "sine", freq: 880, vol: 0.1, dur: 0.05 } } },
+        cues: [{ phase: PHASE.COUNTDOWN, play: (game) => order.push(["cue", game.isHost]) }],
+        onSnapshot: () => order.push(["onSnapshot"]),
+      });
+      match = await playMatch({ EngineClass: Game, gameId: "fake" });
+      match.advance(150);
+
+      expect(order[0]).toEqual(["cue", false]);
+      expect(order[1]).toEqual(["onSnapshot"]);
+      expect(order.filter(([what]) => what === "cue")).toHaveLength(1);
+    });
+  });
+
   describe("outcome", () => {
     const engineFor = (isHost, options = {}) => {
       const Game = defineGame(definition);
