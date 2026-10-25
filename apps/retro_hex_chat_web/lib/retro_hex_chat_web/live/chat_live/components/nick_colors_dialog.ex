@@ -36,7 +36,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.NickColorsDialog do
 
   @spec update(map(), Phoenix.LiveView.Socket.t()) :: {:ok, Phoenix.LiveView.Socket.t()}
   def update(assigns, socket) do
-    {:ok, socket} = DialogIsland.update(socket, assigns)
+    socket = assign(socket, assigns)
     {:ok, put_locales(socket)}
   end
 

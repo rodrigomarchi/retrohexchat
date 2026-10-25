@@ -18,11 +18,11 @@ defmodule RetroHexChatWeb.ChatLive.Components.FloodProtectionDialog do
     id: "flood-protection-dialog",
     initial: %{settings: %{}}
 
+  alias RetroHexChatWeb.ChatLive.Components.DialogIsland
   @impl true
   @spec update(map(), Phoenix.LiveView.Socket.t()) :: {:ok, Phoenix.LiveView.Socket.t()}
-  def update(assigns, socket) do
-    {:ok, assign(socket, settings: Map.get(assigns, :settings, socket.assigns.settings))}
-  end
+  def update(assigns, socket),
+    do: {:ok, assign(socket, DialogIsland.known(socket, assigns, [:settings]))}
 
   @impl true
   @spec render(map()) :: Phoenix.LiveView.Rendered.t()

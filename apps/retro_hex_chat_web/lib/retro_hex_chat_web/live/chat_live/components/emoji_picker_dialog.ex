@@ -18,6 +18,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.EmojiPickerDialog do
 
   import RetroHexChatWeb.Components.UI.EmojiPicker
 
+  alias RetroHexChatWeb.ChatLive.Components.DialogIsland
   alias RetroHexChat.Chat.CustomEmojis
   alias RetroHexChat.Chat.EmojiData
 
@@ -54,13 +55,8 @@ defmodule RetroHexChatWeb.ChatLive.Components.EmojiPickerDialog do
     {:ok, assign(socket, search: query)}
   end
 
-  def update(assigns, socket) do
-    {:ok,
-     assign(socket,
-       id: Map.get(assigns, :id, socket.assigns.id),
-       visible: Map.get(assigns, :visible, socket.assigns.visible)
-     )}
-  end
+  def update(assigns, socket),
+    do: {:ok, assign(socket, DialogIsland.known(socket, assigns, [:visible]))}
 
   @impl true
   @spec render(map()) :: Phoenix.LiveView.Rendered.t()

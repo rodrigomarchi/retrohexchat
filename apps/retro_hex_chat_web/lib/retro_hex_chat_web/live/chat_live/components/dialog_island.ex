@@ -86,10 +86,6 @@ defmodule RetroHexChatWeb.ChatLive.Components.DialogIsland do
     {:ok, socket |> assign(:id, id) |> assign(initial) |> assign(session: nil)}
   end
 
-  @doc "A dialog that only takes what the parent sends it."
-  @spec update(socket(), map()) :: {:ok, socket()}
-  def update(socket, assigns), do: {:ok, assign(socket, assigns)}
-
   @doc """
   The socket with only `keys` taken from what the parent sent: a dialog whose
   parent re-renders with a partial set keeps the rest as it was.

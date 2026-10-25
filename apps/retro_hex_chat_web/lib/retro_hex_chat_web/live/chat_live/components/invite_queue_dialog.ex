@@ -26,10 +26,6 @@ defmodule RetroHexChatWeb.ChatLive.Components.InviteQueueDialog do
     initial: %{invites: []}
 
   @impl true
-  @spec update(map(), Phoenix.LiveView.Socket.t()) :: {:ok, Phoenix.LiveView.Socket.t()}
-  def update(assigns, socket), do: {:ok, assign(socket, assigns)}
-
-  @impl true
   @spec handle_event(String.t(), map(), Phoenix.LiveView.Socket.t()) ::
           {:noreply, Phoenix.LiveView.Socket.t()}
   def handle_event("invite_accept", %{"channel" => channel}, socket) do

@@ -45,9 +45,6 @@ defmodule RetroHexChatWeb.ChatLive.Components.HighlightDialog do
     }
 
   # passthrough context (session)
-  @spec update(map(), Phoenix.LiveView.Socket.t()) :: {:ok, Phoenix.LiveView.Socket.t()}
-  def update(assigns, socket), do: {:ok, assign(socket, assigns)}
-
   # ── Selection ────────────────────────────────────────────────────
 
   @spec handle_event(String.t(), map(), Phoenix.LiveView.Socket.t()) ::

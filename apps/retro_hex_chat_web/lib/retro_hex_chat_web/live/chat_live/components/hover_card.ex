@@ -18,6 +18,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.HoverCard do
   reaches the client regardless of where it originates.
   """
 
+  alias RetroHexChatWeb.ChatLive.Components.DialogIsland
   alias RetroHexChat.Nickname
   use RetroHexChatWeb, :live_component
 
@@ -59,9 +60,8 @@ defmodule RetroHexChatWeb.ChatLive.Components.HoverCard do
     {:ok, update_away(socket, nick, away, message)}
   end
 
-  def update(assigns, socket) do
-    {:ok, assign(socket, id: Map.get(assigns, :id, socket.assigns.id))}
-  end
+  def update(assigns, socket),
+    do: {:ok, assign(socket, DialogIsland.known(socket, assigns, []))}
 
   @impl true
   @spec render(map()) :: Phoenix.LiveView.Rendered.t()

@@ -32,6 +32,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.AccountDialog do
       ghost_error: nil
     }
 
+  alias RetroHexChatWeb.ChatLive.Components.DialogIsland
   @impl true
   @spec update(map(), Phoenix.LiveView.Socket.t()) :: {:ok, Phoenix.LiveView.Socket.t()}
   # Drafts are mirrored back so patches re-render the typed values — inputs in a
@@ -65,16 +66,13 @@ defmodule RetroHexChatWeb.ChatLive.Components.AccountDialog do
     {:ok, assign(socket, ghost_error: message)}
   end
 
-  def update(assigns, socket) do
-    {:ok,
-     assign(socket,
-       id: Map.get(assigns, :id, socket.assigns.id),
-       nickname: Map.get(assigns, :nickname, socket.assigns.nickname),
-       account_state: Map.get(assigns, :account_state, socket.assigns.account_state),
-       registered: Map.get(assigns, :registered, socket.assigns.registered),
-       identified: Map.get(assigns, :identified, socket.assigns.identified)
-     )}
-  end
+  def update(assigns, socket),
+    do:
+      {:ok,
+       assign(
+         socket,
+         DialogIsland.known(socket, assigns, [:nickname, :account_state, :registered, :identified])
+       )}
 
   @impl true
   @spec render(map()) :: Phoenix.LiveView.Rendered.t()

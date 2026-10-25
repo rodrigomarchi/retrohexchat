@@ -14,15 +14,11 @@ defmodule RetroHexChatWeb.ChatLive.Components.UserModesDialog do
     id: "user-modes-dialog",
     initial: %{wallops_enabled: false}
 
+  alias RetroHexChatWeb.ChatLive.Components.DialogIsland
   @impl true
   @spec update(map(), Phoenix.LiveView.Socket.t()) :: {:ok, Phoenix.LiveView.Socket.t()}
-  def update(assigns, socket) do
-    {:ok,
-     assign(socket,
-       id: Map.get(assigns, :id, socket.assigns.id),
-       wallops_enabled: Map.get(assigns, :wallops_enabled, socket.assigns.wallops_enabled)
-     )}
-  end
+  def update(assigns, socket),
+    do: {:ok, assign(socket, DialogIsland.known(socket, assigns, [:wallops_enabled]))}
 
   @impl true
   @spec render(map()) :: Phoenix.LiveView.Rendered.t()

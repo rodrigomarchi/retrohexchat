@@ -21,18 +21,16 @@ defmodule RetroHexChatWeb.ChatLive.Components.ChannelListDialog do
     id: "channel-list-dialog",
     initial: %{channels: [], loading: false, search: "", category: nil}
 
+  alias RetroHexChatWeb.ChatLive.Components.DialogIsland
   @impl true
   @spec update(map(), Phoenix.LiveView.Socket.t()) :: {:ok, Phoenix.LiveView.Socket.t()}
-  def update(assigns, socket) do
-    {:ok,
-     assign(socket,
-       id: Map.get(assigns, :id, socket.assigns.id),
-       channels: Map.get(assigns, :channels, socket.assigns.channels),
-       loading: Map.get(assigns, :loading, socket.assigns.loading),
-       search: Map.get(assigns, :search, socket.assigns.search),
-       category: Map.get(assigns, :category, socket.assigns.category)
-     )}
-  end
+  def update(assigns, socket),
+    do:
+      {:ok,
+       assign(
+         socket,
+         DialogIsland.known(socket, assigns, [:channels, :loading, :search, :category])
+       )}
 
   @impl true
   @spec render(map()) :: Phoenix.LiveView.Rendered.t()

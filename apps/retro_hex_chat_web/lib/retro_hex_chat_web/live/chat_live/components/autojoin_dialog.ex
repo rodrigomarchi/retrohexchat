@@ -39,9 +39,6 @@ defmodule RetroHexChatWeb.ChatLive.Components.AutojoinDialog do
 
   # Opening is pure window mount — closing unmounts the island, so there is no
   # open directive to reset state that the next mount rebuilds anyway.
-  @spec update(map(), Phoenix.LiveView.Socket.t()) :: {:ok, Phoenix.LiveView.Socket.t()}
-  def update(assigns, socket), do: DialogIsland.update(socket, assigns)
-
   # ── Selection ────────────────────────────────────────────────────
 
   @spec handle_event(String.t(), map(), Phoenix.LiveView.Socket.t()) ::
