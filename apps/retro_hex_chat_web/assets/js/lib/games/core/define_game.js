@@ -43,6 +43,7 @@
 import { GameEngine, keymap } from "../../game_engine.js";
 import { encodeGameReady } from "../net_protocol.js";
 import { createFlow } from "./flow.js";
+import { aiRandom, createRng, freshSeed } from "./rng.js";
 import { MSG, dispatcher } from "./messages.js";
 
 const REQUIRED = ["inputs", "schema", "init", "flow", "render", "disconnectResult"];
@@ -72,10 +73,13 @@ export function defineGame(def) {
     constructor(canvas, channel, gameId, isHost, onGameEnd, options = {}) {
       super(canvas, channel, gameId, isHost, options);
       this.onGameEnd = onGameEnd || null;
-      // What the simulation draws from, and what its decoration (particles)
-      // draws from, apart so decoration never changes how a match plays out.
-      this.random = () => Math.random();
-      this.fxRandom = () => Math.random();
+      // One seed plays one match: the simulation draws from its generator,
+      // decoration (particles) and the AI from streams forked off it, so
+      // neither changes how a match plays out.
+      this.matchSeed = options.seed ?? freshSeed();
+      const rng = createRng(this.matchSeed);
+      this.random = rng.next;
+      this.fxRandom = createRng(this.matchSeed).fork("fx").next;
       this.gameState = def.init(this, options);
       this.localInputs = released();
       this.remoteInputs = released();
@@ -84,7 +88,7 @@ export function defineGame(def) {
         this.opponentController =
           options.opponentController ||
           (this.mode === "solo" && def.ai.create
-            ? def.ai.create({ difficulty: this.difficulty, rng: this.random })
+            ? def.ai.create({ difficulty: this.difficulty, rng: aiRandom(this.matchSeed) })
             : null);
       }
       this.frameCount = 0;

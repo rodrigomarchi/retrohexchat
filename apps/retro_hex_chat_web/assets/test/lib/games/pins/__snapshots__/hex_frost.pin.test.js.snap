@@ -4,28 +4,28 @@ exports[`hex_frost pins > P2P following the key script 1`] = `
 {
   "draws": [
     {
-      "digest": "68fb70065ed28f7d",
+      "digest": "b00c532134ebe384",
       "ops": 1962,
       "phase": 1,
       "side": "host",
       "t": 32,
     },
     {
-      "digest": "ecee5f92ec3c4041",
+      "digest": "27099d4c359b9c76",
       "ops": 1962,
       "phase": 1,
       "side": "guest",
       "t": 48,
     },
     {
-      "digest": "23095a31cc45c99b",
+      "digest": "11df127d9174fa29",
       "ops": 1949,
       "phase": 2,
       "side": "host",
       "t": 3024,
     },
     {
-      "digest": "16d780f4986c2d58",
+      "digest": "4307a90f4580734f",
       "ops": 1949,
       "phase": 2,
       "side": "guest",
@@ -60,23 +60,23 @@ exports[`hex_frost pins > P2P following the key script 1`] = `
   },
   "sounds": {
     "guest": {
-      "digest": "bb56bb8bb1a1e2ee",
-      "entries": 325,
+      "digest": "8d0237a446f64961",
+      "entries": 66,
       "voices": {
-        "createBuffer": 3,
-        "createBufferSource": 3,
-        "createGain": 33,
-        "createOscillator": 29,
+        "createBuffer": 2,
+        "createBufferSource": 2,
+        "createGain": 7,
+        "createOscillator": 4,
       },
     },
     "host": {
-      "digest": "d2b36c4fa5d0a254",
-      "entries": 373,
+      "digest": "1ae7bc61c8fb5328",
+      "entries": 114,
       "voices": {
-        "createBuffer": 3,
-        "createBufferSource": 3,
-        "createGain": 38,
-        "createOscillator": 34,
+        "createBuffer": 2,
+        "createBufferSource": 2,
+        "createGain": 12,
+        "createOscillator": 9,
       },
     },
   },
@@ -89,7 +89,7 @@ exports[`hex_frost pins > P2P following the key script 1`] = `
       "p2IglooFlash": 0,
       "phase": 2,
       "round": 1,
-      "seed": 3680900381,
+      "seed": 712862758,
       "temperature": 18.02,
     },
     "host": {
@@ -106,7 +106,7 @@ exports[`hex_frost pins > P2P following the key script 1`] = `
       "piecesNeeded": 15,
       "round": 1,
       "roundWinner": 0,
-      "seed": 3680900381,
+      "seed": 712862758,
       "temperature": 18.0166666666682,
     },
   },
@@ -122,7 +122,7 @@ exports[`hex_frost pins > P2P following the key script 1`] = `
         },
       },
       "host>guest": {
-        "bytes": 272240,
+        "bytes": 270604,
         "datagrams": 1800,
         "dropped": 0,
         "types": {
@@ -130,7 +130,7 @@ exports[`hex_frost pins > P2P following the key script 1`] = `
         },
       },
     },
-    "digest": "04c15de0476970ac",
+    "digest": "e25920fa31fffe71",
     "first": [
       {
         "dir": "guest>host",
@@ -139,27 +139,27 @@ exports[`hex_frost pins > P2P following the key script 1`] = `
       },
       {
         "dir": "host>guest",
-        "hex": "80010001031d1566db94114006000100000001030000000000c01200010000000103000000000000000100000785fe00790200df05005d0900100d009410005e1400ff000007ccfe00170200c005007909003a0d00c110000b140001000007d9fe00580200b60500420900240d00b21000601400ff00000799fe002c0200cc0500460900df0c00ce10007114000100cb0000010000",
+        "hex": "8001000103266c7d2a94114006000100000001030000000000c012000100000001030000000000000001000007ccfe00410200ac05003a0900050d007d10006f1400ff00000794fe000b0200b405007c0900380d007210000b140001000007e8fe00200200dc0500550900ed0c008d1000721400ff000007d6fe006f0200cf05008b0900380d0078100075140001001c0100010000",
         "t": 0,
       },
       {
         "dir": "host>guest",
-        "hex": "80010001031d1566db94114006000100000001030000000000c01200010000000103000000000000000100000785fe00790200df05005d0900100d009410005e1400ff000007ccfe00170200c005007909003a0d00c110000b140001000007d9fe00580200b60500420900240d00b21000601400ff00000799fe002c0200cc0500460900df0c00ce10007114000100cb0000010000",
+        "hex": "8001000103266c7d2a94114006000100000001030000000000c012000100000001030000000000000001000007ccfe00410200ac05003a0900050d007d10006f1400ff00000794fe000b0200b405007c0900380d007210000b140001000007e8fe00200200dc0500550900ed0c008d1000721400ff000007d6fe006f0200cf05008b0900380d0078100075140001001c0100010000",
         "t": 32,
       },
       {
         "dir": "host>guest",
-        "hex": "80010001031d1566db94114006000100000001030000000000c01200010000000103000000000000000100000785fe00790200df05005d0900100d009410005e1400ff000007ccfe00170200c005007909003a0d00c110000b140001000007d9fe00580200b60500420900240d00b21000601400ff00000799fe002c0200cc0500460900df0c00ce10007114000100cb0000010000",
+        "hex": "8001000103266c7d2a94114006000100000001030000000000c012000100000001030000000000000001000007ccfe00410200ac05003a0900050d007d10006f1400ff00000794fe000b0200b405007c0900380d007210000b140001000007e8fe00200200dc0500550900ed0c008d1000721400ff000007d6fe006f0200cf05008b0900380d0078100075140001001c0100010000",
         "t": 48,
       },
       {
         "dir": "host>guest",
-        "hex": "80010001031d1566db94114006000100000001030000000000c01200010000000103000000000000000100000785fe00790200df05005d0900100d009410005e1400ff000007ccfe00170200c005007909003a0d00c110000b140001000007d9fe00580200b60500420900240d00b21000601400ff00000799fe002c0200cc0500460900df0c00ce10007114000100cb0000010000",
+        "hex": "8001000103266c7d2a94114006000100000001030000000000c012000100000001030000000000000001000007ccfe00410200ac05003a0900050d007d10006f1400ff00000794fe000b0200b405007c0900380d007210000b140001000007e8fe00200200dc0500550900ed0c008d1000721400ff000007d6fe006f0200cf05008b0900380d0078100075140001001c0100010000",
         "t": 64,
       },
       {
         "dir": "host>guest",
-        "hex": "80010001031d1566db94114006000100000001030000000000c01200010000000103000000000000000100000785fe00790200df05005d0900100d009410005e1400ff000007ccfe00170200c005007909003a0d00c110000b140001000007d9fe00580200b60500420900240d00b21000601400ff00000799fe002c0200cc0500460900df0c00ce10007114000100cb0000010000",
+        "hex": "8001000103266c7d2a94114006000100000001030000000000c012000100000001030000000000000001000007ccfe00410200ac05003a0900050d007d10006f1400ff00000794fe000b0200b405007c0900380d007210000b140001000007e8fe00200200dc0500550900ed0c008d1000721400ff000007d6fe006f0200cf05008b0900380d0078100075140001001c0100010000",
         "t": 80,
       },
     ],
@@ -171,35 +171,35 @@ exports[`hex_frost pins > P2P over a channel that loses datagrams 1`] = `
 {
   "draws": [
     {
-      "digest": "ad68feddbb36b3f9",
+      "digest": "13834d893ad3c9f7",
       "ops": 1962,
       "phase": 1,
       "side": "host",
       "t": 768,
     },
     {
-      "digest": "6997d1278b39506b",
+      "digest": "a68938e87455f9e8",
       "ops": 1962,
       "phase": null,
       "side": "guest",
       "t": 768,
     },
     {
-      "digest": "ecee5f92ec3c4041",
+      "digest": "27099d4c359b9c76",
       "ops": 1962,
       "phase": 1,
       "side": "guest",
       "t": 784,
     },
     {
-      "digest": "3c47e8cbd02d9346",
+      "digest": "9c980e806fb3bc16",
       "ops": 1949,
       "phase": 2,
       "side": "host",
       "t": 3776,
     },
     {
-      "digest": "2b8de278e0a474f5",
+      "digest": "5b97c7ea0a6ab70f",
       "ops": 1949,
       "phase": 2,
       "side": "guest",
@@ -244,23 +244,23 @@ exports[`hex_frost pins > P2P over a channel that loses datagrams 1`] = `
   },
   "sounds": {
     "guest": {
-      "digest": "79b796bef303714c",
-      "entries": 284,
+      "digest": "9a728accdf6b9684",
+      "entries": 114,
       "voices": {
         "createBuffer": 3,
         "createBufferSource": 3,
-        "createGain": 29,
-        "createOscillator": 25,
+        "createGain": 12,
+        "createOscillator": 8,
       },
     },
     "host": {
-      "digest": "ac4075784e929405",
-      "entries": 373,
+      "digest": "6eb90ff41e3e7dfa",
+      "entries": 173,
       "voices": {
         "createBuffer": 3,
         "createBufferSource": 3,
-        "createGain": 38,
-        "createOscillator": 34,
+        "createGain": 18,
+        "createOscillator": 14,
       },
     },
   },
@@ -273,7 +273,7 @@ exports[`hex_frost pins > P2P over a channel that loses datagrams 1`] = `
       "p2IglooFlash": 0,
       "phase": 2,
       "round": 1,
-      "seed": 3680900381,
+      "seed": 712862758,
       "temperature": 18.78,
     },
     "host": {
@@ -290,7 +290,7 @@ exports[`hex_frost pins > P2P over a channel that loses datagrams 1`] = `
       "piecesNeeded": 15,
       "round": 1,
       "roundWinner": 0,
-      "seed": 3680900381,
+      "seed": 712862758,
       "temperature": 18.766666666668158,
     },
   },
@@ -306,7 +306,7 @@ exports[`hex_frost pins > P2P over a channel that loses datagrams 1`] = `
         },
       },
       "host>guest": {
-        "bytes": 265355,
+        "bytes": 263899,
         "datagrams": 1755,
         "dropped": 250,
         "types": {
@@ -314,7 +314,7 @@ exports[`hex_frost pins > P2P over a channel that loses datagrams 1`] = `
         },
       },
     },
-    "digest": "a6bf5b19cb7bbadf",
+    "digest": "42d0fcc2f35e13ac",
     "first": [
       {
         "dir": "guest>host",
@@ -341,12 +341,12 @@ exports[`hex_frost pins > P2P over a channel that loses datagrams 1`] = `
       },
       {
         "dir": "host>guest",
-        "hex": "80010001031d1566db94114006000100000001030000000000c01200010000000103000000000000000100000785fe00790200df05005d0900100d009410005e1400ff000007ccfe00170200c005007909003a0d00c110000b140001000007d9fe00580200b60500420900240d00b21000601400ff00000799fe002c0200cc0500460900df0c00ce10007114000100cb0000010000",
+        "hex": "8001000103266c7d2a94114006000100000001030000000000c012000100000001030000000000000001000007ccfe00410200ac05003a0900050d007d10006f1400ff00000794fe000b0200b405007c0900380d007210000b140001000007e8fe00200200dc0500550900ed0c008d1000721400ff000007d6fe006f0200cf05008b0900380d0078100075140001001c0100010000",
         "t": 751,
       },
       {
         "dir": "host>guest",
-        "hex": "80010001031d1566db94114006000100000001030000000000c01200010000000103000000000000000100000785fe00790200df05005d0900100d009410005e1400ff000007ccfe00170200c005007909003a0d00c110000b140001000007d9fe00580200b60500420900240d00b21000601400ff00000799fe002c0200cc0500460900df0c00ce10007114000100cb0000010000",
+        "hex": "8001000103266c7d2a94114006000100000001030000000000c012000100000001030000000000000001000007ccfe00410200ac05003a0900050d007d10006f1400ff00000794fe000b0200b405007c0900380d007210000b140001000007e8fe00200200dc0500550900ed0c008d1000721400ff000007d6fe006f0200cf05008b0900380d0078100075140001001c0100010000",
         "t": 768,
       },
     ],
@@ -358,35 +358,35 @@ exports[`hex_frost pins > solo against the AI 1`] = `
 {
   "draws": [
     {
-      "digest": "13abecd4af13ed63",
+      "digest": "e534990887fb1502",
       "ops": 1962,
       "phase": 1,
       "side": "host",
       "t": 32,
     },
     {
-      "digest": "da7c62e488a7d98c",
+      "digest": "a914b20b631cf272",
       "ops": 1949,
       "phase": 2,
       "side": "host",
       "t": 3024,
     },
     {
-      "digest": "d4eaadee5a384111",
+      "digest": "78f411c1943d3e5d",
       "ops": 1968,
       "phase": 3,
       "side": "host",
       "t": 48048,
     },
     {
-      "digest": "bebc5ad86d2a4a61",
+      "digest": "537fa30aaafb6cff",
       "ops": 1990,
       "phase": 1,
       "side": "host",
       "t": 51040,
     },
     {
-      "digest": "93a0a06d46918872",
+      "digest": "80d61d4bdbc409b3",
       "ops": 1977,
       "phase": 2,
       "side": "host",
@@ -427,14 +427,14 @@ exports[`hex_frost pins > solo against the AI 1`] = `
   },
   "sounds": {
     "host": {
-      "digest": "50285055240b0e96",
-      "entries": 2618,
+      "digest": "d83fe3ece9b7121e",
+      "entries": 2357,
       "voices": {
         "createBiquadFilter": 1,
         "createBuffer": 9,
         "createBufferSource": 9,
-        "createGain": 262,
-        "createOscillator": 252,
+        "createGain": 236,
+        "createOscillator": 226,
       },
     },
   },
@@ -453,7 +453,7 @@ exports[`hex_frost pins > solo against the AI 1`] = `
       "piecesNeeded": 15,
       "round": 2,
       "roundWinner": 0,
-      "seed": 2439693905,
+      "seed": 2982484352,
       "temperature": 39.03333333333367,
     },
   },
@@ -469,14 +469,14 @@ exports[`hex_frost pins > solo against the AI: hex_frost_blizzard 1`] = `
 {
   "draws": [
     {
-      "digest": "bba98bfcacd69d62",
+      "digest": "fcf6d926da17d2cc",
       "ops": 1989,
       "phase": 1,
       "side": "host",
       "t": 32,
     },
     {
-      "digest": "26e221d3f9a45361",
+      "digest": "2f2375db0c9365ee",
       "ops": 1976,
       "phase": 2,
       "side": "host",
@@ -502,13 +502,13 @@ exports[`hex_frost pins > solo against the AI: hex_frost_blizzard 1`] = `
   },
   "sounds": {
     "host": {
-      "digest": "2a3e5d9cd67318aa",
-      "entries": 5303,
+      "digest": "6ad1e93bff0dcebc",
+      "entries": 4674,
       "voices": {
-        "createBuffer": 10,
-        "createBufferSource": 10,
-        "createGain": 531,
-        "createOscillator": 520,
+        "createBuffer": 14,
+        "createBufferSource": 14,
+        "createGain": 468,
+        "createOscillator": 453,
       },
     },
   },
@@ -527,7 +527,7 @@ exports[`hex_frost pins > solo against the AI: hex_frost_blizzard 1`] = `
       "piecesNeeded": 20,
       "round": 1,
       "roundWinner": 0,
-      "seed": 2439693905,
+      "seed": 2982484352,
       "temperature": 31.508333333334953,
     },
   },
@@ -543,35 +543,35 @@ exports[`hex_frost pins > solo against the AI: hex_frost_peaceful 1`] = `
 {
   "draws": [
     {
-      "digest": "edf09fc76e36033a",
+      "digest": "2fa4139e6772f088",
       "ops": 1962,
       "phase": 1,
       "side": "host",
       "t": 32,
     },
     {
-      "digest": "4e25d6e78de4b266",
+      "digest": "69cb4e2fe687a030",
       "ops": 1949,
       "phase": 2,
       "side": "host",
       "t": 3024,
     },
     {
-      "digest": "71fadf4e3e571d35",
+      "digest": "e8e80689388d7ec3",
       "ops": 1968,
       "phase": 3,
       "side": "host",
       "t": 48048,
     },
     {
-      "digest": "853c3716f37ebe7d",
+      "digest": "34258f021b2f705d",
       "ops": 1990,
       "phase": 1,
       "side": "host",
       "t": 51040,
     },
     {
-      "digest": "8ca3c7071a55a959",
+      "digest": "992eb10f77f61ebe",
       "ops": 1977,
       "phase": 2,
       "side": "host",
@@ -612,14 +612,14 @@ exports[`hex_frost pins > solo against the AI: hex_frost_peaceful 1`] = `
   },
   "sounds": {
     "host": {
-      "digest": "50285055240b0e96",
-      "entries": 2618,
+      "digest": "d83fe3ece9b7121e",
+      "entries": 2357,
       "voices": {
         "createBiquadFilter": 1,
         "createBuffer": 9,
         "createBufferSource": 9,
-        "createGain": 262,
-        "createOscillator": 252,
+        "createGain": 236,
+        "createOscillator": 226,
       },
     },
   },
@@ -638,7 +638,7 @@ exports[`hex_frost pins > solo against the AI: hex_frost_peaceful 1`] = `
       "piecesNeeded": 15,
       "round": 2,
       "roundWinner": 0,
-      "seed": 2439693905,
+      "seed": 2982484352,
       "temperature": 39.03333333333367,
     },
   },
@@ -688,7 +688,7 @@ exports[`hex_frost pins > the channel drops mid-match 1`] = `
       "p2IglooFlash": 0,
       "phase": 4,
       "round": 1,
-      "seed": 3680900381,
+      "seed": 712862758,
       "temperature": 33.02,
     },
     "host": {
@@ -705,7 +705,7 @@ exports[`hex_frost pins > the channel drops mid-match 1`] = `
       "piecesNeeded": 15,
       "round": 1,
       "roundWinner": 0,
-      "seed": 3680900381,
+      "seed": 712862758,
       "temperature": 33.01666666666735,
     },
   },

@@ -11,6 +11,21 @@
  * @module games/core/rng
  */
 
+/** A new match's seed, from the page's own randomness. */
+export function freshSeed() {
+  return (Math.random() * 0x100000000) >>> 0;
+}
+
+/**
+ * The AI's own stream of a match seed: the same whether the page creates
+ * the AI before the engine or the engine creates it.
+ * @param {number} seed
+ * @returns {() => number}
+ */
+export function aiRandom(seed) {
+  return createRng(seed).fork("ai").next;
+}
+
 /** FNV-1a: a label as a 32-bit number. */
 function hashLabel(label) {
   let h = 0x811c9dc5;

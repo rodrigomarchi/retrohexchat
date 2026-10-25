@@ -1,6 +1,7 @@
 import { describe, it, expect, afterEach, vi } from "vitest";
 import { createLocalTransport } from "../../../../js/lib/games/transport.js";
 import { defineGame } from "../../../../js/lib/games/core/define_game.js";
+import { aiRandom } from "../../../../js/lib/games/core/rng.js";
 import { FakeGame, PHASE, definition } from "../../../support/games/fake_game.js";
 import { playMatch } from "../../../support/games/harness.js";
 
@@ -216,16 +217,12 @@ describe("defineGame", () => {
   });
 
   describe("random draws", () => {
-    it("gives the simulation and its decoration a random function each, and the AI the simulation's", () => {
-      const created = [];
+    const make = (options, created = []) => {
       const Game = defineGame({
         ...definition,
-        ai: {
-          ...definition.ai,
-          create: (options) => created.push(options) && { nextInputs: () => ({}) },
-        },
+        ai: { ...definition.ai, create: (o) => created.push(o) && { nextInputs: () => ({}) } },
       });
-      const game = new Game(
+      return new Game(
         document.createElement("canvas"),
         createLocalTransport(),
         "fake",
@@ -233,12 +230,27 @@ describe("defineGame", () => {
         null,
         {
           mode: "solo",
+          ...options,
         },
       );
+    };
+    const draws = (next) => [next(), next(), next()];
 
-      expect(game.random()).toBeGreaterThanOrEqual(0);
-      expect(game.fxRandom()).toBeLessThan(1);
-      expect(created[0].rng).toBe(game.random);
+    it("plays the match its seed names: the same seed, the same draws", () => {
+      expect(draws(make({ seed: 7 }).random)).toEqual(draws(make({ seed: 7 }).random));
+      expect(draws(make({ seed: 7 }).random)).not.toEqual(draws(make({ seed: 8 }).random));
+    });
+
+    it("draws decoration and the AI from streams apart from the simulation's", () => {
+      const created = [];
+      const game = make({ seed: 7 }, created);
+
+      expect(draws(game.fxRandom)).not.toEqual(draws(make({ seed: 7 }).random));
+      expect(draws(created[0].rng)).toEqual(draws(aiRandom(7)));
+    });
+
+    it("chooses a seed of its own when it is given none", () => {
+      expect(Number.isInteger(make({}).matchSeed)).toBe(true);
     });
   });
 

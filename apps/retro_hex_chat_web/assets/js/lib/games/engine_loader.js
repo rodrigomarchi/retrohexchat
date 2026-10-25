@@ -1,4 +1,5 @@
 import { GameEngine } from "../game_engine.js";
+import { aiRandom, freshSeed } from "./core/rng.js";
 import { createLocalTransport, normalizeGameTransport } from "./transport.js";
 
 const P2P_ENGINE_LOADERS = {
@@ -169,13 +170,16 @@ export async function createGameEngine({
       ? createLocalTransport()
       : normalizeGameTransport(channel);
 
+  // The match seed is chosen here, so the AI made for a solo match draws from
+  // the same seed's AI stream as one the engine would make.
   const options = {
     ...engineOptions,
     mode: runtimeMode,
+    seed: engineOptions.seed ?? freshSeed(),
   };
   const soloOpponentController =
     solo && !opponentController
-      ? await createSoloOpponentController(gameId, { difficulty })
+      ? await createSoloOpponentController(gameId, { difficulty, rng: aiRandom(options.seed) })
       : opponentController;
 
   if (soloOpponentController) options.opponentController = soloOpponentController;

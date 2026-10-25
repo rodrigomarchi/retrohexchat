@@ -25,6 +25,8 @@ import { seedRandom } from "./seeded_random.js";
  * @param {string} options.gameId
  * @param {"p2p"|"solo"} [options.mode]
  * @param {number} [options.seed]
+ * @param {number} [options.matchSeed] - the match's own seed (`options.seed` of
+ *   the engines), apart from the page's `Math.random`
  * @param {string} [options.difficulty] - solo
  * @param {(data: ArrayBuffer, dir: string) => boolean} [options.drop]
  * @param {Array<{at: number, side: "host"|"guest", key: string, down: boolean}>} [options.script]
@@ -38,6 +40,7 @@ export async function playMatch({
   gameId,
   mode = "p2p",
   seed = 1,
+  matchSeed,
   difficulty = "normal",
   drop,
   script = [],
@@ -64,6 +67,7 @@ export async function playMatch({
   // empty answer slowly, and some renderers ask dozens of times a frame.
   vi.stubGlobal("getComputedStyle", () => ({ getPropertyValue: () => "" }));
 
+  const seeded = matchSeed === undefined ? {} : { seed: matchSeed };
   const results = { host: [], guest: [] };
   const keyboards = { host: new EventTarget(), guest: new EventTarget() };
   const canvases = { host: recordingCanvas(width, height) };
@@ -91,7 +95,7 @@ export async function playMatch({
       isHost: true,
       difficulty,
       onGameEnd: (result) => results.host.push(result),
-      engineOptions: { keyboardTarget: keyboards.host },
+      engineOptions: { keyboardTarget: keyboards.host, ...seeded },
     });
   } else {
     pair = channelPair({ drop });
@@ -103,7 +107,7 @@ export async function playMatch({
         channel: pair[side],
         isHost: side === "host",
         onGameEnd: (result) => results[side].push(result),
-        engineOptions: { keyboardTarget: keyboards[side] },
+        engineOptions: { keyboardTarget: keyboards[side], ...seeded },
       });
     }
   }
