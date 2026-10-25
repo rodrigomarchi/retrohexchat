@@ -92,11 +92,13 @@ defmodule RetroHexChat.Bots.OutputTelemetryTest do
     assert first.count == 1
     assert metadata.bot == bot
     assert metadata.channel == channel
-    assert first.delay_ms <= interval and first.delay_ms > div(interval, 2)
 
-    # How much of the second wait is left depends on how late the caller woke
-    # from the first; a loaded machine oversleeps, so only "held back, and no
-    # longer than one interval" is a property of the pacer.
+    # How much of each wait is left depends on how long the send before it
+    # took and how late the caller woke; a loaded machine is slow at both, so
+    # only "held back, and no longer than one interval" is a property of the
+    # pacer.
+    assert first.delay_ms <= interval and first.delay_ms > 0
+
     assert_receive {:telemetry, :throttled, second, _metadata}, 5_000
     assert second.delay_ms <= interval and second.delay_ms > 0
 
