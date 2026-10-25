@@ -151,6 +151,31 @@ This separation is Principle IV and is enforced.
   dispatcher on a page proves nothing about whether that page has shortcuts, and a binding table
   that lists no P2P action is not evidence that P2P lost its own.
 
+### 8.3.1 Adding a feature over the P2P session or the group call
+
+**A new data channel on the 1:1 session** (a whiteboard, a shared cursor):
+
+| Step | Where | Caught by |
+|---|---|---|
+| An entry: label, `RTCDataChannelInit`, element key, ready/closed events, stats key | `js/lib/p2p/data_channels.js` (`DATA_CHANNELS`) | `data_channels.test.js` (every field unique) |
+| The feature follows it — never the peer connection | `subscribeDataChannel(el, label, { onOpen, onClose })` in its `lib/` controller; call the returned function on destroy | `subscribeDataChannel` throws on an undeclared label |
+| Its hook, lazily loaded | `hooks/lazy_feature_hooks.js` | `make lint.hooks` |
+| Its island and the events it sends | `p2p_live/components/`, a prefix route in `p2p_live/events.ex` like `"ft_" <> _` | — |
+| Console section and status summary, if it has one | `@sections` in `p2p_session_console.ex`, `summary_key/1` in `p2p_live/events.ex` | — |
+| Help topic and strings | `HelpTopics`, `make i18n.gettext.merge` | `help_content_coverage_test.exs`, `make i18n.gettext.check` |
+
+Creation, label routing on the answering side, teardown and the per-feature stats all read
+`DATA_CHANNELS`; an inbound label not in it is logged and closed. Unit-test the controller with
+`test/helpers/rtc_peer_connection.js` and a `CustomEvent` on a detached element.
+
+**A new capability in the group call** (reactions, "watch together" sync): the SFU has no data
+channels, so it travels over the Phoenix channel — `handle_in` in `group_call_channel.ex`, the API in
+`group_call.ex`, the room's `handle_call` and broadcast in `group_call/room_server.ex` (server→client
+pushes go through the generic `{:group_call_push, event, payload}`), `push`/`channel.on` in
+`conference_connection.js`, then `call_live/events.ex`, `group_call_shape.ex` and the panel. A second
+video track per participant (camera and screen at once) needs `PeerServer` work: `inbound_tracks`
+holds one track per kind.
+
 ### 8.4 File transfer protocol
 
 - **Custom binary protocol over one ordered RTCDataChannel** (`arraybuffer`, named

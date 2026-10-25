@@ -2,7 +2,7 @@
  * LiveView Hook: LobbyGameCanvasHook
  *
  * Wires the lobby game canvas to a GameEngine over the shared "gamedata"
- * DataChannel exposed by LobbyWebRTCHook. Identical in spirit to
+ * DataChannel, followed with `subscribeDataChannel`. Identical in spirit to
  * games/game_canvas_hook.js, but bound to the lobby's persistent connection
  * (element id "lobby-webrtc") so a game can run alongside an active call and
  * file transfer.
@@ -10,6 +10,7 @@
 import { log } from "../../lib/logger.js";
 import { createGameEngine } from "../../lib/games/engine_loader.js";
 import { createHostTransport } from "../../lib/games/spectate_wire.js";
+import { subscribeDataChannel } from "../../lib/p2p/data_channels.js";
 
 const LobbyGameCanvasHook = {
   mounted() {
@@ -20,18 +21,16 @@ const LobbyGameCanvasHook = {
     this._gameId = this.el.dataset.gameId || null;
     this._isHost = this.el.dataset.isHost === "true";
 
-    const webrtcEl = document.getElementById("lobby-webrtc");
-    if (webrtcEl) {
-      webrtcEl.addEventListener("game_channel_ready", (e) => {
-        this.channel = e.detail.channel;
-        this._maybeInitGame();
-      });
-
-      if (webrtcEl._gameDataChannel) {
-        this.channel = webrtcEl._gameDataChannel;
-        this._maybeInitGame();
-      }
-    }
+    this._unsubscribeChannel = subscribeDataChannel(
+      document.getElementById("lobby-webrtc"),
+      "gamedata",
+      {
+        onOpen: (channel) => {
+          this.channel = channel;
+          this._maybeInitGame();
+        },
+      },
+    );
 
     this.handleEvent("lobby_game_start", ({ game_id, is_host }) => {
       this._gameId = game_id;
@@ -119,6 +118,7 @@ const LobbyGameCanvasHook = {
   },
 
   destroyed() {
+    this._unsubscribeChannel();
     this._cleanup();
   },
 };

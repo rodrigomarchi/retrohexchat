@@ -5,10 +5,11 @@
  * multiplexes EVERY feature over it:
  *
  *   - audio/video  → transceivers (the lobby media hook reuses `this.pc`)
- *   - file transfer → DataChannel "filetransfer" (FileTransferHook)
- *   - games         → DataChannel "gamedata"     (LobbyGameCanvasHook)
+ *   - everything else → the data channels listed in `data_channels.js`
+ *     (file transfer, games), which their features follow with
+ *     `subscribeDataChannel`
  *
- * Both data channels are created up front at connection time so that later
+ * Every data channel is created up front at connection time so that later
  * renegotiation is only ever triggered by media tracks — this avoids glare
  * between "user toggles video" and "game channel opens".
  */
@@ -24,6 +25,7 @@ import {
   createDataChannel,
   RETRY_CONFIG,
 } from "./webrtc.js";
+import { DATA_CHANNELS, dataChannelSpec } from "./data_channels.js";
 import {
   collectConnectionActivity,
   collectFeatureSnapshot,
@@ -87,8 +89,7 @@ export function createLobbyConnection(el, ports) {
       this.negotiating = false;
       this.renegotiationQueued = false;
       this.queuedKinds = [];
-      this.fileChannel = null;
-      this.gameChannel = null;
+      for (const spec of DATA_CHANNELS) this[spec.property] = null;
       this.pendingIceCandidates = [];
       this.remoteIceCandidateKeys = new Set();
       this.iceCandidateFailures = 0;
@@ -708,33 +709,15 @@ export function createLobbyConnection(el, ports) {
       this._dispatch("lobby_media_pc_ready", { pc: this.pc });
     },
 
-    // File transfer and games want opposite things from the same SCTP
-    // association, so they are configured as opposites.
-    //
-    // A file must arrive intact and in order, and it is happy to wait. Game state
-    // must arrive *now*: a snapshot is superseded by the next one 16 ms later, so
-    // retransmitting a lost one delivers stale truth, and delivering it in order
-    // holds every fresher snapshot behind it. That head-of-line blocking is what
-    // turns a single dropped datagram into a freeze-then-jump on the guest, which
-    // is why the game channel is unreliable and unordered.
-    //
-    // Priority is the other half: without it a 64 KB file chunk transmits ahead of
-    // a 25-byte snapshot simply for being queued first.
+    // Every channel in DATA_CHANNELS, opened by the offering side with the
+    // options its entry gives (why file and game are configured as opposites is
+    // written there).
     _createOutgoingChannels() {
-      const fileChannel = createDataChannel(this.pc, "filetransfer", {
-        ordered: true,
-        priority: "low",
-      });
-      fileChannel.binaryType = "arraybuffer";
-      this._setupFileChannel(fileChannel);
-
-      const gameChannel = createDataChannel(this.pc, "gamedata", {
-        ordered: false,
-        maxRetransmits: 0,
-        priority: "high",
-      });
-      gameChannel.binaryType = "arraybuffer";
-      this._setupGameChannel(gameChannel);
+      for (const spec of DATA_CHANNELS) {
+        const channel = createDataChannel(this.pc, spec.label, spec.options);
+        channel.binaryType = "arraybuffer";
+        this._setupChannel(spec, channel);
+      }
     },
 
     // Answerer routes inbound channels by label. A label this side does not know
@@ -742,37 +725,24 @@ export function createLobbyConnection(el, ports) {
     _adoptChannel(channel) {
       channel.binaryType = "arraybuffer";
 
-      if (channel.label === "gamedata") {
-        this._setupGameChannel(channel);
-      } else if (channel.label === "filetransfer") {
-        this._setupFileChannel(channel);
+      const spec = dataChannelSpec(channel.label);
+      if (spec) {
+        this._setupChannel(spec, channel);
       } else {
         log.warn("[Lobby] Closing a data channel with an unknown label", { label: channel.label });
         channel.close();
       }
     },
 
-    _setupFileChannel(channel) {
-      this.fileChannel = channel;
+    _setupChannel(spec, channel) {
+      this[spec.property] = channel;
       channel.onopen = () => {
-        el._fileTransferChannel = channel;
-        this._dispatch("ft_channel_ready", { channel });
+        el[spec.elementKey] = channel;
+        this._dispatch(spec.readyEvent, { channel });
       };
       channel.onclose = () => {
-        el._fileTransferChannel = null;
-        this._dispatch("ft_channel_closed", { channel: null });
-      };
-    },
-
-    _setupGameChannel(channel) {
-      this.gameChannel = channel;
-      channel.onopen = () => {
-        el._gameDataChannel = channel;
-        this._dispatch("game_channel_ready", { channel });
-      };
-      channel.onclose = () => {
-        el._gameDataChannel = null;
-        this._dispatch("game_channel_closed", { channel: null });
+        el[spec.elementKey] = null;
+        this._dispatch(spec.closedEvent, { channel: null });
       };
     },
 
@@ -1154,19 +1124,18 @@ export function createLobbyConnection(el, ports) {
       this._clearSignalBackoff();
       this._stopStatsPolling();
       el._peerConnection = null;
-      el._fileTransferChannel = null;
-      el._gameDataChannel = null;
+      for (const spec of DATA_CHANNELS) el[spec.elementKey] = null;
       this._dispatch("lobby_media_pc_closed", {});
 
-      for (const channel of [this.fileChannel, this.gameChannel]) {
+      for (const spec of DATA_CHANNELS) {
+        const channel = this[spec.property];
         if (channel) {
           channel.onopen = null;
           channel.onclose = null;
           channel.onmessage = null;
         }
+        this[spec.property] = null;
       }
-      this.fileChannel = null;
-      this.gameChannel = null;
       this.pendingIceCandidates = [];
       this.remoteIceCandidateKeys = new Set();
       this.iceCandidateFailures = 0;

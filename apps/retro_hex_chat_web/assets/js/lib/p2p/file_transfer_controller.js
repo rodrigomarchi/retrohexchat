@@ -43,6 +43,7 @@ import {
   createQueueEntry,
 } from "./file_transfer.js";
 import { EFFECT, step } from "./transfer_session.js";
+import { subscribeDataChannel } from "./data_channels.js";
 import { t } from "../i18n.js";
 
 export function createFileTransferController(el, ports) {
@@ -90,24 +91,16 @@ export function createFileTransferController(el, ports) {
       // points this at its own shared connection via `data-webrtc-id`.
       const webrtcId = el.dataset.webrtcId || "p2p-webrtc";
       const webrtcEl = document.getElementById(webrtcId);
-      if (webrtcEl) {
-        webrtcEl.addEventListener("ft_channel_ready", (e) => {
-          this.setupChannel(e.detail.channel);
-        });
-        webrtcEl.addEventListener("ft_channel_closed", () => {
-          this._handleChannelClose();
-        });
-
-        // Check for already-open channel (hook mounted after DataChannel opened)
-        if (webrtcEl._fileTransferChannel && webrtcEl._fileTransferChannel.readyState === "open") {
-          this.setupChannel(webrtcEl._fileTransferChannel);
-        }
-      }
+      this._unsubscribeChannel = subscribeDataChannel(webrtcEl, "filetransfer", {
+        onOpen: (channel) => this.setupChannel(channel),
+        onClose: () => this._handleChannelClose(),
+      });
 
       ports.pushEvent("file_transfer_ready", {});
     },
 
     destroy() {
+      this._unsubscribeChannel?.();
       this._stopProgressUpdates();
       if (this._objectUrl) {
         URL.revokeObjectURL(this._objectUrl);

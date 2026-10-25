@@ -1,4 +1,5 @@
 import { t, jt } from "../i18n.js";
+import { DATA_CHANNELS } from "./data_channels.js";
 /**
  * Media management for audio/video calls — pure logic, no DOM or LiveView dependencies.
  * @module media
@@ -973,8 +974,7 @@ export function deriveFeatureStats(prev, curr) {
       freeze_count: curr.video.freezeCount || 0,
       limitation: curr.video.limitation || "none",
     },
-    game: channel("gamedata"),
-    file: channel("filetransfer"),
+    ...Object.fromEntries(DATA_CHANNELS.map((spec) => [spec.statsKey, channel(spec.label)])),
   };
 }
 
