@@ -24,7 +24,7 @@ import {
 import { PHASE, GAME_MODE, SKIER_STATE } from "./protocol.js";
 import { t, jt } from "../../i18n.js";
 import { gameColor, readGameColors } from "../../game_colors.js";
-import { drawVignette, waitingText } from "../core/render.js";
+import { drawVignette, snowfall, waitingText } from "../core/render.js";
 
 /**
  * Read CSS custom properties from the canvas element.
@@ -49,21 +49,9 @@ export function readColors(canvas) {
   });
 }
 
-/**
- * Generate static snow particle positions (visual-only, non-deterministic).
- */
+/** The falling snow behind the slope. */
 function generateSnowParticles(count) {
-  const particles = [];
-  for (let i = 0; i < count; i++) {
-    particles.push({
-      x: Math.random() * CANVAS_W,
-      y: Math.random() * CANVAS_H,
-      size: 1 + Math.random() * 2,
-      speed: 0.3 + Math.random() * 0.7,
-      drift: (Math.random() - 0.5) * 0.5,
-    });
-  }
-  return particles;
+  return snowfall(count, CANVAS_W, CANVAS_H, { speed: [0.3, 0.7], drift: 0.5 });
 }
 
 /**

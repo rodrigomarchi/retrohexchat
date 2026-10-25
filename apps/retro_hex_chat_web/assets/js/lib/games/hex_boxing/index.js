@@ -8,6 +8,7 @@
  * @module games/hex_boxing
  */
 
+import { settleParticles } from "../core/render.js";
 import { defineGame } from "../core/define_game.js";
 import { createBoxingAI, normalizeBoxingAIDifficulty } from "./ai.js";
 import {
@@ -162,11 +163,7 @@ export default defineGame({
     game.localPunchPressed = false;
     game.remotePunchPressed = false;
   },
-  idle: (game) => {
-    if (!game.particles.length) return;
-    game.particles = updateParticles(game.particles);
-    game.invalidate();
-  },
+  idle: settleParticles(updateParticles),
 
   flow: roundsFlow({
     phases: PHASE,

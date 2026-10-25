@@ -10,6 +10,7 @@
  * @module games/hex_outlaw
  */
 
+import { settleParticles } from "../core/render.js";
 import { defineGame } from "../core/define_game.js";
 import { createOutlawAI, normalizeOutlawAIDifficulty } from "./ai.js";
 import {
@@ -187,11 +188,7 @@ export default defineGame({
     if (input === "up") game.localAimUp = true;
     if (input === "down") game.localAimUp = false;
   },
-  idle: (game) => {
-    if (!game.particles.length) return;
-    game.particles = updateParticles(game.particles);
-    game.invalidate();
-  },
+  idle: settleParticles(updateParticles),
 
   flow: roundsFlow({
     phases: PHASE,

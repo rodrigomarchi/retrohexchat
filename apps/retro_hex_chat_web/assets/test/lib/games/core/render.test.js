@@ -2,6 +2,9 @@ import { describe, it, expect, vi, beforeEach } from "vitest";
 import { recordingCanvas } from "../../../support/games/recording_canvas.js";
 import {
   burst,
+  drawMatchOver,
+  settleParticles,
+  snowfall,
   drawBackground,
   drawCountdown,
   drawScanlines,
@@ -259,5 +262,47 @@ describe("glitched text", () => {
     expect(particles[0].vy).toBeCloseTo(2);
     expect(particles[1]).toMatchObject({ i: 1, life: 0.1 });
     expect(particles[1].vy).toBeCloseTo(-1);
+  });
+
+  it("settleParticles steps the particles and asks for a paint, and does nothing when there are none", () => {
+    const update = vi.fn((ps) => ps.slice(1));
+    const idle = settleParticles(update);
+    const game = { particles: [1, 2], invalidate: vi.fn() };
+
+    idle(game);
+    expect(game.particles).toEqual([2]);
+    expect(game.invalidate).toHaveBeenCalledOnce();
+
+    const still = { particles: [], invalidate: vi.fn() };
+    idle(still);
+    expect(still.invalidate).not.toHaveBeenCalled();
+  });
+
+  it("snowfall scatters flakes across the screen within the fall it is given", () => {
+    const flakes = snowfall(50, 640, 480, { speed: [0.2, 0.5], drift: 0.3 });
+    expect(flakes).toHaveLength(50);
+    for (const f of flakes) {
+      expect(f.x).toBeGreaterThanOrEqual(0);
+      expect(f.x).toBeLessThan(640);
+      expect(f.speed).toBeGreaterThanOrEqual(0.2);
+      expect(f.speed).toBeLessThan(0.7);
+      expect(Math.abs(f.drift)).toBeLessThanOrEqual(0.15);
+    }
+  });
+
+  it("drawMatchOver names the side with more rounds, P1 on a tie", () => {
+    const colors = { fg: "cyan", accent: "magenta", rope: "gold" };
+    const c = recordingCanvas(640, 480);
+    drawMatchOver(c.getContext("2d"), { roundWins1: 1, roundWins2: 2 }, colors, 640, 480);
+    expect(c.log.filter(([op]) => op === "fillText").map(([, text]) => text)).toEqual([
+      "MATCH OVER",
+      "P2 WINS!",
+    ]);
+
+    const tie = recordingCanvas(640, 480);
+    drawMatchOver(tie.getContext("2d"), { roundWins1: 1, roundWins2: 1 }, colors, 640, 480);
+    expect(tie.log.filter(([op]) => op === "fillText").map(([, text]) => text)).toContain(
+      "P1 WINS!",
+    );
   });
 });

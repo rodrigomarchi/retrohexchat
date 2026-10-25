@@ -8,6 +8,7 @@
  * @module games/pixel_tanks
  */
 
+import { settleParticles } from "../core/render.js";
 import { defineGame } from "../core/define_game.js";
 import { createPixelTanksAI, normalizePixelTanksAIDifficulty } from "./ai.js";
 import {
@@ -198,11 +199,7 @@ export default defineGame({
     game.localFirePressed = false;
     game.remoteFirePressed = false;
   },
-  idle: (game) => {
-    if (!game.particles.length) return;
-    game.particles = updateParticles(game.particles);
-    game.invalidate();
-  },
+  idle: settleParticles(updateParticles),
 
   flow: roundsFlow({
     phases: PHASE,

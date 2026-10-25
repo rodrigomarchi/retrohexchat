@@ -382,3 +382,57 @@ export function drawGlitchBanner(
   }
   ctx.restore();
 }
+
+/**
+ * An `idle` hook for a game whose particles keep settling while its
+ * simulation stands still (a round-over pause): one `update` step a tick.
+ * @param {(particles: Array<object>) => Array<object>} update
+ * @returns {(game: { particles: Array<object>, invalidate: () => void }) => void}
+ */
+export function settleParticles(update) {
+  return (game) => {
+    if (!game.particles.length) return;
+    game.particles = update(game.particles);
+    game.invalidate();
+  };
+}
+
+/**
+ * Snowflakes over the whole screen, each drawn at random: where, how big,
+ * how fast it falls (`base` plus up to `spread`) and how far it drifts.
+ * Decoration only: no replay depends on it.
+ * @param {number} count
+ * @param {number} width
+ * @param {number} height
+ * @param {{ speed: [number, number], drift: number }} fall
+ * @returns {Array<{ x: number, y: number, size: number, speed: number, drift: number }>}
+ */
+export function snowfall(count, width, height, { speed: [base, spread], drift }) {
+  const flakes = [];
+  for (let i = 0; i < count; i++) {
+    flakes.push({
+      x: Math.random() * width,
+      y: Math.random() * height,
+      size: 1 + Math.random() * 2,
+      speed: base + Math.random() * spread,
+      drift: (Math.random() - 0.5) * drift,
+    });
+  }
+  return flakes;
+}
+
+/**
+ * The end of a match played in rounds: "MATCH OVER" and the side with more
+ * rounds (P1 on a tie) as the winner.
+ * @param {CanvasRenderingContext2D} ctx
+ * @param {{ roundWins1: number, roundWins2: number }} state
+ * @param {{ fg: string, accent: string, rope: string }} colors
+ * @param {number} width
+ * @param {number} height
+ */
+export function drawMatchOver(ctx, state, colors, width, height) {
+  const winner = state.roundWins1 >= state.roundWins2 ? "P1" : "P2";
+  const color = winner === "P1" ? colors.fg : colors.accent;
+  drawCenterText(ctx, t("MATCH OVER"), 24, colors.rope, width, height);
+  drawCenterText(ctx, jt`${winner} WINS!`, 36, color, width, height, 35);
+}

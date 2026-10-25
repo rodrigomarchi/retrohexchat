@@ -23,7 +23,13 @@ import {
 import { PHASE, PUNCH_STATE } from "./protocol.js";
 import { t, jt } from "../../i18n.js";
 import { gameColor, readGameColors } from "../../game_colors.js";
-import { burst, drawBackground, drawCenterText, stepParticles } from "../core/render.js";
+import {
+  burst,
+  drawBackground,
+  drawCenterText,
+  drawMatchOver,
+  stepParticles,
+} from "../core/render.js";
 
 /**
  * Read CSS custom properties from the canvas element.
@@ -355,13 +361,9 @@ function drawPhaseOverlay(ctx, state, colors, frameCount) {
       }
       break;
     }
-    case PHASE.MATCH_OVER: {
-      const matchWinner = state.roundWins1 >= state.roundWins2 ? "P1" : "P2";
-      const mColor = matchWinner === "P1" ? colors.fg : colors.accent;
-      drawCenterText(ctx, t("MATCH OVER"), 24, colors.rope, CANVAS_W, CANVAS_H);
-      drawCenterText(ctx, jt`${matchWinner} WINS!`, 36, mColor, CANVAS_W, CANVAS_H, 35);
+    case PHASE.MATCH_OVER:
+      drawMatchOver(ctx, state, colors, CANVAS_W, CANVAS_H);
       break;
-    }
     default:
       break;
   }

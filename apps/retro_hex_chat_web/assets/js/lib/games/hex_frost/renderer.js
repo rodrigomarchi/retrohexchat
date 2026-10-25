@@ -35,7 +35,7 @@ import {
 import { PHASE, GAME_MODE, BAILEY_STATE, ENEMY_TYPE, BLOCK_STATE } from "./protocol.js";
 import { t, jt } from "../../i18n.js";
 import { gameColor, readGameColors } from "../../game_colors.js";
-import { drawVignette, waitingText } from "../core/render.js";
+import { drawVignette, snowfall, waitingText } from "../core/render.js";
 
 // ── Color reading ──────────────────────────────────────────────
 
@@ -63,21 +63,9 @@ export function readColors(canvas) {
   });
 }
 
-/**
- * Generate snow particles for visual effects.
- */
+/** The falling snow behind the ice. */
 export function generateSnowParticles(count) {
-  const particles = [];
-  for (let i = 0; i < count; i++) {
-    particles.push({
-      x: Math.random() * CANVAS_W,
-      y: Math.random() * CANVAS_H,
-      size: 1 + Math.random() * 2,
-      speed: 0.2 + Math.random() * 0.5,
-      drift: (Math.random() - 0.5) * 0.3,
-    });
-  }
-  return particles;
+  return snowfall(count, CANVAS_W, CANVAS_H, { speed: [0.2, 0.5], drift: 0.3 });
 }
 
 // ── Main render ────────────────────────────────────────────────
