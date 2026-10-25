@@ -35,6 +35,8 @@ describe("SoundHook", () => {
       })),
       destination: {},
       currentTime: 0,
+      state: "running",
+      close: vi.fn(() => Promise.resolve()),
     };
 
     vi.stubGlobal("AudioContext", function () {
@@ -76,6 +78,19 @@ describe("SoundHook", () => {
 
       simulateEvent(hook, "play_sound", { type: "none" });
       expect(mockAudioCtx.createOscillator).not.toHaveBeenCalled();
+    });
+  });
+
+  // ── teardown ───────────────────────────────────────────
+
+  describe("destroyed", () => {
+    it("closes the AudioContext its sounds opened", () => {
+      mountSoundHook();
+      simulateEvent(hook, "play_sound", { type: "beep" });
+
+      hook.destroyed();
+
+      expect(mockAudioCtx.close).toHaveBeenCalledOnce();
     });
   });
 

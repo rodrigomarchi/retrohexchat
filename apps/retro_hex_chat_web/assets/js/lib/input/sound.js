@@ -1,52 +1,43 @@
 /**
- * Sound catalog and synthesis.
- *
- * Extracted from: sound_hook.js
+ * The notification sounds: one tone each, played through the games' synth,
+ * which opens the AudioContext on the first sound, resumes it when the
+ * browser has suspended it, and closes it on dispose.
  */
+
+import { createSynth, fade } from "../games/core/synth.js";
+
+/** A steady tone dying away exponentially over `dur` seconds. */
+const tone = (wave, freq, dur, vol) => ({ wave, freq, vol: fade(vol, dur, "exp", 0.01), dur });
 
 export const SOUND_CATALOG = {
   none: null,
-  beep: { frequency: 520, duration: 0.1, volume: 0.2, waveType: "sine" },
-  ding_low: { frequency: 440, duration: 0.15, volume: 0.2, waveType: "sine" },
-  ding_high: { frequency: 880, duration: 0.15, volume: 0.25, waveType: "sine" },
-  chime_short: { frequency: 660, duration: 0.12, volume: 0.2, waveType: "sine" },
-  chime_long: { frequency: 660, duration: 0.3, volume: 0.2, waveType: "sine" },
-  chime_high: { frequency: 880, duration: 0.25, volume: 0.25, waveType: "sine" },
-  chime_low: { frequency: 330, duration: 0.25, volume: 0.2, waveType: "sine" },
-  alert: { frequency: 880, duration: 0.3, volume: 0.35, waveType: "square" },
-  buzz: { frequency: 220, duration: 0.2, volume: 0.2, waveType: "sawtooth" },
-  click: { frequency: 1200, duration: 0.05, volume: 0.15, waveType: "square" },
-  ring: { frequency: 740, duration: 0.4, volume: 0.25, waveType: "sine" },
-  notify: { frequency: 600, duration: 0.15, volume: 0.2, waveType: "triangle" },
-  blip: { frequency: 480, duration: 0.08, volume: 0.15, waveType: "sine" },
-  whoosh: { frequency: 300, duration: 0.25, volume: 0.15, waveType: "triangle" },
+  beep: tone("sine", 520, 0.1, 0.2),
+  ding_low: tone("sine", 440, 0.15, 0.2),
+  ding_high: tone("sine", 880, 0.15, 0.25),
+  chime_short: tone("sine", 660, 0.12, 0.2),
+  chime_long: tone("sine", 660, 0.3, 0.2),
+  chime_high: tone("sine", 880, 0.25, 0.25),
+  chime_low: tone("sine", 330, 0.25, 0.2),
+  alert: tone("square", 880, 0.3, 0.35),
+  buzz: tone("sawtooth", 220, 0.2, 0.2),
+  click: tone("square", 1200, 0.05, 0.15),
+  ring: tone("sine", 740, 0.4, 0.25),
+  notify: tone("triangle", 600, 0.15, 0.2),
+  blip: tone("sine", 480, 0.08, 0.15),
+  whoosh: tone("triangle", 300, 0.25, 0.15),
 };
 
 /**
- * Synthesize and play a sound by name.
- *
- * @param {AudioContext} audioCtx - An AudioContext instance
- * @param {string} name - Sound name from SOUND_CATALOG
+ * @returns {{ play: (name: string) => void, dispose: () => void }}
  */
-export function synthesizeSound(audioCtx, name) {
-  const config = SOUND_CATALOG[name];
-  if (!config) return;
-
-  try {
-    const oscillator = audioCtx.createOscillator();
-    const gainNode = audioCtx.createGain();
-
-    oscillator.connect(gainNode);
-    gainNode.connect(audioCtx.destination);
-
-    oscillator.type = config.waveType;
-    oscillator.frequency.setValueAtTime(config.frequency, audioCtx.currentTime);
-    gainNode.gain.setValueAtTime(config.volume, audioCtx.currentTime);
-    gainNode.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + config.duration);
-
-    oscillator.start(audioCtx.currentTime);
-    oscillator.stop(audioCtx.currentTime + config.duration);
-  } catch {
-    // Audio not available
-  }
+export function createNotificationSounds() {
+  const synth = createSynth();
+  return {
+    /** Play a sound by its catalog name; "none" and unknown names are silent. */
+    play(name) {
+      const sound = Object.hasOwn(SOUND_CATALOG, name) ? SOUND_CATALOG[name] : null;
+      if (sound) synth.play(sound);
+    },
+    dispose: () => synth.dispose(),
+  };
 }

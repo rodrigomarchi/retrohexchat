@@ -1,62 +1,118 @@
-import { SOUND_CATALOG, synthesizeSound } from "../../../js/lib/input/sound.js";
+import { SOUND_CATALOG, createNotificationSounds } from "../../../js/lib/input/sound.js";
 
-describe("lib/sound", () => {
+/** An AudioContext that writes down every node and every scheduled value. */
+function recordingContext({ state = "running" } = {}) {
+  const calls = [];
+  const param = (name) => ({
+    setValueAtTime: (v, t) => calls.push([name, "set", v, t]),
+    linearRampToValueAtTime: (v, t) => calls.push([name, "linear", v, t]),
+    exponentialRampToValueAtTime: (v, t) => calls.push([name, "exp", v, t]),
+  });
+  const ctx = {
+    state,
+    currentTime: 0,
+    destination: { name: "speakers" },
+    calls,
+    resume: vi.fn(() => Promise.resolve()),
+    close: vi.fn(() => Promise.resolve()),
+    createOscillator: vi.fn(() => {
+      const osc = {
+        frequency: param("freq"),
+        connect: (node) => calls.push(["osc→", node.kind]),
+        start: (t) => calls.push(["start", t]),
+        stop: (t) => calls.push(["stop", t]),
+      };
+      Object.defineProperty(osc, "type", {
+        set(wave) {
+          calls.push(["wave", wave]);
+        },
+      });
+      return osc;
+    }),
+    createGain: vi.fn(() => ({
+      kind: "gain",
+      gain: param("vol"),
+      connect: (node) => calls.push(["gain→", node.name]),
+    })),
+  };
+  return ctx;
+}
+
+describe("lib/input/sound", () => {
+  let ctx;
+
+  beforeEach(() => {
+    ctx = recordingContext();
+    vi.stubGlobal("AudioContext", function () {
+      return ctx;
+    });
+  });
+
+  afterEach(() => {
+    vi.unstubAllGlobals();
+  });
+
   describe("SOUND_CATALOG", () => {
     it("has 'none' as null", () => {
       expect(SOUND_CATALOG.none).toBeNull();
     });
 
-    it("has 14 named sounds", () => {
+    it("has 14 named sounds, each one voice", () => {
       const sounds = Object.entries(SOUND_CATALOG).filter(([, v]) => v !== null);
       expect(sounds).toHaveLength(14);
-    });
-
-    it("each sound has required fields", () => {
-      Object.entries(SOUND_CATALOG).forEach(([_name, config]) => {
-        if (config === null) return;
-        expect(config).toHaveProperty("frequency");
-        expect(config).toHaveProperty("duration");
-        expect(config).toHaveProperty("volume");
-        expect(config).toHaveProperty("waveType");
-      });
+      for (const [, voice] of sounds) {
+        expect(voice).toEqual({
+          wave: expect.any(String),
+          freq: expect.any(Number),
+          vol: expect.any(Array),
+          dur: expect.any(Number),
+        });
+      }
     });
   });
 
-  describe("synthesizeSound", () => {
-    function mockCtx() {
-      return {
-        createOscillator: vi.fn(() => ({
-          connect: vi.fn(),
-          type: "",
-          frequency: { setValueAtTime: vi.fn() },
-          start: vi.fn(),
-          stop: vi.fn(),
-        })),
-        createGain: vi.fn(() => ({
-          connect: vi.fn(),
-          gain: { setValueAtTime: vi.fn(), exponentialRampToValueAtTime: vi.fn() },
-        })),
-        destination: {},
-        currentTime: 0,
-      };
-    }
+  describe("createNotificationSounds", () => {
+    it("plays a tone that dies away exponentially, through one gain to the speakers", () => {
+      createNotificationSounds().play("beep");
 
-    it("creates oscillator for known sound", () => {
-      const ctx = mockCtx();
-      synthesizeSound(ctx, "beep");
-      expect(ctx.createOscillator).toHaveBeenCalled();
+      expect(ctx.calls).toEqual(
+        expect.arrayContaining([
+          ["wave", "sine"],
+          ["freq", "set", 520, 0],
+          ["vol", "set", 0.2, 0],
+          ["vol", "exp", 0.01, 0.1],
+          ["osc→", "gain"],
+          ["gain→", "speakers"],
+          ["start", 0],
+          ["stop", 0.1],
+        ]),
+      );
+      expect(ctx.createOscillator).toHaveBeenCalledOnce();
     });
 
-    it("does not create oscillator for unknown sound", () => {
-      const ctx = mockCtx();
-      synthesizeSound(ctx, "nonexistent");
+    it.each(["none", "nonexistent", "toString"])("plays nothing for %s", (name) => {
+      createNotificationSounds().play(name);
       expect(ctx.createOscillator).not.toHaveBeenCalled();
     });
 
-    it("does not create oscillator for 'none'", () => {
-      const ctx = mockCtx();
-      synthesizeSound(ctx, "none");
-      expect(ctx.createOscillator).not.toHaveBeenCalled();
+    it("wakes a context the browser has suspended", () => {
+      ctx = recordingContext({ state: "suspended" });
+      createNotificationSounds().play("ding_low");
+      expect(ctx.resume).toHaveBeenCalled();
+    });
+
+    it("closes its context when disposed", () => {
+      const sounds = createNotificationSounds();
+      sounds.play("click");
+      sounds.dispose();
+      expect(ctx.close).toHaveBeenCalledOnce();
+    });
+
+    it("stays quiet, without throwing, where audio cannot start", () => {
+      vi.stubGlobal("AudioContext", function () {
+        throw new Error("no audio here");
+      });
+      expect(() => createNotificationSounds().play("alert")).not.toThrow();
     });
   });
 });

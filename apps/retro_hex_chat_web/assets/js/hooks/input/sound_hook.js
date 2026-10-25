@@ -1,20 +1,19 @@
 /**
  * LiveView hook for notification sounds.
  *
- * Uses the Web Audio API to generate short synthesized tones.
- * Supports a catalog of 14 named sounds plus "none".
- * Respects the server-rendered mute setting.
+ * Plays the catalog's synthesized tones (lib/input/sound.js) when the server
+ * asks, unless the server-rendered mute setting is on.
  */
-import { SOUND_CATALOG, synthesizeSound } from "../../lib/input/sound.js";
+import { createNotificationSounds } from "../../lib/input/sound.js";
 
 const SoundHook = {
   mounted() {
-    this.audioCtx = null;
+    this.sounds = createNotificationSounds();
     this.syncMutedFromDataset();
 
     this.handleEvent("play_sound", ({ type }) => {
       if (!this.muted) {
-        this.playSound(type);
+        this.sounds.play(type);
       }
     });
 
@@ -29,20 +28,12 @@ const SoundHook = {
     this.syncMutedFromDataset();
   },
 
+  destroyed() {
+    this.sounds.dispose();
+  },
+
   syncMutedFromDataset() {
     this.muted = this.el.dataset.muted === "true";
-  },
-
-  getAudioContext() {
-    if (!this.audioCtx) {
-      this.audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-    }
-    return this.audioCtx;
-  },
-
-  playSound(name) {
-    if (!SOUND_CATALOG[name]) return;
-    synthesizeSound(this.getAudioContext(), name);
   },
 };
 
