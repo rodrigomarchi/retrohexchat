@@ -19,4 +19,20 @@ describe("the debris field over P2P", () => {
     const where = (side) => match.engines[side].gameState.asteroids.map(({ x, y }) => [x, y]);
     expect(where("guest")).toEqual(where("host"));
   });
+
+  it("is the host's even when the host's field came from seed 0", async () => {
+    // 188346 is a match seed whose first draw makes the field's seed 0.
+    match = await playMatch({
+      gameId: "debris_field",
+      mode: "p2p",
+      seed: 2,
+      matchSeed: { host: 188346, guest: 7 },
+    });
+    match.runUntil(() => match.engines.host.gameState.phase === PHASE.PLAYING, 30_000);
+    match.advance(100);
+
+    expect(match.engines.host.gameState.asteroidSeed).toBe(0);
+    const where = (side) => match.engines[side].gameState.asteroids.map(({ x, y }) => [x, y]);
+    expect(where("guest")).toEqual(where("host"));
+  });
 });

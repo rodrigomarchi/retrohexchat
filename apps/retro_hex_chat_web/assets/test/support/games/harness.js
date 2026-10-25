@@ -25,8 +25,9 @@ import { seedRandom } from "./seeded_random.js";
  * @param {string} options.gameId
  * @param {"p2p"|"solo"} [options.mode]
  * @param {number} [options.seed]
- * @param {number} [options.matchSeed] - the match's own seed (`options.seed` of
- *   the engines), apart from the page's `Math.random`
+ * @param {number|{host: number, guest: number}} [options.matchSeed] - the
+ *   match's own seed (`options.seed` of the engines), apart from the page's
+ *   `Math.random`; one for both sides, or one per side
  * @param {string} [options.difficulty] - solo
  * @param {(data: ArrayBuffer, dir: string) => boolean} [options.drop]
  * @param {Array<{at: number, side: "host"|"guest", key: string, down: boolean}>} [options.script]
@@ -67,7 +68,10 @@ export async function playMatch({
   // empty answer slowly, and some renderers ask dozens of times a frame.
   vi.stubGlobal("getComputedStyle", () => ({ getPropertyValue: () => "" }));
 
-  const seeded = matchSeed === undefined ? {} : { seed: matchSeed };
+  const seededFor = (side) => {
+    if (matchSeed === undefined) return {};
+    return { seed: typeof matchSeed === "object" ? matchSeed[side] : matchSeed };
+  };
   const results = { host: [], guest: [] };
   const keyboards = { host: new EventTarget(), guest: new EventTarget() };
   const canvases = { host: recordingCanvas(width, height) };
@@ -95,7 +99,7 @@ export async function playMatch({
       isHost: true,
       difficulty,
       onGameEnd: (result) => results.host.push(result),
-      engineOptions: { keyboardTarget: keyboards.host, ...seeded },
+      engineOptions: { keyboardTarget: keyboards.host, ...seededFor("host") },
     });
   } else {
     pair = channelPair({ drop });
@@ -107,7 +111,7 @@ export async function playMatch({
         channel: pair[side],
         isHost: side === "host",
         onGameEnd: (result) => results[side].push(result),
-        engineOptions: { keyboardTarget: keyboards[side], ...seeded },
+        engineOptions: { keyboardTarget: keyboards[side], ...seededFor(side) },
       });
     }
   }
