@@ -23,7 +23,7 @@ const NicklistHook = {
     this._listeners = [
       ["pointerdown", (e) => this.startLongPress(e)],
       ["pointermove", (e) => this.longPress.move(e.clientX, e.clientY)],
-      ["pointerup", (e) => this.finishLongPress(e)],
+      ["pointerup", (e) => this.longPress.finishEvent(e)],
       ["pointercancel", () => this.longPress.cancel()],
       ["click", (e) => this.suppressLongPressClick(e), true],
       ["contextmenu", (e) => this.openMenu(e)],
@@ -102,13 +102,6 @@ const NicklistHook = {
 
     cancelNickHoverTimer();
     this.longPress.start(e.clientX, e.clientY, { nick, x: e.clientX, y: e.clientY });
-  },
-
-  finishLongPress(e) {
-    if (this.longPress.finish()) {
-      e.preventDefault();
-      e.stopPropagation();
-    }
   },
 };
 

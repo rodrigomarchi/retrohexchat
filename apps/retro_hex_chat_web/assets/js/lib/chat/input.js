@@ -53,40 +53,34 @@ export function detectTrigger(value, cursorPos, getArgContext) {
     }
   }
 
-  // Nick trigger: "@" at word boundary
   const textBeforeCursor = value.slice(0, cursorPos);
 
-  for (let i = textBeforeCursor.length - 1; i >= 0; i--) {
-    const ch = textBeforeCursor[i];
-    if (ch === " " || ch === "\t") break;
-    if (ch === "@") {
-      const isWordBoundary = i === 0 || /\s/.test(textBeforeCursor[i - 1]);
-      if (isWordBoundary) {
-        const partial = textBeforeCursor.slice(i + 1);
-        if (partial.length >= 1) {
-          return { type: "nick", partial };
-        }
-      }
-      break;
+  const nick = triggerBefore(textBeforeCursor, "@");
+  if (nick !== null) return { type: "nick", partial: nick };
+
+  const channel = triggerBefore(textBeforeCursor, "#");
+  if (channel !== null) return { type: "channel", partial: channel };
+
+  return null;
+}
+
+/**
+ * The word being typed when it starts with `char` ("@" or "#") at a word
+ * boundary and has at least one character after it, else null.
+ * @param {string} text - the text before the cursor
+ * @param {string} char
+ * @returns {string | null}
+ */
+function triggerBefore(text, char) {
+  for (let i = text.length - 1; i >= 0; i--) {
+    const ch = text[i];
+    if (ch === " " || ch === "\t") return null;
+    if (ch === char) {
+      const atWordStart = i === 0 || /\s/.test(text[i - 1]);
+      const partial = text.slice(i + 1);
+      return atWordStart && partial.length >= 1 ? partial : null;
     }
   }
-
-  // Channel trigger: "#" at word boundary
-  for (let i = textBeforeCursor.length - 1; i >= 0; i--) {
-    const ch = textBeforeCursor[i];
-    if (ch === " " || ch === "\t") break;
-    if (ch === "#") {
-      const isWordBoundary = i === 0 || /\s/.test(textBeforeCursor[i - 1]);
-      if (isWordBoundary) {
-        const partial = textBeforeCursor.slice(i + 1);
-        if (partial.length >= 1) {
-          return { type: "channel", partial };
-        }
-      }
-      break;
-    }
-  }
-
   return null;
 }
 
@@ -117,25 +111,31 @@ export function getArgumentContext(cmdName) {
  * @returns {number} maxHeight in pixels
  */
 export function computeMaxHeight(el, maxLines) {
-  const style = getComputedStyle(el);
-  const lineHeight = parsePixelValue(style.lineHeight, 18.2);
-  const paddingTop = parsePixelValue(style.paddingTop);
-  const paddingBottom = parsePixelValue(style.paddingBottom);
-  const borderTop = parsePixelValue(style.borderTopWidth);
-  const borderBottom = parsePixelValue(style.borderBottomWidth);
-  return lineHeight * maxLines + paddingTop + paddingBottom + borderTop + borderBottom;
+  const { lineHeight, around } = boxMetrics(el);
+  return around(lineHeight * maxLines);
 }
 
 function computeSingleLineHeight(el) {
+  const { style, lineHeight, around } = boxMetrics(el);
+  return Math.max(parsePixelValue(style.minHeight), around(lineHeight));
+}
+
+/**
+ * A textarea's line height, and `around(height)`: that height with the
+ * padding and border above and below added, in that order.
+ * @param {HTMLTextAreaElement} el
+ */
+function boxMetrics(el) {
   const style = getComputedStyle(el);
-  const lineHeight = parsePixelValue(style.lineHeight, 18.2);
   const paddingTop = parsePixelValue(style.paddingTop);
   const paddingBottom = parsePixelValue(style.paddingBottom);
   const borderTop = parsePixelValue(style.borderTopWidth);
   const borderBottom = parsePixelValue(style.borderBottomWidth);
-  const minHeight = parsePixelValue(style.minHeight);
-
-  return Math.max(minHeight, lineHeight + paddingTop + paddingBottom + borderTop + borderBottom);
+  return {
+    style,
+    lineHeight: parsePixelValue(style.lineHeight, 18.2),
+    around: (height) => height + paddingTop + paddingBottom + borderTop + borderBottom,
+  };
 }
 
 function parsePixelValue(value, fallback = 0) {

@@ -73,8 +73,8 @@ const ConversationsHook = {
     );
 
     this._pointerDown = (e) => this.startLongPress(e);
-    this._pointerMove = (e) => this.moveLongPress(e);
-    this._pointerUp = (e) => this.finishLongPress(e);
+    this._pointerMove = (e) => this.longPress.moveEvent(e);
+    this._pointerUp = (e) => this.longPress.finishEvent(e);
     this._pointerCancel = () => this.longPress.cancel();
 
     this.el.addEventListener("pointerdown", this._pointerDown);
@@ -156,17 +156,6 @@ const ConversationsHook = {
     if (!channel && !nick) return;
 
     this.longPress.start(e.clientX, e.clientY, { channel, nick, x: e.clientX, y: e.clientY });
-  },
-
-  moveLongPress(e) {
-    this.longPress.move(e.clientX, e.clientY);
-  },
-
-  finishLongPress(e) {
-    if (this.longPress.finish()) {
-      e.preventDefault();
-      e.stopPropagation();
-    }
   },
 
   fireLongPress({ channel, nick, x, y }) {

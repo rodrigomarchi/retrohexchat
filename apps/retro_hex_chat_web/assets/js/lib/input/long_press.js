@@ -88,6 +88,19 @@ export function createLongPress({
       return fired;
     },
 
+    /** `move` from a pointer event. */
+    moveEvent(e) {
+      this.move(e.clientX, e.clientY);
+    },
+
+    /** `finish` from a pointer event: a press that fired keeps its release from the page. */
+    finishEvent(e) {
+      if (this.finish()) {
+        e.preventDefault();
+        e.stopPropagation();
+      }
+    },
+
     cancel({ keepClickSuppression = false } = {}) {
       if (state?.timer) disarm(state.timer);
       state = null;

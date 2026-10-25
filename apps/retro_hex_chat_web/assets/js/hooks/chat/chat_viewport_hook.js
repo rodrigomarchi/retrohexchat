@@ -233,8 +233,8 @@ const ChatViewportHook = {
     });
 
     this.on(list, "pointerdown", (e) => this.startLongPress(e));
-    this.on(list, "pointermove", (e) => this.moveLongPress(e));
-    this.on(list, "pointerup", (e) => this.finishLongPress(e));
+    this.on(list, "pointermove", (e) => this.longPress.moveEvent(e));
+    this.on(list, "pointerup", (e) => this.longPress.finishEvent(e));
     this.on(list, "pointercancel", () => this.longPress.cancel());
 
     this.on(list, "dblclick", (e) => {
@@ -338,17 +338,6 @@ const ChatViewportHook = {
       x: e.clientX,
       y: e.clientY,
     });
-  },
-
-  moveLongPress(e) {
-    this.longPress.move(e.clientX, e.clientY);
-  },
-
-  finishLongPress(e) {
-    if (this.longPress.finish()) {
-      e.preventDefault();
-      e.stopPropagation();
-    }
   },
 
   fireLongPress({ msgEl, target, x, y }) {

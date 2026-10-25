@@ -150,4 +150,33 @@ describe("createLongPress", () => {
     expect(LONG_PRESS_MS).toBe(550);
     expect(MOVE_TOLERANCE_PX).toBe(10);
   });
+
+  it("reads pointer events: a move past the tolerance cancels, a fired release is kept from the page", () => {
+    const event = (x, y) => ({
+      clientX: x,
+      clientY: y,
+      preventDefault: vi.fn(),
+      stopPropagation: vi.fn(),
+    });
+
+    const moved = machine();
+    moved.start(0, 0, {});
+    moved.moveEvent(event(50, 0));
+    clock.tick();
+    expect(onFire).not.toHaveBeenCalled();
+
+    const held = machine();
+    held.start(0, 0, {});
+    clock.tick();
+    const release = event(0, 0);
+    held.finishEvent(release);
+    expect(release.preventDefault).toHaveBeenCalled();
+    expect(release.stopPropagation).toHaveBeenCalled();
+
+    const tapped = machine();
+    tapped.start(0, 0, {});
+    const tap = event(0, 0);
+    tapped.finishEvent(tap);
+    expect(tap.preventDefault).not.toHaveBeenCalled();
+  });
 });

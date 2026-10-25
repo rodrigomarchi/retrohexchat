@@ -57,6 +57,23 @@ export function createDataChannelTransport(channel) {
 }
 
 /**
+ * The add/remove half of an event target, over `listeners` (type → Set).
+ * @param {Map<string, Set<Function>>} listeners
+ */
+function subscriptions(listeners) {
+  return {
+    addEventListener(type, listener) {
+      if (!listeners.has(type)) listeners.set(type, new Set());
+      listeners.get(type).add(listener);
+    },
+
+    removeEventListener(type, listener) {
+      listeners.get(type)?.delete(listener);
+    },
+  };
+}
+
+/**
  * Create a local in-process transport for solo game runtimes.
  *
  * @returns {object}
@@ -70,14 +87,7 @@ export function createLocalTransport() {
     telemetryState: "local",
     bufferedAmount: 0,
 
-    addEventListener(type, listener) {
-      if (!listeners.has(type)) listeners.set(type, new Set());
-      listeners.get(type).add(listener);
-    },
-
-    removeEventListener(type, listener) {
-      listeners.get(type)?.delete(listener);
-    },
+    ...subscriptions(listeners),
 
     send() {
       return true;
@@ -104,14 +114,7 @@ export function createSpectatorTransport() {
     telemetryState: "spectator",
     bufferedAmount: 0,
 
-    addEventListener(type, listener) {
-      if (!listeners.has(type)) listeners.set(type, new Set());
-      listeners.get(type).add(listener);
-    },
-
-    removeEventListener(type, listener) {
-      listeners.get(type)?.delete(listener);
-    },
+    ...subscriptions(listeners),
 
     send() {
       return false;
