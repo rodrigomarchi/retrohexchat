@@ -18,30 +18,11 @@ import {
 } from "../../../../js/lib/games/hex_skiing/physics.js";
 
 // Must mock audio BEFORE importing engine
-vi.mock("../../../../js/lib/games/hex_skiing/audio.js", () => ({
-  HexSkiingAudio: function () {
-    return {
-      playCountdown: vi.fn(),
-      playCountdownGo: vi.fn(),
-      startSkiDrone: vi.fn(),
-      stopSkiDrone: vi.fn(),
-      updateSkiPitch: vi.fn(),
-      playCollisionTree: vi.fn(),
-      playCollisionRock: vi.fn(),
-      playGateCleared: vi.fn(),
-      playSpeedBoost: vi.fn(),
-      playIcePatch: vi.fn(),
-      playBlizzardStart: vi.fn(),
-      playBlizzardEnd: vi.fn(),
-      playEngulfed: vi.fn(),
-      playRoundEnd: vi.fn(),
-      playVictory: vi.fn(),
-      playGameOver: vi.fn(),
-      playAvalancheRumble: vi.fn(),
-      dispose: vi.fn(),
-    };
-  },
-}));
+vi.mock("../../../../js/lib/games/core/synth.js", async (importOriginal) => {
+  const synth = await importOriginal();
+  const { spySounds } = await import("../../../helpers/spy_sounds.js");
+  return { ...synth, createGameAudio: (spec) => spySounds(synth.createGameAudio(spec)) };
+});
 
 // Must mock renderer
 vi.mock("../../../../js/lib/games/hex_skiing/renderer.js", () => ({

@@ -14,7 +14,6 @@
 
 import { defineGame } from "../core/define_game.js";
 import { matchResult } from "../core/result.js";
-import { HexSkiingAudio } from "./audio.js";
 import { normalizeSkiingAIDifficulty } from "./difficulty.js";
 import {
   checkCollisions,
@@ -36,6 +35,7 @@ import {
 } from "./physics.js";
 import { EVENT, GAME_END, GAME_MODE, PHASE, SNAPSHOT } from "./protocol.js";
 import { generateSnowParticles, readColors, render } from "./renderer.js";
+import { SOUNDS, extend } from "./sounds.js";
 
 const COUNTDOWN_STEPS = 60; // steps per countdown beat
 const ROUND_END_STEPS = 180; // steps the round's end shows
@@ -157,7 +157,7 @@ export default defineGame({
     difficulty: normalizeSkiingAIDifficulty,
     observe: (game) => ({ state: game.gameState, player: 2, difficulty: game.difficulty }),
   },
-  audio: HexSkiingAudio,
+  audio: { sounds: SOUNDS, extend },
   theme: readColors,
   // There is no slope until the host draws its seed on start.
   init: (game) => {
