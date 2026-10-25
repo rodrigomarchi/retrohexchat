@@ -184,6 +184,48 @@ defmodule RetroHexChat.Channels.ServerTest do
     end
   end
 
+  describe "ban and invite exceptions" do
+    setup do
+      channel = unique_channel()
+      {:ok, _pid} = start_channel(channel)
+      {:ok, _} = Server.join(channel, "op")
+      {:ok, _} = Server.join(channel, "guest")
+      Phoenix.PubSub.subscribe(RetroHexChat.PubSub, "channel:#{channel}")
+      %{channel: channel}
+    end
+
+    test "an operator adds and removes each kind, and the room hears of each", %{channel: channel} do
+      assert :ok = Server.add_ban_exception(channel, "op", "friend")
+
+      assert_receive {:ban_exception_added,
+                      %{channel: ^channel, nickname: "friend", added_by: "op"}}
+
+      assert :ok = Server.add_invite_exception(channel, "op", "friend")
+      assert_receive {:invite_exception_added, %{nickname: "friend", added_by: "op"}}
+
+      {:ok, state} = Server.get_state(channel)
+      assert "friend" in state.ban_exceptions
+      assert "friend" in state.invite_exceptions
+
+      assert :ok = Server.remove_ban_exception(channel, "op", "friend")
+      assert_receive {:ban_exception_removed, %{nickname: "friend", removed_by: "op"}}
+
+      assert :ok = Server.remove_invite_exception(channel, "op", "friend")
+      assert_receive {:invite_exception_removed, %{nickname: "friend", removed_by: "op"}}
+
+      {:ok, state} = Server.get_state(channel)
+      refute "friend" in state.ban_exceptions
+      refute "friend" in state.invite_exceptions
+    end
+
+    test "somebody who is not an operator changes neither", %{channel: channel} do
+      assert {:error, _} = Server.add_ban_exception(channel, "guest", "friend")
+      assert {:error, _} = Server.add_invite_exception(channel, "guest", "friend")
+      refute_receive {:ban_exception_added, _}, 50
+      refute_receive {:invite_exception_added, _}, 50
+    end
+  end
+
   describe "channel mutes" do
     test "temporary channel mute is durable and enqueues expiry" do
       channel = unique_channel()

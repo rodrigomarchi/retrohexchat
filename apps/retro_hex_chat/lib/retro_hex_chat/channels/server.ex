@@ -954,102 +954,17 @@ defmodule RetroHexChat.Channels.Server do
     end
   end
 
-  def handle_call({:add_ban_exception, operator_nick, target_nick}, _from, state) do
-    if Policy.operator?(state.membership, operator_nick) do
-      new_exceptions = Nickname.put(state.ban_exceptions, target_nick)
-      new_state = %{state | ban_exceptions: new_exceptions}
+  def handle_call({:add_ban_exception, operator_nick, target_nick}, _from, state),
+    do: change_exception(state, :ban_exception, :add, operator_nick, target_nick)
 
-      maybe_persist_exception(:ban_exception, :add, state.name, target_nick, operator_nick, state)
+  def handle_call({:remove_ban_exception, operator_nick, target_nick}, _from, state),
+    do: change_exception(state, :ban_exception, :remove, operator_nick, target_nick)
 
-      broadcast(
-        state.name,
-        {:ban_exception_added,
-         %{channel: state.name, nickname: target_nick, added_by: operator_nick}}
-      )
+  def handle_call({:add_invite_exception, operator_nick, target_nick}, _from, state),
+    do: change_exception(state, :invite_exception, :add, operator_nick, target_nick)
 
-      reply(:ok, new_state)
-    else
-      reply({:error, dgettext("channels", "You must be a channel operator")}, state)
-    end
-  end
-
-  def handle_call({:remove_ban_exception, operator_nick, target_nick}, _from, state) do
-    if Policy.operator?(state.membership, operator_nick) do
-      new_exceptions = Nickname.delete(state.ban_exceptions, target_nick)
-      new_state = %{state | ban_exceptions: new_exceptions}
-
-      maybe_persist_exception(
-        :ban_exception,
-        :remove,
-        state.name,
-        target_nick,
-        operator_nick,
-        state
-      )
-
-      broadcast(
-        state.name,
-        {:ban_exception_removed,
-         %{channel: state.name, nickname: target_nick, removed_by: operator_nick}}
-      )
-
-      reply(:ok, new_state)
-    else
-      reply({:error, dgettext("channels", "You must be a channel operator")}, state)
-    end
-  end
-
-  def handle_call({:add_invite_exception, operator_nick, target_nick}, _from, state) do
-    if Policy.operator?(state.membership, operator_nick) do
-      new_exceptions = Nickname.put(state.invite_exceptions, target_nick)
-      new_state = %{state | invite_exceptions: new_exceptions}
-
-      maybe_persist_exception(
-        :invite_exception,
-        :add,
-        state.name,
-        target_nick,
-        operator_nick,
-        state
-      )
-
-      broadcast(
-        state.name,
-        {:invite_exception_added,
-         %{channel: state.name, nickname: target_nick, added_by: operator_nick}}
-      )
-
-      reply(:ok, new_state)
-    else
-      reply({:error, dgettext("channels", "You must be a channel operator")}, state)
-    end
-  end
-
-  def handle_call({:remove_invite_exception, operator_nick, target_nick}, _from, state) do
-    if Policy.operator?(state.membership, operator_nick) do
-      new_exceptions = Nickname.delete(state.invite_exceptions, target_nick)
-      new_state = %{state | invite_exceptions: new_exceptions}
-
-      maybe_persist_exception(
-        :invite_exception,
-        :remove,
-        state.name,
-        target_nick,
-        operator_nick,
-        state
-      )
-
-      broadcast(
-        state.name,
-        {:invite_exception_removed,
-         %{channel: state.name, nickname: target_nick, removed_by: operator_nick}}
-      )
-
-      reply(:ok, new_state)
-    else
-      reply({:error, dgettext("channels", "You must be a channel operator")}, state)
-    end
-  end
+  def handle_call({:remove_invite_exception, operator_nick, target_nick}, _from, state),
+    do: change_exception(state, :invite_exception, :remove, operator_nick, target_nick)
 
   def handle_call({:unban, operator_nick, target_nick}, _from, state) do
     if Policy.operator?(state.membership, operator_nick) do
@@ -1937,6 +1852,39 @@ defmodule RetroHexChat.Channels.Server do
        do: content_format
 
   defp persisted_content_format(_message, fallback), do: fallback
+
+  # Where each kind of exception is kept, and what the room is told when one
+  # is added or removed.
+  @exception_lists %{ban_exception: :ban_exceptions, invite_exception: :invite_exceptions}
+  @exception_events %{
+    {:ban_exception, :add} => {:ban_exception_added, :added_by},
+    {:ban_exception, :remove} => {:ban_exception_removed, :removed_by},
+    {:invite_exception, :add} => {:invite_exception_added, :added_by},
+    {:invite_exception, :remove} => {:invite_exception_removed, :removed_by}
+  }
+
+  # An operator adds a nickname to, or removes it from, the ban or invite
+  # exceptions: kept, persisted when the channel is registered, and announced.
+  defp change_exception(state, kind, action, operator_nick, target_nick) do
+    if Policy.operator?(state.membership, operator_nick) do
+      field = Map.fetch!(@exception_lists, kind)
+      change = if action == :add, do: &Nickname.put/2, else: &Nickname.delete/2
+      new_state = Map.put(state, field, change.(Map.fetch!(state, field), target_nick))
+
+      maybe_persist_exception(kind, action, state.name, target_nick, operator_nick, state)
+
+      {event, by} = Map.fetch!(@exception_events, {kind, action})
+
+      broadcast(
+        state.name,
+        {event, %{:channel => state.name, :nickname => target_nick, by => operator_nick}}
+      )
+
+      reply(:ok, new_state)
+    else
+      reply({:error, dgettext("channels", "You must be a channel operator")}, state)
+    end
+  end
 
   defp maybe_persist_exception(type, action, channel_name, nickname, added_by, state) do
     if state.registered do
