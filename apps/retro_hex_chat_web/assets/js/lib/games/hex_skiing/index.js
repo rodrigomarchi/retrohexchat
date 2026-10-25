@@ -155,6 +155,7 @@ export default defineGame({
   captureKeys: ["ArrowLeft", "ArrowRight", "a", "A", "d", "D"],
   schema: { snapshot: SNAPSHOT, end: GAME_END },
   ai: {
+    load: () => import("./ai.js").then((module) => module.createHexSkiingAI),
     difficulty: normalizeSkiingAIDifficulty,
     observe: (game) => ({ state: game.gameState, player: 2, difficulty: game.difficulty }),
   },

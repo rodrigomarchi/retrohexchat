@@ -272,7 +272,10 @@ export default defineGame({
     "Q",
   ],
   schema: { snapshot: SNAPSHOT, end: GAME_END },
-  ai: { difficulty: normalizeRaidAIDifficulty },
+  ai: {
+    load: () => import("./ai.js").then((module) => module.createHexRaidAI),
+    difficulty: normalizeRaidAIDifficulty,
+  },
   audio: { sounds: SOUNDS },
   theme: getColors,
   // The game id picks the mode; only the host seeds the river.

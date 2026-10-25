@@ -1,101 +1,26 @@
 import { GameEngine } from "../game_engine.js";
 import { aiRandom, freshSeed } from "./core/rng.js";
 import { createLocalTransport, normalizeGameTransport } from "./transport.js";
+import REGISTRY from "./registry.json";
 
-const P2P_ENGINE_LOADERS = {
-  hex_pong: () => import("./pong/index.js").then((module) => module.default),
-  block_breakers: () => import("./breakout/index.js").then((module) => module.default),
-  light_trails: () => import("./surround/index.js").then((module) => module.default),
-  star_duel: () => import("./star_duel/index.js").then((module) => module.default),
-  gravity_well: () => import("./star_duel/index.js").then((module) => module.default),
-  debris_field: () => import("./star_duel/index.js").then((module) => module.default),
-  hex_warlords: () => import("./warlords/index.js").then((module) => module.default),
-  pixel_tanks: () => import("./pixel_tanks/index.js").then((module) => module.default),
-  hex_raid: () => import("./hex_raid/index.js").then((module) => module.default),
-  hex_raid_pacifist: () => import("./hex_raid/index.js").then((module) => module.default),
-  hex_raid_blitz: () => import("./hex_raid/index.js").then((module) => module.default),
-  hex_boxing: () => import("./hex_boxing/index.js").then((module) => module.default),
-  hex_outlaw: () => import("./hex_outlaw/index.js").then((module) => module.default),
-  hex_outlaw_ricochet: () => import("./hex_outlaw/index.js").then((module) => module.default),
-  hex_outlaw_stagecoach: () => import("./hex_outlaw/index.js").then((module) => module.default),
-  hex_outlaw_nml: () => import("./hex_outlaw/index.js").then((module) => module.default),
-  hex_invaders: () => import("./hex_invaders/index.js").then((module) => module.default),
-  hex_invaders_coop: () => import("./hex_invaders/index.js").then((module) => module.default),
-  hex_invaders_blitz: () => import("./hex_invaders/index.js").then((module) => module.default),
-  hex_enduro: () => import("./hex_enduro/index.js").then((module) => module.default),
-  hex_enduro_night: () => import("./hex_enduro/index.js").then((module) => module.default),
-  hex_enduro_sprint: () => import("./hex_enduro/index.js").then((module) => module.default),
-  hex_tennis: () => import("./hex_tennis/index.js").then((module) => module.default),
-  hex_tennis_quick: () => import("./hex_tennis/index.js").then((module) => module.default),
-  hex_tennis_sudden: () => import("./hex_tennis/index.js").then((module) => module.default),
-  hex_skiing: () => import("./hex_skiing/index.js").then((module) => module.default),
-  hex_skiing_escape: () => import("./hex_skiing/index.js").then((module) => module.default),
-  hex_skiing_clean: () => import("./hex_skiing/index.js").then((module) => module.default),
-  hex_frost: () => import("./hex_frost/index.js").then((module) => module.default),
-  hex_frost_blizzard: () => import("./hex_frost/index.js").then((module) => module.default),
-  hex_frost_peaceful: () => import("./hex_frost/index.js").then((module) => module.default),
-  hex_hockey: () => import("./hex_hockey/index.js").then((module) => module.default),
-  hex_hockey_blitz: () => import("./hex_hockey/index.js").then((module) => module.default),
-  hex_hockey_showdown: () => import("./hex_hockey/index.js").then((module) => module.default),
-};
-
-const SOLO_GAME_IDS = new Set([
-  "hex_pong",
-  "light_trails",
-  "pixel_tanks",
-  "star_duel",
-  "gravity_well",
-  "debris_field",
-  "block_breakers",
-  "hex_warlords",
-  "hex_raid",
-  "hex_raid_pacifist",
-  "hex_raid_blitz",
-  "hex_boxing",
-  "hex_outlaw",
-  "hex_outlaw_ricochet",
-  "hex_outlaw_stagecoach",
-  "hex_outlaw_nml",
-  "hex_tennis",
-  "hex_tennis_quick",
-  "hex_tennis_sudden",
-  "hex_invaders",
-  "hex_invaders_coop",
-  "hex_invaders_blitz",
-  "hex_enduro",
-  "hex_enduro_night",
-  "hex_enduro_sprint",
-  "hex_skiing",
-  "hex_skiing_escape",
-  "hex_skiing_clean",
-  "hex_frost",
-  "hex_frost_blizzard",
-  "hex_frost_peaceful",
-  "hex_hockey",
-  "hex_hockey_blitz",
-  "hex_hockey_showdown",
-]);
-
-const SOLO_CONTROLLER_LOADERS = {
-  block_breakers: () => import("./breakout/ai.js").then((module) => module.createBreakoutAI),
-  hex_warlords: () => import("./warlords/ai.js").then((module) => module.createWarlordAI),
-  hex_raid: () => import("./hex_raid/ai.js").then((module) => module.createHexRaidAI),
-  hex_raid_pacifist: () => import("./hex_raid/ai.js").then((module) => module.createHexRaidAI),
-  hex_raid_blitz: () => import("./hex_raid/ai.js").then((module) => module.createHexRaidAI),
-  hex_boxing: () => import("./hex_boxing/ai.js").then((module) => module.createBoxingAI),
-  hex_enduro: () => import("./hex_enduro/ai.js").then((module) => module.createHexEnduroAI),
-  hex_enduro_night: () => import("./hex_enduro/ai.js").then((module) => module.createHexEnduroAI),
-  hex_enduro_sprint: () => import("./hex_enduro/ai.js").then((module) => module.createHexEnduroAI),
-  hex_skiing: () => import("./hex_skiing/ai.js").then((module) => module.createHexSkiingAI),
-  hex_skiing_escape: () => import("./hex_skiing/ai.js").then((module) => module.createHexSkiingAI),
-  hex_skiing_clean: () => import("./hex_skiing/ai.js").then((module) => module.createHexSkiingAI),
-  hex_frost: () => import("./hex_frost/ai.js").then((module) => module.createHexFrostAI),
-  hex_frost_blizzard: () => import("./hex_frost/ai.js").then((module) => module.createHexFrostAI),
-  hex_frost_peaceful: () => import("./hex_frost/ai.js").then((module) => module.createHexFrostAI),
-  hex_hockey: () => import("./hex_hockey/ai.js").then((module) => module.createHockeyAI),
-  hex_hockey_blitz: () => import("./hex_hockey/ai.js").then((module) => module.createHockeyAI),
-  hex_hockey_showdown: () => import("./hex_hockey/ai.js").then((module) => module.createHockeyAI),
-  pixel_tanks: () => import("./pixel_tanks/ai.js").then((module) => module.createPixelTanksAI),
+// One literal import per folder: esbuild splits a chunk only for an import
+// whose path it can read. The registry says which folder each game id is in.
+const DEFINITION_LOADERS = {
+  breakout: () => import("./breakout/index.js"),
+  hex_boxing: () => import("./hex_boxing/index.js"),
+  hex_enduro: () => import("./hex_enduro/index.js"),
+  hex_frost: () => import("./hex_frost/index.js"),
+  hex_hockey: () => import("./hex_hockey/index.js"),
+  hex_invaders: () => import("./hex_invaders/index.js"),
+  hex_outlaw: () => import("./hex_outlaw/index.js"),
+  hex_raid: () => import("./hex_raid/index.js"),
+  hex_skiing: () => import("./hex_skiing/index.js"),
+  hex_tennis: () => import("./hex_tennis/index.js"),
+  pixel_tanks: () => import("./pixel_tanks/index.js"),
+  pong: () => import("./pong/index.js"),
+  star_duel: () => import("./star_duel/index.js"),
+  surround: () => import("./surround/index.js"),
+  warlords: () => import("./warlords/index.js"),
 };
 
 /**
@@ -103,7 +28,7 @@ const SOLO_CONTROLLER_LOADERS = {
  * @returns {boolean}
  */
 export function supportsSolo(gameId) {
-  return SOLO_GAME_IDS.has(gameId);
+  return Object.hasOwn(REGISTRY, gameId) && REGISTRY[gameId].solo;
 }
 
 /**
@@ -111,8 +36,8 @@ export function supportsSolo(gameId) {
  * @returns {Promise<typeof GameEngine>}
  */
 export async function loadP2PEngineClass(gameId) {
-  const load = P2P_ENGINE_LOADERS[gameId];
-  return load ? load() : GameEngine;
+  if (!Object.hasOwn(REGISTRY, gameId)) return GameEngine;
+  return DEFINITION_LOADERS[REGISTRY[gameId].dir]().then((module) => module.default);
 }
 
 /**
@@ -125,14 +50,6 @@ export async function loadSoloEngineClass(gameId) {
   }
 
   return loadP2PEngineClass(gameId);
-}
-
-async function createSoloOpponentController(gameId, options = {}) {
-  const loadController = SOLO_CONTROLLER_LOADERS[gameId];
-  if (!loadController) return null;
-
-  const createController = await loadController();
-  return createController(options);
 }
 
 /**
@@ -170,18 +87,18 @@ export async function createGameEngine({
       ? createLocalTransport()
       : normalizeGameTransport(channel);
 
-  // The match seed is chosen here, so the AI made for a solo match draws from
-  // the same seed's AI stream as one the engine would make.
+  // A solo match's opponent comes from the game's definition, drawing from
+  // the match seed's AI stream: made by the engine, or — for an AI kept out
+  // of the game's chunk — loaded and made here.
   const options = {
     ...engineOptions,
     mode: runtimeMode,
     seed: engineOptions.seed ?? freshSeed(),
   };
   const soloOpponentController =
-    solo && !opponentController
-      ? await createSoloOpponentController(gameId, { difficulty, rng: aiRandom(options.seed) })
+    solo && !opponentController && EngineClass.AI_LOADER
+      ? (await EngineClass.AI_LOADER())({ difficulty, rng: aiRandom(options.seed) })
       : opponentController;
-
   if (soloOpponentController) options.opponentController = soloOpponentController;
   if (difficulty) options.difficulty = difficulty;
 

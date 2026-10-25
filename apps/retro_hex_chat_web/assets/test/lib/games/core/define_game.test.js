@@ -29,6 +29,16 @@ describe("defineGame", () => {
       expect(FakeGame.FINAL_PHASE).toBe(PHASE.FINISHED);
     });
 
+    it("hands the page an AI kept out of the game's chunk, to load for a solo match", async () => {
+      const create = () => ({ nextInputs: () => ({}) });
+      const Game = defineGame({
+        ...definition,
+        ai: { ...definition.ai, load: async () => create },
+      });
+      expect(await Game.AI_LOADER()).toBe(create);
+      expect(FakeGame.AI_LOADER).toBeNull();
+    });
+
     it("names the missing field when a definition is incomplete", () => {
       const withoutSchema = Object.fromEntries(
         Object.entries(definition).filter(([key]) => key !== "schema"),
