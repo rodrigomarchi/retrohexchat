@@ -7,13 +7,10 @@
  */
 
 import { schema, bool, i8, i16, list, u8, u16, u32 } from "../core/codec.js";
+import { GAME_MSG as MSG_TYPE } from "../core/messages.js";
 
 // ── Message types ──────────────────────────────────────────────
-export const MSG_TYPE = {
-  GAME_STATE: 0x80,
-  GAME_END: 0x83,
-  GAME_READY: 0x84,
-};
+export { MSG_TYPE };
 
 // Shared by every game: the readiness ping and reading a message's type.
 export { encodeGameReady, getMessageType } from "../net_protocol.js";

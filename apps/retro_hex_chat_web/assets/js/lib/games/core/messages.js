@@ -10,11 +10,16 @@
 
 import { BASE_MSG } from "../net_protocol.js";
 
-export const MSG = Object.freeze({
+/** The messages a game's own protocol sends; each game exports them as its MSG_TYPE. */
+export const GAME_MSG = Object.freeze({
   GAME_STATE: 0x80,
   GAME_START: 0x82,
   GAME_END: 0x83,
   GAME_READY: 0x84,
+});
+
+export const MSG = Object.freeze({
+  ...GAME_MSG,
   INPUT_STATE: BASE_MSG.INPUT_STATE,
   INPUT_EDGE: BASE_MSG.INPUT_EDGE,
 });
