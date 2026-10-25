@@ -35,6 +35,12 @@ defmodule RetroHexChatWeb.P2PLive.Events do
   page saying it is finished — both through `RetroHexChatWeb.Live.Surface`,
   which is what a screen with an address does to itself. There is no host to
   tell any more.
+
+  This module routes the browser's events; the rest sits beside it under
+  `RetroHexChatWeb.P2PLive`: `SessionEvents` (what the session process says),
+  `SessionLink` (the seat, subscriptions and persisted lines), `SessionStatus`
+  (reconnecting, failed, and the sentences about it), `WebRTCStart`,
+  `Console` (the console window) and `SetupPreferences`.
   """
 
   import Phoenix.Component, only: [assign: 2, update: 3]
@@ -43,36 +49,28 @@ defmodule RetroHexChatWeb.P2PLive.Events do
   use Gettext, backend: RetroHexChatWeb.Gettext
 
   alias Phoenix.LiveView.Socket
-  alias RetroHexChat.Accounts.NickLocales
-  alias RetroHexChat.Accounts.TrustedDevices
-  alias RetroHexChat.Calls.Events, as: CallEvents
-  alias RetroHexChat.Chat.Service, as: ChatService
-  alias RetroHexChat.Games.Activity
   alias RetroHexChat.Games.Telemetry, as: GameTelemetry
-  alias RetroHexChat.Games.Watchers
   alias RetroHexChat.Lobby
   alias RetroHexChat.Lobby.JoinToken
-  alias RetroHexChat.Lobby.Schema.Session, as: LobbySession
-  alias RetroHexChat.P2P
   alias RetroHexChat.Topics
   alias RetroHexChatWeb.App.P2PStats
-  alias RetroHexChatWeb.App.Paths
   alias RetroHexChatWeb.Live.P2PConfirmDialog
   alias RetroHexChatWeb.Live.Surface
   alias RetroHexChatWeb.MediaDevices
   alias RetroHexChatWeb.P2PLive.Components.P2PFileIsland
   alias RetroHexChatWeb.P2PLive.Components.P2PGameIsland
   alias RetroHexChatWeb.P2PLive.Components.P2PMediaIsland
-  alias RetroHexChatWeb.Params
-  alias RetroHexChatWeb.SEO
 
-  @pubsub RetroHexChat.PubSub
-  @call_window_id "p2p-call"
-  @p2p_console_width 640
-  @p2p_console_height 430
-  @p2p_console_x 448
-  @p2p_console_y 72
-  @p2p_setup_preference_namespace "p2p_setup"
+  alias RetroHexChatWeb.P2PLive.{
+    Console,
+    SessionEvents,
+    SessionLink,
+    SessionStatus,
+    SetupPreferences,
+    WebRTCStart
+  }
+
+  alias RetroHexChatWeb.Params
 
   # ── Client events (WebRTC hooks + P2P UI) ─────────────────────
 
@@ -101,14 +99,14 @@ defmodule RetroHexChatWeb.P2PLive.Events do
 
     {:halt,
      socket
-     |> put_p2p(%{p2p | hook_ready: true})
-     |> resend_webrtc_start(p2p)}
+     |> SessionStatus.put_p2p(%{p2p | hook_ready: true})
+     |> WebRTCStart.resend_start(p2p)}
   end
 
   def handle_event("lobby_connected", _params, %{assigns: %{p2p_session: %{}}} = socket) do
     p2p = socket.assigns.p2p_session
     _ = Lobby.transition_status(p2p.token, :connected)
-    {:halt, enter_connected(socket, p2p)}
+    {:halt, SessionEvents.enter_connected(socket, p2p)}
   end
 
   # The signaling wire refused the browser. Nothing about the connection can
@@ -123,8 +121,8 @@ defmodule RetroHexChatWeb.P2PLive.Events do
 
     {:halt,
      socket
-     |> mark_p2p_failed("signaling_" <> reason)
-     |> open_p2p_console("call")
+     |> SessionStatus.mark_p2p_failed("signaling_" <> reason)
+     |> Console.open("call")
      |> Surface.system(dgettext("chat", "The P2P signaling channel refused this session."))}
   end
 
@@ -133,7 +131,10 @@ defmodule RetroHexChatWeb.P2PLive.Events do
         %{"state" => "disconnected"},
         %{assigns: %{p2p_session: %{}}} = socket
       ) do
-    {:halt, mark_p2p_reconnecting(socket, nil, "disconnected", %{trigger: "connection_state"})}
+    {:halt,
+     SessionStatus.mark_p2p_reconnecting(socket, nil, "disconnected", %{
+       trigger: "connection_state"
+     })}
   end
 
   def handle_event("lobby_state_change", _params, %{assigns: %{p2p_session: %{}}} = socket) do
@@ -142,12 +143,12 @@ defmodule RetroHexChatWeb.P2PLive.Events do
 
   def handle_event("lobby_failed", params, %{assigns: %{p2p_session: %{}}} = socket) do
     reason = params["reason"] || params[:reason] || "failed"
-    duplicate? = p2p_failed?(socket.assigns.p2p_session, reason)
+    duplicate? = SessionStatus.p2p_failed?(socket.assigns.p2p_session, reason)
 
     socket =
       socket
-      |> mark_p2p_failed(reason)
-      |> open_p2p_console("call")
+      |> SessionStatus.mark_p2p_failed(reason)
+      |> Console.open("call")
 
     socket =
       if duplicate? do
@@ -162,12 +163,12 @@ defmodule RetroHexChatWeb.P2PLive.Events do
   def handle_event("lobby_retry", params, %{assigns: %{p2p_session: %{}}} = socket) do
     attempt = integer_param(params, "attempt")
     reason = short_string_param(params, "reason", 80) || "auto_retry"
-    {:halt, mark_p2p_reconnecting(socket, attempt, reason, %{trigger: "auto"})}
+    {:halt, SessionStatus.mark_p2p_reconnecting(socket, attempt, reason, %{trigger: "auto"})}
   end
 
   def handle_event("lobby_recovery_pending", params, %{assigns: %{p2p_session: %{}}} = socket) do
     reason = short_string_param(params, "reason", 80) || "disconnected"
-    {:halt, mark_p2p_reconnecting(socket, nil, reason, %{trigger: "disconnected"})}
+    {:halt, SessionStatus.mark_p2p_reconnecting(socket, nil, reason, %{trigger: "disconnected"})}
   end
 
   def handle_event("p2p_retry_connection", _params, %{assigns: %{p2p_session: %{}}} = socket) do
@@ -176,8 +177,8 @@ defmodule RetroHexChatWeb.P2PLive.Events do
 
     {:halt,
      socket
-     |> mark_p2p_reconnecting(nil, "manual_retry", %{trigger: "manual"})
-     |> push_event("lobby_restart", webrtc_payload(p2p))}
+     |> SessionStatus.mark_p2p_reconnecting(nil, "manual_retry", %{trigger: "manual"})
+     |> push_event("lobby_restart", WebRTCStart.payload(p2p))}
   end
 
   def handle_event("lobby_media_restart", params, %{assigns: %{p2p_session: %{}}} = socket) do
@@ -188,18 +189,18 @@ defmodule RetroHexChatWeb.P2PLive.Events do
 
     {:halt,
      socket
-     |> mark_p2p_reconnecting(nil, reason, %{trigger: "media_restart"})
-     |> push_event("lobby_restart", webrtc_payload(p2p))}
+     |> SessionStatus.mark_p2p_reconnecting(nil, reason, %{trigger: "media_restart"})
+     |> push_event("lobby_restart", WebRTCStart.payload(p2p))}
   end
 
   def handle_event("lobby_stats", payload, %{assigns: %{p2p_session: %{}}} = socket) do
     p2p = socket.assigns.p2p_session
-    {:halt, put_p2p(socket, %{p2p | stats: P2PStats.normalize(payload)})}
+    {:halt, SessionStatus.put_p2p(socket, %{p2p | stats: P2PStats.normalize(payload)})}
   end
 
   def handle_event("toggle_network_info", _params, %{assigns: %{p2p_session: %{}}} = socket) do
     p2p = socket.assigns.p2p_session
-    {:halt, put_p2p(socket, %{p2p | info_open: not p2p.info_open})}
+    {:halt, SessionStatus.put_p2p(socket, %{p2p | info_open: not p2p.info_open})}
   end
 
   def handle_event(
@@ -207,7 +208,7 @@ defmodule RetroHexChatWeb.P2PLive.Events do
         %{"section" => section},
         %{assigns: %{p2p_session: %{}}} = socket
       ) do
-    {:halt, open_p2p_console(socket, section)}
+    {:halt, Console.open(socket, section)}
   end
 
   def handle_event("p2p_console_select", _params, socket), do: {:halt, socket}
@@ -223,7 +224,7 @@ defmodule RetroHexChatWeb.P2PLive.Events do
       ) do
     {:halt, socket} = forward_media(socket, event, params)
     p2p = socket.assigns.p2p_session
-    {:halt, put_p2p(socket, %{p2p | stats: P2PStats.empty()})}
+    {:halt, SessionStatus.put_p2p(socket, %{p2p | stats: P2PStats.empty()})}
   end
 
   # The media hook finished its lazy load and is listening. This is the
@@ -255,7 +256,7 @@ defmodule RetroHexChatWeb.P2PLive.Events do
             socket
         end
 
-      {:halt, put_p2p(socket, %{p2p | auto_call_started: true})}
+      {:halt, SessionStatus.put_p2p(socket, %{p2p | auto_call_started: true})}
     else
       {:halt, socket}
     end
@@ -376,7 +377,7 @@ defmodule RetroHexChatWeb.P2PLive.Events do
         %{assigns: %{p2p_session: %{}}} = socket
       ) do
     setup_opts =
-      setup_options_from_params(socket, params, socket.assigns.p2p_session.turn_configured)
+      SetupPreferences.from_params(socket, params, socket.assigns.p2p_session.turn_configured)
 
     {:halt,
      socket
@@ -397,14 +398,14 @@ defmodule RetroHexChatWeb.P2PLive.Events do
         _params,
         %{assigns: %{p2p_session: %{role: :creator} = p2p}} = socket
       ) do
-    if room_can_start?(p2p) do
+    if SessionLink.room_can_start?(p2p) do
       Lobby.broadcast(p2p.token, "lobby_session_start", %{})
 
       {:halt,
        socket
-       |> put_p2p(%{p2p | session_started: true})
-       |> start_webrtc(%{p2p | session_started: true})
-       |> open_p2p_console(started_section(p2p))}
+       |> SessionStatus.put_p2p(%{p2p | session_started: true})
+       |> WebRTCStart.start(%{p2p | session_started: true})
+       |> Console.open(started_section(p2p))}
     else
       {:halt, socket}
     end
@@ -431,7 +432,7 @@ defmodule RetroHexChatWeb.P2PLive.Events do
         _params,
         %{assigns: %{p2p_session: %{displaced: true} = p2p}} = socket
       ) do
-    {:halt, attach_session(socket, p2p.token, p2p.user_id, p2p.role)}
+    {:halt, SessionLink.attach_session(socket, p2p.token, p2p.user_id, p2p.role)}
   end
 
   def handle_event("p2p_room_reclaim", _params, socket), do: {:halt, socket}
@@ -450,13 +451,13 @@ defmodule RetroHexChatWeb.P2PLive.Events do
         payload,
         %{assigns: %{setup: %{}}} = socket
       ) do
-    preferences = normalize_p2p_setup_preferences(payload)
+    preferences = SetupPreferences.normalize(payload)
 
     {:halt,
      update(socket, :setup, fn setup ->
        setup
        |> Map.put(:media, preferences.media)
-       |> Map.put(:media_mode, media_mode_from_preferences(preferences))
+       |> Map.put(:media_mode, SetupPreferences.media_mode(preferences))
        |> Map.put(:device_preferences, preferences.device_preferences)
      end)}
   end
@@ -469,8 +470,8 @@ defmodule RetroHexChatWeb.P2PLive.Events do
 
     {:halt,
      socket
-     |> put_p2p(Map.put(p2p, :call_mini, mini))
-     |> push_p2p_call_geometry(mini)}
+     |> SessionStatus.put_p2p(Map.put(p2p, :call_mini, mini))
+     |> Console.push_call_geometry(mini)}
   end
 
   def handle_event("p2p_toggle_call_mini", _params, socket), do: {:halt, socket}
@@ -480,7 +481,7 @@ defmodule RetroHexChatWeb.P2PLive.Events do
 
     case socket.assigns.p2p_session do
       %{} = p2p ->
-        persist_p2p_system(
+        SessionLink.persist_p2p_system(
           socket,
           p2p.peer_nick,
           dgettext("chat", "%{nick} ended the P2P session.", nick: socket.assigns.nickname)
@@ -514,7 +515,7 @@ defmodule RetroHexChatWeb.P2PLive.Events do
   def handle_info(%{event: "lobby_" <> _rest, token: token} = msg, socket) do
     case socket.assigns.p2p_session do
       %{token: ^token, displaced: true} -> {:halt, socket}
-      %{token: ^token} = p2p -> handle_session_event(msg, socket, p2p)
+      %{token: ^token} = p2p -> SessionEvents.handle(msg, socket, p2p)
       _other_session -> {:halt, socket}
     end
   end
@@ -527,7 +528,7 @@ defmodule RetroHexChatWeb.P2PLive.Events do
   def handle_info(%{event: "presence_diff", topic: "lobby:" <> _rest = topic}, socket) do
     case socket.assigns.p2p_session do
       %{token: token} when is_binary(token) ->
-        if topic == Topics.lobby_watchers(token), do: send_watchers(token)
+        if topic == Topics.lobby_watchers(token), do: SessionLink.send_watchers(token)
         {:halt, socket}
 
       _no_session ->
@@ -545,11 +546,16 @@ defmodule RetroHexChatWeb.P2PLive.Events do
         # The page that took the seat is the one listening now. Reclaiming
         # subscribes again, so leaving this subscription in place would make a
         # page that lost and retook its seat hear every event twice.
-        unsubscribe_session(token)
+        SessionLink.unsubscribe_session(token)
 
         {:halt,
          socket
-         |> put_p2p(%{p2p | displaced: true, webrtc_started: false, hook_ready: false})
+         |> SessionStatus.put_p2p(%{
+           p2p
+           | displaced: true,
+             webrtc_started: false,
+             hook_ready: false
+         })
          |> Surface.system(dgettext("chat", "This P2P session moved to another window of yours."))}
 
       _other_session ->
@@ -558,7 +564,7 @@ defmodule RetroHexChatWeb.P2PLive.Events do
   end
 
   def handle_info({:p2p_console_section, section}, socket) do
-    {:halt, open_p2p_console(socket, section)}
+    {:halt, Console.open(socket, section)}
   end
 
   # C2 read-model bubbles from the feature islands (taskbar badges + the
@@ -570,7 +576,7 @@ defmodule RetroHexChatWeb.P2PLive.Events do
         {:halt, socket}
 
       p2p ->
-        {:halt, put_p2p(socket, Map.put(p2p, summary_key(feature), summary))}
+        {:halt, SessionStatus.put_p2p(socket, Map.put(p2p, summary_key(feature), summary))}
     end
   end
 
@@ -594,12 +600,17 @@ defmodule RetroHexChatWeb.P2PLive.Events do
 
       {:shared, p2p} ->
         if Keyword.get(opts, :writer, false),
-          do: persist_p2p_system(socket, p2p.peer_nick, p2p_notice_text(text))
+          do:
+            SessionLink.persist_p2p_system(
+              socket,
+              p2p.peer_nick,
+              SessionStatus.p2p_notice_text(text)
+            )
 
         {:halt, socket}
 
       {:local, _p2p} ->
-        {:halt, p2p_system_event(socket, text)}
+        {:halt, SessionStatus.p2p_system_event(socket, text)}
     end
   end
 
@@ -636,546 +647,16 @@ defmodule RetroHexChatWeb.P2PLive.Events do
     {:halt, socket}
   end
 
-  defp peer_restart_reason("lobby_manual_retry"), do: "peer_manual_retry"
-  defp peer_restart_reason("lobby_media_restart"), do: "peer_media_restart"
-
-  defp handle_session_event(
-         %{event: "lobby_status_changed", payload: %{status: status} = payload},
-         socket,
-         p2p
-       ) do
-    cond do
-      status == "connected" ->
-        {:halt, enter_connected(socket, p2p)}
-
-      LobbySession.terminal?(status) ->
-        {:halt, finish_session(socket, payload[:reason] || status)}
-
-      true ->
-        {:halt, socket}
-    end
-  end
-
-  # Both hooks have reported ready, which is the room saying so rather than a
-  # silent go. The answerer prepares itself the moment it is told — its
-  # `lobby_start_answer` only builds the peer connection and waits — because the
-  # first offer is dropped if it is not listening yet. What waits is the
-  # *offer*, and it waits for the host.
-  defp handle_session_event(
-         %{event: "lobby_start_signaling", payload: payload},
-         socket,
-         p2p
-       ) do
-    p2p = %{p2p | peer_ready: true}
-    socket = put_p2p(socket, p2p)
-
-    cond do
-      # This page is the rebuild the restart is announcing, not a target of it:
-      # its connection was built moments ago by its own start, and tearing that
-      # down restarts the round that is already in flight — the peer then holds
-      # an offer whose answer belongs to a connection that no longer exists.
-      # A page that has not started yet is not that page: it still needs the
-      # start the branch below gives it.
-      Params.truthy?(Params.value(payload, :restart)) and p2p.webrtc_started and
-          p2p.webrtc_connection_reset ->
-        {:halt, socket}
-
-      Params.truthy?(Params.value(payload, :restart)) ->
-        {:halt, restart_webrtc_from_signaling(socket, p2p, Params.value(payload, :reason))}
-
-      p2p.session_started ->
-        # A side that rejoined mid-call re-arms the gate; the host says again
-        # that the session is running, so the returning room does not sit there
-        # waiting for a `[Start]` that was already pressed.
-        if p2p.role == :creator, do: Lobby.broadcast(p2p.token, "lobby_session_start", %{})
-        {:halt, start_webrtc(socket, p2p)}
-
-      # The answerer builds its peer connection now and waits — it is still in
-      # the room, and "connecting" would be a lie about a negotiation nobody
-      # has released yet.
-      p2p.role == :peer ->
-        {:halt, start_webrtc(socket, p2p, :joining)}
-
-      true ->
-        {:halt, socket}
-    end
-  end
-
-  # The host pressed `[Start]`, or is saying again that they already did.
-  # Everyone leaves the room together, which is what makes the wait legible
-  # from the other side — and what stops a page that reloaded mid-negotiation
-  # from being asked to press Ready for a session that is already running.
-  defp handle_session_event(%{event: "lobby_session_start"}, socket, p2p) do
-    started = %{p2p | session_started: true, room_ready: true, state: :connecting}
-
-    {:halt,
-     socket
-     |> put_p2p(started)
-     |> start_webrtc(started)
-     |> open_p2p_console("call")}
-  end
-
-  # The other side asked to restart the connection (by hand, or because its
-  # media failed); our own request comes back to us too and changes nothing.
-  defp handle_session_event(%{event: event, payload: %{from: from} = payload}, socket, p2p)
-       when event in ["lobby_manual_retry", "lobby_media_restart"] do
-    if from == p2p.user_id do
-      {:halt, socket}
-    else
-      reason = payload[:reason] || peer_restart_reason(event)
-
-      {:halt,
-       socket
-       |> mark_p2p_reconnecting(nil, reason, %{trigger: "peer"})
-       |> open_p2p_console("call")
-       |> push_event("lobby_restart", webrtc_payload(p2p))}
-    end
-  end
-
-  # The creator holds :invite_sent WITHOUT having joined — a pending invite is
-  # just a card, not a connection. The peer joining is the cue to join from
-  # here.
-  defp handle_session_event(%{event: "lobby_peer_joined", payload: %{user_id: uid}}, socket, p2p) do
-    cond do
-      uid == p2p.user_id -> {:halt, socket}
-      p2p.state == :invite_sent -> {:halt, seat_taken(socket, p2p)}
-      true -> {:halt, peer_rejoined(socket, p2p)}
-    end
-  end
-
-  defp handle_session_event(
-         %{event: "lobby_peer_disconnected", payload: %{user_id: uid}},
-         socket,
-         p2p
-       ) do
-    cond do
-      uid == p2p.user_id ->
-        {:halt, socket}
-
-      # Nothing was connected yet, so nothing was lost. Someone arriving at a
-      # match link goes through the resolver and then the surface, and the
-      # page swap in between releases the seat for an instant: saying "lost the
-      # P2P connection" there names a connection that never existed, and the
-      # sentence then sits in the status bar through the whole session.
-      p2p.state != :connected ->
-        {:halt, put_p2p(socket, %{p2p | peer_online: false})}
-
-      true ->
-        {:halt,
-         socket
-         |> put_p2p(%{p2p | peer_online: false})
-         |> Surface.system(
-           dgettext("chat", "%{peer} lost the P2P connection — waiting for them to return...",
-             peer: p2p.peer_nick
-           )
-         )}
-    end
-  end
-
-  defp handle_session_event(
-         %{event: "lobby_media_changed", payload: payload},
-         socket,
-         p2p
-       ) do
-    unless payload.user_id == p2p.user_id do
-      Phoenix.LiveView.send_update(P2PMediaIsland,
-        id: P2PMediaIsland.id(),
-        device_preferences: Map.get(p2p, :device_preferences, MediaDevices.no_preference()),
-        media_mode: Map.get(p2p, :media_mode, "video"),
-        action: {:peer_media_changed, payload}
-      )
-    end
-
-    {:halt, socket}
-  end
-
-  defp handle_session_event(
-         %{event: "lobby_peer_mute", payload: %{muted: muted, from: from}},
-         socket,
-         p2p
-       ) do
-    unless from == p2p.user_id do
-      Phoenix.LiveView.send_update(P2PMediaIsland,
-        id: P2PMediaIsland.id(),
-        action: {:peer_mute, muted}
-      )
-    end
-
-    {:halt, socket}
-  end
-
-  defp handle_session_event(
-         %{event: "lobby_peer_camera", payload: %{off: off, from: from}},
-         socket,
-         p2p
-       ) do
-    unless from == p2p.user_id do
-      Phoenix.LiveView.send_update(P2PMediaIsland,
-        id: P2PMediaIsland.id(),
-        action: {:peer_camera, off}
-      )
-    end
-
-    {:halt, socket}
-  end
-
-  defp handle_session_event(
-         %{event: "lobby_peer_screen_share", payload: %{active: active, from: from}},
-         socket,
-         p2p
-       ) do
-    unless from == p2p.user_id do
-      Phoenix.LiveView.send_update(P2PMediaIsland,
-        id: P2PMediaIsland.id(),
-        action: {:peer_screen_share, active}
-      )
-    end
-
-    {:halt, socket}
-  end
-
-  defp handle_session_event(
-         %{
-           event: "lobby_peer_reaction",
-           payload: %{reaction: reaction, reaction_id: id, from: from}
-         },
-         socket,
-         p2p
-       ) do
-    unless from == p2p.user_id do
-      Phoenix.LiveView.send_update(P2PMediaIsland,
-        id: P2PMediaIsland.id(),
-        action: {:peer_reaction, reaction, id}
-      )
-    end
-
-    {:halt, socket}
-  end
-
-  # The game a match link named needs no second yes: following the link was the
-  # consent, and an accept/decline dialog in front of it would be the product
-  # asking whether you meant the address you just opened. Any *other* game
-  # proposed inside the same session still asks, because that one nobody agreed
-  # to yet.
-  defp handle_session_event(
-         %{event: "lobby_game_request", payload: %{game_id: game_id} = request},
-         socket,
-         %{match_game_id: game_id} = p2p
-       )
-       when is_binary(game_id) do
-    if request.proposer_id == p2p.user_id do
-      {:halt, open_p2p_console(socket, "games")}
-    else
-      _ = Lobby.respond_game(p2p.token, p2p.user_id, true)
-      {:halt, open_p2p_console(socket, "games")}
-    end
-  end
-
-  defp handle_session_event(%{event: "lobby_game_request", payload: request}, socket, p2p) do
-    outgoing = request.proposer_id == p2p.user_id
-
-    Phoenix.LiveView.send_update(P2PGameIsland,
-      id: P2PGameIsland.id(),
-      action: {:request, request, outgoing}
-    )
-
-    {:halt, open_p2p_console(socket, "games")}
-  end
-
-  defp handle_session_event(
-         %{event: "lobby_game_response", payload: %{accepted: false}},
-         socket,
-         _p2p
-       ) do
-    Phoenix.LiveView.send_update(P2PGameIsland,
-      id: P2PGameIsland.id(),
-      action: :request_declined
-    )
-
-    {:halt, Surface.system(socket, dgettext("chat", "Game request declined."))}
-  end
-
-  defp handle_session_event(
-         %{event: "lobby_game_response", payload: %{accepted: true}},
-         socket,
-         _p2p
-       ) do
-    {:halt, socket}
-  end
-
-  defp handle_session_event(
-         %{event: "lobby_game_status_changed", payload: %{status: "playing"} = payload},
-         socket,
-         p2p
-       ) do
-    is_host = payload.host_id == p2p.user_id
-    :ok = Activity.playing(socket.assigns.nickname, payload.game_id, p2p.token)
-
-    Phoenix.LiveView.send_update(P2PGameIsland,
-      id: P2PGameIsland.id(),
-      action: {:playing, payload.game_id, is_host}
-    )
-
-    send_watchers(p2p.token)
-
-    {:halt, open_p2p_console(socket, "games")}
-  end
-
-  defp handle_session_event(
-         %{event: "lobby_game_status_changed", payload: %{status: "idle"}},
-         socket,
-         _p2p
-       ) do
-    :ok = Activity.stopped(socket.assigns.nickname)
-    Phoenix.LiveView.send_update(P2PGameIsland, id: P2PGameIsland.id(), action: :idle)
-
-    {:halt, socket}
-  end
-
-  defp handle_session_event(
-         %{event: "lobby_game_status_changed", payload: %{status: "finished"} = payload},
-         socket,
-         _p2p
-       ) do
-    :ok = Activity.stopped(socket.assigns.nickname)
-
-    Phoenix.LiveView.send_update(P2PGameIsland,
-      id: P2PGameIsland.id(),
-      action: {:result, payload.result}
-    )
-
-    {:halt, open_p2p_console(socket, "games")}
-  end
-
-  defp handle_session_event(
-         %{event: "lobby_client_info", payload: %{from: from, info: info}},
-         socket,
-         p2p
-       ) do
-    if from == p2p.user_id do
-      {:halt, socket}
-    else
-      {:halt, put_p2p(socket, %{p2p | peer_info: info, peer_online: true})}
-    end
-  end
-
-  defp handle_session_event(
-         %{event: "lobby_session_closed", payload: %{reason: reason}},
-         socket,
-         _p2p
-       ) do
-    {:halt, finish_session(socket, reason)}
-  end
-
-  defp handle_session_event(%{event: "lobby_inactivity_warning"}, socket, _p2p) do
-    {:halt,
-     Surface.system(
-       socket,
-       dgettext("chat", "The P2P session will expire soon due to inactivity.")
-     )}
-  end
-
-  # Session-topic events the in-chat host doesn't render directly. Feature
-  # windows consume their own relays through their islands/hooks.
-  defp handle_session_event(_msg, socket, _p2p), do: {:halt, socket}
-
-  # The other side has arrived, so this page takes its own seat. A match link
-  # had nobody to name when it mounted, so the peer's nickname is read now
-  # rather than remembered: for an open lobby this arrival *is* the moment
-  # there is one.
-  defp seat_taken(socket, p2p) do
-    case Lobby.join_session(p2p.token, p2p.user_id) do
-      :ok ->
-        p2p = put_peer_nick(p2p, p2p.peer_nick || peer_nick_for(p2p.token, p2p.user_id))
-
-        socket
-        |> put_p2p(%{p2p | state: :joining, peer_online: true})
-        |> share_client_info(p2p)
-        |> Surface.system(
-          dgettext("chat", "%{peer} accepted the P2P request - connecting...",
-            peer: p2p.peer_nick || dgettext("chat", "The other user")
-          )
-        )
-
-      {:error, :already_joined} ->
-        detach_session(socket, p2p)
-
-      {:error, message} ->
-        socket |> detach_session(p2p) |> Surface.system(message)
-    end
-  end
-
-  # Somebody joined a session this page is already in. Re-share our whois so a
-  # peer that joined after us still receives it, and — if this session is
-  # already running — say so, because the page that just arrived cannot know it
-  # and would otherwise sit in the starting room waiting for a `[Start]` that
-  # was pressed minutes ago.
-  defp peer_rejoined(socket, p2p) do
-    if p2p.session_started, do: Lobby.broadcast(p2p.token, "lobby_session_start", %{})
-
-    socket =
-      socket
-      |> put_p2p(%{p2p | peer_online: true})
-      |> share_client_info(p2p)
-
-    # A worry that turned out fine has to be taken back, or it stays on screen
-    # for the rest of the session saying the opposite of the truth.
-    if p2p.state == :connected and not p2p.peer_online do
-      Surface.system(socket, dgettext("chat", "%{peer} is back.", peer: p2p.peer_nick))
-    else
-      socket
-    end
-  end
-
-  # The language travels with the name: a peer named only now (an open lobby's
-  # arrival) is looked up once, here.
-  defp put_peer_nick(%{peer_nick: nick} = p2p, nick), do: p2p
-
-  defp put_peer_nick(p2p, nick),
-    do: Map.merge(p2p, %{peer_nick: nick, peer_locale: NickLocales.for_nick(nick)})
-
-  defp new_session(socket, token, user_id, role, state, opts) do
-    setup_preferences = load_p2p_setup_preferences(socket)
-    peer_nick = peer_nick_for(token, user_id)
-    # Both languages in one lookup, kept with the session: the flags beside the
-    # two names never ask again unless the peer's name changes.
-    locales = NickLocales.for_nicks(Enum.filter([socket.assigns[:nickname], peer_nick], & &1))
-
-    %{
-      token: token,
-      user_id: user_id,
-      role: role,
-      # The game this session was created for, or nil for a plain session.
-      # It is the difference between a room with devices in it and a room with
-      # a game in it, and it is read from the session rather than the address.
-      match_game_id: Keyword.get(opts, :match_game_id),
-      match_proposed: false,
-      peer_nick: peer_nick,
-      peer_locale: Map.get(locales, peer_nick),
-      self_locale: Map.get(locales, socket.assigns[:nickname]),
-      state: state,
-      webrtc_started: false,
-      # Whether this page's start announces a rebuild. A page that opens into a
-      # session already negotiating is one — whatever releases its start, the
-      # peer has to be told the connection is new, or it reads this page's first
-      # offer as stale for the rest of the session. It is also what makes the
-      # resend to a hook that was still loading say the same thing twice.
-      webrtc_connection_reset: false,
-      # The starting room, in three facts. `room_ready` is the devices chosen,
-      # `hook_ready` is the WebRTC hook mounted — `[Ready]` needs both, and the
-      # domain's gate is what turns the pair on the other side into
-      # `peer_ready`. `session_started` is the host having pressed `[Start]`,
-      # which is the only thing that releases the first offer.
-      room_ready: false,
-      hook_ready: false,
-      peer_ready: false,
-      session_started: false,
-      displaced: false,
-      stats: P2PStats.empty(),
-      info_open: false,
-      peer_online: false,
-      peer_info: %{},
-      file_summary: nil,
-      call_summary: nil,
-      game_summary: nil,
-      auto_call_started: false,
-      recovery: empty_p2p_recovery(),
-      console_section: "call",
-      media_mode: media_mode_from_preferences(setup_preferences),
-      call_mini: false,
-      device_preferences: setup_preferences.device_preferences,
-      turn_only: setup_preferences.turn_only,
-      turn_configured: P2P.turn_configured?()
-    }
-  end
-
-  @doc """
-  The creator of an invite nobody has accepted yet.
-
-  Subscribed and drawn, but not seated: a pending invite is a card, and taking
-  a seat would start the rejoin grace on a session with nobody in it.
-  """
-  @spec new_invite_sent(Socket.t(), String.t(), integer(), keyword()) :: map()
-  def new_invite_sent(socket, token, user_id, opts \\ []) do
-    new_session(socket, token, user_id, :creator, :invite_sent, opts)
-  end
-
-  @doc """
-  The device half of the starting room, before the browser has listed anything.
-
-  The person's remembered preferences, not the screen's: the terminal that
-  remembered a camera for the chat's setup dialog hands it to the room that
-  replaced it.
-  """
-  @spec initial_setup(Socket.t()) :: map()
-  def initial_setup(socket) do
-    preferences = load_p2p_setup_preferences(socket)
-
-    %{
-      media: preferences.media,
-      media_mode: media_mode_from_preferences(preferences),
-      devices: default_devices(),
-      device_preferences: preferences.device_preferences,
-      turn_only: preferences.turn_only,
-      turn_configured: P2P.turn_configured?()
-    }
-  end
-
-  @doc """
-  Who is in the starting room and what each of them is still waiting on.
-
-  Two seats and never more: a P2P session is one person talking to one person,
-  and the empty half is exactly the half the reader is waiting for.
-  """
-  @spec room(map()) :: map()
-  def room(%{p2p_session: %{} = p2p, nickname: nickname}) do
-    %{
-      nickname: nickname,
-      match?: is_binary(p2p.match_game_id),
-      peer_nick: p2p.peer_nick,
-      peer_locale: Map.get(p2p, :peer_locale),
-      self_locale: Map.get(p2p, :self_locale),
-      host?: p2p.role == :creator,
-      host_nick: if(p2p.role == :creator, do: nickname, else: p2p.peer_nick),
-      ready?: p2p.room_ready,
-      started?: p2p.session_started,
-      peer_present?: p2p.state != :invite_sent,
-      peer_ready?: p2p.peer_ready,
-      can_start?: room_can_start?(p2p)
-    }
-  end
-
-  @doc """
-  Whether the creator's `[Start]` may be pressed.
-
-  Both sides ready is the domain's own gate, arriving as `lobby_start_signaling`
-  and recorded as `peer_ready`; the button is that gate with a face.
-  """
-  @spec room_can_start?(map()) :: boolean()
-  def room_can_start?(%{role: :creator} = p2p),
-    do: p2p.room_ready and p2p.hook_ready and p2p.peer_ready and not p2p.session_started
-
-  def room_can_start?(_p2p), do: false
-
   # A match leaves its room straight into its game; a plain session leaves it
   # into the call, which is what it is.
   defp started_section(%{match_game_id: game_id}) when is_binary(game_id), do: "games"
   defp started_section(_p2p), do: "call"
 
-  defp share_client_info(socket, p2p) do
-    Lobby.broadcast(p2p.token, "lobby_client_info", %{
-      from: p2p.user_id,
-      info: socket.assigns[:client_info] || %{}
-    })
-
-    socket
-  end
-
   # Cancel a pending invite outright; anything past that needs the confirm.
   defp request_stop(socket) do
     case socket.assigns.p2p_session do
       %{state: :invite_sent} = p2p ->
-        persist_p2p_system(
+        SessionLink.persist_p2p_system(
           socket,
           p2p.peer_nick,
           dgettext("chat", "%{nick} cancelled the P2P invite.", nick: socket.assigns.nickname)
@@ -1197,25 +678,6 @@ defmodule RetroHexChatWeb.P2PLive.Events do
     end
   end
 
-  defp setup_options_from_params(socket, params, turn_configured?) do
-    preferences = normalize_p2p_setup_preferences(params)
-
-    media_mode =
-      normalize_media_mode(params["media_mode"] || media_mode_from_preferences(preferences))
-
-    turn_only = turn_configured? and Params.truthy?(params["turn_only"])
-
-    setup_opts = %{
-      media_mode: media_mode,
-      media: preferences.media,
-      turn_only: turn_only,
-      device_preferences: preferences.device_preferences
-    }
-
-    save_p2p_setup_preferences(socket, setup_opts)
-    setup_opts
-  end
-
   defp apply_setup_options(%{assigns: %{p2p_session: p2p}} = socket, setup_opts)
        when not is_nil(p2p) do
     update(socket, :p2p_session, fn p2p ->
@@ -1230,432 +692,6 @@ defmodule RetroHexChatWeb.P2PLive.Events do
 
   defp apply_setup_options(socket, _setup_opts), do: socket
 
-  defp maybe_persist_connected(socket, %{role: :creator, state: state} = p2p)
-       when state != :connected do
-    persist_p2p_system(
-      socket,
-      p2p.peer_nick,
-      dgettext("chat", "P2P session connected - call, files, games and stats are available.")
-    )
-
-    socket
-  end
-
-  defp maybe_persist_connected(socket, _p2p), do: socket
-
-  # Already connected (duplicate hook event / PubSub echo): keep the console in
-  # place, but clear any transient recovery banner from a completed retry.
-  # Being connected retires the rebuild flag: from here on this page is the one
-  # that stays, and the next restart is about it.
-  defp enter_connected(socket, %{state: :connected} = p2p) do
-    emit_p2p_connected(p2p)
-
-    put_p2p(socket, %{
-      p2p
-      | webrtc_started: true,
-        webrtc_connection_reset: false,
-        recovery: empty_p2p_recovery()
-    })
-  end
-
-  defp enter_connected(socket, p2p) do
-    emit_p2p_connected(p2p)
-
-    socket
-    |> maybe_persist_connected(p2p)
-    # The status bar said "connecting" from the moment the peer accepted;
-    # now that the link is up it says so, rather than lingering on the wait.
-    |> Surface.system(
-      dgettext("chat", "P2P session connected - call, files, games and stats are available.")
-    )
-    |> put_p2p(%{
-      p2p
-      | state: :connected,
-        webrtc_started: true,
-        webrtc_connection_reset: false,
-        recovery: empty_p2p_recovery()
-    })
-    |> burst_windows()
-  end
-
-  # The session presents itself the moment the link comes up, on both sides:
-  # the unified P2P console opens in front. Call, Files, Games and Statistics
-  # live inside that surface so mobile and desktop share one mental model.
-  #
-  # A match opens on its game instead, and the host puts it on the table: the
-  # link already named the game and both sides agreed to it by being here, so a
-  # picker in front of a match would ask a question that was answered by the
-  # address.
-  defp burst_windows(%{assigns: %{p2p_session: %{match_game_id: game_id}}} = socket)
-       when is_binary(game_id) do
-    socket |> open_p2p_console("games") |> propose_match_game()
-  end
-
-  defp burst_windows(socket) do
-    open_p2p_console(socket, "call")
-  end
-
-  defp propose_match_game(
-         %{assigns: %{p2p_session: %{role: :creator, match_proposed: false} = p2p}} = socket
-       ) do
-    _ = Lobby.propose_game(p2p.token, p2p.user_id, p2p.match_game_id)
-    put_p2p(socket, %{p2p | match_proposed: true})
-  end
-
-  defp propose_match_game(socket), do: socket
-
-  defp open_p2p_console(socket, section) do
-    section = normalize_console_section(section)
-
-    case socket.assigns.p2p_session do
-      nil ->
-        socket
-
-      p2p ->
-        was_mini? = Map.get(p2p, :call_mini, false)
-
-        p2p =
-          if section == "call" do
-            p2p
-          else
-            Map.put(p2p, :call_mini, false)
-          end
-
-        socket
-        |> put_p2p(Map.put(p2p, :console_section, section))
-        |> maybe_expand_p2p_console(section, was_mini?)
-    end
-  end
-
-  defp normalize_console_section(section) when section in ~w(call files games stats), do: section
-
-  defp normalize_console_section(section) when is_atom(section),
-    do: normalize_console_section(Atom.to_string(section))
-
-  defp normalize_console_section(_section), do: "call"
-
-  defp maybe_expand_p2p_console(socket, "call", _was_mini?), do: socket
-  defp maybe_expand_p2p_console(socket, _section, true), do: push_p2p_call_geometry(socket, false)
-  defp maybe_expand_p2p_console(socket, _section, false), do: socket
-
-  # The mini call is a size, and a size is the window manager's. This page has
-  # one of its own — the session is a Win98 desktop with the call window on it —
-  # so the command goes straight to it. Handing it to the chat instead is what
-  # makes mini mode a checkbox that changes nothing: the chat's window manager
-  # does not hold this call.
-  # The mini window remembers where the console was, maximized included, and
-  # leaving it puts the console back there; the default size is the fallback.
-  defp push_p2p_call_geometry(socket, true) do
-    push_window_geometry(socket, "set_geometry", %{
-      width: 300,
-      height: 236,
-      anchor: "bottom_right",
-      margin: 16,
-      remember: true
-    })
-  end
-
-  defp push_p2p_call_geometry(socket, false) do
-    push_window_geometry(socket, "restore_geometry", %{
-      width: @p2p_console_width,
-      height: @p2p_console_height,
-      x: @p2p_console_x,
-      y: @p2p_console_y
-    })
-  end
-
-  defp push_window_geometry(socket, action, geometry) do
-    Phoenix.LiveView.push_event(
-      socket,
-      "window_command",
-      geometry |> Map.put(:action, action) |> Map.put(:id, @call_window_id)
-    )
-  end
-
-  # A page that is asked to be in this session takes the seat, and the page that
-  # held it is told. The alternative is refusing the second window, which spends
-  # five backoff attempts and then says "close that window" — a dead end reached
-  # by doing something reasonable, and unreachable to fix from the window you are
-  # looking at. The most recently opened page is the one the person is looking
-  # at, which is the same contract the chat's own takeover has.
-  @spec attach_session(Socket.t(), String.t(), integer(), :creator | :peer, keyword()) ::
-          Socket.t()
-  def attach_session(socket, token, user_id, role, opts \\ []) do
-    case Lobby.join_session(token, user_id, takeover: true) do
-      :ok ->
-        subscribe_session(token)
-        p2p = new_session(socket, token, user_id, role, :joining, opts)
-
-        socket
-        |> put_p2p(p2p)
-        |> share_client_info(p2p)
-
-      {:error, message} ->
-        p2p_system_event(socket, message)
-    end
-  end
-
-  @doc """
-  This page listens to a session: what it says, and who is watching its
-  match. `unsubscribe_session/1` is the way back.
-  """
-  @spec subscribe_session(String.t()) :: :ok
-  def subscribe_session(token) do
-    :ok = Phoenix.PubSub.subscribe(@pubsub, Topics.lobby(token))
-    Phoenix.PubSub.subscribe(@pubsub, Topics.lobby_watchers(token))
-  end
-
-  @spec unsubscribe_session(String.t()) :: :ok
-  def unsubscribe_session(token) do
-    :ok = Phoenix.PubSub.unsubscribe(@pubsub, Topics.lobby(token))
-    Phoenix.PubSub.unsubscribe(@pubsub, Topics.lobby_watchers(token))
-  end
-
-  # What the game panel says about the people watching: how many, and the
-  # address to hand on — only for a match others may watch.
-  defp send_watchers(token) do
-    watch_url = if Lobby.watch_token(token), do: SEO.site_url(Paths.watch_path(token))
-
-    Phoenix.LiveView.send_update(P2PGameIsland,
-      id: P2PGameIsland.id(),
-      action: {:watchers, Watchers.count(token), watch_url}
-    )
-  end
-
-  # A session that ends mid-game ends the game with it: nobody is playing it
-  # any more, and nobody can watch it.
-  defp detach_session(socket, p2p) do
-    unsubscribe_session(p2p.token)
-    :ok = Activity.stopped(socket.assigns.nickname)
-
-    put_p2p(socket, nil)
-  end
-
-  # Whatever ended it, this page's status bar says so: it is this page's own
-  # line, never written into the private chat, so it duplicates nothing — and
-  # without it the bar kept saying the session was connected.
-  defp finish_session(socket, reason) do
-    p2p = socket.assigns.p2p_session
-
-    socket
-    |> detach_session(p2p)
-    |> Surface.system(ended_message(p2p.peer_nick, reason))
-    |> Surface.close()
-  end
-
-  # ICE config + the role-specific start event, exactly once per
-  # (re)signaling round.
-  defp start_webrtc(socket, p2p, next_state \\ :connecting, opts \\ [])
-
-  defp start_webrtc(socket, %{webrtc_started: true} = _p2p, _next_state, _opts), do: socket
-
-  defp start_webrtc(socket, p2p, next_state, opts) do
-    connection_reset = Keyword.get(opts, :connection_reset, p2p.webrtc_connection_reset)
-
-    payload = Map.put(webrtc_payload(p2p), :connection_reset, connection_reset)
-
-    socket
-    |> put_p2p(%{
-      p2p
-      | state: next_state,
-        webrtc_started: true,
-        webrtc_connection_reset: connection_reset
-    })
-    |> push_event(start_webrtc_event(p2p), payload)
-  end
-
-  defp start_webrtc_event(%{role: :creator}), do: "lobby_start_offer"
-  defp start_webrtc_event(%{role: :peer}), do: "lobby_start_answer"
-
-  # The readiness protocol's second half (`AGENT-GUIDE` §15). The WebRTC hook is
-  # lazy, so a page that resumes into a running session pushes its start while
-  # the implementation is still being imported — at nobody. The hook says when
-  # it is listening, and the start is said again then; `handleStartOffer` and
-  # `handleStartAnswer` both return early once they hold a connection, so a page
-  # that did hear the first one does nothing with the second.
-  #
-  # Without this the loss is silent and permanent: the surface has recorded the
-  # start, so it never pushes it again, and the restart that follows arrives at
-  # a connection with no role and no ICE servers to rebuild from.
-  defp resend_webrtc_start(socket, %{webrtc_started: true} = p2p) do
-    payload = Map.put(webrtc_payload(p2p), :connection_reset, p2p.webrtc_connection_reset)
-
-    push_event(socket, start_webrtc_event(p2p), payload)
-  end
-
-  defp resend_webrtc_start(socket, _p2p), do: socket
-
-  defp restart_webrtc_from_signaling(socket, p2p, reason) do
-    reason = reason || "signaling_restart"
-
-    emit_p2p_recovery_transition(p2p, :reconnecting, reason, %{
-      manual_retry: false,
-      trigger: "server"
-    })
-
-    p2p = %{
-      p2p
-      | recovery: %{
-          state: :reconnecting,
-          attempt: nil,
-          reason: reason,
-          trigger: "server",
-          manual_retry: false
-        },
-        stats: P2PStats.empty()
-    }
-
-    socket =
-      socket
-      |> put_p2p(p2p)
-      |> open_p2p_console("call")
-
-    if p2p.webrtc_started do
-      push_event(socket, "lobby_restart", Map.put(webrtc_payload(p2p), :reason, reason))
-    else
-      # A page that has no connection yet but is being told to restart is a page
-      # that opened into a session already running — a second tab that took the
-      # seat, or a reload mid-call. It has to start as a *rebuild*, because the
-      # peer kept its own signalling epoch and would read a fresh page's first
-      # offer as stale for the rest of the session.
-      start_webrtc(socket, p2p, :connecting, connection_reset: true)
-    end
-  end
-
-  defp webrtc_payload(p2p) do
-    %{
-      ice_servers: P2P.ice_servers(to_string(p2p.user_id)),
-      role: to_string(p2p.role),
-      turn_only: p2p.turn_only && p2p.turn_configured
-    }
-  end
-
-  defp put_p2p(socket, p2p), do: assign(socket, p2p_session: p2p)
-
-  defp mark_p2p_reconnecting(socket, attempt, reason, metadata) do
-    emit_p2p_recovery_transition(socket.assigns[:p2p_session], :reconnecting, reason, %{
-      attempt: attempt,
-      manual_retry: false,
-      trigger: metadata[:trigger]
-    })
-
-    update(socket, :p2p_session, fn
-      nil ->
-        nil
-
-      p2p ->
-        %{
-          p2p
-          | recovery: %{
-              state: :reconnecting,
-              attempt: attempt,
-              reason: reason,
-              trigger: metadata[:trigger],
-              manual_retry: false
-            },
-            stats: P2PStats.empty()
-        }
-    end)
-  end
-
-  defp mark_p2p_failed(socket, reason) do
-    p2p = socket.assigns[:p2p_session]
-
-    emit_p2p_recovery_transition(p2p, :failed, reason, %{
-      manual_retry: true,
-      phase: "connection"
-    })
-
-    CallEvents.emit_client_error(:p2p, reason, %{phase: "connection"})
-
-    update(socket, :p2p_session, fn
-      nil ->
-        nil
-
-      p2p ->
-        %{
-          p2p
-          | recovery: %{
-              state: :failed,
-              attempt: nil,
-              reason: reason,
-              trigger: "connection",
-              manual_retry: true
-            },
-            stats: P2PStats.empty()
-        }
-    end)
-  end
-
-  defp p2p_failed?(%{recovery: %{state: :failed, reason: reason}}, reason), do: true
-  defp p2p_failed?(_p2p, _reason), do: false
-
-  defp empty_p2p_recovery do
-    %{state: :idle, attempt: nil, reason: nil, trigger: nil, manual_retry: false}
-  end
-
-  @spec p2p_system_event(Socket.t(), term()) :: Socket.t()
-  defp p2p_system_event(socket, message) do
-    Surface.system(socket, p2p_notice_text(message))
-  end
-
-  @spec p2p_notice_text(term()) :: String.t()
-  defp p2p_notice_text(message) when is_binary(message), do: message
-
-  defp p2p_notice_text(:not_found) do
-    dgettext("chat", "This P2P invite is no longer active.")
-  end
-
-  defp p2p_notice_text(:already_joined) do
-    dgettext("chat", "This P2P session is already active in another window.")
-  end
-
-  defp p2p_notice_text(reason) when is_atom(reason) do
-    reason = reason |> Atom.to_string() |> String.replace("_", " ")
-    dgettext("chat", "P2P action failed: %{reason}", reason: reason)
-  end
-
-  defp p2p_notice_text(reason) do
-    dgettext("chat", "P2P action failed: %{reason}", reason: inspect(reason))
-  end
-
-  defp peer_nick_for(token, user_id) do
-    case Lobby.session_summary(token) do
-      {:ok, summary} ->
-        case Lobby.get_session(token) do
-          {:ok, %{creator_id: ^user_id}} -> summary.peer
-          _ -> summary.created_by
-        end
-
-      _ ->
-        nil
-    end
-  end
-
-  defp ended_message(peer_nick, reason) do
-    peer = peer_nick || dgettext("chat", "the other user")
-
-    case reason do
-      "declined" ->
-        dgettext("chat", "%{peer} declined the P2P invite.", peer: peer)
-
-      "invite_cancelled" ->
-        dgettext("chat", "The P2P invite was cancelled.")
-
-      "user_closed" ->
-        dgettext("chat", "P2P session with %{peer} ended.", peer: peer)
-
-      "peer_left" ->
-        dgettext("chat", "%{peer} left the P2P session.", peer: peer)
-
-      reason when reason in ["expired", "pending_timeout", "lobby_inactivity"] ->
-        dgettext("chat", "The P2P session expired.")
-
-      _ ->
-        dgettext("chat", "P2P session with %{peer} ended.", peer: peer)
-    end
-  end
-
   defp start_call_payload(p2p, type) do
     %{
       "type" => type,
@@ -1663,125 +699,9 @@ defmodule RetroHexChatWeb.P2PLive.Events do
     }
   end
 
-  defp normalize_media_mode(mode) when mode in ~w(video audio receive), do: mode
-  defp normalize_media_mode(_mode), do: "video"
-
-  defp default_p2p_setup_preferences do
-    %{
-      media: %{audio: true, video: true},
-      device_preferences: MediaDevices.no_preference(),
-      turn_only: false
-    }
-  end
-
-  defp normalize_p2p_setup_preferences(preferences) when is_map(preferences) do
-    defaults = default_p2p_setup_preferences()
-    media = Params.value(preferences, :media)
-
-    audio =
-      Params.boolean(
-        preference_value(Params.value(preferences, :audio), Params.value(media, :audio)),
-        true
-      )
-
-    video =
-      Params.boolean(
-        preference_value(Params.value(preferences, :video), Params.value(media, :video)),
-        true
-      )
-
-    %{
-      media: %{audio: audio, video: video},
-      device_preferences: MediaDevices.preferences(preferences),
-      turn_only: Params.boolean(Params.value(preferences, :turn_only), defaults.turn_only)
-    }
-  end
-
-  defp normalize_p2p_setup_preferences(_preferences), do: default_p2p_setup_preferences()
-
-  defp media_mode_from_preferences(%{media: %{audio: true, video: true}}), do: "video"
-  defp media_mode_from_preferences(%{media: %{audio: true, video: false}}), do: "audio"
-  defp media_mode_from_preferences(_preferences), do: "receive"
-
-  defp load_p2p_setup_preferences(%{assigns: %{nickname: nickname}} = socket)
-       when is_binary(nickname) do
-    socket.assigns[:trusted_device_id]
-    |> TrustedDevices.get_device_preference(nickname, @p2p_setup_preference_namespace)
-    |> normalize_p2p_setup_preferences()
-  end
-
-  defp load_p2p_setup_preferences(_socket), do: default_p2p_setup_preferences()
-
-  defp save_p2p_setup_preferences(%{assigns: %{nickname: nickname}} = socket, preferences)
-       when is_binary(nickname) do
-    _ =
-      TrustedDevices.put_device_preference(
-        socket.assigns[:trusted_device_id],
-        nickname,
-        @p2p_setup_preference_namespace,
-        persistable_p2p_setup_preferences(preferences)
-      )
-
-    :ok
-  end
-
-  defp save_p2p_setup_preferences(_socket, _preferences), do: :ok
-
-  defp persistable_p2p_setup_preferences(preferences) do
-    preferences = normalize_p2p_setup_preferences(preferences)
-
-    %{
-      "media" => %{
-        "audio" => preferences.media.audio,
-        "video" => preferences.media.video
-      },
-      "turn_only" => preferences.turn_only == true,
-      "device_preferences" => %{
-        "audio_input_id" => preferences.device_preferences.audio_input_id,
-        "video_input_id" => preferences.device_preferences.video_input_id,
-        "audio_output_id" => preferences.device_preferences.audio_output_id
-      }
-    }
-  end
-
-  defp default_devices, do: MediaDevices.none()
-
   defp normalize_devices(devices), do: MediaDevices.normalize(devices, unnamed_device())
 
   defp unnamed_device, do: dgettext("chat", "Default device")
-
-  defp emit_p2p_connected(p2p) do
-    case p2p_recovery_state(p2p) do
-      state when state in [:reconnecting, :failed] ->
-        emit_p2p_recovery_transition(p2p, :connected, p2p_recovery_reason(p2p), %{
-          manual_retry: false,
-          trigger: "connected"
-        })
-
-      _state ->
-        :ok
-    end
-  end
-
-  defp emit_p2p_recovery_transition(nil, _state, _reason, _metadata), do: :ok
-
-  defp emit_p2p_recovery_transition(p2p, state, reason, metadata) when is_map(p2p) do
-    CallEvents.emit_recovery_transition(
-      :p2p,
-      state,
-      reason,
-      Map.put(metadata, :role, Map.get(p2p, :role))
-    )
-  end
-
-  defp p2p_recovery_state(%{recovery: %{state: state}}), do: state
-  defp p2p_recovery_state(_p2p), do: nil
-
-  defp p2p_recovery_reason(%{recovery: %{reason: reason}}) when not is_nil(reason), do: reason
-  defp p2p_recovery_reason(_p2p), do: "connected"
-
-  defp preference_value(nil, fallback), do: fallback
-  defp preference_value(value, _fallback), do: value
 
   defp short_string_param(map, key, max_bytes) do
     case Params.value(map, key) do
@@ -1798,21 +718,4 @@ defmodule RetroHexChatWeb.P2PLive.Events do
       action: :close
     )
   end
-
-  # Persists a session notice into the PM thread (D2: the PM is the
-  # conversation). The PM broadcast delivers it to BOTH sides — hence the
-  # single-writer rule everywhere this is called.
-  defp persist_p2p_system(socket, peer_nick, text) when is_binary(peer_nick) do
-    _ =
-      ChatService.send_private_message(
-        socket.assigns.nickname,
-        peer_nick,
-        text,
-        "p2p_system"
-      )
-
-    :ok
-  end
-
-  defp persist_p2p_system(_socket, _peer_nick, _text), do: :ok
 end

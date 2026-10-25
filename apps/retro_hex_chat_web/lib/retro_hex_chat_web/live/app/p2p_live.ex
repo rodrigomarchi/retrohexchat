@@ -46,6 +46,7 @@ defmodule RetroHexChatWeb.App.P2PLive do
   alias RetroHexChatWeb.Live.ShareControl
   alias RetroHexChatWeb.P2PLive.Components.P2PSessionConsole
   alias RetroHexChatWeb.P2PLive.Events
+  alias RetroHexChatWeb.P2PLive.SessionLink
 
   @impl true
   @spec mount(map(), map(), Socket.t()) :: {:ok, Socket.t()}
@@ -80,7 +81,7 @@ defmodule RetroHexChatWeb.App.P2PLive do
         {:ok,
          socket
          |> assign(
-           setup: Events.initial_setup(socket),
+           setup: SessionLink.initial_setup(socket),
            match_game: match_game,
            page_title: window_title(nil, match_game)
          )
@@ -179,7 +180,7 @@ defmodule RetroHexChatWeb.App.P2PLive do
         id="p2p-starting-room"
         setup={@setup}
         game={@match_game}
-        room={Events.room(assigns)}
+        room={SessionLink.room(assigns)}
       >
         <:footer>
           <%!-- Minting is a deliberate act, not a side effect of opening a
@@ -324,12 +325,12 @@ defmodule RetroHexChatWeb.App.P2PLive do
   # match nobody has walked into yet.
   defp enter(socket, %LobbySession{status: status} = db_session, user_id, :creator)
        when status in ["pending", "open"] do
-    if connected?(socket), do: Events.subscribe_session(db_session.token)
+    if connected?(socket), do: SessionLink.subscribe_session(db_session.token)
 
     socket
     |> assign(
       p2p_session:
-        Events.new_invite_sent(socket, db_session.token, user_id, match_opts(db_session))
+        SessionLink.new_invite_sent(socket, db_session.token, user_id, match_opts(db_session))
     )
     |> resume_started(db_session)
   end
@@ -343,7 +344,7 @@ defmodule RetroHexChatWeb.App.P2PLive do
   defp enter(socket, db_session, user_id, role) do
     if connected?(socket) do
       socket
-      |> Events.attach_session(db_session.token, user_id, role, match_opts(db_session))
+      |> SessionLink.attach_session(db_session.token, user_id, role, match_opts(db_session))
       |> resume_started(db_session)
     else
       socket
