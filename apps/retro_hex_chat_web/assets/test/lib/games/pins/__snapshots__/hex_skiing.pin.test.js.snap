@@ -588,6 +588,332 @@ exports[`hex_skiing pins > solo against the AI: hex_skiing_escape 1`] = `
 }
 `;
 
+exports[`hex_skiing pins > solo to the end: hex_skiing 1`] = `
+{
+  "draws": [
+    {
+      "digest": "7f8f4b389aa52d39",
+      "ops": 1077,
+      "phase": 1,
+      "side": "host",
+      "t": 32,
+    },
+    {
+      "digest": "842f5026139b7404",
+      "ops": 1093,
+      "phase": 2,
+      "side": "host",
+      "t": 3024,
+    },
+    {
+      "digest": "12bc3800d09f1bb9",
+      "ops": 1112,
+      "phase": 3,
+      "side": "host",
+      "t": 106272,
+    },
+    {
+      "digest": "301f6da0261bebe8",
+      "ops": 1079,
+      "phase": 1,
+      "side": "host",
+      "t": 109280,
+    },
+    {
+      "digest": "8cbb759562e09ff8",
+      "ops": 1123,
+      "phase": 2,
+      "side": "host",
+      "t": 112272,
+    },
+  ],
+  "ended": true,
+  "phases": [
+    {
+      "phase": 1,
+      "side": "host",
+      "t": 16,
+    },
+    {
+      "phase": 2,
+      "side": "host",
+      "t": 3008,
+    },
+    {
+      "phase": 3,
+      "side": "host",
+      "t": 106256,
+    },
+    {
+      "phase": 1,
+      "side": "host",
+      "t": 109264,
+    },
+    {
+      "phase": 2,
+      "side": "host",
+      "t": 112256,
+    },
+    {
+      "phase": 4,
+      "side": "host",
+      "t": 219584,
+    },
+  ],
+  "results": {
+    "guest": [],
+    "host": [
+      {
+        "score": {
+          "p1": 0,
+          "p2": 2,
+        },
+        "winner": 2,
+      },
+    ],
+  },
+  "sounds": {
+    "host": {
+      "digest": "04edd1fb8bc5d9ab",
+      "voices": {
+        "createGain": 129,
+        "createOscillator": 129,
+      },
+    },
+  },
+  "state": {
+    "host": {
+      "avalancheAccelTimer": 1040,
+      "avalancheSpeed": 1.25,
+      "avalancheY": 6330.000000000023,
+      "blizzardActive": true,
+      "blizzardCooldown": 0,
+      "blizzardTimer": 160,
+      "countdown": 0,
+      "events": 0,
+      "frameCount": 13175,
+      "gateWidth": 60,
+      "itemSpawnTimer": 760,
+      "mode": 0,
+      "nextChunkY": 20400,
+      "nextGateY": 19800,
+      "p1RoundWins": 0,
+      "p2RoundWins": 2,
+      "phase": 4,
+      "round": 1,
+      "scrollY": 19304.09999999999,
+      "seed": 3093350481,
+    },
+  },
+  "wire": {
+    "byDir": {},
+    "digest": "4f53cda18c2baa0c",
+    "first": [],
+  },
+}
+`;
+
+exports[`hex_skiing pins > solo to the end: hex_skiing_clean 1`] = `
+{
+  "draws": [
+    {
+      "digest": "61995e7a13c9b3a5",
+      "ops": 1065,
+      "phase": 1,
+      "side": "host",
+      "t": 32,
+    },
+    {
+      "digest": "da124f5479683d30",
+      "ops": 1081,
+      "phase": 2,
+      "side": "host",
+      "t": 3024,
+    },
+    {
+      "digest": "fab9a3d011361ab2",
+      "ops": 1108,
+      "phase": 3,
+      "side": "host",
+      "t": 106032,
+    },
+    {
+      "digest": "f2e7ce2888d48a64",
+      "ops": 1065,
+      "phase": 1,
+      "side": "host",
+      "t": 109024,
+    },
+    {
+      "digest": "faf2db7eedd93890",
+      "ops": 1109,
+      "phase": 2,
+      "side": "host",
+      "t": 112032,
+    },
+  ],
+  "ended": true,
+  "phases": [
+    {
+      "phase": 1,
+      "side": "host",
+      "t": 16,
+    },
+    {
+      "phase": 2,
+      "side": "host",
+      "t": 3008,
+    },
+    {
+      "phase": 3,
+      "side": "host",
+      "t": 106016,
+    },
+    {
+      "phase": 1,
+      "side": "host",
+      "t": 109008,
+    },
+    {
+      "phase": 2,
+      "side": "host",
+      "t": 112016,
+    },
+    {
+      "phase": 4,
+      "side": "host",
+      "t": 219840,
+    },
+  ],
+  "results": {
+    "guest": [],
+    "host": [
+      {
+        "score": {
+          "p1": 0,
+          "p2": 2,
+        },
+        "winner": 2,
+      },
+    ],
+  },
+  "sounds": {
+    "host": {
+      "digest": "b46039d0c40d693f",
+      "voices": {
+        "createGain": 113,
+        "createOscillator": 113,
+      },
+    },
+  },
+  "state": {
+    "host": {
+      "avalancheAccelTimer": 0,
+      "avalancheSpeed": 0,
+      "avalancheY": -100,
+      "blizzardActive": false,
+      "blizzardCooldown": 2700,
+      "blizzardTimer": 0,
+      "countdown": 0,
+      "events": 0,
+      "frameCount": 13190,
+      "gateWidth": 60,
+      "itemSpawnTimer": 1800,
+      "mode": 2,
+      "nextChunkY": 21000,
+      "nextGateY": 20400,
+      "p1RoundWins": 0,
+      "p2RoundWins": 2,
+      "phase": 4,
+      "round": 1,
+      "scrollY": 19394.39999999999,
+      "seed": 3093350481,
+    },
+  },
+  "wire": {
+    "byDir": {},
+    "digest": "4f53cda18c2baa0c",
+    "first": [],
+  },
+}
+`;
+
+exports[`hex_skiing pins > solo to the end: hex_skiing_escape 1`] = `
+{
+  "draws": [
+    {
+      "digest": "bbffdf9e8f8c9cc1",
+      "ops": 1067,
+      "phase": 1,
+      "side": "host",
+      "t": 32,
+    },
+    {
+      "digest": "dc626e2425ffefca",
+      "ops": 1083,
+      "phase": 2,
+      "side": "host",
+      "t": 3024,
+    },
+  ],
+  "ended": false,
+  "phases": [
+    {
+      "phase": 1,
+      "side": "host",
+      "t": 16,
+    },
+    {
+      "phase": 2,
+      "side": "host",
+      "t": 3008,
+    },
+  ],
+  "results": {
+    "guest": [],
+    "host": [],
+  },
+  "sounds": {
+    "host": {
+      "digest": "b35c2cd31a0e0b32",
+      "voices": {
+        "createGain": 310,
+        "createOscillator": 310,
+      },
+    },
+  },
+  "state": {
+    "host": {
+      "avalancheAccelTimer": 1619,
+      "avalancheSpeed": 3.3499999999999988,
+      "avalancheY": 68593.649999998,
+      "blizzardActive": true,
+      "blizzardCooldown": 0,
+      "blizzardTimer": 481,
+      "countdown": 0,
+      "events": 0,
+      "frameCount": 35999,
+      "gateWidth": 80,
+      "itemSpawnTimer": 181,
+      "mode": 1,
+      "nextChunkY": 111000,
+      "nextGateY": 110400,
+      "p1RoundWins": 0,
+      "p2RoundWins": 0,
+      "phase": 2,
+      "round": 0,
+      "scrollY": 109669.34999999969,
+      "seed": 3093350481,
+    },
+  },
+  "wire": {
+    "byDir": {},
+    "digest": "4f53cda18c2baa0c",
+    "first": [],
+  },
+}
+`;
+
 exports[`hex_skiing pins > the channel drops mid-match 1`] = `
 {
   "lastPhases": {

@@ -561,6 +561,242 @@ exports[`hex_enduro pins > solo against the AI: hex_enduro_sprint 1`] = `
 }
 `;
 
+exports[`hex_enduro pins > solo to the end: hex_enduro 1`] = `
+{
+  "draws": [
+    {
+      "digest": "227632d879688da9",
+      "ops": 956,
+      "phase": 1,
+      "side": "host",
+      "t": 1008,
+    },
+    {
+      "digest": "cfa2d73482547c44",
+      "ops": 947,
+      "phase": 2,
+      "side": "host",
+      "t": 3024,
+    },
+  ],
+  "ended": false,
+  "phases": [
+    {
+      "phase": 1,
+      "side": "host",
+      "t": 16,
+    },
+    {
+      "phase": 2,
+      "side": "host",
+      "t": 3008,
+    },
+  ],
+  "results": {
+    "guest": [],
+    "host": [],
+  },
+  "sounds": {
+    "host": {
+      "digest": "a3061e9db7c2807e",
+      "voices": {
+        "createGain": 168,
+        "createOscillator": 168,
+      },
+    },
+  },
+  "state": {
+    "host": {
+      "_rngCounter": 35819,
+      "aiSpawnTimer": 3,
+      "countdown": 1,
+      "dayNumber": 3,
+      "dayOvertakeTarget": 300,
+      "events": 0,
+      "fuelSpawnTimer": 317,
+      "gameTimer": 0,
+      "mode": 0,
+      "phase": 2,
+      "scrollOffset": 973.8200000000057,
+      "seed": 3093350481,
+      "weather": 3,
+      "weatherTimer": 91,
+    },
+  },
+  "wire": {
+    "byDir": {},
+    "digest": "4f53cda18c2baa0c",
+    "first": [],
+  },
+}
+`;
+
+exports[`hex_enduro pins > solo to the end: hex_enduro_night 1`] = `
+{
+  "draws": [
+    {
+      "digest": "a635adc365bfa109",
+      "ops": 1016,
+      "phase": 1,
+      "side": "host",
+      "t": 1008,
+    },
+    {
+      "digest": "cf676a546edf13b1",
+      "ops": 1007,
+      "phase": 2,
+      "side": "host",
+      "t": 3024,
+    },
+  ],
+  "ended": true,
+  "phases": [
+    {
+      "phase": 1,
+      "side": "host",
+      "t": 16,
+    },
+    {
+      "phase": 2,
+      "side": "host",
+      "t": 3008,
+    },
+    {
+      "phase": 4,
+      "side": "host",
+      "t": 183008,
+    },
+  ],
+  "results": {
+    "guest": [],
+    "host": [
+      {
+        "score": {
+          "p1": 3,
+          "p2": 42,
+        },
+        "winner": 2,
+      },
+    ],
+  },
+  "sounds": {
+    "host": {
+      "digest": "c45a66070a1d80a2",
+      "voices": {
+        "createGain": 51,
+        "createOscillator": 51,
+      },
+    },
+  },
+  "state": {
+    "host": {
+      "_rngCounter": 10800,
+      "aiSpawnTimer": 40,
+      "countdown": 1,
+      "dayNumber": 1,
+      "dayOvertakeTarget": 200,
+      "events": 0,
+      "fuelSpawnTimer": 208,
+      "gameTimer": 0,
+      "mode": 1,
+      "phase": 4,
+      "scrollOffset": 907.030000000004,
+      "seed": 3093350481,
+      "weather": 3,
+      "weatherTimer": 0,
+    },
+  },
+  "wire": {
+    "byDir": {},
+    "digest": "4f53cda18c2baa0c",
+    "first": [],
+  },
+}
+`;
+
+exports[`hex_enduro pins > solo to the end: hex_enduro_sprint 1`] = `
+{
+  "draws": [
+    {
+      "digest": "8b02f55a6d86c0e7",
+      "ops": 951,
+      "phase": 1,
+      "side": "host",
+      "t": 1008,
+    },
+    {
+      "digest": "09f0e017c9bd0bed",
+      "ops": 942,
+      "phase": 2,
+      "side": "host",
+      "t": 3024,
+    },
+  ],
+  "ended": true,
+  "phases": [
+    {
+      "phase": 1,
+      "side": "host",
+      "t": 16,
+    },
+    {
+      "phase": 2,
+      "side": "host",
+      "t": 3008,
+    },
+    {
+      "phase": 4,
+      "side": "host",
+      "t": 93008,
+    },
+  ],
+  "results": {
+    "guest": [],
+    "host": [
+      {
+        "score": {
+          "p1": 0,
+          "p2": 48,
+        },
+        "winner": 2,
+      },
+    ],
+  },
+  "sounds": {
+    "host": {
+      "digest": "9a036a118d4e1a9e",
+      "voices": {
+        "createGain": 113,
+        "createOscillator": 113,
+      },
+    },
+  },
+  "state": {
+    "host": {
+      "_rngCounter": 5400,
+      "aiSpawnTimer": 40,
+      "countdown": 1,
+      "dayNumber": 1,
+      "dayOvertakeTarget": 200,
+      "events": 0,
+      "fuelSpawnTimer": 900,
+      "gameTimer": 0,
+      "mode": 2,
+      "phase": 4,
+      "scrollOffset": 259.0299999999994,
+      "seed": 3093350481,
+      "weather": 0,
+      "weatherTimer": 0,
+    },
+  },
+  "wire": {
+    "byDir": {},
+    "digest": "4f53cda18c2baa0c",
+    "first": [],
+  },
+}
+`;
+
 exports[`hex_enduro pins > the channel drops mid-match 1`] = `
 {
   "lastPhases": {

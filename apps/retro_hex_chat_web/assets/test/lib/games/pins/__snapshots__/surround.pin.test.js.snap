@@ -936,6 +936,161 @@ exports[`light_trails pins > solo against the AI 1`] = `
 }
 `;
 
+exports[`light_trails pins > solo to the end: light_trails 1`] = `
+{
+  "draws": [
+    {
+      "digest": "a1d94cb0b7ac617d",
+      "ops": 762,
+      "phase": 1,
+      "side": "host",
+      "t": 32,
+    },
+    {
+      "digest": "d6610808f42b71f1",
+      "ops": 753,
+      "phase": 2,
+      "side": "host",
+      "t": 3024,
+    },
+    {
+      "digest": "b3e0ccb9d2152208",
+      "ops": 1120,
+      "phase": 3,
+      "side": "host",
+      "t": 6320,
+    },
+    {
+      "digest": "03950d56a3e3765e",
+      "ops": 752,
+      "phase": 1,
+      "side": "host",
+      "t": 9328,
+    },
+    {
+      "digest": "db56f7014acb837e",
+      "ops": 743,
+      "phase": 2,
+      "side": "host",
+      "t": 12320,
+    },
+    {
+      "digest": "c17925ec21fa448d",
+      "ops": 1129,
+      "phase": 3,
+      "side": "host",
+      "t": 15632,
+    },
+    {
+      "digest": "33c3600d3816bc9f",
+      "ops": 761,
+      "phase": 1,
+      "side": "host",
+      "t": 18624,
+    },
+    {
+      "digest": "954535832cc5d807",
+      "ops": 752,
+      "phase": 2,
+      "side": "host",
+      "t": 21632,
+    },
+    {
+      "digest": "55998e6d5db21a4f",
+      "ops": 1134,
+      "phase": 4,
+      "side": "host",
+      "t": 24928,
+    },
+  ],
+  "ended": true,
+  "phases": [
+    {
+      "phase": 1,
+      "side": "host",
+      "t": 16,
+    },
+    {
+      "phase": 2,
+      "side": "host",
+      "t": 3008,
+    },
+    {
+      "phase": 3,
+      "side": "host",
+      "t": 6304,
+    },
+    {
+      "phase": 1,
+      "side": "host",
+      "t": 9312,
+    },
+    {
+      "phase": 2,
+      "side": "host",
+      "t": 12304,
+    },
+    {
+      "phase": 3,
+      "side": "host",
+      "t": 15616,
+    },
+    {
+      "phase": 1,
+      "side": "host",
+      "t": 18608,
+    },
+    {
+      "phase": 2,
+      "side": "host",
+      "t": 21616,
+    },
+    {
+      "phase": 4,
+      "side": "host",
+      "t": 24912,
+    },
+  ],
+  "results": {
+    "guest": [],
+    "host": [
+      {
+        "score": {
+          "p1": 0,
+          "p2": 3,
+        },
+        "winner": 2,
+      },
+    ],
+  },
+  "sounds": {
+    "host": {
+      "digest": "d1fb2a1a93d1510d",
+      "voices": {
+        "createGain": 13,
+        "createOscillator": 13,
+      },
+    },
+  },
+  "state": {
+    "host": {
+      "countdown": 0,
+      "p1Dead": true,
+      "p2Dead": false,
+      "phase": 4,
+      "round": 2,
+      "score1": 0,
+      "score2": 3,
+    },
+  },
+  "wire": {
+    "byDir": {},
+    "digest": "4f53cda18c2baa0c",
+    "first": [],
+  },
+}
+`;
+
 exports[`light_trails pins > the channel drops mid-match 1`] = `
 {
   "lastPhases": {

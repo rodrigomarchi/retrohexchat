@@ -451,6 +451,187 @@ exports[`hex_warlords pins > solo against the AI 1`] = `
 }
 `;
 
+exports[`hex_warlords pins > solo to the end: hex_warlords 1`] = `
+{
+  "draws": [
+    {
+      "digest": "9f24ed60a55f77bb",
+      "ops": 1201,
+      "phase": 1,
+      "side": "host",
+      "t": 1008,
+    },
+    {
+      "digest": "c0c4597645992cdf",
+      "ops": 1213,
+      "phase": 2,
+      "side": "host",
+      "t": 3824,
+    },
+    {
+      "digest": "04a9948d245447c0",
+      "ops": 1049,
+      "phase": 3,
+      "side": "host",
+      "t": 118896,
+    },
+    {
+      "digest": "48e453b489d54134",
+      "ops": 1200,
+      "phase": 1,
+      "side": "host",
+      "t": 121872,
+    },
+    {
+      "digest": "7495c1f3f2a1648b",
+      "ops": 1212,
+      "phase": 2,
+      "side": "host",
+      "t": 124688,
+    },
+    {
+      "digest": "65ebcd6a587713c9",
+      "ops": 1108,
+      "phase": 3,
+      "side": "host",
+      "t": 222320,
+    },
+    {
+      "digest": "13a4216a14168455",
+      "ops": 1199,
+      "phase": 1,
+      "side": "host",
+      "t": 225312,
+    },
+    {
+      "digest": "e9b20237d56e48a4",
+      "ops": 1211,
+      "phase": 2,
+      "side": "host",
+      "t": 228128,
+    },
+    {
+      "digest": "5e935df9165bdce1",
+      "ops": 1092,
+      "phase": 3,
+      "side": "host",
+      "t": 286320,
+    },
+  ],
+  "ended": true,
+  "phases": [
+    {
+      "phase": 1,
+      "side": "host",
+      "t": 16,
+    },
+    {
+      "phase": 2,
+      "side": "host",
+      "t": 3808,
+    },
+    {
+      "phase": 3,
+      "side": "host",
+      "t": 118880,
+    },
+    {
+      "phase": 1,
+      "side": "host",
+      "t": 120880,
+    },
+    {
+      "phase": 2,
+      "side": "host",
+      "t": 124672,
+    },
+    {
+      "phase": 3,
+      "side": "host",
+      "t": 222304,
+    },
+    {
+      "phase": 1,
+      "side": "host",
+      "t": 224304,
+    },
+    {
+      "phase": 2,
+      "side": "host",
+      "t": 228112,
+    },
+    {
+      "phase": 3,
+      "side": "host",
+      "t": 286304,
+    },
+    {
+      "phase": 4,
+      "side": "host",
+      "t": 288304,
+    },
+  ],
+  "results": {
+    "guest": [],
+    "host": [
+      {
+        "score": {
+          "p1": 0,
+          "p2": 3,
+        },
+        "winner": 2,
+      },
+    ],
+  },
+  "sounds": {
+    "host": {
+      "digest": "0227046ff1caef5b",
+      "voices": {
+        "createGain": 294,
+        "createOscillator": 294,
+      },
+    },
+  },
+  "state": {
+    "host": {
+      "brickHit": false,
+      "caught": false,
+      "caughtBy": 0,
+      "countdown": 1,
+      "fireballSpeed": 3.6999999999999975,
+      "fireballVX": 3.1547686081101394,
+      "fireballVY": 1.9332446894490092,
+      "fireballX": 82.86921520275351,
+      "fireballY": 234.05611804443157,
+      "hitBrickColor": "#00ff66",
+      "hitBrickX": 60,
+      "hitBrickY": 249,
+      "hitCastle": "p1",
+      "kingHit": false,
+      "kingHitPlayer": 1,
+      "p1KingAlive": false,
+      "p1Lives": 0,
+      "p2KingAlive": true,
+      "p2Lives": 3,
+      "phase": 4,
+      "released": false,
+      "round": 3,
+      "shield1Y": 210,
+      "shield2Y": 306,
+      "shieldHit": false,
+      "shieldHitPlayer": 0,
+      "wallBounced": false,
+      "winner": 2,
+    },
+  },
+  "wire": {
+    "byDir": {},
+    "digest": "4f53cda18c2baa0c",
+    "first": [],
+  },
+}
+`;
+
 exports[`hex_warlords pins > the channel drops mid-match 1`] = `
 {
   "lastPhases": {

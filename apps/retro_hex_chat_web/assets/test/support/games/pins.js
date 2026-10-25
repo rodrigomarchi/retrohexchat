@@ -13,7 +13,10 @@ import { voices } from "./voices.js";
  * 2. p2p — both sides following the game's key script for `p2pMs`;
  * 3. lossy — the same, losing the first ready announcements and one snapshot
  *    in seven;
- * 4. disconnect — the channel drops mid-match.
+ * 4. disconnect — the channel drops mid-match;
+ * 5. to the end — against the hard AI, with the player idle, until the AI
+ *    wins (up to `endMs`), for the game and each variant: the rounds, the
+ *    match's end and its report, which the timed matches seldom reach.
  *
  * Each match is stored as a readable summary (phases, results, counts) and
  * digests of the full logs. When a digest changes, run with
@@ -26,12 +29,20 @@ import { voices } from "./voices.js";
  * @param {number} [options.soloMs] - the longest a solo match runs
  * @param {number} [options.p2pMs] - how long the P2P matches run
  * @param {number} [options.disconnectAtMs]
+ * @param {number} [options.endMs] - the longest a match to the end runs
  * @param {string[]} [options.variants] - other ids this engine plays (a mode of
  *   the same game); each gets its own solo match
  */
 export function pinGame(
   gameId,
-  { script, soloMs = 60_000, p2pMs = 30_000, disconnectAtMs = 15_000, variants = [] },
+  {
+    script,
+    soloMs = 60_000,
+    p2pMs = 30_000,
+    disconnectAtMs = 15_000,
+    endMs = 600_000,
+    variants = [],
+  },
 ) {
   const both = () => [
     ...script("host").map((press) => ({ ...press, side: "host" })),
@@ -62,6 +73,23 @@ export function pinGame(
         const ended = match.runUntil(() => match.over(), soloMs);
         const record = match.record();
         dump(variant, "solo", record);
+
+        expect({ ended, ...summarize(record) }).toMatchSnapshot();
+      });
+    }
+
+    for (const id of [gameId, ...variants]) {
+      it(`solo to the end: ${id}`, async () => {
+        match = await playMatch({
+          gameId: id,
+          mode: "solo",
+          seed: 1,
+          matchSeed: 3,
+          difficulty: "hard",
+        });
+        const ended = match.runUntil(() => match.over(), endMs);
+        const record = match.record();
+        dump(id, "end", record);
 
         expect({ ended, ...summarize(record) }).toMatchSnapshot();
       });

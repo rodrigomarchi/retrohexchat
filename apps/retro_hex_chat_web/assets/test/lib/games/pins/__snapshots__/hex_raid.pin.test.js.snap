@@ -837,6 +837,354 @@ exports[`hex_raid pins > solo against the AI: hex_raid_pacifist 1`] = `
 }
 `;
 
+exports[`hex_raid pins > solo to the end: hex_raid 1`] = `
+{
+  "draws": [
+    {
+      "digest": "9d045912ce7884c1",
+      "ops": 1330,
+      "phase": 1,
+      "side": "host",
+      "t": 1008,
+    },
+    {
+      "digest": "4731bf15dcc92c02",
+      "ops": 1337,
+      "phase": 2,
+      "side": "host",
+      "t": 3024,
+    },
+  ],
+  "ended": true,
+  "phases": [
+    {
+      "phase": 1,
+      "side": "host",
+      "t": 16,
+    },
+    {
+      "phase": 2,
+      "side": "host",
+      "t": 3008,
+    },
+    {
+      "phase": 5,
+      "side": "host",
+      "t": 34384,
+    },
+  ],
+  "results": {
+    "guest": [],
+    "host": [
+      {
+        "score": {
+          "p1": 0,
+          "p2": 650,
+        },
+        "winner": 2,
+      },
+    ],
+  },
+  "sounds": {
+    "host": {
+      "digest": "a8fbe6dd93899ace",
+      "voices": {
+        "createGain": 64,
+        "createOscillator": 64,
+      },
+    },
+  },
+  "state": {
+    "host": {
+      "bridgeActive": false,
+      "bridgeHp": 0,
+      "bridgeY": 227,
+      "countdown": 1,
+      "enemyCount": 5,
+      "fuelCount": 1,
+      "jet1Alive": false,
+      "jet1Fuel": 0,
+      "jet1Invuln": false,
+      "jet1InvulnTimer": 0,
+      "jet1Lives": 0,
+      "jet1MineCooldown": 0,
+      "jet1MissileCooldown": 0,
+      "jet1RespawnTimer": 0,
+      "jet1Respawning": false,
+      "jet1Speed": 2,
+      "jet1X": 320,
+      "jet1Y": 440,
+      "jet2Alive": true,
+      "jet2Fuel": 33,
+      "jet2Invuln": false,
+      "jet2InvulnTimer": 0,
+      "jet2Lives": 1,
+      "jet2MineCooldown": 52,
+      "jet2MissileCooldown": 0,
+      "jet2RespawnTimer": 0,
+      "jet2Respawning": false,
+      "jet2Speed": 2,
+      "jet2X": 293,
+      "jet2Y": 440,
+      "m1Active": false,
+      "m1X": 0,
+      "m1Y": 0,
+      "m2Active": true,
+      "m2X": 359,
+      "m2Y": 110,
+      "mineCount": 0,
+      "mode": 0,
+      "nextBridgeSpawnDist": 4000,
+      "nextEnemySpawnDist": 4029.424000000002,
+      "nextFuelSpawnDist": 4231.472,
+      "phase": 5,
+      "score1": 0,
+      "score2": 650,
+      "scrollY": 3979,
+      "section": 1,
+      "seed": 3093350481,
+    },
+  },
+  "wire": {
+    "byDir": {},
+    "digest": "4f53cda18c2baa0c",
+    "first": [],
+  },
+}
+`;
+
+exports[`hex_raid pins > solo to the end: hex_raid_blitz 1`] = `
+{
+  "draws": [
+    {
+      "digest": "5d159062be8dc00b",
+      "ops": 1330,
+      "phase": 1,
+      "side": "host",
+      "t": 1008,
+    },
+    {
+      "digest": "d0d0e24d3d0d222e",
+      "ops": 1337,
+      "phase": 2,
+      "side": "host",
+      "t": 3024,
+    },
+  ],
+  "ended": true,
+  "phases": [
+    {
+      "phase": 1,
+      "side": "host",
+      "t": 16,
+    },
+    {
+      "phase": 2,
+      "side": "host",
+      "t": 3008,
+    },
+    {
+      "phase": 5,
+      "side": "host",
+      "t": 40592,
+    },
+  ],
+  "results": {
+    "guest": [],
+    "host": [
+      {
+        "score": {
+          "p1": 0,
+          "p2": 1540,
+        },
+        "winner": 2,
+      },
+    ],
+  },
+  "sounds": {
+    "host": {
+      "digest": "d6c6444cd2acee42",
+      "voices": {
+        "createGain": 118,
+        "createOscillator": 118,
+      },
+    },
+  },
+  "state": {
+    "host": {
+      "bridgeActive": false,
+      "bridgeHp": 0,
+      "bridgeY": 256,
+      "countdown": 1,
+      "enemyCount": 5,
+      "fuelCount": 1,
+      "jet1Alive": false,
+      "jet1Fuel": 0,
+      "jet1Invuln": false,
+      "jet1InvulnTimer": 0,
+      "jet1Lives": 0,
+      "jet1MineCooldown": 0,
+      "jet1MissileCooldown": 0,
+      "jet1RespawnTimer": 0,
+      "jet1Respawning": false,
+      "jet1Speed": 2,
+      "jet1X": 320,
+      "jet1Y": 440,
+      "jet2Alive": true,
+      "jet2Fuel": 0,
+      "jet2Invuln": false,
+      "jet2InvulnTimer": 0,
+      "jet2Lives": 1,
+      "jet2MineCooldown": 156,
+      "jet2MissileCooldown": 9,
+      "jet2RespawnTimer": 0,
+      "jet2Respawning": false,
+      "jet2Speed": 2,
+      "jet2X": 344,
+      "jet2Y": 440,
+      "m1Active": false,
+      "m1X": 0,
+      "m1Y": 0,
+      "m2Active": true,
+      "m2X": 311,
+      "m2Y": 368,
+      "mineCount": 1,
+      "mode": 2,
+      "nextBridgeSpawnDist": 6000,
+      "nextEnemySpawnDist": 5034.665600000001,
+      "nextFuelSpawnDist": 5476.128000000001,
+      "phase": 5,
+      "score1": 0,
+      "score2": 1540,
+      "scrollY": 4938,
+      "section": 2,
+      "seed": 3093350481,
+    },
+  },
+  "wire": {
+    "byDir": {},
+    "digest": "4f53cda18c2baa0c",
+    "first": [],
+  },
+}
+`;
+
+exports[`hex_raid pins > solo to the end: hex_raid_pacifist 1`] = `
+{
+  "draws": [
+    {
+      "digest": "ae83b0bf8d79d49c",
+      "ops": 1330,
+      "phase": 1,
+      "side": "host",
+      "t": 1008,
+    },
+    {
+      "digest": "1cea25fe657af723",
+      "ops": 1319,
+      "phase": 2,
+      "side": "host",
+      "t": 3024,
+    },
+  ],
+  "ended": true,
+  "phases": [
+    {
+      "phase": 1,
+      "side": "host",
+      "t": 16,
+    },
+    {
+      "phase": 2,
+      "side": "host",
+      "t": 3008,
+    },
+    {
+      "phase": 5,
+      "side": "host",
+      "t": 34432,
+    },
+  ],
+  "results": {
+    "guest": [],
+    "host": [
+      {
+        "score": {
+          "p1": 0,
+          "p2": 740,
+        },
+        "winner": 2,
+      },
+    ],
+  },
+  "sounds": {
+    "host": {
+      "digest": "f90e790507d0ed66",
+      "voices": {
+        "createGain": 58,
+        "createOscillator": 58,
+      },
+    },
+  },
+  "state": {
+    "host": {
+      "bridgeActive": false,
+      "bridgeHp": 0,
+      "bridgeY": 227,
+      "countdown": 1,
+      "enemyCount": 5,
+      "fuelCount": 1,
+      "jet1Alive": false,
+      "jet1Fuel": 0,
+      "jet1Invuln": false,
+      "jet1InvulnTimer": 0,
+      "jet1Lives": 0,
+      "jet1MineCooldown": 0,
+      "jet1MissileCooldown": 0,
+      "jet1RespawnTimer": 0,
+      "jet1Respawning": false,
+      "jet1Speed": 2,
+      "jet1X": 320,
+      "jet1Y": 440,
+      "jet2Alive": true,
+      "jet2Fuel": 33,
+      "jet2Invuln": false,
+      "jet2InvulnTimer": 0,
+      "jet2Lives": 1,
+      "jet2MineCooldown": 0,
+      "jet2MissileCooldown": 0,
+      "jet2RespawnTimer": 0,
+      "jet2Respawning": false,
+      "jet2Speed": 2,
+      "jet2X": 296,
+      "jet2Y": 440,
+      "m1Active": false,
+      "m1X": 0,
+      "m1Y": 0,
+      "m2Active": true,
+      "m2X": 365,
+      "m2Y": 116,
+      "mineCount": 0,
+      "mode": 1,
+      "nextBridgeSpawnDist": 4000,
+      "nextEnemySpawnDist": 4029.430400000002,
+      "nextFuelSpawnDist": 4231.44,
+      "phase": 5,
+      "score1": 0,
+      "score2": 740,
+      "scrollY": 3978,
+      "section": 1,
+      "seed": 3093350481,
+    },
+  },
+  "wire": {
+    "byDir": {},
+    "digest": "4f53cda18c2baa0c",
+    "first": [],
+  },
+}
+`;
+
 exports[`hex_raid pins > the channel drops mid-match 1`] = `
 {
   "lastPhases": {

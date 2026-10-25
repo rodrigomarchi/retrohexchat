@@ -521,6 +521,153 @@ exports[`hex_boxing pins > solo against the AI 1`] = `
 }
 `;
 
+exports[`hex_boxing pins > solo to the end: hex_boxing 1`] = `
+{
+  "draws": [
+    {
+      "digest": "7d65ba8e1136ea02",
+      "ops": 132,
+      "phase": 1,
+      "side": "host",
+      "t": 1008,
+    },
+    {
+      "digest": "c0e7a1942fbb7973",
+      "ops": 129,
+      "phase": 3,
+      "side": "host",
+      "t": 4032,
+    },
+    {
+      "digest": "8edd229d9a224f61",
+      "ops": 158,
+      "phase": 4,
+      "side": "host",
+      "t": 46672,
+    },
+    {
+      "digest": "072320311c3872c0",
+      "ops": 132,
+      "phase": 1,
+      "side": "host",
+      "t": 50160,
+    },
+    {
+      "digest": "1fe3581387295215",
+      "ops": 129,
+      "phase": 3,
+      "side": "host",
+      "t": 53168,
+    },
+    {
+      "digest": "725234d609ab85a3",
+      "ops": 161,
+      "phase": 5,
+      "side": "host",
+      "t": 93552,
+    },
+  ],
+  "ended": true,
+  "phases": [
+    {
+      "phase": 1,
+      "side": "host",
+      "t": 16,
+    },
+    {
+      "phase": 2,
+      "side": "host",
+      "t": 3008,
+    },
+    {
+      "phase": 3,
+      "side": "host",
+      "t": 4016,
+    },
+    {
+      "phase": 4,
+      "side": "host",
+      "t": 46656,
+    },
+    {
+      "phase": 1,
+      "side": "host",
+      "t": 49152,
+    },
+    {
+      "phase": 2,
+      "side": "host",
+      "t": 52160,
+    },
+    {
+      "phase": 3,
+      "side": "host",
+      "t": 53152,
+    },
+    {
+      "phase": 5,
+      "side": "host",
+      "t": 93536,
+    },
+  ],
+  "results": {
+    "guest": [],
+    "host": [
+      {
+        "score": {
+          "p1": 0,
+          "p2": 2,
+        },
+        "winner": 2,
+      },
+    ],
+  },
+  "sounds": {
+    "host": {
+      "digest": "f03cb8ebd878466b",
+      "voices": {
+        "createGain": 114,
+        "createOscillator": 114,
+      },
+    },
+  },
+  "state": {
+    "host": {
+      "b1arm": 0,
+      "b1cooldownTimer": 0,
+      "b1dir": 0,
+      "b1punchState": 0,
+      "b1punchTimer": 0,
+      "b1x": 192,
+      "b1y": 240,
+      "b2arm": 1,
+      "b2cooldownTimer": 12,
+      "b2dir": 4,
+      "b2punchState": 2,
+      "b2punchTimer": 0,
+      "b2x": 221.35786437626894,
+      "b2y": 240.17766952966383,
+      "countdown": 1,
+      "koPlayer": 1,
+      "lastHitPlayer": 2,
+      "lastHitPoints": 2,
+      "phase": 5,
+      "round": 2,
+      "roundTimer": 4777,
+      "roundWins1": 0,
+      "roundWins2": 2,
+      "score1": 0,
+      "score2": 100,
+    },
+  },
+  "wire": {
+    "byDir": {},
+    "digest": "4f53cda18c2baa0c",
+    "first": [],
+  },
+}
+`;
+
 exports[`hex_boxing pins > the channel drops mid-match 1`] = `
 {
   "lastPhases": {

@@ -866,6 +866,160 @@ exports[`block_breakers pins > solo against the AI 1`] = `
 }
 `;
 
+exports[`block_breakers pins > solo to the end: block_breakers 1`] = `
+{
+  "draws": [
+    {
+      "digest": "33bf833bdf6f5867",
+      "ops": 1186,
+      "phase": 1,
+      "side": "host",
+      "t": 1008,
+    },
+    {
+      "digest": "92be7d816e670fa1",
+      "ops": 1218,
+      "phase": 3,
+      "side": "host",
+      "t": 3824,
+    },
+    {
+      "digest": "13a47193666d2081",
+      "ops": 1181,
+      "phase": 4,
+      "side": "host",
+      "t": 7120,
+    },
+    {
+      "digest": "2ca4408ffdce0437",
+      "ops": 1211,
+      "phase": 3,
+      "side": "host",
+      "t": 7936,
+    },
+    {
+      "digest": "4d4c9b042bf3cffc",
+      "ops": 1086,
+      "phase": 4,
+      "side": "host",
+      "t": 14544,
+    },
+    {
+      "digest": "8d19ee05798b7f07",
+      "ops": 1097,
+      "phase": 3,
+      "side": "host",
+      "t": 15360,
+    },
+  ],
+  "ended": true,
+  "phases": [
+    {
+      "phase": 1,
+      "side": "host",
+      "t": 16,
+    },
+    {
+      "phase": 2,
+      "side": "host",
+      "t": 3008,
+    },
+    {
+      "phase": 3,
+      "side": "host",
+      "t": 3808,
+    },
+    {
+      "phase": 4,
+      "side": "host",
+      "t": 5632,
+    },
+    {
+      "phase": 2,
+      "side": "host",
+      "t": 7120,
+    },
+    {
+      "phase": 3,
+      "side": "host",
+      "t": 7920,
+    },
+    {
+      "phase": 4,
+      "side": "host",
+      "t": 13040,
+    },
+    {
+      "phase": 2,
+      "side": "host",
+      "t": 14544,
+    },
+    {
+      "phase": 3,
+      "side": "host",
+      "t": 15344,
+    },
+    {
+      "phase": 5,
+      "side": "host",
+      "t": 18288,
+    },
+  ],
+  "results": {
+    "guest": [],
+    "host": [
+      {
+        "score": {
+          "p1": 240,
+          "p2": 240,
+        },
+        "winner": -1,
+      },
+    ],
+  },
+  "sounds": {
+    "host": {
+      "digest": "45eab99d6f576f9d",
+      "voices": {
+        "createGain": 19,
+        "createOscillator": 19,
+      },
+    },
+  },
+  "state": {
+    "host": {
+      "ballSpeed": 2.62,
+      "ballVX": -1.0764478494780754,
+      "ballVY": 2.2563820659086145,
+      "ballX": 129.46873064237877,
+      "ballY": 476.9201169204041,
+      "blockHit": false,
+      "blocksDestroyed": 11,
+      "blocksRemaining": 39,
+      "countdown": 0,
+      "hitBlockColor": "#00ff66",
+      "hitBlockRow": 3,
+      "hitBlockX": 230,
+      "hitBlockY": 208,
+      "lifeLost": false,
+      "lives": 0,
+      "paddle1X": 280,
+      "paddle2X": 147,
+      "paddleHit": false,
+      "phase": 5,
+      "score": 240,
+      "wallBounced": false,
+      "won": false,
+    },
+  },
+  "wire": {
+    "byDir": {},
+    "digest": "4f53cda18c2baa0c",
+    "first": [],
+  },
+}
+`;
+
 exports[`block_breakers pins > the channel drops mid-match 1`] = `
 {
   "lastPhases": {

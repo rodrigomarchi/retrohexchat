@@ -643,6 +643,447 @@ exports[`hex_frost pins > solo against the AI: hex_frost_peaceful 1`] = `
 }
 `;
 
+exports[`hex_frost pins > solo to the end: hex_frost 1`] = `
+{
+  "draws": [
+    {
+      "digest": "d784bcfeb813a752",
+      "ops": 1962,
+      "phase": 1,
+      "side": "host",
+      "t": 32,
+    },
+    {
+      "digest": "9f08c2cfb71e8463",
+      "ops": 1949,
+      "phase": 2,
+      "side": "host",
+      "t": 3024,
+    },
+    {
+      "digest": "485e1aa698f68c6a",
+      "ops": 1959,
+      "phase": 3,
+      "side": "host",
+      "t": 48048,
+    },
+    {
+      "digest": "cff66f8b4c1718e3",
+      "ops": 1990,
+      "phase": 1,
+      "side": "host",
+      "t": 51040,
+    },
+    {
+      "digest": "0aa972d84de4a634",
+      "ops": 1977,
+      "phase": 2,
+      "side": "host",
+      "t": 54048,
+    },
+    {
+      "digest": "7d8c21e093a4e3f6",
+      "ops": 1971,
+      "phase": 3,
+      "side": "host",
+      "t": 99056,
+    },
+    {
+      "digest": "0e4f7293c1ad1036",
+      "ops": 2027,
+      "phase": 1,
+      "side": "host",
+      "t": 102064,
+    },
+    {
+      "digest": "52edcaa64600437b",
+      "ops": 2012,
+      "phase": 2,
+      "side": "host",
+      "t": 105056,
+    },
+    {
+      "digest": "6acfc9ddc8ac7011",
+      "ops": 2046,
+      "phase": 3,
+      "side": "host",
+      "t": 150080,
+    },
+  ],
+  "ended": true,
+  "phases": [
+    {
+      "phase": 1,
+      "side": "host",
+      "t": 16,
+    },
+    {
+      "phase": 2,
+      "side": "host",
+      "t": 3008,
+    },
+    {
+      "phase": 3,
+      "side": "host",
+      "t": 48032,
+    },
+    {
+      "phase": 1,
+      "side": "host",
+      "t": 51024,
+    },
+    {
+      "phase": 2,
+      "side": "host",
+      "t": 54032,
+    },
+    {
+      "phase": 3,
+      "side": "host",
+      "t": 99040,
+    },
+    {
+      "phase": 1,
+      "side": "host",
+      "t": 102048,
+    },
+    {
+      "phase": 2,
+      "side": "host",
+      "t": 105040,
+    },
+    {
+      "phase": 3,
+      "side": "host",
+      "t": 150064,
+    },
+    {
+      "phase": 4,
+      "side": "host",
+      "t": 153056,
+    },
+  ],
+  "results": {
+    "guest": [],
+    "host": [
+      {
+        "score": {
+          "p1": 0,
+          "p2": 3,
+        },
+        "winner": 2,
+      },
+    ],
+  },
+  "sounds": {
+    "host": {
+      "digest": "006d8b22af646343",
+      "voices": {
+        "createBiquadFilter": 3,
+        "createBuffer": 26,
+        "createBufferSource": 26,
+        "createGain": 871,
+        "createOscillator": 844,
+      },
+    },
+  },
+  "state": {
+    "host": {
+      "countdown": 0,
+      "events": 0,
+      "fishSpawnTimer": 101,
+      "frameCount": 9183,
+      "mode": 0,
+      "p1IglooFlash": 0,
+      "p1RespawnTimer": 0,
+      "p2IglooFlash": 0,
+      "p2RespawnTimer": 0,
+      "phase": 4,
+      "piecesNeeded": 15,
+      "round": 3,
+      "roundWinner": 2,
+      "seed": 3093350481,
+      "temperature": 0,
+    },
+  },
+  "wire": {
+    "byDir": {},
+    "digest": "4f53cda18c2baa0c",
+    "first": [],
+  },
+}
+`;
+
+exports[`hex_frost pins > solo to the end: hex_frost_blizzard 1`] = `
+{
+  "draws": [
+    {
+      "digest": "b025457e7ef6f2b7",
+      "ops": 1989,
+      "phase": 1,
+      "side": "host",
+      "t": 32,
+    },
+    {
+      "digest": "4c1b67e77cc41bcd",
+      "ops": 1976,
+      "phase": 2,
+      "side": "host",
+      "t": 3024,
+    },
+    {
+      "digest": "8262203719296a06",
+      "ops": 1978,
+      "phase": 3,
+      "side": "host",
+      "t": 123040,
+    },
+  ],
+  "ended": true,
+  "phases": [
+    {
+      "phase": 1,
+      "side": "host",
+      "t": 16,
+    },
+    {
+      "phase": 2,
+      "side": "host",
+      "t": 3008,
+    },
+    {
+      "phase": 3,
+      "side": "host",
+      "t": 123024,
+    },
+    {
+      "phase": 4,
+      "side": "host",
+      "t": 126032,
+    },
+  ],
+  "results": {
+    "guest": [],
+    "host": [
+      {
+        "score": {
+          "p1": 0,
+          "p2": 0,
+        },
+        "winner": 0,
+      },
+    ],
+  },
+  "sounds": {
+    "host": {
+      "digest": "977c258cb996c25c",
+      "voices": {
+        "createBiquadFilter": 1,
+        "createBuffer": 21,
+        "createBufferSource": 21,
+        "createGain": 874,
+        "createOscillator": 852,
+      },
+    },
+  },
+  "state": {
+    "host": {
+      "countdown": 0,
+      "events": 0,
+      "fishSpawnTimer": 161,
+      "frameCount": 7561,
+      "mode": 1,
+      "p1IglooFlash": 0,
+      "p1RespawnTimer": 0,
+      "p2IglooFlash": 0,
+      "p2RespawnTimer": 0,
+      "phase": 4,
+      "piecesNeeded": 20,
+      "round": 1,
+      "roundWinner": 0,
+      "seed": 3093350481,
+      "temperature": 0,
+    },
+  },
+  "wire": {
+    "byDir": {},
+    "digest": "4f53cda18c2baa0c",
+    "first": [],
+  },
+}
+`;
+
+exports[`hex_frost pins > solo to the end: hex_frost_peaceful 1`] = `
+{
+  "draws": [
+    {
+      "digest": "4f3c5080ad41ee67",
+      "ops": 1962,
+      "phase": 1,
+      "side": "host",
+      "t": 32,
+    },
+    {
+      "digest": "dd555e2a3926eaeb",
+      "ops": 1949,
+      "phase": 2,
+      "side": "host",
+      "t": 3024,
+    },
+    {
+      "digest": "249bbf7ce2d98fe0",
+      "ops": 1959,
+      "phase": 3,
+      "side": "host",
+      "t": 48048,
+    },
+    {
+      "digest": "a6d3689bee978704",
+      "ops": 1990,
+      "phase": 1,
+      "side": "host",
+      "t": 51040,
+    },
+    {
+      "digest": "0707502aef22a497",
+      "ops": 1977,
+      "phase": 2,
+      "side": "host",
+      "t": 54048,
+    },
+    {
+      "digest": "5edfd85d0e743872",
+      "ops": 1971,
+      "phase": 3,
+      "side": "host",
+      "t": 99056,
+    },
+    {
+      "digest": "d6d1a9d7a33cf164",
+      "ops": 2027,
+      "phase": 1,
+      "side": "host",
+      "t": 102064,
+    },
+    {
+      "digest": "d36a2936c8c5bf6d",
+      "ops": 2012,
+      "phase": 2,
+      "side": "host",
+      "t": 105056,
+    },
+    {
+      "digest": "b62ccdb202f7c0aa",
+      "ops": 2046,
+      "phase": 3,
+      "side": "host",
+      "t": 150080,
+    },
+  ],
+  "ended": true,
+  "phases": [
+    {
+      "phase": 1,
+      "side": "host",
+      "t": 16,
+    },
+    {
+      "phase": 2,
+      "side": "host",
+      "t": 3008,
+    },
+    {
+      "phase": 3,
+      "side": "host",
+      "t": 48032,
+    },
+    {
+      "phase": 1,
+      "side": "host",
+      "t": 51024,
+    },
+    {
+      "phase": 2,
+      "side": "host",
+      "t": 54032,
+    },
+    {
+      "phase": 3,
+      "side": "host",
+      "t": 99040,
+    },
+    {
+      "phase": 1,
+      "side": "host",
+      "t": 102048,
+    },
+    {
+      "phase": 2,
+      "side": "host",
+      "t": 105040,
+    },
+    {
+      "phase": 3,
+      "side": "host",
+      "t": 150064,
+    },
+    {
+      "phase": 4,
+      "side": "host",
+      "t": 153056,
+    },
+  ],
+  "results": {
+    "guest": [],
+    "host": [
+      {
+        "score": {
+          "p1": 0,
+          "p2": 3,
+        },
+        "winner": 2,
+      },
+    ],
+  },
+  "sounds": {
+    "host": {
+      "digest": "006d8b22af646343",
+      "voices": {
+        "createBiquadFilter": 3,
+        "createBuffer": 26,
+        "createBufferSource": 26,
+        "createGain": 871,
+        "createOscillator": 844,
+      },
+    },
+  },
+  "state": {
+    "host": {
+      "countdown": 0,
+      "events": 0,
+      "fishSpawnTimer": 101,
+      "frameCount": 9183,
+      "mode": 2,
+      "p1IglooFlash": 0,
+      "p1RespawnTimer": 0,
+      "p2IglooFlash": 0,
+      "p2RespawnTimer": 0,
+      "phase": 4,
+      "piecesNeeded": 15,
+      "round": 3,
+      "roundWinner": 2,
+      "seed": 3093350481,
+      "temperature": 0,
+    },
+  },
+  "wire": {
+    "byDir": {},
+    "digest": "4f53cda18c2baa0c",
+    "first": [],
+  },
+}
+`;
+
 exports[`hex_frost pins > the channel drops mid-match 1`] = `
 {
   "lastPhases": {

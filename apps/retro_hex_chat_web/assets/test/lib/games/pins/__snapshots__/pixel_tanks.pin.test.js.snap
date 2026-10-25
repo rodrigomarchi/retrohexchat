@@ -606,6 +606,163 @@ exports[`pixel_tanks pins > solo against the AI 1`] = `
 }
 `;
 
+exports[`pixel_tanks pins > solo to the end: pixel_tanks 1`] = `
+{
+  "draws": [
+    {
+      "digest": "a4fea98f6d18557c",
+      "ops": 1779,
+      "phase": 1,
+      "side": "host",
+      "t": 1008,
+    },
+    {
+      "digest": "d66ea4aa7e0afe27",
+      "ops": 1792,
+      "phase": 3,
+      "side": "host",
+      "t": 4032,
+    },
+    {
+      "digest": "941e0e448ed5f658",
+      "ops": 1779,
+      "phase": 4,
+      "side": "host",
+      "t": 176656,
+    },
+    {
+      "digest": "bb1884a3f26e58e3",
+      "ops": 1779,
+      "phase": 1,
+      "side": "host",
+      "t": 177664,
+    },
+    {
+      "digest": "a544528a2bdc0085",
+      "ops": 1792,
+      "phase": 3,
+      "side": "host",
+      "t": 180672,
+    },
+  ],
+  "ended": true,
+  "phases": [
+    {
+      "phase": 1,
+      "side": "host",
+      "t": 16,
+    },
+    {
+      "phase": 2,
+      "side": "host",
+      "t": 3008,
+    },
+    {
+      "phase": 3,
+      "side": "host",
+      "t": 4016,
+    },
+    {
+      "phase": 4,
+      "side": "host",
+      "t": 174160,
+    },
+    {
+      "phase": 1,
+      "side": "host",
+      "t": 176656,
+    },
+    {
+      "phase": 2,
+      "side": "host",
+      "t": 179664,
+    },
+    {
+      "phase": 3,
+      "side": "host",
+      "t": 180656,
+    },
+    {
+      "phase": 5,
+      "side": "host",
+      "t": 350816,
+    },
+  ],
+  "results": {
+    "guest": [],
+    "host": [
+      {
+        "score": {
+          "p1": 0,
+          "p2": 2,
+        },
+        "winner": 2,
+      },
+    ],
+  },
+  "sounds": {
+    "host": {
+      "digest": "8189765026c2b5f2",
+      "voices": {
+        "createGain": 251,
+        "createOscillator": 251,
+      },
+    },
+  },
+  "state": {
+    "host": {
+      "countdown": 1,
+      "m1Active": false,
+      "m1Age": 0,
+      "m1Bounced": false,
+      "m1VX": 0,
+      "m1VY": 0,
+      "m1X": 0,
+      "m1Y": 0,
+      "m2Active": true,
+      "m2Age": 36,
+      "m2Bounced": false,
+      "m2VX": -5,
+      "m2VY": 6.123233995736766e-16,
+      "m2X": 278,
+      "m2Y": 240,
+      "mazeIndex": 4,
+      "missileExpired": 0,
+      "mode": 1,
+      "phase": 5,
+      "respawnPause": 0,
+      "round": 2,
+      "roundTimer": 0,
+      "roundWins1": 0,
+      "roundWins2": 2,
+      "score1": 0,
+      "score2": 51,
+      "tank1Alive": true,
+      "tank1Cooldown": 0,
+      "tank1Invuln": false,
+      "tank1InvulnTimer": 0,
+      "tank1Rot": 0,
+      "tank1X": 48,
+      "tank1Y": 240,
+      "tank2Alive": true,
+      "tank2Cooldown": 0,
+      "tank2Invuln": false,
+      "tank2InvulnTimer": 0,
+      "tank2Rot": 3.141592653589793,
+      "tank2X": 400,
+      "tank2Y": 240,
+      "tankHit": 0,
+      "wallBounced": 0,
+    },
+  },
+  "wire": {
+    "byDir": {},
+    "digest": "4f53cda18c2baa0c",
+    "first": [],
+  },
+}
+`;
+
 exports[`pixel_tanks pins > the channel drops mid-match 1`] = `
 {
   "lastPhases": {

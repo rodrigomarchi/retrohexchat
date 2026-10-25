@@ -722,6 +722,371 @@ exports[`hex_invaders pins > solo against the AI: hex_invaders_coop 1`] = `
 }
 `;
 
+exports[`hex_invaders pins > solo to the end: hex_invaders 1`] = `
+{
+  "draws": [
+    {
+      "digest": "2b40256f14d5cbd7",
+      "ops": 288,
+      "phase": 1,
+      "side": "host",
+      "t": 1008,
+    },
+    {
+      "digest": "e69c8b97ceae49d4",
+      "ops": 895,
+      "phase": 2,
+      "side": "host",
+      "t": 3024,
+    },
+  ],
+  "ended": true,
+  "phases": [
+    {
+      "phase": 1,
+      "side": "host",
+      "t": 16,
+    },
+    {
+      "phase": 2,
+      "side": "host",
+      "t": 3008,
+    },
+    {
+      "phase": 5,
+      "side": "host",
+      "t": 12608,
+    },
+  ],
+  "results": {
+    "guest": [],
+    "host": [
+      {
+        "score": {
+          "p1": 0,
+          "p2": 80,
+        },
+        "winner": 2,
+      },
+    ],
+  },
+  "sounds": {
+    "host": {
+      "digest": "251fbf8646320e86",
+      "voices": {
+        "createGain": 86,
+        "createOscillator": 86,
+      },
+    },
+  },
+  "state": {
+    "host": {
+      "alien1Count": 39,
+      "alien1DirRight": true,
+      "alien1MoveTimer": 57,
+      "alien2Count": 30,
+      "alien2DirRight": true,
+      "alien2MoveTimer": 19,
+      "bombCount": 3,
+      "bombTimer": 95,
+      "cannon1X": 159,
+      "cannon2X": 485,
+      "combo1Count": 0,
+      "combo1Timer": 0,
+      "combo2Count": 1,
+      "combo2Timer": 63,
+      "countdown": 1,
+      "lives1": 0,
+      "lives2": 3,
+      "m1Active": false,
+      "m1X": 0,
+      "m1Y": 0,
+      "m2Active": false,
+      "m2X": 464,
+      "m2Y": 146,
+      "mode": 0,
+      "phase": 5,
+      "score1": 0,
+      "score2": 80,
+      "seed": 3093350481,
+      "ufoActive": false,
+      "ufoDir": 1,
+      "ufoTimer": 1225,
+      "ufoX": 0,
+      "wave": 1,
+    },
+  },
+  "wire": {
+    "byDir": {},
+    "digest": "4f53cda18c2baa0c",
+    "first": [],
+  },
+}
+`;
+
+exports[`hex_invaders pins > solo to the end: hex_invaders_blitz 1`] = `
+{
+  "draws": [
+    {
+      "digest": "827253161b37ad5b",
+      "ops": 288,
+      "phase": 1,
+      "side": "host",
+      "t": 1008,
+    },
+    {
+      "digest": "46e1bcfdf317c7bb",
+      "ops": 895,
+      "phase": 2,
+      "side": "host",
+      "t": 3024,
+    },
+  ],
+  "ended": true,
+  "phases": [
+    {
+      "phase": 1,
+      "side": "host",
+      "t": 16,
+    },
+    {
+      "phase": 2,
+      "side": "host",
+      "t": 3008,
+    },
+    {
+      "phase": 5,
+      "side": "host",
+      "t": 14448,
+    },
+  ],
+  "results": {
+    "guest": [],
+    "host": [
+      {
+        "score": {
+          "p1": 0,
+          "p2": 90,
+        },
+        "winner": 2,
+      },
+    ],
+  },
+  "sounds": {
+    "host": {
+      "digest": "3f262e2cacb033f1",
+      "voices": {
+        "createGain": 94,
+        "createOscillator": 94,
+      },
+    },
+  },
+  "state": {
+    "host": {
+      "alien1Count": 44,
+      "alien1DirRight": true,
+      "alien1MoveTimer": 27,
+      "alien2Count": 30,
+      "alien2DirRight": true,
+      "alien2MoveTimer": 3,
+      "bombCount": 3,
+      "bombTimer": 95,
+      "cannon1X": 159,
+      "cannon2X": 494,
+      "combo1Count": 0,
+      "combo1Timer": 0,
+      "combo2Count": 1,
+      "combo2Timer": 48,
+      "countdown": 1,
+      "lives1": 0,
+      "lives2": 3,
+      "m1Active": false,
+      "m1X": 0,
+      "m1Y": 0,
+      "m2Active": false,
+      "m2X": 509,
+      "m2Y": 146,
+      "mode": 2,
+      "phase": 5,
+      "score1": 0,
+      "score2": 90,
+      "seed": 3093350481,
+      "ufoActive": false,
+      "ufoDir": 1,
+      "ufoTimer": 1115,
+      "ufoX": 0,
+      "wave": 1,
+    },
+  },
+  "wire": {
+    "byDir": {},
+    "digest": "4f53cda18c2baa0c",
+    "first": [],
+  },
+}
+`;
+
+exports[`hex_invaders pins > solo to the end: hex_invaders_coop 1`] = `
+{
+  "draws": [
+    {
+      "digest": "2dde09c8de4600e3",
+      "ops": 273,
+      "phase": 1,
+      "side": "host",
+      "t": 1008,
+    },
+    {
+      "digest": "c7793d64d40b83fd",
+      "ops": 825,
+      "phase": 2,
+      "side": "host",
+      "t": 3024,
+    },
+    {
+      "digest": "4ad57806e020e096",
+      "ops": 251,
+      "phase": 3,
+      "side": "host",
+      "t": 204208,
+    },
+    {
+      "digest": "f7c95cffdecf3845",
+      "ops": 812,
+      "phase": 4,
+      "side": "host",
+      "t": 206208,
+    },
+    {
+      "digest": "75342535050eab73",
+      "ops": 803,
+      "phase": 2,
+      "side": "host",
+      "t": 207216,
+    },
+    {
+      "digest": "99f335b095fce0b4",
+      "ops": 246,
+      "phase": 3,
+      "side": "host",
+      "t": 485488,
+    },
+    {
+      "digest": "c0fea483ee5b5f7a",
+      "ops": 807,
+      "phase": 4,
+      "side": "host",
+      "t": 487488,
+    },
+    {
+      "digest": "82f85fa92939e98a",
+      "ops": 798,
+      "phase": 2,
+      "side": "host",
+      "t": 488496,
+    },
+  ],
+  "ended": false,
+  "phases": [
+    {
+      "phase": 1,
+      "side": "host",
+      "t": 16,
+    },
+    {
+      "phase": 2,
+      "side": "host",
+      "t": 3008,
+    },
+    {
+      "phase": 3,
+      "side": "host",
+      "t": 204192,
+    },
+    {
+      "phase": 4,
+      "side": "host",
+      "t": 206192,
+    },
+    {
+      "phase": 2,
+      "side": "host",
+      "t": 207184,
+    },
+    {
+      "phase": 3,
+      "side": "host",
+      "t": 485472,
+    },
+    {
+      "phase": 4,
+      "side": "host",
+      "t": 487472,
+    },
+    {
+      "phase": 2,
+      "side": "host",
+      "t": 488480,
+    },
+  ],
+  "results": {
+    "guest": [],
+    "host": [],
+  },
+  "sounds": {
+    "host": {
+      "digest": "1500bf4c2948e485",
+      "voices": {
+        "createGain": 9858,
+        "createOscillator": 9858,
+      },
+    },
+  },
+  "state": {
+    "host": {
+      "alien1Count": 55,
+      "alien1DirRight": true,
+      "alien1MoveTimer": 3,
+      "alien2Count": 0,
+      "alien2DirRight": true,
+      "alien2MoveTimer": 0,
+      "bombCount": 1,
+      "bombTimer": 13,
+      "cannon1X": 213.33333333333334,
+      "cannon2X": 426.66666666666674,
+      "combo1Count": 0,
+      "combo1Timer": 0,
+      "combo2Count": 0,
+      "combo2Timer": 0,
+      "countdown": 1,
+      "lives1": 0,
+      "lives2": 1,
+      "m1Active": false,
+      "m1X": 0,
+      "m1Y": 0,
+      "m2Active": true,
+      "m2X": 399.66666666666674,
+      "m2Y": 152,
+      "mode": 1,
+      "phase": 2,
+      "score1": 0,
+      "score2": 2470,
+      "seed": 3093350481,
+      "ufoActive": false,
+      "ufoDir": 1,
+      "ufoTimer": 1417,
+      "ufoX": 642,
+      "wave": 3,
+    },
+  },
+  "wire": {
+    "byDir": {},
+    "digest": "4f53cda18c2baa0c",
+    "first": [],
+  },
+}
+`;
+
 exports[`hex_invaders pins > the channel drops mid-match 1`] = `
 {
   "lastPhases": {
