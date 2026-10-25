@@ -10,7 +10,6 @@
 
 import { defineGame } from "../core/define_game.js";
 import { createWarlordAI, normalizeWarlordAIDifficulty } from "./ai.js";
-import { WarlordAudio } from "./audio.js";
 import {
   CANVAS_H,
   CANVAS_W,
@@ -37,6 +36,7 @@ import {
 } from "./physics.js";
 import { GAME_END, PHASE, SNAPSHOT } from "./protocol.js";
 import { getColors, render } from "./renderer.js";
+import { SOUNDS } from "./sounds.js";
 
 const SERVE_DELAY_TICKS = 48; // 0.8 s
 const KING_HIT_PAUSE_TICKS = 120; // 2 s
@@ -176,7 +176,7 @@ export default defineGame({
     difficulty: normalizeWarlordAIDifficulty,
     observe: (game) => ({ state: game.gameState, player: 2, difficulty: game.difficulty }),
   },
-  audio: WarlordAudio,
+  audio: { sounds: SOUNDS },
   theme: getColors,
   init: () => createInitialState(),
   onStart: (game) => {

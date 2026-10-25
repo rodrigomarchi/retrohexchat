@@ -17,21 +17,11 @@ import {
 } from "../../../../js/lib/games/warlords/physics.js";
 
 // Must mock audio before importing WarlordEngine
-vi.mock("../../../../js/lib/games/warlords/audio.js", () => ({
-  WarlordAudio: function () {
-    return {
-      playBrickHit: vi.fn(),
-      playShieldDeflect: vi.fn(),
-      playKingHit: vi.fn(),
-      playCatch: vi.fn(),
-      playLaunch: vi.fn(),
-      playWallBounce: vi.fn(),
-      playCountdown: vi.fn(),
-      playWin: vi.fn(),
-      playLose: vi.fn(),
-    };
-  },
-}));
+vi.mock("../../../../js/lib/games/core/synth.js", async (importOriginal) => {
+  const synth = await importOriginal();
+  const { spySounds } = await import("../../../helpers/spy_sounds.js");
+  return { ...synth, createGameAudio: (spec) => spySounds(synth.createGameAudio(spec)) };
+});
 
 // Must mock renderer
 vi.mock("../../../../js/lib/games/warlords/renderer.js", () => ({

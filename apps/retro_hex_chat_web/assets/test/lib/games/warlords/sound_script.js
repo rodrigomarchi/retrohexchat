@@ -1,0 +1,20 @@
+/** Every Hex Warlords sound, once. */
+export const SOUND_SCRIPT = [
+  ["playBrickHit"],
+  { wait: 100 },
+  ["playShieldDeflect"],
+  { wait: 100 },
+  ["playKingHit"],
+  { wait: 600 },
+  ["playCatch"],
+  { wait: 300 },
+  ["playLaunch"],
+  { wait: 200 },
+  ["playWallBounce"],
+  { wait: 100 },
+  ["playCountdown"],
+  { wait: 200 },
+  ["playWin"],
+  { wait: 800 },
+  ["playLose"],
+];
