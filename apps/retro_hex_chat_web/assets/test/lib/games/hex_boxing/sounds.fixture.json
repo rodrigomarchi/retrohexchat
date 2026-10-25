@@ -1,0 +1,457 @@
+[
+  {
+    "source": {
+      "kind": "Oscillator",
+      "type": "sine",
+      "params": {
+        "frequency": [
+          ["set", 800, 1],
+          ["linear", 200, 1.1]
+        ]
+      }
+    },
+    "path": [
+      {
+        "kind": "Gain",
+        "params": {
+          "gain": [
+            ["set", 0.08, 1],
+            ["linear", 0, 1.1]
+          ]
+        }
+      }
+    ],
+    "out": "speakers",
+    "start": 1,
+    "stop": 1.1
+  },
+  {
+    "source": {
+      "kind": "Oscillator",
+      "type": "sawtooth",
+      "params": {
+        "frequency": [
+          ["set", 200, 1.2],
+          ["linear", 60, 1.4]
+        ]
+      }
+    },
+    "path": [
+      {
+        "kind": "Gain",
+        "params": {
+          "gain": [
+            ["set", 0.2, 1.2],
+            ["linear", 0, 1.4]
+          ]
+        }
+      }
+    ],
+    "out": "speakers",
+    "start": 1.2,
+    "stop": 1.4
+  },
+  {
+    "source": {
+      "kind": "Oscillator",
+      "type": "triangle",
+      "params": {
+        "frequency": [
+          ["set", 400, 1.5],
+          ["linear", 150, 1.65]
+        ]
+      }
+    },
+    "path": [
+      {
+        "kind": "Gain",
+        "params": {
+          "gain": [
+            ["set", 0.15, 1.5],
+            ["linear", 0, 1.65]
+          ]
+        }
+      }
+    ],
+    "out": "speakers",
+    "start": 1.5,
+    "stop": 1.65
+  },
+  {
+    "source": {
+      "kind": "Oscillator",
+      "type": "sine",
+      "params": {
+        "frequency": [["set", 600, 1.7]]
+      }
+    },
+    "path": [
+      {
+        "kind": "Gain",
+        "params": {
+          "gain": [
+            ["set", 0.1, 1.7],
+            ["linear", 0, 1.78]
+          ]
+        }
+      }
+    ],
+    "out": "speakers",
+    "start": 1.7,
+    "stop": 1.78
+  },
+  {
+    "source": {
+      "kind": "Oscillator",
+      "type": "sine",
+      "params": {
+        "frequency": [["set", 600, 1.8]]
+      }
+    },
+    "path": [
+      {
+        "kind": "Gain",
+        "params": {
+          "gain": [
+            ["set", 0.1, 1.8],
+            ["linear", 0, 1.88]
+          ]
+        }
+      }
+    ],
+    "out": "speakers",
+    "start": 1.8,
+    "stop": 1.88
+  },
+  {
+    "source": {
+      "kind": "Oscillator",
+      "type": "triangle",
+      "params": {
+        "frequency": [
+          ["set", 400, 2.1],
+          ["linear", 150, 2.25]
+        ]
+      }
+    },
+    "path": [
+      {
+        "kind": "Gain",
+        "params": {
+          "gain": [
+            ["set", 0.15, 2.1],
+            ["linear", 0, 2.25]
+          ]
+        }
+      }
+    ],
+    "out": "speakers",
+    "start": 2.1,
+    "stop": 2.25
+  },
+  {
+    "source": {
+      "kind": "Oscillator",
+      "type": "sawtooth",
+      "params": {
+        "frequency": [
+          ["set", 200, 2.4],
+          ["linear", 60, 2.6]
+        ]
+      }
+    },
+    "path": [
+      {
+        "kind": "Gain",
+        "params": {
+          "gain": [
+            ["set", 0.2, 2.4],
+            ["linear", 0, 2.6]
+          ]
+        }
+      }
+    ],
+    "out": "speakers",
+    "start": 2.4,
+    "stop": 2.6
+  },
+  {
+    "source": {
+      "kind": "Oscillator",
+      "type": "sine",
+      "params": {
+        "frequency": [["set", 1200, 2.7]]
+      }
+    },
+    "path": [
+      {
+        "kind": "Gain",
+        "params": {
+          "gain": [
+            ["set", 0.15, 2.7],
+            ["linear", 0, 2.85]
+          ]
+        }
+      }
+    ],
+    "out": "speakers",
+    "start": 2.7,
+    "stop": 2.85
+  },
+  {
+    "source": {
+      "kind": "Oscillator",
+      "type": "sine",
+      "params": {
+        "frequency": [["set", 1200, 2.9]]
+      }
+    },
+    "path": [
+      {
+        "kind": "Gain",
+        "params": {
+          "gain": [
+            ["set", 0.15, 2.9],
+            ["linear", 0, 3.05]
+          ]
+        }
+      }
+    ],
+    "out": "speakers",
+    "start": 2.9,
+    "stop": 3.05
+  },
+  {
+    "source": {
+      "kind": "Oscillator",
+      "type": "sine",
+      "params": {
+        "frequency": [["set", 1200, 3.1]]
+      }
+    },
+    "path": [
+      {
+        "kind": "Gain",
+        "params": {
+          "gain": [
+            ["set", 0.15, 3.1],
+            ["linear", 0, 3.25]
+          ]
+        }
+      }
+    ],
+    "out": "speakers",
+    "start": 3.1,
+    "stop": 3.25
+  },
+  {
+    "source": {
+      "kind": "Oscillator",
+      "type": "sine",
+      "params": {
+        "frequency": [["set", 800, 3.4]]
+      }
+    },
+    "path": [
+      {
+        "kind": "Gain",
+        "params": {
+          "gain": [
+            ["set", 0.15, 3.4],
+            ["linear", 0, 4]
+          ]
+        }
+      }
+    ],
+    "out": "speakers",
+    "start": 3.4,
+    "stop": 4
+  },
+  {
+    "source": {
+      "kind": "Oscillator",
+      "type": "sine",
+      "params": {
+        "frequency": [["set", 1200, 4.1]]
+      }
+    },
+    "path": [
+      {
+        "kind": "Gain",
+        "params": {
+          "gain": [
+            ["set", 0.25, 4.1],
+            ["linear", 0, 4.6]
+          ]
+        }
+      }
+    ],
+    "out": "speakers",
+    "start": 4.1,
+    "stop": 4.6
+  },
+  {
+    "source": {
+      "kind": "Oscillator",
+      "type": "square",
+      "params": {
+        "frequency": [["set", 600, 4.7]]
+      }
+    },
+    "path": [
+      {
+        "kind": "Gain",
+        "params": {
+          "gain": [
+            ["set", 0.1, 4.7],
+            ["linear", 0, 4.78]
+          ]
+        }
+      }
+    ],
+    "out": "speakers",
+    "start": 4.7,
+    "stop": 4.78
+  },
+  {
+    "source": {
+      "kind": "Oscillator",
+      "type": "square",
+      "params": {
+        "frequency": [["set", 800, 4.8]]
+      }
+    },
+    "path": [
+      {
+        "kind": "Gain",
+        "params": {
+          "gain": [
+            ["set", 0.06, 4.8],
+            ["linear", 0, 4.83]
+          ]
+        }
+      }
+    ],
+    "out": "speakers",
+    "start": 4.8,
+    "stop": 4.83
+  },
+  {
+    "source": {
+      "kind": "Oscillator",
+      "type": "square",
+      "params": {
+        "frequency": [["set", 523, 4.9]]
+      }
+    },
+    "path": [
+      {
+        "kind": "Gain",
+        "params": {
+          "gain": [
+            ["set", 0.1, 4.9],
+            ["linear", 0, 5.02]
+          ]
+        }
+      }
+    ],
+    "out": "speakers",
+    "start": 4.9,
+    "stop": 5.02
+  },
+  {
+    "source": {
+      "kind": "Oscillator",
+      "type": "square",
+      "params": {
+        "frequency": [["set", 659, 5.02]]
+      }
+    },
+    "path": [
+      {
+        "kind": "Gain",
+        "params": {
+          "gain": [
+            ["set", 0.1, 5.02],
+            ["linear", 0, 5.14]
+          ]
+        }
+      }
+    ],
+    "out": "speakers",
+    "start": 5.02,
+    "stop": 5.14
+  },
+  {
+    "source": {
+      "kind": "Oscillator",
+      "type": "square",
+      "params": {
+        "frequency": [["set", 784, 5.14]]
+      }
+    },
+    "path": [
+      {
+        "kind": "Gain",
+        "params": {
+          "gain": [
+            ["set", 0.1, 5.14],
+            ["linear", 0, 5.26]
+          ]
+        }
+      }
+    ],
+    "out": "speakers",
+    "start": 5.14,
+    "stop": 5.26
+  },
+  {
+    "source": {
+      "kind": "Oscillator",
+      "type": "square",
+      "params": {
+        "frequency": [["set", 1047, 5.26]]
+      }
+    },
+    "path": [
+      {
+        "kind": "Gain",
+        "params": {
+          "gain": [
+            ["set", 0.1, 5.26],
+            ["linear", 0, 5.38]
+          ]
+        }
+      }
+    ],
+    "out": "speakers",
+    "start": 5.26,
+    "stop": 5.38
+  },
+  {
+    "source": {
+      "kind": "Oscillator",
+      "type": "sawtooth",
+      "params": {
+        "frequency": [
+          ["set", 500, 5.5],
+          ["linear", 150, 6.2]
+        ]
+      }
+    },
+    "path": [
+      {
+        "kind": "Gain",
+        "params": {
+          "gain": [
+            ["set", 0.12, 5.5],
+            ["linear", 0, 6.2]
+          ]
+        }
+      }
+    ],
+    "out": "speakers",
+    "start": 5.5,
+    "stop": 6.2
+  }
+]

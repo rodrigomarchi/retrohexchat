@@ -10,7 +10,6 @@
 
 import { defineGame } from "../core/define_game.js";
 import { createBoxingAI, normalizeBoxingAIDifficulty } from "./ai.js";
-import { BoxingAudio } from "./audio.js";
 import {
   ROUND_DURATION,
   advanceRound,
@@ -25,6 +24,7 @@ import {
 } from "./physics.js";
 import { GAME_END, PHASE, SNAPSHOT } from "./protocol.js";
 import { createHitParticles, getColors, render, updateParticles } from "./renderer.js";
+import { SOUNDS } from "./sounds.js";
 
 const ROUND_OVER_DELAY_TICKS = 150; // 2.5 s
 const SPAWNING_DELAY_TICKS = 60; // 1 s
@@ -165,7 +165,7 @@ export default defineGame({
   interpolate: { keys: ["b1x", "b1y", "b2x", "b2y"] },
   schema: { snapshot: SNAPSHOT, end: GAME_END },
   ai: { create: createBoxingAI, difficulty: normalizeBoxingAIDifficulty },
-  audio: BoxingAudio,
+  audio: { sounds: SOUNDS },
   theme: getColors,
   init: () => createInitialState(),
   setup: (game) => {

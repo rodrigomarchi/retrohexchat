@@ -17,25 +17,11 @@ import {
 } from "../../../../js/lib/games/hex_boxing/physics.js";
 
 // Must mock audio BEFORE importing engine
-vi.mock("../../../../js/lib/games/hex_boxing/audio.js", () => ({
-  BoxingAudio: function () {
-    return {
-      playCountdown: vi.fn(),
-      playBellStart: vi.fn(),
-      playBellEnd: vi.fn(),
-      playPunchMiss: vi.fn(),
-      playHit: vi.fn(),
-      playHitClose: vi.fn(),
-      playHitMedium: vi.fn(),
-      playHitFar: vi.fn(),
-      playKO: vi.fn(),
-      playTimerTick: vi.fn(),
-      playWin: vi.fn(),
-      playLose: vi.fn(),
-      destroy: vi.fn(),
-    };
-  },
-}));
+vi.mock("../../../../js/lib/games/core/synth.js", async (importOriginal) => {
+  const synth = await importOriginal();
+  const { spySounds } = await import("../../../helpers/spy_sounds.js");
+  return { ...synth, createGameAudio: (spec) => spySounds(synth.createGameAudio(spec)) };
+});
 
 // Must mock renderer
 vi.mock("../../../../js/lib/games/hex_boxing/renderer.js", () => ({
