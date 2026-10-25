@@ -12,7 +12,6 @@
 
 import { defineGame } from "../core/define_game.js";
 import { createTennisAI, normalizeTennisAIDifficulty } from "./ai.js";
-import { TennisAudio } from "./audio.js";
 import {
   advanceScore,
   checkHitZone,
@@ -29,6 +28,7 @@ import {
 } from "./physics.js";
 import { GAME_END, GAME_MODE, PHASE, SNAPSHOT } from "./protocol.js";
 import { getColors, render } from "./renderer.js";
+import { SOUNDS } from "./sounds.js";
 
 const POINT_PAUSE_FRAMES = 120; // 2 s at 60 steps a second
 const CHANGEOVER_PAUSE_FRAMES = 120;
@@ -236,7 +236,7 @@ export default defineGame({
   ],
   schema: { snapshot: SNAPSHOT, end: GAME_END },
   ai: { create: createTennisAI, difficulty: normalizeTennisAIDifficulty },
-  audio: TennisAudio,
+  audio: { sounds: SOUNDS },
   theme: getColors,
   // The game id picks the format: classic, quick or sudden death.
   init: (game) => {
