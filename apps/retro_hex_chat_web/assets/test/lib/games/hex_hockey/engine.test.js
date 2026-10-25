@@ -18,28 +18,11 @@ import {
 } from "../../../../js/lib/games/hex_hockey/physics.js";
 
 // Mock audio BEFORE importing engine
-vi.mock("../../../../js/lib/games/hex_hockey/audio.js", () => ({
-  HexHockeyAudio: function () {
-    return {
-      playCountdownTick: vi.fn(),
-      playGo: vi.fn(),
-      playFaceoffWhistle: vi.fn(),
-      playGoal: vi.fn(),
-      playShot: vi.fn(),
-      playWallBounce: vi.fn(),
-      playGoalieBlock: vi.fn(),
-      playTackleSuccess: vi.fn(),
-      playTackleFail: vi.fn(),
-      playCapture: vi.fn(),
-      playPeriodBuzzer: vi.fn(),
-      playSuddenDeath: vi.fn(),
-      stopSuddenDeath: vi.fn(),
-      playVictory: vi.fn(),
-      playLose: vi.fn(),
-      destroy: vi.fn(),
-    };
-  },
-}));
+vi.mock("../../../../js/lib/games/core/synth.js", async (importOriginal) => {
+  const synth = await importOriginal();
+  const { spySounds } = await import("../../../helpers/spy_sounds.js");
+  return { ...synth, createGameAudio: (spec) => spySounds(synth.createGameAudio(spec)) };
+});
 
 // Mock renderer
 vi.mock("../../../../js/lib/games/hex_hockey/renderer.js", () => ({

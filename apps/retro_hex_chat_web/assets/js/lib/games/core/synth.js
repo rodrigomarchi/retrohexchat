@@ -15,7 +15,8 @@
  * in seconds from the voice's start. `dur` is when an oscillator stops, and
  * how long a noise buffer runs; `delay` starts the voice later on the audio
  * clock. Noise may `decay` (its samples fade to nothing across the buffer, a
- * crack that dies away) and may `stop` at `dur` like an oscillator.
+ * crack that dies away), may have its samples scaled by `amplitude`, and may
+ * `stop` at `dur` like an oscillator.
  *
  * A held sound — an engine's hum, a drone — is a `tone`, moved with `set`
  * and ended with `stop`.
@@ -148,7 +149,17 @@ export function createSynth({ masterVolume = null } = {}) {
     return node;
   };
 
-  const voice = ({ wave, freq, vol, dur, delay = 0, filter, decay = false, stop = false }) => {
+  const voice = ({
+    wave,
+    freq,
+    vol,
+    dur,
+    delay = 0,
+    filter,
+    decay = false,
+    amplitude = 1,
+    stop = false,
+  }) => {
     const start = ctx.currentTime + delay;
     let source;
     if (wave === "noise") {
@@ -156,7 +167,7 @@ export function createSynth({ masterVolume = null } = {}) {
       const buffer = ctx.createBuffer(1, length, ctx.sampleRate);
       const data = buffer.getChannelData(0);
       for (let i = 0; i < length; i++) {
-        data[i] = (Math.random() * 2 - 1) * (decay ? 1 - i / length : 1);
+        data[i] = (Math.random() * 2 - 1) * amplitude * (decay ? 1 - i / length : 1);
       }
       source = ctx.createBufferSource();
       source.buffer = buffer;

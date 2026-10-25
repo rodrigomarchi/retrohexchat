@@ -1,0 +1,42 @@
+/**
+ * Every Hex Hockey sound, once; the sudden-death drone started (twice: the
+ * second does nothing) and stopped, started again and stopped by the
+ * victory's fanfare, and started once more for dispose to stop.
+ */
+export const SOUND_SCRIPT = [
+  ["playShot"],
+  { wait: 100 },
+  ["playWallBounce"],
+  { wait: 200 },
+  ["playGoalieBlock"],
+  { wait: 200 },
+  ["playGoal"],
+  { wait: 900 },
+  ["playTackleSuccess"],
+  { wait: 200 },
+  ["playTackleFail"],
+  { wait: 300 },
+  ["playFaceoffWhistle"],
+  { wait: 400 },
+  ["playPeriodBuzzer"],
+  { wait: 1100 },
+  ["playCapture"],
+  { wait: 100 },
+  ["playCountdownTick"],
+  { wait: 100 },
+  ["playGo"],
+  { wait: 200 },
+  ["playSuddenDeath"],
+  ["playSuddenDeath"],
+  { wait: 200 },
+  ["stopSuddenDeath"],
+  { wait: 100 },
+  ["playSuddenDeath"],
+  { wait: 200 },
+  ["playVictory"],
+  { wait: 900 },
+  ["playLose"],
+  { wait: 900 },
+  ["playSuddenDeath"],
+  { wait: 100 },
+];

@@ -14,7 +14,6 @@
 import { defineGame } from "../core/define_game.js";
 import { matchResult } from "../core/result.js";
 import { createHockeyAI, normalizeHockeyAIDifficulty } from "./ai.js";
-import { HexHockeyAudio } from "./audio.js";
 import {
   COUNTDOWN_FRAME_INTERVAL,
   GOAL_CELEBRATION_FRAMES,
@@ -37,6 +36,7 @@ import {
 } from "./physics.js";
 import { EVENT, GAME_END, GAME_MODE, PHASE, SNAPSHOT } from "./protocol.js";
 import { generateIceParticles, readColors, render } from "./renderer.js";
+import { MASTER_VOLUME, SOUNDS, extend } from "./sounds.js";
 
 const FACEOFF_GO_FRAMES = 30; // how long "GO!" stays up
 const COUNTDOWN_FROM = 3;
@@ -290,7 +290,7 @@ export default defineGame({
   ],
   schema: { snapshot: SNAPSHOT, end: GAME_END },
   ai: { create: createHockeyAI, difficulty: normalizeHockeyAIDifficulty },
-  audio: HexHockeyAudio,
+  audio: { sounds: SOUNDS, masterVolume: MASTER_VOLUME, extend },
   theme: readColors,
   // There is no rink until the engine starts.
   init: (game) => {

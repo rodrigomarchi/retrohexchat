@@ -146,6 +146,20 @@ describe("createSynth", () => {
     expect(heard()[0].stop).toBe(1.08);
   });
 
+  it("scales noise's samples by its amplitude", () => {
+    const buffers = [];
+    const real = AudioContext.prototype.createBuffer;
+    vi.spyOn(AudioContext.prototype, "createBuffer").mockImplementation(function (...args) {
+      const buffer = real.apply(this, args);
+      buffers.push(buffer);
+      return buffer;
+    });
+    createSynth().play({ wave: "noise", vol: fade(0.4, 0.06, "exp"), dur: 0.06, amplitude: 0.4 });
+    const data = buffers[0].getChannelData(0);
+    expect(data.every((v) => Math.abs(v) <= 0.4)).toBe(true);
+    expect(data.some((v) => Math.abs(v) > 0.2)).toBe(true);
+  });
+
   it("sends every voice through one master gain when it has a master volume", () => {
     const synth = createSynth({ masterVolume: 0.3 });
     synth.play({ wave: "sine", freq: 80, vol: fade(0.15, 0.08, "exp"), dur: 0.08 });
