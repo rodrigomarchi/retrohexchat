@@ -1,6 +1,4 @@
 import { log } from "./logger.js";
-import { t, jt } from "./i18n.js";
-import { gameColor } from "./game_colors.js";
 import { FrameClock } from "./games/frame_clock.js";
 import { SnapshotInterpolator } from "./games/interpolator.js";
 import { GameTelemetry } from "./games/telemetry.js";
@@ -75,8 +73,8 @@ const KEYBOARD_CAPTURE_OPTIONS = true;
  *   mid-match the base moves `gameState.phase` there, asks
  *   `_disconnectResult()` for the result to report and calls
  *   `_onMatchAbandoned()` for anything the game must silence.
- * - `phaseTimer` holds the one pending phase change (a countdown, a pause
- *   between rounds); the base clears it on stop and on disconnect.
+ * - `_clearPhaseTimer()` cancels the pending phase change; the base calls it
+ *   on stop and on disconnect.
  */
 /**
  * A `static KEYMAP` from each input's keys, read the way a person says it.
@@ -155,7 +153,6 @@ export class GameEngine {
     this._commandTimers = new Set();
     this._readyTimer = null;
     this._readyEncoder = null;
-    this.phaseTimer = null;
     this._keyboardCaptured = options.captureKeyboard === true;
     this._keyboardTarget = options.keyboardTarget ?? window;
 
@@ -230,13 +227,11 @@ export class GameEngine {
 
   // ── Match lifecycle ──
 
-  /** @returns {void} */
-  _clearPhaseTimer() {
-    if (this.phaseTimer) {
-      clearTimeout(this.phaseTimer);
-      this.phaseTimer = null;
-    }
-  }
+  /**
+   * Cancel the pending phase change (a countdown, a pause between rounds).
+   * @returns {void}
+   */
+  _clearPhaseTimer() {}
 
   /**
    * The window lost focus: its keyup never arrives, so every held input is
@@ -391,8 +386,6 @@ export class GameEngine {
    * @returns {void}
    */
   _ingestSnapshot(decoded, apply) {
-    if (!decoded) return;
-
     const captured = this._interpolator.capture(this.gameState || {});
 
     if (apply) {
@@ -819,9 +812,7 @@ export class GameEngine {
    * Draw the current state. Driven by the presentation loop.
    * @returns {void}
    */
-  _renderState() {
-    this._render();
-  }
+  _renderState() {}
 
   /**
    * @returns {number} monotonic milliseconds
@@ -835,41 +826,5 @@ export class GameEngine {
    */
   _transportTelemetryState() {
     return this.transport.telemetryState || this.transport.readyState || "unknown";
-  }
-
-  _renderStub() {
-    const ctx = this.ctx;
-    const w = this.canvas.width;
-    const h = this.canvas.height;
-
-    // Use CSS custom properties via getComputedStyle for colors
-    const styles = getComputedStyle(this.canvas);
-    const bgColor = styles.getPropertyValue("--game-bg-color").trim() || gameColor("000033");
-    const fgColor = styles.getPropertyValue("--game-fg-color").trim() || gameColor("00ff00");
-    const mutedColor = styles.getPropertyValue("--game-muted-color").trim() || gameColor("006600");
-
-    ctx.fillStyle = bgColor;
-    ctx.fillRect(0, 0, w, h);
-
-    ctx.fillStyle = fgColor;
-    ctx.font = "24px monospace";
-    ctx.textAlign = "center";
-    const title = this.gameId.replace(/_/g, " ").toUpperCase();
-    ctx.fillText(title, w / 2, h / 2 - 30);
-
-    ctx.font = "14px monospace";
-    ctx.fillStyle = mutedColor;
-    ctx.fillText(t("Game implementation coming soon!"), w / 2, h / 2 + 10);
-    ctx.fillText(jt`Role: ${this.isHost ? "HOST" : "PEER"}`, w / 2, h / 2 + 40);
-
-    // Draw decorative border
-    ctx.strokeStyle = fgColor;
-    ctx.lineWidth = 2;
-    ctx.strokeRect(4, 4, w - 8, h - 8);
-  }
-
-  _render() {
-    // Stub: will be overridden by specific game implementations
-    this._renderStub();
   }
 }

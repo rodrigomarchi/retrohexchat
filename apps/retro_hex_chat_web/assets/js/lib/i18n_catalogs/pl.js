@@ -91,7 +91,6 @@ export const PL = {
   "GOAL!": "GOL!",
   "GRAVITY WELL": "STUDNIA GRAWITACYJNA",
   "Game Over": "Koniec gry",
-  "Game implementation coming soon!": "Wkrótce będzie implementacja gry!",
   Good: "Dobrze.",
   "Got it!": "Mam!",
   "Group call media is connecting.": "Media telefoniczne łączą się.",
@@ -197,7 +196,6 @@ export const PL = {
   "Remote video stopped rendering. Trying to recover the media path.":
     "Zdalne wideo przestało renderować. Próbuję odzyskać medialną ścieżkę.",
   "Requesting a fresh media offer.": "Proszę o świeżą ofertę medialną.",
-  "Role: %{0}": "Rola: %{0}",
   "Round %{0}": "Runda %{0}",
   "Rounds: %{0} - %{1}  |  Score: %{2} - %{3}": "Rundy: %{0} - %{1}  |  Wynik: %{2} - %{3}",
   "SECOND SERVE": "DRUGI SERWIS",

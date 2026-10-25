@@ -88,7 +88,6 @@ export const ID = {
   "GOAL!": "GOL!",
   "GRAVITY WELL": "SUMUR GRAVITASI",
   "Game Over": "Permainan berakhir",
-  "Game implementation coming soon!": "Permainan segera dimulai!",
   Good: "Baik",
   "Got it!": "Dapat!",
   "Group call media is connecting.": "Media panggilan grup sedang menyambung.",
@@ -195,7 +194,6 @@ export const ID = {
   "Remote video stopped rendering. Trying to recover the media path.":
     "Video jarak jauh berhenti merekam. Mencoba untuk memulihkan jalur media.",
   "Requesting a fresh media offer.": "Meminta tawaran media baru.",
-  "Role: %{0}": "Peran: %{0}",
   "Round %{0}": "Ronde %{0}",
   "Rounds: %{0} - %{1}  |  Score: %{2} - %{3}": "Ronde: %{0} - %{1}  |  Skor: %{2} - %{3}",
   "SECOND SERVE": "SERVIS KEDUA",
