@@ -136,18 +136,13 @@ function step(game) {
   game.broadcast();
 }
 
-/** After the last wave the match ends; otherwise the next wave comes in. */
+/**
+ * The next wave comes in. The last wave never gets here: clearing it ends the
+ * match in the step that clears it (checkGameOver).
+ */
 function nextWave(game) {
   const s = game.gameState;
-  const maxWaves = s.mode === GAME_MODE.BLITZ ? 5 : 10;
-  const wave = s.wave + 1;
-  if (wave > maxWaves) {
-    const over = checkGameOver({ ...s, wave, phase: PHASE.PLAYING });
-    game.endResult = over.ended ? over : { ended: true, winner: s.score1 >= s.score2 ? 1 : 2 };
-    s.phase = PHASE.FINISHED;
-    return;
-  }
-  game.gameState = createWave(s, wave);
+  game.gameState = createWave(s, s.wave + 1);
   game.gameState.phase = PHASE.WAVE_START;
   game.broadcast();
   game.invalidate();
@@ -235,7 +230,7 @@ export default defineGame({
         tick: step,
         after: { ticks: WAVE_CLEAR_TICKS },
         then: nextWave,
-        next: (game) => (game.gameState.phase === PHASE.FINISHED ? "FINISHED" : "WAVE_START"),
+        next: "WAVE_START",
       },
       WAVE_START: {
         tick: step,

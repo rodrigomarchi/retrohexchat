@@ -83,11 +83,6 @@ export function playHostEvents(game, events) {
   playFlags(game, HOST_SOUNDS, events);
 }
 
-/** The guest's sounds for a snapshot's events, the goal flash with them. */
-export function playPeerEvents(game, events) {
-  playFlags(game, PEER_SOUNDS, events);
-}
-
 const PLAYER_OF = { p1: 1, p2: 2 };
 
 /** The end as the page is told it: GAME_END's `"p1"`/`"p2"`/`"draw"` as a numeric winner. */

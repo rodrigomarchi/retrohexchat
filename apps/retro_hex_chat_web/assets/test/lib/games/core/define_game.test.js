@@ -2,7 +2,7 @@ import { describe, it, expect, afterEach, vi } from "vitest";
 import { createLocalTransport } from "../../../../js/lib/games/transport.js";
 import { defineGame } from "../../../../js/lib/games/core/define_game.js";
 import { aiRandom } from "../../../../js/lib/games/core/rng.js";
-import { FakeGame, PHASE, definition } from "../../../support/games/fake_game.js";
+import { FakeGame, PHASE, SNAPSHOT, definition } from "../../../support/games/fake_game.js";
 import { playMatch } from "../../../support/games/harness.js";
 import { recordingCanvas } from "../../../support/games/recording_canvas.js";
 
@@ -83,8 +83,8 @@ describe("defineGame", () => {
     it("the host ignores an end of match sent to it, and sends nothing without a state", async () => {
       match = await play();
       match.advance(400);
-      const { host } = match.engines;
-      host._onChannelMessage({ data: new Uint8Array([0x83, 9, 9, 2]).buffer });
+      const { host, guest } = match.engines;
+      guest.transport.send(new Uint8Array([0x83, 9, 9, 2]).buffer);
       expect(host.ended).toBeUndefined();
 
       const sent = match.record().wire.length;
@@ -92,6 +92,33 @@ describe("defineGame", () => {
       host.broadcast();
       expect(match.record().wire.length).toBe(sent);
       host.gameState = { phase: PHASE.PLAYING, x: 0, score1: 0, score2: 0, countdown: 0 };
+    });
+
+    it("the host ignores a snapshot sent to it", async () => {
+      match = await play();
+      match.advance(400);
+      const { host, guest } = match.engines;
+      const before = { ...host.gameState };
+      guest.transport.send(SNAPSHOT.encode({ ...before, x: before.x + 50, score2: 7 }));
+      expect(host.gameState).toEqual(before);
+    });
+
+    it("the guest ignores a snapshot it cannot read", async () => {
+      match = await play();
+      match.advance(400);
+      const { host, guest } = match.engines;
+      const before = { ...guest.gameState };
+      // The snapshot's type byte, and one byte of a body that needs more.
+      host.transport.send(new Uint8Array([new Uint8Array(SNAPSHOT.encode(before))[0], 1]).buffer);
+      expect(guest.gameState).toEqual(before);
+    });
+
+    it("a second start changes nothing", async () => {
+      const started = vi.fn();
+      match = await play({ EngineClass: defineGame({ ...definition, onStart: started }) });
+      const calls = started.mock.calls.length; // the host's start and the guest's
+      match.engines.host.start();
+      expect(started).toHaveBeenCalledTimes(calls);
     });
 
     it("the guest's held key reaches the host", async () => {

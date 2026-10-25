@@ -61,6 +61,13 @@ describe("FrameClock", () => {
     expect(clock.drainStalls()).toEqual({ droppedSteps: 0, stallCount: 0 });
   });
 
+  it("owes no steps for a time that is not a number", () => {
+    const clock = new FrameClock();
+    clock.advance(0);
+    expect(clock.advance(Number.NaN)).toBe(0);
+    expect(clock.advance(1000)).toBeGreaterThan(0);
+  });
+
   it("ignores time running backwards", () => {
     const clock = new FrameClock();
     clock.advance(1000);
