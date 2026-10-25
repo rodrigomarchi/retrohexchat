@@ -6,6 +6,7 @@ defmodule RetroHexChat.Services.ChanServ do
   require Logger
 
   alias RetroHexChat.ChangesetErrors
+  alias RetroHexChat.Channels.Server, as: ChannelServer
   alias RetroHexChat.Chat.Archive
   alias RetroHexChat.Nickname
   alias RetroHexChat.Observability
@@ -30,7 +31,11 @@ defmodule RetroHexChat.Services.ChanServ do
     Observability.span(
       [:retro_hex_chat, :channels, :registration, :register],
       %{"chat.channel" => channel_name},
-      fn -> GenServer.call(server, {:register, channel_name, founder_nick}) end
+      fn ->
+        server
+        |> GenServer.call({:register, channel_name, founder_nick})
+        |> tell_channel(channel_name, &ChannelServer.mark_registered/1)
+      end
     )
   end
 
@@ -40,7 +45,11 @@ defmodule RetroHexChat.Services.ChanServ do
     Observability.span(
       [:retro_hex_chat, :channels, :registration, :drop],
       %{"chat.channel" => channel_name},
-      fn -> GenServer.call(server, {:drop, channel_name, nickname}) end
+      fn ->
+        server
+        |> GenServer.call({:drop, channel_name, nickname})
+        |> tell_channel(channel_name, &ChannelServer.mark_unregistered/1)
+      end
     )
   end
 
@@ -143,7 +152,11 @@ defmodule RetroHexChat.Services.ChanServ do
     Observability.span(
       [:retro_hex_chat, :channels, :registration, :admin_drop],
       %{"chat.channel" => channel_name},
-      fn -> GenServer.call(server, {:admin_drop, channel_name}) end
+      fn ->
+        server
+        |> GenServer.call({:admin_drop, channel_name})
+        |> tell_channel(channel_name, &ChannelServer.mark_unregistered/1)
+      end
     )
   end
 
@@ -174,6 +187,17 @@ defmodule RetroHexChat.Services.ChanServ do
       end
     )
   end
+
+  # A running channel keeps its own idea of whether it is registered, so every
+  # change of registration reaches it from here. This runs in the caller, after
+  # the reply: the channel's process calls ChanServ, and ChanServ calling it back
+  # from inside could leave the two waiting on each other.
+  defp tell_channel({:ok, _message} = result, channel_name, mark) do
+    _ = mark.(channel_name)
+    result
+  end
+
+  defp tell_channel(result, _channel_name, _mark), do: result
 
   # ── GenServer callbacks ─────────────────────────────────────
 

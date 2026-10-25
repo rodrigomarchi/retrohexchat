@@ -190,18 +190,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.ChannelCentralDialog do
 
         case ChanServ.register(channel, nickname) do
           {:ok, _message} ->
-            _ = Server.mark_registered(channel)
-
-            {:noreply,
-             socket
-             |> assign(
-               channel_central_cs_error: nil,
-               channel_central_cs_confirm_drop: false,
-               channel_central_access_tab: "sop",
-               channel_central_access_nick: "",
-               channel_central_access_adding: false
-             )
-             |> refresh_channel_central()}
+            {:noreply, registration_changed(socket)}
 
           {:error, message} ->
             {:noreply, chanserv_error(socket, message)}
@@ -233,18 +222,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.ChannelCentralDialog do
 
         case ChanServ.drop(channel, nickname) do
           {:ok, _message} ->
-            _ = Server.mark_unregistered(channel)
-
-            {:noreply,
-             socket
-             |> assign(
-               channel_central_cs_error: nil,
-               channel_central_cs_confirm_drop: false,
-               channel_central_access_tab: "sop",
-               channel_central_access_nick: "",
-               channel_central_access_adding: false
-             )
-             |> refresh_channel_central()}
+            {:noreply, registration_changed(socket)}
 
           {:error, message} ->
             {:noreply, chanserv_error(socket, message)}
@@ -862,6 +840,19 @@ defmodule RetroHexChatWeb.ChatLive.Components.ChannelCentralDialog do
 
   defp chanserv_error(socket, message) do
     assign(socket, channel_central_cs_error: message, channel_central_cs_confirm_drop: false)
+  end
+
+  # Registered or dropped: the ChanServ tab starts over on the reloaded channel.
+  defp registration_changed(socket) do
+    socket
+    |> assign(
+      channel_central_cs_error: nil,
+      channel_central_cs_confirm_drop: false,
+      channel_central_access_tab: "sop",
+      channel_central_access_nick: "",
+      channel_central_access_adding: false
+    )
+    |> refresh_channel_central()
   end
 
   # ── Mode ops ─────────────────────────────────────────────────────

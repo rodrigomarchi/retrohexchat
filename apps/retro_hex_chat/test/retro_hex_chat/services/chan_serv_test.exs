@@ -3,6 +3,7 @@ defmodule RetroHexChat.Services.ChanServTest do
 
   @moduletag :integration
 
+  alias RetroHexChat.Channels
   alias RetroHexChat.Services.ChanServ
   alias RetroHexChat.Services.NickServ
 
@@ -18,6 +19,50 @@ defmodule RetroHexChat.Services.ChanServTest do
 
   defp register_and_identify(nickname, password, nick_server) do
     {:ok, _} = NickServ.register(nickname, password, nick_server)
+  end
+
+  # A running channel keeps its own idea of whether it is registered. ChanServ
+  # tells it, so no caller can change a registration and leave the room behind.
+  describe "a channel that is running" do
+    setup do
+      name = "#csrun#{rem(System.unique_integer([:positive]), 100_000)}"
+      {:ok, pid} = Channels.Supervisor.start_child(name)
+      %{channel: name, pid: pid}
+    end
+
+    test "learns it is registered", ctx do
+      register_and_identify("CsRunReg", "pass123", ctx.nick_server)
+
+      {:ok, _} = ChanServ.register(ctx.channel, "CsRunReg", ctx.server)
+
+      assert :sys.get_state(ctx.pid).registered
+    end
+
+    test "is not told anything when registering fails", ctx do
+      {:error, _} = ChanServ.register(ctx.channel, "CsRunNobody", ctx.server)
+
+      refute :sys.get_state(ctx.pid).registered
+    end
+
+    test "learns the founder dropped it", ctx do
+      register_and_identify("CsRunDrop", "pass123", ctx.nick_server)
+      {:ok, _} = ChanServ.register(ctx.channel, "CsRunDrop", ctx.server)
+      assert :sys.get_state(ctx.pid).registered
+
+      {:ok, _} = ChanServ.drop(ctx.channel, "CsRunDrop", ctx.server)
+
+      refute :sys.get_state(ctx.pid).registered
+    end
+
+    test "learns an administrator dropped it", ctx do
+      register_and_identify("CsRunAdm", "pass123", ctx.nick_server)
+      {:ok, _} = ChanServ.register(ctx.channel, "CsRunAdm", ctx.server)
+      assert :sys.get_state(ctx.pid).registered
+
+      {:ok, _} = ChanServ.admin_drop(ctx.channel, ctx.server)
+
+      refute :sys.get_state(ctx.pid).registered
+    end
   end
 
   describe "register/3" do

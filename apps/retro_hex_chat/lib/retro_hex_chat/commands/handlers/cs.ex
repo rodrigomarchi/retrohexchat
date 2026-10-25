@@ -195,7 +195,6 @@ defmodule RetroHexChat.Commands.Handlers.Cs do
   defp call_register(channel, founder, server) do
     case ChanServ.register(channel, founder, server) do
       {:ok, msg} ->
-        _ = Server.mark_registered(channel)
         {:ok, :system, %{content: dgettext("commands", "[ChanServ] %{message}", message: msg)}}
 
       {:error, msg} ->
@@ -206,7 +205,6 @@ defmodule RetroHexChat.Commands.Handlers.Cs do
   defp call_drop(channel, nickname, server) do
     case ChanServ.drop(channel, nickname, server) do
       {:ok, msg} ->
-        _ = Server.mark_unregistered(channel)
         {:ok, :system, %{content: dgettext("commands", "[ChanServ] %{message}", message: msg)}}
 
       {:error, msg} ->
