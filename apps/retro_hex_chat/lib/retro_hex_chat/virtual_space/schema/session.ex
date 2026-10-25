@@ -19,8 +19,10 @@ defmodule RetroHexChat.VirtualSpace.Schema.Session do
 
   @type t :: %__MODULE__{}
 
-  @status_values ~w(open closed expired)
-  @terminal_statuses ~w(closed expired)
+  use RetroHexChat.Schema.Lifecycle,
+    statuses: ~w(open closed expired),
+    terminal: ~w(closed expired)
+
   @kinds ~w(channel direct_message)
 
   schema "virtual_space_sessions" do
@@ -73,10 +75,4 @@ defmodule RetroHexChat.VirtualSpace.Schema.Session do
     |> validate_inclusion(:status, @terminal_statuses)
     |> validate_length(:closed_reason, max: 100)
   end
-
-  @spec terminal?(String.t()) :: boolean()
-  def terminal?(status), do: status in @terminal_statuses
-
-  @spec terminal_statuses() :: [String.t()]
-  def terminal_statuses, do: @terminal_statuses
 end

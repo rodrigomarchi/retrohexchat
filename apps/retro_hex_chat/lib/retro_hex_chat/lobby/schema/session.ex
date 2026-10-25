@@ -21,8 +21,11 @@ defmodule RetroHexChat.Lobby.Schema.Session do
 
   @type t :: %__MODULE__{}
 
-  @status_values ~w(open pending lobby connected closed expired failed)
-  @terminal_statuses ~w(closed expired failed)
+  use RetroHexChat.Schema.Lifecycle,
+    statuses: ~w(open pending lobby connected closed expired failed),
+    terminal: ~w(closed expired failed),
+    terminal_fields: [:closed_at, :closed_reason]
+
   # The statuses in which a session is a connection between two people. `open`
   # has no peer yet and a terminal one never will: a match link nobody claimed
   # still has to be closeable, and demanding a peer to write `expired` would
@@ -95,12 +98,6 @@ defmodule RetroHexChat.Lobby.Schema.Session do
   def offered?(%__MODULE__{metadata: %{"offered" => true}}), do: true
   def offered?(_invited), do: false
 
-  @spec terminal?(String.t()) :: boolean()
-  def terminal?(status), do: status in @terminal_statuses
-
-  @spec status_values() :: [String.t()]
-  def status_values, do: @status_values
-
   # A session in a paired status has two people in it. The rule guards the
   # status changeset as well as creation, because a plain status write would
   # otherwise walk a peerless session into `pending` without ever touching
@@ -108,16 +105,6 @@ defmodule RetroHexChat.Lobby.Schema.Session do
   defp validate_peer_for_status(changeset) do
     if get_field(changeset, :status) in @paired_statuses do
       validate_required(changeset, [:peer_id])
-    else
-      changeset
-    end
-  end
-
-  defp validate_terminal_fields(changeset) do
-    status = get_field(changeset, :status)
-
-    if status in @terminal_statuses do
-      validate_required(changeset, [:closed_at, :closed_reason])
     else
       changeset
     end

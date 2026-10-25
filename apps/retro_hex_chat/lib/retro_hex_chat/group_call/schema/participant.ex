@@ -9,8 +9,11 @@ defmodule RetroHexChat.GroupCall.Schema.Participant do
 
   @type t :: %__MODULE__{}
 
-  @status_values ~w(invited joining connected reconnecting disconnected left kicked failed)
-  @terminal_statuses ~w(left kicked failed)
+  use RetroHexChat.Schema.Lifecycle,
+    statuses: ~w(invited joining connected reconnecting disconnected left kicked failed),
+    terminal: ~w(left kicked failed),
+    terminal_fields: [:left_at, :reason]
+
   @role_values ~w(owner operator half_operator voiced regular bot)
 
   schema "group_call_participants" do
@@ -98,27 +101,10 @@ defmodule RetroHexChat.GroupCall.Schema.Participant do
     |> validate_terminal_fields()
   end
 
-  @spec terminal?(String.t()) :: boolean()
-  def terminal?(status), do: status in @terminal_statuses
-
-  @spec status_values() :: [String.t()]
-  def status_values, do: @status_values
-
-  @spec terminal_statuses() :: [String.t()]
-  def terminal_statuses, do: @terminal_statuses
-
   defp put_normalized_nickname(changeset) do
     case get_field(changeset, :normalized_nickname) || get_field(changeset, :nickname) do
       nil -> changeset
       nickname -> put_change(changeset, :normalized_nickname, Nickname.key(nickname))
-    end
-  end
-
-  defp validate_terminal_fields(changeset) do
-    if get_field(changeset, :status) in @terminal_statuses do
-      validate_required(changeset, [:left_at, :reason])
-    else
-      changeset
     end
   end
 end

@@ -11,8 +11,10 @@ defmodule RetroHexChat.GroupCall.Schema.Room do
 
   @type t :: %__MODULE__{}
 
-  @status_values ~w(pending open active closing closed expired failed)
-  @terminal_statuses ~w(closed expired failed)
+  use RetroHexChat.Schema.Lifecycle,
+    statuses: ~w(pending open active closing closed expired failed),
+    terminal: ~w(closed expired failed),
+    terminal_fields: [:closed_at, :closed_reason]
 
   schema "group_call_rooms" do
     field :token, :string
@@ -90,22 +92,5 @@ defmodule RetroHexChat.GroupCall.Schema.Room do
     |> validate_inclusion(:status, @status_values)
     |> validate_length(:closed_reason, max: 100)
     |> validate_terminal_fields()
-  end
-
-  @spec terminal?(String.t()) :: boolean()
-  def terminal?(status), do: status in @terminal_statuses
-
-  @spec status_values() :: [String.t()]
-  def status_values, do: @status_values
-
-  @spec terminal_statuses() :: [String.t()]
-  def terminal_statuses, do: @terminal_statuses
-
-  defp validate_terminal_fields(changeset) do
-    if get_field(changeset, :status) in @terminal_statuses do
-      validate_required(changeset, [:closed_at, :closed_reason])
-    else
-      changeset
-    end
   end
 end

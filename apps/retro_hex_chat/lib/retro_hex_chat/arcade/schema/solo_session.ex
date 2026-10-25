@@ -8,8 +8,10 @@ defmodule RetroHexChat.Arcade.Schema.SoloSession do
 
   @type t :: %__MODULE__{}
 
-  @status_values ~w(pending lobby playing finished closed expired)
-  @terminal_statuses ~w(finished closed expired)
+  use RetroHexChat.Schema.Lifecycle,
+    statuses: ~w(pending lobby playing finished closed expired),
+    terminal: ~w(finished closed expired),
+    terminal_fields: [:closed_at, :closed_reason]
 
   schema "solo_sessions" do
     field :token, :string
@@ -72,25 +74,5 @@ defmodule RetroHexChat.Arcade.Schema.SoloSession do
     |> validate_required([:status])
     |> validate_inclusion(:status, @status_values)
     |> validate_terminal_fields()
-  end
-
-  @spec terminal?(String.t()) :: boolean()
-  def terminal?(status), do: status in @terminal_statuses
-
-  @spec status_values() :: [String.t()]
-  def status_values, do: @status_values
-
-  @spec terminal_statuses() :: [String.t()]
-  def terminal_statuses, do: @terminal_statuses
-
-  defp validate_terminal_fields(changeset) do
-    status = get_field(changeset, :status)
-
-    if status in @terminal_statuses do
-      changeset
-      |> validate_required([:closed_at, :closed_reason])
-    else
-      changeset
-    end
   end
 end

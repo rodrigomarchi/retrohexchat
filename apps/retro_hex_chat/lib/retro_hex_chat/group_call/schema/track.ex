@@ -8,8 +8,10 @@ defmodule RetroHexChat.GroupCall.Schema.Track do
   @type t :: %__MODULE__{}
 
   @kind_values ~w(audio video)
-  @status_values ~w(announced active muted ended failed)
-  @terminal_statuses ~w(ended failed)
+  use RetroHexChat.Schema.Lifecycle,
+    statuses: ~w(announced active muted ended failed),
+    terminal: ~w(ended failed),
+    terminal_fields: [:ended_at, :ended_reason]
 
   schema "group_call_tracks" do
     field :room_id, :integer
@@ -82,22 +84,5 @@ defmodule RetroHexChat.GroupCall.Schema.Track do
     |> validate_length(:codec, max: 50)
     |> validate_length(:ended_reason, max: 100)
     |> validate_terminal_fields()
-  end
-
-  @spec terminal?(String.t()) :: boolean()
-  def terminal?(status), do: status in @terminal_statuses
-
-  @spec status_values() :: [String.t()]
-  def status_values, do: @status_values
-
-  @spec terminal_statuses() :: [String.t()]
-  def terminal_statuses, do: @terminal_statuses
-
-  defp validate_terminal_fields(changeset) do
-    if get_field(changeset, :status) in @terminal_statuses do
-      validate_required(changeset, [:ended_at, :ended_reason])
-    else
-      changeset
-    end
   end
 end
