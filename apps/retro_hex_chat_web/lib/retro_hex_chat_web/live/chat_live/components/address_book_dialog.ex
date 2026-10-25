@@ -8,7 +8,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.AddressBookDialog do
   `ContactList` mutations run here and produce a new `session`; the parent owns
   `session` (the central read-model), so the work bubbles up:
 
-    * `{:ab_session, session, :contacts}` — parent assigns + persists.
+    * `{:dialog_session, session, :contacts}` — parent assigns + persists.
     * `DialogIsland.bubble/3` — chat-surface status / system / error lines.
 
   Every event targets this component, and the two window-scoped sub-form modals
@@ -180,7 +180,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.AddressBookDialog do
   # ── Bubble helpers ───────────────────────────────────────────────
 
   defp put_session(socket, session) do
-    send(self(), {:ab_session, session, :contacts})
+    send(self(), {:dialog_session, session, :contacts})
     socket |> assign(session: session) |> put_locales()
   end
 

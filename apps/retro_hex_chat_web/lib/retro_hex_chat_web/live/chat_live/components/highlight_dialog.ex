@@ -21,7 +21,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.HighlightDialog do
   Highlight words live on the `session` — the central read-model the message
   pipeline reads at render time to highlight inbound lines — so it stays
   parent-owned (§1d). The island runs the `HighlightWords` mutation and bubbles
-  the new session via `send(self(), {:highlight_dialog_session, session})`; the
+  the new session via `send(self(), {:dialog_session, session, :highlight})`; the
   parent assigns it + fires the fire-and-forget persist. Validation errors go to
   the status bar (a parent-owned surface) via
   `DialogIsland.bubble/3`.
@@ -186,7 +186,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.HighlightDialog do
   # Optimistically reflect the new session locally (the word list refreshes this
   # cycle) while the parent assigns it as the canonical read-model and persists it.
   defp put_session(socket, session) do
-    send(self(), {:highlight_dialog_session, session})
+    send(self(), {:dialog_session, session, :highlight})
     assign(socket, session: session)
   end
 

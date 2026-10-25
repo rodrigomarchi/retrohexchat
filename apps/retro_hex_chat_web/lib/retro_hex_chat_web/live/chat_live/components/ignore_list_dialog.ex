@@ -8,7 +8,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.IgnoreListDialog do
   here and produce a new `session`; the parent owns `session` and the expiry
   timers, so the work bubbles up:
 
-    * `{:ab_session, session, :ignore}` — parent assigns + persists.
+    * `{:dialog_session, session, :ignore}` — parent assigns + persists.
     * `DialogIsland.bubble/3` — chat-surface status / error lines.
     * `{:ab_ignore_timer, op, ...}` — the parent owns the ignore debounce timers.
   """
@@ -137,7 +137,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.IgnoreListDialog do
   # ── Bubble helpers ───────────────────────────────────────────────
 
   defp put_session(socket, session) do
-    send(self(), {:ab_session, session, :ignore})
+    send(self(), {:dialog_session, session, :ignore})
     socket |> assign(session: session) |> put_locales()
   end
 

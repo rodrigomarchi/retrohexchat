@@ -161,7 +161,7 @@ defmodule RetroHexChatWeb.ChatLive.PubsubHandlers.Presence do
 
   # ── Task/DOWN catch-all ───────────────────────────────────
   # `is_reference/1` guard is load bearing: without it this halts EVERY 2-tuple,
-  # swallowing island→parent bubbles (e.g. `{:highlight_dialog_session, session}`)
+  # swallowing island→parent bubbles (e.g. `{:dialog_session, session, :highlight}`)
   # before they reach the LiveView. Only real `Task` results are `{ref, result}`.
 
   def handle_info({ref, _result}, socket) when is_reference(ref), do: {:halt, socket}

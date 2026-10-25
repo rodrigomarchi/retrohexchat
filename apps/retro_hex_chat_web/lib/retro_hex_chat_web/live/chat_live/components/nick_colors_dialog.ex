@@ -6,7 +6,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.NickColorsDialog do
   Mounted inside a server-managed desktop window: closing unmounts the island,
   resetting the selection, the palette index and any open sub-form. The
   `NickColors` mutations run here and produce a new `session`; the parent owns
-  `session`, so the work bubbles up as `{:ab_session, session, :nick_colors}` —
+  `session`, so the work bubbles up as `{:dialog_session, session, :nick_colors}` —
   the parent assigns it, persists it, rebuilds `nick_color_fn` and refreshes the
   active message stream.
 
@@ -156,7 +156,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.NickColorsDialog do
   # ── Bubble helpers ───────────────────────────────────────────────
 
   defp put_session(socket, session) do
-    send(self(), {:ab_session, session, :nick_colors})
+    send(self(), {:dialog_session, session, :nick_colors})
     socket |> assign(session: session) |> put_locales()
   end
 

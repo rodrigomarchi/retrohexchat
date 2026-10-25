@@ -598,20 +598,11 @@ defmodule RetroHexChatWeb.DesktopLive do
     {:noreply, ChatLive.Helpers.error_event(socket, message)}
   end
 
-  # Perform/Auto-Join list mutations: the dialog owns the work; the parent owns the
-  # session read-model and the fire-and-forget persistence.
-  def handle_info({:perform_dialog_session, session}, socket) do
-    {:noreply,
-     socket
-     |> assign(session: session)
-     |> ChatLive.Helpers.maybe_persist_perform_list(session)}
-  end
-
-  def handle_info({:autojoin_dialog_session, session}, socket) do
-    {:noreply,
-     socket
-     |> assign(session: session)
-     |> ChatLive.Helpers.maybe_persist_autojoin_list(session)}
+  # A settings dialog changed the session: the dialog owns the work; the parent
+  # owns the session read-model, its fire-and-forget persistence, and whatever
+  # else the change redraws.
+  def handle_info({:dialog_session, session, kind}, socket) do
+    {:noreply, socket |> assign(session: session) |> after_dialog_session(kind, session)}
   end
 
   # Invite queue dialog: the island renders the queue + routes the Join/Ignore
@@ -625,61 +616,12 @@ defmodule RetroHexChatWeb.DesktopLive do
     {:noreply, ChatLive.InviteEvents.ignore(socket, channel)}
   end
 
-  # Highlight dialog: the dialog owns the work; the parent owns the session
-  # read-model + persistence and the status-bar surface.
-  def handle_info({:highlight_dialog_session, session}, socket) do
-    {:noreply,
-     socket
-     |> assign(session: session)
-     |> ChatLive.Helpers.maybe_persist_highlight_words(session)}
-  end
-
-  # Notify List dialog: the island owns the work; the parent owns the session
-  # read-model + persistence, the status bar, and the notify debounce timers.
-  def handle_info({:notify_dialog_session, session}, socket) do
-    {:noreply,
-     socket
-     |> assign(session: session)
-     |> ChatLive.Helpers.maybe_persist_notify_list(session)}
-  end
-
+  # The notify debounce timers stay with the parent.
   def handle_info({:notify_dialog_cancel_timer, nick}, socket) do
     {:noreply, ChatLive.Helpers.cancel_notify_timer(socket, nick)}
   end
 
-  # Address Book dialog: the island owns the UI + runs the domain mutations; the
-  # parent owns the session read-model, persistence, the nick-color render fn, the
-  # status surface and the ignore debounce timers.
-  def handle_info({:ab_session, session, :contacts}, socket) do
-    {:noreply,
-     socket
-     |> assign(session: session)
-     |> ChatLive.Helpers.maybe_persist_contacts(session)}
-  end
-
-  def handle_info({:ab_session, session, :nick_colors}, socket) do
-    {:noreply,
-     socket
-     |> assign(session: session)
-     |> ChatLive.Helpers.rebuild_nick_color_fn(session)
-     |> ChatLive.Helpers.refresh_active_message_stream(session)
-     |> ChatLive.Helpers.maybe_persist_nick_colors(session)}
-  end
-
-  def handle_info({:ab_session, session, :ignore}, socket) do
-    {:noreply,
-     socket
-     |> assign(session: session)
-     |> ChatLive.Helpers.maybe_persist_ignore_list(session)}
-  end
-
-  def handle_info({:ab_session, session, :notify}, socket) do
-    {:noreply,
-     socket
-     |> assign(session: session)
-     |> ChatLive.Helpers.maybe_persist_notify_list(session)}
-  end
-
+  # The Address Book's ignore debounce timers stay with the parent.
   def handle_info({:ab_ignore_timer, :restart, nick, duration}, socket) do
     {:noreply,
      socket
@@ -1140,4 +1082,30 @@ defmodule RetroHexChatWeb.DesktopLive do
   end
 
   defp p2p_idle_session_for_active_pm(_session), do: nil
+
+  # What each settings dialog's change asks of the parent beyond the session.
+  defp after_dialog_session(socket, :perform, session),
+    do: ChatLive.Helpers.maybe_persist_perform_list(socket, session)
+
+  defp after_dialog_session(socket, :autojoin, session),
+    do: ChatLive.Helpers.maybe_persist_autojoin_list(socket, session)
+
+  defp after_dialog_session(socket, :highlight, session),
+    do: ChatLive.Helpers.maybe_persist_highlight_words(socket, session)
+
+  defp after_dialog_session(socket, :notify, session),
+    do: ChatLive.Helpers.maybe_persist_notify_list(socket, session)
+
+  defp after_dialog_session(socket, :contacts, session),
+    do: ChatLive.Helpers.maybe_persist_contacts(socket, session)
+
+  defp after_dialog_session(socket, :ignore, session),
+    do: ChatLive.Helpers.maybe_persist_ignore_list(socket, session)
+
+  defp after_dialog_session(socket, :nick_colors, session) do
+    socket
+    |> ChatLive.Helpers.rebuild_nick_color_fn(session)
+    |> ChatLive.Helpers.refresh_active_message_stream(session)
+    |> ChatLive.Helpers.maybe_persist_nick_colors(session)
+  end
 end

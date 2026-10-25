@@ -15,7 +15,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.PerformDialog do
   The perform list lives on the `session`, which is the central chat read-model
   (the connect flow auto-runs perform, and the slash commands read it) — so it
   stays in the parent (§1d). The island runs the list mutations and bubbles the
-  new session up via `send(self(), {:perform_dialog_session, session})`; the
+  new session up via `send(self(), {:dialog_session, session, :perform})`; the
   parent assigns it and fires the fire-and-forget persistence. Validation errors
   that belong to the chat surface bubble via
   `DialogIsland.bubble/3`.
@@ -192,7 +192,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.PerformDialog do
   # Optimistically reflect the new session locally (entries refresh this cycle)
   # while the parent assigns it as the canonical read-model and persists it.
   defp put_session(socket, session) do
-    send(self(), {:perform_dialog_session, session})
+    send(self(), {:dialog_session, session, :perform})
     assign(socket, session: session)
   end
 

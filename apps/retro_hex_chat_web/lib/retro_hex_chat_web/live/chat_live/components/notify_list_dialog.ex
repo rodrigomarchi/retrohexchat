@@ -17,7 +17,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.NotifyListDialog do
   re-renders that flip buddies online/offline (§0a-anti).
 
   Session lives on the parent (the central read-model). The dialog runs the
-  `NotifyOps` mutation and bubbles: `{:notify_dialog_session, session}` (parent
+  `NotifyOps` mutation and bubbles: `{:dialog_session, session, :notify}` (parent
   assigns + persists), `DialogIsland.bubble/3` (status bar), and
   `{:notify_dialog_cancel_timer, nick}` on remove (the parent owns the debounce
   timers).
@@ -184,7 +184,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.NotifyListDialog do
   # ── Internal helpers ─────────────────────────────────────────────
 
   defp put_session(socket, session) do
-    send(self(), {:notify_dialog_session, session})
+    send(self(), {:dialog_session, session, :notify})
     socket |> assign(session: session) |> put_locales()
   end
 
