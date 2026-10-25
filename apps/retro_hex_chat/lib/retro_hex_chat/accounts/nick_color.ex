@@ -13,11 +13,5 @@ defmodule RetroHexChat.Accounts.NickColor do
   defstruct [:target_nickname, :color_index]
 
   @spec new(keyword() | map()) :: t()
-  def new(attrs) when is_list(attrs) do
-    struct!(__MODULE__, attrs)
-  end
-
-  def new(attrs) when is_map(attrs) do
-    struct!(__MODULE__, Map.to_list(attrs))
-  end
+  def new(attrs) when is_list(attrs) or is_map(attrs), do: struct!(__MODULE__, attrs)
 end

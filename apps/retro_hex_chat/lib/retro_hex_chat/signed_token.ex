@@ -15,9 +15,10 @@ defmodule RetroHexChat.SignedToken do
   rejected learns how to forge better, and the channel that receives this has
   one thing to do with anything that is not `{:ok, _}` regardless.
 
-  What each caller keeps is its own salt, its own secret, and the data it binds.
-  The salt is not decoration: it goes into the key derivation, so two kinds of
-  token signed with the same secret cannot be spent on each other's door.
+  What each caller keeps is its own salt and the data it binds; they share one
+  secret, `join_secret/0`. The salt is not decoration: it goes into the key
+  derivation, so two kinds of token signed with the same secret cannot be spent
+  on each other's door.
   """
 
   @default_max_age 3_600
@@ -25,6 +26,13 @@ defmodule RetroHexChat.SignedToken do
   @doc "An hour, which is how long a token is good for unless a caller says otherwise."
   @spec default_max_age() :: pos_integer()
   def default_max_age, do: @default_max_age
+
+  @doc "The secret the join tokens are signed with (`:channel_space_join_secret`)."
+  @spec join_secret() :: binary()
+  def join_secret do
+    Application.get_env(:retro_hex_chat, :channel_space_join_secret) ||
+      raise "Missing :channel_space_join_secret configuration"
+  end
 
   @doc "A token binding `data`, readable only by someone holding `secret` and `salt`."
   @spec sign(binary(), binary(), term()) :: binary()

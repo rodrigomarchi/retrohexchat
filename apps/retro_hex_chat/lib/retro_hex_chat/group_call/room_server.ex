@@ -2494,47 +2494,26 @@ defmodule RetroHexChat.GroupCall.RoomServer do
     end
   end
 
+  # What the server has turned off stays off, whatever the participant asks:
+  # each medium, the flag that holds it off, and who held it off and when.
+  @server_media_holds [
+    {"audio", "server_audio_muted", "muted_by", "muted_at"},
+    {"video", "server_video_blocked", "video_blocked_by", "video_blocked_at"},
+    {"screen", "server_screen_blocked", "screen_blocked_by", "screen_blocked_at"}
+  ]
+
   defp enforce_server_media_policy(media_state, current_media_state) do
-    media_state
-    |> enforce_server_audio_policy(current_media_state)
-    |> enforce_server_video_policy(current_media_state)
-    |> enforce_server_screen_policy(current_media_state)
-  end
-
-  defp enforce_server_audio_policy(media_state, current_media_state) do
-    if Map.get(current_media_state, "server_audio_muted") == true do
-      media_state
-      |> Map.put("audio", false)
-      |> Map.put("server_audio_muted", true)
-      |> copy_current_media_extra(current_media_state, "muted_by")
-      |> copy_current_media_extra(current_media_state, "muted_at")
-    else
-      media_state
-    end
-  end
-
-  defp enforce_server_video_policy(media_state, current_media_state) do
-    if Map.get(current_media_state, "server_video_blocked") == true do
-      media_state
-      |> Map.put("video", false)
-      |> Map.put("server_video_blocked", true)
-      |> copy_current_media_extra(current_media_state, "video_blocked_by")
-      |> copy_current_media_extra(current_media_state, "video_blocked_at")
-    else
-      media_state
-    end
-  end
-
-  defp enforce_server_screen_policy(media_state, current_media_state) do
-    if Map.get(current_media_state, "server_screen_blocked") == true do
-      media_state
-      |> Map.put("screen", false)
-      |> Map.put("server_screen_blocked", true)
-      |> copy_current_media_extra(current_media_state, "screen_blocked_by")
-      |> copy_current_media_extra(current_media_state, "screen_blocked_at")
-    else
-      media_state
-    end
+    Enum.reduce(@server_media_holds, media_state, fn {media, flag, by, at}, state ->
+      if Map.get(current_media_state, flag) == true do
+        state
+        |> Map.put(media, false)
+        |> Map.put(flag, true)
+        |> copy_current_media_extra(current_media_state, by)
+        |> copy_current_media_extra(current_media_state, at)
+      else
+        state
+      end
+    end)
   end
 
   defp copy_current_media_extra(target, current_media_state, key) do

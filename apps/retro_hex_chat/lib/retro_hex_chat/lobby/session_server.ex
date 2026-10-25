@@ -814,53 +814,45 @@ defmodule RetroHexChat.Lobby.SessionServer do
 
   defp do_close(state, reason, closed_by) do
     Logger.debug("Lobby close: session_id=#{state.session.id}, reason=#{reason}, by=#{closed_by}")
-    state = NamedTimers.cancel_all(state)
-    now = DateTime.utc_now()
-
-    {:ok, session} =
-      Queries.update_status(state.session, "closed", %{
-        closed_at: now,
-        closed_reason: reason,
-        duration_seconds: compute_duration(state.session.connected_at, now)
-      })
+    state = finalize(state, "closed", reason)
 
     Lobby.broadcast(state.token, "lobby_session_closed", %{reason: reason, closed_by: closed_by})
     notify_watchers(state.token, %{status: "closed"})
-    notify_chat_participants(state.nicks, session, reason)
-    %{state | session: session}
+    notify_chat_participants(state.nicks, state.session, reason)
+    state
   end
 
   defp do_expire(state, reason) do
     Logger.debug("Lobby expired: session_id=#{state.session.id}, reason=#{reason}")
-    state = NamedTimers.cancel_all(state)
-    now = DateTime.utc_now()
-
-    {:ok, session} =
-      Queries.update_status(state.session, "expired", %{
-        closed_at: now,
-        closed_reason: reason,
-        duration_seconds: compute_duration(state.session.connected_at, now)
-      })
+    state = finalize(state, "expired", reason)
 
     Lobby.broadcast(state.token, "lobby_status_changed", %{status: "expired", reason: reason})
-    notify_chat_participants(state.nicks, session, reason)
-    %{state | session: session}
+    notify_chat_participants(state.nicks, state.session, reason)
+    state
   end
 
   defp do_fail(state, reason) do
     Logger.warning("Lobby failed: session_id=#{state.session.id}, reason=#{reason}")
+    state = finalize(state, "failed", reason)
+
+    Lobby.broadcast(state.token, "lobby_status_changed", %{status: "failed", reason: reason})
+    notify_chat_participants(state.nicks, state.session, reason)
+    state
+  end
+
+  # Every way a session ends stops its timers and records the end: the status,
+  # when, why, and how long the two were connected.
+  defp finalize(state, status, reason) do
     state = NamedTimers.cancel_all(state)
     now = DateTime.utc_now()
 
     {:ok, session} =
-      Queries.update_status(state.session, "failed", %{
+      Queries.update_status(state.session, status, %{
         closed_at: now,
         closed_reason: reason,
         duration_seconds: compute_duration(state.session.connected_at, now)
       })
 
-    Lobby.broadcast(state.token, "lobby_status_changed", %{status: "failed", reason: reason})
-    notify_chat_participants(state.nicks, session, reason)
     %{state | session: session}
   end
 

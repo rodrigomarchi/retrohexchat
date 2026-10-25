@@ -28,19 +28,19 @@ defmodule RetroHexChat.Lobby.JoinToken do
   def sign(session_token, user_id, nickname) do
     data = %{session_token: session_token, user_id: user_id, nickname: nickname}
 
-    SignedToken.sign(secret_key_base(), @salt, data)
+    SignedToken.sign(SignedToken.join_secret(), @salt, data)
   end
 
   @spec verify(String.t(), keyword()) :: {:ok, map()} | {:error, :expired | :invalid}
   def verify(token, opts \\ []) do
-    SignedToken.verify(secret_key_base(), @salt, token, Keyword.put_new(opts, :max_age, @max_age))
+    SignedToken.verify(
+      SignedToken.join_secret(),
+      @salt,
+      token,
+      Keyword.put_new(opts, :max_age, @max_age)
+    )
   end
 
   @spec max_age() :: pos_integer()
   def max_age, do: @max_age
-
-  defp secret_key_base do
-    Application.get_env(:retro_hex_chat, :channel_space_join_secret) ||
-      raise "Missing :channel_space_join_secret configuration"
-  end
 end

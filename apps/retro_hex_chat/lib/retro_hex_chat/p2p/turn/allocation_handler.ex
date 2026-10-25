@@ -382,27 +382,33 @@ defmodule RetroHexChat.P2P.Turn.AllocationHandler do
     end
   end
 
-  defp get_xor_peer_address(msg) do
-    case Message.get_attribute(msg, XORPeerAddress) do
-      {:ok, _attr} = resp -> resp
-      nil -> {:error, :no_xor_peer_address_attribute}
-      {:error, _reason} -> {:error, :invalid_xor_peer_address}
-    end
-  end
+  defp get_xor_peer_address(msg),
+    do:
+      required_attribute(
+        msg,
+        XORPeerAddress,
+        :no_xor_peer_address_attribute,
+        :invalid_xor_peer_address
+      )
 
-  defp get_data(msg) do
-    case Message.get_attribute(msg, Data) do
-      {:ok, _attr} = resp -> resp
-      nil -> {:error, :no_data_attribute}
-      {:error, _reason} -> {:error, :invalid_data}
-    end
-  end
+  defp get_data(msg), do: required_attribute(msg, Data, :no_data_attribute, :invalid_data)
 
-  defp get_channel_number(msg) do
-    case Message.get_attribute(msg, ChannelNumber) do
+  defp get_channel_number(msg),
+    do:
+      required_attribute(
+        msg,
+        ChannelNumber,
+        :no_channel_number_attribute,
+        :invalid_channel_number
+      )
+
+  # An attribute the request cannot do without: missing and unreadable are
+  # two different errors for the client.
+  defp required_attribute(msg, attribute, missing, invalid) do
+    case Message.get_attribute(msg, attribute) do
       {:ok, _attr} = resp -> resp
-      nil -> {:error, :no_channel_number_attribute}
-      {:error, _reason} -> {:error, :invalid_channel_number}
+      nil -> {:error, missing}
+      {:error, _reason} -> {:error, invalid}
     end
   end
 

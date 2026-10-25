@@ -22,13 +22,7 @@ defmodule RetroHexChat.Chat.IgnoreEntry do
   ]
 
   @spec new(keyword() | map()) :: t()
-  def new(attrs) when is_list(attrs) do
-    struct!(__MODULE__, attrs)
-  end
-
-  def new(attrs) when is_map(attrs) do
-    struct!(__MODULE__, Map.to_list(attrs))
-  end
+  def new(attrs) when is_list(attrs) or is_map(attrs), do: struct!(__MODULE__, attrs)
 
   @spec expired?(t() | map()) :: boolean()
   def expired?(%__MODULE__{} = entry), do: expired?(entry, DateTime.utc_now())

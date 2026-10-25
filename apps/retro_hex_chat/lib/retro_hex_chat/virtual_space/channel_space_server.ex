@@ -252,36 +252,20 @@ defmodule RetroHexChat.VirtualSpace.ChannelSpaceServer do
   end
 
   @spec leave(String.t(), String.t()) :: :ok
-  def leave(channel_name, participant_key) do
-    case Registry.lookup({:channel_space, channel_name}) do
-      {:ok, pid} -> GenServer.cast(pid, {:leave, participant_key})
-      {:error, :not_found} -> :ok
-    end
-  end
+  def leave(channel_name, participant_key),
+    do: cast_by_key({:channel_space, channel_name}, {:leave, participant_key})
 
   @spec leave_channel_viewer(String.t(), String.t()) :: :ok
-  def leave_channel_viewer(channel_name, participant_key) do
-    case Registry.lookup({:channel_space, channel_name}) do
-      {:ok, pid} -> GenServer.cast(pid, {:channel_viewer_left, participant_key})
-      {:error, :not_found} -> :ok
-    end
-  end
+  def leave_channel_viewer(channel_name, participant_key),
+    do: cast_by_key({:channel_space, channel_name}, {:channel_viewer_left, participant_key})
 
   @spec leave_direct_message_viewer(String.t(), String.t()) :: :ok
-  def leave_direct_message_viewer(space_id, participant_key) do
-    case Registry.lookup({:direct_message_space, space_id}) do
-      {:ok, pid} -> GenServer.cast(pid, {:viewer_left, participant_key})
-      {:error, :not_found} -> :ok
-    end
-  end
+  def leave_direct_message_viewer(space_id, participant_key),
+    do: cast_by_key({:direct_message_space, space_id}, {:viewer_left, participant_key})
 
   @spec leave_construct_viewer(String.t(), String.t()) :: :ok
-  def leave_construct_viewer(construct_id, participant_key) do
-    case Registry.lookup({:construct_space, construct_id}) do
-      {:ok, pid} -> GenServer.cast(pid, {:viewer_left, participant_key})
-      {:error, :not_found} -> :ok
-    end
-  end
+  def leave_construct_viewer(construct_id, participant_key),
+    do: cast_by_key({:construct_space, construct_id}, {:viewer_left, participant_key})
 
   @type build_error ::
           :not_found | :not_participant | :down | :not_buildable | :cooldown | Layout.error()
@@ -320,6 +304,14 @@ defmodule RetroHexChat.VirtualSpace.ChannelSpaceServer do
     if Construct.construct?(space_id),
       do: {:construct_space, space_id},
       else: {:channel_space, space_id}
+  end
+
+  # Leaving a space nobody is running is already done.
+  defp cast_by_key(registry_key, message) do
+    case Registry.lookup(registry_key) do
+      {:ok, pid} -> GenServer.cast(pid, message)
+      {:error, :not_found} -> :ok
+    end
   end
 
   defp call_by_key(registry_key, message) do

@@ -22,7 +22,7 @@ defmodule RetroHexChat.VirtualSpace.ChannelJoinToken do
       nickname: nickname
     }
 
-    SignedToken.sign(secret_key_base(), @salt, data)
+    SignedToken.sign(SignedToken.join_secret(), @salt, data)
   end
 
   @spec sign_direct_message(String.t(), integer() | nil, String.t(), [String.t()]) :: String.t()
@@ -37,7 +37,7 @@ defmodule RetroHexChat.VirtualSpace.ChannelJoinToken do
       participants: participants
     }
 
-    SignedToken.sign(secret_key_base(), @salt, data)
+    SignedToken.sign(SignedToken.join_secret(), @salt, data)
   end
 
   @doc """
@@ -56,20 +56,15 @@ defmodule RetroHexChat.VirtualSpace.ChannelJoinToken do
       participants: participants
     }
 
-    SignedToken.sign(secret_key_base(), @salt, data)
+    SignedToken.sign(SignedToken.join_secret(), @salt, data)
   end
 
   @spec verify(String.t(), keyword()) ::
           {:ok, map()}
           | {:error, :expired | :invalid}
   def verify(token, opts \\ []),
-    do: SignedToken.verify(secret_key_base(), @salt, token, opts)
+    do: SignedToken.verify(SignedToken.join_secret(), @salt, token, opts)
 
   @spec max_age() :: pos_integer()
   def max_age, do: SignedToken.default_max_age()
-
-  defp secret_key_base do
-    Application.get_env(:retro_hex_chat, :channel_space_join_secret) ||
-      raise "Missing :channel_space_join_secret configuration"
-  end
 end
