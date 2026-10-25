@@ -606,6 +606,10 @@ There is exactly ONE hook registration pattern; do not reintroduce local choice 
   sites: `lazy_feature_hooks.js`, the JS i18n catalog loader (`lib/i18n.js`), the game-engine
   loader — anything else must be added to the allowlist with rationale or it fails CI.
 
+- **Games are definitions.** A browser game is a `defineGame` definition over
+  `js/lib/games/core/`, registered in `js/lib/games/registry.json`; ESLint refuses the shortcuts
+  that would copy the core. How to add or change one: [`guide/games.md`](guide/games.md).
+
 ### 15.1 What may live inside a hook (CI-enforced)
 
 §15 governs how a hook is *loaded*; this governs what may live *inside* one. A hook is a thin
@@ -810,7 +814,7 @@ canonical module instead of copying it.
 | A protocol value (reason, trigger, id) shown in a panel | `RetroHexChatWeb.Components.UI.Format` |
 | Arcade game controls | `RetroHexChat.Arcade.Content.Controls` |
 | Editable-target checks in JS | `js/lib/ui/dom.js` |
-| Game networking, audio, HUD, lifecycle | `js/lib/games/net_protocol.js`, `synth.js`, `hud.js`, `js/lib/game_engine.js` |
+| A browser game: lifecycle, wire, clock, sounds, randomness, chrome, AI | `js/lib/games/core/` — see [`guide/games.md`](guide/games.md) |
 
 **Measure before and after a feature.** `make dup.report` (about 15 s) writes
 `reports/duplication/<UTC>.{json,md}` and compares it with the previous run; pass

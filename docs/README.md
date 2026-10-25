@@ -31,6 +31,7 @@ means island decomposition wherever it lives.
 | [guide/testing.md](guide/testing.md) (§13) | Writing or debugging tests — the flaky-suite rules and what to assert on |
 | [guide/background-jobs.md](guide/background-jobs.md) (§17) | Oban workers, queues, recurrence, observability |
 | [guide/mobile-touch.md](guide/mobile-touch.md) (§18) | Viewport contract, touch handling, mobile dialog patterns |
+| [guide/games.md](guide/games.md) (§15, §20) | Adding or changing a browser game: the definition, the core, registration, the lint rules, pins and tests |
 | [guide/surfaces.md](guide/surfaces.md) (§19) | A screen with an address of its own: how one is entered, the share-link resolver, which tabs a person has open |
 
 ## Reference

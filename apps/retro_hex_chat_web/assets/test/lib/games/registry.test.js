@@ -30,6 +30,15 @@ describe("the games registry", () => {
     expect([...new Set(ENTRIES.map(([, game]) => game.dir))].sort()).toEqual(folders);
   });
 
+  it.each([...new Set(ENTRIES.map(([, game]) => game.dir))])(
+    "has characterization pins for %s",
+    (dir) => {
+      // A game without pins has nothing to prove a refactor of it changed nothing.
+      const pins = join(GAMES_DIR, "../../../test/lib/games/pins", `${dir}.pin.test.js`);
+      expect(existsSync(pins), `${dir}.pin.test.js`).toBe(true);
+    },
+  );
+
   it.each(ENTRIES)("loads %s from its folder's definition", async (id, { dir }) => {
     const EngineClass = await loadP2PEngineClass(id);
     expect(EngineClass).toBe((await import(`../../../js/lib/games/${dir}/index.js`)).default);

@@ -393,7 +393,7 @@ function isLiveShip(ship) {
 }
 
 function randomUnit(rng) {
-  const value = typeof rng === "function" ? rng() : Math.random();
+  const value = rng();
   return Number.isFinite(value) ? clamp(value, 0, 1) : 0;
 }
 
