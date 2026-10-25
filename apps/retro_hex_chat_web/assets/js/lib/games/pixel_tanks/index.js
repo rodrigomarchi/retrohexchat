@@ -25,10 +25,9 @@ import {
   resetForNewRound,
   respawnTanks,
   rotateTank,
-  selectMazeForMode,
+  selectMaze,
   tickTimers,
   updateMissile,
-  updateMissileRicochet,
   updateParticles,
 } from "./physics.js";
 import { GAME_END, GAME_MODE, PHASE, SNAPSHOT } from "./protocol.js";
@@ -86,13 +85,12 @@ function battle(game) {
   s = fire(game, s, 1, local, "localFirePressed", "m1Active");
   s = fire(game, s, 2, remote, "remoteFirePressed", "m2Active");
 
-  const updateShell = game.gameMode === GAME_MODE.RICOCHET ? updateMissileRicochet : updateMissile;
   let bounced = false;
   for (const [player, shell] of [
     [1, "m1"],
     [2, "m2"],
   ]) {
-    s = updateShell(s, player, game.walls);
+    s = updateMissile(s, player, game.walls);
     if (s.wallBounced !== player) continue;
     bounced = true;
     game.particles = [
@@ -184,7 +182,7 @@ export default defineGame({
   // the guest learns it from the first snapshot.
   init: (game) => {
     game.gameMode = GAME_MODE.RICOCHET;
-    game.mazeIndex = game.isHost ? selectMazeForMode(game.gameMode, game.random) : 0;
+    game.mazeIndex = game.isHost ? selectMaze(game.random) : 0;
     game.walls = decodeMaze(game.mazeIndex);
     return createInitialState(game.gameMode, game.mazeIndex);
   },

@@ -4,7 +4,7 @@
  * @module games/pixel_tanks_physics
  */
 
-import { PHASE, GAME_MODE } from "./protocol.js";
+import { PHASE } from "./protocol.js";
 import { stepParticles } from "../core/render.js";
 
 // --- Canvas ---
@@ -248,15 +248,9 @@ export function decodeMaze(index) {
   return walls;
 }
 
-/**
- * Create initial game state.
- * @param {number} mode - GAME_MODE enum
- * @param {number} mazeIndex - Maze layout index
- * @returns {object}
- */
-export function createInitialState(mode, mazeIndex) {
+/** Both tanks at their starting places, alive, unshielded and ready to fire. */
+function tanksAtSpawn() {
   return {
-    // Tanks
     tank1X: P1_SPAWN.x,
     tank1Y: P1_SPAWN.y,
     tank1Rot: P1_SPAWN.rot,
@@ -272,6 +266,18 @@ export function createInitialState(mode, mazeIndex) {
     tank2Invuln: false,
     tank2InvulnTimer: 0,
     tank2Cooldown: 0,
+  };
+}
+
+/**
+ * Create initial game state.
+ * @param {number} mode - GAME_MODE enum
+ * @param {number} mazeIndex - Maze layout index
+ * @returns {object}
+ */
+export function createInitialState(mode, mazeIndex) {
+  return {
+    ...tanksAtSpawn(),
 
     // Missiles
     m1X: 0,
@@ -441,62 +447,14 @@ export function fireMissile(state, player, walls) {
 }
 
 /**
- * Update a missile (straight-line travel, wall destruction).
+ * Move a shell one step: it bounces off the first wall it meets and stops at
+ * the second.
  * @param {object} state - Full game state
  * @param {number} missileNum - 1 or 2
  * @param {Uint8Array} walls
  * @returns {object} Updated state
  */
 export function updateMissile(state, missileNum, walls) {
-  const prefix = missileNum === 1 ? "m1" : "m2";
-  const playerCdKey = missileNum === 1 ? "tank1Cooldown" : "tank2Cooldown";
-
-  if (!state[`${prefix}Active`]) return state;
-
-  const newX = state[`${prefix}X`] + state[`${prefix}VX`];
-  const newY = state[`${prefix}Y`] + state[`${prefix}VY`];
-  const newAge = state[`${prefix}Age`] + 1;
-
-  // Check lifetime
-  if (newAge >= MISSILE_LIFETIME) {
-    return {
-      ...state,
-      [`${prefix}Active`]: false,
-      [playerCdKey]: MISSILE_COOLDOWN,
-      missileExpired: missileNum,
-    };
-  }
-
-  // Check wall collision
-  const col = Math.floor(newX / WALL_SIZE);
-  const row = Math.floor(newY / WALL_SIZE);
-  const outOfBounds = col < 0 || col >= GRID_COLS || row < 0 || row >= GRID_ROWS;
-
-  if (outOfBounds || walls[row * GRID_COLS + col]) {
-    return {
-      ...state,
-      [`${prefix}Active`]: false,
-      [playerCdKey]: MISSILE_COOLDOWN,
-      missileExpired: missileNum,
-    };
-  }
-
-  return {
-    ...state,
-    [`${prefix}X`]: newX,
-    [`${prefix}Y`]: newY,
-    [`${prefix}Age`]: newAge,
-  };
-}
-
-/**
- * Update a missile in ricochet mode (bounces once off walls).
- * @param {object} state - Full game state
- * @param {number} missileNum - 1 or 2
- * @param {Uint8Array} walls
- * @returns {object} Updated state
- */
-export function updateMissileRicochet(state, missileNum, walls) {
   const prefix = missileNum === 1 ? "m1" : "m2";
   const playerCdKey = missileNum === 1 ? "tank1Cooldown" : "tank2Cooldown";
 
@@ -758,21 +716,7 @@ export function advanceRound(state, roundWinner) {
 export function resetForNewRound(state) {
   return {
     ...state,
-    tank1X: P1_SPAWN.x,
-    tank1Y: P1_SPAWN.y,
-    tank1Rot: P1_SPAWN.rot,
-    tank1Alive: true,
-    tank1Invuln: false,
-    tank1InvulnTimer: 0,
-    tank1Cooldown: 0,
-
-    tank2X: P2_SPAWN.x,
-    tank2Y: P2_SPAWN.y,
-    tank2Rot: P2_SPAWN.rot,
-    tank2Alive: true,
-    tank2Invuln: false,
-    tank2InvulnTimer: 0,
-    tank2Cooldown: 0,
+    ...tanksAtSpawn(),
 
     m1Active: false,
     m1Age: 0,
@@ -872,15 +816,10 @@ export function formatTimer(frames) {
 }
 
 /**
- * Select maze index based on game mode.
- * Classic/Guided use open field (0), Maze/Ricochet use random maze (1-5).
- * @param {number} mode - GAME_MODE enum
+ * One of the mazes, at random; layout 0, the open field, is never chosen.
  * @param {() => number} [random=Math.random] - draws in [0, 1)
  * @returns {number}
  */
-export function selectMazeForMode(mode, random = Math.random) {
-  if (mode === GAME_MODE.CLASSIC || mode === GAME_MODE.GUIDED) {
-    return 0;
-  }
+export function selectMaze(random = Math.random) {
   return 1 + Math.floor(random() * (MAZE_LAYOUTS.length - 1));
 }
