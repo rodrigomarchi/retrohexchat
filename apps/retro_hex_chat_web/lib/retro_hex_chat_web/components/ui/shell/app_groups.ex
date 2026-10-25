@@ -20,13 +20,7 @@ defmodule RetroHexChatWeb.Components.UI.AppGroups do
 
   @type item ::
           %{kind: :window, window: String.t(), label: String.t(), icon_fn: atom()}
-          | %{
-              kind: :action,
-              action: String.t(),
-              label: String.t(),
-              icon_fn: atom(),
-              start_menu_only?: boolean()
-            }
+          | %{kind: :action, action: String.t(), label: String.t(), icon_fn: atom()}
           | %{kind: :separator}
 
   @type group :: :tools | :automation | :account
@@ -42,10 +36,8 @@ defmodule RetroHexChatWeb.Components.UI.AppGroups do
       window("user-lookup", dgettext("ui", "User Lookup"), :icon_btn_search),
       window("url-catcher", dgettext("ui", "URL Catcher"), :icon_btn_url_catcher),
       # Saved messages and events are read from the database on open.
-      action("open_saved_dialog", dgettext("ui", "Saved Messages"), :icon_btn_star,
-        start_menu_only?: true
-      ),
-      action("open_events_dialog", dgettext("ui", "Events"), :icon_clock, start_menu_only?: true),
+      action("open_saved_dialog", dgettext("ui", "Saved Messages"), :icon_btn_star),
+      action("open_events_dialog", dgettext("ui", "Events"), :icon_clock),
       # /list rows and channel state are loaded by the LiveView on open.
       action("toggle_channel_list", dgettext("ui", "Channel List"), :icon_btn_channel_list),
       action(
@@ -91,22 +83,11 @@ defmodule RetroHexChatWeb.Components.UI.AppGroups do
     ]
   end
 
-  @doc "The items of `group` the desktop folder shows."
-  @spec folder_items(group()) :: [item()]
-  def folder_items(group), do: Enum.reject(items(group), &Map.get(&1, :start_menu_only?, false))
-
   defp window(id, label, icon_fn),
     do: %{kind: :window, window: id, label: label, icon_fn: icon_fn}
 
-  defp action(event, label, icon_fn, opts \\ []) do
-    %{
-      kind: :action,
-      action: event,
-      label: label,
-      icon_fn: icon_fn,
-      start_menu_only?: Keyword.get(opts, :start_menu_only?, false)
-    }
-  end
+  defp action(event, label, icon_fn),
+    do: %{kind: :action, action: event, label: label, icon_fn: icon_fn}
 
   defp separator, do: %{kind: :separator}
 end

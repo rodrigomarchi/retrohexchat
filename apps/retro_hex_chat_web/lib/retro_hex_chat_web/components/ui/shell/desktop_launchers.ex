@@ -567,7 +567,7 @@ defmodule RetroHexChatWeb.Components.UI.DesktopLaunchers do
   defp account_items(cap), do: group_items(cap, :account)
 
   defp group_items(cap, group) do
-    for item <- AppGroups.folder_items(group) do
+    for item <- AppGroups.items(group) do
       case item do
         %{kind: :window} ->
           window(item.window, item.label, item.icon_fn, disabled: !cap.chat?)

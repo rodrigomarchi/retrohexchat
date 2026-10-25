@@ -134,9 +134,9 @@ make e2e.catalog.check    # verify it is current (also runs in make ci)
 
 ## Coverage
 
-- **260 spec files** under `e2e/tests/`.
-- **657 Playwright `test()` cases**.
-- **600 documented flows**, 599 done, 1 not done.
+- **261 spec files** under `e2e/tests/`.
+- **658 Playwright `test()` cases**.
+- **601 documented flows**, 600 done, 1 not done.
 - **Every spec documents its own flows.**
 
 ## Flow index
@@ -628,6 +628,7 @@ Grouped by section. Every row comes from an `@flow` line in the spec itself.
 | T18 | A phone-width viewport hangs the tall wallpaper instead of the wide one | `tests/desktop-wallpaper.spec.ts` | done |
 | T19 | The wide wallpaper is preloaded in the head; the tall one deliberately is not | `tests/desktop-wallpaper.spec.ts` | done |
 | T24 | The character made in a space stands beside the nickname in the chat, in the nicklist and on the hover card, and View ▸ Character Portraits turns them off (features P2) | `tests/chat-character-portraits.spec.ts` | done |
+| T25 | The desktop's Tools folder lists what Start ▸ Tools lists — Saved Messages and Events included — and each opens its window (features P2) | `tests/desktop-tools-folder.spec.ts` | done |
 
 ### U - Dialog CRUD And Settings Depth
 

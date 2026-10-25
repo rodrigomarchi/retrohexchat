@@ -3,6 +3,7 @@ defmodule RetroHexChatWeb.Components.UI.DesktopLaunchersTest do
 
   import Phoenix.LiveViewTest
 
+  alias RetroHexChatWeb.Components.UI.AppGroups
   alias RetroHexChatWeb.Components.UI.DesktopLaunchers
 
   @moduletag :unit
@@ -131,6 +132,18 @@ defmodule RetroHexChatWeb.Components.UI.DesktopLaunchersTest do
     assert enabled?(html, "desktop-launcher-item-game-hex_pong")
     assert enabled?(html, "desktop-launcher-item-game-hex_hockey")
     refute html =~ ~s(data-testid="desktop-launcher-item-open_arcade")
+  end
+
+  test "the Tools folder lists what the Start menu's Tools submenu lists" do
+    html = render_component(&DesktopLaunchers.desktop_launcher_windows/1, screen: :chat)
+
+    for item <- AppGroups.items(:tools), item.kind != :separator do
+      testid = "desktop-launcher-item-" <> (item[:window] || item[:action])
+      assert enabled?(html, testid), "#{testid} missing from the Tools folder"
+    end
+
+    assert enabled?(html, "desktop-launcher-item-open_saved_dialog")
+    assert enabled?(html, "desktop-launcher-item-open_events_dialog")
   end
 
   test "public launcher windows render only the always-available Language and Help folders" do
