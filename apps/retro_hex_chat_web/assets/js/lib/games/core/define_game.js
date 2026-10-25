@@ -12,7 +12,7 @@
  *   captureKeys: ["ArrowUp", "ArrowDown", " "],
  *   interpolate: { keys: ["ballX", "ballY"] },
  *   schema: { snapshot: SNAPSHOT, end: GAME_END },
- *   ai: { create: createPongAI, difficulty: normalizePongAIDifficulty }, // or load: () => import(…), for the page to load solo
+ *   ai: { create: createPongAI, difficulty: normalizePongAIDifficulty }, // no create: the page hands it in
  *   audio: { sounds: SOUNDS },                     // played by name: playPaddleHit()
  *   theme: getColors,
  *   init: (game, options) => createInitialState(),
@@ -72,8 +72,6 @@ export function defineGame(def) {
     static KEYMAP = keymap(def.inputs);
     static INTERPOLATION = def.interpolate ?? { keys: [] };
     static FINAL_PHASE = final;
-    // An AI kept out of the game's chunk: the page loads it for a solo match.
-    static AI_LOADER = def.ai?.load ?? null;
 
     constructor(canvas, channel, gameId, isHost, onGameEnd, options = {}) {
       super(canvas, channel, gameId, isHost, options);

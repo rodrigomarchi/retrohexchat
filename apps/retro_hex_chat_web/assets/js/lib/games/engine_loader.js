@@ -23,6 +23,14 @@ const DEFINITION_LOADERS = {
   warlords: () => import("./warlords/index.js"),
 };
 
+// Raid, Enduro and Skiing keep their AI out of the game's chunk: it is
+// downloaded only for a solo match. Every other game's definition makes its own.
+const SOLO_AI_LOADERS = {
+  hex_enduro: () => import("./hex_enduro/ai.js").then((module) => module.createHexEnduroAI),
+  hex_raid: () => import("./hex_raid/ai.js").then((module) => module.createHexRaidAI),
+  hex_skiing: () => import("./hex_skiing/ai.js").then((module) => module.createHexSkiingAI),
+};
+
 /**
  * @param {string} gameId
  * @returns {boolean}
@@ -87,17 +95,17 @@ export async function createGameEngine({
       ? createLocalTransport()
       : normalizeGameTransport(channel);
 
-  // A solo match's opponent comes from the game's definition, drawing from
-  // the match seed's AI stream: made by the engine, or — for an AI kept out
-  // of the game's chunk — loaded and made here.
+  // A solo match's opponent draws from the match seed's AI stream: made by
+  // the game's definition, or — for an AI kept out of the game's chunk —
+  // loaded and made here.
   const options = {
     ...engineOptions,
     mode: runtimeMode,
     seed: engineOptions.seed ?? freshSeed(),
   };
   const soloOpponentController =
-    solo && !opponentController && EngineClass.AI_LOADER
-      ? (await EngineClass.AI_LOADER())({ difficulty, rng: aiRandom(options.seed) })
+    solo && !opponentController && SOLO_AI_LOADERS[REGISTRY[gameId]?.dir]
+      ? (await SOLO_AI_LOADERS[REGISTRY[gameId].dir]())({ difficulty, rng: aiRandom(options.seed) })
       : opponentController;
   if (soloOpponentController) options.opponentController = soloOpponentController;
   if (difficulty) options.difficulty = difficulty;

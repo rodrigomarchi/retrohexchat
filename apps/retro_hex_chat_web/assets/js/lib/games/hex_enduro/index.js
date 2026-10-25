@@ -149,7 +149,6 @@ export default defineGame({
   ],
   schema: { snapshot: SNAPSHOT, end: GAME_END },
   ai: {
-    load: () => import("./ai.js").then((module) => module.createHexEnduroAI),
     difficulty: normalizeEnduroAIDifficulty,
     observe: (game) => ({ state: game.gameState, player: 2, difficulty: game.difficulty }),
   },

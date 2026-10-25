@@ -273,7 +273,6 @@ export default defineGame({
   ],
   schema: { snapshot: SNAPSHOT, end: GAME_END },
   ai: {
-    load: () => import("./ai.js").then((module) => module.createHexRaidAI),
     difficulty: normalizeRaidAIDifficulty,
   },
   audio: { sounds: SOUNDS },
