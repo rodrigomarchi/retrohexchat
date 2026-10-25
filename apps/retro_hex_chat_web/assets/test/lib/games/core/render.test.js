@@ -10,6 +10,7 @@ import {
   drawCenterText,
   drawDigit,
   drawGetReady,
+  drawGlitchBanner,
   drawGlitchText,
   glitchJitter,
   drawParticleDots,
@@ -191,5 +192,42 @@ describe("glitched text", () => {
     ]);
     expect(c.log).toContainEqual(["globalAlpha", "=", 0.5]);
     expect(c.log).toContainEqual(["shadowBlur", "=", 20]);
+  });
+
+  it("drawGlitchBanner glitches the title in the middle and pulses the line under it", () => {
+    const c = recordingCanvas(640, 480);
+    vi.spyOn(Math, "random").mockReturnValue(0.5);
+    drawGlitchBanner(
+      c.getContext("2d"),
+      {
+        text: "P1 WINS!",
+        color: "cyan",
+        sub: "3 - 1",
+        subFont: "18px monospace",
+        subColor: "gold",
+      },
+      0,
+      640,
+      480,
+    );
+    expect(c.log.filter(([op]) => op === "fillText").map(([, text, x, y]) => [text, x, y])).toEqual(
+      [
+        ["P1 WINS!", 318, 240],
+        ["P1 WINS!", 322, 240],
+        ["P1 WINS!", 320, 240],
+        ["3 - 1", 320, 280],
+      ],
+    );
+    expect(c.log).toContainEqual(["font", "=", "bold 36px monospace"]);
+    expect(c.log).toContainEqual(["font", "=", "18px monospace"]);
+    expect(c.log).toContainEqual(["globalAlpha", "=", 0.5]);
+    vi.restoreAllMocks();
+  });
+
+  it("drawGlitchBanner draws only the title when there is no line", () => {
+    const c = recordingCanvas(640, 480);
+    drawGlitchBanner(c.getContext("2d"), { text: "DRAW", color: "cyan", size: 32 }, 0, 640, 480);
+    expect(c.log.filter(([op]) => op === "fillText")).toHaveLength(3);
+    expect(c.log).toContainEqual(["font", "=", "bold 32px monospace"]);
   });
 });

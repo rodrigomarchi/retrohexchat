@@ -13,11 +13,10 @@ import {
   drawCountdown,
   drawDigit,
   drawGetReady,
-  drawGlitchText,
+  drawGlitchBanner,
   drawScanlines,
   drawVignette,
   drawWaiting,
-  glitchJitter,
 } from "../core/render.js";
 
 /**
@@ -235,25 +234,13 @@ export function drawWinner(ctx, winner, colors, time) {
   const text = jt`PLAYER ${winner} WINS!`;
   const color = winner === 1 ? colors.fg : colors.accent;
 
-  ctx.save();
-  ctx.font = "bold 36px monospace";
-  ctx.textAlign = "center";
-  ctx.textBaseline = "middle";
-
-  // Glitch effect: offset RGB channels
-  const [glitchX, glitchY] = glitchJitter();
-
-  drawGlitchText(ctx, text, CANVAS_W / 2, CANVAS_H / 2, color, { offset: [glitchX, glitchY] });
-
-  // Sub text
-  ctx.font = "16px monospace";
-  ctx.shadowBlur = 8;
-  ctx.fillStyle = colors.muted;
-  const pulse = 0.5 + 0.5 * Math.sin(time * 0.005);
-  ctx.globalAlpha = pulse;
-  ctx.fillText(t("GAME OVER"), CANVAS_W / 2, CANVAS_H / 2 + 40);
-
-  ctx.restore();
+  drawGlitchBanner(
+    ctx,
+    { text, color, sub: t("GAME OVER"), subColor: colors.muted },
+    time,
+    CANVAS_W,
+    CANVAS_H,
+  );
 }
 
 /**

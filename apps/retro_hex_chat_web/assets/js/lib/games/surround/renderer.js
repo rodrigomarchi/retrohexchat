@@ -12,12 +12,11 @@ import {
   drawBackground,
   drawCountdown,
   drawDigit,
-  drawGlitchText,
+  drawGlitchBanner,
   drawParticleDots,
   drawScanlines,
   drawVignette,
   drawWaiting,
-  glitchJitter,
 } from "../core/render.js";
 
 /**
@@ -249,7 +248,7 @@ export function drawHUD(ctx, state, colors) {
 /**
  * Draw round over overlay with winner indication.
  */
-export function drawRoundOver(ctx, state, colors, _time) {
+export function drawRoundOver(ctx, state, colors, time) {
   const p1Won = state.p2Dead && !state.p1Dead;
   const draw = state.p1Dead && state.p2Dead;
 
@@ -265,17 +264,7 @@ export function drawRoundOver(ctx, state, colors, _time) {
     color = colors.accent;
   }
 
-  // Glitch effect
-  const [glitchX, glitchY] = glitchJitter();
-
-  ctx.save();
-  ctx.font = "bold 32px monospace";
-  ctx.textAlign = "center";
-  ctx.textBaseline = "middle";
-
-  drawGlitchText(ctx, text, CANVAS_W / 2, CANVAS_H / 2, color, { offset: [glitchX, glitchY] });
-
-  ctx.restore();
+  drawGlitchBanner(ctx, { text, color, size: 32 }, time, CANVAS_W, CANVAS_H);
 }
 
 /**
@@ -286,23 +275,12 @@ export function drawMatchOver(ctx, state, colors, time) {
   const text = p1Won ? t("P1 VICTORY!") : t("P2 VICTORY!");
   const color = p1Won ? colors.fg : colors.accent;
 
-  ctx.save();
-  ctx.font = "bold 36px monospace";
-  ctx.textAlign = "center";
-  ctx.textBaseline = "middle";
-
-  // Glitch effect: offset RGB channels
-  const [glitchX, glitchY] = glitchJitter();
-
-  drawGlitchText(ctx, text, CANVAS_W / 2, CANVAS_H / 2, color, { offset: [glitchX, glitchY] });
-
-  // Score sub text
-  ctx.font = "18px monospace";
-  ctx.shadowBlur = 8;
-  ctx.fillStyle = colors.warning;
-  const pulse = 0.5 + 0.5 * Math.sin(time * 0.005);
-  ctx.globalAlpha = pulse;
-  ctx.fillText(`${state.score1} - ${state.score2}`, CANVAS_W / 2, CANVAS_H / 2 + 40);
-
-  ctx.restore();
+  const sub = `${state.score1} - ${state.score2}`;
+  drawGlitchBanner(
+    ctx,
+    { text, color, sub, subFont: "18px monospace", subColor: colors.warning },
+    time,
+    CANVAS_W,
+    CANVAS_H,
+  );
 }

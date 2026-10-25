@@ -289,3 +289,35 @@ export function drawGlitchText(
   ctx.fillStyle = color;
   ctx.fillText(text, x, y);
 }
+
+/**
+ * A closing banner: the title glitched in the middle of the screen and, when
+ * there is one, a line under it that pulses.
+ * @param {CanvasRenderingContext2D} ctx
+ * @param {{ text: string, color: string, size?: number, sub?: string|null, subFont?: string, subColor?: string }} banner
+ * @param {number} time
+ * @param {number} width
+ * @param {number} height
+ */
+export function drawGlitchBanner(
+  ctx,
+  { text, color, size = 36, sub = null, subFont = "16px monospace", subColor },
+  time,
+  width,
+  height,
+) {
+  ctx.save();
+  ctx.font = `bold ${size}px monospace`;
+  ctx.textAlign = "center";
+  ctx.textBaseline = "middle";
+  drawGlitchText(ctx, text, width / 2, height / 2, color, { offset: glitchJitter() });
+
+  if (sub !== null) {
+    ctx.font = subFont;
+    ctx.shadowBlur = 8;
+    ctx.fillStyle = subColor;
+    ctx.globalAlpha = 0.5 + 0.5 * Math.sin(time * 0.005);
+    ctx.fillText(sub, width / 2, height / 2 + 40);
+  }
+  ctx.restore();
+}

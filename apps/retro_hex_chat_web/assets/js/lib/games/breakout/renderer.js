@@ -21,11 +21,10 @@ import {
   drawCountdown,
   drawDigit,
   drawGetReady,
-  drawGlitchText,
+  drawGlitchBanner,
   drawScanlines,
   drawVignette,
   drawWaiting,
-  glitchJitter,
 } from "../core/render.js";
 
 /**
@@ -263,26 +262,8 @@ export function drawFinished(ctx, won, colors, time) {
   const text = won ? t("VICTORY!") : t("GAME OVER");
   const color = won ? colors.fg : colors.accent;
 
-  ctx.save();
-  ctx.font = "bold 36px monospace";
-  ctx.textAlign = "center";
-  ctx.textBaseline = "middle";
-
-  // Glitch effect: offset RGB channels
-  const [glitchX, glitchY] = glitchJitter();
-
-  drawGlitchText(ctx, text, CANVAS_W / 2, CANVAS_H / 2, color, { offset: [glitchX, glitchY] });
-
-  // Sub text
-  ctx.font = "16px monospace";
-  ctx.shadowBlur = 8;
-  ctx.fillStyle = colors.muted;
-  const pulse = 0.5 + 0.5 * Math.sin(time * 0.005);
-  ctx.globalAlpha = pulse;
-  const subText = won ? t("ALL BLOCKS CLEARED") : t("NO LIVES REMAINING");
-  ctx.fillText(subText, CANVAS_W / 2, CANVAS_H / 2 + 40);
-
-  ctx.restore();
+  const sub = won ? t("ALL BLOCKS CLEARED") : t("NO LIVES REMAINING");
+  drawGlitchBanner(ctx, { text, color, sub, subColor: colors.muted }, time, CANVAS_W, CANVAS_H);
 }
 
 /**

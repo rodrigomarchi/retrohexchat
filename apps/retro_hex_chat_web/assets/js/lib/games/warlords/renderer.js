@@ -24,6 +24,7 @@ import { gameColor, readGameColors } from "../../game_colors.js";
 import {
   drawBackground,
   drawCountdown,
+  drawGlitchBanner,
   drawGlitchText,
   drawParticleDots,
   drawScanlines,
@@ -379,23 +380,6 @@ export function drawFinished(ctx, state, colors, time) {
   const text = isP1 ? t("P1 WINS!") : t("P2 WINS!");
   const color = isP1 ? colors.fg : colors.accent;
 
-  ctx.save();
-  ctx.font = "bold 36px monospace";
-  ctx.textAlign = "center";
-  ctx.textBaseline = "middle";
-
-  // Glitch effect
-  const [glitchX, glitchY] = glitchJitter();
-
-  drawGlitchText(ctx, text, CANVAS_W / 2, CANVAS_H / 2, color, { offset: [glitchX, glitchY] });
-
-  // Sub text
-  ctx.font = "16px monospace";
-  ctx.shadowBlur = 8;
-  ctx.fillStyle = colors.muted;
-  const pulse = 0.5 + 0.5 * Math.sin(time * 0.005);
-  ctx.globalAlpha = pulse;
-  ctx.fillText(`${state.p1Lives} - ${state.p2Lives}`, CANVAS_W / 2, CANVAS_H / 2 + 40);
-
-  ctx.restore();
+  const sub = `${state.p1Lives} - ${state.p2Lives}`;
+  drawGlitchBanner(ctx, { text, color, sub, subColor: colors.muted }, time, CANVAS_W, CANVAS_H);
 }
