@@ -268,7 +268,7 @@ function unpackShip(decoded, invulnTimer, warpCooldown) {
   };
 }
 
-/** The guest rebuilds the ships, blows up the ones that just died, and hears the round (the end comes with GAME_END). */
+/** The guest rebuilds the ships, blows up the ones that just died, and follows the rival's thrust. */
 function applySnapshot(game, decoded) {
   const prev = game.gameState;
   const ship1 = unpackShip(decoded.ship1, decoded.invuln1, decoded.warpCooldown1);
@@ -316,16 +316,12 @@ function applySnapshot(game, decoded) {
     game.audio.stopThrust();
     game.peerThrustAudioPlaying = false;
   }
+}
 
-  if (prev.phase !== decoded.phase) {
-    if (decoded.phase === PHASE.COUNTDOWN) game.audio.playCountdown();
-    if (decoded.phase === PHASE.SPAWNING) game.audio.playSpawn();
-    if (decoded.phase === PHASE.ROUND_OVER || decoded.phase === PHASE.FINISHED) {
-      game.audio.stopThrust();
-      game.peerThrustAudioPlaying = false;
-    }
-  }
-  if (s.score1 !== prev.score1 || s.score2 !== prev.score2) game.audio.playDeath();
+/** A round's end, or the match's, silences the rival's thrust. */
+function silencePeerThrust(game) {
+  game.audio.stopThrust();
+  game.peerThrustAudioPlaying = false;
 }
 
 export default defineGame({
@@ -449,6 +445,14 @@ export default defineGame({
 
   toWire,
   applySnapshot,
+  // The guest hears the countdown, the spawn, and every death in the score.
+  cues: [
+    { phase: PHASE.COUNTDOWN, play: "countdown" },
+    { phase: PHASE.SPAWNING, play: "spawn" },
+    { phase: PHASE.ROUND_OVER, play: silencePeerThrust },
+    { phase: PHASE.FINISHED, play: silencePeerThrust },
+    { change: (s) => `${s.score1}:${s.score2}`, play: "death" },
+  ],
   onEnd: (game, result) => {
     game.setKeyboardCaptured(false);
     Object.assign(game.gameState, {

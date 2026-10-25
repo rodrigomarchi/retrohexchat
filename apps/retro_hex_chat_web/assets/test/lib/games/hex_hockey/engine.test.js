@@ -947,21 +947,21 @@ describe("hex_hockey_engine", () => {
   describe("_handleAudioEvents", () => {
     it("plays shot audio on SHOT event", () => {
       const { engine } = setupPlayingEngine();
-      playHostEvents(engine.audio, EVENT.SHOT);
+      playHostEvents(engine, EVENT.SHOT);
       expect(engine.audio.playShot).toHaveBeenCalled();
       engine.stop();
     });
 
     it("plays wall bounce audio on WALL_BOUNCE event", () => {
       const { engine } = setupPlayingEngine();
-      playHostEvents(engine.audio, EVENT.WALL_BOUNCE);
+      playHostEvents(engine, EVENT.WALL_BOUNCE);
       expect(engine.audio.playWallBounce).toHaveBeenCalled();
       engine.stop();
     });
 
     it("skips individual sounds when GOAL event is present (early return)", () => {
       const { engine } = setupPlayingEngine();
-      playHostEvents(engine.audio, EVENT.GOAL_P1 | EVENT.SHOT);
+      playHostEvents(engine, EVENT.GOAL_P1 | EVENT.SHOT);
       // GOAL causes early return — SHOT should NOT play
       expect(engine.audio.playShot).not.toHaveBeenCalled();
       engine.stop();
@@ -969,7 +969,7 @@ describe("hex_hockey_engine", () => {
 
     it("plays multiple audio events in same frame", () => {
       const { engine } = setupPlayingEngine();
-      playHostEvents(engine.audio, EVENT.TACKLE_SUCCESS | EVENT.CAPTURE);
+      playHostEvents(engine, EVENT.TACKLE_SUCCESS | EVENT.CAPTURE);
       expect(engine.audio.playTackleSuccess).toHaveBeenCalled();
       expect(engine.audio.playCapture).toHaveBeenCalled();
       engine.stop();
@@ -977,21 +977,21 @@ describe("hex_hockey_engine", () => {
 
     it("plays goalie block audio", () => {
       const { engine } = setupPlayingEngine();
-      playHostEvents(engine.audio, EVENT.GOALIE_BLOCK);
+      playHostEvents(engine, EVENT.GOALIE_BLOCK);
       expect(engine.audio.playGoalieBlock).toHaveBeenCalled();
       engine.stop();
     });
 
     it("plays tackle fail audio", () => {
       const { engine } = setupPlayingEngine();
-      playHostEvents(engine.audio, EVENT.TACKLE_FAIL);
+      playHostEvents(engine, EVENT.TACKLE_FAIL);
       expect(engine.audio.playTackleFail).toHaveBeenCalled();
       engine.stop();
     });
 
     it("plays whistle audio on WHISTLE event", () => {
       const { engine } = setupPlayingEngine();
-      playHostEvents(engine.audio, EVENT.WHISTLE);
+      playHostEvents(engine, EVENT.WHISTLE);
       expect(engine.audio.playFaceoffWhistle).toHaveBeenCalled();
       engine.stop();
     });

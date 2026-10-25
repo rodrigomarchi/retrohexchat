@@ -12,6 +12,7 @@
  */
 
 import { defineGame } from "../core/define_game.js";
+import { playFlags } from "../core/events.js";
 import { matchResult } from "../core/result.js";
 import { createHockeyAI, normalizeHockeyAIDifficulty } from "./ai.js";
 import {
@@ -48,34 +49,43 @@ const MODE_MAP = {
 
 const RELEASED = { left: false, right: false, up: false, down: false, action: false };
 
+/** What a goal sounds like on the guest: the horn, and the flash with it. */
+function goalHeard(game) {
+  game.audio.playGoal();
+  game.goalFlash = GOAL_CELEBRATION_FRAMES;
+}
+
+/** The sounds both sides hear for the play's events. */
+const PLAY_SOUNDS = [
+  [EVENT.SHOT, "shot"],
+  [EVENT.WALL_BOUNCE, "wallBounce"],
+  [EVENT.GOALIE_BLOCK, "goalieBlock"],
+  [EVENT.TACKLE_SUCCESS, "tackleSuccess"],
+  [EVENT.TACKLE_FAIL, "tackleFail"],
+  [EVENT.CAPTURE, "capture"],
+];
+
+/** The host plays the period's end and sudden death where its step makes them. */
+const HOST_SOUNDS = [...PLAY_SOUNDS, [EVENT.WHISTLE, "faceoffWhistle"]];
+
+/** The guest hears all of a step from its event bits. */
+export const PEER_SOUNDS = [
+  [EVENT.GOAL_P1 | EVENT.GOAL_P2, goalHeard],
+  ...PLAY_SOUNDS,
+  [EVENT.PERIOD_END, "periodBuzzer"],
+  [EVENT.SUDDEN_DEATH, "suddenDeath"],
+  [EVENT.WHISTLE, "faceoffWhistle"],
+];
+
 /** The host's sounds for a step's events; a goal's own sound has played already. */
-export function playHostEvents(audio, events) {
-  if (events & EVENT.GOAL_P1 || events & EVENT.GOAL_P2) return;
-  if (events & EVENT.SHOT) audio.playShot();
-  if (events & EVENT.WALL_BOUNCE) audio.playWallBounce();
-  if (events & EVENT.GOALIE_BLOCK) audio.playGoalieBlock();
-  if (events & EVENT.TACKLE_SUCCESS) audio.playTackleSuccess();
-  if (events & EVENT.TACKLE_FAIL) audio.playTackleFail();
-  if (events & EVENT.CAPTURE) audio.playCapture();
-  if (events & EVENT.WHISTLE) audio.playFaceoffWhistle();
+export function playHostEvents(game, events) {
+  if (events & (EVENT.GOAL_P1 | EVENT.GOAL_P2)) return;
+  playFlags(game, HOST_SOUNDS, events);
 }
 
 /** The guest's sounds for a snapshot's events, the goal flash with them. */
 export function playPeerEvents(game, events) {
-  const { audio } = game;
-  if (events & EVENT.GOAL_P1 || events & EVENT.GOAL_P2) {
-    audio.playGoal();
-    game.goalFlash = GOAL_CELEBRATION_FRAMES;
-  }
-  if (events & EVENT.SHOT) audio.playShot();
-  if (events & EVENT.WALL_BOUNCE) audio.playWallBounce();
-  if (events & EVENT.GOALIE_BLOCK) audio.playGoalieBlock();
-  if (events & EVENT.TACKLE_SUCCESS) audio.playTackleSuccess();
-  if (events & EVENT.TACKLE_FAIL) audio.playTackleFail();
-  if (events & EVENT.CAPTURE) audio.playCapture();
-  if (events & EVENT.PERIOD_END) audio.playPeriodBuzzer();
-  if (events & EVENT.SUDDEN_DEATH) audio.playSuddenDeath();
-  if (events & EVENT.WHISTLE) audio.playFaceoffWhistle();
+  playFlags(game, PEER_SOUNDS, events);
 }
 
 const PLAYER_OF = { p1: 1, p2: 2 };
@@ -232,7 +242,7 @@ function play(game, state) {
   }
 
   updatePuckTrail(game);
-  playHostEvents(game.audio, state.eventFlags);
+  playHostEvents(game, state.eventFlags);
 }
 
 const PHASE_STEP = {
@@ -360,9 +370,9 @@ export default defineGame({
   toWire: (game) => packState(game.gameState),
   applySnapshot: (game, decoded) => {
     game.gameState = unpackState(decoded);
-    playPeerEvents(game, decoded.eventFlags);
     updatePuckTrail(game);
   },
+  cues: [{ flags: (s) => s.eventFlags, sounds: PEER_SOUNDS }],
   onEnd: (game, result) => {
     game.setKeyboardCaptured(false);
     playEnd(game, result.winner);
