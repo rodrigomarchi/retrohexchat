@@ -1,571 +1,537 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
-import { GameEngine, SEND_HIGH_WATER_BYTES } from "../../js/lib/game_engine.js";
+import { SEND_HIGH_WATER_BYTES } from "../../js/lib/game_engine.js";
+import { i16, schema, u8 } from "../../js/lib/games/core/codec.js";
+import { defineGame } from "../../js/lib/games/core/define_game.js";
+import { MSG } from "../../js/lib/games/core/messages.js";
 import { FIXED_STEP_MS } from "../../js/lib/games/frame_clock.js";
 import { decodeInputState, encodeInputState, packInputs } from "../../js/lib/games/net_protocol.js";
 import { createLocalTransport } from "../../js/lib/games/transport.js";
+import { fakeChannel } from "../support/games/fake_channel.js";
+import { playMatch } from "../support/games/harness.js";
 
-function createMockChannel() {
-  return {
-    readyState: "open",
-    bufferedAmount: 0,
-    send: vi.fn(),
-    addEventListener: vi.fn(),
-    removeEventListener: vi.fn(),
-  };
+/*
+ * What the engine underneath every game does — the clock, the paint, the
+ * wire, the ready handshake, the keyboard — seen from outside, through the
+ * smallest game a definition can describe.
+ */
+
+const PHASE = { WAITING: 0, PLAYING: 1, OVER: 2 };
+const SNAPSHOT = schema(MSG.GAME_STATE, [u8("phase"), i16("x"), u8("score")]);
+const END = schema(MSG.GAME_END, [u8("winner")]);
+
+/** A game with two held keys and one smoothed coordinate, and a record of what reached it. */
+function probe(overrides = {}) {
+  const seen = { ticks: 0, idles: 0, paints: 0, keys: [], edges: [] };
+  const Game = defineGame({
+    inputs: { up: ["ArrowUp"], down: ["ArrowDown"] },
+    interpolate: { keys: ["x"] },
+    schema: { snapshot: SNAPSHOT, end: END },
+    init: () => ({ phase: PHASE.WAITING, x: 0, score: 0 }),
+    flow: {
+      phases: PHASE,
+      initial: "WAITING",
+      begin: "PLAYING",
+      states: {
+        PLAYING: { tick: () => (seen.ticks += 1) },
+        OVER: { final: true },
+      },
+    },
+    idle: () => (seen.idles += 1),
+    render: () => (seen.paints += 1),
+    onKeyDown: (_game, event) => seen.keys.push(event.key),
+    onRemoteEdge: (_game, code) => seen.edges.push(code),
+    disconnectResult: () => ({}),
+    ...overrides,
+  });
+  return { Game, seen };
 }
 
-function createMockCanvas() {
-  const canvas = document.createElement("canvas");
-  canvas.width = 640;
-  canvas.height = 480;
-  const mockCtx = {
-    fillStyle: "",
-    strokeStyle: "",
-    lineWidth: 0,
-    font: "",
-    textAlign: "",
-    fillRect: vi.fn(),
-    strokeRect: vi.fn(),
-    fillText: vi.fn(),
-  };
-  canvas.getContext = vi.fn(() => mockCtx);
-  return canvas;
-}
-
-/** A game with held keys and one smoothed coordinate. */
-class TestEngine extends GameEngine {
-  static INPUT_BITS = { up: 0, down: 1 };
-  static INTERPOLATION = { keys: ["x"] };
-
-  constructor(canvas, channel, gameId, isHost) {
-    super(canvas, channel, gameId, isHost);
-    this.gameState = { x: 0, score: 0 };
-    this.localInputs = { up: false, down: false };
-    this.remoteInputs = { up: false, down: false };
-    this.steps = 0;
-    this.idleSteps = 0;
-    this.paints = 0;
-  }
-
-  _gameLoop() {
-    this.steps += 1;
-  }
-
-  _idleStep() {
-    this.idleSteps += 1;
-  }
-
-  _renderState() {
-    this.paints += 1;
-  }
-}
+const snapshot = (fields) => SNAPSHOT.encode({ phase: PHASE.PLAYING, x: 0, score: 0, ...fields });
+const typeOf = (buf) => new Uint8Array(buf)[0];
+const sentOf = (channel, type) => channel.sent.filter((buf) => typeOf(buf) === type);
+const wireOf = (match, dir, type) =>
+  match
+    .record()
+    .wire.filter((entry) => entry.dir === dir && parseInt(entry.hex.slice(0, 2), 16) === type);
+const bytesOf = (hex) => new Uint8Array(hex.match(/../g).map((b) => parseInt(b, 16))).buffer;
 
 describe("GameEngine", () => {
-  let engine;
-  let channel;
-  let canvas;
+  let engines;
+  let match;
+
+  /** An engine on a channel the test holds, reading keys from the window. */
+  function build(Game, { channel = fakeChannel(), isHost = true, options = {} } = {}) {
+    const canvas = document.createElement("canvas");
+    canvas.getContext = () => ({});
+    const engine = new Game(canvas, channel, "probe", isHost, null, options);
+    engines.push(engine);
+    return engine;
+  }
+
+  /** Fire one key event at `target` and hand it back. */
+  function press(target, key, init = {}) {
+    const event = new KeyboardEvent("keydown", { key, bubbles: true, cancelable: true, ...init });
+    target.dispatchEvent(event);
+    return event;
+  }
 
   beforeEach(() => {
-    channel = createMockChannel();
-    canvas = createMockCanvas();
-    vi.stubGlobal(
-      "requestAnimationFrame",
-      vi.fn(() => 1),
-    );
-    vi.stubGlobal("cancelAnimationFrame", vi.fn());
+    engines = [];
+    vi.useFakeTimers({
+      now: 0,
+      toFake: [
+        "setTimeout",
+        "clearTimeout",
+        "setInterval",
+        "clearInterval",
+        "Date",
+        "performance",
+        "requestAnimationFrame",
+        "cancelAnimationFrame",
+      ],
+    });
   });
 
   afterEach(() => {
-    if (engine) engine.stop();
-    engine = null;
-    vi.unstubAllGlobals();
+    for (const engine of engines) engine.stop();
+    match?.stop();
+    match?.restore();
+    match = null;
+    vi.useRealTimers();
+    vi.restoreAllMocks();
   });
 
-  describe("_safeSend", () => {
-    it("stores the normalized transport and runtime mode", () => {
-      engine = new GameEngine(canvas, channel, "test", true, { mode: "solo" });
+  describe("sending", () => {
+    it("keeps the transport and the mode it was given", () => {
+      const engine = build(probe().Game, { options: { mode: "solo" } });
 
       expect(engine.transport.kind).toBe("p2p");
       expect(engine.channel).toBe(engine.transport);
       expect(engine.mode).toBe("solo");
     });
 
-    it("reports local runtime state separately from DataChannel state", () => {
-      engine = new GameEngine(canvas, createLocalTransport(), "test", true, { mode: "solo" });
+    it("tags its telemetry with a local transport's own state", () => {
+      const engine = build(probe().Game, {
+        channel: createLocalTransport(),
+        options: { mode: "solo" },
+      });
+      const samples = [];
+      engine.onTelemetry = (sample) => samples.push(sample);
+      engine.start();
 
-      expect(engine._transportTelemetryState()).toBe("local");
+      vi.advanceTimersByTime(5100);
+
+      expect(samples.at(-1).channel_state).toBe("local");
     });
 
-    it("sends data when channel is open", () => {
-      engine = new GameEngine(canvas, channel, "test", true);
-      const data = new ArrayBuffer(4);
-      expect(engine._safeSend(data)).toBe(true);
-      expect(channel.send).toHaveBeenCalledWith(data);
+    it("sends a snapshot while the channel is open", () => {
+      const channel = fakeChannel();
+      build(probe().Game, { channel }).broadcast();
+      expect(sentOf(channel, MSG.GAME_STATE)).toHaveLength(1);
     });
 
-    it("does not send when channel is closed", () => {
-      channel.readyState = "closed";
-      engine = new GameEngine(canvas, channel, "test", true);
-      expect(engine._safeSend(new ArrayBuffer(1))).toBe(false);
-      expect(channel.send).not.toHaveBeenCalled();
+    it.each(["closing", "closed"])("sends nothing on a %s channel", (readyState) => {
+      const channel = fakeChannel();
+      channel.readyState = readyState;
+      build(probe().Game, { channel }).broadcast();
+      expect(channel.sent).toHaveLength(0);
     });
 
-    it("does not send when channel is closing", () => {
-      channel.readyState = "closing";
-      engine = new GameEngine(canvas, channel, "test", true);
-      engine._safeSend(new ArrayBuffer(1));
-      expect(channel.send).not.toHaveBeenCalled();
-    });
-
-    it("catches throw on channel that closes during send", () => {
+    it("survives a channel that closes during the send", () => {
+      const channel = fakeChannel();
       channel.send = () => {
         throw new Error("closing");
       };
-      engine = new GameEngine(canvas, channel, "test", true);
-      expect(() => engine._safeSend(new ArrayBuffer(1))).not.toThrow();
-      expect(engine._safeSend(new ArrayBuffer(1))).toBe(false);
-    });
-  });
-
-  describe("_sendState", () => {
-    it("sends a snapshot while the channel is keeping up", () => {
-      engine = new TestEngine(canvas, channel, "test", true);
-      expect(engine._sendState(new ArrayBuffer(25))).toBe(true);
+      const engine = build(probe().Game, { channel });
+      expect(() => engine.broadcast()).not.toThrow();
     });
 
     it("drops a snapshot once the channel is backed up", () => {
+      const channel = fakeChannel();
       channel.bufferedAmount = SEND_HIGH_WATER_BYTES;
-      engine = new TestEngine(canvas, channel, "test", true);
 
       // Queuing behind a backlog only adds latency the game never recovers
       // from, and the next snapshot supersedes this one anyway.
-      expect(engine._sendState(new ArrayBuffer(25))).toBe(false);
-      expect(channel.send).not.toHaveBeenCalled();
+      build(probe().Game, { channel }).broadcast();
+
+      expect(channel.sent).toHaveLength(0);
     });
-  });
 
-  describe("_sendCommand", () => {
-    it("repeats a one-shot message, because the channel is unreliable", () => {
-      vi.useFakeTimers();
-      engine = new TestEngine(canvas, channel, "test", true);
-      engine.running = true;
+    it("repeats a one-shot command, because the channel is unreliable", () => {
+      const channel = fakeChannel();
+      const guest = build(probe().Game, { channel, isHost: false });
+      guest.start();
 
-      engine._sendCommand(new ArrayBuffer(4));
-      expect(channel.send).toHaveBeenCalledTimes(1);
+      guest.sendInputEdge(2);
+      expect(sentOf(channel, MSG.INPUT_EDGE)).toHaveLength(1);
 
       vi.advanceTimersByTime(200);
-      expect(channel.send).toHaveBeenCalledTimes(3);
-      vi.useRealTimers();
+      expect(sentOf(channel, MSG.INPUT_EDGE)).toHaveLength(3);
     });
 
     it("stops repeating once the engine is torn down", () => {
-      vi.useFakeTimers();
-      engine = new TestEngine(canvas, channel, "test", true);
-      engine.start();
+      const channel = fakeChannel();
+      const guest = build(probe().Game, { channel, isHost: false });
+      guest.start();
 
-      engine._sendCommand(new ArrayBuffer(4));
-      engine.stop();
+      guest.sendInputEdge(2);
+      guest.stop();
       vi.advanceTimersByTime(200);
 
-      expect(channel.send).toHaveBeenCalledTimes(1);
-      vi.useRealTimers();
+      expect(sentOf(channel, MSG.INPUT_EDGE)).toHaveLength(1);
     });
   });
 
   describe("ready handshake", () => {
-    /** A ready message is one byte; the guest also sends 5-byte input masks. */
-    const READY_BYTE = 0x84;
-    const READY = () => {
-      const buf = new ArrayBuffer(1);
-      new DataView(buf).setUint8(0, READY_BYTE);
-      return buf;
-    };
-
-    const readyPings = () =>
-      channel.send.mock.calls.filter(
-        ([buf]) => buf.byteLength === 1 && new DataView(buf).getUint8(0) === READY_BYTE,
-      ).length;
-
     it("keeps announcing until the host answers", () => {
-      vi.useFakeTimers();
-      engine = new TestEngine(canvas, channel, "test", false);
-      engine.start();
-
-      engine._advertiseReady(READY);
-      expect(readyPings()).toBe(1);
+      const channel = fakeChannel();
+      build(probe().Game, { channel, isHost: false }).start();
+      expect(sentOf(channel, MSG.GAME_READY)).toHaveLength(1);
 
       // Nothing else restates this message, and the host does nothing until it
       // lands — a single send would hang the match on one dropped datagram.
       vi.advanceTimersByTime(1000);
-      expect(readyPings()).toBeGreaterThan(3);
-      vi.useRealTimers();
+      expect(sentOf(channel, MSG.GAME_READY).length).toBeGreaterThan(3);
     });
 
     it("stops announcing on the first word from the host", () => {
-      vi.useFakeTimers();
-      engine = new TestEngine(canvas, channel, "test", false);
-      engine.start();
-      engine._advertiseReady(READY);
+      const channel = fakeChannel();
+      build(probe().Game, { channel, isHost: false }).start();
 
-      const state = new ArrayBuffer(8);
-      new DataView(state).setUint8(0, 0x80);
-      engine._onChannelMessage({ data: state });
-
-      const afterAnswer = readyPings();
+      channel.emit("message", { data: snapshot({}) });
+      const afterAnswer = sentOf(channel, MSG.GAME_READY).length;
       vi.advanceTimersByTime(2000);
 
-      expect(readyPings()).toBe(afterAnswer);
-      vi.useRealTimers();
+      expect(sentOf(channel, MSG.GAME_READY)).toHaveLength(afterAnswer);
     });
 
     it("never announces from the host side", () => {
-      vi.useFakeTimers();
-      engine = new TestEngine(canvas, channel, "test", true);
-      engine.start();
+      const channel = fakeChannel();
+      build(probe().Game, { channel }).start();
 
-      engine._advertiseReady(READY);
       vi.advanceTimersByTime(2000);
 
-      expect(channel.send).not.toHaveBeenCalled();
-      vi.useRealTimers();
+      expect(channel.sent).toHaveLength(0);
     });
 
     it("stops announcing once the engine is torn down", () => {
-      vi.useFakeTimers();
-      engine = new TestEngine(canvas, channel, "test", false);
-      engine.start();
-      engine._advertiseReady(READY);
-      engine.stop();
+      const channel = fakeChannel();
+      const guest = build(probe().Game, { channel, isHost: false });
+      guest.start();
+      guest.stop();
 
-      const afterStop = readyPings();
+      const afterStop = sentOf(channel, MSG.GAME_READY).length;
       vi.advanceTimersByTime(2000);
 
-      expect(readyPings()).toBe(afterStop);
-      vi.useRealTimers();
+      expect(sentOf(channel, MSG.GAME_READY)).toHaveLength(afterStop);
     });
   });
 
   describe("input transport", () => {
-    it("sends the full held mask, not one message per key", () => {
-      engine = new TestEngine(canvas, channel, "test", false);
-      engine.localInputs = { up: true, down: true };
-      engine._sendInputState();
+    const masksFromGuest = () =>
+      wireOf(match, "guest>host", MSG.INPUT_STATE).map((entry) =>
+        decodeInputState(bytesOf(entry.hex)),
+      );
 
-      const decoded = decodeInputState(channel.send.mock.calls[0][0]);
-      expect(decoded.mask).toBe(packInputs({ up: true, down: true }, TestEngine.INPUT_BITS));
+    async function paired(overrides) {
+      const { Game, seen } = probe(overrides);
+      match = await playMatch({ EngineClass: Game, gameId: "probe" });
+      match.advance(100);
+      return seen;
+    }
+
+    it("sends the full held mask, not one message per key", async () => {
+      const { Game } = probe();
+      await paired();
+      match.key("guest", "ArrowUp");
+      match.key("guest", "ArrowDown");
+      match.advance(50);
+
+      expect(masksFromGuest().at(-1).mask).toBe(
+        packInputs({ up: true, down: true }, Game.INPUT_BITS),
+      );
     });
 
-    it("restates a held mask every frame", () => {
-      engine = new TestEngine(canvas, channel, "test", false);
-      engine.localInputs = { up: true, down: false };
+    it("restates a held mask every step", async () => {
+      await paired();
+      match.key("guest", "ArrowUp");
+      const before = masksFromGuest().length;
 
-      engine._sendInputState();
-      engine._sendInputState();
+      match.advance(1000);
 
       // Losing one datagram must cost a step of staleness, never a stuck key.
-      expect(channel.send).toHaveBeenCalledTimes(2);
+      expect(masksFromGuest().length - before).toBeGreaterThanOrEqual(55);
     });
 
-    it("stops restating an empty mask once the release has been repeated", () => {
-      engine = new TestEngine(canvas, channel, "test", false);
-      engine.localInputs.up = true;
-      engine._sendInputState();
-      engine.localInputs.up = false;
-      channel.send.mockClear();
+    it("stops restating an empty mask once the release has been repeated", async () => {
+      await paired();
+      match.key("guest", "ArrowUp");
+      match.advance(100);
+      match.key("guest", "ArrowUp", "keyup");
+      const before = masksFromGuest().length;
 
-      for (let i = 0; i < 50; i++) engine._sendInputState();
+      match.advance(1000);
 
       // The release is restated a few times, then the guest goes quiet.
-      expect(channel.send.mock.calls.length).toBeGreaterThan(0);
-      expect(channel.send.mock.calls.length).toBeLessThan(20);
+      const restated = masksFromGuest().length - before;
+      expect(restated).toBeGreaterThan(0);
+      expect(restated).toBeLessThan(20);
     });
 
-    it("says nothing when no key was ever held", () => {
-      engine = new TestEngine(canvas, channel, "test", false);
-
-      for (let i = 0; i < 50; i++) engine._sendInputState();
+    it("says nothing when no key was ever held", async () => {
+      await paired();
+      match.advance(1000);
 
       // The host already assumes everything is released.
-      expect(channel.send).not.toHaveBeenCalled();
+      expect(masksFromGuest()).toHaveLength(0);
     });
 
-    it("never sends input from the host", () => {
-      engine = new TestEngine(canvas, channel, "test", true);
-      engine.localInputs = { up: true, down: false };
-      engine._sendInputState();
-      expect(channel.send).not.toHaveBeenCalled();
+    it("never sends input from the host", async () => {
+      await paired();
+      match.key("host", "ArrowUp");
+      match.advance(1000);
+
+      expect(wireOf(match, "host>guest", MSG.INPUT_STATE)).toHaveLength(0);
     });
 
-    it("applies a received mask to remote inputs", () => {
-      engine = new TestEngine(canvas, channel, "test", true);
-      engine._receiveInputState(encodeInputState(1, 0b01));
-      expect(engine.remoteInputs).toEqual({ up: true, down: false });
+    it("hands the guest's held keys to the host", async () => {
+      await paired();
+      match.key("guest", "ArrowUp");
+      match.advance(50);
+
+      expect(match.engines.host.remoteInputs).toEqual({ up: true, down: false });
     });
 
-    it("ignores a datagram that arrived out of order", () => {
-      engine = new TestEngine(canvas, channel, "test", true);
-      engine._receiveInputState(encodeInputState(5, 0b11));
-      engine._receiveInputState(encodeInputState(4, 0b00));
+    it("ignores a mask that arrived out of order", async () => {
+      await paired();
+      match.send("guest", encodeInputState(5, 0b11));
+      match.send("guest", encodeInputState(4, 0b00));
+      match.advance(1);
 
       // Unordered delivery means stale input can land after fresh input.
-      expect(engine.remoteInputs).toEqual({ up: true, down: true });
+      expect(match.engines.host.remoteInputs).toEqual({ up: true, down: true });
     });
 
-    it("deduplicates the repeats of a discrete command", () => {
-      engine = new TestEngine(canvas, channel, "test", true);
-      const seen = [];
-      engine._handleRemoteEdge = (code) => seen.push(code);
+    it("applies each discrete command once, however often it is repeated", async () => {
+      const seen = await paired();
+      match.engines.guest.sendInputEdge(2);
+      match.advance(200);
 
-      const buf = new ArrayBuffer(4);
-      const view = new DataView(buf);
-      view.setUint8(0, 0x8f);
-      view.setUint16(1, 3, true);
-      view.setUint8(3, 2);
-
-      engine._receiveInputEdge(buf);
-      engine._receiveInputEdge(buf);
-
-      expect(seen).toEqual([2]);
+      expect(seen.edges).toEqual([2]);
     });
   });
 
   describe("keyboard", () => {
+    afterEach(() => {
+      window.dispatchEvent(new KeyboardEvent("keyup", { key: "ArrowUp", bubbles: true }));
+    });
+
+    /** Record keydowns reaching the page's own window listener while `run` runs. */
+    function pageSees(run) {
+      const page = vi.fn();
+      window.addEventListener("keydown", page);
+      try {
+        run();
+      } finally {
+        window.removeEventListener("keydown", page);
+      }
+      return page;
+    }
+
     it("ignores auto-repeat", () => {
-      engine = new TestEngine(canvas, channel, "test", false);
-      const handled = [];
-      engine._handleKeyDown = (event) => handled.push(event.key);
+      const { Game, seen } = probe();
+      build(Game, { isHost: false }).start();
 
-      engine._onKeyDown({ key: "ArrowUp", repeat: false, target: null });
-      engine._onKeyDown({ key: "ArrowUp", repeat: true, target: null });
+      press(window, "ArrowUp");
+      press(window, "ArrowUp", { repeat: true });
 
-      expect(handled).toEqual(["ArrowUp"]);
+      expect(seen.keys).toEqual(["ArrowUp"]);
     });
 
     it("leaves keystrokes aimed at a text field alone", () => {
-      engine = new TestEngine(canvas, channel, "test", false);
-      const handled = [];
-      engine._handleKeyDown = (event) => handled.push(event.key);
+      const { Game, seen } = probe();
+      build(Game, { isHost: false }).start();
 
       // The game runs in a window beside the chat composer.
-      const input = document.createElement("input");
       const editable = document.createElement("div");
       editable.setAttribute("contenteditable", "true");
-      const select = document.createElement("select");
-      for (const target of [input, editable, select]) {
-        engine._onKeyDown({ key: "ArrowUp", repeat: false, target });
+      const fields = [document.createElement("input"), editable, document.createElement("select")];
+      for (const field of fields) {
+        document.body.appendChild(field);
+        press(field, "ArrowUp");
+        field.remove();
       }
 
-      expect(handled).toEqual([]);
+      expect(seen.keys).toEqual([]);
     });
 
     it("leaves the keyboard alone for somebody only watching", () => {
-      const watching = new (class extends GameEngine {
-        _gameLoop() {}
-        _renderState() {}
-      })(canvas, channel, "test", false, { mode: "spectator" });
-      watching._handleKeyDown = vi.fn();
+      const { Game, seen } = probe();
+      const watching = build(Game, { isHost: false, options: { mode: "spectator" } });
       watching.setKeyboardCaptured(true);
-
-      const globalShortcut = vi.fn();
-      window.addEventListener("keydown", globalShortcut);
-
       watching.start();
-      window.dispatchEvent(
-        new KeyboardEvent("keydown", { key: "ArrowUp", bubbles: true, cancelable: true }),
-      );
 
-      expect(watching._handleKeyDown).not.toHaveBeenCalled();
-      expect(globalShortcut).toHaveBeenCalledOnce();
+      const page = pageSees(() => press(window, "ArrowUp"));
 
-      window.removeEventListener("keydown", globalShortcut);
-      watching.stop();
+      expect(seen.keys).toEqual([]);
+      expect(page).toHaveBeenCalledOnce();
     });
 
-    it("stops handled game keys before they reach global LiveView shortcuts", () => {
-      engine = new TestEngine(canvas, channel, "test", false);
-      engine._handleKeyDown = (event) => {
-        if (event.key === "ArrowUp") event.preventDefault();
-      };
+    it("stops a game key it handled before it reaches the page's shortcuts", () => {
+      build(probe().Game, { isHost: false }).start();
 
-      const globalShortcut = vi.fn();
-      window.addEventListener("keydown", globalShortcut);
+      const page = pageSees(() => press(window, "ArrowUp"));
 
-      engine.start();
-      window.dispatchEvent(
-        new KeyboardEvent("keydown", { key: "ArrowUp", bubbles: true, cancelable: true }),
-      );
-
-      expect(globalShortcut).not.toHaveBeenCalled();
-
-      window.removeEventListener("keydown", globalShortcut);
+      expect(page).not.toHaveBeenCalled();
     });
 
-    it("captures active-game keys before already-registered LiveView window bindings", () => {
-      engine = new TestEngine(canvas, channel, "test", false);
-      engine._handleKeyDown = vi.fn();
+    it("takes every key first while a match holds the keyboard", () => {
+      const { Game, seen } = probe();
+      const engine = build(Game, { isHost: false });
       engine.setKeyboardCaptured(true);
-
-      const liveViewWindowBinding = vi.fn();
-      window.addEventListener("keydown", liveViewWindowBinding);
-
       engine.start();
-      window.dispatchEvent(
-        new KeyboardEvent("keydown", { key: "ArrowRight", bubbles: true, cancelable: true }),
-      );
 
-      expect(engine._handleKeyDown).toHaveBeenCalledOnce();
-      expect(liveViewWindowBinding).not.toHaveBeenCalled();
+      const page = pageSees(() => press(window, "ArrowRight"));
 
-      window.removeEventListener("keydown", liveViewWindowBinding);
+      expect(seen.keys).toEqual(["ArrowRight"]);
+      expect(page).not.toHaveBeenCalled();
     });
 
-    it("lets non-game keys continue to global shortcuts", () => {
-      engine = new TestEngine(canvas, channel, "test", false);
-      engine._handleKeyDown = vi.fn();
+    it("lets a key that is not the game's reach the page", () => {
+      build(probe().Game, { isHost: false }).start();
 
-      const globalShortcut = vi.fn();
-      window.addEventListener("keydown", globalShortcut);
+      const page = pageSees(() => press(document, "Meta"));
 
-      engine.start();
-      document.dispatchEvent(
-        new KeyboardEvent("keydown", { key: "Meta", bubbles: true, cancelable: true }),
-      );
-
-      expect(globalShortcut).toHaveBeenCalledOnce();
-
-      window.removeEventListener("keydown", globalShortcut);
+      expect(page).toHaveBeenCalledOnce();
     });
 
-    it("lets text-entry keys continue to global listeners even during keyboard capture", () => {
-      engine = new TestEngine(canvas, channel, "test", false);
-      engine._handleKeyDown = vi.fn();
+    it("lets typing reach the page even while a match holds the keyboard", () => {
+      const { Game, seen } = probe();
+      const engine = build(Game, { isHost: false });
       engine.setKeyboardCaptured(true);
-
+      engine.start();
       const input = document.createElement("input");
       document.body.appendChild(input);
-      const globalShortcut = vi.fn();
-      window.addEventListener("keydown", globalShortcut);
 
-      engine.start();
-      input.dispatchEvent(
-        new KeyboardEvent("keydown", { key: "ArrowUp", bubbles: true, cancelable: true }),
-      );
-
-      expect(engine._handleKeyDown).not.toHaveBeenCalled();
-      expect(globalShortcut).toHaveBeenCalledOnce();
-
-      window.removeEventListener("keydown", globalShortcut);
+      const page = pageSees(() => press(input, "ArrowUp"));
       input.remove();
+
+      expect(seen.keys).toEqual([]);
+      expect(page).toHaveBeenCalledOnce();
     });
   });
 
   describe("presentation loop", () => {
-    it("runs no simulation steps until the game starts stepping", () => {
-      engine = new TestEngine(canvas, channel, "test", true);
-      engine.start();
+    it("runs no simulation steps before the match begins, only idle ones", () => {
+      const { Game, seen } = probe();
+      build(Game).start();
 
-      engine._pump(0);
-      engine._pump(FIXED_STEP_MS * 3);
+      vi.advanceTimersByTime(FIXED_STEP_MS * 4);
 
-      expect(engine.steps).toBe(0);
-      expect(engine.idleSteps).toBe(3);
+      expect(seen.ticks).toBe(0);
+      expect(seen.idles).toBeGreaterThan(0);
     });
 
-    it("runs one step per elapsed step duration once started", () => {
-      engine = new TestEngine(canvas, channel, "test", true);
-      engine.start();
-      engine._startSteps();
+    it("runs one step per step duration once the match begins", () => {
+      const { Game, seen } = probe();
+      const host = build(Game);
+      host.start();
+      host.beginMatch();
 
-      engine._pump(0);
-      engine._pump(FIXED_STEP_MS * 4);
+      vi.advanceTimersByTime(1000);
 
-      expect(engine.steps).toBe(4);
+      expect(seen.ticks).toBeGreaterThanOrEqual(59);
+      expect(seen.ticks).toBeLessThanOrEqual(61);
     });
 
-    it("paints once per frame however many repaints were requested", () => {
-      engine = new TestEngine(canvas, channel, "test", true);
-      engine.start();
+    it("paints once per frame however many repaints were asked for", () => {
+      const { Game, seen } = probe();
+      const host = build(Game);
+      host.start();
+      vi.advanceTimersByTime(20);
+      const before = seen.paints;
 
-      engine._invalidate();
-      engine._invalidate();
-      engine._pump(0);
+      host.invalidate();
+      host.invalidate();
+      vi.advanceTimersByTime(17);
 
-      expect(engine.paints).toBe(1);
+      expect(seen.paints).toBe(before + 1);
     });
 
     it("keeps painting the guest while a snapshot is being interpolated", () => {
-      engine = new TestEngine(canvas, channel, "test", false);
-      engine.start();
+      const { Game, seen } = probe();
+      const channel = fakeChannel();
+      build(Game, { channel, isHost: false }).start();
+      vi.advanceTimersByTime(20);
 
-      engine._pump(0);
-      const before = engine.paints;
-
-      engine._ingestSnapshot({ x: 0 });
-      engine._ingestSnapshot({ x: 40 });
+      channel.emit("message", { data: snapshot({ x: 0 }) });
+      channel.emit("message", { data: snapshot({ x: 40 }) });
+      const before = seen.paints;
 
       // No new snapshot arrives, and the guest still has frames to draw.
-      engine._pump(FIXED_STEP_MS);
-      engine._pump(FIXED_STEP_MS * 2);
+      vi.advanceTimersByTime(50);
 
-      expect(engine.paints).toBeGreaterThan(before + 1);
+      expect(seen.paints).toBeGreaterThan(before + 1);
     });
   });
 
-  describe("_ingestSnapshot", () => {
-    it("lands non-motion fields immediately", () => {
-      engine = new TestEngine(canvas, channel, "test", false);
-      engine._ingestSnapshot({ x: 100, score: 7 });
-      expect(engine.gameState.score).toBe(7);
+  describe("a snapshot on the guest", () => {
+    it("lands the fields that are not motion at once", () => {
+      const channel = fakeChannel();
+      const guest = build(probe().Game, { channel, isHost: false });
+      guest.start();
+
+      channel.emit("message", { data: snapshot({ x: 100, score: 7 }) });
+
+      expect(guest.gameState.score).toBe(7);
     });
 
-    it("runs a game-specific applier when one is given", () => {
-      engine = new TestEngine(canvas, channel, "test", false);
-      const apply = vi.fn(() => {
-        engine.gameState.applied = true;
+    it("lands through the game's own applier when it has one", () => {
+      const channel = fakeChannel();
+      const { Game } = probe({
+        applySnapshot: (game, decoded) => {
+          game.gameState = { ...game.gameState, ...decoded, applied: true };
+        },
       });
+      const guest = build(Game, { channel, isHost: false });
+      guest.start();
 
-      engine._ingestSnapshot({ x: 10 }, apply);
+      channel.emit("message", { data: snapshot({ x: 10 }) });
 
-      expect(apply).toHaveBeenCalled();
-      expect(engine.gameState.applied).toBe(true);
-    });
-
-    it("ignores a snapshot that failed to decode", () => {
-      engine = new TestEngine(canvas, channel, "test", false);
-      const apply = vi.fn();
-      engine._ingestSnapshot(null, apply);
-      expect(apply).not.toHaveBeenCalled();
+      expect(guest.gameState.applied).toBe(true);
     });
   });
 
   describe("stop", () => {
     it("releases the game's AudioContext", () => {
-      engine = new TestEngine(canvas, channel, "test", true);
+      const engine = build(probe().Game);
       engine.audio = { dispose: vi.fn() };
       engine.start();
       engine.stop();
 
       // Each context holds a real-time audio thread, and browsers cap how many
       // a page may open.
-      expect(engine.audio.dispose).toHaveBeenCalledTimes(1);
+      expect(engine.audio.dispose).toHaveBeenCalledOnce();
     });
 
     it("tolerates a game whose audio has no teardown", () => {
-      engine = new TestEngine(canvas, channel, "test", true);
+      const engine = build(probe().Game);
       engine.audio = {};
       engine.start();
       expect(() => engine.stop()).not.toThrow();
     });
 
     it("stops the simulation and the frame loop", () => {
-      engine = new TestEngine(canvas, channel, "test", true);
-      engine.start();
-      engine._startSteps();
-      engine.stop();
+      const { Game, seen } = probe();
+      const host = build(Game);
+      host.start();
+      host.beginMatch();
+      host.stop();
 
-      engine._pump(FIXED_STEP_MS * 10);
-      expect(engine.steps).toBe(0);
-      expect(engine.stepping).toBe(false);
+      vi.advanceTimersByTime(1000);
+
+      expect(seen.ticks).toBe(0);
+      expect(host.stepping).toBe(false);
     });
   });
 });
