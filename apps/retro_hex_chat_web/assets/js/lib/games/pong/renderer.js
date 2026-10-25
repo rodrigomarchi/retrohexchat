@@ -14,6 +14,7 @@ import {
   drawDigit,
   drawGetReady,
   drawGlitchBanner,
+  drawGrid,
   drawScanlines,
   drawVignette,
   drawWaiting,
@@ -46,7 +47,7 @@ export function getColors(canvas) {
  */
 export function render(ctx, state, colors, time, options = {}) {
   drawBackground(ctx, colors, CANVAS_W, CANVAS_H);
-  drawGrid(ctx, colors);
+  drawGrid(ctx, colors, CANVAS_W, CANVAS_H, { alpha: 0.3 });
   drawCenterLine(ctx, colors, time);
 
   if (state.particles && state.particles.length > 0) {
@@ -74,33 +75,6 @@ export function render(ctx, state, colors, time, options = {}) {
 
   drawScanlines(ctx, CANVAS_W, CANVAS_H);
   drawVignette(ctx, CANVAS_W, CANVAS_H);
-}
-
-/**
- * Draw subtle perspective grid lines for cyberpunk floor effect.
- */
-export function drawGrid(ctx, colors) {
-  ctx.strokeStyle = colors.muted;
-  ctx.lineWidth = 0.5;
-  ctx.globalAlpha = 0.3;
-
-  // Vertical lines
-  for (let x = 0; x <= CANVAS_W; x += 40) {
-    ctx.beginPath();
-    ctx.moveTo(x, 0);
-    ctx.lineTo(x, CANVAS_H);
-    ctx.stroke();
-  }
-
-  // Horizontal lines
-  for (let y = 0; y <= CANVAS_H; y += 40) {
-    ctx.beginPath();
-    ctx.moveTo(0, y);
-    ctx.lineTo(CANVAS_W, y);
-    ctx.stroke();
-  }
-
-  ctx.globalAlpha = 1.0;
 }
 
 /**

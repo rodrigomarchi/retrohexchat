@@ -8,7 +8,6 @@ import {
 import {
   getColors,
   render,
-  drawGrid,
   drawBlocks,
   drawPaddle,
   drawBall,
@@ -87,15 +86,6 @@ describe("breakout_renderer", () => {
       expect(result.accent).toBe("#ff0066");
 
       document.body.removeChild(canvas);
-    });
-  });
-
-  describe("drawGrid", () => {
-    it("draws grid lines", () => {
-      drawGrid(ctx, colors);
-      expect(ctx.beginPath).toHaveBeenCalled();
-      expect(ctx.stroke).toHaveBeenCalled();
-      expect(ctx.globalAlpha).toBe(1.0);
     });
   });
 

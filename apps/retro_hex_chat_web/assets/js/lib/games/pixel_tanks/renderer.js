@@ -18,7 +18,13 @@ import {
 } from "./physics.js";
 import { t, jt } from "../../i18n.js";
 import { gameColor, readGameColors } from "../../game_colors.js";
-import { drawBackground, drawScanlines, drawVignette, waitingText } from "../core/render.js";
+import {
+  drawBackground,
+  drawGrid,
+  drawScanlines,
+  drawVignette,
+  waitingText,
+} from "../core/render.js";
 
 /**
  * Read CSS custom properties from canvas computed style.
@@ -51,7 +57,7 @@ export function getColors(canvas) {
  */
 export function render(ctx, state, colors, walls, time, particles) {
   drawBackground(ctx, colors, CANVAS_W, CANVAS_H);
-  drawGrid(ctx, colors);
+  drawGrid(ctx, colors, CANVAS_W, CANVAS_H, { alpha: 0.3, step: WALL_SIZE });
   drawWalls(ctx, walls, colors);
 
   // Missiles (draw before tanks so tanks are on top)
@@ -105,25 +111,6 @@ export function render(ctx, state, colors, walls, time, particles) {
 }
 
 // --- Drawing functions ---
-
-function drawGrid(ctx, colors) {
-  ctx.strokeStyle = colors.muted;
-  ctx.lineWidth = 0.5;
-  ctx.globalAlpha = 0.3;
-  for (let x = 0; x <= CANVAS_W; x += WALL_SIZE) {
-    ctx.beginPath();
-    ctx.moveTo(x, 0);
-    ctx.lineTo(x, CANVAS_H);
-    ctx.stroke();
-  }
-  for (let y = 0; y <= CANVAS_H; y += WALL_SIZE) {
-    ctx.beginPath();
-    ctx.moveTo(0, y);
-    ctx.lineTo(CANVAS_W, y);
-    ctx.stroke();
-  }
-  ctx.globalAlpha = 1;
-}
 
 function drawWalls(ctx, walls, colors) {
   for (let row = 0; row < GRID_ROWS; row++) {

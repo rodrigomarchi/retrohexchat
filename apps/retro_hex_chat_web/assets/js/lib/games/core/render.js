@@ -291,6 +291,33 @@ export function drawGlitchText(
 }
 
 /**
+ * A faint grid of lines `step` pixels apart over the whole screen.
+ * @param {CanvasRenderingContext2D} ctx
+ * @param {{ muted: string }} colors
+ * @param {number} width
+ * @param {number} height
+ * @param {{ alpha: number, step?: number }} options
+ */
+export function drawGrid(ctx, colors, width, height, { alpha, step = 40 }) {
+  ctx.strokeStyle = colors.muted;
+  ctx.lineWidth = 0.5;
+  ctx.globalAlpha = alpha;
+  for (let x = 0; x <= width; x += step) {
+    ctx.beginPath();
+    ctx.moveTo(x, 0);
+    ctx.lineTo(x, height);
+    ctx.stroke();
+  }
+  for (let y = 0; y <= height; y += step) {
+    ctx.beginPath();
+    ctx.moveTo(0, y);
+    ctx.lineTo(width, y);
+    ctx.stroke();
+  }
+  ctx.globalAlpha = 1.0;
+}
+
+/**
  * A closing banner: the title glitched in the middle of the screen and, when
  * there is one, a line under it that pulses.
  * @param {CanvasRenderingContext2D} ctx

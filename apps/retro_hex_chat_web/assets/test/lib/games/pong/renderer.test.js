@@ -4,7 +4,6 @@ import { CANVAS_W, CANVAS_H, createInitialState } from "../../../../js/lib/games
 import {
   getColors,
   render,
-  drawGrid,
   drawCenterLine,
   drawPaddle,
   drawBall,
@@ -82,15 +81,6 @@ describe("pong_renderer", () => {
       expect(result.accent).toBe("#ff0066");
 
       document.body.removeChild(canvas);
-    });
-  });
-
-  describe("drawGrid", () => {
-    it("draws grid lines", () => {
-      drawGrid(ctx, colors);
-      expect(ctx.beginPath).toHaveBeenCalled();
-      expect(ctx.stroke).toHaveBeenCalled();
-      expect(ctx.globalAlpha).toBe(1.0);
     });
   });
 

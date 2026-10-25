@@ -12,6 +12,7 @@ import {
   drawGetReady,
   drawGlitchBanner,
   drawGlitchText,
+  drawGrid,
   glitchJitter,
   drawParticleDots,
   drawVignette,
@@ -229,5 +230,13 @@ describe("glitched text", () => {
     drawGlitchBanner(c.getContext("2d"), { text: "DRAW", color: "cyan", size: 32 }, 0, 640, 480);
     expect(c.log.filter(([op]) => op === "fillText")).toHaveLength(3);
     expect(c.log).toContainEqual(["font", "=", "bold 32px monospace"]);
+  });
+
+  it("drawGrid strokes a line every step across and down, then restores the alpha", () => {
+    const c = recordingCanvas(640, 480);
+    drawGrid(c.getContext("2d"), { muted: "grey" }, 640, 480, { alpha: 0.3, step: 40 });
+    expect(c.log.filter(([op]) => op === "stroke")).toHaveLength(17 + 13);
+    expect(c.log).toContainEqual(["globalAlpha", "=", 0.3]);
+    expect(c.log.at(-1)).toEqual(["globalAlpha", "=", 1]);
   });
 });
