@@ -15,6 +15,7 @@ import { SCORE_TO_WIN } from "../../../js/lib/games/hex_outlaw/physics.js";
 import { PHASE as OUTLAW } from "../../../js/lib/games/hex_outlaw/protocol.js";
 import { PHASE as RAID } from "../../../js/lib/games/hex_raid/protocol.js";
 import { PHASE as TENNIS } from "../../../js/lib/games/hex_tennis/protocol.js";
+import { GRID_COLS, GRID_ROWS, WALL_SIZE } from "../../../js/lib/games/pixel_tanks/physics.js";
 import { PHASE as TANKS } from "../../../js/lib/games/pixel_tanks/protocol.js";
 import { PHASE as STAR_DUEL } from "../../../js/lib/games/star_duel/protocol.js";
 import { PHASE as TRAILS, WINS_NEEDED } from "../../../js/lib/games/surround/protocol.js";
@@ -273,6 +274,38 @@ describe("Tanks", () => {
     const results = endOf();
     expect(playWin).toHaveBeenCalled();
     expect(results.host[0].winner).toBe(1);
+  });
+});
+
+describe("Tanks — a shell meets a wall", () => {
+  /** A free cell with a wall right above it and room below, away from both tanks. */
+  function cellUnderAWall(game) {
+    const { walls, gameState: s } = game;
+    for (let row = 2; row < GRID_ROWS - 2; row++) {
+      for (let col = 2; col < GRID_COLS - 2; col++) {
+        const free = (r) => !walls[r * GRID_COLS + col];
+        const x = col * WALL_SIZE + WALL_SIZE / 2;
+        const y = row * WALL_SIZE + 2;
+        const clear = [s.tank1X - x, s.tank2X - x].every((dx) => Math.abs(dx) > 80);
+        if (!free(row - 1) && free(row) && free(row + 1) && clear) return { x, y };
+      }
+    }
+    throw new Error("no cell under a wall in this maze");
+  }
+
+  it("bounces off it once, with a ping and sparks", async () => {
+    await underway("pixel_tanks", TANKS.PLAYING);
+    const host = match.engines.host;
+    const { playRicochet } = spy("host", "playRicochet");
+    const { x, y } = cellUnderAWall(host);
+    set({ m1Active: true, m1X: x, m1Y: y, m1VX: 0, m1VY: -5, m1Age: 0, m1Bounced: false });
+
+    match.advance(20);
+
+    expect(host.gameState).toMatchObject({ m1Active: true, m1Bounced: true });
+    expect(host.gameState.m1VY).toBeGreaterThan(0);
+    expect(playRicochet).toHaveBeenCalledOnce();
+    expect(host.particles.some((p) => p.spark)).toBe(true);
   });
 });
 

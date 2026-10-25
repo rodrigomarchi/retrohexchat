@@ -345,7 +345,7 @@ msgstr "Migliore di 3 giri con maggiore difficoltà"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_boxing.html.heex:47
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_outlaw.html.heex:26
-#: lib/retro_hex_chat_web/controllers/help_content/feature_pixel_tanks.html.heex:54
+#: lib/retro_hex_chat_web/controllers/help_content/feature_pixel_tanks.html.heex:60
 #, elixir-autogen, elixir-format
 msgid "Best of 3 rounds — first to 2 round wins takes the match"
 msgstr "Miglior di 3 giri — prima a 2 vittorie rotonde prende la partita"
@@ -1290,7 +1290,7 @@ msgstr "Discesa infinita — il corso non finisce mai"
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_tennis.html.heex:82
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_warlords.html.heex:73
 #: lib/retro_hex_chat_web/controllers/help_content/feature_light_trails.html.heex:48
-#: lib/retro_hex_chat_web/controllers/help_content/feature_pixel_tanks.html.heex:59
+#: lib/retro_hex_chat_web/controllers/help_content/feature_pixel_tanks.html.heex:65
 #: lib/retro_hex_chat_web/controllers/help_content/feature_star_duel.html.heex:83
 #, elixir-autogen, elixir-format
 msgid "Inspiration"
@@ -1834,7 +1834,7 @@ msgstr ""
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_tennis_sudden.html.heex:64
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_warlords.html.heex:80
 #: lib/retro_hex_chat_web/controllers/help_content/feature_light_trails.html.heex:55
-#: lib/retro_hex_chat_web/controllers/help_content/feature_pixel_tanks.html.heex:63
+#: lib/retro_hex_chat_web/controllers/help_content/feature_pixel_tanks.html.heex:69
 #: lib/retro_hex_chat_web/controllers/help_content/feature_retro_games.html.heex:141
 #: lib/retro_hex_chat_web/controllers/help_content/feature_sessions.html.heex:39
 #: lib/retro_hex_chat_web/controllers/help_content/feature_star_duel.html.heex:87
@@ -3365,7 +3365,7 @@ msgstr ""
 "Una stella centrale esercita una forza gravitazionale su tutte le navi e "
 "missili"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_pixel_tanks.html.heex:49
+#: lib/retro_hex_chat_web/controllers/help_content/feature_pixel_tanks.html.heex:55
 #, elixir-autogen, elixir-format
 msgid "After each hit, both tanks respawn at starting positions with 2 seconds of invulnerability"
 msgstr ""
@@ -3427,7 +3427,7 @@ msgstr ""
 "Sulla base di Atari's Breakout (1976) — cooperativa mattone-breaking per due"
 " giocatori."
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_pixel_tanks.html.heex:61
+#: lib/retro_hex_chat_web/controllers/help_content/feature_pixel_tanks.html.heex:67
 #, elixir-autogen, elixir-format
 msgid "Based on Atari's Combat (1977) — the quintessential tank battle game."
 msgstr ""
@@ -3538,7 +3538,7 @@ msgstr ""
 msgid "Gravity-bent shots"
 msgstr "Gravity-bent shot"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_pixel_tanks.html.heex:41
+#: lib/retro_hex_chat_web/controllers/help_content/feature_pixel_tanks.html.heex:47
 #, elixir-autogen, elixir-format
 msgid "Half-second cooldown after each missile expires"
 msgstr "Raffreddamento di mezzo secondo dopo ogni missile scade"
@@ -3553,7 +3553,7 @@ msgstr "Herd il tuo avversario"
 msgid "Hex Pong"
 msgstr "Hex Pong"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_pixel_tanks.html.heex:43
+#: lib/retro_hex_chat_web/controllers/help_content/feature_pixel_tanks.html.heex:49
 #, elixir-autogen, elixir-format
 msgid "Hits score 1 point — most hits when the 2-minute timer runs out wins the round"
 msgstr ""
@@ -3587,7 +3587,7 @@ msgstr ""
 msgid "Learn the layout fast"
 msgstr "Impara il layout velocemente"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_pixel_tanks.html.heex:57
+#: lib/retro_hex_chat_web/controllers/help_content/feature_pixel_tanks.html.heex:63
 #, elixir-autogen, elixir-format
 msgid "Maze is randomly selected from 5 symmetrical layouts"
 msgstr "La labirinto è selezionata casualmente da 5 layout simmetrici"
@@ -3629,7 +3629,7 @@ msgstr ""
 "Utilizzare la curvatura iperspaziale per fuggire — ma c'è una probabilità "
 "del 20% che ti uccide. Prima a 7 vittorie."
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_pixel_tanks.html.heex:56
+#: lib/retro_hex_chat_web/controllers/help_content/feature_pixel_tanks.html.heex:62
 #, elixir-autogen, elixir-format
 msgid "No backward movement — plan your approach carefully"
 msgstr ""
@@ -3741,7 +3741,7 @@ msgstr ""
 "La spinta combatte la gravità, non l'attrito — la gestione dell'orbita è "
 "critica"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_pixel_tanks.html.heex:55
+#: lib/retro_hex_chat_web/controllers/help_content/feature_pixel_tanks.html.heex:61
 #, elixir-autogen, elixir-format
 msgid "Tied round? No round win awarded to either player"
 msgstr "Legato? Nessuna vittoria round assegnato a entrambi i giocatori"
@@ -3752,15 +3752,6 @@ msgid "Top rows are worth more: 50 (red), 40 (orange), 30 (yellow), 20 (green), 
 msgstr ""
 "Le prime righe valgono più: 50 (rosso), 40 (arancione), 30 (giallo), 20 "
 "(verde), 10 (ciano)"
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_pixel_tanks.html.heex:2
-#, elixir-autogen, elixir-format
-msgid "Top-down tank combat in a destructible maze. Rotate your tank, drive forward, and fire missiles at your opponent. One missile at a time — miss and you're vulnerable until it expires. 2-minute rounds, best of 3. Five maze layouts keep every match fresh."
-msgstr ""
-"Combattere in un labirinto distruttibile. Ruotare il serbatoio, guidare in "
-"avanti e lanciare missili al vostro avversario. Un missile alla volta — "
-"signorina e sei vulnerabile fino alla scadenza. 2 minuti di giri, meglio di "
-"3. Cinque layout di labirinto mantenere ogni partita fresca."
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_star_duel.html.heex:51
 #, elixir-autogen, elixir-format
@@ -3941,7 +3932,7 @@ msgstr ""
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_tennis.html.heex:95
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_warlords.html.heex:88
 #: lib/retro_hex_chat_web/controllers/help_content/feature_light_trails.html.heex:58
-#: lib/retro_hex_chat_web/controllers/help_content/feature_pixel_tanks.html.heex:68
+#: lib/retro_hex_chat_web/controllers/help_content/feature_pixel_tanks.html.heex:74
 #: lib/retro_hex_chat_web/controllers/help_content/feature_star_duel.html.heex:93
 #, elixir-autogen, elixir-format
 msgid "/p2p"
@@ -3979,7 +3970,7 @@ msgstr "/p2p"
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_tennis_sudden.html.heex:72
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_warlords.html.heex:82
 #: lib/retro_hex_chat_web/controllers/help_content/feature_light_trails.html.heex:57
-#: lib/retro_hex_chat_web/controllers/help_content/feature_pixel_tanks.html.heex:67
+#: lib/retro_hex_chat_web/controllers/help_content/feature_pixel_tanks.html.heex:73
 #: lib/retro_hex_chat_web/controllers/help_content/feature_retro_games.html.heex:146
 #: lib/retro_hex_chat_web/controllers/help_content/feature_star_duel.html.heex:92
 #, elixir-autogen, elixir-format
@@ -4038,7 +4029,7 @@ msgstr ""
 #: lib/retro_hex_chat_web/controllers/help_content/feature_game_scores.html.heex:50
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_boxing.html.heex:67
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_warlords.html.heex:83
-#: lib/retro_hex_chat_web/controllers/help_content/feature_pixel_tanks.html.heex:65
+#: lib/retro_hex_chat_web/controllers/help_content/feature_pixel_tanks.html.heex:71
 #, elixir-autogen, elixir-format
 msgid "Retro Games"
 msgstr "Giochi retro"
@@ -4598,3 +4589,13 @@ msgstr "Arcade"
 #, elixir-autogen, elixir-format
 msgid "Available Games"
 msgstr "Giochi disponibili"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_pixel_tanks.html.heex:42
+#, elixir-autogen, elixir-format
+msgid "A missile bounces off the first wall it hits and stops at the second — aim off a wall to reach around a corner"
+msgstr "Un missile rimbalza sul primo muro che tocca e si ferma al secondo: mira a un muro per colpire dietro un angolo"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_pixel_tanks.html.heex:2
+#, elixir-autogen, elixir-format
+msgid "Top-down tank combat in a maze. Rotate your tank, drive forward, and fire missiles at your opponent. One missile at a time — miss and you're vulnerable until it expires. 2-minute rounds, best of 3. Five maze layouts keep every match fresh."
+msgstr "Combattimento tra carri armati visto dall'alto in un labirinto. Ruota il carro, avanza e lancia missili contro l'avversario. Un missile alla volta: se sbagli, resti vulnerabile finché non si esaurisce. Round da 2 minuti, al meglio di 3. Cinque labirinti rendono ogni partita diversa."

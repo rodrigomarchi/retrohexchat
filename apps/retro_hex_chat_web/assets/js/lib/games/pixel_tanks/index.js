@@ -17,6 +17,7 @@ import {
   checkRoundEnd,
   createExplosion,
   createInitialState,
+  createSparks,
   decodeMaze,
   fireMissile,
   getMatchWinner,
@@ -86,9 +87,20 @@ function battle(game) {
   s = fire(game, s, 2, remote, "remoteFirePressed", "m2Active");
 
   const updateShell = game.gameMode === GAME_MODE.RICOCHET ? updateMissileRicochet : updateMissile;
-  s = updateShell(s, 1, game.walls);
-  s = updateShell(s, 2, game.walls);
-  if (s.wallBounced) game.audio.playRicochet();
+  let bounced = false;
+  for (const [player, shell] of [
+    [1, "m1"],
+    [2, "m2"],
+  ]) {
+    s = updateShell(s, player, game.walls);
+    if (s.wallBounced !== player) continue;
+    bounced = true;
+    game.particles = [
+      ...game.particles,
+      ...createSparks(s[`${shell}X`], s[`${shell}Y`], game.fxRandom),
+    ];
+  }
+  if (bounced) game.audio.playRicochet();
 
   s = checkMissileHit(s, 1);
   s = checkMissileHit(s, 2);
@@ -168,9 +180,10 @@ export default defineGame({
   },
   audio: { sounds: SOUNDS },
   theme: getColors,
-  // The host chooses the maze; the guest learns it from the first snapshot.
+  // Shells bounce off the first wall they meet. The host chooses the maze;
+  // the guest learns it from the first snapshot.
   init: (game) => {
-    game.gameMode = GAME_MODE.MAZE_BATTLE;
+    game.gameMode = GAME_MODE.RICOCHET;
     game.mazeIndex = game.isHost ? selectMazeForMode(game.gameMode, game.random) : 0;
     game.walls = decodeMaze(game.mazeIndex);
     return createInitialState(game.gameMode, game.mazeIndex);

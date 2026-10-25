@@ -94,7 +94,7 @@ defmodule RetroHexChat.Games.Catalog do
       description:
         dgettext_noop(
           "games",
-          "Top-down tank combat in a destructible maze. Shots ricochet off walls — use geometry to your advantage."
+          "Top-down tank combat in a maze. Shots bounce off the first wall they hit — use geometry to your advantage."
         ),
       icon: "game_tanks",
       controls:

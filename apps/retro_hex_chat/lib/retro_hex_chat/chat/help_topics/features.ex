@@ -2365,7 +2365,7 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
             ) <>
             dgettext(
               "help",
-              "2-minute rounds, best of 3. Modes: Classic (open field) and Maze Battle. "
+              "2-minute rounds, best of 3. Missiles bounce off the first wall they hit. "
             ) <>
             dgettext(
               "help",

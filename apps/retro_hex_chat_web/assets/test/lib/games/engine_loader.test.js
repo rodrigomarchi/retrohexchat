@@ -6,6 +6,7 @@ import {
   loadSoloEngineClass,
   supportsSolo,
 } from "../../../js/lib/games/engine_loader.js";
+import { GAME_MODE } from "../../../js/lib/games/pixel_tanks/protocol.js";
 import { createLocalTransport } from "../../../js/lib/games/transport.js";
 
 function createCanvas() {
@@ -218,7 +219,7 @@ describe("engine loader", () => {
     expect(engine.gameId).toBe("pixel_tanks");
     expect(engine.isHost).toBe(true);
     expect(engine.mode).toBe("solo");
-    expect(engine.gameMode).toBe(1);
+    expect(engine.gameMode).toBe(GAME_MODE.RICOCHET);
     expect(engine.transport.kind).toBe("local");
     expect(engine.difficulty).toBe("hard");
     expect(engine.opponentController?.nextInputs).toEqual(expect.any(Function));
