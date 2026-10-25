@@ -11,8 +11,8 @@ describe("createRng", () => {
     expect(draws(createRng(0xdeadbeef).next, 5)).toEqual(draws(mulberry32(0xdeadbeef), 5));
   });
 
-  it("draws in [0, 1)", () => {
-    for (const value of draws(createRng(7).next, 1000)) {
+  it.each([7, 0, 0xffffffff])("draws in [0, 1) from seed %d", (seed) => {
+    for (const value of draws(createRng(seed).next, 1000)) {
       expect(value).toBeGreaterThanOrEqual(0);
       expect(value).toBeLessThan(1);
     }

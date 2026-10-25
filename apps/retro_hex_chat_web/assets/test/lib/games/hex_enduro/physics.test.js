@@ -21,7 +21,6 @@ import {
   clearEvents,
   packState,
   unpackState,
-  mulberry32,
   SPEED_MAX,
   SPEED_TURBO_MAX,
   FUEL_MAX,
@@ -866,35 +865,6 @@ describe("Hex Enduro Physics", () => {
       const packed = packState(state);
       expect(packed.aiCarCount).toBe(2);
       expect(packed.aiCars).toHaveLength(2);
-    });
-  });
-
-  describe("mulberry32", () => {
-    it("produces values between 0 and 1", () => {
-      const rng = mulberry32(12345);
-      for (let i = 0; i < 100; i++) {
-        const val = rng();
-        expect(val).toBeGreaterThanOrEqual(0);
-        expect(val).toBeLessThan(1);
-      }
-    });
-
-    it("is deterministic for same seed", () => {
-      const rng1 = mulberry32(999);
-      const rng2 = mulberry32(999);
-      for (let i = 0; i < 50; i++) {
-        expect(rng1()).toBe(rng2());
-      }
-    });
-
-    it("different seeds produce different sequences", () => {
-      const rng1 = mulberry32(111);
-      const rng2 = mulberry32(222);
-      let allSame = true;
-      for (let i = 0; i < 10; i++) {
-        if (rng1() !== rng2()) allSame = false;
-      }
-      expect(allSame).toBe(false);
     });
   });
 });

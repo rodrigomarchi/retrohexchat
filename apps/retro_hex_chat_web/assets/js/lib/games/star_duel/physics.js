@@ -4,6 +4,7 @@
  * @module games/star_duel_physics
  */
 
+import { createRng } from "../core/rng.js";
 import { PHASE, GAME_MODE } from "./protocol.js";
 import { stepParticles } from "../core/render.js";
 
@@ -36,21 +37,6 @@ export const ASTEROID_MIN_RADIUS = 15;
 export const ASTEROID_MAX_RADIUS = 30;
 
 // --- Internal helpers ---
-
-/**
- * Seeded PRNG (mulberry32).
- * @param {number} seed
- * @returns {function(): number} returns values in [0, 1)
- */
-function mulberry32(seed) {
-  return function () {
-    seed |= 0;
-    seed = (seed + 0x6d2b79f5) | 0;
-    let t = Math.imul(seed ^ (seed >>> 15), 1 | seed);
-    t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
-    return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
-  };
-}
 
 /**
  * Normalize an angle to [0, 2*PI).
@@ -446,7 +432,7 @@ export function checkStarCollision(ship) {
  * @returns {Array<{x: number, y: number, radius: number, vertices: Array<{x: number, y: number}>}>}
  */
 export function generateAsteroids(seed) {
-  const rng = mulberry32(seed);
+  const rng = createRng(seed).next;
   const asteroids = [];
   const spawnPoints = [
     { x: 160, y: 240 },

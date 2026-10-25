@@ -10,7 +10,6 @@ import {
   SCORE_JET,
   SCORE_BRIDGE,
   SCORE_MINE_HIT,
-  mulberry32,
   getBankAtWorld,
   getRiverWidthAtScroll,
   getDifficulty,
@@ -46,46 +45,6 @@ import {
 } from "../../../../js/lib/games/hex_raid/protocol.js";
 
 describe("Hex Raid Physics", () => {
-  describe("mulberry32 PRNG", () => {
-    it("is deterministic — same seed produces same sequence", () => {
-      const rng1 = mulberry32(12345);
-      const rng2 = mulberry32(12345);
-      for (let i = 0; i < 100; i++) {
-        expect(rng1()).toBe(rng2());
-      }
-    });
-
-    it("produces values in [0, 1)", () => {
-      const rng = mulberry32(42);
-      for (let i = 0; i < 1000; i++) {
-        const v = rng();
-        expect(v).toBeGreaterThanOrEqual(0);
-        expect(v).toBeLessThan(1);
-      }
-    });
-
-    it("different seeds produce different sequences", () => {
-      const rng1 = mulberry32(1);
-      const rng2 = mulberry32(2);
-      const vals1 = Array.from({ length: 10 }, () => rng1());
-      const vals2 = Array.from({ length: 10 }, () => rng2());
-      expect(vals1).not.toEqual(vals2);
-    });
-
-    it("handles seed 0", () => {
-      const rng = mulberry32(0);
-      expect(rng()).toBeGreaterThanOrEqual(0);
-    });
-
-    it("handles max seed (0xFFFFFFFF)", () => {
-      const rng = mulberry32(0xffffffff);
-      const v = rng();
-      expect(v).toBeGreaterThanOrEqual(0);
-      expect(v).toBeLessThan(1);
-      expect(Number.isNaN(v)).toBe(false);
-    });
-  });
-
   describe("getRiverWidthAtScroll", () => {
     it("returns wider river at start, narrower later", () => {
       const w0 = getRiverWidthAtScroll(0, GAME_MODE.RIVER_DUEL);

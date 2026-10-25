@@ -17,7 +17,6 @@ import {
   checkGameOver,
   startNextRound,
   determineWinner,
-  mulberry32,
   CANVAS_W,
   CANVAS_H,
   SCROLL_SPEED_BASE,
@@ -33,36 +32,10 @@ import {
   COURSE_LENGTH,
   ITEM_SPAWN_INTERVAL,
 } from "../../../../js/lib/games/hex_skiing/physics.js";
+import { createRng } from "../../../../js/lib/games/core/rng.js";
 import { PHASE, GAME_MODE, SKIER_STATE } from "../../../../js/lib/games/hex_skiing/protocol.js";
 
 describe("Hex Skiing Physics", () => {
-  describe("mulberry32", () => {
-    it("produces deterministic sequence for same seed", () => {
-      const rng1 = mulberry32(42);
-      const rng2 = mulberry32(42);
-      for (let i = 0; i < 10; i++) {
-        expect(rng1()).toBe(rng2());
-      }
-    });
-
-    it("produces different sequences for different seeds", () => {
-      const rng1 = mulberry32(42);
-      const rng2 = mulberry32(99);
-      const vals1 = Array.from({ length: 5 }, () => rng1());
-      const vals2 = Array.from({ length: 5 }, () => rng2());
-      expect(vals1).not.toEqual(vals2);
-    });
-
-    it("produces values in [0, 1)", () => {
-      const rng = mulberry32(123);
-      for (let i = 0; i < 100; i++) {
-        const v = rng();
-        expect(v).toBeGreaterThanOrEqual(0);
-        expect(v).toBeLessThan(1);
-      }
-    });
-  });
-
   describe("createInitialState", () => {
     it("creates valid state for Alpine Race", () => {
       const state = createInitialState(GAME_MODE.ALPINE_RACE, 12345);
@@ -206,7 +179,7 @@ describe("Hex Skiing Physics", () => {
 
   describe("generateChunk", () => {
     it("generates obstacles for a chunk", () => {
-      const rng = mulberry32(42);
+      const rng = createRng(42).next;
       const obstacles = generateChunk(rng, 0, {
         treeDensity: 4,
         rockDensity: 2,
@@ -219,8 +192,8 @@ describe("Hex Skiing Physics", () => {
     });
 
     it("produces deterministic results for same seed", () => {
-      const rng1 = mulberry32(42);
-      const rng2 = mulberry32(42);
+      const rng1 = createRng(42).next;
+      const rng2 = createRng(42).next;
       const diff = { treeDensity: 3, rockDensity: 1, iceDensity: 0 };
       const obs1 = generateChunk(rng1, 0, diff);
       const obs2 = generateChunk(rng2, 0, diff);

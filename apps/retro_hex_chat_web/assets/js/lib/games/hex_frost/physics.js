@@ -5,6 +5,7 @@
  * No DOM, no canvas, no audio — only data transformations.
  */
 
+import { createRng } from "../core/rng.js";
 import { PHASE, GAME_MODE, BLOCK_STATE, BAILEY_STATE, ENEMY_TYPE, EVENT } from "./protocol.js";
 
 // ── Canvas & layout constants ──────────────────────────────────
@@ -104,18 +105,6 @@ const ROUND_PRESETS = [
 // Rounds to win
 const ROUNDS_TO_WIN = 3; // best of 5
 
-// ── Seeded PRNG ────────────────────────────────────────────────
-
-function mulberry32(seed) {
-  let s = seed | 0;
-  return function () {
-    s = (s + 0x6d2b79f5) | 0;
-    let t = Math.imul(s ^ (s >>> 15), 1 | s);
-    t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
-    return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
-  };
-}
-
 // ── State creation ─────────────────────────────────────────────
 
 /**
@@ -125,7 +114,7 @@ function mulberry32(seed) {
  * @returns {object} nested game state
  */
 export function createInitialState(mode, seed) {
-  const rng = mulberry32(seed);
+  const rng = createRng(seed).next;
   const piecesNeeded = mode === GAME_MODE.BLIZZARD ? IGLOO_PIECES_BLIZZARD : IGLOO_PIECES_RACE;
   const temp = mode === GAME_MODE.BLIZZARD ? TEMP_START_BLIZZARD : TEMP_START_RACE;
 

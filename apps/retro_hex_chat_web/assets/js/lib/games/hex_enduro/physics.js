@@ -4,6 +4,7 @@
  * @module games/hex_enduro_physics
  */
 
+import { createRng } from "../core/rng.js";
 import { PHASE, GAME_MODE, WEATHER, EVENT, MAX_AI_CARS, MAX_FUEL_STATIONS } from "./protocol.js";
 
 // ── Canvas ──
@@ -96,23 +97,6 @@ const WEATHER_SPEED_MOD = {
   [WEATHER.NIGHT]: 0.95,
   [WEATHER.DAWN]: 1.0,
 };
-
-// ── Seeded PRNG (mulberry32) ──
-
-/**
- * Create a seeded PRNG using mulberry32.
- * @param {number} seed - Uint32 seed
- * @returns {function(): number} Returns 0-1 float
- */
-export function mulberry32(seed) {
-  let s = seed | 0;
-  return () => {
-    s = (s + 0x6d2b79f5) | 0;
-    let t = Math.imul(s ^ (s >>> 15), 1 | s);
-    t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
-    return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
-  };
-}
 
 /**
  * Get random int in [min, max] range from PRNG.
@@ -429,7 +413,7 @@ function getAISpawnInterval(dayNumber, weather) {
  * @returns {object}
  */
 export function updateAICars(state) {
-  const rng = mulberry32(state.seed + state._rngCounter);
+  const rng = createRng(state.seed + state._rngCounter).next;
   let aiCars = state.aiCars;
 
   // Move existing AI cars based on average player speed
@@ -628,7 +612,7 @@ export function spawnFuelStations(state) {
 
   let spawnTimer = state.fuelSpawnTimer - 1;
   if (spawnTimer <= 0 && state.fuelStations.length < MAX_FUEL_STATIONS) {
-    const rng = mulberry32(state.seed + state._rngCounter + 9999);
+    const rng = createRng(state.seed + state._rngCounter + 9999).next;
     const lane = rngInt(rng, 0, LANE_COUNT - 1);
     const fuelStations = [...state.fuelStations, { lane, zPos: MAX_Z }];
     spawnTimer = rngInt(rng, FUEL_SPAWN_INTERVAL_MIN, FUEL_SPAWN_INTERVAL_MAX);

@@ -8,6 +8,7 @@
  * All functions are pure: (state, inputs) → newState.
  */
 
+import { createRng } from "../core/rng.js";
 import { PHASE, GAME_MODE, SKIER_STATE, EVENT } from "./protocol.js";
 
 // ── Canvas / world constants ───────────────────────────────────
@@ -108,17 +109,6 @@ const DIFFICULTY = [
   },
 ];
 
-// ── Seeded PRNG (mulberry32) ───────────────────────────────────
-export function mulberry32(seed) {
-  let s = seed | 0;
-  return function () {
-    s = (s + 0x6d2b79f5) | 0;
-    let t = Math.imul(s ^ (s >>> 15), 1 | s);
-    t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
-    return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
-  };
-}
-
 // ── State creation ─────────────────────────────────────────────
 
 /**
@@ -189,7 +179,7 @@ export function createInitialState(mode, seed) {
     itemSpawnTimer: ITEM_SPAWN_INTERVAL,
 
     // RNG instance
-    _rng: mulberry32(seed),
+    _rng: createRng(seed).next,
     _difficulty: diff,
 
     // Frame counter for avalanche accel
@@ -836,7 +826,7 @@ export function startNextRound(state) {
     gateWidth: diff.gateWidth,
     items: [],
     itemSpawnTimer: ITEM_SPAWN_INTERVAL,
-    _rng: mulberry32(state.seed + nextRound * 1000),
+    _rng: createRng(state.seed + nextRound * 1000).next,
     _difficulty: diff,
     frameCount: 0,
   };

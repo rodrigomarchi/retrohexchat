@@ -12,6 +12,7 @@
  * @module games/hex_raid_physics
  */
 
+import { createRng } from "../core/rng.js";
 import { PHASE, GAME_MODE, ENEMY_TYPE, MAX_ENEMIES, MAX_FUEL } from "./protocol.js";
 
 // --- Canvas ---
@@ -77,23 +78,6 @@ const BRIDGE_SPAWN_INTERVAL = 2000;
 // Initial gap before first bridge/enemies
 const INITIAL_SAFE_ZONE = 300;
 
-// --- Seeded PRNG (mulberry32) ---
-
-/**
- * Create a seeded PRNG using mulberry32.
- * @param {number} seed - Uint32 seed
- * @returns {function(): number} Returns 0-1 float
- */
-export function mulberry32(seed) {
-  let s = seed | 0;
-  return () => {
-    s = (s + 0x6d2b79f5) | 0;
-    let t = Math.imul(s ^ (s >>> 15), 1 | s);
-    t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
-    return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
-  };
-}
-
 // --- Difficulty ---
 
 /**
@@ -142,8 +126,8 @@ export function getBankAtWorld(worldY, seed, mode) {
   const segFrac = (worldY % BANK_SEGMENT_SIZE) / BANK_SEGMENT_SIZE;
 
   // Deterministic RNG for this segment and next
-  const rng0 = mulberry32(seed + segIndex * 7919);
-  const rng1 = mulberry32(seed + (segIndex + 1) * 7919);
+  const rng0 = createRng(seed + segIndex * 7919).next;
+  const rng1 = createRng(seed + (segIndex + 1) * 7919).next;
 
   // Width narrows with distance
   const width = getRiverWidthAtScroll(worldY, mode);
@@ -193,7 +177,7 @@ export function spawnEntities(state) {
 
   // --- Spawn enemies ---
   while (s.scrollY >= s.nextEnemySpawnDist && s.enemies.length < MAX_ENEMIES) {
-    const rng = mulberry32(s.seed + Math.floor(s.nextEnemySpawnDist) * 31);
+    const rng = createRng(s.seed + Math.floor(s.nextEnemySpawnDist) * 31).next;
     const worldYAtTop = s.scrollY + CANVAS_H;
     const bank = getBankAtWorld(worldYAtTop, s.seed, s.mode);
     const margin = 25;
@@ -237,7 +221,7 @@ export function spawnEntities(state) {
 
   // --- Spawn fuel depots ---
   while (s.scrollY >= s.nextFuelSpawnDist && s.fuels.filter((f) => f.available).length < MAX_FUEL) {
-    const rng = mulberry32(s.seed + Math.floor(s.nextFuelSpawnDist) * 53);
+    const rng = createRng(s.seed + Math.floor(s.nextFuelSpawnDist) * 53).next;
     const worldYAtTop = s.scrollY + CANVAS_H;
     const bank = getBankAtWorld(worldYAtTop, s.seed, s.mode);
     const margin = 30;
