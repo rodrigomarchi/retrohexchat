@@ -7,7 +7,7 @@ defmodule RetroHexChat.Commands.CommandSyntax.Parameter do
           name: String.t(),
           required: boolean(),
           type: :nick | :channel | :text | :mode_flags | :number | :command,
-          position: non_neg_integer(),
+          position: non_neg_integer() | nil,
           description: String.t() | nil
         }
 
@@ -15,8 +15,9 @@ defmodule RetroHexChat.Commands.CommandSyntax.Parameter do
   defstruct [:name, :required, :type, :position, :description]
 
   @doc """
-  A parameter the command cannot do without. Its position is where it stands
-  in the command's list (`positioned/1`, which `use Handler` applies).
+  A parameter the command cannot do without. Its position is nil until
+  `positioned/1` (which `use Handler` applies) sets it to where it stands in
+  the command's list.
   """
   @spec required(atom(), String.t(), String.t() | nil) :: t()
   def required(type, name, description \\ nil), do: build(true, type, name, description)
