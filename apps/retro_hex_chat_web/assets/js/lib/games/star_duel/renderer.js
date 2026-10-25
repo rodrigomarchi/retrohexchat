@@ -19,7 +19,13 @@ import {
 } from "./physics.js";
 import { t, jt } from "../../i18n.js";
 import { gameColor, readGameColors } from "../../game_colors.js";
-import { drawBackground, drawCountdown, drawScanlines, drawWaiting } from "../hud.js";
+import {
+  drawBackground,
+  drawCountdown,
+  drawScanlines,
+  drawVignette,
+  drawWaiting,
+} from "../core/render.js";
 
 // --- Deterministic starfield (golden ratio distribution, no flickering) ---
 
@@ -116,7 +122,7 @@ export function render(ctx, state, colors, time) {
   }
 
   drawScanlines(ctx, CANVAS_W, CANVAS_H);
-  drawVignette(ctx);
+  drawVignette(ctx, CANVAS_W, CANVAS_H);
 }
 
 // --- Individual draw functions ---
@@ -573,23 +579,4 @@ export function drawWinner(ctx, state, colors, time) {
   ctx.fillText(jt`FIRST TO ${WIN_SCORE}`, CANVAS_W / 2, CANVAS_H / 2 + 40);
 
   ctx.restore();
-}
-
-/**
- * Draw vignette (darkened edges).
- * @param {CanvasRenderingContext2D} ctx
- */
-export function drawVignette(ctx) {
-  const gradient = ctx.createRadialGradient(
-    CANVAS_W / 2,
-    CANVAS_H / 2,
-    CANVAS_H * 0.4,
-    CANVAS_W / 2,
-    CANVAS_H / 2,
-    CANVAS_H * 0.8,
-  );
-  gradient.addColorStop(0, "rgba(0,0,0,0)");
-  gradient.addColorStop(1, "rgba(0,0,0,0.4)");
-  ctx.fillStyle = gradient;
-  ctx.fillRect(0, 0, CANVAS_W, CANVAS_H);
 }

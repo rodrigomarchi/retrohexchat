@@ -34,7 +34,7 @@ import {
 import { PHASE, GAME_MODE } from "./protocol.js";
 import { t, jt } from "../../i18n.js";
 import { gameColor, readGameColors } from "../../game_colors.js";
-import { waitingText } from "../hud.js";
+import { waitingText } from "../core/render.js";
 
 // ── Direction vectors for stick drawing ────────────────────────
 const SQRT2 = Math.SQRT1_2;

@@ -35,7 +35,7 @@ import {
 import { PHASE, GAME_MODE, BAILEY_STATE, ENEMY_TYPE, BLOCK_STATE } from "./protocol.js";
 import { t, jt } from "../../i18n.js";
 import { gameColor, readGameColors } from "../../game_colors.js";
-import { waitingText } from "../hud.js";
+import { drawVignette, waitingText } from "../core/render.js";
 
 // ── Color reading ──────────────────────────────────────────────
 
@@ -909,16 +909,5 @@ function drawCRT(ctx) {
   }
 
   // Vignette
-  const vignette = ctx.createRadialGradient(
-    CANVAS_W / 2,
-    CANVAS_H / 2,
-    CANVAS_W * 0.3,
-    CANVAS_W / 2,
-    CANVAS_H / 2,
-    CANVAS_W * 0.7,
-  );
-  vignette.addColorStop(0, "rgba(0,0,0,0)");
-  vignette.addColorStop(1, "rgba(0,0,0,0.3)");
-  ctx.fillStyle = vignette;
-  ctx.fillRect(0, 0, CANVAS_W, CANVAS_H);
+  drawVignette(ctx, CANVAS_W, CANVAS_H, { from: 0.3, to: 0.7, of: "width", edge: 0.3 });
 }

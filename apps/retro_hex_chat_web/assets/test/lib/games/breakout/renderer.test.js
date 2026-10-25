@@ -17,7 +17,6 @@ import {
   drawServing,
   drawFinished,
   drawParticles,
-  drawVignette,
 } from "../../../../js/lib/games/breakout/renderer.js";
 
 function createMockCtx() {
@@ -189,11 +188,11 @@ describe("breakout_renderer", () => {
     });
   });
 
-  describe("drawVignette", () => {
-    it("creates radial gradient", () => {
-      drawVignette(ctx);
+  describe("the vignette", () => {
+    it("frames every rendered frame with a radial gradient across the canvas", () => {
+      render(ctx, { ...createInitialState(), phase: PHASE.PLAYING }, colors, 0);
       expect(ctx.createRadialGradient).toHaveBeenCalled();
-      expect(ctx.fillRect).toHaveBeenCalledWith(0, 0, CANVAS_W, CANVAS_H);
+      expect(ctx.fillRect).toHaveBeenLastCalledWith(0, 0, CANVAS_W, CANVAS_H);
     });
   });
 

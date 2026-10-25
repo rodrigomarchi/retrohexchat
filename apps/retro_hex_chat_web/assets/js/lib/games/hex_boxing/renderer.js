@@ -23,7 +23,7 @@ import {
 import { PHASE, PUNCH_STATE } from "./protocol.js";
 import { t, jt } from "../../i18n.js";
 import { gameColor, readGameColors } from "../../game_colors.js";
-import { drawBackground } from "../hud.js";
+import { drawBackground } from "../core/render.js";
 
 /**
  * Read CSS custom properties from the canvas element.

@@ -8,7 +8,7 @@ import { PHASE, GAME_MODE, ALIEN_TYPE } from "./protocol.js";
 import { CANVAS_W, CANVAS_H, INITIAL_LIVES, SHIELD_SEGMENTS } from "./physics.js";
 import { t, jt } from "../../i18n.js";
 import { gameColor, readGameColors } from "../../game_colors.js";
-import { drawScanlines, waitingText } from "../hud.js";
+import { drawScanlines, drawVignette, waitingText } from "../core/render.js";
 
 const DIVIDER_X = 320;
 const CANNON_Y = 450;
@@ -85,7 +85,7 @@ export function render(ctx, state, colors, time) {
   }
 
   drawScanlines(ctx, CANVAS_W, CANVAS_H, { alpha: 0.06, step: 3 });
-  drawVignette(ctx);
+  drawVignette(ctx, CANVAS_W, CANVAS_H, { from: 0.35, to: 0.7, of: "width" });
 }
 
 // ── Background ──
@@ -514,18 +514,3 @@ function drawGameOver(ctx, state, colors) {
 }
 
 // ── CRT Effects ──
-
-function drawVignette(ctx) {
-  const grd = ctx.createRadialGradient(
-    CANVAS_W / 2,
-    CANVAS_H / 2,
-    CANVAS_W * 0.35,
-    CANVAS_W / 2,
-    CANVAS_H / 2,
-    CANVAS_W * 0.7,
-  );
-  grd.addColorStop(0, "rgba(0,0,0,0)");
-  grd.addColorStop(1, "rgba(0,0,0,0.4)");
-  ctx.fillStyle = grd;
-  ctx.fillRect(0, 0, CANVAS_W, CANVAS_H);
-}

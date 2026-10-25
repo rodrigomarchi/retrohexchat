@@ -8,7 +8,13 @@ import { PHASE } from "./protocol.js";
 import { CANVAS_W, CANVAS_H, PADDLE_W, PADDLE_H, PADDLE_MARGIN, BALL_SIZE } from "./physics.js";
 import { t, jt } from "../../i18n.js";
 import { gameColor, readGameColors } from "../../game_colors.js";
-import { drawBackground, drawCountdown, drawScanlines, drawWaiting } from "../hud.js";
+import {
+  drawBackground,
+  drawCountdown,
+  drawScanlines,
+  drawVignette,
+  drawWaiting,
+} from "../core/render.js";
 
 // Bitmap digits 5x7 for retro score display (each row is a 5-bit mask)
 const DIGITS = [
@@ -78,7 +84,7 @@ export function render(ctx, state, colors, time, options = {}) {
   }
 
   drawScanlines(ctx, CANVAS_W, CANVAS_H);
-  drawVignette(ctx);
+  drawVignette(ctx, CANVAS_W, CANVAS_H);
 }
 
 /**
@@ -319,22 +325,4 @@ export function drawParticles(ctx, particles, colors) {
     ctx.fillRect(p.x - 2, p.y - 2, 4, 4);
   }
   ctx.globalAlpha = 1.0;
-}
-
-/**
- * Draw vignette (darkened edges).
- */
-export function drawVignette(ctx) {
-  const gradient = ctx.createRadialGradient(
-    CANVAS_W / 2,
-    CANVAS_H / 2,
-    CANVAS_H * 0.4,
-    CANVAS_W / 2,
-    CANVAS_H / 2,
-    CANVAS_H * 0.8,
-  );
-  gradient.addColorStop(0, "rgba(0,0,0,0)");
-  gradient.addColorStop(1, "rgba(0,0,0,0.4)");
-  ctx.fillStyle = gradient;
-  ctx.fillRect(0, 0, CANVAS_W, CANVAS_H);
 }

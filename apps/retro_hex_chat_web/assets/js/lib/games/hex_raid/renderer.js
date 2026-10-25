@@ -17,7 +17,7 @@ import {
 } from "./physics.js";
 import { jt } from "../../i18n.js";
 import { gameColor, readGameColors } from "../../game_colors.js";
-import { drawBackground, drawScanlines, waitingText } from "../hud.js";
+import { drawBackground, drawScanlines, drawVignette, waitingText } from "../core/render.js";
 
 /**
  * Read CSS custom properties from canvas computed style.
@@ -74,7 +74,7 @@ export function render(ctx, state, colors, time, particles) {
   }
 
   drawScanlines(ctx, CANVAS_W, CANVAS_H, { alpha: 0.06, step: 3 });
-  drawVignette(ctx);
+  drawVignette(ctx, CANVAS_W, CANVAS_H, { from: 0.3, to: 0.7, of: "width", edge: 0.3 });
 }
 
 // --- Background layers ---
@@ -713,18 +713,3 @@ function drawGameOver(ctx, state, colors) {
 }
 
 // --- CRT effects ---
-
-function drawVignette(ctx) {
-  const gradient = ctx.createRadialGradient(
-    CANVAS_W / 2,
-    CANVAS_H / 2,
-    CANVAS_W * 0.3,
-    CANVAS_W / 2,
-    CANVAS_H / 2,
-    CANVAS_W * 0.7,
-  );
-  gradient.addColorStop(0, "rgba(0, 0, 0, 0)");
-  gradient.addColorStop(1, "rgba(0, 0, 0, 0.3)");
-  ctx.fillStyle = gradient;
-  ctx.fillRect(0, 0, CANVAS_W, CANVAS_H);
-}
