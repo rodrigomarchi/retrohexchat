@@ -10,7 +10,6 @@
 
 import { defineGame } from "../core/define_game.js";
 import { createBreakoutAI, normalizeBreakoutAIDifficulty } from "./ai.js";
-import { BreakoutAudio } from "./audio.js";
 import {
   BALL_SIZE,
   checkBlockCollision,
@@ -27,6 +26,7 @@ import {
 } from "./physics.js";
 import { GAME_END, PHASE, SNAPSHOT } from "./protocol.js";
 import { getColors, render } from "./renderer.js";
+import { SOUNDS } from "./sounds.js";
 
 const SERVE_DELAY_TICKS = 48; // 0.8 s
 const LIFE_LOST_PAUSE_TICKS = 90; // 1.5 s
@@ -149,7 +149,7 @@ export default defineGame({
     difficulty: normalizeBreakoutAIDifficulty,
     observe: (game) => ({ state: game.gameState, player: 2, difficulty: game.difficulty }),
   },
-  audio: BreakoutAudio,
+  audio: { sounds: SOUNDS },
   theme: getColors,
   init: () => createInitialState(),
   setup: (game) => {

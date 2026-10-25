@@ -17,19 +17,11 @@ import {
 } from "../../../../js/lib/games/breakout/physics.js";
 
 // Must mock breakout_audio before importing BreakoutEngine
-vi.mock("../../../../js/lib/games/breakout/audio.js", () => ({
-  BreakoutAudio: function () {
-    return {
-      playPaddleHit: vi.fn(),
-      playWallBounce: vi.fn(),
-      playBlockHit: vi.fn(),
-      playLifeLost: vi.fn(),
-      playCountdown: vi.fn(),
-      playWin: vi.fn(),
-      playLose: vi.fn(),
-    };
-  },
-}));
+vi.mock("../../../../js/lib/games/core/synth.js", async (importOriginal) => {
+  const synth = await importOriginal();
+  const { spySounds } = await import("../../../helpers/spy_sounds.js");
+  return { ...synth, createGameAudio: (spec) => spySounds(synth.createGameAudio(spec)) };
+});
 
 // Must mock breakout_renderer
 vi.mock("../../../../js/lib/games/breakout/renderer.js", () => ({
