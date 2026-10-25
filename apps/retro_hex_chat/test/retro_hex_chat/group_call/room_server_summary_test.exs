@@ -19,9 +19,10 @@ defmodule RetroHexChat.GroupCall.RoomServerSummaryTest do
     parent = self()
 
     # Stands in for the room: registered under its token, and gone the moment
-    # the question arrives.
+    # the question arrives. Linked, so a registration that fails fails the test
+    # instead of leaving it waiting.
     room =
-      spawn(fn ->
+      spawn_link(fn ->
         {:ok, _owner} =
           Registry.register(GroupRegistry.room_registry_name(), {:room, token}, nil)
 
@@ -32,7 +33,8 @@ defmodule RetroHexChat.GroupCall.RoomServerSummaryTest do
         end
       end)
 
-    assert_receive :registered
+    # A loaded machine can take longer than the default second to schedule it.
+    assert_receive :registered, 5_000
     assert {:ok, ^room} = GroupRegistry.lookup_room({:room, token})
 
     assert RoomServer.summary(token) == {:error, :not_found}
