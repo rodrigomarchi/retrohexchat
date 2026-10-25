@@ -10,6 +10,7 @@ defmodule RetroHexChat.Commands.Handlers.Join do
   use RetroHexChat.Commands.Handler,
     name: "join",
     category: :channel,
+    usage: dgettext("commands", "Usage: /join #channel [password]"),
     syntax: dgettext("commands", "/join #channel [password]"),
     summary:
       dgettext(
@@ -26,28 +27,15 @@ defmodule RetroHexChat.Commands.Handlers.Join do
       dgettext("commands", "/join #secret mypassword")
     ],
     parameters: [
-      %Parameter{
-        name: "#channel",
-        required: true,
-        type: :channel,
-        position: 0,
-        description: dgettext("commands", "Channel name")
-      },
-      %Parameter{
-        name: "password",
-        required: false,
-        type: :text,
-        position: 1,
-        description: dgettext("commands", "Channel password (if key-protected)")
-      }
+      Parameter.required(:channel, "#channel", dgettext("commands", "Channel name")),
+      Parameter.optional(
+        :text,
+        "password",
+        dgettext("commands", "Channel password (if key-protected)")
+      )
     ]
 
   @default_max_channels 10
-
-  @impl true
-  @spec validate(String.t()) :: :ok | {:error, String.t()}
-  def validate(""), do: {:error, dgettext("commands", "Usage: /join #channel [password]")}
-  def validate(_), do: :ok
 
   @impl true
   @spec execute([String.t()], Handler.context()) :: Handler.result()

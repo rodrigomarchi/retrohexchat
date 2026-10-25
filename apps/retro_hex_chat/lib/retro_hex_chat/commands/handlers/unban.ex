@@ -20,13 +20,7 @@ defmodule RetroHexChat.Commands.Handlers.Unban do
       ),
     examples: [dgettext("commands", "/unban user123")],
     parameters: [
-      %Parameter{
-        name: "nickname",
-        required: true,
-        type: :nick,
-        position: 0,
-        description: dgettext("commands", "User to unban")
-      }
+      Parameter.required(:nick, "nickname", dgettext("commands", "User to unban"))
     ]
 
   @impl true

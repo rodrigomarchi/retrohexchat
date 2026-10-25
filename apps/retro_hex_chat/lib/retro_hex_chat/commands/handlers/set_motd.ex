@@ -22,13 +22,7 @@ defmodule RetroHexChat.Commands.Handlers.SetMotd do
       ),
     examples: [dgettext("commands", "/setmotd Welcome to RetroHexChat!")],
     parameters: [
-      %Parameter{
-        name: "text",
-        required: true,
-        type: :text,
-        position: 0,
-        description: dgettext("commands", "Message of the Day text")
-      }
+      Parameter.required(:text, "text", dgettext("commands", "Message of the Day text"))
     ]
 
   @impl true

@@ -27,20 +27,12 @@ defmodule RetroHexChat.Commands.Handlers.AutoRespond do
       dgettext("commands", "/autorespond remove 0")
     ],
     parameters: [
-      %Parameter{
-        name: "subcommand",
-        required: false,
-        type: :text,
-        position: 0,
-        description: dgettext("commands", "Subcommand: list, add, remove")
-      },
-      %Parameter{
-        name: "args",
-        required: false,
-        type: :text,
-        position: 1,
-        description: dgettext("commands", "Subcommand arguments")
-      }
+      Parameter.optional(
+        :text,
+        "subcommand",
+        dgettext("commands", "Subcommand: list, add, remove")
+      ),
+      Parameter.optional(:text, "args", dgettext("commands", "Subcommand arguments"))
     ],
     subcommands: [
       %{name: "list", description: dgettext("commands", "Show auto-respond rules")},

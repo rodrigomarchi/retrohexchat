@@ -21,13 +21,7 @@ defmodule RetroHexChat.Commands.Handlers.Quit do
       ),
     examples: ["/quit", dgettext("commands", "/quit Goodbye!")],
     parameters: [
-      %Parameter{
-        name: "message",
-        required: false,
-        type: :text,
-        position: 0,
-        description: dgettext("commands", "Quit message")
-      }
+      Parameter.optional(:text, "message", dgettext("commands", "Quit message"))
     ]
 
   @impl true

@@ -31,13 +31,7 @@ Requires: a registered, identified nickname."
       ),
     examples: [dgettext("commands", "/lfg"), dgettext("commands", "/lfg blitz")],
     parameters: [
-      %Parameter{
-        name: "mode",
-        required: false,
-        type: :text,
-        position: 0,
-        description: dgettext("commands", "A mode of the game, like blitz")
-      }
+      Parameter.optional(:text, "mode", dgettext("commands", "A mode of the game, like blitz"))
     ]
 
   @impl true

@@ -17,13 +17,7 @@ defmodule RetroHexChat.Commands.Handlers.Whois do
       ),
     examples: [dgettext("commands", "/whois SomeUser")],
     parameters: [
-      %Parameter{
-        name: "nickname",
-        required: true,
-        type: :nick,
-        position: 0,
-        description: dgettext("commands", "User to look up")
-      }
+      Parameter.required(:nick, "nickname", dgettext("commands", "User to look up"))
     ]
 
   @impl true

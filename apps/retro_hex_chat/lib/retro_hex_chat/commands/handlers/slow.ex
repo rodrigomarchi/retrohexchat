@@ -19,13 +19,11 @@ defmodule RetroHexChat.Commands.Handlers.Slow do
       ),
     examples: [dgettext("commands", "/slow 30"), dgettext("commands", "/slow 0")],
     parameters: [
-      %Parameter{
-        name: "seconds",
-        required: true,
-        type: :text,
-        position: 0,
-        description: dgettext("commands", "Throttle interval in seconds (0 to disable)")
-      }
+      Parameter.required(
+        :text,
+        "seconds",
+        dgettext("commands", "Throttle interval in seconds (0 to disable)")
+      )
     ]
 
   @impl true

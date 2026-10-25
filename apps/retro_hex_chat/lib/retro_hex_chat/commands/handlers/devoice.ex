@@ -19,13 +19,7 @@ defmodule RetroHexChat.Commands.Handlers.Devoice do
       ),
     examples: [dgettext("commands", "/devoice alice")],
     parameters: [
-      %Parameter{
-        name: "nickname",
-        required: true,
-        type: :nick,
-        position: 0,
-        description: dgettext("commands", "User to remove voice from")
-      }
+      Parameter.required(:nick, "nickname", dgettext("commands", "User to remove voice from"))
     ]
 
   @impl true

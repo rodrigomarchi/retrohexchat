@@ -8,6 +8,7 @@ defmodule RetroHexChat.Commands.Handlers.Whowas do
   use RetroHexChat.Commands.Handler,
     name: "whowas",
     category: :user,
+    usage: dgettext("commands", "Usage: /whowas <nickname>"),
     syntax: dgettext("commands", "/whowas <nickname>"),
     summary: dgettext("commands", "Look up information about a user who recently disconnected."),
     description:
@@ -17,19 +18,8 @@ defmodule RetroHexChat.Commands.Handlers.Whowas do
       ),
     examples: [dgettext("commands", "/whowas SomeUser")],
     parameters: [
-      %Parameter{
-        name: "nickname",
-        required: true,
-        type: :nick,
-        position: 0,
-        description: dgettext("commands", "Recently disconnected user")
-      }
+      Parameter.required(:nick, "nickname", dgettext("commands", "Recently disconnected user"))
     ]
-
-  @impl true
-  @spec validate(String.t()) :: :ok | {:error, String.t()}
-  def validate(""), do: {:error, dgettext("commands", "Usage: /whowas <nickname>")}
-  def validate(_), do: :ok
 
   @impl true
   @spec execute([String.t()], Handler.context()) :: Handler.result()

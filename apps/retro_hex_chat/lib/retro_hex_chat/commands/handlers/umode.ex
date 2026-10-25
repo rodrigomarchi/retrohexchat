@@ -18,13 +18,7 @@ defmodule RetroHexChat.Commands.Handlers.Umode do
       ),
     examples: [dgettext("commands", "/umode +w"), dgettext("commands", "/umode -w")],
     parameters: [
-      %Parameter{
-        name: "mode",
-        required: true,
-        type: :text,
-        position: 0,
-        description: dgettext("commands", "User mode: +w (wallops), -w")
-      }
+      Parameter.required(:text, "mode", dgettext("commands", "User mode: +w (wallops), -w"))
     ]
 
   @known_modes %{"w" => :wallops}

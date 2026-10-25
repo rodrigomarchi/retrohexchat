@@ -9,6 +9,7 @@ defmodule RetroHexChat.Commands.Handlers.Notice do
   use RetroHexChat.Commands.Handler,
     name: "notice",
     category: :user,
+    usage: dgettext("commands", "Usage: /notice <target> <message>"),
     syntax: dgettext("commands", "/notice <target> <message>"),
     summary:
       dgettext(
@@ -25,26 +26,13 @@ defmodule RetroHexChat.Commands.Handlers.Notice do
       dgettext("commands", "/notice #elixir Server maintenance in 30 minutes")
     ],
     parameters: [
-      %Parameter{
-        name: "target",
-        required: true,
-        type: :nick,
-        position: 0,
-        description: dgettext("commands", "Recipient (nickname or channel)")
-      },
-      %Parameter{
-        name: "message",
-        required: true,
-        type: :text,
-        position: 1,
-        description: dgettext("commands", "Notice content")
-      }
+      Parameter.required(
+        :nick,
+        "target",
+        dgettext("commands", "Recipient (nickname or channel)")
+      ),
+      Parameter.required(:text, "message", dgettext("commands", "Notice content"))
     ]
-
-  @impl true
-  @spec validate(String.t()) :: :ok | {:error, String.t()}
-  def validate(""), do: {:error, dgettext("commands", "Usage: /notice <target> <message>")}
-  def validate(_), do: :ok
 
   @impl true
   @spec execute([String.t()], RetroHexChat.Commands.Handler.context()) ::

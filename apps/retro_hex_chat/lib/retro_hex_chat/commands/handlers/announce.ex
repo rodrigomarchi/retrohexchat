@@ -23,13 +23,7 @@ defmodule RetroHexChat.Commands.Handlers.Announce do
       ),
     examples: [dgettext("commands", "/announce Server will restart at midnight")],
     parameters: [
-      %Parameter{
-        name: "message",
-        required: true,
-        type: :text,
-        position: 0,
-        description: dgettext("commands", "Global announcement message")
-      }
+      Parameter.required(:text, "message", dgettext("commands", "Global announcement message"))
     ]
 
   @impl true

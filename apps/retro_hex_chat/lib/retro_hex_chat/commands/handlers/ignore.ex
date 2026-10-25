@@ -29,33 +29,14 @@ defmodule RetroHexChat.Commands.Handlers.Ignore do
       "/ignore"
     ],
     parameters: [
-      %Parameter{
-        name: "nickname",
-        required: false,
-        type: :nick,
-        position: 0,
-        description: dgettext("commands", "User to ignore")
-      },
-      %Parameter{
-        name: "type",
-        required: false,
-        type: :text,
-        position: 1,
-        description: dgettext("commands", "Type: all, messages, pms, actions, notices, invites")
-      },
-      %Parameter{
-        name: "duration",
-        required: false,
-        type: :text,
-        position: 2,
-        description: dgettext("commands", "Duration: 5m, 1h, 2d")
-      }
+      Parameter.optional(:nick, "nickname", dgettext("commands", "User to ignore")),
+      Parameter.optional(
+        :text,
+        "type",
+        dgettext("commands", "Type: all, messages, pms, actions, notices, invites")
+      ),
+      Parameter.optional(:text, "duration", dgettext("commands", "Duration: 5m, 1h, 2d"))
     ]
-
-  @impl true
-  @spec validate(String.t()) :: :ok | {:error, String.t()}
-  def validate(""), do: :ok
-  def validate(_args), do: :ok
 
   @impl true
   @spec execute([String.t()], Handler.context()) :: Handler.result()

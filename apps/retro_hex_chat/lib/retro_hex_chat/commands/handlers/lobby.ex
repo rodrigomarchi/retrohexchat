@@ -14,6 +14,7 @@ defmodule RetroHexChat.Commands.Handlers.Lobby do
   use RetroHexChat.Commands.Handler,
     name: "p2p",
     category: :user,
+    usage: dgettext("commands", "Usage: /p2p <nickname>"),
     syntax: dgettext("commands", "/p2p <nickname>"),
     summary:
       dgettext(
@@ -27,19 +28,8 @@ defmodule RetroHexChat.Commands.Handlers.Lobby do
       ),
     examples: [dgettext("commands", "/p2p mario")],
     parameters: [
-      %Parameter{
-        name: "nickname",
-        required: true,
-        type: :nick,
-        position: 0,
-        description: dgettext("commands", "Target user")
-      }
+      Parameter.required(:nick, "nickname", dgettext("commands", "Target user"))
     ]
-
-  @impl true
-  @spec validate(String.t()) :: :ok | {:error, String.t()}
-  def validate(""), do: {:error, dgettext("commands", "Usage: /p2p <nickname>")}
-  def validate(_), do: :ok
 
   @impl true
   @spec execute([String.t()], Handler.context()) :: Handler.result()

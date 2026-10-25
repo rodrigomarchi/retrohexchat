@@ -22,13 +22,11 @@ defmodule RetroHexChat.Commands.Handlers.Help do
       ),
     examples: ["/help", dgettext("commands", "/help join")],
     parameters: [
-      %Parameter{
-        name: "command",
-        required: false,
-        type: :command,
-        position: 0,
-        description: dgettext("commands", "Command name to view detailed help")
-      }
+      Parameter.optional(
+        :command,
+        "command",
+        dgettext("commands", "Command name to view detailed help")
+      )
     ]
 
   @impl true

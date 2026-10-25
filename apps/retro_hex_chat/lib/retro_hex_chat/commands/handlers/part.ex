@@ -25,20 +25,12 @@ defmodule RetroHexChat.Commands.Handlers.Part do
       dgettext("commands", "/part #elixir Goodbye!")
     ],
     parameters: [
-      %Parameter{
-        name: "#channel",
-        required: false,
-        type: :channel,
-        position: 0,
-        description: dgettext("commands", "Channel to leave (defaults to current)")
-      },
-      %Parameter{
-        name: "message",
-        required: false,
-        type: :text,
-        position: 1,
-        description: dgettext("commands", "Part message")
-      }
+      Parameter.optional(
+        :channel,
+        "#channel",
+        dgettext("commands", "Channel to leave (defaults to current)")
+      ),
+      Parameter.optional(:text, "message", dgettext("commands", "Part message"))
     ]
 
   @impl true

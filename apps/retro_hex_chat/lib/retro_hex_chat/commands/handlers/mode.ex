@@ -28,20 +28,12 @@ defmodule RetroHexChat.Commands.Handlers.Mode do
       dgettext("commands", "/mode +o nickname")
     ],
     parameters: [
-      %Parameter{
-        name: "+/-flags",
-        required: true,
-        type: :mode_flags,
-        position: 0,
-        description: dgettext("commands", "Mode flags to set or unset")
-      },
-      %Parameter{
-        name: "nick",
-        required: false,
-        type: :nick,
-        position: 1,
-        description: dgettext("commands", "Target nickname (for +o, +v, +b)")
-      }
+      Parameter.required(
+        :mode_flags,
+        "+/-flags",
+        dgettext("commands", "Mode flags to set or unset")
+      ),
+      Parameter.optional(:nick, "nick", dgettext("commands", "Target nickname (for +o, +v, +b)"))
     ],
     sub_options: [
       %SubOption{

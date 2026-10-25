@@ -13,6 +13,35 @@ defmodule RetroHexChat.Commands.CommandSyntax.Parameter do
 
   @enforce_keys [:name, :required, :type, :position]
   defstruct [:name, :required, :type, :position, :description]
+
+  @doc """
+  A parameter the command cannot do without. Its position is where it stands
+  in the command's list (`positioned/1`, which `use Handler` applies).
+  """
+  @spec required(atom(), String.t(), String.t() | nil) :: t()
+  def required(type, name, description \\ nil), do: build(true, type, name, description)
+
+  @doc "A parameter the command can be typed without; positioned like `required/3`."
+  @spec optional(atom(), String.t(), String.t() | nil) :: t()
+  def optional(type, name, description \\ nil), do: build(false, type, name, description)
+
+  @doc "The parameters with each one's position set to where it stands in the list."
+  @spec positioned([t()]) :: [t()]
+  def positioned(parameters) do
+    parameters
+    |> Enum.with_index()
+    |> Enum.map(fn {parameter, index} -> %{parameter | position: parameter.position || index} end)
+  end
+
+  defp build(required, type, name, description) do
+    %__MODULE__{
+      name: name,
+      required: required,
+      type: type,
+      position: nil,
+      description: description
+    }
+  end
 end
 
 defmodule RetroHexChat.Commands.CommandSyntax.SubOption do

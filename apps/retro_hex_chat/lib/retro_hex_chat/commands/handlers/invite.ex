@@ -27,20 +27,12 @@ defmodule RetroHexChat.Commands.Handlers.Invite do
       dgettext("commands", "/invite auto")
     ],
     parameters: [
-      %Parameter{
-        name: "nickname",
-        required: true,
-        type: :nick,
-        position: 0,
-        description: dgettext("commands", "User to invite")
-      },
-      %Parameter{
-        name: "#channel",
-        required: false,
-        type: :channel,
-        position: 1,
-        description: dgettext("commands", "Target channel (defaults to current channel)")
-      }
+      Parameter.required(:nick, "nickname", dgettext("commands", "User to invite")),
+      Parameter.optional(
+        :channel,
+        "#channel",
+        dgettext("commands", "Target channel (defaults to current channel)")
+      )
     ]
 
   @impl true

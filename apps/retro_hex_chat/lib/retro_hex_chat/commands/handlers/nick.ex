@@ -9,6 +9,7 @@ defmodule RetroHexChat.Commands.Handlers.Nick do
   use RetroHexChat.Commands.Handler,
     name: "nick",
     category: :basics,
+    usage: dgettext("commands", "Usage: /nick <newnick>"),
     syntax: dgettext("commands", "/nick <newnick>"),
     summary:
       dgettext(
@@ -22,24 +23,17 @@ defmodule RetroHexChat.Commands.Handlers.Nick do
       ),
     examples: [dgettext("commands", "/nick NewNick"), dgettext("commands", "/nick [Bot]")],
     parameters: [
-      %Parameter{
-        name: "newnick",
-        required: true,
-        type: :nick,
-        position: 0,
-        description: dgettext("commands", "New nickname (max 16 characters)")
-      }
+      Parameter.required(
+        :nick,
+        "newnick",
+        dgettext("commands", "New nickname (max 16 characters)")
+      )
     ]
 
   # IRC-style allowed first characters: letters + [\]^_{|}
   @first_char_pattern ~r/^[a-zA-Z\[\]\\^_\{|\}]/
   # Allowed characters: alphanumeric + [\]^_`{|}-
   @valid_nick_pattern ~r/^[a-zA-Z\[\]\\^_\{|\}][a-zA-Z0-9\[\]\\^_`\{|\}\-]*$/
-
-  @impl true
-  @spec validate(String.t()) :: :ok | {:error, String.t()}
-  def validate(""), do: {:error, dgettext("commands", "Usage: /nick <newnick>")}
-  def validate(_), do: :ok
 
   @impl true
   @spec execute([String.t()], Handler.context()) :: Handler.result()

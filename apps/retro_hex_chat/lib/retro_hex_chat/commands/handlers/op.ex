@@ -19,13 +19,7 @@ defmodule RetroHexChat.Commands.Handlers.Op do
       ),
     examples: [dgettext("commands", "/op alice")],
     parameters: [
-      %Parameter{
-        name: "nickname",
-        required: true,
-        type: :nick,
-        position: 0,
-        description: dgettext("commands", "User to give operator status")
-      }
+      Parameter.required(:nick, "nickname", dgettext("commands", "User to give operator status"))
     ]
 
   @impl true

@@ -26,20 +26,8 @@ defmodule RetroHexChat.Commands.Handlers.Kick do
       dgettext("commands", "/kick troll Spamming the channel")
     ],
     parameters: [
-      %Parameter{
-        name: "nickname",
-        required: true,
-        type: :nick,
-        position: 0,
-        description: dgettext("commands", "User to kick")
-      },
-      %Parameter{
-        name: "reason",
-        required: false,
-        type: :text,
-        position: 1,
-        description: dgettext("commands", "Reason for the kick")
-      }
+      Parameter.required(:nick, "nickname", dgettext("commands", "User to kick")),
+      Parameter.optional(:text, "reason", dgettext("commands", "Reason for the kick"))
     ]
 
   @impl true

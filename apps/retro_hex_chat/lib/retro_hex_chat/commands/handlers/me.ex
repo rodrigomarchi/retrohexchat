@@ -8,6 +8,7 @@ defmodule RetroHexChat.Commands.Handlers.Me do
   use RetroHexChat.Commands.Handler,
     name: "me",
     category: :basics,
+    usage: dgettext("commands", "Usage: /me <action>"),
     syntax: dgettext("commands", "/me <action>"),
     summary:
       dgettext(
@@ -21,19 +22,8 @@ defmodule RetroHexChat.Commands.Handlers.Me do
       ),
     examples: [dgettext("commands", "/me waves hello"), dgettext("commands", "/me is away")],
     parameters: [
-      %Parameter{
-        name: "action",
-        required: true,
-        type: :text,
-        position: 0,
-        description: dgettext("commands", "Action text")
-      }
+      Parameter.required(:text, "action", dgettext("commands", "Action text"))
     ]
-
-  @impl true
-  @spec validate(String.t()) :: :ok | {:error, String.t()}
-  def validate(""), do: {:error, dgettext("commands", "Usage: /me <action>")}
-  def validate(_), do: :ok
 
   @impl true
   @spec execute([String.t()], Handler.context()) :: Handler.result()

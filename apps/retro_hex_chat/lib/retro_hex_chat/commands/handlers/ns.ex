@@ -36,24 +36,15 @@ defmodule RetroHexChat.Commands.Handlers.Ns do
       dgettext("commands", "/ns kill-session 44")
     ],
     parameters: [
-      %Parameter{
-        name: "subcommand",
-        required: true,
-        type: :text,
-        position: 0,
-        description:
-          dgettext(
-            "commands",
-            "Subcommand: register, identify, ghost, info, drop, devices, sessions, revoke-device, kill-session"
-          )
-      },
-      %Parameter{
-        name: "args",
-        required: false,
-        type: :text,
-        position: 1,
-        description: dgettext("commands", "Subcommand arguments")
-      }
+      Parameter.required(
+        :text,
+        "subcommand",
+        dgettext(
+          "commands",
+          "Subcommand: register, identify, ghost, info, drop, devices, sessions, revoke-device, kill-session"
+        )
+      ),
+      Parameter.optional(:text, "args", dgettext("commands", "Subcommand arguments"))
     ],
     subcommands: [
       %{

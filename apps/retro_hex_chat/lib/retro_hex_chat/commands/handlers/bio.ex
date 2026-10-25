@@ -25,13 +25,7 @@ defmodule RetroHexChat.Commands.Handlers.Bio do
       dgettext("commands", "/bio clear")
     ],
     parameters: [
-      %Parameter{
-        name: "text",
-        required: false,
-        type: :text,
-        position: 0,
-        description: dgettext("commands", "Bio text (or 'clear' to remove)")
-      }
+      Parameter.optional(:text, "text", dgettext("commands", "Bio text (or 'clear' to remove)"))
     ]
 
   @max_bio_graphemes 200

@@ -21,13 +21,7 @@ defmodule RetroHexChat.Commands.Handlers.Away do
       ),
     examples: [dgettext("commands", "/away Gone to lunch"), "/away"],
     parameters: [
-      %Parameter{
-        name: "message",
-        required: false,
-        type: :text,
-        position: 0,
-        description: dgettext("commands", "Away message (empty to return)")
-      }
+      Parameter.optional(:text, "message", dgettext("commands", "Away message (empty to return)"))
     ]
 
   @impl true

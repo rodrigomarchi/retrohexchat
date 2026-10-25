@@ -19,13 +19,7 @@ defmodule RetroHexChat.Commands.Handlers.Transfer do
       ),
     examples: [dgettext("commands", "/transfer alice")],
     parameters: [
-      %Parameter{
-        name: "nickname",
-        required: true,
-        type: :nick,
-        position: 0,
-        description: dgettext("commands", "New owner")
-      }
+      Parameter.required(:nick, "nickname", dgettext("commands", "New owner"))
     ]
 
   @impl true

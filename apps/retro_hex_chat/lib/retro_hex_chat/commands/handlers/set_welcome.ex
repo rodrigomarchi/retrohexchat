@@ -22,13 +22,7 @@ defmodule RetroHexChat.Commands.Handlers.SetWelcome do
       ),
     examples: [dgettext("commands", "/setwelcome Welcome to our channel!")],
     parameters: [
-      %Parameter{
-        name: "message",
-        required: true,
-        type: :text,
-        position: 0,
-        description: dgettext("commands", "Channel welcome message")
-      }
+      Parameter.required(:text, "message", dgettext("commands", "Channel welcome message"))
     ]
 
   @impl true

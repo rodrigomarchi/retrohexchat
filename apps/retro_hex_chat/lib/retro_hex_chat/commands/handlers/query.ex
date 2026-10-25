@@ -8,6 +8,7 @@ defmodule RetroHexChat.Commands.Handlers.Query do
   use RetroHexChat.Commands.Handler,
     name: "query",
     category: :user,
+    usage: dgettext("commands", "Usage: /query <nickname>"),
     syntax: dgettext("commands", "/query <nickname>"),
     summary:
       dgettext(
@@ -21,19 +22,8 @@ defmodule RetroHexChat.Commands.Handlers.Query do
       ),
     examples: [dgettext("commands", "/query Nick")],
     parameters: [
-      %Parameter{
-        name: "nickname",
-        required: true,
-        type: :nick,
-        position: 0,
-        description: dgettext("commands", "Open a PM tab with this user")
-      }
+      Parameter.required(:nick, "nickname", dgettext("commands", "Open a PM tab with this user"))
     ]
-
-  @impl true
-  @spec validate(String.t()) :: :ok | {:error, String.t()}
-  def validate(""), do: {:error, dgettext("commands", "Usage: /query <nickname>")}
-  def validate(_), do: :ok
 
   @impl true
   @spec execute([String.t()], Handler.context()) :: Handler.result()

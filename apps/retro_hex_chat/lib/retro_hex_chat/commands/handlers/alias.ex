@@ -24,20 +24,12 @@ defmodule RetroHexChat.Commands.Handlers.Alias do
       dgettext("commands", "/alias remove hi")
     ],
     parameters: [
-      %Parameter{
-        name: "subcommand",
-        required: false,
-        type: :text,
-        position: 0,
-        description: dgettext("commands", "Subcommand: list, add, remove")
-      },
-      %Parameter{
-        name: "args",
-        required: false,
-        type: :text,
-        position: 1,
-        description: dgettext("commands", "Subcommand arguments")
-      }
+      Parameter.optional(
+        :text,
+        "subcommand",
+        dgettext("commands", "Subcommand: list, add, remove")
+      ),
+      Parameter.optional(:text, "args", dgettext("commands", "Subcommand arguments"))
     ],
     subcommands: [
       %{name: "add", description: dgettext("commands", "Create a new command alias")},

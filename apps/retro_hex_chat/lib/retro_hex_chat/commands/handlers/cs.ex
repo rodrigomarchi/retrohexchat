@@ -36,24 +36,15 @@ defmodule RetroHexChat.Commands.Handlers.Cs do
       dgettext("commands", "/cs vop list")
     ],
     parameters: [
-      %Parameter{
-        name: "subcommand",
-        required: true,
-        type: :text,
-        position: 0,
-        description:
-          dgettext(
-            "commands",
-            "Subcommand: register, drop, info, archive, language, category, sop, aop, vop"
-          )
-      },
-      %Parameter{
-        name: "args",
-        required: false,
-        type: :text,
-        position: 1,
-        description: dgettext("commands", "Subcommand arguments")
-      }
+      Parameter.required(
+        :text,
+        "subcommand",
+        dgettext(
+          "commands",
+          "Subcommand: register, drop, info, archive, language, category, sop, aop, vop"
+        )
+      ),
+      Parameter.optional(:text, "args", dgettext("commands", "Subcommand arguments"))
     ],
     subcommands: [
       %{name: "register", description: dgettext("commands", "Register the current channel")},

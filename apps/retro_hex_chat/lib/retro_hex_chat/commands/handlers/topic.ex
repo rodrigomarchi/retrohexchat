@@ -21,13 +21,7 @@ defmodule RetroHexChat.Commands.Handlers.Topic do
       ),
     examples: ["/topic", dgettext("commands", "/topic Welcome to #elixir!")],
     parameters: [
-      %Parameter{
-        name: "new topic",
-        required: false,
-        type: :text,
-        position: 0,
-        description: dgettext("commands", "New channel topic")
-      }
+      Parameter.optional(:text, "new topic", dgettext("commands", "New channel topic"))
     ]
 
   @impl true

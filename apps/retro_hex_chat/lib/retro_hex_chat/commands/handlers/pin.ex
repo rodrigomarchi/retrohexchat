@@ -19,13 +19,7 @@ defmodule RetroHexChat.Commands.Handlers.Pin do
       ),
     examples: ["/pin 1284"],
     parameters: [
-      %Parameter{
-        name: "message id",
-        required: true,
-        type: :text,
-        position: 0,
-        description: dgettext("commands", "Id of the message to keep")
-      }
+      Parameter.required(:text, "message id", dgettext("commands", "Id of the message to keep"))
     ]
 
   @impl true

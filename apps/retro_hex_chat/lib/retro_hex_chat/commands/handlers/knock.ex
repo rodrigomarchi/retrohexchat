@@ -24,20 +24,16 @@ defmodule RetroHexChat.Commands.Handlers.Knock do
       dgettext("commands", "/knock #private Hey, can I join?")
     ],
     parameters: [
-      %Parameter{
-        name: "#channel",
-        required: true,
-        type: :channel,
-        position: 0,
-        description: dgettext("commands", "Channel to request access to")
-      },
-      %Parameter{
-        name: "message",
-        required: false,
-        type: :text,
-        position: 1,
-        description: dgettext("commands", "Message for the channel operators")
-      }
+      Parameter.required(
+        :channel,
+        "#channel",
+        dgettext("commands", "Channel to request access to")
+      ),
+      Parameter.optional(
+        :text,
+        "message",
+        dgettext("commands", "Message for the channel operators")
+      )
     ]
 
   @impl true

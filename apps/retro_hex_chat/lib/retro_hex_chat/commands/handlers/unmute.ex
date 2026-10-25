@@ -19,13 +19,7 @@ defmodule RetroHexChat.Commands.Handlers.Unmute do
       ),
     examples: [dgettext("commands", "/unmute alice")],
     parameters: [
-      %Parameter{
-        name: "nickname",
-        required: true,
-        type: :nick,
-        position: 0,
-        description: dgettext("commands", "User to unmute")
-      }
+      Parameter.required(:nick, "nickname", dgettext("commands", "User to unmute"))
     ]
 
   @impl true

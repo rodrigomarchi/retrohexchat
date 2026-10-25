@@ -27,20 +27,12 @@ defmodule RetroHexChat.Commands.Handlers.Notify do
       "/notify"
     ],
     parameters: [
-      %Parameter{
-        name: "subcommand",
-        required: false,
-        type: :text,
-        position: 0,
-        description: dgettext("commands", "Subcommand: add, remove, edit, list")
-      },
-      %Parameter{
-        name: "args",
-        required: false,
-        type: :text,
-        position: 1,
-        description: dgettext("commands", "Subcommand arguments")
-      }
+      Parameter.optional(
+        :text,
+        "subcommand",
+        dgettext("commands", "Subcommand: add, remove, edit, list")
+      ),
+      Parameter.optional(:text, "args", dgettext("commands", "Subcommand arguments"))
     ],
     subcommands: [
       %{name: "add", description: dgettext("commands", "Add a user to your notify list")},

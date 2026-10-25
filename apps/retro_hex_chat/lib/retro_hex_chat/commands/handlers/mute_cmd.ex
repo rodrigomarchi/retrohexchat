@@ -19,20 +19,8 @@ defmodule RetroHexChat.Commands.Handlers.MuteCmd do
       ),
     examples: [dgettext("commands", "/mute troll"), dgettext("commands", "/mute troll 30m")],
     parameters: [
-      %Parameter{
-        name: "nickname",
-        required: true,
-        type: :nick,
-        position: 0,
-        description: dgettext("commands", "User to mute")
-      },
-      %Parameter{
-        name: "duration",
-        required: false,
-        type: :text,
-        position: 1,
-        description: dgettext("commands", "Duration (e.g. 30s, 5m, 1h)")
-      }
+      Parameter.required(:nick, "nickname", dgettext("commands", "User to mute")),
+      Parameter.optional(:text, "duration", dgettext("commands", "Duration (e.g. 30s, 5m, 1h)"))
     ]
 
   @impl true

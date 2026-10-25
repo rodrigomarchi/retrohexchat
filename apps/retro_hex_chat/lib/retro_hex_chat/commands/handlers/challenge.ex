@@ -18,6 +18,7 @@ defmodule RetroHexChat.Commands.Handlers.Challenge do
   use RetroHexChat.Commands.Handler,
     name: "challenge",
     category: :user,
+    usage: usage(),
     syntax: dgettext("commands", "/challenge <nickname> [mode]"),
     summary: dgettext("commands", "Invite someone to play the channel's game over a P2P session.
 Requires: both users must be registered and identified (/ns identify)."),
@@ -31,26 +32,9 @@ Requires: both users must be registered and identified (/ns identify)."),
       dgettext("commands", "/challenge mario quick")
     ],
     parameters: [
-      %Parameter{
-        name: "nickname",
-        required: true,
-        type: :nick,
-        position: 0,
-        description: dgettext("commands", "Who to play")
-      },
-      %Parameter{
-        name: "mode",
-        required: false,
-        type: :text,
-        position: 1,
-        description: dgettext("commands", "A mode of the game, like blitz")
-      }
+      Parameter.required(:nick, "nickname", dgettext("commands", "Who to play")),
+      Parameter.optional(:text, "mode", dgettext("commands", "A mode of the game, like blitz"))
     ]
-
-  @impl true
-  @spec validate(String.t()) :: :ok | {:error, String.t()}
-  def validate(""), do: {:error, usage()}
-  def validate(_raw_args), do: :ok
 
   @impl true
   @spec execute([String.t()], Handler.context()) :: Handler.result()

@@ -29,20 +29,12 @@ defmodule RetroHexChat.Commands.Handlers.Perform do
       dgettext("commands", "/perform clear")
     ],
     parameters: [
-      %Parameter{
-        name: "subcommand",
-        required: false,
-        type: :text,
-        position: 0,
-        description: dgettext("commands", "Subcommand: list, add, remove, move, clear")
-      },
-      %Parameter{
-        name: "args",
-        required: false,
-        type: :text,
-        position: 1,
-        description: dgettext("commands", "Subcommand arguments")
-      }
+      Parameter.optional(
+        :text,
+        "subcommand",
+        dgettext("commands", "Subcommand: list, add, remove, move, clear")
+      ),
+      Parameter.optional(:text, "args", dgettext("commands", "Subcommand arguments"))
     ],
     subcommands: [
       %{name: "list", description: dgettext("commands", "Show perform commands")},

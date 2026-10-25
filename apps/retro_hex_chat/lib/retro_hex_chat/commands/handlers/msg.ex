@@ -8,6 +8,7 @@ defmodule RetroHexChat.Commands.Handlers.Msg do
   use RetroHexChat.Commands.Handler,
     name: "msg",
     category: :user,
+    usage: dgettext("commands", "Usage: /msg <nickname> <message>"),
     syntax: dgettext("commands", "/msg <nickname> <message>"),
     summary:
       dgettext(
@@ -24,26 +25,9 @@ defmodule RetroHexChat.Commands.Handlers.Msg do
       dgettext("commands", "/msg Nick How are you?")
     ],
     parameters: [
-      %Parameter{
-        name: "nickname",
-        required: true,
-        type: :nick,
-        position: 0,
-        description: dgettext("commands", "Message recipient")
-      },
-      %Parameter{
-        name: "message",
-        required: true,
-        type: :text,
-        position: 1,
-        description: dgettext("commands", "Message content")
-      }
+      Parameter.required(:nick, "nickname", dgettext("commands", "Message recipient")),
+      Parameter.required(:text, "message", dgettext("commands", "Message content"))
     ]
-
-  @impl true
-  @spec validate(String.t()) :: :ok | {:error, String.t()}
-  def validate(""), do: {:error, dgettext("commands", "Usage: /msg <nickname> <message>")}
-  def validate(_), do: :ok
 
   @impl true
   @spec execute([String.t()], Handler.context()) :: Handler.result()

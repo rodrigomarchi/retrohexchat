@@ -25,20 +25,12 @@ defmodule RetroHexChat.Commands.Handlers.Event do
     ],
     tooltip_examples: ["/event", "/event 2h Tuesday tournament", "/event cancel 12"],
     parameters: [
-      %Parameter{
-        name: "when",
-        required: false,
-        type: :text,
-        position: 0,
-        description: dgettext("commands", "How long from now it starts: 2h, 30m, 3d")
-      },
-      %Parameter{
-        name: "title",
-        required: false,
-        type: :text,
-        position: 1,
-        description: dgettext("commands", "What the channel is going to do")
-      }
+      Parameter.optional(
+        :text,
+        "when",
+        dgettext("commands", "How long from now it starts: 2h, 30m, 3d")
+      ),
+      Parameter.optional(:text, "title", dgettext("commands", "What the channel is going to do"))
     ]
 
   @impl true

@@ -12,17 +12,22 @@ defmodule RetroHexChat.Commands.Handler do
         summary: dgettext("commands", "Give channel operator status to a user."),
         description: dgettext("commands", "Give channel operator status ..."),
         examples: [dgettext("commands", "/op alice")],
-        parameters: [%Parameter{name: "nickname", required: true, type: :nick, position: 0,
-                                description: dgettext("commands", "User to give operator status")}]
+        parameters: [
+          Parameter.required(:nick, "nickname", dgettext("commands", "User to give operator status"))
+        ]
 
   From that it answers `help/0` (the `/help` page: `description` is the long
   text), `category/0` and `syntax_definition/0` (the tooltip: `summary` is the
   short text), and `validate/1` accepts anything unless the handler defines
   its own. Every text is an expression evaluated when asked for, so it is
   translated into the reader's language at that moment. Optional:
-  `parameters` (default `[]`), `sub_options`, `subcommands`, and
-  `tooltip_examples` when the tooltip shows fewer examples than `/help`.
+  `parameters` (default `[]`, built with `Parameter.required/3` and
+  `Parameter.optional/3` in the order they are typed), `sub_options`, `subcommands`, and
+  `tooltip_examples` when the tooltip shows fewer examples than `/help`, and
+  `usage` — the message `validate/1` answers when the command is typed bare.
   """
+
+  alias RetroHexChat.Commands.CommandSyntax.Parameter
 
   @doc false
   defmacro __using__(opts) do
@@ -36,13 +41,26 @@ defmodule RetroHexChat.Commands.Handler do
     sub_options = Keyword.get(opts, :sub_options)
     subcommands = Keyword.get(opts, :subcommands)
     tooltip_examples = Keyword.get(opts, :tooltip_examples, examples)
+    usage = Keyword.get(opts, :usage)
 
     quote do
       @behaviour RetroHexChat.Commands.Handler
 
       @impl true
       @spec validate(String.t()) :: :ok | {:error, String.t()}
-      def validate(_raw_args), do: :ok
+      unquote(
+        if usage do
+          quote do
+            def validate(""), do: {:error, unquote(usage)}
+            def validate(_raw_args), do: :ok
+          end
+        else
+          quote do
+            def validate(_raw_args), do: :ok
+          end
+        end
+      )
+
       defoverridable validate: 1
 
       @impl true
@@ -66,7 +84,7 @@ defmodule RetroHexChat.Commands.Handler do
           syntax: unquote(syntax),
           description: unquote(summary),
           category: unquote(category),
-          parameters: unquote(parameters),
+          parameters: Parameter.positioned(unquote(parameters)),
           examples: unquote(tooltip_examples),
           sub_options: unquote(sub_options),
           subcommands: unquote(subcommands)

@@ -27,20 +27,12 @@ defmodule RetroHexChat.Commands.Handlers.Timer do
       dgettext("commands", "/timer stop heartbeat")
     ],
     parameters: [
-      %Parameter{
-        name: "name",
-        required: true,
-        type: :text,
-        position: 0,
-        description: dgettext("commands", "Timer name")
-      },
-      %Parameter{
-        name: "args",
-        required: true,
-        type: :text,
-        position: 1,
-        description: dgettext("commands", "Configuration: [repeat] <seconds> <command>")
-      }
+      Parameter.required(:text, "name", dgettext("commands", "Timer name")),
+      Parameter.required(
+        :text,
+        "args",
+        dgettext("commands", "Configuration: [repeat] <seconds> <command>")
+      )
     ],
     subcommands: [
       %{name: "list", description: dgettext("commands", "Show active timers")},

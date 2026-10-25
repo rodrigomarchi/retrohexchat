@@ -23,13 +23,11 @@ defmodule RetroHexChat.Commands.Handlers.Wallops do
       ),
     examples: [dgettext("commands", "/wallops Server maintenance in 10 minutes")],
     parameters: [
-      %Parameter{
-        name: "message",
-        required: true,
-        type: :text,
-        position: 0,
-        description: dgettext("commands", "Message for all users with +w mode")
-      }
+      Parameter.required(
+        :text,
+        "message",
+        dgettext("commands", "Message for all users with +w mode")
+      )
     ]
 
   @impl true

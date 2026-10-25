@@ -40,21 +40,12 @@ defmodule RetroHexChat.Commands.Handlers.Admin do
       dgettext("commands", "/admin nuke --confirm")
     ],
     parameters: [
-      %Parameter{
-        name: "subcommand",
-        required: true,
-        type: :text,
-        position: 0,
-        description:
-          dgettext("commands", "server, user, channel, ns, cs, debug, log, turn, or nuke")
-      },
-      %Parameter{
-        name: "args",
-        required: false,
-        type: :text,
-        position: 1,
-        description: dgettext("commands", "Subcommand arguments")
-      }
+      Parameter.required(
+        :text,
+        "subcommand",
+        dgettext("commands", "server, user, channel, ns, cs, debug, log, turn, or nuke")
+      ),
+      Parameter.optional(:text, "args", dgettext("commands", "Subcommand arguments"))
     ],
     subcommands: [
       %{name: "server", description: dgettext("commands", "Server info and settings")},

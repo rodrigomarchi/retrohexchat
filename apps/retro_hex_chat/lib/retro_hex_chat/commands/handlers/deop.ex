@@ -19,13 +19,11 @@ defmodule RetroHexChat.Commands.Handlers.Deop do
       ),
     examples: [dgettext("commands", "/deop alice")],
     parameters: [
-      %Parameter{
-        name: "nickname",
-        required: true,
-        type: :nick,
-        position: 0,
-        description: dgettext("commands", "User to remove operator status from")
-      }
+      Parameter.required(
+        :nick,
+        "nickname",
+        dgettext("commands", "User to remove operator status from")
+      )
     ]
 
   @impl true

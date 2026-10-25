@@ -8,6 +8,7 @@ defmodule RetroHexChat.Commands.Handlers.Unignore do
   use RetroHexChat.Commands.Handler,
     name: "unignore",
     category: :user,
+    usage: dgettext("commands", "Usage: /unignore <nickname>"),
     syntax: dgettext("commands", "/unignore <nickname>"),
     summary:
       dgettext(
@@ -23,19 +24,8 @@ defmodule RetroHexChat.Commands.Handlers.Unignore do
       dgettext("commands", "/unignore SpamBot")
     ],
     parameters: [
-      %Parameter{
-        name: "nickname",
-        required: true,
-        type: :nick,
-        position: 0,
-        description: dgettext("commands", "Remove user from ignore list")
-      }
+      Parameter.required(:nick, "nickname", dgettext("commands", "Remove user from ignore list"))
     ]
-
-  @impl true
-  @spec validate(String.t()) :: :ok | {:error, String.t()}
-  def validate(""), do: {:error, dgettext("commands", "Usage: /unignore <nickname>")}
-  def validate(_args), do: :ok
 
   @impl true
   @spec execute([String.t()], Handler.context()) :: Handler.result()
