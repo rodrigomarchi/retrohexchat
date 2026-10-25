@@ -226,6 +226,40 @@ export function drawParticleDots(ctx, particles) {
 }
 
 /**
+ * Particles flying out of one point in random directions. Each draws its
+ * angle, then its speed — `base` plus up to `spread` — then whatever `extra`
+ * adds (a colour, a life drawn after the speed), so a seeded match draws in
+ * the same order every time.
+ * @param {number} x
+ * @param {number} y
+ * @param {number} count
+ * @param {{ speed: [number, number], extra?: (i: number, random: () => number) => object }} shape
+ * @param {() => number} [random=Math.random] - draws in [0, 1)
+ * @returns {Array<object>}
+ */
+export function burst(
+  x,
+  y,
+  count,
+  { speed: [base, spread], extra = () => ({}) },
+  random = Math.random,
+) {
+  const particles = [];
+  for (let i = 0; i < count; i++) {
+    const angle = random() * Math.PI * 2;
+    const speed = base + random() * spread;
+    particles.push({
+      x,
+      y,
+      vx: Math.cos(angle) * speed,
+      vy: Math.sin(angle) * speed,
+      ...extra(i, random),
+    });
+  }
+  return particles;
+}
+
+/**
  * One step of particles: each moves by its velocity, slows by `drag` and
  * loses `fade` of its life; the spent ones are dropped.
  * @param {Array<{ x: number, y: number, vx: number, vy: number, life: number }>} particles

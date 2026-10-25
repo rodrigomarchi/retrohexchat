@@ -5,7 +5,7 @@
  */
 
 import { PHASE } from "./protocol.js";
-import { stepParticles } from "../core/render.js";
+import { burst, stepParticles } from "../core/render.js";
 import { paddleBounce } from "../core/paddle.js";
 
 // --- Constants ---
@@ -257,19 +257,7 @@ export function serveBall(state, random = Math.random) {
  * @returns {Array} particle array
  */
 export function createScoreParticles(x, y, random = Math.random) {
-  const particles = [];
-  for (let i = 0; i < 10; i++) {
-    const angle = random() * Math.PI * 2;
-    const speed = 2 + random() * 4;
-    particles.push({
-      x,
-      y,
-      vx: Math.cos(angle) * speed,
-      vy: Math.sin(angle) * speed,
-      life: 1.0,
-    });
-  }
-  return particles;
+  return burst(x, y, 10, { speed: [2, 4], extra: () => ({ life: 1.0 }) }, random);
 }
 
 /**

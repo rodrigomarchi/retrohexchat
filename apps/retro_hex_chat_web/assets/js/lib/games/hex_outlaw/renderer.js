@@ -20,7 +20,7 @@ import {
 import { PHASE, GAME_MODE } from "./protocol.js";
 import { t, jt } from "../../i18n.js";
 import { gameColor, readGameColors } from "../../game_colors.js";
-import { drawCenterText, waitingText } from "../core/render.js";
+import { burst, drawCenterText, waitingText } from "../core/render.js";
 
 /**
  * Read CSS custom properties from the canvas element.
@@ -358,19 +358,16 @@ function drawBullet(ctx, state, prefix, colors) {
  * @returns {Array}
  */
 export function createHitParticles(x, y, random = Math.random) {
-  const particles = [];
-  for (let i = 0; i < 8; i++) {
-    const angle = random() * Math.PI * 2;
-    const speed = 1 + random() * 3;
-    particles.push({
-      x,
-      y,
-      vx: Math.cos(angle) * speed,
-      vy: Math.sin(angle) * speed,
-      life: 15 + Math.floor(random() * 10),
-      maxLife: 25,
-    });
-  }
+  const particles = burst(
+    x,
+    y,
+    8,
+    {
+      speed: [1, 3],
+      extra: (_i, r) => ({ life: 15 + Math.floor(r() * 10), maxLife: 25 }),
+    },
+    random,
+  );
   // Hat particle (flies upward)
   particles.push({
     x,

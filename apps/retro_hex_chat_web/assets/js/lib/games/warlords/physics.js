@@ -6,7 +6,7 @@
 
 import { PHASE, BRICKS_ROWS, BRICKS_COLS, INITIAL_LIVES } from "./protocol.js";
 import { gameColor } from "../../game_colors.js";
-import { stepParticles } from "../core/render.js";
+import { burst, stepParticles } from "../core/render.js";
 import { paddleBounce } from "../core/paddle.js";
 
 // --- Canvas ---
@@ -536,20 +536,13 @@ export function checkGameOver(state) {
  * @returns {Array} particle array
  */
 export function createBrickParticles(x, y, color, random = Math.random) {
-  const particles = [];
-  for (let i = 0; i < 8; i++) {
-    const angle = random() * Math.PI * 2;
-    const speed = 2 + random() * 3;
-    particles.push({
-      x,
-      y,
-      vx: Math.cos(angle) * speed,
-      vy: Math.sin(angle) * speed,
-      life: 1.0,
-      color: color || gameColor("ffaa00"),
-    });
-  }
-  return particles;
+  return burst(
+    x,
+    y,
+    8,
+    { speed: [2, 3], extra: () => ({ life: 1.0, color: color || gameColor("ffaa00") }) },
+    random,
+  );
 }
 
 /**
@@ -560,20 +553,16 @@ export function createBrickParticles(x, y, color, random = Math.random) {
  * @returns {Array} particle array
  */
 export function createKingParticles(x, y, random = Math.random) {
-  const particles = [];
-  for (let i = 0; i < 16; i++) {
-    const angle = random() * Math.PI * 2;
-    const speed = 3 + random() * 5;
-    particles.push({
-      x,
-      y,
-      vx: Math.cos(angle) * speed,
-      vy: Math.sin(angle) * speed,
-      life: 1.0,
-      color: i % 2 === 0 ? gameColor("ff3366") : gameColor("ffcc00"),
-    });
-  }
-  return particles;
+  return burst(
+    x,
+    y,
+    16,
+    {
+      speed: [3, 5],
+      extra: (i) => ({ life: 1.0, color: i % 2 === 0 ? gameColor("ff3366") : gameColor("ffcc00") }),
+    },
+    random,
+  );
 }
 
 /**

@@ -1,6 +1,7 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
 import { recordingCanvas } from "../../../support/games/recording_canvas.js";
 import {
+  burst,
   drawBackground,
   drawCountdown,
   drawScanlines,
@@ -238,5 +239,25 @@ describe("glitched text", () => {
     expect(c.log.filter(([op]) => op === "stroke")).toHaveLength(17 + 13);
     expect(c.log).toContainEqual(["globalAlpha", "=", 0.3]);
     expect(c.log.at(-1)).toEqual(["globalAlpha", "=", 1]);
+  });
+
+  it("burst sends each particle off at a drawn angle and speed, then adds its extras", () => {
+    const draws = [0.25, 0.5, 0.9, 0.75, 0, 0.1];
+    let n = 0;
+    const random = () => draws[n++];
+    const particles = burst(
+      10,
+      20,
+      2,
+      { speed: [1, 2], extra: (i, r) => ({ i, life: r() }) },
+      random,
+    );
+
+    expect(particles).toHaveLength(2);
+    expect(particles[0]).toMatchObject({ x: 10, y: 20, i: 0, life: 0.9 });
+    expect(particles[0].vx).toBeCloseTo(0);
+    expect(particles[0].vy).toBeCloseTo(2);
+    expect(particles[1]).toMatchObject({ i: 1, life: 0.1 });
+    expect(particles[1].vy).toBeCloseTo(-1);
   });
 });

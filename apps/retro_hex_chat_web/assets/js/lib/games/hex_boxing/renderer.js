@@ -23,7 +23,7 @@ import {
 import { PHASE, PUNCH_STATE } from "./protocol.js";
 import { t, jt } from "../../i18n.js";
 import { gameColor, readGameColors } from "../../game_colors.js";
-import { drawBackground, drawCenterText, stepParticles } from "../core/render.js";
+import { burst, drawBackground, drawCenterText, stepParticles } from "../core/render.js";
 
 /**
  * Read CSS custom properties from the canvas element.
@@ -215,22 +215,11 @@ function drawArms(ctx, bx, by, dir, punchState, punchTimer, arm, armColor, _colo
  * @returns {Array}
  */
 export function createHitParticles(x, y, points, random = Math.random) {
-  const count = points * 3;
-  const particles = [];
-  for (let i = 0; i < count; i++) {
-    const angle = random() * Math.PI * 2;
-    const speed = 1 + random() * 3;
-    particles.push({
-      x,
-      y,
-      vx: Math.cos(angle) * speed,
-      vy: Math.sin(angle) * speed,
-      life: 15 + Math.floor(random() * 10),
-      maxLife: 25,
-    });
-  }
-  return particles;
+  return burst(x, y, points * 3, { speed: [1, 3], extra: hitLife }, random);
 }
+
+/** A hit's spark lasts 15 to 24 steps. */
+const hitLife = (_i, random) => ({ life: 15 + Math.floor(random() * 10), maxLife: 25 });
 
 /**
  * Update particles (tick + remove dead).

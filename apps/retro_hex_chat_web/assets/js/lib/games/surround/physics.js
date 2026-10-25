@@ -6,7 +6,7 @@
 
 import { PHASE, DIR, GRID_W, GRID_H } from "./protocol.js";
 import { gameColor } from "../../game_colors.js";
-import { stepParticles } from "../core/render.js";
+import { burst, stepParticles } from "../core/render.js";
 
 // Canvas dimensions
 export const CANVAS_W = 640;
@@ -180,20 +180,13 @@ export function moveAndCheck(state, p1Dir, p2Dir) {
 export function createCrashParticles(gridX, gridY, color, random = Math.random) {
   const px = GRID_OFFSET_X + gridX * CELL_SIZE + CELL_SIZE / 2;
   const py = GRID_OFFSET_Y + gridY * CELL_SIZE + CELL_SIZE / 2;
-  const particles = [];
-  for (let i = 0; i < 12; i++) {
-    const angle = random() * Math.PI * 2;
-    const speed = 2 + random() * 4;
-    particles.push({
-      x: px,
-      y: py,
-      vx: Math.cos(angle) * speed,
-      vy: Math.sin(angle) * speed,
-      life: 1.0,
-      color: color || gameColor("ffaa00"),
-    });
-  }
-  return particles;
+  return burst(
+    px,
+    py,
+    12,
+    { speed: [2, 4], extra: () => ({ life: 1.0, color: color || gameColor("ffaa00") }) },
+    random,
+  );
 }
 
 /**

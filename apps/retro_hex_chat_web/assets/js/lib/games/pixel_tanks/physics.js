@@ -5,7 +5,7 @@
  */
 
 import { PHASE } from "./protocol.js";
-import { stepParticles } from "../core/render.js";
+import { burst, stepParticles } from "../core/render.js";
 
 // --- Canvas ---
 export const CANVAS_W = 640;
@@ -765,22 +765,13 @@ export function createExplosion(x, y, random = Math.random) {
  * @returns {Array<object>}
  */
 export function createSparks(x, y, random = Math.random) {
-  const particles = [];
-  const count = 6;
-  for (let i = 0; i < count; i++) {
-    const angle = random() * Math.PI * 2;
-    const speed = 1 + random() * 2;
-    particles.push({
-      x,
-      y,
-      vx: Math.cos(angle) * speed,
-      vy: Math.sin(angle) * speed,
-      life: 15 + random() * 10,
-      maxLife: 25,
-      spark: true,
-    });
-  }
-  return particles;
+  return burst(
+    x,
+    y,
+    6,
+    { speed: [1, 2], extra: (_i, r) => ({ life: 15 + r() * 10, maxLife: 25, spark: true }) },
+    random,
+  );
 }
 
 /**
