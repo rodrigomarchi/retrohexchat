@@ -774,6 +774,15 @@ export function checkAlienReachedGround(state) {
 
 // ── Drop Queue Processing ──
 
+/** Where a dropped alien lands: a row under the lowest one standing, never on the ground. */
+function landingY(aliens) {
+  const lowest = aliens.reduce(
+    (m, a) => (a.type !== ALIEN_TYPE.NONE ? Math.max(m, a.y) : m),
+    ALIEN_MARGIN_TOP,
+  );
+  return Math.min(lowest + ALIEN_SPACING_Y, GROUND_Y - ALIEN_SPACING_Y);
+}
+
 /**
  * Process pending alien drops: decrement timers, materialize when ready.
  * @param {object} state
@@ -800,22 +809,14 @@ export function processDropQueue(state) {
 
       if (d.targetSide === 1 || s.mode === GAME_MODE.COOP) {
         // Find lowest row position for P1/coop grid
-        const maxY = aliens1.reduce(
-          (m, a) => (a.type !== ALIEN_TYPE.NONE ? Math.max(m, a.y) : m),
-          ALIEN_MARGIN_TOP,
-        );
-        alien.y = Math.min(maxY + ALIEN_SPACING_Y, GROUND_Y - ALIEN_SPACING_Y);
+        alien.y = landingY(aliens1);
         alien.x =
           ALIEN_MARGIN_LEFT +
           (ac1 % (s.mode === GAME_MODE.COOP ? COOP_GRID_COLS : GRID_COLS)) * ALIEN_SPACING_X;
         aliens1.push(alien);
         ac1 += 1;
       } else {
-        const maxY = aliens2.reduce(
-          (m, a) => (a.type !== ALIEN_TYPE.NONE ? Math.max(m, a.y) : m),
-          ALIEN_MARGIN_TOP,
-        );
-        alien.y = Math.min(maxY + ALIEN_SPACING_Y, GROUND_Y - ALIEN_SPACING_Y);
+        alien.y = landingY(aliens2);
         alien.x = DIVIDER_X + ALIEN_MARGIN_LEFT + (ac2 % GRID_COLS) * ALIEN_SPACING_X;
         aliens2.push(alien);
         ac2 += 1;

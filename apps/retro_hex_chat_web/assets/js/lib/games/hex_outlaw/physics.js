@@ -216,26 +216,35 @@ export function tickBullets(state) {
   return s;
 }
 
+/**
+ * A bullet's height and climb after a step that moved it to `y`: the first
+ * time it reaches the ceiling or the floor it turns back; after that it does
+ * not bounce again.
+ * @param {number} y
+ * @param {number} vy
+ * @param {boolean} bounced
+ * @returns {{ y: number, vy: number, bounced: boolean }}
+ */
+export function ricochet(y, vy, bounced) {
+  if (bounced || vy === 0) return { y, vy, bounced };
+  if (y - BULLET_RADIUS <= ARENA_TOP) {
+    return { y: ARENA_TOP + BULLET_RADIUS, vy: -vy, bounced: true };
+  }
+  if (y + BULLET_RADIUS >= ARENA_BOTTOM) {
+    return { y: ARENA_BOTTOM - BULLET_RADIUS, vy: -vy, bounced: true };
+  }
+  return { y, vy, bounced };
+}
+
 function _tickBullet(state, prefix) {
   if (!state[`${prefix}active`]) return state;
 
   const x = state[`${prefix}x`] + state[`${prefix}vx`];
-  let y = state[`${prefix}y`] + state[`${prefix}vy`];
-  let vy = state[`${prefix}vy`];
-  let bounced = state[`${prefix}bounced`];
-
-  // Ricochet off top/bottom walls (max 1 bounce)
-  if (!bounced && vy !== 0) {
-    if (y - BULLET_RADIUS <= ARENA_TOP) {
-      y = ARENA_TOP + BULLET_RADIUS;
-      vy = -vy;
-      bounced = true;
-    } else if (y + BULLET_RADIUS >= ARENA_BOTTOM) {
-      y = ARENA_BOTTOM - BULLET_RADIUS;
-      vy = -vy;
-      bounced = true;
-    }
-  }
+  const { y, vy, bounced } = ricochet(
+    state[`${prefix}y`] + state[`${prefix}vy`],
+    state[`${prefix}vy`],
+    state[`${prefix}bounced`],
+  );
 
   // Deactivate if out of horizontal bounds
   if (x < ARENA_LEFT - BULLET_RADIUS || x > ARENA_RIGHT + BULLET_RADIUS) {

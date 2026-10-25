@@ -14,7 +14,6 @@ import {
   drawScore,
   drawLives,
   drawFinished,
-  drawParticles,
 } from "../../../../js/lib/games/breakout/renderer.js";
 
 function createMockCtx() {
@@ -162,18 +161,6 @@ describe("breakout_renderer", () => {
       const texts = ctx.fillText.mock.calls.map((c) => c[0]);
       expect(texts).toContain("GAME OVER");
       expect(texts).toContain("NO LIVES REMAINING");
-    });
-  });
-
-  describe("drawParticles", () => {
-    it("draws particles", () => {
-      const particles = [
-        { x: 10, y: 20, life: 0.8, color: "#ff0066" },
-        { x: 30, y: 40, life: 0.3, color: "#00ff66" },
-      ];
-      drawParticles(ctx, particles, colors);
-      expect(ctx.fillRect).toHaveBeenCalledTimes(2);
-      expect(ctx.globalAlpha).toBe(1.0);
     });
   });
 

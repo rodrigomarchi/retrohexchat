@@ -471,6 +471,18 @@ export function checkServeLanding(state) {
   return state;
 }
 
+/** The point took the game: count it, clear the points, announce it, change server. */
+function _winGame(s, pw) {
+  if (pw === 1) s.p1Games++;
+  else s.p2Games++;
+  s.p1Points = 0;
+  s.p2Points = 0;
+  s.totalPointsInGame = 0;
+  s.announcement = ANNOUNCEMENT.GAME;
+  s.server = s.server === 1 ? 2 : 1;
+  return _checkSetWin(s);
+}
+
 /**
  * Advance the score after a point is won.
  * Handles all 3 game modes, deuce/advantage, tiebreak, game/set win.
@@ -484,16 +496,7 @@ export function advanceScore(state) {
   const s = { ...state };
 
   // Sudden Death: each point = a game
-  if (s.gameMode === GAME_MODE.SUDDEN_DEATH) {
-    if (pw === 1) s.p1Games++;
-    else s.p2Games++;
-    s.p1Points = 0;
-    s.p2Points = 0;
-    s.totalPointsInGame = 0;
-    s.announcement = ANNOUNCEMENT.GAME;
-    s.server = s.server === 1 ? 2 : 1;
-    return _checkSetWin(s);
-  }
+  if (s.gameMode === GAME_MODE.SUDDEN_DEATH) return _winGame(s, pw);
 
   // Tiebreak scoring
   if (s.isTiebreak) {
@@ -507,17 +510,7 @@ export function advanceScore(state) {
   s[pKey]++;
 
   // Check for game win (need 4+ points and 2+ lead)
-  if (s[pKey] >= 4 && s[pKey] - s[oKey] >= 2) {
-    // Game won
-    if (pw === 1) s.p1Games++;
-    else s.p2Games++;
-    s.p1Points = 0;
-    s.p2Points = 0;
-    s.totalPointsInGame = 0;
-    s.announcement = ANNOUNCEMENT.GAME;
-    s.server = s.server === 1 ? 2 : 1;
-    return _checkSetWin(s);
-  }
+  if (s[pKey] >= 4 && s[pKey] - s[oKey] >= 2) return _winGame(s, pw);
 
   // Deuce: both at 3+ and equal
   if (s.p1Points >= 3 && s.p2Points >= 3) {

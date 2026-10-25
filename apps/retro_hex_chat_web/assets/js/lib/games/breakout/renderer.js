@@ -23,6 +23,7 @@ import {
   drawGetReady,
   drawGlitchBanner,
   drawGrid,
+  drawParticleDots,
   drawScanlines,
   drawVignette,
   drawWaiting,
@@ -61,7 +62,7 @@ export function render(ctx, state, colors, time) {
   }
 
   if (state.particles && state.particles.length > 0) {
-    drawParticles(ctx, state.particles, colors);
+    drawParticleDots(ctx, state.particles);
   }
 
   // Bottom paddle (P1 — cyan)
@@ -240,16 +241,4 @@ export function drawFinished(ctx, won, colors, time) {
 
   const sub = won ? t("ALL BLOCKS CLEARED") : t("NO LIVES REMAINING");
   drawGlitchBanner(ctx, { text, color, sub, subColor: colors.muted }, time, CANVAS_W, CANVAS_H);
-}
-
-/**
- * Draw block destruction particles.
- */
-export function drawParticles(ctx, particles, _colors) {
-  for (const p of particles) {
-    ctx.globalAlpha = p.life;
-    ctx.fillStyle = p.color || gameColor("ffaa00");
-    ctx.fillRect(p.x - 2, p.y - 2, 4, 4);
-  }
-  ctx.globalAlpha = 1.0;
 }

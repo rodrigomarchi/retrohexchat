@@ -19,6 +19,7 @@ import {
   NML_P2_MIN_X,
   RICOCHET_ANGLE,
   getObstacleRect,
+  ricochet,
 } from "./physics.js";
 import { aiRng, clamp, normalizeDifficulty, randomUnit } from "../core/ai.js";
 
@@ -339,17 +340,7 @@ function simulatedShotHits(state, bullet, opponent) {
     x += bullet.vx;
     y += vy;
 
-    if (!bounced && vy !== 0) {
-      if (y - BULLET_RADIUS <= ARENA_TOP) {
-        y = ARENA_TOP + BULLET_RADIUS;
-        vy = -vy;
-        bounced = true;
-      } else if (y + BULLET_RADIUS >= ARENA_BOTTOM) {
-        y = ARENA_BOTTOM - BULLET_RADIUS;
-        vy = -vy;
-        bounced = true;
-      }
-    }
+    ({ y, vy, bounced } = ricochet(y, vy, bounced));
 
     if (rect && bulletHitsRect(x, y, rect)) return false;
     if (bulletHitsGunslinger(x, y, opponent.x, opponent.y)) return true;
@@ -373,17 +364,7 @@ function simulateBulletCrossing(state, bullet, targetX, options) {
     x += bullet.vx;
     y += vy;
 
-    if (!bounced && vy !== 0) {
-      if (y - BULLET_RADIUS <= ARENA_TOP) {
-        y = ARENA_TOP + BULLET_RADIUS;
-        vy = -vy;
-        bounced = true;
-      } else if (y + BULLET_RADIUS >= ARENA_BOTTOM) {
-        y = ARENA_BOTTOM - BULLET_RADIUS;
-        vy = -vy;
-        bounced = true;
-      }
-    }
+    ({ y, vy, bounced } = ricochet(y, vy, bounced));
 
     if (rect && bulletHitsRect(x, y, rect)) return null;
 
