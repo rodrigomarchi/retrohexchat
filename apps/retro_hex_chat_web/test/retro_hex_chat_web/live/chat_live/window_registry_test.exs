@@ -14,6 +14,7 @@ defmodule RetroHexChatWeb.ChatLive.WindowRegistryTest do
   @moduletag :unit
 
   alias RetroHexChatWeb.ChatLive.WindowRegistry, as: Registry
+  alias RetroHexChatWeb.Components.UI.AppGroups
 
   describe "the registry itself" do
     test "every window has an id, a title and an icon" do
@@ -64,6 +65,22 @@ defmodule RetroHexChatWeb.ChatLive.WindowRegistryTest do
       for window <- Registry.windows(), window.opener do
         refute window.taskbar_when == :never,
                "#{window.id} can be opened but never appears on the taskbar"
+      end
+    end
+
+    test "every opener is either admin-gated or plain, never both" do
+      admin = Registry.openers(:admin)
+      plain = Registry.openers(:plain)
+
+      assert Map.merge(admin, plain) == Registry.openers()
+      assert MapSet.disjoint?(MapSet.new(Map.keys(admin)), MapSet.new(Map.keys(plain)))
+      assert Enum.all?(Map.values(admin), &(&1 in Registry.admin_ids()))
+    end
+
+    test "every window a Start menu group or desktop folder names is registered" do
+      for group <- [:tools, :automation, :account],
+          %{kind: :window, window: id} <- AppGroups.items(group) do
+        assert Registry.fetch(id), "#{group} names unregistered window #{id}"
       end
     end
 
@@ -177,6 +194,46 @@ defmodule RetroHexChatWeb.ChatLive.WindowRegistryTest do
 
       assert english != portuguese,
              "no title changed with the locale — the registry has been frozen at compile time"
+    end
+  end
+
+  describe "the desktop template" do
+    @template File.read!(
+                Path.expand(
+                  "../../../../lib/retro_hex_chat_web/live/desktop_live.html.heex",
+                  __DIR__
+                )
+              )
+
+    defp drawn_ids do
+      ~r/WindowRegistry\.attrs\("([^"]+)"\)|registered_window\s+id="([^"]+)"|%\{id: "([^"]+)", source:/
+      |> Regex.scan(@template, capture: :all_but_first)
+      |> Enum.map(fn groups -> Enum.find(groups, &(&1 != "")) end)
+    end
+
+    test "draws every registered window exactly once, and nothing unregistered" do
+      registered = Enum.map(Registry.windows(), & &1.id)
+
+      assert Enum.sort(drawn_ids()) == Enum.sort(registered)
+    end
+
+    test "a window drawn in one line has an island to hold" do
+      for [id] <-
+            Regex.scan(~r/registered_window\s+id="([^"]+)"/, @template, capture: :all_but_first) do
+        assert Registry.fetch(id).island, "#{id} is drawn in one line but declares no island"
+      end
+    end
+
+    test "an admin window's own block checks the admin role" do
+      for block <-
+            Regex.scan(~r/<\.desktop_window\b.*?<\/\.desktop_window>/s, @template)
+            |> List.flatten(),
+          id <- Registry.admin_ids(),
+          String.contains?(block, ~s|attrs("#{id}")|) or
+            String.contains?(block, ~s|%{id: "#{id}"|) do
+        assert block =~ "ChatContext.admin?(@session)",
+               "#{id} renders without checking the admin role"
+      end
     end
   end
 end

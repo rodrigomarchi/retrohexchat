@@ -106,7 +106,6 @@
       body_class="flex flex-col min-h-0 p-0 overflow-hidden"
       data-testid="chat-window"
     >
-      <:icon><Icons.icon_chat class="h-4 w-4" /></:icon>
       <:meta>{ChatTitle.window_meta(@session, length(@conversation_members))}</:meta>
 
       <%!-- The application's menus, under its own title bar, as Win98 had them.
@@ -390,19 +389,7 @@
       <%!-- Highlight Words — server-managed: closing unmounts the island
           (selection/sub-form state resets); the session read-model stays
           parent-owned and flows in as passthrough. --%>
-      <.desktop_window
-        :if={"highlight" in @open_windows}
-        {WindowRegistry.attrs("highlight")}
-        body_class="flex min-h-0 flex-col p-2"
-        data-testid="highlight-window"
-      >
-        <:icon><Icons.icon_star class="h-4 w-4" /></:icon>
-        <.live_component
-          module={RetroHexChatWeb.ChatLive.Components.HighlightDialog}
-          id={RetroHexChatWeb.ChatLive.Components.HighlightDialog.id()}
-          session={@session}
-        />
-      </.desktop_window>
+      <.registered_window id="highlight" session={@session} open_windows={@open_windows} />
 
       <%!-- Alias / Custom Menus / Auto Respond — server-managed editors: closing
           unmounts the island, resetting selection and draft. --%>
@@ -412,7 +399,6 @@
         body_class="flex min-h-0 flex-col p-2"
         data-testid="alias-window"
       >
-        <:icon><Icons.icon_dialog_alias class="h-4 w-4" /></:icon>
         <.live_component
           module={RetroHexChatWeb.ChatLive.Components.AliasDialog}
           id={RetroHexChatWeb.ChatLive.Components.AliasDialog.id()}
@@ -426,7 +412,6 @@
         body_class="flex min-h-0 flex-col p-2"
         data-testid="custom-menus-window"
       >
-        <:icon><Icons.icon_dialog_custom_menus class="h-4 w-4" /></:icon>
         <.live_component
           module={RetroHexChatWeb.ChatLive.Components.CustomMenusDialog}
           id={RetroHexChatWeb.ChatLive.Components.CustomMenusDialog.id()}
@@ -440,7 +425,6 @@
         body_class="flex min-h-0 flex-col p-2"
         data-testid="auto-respond-window"
       >
-        <:icon><Icons.icon_dialog_auto_respond class="h-4 w-4" /></:icon>
         <.live_component
           module={RetroHexChatWeb.ChatLive.Components.AutoRespondDialog}
           id={RetroHexChatWeb.ChatLive.Components.AutoRespondDialog.id()}
@@ -456,7 +440,6 @@
         body_class="flex min-h-0 flex-col p-2"
         data-testid="address-book-window"
       >
-        <:icon><Icons.icon_dialog_address_book class="h-4 w-4" /></:icon>
         <.live_component
           module={RetroHexChatWeb.ChatLive.Components.AddressBookDialog}
           id={RetroHexChatWeb.ChatLive.Components.AddressBookDialog.id()}
@@ -468,35 +451,11 @@
 
       <%!-- Nick Colors — server-managed: the per-nickname color overrides, with
           the palette editor in two window-scoped sub-forms. --%>
-      <.desktop_window
-        :if={"nick-colors" in @open_windows}
-        {WindowRegistry.attrs("nick-colors")}
-        body_class="flex min-h-0 flex-col p-2"
-        data-testid="nick-colors-window"
-      >
-        <:icon><Icons.icon_dialog_nick_colors class="h-4 w-4" /></:icon>
-        <.live_component
-          module={RetroHexChatWeb.ChatLive.Components.NickColorsDialog}
-          id={RetroHexChatWeb.ChatLive.Components.NickColorsDialog.id()}
-          session={@session}
-        />
-      </.desktop_window>
+      <.registered_window id="nick-colors" session={@session} open_windows={@open_windows} />
 
       <%!-- Ignore List — server-managed: the ignored nicknames, with a
           window-scoped add sub-form. The expiry timers live on the host. --%>
-      <.desktop_window
-        :if={"ignore-list" in @open_windows}
-        {WindowRegistry.attrs("ignore-list")}
-        body_class="flex min-h-0 flex-col p-2"
-        data-testid="ignore-list-window"
-      >
-        <:icon><Icons.icon_dialog_ignore_list class="h-4 w-4" /></:icon>
-        <.live_component
-          module={RetroHexChatWeb.ChatLive.Components.IgnoreListDialog}
-          id={RetroHexChatWeb.ChatLive.Components.IgnoreListDialog.id()}
-          session={@session}
-        />
-      </.desktop_window>
+      <.registered_window id="ignore-list" session={@session} open_windows={@open_windows} />
 
       <%!-- Notify List — server-managed: selection/sub-form state resets on close;
           the buddy list lives on the session and flows in as passthrough. --%>
@@ -506,7 +465,6 @@
         body_class="flex min-h-0 flex-col p-2"
         data-testid="notify-list-window"
       >
-        <:icon><Icons.icon_tab_notify class="h-4 w-4" /></:icon>
         <.live_component
           module={RetroHexChatWeb.ChatLive.Components.NotifyListDialog}
           id={RetroHexChatWeb.ChatLive.Components.NotifyListDialog.id()}
@@ -517,35 +475,11 @@
 
       <%!-- Perform — server-managed: the connect-time command list, with
           window-scoped add/edit sub-forms. --%>
-      <.desktop_window
-        :if={"perform" in @open_windows}
-        {WindowRegistry.attrs("perform")}
-        body_class="flex min-h-0 flex-col p-2"
-        data-testid="perform-window"
-      >
-        <:icon><Icons.icon_dialog_perform class="h-4 w-4" /></:icon>
-        <.live_component
-          module={RetroHexChatWeb.ChatLive.Components.PerformDialog}
-          id={RetroHexChatWeb.ChatLive.Components.PerformDialog.id()}
-          session={@session}
-        />
-      </.desktop_window>
+      <.registered_window id="perform" session={@session} open_windows={@open_windows} />
 
       <%!-- Auto-Join — server-managed: the connect-time channel list, with
           window-scoped add/edit sub-forms. --%>
-      <.desktop_window
-        :if={"autojoin" in @open_windows}
-        {WindowRegistry.attrs("autojoin")}
-        body_class="flex min-h-0 flex-col p-2"
-        data-testid="autojoin-window"
-      >
-        <:icon><Icons.icon_dialog_autojoin class="h-4 w-4" /></:icon>
-        <.live_component
-          module={RetroHexChatWeb.ChatLive.Components.AutojoinDialog}
-          id={RetroHexChatWeb.ChatLive.Components.AutojoinDialog.id()}
-          session={@session}
-        />
-      </.desktop_window>
+      <.registered_window id="autojoin" session={@session} open_windows={@open_windows} />
 
       <%!-- Sound Settings — server-managed: the draft seeds from the session on
           mount; closing discards an uncommitted draft. --%>
@@ -555,7 +489,6 @@
         body_class="flex min-h-0 flex-col p-2"
         data-testid="sound-settings-window"
       >
-        <:icon><Icons.icon_dialog_sound class="h-4 w-4" /></:icon>
         <.live_component
           module={RetroHexChatWeb.ChatLive.Components.SoundSettingsDialog}
           id={RetroHexChatWeb.ChatLive.Components.SoundSettingsDialog.id()}
@@ -575,7 +508,6 @@
         body_class="flex min-h-0 flex-col p-2"
         data-testid="mentions-window"
       >
-        <:icon><Icons.icon_megaphone class="h-4 w-4" /></:icon>
         <.live_component
           module={RetroHexChatWeb.ChatLive.Components.MentionsDialog}
           id={RetroHexChatWeb.ChatLive.Components.MentionsDialog.id()}
@@ -593,7 +525,6 @@
         body_class="flex min-h-0 flex-col p-2"
         data-testid="pinned-window"
       >
-        <:icon><Icons.icon_btn_set_topic class="h-4 w-4" /></:icon>
         <.live_component
           module={RetroHexChatWeb.ChatLive.Components.PinnedDialog}
           id={RetroHexChatWeb.ChatLive.Components.PinnedDialog.id()}
@@ -612,7 +543,6 @@
         body_class="flex min-h-0 flex-col p-2"
         data-testid="saved-window"
       >
-        <:icon><Icons.icon_btn_star class="h-4 w-4" /></:icon>
         <.live_component
           module={RetroHexChatWeb.ChatLive.Components.SavedDialog}
           id={RetroHexChatWeb.ChatLive.Components.SavedDialog.id()}
@@ -630,7 +560,6 @@
         body_class="flex min-h-0 flex-col p-2"
         data-testid="thread-window"
       >
-        <:icon><Icons.icon_chat class="h-4 w-4" /></:icon>
         <.live_component
           module={RetroHexChatWeb.ChatLive.Components.ThreadDialog}
           id={RetroHexChatWeb.ChatLive.Components.ThreadDialog.id()}
@@ -650,7 +579,6 @@
         body_class="flex min-h-0 flex-col p-2"
         data-testid="events-window"
       >
-        <:icon><Icons.icon_clock class="h-4 w-4" /></:icon>
         <.live_component
           module={RetroHexChatWeb.ChatLive.Components.EventsDialog}
           id={RetroHexChatWeb.ChatLive.Components.EventsDialog.id()}
@@ -664,12 +592,11 @@
       <%!-- Server Emoji — the pictures this server answers to by name. The set
           belongs to the server, so only an administrator may change it. --%>
       <.desktop_window
-        :if={"server-emoji" in @open_windows}
+        :if={ChatContext.admin?(@session) and "server-emoji" in @open_windows}
         {WindowRegistry.attrs("server-emoji")}
         body_class="flex min-h-0 flex-col p-2"
         data-testid="server-emoji-window"
       >
-        <:icon><Icons.icon_fmt_emoji class="h-4 w-4" /></:icon>
         <.live_component
           module={RetroHexChatWeb.ChatLive.Components.ServerEmojiDialog}
           id={RetroHexChatWeb.ChatLive.Components.ServerEmojiDialog.id()}
@@ -687,7 +614,6 @@
         body_class="fp-window-body flex min-h-0 flex-col p-2"
         data-testid="flood-protection-window"
       >
-        <:icon><Icons.icon_dialog_flood class="h-4 w-4" /></:icon>
         <.live_component
           module={RetroHexChatWeb.ChatLive.Components.FloodProtectionDialog}
           id={RetroHexChatWeb.ChatLive.Components.FloodProtectionDialog.id()}
@@ -707,7 +633,6 @@
         body_class="h-full min-h-0 overflow-hidden p-2"
         data-testid="arcade-games-window"
       >
-        <:icon><Icons.icon_game_arcade class="h-4 w-4" /></:icon>
         <.solo_lobby
           id="arcade-lobby"
           groups={arcade_groups()}
@@ -734,7 +659,6 @@
         body_class="flex min-h-0 flex-col p-2"
         data-testid="timers-window"
       >
-        <:icon><Icons.icon_btn_timers class="h-4 w-4" /></:icon>
         <.live_component
           module={RetroHexChatWeb.ChatLive.Components.TimersDialog}
           id={RetroHexChatWeb.ChatLive.Components.TimersDialog.id()}
@@ -750,7 +674,6 @@
         body_class="flex min-h-0 flex-col p-2"
         data-testid="channel-list-window"
       >
-        <:icon><Icons.icon_channels class="h-4 w-4" /></:icon>
         <.live_component
           module={RetroHexChatWeb.ChatLive.Components.ChannelListDialog}
           id={RetroHexChatWeb.ChatLive.Components.ChannelListDialog.id()}
@@ -769,7 +692,6 @@
         body_class="cs-window-body flex min-h-0 flex-col p-2"
         data-testid="cheatsheet-window"
       >
-        <:icon><Icons.icon_dialog_cheatsheet class="h-4 w-4" /></:icon>
         <.live_component
           module={RetroHexChatWeb.ChatLive.Components.CheatsheetDialog}
           id={RetroHexChatWeb.ChatLive.Components.CheatsheetDialog.id()}
@@ -789,7 +711,6 @@
         body_class="flex min-h-0 flex-col p-2"
         data-testid="channel-central-window"
       >
-        <:icon><Icons.icon_dialog_channel_central class="h-4 w-4" /></:icon>
         <.live_component
           module={RetroHexChatWeb.ChatLive.Components.ChannelCentralDialog}
           id={RetroHexChatWeb.ChatLive.Components.ChannelCentralDialog.id()}
@@ -805,7 +726,6 @@
         body_class="flex min-h-0 flex-col p-2"
         data-testid="account-window"
       >
-        <:icon><Icons.icon_status_user class="h-4 w-4" /></:icon>
         <.live_component
           module={RetroHexChatWeb.ChatLive.Components.AccountDialog}
           id={RetroHexChatWeb.ChatLive.Components.AccountDialog.id()}
@@ -823,7 +743,6 @@
         body_class="flex min-h-0 flex-col p-2"
         data-testid="trusted-terminals-window"
       >
-        <:icon><Icons.icon_lock class="h-4 w-4" /></:icon>
         <.live_component
           module={RetroHexChatWeb.ChatLive.Components.TrustedTerminalsDialog}
           id={RetroHexChatWeb.ChatLive.Components.TrustedTerminalsDialog.id()}
@@ -841,7 +760,6 @@
         body_class="flex min-h-0 flex-col p-2"
         data-testid="profile-window"
       >
-        <:icon><Icons.icon_dialog_profile class="h-4 w-4" /></:icon>
         <.live_component
           module={RetroHexChatWeb.ChatLive.Components.ProfileDialog}
           id={RetroHexChatWeb.ChatLive.Components.ProfileDialog.id()}
@@ -856,7 +774,6 @@
         body_class="flex min-h-0 flex-col p-2"
         data-testid="away-window"
       >
-        <:icon><Icons.icon_dialog_away class="h-4 w-4" /></:icon>
         <.live_component
           module={RetroHexChatWeb.ChatLive.Components.AwayDialog}
           id={RetroHexChatWeb.ChatLive.Components.AwayDialog.id()}
@@ -873,7 +790,6 @@
         body_class="flex min-h-0 flex-col p-2"
         data-testid="user-modes-window"
       >
-        <:icon><Icons.icon_dialog_user_modes class="h-4 w-4" /></:icon>
         <.live_component
           module={RetroHexChatWeb.ChatLive.Components.UserModesDialog}
           id={RetroHexChatWeb.ChatLive.Components.UserModesDialog.id()}
@@ -889,7 +805,6 @@
         body_class="ul-window-body flex min-h-0 flex-col p-2"
         data-testid="user-lookup-window"
       >
-        <:icon><Icons.icon_btn_search class="h-4 w-4" /></:icon>
         <.live_component
           module={RetroHexChatWeb.ChatLive.Components.UserLookupDialog}
           id={RetroHexChatWeb.ChatLive.Components.UserLookupDialog.id()}
@@ -906,7 +821,6 @@
         body_class="flex min-h-0 flex-col p-2"
         data-testid="url-catcher-window"
       >
-        <:icon><Icons.icon_link class="h-4 w-4" /></:icon>
         <.live_component
           module={RetroHexChatWeb.ChatLive.Components.UrlCatcherDialog}
           id={RetroHexChatWeb.ChatLive.Components.UrlCatcherDialog.id()}
@@ -916,204 +830,34 @@
         />
       </.desktop_window>
 
-      <%!-- Admin Console — server-managed, admin-gated. The open event is the
-          server-side authz for a forged window_open; the render guard here is
-          the second line of defense (no admin content for non-admins). --%>
-      <.desktop_window
-        :if={ChatContext.admin?(@session) and "admin-console" in @open_windows}
-        {WindowRegistry.attrs("admin-console")}
-        body_class="flex min-h-0 flex-col p-2"
-        data-testid="admin-console-window"
-      >
-        <:icon><Icons.icon_dialog_admin_console class="h-4 w-4" /></:icon>
-        <.live_component
-          module={RetroHexChatWeb.ChatLive.Components.AdminConsoleDialog}
-          id={RetroHexChatWeb.ChatLive.Components.AdminConsoleDialog.id()}
-          session={@session}
-        />
-      </.desktop_window>
-
-      <%!-- Admin Users — server-managed, admin-gated. Same authz model as the
-          admin console: the open event gates, the render guard is the second
-          line of defense against a forged window_open. --%>
-      <.desktop_window
-        :if={ChatContext.admin?(@session) and "admin-users" in @open_windows}
-        {WindowRegistry.attrs("admin-users")}
-        body_class="flex min-h-0 flex-col p-2"
-        data-testid="admin-users-window"
-      >
-        <:icon><Icons.icon_community class="h-4 w-4" /></:icon>
-        <.live_component
-          module={RetroHexChatWeb.ChatLive.Components.AdminUsersDialog}
-          id={RetroHexChatWeb.ChatLive.Components.AdminUsersDialog.id()}
-          session={@session}
-        />
-      </.desktop_window>
-
-      <%!-- Admin Channels — server-managed, admin-gated. Same authz model as the
-          admin console. --%>
-      <.desktop_window
-        :if={ChatContext.admin?(@session) and "admin-channels" in @open_windows}
-        {WindowRegistry.attrs("admin-channels")}
-        body_class="flex min-h-0 flex-col p-2"
-        data-testid="admin-channels-window"
-      >
-        <:icon><Icons.icon_channels class="h-4 w-4" /></:icon>
-        <.live_component
-          module={RetroHexChatWeb.ChatLive.Components.AdminChannelsDialog}
-          id={RetroHexChatWeb.ChatLive.Components.AdminChannelsDialog.id()}
-          session={@session}
-        />
-      </.desktop_window>
-
-      <%!-- Admin Server Settings — server-managed, admin-gated. --%>
-      <.desktop_window
-        :if={ChatContext.admin?(@session) and "admin-server-settings" in @open_windows}
-        {WindowRegistry.attrs("admin-server-settings")}
-        body_class="flex min-h-0 flex-col p-2"
-        data-testid="admin-server-settings-window"
-      >
-        <:icon><Icons.icon_server class="h-4 w-4" /></:icon>
-        <.live_component
-          module={RetroHexChatWeb.ChatLive.Components.AdminServerSettingsDialog}
-          id={RetroHexChatWeb.ChatLive.Components.AdminServerSettingsDialog.id()}
-          session={@session}
-        />
-      </.desktop_window>
-
-      <%!-- Admin Audit Log — server-managed, admin-gated. --%>
-      <.desktop_window
-        :if={ChatContext.admin?(@session) and "admin-audit-log" in @open_windows}
-        {WindowRegistry.attrs("admin-audit-log")}
-        body_class="flex min-h-0 flex-col p-2"
-        data-testid="admin-audit-log-window"
-      >
-        <:icon><Icons.icon_notepad class="h-4 w-4" /></:icon>
-        <.live_component
-          module={RetroHexChatWeb.ChatLive.Components.AdminAuditLogDialog}
-          id={RetroHexChatWeb.ChatLive.Components.AdminAuditLogDialog.id()}
-          session={@session}
-        />
-      </.desktop_window>
-
-      <%!-- Admin MOTD — server-managed, admin-gated. --%>
-      <.desktop_window
-        :if={ChatContext.admin?(@session) and "admin-motd" in @open_windows}
-        {WindowRegistry.attrs("admin-motd")}
-        body_class="flex min-h-0 flex-col p-2"
-        data-testid="admin-motd-window"
-      >
-        <:icon><Icons.icon_notepad class="h-4 w-4" /></:icon>
-        <.live_component
-          module={RetroHexChatWeb.ChatLive.Components.AdminMotdDialog}
-          id={RetroHexChatWeb.ChatLive.Components.AdminMotdDialog.id()}
-          session={@session}
-        />
-      </.desktop_window>
-
-      <%!-- Admin TURN — server-managed, admin-gated. --%>
-      <.desktop_window
-        :if={ChatContext.admin?(@session) and "admin-turn" in @open_windows}
-        {WindowRegistry.attrs("admin-turn")}
-        body_class="flex min-h-0 flex-col p-2"
-        data-testid="admin-turn-window"
-      >
-        <:icon><Icons.icon_websocket class="h-4 w-4" /></:icon>
-        <.live_component
-          module={RetroHexChatWeb.ChatLive.Components.AdminTurnDialog}
-          id={RetroHexChatWeb.ChatLive.Components.AdminTurnDialog.id()}
-          session={@session}
-        />
-      </.desktop_window>
-
-      <%!-- Admin Broadcast — server-managed, admin-gated. --%>
-      <.desktop_window
-        :if={ChatContext.admin?(@session) and "admin-broadcast" in @open_windows}
-        {WindowRegistry.attrs("admin-broadcast")}
-        body_class="flex min-h-0 flex-col p-2"
-        data-testid="admin-broadcast-window"
-      >
-        <:icon><Icons.icon_megaphone class="h-4 w-4" /></:icon>
-        <.live_component
-          module={RetroHexChatWeb.ChatLive.Components.AdminBroadcastDialog}
-          id={RetroHexChatWeb.ChatLive.Components.AdminBroadcastDialog.id()}
-          session={@session}
-        />
-      </.desktop_window>
-
-      <%!-- Admin Danger Zone — server-managed, admin-gated. --%>
-      <.desktop_window
-        :if={ChatContext.admin?(@session) and "admin-danger-zone" in @open_windows}
-        {WindowRegistry.attrs("admin-danger-zone")}
-        body_class="flex min-h-0 flex-col p-2"
-        data-testid="admin-danger-zone-window"
-      >
-        <:icon><Icons.icon_warning class="h-4 w-4" /></:icon>
-        <.live_component
-          module={RetroHexChatWeb.ChatLive.Components.AdminDangerZoneDialog}
-          id={RetroHexChatWeb.ChatLive.Components.AdminDangerZoneDialog.id()}
-          session={@session}
-        />
-      </.desktop_window>
-
-      <%!-- System Home — the node's vitals; server-managed, admin-gated. --%>
-      <.desktop_window
-        :if={ChatContext.admin?(@session) and "system-home" in @open_windows}
-        {WindowRegistry.attrs("system-home")}
-        body_class="flex min-h-0 flex-col p-2"
-        data-testid="system-home-window"
-      >
-        <:icon><Icons.icon_server class="h-4 w-4" /></:icon>
-        <.live_component
-          module={RetroHexChatWeb.ChatLive.Components.SystemHomeDialog}
-          id={RetroHexChatWeb.ChatLive.Components.SystemHomeDialog.id()}
-          session={@session}
-        />
-      </.desktop_window>
-
-      <%!-- The three single-reading runtime windows: the host beneath the node,
-          the database behind it, and the application's own occupancy. Each has
-          a shape of its own, so each has its own island and panel. --%>
-      <.desktop_window
-        :for={
-          reading <- [
-            %{id: "system-os", module: RetroHexChatWeb.ChatLive.Components.SystemOsDialog},
-            %{
-              id: "system-database",
-              module: RetroHexChatWeb.ChatLive.Components.SystemDatabaseDialog
-            },
-            %{
-              id: "system-app-info",
-              module: RetroHexChatWeb.ChatLive.Components.SystemAppInfoDialog
-            },
-            %{
-              id: "system-metrics",
-              module: RetroHexChatWeb.ChatLive.Components.SystemMetricsDialog
-            },
-            %{
-              id: "system-oban",
-              module: RetroHexChatWeb.ChatLive.Components.SystemObanDialog
-            },
-            %{
-              id: "system-request-logger",
-              module: RetroHexChatWeb.ChatLive.Components.SystemLogDialog
-            }
-          ]
-        }
-        :if={ChatContext.admin?(@session) and reading.id in @open_windows}
-        {WindowRegistry.attrs(reading.id)}
-        body_class="flex min-h-0 flex-col p-2"
-        data-testid={"#{reading.id}-window"}
-      >
-        <:icon>
-          {apply(Icons, WindowRegistry.fetch(reading.id).icon, [%{class: "h-4 w-4"}])}
-        </:icon>
-        <.live_component
-          module={reading.module}
-          id={reading.module.id()}
-          session={@session}
-        />
-      </.desktop_window>
+      <%!-- The admin and System windows whose island needs only the session.
+          Server-managed and admin-gated: the open event is the server-side
+          authorization, and the registry's admin render condition keeps a
+          forged window_open from drawing anything for a non-admin. --%>
+      <.registered_window id="admin-console" session={@session} open_windows={@open_windows} />
+      <.registered_window id="admin-users" session={@session} open_windows={@open_windows} />
+      <.registered_window id="admin-channels" session={@session} open_windows={@open_windows} />
+      <.registered_window
+        id="admin-server-settings"
+        session={@session}
+        open_windows={@open_windows}
+      />
+      <.registered_window id="admin-audit-log" session={@session} open_windows={@open_windows} />
+      <.registered_window id="admin-motd" session={@session} open_windows={@open_windows} />
+      <.registered_window id="admin-turn" session={@session} open_windows={@open_windows} />
+      <.registered_window id="admin-broadcast" session={@session} open_windows={@open_windows} />
+      <.registered_window id="admin-danger-zone" session={@session} open_windows={@open_windows} />
+      <.registered_window id="system-home" session={@session} open_windows={@open_windows} />
+      <.registered_window id="system-os" session={@session} open_windows={@open_windows} />
+      <.registered_window id="system-database" session={@session} open_windows={@open_windows} />
+      <.registered_window id="system-app-info" session={@session} open_windows={@open_windows} />
+      <.registered_window id="system-metrics" session={@session} open_windows={@open_windows} />
+      <.registered_window id="system-oban" session={@session} open_windows={@open_windows} />
+      <.registered_window
+        id="system-request-logger"
+        session={@session}
+        open_windows={@open_windows}
+      />
 
       <%!-- The runtime listings below — one window each over one island, which is
           handed the population it lists. Each opens at its own offset so that
@@ -1135,9 +879,6 @@
         body_class="flex min-h-0 flex-col p-2"
         data-testid={"#{listing.id}-window"}
       >
-        <:icon>
-          {apply(Icons, WindowRegistry.fetch(listing.id).icon, [%{class: "h-4 w-4"}])}
-        </:icon>
         <.live_component
           module={RetroHexChatWeb.ChatLive.Components.SystemSourceDialog}
           id={RetroHexChatWeb.ChatLive.Components.SystemSourceDialog.id(listing.source)}
@@ -1154,7 +895,6 @@
         body_class="flex min-h-0 flex-col p-2"
         data-testid="bot-management-window"
       >
-        <:icon><Icons.icon_btn_bot_management class="h-4 w-4" /></:icon>
         <.live_component
           module={RetroHexChatWeb.ChatLive.Components.BotManagementDialog}
           id={RetroHexChatWeb.ChatLive.Components.BotManagementDialog.id()}

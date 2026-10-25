@@ -23,6 +23,7 @@ defmodule RetroHexChatWeb.Components.UI.DesktopLaunchers do
   alias RetroHexChat.Games.Catalog
   alias RetroHexChatWeb.App.Paths
   alias RetroHexChatWeb.ChatLive.WindowRegistry
+  alias RetroHexChatWeb.Components.UI.AppGroups
   alias RetroHexChatWeb.Components.UI.LanguageMenu
   alias RetroHexChatWeb.Components.UI.Site.DesktopFiles
   alias RetroHexChatWeb.Components.UI.Site.Document
@@ -539,63 +540,9 @@ defmodule RetroHexChatWeb.Components.UI.DesktopLaunchers do
     ]
   end
 
-  defp tools_items(cap) do
-    [
-      window("address-book", dgettext("ui", "Address Book"), :icon_btn_address_book,
-        disabled: !cap.chat?
-      ),
-      window("notify-list", dgettext("ui", "Notify List"), :icon_tab_notify,
-        disabled: !cap.chat?
-      ),
-      window("ignore-list", dgettext("ui", "Ignore List"), :icon_btn_ignore_list,
-        disabled: !cap.chat?
-      ),
-      window("highlight", dgettext("ui", "Highlight Words"), :icon_btn_highlight_words,
-        disabled: !cap.chat?
-      ),
-      window("user-lookup", dgettext("ui", "User Lookup"), :icon_btn_search,
-        disabled: !cap.chat?
-      ),
-      window("url-catcher", dgettext("ui", "URL Catcher"), :icon_btn_url_catcher,
-        disabled: !cap.chat?
-      ),
-      action(cap, "toggle_channel_list", dgettext("ui", "Channel List"), :icon_btn_channel_list,
-        disabled: !cap.chat?
-      ),
-      action(
-        cap,
-        "open_channel_central",
-        dgettext("ui", "Channel Central"),
-        :icon_btn_channel_central,
-        disabled: !cap.chat?
-      ),
-      separator(),
-      window("nick-colors", dgettext("ui", "Nick Colors"), :icon_btn_nick_colors,
-        disabled: !cap.chat?
-      ),
-      window("sound-settings", dgettext("ui", "Sounds"), :icon_btn_sounds, disabled: !cap.chat?),
-      window("flood-protection", dgettext("ui", "Flood Protection"), :icon_btn_flood_protection,
-        disabled: !cap.chat?
-      )
-    ]
-  end
+  defp tools_items(cap), do: group_items(cap, :tools)
 
-  defp automation_items(cap) do
-    [
-      window("perform", dgettext("ui", "Perform"), :icon_btn_perform, disabled: !cap.chat?),
-      window("autojoin", dgettext("ui", "Auto-Join"), :icon_btn_autojoin, disabled: !cap.chat?),
-      window("auto-respond", dgettext("ui", "Auto Respond"), :icon_btn_auto_respond,
-        disabled: !cap.chat?
-      ),
-      window("alias", dgettext("ui", "Alias Editor"), :icon_btn_alias_editor,
-        disabled: !cap.chat?
-      ),
-      window("custom-menus", dgettext("ui", "Custom Menus"), :icon_btn_custom_menus,
-        disabled: !cap.chat?
-      ),
-      window("timers", dgettext("ui", "Timers"), :icon_btn_timers, disabled: !cap.chat?)
-    ]
-  end
+  defp automation_items(cap), do: group_items(cap, :automation)
 
   # The folder is the catalogue, because a folder full of games is what a
   # catalogue looks like on this desktop: one icon per game, its modes chosen
@@ -617,39 +564,21 @@ defmodule RetroHexChatWeb.Components.UI.DesktopLaunchers do
     end
   end
 
-  defp account_items(cap) do
-    [
-      action(cap, "open_account_register", dgettext("ui", "Register Nickname..."), :icon_lock,
-        disabled: !cap.chat?
-      ),
-      action(cap, "open_account_identify", dgettext("ui", "Identify..."), :icon_status_user,
-        disabled: !cap.chat?
-      ),
-      separator(),
-      action(cap, "open_account_dialog", dgettext("ui", "Account"), :icon_status_user,
-        disabled: !cap.chat?
-      ),
-      action(cap, "open_profile_dialog", dgettext("ui", "Profile"), :icon_btn_profile,
-        disabled: !cap.chat?
-      ),
-      action(cap, "open_away_dialog", dgettext("ui", "Away"), :icon_btn_away,
-        disabled: !cap.chat?
-      ),
-      action(cap, "open_user_modes_dialog", dgettext("ui", "User Modes"), :icon_btn_user_modes,
-        disabled: !cap.chat?
-      ),
-      action(
-        cap,
-        "open_trusted_terminals_dialog",
-        dgettext("ui", "Trusted Terminals"),
-        :icon_lock,
-        disabled: !cap.chat?
-      ),
-      separator(),
-      action(cap, "account_info", dgettext("ui", "Account Info"), :icon_tab_status,
-        disabled: !cap.chat?
-      )
-    ]
+  defp account_items(cap), do: group_items(cap, :account)
+
+  defp group_items(cap, group) do
+    for item <- AppGroups.folder_items(group) do
+      case item do
+        %{kind: :window} ->
+          window(item.window, item.label, item.icon_fn, disabled: !cap.chat?)
+
+        %{kind: :action} ->
+          action(cap, item.action, item.label, item.icon_fn, disabled: !cap.chat?)
+
+        %{kind: :separator} ->
+          separator()
+      end
+    end
   end
 
   defp admin_items(cap) do

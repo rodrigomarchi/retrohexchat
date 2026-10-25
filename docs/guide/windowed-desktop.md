@@ -127,6 +127,18 @@ The chat is one `pinned default_maximized` window (never closable); the former m
 confirmations/transient prompts stay modal `UI.Dialog`; persistence is ON (`persist_key="chat"`,
 unique per LiveView).
 
+- **Adding a chat window — the steps, and what catches each.**
+
+  | Step | Where | Caught by |
+  |---|---|---|
+  | Declare it: id, title, icon, geometry, `managed?`, `opener:` (or `admin:`), `family:` | `ChatLive.WindowRegistry` | `window_registry_test.exs` (ids, icons, geometry, taskbar reachability) |
+  | The island (`use DialogIsland`) and its panel | `live/chat_live/components/`, `components/ui/dialogs/` | — |
+  | Draw it. Island needs only `session` → `island:` on the entry and one `<.registered_window id=…/>` line; otherwise a `<.desktop_window {WindowRegistry.attrs(id)}>` block (title, icon and geometry come from the entry) | `desktop_live.html.heex` | `window_registry_test.exs`: every window drawn exactly once, admin blocks gated |
+  | Open it. An event that only opens → `opener:` on the entry (`WindowOpenEvents`, or `AdminEvents` for `admin:`); opening with server work → that window's own `*Events` hook in `event_hooks/0` | registry or `live/chat_live/*_events.ex` | `window_registry_test.exs` (openers unique, admin and plain disjoint) |
+  | List it. Admin/System → automatic from the registry; Tools, Automation, Account → one line in `AppGroups` (Start menu and desktop folders both read it); the menu bar's Win98 menus are written by hand | `components/ui/shell/app_groups.ex`, `menu_bar_app.ex` | `window_registry_test.exs` (every group window registered), `start_menu_superset_test` |
+  | Help topic, User Interface category | `HelpTopics` + `controllers/help_content/` | `help_content_coverage_test.exs` |
+  | Strings in every locale | `make i18n.gettext.merge` | `make i18n.gettext.check` |
+
 - **Managed vs always-mounted — the decision.** `managed` = the host mounts/unmounts the island
   (`managed?: true` on its `WindowRegistry` entry, read through `WindowRegistry.managed_ids/0`, + an
   `open_windows` MapSet assign; render the window

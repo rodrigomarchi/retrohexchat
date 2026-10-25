@@ -45,6 +45,7 @@ defmodule RetroHexChatWeb.Components.UI.StartMenuApp do
   import RetroHexChatWeb.Components.UI.Desktop
 
   alias RetroHexChatWeb.ChatLive.WindowRegistry
+  alias RetroHexChatWeb.Components.UI.AppGroups
   alias RetroHexChatWeb.Components.UI.LanguageMenu
   alias RetroHexChatWeb.Icons
   alias RetroHexChatWeb.PublicPages
@@ -208,93 +209,10 @@ defmodule RetroHexChatWeb.Components.UI.StartMenuApp do
         >
           <:icon><Icons.icon_group_tools class="h-4 w-4" /></:icon>
           <%= if @full do %>
-            <.window_item
-              window="address-book"
-              label={dgettext("ui", "Address Book")}
-              icon_fn={:icon_btn_address_book}
-              disabled={!@chat?}
-            />
-            <.window_item
-              window="notify-list"
-              label={dgettext("ui", "Notify List")}
-              icon_fn={:icon_tab_notify}
-              disabled={!@chat?}
-            />
-            <.window_item
-              window="ignore-list"
-              label={dgettext("ui", "Ignore List")}
-              icon_fn={:icon_btn_ignore_list}
-              disabled={!@chat?}
-            />
-            <.window_item
-              window="highlight"
-              label={dgettext("ui", "Highlight Words")}
-              icon_fn={:icon_btn_highlight_words}
-              disabled={!@chat?}
-            />
-            <.window_item
-              window="user-lookup"
-              label={dgettext("ui", "User Lookup")}
-              icon_fn={:icon_btn_search}
-              disabled={!@chat?}
-            />
-            <.window_item
-              window="url-catcher"
-              label={dgettext("ui", "URL Catcher")}
-              icon_fn={:icon_btn_url_catcher}
-              disabled={!@chat?}
-            />
-            <%!-- Server opener: the list is read from the database on open, so
-              this one cannot be client-side. --%>
-            <.app_item
-              action="open_saved_dialog"
+            <.group_item
+              :for={item <- AppGroups.items(:tools)}
+              item={item}
               on_action={@on_action}
-              label={dgettext("ui", "Saved Messages")}
-              icon_fn={:icon_btn_star}
-              disabled={!@chat?}
-            />
-            <.app_item
-              action="open_events_dialog"
-              on_action={@on_action}
-              label={dgettext("ui", "Events")}
-              icon_fn={:icon_clock}
-              disabled={!@chat?}
-            />
-            <%!-- Server openers: /list rows and channel state are loaded by the
-              LiveView on open, so these two cannot be client-side. --%>
-            <.app_item
-              action="toggle_channel_list"
-              on_action={@on_action}
-              label={dgettext("ui", "Channel List")}
-              icon_fn={:icon_btn_channel_list}
-              disabled={!@chat?}
-            />
-            <.app_item
-              action="open_channel_central"
-              on_action={@on_action}
-              label={dgettext("ui", "Channel Central")}
-              icon_fn={:icon_btn_channel_central}
-              disabled={!@chat?}
-            />
-            <%!-- Settings used to be a group of its own. Three windows do not earn
-              a root row when a root row is what the menu is short of. --%>
-            <.start_menu_separator />
-            <.window_item
-              window="nick-colors"
-              label={dgettext("ui", "Nick Colors")}
-              icon_fn={:icon_btn_nick_colors}
-              disabled={!@chat?}
-            />
-            <.window_item
-              window="sound-settings"
-              label={dgettext("ui", "Sounds")}
-              icon_fn={:icon_btn_sounds}
-              disabled={!@chat?}
-            />
-            <.window_item
-              window="flood-protection"
-              label={dgettext("ui", "Flood Protection")}
-              icon_fn={:icon_btn_flood_protection}
               disabled={!@chat?}
             />
           <% end %>
@@ -308,40 +226,10 @@ defmodule RetroHexChatWeb.Components.UI.StartMenuApp do
         >
           <:icon><Icons.icon_dialog_perform class="h-4 w-4" /></:icon>
           <%= if @full do %>
-            <.window_item
-              window="perform"
-              label={dgettext("ui", "Perform")}
-              icon_fn={:icon_btn_perform}
-              disabled={!@chat?}
-            />
-            <.window_item
-              window="autojoin"
-              label={dgettext("ui", "Auto-Join")}
-              icon_fn={:icon_btn_autojoin}
-              disabled={!@chat?}
-            />
-            <.window_item
-              window="auto-respond"
-              label={dgettext("ui", "Auto Respond")}
-              icon_fn={:icon_btn_auto_respond}
-              disabled={!@chat?}
-            />
-            <.window_item
-              window="alias"
-              label={dgettext("ui", "Alias Editor")}
-              icon_fn={:icon_btn_alias_editor}
-              disabled={!@chat?}
-            />
-            <.window_item
-              window="custom-menus"
-              label={dgettext("ui", "Custom Menus")}
-              icon_fn={:icon_btn_custom_menus}
-              disabled={!@chat?}
-            />
-            <.window_item
-              window="timers"
-              label={dgettext("ui", "Timers")}
-              icon_fn={:icon_btn_timers}
+            <.group_item
+              :for={item <- AppGroups.items(:automation)}
+              item={item}
+              on_action={@on_action}
               disabled={!@chat?}
             />
           <% end %>
@@ -389,66 +277,10 @@ defmodule RetroHexChatWeb.Components.UI.StartMenuApp do
         >
           <:icon><Icons.icon_status_user class="h-4 w-4" /></:icon>
           <%= if @full do %>
-            <%!-- Claiming a nick and proving it is the pair that comes before
-              everything else under here, so it leads. --%>
-            <.app_item
-              action="open_account_register"
+            <.group_item
+              :for={item <- AppGroups.items(:account)}
+              item={item}
               on_action={@on_action}
-              label={dgettext("ui", "Register Nickname...")}
-              icon_fn={:icon_lock}
-              disabled={!@chat?}
-            />
-            <.app_item
-              action="open_account_identify"
-              on_action={@on_action}
-              label={dgettext("ui", "Identify...")}
-              icon_fn={:icon_status_user}
-              disabled={!@chat?}
-            />
-            <.start_menu_separator />
-            <.app_item
-              action="open_account_dialog"
-              on_action={@on_action}
-              label={dgettext("ui", "Account")}
-              icon_fn={:icon_status_user}
-              disabled={!@chat?}
-            />
-            <.app_item
-              action="open_profile_dialog"
-              on_action={@on_action}
-              label={dgettext("ui", "Profile")}
-              icon_fn={:icon_btn_profile}
-              disabled={!@chat?}
-            />
-            <.app_item
-              action="open_away_dialog"
-              on_action={@on_action}
-              label={dgettext("ui", "Away")}
-              icon_fn={:icon_btn_away}
-              disabled={!@chat?}
-            />
-            <.app_item
-              action="open_user_modes_dialog"
-              on_action={@on_action}
-              label={dgettext("ui", "User Modes")}
-              icon_fn={:icon_btn_user_modes}
-              disabled={!@chat?}
-            />
-            <.app_item
-              action="open_trusted_terminals_dialog"
-              on_action={@on_action}
-              label={dgettext("ui", "Trusted Terminals")}
-              icon_fn={:icon_lock}
-              disabled={!@chat?}
-            />
-            <.start_menu_separator />
-            <%!-- Prints what the server knows about you into the status window,
-              rather than opening one of its own. --%>
-            <.app_item
-              action="account_info"
-              on_action={@on_action}
-              label={dgettext("ui", "Account Info")}
-              icon_fn={:icon_tab_status}
               disabled={!@chat?}
             />
           <% end %>
@@ -740,6 +572,39 @@ defmodule RetroHexChatWeb.Components.UI.StartMenuApp do
     >
       <:icon><Icons.icon_dialog_about class="h-4 w-4" /></:icon>
     </.start_menu_item>
+    """
+  end
+
+  attr :item, :map, required: true
+  attr :on_action, :any, required: true
+  attr :disabled, :boolean, required: true
+
+  defp group_item(%{item: %{kind: :window}} = assigns) do
+    ~H"""
+    <.window_item
+      window={@item.window}
+      label={@item.label}
+      icon_fn={@item.icon_fn}
+      disabled={@disabled}
+    />
+    """
+  end
+
+  defp group_item(%{item: %{kind: :action}} = assigns) do
+    ~H"""
+    <.app_item
+      action={@item.action}
+      on_action={@on_action}
+      label={@item.label}
+      icon_fn={@item.icon_fn}
+      disabled={@disabled}
+    />
+    """
+  end
+
+  defp group_item(%{item: %{kind: :separator}} = assigns) do
+    ~H"""
+    <.start_menu_separator />
     """
   end
 

@@ -284,7 +284,11 @@ defmodule RetroHexChatWeb.Components.UI.Desktop do
   attr :body_class, :any, default: nil
   attr :rest, :global, doc: "extra attrs on the window root, e.g. data-testid"
 
-  slot :icon, required: true, doc: "16×16 title bar icon"
+  attr :icon_name, :atom,
+    default: nil,
+    doc: "a registered 16×16 icon drawn in the title bar when no `:icon` slot is given"
+
+  slot :icon, doc: "16×16 title bar icon; `icon_name` names one instead"
 
   slot :meta,
     doc: "Live status shown after the title — see window_title_bar/1. Hidden on narrow windows."
@@ -331,7 +335,8 @@ defmodule RetroHexChatWeb.Components.UI.Desktop do
           on_close={@on_close}
           data-window-titlebar
         >
-          <:icon>{render_slot(@icon)}</:icon>
+          <:icon :if={@icon != []}>{render_slot(@icon)}</:icon>
+          <:icon :if={@icon == []}>{apply(Icons, @icon_name, [%{class: "h-4 w-4"}])}</:icon>
           <:meta :if={@meta != []}>{render_slot(@meta)}</:meta>
         </.window_title_bar>
 

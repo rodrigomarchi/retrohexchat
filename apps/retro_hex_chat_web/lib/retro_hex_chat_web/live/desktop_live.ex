@@ -39,6 +39,7 @@ defmodule RetroHexChatWeb.DesktopLive do
 
   # ── Desktop window manager ───────────────────────────────────
   import RetroHexChatWeb.Components.UI.Desktop
+  import RetroHexChatWeb.ChatLive.RegisteredWindow
   import RetroHexChatWeb.Components.UI.DesktopLaunchers
 
   # ── P2P session badges ───────────────────────────────────────
@@ -99,7 +100,6 @@ defmodule RetroHexChatWeb.DesktopLive do
   alias RetroHexChatWeb.App.SessionNickname
   alias RetroHexChatWeb.ChatLive.Helpers.Conversation
   alias RetroHexChatWeb.ChatLive.WindowRegistry
-  alias RetroHexChatWeb.Icons
   alias RetroHexChatWeb.Live.OpenSurfaces
   alias RetroHexChatWeb.Timezone
 

@@ -24,7 +24,7 @@ defmodule RetroHexChatWeb.ChatLive.AdminEvents do
   alias RetroHexChatWeb.ChatLive.{AdminOps, WindowRegistry, Windows}
 
   def handle_event(event, _params, socket) do
-    case Map.fetch(WindowRegistry.openers(), event) do
+    case Map.fetch(WindowRegistry.openers(:admin), event) do
       {:ok, window} -> {:halt, open(socket, window)}
       :error -> {:cont, socket}
     end
