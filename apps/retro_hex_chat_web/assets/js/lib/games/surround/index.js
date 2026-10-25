@@ -13,7 +13,6 @@
 import { gameColor } from "../../game_colors.js";
 import { defineGame } from "../core/define_game.js";
 import { createSurroundAI, normalizeSurroundAIDifficulty } from "./ai.js";
-import { SurroundAudio } from "./audio.js";
 import {
   CELL,
   createCrashParticles,
@@ -23,6 +22,7 @@ import {
 } from "./physics.js";
 import { GAME_END, INPUT_KEY, PHASE, SNAPSHOT, WINS_NEEDED } from "./protocol.js";
 import { getColors, render } from "./renderer.js";
+import { SOUNDS } from "./sounds.js";
 
 const TICK_STEPS = 6; // one grid move every 6 fixed steps (10 Hz)
 const ROUND_OVER_DELAY_TICKS = 180; // 3 s
@@ -166,7 +166,7 @@ export default defineGame({
   ],
   schema: { snapshot: SNAPSHOT, end: GAME_END },
   ai: { create: createSurroundAI, difficulty: normalizeSurroundAIDifficulty },
-  audio: SurroundAudio,
+  audio: { sounds: SOUNDS },
   theme: getColors,
   init: () => createInitialState(0),
   setup: (game) => {

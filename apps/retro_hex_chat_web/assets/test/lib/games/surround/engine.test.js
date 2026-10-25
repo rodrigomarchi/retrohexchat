@@ -19,18 +19,11 @@ import {
 import { createLocalTransport } from "../../../../js/lib/games/transport.js";
 
 // Must mock audio before importing SurroundEngine
-vi.mock("../../../../js/lib/games/surround/audio.js", () => ({
-  SurroundAudio: function () {
-    return {
-      playMove: vi.fn(),
-      playCrash: vi.fn(),
-      playCountdown: vi.fn(),
-      playRoundWin: vi.fn(),
-      playMatchWin: vi.fn(),
-      playMatchLose: vi.fn(),
-    };
-  },
-}));
+vi.mock("../../../../js/lib/games/core/synth.js", async (importOriginal) => {
+  const synth = await importOriginal();
+  const { spySounds } = await import("../../../helpers/spy_sounds.js");
+  return { ...synth, createGameAudio: (spec) => spySounds(synth.createGameAudio(spec)) };
+});
 
 // Must mock renderer
 vi.mock("../../../../js/lib/games/surround/renderer.js", () => ({
