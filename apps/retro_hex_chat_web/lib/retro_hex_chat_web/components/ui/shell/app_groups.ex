@@ -7,9 +7,9 @@ defmodule RetroHexChatWeb.Components.UI.AppGroups do
 
     * `%{kind: :window, window: id, ...}` — opened client-side through
       `data-window-open`, no server round trip;
-    * `%{kind: :action, action: event, ...}` — sent to the server, because
-      opening it has server work attached (rows read from the database,
-      channel state, identity sync);
+    * `%{kind: :action, action: event, ...}` — sent to the server, which
+      runs whatever opening it involves (rows read from the database,
+      channel state, identity sync) or acts without a window;
     * `%{kind: :separator}`.
 
   Labels are resolved on every call, never in a module attribute, so they
@@ -63,8 +63,8 @@ defmodule RetroHexChatWeb.Components.UI.AppGroups do
     ]
   end
 
-  # Every account entry is an action: opening one syncs identity or seeds the
-  # bio on the server first.
+  # Account entries go to the server: most open a window after syncing identity
+  # or seeding the bio, and Account Info prints into the status window.
   def items(:account) do
     [
       # Claiming a nick and proving it come before everything else here.

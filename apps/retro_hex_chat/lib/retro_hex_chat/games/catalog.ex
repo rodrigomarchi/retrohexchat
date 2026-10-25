@@ -619,7 +619,7 @@ defmodule RetroHexChat.Games.Catalog do
   @spec ranking(String.t()) :: ranking()
   def ranking(game_id) when game_id in @coop_game_ids, do: :coop
   def ranking(game_id) when game_id in @score_game_ids, do: :score
-  # A game no longer in the catalogue (an old result) ranks as versus.
+  # Every versus game, and an id no longer in the catalogue (an old result).
   def ranking(_versus_or_retired), do: :versus
 
   @doc """

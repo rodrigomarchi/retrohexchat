@@ -168,11 +168,12 @@ Creation, label routing on the answering side, teardown and the per-feature stat
 `DATA_CHANNELS`; an inbound label not in it is logged and closed. Unit-test the controller with
 `test/helpers/rtc_peer_connection.js` and a `CustomEvent` on a detached element.
 
-**A new capability in the group call** (reactions, "watch together" sync): the SFU has no data
-channels, so it travels over the Phoenix channel — `handle_in` in `group_call_channel.ex`, the API in
-`group_call.ex`, the room's `handle_call` and broadcast in `group_call/room_server.ex` (server→client
-pushes go through the generic `{:group_call_push, event, payload}`), `push`/`channel.on` in
-`conference_connection.js`, then `call_live/events.ex`, `group_call_shape.ex` and the panel. A second
+**A new capability in the group call** (a shared timer, "watch together" sync — reactions are the
+existing example to copy): the SFU has no data channels, so it travels over the Phoenix channel —
+`handle_in` in `group_call_channel.ex`, the API in `group_call.ex`, the room's `handle_call` in
+`group_call/room_server.ex` and its broadcast through `RoomFanout` (server→client pushes go through
+the generic `{:group_call_push, event, payload}`), `push`/`channel.on` in `conference_connection.js`,
+then `call_live/events.ex`, `group_call_shape.ex` and the panel. A second
 video track per participant (camera and screen at once) needs `PeerServer` work: `inbound_tracks`
 holds one track per kind.
 

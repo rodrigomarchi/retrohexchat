@@ -687,7 +687,10 @@ defmodule RetroHexChatWeb.DesktopLive do
   def handle_info({:DOWN, _ref, :process, _pid, _reason}, socket), do: {:noreply, socket}
 
   def handle_info(message, socket) do
-    Logger.warning("DesktopLive: unhandled message #{inspect(message, limit: 5)}")
+    Logger.warning(
+      "DesktopLive: unhandled message #{inspect(message, limit: 5, printable_limit: 80)}"
+    )
+
     {:noreply, socket}
   end
 

@@ -25,7 +25,7 @@ defmodule RetroHexChatWeb.CallLive.Moderation do
   alias RetroHexChatWeb.Params
 
   @doc "Mutes or unmutes a participant's audio, whichever it is now."
-  @spec moderate_audio(Socket.t(), integer()) :: Socket.t()
+  @spec moderate_audio(Socket.t(), String.t() | integer()) :: Socket.t()
   def moderate_audio(socket, participant_id) do
     moderate_participant(
       socket,
@@ -36,7 +36,7 @@ defmodule RetroHexChatWeb.CallLive.Moderation do
   end
 
   @doc "Blocks or unblocks a participant's camera, whichever it is now."
-  @spec moderate_video(Socket.t(), integer()) :: Socket.t()
+  @spec moderate_video(Socket.t(), String.t() | integer()) :: Socket.t()
   def moderate_video(socket, participant_id) do
     moderate_participant(
       socket,
@@ -47,7 +47,7 @@ defmodule RetroHexChatWeb.CallLive.Moderation do
   end
 
   @doc "Blocks or allows a participant's screen share, whichever it is now."
-  @spec moderate_screen(Socket.t(), integer()) :: Socket.t()
+  @spec moderate_screen(Socket.t(), String.t() | integer()) :: Socket.t()
   def moderate_screen(socket, participant_id) do
     moderate_participant(
       socket,
@@ -59,7 +59,7 @@ defmodule RetroHexChatWeb.CallLive.Moderation do
   end
 
   @doc "Lowers a participant's hand and unmutes them."
-  @spec allow_speak(Socket.t(), integer()) :: Socket.t()
+  @spec allow_speak(Socket.t(), String.t() | integer()) :: Socket.t()
   def allow_speak(socket, participant_id) do
     moderate_participant(
       socket,
@@ -183,7 +183,7 @@ defmodule RetroHexChatWeb.CallLive.Moderation do
   end
 
   @doc "Asks the moderator to confirm removing a participant."
-  @spec open_kick_confirm(Socket.t(), integer()) :: Socket.t()
+  @spec open_kick_confirm(Socket.t(), String.t() | integer()) :: Socket.t()
   def open_kick_confirm(socket, participant_id) do
     with participant_id when is_integer(participant_id) <- Params.integer(participant_id),
          {:ok, target} <- find_participant(socket.assigns.group_call, participant_id),

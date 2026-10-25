@@ -231,7 +231,9 @@ defmodule RetroHexChatWeb.ChatLive.WindowRegistryTest do
           id <- Registry.admin_ids(),
           String.contains?(block, ~s|attrs("#{id}")|) or
             String.contains?(block, ~s|%{id: "#{id}"|) do
-        assert block =~ "ChatContext.admin?(@session)",
+        [guard] = Regex.run(~r/:if=\{(.*?)\}\n/, block, capture: :all_but_first)
+
+        assert guard =~ "ChatContext.admin?(@session)",
                "#{id} renders without checking the admin role"
       end
     end

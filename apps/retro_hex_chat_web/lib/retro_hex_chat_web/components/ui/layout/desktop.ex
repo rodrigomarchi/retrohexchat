@@ -306,6 +306,11 @@ defmodule RetroHexChatWeb.Components.UI.Desktop do
 
   @spec desktop_window(map()) :: Phoenix.LiveView.Rendered.t()
   def desktop_window(assigns) do
+    if assigns.icon == [] and is_nil(assigns.icon_name) do
+      raise ArgumentError,
+            "desktop_window #{inspect(assigns.id)} needs an :icon slot or an icon_name"
+    end
+
     ~H"""
     <div
       id={@id}

@@ -5,6 +5,7 @@ defmodule RetroHexChatWeb.Components.UI.DesktopLaunchersTest do
 
   alias RetroHexChatWeb.Components.UI.AppGroups
   alias RetroHexChatWeb.Components.UI.DesktopLaunchers
+  alias RetroHexChatWeb.Components.UI.StartMenuApp
 
   @moduletag :unit
 
@@ -134,16 +135,27 @@ defmodule RetroHexChatWeb.Components.UI.DesktopLaunchersTest do
     refute html =~ ~s(data-testid="desktop-launcher-item-open_arcade")
   end
 
-  test "the Tools folder lists what the Start menu's Tools submenu lists" do
-    html = render_component(&DesktopLaunchers.desktop_launcher_windows/1, screen: :chat)
+  test "the Tools folder lists what the Start menu's Tools submenu lists, in order" do
+    launchers = render_component(&DesktopLaunchers.desktop_launcher_windows/1, screen: :chat)
 
-    for item <- AppGroups.items(:tools), item.kind != :separator do
-      testid = "desktop-launcher-item-" <> (item[:window] || item[:action])
-      assert enabled?(html, testid), "#{testid} missing from the Tools folder"
-    end
+    menu =
+      render_component(&StartMenuApp.start_menu_app/1, screen: :chat, windows: [], full: true)
 
-    assert enabled?(html, "desktop-launcher-item-open_saved_dialog")
-    assert enabled?(html, "desktop-launcher-item-open_events_dialog")
+    folder =
+      launchers
+      |> Floki.parse_document!()
+      |> Floki.find(~s([data-testid="desktop-launcher-window-tools"] [data-testid]))
+      |> item_keys("desktop-launcher-item-")
+
+    start =
+      menu
+      |> Floki.parse_document!()
+      |> Floki.find(~s([data-start-submenu-key="tools"] [data-testid]))
+      |> item_keys("start-menu-item-")
+
+    assert folder == start
+    assert "open_saved_dialog" in folder
+    assert "open_events_dialog" in folder
   end
 
   test "public launcher windows render only the always-available Language and Help folders" do
@@ -256,4 +268,11 @@ defmodule RetroHexChatWeb.Components.UI.DesktopLaunchersTest do
 
   defp document(html), do: Floki.parse_fragment!(html)
   defp attrs({_tag, attrs, _children}), do: Map.new(attrs)
+
+  defp item_keys(nodes, prefix) do
+    for node <- nodes,
+        [testid] = Floki.attribute(node, "data-testid"),
+        String.starts_with?(testid, prefix),
+        do: String.replace_prefix(testid, prefix, "")
+  end
 end
