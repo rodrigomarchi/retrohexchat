@@ -504,12 +504,9 @@ defmodule RetroHexChatWeb.CallLive.Events do
      |> push_group_call_layout()}
   end
 
-  def handle_event("group_call_track_added", payload, %{assigns: %{group_call: %{}}} = socket) do
-    track = GroupCallShape.normalize_track(GroupCallShape.value(payload, :track))
-    {:halt, socket |> update_call(&put_track(&1, track)) |> push_group_call_layout()}
-  end
-
-  def handle_event("group_call_track_updated", payload, %{assigns: %{group_call: %{}}} = socket) do
+  # A track that arrives and a track that changes land the same way.
+  def handle_event(event, payload, %{assigns: %{group_call: %{}}} = socket)
+      when event in ["group_call_track_added", "group_call_track_updated"] do
     track = GroupCallShape.normalize_track(GroupCallShape.value(payload, :track))
     {:halt, socket |> update_call(&put_track(&1, track)) |> push_group_call_layout()}
   end

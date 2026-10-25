@@ -91,35 +91,18 @@ defmodule RetroHexChatWeb.ChatLive.PubsubHandlers.Messages do
     end
   end
 
-  # ── Message edited ───────────────────────────────────────
+  # ── Message edited or deleted ───────────────────────────
+  # Either way the line is redrawn where it stands, if its conversation is open.
 
-  def handle_info(%{event: "message_edited", payload: payload}, socket) do
+  def handle_info(%{event: event, payload: payload}, socket)
+      when event in ["message_edited", "message_deleted"] do
     session = socket.assigns.session
-    is_active = active_context?(payload, session)
 
-    if is_active do
-      case stream_item_for_message_event(payload, session) do
-        nil -> {:halt, socket}
-        updated_item -> {:halt, MessageViewport.insert(socket, updated_item)}
-      end
+    with true <- active_context?(payload, session),
+         %{} = item <- stream_item_for_message_event(payload, session) do
+      {:halt, MessageViewport.insert(socket, item)}
     else
-      {:halt, socket}
-    end
-  end
-
-  # ── Message deleted ─────────────────────────────────────
-
-  def handle_info(%{event: "message_deleted", payload: payload}, socket) do
-    session = socket.assigns.session
-    is_active = active_context?(payload, session)
-
-    if is_active do
-      case stream_item_for_message_event(payload, session) do
-        nil -> {:halt, socket}
-        deleted_item -> {:halt, MessageViewport.insert(socket, deleted_item)}
-      end
-    else
-      {:halt, socket}
+      _not_shown -> {:halt, socket}
     end
   end
 

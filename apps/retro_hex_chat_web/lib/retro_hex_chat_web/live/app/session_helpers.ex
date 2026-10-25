@@ -53,6 +53,22 @@ defmodule RetroHexChatWeb.App.SessionHelpers do
   def require_identified(_nickname, message), do: {:error, message}
 
   @doc """
+  The account id behind `nickname`, or `{:error, message}` when nobody holds
+  it. Asked before identification: a nickname that is not registered can never
+  be identified, so asking the other way round makes this refusal unreachable.
+  """
+  @spec require_registered(String.t() | nil, String.t()) ::
+          {:ok, integer()} | {:error, String.t()}
+  def require_registered(nickname, message) when is_binary(nickname) do
+    case resolve_user_id(nickname) do
+      {:ok, user_id} -> {:ok, user_id}
+      _unregistered -> {:error, message}
+    end
+  end
+
+  def require_registered(_nickname, message), do: {:error, message}
+
+  @doc """
   The account behind `nickname` when this browser session has proved it, as the
   player a result is written for — nil for a guest, and for a registered nick
   somebody typed without signing in.

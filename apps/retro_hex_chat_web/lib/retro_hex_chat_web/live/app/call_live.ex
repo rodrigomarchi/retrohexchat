@@ -474,23 +474,12 @@ defmodule RetroHexChatWeb.App.CallLive do
     )
   end
 
-  # Asked before identification, because a nickname that is not registered can
-  # never be identified — inverting the two makes this refusal unreachable and
-  # answers the wrong question.
-  defp require_registered(nickname) when is_binary(nickname) do
-    case SessionHelpers.resolve_user_id(nickname) do
-      {:ok, user_id} ->
-        {:ok, user_id}
-
-      _unregistered ->
-        {:error,
-         dgettext("group_call", "You must be registered with NickServ to use group calls.")}
-    end
+  defp require_registered(nickname) do
+    SessionHelpers.require_registered(
+      nickname,
+      dgettext("group_call", "You must be registered with NickServ to use group calls.")
+    )
   end
-
-  defp require_registered(_nickname),
-    do:
-      {:error, dgettext("group_call", "You must be registered with NickServ to use group calls.")}
 
   defp channel_membership(channel_name) do
     case Server.get_state(channel_name) do

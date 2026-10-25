@@ -636,6 +636,9 @@ defmodule RetroHexChatWeb.P2PLive.Events do
     {:halt, socket}
   end
 
+  defp peer_restart_reason("lobby_manual_retry"), do: "peer_manual_retry"
+  defp peer_restart_reason("lobby_media_restart"), do: "peer_media_restart"
+
   defp handle_session_event(
          %{event: "lobby_status_changed", payload: %{status: status} = payload},
          socket,
@@ -712,35 +715,18 @@ defmodule RetroHexChatWeb.P2PLive.Events do
      |> open_p2p_console("call")}
   end
 
-  defp handle_session_event(
-         %{event: "lobby_manual_retry", payload: %{from: from} = payload},
-         socket,
-         p2p
-       ) do
+  # The other side asked to restart the connection (by hand, or because its
+  # media failed); our own request comes back to us too and changes nothing.
+  defp handle_session_event(%{event: event, payload: %{from: from} = payload}, socket, p2p)
+       when event in ["lobby_manual_retry", "lobby_media_restart"] do
     if from == p2p.user_id do
       {:halt, socket}
     else
-      {:halt,
-       socket
-       |> mark_p2p_reconnecting(nil, payload[:reason] || "peer_manual_retry", %{trigger: "peer"})
-       |> open_p2p_console("call")
-       |> push_event("lobby_restart", webrtc_payload(p2p))}
-    end
-  end
+      reason = payload[:reason] || peer_restart_reason(event)
 
-  defp handle_session_event(
-         %{event: "lobby_media_restart", payload: %{from: from} = payload},
-         socket,
-         p2p
-       ) do
-    if from == p2p.user_id do
-      {:halt, socket}
-    else
       {:halt,
        socket
-       |> mark_p2p_reconnecting(nil, payload[:reason] || "peer_media_restart", %{
-         trigger: "peer"
-       })
+       |> mark_p2p_reconnecting(nil, reason, %{trigger: "peer"})
        |> open_p2p_console("call")
        |> push_event("lobby_restart", webrtc_payload(p2p))}
     end

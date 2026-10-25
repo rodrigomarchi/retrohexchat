@@ -102,42 +102,36 @@ defmodule RetroHexChatWeb.ChatLive.Components.TrustedTerminalsDialog do
   end
 
   def handle_event("trusted_terminals_rename_device", params, socket) do
-    with {:ok, device_id} <- parse_id(params["device_id"]),
-         :ok <-
-           TrustedDevices.rename_device_for_nick(
-             nickname(socket),
-             device_id,
-             params["label"] || "",
-             nickname(socket)
-           ) do
-      {:noreply,
-       socket
-       |> put_status(:ok, dgettext("chat", "Trusted terminal renamed."))
-       |> refresh_snapshot()}
-    else
-      {:error, message} when is_binary(message) ->
-        {:noreply, put_status(socket, :error, message)}
+    result =
+      with {:ok, device_id} <- parse_id(params["device_id"]) do
+        TrustedDevices.rename_device_for_nick(
+          nickname(socket),
+          device_id,
+          params["label"] || "",
+          nickname(socket)
+        )
+      end
 
-      {:error, _reason} ->
-        {:noreply, put_status(socket, :error, dgettext("chat", "Invalid terminal id."))}
-    end
+    respond(
+      socket,
+      result,
+      dgettext("chat", "Trusted terminal renamed."),
+      dgettext("chat", "Invalid terminal id.")
+    )
   end
 
   def handle_event("trusted_terminals_revoke_device", %{"id" => id}, socket) do
-    with {:ok, device_id} <- parse_id(id),
-         :ok <-
-           TrustedDevices.revoke_device_for_nick(nickname(socket), device_id, nickname(socket)) do
-      {:noreply,
-       socket
-       |> put_status(:ok, dgettext("chat", "Trusted terminal revoked."))
-       |> refresh_snapshot()}
-    else
-      {:error, message} when is_binary(message) ->
-        {:noreply, put_status(socket, :error, message)}
+    result =
+      with {:ok, device_id} <- parse_id(id) do
+        TrustedDevices.revoke_device_for_nick(nickname(socket), device_id, nickname(socket))
+      end
 
-      {:error, _reason} ->
-        {:noreply, put_status(socket, :error, dgettext("chat", "Invalid terminal id."))}
-    end
+    respond(
+      socket,
+      result,
+      dgettext("chat", "Trusted terminal revoked."),
+      dgettext("chat", "Invalid terminal id.")
+    )
   end
 
   def handle_event(
@@ -206,19 +200,17 @@ defmodule RetroHexChatWeb.ChatLive.Components.TrustedTerminalsDialog do
   end
 
   def handle_event("trusted_terminals_kill_session", %{"id" => id}, socket) do
-    with {:ok, session_id} <- parse_id(id),
-         :ok <- TrustedDevices.kill_session(nickname(socket), session_id, nickname(socket)) do
-      {:noreply,
-       socket
-       |> put_status(:ok, dgettext("chat", "Session ended."))
-       |> refresh_snapshot()}
-    else
-      {:error, message} when is_binary(message) ->
-        {:noreply, put_status(socket, :error, message)}
+    result =
+      with {:ok, session_id} <- parse_id(id) do
+        TrustedDevices.kill_session(nickname(socket), session_id, nickname(socket))
+      end
 
-      {:error, _reason} ->
-        {:noreply, put_status(socket, :error, dgettext("chat", "Invalid session id."))}
-    end
+    respond(
+      socket,
+      result,
+      dgettext("chat", "Session ended."),
+      dgettext("chat", "Invalid session id.")
+    )
   end
 
   def handle_event("trusted_terminals_kill_other_sessions", _params, socket) do
@@ -299,6 +291,18 @@ defmodule RetroHexChatWeb.ChatLive.Components.TrustedTerminalsDialog do
   defp identity_changed?(%{assigns: before}, %{assigns: now}) do
     Enum.any?(@identity, &(Map.get(before, &1) != Map.get(now, &1)))
   end
+
+  # A change asked of the domain: done, with `done` in the status bar and the
+  # lists reloaded; refused, in the domain's own words, or with `invalid` when
+  # the id itself did not parse.
+  defp respond(socket, :ok, done, _invalid),
+    do: {:noreply, socket |> put_status(:ok, done) |> refresh_snapshot()}
+
+  defp respond(socket, {:error, message}, _done, _invalid) when is_binary(message),
+    do: {:noreply, put_status(socket, :error, message)}
+
+  defp respond(socket, {:error, _reason}, _done, invalid),
+    do: {:noreply, put_status(socket, :error, invalid)}
 
   defp put_status(socket, kind, message) do
     assign(socket, status_kind: kind, status_message: message)

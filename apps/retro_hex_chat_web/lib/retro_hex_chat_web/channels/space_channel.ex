@@ -36,13 +36,7 @@ defmodule RetroHexChatWeb.SpaceChannel do
     with {:ok, data} <- verify_channel_join_token(params, channel_name),
          {:ok, result} <-
            VirtualSpace.join_channel_space(channel_name, build_channel_actor(data, params)) do
-      socket =
-        socket
-        |> assign(:space_kind, :channel)
-        |> assign(:space_id, channel_name)
-        |> assign(:participant_key, result.participant.key)
-        |> assign(:user_id, data.user_id)
-        |> assign(:nickname, data.nickname)
+      socket = assign_participant(socket, :channel, channel_name, result, data)
 
       announce(result, channel_name, "channel", data, [])
       {:ok, space_init(channel_name, result), socket}
@@ -62,13 +56,7 @@ defmodule RetroHexChatWeb.SpaceChannel do
              build_channel_actor(data, params),
              data.participants
            ) do
-      socket =
-        socket
-        |> assign(:space_kind, :direct_message)
-        |> assign(:space_id, space_id)
-        |> assign(:participant_key, result.participant.key)
-        |> assign(:user_id, data.user_id)
-        |> assign(:nickname, data.nickname)
+      socket = assign_participant(socket, :direct_message, space_id, result, data)
 
       announce(result, space_id, "direct_message", data, data.participants)
       {:ok, space_init(space_id, result), socket}
@@ -101,19 +89,23 @@ defmodule RetroHexChatWeb.SpaceChannel do
              build_channel_actor(data, params),
              data.participants
            ) do
-      socket =
-        socket
-        |> assign(:space_kind, :construct)
-        |> assign(:space_id, construct_id)
-        |> assign(:participant_key, result.participant.key)
-        |> assign(:user_id, data.user_id)
-        |> assign(:nickname, data.nickname)
+      socket = assign_participant(socket, :construct, construct_id, result, data)
 
       {:ok, space_init(construct_id, result), socket}
     else
       {:error, reason} ->
         {:error, %{reason: join_error(reason)}}
     end
+  end
+
+  # Who this channel is, from the join that admitted it: which space, and as whom.
+  defp assign_participant(socket, kind, space_id, result, data) do
+    socket
+    |> assign(:space_kind, kind)
+    |> assign(:space_id, space_id)
+    |> assign(:participant_key, result.participant.key)
+    |> assign(:user_id, data.user_id)
+    |> assign(:nickname, data.nickname)
   end
 
   # Walking into an empty space is what starts a gathering, and the join that

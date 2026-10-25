@@ -502,18 +502,12 @@ defmodule RetroHexChatWeb.App.P2PLive do
     )
   end
 
-  defp require_registered(nickname) when is_binary(nickname) do
-    case SessionHelpers.resolve_user_id(nickname) do
-      {:ok, user_id} ->
-        {:ok, user_id}
-
-      _unregistered ->
-        {:error, dgettext("p2p", "You must be registered with NickServ to use P2P sessions.")}
-    end
+  defp require_registered(nickname) do
+    SessionHelpers.require_registered(
+      nickname,
+      dgettext("p2p", "You must be registered with NickServ to use P2P sessions.")
+    )
   end
-
-  defp require_registered(_nickname),
-    do: {:error, dgettext("p2p", "You must be registered with NickServ to use P2P sessions.")}
 
   defp role_of(%LobbySession{creator_id: user_id}, user_id), do: :creator
   defp role_of(_db_session, _user_id), do: :peer

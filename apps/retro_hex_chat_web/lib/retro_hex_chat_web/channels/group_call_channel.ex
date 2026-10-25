@@ -79,10 +79,7 @@ defmodule RetroHexChatWeb.GroupCallChannel do
         {:reply, {:ok, %{participant_id: join_payload.participant.id}}, socket}
 
       {:error, reason} ->
-        payload = %{code: "join_failed", message: error_message(reason)}
-        CallEvents.emit_client_error(:group_call, payload.code, %{phase: "join"})
-        push(socket, "group_call_error", payload)
-        {:reply, {:error, payload}, socket}
+        reply_error(socket, "join_failed", "join", reason)
     end
   end
 
@@ -102,10 +99,7 @@ defmodule RetroHexChatWeb.GroupCallChannel do
       {:reply, :ok, socket}
     else
       {:error, reason} ->
-        payload = %{code: "answer_failed", message: error_message(reason)}
-        CallEvents.emit_client_error(:group_call, payload.code, %{phase: "answer"})
-        push(socket, "group_call_error", payload)
-        {:reply, {:error, payload}, socket}
+        reply_error(socket, "answer_failed", "answer", reason)
     end
   end
 
@@ -118,19 +112,12 @@ defmodule RetroHexChatWeb.GroupCallChannel do
       {:reply, :ok, socket}
     else
       {:error, reason} ->
-        payload = %{code: "ice_failed", message: error_message(reason)}
-        CallEvents.emit_client_error(:group_call, payload.code, %{phase: "ice_candidate"})
-        push(socket, "group_call_error", payload)
-        {:reply, {:error, payload}, socket}
+        reply_error(socket, "ice_failed", "ice_candidate", reason)
     end
   end
 
-  def handle_in("group_call_ice_candidate", _payload, socket) do
-    payload = %{code: "ice_failed", message: error_message(:invalid_signal)}
-    CallEvents.emit_client_error(:group_call, payload.code, %{phase: "ice_candidate"})
-    push(socket, "group_call_error", payload)
-    {:reply, {:error, payload}, socket}
-  end
+  def handle_in("group_call_ice_candidate", _payload, socket),
+    do: reply_error(socket, "ice_failed", "ice_candidate", :invalid_signal)
 
   def handle_in("group_call_request_offer", _payload, socket) do
     with {:ok, participant_id} <- fetch_participant_id(socket),
@@ -139,10 +126,7 @@ defmodule RetroHexChatWeb.GroupCallChannel do
       {:reply, :ok, socket}
     else
       {:error, reason} ->
-        payload = %{code: request_offer_error_code(reason), message: error_message(reason)}
-        CallEvents.emit_client_error(:group_call, payload.code, %{phase: "request_offer"})
-        push(socket, "group_call_error", payload)
-        {:reply, {:error, payload}, socket}
+        reply_error(socket, request_offer_error_code(reason), "request_offer", reason)
     end
   end
 
@@ -230,6 +214,15 @@ defmodule RetroHexChatWeb.GroupCallChannel do
     end
 
     :ok
+  end
+
+  # A signal that failed: counted against its phase, told to the client as an
+  # event and as the reply.
+  defp reply_error(socket, code, phase, reason) do
+    payload = %{code: code, message: error_message(reason)}
+    CallEvents.emit_client_error(:group_call, code, %{phase: phase})
+    push(socket, "group_call_error", payload)
+    {:reply, {:error, payload}, socket}
   end
 
   defp verify_join_token(%{"join_token" => join_token}, room_token) do
