@@ -19,28 +19,11 @@ import {
 } from "../../../../js/lib/games/hex_invaders/physics.js";
 
 // Must mock audio BEFORE importing engine
-vi.mock("../../../../js/lib/games/hex_invaders/audio.js", () => ({
-  HexInvadersAudio: function () {
-    return {
-      playCountdown: vi.fn(),
-      playFire: vi.fn(),
-      playMarch: vi.fn(),
-      playAlienDestroyed: vi.fn(),
-      playArmoredClang: vi.fn(),
-      playCannonHit: vi.fn(),
-      playShieldHit: vi.fn(),
-      playUFOAppear: vi.fn(),
-      playUFODestroyed: vi.fn(),
-      playCombo: vi.fn(),
-      playDropWarning: vi.fn(),
-      playDropLand: vi.fn(),
-      playWaveClear: vi.fn(),
-      playInvaded: vi.fn(),
-      playVictory: vi.fn(),
-      playBombFall: vi.fn(),
-    };
-  },
-}));
+vi.mock("../../../../js/lib/games/core/synth.js", async (importOriginal) => {
+  const synth = await importOriginal();
+  const { spySounds } = await import("../../../helpers/spy_sounds.js");
+  return { ...synth, createGameAudio: (spec) => spySounds(synth.createGameAudio(spec)) };
+});
 
 // Must mock renderer
 vi.mock("../../../../js/lib/games/hex_invaders/renderer.js", () => ({

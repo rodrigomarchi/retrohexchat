@@ -13,7 +13,6 @@
 
 import { defineGame } from "../core/define_game.js";
 import { createHexInvadersAI, normalizeInvadersAIDifficulty } from "./ai.js";
-import { HexInvadersAudio } from "./audio.js";
 import {
   checkAlienReachedGround,
   checkBombCannonHits,
@@ -38,6 +37,7 @@ import {
 } from "./physics.js";
 import { GAME_END, GAME_MODE, PHASE, SNAPSHOT } from "./protocol.js";
 import { getColors, render } from "./renderer.js";
+import { SOUNDS } from "./sounds.js";
 
 const MODE_MAP = {
   hex_invaders: GAME_MODE.INVASION_WAR,
@@ -184,7 +184,7 @@ export default defineGame({
   captureKeys: ["ArrowLeft", "ArrowRight", " ", "Spacebar", "a", "A", "d", "D"],
   schema: { snapshot: SNAPSHOT, end: GAME_END },
   ai: { create: createHexInvadersAI, difficulty: normalizeInvadersAIDifficulty },
-  audio: HexInvadersAudio,
+  audio: { sounds: SOUNDS },
   theme: getColors,
   // The game id picks the mode; only the host seeds the waves.
   init: (game) => {
