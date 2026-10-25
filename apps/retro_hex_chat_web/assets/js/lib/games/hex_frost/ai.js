@@ -20,7 +20,7 @@ import {
   getBlockAbsX,
   getBaileyY,
 } from "./physics.js";
-import { aiRng } from "../core/ai.js";
+import { aiRng, toward } from "../core/ai.js";
 
 const EDGE_MARGIN = 18;
 const NEUTRAL_INPUTS = Object.freeze({ left: false, right: false, up: false, down: false });
@@ -246,9 +246,10 @@ export function movementInputs(actor, target, config = FROST_AI_DIFFICULTIES.nor
   const delta = target.x - actor.x;
   const aligned = Math.abs(delta) <= config.jumpDeadzone;
 
+  const [left, right] = toward(actor.x, target.x, config.deadzone);
   return {
-    left: delta < -config.deadzone,
-    right: delta > config.deadzone,
+    left,
+    right,
     up: aligned && target.jump === "up",
     down: aligned && target.jump === "down",
   };

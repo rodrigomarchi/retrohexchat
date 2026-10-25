@@ -17,7 +17,7 @@ import {
   SERVICE_LINE_TOP,
   HIT_ZONE_H,
 } from "./physics.js";
-import { clamp, normalizeDifficulty } from "../core/ai.js";
+import { aiRng, clamp, normalizeDifficulty, toward } from "../core/ai.js";
 
 const PLAYER_HALF_SIZE = 12;
 const PLAYER_MIN_X = COURT_LEFT + PLAYER_HALF_SIZE;
@@ -91,7 +91,7 @@ export class TennisAI {
    */
   constructor(options = {}) {
     this.difficulty = normalizeTennisAIDifficulty(options.difficulty);
-    this.rng = typeof options.rng === "function" ? options.rng : Math.random;
+    this.rng = aiRng(options);
     this.frame = 0;
     this.serveDelay = 0;
     this._lastServeKey = null;
@@ -277,16 +277,9 @@ function isBallIncoming(state, player) {
 function movementInputs(state, player, target, deadzone) {
   const px = player === 1 ? state.p1x : state.p2x;
   const py = player === 1 ? state.p1y : state.p2y;
-  const dx = target.x - px;
-  const dy = target.y - py;
-
-  return {
-    up: dy < -deadzone,
-    down: dy > deadzone,
-    left: dx < -deadzone,
-    right: dx > deadzone,
-    serve: false,
-  };
+  const [up, down] = toward(py, target.y, deadzone);
+  const [left, right] = toward(px, target.x, deadzone);
+  return { up, down, left, right, serve: false };
 }
 
 /**

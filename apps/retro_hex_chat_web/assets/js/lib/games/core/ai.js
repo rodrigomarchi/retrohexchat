@@ -137,3 +137,31 @@ export function aiRng(options, seed) {
   if (seed === undefined) return Math.random;
   return createRng(options.seed || seed).next;
 }
+
+const TWO_PI = Math.PI * 2;
+
+/**
+ * An angle brought into [0, 2π); 0 for one that is not a number.
+ * @param {number} angle
+ * @returns {number}
+ */
+export function normalizeAngle(angle) {
+  if (!Number.isFinite(angle)) return 0;
+  let normalized = angle % TWO_PI;
+  if (normalized < 0) normalized += TWO_PI;
+  return normalized;
+}
+
+/**
+ * The shortest signed turn from one heading to another: positive turns
+ * right, negative left.
+ * @param {number} current
+ * @param {number} target
+ * @returns {number}
+ */
+export function rotationDelta(current, target) {
+  let delta = normalizeAngle(target) - normalizeAngle(current);
+  if (delta > Math.PI) delta -= TWO_PI;
+  if (delta < -Math.PI) delta += TWO_PI;
+  return delta;
+}

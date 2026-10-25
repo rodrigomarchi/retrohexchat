@@ -14,9 +14,8 @@ import {
   TANK_RADIUS,
   WALL_SIZE,
 } from "./physics.js";
-import { clamp, normalizeDifficulty } from "../core/ai.js";
+import { aiRng, clamp, normalizeAngle, normalizeDifficulty, rotationDelta } from "../core/ai.js";
 
-const TWO_PI = Math.PI * 2;
 const PATH_LOOKAHEAD_CELLS = 3;
 
 const NEUTRAL_INPUTS = Object.freeze({
@@ -97,7 +96,7 @@ export class PixelTanksAI {
    */
   constructor(options = {}) {
     this.difficulty = normalizePixelTanksAIDifficulty(options.difficulty);
-    this.rng = typeof options.rng === "function" ? options.rng : Math.random;
+    this.rng = aiRng(options);
     this.frame = 0;
     this.fireCooldown = 0;
     this._target = null;
@@ -340,20 +339,6 @@ export function lineOfSightClear(fromX, fromY, toX, toY, walls) {
   return true;
 }
 
-/**
- * Smallest signed rotation from current angle to target angle.
- * Positive values rotate right, negative values rotate left.
- * @param {number} current
- * @param {number} target
- * @returns {number}
- */
-export function rotationDelta(current, target) {
-  let delta = normalizeAngle(target) - normalizeAngle(current);
-  if (delta > Math.PI) delta -= TWO_PI;
-  if (delta < -Math.PI) delta += TWO_PI;
-  return delta;
-}
-
 function nextPathWaypoint(actor, opponent, walls) {
   if (!walls) return null;
 
@@ -512,10 +497,4 @@ function cellBlocked(row, col, walls) {
 
 function cellIndex(row, col) {
   return row * GRID_COLS + col;
-}
-
-function normalizeAngle(angle) {
-  let value = angle % TWO_PI;
-  if (value < 0) value += TWO_PI;
-  return value;
 }

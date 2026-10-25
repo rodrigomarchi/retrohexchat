@@ -15,7 +15,7 @@ import {
   DIVIDER_X,
   HALF_W,
 } from "./physics.js";
-import { clamp, normalizeDifficulty } from "../core/ai.js";
+import { aiRng, clamp, normalizeDifficulty } from "../core/ai.js";
 
 const UFO_W = 24;
 const NEUTRAL_INPUTS = Object.freeze({
@@ -89,7 +89,7 @@ export class HexInvadersAI {
    */
   constructor(options = {}) {
     this.difficulty = normalizeInvadersAIDifficulty(options.difficulty);
-    this.rng = typeof options.rng === "function" ? options.rng : Math.random;
+    this.rng = aiRng(options);
     this.frame = 0;
     this.fireCooldown = 0;
     this._target = null;

@@ -14,7 +14,7 @@ import {
   RING_RIGHT,
   RING_TOP,
 } from "./physics.js";
-import { clamp, normalizeDifficulty } from "../core/ai.js";
+import { aiRng, clamp, normalizeDifficulty, toward } from "../core/ai.js";
 
 const PLAYER_HALF_SIZE = BOXER_BODY_RADIUS;
 const PLAYER_MIN_X = RING_LEFT + PLAYER_HALF_SIZE;
@@ -95,7 +95,7 @@ export class BoxingAI {
    */
   constructor(options = {}) {
     this.difficulty = normalizeBoxingAIDifficulty(options.difficulty);
-    this.rng = typeof options.rng === "function" ? options.rng : Math.random;
+    this.rng = aiRng(options);
     this.frame = 0;
     this.punchCooldown = 0;
     this._target = null;
@@ -202,16 +202,9 @@ export function boxingTargetPosition(
 export function boxingMovementInputs(actor, target, deadzone) {
   if (!actor || !target) return NEUTRAL_INPUTS;
 
-  const dx = target.x - actor.x;
-  const dy = target.y - actor.y;
-
-  return {
-    left: dx < -deadzone,
-    right: dx > deadzone,
-    up: dy < -deadzone,
-    down: dy > deadzone,
-    punch: false,
-  };
+  const [left, right] = toward(actor.x, target.x, deadzone);
+  const [up, down] = toward(actor.y, target.y, deadzone);
+  return { left, right, up, down, punch: false };
 }
 
 /**

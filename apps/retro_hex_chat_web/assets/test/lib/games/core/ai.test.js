@@ -6,9 +6,11 @@ import {
   createReaction,
   dutyFrame,
   interceptAt,
+  normalizeAngle,
   normalizeDifficulty,
   randomUnit,
   reflect,
+  rotationDelta,
   toward,
 } from "../../../../js/lib/games/core/ai.js";
 import { createRng } from "../../../../js/lib/games/core/rng.js";
@@ -144,5 +146,29 @@ describe("aiRng", () => {
     const c = aiRng({}, 7);
     const d = createRng(7).next;
     expect([c(), c()]).toEqual([d(), d()]);
+  });
+});
+
+describe("angles", () => {
+  it("normalizeAngle brings an angle into [0, 2π), and a non-number to 0", () => {
+    expect(normalizeAngle(-Math.PI / 2)).toBeCloseTo((3 * Math.PI) / 2);
+    expect(normalizeAngle(5 * Math.PI)).toBeCloseTo(Math.PI);
+    expect(normalizeAngle(NaN)).toBe(0);
+  });
+
+  it("rotationDelta is the shortest signed turn from one heading to another", () => {
+    expect(rotationDelta(0, Math.PI / 2)).toBeCloseTo(Math.PI / 2);
+    expect(rotationDelta(0.1, 2 * Math.PI - 0.1)).toBeCloseTo(-0.2);
+    expect(rotationDelta(2 * Math.PI - 0.1, 0.1)).toBeCloseTo(0.2);
+    fc.assert(
+      fc.property(
+        fc.double({ min: -100, max: 100, noNaN: true }),
+        fc.double({ min: -100, max: 100, noNaN: true }),
+        (a, b) => {
+          const d = rotationDelta(a, b);
+          return d >= -Math.PI - 1e-9 && d <= Math.PI + 1e-9;
+        },
+      ),
+    );
   });
 });

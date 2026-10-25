@@ -17,6 +17,7 @@ import {
   SHIELD_SPEED,
 } from "./physics.js";
 import {
+  aiRng,
   clamp,
   createReaction,
   dutyFrame,
@@ -184,7 +185,7 @@ export class WarlordAI {
    */
   constructor(options = {}) {
     this.difficulty = normalizeWarlordAIDifficulty(options.difficulty);
-    this.rng = typeof options.rng === "function" ? options.rng : Math.random;
+    this.rng = aiRng(options);
     this.frame = 0;
     this.reaction = createReaction();
     this.sampledTargetY = TABLE_CENTER_Y;

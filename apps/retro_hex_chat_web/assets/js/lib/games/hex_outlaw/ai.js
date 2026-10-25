@@ -20,7 +20,7 @@ import {
   RICOCHET_ANGLE,
   getObstacleRect,
 } from "./physics.js";
-import { clamp, normalizeDifficulty, randomUnit } from "../core/ai.js";
+import { aiRng, clamp, normalizeDifficulty, randomUnit } from "../core/ai.js";
 
 const NEUTRAL_INPUTS = Object.freeze({
   up: false,
@@ -121,7 +121,7 @@ export class OutlawAI {
    */
   constructor(options = {}) {
     this.difficulty = normalizeOutlawAIDifficulty(options.difficulty);
-    this.rng = typeof options.rng === "function" ? options.rng : Math.random;
+    this.rng = aiRng(options);
     this.frame = 0;
     this.fireCooldown = 0;
   }

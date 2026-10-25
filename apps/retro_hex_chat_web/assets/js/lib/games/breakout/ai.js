@@ -16,6 +16,7 @@ import {
   PADDLE_W,
 } from "./physics.js";
 import {
+  aiRng,
   clamp,
   createReaction,
   dutyFrame,
@@ -151,7 +152,7 @@ export class BreakoutAI {
    */
   constructor(options = {}) {
     this.difficulty = normalizeBreakoutAIDifficulty(options.difficulty);
-    this.rng = typeof options.rng === "function" ? options.rng : Math.random;
+    this.rng = aiRng(options);
     this.frame = 0;
     this.reaction = createReaction();
     this.sampledTargetX = TABLE_CENTER_X;

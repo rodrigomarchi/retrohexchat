@@ -16,6 +16,7 @@ import {
 } from "./physics.js";
 import { PHASE } from "./protocol.js";
 import {
+  aiRng,
   clamp,
   createReaction,
   dutyFrame,
@@ -116,7 +117,7 @@ export class PongAI {
    */
   constructor(options = {}) {
     this.difficulty = normalizePongAIDifficulty(options.difficulty);
-    this.rng = typeof options.rng === "function" ? options.rng : Math.random;
+    this.rng = aiRng(options);
     this.frame = 0;
     this.reaction = createReaction();
     this.sampledTargetY = TABLE_CENTER_Y;

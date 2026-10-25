@@ -7,7 +7,7 @@
 
 import { CELL } from "./physics.js";
 import { DIR, GRID_H, GRID_W, PHASE } from "./protocol.js";
-import { normalizeDifficulty, randomUnit } from "../core/ai.js";
+import { aiRng, normalizeDifficulty, randomUnit } from "../core/ai.js";
 
 const GRID_AREA = GRID_W * GRID_H;
 const TABLE_CENTER = Object.freeze({
@@ -83,7 +83,7 @@ export class SurroundAI {
    */
   constructor(options = {}) {
     this.difficulty = normalizeSurroundAIDifficulty(options.difficulty);
-    this.rng = typeof options.rng === "function" ? options.rng : Math.random;
+    this.rng = aiRng(options);
     this.frame = 0;
     this.lastDirection = null;
   }

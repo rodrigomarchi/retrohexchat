@@ -16,9 +16,8 @@ import {
   STAR_X,
   STAR_Y,
 } from "./physics.js";
-import { clamp, normalizeDifficulty } from "../core/ai.js";
+import { aiRng, clamp, normalizeDifficulty, rotationDelta } from "../core/ai.js";
 
-const TWO_PI = Math.PI * 2;
 const NEUTRAL_INPUTS = Object.freeze({
   rotateLeft: false,
   rotateRight: false,
@@ -107,7 +106,7 @@ export class StarDuelAI {
    */
   constructor(options = {}) {
     this.difficulty = normalizeStarDuelAIDifficulty(options.difficulty);
-    this.rng = typeof options.rng === "function" ? options.rng : Math.random;
+    this.rng = aiRng(options);
     this.frame = 0;
     this.fireCooldown = 0;
   }
@@ -177,20 +176,6 @@ export function toroidalVector(fromX, fromY, toX, toY) {
   if (dy < -CANVAS_H / 2) dy += CANVAS_H;
 
   return { dx, dy, distance: Math.sqrt(dx * dx + dy * dy) };
-}
-
-/**
- * Smallest signed rotation from current angle to target angle.
- * Positive values rotate right, negative values rotate left.
- * @param {number} current
- * @param {number} target
- * @returns {number}
- */
-export function rotationDelta(current, target) {
-  let delta = normalizeAngle(target) - normalizeAngle(current);
-  if (delta > Math.PI) delta -= TWO_PI;
-  if (delta < -Math.PI) delta += TWO_PI;
-  return delta;
 }
 
 /**
@@ -405,13 +390,6 @@ function shipFor(state, player) {
 
 function isLiveShip(ship) {
   return ship && ship.alive === true && ship.exploding !== true;
-}
-
-function normalizeAngle(angle) {
-  if (!Number.isFinite(angle)) return 0;
-  let normalized = angle % TWO_PI;
-  if (normalized < 0) normalized += TWO_PI;
-  return normalized;
 }
 
 function randomUnit(rng) {

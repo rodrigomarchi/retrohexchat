@@ -14,7 +14,6 @@ import {
   incomingMissileThreat,
   lineOfSightClear,
   normalizePixelTanksAIDifficulty,
-  rotationDelta,
   shouldFire,
   tankMovementInputs,
 } from "../../../../js/lib/games/pixel_tanks/ai.js";
@@ -148,11 +147,6 @@ describe("PixelTanksAI", () => {
     );
     expect(tankMovementInputs(0, { angle: Math.PI / 2, advance: true }).rotateRight).toBe(true);
     expect(tankMovementInputs(Math.PI, { angle: Math.PI, advance: true }).forward).toBe(true);
-  });
-
-  it("computes the shortest signed rotation delta", () => {
-    expect(rotationDelta(0.05, Math.PI * 2 - 0.05)).toBeLessThan(0);
-    expect(rotationDelta(Math.PI * 2 - 0.05, 0.05)).toBeGreaterThan(0);
   });
 
   it("fires only when aligned, visible, and off cooldown", () => {
