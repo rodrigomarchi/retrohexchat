@@ -124,6 +124,28 @@ describe("createSynth", () => {
     ]);
   });
 
+  it("lets noise die away across its buffer, and stop at its length when asked", () => {
+    const buffers = [];
+    const real = AudioContext.prototype.createBuffer;
+    vi.spyOn(AudioContext.prototype, "createBuffer").mockImplementation(function (...args) {
+      const buffer = real.apply(this, args);
+      buffers.push(buffer);
+      return buffer;
+    });
+    createSynth().play({
+      wave: "noise",
+      vol: fade(0.15, 0.08),
+      dur: 0.08,
+      decay: true,
+      stop: true,
+    });
+    const data = buffers[0].getChannelData(0);
+    const half = data.length / 2;
+    expect(Math.abs(data[data.length - 1])).toBeLessThan(0.001);
+    expect(data.slice(half).every((v) => Math.abs(v) <= 0.5 + 1e-6)).toBe(true);
+    expect(heard()[0].stop).toBe(1.08);
+  });
+
   it("sends every voice through one master gain when it has a master volume", () => {
     const synth = createSynth({ masterVolume: 0.3 });
     synth.play({ wave: "sine", freq: 80, vol: fade(0.15, 0.08, "exp"), dur: 0.08 });

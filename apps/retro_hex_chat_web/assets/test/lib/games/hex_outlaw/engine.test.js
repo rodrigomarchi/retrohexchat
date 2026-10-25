@@ -887,9 +887,9 @@ describe("OutlawEngine", () => {
       engine.start();
       // Trigger audio context creation
       engine.audio.playCountdown();
-      expect(engine.audio._ctx).not.toBeNull();
+      expect(engine.audio.ctx).not.toBeNull();
       engine.stop();
-      expect(engine.audio._ctx).toBeNull();
+      expect(engine.audio.ctx).toBeNull();
     });
 
     it("clears phaseTimer on stop", () => {

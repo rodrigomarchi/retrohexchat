@@ -12,7 +12,6 @@
 
 import { defineGame } from "../core/define_game.js";
 import { createOutlawAI, normalizeOutlawAIDifficulty } from "./ai.js";
-import { OutlawAudio } from "./audio.js";
 import {
   advanceRound,
   checkBulletCollisions,
@@ -28,6 +27,7 @@ import {
 } from "./physics.js";
 import { GAME_END, GAME_MODE, PHASE, SNAPSHOT } from "./protocol.js";
 import { createHitParticles, getColors, render, updateParticles } from "./renderer.js";
+import { SOUNDS } from "./sounds.js";
 
 const ROUND_OVER_DELAY_TICKS = 150; // 2.5 s
 const SPAWNING_DELAY_TICKS = 60; // 1 s
@@ -185,7 +185,7 @@ export default defineGame({
   interpolate: { keys: ["p1x", "p1y", "p2x", "p2y", "b1x", "b1y", "b2x", "b2y"] },
   schema: { snapshot: SNAPSHOT, end: GAME_END },
   ai: { create: createOutlawAI, difficulty: normalizeOutlawAIDifficulty },
-  audio: OutlawAudio,
+  audio: { sounds: SOUNDS },
   theme: getColors,
   // The game id picks the street: quick draw, ricochet, stagecoach or no man's land.
   init: (game) => createInitialState(MODE_MAP[game.gameId] ?? GAME_MODE.QUICK_DRAW),
