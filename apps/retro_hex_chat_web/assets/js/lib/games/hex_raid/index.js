@@ -11,6 +11,7 @@
  */
 
 import { defineGame } from "../core/define_game.js";
+import { countdownState } from "../core/rounds.js";
 import { matchResult } from "../core/result.js";
 import { normalizeRaidAIDifficulty } from "./difficulty.js";
 import {
@@ -224,13 +225,6 @@ function fly(game) {
   game.broadcast();
 }
 
-function countdown(game, remaining) {
-  game.gameState.countdown = remaining;
-  game.broadcast();
-  game.invalidate();
-  game.audio.playCountdown();
-}
-
 /** The guest builds the host's river from its seed, then copies the snapshot. */
 function applySnapshot(game, decoded) {
   if (game.seed === 0 && decoded.seed !== 0) {
@@ -308,14 +302,11 @@ export default defineGame({
     initial: "WAITING",
     begin: "COUNTDOWN",
     states: {
-      COUNTDOWN: {
-        enter: (game) => countdown(game, COUNTDOWN_FROM),
-        every: { ticks: COUNTDOWN_EVERY_TICKS, count: COUNTDOWN_FROM },
-        onEvery: (game, remaining) => {
-          if (remaining > 0) countdown(game, remaining);
-        },
+      COUNTDOWN: countdownState({
+        from: COUNTDOWN_FROM,
+        every: COUNTDOWN_EVERY_TICKS,
         next: "FLYING",
-      },
+      }),
       FLYING: {
         enter: (game) => {
           game.broadcast();

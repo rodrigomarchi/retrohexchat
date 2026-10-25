@@ -9,6 +9,7 @@
  */
 
 import { defineGame } from "../core/define_game.js";
+import { countdownState } from "../core/rounds.js";
 import { createPongAI, normalizePongAIDifficulty } from "./ai.js";
 import {
   CANVAS_W,
@@ -78,13 +79,6 @@ function playEnd(game, winner) {
   else game.audio.playLose();
 }
 
-function countdown(game, remaining) {
-  game.gameState.countdown = remaining;
-  game.broadcast();
-  game.invalidate();
-  game.audio.playCountdown();
-}
-
 export default defineGame({
   inputs: {
     up: ["ArrowUp", "w", "W"],
@@ -118,14 +112,11 @@ export default defineGame({
     initial: "WAITING",
     begin: "COUNTDOWN",
     states: {
-      COUNTDOWN: {
-        enter: (game) => countdown(game, COUNTDOWN_FROM),
-        every: { ticks: COUNTDOWN_EVERY_TICKS, count: COUNTDOWN_FROM },
-        onEvery: (game, remaining) => {
-          if (remaining > 0) countdown(game, remaining);
-        },
+      COUNTDOWN: countdownState({
+        from: COUNTDOWN_FROM,
+        every: COUNTDOWN_EVERY_TICKS,
         next: "SERVING",
-      },
+      }),
       SERVING: {
         enter: (game) => {
           game.gameState.countdown = 0;

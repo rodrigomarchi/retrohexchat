@@ -11,6 +11,7 @@
  */
 
 import { defineGame } from "../core/define_game.js";
+import { countdownState } from "../core/rounds.js";
 import { createStarDuelAI, normalizeStarDuelAIDifficulty } from "./ai.js";
 import {
   STAR_X,
@@ -213,13 +214,6 @@ function battle(game) {
   }
 }
 
-function countdown(game, remaining) {
-  game.gameState.countdown = remaining;
-  game.broadcast();
-  game.invalidate();
-  game.audio.playCountdown();
-}
-
 function spawning(game) {
   game.broadcast();
   game.invalidate();
@@ -378,14 +372,11 @@ export default defineGame({
     initial: "WAITING",
     begin: "COUNTDOWN",
     states: {
-      COUNTDOWN: {
-        enter: (game) => countdown(game, COUNTDOWN_FROM),
-        every: { ticks: COUNTDOWN_EVERY_TICKS, count: COUNTDOWN_FROM },
-        onEvery: (game, remaining) => {
-          if (remaining > 0) countdown(game, remaining);
-        },
+      COUNTDOWN: countdownState({
+        from: COUNTDOWN_FROM,
+        every: COUNTDOWN_EVERY_TICKS,
         next: "SPAWNING",
-      },
+      }),
       SPAWNING: {
         enter: spawning,
         after: { ticks: SPAWN_DELAY_TICKS },

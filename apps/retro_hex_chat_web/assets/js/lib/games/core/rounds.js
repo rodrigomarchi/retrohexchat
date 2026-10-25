@@ -33,6 +33,24 @@ function say(game, remaining) {
 }
 
 /**
+ * A spoken countdown: `from` on entering, then one number less every
+ * `every` ticks, then `next` once it reaches zero. The game's state carries
+ * `countdown` and its sounds a `countdown`.
+ * @param {{ from: number, every: number, next: string }} options
+ * @returns {object} a flow state for defineGame
+ */
+export function countdownState({ from, every, next }) {
+  return {
+    enter: (game) => say(game, from),
+    every: { ticks: every, count: from },
+    onEvery: (game, remaining) => {
+      if (remaining > 0) say(game, remaining);
+    },
+    next,
+  };
+}
+
+/**
  * @param {object} options
  * @param {Record<string, number>} options.phases
  * @param {string} options.play - the phase a round is played in
@@ -63,14 +81,7 @@ export function roundsFlow({
     initial: "WAITING",
     begin: "COUNTDOWN",
     states: {
-      COUNTDOWN: {
-        enter: (game) => say(game, from),
-        every: { ticks: every, count: from },
-        onEvery: (game, remaining) => {
-          if (remaining > 0) say(game, remaining);
-        },
-        next: "SPAWNING",
-      },
+      COUNTDOWN: countdownState({ from, every, next: "SPAWNING" }),
       SPAWNING: {
         enter: (game) => {
           game.broadcast();

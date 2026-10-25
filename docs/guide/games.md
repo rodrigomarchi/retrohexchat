@@ -19,7 +19,7 @@ another copy of the core (§G.5).
 |---|---|
 | The engine class from a definition | `core/define_game.js` — `defineGame(def)`; its header lists every field and hook |
 | Phases and their timing | `core/flow.js` — states with `tick`, `enter`, `after: { ticks }`, `every`, `next`, `final` |
-| A match played in rounds | `core/rounds.js` — `roundsFlow({ … })`: countdown, bell, round, round-over pause, match end |
+| A match played in rounds | `core/rounds.js` — `roundsFlow({ … })`: countdown, bell, round, round-over pause, match end; `countdownState({ from, every, next })` for the spoken countdown alone |
 | The wire | `core/codec.js` — `schema(type, fields)` with `u8`, `i16`, `flags`, `struct`, `list`, … |
 | Message types and dispatch | `core/messages.js` |
 | Randomness | `core/rng.js` — `createRng(seed)`; a game gets `game.random` (simulation), `game.fxRandom` (effects) and its AI a stream of its own |
