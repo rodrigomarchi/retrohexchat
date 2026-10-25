@@ -11,6 +11,7 @@
  */
 
 import { defineGame } from "../core/define_game.js";
+import { playFlags } from "../core/events.js";
 import { matchResult } from "../core/result.js";
 import { createHexFrostAI } from "./ai.js";
 import { normalizeFrostAIDifficulty } from "./difficulty.js";
@@ -44,30 +45,25 @@ const MODES = {
   hex_frost_peaceful: GAME_MODE.PEACEFUL,
 };
 
+/** The sound of each event bit; host and guest hear the same. */
 const EVENT_SOUNDS = [
-  [EVENT.BLOCK_CLAIM, "playBlockClaim"],
-  [EVENT.BLOCK_STEAL, "playBlockSteal"],
-  [EVENT.BLOCK_UNDO, "playBlockUndo"],
-  [EVENT.JUMP, "playJump"],
-  [EVENT.LAND, "playLand"],
-  [EVENT.SPLASH, "playSplash"],
-  [EVENT.FISH_COLLECT, "playFishCollect"],
-  [EVENT.ENEMY_HIT, "playEnemyHit"],
-  [EVENT.IGLOO_PIECE, "playIglooPiece"],
-  [EVENT.IGLOO_LOSE, "playIglooLose"],
-  [EVENT.IGLOO_COMPLETE, "playIglooComplete"],
-  [EVENT.IGLOO_ENTER, "playIglooEnter"],
-  [EVENT.TEMP_LOW, "playTempLow"],
-  [EVENT.TEMP_ZERO, "playTempZero"],
-  [EVENT.BEAR_NEAR, "playBearNear"],
-  [EVENT.CLAM_SNAP, "playClamSnap"],
+  [EVENT.BLOCK_CLAIM, "blockClaim"],
+  [EVENT.BLOCK_STEAL, "blockSteal"],
+  [EVENT.BLOCK_UNDO, "blockUndo"],
+  [EVENT.JUMP, "jump"],
+  [EVENT.LAND, "land"],
+  [EVENT.SPLASH, "splash"],
+  [EVENT.FISH_COLLECT, "fishCollect"],
+  [EVENT.ENEMY_HIT, "enemyHit"],
+  [EVENT.IGLOO_PIECE, "iglooPiece"],
+  [EVENT.IGLOO_LOSE, "iglooLose"],
+  [EVENT.IGLOO_COMPLETE, "iglooComplete"],
+  [EVENT.IGLOO_ENTER, "iglooEnter"],
+  [EVENT.TEMP_LOW, "tempLow"],
+  [EVENT.TEMP_ZERO, "tempZero"],
+  [EVENT.BEAR_NEAR, "bearNear"],
+  [EVENT.CLAM_SNAP, "clamSnap"],
 ];
-
-function playEvents(game, events) {
-  for (const [bit, sound] of EVENT_SOUNDS) {
-    if (events & bit) game.audio[sound]();
-  }
-}
 
 /** The frame's bookkeeping, shared by every phase that steps. */
 function nextFrame(game) {
@@ -143,7 +139,7 @@ function buildingTick(game) {
   if (state.phase === PHASE.FINISHED && prevPhase !== PHASE.FINISHED) finishMatch(game, state);
 
   state = updateFlashTimers(state);
-  playEvents(game, state.events);
+  playFlags(game, EVENT_SOUNDS, state.events);
   publish(game, state);
 }
 
@@ -248,8 +244,8 @@ export default defineGame({
   applySnapshot: (game, decoded) => {
     game.gameMode = decoded.mode;
     game.gameState = unpackState(decoded);
-    playEvents(game, decoded.events);
   },
+  cues: [{ flags: (s) => s.events, sounds: EVENT_SOUNDS }],
   onEnd: (game, result) => {
     if (game.gameState) game.gameState = { ...game.gameState, phase: PHASE.FINISHED };
     game.invalidate();

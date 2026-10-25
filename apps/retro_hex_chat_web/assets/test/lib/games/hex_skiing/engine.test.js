@@ -1,3 +1,4 @@
+import { playFlags } from "../../../../js/lib/games/core/events.js";
 import { inputDatagram, inputMask } from "../../../helpers/game_input.js";
 import { decodeInputState } from "../../../../js/lib/games/net_protocol.js";
 import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
@@ -41,7 +42,7 @@ vi.mock("../../../../js/lib/games/hex_skiing/renderer.js", () => ({
 const {
   default: HexSkiingEngine,
   finishMatch,
-  playEvents,
+  EVENT_SOUNDS,
 } = await import("../../../../js/lib/games/hex_skiing/index.js");
 const { render, readColors } = await import("../../../../js/lib/games/hex_skiing/renderer.js");
 
@@ -1100,63 +1101,67 @@ describe("HexSkiingEngine", () => {
     it("COLLISION_TREE triggers playCollisionTree", () => {
       const { engine: e } = setupRacingEngine();
       engine = e;
-      playEvents(engine.audio, EVENT.COLLISION_TREE);
+      playFlags(engine, EVENT_SOUNDS, EVENT.COLLISION_TREE);
       expect(engine.audio.playCollisionTree).toHaveBeenCalled();
     });
 
     it("COLLISION_ROCK triggers playCollisionRock", () => {
       const { engine: e } = setupRacingEngine();
       engine = e;
-      playEvents(engine.audio, EVENT.COLLISION_ROCK);
+      playFlags(engine, EVENT_SOUNDS, EVENT.COLLISION_ROCK);
       expect(engine.audio.playCollisionRock).toHaveBeenCalled();
     });
 
     it("GATE_CLEARED triggers playGateCleared", () => {
       const { engine: e } = setupRacingEngine();
       engine = e;
-      playEvents(engine.audio, EVENT.GATE_CLEARED);
+      playFlags(engine, EVENT_SOUNDS, EVENT.GATE_CLEARED);
       expect(engine.audio.playGateCleared).toHaveBeenCalled();
     });
 
     it("SPEED_BOOST triggers playSpeedBoost", () => {
       const { engine: e } = setupRacingEngine();
       engine = e;
-      playEvents(engine.audio, EVENT.SPEED_BOOST);
+      playFlags(engine, EVENT_SOUNDS, EVENT.SPEED_BOOST);
       expect(engine.audio.playSpeedBoost).toHaveBeenCalled();
     });
 
     it("ICE_PATCH triggers playIcePatch", () => {
       const { engine: e } = setupRacingEngine();
       engine = e;
-      playEvents(engine.audio, EVENT.ICE_PATCH);
+      playFlags(engine, EVENT_SOUNDS, EVENT.ICE_PATCH);
       expect(engine.audio.playIcePatch).toHaveBeenCalled();
     });
 
     it("BLIZZARD_START triggers playBlizzardStart", () => {
       const { engine: e } = setupRacingEngine();
       engine = e;
-      playEvents(engine.audio, EVENT.BLIZZARD_START);
+      playFlags(engine, EVENT_SOUNDS, EVENT.BLIZZARD_START);
       expect(engine.audio.playBlizzardStart).toHaveBeenCalled();
     });
 
     it("BLIZZARD_END triggers playBlizzardEnd", () => {
       const { engine: e } = setupRacingEngine();
       engine = e;
-      playEvents(engine.audio, EVENT.BLIZZARD_END);
+      playFlags(engine, EVENT_SOUNDS, EVENT.BLIZZARD_END);
       expect(engine.audio.playBlizzardEnd).toHaveBeenCalled();
     });
 
     it("ENGULFED triggers playEngulfed", () => {
       const { engine: e } = setupRacingEngine();
       engine = e;
-      playEvents(engine.audio, EVENT.ENGULFED);
+      playFlags(engine, EVENT_SOUNDS, EVENT.ENGULFED);
       expect(engine.audio.playEngulfed).toHaveBeenCalled();
     });
 
     it("multiple events in same frame (bitmask)", () => {
       const { engine: e } = setupRacingEngine();
       engine = e;
-      playEvents(engine.audio, EVENT.COLLISION_TREE | EVENT.GATE_CLEARED | EVENT.SPEED_BOOST);
+      playFlags(
+        engine,
+        EVENT_SOUNDS,
+        EVENT.COLLISION_TREE | EVENT.GATE_CLEARED | EVENT.SPEED_BOOST,
+      );
       expect(engine.audio.playCollisionTree).toHaveBeenCalled();
       expect(engine.audio.playGateCleared).toHaveBeenCalled();
       expect(engine.audio.playSpeedBoost).toHaveBeenCalled();
@@ -1168,7 +1173,7 @@ describe("HexSkiingEngine", () => {
     it("zero events triggers nothing", () => {
       const { engine: e } = setupRacingEngine();
       engine = e;
-      playEvents(engine.audio, 0);
+      playFlags(engine, EVENT_SOUNDS, 0);
       expect(engine.audio.playCollisionTree).not.toHaveBeenCalled();
       expect(engine.audio.playGateCleared).not.toHaveBeenCalled();
     });
@@ -1180,21 +1185,21 @@ describe("HexSkiingEngine", () => {
     it("COLLISION_TREE triggers playCollisionTree", () => {
       const { engine: e } = createEngine("hex_skiing", false);
       engine = e;
-      playEvents(engine.audio, EVENT.COLLISION_TREE);
+      playFlags(engine, EVENT_SOUNDS, EVENT.COLLISION_TREE);
       expect(engine.audio.playCollisionTree).toHaveBeenCalled();
     });
 
     it("ENGULFED triggers playEngulfed", () => {
       const { engine: e } = createEngine("hex_skiing", false);
       engine = e;
-      playEvents(engine.audio, EVENT.ENGULFED);
+      playFlags(engine, EVENT_SOUNDS, EVENT.ENGULFED);
       expect(engine.audio.playEngulfed).toHaveBeenCalled();
     });
 
     it("multiple events via bitmask", () => {
       const { engine: e } = createEngine("hex_skiing", false);
       engine = e;
-      playEvents(engine.audio, EVENT.GATE_CLEARED | EVENT.ICE_PATCH);
+      playFlags(engine, EVENT_SOUNDS, EVENT.GATE_CLEARED | EVENT.ICE_PATCH);
       expect(engine.audio.playGateCleared).toHaveBeenCalled();
       expect(engine.audio.playIcePatch).toHaveBeenCalled();
     });

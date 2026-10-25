@@ -37,6 +37,18 @@ function sound(game, play, current, previous) {
 }
 
 /**
+ * Play the sound of every bit set in `bits`, in the table's order: the host
+ * hears a step's events this way, from the same table a `flags` cue gives
+ * the guest.
+ * @param {{ audio: object }} game
+ * @param {Array<[number, string | Function]>} sounds - bit (or bits) and the sound it plays
+ * @param {number} bits
+ */
+export function playFlags(game, sounds, bits) {
+  for (const [bit, play] of sounds) if (bits & bit) sound(game, play, null, null);
+}
+
+/**
  * Play the cues a new state fires against the previous one.
  * @param {Array<object>} cues
  * @param {object} previous - the state before the snapshot

@@ -11,6 +11,7 @@
  */
 
 import { defineGame } from "../core/define_game.js";
+import { playFlags } from "../core/events.js";
 import { normalizeEnduroAIDifficulty } from "./difficulty.js";
 import {
   activateTurbo,
@@ -50,15 +51,15 @@ const COUNTDOWN_EVERY_TICKS = 60; // 1 s
 
 const RELEASED = { left: false, right: false, accel: false, brake: false, turbo: false };
 
-/** The sounds of a step's events, a bit field, in the order they are heard. */
-export function playEvents(audio, events) {
-  if (events & EVENT.OVERTAKE_AI) audio.playOvertakeAI();
-  if (events & EVENT.OVERTAKE_PLAYER) audio.playOvertakePlayer();
-  if (events & EVENT.COLLISION) audio.playCollision();
-  if (events & EVENT.FUEL_PICKUP) audio.playFuelPickup();
-  if (events & EVENT.TURBO_ACTIVATE) audio.playTurbo();
-  if (events & EVENT.WEATHER_CHANGE) audio.playWeatherChange();
-}
+/** The sound of each event bit, in the order they are heard; host and guest hear the same. */
+export const EVENT_SOUNDS = [
+  [EVENT.OVERTAKE_AI, "overtakeAI"],
+  [EVENT.OVERTAKE_PLAYER, "overtakePlayer"],
+  [EVENT.COLLISION, "collision"],
+  [EVENT.FUEL_PICKUP, "fuelPickup"],
+  [EVENT.TURBO_ACTIVATE, "turbo"],
+  [EVENT.WEATHER_CHANGE, "weatherChange"],
+];
 
 function race(game) {
   // The AI sees the step's state with last step's events already cleared.
@@ -99,7 +100,7 @@ function race(game) {
   s = updateWeather(s);
   s = tickTimers(s);
   s = checkGameOver(s);
-  playEvents(game.audio, s.events);
+  playFlags(game, EVENT_SOUNDS, s.events);
   game.audio.updateEnginePitch((s.p1.speed + s.p2.speed) / 2);
 
   // The step that reaches the finish still sends it; FINISHED's entry ends the match.
@@ -109,7 +110,7 @@ function race(game) {
   game.invalidate();
 }
 
-/** The guest unpacks the host's state, keeping its own road scroll, and hears its events. */
+/** The guest unpacks the host's state, keeping its own road scroll. */
 function applySnapshot(game, decoded) {
   if (game.seed === 0 && decoded.seed !== 0) game.seed = decoded.seed;
   game.gameMode = decoded.mode;
@@ -117,7 +118,6 @@ function applySnapshot(game, decoded) {
   nested.scrollOffset = game.gameState.scrollOffset || 0;
   nested.p1.targetLane = nested.p1.lane;
   nested.p2.targetLane = nested.p2.lane;
-  playEvents(game.audio, decoded.events);
   game.gameState = nested;
   game.invalidate();
 }
@@ -233,6 +233,7 @@ export default defineGame({
 
   toWire: (game) => packState(game.gameState),
   applySnapshot,
+  cues: [{ flags: (s) => s.events, sounds: EVENT_SOUNDS }],
   onEnd: (game, result) => {
     game.gameState = { ...game.gameState, phase: PHASE.FINISHED };
     game.invalidate();

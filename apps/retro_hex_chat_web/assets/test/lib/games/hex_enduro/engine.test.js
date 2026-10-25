@@ -1,3 +1,4 @@
+import { playFlags } from "../../../../js/lib/games/core/events.js";
 import { advance, useFakePageTimers } from "../../../helpers/game_clock.js";
 import { inputDatagram } from "../../../helpers/game_input.js";
 import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
@@ -38,7 +39,7 @@ vi.mock("../../../../js/lib/games/hex_enduro/renderer.js", () => ({
   render: vi.fn(),
 }));
 
-const { default: HexEnduroEngine, playEvents } =
+const { default: HexEnduroEngine, EVENT_SOUNDS } =
   await import("../../../../js/lib/games/hex_enduro/index.js");
 const { render, getColors } = await import("../../../../js/lib/games/hex_enduro/renderer.js");
 
@@ -731,7 +732,7 @@ describe("HexEnduroEngine", () => {
       engine = new HexEnduroEngine(canvas, channel, "hex_enduro", true, null);
       engine.start();
 
-      playEvents(engine.audio, EVENT.COLLISION);
+      playFlags(engine, EVENT_SOUNDS, EVENT.COLLISION);
       expect(engine.audio.playCollision).toHaveBeenCalled();
     });
 
@@ -739,7 +740,7 @@ describe("HexEnduroEngine", () => {
       engine = new HexEnduroEngine(canvas, channel, "hex_enduro", true, null);
       engine.start();
 
-      playEvents(engine.audio, EVENT.OVERTAKE_AI);
+      playFlags(engine, EVENT_SOUNDS, EVENT.OVERTAKE_AI);
       expect(engine.audio.playOvertakeAI).toHaveBeenCalled();
     });
 
@@ -747,7 +748,7 @@ describe("HexEnduroEngine", () => {
       engine = new HexEnduroEngine(canvas, channel, "hex_enduro", true, null);
       engine.start();
 
-      playEvents(engine.audio, EVENT.COLLISION | EVENT.FUEL_PICKUP);
+      playFlags(engine, EVENT_SOUNDS, EVENT.COLLISION | EVENT.FUEL_PICKUP);
       expect(engine.audio.playCollision).toHaveBeenCalled();
       expect(engine.audio.playFuelPickup).toHaveBeenCalled();
     });
@@ -888,7 +889,7 @@ describe("HexEnduroEngine", () => {
       engine.start();
 
       engine.audio.playOvertakePlayer.mockClear();
-      playEvents(engine.audio, EVENT.OVERTAKE_PLAYER);
+      playFlags(engine, EVENT_SOUNDS, EVENT.OVERTAKE_PLAYER);
       expect(engine.audio.playOvertakePlayer).toHaveBeenCalled();
     });
 
@@ -897,7 +898,7 @@ describe("HexEnduroEngine", () => {
       engine.start();
 
       engine.audio.playTurbo.mockClear();
-      playEvents(engine.audio, EVENT.TURBO_ACTIVATE);
+      playFlags(engine, EVENT_SOUNDS, EVENT.TURBO_ACTIVATE);
       expect(engine.audio.playTurbo).toHaveBeenCalled();
     });
 
@@ -906,7 +907,7 @@ describe("HexEnduroEngine", () => {
       engine.start();
 
       engine.audio.playWeatherChange.mockClear();
-      playEvents(engine.audio, EVENT.WEATHER_CHANGE);
+      playFlags(engine, EVENT_SOUNDS, EVENT.WEATHER_CHANGE);
       expect(engine.audio.playWeatherChange).toHaveBeenCalled();
     });
   });

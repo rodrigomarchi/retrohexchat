@@ -13,6 +13,7 @@
  */
 
 import { defineGame } from "../core/define_game.js";
+import { playFlags } from "../core/events.js";
 import { matchResult } from "../core/result.js";
 import { normalizeSkiingAIDifficulty } from "./difficulty.js";
 import {
@@ -46,17 +47,17 @@ const MODE_MAP = {
   hex_skiing_clean: GAME_MODE.CLEAN_RUN,
 };
 
-/** The sounds of a step's events, a bit field; host and guest hear the same. */
-export function playEvents(audio, events) {
-  if (events & EVENT.COLLISION_TREE) audio.playCollisionTree();
-  if (events & EVENT.COLLISION_ROCK) audio.playCollisionRock();
-  if (events & EVENT.GATE_CLEARED) audio.playGateCleared();
-  if (events & EVENT.SPEED_BOOST) audio.playSpeedBoost();
-  if (events & EVENT.ICE_PATCH) audio.playIcePatch();
-  if (events & EVENT.BLIZZARD_START) audio.playBlizzardStart();
-  if (events & EVENT.BLIZZARD_END) audio.playBlizzardEnd();
-  if (events & EVENT.ENGULFED) audio.playEngulfed();
-}
+/** The sound of each event bit, in the order they are heard; host and guest hear the same. */
+export const EVENT_SOUNDS = [
+  [EVENT.COLLISION_TREE, "collisionTree"],
+  [EVENT.COLLISION_ROCK, "collisionRock"],
+  [EVENT.GATE_CLEARED, "gateCleared"],
+  [EVENT.SPEED_BOOST, "speedBoost"],
+  [EVENT.ICE_PATCH, "icePatch"],
+  [EVENT.BLIZZARD_START, "blizzardStart"],
+  [EVENT.BLIZZARD_END, "blizzardEnd"],
+  [EVENT.ENGULFED, "engulfed"],
+];
 
 /** A countdown beat every COUNTDOWN_STEPS; the last one starts the race. */
 function countdown(game, state) {
@@ -117,7 +118,7 @@ function race(game, previous) {
   }
   if (state.phase === PHASE.FINISHED && prevPhase !== PHASE.FINISHED) finishMatch(game, state);
 
-  playEvents(game.audio, state.events);
+  playFlags(game, EVENT_SOUNDS, state.events);
   game.audio.updateSkiPitch(Math.max(getScrollSpeed(state.p1), getScrollSpeed(state.p2)));
   if (state.mode !== GAME_MODE.CLEAN_RUN) {
     const avalancheScreenY = state.avalancheY - state.scrollY;
@@ -216,8 +217,8 @@ export default defineGame({
   applySnapshot: (game, decoded) => {
     game.gameMode = decoded.mode;
     game.gameState = unpackState(decoded);
-    playEvents(game.audio, decoded.events);
   },
+  cues: [{ flags: (s) => s.events, sounds: EVENT_SOUNDS }],
   onEnd: (game, result) => {
     if (game.gameState) game.gameState = { ...game.gameState, phase: PHASE.FINISHED };
     game.invalidate();

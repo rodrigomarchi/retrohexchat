@@ -240,11 +240,7 @@ function applySnapshot(game, decoded) {
     }
   }
   game.gameMode = decoded.mode;
-  const prevPhase = game.gameState.phase;
   for (const key of SNAPSHOT_FIELDS) game.gameState[key] = decoded[key];
-  if (prevPhase !== decoded.phase && decoded.phase === PHASE.COUNTDOWN) {
-    game.audio.playCountdown();
-  }
 }
 
 export default defineGame({
@@ -344,6 +340,7 @@ export default defineGame({
   },
 
   applySnapshot,
+  cues: [{ phase: PHASE.COUNTDOWN, play: "countdown" }],
   onEnd: (game, result) => {
     game.setKeyboardCaptured(false);
     Object.assign(game.gameState, {

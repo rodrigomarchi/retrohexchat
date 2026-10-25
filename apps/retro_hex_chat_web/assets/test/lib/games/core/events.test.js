@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { cueSounds } from "../../../../js/lib/games/core/events.js";
+import { cueSounds, playFlags } from "../../../../js/lib/games/core/events.js";
 
 /** An audio object that writes down what it is asked to play. */
 function listener() {
@@ -90,5 +90,20 @@ describe("cueSounds", () => {
         { phase: 2, score: 1 },
       ]),
     ).toEqual(["playRoundOver", "playPoint"]);
+  });
+});
+
+describe("playFlags", () => {
+  it("plays the sound of every bit set, in the table's order, from the same table a cue uses", () => {
+    const { audio, heard } = listener();
+    playFlags(
+      { audio },
+      [
+        [4, "goal"],
+        [1 | 2, "shot"],
+      ],
+      2 | 4,
+    );
+    expect(heard).toEqual(["playGoal", "playShot"]);
   });
 });
