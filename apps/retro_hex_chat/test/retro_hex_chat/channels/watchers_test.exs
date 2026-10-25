@@ -161,9 +161,8 @@ defmodule RetroHexChat.Channels.WatchersTest do
   describe "the default channel" do
     test "is watchable even when nobody is in it" do
       channel = unique_channel()
-      previous = Application.get_env(:retro_hex_chat, :default_channel)
+      restore_default_channel_on_exit()
       Application.put_env(:retro_hex_chat, :default_channel, channel)
-      on_exit(fn -> Application.put_env(:retro_hex_chat, :default_channel, previous) end)
 
       assert {:ok, state} = Server.watch(channel, visitor(), "Guest9999")
       assert state.guests == ["Guest9999"]

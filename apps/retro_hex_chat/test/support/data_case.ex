@@ -56,6 +56,24 @@ defmodule RetroHexChat.DataCase do
   end
 
   @doc """
+  Puts the default channel back as it was when the test ends: the value it
+  had, or no value at all. Umbrella tests share one VM, so a `nil` written
+  back for a key that was unset leaves every later test — the web app's
+  too — with no default channel, and every visitor page fails to mount.
+  """
+  @spec restore_default_channel_on_exit() :: :ok
+  def restore_default_channel_on_exit do
+    previous = Application.fetch_env(:retro_hex_chat, :default_channel)
+
+    on_exit(fn ->
+      case previous do
+        {:ok, channel} -> Application.put_env(:retro_hex_chat, :default_channel, channel)
+        :error -> Application.delete_env(:retro_hex_chat, :default_channel)
+      end
+    end)
+  end
+
+  @doc """
   A helper that transforms changeset errors into a map of messages.
 
       assert {:error, changeset} = Accounts.create_user(%{password: "short"})

@@ -97,8 +97,8 @@ defmodule RetroHexChat.VirtualSpace.EnterChannelTest do
   # is in it yet: the chat would have started it on arrival.
   test "the default channel takes them in even before anybody is in it" do
     channel = "#" <> unique("front")
+    restore_default_channel_on_exit()
     Application.put_env(:retro_hex_chat, :default_channel, channel)
-    on_exit(fn -> Application.delete_env(:retro_hex_chat, :default_channel) end)
     nickname = unique("eve")
     _tab = open_space_tab(nickname)
 
