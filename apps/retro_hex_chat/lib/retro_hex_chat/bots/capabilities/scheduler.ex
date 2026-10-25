@@ -14,7 +14,7 @@ defmodule RetroHexChat.Bots.Capabilities.Scheduler do
   """
 
   use Gettext, backend: RetroHexChat.Gettext
-  @behaviour RetroHexChat.Bots.Capability
+  use RetroHexChat.Bots.Capability
 
   alias RetroHexChat.Bots.Capabilities.Scheduler.Durable
   alias RetroHexChat.Bots.Capability
@@ -94,11 +94,6 @@ defmodule RetroHexChat.Bots.Capabilities.Scheduler do
   end
 
   @impl true
-  @spec handle_event(atom(), map(), RetroHexChat.Bots.Capability.bot_context()) ::
-          RetroHexChat.Bots.Capability.capability_result()
-  def handle_event(_event, _payload, _ctx), do: :ignore
-
-  @impl true
   @spec default_config() :: map()
   def default_config do
     %{
@@ -109,10 +104,6 @@ defmodule RetroHexChat.Bots.Capabilities.Scheduler do
       "schedules" => []
     }
   end
-
-  @impl true
-  @spec validate_config(map()) :: :ok | {:error, String.t()}
-  def validate_config(_config), do: :ok
 
   @impl true
   @spec commands() :: [%{trigger: String.t(), description: String.t()}]

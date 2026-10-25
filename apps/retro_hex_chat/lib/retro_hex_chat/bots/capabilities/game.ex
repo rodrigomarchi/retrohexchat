@@ -24,7 +24,7 @@ defmodule RetroHexChat.Bots.Capabilities.Game do
   An arcade game's room gets what the game is and its controls, on arrival, as its
   opening line and to `!howto`; it keeps no score, so nothing else.
   """
-  @behaviour RetroHexChat.Bots.Capability
+  use RetroHexChat.Bots.Capability
 
   alias RetroHexChat.Bots.Server
   alias RetroHexChat.Chat.Queries, as: ChatQueries
@@ -117,14 +117,6 @@ defmodule RetroHexChat.Bots.Capabilities.Game do
   @impl true
   @spec init_state(map()) :: map()
   def init_state(_config), do: %{welcomed: %{}}
-
-  @impl true
-  @spec default_config() :: map()
-  def default_config, do: %{"enabled" => true}
-
-  @impl true
-  @spec validate_config(map()) :: :ok | {:error, String.t()}
-  def validate_config(_config), do: :ok
 
   @impl true
   @spec commands() :: [%{trigger: String.t(), description: String.t()}]

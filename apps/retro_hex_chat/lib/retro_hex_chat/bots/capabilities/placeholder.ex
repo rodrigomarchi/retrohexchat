@@ -17,7 +17,7 @@ defmodule RetroHexChat.Bots.Capabilities.Placeholder do
     default_config = Keyword.fetch!(opts, :default_config)
 
     quote do
-      @behaviour RetroHexChat.Bots.Capability
+      use RetroHexChat.Bots.Capability
 
       @impl true
       @spec name() :: atom()

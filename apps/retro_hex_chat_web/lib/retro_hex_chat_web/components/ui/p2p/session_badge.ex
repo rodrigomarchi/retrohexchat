@@ -26,6 +26,7 @@ defmodule RetroHexChatWeb.Components.UI.P2P.SessionBadge do
   alias RetroHexChat.Games.Catalog
   alias RetroHexChatWeb.Components.UI.EntryPopover
   alias RetroHexChatWeb.Icons
+  alias RetroHexChatWeb.Params
 
   attr :peer, :string, required: true
   attr :session, :map, default: nil
@@ -199,14 +200,14 @@ defmodule RetroHexChatWeb.Components.UI.P2P.SessionBadge do
 
   defp assign_session(assigns) do
     session = normalize_session(assigns[:session], assigns[:state])
-    state = value(session, :state)
-    role = value(session, :role)
-    token = value(session, :token)
+    state = Params.value(session, :state)
+    role = Params.value(session, :role)
+    token = Params.value(session, :token)
     status = status(state)
 
     assigns
-    |> assign(:game, value(session, :game))
-    |> assign(:peer_locale, value(session, :peer_locale))
+    |> assign(:game, Params.value(session, :game))
+    |> assign(:peer_locale, Params.value(session, :peer_locale))
     |> assign(:active, session != nil)
     |> assign(:idle?, state in [:idle, "idle"])
     |> assign(:pending_received?, pending_received?(state, role))
@@ -286,10 +287,4 @@ defmodule RetroHexChatWeb.Components.UI.P2P.SessionBadge do
   defp dot_class(:invite), do: "bg-warning"
   defp dot_class(:link), do: "bg-warning-alt"
   defp dot_class(:live), do: "bg-success"
-
-  # Nil-safe because the session it reads is absent more often than present.
-  defp value(nil, _key), do: nil
-  defp value(map, key) when is_map(map) and is_atom(key), do: Map.get(map, key)
-
-  defp value(_value, _key), do: nil
 end

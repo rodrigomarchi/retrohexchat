@@ -16,6 +16,7 @@ defmodule RetroHexChat.Accounts.TrustedDevices do
   alias RetroHexChat.Accounts.TrustedDeviceEvent
   alias RetroHexChat.Accounts.TrustedDeviceNick
   alias RetroHexChat.Accounts.TrustedDevicePreference
+  alias RetroHexChat.MapKey
   alias RetroHexChat.Nickname
   alias RetroHexChat.Page
   alias RetroHexChat.Repo
@@ -1099,15 +1100,15 @@ defmodule RetroHexChat.Accounts.TrustedDevices do
 
     %{
       label: truncate(label, 100),
-      browser: truncate(value(client_info, :browser), 100),
-      os: truncate(value(client_info, :os), 100),
+      browser: truncate(MapKey.get(client_info, :browser), 100),
+      os: truncate(MapKey.get(client_info, :os), 100),
       device_type: device_type(client_info),
-      language: truncate(value(client_info, :language), 32),
-      timezone: truncate(value(client_info, :timezone), 100),
-      screen: truncate(value(client_info, :screen), 32),
-      color_depth: value(client_info, :color_depth),
-      touch: value(client_info, :touch) == true,
-      cores: value(client_info, :cores),
+      language: truncate(MapKey.get(client_info, :language), 32),
+      timezone: truncate(MapKey.get(client_info, :timezone), 100),
+      screen: truncate(MapKey.get(client_info, :screen), 32),
+      color_depth: MapKey.get(client_info, :color_depth),
+      touch: MapKey.get(client_info, :touch) == true,
+      cores: MapKey.get(client_info, :cores),
       user_agent_hash: Keyword.get(opts, :user_agent_hash),
       last_ip_hash: Keyword.get(opts, :ip_hash)
     }
@@ -1297,24 +1298,20 @@ defmodule RetroHexChat.Accounts.TrustedDevices do
   defp normalize_client_value(value) when is_boolean(value), do: value
   defp normalize_client_value(_value), do: nil
 
-  defp value(map, key) when is_map(map) and is_atom(key) do
-    Map.get(map, to_string(key), Map.get(map, key))
-  end
-
   defp default_label(%TrustedDevice{} = device) do
     default_label(%{"browser" => device.browser, "os" => device.os})
   end
 
   defp default_label(client_info) do
-    browser = value(client_info, :browser) || dgettext("accounts", "Browser")
-    os = value(client_info, :os) || dgettext("accounts", "Unknown OS")
+    browser = MapKey.get(client_info, :browser) || dgettext("accounts", "Browser")
+    os = MapKey.get(client_info, :os) || dgettext("accounts", "Unknown OS")
     "#{browser} on #{os}"
   end
 
   defp device_type(client_info) do
     cond do
-      value(client_info, :touch) == true -> "touch"
-      is_binary(value(client_info, :screen)) -> "desktop"
+      MapKey.get(client_info, :touch) == true -> "touch"
+      is_binary(MapKey.get(client_info, :screen)) -> "desktop"
       true -> "unknown"
     end
   end

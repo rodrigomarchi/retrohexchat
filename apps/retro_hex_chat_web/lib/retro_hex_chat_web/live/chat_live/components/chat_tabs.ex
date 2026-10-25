@@ -27,6 +27,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.ChatTabs do
   import RetroHexChatWeb.Components.UI.IrcTabs
 
   alias RetroHexChatWeb.ChatLive.Helpers.NickFlags
+  alias RetroHexChatWeb.Params
 
   attr :class, :any, default: nil, doc: "Extra classes for the tab bar container"
   attr :unread_counts, :map, default: %{}, doc: "Unread counts keyed by channel / \"pm:nick\""
@@ -147,7 +148,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.ChatTabs do
 
   defp pm_tab(pm, assigns) do
     pm_p2p_session = p2p_session_for_pm(assigns, pm)
-    pm_p2p_state = p2p_tab_state(value(pm_p2p_session, :state))
+    pm_p2p_state = p2p_tab_state(Params.value(pm_p2p_session, :state))
 
     %{
       type: "pm",
@@ -184,8 +185,4 @@ defmodule RetroHexChatWeb.ChatLive.Components.ChatTabs do
   defp p2p_tab_state(:connected), do: "connected"
   defp p2p_tab_state(nil), do: nil
   defp p2p_tab_state(_state), do: "connecting"
-
-  # Nil-safe because the session it reads is absent more often than present.
-  defp value(nil, _key), do: nil
-  defp value(map, key) when is_map(map) and is_atom(key), do: Map.get(map, key)
 end

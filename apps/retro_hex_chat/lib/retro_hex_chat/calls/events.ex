@@ -6,6 +6,8 @@ defmodule RetroHexChat.Calls.Events do
   SDP, ICE payloads and free-form messages do not belong in these events.
   """
 
+  alias RetroHexChat.MapKey
+
   @recovery_transition [:retro_hex_chat, :calls, :recovery, :transition]
   @client_error [:retro_hex_chat, :calls, :client_error]
   @signaling_replay [:retro_hex_chat, :calls, :signaling, :replay]
@@ -57,7 +59,7 @@ defmodule RetroHexChat.Calls.Events do
       |> Map.merge(%{
         surface: normalize_tag(surface),
         action: normalize_tag(action),
-        reason: normalize_tag(value(metadata, :reason))
+        reason: normalize_tag(MapKey.get(metadata, :reason))
       })
 
     :telemetry.execute(@signaling_replay, %{count: 1}, metadata)
@@ -74,7 +76,7 @@ defmodule RetroHexChat.Calls.Events do
 
   defp safe_metadata(metadata) when is_map(metadata) do
     Enum.reduce(@safe_optional_keys, %{}, fn key, acc ->
-      case normalize_value(key, value(metadata, key)) do
+      case normalize_value(key, MapKey.get(metadata, key)) do
         nil -> acc
         normalized -> Map.put(acc, key, normalized)
       end
@@ -131,7 +133,4 @@ defmodule RetroHexChat.Calls.Events do
   defp normalize_tag(value) when is_boolean(value), do: to_string(value)
   defp normalize_tag(value) when is_integer(value), do: Integer.to_string(value)
   defp normalize_tag(_value), do: "unknown"
-
-  defp value(map, key) when is_map(map), do: Map.get(map, key) || Map.get(map, to_string(key))
-  defp value(_map, _key), do: nil
 end

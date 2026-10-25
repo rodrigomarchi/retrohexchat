@@ -10,7 +10,7 @@ defmodule RetroHexChat.Bots.Capabilities.RSS do
   """
   use Gettext, backend: RetroHexChat.Gettext
 
-  @behaviour RetroHexChat.Bots.Capability
+  use RetroHexChat.Bots.Capability
 
   alias RetroHexChat.Bots.Capabilities.RSS.FeedParser
   alias RetroHexChat.Bots.Capabilities.RSS.Fetcher
@@ -166,11 +166,6 @@ defmodule RetroHexChat.Bots.Capabilities.RSS do
   end
 
   @impl true
-  @spec handle_event(atom(), map(), RetroHexChat.Bots.Capability.bot_context()) ::
-          RetroHexChat.Bots.Capability.capability_result()
-  def handle_event(_event, _payload, _ctx), do: :ignore
-
-  @impl true
   @spec handle_timer(term(), map(), RetroHexChat.Bots.Capability.bot_context()) ::
           {RetroHexChat.Bots.Capability.capability_result(), map()}
   def handle_timer(%{type: :poll, feed_id: feed_id}, state, ctx) do
@@ -194,10 +189,6 @@ defmodule RetroHexChat.Bots.Capabilities.RSS do
       "max_items_per_poll" => @default_max_items_per_poll
     }
   end
-
-  @impl true
-  @spec validate_config(map()) :: :ok | {:error, String.t()}
-  def validate_config(_config), do: :ok
 
   @impl true
   @spec commands() :: [%{trigger: String.t(), description: String.t()}]

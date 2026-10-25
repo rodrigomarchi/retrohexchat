@@ -6,7 +6,7 @@ defmodule RetroHexChat.Bots.Capabilities.Mention do
   alias RetroHexChat.Nickname
 
   use Gettext, backend: RetroHexChat.Gettext
-  @behaviour RetroHexChat.Bots.Capability
+  use RetroHexChat.Bots.Capability
 
   alias RetroHexChat.Bots.TemplateEngine
 
@@ -37,11 +37,6 @@ defmodule RetroHexChat.Bots.Capabilities.Mention do
       :ignore
     end
   end
-
-  @impl true
-  @spec handle_event(atom(), map(), RetroHexChat.Bots.Capability.bot_context()) ::
-          RetroHexChat.Bots.Capability.capability_result()
-  def handle_event(_event, _payload, _ctx), do: :ignore
 
   @impl true
   @spec default_config() :: map()

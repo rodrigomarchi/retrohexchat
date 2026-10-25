@@ -20,6 +20,33 @@ defmodule RetroHexChat.Bots.Capability do
   implement `handle_timer/3`.
   """
 
+  @doc """
+  Declares the behaviour, with the answers most capabilities give: ignore
+  channel events, start enabled (`%{"enabled" => true}`), accept any config.
+  A capability defines its own `handle_event/3`, `default_config/0` or
+  `validate_config/1` where it has something else to say.
+  """
+  defmacro __using__(_opts) do
+    quote do
+      @behaviour RetroHexChat.Bots.Capability
+
+      @impl true
+      @spec handle_event(atom(), map(), RetroHexChat.Bots.Capability.bot_context()) ::
+              RetroHexChat.Bots.Capability.capability_result()
+      def handle_event(_event, _payload, _ctx), do: :ignore
+
+      @impl true
+      @spec default_config() :: map()
+      def default_config, do: %{"enabled" => true}
+
+      @impl true
+      @spec validate_config(map()) :: :ok | {:error, String.t()}
+      def validate_config(_config), do: :ok
+
+      defoverridable handle_event: 3, default_config: 0, validate_config: 1
+    end
+  end
+
   @type bot_context :: %{
           optional(:joined_channels) => [String.t()],
           bot_nickname: String.t(),

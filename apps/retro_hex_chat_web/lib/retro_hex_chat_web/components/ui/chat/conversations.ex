@@ -57,6 +57,7 @@ defmodule RetroHexChatWeb.Components.UI.Conversations do
   alias RetroHexChat.Channels.Categories
   alias RetroHexChat.Text
   alias RetroHexChatWeb.Icons
+  alias RetroHexChatWeb.Params
 
   @doc """
   Renders the conversations sidebar chrome. `visible` means expanded; when
@@ -789,10 +790,10 @@ defmodule RetroHexChatWeb.Components.UI.Conversations do
   defp popular_item(assigns) do
     assigns =
       assign(assigns,
-        channel_name: value(assigns.channel, :name),
-        user_count: value(assigns.channel, :user_count),
-        locale: value(assigns.channel, :locale),
-        category: if(assigns.show_category, do: value(assigns.channel, :category))
+        channel_name: Params.value(assigns.channel, :name),
+        user_count: Params.value(assigns.channel, :user_count),
+        locale: Params.value(assigns.channel, :locale),
+        category: if(assigns.show_category, do: Params.value(assigns.channel, :category))
       )
 
     ~H"""
@@ -1008,7 +1009,7 @@ defmodule RetroHexChatWeb.Components.UI.Conversations do
           name: channel,
           joined: true,
           pinned: not is_nil(entry),
-          has_key: Text.present?(value(entry, :channel_key))
+          has_key: Text.present?(Params.value(entry, :channel_key))
         }
       end)
 
@@ -1022,7 +1023,7 @@ defmodule RetroHexChatWeb.Components.UI.Conversations do
           name: entry_channel_name(entry),
           joined: false,
           pinned: true,
-          has_key: Text.present?(value(entry, :channel_key))
+          has_key: Text.present?(Params.value(entry, :channel_key))
         }
       end)
 
@@ -1136,15 +1137,11 @@ defmodule RetroHexChatWeb.Components.UI.Conversations do
     if is_function(assigns.nick_color_fn, 1), do: assigns.nick_color_fn.(nick)
   end
 
-  defp entry_channel_name(entry), do: value(entry, :channel_name)
+  defp entry_channel_name(entry), do: Params.value(entry, :channel_name)
 
   defp p2p_session_for_pm(%{p2p_pm_sessions: sessions}, nick)
        when is_map(sessions) and is_binary(nick),
        do: Map.get(sessions, Nickname.key(nick))
 
   defp p2p_session_for_pm(_assigns, _nick), do: nil
-
-  # Nil-safe because the session it reads is absent more often than present.
-  defp value(nil, _key), do: nil
-  defp value(map, key) when is_map(map) and is_atom(key), do: Map.get(map, key)
 end

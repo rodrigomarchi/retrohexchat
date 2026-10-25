@@ -7,6 +7,8 @@ defmodule RetroHexChat.GroupCall.Audit do
   path table for this roadmap step.
   """
 
+  alias RetroHexChat.MapKey
+
   @max_events 100
 
   @spec append(map() | nil, atom(), map()) :: map()
@@ -36,16 +38,16 @@ defmodule RetroHexChat.GroupCall.Audit do
       "type" => Atom.to_string(event_type),
       "occurred_at" => DateTime.utc_now() |> DateTime.to_iso8601()
     }
-    |> put_value("actor", value(attrs, :actor))
-    |> put_value("target", value(attrs, :target))
-    |> put_value("channel", value(attrs, :channel))
-    |> put_value("participant_id", value(attrs, :participant_id))
-    |> put_value("target_participant_id", value(attrs, :target_participant_id))
-    |> put_value("reason", value(attrs, :reason))
-    |> put_value("kind", value(attrs, :kind))
-    |> put_value("changed_count", value(attrs, :changed_count))
-    |> put_value("skipped_count", value(attrs, :skipped_count))
-    |> put_value("metadata", value(attrs, :metadata))
+    |> put_value("actor", MapKey.get(attrs, :actor))
+    |> put_value("target", MapKey.get(attrs, :target))
+    |> put_value("channel", MapKey.get(attrs, :channel))
+    |> put_value("participant_id", MapKey.get(attrs, :participant_id))
+    |> put_value("target_participant_id", MapKey.get(attrs, :target_participant_id))
+    |> put_value("reason", MapKey.get(attrs, :reason))
+    |> put_value("kind", MapKey.get(attrs, :kind))
+    |> put_value("changed_count", MapKey.get(attrs, :changed_count))
+    |> put_value("skipped_count", MapKey.get(attrs, :skipped_count))
+    |> put_value("metadata", MapKey.get(attrs, :metadata))
   end
 
   defp event_id do
@@ -73,8 +75,4 @@ defmodule RetroHexChat.GroupCall.Audit do
     do: {Atom.to_string(key), stringify_value(value)}
 
   defp stringify_pair({key, value}), do: {key, stringify_value(value)}
-
-  defp value(attrs, key) do
-    Map.get(attrs, key) || Map.get(attrs, Atom.to_string(key))
-  end
 end

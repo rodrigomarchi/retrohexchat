@@ -35,16 +35,7 @@ defmodule RetroHexChatWeb.Params do
   def boolean(value, _default) when value in @false_values, do: false
   def boolean(_value, default), do: default
 
-  @doc "A field of a map that came from Elixir (atom key) or from JSON (string key)."
+  @doc "A field of a map that came from Elixir (atom key) or from JSON (string key); see `RetroHexChat.MapKey.get/2`."
   @spec value(term(), atom() | String.t()) :: term()
-  def value(map, key) when is_map(map) and is_atom(key) do
-    cond do
-      Map.has_key?(map, key) -> Map.get(map, key)
-      Map.has_key?(map, Atom.to_string(key)) -> Map.get(map, Atom.to_string(key))
-      true -> nil
-    end
-  end
-
-  def value(map, key) when is_map(map) and is_binary(key), do: Map.get(map, key)
-  def value(_map, _key), do: nil
+  defdelegate value(map, key), to: RetroHexChat.MapKey, as: :get
 end

@@ -32,7 +32,7 @@ defmodule RetroHexChat.Bots.Capabilities.Greeter do
   alias RetroHexChat.Nickname
 
   use Gettext, backend: RetroHexChat.Gettext
-  @behaviour RetroHexChat.Bots.Capability
+  use RetroHexChat.Bots.Capability
 
   alias RetroHexChat.Bots.GreetingLedger
   alias RetroHexChat.Bots.TemplateEngine

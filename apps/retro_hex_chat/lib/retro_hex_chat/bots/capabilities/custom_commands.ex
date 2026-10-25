@@ -5,7 +5,7 @@ defmodule RetroHexChat.Bots.Capabilities.CustomCommands do
   """
 
   use Gettext, backend: RetroHexChat.Gettext
-  @behaviour RetroHexChat.Bots.Capability
+  use RetroHexChat.Bots.Capability
 
   alias RetroHexChat.Bots.TemplateEngine
 
@@ -32,19 +32,6 @@ defmodule RetroHexChat.Bots.Capabilities.CustomCommands do
         :ignore
     end
   end
-
-  @impl true
-  @spec handle_event(atom(), map(), RetroHexChat.Bots.Capability.bot_context()) ::
-          RetroHexChat.Bots.Capability.capability_result()
-  def handle_event(_event, _payload, _ctx), do: :ignore
-
-  @impl true
-  @spec default_config() :: map()
-  def default_config, do: %{"enabled" => true}
-
-  @impl true
-  @spec validate_config(map()) :: :ok | {:error, String.t()}
-  def validate_config(_), do: :ok
 
   # ── Helpers ──
 
