@@ -8,6 +8,7 @@ import { createLocalTransport } from "../../../js/lib/games/transport.js";
 import { fakeChannel } from "../../support/games/fake_channel.js";
 import { recordingAudio } from "../../support/games/recording_audio.js";
 import { recordingCanvas } from "../../support/games/recording_canvas.js";
+import { GAME_DIRS } from "../../support/games/engines.js";
 
 const GAMES = {
   pong: "pong",
@@ -26,6 +27,12 @@ const GAMES = {
   hex_enduro: "hex_enduro",
   block_breakers: "breakout",
 };
+
+describe("the games checked here", () => {
+  it("are every game folder", () => {
+    expect(new Set(Object.values(GAMES))).toEqual(new Set(GAME_DIRS));
+  });
+});
 
 async function load(gameId) {
   const dir = GAMES[gameId];

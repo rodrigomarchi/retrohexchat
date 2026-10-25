@@ -55,6 +55,23 @@ The engine underneath is `js/lib/game_engine.js`; a game never imports it.
 `test/lib/games/registry.test.js` and `apps/retro_hex_chat_web/test/retro_hex_chat_web/games/registry_test.exs`
 fail until the two sides, the folder and its pins agree.
 
+The rest of what a new game needs, and what stops you when it is missing:
+
+| Step | Where | Caught by |
+|---|---|---|
+| Ranking: versus, score or co-op | `@versus_game_ids` / `@score_game_ids` / `@coop_game_ids` in `Games.Catalog` | compilation stops |
+| Goal and keys in the library panel | `goal_label/1` and `control_rows/1` in `RetroGamesPanel` | `retro_games_panel_test.exs` |
+| Box art | an `icon_game_*` in `components/icons/games.ex`, its line in `icons/registry.ex`, and the catalog entry's `icon:` naming it | `icons_test.exs`, `icons_registry_test.exs` |
+| Help topic | `HelpTopics` features list + topic, `controllers/help_content/feature_<id>.html.heex` | `games_catalog_test.exs`, `help_content_coverage_test.exs` |
+| Translations | `make i18n.gettext.merge`, then every locale | `make i18n.gettext.check`, `i18n.catalog.check` |
+| Screenshot and share card | `make games.shots ONLY=<slug>` | `games_catalog_test.exs` |
+| Pins and the key script | `test/lib/games/pins/<dir>.pin.test.js`, `test/support/games/scripts/` | `registry.test.js` |
+| Endings heard and spelled | `end_sounds.test.js`, `result_spelling.test.js` tables | their "every game folder" test |
+| Game channel and its bots | production, by hand: `docs/provisioning/en.md` | nothing — a runbook step |
+
+The lifecycle tests (determinism, disconnect, match, keymap) read the engines from the registry
+and pick a new folder up by themselves.
+
 ## G.4 Rules a game keeps
 
 - **Time is ticks.** The simulation steps at a fixed 60 Hz; a pause is `after: { ticks: n }`, a

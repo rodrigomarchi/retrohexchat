@@ -15,9 +15,13 @@
  *   ai: { create: createPongAI, difficulty: normalizePongAIDifficulty }, // no create: the page hands it in
  *   audio: { sounds: SOUNDS },                     // played by name: playPaddleHit()
  *   theme: getColors,
+ *   setup: (game, options) => …,                  // once, in the constructor, before the flow exists
  *   init: (game, options) => createInitialState(),
  *   flow: { phases: PHASE, initial: "WAITING", begin: "COUNTDOWN", states: { … } },
  *   cues: [{ phase: PHASE.COUNTDOWN, play: "countdown" }, …], // what the guest hears (core/events.js)
+ *   idle: (game) => …,                             // each frame while no match runs (the flow's idle step)
+ *   toWire: (game) => wireState,                   // host: what the snapshot encodes, when not gameState itself
+ *   applySnapshot: (game, decoded) => …,          // guest: lands a snapshot in place of the default copy
  *   onSnapshot: (game, decoded, previous) => …,   // guest, after a snapshot lands
  *   onEnd: (game, result) => …,                    // guest, when the host ends the match
  *   onStart, onStop: (game) => …,                  // around the engine's own start and stop

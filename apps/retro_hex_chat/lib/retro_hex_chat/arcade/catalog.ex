@@ -316,7 +316,7 @@ defmodule RetroHexChat.Arcade.Catalog do
   @spec engine_name(atom()) :: String.t()
   def engine_name(engine), do: Keyword.fetch!(@engines, engine)
 
-  # ex_dna:disable-for-lines:24 two catalogues, one lookup API each over its own @games
+  # ex_dna:disable-for-lines:29 two catalogues, one lookup API each over its own @games
   @spec list_games() :: [game()]
   def list_games, do: Enum.map(@games, &translate_game/1)
 
@@ -342,6 +342,10 @@ defmodule RetroHexChat.Arcade.Catalog do
 
   @spec game_ids() :: [String.t()]
   def game_ids, do: Enum.map(@games, & &1.id)
+
+  @doc "The box-art name of a game (`game_doom`), or nil for an id not in the catalogue."
+  @spec icon(String.t()) :: String.t() | nil
+  def icon(id), do: Enum.find_value(@games, &(&1.id == id and &1.icon))
 
   @doc """
   The address-safe name of a game: `"doom-shareware"` for `"doom_shareware"`.

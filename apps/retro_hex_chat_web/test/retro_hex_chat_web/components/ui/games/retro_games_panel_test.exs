@@ -4,7 +4,9 @@ defmodule RetroHexChatWeb.Components.UI.Games.RetroGamesPanelTest do
   import Phoenix.LiveViewTest
   import RetroHexChatWeb.Components.UI.RetroGamesPanel
 
+  alias RetroHexChat.Games.Catalog
   alias RetroHexChat.Games.Result
+  alias RetroHexChatWeb.Components.UI.RetroGamesPanel
 
   @moduletag :unit
 
@@ -519,5 +521,12 @@ defmodule RetroHexChatWeb.Components.UI.Games.RetroGamesPanelTest do
     assert [home] = Floki.find(document, ~s([data-testid="retro-game-home-link"]))
     assert Floki.attribute(home, "href") == ["/games/hex-raid"]
     assert [_] = Floki.find(document, ~s([data-testid="retro-game-channel-link"]))
+  end
+
+  test "every game in the catalogue states its own goal and keys" do
+    for game <- Catalog.list_games() do
+      assert is_binary(RetroGamesPanel.goal_label(game)), game.id
+      assert [%{label: _, keys: [_ | _]} | _] = RetroGamesPanel.control_rows(game)
+    end
   end
 end

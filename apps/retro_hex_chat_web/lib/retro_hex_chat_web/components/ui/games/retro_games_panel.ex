@@ -325,48 +325,68 @@ defmodule RetroHexChatWeb.Components.UI.RetroGamesPanel do
   defp difficulty_label("hard"), do: dgettext("games", "Hard")
   defp difficulty_label(_difficulty), do: dgettext("games", "Normal")
 
-  defp goal_label(%{id: "light_trails"}), do: dgettext("games", "First to 3 games")
-  defp goal_label(%{id: "pixel_tanks"}), do: dgettext("games", "Best of 3 rounds")
-  defp goal_label(%{id: "star_duel"}), do: dgettext("games", "First to 7")
-  defp goal_label(%{id: "gravity_well"}), do: dgettext("games", "First to 7")
-  defp goal_label(%{id: "debris_field"}), do: dgettext("games", "First to 7")
-  defp goal_label(%{id: "block_breakers"}), do: dgettext("games", "Clear all blocks")
-  defp goal_label(%{id: "hex_warlords"}), do: dgettext("games", "Last king standing")
-  defp goal_label(%{id: "hex_raid_blitz"}), do: dgettext("games", "5 sections")
-  defp goal_label(%{id: "hex_raid"}), do: dgettext("games", "10 sections")
-  defp goal_label(%{id: "hex_raid_pacifist"}), do: dgettext("games", "10 sections")
-  defp goal_label(%{id: "hex_boxing"}), do: dgettext("games", "Best of 3 rounds")
-  defp goal_label(%{id: "hex_outlaw"}), do: dgettext("games", "Best of 3 rounds")
-  defp goal_label(%{id: "hex_outlaw_ricochet"}), do: dgettext("games", "Best of 3 rounds")
-  defp goal_label(%{id: "hex_outlaw_stagecoach"}), do: dgettext("games", "Best of 3 rounds")
-  defp goal_label(%{id: "hex_outlaw_nml"}), do: dgettext("games", "Best of 3 rounds")
-  defp goal_label(%{id: "hex_invaders"}), do: dgettext("games", "10 waves")
-  defp goal_label(%{id: "hex_invaders_coop"}), do: dgettext("games", "10 waves")
-  defp goal_label(%{id: "hex_invaders_blitz"}), do: dgettext("games", "5 waves")
-  defp goal_label(%{id: "hex_enduro"}), do: dgettext("games", "Best of 3 days")
-  defp goal_label(%{id: "hex_enduro_night"}), do: dgettext("games", "3 minutes")
-  defp goal_label(%{id: "hex_enduro_sprint"}), do: dgettext("games", "90 seconds")
-  defp goal_label(%{id: "hex_tennis_quick"}), do: dgettext("games", "First to 3 games")
-  defp goal_label(%{id: "hex_tennis"}), do: dgettext("games", "First to 6 games")
-  defp goal_label(%{id: "hex_tennis_sudden"}), do: dgettext("games", "First to 6 games")
-  defp goal_label(%{id: "hex_skiing"}), do: dgettext("games", "Best of 3 runs")
-  defp goal_label(%{id: "hex_skiing_escape"}), do: dgettext("games", "Last standing")
-  defp goal_label(%{id: "hex_skiing_clean"}), do: dgettext("games", "Fastest time")
-  defp goal_label(%{id: "hex_frost"}), do: dgettext("games", "Best of 5 rounds")
-  defp goal_label(%{id: "hex_frost_blizzard"}), do: dgettext("games", "1 round")
-  defp goal_label(%{id: "hex_frost_peaceful"}), do: dgettext("games", "Build first")
-  defp goal_label(%{id: "hex_hockey"}), do: dgettext("games", "3 periods")
-  defp goal_label(%{id: "hex_hockey_blitz"}), do: dgettext("games", "1 period")
-  defp goal_label(%{id: "hex_hockey_showdown"}), do: dgettext("games", "First to 5 goals")
-  defp goal_label(_game), do: dgettext("games", "First to 11")
+  @doc """
+  What a match of `game` plays to, as the library panel states it. Every game
+  in the catalogue has its own clause: a game without one raises instead of
+  being shown another game's goal.
+  """
+  @spec goal_label(%{required(:id) => String.t(), optional(atom()) => term()}) :: String.t()
+  def goal_label(%{id: "hex_pong"}), do: dgettext("games", "First to 11")
+  def goal_label(%{id: "light_trails"}), do: dgettext("games", "First to 3 games")
+  def goal_label(%{id: "pixel_tanks"}), do: dgettext("games", "Best of 3 rounds")
+  def goal_label(%{id: "star_duel"}), do: dgettext("games", "First to 7")
+  def goal_label(%{id: "gravity_well"}), do: dgettext("games", "First to 7")
+  def goal_label(%{id: "debris_field"}), do: dgettext("games", "First to 7")
+  def goal_label(%{id: "block_breakers"}), do: dgettext("games", "Clear all blocks")
+  def goal_label(%{id: "hex_warlords"}), do: dgettext("games", "Last king standing")
+  def goal_label(%{id: "hex_raid_blitz"}), do: dgettext("games", "5 sections")
+  def goal_label(%{id: "hex_raid"}), do: dgettext("games", "10 sections")
+  def goal_label(%{id: "hex_raid_pacifist"}), do: dgettext("games", "10 sections")
+  def goal_label(%{id: "hex_boxing"}), do: dgettext("games", "Best of 3 rounds")
+  def goal_label(%{id: "hex_outlaw"}), do: dgettext("games", "Best of 3 rounds")
+  def goal_label(%{id: "hex_outlaw_ricochet"}), do: dgettext("games", "Best of 3 rounds")
+  def goal_label(%{id: "hex_outlaw_stagecoach"}), do: dgettext("games", "Best of 3 rounds")
+  def goal_label(%{id: "hex_outlaw_nml"}), do: dgettext("games", "Best of 3 rounds")
+  def goal_label(%{id: "hex_invaders"}), do: dgettext("games", "10 waves")
+  def goal_label(%{id: "hex_invaders_coop"}), do: dgettext("games", "10 waves")
+  def goal_label(%{id: "hex_invaders_blitz"}), do: dgettext("games", "5 waves")
+  def goal_label(%{id: "hex_enduro"}), do: dgettext("games", "Best of 3 days")
+  def goal_label(%{id: "hex_enduro_night"}), do: dgettext("games", "3 minutes")
+  def goal_label(%{id: "hex_enduro_sprint"}), do: dgettext("games", "90 seconds")
+  def goal_label(%{id: "hex_tennis_quick"}), do: dgettext("games", "First to 3 games")
+  def goal_label(%{id: "hex_tennis"}), do: dgettext("games", "First to 6 games")
+  def goal_label(%{id: "hex_tennis_sudden"}), do: dgettext("games", "First to 6 games")
+  def goal_label(%{id: "hex_skiing"}), do: dgettext("games", "Best of 3 runs")
+  def goal_label(%{id: "hex_skiing_escape"}), do: dgettext("games", "Last standing")
+  def goal_label(%{id: "hex_skiing_clean"}), do: dgettext("games", "Fastest time")
+  def goal_label(%{id: "hex_frost"}), do: dgettext("games", "Best of 5 rounds")
+  def goal_label(%{id: "hex_frost_blizzard"}), do: dgettext("games", "1 round")
+  def goal_label(%{id: "hex_frost_peaceful"}), do: dgettext("games", "Build first")
+  def goal_label(%{id: "hex_hockey"}), do: dgettext("games", "3 periods")
+  def goal_label(%{id: "hex_hockey_blitz"}), do: dgettext("games", "1 period")
+  def goal_label(%{id: "hex_hockey_showdown"}), do: dgettext("games", "First to 5 goals")
 
-  defp control_rows(%{id: "light_trails"}) do
+  @doc """
+  The keys of `game`, one row per action, as the library panel lists them.
+  Every game in the catalogue has its own clause: a game without one raises
+  instead of being shown another game's keys.
+  """
+  @spec control_rows(%{required(:id) => String.t(), optional(atom()) => term()}) :: [
+          %{label: String.t(), keys: [String.t()]}
+        ]
+  def control_rows(%{id: "hex_pong"}) do
+    [
+      %{label: dgettext("games", "Move"), keys: ["↑", "↓", "W", "S"]}
+    ]
+  end
+
+  def control_rows(%{id: "light_trails"}) do
     [
       %{label: dgettext("games", "Steer"), keys: ["↑", "↓", "←", "→", "W", "A", "S", "D"]}
     ]
   end
 
-  defp control_rows(%{id: "pixel_tanks"}) do
+  def control_rows(%{id: "pixel_tanks"}) do
     [
       %{label: dgettext("games", "Rotate"), keys: ["←", "→", "A", "D"]},
       %{label: dgettext("games", "Forward"), keys: ["↑", "W"]},
@@ -374,12 +394,12 @@ defmodule RetroHexChatWeb.Components.UI.RetroGamesPanel do
     ]
   end
 
-  defp control_rows(%{id: id})
-       when id in [
-              "star_duel",
-              "gravity_well",
-              "debris_field"
-            ] do
+  def control_rows(%{id: id})
+      when id in [
+             "star_duel",
+             "gravity_well",
+             "debris_field"
+           ] do
     [
       %{label: dgettext("games", "Rotate"), keys: ["←", "→", "A", "D"]},
       %{label: dgettext("games", "Thrust"), keys: ["↑", "W"]},
@@ -387,87 +407,87 @@ defmodule RetroHexChatWeb.Components.UI.RetroGamesPanel do
     ]
   end
 
-  defp control_rows(%{id: "block_breakers"}) do
+  def control_rows(%{id: "block_breakers"}) do
     [
       %{label: dgettext("games", "Move"), keys: ["←", "→", "A", "D"]}
     ]
   end
 
-  defp control_rows(%{id: "hex_warlords"}) do
+  def control_rows(%{id: "hex_warlords"}) do
     [
       %{label: dgettext("games", "Shield"), keys: ["↑", "↓", "W", "S"]},
       %{label: dgettext("games", "Catch/Release"), keys: ["Space"]}
     ]
   end
 
-  defp control_rows(%{id: "hex_raid_pacifist"}) do
+  def control_rows(%{id: "hex_raid_pacifist"}) do
     [
       %{label: dgettext("games", "Move/Speed"), keys: ["↑", "↓", "←", "→", "W", "A", "S", "D"]},
       %{label: dgettext("games", "Fire"), keys: ["Space"]}
     ]
   end
 
-  defp control_rows(%{id: id})
-       when id in [
-              "hex_raid",
-              "hex_raid_blitz"
-            ] do
+  def control_rows(%{id: id})
+      when id in [
+             "hex_raid",
+             "hex_raid_blitz"
+           ] do
     [
       %{label: dgettext("games", "Move/Speed"), keys: ["↑", "↓", "←", "→", "W", "A", "S", "D"]},
       %{label: dgettext("games", "Fire/Mine"), keys: ["Space", "Shift"]}
     ]
   end
 
-  defp control_rows(%{id: "hex_boxing"}) do
+  def control_rows(%{id: "hex_boxing"}) do
     [
       %{label: dgettext("games", "Move"), keys: ["↑", "↓", "←", "→", "W", "A", "S", "D"]},
       %{label: dgettext("games", "Punch"), keys: ["Space", "Shift"]}
     ]
   end
 
-  defp control_rows(%{id: id})
-       when id in [
-              "hex_outlaw",
-              "hex_outlaw_ricochet",
-              "hex_outlaw_stagecoach",
-              "hex_outlaw_nml"
-            ] do
+  def control_rows(%{id: id})
+      when id in [
+             "hex_outlaw",
+             "hex_outlaw_ricochet",
+             "hex_outlaw_stagecoach",
+             "hex_outlaw_nml"
+           ] do
     [
       %{label: dgettext("games", "Move/Aim"), keys: ["↑", "↓", "←", "→", "W", "A", "S", "D"]},
       %{label: dgettext("games", "Fire"), keys: ["Space", "Shift"]}
     ]
   end
 
-  defp control_rows(%{id: id})
-       when id in [
-              "hex_tennis",
-              "hex_tennis_quick",
-              "hex_tennis_sudden"
-            ] do
+  def control_rows(%{id: id})
+      when id in [
+             "hex_tennis",
+             "hex_tennis_quick",
+             "hex_tennis_sudden"
+           ] do
     [
       %{label: dgettext("games", "Move"), keys: ["↑", "↓", "←", "→", "W", "A", "S", "D"]},
       %{label: dgettext("games", "Serve"), keys: ["Space", "Shift"]}
     ]
   end
 
-  defp control_rows(%{id: id})
-       when id in [
-              "hex_invaders",
-              "hex_invaders_coop",
-              "hex_invaders_blitz"
-            ] do
+  def control_rows(%{id: id})
+      when id in [
+             "hex_invaders",
+             "hex_invaders_coop",
+             "hex_invaders_blitz"
+           ] do
     [
       %{label: dgettext("games", "Move"), keys: ["←", "→", "A", "D"]},
       %{label: dgettext("games", "Fire"), keys: ["Space"]}
     ]
   end
 
-  defp control_rows(%{id: id})
-       when id in [
-              "hex_enduro",
-              "hex_enduro_night",
-              "hex_enduro_sprint"
-            ] do
+  def control_rows(%{id: id})
+      when id in [
+             "hex_enduro",
+             "hex_enduro_night",
+             "hex_enduro_sprint"
+           ] do
     [
       %{label: dgettext("games", "Lane"), keys: ["←", "→", "A", "D"]},
       %{label: dgettext("games", "Speed"), keys: ["↑", "↓", "W", "S"]},
@@ -475,44 +495,38 @@ defmodule RetroHexChatWeb.Components.UI.RetroGamesPanel do
     ]
   end
 
-  defp control_rows(%{id: id})
-       when id in [
-              "hex_skiing",
-              "hex_skiing_escape",
-              "hex_skiing_clean"
-            ] do
+  def control_rows(%{id: id})
+      when id in [
+             "hex_skiing",
+             "hex_skiing_escape",
+             "hex_skiing_clean"
+           ] do
     [
       %{label: dgettext("games", "Steer"), keys: ["←", "→", "A", "D"]}
     ]
   end
 
-  defp control_rows(%{id: id})
-       when id in [
-              "hex_frost",
-              "hex_frost_blizzard",
-              "hex_frost_peaceful"
-            ] do
+  def control_rows(%{id: id})
+      when id in [
+             "hex_frost",
+             "hex_frost_blizzard",
+             "hex_frost_peaceful"
+           ] do
     [
       %{label: dgettext("games", "Move"), keys: ["↑", "↓", "←", "→", "W", "A", "S", "D"]},
       %{label: dgettext("games", "Jump rows"), keys: ["↑", "↓", "W", "S"]}
     ]
   end
 
-  defp control_rows(%{id: id})
-       when id in [
-              "hex_hockey",
-              "hex_hockey_blitz",
-              "hex_hockey_showdown"
-            ] do
+  def control_rows(%{id: id})
+      when id in [
+             "hex_hockey",
+             "hex_hockey_blitz",
+             "hex_hockey_showdown"
+           ] do
     [
       %{label: dgettext("games", "Move"), keys: ["↑", "↓", "←", "→", "W", "A", "S", "D"]},
       %{label: dgettext("games", "Shoot/Tackle"), keys: ["Space", "Shift"]}
-    ]
-  end
-
-  defp control_rows(_game) do
-    [
-      %{label: dgettext("games", "Move"), keys: ["↑", "↓", "W", "S"]}
     ]
   end
 

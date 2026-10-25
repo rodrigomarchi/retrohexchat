@@ -4,6 +4,8 @@ defmodule RetroHexChatWeb.IconsTest do
   import Phoenix.LiveViewTest
 
   alias Phoenix.HTML.Safe
+  alias RetroHexChat.Arcade.Catalog, as: ArcadeCatalog
+  alias RetroHexChat.Games.Catalog, as: GamesCatalog
   alias RetroHexChatWeb.Icons
   alias RetroHexChatWeb.Icons.Registry
   alias RetroHexChatWeb.Icons.Sprite
@@ -69,6 +71,17 @@ defmodule RetroHexChatWeb.IconsTest do
       html = render_component(&Icons.game_icon/1, game_id: "hex_pong", class: "h-6")
 
       assert html =~ Sprite.href(Registry.game("hex_pong"))
+    end
+
+    test "every catalogued game, P2P or arcade, has box art of its own" do
+      registered = MapSet.new(Registry.all(), &elem(&1, 0))
+
+      for game <- GamesCatalog.list_games() ++ ArcadeCatalog.list_games() do
+        icon = Registry.game(game.id)
+
+        assert icon != :icon_game_generic, "#{game.id} has no box art"
+        assert MapSet.member?(registered, icon), "#{game.id} names unregistered #{icon}"
+      end
     end
 
     test "falls back for an unknown game" do

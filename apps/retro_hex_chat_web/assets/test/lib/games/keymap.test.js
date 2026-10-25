@@ -2,24 +2,10 @@ import { describe, it, expect, afterEach } from "vitest";
 import { loadP2PEngineClass } from "../../../js/lib/games/engine_loader.js";
 import { keymap } from "../../../js/lib/game_engine.js";
 import { playMatch } from "../../support/games/harness.js";
+import { ENGINE_GAME_IDS } from "../../support/games/engines.js";
 
 // Every engine whose keys hold an input (Light Trails steers by command).
-const GAMES = [
-  "hex_pong",
-  "block_breakers",
-  "star_duel",
-  "hex_warlords",
-  "pixel_tanks",
-  "hex_raid",
-  "hex_boxing",
-  "hex_outlaw",
-  "hex_invaders",
-  "hex_enduro",
-  "hex_tennis",
-  "hex_skiing",
-  "hex_frost",
-  "hex_hockey",
-];
+const GAMES = ENGINE_GAME_IDS.filter((id) => id !== "light_trails");
 
 describe("keymap", () => {
   it("turns each input's keys into a frozen key-to-input table", () => {

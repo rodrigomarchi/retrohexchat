@@ -8,6 +8,7 @@ import { fakeChannel } from "../../support/games/fake_channel.js";
 import { createLocalTransport } from "../../../js/lib/games/transport.js";
 import { recordingAudio } from "../../support/games/recording_audio.js";
 import { recordingCanvas } from "../../support/games/recording_canvas.js";
+import { GAME_DIRS } from "../../support/games/engines.js";
 
 const createMockCanvas = () => recordingCanvas(640, 480);
 
@@ -50,6 +51,13 @@ afterEach(() => {
   engine?.stop();
   engine = null;
   vi.restoreAllMocks();
+});
+
+describe("the games heard here", () => {
+  it("are every game folder but the co-operative one", () => {
+    const heard = Object.entries(games).map(([gameId, end]) => end.dir ?? gameId);
+    expect(new Set([...heard, "breakout"])).toEqual(new Set(GAME_DIRS));
+  });
 });
 
 describe("the guest's end-of-match sound", () => {

@@ -43,9 +43,16 @@ defmodule RetroHexChat.Games.Catalog do
     "hex_hockey_showdown"
   ]
 
-  # How a finished match is ranked. Every game not listed is a versus game: two
-  # sides, one winner. Score games rank the points a player took home; co-op
-  # games rank the score the pair made together.
+  # How a finished match is ranked. Versus games have two sides and one winner;
+  # score games rank the points a player took home; co-op games rank the score
+  # the pair made together. Every game sits in exactly one list: compilation
+  # stops on a game left out, since a score game ranked as versus would have its
+  # real results refused as implausible.
+  @versus_game_ids ~w(hex_pong light_trails pixel_tanks star_duel gravity_well debris_field
+                      hex_warlords hex_boxing hex_outlaw hex_outlaw_ricochet hex_outlaw_stagecoach
+                      hex_outlaw_nml hex_tennis hex_tennis_quick hex_tennis_sudden hex_skiing
+                      hex_skiing_escape hex_skiing_clean hex_frost hex_frost_blizzard
+                      hex_frost_peaceful hex_hockey hex_hockey_blitz hex_hockey_showdown)
   @score_game_ids ~w(hex_raid hex_raid_pacifist hex_raid_blitz hex_invaders hex_invaders_blitz
                      hex_enduro hex_enduro_night hex_enduro_sprint)
   @coop_game_ids ~w(block_breakers hex_invaders_coop)
@@ -524,7 +531,25 @@ defmodule RetroHexChat.Games.Catalog do
     }
   ]
 
-  # ex_dna:disable-for-lines:27 two catalogues, one lookup API each over its own @games
+  rankings = [versus: @versus_game_ids, score: @score_game_ids, coop: @coop_game_ids]
+  catalog_ids = Enum.map(@games, & &1.id)
+
+  for id <- catalog_ids do
+    case for({ranking, ids} <- rankings, id in ids, do: ranking) do
+      [_one] ->
+        :ok
+
+      found ->
+        raise CompileError,
+          description: "game #{id} needs exactly one ranking, has #{inspect(found)}"
+    end
+  end
+
+  for {_ranking, ids} <- rankings, id <- ids, id not in catalog_ids do
+    raise CompileError, description: "ranked game #{id} is not in the catalogue"
+  end
+
+  # ex_dna:disable-for-lines:32 two catalogues, one lookup API each over its own @games
   @spec list_games() :: [game()]
   def list_games, do: Enum.map(@games, &translate_game/1)
 
@@ -553,6 +578,10 @@ defmodule RetroHexChat.Games.Catalog do
 
   @spec game_ids() :: [String.t()]
   def game_ids, do: Enum.map(@games, & &1.id)
+
+  @doc "The box-art name of a game (`game_pong`), or nil for an id not in the catalogue."
+  @spec icon(String.t()) :: String.t() | nil
+  def icon(id), do: Enum.find_value(@games, &(&1.id == id and &1.icon))
 
   @doc """
   The games that are games in their own right, not a mode of another: Hex
@@ -590,7 +619,8 @@ defmodule RetroHexChat.Games.Catalog do
   @spec ranking(String.t()) :: ranking()
   def ranking(game_id) when game_id in @coop_game_ids, do: :coop
   def ranking(game_id) when game_id in @score_game_ids, do: :score
-  def ranking(_game_id), do: :versus
+  # A game no longer in the catalogue (an old result) ranks as versus.
+  def ranking(_versus_or_retired), do: :versus
 
   @doc """
   The address-safe name of a game: `"hex-pong"` for `"hex_pong"`. Its public

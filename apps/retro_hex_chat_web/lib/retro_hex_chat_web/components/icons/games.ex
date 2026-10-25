@@ -6,68 +6,6 @@ defmodule RetroHexChatWeb.Icons.Games do
   use Phoenix.Component
   use Gettext, backend: RetroHexChatWeb.Gettext
 
-  @doc """
-  Renders the icon for a given game_id string.
-  Falls back to a generic gamepad icon for unknown IDs.
-  """
-  attr :game_id, :string, required: true
-  attr :class, :string, default: nil
-
-  @spec game_icon(map()) :: Phoenix.LiveView.Rendered.t()
-  def game_icon(%{game_id: "hex_pong"} = assigns), do: icon_game_pong(assigns)
-  def game_icon(%{game_id: "light_trails"} = assigns), do: icon_game_trails(assigns)
-  def game_icon(%{game_id: "pixel_tanks"} = assigns), do: icon_game_tanks(assigns)
-  def game_icon(%{game_id: "star_duel"} = assigns), do: icon_game_space(assigns)
-  def game_icon(%{game_id: "gravity_well"} = assigns), do: icon_game_gravity(assigns)
-  def game_icon(%{game_id: "debris_field"} = assigns), do: icon_game_debris(assigns)
-  def game_icon(%{game_id: "block_breakers"} = assigns), do: icon_game_breakout(assigns)
-  def game_icon(%{game_id: "hex_warlords"} = assigns), do: icon_game_warlords(assigns)
-  def game_icon(%{game_id: "hex_raid"} = assigns), do: icon_game_raid(assigns)
-  def game_icon(%{game_id: "hex_raid_pacifist"} = assigns), do: icon_game_raid(assigns)
-  def game_icon(%{game_id: "hex_raid_blitz"} = assigns), do: icon_game_raid(assigns)
-  def game_icon(%{game_id: "hex_boxing"} = assigns), do: icon_game_boxing(assigns)
-  def game_icon(%{game_id: "hex_outlaw"} = assigns), do: icon_game_outlaw(assigns)
-  def game_icon(%{game_id: "hex_outlaw_ricochet"} = assigns), do: icon_game_outlaw(assigns)
-  def game_icon(%{game_id: "hex_outlaw_stagecoach"} = assigns), do: icon_game_outlaw(assigns)
-  def game_icon(%{game_id: "hex_outlaw_nml"} = assigns), do: icon_game_outlaw(assigns)
-  def game_icon(%{game_id: "hex_invaders"} = assigns), do: icon_game_invaders(assigns)
-  def game_icon(%{game_id: "hex_invaders_coop"} = assigns), do: icon_game_invaders(assigns)
-  def game_icon(%{game_id: "hex_invaders_blitz"} = assigns), do: icon_game_invaders(assigns)
-  def game_icon(%{game_id: "hex_enduro"} = assigns), do: icon_game_enduro(assigns)
-  def game_icon(%{game_id: "hex_enduro_night"} = assigns), do: icon_game_enduro(assigns)
-  def game_icon(%{game_id: "hex_enduro_sprint"} = assigns), do: icon_game_enduro(assigns)
-  def game_icon(%{game_id: "hex_tennis"} = assigns), do: icon_game_tennis(assigns)
-  def game_icon(%{game_id: "hex_tennis_quick"} = assigns), do: icon_game_tennis(assigns)
-  def game_icon(%{game_id: "hex_tennis_sudden"} = assigns), do: icon_game_tennis(assigns)
-  def game_icon(%{game_id: "hex_skiing"} = assigns), do: icon_game_skiing(assigns)
-  def game_icon(%{game_id: "hex_skiing_escape"} = assigns), do: icon_game_skiing(assigns)
-  def game_icon(%{game_id: "hex_skiing_clean"} = assigns), do: icon_game_skiing(assigns)
-  def game_icon(%{game_id: "hex_frost"} = assigns), do: icon_game_frost(assigns)
-  def game_icon(%{game_id: "hex_frost_blizzard"} = assigns), do: icon_game_frost(assigns)
-  def game_icon(%{game_id: "hex_frost_peaceful"} = assigns), do: icon_game_frost(assigns)
-  def game_icon(%{game_id: "hex_hockey"} = assigns), do: icon_game_hockey(assigns)
-  def game_icon(%{game_id: "hex_hockey_blitz"} = assigns), do: icon_game_hockey(assigns)
-  def game_icon(%{game_id: "hex_hockey_showdown"} = assigns), do: icon_game_hockey(assigns)
-  def game_icon(%{game_id: "doom_shareware"} = assigns), do: icon_game_doom(assigns)
-  def game_icon(%{game_id: "freedoom1"} = assigns), do: icon_game_freedoom1(assigns)
-  def game_icon(%{game_id: "freedoom2"} = assigns), do: icon_game_freedoom2(assigns)
-  def game_icon(%{game_id: "freedm"} = assigns), do: icon_game_freedm(assigns)
-  def game_icon(%{game_id: "chex_quest"} = assigns), do: icon_game_chex(assigns)
-  def game_icon(%{game_id: "hacx"} = assigns), do: icon_game_hacx(assigns)
-  def game_icon(%{game_id: "rekkr"} = assigns), do: icon_game_rekkr(assigns)
-  def game_icon(%{game_id: "quake_shareware"} = assigns), do: icon_game_quake(assigns)
-  def game_icon(%{game_id: "librequake"} = assigns), do: icon_game_librequake(assigns)
-  def game_icon(%{game_id: "quake2_shareware"} = assigns), do: icon_game_quake2(assigns)
-  def game_icon(%{game_id: "wolfenstein_3d"} = assigns), do: icon_game_wolfenstein(assigns)
-  def game_icon(%{game_id: "halflife_uplink"} = assigns), do: icon_game_halflife(assigns)
-  def game_icon(%{game_id: "scummvm_bass"} = assigns), do: icon_game_bass(assigns)
-  def game_icon(%{game_id: "scummvm_drascula"} = assigns), do: icon_game_drascula(assigns)
-  def game_icon(%{game_id: "scummvm_dreamweb"} = assigns), do: icon_game_dreamweb(assigns)
-  def game_icon(%{game_id: "scummvm_fotaq"} = assigns), do: icon_game_fotaq(assigns)
-  def game_icon(%{game_id: "scummvm_lure"} = assigns), do: icon_game_lure(assigns)
-  def game_icon(%{game_id: "scummvm_soltys"} = assigns), do: icon_game_soltys(assigns)
-  def game_icon(assigns), do: icon_game_generic(assigns)
-
   # -- Hex Pong: paddle + ball --
 
   attr :class, :string, default: nil

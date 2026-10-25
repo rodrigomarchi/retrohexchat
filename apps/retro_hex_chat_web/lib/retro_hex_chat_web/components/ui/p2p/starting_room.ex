@@ -337,7 +337,7 @@ defmodule RetroHexChatWeb.Components.UI.P2P.StartingRoom do
     >
       <div class="flex min-w-0 items-center gap-2">
         <span class="shadow-retro-field bg-surface shrink-0 p-2">
-          {apply(Icons, game_icon(@game), [%{class: "h-8 w-8"}])}
+          <Icons.game_icon game_id={@game.id} class="h-8 w-8" />
         </span>
         <span class="min-w-0">
           <span class="block truncate font-bold" data-testid="p2p-room-game-name">
@@ -517,13 +517,6 @@ defmodule RetroHexChatWeb.Components.UI.P2P.StartingRoom do
 
   defp peer_label(peer) when is_binary(peer) and peer != "", do: peer
   defp peer_label(_peer), do: dgettext("p2p", "peer")
-
-  defp game_icon(%{icon: icon}) when is_binary(icon) do
-    name = :"icon_#{icon}"
-    if function_exported?(Icons, name, 1), do: name, else: :icon_game_generic
-  end
-
-  defp game_icon(_game), do: :icon_game_generic
 
   defp ready_label(true), do: dgettext("p2p", "Ready")
   defp ready_label(false), do: dgettext("p2p", "I am ready")

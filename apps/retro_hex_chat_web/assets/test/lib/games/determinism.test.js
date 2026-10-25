@@ -4,24 +4,9 @@
 
 import { afterEach, describe, expect, it } from "vitest";
 import { playMatch } from "../../support/games/harness.js";
+import { ENGINE_GAME_IDS } from "../../support/games/engines.js";
 
-const GAME_IDS = [
-  "hex_pong",
-  "star_duel",
-  "hex_frost",
-  "hex_skiing",
-  "hex_hockey",
-  "hex_invaders",
-  "hex_tennis",
-  "hex_boxing",
-  "hex_outlaw",
-  "hex_raid",
-  "pixel_tanks",
-  "light_trails",
-  "hex_warlords",
-  "hex_enduro",
-  "block_breakers",
-];
+const GAME_IDS = ENGINE_GAME_IDS;
 
 let match = null;
 afterEach(() => {

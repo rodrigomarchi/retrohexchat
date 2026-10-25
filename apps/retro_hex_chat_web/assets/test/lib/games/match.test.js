@@ -12,6 +12,7 @@ import {
 } from "../../../js/lib/games/surround/protocol.js";
 import { PHASE as WARLORDS } from "../../../js/lib/games/warlords/protocol.js";
 import { playMatch } from "../../support/games/harness.js";
+import { ENGINE_GAME_IDS } from "../../support/games/engines.js";
 
 /*
  * The seams between the two sides of a P2P match, where these games have
@@ -197,23 +198,7 @@ describe("Light Trails — a command out of range", () => {
 
 // Datagrams a well-behaved peer never sends, but a broken or out-of-date one
 // can: the host's own snapshot echoed back, a snapshot cut short.
-const ENGINES = [
-  "hex_pong",
-  "block_breakers",
-  "light_trails",
-  "star_duel",
-  "hex_warlords",
-  "pixel_tanks",
-  "hex_raid",
-  "hex_boxing",
-  "hex_outlaw",
-  "hex_invaders",
-  "hex_enduro",
-  "hex_tennis",
-  "hex_skiing",
-  "hex_frost",
-  "hex_hockey",
-];
+const ENGINES = ENGINE_GAME_IDS;
 
 const bytesOf = (hex) => new Uint8Array(hex.match(/../g).map((b) => parseInt(b, 16))).buffer;
 

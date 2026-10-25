@@ -1,6 +1,7 @@
 defmodule RetroHexChatWeb.Icons.Registry do
   @moduledoc """
   Which submodule draws each icon, and which icon a locale or a game resolves to.
+  A game's icon is named by its catalogue entry.
 
   Two consumers read this list and they have to agree, which is why there is one
   list and not two. `RetroHexChatWeb.Icons` generates a component per entry that
@@ -11,6 +12,9 @@ defmodule RetroHexChatWeb.Icons.Registry do
   Adding an icon: write it in the subject submodule under `components/icons/`,
   then add one line here. The submodules stay the catalog; this is the index.
   """
+
+  alias RetroHexChat.Arcade.Catalog, as: ArcadeCatalog
+  alias RetroHexChat.Games.Catalog, as: GamesCatalog
 
   @icons [
     # People
@@ -427,61 +431,6 @@ defmodule RetroHexChatWeb.Icons.Registry do
     "nl" => :icon_flag_nl
   }
 
-  @games %{
-    "hex_pong" => :icon_game_pong,
-    "light_trails" => :icon_game_trails,
-    "pixel_tanks" => :icon_game_tanks,
-    "star_duel" => :icon_game_space,
-    "gravity_well" => :icon_game_gravity,
-    "debris_field" => :icon_game_debris,
-    "block_breakers" => :icon_game_breakout,
-    "hex_warlords" => :icon_game_warlords,
-    "hex_raid" => :icon_game_raid,
-    "hex_raid_pacifist" => :icon_game_raid,
-    "hex_raid_blitz" => :icon_game_raid,
-    "hex_boxing" => :icon_game_boxing,
-    "hex_outlaw" => :icon_game_outlaw,
-    "hex_outlaw_ricochet" => :icon_game_outlaw,
-    "hex_outlaw_stagecoach" => :icon_game_outlaw,
-    "hex_outlaw_nml" => :icon_game_outlaw,
-    "hex_invaders" => :icon_game_invaders,
-    "hex_invaders_coop" => :icon_game_invaders,
-    "hex_invaders_blitz" => :icon_game_invaders,
-    "hex_enduro" => :icon_game_enduro,
-    "hex_enduro_night" => :icon_game_enduro,
-    "hex_enduro_sprint" => :icon_game_enduro,
-    "hex_tennis" => :icon_game_tennis,
-    "hex_tennis_quick" => :icon_game_tennis,
-    "hex_tennis_sudden" => :icon_game_tennis,
-    "hex_skiing" => :icon_game_skiing,
-    "hex_skiing_escape" => :icon_game_skiing,
-    "hex_skiing_clean" => :icon_game_skiing,
-    "hex_frost" => :icon_game_frost,
-    "hex_frost_blizzard" => :icon_game_frost,
-    "hex_frost_peaceful" => :icon_game_frost,
-    "hex_hockey" => :icon_game_hockey,
-    "hex_hockey_blitz" => :icon_game_hockey,
-    "hex_hockey_showdown" => :icon_game_hockey,
-    "doom_shareware" => :icon_game_doom,
-    "freedoom1" => :icon_game_freedoom1,
-    "freedoom2" => :icon_game_freedoom2,
-    "freedm" => :icon_game_freedm,
-    "chex_quest" => :icon_game_chex,
-    "hacx" => :icon_game_hacx,
-    "rekkr" => :icon_game_rekkr,
-    "quake_shareware" => :icon_game_quake,
-    "librequake" => :icon_game_librequake,
-    "quake2_shareware" => :icon_game_quake2,
-    "wolfenstein_3d" => :icon_game_wolfenstein,
-    "halflife_uplink" => :icon_game_halflife,
-    "scummvm_bass" => :icon_game_bass,
-    "scummvm_drascula" => :icon_game_drascula,
-    "scummvm_dreamweb" => :icon_game_dreamweb,
-    "scummvm_fotaq" => :icon_game_fotaq,
-    "scummvm_lure" => :icon_game_lure,
-    "scummvm_soltys" => :icon_game_soltys
-  }
-
   # A channel's subject plaque. No fallback: a channel with no category, or
   # one this set does not draw, gets no plaque at all.
   @categories %{
@@ -527,8 +476,14 @@ defmodule RetroHexChatWeb.Icons.Registry do
   def category(code), do: Map.get(@categories, code)
 
   @doc """
-  The box art for a game id, falling back to a generic cartridge.
+  The box art for a game id: the icon its catalogue entry names, P2P or
+  arcade, or a generic cartridge for an id neither catalogue has.
   """
   @spec game(String.t()) :: atom()
-  def game(game_id), do: Map.get(@games, game_id, @game_fallback)
+  def game(game_id) do
+    case GamesCatalog.icon(game_id) || ArcadeCatalog.icon(game_id) do
+      nil -> @game_fallback
+      icon -> String.to_existing_atom("icon_" <> icon)
+    end
+  end
 end
