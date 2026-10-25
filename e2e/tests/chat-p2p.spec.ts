@@ -643,12 +643,16 @@ test.describe("In-chat P2P session", () => {
         timeout: 30_000,
       });
       // The relay is a fact about the connection, so it is reported where the
-      // connection is: the session's own stats, not the chat's status bar.
+      // connection is: the session's own stats, not the chat's status bar. A
+      // relayed pair often restarts ICE once while it settles, and a restart
+      // brings the console back to the call, so Stats is chosen until it holds.
       for (const page of [aliceSession, bobSession]) {
-        await page.getByTestId("p2p-console-nav-stats").click();
-        await expect(page.getByTestId("p2p-stats-relay")).toBeVisible({
-          timeout: 20_000,
-        });
+        await expect(async () => {
+          await page.getByTestId("p2p-console-nav-stats").click();
+          await expect(page.getByTestId("p2p-stats-relay")).toBeVisible({
+            timeout: 2_000,
+          });
+        }).toPass({ timeout: 20_000 });
       }
     } finally {
       await closeP2PUsers([alice, bob]);
