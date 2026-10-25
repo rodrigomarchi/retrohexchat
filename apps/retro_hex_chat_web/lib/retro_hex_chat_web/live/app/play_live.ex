@@ -33,14 +33,13 @@ defmodule RetroHexChatWeb.App.PlayLive do
   alias RetroHexChat.Games.Results
   alias RetroHexChat.Lobby
   alias RetroHexChat.Services.NickServ
-  alias RetroHexChat.ShareLinks
   alias RetroHexChatWeb.App.Paths
   alias RetroHexChatWeb.App.SessionHelpers
+  alias RetroHexChatWeb.App.ShareLinkEvents
   alias RetroHexChatWeb.Components.UI.Button
   alias RetroHexChatWeb.Icons
   alias RetroHexChatWeb.Live.OpenSurfaces
   alias RetroHexChatWeb.Live.ShareControl
-  alias RetroHexChatWeb.ShareLinkRef
 
   @difficulties ~w(easy normal hard)
 
@@ -228,34 +227,13 @@ defmodule RetroHexChatWeb.App.PlayLive do
   # Minting is a deliberate act, not a side effect of opening a game: a link per
   # window opened would fill the table with addresses nobody ever sent.
   def handle_event("share_game", _params, %{assigns: %{selected_game: %{id: game_id}}} = socket) do
-    with {:ok, user_id} <- SessionHelpers.resolve_user_id(socket.assigns.nickname || ""),
-         {:ok, link} <-
-           ShareLinks.create(%{
-             kind: "play",
-             target: %{"game_id" => game_id},
-             creator_id: user_id,
-             creator_nick: socket.assigns.nickname
-           }) do
-      {:noreply, assign(socket, share_url: ShareLinkRef.url(link.slug), share_slug: link.slug)}
-    else
-      _unavailable -> {:noreply, socket}
-    end
+    creator = SessionHelpers.resolve_user_id(socket.assigns.nickname || "")
+    ShareLinkEvents.mint(socket, "play", %{"game_id" => game_id}, creator)
   end
 
   def handle_event("share_game", _params, socket), do: {:noreply, socket}
 
-  # Closing the address without closing the room. `ShareLinks` asks its own
-  # policy who may — the creator, or an operator of the channel the link leads
-  # into — so a screen that offers the button is not the thing deciding.
-  def handle_event("revoke_game", _params, %{assigns: %{share_slug: slug}} = socket)
-      when is_binary(slug) do
-    case ShareLinks.revoke(slug, socket.assigns.nickname || "") do
-      {:ok, _link} -> {:noreply, assign(socket, share_url: nil, share_slug: nil)}
-      _refused -> {:noreply, socket}
-    end
-  end
-
-  def handle_event("revoke_game", _params, socket), do: {:noreply, socket}
+  def handle_event("revoke_game", _params, socket), do: ShareLinkEvents.revoke(socket)
 
   # A match link needs a room to point at, and a room with an empty seat is
   # what the domain calls an open lobby. Creating it is not sharing it: the

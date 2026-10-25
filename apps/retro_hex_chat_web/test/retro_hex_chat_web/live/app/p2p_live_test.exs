@@ -310,6 +310,23 @@ defmodule RetroHexChatWeb.App.P2PLiveTest do
 
       assert token == session.token
     end
+
+    test "revoking closes the link and takes it off the screen", %{conn: conn} do
+      creator = register("Host") |> identify()
+      peer = register("Guest") |> identify()
+      session = open_session(creator, peer)
+
+      {:ok, view, _html} =
+        conn |> chat_conn(creator.nickname) |> live(~p"/p2p/#{session.token}")
+
+      render_click(view, "share_p2p", %{})
+      slug = assigns(view).share_url |> String.split("/join/") |> List.last()
+
+      render_click(view, "revoke_p2p", %{})
+
+      assert %{share_url: nil, share_slug: nil} = assigns(view)
+      refute match?({:ok, _}, ShareLinks.describe(slug))
+    end
   end
 
   describe "a reload while the session is up" do

@@ -37,16 +37,15 @@ defmodule RetroHexChatWeb.App.P2PLive do
   alias RetroHexChat.Games.Catalog
   alias RetroHexChat.Lobby
   alias RetroHexChat.Lobby.Schema.Session, as: LobbySession
-  alias RetroHexChat.ShareLinks
   alias RetroHexChatWeb.App.Paths
   alias RetroHexChatWeb.App.SessionHelpers
+  alias RetroHexChatWeb.App.ShareLinkEvents
   alias RetroHexChatWeb.Icons
   alias RetroHexChatWeb.Live.OpenSurfaces
   alias RetroHexChatWeb.Live.P2PConfirmDialog
   alias RetroHexChatWeb.Live.ShareControl
   alias RetroHexChatWeb.P2PLive.Components.P2PSessionConsole
   alias RetroHexChatWeb.P2PLive.Events
-  alias RetroHexChatWeb.ShareLinkRef
 
   @impl true
   @spec mount(map(), map(), Socket.t()) :: {:ok, Socket.t()}
@@ -296,36 +295,14 @@ defmodule RetroHexChatWeb.App.P2PLive do
   @spec handle_event(String.t(), map(), Socket.t()) :: {:noreply, Socket.t()}
   def handle_event("share_p2p", _params, %{assigns: %{p2p_session: %{token: token}}} = socket)
       when is_binary(token) do
-    nickname = socket.assigns.nickname
-
-    with {:ok, user_id} <- SessionHelpers.resolve_user_id(nickname || ""),
-         {:ok, link} <-
-           ShareLinks.create(%{
-             kind: share_kind(socket.assigns.match_game),
-             target: share_target(token, socket.assigns.match_game),
-             creator_id: user_id,
-             creator_nick: nickname
-           }) do
-      {:noreply, assign(socket, share_url: ShareLinkRef.url(link.slug), share_slug: link.slug)}
-    else
-      _unavailable -> {:noreply, socket}
-    end
+    game = socket.assigns.match_game
+    creator = SessionHelpers.resolve_user_id(socket.assigns.nickname || "")
+    ShareLinkEvents.mint(socket, share_kind(game), share_target(token, game), creator)
   end
 
   def handle_event("share_p2p", _params, socket), do: {:noreply, socket}
 
-  # Closing the address without closing the room. `ShareLinks` asks its own
-  # policy who may — the creator, or an operator of the channel the link leads
-  # into — so a screen that offers the button is not the thing deciding.
-  def handle_event("revoke_p2p", _params, %{assigns: %{share_slug: slug}} = socket)
-      when is_binary(slug) do
-    case ShareLinks.revoke(slug, socket.assigns.nickname || "") do
-      {:ok, _link} -> {:noreply, assign(socket, share_url: nil, share_slug: nil)}
-      _refused -> {:noreply, socket}
-    end
-  end
-
-  def handle_event("revoke_p2p", _params, socket), do: {:noreply, socket}
+  def handle_event("revoke_p2p", _params, socket), do: ShareLinkEvents.revoke(socket)
 
   def handle_event(event, params, socket) do
     {_halted, socket} = Events.handle_event(event, params, socket)

@@ -44,7 +44,6 @@ defmodule RetroHexChatWeb.App.SpaceLive do
   alias RetroHexChat.Accounts.Avatars
   alias RetroHexChat.Channels.Server
   alias RetroHexChat.Channels.Visibility
-  alias RetroHexChat.ShareLinks
   alias RetroHexChat.Topics
   alias RetroHexChat.VirtualSpace
   alias RetroHexChat.VirtualSpace.ChannelJoinToken
@@ -52,10 +51,10 @@ defmodule RetroHexChatWeb.App.SpaceLive do
   alias RetroHexChat.VirtualSpace.DirectMessageSpace
   alias RetroHexChatWeb.App.Paths
   alias RetroHexChatWeb.App.SessionHelpers
+  alias RetroHexChatWeb.App.ShareLinkEvents
   alias RetroHexChatWeb.Components.UI.SpaceCharacterCreator
   alias RetroHexChatWeb.Live.OpenSurfaces
   alias RetroHexChatWeb.Live.ShareControl
-  alias RetroHexChatWeb.ShareLinkRef
   alias RetroHexChatWeb.SpaceAssets
   alias RetroHexChatWeb.SpaceRef
 
@@ -525,36 +524,19 @@ defmodule RetroHexChatWeb.App.SpaceLive do
   # Minting is a deliberate act, not a side effect of opening a space: a link
   # per visit would fill the table with addresses nobody ever sent.
   def handle_event("share_space", _params, %{assigns: %{space: %{} = space}} = socket) do
-    nickname = socket.assigns.nickname
+    creator = if is_integer(socket.assigns.user_id), do: {:ok, socket.assigns.user_id}
 
-    with user_id when is_integer(user_id) <- socket.assigns.user_id,
-         {:ok, link} <-
-           ShareLinks.create(%{
-             kind: "space",
-             target: %{"space_id" => space.id, "mode" => space.mode},
-             creator_id: user_id,
-             creator_nick: nickname
-           }) do
-      {:noreply, assign(socket, share_url: ShareLinkRef.url(link.slug), share_slug: link.slug)}
-    else
-      _unavailable -> {:noreply, socket}
-    end
+    ShareLinkEvents.mint(
+      socket,
+      "space",
+      %{"space_id" => space.id, "mode" => space.mode},
+      creator
+    )
   end
 
   def handle_event("share_space", _params, socket), do: {:noreply, socket}
 
-  # Closing the address without closing the room. `ShareLinks` asks its own
-  # policy who may — the creator, or an operator of the channel the link leads
-  # into — so a screen that offers the button is not the thing deciding.
-  def handle_event("revoke_space", _params, %{assigns: %{share_slug: slug}} = socket)
-      when is_binary(slug) do
-    case ShareLinks.revoke(slug, socket.assigns.nickname || "") do
-      {:ok, _link} -> {:noreply, assign(socket, share_url: nil, share_slug: nil)}
-      _refused -> {:noreply, socket}
-    end
-  end
-
-  def handle_event("revoke_space", _params, socket), do: {:noreply, socket}
+  def handle_event("revoke_space", _params, socket), do: ShareLinkEvents.revoke(socket)
 
   # Through a gate: the gate names where it goes — one of the space's rooms,
   # or from inside one the space it belongs to. The destination

@@ -32,16 +32,15 @@ defmodule RetroHexChatWeb.App.CallLive do
   alias RetroHexChat.Channels.Server
   alias RetroHexChat.Chat.KeyBindings
   alias RetroHexChat.GroupCall
-  alias RetroHexChat.ShareLinks
   alias RetroHexChat.Topics
   alias RetroHexChatWeb.App.Paths
   alias RetroHexChatWeb.App.SessionHelpers
+  alias RetroHexChatWeb.App.ShareLinkEvents
   alias RetroHexChatWeb.CallLive.Events
   alias RetroHexChatWeb.Icons
   alias RetroHexChatWeb.Live.GroupCallConfirmDialog
   alias RetroHexChatWeb.Live.OpenSurfaces
   alias RetroHexChatWeb.Live.ShareControl
-  alias RetroHexChatWeb.ShareLinkRef
 
   # The shortcuts this page answers. Everything else the binding table knows is
   # the chat's, and reaches nothing here.
@@ -327,18 +326,7 @@ defmodule RetroHexChatWeb.App.CallLive do
 
   def handle_event("share_call", _params, socket), do: {:noreply, socket}
 
-  # Closing the address without closing the room. `ShareLinks` asks its own
-  # policy who may — the creator, or an operator of the channel the link leads
-  # into — so a screen that offers the button is not the thing deciding.
-  def handle_event("revoke_call", _params, %{assigns: %{share_slug: slug}} = socket)
-      when is_binary(slug) do
-    case ShareLinks.revoke(slug, socket.assigns.nickname || "") do
-      {:ok, _link} -> {:noreply, assign(socket, share_url: nil, share_slug: nil)}
-      _refused -> {:noreply, socket}
-    end
-  end
-
-  def handle_event("revoke_call", _params, socket), do: {:noreply, socket}
+  def handle_event("revoke_call", _params, socket), do: ShareLinkEvents.revoke(socket)
 
   # The conference shortcuts were bound on the chat's window while the call was
   # rendered inside it, and the chat forwarded them here. The call has its own
@@ -361,20 +349,8 @@ defmodule RetroHexChatWeb.App.CallLive do
 
   @spec mint_call_link(Socket.t(), String.t()) :: {:noreply, Socket.t()}
   defp mint_call_link(socket, token) do
-    nickname = socket.assigns.nickname
-
-    with {:ok, user_id} <- SessionHelpers.resolve_user_id(nickname || ""),
-         {:ok, link} <-
-           ShareLinks.create(%{
-             kind: "call",
-             target: %{"room_token" => token},
-             creator_id: user_id,
-             creator_nick: nickname
-           }) do
-      {:noreply, assign(socket, share_url: ShareLinkRef.url(link.slug), share_slug: link.slug)}
-    else
-      _unavailable -> {:noreply, socket}
-    end
+    creator = SessionHelpers.resolve_user_id(socket.assigns.nickname || "")
+    ShareLinkEvents.mint(socket, "call", %{"room_token" => token}, creator)
   end
 
   # Only the conference's own shortcuts act here. Everything else the binding
