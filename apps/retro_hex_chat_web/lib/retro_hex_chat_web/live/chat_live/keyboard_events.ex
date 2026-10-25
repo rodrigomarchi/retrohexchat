@@ -20,10 +20,8 @@ defmodule RetroHexChatWeb.ChatLive.KeyboardEvents do
     KnockRequestDialog
   }
 
-  alias RetroHexChatWeb.ChatLive.AddressBookEvents
   alias RetroHexChatWeb.ChatLive.Helpers.PendingInvite
   alias RetroHexChatWeb.ChatLive.NavigationEvents
-  alias RetroHexChatWeb.ChatLive.PerformEvents
   alias RetroHexChatWeb.ChatLive.SearchEvents
   alias RetroHexChatWeb.ChatLive.Windows
 
@@ -65,7 +63,7 @@ defmodule RetroHexChatWeb.ChatLive.KeyboardEvents do
   end
 
   defp dispatch_action(:toggle_address_book, socket) do
-    AddressBookEvents.toggle(socket)
+    Windows.open(socket, "address-book")
   end
 
   defp dispatch_action(:toggle_ignore_dialog, socket) do
@@ -81,7 +79,7 @@ defmodule RetroHexChatWeb.ChatLive.KeyboardEvents do
   end
 
   defp dispatch_action(:toggle_perform_dialog, socket) do
-    PerformEvents.open(socket)
+    Windows.open(socket, "perform")
   end
 
   defp dispatch_action(:toggle_cheatsheet, socket) do

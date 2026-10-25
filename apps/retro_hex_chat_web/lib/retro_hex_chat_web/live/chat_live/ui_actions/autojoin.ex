@@ -12,13 +12,13 @@ defmodule RetroHexChatWeb.ChatLive.UiActions.Autojoin do
 
   alias RetroHexChat.Accounts.Session
   alias RetroHexChat.Chat.AutoJoinList
-  alias RetroHexChatWeb.ChatLive.AutojoinEvents
+  alias RetroHexChatWeb.ChatLive.Windows
 
   @spec handle_ui_action(Phoenix.LiveView.Socket.t(), atom(), map()) ::
           Phoenix.LiveView.Socket.t()
 
   def handle_ui_action(socket, :open_autojoin_dialog, _payload) do
-    AutojoinEvents.open(socket)
+    Windows.open(socket, "autojoin")
   end
 
   def handle_ui_action(socket, :autojoin_list_display, _payload) do

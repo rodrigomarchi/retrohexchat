@@ -15,13 +15,13 @@ defmodule RetroHexChatWeb.ChatLive.UiActions.Notify do
 
   alias RetroHexChat.Accounts.Session
   alias RetroHexChat.Presence.NotifyList
-  alias RetroHexChatWeb.ChatLive.{NotifyEvents, NotifyOps}
+  alias RetroHexChatWeb.ChatLive.{NotifyOps, Windows}
 
   @spec handle_ui_action(Phoenix.LiveView.Socket.t(), atom(), map()) ::
           Phoenix.LiveView.Socket.t()
 
   def handle_ui_action(socket, :open_notify_list, _payload) do
-    NotifyEvents.open(socket)
+    Windows.open(socket, "notify-list")
   end
 
   def handle_ui_action(socket, :notify_add, %{nickname: nick, note: note}) do

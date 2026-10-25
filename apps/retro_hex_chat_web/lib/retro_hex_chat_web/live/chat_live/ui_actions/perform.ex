@@ -12,13 +12,13 @@ defmodule RetroHexChatWeb.ChatLive.UiActions.Perform do
 
   alias RetroHexChat.Accounts.Session
   alias RetroHexChat.Chat.PerformList
-  alias RetroHexChatWeb.ChatLive.PerformEvents
+  alias RetroHexChatWeb.ChatLive.Windows
 
   @spec handle_ui_action(Phoenix.LiveView.Socket.t(), atom(), map()) ::
           Phoenix.LiveView.Socket.t()
 
   def handle_ui_action(socket, :open_perform_dialog, _payload) do
-    PerformEvents.open(socket)
+    Windows.open(socket, "perform")
   end
 
   def handle_ui_action(socket, :perform_list_display, _payload) do
