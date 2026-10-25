@@ -42,4 +42,19 @@ defmodule RetroHexChatWeb.ChatLive.Components.AutojoinDialogTest do
     assert html =~ ~s(data-testid="autojoin-add-dialog")
     assert html =~ ~s(phx-target=)
   end
+
+  # A channel can leave the list between opening its edit form and confirming
+  # it (another tab removed it); the form closes and says why.
+  test "editing a channel that is no longer in the list says so" do
+    socket = %Phoenix.LiveView.Socket{
+      assigns: %{__changed__: %{}, session: session(), show_edit_dialog: true}
+    }
+
+    {:noreply, socket} =
+      AutojoinDialog.handle_event("autojoin_edit_confirm", %{"channel" => "#gone"}, socket)
+
+    refute socket.assigns.show_edit_dialog
+    assert_received {:dialog_said, :error_event, message}
+    assert message =~ "#gone"
+  end
 end

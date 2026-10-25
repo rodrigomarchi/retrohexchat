@@ -97,8 +97,13 @@ defmodule RetroHexChatWeb.ChatLive.Components.AutojoinDialog do
          |> assign(show_edit_dialog: false)
          |> put_session(new_session)}
 
-      {:error, _} ->
-        {:noreply, assign(socket, show_edit_dialog: false)}
+      {:error, :not_found} ->
+        {:noreply,
+         socket
+         |> assign(show_edit_dialog: false)
+         |> DialogIsland.bubble_error(
+           dgettext("chat", "%{channel} is no longer in your auto-join list.", channel: channel)
+         )}
     end
   end
 
