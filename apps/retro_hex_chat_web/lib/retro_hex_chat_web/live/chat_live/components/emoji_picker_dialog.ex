@@ -18,9 +18,9 @@ defmodule RetroHexChatWeb.ChatLive.Components.EmojiPickerDialog do
 
   import RetroHexChatWeb.Components.UI.EmojiPicker
 
-  alias RetroHexChatWeb.ChatLive.Components.DialogIsland
   alias RetroHexChat.Chat.CustomEmojis
   alias RetroHexChat.Chat.EmojiData
+  alias RetroHexChatWeb.ChatLive.Components.DialogIsland
 
   use RetroHexChatWeb.ChatLive.Components.DialogIsland, id: "emoji-picker"
   @default_category "Smileys & Emotion"

@@ -18,8 +18,8 @@ defmodule RetroHexChatWeb.ChatLive.Components.HoverCard do
   reaches the client regardless of where it originates.
   """
 
-  alias RetroHexChatWeb.ChatLive.Components.DialogIsland
   alias RetroHexChat.Nickname
+  alias RetroHexChatWeb.ChatLive.Components.DialogIsland
   use RetroHexChatWeb, :live_component
 
   import RetroHexChatWeb.Components.UI.HoverCard

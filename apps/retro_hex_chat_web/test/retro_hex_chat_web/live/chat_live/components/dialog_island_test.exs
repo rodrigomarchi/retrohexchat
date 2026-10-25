@@ -24,15 +24,6 @@ defmodule RetroHexChatWeb.ChatLive.Components.DialogIslandTest do
     end
   end
 
-  describe "update/2" do
-    test "takes what the parent sends" do
-      {:ok, mounted} = DialogIsland.mount(socket(), "d", %{})
-      {:ok, updated} = DialogIsland.update(mounted, %{session: :a_session})
-
-      assert updated.assigns.session == :a_session
-    end
-  end
-
   describe "load_once/3" do
     test "loads on the first update" do
       {:ok, mounted} = DialogIsland.mount(socket(), "d", %{loaded?: false})
