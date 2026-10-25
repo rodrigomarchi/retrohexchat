@@ -1,3 +1,4 @@
+import { advance, useFakePageTimers } from "../../../helpers/game_clock.js";
 import { inputDatagram, inputMask } from "../../../helpers/game_input.js";
 import { decodeInputState } from "../../../../js/lib/games/net_protocol.js";
 import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
@@ -751,7 +752,7 @@ describe("WarlordEngine", () => {
 
   describe("countdown flow (host)", () => {
     beforeEach(() => {
-      vi.useFakeTimers();
+      useFakePageTimers();
     });
 
     afterEach(() => {
@@ -774,10 +775,10 @@ describe("WarlordEngine", () => {
       engine.start();
       engine._onChannelMessage({ data: encodeGameReady() });
 
-      vi.advanceTimersByTime(1000);
+      advance(engine, 1000);
       expect(engine.gameState.countdown).toBe(2);
 
-      vi.advanceTimersByTime(1000);
+      advance(engine, 1000);
       expect(engine.gameState.countdown).toBe(1);
     });
 
@@ -787,7 +788,7 @@ describe("WarlordEngine", () => {
       engine._onChannelMessage({ data: encodeGameReady() });
 
       // 3 countdown ticks (3×1000ms) + serve delay (800ms)
-      vi.advanceTimersByTime(3800);
+      advance(engine, 3800);
 
       expect(engine.gameState.phase).toBe(PHASE.PLAYING);
     });
@@ -990,7 +991,7 @@ describe("WarlordEngine", () => {
 
   describe("_handleKingHit (host)", () => {
     beforeEach(() => {
-      vi.useFakeTimers();
+      useFakePageTimers();
     });
 
     afterEach(() => {
@@ -1037,7 +1038,7 @@ describe("WarlordEngine", () => {
 
       engine.flow.go("KING_HIT");
       // Advance past KING_HIT_PAUSE (2000ms)
-      vi.advanceTimersByTime(2100);
+      advance(engine, 2100);
 
       expect(engine.gameState.phase).toBe(PHASE.FINISHED);
       expect(onEnd).toHaveBeenCalled();
@@ -1060,7 +1061,7 @@ describe("WarlordEngine", () => {
       };
 
       engine.flow.go("KING_HIT");
-      vi.advanceTimersByTime(2100);
+      advance(engine, 2100);
 
       expect(engine.gameState.phase).toBe(PHASE.COUNTDOWN);
       // All bricks should be rebuilt (alive)

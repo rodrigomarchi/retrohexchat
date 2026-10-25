@@ -1,3 +1,4 @@
+import { advance, useFakePageTimers } from "../../../helpers/game_clock.js";
 import { inputDatagram } from "../../../helpers/game_input.js";
 import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
 import {
@@ -244,7 +245,7 @@ describe("HexRaidEngine", () => {
 
   describe("GAME_READY handshake", () => {
     it("host starts countdown on GAME_READY", () => {
-      vi.useFakeTimers();
+      useFakePageTimers();
       engine = new HexRaidEngine(canvas, channel, "hex_raid", true, null);
       engine.start();
 
@@ -259,7 +260,7 @@ describe("HexRaidEngine", () => {
     });
 
     it("ignores duplicate GAME_READY", () => {
-      vi.useFakeTimers();
+      useFakePageTimers();
       engine = new HexRaidEngine(canvas, channel, "hex_raid", true, null);
       engine.start();
 
@@ -276,7 +277,7 @@ describe("HexRaidEngine", () => {
 
   describe("countdown", () => {
     it("counts down from 3 to flying", () => {
-      vi.useFakeTimers();
+      useFakePageTimers();
       engine = new HexRaidEngine(canvas, channel, "hex_raid", true, null);
       engine.start();
 
@@ -285,13 +286,13 @@ describe("HexRaidEngine", () => {
 
       expect(engine.gameState.countdown).toBe(3);
 
-      vi.advanceTimersByTime(1000);
+      advance(engine, 1000);
       expect(engine.gameState.countdown).toBe(2);
 
-      vi.advanceTimersByTime(1000);
+      advance(engine, 1000);
       expect(engine.gameState.countdown).toBe(1);
 
-      vi.advanceTimersByTime(1000);
+      advance(engine, 1000);
       expect(engine.gameState.phase).toBe(PHASE.FLYING);
       vi.useRealTimers();
     });
@@ -299,7 +300,7 @@ describe("HexRaidEngine", () => {
 
   describe("solo beginMatch", () => {
     it("starts countdown and captures keyboard for solo play", () => {
-      vi.useFakeTimers();
+      useFakePageTimers();
       const opponentController = createOpponentController();
       engine = new HexRaidEngine(canvas, channel, "hex_raid", true, null, {
         mode: "solo",
@@ -325,7 +326,7 @@ describe("HexRaidEngine", () => {
     });
 
     it("returns false when a match is already running", () => {
-      vi.useFakeTimers();
+      useFakePageTimers();
       engine = new HexRaidEngine(canvas, channel, "hex_raid", true, null, {
         mode: "solo",
         opponentController: createOpponentController(),
@@ -483,7 +484,7 @@ describe("HexRaidEngine", () => {
 
   describe("stop", () => {
     it("cleans up timers and animation frames", () => {
-      vi.useFakeTimers();
+      useFakePageTimers();
       engine = new HexRaidEngine(canvas, channel, "hex_raid", true, null);
       engine.start();
 
@@ -512,7 +513,7 @@ describe("HexRaidEngine", () => {
     });
 
     it("guards phase callbacks after stop", () => {
-      vi.useFakeTimers();
+      useFakePageTimers();
       engine = new HexRaidEngine(canvas, channel, "hex_raid", true, null);
       engine.start();
 
@@ -521,7 +522,7 @@ describe("HexRaidEngine", () => {
 
       engine.stop();
 
-      vi.advanceTimersByTime(3000);
+      advance(engine, 3000);
       expect(engine.running).toBe(false);
       vi.useRealTimers();
     });
@@ -571,14 +572,14 @@ describe("HexRaidEngine", () => {
 
   describe("game loop", () => {
     function setupFlying(eng, chan) {
-      vi.useFakeTimers();
+      useFakePageTimers();
       globalThis.requestAnimationFrame = vi.fn(() => 42);
       globalThis.cancelAnimationFrame = vi.fn();
 
       eng.start();
       const handler = chan.addEventListener.mock.calls.find((c) => c[0] === "message")[1];
       handler({ data: encodeGameReady() });
-      vi.advanceTimersByTime(3000);
+      advance(eng, 3000);
     }
 
     function getLoopFn() {
@@ -613,7 +614,7 @@ describe("HexRaidEngine", () => {
     });
 
     it("processes solo opponent controller inputs as player 2", () => {
-      vi.useFakeTimers();
+      useFakePageTimers();
       const opponentController = createOpponentController({ right: true, accel: true });
       engine = new HexRaidEngine(canvas, channel, "hex_raid", true, null, {
         mode: "solo",
@@ -621,7 +622,7 @@ describe("HexRaidEngine", () => {
       });
       engine.start();
       engine.beginMatch();
-      vi.advanceTimersByTime(3000);
+      advance(engine, 3000);
 
       const initialX = engine.gameState.jet2X;
       engine._gameLoop();
@@ -653,14 +654,14 @@ describe("HexRaidEngine", () => {
 
   describe("edge-triggered mine deployment", () => {
     function setupFlying(eng, chan) {
-      vi.useFakeTimers();
+      useFakePageTimers();
       globalThis.requestAnimationFrame = vi.fn(() => 42);
       globalThis.cancelAnimationFrame = vi.fn();
 
       eng.start();
       const handler = chan.addEventListener.mock.calls.find((c) => c[0] === "message")[1];
       handler({ data: encodeGameReady() });
-      vi.advanceTimersByTime(3000);
+      advance(eng, 3000);
     }
 
     function getLoopFn() {
@@ -695,14 +696,14 @@ describe("HexRaidEngine", () => {
 
   describe("remote fire edge-trigger", () => {
     function setupFlying(eng, chan) {
-      vi.useFakeTimers();
+      useFakePageTimers();
       globalThis.requestAnimationFrame = vi.fn(() => 42);
       globalThis.cancelAnimationFrame = vi.fn();
 
       eng.start();
       const handler = chan.addEventListener.mock.calls.find((c) => c[0] === "message")[1];
       handler({ data: encodeGameReady() });
-      vi.advanceTimersByTime(3000);
+      advance(eng, 3000);
     }
 
     function getLoopFn() {
@@ -821,14 +822,14 @@ describe("HexRaidEngine", () => {
 
   describe("game loop audio events", () => {
     function setupFlying(eng, chan) {
-      vi.useFakeTimers();
+      useFakePageTimers();
       globalThis.requestAnimationFrame = vi.fn(() => 42);
       globalThis.cancelAnimationFrame = vi.fn();
 
       eng.start();
       const handler = chan.addEventListener.mock.calls.find((c) => c[0] === "message")[1];
       handler({ data: encodeGameReady() });
-      vi.advanceTimersByTime(3000);
+      advance(eng, 3000);
     }
 
     it("plays playEnemyDestroyed on enemyKill event", () => {

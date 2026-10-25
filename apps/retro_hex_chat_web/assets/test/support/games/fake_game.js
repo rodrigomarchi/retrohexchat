@@ -52,14 +52,14 @@ export const definition = {
           game.gameState.countdown = 2;
           game.broadcast();
         },
-        every: { ms: 100, count: 2 },
+        every: { ticks: 6, count: 2 },
         onEvery: (game, left) => {
           game.gameState.countdown = left;
           game.broadcast();
         },
         next: "PLAYING",
       },
-      PLAYING: { steps: true, tick: step },
+      PLAYING: { tick: step },
       FINISHED: {
         final: true,
         enter: (game) => {

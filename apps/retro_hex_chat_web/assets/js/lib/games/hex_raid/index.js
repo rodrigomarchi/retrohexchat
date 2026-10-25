@@ -47,7 +47,7 @@ import { GAME_END, GAME_MODE, PHASE, SNAPSHOT } from "./protocol.js";
 import { getColors, render } from "./renderer.js";
 
 const COUNTDOWN_FROM = 3;
-const COUNTDOWN_EVERY_MS = 1000;
+const COUNTDOWN_EVERY_TICKS = 60; // 1 s
 
 const MODE_MAP = {
   hex_raid: GAME_MODE.RIVER_DUEL,
@@ -312,14 +312,13 @@ export default defineGame({
     states: {
       COUNTDOWN: {
         enter: (game) => countdown(game, COUNTDOWN_FROM),
-        every: { ms: COUNTDOWN_EVERY_MS, count: COUNTDOWN_FROM },
+        every: { ticks: COUNTDOWN_EVERY_TICKS, count: COUNTDOWN_FROM },
         onEvery: (game, remaining) => {
           if (remaining > 0) countdown(game, remaining);
         },
         next: "FLYING",
       },
       FLYING: {
-        steps: true,
         enter: (game) => {
           game.broadcast();
           game.frameCount = 0;

@@ -26,10 +26,10 @@ import {
 import { GAME_END, PHASE, SNAPSHOT } from "./protocol.js";
 import { createHitParticles, getColors, render, updateParticles } from "./renderer.js";
 
-const ROUND_OVER_DELAY_MS = 2500;
-const SPAWNING_DELAY_MS = 1000;
+const ROUND_OVER_DELAY_TICKS = 150; // 2.5 s
+const SPAWNING_DELAY_TICKS = 60; // 1 s
 const COUNTDOWN_FROM = 3;
-const COUNTDOWN_EVERY_MS = 1000;
+const COUNTDOWN_EVERY_TICKS = 60; // 1 s
 
 /** The eight directions as the ring's numbering, or -1 for none. */
 export function direction({ up, down, left, right }) {
@@ -193,7 +193,7 @@ export default defineGame({
           game.setKeyboardCaptured(true);
           countdown(game, COUNTDOWN_FROM);
         },
-        every: { ms: COUNTDOWN_EVERY_MS, count: COUNTDOWN_FROM },
+        every: { ticks: COUNTDOWN_EVERY_TICKS, count: COUNTDOWN_FROM },
         onEvery: (game, remaining) => {
           if (remaining > 0) countdown(game, remaining);
         },
@@ -206,7 +206,7 @@ export default defineGame({
           game.invalidate();
           game.audio.playBellStart();
         },
-        after: { ms: SPAWNING_DELAY_MS },
+        after: { ticks: SPAWNING_DELAY_TICKS },
         then: (game) => {
           game.gameState.phase = PHASE.FIGHTING;
           game.gameState.roundTimer = ROUND_DURATION;
@@ -215,7 +215,6 @@ export default defineGame({
         next: "FIGHTING",
       },
       FIGHTING: {
-        steps: true,
         enter: (game) => {
           game.setKeyboardCaptured(true);
           game.frameCount = 0;
@@ -225,7 +224,7 @@ export default defineGame({
         tick: fight,
       },
       ROUND_OVER: {
-        after: { ms: ROUND_OVER_DELAY_MS },
+        after: { ticks: ROUND_OVER_DELAY_TICKS },
         then: (game) => {
           game.gameState = resetForNewRound(game.gameState);
         },

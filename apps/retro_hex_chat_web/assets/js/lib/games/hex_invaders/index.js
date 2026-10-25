@@ -45,10 +45,10 @@ const MODE_MAP = {
   hex_invaders_blitz: GAME_MODE.BLITZ,
 };
 
-const WAVE_CLEAR_MS = 2000;
-const WAVE_START_MS = 1000;
+const WAVE_CLEAR_TICKS = 120; // 2 s
+const WAVE_START_TICKS = 60; // 1 s
 const COUNTDOWN_FROM = 3;
-const COUNTDOWN_EVERY_MS = 1000;
+const COUNTDOWN_EVERY_TICKS = 60; // 1 s
 
 /** The sounds of a step's events, in the order they are heard. */
 export function playEvents(audio, events) {
@@ -214,7 +214,7 @@ export default defineGame({
           game.broadcast();
           game.invalidate();
         },
-        every: { ms: COUNTDOWN_EVERY_MS, count: COUNTDOWN_FROM },
+        every: { ticks: COUNTDOWN_EVERY_TICKS, count: COUNTDOWN_FROM },
         onEvery: (game, remaining) => {
           game.audio.playCountdown();
           if (remaining === 0) {
@@ -230,18 +230,16 @@ export default defineGame({
         },
         next: "PLAYING",
       },
-      PLAYING: { steps: true, tick: step },
+      PLAYING: { tick: step },
       WAVE_CLEAR: {
-        steps: true,
         tick: step,
-        after: { ms: WAVE_CLEAR_MS },
+        after: { ticks: WAVE_CLEAR_TICKS },
         then: nextWave,
         next: (game) => (game.gameState.phase === PHASE.FINISHED ? "FINISHED" : "WAVE_START"),
       },
       WAVE_START: {
-        steps: true,
         tick: step,
-        after: { ms: WAVE_START_MS },
+        after: { ticks: WAVE_START_TICKS },
         next: "PLAYING",
       },
       FINISHED: {

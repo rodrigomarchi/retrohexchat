@@ -11,33 +11,33 @@
  *   phases: PHASE,                     // name → the value on the wire
  *   initial: "WAITING",
  *   states: {
- *     COUNTDOWN: { enter, every: { ms: 1000, count: 3 }, onEvery, next: "SERVING" },
- *     SERVING:   { enter, after: { ms: 800 }, then, next: "PLAYING" },
- *     PLAYING:   { steps: true, tick },   // the simulation runs; it may move the phase
- *     SCORED:    { after: { ms: 1500 }, next: "SERVING" },
+ *     COUNTDOWN: { enter, every: { ticks: 60, count: 3 }, onEvery, next: "SERVING" },
+ *     SERVING:   { enter, after: { ticks: 48 }, then, next: "PLAYING" },
+ *     PLAYING:   { tick },                 // the simulation runs; it may move the phase
+ *     SCORED:    { after: { ticks: 90 }, next: "SERVING" },
  *     FINISHED:  { final: true, enter },
  *   },
- * }, { readPhase, writePhase, startSteps, stopSteps, target });
+ * }, { readPhase, writePhase, startSteps, stopSteps, idle, target });
  * ```
  *
- * A phase's hooks receive `target` (the game). Timed phases count either
- * milliseconds (`ms`, on the page's timers) or simulation steps (`ticks`,
- * counted only while the phase steps).
+ * A phase's hooks receive `target` (the game). Time is the simulation's:
+ * once the match begins the game steps in every phase until the final one,
+ * each step runs the phase's `tick` (or the game's `idle` in a phase with
+ * none), and timed phases count those steps (`ticks`, 60 a second). A tab
+ * that draws no frames takes no steps, so nothing moves on without it.
  *
  * @module games/core/flow
  */
 
 /**
  * @typedef {object} Timing
- * @property {number} [ms]
- * @property {number} [ticks]
+ * @property {number} ticks - simulation steps
  * @property {number} [count] - for `every`: how many times it fires
  */
 
 /**
  * @typedef {object} PhaseSpec
  * @property {(target: unknown) => void} [enter]
- * @property {boolean} [steps] - the simulation runs during this phase
  * @property {(target: unknown) => void} [tick] - one simulation step
  * @property {Timing} [after] - leave for `next` once, after this long
  * @property {(target: unknown) => void} [then] - runs just before leaving
@@ -59,30 +59,27 @@
  *   writePhase: (value: number) => void,
  *   startSteps: () => void,
  *   stopSteps: () => void,
+ *   idle?: (target: unknown) => void,
  *   target?: unknown,
- *   setTimer?: (fn: () => void, ms: number) => unknown,
- *   clearTimer?: (handle: unknown) => void,
  * }} ctx
  */
 export function createFlow(table, ctx) {
   const { phases, states } = table;
   const nameOf = new Map(Object.entries(phases).map(([name, value]) => [value, name]));
-  const setTimer = ctx.setTimer ?? ((fn, ms) => setTimeout(fn, ms));
-  const clearTimer = ctx.clearTimer ?? ((handle) => clearTimeout(handle));
+  for (const [name, s] of Object.entries(states)) {
+    for (const t of [s.after, s.every]) {
+      if (t && !(t.ticks > 0)) throw new Error(`flow: ${name} must count its time in ticks`);
+    }
+  }
 
   let current = table.initial;
   let previous = null;
-  let timer = null;
   let ticks = 0;
   let remaining = 0;
+  let halted = false;
 
   const spec = (name) => states[name] ?? {};
   const valueOf = (name) => phases[spec(name).as ?? name];
-
-  const cancel = () => {
-    if (timer !== null) clearTimer(timer);
-    timer = null;
-  };
 
   // `after` and `every` share one countdown: every firing but the last
   // reschedules, and the last (or the only, for `after`) leaves the phase.
@@ -94,7 +91,7 @@ export function createFlow(table, ctx) {
       remaining -= 1;
       s.onEvery?.(ctx.target, remaining);
       if (remaining > 0) {
-        arm(s);
+        ticks = 0;
         return;
       }
     } else {
@@ -105,24 +102,17 @@ export function createFlow(table, ctx) {
     }
   };
 
-  const arm = (s) => {
-    const t = timing(s);
-    if (!t) return;
-    ticks = 0;
-    if (t.ms !== undefined) timer = setTimer(fire, t.ms);
-  };
-
   function enter(name) {
-    cancel();
+    halted = false;
     previous = current;
     current = name;
+    ticks = 0;
     const s = spec(name);
     s.enter?.(ctx.target);
     if (current !== name) return;
-    if (s.steps) ctx.startSteps();
-    else ctx.stopSteps();
+    if (s.final) ctx.stopSteps();
+    else ctx.startSteps();
     remaining = s.every?.count ?? 0;
-    arm(s);
   }
 
   // Enter the phase the state is in, if something other than the flow moved
@@ -156,16 +146,19 @@ export function createFlow(table, ctx) {
 
     /**
      * One simulation step: follow a phase the state was moved to from outside,
-     * run the phase's tick, follow a phase the tick moved to, else count it.
+     * run the phase's tick (or the game's idle), follow a phase the tick moved
+     * to, else count the step.
      */
     step() {
+      if (halted) return;
       follow();
       const s = spec(current);
-      s.tick?.(ctx.target);
+      if (s.tick) s.tick(ctx.target);
+      else ctx.idle?.(ctx.target);
       if (follow()) return;
 
       const t = timing(s);
-      if (t?.ticks !== undefined && spec(current) === s) {
+      if (t && spec(current) === s) {
         ticks += 1;
         if (ticks >= t.ticks) {
           ticks = 0;
@@ -174,7 +167,9 @@ export function createFlow(table, ctx) {
       }
     },
 
-    /** Cancel whatever was pending. */
-    stop: cancel,
+    /** Nothing pending fires until a phase is entered again. */
+    stop() {
+      halted = true;
+    },
   };
 }

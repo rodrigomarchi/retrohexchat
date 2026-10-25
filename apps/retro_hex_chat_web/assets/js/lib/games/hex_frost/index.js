@@ -112,15 +112,6 @@ function roundEndTick(game) {
   publish(game, state);
 }
 
-/** The finished match is drawn and sent once more, then the engine stops. */
-function finishedTick(game) {
-  game.invalidate();
-  game.broadcast();
-  game._stopSteps();
-  game.setKeyboardCaptured(false);
-  game.running = false;
-}
-
 function buildingTick(game) {
   let state = nextFrame(game);
 
@@ -232,7 +223,6 @@ export default defineGame({
     begin: "COUNTDOWN",
     states: {
       COUNTDOWN: {
-        steps: true,
         // A later round's countdown is set up by the simulation itself.
         enter: (game) => {
           if (game.flow.previous !== "WAITING") return;
@@ -245,13 +235,11 @@ export default defineGame({
         },
         tick: countdownTick,
       },
-      BUILDING: { steps: true, tick: buildingTick },
-      ROUND_END: { steps: true, tick: roundEndTick },
+      BUILDING: { tick: buildingTick },
+      ROUND_END: { tick: roundEndTick },
       FINISHED: {
         final: true,
-        steps: true,
         enter: (game) => finishMatch(game, game.gameState),
-        tick: finishedTick,
       },
     },
   },

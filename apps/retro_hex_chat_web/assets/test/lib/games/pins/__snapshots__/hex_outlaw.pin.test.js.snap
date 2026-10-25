@@ -22,7 +22,7 @@ exports[`hex_outlaw pins > P2P following the key script 1`] = `
       "ops": 260,
       "phase": 2,
       "side": "guest",
-      "t": 3024,
+      "t": 3040,
     },
     {
       "digest": "b86762aed9062244",
@@ -32,11 +32,11 @@ exports[`hex_outlaw pins > P2P following the key script 1`] = `
       "t": 4032,
     },
     {
-      "digest": "8cf8208e65618952",
+      "digest": "cbf6c964b3e8ce86",
       "ops": 255,
       "phase": 3,
       "side": "guest",
-      "t": 4032,
+      "t": 4048,
     },
   ],
   "phases": [
@@ -58,17 +58,17 @@ exports[`hex_outlaw pins > P2P following the key script 1`] = `
     {
       "phase": 2,
       "side": "guest",
-      "t": 3008,
+      "t": 3024,
     },
     {
       "phase": 3,
       "side": "host",
-      "t": 4000,
+      "t": 4016,
     },
     {
       "phase": 3,
       "side": "guest",
-      "t": 4016,
+      "t": 4032,
     },
   ],
   "results": {
@@ -77,7 +77,7 @@ exports[`hex_outlaw pins > P2P following the key script 1`] = `
   },
   "sounds": {
     "guest": {
-      "digest": "3d13c156e8da40f3",
+      "digest": "23b78590b9459582",
       "entries": 1207,
       "voices": {
         "createBuffer": 56,
@@ -87,7 +87,7 @@ exports[`hex_outlaw pins > P2P following the key script 1`] = `
       },
     },
     "host": {
-      "digest": "6b9889a0f67d23bb",
+      "digest": "3e34477724dd2ff8",
       "entries": 1700,
       "voices": {
         "createBuffer": 56,
@@ -187,7 +187,7 @@ exports[`hex_outlaw pins > P2P following the key script 1`] = `
         },
       },
     },
-    "digest": "74c7a8b6896eab6b",
+    "digest": "eadc557e089b9ef1",
     "first": [
       {
         "dir": "guest>host",
@@ -202,22 +202,22 @@ exports[`hex_outlaw pins > P2P following the key script 1`] = `
       {
         "dir": "host>guest",
         "hex": "805000fa00003002fa00000000000000200000000000002000fa000100000102010000000000",
-        "t": 1000,
+        "t": 1008,
       },
       {
         "dir": "host>guest",
         "hex": "805000fa00003002fa00000000000000200000000000002000fa000100000101010000000000",
-        "t": 2000,
+        "t": 2016,
       },
       {
         "dir": "host>guest",
         "hex": "805000fa00003002fa00000000000000200000000000002000fa000100000201010000000000",
-        "t": 3000,
+        "t": 3008,
       },
       {
         "dir": "host>guest",
         "hex": "805000fa00003002fa00000000000000200000000000002000fa000100000301010000000000",
-        "t": 4000,
+        "t": 4016,
       },
     ],
   },
@@ -260,7 +260,7 @@ exports[`hex_outlaw pins > P2P over a channel that loses datagrams 1`] = `
       "ops": 260,
       "phase": 2,
       "side": "guest",
-      "t": 3776,
+      "t": 3792,
     },
     {
       "digest": "e14a2f0a276e46c0",
@@ -306,7 +306,7 @@ exports[`hex_outlaw pins > P2P over a channel that loses datagrams 1`] = `
     {
       "phase": 2,
       "side": "guest",
-      "t": 3760,
+      "t": 3776,
     },
     {
       "phase": 3,
@@ -325,7 +325,7 @@ exports[`hex_outlaw pins > P2P over a channel that loses datagrams 1`] = `
   },
   "sounds": {
     "guest": {
-      "digest": "6029d5206f3d56a4",
+      "digest": "9498d5def9e1d2be",
       "entries": 1207,
       "voices": {
         "createBuffer": 56,
@@ -335,7 +335,7 @@ exports[`hex_outlaw pins > P2P over a channel that loses datagrams 1`] = `
       },
     },
     "host": {
-      "digest": "6b827954a5dce639",
+      "digest": "50a34498e98cb9db",
       "entries": 1733,
       "voices": {
         "createBuffer": 56,
@@ -435,7 +435,7 @@ exports[`hex_outlaw pins > P2P over a channel that loses datagrams 1`] = `
         },
       },
     },
-    "digest": "1c2757c941b30fb1",
+    "digest": "48f9f19df897ba50",
     "first": [
       {
         "dir": "guest>host",
@@ -468,7 +468,7 @@ exports[`hex_outlaw pins > P2P over a channel that loses datagrams 1`] = `
       {
         "dir": "host>guest",
         "hex": "805000fa00003002fa00000000000000200000000000002000fa000100000102010000000000",
-        "t": 1751,
+        "t": 1760,
       },
     ],
   },
@@ -508,7 +508,7 @@ exports[`hex_outlaw pins > solo against the AI 1`] = `
     {
       "phase": 3,
       "side": "host",
-      "t": 4000,
+      "t": 4016,
     },
   ],
   "results": {
@@ -517,7 +517,7 @@ exports[`hex_outlaw pins > solo against the AI 1`] = `
   },
   "sounds": {
     "host": {
-      "digest": "fb368ada52e33ae9",
+      "digest": "d413c1aab232fe39",
       "entries": 51,
       "voices": {
         "createGain": 5,
@@ -724,147 +724,147 @@ exports[`hex_outlaw pins > solo against the AI: hex_outlaw_nml 1`] = `
       "ops": 249,
       "phase": 1,
       "side": "host",
-      "t": 30736,
+      "t": 30720,
     },
     {
       "digest": "16918ef0585d6e4d",
       "ops": 268,
       "phase": 3,
       "side": "host",
-      "t": 33760,
+      "t": 33744,
     },
     {
       "digest": "300e7ecee335e677",
       "ops": 285,
       "phase": 4,
       "side": "host",
-      "t": 34720,
+      "t": 34704,
     },
     {
       "digest": "3999bae01a02b14b",
       "ops": 268,
       "phase": 3,
       "side": "host",
-      "t": 36224,
+      "t": 36208,
     },
     {
       "digest": "b84501127c2b96da",
       "ops": 283,
       "phase": 4,
       "side": "host",
-      "t": 37184,
+      "t": 37168,
     },
     {
       "digest": "52eb7e3e021017c8",
       "ops": 268,
       "phase": 3,
       "side": "host",
-      "t": 38688,
+      "t": 38672,
     },
     {
       "digest": "045b8704b1234f7e",
       "ops": 285,
       "phase": 4,
       "side": "host",
-      "t": 39664,
+      "t": 39648,
     },
     {
       "digest": "2d432092bc21a1bd",
       "ops": 244,
       "phase": 3,
       "side": "host",
-      "t": 41152,
+      "t": 41136,
     },
     {
       "digest": "0fa99c73ee57713b",
       "ops": 285,
       "phase": 4,
       "side": "host",
-      "t": 42144,
+      "t": 42128,
     },
     {
       "digest": "7c405d97749efc3c",
       "ops": 268,
       "phase": 3,
       "side": "host",
-      "t": 43648,
+      "t": 43632,
     },
     {
       "digest": "342fbd4f82d0719f",
       "ops": 283,
       "phase": 4,
       "side": "host",
-      "t": 44608,
+      "t": 44592,
     },
     {
       "digest": "dcb29bbc58e96e04",
       "ops": 268,
       "phase": 3,
       "side": "host",
-      "t": 46112,
+      "t": 46096,
     },
     {
       "digest": "5903656b08ce141d",
       "ops": 285,
       "phase": 4,
       "side": "host",
-      "t": 47072,
+      "t": 47056,
     },
     {
       "digest": "ec64c88253bc09dd",
       "ops": 268,
       "phase": 3,
       "side": "host",
-      "t": 48576,
+      "t": 48560,
     },
     {
       "digest": "9ebf80d1929a8399",
       "ops": 283,
       "phase": 4,
       "side": "host",
-      "t": 49536,
+      "t": 49520,
     },
     {
       "digest": "2bf899773752da22",
       "ops": 268,
       "phase": 3,
       "side": "host",
-      "t": 51040,
+      "t": 51024,
     },
     {
       "digest": "0c6d2445e2dc428a",
       "ops": 285,
       "phase": 4,
       "side": "host",
-      "t": 52000,
+      "t": 51984,
     },
     {
       "digest": "24ff7d3ae6d204b7",
       "ops": 244,
       "phase": 3,
       "side": "host",
-      "t": 53504,
+      "t": 53488,
     },
     {
       "digest": "f438c7e5a1980a99",
       "ops": 283,
       "phase": 4,
       "side": "host",
-      "t": 54496,
+      "t": 54480,
     },
     {
       "digest": "c895796cca8c517e",
       "ops": 268,
       "phase": 3,
       "side": "host",
-      "t": 55984,
+      "t": 55968,
     },
     {
       "digest": "c07424361c83ae79",
       "ops": 285,
       "phase": 6,
       "side": "host",
-      "t": 56960,
+      "t": 56944,
     },
   ],
   "ended": true,
@@ -882,7 +882,7 @@ exports[`hex_outlaw pins > solo against the AI: hex_outlaw_nml 1`] = `
     {
       "phase": 3,
       "side": "host",
-      "t": 4000,
+      "t": 4016,
     },
     {
       "phase": 4,
@@ -982,52 +982,52 @@ exports[`hex_outlaw pins > solo against the AI: hex_outlaw_nml 1`] = `
     {
       "phase": 1,
       "side": "host",
-      "t": 29744,
+      "t": 29728,
     },
     {
       "phase": 2,
       "side": "host",
-      "t": 32736,
+      "t": 32720,
     },
     {
       "phase": 3,
       "side": "host",
-      "t": 33744,
+      "t": 33728,
     },
     {
       "phase": 4,
       "side": "host",
-      "t": 34704,
+      "t": 34688,
     },
     {
       "phase": 3,
       "side": "host",
-      "t": 36208,
+      "t": 36192,
     },
     {
       "phase": 4,
       "side": "host",
-      "t": 37168,
+      "t": 37152,
     },
     {
       "phase": 3,
       "side": "host",
-      "t": 38672,
+      "t": 38656,
     },
     {
       "phase": 4,
       "side": "host",
-      "t": 39648,
+      "t": 39632,
     },
     {
       "phase": 3,
       "side": "host",
-      "t": 41136,
+      "t": 41120,
     },
     {
       "phase": 4,
       "side": "host",
-      "t": 42128,
+      "t": 42112,
     },
     {
       "phase": 3,
@@ -1037,57 +1037,57 @@ exports[`hex_outlaw pins > solo against the AI: hex_outlaw_nml 1`] = `
     {
       "phase": 4,
       "side": "host",
-      "t": 44592,
+      "t": 44576,
     },
     {
       "phase": 3,
       "side": "host",
-      "t": 46096,
+      "t": 46080,
     },
     {
       "phase": 4,
       "side": "host",
-      "t": 47056,
+      "t": 47040,
     },
     {
       "phase": 3,
       "side": "host",
-      "t": 48560,
+      "t": 48544,
     },
     {
       "phase": 4,
       "side": "host",
-      "t": 49520,
+      "t": 49504,
     },
     {
       "phase": 3,
       "side": "host",
-      "t": 51024,
+      "t": 51008,
     },
     {
       "phase": 4,
       "side": "host",
-      "t": 51984,
+      "t": 51968,
     },
     {
       "phase": 3,
       "side": "host",
-      "t": 53488,
+      "t": 53472,
     },
     {
       "phase": 4,
       "side": "host",
-      "t": 54480,
+      "t": 54464,
     },
     {
       "phase": 3,
       "side": "host",
-      "t": 55968,
+      "t": 55952,
     },
     {
       "phase": 6,
       "side": "host",
-      "t": 56944,
+      "t": 56928,
     },
   ],
   "results": {
@@ -1104,7 +1104,7 @@ exports[`hex_outlaw pins > solo against the AI: hex_outlaw_nml 1`] = `
   },
   "sounds": {
     "host": {
-      "digest": "6a4f19d92365b088",
+      "digest": "bfe1fc07f063301f",
       "entries": 972,
       "voices": {
         "createBuffer": 20,
@@ -1191,7 +1191,7 @@ exports[`hex_outlaw pins > solo against the AI: hex_outlaw_ricochet 1`] = `
     {
       "phase": 3,
       "side": "host",
-      "t": 4000,
+      "t": 4016,
     },
   ],
   "results": {
@@ -1200,7 +1200,7 @@ exports[`hex_outlaw pins > solo against the AI: hex_outlaw_ricochet 1`] = `
   },
   "sounds": {
     "host": {
-      "digest": "5ad9fa74b9e26c5e",
+      "digest": "8eb513eb88928400",
       "entries": 83,
       "voices": {
         "createBuffer": 1,
@@ -1409,21 +1409,21 @@ exports[`hex_outlaw pins > solo against the AI: hex_outlaw_stagecoach 1`] = `
       "ops": 302,
       "phase": 1,
       "side": "host",
-      "t": 38800,
+      "t": 38784,
     },
     {
       "digest": "8f53b6fd95c6911c",
       "ops": 297,
       "phase": 3,
       "side": "host",
-      "t": 41824,
+      "t": 41808,
     },
     {
       "digest": "74099cbdafe3084e",
       "ops": 338,
       "phase": 4,
       "side": "host",
-      "t": 43728,
+      "t": 43712,
     },
     {
       "digest": "369bcca6ceafbda2",
@@ -1437,7 +1437,7 @@ exports[`hex_outlaw pins > solo against the AI: hex_outlaw_stagecoach 1`] = `
       "ops": 336,
       "phase": 4,
       "side": "host",
-      "t": 46976,
+      "t": 46960,
     },
     {
       "digest": "8b640731e38f7d20",
@@ -1451,42 +1451,42 @@ exports[`hex_outlaw pins > solo against the AI: hex_outlaw_stagecoach 1`] = `
       "ops": 338,
       "phase": 4,
       "side": "host",
-      "t": 50240,
+      "t": 50224,
     },
     {
       "digest": "4e7b4dc6188ffbdc",
       "ops": 297,
       "phase": 3,
       "side": "host",
-      "t": 51744,
+      "t": 51728,
     },
     {
       "digest": "d8f342d455cfb8f5",
       "ops": 336,
       "phase": 4,
       "side": "host",
-      "t": 53520,
+      "t": 53504,
     },
     {
       "digest": "d3d3ebe2f5736c33",
       "ops": 297,
       "phase": 3,
       "side": "host",
-      "t": 55024,
+      "t": 55008,
     },
     {
       "digest": "721a6e4eecbac1e7",
       "ops": 338,
       "phase": 4,
       "side": "host",
-      "t": 56768,
+      "t": 56752,
     },
     {
       "digest": "f3480c1e3d75f129",
       "ops": 297,
       "phase": 3,
       "side": "host",
-      "t": 58272,
+      "t": 58256,
     },
   ],
   "ended": false,
@@ -1504,7 +1504,7 @@ exports[`hex_outlaw pins > solo against the AI: hex_outlaw_stagecoach 1`] = `
     {
       "phase": 3,
       "side": "host",
-      "t": 4000,
+      "t": 4016,
     },
     {
       "phase": 4,
@@ -1604,32 +1604,32 @@ exports[`hex_outlaw pins > solo against the AI: hex_outlaw_stagecoach 1`] = `
     {
       "phase": 1,
       "side": "host",
-      "t": 37808,
+      "t": 37792,
     },
     {
       "phase": 2,
       "side": "host",
-      "t": 40800,
+      "t": 40784,
     },
     {
       "phase": 3,
       "side": "host",
-      "t": 41808,
+      "t": 41792,
     },
     {
       "phase": 4,
       "side": "host",
-      "t": 43712,
+      "t": 43696,
     },
     {
       "phase": 3,
       "side": "host",
-      "t": 45200,
+      "t": 45184,
     },
     {
       "phase": 4,
       "side": "host",
-      "t": 46960,
+      "t": 46944,
     },
     {
       "phase": 3,
@@ -1639,32 +1639,32 @@ exports[`hex_outlaw pins > solo against the AI: hex_outlaw_stagecoach 1`] = `
     {
       "phase": 4,
       "side": "host",
-      "t": 50224,
+      "t": 50208,
     },
     {
       "phase": 3,
       "side": "host",
-      "t": 51728,
+      "t": 51712,
     },
     {
       "phase": 4,
       "side": "host",
-      "t": 53504,
+      "t": 53488,
     },
     {
       "phase": 3,
       "side": "host",
-      "t": 55008,
+      "t": 54992,
     },
     {
       "phase": 4,
       "side": "host",
-      "t": 56752,
+      "t": 56736,
     },
     {
       "phase": 3,
       "side": "host",
-      "t": 58256,
+      "t": 58240,
     },
   ],
   "results": {
@@ -1673,7 +1673,7 @@ exports[`hex_outlaw pins > solo against the AI: hex_outlaw_stagecoach 1`] = `
   },
   "sounds": {
     "host": {
-      "digest": "efb3b581c98c2be3",
+      "digest": "d9b870df725e30da",
       "entries": 767,
       "voices": {
         "createBuffer": 16,

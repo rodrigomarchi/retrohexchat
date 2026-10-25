@@ -1,3 +1,4 @@
+import { advance, useFakePageTimers } from "../../../helpers/game_clock.js";
 import { inputDatagram, inputMask } from "../../../helpers/game_input.js";
 import { decodeInputState } from "../../../../js/lib/games/net_protocol.js";
 import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
@@ -267,7 +268,7 @@ describe("TennisEngine", () => {
 
   describe("beginMatch", () => {
     it("starts the countdown and captures keyboard", () => {
-      vi.useFakeTimers();
+      useFakePageTimers();
       const e = new TennisEngine(
         createMockCanvas(),
         createMockChannel(),
@@ -289,7 +290,7 @@ describe("TennisEngine", () => {
     });
 
     it("updates solo difficulty and controller", () => {
-      vi.useFakeTimers();
+      useFakePageTimers();
       const opponentController = {
         setDifficulty: vi.fn(),
         nextInputs: vi.fn(() => ({
@@ -319,7 +320,7 @@ describe("TennisEngine", () => {
     });
 
     it("does not start twice", () => {
-      vi.useFakeTimers();
+      useFakePageTimers();
       const e = new TennisEngine(
         createMockCanvas(),
         createMockChannel(),
@@ -748,7 +749,7 @@ describe("TennisEngine", () => {
 
   describe("countdown flow", () => {
     it("starts at 3 and ticks down", () => {
-      vi.useFakeTimers();
+      useFakePageTimers();
       const channel = createMockChannel();
       const e = new TennisEngine(createMockCanvas(), channel, "hex_tennis", true, vi.fn());
       e.start();
@@ -758,13 +759,13 @@ describe("TennisEngine", () => {
       expect(e.gameState.countdown).toBe(3);
       expect(e.gameState.phase).toBe(PHASE.COUNTDOWN);
 
-      vi.advanceTimersByTime(1000);
+      advance(e, 1000);
       expect(e.gameState.countdown).toBe(2);
 
-      vi.advanceTimersByTime(1000);
+      advance(e, 1000);
       expect(e.gameState.countdown).toBe(1);
 
-      vi.advanceTimersByTime(1000);
+      advance(e, 1000);
       expect(e.gameState.phase).toBe(PHASE.SERVING);
 
       e.stop();
@@ -772,7 +773,7 @@ describe("TennisEngine", () => {
     });
 
     it("broadcasts state on each tick", () => {
-      vi.useFakeTimers();
+      useFakePageTimers();
       const channel = createMockChannel();
       const e = new TennisEngine(createMockCanvas(), channel, "hex_tennis", true, vi.fn());
       e.start();
@@ -780,7 +781,7 @@ describe("TennisEngine", () => {
       e._onChannelMessage({ data: encodeGameReady() });
       const initialSends = channel.send.mock.calls.length;
 
-      vi.advanceTimersByTime(1000);
+      advance(e, 1000);
       expect(channel.send.mock.calls.length).toBeGreaterThan(initialSends);
 
       e.stop();
@@ -854,7 +855,7 @@ describe("TennisEngine", () => {
 
   describe("serve timer", () => {
     it("auto-serves after timeout", () => {
-      vi.useFakeTimers();
+      useFakePageTimers();
       const e = new TennisEngine(
         createMockCanvas(),
         createMockChannel(),
@@ -866,7 +867,7 @@ describe("TennisEngine", () => {
 
       // Start countdown, let it finish
       e._onChannelMessage({ data: encodeGameReady() });
-      vi.advanceTimersByTime(3000); // countdown done → SERVING
+      advance(e, 3000); // countdown done → SERVING
 
       expect(e.gameState.phase).toBe(PHASE.SERVING);
 
@@ -880,7 +881,7 @@ describe("TennisEngine", () => {
 
   describe("host serve restriction", () => {
     it("host cannot serve when server is P2", () => {
-      vi.useFakeTimers();
+      useFakePageTimers();
       const e = new TennisEngine(
         createMockCanvas(),
         createMockChannel(),
@@ -890,7 +891,7 @@ describe("TennisEngine", () => {
       );
       e.start();
       e._onChannelMessage({ data: encodeGameReady() });
-      vi.advanceTimersByTime(3000); // countdown → SERVING
+      advance(e, 3000); // countdown → SERVING
 
       e.gameState.server = 2;
       e.localInputs.serve = true;
@@ -904,7 +905,7 @@ describe("TennisEngine", () => {
     });
 
     it("host can serve when server is P1", () => {
-      vi.useFakeTimers();
+      useFakePageTimers();
       const e = new TennisEngine(
         createMockCanvas(),
         createMockChannel(),
@@ -914,7 +915,7 @@ describe("TennisEngine", () => {
       );
       e.start();
       e._onChannelMessage({ data: encodeGameReady() });
-      vi.advanceTimersByTime(3000);
+      advance(e, 3000);
 
       e.gameState.server = 1;
       e.localInputs.serve = true;
@@ -1145,14 +1146,14 @@ describe("TennisEngine", () => {
 
   describe("_gameLoop SERVING phase", () => {
     function setupServingEngine() {
-      vi.useFakeTimers();
+      useFakePageTimers();
       const canvas = createMockCanvas();
       const channel = createMockChannel();
       const e = new TennisEngine(canvas, channel, "hex_tennis", true, vi.fn());
       e.start();
       // Trigger countdown then let it finish to reach SERVING
       e._onChannelMessage({ data: encodeGameReady() });
-      vi.advanceTimersByTime(3000);
+      advance(e, 3000);
       expect(e.gameState.phase).toBe(PHASE.SERVING);
       return { e, canvas, channel };
     }

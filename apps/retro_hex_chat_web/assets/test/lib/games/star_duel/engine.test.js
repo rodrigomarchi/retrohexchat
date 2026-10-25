@@ -1,3 +1,4 @@
+import { advance, useFakePageTimers } from "../../../helpers/game_clock.js";
 import { inputDatagram, inputMask } from "../../../helpers/game_input.js";
 import { decodeInputState } from "../../../../js/lib/games/net_protocol.js";
 import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
@@ -756,7 +757,7 @@ describe("StarDuelEngine", () => {
 
   describe("countdown flow (host)", () => {
     beforeEach(() => {
-      vi.useFakeTimers();
+      useFakePageTimers();
     });
 
     afterEach(() => {
@@ -792,10 +793,10 @@ describe("StarDuelEngine", () => {
       engine.start();
       engine._onChannelMessage({ data: encodeGameReady() });
 
-      vi.advanceTimersByTime(1000);
+      advance(engine, 1000);
       expect(engine.gameState.countdown).toBe(2);
 
-      vi.advanceTimersByTime(1000);
+      advance(engine, 1000);
       expect(engine.gameState.countdown).toBe(1);
     });
 
@@ -804,31 +805,31 @@ describe("StarDuelEngine", () => {
       engine.start();
       engine._onChannelMessage({ data: encodeGameReady() });
 
-      vi.advanceTimersByTime(3000);
+      advance(engine, 3000);
 
       expect(engine.gameState.phase).toBe(PHASE.SPAWNING);
     });
 
-    it("leaves no phase timer pending once the countdown and spawn are done", () => {
+    it("schedules no timer for the countdown or the spawn pause", () => {
       engine = new StarDuelEngine(canvas, channel, "star_duel", true, null);
       engine.start();
       engine._onChannelMessage({ data: encodeGameReady() });
 
-      // After all 3 ticks, the countdown is done and _startSpawning is called
-      vi.advanceTimersByTime(3000);
+      // The countdown and the spawn pause are counted in steps, not on timers.
+      const pendingBefore = vi.getTimerCount();
+      advance(engine, 3000);
       expect(engine.gameState.phase).toBe(PHASE.SPAWNING);
-      const pendingWhileSpawning = vi.getTimerCount();
+      expect(vi.getTimerCount()).toBe(pendingBefore);
 
-      // After SPAWN_DELAY (1500ms) the game starts and the spawn pause is gone.
-      vi.advanceTimersByTime(1500);
+      advance(engine, 1500);
       expect(engine.gameState.phase).toBe(PHASE.PLAYING);
-      expect(vi.getTimerCount()).toBe(pendingWhileSpawning - 1);
+      expect(vi.getTimerCount()).toBe(pendingBefore);
     });
   });
 
   describe("game loop — death handling", () => {
     beforeEach(() => {
-      vi.useFakeTimers();
+      useFakePageTimers();
     });
 
     afterEach(() => {
@@ -844,7 +845,7 @@ describe("StarDuelEngine", () => {
       engine._onChannelMessage({ data: encodeGameReady() });
 
       // Fast-forward through countdown (3s) + spawning (1.5s)
-      vi.advanceTimersByTime(4500);
+      advance(engine, 4500);
       expect(engine.gameState.phase).toBe(PHASE.PLAYING);
       return engine;
     }
@@ -934,7 +935,7 @@ describe("StarDuelEngine", () => {
 
   describe("_handleRoundOver", () => {
     beforeEach(() => {
-      vi.useFakeTimers();
+      useFakePageTimers();
     });
 
     afterEach(() => {
@@ -972,7 +973,7 @@ describe("StarDuelEngine", () => {
 
       expect(engine.gameState.phase).toBe(PHASE.ROUND_OVER);
 
-      vi.advanceTimersByTime(2000); // ROUND_OVER_DELAY
+      advance(engine, 2000); // ROUND_OVER_DELAY
       expect(engine.gameState.phase).toBe(PHASE.SPAWNING);
     });
   });
@@ -1266,7 +1267,7 @@ describe("StarDuelEngine", () => {
 
   describe("gravity well mode specifics (host game loop)", () => {
     beforeEach(() => {
-      vi.useFakeTimers();
+      useFakePageTimers();
     });
 
     afterEach(() => {
@@ -1277,7 +1278,7 @@ describe("StarDuelEngine", () => {
       engine = new StarDuelEngine(canvas, channel, "gravity_well", true, null);
       engine.start();
       engine._onChannelMessage({ data: encodeGameReady() });
-      vi.advanceTimersByTime(4500); // countdown + spawn
+      advance(engine, 4500); // countdown + spawn
 
       expect(engine.gameState.phase).toBe(PHASE.PLAYING);
 
@@ -1296,7 +1297,7 @@ describe("StarDuelEngine", () => {
 
   describe("warp handling (host game loop)", () => {
     beforeEach(() => {
-      vi.useFakeTimers();
+      useFakePageTimers();
     });
 
     afterEach(() => {
@@ -1307,7 +1308,7 @@ describe("StarDuelEngine", () => {
       engine = new StarDuelEngine(canvas, channel, "star_duel", true, null);
       engine.start();
       engine._onChannelMessage({ data: encodeGameReady() });
-      vi.advanceTimersByTime(4500);
+      advance(engine, 4500);
       expect(engine.gameState.phase).toBe(PHASE.PLAYING);
 
       // Make ship1 alive, no cooldown, press warp
@@ -1419,7 +1420,7 @@ describe("StarDuelEngine", () => {
 
   describe("additional edge cases", () => {
     beforeEach(() => {
-      vi.useFakeTimers();
+      useFakePageTimers();
     });
 
     afterEach(() => {
@@ -1430,7 +1431,7 @@ describe("StarDuelEngine", () => {
       engine = new StarDuelEngine(canvas, channel, "star_duel", true, null);
       engine.start();
       engine._onChannelMessage({ data: encodeGameReady() });
-      vi.advanceTimersByTime(4500); // countdown + spawn
+      advance(engine, 4500); // countdown + spawn
       expect(engine.gameState.phase).toBe(PHASE.PLAYING);
 
       // Ensure P2 fire was off
@@ -1448,7 +1449,7 @@ describe("StarDuelEngine", () => {
       engine = new StarDuelEngine(canvas, channel, "star_duel", true, null);
       engine.start();
       engine._onChannelMessage({ data: encodeGameReady() });
-      vi.advanceTimersByTime(4500);
+      advance(engine, 4500);
       expect(engine.gameState.phase).toBe(PHASE.PLAYING);
 
       // Make ship2 alive with no cooldown
@@ -1477,7 +1478,7 @@ describe("StarDuelEngine", () => {
       engine = new StarDuelEngine(canvas, channel, "debris_field", true, null);
       engine.start();
       engine._onChannelMessage({ data: encodeGameReady() });
-      vi.advanceTimersByTime(4500);
+      advance(engine, 4500);
       expect(engine.gameState.phase).toBe(PHASE.PLAYING);
 
       // Place ship1 directly on an asteroid, clearing invulnerability
@@ -1505,7 +1506,7 @@ describe("StarDuelEngine", () => {
       engine = new StarDuelEngine(canvas, channel, "gravity_well", true, null);
       engine.start();
       engine._onChannelMessage({ data: encodeGameReady() });
-      vi.advanceTimersByTime(4500);
+      advance(engine, 4500);
       expect(engine.gameState.phase).toBe(PHASE.PLAYING);
 
       // Place ship1 at the star position, clearing invulnerability
@@ -1531,7 +1532,7 @@ describe("StarDuelEngine", () => {
       engine = new StarDuelEngine(canvas, channel, "star_duel", true, null);
       engine.start();
       engine._onChannelMessage({ data: encodeGameReady() });
-      vi.advanceTimersByTime(4500);
+      advance(engine, 4500);
       expect(engine.gameState.phase).toBe(PHASE.PLAYING);
 
       // Set score to trigger game finished

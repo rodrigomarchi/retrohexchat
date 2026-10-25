@@ -42,10 +42,10 @@ import {
 import { GAME_END, GAME_MODE, PHASE, SNAPSHOT, encodeShipFlags } from "./protocol.js";
 import { getColors, render } from "./renderer.js";
 
-const SPAWN_DELAY_MS = 1500;
-const ROUND_OVER_DELAY_MS = 2000;
+const SPAWN_DELAY_TICKS = 90; // 1.5 s
+const ROUND_OVER_DELAY_TICKS = 120; // 2 s
 const COUNTDOWN_FROM = 3;
-const COUNTDOWN_EVERY_MS = 1000;
+const COUNTDOWN_EVERY_TICKS = 60; // 1 s
 
 const MODE_MAP = {
   star_duel: GAME_MODE.OPEN_SPACE,
@@ -386,7 +386,7 @@ export default defineGame({
     states: {
       COUNTDOWN: {
         enter: (game) => countdown(game, COUNTDOWN_FROM),
-        every: { ms: COUNTDOWN_EVERY_MS, count: COUNTDOWN_FROM },
+        every: { ticks: COUNTDOWN_EVERY_TICKS, count: COUNTDOWN_FROM },
         onEvery: (game, remaining) => {
           if (remaining > 0) countdown(game, remaining);
         },
@@ -394,11 +394,10 @@ export default defineGame({
       },
       SPAWNING: {
         enter: spawning,
-        after: { ms: SPAWN_DELAY_MS },
+        after: { ticks: SPAWN_DELAY_TICKS },
         next: "PLAYING",
       },
       PLAYING: {
-        steps: true,
         enter: (game) => {
           game.gameState = spawnShips(game.gameState);
           game.frameCount = 0;
@@ -412,7 +411,6 @@ export default defineGame({
         tick: battle,
       },
       ROUND_OVER: {
-        steps: true,
         enter: (game) => {
           game.broadcast();
           game.invalidate();
@@ -420,16 +418,15 @@ export default defineGame({
           if (game.gameState.mode === GAME_MODE.GRAVITY_WELL) game.audio.stopStarProximity();
         },
         tick: battle,
-        after: { ms: ROUND_OVER_DELAY_MS },
+        after: { ticks: ROUND_OVER_DELAY_TICKS },
         next: "RESPAWNING",
       },
       // Later rounds respawn while the last one's wreckage still drifts.
       RESPAWNING: {
         as: "SPAWNING",
-        steps: true,
         enter: spawning,
         tick: battle,
-        after: { ms: SPAWN_DELAY_MS },
+        after: { ticks: SPAWN_DELAY_TICKS },
         next: "PLAYING",
       },
       FINISHED: {

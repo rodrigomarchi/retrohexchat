@@ -195,7 +195,6 @@ export default defineGame({
       // from the round's end, inside the step.
       STARTING: {
         as: "COUNTDOWN",
-        steps: true,
         enter: (game) => {
           game.gameState.countdown = COUNTDOWN_FROM;
           game.countdownFrames = COUNTDOWN_STEPS;
@@ -206,9 +205,9 @@ export default defineGame({
         },
         tick: step,
       },
-      COUNTDOWN: { steps: true, tick: step },
-      RACING: { steps: true, tick: step },
-      ROUND_END: { steps: true, tick: step },
+      COUNTDOWN: { tick: step },
+      RACING: { tick: step },
+      ROUND_END: { tick: step },
       FINISHED: { final: true },
     },
   },

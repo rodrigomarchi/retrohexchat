@@ -46,7 +46,7 @@ const MODE_MAP = {
 };
 
 const COUNTDOWN_FROM = 3;
-const COUNTDOWN_EVERY_MS = 1000;
+const COUNTDOWN_EVERY_TICKS = 60; // 1 s
 
 const RELEASED = { left: false, right: false, accel: false, brake: false, turbo: false };
 
@@ -194,7 +194,7 @@ export default defineGame({
           game.broadcast();
           game.invalidate();
         },
-        every: { ms: COUNTDOWN_EVERY_MS, count: COUNTDOWN_FROM },
+        every: { ticks: COUNTDOWN_EVERY_TICKS, count: COUNTDOWN_FROM },
         onEvery: (game, remaining) => {
           game.audio.playCountdown();
           if (remaining === 0) {
@@ -211,7 +211,7 @@ export default defineGame({
         },
         next: "RACING",
       },
-      RACING: { steps: true, tick: race },
+      RACING: { tick: race },
       FINISHED: {
         final: true,
         enter: (game) => {

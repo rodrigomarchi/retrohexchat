@@ -33,7 +33,7 @@ import { getColors, render } from "./renderer.js";
 const POINT_PAUSE_FRAMES = 120; // 2 s at 60 steps a second
 const CHANGEOVER_PAUSE_FRAMES = 120;
 const COUNTDOWN_FROM = 3;
-const COUNTDOWN_EVERY_MS = 1000;
+const COUNTDOWN_EVERY_TICKS = 60; // 1 s
 
 const MODE_MAP = {
   hex_tennis: GAME_MODE.CLASSIC,
@@ -266,7 +266,7 @@ export default defineGame({
           game.broadcast();
           game.invalidate();
         },
-        every: { ms: COUNTDOWN_EVERY_MS, count: COUNTDOWN_FROM },
+        every: { ticks: COUNTDOWN_EVERY_TICKS, count: COUNTDOWN_FROM },
         onEvery: (game, remaining) => {
           game.audio.playCountdown();
           if (remaining === 0) {
@@ -279,10 +279,10 @@ export default defineGame({
         },
         next: "SERVING",
       },
-      SERVING: { steps: true, tick: play },
-      RALLY: { steps: true, tick: play },
-      POINT: { steps: true, tick: play },
-      CHANGEOVER: { steps: true, tick: play },
+      SERVING: { tick: play },
+      RALLY: { tick: play },
+      POINT: { tick: play },
+      CHANGEOVER: { tick: play },
       GAME_OVER: {
         final: true,
         enter: (game) => {

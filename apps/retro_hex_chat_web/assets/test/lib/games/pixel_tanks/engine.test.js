@@ -1,3 +1,4 @@
+import { advance, useFakePageTimers } from "../../../helpers/game_clock.js";
 import { inputDatagram } from "../../../helpers/game_input.js";
 import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
 import {
@@ -203,7 +204,7 @@ describe("PixelTanksEngine", () => {
 
   describe("GAME_READY handshake", () => {
     it("host starts countdown on GAME_READY", () => {
-      vi.useFakeTimers();
+      useFakePageTimers();
       engine = new PixelTanksEngine(canvas, channel, "pixel_tanks", true, null);
       engine.start();
 
@@ -219,7 +220,7 @@ describe("PixelTanksEngine", () => {
     });
 
     it("ignores duplicate GAME_READY", () => {
-      vi.useFakeTimers();
+      useFakePageTimers();
       engine = new PixelTanksEngine(canvas, channel, "pixel_tanks", true, null);
       engine.start();
 
@@ -236,7 +237,7 @@ describe("PixelTanksEngine", () => {
 
   describe("countdown", () => {
     it("counts down from 3 to spawning", () => {
-      vi.useFakeTimers();
+      useFakePageTimers();
       engine = new PixelTanksEngine(canvas, channel, "pixel_tanks", true, null);
       engine.start();
 
@@ -245,13 +246,13 @@ describe("PixelTanksEngine", () => {
 
       expect(engine.gameState.countdown).toBe(3);
 
-      vi.advanceTimersByTime(1000);
+      advance(engine, 1000);
       expect(engine.gameState.countdown).toBe(2);
 
-      vi.advanceTimersByTime(1000);
+      advance(engine, 1000);
       expect(engine.gameState.countdown).toBe(1);
 
-      vi.advanceTimersByTime(1000);
+      advance(engine, 1000);
       expect(engine.gameState.phase).toBe(PHASE.SPAWNING);
       vi.useRealTimers();
     });
@@ -259,7 +260,7 @@ describe("PixelTanksEngine", () => {
 
   describe("solo beginMatch", () => {
     it("starts countdown and captures keyboard", () => {
-      vi.useFakeTimers();
+      useFakePageTimers();
       engine = new PixelTanksEngine(canvas, channel, "pixel_tanks", true, null, {
         mode: "solo",
       });
@@ -274,7 +275,7 @@ describe("PixelTanksEngine", () => {
     });
 
     it("updates difficulty and existing controller before starting", () => {
-      vi.useFakeTimers();
+      useFakePageTimers();
       const opponentController = {
         setDifficulty: vi.fn(),
         nextInputs: vi.fn(() => ({
@@ -299,7 +300,7 @@ describe("PixelTanksEngine", () => {
     });
 
     it("does not restart an active countdown", () => {
-      vi.useFakeTimers();
+      useFakePageTimers();
       engine = new PixelTanksEngine(canvas, channel, "pixel_tanks", true, null, {
         mode: "solo",
       });
@@ -498,7 +499,7 @@ describe("PixelTanksEngine", () => {
 
   describe("stop", () => {
     it("cleans up timers and animation frames", () => {
-      vi.useFakeTimers();
+      useFakePageTimers();
       engine = new PixelTanksEngine(canvas, channel, "pixel_tanks", true, null);
       engine.start();
 
@@ -556,7 +557,7 @@ describe("PixelTanksEngine", () => {
 
   describe("game loop", () => {
     function setupPlaying(eng, chan) {
-      vi.useFakeTimers();
+      useFakePageTimers();
       // Re-apply RAF mock after fake timers take over
       globalThis.requestAnimationFrame = vi.fn(() => 42);
       globalThis.cancelAnimationFrame = vi.fn();
@@ -568,7 +569,7 @@ describe("PixelTanksEngine", () => {
         const handler = chan.addEventListener.mock.calls.find((c) => c[0] === "message")[1];
         handler({ data: encodeGameReady() });
       }
-      vi.advanceTimersByTime(4000);
+      advance(eng, 4000);
     }
 
     function getLoopFn() {
@@ -672,14 +673,14 @@ describe("PixelTanksEngine", () => {
 
   describe("round transitions", () => {
     function setupPlaying(eng, chan) {
-      vi.useFakeTimers();
+      useFakePageTimers();
       globalThis.requestAnimationFrame = vi.fn(() => 42);
       globalThis.cancelAnimationFrame = vi.fn();
 
       eng.start();
       const handler = chan.addEventListener.mock.calls.find((c) => c[0] === "message")[1];
       handler({ data: encodeGameReady() });
-      vi.advanceTimersByTime(4000);
+      advance(eng, 4000);
     }
 
     function getLoopFn() {
@@ -713,7 +714,7 @@ describe("PixelTanksEngine", () => {
 
       expect(engine.gameState.phase).toBe(PHASE.ROUND_OVER);
 
-      vi.advanceTimersByTime(2500);
+      advance(engine, 2500);
       expect(engine.gameState.phase).toBe(PHASE.COUNTDOWN);
       expect(engine.gameState.round).toBe(2);
       vi.useRealTimers();
@@ -722,14 +723,14 @@ describe("PixelTanksEngine", () => {
 
   describe("match over", () => {
     function setupPlaying(eng, chan) {
-      vi.useFakeTimers();
+      useFakePageTimers();
       globalThis.requestAnimationFrame = vi.fn(() => 42);
       globalThis.cancelAnimationFrame = vi.fn();
 
       eng.start();
       const handler = chan.addEventListener.mock.calls.find((c) => c[0] === "message")[1];
       handler({ data: encodeGameReady() });
-      vi.advanceTimersByTime(4000);
+      advance(eng, 4000);
     }
 
     function getLoopFn() {
@@ -776,7 +777,7 @@ describe("PixelTanksEngine", () => {
 
   describe("respawn", () => {
     it("respawns tanks after a hit", () => {
-      vi.useFakeTimers();
+      useFakePageTimers();
       globalThis.requestAnimationFrame = vi.fn(() => 42);
       globalThis.cancelAnimationFrame = vi.fn();
 
@@ -785,7 +786,7 @@ describe("PixelTanksEngine", () => {
 
       const handler = channel.addEventListener.mock.calls.find((c) => c[0] === "message")[1];
       handler({ data: encodeGameReady() });
-      vi.advanceTimersByTime(4000);
+      advance(engine, 4000);
 
       // Set up a hit scenario: place missile on top of tank2
       engine.gameState.m1Active = true;
@@ -819,7 +820,7 @@ describe("PixelTanksEngine", () => {
     });
 
     it("guards phase callbacks after stop", () => {
-      vi.useFakeTimers();
+      useFakePageTimers();
       engine = new PixelTanksEngine(canvas, channel, "pixel_tanks", true, null);
       engine.start();
 
@@ -829,7 +830,7 @@ describe("PixelTanksEngine", () => {
       engine.stop();
 
       // Advance timer — countdown tick should be a no-op
-      vi.advanceTimersByTime(3000);
+      advance(engine, 3000);
       expect(engine.running).toBe(false);
       vi.useRealTimers();
     });
@@ -879,14 +880,14 @@ describe("PixelTanksEngine", () => {
 
   describe("RICOCHET mode missile update", () => {
     function setupPlaying(eng, chan, _gameMode) {
-      vi.useFakeTimers();
+      useFakePageTimers();
       globalThis.requestAnimationFrame = vi.fn(() => 42);
       globalThis.cancelAnimationFrame = vi.fn();
 
       eng.start();
       const handler = chan.addEventListener.mock.calls.find((c) => c[0] === "message")[1];
       handler({ data: encodeGameReady() });
-      vi.advanceTimersByTime(4000);
+      advance(eng, 4000);
     }
 
     it("uses updateMissileRicochet in RICOCHET mode", () => {
@@ -937,14 +938,14 @@ describe("PixelTanksEngine", () => {
 
   describe("respawnPause branch in game loop", () => {
     function setupPlaying(eng, chan) {
-      vi.useFakeTimers();
+      useFakePageTimers();
       globalThis.requestAnimationFrame = vi.fn(() => 42);
       globalThis.cancelAnimationFrame = vi.fn();
 
       eng.start();
       const handler = chan.addEventListener.mock.calls.find((c) => c[0] === "message")[1];
       handler({ data: encodeGameReady() });
-      vi.advanceTimersByTime(4000);
+      advance(eng, 4000);
     }
 
     it("continues loop during respawnPause without physics", () => {
@@ -1008,14 +1009,14 @@ describe("PixelTanksEngine", () => {
 
   describe("timer tick audio", () => {
     function setupPlaying(eng, chan) {
-      vi.useFakeTimers();
+      useFakePageTimers();
       globalThis.requestAnimationFrame = vi.fn(() => 42);
       globalThis.cancelAnimationFrame = vi.fn();
 
       eng.start();
       const handler = chan.addEventListener.mock.calls.find((c) => c[0] === "message")[1];
       handler({ data: encodeGameReady() });
-      vi.advanceTimersByTime(4000);
+      advance(eng, 4000);
     }
 
     it("plays playTimerTick when roundTimer <= 900 and divisible by 60", () => {

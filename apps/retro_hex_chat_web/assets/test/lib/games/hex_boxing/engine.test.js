@@ -1,3 +1,4 @@
+import { advance, useFakePageTimers } from "../../../helpers/game_clock.js";
 import { inputDatagram } from "../../../helpers/game_input.js";
 import { decodeInputState } from "../../../../js/lib/games/net_protocol.js";
 import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
@@ -240,7 +241,7 @@ describe("BoxingEngine", () => {
     });
 
     it("beginMatch starts the countdown and captures keyboard", () => {
-      vi.useFakeTimers();
+      useFakePageTimers();
       engine = new BoxingEngine(canvas, channel, "hex_boxing", true, null, { mode: "solo" });
       engine.start();
 
@@ -252,7 +253,7 @@ describe("BoxingEngine", () => {
     });
 
     it("beginMatch updates solo difficulty and existing controller", () => {
-      vi.useFakeTimers();
+      useFakePageTimers();
       const opponentController = { setDifficulty: vi.fn(), nextInputs: vi.fn() };
       engine = new BoxingEngine(canvas, channel, "hex_boxing", true, null, {
         mode: "solo",
@@ -268,7 +269,7 @@ describe("BoxingEngine", () => {
     });
 
     it("beginMatch accepts an explicit opponent controller", () => {
-      vi.useFakeTimers();
+      useFakePageTimers();
       const opponentController = { nextInputs: vi.fn(() => ({ left: false, punch: false })) };
       engine = new BoxingEngine(canvas, channel, "hex_boxing", true, null, { mode: "solo" });
       engine.start();
@@ -279,7 +280,7 @@ describe("BoxingEngine", () => {
     });
 
     it("beginMatch does not restart an active countdown", () => {
-      vi.useFakeTimers();
+      useFakePageTimers();
       engine = new BoxingEngine(canvas, channel, "hex_boxing", true, null, { mode: "solo" });
       engine.start();
       engine.beginMatch();
@@ -310,7 +311,7 @@ describe("BoxingEngine", () => {
     });
 
     it("stop clears phaseTimer", () => {
-      vi.useFakeTimers();
+      useFakePageTimers();
       engine = new BoxingEngine(canvas, channel, "hex_boxing", true, null);
       engine.start();
       engine.phaseTimer = setTimeout(() => {}, 5000);
@@ -468,7 +469,7 @@ describe("BoxingEngine", () => {
     });
 
     it("GAME_READY sets peerReady and starts countdown", () => {
-      vi.useFakeTimers();
+      useFakePageTimers();
       expect(engine.peerReady).toBe(false);
       engine._onChannelMessage({ data: encodeGameReady() });
       expect(engine.peerReady).toBe(true);
@@ -478,7 +479,7 @@ describe("BoxingEngine", () => {
     });
 
     it("duplicate GAME_READY is a no-op", () => {
-      vi.useFakeTimers();
+      useFakePageTimers();
       engine._onChannelMessage({ data: encodeGameReady() });
       engine.audio.playCountdown.mockClear();
       engine._onChannelMessage({ data: encodeGameReady() });
@@ -713,7 +714,7 @@ describe("BoxingEngine", () => {
 
   describe("countdown and spawning phases", () => {
     it("_startCountdown sets phase to COUNTDOWN with count 3 and plays audio", () => {
-      vi.useFakeTimers();
+      useFakePageTimers();
       engine = new BoxingEngine(canvas, channel, "hex_boxing", true, null);
       engine.start();
       engine.beginMatch();
@@ -725,44 +726,44 @@ describe("BoxingEngine", () => {
     });
 
     it("countdown ticks 3→2→1 then starts spawning", () => {
-      vi.useFakeTimers();
+      useFakePageTimers();
       engine = new BoxingEngine(canvas, channel, "hex_boxing", true, null);
       engine.start();
       engine.beginMatch();
       expect(engine.gameState.countdown).toBe(3);
 
-      vi.advanceTimersByTime(1000);
+      advance(engine, 1000);
       expect(engine.gameState.countdown).toBe(2);
 
-      vi.advanceTimersByTime(1000);
+      advance(engine, 1000);
       expect(engine.gameState.countdown).toBe(1);
 
-      vi.advanceTimersByTime(1000);
+      advance(engine, 1000);
       expect(engine.gameState.phase).toBe(PHASE.SPAWNING);
       expect(engine.audio.playBellStart).toHaveBeenCalled();
     });
 
     it("_startSpawning transitions to FIGHTING after SPAWNING_DELAY", () => {
-      vi.useFakeTimers();
+      useFakePageTimers();
       engine = new BoxingEngine(canvas, channel, "hex_boxing", true, null);
       engine.start();
       engine.flow.go("SPAWNING");
       expect(engine.gameState.phase).toBe(PHASE.SPAWNING);
 
-      vi.advanceTimersByTime(1000); // SPAWNING_DELAY
+      advance(engine, 1000); // SPAWNING_DELAY
       expect(engine.gameState.phase).toBe(PHASE.FIGHTING);
       expect(engine.gameState.roundTimer).toBe(ROUND_DURATION);
     });
 
     it("countdown stops if engine is stopped mid-countdown", () => {
-      vi.useFakeTimers();
+      useFakePageTimers();
       engine = new BoxingEngine(canvas, channel, "hex_boxing", true, null);
       engine.start();
       engine.beginMatch();
       expect(engine.gameState.countdown).toBe(3);
 
       engine.stop();
-      vi.advanceTimersByTime(3000);
+      advance(engine, 3000);
       // Countdown should not have progressed further after stop
       expect(engine.gameState.phase).toBe(PHASE.COUNTDOWN);
     });
@@ -986,7 +987,7 @@ describe("BoxingEngine", () => {
 
   describe("round end and match over", () => {
     it("round end with timer expired advances round", () => {
-      vi.useFakeTimers();
+      useFakePageTimers();
       const { engine: e } = setupFightingEngine();
       engine = e;
       engine.gameState.roundTimer = 1; // Will reach 0 after tick
@@ -1002,7 +1003,7 @@ describe("BoxingEngine", () => {
     });
 
     it("KO triggers playKO audio", () => {
-      vi.useFakeTimers();
+      useFakePageTimers();
       const { engine: e } = setupFightingEngine();
       engine = e;
       engine.gameState.score1 = KO_SCORE; // KO!
@@ -1014,7 +1015,7 @@ describe("BoxingEngine", () => {
     });
 
     it("match over when a player reaches ROUNDS_TO_WIN", () => {
-      vi.useFakeTimers();
+      useFakePageTimers();
       const onEnd = vi.fn();
       const { engine: e } = setupFightingEngine(onEnd);
       engine = e;
@@ -1031,7 +1032,7 @@ describe("BoxingEngine", () => {
     });
 
     it("after round over, starts new round countdown after delay", () => {
-      vi.useFakeTimers();
+      useFakePageTimers();
       const { engine: e } = setupFightingEngine();
       engine = e;
       engine.gameState.roundTimer = 1;
@@ -1042,7 +1043,7 @@ describe("BoxingEngine", () => {
       expect(engine.gameState.phase).toBe(PHASE.ROUND_OVER);
 
       // After ROUND_OVER_DELAY (2500ms), should reset and start countdown
-      vi.advanceTimersByTime(2500);
+      advance(engine, 2500);
       expect(engine.gameState.phase).toBe(PHASE.COUNTDOWN);
     });
   });

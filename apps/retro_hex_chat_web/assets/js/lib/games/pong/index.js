@@ -27,10 +27,10 @@ import {
 import { GAME_END, PHASE, SNAPSHOT } from "./protocol.js";
 import { getColors, render } from "./renderer.js";
 
-const SERVE_DELAY_MS = 800;
-const SCORE_PAUSE_MS = 1500;
+const SERVE_DELAY_TICKS = 48; // 0.8 s
+const SCORE_PAUSE_TICKS = 90; // 1.5 s
 const COUNTDOWN_FROM = 3;
-const COUNTDOWN_EVERY_MS = 1000;
+const COUNTDOWN_EVERY_TICKS = 60; // 1 s
 
 /** One simulation step on the host. */
 function step(game) {
@@ -130,7 +130,7 @@ export default defineGame({
     states: {
       COUNTDOWN: {
         enter: (game) => countdown(game, COUNTDOWN_FROM),
-        every: { ms: COUNTDOWN_EVERY_MS, count: COUNTDOWN_FROM },
+        every: { ticks: COUNTDOWN_EVERY_TICKS, count: COUNTDOWN_FROM },
         onEvery: (game, remaining) => {
           if (remaining > 0) countdown(game, remaining);
         },
@@ -142,7 +142,7 @@ export default defineGame({
           game.broadcast();
           game.invalidate();
         },
-        after: { ms: SERVE_DELAY_MS },
+        after: { ticks: SERVE_DELAY_TICKS },
         then: (game) => {
           game.gameState = serveBall(game.gameState, game.random);
           game.broadcast();
@@ -150,13 +150,12 @@ export default defineGame({
         next: "PLAYING",
       },
       PLAYING: {
-        steps: true,
         enter: (game) => {
           game.frameCount = 0;
         },
         tick: step,
       },
-      SCORED: { after: { ms: SCORE_PAUSE_MS }, next: "SERVING" },
+      SCORED: { after: { ticks: SCORE_PAUSE_TICKS }, next: "SERVING" },
       FINISHED: {
         final: true,
         enter: (game) => {

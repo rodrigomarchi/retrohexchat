@@ -1,3 +1,4 @@
+import { advance, useFakePageTimers } from "../../../helpers/game_clock.js";
 import { inputDatagram, inputMask } from "../../../helpers/game_input.js";
 import { decodeInputState } from "../../../../js/lib/games/net_protocol.js";
 import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
@@ -314,7 +315,7 @@ describe("HexInvadersEngine", () => {
 
   describe("beginMatch", () => {
     it("starts countdown and captures keyboard for a running host", () => {
-      vi.useFakeTimers();
+      useFakePageTimers();
       engine = new HexInvadersEngine(canvas, channel, "hex_invaders", true, null, {
         mode: "solo",
       });
@@ -329,7 +330,7 @@ describe("HexInvadersEngine", () => {
     });
 
     it("updates solo difficulty and controller before countdown", () => {
-      vi.useFakeTimers();
+      useFakePageTimers();
       const opponentController = {
         setDifficulty: vi.fn(),
         nextInputs: vi.fn(() => ({ left: false, right: false, fire: false })),
@@ -348,7 +349,7 @@ describe("HexInvadersEngine", () => {
     });
 
     it("accepts an explicit opponent controller", () => {
-      vi.useFakeTimers();
+      useFakePageTimers();
       const opponentController = {
         nextInputs: vi.fn(() => ({ left: false, right: true, fire: false })),
       };
@@ -363,7 +364,7 @@ describe("HexInvadersEngine", () => {
     });
 
     it("does not start twice", () => {
-      vi.useFakeTimers();
+      useFakePageTimers();
       engine = new HexInvadersEngine(canvas, channel, "hex_invaders", true, null, {
         mode: "solo",
       });
@@ -385,7 +386,7 @@ describe("HexInvadersEngine", () => {
     });
 
     it("clears phaseTimer", () => {
-      vi.useFakeTimers();
+      useFakePageTimers();
       engine = new HexInvadersEngine(canvas, channel, "hex_invaders", true, null);
       engine.start();
       engine.phaseTimer = setTimeout(() => {}, 5000);
@@ -701,7 +702,7 @@ describe("HexInvadersEngine", () => {
       });
 
       it("GAME_READY sets peerReady and starts countdown", () => {
-        vi.useFakeTimers();
+        useFakePageTimers();
         const buf = encodeGameReady();
         engine._onChannelMessage({ data: buf });
         expect(engine.peerReady).toBe(true);
@@ -710,7 +711,7 @@ describe("HexInvadersEngine", () => {
       });
 
       it("GAME_READY duplicate is ignored", () => {
-        vi.useFakeTimers();
+        useFakePageTimers();
         const buf = encodeGameReady();
         engine._onChannelMessage({ data: buf });
         const countdown1 = engine.gameState.countdown;
@@ -924,7 +925,7 @@ describe("HexInvadersEngine", () => {
 
   describe("countdown", () => {
     beforeEach(() => {
-      vi.useFakeTimers();
+      useFakePageTimers();
       engine = new HexInvadersEngine(canvas, channel, "hex_invaders", true, null);
       engine.start();
       channel.send.mockClear();
@@ -946,11 +947,11 @@ describe("HexInvadersEngine", () => {
 
     it("decrements countdown on each tick", () => {
       engine.flow.go("COUNTDOWN");
-      vi.advanceTimersByTime(1000);
+      advance(engine, 1000);
       expect(engine.gameState.countdown).toBe(2);
       expect(engine.audio.playCountdown).toHaveBeenCalledTimes(1);
 
-      vi.advanceTimersByTime(1000);
+      advance(engine, 1000);
       expect(engine.gameState.countdown).toBe(1);
       expect(engine.audio.playCountdown).toHaveBeenCalledTimes(2);
     });
@@ -958,25 +959,25 @@ describe("HexInvadersEngine", () => {
     it("transitions to PLAYING after full countdown", () => {
       engine.flow.go("COUNTDOWN");
       // Tick 1: count 3→2
-      vi.advanceTimersByTime(1000);
+      advance(engine, 1000);
       // Tick 2: count 2→1
-      vi.advanceTimersByTime(1000);
+      advance(engine, 1000);
       // Tick 3: count 1→0 → PLAYING
-      vi.advanceTimersByTime(1000);
+      advance(engine, 1000);
       expect(engine.gameState.phase).toBe(PHASE.PLAYING);
       expect(engine.audio.playCountdown).toHaveBeenCalledTimes(3);
     });
 
     it("creates wave 1 when countdown finishes", () => {
       engine.flow.go("COUNTDOWN");
-      vi.advanceTimersByTime(3000);
+      advance(engine, 3000);
       expect(engine.gameState.wave).toBe(1);
       expect(engine.gameState.aliens1.length).toBeGreaterThan(0);
     });
 
     it("starts game loop after countdown finishes", () => {
       engine.flow.go("COUNTDOWN");
-      vi.advanceTimersByTime(3000);
+      advance(engine, 3000);
       // After countdown finishes, _startGameLoop sets animFrame
       expect(engine.animFrame).not.toBeNull();
     });
@@ -984,7 +985,7 @@ describe("HexInvadersEngine", () => {
     it("a stopped engine's countdown never ticks", () => {
       engine.flow.go("COUNTDOWN");
       engine.stop();
-      vi.advanceTimersByTime(1000);
+      advance(engine, 1000);
       expect(engine.gameState.countdown).toBe(3);
     });
   });
@@ -1178,7 +1179,7 @@ describe("HexInvadersEngine", () => {
 
   describe("wave transitions", () => {
     beforeEach(() => {
-      vi.useFakeTimers();
+      useFakePageTimers();
       engine = new HexInvadersEngine(canvas, channel, "hex_invaders", true, null);
       engine.start();
       engine.gameState = createWave(createInitialState(GAME_MODE.INVASION_WAR, 12345), 1);
@@ -1191,7 +1192,7 @@ describe("HexInvadersEngine", () => {
     it("transitions to WAVE_START after WAVE_CLEAR_FRAMES delay", () => {
       engine.flow.go("WAVE_CLEAR");
       // WAVE_CLEAR_FRAMES = 120 → 120/60 * 1000 = 2000ms
-      vi.advanceTimersByTime(2000);
+      advance(engine, 2000);
       expect(engine.gameState.phase).toBe(PHASE.WAVE_START);
       expect(engine.gameState.wave).toBe(2);
     });
@@ -1199,15 +1200,15 @@ describe("HexInvadersEngine", () => {
     it("transitions to PLAYING after WAVE_START_FRAMES delay", () => {
       engine.flow.go("WAVE_CLEAR");
       // 2000ms for WAVE_CLEAR, then 1000ms for WAVE_START (60/60 * 1000)
-      vi.advanceTimersByTime(2000);
+      advance(engine, 2000);
       expect(engine.gameState.phase).toBe(PHASE.WAVE_START);
-      vi.advanceTimersByTime(1000);
+      advance(engine, 1000);
       expect(engine.gameState.phase).toBe(PHASE.PLAYING);
     });
 
     it("starts game loop after WAVE_START phase", () => {
       engine.flow.go("WAVE_CLEAR");
-      vi.advanceTimersByTime(3000); // 2000 + 1000
+      advance(engine, 3000); // 2000 + 1000
       // After WAVE_START delay, animFrame should be set
       expect(engine.animFrame).not.toBeNull();
     });
@@ -1217,7 +1218,7 @@ describe("HexInvadersEngine", () => {
       engine.onGameEnd = onGameEnd;
       engine.gameState.wave = 10; // current wave is 10, next would be 11
       engine.flow.go("WAVE_CLEAR");
-      vi.advanceTimersByTime(2000);
+      advance(engine, 2000);
       expect(engine.gameState.phase).toBe(PHASE.FINISHED);
       expect(onGameEnd).toHaveBeenCalled();
     });
@@ -1228,22 +1229,22 @@ describe("HexInvadersEngine", () => {
       engine.gameState.mode = GAME_MODE.BLITZ;
       engine.gameState.wave = 5;
       engine.flow.go("WAVE_CLEAR");
-      vi.advanceTimersByTime(2000);
+      advance(engine, 2000);
       expect(engine.gameState.phase).toBe(PHASE.FINISHED);
     });
 
     it("a stopped engine never leaves the wave clear", () => {
       engine.flow.go("WAVE_CLEAR");
       engine.stop();
-      vi.advanceTimersByTime(2000);
+      advance(engine, 2000);
       expect(engine.gameState.phase).toBe(PHASE.WAVE_CLEAR);
     });
 
     it("a stopped engine never leaves the wave start", () => {
       engine.flow.go("WAVE_CLEAR");
-      vi.advanceTimersByTime(2000); // enter WAVE_START
+      advance(engine, 2000); // enter WAVE_START
       engine.stop();
-      vi.advanceTimersByTime(1000);
+      advance(engine, 1000);
       expect(engine.gameState.phase).toBe(PHASE.WAVE_START);
     });
   });
@@ -1573,7 +1574,7 @@ describe("HexInvadersEngine", () => {
 
   describe("additional edge cases", () => {
     beforeEach(() => {
-      vi.useFakeTimers();
+      useFakePageTimers();
     });
 
     afterEach(() => {

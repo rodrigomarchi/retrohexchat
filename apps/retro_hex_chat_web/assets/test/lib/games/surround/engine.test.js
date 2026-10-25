@@ -1,3 +1,4 @@
+import { advance, useFakePageTimers } from "../../../helpers/game_clock.js";
 import { decodeInputEdge, encodeInputEdge } from "../../../../js/lib/games/net_protocol.js";
 import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
 import {
@@ -519,7 +520,7 @@ describe("SurroundEngine", () => {
 
   describe("timer safety", () => {
     beforeEach(() => {
-      vi.useFakeTimers();
+      useFakePageTimers();
     });
 
     afterEach(() => {
@@ -640,7 +641,7 @@ describe("SurroundEngine", () => {
 
   describe("countdown flow (host)", () => {
     beforeEach(() => {
-      vi.useFakeTimers();
+      useFakePageTimers();
     });
 
     afterEach(() => {
@@ -663,10 +664,10 @@ describe("SurroundEngine", () => {
       engine.start();
       engine._onChannelMessage({ data: encodeGameReady() });
 
-      vi.advanceTimersByTime(1000);
+      advance(engine, 1000);
       expect(engine.gameState.countdown).toBe(2);
 
-      vi.advanceTimersByTime(1000);
+      advance(engine, 1000);
       expect(engine.gameState.countdown).toBe(1);
     });
 
@@ -675,7 +676,7 @@ describe("SurroundEngine", () => {
       engine.start();
       engine._onChannelMessage({ data: encodeGameReady() });
 
-      vi.advanceTimersByTime(3000);
+      advance(engine, 3000);
 
       expect(engine.gameState.phase).toBe(PHASE.PLAYING);
     });
@@ -685,7 +686,7 @@ describe("SurroundEngine", () => {
       engine.start();
       engine._onChannelMessage({ data: encodeGameReady() });
 
-      vi.advanceTimersByTime(3000);
+      advance(engine, 3000);
 
       expect(engine.stepping).toBe(true);
     });
@@ -863,8 +864,8 @@ describe("SurroundEngine", () => {
       expect(engine.gameState.score1).toBe(1);
     });
 
-    it("sets ROUND_OVER phase and schedules next countdown via phaseTimer", () => {
-      vi.useFakeTimers();
+    it("sets ROUND_OVER phase and counts the steps to the next countdown", () => {
+      useFakePageTimers();
       engine = new SurroundEngine(canvas, channel, "light_trails", true, null);
       engine.start();
       engine.gameState.phase = PHASE.PLAYING;
@@ -877,10 +878,9 @@ describe("SurroundEngine", () => {
       gridMove(engine);
 
       expect(engine.gameState.phase).toBe(PHASE.ROUND_OVER);
-      expect(vi.getTimerCount()).toBeGreaterThan(0);
 
-      // After ROUND_OVER_DELAY (3000ms), next countdown starts
-      vi.advanceTimersByTime(3000);
+      // After ROUND_OVER_DELAY (3 s of steps), the next countdown starts
+      advance(engine, 3000);
       expect(engine.gameState.phase).toBe(PHASE.COUNTDOWN);
       vi.useRealTimers();
     });

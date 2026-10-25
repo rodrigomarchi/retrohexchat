@@ -337,7 +337,6 @@ export default defineGame({
       // The first countdown starts the steps; later ones come from inside the step.
       STARTING: {
         as: "COUNTDOWN",
-        steps: true,
         enter: (game) => {
           const state = game.gameState;
           state.countdownValue = COUNTDOWN_FROM;
@@ -348,12 +347,12 @@ export default defineGame({
         },
         tick,
       },
-      COUNTDOWN: { steps: true, tick },
-      FACE_OFF: { steps: true, tick },
-      PLAYING: { steps: true, tick },
-      SUDDEN_DEATH: { steps: true, tick },
-      GOAL_CELEBRATION: { steps: true, tick },
-      PERIOD_BREAK: { steps: true, tick },
+      COUNTDOWN: { tick },
+      FACE_OFF: { tick },
+      PLAYING: { tick },
+      SUDDEN_DEATH: { tick },
+      GOAL_CELEBRATION: { tick },
+      PERIOD_BREAK: { tick },
       FINISHED: { final: true },
     },
   },

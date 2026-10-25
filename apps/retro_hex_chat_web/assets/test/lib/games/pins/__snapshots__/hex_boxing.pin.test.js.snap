@@ -22,7 +22,7 @@ exports[`hex_boxing pins > P2P following the key script 1`] = `
       "ops": 132,
       "phase": 2,
       "side": "guest",
-      "t": 3024,
+      "t": 3040,
     },
     {
       "digest": "daeada93c8566e3c",
@@ -32,11 +32,11 @@ exports[`hex_boxing pins > P2P following the key script 1`] = `
       "t": 4032,
     },
     {
-      "digest": "d8a4f9263b5111cc",
+      "digest": "fa0603c131286f01",
       "ops": 129,
       "phase": 3,
       "side": "guest",
-      "t": 4032,
+      "t": 4048,
     },
   ],
   "phases": [
@@ -58,17 +58,17 @@ exports[`hex_boxing pins > P2P following the key script 1`] = `
     {
       "phase": 2,
       "side": "guest",
-      "t": 3008,
+      "t": 3024,
     },
     {
       "phase": 3,
       "side": "host",
-      "t": 4000,
+      "t": 4016,
     },
     {
       "phase": 3,
       "side": "guest",
-      "t": 4016,
+      "t": 4032,
     },
   ],
   "results": {
@@ -77,7 +77,7 @@ exports[`hex_boxing pins > P2P following the key script 1`] = `
   },
   "sounds": {
     "guest": {
-      "digest": "86f48f8947aa635d",
+      "digest": "15ed6a74c4cb2eca",
       "entries": 73,
       "voices": {
         "createGain": 7,
@@ -85,7 +85,7 @@ exports[`hex_boxing pins > P2P following the key script 1`] = `
       },
     },
     "host": {
-      "digest": "db234879c833bb7b",
+      "digest": "63983773f0a17cd4",
       "entries": 93,
       "voices": {
         "createGain": 9,
@@ -169,7 +169,7 @@ exports[`hex_boxing pins > P2P following the key script 1`] = `
         },
       },
     },
-    "digest": "aa3df992f6f82e7a",
+    "digest": "ef848c9f7884fdb2",
     "first": [
       {
         "dir": "guest>host",
@@ -184,22 +184,22 @@ exports[`hex_boxing pins > P2P following the key script 1`] = `
       {
         "dir": "host>guest",
         "hex": "80c000f000000000c001f00004000000000102010000201c0000",
-        "t": 1000,
+        "t": 1008,
       },
       {
         "dir": "host>guest",
         "hex": "80c000f000000000c001f00004000000000101010000201c0000",
-        "t": 2000,
+        "t": 2016,
       },
       {
         "dir": "host>guest",
         "hex": "80c000f000000000c001f00004000000000201010000201c0000",
-        "t": 3000,
+        "t": 3008,
       },
       {
         "dir": "host>guest",
         "hex": "80c000f000000000c001f00004000000000301010000201c0000",
-        "t": 4000,
+        "t": 4016,
       },
     ],
   },
@@ -242,7 +242,7 @@ exports[`hex_boxing pins > P2P over a channel that loses datagrams 1`] = `
       "ops": 132,
       "phase": 2,
       "side": "guest",
-      "t": 3776,
+      "t": 3792,
     },
     {
       "digest": "61b0f1dbf742f1e7",
@@ -252,7 +252,7 @@ exports[`hex_boxing pins > P2P over a channel that loses datagrams 1`] = `
       "t": 4768,
     },
     {
-      "digest": "df641cd196014651",
+      "digest": "736c6519d8f457bb",
       "ops": 129,
       "phase": 3,
       "side": "guest",
@@ -288,7 +288,7 @@ exports[`hex_boxing pins > P2P over a channel that loses datagrams 1`] = `
     {
       "phase": 2,
       "side": "guest",
-      "t": 3760,
+      "t": 3776,
     },
     {
       "phase": 3,
@@ -307,7 +307,7 @@ exports[`hex_boxing pins > P2P over a channel that loses datagrams 1`] = `
   },
   "sounds": {
     "guest": {
-      "digest": "1d041c40f431e895",
+      "digest": "27d1abd8854bf4b6",
       "entries": 41,
       "voices": {
         "createGain": 4,
@@ -315,7 +315,7 @@ exports[`hex_boxing pins > P2P over a channel that loses datagrams 1`] = `
       },
     },
     "host": {
-      "digest": "bcaf324d9380cc07",
+      "digest": "a4c14daade5f47fa",
       "entries": 61,
       "voices": {
         "createGain": 6,
@@ -399,7 +399,7 @@ exports[`hex_boxing pins > P2P over a channel that loses datagrams 1`] = `
         },
       },
     },
-    "digest": "8d44eeaa324cd54b",
+    "digest": "d38bc5df80239761",
     "first": [
       {
         "dir": "guest>host",
@@ -432,7 +432,7 @@ exports[`hex_boxing pins > P2P over a channel that loses datagrams 1`] = `
       {
         "dir": "host>guest",
         "hex": "80c000f000000000c001f00004000000000102010000201c0000",
-        "t": 1751,
+        "t": 1760,
       },
     ],
   },
@@ -472,7 +472,7 @@ exports[`hex_boxing pins > solo against the AI 1`] = `
     {
       "phase": 3,
       "side": "host",
-      "t": 4000,
+      "t": 4016,
     },
   ],
   "results": {
@@ -481,7 +481,7 @@ exports[`hex_boxing pins > solo against the AI 1`] = `
   },
   "sounds": {
     "host": {
-      "digest": "9190b1573ea0abec",
+      "digest": "53ca7f1afc7046ae",
       "entries": 457,
       "voices": {
         "createGain": 42,

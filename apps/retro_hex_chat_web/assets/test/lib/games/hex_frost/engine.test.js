@@ -982,7 +982,7 @@ describe("HexFrostEngine", () => {
       engine.stop();
     });
 
-    it("FINISHED phase sets running to false", () => {
+    it("a step in FINISHED stops the steps", () => {
       const { engine } = createEngine("hex_frost", true);
       engine.start();
       engine._onChannelMessage({ data: encodeGameReady() });
@@ -990,7 +990,7 @@ describe("HexFrostEngine", () => {
 
       engine.gameState.phase = PHASE.FINISHED;
       engine._gameLoop();
-      expect(engine.running).toBe(false);
+      expect(engine.stepping).toBe(false);
       engine.stop();
     });
 

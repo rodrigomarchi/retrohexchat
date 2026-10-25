@@ -29,10 +29,10 @@ import {
 import { GAME_END, GAME_MODE, PHASE, SNAPSHOT } from "./protocol.js";
 import { createHitParticles, getColors, render, updateParticles } from "./renderer.js";
 
-const ROUND_OVER_DELAY_MS = 2500;
-const SPAWNING_DELAY_MS = 1000;
+const ROUND_OVER_DELAY_TICKS = 150; // 2.5 s
+const SPAWNING_DELAY_TICKS = 60; // 1 s
 const COUNTDOWN_FROM = 3;
-const COUNTDOWN_EVERY_MS = 1000;
+const COUNTDOWN_EVERY_TICKS = 60; // 1 s
 
 const MODE_MAP = {
   hex_outlaw_ricochet: GAME_MODE.RICOCHET,
@@ -215,7 +215,7 @@ export default defineGame({
     states: {
       COUNTDOWN: {
         enter: (game) => countdown(game, COUNTDOWN_FROM),
-        every: { ms: COUNTDOWN_EVERY_MS, count: COUNTDOWN_FROM },
+        every: { ticks: COUNTDOWN_EVERY_TICKS, count: COUNTDOWN_FROM },
         onEvery: (game, remaining) => {
           if (remaining > 0) countdown(game, remaining);
         },
@@ -227,7 +227,7 @@ export default defineGame({
           game.invalidate();
           game.audio.playBell();
         },
-        after: { ms: SPAWNING_DELAY_MS },
+        after: { ticks: SPAWNING_DELAY_TICKS },
         // A trigger already held at the bell does not fire until pressed again.
         then: (game) => {
           game.gameState.phase = PHASE.PLAYING;
@@ -238,10 +238,10 @@ export default defineGame({
         },
         next: "PLAYING",
       },
-      PLAYING: { steps: true, tick: duel },
-      HIT_PAUSE: { steps: true, tick: duel },
+      PLAYING: { tick: duel },
+      HIT_PAUSE: { tick: duel },
       ROUND_OVER: {
-        after: { ms: ROUND_OVER_DELAY_MS },
+        after: { ticks: ROUND_OVER_DELAY_TICKS },
         then: (game) => {
           game.gameState = resetForNewRound(game.gameState);
         },

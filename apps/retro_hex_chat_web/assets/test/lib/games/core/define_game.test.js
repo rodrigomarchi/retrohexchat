@@ -4,6 +4,7 @@ import { defineGame } from "../../../../js/lib/games/core/define_game.js";
 import { aiRandom } from "../../../../js/lib/games/core/rng.js";
 import { FakeGame, PHASE, definition } from "../../../support/games/fake_game.js";
 import { playMatch } from "../../../support/games/harness.js";
+import { recordingCanvas } from "../../../support/games/recording_canvas.js";
 
 const play = (options) => playMatch({ EngineClass: FakeGame, gameId: "fake", ...options });
 const types = (wire, dir) =>
@@ -213,6 +214,75 @@ describe("defineGame", () => {
       match.key("guest", "x");
       match.advance(100);
       expect(seen).toEqual([7]);
+    });
+  });
+
+  describe("the simulation's clock", () => {
+    afterEach(() => {
+      vi.useRealTimers();
+      vi.unstubAllGlobals();
+    });
+
+    it("holds the countdown still while the tab draws no frames, and goes on when they return", () => {
+      vi.useFakeTimers({ toFake: ["setTimeout", "clearTimeout", "setInterval", "clearInterval"] });
+      const frames = [];
+      vi.stubGlobal("requestAnimationFrame", (callback) => frames.push(callback));
+      vi.stubGlobal("cancelAnimationFrame", () => {});
+      let now = 0;
+      const drawFrames = (ms) => {
+        for (const end = now + ms; now < end; ) {
+          now += 1000 / 60;
+          frames.shift()?.(now);
+        }
+      };
+      const game = new FakeGame(
+        recordingCanvas(64, 48),
+        createLocalTransport(),
+        "fake",
+        true,
+        null,
+        { mode: "solo" },
+      );
+      game.start();
+      drawFrames(50);
+      game.beginMatch();
+
+      // A hidden tab: time passes on the page's timers, no frame is drawn.
+      vi.advanceTimersByTime(5000);
+      expect(game.gameState.phase).toBe(PHASE.COUNTDOWN);
+      expect(game.gameState.countdown).toBe(2);
+
+      // The frames return and the countdown takes its time from there.
+      drawFrames(100);
+      expect(game.gameState.phase).toBe(PHASE.COUNTDOWN);
+      drawFrames(250);
+      expect(game.gameState.phase).toBe(PHASE.PLAYING);
+      game.stop();
+    });
+  });
+
+  describe("the guest's countdown", () => {
+    it("shows the phase and count the host's snapshots carry, and keeps no clock of its own", async () => {
+      match = await play();
+      const seen = [];
+      for (let i = 0; i < 12; i++) {
+        match.advance(20);
+        const { host, guest } = match.engines;
+        seen.push([
+          guest.gameState.phase,
+          guest.gameState.countdown,
+          host.gameState.phase,
+          host.gameState.countdown,
+        ]);
+      }
+      // The guest lags at most a snapshot behind and never runs ahead of the host.
+      for (const [gPhase, gCount, hPhase, hCount] of seen) {
+        expect(gPhase).toBeLessThanOrEqual(hPhase);
+        if (gPhase === hPhase && gPhase === PHASE.COUNTDOWN) {
+          expect(gCount).toBeGreaterThanOrEqual(hCount);
+        }
+      }
+      expect(match.engines.guest.flow.name).toBe("WAITING");
     });
   });
 

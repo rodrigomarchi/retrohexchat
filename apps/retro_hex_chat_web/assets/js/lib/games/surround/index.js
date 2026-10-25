@@ -25,9 +25,9 @@ import { GAME_END, INPUT_KEY, PHASE, SNAPSHOT, WINS_NEEDED } from "./protocol.js
 import { getColors, render } from "./renderer.js";
 
 const TICK_STEPS = 6; // one grid move every 6 fixed steps (10 Hz)
-const ROUND_OVER_DELAY_MS = 3000;
+const ROUND_OVER_DELAY_TICKS = 180; // 3 s
 const COUNTDOWN_FROM = 3;
-const COUNTDOWN_EVERY_MS = 1000;
+const COUNTDOWN_EVERY_TICKS = 60; // 1 s
 
 const KEYS = {
   ArrowUp: INPUT_KEY.UP,
@@ -213,7 +213,7 @@ export default defineGame({
           game.broadcast();
           game.audio.playCountdown();
         },
-        every: { ms: COUNTDOWN_EVERY_MS, count: COUNTDOWN_FROM },
+        every: { ticks: COUNTDOWN_EVERY_TICKS, count: COUNTDOWN_FROM },
         onEvery: (game, remaining) => {
           if (remaining === 0) return;
           game.gameState.countdown = remaining;
@@ -223,7 +223,6 @@ export default defineGame({
         next: "PLAYING",
       },
       PLAYING: {
-        steps: true,
         enter: (game) => {
           game.gameState.countdown = 0;
           game.broadcast();
@@ -232,7 +231,7 @@ export default defineGame({
         tick: move,
       },
       ROUND_OVER: {
-        after: { ms: ROUND_OVER_DELAY_MS },
+        after: { ticks: ROUND_OVER_DELAY_TICKS },
         then: (game) => {
           game.nextRound = game.gameState.round + 1;
         },

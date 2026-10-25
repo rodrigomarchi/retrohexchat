@@ -1,3 +1,4 @@
+import { advance, useFakePageTimers } from "../../../helpers/game_clock.js";
 import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
 import {
   PHASE,
@@ -567,7 +568,7 @@ describe("PongEngine", () => {
 
   describe("countdown flow (host)", () => {
     beforeEach(() => {
-      vi.useFakeTimers();
+      useFakePageTimers();
     });
 
     afterEach(() => {
@@ -590,10 +591,10 @@ describe("PongEngine", () => {
       engine.start();
       engine._onChannelMessage({ data: encodeGameReady() });
 
-      vi.advanceTimersByTime(1000);
+      advance(engine, 1000);
       expect(engine.gameState.countdown).toBe(2);
 
-      vi.advanceTimersByTime(1000);
+      advance(engine, 1000);
       expect(engine.gameState.countdown).toBe(1);
     });
 
@@ -602,7 +603,7 @@ describe("PongEngine", () => {
       engine.start();
       engine._onChannelMessage({ data: encodeGameReady() });
 
-      vi.advanceTimersByTime(3000);
+      advance(engine, 3000);
 
       expect(engine.gameState.phase).toBe(PHASE.SERVING);
     });

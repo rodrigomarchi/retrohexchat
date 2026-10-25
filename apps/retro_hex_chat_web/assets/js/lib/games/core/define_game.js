@@ -105,6 +105,7 @@ export function defineGame(def) {
         },
         startSteps: () => this._startSteps(),
         stopSteps: () => this._stopSteps(),
+        idle: () => def.idle?.(this),
         target: this,
       });
 

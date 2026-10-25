@@ -1,3 +1,4 @@
+import { advance, useFakePageTimers } from "../../../helpers/game_clock.js";
 import { inputDatagram } from "../../../helpers/game_input.js";
 import { describe, it, expect, vi, beforeEach } from "vitest";
 import OutlawEngine from "../../../../js/lib/games/hex_outlaw/index.js";
@@ -634,7 +635,7 @@ describe("OutlawEngine", () => {
 
   describe("_startCountdown + _startSpawning", () => {
     beforeEach(() => {
-      vi.useFakeTimers();
+      useFakePageTimers();
     });
 
     afterEach(() => {
@@ -658,10 +659,10 @@ describe("OutlawEngine", () => {
       engine.flow.go("COUNTDOWN");
       expect(engine.gameState.countdown).toBe(3);
 
-      vi.advanceTimersByTime(1000);
+      advance(engine, 1000);
       expect(engine.gameState.countdown).toBe(2);
 
-      vi.advanceTimersByTime(1000);
+      advance(engine, 1000);
       expect(engine.gameState.countdown).toBe(1);
 
       engine.stop();
@@ -684,11 +685,11 @@ describe("OutlawEngine", () => {
       engine.flow.go("COUNTDOWN");
 
       // 3 seconds for countdown
-      vi.advanceTimersByTime(3000);
+      advance(engine, 3000);
       expect(engine.gameState.phase).toBe(PHASE.SPAWNING);
 
       // 1 second for spawning delay
-      vi.advanceTimersByTime(1000);
+      advance(engine, 1000);
       expect(engine.gameState.phase).toBe(PHASE.PLAYING);
 
       engine.stop();
@@ -712,7 +713,7 @@ describe("OutlawEngine", () => {
 
       engine.flow.go("COUNTDOWN");
       // Fast-forward past countdown
-      vi.advanceTimersByTime(3000);
+      advance(engine, 3000);
 
       expect(spy).toHaveBeenCalled();
       engine.stop();

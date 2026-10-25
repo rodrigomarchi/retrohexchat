@@ -1,3 +1,4 @@
+import { advance, useFakePageTimers } from "../../../helpers/game_clock.js";
 import { inputDatagram } from "../../../helpers/game_input.js";
 import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
 import {
@@ -278,7 +279,7 @@ describe("HexEnduroEngine", () => {
 
   describe("GAME_READY handshake", () => {
     it("host starts countdown on GAME_READY", () => {
-      vi.useFakeTimers();
+      useFakePageTimers();
       engine = new HexEnduroEngine(canvas, channel, "hex_enduro", true, null);
       engine.start();
 
@@ -293,7 +294,7 @@ describe("HexEnduroEngine", () => {
     });
 
     it("ignores duplicate GAME_READY", () => {
-      vi.useFakeTimers();
+      useFakePageTimers();
       engine = new HexEnduroEngine(canvas, channel, "hex_enduro", true, null);
       engine.start();
 
@@ -310,7 +311,7 @@ describe("HexEnduroEngine", () => {
 
   describe("countdown", () => {
     it("counts down from 3 to racing", () => {
-      vi.useFakeTimers();
+      useFakePageTimers();
       engine = new HexEnduroEngine(canvas, channel, "hex_enduro", true, null);
       engine.start();
 
@@ -319,26 +320,26 @@ describe("HexEnduroEngine", () => {
 
       expect(engine.gameState.countdown).toBe(3);
 
-      vi.advanceTimersByTime(1000);
+      advance(engine, 1000);
       expect(engine.gameState.countdown).toBe(2);
 
-      vi.advanceTimersByTime(1000);
+      advance(engine, 1000);
       expect(engine.gameState.countdown).toBe(1);
 
-      vi.advanceTimersByTime(1000);
+      advance(engine, 1000);
       expect(engine.gameState.phase).toBe(PHASE.RACING);
       vi.useRealTimers();
     });
 
     it("starts engine drone when racing begins", () => {
-      vi.useFakeTimers();
+      useFakePageTimers();
       engine = new HexEnduroEngine(canvas, channel, "hex_enduro", true, null);
       engine.start();
 
       const handler = channel.addEventListener.mock.calls.find((c) => c[0] === "message")[1];
       handler({ data: encodeGameReady() });
 
-      vi.advanceTimersByTime(3000);
+      advance(engine, 3000);
       expect(engine.audio.startEngineDrone).toHaveBeenCalled();
       vi.useRealTimers();
     });
@@ -346,7 +347,7 @@ describe("HexEnduroEngine", () => {
 
   describe("solo beginMatch", () => {
     it("starts countdown and captures keyboard for solo play", () => {
-      vi.useFakeTimers();
+      useFakePageTimers();
       const opponentController = createOpponentController();
       engine = new HexEnduroEngine(canvas, channel, "hex_enduro", true, null, {
         mode: "solo",
@@ -372,7 +373,7 @@ describe("HexEnduroEngine", () => {
     });
 
     it("returns false when a match is already running", () => {
-      vi.useFakeTimers();
+      useFakePageTimers();
       engine = new HexEnduroEngine(canvas, channel, "hex_enduro", true, null, {
         mode: "solo",
         opponentController: createOpponentController(),
@@ -558,7 +559,7 @@ describe("HexEnduroEngine", () => {
 
   describe("stop", () => {
     it("cleans up timers and animation frames", () => {
-      vi.useFakeTimers();
+      useFakePageTimers();
       engine = new HexEnduroEngine(canvas, channel, "hex_enduro", true, null);
       engine.start();
 
@@ -585,7 +586,7 @@ describe("HexEnduroEngine", () => {
     });
 
     it("guards phase callbacks after stop", () => {
-      vi.useFakeTimers();
+      useFakePageTimers();
       engine = new HexEnduroEngine(canvas, channel, "hex_enduro", true, null);
       engine.start();
 
@@ -594,7 +595,7 @@ describe("HexEnduroEngine", () => {
 
       engine.stop();
 
-      vi.advanceTimersByTime(3000);
+      advance(engine, 3000);
       expect(engine.running).toBe(false);
       vi.useRealTimers();
     });
@@ -644,14 +645,14 @@ describe("HexEnduroEngine", () => {
 
   describe("game loop", () => {
     function setupRacing(eng, chan) {
-      vi.useFakeTimers();
+      useFakePageTimers();
       globalThis.requestAnimationFrame = vi.fn(() => 42);
       globalThis.cancelAnimationFrame = vi.fn();
 
       eng.start();
       const handler = chan.addEventListener.mock.calls.find((c) => c[0] === "message")[1];
       handler({ data: encodeGameReady() });
-      vi.advanceTimersByTime(3000);
+      advance(eng, 3000);
     }
 
     function getLoopFn() {
@@ -719,7 +720,7 @@ describe("HexEnduroEngine", () => {
     });
 
     it("processes solo opponent controller inputs as player 2", () => {
-      vi.useFakeTimers();
+      useFakePageTimers();
       const opponentController = createOpponentController({ right: true, accel: true });
       engine = new HexEnduroEngine(canvas, channel, "hex_enduro", true, null, {
         mode: "solo",
@@ -727,7 +728,7 @@ describe("HexEnduroEngine", () => {
       });
       engine.start();
       engine.beginMatch();
-      vi.advanceTimersByTime(3000);
+      advance(engine, 3000);
 
       engine._gameLoop();
 

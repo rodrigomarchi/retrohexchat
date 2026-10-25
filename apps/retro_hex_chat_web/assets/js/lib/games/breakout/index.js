@@ -28,10 +28,10 @@ import {
 import { GAME_END, PHASE, SNAPSHOT } from "./protocol.js";
 import { getColors, render } from "./renderer.js";
 
-const SERVE_DELAY_MS = 800;
-const LIFE_LOST_PAUSE_MS = 1500;
+const SERVE_DELAY_TICKS = 48; // 0.8 s
+const LIFE_LOST_PAUSE_TICKS = 90; // 1.5 s
 const COUNTDOWN_FROM = 3;
-const COUNTDOWN_EVERY_MS = 1000;
+const COUNTDOWN_EVERY_TICKS = 60; // 1 s
 
 /** One simulation step on the host. */
 function step(game) {
@@ -173,7 +173,7 @@ export default defineGame({
           game.broadcast();
           game.audio.playCountdown();
         },
-        every: { ms: COUNTDOWN_EVERY_MS, count: COUNTDOWN_FROM },
+        every: { ticks: COUNTDOWN_EVERY_TICKS, count: COUNTDOWN_FROM },
         onEvery: (game, remaining) => {
           if (remaining === 0) return;
           game.gameState.countdown = remaining;
@@ -190,19 +190,18 @@ export default defineGame({
           game.broadcast();
           game.invalidate();
         },
-        after: { ms: SERVE_DELAY_MS },
+        after: { ticks: SERVE_DELAY_TICKS },
         then: serve,
         next: "PLAYING",
       },
       PLAYING: {
-        steps: true,
         enter: (game) => {
           game.frameCount = 0;
         },
         tick: step,
       },
       // A lost life holds the board still a moment, then serves as at the start.
-      LIFE_LOST: { after: { ms: LIFE_LOST_PAUSE_MS }, next: "SERVING" },
+      LIFE_LOST: { after: { ticks: LIFE_LOST_PAUSE_TICKS }, next: "SERVING" },
       FINISHED: {
         final: true,
         enter: (game) => {

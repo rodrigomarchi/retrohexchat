@@ -1,3 +1,4 @@
+import { advance, useFakePageTimers } from "../../../helpers/game_clock.js";
 import { inputDatagram, inputMask } from "../../../helpers/game_input.js";
 import { decodeInputState } from "../../../../js/lib/games/net_protocol.js";
 import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
@@ -677,7 +678,7 @@ describe("BreakoutEngine", () => {
     });
 
     it("schedules the next serve only once during LIFE_LOST", () => {
-      vi.useFakeTimers();
+      useFakePageTimers();
       engine = new BreakoutEngine(canvas, channel, "block_breakers", true, null);
       engine.start();
       engine.running = true;
@@ -695,7 +696,7 @@ describe("BreakoutEngine", () => {
     });
 
     it("serves again after a life is lost", () => {
-      vi.useFakeTimers();
+      useFakePageTimers();
       engine = new BreakoutEngine(canvas, channel, "block_breakers", true, null);
       engine.start();
       engine.colors = getColors(canvas);
@@ -714,9 +715,9 @@ describe("BreakoutEngine", () => {
       expect(engine.gameState.lives).toBe(lives - 1);
 
       // A pause, then the serve as at the start: the ball goes back up, toward P2.
-      vi.advanceTimersByTime(1500);
+      advance(engine, 1500);
       expect(engine.gameState.phase).toBe(PHASE.SERVING);
-      vi.advanceTimersByTime(800);
+      advance(engine, 800);
       expect(engine.gameState.phase).toBe(PHASE.PLAYING);
       expect(engine.gameState.ballY).toBe(CANVAS_H / 2);
       expect(engine.gameState.ballVY).toBeLessThan(0);
@@ -769,7 +770,7 @@ describe("BreakoutEngine", () => {
 
   describe("countdown flow (host)", () => {
     beforeEach(() => {
-      vi.useFakeTimers();
+      useFakePageTimers();
     });
 
     afterEach(() => {
@@ -792,10 +793,10 @@ describe("BreakoutEngine", () => {
       engine.start();
       engine._onChannelMessage({ data: encodeGameReady() });
 
-      vi.advanceTimersByTime(1000);
+      advance(engine, 1000);
       expect(engine.gameState.countdown).toBe(2);
 
-      vi.advanceTimersByTime(1000);
+      advance(engine, 1000);
       expect(engine.gameState.countdown).toBe(1);
     });
 
@@ -804,7 +805,7 @@ describe("BreakoutEngine", () => {
       engine.start();
       engine._onChannelMessage({ data: encodeGameReady() });
 
-      vi.advanceTimersByTime(3000);
+      advance(engine, 3000);
 
       expect(engine.gameState.phase).toBe(PHASE.SERVING);
     });
@@ -814,7 +815,7 @@ describe("BreakoutEngine", () => {
 
   describe("_startServing direction", () => {
     beforeEach(() => {
-      vi.useFakeTimers();
+      useFakePageTimers();
     });
 
     afterEach(() => {
@@ -827,7 +828,7 @@ describe("BreakoutEngine", () => {
       engine.lastExitSide = null;
 
       engine.flow.go("SERVING");
-      vi.advanceTimersByTime(800);
+      advance(engine, 800);
 
       // Ball should have been served with some velocity
       expect(engine.gameState.ballVX !== 0 || engine.gameState.ballVY !== 0).toBe(true);
@@ -839,7 +840,7 @@ describe("BreakoutEngine", () => {
       engine.lastExitSide = "bottom";
 
       engine.flow.go("SERVING");
-      vi.advanceTimersByTime(800);
+      advance(engine, 800);
 
       // Ball should be served upward (negative VY)
       expect(engine.gameState.ballVY).toBeLessThan(0);
@@ -851,7 +852,7 @@ describe("BreakoutEngine", () => {
       engine.lastExitSide = "top";
 
       engine.flow.go("SERVING");
-      vi.advanceTimersByTime(800);
+      advance(engine, 800);
 
       // Ball should be served downward (positive VY)
       expect(engine.gameState.ballVY).toBeGreaterThan(0);
