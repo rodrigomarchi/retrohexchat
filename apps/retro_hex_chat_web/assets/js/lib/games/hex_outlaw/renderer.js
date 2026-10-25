@@ -20,7 +20,7 @@ import {
 import { PHASE, GAME_MODE } from "./protocol.js";
 import { t, jt } from "../../i18n.js";
 import { gameColor, readGameColors } from "../../game_colors.js";
-import { waitingText } from "../core/render.js";
+import { drawCenterText, waitingText } from "../core/render.js";
 
 /**
  * Read CSS custom properties from the canvas element.
@@ -493,13 +493,13 @@ function drawHUD(ctx, state, colors) {
 function drawPhaseOverlay(ctx, state, colors, frameCount) {
   switch (state.phase) {
     case PHASE.WAITING:
-      drawCenterText(ctx, waitingText(), 16, colors.rope);
+      drawCenterText(ctx, waitingText(), 16, colors.rope, CANVAS_W, CANVAS_H);
       break;
     case PHASE.COUNTDOWN:
-      drawCenterText(ctx, `${state.countdown}`, 48, colors.hit);
+      drawCenterText(ctx, `${state.countdown}`, 48, colors.hit, CANVAS_W, CANVAS_H);
       break;
     case PHASE.SPAWNING:
-      drawCenterText(ctx, t("DRAW!"), 36, colors.warning);
+      drawCenterText(ctx, t("DRAW!"), 36, colors.warning, CANVAS_W, CANVAS_H);
       break;
     case PHASE.HIT_PAUSE: {
       const scorer = state.lastHitPlayer;
@@ -509,42 +509,26 @@ function drawPhaseOverlay(ctx, state, colors, frameCount) {
         ctx.fillStyle = "rgba(255, 0, 0, 0.1)";
         ctx.fillRect(0, 0, CANVAS_W, CANVAS_H);
       }
-      drawCenterText(ctx, jt`P${scorer} SCORES!`, 28, scorerColor);
+      drawCenterText(ctx, jt`P${scorer} SCORES!`, 28, scorerColor, CANVAS_W, CANVAS_H);
       break;
     }
     case PHASE.ROUND_OVER: {
       const winner = state.score1 >= state.score2 ? "P1" : "P2";
       const winColor = winner === "P1" ? colors.fg : colors.accent;
-      drawCenterText(ctx, jt`ROUND ${state.round}`, 24, colors.rope);
-      drawCenterTextOffset(ctx, `${winner} WINS`, 28, winColor, 30);
+      drawCenterText(ctx, jt`ROUND ${state.round}`, 24, colors.rope, CANVAS_W, CANVAS_H);
+      drawCenterText(ctx, `${winner} WINS`, 28, winColor, CANVAS_W, CANVAS_H, 30);
       break;
     }
     case PHASE.MATCH_OVER: {
       const matchWinner = state.roundWins1 >= state.roundWins2 ? "P1" : "P2";
       const mColor = matchWinner === "P1" ? colors.fg : colors.accent;
-      drawCenterText(ctx, t("MATCH OVER"), 24, colors.rope);
-      drawCenterTextOffset(ctx, jt`${matchWinner} WINS!`, 36, mColor, 35);
+      drawCenterText(ctx, t("MATCH OVER"), 24, colors.rope, CANVAS_W, CANVAS_H);
+      drawCenterText(ctx, jt`${matchWinner} WINS!`, 36, mColor, CANVAS_W, CANVAS_H, 35);
       break;
     }
     default:
       break;
   }
-}
-
-function drawCenterText(ctx, text, size, color) {
-  ctx.font = `bold ${size}px monospace`;
-  ctx.textAlign = "center";
-  ctx.textBaseline = "middle";
-  ctx.fillStyle = color;
-  ctx.fillText(text, CANVAS_W / 2, CANVAS_H / 2);
-}
-
-function drawCenterTextOffset(ctx, text, size, color, yOffset) {
-  ctx.font = `bold ${size}px monospace`;
-  ctx.textAlign = "center";
-  ctx.textBaseline = "middle";
-  ctx.fillStyle = color;
-  ctx.fillText(text, CANVAS_W / 2, CANVAS_H / 2 + yOffset);
 }
 
 // --- Color Utilities ---

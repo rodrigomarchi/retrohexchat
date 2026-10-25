@@ -11,24 +11,12 @@ import { gameColor, readGameColors } from "../../game_colors.js";
 import {
   drawBackground,
   drawCountdown,
+  drawDigit,
+  drawParticleDots,
   drawScanlines,
   drawVignette,
   drawWaiting,
 } from "../core/render.js";
-
-// Bitmap digits 5x7 for retro score display (each row is a 5-bit mask)
-const DIGITS = [
-  [0x1f, 0x11, 0x11, 0x11, 0x11, 0x11, 0x1f], // 0
-  [0x04, 0x0c, 0x04, 0x04, 0x04, 0x04, 0x0e], // 1
-  [0x1f, 0x01, 0x01, 0x1f, 0x10, 0x10, 0x1f], // 2
-  [0x1f, 0x01, 0x01, 0x1f, 0x01, 0x01, 0x1f], // 3
-  [0x11, 0x11, 0x11, 0x1f, 0x01, 0x01, 0x01], // 4
-  [0x1f, 0x10, 0x10, 0x1f, 0x01, 0x01, 0x1f], // 5
-  [0x1f, 0x10, 0x10, 0x1f, 0x11, 0x11, 0x1f], // 6
-  [0x1f, 0x01, 0x01, 0x02, 0x04, 0x04, 0x04], // 7
-  [0x1f, 0x11, 0x11, 0x1f, 0x11, 0x11, 0x1f], // 8
-  [0x1f, 0x11, 0x11, 0x1f, 0x01, 0x01, 0x1f], // 9
-];
 
 /**
  * Read CSS custom properties from canvas computed style.
@@ -61,7 +49,7 @@ export function render(ctx, state, colors, time) {
   drawHeads(ctx, state, colors, time);
 
   if (state.particles && state.particles.length > 0) {
-    drawParticles(ctx, state.particles);
+    drawParticleDots(ctx, state.particles);
   }
 
   drawHUD(ctx, state, colors);
@@ -226,18 +214,6 @@ function drawHead(ctx, gx, gy, dir, color, pulse) {
 }
 
 /**
- * Draw particles from crash explosions.
- */
-export function drawParticles(ctx, particles) {
-  for (const p of particles) {
-    ctx.globalAlpha = p.life;
-    ctx.fillStyle = p.color || gameColor("ffaa00");
-    ctx.fillRect(p.x - 2, p.y - 2, 4, 4);
-  }
-  ctx.globalAlpha = 1.0;
-}
-
-/**
  * Draw HUD: scores and round indicator.
  */
 export function drawHUD(ctx, state, colors) {
@@ -266,22 +242,6 @@ export function drawHUD(ctx, state, colors) {
   ctx.shadowBlur = 0;
   ctx.shadowColor = "transparent";
   ctx.textAlign = "start";
-}
-
-/**
- * Draw a single bitmap digit.
- */
-function drawDigit(ctx, digit, x, y, pixelSize) {
-  const rows = DIGITS[digit];
-  if (!rows) return;
-
-  for (let row = 0; row < 7; row++) {
-    for (let col = 0; col < 5; col++) {
-      if (rows[row] & (0x10 >> col)) {
-        ctx.fillRect(x + col * pixelSize, y + row * pixelSize, pixelSize, pixelSize);
-      }
-    }
-  }
 }
 
 /**

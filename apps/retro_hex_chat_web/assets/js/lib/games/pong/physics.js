@@ -5,6 +5,7 @@
  */
 
 import { PHASE } from "./protocol.js";
+import { stepParticles } from "../core/render.js";
 
 // --- Constants ---
 
@@ -275,14 +276,5 @@ export function createScoreParticles(x, y, random = Math.random) {
  * @returns {Array} updated particles (alive only)
  */
 export function updateParticles(particles) {
-  return particles
-    .map((p) => ({
-      ...p,
-      x: p.x + p.vx,
-      y: p.y + p.vy,
-      vx: p.vx * 0.96,
-      vy: p.vy * 0.96,
-      life: p.life - 0.03,
-    }))
-    .filter((p) => p.life > 0);
+  return stepParticles(particles, { drag: 0.96, fade: 0.03 });
 }

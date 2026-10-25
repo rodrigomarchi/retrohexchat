@@ -14,7 +14,6 @@ import {
   drawBall,
   drawScore,
   drawLives,
-  drawServing,
   drawFinished,
   drawParticles,
 } from "../../../../js/lib/games/breakout/renderer.js";
@@ -153,9 +152,9 @@ describe("breakout_renderer", () => {
     });
   });
 
-  describe("drawServing", () => {
-    it("draws GET READY text", () => {
-      drawServing(ctx, colors, 0);
+  describe("the serve", () => {
+    it("draws GET READY at the centre while a serve waits", () => {
+      render(ctx, { ...createInitialState(), phase: PHASE.SERVING }, colors, 0);
       expect(ctx.fillText).toHaveBeenCalledWith("GET READY", CANVAS_W / 2, CANVAS_H / 2);
     });
   });

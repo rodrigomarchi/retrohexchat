@@ -5,6 +5,7 @@
  */
 
 import { PHASE, GAME_MODE } from "./protocol.js";
+import { stepParticles } from "../core/render.js";
 
 // --- Canvas ---
 export const CANVAS_W = 640;
@@ -844,16 +845,7 @@ export function createSparks(x, y, random = Math.random) {
  * @returns {Array<object>} Remaining alive particles
  */
 export function updateParticles(particles) {
-  return particles
-    .map((p) => ({
-      ...p,
-      x: p.x + p.vx,
-      y: p.y + p.vy,
-      vx: p.vx * 0.96,
-      vy: p.vy * 0.96,
-      life: p.life - 1,
-    }))
-    .filter((p) => p.life > 0);
+  return stepParticles(particles, { drag: 0.96, fade: 1 });
 }
 
 /**

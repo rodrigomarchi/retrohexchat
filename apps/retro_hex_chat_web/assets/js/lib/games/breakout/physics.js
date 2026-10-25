@@ -6,6 +6,7 @@
 
 import { PHASE, BLOCK_ROWS, BLOCK_COLS, TOTAL_BLOCKS } from "./protocol.js";
 import { gameColor } from "../../game_colors.js";
+import { stepParticles } from "../core/render.js";
 
 // --- Constants ---
 
@@ -389,14 +390,5 @@ export function createBlockParticles(x, y, color, random = Math.random) {
  * @returns {Array} updated particles (alive only)
  */
 export function updateParticles(particles) {
-  return particles
-    .map((p) => ({
-      ...p,
-      x: p.x + p.vx,
-      y: p.y + p.vy,
-      vx: p.vx * 0.96,
-      vy: p.vy * 0.96,
-      life: p.life - 0.04,
-    }))
-    .filter((p) => p.life > 0);
+  return stepParticles(particles, { drag: 0.96, fade: 0.04 });
 }

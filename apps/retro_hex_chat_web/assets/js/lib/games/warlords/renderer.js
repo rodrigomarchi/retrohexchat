@@ -24,6 +24,7 @@ import { gameColor, readGameColors } from "../../game_colors.js";
 import {
   drawBackground,
   drawCountdown,
+  drawParticleDots,
   drawScanlines,
   drawVignette,
   drawWaiting,
@@ -74,7 +75,7 @@ export function render(ctx, state, colors, time) {
 
   // Draw particles
   if (state.particles && state.particles.length > 0) {
-    drawParticles(ctx, state.particles);
+    drawParticleDots(ctx, state.particles);
   }
 
   // Draw fireball
@@ -413,16 +414,4 @@ export function drawFinished(ctx, state, colors, time) {
   ctx.fillText(`${state.p1Lives} - ${state.p2Lives}`, CANVAS_W / 2, CANVAS_H / 2 + 40);
 
   ctx.restore();
-}
-
-/**
- * Draw destruction particles.
- */
-export function drawParticles(ctx, particles) {
-  for (const p of particles) {
-    ctx.globalAlpha = p.life;
-    ctx.fillStyle = p.color || gameColor("ffaa00");
-    ctx.fillRect(p.x - 2, p.y - 2, 4, 4);
-  }
-  ctx.globalAlpha = 1.0;
 }

@@ -19,24 +19,12 @@ import { gameColor, readGameColors } from "../../game_colors.js";
 import {
   drawBackground,
   drawCountdown,
+  drawDigit,
+  drawGetReady,
   drawScanlines,
   drawVignette,
   drawWaiting,
 } from "../core/render.js";
-
-// Bitmap digits 5x7 for retro score display (each row is a 5-bit mask)
-const DIGITS = [
-  [0x1f, 0x11, 0x11, 0x11, 0x11, 0x11, 0x1f], // 0
-  [0x04, 0x0c, 0x04, 0x04, 0x04, 0x04, 0x0e], // 1
-  [0x1f, 0x01, 0x01, 0x1f, 0x10, 0x10, 0x1f], // 2
-  [0x1f, 0x01, 0x01, 0x1f, 0x01, 0x01, 0x1f], // 3
-  [0x11, 0x11, 0x11, 0x1f, 0x01, 0x01, 0x01], // 4
-  [0x1f, 0x10, 0x10, 0x1f, 0x01, 0x01, 0x1f], // 5
-  [0x1f, 0x10, 0x10, 0x1f, 0x11, 0x11, 0x1f], // 6
-  [0x1f, 0x01, 0x01, 0x02, 0x04, 0x04, 0x04], // 7
-  [0x1f, 0x11, 0x11, 0x1f, 0x11, 0x11, 0x1f], // 8
-  [0x1f, 0x11, 0x11, 0x1f, 0x01, 0x01, 0x1f], // 9
-];
 
 /**
  * Read CSS custom properties from canvas computed style.
@@ -89,7 +77,7 @@ export function render(ctx, state, colors, time) {
   if (state.phase === PHASE.COUNTDOWN) {
     drawCountdown(ctx, state.countdown, colors, time, CANVAS_W, CANVAS_H);
   } else if (state.phase === PHASE.SERVING) {
-    drawServing(ctx, colors, time);
+    drawGetReady(ctx, colors, time, CANVAS_W, CANVAS_H);
   } else if (state.phase === PHASE.WAITING) {
     drawWaiting(ctx, colors, time, CANVAS_W, CANVAS_H, { partner: true });
   } else if (state.phase === PHASE.FINISHED) {
@@ -246,22 +234,6 @@ export function drawScore(ctx, score, colors) {
 }
 
 /**
- * Draw a single bitmap digit.
- */
-function drawDigit(ctx, digit, x, y, pixelSize) {
-  const rows = DIGITS[digit];
-  if (!rows) return;
-
-  for (let row = 0; row < 7; row++) {
-    for (let col = 0; col < 5; col++) {
-      if (rows[row] & (0x10 >> col)) {
-        ctx.fillRect(x + col * pixelSize, y + row * pixelSize, pixelSize, pixelSize);
-      }
-    }
-  }
-}
-
-/**
  * Draw lives as small ball icons in bottom-left corner.
  */
 export function drawLives(ctx, lives, colors) {
@@ -280,24 +252,6 @@ export function drawLives(ctx, lives, colors) {
 
   ctx.shadowBlur = 0;
   ctx.shadowColor = "transparent";
-}
-
-/**
- * Draw "GET READY" with flicker effect.
- */
-export function drawServing(ctx, colors, time) {
-  const flicker = Math.sin(time * 0.02) > -0.3 ? 1.0 : 0.3;
-
-  ctx.save();
-  ctx.globalAlpha = flicker;
-  ctx.shadowColor = colors.fg;
-  ctx.shadowBlur = 12;
-  ctx.fillStyle = colors.fg;
-  ctx.font = "bold 24px monospace";
-  ctx.textAlign = "center";
-  ctx.textBaseline = "middle";
-  ctx.fillText(t("GET READY"), CANVAS_W / 2, CANVAS_H / 2);
-  ctx.restore();
 }
 
 /**

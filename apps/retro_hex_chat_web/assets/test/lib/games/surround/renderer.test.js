@@ -12,7 +12,6 @@ import {
   drawGrid,
   drawTrails,
   drawHeads,
-  drawParticles,
   drawHUD,
   drawRoundOver,
   drawMatchOver,
@@ -140,14 +139,15 @@ describe("surround_renderer", () => {
     });
   });
 
-  describe("drawParticles", () => {
-    it("draws particles", () => {
+  describe("particles", () => {
+    it("are drawn as dots, and leave the alpha as they found it", () => {
       const particles = [
         { x: 10, y: 20, life: 0.8, color: "#00ff41" },
         { x: 30, y: 40, life: 0.3, color: "#00d4ff" },
       ];
-      drawParticles(ctx, particles);
-      expect(ctx.fillRect).toHaveBeenCalledTimes(2);
+      render(ctx, { ...createInitialState(0), phase: PHASE.PLAYING, particles }, colors, 0);
+      expect(ctx.fillRect).toHaveBeenCalledWith(8, 18, 4, 4);
+      expect(ctx.fillRect).toHaveBeenCalledWith(28, 38, 4, 4);
       expect(ctx.globalAlpha).toBe(1.0);
     });
   });
