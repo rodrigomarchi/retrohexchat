@@ -15,18 +15,11 @@ import { createLocalTransport } from "../../../../js/lib/games/transport.js";
 const UP_BIT = 1 << 0;
 
 // Must mock pong_audio before importing PongEngine
-vi.mock("../../../../js/lib/games/pong/audio.js", () => ({
-  PongAudio: function () {
-    return {
-      playPaddleHit: vi.fn(),
-      playWallBounce: vi.fn(),
-      playScore: vi.fn(),
-      playWin: vi.fn(),
-      playLose: vi.fn(),
-      playCountdown: vi.fn(),
-    };
-  },
-}));
+vi.mock("../../../../js/lib/games/core/synth.js", async (importOriginal) => {
+  const synth = await importOriginal();
+  const { spySounds } = await import("../../../helpers/spy_sounds.js");
+  return { ...synth, createGameAudio: (spec) => spySounds(synth.createGameAudio(spec)) };
+});
 
 // Must mock pong_renderer
 vi.mock("../../../../js/lib/games/pong/renderer.js", () => ({

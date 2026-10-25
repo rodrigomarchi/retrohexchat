@@ -10,7 +10,6 @@
 
 import { defineGame } from "../core/define_game.js";
 import { createPongAI, normalizePongAIDifficulty } from "./ai.js";
-import { PongAudio } from "./audio.js";
 import {
   CANVAS_W,
   checkPaddleCollision,
@@ -26,6 +25,7 @@ import {
 } from "./physics.js";
 import { GAME_END, PHASE, SNAPSHOT } from "./protocol.js";
 import { getColors, render } from "./renderer.js";
+import { SOUNDS } from "./sounds.js";
 
 const SERVE_DELAY_TICKS = 48; // 0.8 s
 const SCORE_PAUSE_TICKS = 90; // 1.5 s
@@ -119,7 +119,7 @@ export default defineGame({
   interpolate: { keys: ["ballX", "ballY", "paddle1Y", "paddle2Y"] },
   schema: { snapshot: SNAPSHOT, end: GAME_END },
   ai: { create: createPongAI, difficulty: normalizePongAIDifficulty },
-  audio: PongAudio,
+  audio: { sounds: SOUNDS },
   theme: getColors,
   init: () => createInitialState(),
 
