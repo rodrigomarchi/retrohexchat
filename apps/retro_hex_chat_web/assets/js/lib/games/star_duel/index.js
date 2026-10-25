@@ -301,10 +301,11 @@ function applySnapshot(game, decoded) {
   else if (p2Scored && !p1Scored) s.lastScorer = 2;
   else if (p1Scored && p2Scored) s.lastScorer = 0;
 
+  // The guest drew a field of its own at the start; the host's seed replaces it.
   if (
     decoded.mode === GAME_MODE.DEBRIS_FIELD &&
     decoded.asteroidSeed !== 0 &&
-    s.asteroids.length === 0
+    decoded.asteroidSeed !== prev.asteroidSeed
   ) {
     s.asteroids = generateAsteroids(decoded.asteroidSeed);
   }
