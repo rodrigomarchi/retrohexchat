@@ -323,10 +323,9 @@ export function defineGame(def) {
   };
 }
 
-/** A game's sounds: a table played by the core, or a class of its own. */
+/** A game's sounds, played by the core's synthesizer. */
 function audioOf(spec) {
-  if (!spec) return null;
-  return typeof spec === "function" ? new spec() : createGameAudio(spec);
+  return spec ? createGameAudio(spec) : null;
 }
 
 function validate(def) {

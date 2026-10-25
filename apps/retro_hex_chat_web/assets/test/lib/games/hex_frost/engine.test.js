@@ -13,36 +13,11 @@ import {
 import { createInitialState, packState } from "../../../../js/lib/games/hex_frost/physics.js";
 
 // ── Mock audio BEFORE importing engine ────────────────────────────
-vi.mock("../../../../js/lib/games/hex_frost/audio.js", () => ({
-  HexFrostAudio: function () {
-    return {
-      playCountdown: vi.fn(),
-      playCountdownGo: vi.fn(),
-      startAmbientWind: vi.fn(),
-      stopAmbientWind: vi.fn(),
-      playBlockClaim: vi.fn(),
-      playBlockSteal: vi.fn(),
-      playBlockUndo: vi.fn(),
-      playJump: vi.fn(),
-      playLand: vi.fn(),
-      playSplash: vi.fn(),
-      playFishCollect: vi.fn(),
-      playEnemyHit: vi.fn(),
-      playIglooPiece: vi.fn(),
-      playIglooLose: vi.fn(),
-      playIglooComplete: vi.fn(),
-      playIglooEnter: vi.fn(),
-      playTempLow: vi.fn(),
-      playTempZero: vi.fn(),
-      playBearNear: vi.fn(),
-      playClamSnap: vi.fn(),
-      playRoundEnd: vi.fn(),
-      playVictory: vi.fn(),
-      playGameOver: vi.fn(),
-      dispose: vi.fn(),
-    };
-  },
-}));
+vi.mock("../../../../js/lib/games/core/synth.js", async (importOriginal) => {
+  const synth = await importOriginal();
+  const { spySounds } = await import("../../../helpers/spy_sounds.js");
+  return { ...synth, createGameAudio: (spec) => spySounds(synth.createGameAudio(spec)) };
+});
 
 // ── Mock renderer ─────────────────────────────────────────────────
 vi.mock("../../../../js/lib/games/hex_frost/renderer.js", () => ({

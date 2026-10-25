@@ -1,6 +1,5 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
 import { GameSynth } from "../../../js/lib/games/synth.js";
-import { HexFrostAudio } from "../../../js/lib/games/hex_frost/audio.js";
 
 function param() {
   return {
@@ -92,13 +91,5 @@ describe("GameSynth", () => {
     expect(created[0].close).toHaveBeenCalled();
     expect(synth.ctx).toBeNull();
     await Promise.resolve();
-  });
-
-  it("hex_frost opens its context on the first sound and resumes it", () => {
-    startState = "suspended";
-    const frost = new HexFrostAudio();
-    expect(created).toHaveLength(0);
-    frost.playJump();
-    expect(created[0].resume).toHaveBeenCalled();
   });
 });

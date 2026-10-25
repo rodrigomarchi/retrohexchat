@@ -13,7 +13,6 @@
 import { defineGame } from "../core/define_game.js";
 import { matchResult } from "../core/result.js";
 import { createHexFrostAI } from "./ai.js";
-import { HexFrostAudio } from "./audio.js";
 import { normalizeFrostAIDifficulty } from "./difficulty.js";
 import {
   checkEnemyCollisions,
@@ -35,6 +34,7 @@ import {
 } from "./physics.js";
 import { EVENT, GAME_END, GAME_MODE, PHASE, SNAPSHOT } from "./protocol.js";
 import { generateSnowParticles, readColors, render } from "./renderer.js";
+import { MASTER_VOLUME, SOUNDS, extend } from "./sounds.js";
 
 const COUNTDOWN_INTERVAL = 60; // frames per countdown tick
 const ROUND_END_DELAY = 180; // frames the round-end screen stays
@@ -190,7 +190,7 @@ export default defineGame({
     difficulty: normalizeFrostAIDifficulty,
     observe: (game) => ({ state: game.gameState, player: 2, difficulty: game.difficulty }),
   },
-  audio: HexFrostAudio,
+  audio: { sounds: SOUNDS, masterVolume: MASTER_VOLUME, extend },
   theme: readColors,
   init: () => null,
   setup: (game) => {
