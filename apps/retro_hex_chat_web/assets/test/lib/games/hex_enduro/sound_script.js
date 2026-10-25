@@ -1,0 +1,41 @@
+/**
+ * Every Hex Enduro sound, once; the engine drone started (twice: the second
+ * does nothing), pitched by speed, stopped, and started again for dispose to
+ * stop; a pitch change with no drone does nothing.
+ */
+export const SOUND_SCRIPT = [
+  ["updateEnginePitch", 500],
+  ["playLaneChange"],
+  { wait: 100 },
+  ["playTurbo"],
+  { wait: 400 },
+  ["playOvertakeAI"],
+  { wait: 200 },
+  ["playOvertakePlayer"],
+  { wait: 300 },
+  ["playCollision"],
+  { wait: 400 },
+  ["playFuelPickup"],
+  { wait: 300 },
+  ["playWeatherChange"],
+  { wait: 600 },
+  ["playCountdown"],
+  { wait: 100 },
+  ["playVictory"],
+  { wait: 700 },
+  ["playGameOver"],
+  { wait: 900 },
+  ["playFuelWarning"],
+  { wait: 100 },
+  ["startEngineDrone"],
+  ["startEngineDrone"],
+  { wait: 100 },
+  ["updateEnginePitch", 400],
+  { wait: 100 },
+  ["updateEnginePitch", 1000],
+  { wait: 100 },
+  ["stopEngineDrone"],
+  { wait: 100 },
+  ["startEngineDrone"],
+  { wait: 100 },
+];

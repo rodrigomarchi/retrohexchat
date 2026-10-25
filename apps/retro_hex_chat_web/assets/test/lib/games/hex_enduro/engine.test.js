@@ -13,27 +13,11 @@ import {
 import { createInitialState, packState } from "../../../../js/lib/games/hex_enduro/physics.js";
 
 // Must mock audio before importing engine
-vi.mock("../../../../js/lib/games/hex_enduro/audio.js", () => ({
-  HexEnduroAudio: function () {
-    return {
-      playLaneChange: vi.fn(),
-      playTurbo: vi.fn(),
-      playOvertakeAI: vi.fn(),
-      playOvertakePlayer: vi.fn(),
-      playCollision: vi.fn(),
-      playFuelPickup: vi.fn(),
-      playWeatherChange: vi.fn(),
-      playCountdown: vi.fn(),
-      playVictory: vi.fn(),
-      playGameOver: vi.fn(),
-      playFuelWarning: vi.fn(),
-      startEngineDrone: vi.fn(),
-      updateEnginePitch: vi.fn(),
-      stopEngineDrone: vi.fn(),
-      dispose: vi.fn(),
-    };
-  },
-}));
+vi.mock("../../../../js/lib/games/core/synth.js", async (importOriginal) => {
+  const synth = await importOriginal();
+  const { spySounds } = await import("../../../helpers/spy_sounds.js");
+  return { ...synth, createGameAudio: (spec) => spySounds(synth.createGameAudio(spec)) };
+});
 
 // Must mock renderer
 vi.mock("../../../../js/lib/games/hex_enduro/renderer.js", () => ({

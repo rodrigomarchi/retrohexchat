@@ -11,7 +11,6 @@
  */
 
 import { defineGame } from "../core/define_game.js";
-import { HexEnduroAudio } from "./audio.js";
 import { normalizeEnduroAIDifficulty } from "./difficulty.js";
 import {
   activateTurbo,
@@ -38,6 +37,7 @@ import {
 } from "./physics.js";
 import { EVENT, GAME_END, GAME_MODE, PHASE, SNAPSHOT } from "./protocol.js";
 import { getColors, render } from "./renderer.js";
+import { SOUNDS, extend } from "./sounds.js";
 
 const MODE_MAP = {
   hex_enduro: GAME_MODE.CLASSIC_DUEL,
@@ -152,7 +152,7 @@ export default defineGame({
     difficulty: normalizeEnduroAIDifficulty,
     observe: (game) => ({ state: game.gameState, player: 2, difficulty: game.difficulty }),
   },
-  audio: HexEnduroAudio,
+  audio: { sounds: SOUNDS, extend },
   theme: getColors,
   // The game id picks the race; only the host seeds the road.
   init: (game) => {
