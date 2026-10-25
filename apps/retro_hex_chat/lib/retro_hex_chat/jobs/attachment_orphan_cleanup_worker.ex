@@ -32,19 +32,7 @@ defmodule RetroHexChat.Jobs.AttachmentOrphanCleanupWorker do
           orphan_age_seconds: orphan_age_seconds
         )
       end,
-      &cleanup_result_metadata/1
+      ResultMetadata.summary([:candidates, :deleted, :skipped, :bytes_deleted])
     )
   end
-
-  defp cleanup_result_metadata({:ok, summary}) do
-    %{
-      result: "ok",
-      candidates: summary.candidates,
-      deleted: summary.deleted,
-      skipped: summary.skipped,
-      bytes_deleted: summary.bytes_deleted
-    }
-  end
-
-  defp cleanup_result_metadata({:error, reason}), do: ResultMetadata.error(reason)
 end

@@ -22,19 +22,7 @@ defmodule RetroHexChat.Jobs.TrustedDeviceExpiryWorker do
       [:retro_hex_chat, :trusted_devices, :expire],
       %{limit: limit},
       fn -> TrustedDevices.expire_devices(limit: limit) end,
-      &expiry_result_metadata/1
+      ResultMetadata.summary([:candidates, :expired_devices, :revoked_grants, :skipped])
     )
   end
-
-  defp expiry_result_metadata({:ok, summary}) do
-    %{
-      result: "ok",
-      candidates: summary.candidates,
-      expired_devices: summary.expired_devices,
-      revoked_grants: summary.revoked_grants,
-      skipped: summary.skipped
-    }
-  end
-
-  defp expiry_result_metadata({:error, reason}), do: ResultMetadata.error(reason)
 end

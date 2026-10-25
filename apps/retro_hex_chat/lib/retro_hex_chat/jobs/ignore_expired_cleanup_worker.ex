@@ -22,18 +22,7 @@ defmodule RetroHexChat.Jobs.IgnoreExpiredCleanupWorker do
       [:retro_hex_chat, :chat, :ignore_list, :cleanup],
       %{limit: limit},
       fn -> IgnoreList.cleanup_expired_entries(limit: limit) end,
-      &cleanup_result_metadata/1
+      ResultMetadata.summary([:candidates, :deleted, :oldest_expired_age_ms])
     )
   end
-
-  defp cleanup_result_metadata({:ok, summary}) do
-    %{
-      result: "ok",
-      candidates: summary.candidates,
-      deleted: summary.deleted,
-      oldest_expired_age_ms: summary.oldest_expired_age_ms || 0
-    }
-  end
-
-  defp cleanup_result_metadata({:error, reason}), do: ResultMetadata.error(reason)
 end

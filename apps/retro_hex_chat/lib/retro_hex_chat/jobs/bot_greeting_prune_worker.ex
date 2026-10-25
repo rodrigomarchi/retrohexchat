@@ -31,18 +31,7 @@ defmodule RetroHexChat.Jobs.BotGreetingPruneWorker do
       [:retro_hex_chat, :bots, :greetings, :prune],
       %{limit: limit},
       fn -> {:ok, Queries.prune_greetings(limit: limit)} end,
-      &prune_result_metadata/1
+      ResultMetadata.summary([:candidates, :deleted])
     )
   end
-
-  @spec prune_result_metadata({:ok, map()} | {:error, term()}) :: map()
-  defp prune_result_metadata({:ok, summary}) do
-    %{
-      result: "ok",
-      candidates: summary.candidates,
-      deleted: summary.deleted
-    }
-  end
-
-  defp prune_result_metadata({:error, reason}), do: ResultMetadata.error(reason)
 end

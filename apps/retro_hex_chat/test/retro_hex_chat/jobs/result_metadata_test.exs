@@ -64,4 +64,18 @@ defmodule RetroHexChat.Jobs.ResultMetadataTest do
       assert %{result: "error", reason: "timeout"} = ResultMetadata.expiry({:error, :timeout})
     end
   end
+
+  describe "summary/1" do
+    test "takes the run's counts, with a missing one read as zero, and calls it ok" do
+      metadata = ResultMetadata.summary([:candidates, :deleted, :oldest_age_ms])
+
+      assert metadata.({:ok, %{candidates: 3, deleted: 2, oldest_age_ms: nil, extra: 9}}) ==
+               %{result: "ok", candidates: 3, deleted: 2, oldest_age_ms: 0}
+    end
+
+    test "names a failed run the shared way" do
+      assert %{result: "error", reason: "timeout"} =
+               ResultMetadata.summary([:deleted]).({:error, :timeout})
+    end
+  end
 end

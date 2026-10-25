@@ -27,6 +27,22 @@ defmodule RetroHexChat.Jobs.ResultMetadata do
   def error_reason(_reason), do: "unknown"
 
   @doc """
+  The metadata function for a maintenance run (`Observability.span/4`): on
+  `{:ok, summary}`, the summary's `keys` (a missing count read as 0) with
+  `result: "ok"`; on `{:error, reason}`, `error/1`.
+  """
+  @spec summary([atom()]) :: ({:ok, map()} | {:error, term()} -> map())
+  def summary(keys) do
+    fn
+      {:ok, summary} ->
+        keys |> Map.new(&{&1, Map.fetch!(summary, &1) || 0}) |> Map.put(:result, "ok")
+
+      {:error, reason} ->
+        error(reason)
+    end
+  end
+
+  @doc """
   Metadata for a worker whose whole job is to expire one record, covering every
   branch of Oban's return contract.
   """

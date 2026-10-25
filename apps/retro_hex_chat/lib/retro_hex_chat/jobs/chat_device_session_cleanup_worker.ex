@@ -31,17 +31,7 @@ defmodule RetroHexChat.Jobs.ChatDeviceSessionCleanupWorker do
           stale_after_seconds: stale_after_seconds
         )
       end,
-      &cleanup_result_metadata/1
+      ResultMetadata.summary([:candidates, :closed_sessions])
     )
   end
-
-  defp cleanup_result_metadata({:ok, summary}) do
-    %{
-      result: "ok",
-      candidates: summary.candidates,
-      closed_sessions: summary.closed_sessions
-    }
-  end
-
-  defp cleanup_result_metadata({:error, reason}), do: ResultMetadata.error(reason)
 end
