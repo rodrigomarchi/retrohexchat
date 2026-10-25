@@ -137,10 +137,11 @@ function createShip(x, y, rotation) {
  * Create the initial game state.
  * @param {number} mode - GAME_MODE enum value
  * @param {number|null} [seed=null] - optional PRNG seed (random if null)
+ * @param {() => number} [random=Math.random] - draws in [0, 1)
  * @returns {object}
  */
-export function createInitialState(mode, seed = null) {
-  if (seed === null) seed = Math.floor(Math.random() * 65536);
+export function createInitialState(mode, seed = null, random = Math.random) {
+  if (seed === null) seed = Math.floor(random() * 65536);
   return {
     ship1: createShip(160, 240, 0),
     ship2: createShip(480, 240, Math.PI),

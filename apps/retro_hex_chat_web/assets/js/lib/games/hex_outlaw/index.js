@@ -56,7 +56,7 @@ function publish(game, s) {
 }
 
 function addHitParticles(game, x, y) {
-  game.particles = [...game.particles, ...createHitParticles(x, y)];
+  game.particles = [...game.particles, ...createHitParticles(x, y, game.fxRandom)];
 }
 
 function duel(game) {

@@ -791,20 +791,21 @@ export function resetForNewRound(state) {
  * Create explosion particles at a position.
  * @param {number} x
  * @param {number} y
+ * @param {() => number} [random=Math.random] - draws in [0, 1)
  * @returns {Array<object>}
  */
-export function createExplosion(x, y) {
+export function createExplosion(x, y, random = Math.random) {
   const particles = [];
   const count = 12;
   for (let i = 0; i < count; i++) {
-    const angle = (Math.PI * 2 * i) / count + (Math.random() - 0.5) * 0.3;
-    const speed = 1.5 + Math.random() * 2;
+    const angle = (Math.PI * 2 * i) / count + (random() - 0.5) * 0.3;
+    const speed = 1.5 + random() * 2;
     particles.push({
       x,
       y,
       vx: Math.cos(angle) * speed,
       vy: Math.sin(angle) * speed,
-      life: 30 + Math.random() * 20,
+      life: 30 + random() * 20,
       maxLife: 50,
     });
   }
@@ -815,20 +816,21 @@ export function createExplosion(x, y) {
  * Create ricochet spark particles at a position.
  * @param {number} x
  * @param {number} y
+ * @param {() => number} [random=Math.random] - draws in [0, 1)
  * @returns {Array<object>}
  */
-export function createSparks(x, y) {
+export function createSparks(x, y, random = Math.random) {
   const particles = [];
   const count = 6;
   for (let i = 0; i < count; i++) {
-    const angle = Math.random() * Math.PI * 2;
-    const speed = 1 + Math.random() * 2;
+    const angle = random() * Math.PI * 2;
+    const speed = 1 + random() * 2;
     particles.push({
       x,
       y,
       vx: Math.cos(angle) * speed,
       vy: Math.sin(angle) * speed,
-      life: 15 + Math.random() * 10,
+      life: 15 + random() * 10,
       maxLife: 25,
       spark: true,
     });
@@ -881,11 +883,12 @@ export function formatTimer(frames) {
  * Select maze index based on game mode.
  * Classic/Guided use open field (0), Maze/Ricochet use random maze (1-5).
  * @param {number} mode - GAME_MODE enum
+ * @param {() => number} [random=Math.random] - draws in [0, 1)
  * @returns {number}
  */
-export function selectMazeForMode(mode) {
+export function selectMazeForMode(mode, random = Math.random) {
   if (mode === GAME_MODE.CLASSIC || mode === GAME_MODE.GUIDED) {
     return 0;
   }
-  return 1 + Math.floor(Math.random() * (MAZE_LAYOUTS.length - 1));
+  return 1 + Math.floor(random() * (MAZE_LAYOUTS.length - 1));
 }

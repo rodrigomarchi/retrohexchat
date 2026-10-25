@@ -95,7 +95,7 @@ function battle(game) {
     game.audio.playHit();
     const hitX = s.tankHit === 1 ? s.tank1X : s.tank2X;
     const hitY = s.tankHit === 1 ? s.tank1Y : s.tank2Y;
-    game.particles = [...game.particles, ...createExplosion(hitX, hitY)];
+    game.particles = [...game.particles, ...createExplosion(hitX, hitY, game.fxRandom)];
     s = respawnTanks(s);
   }
 
@@ -186,7 +186,7 @@ export default defineGame({
   // The host chooses the maze; the guest learns it from the first snapshot.
   init: (game) => {
     game.gameMode = GAME_MODE.MAZE_BATTLE;
-    game.mazeIndex = game.isHost ? selectMazeForMode(game.gameMode) : 0;
+    game.mazeIndex = game.isHost ? selectMazeForMode(game.gameMode, game.random) : 0;
     game.walls = decodeMaze(game.mazeIndex);
     return createInitialState(game.gameMode, game.mazeIndex);
   },

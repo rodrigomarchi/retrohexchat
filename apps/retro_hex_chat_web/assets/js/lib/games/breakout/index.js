@@ -58,7 +58,7 @@ function step(game) {
     game.audio.playBlockHit(s.hitBlockRow);
     s.particles = [
       ...(s.particles || []),
-      ...createBlockParticles(s.hitBlockX, s.hitBlockY, s.hitBlockColor),
+      ...createBlockParticles(s.hitBlockX, s.hitBlockY, s.hitBlockColor, game.fxRandom),
     ];
     s.blockHit = false;
   }
@@ -84,8 +84,8 @@ function serve(game) {
   let direction;
   if (game.lastExitSide === "bottom") direction = -1;
   else if (game.lastExitSide === "top") direction = 1;
-  else direction = Math.random() < 0.5 ? 1 : -1;
-  game.gameState = serveBall(game.gameState, direction);
+  else direction = game.random() < 0.5 ? 1 : -1;
+  game.gameState = serveBall(game.gameState, direction, game.random);
   game.broadcast();
 }
 

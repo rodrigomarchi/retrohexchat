@@ -49,7 +49,7 @@ export function direction({ up, down, left, right }) {
 }
 
 function addHitParticles(game, x, y, points) {
-  game.particles = [...game.particles, ...createHitParticles(x, y, points)];
+  game.particles = [...game.particles, ...createHitParticles(x, y, points, game.fxRandom)];
 }
 
 /** One step of the fight on the host. */

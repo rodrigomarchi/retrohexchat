@@ -54,12 +54,12 @@ function serving(game, state) {
   let s = updatePlayer(state, 1, game.localInputs);
   s = updatePlayer(s, 2, game.remoteInputs);
   if (game.localInputs.serve && !game.localServePressed && s.server === 1) {
-    s = performServe(s);
+    s = performServe(s, game.random);
     game.audio.playServe();
   }
   game.localServePressed = game.localInputs.serve;
   if (game.remoteInputs.serve && !game.remoteServePressed && s.server === 2) {
-    s = performServe(s);
+    s = performServe(s, game.random);
     game.audio.playServe();
   }
   game.remoteServePressed = game.remoteInputs.serve;
@@ -67,7 +67,7 @@ function serving(game, state) {
   if (s.phase === PHASE.SERVING) {
     s = { ...s, serveTimer: s.serveTimer - 1 };
     if (s.serveTimer <= 0) {
-      s = performServe(s);
+      s = performServe(s, game.random);
       game.audio.playServe();
     }
   }

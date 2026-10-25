@@ -477,10 +477,11 @@ export function rebuildCastles(state) {
 /**
  * Serve fireball from center with random angle.
  * @param {object} state
+ * @param {() => number} [random=Math.random] - draws in [0, 1)
  * @returns {object} new state
  */
-export function serveFireball(state) {
-  const angle = ((Math.random() * 60 - 30) * Math.PI) / 180;
+export function serveFireball(state, random = Math.random) {
+  const angle = ((random() * 60 - 30) * Math.PI) / 180;
   const speed = INITIAL_BALL_SPEED;
   // Alternate serve direction based on round
   const dirX = state.round % 2 === 1 ? 1 : -1;
@@ -516,13 +517,14 @@ export function checkGameOver(state) {
  * @param {number} x - origin x
  * @param {number} y - origin y
  * @param {string} color - particle color
+ * @param {() => number} [random=Math.random] - draws in [0, 1)
  * @returns {Array} particle array
  */
-export function createBrickParticles(x, y, color) {
+export function createBrickParticles(x, y, color, random = Math.random) {
   const particles = [];
   for (let i = 0; i < 8; i++) {
-    const angle = Math.random() * Math.PI * 2;
-    const speed = 2 + Math.random() * 3;
+    const angle = random() * Math.PI * 2;
+    const speed = 2 + random() * 3;
     particles.push({
       x,
       y,
@@ -539,13 +541,14 @@ export function createBrickParticles(x, y, color) {
  * Generate king destruction particles (larger explosion).
  * @param {number} x - origin x
  * @param {number} y - origin y
+ * @param {() => number} [random=Math.random] - draws in [0, 1)
  * @returns {Array} particle array
  */
-export function createKingParticles(x, y) {
+export function createKingParticles(x, y, random = Math.random) {
   const particles = [];
   for (let i = 0; i < 16; i++) {
-    const angle = Math.random() * Math.PI * 2;
-    const speed = 3 + Math.random() * 5;
+    const angle = random() * Math.PI * 2;
+    const speed = 3 + random() * 5;
     particles.push({
       x,
       y,

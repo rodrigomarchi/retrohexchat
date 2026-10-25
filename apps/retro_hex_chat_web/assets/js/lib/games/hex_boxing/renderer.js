@@ -211,20 +211,21 @@ function drawArms(ctx, bx, by, dir, punchState, punchTimer, arm, armColor, _colo
  * @param {number} x
  * @param {number} y
  * @param {number} points
+ * @param {() => number} [random=Math.random] - draws in [0, 1)
  * @returns {Array}
  */
-export function createHitParticles(x, y, points) {
+export function createHitParticles(x, y, points, random = Math.random) {
   const count = points * 3;
   const particles = [];
   for (let i = 0; i < count; i++) {
-    const angle = Math.random() * Math.PI * 2;
-    const speed = 1 + Math.random() * 3;
+    const angle = random() * Math.PI * 2;
+    const speed = 1 + random() * 3;
     particles.push({
       x,
       y,
       vx: Math.cos(angle) * speed,
       vy: Math.sin(angle) * speed,
-      life: 15 + Math.floor(Math.random() * 10),
+      life: 15 + Math.floor(random() * 10),
       maxLife: 25,
     });
   }

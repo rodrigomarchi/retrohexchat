@@ -227,11 +227,12 @@ export function checkWin(state) {
 /**
  * Serve the ball from center toward the opponent of the last scorer.
  * @param {object} state
+ * @param {() => number} [random=Math.random] - draws in [0, 1)
  * @returns {object} new state
  */
-export function serveBall(state) {
+export function serveBall(state, random = Math.random) {
   const direction = state.lastScorer === 1 ? 1 : -1;
-  const angle = ((Math.random() * 60 - 30) * Math.PI) / 180;
+  const angle = ((random() * 60 - 30) * Math.PI) / 180;
   const speed = INITIAL_BALL_SPEED;
 
   return {
@@ -249,13 +250,14 @@ export function serveBall(state) {
  * Generate score celebration particles.
  * @param {number} x - origin x
  * @param {number} y - origin y
+ * @param {() => number} [random=Math.random] - draws in [0, 1)
  * @returns {Array} particle array
  */
-export function createScoreParticles(x, y) {
+export function createScoreParticles(x, y, random = Math.random) {
   const particles = [];
   for (let i = 0; i < 10; i++) {
-    const angle = Math.random() * Math.PI * 2;
-    const speed = 2 + Math.random() * 4;
+    const angle = random() * Math.PI * 2;
+    const speed = 2 + random() * 4;
     particles.push({
       x,
       y,

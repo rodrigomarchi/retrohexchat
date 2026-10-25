@@ -114,14 +114,14 @@ function battle(game) {
     }
   }
   if (pressed(game, "p1WarpPrev", local.warp)) {
-    const warp = attemptWarp(ship1, Math.random);
+    const warp = attemptWarp(ship1, game.random);
     if (warp) {
       ship1 = warp.ship;
       game.audio.playWarp();
     }
   }
   if (pressed(game, "p2WarpPrev", remote.warp)) {
-    const warp = attemptWarp(ship2, Math.random);
+    const warp = attemptWarp(ship2, game.random);
     if (warp) {
       ship2 = warp.ship;
       game.audio.playWarp();
@@ -175,8 +175,12 @@ function battle(game) {
   let scoreChanged = false;
   const p1Died = ship1.exploding && ship1.alive === false && !state.ship1.exploding;
   const p2Died = ship2.exploding && ship2.alive === false && !state.ship2.exploding;
-  if (p1Died) particles = [...particles, ...createExplosionParticles(ship1.x, ship1.y)];
-  if (p2Died) particles = [...particles, ...createExplosionParticles(ship2.x, ship2.y)];
+  if (p1Died) {
+    particles = [...particles, ...createExplosionParticles(ship1.x, ship1.y, 15, game.fxRandom)];
+  }
+  if (p2Died) {
+    particles = [...particles, ...createExplosionParticles(ship2.x, ship2.y, 15, game.fxRandom)];
+  }
   if (p1Died || p2Died) {
     game.audio.playDeath();
     scoreChanged = true;
@@ -271,10 +275,10 @@ function applySnapshot(game, decoded) {
   const ship2 = unpackShip(decoded.ship2, decoded.invuln2, decoded.warpCooldown2);
   let particles = prev.particles || [];
   if (ship1.exploding && !prev.ship1.exploding) {
-    particles = [...particles, ...createExplosionParticles(ship1.x, ship1.y)];
+    particles = [...particles, ...createExplosionParticles(ship1.x, ship1.y, 15, game.fxRandom)];
   }
   if (ship2.exploding && !prev.ship2.exploding) {
-    particles = [...particles, ...createExplosionParticles(ship2.x, ship2.y)];
+    particles = [...particles, ...createExplosionParticles(ship2.x, ship2.y, 15, game.fxRandom)];
   }
 
   game.gameState = {
@@ -355,7 +359,7 @@ export default defineGame({
   // The game id picks the arena: open space, a star's gravity well or a debris field.
   init: (game) => {
     game.gameMode = MODE_MAP[game.gameId] ?? GAME_MODE.OPEN_SPACE;
-    return { ...createInitialState(game.gameMode), lastScorer: 0 };
+    return { ...createInitialState(game.gameMode, null, game.random), lastScorer: 0 };
   },
   setup: (game) => {
     game.p1FirePrev = false;

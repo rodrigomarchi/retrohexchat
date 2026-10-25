@@ -55,7 +55,11 @@ function step(game) {
   s = checkScore(s);
   if (s.scored) {
     game.audio.playScore();
-    s.particles = createScoreParticles(s.lastScorer === 1 ? CANVAS_W - 20 : 20, s.ballY);
+    s.particles = createScoreParticles(
+      s.lastScorer === 1 ? CANVAS_W - 20 : 20,
+      s.ballY,
+      game.fxRandom,
+    );
     s.scored = false;
   }
 
@@ -140,7 +144,7 @@ export default defineGame({
         },
         after: { ms: SERVE_DELAY_MS },
         then: (game) => {
-          game.gameState = serveBall(game.gameState);
+          game.gameState = serveBall(game.gameState, game.random);
           game.broadcast();
         },
         next: "PLAYING",

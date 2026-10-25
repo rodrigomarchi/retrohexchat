@@ -173,15 +173,16 @@ export function moveAndCheck(state, p1Dir, p2Dir) {
  * @param {number} gridX - grid cell x
  * @param {number} gridY - grid cell y
  * @param {string} color - particle color
+ * @param {() => number} [random=Math.random] - draws in [0, 1)
  * @returns {Array} particle array
  */
-export function createCrashParticles(gridX, gridY, color) {
+export function createCrashParticles(gridX, gridY, color, random = Math.random) {
   const px = GRID_OFFSET_X + gridX * CELL_SIZE + CELL_SIZE / 2;
   const py = GRID_OFFSET_Y + gridY * CELL_SIZE + CELL_SIZE / 2;
   const particles = [];
   for (let i = 0; i < 12; i++) {
-    const angle = Math.random() * Math.PI * 2;
-    const speed = 2 + Math.random() * 4;
+    const angle = random() * Math.PI * 2;
+    const speed = 2 + random() * 4;
     particles.push({
       x: px,
       y: py,

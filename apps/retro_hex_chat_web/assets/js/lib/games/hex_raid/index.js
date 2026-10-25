@@ -282,7 +282,7 @@ export default defineGame({
   // The game id picks the mode; only the host seeds the river.
   init: (game) => {
     game.gameMode = MODE_MAP[game.gameId] || GAME_MODE.RIVER_DUEL;
-    game.seed = game.isHost ? ((Math.random() * 0xffffffff) | 0) >>> 0 : 0;
+    game.seed = game.isHost ? ((game.random() * 0xffffffff) | 0) >>> 0 : 0;
     return createInitialState(game.gameMode, game.seed);
   },
   setup: (game) => {

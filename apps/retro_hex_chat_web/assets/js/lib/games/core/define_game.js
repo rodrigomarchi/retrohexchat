@@ -72,6 +72,10 @@ export function defineGame(def) {
     constructor(canvas, channel, gameId, isHost, onGameEnd, options = {}) {
       super(canvas, channel, gameId, isHost, options);
       this.onGameEnd = onGameEnd || null;
+      // What the simulation draws from, and what its decoration (particles)
+      // draws from, apart so decoration never changes how a match plays out.
+      this.random = () => Math.random();
+      this.fxRandom = () => Math.random();
       this.gameState = def.init(this, options);
       this.localInputs = released();
       this.remoteInputs = released();
@@ -80,7 +84,7 @@ export function defineGame(def) {
         this.opponentController =
           options.opponentController ||
           (this.mode === "solo" && def.ai.create
-            ? def.ai.create({ difficulty: this.difficulty })
+            ? def.ai.create({ difficulty: this.difficulty, rng: this.random })
             : null);
       }
       this.frameCount = 0;
@@ -159,7 +163,10 @@ export function defineGame(def) {
         if (this.mode === "solo" && !this.opponentController) {
           // A game that leaves creating its AI to the page cannot play solo without one.
           if (!def.ai.create) return false;
-          this.opponentController = def.ai.create({ difficulty: this.difficulty });
+          this.opponentController = def.ai.create({
+            difficulty: this.difficulty,
+            rng: this.random,
+          });
         }
       }
 

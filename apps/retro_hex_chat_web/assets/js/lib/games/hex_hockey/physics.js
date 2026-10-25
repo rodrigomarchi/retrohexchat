@@ -560,9 +560,10 @@ export function handleShoot(state, isP1) {
  * Handle tackle attempt.
  * @param {object} state
  * @param {boolean} isP1 - attacking player
+ * @param {() => number} [random=Math.random] - draws in [0, 1)
  * @returns {number} event flags
  */
-export function handleTackle(state, isP1) {
+export function handleTackle(state, isP1, random = Math.random) {
   const attacker = isP1 ? state.p1 : state.p2;
   const defender = isP1 ? state.p2 : state.p1;
 
@@ -581,7 +582,7 @@ export function handleTackle(state, isP1) {
 
   const chance = getTackleChance(state.mode);
 
-  if (Math.random() < chance) {
+  if (random() < chance) {
     // Tackle success — free the puck
     defender.hasPuck = false;
     state.puck.possessedBy = 0;

@@ -360,9 +360,10 @@ export function checkOutOfBounds(state) {
 /**
  * Perform a serve.
  * @param {object} state
+ * @param {() => number} [random=Math.random] - draws in [0, 1)
  * @returns {object} new state
  */
-export function performServe(state) {
+export function performServe(state, random = Math.random) {
   const srv = state.server;
   const sx = srv === 1 ? state.p1x : state.p2x;
   const sy = srv === 1 ? state.p1y : state.p2y;
@@ -373,8 +374,8 @@ export function performServe(state) {
   const targetY = srv === 1 ? SERVICE_LINE_TOP + 40 : SERVICE_LINE_BOTTOM - 40;
 
   // Slight randomness in target
-  const tx = targetX + (Math.random() - 0.5) * 30;
-  const ty = targetY + (Math.random() - 0.5) * 15;
+  const tx = targetX + (random() - 0.5) * 30;
+  const ty = targetY + (random() - 0.5) * 15;
 
   // Direction toward target
   const dx = tx - sx;

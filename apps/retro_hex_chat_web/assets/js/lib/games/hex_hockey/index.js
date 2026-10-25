@@ -167,9 +167,9 @@ function periodBreak(game, state) {
 }
 
 /** A shot when holding the puck, a tackle when not. */
-function act(state, isP1) {
+function act(game, state, isP1) {
   const player = isP1 ? state.p1 : state.p2;
-  return player.hasPuck ? handleShoot(state, isP1) : handleTackle(state, isP1);
+  return player.hasPuck ? handleShoot(state, isP1) : handleTackle(state, isP1, game.random);
 }
 
 function play(game, state) {
@@ -179,11 +179,11 @@ function play(game, state) {
   // A shot or tackle goes on the press, not while the key is held.
   if (game.localInputs.action && !game.actionHandled) {
     game.actionHandled = true;
-    state.eventFlags |= act(state, true);
+    state.eventFlags |= act(game, state, true);
   }
   if (game.remoteInputs.action && !game.remoteActionHandled) {
     game.remoteActionHandled = true;
-    state.eventFlags |= act(state, false);
+    state.eventFlags |= act(game, state, false);
   }
 
   updateGoalie(state, true);

@@ -215,6 +215,33 @@ describe("defineGame", () => {
     });
   });
 
+  describe("random draws", () => {
+    it("gives the simulation and its decoration a random function each, and the AI the simulation's", () => {
+      const created = [];
+      const Game = defineGame({
+        ...definition,
+        ai: {
+          ...definition.ai,
+          create: (options) => created.push(options) && { nextInputs: () => ({}) },
+        },
+      });
+      const game = new Game(
+        document.createElement("canvas"),
+        createLocalTransport(),
+        "fake",
+        true,
+        null,
+        {
+          mode: "solo",
+        },
+      );
+
+      expect(game.random()).toBeGreaterThanOrEqual(0);
+      expect(game.fxRandom()).toBeLessThan(1);
+      expect(created[0].rng).toBe(game.random);
+    });
+  });
+
   describe("outcome", () => {
     const engineFor = (isHost, options = {}) => {
       const Game = defineGame(definition);

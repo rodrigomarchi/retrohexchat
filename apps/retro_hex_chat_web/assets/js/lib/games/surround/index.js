@@ -80,10 +80,16 @@ function crash(game, p1Dead, p2Dead) {
   const s = game.gameState;
   game.audio.playCrash();
   if (p1Dead) {
-    s.particles = [...s.particles, ...createCrashParticles(s.p1.x, s.p1.y, gameColor("00ff41"))];
+    s.particles = [
+      ...s.particles,
+      ...createCrashParticles(s.p1.x, s.p1.y, gameColor("00ff41"), game.fxRandom),
+    ];
   }
   if (p2Dead) {
-    s.particles = [...s.particles, ...createCrashParticles(s.p2.x, s.p2.y, gameColor("00d4ff"))];
+    s.particles = [
+      ...s.particles,
+      ...createCrashParticles(s.p2.x, s.p2.y, gameColor("00d4ff"), game.fxRandom),
+    ];
   }
 
   if (p1Dead && !p2Dead) s.score2++;

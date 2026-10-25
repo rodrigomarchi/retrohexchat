@@ -212,7 +212,7 @@ export default defineGame({
   onStart: (game) => {
     game.snowParticles = generateSnowParticles(35);
     if (game.mode === "solo" || game.isHost) {
-      const seed = (Math.random() * 0xffffffff) >>> 0;
+      const seed = (game.random() * 0xffffffff) >>> 0;
       game.gameState = createInitialState(game.gameMode, seed);
     }
   },

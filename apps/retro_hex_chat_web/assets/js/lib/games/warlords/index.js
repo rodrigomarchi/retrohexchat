@@ -84,7 +84,7 @@ function step(game) {
     game.audio.playBrickHit();
     s.particles = [
       ...(s.particles || []),
-      ...createBrickParticles(s.hitBrickX, s.hitBrickY, s.hitBrickColor),
+      ...createBrickParticles(s.hitBrickX, s.hitBrickY, s.hitBrickColor, game.fxRandom),
     ];
     s.brickHit = false;
   }
@@ -95,7 +95,7 @@ function step(game) {
     game.audio.playKingHit();
     const kingX = s.kingHitPlayer === 1 ? P1_KING_X : P2_KING_X;
     const kingY = s.kingHitPlayer === 1 ? P1_KING_Y : P2_KING_Y;
-    s.particles = [...(s.particles || []), ...createKingParticles(kingX, kingY)];
+    s.particles = [...(s.particles || []), ...createKingParticles(kingX, kingY, game.fxRandom)];
     s.kingHit = false;
     s.phase = PHASE.KING_HIT;
     return;
@@ -249,7 +249,7 @@ export default defineGame({
         },
         after: { ms: SERVE_DELAY_MS },
         then: (game) => {
-          game.gameState = serveFireball(game.gameState);
+          game.gameState = serveFireball(game.gameState, game.random);
           game.broadcast();
         },
         next: "PLAYING",

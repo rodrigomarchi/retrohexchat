@@ -340,10 +340,11 @@ export function checkWin(state) {
  * Serve the ball from center in the given direction.
  * @param {object} state
  * @param {number} direction - 1 = downward (toward P1), -1 = upward (toward P2)
+ * @param {() => number} [random=Math.random] - draws in [0, 1)
  * @returns {object} new state
  */
-export function serveBall(state, direction = 1) {
-  const angle = ((Math.random() * 60 - 30) * Math.PI) / 180;
+export function serveBall(state, direction = 1, random = Math.random) {
+  const angle = ((random() * 60 - 30) * Math.PI) / 180;
   const speed = INITIAL_BALL_SPEED;
 
   return {
@@ -362,13 +363,14 @@ export function serveBall(state, direction = 1) {
  * @param {number} x - origin x
  * @param {number} y - origin y
  * @param {string} color - particle color
+ * @param {() => number} [random=Math.random] - draws in [0, 1)
  * @returns {Array} particle array
  */
-export function createBlockParticles(x, y, color) {
+export function createBlockParticles(x, y, color, random = Math.random) {
   const particles = [];
   for (let i = 0; i < 8; i++) {
-    const angle = Math.random() * Math.PI * 2;
-    const speed = 2 + Math.random() * 3;
+    const angle = random() * Math.PI * 2;
+    const speed = 2 + random() * 3;
     particles.push({
       x,
       y,
