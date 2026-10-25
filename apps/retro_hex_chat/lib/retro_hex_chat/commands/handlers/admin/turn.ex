@@ -3,6 +3,7 @@ defmodule RetroHexChat.Commands.Handlers.Admin.Turn do
   use Gettext, backend: RetroHexChat.Gettext
 
   alias RetroHexChat.Commands.Handler
+  alias RetroHexChat.Commands.Listing
   alias RetroHexChat.P2P
   alias RetroHexChat.P2P.Turn.Config
 
@@ -76,17 +77,14 @@ defmodule RetroHexChat.Commands.Handlers.Admin.Turn do
     entries = query_alloc_entries()
 
     text =
-      if entries == [] do
-        dgettext("admin", "*** No active TURN allocations.")
-      else
-        header =
-          dgettext("admin", "*** Active TURN Allocations (%{entries_count}) ***",
-            entries_count: length(entries)
-          )
-
-        lines = Enum.map(entries, &format_entry/1)
-        Enum.join([header | lines], "\n")
-      end
+      Listing.text(
+        entries,
+        dgettext("admin", "*** No active TURN allocations."),
+        &dgettext("admin", "*** Active TURN Allocations (%{entries_count}) ***",
+          entries_count: &1
+        ),
+        &format_entry/1
+      )
 
     {:ok, :system, %{content: text}}
   end

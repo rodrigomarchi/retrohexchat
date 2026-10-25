@@ -8,6 +8,7 @@ defmodule RetroHexChat.Commands.Handlers.Admin.Channel do
   alias RetroHexChat.Channels.Server
   alias RetroHexChat.Commands.Handler
   alias RetroHexChat.Commands.Handler.Args
+  alias RetroHexChat.Commands.Listing
   alias RetroHexChat.Services.Queries
   alias RetroHexChat.Table
 
@@ -22,18 +23,12 @@ defmodule RetroHexChat.Commands.Handlers.Admin.Channel do
     snapshots = if search, do: Directory.search(search), else: Directory.all()
 
     text =
-      if snapshots == [] do
-        dgettext("admin", "*** No active channels.")
-      else
-        header =
-          dgettext("admin", "*** Channel List (%{filtered_count}) ***",
-            filtered_count: length(snapshots)
-          )
-
-        lines = Enum.map(snapshots, &format_channel_entry/1)
-
-        Enum.join([header | lines], "\n")
-      end
+      Listing.text(
+        snapshots,
+        dgettext("admin", "*** No active channels."),
+        &dgettext("admin", "*** Channel List (%{filtered_count}) ***", filtered_count: &1),
+        &format_channel_entry/1
+      )
 
     {:ok, :system, %{content: text, table: channel_table(snapshots)}}
   end
@@ -109,18 +104,15 @@ defmodule RetroHexChat.Commands.Handlers.Admin.Channel do
         bans = state.bans
 
         text =
-          if bans == [] do
-            dgettext("admin", "*** No bans in %{channel}.", channel: channel)
-          else
-            header =
-              dgettext("admin", "*** Ban List for %{channel} (%{bans_count}) ***",
-                channel: channel,
-                bans_count: length(bans)
-              )
-
-            lines = Enum.map(bans, &format_ban_entry/1)
-            Enum.join([header | lines], "\n")
-          end
+          Listing.text(
+            bans,
+            dgettext("admin", "*** No bans in %{channel}.", channel: channel),
+            &dgettext("admin", "*** Ban List for %{channel} (%{bans_count}) ***",
+              channel: channel,
+              bans_count: &1
+            ),
+            &format_ban_entry/1
+          )
 
         {:ok, :system, %{content: text}}
 

@@ -5,6 +5,7 @@ defmodule RetroHexChat.Commands.Handlers.Admin.Log do
   alias RetroHexChat.Admin.AuditLogs
   alias RetroHexChat.Commands.Handler
   alias RetroHexChat.Commands.Handler.Args
+  alias RetroHexChat.Commands.Listing
   alias RetroHexChat.Table
 
   @spec execute([String.t()], Handler.context()) :: Handler.result()
@@ -23,18 +24,12 @@ defmodule RetroHexChat.Commands.Handlers.Admin.Log do
     page = AuditLogs.list(query_opts)
 
     text =
-      if page.items == [] do
-        dgettext("admin", "*** No audit log entries found.")
-      else
-        header =
-          dgettext("admin", "*** Audit Log (%{entries_count} entries) ***",
-            entries_count: length(page.items)
-          )
-
-        lines = Enum.map(page.items, &format_log_entry/1)
-
-        Enum.join([header | lines], "\n")
-      end
+      Listing.text(
+        page.items,
+        dgettext("admin", "*** No audit log entries found."),
+        &dgettext("admin", "*** Audit Log (%{entries_count} entries) ***", entries_count: &1),
+        &format_log_entry/1
+      )
 
     {:ok, :system, %{content: text, table: log_table(page)}}
   end

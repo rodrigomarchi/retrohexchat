@@ -7,6 +7,7 @@ defmodule RetroHexChat.Commands.Handlers.Admin.User do
   alias RetroHexChat.Admin.{AuditLogs, ServerBans}
   alias RetroHexChat.Commands.{Duration, Handler, Timestamp}
   alias RetroHexChat.Commands.Handler.Args
+  alias RetroHexChat.Commands.Listing
   alias RetroHexChat.Page
   alias RetroHexChat.Presence.Tracker
   alias RetroHexChat.Services.{NickServ, Queries}
@@ -163,18 +164,12 @@ defmodule RetroHexChat.Commands.Handlers.Admin.User do
       end
 
     text =
-      if filtered == [] do
-        dgettext("admin", "*** No active server bans.")
-      else
-        header =
-          dgettext("admin", "*** Server Ban List (%{filtered_count}) ***",
-            filtered_count: length(filtered)
-          )
-
-        lines = Enum.map(filtered, &format_ban_entry/1)
-
-        Enum.join([header | lines], "\n")
-      end
+      Listing.text(
+        filtered,
+        dgettext("admin", "*** No active server bans."),
+        &dgettext("admin", "*** Server Ban List (%{filtered_count}) ***", filtered_count: &1),
+        &format_ban_entry/1
+      )
 
     {:ok, :system, %{content: text, table: ban_table(filtered)}}
   end

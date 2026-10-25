@@ -6,6 +6,7 @@ defmodule RetroHexChat.Commands.Handlers.Admin.ChanServ do
   alias RetroHexChat.Admin.AuditLogs
   alias RetroHexChat.Commands.Handler
   alias RetroHexChat.Commands.Handler.Args
+  alias RetroHexChat.Commands.Listing
   alias RetroHexChat.Commands.Timestamp
   alias RetroHexChat.Services.{ChanServ, Queries}
 
@@ -63,22 +64,20 @@ defmodule RetroHexChat.Commands.Handlers.Admin.ChanServ do
     access = Queries.list_access(channel)
 
     text =
-      if access == [] do
-        dgettext("admin", "*** Access list for %{channel}: (empty)", channel: channel)
-      else
-        header = dgettext("admin", "*** Access List for %{channel} ***", channel: channel)
-
-        lines =
-          Enum.map(access, fn e ->
-            dgettext("admin", "  %{nickname} [%{level}] (added by %{added_by})",
-              nickname: e.nickname,
-              level: e.level,
-              added_by: e.added_by
-            )
-          end)
-
-        Enum.join([header | lines], "\n")
-      end
+      Listing.text(
+        access,
+        dgettext("admin", "*** Access list for %{channel}: (empty)", channel: channel),
+        fn _count ->
+          dgettext("admin", "*** Access List for %{channel} ***", channel: channel)
+        end,
+        fn e ->
+          dgettext("admin", "  %{nickname} [%{level}] (added by %{added_by})",
+            nickname: e.nickname,
+            level: e.level,
+            added_by: e.added_by
+          )
+        end
+      )
 
     {:ok, :system, %{content: text}}
   end

@@ -3,6 +3,7 @@ defmodule RetroHexChat.Commands.Handlers.Admin.Debug do
   use Gettext, backend: RetroHexChat.Gettext
 
   alias RetroHexChat.Commands.Handler
+  alias RetroHexChat.Commands.Listing
 
   @spec execute([String.t()], Handler.context()) :: Handler.result()
   def execute(["connections"], _context) do
@@ -24,21 +25,16 @@ defmodule RetroHexChat.Commands.Handlers.Admin.Debug do
       end
 
     text =
-      if channels == [] do
-        dgettext("admin", "*** No active channel processes.")
-      else
-        header =
-          dgettext("admin", "*** Active Channel Processes (%{channels_count}) ***",
-            channels_count: length(channels)
-          )
-
-        lines =
-          Enum.map(channels, fn {name, pid} ->
-            dgettext("admin", "  %{name} (%{pid})", name: name, pid: inspect(pid))
-          end)
-
-        Enum.join([header | lines], "\n")
-      end
+      Listing.text(
+        channels,
+        dgettext("admin", "*** No active channel processes."),
+        &dgettext("admin", "*** Active Channel Processes (%{channels_count}) ***",
+          channels_count: &1
+        ),
+        fn {name, pid} ->
+          dgettext("admin", "  %{name} (%{pid})", name: name, pid: inspect(pid))
+        end
+      )
 
     {:ok, :system, %{content: text}}
   end

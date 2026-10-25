@@ -5,6 +5,7 @@ defmodule RetroHexChat.Commands.Handlers.Admin.Server do
   alias RetroHexChat.Admin
   alias RetroHexChat.Admin.AuditLogs
   alias RetroHexChat.Commands.Handler
+  alias RetroHexChat.Commands.Listing
   alias RetroHexChat.Presence.Tracker
   alias RetroHexChat.Services.Queries
   alias RetroHexChat.Table
@@ -91,22 +92,18 @@ defmodule RetroHexChat.Commands.Handlers.Admin.Server do
     settings = Queries.list_settings()
 
     text =
-      if settings == [] do
-        dgettext("admin", "*** No server settings configured.")
-      else
-        header = dgettext("admin", "*** Server Settings ***")
-
-        lines =
-          Enum.map(settings, fn s ->
-            dgettext("admin", "  %{key} = '%{value}' (by %{updated_by})",
-              key: s.key,
-              value: s.value,
-              updated_by: s.updated_by
-            )
-          end)
-
-        Enum.join([header | lines], "\n")
-      end
+      Listing.text(
+        settings,
+        dgettext("admin", "*** No server settings configured."),
+        fn _count -> dgettext("admin", "*** Server Settings ***") end,
+        fn s ->
+          dgettext("admin", "  %{key} = '%{value}' (by %{updated_by})",
+            key: s.key,
+            value: s.value,
+            updated_by: s.updated_by
+          )
+        end
+      )
 
     {:ok, :system, %{content: text, table: settings_table(settings)}}
   end
