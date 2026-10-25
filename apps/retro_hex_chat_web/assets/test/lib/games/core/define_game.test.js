@@ -324,6 +324,24 @@ describe("defineGame", () => {
     });
   });
 
+  describe("sounds", () => {
+    it("plays a table of sounds through the core's synthesizer, by name", () => {
+      const Game = defineGame({
+        ...definition,
+        audio: { sounds: { ping: { wave: "sine", freq: 880, vol: 0.1, dur: 0.05 } } },
+      });
+      const game = new Game(
+        document.createElement("canvas"),
+        createLocalTransport(),
+        "fake",
+        true,
+        null,
+      );
+      expect(typeof game.audio.playPing).toBe("function");
+      expect(() => game.audio.playPing()).not.toThrow();
+    });
+  });
+
   describe("outcome", () => {
     const engineFor = (isHost, options = {}) => {
       const Game = defineGame(definition);

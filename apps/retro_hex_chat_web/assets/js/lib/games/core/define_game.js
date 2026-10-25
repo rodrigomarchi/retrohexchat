@@ -13,7 +13,7 @@
  *   interpolate: { keys: ["ballX", "ballY"] },
  *   schema: { snapshot: SNAPSHOT, end: GAME_END },
  *   ai: { create: createPongAI, difficulty: normalizePongAIDifficulty }, // no create: the page hands it in
- *   audio: PongAudio,
+ *   audio: { sounds: SOUNDS },                     // played by name: playPaddleHit()
  *   theme: getColors,
  *   init: (game, options) => createInitialState(),
  *   flow: { phases: PHASE, initial: "WAITING", begin: "COUNTDOWN", states: { … } },
@@ -44,6 +44,7 @@ import { GameEngine, keymap } from "../../game_engine.js";
 import { encodeGameReady } from "../net_protocol.js";
 import { createFlow } from "./flow.js";
 import { aiRandom, createRng, freshSeed } from "./rng.js";
+import { createGameAudio } from "./synth.js";
 import { MSG, dispatcher } from "./messages.js";
 
 const REQUIRED = ["inputs", "schema", "init", "flow", "render", "disconnectResult"];
@@ -92,7 +93,7 @@ export function defineGame(def) {
             : null);
       }
       this.frameCount = 0;
-      this.audio = def.audio ? new def.audio() : null;
+      this.audio = audioOf(def.audio);
       this.colors = null;
       this.peerReady = false;
       def.setup?.(this, options);
@@ -320,6 +321,12 @@ export function defineGame(def) {
       return def.disconnectResult(this);
     }
   };
+}
+
+/** A game's sounds: a table played by the core, or a class of its own. */
+function audioOf(spec) {
+  if (!spec) return null;
+  return typeof spec === "function" ? new spec() : createGameAudio(spec);
 }
 
 function validate(def) {
