@@ -23,7 +23,7 @@ defmodule RetroHexChatWeb.ChatLive.GameEvents do
   @spec handle_event(String.t(), map(), Phoenix.LiveView.Socket.t()) ::
           {:halt | :cont, Phoenix.LiveView.Socket.t()}
   def handle_event("game_lfg", _params, socket),
-    do: {:halt, CommandDispatch.dispatch_command(socket, socket.assigns.session, "lfg", [])}
+    do: {:halt, CommandDispatch.run(socket, "lfg", [])}
 
   def handle_event("game_home_lfg", %{"game" => game_id}, socket),
     do: {:halt, in_game_channel(socket, game_id, "lfg", mode_args(game_id))}
@@ -74,7 +74,7 @@ defmodule RetroHexChatWeb.ChatLive.GameEvents do
          command,
          args
        ),
-       do: CommandDispatch.dispatch_command(socket, socket.assigns.session, command, args)
+       do: CommandDispatch.run(socket, command, args)
 
   defp run_in(socket, _channel, _command, _args), do: socket
 

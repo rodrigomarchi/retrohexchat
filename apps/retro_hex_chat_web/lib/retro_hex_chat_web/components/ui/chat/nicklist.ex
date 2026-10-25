@@ -98,7 +98,7 @@ defmodule RetroHexChatWeb.Components.UI.Nicklist do
         expanded={@expanded}
         on_toggle={@on_toggle}
       >
-        <.nicklist_rail_icon icon={@conversation_icon} />
+        <.nicklist_icon icon={@conversation_icon} />
       </.rail_item>
       <.rail_item
         label={dgettext("chat", "Online")}
@@ -106,7 +106,7 @@ defmodule RetroHexChatWeb.Components.UI.Nicklist do
         expanded={@expanded}
         on_toggle={@on_toggle}
       >
-        <.nicklist_rail_icon icon={:online} />
+        <.nicklist_icon icon={:online} />
       </.rail_item>
       <.rail_item
         :if={@away_count > 0}
@@ -115,7 +115,7 @@ defmodule RetroHexChatWeb.Components.UI.Nicklist do
         expanded={@expanded}
         on_toggle={@on_toggle}
       >
-        <.nicklist_rail_icon icon={:away} />
+        <.nicklist_icon icon={:away} />
       </.rail_item>
       <.rail_item
         :if={@muted_count > 0}
@@ -124,7 +124,7 @@ defmodule RetroHexChatWeb.Components.UI.Nicklist do
         expanded={@expanded}
         on_toggle={@on_toggle}
       >
-        <.nicklist_rail_icon icon={:muted} />
+        <.nicklist_icon icon={:muted} />
       </.rail_item>
       <.rail_item
         :for={section <- @visible_sections}
@@ -143,34 +143,35 @@ defmodule RetroHexChatWeb.Components.UI.Nicklist do
   end
 
   attr :icon, :atom, required: true
+  attr :class, :string, default: "h-4 w-4"
 
-  defp nicklist_rail_icon(%{icon: :channel} = assigns) do
+  defp nicklist_icon(%{icon: :channel} = assigns) do
     ~H"""
-    <Icons.icon_tab_nicklist class="h-4 w-4" />
+    <Icons.icon_tab_nicklist class={@class} />
     """
   end
 
-  defp nicklist_rail_icon(%{icon: :pm} = assigns) do
+  defp nicklist_icon(%{icon: :pm} = assigns) do
     ~H"""
-    <Icons.icon_tab_pm class="h-4 w-4" />
+    <Icons.icon_tab_pm class={@class} />
     """
   end
 
-  defp nicklist_rail_icon(%{icon: :online} = assigns) do
+  defp nicklist_icon(%{icon: :online} = assigns) do
     ~H"""
-    <Icons.icon_status_user class="h-4 w-4" />
+    <Icons.icon_status_user class={@class} />
     """
   end
 
-  defp nicklist_rail_icon(%{icon: :away} = assigns) do
+  defp nicklist_icon(%{icon: :away} = assigns) do
     ~H"""
-    <Icons.icon_btn_away class="h-4 w-4" />
+    <Icons.icon_btn_away class={@class} />
     """
   end
 
-  defp nicklist_rail_icon(%{icon: :muted} = assigns) do
+  defp nicklist_icon(%{icon: :muted} = assigns) do
     ~H"""
-    <Icons.icon_mute class="h-4 w-4" />
+    <Icons.icon_mute class={@class} />
     """
   end
 
@@ -332,30 +333,10 @@ defmodule RetroHexChatWeb.Components.UI.Nicklist do
   defp nicklist_stat(assigns) do
     ~H"""
     <div class={["chat-nicklist-stat", "chat-nicklist-stat--#{@variant}"]} title={@label}>
-      <.nicklist_stat_icon icon={@icon} />
+      <.nicklist_icon icon={@icon} class="h-3 w-3" />
       <span class="chat-nicklist-stat__value" data-testid={@testid}>{@count}</span>
       <span class="chat-nicklist-stat__label">{@label}</span>
     </div>
-    """
-  end
-
-  attr :icon, :atom, required: true
-
-  defp nicklist_stat_icon(%{icon: :online} = assigns) do
-    ~H"""
-    <Icons.icon_status_user class="h-3 w-3" />
-    """
-  end
-
-  defp nicklist_stat_icon(%{icon: :away} = assigns) do
-    ~H"""
-    <Icons.icon_btn_away class="h-3 w-3" />
-    """
-  end
-
-  defp nicklist_stat_icon(%{icon: :muted} = assigns) do
-    ~H"""
-    <Icons.icon_mute class="h-3 w-3" />
     """
   end
 

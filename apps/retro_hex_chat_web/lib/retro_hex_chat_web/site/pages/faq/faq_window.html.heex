@@ -1,5 +1,5 @@
 <.accordion>
-  <.accordion_item :for={entry <- entries("getting-started")}>
+  <.accordion_item :for={entry <- entries(@window.id)}>
     <.accordion_trigger group={entry.group}>
       <:icon><Icons.icon_question class="w-4 h-4" /></:icon>
       {entry.question}

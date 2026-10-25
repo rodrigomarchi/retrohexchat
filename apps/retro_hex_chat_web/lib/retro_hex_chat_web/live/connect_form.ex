@@ -24,6 +24,7 @@ defmodule RetroHexChatWeb.ConnectForm do
   alias RetroHexChat.Accounts.NicknameValidator
   alias RetroHexChat.Accounts.TrustedDevices
   alias RetroHexChat.Services.NickServ
+  alias RetroHexChatWeb.ChatLive.Components.DialogIsland
   alias RetroHexChatWeb.Params
 
   use RetroHexChatWeb.ChatLive.Components.DialogIsland, id: "connect-form"
@@ -63,12 +64,8 @@ defmodule RetroHexChatWeb.ConnectForm do
   end
 
   defp assign_context(socket, assigns) do
-    assign(socket,
-      trusted_device_id: Map.get(assigns, :trusted_device_id, socket.assigns.trusted_device_id),
-      csrf_token: Map.get(assigns, :csrf_token, socket.assigns[:csrf_token]),
-      chat_session_path: Map.get(assigns, :chat_session_path, socket.assigns[:chat_session_path]),
-      return_to: Map.get(assigns, :return_to, socket.assigns[:return_to])
-    )
+    keys = [:trusted_device_id, :csrf_token, :chat_session_path, :return_to]
+    assign(socket, DialogIsland.known(socket, assigns, keys))
   end
 
   # The remembered list depends on a host-supplied session value, so it cannot be

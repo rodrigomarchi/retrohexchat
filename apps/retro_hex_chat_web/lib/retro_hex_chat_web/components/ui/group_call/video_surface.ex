@@ -242,34 +242,37 @@ defmodule RetroHexChatWeb.Components.UI.GroupCall.VideoSurface do
   defp self_view(%{layout: %{self_view: mode}}) when mode in [:tile, :pip, :hidden], do: mode
   defp self_view(_call), do: :tile
 
-  defp local_empty_title(call) do
+  # Why your own tile shows no picture, decided once for its title and its line.
+  defp local_empty_state(call) do
     cond do
-      MediaState.enabled?(call, :screen) ->
-        dgettext("group_call", "Sharing screen")
+      MediaState.enabled?(call, :screen) -> :screen
+      !MediaState.enabled?(call, :audio) && !MediaState.enabled?(call, :video) -> :receive_only
+      !MediaState.enabled?(call, :video) -> :camera_off
+      true -> :starting
+    end
+  end
 
-      !MediaState.enabled?(call, :audio) && !MediaState.enabled?(call, :video) ->
-        dgettext("group_call", "Receive-only mode")
-
-      !MediaState.enabled?(call, :video) ->
-        dgettext("group_call", "Camera off")
-
-      true ->
-        dgettext("group_call", "Camera preview starting")
+  defp local_empty_title(call) do
+    case local_empty_state(call) do
+      :screen -> dgettext("group_call", "Sharing screen")
+      :receive_only -> dgettext("group_call", "Receive-only mode")
+      :camera_off -> dgettext("group_call", "Camera off")
+      :starting -> dgettext("group_call", "Camera preview starting")
     end
   end
 
   defp local_empty_detail(call) do
-    cond do
-      MediaState.enabled?(call, :screen) ->
+    case local_empty_state(call) do
+      :screen ->
         dgettext("group_call", "Your screen is replacing the camera feed.")
 
-      !MediaState.enabled?(call, :audio) && !MediaState.enabled?(call, :video) ->
+      :receive_only ->
         dgettext("group_call", "Your microphone and camera are off.")
 
-      !MediaState.enabled?(call, :video) ->
+      :camera_off ->
         dgettext("group_call", "Your camera is not being sent.")
 
-      true ->
+      :starting ->
         dgettext("group_call", "Your local preview appears here when the camera is ready.")
     end
   end

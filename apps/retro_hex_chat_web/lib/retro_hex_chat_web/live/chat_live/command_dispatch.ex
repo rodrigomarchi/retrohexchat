@@ -59,6 +59,10 @@ defmodule RetroHexChatWeb.ChatLive.CommandDispatch do
 
   require Logger
 
+  @doc "Runs `/name args` as the person on this socket, the way a menu item or a dialog does."
+  @spec run(Phoenix.LiveView.Socket.t(), String.t(), [String.t()]) :: Phoenix.LiveView.Socket.t()
+  def run(socket, name, args), do: dispatch_command(socket, socket.assigns.session, name, args)
+
   @spec dispatch_command(
           Phoenix.LiveView.Socket.t(),
           Session.t(),

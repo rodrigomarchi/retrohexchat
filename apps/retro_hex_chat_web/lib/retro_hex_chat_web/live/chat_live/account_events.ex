@@ -31,7 +31,7 @@ defmodule RetroHexChatWeb.ChatLive.AccountEvents do
   def handle_event("open_account_identify", _params, socket), do: {:halt, open(socket)}
 
   def handle_event("account_info", _params, socket) do
-    {:halt, CommandDispatch.dispatch_command(socket, socket.assigns.session, "ns", ["info"])}
+    {:halt, CommandDispatch.run(socket, "ns", ["info"])}
   end
 
   def handle_event("account_register_submit", params, socket) do

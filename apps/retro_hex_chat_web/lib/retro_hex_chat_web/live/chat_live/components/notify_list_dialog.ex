@@ -31,24 +31,17 @@ defmodule RetroHexChatWeb.ChatLive.Components.NotifyListDialog do
   alias RetroHexChatWeb.ChatLive.Helpers.NickFlags
   alias RetroHexChatWeb.ChatLive.NotifyOps
 
-  use RetroHexChatWeb.ChatLive.Components.DialogIsland, id: "notify-list-dialog"
-
-  @initial %{
-    notify_selected: nil,
-    selected_note: "",
-    show_notify_add_dialog: false,
-    show_notify_edit_dialog: false
-  }
-
-  @spec mount(Phoenix.LiveView.Socket.t()) :: {:ok, Phoenix.LiveView.Socket.t()}
-  def mount(socket) do
-    {:ok,
-     socket
-     |> assign(:id, @id)
-     |> assign(@initial)
-     |> assign(session: nil, timezone: "Etc/UTC")
-     |> assign(entry_locales: %{}, entry_locales_cache: nil)}
-  end
+  use RetroHexChatWeb.ChatLive.Components.DialogIsland,
+    id: "notify-list-dialog",
+    initial: %{
+      notify_selected: nil,
+      selected_note: "",
+      show_notify_add_dialog: false,
+      show_notify_edit_dialog: false,
+      timezone: "Etc/UTC",
+      entry_locales: %{},
+      entry_locales_cache: nil
+    }
 
   # passthrough context (session, timezone)
   @spec update(map(), Phoenix.LiveView.Socket.t()) :: {:ok, Phoenix.LiveView.Socket.t()}

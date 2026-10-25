@@ -33,6 +33,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.Nicklist do
   import RetroHexChatWeb.Components.UI.ListStates
   import RetroHexChatWeb.Components.UI.Nicklist
 
+  alias RetroHexChatWeb.ChatLive.Components.DialogIsland
   alias RetroHexChatWeb.Components.UI.Chat.Role
 
   use RetroHexChatWeb.ChatLive.Components.DialogIsland, id: "nicklist"
@@ -305,22 +306,28 @@ defmodule RetroHexChatWeb.ChatLive.Components.Nicklist do
   @spec row_dom_id(map()) :: String.t()
   defp row_dom_id(user), do: dom_id(user.nickname)
 
+  # What the parent sent, else what was there; the two derived keys are worked
+  # out against what was there before.
   defp assign_context(socket, assigns) do
-    assign(socket,
-      id: Map.get(assigns, :id, socket.assigns.id),
-      available: Map.get(assigns, :available, socket.assigns.available),
-      visible: Map.get(assigns, :visible, socket.assigns.visible),
-      conversation_kind: Map.get(assigns, :conversation_kind, socket.assigns.conversation_kind),
-      conversation_label:
-        Map.get(assigns, :conversation_label, socket.assigns.conversation_label),
-      current_modes: Map.get(assigns, :current_modes, socket.assigns.current_modes),
-      current_nick: Map.get(assigns, :current_nick, socket.assigns.current_nick),
-      nick_color_fn: Map.get(assigns, :nick_color_fn, socket.assigns.nick_color_fn),
-      show_avatars: Map.get(assigns, :show_avatars, socket.assigns.show_avatars),
-      guests: Map.get(assigns, :guests, socket.assigns.guests),
+    derived = %{
       guest_locales: guest_locales(assigns, socket),
       call_nicks: normalize_call_nicks(assigns, socket)
-    )
+    }
+
+    known =
+      DialogIsland.known(socket, assigns, [
+        :available,
+        :visible,
+        :conversation_kind,
+        :conversation_label,
+        :current_modes,
+        :current_nick,
+        :nick_color_fn,
+        :show_avatars,
+        :guests
+      ])
+
+    assign(socket, Map.merge(known, derived))
   end
 
   # A visitor's flag is asked of the guest registry when the list of guests

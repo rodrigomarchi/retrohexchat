@@ -202,7 +202,7 @@ defmodule RetroHexChatWeb.Site.Pages.Faq do
          ),
          Window.new("getting-started", dgettext("landing", "Getting Started"), :icon_question,
            width: 520,
-           body: &getting_started/1,
+           body: &faq_window/1,
            status: [dgettext("landing", "8 questions")]
          ),
          Window.new(
@@ -210,7 +210,7 @@ defmodule RetroHexChatWeb.Site.Pages.Faq do
            dgettext("landing", "Technical & Community"),
            :icon_code,
            width: 480,
-           body: &technical_community/1,
+           body: &faq_window/1,
            status: [dgettext("landing", "6 questions")]
          )
        ],

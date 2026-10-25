@@ -109,6 +109,6 @@ defmodule RetroHexChatWeb.ChatLive.ProfileEvents do
   end
 
   defp dispatch(socket, name, args) do
-    CommandDispatch.dispatch_command(socket, socket.assigns.session, name, args)
+    CommandDispatch.run(socket, name, args)
   end
 end

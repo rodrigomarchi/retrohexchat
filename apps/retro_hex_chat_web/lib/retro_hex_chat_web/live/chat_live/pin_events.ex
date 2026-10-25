@@ -31,11 +31,13 @@ defmodule RetroHexChatWeb.ChatLive.PinEvents do
   # how a pin is actually made. The channel checks the permission again when the
   # pin arrives — the menu item only decides whether to draw a button.
   def handle_event("ctx_chat_pin_message", %{"message_id" => id}, socket) do
-    {:halt, socket |> change_pin(id, :pin) |> UserContextMenus.close_chat()}
+    {:halt,
+     socket |> change_pin(active_channel(socket), id, :pin) |> UserContextMenus.close_chat()}
   end
 
   def handle_event("ctx_chat_unpin_message", %{"message_id" => id}, socket) do
-    {:halt, socket |> change_pin(id, :unpin) |> UserContextMenus.close_chat()}
+    {:halt,
+     socket |> change_pin(active_channel(socket), id, :unpin) |> UserContextMenus.close_chat()}
   end
 
   def handle_event(_event, _params, socket), do: {:cont, socket}
@@ -47,26 +49,16 @@ defmodule RetroHexChatWeb.ChatLive.PinEvents do
   end
 
   def handle_info({:unpin_message, channel, message_id}, socket) do
-    nickname = socket.assigns.session.nickname
-
-    socket =
-      case Server.unpin_message(channel, nickname, Params.integer(message_id, 0)) do
-        :ok ->
-          assign(socket, pinned_count: Pins.count(channel))
-
-        {:error, message} ->
-          Messages.error_event(socket, message)
-      end
-
-    {:halt, socket}
+    {:halt, change_pin(socket, channel, message_id, :unpin)}
   end
 
   def handle_info(_message, socket), do: {:cont, socket}
 
   # A menu item that has done its job must go away, or it covers the next line.
 
-  defp change_pin(socket, raw_id, action) do
-    channel = socket.assigns.session.active_channel
+  defp active_channel(socket), do: socket.assigns.session.active_channel
+
+  defp change_pin(socket, channel, raw_id, action) do
     nickname = socket.assigns.session.nickname
     id = Params.integer(raw_id, 0)
 

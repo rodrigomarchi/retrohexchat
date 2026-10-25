@@ -19,8 +19,7 @@ defmodule RetroHexChatWeb.ChatLive.UserModesEvents do
   def handle_event("user_modes_submit", params, socket) do
     mode_string = if Params.truthy?(params["wallops"]), do: "+w", else: "-w"
 
-    {:halt,
-     CommandDispatch.dispatch_command(socket, socket.assigns.session, "umode", [mode_string])}
+    {:halt, CommandDispatch.run(socket, "umode", [mode_string])}
   end
 
   def handle_event(_event, _params, socket), do: {:cont, socket}

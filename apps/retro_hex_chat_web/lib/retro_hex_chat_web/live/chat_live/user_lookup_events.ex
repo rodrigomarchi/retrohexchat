@@ -98,7 +98,7 @@ defmodule RetroHexChatWeb.ChatLive.UserLookupEvents do
   end
 
   defp dispatch_lookup(socket, command, nickname) do
-    CommandDispatch.dispatch_command(socket, socket.assigns.session, command, [nickname])
+    CommandDispatch.run(socket, command, [nickname])
   end
 
   defp open_prefilled(socket, nickname) do
