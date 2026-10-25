@@ -47,6 +47,7 @@ defmodule RetroHexChatWeb.Components.UI.Conversations do
   import RetroHexChatWeb.Components.UI.NickFlag
   import RetroHexChatWeb.Components.UI.Button
   import RetroHexChatWeb.Components.UI.ToolButton
+  import RetroHexChatWeb.Components.UI.SidebarRail
   import RetroHexChatWeb.Components.UI.EmptyState
   import RetroHexChatWeb.Components.UI.GroupCall.ChannelBadge
   import RetroHexChatWeb.Components.UI.ListStates
@@ -121,89 +122,44 @@ defmodule RetroHexChatWeb.Components.UI.Conversations do
       |> assign(:active_icon, if(assigns.active_pm, do: :pm, else: :channel))
 
     ~H"""
-    <nav
-      class="chat-sidebar-rail chat-sidebar-rail--left"
-      aria-label={dgettext("chat", "Conversations rail")}
-      data-testid="conversations-rail"
+    <.sidebar_rail
+      side="left"
+      label={dgettext("chat", "Conversations rail")}
+      testid="conversations-rail"
+      expanded={@expanded}
+      collapse_label={dgettext("chat", "Collapse conversations")}
+      expand_label={dgettext("chat", "Expand conversations")}
+      on_toggle={@on_toggle}
     >
-      <.tool_button
-        label={
-          if @expanded,
-            do: dgettext("chat", "Collapse conversations"),
-            else: dgettext("chat", "Expand conversations")
-        }
-        variant="flat"
-        size="xs"
-        active={@expanded}
-        class="chat-sidebar-rail__button"
-        phx-click={@on_toggle}
-        aria-expanded={to_string(@expanded)}
-        data-testid="conversations-rail-toggle"
-      >
-        <Icons.icon_chevron_left :if={@expanded} class="h-4 w-4" />
-        <Icons.icon_chevron_right :if={!@expanded} class="h-4 w-4" />
-      </.tool_button>
-
-      <.conversations_rail_item
-        icon={@active_icon}
-        label={@active_label}
-        active
-        expanded={@expanded}
-        on_toggle={@on_toggle}
-      />
-      <.conversations_rail_item
-        icon={:channels}
+      <.rail_item label={@active_label} active expanded={@expanded} on_toggle={@on_toggle}>
+        <.conversations_rail_icon icon={@active_icon} />
+      </.rail_item>
+      <.rail_item
         label={dgettext("chat", "Open channels")}
         count={@channel_count}
         expanded={@expanded}
         on_toggle={@on_toggle}
-      />
-      <.conversations_rail_item
-        icon={:pms}
+      >
+        <.conversations_rail_icon icon={:channels} />
+      </.rail_item>
+      <.rail_item
         label={dgettext("chat", "Private messages")}
         count={@pm_count}
-        badge={@unread_count}
+        badge={if @unread_count > 0, do: format_unread_count(@unread_count)}
         expanded={@expanded}
         on_toggle={@on_toggle}
-      />
-      <.conversations_rail_item
-        icon={:popular}
+      >
+        <.conversations_rail_icon icon={:pms} />
+      </.rail_item>
+      <.rail_item
         label={dgettext("chat", "Popular channels")}
         count={@popular_count}
         expanded={@expanded}
         on_toggle={@on_toggle}
-      />
-    </nav>
-    """
-  end
-
-  attr :icon, :atom, required: true
-  attr :label, :string, required: true
-  attr :count, :integer, default: nil
-  attr :badge, :integer, default: 0
-  attr :active, :boolean, default: false
-  attr :expanded, :boolean, default: true
-  attr :on_toggle, :any, required: true
-
-  defp conversations_rail_item(assigns) do
-    assigns =
-      assign(assigns, :title, rail_item_title(assigns.label, assigns.count))
-
-    ~H"""
-    <.tool_button
-      label={@title}
-      variant="flat"
-      size="xs"
-      active={@active}
-      class="chat-sidebar-rail__button"
-      phx-click={if @expanded, do: nil, else: @on_toggle}
-    >
-      <.conversations_rail_icon icon={@icon} />
-      <span :if={is_integer(@count)} class="chat-sidebar-rail__count">{@count}</span>
-      <span :if={@badge > 0} class="chat-sidebar-rail__badge">
-        {format_unread_count(@badge)}
-      </span>
-    </.tool_button>
+      >
+        <.conversations_rail_icon icon={:popular} />
+      </.rail_item>
+    </.sidebar_rail>
     """
   end
 
@@ -1175,9 +1131,6 @@ defmodule RetroHexChatWeb.Components.UI.Conversations do
   end
 
   defp autojoin_title(_has_key), do: dgettext("chat", "Joined on connect")
-
-  defp rail_item_title(label, count) when is_integer(count), do: "#{label}: #{count}"
-  defp rail_item_title(label, _count), do: label
 
   defp nick_color(assigns, nick) do
     if is_function(assigns.nick_color_fn, 1), do: assigns.nick_color_fn.(nick)

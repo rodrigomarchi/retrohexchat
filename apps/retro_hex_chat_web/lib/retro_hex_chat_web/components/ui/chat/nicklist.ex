@@ -9,6 +9,7 @@ defmodule RetroHexChatWeb.Components.UI.Nicklist do
   alias RetroHexChat.Games.Catalog
   alias RetroHexChatWeb.Components.UI.Chat.Role
   import RetroHexChatWeb.Components.UI.ToolButton
+  import RetroHexChatWeb.Components.UI.SidebarRail
 
   alias RetroHexChatWeb.Icons
 
@@ -81,119 +82,63 @@ defmodule RetroHexChatWeb.Components.UI.Nicklist do
       |> assign(:visible_sections, Enum.take(assigns.sections || [], 4))
 
     ~H"""
-    <nav
-      class="chat-sidebar-rail chat-sidebar-rail--right"
-      aria-label={dgettext("chat", "User list rail")}
-      data-testid="nicklist-rail"
+    <.sidebar_rail
+      side="right"
+      label={dgettext("chat", "User list rail")}
+      testid="nicklist-rail"
+      expanded={@expanded}
+      collapse_label={dgettext("chat", "Collapse user list")}
+      expand_label={dgettext("chat", "Expand user list")}
+      on_toggle={@on_toggle}
     >
-      <.tool_button
-        label={
-          if @expanded,
-            do: dgettext("chat", "Collapse user list"),
-            else: dgettext("chat", "Expand user list")
-        }
-        variant="flat"
-        size="xs"
-        active={@expanded}
-        class="chat-sidebar-rail__button"
-        phx-click={@on_toggle}
-        aria-expanded={to_string(@expanded)}
-        data-testid="nicklist-rail-toggle"
-      >
-        <Icons.icon_chevron_right :if={@expanded} class="h-4 w-4" />
-        <Icons.icon_chevron_left :if={!@expanded} class="h-4 w-4" />
-      </.tool_button>
-
-      <.nicklist_rail_item
-        icon={@conversation_icon}
+      <.rail_item
         label={@display_label}
         count={@total}
         active
         expanded={@expanded}
         on_toggle={@on_toggle}
-      />
-      <.nicklist_rail_item
-        icon={:online}
+      >
+        <.nicklist_rail_icon icon={@conversation_icon} />
+      </.rail_item>
+      <.rail_item
         label={dgettext("chat", "Online")}
         count={@online_count}
         expanded={@expanded}
         on_toggle={@on_toggle}
-      />
-      <.nicklist_rail_item
+      >
+        <.nicklist_rail_icon icon={:online} />
+      </.rail_item>
+      <.rail_item
         :if={@away_count > 0}
-        icon={:away}
         label={dgettext("chat", "Away")}
         count={@away_count}
         expanded={@expanded}
         on_toggle={@on_toggle}
-      />
-      <.nicklist_rail_item
+      >
+        <.nicklist_rail_icon icon={:away} />
+      </.rail_item>
+      <.rail_item
         :if={@muted_count > 0}
-        icon={:muted}
         label={dgettext("chat", "Muted")}
         count={@muted_count}
         expanded={@expanded}
         on_toggle={@on_toggle}
-      />
-      <.nicklist_rail_role
+      >
+        <.nicklist_rail_icon icon={:muted} />
+      </.rail_item>
+      <.rail_item
         :for={section <- @visible_sections}
-        section={section}
+        label={section.label}
+        count={section.count}
+        class={"chat-sidebar-rail__button--role-#{Role.slug(section.key)}"}
         expanded={@expanded}
         on_toggle={@on_toggle}
-      />
-    </nav>
-    """
-  end
-
-  attr :icon, :atom, required: true
-  attr :label, :string, required: true
-  attr :count, :integer, default: nil
-  attr :active, :boolean, default: false
-  attr :expanded, :boolean, default: true
-  attr :on_toggle, :any, required: true
-
-  defp nicklist_rail_item(assigns) do
-    assigns = assign(assigns, :title, rail_item_title(assigns.label, assigns.count))
-
-    ~H"""
-    <.tool_button
-      label={@title}
-      variant="flat"
-      size="xs"
-      active={@active}
-      class="chat-sidebar-rail__button"
-      phx-click={if @expanded, do: nil, else: @on_toggle}
-    >
-      <.nicklist_rail_icon icon={@icon} />
-      <span :if={is_integer(@count)} class="chat-sidebar-rail__count">{@count}</span>
-    </.tool_button>
-    """
-  end
-
-  attr :section, :map, required: true
-  attr :expanded, :boolean, default: true
-  attr :on_toggle, :any, required: true
-
-  defp nicklist_rail_role(assigns) do
-    assigns =
-      assign(assigns, :title, rail_item_title(assigns.section.label, assigns.section.count))
-
-    ~H"""
-    <.tool_button
-      label={@title}
-      variant="flat"
-      size="xs"
-      class={[
-        "chat-sidebar-rail__button",
-        "chat-sidebar-rail__button--role-#{Role.slug(@section.key)}"
-      ]}
-      phx-click={if @expanded, do: nil, else: @on_toggle}
-    >
-      <span class="chat-sidebar-rail__role-icon">
-        {role_icon(%{role: @section.key})}
-      </span>
-      <span class="chat-sidebar-rail__count">{@section.count}</span>
-    </.tool_button>
+      >
+        <span class="chat-sidebar-rail__role-icon">
+          {role_icon(%{role: section.key})}
+        </span>
+      </.rail_item>
+    </.sidebar_rail>
     """
   end
 
@@ -621,7 +566,4 @@ defmodule RetroHexChatWeb.Components.UI.Nicklist do
   defp role_icon(assigns) do
     ~H'<Icons.icon_role_regular class="w-[16px] h-[16px]" />'
   end
-
-  defp rail_item_title(label, count) when is_integer(count), do: "#{label}: #{count}"
-  defp rail_item_title(label, _count), do: label
 end
