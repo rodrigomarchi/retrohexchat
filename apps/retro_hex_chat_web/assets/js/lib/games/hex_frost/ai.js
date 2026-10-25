@@ -20,6 +20,7 @@ import {
   getBlockAbsX,
   getBaileyY,
 } from "./physics.js";
+import { aiRng } from "../core/ai.js";
 
 const EDGE_MARGIN = 18;
 const NEUTRAL_INPUTS = Object.freeze({ left: false, right: false, up: false, down: false });
@@ -82,8 +83,7 @@ export class HexFrostAI {
    */
   constructor(options = {}) {
     this.difficulty = normalizeFrostAIDifficulty(options.difficulty);
-    this.rng =
-      typeof options.rng === "function" ? options.rng : createSeededRng(options.seed || 0x66726f73);
+    this.rng = aiRng(options, 0x66726f73);
     this.frame = 0;
     this._target = null;
   }
@@ -365,14 +365,4 @@ function maybeApplyMistake(target, config, rng) {
 
 function clampX(x) {
   return Math.max(EDGE_MARGIN, Math.min(CANVAS_W - EDGE_MARGIN, x));
-}
-
-function createSeededRng(seed) {
-  let s = seed | 0;
-  return function rng() {
-    s = (s + 0x6d2b79f5) | 0;
-    let t = Math.imul(s ^ (s >>> 15), 1 | s);
-    t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
-    return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
-  };
 }

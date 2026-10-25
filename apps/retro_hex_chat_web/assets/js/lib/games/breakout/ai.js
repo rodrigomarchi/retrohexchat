@@ -15,7 +15,16 @@ import {
   PADDLE_SPEED,
   PADDLE_W,
 } from "./physics.js";
-import { clamp, normalizeDifficulty } from "../core/ai.js";
+import {
+  clamp,
+  createReaction,
+  dutyFrame,
+  interceptAt,
+  normalizeDifficulty,
+  randomUnit,
+  reflect,
+  toward,
+} from "../core/ai.js";
 
 const BALL_MIN_X = BALL_SIZE / 2;
 const BALL_MAX_X = CANVAS_W - BALL_SIZE / 2;
@@ -64,14 +73,7 @@ export function normalizeBreakoutAIDifficulty(difficulty) {
  * @returns {number}
  */
 export function reflectBreakoutX(x) {
-  if (!Number.isFinite(x)) return TABLE_CENTER_X;
-
-  const span = BALL_MAX_X - BALL_MIN_X;
-  const cycle = span * 2;
-  let offset = (x - BALL_MIN_X) % cycle;
-  if (offset < 0) offset += cycle;
-
-  return offset <= span ? BALL_MIN_X + offset : BALL_MAX_X - (offset - span);
+  return reflect(x, BALL_MIN_X, BALL_MAX_X, TABLE_CENTER_X);
 }
 
 /**
@@ -87,10 +89,16 @@ export function predictBreakoutInterceptX(state, player = 2) {
   if (!movingTowardPaddle) return null;
 
   const targetY = player === 1 ? P1_PADDLE_FACE_Y : P2_PADDLE_FACE_Y;
-  const framesUntilPaddle = (targetY - state.ballY) / state.ballVY;
-  if (!Number.isFinite(framesUntilPaddle) || framesUntilPaddle < 0) return null;
-
-  return reflectBreakoutX(state.ballX + state.ballVX * framesUntilPaddle);
+  return interceptAt(
+    state.ballY,
+    state.ballVY,
+    targetY,
+    state.ballX,
+    state.ballVX,
+    BALL_MIN_X,
+    BALL_MAX_X,
+    TABLE_CENTER_X,
+  );
 }
 
 /**
@@ -120,11 +128,9 @@ export function breakoutMovementInputs(state, player, targetX, deadzonePx) {
   const paddleCenterX = paddleCenterFor(state, player);
   if (paddleCenterX === null || !Number.isFinite(targetX)) return NEUTRAL_INPUTS;
 
-  const delta = targetX - paddleCenterX;
   const deadzone = Math.max(deadzonePx, PADDLE_SPEED / 2);
-  if (Math.abs(delta) <= deadzone) return NEUTRAL_INPUTS;
-
-  return delta < 0 ? { left: true, right: false } : { left: false, right: true };
+  const [left, right] = toward(paddleCenterX, targetX, deadzone);
+  return { left, right };
 }
 
 /**
@@ -147,7 +153,7 @@ export class BreakoutAI {
     this.difficulty = normalizeBreakoutAIDifficulty(options.difficulty);
     this.rng = typeof options.rng === "function" ? options.rng : Math.random;
     this.frame = 0;
-    this.sampleAge = Number.POSITIVE_INFINITY;
+    this.reaction = createReaction();
     this.sampledTargetX = TABLE_CENTER_X;
   }
 
@@ -157,7 +163,7 @@ export class BreakoutAI {
    */
   setDifficulty(difficulty) {
     this.difficulty = normalizeBreakoutAIDifficulty(difficulty);
-    this.sampleAge = Number.POSITIVE_INFINITY;
+    this.reaction.reset();
   }
 
   /**
@@ -180,17 +186,15 @@ export class BreakoutAI {
     if (difficulty !== this.difficulty) this.setDifficulty(difficulty);
 
     const config = BREAKOUT_AI_DIFFICULTIES[difficulty];
-    if (this.sampleAge >= config.reactionFrames) {
-      this.sampledTargetX = this._sampleTargetX(state, player, config);
-      this.sampleAge = 0;
-    }
+    this.sampledTargetX = this.reaction.sample(config.reactionFrames, () =>
+      this._sampleTargetX(state, player, config),
+    );
 
-    const inputs = isMovementFrame(this.frame, config)
+    const inputs = dutyFrame(this.frame, config.movementDuty)
       ? breakoutMovementInputs(state, player, this.sampledTargetX, config.deadzonePx)
       : NEUTRAL_INPUTS;
 
     this.frame++;
-    this.sampleAge++;
     return inputs;
   }
 
@@ -215,16 +219,4 @@ function paddleCenterFor(state, player) {
   const key = player === 1 ? "paddle1X" : "paddle2X";
   const paddleX = state?.[key];
   return Number.isFinite(paddleX) ? paddleX + PADDLE_W / 2 : null;
-}
-
-function isMovementFrame(frame, config) {
-  if (config.movementDuty >= 1) return true;
-
-  return (frame % 10) / 10 < config.movementDuty;
-}
-
-function randomUnit(rng) {
-  const value = Number(rng());
-  if (!Number.isFinite(value)) return 0;
-  return Math.max(0, Math.min(value, 0.999999999));
 }

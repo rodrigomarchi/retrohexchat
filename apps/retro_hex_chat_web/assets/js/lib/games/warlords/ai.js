@@ -16,7 +16,16 @@ import {
   SHIELD_H,
   SHIELD_SPEED,
 } from "./physics.js";
-import { clamp, normalizeDifficulty } from "../core/ai.js";
+import {
+  clamp,
+  createReaction,
+  dutyFrame,
+  interceptAt,
+  normalizeDifficulty,
+  randomUnit,
+  reflect,
+  toward,
+} from "../core/ai.js";
 
 const FIREBALL_MIN_Y = FIREBALL_SIZE / 2;
 const FIREBALL_MAX_Y = CANVAS_H - FIREBALL_SIZE / 2;
@@ -72,14 +81,7 @@ export function normalizeWarlordAIDifficulty(difficulty) {
  * @returns {number}
  */
 export function reflectWarlordY(y) {
-  if (!Number.isFinite(y)) return TABLE_CENTER_Y;
-
-  const span = FIREBALL_MAX_Y - FIREBALL_MIN_Y;
-  const cycle = span * 2;
-  let offset = (y - FIREBALL_MIN_Y) % cycle;
-  if (offset < 0) offset += cycle;
-
-  return offset <= span ? FIREBALL_MIN_Y + offset : FIREBALL_MAX_Y - (offset - span);
+  return reflect(y, FIREBALL_MIN_Y, FIREBALL_MAX_Y, TABLE_CENTER_Y);
 }
 
 /**
@@ -95,10 +97,16 @@ export function predictWarlordInterceptY(state, player = 2) {
   if (!movingTowardShield) return null;
 
   const targetX = player === 1 ? P1_SHIELD_X + FIREBALL_SIZE / 2 : P2_SHIELD_X - FIREBALL_SIZE / 2;
-  const framesUntilShield = (targetX - state.fireballX) / state.fireballVX;
-  if (!Number.isFinite(framesUntilShield) || framesUntilShield < 0) return null;
-
-  return reflectWarlordY(state.fireballY + state.fireballVY * framesUntilShield);
+  return interceptAt(
+    state.fireballX,
+    state.fireballVX,
+    targetX,
+    state.fireballY,
+    state.fireballVY,
+    FIREBALL_MIN_Y,
+    FIREBALL_MAX_Y,
+    TABLE_CENTER_Y,
+  );
 }
 
 /**
@@ -134,11 +142,9 @@ export function warlordMovementInputs(state, player, targetY, deadzonePx) {
     return { up: false, down: false };
   }
 
-  const delta = targetY - shieldCenterY;
   const deadzone = Math.max(deadzonePx, SHIELD_SPEED / 2);
-  if (Math.abs(delta) <= deadzone) return { up: false, down: false };
-
-  return delta < 0 ? { up: true, down: false } : { up: false, down: true };
+  const [up, down] = toward(shieldCenterY, targetY, deadzone);
+  return { up, down };
 }
 
 /**
@@ -180,7 +186,7 @@ export class WarlordAI {
     this.difficulty = normalizeWarlordAIDifficulty(options.difficulty);
     this.rng = typeof options.rng === "function" ? options.rng : Math.random;
     this.frame = 0;
-    this.sampleAge = Number.POSITIVE_INFINITY;
+    this.reaction = createReaction();
     this.sampledTargetY = TABLE_CENTER_Y;
     this.caughtFrames = 0;
   }
@@ -191,7 +197,7 @@ export class WarlordAI {
    */
   setDifficulty(difficulty) {
     this.difficulty = normalizeWarlordAIDifficulty(difficulty);
-    this.sampleAge = Number.POSITIVE_INFINITY;
+    this.reaction.reset();
     this.caughtFrames = 0;
   }
 
@@ -216,18 +222,16 @@ export class WarlordAI {
     if (difficulty !== this.difficulty) this.setDifficulty(difficulty);
 
     const config = WARLORD_AI_DIFFICULTIES[difficulty];
-    if (this.sampleAge >= config.decisionFrames) {
-      this.sampledTargetY = this._sampleTargetY(state, player, config);
-      this.sampleAge = 0;
-    }
+    this.sampledTargetY = this.reaction.sample(config.decisionFrames, () =>
+      this._sampleTargetY(state, player, config),
+    );
 
-    const movement = isMovementFrame(this.frame, config)
+    const movement = dutyFrame(this.frame, config.movementDuty)
       ? warlordMovementInputs(state, player, this.sampledTargetY, config.deadzonePx)
       : { up: false, down: false };
     const space = this._spaceHeld(state, player, config);
 
     this.frame++;
-    this.sampleAge++;
     return { ...movement, space };
   }
 
@@ -271,16 +275,4 @@ function framesUntilShield(state, player) {
   const targetX = player === 1 ? P1_SHIELD_X + FIREBALL_SIZE / 2 : P2_SHIELD_X - FIREBALL_SIZE / 2;
   const frames = (targetX - state.fireballX) / state.fireballVX;
   return Number.isFinite(frames) && frames >= 0 ? frames : null;
-}
-
-function isMovementFrame(frame, config) {
-  if (config.movementDuty >= 1) return true;
-
-  return (frame % 10) / 10 < config.movementDuty;
-}
-
-function randomUnit(rng) {
-  const value = Number(rng());
-  if (!Number.isFinite(value)) return 0;
-  return Math.max(0, Math.min(value, 0.999999999));
 }

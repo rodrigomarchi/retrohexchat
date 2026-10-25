@@ -20,7 +20,7 @@ import {
   RICOCHET_ANGLE,
   getObstacleRect,
 } from "./physics.js";
-import { clamp, normalizeDifficulty } from "../core/ai.js";
+import { clamp, normalizeDifficulty, randomUnit } from "../core/ai.js";
 
 const NEUTRAL_INPUTS = Object.freeze({
   up: false,
@@ -453,10 +453,4 @@ function minPlayerY() {
 
 function maxPlayerY() {
   return ARENA_BOTTOM - GUNSLINGER_H / 2;
-}
-
-function randomUnit(rng) {
-  const value = Number(rng());
-  if (!Number.isFinite(value)) return 0;
-  return Math.max(0, Math.min(value, 0.999999999));
 }

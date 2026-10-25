@@ -15,7 +15,15 @@ import {
   PADDLE_W,
 } from "./physics.js";
 import { PHASE } from "./protocol.js";
-import { clamp, normalizeDifficulty } from "../core/ai.js";
+import {
+  clamp,
+  createReaction,
+  dutyFrame,
+  interceptAt,
+  normalizeDifficulty,
+  reflect,
+  toward,
+} from "../core/ai.js";
 
 const BALL_MIN_Y = BALL_SIZE / 2;
 const BALL_MAX_Y = CANVAS_H - BALL_SIZE / 2;
@@ -59,14 +67,7 @@ export function normalizePongAIDifficulty(difficulty) {
  * @returns {number}
  */
 export function reflectPongY(y) {
-  if (!Number.isFinite(y)) return TABLE_CENTER_Y;
-
-  const span = BALL_MAX_Y - BALL_MIN_Y;
-  const cycle = span * 2;
-  let offset = (y - BALL_MIN_Y) % cycle;
-  if (offset < 0) offset += cycle;
-
-  return offset <= span ? BALL_MIN_Y + offset : BALL_MAX_Y - (offset - span);
+  return reflect(y, BALL_MIN_Y, BALL_MAX_Y, TABLE_CENTER_Y);
 }
 
 /**
@@ -85,10 +86,16 @@ export function predictPaddleInterceptY(state, player = 2) {
   const movingTowardPaddle = player === 1 ? state.ballVX < 0 : state.ballVX > 0;
   if (!movingTowardPaddle) return null;
 
-  const framesUntilPaddle = (targetX - state.ballX) / state.ballVX;
-  if (!Number.isFinite(framesUntilPaddle) || framesUntilPaddle < 0) return null;
-
-  return reflectPongY(state.ballY + state.ballVY * framesUntilPaddle);
+  return interceptAt(
+    state.ballX,
+    state.ballVX,
+    targetX,
+    state.ballY,
+    state.ballVY,
+    BALL_MIN_Y,
+    BALL_MAX_Y,
+    TABLE_CENTER_Y,
+  );
 }
 
 /**
@@ -111,7 +118,7 @@ export class PongAI {
     this.difficulty = normalizePongAIDifficulty(options.difficulty);
     this.rng = typeof options.rng === "function" ? options.rng : Math.random;
     this.frame = 0;
-    this.sampleAge = Number.POSITIVE_INFINITY;
+    this.reaction = createReaction();
     this.sampledTargetY = TABLE_CENTER_Y;
   }
 
@@ -121,7 +128,7 @@ export class PongAI {
    */
   setDifficulty(difficulty) {
     this.difficulty = normalizePongAIDifficulty(difficulty);
-    this.sampleAge = Number.POSITIVE_INFINITY;
+    this.reaction.reset();
   }
 
   /**
@@ -144,14 +151,12 @@ export class PongAI {
     if (difficulty !== this.difficulty) this.setDifficulty(difficulty);
 
     const config = PONG_AI_DIFFICULTIES[difficulty];
-    if (this.sampleAge >= config.reactionFrames) {
-      this.sampledTargetY = this._sampleTargetY(state, player, config);
-      this.sampleAge = 0;
-    }
+    this.sampledTargetY = this.reaction.sample(config.reactionFrames, () =>
+      this._sampleTargetY(state, player, config),
+    );
 
     const inputs = this._inputsForTarget(state, player, config);
     this.frame++;
-    this.sampleAge++;
     return inputs;
   }
 
@@ -164,16 +169,14 @@ export class PongAI {
   }
 
   _inputsForTarget(state, player, config) {
-    if (!isMovementFrame(this.frame, config)) return NEUTRAL_INPUTS;
+    if (!dutyFrame(this.frame, config.movementDuty)) return NEUTRAL_INPUTS;
 
     const paddleCenterY = paddleCenterFor(state, player);
     if (paddleCenterY === null) return NEUTRAL_INPUTS;
 
-    const delta = this.sampledTargetY - paddleCenterY;
     const deadzone = Math.max(config.deadzonePx, PADDLE_SPEED / 2);
-    if (Math.abs(delta) <= deadzone) return NEUTRAL_INPUTS;
-
-    return delta < 0 ? { up: true, down: false } : { up: false, down: true };
+    const [up, down] = toward(paddleCenterY, this.sampledTargetY, deadzone);
+    return { up, down };
   }
 }
 
@@ -191,10 +194,4 @@ function paddleCenterFor(state, player) {
   const key = player === 1 ? "paddle1Y" : "paddle2Y";
   const paddleY = state[key];
   return Number.isFinite(paddleY) ? paddleY + PADDLE_H / 2 : null;
-}
-
-function isMovementFrame(frame, config) {
-  if (config.movementDuty >= 1) return true;
-
-  return (frame % 10) / 10 < config.movementDuty;
 }

@@ -18,7 +18,7 @@ import {
   SPEED_MIN,
   getBankAtWorld,
 } from "./physics.js";
-import { clamp } from "../core/ai.js";
+import { aiRng, clamp } from "../core/ai.js";
 
 const SAFE_MARGIN = JET_RADIUS + 18;
 const TARGET_LOOKAHEAD_Y = 120;
@@ -105,8 +105,7 @@ export class HexRaidAI {
    */
   constructor(options = {}) {
     this.difficulty = normalizeRaidAIDifficulty(options.difficulty);
-    this.rng =
-      typeof options.rng === "function" ? options.rng : createSeededRng(options.seed || 0x72616964);
+    this.rng = aiRng(options, 0x72616964);
     this.frame = 0;
     this.fireCooldown = 0;
     this.mineCooldown = 0;
@@ -476,14 +475,4 @@ function riverCenterAt(state, screenY) {
 function clampToSafeRiver(state, x, screenY) {
   const bank = safeBankAt(state, screenY);
   return clamp(x, bank.leftX + SAFE_MARGIN, bank.rightX - SAFE_MARGIN);
-}
-
-function createSeededRng(seed) {
-  let value = seed >>> 0;
-  return () => {
-    value = (value + 0x6d2b79f5) | 0;
-    let t = Math.imul(value ^ (value >>> 15), 1 | value);
-    t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
-    return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
-  };
 }

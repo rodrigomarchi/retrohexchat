@@ -7,7 +7,7 @@
 
 import { CELL } from "./physics.js";
 import { DIR, GRID_H, GRID_W, PHASE } from "./protocol.js";
-import { normalizeDifficulty } from "../core/ai.js";
+import { normalizeDifficulty, randomUnit } from "../core/ai.js";
 
 const GRID_AREA = GRID_W * GRID_H;
 const TABLE_CENTER = Object.freeze({
@@ -241,10 +241,4 @@ function isOpenCell(state, pos) {
 
 function cellKey(pos) {
   return `${pos.x}:${pos.y}`;
-}
-
-function randomUnit(rng) {
-  const value = Number(rng());
-  if (!Number.isFinite(value)) return 0;
-  return Math.max(0, Math.min(value, 0.999999999));
 }

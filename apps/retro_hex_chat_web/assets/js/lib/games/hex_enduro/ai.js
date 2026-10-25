@@ -8,6 +8,7 @@
 import { normalizeEnduroAIDifficulty } from "./difficulty.js";
 import { GAME_MODE, PHASE } from "./protocol.js";
 import { LANE_COUNT, SPEED_MAX, TURBO_FUEL_COST } from "./physics.js";
+import { aiRng } from "../core/ai.js";
 
 const COLLISION_ZONE_Z = 40;
 const PLAYER_COLLISION_BUFFER_Z = 135;
@@ -82,8 +83,7 @@ export class HexEnduroAI {
    */
   constructor(options = {}) {
     this.difficulty = normalizeEnduroAIDifficulty(options.difficulty);
-    this.rng =
-      typeof options.rng === "function" ? options.rng : createSeededRng(options.seed || 0x656e6475);
+    this.rng = aiRng(options, 0x656e6475);
     this.frame = 0;
     this.turboCooldown = 0;
     this._target = null;
@@ -346,14 +346,4 @@ function playerState(state, player) {
 
 function clampLane(lane) {
   return Math.max(0, Math.min(LANE_COUNT - 1, lane));
-}
-
-function createSeededRng(seed) {
-  let value = seed >>> 0;
-  return () => {
-    value = (value + 0x6d2b79f5) | 0;
-    let t = Math.imul(value ^ (value >>> 15), 1 | value);
-    t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
-    return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
-  };
 }
