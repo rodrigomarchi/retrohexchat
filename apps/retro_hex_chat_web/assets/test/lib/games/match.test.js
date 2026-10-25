@@ -1,6 +1,9 @@
-import { describe, it, expect, afterEach } from "vitest";
+import { describe, it, expect, afterEach, vi } from "vitest";
 import { BASE_MSG } from "../../../js/lib/games/net_protocol.js";
 import { PHASE as HOCKEY } from "../../../js/lib/games/hex_hockey/protocol.js";
+import { PHASE as OUTLAW } from "../../../js/lib/games/hex_outlaw/protocol.js";
+import { PHASE as RAID } from "../../../js/lib/games/hex_raid/protocol.js";
+import { PHASE as STAR_DUEL } from "../../../js/lib/games/star_duel/protocol.js";
 import { PHASE as PONG } from "../../../js/lib/games/pong/protocol.js";
 import { PHASE as TANKS } from "../../../js/lib/games/pixel_tanks/protocol.js";
 import {
@@ -146,5 +149,48 @@ describe("Hex Hockey — the goal flash", () => {
     match.engines.host.goalFlash = 60;
     match.advance(Math.round((10 * 1000) / 60));
     expect(match.engines.host.goalFlash).toBe(50);
+  });
+});
+
+// What a game does when the window loses focus, or the match stops: the key
+// releases that will never arrive, and the sounds they would have ended.
+describe("losing focus and stopping", () => {
+  it("Star Duel stops the thrust's roar when the window loses focus", async () => {
+    await underway("star_duel", STAR_DUEL.PLAYING);
+    const stopThrust = vi.spyOn(match.engines.host.audio, "stopThrust");
+    window.dispatchEvent(new Event("blur"));
+    expect(stopThrust).toHaveBeenCalled();
+  });
+
+  it("Outlaw lets go of both triggers when the window loses focus", async () => {
+    await underway("hex_outlaw", OUTLAW.PLAYING);
+    Object.assign(match.engines.host, { localFirePressed: true, remoteFirePressed: true });
+    window.dispatchEvent(new Event("blur"));
+    expect(match.engines.host).toMatchObject({ localFirePressed: false, remoteFirePressed: false });
+  });
+
+  it("Raid forgets held triggers and the peer when it stops", async () => {
+    await underway("hex_raid", RAID.FLYING);
+    const { host } = match.engines;
+    Object.assign(host, { localFirePressed: true, localMinePressed: true });
+    host.stop();
+    expect(host).toMatchObject({
+      localFirePressed: false,
+      localMinePressed: false,
+      peerReady: false,
+    });
+  });
+});
+
+describe("Light Trails — a command out of range", () => {
+  it("is ignored; the next real turn still lands", async () => {
+    await underway("light_trails", TRAILS.PLAYING);
+    const before = match.engines.host.p2PendingDir;
+    match.engines.guest.sendInputEdge(9);
+    match.advance(100);
+    expect(match.engines.host.p2PendingDir).toBe(before);
+    match.engines.guest.sendInputEdge(2);
+    match.advance(100);
+    expect(match.engines.host.p2PendingDir).toBe(2);
   });
 });

@@ -26,6 +26,14 @@ describe("a game's own code", () => {
     ["const r = Math.random();", /game\.random/],
     ["class Pong extends GameEngine {}", /defineGame/],
     ['import { GameEngine } from "../../game_engine.js";', /defineGame/],
+    ['import { GameEngine } from "../../game_engine";', /defineGame/],
+    ['const m = import("../../game_engine.js");', /defineGame/],
+    ["class Pong extends E.GameEngine {}", /defineGame/],
+    ['const r = Math["random"]();', /game\.random/],
+    ["const { random } = Math;", /game\.random/],
+    ["const r = Math.random; r();", /game\.random/],
+    ["new globalThis.DataView(buf);", /codec/],
+    ['ctx["createOscillator"]();', /synth/],
   ])("rejects %s", async (code, why) => {
     const found = await messages(code, IN_A_GAME);
     expect(

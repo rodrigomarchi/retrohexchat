@@ -4,35 +4,44 @@ import globals from "globals";
 
 // What a game may not write: the core does each of these once (see
 // docs/guide/games.md), and a game that does it again starts the next copy.
+const ENGINE =
+  "A game is a defineGame definition (core/define_game.js), not the engine underneath.";
+const TIMERS = "A game counts time in ticks (core/flow.js), never on the page's timers.";
+const RANDOM =
+  "The simulation draws from game.random (seeded, the same on every replay), not Math.random.";
+
 const GAME_SYNTAX = [
   {
-    selector: "NewExpression[callee.name='DataView']",
+    selector:
+      "NewExpression[callee.name='DataView'], NewExpression[callee.property.name='DataView']",
     message: "A game's wire is a core/codec.js schema, not a hand-written DataView.",
   },
   {
-    selector: "CallExpression[callee.property.name='createOscillator']",
+    selector:
+      "CallExpression[callee.property.name='createOscillator'], CallExpression[callee.property.value='createOscillator']",
     message: "A game's sounds are data for core/synth.js (its sounds.js table).",
   },
-  {
-    selector: "CallExpression[callee.name=/^set(Timeout|Interval)$/]",
-    message: "A game counts time in ticks (core/flow.js), never on the page's timers.",
-  },
-  {
-    selector: "CallExpression[callee.property.name=/^set(Timeout|Interval)$/]",
-    message: "A game counts time in ticks (core/flow.js), never on the page's timers.",
-  },
+  { selector: "CallExpression[callee.name=/^set(Timeout|Interval)$/]", message: TIMERS },
+  { selector: "CallExpression[callee.property.name=/^set(Timeout|Interval)$/]", message: TIMERS },
   {
     selector:
-      "ClassDeclaration[superClass.name='GameEngine'], ClassExpression[superClass.name='GameEngine']",
-    message: "A game is a defineGame definition (core/define_game.js), not a GameEngine subclass.",
+      "ClassDeclaration[superClass.name='GameEngine'], ClassExpression[superClass.name='GameEngine'], ClassDeclaration[superClass.property.name='GameEngine'], ClassExpression[superClass.property.name='GameEngine']",
+    message: ENGINE,
   },
+  { selector: "ImportExpression[source.value=/game_engine/]", message: ENGINE },
 ];
 
-const SIMULATION_RANDOM = {
-  selector: "CallExpression[callee.object.name='Math'][callee.property.name='random']",
-  message:
-    "The simulation draws from game.random (seeded, the same on every replay), not Math.random.",
-};
+// Math.random, however reached — except handed on as a parameter's default:
+// the pure physics functions are tested with it and called with game.random.
+const SIMULATION_RANDOM = [
+  {
+    selector:
+      "MemberExpression[object.name='Math'][property.name='random']:not(AssignmentPattern > MemberExpression.right)",
+    message: RANDOM,
+  },
+  { selector: "MemberExpression[object.name='Math'][property.value='random']", message: RANDOM },
+  { selector: "VariableDeclarator[init.name='Math'] > ObjectPattern", message: RANDOM },
+];
 
 export default [
   {
@@ -77,17 +86,11 @@ export default [
     files: ["js/lib/games/*/**/*.js"],
     ignores: ["js/lib/games/core/**"],
     rules: {
-      "no-restricted-syntax": ["error", ...GAME_SYNTAX, SIMULATION_RANDOM],
+      "no-restricted-syntax": ["error", ...GAME_SYNTAX, ...SIMULATION_RANDOM],
       "no-restricted-imports": [
         "error",
         {
-          patterns: [
-            {
-              group: ["**/game_engine.js"],
-              message:
-                "A game is a defineGame definition (core/define_game.js); the engine is the core's.",
-            },
-          ],
+          patterns: [{ group: ["**/game_engine", "**/game_engine.js"], message: ENGINE }],
         },
       ],
     },
