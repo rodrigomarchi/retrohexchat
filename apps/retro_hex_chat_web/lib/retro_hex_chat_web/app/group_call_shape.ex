@@ -337,4 +337,15 @@ defmodule RetroHexChatWeb.App.GroupCallShape do
       value -> Map.put(target, key, value)
     end
   end
+
+  @doc "Whether a participant sends `key` (audio, video, screen); one that never said counts as sending."
+  @spec participant_media?(map(), atom()) :: boolean()
+  def participant_media?(%{media_state: media}, key) when is_map(media) do
+    case Map.get(media, key) do
+      nil -> true
+      value -> value == true
+    end
+  end
+
+  def participant_media?(_participant, _key), do: true
 end

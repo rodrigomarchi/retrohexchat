@@ -18,6 +18,12 @@ defmodule RetroHexChatWeb.CallLive.Events do
   page saying it is finished — both through `RetroHexChatWeb.Live.Surface`,
   which is what a screen with an address does to itself. There is no host to
   tell any more.
+
+  This module routes the events and runs the joining; the work sits beside it
+  under `RetroHexChatWeb.CallLive`: `Moderation`, `Roster` (who and what is in
+  the call map), `Layout`, `Recovery` (connection state), `PrejoinPreferences`
+  (the antechamber's remembered choices) and `CallAssign` (the assign and the
+  layout push).
   """
 
   import Phoenix.Component, only: [assign: 2]
@@ -26,29 +32,30 @@ defmodule RetroHexChatWeb.CallLive.Events do
   use Gettext, backend: RetroHexChatWeb.Gettext
 
   alias Phoenix.LiveView.Socket
-  alias RetroHexChat.Accounts.TrustedDevices
   alias RetroHexChat.Calls.Events, as: CallEvents
-  alias RetroHexChat.Channels.Membership
-  alias RetroHexChat.Channels.Policy, as: ChannelPolicy
-  alias RetroHexChat.Channels.Server
   alias RetroHexChat.GroupCall
   alias RetroHexChat.GroupCall.JoinToken
-  alias RetroHexChat.GroupCall.Policy
   alias RetroHexChatWeb.App.GroupCallShape
   alias RetroHexChatWeb.App.GroupCallStats
   alias RetroHexChatWeb.App.GroupCallSummary
-  alias RetroHexChatWeb.App.SessionHelpers
-  alias RetroHexChatWeb.Components.UI.NickFlag
+
+  alias RetroHexChatWeb.CallLive.{
+    CallAssign,
+    Layout,
+    Moderation,
+    PrejoinPreferences,
+    Recovery,
+    Roster
+  }
+
   alias RetroHexChatWeb.Live.GroupCallConfirmDialog
   alias RetroHexChatWeb.Live.Surface
   alias RetroHexChatWeb.MediaDevices
   alias RetroHexChatWeb.Params
 
-  @prejoin_preference_namespace "group_call_prejoin"
-  @layout_modes ~w(auto grid focus speaker)
+  @layout_modes Layout.layout_modes()
   # The conference's window on its own page (`CallLive`'s desktop).
   @call_window_id "group-call"
-  @self_view_cycle [:tile, :pip, :hidden]
 
   @type event_result :: {:cont | :halt, Socket.t()}
 
@@ -58,7 +65,7 @@ defmodule RetroHexChatWeb.CallLive.Events do
   def handle_event("group_call_prejoin_cancel", _params, socket) do
     {:halt,
      socket
-     |> remember_prejoin_preferences()
+     |> PrejoinPreferences.remember()
      |> assign(group_call_prejoin: nil)
      |> Surface.close()}
   end
@@ -72,11 +79,11 @@ defmodule RetroHexChatWeb.CallLive.Events do
     preferences =
       params
       |> GroupCallShape.value(:group_call_prejoin)
-      |> normalize_prejoin_preferences()
+      |> PrejoinPreferences.normalize()
 
     {:halt,
      socket
-     |> maybe_save_prejoin_preferences(preferences)
+     |> PrejoinPreferences.save(preferences)
      |> assign(group_call_prejoin_preferences: preferences)
      |> assign(group_call_prejoin: nil)
      |> join_channel_call(channel_name, user_id, preferences)}
@@ -102,7 +109,7 @@ defmodule RetroHexChatWeb.CallLive.Events do
         payload,
         %{assigns: %{group_call_prejoin: %{}}} = socket
       ) do
-    preferences = normalize_prejoin_preferences(payload)
+    preferences = PrejoinPreferences.normalize(payload)
 
     {:halt,
      socket
@@ -116,7 +123,7 @@ defmodule RetroHexChatWeb.CallLive.Events do
   end
 
   def handle_event("group_call_prejoin_preferences_loaded", payload, socket) do
-    preferences = normalize_prejoin_preferences(payload)
+    preferences = PrejoinPreferences.normalize(payload)
 
     {:halt, assign(socket, group_call_prejoin_preferences: preferences)}
   end
@@ -144,7 +151,7 @@ defmodule RetroHexChatWeb.CallLive.Events do
     })
 
     socket =
-      update_call(socket, fn call ->
+      CallAssign.update(socket, fn call ->
         call
         |> Map.put(:status, :negotiating)
         |> Map.put(:warning, dgettext("group_call", "Requesting a fresh media offer."))
@@ -177,7 +184,7 @@ defmodule RetroHexChatWeb.CallLive.Events do
   def handle_event("group_call_close_room", _params, socket), do: {:halt, socket}
 
   def handle_event("group_call_mute_all", _params, %{assigns: %{group_call: %{}}} = socket) do
-    {:halt, open_bulk_media_confirm(socket, :mute_all)}
+    {:halt, Moderation.open_bulk_media_confirm(socket, :mute_all)}
   end
 
   def handle_event("group_call_mute_all", _params, socket), do: {:halt, socket}
@@ -187,13 +194,13 @@ defmodule RetroHexChatWeb.CallLive.Events do
         _params,
         %{assigns: %{group_call: %{}}} = socket
       ) do
-    {:halt, open_bulk_media_confirm(socket, :camera_off_all)}
+    {:halt, Moderation.open_bulk_media_confirm(socket, :camera_off_all)}
   end
 
   def handle_event("group_call_camera_off_all", _params, socket), do: {:halt, socket}
 
   def handle_event("group_call_toggle_lock", _params, %{assigns: %{group_call: %{}}} = socket) do
-    {:halt, toggle_lock(socket)}
+    {:halt, Moderation.toggle_lock(socket)}
   end
 
   def handle_event("group_call_toggle_lock", _params, socket), do: {:halt, socket}
@@ -220,7 +227,7 @@ defmodule RetroHexChatWeb.CallLive.Events do
         %{assigns: %{group_call: %{}}} = socket
       ) do
     close_confirm()
-    {:halt, close_room(socket)}
+    {:halt, Moderation.close_room(socket)}
   end
 
   def handle_event("group_call_confirm_end_call", _params, socket) do
@@ -239,7 +246,7 @@ defmodule RetroHexChatWeb.CallLive.Events do
     socket =
       socket
       |> assign(group_call_pending: nil)
-      |> kick_participant(pending.participant_id)
+      |> Moderation.kick_participant(pending.participant_id)
 
     {:halt, socket}
   end
@@ -259,7 +266,7 @@ defmodule RetroHexChatWeb.CallLive.Events do
     {:halt,
      socket
      |> assign(group_call_pending: nil)
-     |> moderate_all_media(:mute_all)}
+     |> Moderation.moderate_all_media(:mute_all)}
   end
 
   def handle_event("group_call_confirm_mute_all", _params, socket) do
@@ -277,7 +284,7 @@ defmodule RetroHexChatWeb.CallLive.Events do
     {:halt,
      socket
      |> assign(group_call_pending: nil)
-     |> moderate_all_media(:camera_off_all)}
+     |> Moderation.moderate_all_media(:camera_off_all)}
   end
 
   def handle_event("group_call_confirm_camera_off_all", _params, socket) do
@@ -364,7 +371,7 @@ defmodule RetroHexChatWeb.CallLive.Events do
         %{"participant-id" => participant_id},
         %{assigns: %{group_call: %{}}} = socket
       ) do
-    {:halt, moderate_audio(socket, participant_id)}
+    {:halt, Moderation.moderate_audio(socket, participant_id)}
   end
 
   def handle_event(
@@ -372,7 +379,7 @@ defmodule RetroHexChatWeb.CallLive.Events do
         %{"participant-id" => participant_id},
         %{assigns: %{group_call: %{}}} = socket
       ) do
-    {:halt, moderate_video(socket, participant_id)}
+    {:halt, Moderation.moderate_video(socket, participant_id)}
   end
 
   def handle_event(
@@ -380,7 +387,7 @@ defmodule RetroHexChatWeb.CallLive.Events do
         %{"participant-id" => participant_id},
         %{assigns: %{group_call: %{}}} = socket
       ) do
-    {:halt, moderate_screen(socket, participant_id)}
+    {:halt, Moderation.moderate_screen(socket, participant_id)}
   end
 
   def handle_event(
@@ -388,7 +395,7 @@ defmodule RetroHexChatWeb.CallLive.Events do
         %{"participant-id" => participant_id},
         %{assigns: %{group_call: %{}}} = socket
       ) do
-    {:halt, allow_speak(socket, participant_id)}
+    {:halt, Moderation.allow_speak(socket, participant_id)}
   end
 
   def handle_event(
@@ -396,11 +403,11 @@ defmodule RetroHexChatWeb.CallLive.Events do
         %{"participant-id" => participant_id},
         %{assigns: %{group_call: %{}}} = socket
       ) do
-    {:halt, open_kick_confirm(socket, participant_id)}
+    {:halt, Moderation.open_kick_confirm(socket, participant_id)}
   end
 
   def handle_event("group_call_webrtc_ready", _params, %{assigns: %{group_call: %{}}} = socket) do
-    {:halt, push_group_call_layout(socket)}
+    {:halt, CallAssign.push_layout(socket)}
   end
 
   def handle_event("group_call_webrtc_ready", _params, socket), do: {:halt, socket}
@@ -414,14 +421,14 @@ defmodule RetroHexChatWeb.CallLive.Events do
       |> Map.put(:status, :connecting)
       |> Map.put(:participant_id, participant.id)
       |> Map.put(:self_role, participant.channel_role_snapshot)
-      |> merge_summary(payload)
-      |> put_participant(participant)
+      |> Roster.merge_summary(payload)
+      |> Roster.put_participant(participant)
 
-    {:halt, socket |> assign(group_call: call) |> push_group_call_layout()}
+    {:halt, socket |> assign(group_call: call) |> CallAssign.push_layout()}
   end
 
   def handle_event("group_call_offer_received", _payload, %{assigns: %{group_call: %{}}} = socket) do
-    {:halt, update_call(socket, &put_negotiating_status/1)}
+    {:halt, CallAssign.update(socket, &Recovery.put_negotiating_status/1)}
   end
 
   def handle_event("group_call_peer_joined", payload, %{assigns: %{group_call: %{}}} = socket) do
@@ -430,10 +437,10 @@ defmodule RetroHexChatWeb.CallLive.Events do
 
     call =
       socket.assigns.group_call
-      |> put_participant(participant)
-      |> maybe_mark_connected(participant)
+      |> Roster.put_participant(participant)
+      |> Roster.maybe_mark_connected(participant)
 
-    {:halt, socket |> assign(group_call: call) |> push_group_call_layout()}
+    {:halt, socket |> assign(group_call: call) |> CallAssign.push_layout()}
   end
 
   def handle_event("group_call_peer_left", payload, %{assigns: %{group_call: %{}}} = socket) do
@@ -447,7 +454,9 @@ defmodule RetroHexChatWeb.CallLive.Events do
        |> Surface.close()}
     else
       {:halt,
-       socket |> update_call(&remove_participant(&1, participant_id)) |> push_group_call_layout()}
+       socket
+       |> CallAssign.update(&Roster.remove_participant(&1, participant_id))
+       |> CallAssign.push_layout()}
     end
   end
 
@@ -455,7 +464,10 @@ defmodule RetroHexChatWeb.CallLive.Events do
     participant =
       GroupCallShape.normalize_participant(GroupCallShape.value(payload, :participant))
 
-    {:halt, socket |> update_call(&put_participant(&1, participant)) |> push_group_call_layout()}
+    {:halt,
+     socket
+     |> CallAssign.update(&Roster.put_participant(&1, participant))
+     |> CallAssign.push_layout()}
   end
 
   def handle_event(
@@ -471,21 +483,21 @@ defmodule RetroHexChatWeb.CallLive.Events do
       payload
       |> GroupCallShape.value(:participant)
       |> GroupCallShape.normalize_participant()
-      |> merge_existing_participant_media(call)
+      |> Roster.merge_existing_participant_media(call)
 
     participant_id =
       Params.integer(GroupCallShape.value(payload, :participant_id) || participant.id)
 
     {:halt,
      socket
-     |> update_call(fn call ->
+     |> CallAssign.update(fn call ->
        call
-       |> put_participant(participant)
-       |> maybe_put_track(track)
-       |> put_screen_share_media(participant_id, active?)
-       |> maybe_focus_screen_share(participant_id, active?)
+       |> Roster.put_participant(participant)
+       |> Roster.put_track(track)
+       |> Roster.put_screen_share_media(participant_id, active?)
+       |> Layout.maybe_focus_screen_share(participant_id, active?)
      end)
-     |> push_group_call_layout()}
+     |> CallAssign.push_layout()}
   end
 
   def handle_event(
@@ -496,24 +508,26 @@ defmodule RetroHexChatWeb.CallLive.Events do
     media = GroupCallShape.normalize_media(payload)
 
     {:halt,
-     update_call(socket, fn call ->
+     CallAssign.update(socket, fn call ->
        call
        |> Map.put(:media, media)
        |> update_self_media(media)
      end)
-     |> push_group_call_layout()}
+     |> CallAssign.push_layout()}
   end
 
   # A track that arrives and a track that changes land the same way.
   def handle_event(event, payload, %{assigns: %{group_call: %{}}} = socket)
       when event in ["group_call_track_added", "group_call_track_updated"] do
     track = GroupCallShape.normalize_track(GroupCallShape.value(payload, :track))
-    {:halt, socket |> update_call(&put_track(&1, track)) |> push_group_call_layout()}
+    {:halt, socket |> CallAssign.update(&Roster.put_track(&1, track)) |> CallAssign.push_layout()}
   end
 
   def handle_event("group_call_track_removed", payload, %{assigns: %{group_call: %{}}} = socket) do
     track_id = GroupCallShape.value(payload, :track_id)
-    {:halt, socket |> update_call(&remove_track(&1, track_id)) |> push_group_call_layout()}
+
+    {:halt,
+     socket |> CallAssign.update(&Roster.remove_track(&1, track_id)) |> CallAssign.push_layout()}
   end
 
   # The room ended under this person: the page says so, and who did it, in
@@ -536,24 +550,24 @@ defmodule RetroHexChatWeb.CallLive.Events do
         %{assigns: %{group_call: %{}}} = socket
       ) do
     state = GroupCallShape.value(payload, :state)
-    {:halt, apply_connection_state(socket, state)}
+    {:halt, Recovery.apply_connection_state(socket, state)}
   end
 
   def handle_event("group_call_recovery_state", payload, %{assigns: %{group_call: %{}}} = socket) do
     recovery = GroupCallShape.normalize_recovery(payload)
-    emit_group_call_recovery_transition(recovery)
+    Recovery.emit_group_call_recovery_transition(recovery)
 
-    {:halt, update_call(socket, &apply_recovery_state(&1, payload))}
+    {:halt, CallAssign.update(socket, &Recovery.apply_recovery_state(&1, payload))}
   end
 
   def handle_event("group_call_stats", payload, %{assigns: %{group_call: %{}}} = socket) do
     {:halt,
-     update_call(socket, fn call ->
+     CallAssign.update(socket, fn call ->
        stats = GroupCallStats.normalize(payload)
 
        call
        |> Map.put(:stats, stats)
-       |> apply_stats_connection_state(stats)
+       |> Recovery.apply_stats_connection_state(stats)
        |> refresh_server_stats()
      end)}
   end
@@ -563,13 +577,13 @@ defmodule RetroHexChatWeb.CallLive.Events do
         payload,
         %{assigns: %{group_call: %{}}} = socket
       ) do
-    socket = update_call(socket, &put_participant_quality(&1, payload))
+    socket = CallAssign.update(socket, &Roster.put_participant_quality(&1, payload))
 
-    {:halt, maybe_push_speaker_layout(socket)}
+    {:halt, CallAssign.push_speaker_layout(socket)}
   end
 
   def handle_event("group_call_reaction", payload, %{assigns: %{group_call: %{}}} = socket) do
-    {:halt, update_call(socket, &put_group_call_reaction(&1, payload))}
+    {:halt, CallAssign.update(socket, &Roster.put_group_call_reaction(&1, payload))}
   end
 
   def handle_event("group_call_client_warning", payload, %{assigns: %{group_call: %{}}} = socket) do
@@ -578,7 +592,7 @@ defmodule RetroHexChatWeb.CallLive.Events do
         dgettext("group_call", "Group call media is degraded.")
 
     socket =
-      update_call(socket, fn call ->
+      CallAssign.update(socket, fn call ->
         call
         |> Map.put(:warning, message)
         |> Map.put(:error, nil)
@@ -601,7 +615,7 @@ defmodule RetroHexChatWeb.CallLive.Events do
         dgettext("group_call", "Group call connection failed.")
 
     socket =
-      update_call(socket, fn call ->
+      CallAssign.update(socket, fn call ->
         call
         |> Map.put(:status, :error)
         |> Map.put(:error, message)
@@ -709,7 +723,7 @@ defmodule RetroHexChatWeb.CallLive.Events do
       )
       when is_map(summary) do
     assign(socket,
-      group_call: merge_summary(call, GroupCallSummary.normalize(summary, channel_name))
+      group_call: Roster.merge_summary(call, GroupCallSummary.normalize(summary, channel_name))
     )
   end
 
@@ -743,7 +757,7 @@ defmodule RetroHexChatWeb.CallLive.Events do
 
   defp join_channel_call(socket, channel_name, user_id, preferences) do
     actor = %{user_id: user_id, nickname: socket.assigns.nickname}
-    preferences = normalize_prejoin_preferences(preferences)
+    preferences = PrejoinPreferences.normalize(preferences)
 
     with {:ok, %{token: token}} <- GroupCall.get_or_create_channel_call(channel_name, actor),
          {:ok, _pid} <- GroupCall.ensure_room_server(token),
@@ -763,8 +777,8 @@ defmodule RetroHexChatWeb.CallLive.Events do
   end
 
   defp open_prejoin(socket, channel_name, user_id) do
-    stored = socket.assigns[:group_call_prejoin_preferences] || load_prejoin_preferences(socket)
-    preferences = stored || default_prejoin_preferences()
+    stored = socket.assigns[:group_call_prejoin_preferences] || PrejoinPreferences.load(socket)
+    preferences = stored || PrejoinPreferences.default()
 
     assign(socket,
       group_call_prejoin: %{
@@ -814,11 +828,11 @@ defmodule RetroHexChatWeb.CallLive.Events do
     if is_binary(token) and is_integer(user_id) do
       preferences =
         socket.assigns[:group_call_prejoin_preferences] ||
-          load_prejoin_preferences(socket) ||
-          default_prejoin_preferences()
+          PrejoinPreferences.load(socket) ||
+          PrejoinPreferences.default()
 
       join_token = JoinToken.sign(token, channel_name, user_id, nickname)
-      recovery_message = recovery_message(:rejoining)
+      recovery_message = Recovery.recovery_message(:rejoining)
 
       recovery = %{
         GroupCallShape.empty_recovery()
@@ -845,7 +859,7 @@ defmodule RetroHexChatWeb.CallLive.Events do
         |> Map.put(:status, :reconnecting)
         |> Map.put(:warning, recovery_message)
         |> Map.put(:recovery, recovery)
-        |> put_participant(GroupCallShape.normalize_participant(participant))
+        |> Roster.put_participant(GroupCallShape.normalize_participant(participant))
 
       assign(socket, group_call: call, group_call_pending: nil, group_call_prejoin: nil)
     else
@@ -857,15 +871,15 @@ defmodule RetroHexChatWeb.CallLive.Events do
 
   defp select_console_section(socket, "people") do
     socket
-    |> update_call(fn call ->
+    |> CallAssign.update(fn call ->
       layout =
         call
-        |> layout()
+        |> Layout.layout()
         |> Map.put(:console_section, :people)
 
       %{call | layout: layout}
     end)
-    |> push_group_call_layout()
+    |> CallAssign.push_layout()
   end
 
   defp select_console_section(socket, "settings"), do: put_console_section(socket, :settings)
@@ -873,11 +887,11 @@ defmodule RetroHexChatWeb.CallLive.Events do
   defp select_console_section(socket, _section), do: put_console_section(socket, :call)
 
   defp put_console_section(socket, section) when section in [:call, :people, :stats, :settings] do
-    update_call(socket, fn call ->
-      layout = call |> layout() |> Map.put(:console_section, section)
+    CallAssign.update(socket, fn call ->
+      layout = call |> Layout.layout() |> Map.put(:console_section, section)
       %{call | layout: layout}
     end)
-    |> push_group_call_layout()
+    |> CallAssign.push_layout()
   end
 
   defp end_current_call(%{assigns: %{group_call: call}} = socket, reason) when is_map(call) do
@@ -929,95 +943,6 @@ defmodule RetroHexChatWeb.CallLive.Events do
     |> GroupCallSummary.put_nick_locales()
   end
 
-  defp apply_connection_state(socket, state) do
-    case to_string(state) do
-      "connected" ->
-        CallEvents.emit_recovery_transition(:group_call, :connected, "connection_state", %{
-          manual_retry: false,
-          trigger: "connection_state"
-        })
-
-        update_call(socket, fn call ->
-          call
-          |> Map.put(:connection_state, state)
-          |> Map.put(:status, :connected)
-          |> Map.put(:warning, nil)
-          |> Map.put(:error, nil)
-        end)
-
-      "disconnected" ->
-        message =
-          dgettext("group_call", "Group call media connection interrupted. Trying to recover.")
-
-        CallEvents.emit_recovery_transition(
-          :group_call,
-          :reconnecting,
-          "connection_disconnected",
-          %{
-            manual_retry: false,
-            trigger: "connection_state"
-          }
-        )
-
-        update_call(socket, fn call ->
-          call
-          |> Map.put(:connection_state, state)
-          |> Map.put(:status, :reconnecting)
-          |> Map.put(:warning, message)
-          |> Map.put(:error, nil)
-        end)
-
-      "failed" ->
-        message =
-          dgettext(
-            "group_call",
-            "Group call media connection failed. Retry the media connection."
-          )
-
-        CallEvents.emit_recovery_transition(:group_call, :failed, "connection_failed", %{
-          manual_retry: true,
-          trigger: "connection_state"
-        })
-
-        CallEvents.emit_client_error(:group_call, "connection_failed", %{
-          phase: "connection_state"
-        })
-
-        socket =
-          update_call(socket, fn call ->
-            call
-            |> Map.put(:connection_state, state)
-            |> Map.put(:status, :error)
-            |> Map.put(:error, message)
-            |> Map.put(:warning, nil)
-            |> Map.put(:recovery, %{
-              GroupCallShape.empty_recovery()
-              | state: :failed,
-                manual_retry: true,
-                message: message
-            })
-          end)
-
-        Surface.error(socket, message)
-
-      _other ->
-        update_call(socket, &Map.put(&1, :connection_state, state))
-    end
-  end
-
-  defp put_negotiating_status(%{connection_state: "connected"} = call), do: call
-  defp put_negotiating_status(call), do: Map.put(call, :status, :negotiating)
-
-  defp apply_stats_connection_state(call, %{summary: %{connection_state: "connected"}}) do
-    call
-    |> Map.put(:connection_state, "connected")
-    |> Map.put(:status, :connected)
-    |> Map.put(:warning, nil)
-    |> Map.put(:error, nil)
-  end
-
-  defp apply_stats_connection_state(call, _stats), do: call
-
   defp toggle_media(socket, kind) do
     call = socket.assigns.group_call
 
@@ -1025,7 +950,7 @@ defmodule RetroHexChatWeb.CallLive.Events do
       socket
       |> Surface.error(local_media_blocked_message(kind))
       |> push_event("group_call_set_media_state", call.media)
-      |> push_group_call_layout()
+      |> CallAssign.push_layout()
     else
       do_toggle_media(socket, kind)
     end
@@ -1039,21 +964,26 @@ defmodule RetroHexChatWeb.CallLive.Events do
     socket
     |> assign(group_call: call)
     |> push_event("group_call_set_media_state", media)
-    |> push_group_call_layout()
+    |> CallAssign.push_layout()
   end
 
   defp toggle_hand(socket) do
     call = socket.assigns.group_call
 
     with participant_id when is_integer(participant_id) <- call.participant_id,
-         {:ok, actor} <- actor(socket),
+         {:ok, actor} <- Moderation.actor(socket),
          {:ok, participant} <-
-           GroupCall.set_hand_raised(call.token, actor, participant_id, !self_hand_raised?(call)) do
+           GroupCall.set_hand_raised(
+             call.token,
+             actor,
+             participant_id,
+             !Roster.self_hand_raised?(call)
+           ) do
       participant = GroupCallShape.normalize_participant(participant)
 
       socket
-      |> update_call(&put_self_participant(&1, participant))
-      |> push_group_call_layout()
+      |> CallAssign.update(&Roster.put_self_participant(&1, participant))
+      |> CallAssign.push_layout()
     else
       {:error, message} when is_binary(message) ->
         Surface.error(socket, message)
@@ -1074,44 +1004,46 @@ defmodule RetroHexChatWeb.CallLive.Events do
     do: dgettext("group_call", "Your camera was disabled by a moderator.")
 
   defp set_layout_mode(socket, mode) when mode in @layout_modes do
-    update_call(socket, fn call ->
+    CallAssign.update(socket, fn call ->
       layout =
         call
-        |> layout()
+        |> Layout.layout()
         |> Map.put(:mode, String.to_existing_atom(mode))
-        |> maybe_focus_for_mode(call)
+        |> Layout.maybe_focus_for_mode(call)
 
       %{call | layout: layout}
     end)
-    |> push_group_call_layout()
+    |> CallAssign.push_layout()
   end
 
   defp set_layout_mode(socket, _mode), do: socket
 
   defp cycle_layout_mode(socket) do
     call = socket.assigns.group_call
-    current = call |> layout() |> Map.get(:mode, :auto) |> Atom.to_string()
-    mode = next_layout_mode(current)
+    current = call |> Layout.layout() |> Map.get(:mode, :auto) |> Atom.to_string()
+    mode = Layout.next_layout_mode(current)
 
     set_layout_mode(socket, mode)
   end
 
   defp cycle_self_view(socket) do
-    update_call(socket, fn call ->
-      current = Map.get(layout(call), :self_view, :tile)
-      next = next_self_view(current)
+    CallAssign.update(socket, fn call ->
+      current = Map.get(Layout.layout(call), :self_view, :tile)
+      next = Layout.next_self_view(current)
 
-      %{call | layout: Map.put(layout(call), :self_view, next)}
+      %{call | layout: Map.put(Layout.layout(call), :self_view, next)}
     end)
-    |> push_group_call_layout()
+    |> CallAssign.push_layout()
   end
 
   defp toggle_mini(socket) do
-    mini? = !Map.get(layout(socket.assigns.group_call), :mini, false)
+    mini? = !Map.get(Layout.layout(socket.assigns.group_call), :mini, false)
 
     socket
-    |> update_call(fn call -> %{call | layout: Map.put(layout(call), :mini, mini?)} end)
-    |> push_group_call_layout()
+    |> CallAssign.update(fn call ->
+      %{call | layout: Map.put(Layout.layout(call), :mini, mini?)}
+    end)
+    |> CallAssign.push_layout()
     |> push_call_window_geometry(mini?)
   end
 
@@ -1143,16 +1075,16 @@ defmodule RetroHexChatWeb.CallLive.Events do
   defp focus_participant(socket, participant_id) do
     with participant_id when is_integer(participant_id) <- Params.integer(participant_id),
          true <- participant_id in Enum.map(socket.assigns.group_call.participants, & &1.id) do
-      update_call(socket, fn call ->
+      CallAssign.update(socket, fn call ->
         layout =
           call
-          |> layout()
+          |> Layout.layout()
           |> Map.put(:mode, :focus)
           |> Map.put(:focused_participant_id, participant_id)
 
         %{call | layout: layout}
       end)
-      |> push_group_call_layout()
+      |> CallAssign.push_layout()
     else
       _error -> socket
     end
@@ -1161,13 +1093,13 @@ defmodule RetroHexChatWeb.CallLive.Events do
   defp focus_next_participant(socket) do
     call = socket.assigns.group_call
     participant_ids = Enum.map(call.participants || [], & &1.id)
-    current_id = layout(call).focused_participant_id
+    current_id = Layout.layout(call).focused_participant_id
 
     participant_id =
       if current_id do
-        next_participant_id(participant_ids, current_id)
+        Layout.next_participant_id(participant_ids, current_id)
       else
-        default_focus_participant_id(call) || List.first(participant_ids)
+        Layout.default_focus_participant_id(call) || List.first(participant_ids)
       end
 
     case participant_id do
@@ -1179,33 +1111,33 @@ defmodule RetroHexChatWeb.CallLive.Events do
   defp toggle_pin_participant(socket, participant_id) do
     with participant_id when is_integer(participant_id) <- Params.integer(participant_id),
          true <- participant_id in Enum.map(socket.assigns.group_call.participants, & &1.id) do
-      update_call(socket, fn call ->
-        layout = layout(call)
+      CallAssign.update(socket, fn call ->
+        layout = Layout.layout(call)
 
         pinned_participant_ids =
           layout
           |> Map.get(:pinned_participant_ids, [])
-          |> toggle_participant_id(participant_id)
+          |> Layout.toggle_participant_id(participant_id)
 
         %{call | layout: Map.put(layout, :pinned_participant_ids, pinned_participant_ids)}
       end)
-      |> push_group_call_layout()
+      |> CallAssign.push_layout()
     else
       _error -> socket
     end
   end
 
   defp clear_focus(socket) do
-    update_call(socket, fn call ->
+    CallAssign.update(socket, fn call ->
       layout =
         call
-        |> layout()
+        |> Layout.layout()
         |> Map.put(:mode, :auto)
         |> Map.put(:focused_participant_id, nil)
 
       %{call | layout: layout}
     end)
-    |> push_group_call_layout()
+    |> CallAssign.push_layout()
   end
 
   defp update_self_media(%{participant_id: nil} = call, _media), do: call
@@ -1222,364 +1154,6 @@ defmodule RetroHexChatWeb.CallLive.Events do
     end)
   end
 
-  defp put_self_participant(call, %{id: id, media_state: media} = participant)
-       when id == call.participant_id do
-    call
-    |> put_participant(participant)
-    |> Map.put(:media, media)
-    |> Map.put(:self_role, participant.channel_role_snapshot || call[:self_role])
-  end
-
-  defp put_self_participant(call, participant), do: put_participant(call, participant)
-
-  defp self_hand_raised?(call) do
-    case self_participant(call) do
-      nil -> Map.get(call.media || %{}, :hand_raised) == true
-      participant -> participant_hand_raised?(participant)
-    end
-  end
-
-  defp self_participant(%{participant_id: participant_id, participants: participants}) do
-    Enum.find(participants || [], &(&1.id == participant_id))
-  end
-
-  defp self_participant(_call), do: nil
-
-  defp participant_hand_raised?(%{media_state: media}) when is_map(media),
-    do: Map.get(media, :hand_raised) == true
-
-  defp participant_hand_raised?(_participant), do: false
-
-  defp update_call(socket, fun) do
-    assign(socket, group_call: fun.(socket.assigns.group_call))
-  end
-
-  defp push_group_call_layout(%{assigns: %{group_call: call}} = socket) when is_map(call) do
-    push_event(socket, "group_call_layout_state", group_call_layout_payload(call))
-  end
-
-  defp push_group_call_layout(socket), do: socket
-
-  defp maybe_push_speaker_layout(
-         %{assigns: %{group_call: %{layout: %{mode: :speaker}}}} = socket
-       ),
-       do: push_group_call_layout(socket)
-
-  defp maybe_push_speaker_layout(socket), do: socket
-
-  defp moderate_audio(socket, participant_id) do
-    moderate_participant(
-      socket,
-      participant_id,
-      &set_target_audio(socket.assigns.group_call, &1, &2),
-      dgettext("group_call", "Could not update participant media.")
-    )
-  end
-
-  defp moderate_video(socket, participant_id) do
-    moderate_participant(
-      socket,
-      participant_id,
-      &set_target_video(socket.assigns.group_call, &1, &2),
-      dgettext("group_call", "Could not update participant camera.")
-    )
-  end
-
-  defp moderate_screen(socket, participant_id) do
-    moderate_participant(
-      socket,
-      participant_id,
-      &set_target_screen_share(socket.assigns.group_call, &1, &2),
-      dgettext("group_call", "Could not update participant screen sharing."),
-      &push_group_call_layout/1
-    )
-  end
-
-  defp allow_speak(socket, participant_id) do
-    moderate_participant(
-      socket,
-      participant_id,
-      fn actor, target ->
-        GroupCall.allow_participant_speak(socket.assigns.group_call.token, actor, target.id)
-      end,
-      dgettext("group_call", "Could not allow participant to speak."),
-      &push_group_call_layout/1
-    )
-  end
-
-  # A moderator acting on one participant: find them, act as the moderator,
-  # draw the participant as the server now has them. A refusal says why when
-  # the server said; anything else is `failure`.
-  defp moderate_participant(socket, participant_id, apply, failure, after_update \\ & &1) do
-    with participant_id when is_integer(participant_id) <- Params.integer(participant_id),
-         {:ok, target} <- find_participant(socket.assigns.group_call, participant_id),
-         {:ok, actor} <- actor(socket),
-         {:ok, participant} <- apply.(actor, target) do
-      socket
-      |> update_call(&put_participant(&1, GroupCallShape.normalize_participant(participant)))
-      |> after_update.()
-    else
-      {:error, message} when is_binary(message) -> Surface.error(socket, message)
-      _error -> Surface.error(socket, failure)
-    end
-  end
-
-  defp open_bulk_media_confirm(socket, action) when action in [:mute_all, :camera_off_all] do
-    dialog_action =
-      case action do
-        :mute_all -> :open_mute_all
-        :camera_off_all -> :open_camera_off_all
-      end
-
-    Phoenix.LiveView.send_update(GroupCallConfirmDialog,
-      id: GroupCallConfirmDialog.id(),
-      action: {dialog_action, socket.assigns.group_call.channel_name}
-    )
-
-    assign(socket, group_call_pending: %{action: action})
-  end
-
-  defp moderate_all_media(socket, action) when action in [:mute_all, :camera_off_all] do
-    with {:ok, actor} <- actor(socket),
-         {:ok, summary} <- apply_bulk_media_action(socket.assigns.group_call, actor, action) do
-      socket
-      |> update_call(&put_bulk_media_participants(&1, summary))
-      |> maybe_empty_bulk_media_message(summary)
-      |> push_group_call_layout()
-    else
-      {:error, message} when is_binary(message) ->
-        Surface.error(socket, message)
-
-      _error ->
-        Surface.error(socket, dgettext("group_call", "Could not update participants."))
-    end
-  end
-
-  defp apply_bulk_media_action(call, actor, :mute_all),
-    do: GroupCall.mute_all_participants(call.token, actor)
-
-  defp apply_bulk_media_action(call, actor, :camera_off_all),
-    do: GroupCall.block_all_participant_videos(call.token, actor)
-
-  defp put_bulk_media_participants(call, %{participants: participants})
-       when is_list(participants) do
-    Enum.reduce(participants, call, fn participant, call ->
-      put_participant(call, GroupCallShape.normalize_participant(participant))
-    end)
-  end
-
-  defp put_bulk_media_participants(call, _summary), do: call
-
-  defp maybe_empty_bulk_media_message(socket, %{changed_count: count}) when count > 0, do: socket
-
-  defp maybe_empty_bulk_media_message(socket, _summary) do
-    Surface.system(
-      socket,
-      dgettext("group_call", "No lower-ranked conference participants were affected.")
-    )
-  end
-
-  defp toggle_lock(socket) do
-    call = socket.assigns.group_call
-
-    with {:ok, actor} <- actor(socket),
-         {:ok, result} <- apply_lock_action(call, actor) do
-      socket
-      |> update_call(fn call ->
-        %{
-          call
-          | room: GroupCallShape.normalize_room(GroupCallShape.value(result, :room) || call.room)
-        }
-      end)
-      |> push_group_call_layout()
-    else
-      {:error, message} when is_binary(message) ->
-        Surface.error(socket, message)
-
-      _error ->
-        Surface.error(socket, dgettext("group_call", "Could not update conference lock."))
-    end
-  end
-
-  defp apply_lock_action(call, actor) do
-    if Policy.locked?(call[:room]) do
-      GroupCall.unlock_call(call.token, actor)
-    else
-      GroupCall.lock_call(call.token, actor)
-    end
-  end
-
-  defp open_kick_confirm(socket, participant_id) do
-    with participant_id when is_integer(participant_id) <- Params.integer(participant_id),
-         {:ok, target} <- find_participant(socket.assigns.group_call, participant_id),
-         {:ok, actor} <- actor(socket),
-         :ok <- authorize_channel_ban(socket.assigns.group_call, actor, target) do
-      Phoenix.LiveView.send_update(GroupCallConfirmDialog,
-        id: GroupCallConfirmDialog.id(),
-        action:
-          {:open_kick_participant, socket.assigns.group_call.channel_name, participant_id,
-           target.nickname}
-      )
-
-      assign(socket,
-        group_call_pending: %{
-          action: :kick_participant,
-          participant_id: participant_id,
-          target_nickname: target.nickname
-        }
-      )
-    else
-      {:error, message} when is_binary(message) ->
-        Surface.error(socket, message)
-
-      _error ->
-        Surface.error(socket, dgettext("group_call", "Could not remove participant."))
-    end
-  end
-
-  defp kick_participant(socket, participant_id) do
-    with participant_id when is_integer(participant_id) <- Params.integer(participant_id),
-         {:ok, target} <- find_participant(socket.assigns.group_call, participant_id),
-         {:ok, actor} <- actor(socket),
-         :ok <- remove_participant_from_channel_call(socket.assigns.group_call, actor, target) do
-      socket
-      |> update_call(&remove_participant(&1, participant_id))
-      |> Surface.system(
-        dgettext(
-          "group_call",
-          "%{target} was removed from the conference and banned from %{channel}.",
-          target: target.nickname,
-          channel: socket.assigns.group_call.channel_name
-        )
-      )
-    else
-      {:error, message} when is_binary(message) ->
-        Surface.error(socket, message)
-
-      _error ->
-        Surface.error(socket, dgettext("group_call", "Could not remove participant."))
-    end
-  end
-
-  defp remove_participant_from_channel_call(call, actor, target) do
-    reason = dgettext("group_call", "Removed from channel conference")
-
-    with :ok <- authorize_channel_ban(call, actor, target),
-         :ok <- Server.ban(call.channel_name, actor.nickname, target.nickname, reason),
-         :ok <- kick_group_call_participant(call, actor, target) do
-      :ok
-    end
-  end
-
-  defp kick_group_call_participant(call, actor, target) do
-    GroupCall.force_kick_participant(call.token, actor, target.id, "channel_kick")
-  end
-
-  defp authorize_channel_ban(call, actor, target) do
-    with {:ok, channel_state} <- Server.get_state(call.channel_name) do
-      channel_state.members
-      |> Membership.from_members()
-      |> ChannelPolicy.can_ban?(actor.nickname, target.nickname)
-    end
-  end
-
-  defp close_room(socket) do
-    with {:ok, actor} <- actor(socket),
-         :ok <- GroupCall.close_call(socket.assigns.group_call.token, actor, "moderation") do
-      socket
-      |> assign(group_call: nil, group_call_pending: nil, left_reason: "ended")
-      |> Surface.close()
-    else
-      {:error, message} when is_binary(message) -> Surface.error(socket, message)
-      _error -> Surface.error(socket, dgettext("group_call", "Could not end group call."))
-    end
-  end
-
-  defp set_target_audio(call, actor, target) do
-    if participant_media?(target, :audio) do
-      GroupCall.mute_participant(call.token, actor, target.id)
-    else
-      GroupCall.unmute_participant(call.token, actor, target.id)
-    end
-  end
-
-  defp set_target_video(call, actor, target) do
-    if participant_media_moderated?(target, :video) do
-      GroupCall.unblock_participant_video(call.token, actor, target.id)
-    else
-      GroupCall.block_participant_video(call.token, actor, target.id)
-    end
-  end
-
-  defp set_target_screen_share(call, actor, target) do
-    if participant_media_moderated?(target, :screen) do
-      GroupCall.unblock_participant_screen_share(call.token, actor, target.id)
-    else
-      GroupCall.block_participant_screen_share(call.token, actor, target.id)
-    end
-  end
-
-  defp find_participant(call, participant_id) do
-    case Enum.find(call.participants, &(&1.id == participant_id)) do
-      nil -> {:error, dgettext("group_call", "Participant is no longer in the group call.")}
-      participant -> {:ok, participant}
-    end
-  end
-
-  defp participant_media?(%{media_state: media}, key) when is_map(media) do
-    case Map.get(media, key) do
-      nil -> true
-      value -> value == true
-    end
-  end
-
-  defp participant_media?(_participant, _key), do: true
-
-  defp participant_media_moderated?(%{media_state: media}, :video) when is_map(media),
-    do: Map.get(media, :server_video_blocked) == true
-
-  defp participant_media_moderated?(%{media_state: media}, :screen) when is_map(media),
-    do: Map.get(media, :server_screen_blocked) == true
-
-  defp participant_media_moderated?(_participant, _key), do: false
-
-  defp actor(socket) do
-    case SessionHelpers.resolve_user_id(socket.assigns.nickname) do
-      {:ok, user_id} ->
-        {:ok, %{user_id: user_id, nickname: socket.assigns.nickname}}
-
-      {:redirect, nil} ->
-        {:error, dgettext("group_call", "You must be registered to moderate group calls.")}
-    end
-  end
-
-  defp merge_summary(call, payload) do
-    call
-    |> Map.put(
-      :room,
-      GroupCallShape.normalize_room(GroupCallShape.value(payload, :room) || call.room)
-    )
-    |> Map.put(
-      :participants,
-      GroupCallShape.normalize_participants(GroupCallShape.value(payload, :participants))
-    )
-    |> Map.put(
-      :pending_participants,
-      GroupCallShape.normalize_participants(GroupCallShape.value(payload, :pending_participants))
-    )
-    |> Map.put(
-      :tracks,
-      GroupCallShape.normalize_tracks(GroupCallShape.value(payload, :tracks) || call.tracks)
-    )
-    |> Map.put(
-      :server_stats,
-      GroupCallShape.normalize_server_stats(
-        GroupCallShape.value(payload, :server_stats) || call.server_stats
-      )
-    )
-    |> GroupCallSummary.put_nick_locales()
-  end
-
   defp refresh_server_stats(call) do
     case GroupCall.get_summary(call.token) do
       {:ok, summary} ->
@@ -1594,551 +1168,9 @@ defmodule RetroHexChatWeb.CallLive.Events do
     end
   end
 
-  defp maybe_mark_connected(call, %{id: id}) when id == call.participant_id do
-    %{call | status: :connected}
-  end
-
-  defp maybe_mark_connected(call, _participant), do: call
-
-  defp put_participant(call, %{id: nil}), do: call
-
-  defp put_participant(call, participant) do
-    participants =
-      call.participants
-      |> Enum.reject(&(&1.id == participant.id))
-      |> Kernel.++([participant])
-      |> Enum.sort_by(& &1.id)
-
-    GroupCallSummary.put_nick_locales(%{call | participants: participants})
-  end
-
-  defp merge_existing_participant_media(%{id: nil} = participant, _call), do: participant
-
-  defp merge_existing_participant_media(
-         %{id: participant_id, media_state: media} = participant,
-         call
-       ) do
-    existing =
-      Enum.find(call.participants || [], &(&1.id == participant_id))
-
-    existing_media =
-      case existing do
-        %{media_state: existing_media} when is_map(existing_media) -> existing_media
-        _missing -> %{}
-      end
-
-    %{participant | media_state: Map.merge(existing_media, media)}
-  end
-
-  defp remove_participant(call, participant_id) do
-    call = %{call | participants: Enum.reject(call.participants, &(&1.id == participant_id))}
-    call = remove_participant_quality(call, participant_id)
-    call = remove_participant_reactions(call, participant_id)
-    layout = remove_pinned_participant(layout(call), participant_id)
-
-    if layout.focused_participant_id == participant_id do
-      %{call | layout: %{layout | focused_participant_id: nil, mode: :auto}}
-    else
-      %{call | layout: layout}
-    end
-  end
-
-  defp remove_track(call, track_id) do
-    %{call | tracks: Enum.reject(call.tracks, &(&1.id == track_id))}
-  end
-
-  defp put_track(call, %{id: nil}), do: call
-
-  defp put_track(call, track) do
-    tracks =
-      call.tracks
-      |> Enum.reject(&(&1.id == track.id))
-      |> Kernel.++([track])
-      |> Enum.sort_by(& &1.id)
-
-    %{call | tracks: tracks}
-  end
-
-  defp maybe_put_track(call, %{id: nil}), do: call
-  defp maybe_put_track(call, track), do: put_track(call, track)
-
-  defp apply_recovery_state(call, payload) do
-    recovery = GroupCallShape.normalize_recovery(payload)
-    message = recovery.message || recovery_message(recovery.state)
-
-    call = Map.put(call, :recovery, %{recovery | message: message})
-
-    case recovery.state do
-      :connected ->
-        call
-        |> Map.put(:status, :connected)
-        |> Map.put(:warning, nil)
-        |> Map.put(:error, nil)
-
-      :connecting ->
-        call
-        |> Map.put(:status, :connecting)
-        |> Map.put(:warning, message)
-        |> Map.put(:error, nil)
-
-      :reconnecting ->
-        call
-        |> Map.put(:status, :reconnecting)
-        |> Map.put(:warning, message)
-        |> Map.put(:error, nil)
-
-      :rejoining ->
-        call
-        |> Map.put(:status, :reconnecting)
-        |> Map.put(:warning, message)
-        |> Map.put(:error, nil)
-
-      :negotiating ->
-        call
-        |> Map.put(:status, :negotiating)
-        |> Map.put(:warning, message)
-        |> Map.put(:error, nil)
-
-      :failed ->
-        call
-        |> Map.put(:status, :error)
-        |> Map.put(:error, message)
-        |> Map.put(:warning, nil)
-
-      _state ->
-        call
-    end
-  end
-
-  defp recovery_message(:connecting),
-    do: dgettext("group_call", "Group call media is connecting.")
-
-  defp recovery_message(:reconnecting),
-    do: dgettext("group_call", "Group call media connection interrupted. Trying to recover.")
-
-  defp recovery_message(:rejoining),
-    do: dgettext("group_call", "Rejoining the media session.")
-
-  defp recovery_message(:negotiating),
-    do: dgettext("group_call", "Requesting a fresh media offer.")
-
-  defp recovery_message(:failed),
-    do: dgettext("group_call", "Media recovery failed. Retry the media connection.")
-
-  defp recovery_message(_state), do: nil
-
-  defp emit_group_call_recovery_transition(recovery) do
-    CallEvents.emit_recovery_transition(:group_call, recovery.state, recovery.reason, %{
-      attempt: recovery.attempt,
-      max_attempts: recovery.max_attempts,
-      next_retry_ms: recovery.next_retry_ms,
-      manual_retry: recovery.manual_retry,
-      trigger: recovery.trigger
-    })
-  end
-
-  defp put_participant_quality(call, payload) do
-    valid_ids =
-      call.participants
-      |> Enum.map(& &1.id)
-      |> MapSet.new()
-
-    incoming =
-      payload
-      |> GroupCallShape.value(:participants)
-      |> List.wrap()
-      |> Enum.map(&GroupCallShape.normalize_participant_quality/1)
-      |> Enum.reject(&is_nil(&1.participant_id))
-      |> Enum.map(&{&1.participant_id, &1})
-      |> Map.new()
-
-    existing = Map.get(call, :participant_quality) || GroupCallShape.empty_participant_quality()
-
-    by_participant =
-      existing.by_participant
-      |> Map.merge(incoming)
-      |> Map.filter(fn {participant_id, _quality} ->
-        MapSet.member?(valid_ids, participant_id)
-      end)
-
-    active_speaker_id =
-      Params.integer(GroupCallShape.value(payload, :active_speaker_participant_id))
-
-    active_speaker_id =
-      if MapSet.member?(valid_ids, active_speaker_id), do: active_speaker_id, else: nil
-
-    call =
-      Map.put(call, :participant_quality, %{
-        active_speaker_participant_id: active_speaker_id,
-        by_participant: by_participant
-      })
-
-    maybe_sync_speaker_focus(call)
-  end
-
-  defp remove_participant_quality(call, participant_id) do
-    quality = Map.get(call, :participant_quality) || GroupCallShape.empty_participant_quality()
-    by_participant = Map.delete(quality.by_participant, participant_id)
-
-    active_speaker_id =
-      if quality.active_speaker_participant_id == participant_id,
-        do: nil,
-        else: quality.active_speaker_participant_id
-
-    Map.put(call, :participant_quality, %{
-      active_speaker_participant_id: active_speaker_id,
-      by_participant: by_participant
-    })
-  end
-
-  defp remove_participant_reactions(call, participant_id) do
-    Map.update(call, :reactions, [], fn reactions ->
-      Enum.reject(reactions || [], &(&1.participant_id == participant_id))
-    end)
-  end
-
-  defp put_group_call_reaction(call, payload) do
-    reaction = GroupCallShape.normalize_group_call_reaction(call, payload)
-
-    if is_nil(reaction.participant_id) do
-      call
-    else
-      reactions =
-        call
-        |> Map.get(:reactions, [])
-        |> Enum.reject(&(&1.participant_id == reaction.participant_id))
-
-      Map.put(call, :reactions, Enum.take([reaction | reactions], 8))
-    end
-  end
-
-  defp default_prejoin_preferences do
-    %{
-      media: %{audio: true, video: true},
-      layout: default_layout(),
-      device_preferences: MediaDevices.no_preference()
-    }
-  end
-
-  defp normalize_prejoin_preferences(nil), do: default_prejoin_preferences()
-
-  defp normalize_prejoin_preferences(preferences) when is_map(preferences) do
-    defaults = default_prejoin_preferences()
-
-    %{
-      media:
-        defaults.media
-        |> Map.merge(normalize_prejoin_media(preferences))
-        |> Map.take([:audio, :video]),
-      layout:
-        defaults.layout
-        |> Map.merge(normalize_prejoin_layout(preferences))
-        |> Map.take([:mode, :focused_participant_id, :self_view, :mini]),
-      device_preferences:
-        defaults.device_preferences
-        |> Map.merge(MediaDevices.preferences(preferences))
-        |> Map.take([:audio_input_id, :video_input_id, :audio_output_id])
-    }
-  end
-
-  defp normalize_prejoin_preferences(_preferences), do: default_prejoin_preferences()
-
-  defp normalize_prejoin_media(preferences) do
-    media = GroupCallShape.value(preferences, :media)
-
-    %{
-      audio:
-        Params.boolean(
-          preference_value(
-            GroupCallShape.value(preferences, :audio),
-            GroupCallShape.value(media, :audio)
-          ),
-          true
-        ),
-      video:
-        Params.boolean(
-          preference_value(
-            GroupCallShape.value(preferences, :video),
-            GroupCallShape.value(media, :video)
-          ),
-          true
-        )
-    }
-  end
-
-  defp normalize_prejoin_layout(preferences) do
-    layout = GroupCallShape.value(preferences, :layout)
-
-    mode =
-      preference_value(
-        GroupCallShape.value(preferences, :layout_mode),
-        GroupCallShape.value(layout, :mode)
-      )
-
-    self_view =
-      preference_value(
-        GroupCallShape.value(preferences, :self_view),
-        GroupCallShape.value(layout, :self_view)
-      )
-
-    %{
-      mode: layout_mode(mode),
-      focused_participant_id: nil,
-      self_view: self_view_mode(self_view),
-      mini: false
-    }
-  end
-
-  defp preference_value(nil, fallback), do: fallback
-  defp preference_value(value, _fallback), do: value
-
-  defp load_prejoin_preferences(%{assigns: %{nickname: nickname}} = socket) do
-    with persisted when is_map(persisted) <-
-           TrustedDevices.get_device_preference(
-             socket.assigns[:trusted_device_id],
-             nickname,
-             @prejoin_preference_namespace
-           ) do
-      normalize_prejoin_preferences(persisted)
-    else
-      _missing -> nil
-    end
-  end
-
-  defp load_prejoin_preferences(_socket), do: nil
-
-  defp maybe_save_prejoin_preferences(
-         %{assigns: %{nickname: nickname}} = socket,
-         preferences
-       ) do
-    safe_preferences = persistable_prejoin_preferences(preferences)
-
-    _ =
-      TrustedDevices.put_device_preference(
-        socket.assigns[:trusted_device_id],
-        nickname,
-        @prejoin_preference_namespace,
-        safe_preferences
-      )
-
-    socket
-  end
-
-  defp maybe_save_prejoin_preferences(socket, _preferences), do: socket
-
-  # The media defaults belong to the person, not to the door they leave by.
-  # Closing the antechamber unmounts this LiveView, so a choice that only lives
-  # in `group_call_prejoin_preferences` is gone by the time the antechamber
-  # opens again; only the trusted-device record survives that.
-  defp remember_prejoin_preferences(
-         %{assigns: %{group_call_prejoin: %{}, group_call_prejoin_preferences: preferences}} =
-           socket
-       )
-       when is_map(preferences) do
-    maybe_save_prejoin_preferences(socket, preferences)
-  end
-
-  defp remember_prejoin_preferences(socket), do: socket
-
-  defp persistable_prejoin_preferences(preferences) do
-    preferences = normalize_prejoin_preferences(preferences)
-
-    %{
-      "media" => %{
-        "audio" => preferences.media.audio,
-        "video" => preferences.media.video
-      },
-      "layout" => %{
-        "mode" => Atom.to_string(preferences.layout.mode),
-        "self_view" => Atom.to_string(preferences.layout.self_view)
-      },
-      "device_preferences" => %{
-        "audio_input_id" => preferences.device_preferences.audio_input_id,
-        "video_input_id" => preferences.device_preferences.video_input_id,
-        "audio_output_id" => preferences.device_preferences.audio_output_id
-      }
-    }
-  end
-
   defp update_prejoin(socket, fun) do
     assign(socket, group_call_prejoin: fun.(socket.assigns.group_call_prejoin))
   end
 
   defp default_devices, do: MediaDevices.none()
-
-  defp layout_mode(mode) when mode in [:auto, :grid, :focus, :speaker], do: mode
-
-  defp layout_mode(mode) when is_binary(mode) and mode in @layout_modes,
-    do: String.to_existing_atom(mode)
-
-  defp layout_mode(_mode), do: :auto
-
-  defp self_view_mode(mode) when mode in [:tile, :pip, :hidden], do: mode
-
-  defp self_view_mode(mode) when is_binary(mode) and mode in ~w(tile pip hidden),
-    do: String.to_existing_atom(mode)
-
-  defp self_view_mode(_mode), do: :tile
-
-  defp default_layout do
-    %{
-      mode: :auto,
-      focused_participant_id: nil,
-      self_view: :tile,
-      console_section: :call,
-      mini: false,
-      pinned_participant_ids: []
-    }
-  end
-
-  defp layout(%{layout: layout}) when is_map(layout) do
-    default_layout()
-    |> Map.merge(layout)
-    |> Map.update!(:console_section, &GroupCallShape.normalize_console_section/1)
-    |> Map.update!(:pinned_participant_ids, &GroupCallShape.normalize_pinned_participant_ids/1)
-  end
-
-  defp layout(_call), do: default_layout()
-
-  defp maybe_focus_for_mode(%{mode: :speaker} = layout, call) do
-    %{
-      layout
-      | focused_participant_id:
-          active_speaker_participant_id(call) || default_focus_participant_id(call)
-    }
-  end
-
-  defp maybe_focus_for_mode(%{mode: mode, focused_participant_id: nil} = layout, call)
-       when mode == :focus do
-    %{layout | focused_participant_id: default_focus_participant_id(call)}
-  end
-
-  defp maybe_focus_for_mode(layout, _call), do: layout
-
-  defp default_focus_participant_id(call) do
-    remote =
-      call.participants
-      |> Enum.reject(&(&1.id == call.participant_id))
-      |> Enum.find(&participant_media?(&1, :video))
-
-    (remote || List.first(call.participants) || %{})[:id]
-  end
-
-  defp active_speaker_participant_id(%{
-         participant_quality: %{active_speaker_participant_id: id}
-       }),
-       do: id
-
-  defp active_speaker_participant_id(_call), do: nil
-
-  defp maybe_sync_speaker_focus(%{layout: %{mode: :speaker}} = call) do
-    case active_speaker_participant_id(call) do
-      participant_id when is_integer(participant_id) ->
-        %{call | layout: %{layout(call) | focused_participant_id: participant_id}}
-
-      _missing ->
-        call
-    end
-  end
-
-  defp maybe_sync_speaker_focus(call), do: call
-
-  defp toggle_participant_id(participant_ids, participant_id) do
-    participant_ids = GroupCallShape.normalize_pinned_participant_ids(participant_ids)
-
-    if participant_id in participant_ids do
-      Enum.reject(participant_ids, &(&1 == participant_id))
-    else
-      (participant_ids ++ [participant_id])
-      |> Enum.uniq()
-      |> Enum.take(4)
-    end
-  end
-
-  defp remove_pinned_participant(layout, participant_id) do
-    Map.put(
-      layout,
-      :pinned_participant_ids,
-      layout
-      |> Map.get(:pinned_participant_ids, [])
-      |> GroupCallShape.normalize_pinned_participant_ids()
-      |> Enum.reject(&(&1 == participant_id))
-    )
-  end
-
-  defp next_layout_mode(current) do
-    current_index = Enum.find_index(@layout_modes, &(&1 == current)) || 0
-    Enum.at(@layout_modes, rem(current_index + 1, length(@layout_modes)))
-  end
-
-  defp next_self_view(current) do
-    current_index = Enum.find_index(@self_view_cycle, &(&1 == current)) || 0
-    Enum.at(@self_view_cycle, rem(current_index + 1, length(@self_view_cycle)))
-  end
-
-  defp next_participant_id([], _current_id), do: nil
-
-  defp next_participant_id(participant_ids, current_id) do
-    current_index = Enum.find_index(participant_ids, &(&1 == current_id))
-    next_index = rem((current_index || -1) + 1, length(participant_ids))
-    Enum.at(participant_ids, next_index)
-  end
-
-  defp group_call_layout_payload(call) do
-    layout = layout(call)
-
-    %{
-      mode: Atom.to_string(layout.mode),
-      focused_participant_id: layout.focused_participant_id,
-      self_view: Atom.to_string(layout.self_view),
-      mini: Map.get(layout, :mini, false),
-      pinned_participant_ids: layout.pinned_participant_ids,
-      self_participant_id: call.participant_id,
-      participants:
-        Enum.map(call.participants || [], fn participant ->
-          participant
-          |> GroupCallShape.participant_payload()
-          |> Map.put(:flag, participant_flag(call, participant))
-        end),
-      tracks: Enum.map(call.tracks || [], &GroupCallShape.track_payload/1)
-    }
-  end
-
-  # What a JS-drawn name tile needs to draw the flag beside it: the tile is
-  # built in the browser, so it gets the sprite reference rather than a locale
-  # it would have to map to an icon itself.
-  defp participant_flag(call, %{nickname: nickname}) do
-    call
-    |> Map.get(:nick_locales)
-    |> Kernel.||(%{})
-    |> Map.get(nickname)
-    |> NickFlag.payload()
-  end
-
-  defp participant_flag(_call, _participant), do: nil
-
-  defp put_screen_share_media(call, participant_id, active?) do
-    call =
-      if call.participant_id == participant_id do
-        Map.update(call, :media, %{screen: active?}, &Map.put(&1, :screen, active?))
-      else
-        call
-      end
-
-    update_in(call.participants, fn participants ->
-      Enum.map(participants || [], fn
-        %{id: id, media_state: media_state} = participant when id == participant_id ->
-          %{participant | media_state: Map.put(media_state || %{}, :screen, active?)}
-
-        participant ->
-          participant
-      end)
-    end)
-  end
-
-  defp maybe_focus_screen_share(call, participant_id, true) when is_integer(participant_id) do
-    %{call | layout: %{layout(call) | mode: :focus, focused_participant_id: participant_id}}
-  end
-
-  defp maybe_focus_screen_share(call, _participant_id, _active?), do: call
 end
