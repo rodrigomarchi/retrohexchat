@@ -15,6 +15,8 @@ defmodule RetroHexChatWeb.Site.Window do
   the title, icon, size and contents of a window live here and nowhere else.
   """
 
+  alias RetroHexChatWeb.Components.UI.Site.Section
+
   @enforce_keys [:id, :title, :icon, :body]
   defstruct [
     :id,
@@ -75,6 +77,29 @@ defmodule RetroHexChatWeb.Site.Window do
   @spec new(String.t(), String.t(), atom(), keyword()) :: t()
   def new(id, title, icon, opts) do
     struct!(__MODULE__, [id: id, title: title, icon: icon] ++ opts)
+  end
+
+  @doc """
+  The window a page of the site opens with, in front of the rest: the page's
+  heading (its `h1`, the window's title, under `:heading_id`) and a paragraph
+  on what the page is about (`:description`). Takes `:taskbar_label` and
+  `:status` like `new/4`.
+  """
+  @spec intro(String.t(), atom(), keyword()) :: t()
+  def intro(title, icon, opts) do
+    {heading_id, opts} = Keyword.pop!(opts, :heading_id)
+    {description, opts} = Keyword.pop!(opts, :description)
+
+    new(
+      "intro",
+      title,
+      icon,
+      [
+        width: 640,
+        body: &Section.page_intro/1,
+        assigns: %{heading_id: heading_id, description: description}
+      ] ++ opts
+    )
   end
 
   @doc "The window declared under `id`; raises when the page never declared it."

@@ -19,18 +19,14 @@ defmodule RetroHexChatWeb.Site.Pages.Games do
      %{
        active_page: :games,
        windows: [
-         Window.new("intro", dgettext("landing", "Retro games in your browser"), :icon_joystick,
-           width: 640,
+         Window.intro(dgettext("landing", "Retro games in your browser"), :icon_joystick,
            taskbar_label: dgettext("landing", "Games"),
-           body: &page_intro/1,
-           assigns: %{
-             heading_id: "games-heading",
-             description:
-               dgettext(
-                 "landing",
-                 "Shareware classics and freeware adventures running on their original engines, and arcade games to play against a friend or the AI. Free, and nothing to install: pick a nickname and play."
-               )
-           }
+           heading_id: "games-heading",
+           description:
+             dgettext(
+               "landing",
+               "Shareware classics and freeware adventures running on their original engines, and arcade games to play against a friend or the AI. Free, and nothing to install: pick a nickname and play."
+             )
          ),
          cards_window("arcade", dgettext("landing", "Arcade"), :icon_game_arcade,
            groups: GameCatalog.arcade_cards()

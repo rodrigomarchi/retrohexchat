@@ -13,18 +13,14 @@ defmodule RetroHexChatWeb.Site.Pages.Community do
      %{
        active_page: :community,
        windows: [
-         Window.new("intro", dgettext("landing", "Open Source and Community"), :icon_code,
-           width: 640,
+         Window.intro(dgettext("landing", "Open Source and Community"), :icon_code,
            taskbar_label: dgettext("landing", "Community"),
-           body: &page_intro/1,
-           assigns: %{
-             heading_id: "community-heading",
-             description:
-               dgettext(
-                 "landing",
-                 "Retro Hex Chat is MIT-licensed open source software. Follow the repository, contribute code or translations, report issues, or sponsor continued development."
-               )
-           },
+           heading_id: "community-heading",
+           description:
+             dgettext(
+               "landing",
+               "Retro Hex Chat is MIT-licensed open source software. Follow the repository, contribute code or translations, report issues, or sponsor continued development."
+             ),
            status: [dgettext("landing", "Community overview")]
          ),
          Window.new("open-source", dgettext("landing", "Open Source"), :icon_code,

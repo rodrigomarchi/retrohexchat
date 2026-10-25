@@ -45,18 +45,14 @@ defmodule RetroHexChatWeb.Site.Pages.MircOnline do
        links: Guides.links(:mirc_online),
        commands_path: PublicPages.localized_path(PublicPages.path(:mirc_commands)),
        windows: [
-         Window.new("intro", dgettext("landing", "mIRC online, in your browser"), :icon_chat,
-           width: 640,
+         Window.intro(dgettext("landing", "mIRC online, in your browser"), :icon_chat,
            taskbar_label: dgettext("landing", "mIRC online"),
-           body: &page_intro/1,
-           assigns: %{
-             heading_id: "mirc-online-heading",
-             description:
-               dgettext(
-                 "landing",
-                 "A chat built the way mIRC taught a generation to chat, running in a browser tab: no download, no server list to configure. Pick a nickname, and you are in a channel."
-               )
-           },
+           heading_id: "mirc-online-heading",
+           description:
+             dgettext(
+               "landing",
+               "A chat built the way mIRC taught a generation to chat, running in a browser tab: no download, no server list to configure. Pick a nickname, and you are in a channel."
+             ),
            status: [dgettext("landing", "Free of charge, nothing to install")]
          ),
          Window.new("the-window", dgettext("landing", "The window you know"), :icon_chat,

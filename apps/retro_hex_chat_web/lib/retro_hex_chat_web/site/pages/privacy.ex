@@ -11,18 +11,14 @@ defmodule RetroHexChatWeb.Site.Pages.Privacy do
      %{
        active_page: :privacy,
        windows: [
-         Window.new("intro", dgettext("landing", "Privacy Comparison"), :icon_lock,
-           width: 640,
+         Window.intro(dgettext("landing", "Privacy Comparison"), :icon_lock,
            taskbar_label: dgettext("landing", "Privacy"),
-           body: &page_intro/1,
-           assigns: %{
-             heading_id: "privacy-heading",
-             description:
-               dgettext(
-                 "landing",
-                 "Compare Retro Hex Chat with corporate chat platforms across server ownership, message storage, call routing, AI training, source code access, and community control."
-               )
-           },
+           heading_id: "privacy-heading",
+           description:
+             dgettext(
+               "landing",
+               "Compare Retro Hex Chat with corporate chat platforms across server ownership, message storage, call routing, AI training, source code access, and community control."
+             ),
            status: [dgettext("landing", "Privacy overview")]
          ),
          Window.new(

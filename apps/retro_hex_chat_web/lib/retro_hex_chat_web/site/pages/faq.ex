@@ -190,18 +190,14 @@ defmodule RetroHexChatWeb.Site.Pages.Faq do
      %{
        active_page: :faq,
        windows: [
-         Window.new("intro", dgettext("landing", "Retro Hex Chat FAQ"), :icon_question,
-           width: 640,
+         Window.intro(dgettext("landing", "Retro Hex Chat FAQ"), :icon_question,
            taskbar_label: dgettext("landing", "FAQ"),
-           body: &page_intro/1,
-           assigns: %{
-             heading_id: "faq-heading",
-             description:
-               dgettext(
-                 "landing",
-                 "Answers to common questions about peer-to-peer calls, self-hosting, server requirements, security, mobile support, contributing, and project sponsorship."
-               )
-           },
+           heading_id: "faq-heading",
+           description:
+             dgettext(
+               "landing",
+               "Answers to common questions about peer-to-peer calls, self-hosting, server requirements, security, mobile support, contributing, and project sponsorship."
+             ),
            status: [dgettext("landing", "Frequently asked questions")]
          ),
          Window.new("getting-started", dgettext("landing", "Getting Started"), :icon_question,

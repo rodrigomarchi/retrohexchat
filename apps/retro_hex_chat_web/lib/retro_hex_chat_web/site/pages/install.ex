@@ -11,18 +11,14 @@ defmodule RetroHexChatWeb.Site.Pages.Install do
      %{
        active_page: :install,
        windows: [
-         Window.new("intro", dgettext("landing", "Install Retro Hex Chat"), :icon_terminal,
-           width: 640,
+         Window.intro(dgettext("landing", "Install Retro Hex Chat"), :icon_terminal,
            taskbar_label: dgettext("landing", "Install"),
-           body: &page_intro/1,
-           assigns: %{
-             heading_id: "install-heading",
-             description:
-               dgettext(
-                 "landing",
-                 "Set up your own Retro Hex Chat server from source. Clone the repository, run the setup task, start Phoenix, and keep control of your community data."
-               )
-           },
+           heading_id: "install-heading",
+           description:
+             dgettext(
+               "landing",
+               "Set up your own Retro Hex Chat server from source. Clone the repository, run the setup task, start Phoenix, and keep control of your community data."
+             ),
            status: [dgettext("landing", "Installation guide")]
          ),
          Window.new(

@@ -73,21 +73,16 @@ defmodule RetroHexChatWeb.Site.Pages.IrcChat do
   # taskbar button pointing at one.
   defp windows(rooms) do
     [
-      Window.new(
-        "intro",
+      Window.intro(
         dgettext("landing", "IRC-style chat rooms in your browser"),
         :icon_channels,
-        width: 640,
         taskbar_label: dgettext("landing", "IRC chat"),
-        body: &page_intro/1,
-        assigns: %{
-          heading_id: "irc-chat-heading",
-          description:
-            dgettext(
-              "landing",
-              "Channels whose names start with #, operators who keep order, and nicknames you can register — the way IRC has always worked, in a browser tab, free and with nothing to install."
-            )
-        },
+        heading_id: "irc-chat-heading",
+        description:
+          dgettext(
+            "landing",
+            "Channels whose names start with #, operators who keep order, and nicknames you can register — the way IRC has always worked, in a browser tab, free and with nothing to install."
+          ),
         status: [dgettext("landing", "Chat rooms open to anyone")]
       ),
       Window.new("rooms", dgettext("landing", "How a chat room works"), :icon_channels,

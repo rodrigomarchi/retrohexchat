@@ -13,18 +13,14 @@ defmodule RetroHexChatWeb.Site.Pages.HowItWorks do
      %{
        active_page: :how_it_works,
        windows: [
-         Window.new("intro", dgettext("landing", "How Retro Hex Chat Works"), :icon_server,
-           width: 640,
+         Window.intro(dgettext("landing", "How Retro Hex Chat Works"), :icon_server,
            taskbar_label: dgettext("landing", "How It Works"),
-           body: &page_intro/1,
-           assigns: %{
-             heading_id: "how-it-works-heading",
-             description:
-               dgettext(
-                 "landing",
-                 "Retro Hex Chat combines a self-hosted Phoenix server with real-time chat, channel Spaces, private WebRTC peer-to-peer sessions, and self-hosted channel conferences."
-               )
-           },
+           heading_id: "how-it-works-heading",
+           description:
+             dgettext(
+               "landing",
+               "Retro Hex Chat combines a self-hosted Phoenix server with real-time chat, channel Spaces, private WebRTC peer-to-peer sessions, and self-hosted channel conferences."
+             ),
            status: [dgettext("landing", "Architecture overview")]
          ),
          Window.new("your-server", dgettext("landing", "Your Server"), :icon_server,

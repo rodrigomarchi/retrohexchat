@@ -24,18 +24,14 @@ defmodule RetroHexChatWeb.Site.Pages.Features do
        arcade: GameCatalog.arcade_cards(),
        mirc_commands_path: PublicPages.localized_path(PublicPages.path(:mirc_commands)),
        windows: [
-         Window.new("intro", dgettext("landing", "Retro Hex Chat Features"), :icon_chat,
-           width: 640,
+         Window.intro(dgettext("landing", "Retro Hex Chat Features"), :icon_chat,
            taskbar_label: dgettext("landing", "Features"),
-           body: &page_intro/1,
-           assigns: %{
-             heading_id: "features-heading",
-             description:
-               dgettext(
-                 "landing",
-                 "Explore the public chat features: real-time channels, virtual spaces, private P2P voice and video calls, channel conferences, file transfer, games, bots, IRC-style commands, and built-in help."
-               )
-           },
+           heading_id: "features-heading",
+           description:
+             dgettext(
+               "landing",
+               "Explore the public chat features: real-time channels, virtual spaces, private P2P voice and video calls, channel conferences, file transfer, games, bots, IRC-style commands, and built-in help."
+             ),
            status: [dgettext("landing", "Feature overview")]
          ),
          Window.new("real-time-chat", dgettext("landing", "Real-time Chat"), :icon_chat,

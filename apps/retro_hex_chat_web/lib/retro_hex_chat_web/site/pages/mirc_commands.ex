@@ -27,21 +27,16 @@ defmodule RetroHexChatWeb.Site.Pages.MircCommands do
        links: Guides.links(:mirc_commands),
        windows:
          [
-           Window.new(
-             "intro",
+           Window.intro(
              dgettext("landing", "Your mIRC commands, in the browser"),
              :icon_terminal,
-             width: 640,
              taskbar_label: dgettext("landing", "mIRC commands"),
-             body: &page_intro/1,
-             assigns: %{
-               heading_id: "mirc-commands-heading",
-               description:
-                 dgettext(
-                   "landing",
-                   "Retro Hex Chat is a chat in the style of mIRC that runs in the browser, and most of what your fingers remember still works. Below are the commands mIRC users type most, each marked the same, different, or not here — with what to type instead."
-                 )
-             },
+             heading_id: "mirc-commands-heading",
+             description:
+               dgettext(
+                 "landing",
+                 "Retro Hex Chat is a chat in the style of mIRC that runs in the browser, and most of what your fingers remember still works. Below are the commands mIRC users type most, each marked the same, different, or not here — with what to type instead."
+               ),
              status: [dgettext("landing", "Commands start with a slash")]
            )
          ] ++ Enum.map(groups, &Guides.parity_window/1) ++ [Guides.read_next_window()],
