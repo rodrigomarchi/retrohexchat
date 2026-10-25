@@ -3,13 +3,56 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.Messages do
   Message factory functions for building stream-insertable message maps.
   """
 
-  import Phoenix.Component, only: [assign: 3]
+  import Phoenix.Component, only: [assign: 2, assign: 3]
+  import Phoenix.LiveView, only: [push_event: 3]
 
   use Gettext, backend: RetroHexChatWeb.Gettext
 
   alias RetroHexChat.Chat.IgnoreList
   alias RetroHexChat.Page
   alias RetroHexChatWeb.ChatLive.Components.{MessageViewport, StatusViewport}
+
+  @doc """
+  A page of older messages, scrolled back to, added above the conversation.
+
+  Scrolling back is the third path into a conversation, after the page loaded
+  on open and the message arriving live, and it hides what was cleared and
+  what the ignore list hides for the same reason they do. `Page.filter/2`
+  deliberately keeps `has_more` and the cursor, so reopening a cleared
+  conversation leaves a cursor pointing into the cleared region — which is
+  exactly what this reads. `visible` is the ignore filter for the
+  conversation's kind and `to_items` turns its messages into stream rows.
+  """
+  @spec prepend_older(
+          Phoenix.LiveView.Socket.t(),
+          Page.t(),
+          (Page.t(), map() -> Page.t()),
+          ([term()] -> [term()])
+        ) :: Phoenix.LiveView.Socket.t()
+  def prepend_older(socket, %Page{items: []} = page, _visible, _to_items) do
+    assign(socket, has_more: page.has_more)
+  end
+
+  def prepend_older(socket, %Page{} = page, visible, to_items) do
+    conversation = conversation_key(socket.assigns.session)
+
+    stream_items =
+      page
+      |> Page.filter(&(not cleared_from_conversation?(socket, conversation, &1)))
+      |> visible.(socket.assigns.session.ignore_list)
+      |> Map.fetch!(:items)
+      |> Enum.reverse()
+      |> to_items.()
+
+    socket
+    |> assign(
+      oldest_message_id: page.next_cursor,
+      has_more: page.has_more,
+      loaded_message_count: (socket.assigns[:loaded_message_count] || 50) + length(page.items)
+    )
+    |> push_event("prepend_start", %{})
+    |> MessageViewport.prepend(stream_items)
+  end
 
   @doc """
   Hides ignored authors from a page **without touching its pagination state**.

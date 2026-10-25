@@ -813,7 +813,7 @@ msgid "Cannot add yourself to the notify list"
 msgstr ""
 
 #: lib/retro_hex_chat_web/live/chat_live/command_dispatch.ex:156
-#: lib/retro_hex_chat_web/live/chat_live/helpers/pm.ex:157
+#: lib/retro_hex_chat_web/live/chat_live/helpers/pm.ex:130
 #, elixir-autogen, elixir-format
 msgid "Cannot send text to status window. Use /commands."
 msgstr ""
@@ -833,7 +833,7 @@ msgstr ""
 msgid "ChanServ manages channel registration and access control."
 msgstr ""
 
-#: lib/retro_hex_chat_web/live/chat_live/core_events.ex:695
+#: lib/retro_hex_chat_web/live/chat_live/core_events.ex:675
 #, elixir-autogen, elixir-format
 msgid "Changing nickname"
 msgstr ""
@@ -1192,12 +1192,12 @@ msgid "Half-Op"
 msgstr ""
 
 #: lib/retro_hex_chat_web/components/ui/chat/message_row.ex:156
-#: lib/retro_hex_chat_web/live/chat_live/helpers/messages.ex:195
+#: lib/retro_hex_chat_web/live/chat_live/helpers/messages.ex:238
 #, elixir-autogen, elixir-format
 msgid "Help"
 msgstr ""
 
-#: lib/retro_hex_chat_web/live/chat_live/helpers/messages.ex:209
+#: lib/retro_hex_chat_web/live/chat_live/helpers/messages.ex:252
 #, elixir-autogen, elixir-format
 msgid "Help: %{topic}"
 msgstr ""
@@ -1235,7 +1235,7 @@ msgstr ""
 msgid "Ignored"
 msgstr ""
 
-#: lib/retro_hex_chat_web/live/chat_live/core_events.ex:677
+#: lib/retro_hex_chat_web/live/chat_live/core_events.ex:657
 #, elixir-autogen, elixir-format
 msgid "Incorrect password"
 msgstr ""
@@ -1478,7 +1478,7 @@ msgid "NickServ protects your nickname with a password so nobody else can use it
 msgstr ""
 
 #: lib/retro_hex_chat_web/live/chat_live/command_dispatch.ex:401
-#: lib/retro_hex_chat_web/live/chat_live/core_events.ex:657
+#: lib/retro_hex_chat_web/live/chat_live/core_events.ex:637
 #, elixir-autogen, elixir-format
 msgid "Nickname %{nickname} is already in use"
 msgstr ""
@@ -1697,7 +1697,7 @@ msgstr ""
 msgid "Reply"
 msgstr ""
 
-#: lib/retro_hex_chat_web/live/chat_live/core_events.ex:260
+#: lib/retro_hex_chat_web/live/chat_live/core_events.ex:259
 #, elixir-autogen, elixir-format
 msgid "Reply parent message is not currently loaded. Scroll up to load older history, then try again."
 msgstr ""
@@ -1843,8 +1843,8 @@ msgstr ""
 #: lib/retro_hex_chat_web/components/ui/chat/message_row.ex:75
 #: lib/retro_hex_chat_web/components/ui/chat/message_row.ex:171
 #: lib/retro_hex_chat_web/live/chat_live/components/status_viewport.ex:98
-#: lib/retro_hex_chat_web/live/chat_live/helpers/messages.ex:91
-#: lib/retro_hex_chat_web/live/chat_live/helpers/messages.ex:116
+#: lib/retro_hex_chat_web/live/chat_live/helpers/messages.ex:134
+#: lib/retro_hex_chat_web/live/chat_live/helpers/messages.ex:159
 #: lib/retro_hex_chat_web/live/chat_live/window_registry.ex:410
 #: lib/retro_hex_chat_web/site/pages/archive_index.html.heex:12
 #, elixir-autogen, elixir-format
@@ -2125,7 +2125,7 @@ msgstr ""
 msgid "You must be a member of %{channel} to open Channel Central"
 msgstr ""
 
-#: lib/retro_hex_chat_web/live/chat_live/helpers/pm.ex:189
+#: lib/retro_hex_chat_web/live/chat_live/helpers/pm.ex:162
 #, elixir-autogen, elixir-format
 msgid "You must be a member of %{channel} to send notices there"
 msgstr ""
@@ -3464,7 +3464,7 @@ msgstr ""
 msgid "Attachment upload failed"
 msgstr ""
 
-#: lib/retro_hex_chat_web/live/chat_live/core_events.ex:460
+#: lib/retro_hex_chat_web/live/chat_live/core_events.ex:459
 #, elixir-autogen, elixir-format
 msgid "Attachments can only be sent with messages"
 msgstr ""
@@ -5909,7 +5909,7 @@ msgid "The user list shows you as a guest."
 msgstr ""
 
 #: lib/retro_hex_chat_web/components/ui/chat/visitor_greeting_card.ex:43
-#: lib/retro_hex_chat_web/live/chat_live/helpers/messages.ex:107
+#: lib/retro_hex_chat_web/live/chat_live/helpers/messages.ex:150
 #, elixir-autogen, elixir-format
 msgid "Welcome to %{server}, %{guest}!"
 msgstr ""

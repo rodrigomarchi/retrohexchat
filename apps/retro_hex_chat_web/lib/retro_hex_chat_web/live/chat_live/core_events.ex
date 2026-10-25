@@ -30,7 +30,6 @@ defmodule RetroHexChatWeb.ChatLive.CoreEvents do
   alias RetroHexChat.Chat.{Policy, Queries, Service}
   alias RetroHexChat.Commands.Parser
   alias RetroHexChat.Observability
-  alias RetroHexChat.Page
   alias RetroHexChat.Presence.Tracker
   alias RetroHexChat.Services.NickServ
   alias RetroHexChatWeb.ChatLive
@@ -598,45 +597,26 @@ defmodule RetroHexChatWeb.ChatLive.CoreEvents do
             cursor: oldest_id
           )
 
-        PM.prepend_older_pm_messages(socket, page)
+        MessageHelpers.prepend_older(
+          socket,
+          page,
+          &MessageHelpers.visible_private_page/2,
+          &StreamItem.from_private_messages/1
+        )
 
       session.active_channel ->
         page = Queries.list_messages(session.active_channel, limit: @page_size, cursor: oldest_id)
-        prepend_older_messages(socket, page)
+
+        MessageHelpers.prepend_older(
+          socket,
+          page,
+          &MessageHelpers.visible_channel_page/2,
+          &StreamItem.from_messages/1
+        )
 
       true ->
         socket
     end
-  end
-
-  defp prepend_older_messages(socket, %Page{items: []} = page) do
-    assign(socket, has_more: page.has_more)
-  end
-
-  # Scrolling back is the third path into a conversation, after the page loaded
-  # on open and the message arriving live, and it has to hide what was cleared
-  # for the same reason they do. `Page.filter/2` deliberately keeps `has_more`
-  # and the cursor, so reopening a cleared conversation leaves a cursor pointing
-  # into the cleared region — which is exactly what this reads.
-  defp prepend_older_messages(socket, %Page{} = page) do
-    conversation = MessageHelpers.conversation_key(socket.assigns.session)
-
-    stream_items =
-      page
-      |> Page.filter(&(not MessageHelpers.cleared_from_conversation?(socket, conversation, &1)))
-      |> MessageHelpers.visible_channel_page(socket.assigns.session.ignore_list)
-      |> Map.fetch!(:items)
-      |> Enum.reverse()
-      |> StreamItem.from_messages()
-
-    socket
-    |> assign(
-      oldest_message_id: page.next_cursor,
-      has_more: page.has_more,
-      loaded_message_count: (socket.assigns[:loaded_message_count] || 50) + length(page.items)
-    )
-    |> push_event("prepend_start", %{})
-    |> MessageViewport.prepend(stream_items)
   end
 
   defp content_format(source) do

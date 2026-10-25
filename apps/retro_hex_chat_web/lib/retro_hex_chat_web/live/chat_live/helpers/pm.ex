@@ -46,33 +46,6 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.PM do
     stream_pm_page(socket, page)
   end
 
-  @spec prepend_older_pm_messages(Phoenix.LiveView.Socket.t(), Page.t()) ::
-          Phoenix.LiveView.Socket.t()
-  def prepend_older_pm_messages(socket, %Page{items: []} = page) do
-    assign(socket, has_more: page.has_more)
-  end
-
-  def prepend_older_pm_messages(socket, %Page{} = page) do
-    conversation = Messages.conversation_key(socket.assigns.session)
-
-    stream_items =
-      page
-      |> Page.filter(&(not Messages.cleared_from_conversation?(socket, conversation, &1)))
-      |> Messages.visible_private_page(socket.assigns.session.ignore_list)
-      |> Map.fetch!(:items)
-      |> Enum.reverse()
-      |> StreamItem.from_private_messages()
-
-    socket
-    |> assign(
-      oldest_message_id: page.next_cursor,
-      has_more: page.has_more,
-      loaded_message_count: (socket.assigns[:loaded_message_count] || 50) + length(page.items)
-    )
-    |> push_event("prepend_start", %{})
-    |> MessageViewport.prepend(stream_items)
-  end
-
   @spec open_pm_conversation(Phoenix.LiveView.Socket.t(), String.t()) ::
           Phoenix.LiveView.Socket.t()
   def open_pm_conversation(socket, target) do
