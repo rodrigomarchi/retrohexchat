@@ -33,6 +33,7 @@ import {
 import { GAME_END, GAME_MODE, PHASE, SNAPSHOT } from "./protocol.js";
 import { getColors, render } from "./renderer.js";
 import { SOUNDS } from "./sounds.js";
+import { roundsFlow } from "../core/rounds.js";
 
 const ROUND_OVER_DELAY_TICKS = 150; // 2.5 s
 const SPAWNING_DELAY_TICKS = 60; // 1 s
@@ -117,13 +118,6 @@ function battle(game) {
   publish(game, s);
 }
 
-function countdown(game, remaining) {
-  game.gameState.countdown = remaining;
-  game.broadcast();
-  game.invalidate();
-  game.audio.playCountdown();
-}
-
 /** The guest follows the host's maze and mode, then takes the snapshot field by field. */
 function applySnapshot(game, decoded) {
   if (decoded.mazeIndex !== game.mazeIndex) {
@@ -199,75 +193,29 @@ export default defineGame({
     game.invalidate();
   },
 
-  flow: {
+  flow: roundsFlow({
     phases: PHASE,
-    initial: "WAITING",
-    begin: "COUNTDOWN",
+    play: "PLAYING",
+    countdown: { from: COUNTDOWN_FROM, every: COUNTDOWN_EVERY_TICKS },
+    spawnTicks: SPAWNING_DELAY_TICKS,
+    roundOverTicks: ROUND_OVER_DELAY_TICKS,
+    bell: (game) => game.audio.playSpawn(),
+    startRound: (game) => {
+      game.gameState.roundTimer = ROUND_DURATION;
+    },
     states: {
-      COUNTDOWN: {
-        enter: (game) => {
-          game.setKeyboardCaptured(true);
-          countdown(game, COUNTDOWN_FROM);
-        },
-        every: { ticks: COUNTDOWN_EVERY_TICKS, count: COUNTDOWN_FROM },
-        onEvery: (game, remaining) => {
-          if (remaining > 0) countdown(game, remaining);
-        },
-        next: "SPAWNING",
-      },
-      SPAWNING: {
-        enter: (game) => {
-          game.setKeyboardCaptured(true);
-          game.broadcast();
-          game.invalidate();
-          game.audio.playSpawn();
-        },
-        after: { ticks: SPAWNING_DELAY_TICKS },
-        then: (game) => {
-          game.gameState.phase = PHASE.PLAYING;
-          game.gameState.roundTimer = ROUND_DURATION;
-          game.broadcast();
-        },
-        next: "PLAYING",
-      },
       PLAYING: {
         enter: (game) => {
-          game.setKeyboardCaptured(true);
           game.frameCount = 0;
           game.localFirePressed = false;
           game.remoteFirePressed = false;
         },
         tick: battle,
       },
-      ROUND_OVER: {
-        after: { ticks: ROUND_OVER_DELAY_TICKS },
-        then: (game) => {
-          game.gameState = resetForNewRound(game.gameState);
-        },
-        next: "COUNTDOWN",
-      },
-      MATCH_OVER: {
-        final: true,
-        enter: (game) => {
-          const s = game.gameState;
-          const winner = getMatchWinner(s);
-          if (winner === 1) game.audio.playWin();
-          else game.audio.playLose();
-          game.invalidate();
-          game.finish({
-            end: {
-              score1: s.score1,
-              score2: s.score2,
-              winner,
-              roundWins1: s.roundWins1,
-              roundWins2: s.roundWins2,
-            },
-            result: { score: { p1: s.roundWins1, p2: s.roundWins2 }, winner },
-          });
-        },
-      },
     },
-  },
+    nextRound: resetForNewRound,
+    winner: getMatchWinner,
+  }),
 
   applySnapshot,
   cues: [
