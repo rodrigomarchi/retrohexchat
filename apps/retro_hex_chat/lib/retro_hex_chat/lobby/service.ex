@@ -9,6 +9,7 @@ defmodule RetroHexChat.Lobby.Service do
   alias RetroHexChat.Lobby.{Policy, Queries, SessionServer, Supervisor}
   alias RetroHexChat.Lobby.Schema.Session
   alias RetroHexChat.P2P.RateLimiter
+  alias RetroHexChat.Services.Queries, as: ServiceQueries
   alias RetroHexChat.Topics
 
   @pubsub RetroHexChat.PubSub
@@ -181,13 +182,13 @@ defmodule RetroHexChat.Lobby.Service do
 
   @spec propose_game(String.t(), integer(), String.t()) :: :ok | {:error, atom()}
   def propose_game(token, user_id, game_id) do
-    nick = get_nickname(user_id)
+    nick = ServiceQueries.get_nickname_by_id(user_id)
     SessionServer.propose_game(token, user_id, nick || "unknown", game_id)
   end
 
   @spec respond_game(String.t(), integer(), boolean()) :: :ok | {:error, atom()}
   def respond_game(token, user_id, accepted?) do
-    nick = get_nickname(user_id)
+    nick = ServiceQueries.get_nickname_by_id(user_id)
     SessionServer.respond_game(token, user_id, nick || "unknown", accepted?)
   end
 
@@ -292,8 +293,8 @@ defmodule RetroHexChat.Lobby.Service do
   end
 
   defp notify_peer(peer_id, token, creator_id) do
-    peer_nick = get_nickname(peer_id)
-    creator_nick = get_nickname(creator_id)
+    peer_nick = ServiceQueries.get_nickname_by_id(peer_id)
+    creator_nick = ServiceQueries.get_nickname_by_id(creator_id)
 
     if peer_nick do
       Phoenix.PubSub.broadcast(@pubsub, Topics.inbox(peer_nick), %{
@@ -301,13 +302,6 @@ defmodule RetroHexChat.Lobby.Service do
         payload: %{token: token, from: creator_nick}
       })
     end
-  end
-
-  defp get_nickname(user_id) do
-    import Ecto.Query
-
-    from(r in "registered_nicks", where: r.id == ^user_id, select: r.nickname)
-    |> RetroHexChat.Repo.one()
   end
 
   defp check_rate_limit(user_id) do

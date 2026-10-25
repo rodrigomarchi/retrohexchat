@@ -29,6 +29,7 @@ defmodule RetroHexChat.ShareLinks.Policy do
   alias RetroHexChat.Channels.Server
   alias RetroHexChat.GroupCall
   alias RetroHexChat.Repo
+  alias RetroHexChat.Services.Queries
   alias RetroHexChat.ShareLinks.Schema.Link
   alias RetroHexChat.VirtualSpace
 
@@ -44,7 +45,7 @@ defmodule RetroHexChat.ShareLinks.Policy do
   def can_create?(kind, creator_id, target \\ %{})
 
   def can_create?(kind, creator_id, target) when is_binary(kind) and is_integer(creator_id) do
-    if registered?(creator_id),
+    if Queries.registered_id?(creator_id),
       do: can_create_kind?(kind, creator_id, target),
       else: unauthorized()
   end
@@ -57,7 +58,7 @@ defmodule RetroHexChat.ShareLinks.Policy do
   # and in an invite-only room it is the same decision as letting somebody in —
   # which belongs to whoever already makes that decision.
   defp can_create_kind?("channel", creator_id, %{"channel" => name}) when is_binary(name) do
-    case nickname_of(creator_id) do
+    case Queries.get_nickname_by_id(creator_id) do
       nil -> unauthorized()
       nickname -> channel_sharer?(name, nickname)
     end
@@ -90,11 +91,6 @@ defmodule RetroHexChat.ShareLinks.Policy do
 
   defp unauthorized, do: {:error, :unauthorized}
 
-  defp nickname_of(creator_id) do
-    from(r in "registered_nicks", where: r.id == ^creator_id, select: r.nickname)
-    |> Repo.one()
-  end
-
   @doc """
   Whether `nickname` may close `link`.
 
@@ -112,11 +108,6 @@ defmodule RetroHexChat.ShareLinks.Policy do
   end
 
   def can_revoke?(_link, _nickname), do: {:error, :unauthorized}
-
-  defp registered?(user_id) do
-    from(r in "registered_nicks", where: r.id == ^user_id, select: true)
-    |> Repo.exists?()
-  end
 
   defp creator?(%Link{creator_id: creator_id}, nickname) do
     from(r in "registered_nicks",

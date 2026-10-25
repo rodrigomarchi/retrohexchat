@@ -44,6 +44,11 @@ defmodule RetroHexChat.Services.Queries do
     |> Repo.one()
   end
 
+  @doc "Whether `id` is a registered nickname's (nil never is)."
+  @spec registered_id?(integer() | nil) :: boolean()
+  def registered_id?(nil), do: false
+  def registered_id?(id), do: Repo.exists?(from(n in RegisteredNick, where: n.id == ^id))
+
   @spec delete_registered_nick(RegisteredNick.t()) ::
           {:ok, RegisteredNick.t()} | {:error, Ecto.Changeset.t()}
   def delete_registered_nick(%RegisteredNick{} = nick) do

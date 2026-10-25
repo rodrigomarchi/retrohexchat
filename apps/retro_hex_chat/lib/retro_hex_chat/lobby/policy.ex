@@ -13,6 +13,7 @@ defmodule RetroHexChat.Lobby.Policy do
   alias RetroHexChat.Lobby.Queries
   alias RetroHexChat.Lobby.Schema.Session
   alias RetroHexChat.Repo
+  alias RetroHexChat.Services.Queries, as: ServiceQueries
 
   @session_blocking_ignore_types ~w(all invites)
 
@@ -118,11 +119,7 @@ defmodule RetroHexChat.Lobby.Policy do
   defp check_not_self(_, _), do: :ok
 
   defp check_registered(user_id, role) do
-    exists =
-      from(r in "registered_nicks", where: r.id == ^user_id, select: true)
-      |> Repo.exists?()
-
-    if exists do
+    if ServiceQueries.registered_id?(user_id) do
       :ok
     else
       case role do
@@ -145,8 +142,8 @@ defmodule RetroHexChat.Lobby.Policy do
   end
 
   defp check_no_block(creator_id, peer_id) do
-    creator_nick = get_nickname(creator_id)
-    peer_nick = get_nickname(peer_id)
+    creator_nick = ServiceQueries.get_nickname_by_id(creator_id)
+    peer_nick = ServiceQueries.get_nickname_by_id(peer_id)
 
     blocked =
       ignore_blocks_lobby?(creator_nick, peer_nick) or
@@ -322,10 +319,5 @@ defmodule RetroHexChat.Lobby.Policy do
     else
       :ok
     end
-  end
-
-  defp get_nickname(user_id) do
-    from(r in "registered_nicks", where: r.id == ^user_id, select: r.nickname)
-    |> Repo.one()
   end
 end

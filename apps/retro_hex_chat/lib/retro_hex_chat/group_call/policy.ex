@@ -7,13 +7,11 @@ defmodule RetroHexChat.GroupCall.Policy do
   """
   use Gettext, backend: RetroHexChat.Gettext
 
-  import Ecto.Query
-
   alias RetroHexChat.Channels.Membership
   alias RetroHexChat.Channels.Policy, as: ChannelPolicy
   alias RetroHexChat.GroupCall.Queries
   alias RetroHexChat.GroupCall.Schema.Room
-  alias RetroHexChat.Repo
+  alias RetroHexChat.Services.Queries, as: ServiceQueries
 
   @moderator_roles [:owner, :operator, :half_operator]
 
@@ -84,11 +82,7 @@ defmodule RetroHexChat.GroupCall.Policy do
     do: {:error, dgettext("group_call", "You must be registered to use group calls")}
 
   defp check_registered(user_id) do
-    exists =
-      from(r in "registered_nicks", where: r.id == ^user_id, select: true)
-      |> Repo.exists?()
-
-    if exists do
+    if ServiceQueries.registered_id?(user_id) do
       :ok
     else
       {:error, dgettext("group_call", "You must be registered to use group calls")}

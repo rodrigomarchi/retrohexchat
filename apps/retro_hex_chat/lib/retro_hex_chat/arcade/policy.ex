@@ -4,10 +4,8 @@ defmodule RetroHexChat.Arcade.Policy do
   """
   use Gettext, backend: RetroHexChat.Gettext
 
-  import Ecto.Query
-
   alias RetroHexChat.Arcade.Schema.SoloSession
-  alias RetroHexChat.Repo
+  alias RetroHexChat.Services.Queries
 
   @spec can_create?(integer()) :: :ok | {:error, String.t()}
   def can_create?(creator_id) do
@@ -31,11 +29,7 @@ defmodule RetroHexChat.Arcade.Policy do
   end
 
   defp check_registered(user_id) do
-    exists =
-      from(r in "registered_nicks", where: r.id == ^user_id, select: true)
-      |> Repo.exists?()
-
-    if exists do
+    if Queries.registered_id?(user_id) do
       :ok
     else
       {:error, dgettext("arcade", "You must be registered to play arcade games")}
