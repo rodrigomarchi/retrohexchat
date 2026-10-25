@@ -139,6 +139,24 @@ describe("createLobbyConnection", () => {
     expect(el._fileTransferChannel).toBe(channel);
   });
 
+  it("closes an inbound channel with an unknown label instead of adopting it", async () => {
+    const { conn, el } = makeConn();
+    await conn.handleStartAnswer({ ice_servers: [], turn_only: false });
+    const channel = new MockDataChannel("whiteboard", {});
+    const close = vi.spyOn(channel, "close");
+
+    const ready = [];
+    el.addEventListener("ft_channel_ready", () => ready.push("ft"));
+    el.addEventListener("game_channel_ready", () => ready.push("game"));
+
+    conn.pc.ondatachannel({ channel });
+
+    expect(close).toHaveBeenCalled();
+    expect(channel.onopen).toBeFalsy();
+    expect(conn.fileChannel).not.toBe(channel);
+    expect(ready).toEqual([]);
+  });
+
   it("samples and pushes an always-complete per-feature lobby_stats payload", async () => {
     const { conn, el, pushed } = makeConn();
     await conn.handleStartOffer({ ice_servers: [], turn_only: false });

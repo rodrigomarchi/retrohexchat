@@ -737,14 +737,18 @@ export function createLobbyConnection(el, ports) {
       this._setupGameChannel(gameChannel);
     },
 
-    // Answerer routes inbound channels by label.
+    // Answerer routes inbound channels by label. A label this side does not know
+    // is closed and reported, never handed to another feature's handler.
     _adoptChannel(channel) {
       channel.binaryType = "arraybuffer";
 
       if (channel.label === "gamedata") {
         this._setupGameChannel(channel);
-      } else {
+      } else if (channel.label === "filetransfer") {
         this._setupFileChannel(channel);
+      } else {
+        log.warn("[Lobby] Closing a data channel with an unknown label", { label: channel.label });
+        channel.close();
       }
     },
 

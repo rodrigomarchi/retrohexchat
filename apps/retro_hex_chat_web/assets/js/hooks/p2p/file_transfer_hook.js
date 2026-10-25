@@ -17,7 +17,6 @@ const FileTransferHook = {
     });
     this.transfer.mount();
 
-    this.handleEvent("ft_channel_ready", ({ channel }) => this.transfer.setupChannel(channel));
     this.handleEvent("ft_config", (config) => this.transfer.setConfig(config));
     this.handleEvent("ft_accept", () => this.transfer.handlePeerAccept());
     this.handleEvent("ft_reject", () => this.transfer.handlePeerReject());

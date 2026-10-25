@@ -100,7 +100,7 @@ the door, for both people.
   session via `P2P.validate_signal/1` and the SFU group call via `GroupCallChannel`. Relaxing a
   bound is a one-file change on purpose; a third copy is how one path silently gets a wider
   attack surface than the other.
-- **The session creator is always the offer initiator** — server sends `p2p_start_offer` only to
+- **The session creator is always the offer initiator** — server sends `lobby_start_offer` only to
   the creator on `connecting`, preventing simultaneous-offer glare.
 - **Both hooks ready, then the host starts, and the starting room is that rule with a face.**
   The domain gate has not moved: `lobby_start_signaling` is broadcast only once both sides have
@@ -127,17 +127,18 @@ the door, for both people.
 
 This separation is Principle IV and is enforced.
 
-- **`webrtc.js` owns the single `RTCPeerConnection`** multiplexing all data channels (file
-  transfer, game data) — shared by media+file+game, living in the host backbone, **never** in an
-  island. It exposes pure functions (createOffer/Answer, ICE, track management) and is the one
-  source of PC truth.
-- **Sibling hooks never touch the PC directly.** `WebRTCHook` dispatches the PC reference via
-  `CustomEvent` (`media_pc_ready`, `ft_channel_ready`); `FileTransferHook`/`MediaHook` listen.
-  New media/data logic goes in its own lib module (`media.js`), never bloating `webrtc.js` or a
+- **`lib/p2p/lobby_connection.js` owns the single `RTCPeerConnection`** multiplexing all data
+  channels (file transfer, game data) — shared by media+file+game, living in the host backbone,
+  **never** in an island, and the one source of PC truth. `webrtc.js` holds the pure helpers it
+  calls (createOffer/Answer, ICE, data channels).
+- **Sibling hooks never touch the PC directly.** The connection dispatches the PC and each open
+  channel on the `#lobby-webrtc` element as a `CustomEvent` (`lobby_media_pc_ready`,
+  `ft_channel_ready`, `game_channel_ready`); the media, file-transfer and game hooks listen. New
+  media/data logic goes in its own lib module (`media.js`), never bloating the connection or a
   hook.
 - Audio→video upgrade rides the native `negotiationneeded` event through the existing
-  `p2p_signal` channel — no custom upgrade protocol. Device switching uses `replaceTrack()` (no
-  renegotiation). Codec ordering via `setCodecPreferences()`, never SDP munging.
+  `lobby_signal` channel event — no custom upgrade protocol. Device switching uses
+  `replaceTrack()` (no renegotiation). Codec ordering via `setCodecPreferences()`, never SDP munging.
 - **Single-offerer negotiation** (only the initiator emits offers) is host/backbone logic — an
   island only *requests* media via push_events to its hook. Do not move this into an island.
 - **Bidirectional video** (both enable at once, real RTP `track.muted === false`) is the scenario
@@ -162,9 +163,9 @@ This separation is Principle IV and is enforced.
   disconnection leaves non-contiguous gaps. Receiver stores chunks index-keyed (O(1) out-of-order
   insert), assembles a Blob at the end.
 - **SHA-256 integrity is mandatory** (sender hashes before, receiver hashes assembled buffer).
-- **File metadata flows over the DataChannel, never PubSub** — consent reuses the existing
-  `request_action("file_transfer")` → `respond_action` flow, but nothing about the file touches
-  the server. Extension blocklist is env-configurable; MIME checking rejected (browser MIME is
+- **File metadata flows over the DataChannel, never PubSub** — the offer arrives over the channel,
+  the receiver's file island asks (`ft_offer_received` → `ft_respond`), and the answer goes back
+  over the channel; nothing about the file touches the server. Extension blocklist is env-configurable; MIME checking rejected (browser MIME is
   extension-derived).
 
 ### 8.5 Failure & recovery
