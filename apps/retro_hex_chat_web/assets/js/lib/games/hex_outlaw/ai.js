@@ -188,9 +188,9 @@ function incomingThreat(state, player, config) {
 
 function chooseAttack(state, player, config) {
   if (state.gameMode === GAME_MODE.RICOCHET) {
-    const ricochet = findRicochetShot(state, player);
-    if (ricochet) {
-      return { targetY: ricochet.aimUp ? ARENA_TOP : ARENA_BOTTOM, aimUp: ricochet.aimUp };
+    const bankShot = findRicochetShot(state, player);
+    if (bankShot) {
+      return { targetY: bankShot.aimUp ? ARENA_TOP : ARENA_BOTTOM, aimUp: bankShot.aimUp };
     }
   }
 

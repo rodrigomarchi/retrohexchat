@@ -36,7 +36,12 @@ export function createNotificationSounds() {
     /** Play a sound by its catalog name; "none" and unknown names are silent. */
     play(name) {
       const sound = Object.hasOwn(SOUND_CATALOG, name) ? SOUND_CATALOG[name] : null;
-      if (sound) synth.play(sound);
+      if (!sound) return;
+      try {
+        synth.play(sound);
+      } catch {
+        // Best-effort audio: a notification that cannot sound is not an error.
+      }
     },
     dispose: () => synth.dispose(),
   };

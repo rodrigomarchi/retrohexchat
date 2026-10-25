@@ -44,7 +44,6 @@ defmodule RetroHexChatWeb.ChatLive.Components.HighlightDialog do
       session: nil
     }
 
-  # passthrough context (session)
   # ── Selection ────────────────────────────────────────────────────
 
   @spec handle_event(String.t(), map(), Phoenix.LiveView.Socket.t()) ::

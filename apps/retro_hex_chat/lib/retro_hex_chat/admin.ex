@@ -274,13 +274,20 @@ defmodule RetroHexChat.Admin do
   def create_channel(channel_name, admin) do
     case Channels.Supervisor.start_child(channel_name) do
       {:ok, _pid} ->
-        ChanServ.register(channel_name, admin)
         AuditLogs.log(admin, "channel.create", {"channel", channel_name})
 
-        {:ok,
-         dgettext("admin", "Channel %{channel_name} created and registered.",
-           channel_name: channel_name
-         )}
+        # The room is up either way; when ChanServ refuses the registration the
+        # admin is told why, not that it was registered.
+        case ChanServ.register(channel_name, admin) do
+          {:ok, _message} ->
+            {:ok,
+             dgettext("admin", "Channel %{channel_name} created and registered.",
+               channel_name: channel_name
+             )}
+
+          {:error, message} ->
+            {:error, message}
+        end
 
       {:error, reason} ->
         {:error, "Failed to create channel: #{inspect(reason)}"}

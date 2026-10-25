@@ -66,7 +66,7 @@ defmodule RetroHexChat.Jobs.ResultMetadataTest do
   end
 
   describe "summary/1" do
-    test "takes the run's counts, with a missing one read as zero, and calls it ok" do
+    test "takes the run's counts, with a nil one read as zero, and calls it ok" do
       metadata = ResultMetadata.summary([:candidates, :deleted, :oldest_age_ms])
 
       assert metadata.({:ok, %{candidates: 3, deleted: 2, oldest_age_ms: nil, extra: 9}}) ==

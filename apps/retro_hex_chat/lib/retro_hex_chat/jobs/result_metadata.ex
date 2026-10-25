@@ -28,7 +28,8 @@ defmodule RetroHexChat.Jobs.ResultMetadata do
 
   @doc """
   The metadata function for a maintenance run (`Observability.span/4`): on
-  `{:ok, summary}`, the summary's `keys` (a missing count read as 0) with
+  `{:ok, summary}`, the summary's `keys` (a nil count read as 0; a key the
+  summary lacks raises) with
   `result: "ok"`; on `{:error, reason}`, `error/1`.
   """
   @spec summary([atom()]) :: ({:ok, map()} | {:error, term()} -> map())

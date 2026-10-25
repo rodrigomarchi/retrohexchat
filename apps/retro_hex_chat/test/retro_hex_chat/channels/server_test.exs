@@ -223,6 +223,10 @@ defmodule RetroHexChat.Channels.ServerTest do
       assert {:error, _} = Server.add_invite_exception(channel, "guest", "friend")
       refute_receive {:ban_exception_added, _}, 50
       refute_receive {:invite_exception_added, _}, 50
+
+      {:ok, state} = Server.get_state(channel)
+      refute "friend" in state.ban_exceptions
+      refute "friend" in state.invite_exceptions
     end
   end
 

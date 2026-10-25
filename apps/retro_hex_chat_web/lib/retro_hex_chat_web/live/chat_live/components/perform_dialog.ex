@@ -37,8 +37,6 @@ defmodule RetroHexChatWeb.ChatLive.Components.PerformDialog do
       show_edit_dialog: false
     }
 
-  # Opening is pure window mount — closing unmounts the island, so there is no
-  # open directive to reset state that the next mount rebuilds anyway.
   # ── Selection ────────────────────────────────────────────────────
 
   @spec handle_event(String.t(), map(), Phoenix.LiveView.Socket.t()) ::
