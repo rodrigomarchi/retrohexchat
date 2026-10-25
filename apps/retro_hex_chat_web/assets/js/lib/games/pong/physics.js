@@ -6,6 +6,7 @@
 
 import { PHASE } from "./protocol.js";
 import { stepParticles } from "../core/render.js";
+import { paddleBounce } from "../core/paddle.js";
 
 // --- Constants ---
 
@@ -21,6 +22,13 @@ export const MAX_BALL_SPEED = 12;
 export const PADDLE_SPEED = 6;
 export const WIN_SCORE = 11;
 export const MAX_BOUNCE_ANGLE = (60 * Math.PI) / 180; // 60 degrees in radians
+
+/** How a hit off the paddle turns and speeds the ball. */
+const BOUNCE = {
+  maxAngle: MAX_BOUNCE_ANGLE,
+  increment: SPEED_INCREMENT,
+  maxSpeed: MAX_BALL_SPEED,
+};
 
 /**
  * Create the initial game state.
@@ -130,13 +138,10 @@ export function checkPaddleCollision(state) {
     ballY + halfBall >= p1Top &&
     ballY - halfBall <= p1Bottom
   ) {
-    const hitPos = (ballY - (p1Top + PADDLE_H / 2)) / (PADDLE_H / 2);
-    const clampedHit = Math.max(-1, Math.min(1, hitPos));
-    const angle = clampedHit * MAX_BOUNCE_ANGLE;
-
-    ballSpeed = Math.min(ballSpeed + SPEED_INCREMENT, MAX_BALL_SPEED);
-    ballVX = ballSpeed * Math.cos(angle);
-    ballVY = ballSpeed * Math.sin(angle);
+    const bounce = paddleBounce(ballY, p1Top + PADDLE_H / 2, PADDLE_H / 2, ballSpeed, BOUNCE);
+    ballSpeed = bounce.speed;
+    ballVX = bounce.across;
+    ballVY = bounce.along;
     ballX = p1Right + halfBall;
     paddleHit = true;
   }
@@ -154,13 +159,10 @@ export function checkPaddleCollision(state) {
     ballY + halfBall >= p2Top &&
     ballY - halfBall <= p2Bottom
   ) {
-    const hitPos = (ballY - (p2Top + PADDLE_H / 2)) / (PADDLE_H / 2);
-    const clampedHit = Math.max(-1, Math.min(1, hitPos));
-    const angle = clampedHit * MAX_BOUNCE_ANGLE;
-
-    ballSpeed = Math.min(ballSpeed + SPEED_INCREMENT, MAX_BALL_SPEED);
-    ballVX = -(ballSpeed * Math.cos(angle));
-    ballVY = ballSpeed * Math.sin(angle);
+    const bounce = paddleBounce(ballY, p2Top + PADDLE_H / 2, PADDLE_H / 2, ballSpeed, BOUNCE);
+    ballSpeed = bounce.speed;
+    ballVX = -bounce.across;
+    ballVY = bounce.along;
     ballX = p2Left - halfBall;
     paddleHit = true;
   }

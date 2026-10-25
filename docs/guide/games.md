@@ -26,7 +26,8 @@ another copy of the core (§G.5).
 | Sounds | `core/synth.js` — a sound is data (`blip`, `sweep`, `notes`, voices); `createGameAudio` turns a table into `playX()` methods |
 | What the guest hears | `core/events.js` — `cues` (phase, change, rise, flags, when) and `playFlags` for the host |
 | The result the server is told | `core/result.js` — `matchResult(p1, p2, winner)` |
-| Drawing chrome | `core/render.js` — background, scanlines, vignette, digits, centred and glitched text, countdown, waiting, particles |
+| Drawing chrome | `core/render.js` — background, scanlines, vignette, grid, digits, centred and glitched text, the closing banner, countdown, waiting, particles |
+| A ball off a paddle | `core/paddle.js` — `paddleBounce`: the angle from where it hit, the speed up to a ceiling |
 | AI pieces | `core/ai.js` — `normalizeDifficulty`, `interceptAt`/`reflect`, `toward`, `dutyFrame`, `createReaction`, `aiRng`, `rotationDelta` |
 
 The engine underneath is `js/lib/game_engine.js`; a game never imports it.

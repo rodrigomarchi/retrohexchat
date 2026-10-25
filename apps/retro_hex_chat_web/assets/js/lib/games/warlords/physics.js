@@ -7,6 +7,7 @@
 import { PHASE, BRICKS_ROWS, BRICKS_COLS, INITIAL_LIVES } from "./protocol.js";
 import { gameColor } from "../../game_colors.js";
 import { stepParticles } from "../core/render.js";
+import { paddleBounce } from "../core/paddle.js";
 
 // --- Canvas ---
 export const CANVAS_W = 640;
@@ -23,6 +24,13 @@ export const INITIAL_BALL_SPEED = 3;
 export const SPEED_INCREMENT = 0.05;
 export const MAX_BALL_SPEED = 5.5;
 export const MAX_BOUNCE_ANGLE = (60 * Math.PI) / 180;
+
+/** How a hit off the paddle turns and speeds the ball. */
+const BOUNCE = {
+  maxAngle: MAX_BOUNCE_ANGLE,
+  increment: SPEED_INCREMENT,
+  maxSpeed: MAX_BALL_SPEED,
+};
 
 // --- Bricks ---
 export const BRICK_W = 20;
@@ -242,13 +250,16 @@ export function checkShieldCollision(state) {
     fireballY + halfBall >= s1Top &&
     fireballY - halfBall <= s1Bottom
   ) {
-    const hitPos = (fireballY - (s1Top + SHIELD_H / 2)) / (SHIELD_H / 2);
-    const clampedHit = Math.max(-1, Math.min(1, hitPos));
-    const angle = clampedHit * MAX_BOUNCE_ANGLE;
-
-    fireballSpeed = Math.min(fireballSpeed + SPEED_INCREMENT, MAX_BALL_SPEED);
-    fireballVX = fireballSpeed * Math.cos(angle);
-    fireballVY = fireballSpeed * Math.sin(angle);
+    const bounce = paddleBounce(
+      fireballY,
+      s1Top + SHIELD_H / 2,
+      SHIELD_H / 2,
+      fireballSpeed,
+      BOUNCE,
+    );
+    fireballSpeed = bounce.speed;
+    fireballVX = bounce.across;
+    fireballVY = bounce.along;
     shieldHit = true;
     shieldHitPlayer = 1;
   }
@@ -267,13 +278,16 @@ export function checkShieldCollision(state) {
     fireballY + halfBall >= s2Top &&
     fireballY - halfBall <= s2Bottom
   ) {
-    const hitPos = (fireballY - (s2Top + SHIELD_H / 2)) / (SHIELD_H / 2);
-    const clampedHit = Math.max(-1, Math.min(1, hitPos));
-    const angle = clampedHit * MAX_BOUNCE_ANGLE;
-
-    fireballSpeed = Math.min(fireballSpeed + SPEED_INCREMENT, MAX_BALL_SPEED);
-    fireballVX = -(fireballSpeed * Math.cos(angle));
-    fireballVY = fireballSpeed * Math.sin(angle);
+    const bounce = paddleBounce(
+      fireballY,
+      s2Top + SHIELD_H / 2,
+      SHIELD_H / 2,
+      fireballSpeed,
+      BOUNCE,
+    );
+    fireballSpeed = bounce.speed;
+    fireballVX = -bounce.across;
+    fireballVY = bounce.along;
     shieldHit = true;
     shieldHitPlayer = 2;
   }

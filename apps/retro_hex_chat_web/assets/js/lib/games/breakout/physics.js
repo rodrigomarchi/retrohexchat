@@ -7,6 +7,7 @@
 import { PHASE, BLOCK_ROWS, BLOCK_COLS, TOTAL_BLOCKS } from "./protocol.js";
 import { gameColor } from "../../game_colors.js";
 import { stepParticles } from "../core/render.js";
+import { paddleBounce } from "../core/paddle.js";
 
 // --- Constants ---
 
@@ -22,6 +23,13 @@ export const MAX_BALL_SPEED = 5.5;
 export const PADDLE_SPEED = 7;
 export const INITIAL_LIVES = 3;
 export const MAX_BOUNCE_ANGLE = (60 * Math.PI) / 180;
+
+/** How a hit off the paddle turns and speeds the ball. */
+const BOUNCE = {
+  maxAngle: MAX_BOUNCE_ANGLE,
+  increment: SPEED_INCREMENT,
+  maxSpeed: MAX_BALL_SPEED,
+};
 
 // Block grid layout
 export const BLOCK_W = 56;
@@ -180,13 +188,10 @@ export function checkPaddleCollision(state) {
     ballX + halfBall >= p1Left &&
     ballX - halfBall <= p1Right
   ) {
-    const hitPos = (ballX - (p1Left + PADDLE_W / 2)) / (PADDLE_W / 2);
-    const clampedHit = Math.max(-1, Math.min(1, hitPos));
-    const angle = clampedHit * MAX_BOUNCE_ANGLE;
-
-    ballSpeed = Math.min(ballSpeed + SPEED_INCREMENT, MAX_BALL_SPEED);
-    ballVX = ballSpeed * Math.sin(angle);
-    ballVY = -(ballSpeed * Math.cos(angle));
+    const bounce = paddleBounce(ballX, p1Left + PADDLE_W / 2, PADDLE_W / 2, ballSpeed, BOUNCE);
+    ballSpeed = bounce.speed;
+    ballVX = bounce.along;
+    ballVY = -bounce.across;
     ballY = p1Top - halfBall;
     paddleHit = true;
   }
@@ -204,13 +209,10 @@ export function checkPaddleCollision(state) {
     ballX + halfBall >= p2Left &&
     ballX - halfBall <= p2Right
   ) {
-    const hitPos = (ballX - (p2Left + PADDLE_W / 2)) / (PADDLE_W / 2);
-    const clampedHit = Math.max(-1, Math.min(1, hitPos));
-    const angle = clampedHit * MAX_BOUNCE_ANGLE;
-
-    ballSpeed = Math.min(ballSpeed + SPEED_INCREMENT, MAX_BALL_SPEED);
-    ballVX = ballSpeed * Math.sin(angle);
-    ballVY = ballSpeed * Math.cos(angle);
+    const bounce = paddleBounce(ballX, p2Left + PADDLE_W / 2, PADDLE_W / 2, ballSpeed, BOUNCE);
+    ballSpeed = bounce.speed;
+    ballVX = bounce.along;
+    ballVY = bounce.across;
     ballY = p2Bottom + halfBall;
     paddleHit = true;
   }
