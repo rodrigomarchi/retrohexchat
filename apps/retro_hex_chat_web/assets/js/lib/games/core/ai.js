@@ -65,6 +65,23 @@ export function edgeAware(width, margin) {
 }
 
 /**
+ * Whether a moving thing's position and velocity — `${prefix}X`, `Y`, `VX`
+ * and `VY` on the state — are all numbers an AI can project from.
+ * @param {object | null | undefined} state
+ * @param {string} prefix - e.g. "ball", "fireball"
+ * @returns {boolean}
+ */
+export function finiteMotion(state, prefix) {
+  return Boolean(
+    state &&
+    Number.isFinite(state[`${prefix}X`]) &&
+    Number.isFinite(state[`${prefix}Y`]) &&
+    Number.isFinite(state[`${prefix}VX`]) &&
+    Number.isFinite(state[`${prefix}VY`]),
+  );
+}
+
+/**
  * A coordinate folded back between two walls, as a ball bouncing off them
  * would be: where a straight-line projection lands once the bounces are in.
  * @param {number} value

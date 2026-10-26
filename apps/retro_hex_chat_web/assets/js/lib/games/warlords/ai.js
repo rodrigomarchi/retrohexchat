@@ -21,6 +21,7 @@ import {
   clamp,
   createReaction,
   dutyFrame,
+  finiteMotion,
   interceptAt,
   normalizeDifficulty,
   randomUnit,
@@ -92,7 +93,7 @@ export function reflectWarlordY(y) {
  * @returns {number|null}
  */
 export function predictWarlordInterceptY(state, player = 2) {
-  if (!isPredictableState(state) || state.caughtBy !== 0) return null;
+  if (!finiteMotion(state, "fireball") || state.caughtBy !== 0) return null;
 
   const movingTowardShield = player === 1 ? state.fireballVX < 0 : state.fireballVX > 0;
   if (!movingTowardShield) return null;
@@ -255,16 +256,6 @@ export class WarlordAI {
   }
 }
 
-function isPredictableState(state) {
-  return (
-    state &&
-    Number.isFinite(state.fireballX) &&
-    Number.isFinite(state.fireballY) &&
-    Number.isFinite(state.fireballVX) &&
-    Number.isFinite(state.fireballVY)
-  );
-}
-
 function shieldCenterFor(state, player) {
   const key = player === 1 ? "shield1Y" : "shield2Y";
   const shieldY = state?.[key];
@@ -272,7 +263,7 @@ function shieldCenterFor(state, player) {
 }
 
 function framesUntilShield(state, player) {
-  if (!isPredictableState(state)) return null;
+  if (!finiteMotion(state, "fireball")) return null;
   const targetX = player === 1 ? P1_SHIELD_X + FIREBALL_SIZE / 2 : P2_SHIELD_X - FIREBALL_SIZE / 2;
   const frames = (targetX - state.fireballX) / state.fireballVX;
   return Number.isFinite(frames) && frames >= 0 ? frames : null;

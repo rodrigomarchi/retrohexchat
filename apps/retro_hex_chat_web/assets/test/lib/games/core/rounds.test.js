@@ -1,6 +1,6 @@
 import { describe, it, expect, vi } from "vitest";
 import { createFlow } from "../../../../js/lib/games/core/flow.js";
-import { roundsFlow, tallyRound } from "../../../../js/lib/games/core/rounds.js";
+import { countdownState, roundsFlow, tallyRound } from "../../../../js/lib/games/core/rounds.js";
 
 const PHASE = { WAITING: 0, COUNTDOWN: 1, SPAWNING: 2, FIGHTING: 3, ROUND_OVER: 4, MATCH_OVER: 5 };
 
@@ -160,5 +160,23 @@ describe("tallyRound", () => {
       roundWins2: 1,
       matchOver: false,
     });
+  });
+});
+
+describe("countdownState with capture", () => {
+  it("takes the keyboard, sends the first number and says it, without a redraw", () => {
+    const calls = [];
+    const g = {
+      gameState: {},
+      setKeyboardCaptured: (on) => calls.push(["capture", on]),
+      broadcast: () => calls.push(["broadcast"]),
+      invalidate: () => calls.push(["invalidate"]),
+      audio: { playCountdown: () => calls.push(["countdown"]) },
+    };
+
+    countdownState({ from: 3, every: 60, next: "SERVING", capture: true }).enter(g);
+
+    expect(g.gameState.countdown).toBe(3);
+    expect(calls).toEqual([["capture", true], ["broadcast"], ["countdown"]]);
   });
 });

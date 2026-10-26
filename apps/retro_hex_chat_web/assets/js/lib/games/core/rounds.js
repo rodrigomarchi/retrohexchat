@@ -35,13 +35,21 @@ function say(game, remaining) {
 /**
  * A spoken countdown: `from` on entering, then one number less every
  * `every` ticks, then `next` once it reaches zero. The game's state carries
- * `countdown` and its sounds a `countdown`.
- * @param {{ from: number, every: number, next: string }} options
+ * `countdown` and its sounds a `countdown`. With `capture`, entering it also
+ * takes the keyboard for the match, before the first number is sent.
+ * @param {{ from: number, every: number, next: string, capture?: boolean }} options
  * @returns {object} a flow state for defineGame
  */
-export function countdownState({ from, every, next }) {
+export function countdownState({ from, every, next, capture = false }) {
   return {
-    enter: (game) => say(game, from),
+    enter: capture
+      ? (game) => {
+          game.gameState.countdown = from;
+          game.setKeyboardCaptured(true);
+          game.broadcast();
+          game.audio.playCountdown();
+        }
+      : (game) => say(game, from),
     every: { ticks: every, count: from },
     onEvery: (game, remaining) => {
       if (remaining > 0) say(game, remaining);

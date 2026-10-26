@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { paddleBounce } from "../../../../js/lib/games/core/paddle.js";
+import { moveBall, paddleBounce } from "../../../../js/lib/games/core/paddle.js";
 
 const RULES = { maxAngle: Math.PI / 3, increment: 0.5, maxSpeed: 6 };
 
@@ -18,5 +18,17 @@ describe("paddleBounce", () => {
 
   it("never speeds the ball past its ceiling", () => {
     expect(paddleBounce(50, 50, 20, 5.8, RULES).speed).toBe(6);
+  });
+});
+
+describe("moveBall", () => {
+  const state = { phase: 3, ballX: 10, ballY: 20, ballVX: 2, ballVY: -1 };
+
+  it("steps the ball along its velocity while playing", () => {
+    expect(moveBall(state, 3)).toEqual({ ...state, ballX: 12, ballY: 19 });
+  });
+
+  it("leaves the ball where it is in any other phase", () => {
+    expect(moveBall(state, 4)).toBe(state);
   });
 });

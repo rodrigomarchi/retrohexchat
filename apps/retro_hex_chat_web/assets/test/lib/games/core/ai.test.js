@@ -5,6 +5,7 @@ import {
   clamp,
   createReaction,
   edgeAware,
+  finiteMotion,
   dutyFrame,
   interceptAt,
   normalizeAngle,
@@ -209,5 +210,20 @@ describe("edgeAware", () => {
     });
     expect(maybeApplyMistake({ x: 390 }, config, draws(0.1, 0.8)).x).toBe(380);
     expect(maybeApplyMistake(null, config, draws(0.1))).toBeNull();
+  });
+});
+
+describe("finiteMotion", () => {
+  it("holds when position and velocity under the prefix are all numbers", () => {
+    expect(finiteMotion({ ballX: 1, ballY: 2, ballVX: 0, ballVY: -1 }, "ball")).toBe(true);
+    expect(
+      finiteMotion({ fireballX: 1, fireballY: 2, fireballVX: 3, fireballVY: 4 }, "fireball"),
+    ).toBe(true);
+  });
+
+  it("fails on a missing state, a missing field or a non-finite one", () => {
+    expect(finiteMotion(null, "ball")).toBe(false);
+    expect(finiteMotion({ ballX: 1, ballY: 2, ballVX: 0 }, "ball")).toBe(false);
+    expect(finiteMotion({ ballX: 1, ballY: NaN, ballVX: 0, ballVY: 0 }, "ball")).toBe(false);
   });
 });

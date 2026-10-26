@@ -1,5 +1,5 @@
 /**
- * The bounce off a paddle, shared by the games that have one.
+ * The bounce off a paddle and the ball's step, shared by the games that have one.
  *
  * @module games/core/paddle
  */
@@ -21,4 +21,16 @@ export function paddleBounce(hit, center, half, speed, { maxAngle, increment, ma
   const angle = offset * maxAngle;
   const next = Math.min(speed + increment, maxSpeed);
   return { speed: next, across: next * Math.cos(angle), along: next * Math.sin(angle) };
+}
+
+/**
+ * The ball one frame on along its velocity, while the match is in `playing`;
+ * in any other phase it stays where it is.
+ * @param {{ phase: number, ballX: number, ballY: number, ballVX: number, ballVY: number }} state
+ * @param {number} playing - the game's PHASE.PLAYING
+ * @returns {object} new state
+ */
+export function moveBall(state, playing) {
+  if (state.phase !== playing) return state;
+  return { ...state, ballX: state.ballX + state.ballVX, ballY: state.ballY + state.ballVY };
 }

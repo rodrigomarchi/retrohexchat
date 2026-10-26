@@ -20,6 +20,7 @@ import {
   clamp,
   createReaction,
   dutyFrame,
+  finiteMotion,
   interceptAt,
   normalizeDifficulty,
   reflect,
@@ -78,7 +79,7 @@ export function reflectPongY(y) {
  * @returns {number|null}
  */
 export function predictPaddleInterceptY(state, player = 2) {
-  if (!isPredictableState(state)) return null;
+  if (!finiteMotion(state, "ball")) return null;
 
   const targetX =
     player === 1
@@ -179,16 +180,6 @@ export class PongAI {
     const [up, down] = toward(paddleCenterY, this.sampledTargetY, deadzone);
     return { up, down };
   }
-}
-
-function isPredictableState(state) {
-  return (
-    state &&
-    Number.isFinite(state.ballX) &&
-    Number.isFinite(state.ballY) &&
-    Number.isFinite(state.ballVX) &&
-    Number.isFinite(state.ballVY)
-  );
 }
 
 function paddleCenterFor(state, player) {

@@ -37,6 +37,7 @@ import {
 import { GAME_END, PHASE, SNAPSHOT } from "./protocol.js";
 import { getColors, render } from "./renderer.js";
 import { SOUNDS } from "./sounds.js";
+import { countdownState } from "../core/rounds.js";
 
 const SERVE_DELAY_TICKS = 48; // 0.8 s
 const KING_HIT_PAUSE_TICKS = 120; // 2 s
@@ -215,23 +216,12 @@ export default defineGame({
     initial: "WAITING",
     begin: "COUNTDOWN",
     states: {
-      COUNTDOWN: {
-        enter: (game) => {
-          game.gameState.countdown = COUNTDOWN_FROM;
-          game.setKeyboardCaptured(true);
-          game.broadcast();
-          game.audio.playCountdown();
-        },
-        every: { ticks: COUNTDOWN_EVERY_TICKS, count: COUNTDOWN_FROM },
-        onEvery: (game, remaining) => {
-          if (remaining === 0) return;
-          game.gameState.countdown = remaining;
-          game.broadcast();
-          game.invalidate();
-          game.audio.playCountdown();
-        },
+      COUNTDOWN: countdownState({
+        from: COUNTDOWN_FROM,
+        every: COUNTDOWN_EVERY_TICKS,
         next: "SERVING",
-      },
+        capture: true,
+      }),
       // The fireball waits at the centre while the countdown still shows.
       SERVING: {
         as: "COUNTDOWN",

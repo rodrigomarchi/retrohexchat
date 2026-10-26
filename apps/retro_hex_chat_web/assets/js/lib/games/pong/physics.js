@@ -6,7 +6,7 @@
 
 import { PHASE } from "./protocol.js";
 import { burst, stepParticles } from "../core/render.js";
-import { paddleBounce } from "../core/paddle.js";
+import { moveBall, paddleBounce } from "../core/paddle.js";
 
 // --- Constants ---
 
@@ -78,12 +78,7 @@ export function updatePaddle(state, player, inputs) {
  * @returns {object} new state
  */
 export function updateBall(state) {
-  if (state.phase !== PHASE.PLAYING) return state;
-  return {
-    ...state,
-    ballX: state.ballX + state.ballVX,
-    ballY: state.ballY + state.ballVY,
-  };
+  return moveBall(state, PHASE.PLAYING);
 }
 
 /**

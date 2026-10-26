@@ -20,6 +20,7 @@ import {
   clamp,
   createReaction,
   dutyFrame,
+  finiteMotion,
   interceptAt,
   normalizeDifficulty,
   randomUnit,
@@ -84,7 +85,7 @@ export function reflectBreakoutX(x) {
  * @returns {number|null}
  */
 export function predictBreakoutInterceptX(state, player = 2) {
-  if (!isPredictableState(state)) return null;
+  if (!finiteMotion(state, "ball")) return null;
 
   const movingTowardPaddle = player === 1 ? state.ballVY > 0 : state.ballVY < 0;
   if (!movingTowardPaddle) return null;
@@ -204,16 +205,6 @@ export class BreakoutAI {
     const error = (randomUnit(this.rng) * 2 - 1) * config.errorPx || 0;
     return clamp(targetX + error, PADDLE_MIN_CENTER_X, PADDLE_MAX_CENTER_X);
   }
-}
-
-function isPredictableState(state) {
-  return (
-    state &&
-    Number.isFinite(state.ballX) &&
-    Number.isFinite(state.ballY) &&
-    Number.isFinite(state.ballVX) &&
-    Number.isFinite(state.ballVY)
-  );
 }
 
 function paddleCenterFor(state, player) {
