@@ -40,7 +40,7 @@ defmodule RetroHexChat.Jobs.IndexNowWorker do
 
   @deploy_window_days 2
   @verification_wait_seconds 60 * 60
-  @verification_tries 6
+  @verification_snoozes 5
 
   @type outcome ::
           {:ok, IndexNow.summary() | :disabled}
@@ -50,20 +50,22 @@ defmodule RetroHexChat.Jobs.IndexNowWorker do
 
   @impl Oban.Worker
   @spec perform(Oban.Job.t()) :: outcome()
-  def perform(%Oban.Job{args: args, attempt: attempt}) do
+  def perform(%Oban.Job{args: args, meta: meta}) do
+    snoozed = Map.get(meta || %{}, "snoozed", 0)
+
     Observability.span(
       [:retro_hex_chat, :seo, :index_now, :submit],
       %{scope: Map.get(args, "scope", "unknown")},
-      fn -> announce(args, attempt) end,
+      fn -> announce(args, snoozed) end,
       &result_metadata/1
     )
   end
 
-  @spec announce(map(), pos_integer()) :: outcome()
-  defp announce(args, attempt) do
+  @spec announce(map(), non_neg_integer()) :: outcome()
+  defp announce(args, snoozed) do
     if IndexNow.enabled?() do
       case urls(args) do
-        {:ok, urls} -> urls |> IndexNow.submit() |> settle(attempt)
+        {:ok, urls} -> urls |> IndexNow.submit() |> settle(snoozed)
         {:cancel, reason} -> {:cancel, reason}
       end
     else
@@ -100,15 +102,16 @@ defmodule RetroHexChat.Jobs.IndexNowWorker do
     end
   end
 
-  # Oban counts a snooze as an attempt, so the attempt number bounds the wait.
-  @spec settle({:ok, IndexNow.summary()} | {:error, IndexNow.reason()}, pos_integer()) ::
+  # A snooze is not an attempt: Oban counts snoozes in `meta["snoozed"]`, and
+  # that count bounds the wait for the key to be verified.
+  @spec settle({:ok, IndexNow.summary()} | {:error, IndexNow.reason()}, non_neg_integer()) ::
           outcome()
-  defp settle({:ok, summary}, _attempt), do: {:ok, summary}
+  defp settle({:ok, summary}, _snoozed), do: {:ok, summary}
 
-  defp settle({:error, :verification_pending}, attempt) when attempt < @verification_tries,
+  defp settle({:error, :verification_pending}, snoozed) when snoozed < @verification_snoozes,
     do: {:snooze, @verification_wait_seconds}
 
-  defp settle({:error, reason}, _attempt) do
+  defp settle({:error, reason}, _snoozed) do
     if HTTPRetry.retryable?(reason),
       do: {:error, reason},
       else: {:cancel, ResultMetadata.error_reason(reason)}
