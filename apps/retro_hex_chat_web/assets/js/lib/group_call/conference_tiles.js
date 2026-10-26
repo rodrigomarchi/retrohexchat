@@ -327,8 +327,6 @@ export function tileMethods(el, ports) {
       return unassigned.length === 1 ? unassigned[0] : null;
     },
 
-    // Gives the sole unassigned remote tile to the participant, returning it in
-    // a list (empty when there is no tile to claim).
     _claimUnassignedRemoteTile(participantId) {
       const tile = this._soleUnassignedRemoteTile();
       if (!tile) return [];

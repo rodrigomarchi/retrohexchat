@@ -104,9 +104,6 @@ export function localMediaMethods(_el, ports) {
       this._requestOfferAfterLocalMediaChange();
     },
 
-    // Sends each track on the current connection, remembering the camera's
-    // sender for the screen share to swap, then marks the connection as the
-    // one the local media is published on.
     async _addLocalSenders(tracks, stream) {
       for (const track of tracks) {
         const sender = this.pc.addTrack(track, stream);
