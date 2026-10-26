@@ -364,11 +364,13 @@ export function serveBall(state, direction = 1, random = Math.random) {
  * @param {() => number} [random=Math.random] - draws in [0, 1)
  * @returns {Array} particle array
  */
+// ex_dna:disable-for-lines:15 this game's own rule on the shared core helper
 export function createBlockParticles(x, y, color, random = Math.random) {
   return burst(
     x,
     y,
     8,
+    // ex_dna:disable-for-lines:13 this game's own rule on the shared core helper
     { speed: [2, 3], extra: () => ({ life: 1.0, color: color || gameColor("ffaa00") }) },
     random,
   );

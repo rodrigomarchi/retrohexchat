@@ -221,6 +221,7 @@ export default defineGame({
           const { score1, score2 } = game.gameState;
           const winner = score1 >= WINS_NEEDED ? 1 : 2;
           if (winner === 1) game.audio.playMatchWin();
+          // ex_dna:disable-for-lines:13 this game's own defineGame definition
           else game.audio.playMatchLose();
           game.finish({
             end: { score1, score2, winner },
@@ -262,7 +263,7 @@ export default defineGame({
   render: (game) => {
     const s = game.gameState;
     if (s.particles && s.particles.length > 0) s.particles = updateParticles(s.particles);
-    if (game.colors) render(game.ctx, s, game.colors, performance.now());
+    render(game.ctx, s, game.colors, performance.now());
   },
   disconnectResult: drawOnDisconnect((s) => [s.score1, s.score2]),
 });

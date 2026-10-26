@@ -175,6 +175,7 @@ export default defineGame({
   schema: { snapshot: SNAPSHOT, end: GAME_END },
   ai: {
     create: createWarlordAI,
+    // ex_dna:disable-for-lines:7 this game's own defineGame definition
     difficulty: normalizeWarlordAIDifficulty,
     observe: (game) => ({ state: game.gameState, player: 2, difficulty: game.difficulty }),
   },

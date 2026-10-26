@@ -239,6 +239,7 @@ defmodule RetroHexChatWeb.Components.UI.HoverCard do
 
   attr :role, :atom, required: true
 
+  # ex_dna:disable-for-next-line a different picture for each role
   defp role_badge(%{role: :owner} = assigns) do
     ~H'<.badge variant="destructive">{dgettext("chat", "Owner")}</.badge>'
   end

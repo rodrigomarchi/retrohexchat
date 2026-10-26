@@ -69,6 +69,7 @@ export function render(ctx, state, colors, time) {
   drawMissiles(ctx, state, colors);
   drawCannons(ctx, state, colors);
   drawUFO(ctx, state, colors, time);
+  // ex_dna:disable-for-lines:8 this game's own drawing
   drawHUD(ctx, state, colors, time);
 
   // Phase overlays
@@ -79,6 +80,7 @@ export function render(ctx, state, colors, time) {
   } else if (state.phase === PHASE.WAVE_CLEAR) {
     drawOverlayText(ctx, colors, jt`WAVE ${state.wave} CLEARED`, colors.p1, 28);
   } else if (state.phase === PHASE.WAVE_START) {
+    // ex_dna:disable-for-lines:7 this game's own drawing
     drawOverlayText(ctx, colors, jt`WAVE ${state.wave}`, colors.warning, 36);
   } else if (state.phase === PHASE.FINISHED) {
     drawGameOver(ctx, state, colors);

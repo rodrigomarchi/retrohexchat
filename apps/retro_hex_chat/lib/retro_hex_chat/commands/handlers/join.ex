@@ -3,7 +3,11 @@ defmodule RetroHexChat.Commands.Handlers.Join do
   use Gettext, backend: RetroHexChat.Gettext
 
   alias RetroHexChat.Admin
+
+  # ex_dna:disable-for-next-line a command's declaration: literal gettext texts, one module per command
   alias RetroHexChat.Channels.Name
+
+  # ex_dna:disable-for-next-line a command's declaration: literal gettext texts, one module per command
   alias RetroHexChat.Commands.CommandSyntax.Parameter
   alias RetroHexChat.Commands.Handler
 

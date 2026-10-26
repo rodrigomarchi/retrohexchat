@@ -11,7 +11,11 @@ defmodule RetroHexChat.Commands.Handlers.Challenge do
   use Gettext, backend: RetroHexChat.Gettext
 
   alias RetroHexChat.Commands.CommandSyntax.Parameter
+
+  # ex_dna:disable-for-next-line a command's declaration: literal gettext texts, one module per command
   alias RetroHexChat.Commands.Handler
+
+  # ex_dna:disable-for-next-line a command's declaration: literal gettext texts, one module per command
   alias RetroHexChat.Commands.Handler.Guards
   alias RetroHexChat.Commands.Handlers.Lobby
 

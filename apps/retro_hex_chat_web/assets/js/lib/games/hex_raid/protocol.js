@@ -46,6 +46,7 @@ const jet = (j) => [
   u8(`${j}Fuel`),
   u8(`${j}Lives`),
   flags([`${j}Alive`, `${j}Invuln`, `${j}Respawning`]),
+  // ex_dna:disable-for-lines:10 this game's own wire fields
 ];
 
 /** A missile: position and whether it is in flight. */

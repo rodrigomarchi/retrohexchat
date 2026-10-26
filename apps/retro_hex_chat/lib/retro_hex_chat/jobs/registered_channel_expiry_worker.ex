@@ -1,3 +1,4 @@
+# ex_dna:disable-for-next-line a worker's own query, telemetry event and summary keys on the shared worker shape
 defmodule RetroHexChat.Jobs.RegisteredChannelExpiryWorker do
   @moduledoc """
   Durable maintenance worker for purging inactive registered channels.

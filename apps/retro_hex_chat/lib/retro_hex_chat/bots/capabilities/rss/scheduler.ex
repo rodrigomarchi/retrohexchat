@@ -17,6 +17,7 @@ defmodule RetroHexChat.Bots.Capabilities.RSS.Scheduler do
   @doc "Ensure a durable RSS poll job exists after `delay_ms`."
   @spec schedule_poll(integer() | nil, String.t() | nil, non_neg_integer()) ::
           :ok | {:error, term()}
+  # ex_dna:disable-for-next-line the scheduling boundary's own names and error
   def schedule_poll(bot_id, feed_id, delay_ms)
       when schedulable(bot_id, feed_id, delay_ms) do
     impl().schedule_poll(bot_id, feed_id, delay_ms)

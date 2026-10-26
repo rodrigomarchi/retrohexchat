@@ -3,7 +3,6 @@ defmodule RetroHexChatWeb.Components.UI.DesktopLaunchersTest do
 
   import Phoenix.LiveViewTest
 
-  alias RetroHexChatWeb.Components.UI.AppGroups
   alias RetroHexChatWeb.Components.UI.DesktopLaunchers
   alias RetroHexChatWeb.Components.UI.StartMenuApp
 

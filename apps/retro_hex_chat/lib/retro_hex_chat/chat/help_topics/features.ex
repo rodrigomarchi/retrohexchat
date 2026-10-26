@@ -4269,6 +4269,7 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
           "keyboard-shortcuts"
         ]
       },
+      # ex_dna:disable-for-next-line help text: literal gettext data
       %{
         id: "feature-space-office",
         title: dpgettext("help", "space room", "The Office"),
@@ -4284,6 +4285,7 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
           dgettext("help", "furniture")
         ],
         icon: :icon_community,
+        # ex_dna:disable-for-lines:2 help text: literal gettext data
         description:
           Enum.join(
             [
@@ -4316,6 +4318,7 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
           "keyboard-shortcuts"
         ]
       },
+      # ex_dna:disable-for-next-line help text: literal gettext data
       %{
         id: "feature-space-game-room",
         title: dpgettext("help", "space room", "The Game Room"),
@@ -4332,6 +4335,7 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
           dgettext("help", "arcade")
         ],
         icon: :icon_community,
+        # ex_dna:disable-for-lines:2 help text: literal gettext data
         description:
           Enum.join(
             [

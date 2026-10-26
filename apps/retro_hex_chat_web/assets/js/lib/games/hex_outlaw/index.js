@@ -27,6 +27,7 @@ import {
   tickHitPause,
   tickObstacle,
 } from "./physics.js";
+// ex_dna:disable-for-lines:11 this game's own defineGame definition
 import { GAME_END, GAME_MODE, PHASE, SNAPSHOT } from "./protocol.js";
 import { createHitParticles, getColors, render, updateParticles } from "./renderer.js";
 import { SOUNDS } from "./sounds.js";
@@ -172,6 +173,7 @@ export default defineGame({
   onKeyDown: (game, event) => {
     const input = game.keyInput(event);
     if (input === "up") game.localAimUp = true;
+    // ex_dna:disable-for-lines:11 this game's own defineGame definition
     if (input === "down") game.localAimUp = false;
   },
   idle: settleParticles(updateParticles),
@@ -203,6 +205,7 @@ export default defineGame({
     { phase: PHASE.COUNTDOWN, play: "countdown" },
     { phase: PHASE.SPAWNING, play: "bell" },
   ],
+  // ex_dna:disable-for-lines:7 this game's own defineGame definition
   onSnapshot: (game) => game.invalidate(),
   onEnd: guestEnd({
     phase: PHASE.MATCH_OVER,

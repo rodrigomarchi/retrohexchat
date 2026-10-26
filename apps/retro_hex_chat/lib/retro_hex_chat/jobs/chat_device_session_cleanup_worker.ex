@@ -1,3 +1,4 @@
+# ex_dna:disable-for-next-line a worker's own query, telemetry event and summary keys on the shared worker shape
 defmodule RetroHexChat.Jobs.ChatDeviceSessionCleanupWorker do
   @moduledoc """
   Closes chat device session audit rows that stopped receiving heartbeats.

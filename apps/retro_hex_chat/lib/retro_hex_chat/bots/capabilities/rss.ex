@@ -126,12 +126,10 @@ defmodule RetroHexChat.Bots.Capabilities.RSS do
   @spec handle_message(String.t(), String.t(), RetroHexChat.Bots.Capability.bot_context()) ::
           RetroHexChat.Bots.Capability.capability_result()
   def handle_message(content, _author, ctx) do
-    prefix = ctx.command_prefix
-    bot_name = ctx.bot_nickname
     state = ctx.capability_state
     config = ctx.config
 
-    case parse_command(content, prefix, bot_name) do
+    case parse_command(content, ctx) do
       {:rss, "list"} ->
         if_admin(ctx, fn -> handle_list(state) end)
 
@@ -192,6 +190,7 @@ defmodule RetroHexChat.Bots.Capabilities.RSS do
 
   @impl true
   @spec commands() :: [%{trigger: String.t(), description: String.t()}]
+  # ex_dna:disable-for-next-line a capability's command list: literal gettext data
   def commands do
     [
       %{trigger: "rss add", description: dgettext("bots", "Add an RSS feed")},
@@ -203,9 +202,10 @@ defmodule RetroHexChat.Bots.Capabilities.RSS do
 
   # ── Command Parsing ──
 
-  @spec parse_command(String.t(), String.t(), String.t()) :: {:rss, String.t()} | :ignore
-  defp parse_command(content, prefix, bot_name) do
-    case Capability.subcommand(content, prefix, bot_name, "rss") do
+  @spec parse_command(String.t(), Capability.bot_context()) :: {:rss, String.t()} | :ignore
+  # ex_dna:disable-for-next-line a capability's own command word and list texts
+  defp parse_command(content, ctx) do
+    case Capability.subcommand(content, ctx, "rss") do
       {:ok, sub} -> {:rss, Capability.downcase_verb(sub)}
       :error -> :ignore
     end

@@ -70,6 +70,7 @@ export function generateSnowParticles(count) {
 
 // ── Main render ────────────────────────────────────────────────
 
+// ex_dna:disable-for-lines:17 this game's own drawing
 /**
  * Main render function.
  * @param {CanvasRenderingContext2D} ctx

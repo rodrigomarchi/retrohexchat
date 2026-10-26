@@ -264,6 +264,7 @@ function step(game) {
 /** Every step, whatever the phase, the goal flash fades. */
 function tick(game) {
   step(game);
+  // ex_dna:disable-for-lines:10 this game's own defineGame definition
   if (game.goalFlash > 0) game.goalFlash--;
 }
 

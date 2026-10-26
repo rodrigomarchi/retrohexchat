@@ -156,6 +156,7 @@ function finishMatch(game, state) {
   else game.audio.playGameOver();
 
   const end = { score1: state.p1.roundWins, score2: state.p2.roundWins, winner };
+  // ex_dna:disable-for-lines:10 this game's own defineGame definition
   game.finish({ end, result: matchResult(end.score1, end.score2, winner), broadcast: false });
 }
 
@@ -198,6 +199,7 @@ export default defineGame({
   },
   onStart: (game) => {
     game.snowParticles = generateSnowParticles(35);
+    // ex_dna:disable-for-lines:7 this game's own defineGame definition
     if (game.mode === "solo" || game.isHost) {
       const seed = (game.random() * 0xffffffff) >>> 0;
       game.gameState = createInitialState(game.gameMode, seed);
@@ -236,6 +238,7 @@ export default defineGame({
       FINISHED: {
         final: true,
         enter: (game) => finishMatch(game, game.gameState),
+        // ex_dna:disable-for-lines:15 this game's own defineGame definition
       },
     },
   },

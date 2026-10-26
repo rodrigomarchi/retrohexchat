@@ -1,3 +1,4 @@
+# ex_dna:disable-for-next-line a table declares its own columns and constraints
 defmodule RetroHexChat.Chat.Schemas.ContextualTipSetting do
   @moduledoc """
   Ecto schema for persisted contextual tip state.

@@ -32,6 +32,7 @@ defmodule RetroHexChat.GroupCall.Queries do
 
   @spec update_room_status(Room.t(), String.t(), map()) ::
           {:ok, Room.t()} | {:error, Ecto.Changeset.t()}
+  # ex_dna:disable-for-next-line each context's own schema, key and terminal states
   def update_room_status(room, new_status, extra_attrs \\ %{}) do
     attrs = Map.merge(extra_attrs, %{status: new_status})
 

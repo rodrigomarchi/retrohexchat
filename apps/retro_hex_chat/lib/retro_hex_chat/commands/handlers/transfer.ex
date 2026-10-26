@@ -1,3 +1,4 @@
+# ex_dna:disable-for-next-line a command's declaration: literal gettext texts, one module per command
 defmodule RetroHexChat.Commands.Handlers.Transfer do
   @moduledoc "Handler for /transfer <nickname> — transfer channel ownership."
   use Gettext, backend: RetroHexChat.Gettext
@@ -6,6 +7,7 @@ defmodule RetroHexChat.Commands.Handlers.Transfer do
 
   alias RetroHexChat.Commands.CommandSyntax.Parameter
 
+  # ex_dna:disable-for-next-line a command's declaration: literal gettext texts, one module per command
   use RetroHexChat.Commands.Handler,
     name: "transfer",
     category: :channel,

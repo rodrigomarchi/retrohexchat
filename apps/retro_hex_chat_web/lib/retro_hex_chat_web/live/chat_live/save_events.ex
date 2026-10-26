@@ -26,7 +26,9 @@ defmodule RetroHexChatWeb.ChatLive.SaveEvents do
   alias RetroHexChatWeb.ChatLive.Components.SavedDialog
   alias RetroHexChatWeb.ChatLive.Components.UserContextMenus
   alias RetroHexChatWeb.ChatLive.Helpers.Conversation
+  # ex_dna:disable-for-next-line each event module's own event names and action
   alias RetroHexChatWeb.ChatLive.Helpers.Messages
+  # ex_dna:disable-for-next-line each event module's own event names and action
   alias RetroHexChatWeb.ChatLive.Windows
   alias RetroHexChatWeb.Params
 

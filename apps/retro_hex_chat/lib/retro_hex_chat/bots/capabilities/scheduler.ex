@@ -72,12 +72,10 @@ defmodule RetroHexChat.Bots.Capabilities.Scheduler do
   @spec handle_message(String.t(), String.t(), RetroHexChat.Bots.Capability.bot_context()) ::
           RetroHexChat.Bots.Capability.capability_result()
   def handle_message(content, _author, ctx) do
-    prefix = ctx.command_prefix
-    bot_name = ctx.bot_nickname
     state = ctx.capability_state
     config = ctx.config
 
-    case parse_command(content, prefix, bot_name) do
+    case parse_command(content, ctx) do
       {:schedule, "list"} ->
         if_admin(ctx, fn -> handle_list(state) end)
 
@@ -130,9 +128,10 @@ defmodule RetroHexChat.Bots.Capabilities.Scheduler do
 
   # ── Command Parsing ──
 
-  @spec parse_command(String.t(), String.t(), String.t()) :: {:schedule, String.t()} | :ignore
-  defp parse_command(content, prefix, bot_name) do
-    case Capability.subcommand(content, prefix, bot_name, "schedule") do
+  @spec parse_command(String.t(), Capability.bot_context()) :: {:schedule, String.t()} | :ignore
+  # ex_dna:disable-for-next-line a capability's own command word and list texts
+  defp parse_command(content, ctx) do
+    case Capability.subcommand(content, ctx, "schedule") do
       {:ok, sub} -> {:schedule, Capability.downcase_verb(sub)}
       :error -> :ignore
     end

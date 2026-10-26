@@ -320,6 +320,7 @@ function drawHUD(ctx, state, colors, frameCount) {
     ctx.beginPath();
     ctx.arc(dx, dotY + 12, 3, 0, Math.PI * 2);
     if (i < state.roundWins1) ctx.fillStyle = colors.fg;
+    // ex_dna:disable-for-lines:7 this game's own drawing
     else ctx.fillStyle = colors.muted;
     ctx.fill();
   }

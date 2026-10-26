@@ -1,3 +1,4 @@
+# ex_dna:disable-for-next-line a command's declaration: literal gettext texts, one module per command
 defmodule RetroHexChat.Commands.Handlers.Kick do
   @moduledoc "Handler for /kick <nickname> [reason]"
   use Gettext, backend: RetroHexChat.Gettext
@@ -6,6 +7,7 @@ defmodule RetroHexChat.Commands.Handlers.Kick do
 
   alias RetroHexChat.Commands.CommandSyntax.Parameter
 
+  # ex_dna:disable-for-next-line a command's declaration: literal gettext texts, one module per command
   use RetroHexChat.Commands.Handler,
     name: "kick",
     category: :channel,

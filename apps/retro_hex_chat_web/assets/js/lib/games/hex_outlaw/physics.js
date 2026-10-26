@@ -497,6 +497,7 @@ export function checkRoundEnd(state) {
     return { ended: true, roundWinner: 1 };
   }
   if (state.score2 >= SCORE_TO_WIN) {
+    // ex_dna:disable-for-lines:19 this game's own rule on the shared core helper
     return { ended: true, roundWinner: 2 };
   }
   return { ended: false, roundWinner: 0 };

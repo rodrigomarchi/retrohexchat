@@ -33,10 +33,7 @@ defmodule RetroHexChat.Bots.Capabilities.Dice do
   @spec handle_message(String.t(), String.t(), RetroHexChat.Bots.Capability.bot_context()) ::
           RetroHexChat.Bots.Capability.capability_result()
   def handle_message(content, _author, ctx) do
-    prefix = ctx.command_prefix
-    bot_name = ctx.bot_nickname
-
-    case parse_command(content, prefix, bot_name) do
+    case parse_command(content, ctx) do
       {:roll, notation} -> do_roll(notation, ctx.config)
       :ignore -> :ignore
     end
@@ -82,9 +79,9 @@ defmodule RetroHexChat.Bots.Capabilities.Dice do
 
   # ── Internal ──
 
-  @spec parse_command(String.t(), String.t(), String.t()) :: {:roll, String.t()} | :ignore
-  defp parse_command(content, prefix, bot_name) do
-    case Capability.subcommand(content, prefix, bot_name, ["roll", "dice"]) do
+  @spec parse_command(String.t(), Capability.bot_context()) :: {:roll, String.t()} | :ignore
+  defp parse_command(content, ctx) do
+    case Capability.subcommand(content, ctx, ["roll", "dice"]) do
       {:ok, notation} -> {:roll, notation}
       :error -> :ignore
     end

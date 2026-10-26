@@ -111,6 +111,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.IgnoreListDialog do
   # ── Render ───────────────────────────────────────────────────────
 
   @spec render(map()) :: Phoenix.LiveView.Rendered.t()
+  # ex_dna:disable-for-next-line each list dialog's own panel, entries and messages
   def render(assigns) do
     assigns = assign(assigns, :entries, IgnoreList.sorted_entries(assigns.session.ignore_list))
 

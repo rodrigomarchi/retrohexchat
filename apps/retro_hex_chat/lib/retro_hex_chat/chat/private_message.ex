@@ -1,3 +1,4 @@
+# ex_dna:disable-for-next-line a table declares its own columns; the shared rules are MessageRules
 defmodule RetroHexChat.Chat.PrivateMessage do
   @moduledoc """
   Ecto schema for private messages between two users.

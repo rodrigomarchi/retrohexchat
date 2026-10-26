@@ -313,6 +313,7 @@ function drawLives(ctx, startX, y, lives, color) {
 
   ctx.shadowColor = color;
   ctx.shadowBlur = 4;
+  // ex_dna:disable-for-lines:13 this game's own drawing
   ctx.fillStyle = color;
 
   for (let i = 0; i < Math.min(lives, INITIAL_LIVES); i++) {

@@ -1,3 +1,4 @@
+# ex_dna:disable-for-next-line a worker's own query, telemetry event and summary keys on the shared worker shape
 defmodule RetroHexChat.Jobs.IgnoreExpiredCleanupWorker do
   @moduledoc """
   Removes expired durable ignore-list entries.

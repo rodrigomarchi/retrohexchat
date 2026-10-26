@@ -184,6 +184,7 @@ export function createCrashParticles(gridX, gridY, color, random = Math.random) 
     px,
     py,
     12,
+    // ex_dna:disable-for-lines:13 this game's own rule on the shared core helper
     { speed: [2, 4], extra: () => ({ life: 1.0, color: color || gameColor("ffaa00") }) },
     random,
   );

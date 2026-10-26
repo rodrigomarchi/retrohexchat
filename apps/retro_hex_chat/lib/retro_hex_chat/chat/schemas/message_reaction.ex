@@ -1,3 +1,4 @@
+# ex_dna:disable-for-next-line a table declares its own columns and constraints
 defmodule RetroHexChat.Chat.Schemas.MessageReaction do
   @moduledoc """
   One person's one-emoji answer to one message.

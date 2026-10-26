@@ -24,6 +24,7 @@ defmodule RetroHexChat.Bots.Capabilities.Scheduler.Durable do
 
   @doc "Ensure a durable scheduled message job exists after `delay_ms`."
   @spec schedule(integer() | nil, String.t() | nil, non_neg_integer()) :: :ok | {:error, term()}
+  # ex_dna:disable-for-next-line the scheduling boundary's own names and error
   def schedule(bot_id, schedule_id, delay_ms)
       when schedulable(bot_id, schedule_id, delay_ms) do
     impl().schedule(bot_id, schedule_id, delay_ms)

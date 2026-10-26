@@ -2,10 +2,16 @@ defmodule RetroHexChat.Commands.Handlers.AutoRespond do
   @moduledoc "Handler for /autorespond [subcommand] [args]"
   use Gettext, backend: RetroHexChat.Gettext
 
+  # ex_dna:disable-for-next-line a command's declaration: literal gettext texts, one module per command
   alias RetroHexChat.Commands.CommandSyntax.Parameter
+
+  # ex_dna:disable-for-next-line a command's declaration: literal gettext texts, one module per command
   alias RetroHexChat.Commands.Handler
+
+  # ex_dna:disable-for-next-line a command's declaration: literal gettext texts, one module per command
   alias RetroHexChat.Commands.Handler.Args
 
+  # ex_dna:disable-for-next-line a command's declaration: literal gettext texts, one module per command
   use RetroHexChat.Commands.Handler,
     name: "autorespond",
     category: :config,
@@ -45,6 +51,7 @@ defmodule RetroHexChat.Commands.Handlers.AutoRespond do
 
   @impl true
   @spec validate(String.t()) :: :ok | {:error, String.t()}
+  # ex_dna:disable-for-next-line a command's declaration: literal gettext texts, one module per command
   def validate(""), do: :ok
   def validate("list"), do: :ok
 

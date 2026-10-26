@@ -97,6 +97,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.NickColorsDialog do
     end
   end
 
+  # ex_dna:disable-for-next-line each list dialog's own panel, entries and messages
   def handle_event("nick_color_remove", params, socket) do
     session = socket.assigns.session
     nick = params["nickname"] || socket.assigns.selected
@@ -125,6 +126,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.NickColorsDialog do
   # ── Render ───────────────────────────────────────────────────────
 
   @spec render(map()) :: Phoenix.LiveView.Rendered.t()
+  # ex_dna:disable-for-next-line each list dialog's own panel, entries and messages
   def render(assigns) do
     assigns =
       assign(assigns, :entries, NickColors.sorted_entries(assigns.session.nick_colors))

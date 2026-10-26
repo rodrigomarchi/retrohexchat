@@ -17,7 +17,9 @@ defmodule RetroHexChatWeb.ChatLive.PinEvents do
   alias RetroHexChat.Channels.Pins
   alias RetroHexChat.Channels.Server
   alias RetroHexChatWeb.ChatLive.Components.UserContextMenus
+  # ex_dna:disable-for-next-line each event module's own event names and action
   alias RetroHexChatWeb.ChatLive.Helpers.Messages
+  # ex_dna:disable-for-next-line each event module's own event names and action
   alias RetroHexChatWeb.ChatLive.Windows
   alias RetroHexChatWeb.Params
 

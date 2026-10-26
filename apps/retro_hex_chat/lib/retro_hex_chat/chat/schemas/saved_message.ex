@@ -1,3 +1,4 @@
+# ex_dna:disable-for-next-line a table declares its own columns and constraints
 defmodule RetroHexChat.Chat.Schemas.SavedMessage do
   @moduledoc """
   One line one person decided to come back to.

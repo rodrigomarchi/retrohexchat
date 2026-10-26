@@ -166,6 +166,7 @@ defmodule RetroHexChatWeb.Components.UI.Conversations do
 
   attr :icon, :atom, required: true
 
+  # ex_dna:disable-for-next-line a different picture for each section
   defp conversations_rail_icon(%{icon: :channel} = assigns) do
     ~H"""
     <Icons.icon_tab_channel class="h-4 w-4" />
@@ -774,7 +775,7 @@ defmodule RetroHexChatWeb.Components.UI.Conversations do
   attr :on_click, :any, required: true
   attr :testid, :string, required: true
   attr :title, :string, required: true
-  attr :rest, :global, include: ~w(phx-value-channel phx-value-nickname)
+  attr :rest, :global
   slot :inner_block, required: true
 
   defp conversation_row(assigns) do

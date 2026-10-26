@@ -208,6 +208,7 @@ defmodule RetroHexChatWeb.Components.UI.Sheet do
   end
 
   defp show_sheet(js \\ %JS{}, id, side) when is_binary(id) do
+    # ex_dna:disable-for-next-line the enter and leave transitions, mirrored
     transition =
       case side do
         "left" -> {"transition ease-in-out", "-translate-x-full", "translate-x-0"}
@@ -232,6 +233,7 @@ defmodule RetroHexChatWeb.Components.UI.Sheet do
   end
 
   defp hide_sheet(js \\ %JS{}, id, side) do
+    # ex_dna:disable-for-next-line the enter and leave transitions, mirrored
     transition =
       case side do
         "left" -> {"transition ease-in-out", "translate-x-0", "-translate-x-full"}

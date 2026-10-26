@@ -24,6 +24,7 @@ import {
   tickPunchTimers,
   tickRoundTimer,
 } from "./physics.js";
+// ex_dna:disable-for-lines:11 this game's own defineGame definition
 import { GAME_END, PHASE, SNAPSHOT } from "./protocol.js";
 import { createHitParticles, getColors, render, updateParticles } from "./renderer.js";
 import { SOUNDS } from "./sounds.js";
@@ -89,6 +90,7 @@ function fight(game) {
     addHitParticles(game, s.b1x, s.b1y, p2HitPoints);
   }
 
+  // ex_dna:disable-for-lines:9 this game's own defineGame definition
   s = tickRoundTimer(s);
   if (s.roundTimer <= 900 && s.roundTimer > 0 && s.roundTimer % 60 === 0) {
     game.audio.playTimerTick();
@@ -178,6 +180,7 @@ export default defineGame({
   cues: [
     { phase: PHASE.COUNTDOWN, play: "countdown" },
     { phase: PHASE.SPAWNING, play: "bellStart" },
+    // ex_dna:disable-for-lines:10 this game's own defineGame definition
     { phase: PHASE.ROUND_OVER, play: "bellEnd" },
   ],
   onEnd: guestEnd({

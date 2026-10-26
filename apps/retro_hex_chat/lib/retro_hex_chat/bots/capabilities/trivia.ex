@@ -33,11 +33,9 @@ defmodule RetroHexChat.Bots.Capabilities.Trivia do
   @spec handle_message(String.t(), String.t(), RetroHexChat.Bots.Capability.bot_context()) ::
           RetroHexChat.Bots.Capability.capability_result()
   def handle_message(content, author, ctx) do
-    prefix = ctx.command_prefix
-    bot_name = ctx.bot_nickname
     state = ctx.capability_state
 
-    case parse_command(content, prefix, bot_name) do
+    case parse_command(content, ctx) do
       {:trivia, "start"} ->
         handle_start(ctx.channel, state, ctx.config)
 
@@ -129,6 +127,7 @@ defmodule RetroHexChat.Bots.Capabilities.Trivia do
 
   @impl true
   @spec commands() :: [%{trigger: String.t(), description: String.t()}]
+  # ex_dna:disable-for-next-line a capability's command list: literal gettext data
   def commands do
     [
       %{trigger: "trivia start", description: dgettext("bots", "Start a trivia round")},
@@ -140,15 +139,15 @@ defmodule RetroHexChat.Bots.Capabilities.Trivia do
 
   # ── Command Parsing ──
 
-  @spec parse_command(String.t(), String.t(), String.t()) ::
+  @spec parse_command(String.t(), Capability.bot_context()) ::
           {:trivia, String.t()} | {:answer, String.t()} | :ignore
-  defp parse_command(content, prefix, bot_name) do
-    case Capability.subcommand(content, prefix, bot_name, "trivia") do
+  defp parse_command(content, ctx) do
+    case Capability.subcommand(content, ctx, "trivia") do
       {:ok, sub} ->
         {:trivia, String.downcase(sub)}
 
       :error ->
-        case Capability.subcommand(content, prefix, bot_name, "answer") do
+        case Capability.subcommand(content, ctx, "answer") do
           {:ok, text} when text != "" -> {:answer, text}
           _bare_or_other -> :ignore
         end

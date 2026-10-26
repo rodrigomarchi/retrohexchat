@@ -1,3 +1,4 @@
+# ex_dna:disable-for-next-line a game's own texts: literal gettext data, one module per game
 defmodule RetroHexChat.Arcade.Content.ScummvmSoltys do
   @moduledoc false
   use Gettext, backend: RetroHexChat.Gettext

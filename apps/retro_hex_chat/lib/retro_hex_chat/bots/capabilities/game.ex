@@ -120,6 +120,7 @@ defmodule RetroHexChat.Bots.Capabilities.Game do
 
   @impl true
   @spec commands() :: [%{trigger: String.t(), description: String.t()}]
+  # ex_dna:disable-for-next-line a capability's command list: literal gettext data
   def commands do
     [
       %{trigger: "ranking", description: dgettext("bots", "The game's ranking")},

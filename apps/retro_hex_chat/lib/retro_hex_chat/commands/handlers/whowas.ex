@@ -1,3 +1,4 @@
+# ex_dna:disable-for-next-line a command's declaration: literal gettext texts, one module per command
 defmodule RetroHexChat.Commands.Handlers.Whowas do
   @moduledoc "Handler for /whowas <nickname>"
   use Gettext, backend: RetroHexChat.Gettext

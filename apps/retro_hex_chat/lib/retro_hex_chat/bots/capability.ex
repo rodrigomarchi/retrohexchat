@@ -188,6 +188,12 @@ defmodule RetroHexChat.Bots.Capability do
     end)
   end
 
+  @doc "`subcommand/4`, reading the prefix and the bot's name from the context."
+  @spec subcommand(String.t(), bot_context(), String.t() | [String.t()]) ::
+          {:ok, String.t()} | :error
+  def subcommand(content, %{command_prefix: prefix, bot_nickname: bot_name}, words),
+    do: subcommand(content, prefix, bot_name, words)
+
   @doc """
   A subcommand with its verb lowercased and the rest as typed:
   `"ADD https://x/Feed #c"` is `"add https://x/Feed #c"`. Matching ignores

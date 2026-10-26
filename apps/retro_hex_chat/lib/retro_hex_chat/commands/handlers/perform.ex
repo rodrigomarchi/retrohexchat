@@ -2,8 +2,13 @@ defmodule RetroHexChat.Commands.Handlers.Perform do
   @moduledoc "Handler for /perform [subcommand] [args]"
   use Gettext, backend: RetroHexChat.Gettext
 
+  # ex_dna:disable-for-next-line a command's declaration: literal gettext texts, one module per command
   alias RetroHexChat.Commands.CommandSyntax.Parameter
+
+  # ex_dna:disable-for-next-line a command's declaration: literal gettext texts, one module per command
   alias RetroHexChat.Commands.Handler
+
+  # ex_dna:disable-for-next-line a command's declaration: literal gettext texts, one module per command
   alias RetroHexChat.Commands.Handler.Args
 
   use RetroHexChat.Commands.Handler,

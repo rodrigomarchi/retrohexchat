@@ -69,6 +69,7 @@ export function render(ctx, state, colors, time) {
   }
 
   drawScore(ctx, state.score, colors);
+  // ex_dna:disable-for-lines:8 this game's own drawing
   drawLives(ctx, state.lives, colors);
 
   if (state.phase === PHASE.COUNTDOWN) {
@@ -161,6 +162,7 @@ export function drawLives(ctx, lives, colors) {
 
   ctx.shadowColor = colors.warning;
   ctx.shadowBlur = 4;
+  // ex_dna:disable-for-lines:13 this game's own drawing
   ctx.fillStyle = colors.warning;
 
   for (let i = 0; i < Math.min(lives, INITIAL_LIVES); i++) {

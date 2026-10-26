@@ -32,6 +32,7 @@ defmodule RetroHexChat.Arcade.Queries do
 
   @spec update_status(SoloSession.t(), String.t(), map()) ::
           {:ok, SoloSession.t()} | {:error, Ecto.Changeset.t()}
+  # ex_dna:disable-for-next-line each context's own schema, key and terminal states
   def update_status(session, new_status, extra_attrs \\ %{}) do
     attrs = Map.merge(extra_attrs, %{status: new_status})
 

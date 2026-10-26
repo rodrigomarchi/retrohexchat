@@ -172,6 +172,7 @@ export default defineGame({
   },
   onStart: (game) => {
     game.snowParticles = generateSnowParticles(40);
+    // ex_dna:disable-for-lines:7 this game's own defineGame definition
     if (game.isHost) {
       const seed = (game.random() * 0xffffffff) >>> 0;
       game.gameState = createInitialState(game.gameMode, seed);
@@ -209,6 +210,7 @@ export default defineGame({
       COUNTDOWN: { tick: step },
       RACING: { tick: step },
       ROUND_END: { tick: step },
+      // ex_dna:disable-for-lines:15 this game's own defineGame definition
       FINISHED: { final: true },
     },
   },

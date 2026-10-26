@@ -80,6 +80,24 @@ class DecidedClonesTest(unittest.TestCase):
         text = "a\n  # ex_dna:disable-for-lines:3 kept on purpose\nb\nc\nd\ne\n# ex_dna:disable-for-next-line why\nf\n"
         self.assertEqual(dr.disabled_ranges(text), [(3, 5), (8, 8)])
 
+    def test_disabled_ranges_read_the_marker_in_js_comments(self):
+        text = "a\n// ex_dna:disable-for-lines:2 a game's own rule\nb\nc\nd\n"
+        self.assertEqual(dr.disabled_ranges(text), [(3, 4)])
+
+    def test_an_exdna_group_is_decided_only_when_every_site_is_marked(self):
+        root = dr.ROOT
+        clone = {
+            "type": "type_iii",
+            "mass": 50,
+            "fragments": [{"file": f"{root}/a.ex", "line": 3}, {"file": f"{root}/b.ex", "line": 9}],
+        }
+        report = {"stats": {"total_clones": 1, "total_duplicated_lines": 20}, "clones": [clone]}
+        both = {"a.ex": [(3, 3)], "b.ex": [(8, 12)]}
+        one = {"a.ex": [(3, 3)]}
+        self.assertEqual(dr.exdna_summary(report, 5, both)["clones"], 0)
+        self.assertEqual(dr.exdna_summary(report, 5, both)["decided_clones"], 1)
+        self.assertEqual(dr.exdna_summary(report, 5, one)["clones"], 1)
+
     def test_a_clone_inside_a_decided_range_is_set_aside_and_counted(self):
         report = {
             "statistics": {"total": {"lines": 100, "duplicatedLines": 18, "percentage": 18.0, "clones": 2}},

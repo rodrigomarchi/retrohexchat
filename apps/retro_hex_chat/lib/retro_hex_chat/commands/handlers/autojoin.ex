@@ -1,8 +1,12 @@
 defmodule RetroHexChat.Commands.Handlers.AutoJoin do
   @moduledoc "Handler for /autojoin [subcommand] [args]"
+  # ex_dna:disable-for-next-line a command's declaration: literal gettext texts, one module per command
   use Gettext, backend: RetroHexChat.Gettext
 
+  # ex_dna:disable-for-next-line a command's declaration: literal gettext texts, one module per command
   alias RetroHexChat.Commands.CommandSyntax.Parameter
+
+  # ex_dna:disable-for-next-line a command's declaration: literal gettext texts, one module per command
   alias RetroHexChat.Commands.Handler
 
   use RetroHexChat.Commands.Handler,

@@ -44,6 +44,7 @@ const OUT_MESSAGES = ["", "OUT!", "LONG!", "ACE!", "DEAD BALL"];
  * @param {HTMLCanvasElement} canvas
  * @returns {object} color palette
  */
+// ex_dna:disable-for-lines:8 this game's own drawing
 export function getColors(canvas) {
   return readGameColors(canvas, {
     bg: ["--game-bg-color", "0a0a14"],

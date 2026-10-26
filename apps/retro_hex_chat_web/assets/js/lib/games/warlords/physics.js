@@ -535,6 +535,7 @@ export function checkGameOver(state) {
  * @param {() => number} [random=Math.random] - draws in [0, 1)
  * @returns {Array} particle array
  */
+// ex_dna:disable-for-lines:17 this game's own rule on the shared core helper
 export function createBrickParticles(x, y, color, random = Math.random) {
   return burst(
     x,

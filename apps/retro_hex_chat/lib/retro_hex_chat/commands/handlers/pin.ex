@@ -1,3 +1,4 @@
+# ex_dna:disable-for-next-line a command's declaration: literal gettext texts, one module per command
 defmodule RetroHexChat.Commands.Handlers.Pin do
   @moduledoc "Handler for /pin <message id>"
   use Gettext, backend: RetroHexChat.Gettext

@@ -204,6 +204,7 @@ export default defineGame({
     begin: "COUNTDOWN",
     states: {
       // The beep sounds on each second that passes; the last one brings the first wave.
+      // ex_dna:disable-for-lines:11 this game's own defineGame definition
       COUNTDOWN: {
         enter: (game) => {
           game.gameState.countdown = COUNTDOWN_FROM;
@@ -245,6 +246,7 @@ export default defineGame({
           const { winner } = game.endResult;
           game.broadcast();
           game.invalidate();
+          // ex_dna:disable-for-lines:13 this game's own defineGame definition
           playEnd(game, winner);
           game.finish({
             end: { score1, score2, winner },

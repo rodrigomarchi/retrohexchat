@@ -6,6 +6,7 @@ defmodule RetroHexChat.Commands.Handlers.SetWelcome do
   alias RetroHexChat.Commands.Handler
   alias RetroHexChat.Commands.Handler.Guards
 
+  # ex_dna:disable-for-next-line a command's declaration: literal gettext texts, one module per command
   use RetroHexChat.Commands.Handler,
     name: "setwelcome",
     category: :advanced,

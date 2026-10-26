@@ -40,6 +40,7 @@ export const ALIEN_TYPE = {
 // --- Entity limits ---
 export const MAX_ALIENS = 36; // 30 grid + 6 reinforcement buffer per side
 export const MAX_BOMBS = 8;
+// ex_dna:disable-for-lines:10 this game's own wire fields
 export const MAX_DROPS = 6;
 
 /** A missile: position and whether it is in flight. */

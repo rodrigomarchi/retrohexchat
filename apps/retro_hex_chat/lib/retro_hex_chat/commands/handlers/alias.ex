@@ -6,6 +6,7 @@ defmodule RetroHexChat.Commands.Handlers.Alias do
   alias RetroHexChat.Commands.Handler
   alias RetroHexChat.Commands.Handler.Args
 
+  # ex_dna:disable-for-next-line a command's declaration: literal gettext texts, one module per command
   use RetroHexChat.Commands.Handler,
     name: "alias",
     category: :config,
@@ -40,6 +41,7 @@ defmodule RetroHexChat.Commands.Handlers.Alias do
 
   @impl true
   @spec validate(String.t()) :: :ok | {:error, String.t()}
+  # ex_dna:disable-for-next-line a command's declaration: literal gettext texts, one module per command
   def validate(""), do: :ok
   def validate("list"), do: :ok
 

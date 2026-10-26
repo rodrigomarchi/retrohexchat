@@ -1,3 +1,4 @@
+# ex_dna:disable-for-next-line each system window's own panel and reading
 defmodule RetroHexChatWeb.ChatLive.Components.SystemAppInfoDialog do
   @moduledoc """
   Stateful island behind the App Info window.

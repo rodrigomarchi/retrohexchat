@@ -73,14 +73,17 @@ defmodule RetroHexChatWeb.Components.UI.Format do
   that; seconds beyond the first minute are never the question.
   """
   @spec duration_ms(term()) :: String.t()
+  # ex_dna:disable-for-next-line one clause per unit
   def duration_ms(value) when is_integer(value) and value >= @day do
     "#{div(value, @day)}d #{rem(div(value, @hour), 24)}h"
   end
 
+  # ex_dna:disable-for-next-line one clause per unit
   def duration_ms(value) when is_integer(value) and value >= @hour do
     "#{div(value, @hour)}h #{rem(div(value, @minute), 60)}m"
   end
 
+  # ex_dna:disable-for-next-line one clause per unit
   def duration_ms(value) when is_integer(value) and value >= @minute do
     "#{div(value, @minute)}m #{rem(div(value, @second), 60)}s"
   end

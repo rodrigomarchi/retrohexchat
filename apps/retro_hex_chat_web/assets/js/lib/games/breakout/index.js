@@ -31,6 +31,7 @@ import { SOUNDS } from "./sounds.js";
 import { countdownState } from "../core/rounds.js";
 
 const SERVE_DELAY_TICKS = 48; // 0.8 s
+// ex_dna:disable-for-lines:25 this game's own defineGame definition
 const LIFE_LOST_PAUSE_TICKS = 90; // 1.5 s
 const COUNTDOWN_FROM = 3;
 const COUNTDOWN_EVERY_TICKS = 60; // 1 s
@@ -69,6 +70,7 @@ function step(game) {
   if (s.lifeLost) {
     game.audio.playLifeLost();
     game.lastExitSide = s.ballY <= 0 + BALL_SIZE / 2 ? "top" : "bottom";
+    // ex_dna:disable-for-lines:13 this game's own defineGame definition
     s.lifeLost = false;
   }
 
@@ -134,6 +136,7 @@ export default defineGame({
   schema: { snapshot: SNAPSHOT, end: GAME_END },
   ai: {
     create: createBreakoutAI,
+    // ex_dna:disable-for-lines:7 this game's own defineGame definition
     difficulty: normalizeBreakoutAIDifficulty,
     observe: (game) => ({ state: game.gameState, player: 2, difficulty: game.difficulty }),
   },

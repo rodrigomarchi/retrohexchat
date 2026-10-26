@@ -9,10 +9,17 @@ defmodule RetroHexChat.Commands.Handlers.Cs do
   alias RetroHexChat.Chat.Archive
   alias RetroHexChat.Commands.CommandSyntax.Parameter
   alias RetroHexChat.Commands.Handler
+
+  # ex_dna:disable-for-next-line a command's declaration: literal gettext texts, one module per command
   alias RetroHexChat.Commands.Timestamp
+
+  # ex_dna:disable-for-next-line a command's declaration: literal gettext texts, one module per command
   alias RetroHexChat.Locales
+
+  # ex_dna:disable-for-next-line a command's declaration: literal gettext texts, one module per command
   alias RetroHexChat.Services.{ChanServ, Queries}
 
+  # ex_dna:disable-for-next-line a command's declaration: literal gettext texts, one module per command
   use RetroHexChat.Commands.Handler,
     name: "cs",
     category: :advanced,

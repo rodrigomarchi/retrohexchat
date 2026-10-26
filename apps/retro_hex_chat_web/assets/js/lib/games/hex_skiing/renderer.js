@@ -29,6 +29,7 @@ import { drawVignette, snowfall, waitingText } from "../core/render.js";
 /**
  * Read CSS custom properties from the canvas element.
  */
+// ex_dna:disable-for-lines:8 this game's own drawing
 export function readColors(canvas) {
   return readGameColors(canvas, {
     bg: ["--game-bg-color", "0a0a14"],
@@ -54,6 +55,7 @@ function generateSnowParticles(count) {
   return snowfall(count, CANVAS_W, CANVAS_H, { speed: [0.3, 0.7], drift: 0.5 });
 }
 
+// ex_dna:disable-for-lines:17 this game's own drawing
 /**
  * Main render function.
  * @param {CanvasRenderingContext2D} ctx

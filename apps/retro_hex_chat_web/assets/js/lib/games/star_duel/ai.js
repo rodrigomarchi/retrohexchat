@@ -126,6 +126,7 @@ export class StarDuelAI {
    * @param {1|2} [request.player]
    * @returns {{rotateLeft: boolean, rotateRight: boolean, thrust: boolean, fire: boolean, warp: boolean}}
    */
+  // ex_dna:disable-for-lines:9 this AI's own turn: its cooldowns and the phase it plays in
   nextInputs(request = {}) {
     const { state, player } = aiRequest(request);
 

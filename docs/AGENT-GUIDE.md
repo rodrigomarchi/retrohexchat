@@ -824,3 +824,15 @@ canonical module instead of copying it.
 `BASELINE=reports/duplication/<file>.json` to compare with a fixed point. A
 feature should not raise exact clones, near-miss clones or the JS duplication
 percentage; when it does, the report names the files.
+
+**Every clone the report counts is open: zero is the expected state.** A
+similarity that is not a copy — a command's declaration (its gettext texts stay
+literal), a game's own rule, a table's own columns — is marked where it starts,
+with the reason, and the report counts it apart as decided:
+
+    # ex_dna:disable-for-next-line a command's declaration: literal gettext texts
+    // ex_dna:disable-for-lines:9 this game's own defineGame definition
+
+The same marker works in Elixir and JavaScript. An ExDNA group is decided only
+when every one of its sites is marked, so a new copy of a decided shape shows up
+open. Mark only after reading both sides; a real copy is extracted, not marked.

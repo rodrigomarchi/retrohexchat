@@ -1,3 +1,4 @@
+# ex_dna:disable-for-next-line a command's declaration: literal gettext texts, one module per command
 defmodule RetroHexChat.Commands.Handlers.Op do
   @moduledoc "Handler for /op <nickname> — give channel operator status."
   use Gettext, backend: RetroHexChat.Gettext
@@ -6,6 +7,7 @@ defmodule RetroHexChat.Commands.Handlers.Op do
 
   alias RetroHexChat.Commands.CommandSyntax.Parameter
 
+  # ex_dna:disable-for-next-line a command's declaration: literal gettext texts, one module per command
   use RetroHexChat.Commands.Handler,
     name: "op",
     category: :channel,

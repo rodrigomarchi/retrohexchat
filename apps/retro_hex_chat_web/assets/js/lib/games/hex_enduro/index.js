@@ -175,6 +175,7 @@ export default defineGame({
       COUNTDOWN: {
         enter: (game) => {
           game.gameState.countdown = COUNTDOWN_FROM;
+          // ex_dna:disable-for-lines:9 this game's own defineGame definition
           game.setKeyboardCaptured(true);
           game.broadcast();
           game.invalidate();

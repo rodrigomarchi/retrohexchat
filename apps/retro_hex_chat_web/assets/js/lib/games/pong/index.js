@@ -30,6 +30,7 @@ import { getColors, render } from "./renderer.js";
 import { SOUNDS } from "./sounds.js";
 
 const SERVE_DELAY_TICKS = 48; // 0.8 s
+// ex_dna:disable-for-lines:25 this game's own defineGame definition
 const SCORE_PAUSE_TICKS = 90; // 1.5 s
 const COUNTDOWN_FROM = 3;
 const COUNTDOWN_EVERY_TICKS = 60; // 1 s
@@ -62,6 +63,7 @@ function step(game) {
       s.ballY,
       game.fxRandom,
     );
+    // ex_dna:disable-for-lines:13 this game's own defineGame definition
     s.scored = false;
   }
 

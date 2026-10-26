@@ -458,6 +458,7 @@ defmodule RetroHexChatWeb.Components.UI.RetroGamesPanel do
     ]
   end
 
+  # ex_dna:disable-for-next-line each game's own control labels
   def control_rows(%{id: id})
       when id in [
              "hex_tennis",
@@ -518,6 +519,7 @@ defmodule RetroHexChatWeb.Components.UI.RetroGamesPanel do
     ]
   end
 
+  # ex_dna:disable-for-next-line each game's own control labels
   def control_rows(%{id: id})
       when id in [
              "hex_hockey",

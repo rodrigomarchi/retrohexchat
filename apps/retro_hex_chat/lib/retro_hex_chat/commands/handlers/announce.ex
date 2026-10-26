@@ -1,3 +1,4 @@
+# ex_dna:disable-for-next-line a command's declaration: literal gettext texts, one module per command
 defmodule RetroHexChat.Commands.Handlers.Announce do
   @moduledoc "Handler for /announce <message> — admin global broadcast."
   use Gettext, backend: RetroHexChat.Gettext
@@ -7,6 +8,7 @@ defmodule RetroHexChat.Commands.Handlers.Announce do
   alias RetroHexChat.Commands.Handler.ServerWide
   alias RetroHexChat.Topics
 
+  # ex_dna:disable-for-next-line a command's declaration: literal gettext texts, one module per command
   use RetroHexChat.Commands.Handler,
     name: "announce",
     category: :advanced,

@@ -145,6 +145,7 @@ defmodule RetroHexChatWeb.Components.UI.Nicklist do
   attr :icon, :atom, required: true
   attr :class, :string, default: "h-4 w-4"
 
+  # ex_dna:disable-for-next-line a different picture for each role or section
   defp nicklist_icon(%{icon: :channel} = assigns) do
     ~H"""
     <Icons.icon_tab_nicklist class={@class} />
@@ -524,6 +525,7 @@ defmodule RetroHexChatWeb.Components.UI.Nicklist do
 
   defp role_name(role), do: role |> Role.key() |> Atom.to_string()
 
+  # ex_dna:disable-for-next-line a different picture for each role or section
   defp role_icon(%{role: :owner} = assigns) do
     ~H'<Icons.icon_role_owner class="h-4 w-4" />'
   end

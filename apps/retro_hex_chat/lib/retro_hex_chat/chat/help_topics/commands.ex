@@ -650,6 +650,7 @@ defmodule RetroHexChat.Chat.HelpTopics.Commands do
           ),
         see_also: ["feature-admin-channels", "feature-admin-console", "cmd-admin-cs"]
       },
+      # ex_dna:disable-for-next-line help text: literal gettext data
       %{
         id: "cmd-admin-ns",
         title: dgettext("help", "/admin ns"),
@@ -684,6 +685,7 @@ defmodule RetroHexChat.Chat.HelpTopics.Commands do
           ),
         see_also: ["feature-admin-console", "cmd-admin-channel", "cmd-cs"]
       },
+      # ex_dna:disable-for-next-line help text: literal gettext data
       %{
         id: "cmd-admin-debug",
         title: dgettext("help", "/admin debug"),

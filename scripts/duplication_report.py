@@ -51,6 +51,9 @@ JSCPD = "jscpd@4.3.0"
 EXDNA_IGNORE = ["**/showcase_live/**"]
 # Help pages and icon SVGs repeat by design; the gallery as above.
 HEEX_IGNORE = "**/help_content/**,**/icons/**,**/showcase_live/**"
+# Translation catalogs are data the i18n scripts write; two Portuguese variants
+# share most phrases on purpose.
+JS_IGNORE = "**/i18n_catalogs/**"
 
 # Names that are callbacks or conventional entry points, not helpers.
 CENSUS_SKIP = {
@@ -65,7 +68,7 @@ CENSUS_SKIP = {
 
 COMMENT_RE = re.compile(r"^\s*(?:#|//|\*|/\*)")
 DEF_RE = re.compile(r"^\s*(defp|def)\s+([a-z_][a-zA-Z0-9_?!]*)\s*\(", re.M)
-DISABLE_RE = re.compile(r"#\s*ex_dna:disable-for-(?:lines:(\d+)|next-line)")
+DISABLE_RE = re.compile(r"(?:#|//)\s*ex_dna:disable-for-(?:lines:(\d+)|next-line)")
 
 # name -> (regex, roots, file suffixes, paths excluded)
 MARKERS = {
@@ -120,11 +123,18 @@ def exdna(extra: list[str]) -> dict:
     return json.loads(proc.stdout[start:])
 
 
-def exdna_summary(report: dict, top: int) -> dict:
+def exdna_summary(report: dict, top: int, disabled=None) -> dict:
+    """`disabled` maps a file to its `ex_dna:disable` line ranges. ExDNA itself
+    only honours the marker on a function definition; a clone group whose every
+    site starts inside a marked range was decided on purpose, so it is set
+    aside and counted apart. A new copy outside a mark keeps the group open.
+    """
     stats = report["stats"]
-    clones = sorted(report["clones"], key=lambda c: -c["mass"] * len(c["fragments"]))
-    return {
-        "clones": stats["total_clones"],
+    decided = [c for c in report["clones"] if disabled is not None and all_marked(c, disabled)]
+    open_clones = [c for c in report["clones"] if c not in decided]
+    clones = sorted(open_clones, key=lambda c: -c["mass"] * len(c["fragments"]))
+    summary = {
+        "clones": len(open_clones),
         "duplicated_lines": stats["total_duplicated_lines"],
         "type_i": stats.get("type_i_count", 0),
         "type_ii": stats.get("type_ii_count", 0),
@@ -138,6 +148,16 @@ def exdna_summary(report: dict, top: int) -> dict:
             for c in clones[:top]
         ],
     }
+    if disabled is not None:
+        summary["decided_clones"] = len(decided)
+    return summary
+
+
+def all_marked(clone: dict, disabled: dict) -> bool:
+    return all(
+        any(start <= f["line"] <= end for start, end in disabled.get(rel(f["file"]), ()))
+        for f in clone["fragments"]
+    )
 
 
 def jscpd(paths: list[str], args: list[str]) -> dict:
@@ -294,10 +314,11 @@ def in_ranges(ranges, fragment: dict) -> bool:
     return any(fragment["start"] <= end and fragment["end"] >= start for start, end in ranges)
 
 
-def disabled_in(roots: list[str]) -> dict:
-    """Every `ex_dna:disable` range under `roots`, by repository-relative path."""
+def disabled_in(roots: list[str], suffixes: tuple = (".ex", ".heex")) -> dict:
+    """Every `ex_dna:disable` range under `roots`, by repository-relative path.
+    The same marker is read in Elixir (`#`) and JavaScript (`//`) comments."""
     found = {}
-    for path in source_files(roots, (".ex", ".heex"), []):
+    for path in source_files(roots, suffixes, []):
         ranges = disabled_ranges(path.read_text(errors="replace"))
         if ranges:
             found[rel(path)] = ranges
@@ -403,8 +424,8 @@ def main(argv: list[str] | None = None) -> int:
     # near-miss ExDNA pass) rather than the sum of all of them.
     near = ["--literal-mode", "abstract", "--min-similarity", "0.85", "--normalize-pipes"]
     jobs = {
-        "exdna_exact": lambda: exdna_summary(exdna([]), args.top),
-        "exdna_near": lambda: exdna_summary(exdna(near), args.top),
+        "exdna_exact": lambda: exdna_summary(exdna([]), args.top, disabled_in([DOMAIN_LIB, WEB_LIB])),
+        "exdna_near": lambda: exdna_summary(exdna(near), args.top, disabled_in([DOMAIN_LIB, WEB_LIB])),
         "census": lambda: census(
             [(rel(p), p.read_text(errors="ignore")) for p in source_files([DOMAIN_LIB, WEB_LIB], (".ex",), [])]
         ),
@@ -412,7 +433,10 @@ def main(argv: list[str] | None = None) -> int:
     }
     if not args.skip_jscpd:
         jobs["jscpd_js"] = lambda: jscpd_summary(
-            jscpd([f"{ASSETS}/js"], ["--format", "javascript", "--min-tokens", "50"]), args.top, games_split
+            jscpd([f"{ASSETS}/js"], ["--format", "javascript", "--min-tokens", "50", "--ignore", JS_IGNORE]),
+            args.top,
+            games_split,
+            disabled=disabled_in([f"{ASSETS}/js"], (".js",)),
         )
         jobs["jscpd_css"] = lambda: jscpd_summary(
             jscpd([f"{ASSETS}/css"], ["--format", "css", "--min-tokens", "50"]), args.top

@@ -6,10 +6,17 @@ defmodule RetroHexChat.Commands.Handlers.Ns do
   alias RetroHexChat.Commands.CommandSyntax.Parameter
   alias RetroHexChat.Commands.Handler
   alias RetroHexChat.Commands.Handler.Args
+
+  # ex_dna:disable-for-next-line a command's declaration: literal gettext texts, one module per command
   alias RetroHexChat.Commands.Handler.Guards
+
+  # ex_dna:disable-for-next-line a command's declaration: literal gettext texts, one module per command
   alias RetroHexChat.Commands.Timestamp
+
+  # ex_dna:disable-for-next-line a command's declaration: literal gettext texts, one module per command
   alias RetroHexChat.Services.NickServ
 
+  # ex_dna:disable-for-next-line a command's declaration: literal gettext texts, one module per command
   use RetroHexChat.Commands.Handler,
     name: "ns",
     category: :advanced,

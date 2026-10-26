@@ -6,6 +6,7 @@ defmodule RetroHexChat.Commands.Handlers.SetMotd do
   alias RetroHexChat.Commands.Handler
   alias RetroHexChat.Services.Motd
 
+  # ex_dna:disable-for-next-line a command's declaration: literal gettext texts, one module per command
   use RetroHexChat.Commands.Handler,
     name: "setmotd",
     category: :advanced,

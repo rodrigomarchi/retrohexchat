@@ -54,6 +54,7 @@ export function render(ctx, state, colors, time, options = {}) {
     drawNeonBall(ctx, state, BALL_SIZE, colors.fg, time);
   }
 
+  // ex_dna:disable-for-lines:8 this game's own drawing
   drawScore(ctx, state.score1, state.score2, colors);
 
   if (state.phase === PHASE.COUNTDOWN) {

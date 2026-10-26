@@ -62,12 +62,14 @@ export function render(ctx, state, colors, time, particles) {
     drawParticles(ctx, particles, colors);
   }
 
+  // ex_dna:disable-for-lines:8 this game's own drawing
   drawHUD(ctx, state, colors, time);
 
   // Phase overlays
   if (state.phase === PHASE.WAITING) {
     drawOverlayText(ctx, colors, waitingText(), colors.p1);
   } else if (state.phase === PHASE.COUNTDOWN) {
+    // ex_dna:disable-for-lines:7 this game's own drawing
     drawOverlayText(ctx, colors, String(state.countdown), colors.warning, 64);
   } else if (state.phase === PHASE.FINISHED) {
     drawGameOver(ctx, state, colors);

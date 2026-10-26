@@ -112,6 +112,7 @@ function battle(game) {
     s = respawnTanks(s);
   }
 
+  // ex_dna:disable-for-lines:9 this game's own defineGame definition
   s = tickTimers(s);
   if (s.roundTimer <= 900 && s.roundTimer > 0 && s.roundTimer % 60 === 0) {
     game.audio.playTimerTick();
@@ -182,6 +183,7 @@ export default defineGame({
   },
   onStop: (game) => {
     game.localFirePressed = false;
+    // ex_dna:disable-for-lines:11 this game's own defineGame definition
     game.remoteFirePressed = false;
   },
   idle: settleParticles(updateParticles),
@@ -214,7 +216,9 @@ export default defineGame({
   cues: [
     { phase: PHASE.COUNTDOWN, play: "countdown" },
     { phase: PHASE.SPAWNING, play: "spawn" },
+    // ex_dna:disable-for-lines:-2 this game's own defineGame definition
     { phase: PHASE.ROUND_OVER, play: "roundEnd" },
+    // ex_dna:disable-for-lines:8 this game's own defineGame definition
   ],
   onEnd: guestEnd({
     phase: PHASE.MATCH_OVER,

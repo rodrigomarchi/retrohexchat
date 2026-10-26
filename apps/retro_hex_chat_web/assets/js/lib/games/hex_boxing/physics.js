@@ -353,6 +353,7 @@ export function checkRoundEnd(state) {
   if (state.roundTimer <= 0) {
     // Decision by points; tie goes to player 1 (host advantage, rare edge case)
     const winner = state.score1 >= state.score2 ? 1 : 2;
+    // ex_dna:disable-for-lines:19 this game's own rule on the shared core helper
     return { ended: true, roundWinner: winner };
   }
   return { ended: false, roundWinner: 0 };

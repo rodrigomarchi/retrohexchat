@@ -473,6 +473,7 @@ function drawHUD(ctx, state, colors) {
     const dx = CANVAS_W / 2 - 20 + i * 20;
     ctx.beginPath();
     ctx.arc(dx, bottomY + 8, 3, 0, Math.PI * 2);
+    // ex_dna:disable-for-lines:7 this game's own drawing
     ctx.fillStyle = i < state.roundWins1 ? colors.fg : colors.muted;
     ctx.fill();
   }

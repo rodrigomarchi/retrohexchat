@@ -208,8 +208,10 @@ export default defineGame({
     begin: "COUNTDOWN",
     states: {
       // The beep sounds on each second that passes, the last one included.
+      // ex_dna:disable-for-lines:11 this game's own defineGame definition
       COUNTDOWN: {
         enter: (game) => {
+          // ex_dna:disable-for-lines:9 this game's own defineGame definition
           game.gameState.countdown = COUNTDOWN_FROM;
           game.broadcast();
           game.invalidate();

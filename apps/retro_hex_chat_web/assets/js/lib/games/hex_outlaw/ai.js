@@ -142,6 +142,7 @@ export class OutlawAI {
    * @param {1|2} [request.player]
    * @returns {{up: boolean, down: boolean, left: boolean, right: boolean, fire: boolean}}
    */
+  // ex_dna:disable-for-lines:9 this AI's own turn: its cooldowns and the phase it plays in
   nextInputs(request = {}) {
     const { state, player } = aiRequest(request);
 

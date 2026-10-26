@@ -11,6 +11,7 @@ defmodule RetroHexChat.Commands.Handlers.Lobby do
   alias RetroHexChat.Services.Queries
   alias RetroHexChat.Topics
 
+  # ex_dna:disable-for-next-line a command's declaration: literal gettext texts, one module per command
   use RetroHexChat.Commands.Handler,
     name: "p2p",
     category: :user,
