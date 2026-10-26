@@ -275,9 +275,29 @@ defmodule RetroHexChat.Accounts.Session do
     %{session | away: true, away_message: message}
   end
 
-  @spec set_notify_list(t(), map()) :: t()
-  def set_notify_list(%__MODULE__{} = session, notify_list) do
-    %{session | notify_list: notify_list}
+  # The lists and settings maps the session carries are each replaced whole,
+  # so each has the same one-line setter: `set_contacts/2`, `set_aliases/2`, …
+  @replaced_whole [
+    :notify_list,
+    :contacts,
+    :nick_colors,
+    :highlight_words,
+    :ignore_list,
+    :perform_list,
+    :autojoin_list,
+    :flood_protection,
+    :input_history,
+    :contextual_tips,
+    :sound_settings,
+    :aliases,
+    :custom_menus,
+    :autorespond_rules
+  ]
+
+  for field <- @replaced_whole do
+    @spec unquote(:"set_#{field}")(t(), map()) :: t()
+    def unquote(:"set_#{field}")(%__MODULE__{} = session, value),
+      do: %{session | unquote(field) => value}
   end
 
   @spec get_notify_list(t()) :: map()
@@ -285,39 +305,9 @@ defmodule RetroHexChat.Accounts.Session do
     notify_list
   end
 
-  @spec set_contacts(t(), map()) :: t()
-  def set_contacts(%__MODULE__{} = session, contacts) do
-    %{session | contacts: contacts}
-  end
-
-  @spec set_nick_colors(t(), map()) :: t()
-  def set_nick_colors(%__MODULE__{} = session, nick_colors) do
-    %{session | nick_colors: nick_colors}
-  end
-
-  @spec set_highlight_words(t(), map()) :: t()
-  def set_highlight_words(%__MODULE__{} = session, highlight_words) do
-    %{session | highlight_words: highlight_words}
-  end
-
   @spec get_highlight_words(t()) :: map()
   def get_highlight_words(%__MODULE__{highlight_words: highlight_words}) do
     highlight_words
-  end
-
-  @spec set_ignore_list(t(), map()) :: t()
-  def set_ignore_list(%__MODULE__{} = session, ignore_list) do
-    %{session | ignore_list: ignore_list}
-  end
-
-  @spec set_perform_list(t(), map()) :: t()
-  def set_perform_list(%__MODULE__{} = session, perform_list) do
-    %{session | perform_list: perform_list}
-  end
-
-  @spec set_autojoin_list(t(), map()) :: t()
-  def set_autojoin_list(%__MODULE__{} = session, autojoin_list) do
-    %{session | autojoin_list: autojoin_list}
   end
 
   @spec get_auto_join_on_invite(t()) :: boolean()
@@ -340,41 +330,6 @@ defmodule RetroHexChat.Accounts.Session do
   def set_notice_routing(%__MODULE__{} = session, routing)
       when routing in [:active, :status, :sender] do
     %{session | notice_routing: routing}
-  end
-
-  @spec set_flood_protection(t(), map()) :: t()
-  def set_flood_protection(%__MODULE__{} = session, settings) do
-    %{session | flood_protection: settings}
-  end
-
-  @spec set_input_history(t(), map()) :: t()
-  def set_input_history(%__MODULE__{} = session, history) do
-    %{session | input_history: history}
-  end
-
-  @spec set_contextual_tips(t(), map()) :: t()
-  def set_contextual_tips(%__MODULE__{} = session, tips) do
-    %{session | contextual_tips: tips}
-  end
-
-  @spec set_sound_settings(t(), map()) :: t()
-  def set_sound_settings(%__MODULE__{} = session, settings) do
-    %{session | sound_settings: settings}
-  end
-
-  @spec set_aliases(t(), map()) :: t()
-  def set_aliases(%__MODULE__{} = session, aliases) do
-    %{session | aliases: aliases}
-  end
-
-  @spec set_custom_menus(t(), map()) :: t()
-  def set_custom_menus(%__MODULE__{} = session, custom_menus) do
-    %{session | custom_menus: custom_menus}
-  end
-
-  @spec set_autorespond_rules(t(), map()) :: t()
-  def set_autorespond_rules(%__MODULE__{} = session, rules) do
-    %{session | autorespond_rules: rules}
   end
 
   @spec get_bio(t()) :: String.t() | nil

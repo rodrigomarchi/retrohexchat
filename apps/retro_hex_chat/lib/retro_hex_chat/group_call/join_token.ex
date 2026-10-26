@@ -6,9 +6,7 @@ defmodule RetroHexChat.GroupCall.JoinToken do
   name. The channel verifies it before allowing SDP/ICE signaling.
   """
 
-  alias RetroHexChat.SignedToken
-
-  @salt "group_call_join"
+  use RetroHexChat.SignedToken, salt: "group_call_join"
 
   @spec sign(String.t(), String.t(), integer(), String.t()) :: String.t()
   def sign(room_token, channel_name, user_id, nickname) do
@@ -19,13 +17,6 @@ defmodule RetroHexChat.GroupCall.JoinToken do
       nickname: nickname
     }
 
-    SignedToken.sign(SignedToken.join_secret(), @salt, data)
+    sign_data(data)
   end
-
-  @spec verify(String.t(), keyword()) :: {:ok, map()} | {:error, :expired | :invalid}
-  def verify(token, opts \\ []),
-    do: SignedToken.verify(SignedToken.join_secret(), @salt, token, opts)
-
-  @spec max_age() :: pos_integer()
-  def max_age, do: SignedToken.default_max_age()
 end

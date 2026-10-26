@@ -316,11 +316,9 @@ defmodule RetroHexChat.Moderation.TimedRestriction do
     args_key = Atom.to_string(restriction.job_args_key)
 
     Enum.each(records, fn record ->
-      {:ok, _count} =
+      :ok =
         Jobs.cancel_worker_jobs(restriction.worker, restriction.queue, %{args_key => record.id})
     end)
-
-    :ok
   end
 
   defp unrevoked_query(restriction, subject, scope) do

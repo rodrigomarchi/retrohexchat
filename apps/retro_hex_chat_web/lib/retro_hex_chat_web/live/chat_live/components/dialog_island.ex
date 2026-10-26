@@ -33,7 +33,9 @@ defmodule RetroHexChatWeb.ChatLive.Components.DialogIsland do
   keeps `keys` as `known/3` gives them; `take: keys` takes `keys` from the
   parent and, when it sends an `action`, hands it to the island's own
   `dispatch/2`; `holds: {key, tag}` sets `key` from an `{tag, value}`
-  action and clears it on `:close` (a confirmation holding what it confirms).
+  action and clears it on `:close` (a confirmation holding what it confirms);
+  `after_assign: fun` takes everything the parent sends, then runs `fun` on
+  the socket.
   With `initial:`, `lists: [name: options]` also starts a
   `PaginatedList` per entry in `mount/1`.
 
@@ -77,7 +79,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.DialogIsland do
   defp with_update(code, opts) do
     quote do
       unquote(code)
-      unquote(update_shape(Keyword.take(opts, [:known, :take, :holds])))
+      unquote(update_shape(Keyword.take(opts, [:known, :take, :holds, :after_assign])))
     end
   end
 
@@ -101,6 +103,14 @@ defmodule RetroHexChatWeb.ChatLive.Components.DialogIsland do
 
       def update(assigns, socket),
         do: {:ok, unquote(__MODULE__).take(socket, assigns, unquote(keys))}
+    end
+  end
+
+  defp update_shape(after_assign: fun) do
+    quote do
+      @impl true
+      @spec update(map(), Phoenix.LiveView.Socket.t()) :: {:ok, Phoenix.LiveView.Socket.t()}
+      def update(assigns, socket), do: {:ok, socket |> assign(assigns) |> then(unquote(fun))}
     end
   end
 
@@ -142,6 +152,20 @@ defmodule RetroHexChatWeb.ChatLive.Components.DialogIsland do
   def mount(socket, id, initial) do
     {:ok, socket |> assign(:id, id) |> assign(initial) |> assign(session: nil)}
   end
+
+  @doc """
+  The updates a confirmation hosted in a window or over the whole viewport
+  ends with: `:close` hides it, and the host declares on every render whether
+  the dialog blocks the viewport or only its window (`send_update/2` carries
+  actions; this carries the shape of the host). Anything else changes nothing.
+  """
+  @spec scoped_update(map(), socket()) :: {:ok, socket()}
+  def scoped_update(%{action: :close}, socket), do: {:ok, assign(socket, show: false)}
+
+  def scoped_update(%{scope: scope} = assigns, socket) when scope in [:viewport, :window],
+    do: {:ok, assign(socket, id: assigns.id, scope: scope)}
+
+  def scoped_update(_assigns, socket), do: {:ok, socket}
 
   @doc "A `PaginatedList` started on the socket for each `{name, options}` in `lists`."
   @spec init_lists(socket(), keyword()) :: socket()

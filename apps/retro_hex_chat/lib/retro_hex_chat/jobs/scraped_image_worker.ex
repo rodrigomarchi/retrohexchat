@@ -3,20 +3,11 @@ defmodule RetroHexChat.Jobs.ScrapedImageWorker do
   Durable thumbnail generation for scraped page images.
   """
 
-  use Oban.Worker,
+  use RetroHexChat.Jobs.OneJobPerKey,
     queue: :scrape,
     max_attempts: 3,
     tags: ["scraper", "image"],
-    unique: [
-      fields: [:worker, :queue, :args],
-      keys: [:url_hash],
-      states: :incomplete,
-      period: :infinity
-    ],
-    replace: [
-      available: [:scheduled_at],
-      scheduled: [:scheduled_at]
-    ]
+    keys: [:url_hash]
 
   use RetroHexChat.Jobs.Retry,
     timeout: :timer.seconds(30),

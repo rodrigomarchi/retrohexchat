@@ -10,15 +10,7 @@ defmodule RetroHexChatWeb.Components.UI.AdminConsoleDialog do
   Output is a transcript, not a snapshot: each line echoes the command and its
   answer, green or red, until cleared.
   """
-  use RetroHexChatWeb.Component
-
-  import RetroHexChatWeb.Components.UI.Inset
-  import RetroHexChatWeb.Components.UI.Button
-  import RetroHexChatWeb.Components.UI.Dialog
-  import RetroHexChatWeb.Components.UI.DialogBanner
-
-  alias RetroHexChatWeb.Components.Diagrams
-  alias RetroHexChatWeb.Icons
+  use RetroHexChatWeb.Components.UI.AdminShared
 
   attr :id, :string, required: true
   attr :show, :boolean, default: false

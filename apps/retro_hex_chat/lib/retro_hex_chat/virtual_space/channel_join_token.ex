@@ -8,9 +8,8 @@ defmodule RetroHexChat.VirtualSpace.ChannelJoinToken do
   client input for identity.
   """
 
-  @salt "channel_space_join"
+  use RetroHexChat.SignedToken, salt: "channel_space_join"
 
-  alias RetroHexChat.SignedToken
   alias RetroHexChat.VirtualSpace.DirectMessageSpace
 
   @spec sign(String.t(), integer() | nil, String.t()) :: String.t()
@@ -22,7 +21,7 @@ defmodule RetroHexChat.VirtualSpace.ChannelJoinToken do
       nickname: nickname
     }
 
-    SignedToken.sign(SignedToken.join_secret(), @salt, data)
+    sign_data(data)
   end
 
   @spec sign_direct_message(String.t(), integer() | nil, String.t(), [String.t()]) :: String.t()
@@ -37,7 +36,7 @@ defmodule RetroHexChat.VirtualSpace.ChannelJoinToken do
       participants: participants
     }
 
-    SignedToken.sign(SignedToken.join_secret(), @salt, data)
+    sign_data(data)
   end
 
   @doc """
@@ -56,15 +55,6 @@ defmodule RetroHexChat.VirtualSpace.ChannelJoinToken do
       participants: participants
     }
 
-    SignedToken.sign(SignedToken.join_secret(), @salt, data)
+    sign_data(data)
   end
-
-  @spec verify(String.t(), keyword()) ::
-          {:ok, map()}
-          | {:error, :expired | :invalid}
-  def verify(token, opts \\ []),
-    do: SignedToken.verify(SignedToken.join_secret(), @salt, token, opts)
-
-  @spec max_age() :: pos_integer()
-  def max_age, do: SignedToken.default_max_age()
 end

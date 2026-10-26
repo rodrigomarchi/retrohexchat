@@ -5,15 +5,7 @@ defmodule RetroHexChatWeb.Components.UI.AdminTurnDialog do
   Read-only. Two panes, one refresh: there is nothing here an admin can change,
   only observe.
   """
-  use RetroHexChatWeb.Component
-
-  import RetroHexChatWeb.Components.UI.AdminShared
-  import RetroHexChatWeb.Components.UI.DialogBanner
-  import RetroHexChatWeb.Components.UI.Button
-  import RetroHexChatWeb.Components.UI.Dialog
-
-  alias RetroHexChatWeb.Components.Diagrams
-  alias RetroHexChatWeb.Icons
+  use RetroHexChatWeb.Components.UI.AdminShared
 
   attr :id, :string, required: true
   attr :show, :boolean, default: false

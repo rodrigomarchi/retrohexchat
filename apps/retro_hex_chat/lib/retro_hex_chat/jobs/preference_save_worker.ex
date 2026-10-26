@@ -3,21 +3,12 @@ defmodule RetroHexChat.Jobs.PreferenceSaveWorker do
   Durable worker for registered-user preference and list persistence.
   """
 
-  use Oban.Worker,
+  use RetroHexChat.Jobs.OneJobPerKey,
     queue: :persistence,
     max_attempts: 5,
     tags: ["persistence"],
-    unique: [
-      fields: [:worker, :queue, :args],
-      keys: [:owner_nickname, :preference_type],
-      states: :incomplete,
-      period: :infinity
-    ],
-    replace: [
-      available: [:scheduled_at],
-      scheduled: [:scheduled_at],
-      retryable: [:scheduled_at]
-    ]
+    keys: [:owner_nickname, :preference_type],
+    reschedule: [:available, :scheduled, :retryable]
 
   use RetroHexChat.Jobs.Retry,
     timeout: :timer.seconds(30),

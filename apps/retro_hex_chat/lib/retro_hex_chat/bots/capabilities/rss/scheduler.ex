@@ -7,6 +7,8 @@ defmodule RetroHexChat.Bots.Capabilities.RSS.Scheduler do
   module without touching RSS parsing or command handling.
   """
 
+  import RetroHexChat.Jobs, only: [schedulable: 3]
+
   @callback schedule_poll(integer(), String.t(), non_neg_integer()) :: :ok | {:error, term()}
   @callback schedule_follow_up_poll(integer(), String.t(), non_neg_integer()) ::
               :ok | {:error, term()}
@@ -16,7 +18,7 @@ defmodule RetroHexChat.Bots.Capabilities.RSS.Scheduler do
   @spec schedule_poll(integer() | nil, String.t() | nil, non_neg_integer()) ::
           :ok | {:error, term()}
   def schedule_poll(bot_id, feed_id, delay_ms)
-      when is_integer(bot_id) and is_binary(feed_id) and is_integer(delay_ms) and delay_ms >= 0 do
+      when schedulable(bot_id, feed_id, delay_ms) do
     impl().schedule_poll(bot_id, feed_id, delay_ms)
   end
 
@@ -32,7 +34,7 @@ defmodule RetroHexChat.Bots.Capabilities.RSS.Scheduler do
   @spec schedule_follow_up_poll(integer() | nil, String.t() | nil, non_neg_integer()) ::
           :ok | {:error, term()}
   def schedule_follow_up_poll(bot_id, feed_id, delay_ms)
-      when is_integer(bot_id) and is_binary(feed_id) and is_integer(delay_ms) and delay_ms >= 0 do
+      when schedulable(bot_id, feed_id, delay_ms) do
     impl().schedule_follow_up_poll(bot_id, feed_id, delay_ms)
   end
 
@@ -83,10 +85,7 @@ defmodule RetroHexChat.Bots.Capabilities.RSS.Scheduler.Oban do
   @impl true
   @spec cancel_poll(integer(), String.t()) :: :ok | {:error, term()}
   def cancel_poll(bot_id, feed_id) do
-    {:ok, _count} =
-      Jobs.cancel_worker_jobs(RSSPollWorker, :rss, %{"bot_id" => bot_id, "feed_id" => feed_id})
-
-    :ok
+    Jobs.cancel_worker_jobs(RSSPollWorker, :rss, %{"bot_id" => bot_id, "feed_id" => feed_id})
   end
 
   defp args(bot_id, feed_id), do: [bot_id: bot_id, feed_id: feed_id]

@@ -3,20 +3,11 @@ defmodule RetroHexChat.Jobs.BotScheduledMessageWorker do
   Durable worker for bot scheduled messages.
   """
 
-  use Oban.Worker,
+  use RetroHexChat.Jobs.OneJobPerKey,
     queue: :bots,
     max_attempts: 5,
     tags: ["bots", "scheduler"],
-    unique: [
-      fields: [:worker, :queue, :args],
-      keys: [:bot_id, :schedule_id],
-      states: :incomplete,
-      period: :infinity
-    ],
-    replace: [
-      available: [:scheduled_at],
-      scheduled: [:scheduled_at]
-    ]
+    keys: [:bot_id, :schedule_id]
 
   use RetroHexChat.Jobs.Retry,
     timeout: :timer.minutes(1),

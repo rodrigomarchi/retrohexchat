@@ -10,16 +10,7 @@ defmodule RetroHexChatWeb.Components.UI.AdminChannelsDialog do
   time into a confirm field. The server checks that too — the field is not a
   formality the client can skip.
   """
-  use RetroHexChatWeb.Component
-
-  import RetroHexChatWeb.Components.UI.Inset
-  import RetroHexChatWeb.Components.UI.AdminShared
-  import RetroHexChatWeb.Components.UI.DialogBanner
-  import RetroHexChatWeb.Components.UI.RetroTable
-  import RetroHexChatWeb.Components.UI.Button
-
-  alias RetroHexChatWeb.Components.Diagrams
-  alias RetroHexChatWeb.Icons
+  use RetroHexChatWeb.Components.UI.AdminShared
 
   attr :id, :string, required: true
   attr :target, :any, default: nil

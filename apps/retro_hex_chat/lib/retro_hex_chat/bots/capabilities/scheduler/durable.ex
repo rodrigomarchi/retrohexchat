@@ -6,6 +6,8 @@ defmodule RetroHexChat.Bots.Capabilities.Scheduler.Durable do
   each configured schedule becomes background work.
   """
 
+  import RetroHexChat.Jobs, only: [schedulable: 3]
+
   @callback reconcile(integer(), [map()]) :: :ok | {:error, term()}
   @callback schedule(integer(), String.t(), non_neg_integer()) :: :ok | {:error, term()}
   @callback schedule_follow_up(integer(), String.t(), non_neg_integer()) :: :ok | {:error, term()}
@@ -23,8 +25,7 @@ defmodule RetroHexChat.Bots.Capabilities.Scheduler.Durable do
   @doc "Ensure a durable scheduled message job exists after `delay_ms`."
   @spec schedule(integer() | nil, String.t() | nil, non_neg_integer()) :: :ok | {:error, term()}
   def schedule(bot_id, schedule_id, delay_ms)
-      when is_integer(bot_id) and is_binary(schedule_id) and is_integer(delay_ms) and
-             delay_ms >= 0 do
+      when schedulable(bot_id, schedule_id, delay_ms) do
     impl().schedule(bot_id, schedule_id, delay_ms)
   end
 
@@ -34,8 +35,7 @@ defmodule RetroHexChat.Bots.Capabilities.Scheduler.Durable do
   @spec schedule_follow_up(integer() | nil, String.t() | nil, non_neg_integer()) ::
           :ok | {:error, term()}
   def schedule_follow_up(bot_id, schedule_id, delay_ms)
-      when is_integer(bot_id) and is_binary(schedule_id) and is_integer(delay_ms) and
-             delay_ms >= 0 do
+      when schedulable(bot_id, schedule_id, delay_ms) do
     impl().schedule_follow_up(bot_id, schedule_id, delay_ms)
   end
 
@@ -112,22 +112,16 @@ defmodule RetroHexChat.Bots.Capabilities.Scheduler.Durable.Oban do
   @impl true
   @spec cancel(integer(), String.t()) :: :ok | {:error, term()}
   def cancel(bot_id, schedule_id) do
-    {:ok, _count} =
-      Jobs.cancel_worker_jobs(BotScheduledMessageWorker, :bots, %{
-        "bot_id" => bot_id,
-        "schedule_id" => schedule_id
-      })
-
-    :ok
+    Jobs.cancel_worker_jobs(BotScheduledMessageWorker, :bots, %{
+      "bot_id" => bot_id,
+      "schedule_id" => schedule_id
+    })
   end
 
   @impl true
   @spec cancel_bot(integer()) :: :ok | {:error, term()}
   def cancel_bot(bot_id) do
-    {:ok, _count} =
-      Jobs.cancel_worker_jobs(BotScheduledMessageWorker, :bots, %{"bot_id" => bot_id})
-
-    :ok
+    Jobs.cancel_worker_jobs(BotScheduledMessageWorker, :bots, %{"bot_id" => bot_id})
   end
 
   defp do_schedule(bot_id, schedule_id, delay_ms, opts) do

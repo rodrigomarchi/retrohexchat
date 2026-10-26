@@ -32,13 +32,8 @@ defmodule RetroHexChatWeb.ChatLive.Components.NickColorsDialog do
       show_edit_dialog: false,
       entry_locales: %{},
       entry_locales_cache: nil
-    }
-
-  @spec update(map(), Phoenix.LiveView.Socket.t()) :: {:ok, Phoenix.LiveView.Socket.t()}
-  def update(assigns, socket) do
-    socket = assign(socket, assigns)
-    {:ok, put_locales(socket)}
-  end
+    },
+    after_assign: &put_locales/1
 
   @spec handle_event(String.t(), map(), Phoenix.LiveView.Socket.t()) ::
           {:noreply, Phoenix.LiveView.Socket.t()}

@@ -4,6 +4,7 @@ defmodule RetroHexChat.Commands.Handlers.Alias do
 
   alias RetroHexChat.Commands.CommandSyntax.Parameter
   alias RetroHexChat.Commands.Handler
+  alias RetroHexChat.Commands.Handler.Args
 
   use RetroHexChat.Commands.Handler,
     name: "alias",
@@ -54,13 +55,8 @@ defmodule RetroHexChat.Commands.Handlers.Alias do
 
   def validate("add"), do: {:error, dgettext("commands", "Usage: /alias add <name> <expansion>")}
 
-  def validate("remove " <> rest) do
-    if String.trim(rest) == "" do
-      {:error, dgettext("commands", "Usage: /alias remove <name>")}
-    else
-      :ok
-    end
-  end
+  def validate("remove " <> rest),
+    do: Args.present(rest, dgettext("commands", "Usage: /alias remove <name>"))
 
   def validate("remove"), do: {:error, dgettext("commands", "Usage: /alias remove <name>")}
 

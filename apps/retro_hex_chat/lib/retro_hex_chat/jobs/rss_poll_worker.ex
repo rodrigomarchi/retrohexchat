@@ -7,20 +7,11 @@ defmodule RetroHexChat.Jobs.RSSPollWorker do
   cannot plan the same items from stale `seen` state.
   """
 
-  use Oban.Worker,
+  use RetroHexChat.Jobs.OneJobPerKey,
     queue: :rss,
     max_attempts: 3,
     tags: ["bots", "rss"],
-    unique: [
-      fields: [:worker, :queue, :args],
-      keys: [:bot_id, :feed_id],
-      states: :incomplete,
-      period: :infinity
-    ],
-    replace: [
-      available: [:scheduled_at],
-      scheduled: [:scheduled_at]
-    ]
+    keys: [:bot_id, :feed_id]
 
   use RetroHexChat.Jobs.Retry,
     timeout: :timer.minutes(5),

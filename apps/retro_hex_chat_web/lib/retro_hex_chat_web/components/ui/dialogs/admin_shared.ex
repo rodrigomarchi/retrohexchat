@@ -14,6 +14,27 @@ defmodule RetroHexChatWeb.Components.UI.AdminShared do
   use RetroHexChatWeb.Component
 
   @doc """
+  An admin window's module: `use RetroHexChatWeb.Component`, the window kit
+  every admin dialog draws with (dialog, banner, buttons, inset, table, this
+  module's strip) and the `Diagrams` and `Icons` aliases its previews use.
+  """
+  defmacro __using__(_opts) do
+    quote do
+      use RetroHexChatWeb.Component
+
+      import RetroHexChatWeb.Components.UI.AdminShared
+      import RetroHexChatWeb.Components.UI.Button
+      import RetroHexChatWeb.Components.UI.Dialog
+      import RetroHexChatWeb.Components.UI.DialogBanner
+      import RetroHexChatWeb.Components.UI.Inset
+      import RetroHexChatWeb.Components.UI.RetroTable
+
+      alias RetroHexChatWeb.Components.Diagrams
+      alias RetroHexChatWeb.Icons
+    end
+  end
+
+  @doc """
   Outcome strip for a privileged command — green on success, red on error.
 
   Renders nothing while `result` is nil, so a window that has not run a command

@@ -6,15 +6,7 @@ defmodule RetroHexChatWeb.Components.UI.AdminBroadcastDialog do
   is open to server operators; announce goes to everyone and is admin-only.
   Write-only — there is nothing to read back.
   """
-  use RetroHexChatWeb.Component
-
-  import RetroHexChatWeb.Components.UI.AdminShared
-  import RetroHexChatWeb.Components.UI.DialogBanner
-  import RetroHexChatWeb.Components.UI.Button
-  import RetroHexChatWeb.Components.UI.Dialog
-
-  alias RetroHexChatWeb.Components.Diagrams
-  alias RetroHexChatWeb.Icons
+  use RetroHexChatWeb.Components.UI.AdminShared
 
   attr :id, :string, required: true
   attr :show, :boolean, default: false

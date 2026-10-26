@@ -630,36 +630,25 @@ defmodule RetroHexChatWeb.Components.UI.Conversations do
   attr :mention_count, :integer, default: 0
 
   defp channel_item(assigns) do
-    assigns =
-      assign(assigns,
-        testid: assigns.testid || "channel-#{assigns.name}",
-        unread_badge_testid:
-          assigns.unread_badge_testid || "channel-unread-badge-#{assigns.name}",
-        unread_dot_testid: assigns.unread_dot_testid || "channel-unread-dot-#{assigns.name}"
-      )
+    assigns = row_testids(assigns, "channel", assigns.name)
 
     ~H"""
-    <li
-      class={[
-        row_classes(@active),
-        !@joined && "chat-conversations-row--saved",
-        @unread && !@active && "font-bold",
-        @highlight && !@active && "chat-conversations-row--highlight",
-        @flash && "animate-pulse",
-        @muted && "chat-conversations-row--muted"
-      ]}
-      phx-click={@on_click}
+    <.conversation_row
+      active={@active}
+      saved={!@joined}
+      unread={@unread}
+      unread_class="font-bold"
+      highlight={@highlight}
+      flash={@flash}
+      muted={@muted}
+      on_click={@on_click}
+      testid={@testid}
+      title={channel_row_title(@name, @user_count, @joined)}
       phx-value-channel={@name}
       data-channel={@name}
       data-joined={to_string(@joined)}
       data-pinned={to_string(@pinned)}
-      data-muted={to_string(@muted)}
-      data-unread={to_string(@unread)}
       data-group-call-active={to_string(@group_call_active)}
-      data-testid={@testid}
-      title={channel_row_title(@name, @user_count, @joined)}
-      tabindex="0"
-      aria-current={if @active, do: "page"}
     >
       <%!-- What the row is, its section already says. Only a state the
             section cannot — a connection lost — takes the place before it. --%>
@@ -704,7 +693,7 @@ defmodule RetroHexChatWeb.Components.UI.Conversations do
         unread_dot_testid={@unread_dot_testid}
       />
       <.row_menu_button name={@name} />
-    </li>
+    </.conversation_row>
     """
   end
 
@@ -726,33 +715,23 @@ defmodule RetroHexChatWeb.Components.UI.Conversations do
   attr :mention_count, :integer, default: 0
 
   defp pm_item(assigns) do
-    assigns =
-      assign(assigns,
-        testid: assigns.testid || "pm-#{assigns.nick}",
-        unread_badge_testid: assigns.unread_badge_testid || "pm-unread-badge-#{assigns.nick}",
-        unread_dot_testid: assigns.unread_dot_testid || "pm-unread-dot-#{assigns.nick}"
-      )
+    assigns = row_testids(assigns, "pm", assigns.nick)
 
     ~H"""
-    <li
-      class={[
-        row_classes(@active),
-        !@open_tab && "chat-conversations-row--saved",
-        @unread && !@active && "font-bold italic",
-        @highlight && !@active && "chat-conversations-row--highlight",
-        @flash && "animate-pulse",
-        @muted && "chat-conversations-row--muted"
-      ]}
-      phx-click={@on_click}
+    <.conversation_row
+      active={@active}
+      saved={!@open_tab}
+      unread={@unread}
+      unread_class="font-bold italic"
+      highlight={@highlight}
+      flash={@flash}
+      muted={@muted}
+      on_click={@on_click}
+      testid={@testid}
+      title={pm_row_title(@nick, @open_tab)}
       phx-value-nickname={@nick}
       data-nick={@nick}
       data-joined={to_string(@open_tab)}
-      data-muted={to_string(@muted)}
-      data-unread={to_string(@unread)}
-      data-testid={@testid}
-      title={pm_row_title(@nick, @open_tab)}
-      tabindex="0"
-      aria-current={if @active, do: "page"}
     >
       <%!-- A conversation with no tab mounted reads the way a channel you have
             not opened reads: the same greyed name, not a word of its own. The
@@ -778,8 +757,58 @@ defmodule RetroHexChatWeb.Components.UI.Conversations do
         unread_dot_testid={@unread_dot_testid}
       />
       <.row_menu_button name={@nick} />
+    </.conversation_row>
+    """
+  end
+
+  # The `<li>` a channel or a conversation row is: how its state reads (saved,
+  # unread, highlighted, flashing, muted), the click, and the attributes the
+  # tests and the client read. What only one kind carries comes in `rest`.
+  attr :active, :boolean, required: true
+  attr :saved, :boolean, required: true
+  attr :unread, :boolean, required: true
+  attr :unread_class, :string, required: true
+  attr :highlight, :boolean, required: true
+  attr :flash, :boolean, required: true
+  attr :muted, :boolean, required: true
+  attr :on_click, :any, required: true
+  attr :testid, :string, required: true
+  attr :title, :string, required: true
+  attr :rest, :global, include: ~w(phx-value-channel phx-value-nickname)
+  slot :inner_block, required: true
+
+  defp conversation_row(assigns) do
+    ~H"""
+    <li
+      class={[
+        row_classes(@active),
+        @saved && "chat-conversations-row--saved",
+        @unread && !@active && @unread_class,
+        @highlight && !@active && "chat-conversations-row--highlight",
+        @flash && "animate-pulse",
+        @muted && "chat-conversations-row--muted"
+      ]}
+      phx-click={@on_click}
+      data-muted={to_string(@muted)}
+      data-unread={to_string(@unread)}
+      data-testid={@testid}
+      title={@title}
+      tabindex="0"
+      aria-current={if @active, do: "page"}
+      {@rest}
+    >
+      {render_slot(@inner_block)}
     </li>
     """
+  end
+
+  # The test ids a row falls back to when its caller names none.
+  defp row_testids(assigns, kind, name) do
+    assign(assigns,
+      testid: assigns.testid || "#{kind}-#{name}",
+      unread_badge_testid: assigns.unread_badge_testid || "#{kind}-unread-badge-#{name}",
+      unread_dot_testid: assigns.unread_dot_testid || "#{kind}-unread-dot-#{name}"
+    )
   end
 
   attr :channel, :map, required: true, doc: "Map with :name and :user_count"

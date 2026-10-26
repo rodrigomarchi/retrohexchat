@@ -32,4 +32,13 @@ defmodule RetroHexChat.Commands.Handler.Args do
   end
 
   def positive_id(_raw, error), do: {:error, error}
+
+  @doc """
+  `:ok` when `text` holds something besides spaces, else `{:error, usage}`:
+  a subcommand typed with nothing after it.
+  """
+  @spec present(String.t(), error) :: :ok | {:error, error} when error: term()
+  def present(text, usage) do
+    if String.trim(text) == "", do: {:error, usage}, else: :ok
+  end
 end

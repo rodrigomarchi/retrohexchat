@@ -4,6 +4,7 @@ defmodule RetroHexChat.Commands.Handlers.Perform do
 
   alias RetroHexChat.Commands.CommandSyntax.Parameter
   alias RetroHexChat.Commands.Handler
+  alias RetroHexChat.Commands.Handler.Args
 
   use RetroHexChat.Commands.Handler,
     name: "perform",
@@ -50,13 +51,8 @@ defmodule RetroHexChat.Commands.Handlers.Perform do
   def validate("list"), do: :ok
   def validate("clear"), do: :ok
 
-  def validate("add " <> rest) do
-    if String.trim(rest) == "" do
-      {:error, dgettext("commands", "Usage: /perform add <command>")}
-    else
-      :ok
-    end
-  end
+  def validate("add " <> rest),
+    do: Args.present(rest, dgettext("commands", "Usage: /perform add <command>"))
 
   def validate("add"), do: {:error, dgettext("commands", "Usage: /perform add <command>")}
 

@@ -23,6 +23,31 @@ defmodule RetroHexChat.SignedToken do
 
   @default_max_age 3_600
 
+  @doc """
+  A kind of join token, by its salt: `verify/2`, `max_age/0` and a private
+  `sign_data/1` that signs the data the token binds.
+
+      use RetroHexChat.SignedToken, salt: "group_call_join"
+  """
+  defmacro __using__(opts) do
+    salt = Keyword.fetch!(opts, :salt)
+
+    quote do
+      alias RetroHexChat.SignedToken
+
+      @salt unquote(salt)
+
+      @spec verify(String.t(), keyword()) :: {:ok, map()} | {:error, :expired | :invalid}
+      def verify(token, opts \\ []),
+        do: SignedToken.verify(SignedToken.join_secret(), @salt, token, opts)
+
+      @spec max_age() :: pos_integer()
+      def max_age, do: SignedToken.default_max_age()
+
+      defp sign_data(data), do: SignedToken.sign(SignedToken.join_secret(), @salt, data)
+    end
+  end
+
   @doc "An hour, which is how long a token is good for unless a caller says otherwise."
   @spec default_max_age() :: pos_integer()
   def default_max_age, do: @default_max_age

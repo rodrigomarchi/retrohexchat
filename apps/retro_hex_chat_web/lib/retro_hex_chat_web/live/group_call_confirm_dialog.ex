@@ -13,6 +13,8 @@ defmodule RetroHexChatWeb.Live.GroupCallConfirmDialog do
 
   import RetroHexChatWeb.Components.UI.GroupCallConfirmDialog
 
+  alias RetroHexChatWeb.ChatLive.Components.DialogIsland
+
   use RetroHexChatWeb.ChatLive.Components.DialogIsland, id: "group-call-confirm-dialog"
 
   @open_modes %{
@@ -55,16 +57,7 @@ defmodule RetroHexChatWeb.Live.GroupCallConfirmDialog do
     {:ok, open(socket, :kick_participant, channel, target_nickname)}
   end
 
-  def update(%{action: :close}, socket), do: {:ok, assign(socket, show: false)}
-
-  # The host declares, on every render, whether the dialog blocks the whole
-  # viewport or just the window it lives in. `send_update/2` carries actions;
-  # this carries the shape of the host.
-  def update(%{scope: scope} = assigns, socket) when scope in [:viewport, :window] do
-    {:ok, assign(socket, id: assigns.id, scope: scope)}
-  end
-
-  def update(_assigns, socket), do: {:ok, socket}
+  def update(assigns, socket), do: DialogIsland.scoped_update(assigns, socket)
 
   defp open(socket, mode, channel, target_nickname \\ nil) do
     assign(socket, show: true, mode: mode, channel: channel, target_nickname: target_nickname)

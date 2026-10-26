@@ -5,17 +5,9 @@ defmodule RetroHexChatWeb.Components.UI.AdminMotdDialog do
   Shows what is set now above the editor, so an admin can see what they are
   replacing. Server operators can read the window but not edit it.
   """
-  use RetroHexChatWeb.Component
+  use RetroHexChatWeb.Components.UI.AdminShared
 
-  import RetroHexChatWeb.Components.UI.Inset
-  import RetroHexChatWeb.Components.UI.AdminShared
-  import RetroHexChatWeb.Components.UI.DialogBanner
-  import RetroHexChatWeb.Components.UI.Button
-  import RetroHexChatWeb.Components.UI.Dialog
-
-  alias RetroHexChatWeb.Components.Diagrams
   alias RetroHexChatWeb.Components.Diagrams.DialogPreview
-  alias RetroHexChatWeb.Icons
 
   attr :id, :string, required: true
   attr :show, :boolean, default: false

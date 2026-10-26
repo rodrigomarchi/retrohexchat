@@ -71,17 +71,27 @@ defmodule RetroHexChat.Jobs do
   @spec delete_all() :: {non_neg_integer(), nil | [term()]}
   def delete_all, do: Repo.delete_all(Job)
 
+  @doc """
+  A bot's job addressed by the bot's id, the key of what it runs (a feed, a
+  schedule) and a delay that is not in the past.
+  """
+  defguard schedulable(bot_id, key, delay_ms)
+           when is_integer(bot_id) and is_binary(key) and is_integer(delay_ms) and delay_ms >= 0
+
   @doc "Cancel incomplete jobs for a worker, queue, and JSON args subset."
-  @spec cancel_worker_jobs(module(), atom() | String.t(), map()) :: {:ok, non_neg_integer()}
+  @spec cancel_worker_jobs(module(), atom() | String.t(), map()) :: :ok
   def cancel_worker_jobs(worker, queue, args) when is_map(args) do
     worker = Oban.Worker.to_string(worker)
     queue = to_string(queue)
 
-    Job
-    |> where([job], job.worker == ^worker)
-    |> where([job], job.queue == ^queue)
-    |> where([job], job.state in ^@cancellable_states)
-    |> where([job], fragment("? @> ?", job.args, type(^args, :map)))
-    |> Oban.cancel_all_jobs()
+    {:ok, _count} =
+      Job
+      |> where([job], job.worker == ^worker)
+      |> where([job], job.queue == ^queue)
+      |> where([job], job.state in ^@cancellable_states)
+      |> where([job], fragment("? @> ?", job.args, type(^args, :map)))
+      |> Oban.cancel_all_jobs()
+
+    :ok
   end
 end

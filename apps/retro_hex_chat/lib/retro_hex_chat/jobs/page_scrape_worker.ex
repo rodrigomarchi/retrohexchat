@@ -11,20 +11,11 @@ defmodule RetroHexChat.Jobs.PageScrapeWorker do
   Unique by URL, so a link posted to five channels at once is fetched once.
   """
 
-  use Oban.Worker,
+  use RetroHexChat.Jobs.OneJobPerKey,
     queue: :scrape,
     max_attempts: 3,
     tags: ["scraper"],
-    unique: [
-      fields: [:worker, :queue, :args],
-      keys: [:url_hash],
-      states: :incomplete,
-      period: :infinity
-    ],
-    replace: [
-      available: [:scheduled_at],
-      scheduled: [:scheduled_at]
-    ]
+    keys: [:url_hash]
 
   use RetroHexChat.Jobs.Retry,
     timeout: :timer.seconds(30),

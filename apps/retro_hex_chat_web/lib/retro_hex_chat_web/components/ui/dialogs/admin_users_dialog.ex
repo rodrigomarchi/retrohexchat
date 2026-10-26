@@ -11,16 +11,7 @@ defmodule RetroHexChatWeb.Components.UI.AdminUsersDialog do
   on a list of names types each one, and a stale shared selection on destructive
   actions is worse than retyping.
   """
-  use RetroHexChatWeb.Component
-
-  import RetroHexChatWeb.Components.UI.Inset
-  import RetroHexChatWeb.Components.UI.AdminShared
-  import RetroHexChatWeb.Components.UI.DialogBanner
-  import RetroHexChatWeb.Components.UI.RetroTable
-  import RetroHexChatWeb.Components.UI.Button
-
-  alias RetroHexChatWeb.Components.Diagrams
-  alias RetroHexChatWeb.Icons
+  use RetroHexChatWeb.Components.UI.AdminShared
 
   attr :id, :string, required: true
   attr :target, :any, default: nil

@@ -4,6 +4,7 @@ defmodule RetroHexChat.Commands.Handlers.AutoRespond do
 
   alias RetroHexChat.Commands.CommandSyntax.Parameter
   alias RetroHexChat.Commands.Handler
+  alias RetroHexChat.Commands.Handler.Args
 
   use RetroHexChat.Commands.Handler,
     name: "autorespond",
@@ -69,13 +70,8 @@ defmodule RetroHexChat.Commands.Handlers.AutoRespond do
   def validate("add"),
     do: {:error, dgettext("commands", "Usage: /autorespond add <trigger> [#channel] <command>")}
 
-  def validate("remove " <> rest) do
-    if String.trim(rest) == "" do
-      {:error, dgettext("commands", "Usage: /autorespond remove <position>")}
-    else
-      :ok
-    end
-  end
+  def validate("remove " <> rest),
+    do: Args.present(rest, dgettext("commands", "Usage: /autorespond remove <position>"))
 
   def validate("remove"),
     do: {:error, dgettext("commands", "Usage: /autorespond remove <position>")}

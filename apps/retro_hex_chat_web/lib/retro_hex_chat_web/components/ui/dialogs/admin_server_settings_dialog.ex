@@ -9,18 +9,9 @@ defmodule RetroHexChatWeb.Components.UI.AdminServerSettingsDialog do
   Saving dispatches one command per changed field, which is why the outcome
   strip can report several lines at once.
   """
-  use RetroHexChatWeb.Component
+  use RetroHexChatWeb.Components.UI.AdminShared
 
-  import RetroHexChatWeb.Components.UI.Inset
-  import RetroHexChatWeb.Components.UI.AdminShared
-  import RetroHexChatWeb.Components.UI.DialogBanner
-  import RetroHexChatWeb.Components.UI.RetroTable
-  import RetroHexChatWeb.Components.UI.Button
-  import RetroHexChatWeb.Components.UI.Dialog
   import RetroHexChatWeb.Components.UI.Input, only: [updown: 1]
-
-  alias RetroHexChatWeb.Components.Diagrams
-  alias RetroHexChatWeb.Icons
 
   attr :id, :string, required: true
   attr :show, :boolean, default: false
