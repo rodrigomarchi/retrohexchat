@@ -6,7 +6,15 @@
  * @module games/hex_jungle/physics
  */
 
-import { cadence, edgeExit, fall, jumpStep, overlaps } from "../core/platform.js";
+import {
+  cadence,
+  climbStep,
+  edgeExit,
+  fall,
+  jumpStep,
+  ladderGrab,
+  overlaps,
+} from "../core/platform.js";
 import {
   BODY,
   CROC_CYCLE,
@@ -20,6 +28,10 @@ import {
   JUMP_LIFT,
   JUMP_STEER_TICKS,
   JUMP_TABLE,
+  LADDER,
+  LADDER_EVERY,
+  LADDER_REACH_FROM_BELOW,
+  LADDER_RUNG,
   LOG_BOX,
   LOG_ROLL_EVERY,
   LOG_SPACING,
@@ -28,6 +40,9 @@ import {
   PHASE,
   PIT,
   PIT_DEATH_Y,
+  SCORPION_BOX,
+  SCORPION_EVERY,
+  SCORPION_START,
   SCREEN_W,
   SEED,
   SHIFT_CYCLE,
@@ -41,7 +56,15 @@ import {
   START_X,
   TIME_TICKS,
   UNDER_Y,
+  VINE_CENTER,
+  VINE_DROP_TICK,
+  VINE_HANG_Y,
+  VINE_PERIOD,
+  VINE_REACH,
+  VINE_SWING,
   WALK_EVERY,
+  WALL_BOX,
+  WALL_X,
 } from "./protocol.js";
 import { decodeScene, stepScreens } from "./world.js";
 
@@ -58,11 +81,33 @@ export function createInitialState() {
     clockRunning: false,
     jumpHeld: false,
     logs: logsFor(SEED),
-    player: { x: START_X, y: GROUND_Y, facing: 1, jumpTick: null, jumpDir: 0, kneeling: null },
+    scorpionX: SCORPION_START,
+    player: {
+      x: START_X,
+      y: GROUND_Y,
+      facing: 1,
+      jumpTick: null,
+      jumpDir: 0,
+      kneeling: null,
+      onVine: false,
+      fromVine: false,
+      climbing: false,
+    },
   };
 }
 
 const within = (x, [from, to]) => x >= from && x <= to;
+
+/**
+ * Where the vine hangs `tick` into the expedition.
+ * @param {number} tick
+ * @returns {number}
+ */
+export function vineX(tick) {
+  return Math.round(VINE_CENTER + VINE_SWING * Math.cos((2 * Math.PI * tick) / VINE_PERIOD));
+}
+
+const LADDER_CLIMB = { top: GROUND_Y, bottom: UNDER_Y, rung: LADDER_RUNG, every: LADDER_EVERY };
 
 /**
  * Where a shifting pit's edges stand, `tick` into its cycle: how far each
@@ -136,6 +181,7 @@ export function changeScreen(state, toward) {
     ...state,
     screen,
     logs: logsFor(screen),
+    scorpionX: SCORPION_START,
     player: { ...state.player, x: toward > 0 ? EDGE_MIN : EDGE_MAX },
   };
 }
@@ -150,10 +196,23 @@ export function changeScreen(state, toward) {
 export function stepPlayer(state, inputs) {
   const floorUnder = (x) => floorAt(state, x);
   const pressedJump = inputs.jump && !state.jumpHeld;
+  const scene = decodeScene(state.screen);
   let player = { ...state.player };
   const floor = floorUnder(player.x);
+  let underground = state.underground;
 
-  if (player.jumpTick === null && player.y === floor) {
+  if (player.onVine) {
+    player = swing(player, inputs, state.tick);
+  } else if (player.climbing) {
+    player = climb(player, inputs, state.tick);
+    underground = player.y > GROUND_Y;
+  } else if (
+    player.jumpTick === null &&
+    player.y === floor &&
+    reachesLadder(state, scene, inputs)
+  ) {
+    player = { ...player, x: LADDER.x, climbing: true };
+  } else if (player.jumpTick === null && player.y === floor) {
     const dir = direction(inputs);
     if (pressedJump) {
       player = { ...player, y: player.y - JUMP_LIFT, jumpTick: 0, jumpDir: dir };
@@ -166,10 +225,17 @@ export function stepPlayer(state, inputs) {
     player = fall(player, floor);
   }
 
-  if (player.jumpTick !== null) player = stepJump(player, inputs, floorUnder);
+  if (player.jumpTick !== null) {
+    player = stepJump(player, inputs, floorUnder);
+    const vine = vineX(state.tick);
+    if (scene.vine && !underground && player.jumpTick !== null && !player.fromVine) {
+      if (Math.abs(player.x - vine) <= VINE_REACH) player = catchVine(player, vine);
+    }
+  }
 
   let next = {
     ...state,
+    underground,
     tick: state.tick + 1,
     jumpHeld: inputs.jump,
     clockRunning: state.clockRunning || moved(inputs),
@@ -180,12 +246,20 @@ export function stepPlayer(state, inputs) {
   return next;
 }
 
+const landed = (player, floor) => ({
+  ...player,
+  y: floor,
+  jumpTick: null,
+  jumpDir: 0,
+  fromVine: false,
+});
+
 /** One tick in the air: the table, then a fall to the floor under it. */
 function stepJump(player, inputs, floorUnder) {
   if (player.jumpTick >= JUMP_TABLE.length) {
     const floor = floorUnder(player.x);
     const fallen = fall(player, floor);
-    return fallen.y === floor ? { ...fallen, jumpTick: null, jumpDir: 0 } : fallen;
+    return fallen.y === floor ? landed(fallen, floor) : fallen;
   }
   let next = jumpStep(player, JUMP_TABLE);
   if (next.jumpTick <= JUMP_STEER_TICKS && direction(inputs) !== 0) {
@@ -193,7 +267,47 @@ function stepJump(player, inputs, floorUnder) {
   }
   if (next.jumpDir !== 0) next.facing = next.jumpDir;
   if (cadence(next.jumpTick, WALK_EVERY)) next.x += next.jumpDir;
-  return next;
+  // A drop from higher than the jump left (a vine) can reach the floor early.
+  const floor = floorUnder(next.x);
+  return next.y >= floor ? landed(next, floor) : next;
+}
+
+function catchVine(player, vine) {
+  return { ...player, x: vine, y: VINE_HANG_Y, onVine: true, jumpTick: null, jumpDir: 0 };
+}
+
+/** One tick on the vine: carried along it, or letting go with down. */
+function swing(player, inputs, tick) {
+  const x = vineX(tick);
+  if (!inputs.down) return { ...player, x };
+  const toward = Math.sign(vineX(tick + 1) - x) || player.facing;
+  return {
+    ...player,
+    x,
+    onVine: false,
+    fromVine: true,
+    jumpTick: VINE_DROP_TICK,
+    jumpDir: toward,
+    facing: toward,
+  };
+}
+
+/** Whether the player standing here takes the ladder with what they hold. */
+function reachesLadder(state, scene, inputs) {
+  if (!scene.ladder || ladderGrab(state.player.x, LADDER) === null) return false;
+  if (!state.underground) return inputs.down;
+  return inputs.up && state.player.y >= LADDER_REACH_FROM_BELOW;
+}
+
+/** One tick on the ladder: a rung at a time, off at the bottom or with a hop at the top. */
+function climb(player, inputs, tick) {
+  const dir = direction(inputs);
+  if (player.y === GROUND_Y && dir !== 0) {
+    return { ...player, climbing: false, y: GROUND_Y - JUMP_LIFT, jumpTick: 0, jumpDir: dir };
+  }
+  const way = (inputs.down ? 1 : 0) - (inputs.up ? 1 : 0);
+  const next = climbStep(player, LADDER_CLIMB, way, tick);
+  return next.y === UNDER_Y && way > 0 ? { ...next, climbing: false } : next;
 }
 
 const body = (player) => ({ x: player.x, y: player.y - BODY.h, w: BODY.w, h: BODY.h });
@@ -207,9 +321,10 @@ const onGround = (box) => ({ x: box.x, y: GROUND_Y - box.h, w: box.w, h: box.h }
  * @returns {object}
  */
 export function stepHazards(state, tick) {
-  if (state.underground) return state;
   const scene = decodeScene(state.screen);
   let next = { ...state, player: { ...state.player, kneeling: null } };
+  if (next.player.climbing) return pushOffLadder(next);
+  if (next.underground) return stepTunnel(next, scene, tick);
 
   if (next.player.y > GROUND_Y && scene.holes.some((hole) => within(next.player.x, hole))) {
     return { ...next, underground: true, score: Math.max(0, next.score - HOLE_POINTS) };
@@ -228,6 +343,36 @@ export function stepHazards(state, tick) {
   const deadly = scene.hazard?.kind === "fire" || scene.hazard?.kind === "snake";
   if (deadly && overlaps(you, onGround({ ...OBJECT_BOX, x: OBJECT_X }))) {
     next = { ...next, phase: PHASE.DYING };
+  }
+  return next;
+}
+
+const touchesLog = (state) =>
+  state.logs.some((log) => overlaps(body(state.player), onGround({ ...LOG_BOX, x: log.x })));
+
+/** A log rolling into a climber near the top knocks them a rung down. */
+function pushOffLadder(state) {
+  if (!touchesLog(state)) return state;
+  const y = Math.min(state.player.y + LADDER_RUNG, UNDER_Y);
+  return { ...state, score: Math.max(0, state.score - 1), player: { ...state.player, y } };
+}
+
+const inTunnel = (box) => ({ x: box.x, y: UNDER_Y - box.h, w: box.w, h: box.h });
+
+/** One tick of the tunnel: its wall pushes back, its scorpion creeps and stings. */
+function stepTunnel(state, scene, tick) {
+  const { wall, scorpion } = scene.underground;
+  let next = state;
+  if (wall && overlaps(body(next.player), inTunnel({ ...WALL_BOX, x: WALL_X[wall] }))) {
+    const back = wall === "right" ? -1 : 1;
+    next = { ...next, player: { ...next.player, x: next.player.x + back } };
+  }
+  if (!scorpion) return next;
+  let scorpionX = next.scorpionX;
+  if (cadence(tick, SCORPION_EVERY)) scorpionX += Math.sign(next.player.x - scorpionX);
+  next = { ...next, scorpionX };
+  if (overlaps(body(next.player), inTunnel({ ...SCORPION_BOX, x: scorpionX }))) {
+    return { ...next, phase: PHASE.DYING };
   }
   return next;
 }

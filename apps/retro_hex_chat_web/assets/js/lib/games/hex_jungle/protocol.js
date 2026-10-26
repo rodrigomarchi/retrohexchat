@@ -128,3 +128,35 @@ export const LOG_ROLL_EVERY = 2;
 export const BODY = Object.freeze({ w: 4, h: 22 });
 export const LOG_BOX = Object.freeze({ w: 8, h: 4 });
 export const OBJECT_BOX = Object.freeze({ w: 8, h: 6 });
+
+/**
+ * The vine swings like a pendulum over the pit, between x 44 and 106, once
+ * every 285 ticks. A jump within 4 pixels of it catches it, and the player
+ * hangs with their feet at line 26.
+ */
+export const VINE_CENTER = 75;
+export const VINE_SWING = 31;
+export const VINE_PERIOD = 285;
+export const VINE_REACH = 4;
+export const VINE_HANG_Y = 26;
+/** Letting go, the player drops the second half of a jump. */
+export const VINE_DROP_TICK = 16;
+
+/**
+ * The ladder in a ladder screen's middle hole: within reach from x 68 to 82,
+ * climbed at x 76 a rung of 5 lines every 8 ticks, and taken from the tunnel
+ * by a player standing low enough.
+ */
+export const LADDER = Object.freeze({ left: 68, right: 82, x: 76 });
+export const LADDER_RUNG = 5;
+export const LADDER_EVERY = 8;
+export const LADDER_REACH_FROM_BELOW = 84;
+
+/** A tunnel's brick wall, on the left or the right of a ladder screen. */
+export const WALL_X = Object.freeze({ left: 17, right: 136 });
+export const WALL_BOX = Object.freeze({ w: 8, h: 16 });
+
+/** A scorpion starts in the tunnel's middle and creeps a pixel every 8 ticks. */
+export const SCORPION_START = 76;
+export const SCORPION_EVERY = 8;
+export const SCORPION_BOX = Object.freeze({ w: 8, h: 8 });

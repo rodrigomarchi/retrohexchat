@@ -14,6 +14,7 @@ import {
   changeScreen,
   createInitialState,
   shiftingInset,
+  vineX,
   stepPlayer,
   logsFor,
   stepTick,
@@ -268,5 +269,120 @@ describe("fire and snakes", () => {
       const seen = ticks(playing(screenOf(0, object), { x: 110 }), { right: true }, 30);
       expect(seen.at(-1).phase).toBe(PHASE.DYING);
     }
+  });
+});
+
+// ── Vines, ladders and the tunnel ──
+
+describe("a vine", () => {
+  const tar = screenOf(2, FIRE);
+
+  it("swings between x 44 and 106 every 285 ticks", () => {
+    expect(vineX(0)).toBe(106);
+    expect(vineX(142)).toBe(44);
+    expect(vineX(285)).toBe(106);
+  });
+
+  it("is caught by jumping into it, and carries the player over the pit", () => {
+    const caught = after(playing(tar, { x: 110 }, { tick: 0 }), { jump: true, left: true }, 1);
+    expect(caught.player.onVine).toBe(true);
+
+    const swung = ticks(caught, {}, 120);
+    expect(swung.every((s) => s.phase === PHASE.PLAYING && s.player.onVine)).toBe(true);
+    swung.forEach((s) => expect(s.player.x).toBe(vineX(s.tick - 1)));
+  });
+
+  it("is not caught by walking under it", () => {
+    expect(after(playing(tar, { x: 110 }, { tick: 0 }), {}, 1).player.onVine).toBe(false);
+  });
+
+  it("lets go on down, and the player drops the way it was swinging", () => {
+    const caught = after(playing(tar, { x: 110 }, { tick: 0 }), { jump: true, left: true }, 1);
+    const late = after(caught, {}, 129);
+    const landed = after(after(late, { down: true }, 1), {}, 40);
+    expect(landed.player.onVine).toBe(false);
+    expect(landed.player.y).toBe(GROUND_Y);
+    expect(landed.player.x).toBeLessThan(44);
+    expect(landed.phase).toBe(PHASE.PLAYING);
+  });
+});
+
+describe("a ladder", () => {
+  const ladder = screenOf(0, FIRE);
+
+  it("is climbed down a rung every 8 ticks into the tunnel, with no hole to pay for", () => {
+    const on = after(playing(ladder, { x: 70 }), { down: true }, 1);
+    expect(on.player).toMatchObject({ climbing: true, x: 76 });
+
+    const seen = ticks(on, { down: true }, 88);
+    const ys = seen.map((s) => s.player.y);
+    expect(new Set(ys.slice(0, 9)).size).toBe(2);
+    const bottom = seen.at(-1);
+    expect(bottom.player).toMatchObject({ y: UNDER_Y, climbing: false });
+    expect(bottom.underground).toBe(true);
+    expect(bottom.score).toBe(2000);
+  });
+
+  it("is out of reach a step away", () => {
+    expect(after(playing(ladder, { x: 66 }), { down: true }, 1).player.climbing).toBeFalsy();
+  });
+
+  it("is climbed up from the tunnel, and stepped off at the top with a hop", () => {
+    const below = playing(ladder, { x: 74, y: UNDER_Y }, { underground: true });
+    const on = after(below, { up: true }, 1);
+    expect(on.player).toMatchObject({ climbing: true, x: 76 });
+
+    const top = after(on, { up: true }, 88);
+    expect(top.player).toMatchObject({ climbing: true, y: GROUND_Y });
+    expect(top.underground).toBe(false);
+
+    const off = after(after(top, { right: true }, 1), {}, 40);
+    expect(off.player.climbing).toBe(false);
+    expect(off.player.y).toBe(GROUND_Y);
+    expect(off.player.x).toBeGreaterThan(82);
+    expect(off.underground).toBe(false);
+    expect(off.phase).toBe(PHASE.PLAYING);
+  });
+
+  it("is pushed down a rung by a log", () => {
+    const climbing = playing(
+      screenOf(0, 4),
+      { x: 76, y: GROUND_Y + 2, climbing: true },
+      {
+        logs: [{ x: 76 }],
+      },
+    );
+    const pushed = after(climbing, {}, 1);
+    expect(pushed.player.y).toBeGreaterThan(GROUND_Y + 2);
+  });
+});
+
+describe("the tunnel", () => {
+  const tunnel = (screen, player) =>
+    playing(screen, { y: UNDER_Y, ...player }, { underground: true });
+
+  it("has a wall on the side bit 7 names, which pushes the player back", () => {
+    const right = ticks(tunnel(0b10000110, { x: 100 }), { right: true }, 100);
+    expect(Math.max(...right.map((s) => s.player.x))).toBeLessThanOrEqual(132);
+    expect(right.at(-1).phase).toBe(PHASE.PLAYING);
+
+    const left = ticks(tunnel(0b00000110, { x: 40 }), { left: true }, 100);
+    expect(Math.min(...left.map((s) => s.player.x))).toBeGreaterThanOrEqual(25);
+  });
+
+  it("is three screens of the jungle's for each of its own", () => {
+    const entered = after(tunnel(screenOf(2, 0), { x: EDGE_MAX }), { right: true }, 1);
+    expect(entered.screen).toBe(stepRight(stepRight(stepRight(screenOf(2, 0)))));
+  });
+
+  it("has a scorpion that creeps a pixel every 8 ticks toward the player", () => {
+    const start = tunnel(screenOf(2, 0), { x: 20 });
+    expect(start.scorpionX).toBe(76);
+    expect(after(start, {}, 80).scorpionX).toBe(66);
+    expect(after(tunnel(screenOf(2, 0), { x: 140 }), {}, 80).scorpionX).toBe(86);
+  });
+
+  it("dies at the scorpion's touch", () => {
+    expect(after(tunnel(screenOf(2, 0), { x: 74 }), {}, 1).phase).toBe(PHASE.DYING);
   });
 });
