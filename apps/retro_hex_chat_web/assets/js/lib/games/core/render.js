@@ -171,6 +171,31 @@ export function drawDigit(ctx, digit, x, y, pixelSize) {
 }
 
 /**
+ * A pixel-art sprite from rows of characters: each character a cell, coloured
+ * by its entry in `palette`; a character the palette lacks (".") is left blank.
+ * @param {CanvasRenderingContext2D} ctx
+ * @param {string[]} rows
+ * @param {Record<string, string>} palette
+ * @param {number} x - left
+ * @param {number} y - top
+ * @param {number} sx - a cell's width
+ * @param {number} sy - a cell's height
+ * @param {{ flip?: boolean }} [options] - `flip` mirrors it left to right
+ */
+export function drawPixelSprite(ctx, rows, palette, x, y, sx, sy, { flip = false } = {}) {
+  for (let row = 0; row < rows.length; row++) {
+    const line = rows[row];
+    for (let col = 0; col < line.length; col++) {
+      const color = palette[line[col]];
+      if (!color) continue;
+      const cell = flip ? line.length - 1 - col : col;
+      ctx.fillStyle = color;
+      ctx.fillRect(x + cell * sx, y + row * sy, sx, sy);
+    }
+  }
+}
+
+/**
  * Bold monospace text at the centre of the canvas, lowered by `yOffset`.
  * @param {CanvasRenderingContext2D} ctx
  * @param {string} text

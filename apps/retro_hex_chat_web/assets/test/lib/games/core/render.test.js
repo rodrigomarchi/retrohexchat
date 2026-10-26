@@ -19,6 +19,7 @@ import {
   drawGrid,
   glitchJitter,
   drawParticleDots,
+  drawPixelSprite,
   drawVignette,
   stepParticles,
 } from "../../../../js/lib/games/core/render.js";
@@ -304,5 +305,32 @@ describe("glitched text", () => {
     expect(tie.log.filter(([op]) => op === "fillText").map(([, text]) => text)).toContain(
       "P1 WINS!",
     );
+  });
+});
+
+describe("drawPixelSprite", () => {
+  it("paints each coloured cell as a block of the scale, and skips the blank ones", () => {
+    const canvas = recordingCanvas(W, H);
+    canvas.recording = true;
+    const ctx = canvas.getContext("2d");
+    drawPixelSprite(ctx, [".#", "#o"], { "#": "#fff", o: "#f00" }, 10, 20, 4, 2);
+
+    const fills = canvas.log
+      .filter((entry) => entry[0] === "fillRect")
+      .map((entry) => entry.slice(1));
+    expect(fills).toEqual([
+      [14, 20, 4, 2],
+      [10, 22, 4, 2],
+      [14, 22, 4, 2],
+    ]);
+  });
+
+  it("can draw a sprite facing the other way", () => {
+    const canvas = recordingCanvas(W, H);
+    canvas.recording = true;
+    drawPixelSprite(canvas.getContext("2d"), ["#."], { "#": "#fff" }, 0, 0, 1, 1, { flip: true });
+    expect(canvas.log.filter((entry) => entry[0] === "fillRect")).toEqual([
+      ["fillRect", 1, 0, 1, 1],
+    ]);
   });
 });

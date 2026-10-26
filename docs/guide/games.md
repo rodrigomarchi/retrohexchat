@@ -29,6 +29,8 @@ another copy of the core (§G.5).
 | Drawing chrome | `core/render.js` — background, scanlines, vignette, grid, digits, centred and glitched text, the closing banner, countdown, waiting, particles |
 | A ball off a paddle | `core/paddle.js` — `paddleBounce`: the angle from where it hit, the speed up to a ceiling; `moveBall` |
 | The neon bat-and-ball look | `core/neon.js` — `neonColors`, `drawNeonPaddle`, `drawNeonBall` (Pong and Block Breakers); a module of its own, so the other games do not load it |
+| A person on platforms | `core/platform.js` — `jumpStep` (a jump read from a table of lines a tick), `fall`, `ladderGrab`, `climbStep`, `overlaps`, `edgeExit`, `cadence`; a module of its own, so the other games do not load it |
+| Pixel-art sprites | `core/render.js` — `drawPixelSprite(ctx, rows, palette, x, y, sx, sy, { flip })`: a sprite as rows of characters, coloured by a palette |
 | AI pieces | `core/ai.js` — `aiRequest`, `normalizeDifficulty`, `interceptAt`/`reflect`, `toward`, `dutyFrame`, `createReaction`, `aiRng`, `rotationDelta`, `finiteMotion`, `edgeAware` |
 
 The engine underneath is `js/lib/game_engine.js`; a game never imports it.
