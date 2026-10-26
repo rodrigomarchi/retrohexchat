@@ -361,6 +361,14 @@ included, is joined explicitly.
 /topic Results and rankings of Hex Hockey, and people to play with. Everything said here is published in a public archive.
 /mode +tn
 
+/join #hex-jungle
+/cs register
+/cs archive on
+/cs language en
+/cs category games
+/topic Results and rankings of Hex Jungle, a game for one player. Everything said here is published in a public archive.
+/mode +tn
+
 /join #retro-games
 /cs register
 /cs archive on
@@ -581,6 +589,7 @@ included, is joined explicitly.
 /bot join Brutus #hex-skiing
 /bot join Brutus #hex-frost
 /bot join Brutus #hex-hockey
+/bot join Brutus #hex-jungle
 /bot join Brutus #retro-games
 /bot join Brutus #doom-shareware
 /bot join Brutus #freedoom1
@@ -1117,7 +1126,7 @@ included, is joined explicitly.
 /bot set Scoreboard prefix !
 /bot set Scoreboard cooldown 1000
 /bot set Scoreboard game_announce on
-/bot set Scoreboard greeting \c09\b[Scoreboard]\o Welcome to {channel}, {nickname}. \c10Find a partner\o under the topic (or \c10/lfg\o) offers a seat; \c10/challenge nick\o invites one person.
+/bot set Scoreboard greeting \c09\b[Scoreboard]\o Welcome to {channel}, {nickname}. \c10Play\o under the topic starts a game; in a game for two, \c10Find a partner\o (or \c10/lfg\o) offers a seat and \c10/challenge nick\o invites one person.
 /bot set Scoreboard greeting_delivery private_notice
 /bot set Scoreboard greeter_repeat_window 3600
 /bot set Scoreboard public_greeting \c09\b[Scoreboard]\o \b{nickname}\o is here. Anyone up for a match?
@@ -1125,9 +1134,9 @@ included, is joined explicitly.
 /bot set Scoreboard onboarding_2 \c14\b[{botname}]\o \c10/part\o leaves a room · \c10/help\o lists every command.
 /bot set Scoreboard visitor_greeting \c09\b[Scoreboard]\o Welcome, \b{nickname}\o! You're watching {channel} live: every match worth telling is said here. \c10Sign up\o to play and to rank.
 /bot set Scoreboard farewell none
-/bot set Scoreboard mention_response \c09\b[Scoreboard]\o I keep the score here, {nickname}. \c10!ranking\o, \c10!challenge\o, \c10!recent\o and \c10!howto\o — or \c10!play\o to find someone.
+/bot set Scoreboard mention_response \c09\b[Scoreboard]\o I keep the score here, {nickname}. \c10!ranking\o, \c10!challenge\o, \c10!recent\o and \c10!howto\o — or \c10!play\o for how to play.
 
-/bot addcmd Scoreboard play \c09\b[Scoreboard]\o \c10Find a partner\o under the topic (or \c10/lfg\o) puts a card with one open seat in the room: whoever presses Join first plays you. \c10/challenge nick\o invites one person instead.
+/bot addcmd Scoreboard play \c09\b[Scoreboard]\o \c10Play\o under the topic starts a game. In a game for two, \c10Find a partner\o (or \c10/lfg\o) puts a card with one open seat in the room: whoever presses Join first plays you; \c10/challenge nick\o invites one person instead.
 
 /bot join Scoreboard #hex-pong
 /bot join Scoreboard #light-trails
@@ -1146,6 +1155,7 @@ included, is joined explicitly.
 /bot join Scoreboard #hex-skiing
 /bot join Scoreboard #hex-frost
 /bot join Scoreboard #hex-hockey
+/bot join Scoreboard #hex-jungle
 /bot join Scoreboard #retro-games
 ```
 
@@ -1205,6 +1215,7 @@ the capability is created by that first `/bot set`:
 | `#hex-skiing` | `games` | Brutus, **Scoreboard** | a room per game, announced by Scoreboard |
 | `#hex-frost` | `games` | Brutus, **Scoreboard** | a room per game, announced by Scoreboard |
 | `#hex-hockey` | `games` | Brutus, **Scoreboard** | a room per game, announced by Scoreboard |
+| `#hex-jungle` | `games` | Brutus, **Scoreboard** | a game for one player: its best runs are announced |
 | `#retro-games` | `games` | Brutus, **Scoreboard** | every game's results at once |
 | `#doom-shareware` | `games` | Brutus, **Pixel** | a room per arcade game, announced by Pixel |
 | `#freedoom1` | `games` | Brutus, **Pixel** | a room per arcade game, announced by Pixel |
