@@ -33,6 +33,7 @@ defmodule RetroHexChat.Jobs.RSSPollWorker do
   alias RetroHexChat.Bots.Output
   alias RetroHexChat.Bots.Queries
   alias RetroHexChat.Bots.Server
+  alias RetroHexChat.Jobs.BotCapability
   alias RetroHexChat.Net.HTTPRetry
   alias RetroHexChat.Observability
 
@@ -92,7 +93,7 @@ defmodule RetroHexChat.Jobs.RSSPollWorker do
         {:cancel, "bot disabled"}
 
       %Bot{} = bot ->
-        with {:ok, rss_config} <- enabled_rss_config(bot),
+        with {:ok, rss_config} <- BotCapability.enabled_config(bot, @rss_capability),
              {:ok, feed} <- find_feed(rss_config, feed_id) do
           Observability.set_current_span_attributes(%{
             bot: bot.nickname,
@@ -119,7 +120,7 @@ defmodule RetroHexChat.Jobs.RSSPollWorker do
   @spec apply_under_lock(Bot.t(), String.t(), RSS.decoded_feed_result()) ::
           {:ok, map()} | {:cancel, String.t()} | {:error, term()}
   defp apply_under_lock(bot, feed_id, decoded) do
-    with {:ok, rss_config} <- enabled_rss_config(bot),
+    with {:ok, rss_config} <- BotCapability.enabled_config(bot, @rss_capability),
          {:ok, feed} <- find_feed(rss_config, feed_id) do
       state = RSS.init_state(rss_config)
       {planned, new_state} = RSS.apply_decoded_result(feed, decoded, state, rss_config)
@@ -145,15 +146,6 @@ defmodule RetroHexChat.Jobs.RSSPollWorker do
       end
     else
       {:cancel, reason} -> {:cancel, reason}
-    end
-  end
-
-  @spec enabled_rss_config(Bot.t()) :: {:ok, map()} | {:cancel, String.t()}
-  defp enabled_rss_config(%Bot{} = bot) do
-    case Bot.capability_config(bot, @rss_capability) do
-      {:ok, config} -> {:ok, config}
-      {:error, :disabled} -> {:cancel, "rss disabled"}
-      {:error, :missing} -> {:cancel, "rss not configured"}
     end
   end
 

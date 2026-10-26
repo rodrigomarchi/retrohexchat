@@ -6,6 +6,8 @@ defmodule RetroHexChat.Games.Catalog do
 
   use Gettext, backend: RetroHexChat.Gettext
 
+  alias RetroHexChat.CatalogText
+
   @solo_game_ids [
     "hex_pong",
     "light_trails",
@@ -665,16 +667,5 @@ defmodule RetroHexChat.Games.Catalog do
 
   def game_for_channel(_name), do: :error
 
-  # Every text field is a msgid translated when the game is read, never when
-  # the module compiles: a description concatenated from two msgids at compile
-  # time matched nothing in a catalog, and one split mid-sentence translated
-  # each half without the other.
-  defp translate_game(game) do
-    game
-    |> Map.update!(:tagline, &t/1)
-    |> Map.update!(:description, &t/1)
-    |> Map.update!(:controls, &t/1)
-  end
-
-  defp t(msgid), do: Gettext.dgettext(RetroHexChat.Gettext, "games", msgid)
+  defp translate_game(game), do: CatalogText.translate(game, "games")
 end

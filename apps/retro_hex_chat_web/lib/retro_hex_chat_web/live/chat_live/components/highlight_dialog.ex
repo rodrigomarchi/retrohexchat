@@ -89,7 +89,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.HighlightDialog do
         {:noreply,
          socket
          |> assign(show_highlight_add_dialog: false)
-         |> put_session(Session.set_highlight_words(session, updated))}
+         |> put_words(updated)}
 
       {:error, reason} ->
         {:noreply,
@@ -108,7 +108,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.HighlightDialog do
         {:noreply,
          socket
          |> assign(highlight_selected: nil)
-         |> put_session(Session.set_highlight_words(session, updated))}
+         |> put_words(updated)}
 
       {:error, :not_found} ->
         {:noreply, bubble_status_error(socket, dgettext("chat", "Word not in highlight list"))}
@@ -124,7 +124,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.HighlightDialog do
         {:noreply,
          socket
          |> assign(show_highlight_edit_dialog: false)
-         |> put_session(Session.set_highlight_words(session, updated))}
+         |> put_words(updated)}
 
       {:error, reason} ->
         {:noreply,
@@ -181,7 +181,8 @@ defmodule RetroHexChatWeb.ChatLive.Components.HighlightDialog do
 
   # Optimistically reflect the new session locally (the word list refreshes this
   # cycle) while the parent assigns it as the canonical read-model and persists it.
-  defp put_session(socket, session) do
+  defp put_words(socket, list) do
+    session = Session.set_highlight_words(socket.assigns.session, list)
     send(self(), {:dialog_session, session, :highlight})
     assign(socket, session: session)
   end

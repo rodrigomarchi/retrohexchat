@@ -469,21 +469,11 @@ defmodule RetroHexChatWeb.DesktopLive do
 
   # Tab bar actions → type-specific v1 events
   def handle_event("switch_tab", %{"type" => type, "label" => label}, socket) do
-    case type do
-      "status" -> dispatch_to_hooks("switch_to_status", %{}, socket)
-      "channel" -> dispatch_to_hooks("switch_channel", %{"channel" => label}, socket)
-      "pm" -> dispatch_to_hooks("switch_pm", %{"nickname" => label}, socket)
-      _ -> {:noreply, socket}
-    end
+    tab_event(type, label, {"switch_channel", "switch_pm"}, socket)
   end
 
   def handle_event("close_tab", %{"type" => type, "label" => label}, socket) do
-    case type do
-      "status" -> dispatch_to_hooks("switch_to_status", %{}, socket)
-      "channel" -> dispatch_to_hooks("close_channel_tab", %{"channel" => label}, socket)
-      "pm" -> dispatch_to_hooks("close_pm_tab", %{"nickname" => label}, socket)
-      _ -> {:noreply, socket}
-    end
+    tab_event(type, label, {"close_channel_tab", "close_pm_tab"}, socket)
   end
 
   def handle_event("close_all_context_menus", _params, socket) do
@@ -790,6 +780,18 @@ defmodule RetroHexChatWeb.DesktopLive do
 
   @spec dispatch_to_hooks(String.t(), map(), Phoenix.LiveView.Socket.t()) ::
           {:noreply, Phoenix.LiveView.Socket.t()}
+  # The status tab has nothing to close, so both actions on it switch to it.
+  defp tab_event("status", _label, _events, socket),
+    do: dispatch_to_hooks("switch_to_status", %{}, socket)
+
+  defp tab_event("channel", label, {channel_event, _pm_event}, socket),
+    do: dispatch_to_hooks(channel_event, %{"channel" => label}, socket)
+
+  defp tab_event("pm", label, {_channel_event, pm_event}, socket),
+    do: dispatch_to_hooks(pm_event, %{"nickname" => label}, socket)
+
+  defp tab_event(_type, _label, _events, socket), do: {:noreply, socket}
+
   defp dispatch_to_hooks(event, params, socket) do
     result =
       Enum.reduce_while(event_hooks(), socket, fn {_name, hook_fn}, acc ->

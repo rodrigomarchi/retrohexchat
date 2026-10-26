@@ -215,25 +215,19 @@ defmodule RetroHexChat.Bots.Capabilities.RSS do
 
   @spec handle_list(map()) :: RetroHexChat.Bots.Capability.capability_result()
   defp handle_list(state) do
-    feeds = state.feeds
-
-    if feeds == [] do
-      {:reply, dgettext("bots", "No RSS feeds configured.")}
-    else
-      lines =
-        Enum.map(feeds, fn f ->
-          title = f["title"] || dgettext("bots", "(untitled)")
-
-          dgettext("bots", "  %{id} | %{title} | %{channel} | %{url}",
-            id: f["id"],
-            title: title,
-            channel: f["channel"],
-            url: Text.truncate(f["url"], 40)
-          )
-        end)
-
-      {:multi_reply, [dgettext("bots", "RSS Feeds:") | lines]}
-    end
+    Capability.list_reply(
+      state.feeds,
+      dgettext("bots", "No RSS feeds configured."),
+      dgettext("bots", "RSS Feeds:"),
+      fn f ->
+        dgettext("bots", "  %{id} | %{title} | %{channel} | %{url}",
+          id: f["id"],
+          title: f["title"] || dgettext("bots", "(untitled)"),
+          channel: f["channel"],
+          url: Text.truncate(f["url"], 40)
+        )
+      end
+    )
   end
 
   @spec handle_add(String.t(), map(), map()) :: RetroHexChat.Bots.Capability.capability_result()

@@ -491,42 +491,39 @@ defmodule RetroHexChat.Commands.Handlers.Bot do
   end
 
   defp apply_setting(bot, "greeting", value) do
-    case update_greeter_text(bot, "greeting", value) do
-      {:ok, nil} -> {:ok, dgettext("commands", "Greeting disabled.")}
-      {:ok, text} -> {:ok, dgettext("commands", "Greeting set to '%{greeting}'.", greeting: text)}
-    end
+    greeter_reply(bot, "greeting", value, dgettext("commands", "Greeting disabled."), fn text ->
+      dgettext("commands", "Greeting set to '%{greeting}'.", greeting: text)
+    end)
   end
 
   defp apply_setting(bot, "public_greeting", value) do
-    case update_greeter_text(bot, "public_greeting", value) do
-      {:ok, nil} ->
-        {:ok, dgettext("commands", "Public greeting disabled.")}
-
-      {:ok, text} ->
-        {:ok, dgettext("commands", "Public greeting set to '%{greeting}'.", greeting: text)}
-    end
+    greeter_reply(
+      bot,
+      "public_greeting",
+      value,
+      dgettext("commands", "Public greeting disabled."),
+      &dgettext("commands", "Public greeting set to '%{greeting}'.", greeting: &1)
+    )
   end
 
   defp apply_setting(bot, "visitor_greeting", value) do
-    case update_greeter_text(bot, "visitor_greeting", value) do
-      {:ok, nil} ->
-        {:ok, dgettext("commands", "The bot will not greet visitors.")}
-
-      {:ok, text} ->
-        {:ok,
-         dgettext("commands", "The bot will greet visitors with '%{greeting}'.", greeting: text)}
-    end
+    greeter_reply(
+      bot,
+      "visitor_greeting",
+      value,
+      dgettext("commands", "The bot will not greet visitors."),
+      &dgettext("commands", "The bot will greet visitors with '%{greeting}'.", greeting: &1)
+    )
   end
 
   defp apply_setting(bot, key, value) when key in @onboarding_keys do
-    case update_greeter_text(bot, key, value) do
-      {:ok, nil} ->
-        {:ok, dgettext("commands", "Onboarding line %{key} cleared.", key: key)}
-
-      {:ok, text} ->
-        {:ok,
-         dgettext("commands", "Onboarding line %{key} set to '%{line}'.", key: key, line: text)}
-    end
+    greeter_reply(
+      bot,
+      key,
+      value,
+      dgettext("commands", "Onboarding line %{key} cleared.", key: key),
+      &dgettext("commands", "Onboarding line %{key} set to '%{line}'.", key: key, line: &1)
+    )
   end
 
   defp apply_setting(bot, "farewell", value) do
@@ -667,6 +664,16 @@ defmodule RetroHexChat.Commands.Handlers.Bot do
        key: key,
        settings: Enum.join(@setting_keys, ", ")
      )}
+  end
+
+  # A greeter line saved: `off` when it was cleared, `on` given the line kept.
+  @spec greeter_reply(map(), String.t(), String.t(), String.t(), (String.t() -> String.t())) ::
+          {:ok, String.t()}
+  defp greeter_reply(bot, key, value, off, on) do
+    case update_greeter_text(bot, key, value) do
+      {:ok, nil} -> {:ok, off}
+      {:ok, text} -> {:ok, on.(text)}
+    end
   end
 
   # Every line a greeter can say is stored the same way: `none` clears it, and

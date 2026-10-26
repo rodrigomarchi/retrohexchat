@@ -142,25 +142,19 @@ defmodule RetroHexChat.Bots.Capabilities.Scheduler do
 
   @spec handle_list(map()) :: RetroHexChat.Bots.Capability.capability_result()
   defp handle_list(state) do
-    schedules = state.schedules
-
-    if schedules == [] do
-      {:reply, dgettext("bots", "No active schedules.")}
-    else
-      lines =
-        Enum.map(schedules, fn s ->
-          type_str = format_schedule_type(s)
-
-          dgettext("bots", "  %{id} | %{type} | %{channel} | %{message}",
-            id: s["id"],
-            type: type_str,
-            channel: s["channel"],
-            message: Text.truncate(s["message"], 40)
-          )
-        end)
-
-      {:multi_reply, [dgettext("bots", "Active schedules:") | lines]}
-    end
+    Capability.list_reply(
+      state.schedules,
+      dgettext("bots", "No active schedules."),
+      dgettext("bots", "Active schedules:"),
+      fn s ->
+        dgettext("bots", "  %{id} | %{type} | %{channel} | %{message}",
+          id: s["id"],
+          type: format_schedule_type(s),
+          channel: s["channel"],
+          message: Text.truncate(s["message"], 40)
+        )
+      end
+    )
   end
 
   @spec handle_add(String.t(), map(), map()) :: RetroHexChat.Bots.Capability.capability_result()

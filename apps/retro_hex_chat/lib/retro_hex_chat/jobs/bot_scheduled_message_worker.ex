@@ -29,6 +29,7 @@ defmodule RetroHexChat.Jobs.BotScheduledMessageWorker do
   alias RetroHexChat.Bots.Output
   alias RetroHexChat.Bots.Queries
   alias RetroHexChat.Bots.Server
+  alias RetroHexChat.Jobs.BotCapability
   alias RetroHexChat.Observability
 
   require Logger
@@ -85,7 +86,7 @@ defmodule RetroHexChat.Jobs.BotScheduledMessageWorker do
   @spec apply_under_lock(Bot.t(), String.t(), DateTime.t()) ::
           {:ok, map()} | {:cancel, String.t()} | {:error, term()}
   defp apply_under_lock(bot, schedule_id, now) do
-    with {:ok, scheduler_config} <- enabled_scheduler_config(bot),
+    with {:ok, scheduler_config} <- BotCapability.enabled_config(bot, @scheduler_capability),
          {:ok, schedule} <- find_schedule(scheduler_config, schedule_id),
          {:ok, channel} <- schedule_channel(schedule),
          {:ok, message} <- schedule_message(schedule) do
@@ -112,15 +113,6 @@ defmodule RetroHexChat.Jobs.BotScheduledMessageWorker do
       end
     else
       {:cancel, reason} -> {:cancel, reason}
-    end
-  end
-
-  @spec enabled_scheduler_config(Bot.t()) :: {:ok, map()} | {:cancel, String.t()}
-  defp enabled_scheduler_config(%Bot{} = bot) do
-    case Bot.capability_config(bot, @scheduler_capability) do
-      {:ok, config} -> {:ok, config}
-      {:error, :disabled} -> {:cancel, "scheduler disabled"}
-      {:error, :missing} -> {:cancel, "scheduler not configured"}
     end
   end
 

@@ -7,6 +7,8 @@ defmodule RetroHexChat.Arcade.Catalog do
 
   use Gettext, backend: RetroHexChat.Gettext
 
+  alias RetroHexChat.CatalogText
+
   @type game :: %{
           id: String.t(),
           name: String.t(),
@@ -395,14 +397,7 @@ defmodule RetroHexChat.Arcade.Catalog do
 
   def game_url(%{id: id}), do: "#{arcade_base_url()}/#{id}/index.html"
 
-  defp translate_game(game) do
-    game
-    |> Map.update!(:tagline, &t/1)
-    |> Map.update!(:description, &t/1)
-    |> Map.update!(:controls, &t/1)
-  end
-
-  defp t(msgid), do: Gettext.dgettext(RetroHexChat.Gettext, "arcade", msgid)
+  defp translate_game(game), do: CatalogText.translate(game, "arcade")
 
   defp arcade_base_url, do: Application.fetch_env!(:retro_hex_chat, :arcade_base_url)
 end

@@ -68,12 +68,10 @@ defmodule RetroHexChatWeb.ChatLive.Components.AutojoinDialog do
 
     case AutoJoinList.add_entry(session.autojoin_list, channel, key) do
       {:ok, updated_list} ->
-        new_session = Session.set_autojoin_list(session, updated_list)
-
         {:noreply,
          socket
          |> assign(show_add_dialog: false)
-         |> put_session(new_session)}
+         |> put_list(updated_list)}
 
       {:error, reason} ->
         {:noreply,
@@ -90,12 +88,10 @@ defmodule RetroHexChatWeb.ChatLive.Components.AutojoinDialog do
 
     case AutoJoinList.update_entry(session.autojoin_list, channel, key) do
       {:ok, updated_list} ->
-        new_session = Session.set_autojoin_list(session, updated_list)
-
         {:noreply,
          socket
          |> assign(show_edit_dialog: false)
-         |> put_session(new_session)}
+         |> put_list(updated_list)}
 
       {:error, :not_found} ->
         {:noreply,
@@ -115,7 +111,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.AutojoinDialog do
       {:noreply,
        socket
        |> assign(selected: nil)
-       |> put_session(Session.set_autojoin_list(session, updated_list))}
+       |> put_list(updated_list)}
     else
       _ -> {:noreply, socket}
     end
@@ -148,7 +144,8 @@ defmodule RetroHexChatWeb.ChatLive.Components.AutojoinDialog do
 
   # Optimistically reflect the new session locally (entries refresh this cycle)
   # while the parent assigns it as the canonical read-model and persists it.
-  defp put_session(socket, session) do
+  defp put_list(socket, list) do
+    session = Session.set_autojoin_list(socket.assigns.session, list)
     send(self(), {:dialog_session, session, :autojoin})
     assign(socket, session: session)
   end

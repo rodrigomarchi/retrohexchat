@@ -200,4 +200,15 @@ defmodule RetroHexChat.Bots.Capability do
       [verb] -> String.downcase(verb)
     end
   end
+
+  @doc """
+  The reply to a `list` subcommand: `empty` when there is nothing to list,
+  otherwise `header` and one line per item.
+  """
+  @spec list_reply([term()], String.t(), String.t(), (term() -> String.t())) ::
+          capability_result()
+  def list_reply([], empty, _header, _line), do: {:reply, empty}
+
+  def list_reply(items, _empty, header, line),
+    do: {:multi_reply, [header | Enum.map(items, line)]}
 end
