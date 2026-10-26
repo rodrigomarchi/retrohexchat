@@ -1,5 +1,6 @@
 /**
- * The bounce off a paddle and the ball's step, shared by the games that have one.
+ * The bounce off a paddle, shared by the games that have one, and the ball's
+ * step that Pong and Block Breakers share.
  *
  * @module games/core/paddle
  */

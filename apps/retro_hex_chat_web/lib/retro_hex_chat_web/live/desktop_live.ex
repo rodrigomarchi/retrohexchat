@@ -780,18 +780,6 @@ defmodule RetroHexChatWeb.DesktopLive do
 
   @spec dispatch_to_hooks(String.t(), map(), Phoenix.LiveView.Socket.t()) ::
           {:noreply, Phoenix.LiveView.Socket.t()}
-  # The status tab has nothing to close, so both actions on it switch to it.
-  defp tab_event("status", _label, _events, socket),
-    do: dispatch_to_hooks("switch_to_status", %{}, socket)
-
-  defp tab_event("channel", label, {channel_event, _pm_event}, socket),
-    do: dispatch_to_hooks(channel_event, %{"channel" => label}, socket)
-
-  defp tab_event("pm", label, {_channel_event, pm_event}, socket),
-    do: dispatch_to_hooks(pm_event, %{"nickname" => label}, socket)
-
-  defp tab_event(_type, _label, _events, socket), do: {:noreply, socket}
-
   defp dispatch_to_hooks(event, params, socket) do
     result =
       Enum.reduce_while(event_hooks(), socket, fn {_name, hook_fn}, acc ->
@@ -813,6 +801,18 @@ defmodule RetroHexChatWeb.DesktopLive do
         {:noreply, socket}
     end
   end
+
+  # The status tab has nothing to close, so both actions on it switch to it.
+  defp tab_event("status", _label, _events, socket),
+    do: dispatch_to_hooks("switch_to_status", %{}, socket)
+
+  defp tab_event("channel", label, {channel_event, _pm_event}, socket),
+    do: dispatch_to_hooks(channel_event, %{"channel" => label}, socket)
+
+  defp tab_event("pm", label, {_channel_event, pm_event}, socket),
+    do: dispatch_to_hooks(pm_event, %{"nickname" => label}, socket)
+
+  defp tab_event(_type, _label, _events, socket), do: {:noreply, socket}
 
   # ── Hooks ─────────────────────────────────────────────────────
 
