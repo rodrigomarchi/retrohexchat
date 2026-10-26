@@ -17,19 +17,19 @@ another copy of the core (§G.5).
 
 | Need | Module |
 |---|---|
-| The engine class from a definition | `core/define_game.js` — `defineGame(def)`; its header lists every field and hook |
+| The engine class from a definition | `core/define_game.js` — `defineGame(def)`; its header lists every field and hook. `ARROWS_WASD_SPACE` is the usual `captureKeys`; nothing is rendered before `theme` has given the colours |
 | Phases and their timing | `core/flow.js` — states with `tick`, `enter`, `after: { ticks }`, `every`, `next`, `final` |
-| A match played in rounds | `core/rounds.js` — `roundsFlow({ … })`: countdown, bell, round, round-over pause, match end; `countdownState({ from, every, next })` for the spoken countdown alone |
+| A match played in rounds | `core/rounds.js` — `roundsFlow({ … })`: countdown, bell, round, round-over pause, match end; `countdownState({ from, every, next, capture })` for the spoken countdown alone; `tallyRound` counts a round's win |
 | The wire | `core/codec.js` — `schema(type, fields)` with `u8`, `i16`, `flags`, `struct`, `list`, … |
-| Message types and dispatch | `core/messages.js` |
+| Message types and dispatch | `core/messages.js`; a `protocol.js` re-exports `core/protocol_base.js` (`MSG_TYPE`, `encodeGameReady`, `getMessageType`) |
 | Randomness | `core/rng.js` — `createRng(seed)`; a game gets `game.random` (simulation), `game.fxRandom` (effects) and its AI a stream of its own |
 | Sounds | `core/synth.js` — a sound is data (`blip`, `sweep`, `notes`, voices); `createGameAudio` turns a table into `playX()` methods |
 | What the guest hears | `core/events.js` — `cues` (phase, change, rise, flags, when) and `playFlags` for the host |
-| The result the server is told | `core/result.js` — `matchResult(p1, p2, winner)` |
+| The result the server is told, and the end | `core/result.js` — `matchResult(p1, p2, winner)`; `drawOnDisconnect((s) => [p1, p2])` for `disconnectResult`; `guestEnd({ phase, fields, sound })` for `onEnd`; `playOutcome(game, winner, win, lose)` for the ending sound |
 | Drawing chrome | `core/render.js` — background, scanlines, vignette, grid, digits, centred and glitched text, the closing banner, countdown, waiting, particles |
-| A ball off a paddle | `core/paddle.js` — `paddleBounce`: the angle from where it hit, the speed up to a ceiling |
+| A ball off a paddle | `core/paddle.js` — `paddleBounce`: the angle from where it hit, the speed up to a ceiling; `moveBall` |
 | The neon bat-and-ball look | `core/neon.js` — `neonColors`, `drawNeonPaddle`, `drawNeonBall` (Pong and Block Breakers); a module of its own, so the other games do not load it |
-| AI pieces | `core/ai.js` — `normalizeDifficulty`, `interceptAt`/`reflect`, `toward`, `dutyFrame`, `createReaction`, `aiRng`, `rotationDelta` |
+| AI pieces | `core/ai.js` — `aiRequest`, `normalizeDifficulty`, `interceptAt`/`reflect`, `toward`, `dutyFrame`, `createReaction`, `aiRng`, `rotationDelta`, `finiteMotion`, `edgeAware` |
 
 The engine underneath is `js/lib/game_engine.js`; a game never imports it.
 

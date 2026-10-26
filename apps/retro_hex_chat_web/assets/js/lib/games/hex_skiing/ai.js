@@ -8,7 +8,7 @@
 import { normalizeSkiingAIDifficulty } from "./difficulty.js";
 import { GAME_MODE, PHASE } from "./protocol.js";
 import { CANVAS_W, SKIER_SCREEN_Y } from "./physics.js";
-import { aiRng, edgeAware } from "../core/ai.js";
+import { aiRequest, aiRng, edgeAware } from "../core/ai.js";
 
 const EDGE_MARGIN = 24;
 const { clampX, edgeRisk, maybeApplyMistake } = edgeAware(CANVAS_W, EDGE_MARGIN);
@@ -99,8 +99,7 @@ export class HexSkiingAI {
    * @returns {{left: boolean, right: boolean}}
    */
   nextInputs(request = {}) {
-    const state = request.state;
-    const player = request.player === 1 ? 1 : 2;
+    const { state, player } = aiRequest(request);
 
     this.frame++;
 

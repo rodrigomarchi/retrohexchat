@@ -9,6 +9,7 @@
  */
 
 import { defineGame } from "../core/define_game.js";
+import { drawOnDisconnect, guestEnd, playOutcome } from "../core/result.js";
 import { createWarlordAI, normalizeWarlordAIDifficulty } from "./ai.js";
 import {
   CANVAS_H,
@@ -285,23 +286,11 @@ export default defineGame({
     { phase: PHASE.KING_HIT, play: "kingHit" },
   ],
   onSnapshot: (game) => game.invalidate(),
-  onEnd: (game, result) => {
-    game.setKeyboardCaptured(false);
-    Object.assign(game.gameState, {
-      phase: PHASE.FINISHED,
-      p1Lives: result.p1Lives,
-      p2Lives: result.p2Lives,
-      winner: result.winner,
-    });
-    if (result.winner === 2) game.audio.playWin();
-    else game.audio.playLose();
-    game.invalidate();
-  },
-  render: (game) => {
-    if (game.colors) render(game.ctx, game.gameState, game.colors, performance.now());
-  },
-  disconnectResult: (game) => ({
-    score: { p1: game.gameState.p1Lives, p2: game.gameState.p2Lives },
-    winner: 0,
+  onEnd: guestEnd({
+    phase: PHASE.FINISHED,
+    fields: ["p1Lives", "p2Lives", "winner"],
+    sound: (game, result) => playOutcome(game, result.winner),
   }),
+  render: (game) => render(game.ctx, game.gameState, game.colors, performance.now()),
+  disconnectResult: drawOnDisconnect((s) => [s.p1Lives, s.p2Lives]),
 });

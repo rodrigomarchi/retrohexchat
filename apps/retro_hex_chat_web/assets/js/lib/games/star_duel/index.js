@@ -10,7 +10,8 @@
  * @module games/star_duel
  */
 
-import { defineGame } from "../core/define_game.js";
+import { ARROWS_WASD_SPACE, defineGame } from "../core/define_game.js";
+import { drawOnDisconnect, guestEnd, playOutcome } from "../core/result.js";
 import { countdownState } from "../core/rounds.js";
 import { createStarDuelAI, normalizeStarDuelAIDifficulty } from "./ai.js";
 import {
@@ -75,12 +76,6 @@ function pressed(game, key, now) {
   const fresh = now && !game[key];
   game[key] = now;
   return fresh;
-}
-
-/** The fanfare for whoever won at this screen, the falling one otherwise. */
-function playEnd(game, winner) {
-  if (game.outcome(winner) === "win") game.audio.playWin();
-  else game.audio.playLose();
 }
 
 function silenceThrust(game) {
@@ -324,22 +319,7 @@ export default defineGame({
     fire: [" "],
     warp: ["ArrowDown", "s", "S"],
   },
-  captureKeys: [
-    "ArrowUp",
-    "ArrowDown",
-    "ArrowLeft",
-    "ArrowRight",
-    " ",
-    "Spacebar",
-    "w",
-    "W",
-    "a",
-    "A",
-    "s",
-    "S",
-    "d",
-    "D",
-  ],
+  captureKeys: ARROWS_WASD_SPACE,
   schema: { snapshot: SNAPSHOT, end: GAME_END },
   ai: { create: createStarDuelAI, difficulty: normalizeStarDuelAIDifficulty },
   audio: { sounds: SOUNDS, extend },
@@ -420,7 +400,7 @@ export default defineGame({
           const s = game.gameState;
           const winner = s.score1 >= WIN_SCORE ? 1 : 2;
           s.winner = winner;
-          playEnd(game, winner);
+          playOutcome(game, winner);
           silenceThrust(game);
           if (s.mode === GAME_MODE.GRAVITY_WELL) game.audio.stopStarProximity();
           game.finish({
@@ -442,25 +422,16 @@ export default defineGame({
     { phase: PHASE.FINISHED, play: silencePeerThrust },
     { change: (s) => `${s.score1}:${s.score2}`, play: "death" },
   ],
-  onEnd: (game, result) => {
-    game.setKeyboardCaptured(false);
-    Object.assign(game.gameState, {
-      phase: PHASE.FINISHED,
-      winner: result.winner,
-      score1: result.score1,
-      score2: result.score2,
-    });
-    playEnd(game, result.winner);
-    game.audio.stopThrust();
-    game.audio.stopStarProximity();
-    game.peerThrustAudioPlaying = false;
-    game.invalidate();
-  },
-  render: (game) => {
-    if (game.colors) render(game.ctx, game.gameState, game.colors, performance.now());
-  },
-  disconnectResult: (game) => ({
-    score: { p1: game.gameState.score1, p2: game.gameState.score2 },
-    winner: 0,
+  onEnd: guestEnd({
+    phase: PHASE.FINISHED,
+    fields: ["winner", "score1", "score2"],
+    sound: (game, result) => {
+      playOutcome(game, result.winner);
+      game.audio.stopThrust();
+      game.audio.stopStarProximity();
+      game.peerThrustAudioPlaying = false;
+    },
   }),
+  render: (game) => render(game.ctx, game.gameState, game.colors, performance.now()),
+  disconnectResult: drawOnDisconnect((s) => [s.score1, s.score2]),
 });

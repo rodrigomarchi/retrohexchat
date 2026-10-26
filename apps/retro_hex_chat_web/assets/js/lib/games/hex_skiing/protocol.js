@@ -8,12 +8,9 @@
 
 // ── Message types ──────────────────────────────────────────────
 import { schema, bool, f32, i16, list, u8, u16, u32 } from "../core/codec.js";
-import { GAME_MSG as MSG_TYPE } from "../core/messages.js";
+import { MSG_TYPE } from "../core/protocol_base.js";
 
-export { MSG_TYPE };
-
-// Shared by every game: the readiness ping and reading a message's type.
-export { encodeGameReady, getMessageType } from "../net_protocol.js";
+export * from "../core/protocol_base.js";
 
 // ── Enums ──────────────────────────────────────────────────────
 export const PHASE = {

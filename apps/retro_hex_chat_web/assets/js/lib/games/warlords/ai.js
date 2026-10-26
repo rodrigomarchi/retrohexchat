@@ -17,6 +17,7 @@ import {
   SHIELD_SPEED,
 } from "./physics.js";
 import {
+  aiRequest,
   aiRng,
   clamp,
   createReaction,
@@ -211,8 +212,7 @@ export class WarlordAI {
    * @returns {{up: boolean, down: boolean, space: boolean}}
    */
   nextInputs(request = {}) {
-    const state = request.state;
-    const player = request.player === 1 ? 1 : 2;
+    const { state, player } = aiRequest(request);
 
     if (!state || state.phase !== PHASE.PLAYING) {
       this.frame++;

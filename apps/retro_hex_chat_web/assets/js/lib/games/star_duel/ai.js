@@ -16,7 +16,7 @@ import {
   STAR_X,
   STAR_Y,
 } from "./physics.js";
-import { aiRng, clamp, normalizeDifficulty, rotationDelta } from "../core/ai.js";
+import { aiRequest, aiRng, clamp, normalizeDifficulty, rotationDelta } from "../core/ai.js";
 
 const NEUTRAL_INPUTS = Object.freeze({
   rotateLeft: false,
@@ -127,8 +127,7 @@ export class StarDuelAI {
    * @returns {{rotateLeft: boolean, rotateRight: boolean, thrust: boolean, fire: boolean, warp: boolean}}
    */
   nextInputs(request = {}) {
-    const state = request.state;
-    const player = request.player === 1 ? 1 : 2;
+    const { state, player } = aiRequest(request);
 
     this.frame++;
     if (this.fireCooldown > 0) this.fireCooldown--;

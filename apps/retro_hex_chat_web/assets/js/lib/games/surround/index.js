@@ -11,7 +11,8 @@
  */
 
 import { gameColor } from "../../game_colors.js";
-import { defineGame } from "../core/define_game.js";
+import { ARROWS_WASD_SPACE, defineGame } from "../core/define_game.js";
+import { drawOnDisconnect, guestEnd, playOutcome } from "../core/result.js";
 import { createSurroundAI, normalizeSurroundAIDifficulty } from "./ai.js";
 import {
   CELL,
@@ -140,22 +141,7 @@ function applySnapshot(game, decoded) {
 
 export default defineGame({
   inputs: {},
-  captureKeys: [
-    "ArrowUp",
-    "ArrowDown",
-    "ArrowLeft",
-    "ArrowRight",
-    " ",
-    "Spacebar",
-    "w",
-    "W",
-    "a",
-    "A",
-    "s",
-    "S",
-    "d",
-    "D",
-  ],
+  captureKeys: ARROWS_WASD_SPACE,
   schema: { snapshot: SNAPSHOT, end: GAME_END },
   ai: { create: createSurroundAI, difficulty: normalizeSurroundAIDifficulty },
   audio: { sounds: SOUNDS },
@@ -267,23 +253,16 @@ export default defineGame({
       play: "roundWin",
     },
   ],
-  onEnd: (game, result) => {
-    game.setKeyboardCaptured(false);
-    Object.assign(game.gameState, {
-      phase: PHASE.MATCH_OVER,
-      score1: result.score1,
-      score2: result.score2,
-    });
-    if (result.winner === 2) game.audio.playMatchWin();
-    else game.audio.playMatchLose();
-  },
+  onEnd: guestEnd({
+    phase: PHASE.MATCH_OVER,
+    fields: ["score1", "score2"],
+    sound: (game, result) => playOutcome(game, result.winner, "playMatchWin", "playMatchLose"),
+    repaint: false,
+  }),
   render: (game) => {
     const s = game.gameState;
     if (s.particles && s.particles.length > 0) s.particles = updateParticles(s.particles);
     if (game.colors) render(game.ctx, s, game.colors, performance.now());
   },
-  disconnectResult: (game) => ({
-    score: { p1: game.gameState.score1, p2: game.gameState.score2 },
-    winner: 0,
-  }),
+  disconnectResult: drawOnDisconnect((s) => [s.score1, s.score2]),
 });

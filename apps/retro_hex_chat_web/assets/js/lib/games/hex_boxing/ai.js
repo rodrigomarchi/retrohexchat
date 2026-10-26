@@ -14,7 +14,7 @@ import {
   RING_RIGHT,
   RING_TOP,
 } from "./physics.js";
-import { aiRng, clamp, normalizeDifficulty, toward } from "../core/ai.js";
+import { aiRequest, aiRng, clamp, normalizeDifficulty, toward } from "../core/ai.js";
 
 const PLAYER_HALF_SIZE = BOXER_BODY_RADIUS;
 const PLAYER_MIN_X = RING_LEFT + PLAYER_HALF_SIZE;
@@ -117,8 +117,7 @@ export class BoxingAI {
    * @returns {{up: boolean, down: boolean, left: boolean, right: boolean, punch: boolean}}
    */
   nextInputs(request = {}) {
-    const state = request.state;
-    const player = request.player === 1 ? 1 : 2;
+    const { state, player } = aiRequest(request);
 
     this.frame++;
     if (this.punchCooldown > 0) this.punchCooldown--;

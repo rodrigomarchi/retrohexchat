@@ -18,7 +18,7 @@ import {
   GOAL_LINE_LEFT,
   GOAL_LINE_RIGHT,
 } from "./physics.js";
-import { aiRng, clamp, normalizeDifficulty, toward } from "../core/ai.js";
+import { aiRequest, aiRng, clamp, normalizeDifficulty, toward } from "../core/ai.js";
 
 const PLAYER_HALF_SIZE = 4;
 const PLAYER_MIN_X = RINK_LEFT + PLAYER_HALF_SIZE;
@@ -118,8 +118,7 @@ export class HockeyAI {
    * @returns {{left: boolean, right: boolean, up: boolean, down: boolean, action: boolean}}
    */
   nextInputs(request = {}) {
-    const state = request.state;
-    const player = request.player === 1 ? 1 : 2;
+    const { state, player } = aiRequest(request);
 
     this.frame++;
     if (this.actionCooldown > 0) this.actionCooldown--;

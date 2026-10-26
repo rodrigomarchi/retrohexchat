@@ -8,7 +8,7 @@
 import { normalizeEnduroAIDifficulty } from "./difficulty.js";
 import { GAME_MODE, PHASE } from "./protocol.js";
 import { LANE_COUNT, SPEED_MAX, TURBO_FUEL_COST } from "./physics.js";
-import { aiRng } from "../core/ai.js";
+import { aiRequest, aiRng } from "../core/ai.js";
 
 const COLLISION_ZONE_Z = 40;
 const PLAYER_COLLISION_BUFFER_Z = 135;
@@ -105,8 +105,7 @@ export class HexEnduroAI {
    * @returns {{left: boolean, right: boolean, accel: boolean, brake: boolean, turbo: boolean}}
    */
   nextInputs(request = {}) {
-    const state = request.state;
-    const player = request.player === 1 ? 1 : 2;
+    const { state, player } = aiRequest(request);
 
     this.frame++;
     if (this.turboCooldown > 0) this.turboCooldown--;

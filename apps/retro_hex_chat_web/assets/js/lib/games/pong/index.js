@@ -8,7 +8,8 @@
  * @module games/pong
  */
 
-import { defineGame } from "../core/define_game.js";
+import { ARROWS_WASD_SPACE, defineGame } from "../core/define_game.js";
+import { drawOnDisconnect, guestEnd, playOutcome } from "../core/result.js";
 import { countdownState } from "../core/rounds.js";
 import { createPongAI, normalizePongAIDifficulty } from "./ai.js";
 import {
@@ -73,33 +74,12 @@ function step(game) {
   game.broadcast();
 }
 
-/** The fanfare for whoever won at this screen, the falling one otherwise. */
-function playEnd(game, winner) {
-  if (game.outcome(winner) === "win") game.audio.playWin();
-  else game.audio.playLose();
-}
-
 export default defineGame({
   inputs: {
     up: ["ArrowUp", "w", "W"],
     down: ["ArrowDown", "s", "S"],
   },
-  captureKeys: [
-    "ArrowUp",
-    "ArrowDown",
-    "ArrowLeft",
-    "ArrowRight",
-    " ",
-    "Spacebar",
-    "w",
-    "W",
-    "a",
-    "A",
-    "s",
-    "S",
-    "d",
-    "D",
-  ],
+  captureKeys: ARROWS_WASD_SPACE,
   interpolate: { keys: ["ballX", "ballY", "paddle1Y", "paddle2Y"] },
   schema: { snapshot: SNAPSHOT, end: GAME_END },
   ai: { create: createPongAI, difficulty: normalizePongAIDifficulty },
@@ -141,7 +121,7 @@ export default defineGame({
         final: true,
         enter: (game) => {
           const { score1, score2, winner } = game.gameState;
-          playEnd(game, winner);
+          playOutcome(game, winner);
           game.finish({
             end: { score1, score2, winner },
             result: { score: { p1: score1, p2: score2 }, winner },
@@ -156,22 +136,12 @@ export default defineGame({
     { phase: PHASE.COUNTDOWN, play: "countdown" },
     { change: (s) => `${s.score1}:${s.score2}`, play: "score" },
   ],
-  onEnd: (game, result) => {
-    game.setKeyboardCaptured(false);
-    game.gameState.phase = PHASE.FINISHED;
-    game.gameState.winner = result.winner;
-    game.gameState.score1 = result.score1;
-    game.gameState.score2 = result.score2;
-    playEnd(game, result.winner);
-    game.invalidate();
-  },
-  render: (game) => {
-    if (game.colors) {
-      render(game.ctx, game.gameState, game.colors, performance.now(), { mode: game.mode });
-    }
-  },
-  disconnectResult: (game) => ({
-    score: { p1: game.gameState.score1, p2: game.gameState.score2 },
-    winner: 0,
+  onEnd: guestEnd({
+    phase: PHASE.FINISHED,
+    fields: ["winner", "score1", "score2"],
+    sound: (game, result) => playOutcome(game, result.winner),
   }),
+  render: (game) =>
+    render(game.ctx, game.gameState, game.colors, performance.now(), { mode: game.mode }),
+  disconnectResult: drawOnDisconnect((s) => [s.score1, s.score2]),
 });

@@ -7,7 +7,7 @@
 
 import { CELL } from "./physics.js";
 import { DIR, GRID_H, GRID_W, PHASE } from "./protocol.js";
-import { aiRng, normalizeDifficulty, randomUnit } from "../core/ai.js";
+import { aiRequest, aiRng, normalizeDifficulty, randomUnit } from "../core/ai.js";
 
 const GRID_AREA = GRID_W * GRID_H;
 const TABLE_CENTER = Object.freeze({
@@ -104,8 +104,7 @@ export class SurroundAI {
    * @returns {number}
    */
   nextDirection(request = {}) {
-    const state = request.state;
-    const player = request.player === 1 ? 1 : 2;
+    const { state, player } = aiRequest(request);
     const actor = playerState(state, player);
 
     if (!actor || state.phase !== PHASE.PLAYING) {

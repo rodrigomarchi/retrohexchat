@@ -9,7 +9,8 @@
  */
 
 import { settleParticles } from "../core/render.js";
-import { defineGame } from "../core/define_game.js";
+import { ARROWS_WASD_SPACE, defineGame } from "../core/define_game.js";
+import { drawOnDisconnect, guestEnd, playOutcome } from "../core/result.js";
 import { createPixelTanksAI, normalizePixelTanksAIDifficulty } from "./ai.js";
 import {
   ROUND_DURATION,
@@ -147,23 +148,7 @@ export default defineGame({
     forward: ["ArrowUp", "w", "W"],
     fire: [" ", "Shift"],
   },
-  captureKeys: [
-    "ArrowUp",
-    "ArrowDown",
-    "ArrowLeft",
-    "ArrowRight",
-    " ",
-    "Spacebar",
-    "Shift",
-    "w",
-    "W",
-    "a",
-    "A",
-    "s",
-    "S",
-    "d",
-    "D",
-  ],
+  captureKeys: [...ARROWS_WASD_SPACE, "Shift"],
   interpolate: { keys: ["tank1X", "tank1Y", "tank2X", "tank2Y", "m1X", "m1Y", "m2X", "m2Y"] },
   schema: { snapshot: SNAPSHOT, end: GAME_END },
   ai: {
@@ -231,24 +216,12 @@ export default defineGame({
     { phase: PHASE.SPAWNING, play: "spawn" },
     { phase: PHASE.ROUND_OVER, play: "roundEnd" },
   ],
-  onEnd: (game, result) => {
-    game.setKeyboardCaptured(false);
-    Object.assign(game.gameState, {
-      phase: PHASE.MATCH_OVER,
-      roundWins1: result.roundWins1,
-      roundWins2: result.roundWins2,
-    });
-    if (result.winner === 2) game.audio.playWin();
-    else game.audio.playLose();
-    game.invalidate();
-  },
-  render: (game) => {
-    if (game.colors) {
-      render(game.ctx, game.gameState, game.colors, game.walls, performance.now(), game.particles);
-    }
-  },
-  disconnectResult: (game) => ({
-    score: { p1: game.gameState.roundWins1, p2: game.gameState.roundWins2 },
-    winner: 0,
+  onEnd: guestEnd({
+    phase: PHASE.MATCH_OVER,
+    fields: ["roundWins1", "roundWins2"],
+    sound: (game, result) => playOutcome(game, result.winner),
   }),
+  render: (game) =>
+    render(game.ctx, game.gameState, game.colors, game.walls, performance.now(), game.particles),
+  disconnectResult: drawOnDisconnect((s) => [s.roundWins1, s.roundWins2]),
 });

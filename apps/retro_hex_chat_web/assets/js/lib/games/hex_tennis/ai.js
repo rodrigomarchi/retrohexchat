@@ -17,7 +17,7 @@ import {
   SERVICE_LINE_TOP,
   HIT_ZONE_H,
 } from "./physics.js";
-import { aiRng, clamp, normalizeDifficulty, toward } from "../core/ai.js";
+import { aiRequest, aiRng, clamp, normalizeDifficulty, toward } from "../core/ai.js";
 
 const PLAYER_HALF_SIZE = 12;
 const PLAYER_MIN_X = COURT_LEFT + PLAYER_HALF_SIZE;
@@ -114,8 +114,7 @@ export class TennisAI {
    * @returns {{up: boolean, down: boolean, left: boolean, right: boolean, serve: boolean}}
    */
   nextInputs(request = {}) {
-    const state = request.state;
-    const player = request.player === 1 ? 1 : 2;
+    const { state, player } = aiRequest(request);
 
     this.frame++;
 

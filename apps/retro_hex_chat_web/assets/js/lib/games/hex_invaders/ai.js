@@ -15,7 +15,7 @@ import {
   DIVIDER_X,
   HALF_W,
 } from "./physics.js";
-import { aiRng, clamp, normalizeDifficulty } from "../core/ai.js";
+import { aiRequest, aiRng, clamp, normalizeDifficulty } from "../core/ai.js";
 
 const UFO_W = 24;
 const NEUTRAL_INPUTS = Object.freeze({
@@ -111,8 +111,7 @@ export class HexInvadersAI {
    * @returns {{left: boolean, right: boolean, fire: boolean}}
    */
   nextInputs(request = {}) {
-    const state = request.state;
-    const player = request.player === 1 ? 1 : 2;
+    const { state, player } = aiRequest(request);
 
     this.frame++;
     if (this.fireCooldown > 0) this.fireCooldown--;

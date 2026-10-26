@@ -11,7 +11,8 @@
  */
 
 import { settleParticles } from "../core/render.js";
-import { defineGame } from "../core/define_game.js";
+import { ARROWS_WASD_SPACE, defineGame } from "../core/define_game.js";
+import { drawOnDisconnect, guestEnd, playOutcome } from "../core/result.js";
 import { createOutlawAI, normalizeOutlawAIDifficulty } from "./ai.js";
 import {
   advanceRound,
@@ -152,22 +153,7 @@ export default defineGame({
     right: ["ArrowRight", "d", "D"],
     fire: [" ", "Shift"],
   },
-  captureKeys: [
-    "ArrowUp",
-    "ArrowDown",
-    "ArrowLeft",
-    "ArrowRight",
-    " ",
-    "Spacebar",
-    "w",
-    "W",
-    "a",
-    "A",
-    "s",
-    "S",
-    "d",
-    "D",
-  ],
+  captureKeys: ARROWS_WASD_SPACE,
   interpolate: { keys: ["p1x", "p1y", "p2x", "p2y", "b1x", "b1y", "b2x", "b2y"] },
   schema: { snapshot: SNAPSHOT, end: GAME_END },
   ai: { create: createOutlawAI, difficulty: normalizeOutlawAIDifficulty },
@@ -218,22 +204,11 @@ export default defineGame({
     { phase: PHASE.SPAWNING, play: "bell" },
   ],
   onSnapshot: (game) => game.invalidate(),
-  onEnd: (game, result) => {
-    game.setKeyboardCaptured(false);
-    Object.assign(game.gameState, {
-      phase: PHASE.MATCH_OVER,
-      roundWins1: result.roundWins1,
-      roundWins2: result.roundWins2,
-    });
-    if (result.winner === 2) game.audio.playWin();
-    else game.audio.playLose();
-    game.invalidate();
-  },
-  render: (game) => {
-    if (game.colors) render(game.ctx, game.gameState, game.colors, game.frameCount, game.particles);
-  },
-  disconnectResult: (game) => ({
-    score: { p1: game.gameState.roundWins1, p2: game.gameState.roundWins2 },
-    winner: 0,
+  onEnd: guestEnd({
+    phase: PHASE.MATCH_OVER,
+    fields: ["roundWins1", "roundWins2"],
+    sound: (game, result) => playOutcome(game, result.winner),
   }),
+  render: (game) => render(game.ctx, game.gameState, game.colors, game.frameCount, game.particles),
+  disconnectResult: drawOnDisconnect((s) => [s.roundWins1, s.roundWins2]),
 });

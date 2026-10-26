@@ -1,6 +1,7 @@
 import fc from "fast-check";
 import { describe, it, expect } from "vitest";
 import {
+  aiRequest,
   aiRng,
   clamp,
   createReaction,
@@ -225,5 +226,14 @@ describe("finiteMotion", () => {
     expect(finiteMotion(null, "ball")).toBe(false);
     expect(finiteMotion({ ballX: 1, ballY: 2, ballVX: 0 }, "ball")).toBe(false);
     expect(finiteMotion({ ballX: 1, ballY: NaN, ballVX: 0, ballVY: 0 }, "ball")).toBe(false);
+  });
+});
+
+describe("aiRequest", () => {
+  it("passes the state through and plays player two unless asked for one", () => {
+    const state = { phase: 3 };
+    expect(aiRequest({ state, player: 1 })).toEqual({ state, player: 1 });
+    expect(aiRequest({ state, player: 2 })).toEqual({ state, player: 2 });
+    expect(aiRequest({})).toEqual({ state: undefined, player: 2 });
   });
 });

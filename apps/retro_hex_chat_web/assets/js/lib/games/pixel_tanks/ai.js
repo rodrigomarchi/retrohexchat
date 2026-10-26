@@ -14,7 +14,14 @@ import {
   TANK_RADIUS,
   WALL_SIZE,
 } from "./physics.js";
-import { aiRng, clamp, normalizeAngle, normalizeDifficulty, rotationDelta } from "../core/ai.js";
+import {
+  aiRequest,
+  aiRng,
+  clamp,
+  normalizeAngle,
+  normalizeDifficulty,
+  rotationDelta,
+} from "../core/ai.js";
 
 const PATH_LOOKAHEAD_CELLS = 3;
 
@@ -119,8 +126,7 @@ export class PixelTanksAI {
    * @returns {{rotateLeft: boolean, rotateRight: boolean, forward: boolean, fire: boolean}}
    */
   nextInputs(request = {}) {
-    const state = request.state;
-    const player = request.player === 1 ? 1 : 2;
+    const { state, player } = aiRequest(request);
 
     this.frame++;
     if (this.fireCooldown > 0) this.fireCooldown--;

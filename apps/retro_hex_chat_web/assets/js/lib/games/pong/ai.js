@@ -16,6 +16,7 @@ import {
 } from "./physics.js";
 import { PHASE } from "./protocol.js";
 import {
+  aiRequest,
   aiRng,
   clamp,
   createReaction,
@@ -141,8 +142,7 @@ export class PongAI {
    * @returns {{up: boolean, down: boolean}}
    */
   nextInputs(request = {}) {
-    const state = request.state;
-    const player = request.player === 1 ? 1 : 2;
+    const { state, player } = aiRequest(request);
 
     if (!state || state.phase !== PHASE.PLAYING) {
       this.frame++;

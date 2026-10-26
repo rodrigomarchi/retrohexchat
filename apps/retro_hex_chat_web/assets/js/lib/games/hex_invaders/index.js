@@ -12,6 +12,7 @@
  */
 
 import { defineGame } from "../core/define_game.js";
+import { drawOnDisconnect } from "../core/result.js";
 import { createHexInvadersAI, normalizeInvadersAIDifficulty } from "./ai.js";
 import {
   checkAlienReachedGround,
@@ -262,11 +263,6 @@ export default defineGame({
     playEnd(game, result.winner);
     game.invalidate();
   },
-  render: (game) => {
-    if (game.colors) render(game.ctx, game.gameState, game.colors, performance.now());
-  },
-  disconnectResult: (game) => ({
-    score: { p1: game.gameState.score1, p2: game.gameState.score2 },
-    winner: 0,
-  }),
+  render: (game) => render(game.ctx, game.gameState, game.colors, performance.now()),
+  disconnectResult: drawOnDisconnect((s) => [s.score1, s.score2]),
 });

@@ -10,7 +10,8 @@
  * @module games/hex_tennis
  */
 
-import { defineGame } from "../core/define_game.js";
+import { ARROWS_WASD_SPACE, defineGame } from "../core/define_game.js";
+import { drawOnDisconnect, guestEnd, playOutcome } from "../core/result.js";
 import { createTennisAI, normalizeTennisAIDifficulty } from "./ai.js";
 import {
   advanceScore,
@@ -142,12 +143,6 @@ function play(game) {
   game.broadcast();
 }
 
-/** The fanfare for whoever won at this screen, the falling one otherwise. */
-function playEnd(game, winner) {
-  if (game.outcome(winner) === "win") game.audio.playMatchWon();
-  else game.audio.playMatchLost();
-}
-
 /** The ball travels flattened beside the rest of the state. */
 function toWire(game) {
   const s = game.gameState;
@@ -187,23 +182,7 @@ export default defineGame({
     right: ["ArrowRight", "d", "D"],
     serve: [" ", "Shift"],
   },
-  captureKeys: [
-    "ArrowUp",
-    "ArrowDown",
-    "ArrowLeft",
-    "ArrowRight",
-    " ",
-    "Spacebar",
-    "Shift",
-    "w",
-    "W",
-    "a",
-    "A",
-    "s",
-    "S",
-    "d",
-    "D",
-  ],
+  captureKeys: [...ARROWS_WASD_SPACE, "Shift"],
   schema: { snapshot: SNAPSHOT, end: GAME_END },
   ai: { create: createTennisAI, difficulty: normalizeTennisAIDifficulty },
   audio: { sounds: SOUNDS },
@@ -258,7 +237,7 @@ export default defineGame({
           const { p1Games, p2Games, winner, gameMode, isTiebreak } = game.gameState;
           game.broadcast();
           game.invalidate();
-          if (winner > 0) playEnd(game, winner);
+          if (winner > 0) playOutcome(game, winner, "playMatchWon", "playMatchLost");
           game.finish({
             end: { p1Games, p2Games, winner, gameMode, wasTiebreak: isTiebreak },
             result: { score: { p1: p1Games, p2: p2Games }, winner },
@@ -284,22 +263,11 @@ export default defineGame({
       play: (game, s) => (s.outType === 3 ? game.audio.playAce() : game.audio.playOut()),
     },
   ],
-  onEnd: (game, result) => {
-    game.setKeyboardCaptured(false);
-    Object.assign(game.gameState, {
-      phase: PHASE.GAME_OVER,
-      winner: result.winner,
-      p1Games: result.p1Games,
-      p2Games: result.p2Games,
-    });
-    playEnd(game, result.winner);
-    game.invalidate();
-  },
-  render: (game) => {
-    if (game.colors) render(game.ctx, game.gameState, game.colors, performance.now());
-  },
-  disconnectResult: (game) => ({
-    score: { p1: game.gameState.p1Games, p2: game.gameState.p2Games },
-    winner: 0,
+  onEnd: guestEnd({
+    phase: PHASE.GAME_OVER,
+    fields: ["winner", "p1Games", "p2Games"],
+    sound: (game, result) => playOutcome(game, result.winner, "playMatchWon", "playMatchLost"),
   }),
+  render: (game) => render(game.ctx, game.gameState, game.colors, performance.now()),
+  disconnectResult: drawOnDisconnect((s) => [s.p1Games, s.p2Games]),
 });

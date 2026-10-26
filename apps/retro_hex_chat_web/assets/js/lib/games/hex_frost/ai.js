@@ -20,7 +20,7 @@ import {
   getBlockAbsX,
   getBaileyY,
 } from "./physics.js";
-import { aiRng, edgeAware, toward } from "../core/ai.js";
+import { aiRequest, aiRng, edgeAware, toward } from "../core/ai.js";
 
 const EDGE_MARGIN = 18;
 const { clampX, edgeRisk, maybeApplyMistake } = edgeAware(CANVAS_W, EDGE_MARGIN);
@@ -105,8 +105,7 @@ export class HexFrostAI {
    * @returns {{left: boolean, right: boolean, up: boolean, down: boolean}}
    */
   nextInputs(request = {}) {
-    const state = request.state;
-    const player = request.player === 1 ? 1 : 2;
+    const { state, player } = aiRequest(request);
 
     this.frame++;
 

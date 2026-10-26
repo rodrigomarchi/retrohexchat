@@ -11,9 +11,9 @@
  * @module games/hex_hockey
  */
 
-import { defineGame } from "../core/define_game.js";
+import { ARROWS_WASD_SPACE, defineGame } from "../core/define_game.js";
 import { playFlags } from "../core/events.js";
-import { matchResult } from "../core/result.js";
+import { drawOnDisconnect, matchResult } from "../core/result.js";
 import { createHockeyAI, normalizeHockeyAIDifficulty } from "./ai.js";
 import {
   COUNTDOWN_FRAME_INTERVAL,
@@ -275,23 +275,7 @@ export default defineGame({
     down: ["ArrowDown", "s", "S"],
     action: [" ", "Spacebar", "Shift"],
   },
-  captureKeys: [
-    "ArrowUp",
-    "ArrowDown",
-    "ArrowLeft",
-    "ArrowRight",
-    " ",
-    "Spacebar",
-    "Shift",
-    "w",
-    "W",
-    "a",
-    "A",
-    "s",
-    "S",
-    "d",
-    "D",
-  ],
+  captureKeys: [...ARROWS_WASD_SPACE, "Shift"],
   schema: { snapshot: SNAPSHOT, end: GAME_END },
   ai: { create: createHockeyAI, difficulty: normalizeHockeyAIDifficulty },
   audio: { sounds: SOUNDS, masterVolume: MASTER_VOLUME, extend },
@@ -378,5 +362,5 @@ export default defineGame({
       goalFlash: game.goalFlash,
     });
   },
-  disconnectResult: (game) => matchResult(game.gameState.scoreP1, game.gameState.scoreP2, 0),
+  disconnectResult: drawOnDisconnect((s) => [s.scoreP1, s.scoreP2]),
 });

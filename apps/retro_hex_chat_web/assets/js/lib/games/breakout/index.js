@@ -9,6 +9,7 @@
  */
 
 import { defineGame } from "../core/define_game.js";
+import { guestEnd } from "../core/result.js";
 import { createBreakoutAI, normalizeBreakoutAIDifficulty } from "./ai.js";
 import {
   BALL_SIZE,
@@ -206,18 +207,12 @@ export default defineGame({
     { change: (s) => s.score, play: (game) => game.audio.playBlockHit(0) },
   ],
   onSnapshot: (game) => game.invalidate(),
-  onEnd: (game, result) => {
-    game.setKeyboardCaptured(false);
-    game.gameState.phase = PHASE.FINISHED;
-    game.gameState.won = result.won;
-    game.gameState.score = result.score;
-    if (result.won) game.audio.playWin();
-    else game.audio.playLose();
-    game.invalidate();
-  },
-  render: (game) => {
-    if (game.colors) render(game.ctx, game.gameState, game.colors, performance.now());
-  },
+  onEnd: guestEnd({
+    phase: PHASE.FINISHED,
+    fields: ["won", "score"],
+    sound: (game, result) => (result.won ? game.audio.playWin() : game.audio.playLose()),
+  }),
+  render: (game) => render(game.ctx, game.gameState, game.colors, performance.now()),
   disconnectResult: (game) => ({
     score: { p1: game.gameState.score, p2: game.gameState.score },
     winner: -1,

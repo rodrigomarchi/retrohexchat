@@ -14,7 +14,7 @@
 
 import { defineGame } from "../core/define_game.js";
 import { playFlags } from "../core/events.js";
-import { matchResult } from "../core/result.js";
+import { drawOnDisconnect, matchResult, playOutcome } from "../core/result.js";
 import { normalizeSkiingAIDifficulty } from "./difficulty.js";
 import {
   checkCollisions,
@@ -224,12 +224,10 @@ export default defineGame({
     game.invalidate();
     game.setKeyboardCaptured(false);
     game.audio.stopSkiDrone();
-    if (game.outcome(result.winner) === "win") game.audio.playVictory();
-    else game.audio.playGameOver();
+    playOutcome(game, result.winner, "playVictory", "playGameOver");
   },
   render: (game) => {
     render(game.ctx, game.gameState, game.colors, game.frameCount, game.snowParticles);
   },
-  disconnectResult: (game) =>
-    matchResult(game.gameState.p1RoundWins || 0, game.gameState.p2RoundWins || 0, 0),
+  disconnectResult: drawOnDisconnect((s) => [s.p1RoundWins || 0, s.p2RoundWins || 0]),
 });

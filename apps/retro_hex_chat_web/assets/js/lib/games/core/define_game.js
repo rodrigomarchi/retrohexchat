@@ -58,6 +58,27 @@ import { MSG, dispatcher } from "./messages.js";
 const REQUIRED = ["inputs", "schema", "init", "flow", "render", "disconnectResult"];
 
 /**
+ * The arrows, WASD in either case and the space bar: the keys most games take
+ * from the page while a match runs, so they move and fire instead of scrolling.
+ */
+export const ARROWS_WASD_SPACE = Object.freeze([
+  "ArrowUp",
+  "ArrowDown",
+  "ArrowLeft",
+  "ArrowRight",
+  " ",
+  "Spacebar",
+  "w",
+  "W",
+  "a",
+  "A",
+  "s",
+  "S",
+  "d",
+  "D",
+]);
+
+/**
  * @param {object} def
  * @returns {typeof GameEngine}
  */
@@ -317,7 +338,10 @@ export function defineGame(def) {
       this._sendState(def.schema.snapshot.encode(wire));
     }
 
+    // Nothing is drawn before the theme is read: the engine can ask for a
+    // frame while it starts, and no game draws without its colours.
     _renderState() {
+      if (def.theme && !this.colors) return;
       def.render(this);
     }
 

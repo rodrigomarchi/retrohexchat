@@ -10,14 +10,10 @@
  * @module games/star_duel_protocol
  */
 
-// Message types (shared with game_engine.js 0x80+ range)
 import { schema, custom, f32, list, struct, u8, u16 } from "../core/codec.js";
-import { GAME_MSG as MSG_TYPE } from "../core/messages.js";
+import { MSG_TYPE } from "../core/protocol_base.js";
 
-export { MSG_TYPE };
-
-// Shared by every game: the readiness ping and reading a message's type.
-export { encodeGameReady, getMessageType } from "../net_protocol.js";
+export * from "../core/protocol_base.js";
 
 // Game phase enum
 export const PHASE = {

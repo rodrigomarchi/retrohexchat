@@ -18,7 +18,7 @@ import {
   SPEED_MIN,
   getBankAtWorld,
 } from "./physics.js";
-import { aiRng, clamp } from "../core/ai.js";
+import { aiRequest, aiRng, clamp } from "../core/ai.js";
 
 const SAFE_MARGIN = JET_RADIUS + 18;
 const TARGET_LOOKAHEAD_Y = 120;
@@ -128,8 +128,7 @@ export class HexRaidAI {
    * @returns {{left: boolean, right: boolean, accel: boolean, decel: boolean, fire: boolean, mine: boolean}}
    */
   nextInputs(request = {}) {
-    const state = request.state;
-    const player = request.player === 1 ? 1 : 2;
+    const { state, player } = aiRequest(request);
 
     this.frame++;
     if (this.fireCooldown > 0) this.fireCooldown--;

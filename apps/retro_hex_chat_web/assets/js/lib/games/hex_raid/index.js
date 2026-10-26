@@ -10,9 +10,9 @@
  * @module games/hex_raid
  */
 
-import { defineGame } from "../core/define_game.js";
+import { ARROWS_WASD_SPACE, defineGame } from "../core/define_game.js";
 import { countdownState } from "../core/rounds.js";
-import { matchResult } from "../core/result.js";
+import { drawOnDisconnect, guestEnd, matchResult, playOutcome } from "../core/result.js";
 import { normalizeRaidAIDifficulty } from "./difficulty.js";
 import {
   SCORE_FUEL_OUT,
@@ -246,25 +246,7 @@ export default defineGame({
     fire: [" "],
     mine: ["Shift", "q", "Q"],
   },
-  captureKeys: [
-    "ArrowUp",
-    "ArrowDown",
-    "ArrowLeft",
-    "ArrowRight",
-    " ",
-    "Spacebar",
-    "Shift",
-    "w",
-    "W",
-    "a",
-    "A",
-    "s",
-    "S",
-    "d",
-    "D",
-    "q",
-    "Q",
-  ],
+  captureKeys: [...ARROWS_WASD_SPACE, "Shift", "q", "Q"],
   schema: { snapshot: SNAPSHOT, end: GAME_END },
   ai: {
     difficulty: normalizeRaidAIDifficulty,
@@ -334,24 +316,12 @@ export default defineGame({
 
   applySnapshot,
   cues: [{ phase: PHASE.COUNTDOWN, play: "countdown" }],
-  onEnd: (game, result) => {
-    game.setKeyboardCaptured(false);
-    Object.assign(game.gameState, {
-      phase: PHASE.FINISHED,
-      score1: result.score1,
-      score2: result.score2,
-    });
-    if (result.winner === 2) game.audio.playWin();
-    else game.audio.playLose();
-    game.invalidate();
-  },
-  render: (game) => {
-    if (game.colors) {
-      render(game.ctx, game.gameState, game.colors, performance.now(), game.particles);
-    }
-  },
-  disconnectResult: (game) => ({
-    score: { p1: game.gameState.score1, p2: game.gameState.score2 },
-    winner: 0,
+  onEnd: guestEnd({
+    phase: PHASE.FINISHED,
+    fields: ["score1", "score2"],
+    sound: (game, result) => playOutcome(game, result.winner),
   }),
+  render: (game) =>
+    render(game.ctx, game.gameState, game.colors, performance.now(), game.particles),
+  disconnectResult: drawOnDisconnect((s) => [s.score1, s.score2]),
 });

@@ -82,6 +82,16 @@ export function finiteMotion(state, prefix) {
 }
 
 /**
+ * What an AI is asked to decide on: the match state, and the side it plays —
+ * player two unless the request names player one.
+ * @param {{ state?: object, player?: number }} request
+ * @returns {{ state: object | undefined, player: 1 | 2 }}
+ */
+export function aiRequest(request) {
+  return { state: request.state, player: request.player === 1 ? 1 : 2 };
+}
+
+/**
  * A coordinate folded back between two walls, as a ball bouncing off them
  * would be: where a straight-line projection lands once the bounces are in.
  * @param {number} value

@@ -10,7 +10,8 @@
  * @module games/hex_enduro
  */
 
-import { defineGame } from "../core/define_game.js";
+import { ARROWS_WASD_SPACE, defineGame } from "../core/define_game.js";
+import { drawOnDisconnect, playOutcome } from "../core/result.js";
 import { playFlags } from "../core/events.js";
 import { normalizeEnduroAIDifficulty } from "./difficulty.js";
 import {
@@ -130,23 +131,7 @@ export default defineGame({
     brake: ["ArrowDown", "s", "S"],
     turbo: [" ", "Shift"],
   },
-  captureKeys: [
-    "ArrowUp",
-    "ArrowDown",
-    "ArrowLeft",
-    "ArrowRight",
-    " ",
-    "Spacebar",
-    "Shift",
-    "w",
-    "W",
-    "a",
-    "A",
-    "s",
-    "S",
-    "d",
-    "D",
-  ],
+  captureKeys: [...ARROWS_WASD_SPACE, "Shift"],
   schema: { snapshot: SNAPSHOT, end: GAME_END },
   ai: {
     difficulty: normalizeEnduroAIDifficulty,
@@ -239,15 +224,11 @@ export default defineGame({
     game.invalidate();
     game.setKeyboardCaptured(false);
     game.audio.stopEngineDrone();
-    if (result.winner === (game.isHost ? 1 : 2)) game.audio.playVictory();
-    else game.audio.playGameOver();
+    playOutcome(game, result.winner, "playVictory", "playGameOver");
   },
   render: (game) => {
-    if (!game.ctx || !game.colors) return;
+    if (!game.ctx) return;
     render(game.ctx, game.gameState, game.colors, performance.now(), game.isHost);
   },
-  disconnectResult: (game) => ({
-    score: { p1: game.gameState.p1.score, p2: game.gameState.p2.score },
-    winner: 0,
-  }),
+  disconnectResult: drawOnDisconnect((s) => [s.p1.score, s.p2.score]),
 });
