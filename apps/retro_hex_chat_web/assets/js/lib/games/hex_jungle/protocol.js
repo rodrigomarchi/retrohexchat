@@ -35,3 +35,32 @@ export const TREASURE = Object.freeze({
 /** Where the holes in the ground are, inclusive. */
 export const LADDER_HOLE = Object.freeze([72, 79]);
 export const SIDE_HOLES = Object.freeze([Object.freeze([44, 55]), Object.freeze([96, 107])]);
+
+/** The floors: the jungle's ground, and the tunnel's below it. */
+export const GROUND_Y = 32;
+export const UNDER_Y = 86;
+
+/** Where a player can stand before the screen changes, and where they start. */
+export const EDGE_MIN = 8;
+export const EDGE_MAX = 148;
+export const START_X = 20;
+
+/** A pixel of running every this many ticks: 30 pixels a second. */
+export const WALK_EVERY = 2;
+
+/**
+ * A jump, as lines moved each tick (up positive): it rises 10 lines over 16
+ * ticks and comes down over 16 more, after a line of lift as it leaves.
+ */
+export const JUMP_LIFT = 1;
+export const JUMP_TABLE = Object.freeze([
+  1, 1, 1, 1, 1, 1, 1, 0, 1, 0, 0, 1, 0, 0, 0, 1, -1, 0, 0, 0, -1, 0, 0, -1, 0, -1, -1, -1, -1, -1,
+  -1, -1,
+]);
+/** The jump's direction is still the player's to choose for this many ticks. */
+export const JUMP_STEER_TICKS = 2;
+
+export const START_SCORE = 2000;
+export const START_LIVES = 3;
+/** Twenty minutes. */
+export const TIME_TICKS = 20 * 60 * 60;
