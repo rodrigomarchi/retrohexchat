@@ -44,6 +44,17 @@ export async function installAudioSpy(target: SpyTarget): Promise<void> {
     class FakeAudioContext {
       currentTime = 0;
       destination = {};
+      state = "running";
+
+      // What a real context answers when the synth wakes or disposes it.
+      resume() {
+        return Promise.resolve();
+      }
+
+      close() {
+        this.state = "closed";
+        return Promise.resolve();
+      }
 
       createOscillator() {
         return new FakeOscillatorNode();
