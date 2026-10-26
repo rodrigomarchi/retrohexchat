@@ -140,16 +140,7 @@ export function statsMethods(el, ports) {
           .tilesForParticipant(participantId)
           .filter((tile) => tile.dataset.local !== "true");
 
-        if (remoteTiles.length === 0) {
-          const unassignedRemoteTiles = this.tileView
-            .remoteTileElements()
-            .filter((tile) => !tile.dataset.participantId);
-
-          if (unassignedRemoteTiles.length === 1) {
-            unassignedRemoteTiles[0].dataset.participantId = participantId;
-            this._applyParticipantToTile(unassignedRemoteTiles[0], participantId);
-          }
-        }
+        if (remoteTiles.length === 0) this._claimUnassignedRemoteTile(participantId);
       }
 
       for (const tile of el.querySelectorAll("[data-group-call-video-tile]")) {

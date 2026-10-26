@@ -302,13 +302,8 @@ export function tileMethods(el, ports) {
         .filter((tile) => tile.dataset.local !== "true");
 
       if (tiles.length === 0) {
-        const unassignedRemoteTiles = this.tileView
-          .remoteTileElements()
-          .filter((tile) => !tile.dataset.participantId);
-
-        if (unassignedRemoteTiles.length === 1) {
-          tiles = unassignedRemoteTiles;
-        }
+        const unassigned = this._soleUnassignedRemoteTile();
+        if (unassigned) tiles = [unassigned];
       }
 
       for (const tile of tiles) {
@@ -319,6 +314,28 @@ export function tileMethods(el, ports) {
       }
 
       this._applyLayout();
+    },
+
+    // A remote tile can arrive before the event that says whose it is. While
+    // exactly one tile is waiting for an owner, a participant with no tile of
+    // their own is that tile's owner; with two or more the guess could be wrong.
+    _soleUnassignedRemoteTile() {
+      const unassigned = this.tileView
+        .remoteTileElements()
+        .filter((tile) => !tile.dataset.participantId);
+
+      return unassigned.length === 1 ? unassigned[0] : null;
+    },
+
+    // Gives the sole unassigned remote tile to the participant, returning it in
+    // a list (empty when there is no tile to claim).
+    _claimUnassignedRemoteTile(participantId) {
+      const tile = this._soleUnassignedRemoteTile();
+      if (!tile) return [];
+
+      tile.dataset.participantId = participantId;
+      this._applyParticipantToTile(tile, participantId);
+      return [tile];
     },
 
     _applyLayout() {

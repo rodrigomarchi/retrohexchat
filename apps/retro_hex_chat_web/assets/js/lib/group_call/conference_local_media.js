@@ -99,8 +99,17 @@ export function localMediaMethods(_el, ports) {
       applyTrackHints(stream);
       this._mergeLocalStream(stream);
 
-      for (const track of stream.getTracks()) {
-        const sender = this.pc.addTrack(track, this.localStream || stream);
+      await this._addLocalSenders(stream.getTracks(), this.localStream || stream);
+      this._attachLocalStream(this.localStream || stream);
+      this._requestOfferAfterLocalMediaChange();
+    },
+
+    // Sends each track on the current connection, remembering the camera's
+    // sender for the screen share to swap, then marks the connection as the
+    // one the local media is published on.
+    async _addLocalSenders(tracks, stream) {
+      for (const track of tracks) {
+        const sender = this.pc.addTrack(track, stream);
         this.localSenders.push(sender);
 
         if (track.kind === "video") {
@@ -111,8 +120,6 @@ export function localMediaMethods(_el, ports) {
 
       await applyMediaProfile(this.pc);
       this._sendersPc = this.pc;
-      this._attachLocalStream(this.localStream || stream);
-      this._requestOfferAfterLocalMediaChange();
     },
 
     _mergeLocalStream(stream) {

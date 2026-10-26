@@ -356,6 +356,39 @@ describe("GroupCallWebRTCHook media fallback", () => {
     });
   });
 
+  it("remembers the camera sender of a camera enabled later", async () => {
+    const hook = setupHook();
+    const videoTrack = { id: "video-late", kind: "video", readyState: "live", enabled: true };
+    const localTracks = [];
+    const localStream = {
+      addTrack: vi.fn((track) => localTracks.push(track)),
+      getTracks: vi.fn(() => localTracks),
+      getAudioTracks: vi.fn(() => []),
+      getVideoTracks: vi.fn(() => localTracks.filter((track) => track.kind === "video")),
+    };
+    const captureStream = {
+      getTracks: vi.fn(() => [videoTrack]),
+      getAudioTracks: vi.fn(() => []),
+      getVideoTracks: vi.fn(() => [videoTrack]),
+    };
+
+    hook.localStream = localStream;
+    hook.channel = { push: vi.fn(() => pushWithReceivers().push) };
+    hook.pc = { addTrack: vi.fn((track) => ({ track })) };
+
+    Object.defineProperty(navigator, "mediaDevices", {
+      configurable: true,
+      value: { getUserMedia: vi.fn().mockResolvedValue(captureStream) },
+    });
+
+    await hook._ensureRequestedLocalTracks({ audio: false, video: true });
+
+    expect(hook.pc.addTrack).toHaveBeenCalledWith(videoTrack, localStream);
+    expect(hook.videoSender).toEqual({ track: videoTrack });
+    expect(hook.cameraVideoTrack).toBe(videoTrack);
+    expect(hook._sendersPc).toBe(hook.pc);
+  });
+
   it("keeps the local tile empty-state copy synchronized with live media state", () => {
     const hook = setupLayoutHook();
     const localTile = hook.el.querySelector("[data-group-call-local-tile]");
@@ -951,6 +984,29 @@ describe("GroupCallWebRTCHook media fallback", () => {
     expect(hook._sendersPc).toBe(pc);
   });
 
+  it("remembers the camera sender when it republishes local tracks", async () => {
+    const hook = setupNegotiationHook();
+    const audioTrack = { id: "audio-1", kind: "audio", enabled: true };
+    const videoTrack = { id: "video-1", kind: "video", enabled: true };
+    const stream = {
+      getTracks: vi.fn(() => [audioTrack, videoTrack]),
+      getAudioTracks: vi.fn(() => [audioTrack]),
+      getVideoTracks: vi.fn(() => [videoTrack]),
+    };
+    const pc = new MockPeerConnection();
+
+    hook.localStream = stream;
+    vi.stubGlobal("RTCPeerConnection", function RTCPeerConnectionMock() {
+      return pc;
+    });
+
+    await hook._processOffer({ sdp: "offer-with-camera", ice_servers: [] });
+
+    expect(hook.localSenders).toHaveLength(2);
+    expect(hook.videoSender).toBe(hook.localSenders[1]);
+    expect(hook.cameraVideoTrack).toBe(videoTrack);
+  });
+
   it("keeps the same remote video element and stream while focusing a participant", () => {
     const hook = setupLayoutHook();
     const stream = { id: "stream-456" };
@@ -1251,6 +1307,41 @@ describe("GroupCallWebRTCHook media fallback", () => {
     vi.advanceTimersByTime(2400);
 
     expect(tile.querySelector("[data-group-call-reaction-bubble]")).toBeNull();
+  });
+
+  it("shows a reaction on the sole remote tile nobody has claimed yet", () => {
+    const hook = setupLayoutHook();
+
+    fireServer(hook, "group_call_layout_state", {
+      participants: [{ id: 456, nickname: "Ada", media_state: { audio: true, video: true } }],
+    });
+    hook._attachRemoteStream({ id: "sfu-generated-stream" }, { id: "sfu-generated-track" });
+
+    hook._applyReaction({ id: "reaction-1", participant_id: 456, reaction: "clap" });
+
+    const tile = hook.el.querySelector('[data-stream-id="sfu-generated-stream"]');
+    expect(tile.dataset.participantId).toBe("456");
+    expect(tile.querySelector("[data-group-call-tile-name]").textContent).toBe("Ada");
+    expect(
+      tile.querySelector('[data-group-call-reaction-bubble][data-reaction="clap"]'),
+    ).not.toBeNull();
+  });
+
+  it("gives the sole unclaimed remote tile to a participant reported by the quality feed", () => {
+    const hook = setupLayoutHook();
+
+    fireServer(hook, "group_call_layout_state", {
+      participants: [{ id: 456, nickname: "Ada", media_state: { audio: true, video: true } }],
+    });
+    hook._attachRemoteStream({ id: "sfu-generated-stream" }, { id: "sfu-generated-track" });
+
+    hook._syncParticipantQualityState({
+      participants: [{ participant_id: "456", level: "good", speaking: false }],
+    });
+
+    const tile = hook.el.querySelector('[data-stream-id="sfu-generated-stream"]');
+    expect(tile.dataset.participantId).toBe("456");
+    expect(tile.querySelector("[data-group-call-tile-name]").textContent).toBe("Ada");
   });
 
   it("pushes live browser stats with conference counters", async () => {

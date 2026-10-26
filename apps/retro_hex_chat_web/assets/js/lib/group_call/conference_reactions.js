@@ -70,21 +70,8 @@ export function reactionMethods(el, _ports) {
     },
 
     _reactionTiles(participantId) {
-      let tiles = this.tileView.tilesForParticipant(participantId);
-
-      if (tiles.length === 0) {
-        const unassignedRemoteTiles = this.tileView
-          .remoteTileElements()
-          .filter((tile) => !tile.dataset.participantId);
-
-        if (unassignedRemoteTiles.length === 1) {
-          unassignedRemoteTiles[0].dataset.participantId = participantId;
-          this._applyParticipantToTile(unassignedRemoteTiles[0], participantId);
-          tiles = unassignedRemoteTiles;
-        }
-      }
-
-      return tiles;
+      const tiles = this.tileView.tilesForParticipant(participantId);
+      return tiles.length > 0 ? tiles : this._claimUnassignedRemoteTile(participantId);
     },
   };
 }

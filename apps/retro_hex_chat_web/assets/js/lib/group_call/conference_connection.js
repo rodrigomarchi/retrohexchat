@@ -27,7 +27,7 @@ import { createTrackRegistry } from "./track_registry.js";
 import { createParticipantRegistry } from "./participant_registry.js";
 import { createTileView } from "./tile_view.js";
 import { mediaStateFromDataset } from "./media_state.js";
-import { attachMediaStream, applyMediaProfile, applyTrackHints, setSinkId } from "../p2p/media.js";
+import { attachMediaStream, applyTrackHints, setSinkId } from "../p2p/media.js";
 import { screenShareMethods } from "./conference_screen_share.js";
 import { statsMethods } from "./conference_stats.js";
 import { localMediaMethods } from "./conference_local_media.js";
@@ -461,19 +461,7 @@ export function createConferenceConnection(el, ports) {
       if (!this.pc || !this.localStream || this._sendersPc === this.pc) return;
 
       this.localSenders = [];
-
-      for (const track of this.localStream.getTracks()) {
-        const sender = this.pc.addTrack(track, this.localStream);
-        this.localSenders.push(sender);
-
-        if (track.kind === "video") {
-          this.videoSender = sender;
-          this.cameraVideoTrack = track;
-        }
-      }
-
-      await applyMediaProfile(this.pc);
-      this._sendersPc = this.pc;
+      await this._addLocalSenders(this.localStream.getTracks(), this.localStream);
     },
 
     async _handleRemoteCandidate(candidate) {
