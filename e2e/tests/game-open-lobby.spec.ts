@@ -4,6 +4,7 @@
  * @flow N46 [done] A third person following the same match link is told the seat is taken, and it stays taken after the match ends
  * @flow N67 [done] Somebody with no account watches the match being played, at its /watch address, drawn live from the host's relayed frames
  * @flow N68 [done] The players see how many are watching and the watch link to hand on; the match is offered to watch under its game channel's topic and on the game's page
+ * @flow N77 [done] Players who take their time in a match room — reading it, pressing Ready a while after arriving — still get the game when the host presses Start
  * @flow N69 [done] A full match's link, a playing nickname's menu and the game's page each lead to watching it; a member's Play on the game's page opens beside the desktop
  *
  * These @flow lines are the source of truth for e2e/TEST_CATALOG.md.
@@ -220,5 +221,73 @@ test("a match link fills its one seat and the game runs on it (N45, N46)", async
     await hostCtx.close();
     await guestCtx.close();
     await latecomerCtx.close();
+  }
+});
+
+// People do not press Ready the instant they arrive: they read the room, wait
+// for the other side, take a minute. Nothing connects before Start, so time
+// spent in the room must not count against the connection — the room used to
+// fail silently half a minute after the guest arrived, leaving both screens
+// showing a Start that could no longer start anything.
+test("a match room survives the people who take their time (N77)", async ({
+  browser,
+}) => {
+  test.setTimeout(150_000);
+  const hostCtx = await browser.newContext({
+    viewport: { width: 1500, height: 900 },
+  });
+  const guestCtx = await browser.newContext({
+    viewport: { width: 1500, height: 900 },
+  });
+  const host = await hostCtx.newPage();
+  const guest = await guestCtx.newPage();
+
+  try {
+    await connectedUser(host);
+    await connectedUser(guest);
+
+    await host.goto(`/play/${GAME}`);
+    await host.getByTestId("play-create-match").click();
+    await expect(host).toHaveURL(new RegExp(`/play/${GAME}/`));
+    await host.getByTestId("share-create").click();
+    const joinPath = new URL(await host.getByTestId("share-url").inputValue())
+      .pathname;
+    await host.getByTestId("share-close").click();
+
+    await guest.goto(joinPath);
+    await guest.getByTestId("join-enter").click();
+    await expect(guest).toHaveURL(new RegExp(`/play/${GAME}/`));
+
+    // Longer than the connecting deadline, spent in the room.
+    await guest.waitForTimeout(20_000);
+    await guest.getByTestId("p2p-room-ready").click();
+    await host.waitForTimeout(20_000);
+    await host.getByTestId("p2p-room-ready").click();
+
+    const start = host.getByTestId("p2p-room-start");
+    await expect(start).toBeEnabled({ timeout: 15_000 });
+    await expect(start).toBeInViewport({ ratio: 1 });
+    await expect(host.getByTestId("p2p-room-roster")).not.toContainText(
+      "getting ready",
+    );
+    await expect(guest.getByTestId("p2p-room-roster")).not.toContainText(
+      "getting ready",
+    );
+    await shot(host, "match-room-ready-after-a-while");
+    await start.click();
+
+    for (const page of [host, guest]) {
+      await expect(page.locator("#lobby-game-canvas canvas")).toBeVisible({
+        timeout: 30_000,
+      });
+      await expect(page.getByTestId("p2p-call-window")).toContainText(
+        "Connected",
+        { timeout: 30_000 },
+      );
+    }
+    await shot(guest, "match-running-after-a-while");
+  } finally {
+    await hostCtx.close();
+    await guestCtx.close();
   }
 });

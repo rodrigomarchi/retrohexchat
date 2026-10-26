@@ -11,105 +11,105 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n>1);\n"
 
-#: lib/retro_hex_chat/lobby/policy.ex:116
+#: lib/retro_hex_chat/lobby/policy.ex:117
 #, elixir-autogen, elixir-format
 msgid "Cannot create a session with yourself"
 msgstr "Não é possível criar uma sessão consigo próprio"
 
-#: lib/retro_hex_chat/lobby/service.ex:238
-#: lib/retro_hex_chat/lobby/service.ex:255
-#: lib/retro_hex_chat/lobby/service.ex:279
+#: lib/retro_hex_chat/lobby/service.ex:239
+#: lib/retro_hex_chat/lobby/service.ex:256
+#: lib/retro_hex_chat/lobby/service.ex:280
 #, elixir-autogen, elixir-format
 msgid "Failed to create lobby"
 msgstr "Falha ao criar o lobby"
 
-#: lib/retro_hex_chat/lobby/session_server.ex:295
+#: lib/retro_hex_chat/lobby/session_server.ex:318
 #, elixir-autogen, elixir-format
 msgid "Invalid transition from %{from} to %{to}"
 msgstr "Transição inválida de %{from} para %{to}"
 
-#: lib/retro_hex_chat/lobby/policy.ex:317
+#: lib/retro_hex_chat/lobby/policy.ex:310
 #, elixir-autogen, elixir-format
 msgid "Invite is no longer pending"
 msgstr "O convite já não está pendente"
 
-#: lib/retro_hex_chat/lobby/policy.ex:321
+#: lib/retro_hex_chat/lobby/policy.ex:314
 #, elixir-autogen, elixir-format
 msgid "Lobby is no longer active"
 msgstr "O lobby não está mais ativo"
 
-#: lib/retro_hex_chat/lobby/service.ex:289
+#: lib/retro_hex_chat/lobby/service.ex:290
 #, elixir-autogen, elixir-format
 msgid "Lobby not found"
 msgstr "Lobby não encontrado"
 
-#: lib/retro_hex_chat/lobby/session_server.ex:235
+#: lib/retro_hex_chat/lobby/session_server.ex:245
 #, elixir-autogen, elixir-format
 msgid "Not a participant"
 msgstr "Não é um participante"
 
-#: lib/retro_hex_chat/lobby/policy.ex:278
+#: lib/retro_hex_chat/lobby/policy.ex:271
 #, elixir-autogen, elixir-format
 msgid "Only the invited user can decline"
 msgstr "Só o usuário convidado pode recusar"
 
-#: lib/retro_hex_chat/lobby/policy.ex:286
+#: lib/retro_hex_chat/lobby/policy.ex:279
 #, elixir-autogen, elixir-format
 msgid "Only the inviter can cancel the invite"
 msgstr "Somente o convidado pode cancelar o convite"
 
-#: lib/retro_hex_chat/lobby/service.ex:220
-#: lib/retro_hex_chat/lobby/session_server.ex:138
-#: lib/retro_hex_chat/lobby/session_server.ex:1084
-#: lib/retro_hex_chat/lobby/session_server.ex:1085
-#: lib/retro_hex_chat/lobby/session_server.ex:1086
+#: lib/retro_hex_chat/lobby/service.ex:221
+#: lib/retro_hex_chat/lobby/session_server.ex:148
+#: lib/retro_hex_chat/lobby/session_server.ex:1099
+#: lib/retro_hex_chat/lobby/session_server.ex:1100
+#: lib/retro_hex_chat/lobby/session_server.ex:1101
 #, elixir-autogen, elixir-format
 msgid "Session process not running"
 msgstr "Processo de sessão não em execução"
 
-#: lib/retro_hex_chat/lobby/policy.ex:130
+#: lib/retro_hex_chat/lobby/policy.ex:127
 #, elixir-autogen, elixir-format
 msgid "Target user must be registered"
 msgstr "O usuário- alvo deve estar registrado"
 
-#: lib/retro_hex_chat/lobby/policy.ex:156
+#: lib/retro_hex_chat/lobby/policy.ex:153
 #, elixir-autogen, elixir-format
 msgid "User not available"
 msgstr "Usuário não disponível"
 
-#: lib/retro_hex_chat/lobby/policy.ex:270
+#: lib/retro_hex_chat/lobby/policy.ex:263
 #, elixir-autogen, elixir-format
 msgid "You are not a participant in this lobby"
 msgstr "Você não é um participante neste lobby"
 
-#: lib/retro_hex_chat/lobby/policy.ex:129
+#: lib/retro_hex_chat/lobby/policy.ex:126
 #, elixir-autogen, elixir-format
 msgid "You must be registered to use the lobby"
 msgstr "Você deve estar registrado para usar o lobby"
 
-#: lib/retro_hex_chat/lobby/policy.ex:293
+#: lib/retro_hex_chat/lobby/policy.ex:286
 #, elixir-autogen, elixir-format
 msgid "This match is already full"
 msgstr "Esta partida já está cheia"
 
-#: lib/retro_hex_chat/lobby/policy.ex:297
+#: lib/retro_hex_chat/lobby/policy.ex:290
 #, elixir-autogen, elixir-format
 msgid "This match link has expired"
 msgstr "Este link de partida expirou"
 
-#: lib/retro_hex_chat/lobby/policy.ex:306
+#: lib/retro_hex_chat/lobby/policy.ex:299
 #, elixir-autogen, elixir-format
 msgid "You cannot join your own match"
 msgstr "Você não pode entrar na sua própria partida"
 
-#: lib/retro_hex_chat/lobby/service.ex:320
+#: lib/retro_hex_chat/lobby/service.ex:314
 #, elixir-autogen, elixir-format
 msgid "Too many lobbies created. Try again in %{count} second"
 msgid_plural "Too many lobbies created. Try again in %{count} seconds"
 msgstr[0] "Muitos lobbies criados. Tente novamente em %{count} segundo"
 msgstr[1] "Muitos lobbies criados. Tente novamente em %{count} segundos"
 
-#: lib/retro_hex_chat/lobby/policy.ex:138
+#: lib/retro_hex_chat/lobby/policy.ex:135
 #, elixir-autogen, elixir-format
 msgid "A session with this person is already open. Its card is in this conversation."
 msgstr "Já existe uma sessão aberta com essa pessoa. O card dela está nesta conversa."

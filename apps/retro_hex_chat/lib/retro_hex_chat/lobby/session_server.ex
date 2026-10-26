@@ -121,6 +121,15 @@ defmodule RetroHexChat.Lobby.SessionServer do
     call(token, {:webrtc_ready, user_id})
   end
 
+  @doc """
+  The host pressed `[Start]`: the negotiation is released, so the connecting
+  clock starts now. Waiting in the starting room is not connecting.
+  """
+  @spec mark_started(String.t(), integer()) :: :ok | {:error, atom()}
+  def mark_started(token, user_id) do
+    call(token, {:started, user_id})
+  end
+
   @spec record_signaling_event(String.t(), integer(), String.t(), map()) :: :ok | {:error, atom()}
   def record_signaling_event(token, user_id, event, payload)
       when event in ["lobby_signal", "lobby_renegotiate"] and is_map(payload) do
@@ -260,6 +269,19 @@ defmodule RetroHexChat.Lobby.SessionServer do
       role ->
         state = put_in(state, [:webrtc_ready, role], true)
         {:reply, :ok, maybe_start_signaling(state)}
+    end
+  end
+
+  def handle_call({:started, user_id}, _from, state) do
+    cond do
+      role_of(state, user_id) != :creator ->
+        {:reply, {:error, :not_creator}, state}
+
+      state.session.status == "lobby" ->
+        {:reply, :ok, NamedTimers.schedule(state, :connecting_timeout, connecting_timeout())}
+
+      true ->
+        {:reply, :ok, state}
     end
   end
 
@@ -789,7 +811,6 @@ defmodule RetroHexChat.Lobby.SessionServer do
     state = %{state | session: session}
     state = NamedTimers.schedule(state, :lobby_warning, lobby_warning_timeout())
     state = NamedTimers.schedule(state, :lobby_expiry, lobby_expiry_timeout())
-    state = NamedTimers.schedule(state, :connecting_timeout, connecting_timeout())
 
     Lobby.broadcast(state.token, "lobby_status_changed", %{status: "lobby", reason: nil})
     notify_chat_progress(state)

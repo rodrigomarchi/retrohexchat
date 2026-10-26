@@ -312,6 +312,49 @@ defmodule RetroHexChat.Lobby.SessionServerTest do
     end
   end
 
+  # The starting room is people deciding when to play: they read the room,
+  # press Ready, and the host presses Start when they like. Nothing negotiates
+  # before Start, so the connecting clock must not run before it.
+  describe "connecting clock" do
+    setup do
+      Application.put_env(:retro_hex_chat, :lobby_connecting_timeout, 80)
+      on_exit(fn -> Application.delete_env(:retro_hex_chat, :lobby_connecting_timeout) end)
+
+      creator = create_registered_nick("clkc#{System.unique_integer([:positive])}")
+      peer = create_registered_nick("clkp#{System.unique_integer([:positive])}")
+      session = create_session_record(creator.id, peer.id)
+      Phoenix.PubSub.subscribe(RetroHexChat.PubSub, "lobby:#{session.token}")
+      start_and_join!(session.token, [creator.id, peer.id])
+      assert_received %{event: "lobby_status_changed", payload: %{status: "lobby"}}
+
+      on_exit(fn -> stop_server(session.token) end)
+      %{token: session.token, creator: creator, peer: peer}
+    end
+
+    test "waiting in the room before Start does not fail the session", ctx do
+      :ok = SessionServer.mark_webrtc_ready(ctx.token, ctx.creator.id)
+      :ok = SessionServer.mark_webrtc_ready(ctx.token, ctx.peer.id)
+
+      refute_receive %{event: "lobby_status_changed", payload: %{status: "failed"}}, 300
+      assert {:ok, %{session: %{status: "lobby"}}} = SessionServer.get_state(ctx.token)
+    end
+
+    test "the clock runs from the host's Start", ctx do
+      assert :ok = SessionServer.mark_started(ctx.token, ctx.creator.id)
+
+      assert_receive %{
+                       event: "lobby_status_changed",
+                       payload: %{status: "failed", reason: "connecting_timeout"}
+                     },
+                     1_000
+    end
+
+    test "only the host starts the clock", ctx do
+      assert {:error, :not_creator} = SessionServer.mark_started(ctx.token, ctx.peer.id)
+      refute_receive %{event: "lobby_status_changed", payload: %{status: "failed"}}, 300
+    end
+  end
+
   describe "webrtc readiness coordination" do
     setup do
       creator = create_registered_nick("rdyc#{System.unique_integer([:positive])}")

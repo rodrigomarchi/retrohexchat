@@ -135,8 +135,8 @@ make e2e.catalog.check    # verify it is current (also runs in make ci)
 ## Coverage
 
 - **262 spec files** under `e2e/tests/`.
-- **661 Playwright `test()` cases**.
-- **604 documented flows**, 603 done, 1 not done.
+- **662 Playwright `test()` cases**.
+- **605 documented flows**, 604 done, 1 not done.
 - **Every spec documents its own flows.**
 
 ## Flow index
@@ -485,6 +485,7 @@ Grouped by section. Every row comes from an `@flow` line in the spec itself.
 | N74 | A visitor reads an arcade game's channel and its page; pressing Play opens the sign-in window, which returns to the same game | `tests/arcade-channels.spec.ts` | done |
 | N75 | A game played alone (Hex Jungle): its home offers Play and nothing that needs somebody else — no partner, match link, invitation or Live tab; a run ended with End is written down, in the player's own record and among the best runs | `tests/game-solo-only.spec.ts` | done |
 | N76 | In the channel of a game played alone, the strip offers Play without Find a partner, and /lfg says the game is played alone | `tests/game-solo-only.spec.ts` | done |
+| N77 | Players who take their time in a match room — reading it, pressing Ready a while after arriving — still get the game when the host presses Start | `tests/game-open-lobby.spec.ts` | done |
 
 ### O - Chat UI Micro-Journeys
 

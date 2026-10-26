@@ -327,6 +327,9 @@ defmodule RetroHexChat.Lobby do
   @spec mark_webrtc_ready(String.t(), integer()) :: :ok | {:error, atom()}
   defdelegate mark_webrtc_ready(token, user_id), to: SessionServer
 
+  @spec mark_started(String.t(), integer()) :: :ok | {:error, atom()}
+  defdelegate mark_started(token, user_id), to: SessionServer
+
   @spec record_signaling_event(String.t(), integer(), String.t(), map()) :: :ok | {:error, atom()}
   defdelegate record_signaling_event(token, user_id, event, payload), to: SessionServer
 

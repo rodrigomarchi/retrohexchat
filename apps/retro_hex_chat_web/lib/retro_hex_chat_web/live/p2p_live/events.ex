@@ -399,6 +399,7 @@ defmodule RetroHexChatWeb.P2PLive.Events do
         %{assigns: %{p2p_session: %{role: :creator} = p2p}} = socket
       ) do
     if SessionLink.room_can_start?(p2p) do
+      _ = Lobby.mark_started(p2p.token, p2p.user_id)
       Lobby.broadcast(p2p.token, "lobby_session_start", %{})
 
       {:halt,
