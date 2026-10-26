@@ -345,7 +345,6 @@ defmodule RetroHexChat.PromEx.Plugins.Domain do
       "" -> default
       value when is_atom(value) -> Atom.to_string(value)
       value when is_binary(value) -> value
-      value when is_boolean(value) -> to_string(value)
       value when is_integer(value) -> Integer.to_string(value)
       _value -> default
     end

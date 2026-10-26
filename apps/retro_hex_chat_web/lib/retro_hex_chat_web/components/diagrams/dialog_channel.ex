@@ -46,8 +46,8 @@ defmodule RetroHexChatWeb.Components.Diagrams.DialogChannel do
       <rect x="2" y="4" width="124" height="88" fill="#c0c0c0" stroke="#000000" stroke-width="1" />
       <polyline points="3,91 3,5 125,5" fill="none" stroke="#ffffff" stroke-width="1" />
       <polyline points="125,6 125,91 3,91" fill="none" stroke="#808080" stroke-width="1" />
-      
-    <!-- Title bar -->
+
+      <!-- Title bar -->
       <rect x="5" y="7" width="118" height="11" fill="#000080" />
       <text
         x="8"
@@ -59,8 +59,8 @@ defmodule RetroHexChatWeb.Components.Diagrams.DialogChannel do
       >
         {@title}
       </text>
-      
-    <!-- Topic strip -->
+
+      <!-- Topic strip -->
       <rect x="5" y="20" width="118" height="12" fill="#c0c0c0" />
       <polyline points="5,31 5,20 122,20" fill="none" stroke="#808080" stroke-width="1" />
       <polyline points="123,21 123,32 5,32" fill="none" stroke="#ffffff" stroke-width="1" />
@@ -75,17 +75,17 @@ defmodule RetroHexChatWeb.Components.Diagrams.DialogChannel do
         {@topic_line}
       </text>
       <rect :if={@topic_line == ""} x="8" y="24" width="60" height="4" fill="#a0a0a0" />
-      
-    <!-- Message area -->
+
+      <!-- Message area -->
       <rect x="5" y="34" width="118" height="55" fill="#ffffff" />
       <polyline points="5,88 5,34 122,34" fill="none" stroke="#808080" stroke-width="1" />
-      
-    <!-- The join line the channel always writes -->
+
+      <!-- The join line the channel always writes -->
       <text x="8" y="43" fill="#008080" font-size="7" font-family="Tahoma,sans-serif">
         {Diagrams.system_line(dgettext("diagrams", "someone joined"))}
       </text>
-      
-    <!-- The welcome message, as the joiner reads it -->
+
+      <!-- The welcome message, as the joiner reads it -->
       <g :if={@welcome_lines != []}>
         <text
           :for={{line, index} <- Enum.with_index(@welcome_lines)}
@@ -98,8 +98,8 @@ defmodule RetroHexChatWeb.Components.Diagrams.DialogChannel do
           {line}
         </text>
       </g>
-      
-    <!-- Nothing greets them: the space the message would occupy, left empty -->
+
+      <!-- Nothing greets them: the space the message would occupy, left empty -->
       <g :if={@welcome_lines == []}>
         <rect x="8" y="50" width="88" height="4" fill="#e0e0e0" />
         <rect x="8" y="59" width="70" height="4" fill="#e0e0e0" />

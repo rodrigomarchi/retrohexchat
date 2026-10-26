@@ -20,8 +20,8 @@ defmodule RetroHexChatWeb.Icons.People do
         stroke-linecap="round"
         transform="translate(1,1)"
       />
-      
-    <!-- Back figure (Navy) -->
+
+      <!-- Back figure (Navy) -->
       <circle cx="10" cy="8" r="4" fill="#000080" stroke="#000" stroke-width="1.5" />
       <path
         d="M4 18 C4 14 7 12 10 12 C13 12 16 14 16 18"
@@ -38,8 +38,8 @@ defmodule RetroHexChatWeb.Icons.People do
         opacity="0.6"
         stroke-linecap="round"
       />
-      
-    <!-- Middle figure (Teal) -->
+
+      <!-- Middle figure (Teal) -->
       <circle cx="22" cy="8" r="4" fill="#008080" stroke="#000" stroke-width="1.5" />
       <path
         d="M16 18 C16 14 19 12 22 12 C25 12 28 14 28 18"
@@ -56,8 +56,8 @@ defmodule RetroHexChatWeb.Icons.People do
         opacity="0.6"
         stroke-linecap="round"
       />
-      
-    <!-- Front figure (Gray/Silver) -->
+
+      <!-- Front figure (Gray/Silver) -->
       <circle cx="16" cy="16" r="4" fill="#C0C0C0" stroke="#000" stroke-width="1.5" />
       <path
         d="M10 26 C10 22 13 20 16 20 C19 20 22 22 22 26"
@@ -143,8 +143,8 @@ defmodule RetroHexChatWeb.Icons.People do
       <!-- Shadow Base -->
       <circle cx="17" cy="17" r="13" fill="#000" />
       <path d="M12 9 L 12 25 L 26 17 z" fill="#000" transform="translate(1,1)" />
-      
-    <!-- Base Circle (Green) -->
+
+      <!-- Base Circle (Green) -->
       <circle cx="16" cy="16" r="13" fill="#008000" stroke="#000" stroke-width="1.5" />
       <!-- Bevel -->
       <path
@@ -155,8 +155,8 @@ defmodule RetroHexChatWeb.Icons.People do
         opacity="0.6"
         stroke-linecap="round"
       />
-      
-    <!-- Connect Arrow -->
+
+      <!-- Connect Arrow -->
       <path
         d="M12 9 L 12 25 L 26 17 z"
         fill="#fff"
@@ -188,8 +188,8 @@ defmodule RetroHexChatWeb.Icons.People do
       <!-- Antenna -->
       <line x1="16" y1="6" x2="16" y2="10" stroke="#808080" stroke-width="2" />
       <circle cx="16" cy="5" r="2" fill="#FF0000" stroke="#000" stroke-width="1.5" />
-      
-    <!-- Head Shadow -->
+
+      <!-- Head Shadow -->
       <rect x="8" y="10" width="16" height="16" rx="2" fill="#000" transform="translate(1,1)" />
       <!-- Head Base -->
       <rect
@@ -205,15 +205,15 @@ defmodule RetroHexChatWeb.Icons.People do
       <!-- Bevel -->
       <path d="M9 11 h 14" stroke="#fff" stroke-width="1.5" opacity="0.6" stroke-linecap="round" />
       <path d="M9 11 v 14" stroke="#fff" stroke-width="1.5" opacity="0.6" stroke-linecap="round" />
-      
-    <!-- Eyes -->
+
+      <!-- Eyes -->
       <rect x="10" y="13" width="4" height="4" fill="#FF0000" stroke="#000" stroke-width="1" />
       <rect x="18" y="13" width="4" height="4" fill="#FF0000" stroke="#000" stroke-width="1" />
-      
-    <!-- Mouth -->
+
+      <!-- Mouth -->
       <rect x="12" y="20" width="8" height="2" fill="#000080" />
-      
-    <!-- Ears -->
+
+      <!-- Ears -->
       <path d="M6 16 v 4 M26 16 v 4" stroke="#000" stroke-width="2" stroke-linecap="round" />
     </svg>
     """
@@ -250,12 +250,12 @@ defmodule RetroHexChatWeb.Icons.People do
       <!-- Shadow -->
       <rect x="4" y="3" width="6" height="5" fill="#000" />
       <polygon points="1,15 13,15 13,10 10,8 4,8 1,10" fill="#000" />
-      
-    <!-- Person (White for dark bg) -->
+
+      <!-- Person (White for dark bg) -->
       <rect x="3" y="2" width="6" height="5" fill="#fff" stroke="#000" stroke-width="1" />
       <polygon points="1,14 12,14 12,10 9,8 3,8 1,10" fill="#fff" stroke="#000" stroke-width="1" />
-      
-    <!-- Edit Pencil or Plus (Gold) -->
+
+      <!-- Edit Pencil or Plus (Gold) -->
       <polygon points="12,5 15,5 15,6 12,6" fill="#FFD700" stroke="#000" stroke-width="1" />
       <polygon points="13,4 14,4 14,7 13,7" fill="#FFD700" stroke="#000" stroke-width="1" />
     </svg>
@@ -283,12 +283,12 @@ defmodule RetroHexChatWeb.Icons.People do
       <!-- Card -->
       <rect x="1" y="3" width="14" height="11" fill="#c0c0c0" stroke="#000" stroke-width="1" />
       <rect x="2" y="4" width="12" height="1" fill="#fff" />
-      
-    <!-- Portrait -->
+
+      <!-- Portrait -->
       <rect x="3" y="6" width="4" height="3" fill="#000080" />
       <polygon points="2,13 8,13 8,11 6,9 4,9 2,11" fill="#000080" />
-      
-    <!-- Bio lines -->
+
+      <!-- Bio lines -->
       <rect x="9" y="6" width="5" height="1" fill="#000080" />
       <rect x="9" y="8" width="5" height="1" fill="#808080" />
       <rect x="9" y="10" width="4" height="1" fill="#808080" />
@@ -320,12 +320,12 @@ defmodule RetroHexChatWeb.Icons.People do
       <!-- Shadow -->
       <rect x="3" y="3" width="5" height="4" fill="#000" />
       <polygon points="1,14 9,14 9,11 7,9 3,9 1,11" fill="#000" />
-      
-    <!-- Person -->
+
+      <!-- Person -->
       <rect x="2" y="2" width="5" height="4" fill="#000080" stroke="#000" stroke-width="1" />
       <polygon points="0,13 8,13 8,11 6,9 2,9 0,11" fill="#000080" stroke="#000" stroke-width="1" />
-      
-    <!-- Mode flag (+) -->
+
+      <!-- Mode flag (+) -->
       <rect x="10" y="4" width="5" height="5" fill="#c0c0c0" stroke="#000" stroke-width="1" />
       <rect x="12" y="5" width="1" height="3" fill="#000080" />
       <rect x="11" y="6" width="3" height="1" fill="#000080" />
@@ -388,8 +388,8 @@ defmodule RetroHexChatWeb.Icons.People do
         stroke="#000"
         stroke-width="1"
       />
-      
-    <!-- Crown Points -->
+
+      <!-- Crown Points -->
       <rect x="3" y="5" width="2" height="2" fill="#FF0000" stroke="#000" stroke-width="1" />
       <rect x="7" y="4" width="2" height="2" fill="#008000" stroke="#000" stroke-width="1" />
       <rect x="11" y="5" width="2" height="2" fill="#000080" stroke="#000" stroke-width="1" />
@@ -405,11 +405,11 @@ defmodule RetroHexChatWeb.Icons.People do
     <svg class={@class} viewBox="0 0 16 16" shape-rendering="crispEdges" aria-hidden="true">
       <!-- Outline/Shadow -->
       <polygon points="3,2 13,2 13,8 8,14 3,8" fill="#000" />
-      
-    <!-- Navy Shield Base -->
+
+      <!-- Navy Shield Base -->
       <polygon points="4,3 12,3 12,8 8,12 4,8" fill="#000080" />
-      
-    <!-- Star (Gold) -->
+
+      <!-- Star (Gold) -->
       <rect x="7" y="5" width="2" height="2" fill="#FFD700" />
       <rect x="6" y="6" width="4" height="1" fill="#FFD700" />
       <rect x="6" y="8" width="1" height="1" fill="#FFD700" />
@@ -426,11 +426,11 @@ defmodule RetroHexChatWeb.Icons.People do
     <svg class={@class} viewBox="0 0 16 16" shape-rendering="crispEdges" aria-hidden="true">
       <!-- Outline/Shadow -->
       <polygon points="3,2 13,2 13,8 8,14 3,8" fill="#000" />
-      
-    <!-- Shield Base -->
+
+      <!-- Shield Base -->
       <polygon points="4,3 12,3 12,8 8,12 4,8" fill="#C0C0C0" />
-      
-    <!-- Half (Green) -->
+
+      <!-- Half (Green) -->
       <polygon points="4,3 8,3 8,12 4,8" fill="#008000" />
     </svg>
     """
@@ -445,8 +445,8 @@ defmodule RetroHexChatWeb.Icons.People do
       <!-- Speaker Cone -->
       <polygon points="7,5 3,7 3,9 7,11" fill="#000080" />
       <rect x="7" y="5" width="2" height="6" fill="#000080" />
-      
-    <!-- Waves -->
+
+      <!-- Waves -->
       <rect x="10" y="6" width="1" height="4" fill="#000080" />
       <rect x="12" y="5" width="1" height="6" fill="#000080" />
     </svg>

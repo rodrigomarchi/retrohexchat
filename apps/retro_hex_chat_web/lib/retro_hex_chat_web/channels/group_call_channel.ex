@@ -9,8 +9,6 @@ defmodule RetroHexChatWeb.GroupCallChannel do
 
   use Phoenix.Channel, log_join: :debug
 
-  require Logger
-
   alias RetroHexChat.Calls.Events, as: CallEvents
   alias RetroHexChat.Calls.SignalValidation
   alias RetroHexChat.GroupCall

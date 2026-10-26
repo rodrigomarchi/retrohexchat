@@ -192,8 +192,7 @@ defmodule RetroHexChatWeb.Components.UI.P2P.SessionBadge do
           dot_class(@status)
         ]}
         aria-hidden="true"
-      >
-      </span>
+      ></span>
     </span>
     """
   end

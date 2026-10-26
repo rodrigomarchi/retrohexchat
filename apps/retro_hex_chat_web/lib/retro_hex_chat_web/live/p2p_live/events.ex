@@ -690,8 +690,6 @@ defmodule RetroHexChatWeb.P2PLive.Events do
     end)
   end
 
-  defp apply_setup_options(socket, _setup_opts), do: socket
-
   defp start_call_payload(p2p, type) do
     %{
       "type" => type,

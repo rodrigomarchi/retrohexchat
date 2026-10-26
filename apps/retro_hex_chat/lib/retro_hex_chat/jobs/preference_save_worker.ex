@@ -18,8 +18,6 @@ defmodule RetroHexChat.Jobs.PreferenceSaveWorker do
   alias RetroHexChat.Chat.PreferencePersistence
   alias RetroHexChat.Observability
 
-  require Logger
-
   @impl Oban.Worker
   @spec perform(Oban.Job.t()) ::
           {:ok, :applied | :already_applied} | {:cancel, String.t()} | {:error, term()}

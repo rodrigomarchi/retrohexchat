@@ -165,8 +165,7 @@ defmodule RetroHexChatWeb.Components.UI.P2P.CallPanel do
                   }
                   autoplay
                   playsinline
-                >
-                </video>
+                ></video>
 
                 <.inset
                   :if={@peer_left}
@@ -243,8 +242,7 @@ defmodule RetroHexChatWeb.Components.UI.P2P.CallPanel do
                   playsinline
                   muted
                   data-testid="p2p-local-self-view"
-                >
-                </video>
+                ></video>
                 <div class={local_label_class(@self_view_place)}>
                   <CallControls.icon_call_screen_share
                     :if={@screen_sharing}

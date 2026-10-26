@@ -319,8 +319,7 @@ defmodule RetroHexChatWeb.Components.UI.DesktopLaunchers do
         class="fixed inset-0 bg-black/30"
         data-desktop-connect-dialog-close
         aria-label={dgettext("ui", "Close")}
-      >
-      </button>
+      ></button>
 
       <div
         class="fixed inset-0 flex items-center justify-center overflow-y-auto p-0 md:p-4"

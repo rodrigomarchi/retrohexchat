@@ -100,8 +100,7 @@ defmodule RetroHexChatWeb.Components.UI.P2PConnectionDiagram do
             "p2p-diagram__status-dot",
             @online && "p2p-diagram__status-dot--online",
             !@online && "p2p-diagram__status-dot--offline"
-          ]}>
-          </span>
+          ]}></span>
           <.nick_flag locale={@locale} />
           <span class="p2p-diagram__nick">{@nick}</span>
           <span :if={@label} class="p2p-diagram__you-label">{@label}</span>

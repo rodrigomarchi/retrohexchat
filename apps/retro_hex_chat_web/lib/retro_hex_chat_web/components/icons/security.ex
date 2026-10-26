@@ -20,8 +20,8 @@ defmodule RetroHexChatWeb.Icons.Security do
         transform="translate(1,1)"
       />
       <rect x="8" y="14" width="16" height="14" rx="2" fill="#000" transform="translate(1,1)" />
-      
-    <!-- Lock Shackle Base -->
+
+      <!-- Lock Shackle Base -->
       <path
         d="M10 14V10C10 6.7 12.7 4 16 4C19.3 4 22 6.7 22 10V14"
         fill="none"
@@ -34,11 +34,11 @@ defmodule RetroHexChatWeb.Icons.Security do
         stroke="#000"
         stroke-width="2"
       />
-      
-    <!-- Highlight -->
+
+      <!-- Highlight -->
       <path d="M11 12 V 10 C 11 7 13 5 16 5" fill="none" stroke="#fff" stroke-width="1" />
-      
-    <!-- Lock Body -->
+
+      <!-- Lock Body -->
       <rect
         x="8"
         y="14"
@@ -49,8 +49,8 @@ defmodule RetroHexChatWeb.Icons.Security do
         stroke="#000"
         stroke-width="1.5"
       />
-      
-    <!-- Highlight / Shadow inside Lock Body -->
+
+      <!-- Highlight / Shadow inside Lock Body -->
       <path d="M9 15 h 14" stroke="#fff" stroke-width="1.5" opacity="0.6" stroke-linecap="round" />
       <path d="M9 16 v 10" stroke="#fff" stroke-width="1.5" opacity="0.6" stroke-linecap="round" />
 
@@ -73,8 +73,8 @@ defmodule RetroHexChatWeb.Icons.Security do
         transform="translate(1,1)"
         stroke-linejoin="round"
       />
-      
-    <!-- Shield Body -->
+
+      <!-- Shield Body -->
       <path
         d="M16 2 L 4 8 v 8 c 0 7 6 12 12 14 c 6 -2 12 -7 12 -14 V 8 z"
         fill="#000080"
@@ -82,8 +82,8 @@ defmodule RetroHexChatWeb.Icons.Security do
         stroke-width="1.5"
         stroke-linejoin="round"
       />
-      
-    <!-- Inner Shield (White) -->
+
+      <!-- Inner Shield (White) -->
       <path
         d="M16 5 L 7 10 v 5 c 0 5 4 9 9 11 c 5 -2 9 -6 9 -11 V 10 z"
         fill="#fff"
@@ -91,8 +91,8 @@ defmodule RetroHexChatWeb.Icons.Security do
         stroke-width="1.5"
         stroke-linejoin="round"
       />
-      
-    <!-- Checkmark -->
+
+      <!-- Checkmark -->
       <path
         d="M12 15 l 3 4 L 22 12"
         fill="none"
@@ -130,8 +130,8 @@ defmodule RetroHexChatWeb.Icons.Security do
         stroke-width="1.5"
         stroke-linejoin="round"
       />
-      
-    <!-- Inner Shield (White) -->
+
+      <!-- Inner Shield (White) -->
       <path
         d="M16 5 L 7 10 v 5 c 0 5 4 9 9 11 c 5 -2 9 -6 9 -11 V 10 z"
         fill="#fff"
@@ -139,8 +139,8 @@ defmodule RetroHexChatWeb.Icons.Security do
         stroke-width="1.5"
         stroke-linejoin="round"
       />
-      
-    <!-- Center Lock Shackle Base -->
+
+      <!-- Center Lock Shackle Base -->
       <path
         d="M13 13 V 10 C 13 8 15 6 16 6 C 17 6 19 8 19 10 V 13"
         fill="none"
@@ -153,12 +153,12 @@ defmodule RetroHexChatWeb.Icons.Security do
         stroke="#555"
         stroke-width="1.5"
       />
-      
-    <!-- Center Lock Body -->
+
+      <!-- Center Lock Body -->
       <rect x="12" y="13" width="8" height="7" rx="1" fill="#FFD700" stroke="#000" stroke-width="1.5" />
       <path d="M13 14 h 6" stroke="#fff" stroke-width="1" opacity="0.6" stroke-linecap="round" />
-      
-    <!-- Keyhole -->
+
+      <!-- Keyhole -->
       <circle cx="16" cy="16" r="1.5" fill="#000" />
       <path d="M15.5 17 h 1 l 0.5 2 h -2 z" fill="#000" stroke-linejoin="round" />
     </svg>
@@ -174,12 +174,12 @@ defmodule RetroHexChatWeb.Icons.Security do
       <!-- Shadow -->
       <circle cx="17" cy="17" r="13" fill="none" stroke="#000" stroke-width="4" />
       <line x1="8" y1="8" x2="26" y2="26" stroke="#000" stroke-width="4" />
-      
-    <!-- Red Ban Sign -->
+
+      <!-- Red Ban Sign -->
       <circle cx="16" cy="16" r="13" fill="none" stroke="#FF0000" stroke-width="5" />
       <line x1="7" y1="7" x2="25" y2="25" stroke="#FF0000" stroke-width="5" />
-      
-    <!-- Inner Bevel (pink) -->
+
+      <!-- Inner Bevel (pink) -->
       <circle cx="16" cy="16" r="11" fill="none" stroke="#FF8080" stroke-width="1" />
       <line x1="8" y1="7" x2="25" y2="24" stroke="#FF8080" stroke-width="1" />
     </svg>
@@ -194,15 +194,15 @@ defmodule RetroHexChatWeb.Icons.Security do
     <svg class={@class} viewBox="0 0 32 32" aria-hidden="true">
       <!-- Shadow Globe -->
       <circle cx="16" cy="16" r="11" fill="#000" transform="translate(1,1)" />
-      
-    <!-- Globe Base -->
+
+      <!-- Globe Base -->
       <circle cx="16" cy="16" r="11" fill="#fff" stroke="#000080" stroke-width="1.5" />
-      
-    <!-- Globe Ellipses/Grid -->
+
+      <!-- Globe Ellipses/Grid -->
       <ellipse cx="16" cy="16" rx="5" ry="11" fill="none" stroke="#000080" stroke-width="1.5" />
       <line x1="5" y1="16" x2="27" y2="16" stroke="#000080" stroke-width="1.5" />
-      
-    <!-- Block Shadow -->
+
+      <!-- Block Shadow -->
       <line
         x1="5"
         y1="5"
@@ -213,8 +213,8 @@ defmodule RetroHexChatWeb.Icons.Security do
         stroke-linecap="round"
         transform="translate(1,1)"
       />
-      
-    <!-- Block Line -->
+
+      <!-- Block Line -->
       <line x1="5" y1="5" x2="27" y2="27" stroke="#FF0000" stroke-width="4" stroke-linecap="round" />
       <line x1="6" y1="6" x2="25" y2="25" stroke="#FF8080" stroke-width="1" stroke-linecap="round" />
     </svg>
@@ -229,13 +229,13 @@ defmodule RetroHexChatWeb.Icons.Security do
     <svg class={@class} viewBox="0 0 32 32" aria-hidden="true">
       <!-- Shadow of paper -->
       <rect x="6" y="2" width="20" height="28" rx="2" fill="#000" transform="translate(1,1)" />
-      
-    <!-- Paper Base -->
+
+      <!-- Paper Base -->
       <rect x="6" y="2" width="20" height="28" rx="2" fill="#fff" stroke="#000" stroke-width="1.5" />
       <path d="M7 3 h 18" stroke="#C0C0C0" stroke-width="1" opacity="0.6" stroke-linecap="round" />
       <path d="M7 3 v 26" stroke="#C0C0C0" stroke-width="1" opacity="0.6" stroke-linecap="round" />
-      
-    <!-- Checkbox 1 -->
+
+      <!-- Checkbox 1 -->
       <rect x="10" y="6" width="4" height="4" fill="#C0C0C0" stroke="#000080" stroke-width="1" />
       <path
         d="M11 8 l 1 1 l 2 -3"
@@ -247,8 +247,8 @@ defmodule RetroHexChatWeb.Icons.Security do
       />
       <!-- Line 1 -->
       <line x1="16" y1="8" x2="22" y2="8" stroke="#000080" stroke-width="2" stroke-linecap="round" />
-      
-    <!-- Checkbox 2 -->
+
+      <!-- Checkbox 2 -->
       <rect x="10" y="14" width="4" height="4" fill="#C0C0C0" stroke="#000080" stroke-width="1" />
       <path
         d="M11 16 l 1 1 l 2 -3"
@@ -260,8 +260,8 @@ defmodule RetroHexChatWeb.Icons.Security do
       />
       <!-- Line 2 -->
       <line x1="16" y1="16" x2="22" y2="16" stroke="#000080" stroke-width="2" stroke-linecap="round" />
-      
-    <!-- Checkbox 3 -->
+
+      <!-- Checkbox 3 -->
       <rect x="10" y="22" width="4" height="4" fill="#fff" stroke="#000080" stroke-width="1" />
       <!-- Line 3 -->
       <line x1="16" y1="24" x2="22" y2="24" stroke="#000080" stroke-width="2" stroke-linecap="round" />
@@ -279,12 +279,12 @@ defmodule RetroHexChatWeb.Icons.Security do
       <rect x="5" y="4" width="6" height="5" fill="#000" />
       <polygon points="2,15 14,15 14,11 11,9 5,9 2,11" fill="#000" />
       <rect x="10" y="8" width="6" height="6" fill="#000" />
-      
-    <!-- Person (White) -->
+
+      <!-- Person (White) -->
       <rect x="4" y="3" width="6" height="5" fill="#fff" stroke="#000" stroke-width="1" />
       <polygon points="1,14 13,14 13,10 10,8 4,8 1,10" fill="#fff" stroke="#000" stroke-width="1" />
-      
-    <!-- Ban sign (Red Octagon) -->
+
+      <!-- Ban sign (Red Octagon) -->
       <polygon
         points="11,7 13,7 15,9 15,11 13,13 11,13 9,11 9,9"
         fill="#808080"
@@ -370,8 +370,8 @@ defmodule RetroHexChatWeb.Icons.Security do
         stroke-width="1.5"
         stroke-linejoin="round"
       />
-      
-    <!-- Inner Shield (White) -->
+
+      <!-- Inner Shield (White) -->
       <path
         d="M16 5 L 7 10 v 5 c 0 5 4 9 9 11 c 5 -2 9 -6 9 -11 V 10 z"
         fill="#fff"
@@ -379,8 +379,8 @@ defmodule RetroHexChatWeb.Icons.Security do
         stroke-width="1.5"
         stroke-linejoin="round"
       />
-      
-    <!-- Center Lock Shackle Base -->
+
+      <!-- Center Lock Shackle Base -->
       <path
         d="M13 13 V 10 C 13 8 15 6 16 6 C 17 6 19 8 19 10 V 13"
         fill="none"
@@ -393,12 +393,12 @@ defmodule RetroHexChatWeb.Icons.Security do
         stroke="#555"
         stroke-width="1.5"
       />
-      
-    <!-- Center Lock Body -->
+
+      <!-- Center Lock Body -->
       <rect x="12" y="13" width="8" height="7" rx="1" fill="#FFD700" stroke="#000" stroke-width="1.5" />
       <path d="M13 14 h 6" stroke="#fff" stroke-width="1" opacity="0.6" stroke-linecap="round" />
-      
-    <!-- Keyhole -->
+
+      <!-- Keyhole -->
       <circle cx="16" cy="16" r="1.5" fill="#000" />
       <path d="M15.5 17 h 1 l 0.5 2 h -2 z" fill="#000" stroke-linejoin="round" />
     </svg>
@@ -414,12 +414,12 @@ defmodule RetroHexChatWeb.Icons.Security do
       <!-- Shadow -->
       <rect x="4" y="3" width="6" height="5" fill="#000" />
       <polygon points="2,15 12,15 12,11 10,9 4,9 2,11" fill="#000" />
-      
-    <!-- Person (white for dark bg) -->
+
+      <!-- Person (white for dark bg) -->
       <rect x="3" y="2" width="6" height="5" fill="#fff" stroke="#000" stroke-width="1" />
       <polygon points="1,14 11,14 11,10 9,8 3,8 1,10" fill="#fff" stroke="#000" stroke-width="1" />
-      
-    <!-- Deny ring -->
+
+      <!-- Deny ring -->
       <circle cx="11" cy="11" r="4" fill="none" stroke="#FF0000" stroke-width="2" />
       <path d="M8 14 L14 8" stroke="#FF0000" stroke-width="2" />
     </svg>

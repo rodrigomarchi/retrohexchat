@@ -33,7 +33,7 @@ defmodule RetroHexChatWeb.Components.UI.Breadcrumb do
   def breadcrumb(assigns) do
     ~H"""
     <nav
-      arial-label="breadcrumb"
+      aria-label="breadcrumb"
       class={
         classes([
           "flex flex-wrap items-center gap-1.5 break-words text-sm text-muted-foreground sm:gap-2.5",
@@ -41,7 +41,6 @@ defmodule RetroHexChatWeb.Components.UI.Breadcrumb do
         ])
       }
       {@rest}
-      }
     >
       {render_slot(@inner_block)}
     </nav>
@@ -65,7 +64,6 @@ defmodule RetroHexChatWeb.Components.UI.Breadcrumb do
         ])
       }
       {@rest}
-      }
     >
       {render_slot(@inner_block)}
     </ol>

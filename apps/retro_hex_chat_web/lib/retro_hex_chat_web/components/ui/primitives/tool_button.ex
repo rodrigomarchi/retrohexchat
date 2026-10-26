@@ -98,8 +98,7 @@ defmodule RetroHexChatWeb.Components.UI.ToolButton do
       class={classes(["mx-[2px] w-[1px] shrink-0 bg-gray-500", separator_height(@size), @class])}
       aria-hidden="true"
       {@rest}
-    >
-    </span>
+    ></span>
     """
   end
 

@@ -28,8 +28,7 @@ defmodule RetroHexChatWeb.Components.UI.Space.PixelIcon do
   @spec pixel_icon(map()) :: Phoenix.LiveView.Rendered.t()
   def pixel_icon(assigns) do
     ~H"""
-    <span class={classes(["space-icon", icon_class(@name), @class])} aria-hidden="true" {@rest}>
-    </span>
+    <span class={classes(["space-icon", icon_class(@name), @class])} aria-hidden="true" {@rest}></span>
     """
   end
 

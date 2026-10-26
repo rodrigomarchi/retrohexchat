@@ -306,10 +306,8 @@ defmodule RetroHexChat.Observability do
 
   defp normalize_value(value) when is_atom(value), do: Atom.to_string(value)
   defp normalize_value(value) when is_binary(value), do: value
-  defp normalize_value(value) when is_boolean(value), do: value
   defp normalize_value(value) when is_integer(value), do: value
   defp normalize_value(value) when is_float(value), do: value
-  defp normalize_value(nil), do: "none"
   defp normalize_value(%DateTime{} = value), do: DateTime.to_iso8601(value)
   defp normalize_value(%NaiveDateTime{} = value), do: NaiveDateTime.to_iso8601(value)
   defp normalize_value(_value), do: "unknown"

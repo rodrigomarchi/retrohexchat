@@ -155,12 +155,13 @@ defmodule RetroHexChat.VirtualSpace.Construct.Layout do
          true <-
            (in_bounds?(base, x0, y0) and in_bounds?(base, x1, y1)) || {:error, :out_of_bounds} do
       width = base.width
-      run = :binary.copy(<<char>>, x1 - x0 + 1)
+      length = x1 - x0 + 1
+      run = :binary.copy(<<char>>, length)
 
       painted =
         Enum.reduce(y0..y1//1, floor || blank_floor(base), fn y, acc ->
           at = y * width + x0
-          <<before::binary-size(at), _old::binary-size(x1 - x0 + 1), rest::binary>> = acc
+          <<before::binary-size(^at), _old::binary-size(^length), rest::binary>> = acc
           before <> run <> rest
         end)
 

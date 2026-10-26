@@ -61,8 +61,8 @@ defmodule RetroHexChatWeb.MixProject do
       {:phoenix_ecto, "~> 4.5"},
       {:phoenix_html, "~> 4.1"},
       {:phoenix_live_reload, "~> 1.2", only: :dev},
-      {:phoenix_live_view, "~> 1.1.0"},
-      {:phoenix_live_dashboard, "~> 0.8.3"},
+      {:phoenix_live_view, "~> 1.2.13"},
+      {:phoenix_live_dashboard, "~> 0.9.1"},
       {:esbuild, "~> 0.10", runtime: Mix.env() == :dev},
       {:telemetry_metrics, "~> 1.0"},
       {:telemetry_poller, "~> 1.0"},
@@ -79,7 +79,7 @@ defmodule RetroHexChatWeb.MixProject do
       {:opentelemetry_logger_metadata, "~> 0.2"},
       {:prom_ex, "~> 1.11"},
       {:live_dashboard_history, "~> 0.1"},
-      {:salad_ui, "~> 0.14"},
+      {:salad_ui, "~> 1.0"},
 
       # Test dependencies
       # Unrestricted, and matching the domain app: that app needs Floki in

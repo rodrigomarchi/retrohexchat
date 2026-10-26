@@ -581,7 +581,6 @@ defmodule RetroHexChat.Bots.Server do
     state
   end
 
-  defp handle_side_effect(state, _channel, %{state_update: _}), do: state
   defp handle_side_effect(state, _channel, _action), do: state
 
   @spec capability_passive?(module()) :: boolean()

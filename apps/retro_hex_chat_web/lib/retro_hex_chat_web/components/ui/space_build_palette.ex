@@ -155,8 +155,7 @@ defmodule RetroHexChatWeb.Components.UI.SpaceBuildPalette do
           width="40"
           height="40"
           class="space-build-thumb h-10 w-10"
-        >
-        </canvas>
+        ></canvas>
         <span data-construct-holding-name class="space-build-holding__name"></span>
         <button
           type="button"
@@ -265,8 +264,7 @@ defmodule RetroHexChatWeb.Components.UI.SpaceBuildPalette do
       aria-label={@label}
       class="space-build-tool"
     >
-      <canvas data-construct-thumb width="40" height="40" class="space-build-thumb h-10 w-10">
-      </canvas>
+      <canvas data-construct-thumb width="40" height="40" class="space-build-thumb h-10 w-10"></canvas>
       <span>{@label}</span>
     </button>
     """
@@ -288,8 +286,7 @@ defmodule RetroHexChatWeb.Components.UI.SpaceBuildPalette do
       aria-label={@label}
       class="space-build-tool"
     >
-      <canvas data-construct-thumb width="40" height="40" class="space-build-thumb h-10 w-10">
-      </canvas>
+      <canvas data-construct-thumb width="40" height="40" class="space-build-thumb h-10 w-10"></canvas>
       <span>{@label}</span>
     </button>
     """

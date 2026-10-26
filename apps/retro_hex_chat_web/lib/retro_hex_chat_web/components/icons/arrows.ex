@@ -167,8 +167,8 @@ defmodule RetroHexChatWeb.Icons.Arrows do
         stroke-linecap="round"
       />
       <polygon points="8,26 4,22 12,22" fill="#000" transform="translate(1,1)" />
-      
-    <!-- Blue Arrows -->
+
+      <!-- Blue Arrows -->
       <path
         d="M6 16 A 10 10 0 0 1 24 10"
         fill="none"

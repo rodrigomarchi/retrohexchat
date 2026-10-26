@@ -47,8 +47,7 @@ defmodule RetroHexChatWeb.Components.UI.Switch do
       data-testid={@testid}
       {%{disabled: @disabled}}
     >
-      <span class="pointer-events-none block h-5 w-5 rounded-full bg-surface shadow-retro-raised ring-0 group-data-[state=checked]/switch:translate-x-5 group-data-[state=unchecked]/switch:translate-x-0">
-      </span>
+      <span class="pointer-events-none block h-5 w-5 rounded-full bg-surface shadow-retro-raised ring-0 group-data-[state=checked]/switch:translate-x-5 group-data-[state=unchecked]/switch:translate-x-0"></span>
       <input type="hidden" name={@name} value="false" />
       <input type="checkbox" class="hidden" name={@name} value="true" {%{checked: @checked}} {@rest} />
     </button>

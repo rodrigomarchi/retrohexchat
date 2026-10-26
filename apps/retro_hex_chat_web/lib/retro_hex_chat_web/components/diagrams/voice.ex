@@ -33,8 +33,8 @@ defmodule RetroHexChatWeb.Components.Diagrams.Voice do
       <rect x="10" y="10" width="320" height="130" fill="#c0c0c0" stroke="#000" stroke-width="1" />
       <polyline points="11,139 11,11 329,11" fill="none" stroke="#fff" stroke-width="1" />
       <polyline points="329,12 329,139 11,139" fill="none" stroke="#808080" stroke-width="1" />
-      
-    <!-- Title bar -->
+
+      <!-- Title bar -->
       <rect x="13" y="13" width="314" height="20" fill="#000080" />
       <text
         x="22"
@@ -46,22 +46,22 @@ defmodule RetroHexChatWeb.Components.Diagrams.Voice do
       >
         {dgettext("diagrams", "Voice Call with Bob")}
       </text>
-      
-    <!-- Title bar buttons (fake) -->
+
+      <!-- Title bar buttons (fake) -->
       <!-- Minimize -->
       <rect x="274" y="15" width="16" height="16" fill="#c0c0c0" stroke="#000" stroke-width="1" />
       <polyline points="275,30 275,16 289,16" fill="none" stroke="#fff" stroke-width="1" />
       <polyline points="289,17 289,30 275,30" fill="none" stroke="#808080" stroke-width="1" />
       <rect x="277" y="27" width="6" height="2" fill="#000" />
-      
-    <!-- Maximize -->
+
+      <!-- Maximize -->
       <rect x="292" y="15" width="16" height="16" fill="#c0c0c0" stroke="#000" stroke-width="1" />
       <polyline points="293,30 293,16 307,16" fill="none" stroke="#fff" stroke-width="1" />
       <polyline points="307,17 307,30 293,30" fill="none" stroke="#808080" stroke-width="1" />
       <rect x="295" y="18" width="10" height="9" fill="none" stroke="#000" stroke-width="1" />
       <rect x="295" y="18" width="10" height="2" fill="#000" />
-      
-    <!-- Close -->
+
+      <!-- Close -->
       <rect x="309" y="15" width="16" height="16" fill="#c0c0c0" stroke="#000" stroke-width="1" />
       <polyline points="310,30 310,16 324,16" fill="none" stroke="#fff" stroke-width="1" />
       <polyline points="324,17 324,30 310,30" fill="none" stroke="#808080" stroke-width="1" />
@@ -69,24 +69,24 @@ defmodule RetroHexChatWeb.Components.Diagrams.Voice do
       <line x1="314" y1="19" x2="322" y2="27" stroke="#000" stroke-width="1" />
       <line x1="321" y1="19" x2="313" y2="27" stroke="#000" stroke-width="1" />
       <line x1="322" y1="19" x2="314" y2="27" stroke="#000" stroke-width="1" />
-      
-    <!-- Inner Content Panel (Sunken) -->
+
+      <!-- Inner Content Panel (Sunken) -->
       <rect x="18" y="42" width="304" height="88" fill="#dfdfdf" stroke="#000" stroke-width="1" />
       <polyline points="19,129 19,43 321,43" fill="none" stroke="#808080" stroke-width="1" />
       <polyline points="321,44 321,129 19,129" fill="none" stroke="#fff" stroke-width="1" />
-      
-    <!-- Display Area (Call avatar / timer) -->
+
+      <!-- Display Area (Call avatar / timer) -->
       <rect x="24" y="48" width="292" height="40" fill="#000" stroke="#008080" stroke-width="1" />
       <polyline points="25,87 25,49 315,49" fill="none" stroke="#555" stroke-width="1" />
       <polyline points="315,50 315,87 25,87" fill="none" stroke="#333" stroke-width="1" />
-      
-    <!-- Small avatar icon square -->
+
+      <!-- Small avatar icon square -->
       <rect x="30" y="52" width="32" height="32" fill="#008080" stroke="#fff" stroke-width="1" />
       <text x="46" y="74" text-anchor="middle" fill="#fff" font-size="20">
         {dgettext("diagrams", "👩")}
       </text>
-      
-    <!-- Timer elements -->
+
+      <!-- Timer elements -->
       <circle cx="95" cy="68" r="5" fill="#00ff00" />
       <!-- Animated inner dot using values representing blinking -->
       <circle cx="95" cy="68" r="3" fill="#fff">
@@ -103,8 +103,8 @@ defmodule RetroHexChatWeb.Components.Diagrams.Voice do
       >
         00:03:42
       </text>
-      
-    <!-- Call buttons (Outset) -->
+
+      <!-- Call buttons (Outset) -->
       <!-- Mute -->
       <rect x="24" y="96" width="65" height="26" fill="#c0c0c0" stroke="#000" stroke-width="1" />
       <polyline points="25,121 25,97 88,97" fill="none" stroke="#fff" stroke-width="1" />
@@ -119,8 +119,8 @@ defmodule RetroHexChatWeb.Components.Diagrams.Voice do
       >
         {dgettext("diagrams", "Mute")}
       </text>
-      
-    <!-- Camera -->
+
+      <!-- Camera -->
       <rect x="99" y="96" width="65" height="26" fill="#c0c0c0" stroke="#000" stroke-width="1" />
       <polyline points="100,121 100,97 163,97" fill="none" stroke="#fff" stroke-width="1" />
       <polyline points="163,98 163,121 100,121" fill="none" stroke="#808080" stroke-width="1" />
@@ -134,8 +134,8 @@ defmodule RetroHexChatWeb.Components.Diagrams.Voice do
       >
         {dgettext("diagrams", "Camera")}
       </text>
-      
-    <!-- Screen -->
+
+      <!-- Screen -->
       <rect x="174" y="96" width="65" height="26" fill="#c0c0c0" stroke="#000" stroke-width="1" />
       <polyline points="175,121 175,97 238,97" fill="none" stroke="#fff" stroke-width="1" />
       <polyline points="238,98 238,121 175,121" fill="none" stroke="#808080" stroke-width="1" />
@@ -149,13 +149,13 @@ defmodule RetroHexChatWeb.Components.Diagrams.Voice do
       >
         {dgettext("diagrams", "Screen")}
       </text>
-      
-    <!-- End Call (Disabled/Red style) -->
+
+      <!-- End Call (Disabled/Red style) -->
       <rect x="249" y="96" width="67" height="26" fill="#c0c0c0" stroke="#000" stroke-width="1" />
       <polyline points="250,121 250,97 315,97" fill="none" stroke="#fff" stroke-width="1" />
       <polyline points="315,98 315,121 250,121" fill="none" stroke="#808080" stroke-width="1" />
-      
-    <!-- Inside inset text with a bit of color -->
+
+      <!-- Inside inset text with a bit of color -->
       <rect x="252" y="99" width="61" height="20" fill="#cc0000" />
       <polyline points="253,118 253,100 312,100" fill="none" stroke="#800000" stroke-width="1" />
       <polyline points="312,101 312,118 253,118" fill="none" stroke="#ff8080" stroke-width="1" />

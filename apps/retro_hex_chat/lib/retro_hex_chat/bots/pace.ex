@@ -22,8 +22,6 @@ defmodule RetroHexChat.Bots.Pace do
 
   alias RetroHexChat.Chat.FloodProtection
 
-  require Logger
-
   @prune_interval_ms :timer.minutes(10)
 
   @doc """

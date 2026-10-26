@@ -404,8 +404,7 @@ defmodule RetroHexChatWeb.Components.UI.P2P.StartingRoom do
           playsinline
           class="h-full max-h-[150px] w-full object-contain"
           data-testid="p2p-setup-preview-video"
-        >
-        </video>
+        ></video>
         <div
           id="p2p-setup-empty"
           phx-update="ignore"

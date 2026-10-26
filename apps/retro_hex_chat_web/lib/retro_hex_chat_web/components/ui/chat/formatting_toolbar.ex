@@ -361,8 +361,7 @@ defmodule RetroHexChatWeb.Components.UI.FormattingToolbar do
             data-testid={"format-color-swatch-#{i}"}
             title={name}
             aria-label={name}
-          >
-          </button>
+          ></button>
         </div>
       </div>
     </div>

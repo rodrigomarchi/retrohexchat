@@ -3,8 +3,6 @@ defmodule RetroHexChat.Services.ChanServ do
   use Gettext, backend: RetroHexChat.Gettext
   use GenServer
 
-  require Logger
-
   alias RetroHexChat.ChangesetErrors
   alias RetroHexChat.Channels.Server, as: ChannelServer
   alias RetroHexChat.Chat.Archive

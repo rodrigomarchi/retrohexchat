@@ -30,16 +30,14 @@ defmodule RetroHexChatWeb.Icons.Marks do
   @spec icon_btn_remove(map()) :: Phoenix.LiveView.Rendered.t()
   def icon_btn_remove(assigns) do
     ~H"""
-    <svg class={@class} viewBox="0 0 16 16" shape-rendering="crispEdges" aria-hidden="true">
-      <!-- Shadow -->
-      <rect x="3" y="4" width="10" height="10" fill="#555" />
-      <!-- Square Body -->
-      <rect x="2" y="3" width="10" height="10" fill="#FF0000" stroke="#000" stroke-width="1" />
-      <!-- Inner Cross (Diagonal) -->
-      <polygon points="5,4 7,4 7,12 5,12" fill="#fff" transform="rotate(45 7 8)" />
-      <polygon points="5,4 7,4 7,12 5,12" fill="#fff" transform="rotate(-45 7 8)" />
-      <!-- Since crispEdges + rotation is often ugly, let's draw the cross via pixel coords instead -->
-    </svg>
+    <svg class={@class} viewBox="0 0 16 16" shape-rendering="crispEdges" aria-hidden="true"><!-- Shadow -->
+    <rect x="3" y="4" width="10" height="10" fill="#555" />
+    <!-- Square Body -->
+    <rect x="2" y="3" width="10" height="10" fill="#FF0000" stroke="#000" stroke-width="1" />
+    <!-- Inner Cross (Diagonal) -->
+    <polygon points="5,4 7,4 7,12 5,12" fill="#fff" transform="rotate(45 7 8)" />
+    <polygon points="5,4 7,4 7,12 5,12" fill="#fff" transform="rotate(-45 7 8)" />
+    <!-- Since crispEdges + rotation is often ugly, let's draw the cross via pixel coords instead --></svg>
     """
   end
 

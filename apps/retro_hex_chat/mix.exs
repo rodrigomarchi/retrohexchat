@@ -56,7 +56,7 @@ defmodule RetroHexChat.MixProject do
   # Type `mix help deps` for examples and options.
   defp deps do
     [
-      {:dns_cluster, "~> 0.2.0"},
+      {:dns_cluster, "~> 0.3.1"},
       {:phoenix, "~> 1.8"},
       {:phoenix_pubsub, "~> 2.1"},
       {:ecto_sql, "~> 3.13"},
@@ -65,16 +65,16 @@ defmodule RetroHexChat.MixProject do
       {:bcrypt_elixir, "~> 3.0"},
       {:phoenix_html, "~> 4.0"},
       {:floki, "~> 0.38"},
-      {:mdex, "~> 0.13.5"},
+      {:mdex, "~> 0.14.3"},
       {:gettext, "~> 1.0"},
       {:req, "~> 0.5"},
       {:ex_aws, "~> 2.7"},
       {:ex_aws_s3, "~> 2.5"},
       {:sweet_xml, "~> 0.7.5"},
-      {:vix, "~> 0.41.0"},
+      {:vix, "~> 0.42.0"},
       {:oban, "~> 2.23"},
       {:ex_stun, "~> 0.2.0"},
-      {:ex_webrtc, "~> 0.17.0"},
+      {:ex_webrtc, "~> 0.18.0"},
       {:ecto_psql_extras, "~> 0.8"},
       {:opentelemetry, "~> 1.7"},
       {:prom_ex, "~> 1.11"},

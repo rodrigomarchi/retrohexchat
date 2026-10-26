@@ -97,8 +97,7 @@ defmodule RetroHexChatWeb.Components.UI.ChatAttachment do
         preload="metadata"
         class="block h-40 w-full bg-black"
         data-testid="message-attachment-video-preview"
-      >
-      </video>
+      ></video>
       <.tile_footer attachment={@attachment} />
     </div>
     """
@@ -124,8 +123,7 @@ defmodule RetroHexChatWeb.Components.UI.ChatAttachment do
           preload="metadata"
           class="h-8 w-full"
           data-testid="message-attachment-audio-preview"
-        >
-        </audio>
+        ></audio>
       </div>
       <.tile_footer attachment={@attachment} />
     </div>
@@ -169,8 +167,7 @@ defmodule RetroHexChatWeb.Components.UI.ChatAttachment do
           preload="metadata"
           class="h-8 w-full"
           data-testid="message-attachment-audio-preview"
-        >
-        </audio>
+        ></audio>
       </div>
       <div class="flex items-center gap-1 border-t border-border px-1 py-0.5">
         <span class="min-w-0 flex-1 truncate text-muted-foreground">

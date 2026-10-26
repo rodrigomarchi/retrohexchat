@@ -386,8 +386,7 @@ defmodule RetroHexChatWeb.Components.UI.SpaceCharacterCreator do
           title={name}
           class={["space-creator-swatch", "rh-creator-swatch--#{@palette}-#{i}"]}
           data-testid={"space-creator-swatch-#{@field}-#{i}"}
-        >
-        </button>
+        ></button>
       </div>
     </fieldset>
     """

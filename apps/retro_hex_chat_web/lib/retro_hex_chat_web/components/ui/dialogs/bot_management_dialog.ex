@@ -181,8 +181,7 @@ defmodule RetroHexChatWeb.Components.UI.BotManagementDialog do
               class={["bm-dot", bot_state_class(bot, @running)]}
               title={bot_state_label(bot, @running)}
               aria-hidden="true"
-            >
-            </span>
+            ></span>
 
             <div class="bm-roster-main">
               <div class="bm-roster-line">
@@ -281,8 +280,7 @@ defmodule RetroHexChatWeb.Components.UI.BotManagementDialog do
           class={["bm-dot", bot_state_class(@selected, @running)]}
           title={bot_state_label(@selected, @running)}
           aria-hidden="true"
-        >
-        </span>
+        ></span>
 
         <div class="bm-detail-identity">
           <div class="bm-detail-line">

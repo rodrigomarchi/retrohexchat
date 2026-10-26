@@ -367,8 +367,7 @@ defmodule RetroHexChatWeb.Components.UI.Desktop do
           data-window-resize="se"
           aria-label={dgettext("ui", "Resize")}
           class="desktop-window__resize desktop-window__resize--grip absolute bottom-0 right-0 h-4 w-4 cursor-nwse-resize"
-        >
-        </button>
+        ></button>
         <span
           :for={dir <- ~w(n s e w ne nw sw)}
           :if={@resizable}

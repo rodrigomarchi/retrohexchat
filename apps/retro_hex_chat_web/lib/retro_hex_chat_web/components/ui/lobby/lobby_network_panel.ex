@@ -574,8 +574,7 @@ defmodule RetroHexChatWeb.Components.UI.Lobby.LobbyNetworkPanel do
         :if={@active}
         class="bg-success ml-retro-2 h-1.5 w-1.5 shrink-0 animate-pulse rounded-full"
         aria-hidden="true"
-      >
-      </span>
+      ></span>
     </.tabs_trigger>
     """
   end

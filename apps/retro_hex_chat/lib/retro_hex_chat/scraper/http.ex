@@ -485,9 +485,7 @@ defmodule RetroHexChat.Scraper.HTTP do
 
   defp cap_content(text), do: String.slice(text, 0, @max_content_text_length)
 
-  @spec excerpt(String.t() | nil) :: String.t() | nil
-  defp excerpt(nil), do: nil
-
+  @spec excerpt(String.t()) :: String.t() | nil
   defp excerpt(text) do
     text
     |> Text.truncate(@max_excerpt_length)

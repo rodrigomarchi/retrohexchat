@@ -16,8 +16,8 @@ defmodule RetroHexChatWeb.Icons.Code do
       <!-- Terminal Body -->
       <rect x="2" y="4" width="28" height="24" rx="2" fill="#000" stroke="#808080" stroke-width="1.5" />
       <path d="M4 6 L 28 6" stroke="#fff" stroke-width="1" opacity="0.3" stroke-linecap="round" />
-      
-    <!-- Prompt '>' -->
+
+      <!-- Prompt '>' -->
       <path
         d="M6 10 L 12 16 L 6 22"
         fill="none"
@@ -62,18 +62,18 @@ defmodule RetroHexChatWeb.Icons.Code do
       <!-- Branches Lines -->
       <line x1="16" y1="12" x2="10" y2="20" stroke="#555" stroke-width="3" stroke-linecap="round" />
       <line x1="16" y1="12" x2="22" y2="20" stroke="#555" stroke-width="3" stroke-linecap="round" />
-      
-    <!-- Nodes Shadow -->
+
+      <!-- Nodes Shadow -->
       <circle cx="16" cy="10" r="4" fill="#000" transform="translate(1,1)" />
       <circle cx="9" cy="22" r="4" fill="#000" transform="translate(1,1)" />
       <circle cx="23" cy="22" r="4" fill="#000" transform="translate(1,1)" />
-      
-    <!-- Nodes -->
+
+      <!-- Nodes -->
       <circle cx="16" cy="10" r="4" fill="#FF0000" stroke="#000" stroke-width="1.5" />
       <circle cx="9" cy="22" r="4" fill="#008000" stroke="#000" stroke-width="1.5" />
       <circle cx="23" cy="22" r="4" fill="#000080" stroke="#000" stroke-width="1.5" />
-      
-    <!-- Nodes Reflection -->
+
+      <!-- Nodes Reflection -->
       <circle cx="15" cy="8.5" r="1" fill="#fff" opacity="0.6" />
       <circle cx="8" cy="20.5" r="1" fill="#fff" opacity="0.6" />
       <circle cx="22" cy="20.5" r="1" fill="#fff" opacity="0.6" />
@@ -116,8 +116,8 @@ defmodule RetroHexChatWeb.Icons.Code do
         stroke-linecap="round"
         transform="translate(1,1)"
       />
-      
-    <!-- Base Color -->
+
+      <!-- Base Color -->
       <path
         d="M10 8 L 2 16 L 10 24"
         fill="none"
@@ -159,16 +159,16 @@ defmodule RetroHexChatWeb.Icons.Code do
       <rect x="2" y="3" width="2" height="10" fill="#000" />
       <rect x="5" y="3" width="2" height="10" fill="#000" />
       <rect x="2" y="8" width="5" height="2" fill="#000" />
-      
-    <!-- A= Text using pure blocks (White for dark bg) -->
+
+      <!-- A= Text using pure blocks (White for dark bg) -->
       <rect x="1" y="2" width="2" height="10" fill="#fff" />
       <rect x="4" y="2" width="2" height="10" fill="#fff" />
       <rect x="1" y="7" width="5" height="2" fill="#fff" />
 
       <rect x="8" y="5" width="4" height="2" fill="#fff" />
       <rect x="8" y="9" width="4" height="2" fill="#fff" />
-      
-    <!-- Edit pencil (Gold) -->
+
+      <!-- Edit pencil (Gold) -->
       <polygon points="12,14 15,11 14,10 11,13" fill="#FFD700" stroke="#000" stroke-width="1" />
       <polygon points="11,13 14,10 13,9 10,12" fill="#fff" stroke="#000" stroke-width="1" />
     </svg>
@@ -183,16 +183,16 @@ defmodule RetroHexChatWeb.Icons.Code do
     <svg class={@class} viewBox="0 0 16 16" shape-rendering="crispEdges" aria-hidden="true">
       <!-- Shadow -->
       <polygon points="3,3 13,3 15,6 15,10 10,10 6,14 6,10 3,10" fill="#000" />
-      
-    <!-- Message Balloon (White) -->
+
+      <!-- Message Balloon (White) -->
       <polygon
         points="2,2 12,2 14,5 14,9 9,9 5,13 5,9 2,9"
         fill="#fff"
         stroke="#000"
         stroke-width="1"
       />
-      
-    <!-- Arrow Return (Gold) -->
+
+      <!-- Arrow Return (Gold) -->
       <path d="M12 9 V5 H5" fill="none" stroke="#FFD700" stroke-width="2" />
       <polygon points="7,3 4,5 7,7" fill="#FFD700" stroke="#000" stroke-width="1" />
     </svg>
@@ -208,11 +208,11 @@ defmodule RetroHexChatWeb.Icons.Code do
       <!-- Shadow -->
       <polygon points="3,3 3,13 11,8" fill="#000" />
       <rect x="8" y="8" width="6" height="6" fill="#000" />
-      
-    <!-- Play button (Green instead of navy/blank for popup) -->
+
+      <!-- Play button (Green instead of navy/blank for popup) -->
       <polygon points="2,2 2,12 10,7" fill="#00FF00" stroke="#000" stroke-width="1" />
-      
-    <!-- Gear (Silver) -->
+
+      <!-- Gear (Silver) -->
       <rect x="9" y="8" width="4" height="4" fill="#C0C0C0" stroke="#000" stroke-width="1" />
       <rect x="10" y="7" width="2" height="6" fill="#C0C0C0" />
       <rect x="8" y="9" width="6" height="2" fill="#C0C0C0" />

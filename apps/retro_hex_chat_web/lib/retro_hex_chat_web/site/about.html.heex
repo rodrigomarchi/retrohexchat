@@ -8,7 +8,10 @@
     />
     <div class="min-w-0">
       <p class="text-base font-bold leading-tight">
-        <span class="text-text">{dgettext("dialogs", "Retro")}</span><span class="text-desktop">{dgettext("dialogs", "Hex")}</span><span class="text-selection-bg">{dgettext("dialogs", "Chat")}</span>
+        <span class="text-text">{dgettext("dialogs", "Retro")}</span><span class="text-desktop">{dgettext(
+          "dialogs",
+          "Hex"
+        )}</span><span class="text-selection-bg">{dgettext("dialogs", "Chat")}</span>
       </p>
       <p class="text-xs text-muted-foreground" data-testid="about-version">
         {dgettext("dialogs", "Version %{version}", version: BuildInfo.version())}

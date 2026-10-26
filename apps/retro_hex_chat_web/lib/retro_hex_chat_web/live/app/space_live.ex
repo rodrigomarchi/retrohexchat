@@ -266,8 +266,7 @@ defmodule RetroHexChatWeb.App.SpaceLive do
               @space.mode == "construct" && "touch-none"
             ]
           }
-        >
-        </canvas>
+        ></canvas>
         <.space_virtual_pad />
         <.space_build_palette
           :if={@space.mode == "construct"}

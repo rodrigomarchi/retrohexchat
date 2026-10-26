@@ -44,6 +44,21 @@ defmodule RetroHexChat.Chat.MessageRulesTest do
       end
     end
 
+    test "content of spaces alone is blank too" do
+      for {kind, changeset} <- both(%{content: "   "}) do
+        refute changeset.valid?, "#{kind} accepted content of spaces"
+      end
+    end
+
+    test "a blank address is refused" do
+      refute Message.changeset(%Message{}, channel_attrs(%{author_nickname: ""})).valid?
+
+      refute PrivateMessage.changeset(
+               %PrivateMessage{},
+               private_attrs(%{recipient_nickname: " "})
+             ).valid?
+    end
+
     test "blank content is accepted when the writer allowed it" do
       for {kind, changeset} <- both(%{content: "", allow_blank_content: true}) do
         assert changeset.valid?, "#{kind} refused deliberately blank content"

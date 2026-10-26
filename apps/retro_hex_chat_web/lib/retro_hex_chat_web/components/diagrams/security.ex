@@ -41,16 +41,16 @@ defmodule RetroHexChatWeb.Components.Diagrams.Security do
       >
         {dgettext("diagrams", "LAYER 1 — Server Connection")}
       </text>
-      
-    <!-- Browser box (left) -->
+
+      <!-- Browser box (left) -->
       <!-- Shadow -->
       <rect x="34" y="34" width="120" height="50" fill="#000" />
       <!-- Window Background -->
       <rect x="30" y="30" width="120" height="50" fill="#c0c0c0" stroke="#000" stroke-width="1" />
       <polyline points="31,79 31,31 149,31" fill="none" stroke="#fff" stroke-width="1" />
       <polyline points="149,32 149,79 31,79" fill="none" stroke="#808080" stroke-width="1" />
-      
-    <!-- Title bar -->
+
+      <!-- Title bar -->
       <rect x="33" y="33" width="114" height="18" fill="#000080" />
       <text
         x="90"
@@ -63,8 +63,8 @@ defmodule RetroHexChatWeb.Components.Diagrams.Security do
       >
         {dgettext("diagrams", "Browser")}
       </text>
-      
-    <!-- Inside lock area -->
+
+      <!-- Inside lock area -->
       <rect x="74" y="55" width="12" height="10" fill="#008080" stroke="#000" stroke-width="1" />
       <!-- Lock hoop -->
       <path d="M77 55 v-3 h6 v3" fill="none" stroke="#000" stroke-width="1.5" />
@@ -79,16 +79,16 @@ defmodule RetroHexChatWeb.Components.Diagrams.Security do
       >
         {dgettext("diagrams", "TLS 1.3")}
       </text>
-      
-    <!-- Server box (right) -->
+
+      <!-- Server box (right) -->
       <!-- Shadow -->
       <rect x="374" y="34" width="120" height="50" fill="#000" />
       <!-- Window Background -->
       <rect x="370" y="30" width="120" height="50" fill="#c0c0c0" stroke="#000" stroke-width="1" />
       <polyline points="371,79 371,31 489,31" fill="none" stroke="#fff" stroke-width="1" />
       <polyline points="489,32 489,79 371,79" fill="none" stroke="#808080" stroke-width="1" />
-      
-    <!-- Title bar -->
+
+      <!-- Title bar -->
       <rect x="373" y="33" width="114" height="18" fill="#000080" />
       <text
         x="430"
@@ -101,8 +101,8 @@ defmodule RetroHexChatWeb.Components.Diagrams.Security do
       >
         {dgettext("diagrams", "Server")}
       </text>
-      
-    <!-- Shield icon -->
+
+      <!-- Shield icon -->
       <path d="M422 55 h10 v6 l-5 5 l-5 -5 z" fill="#008080" stroke="#000" stroke-width="1" />
       <path d="M423 56 h8 v5 l-4 4 l-4 -4 z" fill="none" stroke="#fff" stroke-width="1" />
       <text
@@ -115,18 +115,18 @@ defmodule RetroHexChatWeb.Components.Diagrams.Security do
       >
         {dgettext("diagrams", "Protected")}
       </text>
-      
-    <!-- HTTPS/WSS connection line -->
+
+      <!-- HTTPS/WSS connection line -->
       <rect x="156" y="54" width="208" height="4" fill="#000" />
       <path d="M152 56 l8 -6 v12 z" fill="#000" />
       <path d="M368 56 l-8 -6 v12 z" fill="#000" />
-      
-    <!-- Inner line accent -->
+
+      <!-- Inner line accent -->
       <rect x="160" y="55" width="200" height="2" fill="#008080" />
       <path d="M154 56 l6 -4 v8 z" fill="#008080" />
       <path d="M366 56 l-6 -4 v8 z" fill="#008080" />
-      
-    <!-- Protocol label inset -->
+
+      <!-- Protocol label inset -->
       <rect x="220" y="45" width="80" height="18" fill="#008080" stroke="#000" stroke-width="1" />
       <polyline points="221,62 221,46 299,46" fill="none" stroke="#005500" stroke-width="1" />
       <polyline points="299,47 299,62 221,62" fill="none" stroke="#00ff00" stroke-width="1" />
@@ -141,8 +141,8 @@ defmodule RetroHexChatWeb.Components.Diagrams.Security do
       >
         {dgettext("diagrams", "HTTPS / WSS")}
       </text>
-      
-    <!-- Server features (Tooltip style) -->
+
+      <!-- Server features (Tooltip style) -->
       <rect x="374" y="90" width="120" height="44" fill="#ffffcc" stroke="#000" stroke-width="1" />
       <polyline points="375,133 375,91 493,91" fill="none" stroke="#fff" stroke-width="1" />
       <polyline points="493,92 493,133 375,133" fill="none" stroke="#808080" stroke-width="1" />
@@ -176,8 +176,8 @@ defmodule RetroHexChatWeb.Components.Diagrams.Security do
       >
         {dgettext("diagrams", "· CSRF protection")}
       </text>
-      
-    <!-- Separator line (engraved style) -->
+
+      <!-- Separator line (engraved style) -->
       <line
         x1="10"
         y1="145"
@@ -188,8 +188,8 @@ defmodule RetroHexChatWeb.Components.Diagrams.Security do
         stroke-dasharray="4,4"
       />
       <line x1="10" y1="146" x2="510" y2="146" stroke="#fff" stroke-width="1" stroke-dasharray="4,4" />
-      
-    <!-- Layer 2 label -->
+
+      <!-- Layer 2 label -->
       <text
         x="260"
         y="170"
@@ -201,8 +201,8 @@ defmodule RetroHexChatWeb.Components.Diagrams.Security do
       >
         {dgettext("diagrams", "LAYER 2 — P2P Calls (end-to-end)")}
       </text>
-      
-    <!-- Browser box (left, Bottom) -->
+
+      <!-- Browser box (left, Bottom) -->
       <rect x="34" y="184" width="120" height="50" fill="#000" />
       <rect x="30" y="180" width="120" height="50" fill="#c0c0c0" stroke="#000" stroke-width="1" />
       <polyline points="31,229 31,181 149,181" fill="none" stroke="#fff" stroke-width="1" />
@@ -234,8 +234,8 @@ defmodule RetroHexChatWeb.Components.Diagrams.Security do
       >
         {dgettext("diagrams", "E2E enc")}
       </text>
-      
-    <!-- Browser box (right, Bottom) -->
+
+      <!-- Browser box (right, Bottom) -->
       <rect x="374" y="184" width="120" height="50" fill="#000" />
       <rect x="370" y="180" width="120" height="50" fill="#c0c0c0" stroke="#000" stroke-width="1" />
       <polyline points="371,229 371,181 489,181" fill="none" stroke="#fff" stroke-width="1" />
@@ -267,8 +267,8 @@ defmodule RetroHexChatWeb.Components.Diagrams.Security do
       >
         {dgettext("diagrams", "E2E enc")}
       </text>
-      
-    <!-- DTLS-SRTP connection line -->
+
+      <!-- DTLS-SRTP connection line -->
       <rect x="156" y="204" width="208" height="4" fill="#000" />
       <path d="M152 206 l8 -6 v12 z" fill="#000" />
       <path d="M368 206 l-8 -6 v12 z" fill="#000" />
@@ -276,8 +276,8 @@ defmodule RetroHexChatWeb.Components.Diagrams.Security do
       <rect x="160" y="205" width="200" height="2" fill="#008080" />
       <path d="M154 206 l6 -4 v8 z" fill="#008080" />
       <path d="M366 206 l-6 -4 v8 z" fill="#008080" />
-      
-    <!-- Protocol label inset -->
+
+      <!-- Protocol label inset -->
       <rect x="220" y="195" width="80" height="18" fill="#008080" stroke="#000" stroke-width="1" />
       <polyline points="221,212 221,196 299,196" fill="none" stroke="#005500" stroke-width="1" />
       <polyline points="299,197 299,212 221,212" fill="none" stroke="#00ff00" stroke-width="1" />
@@ -292,8 +292,8 @@ defmodule RetroHexChatWeb.Components.Diagrams.Security do
       >
         {dgettext("diagrams", "DTLS / SRTP")}
       </text>
-      
-    <!-- P2P description -->
+
+      <!-- P2P description -->
       <!-- Tooltip container -->
       <rect x="140" y="240" width="240" height="34" fill="#ffffcc" stroke="#000" stroke-width="1" />
       <polyline points="141,273 141,241 379,241" fill="none" stroke="#fff" stroke-width="1" />

@@ -141,8 +141,7 @@ defmodule RetroHexChatWeb.ShowcaseHelpers do
                   data-clock
                   phx-hook="ClockHook"
                   class="font-mono tabular-nums"
-                >
-                </span>
+                ></span>
               </.desktop_tray>
             </:tray>
           </.taskbar>

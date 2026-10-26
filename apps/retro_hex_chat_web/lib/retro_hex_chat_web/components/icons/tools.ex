@@ -18,8 +18,8 @@ defmodule RetroHexChatWeb.Icons.Tools do
         transform="translate(1,1)"
         stroke-linejoin="round"
       />
-      
-    <!-- Wrench Base (Silver) -->
+
+      <!-- Wrench Base (Silver) -->
       <path
         d="M22 4 C 19 4 16.4 5.6 15 8 L 6 17 L 4 20 L 7 23 L 9 22 L 12 28 L 15 26 L 24 17 C 26.4 15.6 28 13 28 10 C 28 9 27.8 8 27.6 7 L 24 11 L 21 8 L 24.6 4.4 C 23.6 4.2 22.6 4 22 4 z"
         fill="#C0C0C0"
@@ -27,8 +27,8 @@ defmodule RetroHexChatWeb.Icons.Tools do
         stroke-width="1.5"
         stroke-linejoin="round"
       />
-      
-    <!-- Highlights and details -->
+
+      <!-- Highlights and details -->
       <path d="M7 20 l 5 5" fill="none" stroke="#000" stroke-width="1.5" stroke-linecap="round" />
       <path
         d="M15 8 L 6 17 M 24 17 L 26.4 14"
@@ -49,8 +49,8 @@ defmodule RetroHexChatWeb.Icons.Tools do
     <svg class={@class} viewBox="0 0 32 32" aria-hidden="true">
       <!-- Shadow -->
       <circle cx="17" cy="17" r="13" fill="#000" />
-      
-    <!-- Wooden Palette Base -->
+
+      <!-- Wooden Palette Base -->
       <circle cx="16" cy="16" r="13" fill="#D2B48C" stroke="#000" stroke-width="1.5" />
       <path
         d="M16 4 A 12 12 0 0 0 4 16"
@@ -60,13 +60,13 @@ defmodule RetroHexChatWeb.Icons.Tools do
         opacity="0.4"
         stroke-linecap="round"
       />
-      
-    <!-- Thumb Hole -->
+
+      <!-- Thumb Hole -->
       <circle cx="23" cy="22" r="3" fill="#000080" />
       <!-- Empty background-like color for hole -->
       <circle cx="23" cy="22" r="3" fill="none" stroke="#555" stroke-width="1.5" />
-      
-    <!-- Colors -->
+
+      <!-- Colors -->
       <circle cx="12" cy="9" r="2.5" fill="#FF0000" stroke="#000" stroke-width="1" />
       <circle cx="18" cy="8" r="2.5" fill="#008000" stroke="#000" stroke-width="1" />
       <circle cx="23" cy="14" r="2.5" fill="#000080" stroke="#000" stroke-width="1" />
@@ -85,12 +85,12 @@ defmodule RetroHexChatWeb.Icons.Tools do
       <!-- Shadow -->
       <polygon points="12,4 12,6 6,12 4,12 4,10 10,4" fill="#555" />
       <rect x="2" y="11" width="3" height="3" fill="#555" />
-      
-    <!-- Body -->
+
+      <!-- Body -->
       <polygon points="11,3 11,5 5,11 3,11 3,9 9,3" fill="#000080" stroke="#000" stroke-width="1" />
       <rect x="2" y="10" width="3" height="3" fill="#C0C0C0" stroke="#000" stroke-width="1" />
-      
-    <!-- Highlight -->
+
+      <!-- Highlight -->
       <polyline points="10,3 9,3 3,9 3,10" fill="none" stroke="#fff" stroke-width="1" />
     </svg>
     """
@@ -130,8 +130,8 @@ defmodule RetroHexChatWeb.Icons.Tools do
       <path d="M7 1h2v3H7z M7 12h2v3H7z" fill="#000080" />
       <path d="M1 7h3v2H1z M12 7h3v2H12z" fill="#000080" />
       <rect x="6" y="6" width="4" height="4" fill="#000080" />
-      
-    <!-- High contrast Sharp Checkmark overlaid -->
+
+      <!-- High contrast Sharp Checkmark overlaid -->
       <path d="M8 10 L11 13 L16 7" fill="none" stroke="#000" stroke-width="3" />
       <path d="M8 10 L11 13 L16 7" fill="none" stroke="#00FF00" stroke-width="1.5" />
     </svg>
@@ -146,16 +146,16 @@ defmodule RetroHexChatWeb.Icons.Tools do
     <svg class={@class} viewBox="0 0 16 16" shape-rendering="crispEdges" aria-hidden="true">
       <!-- Handle shadow -->
       <line x1="11" y1="11" x2="15" y2="15" stroke="#555" stroke-width="3" />
-      
-    <!-- Handle -->
+
+      <!-- Handle -->
       <line x1="10" y1="10" x2="14" y2="14" stroke="#000" stroke-width="3" />
       <line x1="10" y1="10" x2="14" y2="14" stroke="#000080" stroke-width="1" />
-      
-    <!-- Mag glass frame -->
+
+      <!-- Mag glass frame -->
       <rect x="2" y="2" width="7" height="7" fill="none" stroke="#000" stroke-width="3" />
       <rect x="2" y="2" width="7" height="7" fill="none" stroke="#000080" stroke-width="1" />
-      
-    <!-- Glass reflection -->
+
+      <!-- Glass reflection -->
       <rect x="4" y="4" width="2" height="2" fill="#fff" />
     </svg>
     """
@@ -171,8 +171,8 @@ defmodule RetroHexChatWeb.Icons.Tools do
       <rect x="2" y="3" width="12" height="2" fill="#000080" />
       <rect x="2" y="7" width="8" height="2" fill="#000080" />
       <rect x="2" y="11" width="5" height="2" fill="#000080" />
-      
-    <!-- Edit pencil overlaid -->
+
+      <!-- Edit pencil overlaid -->
       <polygon points="12,8 14,10 10,14 8,14 8,12" fill="#555" />
       <polygon points="11,7 13,9 9,13 7,13 7,11" fill="#fff" stroke="#000" stroke-width="1" />
       <polygon points="11,7 13,9 12,10 10,8" fill="#FFC000" stroke="#000" stroke-width="1" />
@@ -191,12 +191,12 @@ defmodule RetroHexChatWeb.Icons.Tools do
       <rect x="3" y="12" width="12" height="2" fill="#000" />
       <rect x="5" y="3" width="2" height="4" fill="#000" />
       <rect x="11" y="11" width="2" height="4" fill="#000" />
-      
-    <!-- Sliders (White) -->
+
+      <!-- Sliders (White) -->
       <rect x="2" y="3" width="12" height="2" fill="#fff" />
       <rect x="2" y="11" width="12" height="2" fill="#fff" />
-      
-    <!-- Knobs (Gold) -->
+
+      <!-- Knobs (Gold) -->
       <rect x="4" y="2" width="2" height="4" fill="#FFD700" stroke="#000" stroke-width="1" />
       <rect x="10" y="10" width="2" height="4" fill="#FFD700" stroke="#000" stroke-width="1" />
     </svg>
@@ -213,13 +213,13 @@ defmodule RetroHexChatWeb.Icons.Tools do
       <rect x="3" y="4" width="9" height="2" fill="#000" />
       <rect x="3" y="8" width="9" height="2" fill="#000" />
       <rect x="3" y="12" width="9" height="2" fill="#000" />
-      
-    <!-- Menu lines (White) -->
+
+      <!-- Menu lines (White) -->
       <rect x="2" y="3" width="9" height="2" fill="#fff" />
       <rect x="2" y="7" width="9" height="2" fill="#fff" />
       <rect x="2" y="11" width="9" height="2" fill="#fff" />
-      
-    <!-- Gold Arrow -->
+
+      <!-- Gold Arrow -->
       <polygon points="10,6 14,9 10,12" fill="#FFD700" stroke="#000" stroke-width="1" />
       <!-- Inner highlight -->
       <polygon points="11,7 13,9 11,11" fill="none" stroke="#fff" stroke-width="1" />
@@ -322,8 +322,8 @@ defmodule RetroHexChatWeb.Icons.Tools do
     <svg class={@class} viewBox="0 0 32 32" aria-hidden="true">
       <!-- Shadow -->
       <path d="M2 16 Q 16 28 30 16 Q 16 4 2 16 z" fill="#000" transform="translate(1,1)" />
-      
-    <!-- Eye White -->
+
+      <!-- Eye White -->
       <path
         d="M2 16 Q 16 28 30 16 Q 16 4 2 16 z"
         fill="#fff"
@@ -331,8 +331,8 @@ defmodule RetroHexChatWeb.Icons.Tools do
         stroke-width="2"
         stroke-linejoin="round"
       />
-      
-    <!-- Top Eyelid line to add depth -->
+
+      <!-- Top Eyelid line to add depth -->
       <path
         d="M4 16 Q 16 7 28 16"
         fill="none"
@@ -340,8 +340,8 @@ defmodule RetroHexChatWeb.Icons.Tools do
         stroke-width="3"
         stroke-linecap="round"
       />
-      
-    <!-- Iris Outline -->
+
+      <!-- Iris Outline -->
       <circle cx="16" cy="16" r="6" fill="#000" />
       <!-- Iris -->
       <circle cx="16" cy="16" r="5" fill="#008080" />
@@ -380,11 +380,11 @@ defmodule RetroHexChatWeb.Icons.Tools do
         stroke="#A0A0A0"
         stroke-width="1.5"
       />
-      
-    <!-- Base box shadow -->
+
+      <!-- Base box shadow -->
       <rect x="3" y="10" width="27" height="19" rx="1.5" fill="#000" />
-      
-    <!-- Base box -->
+
+      <!-- Base box -->
       <rect
         x="2"
         y="9"
@@ -395,14 +395,14 @@ defmodule RetroHexChatWeb.Icons.Tools do
         stroke="#000"
         stroke-width="1.5"
       />
-      
-    <!-- Top Lid -->
+
+      <!-- Top Lid -->
       <rect x="2" y="9" width="28" height="6" rx="1.5" fill="#A0A0A0" stroke="#000" stroke-width="1" />
       <line x1="2" y1="15" x2="30" y2="15" stroke="#000" stroke-width="1.5" />
       <line x1="3" y1="10" x2="29" y2="10" stroke="#fff" stroke-width="1.5" />
       <line x1="3" y1="16" x2="29" y2="16" stroke="#fff" stroke-width="1" opacity="0.6" />
-      
-    <!-- Details/Drawers -->
+
+      <!-- Details/Drawers -->
       <rect x="7" y="19" width="8" height="5" fill="#FFD700" stroke="#000" stroke-width="1.5" />
       <rect x="17" y="19" width="8" height="5" fill="#FF0000" stroke="#000" stroke-width="1.5" />
       <line x1="8" y1="20" x2="14" y2="20" stroke="#fff" stroke-width="1" opacity="0.8" />

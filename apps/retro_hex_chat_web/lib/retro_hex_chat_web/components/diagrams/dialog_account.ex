@@ -45,13 +45,13 @@ defmodule RetroHexChatWeb.Components.Diagrams.DialogAccount do
       >
         NICKSERV
       </text>
-      
-    <!-- Portrait well -->
+
+      <!-- Portrait well -->
       <rect x="11" y="18" width="24" height="24" fill="#c0c0c0" />
       <polyline points="11,41 11,18 34,18" fill="none" stroke="#808080" stroke-width="1" />
       <polyline points="35,19 35,42 12,42" fill="none" stroke="#ffffff" stroke-width="1" />
-      
-    <!-- An unclaimed card carries no face -->
+
+      <!-- An unclaimed card carries no face -->
       <text
         :if={@state == :guest}
         x="23"
@@ -69,8 +69,8 @@ defmodule RetroHexChatWeb.Components.Diagrams.DialogAccount do
         <rect x="19" y="22" width="8" height="8" fill="#000080" />
         <rect x="15" y="32" width="16" height="8" fill="#000080" />
       </g>
-      
-    <!-- Name line -->
+
+      <!-- Name line -->
       <g :if={@name == ""}>
         <rect x="41" y="22" width="70" height="6" fill="#c0c0c0" />
         <rect x="41" y="33" width="48" height="4" fill="#e0e0e0" />
@@ -97,8 +97,8 @@ defmodule RetroHexChatWeb.Components.Diagrams.DialogAccount do
       >
         {state_caption(@state)}
       </text>
-      
-    <!-- Padlock body. It is drawn in every state: the registration exists as
+
+      <!-- Padlock body. It is drawn in every state: the registration exists as
            a thing whether or not this session is allowed to open it -->
       <rect
         x="34"
@@ -113,22 +113,22 @@ defmodule RetroHexChatWeb.Components.Diagrams.DialogAccount do
       <polyline points="65,72 65,93 35,93" fill="none" stroke="#808080" stroke-width="1" />
       <rect x="46" y="76" width="7" height="7" fill="#000000" />
       <rect x="48" y="82" width="3" height="7" fill="#000000" />
-      
-    <!-- Shut: both legs seated in the body -->
+
+      <!-- Shut: both legs seated in the body -->
       <g :if={@state != :identified}>
         <rect x="40" y="58" width="5" height="12" fill={shackle_fill(@state)} />
         <rect x="55" y="58" width="5" height="12" fill={shackle_fill(@state)} />
         <rect x="40" y="53" width="20" height="5" fill={shackle_fill(@state)} />
       </g>
-      
-    <!-- Swung open: the left leg holds, the arc lifts clear of the body -->
+
+      <!-- Swung open: the left leg holds, the arc lifts clear of the body -->
       <g :if={@state == :identified}>
         <rect x="40" y="53" width="5" height="17" fill="#000080" />
         <rect x="40" y="48" width="26" height="5" fill="#000080" />
         <rect x="61" y="53" width="5" height="11" fill="#000080" />
       </g>
-      
-    <!-- The key that turned it -->
+
+      <!-- The key that turned it -->
       <g :if={@state == :identified}>
         <rect x="72" y="78" width="30" height="6" fill="#808000" />
         <rect x="78" y="84" width="4" height="6" fill="#808000" />
@@ -136,8 +136,8 @@ defmodule RetroHexChatWeb.Components.Diagrams.DialogAccount do
         <rect x="102" y="73" width="16" height="16" fill="#808000" />
         <rect x="106" y="77" width="8" height="8" fill="#ffffff" />
       </g>
-      
-    <!-- A guest has no key to offer: the shape of one, drained of colour -->
+
+      <!-- A guest has no key to offer: the shape of one, drained of colour -->
       <g :if={@state == :guest}>
         <rect x="72" y="78" width="30" height="6" fill="#e0e0e0" />
         <rect x="102" y="73" width="16" height="16" fill="#e0e0e0" />

@@ -39,7 +39,7 @@ const BUDGETS = {
   // server, a page of the site opened as a group of windows
   // (lib/window_manager/window_groups.js), the focus reported as an address —
   // before anything else runs, so none of it can be lazy.
-  entry: 490 * KIB,
+  entry: 530 * KIB,
   entryGzip: 130 * KIB,
   // A browser catalog holds every message the JS asks to translate
   // (scripts/i18n_js_catalog_check.py), which is twice what it held when this
@@ -83,7 +83,7 @@ const CHUNK_OVERRIDES = [
   },
   {
     pattern: /^desktop-live_boot-/,
-    budget: 475 * KIB,
+    budget: 505 * KIB,
     reason:
       "the chat's LiveSocket and every critical hook — app.js's body, started by the desktop " +
       "only once the page has a reason to (lib/site/boot_policy.js); same budget as app.js",

@@ -180,9 +180,6 @@ defmodule RetroHexChat.Jobs.RSSPollWorker do
         )
 
         result
-
-      :ignore ->
-        :ok
     end
   end
 

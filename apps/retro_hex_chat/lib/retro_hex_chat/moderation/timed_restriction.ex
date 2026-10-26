@@ -70,13 +70,13 @@ defmodule RetroHexChat.Moderation.TimedRestriction do
           scope_fields: [atom()]
         }
 
-  @type record :: Ecto.Schema.t()
+  @type restriction :: Ecto.Schema.t()
   @type scope :: keyword()
   @type revoke_summary :: %{revoked: non_neg_integer()}
   @type expiry_result ::
-          {:expired, record()}
-          | {:noop, record()}
-          | {:not_due, record(), pos_integer()}
+          {:expired, restriction()}
+          | {:noop, restriction()}
+          | {:not_due, restriction(), pos_integer()}
 
   @doc """
   Declares a restriction, refusing at compile time to name a column the schema
@@ -112,7 +112,7 @@ defmodule RetroHexChat.Moderation.TimedRestriction do
   positive integer of seconds means the restriction does not end on its own.
   """
   @spec put(t(), map(), non_neg_integer() | :permanent, keyword()) ::
-          {:ok, record()} | {:error, term()}
+          {:ok, restriction()} | {:error, term()}
   def put(%__MODULE__{} = restriction, attrs, duration, opts \\ []) do
     now = now(opts)
 
@@ -189,7 +189,7 @@ defmodule RetroHexChat.Moderation.TimedRestriction do
   end
 
   @doc "Lists the restrictions in force, ordered by the subject as written."
-  @spec list_active(t(), keyword()) :: [record()]
+  @spec list_active(t(), keyword()) :: [restriction()]
   def list_active(%__MODULE__{} = restriction, opts \\ []) do
     restriction
     |> active_query(Keyword.get(opts, :scope, []), now(opts))

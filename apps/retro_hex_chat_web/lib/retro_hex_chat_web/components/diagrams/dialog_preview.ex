@@ -96,8 +96,8 @@ defmodule RetroHexChatWeb.Components.Diagrams.DialogPreview do
       >
         {@heading}
       </text>
-      
-    <!-- The well, shaped by what this surface is -->
+
+      <!-- The well, shaped by what this surface is -->
       <g :if={@kind == :menu}>
         <rect x="5" y="21" width="118" height="67" fill="#c0c0c0" />
         <polyline points="6,87 6,22 122,22" fill="none" stroke="#ffffff" stroke-width="1" />
@@ -122,23 +122,23 @@ defmodule RetroHexChatWeb.Components.Diagrams.DialogPreview do
           stroke-width="1"
         />
       </g>
-      
-    <!-- Pin bar: what a pinned line actually is, a strip the room wears
+
+      <!-- Pin bar: what a pinned line actually is, a strip the room wears
            above its messages -->
       <g :if={@kind == :pinned}>
         <rect x="6" y="22" width="116" height="13" fill="#ffffcc" />
         <polyline points="6,34 6,22 121,22" fill="none" stroke="#808080" stroke-width="1" />
         <rect x="9" y="25" width="7" height="7" fill="#800000" />
       </g>
-      
-    <!-- Roster column header -->
+
+      <!-- Roster column header -->
       <g :if={@kind == :ordered}>
         <rect x="6" y="22" width="116" height="9" fill="#c0c0c0" />
         <polyline points="6,30 6,22 121,22" fill="none" stroke="#ffffff" stroke-width="1" />
         <polyline points="121,23 121,30 6,30" fill="none" stroke="#808080" stroke-width="1" />
       </g>
-      
-    <!-- Running lamps: a roster of processes is read by which ones are lit -->
+
+      <!-- Running lamps: a roster of processes is read by which ones are lit -->
       <g :if={@kind == :roster}>
         <circle
           :for={row <- @rows}
@@ -150,8 +150,8 @@ defmodule RetroHexChatWeb.Components.Diagrams.DialogPreview do
           stroke-width="1"
         />
       </g>
-      
-    <!-- Checkboxes: a capability list is a set of things not yet chosen -->
+
+      <!-- Checkboxes: a capability list is a set of things not yet chosen -->
       <g :if={@kind == :checklist}>
         <g :for={row <- @rows}>
           <rect
@@ -170,8 +170,8 @@ defmodule RetroHexChatWeb.Components.Diagrams.DialogPreview do
           </g>
         </g>
       </g>
-      
-    <!-- Clock face: a schedule is a time before it is a command -->
+
+      <!-- Clock face: a schedule is a time before it is a command -->
       <g :if={@kind == :schedule}>
         <rect x="14" y="30" width="20" height="20" fill="#ffffff" stroke="#000000" stroke-width="1" />
         <rect x="18" y="28" width="12" height="2" fill="#000000" />
@@ -181,13 +181,13 @@ defmodule RetroHexChatWeb.Components.Diagrams.DialogPreview do
         <rect x="23" y="34" width="2" height="7" fill="#000000" />
         <rect x="23" y="39" width="8" height="2" fill="#000000" />
       </g>
-      
-    <!-- Speech turns: a query is two people, so it is drawn as two -->
+
+      <!-- Speech turns: a query is two people, so it is drawn as two -->
       <g :if={@kind == :query}>
         <rect :for={row <- @rows} x="8" y={row.y - 5} width="4" height="4" fill={turn_fill(row)} />
       </g>
-      
-    <!-- Highlight band: the row does not merely say it matched, it wears
+
+      <!-- Highlight band: the row does not merely say it matched, it wears
            the colour the real line wears -->
       <g :if={@kind == :highlighted}>
         <rect
@@ -207,8 +207,8 @@ defmodule RetroHexChatWeb.Components.Diagrams.DialogPreview do
           fill="#800000"
         />
       </g>
-      
-    <!-- A hidden line is not a line with different words, it is a line that
+
+      <!-- A hidden line is not a line with different words, it is a line that
            is not there -->
       <g :if={@kind == :hidden}>
         <g :for={row <- Enum.filter(@rows, &(&1.tone == :muted))}>
@@ -216,8 +216,8 @@ defmodule RetroHexChatWeb.Components.Diagrams.DialogPreview do
           <rect x="10" y={row.y - 3} width="108" height="1" fill="#808080" />
         </g>
       </g>
-      
-    <!-- Settings sheet: a name is only half a setting, the value is the half
+
+      <!-- Settings sheet: a name is only half a setting, the value is the half
            that changes -->
       <g :if={@kind == :fields}>
         <g :for={row <- @rows}>
@@ -239,8 +239,8 @@ defmodule RetroHexChatWeb.Components.Diagrams.DialogPreview do
           </text>
         </g>
       </g>
-      
-    <!-- Relay: the two ends, and the box that carries the call when they
+
+      <!-- Relay: the two ends, and the box that carries the call when they
            cannot reach each other -->
       <g :if={@kind == :relay}>
         <rect x="32" y="40" width="18" height="2" fill="#000080" />
@@ -255,8 +255,8 @@ defmodule RetroHexChatWeb.Components.Diagrams.DialogPreview do
         <rect x="55" y="39" width="18" height="3" fill="#008080" />
         <rect x="55" y="44" width="18" height="3" fill="#000080" />
       </g>
-      
-    <!-- Broadcast: one line, and every window that receives it -->
+
+      <!-- Broadcast: one line, and every window that receives it -->
       <g :if={@kind == :broadcast}>
         <g :for={{top, left} <- [{25, 30}, {44, 20}, {63, 10}]}>
           <rect
@@ -286,8 +286,8 @@ defmodule RetroHexChatWeb.Components.Diagrams.DialogPreview do
           </text>
         </g>
       </g>
-      
-    <!-- The rows themselves -->
+
+      <!-- The rows themselves -->
       <g :for={row <- @rows}>
         <rect
           :if={row.text == "-"}
@@ -316,15 +316,15 @@ defmodule RetroHexChatWeb.Components.Diagrams.DialogPreview do
           {row.text}
         </text>
       </g>
-      
-    <!-- Nothing set yet: the space the rows would occupy, left empty -->
+
+      <!-- Nothing set yet: the space the rows would occupy, left empty -->
       <g :if={@rows == [] and @kind not in [:relay, :broadcast]}>
         <rect x={row_x(@kind)} y={empty_top(@kind)} width="82" height="4" fill="#e0e0e0" />
         <rect x={row_x(@kind)} y={empty_top(@kind) + 9} width="64" height="4" fill="#e0e0e0" />
         <rect x={row_x(@kind)} y={empty_top(@kind) + 18} width="74" height="4" fill="#e0e0e0" />
       </g>
-      
-    <!-- Composer strip: the line you type sits under what it produced -->
+
+      <!-- Composer strip: the line you type sits under what it produced -->
       <g :if={@kind == :composer}>
         <rect x="5" y="72" width="94" height="14" fill="#ffffff" />
         <polyline points="5,85 5,72 98,72" fill="none" stroke="#808080" stroke-width="1" />
@@ -340,8 +340,8 @@ defmodule RetroHexChatWeb.Components.Diagrams.DialogPreview do
           {typed_line(@rows)}
         </text>
       </g>
-      
-    <!-- Tab strip: the channels that will be sitting there when you arrive -->
+
+      <!-- Tab strip: the channels that will be sitting there when you arrive -->
       <g :if={@kind == :tabs}>
         <g :for={{tab, index} <- Enum.with_index(tab_labels(@rows))}>
           <rect

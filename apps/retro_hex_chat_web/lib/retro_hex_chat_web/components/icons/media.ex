@@ -69,11 +69,11 @@ defmodule RetroHexChatWeb.Icons.Media do
       <line x1="13" y1="8" x2="21" y2="8" stroke="#A0A0A0" stroke-width="1" />
       <line x1="13" y1="11" x2="21" y2="11" stroke="#A0A0A0" stroke-width="1" />
       <line x1="14" y1="14" x2="20" y2="14" stroke="#A0A0A0" stroke-width="1" />
-      
-    <!-- Mic Head Highlight -->
+
+      <!-- Mic Head Highlight -->
       <path d="M 14 5 A 3 3 0 0 0 14 16" fill="none" stroke="#fff" stroke-width="1.5" opacity="0.8" />
-      
-    <!-- Armature Shadow -->
+
+      <!-- Armature Shadow -->
       <path
         d="M7 14 a 9 9 0 0 0 18 0"
         fill="none"
@@ -102,8 +102,8 @@ defmodule RetroHexChatWeb.Icons.Media do
         stroke-linecap="round"
         transform="translate(1,1)"
       />
-      
-    <!-- Armature -->
+
+      <!-- Armature -->
       <path
         d="M7 14 a 9 9 0 0 0 18 0"
         fill="none"
@@ -162,13 +162,13 @@ defmodule RetroHexChatWeb.Icons.Media do
         stroke-linejoin="round"
         transform="translate(1,1)"
       />
-      
-    <!-- Body -->
+
+      <!-- Body -->
       <rect x="4" y="8" width="18" height="16" rx="2" fill="#000080" stroke="#000" stroke-width="1.5" />
       <path d="M4 10 L 22 10" stroke="#fff" stroke-width="1" opacity="0.6" />
       <path d="M6 8 L 6 24" stroke="#fff" stroke-width="1" opacity="0.5" />
-      
-    <!-- Lens -->
+
+      <!-- Lens -->
       <path
         d="M22 13 L 28 9 L 28 23 L 22 19 z"
         fill="#008080"
@@ -177,8 +177,8 @@ defmodule RetroHexChatWeb.Icons.Media do
         stroke-linejoin="round"
       />
       <path d="M22 13 L 27 9.5" stroke="#fff" stroke-width="1" opacity="0.6" />
-      
-    <!-- Record Light -->
+
+      <!-- Record Light -->
       <circle cx="9" cy="12" r="2" fill="#FF0000" stroke="#000" stroke-width="1" />
       <circle cx="8.5" cy="11.5" r="0.5" fill="#fff" />
     </svg>
@@ -199,11 +199,11 @@ defmodule RetroHexChatWeb.Icons.Media do
         stroke-linejoin="round"
         transform="translate(1,1)"
       />
-      
-    <!-- Body (Gray out) -->
+
+      <!-- Body (Gray out) -->
       <rect x="4" y="8" width="18" height="16" rx="2" fill="#808080" stroke="#000" stroke-width="1.5" />
-      
-    <!-- Lens (Gray out) -->
+
+      <!-- Lens (Gray out) -->
       <path
         d="M22 13 L 28 9 L 28 23 L 22 19 z"
         fill="#606060"
@@ -213,8 +213,8 @@ defmodule RetroHexChatWeb.Icons.Media do
       />
 
       <circle cx="9" cy="12" r="2" fill="#555" stroke="#000" stroke-width="1" />
-      
-    <!-- Red Slash Shadow -->
+
+      <!-- Red Slash Shadow -->
       <line
         x1="3"
         y1="3"
@@ -307,8 +307,8 @@ defmodule RetroHexChatWeb.Icons.Media do
       />
       <line x1="16" y1="23" x2="16" y2="28" stroke="#606060" stroke-width="3" stroke-linecap="round" />
       <line x1="12" y1="28" x2="20" y2="28" stroke="#606060" stroke-width="3" stroke-linecap="round" />
-      
-    <!-- Red Slash Shadow -->
+
+      <!-- Red Slash Shadow -->
       <line
         x1="5"
         y1="5"
@@ -340,8 +340,8 @@ defmodule RetroHexChatWeb.Icons.Media do
         stroke-linejoin="round"
         stroke-linecap="round"
       />
-      
-    <!-- Base Phone (Red) -->
+
+      <!-- Base Phone (Red) -->
       <path
         d="M6 18 C 6 8 26 8 26 18 L 19 23 L 15 16 C 15 16 17 16 17 16 L 21 16 C 21 12 11 12 11 16 C 11 16 13 16 13 16 L 17 23 L 6 18 z"
         fill="#CC0000"
@@ -350,8 +350,8 @@ defmodule RetroHexChatWeb.Icons.Media do
         stroke-linejoin="round"
         stroke-linecap="round"
       />
-      
-    <!-- Highlights -->
+
+      <!-- Highlights -->
       <path
         d="M8 17 C 8 10 24 10 24 17"
         fill="none"
@@ -439,8 +439,8 @@ defmodule RetroHexChatWeb.Icons.Media do
         stroke-dasharray="29 200"
         opacity="0.6"
       />
-      
-    <!-- Inner Square Shadow -->
+
+      <!-- Inner Square Shadow -->
       <rect x="16" y="14" width="10" height="8" rx="1" fill="#000" />
       <!-- Inner Square -->
       <rect x="15" y="13" width="10" height="8" rx="1" fill="#C0C0C0" stroke="#fff" stroke-width="1" />
@@ -464,12 +464,12 @@ defmodule RetroHexChatWeb.Icons.Media do
         stroke-width="1.5"
         stroke-linejoin="round"
       />
-      
-    <!-- Arrow Badge Background Circle -->
+
+      <!-- Arrow Badge Background Circle -->
       <circle cx="24" cy="8" r="7" fill="#000" transform="translate(1,1)" />
       <circle cx="24" cy="8" r="7" fill="#fff" stroke="#000" stroke-width="1.5" />
-      
-    <!-- Green Up Arrow -->
+
+      <!-- Green Up Arrow -->
       <path
         d="M24 3 L 28 7 L 25 7 L 25 11 L 23 11 L 23 7 L 20 7 z"
         fill="#00FF00"
@@ -503,8 +503,8 @@ defmodule RetroHexChatWeb.Icons.Media do
       <rect x="7" y="12" width="8" height="12" fill="#000080" />
       <circle cx="11" cy="26" r="1" fill="#555" />
       <path d="M6 12 L 16 12" stroke="#fff" stroke-width="1" />
-      
-    <!-- Signal Waves -->
+
+      <!-- Signal Waves -->
       <path
         d="M19 12 C 21 14 21 18 19 20"
         fill="none"
@@ -533,13 +533,13 @@ defmodule RetroHexChatWeb.Icons.Media do
       <rect x="3" y="12" width="3" height="4" fill="#555" />
       <rect x="7" y="8" width="3" height="8" fill="#555" />
       <rect x="11" y="4" width="3" height="12" fill="#555" />
-      
-    <!-- Crisp colored bars -->
+
+      <!-- Crisp colored bars -->
       <rect x="2" y="11" width="3" height="4" fill="#00FF00" />
       <rect x="6" y="7" width="3" height="8" fill="#00FF00" />
       <rect x="10" y="3" width="3" height="12" fill="#00FF00" />
-      
-    <!-- Micro-highlight to give volume without clutter -->
+
+      <!-- Micro-highlight to give volume without clutter -->
       <line x1="2" y1="11" x2="4" y2="11" stroke="#fff" stroke-width="1" />
       <line x1="6" y1="7" x2="8" y2="7" stroke="#fff" stroke-width="1" />
       <line x1="10" y1="3" x2="12" y2="3" stroke="#fff" stroke-width="1" />
@@ -597,11 +597,11 @@ defmodule RetroHexChatWeb.Icons.Media do
     <svg class={@class} viewBox="0 0 16 16" shape-rendering="crispEdges" aria-hidden="true">
       <!-- Shadow -->
       <polygon points="3,7 5,7 8,4 8,14 5,11 3,11" fill="#000" />
-      
-    <!-- Speaker Body (White for dark bg) -->
+
+      <!-- Speaker Body (White for dark bg) -->
       <polygon points="2,6 4,6 7,3 7,13 4,10 2,10" fill="#fff" stroke="#000" stroke-width="1" />
-      
-    <!-- Sound Waves (Gold) -->
+
+      <!-- Sound Waves (Gold) -->
       <path d="M10 5 V11 M12 3 V13 M14 1 V15" fill="none" stroke="#FFD700" stroke-width="1" />
       <!-- Shadow for waves -->
       <path d="M11 6 V12 M13 4 V14 M15 2 V16" fill="none" stroke="#000" stroke-width="1" />

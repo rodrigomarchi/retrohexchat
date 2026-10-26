@@ -162,8 +162,7 @@ defmodule RetroHexChatWeb.App.WatchLive do
                 width="640"
                 height="480"
                 class="aspect-[4/3] h-auto max-h-full w-full max-w-[720px] bg-black"
-              >
-              </canvas>
+              ></canvas>
               <div class="game-canvas__stub absolute inset-0 flex items-center justify-center bg-black text-xs font-bold text-white">
                 {dgettext("games", "Waiting for the first frame...")}
               </div>

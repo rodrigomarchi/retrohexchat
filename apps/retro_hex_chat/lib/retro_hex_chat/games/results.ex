@@ -262,7 +262,7 @@ defmodule RetroHexChat.Games.Results do
   end
 
   @type player_record :: %{
-          rating: Ratings.record() | nil,
+          rating: Ratings.rating() | nil,
           people: Queries.totals() | nil,
           computer: Queries.totals() | nil,
           recent: [card()]

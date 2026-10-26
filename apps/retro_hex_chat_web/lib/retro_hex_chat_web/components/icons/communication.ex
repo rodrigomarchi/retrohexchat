@@ -13,22 +13,22 @@ defmodule RetroHexChatWeb.Icons.Communication do
     <svg class={@class} viewBox="0 0 32 32" aria-hidden="true">
       <!-- Shadow of connection -->
       <path d="M12 16 L20 16" stroke="#000" stroke-width="4" transform="translate(1,1)" />
-      
-    <!-- Nodes Shadow -->
+
+      <!-- Nodes Shadow -->
       <circle cx="8" cy="16" r="6" fill="#000" transform="translate(1,1)" />
       <circle cx="24" cy="16" r="6" fill="#000" transform="translate(1,1)" />
-      
-    <!-- Connection lines -->
+
+      <!-- Connection lines -->
       <path d="M12 16 L20 16" stroke="#008000" stroke-width="3.5" stroke-linecap="round" />
       <path d="M12 15.5 L20 15.5" stroke="#00FF00" stroke-width="1.5" stroke-linecap="round" />
       <polygon points="17,11 22,16 17,21" fill="#008000" />
       <polygon points="15,11 10,16 15,21" fill="#008000" />
-      
-    <!-- Nodes Base -->
+
+      <!-- Nodes Base -->
       <circle cx="8" cy="16" r="6" fill="#000080" stroke="#000" stroke-width="1.5" />
       <circle cx="24" cy="16" r="6" fill="#000080" stroke="#000" stroke-width="1.5" />
-      
-    <!-- Nodes Highlight -->
+
+      <!-- Nodes Highlight -->
       <circle cx="6" cy="14" r="2" fill="#fff" opacity="0.6" />
       <circle cx="22" cy="14" r="2" fill="#fff" opacity="0.6" />
     </svg>
@@ -353,8 +353,8 @@ defmodule RetroHexChatWeb.Icons.Communication do
       />
       <path d="M5 5 h 16" stroke="#fff" stroke-width="1.5" opacity="0.4" stroke-linecap="round" />
       <path d="M5 5 v 10" stroke="#fff" stroke-width="1.5" opacity="0.4" stroke-linecap="round" />
-      
-    <!-- Shadow Front Bubble -->
+
+      <!-- Shadow Front Bubble -->
       <path
         d="M8 12 h 18 v 12 h -8 l -4 6 c -1 -1 -1 -3 -1 -6 h -5 z"
         fill="#000"
@@ -369,8 +369,8 @@ defmodule RetroHexChatWeb.Icons.Communication do
         stroke-width="1.5"
         stroke-linejoin="round"
       />
-      
-    <!-- Text Lines -->
+
+      <!-- Text Lines -->
       <line x1="12" y1="16" x2="22" y2="16" stroke="#000080" stroke-width="2" stroke-linecap="round" />
       <line x1="12" y1="20" x2="19" y2="20" stroke="#000080" stroke-width="2" stroke-linecap="round" />
     </svg>
@@ -443,8 +443,8 @@ defmodule RetroHexChatWeb.Icons.Communication do
       >
         #
       </text>
-      
-    <!-- Top Right -->
+
+      <!-- Top Right -->
       <rect x="17" y="2" width="12" height="12" rx="2" fill="#000" transform="translate(1,1)" />
       <rect
         x="17"
@@ -468,8 +468,8 @@ defmodule RetroHexChatWeb.Icons.Communication do
       >
         #
       </text>
-      
-    <!-- Bottom Left -->
+
+      <!-- Bottom Left -->
       <rect x="3" y="16" width="12" height="12" rx="2" fill="#000" transform="translate(1,1)" />
       <rect
         x="3"
@@ -493,8 +493,8 @@ defmodule RetroHexChatWeb.Icons.Communication do
       >
         #
       </text>
-      
-    <!-- Bottom Right -->
+
+      <!-- Bottom Right -->
       <rect x="17" y="16" width="12" height="12" rx="2" fill="#000" transform="translate(1,1)" />
       <rect
         x="17"
@@ -530,20 +530,20 @@ defmodule RetroHexChatWeb.Icons.Communication do
     <svg class={@class} viewBox="0 0 32 32" aria-hidden="true">
       <!-- Shadow -->
       <circle cx="16" cy="16" r="11" fill="#000" transform="translate(1,1)" />
-      
-    <!-- Globe base + ocean -->
+
+      <!-- Globe base + ocean -->
       <circle cx="16" cy="16" r="11" fill="#C0E0FF" stroke="#000080" stroke-width="1.5" />
-      
-    <!-- Grid: meridian ellipse, equator, prime meridian -->
+
+      <!-- Grid: meridian ellipse, equator, prime meridian -->
       <ellipse cx="16" cy="16" rx="5" ry="11" fill="none" stroke="#000080" stroke-width="1.5" />
       <line x1="16" y1="5" x2="16" y2="27" stroke="#000080" stroke-width="1.5" />
       <line x1="5" y1="16" x2="27" y2="16" stroke="#000080" stroke-width="1.5" />
-      
-    <!-- Latitude lines -->
+
+      <!-- Latitude lines -->
       <line x1="7.5" y1="11" x2="24.5" y2="11" stroke="#000080" stroke-width="1" />
       <line x1="7.5" y1="21" x2="24.5" y2="21" stroke="#000080" stroke-width="1" />
-      
-    <!-- Highlight -->
+
+      <!-- Highlight -->
       <circle cx="12" cy="11.5" r="1.5" fill="#fff" opacity="0.7" />
     </svg>
     """
@@ -564,8 +564,8 @@ defmodule RetroHexChatWeb.Icons.Communication do
         transform="translate(1,1)"
         stroke-linecap="round"
       />
-      
-    <!-- Connecting Wave -->
+
+      <!-- Connecting Wave -->
       <path
         d="M4 16 C 8 8, 12 8, 16 16 C 20 24, 24 24, 28 16"
         fill="none"
@@ -580,16 +580,16 @@ defmodule RetroHexChatWeb.Icons.Communication do
         stroke-width="1.5"
         stroke-linecap="round"
       />
-      
-    <!-- Nodes Shadow -->
+
+      <!-- Nodes Shadow -->
       <circle cx="4" cy="16" r="4" fill="#000" transform="translate(1,1)" />
       <circle cx="28" cy="16" r="4" fill="#000" transform="translate(1,1)" />
-      
-    <!-- Nodes Base -->
+
+      <!-- Nodes Base -->
       <circle cx="4" cy="16" r="4" fill="#000080" stroke="#000" stroke-width="1.5" />
       <circle cx="28" cy="16" r="4" fill="#000080" stroke="#000" stroke-width="1.5" />
-      
-    <!-- Nodes Bevel -->
+
+      <!-- Nodes Bevel -->
       <circle cx="3" cy="15" r="1.5" fill="#fff" opacity="0.6" />
       <circle cx="27" cy="15" r="1.5" fill="#fff" opacity="0.6" />
     </svg>
@@ -615,8 +615,8 @@ defmodule RetroHexChatWeb.Icons.Communication do
         transform="translate(1,1)"
         stroke-linejoin="round"
       />
-      
-    <!-- Polygon Right (Teal) -->
+
+      <!-- Polygon Right (Teal) -->
       <polygon
         points="14,12 22,8 22,24 14,20"
         fill="#008080"
@@ -632,8 +632,8 @@ defmodule RetroHexChatWeb.Icons.Communication do
         opacity="0.6"
         stroke-linecap="round"
       />
-      
-    <!-- Polygon Left (Navy) -->
+
+      <!-- Polygon Left (Navy) -->
       <polygon
         points="4,8 14,8 14,24 4,24"
         fill="#000080"
@@ -649,8 +649,8 @@ defmodule RetroHexChatWeb.Icons.Communication do
         opacity="0.6"
         stroke-linecap="round"
       />
-      
-    <!-- Recording Light -->
+
+      <!-- Recording Light -->
       <circle cx="26" cy="10" r="3" fill="#FF0000" stroke="#000" stroke-width="1.5" />
       <circle cx="26" cy="22" r="1.5" fill="#FF0000" stroke="#000" stroke-width="1" />
       <circle cx="25" cy="9" r="1" fill="#fff" opacity="0.7" />
@@ -671,8 +671,8 @@ defmodule RetroHexChatWeb.Icons.Communication do
         transform="translate(1,1)"
         stroke-linejoin="round"
       />
-      
-    <!-- Megaphone Body -->
+
+      <!-- Megaphone Body -->
       <polygon
         points="6,12 6,20 12,20 22,26 22,6 12,12"
         fill="#000080"
@@ -688,8 +688,8 @@ defmodule RetroHexChatWeb.Icons.Communication do
         opacity="0.6"
         stroke-linejoin="round"
       />
-      
-    <!-- Sound Waves Shadow -->
+
+      <!-- Sound Waves Shadow -->
       <path
         d="M26 12 A 5 5 0 0 1 26 20"
         fill="none"
@@ -706,8 +706,8 @@ defmodule RetroHexChatWeb.Icons.Communication do
         stroke-linecap="round"
         transform="translate(1,1)"
       />
-      
-    <!-- Sound Waves -->
+
+      <!-- Sound Waves -->
       <path
         d="M26 12 A 5 5 0 0 1 26 20"
         fill="none"
@@ -722,8 +722,8 @@ defmodule RetroHexChatWeb.Icons.Communication do
         stroke-width="2"
         stroke-linecap="round"
       />
-      
-    <!-- Speaker details -->
+
+      <!-- Speaker details -->
       <rect x="23" y="14" width="4" height="4" fill="#FFD700" stroke="#B8860B" stroke-width="1" />
     </svg>
     """
@@ -840,8 +840,8 @@ defmodule RetroHexChatWeb.Icons.Communication do
       <rect x="9" y="3" width="2" height="10" fill="#000080" />
       <rect x="3" y="6" width="10" height="2" fill="#000080" />
       <rect x="3" y="9" width="10" height="2" fill="#000080" />
-      
-    <!-- Auto-entry arrow -->
+
+      <!-- Auto-entry arrow -->
       <rect x="1" y="12" width="5" height="2" fill="#008000" />
       <polygon points="6,10 6,16 10,13" fill="#00FF00" stroke="#000" stroke-width="1" />
     </svg>
@@ -896,8 +896,8 @@ defmodule RetroHexChatWeb.Icons.Communication do
         stroke-linecap="round"
         transform="translate(1,1)"
       />
-      
-    <!-- Right Chain -->
+
+      <!-- Right Chain -->
       <path
         d="M20 12 C 26 6 32 12 26 18"
         fill="none"
@@ -912,12 +912,12 @@ defmodule RetroHexChatWeb.Icons.Communication do
         stroke-width="1"
         stroke-linecap="round"
       />
-      
-    <!-- Connect Line -->
+
+      <!-- Connect Line -->
       <path d="M12 20 L 20 12" fill="none" stroke="#000080" stroke-width="3" stroke-linecap="round" />
       <path d="M12 20 L 20 12" fill="none" stroke="#fff" stroke-width="1" stroke-linecap="round" />
-      
-    <!-- Left Chain -->
+
+      <!-- Left Chain -->
       <path
         d="M14 20 C 8 26 2 20 8 14"
         fill="none"
@@ -1111,12 +1111,12 @@ defmodule RetroHexChatWeb.Icons.Communication do
       <!-- Background bubble -->
       <rect x="2" y="3" width="10" height="7" fill="#000080" />
       <rect x="4" y="10" width="2" height="2" fill="#000080" />
-      
-    <!-- Foreground bubble -->
+
+      <!-- Foreground bubble -->
       <rect x="3" y="4" width="8" height="5" fill="#87CEEB" />
       <rect x="5" y="9" width="1" height="1" fill="#87CEEB" />
-      
-    <!-- Arrow -->
+
+      <!-- Arrow -->
       <path d="M7 6h3V5h1V4h1v2h1v2h-1v2h-1V9h-1V8H7V6z" fill="#FFD700" />
     </svg>
     """

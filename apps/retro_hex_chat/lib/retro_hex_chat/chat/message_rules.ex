@@ -119,7 +119,7 @@ defmodule RetroHexChat.Chat.MessageRules do
 
     message
     |> cast(attrs, scope_fields ++ @content_fields ++ extra_fields, empty_values: [])
-    |> validate_required(scope_fields ++ [:content_format])
+    |> validate_present(scope_fields ++ [:content_format])
     |> validate_content_required()
     |> validate_scope_lengths(rules.scope)
     |> validate_inclusion(:content_format, @content_formats)
@@ -154,9 +154,25 @@ defmodule RetroHexChat.Chat.MessageRules do
         _absent -> add_error(changeset, :content, "can't be blank")
       end
     else
-      validate_required(changeset, [:content])
+      validate_present(changeset, [:content])
     end
   end
+
+  # `validate_required/2`, with blank text counted as missing. The cast keeps
+  # `""` (`empty_values: []`) so a deliberately empty message can be told from
+  # an omitted one, and `validate_required` treats as missing only what the
+  # cast's empty values name — so it would let a blank address or text through.
+  defp validate_present(changeset, fields) do
+    Enum.reduce(fields, changeset, fn field, acc ->
+      if blank?(get_field(acc, field)),
+        do: add_error(acc, field, "can't be blank", validation: :required),
+        else: acc
+    end)
+  end
+
+  defp blank?(nil), do: true
+  defp blank?(value) when is_binary(value), do: String.trim(value) == ""
+  defp blank?(_value), do: false
 
   # Derived here rather than accepted from the caller: `plain_content` is what
   # search, previews and the clipboard read, so a caller able to set it could

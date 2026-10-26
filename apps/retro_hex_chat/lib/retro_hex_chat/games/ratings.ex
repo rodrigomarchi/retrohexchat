@@ -105,7 +105,7 @@ defmodule RetroHexChat.Games.Ratings do
     |> Repo.update!()
   end
 
-  @type record :: %{
+  @type rating :: %{
           rating: integer(),
           rank: pos_integer(),
           players: pos_integer(),
@@ -120,7 +120,7 @@ defmodule RetroHexChat.Games.Ratings do
   rated in it (players with the same rating share a place) and their wins,
   losses and draws. Nil until their first rated match.
   """
-  @spec of(String.t(), integer()) :: record() | nil
+  @spec of(String.t(), integer()) :: rating() | nil
   def of(base_id, player_id) do
     case Repo.get_by(GameRating, base_id: base_id, player_id: player_id) do
       nil ->

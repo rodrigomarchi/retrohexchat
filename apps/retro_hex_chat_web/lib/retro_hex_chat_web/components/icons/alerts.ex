@@ -15,8 +15,8 @@ defmodule RetroHexChatWeb.Icons.Alerts do
       <rect x="7" y="3" width="18" height="24" rx="1" fill="#000" transform="translate(1,1)" />
       <!-- Document Base -->
       <rect x="7" y="3" width="18" height="24" rx="1" fill="#fff" stroke="#000" stroke-width="1.5" />
-      
-    <!-- Blue Lines -->
+
+      <!-- Blue Lines -->
       <line x1="10" y1="9" x2="22" y2="9" stroke="#000080" stroke-width="1.5" stroke-linecap="round" />
       <line
         x1="10"
@@ -36,14 +36,14 @@ defmodule RetroHexChatWeb.Icons.Alerts do
         stroke-width="1.5"
         stroke-linecap="round"
       />
-      
-    <!-- Alert Badge Shadow -->
+
+      <!-- Alert Badge Shadow -->
       <circle cx="21" cy="20" r="7" fill="#000" transform="translate(1,1)" />
       <!-- Alert Badge -->
       <circle cx="21" cy="20" r="7" fill="#FFD700" stroke="#000" stroke-width="1.5" />
       <circle cx="19.5" cy="18.5" r="3" fill="none" stroke="#fff" stroke-width="1.5" opacity="0.6" />
-      
-    <!-- Exclamation point -->
+
+      <!-- Exclamation point -->
       <path d="M21 15 L 21 21 L 21 21" stroke="#000" stroke-width="2" stroke-linecap="round" />
       <circle cx="21" cy="24" r="1" fill="#000" />
     </svg>
@@ -58,11 +58,11 @@ defmodule RetroHexChatWeb.Icons.Alerts do
     <svg class={@class} viewBox="0 0 32 32" aria-hidden="true">
       <!-- Shadow -->
       <circle cx="17" cy="17" r="13" fill="#000" />
-      
-    <!-- Base Base (Navy) -->
+
+      <!-- Base Base (Navy) -->
       <circle cx="16" cy="16" r="13" fill="#000080" stroke="#000" stroke-width="1.5" />
-      
-    <!-- Bevel Highlights -->
+
+      <!-- Bevel Highlights -->
       <path
         d="M16 4 A 12 12 0 0 0 4 16"
         fill="none"
@@ -71,8 +71,8 @@ defmodule RetroHexChatWeb.Icons.Alerts do
         opacity="0.6"
         stroke-linecap="round"
       />
-      
-    <!-- Question Mark -->
+
+      <!-- Question Mark -->
       <path
         d="M11 11.5 A 5 5 0 1 1 20 12 C 20 15 16 16 16 19"
         fill="none"
@@ -93,16 +93,16 @@ defmodule RetroHexChatWeb.Icons.Alerts do
     <svg class={@class} viewBox="0 0 16 16" shape-rendering="crispEdges" aria-hidden="true">
       <!-- Shadow -->
       <polygon points="7,3 12,3 15,6 15,11 12,14 7,14 4,11 4,6" fill="#000" />
-      
-    <!-- Octagon base -->
+
+      <!-- Octagon base -->
       <polygon
         points="6,2 11,2 14,5 14,10 11,13 6,13 3,10 3,5"
         fill="#fff"
         stroke="#000"
         stroke-width="1"
       />
-      
-    <!-- 'i' symbol (Navy blue inside white box) -->
+
+      <!-- 'i' symbol (Navy blue inside white box) -->
       <rect x="8" y="4" width="2" height="2" fill="#000080" />
       <rect x="7" y="7" width="3" height="4" fill="#000080" />
       <line x1="6" y1="11" x2="11" y2="11" stroke="#000080" stroke-width="1" />
@@ -118,8 +118,8 @@ defmodule RetroHexChatWeb.Icons.Alerts do
     <svg class={@class} viewBox="0 0 16 16" shape-rendering="crispEdges" aria-hidden="true">
       <!-- Shadow -->
       <polygon points="6,5 12,5 12,10 14,12 14,13 4,13 4,12 6,10" fill="#000" />
-      
-    <!-- Bell shape (Gold) -->
+
+      <!-- Bell shape (Gold) -->
       <rect x="7" y="2" width="2" height="2" fill="#FFD700" stroke="#000" stroke-width="1" />
       <polygon
         points="5,4 11,4 11,9 13,11 13,12 3,12 3,11 5,9"
@@ -127,11 +127,11 @@ defmodule RetroHexChatWeb.Icons.Alerts do
         stroke="#000"
         stroke-width="1"
       />
-      
-    <!-- Highlight -->
+
+      <!-- Highlight -->
       <polyline points="5,5 10,5" stroke="#fff" stroke-width="1" />
-      
-    <!-- Ringer (Silver) -->
+
+      <!-- Ringer (Silver) -->
       <rect x="6" y="13" width="4" height="2" fill="#C0C0C0" stroke="#000" stroke-width="1" />
     </svg>
     """
@@ -146,8 +146,8 @@ defmodule RetroHexChatWeb.Icons.Alerts do
       <!-- Lines (White for dark bg) -->
       <rect x="2" y="3" width="12" height="2" fill="#fff" />
       <rect x="2" y="6" width="12" height="2" fill="#fff" />
-      
-    <!-- Highlighting block (Gold/Yellow) -->
+
+      <!-- Highlighting block (Gold/Yellow) -->
       <rect x="1" y="9" width="14" height="4" fill="#FFD700" stroke="#000" stroke-width="1" />
       <!-- Line inside highlight (Black for contrast) -->
       <rect x="2" y="10" width="12" height="2" fill="#000" />
@@ -165,13 +165,13 @@ defmodule RetroHexChatWeb.Icons.Alerts do
     <svg class={@class} viewBox="0 0 16 16" shape-rendering="crispEdges" aria-hidden="true">
       <!-- Shadow -->
       <polygon points="8,3 2,14 14,14" fill="#000" />
-      
-    <!-- Warning Triangle (Gold) -->
+
+      <!-- Warning Triangle (Gold) -->
       <polygon points="8,2 2,13 14,13" fill="#FFD700" />
       <polygon points="8,3 3,12 13,12" fill="none" stroke="#fff" stroke-width="1" />
       <polygon points="8,2 2,13 14,13" fill="none" stroke="#000" stroke-width="1" />
-      
-    <!-- ! marker (Black inside gold triangle) -->
+
+      <!-- ! marker (Black inside gold triangle) -->
       <rect x="7" y="6" width="2" height="3" fill="#000" />
       <rect x="7" y="10" width="2" height="2" fill="#000" />
     </svg>
@@ -208,8 +208,8 @@ defmodule RetroHexChatWeb.Icons.Alerts do
         stroke="#000080"
         stroke-width="1"
       />
-      
-    <!-- 'i' symbol (Navy blue) -->
+
+      <!-- 'i' symbol (Navy blue) -->
       <rect x="7" y="4" width="2" height="2" fill="#000080" />
       <rect x="6" y="7" width="3" height="4" fill="#000080" />
       <rect x="5" y="11" width="5" height="1" fill="#000080" />
@@ -271,12 +271,12 @@ defmodule RetroHexChatWeb.Icons.Alerts do
       <path d="M14 3 v -1 a 2 2 0 0 1 4 0 v 1" fill="none" stroke="#000" stroke-width="1.5" />
       <!-- Ringer -->
       <path d="M12 25 a 4 4 0 0 0 8 0 z" fill="#FFD700" stroke="#000" stroke-width="1.5" />
-      
-    <!-- Highlight -->
+
+      <!-- Highlight -->
       <path d="M11 13 v 6 l -3 3" fill="none" stroke="#fff" stroke-width="1.5" />
       <path d="M16 4 C 11 4 9 9 9 14" fill="none" stroke="#fff" stroke-width="1.5" />
-      
-    <!-- Red Alert -->
+
+      <!-- Red Alert -->
       <circle cx="26" cy="8" r="6" fill="#000" />
       <circle cx="26" cy="8" r="5" fill="#FF0000" />
       <text
@@ -306,8 +306,8 @@ defmodule RetroHexChatWeb.Icons.Alerts do
       <circle cx="15" cy="15" r="14" fill="#fff" />
       <!-- Main fill -->
       <circle cx="16" cy="16" r="13" fill="#000080" />
-      
-    <!-- Question Mark Shadow -->
+
+      <!-- Question Mark Shadow -->
       <path
         d="M11 11.5 A 5 5 0 1 1 20 12 C 20 15 16 16 16 19"
         fill="none"
@@ -316,8 +316,8 @@ defmodule RetroHexChatWeb.Icons.Alerts do
         stroke-linecap="round"
       />
       <circle cx="16" cy="24" r="2.5" fill="#000" />
-      
-    <!-- Question Mark -->
+
+      <!-- Question Mark -->
       <path
         d="M11 11.5 A 5 5 0 1 1 20 12 C 20 15 16 16 16 19"
         fill="none"
@@ -343,8 +343,8 @@ defmodule RetroHexChatWeb.Icons.Alerts do
         transform="translate(1,1)"
         stroke-linejoin="round"
       />
-      
-    <!-- Lightbulb Glass (Yellow/Gold) -->
+
+      <!-- Lightbulb Glass (Yellow/Gold) -->
       <path
         d="M16 2 C 11 2 7 6 7 11 C 7 14 9 17 11 19 V 23 H 21 V 19 C 23 17 25 14 25 11 C 25 6 21 2 16 2 z"
         fill="#FFD700"
@@ -352,8 +352,8 @@ defmodule RetroHexChatWeb.Icons.Alerts do
         stroke-width="1.5"
         stroke-linejoin="round"
       />
-      
-    <!-- Yellow glow lines -->
+
+      <!-- Yellow glow lines -->
       <path
         d="M16 4 C 12 4 9 8 9 11"
         fill="none"
@@ -362,8 +362,8 @@ defmodule RetroHexChatWeb.Icons.Alerts do
         opacity="0.6"
         stroke-linecap="round"
       />
-      
-    <!-- Filament -->
+
+      <!-- Filament -->
       <path
         d="M13 18 v -4 l 2 -2 l 2 2 v 4"
         fill="none"
@@ -371,13 +371,13 @@ defmodule RetroHexChatWeb.Icons.Alerts do
         stroke-width="2"
         stroke-linejoin="round"
       />
-      
-    <!-- Screw Base -->
+
+      <!-- Screw Base -->
       <rect x="11" y="23" width="10" height="3" fill="#C0C0C0" stroke="#000" stroke-width="1.5" />
       <rect x="12" y="26" width="8" height="3" fill="#808080" stroke="#000" stroke-width="1.5" />
       <circle cx="16" cy="29" r="2" fill="#000" />
-      
-    <!-- Shine paths (optional outer rays) -->
+
+      <!-- Shine paths (optional outer rays) -->
       <line x1="16" y1="0" x2="16" y2="3" stroke="#FFD700" stroke-width="2" stroke-linecap="round" />
       <line x1="3" y1="11" x2="6" y2="11" stroke="#FFD700" stroke-width="2" stroke-linecap="round" />
       <line x1="26" y1="11" x2="29" y2="11" stroke="#FFD700" stroke-width="2" stroke-linecap="round" />
@@ -393,11 +393,11 @@ defmodule RetroHexChatWeb.Icons.Alerts do
     <svg class={@class} viewBox="0 0 16 16" shape-rendering="crispEdges" aria-hidden="true">
       <!-- Shadow -->
       <circle cx="9" cy="9" r="6" fill="#000" />
-      
-    <!-- Clock face -->
+
+      <!-- Clock face -->
       <circle cx="8" cy="8" r="6" fill="#fff" stroke="#000" stroke-width="1" />
-      
-    <!-- Hands pointing away-from-desk o'clock -->
+
+      <!-- Hands pointing away-from-desk o'clock -->
       <rect x="7" y="4" width="1" height="5" fill="#000080" />
       <rect x="7" y="8" width="4" height="1" fill="#000080" />
     </svg>

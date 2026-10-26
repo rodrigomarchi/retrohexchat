@@ -31,8 +31,8 @@ defmodule RetroHexChatWeb.Components.Diagrams.P2pFlow do
       <!-- Outset borders -->
       <polyline points="61,45 61,11 359,11" fill="none" stroke="#fff" stroke-width="1" />
       <polyline points="359,12 359,45 61,45" fill="none" stroke="#808080" stroke-width="1" />
-      
-    <!-- Number block (Inset) -->
+
+      <!-- Number block (Inset) -->
       <rect x="64" y="14" width="20" height="28" fill="#000080" stroke="#000" stroke-width="1" />
       <polyline points="65,41 65,15 83,15" fill="none" stroke="#555" stroke-width="1" />
       <polyline points="83,16 83,41 65,41" fill="none" stroke="#fff" stroke-width="1" />
@@ -47,8 +47,8 @@ defmodule RetroHexChatWeb.Components.Diagrams.P2pFlow do
       >
         1
       </text>
-      
-    <!-- Text -->
+
+      <!-- Text -->
       <text
         x="210"
         y="32"
@@ -60,15 +60,15 @@ defmodule RetroHexChatWeb.Components.Diagrams.P2pFlow do
       >
         {dgettext("diagrams", "Alice wants to call Bob")}
       </text>
-      
-    <!-- Arrow 1->2 -->
+
+      <!-- Arrow 1->2 -->
       <rect x="208" y="47" width="4" height="25" fill="#000" />
       <path d="M202 68 h16 l-8 8 z" fill="#000" />
       <!-- Arrow Highlights -->
       <rect x="208" y="47" width="2" height="23" fill="#808080" />
       <path d="M204 68 h10 l-5 5 z" fill="#808080" />
-      
-    <!-- Step 2: Server signaling -->
+
+      <!-- Step 2: Server signaling -->
       <rect x="64" y="78" width="300" height="36" fill="#000" />
       <rect x="60" y="74" width="300" height="36" fill="#c0c0c0" stroke="#000" stroke-width="1" />
       <polyline points="61,109 61,75 359,75" fill="none" stroke="#fff" stroke-width="1" />
@@ -99,14 +99,14 @@ defmodule RetroHexChatWeb.Components.Diagrams.P2pFlow do
       >
         {dgettext("diagrams", "Server exchanges signaling (SDP/ICE)")}
       </text>
-      
-    <!-- Arrow 2->3 -->
+
+      <!-- Arrow 2->3 -->
       <rect x="208" y="111" width="4" height="25" fill="#000" />
       <path d="M202 132 h16 l-8 8 z" fill="#000" />
       <rect x="208" y="111" width="2" height="23" fill="#808080" />
       <path d="M204 132 h10 l-5 5 z" fill="#808080" />
-      
-    <!-- Step 3: P2P Connection established -->
+
+      <!-- Step 3: P2P Connection established -->
       <rect x="64" y="142" width="300" height="36" fill="#000" />
       <rect x="60" y="138" width="300" height="36" fill="#c0c0c0" stroke="#000" stroke-width="1" />
       <polyline points="61,173 61,139 359,139" fill="none" stroke="#fff" stroke-width="1" />
@@ -137,14 +137,14 @@ defmodule RetroHexChatWeb.Components.Diagrams.P2pFlow do
       >
         {dgettext("diagrams", "Direct P2P connection established")}
       </text>
-      
-    <!-- Arrow 3->4 (Accent color to show success) -->
+
+      <!-- Arrow 3->4 (Accent color to show success) -->
       <rect x="208" y="175" width="4" height="25" fill="#000" />
       <path d="M202 196 h16 l-8 8 z" fill="#000" />
       <rect x="208" y="175" width="2" height="23" fill="#00ff00" />
       <path d="M204 196 h10 l-5 5 z" fill="#00ff00" />
-      
-    <!-- Step 4: Direct Data Flow -->
+
+      <!-- Step 4: Direct Data Flow -->
       <rect x="64" y="206" width="300" height="36" fill="#000" />
       <rect x="60" y="202" width="300" height="36" fill="#c0c0c0" stroke="#000" stroke-width="1" />
       <!-- Highlight box to make step 4 pop out more -->
@@ -177,8 +177,8 @@ defmodule RetroHexChatWeb.Components.Diagrams.P2pFlow do
       >
         {dgettext("diagrams", "Voice, video, and files flow directly")}
       </text>
-      
-    <!-- Alice & Bob nodes -->
+
+      <!-- Alice & Bob nodes -->
       <!-- Alice Shadow -->
       <rect x="84" y="262" width="70" height="32" fill="#000" />
       <!-- Alice Box -->
@@ -208,8 +208,8 @@ defmodule RetroHexChatWeb.Components.Diagrams.P2pFlow do
       >
         {dgettext("diagrams", "Connected")}
       </text>
-      
-    <!-- Bob Shadow -->
+
+      <!-- Bob Shadow -->
       <rect x="274" y="262" width="70" height="32" fill="#000" />
       <!-- Bob Box -->
       <rect x="270" y="258" width="70" height="32" fill="#dfdfdf" stroke="#000" stroke-width="1" />
@@ -238,8 +238,8 @@ defmodule RetroHexChatWeb.Components.Diagrams.P2pFlow do
       >
         {dgettext("diagrams", "Connected")}
       </text>
-      
-    <!-- Bidirectional Data Flow Arrow -->
+
+      <!-- Bidirectional Data Flow Arrow -->
       <rect x="150" y="270" width="120" height="8" fill="#000" />
       <rect x="156" y="270" width="108" height="6" fill="#00ff00" />
       <!-- Left head -->
@@ -248,8 +248,8 @@ defmodule RetroHexChatWeb.Components.Diagrams.P2pFlow do
       <!-- Right head -->
       <path d="M264 266 l8 8 l-8 8 z" fill="#000" />
       <path d="M264 268 l6 6 l-6 6 z" fill="#00ff00" />
-      
-    <!-- Description (Server out of the loop) -->
+
+      <!-- Description (Server out of the loop) -->
       <!-- Tooltip style bounding box -->
       <rect x="135" y="300" width="150" height="18" fill="#ffffcc" stroke="#000" stroke-width="1" />
       <polyline points="135,317 135,301 284,301" fill="none" stroke="#fff" stroke-width="1" />

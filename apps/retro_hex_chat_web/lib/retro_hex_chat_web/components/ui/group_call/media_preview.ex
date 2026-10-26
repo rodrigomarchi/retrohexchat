@@ -78,8 +78,7 @@ defmodule RetroHexChatWeb.Components.UI.GroupCall.MediaPreview do
           playsinline
           class="h-full max-h-[150px] w-full object-contain"
           data-testid="group-call-prejoin-video"
-        >
-        </video>
+        ></video>
         <div
           id="group-call-prejoin-empty"
           phx-update="ignore"

@@ -134,8 +134,7 @@ defmodule RetroHexChatWeb.Components.UI.Lobby.GamePanel do
             width="640"
             height="480"
             class="aspect-[4/3] h-auto max-h-full w-full max-w-[720px] bg-black"
-          >
-          </canvas>
+          ></canvas>
         </div>
       </div>
 

@@ -33,6 +33,7 @@ defmodule RetroHexChat.Channels.Schemas.ChannelEvent do
     field :announcement_message_id, :integer
     field :cancelled_at, :utc_datetime_usec
     field :reminded_at, :utc_datetime_usec
+    field :attendee_count, :integer, virtual: true, default: 0
 
     has_many :attendees, ChannelEventAttendee, foreign_key: :event_id
 

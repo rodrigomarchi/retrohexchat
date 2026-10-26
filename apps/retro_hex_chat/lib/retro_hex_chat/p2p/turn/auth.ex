@@ -1,6 +1,5 @@
 defmodule RetroHexChat.P2P.Turn.Auth do
   @moduledoc false
-  require Logger
 
   alias ExSTUN.Message
   alias ExSTUN.Message.Attribute.{MessageIntegrity, Nonce, Realm, Username}

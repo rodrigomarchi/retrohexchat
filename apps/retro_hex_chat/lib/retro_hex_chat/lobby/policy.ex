@@ -219,15 +219,11 @@ defmodule RetroHexChat.Lobby.Policy do
     |> then(&(&1 in @session_blocking_ignore_types))
   end
 
-  defp entry_blocks_lobby?(_entry), do: false
-
   defp entry_expired?(entry, now) when is_map(entry) do
     entry
     |> entry_value(:expires_at)
     |> expired_at?(now)
   end
-
-  defp entry_expired?(_entry, _now), do: false
 
   defp entry_value(entry, key), do: Map.get(entry, Atom.to_string(key)) || Map.get(entry, key)
 

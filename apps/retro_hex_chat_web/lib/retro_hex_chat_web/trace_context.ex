@@ -16,8 +16,6 @@ defmodule RetroHexChatWeb.TraceContext do
   lives here rather than in either caller.
   """
 
-  require OpenTelemetry.Tracer
-
   alias OpenTelemetry.Span
   alias OpenTelemetry.Tracer
 

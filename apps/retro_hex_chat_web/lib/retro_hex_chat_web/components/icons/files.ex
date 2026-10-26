@@ -13,8 +13,8 @@ defmodule RetroHexChatWeb.Icons.Files do
     <svg class={@class} viewBox="0 0 32 32" aria-hidden="true">
       <!-- Shadow projection -->
       <path d="M4 10 L 15 10 L 18 13 L 29 13 L 29 27 L 4 27 z" fill="#000" transform="translate(1,1)" />
-      
-    <!-- Back flap of folder -->
+
+      <!-- Back flap of folder -->
       <path
         d="M3 9 L 14 9 L 17 12 L 28 12 L 28 25 L 3 25 z"
         fill="#FFC000"
@@ -22,14 +22,14 @@ defmodule RetroHexChatWeb.Icons.Files do
         stroke-width="1.5"
         stroke-linejoin="round"
       />
-      
-    <!-- Folder Tab Detail -->
+
+      <!-- Folder Tab Detail -->
       <rect x="4" y="9" width="10" height="2" fill="#FFC000" stroke="#000" stroke-width="1" />
-      
-    <!-- Inside darkness -->
+
+      <!-- Inside darkness -->
       <rect x="4" y="11" width="24" height="2" fill="#806b00" />
-      
-    <!-- Front flap of folder -->
+
+      <!-- Front flap of folder -->
       <rect
         x="3"
         y="13"
@@ -41,8 +41,8 @@ defmodule RetroHexChatWeb.Icons.Files do
         stroke-width="1.5"
         stroke-linejoin="round"
       />
-      
-    <!-- 3D Bevel Highlight (Top/Left) -->
+
+      <!-- 3D Bevel Highlight (Top/Left) -->
       <path
         d="M4 25 L 4 14 L 28 14"
         fill="none"
@@ -69,8 +69,8 @@ defmodule RetroHexChatWeb.Icons.Files do
     <svg class={@class} viewBox="0 0 32 32" aria-hidden="true">
       <!-- Shadow -->
       <path d="M7 4 L 21 4 L 27 10 L 27 28 L 7 28 z" fill="#000" transform="translate(1,1)" />
-      
-    <!-- Main Paper Body -->
+
+      <!-- Main Paper Body -->
       <path
         d="M6 3 L 20 3 L 26 9 L 26 27 L 6 27 z"
         fill="#fff"
@@ -78,8 +78,8 @@ defmodule RetroHexChatWeb.Icons.Files do
         stroke-width="1.5"
         stroke-linejoin="round"
       />
-      
-    <!-- Paper Fold Detail (Top Right) -->
+
+      <!-- Paper Fold Detail (Top Right) -->
       <path
         d="M20 3 L 20 9 L 26 9"
         fill="#dfdfdf"
@@ -88,12 +88,12 @@ defmodule RetroHexChatWeb.Icons.Files do
         stroke-linejoin="round"
       />
       <path d="M21 8 L 22 8" stroke="#fff" stroke-width="1.5" />
-      
-    <!-- Blue Header with Bevel -->
+
+      <!-- Blue Header with Bevel -->
       <rect x="7" y="4" width="13" height="4" fill="#000080" />
       <line x1="7" y1="4" x2="19" y2="4" stroke="#fff" stroke-width="1.5" />
-      
-    <!-- Line rules with pixel precision spacing -->
+
+      <!-- Line rules with pixel precision spacing -->
       <line x1="9" y1="13" x2="23" y2="13" stroke="#000080" stroke-width="1.5" stroke-linecap="round" />
       <line x1="9" y1="17" x2="23" y2="17" stroke="#000080" stroke-width="1.5" stroke-linecap="round" />
       <line x1="9" y1="21" x2="23" y2="21" stroke="#000080" stroke-width="1.5" stroke-linecap="round" />
@@ -110,8 +110,8 @@ defmodule RetroHexChatWeb.Icons.Files do
     <svg class={@class} viewBox="0 0 32 32" aria-hidden="true">
       <!-- Shadow projection -->
       <path d="M10 9 L 11 29 L 25 29 L 25 9 z" fill="#000" transform="translate(1,1)" />
-      
-    <!-- Main Bin Body -->
+
+      <!-- Main Bin Body -->
       <path
         d="M9 8 L 23 8 L 21 28 L 11 28 z"
         fill="#C0C0C0"
@@ -119,23 +119,23 @@ defmodule RetroHexChatWeb.Icons.Files do
         stroke-width="1.5"
         stroke-linejoin="round"
       />
-      
-    <!-- Body Highlights (Left light, Right shadow) -->
+
+      <!-- Body Highlights (Left light, Right shadow) -->
       <line x1="11.5" y1="10" x2="13" y2="27" stroke="#fff" stroke-width="1.5" stroke-linecap="round" />
-      
-    <!-- Internal Ribs -->
+
+      <!-- Internal Ribs -->
       <path d="M 14.5 12 L 15.5 25" stroke="#fff" stroke-width="1.5" stroke-linecap="round" />
       <path d="M 17.5 12 L 17.5 25" stroke="#fff" stroke-width="1.5" stroke-linecap="round" />
       <path d="M 20.5 12 L 19.5 25" stroke="#fff" stroke-width="1.5" stroke-linecap="round" />
-      
-    <!-- Bin Lid Shadow -->
+
+      <!-- Bin Lid Shadow -->
       <rect x="8" y="7" width="16" height="3" rx="1" fill="#000" transform="translate(1,1)" />
       <!-- Bin Lid Main -->
       <rect x="7" y="6" width="18" height="3" rx="1" fill="#C0C0C0" stroke="#000" stroke-width="1.5" />
       <!-- Bin Lid Highlight -->
       <line x1="8" y1="7" x2="24" y2="7" stroke="#fff" stroke-width="1" stroke-linecap="round" />
-      
-    <!-- Lid Handle -->
+
+      <!-- Lid Handle -->
       <path d="M13 6 v -2 h 6 v 2" fill="none" stroke="#000" stroke-width="2" />
       <path d="M13.5 6 v -1.5 h 5 v 1.5" fill="none" stroke="#C0C0C0" stroke-width="1" />
     </svg>
@@ -150,19 +150,19 @@ defmodule RetroHexChatWeb.Icons.Files do
     <svg class={@class} viewBox="0 0 32 32" aria-hidden="true">
       <!-- Shadow -->
       <circle cx="17" cy="17" r="12" fill="#000" />
-      
-    <!-- Disc base -->
+
+      <!-- Disc base -->
       <circle cx="16" cy="16" r="12" fill="#fff" stroke="#000" stroke-width="1.5" />
-      
-    <!-- Disc Hole -->
+
+      <!-- Disc Hole -->
       <circle cx="16" cy="16" r="4" fill="#C0C0C0" stroke="#000" stroke-width="1.5" />
       <circle cx="16" cy="16" r="1.5" fill="#fff" />
-      
-    <!-- Disc Reflection -->
+
+      <!-- Disc Reflection -->
       <path d="M10 10 L 13 13" stroke="#dfdfdf" stroke-width="2" />
       <path d="M22 10 L 19 13" stroke="#dfdfdf" stroke-width="2" />
-      
-    <!-- Update Arrow (Green) -->
+
+      <!-- Update Arrow (Green) -->
       <path
         d="M7 23 A 9 9 0 0 0 25 23"
         fill="none"
@@ -205,12 +205,12 @@ defmodule RetroHexChatWeb.Icons.Files do
         stroke-width="1.5"
         stroke-linejoin="round"
       />
-      
-    <!-- Speed lines -->
+
+      <!-- Speed lines -->
       <line x1="14" y1="20" x2="26" y2="20" stroke="#000080" stroke-width="2" stroke-linecap="round" />
       <line x1="10" y1="16" x2="22" y2="16" stroke="#000080" stroke-width="2" stroke-linecap="round" />
-      
-    <!-- Arrow Send -->
+
+      <!-- Arrow Send -->
       <path
         d="M22 17 l 4 3 l -4 3"
         fill="none"
@@ -239,8 +239,8 @@ defmodule RetroHexChatWeb.Icons.Files do
     <svg class={@class} viewBox="0 0 32 32" aria-hidden="true">
       <!-- Shadow -->
       <path d="M2 9 L 14 9 L 17 12 L 28 12 L 28 25 L 2 25 z" fill="#000" transform="translate(1,1)" />
-      
-    <!-- Back flap of folder -->
+
+      <!-- Back flap of folder -->
       <path
         d="M2 9 L 14 9 L 17 12 L 28 12 L 28 25 L 2 25 z"
         fill="#FFC000"
@@ -248,8 +248,8 @@ defmodule RetroHexChatWeb.Icons.Files do
         stroke-width="1.5"
         stroke-linejoin="round"
       />
-      
-    <!-- File inside -->
+
+      <!-- File inside -->
       <rect
         x="6"
         y="5"
@@ -262,8 +262,8 @@ defmodule RetroHexChatWeb.Icons.Files do
       />
       <line x1="9" y1="9" x2="19" y2="9" stroke="#000" stroke-width="1" />
       <line x1="9" y1="12" x2="19" y2="12" stroke="#000" stroke-width="1" />
-      
-    <!-- Front flap of folder (open wider) -->
+
+      <!-- Front flap of folder (open wider) -->
       <path
         d="M2 15 L 28 15 L 30 29 L 4 29 z"
         fill="#FFD700"
@@ -344,13 +344,13 @@ defmodule RetroHexChatWeb.Icons.Files do
       <rect x="6" y="4" width="16" height="20" rx="1" fill="#000" transform="translate(2,2)" />
       <!-- Back document -->
       <rect x="6" y="4" width="16" height="20" rx="1" fill="#dfdfdf" stroke="#000" stroke-width="1.5" />
-      
-    <!-- Shadow of front document -->
+
+      <!-- Shadow of front document -->
       <rect x="12" y="10" width="16" height="20" rx="1" fill="#000" transform="translate(1,1)" />
       <!-- Front document -->
       <rect x="12" y="10" width="16" height="20" rx="1" fill="#fff" stroke="#000" stroke-width="1.5" />
-      
-    <!-- Front doc lines -->
+
+      <!-- Front doc lines -->
       <line
         x1="15"
         y1="16"

@@ -99,8 +99,7 @@ defmodule RetroHexChatWeb.Components.UI.Select do
       <span
         class="select-value pointer-events-none before:content-[attr(data-content)]"
         data-content={@builder.label || @builder.value || @builder.placeholder}
-      >
-      </span>
+      ></span>
     </button>
     """
   end

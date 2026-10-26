@@ -39,7 +39,6 @@ defmodule RetroHexChatWeb.Components.UI.GroupCall.ParticipantQualityBadge do
   defp quality_class(:fair), do: "bg-warning-bg text-foreground"
   defp quality_class(:poor), do: "bg-destructive text-destructive-foreground"
   defp quality_class(:reconnecting), do: "bg-muted text-muted-foreground"
-  defp quality_class(:unknown), do: "bg-muted text-muted-foreground"
 
   defp quality_title(nil), do: dgettext("group_call", "Quality unknown")
 

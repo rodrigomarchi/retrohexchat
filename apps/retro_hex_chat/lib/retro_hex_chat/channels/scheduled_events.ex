@@ -276,7 +276,7 @@ defmodule RetroHexChat.Channels.ScheduledEvents do
       starts_at: event.starts_at,
       surface_hint: event.surface_hint,
       cancelled?: not is_nil(event.cancelled_at),
-      attendee_count: Map.get(event, :attendee_count) || 0
+      attendee_count: event.attendee_count
     }
   end
 
@@ -295,7 +295,7 @@ defmodule RetroHexChat.Channels.ScheduledEvents do
       |> Repo.all()
       |> Map.new()
 
-    Enum.map(events, &Map.put(&1, :attendee_count, Map.get(counts, &1.id, 0)))
+    Enum.map(events, &%{&1 | attendee_count: Map.get(counts, &1.id, 0)})
   end
 
   @spec future?(term()) :: :ok | {:error, String.t()}

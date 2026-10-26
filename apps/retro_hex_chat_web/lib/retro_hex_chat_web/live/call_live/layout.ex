@@ -191,8 +191,6 @@ defmodule RetroHexChatWeb.CallLive.Layout do
     |> NickFlag.payload()
   end
 
-  defp participant_flag(_call, _participant), do: nil
-
   @doc "A screen share that starts takes the focus."
   @spec maybe_focus_screen_share(map(), integer() | nil, boolean()) :: map()
   def maybe_focus_screen_share(call, participant_id, true) when is_integer(participant_id) do

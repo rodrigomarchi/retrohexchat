@@ -130,7 +130,6 @@ defmodule RetroHexChat.Calls.Events do
     end
   end
 
-  defp normalize_tag(value) when is_boolean(value), do: to_string(value)
   defp normalize_tag(value) when is_integer(value), do: Integer.to_string(value)
   defp normalize_tag(_value), do: "unknown"
 end

@@ -97,8 +97,7 @@ defmodule RetroHexChatWeb.Components.UI.GroupCall.VideoSurface do
             playsinline
             class="group-call-video-tile__video"
             data-testid="group-call-local-video"
-          >
-          </video>
+          ></video>
 
           <div
             class="group-call-video-tile__empty icon-on-dark"

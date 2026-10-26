@@ -28,8 +28,8 @@ defmodule RetroHexChatWeb.Components.Diagrams.P2pArchitecture do
       <rect x="20" y="20" width="140" height="80" fill="#c0c0c0" stroke="#000" stroke-width="1" />
       <polyline points="21,99 21,21 159,21" fill="none" stroke="#fff" stroke-width="1" />
       <polyline points="159,22 159,99 21,99" fill="none" stroke="#808080" stroke-width="1" />
-      
-    <!-- Title bar -->
+
+      <!-- Title bar -->
       <rect x="23" y="23" width="134" height="20" fill="#000080" />
       <text
         x="90"
@@ -50,16 +50,16 @@ defmodule RetroHexChatWeb.Components.Diagrams.P2pArchitecture do
       <text x="90" y="80" text-anchor="middle" fill="#000" font-size="28">
         {dgettext("diagrams", "👨")}
       </text>
-      
-    <!-- Bob window -->
+
+      <!-- Bob window -->
       <!-- Shadow -->
       <rect x="364" y="24" width="140" height="80" fill="#000" />
       <!-- Base -->
       <rect x="360" y="20" width="140" height="80" fill="#c0c0c0" stroke="#000" stroke-width="1" />
       <polyline points="361,99 361,21 499,21" fill="none" stroke="#fff" stroke-width="1" />
       <polyline points="499,22 499,99 361,99" fill="none" stroke="#808080" stroke-width="1" />
-      
-    <!-- Title bar -->
+
+      <!-- Title bar -->
       <rect x="363" y="23" width="134" height="20" fill="#000080" />
       <text
         x="430"
@@ -80,8 +80,8 @@ defmodule RetroHexChatWeb.Components.Diagrams.P2pArchitecture do
       <text x="430" y="80" text-anchor="middle" fill="#000" font-size="28">
         {dgettext("diagrams", "👩")}
       </text>
-      
-    <!-- P2P arrow (bidirectional thick line) -->
+
+      <!-- P2P arrow (bidirectional thick line) -->
       <rect x="160" y="52" width="200" height="12" fill="#000" />
       <rect x="168" y="52" width="184" height="10" fill="#008080" />
       <!-- Left head -->
@@ -115,8 +115,8 @@ defmodule RetroHexChatWeb.Components.Diagrams.P2pArchitecture do
       >
         {dgettext("diagrams", "voice / video / files")}
       </text>
-      
-    <!-- Dashed lines to server -->
+
+      <!-- Dashed lines to server -->
       <line
         x1="90"
         y1="110"
@@ -153,16 +153,16 @@ defmodule RetroHexChatWeb.Components.Diagrams.P2pArchitecture do
         stroke-width="2"
         stroke-dasharray="6,4"
       />
-      
-    <!-- Server window -->
+
+      <!-- Server window -->
       <!-- Shadow -->
       <rect x="199" y="196" width="122" height="60" fill="#000" />
       <!-- Base -->
       <rect x="195" y="192" width="122" height="60" fill="#c0c0c0" stroke="#000" stroke-width="1" />
       <polyline points="196,251 196,193 316,193" fill="none" stroke="#fff" stroke-width="1" />
       <polyline points="316,194 316,251 196,251" fill="none" stroke="#808080" stroke-width="1" />
-      
-    <!-- Title bar (disabled style for server since it's just bg signaling) -->
+
+      <!-- Title bar (disabled style for server since it's just bg signaling) -->
       <rect x="198" y="195" width="116" height="18" fill="#808080" />
       <text
         x="256"

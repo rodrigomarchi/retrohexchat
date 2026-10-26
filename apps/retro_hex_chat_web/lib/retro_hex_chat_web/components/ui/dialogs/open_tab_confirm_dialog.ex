@@ -105,7 +105,7 @@ defmodule RetroHexChatWeb.Components.UI.OpenTabConfirmDialog do
 
   @spec show_url?(map() | nil) :: boolean()
   defp show_url?(target) do
-    kind(target) == :external and presence(target && Map.get(target, :host)) != nil
+    kind(target) == :external and presence(Map.get(target, :host)) != nil
   end
 
   @spec title(map() | nil) :: String.t()

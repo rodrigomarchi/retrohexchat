@@ -664,7 +664,7 @@ defmodule RetroHexChatWeb.Components.UI.StartMenuApp do
     default: false,
     doc: "an address of the one desktop: followed as a LiveView patch, never a page load"
 
-  attr :rest, :global
+  attr :rest, :global, include: ~w(target rel)
 
   defp link_item(assigns) do
     ~H"""

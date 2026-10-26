@@ -15,8 +15,8 @@ defmodule RetroHexChatWeb.Icons.Symbols do
       <circle cx="17" cy="17" r="13" fill="#000" />
       <!-- Base Circle (Gold) -->
       <circle cx="16" cy="16" r="13" fill="#FFD700" stroke="#000" stroke-width="1.5" />
-      
-    <!-- Bevel -->
+
+      <!-- Bevel -->
       <path
         d="M16 4 A 12 12 0 0 0 4 16"
         fill="none"
@@ -54,8 +54,8 @@ defmodule RetroHexChatWeb.Icons.Symbols do
         transform="translate(1,1)"
         stroke-linejoin="round"
       />
-      
-    <!-- Base Star (Gold) -->
+
+      <!-- Base Star (Gold) -->
       <polygon
         points="16,4 20,12 29,13 22,19 24,28 16,23 8,28 10,19 3,13 12,12"
         fill="#FFD700"
@@ -99,17 +99,17 @@ defmodule RetroHexChatWeb.Icons.Symbols do
         stroke-width="2"
         stroke-linecap="round"
       />
-      
-    <!-- Body Shadow -->
+
+      <!-- Body Shadow -->
       <ellipse cx="17" cy="19" rx="7" ry="9" fill="#000" />
       <circle cx="17" cy="11" r="4" fill="#000" />
-      
-    <!-- Body -->
+
+      <!-- Body -->
       <ellipse cx="16" cy="18" rx="7" ry="9" fill="#008000" stroke="#000" stroke-width="1.5" />
       <!-- Head -->
       <circle cx="16" cy="10" r="4" fill="#008000" stroke="#000" stroke-width="1.5" />
-      
-    <!-- Details -->
+
+      <!-- Details -->
       <line x1="16" y1="13" x2="16" y2="25" stroke="#000" stroke-width="1.5" />
       <!-- Bevel Highlight -->
       <path
@@ -319,16 +319,16 @@ defmodule RetroHexChatWeb.Icons.Symbols do
         stroke-linejoin="round"
         transform="translate(1,1)"
       />
-      
-    <!-- Central Pole -->
+
+      <!-- Central Pole -->
       <rect x="14" y="4" width="4" height="20" fill="#C0C0C0" stroke="#000" stroke-width="1.5" />
       <path d="M15 5 v 18" stroke="#fff" stroke-width="1" opacity="0.6" />
-      
-    <!-- Top Beam -->
+
+      <!-- Top Beam -->
       <line x1="6" y1="10" x2="26" y2="10" stroke="#000" stroke-width="3" stroke-linecap="round" />
       <line x1="6" y1="10" x2="26" y2="10" stroke="#808080" stroke-width="1" stroke-linecap="round" />
-      
-    <!-- Left Pan -->
+
+      <!-- Left Pan -->
       <path
         d="M6 14 c 0 6 6 6 6 6"
         fill="none"
@@ -343,8 +343,8 @@ defmodule RetroHexChatWeb.Icons.Symbols do
         stroke-width="1.5"
         stroke-linejoin="round"
       />
-      
-    <!-- Right Pan -->
+
+      <!-- Right Pan -->
       <path
         d="M20 14 c 0 6 6 6 6 6"
         fill="none"
@@ -359,8 +359,8 @@ defmodule RetroHexChatWeb.Icons.Symbols do
         stroke-width="1.5"
         stroke-linejoin="round"
       />
-      
-    <!-- Base -->
+
+      <!-- Base -->
       <rect
         x="10"
         y="24"
@@ -384,12 +384,12 @@ defmodule RetroHexChatWeb.Icons.Symbols do
     <svg class={@class} viewBox="0 0 32 32" aria-hidden="true">
       <!-- Shadow -->
       <circle cx="17" cy="17" r="13" fill="#000" />
-      
-    <!-- Base Circle (White) -->
+
+      <!-- Base Circle (White) -->
       <circle cx="16" cy="16" r="13" fill="#fff" stroke="#000" stroke-width="1.5" />
       <circle cx="16" cy="16" r="13" fill="none" stroke="#000080" stroke-width="2" />
-      
-    <!-- Bevel Highlights -->
+
+      <!-- Bevel Highlights -->
       <path
         d="M16 4 A 12 12 0 0 0 4 16"
         fill="none"
@@ -406,12 +406,12 @@ defmodule RetroHexChatWeb.Icons.Symbols do
         opacity="0.2"
         stroke-linecap="round"
       />
-      
-    <!-- Clock Hands -->
+
+      <!-- Clock Hands -->
       <line x1="16" y1="8" x2="16" y2="16" stroke="#000" stroke-width="2" stroke-linecap="round" />
       <line x1="16" y1="16" x2="22" y2="20" stroke="#000" stroke-width="2" stroke-linecap="round" />
-      
-    <!-- Center Pin -->
+
+      <!-- Center Pin -->
       <circle cx="16" cy="16" r="1.5" fill="#FFD700" stroke="#000" stroke-width="1" />
     </svg>
     """
@@ -438,8 +438,8 @@ defmodule RetroHexChatWeb.Icons.Symbols do
     <svg class={@class} viewBox="0 0 16 16" shape-rendering="crispEdges" aria-hidden="true">
       <!-- Shadow -->
       <polygon points="5,3 11,3 14,6 14,12 11,15 5,15 2,12 2,6" fill="#000" />
-      
-    <!-- Outer Octagon Shape (Ignore symbol background) -->
+
+      <!-- Outer Octagon Shape (Ignore symbol background) -->
       <polygon
         points="5,2 11,2 14,5 14,11 11,14 5,14 2,11 2,5"
         fill="#808080"
@@ -447,8 +447,8 @@ defmodule RetroHexChatWeb.Icons.Symbols do
         stroke-width="1"
       />
       <polyline points="5,3 11,3" stroke="#fff" stroke-width="1" />
-      
-    <!-- Inner Shape and diagonal block -->
+
+      <!-- Inner Shape and diagonal block -->
       <polygon
         points="6,4 10,4 12,6 12,10 10,12 6,12 4,10 4,6"
         fill="none"
@@ -469,8 +469,8 @@ defmodule RetroHexChatWeb.Icons.Symbols do
     <svg class={@class} viewBox="0 0 16 16" shape-rendering="crispEdges" aria-hidden="true">
       <!-- Shadow -->
       <polygon points="6,3 12,3 15,6 15,12 12,15 6,15 3,12 3,6" fill="#000" />
-      
-    <!-- Red Octagon -->
+
+      <!-- Red Octagon -->
       <polygon
         points="5,2 11,2 14,5 14,11 11,14 5,14 2,11 2,5"
         fill="#FF0000"
@@ -479,8 +479,8 @@ defmodule RetroHexChatWeb.Icons.Symbols do
       />
       <!-- Red Highlight -->
       <polygon points="5,3 11,3 13,5 5,5" fill="#FF6B6B" />
-      
-    <!-- ! marker (White) -->
+
+      <!-- ! marker (White) -->
       <rect x="7" y="4" width="2" height="5" fill="#fff" />
       <rect x="7" y="11" width="2" height="2" fill="#fff" />
     </svg>
@@ -587,8 +587,8 @@ defmodule RetroHexChatWeb.Icons.Symbols do
         transform="translate(1,1)"
         stroke-linejoin="round"
       />
-      
-    <!-- Base Tag (Gold) -->
+
+      <!-- Base Tag (Gold) -->
       <path
         d="M4 2 h 13 L 28 13 L 17 24 L 4 11 z"
         fill="#FFD700"
@@ -596,8 +596,8 @@ defmodule RetroHexChatWeb.Icons.Symbols do
         stroke-width="1.5"
         stroke-linejoin="round"
       />
-      
-    <!-- Highlight -->
+
+      <!-- Highlight -->
       <path
         d="M5 3 h 11 L 27 13 L 17 23 L 5 11 z"
         fill="none"
@@ -606,8 +606,8 @@ defmodule RetroHexChatWeb.Icons.Symbols do
         opacity="0.6"
         stroke-linejoin="round"
       />
-      
-    <!-- String -->
+
+      <!-- String -->
       <path
         d="M10 9 C 15 4 24 6 28 2"
         fill="none"
@@ -616,8 +616,8 @@ defmodule RetroHexChatWeb.Icons.Symbols do
         stroke-linecap="round"
       />
       <path d="M9.5 8.5 C 14.5 3.5 23.5 5.5 28.5 2" fill="none" stroke="#555" stroke-width="1" />
-      
-    <!-- Hole -->
+
+      <!-- Hole -->
       <circle cx="9" cy="8" r="3" fill="#000080" stroke="#000" stroke-width="1" />
       <circle cx="9" cy="8" r="1.5" fill="#fff" stroke="#000" stroke-width="1.5" />
     </svg>
