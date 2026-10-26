@@ -21,27 +21,20 @@ defmodule RetroHexChatWeb.ChatLive.Components.SavedDialog do
   alias RetroHexChatWeb.PaginatedList
   alias RetroHexChatWeb.Params
 
-  use RetroHexChatWeb.ChatLive.Components.DialogIsland, id: "saved-dialog"
   @page_size 25
 
-  @impl true
-  @spec mount(Phoenix.LiveView.Socket.t()) :: {:ok, Phoenix.LiveView.Socket.t()}
-  def mount(socket) do
-    {:ok,
-     socket
-     |> assign(
-       id: @id,
-       nickname: nil,
-       timezone: "Etc/UTC",
-       nick_color_fn: nil,
-       loaded?: false,
-       first_row: nil
-     )
-     |> PaginatedList.init(:saved,
-       page_size: @page_size,
-       dom_id: &"saved-#{&1.id}"
-     )}
-  end
+  use RetroHexChatWeb.ChatLive.Components.DialogIsland,
+    id: "saved-dialog",
+    initial: %{
+      nickname: nil,
+      timezone: "Etc/UTC",
+      nick_color_fn: nil,
+      loaded?: false,
+      first_row: nil
+    },
+    lists: [
+      saved: [page_size: @page_size, dom_id: &"saved-#{&1.id}"]
+    ]
 
   @impl true
   @spec update(map(), Phoenix.LiveView.Socket.t()) :: {:ok, Phoenix.LiveView.Socket.t()}

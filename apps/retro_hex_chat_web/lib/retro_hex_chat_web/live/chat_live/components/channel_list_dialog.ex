@@ -19,18 +19,8 @@ defmodule RetroHexChatWeb.ChatLive.Components.ChannelListDialog do
 
   use RetroHexChatWeb.ChatLive.Components.DialogIsland,
     id: "channel-list-dialog",
-    initial: %{channels: [], loading: false, search: "", category: nil}
-
-  alias RetroHexChatWeb.ChatLive.Components.DialogIsland
-  @impl true
-  @spec update(map(), Phoenix.LiveView.Socket.t()) :: {:ok, Phoenix.LiveView.Socket.t()}
-  def update(assigns, socket),
-    do:
-      {:ok,
-       assign(
-         socket,
-         DialogIsland.known(socket, assigns, [:channels, :loading, :search, :category])
-       )}
+    initial: %{channels: [], loading: false, search: "", category: nil},
+    known: [:channels, :loading, :search, :category]
 
   @impl true
   @spec render(map()) :: Phoenix.LiveView.Rendered.t()

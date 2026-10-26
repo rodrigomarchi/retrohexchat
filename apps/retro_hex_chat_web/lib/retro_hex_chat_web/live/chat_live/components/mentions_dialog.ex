@@ -23,30 +23,20 @@ defmodule RetroHexChatWeb.ChatLive.Components.MentionsDialog do
   alias RetroHexChatWeb.ChatLive.Helpers.NickFlags
   alias RetroHexChatWeb.PaginatedList
 
-  use RetroHexChatWeb.ChatLive.Components.DialogIsland,
-    id: "mentions-dialog",
-    load: &load_first_page/1
-
   @page_size 30
 
-  @impl true
-  @spec mount(Phoenix.LiveView.Socket.t()) :: {:ok, Phoenix.LiveView.Socket.t()}
-  def mount(socket) do
-    {:ok,
-     socket
-     |> assign(
-       id: @id,
-       session: nil,
-       timezone: "Etc/UTC",
-       nick_color_fn: nil,
-       loaded?: false,
-       first_row: nil
-     )
-     |> PaginatedList.init(:mentions,
-       page_size: @page_size,
-       dom_id: &"mention-#{&1.id}"
-     )}
-  end
+  use RetroHexChatWeb.ChatLive.Components.DialogIsland,
+    id: "mentions-dialog",
+    load: &load_first_page/1,
+    initial: %{
+      timezone: "Etc/UTC",
+      nick_color_fn: nil,
+      loaded?: false,
+      first_row: nil
+    },
+    lists: [
+      mentions: [page_size: @page_size, dom_id: &"mention-#{&1.id}"]
+    ]
 
   @impl true
   @spec handle_event(String.t(), map(), Phoenix.LiveView.Socket.t()) ::

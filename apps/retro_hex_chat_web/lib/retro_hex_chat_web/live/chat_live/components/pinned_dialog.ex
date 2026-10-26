@@ -21,28 +21,21 @@ defmodule RetroHexChatWeb.ChatLive.Components.PinnedDialog do
   alias RetroHexChatWeb.ChatLive.Helpers.NickFlags
   alias RetroHexChatWeb.PaginatedList
 
-  use RetroHexChatWeb.ChatLive.Components.DialogIsland, id: "pinned-dialog"
   @page_size 25
 
-  @impl true
-  @spec mount(Phoenix.LiveView.Socket.t()) :: {:ok, Phoenix.LiveView.Socket.t()}
-  def mount(socket) do
-    {:ok,
-     socket
-     |> assign(
-       id: @id,
-       channel: nil,
-       can_unpin: false,
-       timezone: "Etc/UTC",
-       nick_color_fn: nil,
-       loaded?: false,
-       first_row: nil
-     )
-     |> PaginatedList.init(:pins,
-       page_size: @page_size,
-       dom_id: &"pin-#{&1.message_id}"
-     )}
-  end
+  use RetroHexChatWeb.ChatLive.Components.DialogIsland,
+    id: "pinned-dialog",
+    initial: %{
+      channel: nil,
+      can_unpin: false,
+      timezone: "Etc/UTC",
+      nick_color_fn: nil,
+      loaded?: false,
+      first_row: nil
+    },
+    lists: [
+      pins: [page_size: @page_size, dom_id: &"pin-#{&1.message_id}"]
+    ]
 
   @impl true
   @spec update(map(), Phoenix.LiveView.Socket.t()) :: {:ok, Phoenix.LiveView.Socket.t()}

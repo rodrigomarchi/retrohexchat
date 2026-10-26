@@ -26,28 +26,21 @@ defmodule RetroHexChatWeb.ChatLive.Components.EventsDialog do
   alias RetroHexChatWeb.App.ChatHelpers
   alias RetroHexChatWeb.PaginatedList
 
-  use RetroHexChatWeb.ChatLive.Components.DialogIsland, id: "events-dialog"
   @page_size 25
 
-  @impl true
-  @spec mount(Phoenix.LiveView.Socket.t()) :: {:ok, Phoenix.LiveView.Socket.t()}
-  def mount(socket) do
-    {:ok,
-     socket
-     |> assign(
-       id: @id,
-       channel: nil,
-       viewer: nil,
-       timezone: "Etc/UTC",
-       can_schedule: false,
-       loaded?: false,
-       first_row: nil
-     )
-     |> PaginatedList.init(:events,
-       page_size: @page_size,
-       dom_id: &"events-row-#{&1.card.event_id}"
-     )}
-  end
+  use RetroHexChatWeb.ChatLive.Components.DialogIsland,
+    id: "events-dialog",
+    initial: %{
+      channel: nil,
+      viewer: nil,
+      timezone: "Etc/UTC",
+      can_schedule: false,
+      loaded?: false,
+      first_row: nil
+    },
+    lists: [
+      events: [page_size: @page_size, dom_id: &"events-row-#{&1.card.event_id}"]
+    ]
 
   @impl true
   @spec update(map(), Phoenix.LiveView.Socket.t()) :: {:ok, Phoenix.LiveView.Socket.t()}

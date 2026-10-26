@@ -19,10 +19,25 @@ defmodule RetroHexChatWeb.ChatLive.Components.TrustedTerminalsDialog do
   alias RetroHexChatWeb.PaginatedList
   alias RetroHexChatWeb.Params
 
-  use RetroHexChatWeb.ChatLive.Components.DialogIsland, id: "trusted-terminals-dialog"
-
   @sessions_page_size 25
   @events_page_size 20
+
+  use RetroHexChatWeb.ChatLive.Components.DialogIsland,
+    id: "trusted-terminals-dialog",
+    initial: %{
+      timezone: "Etc/UTC",
+      trusted_device_id: nil,
+      chat_device_session_ref: nil,
+      devices: [],
+      loaded?: false,
+      active_tab: "devices",
+      status_kind: nil,
+      status_message: nil
+    },
+    lists: [
+      sessions: [page_size: @sessions_page_size, dom_id: &"trusted-session-row-#{&1.id}"],
+      events: [page_size: @events_page_size, dom_id: &"trusted-event-row-#{&1.id}"]
+    ]
 
   # The inputs a snapshot is taken from. A refresh is only free-standing while
   # the lists are plain lists; with streams, refreshing on every parent render
@@ -30,33 +45,6 @@ defmodule RetroHexChatWeb.ChatLive.Components.TrustedTerminalsDialog do
   # a change of identity, and after a mutation — never as a side effect of the
   # parent re-rendering.
   @identity [:session, :trusted_device_id, :chat_device_session_ref]
-
-  @impl true
-  @spec mount(Phoenix.LiveView.Socket.t()) :: {:ok, Phoenix.LiveView.Socket.t()}
-  def mount(socket) do
-    {:ok,
-     socket
-     |> assign(
-       id: @id,
-       session: nil,
-       timezone: "Etc/UTC",
-       trusted_device_id: nil,
-       chat_device_session_ref: nil,
-       devices: [],
-       loaded?: false,
-       active_tab: "devices",
-       status_kind: nil,
-       status_message: nil
-     )
-     |> PaginatedList.init(:sessions,
-       page_size: @sessions_page_size,
-       dom_id: &"trusted-session-row-#{&1.id}"
-     )
-     |> PaginatedList.init(:events,
-       page_size: @events_page_size,
-       dom_id: &"trusted-event-row-#{&1.id}"
-     )}
-  end
 
   @impl true
   @spec update(map(), Phoenix.LiveView.Socket.t()) :: {:ok, Phoenix.LiveView.Socket.t()}

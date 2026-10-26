@@ -12,13 +12,8 @@ defmodule RetroHexChatWeb.ChatLive.Components.UserModesDialog do
 
   use RetroHexChatWeb.ChatLive.Components.DialogIsland,
     id: "user-modes-dialog",
-    initial: %{wallops_enabled: false}
-
-  alias RetroHexChatWeb.ChatLive.Components.DialogIsland
-  @impl true
-  @spec update(map(), Phoenix.LiveView.Socket.t()) :: {:ok, Phoenix.LiveView.Socket.t()}
-  def update(assigns, socket),
-    do: {:ok, assign(socket, DialogIsland.known(socket, assigns, [:wallops_enabled]))}
+    initial: %{wallops_enabled: false},
+    known: [:wallops_enabled]
 
   @impl true
   @spec render(map()) :: Phoenix.LiveView.Rendered.t()

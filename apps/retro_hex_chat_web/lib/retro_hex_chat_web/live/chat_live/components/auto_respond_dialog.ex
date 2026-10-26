@@ -21,7 +21,6 @@ defmodule RetroHexChatWeb.ChatLive.Components.AutoRespondDialog do
   import RetroHexChatWeb.Components.UI.AutoRespondDialog
 
   alias RetroHexChat.Chat.AutoRespondRules
-  alias RetroHexChatWeb.ChatLive.Components.DialogIsland
 
   @default_trigger "on_join"
 
@@ -35,15 +34,8 @@ defmodule RetroHexChatWeb.ChatLive.Components.AutoRespondDialog do
       draft_channel: "",
       draft_command: "",
       error: nil
-    }
-
-  @impl true
-  @spec update(map(), Phoenix.LiveView.Socket.t()) :: {:ok, Phoenix.LiveView.Socket.t()}
-  def update(%{action: action} = assigns, socket) do
-    {:ok, socket |> DialogIsland.take(assigns, [:rules]) |> dispatch(action)}
-  end
-
-  def update(assigns, socket), do: {:ok, DialogIsland.take(socket, assigns, [:rules])}
+    },
+    take: [:rules]
 
   @impl true
   @spec handle_event(String.t(), map(), Phoenix.LiveView.Socket.t()) ::

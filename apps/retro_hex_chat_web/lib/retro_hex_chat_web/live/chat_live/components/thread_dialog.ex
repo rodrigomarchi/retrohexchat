@@ -29,31 +29,24 @@ defmodule RetroHexChatWeb.ChatLive.Components.ThreadDialog do
   alias RetroHexChatWeb.ChatLive.StreamItem
   alias RetroHexChatWeb.PaginatedList
 
-  use RetroHexChatWeb.ChatLive.Components.DialogIsland, id: "thread-dialog"
   @page_size 25
 
-  @impl true
-  @spec mount(Phoenix.LiveView.Socket.t()) :: {:ok, Phoenix.LiveView.Socket.t()}
-  def mount(socket) do
-    {:ok,
-     socket
-     |> assign(
-       id: @id,
-       root_id: nil,
-       kind: :message,
-       root: nil,
-       nick_color_fn: nil,
-       timestamp_format: :time,
-       timezone: "Etc/UTC",
-       strip_formatting: false,
-       viewer: nil,
-       loaded_root_id: :none
-     )
-     |> PaginatedList.init(:replies,
-       page_size: @page_size,
-       dom_id: &"thread-reply-#{&1.id}"
-     )}
-  end
+  use RetroHexChatWeb.ChatLive.Components.DialogIsland,
+    id: "thread-dialog",
+    initial: %{
+      root_id: nil,
+      kind: :message,
+      root: nil,
+      nick_color_fn: nil,
+      timestamp_format: :time,
+      timezone: "Etc/UTC",
+      strip_formatting: false,
+      viewer: nil,
+      loaded_root_id: :none
+    },
+    lists: [
+      replies: [page_size: @page_size, dom_id: &"thread-reply-#{&1.id}"]
+    ]
 
   @impl true
   @spec update(map(), Phoenix.LiveView.Socket.t()) :: {:ok, Phoenix.LiveView.Socket.t()}

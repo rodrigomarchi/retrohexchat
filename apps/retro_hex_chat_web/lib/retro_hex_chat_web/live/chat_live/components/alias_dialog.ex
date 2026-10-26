@@ -22,7 +22,6 @@ defmodule RetroHexChatWeb.ChatLive.Components.AliasDialog do
   import RetroHexChatWeb.Components.UI.AliasDialog
 
   alias RetroHexChat.Chat.AliasList
-  alias RetroHexChatWeb.ChatLive.Components.DialogIsland
 
   use RetroHexChatWeb.ChatLive.Components.DialogIsland,
     id: "alias-dialog",
@@ -34,15 +33,8 @@ defmodule RetroHexChatWeb.ChatLive.Components.AliasDialog do
       draft_expansion: "",
       warning: nil,
       error: nil
-    }
-
-  @impl true
-  @spec update(map(), Phoenix.LiveView.Socket.t()) :: {:ok, Phoenix.LiveView.Socket.t()}
-  def update(%{action: action} = assigns, socket) do
-    {:ok, socket |> DialogIsland.take(assigns, [:aliases]) |> dispatch(action)}
-  end
-
-  def update(assigns, socket), do: {:ok, DialogIsland.take(socket, assigns, [:aliases])}
+    },
+    take: [:aliases]
 
   @impl true
   @spec handle_event(String.t(), map(), Phoenix.LiveView.Socket.t()) ::

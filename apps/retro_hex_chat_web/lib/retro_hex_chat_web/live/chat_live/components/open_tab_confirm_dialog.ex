@@ -27,13 +27,8 @@ defmodule RetroHexChatWeb.ChatLive.Components.OpenTabConfirmDialog do
 
   use RetroHexChatWeb.ChatLive.Components.DialogIsland,
     id: "open-tab-confirm-dialog",
-    initial: %{target: nil}
-
-  @impl true
-  @spec update(map(), Phoenix.LiveView.Socket.t()) :: {:ok, Phoenix.LiveView.Socket.t()}
-  def update(%{action: {:set, target}}, socket), do: {:ok, assign(socket, target: target)}
-  def update(%{action: :close}, socket), do: {:ok, assign(socket, target: nil)}
-  def update(_assigns, socket), do: {:ok, socket}
+    initial: %{target: nil},
+    holds: {:target, :set}
 
   @impl true
   @spec handle_event(String.t(), map(), Phoenix.LiveView.Socket.t()) ::

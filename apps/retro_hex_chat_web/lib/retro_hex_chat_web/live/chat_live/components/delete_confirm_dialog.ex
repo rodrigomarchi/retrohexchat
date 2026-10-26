@@ -14,15 +14,8 @@ defmodule RetroHexChatWeb.ChatLive.Components.DeleteConfirmDialog do
 
   use RetroHexChatWeb.ChatLive.Components.DialogIsland,
     id: "delete-confirm-dialog",
-    initial: %{message_id: nil}
-
-  @impl true
-  @spec update(map(), Phoenix.LiveView.Socket.t()) :: {:ok, Phoenix.LiveView.Socket.t()}
-  def update(%{action: {:open, message_id}}, socket),
-    do: {:ok, assign(socket, message_id: message_id)}
-
-  def update(%{action: :close}, socket), do: {:ok, assign(socket, message_id: nil)}
-  def update(_assigns, socket), do: {:ok, socket}
+    initial: %{message_id: nil},
+    holds: {:message_id, :open}
 
   @impl true
   @spec render(map()) :: Phoenix.LiveView.Rendered.t()
