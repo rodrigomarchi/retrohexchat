@@ -70,25 +70,13 @@ export function render(ctx, state, colors, frameCount, snowParticles) {
       drawWaitingScreen(ctx, colors, frameCount);
       return;
     case PHASE.COUNTDOWN:
-      drawBackground(ctx, state, colors, frameCount, snowParticles);
-      drawObstacles(ctx, state, colors);
-      drawGates(ctx, state, colors, frameCount);
-      drawItems(ctx, state, colors, frameCount);
-      drawSkiers(ctx, state, colors, frameCount);
-      drawAvalanche(ctx, state, colors, frameCount);
-      drawBlizzard(ctx, state, colors, frameCount);
+      drawRaceScene(ctx, state, colors, frameCount, snowParticles);
       drawHUD(ctx, state, colors);
       drawCountdown(ctx, state, colors, frameCount);
       drawCRT(ctx);
       return;
     case PHASE.RACING:
-      drawBackground(ctx, state, colors, frameCount, snowParticles);
-      drawObstacles(ctx, state, colors);
-      drawGates(ctx, state, colors, frameCount);
-      drawItems(ctx, state, colors, frameCount);
-      drawSkiers(ctx, state, colors, frameCount);
-      drawAvalanche(ctx, state, colors, frameCount);
-      drawBlizzard(ctx, state, colors, frameCount);
+      drawRaceScene(ctx, state, colors, frameCount, snowParticles);
       drawFinishLine(ctx, state, colors);
       drawHUD(ctx, state, colors);
       drawCRT(ctx);
@@ -110,6 +98,17 @@ export function render(ctx, state, colors, frameCount, snowParticles) {
     default:
       break;
   }
+}
+
+/** The course and everyone on it, under the HUD — the countdown's and the race's. */
+function drawRaceScene(ctx, state, colors, frameCount, snowParticles) {
+  drawBackground(ctx, state, colors, frameCount, snowParticles);
+  drawObstacles(ctx, state, colors);
+  drawGates(ctx, state, colors, frameCount);
+  drawItems(ctx, state, colors, frameCount);
+  drawSkiers(ctx, state, colors, frameCount);
+  drawAvalanche(ctx, state, colors, frameCount);
+  drawBlizzard(ctx, state, colors, frameCount);
 }
 
 // ── Background ─────────────────────────────────────────────────

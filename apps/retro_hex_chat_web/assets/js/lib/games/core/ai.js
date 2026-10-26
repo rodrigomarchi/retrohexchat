@@ -35,6 +35,36 @@ export function clamp(value, min, max) {
 }
 
 /**
+ * For an AI that moves across a field `width` wide and keeps `margin` from
+ * either side: the spot moved inside the margins, how risky a spot is for
+ * being near a side, and the occasional slip that moves its target sideways
+ * by `config.mistakePixels`, `config.mistakeOdds` of the time.
+ * @param {number} width
+ * @param {number} margin
+ */
+export function edgeAware(width, margin) {
+  const clampX = (x) => Math.max(margin, Math.min(width - margin, x));
+
+  return {
+    clampX,
+    edgeRisk(x) {
+      const left = Math.max(0, margin * 2 - x);
+      const right = Math.max(0, x - (width - margin * 2));
+      return (left + right) / 8;
+    },
+    maybeApplyMistake(target, config, rng) {
+      if (!target || rng() >= config.mistakeOdds) return target;
+      const direction = rng() < 0.5 ? -1 : 1;
+      return {
+        ...target,
+        x: clampX(target.x + direction * config.mistakePixels),
+        reason: "mistake",
+      };
+    },
+  };
+}
+
+/**
  * A coordinate folded back between two walls, as a ball bouncing off them
  * would be: where a straight-line projection lands once the bounces are in.
  * @param {number} value

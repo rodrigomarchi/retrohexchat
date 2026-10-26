@@ -4,6 +4,7 @@ import {
   aiRng,
   clamp,
   createReaction,
+  edgeAware,
   dutyFrame,
   interceptAt,
   normalizeAngle,
@@ -170,5 +171,43 @@ describe("angles", () => {
         },
       ),
     );
+  });
+});
+
+describe("edgeAware", () => {
+  const { clampX, edgeRisk, maybeApplyMistake } = edgeAware(400, 20);
+
+  it("keeps a spot inside the margins", () => {
+    expect(clampX(5)).toBe(20);
+    expect(clampX(200)).toBe(200);
+    expect(clampX(395)).toBe(380);
+  });
+
+  it("rates a spot riskier the deeper it is into twice the margin", () => {
+    expect(edgeRisk(200)).toBe(0);
+    expect(edgeRisk(40)).toBe(0);
+    expect(edgeRisk(24)).toBe(2);
+    expect(edgeRisk(376)).toBe(2);
+  });
+
+  it("slips sideways by the configured pixels when the odds say so", () => {
+    const config = { mistakeOdds: 0.5, mistakePixels: 30 };
+    const target = { x: 100, reason: "fish" };
+    const draws =
+      (...values) =>
+      () =>
+        values.shift();
+
+    expect(maybeApplyMistake(target, config, draws(0.9))).toBe(target);
+    expect(maybeApplyMistake(target, config, draws(0.1, 0.2))).toEqual({
+      x: 70,
+      reason: "mistake",
+    });
+    expect(maybeApplyMistake(target, config, draws(0.1, 0.8))).toEqual({
+      x: 130,
+      reason: "mistake",
+    });
+    expect(maybeApplyMistake({ x: 390 }, config, draws(0.1, 0.8)).x).toBe(380);
+    expect(maybeApplyMistake(null, config, draws(0.1))).toBeNull();
   });
 });

@@ -8,9 +8,10 @@
 import { normalizeSkiingAIDifficulty } from "./difficulty.js";
 import { GAME_MODE, PHASE } from "./protocol.js";
 import { CANVAS_W, SKIER_SCREEN_Y } from "./physics.js";
-import { aiRng } from "../core/ai.js";
+import { aiRng, edgeAware } from "../core/ai.js";
 
 const EDGE_MARGIN = 24;
+const { clampX, edgeRisk, maybeApplyMistake } = edgeAware(CANVAS_W, EDGE_MARGIN);
 const NEUTRAL_INPUTS = Object.freeze({ left: false, right: false });
 
 export const SKIING_AI_DIFFICULTIES = Object.freeze({
@@ -298,20 +299,4 @@ function playerState(state, player) {
 
 function skierWorldY(state) {
   return (state.scrollY || 0) + SKIER_SCREEN_Y;
-}
-
-function edgeRisk(x) {
-  const left = Math.max(0, EDGE_MARGIN * 2 - x);
-  const right = Math.max(0, x - (CANVAS_W - EDGE_MARGIN * 2));
-  return (left + right) / 8;
-}
-
-function maybeApplyMistake(target, config, rng) {
-  if (!target || rng() >= config.mistakeOdds) return target;
-  const direction = rng() < 0.5 ? -1 : 1;
-  return { ...target, x: clampX(target.x + direction * config.mistakePixels), reason: "mistake" };
-}
-
-function clampX(x) {
-  return Math.max(EDGE_MARGIN, Math.min(CANVAS_W - EDGE_MARGIN, x));
 }

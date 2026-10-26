@@ -6,6 +6,7 @@
 
 import { PHASE } from "./protocol.js";
 import { burst, stepParticles } from "../core/render.js";
+import { tallyRound } from "../core/rounds.js";
 
 // --- Canvas ---
 export const CANVAS_W = 640;
@@ -679,27 +680,17 @@ export function checkRoundEnd(state) {
  * @returns {object} Updated state
  */
 export function advanceRound(state, roundWinner) {
-  let rw1 = state.roundWins1;
-  let rw2 = state.roundWins2;
+  const { matchOver, ...roundWins } = tallyRound(state, roundWinner, ROUNDS_TO_WIN);
 
-  if (roundWinner === 1) rw1 += 1;
-  else if (roundWinner === 2) rw2 += 1;
-
-  // Check match winner (also end if max rounds reached to prevent infinite draws)
-  if (rw1 >= ROUNDS_TO_WIN || rw2 >= ROUNDS_TO_WIN || state.round >= MAX_ROUNDS) {
-    return {
-      ...state,
-      roundWins1: rw1,
-      roundWins2: rw2,
-      phase: PHASE.MATCH_OVER,
-    };
+  // The match also ends after MAX_ROUNDS, so draws cannot go on forever
+  if (matchOver || state.round >= MAX_ROUNDS) {
+    return { ...state, ...roundWins, phase: PHASE.MATCH_OVER };
   }
 
   // Next round
   return {
     ...state,
-    roundWins1: rw1,
-    roundWins2: rw2,
+    ...roundWins,
     round: state.round + 1,
     score1: 0,
     score2: 0,

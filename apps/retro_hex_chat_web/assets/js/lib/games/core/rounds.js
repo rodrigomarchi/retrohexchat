@@ -51,6 +51,21 @@ export function countdownState({ from, every, next }) {
 }
 
 /**
+ * The round wins after a round: one more for its winner (none for 0, a
+ * draw), and whether a side now has the `roundsToWin` the match needs.
+ * @param {{ roundWins1: number, roundWins2: number }} state
+ * @param {number} roundWinner - 1, 2, or 0 for a draw
+ * @param {number} roundsToWin
+ * @returns {{ roundWins1: number, roundWins2: number, matchOver: boolean }}
+ */
+export function tallyRound(state, roundWinner, roundsToWin) {
+  const roundWins1 = state.roundWins1 + (roundWinner === 1 ? 1 : 0);
+  const roundWins2 = state.roundWins2 + (roundWinner === 2 ? 1 : 0);
+  const matchOver = roundWins1 >= roundsToWin || roundWins2 >= roundsToWin;
+  return { roundWins1, roundWins2, matchOver };
+}
+
+/**
  * @param {object} options
  * @param {Record<string, number>} options.phases
  * @param {string} options.play - the phase a round is played in

@@ -1,6 +1,6 @@
 import { describe, it, expect, vi } from "vitest";
 import { createFlow } from "../../../../js/lib/games/core/flow.js";
-import { roundsFlow } from "../../../../js/lib/games/core/rounds.js";
+import { roundsFlow, tallyRound } from "../../../../js/lib/games/core/rounds.js";
 
 const PHASE = { WAITING: 0, COUNTDOWN: 1, SPAWNING: 2, FIGHTING: 3, ROUND_OVER: 4, MATCH_OVER: 5 };
 
@@ -137,5 +137,28 @@ describe("a match in rounds", () => {
       ]),
     );
     expect(spec).toMatchObject({ phases: PHASE, initial: "WAITING", begin: "COUNTDOWN" });
+  });
+});
+
+describe("tallyRound", () => {
+  it("counts the round for its winner and says when the match is won", () => {
+    expect(tallyRound({ roundWins1: 0, roundWins2: 1 }, 1, 2)).toEqual({
+      roundWins1: 1,
+      roundWins2: 1,
+      matchOver: false,
+    });
+    expect(tallyRound({ roundWins1: 1, roundWins2: 1 }, 2, 2)).toEqual({
+      roundWins1: 1,
+      roundWins2: 2,
+      matchOver: true,
+    });
+  });
+
+  it("counts a draw for nobody", () => {
+    expect(tallyRound({ roundWins1: 1, roundWins2: 1 }, 0, 2)).toEqual({
+      roundWins1: 1,
+      roundWins2: 1,
+      matchOver: false,
+    });
   });
 });

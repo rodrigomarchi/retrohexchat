@@ -5,6 +5,7 @@
  */
 
 import { PHASE, PUNCH_STATE } from "./protocol.js";
+import { tallyRound } from "../core/rounds.js";
 
 // --- Canvas ---
 export const CANVAS_W = 640;
@@ -364,15 +365,11 @@ export function checkRoundEnd(state) {
  * @returns {object}
  */
 export function advanceRound(state, roundWinner) {
-  const rw1 = state.roundWins1 + (roundWinner === 1 ? 1 : 0);
-  const rw2 = state.roundWins2 + (roundWinner === 2 ? 1 : 0);
-
-  const matchOver = rw1 >= ROUNDS_TO_WIN || rw2 >= ROUNDS_TO_WIN;
+  const { matchOver, ...roundWins } = tallyRound(state, roundWinner, ROUNDS_TO_WIN);
 
   return {
     ...state,
-    roundWins1: rw1,
-    roundWins2: rw2,
+    ...roundWins,
     phase: matchOver ? PHASE.MATCH_OVER : PHASE.ROUND_OVER,
     koPlayer: state.score1 >= KO_SCORE ? 2 : state.score2 >= KO_SCORE ? 1 : 0,
   };
