@@ -9,8 +9,6 @@ import {
   getColors,
   render,
   drawBlocks,
-  drawPaddle,
-  drawBall,
   drawScore,
   drawLives,
   drawFinished,
@@ -101,23 +99,6 @@ describe("breakout_renderer", () => {
       state.blocks = state.blocks.map((b) => ({ ...b, alive: false }));
       drawBlocks(ctx, state.blocks, colors, 0);
       expect(ctx.fillRect).not.toHaveBeenCalled();
-    });
-  });
-
-  describe("drawPaddle", () => {
-    it("draws paddle rectangle with glow", () => {
-      drawPaddle(ctx, 280, 448, colors.fg);
-      expect(ctx.fillRect).toHaveBeenCalled();
-      expect(ctx.strokeRect).toHaveBeenCalled();
-    });
-  });
-
-  describe("drawBall", () => {
-    it("draws ball with trail", () => {
-      const state = { ...createInitialState(), ballVX: 3, ballVY: 2, phase: PHASE.PLAYING };
-      drawBall(ctx, state, colors, 0);
-      // Trail (4) + main ball (1) + bright core (1) = 6 fillRect calls
-      expect(ctx.fillRect.mock.calls.length).toBeGreaterThanOrEqual(5);
     });
   });
 

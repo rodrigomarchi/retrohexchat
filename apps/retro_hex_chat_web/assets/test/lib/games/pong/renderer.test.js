@@ -5,8 +5,6 @@ import {
   getColors,
   render,
   drawCenterLine,
-  drawPaddle,
-  drawBall,
   drawScore,
   drawWinner,
   drawParticles,
@@ -90,23 +88,6 @@ describe("pong_renderer", () => {
       expect(ctx.setLineDash).toHaveBeenCalledWith([12, 8]);
       expect(ctx.setLineDash).toHaveBeenCalledWith([]);
       expect(ctx.globalAlpha).toBe(1.0);
-    });
-  });
-
-  describe("drawPaddle", () => {
-    it("draws paddle rectangle with glow", () => {
-      drawPaddle(ctx, 30, 200, colors.fg, colors);
-      expect(ctx.fillRect).toHaveBeenCalled();
-      expect(ctx.strokeRect).toHaveBeenCalled();
-    });
-  });
-
-  describe("drawBall", () => {
-    it("draws ball with trail when playing", () => {
-      const state = { ...createInitialState(), ballVX: 3, ballVY: 2, phase: PHASE.PLAYING };
-      drawBall(ctx, state, colors, 0);
-      // Trail (4) + main ball (1) + bright core (1) = 6 fillRect calls
-      expect(ctx.fillRect.mock.calls.length).toBeGreaterThanOrEqual(5);
     });
   });
 

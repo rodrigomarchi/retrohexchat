@@ -15,7 +15,7 @@ import {
   INITIAL_LIVES,
 } from "./physics.js";
 import { t } from "../../i18n.js";
-import { gameColor, readGameColors } from "../../game_colors.js";
+import { gameColor } from "../../game_colors.js";
 import {
   drawBackground,
   drawCountdown,
@@ -28,22 +28,9 @@ import {
   drawVignette,
   drawWaiting,
 } from "../core/render.js";
+import { drawNeonBall, drawNeonPaddle } from "../core/neon.js";
 
-/**
- * Read CSS custom properties from canvas computed style.
- * @param {HTMLCanvasElement} canvas
- * @returns {object} color palette
- */
-export function getColors(canvas) {
-  return readGameColors(canvas, {
-    bg: ["--game-bg-color", "0a0a1a"],
-    fg: ["--game-fg-color", "00ffcc"],
-    accent: ["--game-accent-color", "ff0066"],
-    muted: ["--game-muted-color", "1a3a4a"],
-    glow: ["--game-glow-color", "rgba(0,255,204,0.2)"],
-    warning: ["--game-warning-color", "ffaa00"],
-  });
-}
+export { neonColors as getColors } from "../core/neon.js";
 
 /**
  * Render a full frame of the game.
@@ -66,12 +53,19 @@ export function render(ctx, state, colors, time) {
   }
 
   // Bottom paddle (P1 — cyan)
-  drawPaddle(ctx, state.paddle1X, CANVAS_H - PADDLE_MARGIN - PADDLE_H, colors.fg);
+  drawNeonPaddle(
+    ctx,
+    state.paddle1X,
+    CANVAS_H - PADDLE_MARGIN - PADDLE_H,
+    PADDLE_W,
+    PADDLE_H,
+    colors.fg,
+  );
   // Top paddle (P2 — pink)
-  drawPaddle(ctx, state.paddle2X, PADDLE_MARGIN, colors.accent);
+  drawNeonPaddle(ctx, state.paddle2X, PADDLE_MARGIN, PADDLE_W, PADDLE_H, colors.accent);
 
   if (state.phase === PHASE.PLAYING || state.phase === PHASE.LIFE_LOST) {
-    drawBall(ctx, state, colors, time);
+    drawNeonBall(ctx, state, BALL_SIZE, colors.fg, time);
   }
 
   drawScore(ctx, state.score, colors);
@@ -122,61 +116,6 @@ export function drawBlocks(ctx, blocks, _colors, time) {
     ctx.globalAlpha = 1.0;
     ctx.shadowColor = "transparent";
   }
-}
-
-/**
- * Draw a horizontal paddle with neon glow effect.
- */
-export function drawPaddle(ctx, x, y, color) {
-  ctx.shadowColor = color;
-  ctx.shadowBlur = 15;
-  ctx.fillStyle = color;
-  ctx.fillRect(x, y, PADDLE_W, PADDLE_H);
-
-  // Inner highlight
-  ctx.shadowBlur = 0;
-  ctx.fillStyle = "rgba(255,255,255,0.3)";
-  ctx.fillRect(x + 2, y + 2, PADDLE_W - 4, PADDLE_H - 4);
-
-  // Border frame
-  ctx.strokeStyle = color;
-  ctx.lineWidth = 1;
-  ctx.strokeRect(x - 1, y - 1, PADDLE_W + 2, PADDLE_H + 2);
-
-  ctx.shadowColor = "transparent";
-}
-
-/**
- * Draw ball with glow bloom and motion trail.
- */
-export function drawBall(ctx, state, colors, time) {
-  const { ballX, ballY, ballVX, ballVY } = state;
-  const halfBall = BALL_SIZE / 2;
-
-  // Trail ghosts
-  const trailAlphas = [0.15, 0.1, 0.06, 0.03];
-  for (let i = trailAlphas.length - 1; i >= 0; i--) {
-    const factor = (i + 1) * 2;
-    const tx = ballX - ballVX * factor;
-    const ty = ballY - ballVY * factor;
-    ctx.globalAlpha = trailAlphas[i];
-    ctx.fillStyle = colors.fg;
-    ctx.fillRect(tx - halfBall, ty - halfBall, BALL_SIZE, BALL_SIZE);
-  }
-  ctx.globalAlpha = 1.0;
-
-  // Main ball with glow
-  ctx.shadowColor = colors.fg;
-  ctx.shadowBlur = 12 + 4 * Math.sin(time * 0.01);
-  ctx.fillStyle = colors.fg;
-  ctx.fillRect(ballX - halfBall, ballY - halfBall, BALL_SIZE, BALL_SIZE);
-
-  // Bright core
-  ctx.shadowBlur = 0;
-  ctx.fillStyle = gameColor("ffffff");
-  ctx.fillRect(ballX - halfBall + 2, ballY - halfBall + 2, BALL_SIZE - 4, BALL_SIZE - 4);
-
-  ctx.shadowColor = "transparent";
 }
 
 /**
