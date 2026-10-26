@@ -69,7 +69,7 @@ defmodule RetroHexChatWeb.Site.Pages.Index do
            body: &three_ways_to_be_together/1,
            status: [{:check, dgettext("landing", "Chat / Space / Conference")}]
          ),
-         Window.new("multiplayer-games", dgettext("landing", "Multiplayer Games"), :icon_joystick,
+         Window.new("multiplayer-games", dgettext("landing", "Retro Games"), :icon_joystick,
            width: 460,
            body: &multiplayer_games/1,
            assigns: %{

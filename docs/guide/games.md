@@ -96,8 +96,9 @@ and pick a new folder up by themselves.
 - **Sounds are data.** A new sound is an entry in `SOUNDS`; nothing builds oscillators by hand.
 - **End mid-match ends it as it stands.** `quit()` (the page's End button) reports the score
   the game holds now — `standing`, or for a two-player game the score `disconnectResult` reads
-  — with `ended_early: true`. The server decides the rest: a versus match goes to whoever
-  leads, a score or co-op game keeps its points. So `disconnectResult` must read the score at
+  — with `ended_early: true`. The server decides the rest: a versus match keeps who led but is
+  written unranked (no win, no announcement — a lead of one and End is no victory), a score or
+  co-op game keeps its points, ranked, best included. So `disconnectResult` must read the score at
   any moment of play; `test/lib/games/quit.test.js` holds every game to it.
 - **A definition uses the public surface** listed in `define_game.js`: `gameState`,
   `localInputs`, `remoteInputs`, `audio`, `broadcast()`, `invalidate()`, `updateOpponent()`,

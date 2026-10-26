@@ -164,11 +164,15 @@ defmodule RetroHexChat.Games.ResultsTest do
       refute GameResult.changeset(%GameResult{}, Map.put(base, :origin, "ai")).valid?
     end
 
-    test "ranks a match ended early as it stood, a best score included", %{ana: ana} do
+    # A versus match ended with End keeps who led, but is no win to rank:
+    # otherwise a lead of one point, then End, would be a win on hard.
+    test "writes a match ended early as it stood; only a points game's ranks", %{ana: ana} do
       early = fn p1, p2 -> %{"score" => %{"p1" => p1, "p2" => p2}, "ended_early" => true} end
 
-      assert {:ok, %{ranked: true, outcome: "p1"}} =
-               Results.record(ai_match(ana, "hex_pong", early.(4, 2)))
+      assert {:ok, %{ranked: false, outcome: "p1", channel_message_id: nil}} =
+               Results.record(ai_match(ana, "hex_pong", early.(1, 0), difficulty: "hard"))
+
+      assert Results.standings("hex_pong", origin: "ai", difficulty: "hard") == []
 
       assert {:ok, %{ranked: true, outcome: "none", personal_best: true}} =
                Results.record(ai_match(ana, "hex_raid", early.(700, 900)))

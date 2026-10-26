@@ -193,7 +193,12 @@ defmodule RetroHexChatWeb.Components.UI.GameResultCard do
 
   @doc "How the match ended, in a few words."
   @spec verdict(map()) :: String.t()
-  def verdict(%{ranked: false}), do: dgettext("games", "Somebody left before the end")
+  # Unranked: a match somebody left names nobody; one ended early with End
+  # keeps its score, but no winner.
+  def verdict(%{ranked: false, outcome: :none}),
+    do: dgettext("games", "Somebody left before the end")
+
+  def verdict(%{ranked: false}), do: dgettext("games", "Match over")
 
   def verdict(%{outcome: :p1} = card),
     do: dgettext("games", "Winner: %{name}", name: card.p1_nickname)

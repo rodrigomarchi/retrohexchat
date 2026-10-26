@@ -403,7 +403,7 @@ Grouped by section. Every row comes from an `@flow` line in the spec itself.
 | M38 | An admin gives a bot a language with /bot set or Bot Management, and its flag is drawn beside its nickname in the user list, the roster and its detail | `tests/chat-bot-management-window.spec.ts` | done |
 | M39 | /bot set game_announce on gives a bot the Game capability, which Bot Management shows as a working capability that can be switched off | `tests/chat-bot-management-window.spec.ts` | done |
 | M40 | Play on an arcade game's public page opens the Arcade on that game for a member, and asks a visitor to sign in from the Arcade icon | `tests/chat-arcade.spec.ts` | done |
-| M41 | End pressed mid-match writes the match down as it stood: the score, who led, and "Ended early" (features P2) | `tests/chat-retro-games.spec.ts` | done |
+| M41 | End pressed mid-match writes the match down as it stood: the score and "Ended early", with nobody named the winner (features P2) | `tests/chat-retro-games.spec.ts` | done |
 
 ### N - P2P, File, Call, Game
 
@@ -483,7 +483,7 @@ Grouped by section. Every row comes from an `@flow` line in the spec itself.
 | N72 | An arcade game's channel names its game under the topic and Pixel tells whoever arrives what the game is and its controls; Play opens the in-app Arcade on that game, and starting it is said by Pixel in the game's channel and in #arcade, each line with its card | `tests/arcade-channels.spec.ts` | done |
 | N73 | An arcade game's page is its home: Play with the game's sheet, who played it lately, who plays it most, the reader's own plays and the channel's last lines | `tests/arcade-channels.spec.ts` | done |
 | N74 | A visitor reads an arcade game's channel and its page; pressing Play opens the sign-in window, which returns to the same game | `tests/arcade-channels.spec.ts` | done |
-| N75 | A game played alone (Hex Jungle): its home offers Play and nothing that needs somebody else — no partner, match link, invitation or Live tab; a run ended with End is written down and the player's best is in the Ranking tab | `tests/game-solo-only.spec.ts` | done |
+| N75 | A game played alone (Hex Jungle): its home offers Play and nothing that needs somebody else — no partner, match link, invitation or Live tab; a run ended with End is written down, in the player's own record and among the best runs | `tests/game-solo-only.spec.ts` | done |
 | N76 | In the channel of a game played alone, the strip offers Play without Find a partner, and /lfg says the game is played alone | `tests/game-solo-only.spec.ts` | done |
 
 ### O - Chat UI Micro-Journeys

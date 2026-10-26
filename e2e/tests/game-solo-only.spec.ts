@@ -1,6 +1,6 @@
 /**
  * @section N - P2P, File, Call, Game
- * @flow N75 [done] A game played alone (Hex Jungle): its home offers Play and nothing that needs somebody else — no partner, match link, invitation or Live tab; a run ended with End is written down and the player's best is in the Ranking tab
+ * @flow N75 [done] A game played alone (Hex Jungle): its home offers Play and nothing that needs somebody else — no partner, match link, invitation or Live tab; a run ended with End is written down, in the player's own record and among the best runs
  * @flow N76 [done] In the channel of a game played alone, the strip offers Play without Find a partner, and /lfg says the game is played alone
  *
  * These @flow lines are the source of truth for e2e/TEST_CATALOG.md.
@@ -12,7 +12,7 @@ import { shot } from "../helpers/screenshots";
 import { waitForView } from "../helpers/liveView";
 
 test.describe("a game played alone", () => {
-  test("is played alone, and its best run is ranked", async ({ browser }) => {
+  test("is played alone, and its run is written down", async ({ browser }) => {
     const user = await newSignedInUser(browser, "jungle");
     try {
       const home = await user.chat.openGameHomeFromFolder("hex_jungle");
@@ -53,12 +53,19 @@ test.describe("a game played alone", () => {
       await shot(result, "hex-jungle-result");
 
       await user.page.getByTestId("game-home-tab-ranking").click();
-      await expect(user.page.getByTestId("game-community-best")).toContainText(
-        user.nick,
-      );
+      await expect(user.page.getByTestId("game-community-best")).toBeVisible();
       await shot(
         user.page.getByTestId("game-home-ranking"),
         "hex-jungle-ranking",
+      );
+
+      // The ranking keeps the five best of everybody; the run is the player's own.
+      await user.page.getByTestId("game-home-tab-you").click();
+      await expect(user.page.getByTestId("game-you-totals")).toContainText(
+        /\d/,
+      );
+      await expect(user.page.getByTestId("game-you-recent")).toContainText(
+        user.nick,
       );
     } finally {
       await closeUsers([user]);

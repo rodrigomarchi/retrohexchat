@@ -578,8 +578,8 @@ defmodule RetroHexChatWeb.Components.UI.RetroGamesPanel do
   defp status_label("error"), do: dgettext("games", "Error")
   defp status_label(_status), do: dgettext("games", "Loading")
 
-  # A points game ended early names nobody, and says only that it ended early.
-  defp verdict_label(%Result{outcome: :none, ended_early?: true}), do: nil
+  # A match ended early names nobody, whoever led: it says only that it ended early.
+  defp verdict_label(%Result{ended_early?: true}), do: nil
   defp verdict_label(%Result{outcome: :p1}), do: dgettext("games", "You won")
   defp verdict_label(%Result{outcome: :p2}), do: dgettext("games", "AI won")
   defp verdict_label(%Result{outcome: :draw}), do: dgettext("games", "Draw")

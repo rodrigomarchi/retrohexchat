@@ -105,6 +105,16 @@ defmodule RetroHexChat.Games.Results do
     end
   end
 
+  # A versus match ended with End keeps who led, but is no win to rank: one
+  # point of lead and End would otherwise be a win on hard. A points game's
+  # run ended early keeps its points, and its best.
+  defp ranked?(%Result{disconnected?: true}), do: false
+
+  defp ranked?(%Result{ended_early?: true, game_id: game_id}),
+    do: Catalog.ranking(game_id) != :versus
+
+  defp ranked?(_played_out), do: true
+
   defp duration(started_at, finished_at) do
     minimum = Application.get_env(:retro_hex_chat, :game_result_min_duration_ms, @min_duration_ms)
 
@@ -129,7 +139,7 @@ defmodule RetroHexChat.Games.Results do
       p1_score: result.p1_score,
       p2_score: result.p2_score,
       outcome: Atom.to_string(result.outcome),
-      ranked: not result.disconnected?,
+      ranked: ranked?(result),
       duration_ms: duration_ms,
       started_at: match.started_at,
       finished_at: finished_at,

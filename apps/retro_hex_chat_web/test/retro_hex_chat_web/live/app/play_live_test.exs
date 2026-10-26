@@ -141,7 +141,9 @@ defmodule RetroHexChatWeb.App.PlayLiveTest do
         })
 
       refute Map.has_key?(Activity.now(), Nickname.key(nick))
-      assert html =~ "You won"
+      # The score as it stood, and no verdict: a match ended early is no win.
+      assert html =~ "You 2 x 1 AI"
+      refute html =~ "You won"
       assert html =~ "retro-game-ended-early"
     end
 
@@ -242,10 +244,10 @@ defmodule RetroHexChatWeb.App.PlayLiveTest do
       html =
         play_to_the_end(view, %{"score" => %{"p1" => 1, "p2" => 2}, "ended_early" => true})
 
-      assert html =~ "AI won"
+      refute html =~ "AI won"
       assert html =~ "retro-game-ended-early"
       assert html =~ "retro-game-recorded"
-      assert_receive {:game_result_recorded, %{p1_nickname: ^nick, outcome: "p2", ranked: true}}
+      assert_receive {:game_result_recorded, %{p1_nickname: ^nick, outcome: "p2", ranked: false}}
     end
 
     test "a one-player game is written down as solo, with no difficulty", %{conn: conn} do

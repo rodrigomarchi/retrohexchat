@@ -729,6 +729,9 @@ _ROWS = {
     # Hex Jungle's labels: a jump and a climb of the explorer, the vine let
     # go of, and a run's points. "Run" stays out: it is also a command that
     # executes ("Run" in the admin console).
+    # The in-page games, as every catalogue already names them: some are for
+    # two people, Hex Jungle for one.
+    "Retro Games":    ("Jogos Retro", "Jogos Retro", "Juegos retro", "Jeux rétro", "Retro-Spiele", "Giochi retro", "Retrogames", "Gry retro", "Ретро-игры", "Game Retro", "レトロゲーム", "复古游戏", "復古遊戲"),
     "Jump":           ("Pular", "Saltar", "Saltar", "Sauter", "Springen", "Salta", "Springen", "Skok", "Прыжок", "Lompat", "ジャンプ", "跳跃", "跳躍"),
     "Climb":          ("Subir", "Subir", "Trepar", "Grimper", "Klettern", "Arrampica", "Klimmen", "Wspinaj się", "Лезть", "Panjat", "登る", "攀爬", "攀爬"),
     "— Catch the vine in a jump": ("— Agarrar o cipó num pulo", "— Agarrar o cipó num salto", "— Agarrar la liana en un salto", "— Attraper la liane en sautant", "— Im Sprung die Liane greifen", "— Afferra la liana con un salto", "— Grijp de liaan in een sprong", "— Złap lianę w skoku", "— Схватить лиану в прыжке", "— Raih sulur saat melompat", "— ジャンプしてツタをつかむ", "— 跳起抓住藤蔓", "— 跳起抓住藤蔓"),

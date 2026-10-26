@@ -63,4 +63,11 @@ defmodule RetroHexChatWeb.Components.UI.GameResultCardTest do
 
     refute Floki.text(doc) =~ "Computer"
   end
+
+  test "a match ended early is over, with nobody named the winner" do
+    assert GameResultCard.verdict(card(%{ranked: false, outcome: :p1})) == "Match over"
+
+    assert GameResultCard.verdict(card(%{ranked: false, outcome: :none})) ==
+             "Somebody left before the end"
+  end
 end

@@ -31,7 +31,7 @@ defmodule RetroHexChatWeb.Site.Pages.Games do
          cards_window("arcade", dgettext("landing", "Arcade"), :icon_game_arcade,
            groups: GameCatalog.arcade_cards()
          ),
-         cards_window("multiplayer", dgettext("landing", "Multiplayer Games"), :icon_joystick,
+         cards_window("multiplayer", dgettext("landing", "Retro Games"), :icon_joystick,
            cards: multiplayer
          )
        ],
