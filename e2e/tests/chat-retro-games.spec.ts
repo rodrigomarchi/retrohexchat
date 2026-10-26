@@ -98,8 +98,20 @@ test.describe("Retro Games from the chat", () => {
     const games = await chat.openGameFromFolder("hex_pong");
     await waitForView(games);
 
+    // On a wide window the button and the whole game are on screen, not
+    // clipped below it: a click by test id would reach them either way.
+    await games.setViewportSize({ width: 1500, height: 900 });
+    await expect(games.getByTestId("retro-game-start-ai")).toBeInViewport({
+      ratio: 1,
+    });
+    await expect(
+      games.getByTestId("retro-game-canvas-hex_pong"),
+    ).toBeInViewport({ ratio: 1 });
+    await shot(games, "wide-window-ready");
     await games.getByTestId("retro-game-start-ai").click();
-    await expect(games.getByTestId("retro-game-end-match")).toBeVisible();
+    await expect(games.getByTestId("retro-game-end-match")).toBeInViewport({
+      ratio: 1,
+    });
     // Long enough to be a match the server keeps: anything under 3 s is not.
     await games.waitForTimeout(4000);
     await games.getByTestId("retro-game-end-match").click();

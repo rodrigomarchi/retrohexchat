@@ -71,7 +71,10 @@ defmodule RetroHexChatWeb.Components.UI.RetroGamesPanel do
       class="flex h-full min-h-0 flex-col"
       data-testid={"retro-game-session-#{@game.id}"}
     >
-      <div class="grid min-h-0 flex-1 auto-rows-max content-start grid-cols-1 gap-retro-10 overflow-auto pr-retro-1 lg:grid-cols-[minmax(0,1fr)_240px] lg:overflow-hidden lg:pr-0">
+      <%!-- On a wide screen the game and its panel share the window's height:
+            the canvas fits inside it (letterboxed), so neither the bottom of
+            the game nor the panel's buttons fall below what the window shows. --%>
+      <div class="grid min-h-0 flex-1 auto-rows-max content-start grid-cols-1 gap-retro-10 overflow-auto pr-retro-1 lg:grid-cols-[minmax(0,1fr)_240px] lg:auto-rows-[minmax(0,1fr)] lg:content-stretch lg:overflow-hidden lg:pr-0">
         <div class="flex min-h-0 flex-col">
           <div
             :if={@status in ["ready", "playing"]}
@@ -81,10 +84,10 @@ defmodule RetroHexChatWeb.Components.UI.RetroGamesPanel do
             data-game-id={@game.id}
             data-difficulty={@difficulty}
             tabindex="-1"
-            class="relative aspect-[4/3] min-h-[220px] w-full overflow-hidden bg-black p-[2px] shadow-retro-field"
+            class="relative aspect-[4/3] min-h-[220px] w-full overflow-hidden bg-black p-[2px] shadow-retro-field lg:aspect-auto lg:h-full lg:min-h-0"
             data-testid={"retro-game-canvas-#{@game.id}"}
           >
-            <canvas width="640" height="480" class="block h-full w-full bg-black"></canvas>
+            <canvas width="640" height="480" class="block h-full w-full bg-black object-contain"></canvas>
             <div class="game-canvas__stub absolute inset-0 flex items-center justify-center bg-black text-xs font-bold text-white">
               {dgettext("games", "Loading game...")}
             </div>
@@ -92,7 +95,7 @@ defmodule RetroHexChatWeb.Components.UI.RetroGamesPanel do
 
           <.inset
             :if={@status == "finished"}
-            class="flex aspect-[4/3] min-h-[220px] w-full flex-col items-center justify-center gap-retro-8 p-retro-12 text-center"
+            class="flex aspect-[4/3] min-h-[220px] w-full flex-col items-center justify-center gap-retro-8 p-retro-12 text-center lg:aspect-auto lg:h-full lg:min-h-0"
             data-testid="retro-game-result"
           >
             <Icons.game_icon game_id={@game.id} class="h-16 w-16" />
@@ -168,7 +171,7 @@ defmodule RetroHexChatWeb.Components.UI.RetroGamesPanel do
 
           <.inset
             :if={@status == "error"}
-            class="flex aspect-[4/3] min-h-[220px] w-full flex-col items-center justify-center gap-retro-8 p-retro-12 text-center"
+            class="flex aspect-[4/3] min-h-[220px] w-full flex-col items-center justify-center gap-retro-8 p-retro-12 text-center lg:aspect-auto lg:h-full lg:min-h-0"
             data-testid="retro-game-error"
           >
             <Icons.icon_warning class="h-10 w-10 text-destructive" />
@@ -177,7 +180,10 @@ defmodule RetroHexChatWeb.Components.UI.RetroGamesPanel do
           </.inset>
         </div>
 
-        <aside class="flex min-h-0 flex-col gap-retro-8" data-testid="retro-game-control-panel">
+        <aside
+          class="flex min-h-0 flex-col gap-retro-8 lg:overflow-y-auto"
+          data-testid="retro-game-control-panel"
+        >
           <section
             class="order-1 grid gap-retro-6 bg-white p-retro-8 text-xs shadow-retro-field"
             data-testid="retro-game-session-status"
