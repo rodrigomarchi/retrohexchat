@@ -202,10 +202,8 @@ msgstr ""
 #: lib/retro_hex_chat_web/components/ui/lobby/lobby_network_panel.ex:358
 #: lib/retro_hex_chat_web/components/ui/lobby/lobby_network_panel.ex:601
 #: lib/retro_hex_chat_web/components/ui/lobby/lobby_network_panel.ex:608
-#: lib/retro_hex_chat_web/components/ui/lobby/lobby_network_panel.ex:727
-#: lib/retro_hex_chat_web/components/ui/lobby/lobby_network_panel.ex:728
-#: lib/retro_hex_chat_web/components/ui/lobby/lobby_network_panel.ex:750
-#: lib/retro_hex_chat_web/components/ui/lobby/lobby_network_panel.ex:751
+#: lib/retro_hex_chat_web/components/ui/lobby/lobby_network_panel.ex:742
+#: lib/retro_hex_chat_web/components/ui/lobby/lobby_network_panel.ex:743
 #, elixir-autogen, elixir-format
 msgid "%{n} kbps"
 msgstr ""
@@ -225,7 +223,7 @@ msgstr ""
 msgid "%{n}%"
 msgstr ""
 
-#: lib/retro_hex_chat_web/components/ui/lobby/lobby_network_panel.ex:846
+#: lib/retro_hex_chat_web/components/ui/lobby/lobby_network_panel.ex:838
 #, elixir-autogen, elixir-format
 msgid "%{w}×%{h}"
 msgstr ""
@@ -238,7 +236,6 @@ msgstr ""
 #: lib/retro_hex_chat_web/components/ui/lobby/lobby_network_panel.ex:273
 #: lib/retro_hex_chat_web/components/ui/lobby/lobby_network_panel.ex:321
 #: lib/retro_hex_chat_web/components/ui/lobby/lobby_network_panel.ex:592
-#: lib/retro_hex_chat_web/components/ui/lobby/lobby_network_panel.ex:726
 #, elixir-autogen, elixir-format
 msgid "Active"
 msgstr ""
@@ -326,12 +323,12 @@ msgstr ""
 msgid "Connection"
 msgstr ""
 
-#: lib/retro_hex_chat_web/components/ui/lobby/lobby_network_panel.ex:817
+#: lib/retro_hex_chat_web/components/ui/lobby/lobby_network_panel.ex:809
 #, elixir-autogen, elixir-format
 msgid "Data currently being received from the peer, in kilobits per second."
 msgstr ""
 
-#: lib/retro_hex_chat_web/components/ui/lobby/lobby_network_panel.ex:820
+#: lib/retro_hex_chat_web/components/ui/lobby/lobby_network_panel.ex:812
 #, elixir-autogen, elixir-format
 msgid "Data currently being sent to the peer, in kilobits per second."
 msgstr ""
@@ -347,7 +344,7 @@ msgstr ""
 msgid "Download"
 msgstr ""
 
-#: lib/retro_hex_chat_web/components/ui/lobby/lobby_network_panel.ex:793
+#: lib/retro_hex_chat_web/components/ui/lobby/lobby_network_panel.ex:785
 #, elixir-autogen, elixir-format
 msgid "Estimated bandwidth available for sending to the peer, in kilobits per second."
 msgstr ""
@@ -388,7 +385,7 @@ msgstr ""
 msgid "Frame rate"
 msgstr ""
 
-#: lib/retro_hex_chat_web/components/ui/lobby/lobby_network_panel.ex:829
+#: lib/retro_hex_chat_web/components/ui/lobby/lobby_network_panel.ex:821
 #, elixir-autogen, elixir-format
 msgid "Frames per second of the received video. Higher is smoother."
 msgstr ""
@@ -421,7 +418,7 @@ msgstr ""
 msgid "Hide self view"
 msgstr ""
 
-#: lib/retro_hex_chat_web/components/ui/lobby/lobby_network_panel.ex:832
+#: lib/retro_hex_chat_web/components/ui/lobby/lobby_network_panel.ex:824
 #, elixir-autogen, elixir-format
 msgid "How many times the received video stalled momentarily."
 msgstr ""
@@ -432,8 +429,7 @@ msgstr ""
 #: lib/retro_hex_chat_web/components/ui/lobby/lobby_network_panel.ex:682
 #: lib/retro_hex_chat_web/components/ui/lobby/lobby_network_panel.ex:705
 #: lib/retro_hex_chat_web/components/ui/lobby/lobby_network_panel.ex:709
-#: lib/retro_hex_chat_web/components/ui/lobby/lobby_network_panel.ex:726
-#: lib/retro_hex_chat_web/components/ui/lobby/lobby_network_panel.ex:742
+#: lib/retro_hex_chat_web/components/ui/lobby/lobby_network_panel.ex:734
 #, elixir-autogen, elixir-format
 msgid "Idle"
 msgstr ""
@@ -466,7 +462,7 @@ msgstr ""
 msgid "MOS %{score}"
 msgstr ""
 
-#: lib/retro_hex_chat_web/components/ui/lobby/lobby_network_panel.ex:765
+#: lib/retro_hex_chat_web/components/ui/lobby/lobby_network_panel.ex:757
 #, elixir-autogen, elixir-format
 msgid "Mean Opinion Score (1-5): an overall call-quality estimate from latency, jitter and loss. 5 is excellent; below 3.5 feels poor."
 msgstr ""
@@ -528,7 +524,7 @@ msgstr ""
 msgid "Output"
 msgstr ""
 
-#: lib/retro_hex_chat_web/components/ui/lobby/lobby_network_panel.ex:758
+#: lib/retro_hex_chat_web/components/ui/lobby/lobby_network_panel.ex:750
 #, elixir-autogen, elixir-format
 msgid "Overall connection health, rated from Excellent to Poor based on the MOS score."
 msgstr ""
@@ -571,7 +567,7 @@ msgstr ""
 msgid "Pending"
 msgstr ""
 
-#: lib/retro_hex_chat_web/components/ui/lobby/lobby_network_panel.ex:786
+#: lib/retro_hex_chat_web/components/ui/lobby/lobby_network_panel.ex:778
 #, elixir-autogen, elixir-format
 msgid "Percentage of packets that never arrived. Above ~3% noticeably degrades quality."
 msgstr ""
@@ -616,7 +612,7 @@ msgstr ""
 msgid "Resolution"
 msgstr ""
 
-#: lib/retro_hex_chat_web/components/ui/lobby/lobby_network_panel.ex:823
+#: lib/retro_hex_chat_web/components/ui/lobby/lobby_network_panel.ex:815
 #, elixir-autogen, elixir-format
 msgid "Resolution of the received video, in pixels."
 msgstr ""
@@ -632,7 +628,7 @@ msgstr ""
 msgid "Return to split layout"
 msgstr ""
 
-#: lib/retro_hex_chat_web/components/ui/lobby/lobby_network_panel.ex:772
+#: lib/retro_hex_chat_web/components/ui/lobby/lobby_network_panel.ex:764
 #, elixir-autogen, elixir-format
 msgid "Round-trip time for data to reach the peer and return. Lower is better; under ~150 ms feels instant."
 msgstr ""
@@ -730,7 +726,7 @@ msgstr ""
 msgid "Status"
 msgstr ""
 
-#: lib/retro_hex_chat_web/components/ui/lobby/lobby_network_panel.ex:835
+#: lib/retro_hex_chat_web/components/ui/lobby/lobby_network_panel.ex:827
 #, elixir-autogen, elixir-format
 msgid "Total messages exchanged over this feature's data channel."
 msgstr ""
@@ -746,7 +742,7 @@ msgstr ""
 msgid "Upload"
 msgstr ""
 
-#: lib/retro_hex_chat_web/components/ui/lobby/lobby_network_panel.ex:779
+#: lib/retro_hex_chat_web/components/ui/lobby/lobby_network_panel.ex:771
 #, elixir-autogen, elixir-format
 msgid "Variation in packet arrival timing. High jitter causes choppy audio and video."
 msgstr ""
@@ -770,12 +766,12 @@ msgstr ""
 msgid "What do these mean?"
 msgstr ""
 
-#: lib/retro_hex_chat_web/components/ui/lobby/lobby_network_panel.ex:826
+#: lib/retro_hex_chat_web/components/ui/lobby/lobby_network_panel.ex:818
 #, elixir-autogen, elixir-format
 msgid "Whether the active video RTP is camera or shared screen."
 msgstr ""
 
-#: lib/retro_hex_chat_web/components/ui/lobby/lobby_network_panel.ex:839
+#: lib/retro_hex_chat_web/components/ui/lobby/lobby_network_panel.ex:831
 #, elixir-autogen, elixir-format
 msgid "Why quality was capped: CPU means your device is too busy; Bandwidth means the network is too slow."
 msgstr ""
@@ -864,22 +860,17 @@ msgstr ""
 msgid "%{latency} ms / %{loss}% loss"
 msgstr ""
 
-#: lib/retro_hex_chat_web/components/ui/lobby/lobby_network_panel.ex:733
+#: lib/retro_hex_chat_web/components/ui/lobby/lobby_network_panel.ex:725
 #, elixir-autogen, elixir-format
 msgid "%{source} / %{resolution} / %{fps} fps"
 msgstr ""
 
-#: lib/retro_hex_chat_web/components/ui/lobby/lobby_network_panel.ex:725
-#, elixir-autogen, elixir-format
-msgid "%{state} / %{down} down / %{up} up"
-msgstr ""
-
-#: lib/retro_hex_chat_web/components/ui/lobby/lobby_network_panel.ex:748
+#: lib/retro_hex_chat_web/components/ui/lobby/lobby_network_panel.ex:740
 #, elixir-autogen, elixir-format
 msgid "%{state} / %{sent} sent / %{received} received"
 msgstr ""
 
-#: lib/retro_hex_chat_web/components/ui/lobby/lobby_network_panel.ex:741
+#: lib/retro_hex_chat_web/components/ui/lobby/lobby_network_panel.ex:733
 #, elixir-autogen, elixir-format
 msgid "%{state} / %{source}"
 msgstr ""
@@ -1119,22 +1110,22 @@ msgstr ""
 msgid "Could not restore this P2P session. Retry or end the session."
 msgstr ""
 
-#: lib/retro_hex_chat_web/components/ui/lobby/lobby_network_panel.ex:811
+#: lib/retro_hex_chat_web/components/ui/lobby/lobby_network_panel.ex:803
 #, elixir-autogen, elixir-format
 msgid "Current P2P signaling generation used to ignore stale SDP and ICE."
 msgstr ""
 
-#: lib/retro_hex_chat_web/components/ui/lobby/lobby_network_panel.ex:808
+#: lib/retro_hex_chat_web/components/ui/lobby/lobby_network_panel.ex:800
 #, elixir-autogen, elixir-format
 msgid "Current automatic retry attempt for this recovery cycle."
 msgstr ""
 
-#: lib/retro_hex_chat_web/components/ui/lobby/lobby_network_panel.ex:814
+#: lib/retro_hex_chat_web/components/ui/lobby/lobby_network_panel.ex:806
 #, elixir-autogen, elixir-format
 msgid "Current offer identifier used to ignore stale answers and candidates."
 msgstr ""
 
-#: lib/retro_hex_chat_web/components/ui/lobby/lobby_network_panel.ex:799
+#: lib/retro_hex_chat_web/components/ui/lobby/lobby_network_panel.ex:791
 #, elixir-autogen, elixir-format
 msgid "Current recovery state reported by the call connection."
 msgstr ""
@@ -1144,7 +1135,7 @@ msgstr ""
 msgid "Epoch %{epoch}"
 msgstr ""
 
-#: lib/retro_hex_chat_web/components/ui/lobby/lobby_network_panel.ex:802
+#: lib/retro_hex_chat_web/components/ui/lobby/lobby_network_panel.ex:794
 #, elixir-autogen, elixir-format
 msgid "Low-cardinality reason for the latest recovery transition."
 msgstr ""
@@ -1190,7 +1181,7 @@ msgstr ""
 msgid "Signaling"
 msgstr ""
 
-#: lib/retro_hex_chat_web/components/ui/lobby/lobby_network_panel.ex:805
+#: lib/retro_hex_chat_web/components/ui/lobby/lobby_network_panel.ex:797
 #, elixir-autogen, elixir-format
 msgid "Source that triggered recovery, such as browser, peer or server."
 msgstr ""

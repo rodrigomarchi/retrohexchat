@@ -10,8 +10,9 @@ defmodule RetroHexChat.Chat.Message do
   """
   use Ecto.Schema
 
-  alias RetroHexChat.Chat.Attachment
   alias RetroHexChat.Chat.MessageRules
+
+  require MessageRules
 
   @type t :: %__MODULE__{}
 
@@ -26,21 +27,8 @@ defmodule RetroHexChat.Chat.Message do
   schema "messages" do
     field :channel_name, :string
     field :author_nickname, :string
-    field :content, :string
-    field :content_format, :string, default: "irc"
-    field :plain_content, :string
-    field :type, :string, default: "message"
-    field :allow_blank_content, :boolean, virtual: true, default: false
 
-    field :reply_to_id, :integer
-    field :reply_to_author, :string
-    field :reply_to_preview, :string
-    field :edited_at, :utc_datetime_usec
-    field :deleted_at, :utc_datetime_usec
-
-    has_many :attachments, Attachment
-
-    timestamps(type: :utc_datetime_usec, updated_at: false)
+    MessageRules.written_fields()
   end
 
   # ex_dna:disable-for-lines:11 each schema hands its own @rules to MessageRules

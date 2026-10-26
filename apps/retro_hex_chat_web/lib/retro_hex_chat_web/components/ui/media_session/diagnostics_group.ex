@@ -58,4 +58,21 @@ defmodule RetroHexChatWeb.Components.UI.MediaSession.DiagnosticsGroup do
     </details>
     """
   end
+
+  @doc """
+  The audio group's summary line, the same for the P2P session and the group
+  call: whether audio is flowing, and its rate each way.
+  """
+  @spec audio_summary(%{active: boolean(), in_kbps: number(), out_kbps: number()}) :: String.t()
+  def audio_summary(audio) do
+    dgettext("group_call", "%{state} / %{down} down / %{up} up",
+      state:
+        if(audio.active,
+          do: dgettext("group_call", "Active"),
+          else: dgettext("group_call", "Idle")
+        ),
+      down: dgettext("group_call", "%{n} kbps", n: audio.in_kbps),
+      up: dgettext("group_call", "%{n} kbps", n: audio.out_kbps)
+    )
+  end
 end

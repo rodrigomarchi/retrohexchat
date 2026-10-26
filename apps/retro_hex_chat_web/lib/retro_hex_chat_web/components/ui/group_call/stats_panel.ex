@@ -248,7 +248,7 @@ defmodule RetroHexChatWeb.Components.UI.GroupCall.StatsPanel do
 
       <.media_session_diagnostics_group
         title={dgettext("group_call", "Audio")}
-        summary={audio_diagnostics_summary(@stats.audio)}
+        summary={audio_summary(@stats.audio)}
         icon={:icon_microphone}
         testid="group-call-stats-details-audio"
       >
@@ -495,18 +495,6 @@ defmodule RetroHexChatWeb.Components.UI.GroupCall.StatsPanel do
     dgettext("group_call", "%{health} / %{latency} ms",
       health: health_label(stats.connection.level),
       latency: stats.connection.rtt_ms
-    )
-  end
-
-  defp audio_diagnostics_summary(audio) do
-    dgettext("group_call", "%{state} / %{down} down / %{up} up",
-      state:
-        if(audio.active,
-          do: dgettext("group_call", "Active"),
-          else: dgettext("group_call", "Idle")
-        ),
-      down: dgettext("group_call", "%{n} kbps", n: audio.in_kbps),
-      up: dgettext("group_call", "%{n} kbps", n: audio.out_kbps)
     )
   end
 

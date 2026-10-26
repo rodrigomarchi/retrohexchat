@@ -264,7 +264,7 @@ defmodule RetroHexChatWeb.Components.UI.Lobby.LobbyNetworkPanel do
         <.tabs_content value="audio" builder={builder}>
           <.media_session_diagnostics_group
             title={dgettext("p2p", "Audio")}
-            summary={p2p_audio_summary(@stats.audio)}
+            summary={audio_summary(@stats.audio)}
             icon={:icon_microphone}
             testid="p2p-stats-details-audio"
           >
@@ -720,14 +720,6 @@ defmodule RetroHexChatWeb.Components.UI.Lobby.LobbyNetworkPanel do
   defp p2p_signaling_label(_stats), do: dgettext("p2p", "Not started")
 
   defp technical_label(value), do: Format.technical(value, dgettext("p2p", "None"))
-
-  defp p2p_audio_summary(audio) do
-    dgettext("p2p", "%{state} / %{down} down / %{up} up",
-      state: if(audio.active, do: dgettext("p2p", "Active"), else: dgettext("p2p", "Idle")),
-      down: dgettext("p2p", "%{n} kbps", n: audio.in_kbps),
-      up: dgettext("p2p", "%{n} kbps", n: audio.out_kbps)
-    )
-  end
 
   defp p2p_video_detail(%{active: true} = video) do
     dgettext("p2p", "%{source} / %{resolution} / %{fps} fps",

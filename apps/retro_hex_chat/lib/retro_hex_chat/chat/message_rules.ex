@@ -12,9 +12,9 @@ defmodule RetroHexChat.Chat.MessageRules do
   is derived and never trusted from the caller, a reply that must name what it
   quotes: a change to any of those lands on both kinds or on neither.
 
-  The schemas keep their own `schema` block. Ecto needs it declared literally,
-  and the fields of a table are the one thing a reader should be able to see
-  without following an indirection.
+  Each schema keeps its own `schema` block, with the columns that address it
+  written out; the columns every written message has come from
+  `written_fields/0`, so a column added there lands on both tables.
   """
 
   import Ecto.Changeset
@@ -22,6 +22,32 @@ defmodule RetroHexChat.Chat.MessageRules do
   alias RetroHexChat.Chat.Content
 
   @content_formats ~w(irc markdown plain)
+
+  @doc """
+  The columns every written message has, after the ones that address it:
+  the content and its format, the type, the reply it quotes, when it was
+  edited or deleted, its attachments and when it was written. Used inside a
+  `schema` block.
+  """
+  defmacro written_fields do
+    quote do
+      field :content, :string
+      field :content_format, :string, default: "irc"
+      field :plain_content, :string
+      field :type, :string, default: "message"
+      field :allow_blank_content, :boolean, virtual: true, default: false
+
+      field :reply_to_id, :integer
+      field :reply_to_author, :string
+      field :reply_to_preview, :string
+      field :edited_at, :utc_datetime_usec
+      field :deleted_at, :utc_datetime_usec
+
+      has_many :attachments, RetroHexChat.Chat.Attachment
+
+      timestamps(type: :utc_datetime_usec, updated_at: false)
+    end
+  end
 
   @typedoc """
   A schema's declaration of what it addresses and what it may carry.
