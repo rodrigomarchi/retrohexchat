@@ -4,6 +4,7 @@ import {
   guestEnd,
   matchResult,
   playOutcome,
+  soloResult,
 } from "../../../../js/lib/games/core/result.js";
 
 describe("matchResult", () => {
@@ -14,6 +15,12 @@ describe("matchResult", () => {
   it("keeps a draw, and a co-op pair's win (0) or loss (-1), as numbers", () => {
     expect(matchResult(2, 2, 0)).toEqual({ score: { p1: 2, p2: 2 }, winner: 0 });
     expect(matchResult(40, 40, -1)).toEqual({ score: { p1: 40, p2: 40 }, winner: -1 });
+  });
+});
+
+describe("soloResult", () => {
+  it("spells a one-player game's points the way the server reads every result, with nobody to beat", () => {
+    expect(soloResult(4200)).toEqual({ score: { p1: 4200, p2: 0 }, winner: 0 });
   });
 });
 

@@ -35,6 +35,12 @@
  * });
  * ```
  *
+ * A game for one player says `players: 1` and `standing: (game) => result`,
+ * the result as the score stands (`soloResult` from `core/result.js`). It
+ * plays solo only, never goes on the wire and has no opponent, so it declares
+ * no `schema`, `ai`, `disconnectResult`, `cues` or snapshot hooks; its
+ * `broadcast()` does nothing and its `finish({ result })` only tells the page.
+ *
  * The phase hooks in `flow.states` receive the game and use its public
  * surface: `gameState`, `localInputs`, `remoteInputs`, `audio`, `broadcast()`,
  * `invalidate()`, `updateOpponent()`, `finish()` and `flow.go()`; key hooks
@@ -56,6 +62,7 @@ import { createGameAudio } from "./synth.js";
 import { MSG, dispatcher } from "./messages.js";
 
 const REQUIRED = ["inputs", "schema", "init", "flow", "render", "disconnectResult"];
+const ONE_PLAYER_REQUIRED = ["inputs", "init", "flow", "render", "standing"];
 
 /**
  * The arrows, WASD in either case and the space bar: the keys most games take
@@ -85,6 +92,7 @@ export const ARROWS_WASD_SPACE = Object.freeze([
 export function defineGame(def) {
   validate(def);
 
+  const onePlayer = def.players === 1;
   const inputNames = Object.keys(def.inputs);
   const inputBits = Object.fromEntries(inputNames.map((name, bit) => [name, bit]));
   const released = () => Object.fromEntries(inputNames.map((name) => [name, false]));
@@ -102,6 +110,9 @@ export function defineGame(def) {
 
     constructor(canvas, channel, gameId, isHost, onGameEnd, options = {}) {
       super(canvas, channel, gameId, isHost, options);
+      if (onePlayer && this.mode !== "solo") {
+        throw new Error(`defineGame: ${gameId} is a one-player game; it plays solo only`);
+      }
       this.onGameEnd = onGameEnd || null;
       // One seed plays one match: the simulation draws from its generator,
       // decoration (particles) and the AI from streams forked off it, so
@@ -139,18 +150,20 @@ export function defineGame(def) {
         target: this,
       });
 
-      this._dispatch = dispatcher({
-        [MSG.GAME_STATE]: (buf) => this._receiveSnapshot(buf),
-        [MSG.GAME_READY]: () => {
-          if (this.isHost && !this.peerReady) this.beginMatch();
-        },
-        // Only the host ends a match; one sent to the host is ignored.
-        [MSG.GAME_END]: (buf) => {
-          if (this.isHost) return;
-          const result = def.schema.end.decode(buf);
-          if (result) def.onEnd?.(this, result);
-        },
-      });
+      this._dispatch = onePlayer
+        ? () => {}
+        : dispatcher({
+            [MSG.GAME_STATE]: (buf) => this._receiveSnapshot(buf),
+            [MSG.GAME_READY]: () => {
+              if (this.isHost && !this.peerReady) this.beginMatch();
+            },
+            // Only the host ends a match; one sent to the host is ignored.
+            [MSG.GAME_END]: (buf) => {
+              if (this.isHost) return;
+              const result = def.schema.end.decode(buf);
+              if (result) def.onEnd?.(this, result);
+            },
+          });
     }
 
     start() {
@@ -251,8 +264,10 @@ export function defineGame(def) {
     finish({ end, result, broadcast = true }) {
       this._stopSteps();
       this.setKeyboardCaptured(false);
-      this._sendCommand(def.schema.end.encode(end));
-      if (broadcast) this._broadcastState();
+      if (!onePlayer) {
+        this._sendCommand(def.schema.end.encode(end));
+        if (broadcast) this._broadcastState();
+      }
       this._reportResult(result);
     }
 
@@ -333,7 +348,7 @@ export function defineGame(def) {
     }
 
     _broadcastState() {
-      if (!this.gameState) return;
+      if (onePlayer || !this.gameState) return;
       const wire = def.toWire ? def.toWire(this) : this.gameState;
       this._sendState(def.schema.snapshot.encode(wire));
     }
@@ -349,8 +364,13 @@ export function defineGame(def) {
       return captureKeys.has(event.key);
     }
 
+    // A one-player game has nobody to lose: a closed transport ends nothing.
     _disconnectResult() {
-      return def.disconnectResult(this);
+      return onePlayer ? null : def.disconnectResult(this);
+    }
+
+    _reportDisconnect(result) {
+      if (result) super._reportDisconnect(result);
     }
   };
 }
@@ -361,7 +381,13 @@ function audioOf(spec) {
 }
 
 function validate(def) {
-  for (const field of REQUIRED) {
+  if (def.players !== undefined && def.players !== 1 && def.players !== 2) {
+    throw new Error(`defineGame: players is 1 or 2, not ${def.players}`);
+  }
+  if (def.players === 1 && def.ai) {
+    throw new Error("defineGame: a one-player game has no opponent");
+  }
+  for (const field of def.players === 1 ? ONE_PLAYER_REQUIRED : REQUIRED) {
     if (def[field] === undefined) throw new Error(`defineGame: missing ${field}`);
   }
   const { phases, states, initial, begin } = def.flow;

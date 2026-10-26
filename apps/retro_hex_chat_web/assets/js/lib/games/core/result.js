@@ -20,6 +20,16 @@ export function matchResult(p1, p2, winner) {
 }
 
 /**
+ * A one-player game's result: its points, and nobody beaten. The server reads
+ * the same spelling as every other result, with player two on nothing.
+ * @param {number} points
+ * @returns {{ score: { p1: number, p2: number }, winner: number }}
+ */
+export function soloResult(points) {
+  return matchResult(points, 0, 0);
+}
+
+/**
  * A disconnect's result: the score as it stood, and nobody the winner.
  * @param {(state: object) => [number, number]} score - p1's and p2's score from the state
  * @returns {(game: object) => { score: { p1: number, p2: number }, winner: number }}

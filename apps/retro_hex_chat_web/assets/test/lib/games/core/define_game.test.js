@@ -2,7 +2,14 @@ import { describe, it, expect, afterEach, vi } from "vitest";
 import { createLocalTransport } from "../../../../js/lib/games/transport.js";
 import { defineGame } from "../../../../js/lib/games/core/define_game.js";
 import { aiRandom } from "../../../../js/lib/games/core/rng.js";
-import { FakeGame, PHASE, SNAPSHOT, definition } from "../../../support/games/fake_game.js";
+import {
+  FakeGame,
+  FakeSoloGame,
+  PHASE,
+  SNAPSHOT,
+  definition,
+  soloDefinition,
+} from "../../../support/games/fake_game.js";
 import { playMatch } from "../../../support/games/harness.js";
 import { recordingCanvas } from "../../../support/games/recording_canvas.js";
 
@@ -11,6 +18,16 @@ const types = (wire, dir) =>
   wire.filter((d) => d.dir === dir && !d.dropped).map((d) => d.hex.slice(0, 2));
 const phasesOf = (record, side) => record.phases.filter((p) => p.side === side).map((p) => p.phase);
 const hold = (side, key, at = 0) => [{ at, side, key, down: true }];
+
+/** A transport's close event, which a test can fire. */
+function closable() {
+  const target = new EventTarget();
+  return {
+    addEventListener: (type, listener) => target.addEventListener(type, listener),
+    removeEventListener: (type, listener) => target.removeEventListener(type, listener),
+    close: () => target.dispatchEvent(new Event("close")),
+  };
+}
 
 describe("defineGame", () => {
   let match;
@@ -37,6 +54,72 @@ describe("defineGame", () => {
       expect(() =>
         defineGame({ ...definition, flow: { ...definition.flow, begin: "NOPE" } }),
       ).toThrow(/NOPE/);
+    });
+  });
+
+  describe("a one-player game", () => {
+    const solo = (options) =>
+      playMatch({ EngineClass: FakeSoloGame, gameId: "fake_solo", mode: "solo", ...options });
+    const without = (key) =>
+      Object.fromEntries(Object.entries(soloDefinition).filter(([field]) => field !== key));
+    const engine = (mode, transport = createLocalTransport()) =>
+      new FakeSoloGame(recordingCanvas(64, 48), transport, "fake_solo", true, null, { mode });
+
+    it("needs no wire, no opponent and no disconnect result, but the score as it stands", () => {
+      expect(() => defineGame(soloDefinition)).not.toThrow();
+      expect(() => defineGame(without("standing"))).toThrow(/standing/);
+      expect(() => defineGame(without("players"))).toThrow(/schema/);
+    });
+
+    it("refuses an opponent", () => {
+      expect(() => defineGame({ ...soloDefinition, ai: definition.ai })).toThrow(/no opponent/);
+    });
+
+    it("plays solo only", () => {
+      expect(() => engine("p2p_host")).toThrow(/one-player/);
+      expect(() => engine("p2p_guest")).toThrow(/one-player/);
+      expect(() => engine("spectator")).toThrow(/one-player/);
+      expect(() => engine("solo").stop()).not.toThrow();
+    });
+
+    it("begins without an opponent and reports its end once", async () => {
+      match = await solo({ script: hold("host", "ArrowRight") });
+      expect(match.engines.host.opponentController ?? null).toBeNull();
+      match.advance(1000);
+
+      expect(phasesOf(match.record(), "host").slice(-2)).toEqual([PHASE.PLAYING, PHASE.FINISHED]);
+      expect(match.results.host).toEqual([{ score: { p1: 3, p2: 0 }, winner: 0 }]);
+    });
+
+    it("writes nothing to the transport, through the match and its end", async () => {
+      match = await solo({ script: hold("host", "ArrowRight") });
+      const send = vi.spyOn(match.engines.host.transport, "send");
+      match.advance(1000);
+
+      expect(match.results.host).toHaveLength(1);
+      expect(send).not.toHaveBeenCalled();
+      // A two-player end repeats itself on timers; this one leaves none.
+      match.stop();
+      expect(match.pendingTimers()).toBe(0);
+    });
+
+    it("reports nothing when its transport closes", () => {
+      const transport = { ...createLocalTransport(), ...closable() };
+      const results = [];
+      const game = new FakeSoloGame(
+        recordingCanvas(64, 48),
+        transport,
+        "fake_solo",
+        true,
+        (result) => results.push(result),
+        { mode: "solo" },
+      );
+      game.start();
+      game.beginMatch();
+      transport.close();
+      game.stop();
+
+      expect(results).toEqual([]);
     });
   });
 

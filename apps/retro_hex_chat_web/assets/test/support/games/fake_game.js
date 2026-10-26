@@ -1,6 +1,7 @@
 import { defineGame } from "../../../js/lib/games/core/define_game.js";
 import { schema, i16, u8 } from "../../../js/lib/games/core/codec.js";
 import { MSG } from "../../../js/lib/games/core/messages.js";
+import { soloResult } from "../../../js/lib/games/core/result.js";
 
 /**
  * The smallest game the core can run: a dot that walks right while a player
@@ -89,3 +90,41 @@ export const definition = {
 };
 
 export const FakeGame = defineGame(definition);
+
+/**
+ * The smallest one-player game: the same dot, walking right while the key is
+ * held, a point each time it reaches the wall. Three points end it.
+ */
+export const soloDefinition = {
+  players: 1,
+  inputs: { right: ["ArrowRight"] },
+  captureKeys: ["ArrowRight"],
+  theme: () => ({ bg: "black" }),
+  init: () => ({ phase: PHASE.WAITING, x: 0, points: 0 }),
+  flow: {
+    phases: PHASE,
+    initial: "WAITING",
+    begin: "PLAYING",
+    states: {
+      PLAYING: {
+        tick: (game) => {
+          const s = game.gameState;
+          if (game.localInputs.right) s.x += 1;
+          if (s.x >= 10) [s.points, s.x] = [s.points + 1, 0];
+          if (s.points >= 3) s.phase = PHASE.FINISHED;
+          game.broadcast();
+        },
+      },
+      FINISHED: {
+        final: true,
+        enter: (game) => game.finish({ result: soloResult(game.gameState.points) }),
+      },
+    },
+  },
+  standing: (game) => soloResult(game.gameState.points),
+  render: (game) => {
+    game.ctx.fillRect(game.gameState.x, 0, 1, 1);
+  },
+};
+
+export const FakeSoloGame = defineGame(soloDefinition);
