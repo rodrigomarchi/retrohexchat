@@ -40,7 +40,7 @@ defmodule RetroHexChat.Lobby.SessionServer do
   @pending_timeout :timer.minutes(5)
   @lobby_warning_timeout :timer.minutes(10)
   @lobby_expiry_timeout :timer.minutes(15)
-  @connecting_timeout :timer.seconds(30)
+  @connecting_timeout :timer.minutes(3)
   @game_request_timeout :timer.seconds(60)
   @rejoin_grace_timeout :timer.seconds(30)
   @max_signaling_candidates 64
