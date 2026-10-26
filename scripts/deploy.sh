@@ -115,6 +115,16 @@ export ELIXIR_ERL_OPTIONS="${ELIXIR_ERL_OPTIONS:-+S ${DEPLOY_ERL_SCHEDULERS}:${D
 echo "==> Gettext split module compilation: ${GETTEXT_SPLIT_MODULE_COMPILATION}"
 echo "==> Erlang runtime options: ${ELIXIR_ERL_OPTIONS}"
 
+# A build made by another Erlang/Elixir is not reused: compiled deps and NIFs
+# from the old toolchain would sit under the new one. The toolchain the last
+# build used is kept beside it; when `.tool-versions` differs (or the mark is
+# missing), the build and the fetched deps start over.
+TOOLCHAIN_MARK="_build/prod/.toolchain"
+if [ "$(cat "${TOOLCHAIN_MARK}" 2>/dev/null)" != "$(cat .tool-versions)" ]; then
+  echo "==> Erlang/Elixir changed since the last build — rebuilding from scratch"
+  rm -rf _build/prod deps
+fi
+
 echo "==> Installing Elixir deps..."
 mix local.hex --force --if-missing
 mix local.rebar --force --if-missing
@@ -134,6 +144,7 @@ mix assets.deploy
 
 echo "==> Building release..."
 mix release retro_hex_chat --overwrite
+cp .tool-versions "${TOOLCHAIN_MARK}"
 
 # ------------------------------------------------------------------
 # 4. Copy tarball to DeployEx dist directory
