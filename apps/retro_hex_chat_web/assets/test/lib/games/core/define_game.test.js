@@ -123,6 +123,77 @@ describe("defineGame", () => {
     });
   });
 
+  describe("ending a solo match early", () => {
+    it("reports the score as it stands, once, with nobody named the winner", async () => {
+      match = await playMatch({
+        EngineClass: FakeGame,
+        gameId: "fake",
+        mode: "solo",
+        script: hold("host", "ArrowRight"),
+      });
+      match.advance(200);
+      const { host } = match.engines;
+      const standing = { p1: host.gameState.score1, p2: host.gameState.score2 };
+
+      expect(host.quit()).toBe(true);
+      expect(host.quit()).toBe(false);
+      match.advance(500);
+
+      expect(match.results.host).toEqual([{ score: standing, ended_early: true }]);
+      expect(host.gameState.phase).toBe(PHASE.FINISHED);
+      expect(host.stepping).toBe(false);
+    });
+
+    it("reads a one-player game's standing", async () => {
+      match = await playMatch({
+        EngineClass: FakeSoloGame,
+        gameId: "fake_solo",
+        mode: "solo",
+        script: hold("host", "ArrowRight"),
+      });
+      match.advance(300);
+      const points = match.engines.host.gameState.points;
+      match.engines.host.quit();
+
+      expect(points).toBeGreaterThan(0);
+      expect(match.results.host).toEqual([{ score: { p1: points, p2: 0 }, ended_early: true }]);
+    });
+
+    it("ends nothing before the match begins, after it ends, or on either side of a P2P match", async () => {
+      const waiting = new FakeGame(
+        recordingCanvas(64, 48),
+        createLocalTransport(),
+        "fake",
+        true,
+        null,
+        {
+          mode: "solo",
+        },
+      );
+      waiting.start();
+      expect(waiting.quit()).toBe(false);
+      waiting.stop();
+
+      match = await playMatch({
+        EngineClass: FakeSoloGame,
+        gameId: "fake_solo",
+        mode: "solo",
+        script: hold("host", "ArrowRight"),
+      });
+      match.advance(3000);
+      expect(match.results.host).toHaveLength(1);
+      expect(match.engines.host.quit()).toBe(false);
+      expect(match.results.host).toHaveLength(1);
+      match.stop();
+      match.restore();
+
+      match = await play();
+      match.advance(500);
+      expect(match.engines.host.quit()).toBe(false);
+      expect(match.engines.guest.quit()).toBe(false);
+    });
+  });
+
   describe("a P2P match", () => {
     it("starts once the guest is ready, even when its first announcements are lost", async () => {
       let lost = 0;

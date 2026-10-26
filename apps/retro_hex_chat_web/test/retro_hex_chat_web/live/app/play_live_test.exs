@@ -119,8 +119,9 @@ defmodule RetroHexChatWeb.App.PlayLiveTest do
                ~s(href="/c/hex-tennis")
     end
 
-    # Ending a match keeps the game on screen, ready for another.
-    test "ending a match leaves the game ready", %{conn: conn} do
+    # End mid-match asks the canvas to end the match as it stands; the result it
+    # reports is the match's end, like any other.
+    test "ending a match mid-play asks the canvas for the match as it stands", %{conn: conn} do
       nick = "End#{uid()}"
       {:ok, view, _html} = conn |> chat_conn(nick) |> live(~p"/play/hex_pong")
 
@@ -129,6 +130,32 @@ defmodule RetroHexChatWeb.App.PlayLiveTest do
       assert Map.has_key?(Activity.now(), Nickname.key(nick))
 
       render_click(view, "retro_games_end", %{})
+      assert_push_event(view, "retro_game_quit", %{game_id: "hex_pong"})
+      assert has_element?(view, ~s([data-testid="retro-game-end-match"]))
+
+      html =
+        render_hook(view, "retro_game_result", %{
+          "game_id" => "hex_pong",
+          "score" => %{"p1" => 2, "p2" => 1},
+          "ended_early" => true
+        })
+
+      refute Map.has_key?(Activity.now(), Nickname.key(nick))
+      assert html =~ "You won"
+      assert html =~ "retro-game-ended-early"
+    end
+
+    # A canvas with no match left to end says so, and the game is made ready
+    # for another, as a match nobody played.
+    test "a canvas with nothing to end leaves the game ready", %{conn: conn} do
+      nick = "Stop#{uid()}"
+      {:ok, view, _html} = conn |> chat_conn(nick) |> live(~p"/play/hex_pong")
+
+      render_hook(view, "retro_game_canvas_ready", %{"game_id" => "hex_pong"})
+      render_click(view, "retro_games_start_ai", %{})
+      render_click(view, "retro_games_end", %{})
+      render_hook(view, "retro_game_stopped", %{"game_id" => "hex_pong"})
+
       assert_push_event(view, "retro_game_stop", %{game_id: "hex_pong"})
       refute Map.has_key?(Activity.now(), Nickname.key(nick))
 
@@ -187,6 +214,23 @@ defmodule RetroHexChatWeb.App.PlayLiveTest do
       assert html =~ "/c/hex-pong"
 
       assert_receive {:game_result_recorded, %{p1_nickname: ^nick, origin: "ai", outcome: "p1"}}
+    end
+
+    test "a match ended early is written down as it stood", %{conn: conn} do
+      nick = "Early#{uid()}"
+      {:ok, _} = register(nick)
+      Phoenix.PubSub.subscribe(RetroHexChat.PubSub, Topics.game_results())
+
+      {:ok, view, _html} =
+        conn |> chat_conn(nick, pre_identified: true) |> live(~p"/play/hex_pong")
+
+      html =
+        play_to_the_end(view, %{"score" => %{"p1" => 1, "p2" => 2}, "ended_early" => true})
+
+      assert html =~ "AI won"
+      assert html =~ "retro-game-ended-early"
+      assert html =~ "retro-game-recorded"
+      assert_receive {:game_result_recorded, %{p1_nickname: ^nick, outcome: "p2", ranked: true}}
     end
 
     test "a nickname typed without signing in plays unranked", %{conn: conn} do

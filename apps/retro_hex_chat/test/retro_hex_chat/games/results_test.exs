@@ -119,6 +119,16 @@ defmodule RetroHexChat.Games.ResultsTest do
       assert {:ok, %{personal_best: false}} =
                Results.record(ai_match(ana, "hex_pong", pong(11, 0, 1)))
     end
+
+    test "ranks a match ended early as it stood, a best score included", %{ana: ana} do
+      early = fn p1, p2 -> %{"score" => %{"p1" => p1, "p2" => p2}, "ended_early" => true} end
+
+      assert {:ok, %{ranked: true, outcome: "p1"}} =
+               Results.record(ai_match(ana, "hex_pong", early.(4, 2)))
+
+      assert {:ok, %{ranked: true, outcome: "none", personal_best: true}} =
+               Results.record(ai_match(ana, "hex_raid", early.(700, 900)))
+    end
   end
 
   describe "standings/2" do

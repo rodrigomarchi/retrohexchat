@@ -101,8 +101,19 @@ defmodule RetroHexChatWeb.Components.UI.RetroGamesPanel do
                 ai: (@result && @result.p2_score) || 0
               )}
             </p>
-            <p class="text-xs text-muted-foreground" data-testid="retro-game-verdict">
+            <p
+              :if={verdict_label(@result)}
+              class="text-xs text-muted-foreground"
+              data-testid="retro-game-verdict"
+            >
               {verdict_label(@result)}
+            </p>
+            <p
+              :if={@result && @result.ended_early?}
+              class="text-xs text-muted-foreground"
+              data-testid="retro-game-ended-early"
+            >
+              {dgettext("games", "Ended early")}
             </p>
             <.badge :if={@record && @record.personal_best} variant="success">
               <:icon><Icons.icon_star class="h-3 w-3" /></:icon>
@@ -549,6 +560,8 @@ defmodule RetroHexChatWeb.Components.UI.RetroGamesPanel do
   defp status_label("error"), do: dgettext("games", "Error")
   defp status_label(_status), do: dgettext("games", "Loading")
 
+  # A points game ended early names nobody, and says only that it ended early.
+  defp verdict_label(%Result{outcome: :none, ended_early?: true}), do: nil
   defp verdict_label(%Result{outcome: :p1}), do: dgettext("games", "You won")
   defp verdict_label(%Result{outcome: :p2}), do: dgettext("games", "AI won")
   defp verdict_label(%Result{outcome: :draw}), do: dgettext("games", "Draw")

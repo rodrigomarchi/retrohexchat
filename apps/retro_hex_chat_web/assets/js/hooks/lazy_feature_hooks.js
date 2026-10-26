@@ -81,7 +81,7 @@ export const lazyFeatureHooks = {
   RetroGameCanvasHook: lazyFeatureHook({
     name: "RetroGameCanvasHook",
     loader: () => import("./games/retro_game_canvas_hook"),
-    serverEvents: ["retro_game_begin", "retro_game_stop"],
+    serverEvents: ["retro_game_begin", "retro_game_stop", "retro_game_quit"],
     readyEvent: "retro_game_canvas_ready",
     reason: "Solo retro game canvas and engine loading are only needed inside Retro Games.",
   }),

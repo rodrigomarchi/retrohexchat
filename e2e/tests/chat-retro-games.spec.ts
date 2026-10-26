@@ -2,6 +2,7 @@
  * @section M - Admin, Server Operations, Bots
  * @flow M36 [done] The Games folder is the catalogue: a game icon opens the game's home over the chat, and its Play opens the game in a tab of its own (features P2)
  * @flow M37 [done] Start -> Games -> Retro Games opens the folder, and the Arcade is still a window (features P2)
+ * @flow M41 [done] End pressed mid-match writes the match down as it stood: the score, who led, and "Ended early" (features P2)
  *
  * These @flow lines are the source of truth for e2e/TEST_CATALOG.md.
  * Edit them here, then run `make e2e.catalog` to regenerate the index.
@@ -10,6 +11,7 @@ import { test, expect } from "@playwright/test";
 import { ConnectPage, uniqueNickname } from "../pages/ConnectPage";
 import { ChatPage } from "../pages/ChatPage";
 import { shot } from "../helpers/screenshots";
+import { waitForView } from "../helpers/liveView";
 
 test.describe("Retro Games from the chat", () => {
   test("the Games folder opens Pixel Tanks' home, and its Play opens the game in a tab", async ({
@@ -81,5 +83,35 @@ test.describe("Retro Games from the chat", () => {
     await expect(chat.gameFolderIcon("pixel_tanks")).toBeVisible();
 
     await chat.openArcadeFromDesktopShortcut();
+  });
+
+  test("End mid-match writes the match down as it stood", async ({ page }) => {
+    const connect = new ConnectPage(page);
+    const chat = new ChatPage(page);
+
+    await connect.open();
+    await connect.enterNickname(uniqueNickname("quit"));
+    await connect.registerWithPassword("pass12345");
+    await chat.waitUntilConnected();
+
+    await chat.openGamesFolder();
+    const games = await chat.openGameFromFolder("hex_pong");
+    await waitForView(games);
+
+    await games.getByTestId("retro-game-start-ai").click();
+    await expect(games.getByTestId("retro-game-end-match")).toBeVisible();
+    // Long enough to be a match the server keeps: anything under 3 s is not.
+    await games.waitForTimeout(4000);
+    await games.getByTestId("retro-game-end-match").click();
+
+    const result = games.getByTestId("retro-game-result");
+    await expect(result).toBeVisible();
+    await expect(result.getByTestId("retro-game-ended-early")).toBeVisible();
+    await expect(result.getByTestId("retro-game-verdict")).toBeVisible();
+    await shot(result, "hex-pong-ended-early");
+
+    // Again starts another match from a fresh engine.
+    await games.getByTestId("retro-game-play-again").click();
+    await expect(games.getByTestId("retro-game-start-ai")).toBeVisible();
   });
 });

@@ -210,19 +210,24 @@ defmodule RetroHexChatWeb.App.PlayLive do
      )}
   end
 
-  # Ending a match leaves the game on screen, ready for another: the game's
-  # home, where another game is chosen, is still open in the chat's tab.
+  # End mid-match ends it as it stands: the canvas reports the score, and that
+  # report finishes the match like any other.
   def handle_event(
         "retro_games_end",
         _params,
-        %{assigns: %{selected_game: %{id: game_id}}} = socket
+        %{assigns: %{status: "playing", selected_game: %{id: game_id}}} = socket
       ) do
-    {:noreply,
-     socket
-     |> stop_playing()
-     |> push_event("retro_game_stop", %{game_id: game_id})
-     |> assign(status: "ready", canvas_ready: false, result: nil, record: nil, error_message: nil)}
+    {:noreply, push_event(socket, "retro_game_quit", %{game_id: game_id})}
   end
+
+  def handle_event("retro_games_end", _params, socket), do: {:noreply, reset_match(socket)}
+
+  # The canvas had no match left to end: the game is made ready for another.
+  def handle_event("retro_game_stopped", params, %{assigns: %{selected_game: %{id: id}}} = socket) do
+    if game_id(params) == id, do: {:noreply, reset_match(socket)}, else: {:noreply, socket}
+  end
+
+  def handle_event("retro_game_stopped", _params, socket), do: {:noreply, socket}
 
   # Minting is a deliberate act, not a side effect of opening a game: a link per
   # window opened would fill the table with addresses nobody ever sent.
@@ -327,6 +332,17 @@ defmodule RetroHexChatWeb.App.PlayLive do
   end
 
   defp mark_canvas_ready(socket, _game_id), do: socket
+
+  # A match left unplayed leaves the game on screen, ready for another: the
+  # game's home, where another game is chosen, is still open in the chat's tab.
+  defp reset_match(%{assigns: %{selected_game: %{id: game_id}}} = socket) do
+    socket
+    |> stop_playing()
+    |> push_event("retro_game_stop", %{game_id: game_id})
+    |> assign(status: "ready", canvas_ready: false, result: nil, record: nil, error_message: nil)
+  end
+
+  defp reset_match(socket), do: socket
 
   # Only a match this page started can finish: a result arriving in any other
   # state is a canvas reporting on a game nobody here began.

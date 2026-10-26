@@ -41,6 +41,10 @@
  * no `schema`, `ai`, `disconnectResult`, `cues` or snapshot hooks; its
  * `broadcast()` does nothing and its `finish({ result })` only tells the page.
  *
+ * `quit()` ends a solo match early, as it stands: the page is told the score
+ * (`standing`, or for a two-player game the score `disconnectResult` reads)
+ * with `ended_early: true` and nobody named the winner.
+ *
  * The phase hooks in `flow.states` receive the game and use its public
  * surface: `gameState`, `localInputs`, `remoteInputs`, `audio`, `broadcast()`,
  * `invalidate()`, `updateOpponent()`, `finish()` and `flow.go()`; key hooks
@@ -269,6 +273,24 @@ export function defineGame(def) {
         if (broadcast) this._broadcastState();
       }
       this._reportResult(result);
+    }
+
+    /**
+     * End a solo match where it stands, reporting its score once.
+     * @returns {boolean} whether a match was running to end
+     */
+    quit() {
+      if (this.mode !== "solo" || !this.stepping || !this.gameState) return false;
+      if (this.gameState.phase === final) return false;
+      const { score } = (def.standing ?? def.disconnectResult)(this);
+      this._stopSteps();
+      this.setKeyboardCaptured(false);
+      this._cancelPendingPhase();
+      this.gameState.phase = final;
+      this._onMatchAbandoned();
+      this._invalidate();
+      this._reportResult({ score, ended_early: true });
+      return true;
     }
 
     // ── GameEngine hooks ──

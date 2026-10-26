@@ -10,6 +10,11 @@ defmodule RetroHexChat.Games.Result do
   the one place that reads them all, so every reader — the result panel, the
   ledger, a card in a channel — sees one shape.
 
+  A match ended early (End pressed mid-match, `ended_early: true`) is read as
+  it stood: a versus match goes to whoever leads, a level score is a draw, and
+  a score or co-op game keeps its points and names nobody. The score decides,
+  never a `winner` the browser sends with it.
+
   The payload comes from a browser and is never trusted: an unknown game, a
   missing or negative score, and a score past what the game can produce are
   all refused here, before anything is stored or shown as a record.
@@ -18,7 +23,7 @@ defmodule RetroHexChat.Games.Result do
   alias RetroHexChat.Games.Catalog
 
   @enforce_keys [:game_id, :p1_score, :p2_score, :outcome]
-  defstruct [:game_id, :p1_score, :p2_score, :outcome, disconnected?: false]
+  defstruct [:game_id, :p1_score, :p2_score, :outcome, disconnected?: false, ended_early?: false]
 
   @typedoc """
   Who won, by side. `:none` is a match that names nobody — a disconnect, or a
@@ -31,7 +36,8 @@ defmodule RetroHexChat.Games.Result do
           p1_score: non_neg_integer(),
           p2_score: non_neg_integer(),
           outcome: outcome(),
-          disconnected?: boolean()
+          disconnected?: boolean(),
+          ended_early?: boolean()
         }
 
   @outcomes ~w(p1 p2 draw coop_win coop_loss none)a
@@ -59,7 +65,7 @@ defmodule RetroHexChat.Games.Result do
     with true <- Catalog.valid_game_id?(game_id) || {:error, :unknown_game},
          {:ok, p1, p2} <- scores(payload),
          :ok <- within_ceiling(game_id, p1, p2),
-         outcome = outcome(verdict(game_id), field(payload, "winner"), disconnected?(payload)),
+         outcome = read_outcome(game_id, payload, p1, p2),
          :ok <- agrees(Catalog.ranking(game_id), outcome, p1, p2) do
       {:ok,
        %__MODULE__{
@@ -67,7 +73,8 @@ defmodule RetroHexChat.Games.Result do
          p1_score: p1,
          p2_score: p2,
          outcome: outcome,
-         disconnected?: disconnected?(payload)
+         disconnected?: disconnected?(payload),
+         ended_early?: ended_early?(payload)
        }}
     end
   end
@@ -111,6 +118,19 @@ defmodule RetroHexChat.Games.Result do
     if p1 <= ceiling and p2 <= ceiling, do: :ok, else: {:error, :implausible}
   end
 
+  defp read_outcome(game_id, payload, p1, p2) do
+    if ended_early?(payload) and not disconnected?(payload) do
+      standing(Catalog.ranking(game_id), p1, p2)
+    else
+      outcome(verdict(game_id), field(payload, "winner"), disconnected?(payload))
+    end
+  end
+
+  defp standing(:versus, p1, p2) when p1 > p2, do: :p1
+  defp standing(:versus, p1, p2) when p2 > p1, do: :p2
+  defp standing(:versus, _p1, _p2), do: :draw
+  defp standing(_score_or_coop, _p1, _p2), do: :none
+
   # Which reading the `winner` field gets: a side, the pair, or none at all.
   defp verdict(game_id) do
     case Catalog.ranking(game_id) do
@@ -139,11 +159,12 @@ defmodule RetroHexChat.Games.Result do
   defp agrees(_ranking, _outcome, _p1, _p2), do: :ok
 
   defp disconnected?(payload), do: field(payload, "disconnected") == true
+  defp ended_early?(payload), do: field(payload, "ended_early") == true
 
   # A payload pushed from a hook arrives with string keys; one built in a test
   # or relayed through a process may carry atoms.
   @atom_keys Map.new(
-               ~w(score p1 p2 score_p1 score_p2 score1 score2 winner disconnected),
+               ~w(score p1 p2 score_p1 score_p2 score1 score2 winner disconnected ended_early),
                &{&1, String.to_atom(&1)}
              )
 

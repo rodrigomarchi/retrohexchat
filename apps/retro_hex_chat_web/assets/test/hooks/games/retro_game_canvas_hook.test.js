@@ -34,12 +34,18 @@ function buildHook(engineFactory, context = mountContext()) {
   );
 }
 
+/** The engine is loaded once the hook says so to the server. */
+const ready = (hook) =>
+  vi.waitFor(() =>
+    expect(hook.pushEvent).toHaveBeenCalledWith("retro_game_canvas_ready", expect.anything()),
+  );
+
 describe("RetroGameCanvasHook lazy registration", () => {
   it("registers the server event contract", () => {
     const meta = lazyFeatureHooks.RetroGameCanvasHook.__lazyFeature;
 
     expect(meta.name).toBe("RetroGameCanvasHook");
-    expect(meta.serverEvents).toEqual(["retro_game_begin", "retro_game_stop"]);
+    expect(meta.serverEvents).toEqual(["retro_game_begin", "retro_game_stop", "retro_game_quit"]);
     expect(meta.readyEvent).toBe("retro_game_canvas_ready");
     expect(meta.reason).toMatch(/solo/i);
   });
@@ -137,5 +143,52 @@ describe("RetroGameCanvasHook", () => {
     hook.destroyed();
     expect(second.stop).toHaveBeenCalledOnce();
     expect(hook.engine).toBeNull();
+  });
+
+  it("ends the match as it stands on the server's quit event, and the engine's report goes up", async () => {
+    let onGameEnd;
+    const engine = buildEngine({
+      quit: vi.fn(() => {
+        onGameEnd({ score: { p1: 3, p2: 1 }, ended_early: true });
+        return true;
+      }),
+    });
+    const eventHandlers = {};
+    const hook = buildHook((options) => {
+      onGameEnd = options.onGameEnd;
+      return Promise.resolve(engine);
+    });
+    hook.handleEvent.mockImplementation((event, cb) => {
+      eventHandlers[event] = cb;
+    });
+
+    hook.mounted();
+    await ready(hook);
+    eventHandlers.retro_game_quit({ game_id: "other_game" });
+    expect(engine.quit).not.toHaveBeenCalled();
+    eventHandlers.retro_game_quit({ game_id: "hex_pong" });
+
+    expect(engine.quit).toHaveBeenCalledOnce();
+    expect(hook.pushEvent).toHaveBeenCalledWith("retro_game_result", {
+      score: { p1: 3, p2: 1 },
+      ended_early: true,
+      game_id: "hex_pong",
+    });
+    expect(engine.stop).not.toHaveBeenCalled();
+  });
+
+  it("says so when the engine had no match left to end", async () => {
+    const engine = buildEngine({ quit: vi.fn(() => false) });
+    const eventHandlers = {};
+    const hook = buildHook(() => Promise.resolve(engine));
+    hook.handleEvent.mockImplementation((event, cb) => {
+      eventHandlers[event] = cb;
+    });
+
+    hook.mounted();
+    await ready(hook);
+    eventHandlers.retro_game_quit({ game_id: "hex_pong" });
+
+    expect(hook.pushEvent).toHaveBeenCalledWith("retro_game_stopped", { game_id: "hex_pong" });
   });
 });

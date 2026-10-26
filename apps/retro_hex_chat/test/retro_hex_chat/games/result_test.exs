@@ -131,6 +131,42 @@ defmodule RetroHexChat.Games.ResultTest do
     end
   end
 
+  # End pressed mid-match: the match as it stood. A versus match is decided by
+  # its score, whatever a browser claims; points and co-op games name nobody.
+  describe "normalize/2 on a match ended early" do
+    test "a versus match goes to whoever leads, and a level score is a draw" do
+      for {p1, p2, outcome} <- [{3, 2, :p1}, {2, 3, :p2}, {2, 2, :draw}],
+          winner <- [nil, 1, 2, 0] do
+        payload = %{"score" => %{"p1" => p1, "p2" => p2}, "ended_early" => true}
+        payload = if winner, do: Map.put(payload, "winner", winner), else: payload
+
+        assert {:ok,
+                %Result{
+                  outcome: ^outcome,
+                  p1_score: ^p1,
+                  p2_score: ^p2,
+                  ended_early?: true,
+                  disconnected?: false
+                }} = Result.normalize("hex_pong", payload)
+      end
+    end
+
+    test "a score game and a co-op game keep their points and name nobody" do
+      payload = %{"score" => %{"p1" => 900, "p2" => 300}, "ended_early" => true}
+
+      assert {:ok, %Result{outcome: :none, p1_score: 900, ended_early?: true}} =
+               Result.normalize("hex_raid", payload)
+
+      assert {:ok, %Result{outcome: :none, ended_early?: true}} =
+               Result.normalize("block_breakers", Map.put(payload, "winner", 0))
+    end
+
+    test "a match played to its end is not one ended early" do
+      assert {:ok, %Result{ended_early?: false}} =
+               Result.normalize("hex_pong", %{"score" => %{"p1" => 3, "p2" => 1}, "winner" => 1})
+    end
+  end
+
   describe "normalize/2 refuses" do
     test "a game outside the catalogue" do
       assert {:error, :unknown_game} =

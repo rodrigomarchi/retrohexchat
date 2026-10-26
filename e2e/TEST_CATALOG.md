@@ -135,8 +135,8 @@ make e2e.catalog.check    # verify it is current (also runs in make ci)
 ## Coverage
 
 - **261 spec files** under `e2e/tests/`.
-- **658 Playwright `test()` cases**.
-- **601 documented flows**, 600 done, 1 not done.
+- **659 Playwright `test()` cases**.
+- **602 documented flows**, 601 done, 1 not done.
 - **Every spec documents its own flows.**
 
 ## Flow index
@@ -403,6 +403,7 @@ Grouped by section. Every row comes from an `@flow` line in the spec itself.
 | M38 | An admin gives a bot a language with /bot set or Bot Management, and its flag is drawn beside its nickname in the user list, the roster and its detail | `tests/chat-bot-management-window.spec.ts` | done |
 | M39 | /bot set game_announce on gives a bot the Game capability, which Bot Management shows as a working capability that can be switched off | `tests/chat-bot-management-window.spec.ts` | done |
 | M40 | Play on an arcade game's public page opens the Arcade on that game for a member, and asks a visitor to sign in from the Arcade icon | `tests/chat-arcade.spec.ts` | done |
+| M41 | End pressed mid-match writes the match down as it stood: the score, who led, and "Ended early" (features P2) | `tests/chat-retro-games.spec.ts` | done |
 
 ### N - P2P, File, Call, Game
 

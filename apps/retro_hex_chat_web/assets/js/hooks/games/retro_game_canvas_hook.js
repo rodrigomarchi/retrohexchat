@@ -22,6 +22,10 @@ export function createRetroGameCanvasHook({ engineFactory = createGameEngine } =
         this._stopMatch(payload);
       });
 
+      this.handleEvent("retro_game_quit", (payload = {}) => {
+        this._quitMatch(payload);
+      });
+
       this._enginePromise = this._maybeInitGame();
     },
 
@@ -100,6 +104,14 @@ export function createRetroGameCanvasHook({ engineFactory = createGameEngine } =
       if (payload.game_id && payload.game_id !== this._gameId) return;
       this._cleanup();
       this._enginePromise = this._maybeInitGame();
+    },
+
+    // End pressed mid-match: the engine reports the match as it stands, and
+    // that report reaches the server the way a finished match's does.
+    _quitMatch(payload = {}) {
+      if (payload.game_id && payload.game_id !== this._gameId) return;
+      if (this.engine?.quit?.()) return;
+      this.pushEvent("retro_game_stopped", { game_id: this._gameId });
     },
 
     _reportResult(result = {}) {
