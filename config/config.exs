@@ -48,46 +48,45 @@ config :retro_hex_chat, :expiry,
 config :retro_hex_chat, Oban,
   engine: Oban.Engines.Basic,
   repo: RetroHexChat.Repo,
-  plugins: [
-    {Oban.Plugins.Cron,
-     crontab: [
-       {"@reboot", RetroHexChat.Jobs.ServerBanExpiryWorker},
-       {"@reboot", RetroHexChat.Jobs.RegisteredChannelExpiryWorker},
-       {"@reboot", RetroHexChat.Jobs.RegisteredNickExpiryWorker},
-       {"@reboot", RetroHexChat.Jobs.AttachmentOrphanCleanupWorker},
-       {"@reboot", RetroHexChat.Jobs.TrustedDeviceExpiryWorker},
-       {"@reboot", RetroHexChat.Jobs.ChatDeviceSessionCleanupWorker},
-       {"@reboot", RetroHexChat.Jobs.RuntimeStaleCleanupWorker},
-       {"@reboot", RetroHexChat.Jobs.OpenLobbyExpiryWorker},
-       {"@reboot", RetroHexChat.Jobs.IgnoreExpiredCleanupWorker},
-       {"@reboot", RetroHexChat.Jobs.ScrapedPagePruneWorker},
-       {"@reboot", RetroHexChat.Jobs.BotGreetingPruneWorker},
-       # Every boot is a deploy or a restart: announce what the release changed.
-       {"@reboot", RetroHexChat.Jobs.IndexNowWorker, args: %{"scope" => "deploy"}},
-       {"@hourly", RetroHexChat.Jobs.ServerBanExpiryWorker},
-       {"0 */6 * * *", RetroHexChat.Jobs.RegisteredChannelExpiryWorker},
-       {"15 */6 * * *", RetroHexChat.Jobs.RegisteredNickExpiryWorker},
-       {"30 * * * *", RetroHexChat.Jobs.AttachmentOrphanCleanupWorker},
-       {"35 * * * *", RetroHexChat.Jobs.TrustedDeviceExpiryWorker},
-       {"*/15 * * * *", RetroHexChat.Jobs.ChatDeviceSessionCleanupWorker},
-       # Every five minutes, because the reminder window is fifteen: a sweep
-       # slower than a third of the window can miss an event entirely.
-       {"*/5 * * * *", RetroHexChat.Jobs.EventReminderWorker},
-       {"45 * * * *", RetroHexChat.Jobs.RuntimeStaleCleanupWorker},
-       {"*/5 * * * *", RetroHexChat.Jobs.OpenLobbyExpiryWorker},
-       {"50 * * * *", RetroHexChat.Jobs.ScrapedPagePruneWorker},
-       {"55 * * * *", RetroHexChat.Jobs.IgnoreExpiredCleanupWorker},
-       {"5 4 * * *", RetroHexChat.Jobs.BotGreetingPruneWorker},
-       # Yesterday in each game's channel, once its day is complete.
-       {"10 0 * * *", RetroHexChat.Jobs.GameDigestWorker},
-       # Monday, after the digest: last week's challenge closes, this week's opens.
-       {"15 0 * * 1", RetroHexChat.Jobs.GameChallengeWorker},
-       # Shortly after midnight UTC, once yesterday's archive pages are complete.
-       {"20 0 * * *", RetroHexChat.Jobs.IndexNowWorker, args: %{"scope" => "archive"}}
-     ]},
-    {Oban.Plugins.Lifeline, rescue_after: :timer.minutes(6)},
-    Oban.Plugins.Pruner
+  cron: [
+    crontab: [
+      {"@reboot", RetroHexChat.Jobs.ServerBanExpiryWorker},
+      {"@reboot", RetroHexChat.Jobs.RegisteredChannelExpiryWorker},
+      {"@reboot", RetroHexChat.Jobs.RegisteredNickExpiryWorker},
+      {"@reboot", RetroHexChat.Jobs.AttachmentOrphanCleanupWorker},
+      {"@reboot", RetroHexChat.Jobs.TrustedDeviceExpiryWorker},
+      {"@reboot", RetroHexChat.Jobs.ChatDeviceSessionCleanupWorker},
+      {"@reboot", RetroHexChat.Jobs.RuntimeStaleCleanupWorker},
+      {"@reboot", RetroHexChat.Jobs.OpenLobbyExpiryWorker},
+      {"@reboot", RetroHexChat.Jobs.IgnoreExpiredCleanupWorker},
+      {"@reboot", RetroHexChat.Jobs.ScrapedPagePruneWorker},
+      {"@reboot", RetroHexChat.Jobs.BotGreetingPruneWorker},
+      # Every boot is a deploy or a restart: announce what the release changed.
+      {"@reboot", RetroHexChat.Jobs.IndexNowWorker, args: %{"scope" => "deploy"}},
+      {"@hourly", RetroHexChat.Jobs.ServerBanExpiryWorker},
+      {"0 */6 * * *", RetroHexChat.Jobs.RegisteredChannelExpiryWorker},
+      {"15 */6 * * *", RetroHexChat.Jobs.RegisteredNickExpiryWorker},
+      {"30 * * * *", RetroHexChat.Jobs.AttachmentOrphanCleanupWorker},
+      {"35 * * * *", RetroHexChat.Jobs.TrustedDeviceExpiryWorker},
+      {"*/15 * * * *", RetroHexChat.Jobs.ChatDeviceSessionCleanupWorker},
+      # Every five minutes, because the reminder window is fifteen: a sweep
+      # slower than a third of the window can miss an event entirely.
+      {"*/5 * * * *", RetroHexChat.Jobs.EventReminderWorker},
+      {"45 * * * *", RetroHexChat.Jobs.RuntimeStaleCleanupWorker},
+      {"*/5 * * * *", RetroHexChat.Jobs.OpenLobbyExpiryWorker},
+      {"50 * * * *", RetroHexChat.Jobs.ScrapedPagePruneWorker},
+      {"55 * * * *", RetroHexChat.Jobs.IgnoreExpiredCleanupWorker},
+      {"5 4 * * *", RetroHexChat.Jobs.BotGreetingPruneWorker},
+      # Yesterday in each game's channel, once its day is complete.
+      {"10 0 * * *", RetroHexChat.Jobs.GameDigestWorker},
+      # Monday, after the digest: last week's challenge closes, this week's opens.
+      {"15 0 * * 1", RetroHexChat.Jobs.GameChallengeWorker},
+      # Shortly after midnight UTC, once yesterday's archive pages are complete.
+      {"20 0 * * *", RetroHexChat.Jobs.IndexNowWorker, args: %{"scope" => "archive"}}
+    ]
   ],
+  lifeline: [rescue_after: {6, :minutes}],
+  pruner: [],
   queues: [rss: 2, maintenance: 1, bots: 2, scrape: 2, persistence: 1, push: 3]
 
 # IndexNow announces changed public pages to Bing and Yandex. The key is public

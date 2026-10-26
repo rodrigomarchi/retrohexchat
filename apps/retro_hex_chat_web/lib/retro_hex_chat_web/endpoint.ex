@@ -12,13 +12,17 @@ defmodule RetroHexChatWeb.Endpoint do
     same_site: gettext("Lax")
   ]
 
+  # A page holds a few channels at a time; the ceiling stops one connection
+  # from holding many.
   socket "/socket", RetroHexChatWeb.UserSocket,
     websocket: [log: :debug],
-    longpoll: false
+    longpoll: false,
+    max_channels_per_transport: 10
 
   socket "/live", Phoenix.LiveView.Socket,
     websocket: [connect_info: [:uri, session: @session_options], log: :debug],
-    longpoll: [connect_info: [:uri, session: @session_options], log: :debug]
+    longpoll: [connect_info: [:uri, session: @session_options], log: :debug],
+    max_channels_per_transport: 10
 
   # esbuild's dynamic-import chunks, ahead of the general handler because they
   # need a different cache policy. `Plug.Static` only grants `immutable` to a

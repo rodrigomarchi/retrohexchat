@@ -38,7 +38,10 @@ config :retro_hex_chat, Oban,
   repo: RetroHexChat.Repo,
   testing: :manual,
   queues: false,
-  plugins: false
+  plugins: false,
+  cron: false,
+  lifeline: false,
+  pruner: false
 
 # We don't run a server during test. If one is required,
 # you can enable the server option below.
