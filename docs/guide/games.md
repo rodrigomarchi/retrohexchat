@@ -58,6 +58,14 @@ The engine underneath is `js/lib/game_engine.js`; a game never imports it.
 `test/lib/games/registry.test.js` and `apps/retro_hex_chat_web/test/retro_hex_chat_web/games/registry_test.exs`
 fail until the two sides, the folder and its pins agree.
 
+**A game for one player** (`players: 1` in its definition) is `"soloOnly": true` in
+`registry.json` and in `@solo_only_game_ids` of `Games.Catalog` (always also solo and ranked by
+score). It has no `ai.js`, no snapshot or end schema and no guest: the lifecycle tests that need a
+channel between two players skip it (`TWO_PLAYER_ENGINE_GAME_IDS` in `test/support/games/engines.js`),
+and its pins are `pinGame(id, { soloOnly: true, script, endScript })` — the solo match on its key
+script, one played to the end, and the same match twice. Its result is `soloResult(points)`, and
+the server records it with origin `"solo"`.
+
 The rest of what a new game needs, and what stops you when it is missing:
 
 | Step | Where | Caught by |

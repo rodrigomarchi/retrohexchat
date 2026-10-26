@@ -150,14 +150,20 @@ defmodule RetroHexChatWeb.GameCatalog do
 
   @doc """
   What the screenshot capture needs to open each game, as plain data — the
-  capture script is JavaScript and reads it as JSON.
+  capture script is JavaScript and reads it as JSON. Read from the catalogues
+  alone: the capture runs with the application stopped (`mix run --no-start`),
+  where nothing that asks the endpoint (a screenshot's path, a verified
+  route) can be built.
   """
   @spec capture_targets() :: [map()]
   def capture_targets do
     Enum.map(Arcade.list_games(), fn game ->
       %{slug: slug(game.id), kind: "arcade", engine: game.engine, url: Arcade.game_url(game)}
     end) ++
-      Enum.map(list(:multiplayer), &%{slug: &1.slug, kind: "multiplayer", path: play_path(&1)})
+      Enum.map(Games.base_games(), fn game ->
+        # The page's route written out: a verified route asks the endpoint too.
+        %{slug: slug(game.id), kind: "multiplayer", path: "/play/#{game.id}"}
+      end)
   end
 
   @doc "A game's page, unprefixed — the canonical address every locale's version names."

@@ -23,4 +23,11 @@ defmodule RetroHexChatWeb.Games.RegistryTest do
       assert solo == Catalog.solo_game_id?(id), "#{id}: registry solo #{solo}"
     end
   end
+
+  test "marks one-player games exactly as the catalog does", %{registry: registry} do
+    for {id, entry} <- registry do
+      solo_only = Map.get(entry, "soloOnly", false)
+      assert solo_only == Catalog.solo_only?(id), "#{id}: registry soloOnly #{solo_only}"
+    end
+  end
 end

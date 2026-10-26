@@ -253,7 +253,8 @@ async function captureArcade(target) {
 
 async function captureMatch(page, target) {
   await page.goto(`${baseURL}${target.path}`);
-  await page.getByRole("button", { name: "Play vs AI" }).click();
+  // "Play vs AI", or "Play" for a game played alone: the same button.
+  await page.getByTestId("retro-game-start-ai").click();
   await page.waitForTimeout(MATCH_WARMUP);
 
   // The canvas's own pixels: the desktop's toolbars overlap it on screen.
@@ -352,7 +353,10 @@ async function connectWithNewNick(page) {
   await page.locator("#reg-password").fill(password);
   await page.locator("#reg-password-confirm").fill(password);
   await page.getByTestId("register-btn").click();
-  await page.waitForURL(/\/chat/, { timeout: 30_000 });
+  // Signed in is anywhere past the connect screen: the chat opens on a room.
+  await page.waitForURL((url) => !url.pathname.startsWith("/connect"), {
+    timeout: 30_000,
+  });
 }
 
 async function writeCard(slug, webp) {

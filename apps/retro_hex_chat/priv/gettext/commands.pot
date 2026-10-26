@@ -3035,7 +3035,7 @@ msgstr ""
 msgid "Stop keeping a message in view. The message itself stays where it is — only the pin goes.\nOperators only."
 msgstr ""
 
-#: lib/retro_hex_chat/commands/handler/guards.ex:181
+#: lib/retro_hex_chat/commands/handler/guards.ex:195
 #, elixir-autogen, elixir-format
 msgid "That is not a message id"
 msgstr ""
@@ -3286,7 +3286,7 @@ msgstr ""
 msgid "You must be a channel operator to register the channel"
 msgstr ""
 
-#: lib/retro_hex_chat/commands/handler/guards.ex:124
+#: lib/retro_hex_chat/commands/handler/guards.ex:138
 #, elixir-autogen, elixir-format
 msgid "%{game} has no mode called %{mode}."
 msgstr ""
@@ -3348,12 +3348,12 @@ msgstr ""
 msgid "That nickname is reserved"
 msgstr ""
 
-#: lib/retro_hex_chat/commands/handlers/challenge.ex:54
+#: lib/retro_hex_chat/commands/handlers/challenge.ex:55
 #, elixir-autogen, elixir-format
 msgid "Usage: /challenge <nickname> [mode]"
 msgstr ""
 
-#: lib/retro_hex_chat/commands/handler/guards.ex:109
+#: lib/retro_hex_chat/commands/handler/guards.ex:123
 #, elixir-autogen, elixir-format
 msgid "Use this in a game's own channel, like %{channel}."
 msgstr ""
@@ -3524,4 +3524,9 @@ msgstr ""
 #: lib/retro_hex_chat/commands/handlers/bot.ex:219
 #, elixir-autogen, elixir-format
 msgid "[BotService] Bot '%{name}' created."
+msgstr ""
+
+#: lib/retro_hex_chat/commands/handler/guards.ex:110
+#, elixir-autogen, elixir-format
+msgid "%{game} is a game for one player."
 msgstr ""

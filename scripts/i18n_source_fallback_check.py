@@ -158,6 +158,9 @@ TECHNICAL_SOURCE_ALLOWLIST = [
     # plural. The singular matching English is the translation, not the absence
     # of one. The same is true of "object" / "objecten".
     r"^%\{count\} components?$",
+    # French says "points" for a game's points: "%{points} points" is the
+    # translation.
+    r"^%\{points\} points$",
     r"^%\{count\} objects?$",
     # ── Deliberately literal ─────────────────────────────────────
     # Game titles are names. "Hex Pong" is what the icon says in every locale,

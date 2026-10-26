@@ -27,7 +27,7 @@ defmodule RetroHexChat.Games.Schema.GameResult do
 
   @type t :: %__MODULE__{}
 
-  @origins ~w(ai p2p)
+  @origins ~w(ai p2p solo)
   @difficulties ~w(easy normal hard)
   @outcomes Enum.map(Result.outcomes(), &Atom.to_string/1)
 
@@ -83,14 +83,24 @@ defmodule RetroHexChat.Games.Schema.GameResult do
     )
   end
 
-  # The two origins are two shapes of the same row: the computer has a
-  # difficulty and no nickname, a person has a nickname and no difficulty.
+  # The origins are shapes of the same row: the computer has a difficulty and
+  # no nickname, a person has a nickname and no difficulty, and a player alone
+  # has neither.
   defp validate_origin_shape(changeset) do
     case get_field(changeset, :origin) do
       "ai" -> validate_required(changeset, [:difficulty])
       "p2p" -> validate_required(changeset, [:p2_nickname, :lobby_token])
+      "solo" -> refuse_present(changeset, [:difficulty, :p2_nickname])
       _other -> changeset
     end
+  end
+
+  defp refuse_present(changeset, fields) do
+    Enum.reduce(fields, changeset, fn field, acc ->
+      if get_field(acc, field) == nil,
+        do: acc,
+        else: add_error(acc, field, "must be empty for a match played alone")
+    end)
   end
 
   @doc """

@@ -171,9 +171,14 @@ defmodule RetroHexChat.Games.Announcer do
         bindings
       )
 
-  # Against the computer, a best is the news; who won is the score beside it.
-  defp sentence(%GameResult{origin: "ai", personal_best: true}, bindings),
-    do: dgettext("games", "%{p1} set a personal best of %{p1_score} in %{game}", bindings)
+  # Against the computer or alone, a best is the news; who won is the score beside it.
+  defp sentence(%GameResult{origin: origin, personal_best: true}, bindings)
+       when origin in ["ai", "solo"],
+       do: dgettext("games", "%{p1} set a personal best of %{p1_score} in %{game}", bindings)
+
+  # A run played alone was against nobody: what it scored.
+  defp sentence(%GameResult{origin: "solo"}, bindings),
+    do: dgettext("games", "%{p1} scored %{p1_score} in %{game}", bindings)
 
   defp sentence(%GameResult{outcome: "p1"}, bindings),
     do: dgettext("games", "%{p1} beat %{p2} %{p1_score} × %{p2_score} in %{game}", bindings)

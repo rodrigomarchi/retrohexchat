@@ -3,6 +3,7 @@ defmodule RetroHexChatWeb.SEO do
   SEO helpers for public URLs and search metadata.
   """
 
+  alias RetroHexChat.Games.Catalog
   alias RetroHexChatWeb.I18n
   alias RetroHexChatWeb.I18n.Locales
   alias RetroHexChatWeb.PublicPages
@@ -299,7 +300,7 @@ defmodule RetroHexChatWeb.SEO do
       "gamePlatform" => "Web browser",
       "operatingSystem" => "Web browser",
       "applicationCategory" => "GameApplication",
-      "playMode" => if(game.kind == :arcade, do: "SinglePlayer", else: "MultiPlayer"),
+      "playMode" => play_mode(game),
       "isAccessibleForFree" => true,
       "offers" => %{"@type" => "Offer", "price" => "0", "priceCurrency" => "USD"}
     }
@@ -307,6 +308,12 @@ defmodule RetroHexChatWeb.SEO do
     |> put_plays(plays)
     |> Jason.encode!(escape: :html_safe)
   end
+
+  # An arcade game and a one-player Retro Game are played alone.
+  defp play_mode(%{kind: :arcade}), do: "SinglePlayer"
+
+  defp play_mode(game),
+    do: if(Catalog.solo_only?(game.id), do: "SinglePlayer", else: "MultiPlayer")
 
   defp put_plays(data, plays) when is_integer(plays) and plays > 0 do
     Map.put(data, "interactionStatistic", %{

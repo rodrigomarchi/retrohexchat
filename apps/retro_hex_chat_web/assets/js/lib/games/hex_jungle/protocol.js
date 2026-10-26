@@ -160,3 +160,26 @@ export const WALL_BOX = Object.freeze({ w: 8, h: 16 });
 export const SCORPION_START = 76;
 export const SCORPION_EVERY = 8;
 export const SCORPION_BOX = Object.freeze({ w: 8, h: 8 });
+
+/** A treasure lies on the ground at x 124, 8 pixels square. */
+export const TREASURE_BOX = Object.freeze({ w: 8, h: 8 });
+export const TREASURES_TOTAL = 32;
+
+/**
+ * A life lost: the death's tune runs DEATH_TICKS (the clock stands still),
+ * then the player drops from the treetops at x 20 — or from the tunnel's roof
+ * at line 64 — a line a tick to the floor.
+ */
+export const DEATH_TICKS = 150;
+export const RESPAWN_Y = GROUND_Y - 66;
+export const RESPAWN_UNDER_Y = 64;
+
+/** What a tick says happened, one bit each, for the sounds to answer. */
+export const EVENT = Object.freeze({
+  JUMP: 1,
+  VINE: 2,
+  TREASURE: 4,
+  HOLE: 8,
+  DEATH: 16,
+  WALL: 32,
+});

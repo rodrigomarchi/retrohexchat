@@ -12,6 +12,7 @@ const DEFINITION_LOADERS = {
   hex_frost: () => import("./hex_frost/index.js"),
   hex_hockey: () => import("./hex_hockey/index.js"),
   hex_invaders: () => import("./hex_invaders/index.js"),
+  hex_jungle: () => import("./hex_jungle/index.js"),
   hex_outlaw: () => import("./hex_outlaw/index.js"),
   hex_raid: () => import("./hex_raid/index.js"),
   hex_skiing: () => import("./hex_skiing/index.js"),

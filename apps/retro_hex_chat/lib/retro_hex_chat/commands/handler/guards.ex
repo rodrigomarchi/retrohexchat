@@ -99,6 +99,20 @@ defmodule RetroHexChat.Commands.Handler.Guards do
     end
   end
 
+  @doc """
+  Refuses a game played alone: there is nobody to seat or invite, and the
+  refusal says how it is played instead.
+  """
+  @spec require_game_for_two(String.t()) :: :ok | {:error, String.t()}
+  def require_game_for_two(game_id) do
+    if Catalog.solo_only?(game_id) do
+      {:error,
+       dgettext("commands", "%{game} is a game for one player.", game: Catalog.game_name(game_id))}
+    else
+      :ok
+    end
+  end
+
   defp game_of(channel) do
     case Catalog.game_for_channel(channel) do
       {:ok, base_id} ->

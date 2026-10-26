@@ -2,22 +2,29 @@ import { describe, expect, it } from "vitest";
 import {
   EDGE_MAX,
   EDGE_MIN,
+  EVENT,
   GROUND_Y,
   PHASE,
   SCREENS,
   SEED,
   START_X,
+  TREASURE,
   UNDER_Y,
 } from "../../../../js/lib/games/hex_jungle/protocol.js";
 import { stepLeft, stepRight } from "../../../../js/lib/games/hex_jungle/world.js";
 import {
   changeScreen,
+  collectTreasure,
   createInitialState,
+  loseLife,
+  respawn,
+  stepRespawn,
   shiftingInset,
   vineX,
   stepPlayer,
   logsFor,
   stepTick,
+  tickClock,
 } from "../../../../js/lib/games/hex_jungle/physics.js";
 
 const NONE = { left: false, right: false, up: false, down: false, jump: false };
@@ -384,5 +391,136 @@ describe("the tunnel", () => {
 
   it("dies at the scorpion's touch", () => {
     expect(after(tunnel(screenOf(2, 0), { x: 74 }), {}, 1).phase).toBe(PHASE.DYING);
+  });
+});
+
+// ── Treasures, the clock and lives ──
+
+describe("treasures", () => {
+  // Scene 5 holds the treasure its object's two low bits name.
+  const ring = screenOf(5, 3);
+  const standingOnIt = (rest = {}) => playing(ring, { x: 122 }, { tick: 30, ...rest });
+
+  it("are worth their own points when touched, once", () => {
+    const taken = collectTreasure(standingOnIt());
+    expect(taken.score).toBe(2000 + TREASURE.RING.points);
+    expect(taken.treasures).toBe(1);
+    expect(collectTreasure(taken).score).toBe(taken.score);
+  });
+
+  it("stay taken when the screen comes round again", () => {
+    let state = collectTreasure(standingOnIt());
+    for (let i = 0; i < SCREENS; i++) state = changeScreen(state, 1);
+    expect(state.screen).toBe(ring);
+    expect(collectTreasure({ ...state, player: { ...state.player, x: 122 } }).score).toBe(
+      state.score,
+    );
+  });
+
+  it("end the expedition when the 32nd is taken", () => {
+    const last = collectTreasure(standingOnIt({ treasures: 31 }));
+    expect(last.treasures).toBe(32);
+    expect(last.phase).toBe(PHASE.FINISHED);
+  });
+
+  it("are out of reach from the tunnel", () => {
+    const below = standingOnIt({ underground: true });
+    expect(collectTreasure({ ...below, player: { ...below.player, y: UNDER_Y } }).score).toBe(2000);
+  });
+});
+
+describe("the clock", () => {
+  it("counts down a second every 60 ticks once running", () => {
+    let state = playing(screenOf(0, FIRE));
+    for (let i = 0; i < 60; i++) state = tickClock(state);
+    expect(state.timerTicks).toBe(20 * 60 * 60 - 60);
+
+    const stopped = { ...state, clockRunning: false };
+    expect(tickClock(stopped).timerTicks).toBe(stopped.timerTicks);
+  });
+
+  it("ends the expedition at zero", () => {
+    const last = tickClock({ ...playing(screenOf(0, FIRE)), timerTicks: 1 });
+    expect(last.timerTicks).toBe(0);
+    expect(last.phase).toBe(PHASE.FINISHED);
+  });
+});
+
+describe("a life lost", () => {
+  it("is taken from the three", () => {
+    expect(loseLife(playing(screenOf(0, FIRE))).lives).toBe(2);
+  });
+
+  it("drops the player from the trees at x 20, back to their feet in about a second", () => {
+    const dead = { ...playing(screenOf(0, FIRE), { x: 120 }), phase: PHASE.DYING, logs: [] };
+    let state = respawn(dead);
+    expect(state.player).toMatchObject({ x: START_X, y: GROUND_Y - 66 });
+    expect(state.phase).toBe(PHASE.RESPAWN);
+    let steps = 0;
+    while (state.phase === PHASE.RESPAWN && steps < 200) {
+      state = stepRespawn(state);
+      steps++;
+    }
+    expect(steps).toBe(66);
+    expect(state.player.y).toBe(GROUND_Y);
+    expect(state.phase).toBe(PHASE.PLAYING);
+  });
+
+  it("in the tunnel drops them from its roof, and sends the scorpion back to the middle", () => {
+    const dead = {
+      ...playing(screenOf(2, 0), { x: 74, y: UNDER_Y }, { underground: true, scorpionX: 74 }),
+      phase: PHASE.DYING,
+    };
+    const state = respawn(dead);
+    expect(state.player).toMatchObject({ x: START_X, y: 64 });
+    expect(state.underground).toBe(true);
+    expect(state.scorpionX).toBe(76);
+  });
+});
+
+// ── What a tick says happened, for the sounds ──
+
+describe("events", () => {
+  const fired = (state, bit) => (state.events & bit) !== 0;
+
+  it("a jump, on the tick it leaves the ground only", () => {
+    const start = playing(screenOf(0, FIRE), { x: 100 });
+    const seen = ticks(start, { jump: true }, 3);
+    expect(seen.slice(1).map((s) => fired(s, EVENT.JUMP))).toEqual([true, false, false]);
+  });
+
+  it("the vine caught", () => {
+    const caught = after(playing(screenOf(2, FIRE), { x: 110 }, { tick: 0 }), { jump: true }, 1);
+    expect(fired(caught, EVENT.VINE)).toBe(true);
+  });
+
+  it("a fall through a hole", () => {
+    const seen = ticks(playing(screenOf(0, FIRE), { x: 70 }), { right: true }, 8);
+    expect(seen.filter((s) => fired(s, EVENT.HOLE))).toHaveLength(1);
+  });
+
+  it("a death", () => {
+    const seen = ticks(playing(screenOf(0, FIRE), { x: 110 }), { right: true }, 30);
+    const died = seen.find((s) => s.phase === PHASE.DYING);
+    expect(fired(died, EVENT.DEATH)).toBe(true);
+  });
+
+  it("a treasure taken", () => {
+    const taken = after(playing(screenOf(5, 0), { x: 121 }, { tick: 30 }), { right: true }, 2);
+    expect(taken.treasures).toBe(1);
+    expect(
+      ticks(playing(screenOf(5, 0), { x: 121 }, { tick: 30 }), { right: true }, 2).some((s) =>
+        fired(s, EVENT.TREASURE),
+      ),
+    ).toBe(true);
+  });
+
+  it("a wall hit", () => {
+    const tunnel = playing(0b10000110, { x: 130, y: UNDER_Y }, { underground: true });
+    expect(ticks(tunnel, { right: true }, 10).some((s) => fired(s, EVENT.WALL))).toBe(true);
+  });
+
+  it("nothing, on a quiet tick", () => {
+    expect(after(playing(screenOf(0, FIRE), { x: 20 }), {}, 1).events).toBe(0);
   });
 });

@@ -10,6 +10,8 @@ defmodule RetroHexChat.Games.Result do
   the one place that reads them all, so every reader — the result panel, the
   ledger, a card in a channel — sees one shape.
 
+  A one-player game names nobody: its points are the whole of its result.
+
   A match ended early (End pressed mid-match, `ended_early: true`) is read as
   it stood: a versus match goes to whoever leads, a level score is a draw, and
   a score or co-op game keeps its points and names nobody. The score decides,
@@ -51,6 +53,9 @@ defmodule RetroHexChat.Games.Result do
   # good game: a versus match counts rounds, points or goals and never runs
   # into three digits; the score games count points.
   @ceilings %{versus: 99, score: 9_999_999, coop: 9_999_999}
+
+  # A game whose best is known: the jungle holds 2000 points and 32 treasures.
+  @game_ceilings %{"hex_jungle" => 114_000}
 
   @doc "Every outcome, in the order a column of them is validated against."
   @spec outcomes() :: [outcome()]
@@ -114,15 +119,24 @@ defmodule RetroHexChat.Games.Result do
   defp count(_value), do: :error
 
   defp within_ceiling(game_id, p1, p2) do
-    ceiling = Map.fetch!(@ceilings, Catalog.ranking(game_id))
+    ceiling =
+      Map.get_lazy(@game_ceilings, game_id, fn ->
+        Map.fetch!(@ceilings, Catalog.ranking(game_id))
+      end)
+
     if p1 <= ceiling and p2 <= ceiling, do: :ok, else: {:error, :implausible}
   end
 
   defp read_outcome(game_id, payload, p1, p2) do
-    if ended_early?(payload) and not disconnected?(payload) do
-      standing(Catalog.ranking(game_id), p1, p2)
-    else
-      outcome(verdict(game_id), field(payload, "winner"), disconnected?(payload))
+    cond do
+      Catalog.solo_only?(game_id) ->
+        :none
+
+      ended_early?(payload) and not disconnected?(payload) ->
+        standing(Catalog.ranking(game_id), p1, p2)
+
+      true ->
+        outcome(verdict(game_id), field(payload, "winner"), disconnected?(payload))
     end
   end
 

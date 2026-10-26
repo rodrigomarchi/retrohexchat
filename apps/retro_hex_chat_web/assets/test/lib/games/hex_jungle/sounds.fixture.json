@@ -1,0 +1,1330 @@
+[
+  {
+    "source": {
+      "kind": "Oscillator",
+      "type": "square",
+      "params": {
+        "frequency": [
+          ["set", 300, 1],
+          ["linear", 600, 1.08]
+        ]
+      }
+    },
+    "path": [
+      {
+        "kind": "Gain",
+        "params": {
+          "gain": [
+            ["set", 0.15, 1],
+            ["exp", 0.001, 1.08]
+          ]
+        }
+      },
+      {
+        "kind": "Gain",
+        "params": {
+          "gain": [["set", 0.3, 1]]
+        }
+      }
+    ],
+    "out": "speakers",
+    "start": 1,
+    "stop": 1.08
+  },
+  {
+    "source": {
+      "kind": "Oscillator",
+      "type": "square",
+      "params": {
+        "frequency": [["set", 392, 1.2]]
+      }
+    },
+    "path": [
+      {
+        "kind": "Gain",
+        "params": {
+          "gain": [
+            ["set", 0.12, 1.2],
+            ["exp", 0.001, 1.308]
+          ]
+        }
+      },
+      {
+        "kind": "Gain",
+        "params": {
+          "gain": [["set", 0.3, 1.2]]
+        }
+      }
+    ],
+    "out": "speakers",
+    "start": 1.2,
+    "stop": 1.308
+  },
+  {
+    "source": {
+      "kind": "Oscillator",
+      "type": "square",
+      "params": {
+        "frequency": [["set", 523, 1.32]]
+      }
+    },
+    "path": [
+      {
+        "kind": "Gain",
+        "params": {
+          "gain": [
+            ["set", 0.12, 1.32],
+            ["exp", 0.001, 1.428]
+          ]
+        }
+      },
+      {
+        "kind": "Gain",
+        "params": {
+          "gain": [["set", 0.3, 1.32]]
+        }
+      }
+    ],
+    "out": "speakers",
+    "start": 1.32,
+    "stop": 1.428
+  },
+  {
+    "source": {
+      "kind": "Oscillator",
+      "type": "square",
+      "params": {
+        "frequency": [["set", 392, 1.44]]
+      }
+    },
+    "path": [
+      {
+        "kind": "Gain",
+        "params": {
+          "gain": [
+            ["set", 0.12, 1.44],
+            ["exp", 0.001, 1.548]
+          ]
+        }
+      },
+      {
+        "kind": "Gain",
+        "params": {
+          "gain": [["set", 0.3, 1.44]]
+        }
+      }
+    ],
+    "out": "speakers",
+    "start": 1.44,
+    "stop": 1.548
+  },
+  {
+    "source": {
+      "kind": "Oscillator",
+      "type": "square",
+      "params": {
+        "frequency": [["set", 659, 1.56]]
+      }
+    },
+    "path": [
+      {
+        "kind": "Gain",
+        "params": {
+          "gain": [
+            ["set", 0.12, 1.56],
+            ["exp", 0.001, 1.668]
+          ]
+        }
+      },
+      {
+        "kind": "Gain",
+        "params": {
+          "gain": [["set", 0.3, 1.56]]
+        }
+      }
+    ],
+    "out": "speakers",
+    "start": 1.56,
+    "stop": 1.668
+  },
+  {
+    "source": {
+      "kind": "Oscillator",
+      "type": "square",
+      "params": {
+        "frequency": [["set", 523, 1.68]]
+      }
+    },
+    "path": [
+      {
+        "kind": "Gain",
+        "params": {
+          "gain": [
+            ["set", 0.12, 1.68],
+            ["exp", 0.001, 1.788]
+          ]
+        }
+      },
+      {
+        "kind": "Gain",
+        "params": {
+          "gain": [["set", 0.3, 1.68]]
+        }
+      }
+    ],
+    "out": "speakers",
+    "start": 1.68,
+    "stop": 1.788
+  },
+  {
+    "source": {
+      "kind": "Oscillator",
+      "type": "square",
+      "params": {
+        "frequency": [["set", 784, 1.8]]
+      }
+    },
+    "path": [
+      {
+        "kind": "Gain",
+        "params": {
+          "gain": [
+            ["set", 0.12, 1.8],
+            ["exp", 0.001, 1.908]
+          ]
+        }
+      },
+      {
+        "kind": "Gain",
+        "params": {
+          "gain": [["set", 0.3, 1.8]]
+        }
+      }
+    ],
+    "out": "speakers",
+    "start": 1.8,
+    "stop": 1.908
+  },
+  {
+    "source": {
+      "kind": "Oscillator",
+      "type": "square",
+      "params": {
+        "frequency": [["set", 659, 1.92]]
+      }
+    },
+    "path": [
+      {
+        "kind": "Gain",
+        "params": {
+          "gain": [
+            ["set", 0.12, 1.92],
+            ["exp", 0.001, 2.028]
+          ]
+        }
+      },
+      {
+        "kind": "Gain",
+        "params": {
+          "gain": [["set", 0.3, 1.92]]
+        }
+      }
+    ],
+    "out": "speakers",
+    "start": 1.92,
+    "stop": 2.028
+  },
+  {
+    "source": {
+      "kind": "Oscillator",
+      "type": "square",
+      "params": {
+        "frequency": [["set", 523, 2.04]]
+      }
+    },
+    "path": [
+      {
+        "kind": "Gain",
+        "params": {
+          "gain": [
+            ["set", 0.12, 2.04],
+            ["exp", 0.001, 2.148]
+          ]
+        }
+      },
+      {
+        "kind": "Gain",
+        "params": {
+          "gain": [["set", 0.3, 2.04]]
+        }
+      }
+    ],
+    "out": "speakers",
+    "start": 2.04,
+    "stop": 2.148
+  },
+  {
+    "source": {
+      "kind": "Oscillator",
+      "type": "square",
+      "params": {
+        "frequency": [["set", 392, 2.16]]
+      }
+    },
+    "path": [
+      {
+        "kind": "Gain",
+        "params": {
+          "gain": [
+            ["set", 0.12, 2.16],
+            ["exp", 0.001, 2.268]
+          ]
+        }
+      },
+      {
+        "kind": "Gain",
+        "params": {
+          "gain": [["set", 0.3, 2.16]]
+        }
+      }
+    ],
+    "out": "speakers",
+    "start": 2.16,
+    "stop": 2.268
+  },
+  {
+    "source": {
+      "kind": "Oscillator",
+      "type": "square",
+      "params": {
+        "frequency": [["set", 523, 2.28]]
+      }
+    },
+    "path": [
+      {
+        "kind": "Gain",
+        "params": {
+          "gain": [
+            ["set", 0.12, 2.28],
+            ["exp", 0.001, 2.388]
+          ]
+        }
+      },
+      {
+        "kind": "Gain",
+        "params": {
+          "gain": [["set", 0.3, 2.28]]
+        }
+      }
+    ],
+    "out": "speakers",
+    "start": 2.28,
+    "stop": 2.388
+  },
+  {
+    "source": {
+      "kind": "Oscillator",
+      "type": "square",
+      "params": {
+        "frequency": [["set", 659, 2.4]]
+      }
+    },
+    "path": [
+      {
+        "kind": "Gain",
+        "params": {
+          "gain": [
+            ["set", 0.12, 2.4],
+            ["exp", 0.001, 2.508]
+          ]
+        }
+      },
+      {
+        "kind": "Gain",
+        "params": {
+          "gain": [["set", 0.3, 2.4]]
+        }
+      }
+    ],
+    "out": "speakers",
+    "start": 2.4,
+    "stop": 2.508
+  },
+  {
+    "source": {
+      "kind": "Oscillator",
+      "type": "square",
+      "params": {
+        "frequency": [["set", 784, 2.52]]
+      }
+    },
+    "path": [
+      {
+        "kind": "Gain",
+        "params": {
+          "gain": [
+            ["set", 0.12, 2.52],
+            ["exp", 0.001, 2.628]
+          ]
+        }
+      },
+      {
+        "kind": "Gain",
+        "params": {
+          "gain": [["set", 0.3, 2.52]]
+        }
+      }
+    ],
+    "out": "speakers",
+    "start": 2.52,
+    "stop": 2.628
+  },
+  {
+    "source": {
+      "kind": "Oscillator",
+      "type": "square",
+      "params": {
+        "frequency": [["set", 880, 2.64]]
+      }
+    },
+    "path": [
+      {
+        "kind": "Gain",
+        "params": {
+          "gain": [
+            ["set", 0.12, 2.64],
+            ["exp", 0.001, 2.748]
+          ]
+        }
+      },
+      {
+        "kind": "Gain",
+        "params": {
+          "gain": [["set", 0.3, 2.64]]
+        }
+      }
+    ],
+    "out": "speakers",
+    "start": 2.64,
+    "stop": 2.748
+  },
+  {
+    "source": {
+      "kind": "Oscillator",
+      "type": "square",
+      "params": {
+        "frequency": [["set", 784, 2.76]]
+      }
+    },
+    "path": [
+      {
+        "kind": "Gain",
+        "params": {
+          "gain": [
+            ["set", 0.12, 2.76],
+            ["exp", 0.001, 2.868]
+          ]
+        }
+      },
+      {
+        "kind": "Gain",
+        "params": {
+          "gain": [["set", 0.3, 2.76]]
+        }
+      }
+    ],
+    "out": "speakers",
+    "start": 2.76,
+    "stop": 2.868
+  },
+  {
+    "source": {
+      "kind": "Oscillator",
+      "type": "square",
+      "params": {
+        "frequency": [["set", 659, 2.88]]
+      }
+    },
+    "path": [
+      {
+        "kind": "Gain",
+        "params": {
+          "gain": [
+            ["set", 0.12, 2.88],
+            ["exp", 0.001, 2.988]
+          ]
+        }
+      },
+      {
+        "kind": "Gain",
+        "params": {
+          "gain": [["set", 0.3, 2.88]]
+        }
+      }
+    ],
+    "out": "speakers",
+    "start": 2.88,
+    "stop": 2.988
+  },
+  {
+    "source": {
+      "kind": "Oscillator",
+      "type": "square",
+      "params": {
+        "frequency": [["set", 523, 3]]
+      }
+    },
+    "path": [
+      {
+        "kind": "Gain",
+        "params": {
+          "gain": [
+            ["set", 0.12, 3],
+            ["exp", 0.001, 3.108]
+          ]
+        }
+      },
+      {
+        "kind": "Gain",
+        "params": {
+          "gain": [["set", 0.3, 3]]
+        }
+      }
+    ],
+    "out": "speakers",
+    "start": 3,
+    "stop": 3.108
+  },
+  {
+    "source": {
+      "kind": "Oscillator",
+      "type": "square",
+      "params": {
+        "frequency": [["set", 784, 3.2]]
+      }
+    },
+    "path": [
+      {
+        "kind": "Gain",
+        "params": {
+          "gain": [
+            ["set", 0.15, 3.2],
+            ["exp", 0.001, 3.272]
+          ]
+        }
+      },
+      {
+        "kind": "Gain",
+        "params": {
+          "gain": [["set", 0.3, 3.2]]
+        }
+      }
+    ],
+    "out": "speakers",
+    "start": 3.2,
+    "stop": 3.272
+  },
+  {
+    "source": {
+      "kind": "Oscillator",
+      "type": "square",
+      "params": {
+        "frequency": [["set", 988, 3.28]]
+      }
+    },
+    "path": [
+      {
+        "kind": "Gain",
+        "params": {
+          "gain": [
+            ["set", 0.15, 3.28],
+            ["exp", 0.001, 3.352]
+          ]
+        }
+      },
+      {
+        "kind": "Gain",
+        "params": {
+          "gain": [["set", 0.3, 3.28]]
+        }
+      }
+    ],
+    "out": "speakers",
+    "start": 3.28,
+    "stop": 3.352
+  },
+  {
+    "source": {
+      "kind": "Oscillator",
+      "type": "square",
+      "params": {
+        "frequency": [["set", 1175, 3.36]]
+      }
+    },
+    "path": [
+      {
+        "kind": "Gain",
+        "params": {
+          "gain": [
+            ["set", 0.15, 3.36],
+            ["exp", 0.001, 3.432]
+          ]
+        }
+      },
+      {
+        "kind": "Gain",
+        "params": {
+          "gain": [["set", 0.3, 3.36]]
+        }
+      }
+    ],
+    "out": "speakers",
+    "start": 3.36,
+    "stop": 3.432
+  },
+  {
+    "source": {
+      "kind": "Oscillator",
+      "type": "square",
+      "params": {
+        "frequency": [["set", 1568, 3.44]]
+      }
+    },
+    "path": [
+      {
+        "kind": "Gain",
+        "params": {
+          "gain": [
+            ["set", 0.15, 3.44],
+            ["exp", 0.001, 3.512]
+          ]
+        }
+      },
+      {
+        "kind": "Gain",
+        "params": {
+          "gain": [["set", 0.3, 3.44]]
+        }
+      }
+    ],
+    "out": "speakers",
+    "start": 3.44,
+    "stop": 3.512
+  },
+  {
+    "source": {
+      "kind": "Oscillator",
+      "type": "square",
+      "params": {
+        "frequency": [["set", 660, 3.6]]
+      }
+    },
+    "path": [
+      {
+        "kind": "Gain",
+        "params": {
+          "gain": [
+            ["set", 0.12, 3.6],
+            ["exp", 0.001, 3.663]
+          ]
+        }
+      },
+      {
+        "kind": "Gain",
+        "params": {
+          "gain": [["set", 0.3, 3.6]]
+        }
+      }
+    ],
+    "out": "speakers",
+    "start": 3.6,
+    "stop": 3.663
+  },
+  {
+    "source": {
+      "kind": "Oscillator",
+      "type": "square",
+      "params": {
+        "frequency": [["set", 554, 3.67]]
+      }
+    },
+    "path": [
+      {
+        "kind": "Gain",
+        "params": {
+          "gain": [
+            ["set", 0.12, 3.67],
+            ["exp", 0.001, 3.733]
+          ]
+        }
+      },
+      {
+        "kind": "Gain",
+        "params": {
+          "gain": [["set", 0.3, 3.67]]
+        }
+      }
+    ],
+    "out": "speakers",
+    "start": 3.67,
+    "stop": 3.733
+  },
+  {
+    "source": {
+      "kind": "Oscillator",
+      "type": "square",
+      "params": {
+        "frequency": [["set", 440, 3.74]]
+      }
+    },
+    "path": [
+      {
+        "kind": "Gain",
+        "params": {
+          "gain": [
+            ["set", 0.12, 3.74],
+            ["exp", 0.001, 3.803]
+          ]
+        }
+      },
+      {
+        "kind": "Gain",
+        "params": {
+          "gain": [["set", 0.3, 3.74]]
+        }
+      }
+    ],
+    "out": "speakers",
+    "start": 3.74,
+    "stop": 3.803
+  },
+  {
+    "source": {
+      "kind": "Oscillator",
+      "type": "square",
+      "params": {
+        "frequency": [["set", 370, 3.81]]
+      }
+    },
+    "path": [
+      {
+        "kind": "Gain",
+        "params": {
+          "gain": [
+            ["set", 0.12, 3.81],
+            ["exp", 0.001, 3.873]
+          ]
+        }
+      },
+      {
+        "kind": "Gain",
+        "params": {
+          "gain": [["set", 0.3, 3.81]]
+        }
+      }
+    ],
+    "out": "speakers",
+    "start": 3.81,
+    "stop": 3.873
+  },
+  {
+    "source": {
+      "kind": "Oscillator",
+      "type": "square",
+      "params": {
+        "frequency": [["set", 294, 3.88]]
+      }
+    },
+    "path": [
+      {
+        "kind": "Gain",
+        "params": {
+          "gain": [
+            ["set", 0.12, 3.88],
+            ["exp", 0.001, 3.943]
+          ]
+        }
+      },
+      {
+        "kind": "Gain",
+        "params": {
+          "gain": [["set", 0.3, 3.88]]
+        }
+      }
+    ],
+    "out": "speakers",
+    "start": 3.88,
+    "stop": 3.943
+  },
+  {
+    "source": {
+      "kind": "Oscillator",
+      "type": "square",
+      "params": {
+        "frequency": [["set", 220, 3.95]]
+      }
+    },
+    "path": [
+      {
+        "kind": "Gain",
+        "params": {
+          "gain": [
+            ["set", 0.12, 3.95],
+            ["exp", 0.001, 4.013]
+          ]
+        }
+      },
+      {
+        "kind": "Gain",
+        "params": {
+          "gain": [["set", 0.3, 3.95]]
+        }
+      }
+    ],
+    "out": "speakers",
+    "start": 3.95,
+    "stop": 4.013
+  },
+  {
+    "source": {
+      "kind": "Oscillator",
+      "type": "square",
+      "params": {
+        "frequency": [["set", 523, 4.1]]
+      }
+    },
+    "path": [
+      {
+        "kind": "Gain",
+        "params": {
+          "gain": [
+            ["set", 0.12, 4.1],
+            ["exp", 0.001, 4.2875]
+          ]
+        }
+      },
+      {
+        "kind": "Gain",
+        "params": {
+          "gain": [["set", 0.3, 4.1]]
+        }
+      }
+    ],
+    "out": "speakers",
+    "start": 4.1,
+    "stop": 4.2875
+  },
+  {
+    "source": {
+      "kind": "Oscillator",
+      "type": "square",
+      "params": {
+        "frequency": [["set", 494, 4.308333]]
+      }
+    },
+    "path": [
+      {
+        "kind": "Gain",
+        "params": {
+          "gain": [
+            ["set", 0.12, 4.308333],
+            ["exp", 0.001, 4.495833]
+          ]
+        }
+      },
+      {
+        "kind": "Gain",
+        "params": {
+          "gain": [["set", 0.3, 4.308333]]
+        }
+      }
+    ],
+    "out": "speakers",
+    "start": 4.308333,
+    "stop": 4.495833
+  },
+  {
+    "source": {
+      "kind": "Oscillator",
+      "type": "square",
+      "params": {
+        "frequency": [["set", 440, 4.516667]]
+      }
+    },
+    "path": [
+      {
+        "kind": "Gain",
+        "params": {
+          "gain": [
+            ["set", 0.12, 4.516667],
+            ["exp", 0.001, 4.704167]
+          ]
+        }
+      },
+      {
+        "kind": "Gain",
+        "params": {
+          "gain": [["set", 0.3, 4.516667]]
+        }
+      }
+    ],
+    "out": "speakers",
+    "start": 4.516667,
+    "stop": 4.704167
+  },
+  {
+    "source": {
+      "kind": "Oscillator",
+      "type": "square",
+      "params": {
+        "frequency": [["set", 392, 4.725]]
+      }
+    },
+    "path": [
+      {
+        "kind": "Gain",
+        "params": {
+          "gain": [
+            ["set", 0.12, 4.725],
+            ["exp", 0.001, 4.9125]
+          ]
+        }
+      },
+      {
+        "kind": "Gain",
+        "params": {
+          "gain": [["set", 0.3, 4.725]]
+        }
+      }
+    ],
+    "out": "speakers",
+    "start": 4.725,
+    "stop": 4.9125
+  },
+  {
+    "source": {
+      "kind": "Oscillator",
+      "type": "square",
+      "params": {
+        "frequency": [["set", 349, 4.933333]]
+      }
+    },
+    "path": [
+      {
+        "kind": "Gain",
+        "params": {
+          "gain": [
+            ["set", 0.12, 4.933333],
+            ["exp", 0.001, 5.120833]
+          ]
+        }
+      },
+      {
+        "kind": "Gain",
+        "params": {
+          "gain": [["set", 0.3, 4.933333]]
+        }
+      }
+    ],
+    "out": "speakers",
+    "start": 4.933333,
+    "stop": 5.120833
+  },
+  {
+    "source": {
+      "kind": "Oscillator",
+      "type": "square",
+      "params": {
+        "frequency": [["set", 330, 5.141667]]
+      }
+    },
+    "path": [
+      {
+        "kind": "Gain",
+        "params": {
+          "gain": [
+            ["set", 0.12, 5.141667],
+            ["exp", 0.001, 5.329167]
+          ]
+        }
+      },
+      {
+        "kind": "Gain",
+        "params": {
+          "gain": [["set", 0.3, 5.141667]]
+        }
+      }
+    ],
+    "out": "speakers",
+    "start": 5.141667,
+    "stop": 5.329167
+  },
+  {
+    "source": {
+      "kind": "Oscillator",
+      "type": "square",
+      "params": {
+        "frequency": [["set", 294, 5.35]]
+      }
+    },
+    "path": [
+      {
+        "kind": "Gain",
+        "params": {
+          "gain": [
+            ["set", 0.12, 5.35],
+            ["exp", 0.001, 5.5375]
+          ]
+        }
+      },
+      {
+        "kind": "Gain",
+        "params": {
+          "gain": [["set", 0.3, 5.35]]
+        }
+      }
+    ],
+    "out": "speakers",
+    "start": 5.35,
+    "stop": 5.5375
+  },
+  {
+    "source": {
+      "kind": "Oscillator",
+      "type": "square",
+      "params": {
+        "frequency": [["set", 262, 5.558333]]
+      }
+    },
+    "path": [
+      {
+        "kind": "Gain",
+        "params": {
+          "gain": [
+            ["set", 0.12, 5.558333],
+            ["exp", 0.001, 5.745833]
+          ]
+        }
+      },
+      {
+        "kind": "Gain",
+        "params": {
+          "gain": [["set", 0.3, 5.558333]]
+        }
+      }
+    ],
+    "out": "speakers",
+    "start": 5.558333,
+    "stop": 5.745833
+  },
+  {
+    "source": {
+      "kind": "Oscillator",
+      "type": "square",
+      "params": {
+        "frequency": [["set", 247, 5.766667]]
+      }
+    },
+    "path": [
+      {
+        "kind": "Gain",
+        "params": {
+          "gain": [
+            ["set", 0.12, 5.766667],
+            ["exp", 0.001, 5.954167]
+          ]
+        }
+      },
+      {
+        "kind": "Gain",
+        "params": {
+          "gain": [["set", 0.3, 5.766667]]
+        }
+      }
+    ],
+    "out": "speakers",
+    "start": 5.766667,
+    "stop": 5.954167
+  },
+  {
+    "source": {
+      "kind": "Oscillator",
+      "type": "square",
+      "params": {
+        "frequency": [["set", 220, 5.975]]
+      }
+    },
+    "path": [
+      {
+        "kind": "Gain",
+        "params": {
+          "gain": [
+            ["set", 0.12, 5.975],
+            ["exp", 0.001, 6.1625]
+          ]
+        }
+      },
+      {
+        "kind": "Gain",
+        "params": {
+          "gain": [["set", 0.3, 5.975]]
+        }
+      }
+    ],
+    "out": "speakers",
+    "start": 5.975,
+    "stop": 6.1625
+  },
+  {
+    "source": {
+      "kind": "Oscillator",
+      "type": "square",
+      "params": {
+        "frequency": [["set", 196, 6.183333]]
+      }
+    },
+    "path": [
+      {
+        "kind": "Gain",
+        "params": {
+          "gain": [
+            ["set", 0.12, 6.183333],
+            ["exp", 0.001, 6.370833]
+          ]
+        }
+      },
+      {
+        "kind": "Gain",
+        "params": {
+          "gain": [["set", 0.3, 6.183333]]
+        }
+      }
+    ],
+    "out": "speakers",
+    "start": 6.183333,
+    "stop": 6.370833
+  },
+  {
+    "source": {
+      "kind": "Oscillator",
+      "type": "square",
+      "params": {
+        "frequency": [["set", 175, 6.391667]]
+      }
+    },
+    "path": [
+      {
+        "kind": "Gain",
+        "params": {
+          "gain": [
+            ["set", 0.12, 6.391667],
+            ["exp", 0.001, 6.579167]
+          ]
+        }
+      },
+      {
+        "kind": "Gain",
+        "params": {
+          "gain": [["set", 0.3, 6.391667]]
+        }
+      }
+    ],
+    "out": "speakers",
+    "start": 6.391667,
+    "stop": 6.579167
+  },
+  {
+    "source": {
+      "kind": "BufferSource",
+      "seconds": 0.08
+    },
+    "path": [
+      {
+        "kind": "Gain",
+        "params": {
+          "gain": [
+            ["set", 0.15, 6.6],
+            ["exp", 0.001, 6.68]
+          ]
+        }
+      },
+      {
+        "kind": "Gain",
+        "params": {
+          "gain": [["set", 0.3, 6.6]]
+        }
+      }
+    ],
+    "out": "speakers",
+    "start": 6.6,
+    "stop": null
+  },
+  {
+    "source": {
+      "kind": "Oscillator",
+      "type": "sine",
+      "params": {
+        "frequency": [["set", 70, 6.6]]
+      }
+    },
+    "path": [
+      {
+        "kind": "Gain",
+        "params": {
+          "gain": [
+            ["set", 0.2, 6.6],
+            ["exp", 0.001, 6.7]
+          ]
+        }
+      },
+      {
+        "kind": "Gain",
+        "params": {
+          "gain": [["set", 0.3, 6.6]]
+        }
+      }
+    ],
+    "out": "speakers",
+    "start": 6.6,
+    "stop": 6.7
+  },
+  {
+    "source": {
+      "kind": "Oscillator",
+      "type": "square",
+      "params": {
+        "frequency": [["set", 659, 6.8]]
+      }
+    },
+    "path": [
+      {
+        "kind": "Gain",
+        "params": {
+          "gain": [
+            ["set", 0.15, 6.8],
+            ["exp", 0.001, 6.962]
+          ]
+        }
+      },
+      {
+        "kind": "Gain",
+        "params": {
+          "gain": [["set", 0.3, 6.8]]
+        }
+      }
+    ],
+    "out": "speakers",
+    "start": 6.8,
+    "stop": 6.962
+  },
+  {
+    "source": {
+      "kind": "Oscillator",
+      "type": "square",
+      "params": {
+        "frequency": [["set", 523, 6.98]]
+      }
+    },
+    "path": [
+      {
+        "kind": "Gain",
+        "params": {
+          "gain": [
+            ["set", 0.15, 6.98],
+            ["exp", 0.001, 7.142]
+          ]
+        }
+      },
+      {
+        "kind": "Gain",
+        "params": {
+          "gain": [["set", 0.3, 6.98]]
+        }
+      }
+    ],
+    "out": "speakers",
+    "start": 6.98,
+    "stop": 7.142
+  },
+  {
+    "source": {
+      "kind": "Oscillator",
+      "type": "square",
+      "params": {
+        "frequency": [["set", 392, 7.16]]
+      }
+    },
+    "path": [
+      {
+        "kind": "Gain",
+        "params": {
+          "gain": [
+            ["set", 0.15, 7.16],
+            ["exp", 0.001, 7.322]
+          ]
+        }
+      },
+      {
+        "kind": "Gain",
+        "params": {
+          "gain": [["set", 0.3, 7.16]]
+        }
+      }
+    ],
+    "out": "speakers",
+    "start": 7.16,
+    "stop": 7.322
+  },
+  {
+    "source": {
+      "kind": "Oscillator",
+      "type": "sawtooth",
+      "params": {
+        "frequency": [["set", 90, 7.4]]
+      }
+    },
+    "path": [
+      {
+        "kind": "Gain",
+        "params": {
+          "gain": [["set", 0.05, 7.4]]
+        }
+      },
+      {
+        "kind": "Gain",
+        "params": {
+          "gain": [["set", 0.3, 7.4]]
+        }
+      }
+    ],
+    "out": "speakers",
+    "start": 7.4,
+    "stop": 7.7
+  },
+  {
+    "source": {
+      "kind": "Oscillator",
+      "type": "sawtooth",
+      "params": {
+        "frequency": [["set", 90, 7.8]]
+      }
+    },
+    "path": [
+      {
+        "kind": "Gain",
+        "params": {
+          "gain": [["set", 0.05, 7.8]]
+        }
+      },
+      {
+        "kind": "Gain",
+        "params": {
+          "gain": [["set", 0.3, 7.8]]
+        }
+      }
+    ],
+    "out": "speakers",
+    "start": 7.8,
+    "stop": 12.8
+  }
+]

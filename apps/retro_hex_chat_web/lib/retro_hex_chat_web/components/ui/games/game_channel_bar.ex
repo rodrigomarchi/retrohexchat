@@ -93,8 +93,9 @@ defmodule RetroHexChatWeb.Components.UI.GameChannelBar do
         {dpgettext("games", "game", "Play")}
       </.surface_link>
 
+      <%!-- A game played alone has nobody to seat. --%>
       <button
-        :if={@kind == :retro}
+        :if={@kind == :retro and not Catalog.solo_only?(@game_id)}
         type="button"
         class="shrink-0 cursor-pointer whitespace-nowrap underline"
         title={

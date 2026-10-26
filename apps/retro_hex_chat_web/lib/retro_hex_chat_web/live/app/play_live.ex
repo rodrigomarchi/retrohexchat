@@ -148,7 +148,7 @@ defmodule RetroHexChatWeb.App.PlayLive do
         <%!-- The match room seats only an identified nickname, so the
               button is offered to nobody it would turn away. --%>
         <Button.button
-          :if={@host_id}
+          :if={@host_id && not Catalog.solo_only?(@selected_game.id)}
           type="button"
           phx-click="create_match"
           data-testid="play-create-match"
@@ -277,7 +277,14 @@ defmodule RetroHexChatWeb.App.PlayLive do
 
   defp open_match_if_asked(socket, _params), do: socket
 
-  defp open_match(%{assigns: %{selected_game: %{id: game_id}, host_id: user_id}} = socket)
+  # A one-player game has nobody to seat: there is no room to open.
+  defp open_match(%{assigns: %{selected_game: %{id: game_id}}} = socket) do
+    if Catalog.solo_only?(game_id), do: socket, else: open_room(socket)
+  end
+
+  defp open_match(socket), do: socket
+
+  defp open_room(%{assigns: %{selected_game: %{id: game_id}, host_id: user_id}} = socket)
        when not is_nil(user_id) do
     case Lobby.create_open_session(user_id, metadata: %{"game_id" => game_id}) do
       {:ok, %{token: token}} -> push_navigate(socket, to: Paths.play_match_path(game_id, token))
@@ -287,13 +294,11 @@ defmodule RetroHexChatWeb.App.PlayLive do
 
   # Arriving at `?match=new` without a nickname the room would seat: said,
   # rather than a game against the computer the reader never asked for.
-  defp open_match(%{assigns: %{selected_game: %{}}} = socket),
+  defp open_room(%{assigns: %{selected_game: %{}}} = socket),
     do:
       assign(socket,
         match_error: dgettext("p2p", "You must be identified with NickServ to use P2P sessions.")
       )
-
-  defp open_match(socket), do: socket
 
   defp select_game(socket, game_id) do
     with true <- Catalog.solo_game_id?(game_id),
@@ -376,10 +381,15 @@ defmodule RetroHexChatWeb.App.PlayLive do
   defp record_match(%{assigns: %{player: nil}}, _payload), do: nil
 
   defp record_match(%{assigns: assigns}, payload) do
+    game_id = assigns.selected_game.id
+
+    {origin, difficulty} =
+      if Catalog.solo_only?(game_id), do: {"solo", nil}, else: {"ai", assigns.difficulty}
+
     case Results.record(%{
-           game_id: assigns.selected_game.id,
-           origin: "ai",
-           difficulty: assigns.difficulty,
+           game_id: game_id,
+           origin: origin,
+           difficulty: difficulty,
            p1: assigns.player,
            payload: payload,
            started_at: assigns.match_started_at

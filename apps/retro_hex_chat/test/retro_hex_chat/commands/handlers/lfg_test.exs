@@ -34,4 +34,10 @@ defmodule RetroHexChat.Commands.Handlers.LfgTest do
   test "only for an identified nickname" do
     assert {:error, _not_identified} = Lfg.execute([], %{@context | identified: false})
   end
+
+  test "not for a game played alone, which says how it is played" do
+    jungle = %{@context | active_channel: "#hex-jungle", channels: ["#hex-jungle"]}
+    assert {:error, message} = Lfg.execute([], jungle)
+    assert message == "Hex Jungle is a game for one player."
+  end
 end

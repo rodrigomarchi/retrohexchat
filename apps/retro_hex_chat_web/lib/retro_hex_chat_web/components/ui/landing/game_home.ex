@@ -51,7 +51,7 @@ defmodule RetroHexChatWeb.Components.UI.Landing.GameHome do
             as a Win98 tab control does, rather than pushing the panel sideways. --%>
       <.tabs_list class="flex-wrap gap-y-retro-2">
         <.tabs_trigger
-          :for={{value, label, icon} <- tabs(@live, @channel)}
+          :for={{value, label, icon} <- tabs(@live, @channel, @alone)}
           builder={builder}
           value={value}
           data-testid={"game-home-tab-#{value}"}
@@ -70,7 +70,7 @@ defmodule RetroHexChatWeb.Components.UI.Landing.GameHome do
       <.tabs_content builder={builder} value="play" data-testid="game-home-play">
         <.play_tab {assigns} />
       </.tabs_content>
-      <.tabs_content builder={builder} value="live" data-testid="game-home-live">
+      <.tabs_content :if={not @alone} builder={builder} value="live" data-testid="game-home-live">
         <.live_now live={@live} playing_now={@playing_now} nick_locales={@nick_locales} />
       </.tabs_content>
       <.tabs_content builder={builder} value="ranking" data-testid="game-home-ranking">
@@ -129,11 +129,13 @@ defmodule RetroHexChatWeb.Components.UI.Landing.GameHome do
               data-testid="game-play"
             >
               <:icon><Icons.icon_joystick class="h-4 w-4" /></:icon>
-              {dgettext("games", "Against the computer")}
+              {if @alone,
+                do: dpgettext("games", "game", "Play"),
+                else: dgettext("games", "Against the computer")}
             </.surface_link>
 
             <.button
-              :if={@identified}
+              :if={@identified and not @alone}
               type="button"
               size="sm"
               variant="outline"
@@ -153,7 +155,7 @@ defmodule RetroHexChatWeb.Components.UI.Landing.GameHome do
             </.button>
 
             <.surface_link
-              :if={@identified}
+              :if={@identified and not @alone}
               href={way.link_path}
               label={way.name}
               class="w-full text-xs"
@@ -168,7 +170,7 @@ defmodule RetroHexChatWeb.Components.UI.Landing.GameHome do
               the seat, the invitation and the match room all ask for one, so
               they are offered only to whom they would not turn away. --%>
         <p
-          :if={not @visitor and not @identified}
+          :if={not @visitor and not @identified and not @alone}
           class="text-sm mt-retro-12"
           data-testid="game-identify"
         >
@@ -178,7 +180,7 @@ defmodule RetroHexChatWeb.Components.UI.Landing.GameHome do
           </.link>
         </p>
 
-        <div :if={@identified} class="mt-retro-12" data-testid="game-invite">
+        <div :if={@identified and not @alone} class="mt-retro-12" data-testid="game-invite">
           <h2 class="text-sm font-bold mb-retro-4">
             {dgettext("games", "Play with somebody you know")}
           </h2>
@@ -228,14 +230,16 @@ defmodule RetroHexChatWeb.Components.UI.Landing.GameHome do
     """
   end
 
-  defp tabs(live, channel) do
+  # A one-player game has no match to watch: no Live tab.
+  defp tabs(live, channel, alone) do
     [
       {"play", dpgettext("games", "game", "Play"), :joystick},
-      {"live", live_label(live), :watching},
+      if(not alone, do: {"live", live_label(live), :watching}),
       {"ranking", dgettext("games", "Ranking"), :star},
       {"you", dpgettext("games", "player", "You"), :user},
       {"channel", channel, :chat}
     ]
+    |> Enum.reject(&is_nil/1)
   end
 
   # The reader's own place in the game. Only a registered nickname is in the
@@ -260,11 +264,32 @@ defmodule RetroHexChatWeb.Components.UI.Landing.GameHome do
     """
   end
 
-  defp your_record(%{you: %{people: nil, computer: nil, recent: []}} = assigns) do
+  defp your_record(%{you: %{people: nil, computer: nil, alone: nil, recent: []}} = assigns) do
     ~H"""
     <p class="text-sm" data-testid="game-you-none">
       {dgettext("landing", "No matches yet. Play the first one.")}
     </p>
+    """
+  end
+
+  # Played alone: the runs and the best of them, nobody to count against.
+  defp your_record(%{alone: true} = assigns) do
+    ~H"""
+    <table class="text-sm mb-retro-12" data-testid="game-you-totals">
+      <tbody>
+        <tr>
+          <th class="pr-retro-8 text-left font-normal">{dgettext("games", "Matches")}</th>
+          <td class="px-retro-8">{total(@you.alone, :matches)}</td>
+        </tr>
+        <tr>
+          <th class="pr-retro-8 text-left font-normal">{dgettext("games", "Best score")}</th>
+          <td class="px-retro-8">{total(@you.alone, :best)}</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h3 class="text-sm font-bold mb-1">{dgettext("games", "Your latest matches")}</h3>
+    <.match_list cards={@you.recent} locales={@nick_locales} testid="game-you-recent" />
     """
   end
 

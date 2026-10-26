@@ -74,7 +74,7 @@ defmodule RetroHexChat.Games.RoomFacts do
     in_english(fn ->
       case room(channel) do
         {:game, game} ->
-          Enum.join([about(game), how_to_start(), commands_hint()], " ")
+          Enum.join([about(game), how_to_start(game), commands_hint()], " ")
 
         :feed ->
           feed_about()
@@ -110,7 +110,7 @@ defmodule RetroHexChat.Games.RoomFacts do
   end
 
   defp answer_in("howto", {:game, game}) do
-    "#{game.name}: #{game.controls}. #{how_to_start()}"
+    "#{game.name}: #{game.controls}. #{how_to_start(game)}"
   end
 
   defp answer_in("ranking", {:game, game}), do: ranking(game)
@@ -152,12 +152,17 @@ defmodule RetroHexChat.Games.RoomFacts do
 
   defp about(game), do: "#{game.name}: #{game.description}"
 
-  defp how_to_start,
-    do:
-      dgettext(
-        "games",
-        "Press Play under the topic to start, or Find a partner to play with someone here."
-      )
+  # A game played alone has no partner to find: it starts the way an arcade
+  # game does.
+  defp how_to_start(game) do
+    if Catalog.solo_only?(game.id),
+      do: how_to_start_arcade(),
+      else:
+        dgettext(
+          "games",
+          "Press Play under the topic to start, or Find a partner to play with someone here."
+        )
+  end
 
   defp controls(game),
     do:

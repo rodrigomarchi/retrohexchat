@@ -43,7 +43,8 @@ Requires: a registered, identified nickname."
              dgettext("commands", "You must be identified to look for a match.")
            ),
          {:ok, %{channel: channel, game_id: game_id}} <-
-           Guards.require_game_channel(context, args) do
+           Guards.require_game_channel(context, args),
+         :ok <- Guards.require_game_for_two(game_id) do
       {:ok, :ui_action, :game_lfg, %{channel: channel, game_id: game_id}}
     end
   end

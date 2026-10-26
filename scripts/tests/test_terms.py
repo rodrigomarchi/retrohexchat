@@ -150,6 +150,13 @@ class MissingTermsTest(unittest.TestCase):
         self.assertEqual(names.localize("feedは大きすぎます。", "ja"), "フィードは大きすぎます。")
         self.assertEqual(names.localize("feedback", "ja"), "feedback")
 
+    def test_a_games_title_is_kept_not_translated(self):
+        from i18n import names
+
+        # The engine made Hex Jungle "Selva Hex" and "六角ジャングル".
+        self.assertEqual(names.form("Hex Jungle", "pt_BR"), "Hex Jungle")
+        self.assertEqual(names.form("Hex Jungle", "ja"), "ヘックスジャングル")
+
     def test_a_url_a_placeholder_a_command_and_a_channel_keep_their_feed(self):
         from i18n import names
         from i18n.protection import protect, restore
@@ -243,6 +250,24 @@ class MissingTermsTest(unittest.TestCase):
             missing_terms(source, "O Arcade permite jogar clássicos de tiro e aventuras.", "pt_BR"),
             [],
         )
+
+    def test_a_vine_is_swung_on_not_a_grapevine(self):
+        source = "— Let go of the vine"
+        self.assertTrue(missing_terms(source, "— Soltar a videira", "pt_BR"))
+        self.assertEqual(missing_terms(source, "— Soltar o cipó", "pt_BR"), [])
+        self.assertTrue(missing_terms(source, "— ぶどうに行く", "ja"))
+        self.assertEqual(missing_terms(source, "— ツタを放す", "ja"), [])
+
+    def test_quicksand_is_not_plain_sand(self):
+        source = "A pit, quicksand or fire costs a life."
+        self.assertTrue(missing_terms(source, "Un pozo, arena o fuego cuesta una vida.", "es"))
+        self.assertEqual(
+            missing_terms(source, "Un pozo, arenas movedizas o fuego cuesta una vida.", "es"), []
+        )
+
+    def test_a_treasure_is_not_jewellery(self):
+        self.assertTrue(missing_terms("treasures", "ジュエリー", "ja"))
+        self.assertEqual(missing_terms("treasures", "宝物", "ja"), [])
 
     def test_reviewing_details_is_not_a_critics_review(self):
         source = "Review details, then press %{play}"

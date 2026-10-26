@@ -426,6 +426,103 @@ defmodule RetroHexChatWeb.GamesCatalogTest do
     end
   end
 
+  describe "the screenshot capture" do
+    test "opens every Retro Game at its play page, the routes the router serves" do
+      targets = Enum.filter(GameCatalog.capture_targets(), &(&1.kind == "multiplayer"))
+      assert %{path: "/play/hex_jungle"} = Enum.find(targets, &(&1.slug == "hex-jungle"))
+
+      for target <- targets do
+        assert target.path == Paths.play_path(String.replace(target.slug, "-", "_"))
+      end
+    end
+  end
+
+  describe "a one-player game's home" do
+    defp record_alone(player, points) do
+      now = DateTime.utc_now()
+
+      {:ok, _row} =
+        GameQueries.insert(%{
+          game_id: "hex_jungle",
+          base_id: "hex_jungle",
+          origin: "solo",
+          p1_id: player.id,
+          p1_nickname: player.nickname,
+          p1_score: points,
+          p2_score: 0,
+          outcome: "none",
+          ranked: true,
+          duration_ms: 600_000,
+          started_at: DateTime.add(now, -600, :second),
+          finished_at: now
+        })
+    end
+
+    defp alone_player(nickname) do
+      {:ok, nick} =
+        RetroHexChat.Repo.insert(%RegisteredNick{
+          nickname: nickname,
+          password_hash: "x",
+          registered_at: DateTime.utc_now(),
+          last_seen_at: DateTime.utc_now()
+        })
+
+      %{id: nick.id, nickname: nickname}
+    end
+
+    test "offers playing it, and nothing that needs somebody else", %{conn: conn} do
+      ana = alone_player("ana#{System.unique_integer([:positive])}")
+
+      {:ok, view, _html} =
+        conn |> chat_conn(ana.nickname, pre_identified: true) |> live("/games/hex-jungle")
+
+      html = render(view)
+
+      for testid <- ~w(game-lfg game-match-link game-invite game-identify game-home-tab-live) do
+        refute html =~ ~s(data-testid="#{testid}"), "#{testid} is offered for a game played alone"
+      end
+
+      assert view
+             |> element(~s([data-testid="game-way-hex_jungle"] [data-testid="game-play"]))
+             |> render() =~
+               "Play"
+
+      refute html =~ "Against the computer"
+    end
+
+    test "ranks the best runs of players alone, this week and of all time", %{conn: conn} do
+      ana = alone_player("ana#{System.unique_integer([:positive])}")
+      beto = alone_player("beto#{System.unique_integer([:positive])}")
+      record_alone(ana, 4200)
+      record_alone(beto, 9000)
+
+      document = document(conn, "/games/hex-jungle")
+
+      week = document |> Floki.find(~s([data-testid="game-community-week"])) |> Floki.text()
+      assert week =~ ana.nickname
+      assert week =~ beto.nickname
+
+      best = document |> Floki.find(~s([data-testid="game-community-best"])) |> Floki.text()
+      assert best =~ "9000"
+
+      assert Floki.find(document, ~s([data-testid="game-community-computer"])) == []
+      refute Floki.text(document) =~ "between players"
+      assert json_ld(document, "VideoGame")["playMode"] == "SinglePlayer"
+    end
+
+    test "the You tab is the reader's own runs", %{conn: conn} do
+      ana = alone_player("ana#{System.unique_integer([:positive])}")
+      record_alone(ana, 4200)
+
+      {:ok, view, _html} =
+        conn |> chat_conn(ana.nickname, pre_identified: true) |> live("/games/hex-jungle")
+
+      totals = view |> element(~s([data-testid="game-you-totals"])) |> render()
+      assert totals =~ "4200"
+      refute totals =~ "Against people"
+    end
+  end
+
   describe "an arcade game's home" do
     defp arcade_player(nickname) do
       {:ok, nick} =

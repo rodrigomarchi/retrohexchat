@@ -102,4 +102,12 @@ defmodule RetroHexChatWeb.Components.UI.GameChannelBarTest do
     assert Floki.find(document, ~s([data-testid="game-channel-lfg"])) == []
     assert render_component(&game_channel_bar/1, channel: "#arcade") == ""
   end
+
+  test "a game played alone offers the game, and no seat" do
+    document =
+      render_component(&game_channel_bar/1, channel: "#hex-jungle") |> Floki.parse_document!()
+
+    assert [_] = Floki.find(document, ~s([data-testid="game-channel-play"]))
+    assert Floki.find(document, ~s([data-testid="game-channel-lfg"])) == []
+  end
 end

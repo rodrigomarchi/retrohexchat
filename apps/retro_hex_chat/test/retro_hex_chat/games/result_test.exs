@@ -167,6 +167,24 @@ defmodule RetroHexChat.Games.ResultTest do
     end
   end
 
+  describe "normalize/2 for a one-player game" do
+    test "keeps the points and names nobody" do
+      assert {:ok, %Result{p1_score: 4200, p2_score: 0, outcome: :none}} =
+               Result.normalize("hex_jungle", %{
+                 "score" => %{"p1" => 4200, "p2" => 0},
+                 "winner" => 0
+               })
+    end
+
+    test "refuses more points than the jungle holds" do
+      assert {:ok, %Result{p1_score: 114_000}} =
+               Result.normalize("hex_jungle", %{"score" => %{"p1" => 114_000, "p2" => 0}})
+
+      assert {:error, :implausible} =
+               Result.normalize("hex_jungle", %{"score" => %{"p1" => 114_001, "p2" => 0}})
+    end
+  end
+
   describe "normalize/2 refuses" do
     test "a game outside the catalogue" do
       assert {:error, :unknown_game} =

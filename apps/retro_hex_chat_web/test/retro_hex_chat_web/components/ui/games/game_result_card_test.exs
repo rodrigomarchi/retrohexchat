@@ -47,4 +47,20 @@ defmodule RetroHexChatWeb.Components.UI.GameResultCardTest do
     assert Floki.text(doc) ==
              GameResultCard.score_line(card(%{p2_nickname: nil, difficulty: "hard"}))
   end
+
+  test "a run played alone names its player and points, and nobody against them" do
+    solo = card(%{origin: "solo", p2_nickname: nil, p1_score: 4200, p2_score: 0, p1_locale: "fr"})
+    assert GameResultCard.score_line(solo) == "ana: 4200 points"
+
+    doc =
+      render_component(&GameResultCard.score_with_flags/1, card: solo) |> Floki.parse_fragment!()
+
+    assert Floki.text(doc) == "ana: 4200 points"
+
+    assert doc |> Floki.find(~s([data-testid="nick-flag"])) |> Floki.attribute("data-locale") == [
+             "fr"
+           ]
+
+    refute Floki.text(doc) =~ "Computer"
+  end
 end

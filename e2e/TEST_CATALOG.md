@@ -134,9 +134,9 @@ make e2e.catalog.check    # verify it is current (also runs in make ci)
 
 ## Coverage
 
-- **261 spec files** under `e2e/tests/`.
-- **659 Playwright `test()` cases**.
-- **602 documented flows**, 601 done, 1 not done.
+- **262 spec files** under `e2e/tests/`.
+- **661 Playwright `test()` cases**.
+- **604 documented flows**, 603 done, 1 not done.
 - **Every spec documents its own flows.**
 
 ## Flow index
@@ -483,6 +483,8 @@ Grouped by section. Every row comes from an `@flow` line in the spec itself.
 | N72 | An arcade game's channel names its game under the topic and Pixel tells whoever arrives what the game is and its controls; Play opens the in-app Arcade on that game, and starting it is said by Pixel in the game's channel and in #arcade, each line with its card | `tests/arcade-channels.spec.ts` | done |
 | N73 | An arcade game's page is its home: Play with the game's sheet, who played it lately, who plays it most, the reader's own plays and the channel's last lines | `tests/arcade-channels.spec.ts` | done |
 | N74 | A visitor reads an arcade game's channel and its page; pressing Play opens the sign-in window, which returns to the same game | `tests/arcade-channels.spec.ts` | done |
+| N75 | A game played alone (Hex Jungle): its home offers Play and nothing that needs somebody else — no partner, match link, invitation or Live tab; a run ended with End is written down and the player's best is in the Ranking tab | `tests/game-solo-only.spec.ts` | done |
+| N76 | In the channel of a game played alone, the strip offers Play without Find a partner, and /lfg says the game is played alone | `tests/game-solo-only.spec.ts` | done |
 
 ### O - Chat UI Micro-Journeys
 

@@ -46,6 +46,7 @@ Requires: both users must be registered and identified (/ns identify)."),
 
   def execute([target | mode], context) do
     with {:ok, %{game_id: game_id}} <- Guards.require_game_channel(context, mode),
+         :ok <- Guards.require_game_for_two(game_id),
          {:ok, :ui_action, :lobby_invite, invite} <- Lobby.execute([target], context) do
       {:ok, :ui_action, :lobby_invite, Map.put(invite, :game_id, game_id)}
     end

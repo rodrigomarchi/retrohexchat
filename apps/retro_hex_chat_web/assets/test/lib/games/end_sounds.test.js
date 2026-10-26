@@ -1,14 +1,14 @@
 // The sound at the end of a match follows who won, for whoever is at the
 // screen: the guest who lost hears the losing sound, the host who lost too.
 // Cooperative endings (Block Breakers, Invaders' co-op) are heard alike by
-// both players and are not here.
+// both players, and a one-player game has nobody to beat: neither is here.
 
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { fakeChannel } from "../../support/games/fake_channel.js";
 import { createLocalTransport } from "../../../js/lib/games/transport.js";
 import { recordingAudio } from "../../support/games/recording_audio.js";
 import { recordingCanvas } from "../../support/games/recording_canvas.js";
-import { GAME_DIRS } from "../../support/games/engines.js";
+import { GAME_DIRS, ONE_PLAYER_DIRS } from "../../support/games/engines.js";
 
 const createMockCanvas = () => recordingCanvas(640, 480);
 
@@ -54,9 +54,9 @@ afterEach(() => {
 });
 
 describe("the games heard here", () => {
-  it("are every game folder but the co-operative one", () => {
+  it("are every game folder but the co-operative one and the one-player ones", () => {
     const heard = Object.entries(games).map(([gameId, end]) => end.dir ?? gameId);
-    expect(new Set([...heard, "breakout"])).toEqual(new Set(GAME_DIRS));
+    expect(new Set([...heard, "breakout", ...ONE_PLAYER_DIRS])).toEqual(new Set(GAME_DIRS));
   });
 });
 

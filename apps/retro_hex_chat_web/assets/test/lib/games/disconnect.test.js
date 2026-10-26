@@ -1,10 +1,11 @@
 import { describe, it, expect, afterEach, vi } from "vitest";
 import { loadP2PEngineClass } from "../../../js/lib/games/engine_loader.js";
 import { playMatch } from "../../support/games/harness.js";
-import { ENGINE_GAME_IDS } from "../../support/games/engines.js";
+import { TWO_PLAYER_ENGINE_GAME_IDS } from "../../support/games/engines.js";
 
-// One id per engine: the variants share their engine's lifecycle.
-const GAMES = ENGINE_GAME_IDS;
+// One id per two-player engine: the variants share their engine's lifecycle, and
+// a one-player game has no other side to lose.
+const GAMES = TWO_PLAYER_ENGINE_GAME_IDS;
 
 describe.each(GAMES)("%s when the other side disconnects", (gameId) => {
   let match;

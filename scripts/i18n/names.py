@@ -16,6 +16,12 @@ import re
 
 # English name -> its form per locale. `pt` covers both Portuguese locales.
 NAMES: dict[str, dict[str, str]] = {
+    # A game's title, kept as it is on the box: Portuguese made it "Selva Hex"
+    # and Japanese "六角ジャングル" (a hexagon's jungle). Japanese writes the
+    # titles of the other games in katakana.
+    "Hex Jungle": {
+        "ja": "ヘックスジャングル",
+    },
     "Construct": {
         "pt": "Constructo",
         "es": "Constructo",

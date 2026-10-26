@@ -40,4 +40,9 @@ defmodule RetroHexChat.Commands.Handlers.ChallengeTest do
     assert {:error, "Usage: /challenge" <> _} = Challenge.execute([], context("#hex-pong"))
     assert {:error, _usage} = Challenge.validate("")
   end
+
+  test "not in a game played alone" do
+    assert {:error, "Hex Jungle is a game for one player."} =
+             Challenge.execute(["bob"], context("#hex-jungle"))
+  end
 end

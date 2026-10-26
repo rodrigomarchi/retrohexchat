@@ -23,6 +23,7 @@ import {
   CROC_SHUT_TICKS,
   EDGE_MAX,
   EDGE_MIN,
+  EVENT,
   GROUND_Y,
   HOLE_POINTS,
   JUMP_LIFT,
@@ -40,6 +41,8 @@ import {
   PHASE,
   PIT,
   PIT_DEATH_Y,
+  RESPAWN_UNDER_Y,
+  RESPAWN_Y,
   SCORPION_BOX,
   SCORPION_EVERY,
   SCORPION_START,
@@ -55,6 +58,8 @@ import {
   START_SCORE,
   START_X,
   TIME_TICKS,
+  TREASURE_BOX,
+  TREASURES_TOTAL,
   UNDER_Y,
   VINE_CENTER,
   VINE_DROP_TICK,
@@ -66,7 +71,7 @@ import {
   WALL_BOX,
   WALL_X,
 } from "./protocol.js";
-import { decodeScene, stepScreens } from "./world.js";
+import { decodeScene, stepScreens, treasureSlot } from "./world.js";
 
 /** The jungle as the expedition finds it. */
 export function createInitialState() {
@@ -80,6 +85,9 @@ export function createInitialState() {
     timerTicks: TIME_TICKS,
     clockRunning: false,
     jumpHeld: false,
+    events: 0,
+    taken: 0,
+    treasures: 0,
     logs: logsFor(SEED),
     scorpionX: SCORPION_START,
     player: {
@@ -97,6 +105,8 @@ export function createInitialState() {
 }
 
 const within = (x, [from, to]) => x >= from && x <= to;
+const flag = (state, bit) => ({ ...state, events: state.events | bit });
+const dies = (state) => flag({ ...state, phase: PHASE.DYING }, EVENT.DEATH);
 
 /**
  * Where the vine hangs `tick` into the expedition.
@@ -200,12 +210,14 @@ export function stepPlayer(state, inputs) {
   let player = { ...state.player };
   const floor = floorUnder(player.x);
   let underground = state.underground;
+  let events = state.events;
 
   if (player.onVine) {
     player = swing(player, inputs, state.tick);
   } else if (player.climbing) {
     player = climb(player, inputs, state.tick);
     underground = player.y > GROUND_Y;
+    if (player.jumpTick === 0) events |= EVENT.JUMP;
   } else if (
     player.jumpTick === null &&
     player.y === floor &&
@@ -216,6 +228,7 @@ export function stepPlayer(state, inputs) {
     const dir = direction(inputs);
     if (pressedJump) {
       player = { ...player, y: player.y - JUMP_LIFT, jumpTick: 0, jumpDir: dir };
+      events |= EVENT.JUMP;
     } else if (dir !== 0) {
       player.facing = dir;
       const stopped = player.kneeling === "rolling";
@@ -229,13 +242,17 @@ export function stepPlayer(state, inputs) {
     player = stepJump(player, inputs, floorUnder);
     const vine = vineX(state.tick);
     if (scene.vine && !underground && player.jumpTick !== null && !player.fromVine) {
-      if (Math.abs(player.x - vine) <= VINE_REACH) player = catchVine(player, vine);
+      if (Math.abs(player.x - vine) <= VINE_REACH) {
+        player = catchVine(player, vine);
+        events |= EVENT.VINE;
+      }
     }
   }
 
   let next = {
     ...state,
     underground,
+    events,
     tick: state.tick + 1,
     jumpHeld: inputs.jump,
     clockRunning: state.clockRunning || moved(inputs),
@@ -327,9 +344,10 @@ export function stepHazards(state, tick) {
   if (next.underground) return stepTunnel(next, scene, tick);
 
   if (next.player.y > GROUND_Y && scene.holes.some((hole) => within(next.player.x, hole))) {
-    return { ...next, underground: true, score: Math.max(0, next.score - HOLE_POINTS) };
+    const score = Math.max(0, next.score - HOLE_POINTS);
+    return flag({ ...next, underground: true, score }, EVENT.HOLE);
   }
-  if (next.player.y > PIT_DEATH_Y) return { ...next, phase: PHASE.DYING };
+  if (next.player.y > PIT_DEATH_Y) return dies(next);
 
   const rolling = scene.hazard?.kind === "log" && scene.hazard.rolling;
   if (rolling && cadence(tick, LOG_ROLL_EVERY)) {
@@ -341,9 +359,7 @@ export function stepHazards(state, tick) {
     next.player.kneeling = rolling ? "rolling" : "still";
   }
   const deadly = scene.hazard?.kind === "fire" || scene.hazard?.kind === "snake";
-  if (deadly && overlaps(you, onGround({ ...OBJECT_BOX, x: OBJECT_X }))) {
-    next = { ...next, phase: PHASE.DYING };
-  }
+  if (deadly && overlaps(you, onGround({ ...OBJECT_BOX, x: OBJECT_X }))) next = dies(next);
   return next;
 }
 
@@ -365,16 +381,106 @@ function stepTunnel(state, scene, tick) {
   let next = state;
   if (wall && overlaps(body(next.player), inTunnel({ ...WALL_BOX, x: WALL_X[wall] }))) {
     const back = wall === "right" ? -1 : 1;
-    next = { ...next, player: { ...next.player, x: next.player.x + back } };
+    next = flag({ ...next, player: { ...next.player, x: next.player.x + back } }, EVENT.WALL);
   }
   if (!scorpion) return next;
   let scorpionX = next.scorpionX;
   if (cadence(tick, SCORPION_EVERY)) scorpionX += Math.sign(next.player.x - scorpionX);
   next = { ...next, scorpionX };
-  if (overlaps(body(next.player), inTunnel({ ...SCORPION_BOX, x: scorpionX }))) {
-    return { ...next, phase: PHASE.DYING };
-  }
+  if (overlaps(body(next.player), inTunnel({ ...SCORPION_BOX, x: scorpionX }))) return dies(next);
   return next;
+}
+
+/**
+ * Whether this screen's treasure is still where it lay.
+ * @param {object} state
+ * @returns {boolean}
+ */
+export function treasureLies(state) {
+  const { treasure } = decodeScene(state.screen);
+  return !!treasure && ((state.taken >>> treasureSlot(state.screen)) & 1) === 0;
+}
+
+/**
+ * The treasure the player touches, taken for its points; the 32nd ends it.
+ * @param {object} state
+ * @returns {object}
+ */
+export function collectTreasure(state) {
+  if (state.underground || !treasureLies(state)) return state;
+  if (!overlaps(body(state.player), onGround({ ...TREASURE_BOX, x: OBJECT_X }))) return state;
+  const { treasure } = decodeScene(state.screen);
+  const treasures = state.treasures + 1;
+  return {
+    ...state,
+    events: state.events | EVENT.TREASURE,
+    score: state.score + treasure.points,
+    taken: (state.taken | (1 << treasureSlot(state.screen))) >>> 0,
+    treasures,
+    phase: treasures >= TREASURES_TOTAL ? PHASE.FINISHED : state.phase,
+  };
+}
+
+/**
+ * One tick of the clock, once the first move has started it; zero ends it.
+ * @param {object} state
+ * @returns {object}
+ */
+export function tickClock(state) {
+  if (!state.clockRunning || state.timerTicks <= 0) return state;
+  const timerTicks = state.timerTicks - 1;
+  return { ...state, timerTicks, phase: timerTicks === 0 ? PHASE.FINISHED : state.phase };
+}
+
+/**
+ * A life taken.
+ * @param {object} state
+ * @returns {object}
+ */
+export function loseLife(state) {
+  return { ...state, lives: Math.max(0, state.lives - 1) };
+}
+
+/**
+ * The player back after a death: dropping at x 20 from the treetops, or from
+ * the tunnel's roof, with the screen's logs and scorpion back where they start.
+ * @param {object} state
+ * @returns {object}
+ */
+export function respawn(state) {
+  return {
+    ...state,
+    phase: PHASE.RESPAWN,
+    logs: logsFor(state.screen),
+    scorpionX: SCORPION_START,
+    player: {
+      ...state.player,
+      x: START_X,
+      y: state.underground ? RESPAWN_UNDER_Y : RESPAWN_Y,
+      jumpTick: null,
+      jumpDir: 0,
+      kneeling: null,
+      onVine: false,
+      fromVine: false,
+      climbing: false,
+    },
+  };
+}
+
+/**
+ * One tick of the drop back in: a line a tick, and in play once on the floor.
+ * @param {object} state
+ * @returns {object}
+ */
+export function stepRespawn(state) {
+  const floor = floorAt(state, state.player.x);
+  const player = fall(state.player, floor);
+  return {
+    ...state,
+    tick: state.tick + 1,
+    player,
+    phase: player.y === floor ? PHASE.PLAYING : state.phase,
+  };
 }
 
 /**
@@ -384,5 +490,6 @@ function stepTunnel(state, scene, tick) {
  * @returns {object}
  */
 export function stepTick(state, inputs) {
-  return stepHazards(stepPlayer(state, inputs), state.tick);
+  const quiet = { ...state, events: 0 };
+  return collectTreasure(stepHazards(stepPlayer(quiet, inputs), state.tick));
 }

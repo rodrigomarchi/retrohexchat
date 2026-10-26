@@ -2312,6 +2312,7 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
           "feature-hex-skiing",
           "feature-hex-frost",
           "feature-hex-hockey",
+          "feature-hex-jungle",
           "feature-arcade"
         ]
       },
@@ -3259,6 +3260,27 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
           "feature-hex-hockey",
           "feature-hex-hockey-blitz"
         ]
+      },
+      %{
+        id: "feature-hex-jungle",
+        title: dgettext("help", "Hex Jungle"),
+        category: dgettext("help", "Retro Games"),
+        keywords: [
+          "hex jungle",
+          dgettext("help", "jungle"),
+          dgettext("help", "treasures"),
+          dgettext("help", "vines"),
+          "pitfall",
+          "explorer",
+          "game"
+        ],
+        icon: :icon_game_jungle,
+        description:
+          dgettext(
+            "help",
+            "A game for one player: cross 255 screens of jungle and the tunnels below, and find 32 treasures in twenty minutes. Arrow keys or WASD to move and climb, the space bar to jump."
+          ),
+        see_also: ["feature-retro-games"]
       },
       # ── Solo Arcade ──────────────────────────────────
       %{

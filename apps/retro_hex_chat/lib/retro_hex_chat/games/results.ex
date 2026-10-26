@@ -265,13 +265,14 @@ defmodule RetroHexChat.Games.Results do
           rating: Ratings.rating() | nil,
           people: Queries.totals() | nil,
           computer: Queries.totals() | nil,
+          alone: Queries.totals() | nil,
           recent: [card()]
         }
 
   @doc """
   One player's record in a game and all its modes: their rating (a versus
   game between people), their ranked matches against people and against the
-  computer, and their latest matches as cards.
+  computer, or alone in a one-player game, and their latest matches as cards.
   """
   @spec player_record(String.t(), integer(), pos_integer()) :: player_record()
   def player_record(game_id, player_id, limit \\ 5) do
@@ -282,6 +283,7 @@ defmodule RetroHexChat.Games.Results do
       rating: if(Catalog.ranking(base_id) == :versus, do: Ratings.of(base_id, player_id)),
       people: Map.get(totals, "p2p"),
       computer: Map.get(totals, "ai"),
+      alone: Map.get(totals, "solo"),
       recent: base_id |> Queries.recent_of(player_id, limit) |> Enum.map(&card/1)
     }
   end

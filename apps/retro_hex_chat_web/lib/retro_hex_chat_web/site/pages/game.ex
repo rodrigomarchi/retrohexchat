@@ -81,6 +81,9 @@ defmodule RetroHexChatWeb.Site.Pages.Game do
   # who started it — and the games beside it.
   defp windows(%{kind: :multiplayer, id: game_id} = game, ctx) do
     channel = Catalog.channel_name(game_id)
+    # A one-player game is ranked on runs played alone, and has no computer.
+    alone = Catalog.solo_only?(game_id)
+    origin = if alone, do: "solo", else: "p2p"
     week_ago = DateTime.add(DateTime.utc_now(), -7, :day)
     challenge = Challenges.for_week(game_id, Date.utc_today())
     week_count = Results.count_since(game_id, week_ago)
@@ -116,15 +119,31 @@ defmodule RetroHexChatWeb.Site.Pages.Game do
             register_path: PublicPages.localized_path("/chat/help/nickserv"),
             channel: channel,
             channel_path: Paths.chat_path(channel),
+            alone: alone,
             ranking: if(Catalog.ranking(game_id) == :versus, do: :wins, else: :best),
-            week: Results.standings(game_id, modes: true, since: week_ago, limit: 5),
+            week:
+              Results.standings(game_id, modes: true, origin: origin, since: week_ago, limit: 5),
+            best:
+              if(alone,
+                do: Results.standings(game_id, modes: true, origin: "solo", limit: 5),
+                else: []
+              ),
             ratings: Ratings.top(game_id, 5),
             playing_now: playing_now,
             live: Activity.live_matches(game_id),
             challenge: challenge,
             challenge_leader: Challenges.leader(challenge),
             computer:
-              Results.standings(game_id, modes: true, origin: "ai", difficulty: "hard", limit: 3),
+              if(alone,
+                do: [],
+                else:
+                  Results.standings(game_id,
+                    modes: true,
+                    origin: "ai",
+                    difficulty: "hard",
+                    limit: 3
+                  )
+              ),
             recent: Results.recent(game_id, 6),
             chatter: Archive.recent(channel, 5),
             week_count: week_count

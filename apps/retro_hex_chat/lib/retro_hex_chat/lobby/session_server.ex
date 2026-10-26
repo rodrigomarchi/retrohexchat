@@ -26,6 +26,7 @@ defmodule RetroHexChat.Lobby.SessionServer do
 
   require Logger
 
+  alias RetroHexChat.Games.Catalog
   alias RetroHexChat.Games.Result
   alias RetroHexChat.Games.Results
   alias RetroHexChat.Lobby
@@ -340,10 +341,11 @@ defmodule RetroHexChat.Lobby.SessionServer do
   end
 
   def handle_call({:propose_game, user_id, proposer_nick, game_id}, _from, state) do
-    if role_of(state, user_id) do
-      {:reply, :ok, handle_propose_game(state, user_id, proposer_nick, game_id)}
-    else
-      {:reply, {:error, :not_participant}, state}
+    cond do
+      is_nil(role_of(state, user_id)) -> {:reply, {:error, :not_participant}, state}
+      not Catalog.valid_game_id?(game_id) -> {:reply, {:error, :unknown_game}, state}
+      Catalog.solo_only?(game_id) -> {:reply, {:error, :not_for_two}, state}
+      true -> {:reply, :ok, handle_propose_game(state, user_id, proposer_nick, game_id)}
     end
   end
 

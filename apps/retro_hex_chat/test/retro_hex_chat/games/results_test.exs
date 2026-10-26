@@ -120,6 +120,50 @@ defmodule RetroHexChat.Games.ResultsTest do
                Results.record(ai_match(ana, "hex_pong", pong(11, 0, 1)))
     end
 
+    test "writes a one-player match as solo, with no difficulty, and its best", %{ana: ana} do
+      solo = fn points ->
+        %{
+          game_id: "hex_jungle",
+          origin: "solo",
+          p1: ana,
+          payload: %{"score" => %{"p1" => points, "p2" => 0}, "winner" => 0},
+          started_at: ago(60_000)
+        }
+      end
+
+      assert {:ok, %{origin: "solo", difficulty: nil, ranked: true, personal_best: true} = row} =
+               Results.record(solo.(4200))
+
+      assert row.outcome == "none"
+      assert {:ok, %{personal_best: false}} = Results.record(solo.(3000))
+      assert {:ok, %{personal_best: true}} = Results.record(solo.(9000))
+    end
+
+    test "a solo match carries no difficulty, and a match against the computer always does" do
+      base = %{
+        game_id: "hex_jungle",
+        base_id: "hex_jungle",
+        p1_nickname: "ana",
+        p1_score: 1,
+        p2_score: 0,
+        outcome: "none",
+        ranked: true,
+        personal_best: false,
+        duration_ms: 1000,
+        started_at: DateTime.utc_now(),
+        finished_at: DateTime.utc_now()
+      }
+
+      assert GameResult.changeset(%GameResult{}, Map.put(base, :origin, "solo")).valid?
+
+      refute GameResult.changeset(
+               %GameResult{},
+               Map.merge(base, %{origin: "solo", difficulty: "hard"})
+             ).valid?
+
+      refute GameResult.changeset(%GameResult{}, Map.put(base, :origin, "ai")).valid?
+    end
+
     test "ranks a match ended early as it stood, a best score included", %{ana: ana} do
       early = fn p1, p2 -> %{"score" => %{"p1" => p1, "p2" => p2}, "ended_early" => true} end
 

@@ -48,7 +48,23 @@ describe("the games registry", () => {
     expect(supportsSolo(id)).toBe(solo);
   });
 
-  it.each(ENTRIES.filter(([, game]) => game.solo))(
+  it.each(ENTRIES.filter(([, game]) => game.soloOnly))(
+    "plays %s, a one-player game, solo and without an opponent",
+    async (id) => {
+      expect(supportsSolo(id)).toBe(true);
+      const engine = await createGameEngine({
+        canvas: canvas(),
+        gameId: id,
+        mode: "solo",
+        transport: createLocalTransport(),
+        engineOptions: { seed: 7 },
+      });
+      expect(engine.opponentController ?? null).toBeNull();
+      engine.stop();
+    },
+  );
+
+  it.each(ENTRIES.filter(([, game]) => game.solo && !game.soloOnly))(
     "gives a solo %s an opponent of its own",
     async (id) => {
       const engine = await createGameEngine({

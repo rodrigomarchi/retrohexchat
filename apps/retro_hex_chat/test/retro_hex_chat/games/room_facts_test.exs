@@ -90,6 +90,12 @@ defmodule RetroHexChat.Games.RoomFactsTest do
                RoomFacts.answer("howto", "#hex-pong")
     end
 
+    test "tells how a game played alone is played, with nobody to find" do
+      assert {:ok, howto} = RoomFacts.answer("howto", "#hex-jungle")
+      assert howto =~ "Press Play under the topic to start it in your browser."
+      refute howto =~ "partner"
+    end
+
     test "the feed points a game's question at the game's room" do
       assert {:ok, "Each game also has its own room. #hex-pong" <> _} =
                RoomFacts.answer("ranking", "#retro-games")

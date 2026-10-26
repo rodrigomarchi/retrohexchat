@@ -514,6 +514,19 @@ defmodule RetroHexChat.Lobby.SessionServerTest do
       stop_server(ctx.token)
     end
 
+    test "a game two people cannot play together is never proposed" do
+      ctx = setup_connected_lobby("alone")
+
+      assert {:error, :not_for_two} =
+               SessionServer.propose_game(ctx.token, ctx.creator.id, "creator", "hex_jungle")
+
+      assert {:error, :unknown_game} =
+               SessionServer.propose_game(ctx.token, ctx.creator.id, "creator", "doom")
+
+      refute_receive %{event: "lobby_game_request"}
+      stop_server(ctx.token)
+    end
+
     test "a full game cycle leaves the connection open for more features" do
       ctx = setup_connected_lobby("feat2")
 

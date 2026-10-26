@@ -68,7 +68,8 @@ defmodule RetroHexChat.Games.CatalogTest do
                %{id: "hex_frost_peaceful", name: "Hex Frost: Peaceful"},
                %{id: "hex_hockey", name: "Hex Hockey"},
                %{id: "hex_hockey_blitz", name: "Hex Hockey: Blitz"},
-               %{id: "hex_hockey_showdown", name: "Hex Hockey: Showdown"}
+               %{id: "hex_hockey_showdown", name: "Hex Hockey: Showdown"},
+               %{id: "hex_jungle", name: "Hex Jungle"}
              ] = Catalog.list_games()
     end
 
@@ -237,6 +238,10 @@ defmodule RetroHexChat.Games.CatalogTest do
                  %{
                    id: "hex_hockey_showdown",
                    controls: "Setas ou WASD para mover, Espaço ou Shift para chutar/desarmar"
+                 },
+                 %{
+                   id: "hex_jungle",
+                   controls: "Setas ou WASD para mover e subir, a barra de espaço para saltar"
                  }
                ] = Catalog.list_games()
       after
@@ -281,7 +286,18 @@ defmodule RetroHexChat.Games.CatalogTest do
       assert Catalog.solo_game_id?("hex_hockey")
       assert Catalog.solo_game_id?("hex_hockey_blitz")
       assert Catalog.solo_game_id?("hex_hockey_showdown")
+      assert Catalog.solo_game_id?("hex_jungle")
       refute Catalog.solo_game_id?("nonexistent")
+    end
+  end
+
+  describe "solo_only?/1" do
+    test "names the games played by one person alone, ranked by score" do
+      assert Catalog.solo_only?("hex_jungle")
+      assert Catalog.ranking("hex_jungle") == :score
+      refute Catalog.solo_only?("hex_raid")
+      refute Catalog.solo_only?("hex_pong")
+      refute Catalog.solo_only?("nonexistent")
     end
   end
 
@@ -321,6 +337,7 @@ defmodule RetroHexChat.Games.CatalogTest do
       assert Catalog.valid_game_id?("hex_hockey")
       assert Catalog.valid_game_id?("hex_hockey_blitz")
       assert Catalog.valid_game_id?("hex_hockey_showdown")
+      assert Catalog.valid_game_id?("hex_jungle")
     end
 
     test "returns false for invalid ids" do
@@ -332,7 +349,7 @@ defmodule RetroHexChat.Games.CatalogTest do
   describe "game_ids/0" do
     test "returns list of all game id strings" do
       ids = Catalog.game_ids()
-      assert length(ids) == 34
+      assert length(ids) == 35
       assert Enum.all?(ids, &is_binary/1)
     end
   end

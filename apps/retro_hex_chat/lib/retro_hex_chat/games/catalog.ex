@@ -42,8 +42,13 @@ defmodule RetroHexChat.Games.Catalog do
     "hex_frost_peaceful",
     "hex_hockey",
     "hex_hockey_blitz",
-    "hex_hockey_showdown"
+    "hex_hockey_showdown",
+    "hex_jungle"
   ]
+
+  # Played by one person alone: no opponent, no partner, nothing to watch. A
+  # one-player game is also played solo and ranked by score (checked below).
+  @solo_only_game_ids ~w(hex_jungle)
 
   # How a finished match is ranked. Versus games have two sides and one winner;
   # score games rank the points a player took home; co-op games rank the score
@@ -56,7 +61,7 @@ defmodule RetroHexChat.Games.Catalog do
                       hex_skiing_escape hex_skiing_clean hex_frost hex_frost_blizzard
                       hex_frost_peaceful hex_hockey hex_hockey_blitz hex_hockey_showdown)
   @score_game_ids ~w(hex_raid hex_raid_pacifist hex_raid_blitz hex_invaders hex_invaders_blitz
-                     hex_enduro hex_enduro_night hex_enduro_sprint)
+                     hex_enduro hex_enduro_night hex_enduro_sprint hex_jungle)
   @coop_game_ids ~w(block_breakers hex_invaders_coop)
 
   @type ranking :: :versus | :score | :coop
@@ -530,6 +535,22 @@ defmodule RetroHexChat.Games.Catalog do
       icon: "game_hockey",
       controls:
         dgettext_noop("games", "Arrow keys or WASD to move, Space or Shift to shoot/tackle")
+    },
+    %{
+      id: "hex_jungle",
+      name: "Hex Jungle",
+      tagline: dgettext_noop("games", "One adventurer, 255 screens"),
+      description:
+        dgettext_noop(
+          "games",
+          "Cross 255 screens of jungle and the tunnels below it. Jump over tree trunks and crocodiles, and find 32 treasures in twenty minutes."
+        ),
+      icon: "game_jungle",
+      controls:
+        dgettext_noop(
+          "games",
+          "Arrow keys or WASD to move and climb, the space bar to jump"
+        )
     }
   ]
 
@@ -549,6 +570,11 @@ defmodule RetroHexChat.Games.Catalog do
 
   for {_ranking, ids} <- rankings, id <- ids, id not in catalog_ids do
     raise CompileError, description: "ranked game #{id} is not in the catalogue"
+  end
+
+  for id <- @solo_only_game_ids, id not in @solo_game_ids or id not in @score_game_ids do
+    raise CompileError,
+      description: "one-player game #{id} must be played solo and ranked by score"
   end
 
   # ex_dna:disable-for-lines:32 two catalogues, one lookup API each over its own @games
@@ -577,6 +603,10 @@ defmodule RetroHexChat.Games.Catalog do
 
   @spec solo_game_id?(String.t()) :: boolean()
   def solo_game_id?(id), do: id in @solo_game_ids
+
+  @doc "Whether `id` is a game for one player alone: no opponent, partner or audience."
+  @spec solo_only?(String.t()) :: boolean()
+  def solo_only?(id), do: id in @solo_only_game_ids
 
   @spec game_ids() :: [String.t()]
   def game_ids, do: Enum.map(@games, & &1.id)

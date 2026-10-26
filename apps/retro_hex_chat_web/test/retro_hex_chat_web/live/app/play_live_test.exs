@@ -165,6 +165,21 @@ defmodule RetroHexChatWeb.App.PlayLiveTest do
       assert has_element?(view, ~s([data-testid="retro-game-start-ai"]))
     end
 
+    test "a one-player game offers no match with somebody, nor opens one", %{conn: conn} do
+      nick = "Alone#{uid()}"
+      {:ok, _} = register(nick)
+      conn = chat_conn(conn, nick, pre_identified: true)
+
+      {:ok, view, _html} = live(conn, ~p"/play/hex_jungle")
+      refute has_element?(view, ~s([data-testid="play-create-match"]))
+
+      {:ok, view, _html} = live(conn, ~p"/play/hex_jungle?match=new")
+      refute has_element?(view, ~s([data-testid="play-match-error"]))
+      assert has_element?(view, ~s([data-testid="retro-game-session-hex_jungle"]))
+      # A room would navigate the page away; it stays on the game.
+      assert render_click(view, "create_match", %{}) =~ "retro-game-session-hex_jungle"
+    end
+
     test "an unknown game is sent to the catalogue", %{conn: conn} do
       assert {:error, {:redirect, %{to: "/games"}}} =
                conn |> chat_conn("Miss#{uid()}") |> live(~p"/play/not_a_game")
@@ -231,6 +246,27 @@ defmodule RetroHexChatWeb.App.PlayLiveTest do
       assert html =~ "retro-game-ended-early"
       assert html =~ "retro-game-recorded"
       assert_receive {:game_result_recorded, %{p1_nickname: ^nick, outcome: "p2", ranked: true}}
+    end
+
+    test "a one-player game is written down as solo, with no difficulty", %{conn: conn} do
+      nick = "Solo#{uid()}"
+      {:ok, _} = register(nick)
+      Phoenix.PubSub.subscribe(RetroHexChat.PubSub, Topics.game_results())
+
+      {:ok, view, _html} =
+        conn |> chat_conn(nick, pre_identified: true) |> live(~p"/play/hex_jungle")
+
+      render_hook(view, "retro_game_canvas_ready", %{"game_id" => "hex_jungle"})
+      view |> element(~s([data-testid="retro-game-start-ai"])) |> render_click()
+
+      render_hook(view, "retro_game_result", %{
+        "game_id" => "hex_jungle",
+        "score" => %{"p1" => 4200, "p2" => 0},
+        "winner" => 0
+      })
+
+      assert_receive {:game_result_recorded,
+                      %{p1_nickname: ^nick, origin: "solo", difficulty: nil, p1_score: 4200}}
     end
 
     test "a nickname typed without signing in plays unranked", %{conn: conn} do

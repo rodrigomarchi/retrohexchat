@@ -50,6 +50,11 @@ defmodule RetroHexChatWeb.P2PLive.Components.P2PGameIslandTest do
     assert html =~ "Hex Pong"
   end
 
+  test "offers only the games two people play" do
+    html = render_component(P2PGameIsland, id: P2PGameIsland.id(), connected: true)
+    refute html =~ "Hex Jungle"
+  end
+
   test "shows the consent prompt for an incoming request" do
     html =
       render_component(P2PGameIsland,

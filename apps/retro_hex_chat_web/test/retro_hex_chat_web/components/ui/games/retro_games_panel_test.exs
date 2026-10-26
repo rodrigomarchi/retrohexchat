@@ -145,6 +145,35 @@ defmodule RetroHexChatWeb.Components.UI.Games.RetroGamesPanelTest do
     controls: "Arrow keys or WASD to move, Space or Shift to shoot/tackle"
   }
 
+  @jungle %{
+    id: "hex_jungle",
+    name: "Hex Jungle",
+    tagline: "One explorer, 255 screens",
+    description: "Cross 255 screens of jungle.",
+    icon: "game_jungle",
+    controls: "Arrow keys or WASD to run and climb, Space to jump"
+  }
+
+  test "a one-player game is played, not played against anybody" do
+    html =
+      render_component(&retro_games_panel/1,
+        id: "retro-games-panel",
+        status: "ready",
+        selected_game: @jungle,
+        difficulty: "normal",
+        canvas_ready: true
+      )
+
+    document = Floki.parse_document!(html)
+    text = Floki.text(document)
+
+    assert Floki.find(document, ~s([data-testid="retro-game-start-ai"])) |> Floki.text() =~ "Play"
+    refute text =~ "Play vs AI"
+    refute text =~ "Solo AI"
+    assert Floki.find(document, ~s([data-testid="retro-game-difficulty-panel"])) == []
+    assert text =~ "32 treasures in 20 minutes"
+  end
+
   test "renders the ready game with an integrated control panel" do
     html =
       render_component(&retro_games_panel/1,
@@ -491,6 +520,17 @@ defmodule RetroHexChatWeb.Components.UI.Games.RetroGamesPanelTest do
 
     silent = %Result{game_id: "hex_raid", p1_score: 1, p2_score: 0, outcome: :none}
     assert @raid |> finished_text(silent) |> Floki.text() =~ "No winner reported"
+  end
+
+  test "a one-player game's match ends on its points alone" do
+    result = %Result{game_id: "hex_jungle", p1_score: 4200, p2_score: 0, outcome: :none}
+    document = finished_text(@jungle, result)
+    text = Floki.text(document)
+
+    assert text =~ "4200 points"
+    refute text =~ "AI"
+    refute text =~ "No winner reported"
+    assert Floki.find(document, ~s([data-testid="retro-game-verdict"])) == []
   end
 
   test "a written match says where it went, and a personal best says so" do

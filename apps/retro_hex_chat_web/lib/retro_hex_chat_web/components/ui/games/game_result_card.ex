@@ -95,8 +95,15 @@ defmodule RetroHexChatWeb.Components.UI.GameResultCard do
     """
   end
 
-  @doc "Both sides and both scores, host first: `ana 11 × 7 beto`."
+  @doc """
+  Both sides and both scores, host first: `ana 11 × 7 beto`; a run played
+  alone, its player and points: `ana: 4200 points`.
+  """
   @spec score_line(map()) :: String.t()
+  def score_line(%{origin: "solo"} = card) do
+    dgettext("games", "%{p1}: %{p1_score} points", p1: card.p1_nickname, p1_score: card.p1_score)
+  end
+
   def score_line(card) do
     dgettext("games", "%{p1} %{p1_score} × %{p2_score} %{p2}",
       p1: card.p1_nickname,
@@ -142,12 +149,18 @@ defmodule RetroHexChatWeb.Components.UI.GameResultCard do
 
   defp score_parts(card, locales) do
     line =
-      dgettext("games", "%{p1} %{p1_score} × %{p2_score} %{p2}",
-        p1: @p1_mark,
-        p2: @p2_mark,
-        p1_score: card.p1_score,
-        p2_score: card.p2_score
-      )
+      case card do
+        %{origin: "solo"} ->
+          dgettext("games", "%{p1}: %{p1_score} points", p1: @p1_mark, p1_score: card.p1_score)
+
+        _two_sides ->
+          dgettext("games", "%{p1} %{p1_score} × %{p2_score} %{p2}",
+            p1: @p1_mark,
+            p2: @p2_mark,
+            p1_score: card.p1_score,
+            p2_score: card.p2_score
+          )
+      end
 
     ~r/(\x{E000}[12]\x{E000})/u
     |> Regex.split(line, include_captures: true, trim: true)

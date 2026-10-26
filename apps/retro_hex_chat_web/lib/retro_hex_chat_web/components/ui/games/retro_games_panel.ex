@@ -62,6 +62,8 @@ defmodule RetroHexChatWeb.Components.UI.RetroGamesPanel do
       assigns
       |> assign(:difficulties, @difficulties)
       |> assign(:control_rows, control_rows(assigns.game))
+      # A one-player game has no opponent: no difficulty, nobody to beat.
+      |> assign(:alone, Catalog.solo_only?(assigns.game.id))
 
     ~H"""
     <div
@@ -95,14 +97,17 @@ defmodule RetroHexChatWeb.Components.UI.RetroGamesPanel do
           >
             <Icons.game_icon game_id={@game.id} class="h-16 w-16" />
             <h4 class="text-base font-bold">{dgettext("games", "Match Finished")}</h4>
-            <p class="text-sm">
+            <p :if={@alone} class="text-sm">
+              {dgettext("games", "%{points} points", points: (@result && @result.p1_score) || 0)}
+            </p>
+            <p :if={not @alone} class="text-sm">
               {dgettext("games", "You %{you} x %{ai} AI",
                 you: (@result && @result.p1_score) || 0,
                 ai: (@result && @result.p2_score) || 0
               )}
             </p>
             <p
-              :if={verdict_label(@result)}
+              :if={not @alone and verdict_label(@result)}
               class="text-xs text-muted-foreground"
               data-testid="retro-game-verdict"
             >
@@ -194,7 +199,7 @@ defmodule RetroHexChatWeb.Components.UI.RetroGamesPanel do
               </span>
               <.badge variant="success" class="shrink-0">
                 <:icon><Icons.icon_joystick class="h-3 w-3" /></:icon>
-                {dgettext("games", "Solo AI")}
+                {if @alone, do: dgettext("games", "Solo"), else: dgettext("games", "Solo AI")}
               </.badge>
             </div>
             <dl class="grid gap-retro-4 text-[11px] leading-tight">
@@ -218,6 +223,7 @@ defmodule RetroHexChatWeb.Components.UI.RetroGamesPanel do
           </section>
 
           <.inset
+            :if={not @alone}
             bevel="sunken"
             tone="surface"
             as="section"
@@ -292,7 +298,9 @@ defmodule RetroHexChatWeb.Components.UI.RetroGamesPanel do
               data-testid="retro-game-start-ai"
             >
               <:icon><Icons.icon_btn_play class="h-4 w-4" /></:icon>
-              {dgettext("games", "Play vs AI")}
+              {if @alone,
+                do: dpgettext("games", "game", "Play"),
+                else: dgettext("games", "Play vs AI")}
             </.button>
             <.button
               :if={@status == "ready" and not @canvas_ready}
@@ -376,6 +384,7 @@ defmodule RetroHexChatWeb.Components.UI.RetroGamesPanel do
   def goal_label(%{id: "hex_hockey"}), do: dgettext("games", "3 periods")
   def goal_label(%{id: "hex_hockey_blitz"}), do: dgettext("games", "1 period")
   def goal_label(%{id: "hex_hockey_showdown"}), do: dgettext("games", "First to 5 goals")
+  def goal_label(%{id: "hex_jungle"}), do: dgettext("games", "32 treasures in 20 minutes")
 
   @doc """
   The keys of `game`, one row per action, as the library panel lists them.
@@ -385,6 +394,15 @@ defmodule RetroHexChatWeb.Components.UI.RetroGamesPanel do
   @spec control_rows(%{required(:id) => String.t(), optional(atom()) => term()}) :: [
           %{label: String.t(), keys: [String.t()]}
         ]
+  def control_rows(%{id: "hex_jungle"}) do
+    [
+      %{label: dgettext("games", "Move"), keys: ["←", "→", "A", "D"]},
+      %{label: dgettext("games", "Jump"), keys: ["Space"]},
+      %{label: dgettext("games", "Climb"), keys: ["↑", "↓", "W", "S"]},
+      %{label: dgettext("games", "Let go of the vine"), keys: ["↓", "S"]}
+    ]
+  end
+
   def control_rows(%{id: "hex_pong"}) do
     [
       %{label: dgettext("games", "Move"), keys: ["↑", "↓", "W", "S"]}

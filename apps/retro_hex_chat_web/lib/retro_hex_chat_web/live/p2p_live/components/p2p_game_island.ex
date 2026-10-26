@@ -37,7 +37,8 @@ defmodule RetroHexChatWeb.P2PLive.Components.P2PGameIsland do
        game: @idle,
        game_request: nil,
        game_outgoing: false,
-       games: Catalog.list_games(),
+       # A session is two people: a game played alone is not one to propose.
+       games: Enum.reject(Catalog.list_games(), &Catalog.solo_only?(&1.id)),
        connected: false,
        peer_nick: nil,
        peer_locale: nil,

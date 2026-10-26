@@ -504,6 +504,39 @@ defmodule RetroHexChatWeb.Icons.Games do
     """
   end
 
+  # -- Hex Jungle: an explorer swinging on a vine over a tar pit --
+
+  attr :class, :string, default: nil
+
+  @spec icon_game_jungle(map()) :: Phoenix.LiveView.Rendered.t()
+  def icon_game_jungle(assigns) do
+    ~H"""
+    <svg class={@class} viewBox="0 0 32 32" shape-rendering="crispEdges" aria-hidden="true">
+      <rect x="0" y="0" width="32" height="32" fill="#333" />
+      <path d="M0 0h32v2H2v28H0z" fill="#777" />
+      <path d="M0 32h32v-2H2V2h30V0h-2v30H0z" fill="#000" />
+      <rect x="2" y="2" width="28" height="28" fill="#0a1a0a" />
+
+      <rect x="2" y="2" width="28" height="6" fill="#1d5e1d" />
+      <path d="M2 8h4v2H2z M10 8h4v2h-4z M18 8h4v2h-4z M26 8h4v2h-4z" fill="#2f8a2f" />
+      <rect x="4" y="8" width="2" height="16" fill="#5a3a1a" />
+      <rect x="26" y="8" width="2" height="16" fill="#5a3a1a" />
+
+      <path d="M15 8h2v3h1v3h1v2h1v2" fill="none" stroke="#3a7a2a" stroke-width="1" />
+      <rect x="20" y="13" width="3" height="2" fill="#e8dca0" />
+      <rect x="20" y="15" width="3" height="2" fill="#e0a070" />
+      <rect x="20" y="17" width="3" height="3" fill="#4a8a3a" />
+      <rect x="20" y="20" width="3" height="2" fill="#b89850" />
+      <rect x="19" y="22" width="1" height="1" fill="#3a2410" />
+      <rect x="23" y="22" width="1" height="1" fill="#3a2410" />
+
+      <rect x="2" y="24" width="28" height="6" fill="#8a6a2a" />
+      <rect x="9" y="24" width="14" height="3" fill="#101010" />
+      <rect x="6" y="22" width="3" height="2" fill="#ffd030" />
+    </svg>
+    """
+  end
+
   # -- DOOM Shareware: shotgun with muzzle flash (red/orange) --
 
   attr :class, :string, default: nil

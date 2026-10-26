@@ -366,6 +366,32 @@ _TERMS: dict[str, dict[str, tuple[str, ...]]] = {
         "zh_hans": ("空间",),
         "zh_hant": ("空間",),
     },
+    # A vine a player swings on, never a grapevine: Hex Jungle's help came
+    # back as "videira" in Portuguese, "vid" in Spanish and "ぶどう" (grapes)
+    # in Japanese.
+    r"\bvines?\b": {
+        "pt": ("cipó",),
+        "es": ("liana", "bejuco"),
+        "fr": ("liane",),
+        "de": ("liane",),
+        "it": ("liana", "liane"),
+        "nl": ("liaan", "lianen"),
+        "pl": ("lian",),
+        "ru": ("лиан",),
+        "ja": ("ツタ", "つた", "蔓"),
+        "zh_hans": ("藤",),
+        "zh_hant": ("藤",),
+    },
+    # Sand that swallows, never plain sand: Spanish gave "arena" for
+    # "quicksand", Hex Jungle's deadly ground.
+    r"\bquicksand\b": {
+        "pt": ("movediç",),
+        "es": ("movediz",),
+    },
+    # A treasure found in a game, never jewellery: Japanese gave "ジュエリー".
+    r"\btreasures?\b": {
+        "ja": ("宝",),
+    },
     # An account on the server, never a bank account: Russian gave "Это все,
     # что нужно для счета" — the bill.
     r"\baccounts?\b": {

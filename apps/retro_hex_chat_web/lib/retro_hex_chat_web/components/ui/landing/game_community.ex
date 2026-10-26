@@ -73,13 +73,26 @@ defmodule RetroHexChatWeb.Components.UI.Landing.GameCommunity do
       </p>
     </div>
 
-    <h3 class="text-sm font-bold mb-1">{dgettext("landing", "This week, between players")}</h3>
+    <h3 :if={not @alone} class="text-sm font-bold mb-1">
+      {dgettext("landing", "This week, between players")}
+    </h3>
+    <h3 :if={@alone} class="text-sm font-bold mb-1">{dgettext("landing", "This week")}</h3>
     <.standings
       standings={@week}
       ranking={@ranking}
       locales={@nick_locales}
       testid="game-community-week"
     />
+
+    <div :if={@alone}>
+      <h3 class="text-sm font-bold mb-1 mt-3">{dgettext("landing", "Best scores")}</h3>
+      <.standings
+        standings={@best}
+        ranking={@ranking}
+        locales={@nick_locales}
+        testid="game-community-best"
+      />
+    </div>
 
     <div :if={@ranking == :wins}>
       <h3 class="text-sm font-bold mb-1 mt-3">{dgettext("landing", "Rating")}</h3>
@@ -95,13 +108,17 @@ defmodule RetroHexChatWeb.Components.UI.Landing.GameCommunity do
       </ol>
     </div>
 
-    <h3 class="text-sm font-bold mb-1 mt-3">{dgettext("landing", "Against the computer on hard")}</h3>
-    <.standings
-      standings={@computer}
-      ranking={@ranking}
-      locales={@nick_locales}
-      testid="game-community-computer"
-    />
+    <div :if={not @alone}>
+      <h3 class="text-sm font-bold mb-1 mt-3">
+        {dgettext("landing", "Against the computer on hard")}
+      </h3>
+      <.standings
+        standings={@computer}
+        ranking={@ranking}
+        locales={@nick_locales}
+        testid="game-community-computer"
+      />
+    </div>
 
     <h3 class="text-sm font-bold mb-1 mt-3">{dgettext("landing", "Latest matches")}</h3>
     <p :if={@recent == []} class="text-sm text-muted-foreground">

@@ -32,6 +32,11 @@ import { voices } from "./voices.js";
  * @param {number} [options.endMs] - the longest a match to the end runs
  * @param {string[]} [options.variants] - other ids this engine plays (a mode of
  *   the same game); each gets its own solo match
+ * @param {boolean} [options.soloOnly] - a one-player game: no AI, no wire, so
+ *   its pins are the solo match on the key script, one to the end, and the
+ *   same match twice
+ * @param {(side: "host") => Array<object>} [options.endScript] - for a
+ *   one-player game, the keys of the match played to the end
  */
 export function pinGame(
   gameId,
@@ -42,8 +47,15 @@ export function pinGame(
     disconnectAtMs = 15_000,
     endMs = 600_000,
     variants = [],
+    soloOnly = false,
+    endScript = () => [],
   },
 ) {
+  if (soloOnly) {
+    pinOnePlayer(gameId, { script, soloMs, endMs, endScript });
+    return;
+  }
+
   const both = () => [
     ...script("host").map((press) => ({ ...press, side: "host" })),
     ...script("guest").map((press) => ({ ...press, side: "guest" })),
@@ -133,6 +145,57 @@ export function pinGame(
     it("records the same match the same way twice", async () => {
       const play = async () => {
         const run = await playMatch({ gameId, mode: "p2p", seed: 3, script: both() });
+        run.advance(10_000);
+        const record = run.record();
+        run.stop();
+        run.restore();
+        return record;
+      };
+
+      expect(digest(await play())).toBe(digest(await play()));
+    });
+  });
+}
+
+/** The pins of a one-player game: what it does alone, on its keys. */
+function pinOnePlayer(gameId, { script, soloMs, endMs, endScript }) {
+  const host = (presses) => presses.map((press) => ({ ...press, side: "host" }));
+
+  describe(`${gameId} pins`, { timeout: PIN_TIMEOUT_MS }, () => {
+    let match;
+
+    afterEach(() => {
+      match?.stop();
+      match?.restore();
+      match = null;
+    });
+
+    it("solo following the key script", async () => {
+      match = await playMatch({ gameId, mode: "solo", seed: 1, script: host(script("host")) });
+      const ended = match.runUntil(() => match.over(), soloMs);
+      const record = match.record();
+      dump(gameId, "solo", record);
+
+      expect({ ended, ...summarize(record) }).toMatchSnapshot();
+    });
+
+    it(`solo to the end: ${gameId}`, async () => {
+      match = await playMatch({ gameId, mode: "solo", seed: 1, script: host(endScript("host")) });
+      const ended = match.runUntil(() => match.over(), endMs);
+      const record = match.record();
+      dump(gameId, "end", record);
+
+      expect({ ended, ...summarize(record) }).toMatchSnapshot();
+    });
+
+    it("records the same match the same way twice", async () => {
+      const play = async () => {
+        const run = await playMatch({
+          gameId,
+          mode: "solo",
+          seed: 3,
+          script: host(script("host")),
+        });
         run.advance(10_000);
         const record = run.record();
         run.stop();

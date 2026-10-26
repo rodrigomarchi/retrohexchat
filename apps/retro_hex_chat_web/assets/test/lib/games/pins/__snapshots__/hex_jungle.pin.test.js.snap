@@ -1,0 +1,227 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`hex_jungle pins > solo following the key script 1`] = `
+{
+  "draws": [
+    {
+      "digest": "94d250954514f4c0",
+      "ops": 498,
+      "phase": 1,
+      "side": "host",
+      "t": 32,
+    },
+    {
+      "digest": "1e6eea274a8853eb",
+      "ops": 599,
+      "phase": 2,
+      "side": "host",
+      "t": 5680,
+    },
+    {
+      "digest": "3e3928ef6efb0b11",
+      "ops": 599,
+      "phase": 3,
+      "side": "host",
+      "t": 5696,
+    },
+    {
+      "digest": "cbc421af743b2b05",
+      "ops": 591,
+      "phase": 1,
+      "side": "host",
+      "t": 6784,
+    },
+    {
+      "digest": "8405148cb3d8a8a0",
+      "ops": 541,
+      "phase": 2,
+      "side": "host",
+      "t": 12624,
+    },
+    {
+      "digest": "94f137d27ca4a800",
+      "ops": 541,
+      "phase": 3,
+      "side": "host",
+      "t": 12640,
+    },
+    {
+      "digest": "16c564b46a6b257c",
+      "ops": 565,
+      "phase": 1,
+      "side": "host",
+      "t": 13744,
+    },
+    {
+      "digest": "5aab31d1f980c130",
+      "ops": 471,
+      "phase": 2,
+      "side": "host",
+      "t": 19632,
+    },
+  ],
+  "ended": true,
+  "phases": [
+    {
+      "phase": 1,
+      "side": "host",
+      "t": 16,
+    },
+    {
+      "phase": 2,
+      "side": "host",
+      "t": 3168,
+    },
+    {
+      "phase": 3,
+      "side": "host",
+      "t": 5680,
+    },
+    {
+      "phase": 1,
+      "side": "host",
+      "t": 6768,
+    },
+    {
+      "phase": 2,
+      "side": "host",
+      "t": 10128,
+    },
+    {
+      "phase": 3,
+      "side": "host",
+      "t": 12624,
+    },
+    {
+      "phase": 1,
+      "side": "host",
+      "t": 13728,
+    },
+    {
+      "phase": 2,
+      "side": "host",
+      "t": 17120,
+    },
+    {
+      "phase": 4,
+      "side": "host",
+      "t": 19632,
+    },
+  ],
+  "results": {
+    "guest": [],
+    "host": [
+      {
+        "score": {
+          "p1": 2000,
+          "p2": 0,
+        },
+        "winner": 0,
+      },
+    ],
+  },
+  "sounds": {
+    "host": {
+      "digest": "3d5f10c9450b3084",
+      "voices": {
+        "createGain": 50,
+        "createOscillator": 49,
+      },
+    },
+  },
+  "state": {
+    "host": {
+      "clockRunning": true,
+      "events": 16,
+      "jumpHeld": false,
+      "lives": 0,
+      "phase": 4,
+      "score": 2000,
+      "scorpionX": 76,
+      "screen": 56,
+      "taken": 0,
+      "tick": 727,
+      "timerTicks": 71464,
+      "treasures": 0,
+      "underground": false,
+    },
+  },
+  "wire": {
+    "byDir": {},
+    "digest": "4f53cda18c2baa0c",
+    "first": [],
+  },
+}
+`;
+
+exports[`hex_jungle pins > solo to the end: hex_jungle 1`] = `
+{
+  "draws": [
+    {
+      "digest": "94d250954514f4c0",
+      "ops": 498,
+      "phase": 1,
+      "side": "host",
+      "t": 32,
+    },
+  ],
+  "ended": true,
+  "phases": [
+    {
+      "phase": 1,
+      "side": "host",
+      "t": 16,
+    },
+    {
+      "phase": 4,
+      "side": "host",
+      "t": 1200992,
+    },
+  ],
+  "results": {
+    "guest": [],
+    "host": [
+      {
+        "score": {
+          "p1": 1900,
+          "p2": 0,
+        },
+        "winner": 0,
+      },
+    ],
+  },
+  "sounds": {
+    "host": {
+      "digest": "fba61b3435fabff0",
+      "voices": {
+        "createBuffer": 731,
+        "createBufferSource": 731,
+        "createGain": 1472,
+        "createOscillator": 740,
+      },
+    },
+  },
+  "state": {
+    "host": {
+      "clockRunning": true,
+      "events": 0,
+      "jumpHeld": false,
+      "lives": 3,
+      "phase": 4,
+      "score": 1900,
+      "scorpionX": 76,
+      "screen": 196,
+      "taken": 0,
+      "tick": 72059,
+      "timerTicks": 0,
+      "treasures": 0,
+      "underground": true,
+    },
+  },
+  "wire": {
+    "byDir": {},
+    "digest": "4f53cda18c2baa0c",
+    "first": [],
+  },
+}
+`;

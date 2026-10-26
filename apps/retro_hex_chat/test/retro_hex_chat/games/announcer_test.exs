@@ -22,12 +22,18 @@ defmodule RetroHexChat.Games.AnnouncerTest do
       Application.delete_env(:retro_hex_chat, :game_result_min_duration_ms)
 
       Enum.each(
-        ["#hex-pong", "#hex-raid", "#hex-tennis", Catalog.feed_channel()],
+        ["#hex-pong", "#hex-raid", "#hex-tennis", "#hex-jungle", Catalog.feed_channel()],
         &stop_channel/1
       )
     end)
 
-    insert_game_announcer(["#hex-pong", "#hex-raid", "#hex-tennis", Catalog.feed_channel()])
+    insert_game_announcer([
+      "#hex-pong",
+      "#hex-raid",
+      "#hex-tennis",
+      "#hex-jungle",
+      Catalog.feed_channel()
+    ])
 
     ana = insert(:registered_nick, nickname: "ana")
     beto = insert(:registered_nick, nickname: "beto")
@@ -122,6 +128,27 @@ defmodule RetroHexChat.Games.AnnouncerTest do
 
     assert Repo.get!(Message, hard.channel_message_id).content ==
              "ana beat the computer (hard) 11 × 4 in Hex Pong"
+  end
+
+  test "a one-player game's best is news, its other runs are not", %{ana: ana} do
+    run = fn points ->
+      record(%{
+        game_id: "hex_jungle",
+        origin: "solo",
+        p1: ana,
+        payload: %{"score" => %{"p1" => points, "p2" => 0}, "winner" => 0}
+      })
+    end
+
+    best = run.(4200)
+
+    assert Repo.get!(Message, best.channel_message_id).content ==
+             "ana set a personal best of 4200 in Hex Jungle"
+
+    quiet = run.(1000)
+    assert quiet.channel_message_id == nil
+    # Asked for in the room (!recent), a run that was no best says what it scored.
+    assert Announcer.line(quiet) == "ana scored 1000 in Hex Jungle"
   end
 
   test "a match somebody left is never news", %{ana: ana, beto: beto} do
