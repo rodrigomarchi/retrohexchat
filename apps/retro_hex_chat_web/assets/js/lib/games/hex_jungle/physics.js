@@ -204,7 +204,12 @@ export function changeScreen(state, toward) {
  * @returns {object}
  */
 export function stepPlayer(state, inputs) {
-  const floorUnder = (x) => floorAt(state, x);
+  // Once a player has sunk below the jungle's ground they sink on: a pit that
+  // shuts, or jaws that close, under them do not lift them back out.
+  const floorUnder = (x, y = state.player.y) => {
+    const floor = floorAt(state, x);
+    return !state.underground && y > GROUND_Y && floor === GROUND_Y ? Infinity : floor;
+  };
   const pressedJump = inputs.jump && !state.jumpHeld;
   const scene = decodeScene(state.screen);
   let player = { ...state.player };
@@ -241,7 +246,9 @@ export function stepPlayer(state, inputs) {
   if (player.jumpTick !== null) {
     player = stepJump(player, inputs, floorUnder);
     const vine = vineX(state.tick);
-    if (scene.vine && !underground && player.jumpTick !== null && !player.fromVine) {
+    // A player already below the ground is sinking: the vine is out of reach.
+    const reachable = !underground && player.y <= GROUND_Y && !player.fromVine;
+    if (scene.vine && reachable && player.jumpTick !== null) {
       if (Math.abs(player.x - vine) <= VINE_REACH) {
         player = catchVine(player, vine);
         events |= EVENT.VINE;
@@ -274,7 +281,7 @@ const landed = (player, floor) => ({
 /** One tick in the air: the table, then a fall to the floor under it. */
 function stepJump(player, inputs, floorUnder) {
   if (player.jumpTick >= JUMP_TABLE.length) {
-    const floor = floorUnder(player.x);
+    const floor = floorUnder(player.x, player.y);
     const fallen = fall(player, floor);
     return fallen.y === floor ? landed(fallen, floor) : fallen;
   }
@@ -285,7 +292,7 @@ function stepJump(player, inputs, floorUnder) {
   if (next.jumpDir !== 0) next.facing = next.jumpDir;
   if (cadence(next.jumpTick, WALK_EVERY)) next.x += next.jumpDir;
   // A drop from higher than the jump left (a vine) can reach the floor early.
-  const floor = floorUnder(next.x);
+  const floor = floorUnder(next.x, next.y);
   return next.y >= floor ? landed(next, floor) : next;
 }
 
@@ -380,7 +387,9 @@ function stepTunnel(state, scene, tick) {
   const { wall, scorpion } = scene.underground;
   let next = state;
   if (wall && overlaps(body(next.player), inTunnel({ ...WALL_BOX, x: WALL_X[wall] }))) {
-    const back = wall === "right" ? -1 : 1;
+    // Pushed back to the side of the wall the player came from.
+    const middle = WALL_X[wall] + WALL_BOX.w / 2;
+    const back = next.player.x + BODY.w / 2 < middle ? -1 : 1;
     next = flag({ ...next, player: { ...next.player, x: next.player.x + back } }, EVENT.WALL);
   }
   if (!scorpion) return next;

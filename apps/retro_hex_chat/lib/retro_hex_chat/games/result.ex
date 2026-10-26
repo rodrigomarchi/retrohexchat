@@ -69,6 +69,7 @@ defmodule RetroHexChat.Games.Result do
   def normalize(game_id, payload) when is_binary(game_id) and is_map(payload) do
     with true <- Catalog.valid_game_id?(game_id) || {:error, :unknown_game},
          {:ok, p1, p2} <- scores(payload),
+         {p2, payload} = alone(game_id, p2, payload),
          :ok <- within_ceiling(game_id, p1, p2),
          outcome = read_outcome(game_id, payload, p1, p2),
          :ok <- agrees(Catalog.ranking(game_id), outcome, p1, p2) do
@@ -125,6 +126,14 @@ defmodule RetroHexChat.Games.Result do
       end)
 
     if p1 <= ceiling and p2 <= ceiling, do: :ok, else: {:error, :implausible}
+  end
+
+  # A one-player game's result is its points: nobody else scored, and a run
+  # played alone has nobody to lose by a disconnect.
+  defp alone(game_id, p2, payload) do
+    if Catalog.solo_only?(game_id),
+      do: {0, Map.drop(payload, ["disconnected", :disconnected])},
+      else: {p2, payload}
   end
 
   defp read_outcome(game_id, payload, p1, p2) do

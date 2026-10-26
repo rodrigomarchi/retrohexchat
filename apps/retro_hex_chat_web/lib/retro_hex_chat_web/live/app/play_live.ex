@@ -223,7 +223,12 @@ defmodule RetroHexChatWeb.App.PlayLive do
   def handle_event("retro_games_end", _params, socket), do: {:noreply, reset_match(socket)}
 
   # The canvas had no match left to end: the game is made ready for another.
-  def handle_event("retro_game_stopped", params, %{assigns: %{selected_game: %{id: id}}} = socket) do
+  # Only a match still in play: a result that got in first stays on screen.
+  def handle_event(
+        "retro_game_stopped",
+        params,
+        %{assigns: %{status: "playing", selected_game: %{id: id}}} = socket
+      ) do
     if game_id(params) == id, do: {:noreply, reset_match(socket)}, else: {:noreply, socket}
   end
 

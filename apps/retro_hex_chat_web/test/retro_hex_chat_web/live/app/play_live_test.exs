@@ -269,6 +269,22 @@ defmodule RetroHexChatWeb.App.PlayLiveTest do
                       %{p1_nickname: ^nick, origin: "solo", difficulty: nil, p1_score: 4200}}
     end
 
+    # End pressed twice, or as the match ends on its own: the canvas reports
+    # the result, then says it had nothing left to end. The result stays.
+    test "a canvas with nothing left to end does not wipe a result already in", %{conn: conn} do
+      nick = "Twice#{uid()}"
+      {:ok, _} = register(nick)
+
+      {:ok, view, _html} =
+        conn |> chat_conn(nick, pre_identified: true) |> live(~p"/play/hex_pong")
+
+      play_to_the_end(view, %{"score" => %{"p1" => 2, "p2" => 1}, "ended_early" => true})
+      html = render_hook(view, "retro_game_stopped", %{"game_id" => "hex_pong"})
+
+      assert html =~ "retro-game-result"
+      assert html =~ "retro-game-ended-early"
+    end
+
     test "a nickname typed without signing in plays unranked", %{conn: conn} do
       nick = "Typed#{uid()}"
       {:ok, _} = register(nick)

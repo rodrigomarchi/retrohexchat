@@ -524,3 +524,45 @@ describe("events", () => {
     expect(after(playing(screenOf(0, FIRE), { x: 20 }), {}, 1).events).toBe(0);
   });
 });
+
+// ── Found in review ──
+
+describe("a pit that shuts on a sinking player", () => {
+  it("does not lift them back out: they sink on to the end", () => {
+    // Open at tick 250; the edge passes x 50 as it narrows from tick 256.
+    const seen = ticks(playing(screenOf(6, FIRE), { x: 50 }, { tick: 250 }), {}, 40);
+    expect(seen.at(-1).phase).toBe(PHASE.DYING);
+  });
+
+  it("nor do a crocodile's jaws shutting under them", () => {
+    // Jaws open at tick 250: x 58 is water; at tick 256 they shut and x 58 is a head.
+    const seen = ticks(playing(screenOf(4, 0), { x: 58 }, { tick: 250 }), {}, 40);
+    expect(seen.at(-1).phase).toBe(PHASE.DYING);
+  });
+});
+
+describe("a tunnel wall met from outside", () => {
+  it("stops a player coming from the screen's left edge", () => {
+    const tunnel = playing(0b00000110, { x: 8, y: UNDER_Y }, { underground: true });
+    const seen = ticks(tunnel, { right: true }, 60);
+    expect(Math.max(...seen.map((s) => s.player.x))).toBeLessThanOrEqual(13);
+  });
+
+  it("stops a player coming from the screen's right edge", () => {
+    const tunnel = playing(0b10000110, { x: 148, y: UNDER_Y }, { underground: true });
+    const seen = ticks(tunnel, { left: true }, 60);
+    expect(Math.min(...seen.map((s) => s.player.x))).toBeGreaterThanOrEqual(144);
+  });
+});
+
+describe("the vine and a player already in the tar", () => {
+  it("is out of reach once they are below the ground", () => {
+    const sinking = playing(
+      screenOf(2, FIRE),
+      { x: 104, y: GROUND_Y + 10, jumpTick: 32 },
+      { tick: 0 },
+    );
+    // The vine hangs at x 106 at tick 0: within reach, but the player is sinking.
+    expect(after(sinking, {}, 1).player.onVine).toBe(false);
+  });
+});

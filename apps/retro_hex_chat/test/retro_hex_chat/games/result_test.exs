@@ -43,7 +43,10 @@ defmodule RetroHexChat.Games.ResultTest do
         winner = if Catalog.ranking(game_id) == :coop, do: 0, else: 1
         payload = %{"score" => %{"p1" => 2, "p2" => 1}, "winner" => winner}
 
-        assert {:ok, %Result{game_id: ^game_id, p1_score: 2, p2_score: 1}} =
+        # A one-player game keeps only its player's points.
+        p2 = if Catalog.solo_only?(game_id), do: 0, else: 1
+
+        assert {:ok, %Result{game_id: ^game_id, p1_score: 2, p2_score: ^p2}} =
                  Result.normalize(game_id, payload)
       end
     end
@@ -173,6 +176,14 @@ defmodule RetroHexChat.Games.ResultTest do
                Result.normalize("hex_jungle", %{
                  "score" => %{"p1" => 4200, "p2" => 0},
                  "winner" => 0
+               })
+    end
+
+    test "takes from the browser only the points: nobody else's score, no disconnect" do
+      assert {:ok, %Result{p1_score: 4200, p2_score: 0, outcome: :none, disconnected?: false}} =
+               Result.normalize("hex_jungle", %{
+                 "score" => %{"p1" => 4200, "p2" => 900},
+                 "disconnected" => true
                })
     end
 
