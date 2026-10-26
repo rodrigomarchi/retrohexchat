@@ -5,7 +5,6 @@ defmodule RetroHexChat.Commands.Handlers.Deop do
   import RetroHexChat.Commands.Handler.Guards
 
   alias RetroHexChat.Commands.CommandSyntax.Parameter
-  alias RetroHexChat.Commands.Handler
 
   use RetroHexChat.Commands.Handler,
     name: "deop",
@@ -24,17 +23,8 @@ defmodule RetroHexChat.Commands.Handlers.Deop do
         "nickname",
         dgettext("commands", "User to remove operator status from")
       )
-    ]
-
-  @impl true
-  @spec execute([String.t()], Handler.context()) :: Handler.result()
-  def execute(args, context) do
-    on_channel_target(
-      args,
-      context,
-      dgettext("commands", "Usage: /deop <nickname>"),
-      &require_operator/2,
-      &{:ok, :ui_action, :set_mode, %{channel: &1, mode_string: "-o", params: [&2]}}
-    )
-  end
+    ],
+    execute:
+      {:channel_target, dgettext("commands", "Usage: /deop <nickname>"), &require_operator/2,
+       &{:ok, :ui_action, :set_mode, %{channel: &1, mode_string: "-o", params: [&2]}}}
 end

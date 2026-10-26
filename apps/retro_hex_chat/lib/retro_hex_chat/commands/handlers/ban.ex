@@ -5,7 +5,6 @@ defmodule RetroHexChat.Commands.Handlers.Ban do
   import RetroHexChat.Commands.Handler.Guards
 
   alias RetroHexChat.Commands.CommandSyntax.Parameter
-  alias RetroHexChat.Commands.Handler
 
   use RetroHexChat.Commands.Handler,
     name: "ban",
@@ -28,21 +27,12 @@ defmodule RetroHexChat.Commands.Handlers.Ban do
     parameters: [
       Parameter.required(:nick, "nickname", dgettext("commands", "User to ban")),
       Parameter.optional(:text, "reason", dgettext("commands", "Reason for the ban"))
-    ]
-
-  @impl true
-  @spec execute([String.t()], Handler.context()) :: Handler.result()
-  def execute(args, context) do
-    on_channel_target(
-      args,
-      context,
-      dgettext("commands", "Usage: /ban <nickname> [reason]"),
-      &require_operator(
-        &1,
-        &2,
-        dgettext("commands", "You must be a channel operator to ban users")
-      ),
-      &{:ok, :ui_action, :ban_user, %{channel: &1, target: &2, reason: &3}}
-    )
-  end
+    ],
+    execute:
+      {:channel_target, dgettext("commands", "Usage: /ban <nickname> [reason]"),
+       &require_operator(
+         &1,
+         &2,
+         dgettext("commands", "You must be a channel operator to ban users")
+       ), &{:ok, :ui_action, :ban_user, %{channel: &1, target: &2, reason: &3}}}
 end

@@ -3,7 +3,6 @@ defmodule RetroHexChat.Commands.Handlers.Query do
   use Gettext, backend: RetroHexChat.Gettext
 
   alias RetroHexChat.Commands.CommandSyntax.Parameter
-  alias RetroHexChat.Commands.Handler
 
   use RetroHexChat.Commands.Handler,
     name: "query",
@@ -23,13 +22,6 @@ defmodule RetroHexChat.Commands.Handlers.Query do
     examples: [dgettext("commands", "/query Nick")],
     parameters: [
       Parameter.required(:nick, "nickname", dgettext("commands", "Open a PM tab with this user"))
-    ]
-
-  @impl true
-  @spec execute([String.t()], Handler.context()) :: Handler.result()
-  def execute([], _context), do: {:error, dgettext("commands", "Usage: /query <nickname>")}
-
-  def execute([target | _rest], _context) do
-    {:ok, :ui_action, :open_query, %{nickname: target}}
-  end
+    ],
+    execute: {:nick_action, :open_query, dgettext("commands", "Usage: /query <nickname>")}
 end

@@ -11,11 +11,6 @@ defmodule RetroHexChat.Commands.Handlers.NoticeRouting do
     syntax: "/notice_routing",
     summary: dgettext("commands", "Notices are always routed to the active window."),
     description: dgettext("commands", "Notices are always routed to the active window."),
-    examples: ["/notice_routing"]
-
-  @impl true
-  @spec execute([String.t()], RetroHexChat.Commands.Handler.context()) ::
-          RetroHexChat.Commands.Handler.result()
-  def execute(_, _context),
-    do: {:ok, :ui_action, :notice_routing_show, %{}}
+    examples: ["/notice_routing"],
+    execute: {:ui_action, :notice_routing_show}
 end

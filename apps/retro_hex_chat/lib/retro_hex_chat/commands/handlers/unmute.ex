@@ -5,7 +5,6 @@ defmodule RetroHexChat.Commands.Handlers.Unmute do
   import RetroHexChat.Commands.Handler.Guards
 
   alias RetroHexChat.Commands.CommandSyntax.Parameter
-  alias RetroHexChat.Commands.Handler
 
   use RetroHexChat.Commands.Handler,
     name: "unmute",
@@ -20,17 +19,8 @@ defmodule RetroHexChat.Commands.Handlers.Unmute do
     examples: [dgettext("commands", "/unmute alice")],
     parameters: [
       Parameter.required(:nick, "nickname", dgettext("commands", "User to unmute"))
-    ]
-
-  @impl true
-  @spec execute([String.t()], Handler.context()) :: Handler.result()
-  def execute(args, context) do
-    on_channel_target(
-      args,
-      context,
-      dgettext("commands", "Usage: /unmute <nickname>"),
-      &require_operator/2,
-      &{:ok, :ui_action, :channel_unmute_user, %{channel: &1, target: &2}}
-    )
-  end
+    ],
+    execute:
+      {:channel_target, dgettext("commands", "Usage: /unmute <nickname>"), &require_operator/2,
+       &{:ok, :ui_action, :channel_unmute_user, %{channel: &1, target: &2}}}
 end

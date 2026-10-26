@@ -25,9 +25,22 @@ defmodule RetroHexChat.Commands.Handler do
   `Parameter.optional/3` in the order they are typed), `sub_options`, `subcommands`, and
   `tooltip_examples` when the tooltip shows fewer examples than `/help`, and
   `usage` — the message `validate/1` answers when the command is typed bare.
+
+  A command whose whole job is one of the common shapes declares it as
+  `execute:` instead of writing `execute/2`:
+
+    * `{:ui_action, action}` — opens or does `action` in the client, whatever
+      was typed after it;
+    * `{:nick_action, action, usage}` — `action` on the nickname typed, or
+      `usage` when none was;
+    * `{:channel_target, usage, check, run}` — `Guards.on_channel_target/5`:
+      a nickname in the active channel, allowed by `check`, handed to `run`;
+    * `{:channel_message, usage, run}` — `Guards.on_channel_message/4`: a
+      message id in the active channel, handed to `run`.
   """
 
   alias RetroHexChat.Commands.CommandSyntax.Parameter
+  alias RetroHexChat.Commands.Handler.Guards
 
   @doc false
   defmacro __using__(opts) do
@@ -42,8 +55,11 @@ defmodule RetroHexChat.Commands.Handler do
     subcommands = Keyword.get(opts, :subcommands)
     tooltip_examples = Keyword.get(opts, :tooltip_examples, examples)
     usage = Keyword.get(opts, :usage)
+    execute = Keyword.get(opts, :execute)
 
     quote do
+      unquote(execute_shape(execute))
+
       @behaviour RetroHexChat.Commands.Handler
 
       @impl true
@@ -89,6 +105,65 @@ defmodule RetroHexChat.Commands.Handler do
           sub_options: unquote(sub_options),
           subcommands: unquote(subcommands)
         }
+      end
+    end
+  end
+
+  defp execute_shape(nil), do: nil
+
+  # A tuple of three or more arrives quoted as `{:{}, meta, elements}`.
+  defp execute_shape({:{}, _meta, elements}), do: execute_shape(List.to_tuple(elements))
+
+  defp execute_shape({:ui_action, action}) do
+    quote do
+      @impl true
+      @spec execute([String.t()], RetroHexChat.Commands.Handler.context()) ::
+              RetroHexChat.Commands.Handler.result()
+      def execute(_args, _context), do: {:ok, :ui_action, unquote(action), %{}}
+    end
+  end
+
+  defp execute_shape({:nick_action, action, usage}) do
+    quote do
+      @impl true
+      @spec execute([String.t()], RetroHexChat.Commands.Handler.context()) ::
+              RetroHexChat.Commands.Handler.result()
+      def execute([], _context), do: {:error, unquote(usage)}
+
+      def execute([target | _rest], _context),
+        do: {:ok, :ui_action, unquote(action), %{nickname: target}}
+    end
+  end
+
+  defp execute_shape({:channel_target, usage, check, run}) do
+    quote do
+      @impl true
+      @spec execute([String.t()], RetroHexChat.Commands.Handler.context()) ::
+              RetroHexChat.Commands.Handler.result()
+      def execute(args, context) do
+        Guards.on_channel_target(
+          args,
+          context,
+          unquote(usage),
+          unquote(check),
+          unquote(run)
+        )
+      end
+    end
+  end
+
+  defp execute_shape({:channel_message, usage, run}) do
+    quote do
+      @impl true
+      @spec execute([String.t()], RetroHexChat.Commands.Handler.context()) ::
+              RetroHexChat.Commands.Handler.result()
+      def execute(args, context) do
+        Guards.on_channel_message(
+          args,
+          context,
+          unquote(usage),
+          unquote(run)
+        )
       end
     end
   end

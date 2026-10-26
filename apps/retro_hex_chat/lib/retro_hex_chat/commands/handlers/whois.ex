@@ -3,11 +3,11 @@ defmodule RetroHexChat.Commands.Handlers.Whois do
   use Gettext, backend: RetroHexChat.Gettext
 
   alias RetroHexChat.Commands.CommandSyntax.Parameter
-  alias RetroHexChat.Commands.Handler
 
   use RetroHexChat.Commands.Handler,
     name: "whois",
     category: :user,
+    usage: dgettext("commands", "Usage: /whois <nickname>"),
     syntax: dgettext("commands", "/whois <nickname>"),
     summary: dgettext("commands", "Look up detailed information about an online user."),
     description:
@@ -18,18 +18,6 @@ defmodule RetroHexChat.Commands.Handlers.Whois do
     examples: [dgettext("commands", "/whois SomeUser")],
     parameters: [
       Parameter.required(:nick, "nickname", dgettext("commands", "User to look up"))
-    ]
-
-  @impl true
-  @spec validate(String.t()) :: :ok | {:error, String.t()}
-  def validate(""), do: {:error, dgettext("commands", "Usage: /whois <nickname>")}
-  def validate(_), do: :ok
-
-  @impl true
-  @spec execute([String.t()], Handler.context()) :: Handler.result()
-  def execute([], _context), do: {:error, dgettext("commands", "Usage: /whois <nickname>")}
-
-  def execute([target | _rest], _context) do
-    {:ok, :ui_action, :show_whois_info, %{nickname: target}}
-  end
+    ],
+    execute: {:nick_action, :show_whois_info, dgettext("commands", "Usage: /whois <nickname>")}
 end

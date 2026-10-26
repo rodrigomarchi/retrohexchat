@@ -5,7 +5,6 @@ defmodule RetroHexChat.Commands.Handlers.Kick do
   import RetroHexChat.Commands.Handler.Guards
 
   alias RetroHexChat.Commands.CommandSyntax.Parameter
-  alias RetroHexChat.Commands.Handler
 
   use RetroHexChat.Commands.Handler,
     name: "kick",
@@ -28,21 +27,12 @@ defmodule RetroHexChat.Commands.Handlers.Kick do
     parameters: [
       Parameter.required(:nick, "nickname", dgettext("commands", "User to kick")),
       Parameter.optional(:text, "reason", dgettext("commands", "Reason for the kick"))
-    ]
-
-  @impl true
-  @spec execute([String.t()], Handler.context()) :: Handler.result()
-  def execute(args, context) do
-    on_channel_target(
-      args,
-      context,
-      dgettext("commands", "Usage: /kick <nickname> [reason]"),
-      &require_half_op_or_above(
-        &1,
-        &2,
-        dgettext("commands", "You must be a channel operator to kick users")
-      ),
-      &{:ok, :ui_action, :kick_user, %{channel: &1, target: &2, reason: &3}}
-    )
-  end
+    ],
+    execute:
+      {:channel_target, dgettext("commands", "Usage: /kick <nickname> [reason]"),
+       &require_half_op_or_above(
+         &1,
+         &2,
+         dgettext("commands", "You must be a channel operator to kick users")
+       ), &{:ok, :ui_action, :kick_user, %{channel: &1, target: &2, reason: &3}}}
 end

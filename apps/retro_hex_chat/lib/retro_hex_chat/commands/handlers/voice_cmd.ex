@@ -5,7 +5,6 @@ defmodule RetroHexChat.Commands.Handlers.VoiceCmd do
   import RetroHexChat.Commands.Handler.Guards
 
   alias RetroHexChat.Commands.CommandSyntax.Parameter
-  alias RetroHexChat.Commands.Handler
 
   use RetroHexChat.Commands.Handler,
     name: "voice",
@@ -20,17 +19,9 @@ defmodule RetroHexChat.Commands.Handlers.VoiceCmd do
     examples: [dgettext("commands", "/voice alice")],
     parameters: [
       Parameter.required(:nick, "nickname", dgettext("commands", "User to give voice"))
-    ]
-
-  @impl true
-  @spec execute([String.t()], Handler.context()) :: Handler.result()
-  def execute(args, context) do
-    on_channel_target(
-      args,
-      context,
-      dgettext("commands", "Usage: /voice <nickname>"),
-      &require_half_op_or_above/2,
-      &{:ok, :ui_action, :set_mode, %{channel: &1, mode_string: "+v", params: [&2]}}
-    )
-  end
+    ],
+    execute:
+      {:channel_target, dgettext("commands", "Usage: /voice <nickname>"),
+       &require_half_op_or_above/2,
+       &{:ok, :ui_action, :set_mode, %{channel: &1, mode_string: "+v", params: [&2]}}}
 end

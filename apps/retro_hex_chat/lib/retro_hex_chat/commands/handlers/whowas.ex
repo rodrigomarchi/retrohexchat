@@ -3,7 +3,6 @@ defmodule RetroHexChat.Commands.Handlers.Whowas do
   use Gettext, backend: RetroHexChat.Gettext
 
   alias RetroHexChat.Commands.CommandSyntax.Parameter
-  alias RetroHexChat.Commands.Handler
 
   use RetroHexChat.Commands.Handler,
     name: "whowas",
@@ -19,13 +18,6 @@ defmodule RetroHexChat.Commands.Handlers.Whowas do
     examples: [dgettext("commands", "/whowas SomeUser")],
     parameters: [
       Parameter.required(:nick, "nickname", dgettext("commands", "Recently disconnected user"))
-    ]
-
-  @impl true
-  @spec execute([String.t()], Handler.context()) :: Handler.result()
-  def execute([], _context), do: {:error, dgettext("commands", "Usage: /whowas <nickname>")}
-
-  def execute([target | _rest], _context) do
-    {:ok, :ui_action, :show_whowas_info, %{nickname: target}}
-  end
+    ],
+    execute: {:nick_action, :show_whowas_info, dgettext("commands", "Usage: /whowas <nickname>")}
 end

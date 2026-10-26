@@ -2,10 +2,7 @@ defmodule RetroHexChat.Commands.Handlers.Unpin do
   @moduledoc "Handler for /unpin <message id>"
   use Gettext, backend: RetroHexChat.Gettext
 
-  import RetroHexChat.Commands.Handler.Guards, only: [on_channel_message: 4]
-
   alias RetroHexChat.Commands.CommandSyntax.Parameter
-  alias RetroHexChat.Commands.Handler
 
   use RetroHexChat.Commands.Handler,
     name: "unpin",
@@ -24,19 +21,11 @@ defmodule RetroHexChat.Commands.Handlers.Unpin do
         "message id",
         dgettext("commands", "Id of the message to stop keeping")
       )
-    ]
-
-  @impl true
-  @spec execute([String.t()], Handler.context()) :: Handler.result()
-  def execute(args, context) do
-    on_channel_message(
-      args,
-      context,
-      dgettext(
-        "commands",
-        "Which message? Use /unpin <id>, or unpin it from the Pinned window."
-      ),
-      &{:ok, :ui_action, :unpin_message, %{channel: &1, message_id: &2}}
-    )
-  end
+    ],
+    execute:
+      {:channel_message,
+       dgettext(
+         "commands",
+         "Which message? Use /unpin <id>, or unpin it from the Pinned window."
+       ), &{:ok, :ui_action, :unpin_message, %{channel: &1, message_id: &2}}}
 end

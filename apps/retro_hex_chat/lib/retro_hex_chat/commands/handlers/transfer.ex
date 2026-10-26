@@ -5,7 +5,6 @@ defmodule RetroHexChat.Commands.Handlers.Transfer do
   import RetroHexChat.Commands.Handler.Guards
 
   alias RetroHexChat.Commands.CommandSyntax.Parameter
-  alias RetroHexChat.Commands.Handler
 
   use RetroHexChat.Commands.Handler,
     name: "transfer",
@@ -20,17 +19,8 @@ defmodule RetroHexChat.Commands.Handlers.Transfer do
     examples: [dgettext("commands", "/transfer alice")],
     parameters: [
       Parameter.required(:nick, "nickname", dgettext("commands", "New owner"))
-    ]
-
-  @impl true
-  @spec execute([String.t()], Handler.context()) :: Handler.result()
-  def execute(args, context) do
-    on_channel_target(
-      args,
-      context,
-      dgettext("commands", "Usage: /transfer <nickname>"),
-      &require_owner/2,
-      &{:ok, :ui_action, :transfer_ownership, %{channel: &1, target: &2}}
-    )
-  end
+    ],
+    execute:
+      {:channel_target, dgettext("commands", "Usage: /transfer <nickname>"), &require_owner/2,
+       &{:ok, :ui_action, :transfer_ownership, %{channel: &1, target: &2}}}
 end
