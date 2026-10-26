@@ -21,6 +21,26 @@ class MissingTermsTest(unittest.TestCase):
 
         self.assertEqual(missing_terms(MODES, translated, "de"), [])
 
+    def test_a_rooms_host_is_a_person_not_a_machine(self):
+        # What the engine shipped for the match room's help.
+        source = "The connection only begins when the host presses Start."
+        self.assertTrue(
+            missing_terms(source, "A conexão só começa quando a máquina pressiona Iniciar.", "pt_BR")
+        )
+        self.assertEqual(
+            missing_terms(source, "A conexão só começa quando o anfitrião aperta Iniciar.", "pt_BR"),
+            [],
+        )
+        self.assertTrue(missing_terms("You are the host.", "Você é o servidor.", "pt_BR"))
+        # The server's host is the machine, and stays the other word.
+        self.assertEqual(
+            missing_terms("Readings the host will not report", "Leituras que a máquina não relata", "pt_BR"),
+            [],
+        )
+        self.assertEqual(
+            missing_terms("the host's processors", "os processadores da máquina", "pt_BR"), []
+        )
+
     def test_a_match_is_a_game_played_not_a_correspondence(self):
         # What the engine shipped for the watch link's label.
         self.assertTrue(missing_terms("Watching a match", "Observando uma correspondência", "pt_BR"))

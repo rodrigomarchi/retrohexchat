@@ -3547,7 +3547,7 @@ msgstr ""
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_block_breakers.html.heex:72
 #: lib/retro_hex_chat_web/controllers/help_content/feature_game_match_full.html.heex:31
-#: lib/retro_hex_chat_web/controllers/help_content/feature_game_match_link.html.heex:39
+#: lib/retro_hex_chat_web/controllers/help_content/feature_game_match_link.html.heex:48
 #: lib/retro_hex_chat_web/controllers/help_content/feature_game_scores.html.heex:50
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_boxing.html.heex:67
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_jungle.html.heex:74
@@ -3617,7 +3617,7 @@ msgstr ""
 msgid "A match nobody joins closes itself after about fifteen minutes. That is deliberate: an address pasted in a channel would otherwise stay a way into your session for the rest of the day, and a room waiting for nobody is worth less than a fresh one."
 msgstr ""
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_game_match_link.html.heex:26
+#: lib/retro_hex_chat_web/controllers/help_content/feature_game_match_link.html.heex:35
 #, elixir-autogen, elixir-format
 msgid "Creating a match link needs a registered nickname you have identified with NickServ, and so does taking the seat. Somebody either of you has blocked cannot join, and neither can you join your own match from a second window."
 msgstr ""
@@ -3649,7 +3649,7 @@ msgstr ""
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_game_channels.html.heex:83
 #: lib/retro_hex_chat_web/controllers/help_content/feature_game_match_full.html.heex:25
-#: lib/retro_hex_chat_web/controllers/help_content/feature_game_match_link.html.heex:33
+#: lib/retro_hex_chat_web/controllers/help_content/feature_game_match_link.html.heex:42
 #: lib/retro_hex_chat_web/controllers/help_content/feature_game_scores.html.heex:48
 #: lib/retro_hex_chat_web/controllers/help_content/feature_game_watch.html.heex:70
 #, elixir-autogen, elixir-format
@@ -3661,7 +3661,7 @@ msgstr ""
 msgid "The link comes from Share"
 msgstr ""
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_game_match_link.html.heex:24
+#: lib/retro_hex_chat_web/controllers/help_content/feature_game_match_link.html.heex:33
 #, elixir-autogen, elixir-format
 msgid "Who can play"
 msgstr ""
@@ -3671,7 +3671,7 @@ msgstr ""
 msgid "Whoever follows the link takes the seat and lands in the same room. Both of you press Ready, and then the host's Start begins the match. There is no accept step for the game itself: the link named it, and following the link was the agreement."
 msgstr ""
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_game_match_link.html.heex:35
+#: lib/retro_hex_chat_web/controllers/help_content/feature_game_match_link.html.heex:44
 #, elixir-autogen, elixir-format
 msgid "Why a Match Link Stopped Working"
 msgstr ""
@@ -4176,4 +4176,24 @@ msgstr ""
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_jungle.html.heex:46
 #, elixir-autogen, elixir-format
 msgid "Touching a rolling tree trunk costs points. Falling down a hole costs 100 points."
+msgstr ""
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_game_match_link.html.heex:25
+#, elixir-autogen, elixir-format
+msgid "If the game does not start"
+msgstr ""
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_game_match_link.html.heex:30
+#, elixir-autogen, elixir-format
+msgid "Play again opens a new room for the same game, with you as the host."
+msgstr ""
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_game_match_link.html.heex:28
+#, elixir-autogen, elixir-format
+msgid "There is no hurry before Start."
+msgstr ""
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_game_match_link.html.heex:29
+#, elixir-autogen, elixir-format
+msgid "The connection only begins after Start."
 msgstr ""

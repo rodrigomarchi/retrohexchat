@@ -154,8 +154,8 @@ msgstr ""
 "построить иглу, соревнуясь с противником. Изюминка: блоки разделены, и "
 "наступление на блоки, принадлежащие противнику, крадет их части!"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_jungle.html.heex:22
-#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_jungle.html.heex:28
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_jungle.html.heex:24
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_jungle.html.heex:30
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_raid.html.heex:20
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_raid_blitz.html.heex:20
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_raid_pacifist.html.heex:20
@@ -1270,7 +1270,7 @@ msgstr "Бесконечный спуск — курс никогда не за�
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_frost_peaceful.html.heex:68
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_hockey.html.heex:120
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_invaders.html.heex:80
-#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_jungle.html.heex:68
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_jungle.html.heex:70
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_outlaw.html.heex:75
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_pong.html.heex:47
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_raid.html.heex:71
@@ -1705,7 +1705,7 @@ msgstr "Круг 3"
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_invaders.html.heex:26
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_invaders_blitz.html.heex:26
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_invaders_coop.html.heex:26
-#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_jungle.html.heex:34
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_jungle.html.heex:36
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_outlaw.html.heex:23
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_pong.html.heex:23
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_raid.html.heex:32
@@ -1818,7 +1818,7 @@ msgstr ""
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_invaders.html.heex:82
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_invaders_blitz.html.heex:71
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_invaders_coop.html.heex:74
-#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_jungle.html.heex:70
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_jungle.html.heex:72
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_outlaw.html.heex:77
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_outlaw_nml.html.heex:70
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_outlaw_ricochet.html.heex:78
@@ -4011,10 +4011,10 @@ msgstr ""
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_block_breakers.html.heex:72
 #: lib/retro_hex_chat_web/controllers/help_content/feature_game_match_full.html.heex:31
-#: lib/retro_hex_chat_web/controllers/help_content/feature_game_match_link.html.heex:39
+#: lib/retro_hex_chat_web/controllers/help_content/feature_game_match_link.html.heex:48
 #: lib/retro_hex_chat_web/controllers/help_content/feature_game_scores.html.heex:50
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_boxing.html.heex:67
-#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_jungle.html.heex:72
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_jungle.html.heex:74
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_warlords.html.heex:83
 #: lib/retro_hex_chat_web/controllers/help_content/feature_pixel_tanks.html.heex:71
 #, elixir-autogen, elixir-format
@@ -4092,7 +4092,7 @@ msgstr "У ссылки на матч ровно одно место. Как т�
 msgid "A match nobody joins closes itself after about fifteen minutes. That is deliberate: an address pasted in a channel would otherwise stay a way into your session for the rest of the day, and a room waiting for nobody is worth less than a fresh one."
 msgstr "Матч, к которому никто не присоединился, закрывается сам примерно через пятнадцать минут. Это сделано намеренно: иначе адрес, вставленный в канал, оставался бы входом в вашу сессию до конца дня, а комната, ждущая никого, стоит меньше новой."
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_game_match_link.html.heex:26
+#: lib/retro_hex_chat_web/controllers/help_content/feature_game_match_link.html.heex:35
 #, elixir-autogen, elixir-format
 msgid "Creating a match link needs a registered nickname you have identified with NickServ, and so does taking the seat. Somebody either of you has blocked cannot join, and neither can you join your own match from a second window."
 msgstr "Чтобы создать ссылку на матч, нужен зарегистрированный ник, подтверждённый в NickServ; чтобы занять место — тоже. Тот, кого заблокировал любой из вас, присоединиться не сможет, и к собственному матчу из второго окна вы тоже не присоединитесь."
@@ -4124,7 +4124,7 @@ msgstr "«Готово», затем «Старт»"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_game_channels.html.heex:83
 #: lib/retro_hex_chat_web/controllers/help_content/feature_game_match_full.html.heex:25
-#: lib/retro_hex_chat_web/controllers/help_content/feature_game_match_link.html.heex:33
+#: lib/retro_hex_chat_web/controllers/help_content/feature_game_match_link.html.heex:42
 #: lib/retro_hex_chat_web/controllers/help_content/feature_game_scores.html.heex:48
 #: lib/retro_hex_chat_web/controllers/help_content/feature_game_watch.html.heex:70
 #, elixir-autogen, elixir-format
@@ -4136,7 +4136,7 @@ msgstr "Смотрите также:"
 msgid "The link comes from Share"
 msgstr "Ссылка появляется из «Поделиться»"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_game_match_link.html.heex:24
+#: lib/retro_hex_chat_web/controllers/help_content/feature_game_match_link.html.heex:33
 #, elixir-autogen, elixir-format
 msgid "Who can play"
 msgstr "Кто может играть"
@@ -4146,7 +4146,7 @@ msgstr "Кто может играть"
 msgid "Whoever follows the link takes the seat and lands in the same room. Both of you press Ready, and then the host's Start begins the match. There is no accept step for the game itself: the link named it, and following the link was the agreement."
 msgstr "Тот, кто перейдёт по ссылке, занимает место и попадает в ту же комнату. Вы оба нажимаете «Готово», после чего «Старт» хозяина начинает матч. Отдельного шага согласия на саму игру нет: её назвала ссылка, а переход по ней и был согласием."
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_game_match_link.html.heex:35
+#: lib/retro_hex_chat_web/controllers/help_content/feature_game_match_link.html.heex:44
 #, elixir-autogen, elixir-format
 msgid "Why a Match Link Stopped Working"
 msgstr "Почему ссылка на матч перестала работать"
@@ -4588,37 +4588,37 @@ msgstr "Ракета отскакивает от первой стены, в к�
 msgid "Top-down tank combat in a maze. Rotate your tank, drive forward, and fire missiles at your opponent. One missile at a time — miss and you're vulnerable until it expires. 2-minute rounds, best of 3. Five maze layouts keep every match fresh."
 msgstr "Танковый бой с видом сверху в лабиринте. Поворачивайте танк, двигайтесь вперёд и стреляйте ракетами по противнику. Только одна ракета за раз — промахнулись, и вы беззащитны, пока она не погаснет. Раунды по 2 минуты, до двух побед из трёх. Пять лабиринтов делают каждый матч непохожим на другие."
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_jungle.html.heex:56
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_jungle.html.heex:58
 #, elixir-autogen, elixir-format
 msgid "Each screen of the tunnel is three of the jungle's: a shortcut, when no wall blocks it."
 msgstr "Каждый экран туннеля — это три джунгля: ярлык, когда ни одна стена не блокирует его."
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_jungle.html.heex:38
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_jungle.html.heex:40
 #, elixir-autogen, elixir-format
 msgid "Each treasure is worth from 2000 to 5000 points; once taken, it stays taken."
 msgstr "Каждое сокровище стоит от 2000 до 5000 очков; после взятия оно остается взятым."
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_jungle.html.heex:69
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_jungle.html.heex:71
 #, elixir-autogen, elixir-format
 msgid "Inspired by Activision's Pitfall! (1982) for the Atari 2600."
 msgstr "Вдохновленный ловушкой Activision! (1982) для Atari 2600"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_jungle.html.heex:36
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_jungle.html.heex:38
 #, elixir-autogen, elixir-format
 msgid "You start with 2000 points, three lives and twenty minutes."
 msgstr "Вы начинаете с 2000 очков, трех жизней и двадцати минут."
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_jungle.html.heex:25
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_jungle.html.heex:27
 #, elixir-autogen, elixir-format
 msgid "— Climb a ladder"
 msgstr "Поднимитесь по лестнице"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_jungle.html.heex:50
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_jungle.html.heex:52
 #, elixir-autogen, elixir-format
 msgid "A pit, quicksand, a crocodile's jaws, fire, a snake or a scorpion costs a life."
 msgstr "Яма, зыбучий песок, челюсти крокодила, огонь, змея или скорпион стоят жизни."
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_jungle.html.heex:28
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_jungle.html.heex:30
 #, elixir-autogen, elixir-format
 msgid "— Let go of the vine"
 msgstr "— Отпустить лиану"
@@ -4633,7 +4633,7 @@ msgstr "- Двигаться влево и вправо"
 msgid "Hex Jungle is a game for one player. An adventurer crosses a jungle of 255 screens, and the tunnels below it, looking for 32 treasures before twenty minutes run out. Nobody plays against you: your score is your own, and your best runs go into the ranking."
 msgstr "Hex Jungle - игра для одного игрока. Авантюрист пересекает джунгли с 255 экранами, и туннели под ним, ища 32 сокровища, прежде чем двадцать минут закончатся. Никто не играет против вас: ваш счет принадлежит вам, и ваши лучшие пробежки попадают в рейтинг."
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_jungle.html.heex:62
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_jungle.html.heex:64
 #, elixir-autogen, elixir-format
 msgid "The game ends when the twenty minutes are over, when the last life is lost, or when the 32nd treasure is found. The End button keeps the points you have."
 msgstr "Игра заканчивается, когда двадцать минут закончились, когда последняя жизнь потеряна, или когда найдено 32-е сокровище. Кнопка «Конец» сохраняет ваши очки."
@@ -4648,7 +4648,27 @@ msgstr "— Схватить лиану в прыжке"
 msgid "Hex Jungle is a game for one player: move with the arrow keys or WASD, jump with the space bar, and climb ladders with Up and Down."
 msgstr "Hex Jungle - это игра для одного игрока: двигайтесь со стрелочными клавишами или WASD, прыгайте с космической планкой и поднимайтесь по лестнице вверх и вниз."
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_jungle.html.heex:44
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_jungle.html.heex:46
 #, elixir-autogen, elixir-format
 msgid "Touching a rolling tree trunk costs points. Falling down a hole costs 100 points."
 msgstr "Прикосновение к стволу дерева стоит очков. Падение в отверстие стоит 100 очков."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_game_match_link.html.heex:25
+#, elixir-autogen, elixir-format
+msgid "If the game does not start"
+msgstr "Если игра не начинается"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_game_match_link.html.heex:30
+#, elixir-autogen, elixir-format
+msgid "Play again opens a new room for the same game, with you as the host."
+msgstr "Игра снова открывает новую комнату для той же игры, с вами, как хозяин."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_game_match_link.html.heex:28
+#, elixir-autogen, elixir-format
+msgid "There is no hurry before Start."
+msgstr "Нет никакой спешки перед стартом."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_game_match_link.html.heex:29
+#, elixir-autogen, elixir-format
+msgid "The connection only begins after Start."
+msgstr "Связь начинается только после старта."

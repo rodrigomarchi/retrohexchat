@@ -135,28 +135,27 @@ defmodule RetroHexChatWeb.P2PLive.SessionStatus do
   @doc "The sentence for a session that ended, by why it ended."
   @spec ended_message(String.t() | nil, String.t()) :: String.t()
   def ended_message(peer_nick, reason) do
-    peer = peer_nick || dgettext("chat", "the other user")
-
-    case reason do
-      "declined" ->
-        dgettext("chat", "%{peer} declined the P2P invite.", peer: peer)
-
-      "invite_cancelled" ->
-        dgettext("chat", "The P2P invite was cancelled.")
-
-      "user_closed" ->
-        dgettext("chat", "P2P session with %{peer} ended.", peer: peer)
-
-      "peer_left" ->
-        dgettext("chat", "%{peer} left the P2P session.", peer: peer)
-
-      reason when reason in ["expired", "pending_timeout", "lobby_inactivity"] ->
-        dgettext("chat", "The P2P session expired.")
-
-      _ ->
-        dgettext("chat", "P2P session with %{peer} ended.", peer: peer)
-    end
+    reason_message(reason, peer_nick || dgettext("chat", "the other user"))
   end
+
+  defp reason_message("declined", peer),
+    do: dgettext("chat", "%{peer} declined the P2P invite.", peer: peer)
+
+  defp reason_message("invite_cancelled", _peer),
+    do: dgettext("chat", "The P2P invite was cancelled.")
+
+  defp reason_message("peer_left", peer),
+    do: dgettext("chat", "%{peer} left the P2P session.", peer: peer)
+
+  defp reason_message("connecting_timeout", peer),
+    do: dgettext("chat", "Could not connect to %{peer}.", peer: peer)
+
+  defp reason_message(reason, _peer)
+       when reason in ["expired", "pending_timeout", "lobby_inactivity"],
+       do: dgettext("chat", "The P2P session expired.")
+
+  defp reason_message(_user_closed_or_other, peer),
+    do: dgettext("chat", "P2P session with %{peer} ended.", peer: peer)
 
   @doc "Reports a recovery that ended connected, when the session was reconnecting or failed."
   @spec emit_p2p_connected(map() | nil) :: :ok

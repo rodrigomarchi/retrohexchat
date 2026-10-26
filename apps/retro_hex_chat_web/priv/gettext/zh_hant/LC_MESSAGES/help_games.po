@@ -139,8 +139,8 @@ msgstr "Hex入侵者的所有其他規則都適用"
 msgid "Arctic construction race — jump on floating ice blocks to build your igloo while competing against your opponent. The twist: blocks are shared, and stepping on opponent-owned blocks steals their pieces!"
 msgstr "北極建築競賽——跳上漂浮的冰塊,在與對手競爭的同時建造你的冰盧. 曲折:塊是共享的,踩上對手擁有的塊會偷走他們的塊!"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_jungle.html.heex:22
-#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_jungle.html.heex:28
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_jungle.html.heex:24
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_jungle.html.heex:30
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_raid.html.heex:20
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_raid_blitz.html.heex:20
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_raid_pacifist.html.heex:20
@@ -1180,7 +1180,7 @@ msgstr "無限血統——航線永無止境."
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_frost_peaceful.html.heex:68
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_hockey.html.heex:120
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_invaders.html.heex:80
-#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_jungle.html.heex:68
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_jungle.html.heex:70
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_outlaw.html.heex:75
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_pong.html.heex:47
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_raid.html.heex:71
@@ -1577,7 +1577,7 @@ msgstr "第3輪"
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_invaders.html.heex:26
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_invaders_blitz.html.heex:26
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_invaders_coop.html.heex:26
-#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_jungle.html.heex:34
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_jungle.html.heex:36
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_outlaw.html.heex:23
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_pong.html.heex:23
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_raid.html.heex:32
@@ -1681,7 +1681,7 @@ msgstr "賽制:愛~15~30~40~比賽(成績40~40,優勢,2勝)."
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_invaders.html.heex:82
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_invaders_blitz.html.heex:71
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_invaders_coop.html.heex:74
-#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_jungle.html.heex:70
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_jungle.html.heex:72
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_outlaw.html.heex:77
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_outlaw_nml.html.heex:70
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_outlaw_ricochet.html.heex:78
@@ -3603,10 +3603,10 @@ msgstr "在復古遊戲單人模式中，你控制左側城堡護盾，AI 控制
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_block_breakers.html.heex:72
 #: lib/retro_hex_chat_web/controllers/help_content/feature_game_match_full.html.heex:31
-#: lib/retro_hex_chat_web/controllers/help_content/feature_game_match_link.html.heex:39
+#: lib/retro_hex_chat_web/controllers/help_content/feature_game_match_link.html.heex:48
 #: lib/retro_hex_chat_web/controllers/help_content/feature_game_scores.html.heex:50
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_boxing.html.heex:67
-#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_jungle.html.heex:72
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_jungle.html.heex:74
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_warlords.html.heex:83
 #: lib/retro_hex_chat_web/controllers/help_content/feature_pixel_tanks.html.heex:71
 #, elixir-autogen, elixir-format
@@ -3674,7 +3674,7 @@ msgstr "對局連結只有一個座位。只要有人坐下，連結就不再有
 msgid "A match nobody joins closes itself after about fifteen minutes. That is deliberate: an address pasted in a channel would otherwise stay a way into your session for the rest of the day, and a room waiting for nobody is worth less than a fresh one."
 msgstr "沒人加入的對局會在大約十五分鐘後自行關閉。這是有意為之：否則貼在頻道裡的位址會在這一整天裡都是通往你工作階段的入口，而一個誰也不等的房間，價值還不如一個新的。"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_game_match_link.html.heex:26
+#: lib/retro_hex_chat_web/controllers/help_content/feature_game_match_link.html.heex:35
 #, elixir-autogen, elixir-format
 msgid "Creating a match link needs a registered nickname you have identified with NickServ, and so does taking the seat. Somebody either of you has blocked cannot join, and neither can you join your own match from a second window."
 msgstr "建立對局連結需要一個已註冊、並在 NickServ 完成身分驗證的暱稱，佔下座位的一方也一樣。被你們任何一方封鎖的人無法加入，你自己也不能從第二個視窗加入自己的對局。"
@@ -3706,7 +3706,7 @@ msgstr "先準備完成，再開始"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_game_channels.html.heex:83
 #: lib/retro_hex_chat_web/controllers/help_content/feature_game_match_full.html.heex:25
-#: lib/retro_hex_chat_web/controllers/help_content/feature_game_match_link.html.heex:33
+#: lib/retro_hex_chat_web/controllers/help_content/feature_game_match_link.html.heex:42
 #: lib/retro_hex_chat_web/controllers/help_content/feature_game_scores.html.heex:48
 #: lib/retro_hex_chat_web/controllers/help_content/feature_game_watch.html.heex:70
 #, elixir-autogen, elixir-format
@@ -3718,7 +3718,7 @@ msgstr "另請參閱："
 msgid "The link comes from Share"
 msgstr "連結來自分享"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_game_match_link.html.heex:24
+#: lib/retro_hex_chat_web/controllers/help_content/feature_game_match_link.html.heex:33
 #, elixir-autogen, elixir-format
 msgid "Who can play"
 msgstr "誰可以玩"
@@ -3728,7 +3728,7 @@ msgstr "誰可以玩"
 msgid "Whoever follows the link takes the seat and lands in the same room. Both of you press Ready, and then the host's Start begins the match. There is no accept step for the game itself: the link named it, and following the link was the agreement."
 msgstr "跟著連結進來的人會佔下座位，落在同一個房間裡。你們兩人都按下「準備完成」，然後主持人的「開始」就讓對局開始。遊戲本身沒有接受這一步：連結已經指定了它，而跟著連結進來就是同意。"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_game_match_link.html.heex:35
+#: lib/retro_hex_chat_web/controllers/help_content/feature_game_match_link.html.heex:44
 #, elixir-autogen, elixir-format
 msgid "Why a Match Link Stopped Working"
 msgstr "對局連結為什麼會失效"
@@ -4170,37 +4170,37 @@ msgstr "飛彈會從碰到的第一面牆上彈開，碰到第二面牆時停下
 msgid "Top-down tank combat in a maze. Rotate your tank, drive forward, and fire missiles at your opponent. One missile at a time — miss and you're vulnerable until it expires. 2-minute rounds, best of 3. Five maze layouts keep every match fresh."
 msgstr "在迷宮中進行的俯視坦克對戰。旋轉坦克、向前行駛，向對手發射飛彈。每次只能發射一枚飛彈——打偏了，在它消失前你都毫無防備。每回合 2 分鐘，三局兩勝。五種迷宮配置讓每場對局都不一樣。"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_jungle.html.heex:56
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_jungle.html.heex:58
 #, elixir-autogen, elixir-format
 msgid "Each screen of the tunnel is three of the jungle's: a shortcut, when no wall blocks it."
 msgstr "隧道的每個屏幕都是叢林的三塊:一條捷徑,當沒有牆擋時."
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_jungle.html.heex:38
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_jungle.html.heex:40
 #, elixir-autogen, elixir-format
 msgid "Each treasure is worth from 2000 to 5000 points; once taken, it stays taken."
 msgstr "每件寶物的價值從2000點到5000點;一旦取下,它就留下來."
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_jungle.html.heex:69
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_jungle.html.heex:71
 #, elixir-autogen, elixir-format
 msgid "Inspired by Activision's Pitfall! (1982) for the Atari 2600."
 msgstr "受Activision's Pitfall!(1982)的啓發,爲阿塔裏2600號."
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_jungle.html.heex:36
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_jungle.html.heex:38
 #, elixir-autogen, elixir-format
 msgid "You start with 2000 points, three lives and twenty minutes."
 msgstr "你從2000分開始 三條命20分鐘"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_jungle.html.heex:25
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_jungle.html.heex:27
 #, elixir-autogen, elixir-format
 msgid "— Climb a ladder"
 msgstr "爬上梯子 爬上梯子"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_jungle.html.heex:50
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_jungle.html.heex:52
 #, elixir-autogen, elixir-format
 msgid "A pit, quicksand, a crocodile's jaws, fire, a snake or a scorpion costs a life."
 msgstr "坑,流沙,鱷魚的下巴,火,蛇或蠍子都要付出代價."
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_jungle.html.heex:28
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_jungle.html.heex:30
 #, elixir-autogen, elixir-format
 msgid "— Let go of the vine"
 msgstr "— 放開藤蔓"
@@ -4215,7 +4215,7 @@ msgstr "- 左右移動"
 msgid "Hex Jungle is a game for one player. An adventurer crosses a jungle of 255 screens, and the tunnels below it, looking for 32 treasures before twenty minutes run out. Nobody plays against you: your score is your own, and your best runs go into the ranking."
 msgstr "黑克斯叢林(英語:Hex Jungle)是一個玩家的遊戲. 一個冒險家穿越了255屏蔽的叢林,下面的隧道,在20分鐘前尋找32個寶藏. 沒有人和你作對:你的得分是你自己的,你最好的跑步進入排名."
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_jungle.html.heex:62
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_jungle.html.heex:64
 #, elixir-autogen, elixir-format
 msgid "The game ends when the twenty minutes are over, when the last life is lost, or when the 32nd treasure is found. The End button keeps the points you have."
 msgstr "遊戲在20分鐘結束,末世失傳,或發現32財寶時結束. 末端按鈕保持你的分數."
@@ -4230,7 +4230,27 @@ msgstr "— 跳起抓住藤蔓"
 msgid "Hex Jungle is a game for one player: move with the arrow keys or WASD, jump with the space bar, and climb ladders with Up and Down."
 msgstr "黑克斯叢林(Hex Jungle)是一個玩家的遊戲:用箭鍵或WASD移動,用空間欄跳,用上下爬梯."
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_jungle.html.heex:44
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_jungle.html.heex:46
 #, elixir-autogen, elixir-format
 msgid "Touching a rolling tree trunk costs points. Falling down a hole costs 100 points."
 msgstr "觸摸一個滾動樹幹的成本點。 倒下一個洞要100分"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_game_match_link.html.heex:25
+#, elixir-autogen, elixir-format
+msgid "If the game does not start"
+msgstr "如果遊戲沒有開始"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_game_match_link.html.heex:30
+#, elixir-autogen, elixir-format
+msgid "Play again opens a new room for the same game, with you as the host."
+msgstr "Play again opens a new room for the same game, with you as the host."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_game_match_link.html.heex:28
+#, elixir-autogen, elixir-format
+msgid "There is no hurry before Start."
+msgstr "開始之前不急"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_game_match_link.html.heex:29
+#, elixir-autogen, elixir-format
+msgid "The connection only begins after Start."
+msgstr "連接只在 Start 之後開始 。"

@@ -228,6 +228,11 @@ defmodule RetroHexChatWeb.P2PLive.SessionLink do
     socket
     |> detach_session(p2p)
     |> Surface.system(SessionStatus.ended_message(p2p.peer_nick, reason))
+    |> Phoenix.Component.assign(:ended, %{
+      reason: reason,
+      peer: p2p.peer_nick,
+      started: p2p.session_started
+    })
     |> Surface.close()
   end
 

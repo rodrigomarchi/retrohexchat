@@ -2896,7 +2896,7 @@ msgstr "%{nick} terminó la sesión de P2P."
 msgid "%{peer} declined the P2P invite."
 msgstr "%{peer} declinó la invitación P2P."
 
-#: lib/retro_hex_chat_web/live/p2p_live/session_status.ex:151
+#: lib/retro_hex_chat_web/live/p2p_live/session_status.ex:148
 #, elixir-autogen, elixir-format
 msgid "%{peer} left the P2P session."
 msgstr "%{peer} dejó la sesión P2P."
@@ -3009,8 +3009,7 @@ msgstr "P2P invite pending"
 msgid "P2P session connecting"
 msgstr "Conectando la sesión P2P"
 
-#: lib/retro_hex_chat_web/live/p2p_live/session_status.ex:148
-#: lib/retro_hex_chat_web/live/p2p_live/session_status.ex:157
+#: lib/retro_hex_chat_web/live/p2p_live/session_status.ex:158
 #, elixir-autogen, elixir-format
 msgid "P2P session with %{peer} ended."
 msgstr "P2P sesión con %{peer} terminó."
@@ -3043,7 +3042,7 @@ msgstr "Basta con los medios de comunicación; la sesión P2P permanece abierta"
 msgid "The P2P invite was cancelled."
 msgstr "La invitación P2P fue cancelada."
 
-#: lib/retro_hex_chat_web/live/p2p_live/session_status.ex:154
+#: lib/retro_hex_chat_web/live/p2p_live/session_status.ex:155
 #, elixir-autogen, elixir-format
 msgid "The P2P session expired."
 msgstr "El período de sesiones del P2P venció."
@@ -3130,7 +3129,7 @@ msgstr "Unirse..."
 
 #: lib/retro_hex_chat_web/components/ui/chat/chat_context_menu.ex:152
 #: lib/retro_hex_chat_web/components/ui/chat/nicklist_context_menu.ex:153
-#: lib/retro_hex_chat_web/live/app/p2p_live.ex:582
+#: lib/retro_hex_chat_web/live/app/p2p_live.ex:628
 #, elixir-autogen, elixir-format
 msgid "P2P Session"
 msgstr "Sesión P2P"
@@ -3299,7 +3298,7 @@ msgstr "ID de sesión no válido."
 msgid "Invalid terminal id."
 msgstr "ID de terminal no válido."
 
-#: lib/retro_hex_chat_web/live/app/p2p_live.ex:256
+#: lib/retro_hex_chat_web/live/app/p2p_live.ex:299
 #: lib/retro_hex_chat_web/live/chat_live/components/trusted_terminals_dialog.ex:199
 #, elixir-autogen, elixir-format
 msgid "Session ended."
@@ -3815,7 +3814,7 @@ msgstr "Tienes que estar en %{channel} para entrar en su espacio."
 msgid "The P2P signaling channel refused this session."
 msgstr "El canal de señalización P2P rechazó esta sesión."
 
-#: lib/retro_hex_chat_web/live/app/p2p_live.ex:580
+#: lib/retro_hex_chat_web/live/app/p2p_live.ex:626
 #, elixir-autogen, elixir-format
 msgid "P2P · %{peer}"
 msgstr "P2P · %{peer}"
@@ -3825,12 +3824,12 @@ msgstr "P2P · %{peer}"
 msgid "This P2P session moved to another window of yours."
 msgstr "Esta sesión P2P se movió a otra ventana tuya."
 
-#: lib/retro_hex_chat_web/live/app/p2p_live.ex:574
+#: lib/retro_hex_chat_web/live/app/p2p_live.ex:620
 #, elixir-autogen, elixir-format
 msgid "%{game} · %{peer}"
 msgstr "%{game} · %{peer}"
 
-#: lib/retro_hex_chat_web/live/app/p2p_live.ex:577
+#: lib/retro_hex_chat_web/live/app/p2p_live.ex:623
 #, elixir-autogen, elixir-format
 msgid "%{game} · match"
 msgstr "%{game} · partida"
@@ -6088,3 +6087,13 @@ msgstr "%{minutes}m %{seconds}s"
 #, elixir-autogen, elixir-format
 msgid "%{channel} is no longer in your auto-join list."
 msgstr "%{channel} ya no está en tu lista de entrada automática."
+
+#: lib/retro_hex_chat_web/live/p2p_live/session_status.ex:151
+#, elixir-autogen, elixir-format
+msgid "Could not connect to %{peer}."
+msgstr "No podía conectarse a %{peer}."
+
+#: lib/retro_hex_chat_web/live/app/p2p_live.ex:294
+#, elixir-autogen, elixir-format
+msgid "The game expired before it started."
+msgstr "El juego caducó antes de que empezara."

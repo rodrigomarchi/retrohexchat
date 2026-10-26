@@ -47,6 +47,7 @@ defmodule RetroHexChatWeb.App.P2PLive do
   alias RetroHexChatWeb.P2PLive.Components.P2PSessionConsole
   alias RetroHexChatWeb.P2PLive.Events
   alias RetroHexChatWeb.P2PLive.SessionLink
+  alias RetroHexChatWeb.P2PLive.SessionStatus
 
   @impl true
   @spec mount(map(), map(), Socket.t()) :: {:ok, Socket.t()}
@@ -69,7 +70,8 @@ defmodule RetroHexChatWeb.App.P2PLive do
         share_slug: nil,
         match_game: nil,
         denied: nil,
-        surface_left: false
+        surface_left: false,
+        ended: nil
       )
 
     socket = OpenSurfaces.attach(socket, socket.assigns.nickname)
@@ -165,7 +167,7 @@ defmodule RetroHexChatWeb.App.P2PLive do
     ~H"""
     <div class="flex h-full min-h-0 flex-col">
       <.p2p_denied :if={@denied} message={@denied} />
-      <.p2p_left :if={@surface_left} />
+      <.p2p_left :if={@surface_left} ended={@ended} game={@match_game} />
 
       <%!-- The first render of a match whose seat is still empty: the seat is
             taken by the mount that can hold it, so until the socket joins there
@@ -247,16 +249,60 @@ defmodule RetroHexChatWeb.App.P2PLive do
     """
   end
 
-  # The session is over and this page said so on its status bar. No second way
-  # back: `← Chat` is along the bottom of the window in every state, and it is
-  # the one that knows how to reach a chat tab that is already open.
+  # The session is over, and the middle of the window says why — a room that
+  # timed out reads differently from one somebody left, and a status-bar line
+  # is not where anybody looks. A match offers the way on: a new room for the
+  # same game, or the game's own page. `← Chat` stays the way back to the chat.
+  attr :ended, :map, default: nil
+  attr :game, :map, default: nil
+
   defp p2p_left(assigns) do
     ~H"""
     <.session_notice icon={:icon_protocol_p2p_compact} testid="p2p-left">
-      {dgettext("chat", "Session ended.")}
+      <span data-testid="p2p-left-reason">{ended_text(@ended, @game)}</span>
+      <:note :if={@game}>
+        <p :if={match_unplayed?(@ended)} data-testid="p2p-left-detail">
+          {dgettext("p2p", "The match did not start.")}
+        </p>
+        <div class="flex flex-wrap gap-2">
+          <.button
+            size="sm"
+            navigate={Paths.play_path(@game.id) <> "?match=new"}
+            data-testid="p2p-left-play-again"
+          >
+            <:icon><Icons.icon_btn_join class="h-4 w-4" /></:icon>
+            {dgettext("p2p", "Play again")}
+          </.button>
+          <.button
+            size="sm"
+            variant="outline"
+            navigate={Paths.play_path(@game.id)}
+            data-testid="p2p-left-back-to-game"
+          >
+            <:icon><Icons.game_icon game_id={@game.id} class="h-4 w-4" /></:icon>
+            {dgettext("p2p", "Back to the game")}
+          </.button>
+        </div>
+      </:note>
     </.session_notice>
     """
   end
+
+  # A match room that nobody started is a game that never happened; any other
+  # session that expired is just a session.
+  defp ended_text(%{reason: "lobby_inactivity"}, %{}),
+    do: dgettext("chat", "The game expired before it started.")
+
+  defp ended_text(%{reason: reason, peer: peer}, _game),
+    do: SessionStatus.ended_message(peer, reason)
+
+  defp ended_text(_unknown, _game), do: dgettext("chat", "Session ended.")
+
+  # Nothing was played if Start was never pressed, or if it was and the two
+  # never managed to connect.
+  defp match_unplayed?(%{reason: "connecting_timeout"}), do: true
+  defp match_unplayed?(%{started: started}), do: not started
+  defp match_unplayed?(_unknown), do: false
 
   defp p2p_arriving(assigns) do
     ~H"""

@@ -823,7 +823,7 @@ msgid "End"
 msgstr "Termina"
 
 #: lib/retro_hex_chat_web/components/ui/p2p/session_badge.ex:270
-#: lib/retro_hex_chat_web/live/app/p2p_live.ex:265
+#: lib/retro_hex_chat_web/live/app/p2p_live.ex:311
 #, elixir-autogen, elixir-format
 msgid "P2P Session"
 msgstr "Sessione P2P"
@@ -1229,7 +1229,7 @@ msgstr "Questa sessione è ancora attiva in un'altra finestra. Chiudila, riprova
 msgid "Trigger"
 msgstr "Origine"
 
-#: lib/retro_hex_chat_web/live/app/p2p_live.ex:288
+#: lib/retro_hex_chat_web/live/app/p2p_live.ex:334
 #, elixir-autogen, elixir-format
 msgid "Bring it back here"
 msgstr "Riportala qui"
@@ -1254,12 +1254,12 @@ msgstr "Sono pronto"
 msgid "In the room"
 msgstr "Nella stanza"
 
-#: lib/retro_hex_chat_web/live/app/p2p_live.ex:516
+#: lib/retro_hex_chat_web/live/app/p2p_live.ex:562
 #, elixir-autogen, elixir-format
 msgid "This P2P session is no longer available."
 msgstr "Questa sessione P2P non è più disponibile."
 
-#: lib/retro_hex_chat_web/live/app/p2p_live.ex:278
+#: lib/retro_hex_chat_web/live/app/p2p_live.ex:324
 #, elixir-autogen, elixir-format
 msgid "This session is open in another window of yours."
 msgstr "Questa sessione è aperta in un'altra tua finestra."
@@ -1279,7 +1279,7 @@ msgstr "In attesa che %{peer} sia pronto."
 msgid "Waiting for %{peer} to start."
 msgstr "In attesa che %{peer} avvii."
 
-#: lib/retro_hex_chat_web/live/app/p2p_live.ex:509
+#: lib/retro_hex_chat_web/live/app/p2p_live.ex:555
 #, elixir-autogen, elixir-format
 msgid "You must be registered with NickServ to use P2P sessions."
 msgstr "Devi essere registrato con NickServ per usare le sessioni P2P."
@@ -1307,7 +1307,7 @@ msgid "ready"
 msgstr "pronto"
 
 #: lib/retro_hex_chat_web/components/ui/landing/game_home.ex:177
-#: lib/retro_hex_chat_web/live/app/p2p_live.ex:502
+#: lib/retro_hex_chat_web/live/app/p2p_live.ex:548
 #: lib/retro_hex_chat_web/live/app/play_live.ex:305
 #, elixir-autogen, elixir-format
 msgid "You must be identified with NickServ to use P2P sessions."
@@ -1323,7 +1323,7 @@ msgstr "Premi Pronto quando il gioco ha la tua attenzione."
 msgid "Share the link — the match starts when somebody takes the seat."
 msgstr "Condividi il link: la partita inizia quando qualcuno occupa il posto."
 
-#: lib/retro_hex_chat_web/live/app/p2p_live.ex:521
+#: lib/retro_hex_chat_web/live/app/p2p_live.ex:567
 #, elixir-autogen, elixir-format
 msgid "This match is already full."
 msgstr "Questa partita è già al completo."
@@ -1344,7 +1344,7 @@ msgstr "posto libero"
 msgid "whoever joins"
 msgstr "chi si unirà"
 
-#: lib/retro_hex_chat_web/live/app/p2p_live.ex:266
+#: lib/retro_hex_chat_web/live/app/p2p_live.ex:312
 #, elixir-autogen, elixir-format
 msgid "Taking your seat..."
 msgstr "Occupando il tuo posto..."
@@ -1408,3 +1408,18 @@ msgstr "Ci sei ancora dentro. Possono unirsi di nuovo, o puoi andartene anche tu
 #, elixir-autogen, elixir-format
 msgid "Playing %{game}"
 msgstr "Giocare %{game}"
+
+#: lib/retro_hex_chat_web/live/app/p2p_live.ex:283
+#, elixir-autogen, elixir-format
+msgid "Back to the game"
+msgstr "Torna al gioco"
+
+#: lib/retro_hex_chat_web/live/app/p2p_live.ex:274
+#, elixir-autogen, elixir-format
+msgid "Play again"
+msgstr "Gioca ancora"
+
+#: lib/retro_hex_chat_web/live/app/p2p_live.ex:265
+#, elixir-autogen, elixir-format
+msgid "The match did not start."
+msgstr "La partita non è iniziata."

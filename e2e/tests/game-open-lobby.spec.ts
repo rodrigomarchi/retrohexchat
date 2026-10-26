@@ -5,6 +5,7 @@
  * @flow N67 [done] Somebody with no account watches the match being played, at its /watch address, drawn live from the host's relayed frames
  * @flow N68 [done] The players see how many are watching and the watch link to hand on; the match is offered to watch under its game channel's topic and on the game's page
  * @flow N77 [done] Players who take their time in a match room — reading it, pressing Ready a while after arriving — still get the game when the host presses Start
+ * @flow N78 [done] When a match room ends, the window says why and that the match did not start, and offers Play again — a new room for the same game — or the game's page
  * @flow N69 [done] A full match's link, a playing nickname's menu and the game's page each lead to watching it; a member's Play on the game's page opens beside the desktop
  *
  * These @flow lines are the source of truth for e2e/TEST_CATALOG.md.
@@ -286,6 +287,75 @@ test("a match room survives the people who take their time (N77)", async ({
       );
     }
     await shot(guest, "match-running-after-a-while");
+  } finally {
+    await hostCtx.close();
+    await guestCtx.close();
+  }
+});
+
+// A room that ends says why in the middle of the window, not only on the
+// status bar, and a match offers the way on: a new room for the same game, or
+// the game's page.
+test("an ended match room says why and offers to play again (N78)", async ({
+  browser,
+}) => {
+  const hostCtx = await browser.newContext({
+    viewport: { width: 1500, height: 900 },
+  });
+  const guestCtx = await browser.newContext({
+    viewport: { width: 1500, height: 900 },
+  });
+  const host = await hostCtx.newPage();
+  const guest = await guestCtx.newPage();
+
+  try {
+    const hostNick = await connectedUser(host);
+    const guestNick = await connectedUser(guest);
+
+    await host.goto(`/play/${GAME}`);
+    await host.getByTestId("play-create-match").click();
+    await expect(host).toHaveURL(new RegExp(`/play/${GAME}/`));
+    const firstRoom = host.url();
+    await host.getByTestId("share-create").click();
+    const joinPath = new URL(await host.getByTestId("share-url").inputValue())
+      .pathname;
+    await host.getByTestId("share-close").click();
+
+    await guest.goto(joinPath);
+    await guest.getByTestId("join-enter").click();
+    await expect(guest).toHaveURL(new RegExp(`/play/${GAME}/`));
+    await expect(guest.getByTestId("p2p-room-roster")).toContainText(hostNick);
+
+    await host.getByTestId("p2p-room-cancel").click();
+    await host.getByRole("button", { name: "End session" }).click();
+
+    const left = guest.getByTestId("p2p-left");
+    await expect(left).toBeVisible();
+    await expect(guest.getByTestId("p2p-left-reason")).toHaveText(
+      `P2P session with ${hostNick} ended.`,
+    );
+    await expect(guest.getByTestId("p2p-left-detail")).toHaveText(
+      "The match did not start.",
+    );
+    const again = guest.getByTestId("p2p-left-play-again");
+    await expect(again).toBeInViewport({ ratio: 1 });
+    await expect(guest.getByTestId("p2p-left-back-to-game")).toBeInViewport({
+      ratio: 1,
+    });
+    await shot(guest, "match-ended-desktop");
+    await guest.setViewportSize({ width: 390, height: 844 });
+    await expect(again).toBeInViewport({ ratio: 1 });
+    await shot(guest, "match-ended-phone");
+    await guest.setViewportSize({ width: 1500, height: 900 });
+
+    // Play again is a new room for the same game, with this player as its host.
+    await again.click();
+    await expect(guest).not.toHaveURL(firstRoom, { timeout: 15_000 });
+    await expect(guest).toHaveURL(new RegExp(`/play/${GAME}/[^/?]+$`));
+    await expect(guest.getByTestId("p2p-room-roster")).toContainText(
+      `${guestNick} (host)`,
+    );
+    await expect(guest.getByTestId("p2p-room-cancel")).toBeVisible();
   } finally {
     await hostCtx.close();
     await guestCtx.close();

@@ -245,6 +245,66 @@ defmodule RetroHexChatWeb.App.PlayMatchTest do
   # The link named the game and both sides agreed to it by being here, so the
   # match starts without a second question. Two real LiveViews, because the
   # thing being asserted is what one of them does when the other one moves.
+  # A room that ends says why in the middle of the window, and a match offers
+  # the way on: a new room for the same game, or the game's page.
+  describe "when the room ends" do
+    setup %{conn: conn} do
+      host = register("MHost") |> identify()
+      guest = register("MGuest") |> identify()
+      session = match_lobby(host)
+
+      {:ok, view, _html} =
+        conn |> chat_conn(guest.nickname) |> live(~p"/play/#{@game}/#{session.token}")
+
+      %{host: host, session: session, view: view}
+    end
+
+    test "a connection that timed out says so, and that the match never started", ctx do
+      Lobby.broadcast(ctx.session.token, "lobby_status_changed", %{
+        status: "failed",
+        reason: "connecting_timeout"
+      })
+
+      assert render(ctx.view) =~ ~s(data-testid="p2p-left")
+
+      assert element(ctx.view, ~s([data-testid="p2p-left-reason"])) |> render() =~
+               "Could not connect to #{ctx.host.nickname}."
+
+      assert has_element?(ctx.view, ~s([data-testid="p2p-left-detail"]), "did not start")
+      refute has_element?(ctx.view, ~s([data-testid="p2p-starting-room"]))
+    end
+
+    test "a room nobody started says it expired", ctx do
+      Lobby.broadcast(ctx.session.token, "lobby_status_changed", %{
+        status: "expired",
+        reason: "lobby_inactivity"
+      })
+
+      assert has_element?(
+               ctx.view,
+               ~s([data-testid="p2p-left-reason"]),
+               "The game expired before it started."
+             )
+    end
+
+    test "the way on is a new room for the same game, or the game's page", ctx do
+      Lobby.broadcast(ctx.session.token, "lobby_session_closed", %{
+        reason: "user_closed",
+        closed_by: "user"
+      })
+
+      assert has_element?(
+               ctx.view,
+               ~s([data-testid="p2p-left-play-again"][href="/play/#{@game}?match=new"])
+             )
+
+      assert has_element?(
+               ctx.view,
+               ~s([data-testid="p2p-left-back-to-game"][href="/play/#{@game}"])
+             )
+    end
+  end
+
   describe "the game the link named" do
     test "starts itself once the two are connected, with no accept step", %{conn: conn} do
       host = register("MHost") |> identify()

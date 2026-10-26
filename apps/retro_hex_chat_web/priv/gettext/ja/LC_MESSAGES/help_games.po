@@ -143,8 +143,8 @@ msgstr ""
 "アークティック・コンストラクション・レース — フローティング・アイス・ブロックにジャンプして、対戦相手と対戦しながらイグルーを構築しましょう。 "
 "ツイスト:ブロックは共有され、相手所有のブロックを踏むと、その部分を盗む!"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_jungle.html.heex:22
-#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_jungle.html.heex:28
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_jungle.html.heex:24
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_jungle.html.heex:30
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_raid.html.heex:20
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_raid_blitz.html.heex:20
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_raid_pacifist.html.heex:20
@@ -1187,7 +1187,7 @@ msgstr "無限の降下 — コースは終わらない"
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_frost_peaceful.html.heex:68
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_hockey.html.heex:120
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_invaders.html.heex:80
-#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_jungle.html.heex:68
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_jungle.html.heex:70
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_outlaw.html.heex:75
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_pong.html.heex:47
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_raid.html.heex:71
@@ -1592,7 +1592,7 @@ msgstr "ラウンド3"
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_invaders.html.heex:26
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_invaders_blitz.html.heex:26
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_invaders_coop.html.heex:26
-#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_jungle.html.heex:34
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_jungle.html.heex:36
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_outlaw.html.heex:23
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_pong.html.heex:23
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_raid.html.heex:32
@@ -1696,7 +1696,7 @@ msgstr "スコアリング: ラブ → 15 → 30 → 40 → ゲーム (40-40で�
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_invaders.html.heex:82
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_invaders_blitz.html.heex:71
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_invaders_coop.html.heex:74
-#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_jungle.html.heex:70
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_jungle.html.heex:72
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_outlaw.html.heex:77
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_outlaw_nml.html.heex:70
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_outlaw_ricochet.html.heex:78
@@ -3630,10 +3630,10 @@ msgstr "レトロゲームのソロモードでは、左の城のシールドを
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_block_breakers.html.heex:72
 #: lib/retro_hex_chat_web/controllers/help_content/feature_game_match_full.html.heex:31
-#: lib/retro_hex_chat_web/controllers/help_content/feature_game_match_link.html.heex:39
+#: lib/retro_hex_chat_web/controllers/help_content/feature_game_match_link.html.heex:48
 #: lib/retro_hex_chat_web/controllers/help_content/feature_game_scores.html.heex:50
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_boxing.html.heex:67
-#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_jungle.html.heex:72
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_jungle.html.heex:74
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_warlords.html.heex:83
 #: lib/retro_hex_chat_web/controllers/help_content/feature_pixel_tanks.html.heex:71
 #, elixir-autogen, elixir-format
@@ -3706,7 +3706,7 @@ msgstr "対戦リンクの席はちょうど一つです。誰かが座った瞬
 msgid "A match nobody joins closes itself after about fifteen minutes. That is deliberate: an address pasted in a channel would otherwise stay a way into your session for the rest of the day, and a room waiting for nobody is worth less than a fresh one."
 msgstr "誰も入らなかった対戦は、十五分ほどで自分から閉じます。これは意図的です。そうでなければ、チャンネルに貼った住所がその日の残りずっとあなたのセッションへの入り口であり続けますし、誰も待っていないルームは新しいルームより価値がありません。"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_game_match_link.html.heex:26
+#: lib/retro_hex_chat_web/controllers/help_content/feature_game_match_link.html.heex:35
 #, elixir-autogen, elixir-format
 msgid "Creating a match link needs a registered nickname you have identified with NickServ, and so does taking the seat. Somebody either of you has blocked cannot join, and neither can you join your own match from a second window."
 msgstr "対戦リンクを作るには、登録して NickServ で本人確認を済ませたニックネームが必要で、席に着く側も同じです。どちらかがブロックしている相手は参加できませんし、自分の対戦に二つ目のウィンドウから参加することもできません。"
@@ -3738,7 +3738,7 @@ msgstr "準備完了、そして開始"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_game_channels.html.heex:83
 #: lib/retro_hex_chat_web/controllers/help_content/feature_game_match_full.html.heex:25
-#: lib/retro_hex_chat_web/controllers/help_content/feature_game_match_link.html.heex:33
+#: lib/retro_hex_chat_web/controllers/help_content/feature_game_match_link.html.heex:42
 #: lib/retro_hex_chat_web/controllers/help_content/feature_game_scores.html.heex:48
 #: lib/retro_hex_chat_web/controllers/help_content/feature_game_watch.html.heex:70
 #, elixir-autogen, elixir-format
@@ -3750,7 +3750,7 @@ msgstr "関連項目:"
 msgid "The link comes from Share"
 msgstr "リンクは「共有」から生まれます"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_game_match_link.html.heex:24
+#: lib/retro_hex_chat_web/controllers/help_content/feature_game_match_link.html.heex:33
 #, elixir-autogen, elixir-format
 msgid "Who can play"
 msgstr "遊べる人"
@@ -3760,7 +3760,7 @@ msgstr "遊べる人"
 msgid "Whoever follows the link takes the seat and lands in the same room. Both of you press Ready, and then the host's Start begins the match. There is no accept step for the game itself: the link named it, and following the link was the agreement."
 msgstr "リンクをたどった人が席に着き、同じルームに入ります。二人とも「準備完了」を押すと、ホストの「開始」で対戦が始まります。ゲームそのものを承諾する手順はありません。リンクがゲームを指定しており、それをたどったことが合意だからです。"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_game_match_link.html.heex:35
+#: lib/retro_hex_chat_web/controllers/help_content/feature_game_match_link.html.heex:44
 #, elixir-autogen, elixir-format
 msgid "Why a Match Link Stopped Working"
 msgstr "対戦リンクが使えなくなる理由"
@@ -4202,37 +4202,37 @@ msgstr "ミサイルは最初に当たった壁で跳ね返り、2枚目の壁�
 msgid "Top-down tank combat in a maze. Rotate your tank, drive forward, and fire missiles at your opponent. One missile at a time — miss and you're vulnerable until it expires. 2-minute rounds, best of 3. Five maze layouts keep every match fresh."
 msgstr "迷路の中で戦う見下ろし型の戦車バトル。戦車を回転させて前進し、相手にミサイルを撃ちます。ミサイルは一度に1発だけ。外すと、消えるまで無防備になります。1ラウンド2分、3ラウンド制で2勝した方の勝ち。5種類の迷路で毎回違う対戦になります。"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_jungle.html.heex:56
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_jungle.html.heex:58
 #, elixir-autogen, elixir-format
 msgid "Each screen of the tunnel is three of the jungle's: a shortcut, when no wall blocks it."
 msgstr "トンネルの各画面はジャングルの3つです。壁がブロックされていない場合は、ショートカットです。"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_jungle.html.heex:38
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_jungle.html.heex:40
 #, elixir-autogen, elixir-format
 msgid "Each treasure is worth from 2000 to 5000 points; once taken, it stays taken."
 msgstr "各宝は2000〜5000ポイントで価値があります。 一度服用すると、受け継がれます。"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_jungle.html.heex:69
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_jungle.html.heex:71
 #, elixir-autogen, elixir-format
 msgid "Inspired by Activision's Pitfall! (1982) for the Atari 2600."
 msgstr "アタリ2600のActivisionのPitfall!(1982)に触発されました。"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_jungle.html.heex:36
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_jungle.html.heex:38
 #, elixir-autogen, elixir-format
 msgid "You start with 2000 points, three lives and twenty minutes."
 msgstr "You start with 2000 points, three lives and twenty minutes."
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_jungle.html.heex:25
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_jungle.html.heex:27
 #, elixir-autogen, elixir-format
 msgid "— Climb a ladder"
 msgstr "— 梯子を登る"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_jungle.html.heex:50
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_jungle.html.heex:52
 #, elixir-autogen, elixir-format
 msgid "A pit, quicksand, a crocodile's jaws, fire, a snake or a scorpion costs a life."
 msgstr "ピット、クイックサンド、クロコダイルの爪、火、ヘビ、またはスコーピオンは命を要します。"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_jungle.html.heex:28
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_jungle.html.heex:30
 #, elixir-autogen, elixir-format
 msgid "— Let go of the vine"
 msgstr "— ツタを放す"
@@ -4247,7 +4247,7 @@ msgstr "— 左右に移動"
 msgid "Hex Jungle is a game for one player. An adventurer crosses a jungle of 255 screens, and the tunnels below it, looking for 32 treasures before twenty minutes run out. Nobody plays against you: your score is your own, and your best runs go into the ranking."
 msgstr "Hex Jungle is a game for one player. An adventurer crosses a jungle of 255 screens, and the tunnels below it, looking for 32 treasures before twenty minutes run out. Nobody plays against you: your score is your own, and your best runs go into the ranking."
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_jungle.html.heex:62
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_jungle.html.heex:64
 #, elixir-autogen, elixir-format
 msgid "The game ends when the twenty minutes are over, when the last life is lost, or when the 32nd treasure is found. The End button keeps the points you have."
 msgstr "最後の人生が失われたとき、または32番目の宝が発見されたとき、ゲームは20分を超えると終了します。 エンドボタンは、あなたが持っているポイントを保持します。"
@@ -4262,7 +4262,27 @@ msgstr "— ジャンプしてツタをつかむ"
 msgid "Hex Jungle is a game for one player: move with the arrow keys or WASD, jump with the space bar, and climb ladders with Up and Down."
 msgstr "ヘックスジャングルは1つのプレーヤーのためのゲームです:矢印キーまたはWASDで移動し、スペースバーでジャンプし、上下に梯子を登る。"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_jungle.html.heex:44
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_jungle.html.heex:46
 #, elixir-autogen, elixir-format
 msgid "Touching a rolling tree trunk costs points. Falling down a hole costs 100 points."
 msgstr "ローリングツリートランクのコストポイントに触れる。 穴のコストを下げる 100 ポイント."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_game_match_link.html.heex:25
+#, elixir-autogen, elixir-format
+msgid "If the game does not start"
+msgstr "ゲームが起動しない場合"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_game_match_link.html.heex:30
+#, elixir-autogen, elixir-format
+msgid "Play again opens a new room for the same game, with you as the host."
+msgstr "Play again opens a new room for the same game, with you as the host."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_game_match_link.html.heex:28
+#, elixir-autogen, elixir-format
+msgid "There is no hurry before Start."
+msgstr "スタート前の急ぎはありません。"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_game_match_link.html.heex:29
+#, elixir-autogen, elixir-format
+msgid "The connection only begins after Start."
+msgstr "開始直後にのみ接続が始まります。"

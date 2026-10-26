@@ -268,6 +268,24 @@ _TERMS: dict[str, dict[str, tuple[str, ...]]] = {
         "fr": ("épingl",),
         "de": ("angeheftet", "pinn", "fixiert"),
     },
+    # The host of a room or a match is the person who opened it: Portuguese
+    # gave "a máquina pressiona Iniciar". The server's host — its processors,
+    # the readings it reports — is the machine, and the other word; only the
+    # host that presses, cancels, or that somebody is, is held to it.
+    r"\bthe host(?:'s Start|\s+(?:presses|pressed|cancels|cancelled))\b|\b(?:as|is|are) (?:the )?host\b": {
+        "pt": ("anfitri",),
+        "es": ("anfitri",),
+        "fr": ("hôte",),
+        "de": ("gastgeber", "host"),
+        "it": ("host", "ospit"),
+        "nl": ("host", "gastheer", "gastvrouw"),
+        "pl": ("gospodarz", "host"),
+        "ru": ("хозя", "ведущ", "хост"),
+        "id": ("tuan rumah", "host"),
+        "ja": ("ホスト",),
+        "zh_hans": ("房主", "主持"),
+        "zh_hant": ("房主", "主持"),
+    },
     # A match is a game played, never a correspondence or a coincidence:
     # "Watching a match" came back as "Observando uma correspondência", "Ver
     # una coincidencia" and "Eine Übereinstimmung beobachten". Only the noun

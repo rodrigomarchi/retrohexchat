@@ -804,7 +804,7 @@ msgid "End"
 msgstr "結束"
 
 #: lib/retro_hex_chat_web/components/ui/p2p/session_badge.ex:270
-#: lib/retro_hex_chat_web/live/app/p2p_live.ex:265
+#: lib/retro_hex_chat_web/live/app/p2p_live.ex:311
 #, elixir-autogen, elixir-format
 msgid "P2P Session"
 msgstr "P2P 工作階段"
@@ -1201,7 +1201,7 @@ msgstr "此工作階段仍在另一個視窗中運作。請關閉該視窗、重
 msgid "Trigger"
 msgstr "觸發來源"
 
-#: lib/retro_hex_chat_web/live/app/p2p_live.ex:288
+#: lib/retro_hex_chat_web/live/app/p2p_live.ex:334
 #, elixir-autogen, elixir-format
 msgid "Bring it back here"
 msgstr "移回此處"
@@ -1226,12 +1226,12 @@ msgstr "我準備好了"
 msgid "In the room"
 msgstr "房間內"
 
-#: lib/retro_hex_chat_web/live/app/p2p_live.ex:516
+#: lib/retro_hex_chat_web/live/app/p2p_live.ex:562
 #, elixir-autogen, elixir-format
 msgid "This P2P session is no longer available."
 msgstr "此 P2P 工作階段已無法使用。"
 
-#: lib/retro_hex_chat_web/live/app/p2p_live.ex:278
+#: lib/retro_hex_chat_web/live/app/p2p_live.ex:324
 #, elixir-autogen, elixir-format
 msgid "This session is open in another window of yours."
 msgstr "此工作階段已在你的另一個視窗中開啟。"
@@ -1251,7 +1251,7 @@ msgstr "正在等待 %{peer} 就緒。"
 msgid "Waiting for %{peer} to start."
 msgstr "正在等待 %{peer} 開始。"
 
-#: lib/retro_hex_chat_web/live/app/p2p_live.ex:509
+#: lib/retro_hex_chat_web/live/app/p2p_live.ex:555
 #, elixir-autogen, elixir-format
 msgid "You must be registered with NickServ to use P2P sessions."
 msgstr "使用 P2P 工作階段需要先在 NickServ 註冊。"
@@ -1279,7 +1279,7 @@ msgid "ready"
 msgstr "就緒"
 
 #: lib/retro_hex_chat_web/components/ui/landing/game_home.ex:177
-#: lib/retro_hex_chat_web/live/app/p2p_live.ex:502
+#: lib/retro_hex_chat_web/live/app/p2p_live.ex:548
 #: lib/retro_hex_chat_web/live/app/play_live.ex:305
 #, elixir-autogen, elixir-format
 msgid "You must be identified with NickServ to use P2P sessions."
@@ -1295,7 +1295,7 @@ msgstr "準備好專心遊戲後，按下準備完成。"
 msgid "Share the link — the match starts when somebody takes the seat."
 msgstr "分享連結——有人佔了座位，對局就開始。"
 
-#: lib/retro_hex_chat_web/live/app/p2p_live.ex:521
+#: lib/retro_hex_chat_web/live/app/p2p_live.ex:567
 #, elixir-autogen, elixir-format
 msgid "This match is already full."
 msgstr "這場對局已經滿員。"
@@ -1316,7 +1316,7 @@ msgstr "空位"
 msgid "whoever joins"
 msgstr "加入的人"
 
-#: lib/retro_hex_chat_web/live/app/p2p_live.ex:266
+#: lib/retro_hex_chat_web/live/app/p2p_live.ex:312
 #, elixir-autogen, elixir-format
 msgid "Taking your seat..."
 msgstr "正在為你佔位..."
@@ -1380,3 +1380,18 @@ msgstr "你還在其中。 他們可以再加入 或者你也可以離開"
 #, elixir-autogen, elixir-format
 msgid "Playing %{game}"
 msgstr "播放 %{game} 遊戲"
+
+#: lib/retro_hex_chat_web/live/app/p2p_live.ex:283
+#, elixir-autogen, elixir-format
+msgid "Back to the game"
+msgstr "回到遊戲中"
+
+#: lib/retro_hex_chat_web/live/app/p2p_live.ex:274
+#, elixir-autogen, elixir-format
+msgid "Play again"
+msgstr "再玩一次"
+
+#: lib/retro_hex_chat_web/live/app/p2p_live.ex:265
+#, elixir-autogen, elixir-format
+msgid "The match did not start."
+msgstr "比賽沒有開始"
