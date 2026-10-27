@@ -3,15 +3,15 @@
  * table does (`act`), what a tick does (`step`), and the score it ends on.
  *
  * The state is `{ phase, table, score, clock, events, won, stuck }`: the
- * table is `rules.js`'s, `clock` is the card table's (`core/card_table/clock.js`),
+ * table is `rules.js`'s, `clock` is the card table's (`core/solo/clock.js`),
  * and `events` gathers the `EVENT` bits of the tick. Points are Windows':
  * 500 to start, one a move, a hundred a suit; time costs nothing.
  *
  * @module games/hex_spider/physics
  */
 
-import { addPoints, startClock, tickMatch, untilTimeUp } from "../core/card_table/clock.js";
-import { PHASE, ending } from "../core/card_table/phases.js";
+import { addPoints, startClock, tickMatch, untilTimeUp } from "../core/solo/clock.js";
+import { PHASE, ending } from "../core/solo/phases.js";
 import { EVENT, GEOMETRY, POINTS } from "./protocol.js";
 import { applyMove, deal, dealRow, hasMove, won } from "./rules.js";
 

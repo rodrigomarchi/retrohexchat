@@ -19,7 +19,7 @@ import { gameColor } from "../../../game_colors.js";
 import { FULL_CARD, MINI_CARD } from "../cards.js";
 import { burst, stepParticles } from "../render.js";
 import { easeOutBack, easeOutCubic, progress, tweenPoint } from "../tween.js";
-import { EVENT } from "./phases.js";
+import { EVENT } from "./events.js";
 
 /** How long each effect lasts, in ticks (drawing only; the match never waits). */
 export const FX = Object.freeze({

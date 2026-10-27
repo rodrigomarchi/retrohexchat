@@ -36,13 +36,16 @@ import { defineGame } from "../define_game.js";
 import { playFlags } from "../events.js";
 import { createLayer } from "../layers.js";
 import { createGesture } from "../pointer.js";
+import { laidFor, tableView } from "../solo/view.js";
 import { soloResult } from "../result.js";
 import { active, createEffects, settle, stepEffects } from "./effects.js";
 import { feltWeave, readTableColors } from "./render.js";
-import { CELEBRATION_TICKS, EVENT, PHASE, TAP_SLOP } from "./phases.js";
+import { CELEBRATION_TICKS, PHASE, TAP_SLOP } from "../solo/phases.js";
+import { EVENT } from "./events.js";
 import { MASTER_VOLUME, SOUNDS } from "./sounds.js";
 
-export { CELEBRATION_TICKS, EVENT, PHASE, TAP_SLOP } from "./phases.js";
+export { CELEBRATION_TICKS, PHASE, TAP_SLOP } from "../solo/phases.js";
+export { EVENT } from "./events.js";
 
 /** The back a player last chose, kept by the browser for every card game. */
 const BACK_KEY = "retrohex.cards.back";
@@ -181,8 +184,6 @@ export function defineCardTable(table) {
     }
   }
 
-  const portrait = (view) => view.height > view.width;
-
   return defineGame({
     players: 1,
     pointer: true,
@@ -208,14 +209,11 @@ export function defineCardTable(table) {
     },
     // A phone held upright gives the canvas a box taller than wide: the table
     // stands up in it, so the cards are as big as the phone allows.
-    view: (canvas) => {
-      const box = canvas.getBoundingClientRect();
-      return box.height > box.width ? geometry.PORTRAIT.view : geometry.LANDSCAPE.view;
-    },
+    view: tableView(geometry),
     // The cards are dealt in the size the table is laid for: a table of many
     // columns standing up on a phone deals the minis (`size: "mini"`).
     init: (game) => {
-      const laid = portrait(game.view) ? geometry.PORTRAIT : geometry.LANDSCAPE;
+      const laid = laidFor(geometry, game.view);
       game.fx = createEffects({ reduced: reducedMotion(), size: laid.size ?? "full" });
       return table.init(game, laid);
     },

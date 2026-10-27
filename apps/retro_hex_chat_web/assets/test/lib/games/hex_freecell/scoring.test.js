@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 import { CEILING, POINTS } from "../../../../js/lib/games/hex_freecell/protocol.js";
 import { scoreMove } from "../../../../js/lib/games/hex_freecell/scoring.js";
-import { timeBonus } from "../../../../js/lib/games/core/card_table/clock.js";
+import { timeBonus } from "../../../../js/lib/games/core/solo/clock.js";
 
 const column = { pile: "column", col: 0, index: 0 };
 const cell = { pile: "cell", cell: 0 };

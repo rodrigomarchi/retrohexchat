@@ -1,6 +1,6 @@
 /**
  * Hex FreeCell's points: what a move earns or costs. The clock, what time
- * costs and the bonus of a win are every card table's (`core/card_table/clock.js`).
+ * costs and the bonus of a win are every card table's (`core/solo/clock.js`).
  *
  * @module games/hex_freecell/scoring
  */

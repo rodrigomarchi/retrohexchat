@@ -7,7 +7,7 @@
 
 import { POINTS } from "./protocol.js";
 
-export { addPoints, startClock, tickClock, timeBonus } from "../core/card_table/clock.js";
+export { addPoints, startClock, tickClock, timeBonus } from "../core/solo/clock.js";
 
 /**
  * The points of a move (`rules.js`), and of the card it turned over.

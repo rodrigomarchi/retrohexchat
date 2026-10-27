@@ -76,6 +76,43 @@ describe("createGesture", () => {
     expect(feed(gesture, [at("down", 0, 0), { type: "cancel" }, at("up", 0, 0)])).toEqual([]);
   });
 
+  it("reads a press held still for its ticks as a hold, and its release as nothing", () => {
+    const gesture = createGesture({ slop: 6, holdTicks: 3 });
+    const ticks = (n) => Array.from({ length: n }, () => gesture.tick()).flat();
+    expect(gesture(at("down", 10, 10))).toEqual([]);
+    expect(ticks(2)).toEqual([]);
+    expect(feed(gesture, [at("move", 12, 11)])).toEqual([]);
+    expect(ticks(1)).toEqual([{ type: "hold", x: 10, y: 10 }]);
+    expect(ticks(5)).toEqual([]);
+    expect(feed(gesture, [at("up", 12, 11)])).toEqual([]);
+  });
+
+  it("never holds a press that moved past the slop, nor one released in time", () => {
+    const gesture = createGesture({ slop: 6, holdTicks: 3 });
+    const ticks = (n) => Array.from({ length: n }, () => gesture.tick()).flat();
+    gesture(at("down", 10, 10));
+    gesture(at("move", 30, 10));
+    expect(ticks(5)).toEqual([]);
+    gesture(at("up", 30, 10));
+    gesture(at("down", 10, 10));
+    ticks(2);
+    expect(feed(gesture, [at("up", 10, 10)])).toEqual([{ type: "tap", x: 10, y: 10 }]);
+    expect(ticks(5)).toEqual([]);
+  });
+
+  it("tells which button made a tap, when the press says", () => {
+    const gesture = createGesture({ slop: 6 });
+    expect(feed(gesture, [{ ...at("down", 1, 2), button: "secondary" }, at("up", 1, 2)])).toEqual([
+      { type: "tap", x: 1, y: 2, button: "secondary" },
+    ]);
+  });
+
+  it("holds nothing without hold ticks", () => {
+    const gesture = createGesture({ slop: 6 });
+    gesture(at("down", 0, 0));
+    expect(Array.from({ length: 100 }, () => gesture.tick()).flat()).toEqual([]);
+  });
+
   it("ignores moves and releases with no press", () => {
     const gesture = createGesture({ slop: 6 });
     expect(feed(gesture, [at("move", 5, 5), at("up", 5, 5)])).toEqual([]);

@@ -3,7 +3,7 @@
  * ten seconds of play may cost points, an hour calls time, and a fast win
  * earns a bonus. The score never falls below zero.
  *
- * @module games/core/card_table/clock
+ * @module games/core/solo/clock
  */
 
 import { PHASE } from "./phases.js";

@@ -3,7 +3,7 @@
  * the table does (`act`), what a tick does (`step`), and the score it ends on.
  *
  * The state is `{ phase, table, score, clock, events, won, stuck, autoTicks }`:
- * the table is `rules.js`'s, `clock` is the card table's (`core/card_table/clock.js`),
+ * the table is `rules.js`'s, `clock` is the card table's (`core/solo/clock.js`),
  * and `events` gathers the `EVENT` bits of the tick. In play, a card no
  * other card can still want goes up by itself, one every `AUTO_TICKS`; once
  * every column runs down, the rest go up the same way.
@@ -17,8 +17,8 @@ import {
   startClock,
   tickMatch,
   untilTimeUp,
-} from "../core/card_table/clock.js";
-import { PHASE, ending } from "../core/card_table/phases.js";
+} from "../core/solo/clock.js";
+import { PHASE, ending } from "../core/solo/phases.js";
 import { AUTO_TICKS, EVENT, GEOMETRY } from "./protocol.js";
 import {
   applyMove,

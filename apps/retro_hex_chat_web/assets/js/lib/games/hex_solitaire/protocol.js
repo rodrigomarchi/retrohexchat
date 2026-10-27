@@ -7,7 +7,7 @@
  * @module games/hex_solitaire/protocol
  */
 
-import { TIME_PENALTY } from "../core/card_table/clock.js";
+import { TIME_PENALTY } from "../core/solo/clock.js";
 
 /** How many cards the stock turns at a time, by the variant played. */
 export const MODE = Object.freeze({ DRAW1: 1, DRAW3: 3 });
@@ -37,7 +37,7 @@ export {
   BONUS_NUMERATOR,
   PENALTY_TICKS,
   SAFETY_TICKS,
-} from "../core/card_table/clock.js";
+} from "../core/solo/clock.js";
 
 /**
  * The most a game can score: all 52 cards up (10 each), the 21 cards dealt
@@ -95,7 +95,8 @@ export const GEOMETRY = Object.freeze({
 });
 
 /** The match's phases, its events and the celebration's length: every card table's. */
-export { CELEBRATION_TICKS, EVENT, PHASE, TAP_SLOP } from "../core/card_table/phases.js";
+export { CELEBRATION_TICKS, PHASE, TAP_SLOP } from "../core/solo/phases.js";
+export { EVENT } from "../core/card_table/events.js";
 
 /** How long each effect lasts: every card table's. */
 export { FX } from "../core/card_table/effects.js";

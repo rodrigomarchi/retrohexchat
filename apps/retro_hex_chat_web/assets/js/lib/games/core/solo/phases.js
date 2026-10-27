@@ -1,9 +1,9 @@
 /**
- * A card match's phases, the events a tick raises, and how a move ends a
- * match: every card table's, so a game's state and its sounds speak the same
- * words. A module of its own, light enough for a game's pure functions.
+ * A one-player match's phases and how a move ends a match: every solo game
+ * on the pointer core's, so their states speak the same words. A module of
+ * its own, light enough for a game's pure functions.
  *
- * @module games/core/card_table/phases
+ * @module games/core/solo/phases
  */
 
 /**
@@ -24,22 +24,8 @@ export const CELEBRATION_TICKS = 600;
 /** How far a press may move and still be a tap. */
 export const TAP_SLOP = 6;
 
-/**
- * What happened in a tick, one bit each: the sounds (each the event's name,
- * `card_table/sounds.js`) and the effects read them. A game raises the ones
- * its table has.
- */
-export const EVENT = Object.freeze({
-  DEAL: 1,
-  DRAW: 2,
-  FLIP: 4,
-  PLACE: 8,
-  FOUNDATION: 16,
-  REFUSE: 32,
-  RECYCLE: 64,
-  RETURN: 128,
-  WIN: 256,
-});
+/** The bit of a tick's events that says the match was won: every solo game's `EVENT.WIN`. */
+export const WIN_EVENT = 256;
 
 /**
  * The state after a move, with the end it brings: a win is celebrated, a
@@ -49,7 +35,7 @@ export const EVENT = Object.freeze({
  * @returns {object}
  */
 export function ending(next, { won, finish = false, stuck = false }) {
-  if (won) return { ...next, phase: PHASE.CELEBRATING, won: true, events: next.events | EVENT.WIN };
+  if (won) return { ...next, phase: PHASE.CELEBRATING, won: true, events: next.events | WIN_EVENT };
   if (finish) return { ...next, phase: PHASE.AUTO_FINISH, autoTicks: 0 };
   if (stuck) return { ...next, phase: PHASE.FINISHED, stuck: true };
   return next;

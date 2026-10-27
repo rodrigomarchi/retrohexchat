@@ -35,27 +35,39 @@ export function toCanvasPoint(rect, width, height, clientX, clientY, { clamp = t
 }
 
 /**
- * Reads presses as taps and drags. Feed it the pointer events of one pointer
- * — `down`, `move`, `up`, `cancel`, each with `x` and `y` — and it answers
- * what they mean: `tap` (a press that moved no further than `slop`),
- * `dragStart` (at the press, once it moved further), `dragMove`, `drop`, or
- * `dragCancel`. A cancelled press that never moved means nothing.
+ * A press, read as the gesture it makes: `tap` (a press that moved no
+ * further than `slop`), `dragStart` (at the press, once it moved further),
+ * `dragMove`, `drop`, or `dragCancel`. A cancelled press that never moved
+ * means nothing. A tap says which button made it when the press did
+ * (`button`, from a game that takes the secondary button).
  *
- * @param {{ slop: number }} options - how far a press may move and still be a tap
- * @returns {(event: { type: string, x?: number, y?: number }) => Array<object>}
+ * With `holdTicks`, a press kept within `slop` for that many ticks is a
+ * `hold` (a long press: a finger's right click), counted by `tick()` — one
+ * call each tick, so a script of presses replays the same holds — and its
+ * release then means nothing.
+ *
+ * @param {{ slop: number, holdTicks?: number }} options
+ * @returns {((event: { type: string, x?: number, y?: number, button?: string }) => Array<object>)
+ *   & { tick: () => Array<object> }}
  */
-export function createGesture({ slop }) {
+export function createGesture({ slop, holdTicks = 0 }) {
   let press = null;
 
-  return (event) => {
+  const tapOf = (ended) =>
+    ended.button === undefined
+      ? { type: "tap", x: ended.x, y: ended.y }
+      : { type: "tap", x: ended.x, y: ended.y, button: ended.button };
+
+  const gesture = (event) => {
     switch (event.type) {
       case "down":
-        press = { x: event.x, y: event.y, dragging: false };
+        press = { x: event.x, y: event.y, dragging: false, held: 0, button: event.button };
         return [];
       case "move":
         if (!press) return [];
         if (press.dragging) return [{ type: "dragMove", x: event.x, y: event.y }];
         if (Math.hypot(event.x - press.x, event.y - press.y) <= slop) return [];
+        if (press.held < 0) return [];
         press.dragging = true;
         return [
           { type: "dragStart", x: press.x, y: press.y },
@@ -65,9 +77,8 @@ export function createGesture({ slop }) {
         if (!press) return [];
         const ended = press;
         press = null;
-        return ended.dragging
-          ? [{ type: "drop", x: event.x, y: event.y }]
-          : [{ type: "tap", x: ended.x, y: ended.y }];
+        if (ended.held < 0) return [];
+        return ended.dragging ? [{ type: "drop", x: event.x, y: event.y }] : [tapOf(ended)];
       }
       case "cancel": {
         const ended = press;
@@ -78,4 +89,15 @@ export function createGesture({ slop }) {
         return [];
     }
   };
+
+  // A press already held is marked with a negative count: it holds once.
+  gesture.tick = () => {
+    if (!holdTicks || !press || press.dragging || press.held < 0) return [];
+    press.held += 1;
+    if (press.held < holdTicks) return [];
+    press.held = -1;
+    return [{ type: "hold", x: press.x, y: press.y }];
+  };
+
+  return gesture;
 }

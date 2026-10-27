@@ -5,6 +5,7 @@ import { aiRandom } from "../../../../js/lib/games/core/rng.js";
 import {
   FakeGame,
   FakePointerGame,
+  FakeTwoButtonGame,
   FakeSoloGame,
   pointerDefinition,
   PHASE,
@@ -189,6 +190,38 @@ describe("defineGame", () => {
       match.advance(17);
 
       expect(logOf(match)).toEqual([]);
+    });
+
+    it("takes the secondary button when the game asks for it, and keeps the menu away", async () => {
+      match = await playMatch({
+        EngineClass: FakeTwoButtonGame,
+        gameId: "fake_pointer",
+        mode: "solo",
+      });
+      match.advance(100);
+      match.pointer("down", 10, 10, { button: 2 });
+      match.pointer("up", 10, 10, { button: 2 });
+      match.pointer("down", 20, 20);
+      match.pointer("up", 20, 20);
+      match.pointer("down", 10, 10, { button: 1 });
+      match.advance(17);
+
+      expect(logOf(match).map((entry) => entry.slice(1))).toEqual([
+        ["down", 10, 10, "secondary"],
+        ["up", 10, 10, "secondary"],
+        ["down", 20, 20, "main"],
+        ["up", 20, 20, "main"],
+      ]);
+      const menu = new MouseEvent("contextmenu", { cancelable: true });
+      match.engines.host.canvas.dispatchEvent(menu);
+      expect(menu.defaultPrevented).toBe(true);
+    });
+
+    it("leaves the browser's menu to a game that takes the main button only", async () => {
+      match = await pointerMatch({});
+      const menu = new MouseEvent("contextmenu", { cancelable: true });
+      match.engines.host.canvas.dispatchEvent(menu);
+      expect(menu.defaultPrevented).toBe(false);
     });
 
     it("cancels a press when the window loses focus", async () => {

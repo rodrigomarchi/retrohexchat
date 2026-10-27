@@ -12,8 +12,8 @@
 
 import { AUTO_TICKS, EVENT, GEOMETRY, PHASE } from "./protocol.js";
 import { applyMove, autoFinishReady, deal, draw, nextAutoMove, recycle, won } from "./rules.js";
-import { scoreWithBonus, tickMatch, untilTimeUp } from "../core/card_table/clock.js";
-import { ending } from "../core/card_table/phases.js";
+import { scoreWithBonus, tickMatch, untilTimeUp } from "../core/solo/clock.js";
+import { ending } from "../core/solo/phases.js";
 import { addPoints, recyclePoints, scoreMove, startClock } from "./scoring.js";
 
 /** A new match: the table dealt, on the table it is laid on, nothing scored, the clock stopped. */

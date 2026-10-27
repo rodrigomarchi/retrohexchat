@@ -50,10 +50,13 @@
  * or the window lost focus, which carries no point), and `x`, `y` are the
  * canvas's pixels (`core/pointer.js`). One press is followed at a time — a
  * second finger is ignored — and a press off the picture starts nothing.
+ * A game that also reads a right click says `pointerButtons: ["main",
+ * "secondary"]`: every event of a press then carries `button` ("main" or
+ * "secondary"), and the browser's menu stays shut over the canvas.
  * The canvas of a pointer game takes the touch for itself
  * (`game-canvas--pointer`), so a drag on a phone moves a card, not the page.
  *
- * `view: (canvas) => ({ width, height }) | null` lets a game choose the picture
+ * `view: (canvas, gameId) => ({ width, height }) | null` lets a game choose the picture
  * it draws from the box the page gave its canvas — a table standing up on a
  * phone held upright; null keeps the size the page gave.
  *
@@ -93,6 +96,9 @@ const REQUIRED = ["inputs", "schema", "init", "flow", "render", "disconnectResul
 const ONE_PLAYER_REQUIRED = ["inputs", "init", "flow", "render", "standing"];
 
 /** The canvas's pointer events, by the name a game is handed. */
+/** A mouse button's number, as the game is told it. */
+const BUTTONS = Object.freeze({ 0: "main", 2: "secondary" });
+
 const POINTER_EVENTS = Object.freeze({
   pointerdown: "down",
   pointermove: "move",
@@ -130,6 +136,8 @@ export function defineGame(def) {
 
   const onePlayer = def.players === 1;
   const pointer = def.pointer === true;
+  // A game may take the secondary button too (a right click); the menu then stays shut.
+  const secondary = pointer && (def.pointerButtons ?? ["main"]).includes("secondary");
   const resolution = def.resolution ?? 1;
   const scaled = resolution !== 1 || def.pixelArt === true;
   const inputNames = Object.keys(def.inputs);
@@ -159,7 +167,7 @@ export function defineGame(def) {
       // given more pixels.
       canvas.dataset.gameWidth ??= String(canvas.width);
       canvas.dataset.gameHeight ??= String(canvas.height);
-      this.view = def.view?.(canvas) ?? {
+      this.view = def.view?.(canvas, gameId) ?? {
         width: Number(canvas.dataset.gameWidth),
         height: Number(canvas.dataset.gameHeight),
       };
@@ -231,6 +239,7 @@ export function defineGame(def) {
         for (const type of Object.keys(POINTER_EVENTS)) {
           this.canvas.addEventListener(type, this._boundPointer);
         }
+        if (secondary) this.canvas.addEventListener("contextmenu", this._preventMenu);
       }
       if (def.theme) this.colors = def.theme(this.canvas);
       def.onStart?.(this);
@@ -251,6 +260,7 @@ export function defineGame(def) {
         for (const type of Object.keys(POINTER_EVENTS)) {
           this.canvas.removeEventListener(type, this._boundPointer);
         }
+        this.canvas.removeEventListener("contextmenu", this._preventMenu);
         this._pointerQueue = [];
         this._activePointer = null;
       }
@@ -402,13 +412,18 @@ export function defineGame(def) {
       const type = POINTER_EVENTS[event.type];
       const id = event.pointerId ?? 0;
       if (type === "down") {
-        // The main button, a finger or a pen: a right or middle click is not a press.
-        if (this._activePointer !== null || (event.button ?? 0) !== 0) return;
+        // The main button, a finger or a pen; the secondary one only for a
+        // game that asks for it. A middle click is never a press.
+        const button = BUTTONS[event.button ?? 0];
+        if (this._activePointer !== null || !button || (button === "secondary" && !secondary)) {
+          return;
+        }
         const point = this._pointAt(event, true);
         if (!point) return;
         this._activePointer = id;
+        this._activeButton = secondary ? button : undefined;
         this._capturePointer(id);
-        this._pointerQueue.push({ type, ...point });
+        this._pointerQueue.push(this._withButton({ type, ...point }));
         return;
       }
       if (id !== this._activePointer) return;
@@ -418,8 +433,17 @@ export function defineGame(def) {
         return;
       }
       const point = this._pointAt(event, false);
+      if (point) this._pointerQueue.push(this._withButton({ type, ...point }));
       if (type === "up") this._activePointer = null;
-      if (point) this._pointerQueue.push({ type, ...point });
+    }
+
+    // A two-button game is told which button each event of a press belongs to.
+    _withButton(event) {
+      return this._activeButton === undefined ? event : { ...event, button: this._activeButton };
+    }
+
+    _preventMenu(event) {
+      event.preventDefault();
     }
 
     _pointAt(event, clamp) {

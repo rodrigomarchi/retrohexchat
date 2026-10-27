@@ -8,7 +8,7 @@
  */
 
 import { FULL_CARD, MINI_CARD } from "../core/cards.js";
-import { BONUS_MIN_SECONDS, BONUS_NUMERATOR, TIME_PENALTY } from "../core/card_table/clock.js";
+import { BONUS_MIN_SECONDS, BONUS_NUMERATOR, TIME_PENALTY } from "../core/solo/clock.js";
 
 /** The table: eight columns, four free cells, four foundations. */
 export const COLUMNS = 8;
@@ -27,8 +27,8 @@ export const POINTS = Object.freeze({
  */
 export const CEILING = 52 * POINTS.TO_FOUNDATION + Math.floor(BONUS_NUMERATOR / BONUS_MIN_SECONDS);
 
-/** What happened in a tick: every card table's events (`core/card_table/phases.js`). */
-export { EVENT } from "../core/card_table/phases.js";
+/** What happened in a tick: every card table's events (`core/solo/phases.js`). */
+export { EVENT } from "../core/card_table/events.js";
 
 /** Cards going up by themselves — the safe ones in play, all of them at the end: one every this many ticks. */
 export const AUTO_TICKS = 6;

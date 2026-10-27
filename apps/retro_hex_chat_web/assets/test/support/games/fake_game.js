@@ -168,3 +168,13 @@ export const pointerDefinition = {
 };
 
 export const FakePointerGame = defineGame(pointerDefinition);
+
+/** A pointer game that also takes the secondary button: its log keeps which button pressed. */
+export const FakeTwoButtonGame = defineGame({
+  ...pointerDefinition,
+  pointerButtons: ["main", "secondary"],
+  onPointer: (game, event) => {
+    const s = game.gameState;
+    s.log.push([s.ticks, event.type, event.x ?? null, event.y ?? null, event.button ?? null]);
+  },
+});

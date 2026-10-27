@@ -29,8 +29,8 @@ export const POINTS = Object.freeze({ START: 500, MOVE: -1, COMPLETE: 100 });
 /** The most a game can score: the start and every suit up. The server refuses more. */
 export const CEILING = POINTS.START + FOUNDATIONS * POINTS.COMPLETE;
 
-/** What happened in a tick: every card table's events (`core/card_table/phases.js`). */
-export { EVENT } from "../core/card_table/phases.js";
+/** What happened in a tick: every card table's events (`core/solo/phases.js`). */
+export { EVENT } from "../core/card_table/events.js";
 
 /**
  * The two tables the game is laid out on: lying down on a desktop's window,
