@@ -205,6 +205,16 @@ defmodule RetroHexChat.Games.ResultTest do
       end
     end
 
+    test "refuses more points than a game of Spider can score, in every variant" do
+      for id <- ~w(hex_spider hex_spider_2suits hex_spider_4suits) do
+        assert {:ok, %Result{p1_score: 1_300}} =
+                 Result.normalize(id, %{"score" => %{"p1" => 1_300, "p2" => 0}})
+
+        assert {:error, :implausible} =
+                 Result.normalize(id, %{"score" => %{"p1" => 1_301, "p2" => 0}})
+      end
+    end
+
     test "refuses more points than a table of FreeCell can score" do
       assert {:ok, %Result{p1_score: 23_853}} =
                Result.normalize("hex_freecell", %{"score" => %{"p1" => 23_853, "p2" => 0}})

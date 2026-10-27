@@ -18,6 +18,7 @@ BRAND_RE = re.compile(
     r"\b(Retro Hex Chat|RetroHexChat|RetroHex|ChanServ|NickServ|MemoServ|OperServ|HostServ|Construct|"
     r"End of Time|Hex Solitaire: Draw Three|Hex Solitaire|Klondike solitaire|"
     r"Hex FreeCell|FreeCell solitaire|FreeCell|"
+    r"Hex Spider: Two Suits|Hex Spider: Four Suits|Hex Spider|Spider solitaire|Spider|"
     r"mIRC|IRC|CTCP|DCC|"
     r"LibreQuake|QuakeSpasm|WebRTC|LiveView|PostgreSQL|Elixir|Phoenix)\b"
 )
@@ -48,6 +49,14 @@ KEY_CHORD_RE = re.compile(
 # (`names.py`); a camera's or a video's feed is a picture and is left alone.
 FEED_RE = re.compile(r"(?<![Cc]amera )(?<![Vv]ideo )\b[Ff]eeds?\b")
 
+# A card's suit, and the two suits Spider deals together, are masked like names and
+# written in each language's form (`names.py`): translated as words a suit was
+# clothing ("fato", "traje", "Anzug"), spades a shovel ("Spaten") and hearts
+# organs ("corações"). A suit of armour (Half-Life's HEV suit) is left alone,
+# and a game's own mode ("Hex Spider: Two Suits") is masked whole before it.
+# Hearts alone are left to the emoji they also name.
+SUIT_RE = re.compile(r"(?<!HEV )\b(?:spades and hearts|suits?)\b")
+
 # The prefix a service's reply carries ("[BotService] Feed added."): the reader
 # sees which service is speaking by it. Masked whole, brackets included, or the
 # engines drop it, translate it, or wrap it in markup they invent.
@@ -66,6 +75,7 @@ PROTECTED_PATTERNS = (
     # After commands, channels and placeholders: `/feed`, `#feeds` and
     # `%{feed}` are syntax, and a mask inside a mask would not come back.
     FEED_RE,
+    SUIT_RE,
     MODE_RE,
     ALIAS_VARIABLE_RE,
     UI_GLYPH_RE,

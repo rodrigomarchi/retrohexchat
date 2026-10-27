@@ -27,3 +27,49 @@ export const POINTS = Object.freeze({ START: 500, MOVE: -1, COMPLETE: 100 });
 
 /** The most a game can score: the start and every suit up. The server refuses more. */
 export const CEILING = POINTS.START + FOUNDATIONS * POINTS.COMPLETE;
+
+/** What happened in a tick, one bit each: the sounds (by name) and the effects read them. */
+export const EVENT = Object.freeze({
+  DEAL: 1,
+  FLIP: 2,
+  PLACE: 4,
+  FOUNDATION: 8,
+  REFUSE: 16,
+  RETURN: 32,
+  WIN: 64,
+});
+
+/**
+ * The two tables the game is laid out on: lying down on a desktop's window,
+ * wider than the others (ten columns of full cards), and standing up for a
+ * phone held upright, with the minis. The columns hang from the top; the
+ * suits completed and the stock wait along the bottom, as on Windows.
+ */
+export const GEOMETRY = Object.freeze({
+  LANDSCAPE: Object.freeze({
+    view: Object.freeze({ width: 720, height: 540 }),
+    size: "full",
+    card: Object.freeze({ width: 64, height: 88 }),
+    left: 13,
+    gap: 6,
+    columnsTop: 30,
+    downOffset: 6,
+    upOffset: 18,
+    minOffset: 4,
+    bottom: 8,
+    stackOffset: 8,
+  }),
+  PORTRAIT: Object.freeze({
+    view: Object.freeze({ width: 464, height: 760 }),
+    size: "mini",
+    card: Object.freeze({ width: 44, height: 62 }),
+    left: 3,
+    gap: 2,
+    columnsTop: 30,
+    downOffset: 6,
+    upOffset: 17,
+    minOffset: 4,
+    bottom: 8,
+    stackOffset: 6,
+  }),
+});

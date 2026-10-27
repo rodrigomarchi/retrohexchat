@@ -72,7 +72,10 @@ defmodule RetroHexChat.Games.CatalogTest do
                %{id: "hex_jungle", name: "Hex Jungle"},
                %{id: "hex_solitaire", name: "Hex Solitaire"},
                %{id: "hex_solitaire_draw3", name: "Hex Solitaire: Draw Three"},
-               %{id: "hex_freecell", name: "Hex FreeCell"}
+               %{id: "hex_freecell", name: "Hex FreeCell"},
+               %{id: "hex_spider", name: "Hex Spider"},
+               %{id: "hex_spider_2suits", name: "Hex Spider: Two Suits"},
+               %{id: "hex_spider_4suits", name: "Hex Spider: Four Suits"}
              ] = Catalog.list_games()
     end
 
@@ -257,6 +260,18 @@ defmodule RetroHexChat.Games.CatalogTest do
                  %{
                    id: "hex_freecell",
                    controls: "Toque para jogar, ou arraste com o mouse ou um dedo"
+                 },
+                 %{
+                   id: "hex_spider",
+                   controls: "Toque para jogar, ou arraste com o mouse ou um dedo"
+                 },
+                 %{
+                   id: "hex_spider_2suits",
+                   controls: "Toque para jogar, ou arraste com o mouse ou um dedo"
+                 },
+                 %{
+                   id: "hex_spider_4suits",
+                   controls: "Toque para jogar, ou arraste com o mouse ou um dedo"
                  }
                ] = Catalog.list_games()
       after
@@ -305,6 +320,7 @@ defmodule RetroHexChat.Games.CatalogTest do
       assert Catalog.solo_game_id?("hex_solitaire")
       assert Catalog.solo_game_id?("hex_solitaire_draw3")
       assert Catalog.solo_game_id?("hex_freecell")
+      assert Catalog.solo_game_id?("hex_spider_4suits")
       refute Catalog.solo_game_id?("nonexistent")
     end
   end
@@ -314,7 +330,8 @@ defmodule RetroHexChat.Games.CatalogTest do
       assert Catalog.solo_only?("hex_jungle")
       assert Catalog.ranking("hex_jungle") == :score
 
-      for id <- ~w(hex_solitaire hex_solitaire_draw3 hex_freecell) do
+      for id <- ~w(hex_solitaire hex_solitaire_draw3 hex_freecell hex_spider hex_spider_2suits
+                   hex_spider_4suits) do
         assert Catalog.solo_only?(id)
         assert Catalog.ranking(id) == :score
       end
@@ -373,7 +390,7 @@ defmodule RetroHexChat.Games.CatalogTest do
   describe "game_ids/0" do
     test "returns list of all game id strings" do
       ids = Catalog.game_ids()
-      assert length(ids) == 38
+      assert length(ids) == 41
       assert Enum.all?(ids, &is_binary/1)
     end
   end
@@ -468,6 +485,12 @@ defmodule RetroHexChat.Games.CatalogTest do
       assert [%{id: "hex_solitaire_draw3"}] = Catalog.modes_of("hex_solitaire")
       assert Catalog.channel_name("hex_freecell") == "#hex-freecell"
       assert Catalog.modes_of("hex_freecell") == []
+      assert Catalog.base_id("hex_spider_4suits") == "hex_spider"
+      assert Catalog.mode_word("hex_spider_2suits") == "2suits"
+      assert Catalog.channel_name("hex_spider_4suits") == "#hex-spider"
+
+      assert [%{id: "hex_spider_2suits"}, %{id: "hex_spider_4suits"}] =
+               Catalog.modes_of("hex_spider")
     end
   end
 end

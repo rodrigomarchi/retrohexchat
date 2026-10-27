@@ -2315,6 +2315,7 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
           "feature-hex-jungle",
           "feature-hex-solitaire",
           "feature-hex-freecell",
+          "feature-hex-spider",
           "feature-arcade"
         ]
       },
@@ -3326,6 +3327,28 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
             "FreeCell for one player: all the cards face up, and four free cells. Put every card on its pile, from the ace to the king."
           ),
         see_also: ["feature-hex-solitaire", "feature-retro-games"]
+      },
+      %{
+        id: "feature-hex-spider",
+        title: dgettext("help", "Hex Spider"),
+        category: dgettext("help", "Retro Games"),
+        keywords: [
+          "hex spider",
+          "spider",
+          "spider solitaire",
+          "solitaire",
+          dgettext("help", "solitaire"),
+          dgettext("help", "card game"),
+          dgettext("help", "cards"),
+          "game"
+        ],
+        icon: :icon_game_spider,
+        description:
+          dgettext(
+            "help",
+            "Spider for one player, with two decks in ten columns: one suit, two or four. Build each suit from the king down to the ace."
+          ),
+        see_also: ["feature-hex-solitaire", "feature-hex-freecell", "feature-retro-games"]
       },
       # ── Solo Arcade ──────────────────────────────────
       %{

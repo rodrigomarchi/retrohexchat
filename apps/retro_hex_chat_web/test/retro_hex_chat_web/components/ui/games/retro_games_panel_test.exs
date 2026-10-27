@@ -199,6 +199,24 @@ defmodule RetroHexChatWeb.Components.UI.Games.RetroGamesPanelTest do
     freecell = %{@jungle | id: "hex_freecell", name: "Hex FreeCell", icon: "game_freecell"}
     assert box.(freecell) =~ "aspect-[464/760]"
     assert box.(freecell) =~ "sm:aspect-[4/3]"
+
+    spider = %{
+      @jungle
+      | id: "hex_spider_4suits",
+        name: "Hex Spider: Four Suits",
+        icon: "game_spider"
+    }
+
+    assert box.(spider) =~ "aspect-[464/760]"
+    assert box.(spider) =~ "sm:aspect-[4/3]"
+  end
+
+  test "Hex Spider is played by taps and drags and a tap on the deck, toward eight suits" do
+    spider = %{@jungle | id: "hex_spider", name: "Hex Spider", icon: "game_spider"}
+
+    assert goal_label(spider) == "Eight suits, king to ace"
+
+    assert [%{keys: ["Tap"]}, %{keys: ["Drag"]}, %{keys: ["Tap the deck"]}] = control_rows(spider)
   end
 
   test "Hex FreeCell is played by taps and drags, toward four piles" do

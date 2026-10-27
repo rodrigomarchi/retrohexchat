@@ -316,6 +316,9 @@ defmodule RetroHexChatWeb.Site.Pages.Game do
 
   defp kind_of_game(%{id: "hex_freecell"}), do: dgettext("landing", "FreeCell solitaire")
 
+  defp kind_of_game(%{id: id}) when id in ~w(hex_spider hex_spider_2suits hex_spider_4suits),
+    do: dgettext("landing", "Spider solitaire")
+
   defp kind_of_game(_game), do: nil
 
   defp og_image(%{screenshot: nil}), do: SEO.social_image()

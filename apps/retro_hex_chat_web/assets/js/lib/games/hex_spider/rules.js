@@ -77,8 +77,9 @@ function complete(table) {
   const foundations = [...table.foundations];
   const columns = table.columns.map((column) => {
     const tail = column.up.slice(-SUIT_LENGTH);
-    if (tail.length < SUIT_LENGTH || rank(tail[0]) !== SUIT_LENGTH || !sameSuitRun(tail))
-      {return column;}
+    if (tail.length < SUIT_LENGTH || rank(tail[0]) !== SUIT_LENGTH || !sameSuitRun(tail)) {
+      return column;
+    }
     completed = true;
     foundations.push(tail);
     const after = turned({ down: column.down, up: column.up.slice(0, -SUIT_LENGTH) });

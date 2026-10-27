@@ -56,12 +56,15 @@ defmodule RetroHexChat.Games.Result do
 
   # A game whose best is known: the jungle holds 2000 points and 32 treasures;
   # a table of solitaire or FreeCell every move's points and the bonus of a
-  # 30-second win.
+  # 30-second win; Spider its 500 to start and the eight suits.
   @game_ceilings %{
     "hex_jungle" => 114_000,
     "hex_solitaire" => 24_078,
     "hex_solitaire_draw3" => 24_078,
-    "hex_freecell" => 23_853
+    "hex_freecell" => 23_853,
+    "hex_spider" => 1_300,
+    "hex_spider_2suits" => 1_300,
+    "hex_spider_4suits" => 1_300
   }
 
   @doc "Every outcome, in the order a column of them is validated against."

@@ -46,12 +46,16 @@ defmodule RetroHexChat.Games.Catalog do
     "hex_jungle",
     "hex_solitaire",
     "hex_solitaire_draw3",
-    "hex_freecell"
+    "hex_freecell",
+    "hex_spider",
+    "hex_spider_2suits",
+    "hex_spider_4suits"
   ]
 
   # Played by one person alone: no opponent, no partner, nothing to watch. A
   # one-player game is also played solo and ranked by score (checked below).
-  @solo_only_game_ids ~w(hex_jungle hex_solitaire hex_solitaire_draw3 hex_freecell)
+  @solo_only_game_ids ~w(hex_jungle hex_solitaire hex_solitaire_draw3 hex_freecell hex_spider
+                         hex_spider_2suits hex_spider_4suits)
 
   # How a finished match is ranked. Versus games have two sides and one winner;
   # score games rank the points a player took home; co-op games rank the score
@@ -65,7 +69,8 @@ defmodule RetroHexChat.Games.Catalog do
                       hex_frost_peaceful hex_hockey hex_hockey_blitz hex_hockey_showdown)
   @score_game_ids ~w(hex_raid hex_raid_pacifist hex_raid_blitz hex_invaders hex_invaders_blitz
                      hex_enduro hex_enduro_night hex_enduro_sprint hex_jungle hex_solitaire
-                     hex_solitaire_draw3 hex_freecell)
+                     hex_solitaire_draw3 hex_freecell hex_spider hex_spider_2suits
+                     hex_spider_4suits)
   @coop_game_ids ~w(block_breakers hex_invaders_coop)
 
   @type ranking :: :versus | :score | :coop
@@ -599,6 +604,56 @@ defmodule RetroHexChat.Games.Catalog do
           "FreeCell: all the cards are face up from the start. Use the four free cells to move cards, and put every card on its pile, from the ace to the king. Win fast for a time bonus."
         ),
       icon: "game_freecell",
+      controls:
+        dgettext_noop(
+          "games",
+          "Tap to play, or drag with the mouse or a finger"
+        )
+    },
+    %{
+      id: "hex_spider",
+      name: "Hex Spider",
+      tagline: dgettext_noop("games", "Two decks, ten columns, one suit"),
+      description:
+        dgettext_noop(
+          "games",
+          "Spider with one suit: build each suit from the king down to the ace in the ten columns, and a whole suit goes to its place by itself. Put away all eight to win."
+        ),
+      icon: "game_spider",
+      controls:
+        dgettext_noop(
+          "games",
+          "Tap to play, or drag with the mouse or a finger"
+        )
+    },
+    %{
+      id: "hex_spider_2suits",
+      mode_of: "hex_spider",
+      name: "Hex Spider: Two Suits",
+      tagline: dgettext_noop("games", "Two suits: spades and hearts"),
+      description:
+        dgettext_noop(
+          "games",
+          "Spider with spades and hearts: only cards of the same suit move together, so plan where each suit goes."
+        ),
+      icon: "game_spider",
+      controls:
+        dgettext_noop(
+          "games",
+          "Tap to play, or drag with the mouse or a finger"
+        )
+    },
+    %{
+      id: "hex_spider_4suits",
+      mode_of: "hex_spider",
+      name: "Hex Spider: Four Suits",
+      tagline: dgettext_noop("games", "All four suits: the hardest"),
+      description:
+        dgettext_noop(
+          "games",
+          "Spider with all four suits, the classic game at its hardest: few games are won, and every suit put away counts."
+        ),
+      icon: "game_spider",
       controls:
         dgettext_noop(
           "games",

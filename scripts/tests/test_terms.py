@@ -54,6 +54,22 @@ class MissingTermsTest(unittest.TestCase):
         self.assertEqual(missing_terms(source, "FreeCell: alle Karten liegen offen, vom Ass bis zum König.", "de"), [])
         self.assertTrue(missing_terms("A card that no other card still needs goes up.", "Um cartão que nenhum outro cartão precisa sobe.", "pt_BR"))
 
+    def test_a_suit_is_of_cards_and_a_deal_is_of_cards(self):
+        source = "Cards move together only when they follow each other in the same suit."
+        self.assertTrue(missing_terms(source, "As cartas só se movem juntas quando se seguem no mesmo fato.", "pt_BR"))
+        self.assertEqual(missing_terms(source, "As cartas só se movem juntas quando seguem no mesmo naipe.", "pt_BR"), [])
+        self.assertTrue(missing_terms("Eight suits", "Ocho trajes y palos", "es"))
+        deal = "The deck deals only when no column is empty."
+        self.assertTrue(missing_terms(deal, "O baralho só negocia quando nenhuma coluna está vazia.", "pt_BR"))
+        self.assertEqual(missing_terms(deal, "O baralho só distribui quando nenhuma coluna está vazia.", "pt_BR"), [])
+        self.assertTrue(missing_terms("with two decks", "con dos cubiertas", "es"))
+        self.assertEqual(missing_terms("with two decks", "con dos mazos", "es"), [])
+        from i18n import names
+
+        self.assertEqual(names.localize("spades and hearts", "pt_BR"), "espadas e copas")
+        self.assertTrue(missing_terms("Mixes spades and hearts", "Mischt Spaten und Herzen", "de"))
+        self.assertEqual(missing_terms("Mixes spades and hearts", "Mischt Pik und Herz", "de"), [])
+
     def test_a_tap_is_a_finger_on_the_screen_not_a_kick(self):
         source = "Tap to play, or drag with the mouse or a finger"
         self.assertTrue(missing_terms(source, "踢打游戏,或用鼠标或手指拖动", "zh_hans"))
@@ -234,6 +250,25 @@ class MissingTermsTest(unittest.TestCase):
             pipeline.translate_one("Feed removed. Add another feed."),
             "Flux supprimé. Ajoutez un autre flux.",
         )
+
+    def test_a_suit_travels_masked_and_comes_back_as_the_cards_word(self):
+        from i18n.pipeline import Pipeline
+        from i18n.protection import protect
+
+        masked, replacements = protect("Build each suit. Hex Spider: Two Suits mixes them. Your HEV suit.")
+        self.assertEqual(
+            sorted(replacements.values()), ["Hex Spider: Two Suits", "suit"]
+        )
+
+        class Echo:
+            def translate(self, text):
+                return text.replace("Build each", "Construa cada")
+
+        pipeline = Pipeline(Echo(), locale_code="pt_BR")
+        self.assertEqual(pipeline.translate_one("Build each suit."), "Construa cada naipe.")
+        # German has no form: the English word fails the check, and the source stays.
+        german = Pipeline(Echo(), locale_code="de")
+        self.assertEqual(german.translate_one("Build each suit."), "Build each suit.")
 
     def test_a_feed_with_no_space_around_it_is_still_swapped(self):
         from i18n import names

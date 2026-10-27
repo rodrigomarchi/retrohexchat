@@ -19,7 +19,7 @@ from __future__ import annotations
 
 import re
 
-from .protection import FEED_RE, protect, restore
+from .protection import FEED_RE, SUIT_RE, protect, restore
 
 # English term pattern -> accepted forms per locale. `pt` covers both
 # Portuguese locales; a locale with no entry is not checked for that term.
@@ -128,6 +128,51 @@ _TERMS: dict[str, dict[str, tuple[str, ...]]] = {
         "pl": ("as",),
         "ru": ("туз",),
         "ja": ("エース",),
+    },
+    # A card's suit, never clothing: Portuguese gave "fato" and "terno",
+    # Spanish "traje", German "Anzug". The word travels masked
+    # (`protection.SUIT_RE`) and comes back as "suit" until `names.localize`
+    # writes it, so "suit" is accepted where `names.py` has the language's form.
+    r"(?<!HEV )\bsuits?\b": {
+        "pt": ("naipe", "suit"),
+        "es": ("palo", "suit"),
+        "fr": ("couleur",),
+        "de": ("farbe",),
+        "it": ("seme", "semi", "suit"),
+        "nl": ("kleur",),
+        "pl": ("kolor",),
+        "ru": ("маст",),
+        "ja": ("スート", "マーク", "組", "suit"),
+        "zh_hans": ("花色", "suit"),
+        "zh_hant": ("花色", "suit"),
+    },
+    # Dealing cards, never a business deal: Portuguese gave "negocia" and
+    # "acordo", German "behandelt" (treats).
+    r"\b(?:deals?\s+(?:only|a\s+row|one\s+card)|deal\s+from\s+the\s+deck)\b": {
+        "pt": ("distribu", "dá ", "dar ", "da uma"),
+        "es": ("repart", "da "),
+        "fr": ("distribu",),
+        "de": ("austeil", "teilt", "gibt", "geben"),
+        "it": ("distribu",),
+    },
+    # The suits by name: German gave "Spaten" (a shovel).
+    # Spider's two decks of cards, never a ship's: Spanish gave "cubiertas".
+    r"\btwo\s+decks\b": {
+        "pt": ("baralho",),
+        "es": ("mazo", "baraja"),
+        "fr": ("jeu", "paquet"),
+        "it": ("mazz",),
+    },
+    # Spider's two suits by name: German gave "Spaten" (a shovel) and
+    # Portuguese "corações". They travel masked (`protection.SUIT_RE`) and
+    # come back in English until `names.localize` writes them.
+    r"\bspades\s+and\s+hearts\b": {
+        "pt": ("espadas e copas", "spades and hearts"),
+        "es": ("picas y corazones", "spades and hearts"),
+        "fr": ("piques et cœurs", "spades and hearts"),
+        "de": ("pik und herz", "spades and hearts"),
+        "it": ("picche e cuori", "spades and hearts"),
+        "ja": ("スペードとハート", "spades and hearts"),
     },
     # FreeCell's cell holds one card: never a prison cell ("cela") nor a
     # living one in a sentence about a game.
@@ -571,7 +616,10 @@ def missing_terms(source: str, translated: str, locale_code: str) -> list[str]:
     A feed travels masked too, but it is vocabulary, so it is put back.
     """
     masked, replacements = protect(source)
-    masked = restore(masked, {k: v for k, v in replacements.items() if FEED_RE.fullmatch(v)})
+    masked = restore(
+        masked,
+        {k: v for k, v in replacements.items() if FEED_RE.fullmatch(v) or SUIT_RE.fullmatch(v)},
+    )
     text = translated.lower()
     missing = []
 
@@ -598,7 +646,8 @@ _WRONG_SENSES: dict[str, dict[str, tuple[str, ...]]] = {
     r"|cards?\s+at\s+a\s+time|cards?\s+on\s+(?:a|its|the)\s+pile|cards?\s+on\s+top\s+of"
     r"|cards?\s+(?:back\s+)?from\s+(?:the\s+deck|a\s+pile)|(?:its|the)\s+next\s+card"
     r"|every\s+card\s+on|tap\s+a\s+card|a\s+card\s+goes|a\s+card\s+that\s+no\s+other\s+card"
-    r"|no\s+card\s+can|holds\s+one\s+card|all\s+the\s+cards|any\s+card\s+goes)\b": {
+    r"|no\s+card\s+can|holds\s+one\s+card|all\s+the\s+cards|any\s+card\s+goes"
+    r"|cards?\s+move\s+together|move\s+a\s+card|cards\s+of\s+its\s+suit)\b": {
         "pt": ("cartão", "cartões"),
         "es": ("tarjeta",),
         "it": ("scheda", "schede"),
@@ -609,6 +658,15 @@ _WRONG_SENSES: dict[str, dict[str, tuple[str, ...]]] = {
     },
     r"\bface\s+up\b": {
         "de": ("verdeckt",),
+    },
+    r"(?<!HEV )\bsuits?\b": {
+        "pt": ("fato", "terno"),
+        "es": ("traje",),
+        "de": ("anzug", "anzüg"),
+    },
+    r"\b(?:deals?\s+(?:only|a\s+row|one\s+card)|deal\s+from\s+the\s+deck)\b": {
+        "pt": ("negoci", "acordo"),
+        "de": ("behandelt",),
     },
 }
 

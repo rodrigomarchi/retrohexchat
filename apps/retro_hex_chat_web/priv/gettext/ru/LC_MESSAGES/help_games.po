@@ -625,6 +625,7 @@ msgstr "Контролируйте расстояние"
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_skiing_clean.html.heex:8
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_skiing_escape.html.heex:8
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_solitaire.html.heex:7
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_spider.html.heex:7
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_tennis.html.heex:8
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_tennis_quick.html.heex:8
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_tennis_sudden.html.heex:8
@@ -1283,6 +1284,7 @@ msgstr "Бесконечный спуск — курс никогда не за�
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_skiing_clean.html.heex:58
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_skiing_escape.html.heex:70
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_solitaire.html.heex:94
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_spider.html.heex:82
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_tennis.html.heex:82
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_warlords.html.heex:73
 #: lib/retro_hex_chat_web/controllers/help_content/feature_light_trails.html.heex:48
@@ -1720,6 +1722,7 @@ msgstr "Круг 3"
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_skiing_clean.html.heex:17
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_skiing_escape.html.heex:17
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_solitaire.html.heex:34
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_spider.html.heex:34
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_tennis.html.heex:23
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_tennis_quick.html.heex:23
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_tennis_sudden.html.heex:23
@@ -1838,13 +1841,14 @@ msgstr ""
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_skiing_clean.html.heex:60
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_skiing_escape.html.heex:72
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_solitaire.html.heex:101
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_spider.html.heex:89
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_tennis.html.heex:84
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_tennis_quick.html.heex:66
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_tennis_sudden.html.heex:64
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_warlords.html.heex:80
 #: lib/retro_hex_chat_web/controllers/help_content/feature_light_trails.html.heex:55
 #: lib/retro_hex_chat_web/controllers/help_content/feature_pixel_tanks.html.heex:69
-#: lib/retro_hex_chat_web/controllers/help_content/feature_retro_games.html.heex:159
+#: lib/retro_hex_chat_web/controllers/help_content/feature_retro_games.html.heex:165
 #: lib/retro_hex_chat_web/controllers/help_content/feature_sessions.html.heex:39
 #: lib/retro_hex_chat_web/controllers/help_content/feature_star_duel.html.heex:87
 #, elixir-autogen, elixir-format
@@ -3965,7 +3969,7 @@ msgstr "/p2p"
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_warlords.html.heex:82
 #: lib/retro_hex_chat_web/controllers/help_content/feature_light_trails.html.heex:57
 #: lib/retro_hex_chat_web/controllers/help_content/feature_pixel_tanks.html.heex:73
-#: lib/retro_hex_chat_web/controllers/help_content/feature_retro_games.html.heex:164
+#: lib/retro_hex_chat_web/controllers/help_content/feature_retro_games.html.heex:170
 #: lib/retro_hex_chat_web/controllers/help_content/feature_star_duel.html.heex:92
 #, elixir-autogen, elixir-format
 msgid "P2P Session"
@@ -4025,13 +4029,14 @@ msgstr ""
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_freecell.html.heex:80
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_jungle.html.heex:74
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_solitaire.html.heex:103
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_spider.html.heex:93
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_warlords.html.heex:83
 #: lib/retro_hex_chat_web/controllers/help_content/feature_pixel_tanks.html.heex:71
 #, elixir-autogen, elixir-format
 msgid "Retro Games"
 msgstr "Ретро-игры"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_retro_games.html.heex:147
+#: lib/retro_hex_chat_web/controllers/help_content/feature_retro_games.html.heex:153
 #, elixir-autogen, elixir-format
 msgid "In Hex Boxing, move in 8 directions, manage range, and tap Space or Shift to punch while the AI fights from the right side."
 msgstr ""
@@ -4046,7 +4051,7 @@ msgstr ""
 " Сложность меняет точность, с которой ИИ держит дистанцию, уклоняется и "
 "выбирает момент удара."
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_retro_games.html.heex:153
+#: lib/retro_hex_chat_web/controllers/help_content/feature_retro_games.html.heex:159
 #, elixir-autogen, elixir-format
 msgid "In Pixel Tanks, rotate with Left/Right or A/D, drive forward with Up or W, and fire with Space or Shift while the AI navigates the maze as player 2."
 msgstr ""
@@ -4578,7 +4583,7 @@ msgstr "— рейтинг игры"
 msgid "— this week's challenge and who leads it"
 msgstr "На этой неделе вызов и кто его возглавит"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_retro_games.html.heex:161
+#: lib/retro_hex_chat_web/controllers/help_content/feature_retro_games.html.heex:167
 #, elixir-autogen, elixir-format
 msgid "Arcade"
 msgstr "Аркада"
@@ -4690,6 +4695,7 @@ msgstr "A face-down card turns over by itself once nothing lies on it."
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_freecell.html.heex:16
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_solitaire.html.heex:16
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_spider.html.heex:16
 #, elixir-autogen, elixir-format
 msgid "Drag"
 msgstr "Перетаскивание"
@@ -4707,18 +4713,21 @@ msgstr "Klondike - это карточная игра девятнадцатог
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_freecell.html.heex:49
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_solitaire.html.heex:67
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_spider.html.heex:67
 #, elixir-autogen, elixir-format
 msgid "Score"
 msgstr "счет"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_freecell.html.heex:10
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_solitaire.html.heex:10
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_spider.html.heex:10
 #, elixir-autogen, elixir-format
 msgid "Tap a card"
 msgstr "Нажмите на карту"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_freecell.html.heex:64
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_solitaire.html.heex:88
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_spider.html.heex:76
 #, elixir-autogen, elixir-format
 msgid "The End button keeps the points you have. A game still open after an hour ends by itself."
 msgstr "Кнопка «Конец» сохраняет ваши очки. Игра открывается через час и заканчивается сама собой."
@@ -4744,11 +4753,13 @@ msgid "Only a king, with the cards on top of it, goes into an empty column."
 msgstr "Только король с карточками наверху уходит в пустую колонну."
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_solitaire.html.heex:22
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_spider.html.heex:22
 #, elixir-autogen, elixir-format
 msgid "Tap the deck"
 msgstr "Нажмите на колоду"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_solitaire.html.heex:28
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_spider.html.heex:28
 #, elixir-autogen, elixir-format
 msgid "Tap the deck before you play"
 msgstr "Нажмите на колоду, прежде чем играть"
@@ -4789,6 +4800,7 @@ msgid "— Take its next card, or start the deck again when it is empty"
 msgstr "Возьмите следующую карту или начните колоду снова, когда она пуста."
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_solitaire.html.heex:28
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_spider.html.heex:28
 #, elixir-autogen, elixir-format
 msgid "— Change the back of the cards"
 msgstr "— Change the back of the cards"
@@ -4809,6 +4821,7 @@ msgid "FreeCell is a game of patience from the twentieth century, made famous on
 msgstr "FreeCell - это игра терпения двадцатого века, прославившаяся на ПК версией, поступившей с Windows."
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_freecell.html.heex:79
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_spider.html.heex:91
 #, elixir-autogen, elixir-format
 msgid "Hex Solitaire"
 msgstr "Hex Solitaire"
@@ -4847,3 +4860,68 @@ msgstr "Hex FreeCell is FreeCell, the game of patience where all the cards are f
 #, elixir-autogen, elixir-format
 msgid "Hex FreeCell is played the same way, with all the cards face up and four free cells to hold a card each."
 msgstr "Hex FreeCell воспроизводится одинаково, со всеми картами лицом вверх и четырьмя свободными ячейками для хранения карты."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_spider.html.heex:43
+#, elixir-autogen, elixir-format
+msgid "Cards move together only when they follow each other in the same suit."
+msgstr "Cards move together only when they follow each other in the same suit."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_spider.html.heex:92
+#, elixir-autogen, elixir-format
+msgid "Hex FreeCell"
+msgstr "Hex FreeCell"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_spider.html.heex:2
+#, elixir-autogen, elixir-format
+msgid "Hex Spider is Spider, the game of patience played with two decks, for one player. Build each suit from the king down to the ace in the ten columns of the table: a whole suit in order goes to its place by itself. Put away all eight suits to win. Your score is your own, and your best games go into the ranking."
+msgstr "Hex Spider is Spider, the game of patience played with two decks, for one player. Build each suit from the king down to the ace in the ten columns of the table: a whole suit in order goes to its place by itself. Put away all eight suits to win. Your score is your own, and your best games go into the ranking."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_retro_games.html.heex:147
+#, elixir-autogen, elixir-format
+msgid "Hex Spider is played the same way too, with two decks in ten columns: one suit, two or four."
+msgstr "Hex Spider is played the same way too, with two decks in ten columns: one suit, two or four."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_spider.html.heex:55
+#, elixir-autogen, elixir-format
+msgid "Hex Spider plays with one suit. Hex Spider: Two Suits mixes spades and hearts, and Hex Spider: Four Suits uses all four: harder, and closer to the classic game."
+msgstr "Hex Spider plays with one suit. Hex Spider: Two Suits mixes spades and hearts, and Hex Spider: Four Suits uses all four: harder, and closer to the classic game."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_spider.html.heex:37
+#, elixir-autogen, elixir-format
+msgid "On the table, a card goes on a card one higher in value, of any suit. Any card goes into an empty column."
+msgstr "On the table, a card goes on a card one higher in value, of any suit. Any card goes into an empty column."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_spider.html.heex:84
+#, elixir-autogen, elixir-format
+msgid "Spider is a game of patience from the twentieth century, made famous on the PC by the version that came with Windows."
+msgstr "Spider - это игра терпения двадцатого века, прославившаяся на ПК версией, поступившей с Windows."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_spider.html.heex:49
+#, elixir-autogen, elixir-format
+msgid "The deck deals only when no column is empty. A face-down card turns over by itself once nothing lies on it."
+msgstr "The deck deals only when no column is empty. A face-down card turns over by itself once nothing lies on it."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_spider.html.heex:61
+#, elixir-autogen, elixir-format
+msgid "When the deck is empty and no card can move any more, the game ends with the points you have."
+msgstr "Когда колода пуста, и ни одна карта больше не может двигаться, игра заканчивается очками, которые у вас есть."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_spider.html.heex:70
+#, elixir-autogen, elixir-format
+msgid "You start with 500 points. Every move, and every deal from the deck, costs 1 point; every whole suit put away earns 100."
+msgstr "You start with 500 points. Every move, and every deal from the deck, costs 1 point; every whole suit put away earns 100."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_spider.html.heex:22
+#, elixir-autogen, elixir-format
+msgid "— Deal one card onto every column"
+msgstr "Сделать одну карту на каждую колонку"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_spider.html.heex:16
+#, elixir-autogen, elixir-format
+msgid "— Move a card, or the cards of its suit on top of it, onto another column"
+msgstr "— Move a card, or the cards of its suit on top of it, onto another column"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_spider.html.heex:10
+#, elixir-autogen, elixir-format
+msgid "— Move it, with the cards of its suit on top of it, onto the best column: one of the same suit first"
+msgstr "— Move it, with the cards of its suit on top of it, onto the best column: one of the same suit first"

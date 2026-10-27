@@ -1,0 +1,102 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`hex_spider pins > solo following the key script 1`] = `
+{
+  "draws": [
+    {
+      "digest": "724d1743b20705fd",
+      "ops": 509,
+      "phase": 1,
+      "side": "host",
+      "t": 32,
+    },
+  ],
+  "ended": false,
+  "phases": [
+    {
+      "phase": 1,
+      "side": "host",
+      "t": 16,
+    },
+  ],
+  "results": {
+    "guest": [],
+    "host": [],
+  },
+  "sounds": {
+    "host": {
+      "digest": "f3c84bfd32f53095",
+      "voices": {
+        "createBuffer": 26,
+        "createBufferSource": 26,
+        "createGain": 95,
+        "createOscillator": 68,
+      },
+    },
+  },
+  "state": {
+    "host": {
+      "events": 0,
+      "phase": 1,
+      "score": 482,
+      "stuck": false,
+      "won": false,
+    },
+  },
+  "wire": {
+    "byDir": {},
+    "digest": "4f53cda18c2baa0c",
+    "first": [],
+  },
+}
+`;
+
+exports[`hex_spider pins > solo to the end: hex_spider 1`] = `
+{
+  "draws": [
+    {
+      "digest": "724d1743b20705fd",
+      "ops": 509,
+      "phase": 1,
+      "side": "host",
+      "t": 32,
+    },
+  ],
+  "ended": false,
+  "phases": [
+    {
+      "phase": 1,
+      "side": "host",
+      "t": 16,
+    },
+  ],
+  "results": {
+    "guest": [],
+    "host": [],
+  },
+  "sounds": {
+    "host": {
+      "digest": "eb9107cfdbf063e3",
+      "voices": {
+        "createBuffer": 8,
+        "createBufferSource": 8,
+        "createGain": 9,
+      },
+    },
+  },
+  "state": {
+    "host": {
+      "events": 0,
+      "phase": 1,
+      "score": 500,
+      "stuck": false,
+      "won": false,
+    },
+  },
+  "wire": {
+    "byDir": {},
+    "digest": "4f53cda18c2baa0c",
+    "first": [],
+  },
+}
+`;

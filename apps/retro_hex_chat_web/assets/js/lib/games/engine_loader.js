@@ -15,6 +15,7 @@ const DEFINITION_LOADERS = {
   hex_invaders: () => import("./hex_invaders/index.js"),
   hex_jungle: () => import("./hex_jungle/index.js"),
   hex_solitaire: () => import("./hex_solitaire/index.js"),
+  hex_spider: () => import("./hex_spider/index.js"),
   hex_outlaw: () => import("./hex_outlaw/index.js"),
   hex_raid: () => import("./hex_raid/index.js"),
   hex_skiing: () => import("./hex_skiing/index.js"),

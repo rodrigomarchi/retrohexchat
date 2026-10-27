@@ -606,6 +606,40 @@ defmodule RetroHexChatWeb.Icons.Games do
     """
   end
 
+  # -- Hex Spider: a pixel spider on its thread over a fan of spades, on the felt --
+
+  attr :class, :string, default: nil
+
+  @spec icon_game_spider(map()) :: Phoenix.LiveView.Rendered.t()
+  def icon_game_spider(assigns) do
+    ~H"""
+    <svg class={@class} viewBox="0 0 32 32" shape-rendering="crispEdges" aria-hidden="true">
+      <rect x="0" y="0" width="32" height="32" fill="#333" />
+      <path d="M0 0h32v2H2v28H0z" fill="#777" />
+      <path d="M0 32h32v-2H2V2h30V0h-2v30H0z" fill="#000" />
+      <rect x="2" y="2" width="28" height="28" fill="#08786c" />
+
+      <rect x="4" y="14" width="10" height="14" fill="#828284" />
+      <rect x="5" y="15" width="8" height="12" fill="#fefefe" />
+      <rect x="10" y="15" width="10" height="14" fill="#828284" />
+      <rect x="11" y="16" width="8" height="12" fill="#fefefe" />
+      <rect x="16" y="16" width="10" height="13" fill="#828284" />
+      <rect x="17" y="17" width="8" height="11" fill="#fefefe" />
+      <path
+        d="M21 19h1v1h-1z M20 20h3v1h-3z M19 21h5v2h-5z M21 23h1v2h-1z M20 25h3v1h-3z"
+        fill="#090101"
+      />
+
+      <rect x="15" y="2" width="1" height="7" fill="#e4e5e4" />
+      <path
+        d="M14 9h3v4h-3z M12 9h2v1h-2z M17 9h2v1h-2z M11 10h1v1h-1z M19 10h1v1h-1z M12 12h2v1h-2z M17 12h2v1h-2z M11 13h1v1h-1z M19 13h1v1h-1z"
+        fill="#090101"
+      />
+      <path d="M14 10h1v1h-1z M16 10h1v1h-1z" fill="#c51316" />
+    </svg>
+    """
+  end
+
   # -- DOOM Shareware: shotgun with muzzle flash (red/orange) --
 
   attr :class, :string, default: nil

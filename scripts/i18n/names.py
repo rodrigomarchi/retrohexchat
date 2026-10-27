@@ -57,6 +57,65 @@ NAMES: dict[str, dict[str, str]] = {
         "zh_hans": "空当接龙",
         "zh_hant": "空當接龍",
     },
+    # Spider's modes before its name, its name before the bare word.
+    "Hex Spider: Two Suits": {
+        "ja": "ヘックススパイダー：2スート",
+    },
+    "Hex Spider: Four Suits": {
+        "ja": "ヘックススパイダー：4スート",
+    },
+    "Hex Spider": {
+        "ja": "ヘックススパイダー",
+    },
+    # The game of patience as each language searches for it.
+    "Spider solitaire": {
+        "pt": "Paciência Spider",
+        "es": "Solitario Spider",
+        "fr": "Spider Solitaire",
+        "de": "Spider Solitär",
+        "it": "Solitario Spider",
+        "nl": "Spider Patience",
+        "pl": "Pasjans Pająk",
+        "ru": "Пасьянс «Паук»",
+        "ja": "スパイダーソリティア",
+        "zh_hans": "蜘蛛纸牌",
+        "zh_hant": "蜘蛛紙牌",
+    },
+    "Spider": {
+        "ja": "スパイダー",
+        "zh_hans": "蜘蛛纸牌",
+        "zh_hant": "蜘蛛紙牌",
+    },
+    # A card's suit (`protection.SUIT_RE`), where the language's word takes
+    # the same articles as the one the engine would have chosen. Elsewhere
+    # the word stays English, the vocabulary check refuses the sentence, and
+    # it keeps the English source.
+    "suit": {
+        "pt": "naipe",
+        "es": "palo",
+        "it": "seme",
+        "ja": "スート",
+        "zh_hans": "花色",
+        "zh_hant": "花色",
+    },
+    "suits": {
+        "pt": "naipes",
+        "es": "palos",
+        "it": "semi",
+        "ja": "スート",
+        "zh_hans": "花色",
+        "zh_hant": "花色",
+    },
+    "spades and hearts": {
+        "pt": "espadas e copas",
+        "es": "picas y corazones",
+        "fr": "piques et cœurs",
+        "de": "Pik und Herz",
+        "it": "picche e cuori",
+        "ja": "スペードとハート",
+        "zh_hans": "黑桃和红心",
+        "zh_hant": "黑桃和紅心",
+    },
     "FreeCell": {
         "ja": "フリーセル",
         "zh_hans": "空当接龙",
