@@ -6,19 +6,22 @@
  * @module games/hex_solitaire/layout
  */
 
-import { CARD, COLUMNS, TABLE, TOP_ROW, VIEW } from "./protocol.js";
+import { CARD, COLUMNS, GEOMETRY, TABLE, TOP_ROW } from "./protocol.js";
 
-const columnX = (col) => TABLE.left + col * (CARD.width + TABLE.gap);
+/** The table a game is laid out on: its own, or lying down when it names none. */
+export const geometryOf = (state) => state.geometry ?? GEOMETRY.LANDSCAPE;
+
+const columnX = (geo, col) => geo.left + col * (CARD.width + geo.gap);
 const place = (x, y) => ({ x, y, w: CARD.width, h: CARD.height });
 const contains = (r, x, y) => x >= r.x && x < r.x + r.w && y >= r.y && y < r.y + r.h;
 
 /** How far apart a column's cards stand, squeezed to keep the last one on the canvas. */
-function offsets(down, up) {
-  const room = VIEW.height - TABLE.bottom - TABLE.columnsTop - CARD.height;
+function offsets(geo, down, up) {
+  const room = geo.view.height - TABLE.bottom - geo.columnsTop - CARD.height;
   const upGaps = Math.max(0, up - 1);
   const downGaps = up > 0 ? down : Math.max(0, down - 1);
-  let downOffset = TABLE.downOffset;
-  let upOffset = TABLE.upOffset;
+  let downOffset = geo.downOffset ?? TABLE.downOffset;
+  let upOffset = geo.upOffset ?? TABLE.upOffset;
   if (downGaps * downOffset + upGaps * upOffset > room && upGaps > 0) {
     upOffset = Math.max(TABLE.minOffset, Math.floor((room - downGaps * downOffset) / upGaps));
   }
@@ -34,18 +37,19 @@ function offsets(down, up) {
  * face up and, if so, its index in the column's face-up run.
  */
 export function layout(state) {
-  const stock = place(columnX(TOP_ROW.stock), TABLE.top);
-  const wasteSlot = place(columnX(TOP_ROW.waste), TABLE.top);
+  const geo = geometryOf(state);
+  const stock = place(columnX(geo, TOP_ROW.stock), geo.top);
+  const wasteSlot = place(columnX(geo, TOP_ROW.waste), geo.top);
   const showing = state.waste.slice(-Math.max(state.fan, state.waste.length ? 1 : 0));
   const waste = showing.map((card, i) => ({
     card,
-    ...place(wasteSlot.x + i * TABLE.fanOffset, TABLE.top),
+    ...place(wasteSlot.x + i * TABLE.fanOffset, geo.top),
   }));
-  const foundations = TOP_ROW.foundations.map((col) => place(columnX(col), TABLE.top));
+  const foundations = TOP_ROW.foundations.map((col) => place(columnX(geo, col), geo.top));
 
   const columns = state.tableau.slice(0, COLUMNS).map((column, col) => {
-    const slot = place(columnX(col), TABLE.columnsTop);
-    const { downOffset, upOffset } = offsets(column.down.length, column.up.length);
+    const slot = place(columnX(geo, col), geo.columnsTop);
+    const { downOffset, upOffset } = offsets(geo, column.down.length, column.up.length);
     const cards = [];
     let y = slot.y;
     column.down.forEach((card) => {

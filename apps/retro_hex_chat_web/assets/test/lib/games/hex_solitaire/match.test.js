@@ -1,7 +1,7 @@
 import { afterEach, describe, expect, it } from "vitest";
 import HexSolitaire from "../../../../js/lib/games/hex_solitaire/index.js";
 import { layout } from "../../../../js/lib/games/hex_solitaire/layout.js";
-import { MODE, PHASE } from "../../../../js/lib/games/hex_solitaire/protocol.js";
+import { GEOMETRY, MODE, PHASE } from "../../../../js/lib/games/hex_solitaire/protocol.js";
 import { playMatch } from "../../../support/games/harness.js";
 
 const card = (rank, suit) => suit * 13 + rank - 1;
@@ -76,6 +76,31 @@ describe("a match of Hex Solitaire", () => {
       lastFrame.some(([op, , value]) => op === "fillStyle" && value === "rgba(0,0,0,0.35)"),
     ).toBe(false);
     expect(lastFrame.length).toBeGreaterThan(0);
+  });
+
+  it("stands the table up in a box taller than wide, as on a phone held upright", async () => {
+    match = await solo({ rect: { left: 0, top: 0, width: 360, height: 560 } });
+    match.advance(100);
+    const { host } = match.engines;
+    expect(host.view).toEqual(GEOMETRY.PORTRAIT.view);
+    expect(host.gameState.table.geometry).toBe(GEOMETRY.PORTRAIT);
+
+    // A tap on the stock, where the standing table has it on the screen.
+    const stock = layout(host.gameState.table).stock;
+    const scale = 360 / GEOMETRY.PORTRAIT.view.width;
+    const top = (560 - GEOMETRY.PORTRAIT.view.height * scale) / 2;
+    const x = (stock.x + 20) * scale;
+    const y = top + (stock.y + 20) * scale;
+    match.pointer("down", x, y);
+    match.pointer("up", x, y);
+    match.advance(100);
+    expect(host.gameState.table.waste).toHaveLength(1);
+  });
+
+  it("lies the table down in a box wider than tall", async () => {
+    match = await solo();
+    expect(match.engines.host.view).toEqual(GEOMETRY.LANDSCAPE.view);
+    expect(match.engines.host.gameState.table.geometry).toBe(GEOMETRY.LANDSCAPE);
   });
 
   it("plays draw three for its mode", async () => {

@@ -10,7 +10,7 @@
  * @module games/hex_solitaire/physics
  */
 
-import { AUTO_TICKS, EVENT, PHASE } from "./protocol.js";
+import { AUTO_TICKS, EVENT, GEOMETRY, PHASE } from "./protocol.js";
 import { applyMove, autoFinishReady, deal, draw, nextAutoMove, recycle, won } from "./rules.js";
 import {
   addPoints,
@@ -21,11 +21,11 @@ import {
   timeBonus,
 } from "./scoring.js";
 
-/** A new match: the table dealt, nothing scored, the clock stopped. */
-export function createInitialState(random, mode) {
+/** A new match: the table dealt, on the table it is laid on, nothing scored, the clock stopped. */
+export function createInitialState(random, mode, geometry = GEOMETRY.LANDSCAPE) {
   return {
     phase: PHASE.WAITING,
-    table: deal(random, mode),
+    table: { ...deal(random, mode), geometry },
     score: 0,
     clock: { started: false, ticks: 0 },
     events: EVENT.DEAL,

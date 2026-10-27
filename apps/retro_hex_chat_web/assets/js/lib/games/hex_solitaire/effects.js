@@ -15,8 +15,8 @@
 import { gameColor } from "../../game_colors.js";
 import { burst, stepParticles } from "../core/render.js";
 import { easeOutBack, easeOutCubic, progress, tweenPoint } from "../core/tween.js";
-import { cardsFrom, layout, sourcePlace } from "./layout.js";
-import { CARD, EVENT, FX, VIEW } from "./protocol.js";
+import { cardsFrom, geometryOf, layout, sourcePlace } from "./layout.js";
+import { CARD, EVENT, FX } from "./protocol.js";
 
 const GRAVITY = 0.6;
 const BOUNCE = 0.72;
@@ -176,7 +176,13 @@ export function cascadeEffects(fx, table, now, random) {
       });
     }
   }
-  fx.list.push({ kind: "cascade", items, start: now, ticks: Infinity });
+  fx.list.push({
+    kind: "cascade",
+    items,
+    view: geometryOf(table).view,
+    start: now,
+    ticks: Infinity,
+  });
 }
 
 /** One tick of the effects that move by themselves: the sparks and the cascade. */
@@ -193,11 +199,11 @@ export function stepEffects(fx, now) {
         item.x += item.vx;
         item.vy += GRAVITY;
         item.y += item.vy;
-        if (item.y > VIEW.height - CARD.height) {
-          item.y = VIEW.height - CARD.height;
+        if (item.y > effect.view.height - CARD.height) {
+          item.y = effect.view.height - CARD.height;
           item.vy = -item.vy * BOUNCE;
         }
-        if (item.x < -CARD.width || item.x > VIEW.width) item.gone = true;
+        if (item.x < -CARD.width || item.x > effect.view.width) item.gone = true;
       }
       return effect.items.some((item) => !item.gone);
     }

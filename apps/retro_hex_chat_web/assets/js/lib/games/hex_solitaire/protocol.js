@@ -67,6 +67,34 @@ export const TABLE = Object.freeze({
 export const TOP_ROW = Object.freeze({ stock: 0, waste: 1, foundations: [3, 4, 5, 6] });
 
 /**
+ * The two tables the game is laid out on: lying down, as on a desktop's
+ * window, and standing up, for a phone held upright — the seven columns
+ * across its whole width, so the cards are as big as a phone allows, and
+ * the height the columns grow into. The cards are the same; only the table
+ * around them changes.
+ */
+export const GEOMETRY = Object.freeze({
+  LANDSCAPE: Object.freeze({
+    view: VIEW,
+    left: TABLE.left,
+    gap: TABLE.gap,
+    top: TABLE.top,
+    columnsTop: TABLE.columnsTop,
+  }),
+  PORTRAIT: Object.freeze({
+    view: Object.freeze({ width: 464, height: 720 }),
+    left: 2,
+    gap: 2,
+    top: 30,
+    columnsTop: 128,
+    // The height a phone gives: more of each card shows in a column, easier
+    // to read and to press.
+    downOffset: 8,
+    upOffset: 24,
+  }),
+});
+
+/**
  * The match's phases. A win is celebrated — the cascade bounces across the
  * table — before the match is over and its result told, so the page still
  * shows it.

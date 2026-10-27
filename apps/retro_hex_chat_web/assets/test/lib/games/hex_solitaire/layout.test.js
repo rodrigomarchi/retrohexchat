@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { CARD, MODE, VIEW } from "../../../../js/lib/games/hex_solitaire/protocol.js";
+import { CARD, GEOMETRY, MODE, VIEW } from "../../../../js/lib/games/hex_solitaire/protocol.js";
 import { hitTest, layout } from "../../../../js/lib/games/hex_solitaire/layout.js";
 
 const card = (rank, suit) => suit * 13 + rank - 1;
@@ -104,5 +104,43 @@ describe("hitTest", () => {
   it("finds nothing on the bare felt, nor a waste card another covers", () => {
     expect(hitTest(state, 2, VIEW.height - 2)).toBeNull();
     expect(at(places.waste[0])).toBeNull();
+  });
+});
+
+describe("the table standing up, for a phone", () => {
+  const standing = (extra = {}) => ({ ...table(extra), geometry: GEOMETRY.PORTRAIT });
+  const { view } = GEOMETRY.PORTRAIT;
+  const within = (r) => r.x >= 0 && r.y >= 0 && r.x + r.w <= view.width && r.y + r.h <= view.height;
+
+  it("lays the seven columns across the whole width, every pile apart and inside it", () => {
+    const places = layout(standing());
+    const piles = [
+      places.stock,
+      places.wasteSlot,
+      ...places.foundations,
+      ...places.columns.map((c) => c.slot),
+    ];
+    expect(piles.every(within)).toBe(true);
+    for (const [i, a] of piles.entries()) {
+      for (const b of piles.slice(i + 1)) expect(overlaps(a, b)).toBe(false);
+    }
+    const last = places.columns[6].slot;
+    expect(view.width - (last.x + last.w)).toBeLessThanOrEqual(4);
+  });
+
+  it("gives the longest column room to show every card fully fanned", () => {
+    const down = [0, 1, 2, 3, 4, 5].map((r) => card(r + 1, 3));
+    const up = Array.from({ length: 13 }, (_, i) => card(13 - i, i % 2 ? 1 : 0));
+    const cards = layout(standing({ columns: [{}, {}, {}, {}, {}, {}, { down, up }] })).columns[6]
+      .cards;
+    expect(within(cards.at(-1))).toBe(true);
+    expect(cards.at(-1).y - cards.at(-2).y).toBe(GEOMETRY.PORTRAIT.upOffset);
+    expect(GEOMETRY.PORTRAIT.upOffset).toBeGreaterThan(18);
+  });
+
+  it("finds what a point lands on, on the table it is laid on", () => {
+    const state = standing({ columns: [{ up: [card(7, 0)] }] });
+    const seven = layout(state).columns[0].cards[0];
+    expect(hitTest(state, seven.x + 4, seven.y + 4)).toEqual({ pile: "tableau", col: 0, index: 0 });
   });
 });

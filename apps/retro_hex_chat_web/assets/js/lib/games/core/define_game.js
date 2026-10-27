@@ -53,6 +53,10 @@
  * The canvas of a pointer game takes the touch for itself
  * (`game-canvas--pointer`), so a drag on a phone moves a card, not the page.
  *
+ * `view: (canvas) => ({ width, height }) | null` lets a game choose the picture
+ * it draws from the box the page gave its canvas — a table standing up on a
+ * phone held upright; null keeps the size the page gave.
+ *
  * `resolution: 2` gives the canvas twice the pixels each way while the game
  * goes on drawing and reading presses at the size the page gave it
  * (`game.view`); every frame begins scaled. `pixelArt: true` draws unsmoothed
@@ -149,6 +153,22 @@ export function defineGame(def) {
         throw new Error(`defineGame: ${gameId} is a one-player game; it plays solo only`);
       }
       this.onGameEnd = onGameEnd || null;
+      // The picture the game draws, before its state is made from it. The
+      // size the page gave the canvas is kept on it: the page builds every
+      // engine of a match on the same canvas, which an earlier one has already
+      // given more pixels.
+      canvas.dataset.gameWidth ??= String(canvas.width);
+      canvas.dataset.gameHeight ??= String(canvas.height);
+      this.view = def.view?.(canvas) ?? {
+        width: Number(canvas.dataset.gameWidth),
+        height: Number(canvas.dataset.gameHeight),
+      };
+      if (resolution !== 1 || def.view) {
+        canvas.width = this.view.width * resolution;
+        canvas.height = this.view.height * resolution;
+      }
+      if (def.pixelArt) canvas.classList.add("game-canvas--pixel-art");
+      if (pointer) canvas.classList.add("game-canvas--pointer");
       // One seed plays one match: the simulation draws from its generator,
       // decoration (particles) and the AI from streams forked off it, so
       // neither changes how a match plays out.
@@ -171,21 +191,6 @@ export function defineGame(def) {
       this.audio = audioOf(def.audio);
       this.colors = null;
       this.peerReady = false;
-      // The size the page gave the canvas, kept on it: the page builds every
-      // engine of a match on the same canvas, which an earlier one has already
-      // given more pixels.
-      canvas.dataset.gameWidth ??= String(canvas.width);
-      canvas.dataset.gameHeight ??= String(canvas.height);
-      this.view = {
-        width: Number(canvas.dataset.gameWidth),
-        height: Number(canvas.dataset.gameHeight),
-      };
-      if (resolution !== 1) {
-        canvas.width = this.view.width * resolution;
-        canvas.height = this.view.height * resolution;
-      }
-      if (def.pixelArt) canvas.classList.add("game-canvas--pixel-art");
-      if (pointer) canvas.classList.add("game-canvas--pointer");
       this._pointerQueue = [];
       this._activePointer = null;
       this._boundPointer = pointer ? this._onPointerEvent.bind(this) : null;

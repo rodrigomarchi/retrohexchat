@@ -488,7 +488,7 @@ Grouped by section. Every row comes from an `@flow` line in the spec itself.
 | N77 | Players who take their time in a match room — reading it, pressing Ready a while after arriving — still get the game when the host presses Start | `tests/game-open-lobby.spec.ts` | done |
 | N78 | When a match room ends, the window says why and that the match did not start, and offers Play again — a new room for the same game — or the game's page | `tests/game-open-lobby.spec.ts` | done |
 | N79 | Hex Solitaire on the desktop: opened from the Retro Games folder, played with the mouse (a click on the stock turns a card), ended with End and written down | `tests/game-hex-solitaire.spec.ts` | done |
-| N80 | Hex Solitaire on a phone: the whole table fits the screen and a tap on the stock turns a card | `tests/game-hex-solitaire.spec.ts` | done |
+| N80 | Hex Solitaire on a phone: the table stands up, fits the screen, and a tap on the stock turns a card | `tests/game-hex-solitaire.spec.ts` | done |
 
 ### O - Chat UI Micro-Journeys
 

@@ -174,6 +174,29 @@ defmodule RetroHexChatWeb.Components.UI.Games.RetroGamesPanelTest do
     assert text =~ "32 treasures in 20 minutes"
   end
 
+  test "a card table stands up on a narrow screen, every other game keeps its 4:3" do
+    solitaire = %{@jungle | id: "hex_solitaire", name: "Hex Solitaire", icon: "game_solitaire"}
+
+    box = fn game ->
+      render_component(&retro_games_panel/1,
+        id: "retro-games-panel",
+        status: "ready",
+        selected_game: game,
+        difficulty: "normal",
+        canvas_ready: true
+      )
+      |> Floki.parse_document!()
+      |> Floki.find(~s([data-testid="retro-game-canvas-#{game.id}"]))
+      |> Floki.attribute("class")
+      |> List.first()
+    end
+
+    assert box.(solitaire) =~ "aspect-[464/720]"
+    assert box.(solitaire) =~ "sm:aspect-[4/3]"
+    assert box.(@jungle) =~ "aspect-[4/3]"
+    refute box.(@jungle) =~ "aspect-[464/720]"
+  end
+
   test "renders the ready game with an integrated control panel" do
     html =
       render_component(&retro_games_panel/1,

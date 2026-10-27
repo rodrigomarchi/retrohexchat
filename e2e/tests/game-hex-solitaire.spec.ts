@@ -1,7 +1,7 @@
 /**
  * @section N - P2P, File, Call, Game
  * @flow N79 [done] Hex Solitaire on the desktop: opened from the Retro Games folder, played with the mouse (a click on the stock turns a card), ended with End and written down
- * @flow N80 [done] Hex Solitaire on a phone: the whole table fits the screen and a tap on the stock turns a card
+ * @flow N80 [done] Hex Solitaire on a phone: the table stands up, fits the screen, and a tap on the stock turns a card
  *
  * These @flow lines are the source of truth for e2e/TEST_CATALOG.md.
  * Edit them here, then run `make e2e.catalog` to regenerate the index.
@@ -14,18 +14,27 @@ import { waitForView } from "../helpers/liveView";
 import { ChatPage } from "../pages/ChatPage";
 import { ConnectPage, uniqueNickname } from "../pages/ConnectPage";
 
-// The game draws a 640×480 table, fitted into its canvas and centred.
-const VIEW = { width: 640, height: 480 };
-const STOCK = { x: 80, y: 72 };
+// The middle of the stock, on either table: lying down (640×480) on a
+// desktop, standing up (464×720) on a phone held upright.
+const STOCK = { x: 34, y: 72 };
+const STOCK_LANDSCAPE = { x: 80, y: 72 };
 
-/** Where a point of the table is on the page. */
+/** The picture the game draws: its canvas has twice its pixels. */
+const viewOf = (canvas: Locator) =>
+  canvas.evaluate((c: HTMLCanvasElement) => ({
+    width: c.width / 2,
+    height: c.height / 2,
+  }));
+
+/** Where a point of the table is on the page, fitted into its canvas and centred. */
 async function pagePoint(canvas: Locator, point: { x: number; y: number }) {
   const box = await canvas.boundingBox();
   if (!box) throw new Error("the canvas has no box");
-  const scale = Math.min(box.width / VIEW.width, box.height / VIEW.height);
+  const view = await viewOf(canvas);
+  const scale = Math.min(box.width / view.width, box.height / view.height);
   return {
-    x: box.x + (box.width - VIEW.width * scale) / 2 + point.x * scale,
-    y: box.y + (box.height - VIEW.height * scale) / 2 + point.y * scale,
+    x: box.x + (box.width - view.width * scale) / 2 + point.x * scale,
+    y: box.y + (box.height - view.height * scale) / 2 + point.y * scale,
   };
 }
 
@@ -52,7 +61,8 @@ test.describe("Hex Solitaire", () => {
       await shot(canvas, "hex-solitaire-dealt");
 
       const before = await pixels(canvas);
-      const stock = await pagePoint(canvas, STOCK);
+      expect(await viewOf(canvas)).toEqual({ width: 640, height: 480 });
+      const stock = await pagePoint(canvas, STOCK_LANDSCAPE);
       await game.mouse.click(stock.x, stock.y);
       await game.waitForTimeout(600);
       expect(await pixels(canvas)).not.toBe(before);
@@ -90,6 +100,8 @@ test.describe("Hex Solitaire", () => {
         await page.goto("/play/hex_solitaire");
         await waitForView(page);
         const canvas = await startAndWaitForTheDeal(page);
+        // The table stands up on a phone held upright, the cards as big as it allows.
+        expect(await viewOf(canvas)).toEqual({ width: 464, height: 720 });
         await expect(canvas).toBeInViewport({ ratio: 1 });
         await shot(page, "hex-solitaire-phone");
 

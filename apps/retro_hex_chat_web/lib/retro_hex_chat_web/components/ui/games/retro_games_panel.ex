@@ -84,7 +84,10 @@ defmodule RetroHexChatWeb.Components.UI.RetroGamesPanel do
             data-game-id={@game.id}
             data-difficulty={@difficulty}
             tabindex="-1"
-            class="relative aspect-[4/3] min-h-[220px] w-full overflow-hidden bg-black p-[2px] shadow-retro-field lg:aspect-auto lg:h-full lg:min-h-0"
+            class={[
+              "relative min-h-[220px] w-full overflow-hidden bg-black p-[2px] shadow-retro-field lg:aspect-auto lg:h-full lg:min-h-0",
+              canvas_box_aspect(@game)
+            ]}
             data-testid={"retro-game-canvas-#{@game.id}"}
           >
             <canvas width="640" height="480" class="block h-full w-full bg-black object-contain"></canvas>
@@ -394,6 +397,14 @@ defmodule RetroHexChatWeb.Components.UI.RetroGamesPanel do
 
   def goal_label(%{id: id}) when id in ~w(hex_solitaire hex_solitaire_draw3),
     do: dgettext("games", "Four piles, ace to king")
+
+  # A card table stands up on a phone held upright: the game lays itself out
+  # on the box it is given (`view` in its definition), so on a narrow screen
+  # the box is tall and the cards are as big as the phone allows.
+  defp canvas_box_aspect(%{id: id}) when id in ~w(hex_solitaire hex_solitaire_draw3),
+    do: "aspect-[464/720] sm:aspect-[4/3]"
+
+  defp canvas_box_aspect(_game), do: "aspect-[4/3]"
 
   @doc """
   The keys of `game`, one row per action, as the library panel lists them.

@@ -27,7 +27,15 @@ import {
 import { interpret } from "./gestures.js";
 import { hitTest } from "./layout.js";
 import { act, createInitialState, finalScore, step } from "./physics.js";
-import { CELEBRATION_TICKS, EVENT, MODE, MODE_BY_GAME, PHASE, TAP_SLOP, VIEW } from "./protocol.js";
+import {
+  CELEBRATION_TICKS,
+  EVENT,
+  GEOMETRY,
+  MODE,
+  MODE_BY_GAME,
+  PHASE,
+  TAP_SLOP,
+} from "./protocol.js";
 import { feltWeave, readColors, render } from "./renderer.js";
 import { MASTER_VOLUME, SOUNDS } from "./sounds.js";
 
@@ -71,7 +79,8 @@ function storeBack(back) {
  * cannot draw off the screen (the cascade is then drawn without a trail).
  */
 function trailLayer(game) {
-  const layer = createLayer(VIEW.width, VIEW.height, game.canvas.width / VIEW.width, {
+  const { width, height } = game.view;
+  const layer = createLayer(width, height, game.canvas.width / width, {
     createCanvas: (width, height) => {
       const canvas = game.canvas.ownerDocument.createElement("canvas");
       canvas.width = width;
@@ -199,7 +208,18 @@ export default defineGame({
       })
       .catch((error) => log.warn("[HexSolitaire] the card atlas did not load", error));
   },
-  init: (game) => createInitialState(game.random, MODE_BY_GAME[game.gameId] ?? MODE.DRAW1),
+  // A phone held upright gives the canvas a box taller than wide: the table
+  // stands up in it, so the cards are as big as the phone allows.
+  view: (canvas) => {
+    const box = canvas.getBoundingClientRect();
+    return box.height > box.width ? GEOMETRY.PORTRAIT.view : GEOMETRY.LANDSCAPE.view;
+  },
+  init: (game) =>
+    createInitialState(
+      game.random,
+      MODE_BY_GAME[game.gameId] ?? MODE.DRAW1,
+      game.view.height > game.view.width ? GEOMETRY.PORTRAIT : GEOMETRY.LANDSCAPE,
+    ),
   onPointer,
   flow: {
     phases: PHASE,

@@ -301,6 +301,41 @@ describe("defineGame", () => {
       expect(canvas.classList.contains("game-canvas--pointer")).toBe(true);
     });
 
+    it("lets a game choose the picture it draws from the box the page gave its canvas", async () => {
+      const Standing = defineGame({
+        ...pointerDefinition,
+        resolution: 2,
+        view: (canvas) => {
+          const box = canvas.getBoundingClientRect();
+          return box.height > box.width ? { width: 464, height: 720 } : null;
+        },
+      });
+      match = await playMatch({
+        EngineClass: Standing,
+        gameId: "fake_standing",
+        mode: "solo",
+        rect: { left: 0, top: 0, width: 360, height: 560 },
+      });
+      const { host } = match.engines;
+      expect(host.view).toEqual({ width: 464, height: 720 });
+      expect([host.canvas.width, host.canvas.height]).toEqual([928, 1440]);
+
+      // The picture fills the box's width: a press at its far right is its far right.
+      match.advance(100);
+      match.pointer("down", 359, 10);
+      match.advance(17);
+      expect(host.gameState.log[0][2]).toBe(462);
+    });
+
+    it("keeps the page's size when the game chooses none", () => {
+      const Lying = defineGame({ ...pointerDefinition, resolution: 2, view: () => null });
+      const canvas = recordingCanvas(640, 480);
+      const game = new Lying(canvas, createLocalTransport(), "fake_lying", true, null, {
+        mode: "solo",
+      });
+      expect(game.view).toEqual({ width: 640, height: 480 });
+    });
+
     it("keeps the size the page gave a canvas a second engine is built on", () => {
       const canvas = recordingCanvas(640, 480);
       crisp(canvas);

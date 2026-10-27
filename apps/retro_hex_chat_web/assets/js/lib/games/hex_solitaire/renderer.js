@@ -13,8 +13,8 @@ import { readGameColors } from "../../game_colors.js";
 import { drawCard } from "../core/cards.js";
 import { drawParticleDots, drawPixelSprite } from "../core/render.js";
 import { flightAt, flipShowsFace, flipWidth, flying, shakeAt } from "./effects.js";
-import { layout } from "./layout.js";
-import { CARD, VIEW } from "./protocol.js";
+import { geometryOf, layout } from "./layout.js";
+import { CARD, TABLE } from "./protocol.js";
 
 /** The table's colours, from the canvas's custom properties. */
 export function readColors(canvas) {
@@ -193,6 +193,10 @@ export function render(
 ) {
   const { table } = state;
   const places = layout(table);
+  const geo = geometryOf(table);
+  const { view } = geo;
+  // How far apart the cards of a run held or flying stand, as in a column.
+  const run = geo.upOffset ?? TABLE.upOffset;
   const away = flying(fx);
   if (drag) for (const card of drag.cards) away.add(card);
   // A card the cascade has launched has left its foundation.
@@ -214,9 +218,9 @@ export function render(
   };
 
   ctx.fillStyle = felt ?? colors.felt;
-  ctx.fillRect(0, 0, VIEW.width, VIEW.height);
+  ctx.fillRect(0, 0, view.width, view.height);
   ctx.fillStyle = colors.feltDark;
-  ctx.fillRect(0, 0, VIEW.width, 22);
+  ctx.fillRect(0, 0, view.width, 22);
 
   // The stock, the waste and the foundations.
   if (table.stock.length) one(table.stock.at(-1), places.stock.x, places.stock.y, false);
@@ -247,10 +251,10 @@ export function render(
       const at = flightAt(effect, now);
       // In the air: a shadow on the felt below, until it lands.
       if (now < effect.start + effect.ticks) {
-        effect.cards.forEach((card, k) => drawShadow(ctx, at.x, at.y + k * 18, colors, 1));
+        effect.cards.forEach((card, k) => drawShadow(ctx, at.x, at.y + k * run, colors, 1));
       }
       effect.cards.forEach((card, i) => {
-        drawOne(ctx, atlas, card, at.x, at.y + i * 18, { faceUp: effect.faceUp ?? true, back });
+        drawOne(ctx, atlas, card, at.x, at.y + i * run, { faceUp: effect.faceUp ?? true, back });
       });
     }
     if (effect.kind === "sparks" && now >= effect.start) drawParticleDots(ctx, effect.particles);
@@ -265,9 +269,9 @@ export function render(
     }
   }
   if (drag) {
-    drag.cards.forEach((card, i) => drawShadow(ctx, drag.x, drag.y - 2 + i * 18, colors, 2));
+    drag.cards.forEach((card, i) => drawShadow(ctx, drag.x, drag.y - 2 + i * run, colors, 2));
     drag.cards.forEach((card, i) =>
-      drawOne(ctx, atlas, card, drag.x, drag.y - 2 + i * 18, { back }),
+      drawOne(ctx, atlas, card, drag.x, drag.y - 2 + i * run, { back }),
     );
   }
 
@@ -275,7 +279,7 @@ export function render(
   drawPixelSprite(ctx, STAR, { "#": colors.ink }, 8, 4, 2, 2);
   drawNumber(ctx, state.score, 26, 4, colors.ink);
   const time = clock(state.clock.ticks);
-  const left = VIEW.width - 8 - numberWidth(time);
+  const left = view.width - 8 - numberWidth(time);
   drawPixelSprite(ctx, CLOCK, { "#": colors.ink }, left - 18, 4, 2, 2);
   drawNumber(ctx, time, left, 4, colors.ink);
 }
