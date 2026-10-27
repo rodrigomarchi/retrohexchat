@@ -120,6 +120,36 @@ describe("a match of Hex Sudoku", () => {
     expect(host.gameState.board.values[i]).toBe(0);
   });
 
+  it("erases the chosen square with the eraser on the screen", async () => {
+    match = await ready();
+    const { host } = match.engines;
+    const { i, wrong } = emptySquare(host.gameState.board);
+    tap(match, centre(squarePlace(host.laid, i)));
+    tap(match, centre(host.laid.keys[wrong - 1]));
+    match.advance(20);
+    expect(host.gameState.board.values[i]).toBe(wrong);
+    tap(match, centre(host.laid.tools.eraser));
+    match.advance(20);
+    expect(host.gameState.board.values[i]).toBe(0);
+  });
+
+  it("wins when an undo brings back the last digit the grid lacked", async () => {
+    match = await ready();
+    const { host } = match.engines;
+    const { board } = host.gameState;
+    const [last, mine] = board.values.flatMap((v, i) => (v ? [] : [i]));
+    const values = board.values.map((v, i) => (i === last ? 0 : board.solution[i]));
+    host.gameState = { ...host.gameState, board: { ...board, values } };
+    // Erase a digit of one's own, have the last square revealed, then undo the erase.
+    tap(match, centre(squarePlace(host.laid, mine)));
+    tap(match, centre(host.laid.tools.eraser));
+    tap(match, centre(squarePlace(host.laid, last)));
+    tap(match, centre(host.laid.tools.hint));
+    tap(match, centre(host.laid.tools.undo));
+    expect(match.runUntil(() => match.over(), 5_000)).toBe(true);
+    expect(host.gameState.won).toBe(true);
+  });
+
   it("reveals the chosen square with a hint, a minute on the clock", async () => {
     match = await ready();
     const { host } = match.engines;

@@ -4583,19 +4583,9 @@ msgstr ""
 msgid "Hex Sudoku is Sudoku for one player. Fill the 9×9 grid so every row, every column and every 3×3 box holds the digits 1 to 9 once. Every grid is made new for your game and has one solution, which you can always reach without guessing. The fastest wins go into the ranking."
 msgstr ""
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_retro_games.html.heex:159
-#, elixir-autogen, elixir-format
-msgid "Hex Sudoku is Sudoku for one player: tap a square, then a digit below the grid, or play with the keyboard. Every grid is new and has one solution."
-msgstr ""
-
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_sudoku.html.heex:84
 #, elixir-autogen, elixir-format
 msgid "Sudoku first appeared in American puzzle magazines in the 1970s. It got its name in Japan in the 1980s and then spread to newspapers all over the world."
-msgstr ""
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_sudoku.html.heex:16
-#, elixir-autogen, elixir-format
-msgid "Tap a digit below the grid, or press 1 to 9"
 msgstr ""
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_sudoku.html.heex:40
@@ -4633,7 +4623,17 @@ msgstr ""
 msgid "— Cancel your last move. A hint is not cancelled"
 msgstr ""
 
+#: lib/retro_hex_chat_web/controllers/help_content/feature_retro_games.html.heex:159
+#, elixir-autogen, elixir-format
+msgid "Hex Sudoku is Sudoku for one player: tap a square, then a digit next to the grid, or play with the keyboard. Every grid is new and has one solution."
+msgstr ""
+
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_sudoku.html.heex:16
 #, elixir-autogen, elixir-format
-msgid "— Write that digit in the square you chose. A digit turns grey below the grid once all nine are in place"
+msgid "Tap a digit next to the grid, or press 1 to 9"
+msgstr ""
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_sudoku.html.heex:16
+#, elixir-autogen, elixir-format
+msgid "— Write that digit in the square you chose. A digit turns grey next to the grid once all nine are in place"
 msgstr ""

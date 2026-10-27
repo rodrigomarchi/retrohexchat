@@ -36,6 +36,7 @@ import { defineGame } from "../define_game.js";
 import { playFlags } from "../events.js";
 import { createLayer } from "../layers.js";
 import { createGesture } from "../pointer.js";
+import { soundTheEnd } from "../solo/board_game.js";
 import { laidFor, tableView } from "../solo/view.js";
 import { soloResult } from "../result.js";
 import { active, createEffects, settle, stepEffects } from "./effects.js";
@@ -238,9 +239,7 @@ export function defineCardTable(table) {
             game.celebration = 0;
             game.trail = reducedMotion() ? null : trailLayer(game);
             effects.cascadeEffects(game.fx, game.gameState.table, game.frameCount, game.fxRandom);
-            playFlags(game, sounds, game.gameState.events);
-            game.gameState = { ...game.gameState, events: 0 };
-            game.invalidate();
+            soundTheEnd(game, sounds);
           },
           tick: (game) => {
             game.frameCount++;

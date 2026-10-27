@@ -10,6 +10,14 @@
 
 import { hitAt } from "./layout.js";
 
+/** What each tool on the screen does: the same actions as its keys. */
+const TOOL_ACTIONS = Object.freeze({
+  undo: "undo",
+  eraser: "erase",
+  pencil: "pencil",
+  hint: "hint",
+});
+
 /**
  * The action a gesture makes, or null.
  * @param {object} laid - `layout.js`'s
@@ -22,7 +30,7 @@ export function interpret(laid, gesture) {
   if (!hit) return null;
   if (hit.type === "square") return { type: "select", i: hit.i };
   if (hit.type === "key") return { type: "digit", d: hit.d };
-  return { type: hit.name };
+  return { type: TOOL_ACTIONS[hit.name] };
 }
 
 const ARROWS = Object.freeze({

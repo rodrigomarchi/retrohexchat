@@ -128,13 +128,16 @@ function play(state, action, random) {
     case "undo": {
       const before = state.history.at(-1);
       if (!before) return state;
-      return {
+      const board = keepHints(before, state.board);
+      const next = {
         ...state,
-        board: keepHints(before, state.board),
+        board,
         history: state.history.slice(0, -1),
         events: state.events | EVENT.UNDO,
         changed: null,
       };
+      // A hint since may have filled the last square the undone move left open.
+      return won(board) ? ending({ ...next, selected: null }, { won: true }) : next;
     }
     default:
       return state;

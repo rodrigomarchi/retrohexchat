@@ -98,6 +98,15 @@ describe("Hex Sudoku's picture", () => {
     expect(filled(log, "peer")).toBe(20 - 1);
   });
 
+  it("runs the clock past 99 minutes, as long as a game may last", () => {
+    const state = { ...createInitialState(), clock: { started: true, ticks: (150 * 60 + 7) * 60 } };
+    const log = drawn(state);
+    // 150:07, and the two counts at 00: five digits for the clock, four for the counts.
+    const digits = [..."0123456789"].reduce((n, d) => n + cut(log, `digit_${d}`), 0);
+    expect(digits).toBe(5 + 4);
+    expect(cut(log, "digit_5")).toBe(1);
+  });
+
   it("stands up with the same pieces on a phone", () => {
     const log = drawn(createInitialState(), "PORTRAIT");
     for (const n of DIGITS) expect(cut(log, `key_${n}`)).toBe(1);

@@ -51,7 +51,7 @@ function light(fx, squares, from, now, step) {
 export function playedEffects(fx, { before, after, laid, now, random }) {
   const events = after.events & ~before.events;
   const { changed } = after;
-  if (!fx.reduced && changed) {
+  if (!fx.reduced && changed && events & (EVENT.PLACE | EVENT.HINT | EVENT.MISTAKE)) {
     if (events & (EVENT.PLACE | EVENT.HINT)) {
       fx.list.push({ kind: "hop", i: changed.i, start: now, ticks: FX.hop });
     }

@@ -49,6 +49,13 @@ export function loadAtlas(game, url, name) {
     .catch((error) => log.warn(`[${name}] the tiles did not load`, error));
 }
 
+/** The sounds of how a match ended, played once: its events are cleared, and a frame drawn. */
+export function soundTheEnd(game, sounds) {
+  playFlags(game, sounds, game.gameState.events);
+  game.gameState = { ...game.gameState, events: 0 };
+  game.invalidate();
+}
+
 /**
  * The end of a tick in play, once its actions are played: their sounds, the
  * match's `step`, the effects, and a frame when anything moved or the clock
@@ -79,9 +86,7 @@ export const boardFlow = ({ tick, sounds, showTicks, finalScore, onShow = () => 
       enter: (game) => {
         onShow(game);
         game.shown = 0;
-        playFlags(game, sounds, game.gameState.events);
-        game.gameState = { ...game.gameState, events: 0 };
-        game.invalidate();
+        soundTheEnd(game, sounds);
       },
       tick: (game) => {
         game.frameCount++;

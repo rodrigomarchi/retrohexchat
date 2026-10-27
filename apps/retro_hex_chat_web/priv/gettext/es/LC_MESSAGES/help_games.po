@@ -5151,20 +5151,10 @@ msgstr "Un dígito equivocado se vuelve rojo inmediatamente y añade 30 segundos
 msgid "Hex Sudoku is Sudoku for one player. Fill the 9×9 grid so every row, every column and every 3×3 box holds the digits 1 to 9 once. Every grid is made new for your game and has one solution, which you can always reach without guessing. The fastest wins go into the ranking."
 msgstr "Hex Sudoku es Sudoku para un jugador. Llene la cuadrícula 9×9 para que cada fila, cada columna y cada caja 3×3 mantenga los dígitos 1 a 9 una vez. Cada rejilla se hace nueva para su juego y tiene una solución, que siempre puede alcanzar sin adivinar. Las victorias más rápidas van al ranking."
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_retro_games.html.heex:159
-#, elixir-autogen, elixir-format
-msgid "Hex Sudoku is Sudoku for one player: tap a square, then a digit below the grid, or play with the keyboard. Every grid is new and has one solution."
-msgstr "Hex Sudoku es Sudoku para un jugador: pulsa un cuadrado, luego un dígito debajo de la cuadrícula, o juega con el teclado. Cada rejilla es nueva y tiene una solución."
-
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_sudoku.html.heex:84
 #, elixir-autogen, elixir-format
 msgid "Sudoku first appeared in American puzzle magazines in the 1970s. It got its name in Japan in the 1980s and then spread to newspapers all over the world."
 msgstr "Sudoku apareció por primera vez en revistas americanas de rompecabezas en la década de 1970. Consiguió su nombre en Japón en los años 80 y luego se extendió a periódicos por todo el mundo."
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_sudoku.html.heex:16
-#, elixir-autogen, elixir-format
-msgid "Tap a digit below the grid, or press 1 to 9"
-msgstr "Toque un dígito debajo de la cuadrícula, o presione 1 a 9"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_sudoku.html.heex:40
 #, elixir-autogen, elixir-format
@@ -5201,7 +5191,17 @@ msgstr "Los puntos vienen sólo de una victoria: 10.000 divididos en los minutos
 msgid "— Cancel your last move. A hint is not cancelled"
 msgstr "- Cancela tu último movimiento. Una pista no se cancela"
 
+#: lib/retro_hex_chat_web/controllers/help_content/feature_retro_games.html.heex:159
+#, elixir-autogen, elixir-format
+msgid "Hex Sudoku is Sudoku for one player: tap a square, then a digit next to the grid, or play with the keyboard. Every grid is new and has one solution."
+msgstr "Hex Sudoku es Sudoku para un jugador: pulsa un cuadrado, luego un dígito junto a la cuadrícula, o juega con el teclado. Cada rejilla es nueva y tiene una solución."
+
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_sudoku.html.heex:16
 #, elixir-autogen, elixir-format
-msgid "— Write that digit in the square you chose. A digit turns grey below the grid once all nine are in place"
-msgstr "— Write that digit in the square you chose. A digit turns grey below the grid once all nine are in place"
+msgid "Tap a digit next to the grid, or press 1 to 9"
+msgstr "Toque un dígito junto a la cuadrícula, o presione 1 a 9"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_sudoku.html.heex:16
+#, elixir-autogen, elixir-format
+msgid "— Write that digit in the square you chose. A digit turns grey next to the grid once all nine are in place"
+msgstr "— Write that digit in the square you chose. A digit turns grey next to the grid once all nine are in place"

@@ -46,9 +46,9 @@ function led(ctx, atlas, text, place, colors) {
   }
 }
 
-/** The clock as minutes and seconds, up to 99:59. */
+/** The clock as minutes and seconds; past 99 minutes, three digits of minutes. */
 function clockText(ticks) {
-  const seconds = Math.min(99 * 60 + 59, Math.floor(ticks / 60));
+  const seconds = Math.floor(ticks / 60);
   const pad = (n) => String(n).padStart(2, "0");
   return `${pad(Math.floor(seconds / 60))}:${pad(seconds % 60)}`;
 }
