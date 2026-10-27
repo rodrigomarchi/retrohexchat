@@ -1,10 +1,10 @@
 /**
- * Hex Solitaire's sounds, as data the core's synthesizer plays: short 8-bit
+ * A card table's sounds, as data the core's synthesizer plays: short 8-bit
  * clicks and chimes, one for each thing that happens on the table.
- * @module games/hex_solitaire/sounds
+ * @module games/core/card_table/sounds
  */
 
-import { fade, glide } from "../core/synth.js";
+import { fade, glide } from "../synth.js";
 
 export const MASTER_VOLUME = 0.25;
 

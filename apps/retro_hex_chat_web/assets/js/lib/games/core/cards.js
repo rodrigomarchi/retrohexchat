@@ -20,7 +20,7 @@ export const DECK = Object.freeze(Array.from({ length: 52 }, (_, id) => id));
 export const SUIT = Object.freeze({ SPADES: 0, HEARTS: 1, DIAMONDS: 2, CLUBS: 3 });
 
 /** A card's size on the canvas when no atlas says otherwise. */
-const DEFAULT_CARD = Object.freeze({ width: 64, height: 88 });
+export const FULL_CARD = Object.freeze({ width: 64, height: 88 });
 
 const ATLAS_FACES = 52;
 const ATLAS_BACKS = 4;
@@ -99,7 +99,7 @@ const SUIT_SIGNS = ["♠", "♥", "♦", "♣"];
  * @returns {void}
  */
 export function drawCard(ctx, atlas, card, x, y, { faceUp = true, back = 0 } = {}) {
-  const { width, height } = atlas?.card ?? DEFAULT_CARD;
+  const { width, height } = atlas?.card ?? FULL_CARD;
   if (!atlas) {
     ctx.fillStyle = gameColor("f4f1e8");
     ctx.fillRect(x, y, width, height);

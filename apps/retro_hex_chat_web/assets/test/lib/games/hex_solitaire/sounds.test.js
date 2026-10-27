@@ -1,5 +1,5 @@
 import { describe, it } from "vitest";
-import { MASTER_VOLUME, SOUNDS } from "../../../../js/lib/games/hex_solitaire/sounds.js";
+import { MASTER_VOLUME, SOUNDS } from "../../../../js/lib/games/core/card_table/sounds.js";
 import { expectSoundsAsRecorded } from "../../../support/games/sound_fixture.js";
 import { SOUND_SCRIPT } from "./sound_script.js";
 

@@ -1,15 +1,13 @@
 /**
- * What a tap or a drag on the table means, as an action for the match to
- * play: turn the stock (`draw`), turn the waste back (`recycle`), a `move`
- * (`rules.js`), a `refuse` (a tapped card with nowhere to go) or a `return`
- * (a dragged card going back where it came from). A drag in progress is
- * `{ from, cards, x, y, grabX, grabY }`: the run held, and where its bottom
- * card is drawn. Pure functions of the table, the drag and the gesture
- * (`core/pointer.js`).
+ * What a tap or a drag on the Klondike table means (`core/card_table/gestures.js`):
+ * besides moves, a tap on the stock turns it (`draw`) or turns the waste
+ * back (`recycle`), and a tap never takes a card back from a foundation —
+ * a drag still can.
  *
  * @module games/hex_solitaire/gestures
  */
 
+import { createInterpreter } from "../core/card_table/gestures.js";
 import { CARD, COLUMNS } from "./protocol.js";
 import { cardsFrom, hitTest, layout, sourcePlace } from "./layout.js";
 import { canMove } from "./rules.js";
@@ -44,27 +42,23 @@ export function bestDestination(state, from) {
   return null;
 }
 
-const overlap = (a, b) =>
-  Math.max(0, Math.min(a.x + a.w, b.x + b.w) - Math.max(a.x, b.x)) *
-  Math.max(0, Math.min(a.y + a.h, b.y + b.h) - Math.max(a.y, b.y));
-
-/** The pile a held run covers most, as a move's `to`, or null over the bare felt. */
-function dropTarget(state, drag) {
-  const held = { x: drag.x, y: drag.y, w: CARD.width, h: CARD.height };
+/** Where a held run may be dropped: the foundations, then each column's last card or place. */
+function targets(state) {
   const places = layout(state);
-  const targets = [
+  return [
     ...places.foundations.map((r, suit) => ({ r, to: { pile: "foundation", suit } })),
     ...places.columns.map((column, col) => ({
       r: column.cards.at(-1) ?? column.slot,
       to: { pile: "tableau", col },
     })),
   ];
-  let best = null;
-  for (const target of targets) {
-    const area = overlap(held, target.r);
-    if (area > 0 && (!best || area > best.area)) best = { area, to: target.to };
-  }
-  return best?.to ?? null;
+}
+
+/** A tap on the stock turns it, or the waste back once it is empty. */
+function tapStock(state, hit) {
+  if (hit?.pile !== "stock") return undefined;
+  if (state.stock.length) return { type: "draw" };
+  return state.waste.length ? { type: "recycle" } : null;
 }
 
 /**
@@ -74,53 +68,15 @@ function dropTarget(state, drag) {
  * @param {{ type: string, x?: number, y?: number }} gesture
  * @returns {{ drag: object | null, action: object | null }}
  */
-export function interpret(state, drag, gesture) {
-  switch (gesture.type) {
-    case "tap": {
-      const hit = hitTest(state, gesture.x, gesture.y);
-      if (hit?.pile === "stock") {
-        if (state.stock.length) return { drag: null, action: { type: "draw" } };
-        return { drag: null, action: state.waste.length ? { type: "recycle" } : null };
-      }
-      const from = pickable(state, hit);
-      // A tap never takes a card back from a foundation; a drag still can.
-      if (!from || from.pile === "foundation") return { drag: null, action: null };
-      const move = bestDestination(state, from);
-      return { drag: null, action: move ? { type: "move", move } : { type: "refuse", from } };
-    }
-    case "dragStart": {
-      const from = pickable(state, hitTest(state, gesture.x, gesture.y));
-      if (!from) return { drag: null, action: null };
-      const place = sourcePlace(layout(state), from);
-      return {
-        drag: {
-          from,
-          cards: cardsFrom(state, from),
-          x: place.x,
-          y: place.y,
-          grabX: gesture.x - place.x,
-          grabY: gesture.y - place.y,
-        },
-        action: null,
-      };
-    }
-    case "dragMove":
-      if (!drag) return { drag: null, action: null };
-      return {
-        drag: { ...drag, x: gesture.x - drag.grabX, y: gesture.y - drag.grabY },
-        action: null,
-      };
-    case "drop": {
-      if (!drag) return { drag: null, action: null };
-      const held = { ...drag, x: gesture.x - drag.grabX, y: gesture.y - drag.grabY };
-      const to = dropTarget(state, held);
-      const move = to && { from: drag.from, to };
-      if (move && canMove(state, move)) return { drag: null, action: { type: "move", move } };
-      return { drag: null, action: { type: "return", from: drag.from } };
-    }
-    case "dragCancel":
-      return { drag: null, action: drag ? { type: "return", from: drag.from } : null };
-    default:
-      return { drag, action: null };
-  }
-}
+export const interpret = createInterpreter({
+  card: CARD,
+  hitTest,
+  pick: pickable,
+  tap: tapStock,
+  tapMoves: (from) => from.pile !== "foundation",
+  bestDestination,
+  canMove,
+  cardsFrom,
+  sourcePlace: (state, from) => sourcePlace(layout(state), from),
+  targets,
+});

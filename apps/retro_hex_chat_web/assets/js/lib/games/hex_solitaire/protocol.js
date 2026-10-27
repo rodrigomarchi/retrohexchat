@@ -94,21 +94,11 @@ export const GEOMETRY = Object.freeze({
   }),
 });
 
-/**
- * The match's phases. A win is celebrated — the cascade bounces across the
- * table — before the match is over and its result told, so the page still
- * shows it.
- */
-export const PHASE = Object.freeze({
-  WAITING: 0,
-  PLAYING: 1,
-  AUTO_FINISH: 2,
-  FINISHED: 3,
-  CELEBRATING: 4,
-});
+/** The match's phases and the celebration's length: every card table's. */
+export { CELEBRATION_TICKS, PHASE, TAP_SLOP } from "../core/card_table/table.js";
 
-/** The longest a celebration lasts; a tap ends it sooner. */
-export const CELEBRATION_TICKS = 600;
+/** How long each effect lasts: every card table's. */
+export { FX } from "../core/card_table/effects.js";
 
 /** What happened in a tick, one bit each: the sounds and the effects read them. */
 export const EVENT = Object.freeze({
@@ -125,20 +115,3 @@ export const EVENT = Object.freeze({
 
 /** The finish with nothing left hidden: a card goes up every this many ticks. */
 export const AUTO_TICKS = 6;
-
-/** How far a press may move and still be a tap. */
-export const TAP_SLOP = 6;
-
-/** How long each effect lasts, in ticks (drawing only; the match never waits). */
-export const FX = Object.freeze({
-  dealStagger: 3,
-  dealFlight: 12,
-  flight: 10,
-  drop: 6,
-  return: 8,
-  draw: 8,
-  shake: 12,
-  flip: 8,
-  sparks: 20,
-  cascadeStagger: 8,
-});

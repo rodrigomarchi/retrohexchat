@@ -1,11 +1,8 @@
 import { describe, expect, it } from "vitest";
 import { createRng } from "../../../../js/lib/games/core/rng.js";
 import {
-  actionEffects,
   active,
-  cascadeEffects,
   createEffects,
-  dealEffects,
   flightAt,
   flipShowsFace,
   flipWidth,
@@ -13,6 +10,11 @@ import {
   settle,
   shakeAt,
   stepEffects,
+} from "../../../../js/lib/games/core/card_table/effects.js";
+import {
+  actionEffects,
+  cascadeEffects,
+  dealEffects,
 } from "../../../../js/lib/games/hex_solitaire/effects.js";
 import { layout } from "../../../../js/lib/games/hex_solitaire/layout.js";
 import { CARD, EVENT, FX, MODE } from "../../../../js/lib/games/hex_solitaire/protocol.js";

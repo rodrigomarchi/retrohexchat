@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest";
 import { createRng } from "../../../../js/lib/games/core/rng.js";
-import { createEffects, dealEffects } from "../../../../js/lib/games/hex_solitaire/effects.js";
+import { createEffects } from "../../../../js/lib/games/core/card_table/effects.js";
+import { dealEffects } from "../../../../js/lib/games/hex_solitaire/effects.js";
 import { layout } from "../../../../js/lib/games/hex_solitaire/layout.js";
 import { MODE } from "../../../../js/lib/games/hex_solitaire/protocol.js";
 import { createInitialState } from "../../../../js/lib/games/hex_solitaire/physics.js";

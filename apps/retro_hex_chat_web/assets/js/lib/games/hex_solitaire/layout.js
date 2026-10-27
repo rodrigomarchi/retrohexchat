@@ -6,30 +6,25 @@
  * @module games/hex_solitaire/layout
  */
 
+import { cardPlace, columnCards, contains, fanOffsets } from "../core/card_table/piles.js";
 import { CARD, COLUMNS, GEOMETRY, TABLE, TOP_ROW } from "./protocol.js";
 
 /** The table a game is laid out on: its own, or lying down when it names none. */
 export const geometryOf = (state) => state.geometry ?? GEOMETRY.LANDSCAPE;
 
 const columnX = (geo, col) => geo.left + col * (CARD.width + geo.gap);
-const place = (x, y) => ({ x, y, w: CARD.width, h: CARD.height });
-const contains = (r, x, y) => x >= r.x && x < r.x + r.w && y >= r.y && y < r.y + r.h;
+const place = (x, y) => cardPlace(x, y, CARD);
 
 /** How far apart a column's cards stand, squeezed to keep the last one on the canvas. */
-function offsets(geo, down, up) {
-  const room = geo.view.height - TABLE.bottom - geo.columnsTop - CARD.height;
-  const upGaps = Math.max(0, up - 1);
-  const downGaps = up > 0 ? down : Math.max(0, down - 1);
-  let downOffset = geo.downOffset ?? TABLE.downOffset;
-  let upOffset = geo.upOffset ?? TABLE.upOffset;
-  if (downGaps * downOffset + upGaps * upOffset > room && upGaps > 0) {
-    upOffset = Math.max(TABLE.minOffset, Math.floor((room - downGaps * downOffset) / upGaps));
-  }
-  if (downGaps * downOffset + upGaps * upOffset > room && downGaps > 0) {
-    downOffset = Math.max(TABLE.minOffset, Math.floor((room - upGaps * upOffset) / downGaps));
-  }
-  return { downOffset, upOffset };
-}
+const offsets = (geo, down, up) =>
+  fanOffsets({
+    room: geo.view.height - TABLE.bottom - geo.columnsTop - CARD.height,
+    down,
+    up,
+    downOffset: geo.downOffset ?? TABLE.downOffset,
+    upOffset: geo.upOffset ?? TABLE.upOffset,
+    min: TABLE.minOffset,
+  });
 
 /**
  * Every pile's place and every card's, in the canvas's pixels. A column's
@@ -49,17 +44,8 @@ export function layout(state) {
 
   const columns = state.tableau.slice(0, COLUMNS).map((column, col) => {
     const slot = place(columnX(geo, col), geo.columnsTop);
-    const { downOffset, upOffset } = offsets(geo, column.down.length, column.up.length);
-    const cards = [];
-    let y = slot.y;
-    column.down.forEach((card) => {
-      cards.push({ card, faceUp: false, index: null, ...place(slot.x, y) });
-      y += downOffset;
-    });
-    column.up.forEach((card, index) => {
-      cards.push({ card, faceUp: true, index, ...place(slot.x, y) });
-      y += upOffset;
-    });
+    const spacing = offsets(geo, column.down.length, column.up.length);
+    const cards = columnCards(slot, column.down, column.up, spacing, CARD);
     return { slot, cards };
   });
 
