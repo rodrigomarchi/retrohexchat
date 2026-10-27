@@ -28,7 +28,7 @@ import { interpret } from "./gestures.js";
 import { hitTest } from "./layout.js";
 import { act, createInitialState, finalScore, step } from "./physics.js";
 import { CELEBRATION_TICKS, EVENT, MODE, MODE_BY_GAME, PHASE, TAP_SLOP, VIEW } from "./protocol.js";
-import { readColors, render } from "./renderer.js";
+import { feltWeave, readColors, render } from "./renderer.js";
 import { MASTER_VOLUME, SOUNDS } from "./sounds.js";
 
 /** The sound of each event bit. */
@@ -150,12 +150,14 @@ function tick(game) {
   }
   playFlags(game, EVENT_SOUNDS, events | finished);
   game.gameState = { ...game.gameState, events: 0 };
+  // Something that moved this tick is drawn once more where it came to rest.
+  const moving = active(game.fx);
   stepEffects(game.fx, game.frameCount);
   if (
     events ||
     finished ||
     game.drag ||
-    active(game.fx) ||
+    moving ||
     Math.floor(game.gameState.clock.ticks / 60) !== second
   ) {
     game.invalidate();
@@ -246,8 +248,10 @@ export default defineGame({
   },
   // A match ended mid-celebration keeps the bonus its win earned.
   standing: (game) => soloResult(finalScore(game.gameState)),
-  render: (game) =>
-    render(game.ctx, {
+  render: (game) => {
+    // Made once the colours are read; false where the page cannot make one.
+    game.felt ??= feltWeave(game.ctx, game.colors, game.canvas.ownerDocument) ?? false;
+    return render(game.ctx, {
       state: game.gameState,
       drag: game.drag,
       fx: game.fx,
@@ -256,5 +260,7 @@ export default defineGame({
       now: game.frameCount,
       back: game.back,
       trail: game.trail,
-    }),
+      felt: game.felt || null,
+    });
+  },
 });

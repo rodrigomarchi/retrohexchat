@@ -393,7 +393,7 @@ defmodule RetroHexChatWeb.Components.UI.RetroGamesPanel do
   def goal_label(%{id: "hex_jungle"}), do: dgettext("games", "32 treasures in 20 minutes")
 
   def goal_label(%{id: id}) when id in ~w(hex_solitaire hex_solitaire_draw3),
-    do: dgettext("games", "Every card on its pile, ace to king")
+    do: dgettext("games", "Four piles, ace to king")
 
   @doc """
   The keys of `game`, one row per action, as the library panel lists them.

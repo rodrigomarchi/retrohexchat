@@ -77,4 +77,32 @@ describe("the picture", () => {
     const log = drawn({ state });
     for (const call of images(log)) expect(call.slice(-4).every(Number.isInteger)).toBe(true);
   });
+
+  it("shows the card under one the cascade has launched", () => {
+    const foundations = [0, 1, 2, 3].map((suit) =>
+      Array.from({ length: 13 }, (_, r) => suit * 13 + r),
+    );
+    const won = {
+      ...state,
+      table: {
+        ...state.table,
+        stock: [],
+        tableau: state.table.tableau.map(() => ({ down: [], up: [] })),
+        foundations,
+      },
+    };
+    const fx = createEffects();
+    fx.list.push({
+      kind: "cascade",
+      start: 0,
+      ticks: Infinity,
+      items: [{ card: 12, x: 0, y: 0, vx: 0, vy: 0, launch: 0 }],
+    });
+    const log = drawn({ state: won, fx, now: 1 });
+    const queen = atlas.faces[11];
+    const spadesPlace = layout(won.table).foundations[0];
+    expect(
+      images(log).some((c) => c[2] === queen.x && c[6] === spadesPlace.x && c[7] === spadesPlace.y),
+    ).toBe(true);
+  });
 });

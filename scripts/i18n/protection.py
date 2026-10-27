@@ -16,7 +16,7 @@ import re
 # are masked the same way, and swapped for each language's form afterwards.
 BRAND_RE = re.compile(
     r"\b(Retro Hex Chat|RetroHexChat|RetroHex|ChanServ|NickServ|MemoServ|OperServ|HostServ|Construct|"
-    r"End of Time|"
+    r"End of Time|Hex Solitaire: Draw Three|Hex Solitaire|Klondike solitaire|"
     r"mIRC|IRC|CTCP|DCC|"
     r"LibreQuake|QuakeSpasm|WebRTC|LiveView|PostgreSQL|Elixir|Phoenix)\b"
 )

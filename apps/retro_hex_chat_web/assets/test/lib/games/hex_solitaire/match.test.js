@@ -58,6 +58,26 @@ describe("a match of Hex Solitaire", () => {
     expect(host.gameState.table.waste).toEqual([]);
   });
 
+  it("draws the table at rest once the deal has landed, not its last moment in the air", async () => {
+    match = await solo();
+    const { canvas } = match.engines.host;
+    match.advance(1000);
+    canvas.recording = true;
+    canvas.clearLog();
+    match.advance(3000);
+    const log = canvas.log;
+    const lastFrame = log.slice(
+      log.findLastIndex(
+        ([op, ...a]) => op === "fillRect" && a[0] === 0 && a[1] === 0 && a[2] === 640,
+      ),
+    );
+    // A card in the air casts a shadow; at rest none does.
+    expect(
+      lastFrame.some(([op, , value]) => op === "fillStyle" && value === "rgba(0,0,0,0.35)"),
+    ).toBe(false);
+    expect(lastFrame.length).toBeGreaterThan(0);
+  });
+
   it("plays draw three for its mode", async () => {
     match = await solo({ gameId: "hex_solitaire_draw3" });
     expect(match.engines.host.gameState.table.mode).toBe(MODE.DRAW3);

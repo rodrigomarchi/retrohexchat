@@ -4720,11 +4720,6 @@ msgstr "Ogni dieci secondi di gioco costa 2 punti. Una vittoria guadagna un bonu
 msgid "Klondike is a card game from the nineteenth century, made famous on the PC by the solitaire that came with Windows."
 msgstr "Klondike è un gioco di carte del XIX secolo, reso famoso sul PC dal solitario che è venuto con Windows."
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_solitaire.html.heex:37
-#, elixir-autogen, elixir-format
-msgid "On the table, a card goes on one a rank higher of the other colour: a red six on a black seven."
-msgstr "Sul tavolo, una carta va su uno un grado superiore dell'altro colore: un rosso sei su un nero sette."
-
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_solitaire.html.heex:67
 #, elixir-autogen, elixir-format
 msgid "Score"
@@ -4740,20 +4735,10 @@ msgstr "Tap a card"
 msgid "The End button keeps the points you have. A game still open after an hour ends by itself."
 msgstr "Il pulsante Fine mantiene i punti che hai. Un gioco ancora aperto dopo un'ora finisce da solo."
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_solitaire.html.heex:28
-#, elixir-autogen, elixir-format
-msgid "— Choose another back for the cards"
-msgstr "— Scegliere un altro indietro per le carte"
-
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_solitaire.html.heex:70
 #, elixir-autogen, elixir-format
 msgid "A card on a pile at the top is worth 10 points; a card from the deck onto the table, or a card turned over, 5."
 msgstr "A card on a pile at the top is worth 10 points; a card from the deck onto the table, or a card turned over, 5."
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_solitaire.html.heex:55
-#, elixir-autogen, elixir-format
-msgid "Hex Solitaire draws one card at a time from the deck. Hex Solitaire: Draw Three draws three, and only the top one can be played."
-msgstr "Hex Solitaire draws one card at a time from the deck. Hex Solitaire: Draw Three draws three, and only the top one can be played."
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_solitaire.html.heex:2
 #, elixir-autogen, elixir-format
@@ -4763,17 +4748,12 @@ msgstr "Hex Solitaire è Klondike, il classico gioco di pazienza, per un giocato
 #: lib/retro_hex_chat_web/controllers/help_content/feature_retro_games.html.heex:135
 #, elixir-autogen, elixir-format
 msgid "Hex Solitaire is a game of cards for one player, played with the mouse or a finger: tap a card to move it to its place, or drag it onto another pile."
-msgstr "Hex Solitaire è un gioco di carte per un giocatore, giocato con il mouse o un dito: toccare una carta per spostarlo al suo posto, o trascinarlo su un altro stack."
+msgstr "Hex Solitaire is a game of cards for one player, played with the mouse or a finger: tap a card to move it to its place, or drag it onto another pile."
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_solitaire.html.heex:43
 #, elixir-autogen, elixir-format
 msgid "Only a king, with the cards on top of it, goes into an empty column."
 msgstr "Solo un re, con le carte sopra, entra in una colonna vuota."
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_solitaire.html.heex:76
-#, elixir-autogen, elixir-format
-msgid "Taking a card back from a pile at the top costs 15 points. Starting the deck again costs 100 points drawing one card, 20 drawing three."
-msgstr "Taking a card back from a pile at the top costs 15 points. Starting the deck again costs 100 points drawing one card, 20 drawing three."
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_solitaire.html.heex:22
 #, elixir-autogen, elixir-format
@@ -4790,11 +4770,6 @@ msgstr "Tap the deck before you play"
 msgid "When nothing is left hidden, the cards go up to the piles at the top by themselves."
 msgstr "Quando nulla è lasciato nascosto, le carte vanno fino alle pile in cima da soli."
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_solitaire.html.heex:22
-#, elixir-autogen, elixir-format
-msgid "— Draw its next card, or start the deck again when it is empty"
-msgstr "— Disegnare la prossima carta, o ricominciare il mazzo quando è vuoto"
-
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_solitaire.html.heex:16
 #, elixir-autogen, elixir-format
 msgid "— Move a card, or the cards on top of it, onto another pile"
@@ -4804,3 +4779,28 @@ msgstr "— Spostare una carta, o le carte sopra di esso, su un altro mucchio"
 #, elixir-autogen, elixir-format
 msgid "— Move it to its place: a pile at the top first, otherwise the first column that takes it"
 msgstr "— Spostalo al suo posto: una pila in alto prima, altrimenti la prima colonna che la prende"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_solitaire.html.heex:37
+#, elixir-autogen, elixir-format
+msgid "On the table, a card goes on a card one higher in value and of the other colour: a red six on a black seven."
+msgstr "Sul tavolo, una carta va su una carta uno superiore in valore e dell'altro colore: un rosso sei su un nero sette."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_solitaire.html.heex:55
+#, elixir-autogen, elixir-format
+msgid "Hex Solitaire takes one card at a time from the deck. Hex Solitaire: Draw Three takes three, and only the top one can be played."
+msgstr "Hex Solitaire takes one card at a time from the deck. Hex Solitaire: Draw Three takes three, and only the top one can be played."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_solitaire.html.heex:76
+#, elixir-autogen, elixir-format
+msgid "Taking a card back from a pile at the top costs 15 points. Starting the deck again costs 100 points when taking one card at a time, 20 when taking three."
+msgstr "Taking a card back from a pile at the top costs 15 points. Starting the deck again costs 100 points when taking one card at a time, 20 when taking three."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_solitaire.html.heex:22
+#, elixir-autogen, elixir-format
+msgid "— Take its next card, or start the deck again when it is empty"
+msgstr "— Prendere la sua prossima carta, o ricominciare il mazzo quando è vuoto"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_solitaire.html.heex:28
+#, elixir-autogen, elixir-format
+msgid "— Change the back of the cards"
+msgstr "— Cambiare il retro delle carte"

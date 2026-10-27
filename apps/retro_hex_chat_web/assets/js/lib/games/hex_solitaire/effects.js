@@ -12,6 +12,7 @@
  * @module games/hex_solitaire/effects
  */
 
+import { gameColor } from "../../game_colors.js";
 import { burst, stepParticles } from "../core/render.js";
 import { easeOutBack, easeOutCubic, progress, tweenPoint } from "../core/tween.js";
 import { cardsFrom, layout, sourcePlace } from "./layout.js";
@@ -28,12 +29,17 @@ const flight = (fx, cards, from, to, start, ticks, ease, extra = {}) => {
   fx.list.push({ kind: "flight", cards, from, to, start, ticks, ease, ...extra });
 };
 
-/** The deal: every card on the table flying out from the stock, one after another. */
+/**
+ * The deal, as Klondike deals: in rounds, one card to each column still short,
+ * left to right, every card flying out from the stock.
+ */
 export function dealEffects(fx, table, now) {
   const places = layout(table);
   let order = 0;
-  for (const column of places.columns) {
-    for (const card of column.cards) {
+  for (let row = 0; row < places.columns.length; row++) {
+    for (const column of places.columns) {
+      const card = column.cards[row];
+      if (!card) continue;
       flight(
         fx,
         [card.card],
@@ -93,7 +99,9 @@ export function actionEffects(fx, { before, after, action, events, now, drag = n
         fx.list.push({ kind: "flip", card: turned.card, at: turned, start: now, ticks: FX.flip });
       }
     }
-    if (events & EVENT.FOUNDATION) sparks(fx, landing(is, to, 1), now, random);
+    // The sparks go off as the card lands.
+    const landed = now + (fx.reduced ? 0 : drag ? FX.drop : FX.flight);
+    if (events & EVENT.FOUNDATION) sparks(fx, landing(is, to, 1), landed, random);
   }
   if (action.type === "return" && drag) {
     flight(
@@ -118,19 +126,30 @@ export function actionEffects(fx, { before, after, action, events, now, drag = n
   }
 }
 
-/** A few sparks out of the middle of a pile. */
-function sparks(fx, place, now, random) {
+const SPARK_COLOURS = ["ffd34d", "fff6c8", "ffffff"];
+
+/** Sparks flying out from the edge of a pile, gold and white, from tick `start`. */
+function sparks(fx, place, start, random) {
+  const cx = place.x + CARD.width / 2;
+  const cy = place.y + CARD.height / 2;
   const particles = burst(
-    place.x + CARD.width / 2,
-    place.y + CARD.height / 2,
-    fx.reduced ? 4 : 12,
+    cx,
+    cy,
+    fx.reduced ? 6 : 16,
     {
-      speed: [1, 2.5],
-      extra: () => ({ life: 1 }),
+      speed: [1.5, 2.5],
+      extra: (i) => ({ life: 1, color: gameColor(SPARK_COLOURS[i % SPARK_COLOURS.length]) }),
     },
     random,
-  );
-  fx.list.push({ kind: "sparks", particles, start: now, ticks: FX.sparks });
+  ).map((p) => {
+    // Out from the card's edge, not its middle: the card hides its middle.
+    const reach = Math.min(
+      CARD.width / 2 / Math.abs(p.vx || 1e-6),
+      CARD.height / 2 / Math.abs(p.vy || 1e-6),
+    );
+    return { ...p, x: cx + p.vx * reach, y: cy + p.vy * reach };
+  });
+  fx.list.push({ kind: "sparks", particles, start, ticks: FX.sparks });
 }
 
 /**
@@ -164,6 +183,7 @@ export function cascadeEffects(fx, table, now, random) {
 export function stepEffects(fx, now) {
   fx.list = fx.list.filter((effect) => {
     if (effect.kind === "sparks") {
+      if (now < effect.start) return true;
       effect.particles = stepParticles(effect.particles, { drag: 0.9, fade: 1 / FX.sparks });
       return effect.particles.length > 0;
     }
@@ -211,6 +231,9 @@ export function shakeAt(effect, now) {
   const t = progress(effect.start, effect.ticks, now);
   return Math.round(Math.sin(t * Math.PI * 6) * 4 * (1 - t)) || 0;
 }
+
+/** Whether a turning card already shows its face: the back narrows, the face opens. */
+export const flipShowsFace = (effect, now) => progress(effect.start, effect.ticks, now) >= 0.5;
 
 /** How wide a turning card shows at `now`: narrowing to an edge and opening again. */
 export function flipWidth(effect, now) {

@@ -24,6 +24,22 @@ NAMES: dict[str, dict[str, str]] = {
     },
     # The longer title first, so its mode is never read as a sentence: the
     # engine made "Draw Three" into "Draw Tres".
+    # The name of the game of patience, as each language calls it — what a
+    # search for it uses. Translated as words it came back as "Solitário de
+    # Klondike", which nobody in Brazil looks for.
+    "Klondike solitaire": {
+        "pt": "Paciência",
+        "es": "Solitario",
+        "fr": "Solitaire",
+        "de": "Solitär",
+        "it": "Solitario",
+        "nl": "Patience",
+        "pl": "Pasjans",
+        "ru": "Пасьянс «Косынка»",
+        "ja": "ソリティア",
+        "zh_hans": "纸牌接龙",
+        "zh_hant": "紙牌接龍",
+    },
     "Hex Solitaire: Draw Three": {
         "ja": "ヘックスソリティア：3枚めくり",
     },

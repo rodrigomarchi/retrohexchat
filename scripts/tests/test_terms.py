@@ -44,6 +44,30 @@ class MissingTermsTest(unittest.TestCase):
         self.assertTrue(missing_terms(source, "踢打游戏,或用鼠标或手指拖动", "zh_hans"))
         self.assertEqual(missing_terms(source, "轻点即可出牌，或用鼠标或手指拖动", "zh_hans"), [])
 
+    def test_drawing_a_card_is_not_drawing_a_picture(self):
+        source = "— Draw its next card, or start the deck again when it is empty"
+        self.assertTrue(missing_terms(source, "— Desenhar a sua próxima carta", "pt_BR"))
+        self.assertEqual(missing_terms(source, "— Comprar a próxima carta do baralho", "pt_BR"), [])
+
+    def test_the_back_of_the_cards_is_their_back(self):
+        source = "— Choose another back for the cards"
+        self.assertTrue(missing_terms(source, "— Escolha outra parte para as cartas", "pt_BR"))
+        self.assertEqual(missing_terms(source, "— Escolha outro verso para as cartas", "pt_BR"), [])
+
+    def test_a_bank_card_beside_a_playing_card_is_still_rejected(self):
+        source = "— Move a card, or the cards on top of it, onto another pile"
+        self.assertTrue(
+            missing_terms(source, "— Mover una tarjeta, o las cartas encima de ella, a otra pila", "es")
+        )
+        self.assertEqual(
+            missing_terms(source, "— Mover una carta, o las cartas encima de ella, a otro montón", "es"), []
+        )
+
+    def test_a_pile_of_cards_is_not_a_post(self):
+        source = "Klondike solitaire for one player. Put every card on its pile, from the ace to the king."
+        self.assertTrue(missing_terms(source, "Solitär für einen Spieler. Legen Sie jede Karte auf ihren Pfahl.", "de"))
+        self.assertEqual(missing_terms(source, "Solitär für einen Spieler. Legen Sie jede Karte auf ihren Stapel.", "de"), [])
+
     def test_the_deck_is_the_cards_pile_not_a_ships(self):
         source = "Hex Solitaire draws one card at a time from the deck."
         self.assertTrue(

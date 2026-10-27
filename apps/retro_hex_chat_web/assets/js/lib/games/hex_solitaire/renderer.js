@@ -11,8 +11,8 @@
 
 import { readGameColors } from "../../game_colors.js";
 import { drawCard } from "../core/cards.js";
-import { drawDigit, drawParticleDots, drawPixelSprite } from "../core/render.js";
-import { flightAt, flipWidth, flying, shakeAt } from "./effects.js";
+import { drawParticleDots, drawPixelSprite } from "../core/render.js";
+import { flightAt, flipShowsFace, flipWidth, flying, shakeAt } from "./effects.js";
 import { layout } from "./layout.js";
 import { CARD, VIEW } from "./protocol.js";
 
@@ -27,8 +27,22 @@ export function readColors(canvas) {
   });
 }
 
-const STAR = ["..#..", "..#..", "#####", ".###.", ".#.#.", "#...#"];
-const CLOCK = [".###.", "#.#.#", "#.#.#", "#.###", "#...#", ".###."];
+// The score's and the clock's icons and digits, in the deck's rank lettering.
+const STAR = ["...#...", "..###..", "#######", ".#####.", "..###..", ".##.##.", "##...##"];
+const CLOCK = ["..###..", ".#.#.#.", "#..#..#", "#..##.#", "#.....#", ".#...#.", "..###.."];
+const DIGITS = {
+  0: [".###.", "#...#", "#..##", "#.#.#", "##..#", "#...#", ".###."],
+  1: ["..#..", ".##..", "..#..", "..#..", "..#..", "..#..", ".###."],
+  2: [".###.", "#...#", "....#", "...#.", "..#..", ".#...", "#####"],
+  3: ["####.", "....#", "....#", ".###.", "....#", "....#", "####."],
+  4: ["...#.", "..##.", ".#.#.", "#..#.", "#####", "...#.", "..###"],
+  5: ["#####", "#....", "####.", "....#", "....#", "#...#", ".###."],
+  6: [".###.", "#....", "#....", "####.", "#...#", "#...#", ".###."],
+  7: ["#####", "#...#", "...#.", "..#..", "..#..", ".#...", ".#..."],
+  8: [".###.", "#...#", "#...#", ".###.", "#...#", "#...#", ".###."],
+  9: [".###.", "#...#", "#...#", ".####", "....#", "....#", ".###."],
+  ":": [".", ".", "#", ".", "#", ".", "."],
+};
 // The deck's own pips (`assets/art/cards/build_deck.py`), marking each foundation's place.
 const SUITS = [
   [
@@ -84,20 +98,48 @@ const SUITS = [
   ],
 ];
 
-/** A number in pixel digits from its left edge; answers where it ended. */
-function drawNumber(ctx, text, x, y) {
+// The felt's weave: a tile of the felt's colour with a few darker threads.
+const WEAVE = [
+  "#.......",
+  "........",
+  "....#...",
+  "........",
+  "..#.....",
+  "........",
+  "......#.",
+  "........",
+];
+
+/**
+ * The felt as a pattern of its weave, for `fillStyle`; null where the page
+ * cannot draw off the screen (the felt is then plain).
+ * @param {CanvasRenderingContext2D} ctx - the screen the pattern is for
+ * @param {object} colors
+ * @param {Document} document
+ */
+export function feltWeave(ctx, colors, document) {
+  const tile = document.createElement("canvas");
+  tile.width = WEAVE[0].length;
+  tile.height = WEAVE.length;
+  const weave = tile.getContext("2d");
+  if (!weave) return null;
+  weave.fillStyle = colors.felt;
+  weave.fillRect(0, 0, tile.width, tile.height);
+  drawPixelSprite(weave, WEAVE, { "#": colors.feltDark }, 0, 0, 1, 1);
+  return ctx.createPattern(tile, "repeat");
+}
+
+/** How wide a number is in the score's digits, at 2 pixels a dot. */
+const numberWidth = (text) =>
+  [...String(text)].reduce((width, char) => width + (DIGITS[char][0].length + 1) * 2, 0);
+
+/** A number in the score's digits from its left edge. */
+function drawNumber(ctx, text, x, y, ink) {
   let left = x;
   for (const char of String(text)) {
-    if (char === ":") {
-      ctx.fillRect(left, y + 4, 2, 2);
-      ctx.fillRect(left, y + 10, 2, 2);
-      left += 5;
-    } else {
-      drawDigit(ctx, Number(char), left, y, 2);
-      left += 12;
-    }
+    drawPixelSprite(ctx, DIGITS[char], { "#": ink }, left, y, 2, 2);
+    left += (DIGITS[char][0].length + 1) * 2;
   }
-  return left;
 }
 
 const clock = (ticks) => {
@@ -125,6 +167,7 @@ function drawShadow(ctx, x, y, colors, lift = 0) {
 
 /** One card at its place, face up or down, narrowed while it turns over. */
 function drawOne(ctx, atlas, card, x, y, { faceUp = true, back = 0, width = CARD.width } = {}) {
+  if (width <= 0) return;
   if (width === CARD.width) {
     drawCard(ctx, atlas, card, x, y, { faceUp, back });
     return;
@@ -140,27 +183,37 @@ function drawOne(ctx, atlas, card, x, y, { faceUp = true, back = 0, width = CARD
  * The whole picture.
  * @param {CanvasRenderingContext2D} ctx
  * @param {{ state: object, drag: object | null, fx: object, atlas: object | null,
- *   colors: object, now: number, back: number, trail?: object | null }} scene
+ *   colors: object, now: number, back: number, trail?: object | null,
+ *   felt?: CanvasPattern | null }} scene - `felt` is the felt's weave, when the
+ *   page could make one; the felt is plain without it
  */
-export function render(ctx, { state, drag, fx, atlas, colors, now, back, trail = null }) {
+export function render(
+  ctx,
+  { state, drag, fx, atlas, colors, now, back, trail = null, felt = null },
+) {
   const { table } = state;
   const places = layout(table);
   const away = flying(fx);
   if (drag) for (const card of drag.cards) away.add(card);
+  // A card the cascade has launched has left its foundation.
+  for (const effect of fx.list) {
+    if (effect.kind !== "cascade") continue;
+    for (const item of effect.items) if (now >= item.launch) away.add(item.card);
+  }
   const shaking = new Map(
     fx.list.filter((e) => e.kind === "shake").map((e) => [e.card, shakeAt(e, now)]),
   );
-  const turning = new Map(
-    fx.list.filter((e) => e.kind === "flip").map((e) => [e.card, flipWidth(e, now)]),
-  );
-  const one = (card, x, y, faceUp = true) =>
+  const turning = new Map(fx.list.filter((e) => e.kind === "flip").map((e) => [e.card, e]));
+  const one = (card, x, y, faceUp = true) => {
+    const flip = turning.get(card);
     drawOne(ctx, atlas, card, x + (shaking.get(card) ?? 0), y, {
-      faceUp,
+      faceUp: flip ? flipShowsFace(flip, now) : faceUp,
       back,
-      width: turning.get(card) ?? CARD.width,
+      width: flip ? flipWidth(flip, now) : CARD.width,
     });
+  };
 
-  ctx.fillStyle = colors.felt;
+  ctx.fillStyle = felt ?? colors.felt;
   ctx.fillRect(0, 0, VIEW.width, VIEW.height);
   ctx.fillStyle = colors.feltDark;
   ctx.fillRect(0, 0, VIEW.width, 22);
@@ -192,11 +245,15 @@ export function render(ctx, { state, drag, fx, atlas, colors, now, back, trail =
   for (const effect of fx.list) {
     if (effect.kind === "flight" && now >= effect.start) {
       const at = flightAt(effect, now);
+      // In the air: a shadow on the felt below, until it lands.
+      if (now < effect.start + effect.ticks) {
+        effect.cards.forEach((card, k) => drawShadow(ctx, at.x, at.y + k * 18, colors, 1));
+      }
       effect.cards.forEach((card, i) => {
         drawOne(ctx, atlas, card, at.x, at.y + i * 18, { faceUp: effect.faceUp ?? true, back });
       });
     }
-    if (effect.kind === "sparks") drawParticleDots(ctx, effect.particles);
+    if (effect.kind === "sparks" && now >= effect.start) drawParticleDots(ctx, effect.particles);
     if (effect.kind === "cascade") {
       const target = trail ? trail.ctx : ctx;
       for (const item of effect.items) {
@@ -215,11 +272,10 @@ export function render(ctx, { state, drag, fx, atlas, colors, now, back, trail =
   }
 
   // The score and the time.
-  ctx.fillStyle = colors.ink;
   drawPixelSprite(ctx, STAR, { "#": colors.ink }, 8, 4, 2, 2);
-  drawNumber(ctx, state.score, 22, 4);
+  drawNumber(ctx, state.score, 26, 4, colors.ink);
   const time = clock(state.clock.ticks);
-  const right = VIEW.width - 8 - (time.length - 1) * 12 - 5;
-  drawPixelSprite(ctx, CLOCK, { "#": colors.ink }, right - 14, 4, 2, 2);
-  drawNumber(ctx, time, right, 4);
+  const left = VIEW.width - 8 - numberWidth(time);
+  drawPixelSprite(ctx, CLOCK, { "#": colors.ink }, left - 18, 4, 2, 2);
+  drawNumber(ctx, time, left, 4, colors.ink);
 }

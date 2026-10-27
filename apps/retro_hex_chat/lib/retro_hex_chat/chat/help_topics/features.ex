@@ -3300,7 +3300,7 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
         description:
           dgettext(
             "help",
-            "Klondike solitaire for one player: put every card on its pile, from the ace to the king. Tap a card to move it to its place, or drag it with the mouse or a finger."
+            "Klondike solitaire for one player. Put every card on its pile, from the ace to the king."
           ),
         see_also: ["feature-retro-games"]
       },

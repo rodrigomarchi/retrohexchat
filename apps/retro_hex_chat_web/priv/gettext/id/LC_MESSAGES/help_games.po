@@ -4709,11 +4709,6 @@ msgstr "Setiap sepuluh detik bermain biaya 2 poin. Sebuah kemenangan menghasilka
 msgid "Klondike is a card game from the nineteenth century, made famous on the PC by the solitaire that came with Windows."
 msgstr "Klondike adalah permainan kartu dari abad ke-19, terkenal di PC oleh solitaire yang datang dengan Windows."
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_solitaire.html.heex:37
-#, elixir-autogen, elixir-format
-msgid "On the table, a card goes on one a rank higher of the other colour: a red six on a black seven."
-msgstr "Di meja, kartu berjalan pada satu peringkat lebih tinggi dari warna lain: enam merah pada tujuh hitam."
-
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_solitaire.html.heex:67
 #, elixir-autogen, elixir-format
 msgid "Score"
@@ -4729,20 +4724,10 @@ msgstr "Sentuh kartu"
 msgid "The End button keeps the points you have. A game still open after an hour ends by itself."
 msgstr "Tombol Akhir menyimpan poin yang kau miliki. Sebuah permainan masih terbuka setelah satu jam berakhir dengan sendirinya."
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_solitaire.html.heex:28
-#, elixir-autogen, elixir-format
-msgid "— Choose another back for the cards"
-msgstr "- Pilih kembali yang lain untuk kartu"
-
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_solitaire.html.heex:70
 #, elixir-autogen, elixir-format
 msgid "A card on a pile at the top is worth 10 points; a card from the deck onto the table, or a card turned over, 5."
 msgstr "Sebuah kartu di atas tumpukan bernilai 10 poin; sebuah kartu dari dek ke meja, atau kartu diserahkan, 5."
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_solitaire.html.heex:55
-#, elixir-autogen, elixir-format
-msgid "Hex Solitaire draws one card at a time from the deck. Hex Solitaire: Draw Three draws three, and only the top one can be played."
-msgstr "Hex Solitaire menarik satu kartu sekaligus dari dek. Gambar Tiga gambar tiga, dan hanya yang atas dapat dimainkan."
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_solitaire.html.heex:2
 #, elixir-autogen, elixir-format
@@ -4759,11 +4744,6 @@ msgstr "Hex Solitaire is a game of cards for one player, played with the mouse o
 msgid "Only a king, with the cards on top of it, goes into an empty column."
 msgstr "Hanya seorang raja, dengan kartu di atasnya, masuk ke kolom kosong."
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_solitaire.html.heex:76
-#, elixir-autogen, elixir-format
-msgid "Taking a card back from a pile at the top costs 15 points. Starting the deck again costs 100 points drawing one card, 20 drawing three."
-msgstr "Mengambil kembali kartu dari tumpukan di atas biaya 15 poin. Mulai dek lagi biaya 100 poin menggambar satu kartu, 20 menggambar tiga."
-
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_solitaire.html.heex:22
 #, elixir-autogen, elixir-format
 msgid "Tap the deck"
@@ -4779,11 +4759,6 @@ msgstr "Tap the deck before you play"
 msgid "When nothing is left hidden, the cards go up to the piles at the top by themselves."
 msgstr "When nothing is left hidden, the cards go up to the piles at the top by themselves."
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_solitaire.html.heex:22
-#, elixir-autogen, elixir-format
-msgid "— Draw its next card, or start the deck again when it is empty"
-msgstr "- Gambar kartu berikutnya, atau mulai dek lagi ketika kosong"
-
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_solitaire.html.heex:16
 #, elixir-autogen, elixir-format
 msgid "— Move a card, or the cards on top of it, onto another pile"
@@ -4793,3 +4768,28 @@ msgstr "- Pindahkan kartu, atau kartu di atasnya, ke tumpukan lain"
 #, elixir-autogen, elixir-format
 msgid "— Move it to its place: a pile at the top first, otherwise the first column that takes it"
 msgstr "- Pindahkan ke tempatnya: tumpukan di atas pertama, jika tidak kolom pertama yang mengambilnya"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_solitaire.html.heex:37
+#, elixir-autogen, elixir-format
+msgid "On the table, a card goes on a card one higher in value and of the other colour: a red six on a black seven."
+msgstr "Di meja, kartu berjalan pada kartu satu lebih tinggi dalam nilai dan warna lainnya: enam merah pada tujuh hitam."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_solitaire.html.heex:55
+#, elixir-autogen, elixir-format
+msgid "Hex Solitaire takes one card at a time from the deck. Hex Solitaire: Draw Three takes three, and only the top one can be played."
+msgstr "Hex Solitaire mengambil satu kartu sekaligus dari dek. Hex Solitaire: Draw Three mengambil tiga, dan hanya yang atas dapat dimainkan."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_solitaire.html.heex:76
+#, elixir-autogen, elixir-format
+msgid "Taking a card back from a pile at the top costs 15 points. Starting the deck again costs 100 points when taking one card at a time, 20 when taking three."
+msgstr "Mengambil kembali kartu dari tumpukan di atas biaya 15 poin. Mulai dek lagi biaya 100 poin ketika mengambil satu kartu pada satu waktu, 20 ketika mengambil tiga."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_solitaire.html.heex:22
+#, elixir-autogen, elixir-format
+msgid "— Take its next card, or start the deck again when it is empty"
+msgstr "- Ambil kartu berikutnya, atau mulai dek lagi ketika kosong"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_solitaire.html.heex:28
+#, elixir-autogen, elixir-format
+msgid "— Change the back of the cards"
+msgstr "- Ubah bagian belakang kartu"

@@ -7,6 +7,7 @@ import {
   createEffects,
   dealEffects,
   flightAt,
+  flipShowsFace,
   flipWidth,
   flying,
   settle,
@@ -34,6 +35,9 @@ describe("the deal", () => {
     dealEffects(fx, dealt, 0);
 
     expect(flying(fx).size).toBe(28);
+    // In rounds, as Klondike deals: the second card out goes to the second column.
+    const second = fx.list[1];
+    expect(second.to.x).toBe(layout(dealt).columns[1].cards[0].x);
     const last = fx.list.at(-1);
     expect(last.start).toBe(27 * FX.dealStagger);
     expect(flightAt(last, last.start)).toEqual({
@@ -76,6 +80,25 @@ describe("an action's effects", () => {
     });
     const flip = fx.list.find((e) => e.kind === "flip");
     expect([flipWidth(flip, 10), flipWidth(flip, 10 + FX.flip / 2)]).toEqual([CARD.width, 12]);
+  });
+
+  it("turns a card over back first, then face, and sparks only once it has landed", () => {
+    const fx = createEffects();
+    actionEffects(fx, {
+      before,
+      after,
+      action: { type: "move", move },
+      events,
+      now: 10,
+      random: random(),
+    });
+    const flip = fx.list.find((e) => e.kind === "flip");
+    expect([flipShowsFace(flip, 10), flipShowsFace(flip, 10 + FX.flip)]).toEqual([false, true]);
+    const spark = fx.list.find((e) => e.kind === "sparks");
+    expect(spark.start).toBe(10 + FX.flight);
+    const before0 = JSON.stringify(spark.particles);
+    stepEffects(fx, 12);
+    expect(JSON.stringify(fx.list.find((e) => e.kind === "sparks").particles)).toBe(before0);
   });
 
   it("flies a dropped card from where the finger let it go", () => {

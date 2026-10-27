@@ -62,6 +62,51 @@ _TERMS: dict[str, dict[str, tuple[str, ...]]] = {
         "zh_hans": ("点按", "轻触", "点击", "轻点"),
         "zh_hant": ("點按", "輕觸", "點擊", "輕點"),
     },
+    # Drawing a card from the deck, never drawing a picture: Portuguese gave
+    # "Desenhar a sua próxima carta", Spanish "dibuja".
+    r"\b(?:draws?\s+(?:its\s+next\s+card|one\s+card|three|from\s+the\s+deck)"
+    r"|drawing\s+(?:one|three)\s+cards?)\b": {
+        "pt": ("compr", "tir", "vir", "pux"),
+        "es": ("roba", "rob", "saca", "tom"),
+        "fr": ("pioch", "tir"),
+        "de": ("zieh",),
+        "it": ("pesc",),
+        "nl": ("pak", "trek"),
+        "pl": ("dobier", "bierz", "dobr"),
+        "ru": ("бер", "тян", "взя"),
+        "id": ("ambil",),
+        "ja": ("引", "めく"),
+        "zh_hans": ("抽", "翻"),
+        "zh_hant": ("抽", "翻"),
+    },
+    # The back of the cards, never a part of them: Portuguese gave "outra
+    # parte para as cartas".
+    r"\bbacks?\s+(?:for|of)\s+the\s+cards\b": {
+        "pt": ("verso", "parte de trás"),
+        "es": ("dorso", "reverso", "parte trasera"),
+        "fr": ("dos",),
+        "de": ("rückseite",),
+        "it": ("dorso", "retro"),
+        "nl": ("achterkant",),
+        "pl": ("rewers", "tył"),
+        "ru": ("рубашк",),
+        "id": ("belakang", "punggung"),
+        "ja": ("裏",),
+        "zh_hans": ("背面",),
+        "zh_hant": ("背面",),
+    },
+    # A pile of cards, never a post: German gave "auf ihren Pfahl".
+    r"\b(?:on\s+its\s+pile|(?:another|a|the)\s+pile|the\s+four\s+piles|piles\s+at\s+the\s+top"
+    r"|between\s+piles)\b": {
+        "pt": ("pilha", "monte"),
+        "es": ("pila", "montón", "monton"),
+        "fr": ("pile", "tas"),
+        "de": ("stapel",),
+        "it": ("pil", "mazz", "mucchi"),
+        "nl": ("stapel",),
+        "pl": ("stos",),
+        "ru": ("стопк", "куч"),
+    },
     # The cards' pile one draws from, never a ship's deck: Spanish gave
     # "cubierta" and drew from it with a pencil ("dibuja").
     r"\b(?:the|a)\s+deck\b": {
@@ -499,7 +544,32 @@ def missing_terms(source: str, translated: str, locale_code: str) -> list[str]:
         if accepted and pattern.search(masked) and not any(form in text for form in accepted):
             missing.append(pattern.pattern)
 
+    for pattern, forms in WRONG_SENSES:
+        wrong = _forms(forms, locale_code)
+
+        if wrong and pattern.search(masked) and any(form in text for form in wrong):
+            missing.append(pattern.pattern)
+
     return missing
+
+
+# Words that carry a term's other sense, rejected even beside the right one:
+# Spanish wrote "Mover una tarjeta, o las cartas encima de ella", a bank card
+# and a playing card in one sentence, so the card term alone passed it.
+_WRONG_SENSES: dict[str, dict[str, tuple[str, ...]]] = {
+    r"\b(?:face-down\s+cards?|playing\s+cards?|card\s+game|game\s+of\s+cards"
+    r"|cards?\s+at\s+a\s+time|cards?\s+on\s+(?:a|its|the)\s+pile|cards?\s+on\s+top\s+of"
+    r"|cards?\s+(?:back\s+)?from\s+(?:the\s+deck|a\s+pile)|(?:its|the)\s+next\s+card"
+    r"|every\s+card\s+on|tap\s+a\s+card|a\s+card\s+goes)\b": {
+        "pt": ("cartão", "cartões"),
+        "es": ("tarjeta",),
+        "it": ("scheda", "schede"),
+    },
+}
+
+WRONG_SENSES: tuple[tuple[re.Pattern[str], dict[str, tuple[str, ...]]], ...] = tuple(
+    (re.compile(pattern, re.IGNORECASE), forms) for pattern, forms in _WRONG_SENSES.items()
+)
 
 
 # Words one variant of a language uses and the other does not. Argos has a

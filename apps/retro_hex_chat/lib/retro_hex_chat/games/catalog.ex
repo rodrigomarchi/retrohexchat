@@ -562,7 +562,7 @@ defmodule RetroHexChat.Games.Catalog do
       description:
         dgettext_noop(
           "games",
-          "Classic Klondike solitaire. Put every card on its pile, from the ace to the king, drawing one card at a time from the deck. Win fast for a time bonus."
+          "Klondike solitaire: put every card on its pile, from the ace to the king, taking one card at a time from the deck. Win fast for a time bonus."
         ),
       icon: "game_solitaire",
       controls:
@@ -579,7 +579,7 @@ defmodule RetroHexChat.Games.Catalog do
       description:
         dgettext_noop(
           "games",
-          "Klondike drawing three cards at a time from the deck, where only the top one can be played. Harder, and closer to the classic game."
+          "Klondike taking three cards at a time from the deck, where only the top one can be played. More difficult, and closer to the classic game."
         ),
       icon: "game_solitaire",
       controls:
