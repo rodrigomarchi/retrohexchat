@@ -39,6 +39,21 @@ class MissingTermsTest(unittest.TestCase):
         ):
             self.assertEqual(missing_terms(source, "Una tarjeta.", "es"), [], source)
 
+    def test_a_free_cell_holds_a_card_it_is_not_a_prison(self):
+        source = "A free cell holds one card."
+        self.assertTrue(missing_terms(source, "Uma cela livre guarda uma carta.", "pt_BR"))
+        self.assertTrue(missing_terms(source, "Uma célula livre, não uma cela, guarda uma carta.", "pt_BR"))
+        self.assertEqual(missing_terms(source, "Uma célula livre guarda uma carta.", "pt_BR"), [])
+        self.assertTrue(missing_terms(source, "Una célula libre contiene una carta.", "es"))
+        self.assertEqual(missing_terms(source, "Una celda libre contiene una carta.", "es"), [])
+
+    def test_face_up_is_seen_and_the_ace_is_a_card(self):
+        source = "FreeCell: all the cards are face up from the start, from the ace to the king."
+        self.assertTrue(missing_terms(source, "FreeCell: Jede Karte wird verdeckt, von der Spitze zum König.", "de"))
+        self.assertTrue(missing_terms(source, "FreeCell: alle Karten sind offen und verdeckt, vom Ass zum König.", "de"))
+        self.assertEqual(missing_terms(source, "FreeCell: alle Karten liegen offen, vom Ass bis zum König.", "de"), [])
+        self.assertTrue(missing_terms("A card that no other card still needs goes up.", "Um cartão que nenhum outro cartão precisa sobe.", "pt_BR"))
+
     def test_a_tap_is_a_finger_on_the_screen_not_a_kick(self):
         source = "Tap to play, or drag with the mouse or a finger"
         self.assertTrue(missing_terms(source, "踢打游戏,或用鼠标或手指拖动", "zh_hans"))
@@ -66,7 +81,7 @@ class MissingTermsTest(unittest.TestCase):
     def test_a_pile_of_cards_is_not_a_post(self):
         source = "Klondike solitaire for one player. Put every card on its pile, from the ace to the king."
         self.assertTrue(missing_terms(source, "Solitär für einen Spieler. Legen Sie jede Karte auf ihren Pfahl.", "de"))
-        self.assertEqual(missing_terms(source, "Solitär für einen Spieler. Legen Sie jede Karte auf ihren Stapel.", "de"), [])
+        self.assertEqual(missing_terms(source, "Solitär für einen Spieler. Legen Sie jede Karte auf ihren Stapel, vom Ass bis zum König.", "de"), [])
 
     def test_the_deck_is_the_cards_pile_not_a_ships(self):
         source = "Hex Solitaire draws one card at a time from the deck."

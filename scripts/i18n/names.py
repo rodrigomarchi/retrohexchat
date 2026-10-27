@@ -46,6 +46,22 @@ NAMES: dict[str, dict[str, str]] = {
     "Hex Solitaire": {
         "ja": "ヘックスソリティア",
     },
+    # FreeCell keeps its name where players search for it by that name; the
+    # longer forms first, so the bare name never splits them.
+    "Hex FreeCell": {
+        "ja": "ヘックスフリーセル",
+    },
+    "FreeCell solitaire": {
+        "es": "Carta Blanca",
+        "ja": "フリーセル",
+        "zh_hans": "空当接龙",
+        "zh_hant": "空當接龍",
+    },
+    "FreeCell": {
+        "ja": "フリーセル",
+        "zh_hans": "空当接龙",
+        "zh_hant": "空當接龍",
+    },
     "Construct": {
         "pt": "Constructo",
         "es": "Constructo",

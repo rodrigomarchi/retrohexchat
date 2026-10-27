@@ -45,6 +45,19 @@ class TranslationStats:
     reasons: list[str] = field(default_factory=list)
 
 
+def wrong_words(source: str, translated: str, locale_code: str) -> bool:
+    """Whether a translation fails the checks of its words: a term missing or
+    in its other sense, the other variant's forms, a negation lost, words
+    glued together. Cheap and local, so a cached translation is held to them too.
+    """
+    return bool(
+        missing_terms(source, translated, locale_code)
+        or foreign_forms(translated, locale_code)
+        or lost_negation(source, translated, locale_code)
+        or glued_words(translated, locale_code)
+    )
+
+
 class Pipeline:
     """Translates strings for one locale, rejecting unusable output.
 
@@ -87,12 +100,7 @@ class Pipeline:
         if not is_usable_translation(source, translated, replacements):
             return False
 
-        if self.locale_code and (
-            missing_terms(source, translated, self.locale_code)
-            or foreign_forms(translated, self.locale_code)
-            or lost_negation(source, translated, self.locale_code)
-            or glued_words(translated, self.locale_code)
-        ):
+        if self.locale_code and wrong_words(source, translated, self.locale_code):
             return False
 
         if self.back_translator is None:

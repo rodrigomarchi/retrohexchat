@@ -71,7 +71,8 @@ defmodule RetroHexChat.Games.CatalogTest do
                %{id: "hex_hockey_showdown", name: "Hex Hockey: Showdown"},
                %{id: "hex_jungle", name: "Hex Jungle"},
                %{id: "hex_solitaire", name: "Hex Solitaire"},
-               %{id: "hex_solitaire_draw3", name: "Hex Solitaire: Draw Three"}
+               %{id: "hex_solitaire_draw3", name: "Hex Solitaire: Draw Three"},
+               %{id: "hex_freecell", name: "Hex FreeCell"}
              ] = Catalog.list_games()
     end
 
@@ -252,6 +253,10 @@ defmodule RetroHexChat.Games.CatalogTest do
                  %{
                    id: "hex_solitaire_draw3",
                    controls: "Toque para jogar, ou arraste com o mouse ou um dedo"
+                 },
+                 %{
+                   id: "hex_freecell",
+                   controls: "Toque para jogar, ou arraste com o mouse ou um dedo"
                  }
                ] = Catalog.list_games()
       after
@@ -299,6 +304,7 @@ defmodule RetroHexChat.Games.CatalogTest do
       assert Catalog.solo_game_id?("hex_jungle")
       assert Catalog.solo_game_id?("hex_solitaire")
       assert Catalog.solo_game_id?("hex_solitaire_draw3")
+      assert Catalog.solo_game_id?("hex_freecell")
       refute Catalog.solo_game_id?("nonexistent")
     end
   end
@@ -308,7 +314,7 @@ defmodule RetroHexChat.Games.CatalogTest do
       assert Catalog.solo_only?("hex_jungle")
       assert Catalog.ranking("hex_jungle") == :score
 
-      for id <- ~w(hex_solitaire hex_solitaire_draw3) do
+      for id <- ~w(hex_solitaire hex_solitaire_draw3 hex_freecell) do
         assert Catalog.solo_only?(id)
         assert Catalog.ranking(id) == :score
       end
@@ -367,7 +373,7 @@ defmodule RetroHexChat.Games.CatalogTest do
   describe "game_ids/0" do
     test "returns list of all game id strings" do
       ids = Catalog.game_ids()
-      assert length(ids) == 37
+      assert length(ids) == 38
       assert Enum.all?(ids, &is_binary/1)
     end
   end
@@ -460,6 +466,8 @@ defmodule RetroHexChat.Games.CatalogTest do
       assert Catalog.mode_word("hex_solitaire_draw3") == "draw3"
       assert Catalog.channel_name("hex_solitaire_draw3") == "#hex-solitaire"
       assert [%{id: "hex_solitaire_draw3"}] = Catalog.modes_of("hex_solitaire")
+      assert Catalog.channel_name("hex_freecell") == "#hex-freecell"
+      assert Catalog.modes_of("hex_freecell") == []
     end
   end
 end

@@ -349,6 +349,7 @@ defmodule RetroHexChatWeb.Icons.Registry do
     {:icon_game_hockey, RetroHexChatWeb.Icons.Games},
     {:icon_game_jungle, RetroHexChatWeb.Icons.Games},
     {:icon_game_solitaire, RetroHexChatWeb.Icons.Games},
+    {:icon_game_freecell, RetroHexChatWeb.Icons.Games},
     {:icon_game_doom, RetroHexChatWeb.Icons.Games},
     {:icon_game_freedoom1, RetroHexChatWeb.Icons.Games},
     {:icon_game_freedoom2, RetroHexChatWeb.Icons.Games},

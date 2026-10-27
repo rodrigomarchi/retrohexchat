@@ -18,7 +18,8 @@ import { overlap } from "./piles.js";
 
 /**
  * @typedef {object} CardTableRules
- * @property {{ width: number, height: number }} card - the size the cards are drawn at
+ * @property {{ width: number, height: number } | ((state: object) => { width: number, height: number })} card -
+ *   the size the cards are drawn at, or what it is on a table
  * @property {(state: object, x: number, y: number) => object | null} hitTest
  * @property {(state: object, hit: object | null) => object | null} pick - the `from` a hit picks up
  * @property {(state: object, hit: object | null) => object | null | undefined} [tap] - a tap the
@@ -39,11 +40,12 @@ import { overlap } from "./piles.js";
  *   { drag: object | null, action: object | null }}
  */
 export function createInterpreter(table) {
-  const { card } = table;
+  const cardOf = typeof table.card === "function" ? table.card : () => table.card;
   const tapMoves = table.tapMoves ?? (() => true);
 
   /** The pile a held run covers most, as a move's `to`, or null over the bare felt. */
   function dropTarget(state, drag) {
+    const card = cardOf(state);
     const held = { x: drag.x, y: drag.y, w: card.width, h: card.height };
     let best = null;
     for (const target of table.targets(state)) {

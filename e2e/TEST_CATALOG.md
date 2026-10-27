@@ -134,9 +134,9 @@ make e2e.catalog.check    # verify it is current (also runs in make ci)
 
 ## Coverage
 
-- **263 spec files** under `e2e/tests/`.
-- **665 Playwright `test()` cases**.
-- **608 documented flows**, 607 done, 1 not done.
+- **264 spec files** under `e2e/tests/`.
+- **667 Playwright `test()` cases**.
+- **610 documented flows**, 609 done, 1 not done.
 - **Every spec documents its own flows.**
 
 ## Flow index
@@ -489,6 +489,8 @@ Grouped by section. Every row comes from an `@flow` line in the spec itself.
 | N78 | When a match room ends, the window says why and that the match did not start, and offers Play again — a new room for the same game — or the game's page | `tests/game-open-lobby.spec.ts` | done |
 | N79 | Hex Solitaire on the desktop: opened from the Retro Games folder, played with the mouse (a click on the stock turns a card), ended with End and written down | `tests/game-hex-solitaire.spec.ts` | done |
 | N80 | Hex Solitaire on a phone: the table stands up, fits the screen, and a tap on the stock turns a card | `tests/game-hex-solitaire.spec.ts` | done |
+| N81 | Hex FreeCell on the desktop: opened from the Retro Games folder, played with the mouse (a click on a column's foot moves its card), ended with End and written down | `tests/game-hex-freecell.spec.ts` | done |
+| N82 | Hex FreeCell on a phone: the table stands up with the mini cards, fits the screen, and a tap moves a card | `tests/game-hex-freecell.spec.ts` | done |
 
 ### O - Chat UI Micro-Journeys
 

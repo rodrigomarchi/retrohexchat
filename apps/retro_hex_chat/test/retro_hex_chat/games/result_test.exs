@@ -204,6 +204,14 @@ defmodule RetroHexChat.Games.ResultTest do
                  Result.normalize(id, %{"score" => %{"p1" => 24_079, "p2" => 0}})
       end
     end
+
+    test "refuses more points than a table of FreeCell can score" do
+      assert {:ok, %Result{p1_score: 23_853}} =
+               Result.normalize("hex_freecell", %{"score" => %{"p1" => 23_853, "p2" => 0}})
+
+      assert {:error, :implausible} =
+               Result.normalize("hex_freecell", %{"score" => %{"p1" => 23_854, "p2" => 0}})
+    end
   end
 
   describe "normalize/2 refuses" do

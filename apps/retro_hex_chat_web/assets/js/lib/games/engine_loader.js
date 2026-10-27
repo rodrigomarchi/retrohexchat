@@ -11,6 +11,7 @@ const DEFINITION_LOADERS = {
   hex_enduro: () => import("./hex_enduro/index.js"),
   hex_frost: () => import("./hex_frost/index.js"),
   hex_hockey: () => import("./hex_hockey/index.js"),
+  hex_freecell: () => import("./hex_freecell/index.js"),
   hex_invaders: () => import("./hex_invaders/index.js"),
   hex_jungle: () => import("./hex_jungle/index.js"),
   hex_solitaire: () => import("./hex_solitaire/index.js"),

@@ -55,11 +55,13 @@ defmodule RetroHexChat.Games.Result do
   @ceilings %{versus: 99, score: 9_999_999, coop: 9_999_999}
 
   # A game whose best is known: the jungle holds 2000 points and 32 treasures;
-  # a table of solitaire every move's points and the bonus of a 30-second win.
+  # a table of solitaire or FreeCell every move's points and the bonus of a
+  # 30-second win.
   @game_ceilings %{
     "hex_jungle" => 114_000,
     "hex_solitaire" => 24_078,
-    "hex_solitaire_draw3" => 24_078
+    "hex_solitaire_draw3" => 24_078,
+    "hex_freecell" => 23_853
   }
 
   @doc "Every outcome, in the order a column of them is validated against."

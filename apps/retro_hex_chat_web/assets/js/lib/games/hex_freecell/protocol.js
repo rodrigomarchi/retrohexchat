@@ -25,3 +25,49 @@ export const POINTS = Object.freeze({
  * win in thirty seconds. The server refuses more.
  */
 export const CEILING = 52 * POINTS.TO_FOUNDATION + Math.floor(BONUS_NUMERATOR / BONUS_MIN_SECONDS);
+
+/** What happened in a tick, one bit each: the sounds (by name) and the effects read them. */
+export const EVENT = Object.freeze({
+  DEAL: 1,
+  PLACE: 2,
+  FOUNDATION: 4,
+  REFUSE: 8,
+  RETURN: 16,
+  WIN: 32,
+});
+
+/** Cards going up by themselves — the safe ones in play, all of them at the end: one every this many ticks. */
+export const AUTO_TICKS = 6;
+
+/**
+ * The two tables the game is laid out on: lying down on a desktop's window,
+ * with the full cards, and standing up for a phone held upright, with the
+ * minis, so the eight columns read on a phone's width.
+ */
+export const GEOMETRY = Object.freeze({
+  LANDSCAPE: Object.freeze({
+    view: Object.freeze({ width: 640, height: 480 }),
+    size: "full",
+    card: Object.freeze({ width: 64, height: 88 }),
+    left: 29,
+    gap: 10,
+    top: 30,
+    columnsTop: 132,
+    upOffset: 18,
+    minOffset: 6,
+    bottom: 8,
+  }),
+  PORTRAIT: Object.freeze({
+    view: Object.freeze({ width: 464, height: 760 }),
+    size: "mini",
+    card: Object.freeze({ width: 44, height: 62 }),
+    left: 14,
+    gap: 12,
+    top: 30,
+    columnsTop: 104,
+    // The phone's height: more of each card shows, easier to read and to press.
+    upOffset: 24,
+    minOffset: 6,
+    bottom: 8,
+  }),
+});

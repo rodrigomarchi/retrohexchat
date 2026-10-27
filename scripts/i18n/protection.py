@@ -17,6 +17,7 @@ import re
 BRAND_RE = re.compile(
     r"\b(Retro Hex Chat|RetroHexChat|RetroHex|ChanServ|NickServ|MemoServ|OperServ|HostServ|Construct|"
     r"End of Time|Hex Solitaire: Draw Three|Hex Solitaire|Klondike solitaire|"
+    r"Hex FreeCell|FreeCell solitaire|FreeCell|"
     r"mIRC|IRC|CTCP|DCC|"
     r"LibreQuake|QuakeSpasm|WebRTC|LiveView|PostgreSQL|Elixir|Phoenix)\b"
 )

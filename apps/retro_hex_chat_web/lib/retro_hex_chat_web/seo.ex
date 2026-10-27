@@ -311,7 +311,7 @@ defmodule RetroHexChatWeb.SEO do
   end
 
   # A game of cards says so, for a search that asks for one.
-  defp put_genre(data, %{id: id}) when id in ~w(hex_solitaire hex_solitaire_draw3),
+  defp put_genre(data, %{id: id}) when id in ~w(hex_solitaire hex_solitaire_draw3 hex_freecell),
     do: Map.put(data, "genre", "Card game")
 
   defp put_genre(data, _game), do: data

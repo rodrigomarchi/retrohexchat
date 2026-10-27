@@ -206,7 +206,6 @@ export function defineCardTable(table) {
     theme: readTableColors,
     setup: (game) => {
       game.frameCount = 0;
-      game.fx = createEffects({ reduced: reducedMotion() });
       game.gesture = createGesture({ slop: TAP_SLOP });
       game.drag = null;
       game.heldDrag = null;
@@ -226,7 +225,13 @@ export function defineCardTable(table) {
       const box = canvas.getBoundingClientRect();
       return box.height > box.width ? geometry.PORTRAIT.view : geometry.LANDSCAPE.view;
     },
-    init: (game) => table.init(game, portrait(game.view) ? geometry.PORTRAIT : geometry.LANDSCAPE),
+    // The cards are dealt in the size the table is laid for: a table of many
+    // columns standing up on a phone deals the minis (`size: "mini"`).
+    init: (game) => {
+      const laid = portrait(game.view) ? geometry.PORTRAIT : geometry.LANDSCAPE;
+      game.fx = createEffects({ reduced: reducedMotion(), size: laid.size ?? "full" });
+      return table.init(game, laid);
+    },
     onPointer,
     flow: {
       phases: PHASE,

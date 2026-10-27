@@ -397,7 +397,7 @@ defmodule RetroHexChatWeb.Components.UI.RetroGamesPanel do
   def goal_label(%{id: "hex_hockey_showdown"}), do: dgettext("games", "First to 5 goals")
   def goal_label(%{id: "hex_jungle"}), do: dgettext("games", "32 treasures in 20 minutes")
 
-  def goal_label(%{id: id}) when id in ~w(hex_solitaire hex_solitaire_draw3),
+  def goal_label(%{id: id}) when id in ~w(hex_solitaire hex_solitaire_draw3 hex_freecell),
     do: dgettext("games", "Four piles, ace to king")
 
   # A card table stands up on a phone held upright: the game lays itself out
@@ -405,6 +405,8 @@ defmodule RetroHexChatWeb.Components.UI.RetroGamesPanel do
   # the box is tall and the cards are as big as the phone allows.
   defp canvas_box_aspect(%{id: id}) when id in ~w(hex_solitaire hex_solitaire_draw3),
     do: "aspect-[464/720] sm:aspect-[4/3]"
+
+  defp canvas_box_aspect(%{id: "hex_freecell"}), do: "aspect-[464/760] sm:aspect-[4/3]"
 
   defp canvas_box_aspect(_game), do: "aspect-[4/3]"
 
@@ -426,6 +428,13 @@ defmodule RetroHexChatWeb.Components.UI.RetroGamesPanel do
   end
 
   # Played with the mouse or a finger: the "keys" are the gestures.
+  def control_rows(%{id: "hex_freecell"}) do
+    [
+      %{label: dgettext("games", "Move a card to its place"), keys: [dgettext("games", "Tap")]},
+      %{label: dgettext("games", "Move cards between piles"), keys: [dgettext("games", "Drag")]}
+    ]
+  end
+
   def control_rows(%{id: id}) when id in ~w(hex_solitaire hex_solitaire_draw3) do
     [
       %{label: dgettext("games", "Move a card to its place"), keys: [dgettext("games", "Tap")]},

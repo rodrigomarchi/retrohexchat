@@ -107,6 +107,43 @@ _TERMS: dict[str, dict[str, tuple[str, ...]]] = {
         "pl": ("stos",),
         "ru": ("стопк", "куч"),
     },
+    # A card lying face up, its face seen: German gave "verdeckt" (face down)
+    # and Japanese "直面" (to confront).
+    r"\bface\s+up\b": {
+        "pt": ("para cima", "virad", "à vista", "visíve"),
+        "es": ("boca arriba", "descubiert", "a la vista"),
+        "fr": ("face visible", "visible", "retourn"),
+        "de": ("aufgedeckt", "offen", "sichtbar"),
+        "it": ("scopert", "a faccia in su", "visibil"),
+        "ja": ("表向き", "表に"),
+    },
+    # The ace, the card: German gave "Spitze" (a peak).
+    r"\bthe\s+ace\b": {
+        "pt": ("ás",),
+        "es": ("as",),
+        "fr": ("as",),
+        "de": ("ass",),
+        "it": ("asso",),
+        "nl": ("aas",),
+        "pl": ("as",),
+        "ru": ("туз",),
+        "ja": ("エース",),
+    },
+    # FreeCell's cell holds one card: never a prison cell ("cela") nor a
+    # living one in a sentence about a game.
+    r"\bfree\s+cells?\b": {
+        "pt": ("célula",),
+        "es": ("celda", "casilla"),
+        "fr": ("cellule", "case"),
+        "de": ("zelle", "feld"),
+        "it": ("cell", "casell"),
+        "nl": ("cel", "vak"),
+        "pl": ("komór", "pol"),
+        "ru": ("ячейк",),
+        "ja": ("セル",),
+        "zh_hans": ("空当", "格"),
+        "zh_hant": ("空當", "格"),
+    },
     # The cards' pile one draws from, never a ship's deck: Spanish gave
     # "cubierta" and drew from it with a pencil ("dibuja").
     r"\b(?:the|a)\s+deck\b": {
@@ -560,10 +597,18 @@ _WRONG_SENSES: dict[str, dict[str, tuple[str, ...]]] = {
     r"\b(?:face-down\s+cards?|playing\s+cards?|card\s+game|game\s+of\s+cards"
     r"|cards?\s+at\s+a\s+time|cards?\s+on\s+(?:a|its|the)\s+pile|cards?\s+on\s+top\s+of"
     r"|cards?\s+(?:back\s+)?from\s+(?:the\s+deck|a\s+pile)|(?:its|the)\s+next\s+card"
-    r"|every\s+card\s+on|tap\s+a\s+card|a\s+card\s+goes)\b": {
+    r"|every\s+card\s+on|tap\s+a\s+card|a\s+card\s+goes|a\s+card\s+that\s+no\s+other\s+card"
+    r"|no\s+card\s+can|holds\s+one\s+card|all\s+the\s+cards|any\s+card\s+goes)\b": {
         "pt": ("cartão", "cartões"),
         "es": ("tarjeta",),
         "it": ("scheda", "schede"),
+    },
+    r"\bfree\s+cells?\b": {
+        "pt": ("cela", "celas"),
+        "ja": ("無料",),
+    },
+    r"\bface\s+up\b": {
+        "de": ("verdeckt",),
     },
 }
 

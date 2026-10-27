@@ -195,6 +195,18 @@ defmodule RetroHexChatWeb.Components.UI.Games.RetroGamesPanelTest do
     assert box.(solitaire) =~ "sm:aspect-[4/3]"
     assert box.(@jungle) =~ "aspect-[4/3]"
     refute box.(@jungle) =~ "aspect-[464/720]"
+
+    freecell = %{@jungle | id: "hex_freecell", name: "Hex FreeCell", icon: "game_freecell"}
+    assert box.(freecell) =~ "aspect-[464/760]"
+    assert box.(freecell) =~ "sm:aspect-[4/3]"
+  end
+
+  test "Hex FreeCell is played by taps and drags, toward four piles" do
+    freecell = %{@jungle | id: "hex_freecell", name: "Hex FreeCell", icon: "game_freecell"}
+
+    assert goal_label(freecell) == "Four piles, ace to king"
+
+    assert [%{keys: ["Tap"]}, %{keys: ["Drag"]}] = control_rows(freecell)
   end
 
   test "renders the ready game with an integrated control panel" do

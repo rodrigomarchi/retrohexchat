@@ -1,0 +1,118 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`hex_freecell pins > solo following the key script 1`] = `
+{
+  "draws": [
+    {
+      "digest": "2ffe81375c92766c",
+      "ops": 931,
+      "phase": 1,
+      "side": "host",
+      "t": 32,
+    },
+  ],
+  "ended": false,
+  "phases": [
+    {
+      "phase": 1,
+      "side": "host",
+      "t": 16,
+    },
+  ],
+  "results": {
+    "guest": [],
+    "host": [],
+  },
+  "sounds": {
+    "host": {
+      "digest": "4c96a742bc20cb09",
+      "voices": {
+        "createBuffer": 69,
+        "createBufferSource": 69,
+        "createGain": 287,
+        "createOscillator": 217,
+      },
+    },
+  },
+  "state": {
+    "host": {
+      "autoTicks": 13,
+      "events": 0,
+      "phase": 1,
+      "score": 0,
+      "stuck": false,
+      "won": false,
+    },
+  },
+  "wire": {
+    "byDir": {},
+    "digest": "4f53cda18c2baa0c",
+    "first": [],
+  },
+}
+`;
+
+exports[`hex_freecell pins > solo to the end: hex_freecell 1`] = `
+{
+  "draws": [
+    {
+      "digest": "2ffe81375c92766c",
+      "ops": 931,
+      "phase": 1,
+      "side": "host",
+      "t": 32,
+    },
+  ],
+  "ended": true,
+  "phases": [
+    {
+      "phase": 1,
+      "side": "host",
+      "t": 16,
+    },
+    {
+      "phase": 3,
+      "side": "host",
+      "t": 3601024,
+    },
+  ],
+  "results": {
+    "guest": [],
+    "host": [
+      {
+        "score": {
+          "p1": 0,
+          "p2": 0,
+        },
+        "winner": 0,
+      },
+    ],
+  },
+  "sounds": {
+    "host": {
+      "digest": "e6a4a1edecde352c",
+      "voices": {
+        "createBuffer": 9,
+        "createBufferSource": 9,
+        "createGain": 13,
+        "createOscillator": 3,
+      },
+    },
+  },
+  "state": {
+    "host": {
+      "autoTicks": 216000,
+      "events": 0,
+      "phase": 3,
+      "score": 0,
+      "stuck": false,
+      "won": false,
+    },
+  },
+  "wire": {
+    "byDir": {},
+    "digest": "4f53cda18c2baa0c",
+    "first": [],
+  },
+}
+`;

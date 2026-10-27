@@ -18,7 +18,7 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).parent))
 
 from i18n import catalogs, glossary, locales, numerals  # noqa: E402
-from i18n.pipeline import DEFAULT_BATCH_CHARS, DEFAULT_BATCH_SIZE, Pipeline  # noqa: E402
+from i18n.pipeline import DEFAULT_BATCH_CHARS, DEFAULT_BATCH_SIZE, Pipeline, wrong_words  # noqa: E402
 from i18n.protection import has_sentinel_residue  # noqa: E402
 from i18n.terms import brazilian_forms, italian_accents  # noqa: E402
 from i18n.translator import TraditionalChinesePostprocessor, build, build_back  # noqa: E402
@@ -338,7 +338,14 @@ def cached_usable(cache: dict, code: str, source: str) -> bool:
     the reason it was skipped is gone.
     """
     value = cache.get(cache_key(code, source))
-    return value is not None and value != source and not has_sentinel_residue(value)
+    return (
+        value is not None
+        and value != source
+        and not has_sentinel_residue(value)
+        # A term added since it was cached may refuse it now: the cache would
+        # otherwise hand the refused wording back in every run.
+        and not wrong_words(source, value, code)
+    )
 
 
 def lookup(cache: dict, code: str, source: str) -> str:

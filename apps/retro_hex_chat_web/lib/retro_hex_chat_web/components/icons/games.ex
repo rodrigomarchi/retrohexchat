@@ -569,6 +569,43 @@ defmodule RetroHexChatWeb.Icons.Games do
     """
   end
 
+  # -- Hex FreeCell: four free cells above two cards face up, on the felt --
+
+  attr :class, :string, default: nil
+
+  @spec icon_game_freecell(map()) :: Phoenix.LiveView.Rendered.t()
+  def icon_game_freecell(assigns) do
+    ~H"""
+    <svg class={@class} viewBox="0 0 32 32" shape-rendering="crispEdges" aria-hidden="true">
+      <rect x="0" y="0" width="32" height="32" fill="#333" />
+      <path d="M0 0h32v2H2v28H0z" fill="#777" />
+      <path d="M0 32h32v-2H2V2h30V0h-2v30H0z" fill="#000" />
+      <rect x="2" y="2" width="28" height="28" fill="#08786c" />
+
+      <path
+        d="M4 4h5v7H4z M5 5v5h3V5z M10 4h5v7h-5z M11 5v5h3V5z M17 4h5v7h-5z M18 5v5h3V5z M23 4h5v7h-5z M24 5v5h3V5z"
+        fill="#0a8f80"
+        fill-rule="evenodd"
+      />
+
+      <rect x="5" y="13" width="12" height="16" fill="#828284" />
+      <rect x="6" y="14" width="10" height="14" fill="#fefefe" />
+      <path
+        d="M10 17h2v1h-2z M9 18h4v1h-4z M8 19h6v2h-6z M10 21h2v2h-2z M9 23h4v1h-4z"
+        fill="#090101"
+      />
+
+      <rect x="16" y="12" width="13" height="17" fill="#023e3e" />
+      <rect x="15" y="11" width="13" height="17" fill="#828284" />
+      <rect x="16" y="12" width="11" height="15" fill="#fefefe" />
+      <path
+        d="M17 16h2v1h-2z M21 16h2v1h-2z M16 17h8v2h-8z M17 19h6v1h-6z M18 20h4v1h-4z M19 21h2v1h-2z"
+        fill="#c51316"
+      />
+    </svg>
+    """
+  end
+
   # -- DOOM Shareware: shotgun with muzzle flash (red/orange) --
 
   attr :class, :string, default: nil

@@ -2314,6 +2314,7 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
           "feature-hex-hockey",
           "feature-hex-jungle",
           "feature-hex-solitaire",
+          "feature-hex-freecell",
           "feature-arcade"
         ]
       },
@@ -3303,6 +3304,28 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
             "Klondike solitaire for one player. Put every card on its pile, from the ace to the king."
           ),
         see_also: ["feature-retro-games"]
+      },
+      %{
+        id: "feature-hex-freecell",
+        title: dgettext("help", "Hex FreeCell"),
+        category: dgettext("help", "Retro Games"),
+        keywords: [
+          "hex freecell",
+          "freecell",
+          "free cell",
+          "solitaire",
+          dgettext("help", "solitaire"),
+          dgettext("help", "card game"),
+          dgettext("help", "cards"),
+          "game"
+        ],
+        icon: :icon_game_freecell,
+        description:
+          dgettext(
+            "help",
+            "FreeCell for one player: all the cards face up, and four free cells. Put every card on its pile, from the ace to the king."
+          ),
+        see_also: ["feature-hex-solitaire", "feature-retro-games"]
       },
       # ── Solo Arcade ──────────────────────────────────
       %{

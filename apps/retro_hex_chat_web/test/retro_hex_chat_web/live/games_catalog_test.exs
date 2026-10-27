@@ -105,6 +105,7 @@ defmodule RetroHexChatWeb.GamesCatalogTest do
 
       refute translated == "Klondike solitaire"
       assert title.("/pt-BR/games/hex-solitaire") =~ translated
+      assert title.("/games/hex-freecell") =~ "FreeCell solitaire"
     end
 
     test "is titled for the search it answers and canonical to itself", %{conn: conn} do
@@ -155,6 +156,10 @@ defmodule RetroHexChatWeb.GamesCatalogTest do
 
       assert solitaire["genre"] == "Card game"
       assert solitaire["playMode"] == "SinglePlayer"
+
+      freecell = conn |> document("/games/hex-freecell") |> json_ld("VideoGame")
+      assert freecell["genre"] == "Card game"
+      assert freecell["playMode"] == "SinglePlayer"
       refute Map.has_key?(doom, "genre")
     end
 

@@ -611,6 +611,7 @@ msgstr "Controllare la distanza"
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_enduro.html.heex:8
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_enduro_night.html.heex:8
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_enduro_sprint.html.heex:8
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_freecell.html.heex:7
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_frost.html.heex:8
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_frost_blizzard.html.heex:8
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_frost_peaceful.html.heex:8
@@ -1280,6 +1281,7 @@ msgstr "Discesa infinita — il corso non finisce mai"
 #: lib/retro_hex_chat_web/controllers/help_content/feature_block_breakers.html.heex:62
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_boxing.html.heex:63
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_enduro.html.heex:85
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_freecell.html.heex:70
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_frost.html.heex:119
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_frost_blizzard.html.heex:68
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_frost_peaceful.html.heex:68
@@ -1715,6 +1717,7 @@ msgstr "Fase 3"
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_enduro.html.heex:38
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_enduro_night.html.heex:38
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_enduro_sprint.html.heex:38
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_freecell.html.heex:22
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_invaders.html.heex:26
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_invaders_blitz.html.heex:26
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_invaders_coop.html.heex:26
@@ -1819,6 +1822,7 @@ msgstr ""
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_enduro.html.heex:87
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_enduro_night.html.heex:82
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_enduro_sprint.html.heex:78
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_freecell.html.heex:77
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_frost.html.heex:121
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_frost_blizzard.html.heex:70
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_frost_peaceful.html.heex:70
@@ -1847,7 +1851,7 @@ msgstr ""
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_warlords.html.heex:80
 #: lib/retro_hex_chat_web/controllers/help_content/feature_light_trails.html.heex:55
 #: lib/retro_hex_chat_web/controllers/help_content/feature_pixel_tanks.html.heex:69
-#: lib/retro_hex_chat_web/controllers/help_content/feature_retro_games.html.heex:153
+#: lib/retro_hex_chat_web/controllers/help_content/feature_retro_games.html.heex:159
 #: lib/retro_hex_chat_web/controllers/help_content/feature_sessions.html.heex:39
 #: lib/retro_hex_chat_web/controllers/help_content/feature_star_duel.html.heex:87
 #, elixir-autogen, elixir-format
@@ -3984,7 +3988,7 @@ msgstr "/p2p"
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_warlords.html.heex:82
 #: lib/retro_hex_chat_web/controllers/help_content/feature_light_trails.html.heex:57
 #: lib/retro_hex_chat_web/controllers/help_content/feature_pixel_tanks.html.heex:73
-#: lib/retro_hex_chat_web/controllers/help_content/feature_retro_games.html.heex:158
+#: lib/retro_hex_chat_web/controllers/help_content/feature_retro_games.html.heex:164
 #: lib/retro_hex_chat_web/controllers/help_content/feature_star_duel.html.heex:92
 #, elixir-autogen, elixir-format
 msgid "P2P Session"
@@ -4041,6 +4045,7 @@ msgstr ""
 #: lib/retro_hex_chat_web/controllers/help_content/feature_game_match_link.html.heex:48
 #: lib/retro_hex_chat_web/controllers/help_content/feature_game_scores.html.heex:50
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_boxing.html.heex:67
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_freecell.html.heex:80
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_jungle.html.heex:74
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_solitaire.html.heex:103
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_warlords.html.heex:83
@@ -4049,7 +4054,7 @@ msgstr ""
 msgid "Retro Games"
 msgstr "Giochi retro"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_retro_games.html.heex:141
+#: lib/retro_hex_chat_web/controllers/help_content/feature_retro_games.html.heex:147
 #, elixir-autogen, elixir-format
 msgid "In Hex Boxing, move in 8 directions, manage range, and tap Space or Shift to punch while the AI fights from the right side."
 msgstr ""
@@ -4064,7 +4069,7 @@ msgstr ""
 "mentre l'IA controlla quello destro. La difficoltà cambia quanto l'IA "
 "gestisce distanza, schivate e tempismo dei pugni."
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_retro_games.html.heex:147
+#: lib/retro_hex_chat_web/controllers/help_content/feature_retro_games.html.heex:153
 #, elixir-autogen, elixir-format
 msgid "In Pixel Tanks, rotate with Left/Right or A/D, drive forward with Up or W, and fire with Space or Shift while the AI navigates the maze as player 2."
 msgstr ""
@@ -4595,7 +4600,7 @@ msgstr "— la classifica del gioco"
 msgid "— this week's challenge and who leads it"
 msgstr "— la sfida di questa settimana e chi la guida"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_retro_games.html.heex:155
+#: lib/retro_hex_chat_web/controllers/help_content/feature_retro_games.html.heex:161
 #, elixir-autogen, elixir-format
 msgid "Arcade"
 msgstr "Arcade"
@@ -4705,11 +4710,13 @@ msgstr "La connessione inizia solo dopo Start."
 msgid "A face-down card turns over by itself once nothing lies on it."
 msgstr "Una carta face-down si trasforma da sola una volta che non c'è niente su di esso."
 
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_freecell.html.heex:16
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_solitaire.html.heex:16
 #, elixir-autogen, elixir-format
 msgid "Drag"
 msgstr "Trascina"
 
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_freecell.html.heex:58
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_solitaire.html.heex:82
 #, elixir-autogen, elixir-format
 msgid "Every ten seconds of play cost 2 points. A win earns a time bonus: the faster, the bigger."
@@ -4720,16 +4727,19 @@ msgstr "Ogni dieci secondi di gioco costa 2 punti. Una vittoria guadagna un bonu
 msgid "Klondike is a card game from the nineteenth century, made famous on the PC by the solitaire that came with Windows."
 msgstr "Klondike è un gioco di carte del XIX secolo, reso famoso sul PC dal solitario che è venuto con Windows."
 
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_freecell.html.heex:49
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_solitaire.html.heex:67
 #, elixir-autogen, elixir-format
 msgid "Score"
 msgstr "Punteggio"
 
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_freecell.html.heex:10
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_solitaire.html.heex:10
 #, elixir-autogen, elixir-format
 msgid "Tap a card"
 msgstr "Tap a card"
 
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_freecell.html.heex:64
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_solitaire.html.heex:88
 #, elixir-autogen, elixir-format
 msgid "The End button keeps the points you have. A game still open after an hour ends by itself."
@@ -4804,3 +4814,58 @@ msgstr "— Prendere la sua prossima carta, o ricominciare il mazzo quando è vu
 #, elixir-autogen, elixir-format
 msgid "— Change the back of the cards"
 msgstr "— Cambiare il retro delle carte"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_freecell.html.heex:52
+#, elixir-autogen, elixir-format
+msgid "A card on a pile at the top is worth 10 points; taking one back costs 15."
+msgstr "Una carta su un mucchio in cima vale 10 punti; prendendo uno indietro costa 15."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_freecell.html.heex:31
+#, elixir-autogen, elixir-format
+msgid "A free cell holds one card. The more free cells and empty columns you have, the longer the run of cards you can move at once."
+msgstr "Una cella libera contiene una carta. Più celle libere e colonne vuote avete, più lunga è la corsa di carte si può spostare subito."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_freecell.html.heex:72
+#, elixir-autogen, elixir-format
+msgid "FreeCell is a game of patience from the twentieth century, made famous on the PC by the version that came with Windows."
+msgstr "FreeCell è un gioco di pazienza del XX secolo, reso famoso sul PC dalla versione che è venuto con Windows."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_freecell.html.heex:79
+#, elixir-autogen, elixir-format
+msgid "Hex Solitaire"
+msgstr "Hex Solitaire"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_freecell.html.heex:25
+#, elixir-autogen, elixir-format
+msgid "On the table, a card goes on a card one higher in value and of the other colour: a red six on a black seven. Any card goes into an empty column."
+msgstr "Sul tavolo, una carta va su una carta uno superiore in valore e dell'altro colore: un rosso sei su un nero sette. Ogni carta entra in una colonna vuota."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_freecell.html.heex:43
+#, elixir-autogen, elixir-format
+msgid "When no card can move any more, the game ends with the points you have."
+msgstr "Quando nessuna carta può muoversi più, il gioco finisce con i punti che hai."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_freecell.html.heex:16
+#, elixir-autogen, elixir-format
+msgid "— Move a card, or the cards on top of it, onto another pile or into a free cell"
+msgstr "— Spostare una carta, o le carte sopra di esso, su un altro mucchio o in una cella libera"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_freecell.html.heex:10
+#, elixir-autogen, elixir-format
+msgid "— Move it, or the cards on top of it, to its place: a pile at the top first, then a column that takes it, then a free cell"
+msgstr "— Spostalo, o le carte sopra di esso, al suo posto: un mucchio in alto prima, poi una colonna che lo prende, poi una cella libera"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_freecell.html.heex:37
+#, elixir-autogen, elixir-format
+msgid "A card that no other card still needs goes up to its pile by itself. When every column runs down in order, the rest go up by themselves."
+msgstr "Una carta che nessun'altra carta ha ancora bisogno va fino al suo mucchio da solo. Quando ogni colonna scende in ordine, il resto sale da soli."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_freecell.html.heex:2
+#, elixir-autogen, elixir-format
+msgid "Hex FreeCell is FreeCell, the game of patience where all the cards are face up from the start, for one player. Put every card on the four piles at the top, each from the ace up to the king, using the eight columns of the table and the four free cells. Almost every game can be won: your score is your own, and your best games go into the ranking."
+msgstr "Hex FreeCell is FreeCell, the game of patience where all the cards are face up from the start, for one player. Put every card on the four piles at the top, each from the ace up to the king, using the eight columns of the table and the four free cells. Almost every game can be won: your score is your own, and your best games go into the ranking."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_retro_games.html.heex:141
+#, elixir-autogen, elixir-format
+msgid "Hex FreeCell is played the same way, with all the cards face up and four free cells to hold a card each."
+msgstr "Hex FreeCell is played the same way, with all the cards face up and four free cells to hold a card each."

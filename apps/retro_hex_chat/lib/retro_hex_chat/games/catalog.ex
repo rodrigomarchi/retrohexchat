@@ -45,12 +45,13 @@ defmodule RetroHexChat.Games.Catalog do
     "hex_hockey_showdown",
     "hex_jungle",
     "hex_solitaire",
-    "hex_solitaire_draw3"
+    "hex_solitaire_draw3",
+    "hex_freecell"
   ]
 
   # Played by one person alone: no opponent, no partner, nothing to watch. A
   # one-player game is also played solo and ranked by score (checked below).
-  @solo_only_game_ids ~w(hex_jungle hex_solitaire hex_solitaire_draw3)
+  @solo_only_game_ids ~w(hex_jungle hex_solitaire hex_solitaire_draw3 hex_freecell)
 
   # How a finished match is ranked. Versus games have two sides and one winner;
   # score games rank the points a player took home; co-op games rank the score
@@ -64,7 +65,7 @@ defmodule RetroHexChat.Games.Catalog do
                       hex_frost_peaceful hex_hockey hex_hockey_blitz hex_hockey_showdown)
   @score_game_ids ~w(hex_raid hex_raid_pacifist hex_raid_blitz hex_invaders hex_invaders_blitz
                      hex_enduro hex_enduro_night hex_enduro_sprint hex_jungle hex_solitaire
-                     hex_solitaire_draw3)
+                     hex_solitaire_draw3 hex_freecell)
   @coop_game_ids ~w(block_breakers hex_invaders_coop)
 
   @type ranking :: :versus | :score | :coop
@@ -582,6 +583,22 @@ defmodule RetroHexChat.Games.Catalog do
           "Klondike taking three cards at a time from the deck, where only the top one can be played. More difficult, and closer to the classic game."
         ),
       icon: "game_solitaire",
+      controls:
+        dgettext_noop(
+          "games",
+          "Tap to play, or drag with the mouse or a finger"
+        )
+    },
+    %{
+      id: "hex_freecell",
+      name: "Hex FreeCell",
+      tagline: dgettext_noop("games", "All the cards face up, and four free cells"),
+      description:
+        dgettext_noop(
+          "games",
+          "FreeCell: all the cards are face up from the start. Use the four free cells to move cards, and put every card on its pile, from the ace to the king. Win fast for a time bonus."
+        ),
+      icon: "game_freecell",
       controls:
         dgettext_noop(
           "games",

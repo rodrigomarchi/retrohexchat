@@ -97,6 +97,16 @@ class CacheTest(unittest.TestCase):
 
         self.assertTrue(machine_translate_po.must_translate(cache, "de", source, False))
 
+    def test_a_cached_translation_the_vocabulary_now_refuses_is_translated_again(self):
+        # Cached before the free-cell term existed, "una tarjeta" came back
+        # from the cache in every run, never checked again.
+        source = "A free cell holds one card."
+        cache = {self.key("es", source): "Una celda libre tiene una tarjeta."}
+
+        self.assertTrue(machine_translate_po.must_translate(cache, "es", source, False))
+        good = {self.key("es", source): "Una celda libre guarda una carta."}
+        self.assertFalse(machine_translate_po.must_translate(good, "es", source, False))
+
     def test_a_forced_msgid_never_comes_from_the_cache(self):
         cache = {self.key("nl", "Who runs a room"): "Wie leidt een kamer"}
 
