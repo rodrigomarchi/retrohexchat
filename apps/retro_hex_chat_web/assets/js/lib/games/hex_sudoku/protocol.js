@@ -20,6 +20,22 @@ export const LEVEL = Object.freeze({
 });
 
 /**
+ * A win's points: `NUMERATOR` / its ticks, never counting fewer than
+ * `MIN_TICKS` (a minute): 1 min is 10,000, 10 min is 1,000. Giving up scores
+ * nothing.
+ */
+export const POINTS = Object.freeze({ NUMERATOR: 36_000_000, MIN_TICKS: 3_600 });
+
+/** The most a game can score, a win in a minute. The server refuses more. */
+export const CEILING = POINTS.NUMERATOR / POINTS.MIN_TICKS;
+
+/** What the clock adds, in ticks: half a minute for a wrong digit, a minute for a hint. */
+export const PENALTY = Object.freeze({ MISTAKE: 1_800, HINT: 3_600 });
+
+/** Three hours on the clock: a game still open then ends, with nothing scored. */
+export const SAFETY_TICKS = 3 * 60 * 60 * 60;
+
+/**
  * Where the game's pictures are served, with the version of their description
  * (`assets/art/sudoku/build_tiles.py` writes it), so a new atlas is never read
  * from an old cache.
