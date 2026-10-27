@@ -49,13 +49,17 @@ defmodule RetroHexChat.Games.Catalog do
     "hex_freecell",
     "hex_spider",
     "hex_spider_2suits",
-    "hex_spider_4suits"
+    "hex_spider_4suits",
+    "hex_mines",
+    "hex_mines_intermediate",
+    "hex_mines_expert"
   ]
 
   # Played by one person alone: no opponent, no partner, nothing to watch. A
   # one-player game is also played solo and ranked by score (checked below).
   @solo_only_game_ids ~w(hex_jungle hex_solitaire hex_solitaire_draw3 hex_freecell hex_spider
-                         hex_spider_2suits hex_spider_4suits)
+                         hex_spider_2suits hex_spider_4suits hex_mines hex_mines_intermediate
+                         hex_mines_expert)
 
   # How a finished match is ranked. Versus games have two sides and one winner;
   # score games rank the points a player took home; co-op games rank the score
@@ -70,7 +74,7 @@ defmodule RetroHexChat.Games.Catalog do
   @score_game_ids ~w(hex_raid hex_raid_pacifist hex_raid_blitz hex_invaders hex_invaders_blitz
                      hex_enduro hex_enduro_night hex_enduro_sprint hex_jungle hex_solitaire
                      hex_solitaire_draw3 hex_freecell hex_spider hex_spider_2suits
-                     hex_spider_4suits)
+                     hex_spider_4suits hex_mines hex_mines_intermediate hex_mines_expert)
   @coop_game_ids ~w(block_breakers hex_invaders_coop)
 
   @type ranking :: :versus | :score | :coop
@@ -658,6 +662,56 @@ defmodule RetroHexChat.Games.Catalog do
         dgettext_noop(
           "games",
           "Tap to play, or drag with the mouse or a finger"
+        )
+    },
+    %{
+      id: "hex_mines",
+      name: "Hex Mines",
+      tagline: dgettext_noop("games", "Minesweeper: 10 mines on a 9×9 field"),
+      description:
+        dgettext_noop(
+          "games",
+          "Minesweeper for beginners: open every square without a mine on a 9×9 field hiding 10. Each number tells how many mines touch it. The faster you clear the field, the more points."
+        ),
+      icon: "game_mines",
+      controls:
+        dgettext_noop(
+          "games",
+          "Click or tap to open a square; right click or long press to plant a flag"
+        )
+    },
+    %{
+      id: "hex_mines_intermediate",
+      mode_of: "hex_mines",
+      name: "Hex Mines: Intermediate",
+      tagline: dgettext_noop("games", "40 mines on a 16×16 field"),
+      description:
+        dgettext_noop(
+          "games",
+          "Minesweeper on a 16×16 field hiding 40 mines: the classic middle level, where flags and chords start to save time."
+        ),
+      icon: "game_mines",
+      controls:
+        dgettext_noop(
+          "games",
+          "Click or tap to open a square; right click or long press to plant a flag"
+        )
+    },
+    %{
+      id: "hex_mines_expert",
+      mode_of: "hex_mines",
+      name: "Hex Mines: Expert",
+      tagline: dgettext_noop("games", "99 mines on a 30×16 field"),
+      description:
+        dgettext_noop(
+          "games",
+          "Minesweeper at its hardest: 99 mines on a 30×16 field. On a phone the field stands up, sixteen squares across."
+        ),
+      icon: "game_mines",
+      controls:
+        dgettext_noop(
+          "games",
+          "Click or tap to open a square; right click or long press to plant a flag"
         )
     }
   ]

@@ -32,8 +32,9 @@ describe.each(Object.entries(LEVEL))("the %s board", (id, level) => {
       expect(laid.board.y).toBeGreaterThanOrEqual(laid.bar.h);
       expect((laid.scale * 2) % 1).toBe(0);
       expect(laid.scale).toBeGreaterThanOrEqual(1.5);
-      for (const r of [laid.counter, laid.face, laid.clock])
-        {expect(within(r, geometry.view)).toBe(true);}
+      for (const r of [laid.counter, laid.face, laid.clock]) {
+        expect(within(r, geometry.view)).toBe(true);
+      }
     });
 
     it("finds the square under a point, at the corners and nowhere off the board", () => {

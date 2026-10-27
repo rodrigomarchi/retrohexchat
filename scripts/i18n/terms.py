@@ -174,6 +174,45 @@ _TERMS: dict[str, dict[str, tuple[str, ...]]] = {
         "it": ("picche e cuori", "spades and hearts"),
         "ja": ("スペードとハート", "spades and hearts"),
     },
+    # A mine under a square, never "my" ("minha") nor a mining pit: a game's
+    # mines, as its help and its catalogue say them.
+    r"\b(?:mines?\s+(?:you|on|touch|lie|hidden|hiding)|a\s+mine\b|no\s+mine\b|\d+\s+mines|hidden\s+mines|without\s+(?:a|one)\s*(?:mine)?)": {
+        "pt": ("mina",),
+        "es": ("mina",),
+        "fr": ("mine",),
+        "de": ("mine",),
+        "it": ("mine", "mina"),
+        "nl": ("mijn",),
+        "pl": ("min",),
+        "ru": ("мин",),
+        "ja": ("地雷",),
+        "zh_hans": ("雷",),
+        "zh_hant": ("雷",),
+    },
+    # A flag planted on a square: Portuguese and Spanish keep the flag, never
+    # a country's banner word gone astray ("sinalizador").
+    r"\b(?:plants?\s+a\s+flag|plant\s+flags|a\s+flag\s+keeps|as\s+many\s+flags)\b": {
+        "pt": ("bandeir",),
+        "es": ("bandera", "banderas"),
+        "fr": ("drapeau",),
+        "de": ("flagge", "fahne", "markierung"),
+        "it": ("bandier",),
+        "ja": ("旗", "フラグ"),
+        "zh_hans": ("旗",),
+        "zh_hant": ("旗",),
+    },
+    # A press held on the screen, never a printing press: Portuguese gave
+    # "imprensa", Spanish "prensa".
+    r"\blong\s+press\b": {
+        "pt": ("toque longo", "pression", "segur", "manten"),
+        "es": ("pulsación", "pulsa", "mantén", "mantener", "presión"),
+        "fr": ("appui", "maint"),
+        "de": ("lange", "gedrückt"),
+        "it": ("prolungat", "tieni"),
+        "ja": ("長押し",),
+        "zh_hans": ("长按",),
+        "zh_hant": ("長按",),
+    },
     # FreeCell's cell holds one card: never a prison cell ("cela") nor a
     # living one in a sentence about a game.
     r"\bfree\s+cells?\b": {
@@ -658,6 +697,18 @@ _WRONG_SENSES: dict[str, dict[str, tuple[str, ...]]] = {
     },
     r"\bface\s+up\b": {
         "de": ("verdeckt",),
+    },
+    r"\b(?:mines?\s+(?:you|on|touch|lie|hidden|hiding)|a\s+mine\b|no\s+mine\b|\d+\s+mines|hidden\s+mines|without\s+(?:a|one)\s*(?:mine)?)": {
+        "pt": ("minha", "minhas", "mineração", "minério"),
+        "es": (" mi ",),
+    },
+    r"\blong\s+press\b": {
+        "pt": ("imprensa",),
+        "es": ("prensa",),
+    },
+    # A field's square, never a town square.
+    r"\b(?:(?:a|the|every|each|first|other)\s+squares?|squares?\s+(?:you|of|around|without|with))\b": {
+        "es": ("plaza",),
     },
     r"(?<!HEV )\bsuits?\b": {
         "pt": ("fato", "terno"),

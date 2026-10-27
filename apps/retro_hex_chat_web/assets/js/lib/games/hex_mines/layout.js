@@ -58,9 +58,9 @@ export function layout(level, geometry) {
     across,
     board,
     bar: { x: 0, y: 0, w: width, h: BAR },
-    counter: piece(8, 3 * 16 + 4, 26),
+    counter: piece(8, 3 * 22 + 3, 34),
     face: piece(Math.round(width / 2 - 18), 36),
-    clock: piece(width - 8 - (3 * 16 + 4), 3 * 16 + 4, 26),
+    clock: piece(width - 8 - (3 * 22 + 3), 3 * 22 + 3, 34),
     mode: standing(geometry) ? piece(Math.round(width / 2 + 30), 36) : null,
   };
 }

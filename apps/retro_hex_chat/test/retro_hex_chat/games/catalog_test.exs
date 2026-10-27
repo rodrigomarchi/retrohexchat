@@ -75,7 +75,10 @@ defmodule RetroHexChat.Games.CatalogTest do
                %{id: "hex_freecell", name: "Hex FreeCell"},
                %{id: "hex_spider", name: "Hex Spider"},
                %{id: "hex_spider_2suits", name: "Hex Spider: Two Suits"},
-               %{id: "hex_spider_4suits", name: "Hex Spider: Four Suits"}
+               %{id: "hex_spider_4suits", name: "Hex Spider: Four Suits"},
+               %{id: "hex_mines", name: "Hex Mines"},
+               %{id: "hex_mines_intermediate", name: "Hex Mines: Intermediate"},
+               %{id: "hex_mines_expert", name: "Hex Mines: Expert"}
              ] = Catalog.list_games()
     end
 
@@ -272,8 +275,13 @@ defmodule RetroHexChat.Games.CatalogTest do
                  %{
                    id: "hex_spider_4suits",
                    controls: "Toque para jogar, ou arraste com o mouse ou um dedo"
-                 }
+                 },
+                 %{id: "hex_mines", controls: mines},
+                 %{id: "hex_mines_intermediate", controls: mines},
+                 %{id: "hex_mines_expert", controls: mines}
                ] = Catalog.list_games()
+
+        refute mines == "Click or tap to open a square; right click or long press to plant a flag"
       after
         Gettext.put_locale(RetroHexChat.Gettext, previous_locale)
       end
@@ -331,7 +339,7 @@ defmodule RetroHexChat.Games.CatalogTest do
       assert Catalog.ranking("hex_jungle") == :score
 
       for id <- ~w(hex_solitaire hex_solitaire_draw3 hex_freecell hex_spider hex_spider_2suits
-                   hex_spider_4suits) do
+                   hex_spider_4suits hex_mines hex_mines_intermediate hex_mines_expert) do
         assert Catalog.solo_only?(id)
         assert Catalog.ranking(id) == :score
       end
@@ -390,7 +398,7 @@ defmodule RetroHexChat.Games.CatalogTest do
   describe "game_ids/0" do
     test "returns list of all game id strings" do
       ids = Catalog.game_ids()
-      assert length(ids) == 41
+      assert length(ids) == 44
       assert Enum.all?(ids, &is_binary/1)
     end
   end
@@ -491,6 +499,9 @@ defmodule RetroHexChat.Games.CatalogTest do
 
       assert [%{id: "hex_spider_2suits"}, %{id: "hex_spider_4suits"}] =
                Catalog.modes_of("hex_spider")
+
+      assert Catalog.channel_name("hex_mines_expert") == "#hex-mines"
+      assert Catalog.mode_word("hex_mines_intermediate") == "intermediate"
     end
   end
 end

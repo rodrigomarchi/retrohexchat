@@ -60,7 +60,7 @@ msgstr "Sesi selesai"
 msgid "Started %{time}"
 msgstr "Dimulai %{time}"
 
-#: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:637
+#: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:664
 #, elixir-autogen, elixir-format
 msgid "AI won"
 msgstr "AI menang"
@@ -102,7 +102,7 @@ msgid "Hard"
 msgstr "Sulit"
 
 #: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:324
-#: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:632
+#: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:659
 #, elixir-autogen, elixir-format
 msgid "Loading"
 msgstr "Memuat"
@@ -117,7 +117,7 @@ msgstr "Memuat game..."
 msgid "Match Finished"
 msgstr "Pertandingan selesai"
 
-#: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:641
+#: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:668
 #, elixir-autogen, elixir-format
 msgid "No winner reported"
 msgstr "Pemenang tidak dilaporkan"
@@ -147,17 +147,17 @@ msgstr "Engine game tidak dapat dimuat."
 msgid "You %{you} x %{ai} AI"
 msgstr "Kamu %{you} x %{ai} AI"
 
-#: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:636
+#: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:663
 #, elixir-autogen, elixir-format
 msgid "You won"
 msgstr "Kamu menang"
 
-#: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:631
+#: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:658
 #, elixir-autogen, elixir-format
 msgid "Error"
 msgstr "Kesalahan"
 
-#: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:630
+#: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:657
 #, elixir-autogen, elixir-format
 msgid "Finished"
 msgstr "Selesai"
@@ -178,24 +178,24 @@ msgstr "Sasaran"
 msgid "Mode"
 msgstr "Mode"
 
-#: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:428
-#: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:461
-#: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:494
-#: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:525
-#: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:551
-#: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:563
-#: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:599
-#: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:612
+#: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:434
+#: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:488
+#: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:521
+#: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:552
+#: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:578
+#: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:590
+#: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:626
+#: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:639
 #, elixir-autogen, elixir-format
 msgid "Move"
 msgstr "Gerak"
 
-#: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:629
+#: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:656
 #, elixir-autogen, elixir-format
 msgid "Playing"
 msgstr "Bermain"
 
-#: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:628
+#: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:655
 #: lib/retro_hex_chat_web/components/ui/games/solo_lobby.ex:130
 #, elixir-autogen, elixir-format
 msgid "Ready"
@@ -222,26 +222,26 @@ msgstr "Pertama mencapai 3 game"
 msgid "Best of 3 rounds"
 msgstr "Terbaik dari 3 ronde"
 
-#: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:475
-#: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:508
-#: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:539
-#: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:564
+#: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:502
+#: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:535
+#: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:566
+#: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:591
 #, elixir-autogen, elixir-format
 msgid "Fire"
 msgstr "Tembak"
 
-#: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:538
+#: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:565
 #, elixir-autogen, elixir-format
 msgid "Move/Aim"
 msgstr "Gerak/Bidik"
 
-#: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:467
-#: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:588
+#: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:494
+#: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:615
 #, elixir-autogen, elixir-format
 msgid "Steer"
 msgstr "Kemudi"
 
-#: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:488
+#: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:515
 #, elixir-autogen, elixir-format
 msgid "Fire/Warp"
 msgstr "Tembak/Warp"
@@ -253,13 +253,13 @@ msgstr "Tembak/Warp"
 msgid "First to 7"
 msgstr "Pertama mencapai 7"
 
-#: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:473
-#: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:486
+#: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:500
+#: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:513
 #, elixir-autogen, elixir-format
 msgid "Rotate"
 msgstr "Putar"
 
-#: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:487
+#: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:514
 #, elixir-autogen, elixir-format
 msgid "Thrust"
 msgstr "Dorong"
@@ -270,7 +270,7 @@ msgstr "Dorong"
 msgid "First to 6 games"
 msgstr "Pertama mencapai 6 game"
 
-#: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:552
+#: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:579
 #, elixir-autogen, elixir-format
 msgid "Serve"
 msgstr "Servis"
@@ -301,7 +301,7 @@ msgstr "3 periode"
 msgid "First to 5 goals"
 msgstr "Pertama mencapai 5 gol"
 
-#: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:613
+#: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:640
 #, elixir-autogen, elixir-format
 msgid "Shoot/Tackle"
 msgstr "Tembak/Tekel"
@@ -317,13 +317,13 @@ msgstr "10 bagian"
 msgid "5 sections"
 msgstr "5 bagian"
 
-#: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:519
+#: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:546
 #, elixir-autogen, elixir-format
 msgid "Fire/Mine"
 msgstr "Tembak/Ranjau"
 
-#: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:507
-#: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:518
+#: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:534
+#: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:545
 #, elixir-autogen, elixir-format
 msgid "Move/Speed"
 msgstr "Gerak/Kecepatan"
@@ -343,17 +343,17 @@ msgstr "90 detik"
 msgid "Best of 3 days"
 msgstr "Terbaik dari 3 hari"
 
-#: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:575
+#: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:602
 #, elixir-autogen, elixir-format
 msgid "Lane"
 msgstr "Jalur"
 
-#: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:576
+#: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:603
 #, elixir-autogen, elixir-format
 msgid "Speed"
 msgstr "Kecepatan"
 
-#: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:577
+#: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:604
 #, elixir-autogen, elixir-format
 msgid "Turbo"
 msgstr "Turbo"
@@ -388,12 +388,12 @@ msgstr "Terbaik dari 5 ronde"
 msgid "Build first"
 msgstr "Bangun dulu"
 
-#: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:600
+#: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:627
 #, elixir-autogen, elixir-format
 msgid "Jump rows"
 msgstr "Lompat baris"
 
-#: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:501
+#: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:528
 #, elixir-autogen, elixir-format
 msgid "Catch/Release"
 msgstr "Tangkap/Lepas"
@@ -408,17 +408,17 @@ msgstr "Hancurkan semua blok"
 msgid "Last king standing"
 msgstr "Raja terakhir bertahan"
 
-#: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:500
+#: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:527
 #, elixir-autogen, elixir-format
 msgid "Shield"
 msgstr "Perisai"
 
-#: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:526
+#: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:553
 #, elixir-autogen, elixir-format
 msgid "Punch"
 msgstr "Pukul"
 
-#: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:474
+#: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:501
 #, elixir-autogen, elixir-format
 msgid "Forward"
 msgstr "Maju"
@@ -495,7 +495,7 @@ msgstr "Permainan berjalan di tab sendiri, dengan alamatnya sendiri. Menutup tab
 msgid "%{p1} %{p1_score} × %{p2_score} %{p2}"
 msgstr "%{p1} %{p1_score} × %{p2_score} %{p2}"
 
-#: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:639
+#: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:666
 #, elixir-autogen, elixir-format
 msgid "Board cleared"
 msgstr "Papan dibersihkan"
@@ -521,7 +521,7 @@ msgid "Computer (hard)"
 msgstr "Komputer (keras)"
 
 #: lib/retro_hex_chat_web/components/ui/games/game_result_card.ex:209
-#: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:638
+#: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:665
 #, elixir-autogen, elixir-format
 msgid "Draw"
 msgstr "Seri"
@@ -553,7 +553,7 @@ msgid "Offer a seat to this channel: whoever presses Join first plays you"
 msgstr "Menawarkan tempat duduk ke saluran ini: siapa pun menekan Bergabung pertama memainkan Anda"
 
 #: lib/retro_hex_chat_web/components/ui/games/game_result_card.ex:211
-#: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:640
+#: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:667
 #, elixir-autogen, elixir-format
 msgid "Out of lives"
 msgstr "Dari kehidupan"
@@ -843,12 +843,12 @@ msgstr "%{points} poin"
 msgid "32 treasures in 20 minutes"
 msgstr "32 harta karun dalam 20 menit"
 
-#: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:430
+#: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:436
 #, elixir-autogen, elixir-format
 msgid "Climb"
 msgstr "Panjat"
 
-#: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:429
+#: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:435
 #, elixir-autogen, elixir-format
 msgid "Jump"
 msgstr "Lompat"
@@ -858,7 +858,7 @@ msgstr "Lompat"
 msgid "Solo"
 msgstr "Solo"
 
-#: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:431
+#: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:437
 #, elixir-autogen, elixir-format
 msgid "Let go of the vine"
 msgstr "Lepas sulur"
@@ -869,41 +869,42 @@ msgstr "Lepas sulur"
 msgid "%{p1}: %{p1_score} points"
 msgstr "%{p1}: %{p1_score} poin"
 
-#: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:439
-#: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:447
-#: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:454
+#: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:466
+#: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:474
+#: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:481
 #, elixir-autogen, elixir-format
 msgid "Drag"
 msgstr "Seret"
 
-#: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:438
 #: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:446
-#: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:453
+#: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:465
+#: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:473
+#: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:480
 #, elixir-autogen, elixir-format
 msgid "Tap"
 msgstr "Ketuk"
 
-#: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:455
+#: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:482
 #, elixir-autogen, elixir-format
 msgid "Draw from the deck"
 msgstr "Ambil dari tumpukan"
 
-#: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:438
-#: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:446
-#: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:453
+#: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:465
+#: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:473
+#: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:480
 #, elixir-autogen, elixir-format
 msgid "Move a card to its place"
 msgstr "Pindahkan kartu ke tempatnya"
 
-#: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:439
-#: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:447
-#: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:454
+#: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:466
+#: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:474
+#: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:481
 #, elixir-autogen, elixir-format
 msgid "Move cards between piles"
 msgstr "Pindahkan kartu antar tumpukan"
 
-#: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:440
-#: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:455
+#: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:467
+#: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:482
 #, elixir-autogen, elixir-format
 msgid "Tap the deck"
 msgstr "Ketuk tumpukan kartu"
@@ -913,7 +914,7 @@ msgstr "Ketuk tumpukan kartu"
 msgid "Four piles, ace to king"
 msgstr "Empat tumpukan, as sampai raja"
 
-#: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:440
+#: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:467
 #, elixir-autogen, elixir-format
 msgid "Deal a row"
 msgstr "Tawar baris"
@@ -922,3 +923,53 @@ msgstr "Tawar baris"
 #, elixir-autogen, elixir-format
 msgid "Eight suits, king to ace"
 msgstr "Delapan setelan, raja untuk ace"
+
+#: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:407
+#, elixir-autogen, elixir-format
+msgid "Clear every square without a mine"
+msgstr "Hapus setiap persegi tanpa tambang"
+
+#: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:446
+#, elixir-autogen, elixir-format
+msgid "Click"
+msgstr "Klik"
+
+#: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:457
+#, elixir-autogen, elixir-format
+msgid "Flag with a tap, on a phone"
+msgstr "Flag with a tap, on a phone"
+
+#: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:450
+#, elixir-autogen, elixir-format
+msgid "Long press"
+msgstr "Tekan lama"
+
+#: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:445
+#, elixir-autogen, elixir-format
+msgid "Open a square"
+msgstr "Buka kotak"
+
+#: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:453
+#, elixir-autogen, elixir-format
+msgid "Open around a flagged number"
+msgstr "Buka sekitar nomor yang ditandai"
+
+#: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:449
+#, elixir-autogen, elixir-format
+msgid "Plant or lift a flag"
+msgstr "Tanaman atau mengangkat bendera"
+
+#: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:450
+#, elixir-autogen, elixir-format
+msgid "Right click"
+msgstr "Klik kanan"
+
+#: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:454
+#, elixir-autogen, elixir-format
+msgid "Tap the number"
+msgstr "Sentuh nomor"
+
+#: lib/retro_hex_chat_web/components/ui/games/retro_games_panel.ex:458
+#, elixir-autogen, elixir-format
+msgid "Tap the switch"
+msgstr "Tap the switch"

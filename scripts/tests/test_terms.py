@@ -70,6 +70,27 @@ class MissingTermsTest(unittest.TestCase):
         self.assertTrue(missing_terms("Mixes spades and hearts", "Mischt Spaten und Herzen", "de"))
         self.assertEqual(missing_terms("Mixes spades and hearts", "Mischt Pik und Herz", "de"), [])
 
+    def test_a_mine_is_under_a_square_and_a_flag_is_planted(self):
+        source = "Opening a square with a mine ends the game. A flag keeps a square from opening by mistake."
+        self.assertTrue(missing_terms(source, "Abrir uma casa com minha mina termina o jogo. Uma bandeira impede.", "pt_BR"))
+        self.assertTrue(missing_terms(source, "Abrir uma casa com mina termina o jogo. Um sinalizador impede.", "pt_BR"))
+        self.assertEqual(
+            missing_terms(source, "Abrir uma casa com mina termina o jogo. Uma bandeira impede.", "pt_BR"), []
+        )
+
+    def test_a_long_press_is_held_and_a_square_is_on_the_field(self):
+        self.assertTrue(missing_terms("Right click or long press", "Clique direito ou imprensa longa", "pt_BR"))
+        self.assertEqual(missing_terms("Right click or long press", "Clique direito ou toque longo", "pt_BR"), [])
+        self.assertTrue(missing_terms("A square with no mine around it opens", "Un cuadrado sin mi alrededor abre", "es"))
+        self.assertTrue(missing_terms("The first square you open", "La primera plaza que abres", "es"))
+        self.assertEqual(missing_terms("The first square you open", "La primera casilla que abres", "es"), [])
+
+    def test_minesweeper_is_called_as_each_language_calls_it(self):
+        from i18n import names
+
+        self.assertEqual(names.localize("Play Minesweeper", "pt_BR"), "Play Campo Minado")
+        self.assertEqual(names.localize("Hex Mines: Expert", "zh_hans"), "Hex Mines: Expert")
+
     def test_a_tap_is_a_finger_on_the_screen_not_a_kick(self):
         source = "Tap to play, or drag with the mouse or a finger"
         self.assertTrue(missing_terms(source, "踢打游戏,或用鼠标或手指拖动", "zh_hans"))

@@ -1,0 +1,74 @@
+<p>
+  {dgettext(
+    "help_games",
+    "Hex Mines is Minesweeper for one player. Under the squares of the field lie hidden mines: open every square without one, and plant flags on the ones you find. A number on an open square tells how many mines touch it. Your best games, the fastest wins, go into the ranking."
+  )}
+</p>
+<.help_h4 icon={:icon_btn_keyboard}>{dgettext("help_games", "Controls")}</.help_h4>
+<ul>
+  <li>
+    <strong>{dgettext("help_games", "Click or tap a square")}</strong> {dgettext(
+      "help_games",
+      "— Open it. A square with no mine around it opens the ones around it too"
+    )}
+  </li>
+  <li>
+    <strong>{dgettext("help_games", "Right click or long press")}</strong> {dgettext(
+      "help_games",
+      "— Plant a flag on a square, or lift it"
+    )}
+  </li>
+  <li>
+    <strong>{dgettext("help_games", "Click or tap a number")}</strong> {dgettext(
+      "help_games",
+      "— Once as many flags lie around it as its number, open every other square around it"
+    )}
+  </li>
+  <li>
+    <strong>{dgettext("help_games", "The switch on a phone")}</strong> {dgettext(
+      "help_games",
+      "— Change what a tap does: open a square, or plant a flag"
+    )}
+  </li>
+</ul>
+<.help_h4 icon={:icon_rules}>{dgettext("help_games", "Rules")}</.help_h4>
+<ul>
+  <li>
+    {dgettext(
+      "help_games",
+      "The first square you open never hides a mine, nor do the squares around it."
+    )}
+  </li>
+  <li>
+    {dgettext(
+      "help_games",
+      "Opening a square with a mine ends the game. A flag keeps a square from opening by mistake."
+    )}
+  </li>
+  <li>
+    {dgettext(
+      "help_games",
+      "Hex Mines is the beginner level: 10 mines on a 9×9 field. Hex Mines: Intermediate hides 40 on 16×16, and Hex Mines: Expert 99 on 30×16."
+    )}
+  </li>
+</ul>
+<.help_h4 icon={:icon_rules}>{dgettext("help_games", "Score")}</.help_h4>
+<ul>
+  <li>
+    {dgettext(
+      "help_games",
+      "Only a win scores: 10,000 points divided by the seconds it took, so the faster, the more. A game lost or ended with End scores nothing."
+    )}
+  </li>
+</ul>
+<.help_h4 icon={:icon_joystick}>{dgettext("help_games", "Inspiration")}</.help_h4>
+<p>
+  {dgettext(
+    "help_games",
+    "Minesweeper is a puzzle from the 1980s, made famous on the PC by the version that came with Windows."
+  )}
+</p>
+<.help_h4 icon={:icon_link}>{dgettext("help_games", "See Also")}</.help_h4>
+<p>
+  <.help_link topic="feature-retro-games">{dgettext("help_games", "Retro Games")}</.help_link>
+</p>

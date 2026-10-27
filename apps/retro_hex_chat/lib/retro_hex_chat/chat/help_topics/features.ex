@@ -2316,6 +2316,7 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
           "feature-hex-solitaire",
           "feature-hex-freecell",
           "feature-hex-spider",
+          "feature-hex-mines",
           "feature-arcade"
         ]
       },
@@ -3349,6 +3350,26 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
             "Spider for one player, with two decks in ten columns: one suit, two or four. Build each suit from the king down to the ace."
           ),
         see_also: ["feature-hex-solitaire", "feature-hex-freecell", "feature-retro-games"]
+      },
+      %{
+        id: "feature-hex-mines",
+        title: dgettext("help", "Hex Mines"),
+        category: dgettext("help", "Retro Games"),
+        keywords: [
+          "hex mines",
+          "minesweeper",
+          "mines",
+          dgettext("help", "minesweeper"),
+          dgettext("help", "puzzle"),
+          "game"
+        ],
+        icon: :icon_game_mines,
+        description:
+          dgettext(
+            "help",
+            "Minesweeper for one player, in three levels. Open every square without a mine; plant flags on the mines you find."
+          ),
+        see_also: ["feature-retro-games"]
       },
       # ── Solo Arcade ──────────────────────────────────
       %{

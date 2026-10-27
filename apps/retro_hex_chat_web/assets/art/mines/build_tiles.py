@@ -50,7 +50,7 @@ WHITE = (255, 255, 255, 255)
 YELLOW = (255, 210, 40, 255)
 AMBER = (200, 140, 10, 255)
 LED_ON = (255, 40, 30, 255)
-LED_OFF = (34, 7, 7, 255)
+LED_OFF = (22, 5, 5, 255)
 LED_BACK = (12, 6, 6, 255)
 
 # The classic colours of the numbers, in the deck's tones.

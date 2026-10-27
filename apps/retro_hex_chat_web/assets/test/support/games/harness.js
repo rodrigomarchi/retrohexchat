@@ -31,7 +31,8 @@ import { seedRandom } from "./seeded_random.js";
  * @param {string} [options.difficulty] - solo
  * @param {(data: ArrayBuffer, dir: string) => boolean} [options.drop]
  * @param {Array<{at: number, side: "host"|"guest", key: string, down: boolean}
- *   | {at: number, side: "host"|"guest", pointer: "down"|"move"|"up"|"cancel", x: number, y: number}>} [options.script] -
+ *   | {at: number, side: "host"|"guest", pointer: "down"|"move"|"up"|"cancel", x: number, y: number,
+ *      button?: number}>} [options.script] -
  *   key presses, and pointer events at a point of the page
  * @param {number} [options.width]
  * @param {number} [options.height]
@@ -200,7 +201,7 @@ export async function playMatch({
   const scriptTimers = script.map((entry) =>
     setTimeout(() => {
       if (entry.pointer) {
-        pointerAt(entry.side, entry.pointer, entry.x, entry.y);
+        pointerAt(entry.side, entry.pointer, entry.x, entry.y, { button: entry.button ?? 0 });
         return;
       }
       keyboards[entry.side].dispatchEvent(

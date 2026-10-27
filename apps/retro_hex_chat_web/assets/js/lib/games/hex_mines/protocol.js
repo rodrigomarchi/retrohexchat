@@ -49,4 +49,4 @@ export const EVENT = Object.freeze({
  * (`assets/art/mines/build_tiles.py` writes it), so a new atlas is never read
  * from an old cache.
  */
-export const TILES_URL = "/images/games/mines/tiles.json?vsn=932d7119f361";
+export const TILES_URL = "/images/games/mines/tiles.json?vsn=7dda049a36ac";

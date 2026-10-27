@@ -640,6 +640,41 @@ defmodule RetroHexChatWeb.Icons.Games do
     """
   end
 
+  # -- Hex Mines: a mine beside a red flag on the raised squares of a field --
+
+  attr :class, :string, default: nil
+
+  @spec icon_game_mines(map()) :: Phoenix.LiveView.Rendered.t()
+  def icon_game_mines(assigns) do
+    ~H"""
+    <svg class={@class} viewBox="0 0 32 32" shape-rendering="crispEdges" aria-hidden="true">
+      <rect x="0" y="0" width="32" height="32" fill="#333" />
+      <path d="M0 0h32v2H2v28H0z" fill="#777" />
+      <path d="M0 32h32v-2H2V2h30V0h-2v30H0z" fill="#000" />
+      <rect x="2" y="2" width="28" height="28" fill="#bdbfc5" />
+      <path d="M2 16h28v1H2z M16 2h1v28h-1z" fill="#96989f" />
+
+      <rect x="17" y="17" width="13" height="13" fill="#ccced4" />
+      <path d="M17 17h13v1H18v12h-1z" fill="#fefefe" />
+      <path d="M29 18h1v12H18v-1h11z" fill="#80828a" />
+      <path
+        d="M22 19h3v1h-3z M20 20h5v1h-5z M19 21h6v1h-6z M20 22h5v1h-5z M22 23h3v1h-3z"
+        fill="#cd1c1e"
+      />
+      <path d="M24 19h1v8h-1z M21 27h7v1h-7z" fill="#101014" />
+
+      <path
+        d="M8 4h1v2H8z M5 7h7v1H5z M4 8h9v4H4z M5 12h7v1H5z M8 13h1v2H8z M2 9h2v2H2z M13 9h2v2h-2z M5 5h1v1H5z M11 5h1v1h-1z M5 14h1v1H5z M11 14h1v1h-1z"
+        fill="#101014"
+      />
+      <path d="M6 8h2v2H6z" fill="#fefefe" />
+
+      <path d="M21 4h3v1h-3z M20 5h1v6h-1z M24 5h1v6h-1z M21 11h3v1h-3z" fill="#1c48d6" />
+      <path d="M5 21h5v1H5z M9 22h1v2H9z M6 24h3v1H6z M5 25h1v2H5z M5 27h5v1H5z" fill="#0e802c" />
+    </svg>
+    """
+  end
+
   # -- DOOM Shareware: shotgun with muzzle flash (red/orange) --
 
   attr :class, :string, default: nil

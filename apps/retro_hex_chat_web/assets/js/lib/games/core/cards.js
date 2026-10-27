@@ -12,6 +12,7 @@
  */
 
 import { gameColor } from "../../game_colors.js";
+import { browserAtlasIO, createAtlasLoader } from "./atlas.js";
 
 /** The 52 cards, in suit order. */
 export const DECK = Object.freeze(Array.from({ length: 52 }, (_, id) => id));
@@ -79,32 +80,21 @@ export function spiderDeck(suits) {
 /**
  * A loader of card atlases: an atlas is a JSON description (`card`, the size a
  * card is drawn at; `faces`, one region per card; `backs`, one per back;
- * `image`, the picture's file beside it) and the picture it cuts from. Each
- * atlas is fetched once however many ask, and an incomplete one is refused.
+ * `image`, the picture's file beside it) and the picture it cuts from
+ * (`core/atlas.js`). An incomplete one is refused.
  *
  * @param {{ fetchJson: (url: string) => Promise<object>, loadImage: (src: string) => Promise<CanvasImageSource> }} io
  * @returns {(url: string) => Promise<object>}
  */
-export function createCardAtlasLoader({ fetchJson, loadImage }) {
-  const loading = new Map();
-
-  return (url) => {
-    if (!loading.has(url)) loading.set(url, readAtlas(url, fetchJson, loadImage));
-    return loading.get(url);
-  };
-}
-
-async function readAtlas(url, fetchJson, loadImage) {
-  const description = await fetchJson(url);
-  if (description?.faces?.length !== ATLAS_FACES) {
-    throw new Error(`card atlas ${url} needs ${ATLAS_FACES} faces`);
-  }
-  if (!((description.backs?.length ?? 0) >= ATLAS_BACKS)) {
-    throw new Error(`card atlas ${url} needs ${ATLAS_BACKS} backs`);
-  }
-  const image = new URL(description.image, new URL(url, "http://atlas.invalid"));
-  const src = image.pathname + image.search;
-  return { ...description, image: await loadImage(src) };
+export function createCardAtlasLoader(io) {
+  return createAtlasLoader(io, (description, url) => {
+    if (description?.faces?.length !== ATLAS_FACES) {
+      throw new Error(`card atlas ${url} needs ${ATLAS_FACES} faces`);
+    }
+    if (!((description.backs?.length ?? 0) >= ATLAS_BACKS)) {
+      throw new Error(`card atlas ${url} needs ${ATLAS_BACKS} backs`);
+    }
+  });
 }
 
 const RANK_NAMES = ["A", "2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K"];
@@ -156,23 +146,7 @@ export function drawCard(ctx, atlas, card, x, y, { faceUp = true, back = 0, size
 export const CARD_ATLAS_URL = "/images/games/cards/cards.json?vsn=7725fd890adb";
 
 /**
- * A loader that reads atlases the way a browser does: the description by
- * `fetch`, the picture by an `Image`.
+ * A loader that reads card atlases the way a browser does.
  * @returns {(url: string) => Promise<object>}
  */
-export function browserCardAtlasLoader() {
-  return createCardAtlasLoader({
-    fetchJson: async (url) => {
-      const response = await fetch(url);
-      if (!response.ok) throw new Error(`card atlas ${url}: HTTP ${response.status}`);
-      return response.json();
-    },
-    loadImage: (src) =>
-      new Promise((resolve, reject) => {
-        const image = new Image();
-        image.onload = () => resolve(image);
-        image.onerror = () => reject(new Error(`card atlas picture ${src} did not load`));
-        image.src = src;
-      }),
-  });
-}
+export const browserCardAtlasLoader = () => createCardAtlasLoader(browserAtlasIO);

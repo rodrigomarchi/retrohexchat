@@ -1,0 +1,141 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`hex_mines pins > solo following the key script 1`] = `
+{
+  "draws": [
+    {
+      "digest": "c16420ed200e9ac7",
+      "ops": 184,
+      "phase": 1,
+      "side": "host",
+      "t": 1008,
+    },
+    {
+      "digest": "aac8b1ebda454080",
+      "ops": 269,
+      "phase": 4,
+      "side": "host",
+      "t": 4832,
+    },
+  ],
+  "ended": true,
+  "phases": [
+    {
+      "phase": 1,
+      "side": "host",
+      "t": 16,
+    },
+    {
+      "phase": 4,
+      "side": "host",
+      "t": 4816,
+    },
+    {
+      "phase": 3,
+      "side": "host",
+      "t": 6288,
+    },
+  ],
+  "results": {
+    "guest": [],
+    "host": [
+      {
+        "score": {
+          "p1": 0,
+          "p2": 0,
+        },
+        "winner": 0,
+      },
+    ],
+  },
+  "sounds": {
+    "host": {
+      "digest": "44100251b6bad35c",
+      "voices": {
+        "createBuffer": 1,
+        "createBufferSource": 1,
+        "createGain": 13,
+        "createOscillator": 11,
+      },
+    },
+  },
+  "state": {
+    "host": {
+      "events": 0,
+      "lost": true,
+      "mode": "dig",
+      "phase": 3,
+      "score": 0,
+      "won": false,
+    },
+  },
+  "wire": {
+    "byDir": {},
+    "digest": "4f53cda18c2baa0c",
+    "first": [],
+  },
+}
+`;
+
+exports[`hex_mines pins > solo to the end: hex_mines 1`] = `
+{
+  "draws": [
+    {
+      "digest": "c16420ed200e9ac7",
+      "ops": 184,
+      "phase": 1,
+      "side": "host",
+      "t": 1008,
+    },
+  ],
+  "ended": true,
+  "phases": [
+    {
+      "phase": 1,
+      "side": "host",
+      "t": 16,
+    },
+    {
+      "phase": 3,
+      "side": "host",
+      "t": 3601024,
+    },
+  ],
+  "results": {
+    "guest": [],
+    "host": [
+      {
+        "score": {
+          "p1": 0,
+          "p2": 0,
+        },
+        "winner": 0,
+      },
+    ],
+  },
+  "sounds": {
+    "host": {
+      "digest": "bc5c5caa67d72f93",
+      "voices": {
+        "createGain": 6,
+        "createOscillator": 5,
+      },
+    },
+  },
+  "state": {
+    "host": {
+      "events": 0,
+      "lost": false,
+      "mode": "dig",
+      "phase": 3,
+      "score": 0,
+      "won": false,
+    },
+  },
+  "wire": {
+    "byDir": {},
+    "digest": "4f53cda18c2baa0c",
+    "first": [],
+  },
+}
+`;

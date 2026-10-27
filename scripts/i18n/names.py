@@ -116,6 +116,28 @@ NAMES: dict[str, dict[str, str]] = {
         "zh_hans": "黑桃和红心",
         "zh_hant": "黑桃和紅心",
     },
+    # Hex Mines' levels before its name; the puzzle as each language calls it.
+    "Hex Mines: Intermediate": {
+        "ja": "ヘックスマインズ：中級",
+    },
+    "Hex Mines: Expert": {
+        "ja": "ヘックスマインズ：上級",
+    },
+    "Hex Mines": {
+        "ja": "ヘックスマインズ",
+    },
+    "Minesweeper": {
+        "pt": "Campo Minado",
+        "es": "Buscaminas",
+        "fr": "Démineur",
+        "it": "Campo minato",
+        "nl": "Mijnenveger",
+        "pl": "Saper",
+        "ru": "Сапёр",
+        "ja": "マインスイーパ",
+        "zh_hans": "扫雷",
+        "zh_hant": "踩地雷",
+    },
     "FreeCell": {
         "ja": "フリーセル",
     },

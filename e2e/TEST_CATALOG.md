@@ -134,9 +134,9 @@ make e2e.catalog.check    # verify it is current (also runs in make ci)
 
 ## Coverage
 
-- **265 spec files** under `e2e/tests/`.
-- **669 Playwright `test()` cases**.
-- **612 documented flows**, 611 done, 1 not done.
+- **266 spec files** under `e2e/tests/`.
+- **671 Playwright `test()` cases**.
+- **614 documented flows**, 613 done, 1 not done.
 - **Every spec documents its own flows.**
 
 ## Flow index
@@ -493,6 +493,8 @@ Grouped by section. Every row comes from an `@flow` line in the spec itself.
 | N82 | Hex FreeCell on a phone: the table stands up with the mini cards, fits the screen, and a tap moves a card | `tests/game-hex-freecell.spec.ts` | done |
 | N83 | Hex Spider on the desktop: opened from the Retro Games folder, played with the mouse (a click on the stock deals a row), ended with End and written down | `tests/game-hex-spider.spec.ts` | done |
 | N84 | Hex Spider on a phone: the table stands up with the mini cards, fits the screen, and a tap on the stock deals a row | `tests/game-hex-spider.spec.ts` | done |
+| N85 | Hex Mines on the desktop: opened from the Retro Games folder, a click opens the field, a right click plants a flag, ended with End and written down | `tests/game-hex-mines.spec.ts` | done |
+| N86 | Hex Mines on a phone: the board stands up and fits the screen, a tap opens it, and the switch turns a tap into a flag | `tests/game-hex-mines.spec.ts` | done |
 
 ### O - Chat UI Micro-Journeys
 

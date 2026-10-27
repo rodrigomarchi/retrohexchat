@@ -14,6 +14,7 @@ const DEFINITION_LOADERS = {
   hex_freecell: () => import("./hex_freecell/index.js"),
   hex_invaders: () => import("./hex_invaders/index.js"),
   hex_jungle: () => import("./hex_jungle/index.js"),
+  hex_mines: () => import("./hex_mines/index.js"),
   hex_solitaire: () => import("./hex_solitaire/index.js"),
   hex_spider: () => import("./hex_spider/index.js"),
   hex_outlaw: () => import("./hex_outlaw/index.js"),

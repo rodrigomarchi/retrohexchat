@@ -316,6 +316,11 @@ defmodule RetroHexChatWeb.SEO do
                      hex_spider_4suits),
        do: Map.put(data, "genre", "Card game")
 
+  # A minefield is a puzzle, for a search that asks for one.
+  defp put_genre(data, %{id: id})
+       when id in ~w(hex_mines hex_mines_intermediate hex_mines_expert),
+       do: Map.put(data, "genre", "Puzzle")
+
   defp put_genre(data, _game), do: data
 
   # An arcade game and a one-player Retro Game are played alone.

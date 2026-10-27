@@ -741,6 +741,9 @@ _ROWS = {
     "cards":          ("cartas", "cartas", "cartas", "cartes", "Karten", "carte", "kaarten", "karty", "карты", "kartu", "カード", "纸牌", "紙牌"),
     "card game":      ("jogo de cartas", "jogo de cartas", "juego de cartas", "jeu de cartes", "Kartenspiel", "gioco di carte", "kaartspel", "gra karciana", "карточная игра", "permainan kartu", "カードゲーム", "纸牌游戏", "紙牌遊戲"),
     "solitaire":      ("paciência", "paciência", "solitario", "solitaire", "Solitär", "solitario", "patience", "pasjans", "пасьянс", "solitaire", "ソリティア", "纸牌接龙", "紙牌接龍"),
+    # Hex Mines' gesture: a press held, never a printing press ("Imprensa",
+    # "prensa").
+    "Long press":     ("Toque longo", "Toque longo", "Pulsación larga", "Appui long", "Lange drücken", "Pressione prolungata", "Lang indrukken", "Długie naciśnięcie", "Долгое нажатие", "Tekan lama", "長押し", "长按", "長按"),
     "Tap":            ("Toque", "Toque", "Toca", "Toucher", "Tippen", "Tocca", "Tikken", "Dotknij", "Нажатие", "Ketuk", "タップ", "点按", "點按"),
     "Drag":           ("Arrastar", "Arrastar", "Arrastrar", "Glisser", "Ziehen", "Trascina", "Slepen", "Przeciągnij", "Перетаскивание", "Seret", "ドラッグ", "拖动", "拖曳"),
     "Tap the deck":   ("Toque no baralho", "Toque no baralho", "Toca el mazo", "Touchez le paquet", "Auf den Stapel tippen", "Tocca il mazzo", "Tik op de stapel", "Dotknij talii", "Нажмите на колоду", "Ketuk tumpukan kartu", "山札をタップ", "点按牌堆", "點按牌堆"),

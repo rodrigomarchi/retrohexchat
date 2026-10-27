@@ -616,6 +616,7 @@ msgstr "Steuerung der Distanz"
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_invaders_blitz.html.heex:8
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_invaders_coop.html.heex:8
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_jungle.html.heex:7
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_mines.html.heex:7
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_outlaw.html.heex:8
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_outlaw_nml.html.heex:8
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_outlaw_ricochet.html.heex:8
@@ -1279,6 +1280,7 @@ msgstr "Unendliche Abfahrt — der Kurs endet nie"
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_hockey.html.heex:120
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_invaders.html.heex:80
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_jungle.html.heex:70
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_mines.html.heex:64
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_outlaw.html.heex:75
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_pong.html.heex:47
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_raid.html.heex:71
@@ -1719,6 +1721,7 @@ msgstr "Runde 3"
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_invaders_blitz.html.heex:26
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_invaders_coop.html.heex:26
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_jungle.html.heex:36
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_mines.html.heex:34
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_outlaw.html.heex:23
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_pong.html.heex:23
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_raid.html.heex:32
@@ -1835,6 +1838,7 @@ msgstr ""
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_invaders_blitz.html.heex:71
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_invaders_coop.html.heex:74
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_jungle.html.heex:72
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_mines.html.heex:71
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_outlaw.html.heex:77
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_outlaw_nml.html.heex:70
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_outlaw_ricochet.html.heex:78
@@ -1854,7 +1858,7 @@ msgstr ""
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_warlords.html.heex:80
 #: lib/retro_hex_chat_web/controllers/help_content/feature_light_trails.html.heex:55
 #: lib/retro_hex_chat_web/controllers/help_content/feature_pixel_tanks.html.heex:69
-#: lib/retro_hex_chat_web/controllers/help_content/feature_retro_games.html.heex:165
+#: lib/retro_hex_chat_web/controllers/help_content/feature_retro_games.html.heex:171
 #: lib/retro_hex_chat_web/controllers/help_content/feature_sessions.html.heex:39
 #: lib/retro_hex_chat_web/controllers/help_content/feature_star_duel.html.heex:87
 #, elixir-autogen, elixir-format
@@ -3988,7 +3992,7 @@ msgstr "/p2p"
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_warlords.html.heex:82
 #: lib/retro_hex_chat_web/controllers/help_content/feature_light_trails.html.heex:57
 #: lib/retro_hex_chat_web/controllers/help_content/feature_pixel_tanks.html.heex:73
-#: lib/retro_hex_chat_web/controllers/help_content/feature_retro_games.html.heex:170
+#: lib/retro_hex_chat_web/controllers/help_content/feature_retro_games.html.heex:176
 #: lib/retro_hex_chat_web/controllers/help_content/feature_star_duel.html.heex:92
 #, elixir-autogen, elixir-format
 msgid "P2P Session"
@@ -4049,6 +4053,7 @@ msgstr ""
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_boxing.html.heex:67
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_freecell.html.heex:80
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_jungle.html.heex:74
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_mines.html.heex:73
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_solitaire.html.heex:103
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_spider.html.heex:93
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_warlords.html.heex:83
@@ -4057,7 +4062,7 @@ msgstr ""
 msgid "Retro Games"
 msgstr "Retro-Spiele"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_retro_games.html.heex:153
+#: lib/retro_hex_chat_web/controllers/help_content/feature_retro_games.html.heex:159
 #, elixir-autogen, elixir-format
 msgid "In Hex Boxing, move in 8 directions, manage range, and tap Space or Shift to punch while the AI fights from the right side."
 msgstr ""
@@ -4072,7 +4077,7 @@ msgstr ""
 "rechten Boxer steuert. Die Schwierigkeit ändert, wie genau die KI Distanz "
 "hält, ausweicht und Schläge timt."
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_retro_games.html.heex:159
+#: lib/retro_hex_chat_web/controllers/help_content/feature_retro_games.html.heex:165
 #, elixir-autogen, elixir-format
 msgid "In Pixel Tanks, rotate with Left/Right or A/D, drive forward with Up or W, and fire with Space or Shift while the AI navigates the maze as player 2."
 msgstr ""
@@ -4604,7 +4609,7 @@ msgstr "— das Ranking des Spiels"
 msgid "— this week's challenge and who leads it"
 msgstr "— die Herausforderung dieser Woche und wer sie führt"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_retro_games.html.heex:167
+#: lib/retro_hex_chat_web/controllers/help_content/feature_retro_games.html.heex:173
 #, elixir-autogen, elixir-format
 msgid "Arcade"
 msgstr "Arcade"
@@ -4733,6 +4738,7 @@ msgid "Klondike is a card game from the nineteenth century, made famous on the P
 msgstr "Klondike ist ein Kartenspiel aus dem neunzehnten Jahrhundert, berühmt auf dem PC von der Solitär, die mit Windows kam."
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_freecell.html.heex:49
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_mines.html.heex:55
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_solitaire.html.heex:67
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_spider.html.heex:67
 #, elixir-autogen, elixir-format
@@ -4946,3 +4952,78 @@ msgstr "— Move a card, or the cards of its suit on top of it, onto another col
 #, elixir-autogen, elixir-format
 msgid "— Move it, with the cards of its suit on top of it, onto the best column: one of the same suit first"
 msgstr "— Move it, with the cards of its suit on top of it, onto the best column: one of the same suit first"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_mines.html.heex:22
+#, elixir-autogen, elixir-format
+msgid "Click or tap a number"
+msgstr "Klicken Sie auf oder tippen Sie auf eine Nummer"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_mines.html.heex:10
+#, elixir-autogen, elixir-format
+msgid "Click or tap a square"
+msgstr "Klicken Sie auf oder tippen Sie auf ein Quadrat"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_retro_games.html.heex:153
+#, elixir-autogen, elixir-format
+msgid "Hex Mines is Minesweeper for one player, played with the mouse or a finger: click or tap a square to open it, and a right click or a long press plants a flag."
+msgstr "Hex Mines ist Minesweeper für einen Spieler, gespielt mit der Maus oder einem Finger: Klicken Sie auf oder tippen Sie auf ein Quadrat, um es zu öffnen, und ein Rechtsklick oder eine lange Presse Pflanzen eine Flagge."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_mines.html.heex:2
+#, elixir-autogen, elixir-format
+msgid "Hex Mines is Minesweeper for one player. Under the squares of the field lie hidden mines: open every square without one, and plant flags on the ones you find. A number on an open square tells how many mines touch it. Your best games, the fastest wins, go into the ranking."
+msgstr "Hex Mines ist Minesweeper für einen Spieler. Unter den Plätzen des Feldes liegen versteckte Minen: öffnen Sie jeden Platz ohne einen, und Pflanzen Flaggen auf den, die Sie finden. Eine Nummer auf einem offenen Platz sagt, wie viele Minen es berühren. Deine besten Spiele, die schnellsten Gewinne, gehen ins Ranking."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_mines.html.heex:49
+#, elixir-autogen, elixir-format
+msgid "Hex Mines is the beginner level: 10 mines on a 9×9 field. Hex Mines: Intermediate hides 40 on 16×16, and Hex Mines: Expert 99 on 30×16."
+msgstr "Hex Mines ist die Anfängerstufe: 10 Minen auf einem 9×9 Feld. Hex Mines: Intermediate versteckt 40 auf 16×16 und Hex Mines: Expert 99 auf 30×16."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_mines.html.heex:66
+#, elixir-autogen, elixir-format
+msgid "Minesweeper is a puzzle from the 1980s, made famous on the PC by the version that came with Windows."
+msgstr "Minesweeper ist ein Puzzle aus den 1980er Jahren, bekannt auf dem PC durch die Version, die mit Windows kam."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_mines.html.heex:58
+#, elixir-autogen, elixir-format
+msgid "Only a win scores: 10,000 points divided by the seconds it took, so the faster, the more. A game lost or ended with End scores nothing."
+msgstr "Nur ein Gewinn erzielt: 10.000 Punkte geteilt durch die Sekunden, die es dauerte, also schneller, desto mehr. Ein Spiel verloren oder beendet mit End erzielt nichts."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_mines.html.heex:43
+#, elixir-autogen, elixir-format
+msgid "Opening a square with a mine ends the game. A flag keeps a square from opening by mistake."
+msgstr "Öffnen eines Platzes mit einer Mine endet das Spiel. Eine Flagge hält einen Platz vor dem Öffnen durch Fehler."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_mines.html.heex:16
+#, elixir-autogen, elixir-format
+msgid "Right click or long press"
+msgstr "Rechtsklick oder lange Presse"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_mines.html.heex:37
+#, elixir-autogen, elixir-format
+msgid "The first square you open never hides a mine, nor do the squares around it."
+msgstr "Der erste Platz, den Sie öffnen, versteckt nie eine Mine, noch tun die Quadrate um sie herum."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_mines.html.heex:28
+#, elixir-autogen, elixir-format
+msgid "The switch on a phone"
+msgstr "Der Schalter am Telefon"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_mines.html.heex:28
+#, elixir-autogen, elixir-format
+msgid "— Change what a tap does: open a square, or plant a flag"
+msgstr "— Change what a tap does: open a square, or plant a flag"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_mines.html.heex:22
+#, elixir-autogen, elixir-format
+msgid "— Once as many flags lie around it as its number, open every other square around it"
+msgstr "— Sobald so viele Flaggen um sie herum liegen wie ihre Zahl, öffnen Sie jeden anderen Platz um ihn herum"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_mines.html.heex:10
+#, elixir-autogen, elixir-format
+msgid "— Open it. A square with no mine around it opens the ones around it too"
+msgstr "— Open it. A square with no mine around it opens the ones around it too"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_mines.html.heex:16
+#, elixir-autogen, elixir-format
+msgid "— Plant a flag on a square, or lift it"
+msgstr "— Eine Flagge auf einem Quadrat pflanzen oder aufheben"

@@ -215,6 +215,16 @@ defmodule RetroHexChat.Games.ResultTest do
       end
     end
 
+    test "refuses more points than a minefield can score, at every level" do
+      for id <- ~w(hex_mines hex_mines_intermediate hex_mines_expert) do
+        assert {:ok, %Result{p1_score: 10_000}} =
+                 Result.normalize(id, %{"score" => %{"p1" => 10_000, "p2" => 0}})
+
+        assert {:error, :implausible} =
+                 Result.normalize(id, %{"score" => %{"p1" => 10_001, "p2" => 0}})
+      end
+    end
+
     test "refuses more points than a table of FreeCell can score" do
       assert {:ok, %Result{p1_score: 23_853}} =
                Result.normalize("hex_freecell", %{"score" => %{"p1" => 23_853, "p2" => 0}})

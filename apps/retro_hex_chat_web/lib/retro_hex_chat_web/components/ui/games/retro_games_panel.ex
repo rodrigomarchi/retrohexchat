@@ -403,14 +403,20 @@ defmodule RetroHexChatWeb.Components.UI.RetroGamesPanel do
   def goal_label(%{id: id}) when id in ~w(hex_spider hex_spider_2suits hex_spider_4suits),
     do: dgettext("games", "Eight suits, king to ace")
 
+  def goal_label(%{id: id}) when id in ~w(hex_mines hex_mines_intermediate hex_mines_expert),
+    do: dgettext("games", "Clear every square without a mine")
+
   # A card table stands up on a phone held upright: the game lays itself out
   # on the box it is given (`view` in its definition), so on a narrow screen
   # the box is tall and the cards are as big as the phone allows.
   defp canvas_box_aspect(%{id: id}) when id in ~w(hex_solitaire hex_solitaire_draw3),
     do: "aspect-[464/720] sm:aspect-[4/3]"
 
+  defp canvas_box_aspect(%{id: "hex_mines_expert"}), do: "aspect-[464/780] sm:aspect-[5/3]"
+
   defp canvas_box_aspect(%{id: id})
-       when id in ~w(hex_freecell hex_spider hex_spider_2suits hex_spider_4suits),
+       when id in ~w(hex_freecell hex_spider hex_spider_2suits hex_spider_4suits hex_mines
+                     hex_mines_intermediate),
        do: "aspect-[464/760] sm:aspect-[4/3]"
 
   defp canvas_box_aspect(_game), do: "aspect-[4/3]"
@@ -433,6 +439,27 @@ defmodule RetroHexChatWeb.Components.UI.RetroGamesPanel do
   end
 
   # Played with the mouse or a finger: the "keys" are the gestures.
+  def control_rows(%{id: id}) when id in ~w(hex_mines hex_mines_intermediate hex_mines_expert) do
+    [
+      %{
+        label: dgettext("games", "Open a square"),
+        keys: [dgettext("games", "Click"), dgettext("games", "Tap")]
+      },
+      %{
+        label: dgettext("games", "Plant or lift a flag"),
+        keys: [dgettext("games", "Right click"), dgettext("games", "Long press")]
+      },
+      %{
+        label: dgettext("games", "Open around a flagged number"),
+        keys: [dgettext("games", "Tap the number")]
+      },
+      %{
+        label: dgettext("games", "Flag with a tap, on a phone"),
+        keys: [dgettext("games", "Tap the switch")]
+      }
+    ]
+  end
+
   def control_rows(%{id: id}) when id in ~w(hex_spider hex_spider_2suits hex_spider_4suits) do
     [
       %{label: dgettext("games", "Move a card to its place"), keys: [dgettext("games", "Tap")]},

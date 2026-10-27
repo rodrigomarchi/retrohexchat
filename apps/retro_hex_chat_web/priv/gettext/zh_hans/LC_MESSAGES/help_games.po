@@ -569,6 +569,7 @@ msgstr "控制距离"
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_invaders_blitz.html.heex:8
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_invaders_coop.html.heex:8
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_jungle.html.heex:7
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_mines.html.heex:7
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_outlaw.html.heex:8
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_outlaw_nml.html.heex:8
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_outlaw_ricochet.html.heex:8
@@ -1185,6 +1186,7 @@ msgstr "无限血统——航线永无止境."
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_hockey.html.heex:120
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_invaders.html.heex:80
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_jungle.html.heex:70
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_mines.html.heex:64
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_outlaw.html.heex:75
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_pong.html.heex:47
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_raid.html.heex:71
@@ -1585,6 +1587,7 @@ msgstr "第3轮"
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_invaders_blitz.html.heex:26
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_invaders_coop.html.heex:26
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_jungle.html.heex:36
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_mines.html.heex:34
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_outlaw.html.heex:23
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_pong.html.heex:23
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_raid.html.heex:32
@@ -1692,6 +1695,7 @@ msgstr "赛制:爱~15~30~40~比赛(成绩40~40,优势,2胜)."
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_invaders_blitz.html.heex:71
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_invaders_coop.html.heex:74
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_jungle.html.heex:72
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_mines.html.heex:71
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_outlaw.html.heex:77
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_outlaw_nml.html.heex:70
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_outlaw_ricochet.html.heex:78
@@ -1711,7 +1715,7 @@ msgstr "赛制:爱~15~30~40~比赛(成绩40~40,优势,2胜)."
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_warlords.html.heex:80
 #: lib/retro_hex_chat_web/controllers/help_content/feature_light_trails.html.heex:55
 #: lib/retro_hex_chat_web/controllers/help_content/feature_pixel_tanks.html.heex:69
-#: lib/retro_hex_chat_web/controllers/help_content/feature_retro_games.html.heex:165
+#: lib/retro_hex_chat_web/controllers/help_content/feature_retro_games.html.heex:171
 #: lib/retro_hex_chat_web/controllers/help_content/feature_sessions.html.heex:39
 #: lib/retro_hex_chat_web/controllers/help_content/feature_star_duel.html.heex:87
 #, elixir-autogen, elixir-format
@@ -3576,7 +3580,7 @@ msgstr "/p2p"
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_warlords.html.heex:82
 #: lib/retro_hex_chat_web/controllers/help_content/feature_light_trails.html.heex:57
 #: lib/retro_hex_chat_web/controllers/help_content/feature_pixel_tanks.html.heex:73
-#: lib/retro_hex_chat_web/controllers/help_content/feature_retro_games.html.heex:170
+#: lib/retro_hex_chat_web/controllers/help_content/feature_retro_games.html.heex:176
 #: lib/retro_hex_chat_web/controllers/help_content/feature_star_duel.html.heex:92
 #, elixir-autogen, elixir-format
 msgid "P2P Session"
@@ -3620,6 +3624,7 @@ msgstr "在复古游戏单人模式中，你控制左侧城堡护盾，AI 控制
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_boxing.html.heex:67
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_freecell.html.heex:80
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_jungle.html.heex:74
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_mines.html.heex:73
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_solitaire.html.heex:103
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_spider.html.heex:93
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_warlords.html.heex:83
@@ -3628,7 +3633,7 @@ msgstr "在复古游戏单人模式中，你控制左侧城堡护盾，AI 控制
 msgid "Retro Games"
 msgstr "复古游戏"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_retro_games.html.heex:153
+#: lib/retro_hex_chat_web/controllers/help_content/feature_retro_games.html.heex:159
 #, elixir-autogen, elixir-format
 msgid "In Hex Boxing, move in 8 directions, manage range, and tap Space or Shift to punch while the AI fights from the right side."
 msgstr "在 Hex Boxing 中，向 8 个方向移动、控制距离，并点按 Space 或 Shift 出拳；AI 从右侧作战。"
@@ -3638,7 +3643,7 @@ msgstr "在 Hex Boxing 中，向 8 个方向移动、控制距离，并点按 Sp
 msgid "In Retro Games solo mode, you control the left boxer while the AI controls the right boxer. Difficulty changes how tightly the AI tracks range, dodges, and times punches."
 msgstr "在复古游戏单人模式中，你控制左侧拳手，AI 控制右侧拳手。难度会改变 AI 控制距离、闪避和把握出拳时机的精度。"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_retro_games.html.heex:159
+#: lib/retro_hex_chat_web/controllers/help_content/feature_retro_games.html.heex:165
 #, elixir-autogen, elixir-format
 msgid "In Pixel Tanks, rotate with Left/Right or A/D, drive forward with Up or W, and fire with Space or Shift while the AI navigates the maze as player 2."
 msgstr ""
@@ -4165,7 +4170,7 @@ msgstr "——游戏排名."
 msgid "— this week's challenge and who leads it"
 msgstr "——本周的挑战与谁领导."
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_retro_games.html.heex:167
+#: lib/retro_hex_chat_web/controllers/help_content/feature_retro_games.html.heex:173
 #, elixir-autogen, elixir-format
 msgid "Arcade"
 msgstr "街机"
@@ -4294,6 +4299,7 @@ msgid "Klondike is a card game from the nineteenth century, made famous on the P
 msgstr "Klondike是19世纪的一款纸牌游戏,由随Windows而来的人在PC上出名."
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_freecell.html.heex:49
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_mines.html.heex:55
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_solitaire.html.heex:67
 #: lib/retro_hex_chat_web/controllers/help_content/feature_hex_spider.html.heex:67
 #, elixir-autogen, elixir-format
@@ -4507,3 +4513,78 @@ msgstr "- 将一张牌或上面的花色的牌移至另一列"
 #, elixir-autogen, elixir-format
 msgid "— Move it, with the cards of its suit on top of it, onto the best column: one of the same suit first"
 msgstr "——移动它,上面有它的花色的卡片,放在最好的一列上:第一个是同一个花色之一."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_mines.html.heex:22
+#, elixir-autogen, elixir-format
+msgid "Click or tap a number"
+msgstr "单击或点击一个数字"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_mines.html.heex:10
+#, elixir-autogen, elixir-format
+msgid "Click or tap a square"
+msgstr "Click or tap a square"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_retro_games.html.heex:153
+#, elixir-autogen, elixir-format
+msgid "Hex Mines is Minesweeper for one player, played with the mouse or a finger: click or tap a square to open it, and a right click or a long press plants a flag."
+msgstr "Hex Mines是一个玩家的扫雷,使用鼠标或手指玩:点击或点击一个方块打开,右键点击或长按植物为旗帜."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_mines.html.heex:2
+#, elixir-autogen, elixir-format
+msgid "Hex Mines is Minesweeper for one player. Under the squares of the field lie hidden mines: open every square without one, and plant flags on the ones you find. A number on an open square tells how many mines touch it. Your best games, the fastest wins, go into the ranking."
+msgstr "Hex Mines是一个玩家的扫雷. 球场的方块下埋藏着隐藏的地雷:打开每个方块没有一块,并在发现的方块上放置旗帜. 一个开放式广场上的数字 显示有多少地雷触摸它。 你最好的比赛,最快的获胜者,进入排名."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_mines.html.heex:49
+#, elixir-autogen, elixir-format
+msgid "Hex Mines is the beginner level: 10 mines on a 9×9 field. Hex Mines: Intermediate hides 40 on 16×16, and Hex Mines: Expert 99 on 30×16."
+msgstr "Hex Mines为初探级:9×9场设10枚地雷. Hex Mines: Intermediate在16x16上隐藏40个,在30x16上隐藏Hex Mines: Expert 99个."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_mines.html.heex:66
+#, elixir-autogen, elixir-format
+msgid "Minesweeper is a puzzle from the 1980s, made famous on the PC by the version that came with Windows."
+msgstr "扫雷是一个1980年代的谜题,由随Windows而来的版本在PC上出名."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_mines.html.heex:58
+#, elixir-autogen, elixir-format
+msgid "Only a win scores: 10,000 points divided by the seconds it took, so the faster, the more. A game lost or ended with End scores nothing."
+msgstr "只得一分:一万分除以所花秒,故越快越多. 游戏丢失或以无得分结束."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_mines.html.heex:43
+#, elixir-autogen, elixir-format
+msgid "Opening a square with a mine ends the game. A flag keeps a square from opening by mistake."
+msgstr "Opening a square with a mine ends the game. A flag keeps a square from opening by mistake."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_mines.html.heex:16
+#, elixir-autogen, elixir-format
+msgid "Right click or long press"
+msgstr "右键或长按"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_mines.html.heex:37
+#, elixir-autogen, elixir-format
+msgid "The first square you open never hides a mine, nor do the squares around it."
+msgstr "你打开的第一个方块 从来不藏地雷 也不藏周围的方块"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_mines.html.heex:28
+#, elixir-autogen, elixir-format
+msgid "The switch on a phone"
+msgstr "电话上的开关"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_mines.html.heex:28
+#, elixir-autogen, elixir-format
+msgid "— Change what a tap does: open a square, or plant a flag"
+msgstr "— Change what a tap does: open a square, or plant a flag"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_mines.html.heex:22
+#, elixir-autogen, elixir-format
+msgid "— Once as many flags lie around it as its number, open every other square around it"
+msgstr "- 只要周围有那么多旗帜,就打开周围的方块"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_mines.html.heex:10
+#, elixir-autogen, elixir-format
+msgid "— Open it. A square with no mine around it opens the ones around it too"
+msgstr "— Open it. A square with no mine around it opens the ones around it too"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_hex_mines.html.heex:16
+#, elixir-autogen, elixir-format
+msgid "— Plant a flag on a square, or lift it"
+msgstr "- 在广场上树立一面旗帜,或者升起它"

@@ -211,6 +211,34 @@ defmodule RetroHexChatWeb.Components.UI.Games.RetroGamesPanelTest do
     assert box.(spider) =~ "sm:aspect-[4/3]"
   end
 
+  test "Hex Mines stands up to its board, and is played by clicks, flags and taps" do
+    mines = %{@jungle | id: "hex_mines", name: "Hex Mines", icon: "game_mines"}
+    expert = %{mines | id: "hex_mines_expert", name: "Hex Mines: Expert"}
+
+    box = fn game ->
+      render_component(&retro_games_panel/1,
+        id: "retro-games-panel",
+        status: "ready",
+        selected_game: game,
+        difficulty: "normal",
+        canvas_ready: true
+      )
+      |> Floki.parse_document!()
+      |> Floki.find(~s([data-testid="retro-game-canvas-#{game.id}"]))
+      |> Floki.attribute("class")
+      |> List.first()
+    end
+
+    assert box.(mines) =~ "aspect-[464/760]"
+    assert box.(mines) =~ "sm:aspect-[4/3]"
+    assert box.(expert) =~ "aspect-[464/780]"
+    assert box.(expert) =~ "sm:aspect-[5/3]"
+    assert goal_label(mines) == "Clear every square without a mine"
+
+    assert [%{keys: ["Click", "Tap"]}, %{keys: ["Right click", "Long press"]}, %{}, %{}] =
+             control_rows(mines)
+  end
+
   test "Hex Spider is played by taps and drags and a tap on the deck, toward eight suits" do
     spider = %{@jungle | id: "hex_spider", name: "Hex Spider", icon: "game_spider"}
 
