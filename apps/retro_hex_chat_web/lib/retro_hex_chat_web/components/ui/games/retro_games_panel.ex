@@ -222,11 +222,13 @@ defmodule RetroHexChatWeb.Components.UI.RetroGamesPanel do
                 </dd>
               </div>
               <div class="flex items-center justify-between gap-retro-6">
-                <dt class="flex min-w-0 items-center gap-retro-4 text-muted-foreground">
+                <dt class="flex shrink-0 items-center gap-retro-4 text-muted-foreground">
                   <Icons.icon_chart_bars class="h-3 w-3 shrink-0" />
                   {dgettext("games", "Goal")}
                 </dt>
-                <dd class="shrink-0 font-bold">{goal_label(@game)}</dd>
+                <%!-- A long goal, in a long language, wraps under itself rather than
+                     pushing the column wider than its window. --%>
+                <dd class="min-w-0 text-right font-bold">{goal_label(@game)}</dd>
               </div>
             </dl>
           </section>
@@ -282,7 +284,7 @@ defmodule RetroHexChatWeb.Components.UI.RetroGamesPanel do
             </h4>
             <div
               :for={row <- @control_rows}
-              class="grid grid-cols-[auto_minmax(0,1fr)] items-center gap-retro-6 text-[11px]"
+              class="grid grid-cols-[minmax(0,1fr)_auto] items-center gap-retro-6 text-[11px]"
             >
               <span class="text-muted-foreground">{row.label}</span>
               <span class="flex min-w-0 flex-wrap gap-retro-4">
