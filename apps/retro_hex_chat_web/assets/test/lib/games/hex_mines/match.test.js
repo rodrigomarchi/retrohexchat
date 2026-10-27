@@ -82,6 +82,18 @@ describe("a match of Hex Mines", () => {
     expect(host.gameState.board.mine).toBeNull();
   });
 
+  it("opens, never flags, a square a mouse holds down", async () => {
+    match = await solo();
+    match.advance(100);
+    const { host } = match.engines;
+    const [x, y] = centre(host, 40);
+    match.pointer("down", x, y, { pointerType: "mouse" });
+    match.advance(600);
+    match.pointer("up", x, y, { pointerType: "mouse" });
+    match.advance(50);
+    expect(host.gameState.board.cell[40]).toBe(CELL.OPEN);
+  });
+
   it("flags with a tap once a phone is switched to flags", async () => {
     match = await solo({ rect: { left: 0, top: 0, width: 360, height: 600 } });
     match.advance(100);

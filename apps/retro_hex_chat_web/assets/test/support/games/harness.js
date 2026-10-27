@@ -185,12 +185,13 @@ export async function playMatch({
   if (mode === "solo" && begin) engines.host.beginMatch({ difficulty });
   observerFrame = requestAnimationFrame(observeFrame);
 
-  const pointerAt = (side, type, x, y, { pointerId = 0, button = 0 } = {}) => {
+  const pointerAt = (side, type, x, y, { pointerId = 0, button = 0, pointerType = "" } = {}) => {
     const event = new PointerEvent(`pointer${type}`, {
       clientX: x,
       clientY: y,
       pointerId,
       button,
+      pointerType,
       bubbles: true,
       cancelable: true,
     });

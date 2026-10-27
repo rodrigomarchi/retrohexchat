@@ -85,6 +85,15 @@ class MissingTermsTest(unittest.TestCase):
         self.assertTrue(missing_terms("The first square you open", "La primera plaza que abres", "es"))
         self.assertEqual(missing_terms("The first square you open", "La primera casilla que abres", "es"), [])
 
+    def test_the_mine_term_asks_nothing_of_a_sentence_without_mines(self):
+        for source in (
+            "Watching Without an Account",
+            "Without a subcommand, you see the usage line",
+            "Without arguments, opens the Bot Management dialog",
+            "destroy enemies for points, steal fuel, and drop mines on your rival.",
+        ):
+            self.assertEqual(missing_terms(source, "Assistir sem conta", "pt_BR"), [], source)
+
     def test_minesweeper_is_called_as_each_language_calls_it(self):
         from i18n import names
 

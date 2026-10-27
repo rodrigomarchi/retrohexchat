@@ -52,7 +52,8 @@
  * second finger is ignored — and a press off the picture starts nothing.
  * A game that also reads a right click says `pointerButtons: ["main",
  * "secondary"]`: every event of a press then carries `button` ("main" or
- * "secondary"), and the browser's menu stays shut over the canvas.
+ * "secondary") and `device` ("mouse", "touch" or "pen", when the browser
+ * says), and the browser's menu stays shut over the canvas.
  * The canvas of a pointer game takes the touch for itself
  * (`game-canvas--pointer`), so a drag on a phone moves a card, not the page.
  *
@@ -422,6 +423,7 @@ export function defineGame(def) {
         if (!point) return;
         this._activePointer = id;
         this._activeButton = secondary ? button : undefined;
+        this._activeDevice = event.pointerType || undefined;
         this._capturePointer(id);
         this._pointerQueue.push(this._withButton({ type, ...point }));
         return;
@@ -437,9 +439,12 @@ export function defineGame(def) {
       if (type === "up") this._activePointer = null;
     }
 
-    // A two-button game is told which button each event of a press belongs to.
+    // A two-button game is told which button each event of a press belongs to,
+    // and what made it ("mouse", "touch" or "pen"), when the browser says.
     _withButton(event) {
-      return this._activeButton === undefined ? event : { ...event, button: this._activeButton };
+      if (this._activeButton === undefined) return event;
+      const device = this._activeDevice === undefined ? {} : { device: this._activeDevice };
+      return { ...event, button: this._activeButton, ...device };
     }
 
     _preventMenu(event) {

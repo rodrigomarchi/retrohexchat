@@ -107,6 +107,13 @@ describe("createGesture", () => {
     ]);
   });
 
+  it("never holds a press that says it does not", () => {
+    const gesture = createGesture({ slop: 6, holdTicks: 3 });
+    gesture({ ...at("down", 1, 1), hold: false });
+    expect(Array.from({ length: 10 }, () => gesture.tick()).flat()).toEqual([]);
+    expect(gesture(at("up", 1, 1))).toEqual([{ type: "tap", x: 1, y: 1 }]);
+  });
+
   it("holds nothing without hold ticks", () => {
     const gesture = createGesture({ slop: 6 });
     gesture(at("down", 0, 0));

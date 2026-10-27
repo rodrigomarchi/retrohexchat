@@ -20,7 +20,7 @@ import { EVENT } from "./protocol.js";
 import { CELL } from "./rules.js";
 
 /** How long each effect lasts, in ticks. */
-export const FX = Object.freeze({ ring: 2, hop: 10, shake: 16, fire: 40, winStagger: 3, glow: 24 });
+export const FX = Object.freeze({ ring: 2, hop: 10, shake: 16, fire: 40, winLight: 100, glow: 24 });
 
 /** The effects of one match. */
 export const createEffects = ({ reduced = false } = {}) => ({ reduced, list: [] });
@@ -70,7 +70,9 @@ export function boardEffects(fx, { before, after, laid, now, random }) {
   if (events & EVENT.WIN && !fx.reduced) {
     const mines = after.board.cell.flatMap((c, i) => (after.board.mine[i] ? [i] : []));
     mines.forEach((i, k) => {
-      fx.list.push({ kind: "glow", i, start: now + k * FX.winStagger, ticks: FX.glow });
+      // Every flag lights within `winLight` ticks, however many mines.
+      const stagger = Math.max(1, Math.floor(FX.winLight / mines.length));
+      fx.list.push({ kind: "glow", i, start: now + k * stagger, ticks: FX.glow });
     });
   }
 }

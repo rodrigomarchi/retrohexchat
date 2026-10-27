@@ -176,7 +176,7 @@ _TERMS: dict[str, dict[str, tuple[str, ...]]] = {
     },
     # A mine under a square, never "my" ("minha") nor a mining pit: a game's
     # mines, as its help and its catalogue say them.
-    r"\b(?:mines?\s+(?:you|on|touch|lie|hidden|hiding)|a\s+mine\b|no\s+mine\b|\d+\s+mines|hidden\s+mines|without\s+(?:a|one)\s*(?:mine)?)": {
+    r"\b(?:mines?\s+(?:you|touch|lie|hidden|hiding)|a\s+mine\b|no\s+mine\b|\d+\s+mines|hidden\s+mines|without\s+(?:a|one)\s+mine)\b": {
         "pt": ("mina",),
         "es": ("mina",),
         "fr": ("mine",),
@@ -698,7 +698,7 @@ _WRONG_SENSES: dict[str, dict[str, tuple[str, ...]]] = {
     r"\bface\s+up\b": {
         "de": ("verdeckt",),
     },
-    r"\b(?:mines?\s+(?:you|on|touch|lie|hidden|hiding)|a\s+mine\b|no\s+mine\b|\d+\s+mines|hidden\s+mines|without\s+(?:a|one)\s*(?:mine)?)": {
+    r"\b(?:mines?\s+(?:you|touch|lie|hidden|hiding)|a\s+mine\b|no\s+mine\b|\d+\s+mines|hidden\s+mines|without\s+(?:a|one)\s+mine)\b": {
         "pt": ("minha", "minhas", "mineração", "minério"),
         "es": (" mi ",),
     },

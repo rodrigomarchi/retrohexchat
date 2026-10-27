@@ -27,8 +27,8 @@ import { MASTER_VOLUME, SOUNDS } from "./sounds.js";
 /** The sound of each event bit, by the event's name: `BOOM` plays `boom`. */
 const EVENT_SOUNDS = Object.entries(EVENT).map(([name, bit]) => [bit, name.toLowerCase()]);
 
-/** How long the board shows how the match ended before its result is told. */
-const SHOW_TICKS = 90;
+/** How long the board shows how the match ended before its result is told: a win's flags all light. */
+const SHOW_TICKS = Object.freeze({ lost: 90, won: 150 });
 
 const reducedMotion = () =>
   globalThis.matchMedia?.("(prefers-reduced-motion: reduce)")?.matches === true;
@@ -66,7 +66,8 @@ function press(game, event) {
 function onPointer(game, event) {
   if (game.gameState.phase !== PHASE.PLAYING) return;
   if (event.type === "down" || event.type === "up" || event.type === "cancel") press(game, event);
-  for (const gesture of game.gesture(event)) {
+  // A finger's long press flags; a mouse has its right button for that.
+  for (const gesture of game.gesture({ ...event, hold: event.device !== "mouse" })) {
     if (gesture.type === "dragStart") press(game, { type: "cancel" });
     const action = interpret(game.gameState, game.laid, gesture);
     play(game, action && { ...action, held: gesture.type === "hold" });
@@ -138,7 +139,7 @@ export default defineGame({
           game.shown++;
           stepEffects(game.fx, game.frameCount);
           game.invalidate();
-          if (game.shown >= SHOW_TICKS) {
+          if (game.shown >= (game.gameState.won ? SHOW_TICKS.won : SHOW_TICKS.lost)) {
             game.gameState = { ...game.gameState, phase: PHASE.FINISHED };
           }
         },

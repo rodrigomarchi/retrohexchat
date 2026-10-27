@@ -44,7 +44,8 @@ export function toCanvasPoint(rect, width, height, clientX, clientY, { clamp = t
  * With `holdTicks`, a press kept within `slop` for that many ticks is a
  * `hold` (a long press: a finger's right click), counted by `tick()` — one
  * call each tick, so a script of presses replays the same holds — and its
- * release then means nothing.
+ * release then means nothing. A press that says `hold: false` (a mouse's,
+ * whose right button flags) never holds.
  *
  * @param {{ slop: number, holdTicks?: number }} options
  * @returns {((event: { type: string, x?: number, y?: number, button?: string }) => Array<object>)
@@ -61,7 +62,14 @@ export function createGesture({ slop, holdTicks = 0 }) {
   const gesture = (event) => {
     switch (event.type) {
       case "down":
-        press = { x: event.x, y: event.y, dragging: false, held: 0, button: event.button };
+        press = {
+          x: event.x,
+          y: event.y,
+          dragging: false,
+          held: 0,
+          holds: event.hold !== false,
+          button: event.button,
+        };
         return [];
       case "move":
         if (!press) return [];
@@ -92,7 +100,7 @@ export function createGesture({ slop, holdTicks = 0 }) {
 
   // A press already held is marked with a negative count: it holds once.
   gesture.tick = () => {
-    if (!holdTicks || !press || press.dragging || press.held < 0) return [];
+    if (!holdTicks || !press?.holds || press.dragging || press.held < 0) return [];
     press.held += 1;
     if (press.held < holdTicks) return [];
     press.held = -1;
