@@ -18,3 +18,10 @@ export const LEVEL = Object.freeze({
   hex_sudoku_medium: Object.freeze({ level: 2, givens: Object.freeze([26, 35]) }),
   hex_sudoku_hard: Object.freeze({ level: 3, givens: Object.freeze([22, 29]) }),
 });
+
+/**
+ * Where the game's pictures are served, with the version of their description
+ * (`assets/art/sudoku/build_tiles.py` writes it), so a new atlas is never read
+ * from an old cache.
+ */
+export const TILES_URL = "/images/games/sudoku/tiles.json?vsn=0784a1139ed8";
